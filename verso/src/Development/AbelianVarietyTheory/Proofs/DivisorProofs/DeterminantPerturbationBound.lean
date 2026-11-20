@@ -9,11 +9,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hg : ∀ i, ‖g i‖ ≤ 1` using `fun i => by`. Establish `: g i = f i + -(f i - g i)` using `by ring`. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hf i) (by rw [norm_neg]; exact (hfg i).le))`. Proceed by induction on `s using Finset.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Establish `e : f a * ∏ i ∈ s, f i - g a * ∏ i ∈ s, g i = f a * (∏ i ∈ s, f i - ∏ i ∈ s, g i) + (f a - g a) * ∏ i ∈ s, g i` using `by ring`. Rewrite using `[e]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_prod]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem detClose_norm_prod_sub_lt {C : Type} [NormedField C] [IsUltrametricDist C] {ι : Type}
     (s : Finset ι) (f g : ι → C) (hf : ∀ i, ‖f i‖ ≤ 1) (hfg : ∀ i, ‖f i - g i‖ < 1) :
@@ -42,7 +42,7 @@ theorem detClose_norm_prod_sub_lt {C : Type} [NormedField C] [IsUltrametricDist 
         _ < 1 := by simpa using hfg a
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detClose_norm_sum_lt {C : Type} [NormedField C] [IsUltrametricDist C] {ι : Type}
     (s : Finset ι) (f : ι → C) (h : ∀ i ∈ s, ‖f i‖ < 1) : ‖∑ i ∈ s, f i‖ < 1 := by
@@ -56,9 +56,9 @@ theorem detClose_norm_sum_lt {C : Type} [NormedField C] [IsUltrametricDist C] {�
         (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply', Matrix.det_apply', ← Finset.sum_sub_distrib]`. Apply `detClose_norm_sum_lt` to reduce the goal to its premises. Introduce `σ _`. Rewrite using `[← mul_sub, norm_mul]`. Establish `hs : ‖((Equiv.Perm.sign σ : ℤ) : C)‖ = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`. Rewrite using `[hs, one_mul]`. Conclude with `detClose_norm_prod_sub_lt _ _ _ (fun i => hB _ _) (fun i => hBB _ _)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detClose_norm_det_sub_lt {C : Type} [NormedField C] [IsUltrametricDist C] {k : ℕ}
     (B B' : Matrix (Fin k) (Fin k) C) (hB : ∀ i j, ‖B i j‖ ≤ 1)
@@ -73,25 +73,23 @@ theorem detClose_norm_det_sub_lt {C : Type} [NormedField C] [IsUltrametricDist C
   exact detClose_norm_prod_sub_lt _ _ _ (fun i => hB _ _) (fun i => hBB _ _)
 
 /- English proof (translation)
-Introduce `C _ _ J k P P' N hN hle ⟨σ₀, hσ₀⟩ hclose σ`. Use `set A : Matrix (Fin k) (Fin k) C := Matrix.of fun r l => P (σ₀ r) l with hA`. Establish `hdetA : A.det ≠ 0`. Introduce `h`. Rewrite `hσ₀` using `[h, norm_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set Q := A⁻¹ with hQ`. Establish `hcol : ∀ (c : Fin k) (j : J), ‖∑ l, Q l c * P j l‖ ≤ 1`. Introduce `c j`. Establish `h1 : ∑ l, A.adjugate l c * P j l = (A.updateRow c (P j)).det`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.cramer_transpose_apply, Matrix.cramer_eq_adjugate_mulVec, ← Matrix.adjugate_transpose]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.transpose_apply, mul_comm]`. Establish `h2 : A.updateRow c (P j) = Matrix.of fun r l => P (Function.update σ₀ c j r) l`. Use extensionality with `r l`. Distinguish the cases in `hr : r = c`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hr` using the available equality. Simplify using `[Matrix.updateRow_apply]`. Simplify using `[Matrix.updateRow_apply, hr, Function.update_of_ne hr, hA]`. Establish `h3 : ∑ l, Q l c * P j l = (A.det)⁻¹ * ∑ l, A.adjugate l c * P j l`. Rewrite using `[hQ, Matrix.inv_def, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Ring.inverse_eq_inv', smul_eq_mul, mul_assoc]`. Rewrite using `[h3, h1, h2, norm_mul, norm_inv, hσ₀]`. Rewrite using `[inv_mul_le_iff₀ hN, mul_one]`. Conclude with `hle _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set M : Matrix (Fin k) (Fin k) C := Matrix.of fun r l => P (σ r) l`. Use `set M' : Matrix (Fin k) (Fin k) C := Matrix.of fun r l => P' (σ r) l`. Establish `hB : ∀ r c, ‖(M * Q) r c‖ ≤ 1`. Introduce `r c`. Rewrite using `[Matrix.mul_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `hcol c (σ r)` using `[M, mul_comm]`. Establish `hBB : ∀ r c, ‖(M * Q) r c - (M' * Q) r c‖ < 1`. Introduce `r c`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, ← Finset.sum_sub_distrib]`. Use `hclose (fun l => Q l c) (fun j => hcol c j) (σ r)` as an intermediate fact.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `this using 2` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `[M, M']`. Expand and normalize the polynomial expressions, which then agree. Establish `hkey` using `detClose_norm_det_sub_lt (M * Q) (M' * Q) hB hBB`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hQA : Q.det * A.det = 1`. Rewrite using `[hQ, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', inv_mul_cancel₀ hdetA]`. Establish `e : M.det - M'.det = ((M * Q).det - (M' * Q).det) * A.det`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, sub_mul, mul_assoc, mul_assoc, hQA, mul_one, mul_one]`. Use `show ‖M.det - M'.det‖ < N`.
-
-Rewrite using `[e, norm_mul, hσ₀]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem det_sub_lt_of_close_on_unitBall : ∀ (C : Type) [NormedField C] [IsUltrametricDist C] (J : Type) (k : ℕ) (P P' : J → Fin k → C) (N : ℝ), 0 < N → (∀ σ : Fin k → J, ‖(Matrix.of fun r l => P (σ r) l).det‖ ≤ N) → (∃ σ : Fin k → J, ‖(Matrix.of fun r l => P (σ r) l).det‖ = N) → (∀ cf : Fin k → C, (∀ j, ‖∑ l, cf l * P j l‖ ≤ 1) → ∀ j, ‖∑ l, cf l * (P j l - P' j l)‖ < 1) → ∀ σ : Fin k → J, ‖(Matrix.of fun r l => P (σ r) l).det - (Matrix.of fun r l => P' (σ r) l).det‖ < N := by
   intro C _ _ J k P P' N hN hle ⟨σ₀, hσ₀⟩ hclose σ

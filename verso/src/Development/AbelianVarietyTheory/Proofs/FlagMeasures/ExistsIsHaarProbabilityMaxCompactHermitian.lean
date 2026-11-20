@@ -6,7 +6,7 @@ noncomputable section
 namespace GlobalTheory.KFinAvg
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem uh_mul {N : ℕ} {H A B : Matrix (Fin N) (Fin N) ℂ} (hA : Aᴴ * H * A = H) (hB : Bᴴ * H * B = H) :
     (A * B)ᴴ * H * (A * B) = H := by
@@ -15,7 +15,7 @@ theorem uh_mul {N : ℕ} {H A B : Matrix (Fin N) (Fin N) ℂ} (hA : Aᴴ * H * A
     _ = H := by rw [hA, hB]
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem uh_star {N : ℕ} {H A : Matrix (Fin N) (Fin N) ℂ} (hA : Aᴴ * H * A = H) (hu : A * Aᴴ = 1) :
     (Aᴴ)ᴴ * H * Aᴴ = H := by
@@ -57,26 +57,26 @@ def incKH (k r : ℕ) (u : subKH k r) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r
   ((u : Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ) : Matrix _ _ ℂ)
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_incKH (k r : ℕ) : Continuous (incKH k r) :=
   continuous_subtype_val.comp continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `u.2`.
+A detailed English derivation is pending.
 -/
 theorem incKH_mem (k r : ℕ) (u : subKH k r) : incKH k r u ∈ GlobalTheory.ThA.KH k r := u.2
 
 /- English proof (translation)
-Introduce `k r`. Set `ν : Measure (subKH k r)` to `Measure.haarMeasure ⊤`. Establish `hmeas : Measurable (incKH k r)` using `(continuous_incKH k r).measurable`. Establish `hν : IsProbabilityMeasure ν` using `⟨by`. Use `Measure.haarMeasure_self (G := subKH k r) (K₀ := ⊤)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this⟩`. Establish `hKm : MeasurableSet (GlobalTheory.ThA.KH k r)` using `(isCompact_KH k r).isClosed.measurableSet`. Use `⟨ν.map (incKH k r), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Measure.isProbabilityMeasure_map hmeas.aemeasurable`. Rewrite using `[Measure.map_apply hmeas hKm.compl]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: incKH k r ⁻¹' (GlobalTheory.ThA.KH k r)ᶜ = ∅`. Use extensionality with `u`. Simplify using `[incKH_mem k r u]`. Rewrite using `[this, measure_empty]`. Introduce `a ha`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `au : Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ` to `⟨a, ha.2⟩`. Set `a' : subKH k r` to `⟨au, ha⟩`. Establish `h` using `map_mul_left_eq_self ν a'`. Rewrite using `[Measure.map_map (measurable_const_mul a) hmeas]`. Use `conv_rhs => rw [← h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Measure.map_map hmeas (measurable_const_mul _)]`. Both sides reduce to the same expression. Introduce `U hU h1`. Rewrite using `[Measure.map_apply hmeas hU.measurableSet]`. Conclude with `(hU.preimage (continuous_incKH k r)).measure_pos ν ⟨1, h1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isHaarKH : ∀ k r : ℕ, ∃ μ : Measure (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ),
     GlobalTheory.KFinAvg.IsHaarKH k r μ := by

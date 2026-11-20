@@ -15,13 +15,13 @@ def SegreLiftIntNum.Statement : Prop :=
       intNum F (segreLift ι F W) ![IndefiniteRowSideFullHecke.Kleiman2.pullDeg β] = intNum F W ![β]
 
 /- English proof (translation)
-The claim follows from `NumbersDVR.isMultiProjPrime_bot`.
+A detailed English derivation is pending.
 -/
 theorem SegreLiftIntNum.hyps : IsMultiProjPrime (⊥ : Ideal (MRing (fun _ : Unit => Fin 2) ℚ)) :=
   NumbersDVR.isMultiProjPrime_bot
 
 /- English proof (translation)
-The claim follows from `h ℚ Unit (fun _ => Fin 2) ⊥ SegreLiftIntNum.hyps 1`.
+A detailed English derivation is pending.
 -/
 example (h : SegreLiftIntNum.Statement) := h ℚ Unit (fun _ => Fin 2) ⊥ SegreLiftIntNum.hyps 1
 

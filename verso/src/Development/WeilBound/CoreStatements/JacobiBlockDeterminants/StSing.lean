@@ -6,7 +6,7 @@ import Development.WeilBound.CoreStatements.MultihomogeneousSquares.BlockDiagMin
 import Development.WeilBound.CoreStatements.MultihomogeneousSquares.SameOrbitTrans
 
 /- English proof (translation)
-The claim follows from `SquareStatements.Sing.stSing_of SquareStatements.Sing.c0 HeightCancellation.G.c1 HeightCancellation.c2 SquareStatements.Sing.c5 HeightCancellation.G.c3w HeightCancellation.G.c3o HeightCancellation.c4`.
+A detailed English derivation is pending.
 -/
 theorem HeightCancellation.stSing : SquareStatements.StSing :=
   SquareStatements.Sing.stSing_of SquareStatements.Sing.c0 HeightCancellation.G.c1 HeightCancellation.c2 SquareStatements.Sing.c5 HeightCancellation.G.c3w HeightCancellation.G.c3o HeightCancellation.c4

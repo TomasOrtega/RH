@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.GoodCuspPoint
 
 /- English proof (translation)
-Take `⟨P, -, hBC⟩` from `hx`. Use `⟨fun p hp => ?_, ?_⟩` and prove the remaining obligations. Establish `hm : (⟨p.a, D.naut.tw p.π D.naut.etaTinv, p.d⟩ : Formalism.BasicNotions.Part D.naut.CG) ∈ twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv` using `List.mem_map.2 ⟨p, List.mem_append_left _ hp, rfl⟩`. Conclude with `⟨(hBC.1 _ hm).1, (hBC.1 _ hm).2.1⟩`. Establish `h` using `hBC.2.2.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `e : rankIso D.nd D.naut (twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv) = rankIso D.nd D.naut Sig + D.R.t`. Simplify using `[rankIso, twistIso, muPart, List.map_map, Function.comp_def]`. Rewrite `h` using `[e]`. Establish `: D.R.nV = D.R.r + D.R.t` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem param_parts_pos_rank (D : D7) (i : D.nd.Loc) (x : D.nd.X i) (Sig : List (Formalism.BasicNotions.Part D.naut.CG))
     (hx : HasParamX D.nd D.naut i x Sig) :
@@ -32,25 +32,23 @@ theorem param_parts_pos_rank (D : D7) (i : D.nd.Loc) (x : D.nd.X i) (Sig : List 
     omega
 
 /- English proof (translation)
-Take `⟨hpos, hrank⟩` from `param_parts_pos_rank D i x Sig hx`. Set `k : Fin 2` to `0`. Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Take `⟨h1, h2, -, -, h5, -⟩` from `(hg k).1`. Establish `: Nonempty (D.nd.PlG k)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Fintype.card_pos_iff, D.nd.card_PlG k]`. Use `show 0 < 2 * D.R.ord`. Use `D.R.ord_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hr : 1 ≤ D.R.r`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.R.two_le_m` as an intermediate fact. Use `show 1 ≤ D.R.k + D.R.m - 1`. Use linear arithmetic over natural numbers and integers. Establish `hf : ∀ v, D.naut.items₂ k (D.naut.plGw k v) (isoLoc D.nd D.naut Sig (D.naut.plGw k v)) = ∏ j : Fin Sig.length, D.naut.items₂ k (D.naut.plGw k v) (D.naut.locG (Sig.get j).π (D.naut.plGw k v)) ^ (Sig.get j).d`. Introduce `v`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Formalism.MainNotions.SumRepresentations.inertiaCharpoly_eq_of_iso D.nd D.naut hT k v Sig, Formalism.MainNotions.SumRepresentations.list_prod_fin Sig (fun p => D.naut.items₂ k (D.naut.plGw k v) (D.naut.locG p.π (D.naut.plGw k v)) ^ p.d)]`. Establish `hrk : ∑ j : Fin Sig.length, (Sig.get j).a * (Sig.get j).d = D.R.r`. Rewrite using `[← hrank, rankIso, Formalism.MainNotions.SumRepresentations.list_sum_fin Sig (fun p => p.a * p.d)]`. Establish `hd : ∀ j : Fin Sig.length, 1 ≤ (Sig.get j).a ∧ 1 ≤ (Sig.get j).d` using `fun j => hpos _ (List.get_mem Sig j)`. Establish `hdeg : ∀ v (j : Fin Sig.length), (D.naut.items₂ k (D.naut.plGw k v) (D.naut.locG (Sig.get j).π (D.naut.plGw k v))).natDegree = (Sig.get j).a`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v`. Establish `hne : ∀ j ∈ (Finset.univ : Finset (Fin Sig.length)), D.naut.items₂ k (D.naut.plGw k v) (D.naut.locG (Sig.get j).π (D.naut.plGw k v)) ^ (Sig.get j).d ≠ 0`. Rewrite using `[← Finset.prod_ne_zero_iff, ← hf v]`. Conclude with `(h1 v).1.ne_zero`. Establish `hsum : ∑ j : Fin Sig.length, (D.naut.items₂ k (D.naut.plGw k v) (D.naut.locG (Sig.get j).π (D.naut.plGw k v))).natDegree * (Sig.get j).d = ∑ j : Fin Sig.length, (Sig.get j).a * (Sig.get j).d`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1' : (D.naut.items₂ k (D.naut.plGw k v) (isoLoc D.nd D.naut Sig (D.naut.plGw k v))).natDegree = D.R.r` using `(h1 v).2.1`. Rewrite using `[hrk, ← h1', hf v, natDegree_prod _ _ hne]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[natDegree_pow, mul_comm]`. Establish `hle : ∀ j ∈ (Finset.univ : Finset (Fin Sig.length)), (D.naut.items₂ k (D.naut.plGw k v) (D.naut.locG (Sig.get j).π (D.naut.plGw k v))).natDegree * (Sig.get j).d ≤ (Sig.get j).a * (Sig.get j).d`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `j _`. Use `Nat.mul_le_mul_right _ ?_` and prove the remaining obligations. Use `hT.2 k v (D.naut.locG (Sig.get j).π (D.naut.plGw k v))` as an intermediate fact. Rewrite `this` using `[D.naut.locG_dim]`. Then use the resulting hypothesis. Introduce `j`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Use `(Finset.sum_eq_sum_iff_of_le hle).1 hsum j (Finset.mem_univ j)` as an intermediate fact. Conclude with `Nat.eq_of_mul_eq_mul_right (hd j).2 this`. Take `⟨hc, hall⟩` from `Formalism.IrreducibleCountingLemmas.Z.good_cuspidal_multiplicity_one (ZMod (D.host.g k)) (D.nd.PlG k) D.R.r (fun v => D.naut.items₂ k (D.naut.plGw k v) (isoLoc D.nd D.naut Sig (D.naut.plGw k v))) (Fin Sig.length) (fun j => (Sig.get j).a) (fun j => (Sig.get j).d) (fun v j => D.nau …`. Introduce and unpack `⟨a, ha1, ha2, ha⟩`. Take `⟨v, hv⟩` from `h5 a ha1 ha2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hv (ha v))`. Rewrite `hc` using `[Fintype.card_fin]`. Take `⟨p, rfl⟩` from `List.length_eq_one_iff.1 hc`. Take `⟨hd1, ha1⟩` from `hall ⟨0, by simp⟩`. Take `⟨a, π, d⟩` from `p`.
-
-Simplify using `only [List.get_eq_getElem, List.getElem_cons_zero] at hd1 ha1`. Substitute `hd1 ha1` using the available equality. Conclude with `⟨π, rfl⟩`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cuspidal_of_good_labels (D : D7) (hT : Formalism.MainNotions.SumRepresentations.tieLab D) (i : D.nd.Loc) (x : D.nd.X i)
     (Sig : List (Formalism.BasicNotions.Part D.naut.CG)) (hx : HasParamX D.nd D.naut i x Sig)
@@ -123,7 +121,7 @@ theorem cuspidal_of_good_labels (D : D7) (hT : Formalism.MainNotions.SumRepresen
   exact ⟨π, rfl⟩
 
 /- English proof (translation)
-Introduce `D hT i x Sig hx hg` and use `cuspidal_of_good_labels D hT i x Sig hx hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ D : D7, Formalism.MainNotions.SumRepresentations.tieLab D → GlobalTheory.LocalInv.GoodCuspidal D.nd D.naut :=
   fun D hT i x Sig hx hg => cuspidal_of_good_labels D hT i x Sig hx hg

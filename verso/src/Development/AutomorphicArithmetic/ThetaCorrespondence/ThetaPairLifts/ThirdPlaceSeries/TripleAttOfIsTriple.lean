@@ -33,7 +33,7 @@ variable {D : D7} {T : WDTie D.nd D.naut} {C₀ C : CharFrame D} (S : CharSide D
   {w : D.what₂.places.Pl} {red : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.Zbar (D.ntw.l i) →+* FbAt D w}
 end Triple
 /- English proof (translation)
-Take `⟨C, art, h⟩` from `h`. Take `⟨ρ, h1, σ, π, r, ν, w, red, h2⟩` from `h.triple hi s`. Conclude with `_root_.GlobalTheory.TripleLocal.triple_att_n_of_is_triple_with hF hG h.artin h1 h2 S`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem triple_att_n_of_is_triple {D : D7} {T : WDTie D.nd D.naut} {C₀ : CharFrame D} (S : CharSide D C₀) (hF : FrobDense D)
     (hG : _root_.UpperTheory.GalS.GalHodgeN D T) (h : _root_.GlobalTheory.Triple.IsGaloisTriple D) (i : D.ntw.Tw) (hi : D.ntw.NonzeroIndexPlace i) (s : D.ntw.Sig i) :

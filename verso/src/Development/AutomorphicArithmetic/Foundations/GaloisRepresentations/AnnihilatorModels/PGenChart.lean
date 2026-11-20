@@ -5,19 +5,17 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `Y π U hU V _ _ f hmin`. Use `set πU := Y.presheaf.map (homOfLE le_top).op π with hπU`. Set `P : PrimeSpectrum Γ(Y, U)` to `⟨Ideal.comap f (IsLocalRing.maximalIdeal V), inferInstance⟩`. Establish `hx : ptOf hU V f (IsLocalRing.closedPoint V) = hU.fromSpec P` using `rfl`. Establish `hinU : ∀ q : PrimeSpectrum Γ(Y, U), hU.fromSpec q ∈ U`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Establish `: hU.fromSpec q ∈ Set.range hU.fromSpec` using `⟨q, rfl⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Conclude with `this`. Establish `hmem : ∀ q : PrimeSpectrum Γ(Y, U), hU.fromSpec q ∈ Y.basicOpen π ↔ πU ∉ q.asIdeal`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `q`. Establish `h1 : q ∈ PrimeSpectrum.basicOpen πU ↔ hU.fromSpec q ∈ Y.basicOpen πU`. Rewrite using `[← hU.fromSpec_preimage_basicOpen]`. Both sides reduce to the same expression. Rewrite using `[← PrimeSpectrum.mem_basicOpen, h1, hπU, Scheme.basicOpen_res]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => ⟨hinU q, h⟩, fun h => h.2⟩`. Rewrite using `[hx]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmem, not_not]`. Conclude with `hmin.1.2 (Ideal.subset_span (Set.mem_singleton _))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `x' hx' hsp`. Establish `hx'U : x' ∈ U` using `hsp.mem_open U.isOpen (hinU P)`. Choose the witnesses or unpack the hypotheses as in `⟨q, rfl⟩ : x' ∈ Set.range hU.fromSpec := by`. Rewrite using `[hU.range_fromSpec]`. Conclude with `hx'U`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hqp : q ⤳ P` using `hU.fromSpec.isOpenEmbedding.isInducing.specializes_iff.mp hsp`. Establish `hqp' : q.asIdeal ≤ P.asIdeal` using `(PrimeSpectrum.le_iff_specializes (R := Γ(Y, U)) q P).mpr hqp`. Establish `hπq : πU ∈ q.asIdeal`. Assume the negation of the conclusion as `h`. Conclude with `hx' ((hmem q).mpr h)`.
-
-Establish `hPq : P.asIdeal ≤ q.asIdeal` using `hmin.2 ⟨q.2, Ideal.span_le.mpr (Set.singleton_subset_iff.mpr hπq)⟩ hqp'`. Use `congr 1`. Conclude with `PrimeSpectrum.ext (le_antisymm hqp' hPq)`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.genChart_of :
     GenChart := by

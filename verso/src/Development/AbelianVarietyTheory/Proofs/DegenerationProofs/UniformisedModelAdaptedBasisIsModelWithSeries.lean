@@ -18,9 +18,9 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Introduce `hL hT o Ω _ _ _ _ S ρ p _ y₀ u l σ cls f hb`. Take `⟨-, hdim, hsm, h4, -⟩` from `utest_dim_and_split hL o Ω S ρ p y₀ u`. Establish `h1 : 1 ≤ S.N` using `le_trans (by norm_num) h4`. Take `⟨fb⟩` from `GlobalTheory.T.nonempty_geometric_special_fibre_uniformised hL o Ω S ρ p y₀ u S.N h1`. Take `⟨F, hF, hred⟩` from `fb.exp S.J σ f (fun i => hb.2.2.2.1 i 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨{ isLB := LB.isLB_linComb u.U.LG.isLB _ _ smooth := hsm Φ := fb.Φ r := fb.r cart := fb.cart xe := fb.xe F := F good := GlobalTheory.T.good_reduction_adapted_basis hL o Ω S ρ p y₀ u l S.N fb h1 S.J σ cls f hb F hF pol := fb.pol dim := ?_ red := hred ser := GlobalTheory.T.theta_se …` and prove the remaining obligations. Rewrite using `[fb.dim, fb.xe.toIntLinearEquiv.finrank_eq]`. Conclude with `hdim`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem utest_nonempty_mod : GlobalTheory.UT.LL → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab) (σ : S.J → (u.H S.N).Sec) (cls : S.J → u.D.toPre.X) (f : S.J → ∀ α, u.D.toPre.SecB S.N α), u.Basis l S.N σ cls f → Nonempty (Mod p u.j u.G S.g S.N l.q (u.H S.N) σ cls) := by
   intro hL hT o Ω _ _ _ _ S ρ p _ y₀ u l σ cls f hb

@@ -35,14 +35,14 @@ def LocFacts₂ (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (p 
   ∑ i, ∑ j, x i * (M p).L.cj (y j) * (D.s.atP p).ιE (gramV D i j)
 
 /- English proof (translation)
-Simplify using `only [gramV, brS]`. Conclude with `(VS D).herm.eq _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem star_gramV (i j : Fin (nV D)) : star (gramV D i j) = gramV D j i := by
   simp only [gramV, brS]
   exact (VS D).herm.eq _ _
 
 /- English proof (translation)
-Rewrite using `[hcj, (D.s.atP p).cj_ιE, D.conjF_eq, Formalism.BasicNotions.Examples₂.star_eq_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_iota {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {p : PlF D}
     (hcj : (M p).L.cj = (D.s.atP p).cj) (z : D.host.E) :
@@ -50,13 +50,13 @@ theorem cj_iota {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {p 
   rw [hcj, (D.s.atP p).cj_ιE, D.conjF_eq, Formalism.BasicNotions.Examples₂.star_eq_conj]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h`. Apply `hv0` to reduce the goal to its premises. Use `set b := (VS D).frame`. Use `set w : (VS D).V := ∑ i, v i • b i with hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hj : ∀ j, (VS D).hT (b j) w = 0`. Introduce `j`. Use `congrFun hv j` as an intermediate fact. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, Pi.zero_apply, gramV, brS] at this`. Rewrite using `[hw, map_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[map_smul, smul_eq_mul]`. Establish `hall : (VS D).hT.flip w = 0` using `b.ext fun j => by simpa using hj j`. Establish `hw0 : w = 0` using `(VS D).nondeg.2 w fun x => by`. Use `congrArg (fun f => f x) hall` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(Fintype.linearIndependent_iff.1 b.linearIndependent) v (by rw [← hw]; exact hw0)` as an intermediate fact. Use function extensionality and compare the values at `i`. Conclude with `this i`.
+A detailed English derivation is pending.
 -/
 theorem gram_det_ne : (Matrix.of (gramV D)).det ≠ 0 := by
   intro h
@@ -85,7 +85,7 @@ instance ntEp (p : PlF D) : Nontrivial (D.s.atP p).Ep := by
   omega
 
 /- English proof (translation)
-Simplify using `[LocFacts₂, Matrix.vecMul, dotProduct, Pi.single_apply, apply_ite, Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules.
 -/
 theorem localForm_single (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (p : PlF D) (x : Vp D p)
     (j : Fin (nV D)) :
@@ -118,7 +118,7 @@ def locHerm (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (p : Pl
   fin := inferInstance
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_fin_fun]`. Use `show (D.sp.Y 0).rank = _`. Rewrite using `[D.sp.Y_rank 0 (Nat.zero_le _)]`. Simplify using `[Ranks.rankY]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finrank_Vp (p : PlF D) : Module.finrank (D.s.atP p).Ep (Vp D p) = D.R.r := by
   rw [Module.finrank_fin_fun]
@@ -127,7 +127,7 @@ theorem finrank_Vp (p : PlF D) : Module.finrank (D.s.atP p).Ep (Vp D p) = D.R.r 
   simp [Ranks.rankY]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [baseChange₂, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Pi.smul_apply, smul_eq_mul, LinearEquiv.map_smul, Finsupp.smul_apply, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem baseChange_smul₂ (p : PlF D) (a : D.host.E) (x : (VS D).V) :
     baseChange₂ D p ((a • x : (VS D).V)) = ((D.s.atP p).ιE a : (D.s.atP p).Ep) • (baseChange₂ D p x : Vp D p) := by
@@ -136,13 +136,13 @@ theorem baseChange_smul₂ (p : PlF D) (a : D.host.E) (x : (VS D).V) :
     Finsupp.smul_apply, map_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[baseChange₂, Finsupp.single_apply, Pi.single_apply, eq_comm, apply_ite]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem baseChangeAt_frame (p : PlF D) (i : Fin (nV D)) : baseChange₂ D p ((VS D).frame i) = Pi.single i 1 := by
   funext j; simp [baseChange₂, Finsupp.single_apply, Pi.single_apply, eq_comm, apply_ite]
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← (Pi.basisFun (D.s.atP p).Ep (Fin (nV D))).span_eq]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨(VS D).frame i, by rw [baseChangeAt_frame, Pi.basisFun_apply]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem span_baseChange_eq_top (p : PlF D) : Submodule.span (D.s.atP p).Ep (Set.range (baseChange₂ D p)) = ⊤ := by
   rw [eq_top_iff, ← (Pi.basisFun (D.s.atP p).Ep (Fin (nV D))).span_eq]
@@ -151,9 +151,9 @@ theorem span_baseChange_eq_top (p : PlF D) : Submodule.span (D.s.atP p).Ep (Set.
   exact ⟨(VS D).frame i, by rw [baseChangeAt_frame, Pi.basisFun_apply]⟩
 
 /- English proof (translation)
-Establish `key : (VS D).hT y x = ∑ j, ∑ i, star ((VS D).frame.repr y j) * ((VS D).frame.repr x i * (VS D).hT ((VS D).frame j) ((VS D).frame i))` using `by conv_lhs => rw [← (VS D).frame.sum_repr y, ← (VS D).frame.sum_repr x]`. Simplify using `only [map_sum, map_smulₛₗ, smul_eq_mul, starRingEnd_apply, LinearMap.sum_apply, LinearMap.smul_apply, RingHom.id_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [LocFacts₂, brS, key, baseChange₂, AddMonoidHom.coe_mk, ZeroHom.coe_mk, cj_iota hcj, map_sum, map_mul, gramV]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem baseChangeAt_form (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (p : PlF D)
     (hcj : (M p).L.cj = (D.s.atP p).cj) (x y : (VS D).V) :
@@ -177,7 +177,7 @@ structure LocDat (D : D7) where
   agree : ∀ p, Agree δ M p
 
 /- English proof (translation)
-The claim follows from `(Z.agree p).2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem LocDat.hcj (Z : LocDat D) (p : PlF D) : (Z.M p).L.cj = (D.s.atP p).cj := (Z.agree p).2.2.1
 
@@ -198,9 +198,9 @@ def sgnP' (p : PlF D) (b : Fin (D.R.rS + 1)) : (D.s.atP p).Ep :=
   | none => (-1) ^ (D.R.rS - b.val)
 
 /- English proof (translation)
-Unfold `sgnP`. Use `split`. Name the introduced variables `sg _`. Rewrite using `[← map_mul]`. Establish `h : (((-1 : (D.s.atP p).Fp) ^ (D.R.rS - a.val), (1 : (D.s.atP p).Fp)) * ((-1) ^ (D.R.rS - a.val), 1) : (D.s.atP p).Fp × (D.s.atP p).Fp) = 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp [← mul_pow]`. Rewrite using `[h, map_one]`. Conclude with `one_mul 1`.
+A detailed English derivation is pending.
 -/
 theorem localSign_sq (p : PlF D) (a : Fin (D.R.rS + 1)) : sgnP D p a * sgnP D p a = 1 := by
   unfold sgnP
@@ -214,7 +214,7 @@ theorem localSign_sq (p : PlF D) (a : Fin (D.R.rS + 1)) : sgnP D p a * sgnP D p 
   · exact one_mul 1
 
 /- English proof (translation)
-Unfold `sgnP'`. Use `split`. Conclude with `localSign_sq p b`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sgnP'_sq (p : PlF D) (b : Fin (D.R.rS + 1)) : sgnP' D p b * sgnP' D p b = 1 := by
   unfold sgnP'
@@ -235,7 +235,7 @@ def admXi (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T T' : D.host.E} (F : LFlag
   if h : IsAdmissible Λ (gS D) F F' then h.choose else 1
 
 /- English proof (translation)
-Unfold `admXi`. Use `split_ifs with h`. Conclude with `⟨h.choose_spec.1, h.choose_spec.2.1⟩`. Conclude with `⟨fun a b hab => Matrix.one_apply_ne (ne_of_lt hab).symm, fun a => Matrix.one_apply_eq a⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem admissibility_witness_unitriangular (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') :
@@ -246,13 +246,13 @@ theorem admissibility_witness_unitriangular (Λ : Submodule (𝓞 D.host.E) (VS 
   · exact ⟨fun a b hab => Matrix.one_apply_ne (ne_of_lt hab).symm, fun a => Matrix.one_apply_eq a⟩
 
 /- English proof (translation)
-Establish `hbt : ξ.BlockTriangular id` using `fun i j hij => h1 i j hij`. Establish `hdet : ξ.det = 1`. Rewrite using `[Matrix.det_of_isUpperTriangular hbt]`. Simplify using `[h2]`. Establish `hu : IsUnit ξ.det` using `by rw [hdet]; exact isUnit_one`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `_inst : Invertible ξ` to `ξ.invertibleOfIsUnitDet hu`. Establish `hbt' : ξ⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hbt`. Use `⟨fun a b hab => hbt' hab, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (congrFun (Matrix.nonsing_inv_mul ξ hu) a) a`. Rewrite `h` using `[Matrix.mul_apply, Finset.sum_eq_single a]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h` using `[h2]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with hk | hk` into its components or cases. Rewrite using `[hbt' (show id k < id a from hk), zero_mul]`. Rewrite using `[h1 k a hk, mul_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inv_unitri {n : ℕ} {R : Type*} [CommRing R] (ξ : Matrix (Fin n) (Fin n) R)
     (h1 : ∀ a b, b < a → ξ a b = 0) (h2 : ∀ a, ξ a a = 1) :
@@ -299,9 +299,9 @@ def locBBneT (Z : LocDat D) {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((
   locBBne Z p t.lam (lf D F0) (Quot.out t.cls).1 (Tu D u) (Tu D u')
 
 /- English proof (translation)
-Establish `hL` using `hrows.1 t.lam t.mem`. Establish `hxm : mk t.lam (lf D F0) (PD D t.lam (lf D F0) u') (Quot.out t.cls) = t.cls` using `Quot.out_eq _`. Rewrite using `[locBBneT, ← hT u u' F0 t.lam (Quot.out t.cls).1 hL (Quot.out t.cls).2 (hMI _ _) p]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, hm⟩, P, hP, hbb⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `e` using `const_of_mk (fun y : Carrier (PD D t.lam (lf D F0) u') => BBneP t.lam (gS D) (lf D F0) y.1 P) (fun a b hab => propext (hBF F0 t.lam hL P a b hab)) (hm.trans hxm.symm)`. Simplify using `only at e`. Conclude with `⟨P, hP, e ▸ hbb⟩`. Introduce `h`. Conclude with `⟨(Quot.out t.cls).1, ⟨(Quot.out t.cls).2, hxm⟩, h⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem termBBne_iff_loc (Z : LocDat D) (hT : BBTie D Z) {u u' : D.what₂.Word}
     {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)} {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
@@ -335,11 +335,11 @@ def GenIffLocBB (Z : LocDat D) (u u' : D.what₂.Word) : Prop :=
     IsRowReps D F0 what₂ → ∀ t : Term D u u' F0 what₂, t.generic ↔ ∀ p, ¬ locBBneT Z t p
 
 /- English proof (translation)
-Introduce `F0 what₂ hrows t`. Establish `hloc` using `fun p => termBBne_iff_loc Z hT hrows hBF (hMI F0) t p`. Simplify using `only [← hloc]`. Prove the components needed by the constructor for the conclusion. Introduce `hg p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `not_bbne_of_generic hrows hBF hg p`. Introduce `h`. Establish `hL` using `hrows.1 t.lam t.mem`. Establish `hxm : mk t.lam (lf D F0) (PD D t.lam (lf D F0) u') (Quot.out t.cls) = t.cls` using `Quot.out_eq _`. Use `⟨(Quot.out t.cls).1, ⟨(Quot.out t.cls).2, hxm⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `generic_of_not_BBneP (hMI F0 t.lam _) hL.2.1.2.2.1 hL.2.1.2.2.2 (Quot.out t.cls).2.2.1 ?_` and prove the remaining obligations. Introduce `P hP`. Conclude with `h (below D P) ⟨(Quot.out t.cls).1, ⟨(Quot.out t.cls).2, hxm⟩, P, rfl, hP⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem genIffLocBB_of (Z : LocDat D) (hT : BBTie D Z) (u u' : D.what₂.Word) (hBF : BBFun D u u')
     (hMI : ∀ (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
@@ -454,9 +454,9 @@ variable (D) in
 def LocDatExists : Prop := Nonempty (LocDat D)
 
 /- English proof (translation)
-Simplify using `only [← hR γ, hY γ, Y.gen_iff γ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `hg p ⟨P, -, hP⟩`. Conclude with `not_BBneP_of_generic hg P hP`. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfix` using `Y.fixed γ`. Use `generic_of_not_BBneP (hMI γ) hfix.2.2.1 hfix.2.2.2 (Y.adm γ) ?_` and prove the remaining obligations. Introduce `P hP`. Conclude with `h (below D P) ⟨P, rfl, hP⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem recGenIff_of (Z : LocDat D) (Y : TermTie D) (u u' : D.what₂.Word) (hY : RecBBGlob D Y u u')
     (hR : RecBBTie D Z Y u u')
@@ -473,9 +473,9 @@ theorem recGenIff_of (Z : LocDat D) (Y : TermTie D) (u u' : D.what₂.Word) (hY 
     exact h (below D P) ⟨P, rfl, hP⟩
 
 /- English proof (translation)
-Introduce `γ p`. Rewrite using `[hY γ p]`. Unfold `locY`. Establish `hadm` using `Y.adm γ`. Rewrite `hadm`, the goal using `[hfl γ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hT u u' F0 (Y.abelian₂ γ) (Y.fl' γ) (hrow γ) ⟨Y.lift' γ, hadm, hok γ⟩ (hMI γ) p`.
+A detailed English derivation is pending.
 -/
 theorem recBBTie_of (Z : LocDat D) (hT : BBTie D Z) (Y : TermTie D) (u u' : D.what₂.Word) (hY : RecBBGlob D Y u u')
     (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (hfl : ∀ γ : D.s.Term u u', Y.fl γ = lf D F0)

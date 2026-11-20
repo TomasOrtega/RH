@@ -16,7 +16,7 @@ open Ad3 Ad3.R
 namespace GlobalTheory.CompanionTheory.NewformLiftDecay
 
 /- English proof (translation)
-Establish `e : (z : v.adicCompletion K) = algebraMap K (v.adicCompletion K) z`. Simplify using `[HeightOneSpectrum.algebraMap_adicCompletion]`. Rewrite using `[← e]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_algebraMap' {K : Type*} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (z : K) :
     Valued.v (algebraMap K (v.adicCompletion K) z) = v.valuation K z := by
@@ -26,7 +26,7 @@ theorem valued_algebraMap' {K : Type*} [Field K] [NumberField K] (v : HeightOneS
   exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v z
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Use `haveI : (Valued.v : Valuation (v.adicCompletion ℚ) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (ValuativeRel.valuation (Qv v)) (Valued.v : Valuation (v.adicCompletion ℚ) (WithZero (Multiplicative ℤ)))).le_one_iff_le_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_O_iff (v : Pl) (x : Qv v) : x ∈ 𝒪[Qv v] ↔ x ∈ v.adicCompletionIntegers ℚ := by
   rw [HeightOneSpectrum.mem_adicCompletionIntegers]
@@ -36,7 +36,7 @@ theorem mem_O_iff (v : Pl) (x : Qv v) : x ∈ 𝒪[Qv v] ↔ x ∈ v.adicComplet
     (Valued.v : Valuation (v.adicCompletion ℚ) (WithZero (Multiplicative ℤ)))).le_one_iff_le_one
 
 /- English proof (translation)
-Establish `h1 : (((e : v.adicCompletionIntegers ℚ) : v.adicCompletion ℚ) : Qv v) ∈ 𝒪[Qv v]` using `(mem_O_iff v _).2 (e : v.adicCompletionIntegers ℚ).2`. Establish `h2 : ((((e⁻¹ : (v.adicCompletionIntegers ℚ)ˣ) : v.adicCompletionIntegers ℚ) : v.adicCompletion ℚ) : Qv v) ∈ 𝒪[Qv v]` using `(mem_O_iff v _).2 ((e⁻¹ : (v.adicCompletionIntegers ℚ)ˣ) : v.adicCompletionIntegers ℚ).2`. Establish `h3` using `congrArg (Subtype.val) e.mul_inv`. Establish `h4` using `congrArg (Subtype.val) e.inv_mul`. Conclude with `ord_unit (K := Qv v) (⟨⟨_, h1⟩, ⟨_, h2⟩, Subtype.ext h3, Subtype.ext h4⟩ : 𝒪[Qv v]ˣ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ord_int_unit (v : Pl) (e : (v.adicCompletionIntegers ℚ)ˣ) :
     ord (((e : v.adicCompletionIntegers ℚ) : v.adicCompletion ℚ) : Qv v) = 0 := by
@@ -49,9 +49,9 @@ theorem ord_int_unit (v : Pl) (e : (v.adicCompletionIntegers ℚ)ˣ) :
   exact ord_unit (K := Qv v) (⟨⟨_, h1⟩, ⟨_, h2⟩, Subtype.ext h3, Subtype.ext h4⟩ : 𝒪[Qv v]ˣ)
 
 /- English proof (translation)
-Establish `h1 : ((pOf v : ℕ) : 𝓞 ℚ) ∈ v.asIdeal` using `Ideal.absNorm_mem v.asIdeal`. Take `⟨m, rfl⟩` from `hv`. Establish `h2 : ((pOf v * m : ℕ) : 𝓞 ℚ) ∈ v.asIdeal`. Use `push_cast`. Conclude with `Ideal.mul_mem_right _ _ h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `h3` using `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := ℚ) v _).2 h2`. Establish `h6` using `valued_algebraMap' v (((pOf v * m : ℕ)) : ℚ)`. Rewrite `h6` using `[map_natCast]`. Rewrite using `[h6]`. Simplify using `using h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem val_nat_lt_one (v : Pl) (N : ℕ) (hv : pOf v ∣ N) :
     Valued.v ((N : Qv v)) < (1 : WithZero (Multiplicative ℤ)) := by
@@ -67,21 +67,17 @@ theorem val_nat_lt_one (v : Pl) (N : ℕ) (hv : pOf v ∣ N) :
   simpa using h3
 
 /- English proof (translation)
-Take `⟨hi, t, ht, hc⟩` from `hu`. Take `⟨h1, h2⟩` from `(GroundTheory.Automorphic.AdelicGLn.mem_integralFiniteGL_iff ℚ 2).1 hi`. Use `set d : Qv v := (u : Matrix (Fin 2) (Fin 2) Af) 1 1 v with hd`. Use `set c : Qv v := (u : Matrix (Fin 2) (Fin 2) Af) 1 0 v with hcdef`. Use `set x : Qv v := ((u⁻¹ : FiniteAdelicGL ℚ 2) : Matrix (Fin 2) (Fin 2) Af) 1 1 v with hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y : Qv v := ((u⁻¹ : FiniteAdelicGL ℚ 2) : Matrix (Fin 2) (Fin 2) Af) 0 1 v with hy`. Establish `hdi : Valued.v d ≤ 1` using `h1 1 1 v`. Establish `hxi : Valued.v x ≤ 1` using `h2 1 1 v`. Establish `hyi : Valued.v y ≤ 1` using `h2 0 1 v`. Establish `hti : Valued.v (t v) ≤ 1` using `ht v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hrel : c * y + d * x = 1`. Establish `h` using `congrArg (fun M : Matrix (Fin 2) (Fin 2) Af => adeleAt v (M 1 1)) (Units.mul_inv u)`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, map_add, map_mul, Matrix.one_apply_eq, map_one] at h`. Conclude with `h`. Establish `hcv : c = (N : Qv v) * t v`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `congrArg (adeleAt v) hc`. Simplify using `only [map_mul, map_natCast] at h`. Conclude with `h`. Establish `hclt : Valued.v (c * y) < 1`. Rewrite using `[hcv, map_mul, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `lt_of_le_of_lt ((mul_le_of_le_one_right' hyi).trans (mul_le_of_le_one_right' hti)) (val_nat_lt_one v N hv)`. Establish `hone : Valued.v (d * x) = 1`. Establish `: d * x = 1 - c * y` using `by rw [← hrel]; ring`. Rewrite using `[this]`. Conclude with `Valuation.map_one_sub_of_lt _ hclt`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd1 : Valued.v d = 1`. Use `le_antisymm hdi (not_lt.1 fun h => ?_)` and prove the remaining obligations. Establish `h2 : Valued.v (d * x) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hxi) h`.
-
-Rewrite `h2` using `[hone]`. Conclude with `lt_irrefl _ h2`. Establish `hd0 : d ≠ 0`. Introduce `h`. Rewrite `hd1` using `[h, map_zero]`.
-
-Conclude with `zero_ne_one hd1`. Use `⟨⟨⟨d, hd1.le⟩, ⟨d⁻¹, ?_⟩, Subtype.ext (mul_inv_cancel₀ hd0), Subtype.ext (inv_mul_cancel₀ hd0)⟩, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v d⁻¹ ≤ 1`. Rewrite using `[map_inv₀, hd1, inv_one]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_entry {N : ℕ} [NeZero N] {u : FiniteAdelicGL ℚ 2} (hu : u ∈ Gamma0Level N) (v : Pl) (hv : pOf v ∣ N) :
     ∃ e : (v.adicCompletionIntegers ℚ)ˣ, (((e : v.adicCompletionIntegers ℚ) : v.adicCompletion ℚ) : Qv v) =
@@ -125,9 +121,9 @@ theorem unit_entry {N : ℕ} [NeZero N] {u : FiniteAdelicGL ℚ 2} (hu : u ∈ G
   rw [map_inv₀, hd1, inv_one]
 
 /- English proof (translation)
-Apply the tactic sequence `let e : ∀ v : Pl, (v.adicCompletionIntegers ℚ)ˣ := fun v => if h : pOf v ∣ N then (unit_entry hu v h).choose else 1`. Use `⟨IdeleGroup.toFinite ℚ (IdeleGroup.ofIntegerUnits 1 e), fun v => ord_int_unit v (e v), fun v hv => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have h : e v = (unit_entry hu v hv).choose := dif_pos hv`. Apply the tactic sequence `have h2 := (unit_entry hu v hv).choose_spec`. Rewrite `h2` using `[← h]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_level_idele (N : ℕ) [NeZero N] (u : FiniteAdelicGL ℚ 2) (hu : u ∈ Gamma0Level N) :
     ∃ d : Afˣ, (∀ v : Pl, ord (lf v d : Qv v) = 0) ∧
@@ -143,11 +139,11 @@ theorem exists_level_idele (N : ℕ) [NeZero N] (u : FiniteAdelicGL ℚ 2) (hu :
 
 open UpperHalfPlane in
 /- English proof (translation)
-Establish `hd : (g * borelGL z).det.val = g.det.val * z.im`. Rewrite using `[map_mul, Units.val_mul, det_borelGL]`. Establish `hs : (g * borelGL z) • UpperHalfPlane.I = g • z`. Rewrite using `[mul_smul, borelGL_smul_I]`. Establish `hj : denom (g * borelGL z) (UpperHalfPlane.I : ℂ) = denom g (z : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[denom_mul_of_det_pos _ (det_borelGL_pos z), borelGL_smul_I, denom_borelGL, mul_one]`. Rewrite using `[archLift, hd, hs, hj, ModularForm.slash_apply, σ_of_det_pos hD, abs_of_pos hD]`. Establish `hDc : (g.det.val : ℂ) ≠ 0` using `by exact_mod_cast hD.ne'`. Establish `h : (g.det.val : ℂ) ^ (k - 1) * (g.det.val : ℂ) ^ (1 - k) = 1`. Rewrite using `[← zpow_add₀ hDc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take the linear combination `(-((Real.sqrt (g.det.val * z.im) : ℂ) ^ k * f (g • z) * denom g (z : ℂ) ^ (-k))) * h`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem archLift_translate (k : ℤ) (f : ℍ → ℂ) (g : GL (Fin 2) ℝ) (hD : 0 < g.det.val) (z : ℍ) :
     archLift k f (g * borelGL z) =
@@ -165,9 +161,9 @@ theorem archLift_translate (k : ℤ) (f : ℍ → ℂ) (g : GL (Fin 2) ℝ) (hD 
   linear_combination (-((Real.sqrt (g.det.val * z.im) : ℂ) ^ k * f (g • z) * denom g (z : ℂ) ^ (-k))) * h
 
 /- English proof (translation)
-Use `⟨n.factorial / c ^ n, by positivity, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h` using `Real.pow_div_factorial_le_exp (c * y) (by positivity) n`. Rewrite `h` using `[div_le_iff₀ (by positivity)]`. Rewrite using `[le_div_iff₀ (by positivity), neg_mul, Real.exp_neg]`. Establish `hE` using `Real.exp_pos (c * y)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[mul_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem pow_mul_exp_le (c : ℝ) (hc : 0 < c) (n : ℕ) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ y : ℝ, 0 ≤ y → y ^ n * Real.exp (-c * y) ≤ K := by
@@ -183,21 +179,19 @@ theorem pow_mul_exp_le (c : ℝ) (hc : 0 < c) (n : ℕ) :
 
 open UpperHalfPlane Asymptotics in
 /- English proof (translation)
-Take `⟨D0, hD0⟩` from `hO.bound`. Rewrite `hD0` using `[atImInfty, eventually_comap, eventually_atTop]`. Take `⟨A₀, hA⟩` from `hD0`. Use `set A := max A₀ 1 with hAdef`. Establish `hA1 : 1 ≤ A` using `le_max_right _ _`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK0, hK⟩` from `pow_mul_exp_le c hc (k.natAbs + M)`. Use `⟨|D0| * K + |C₁| * A ^ M, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hy : 0 < z.im` using `z.im_pos`. Establish `hsq1 : 1 ≤ Real.sqrt z.im` using `Real.one_le_sqrt.2 hz`. Establish `hsq0 : 0 < Real.sqrt z.im ^ k` using `zpow_pos (by linarith) _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : 0 ≤ (z.im⁻¹) ^ M` using `by positivity`. Break down `le_total A z.im with h1 | h1` into its components or cases. Establish `h2` using `hA z.im ((le_max_left _ _).trans h1) z rfl`. Rewrite `h2` using `[Real.norm_of_nonneg (Real.exp_pos _).le]`. Establish `h4 : Real.sqrt z.im ≤ z.im`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.sqrt_le_iff]; exact ⟨hy.le, by nlinarith⟩`. Establish `h3 : Real.sqrt z.im ^ k ≤ z.im ^ k.natAbs`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : ‖F z‖ ≤ |D0| * Real.exp (-c * z.im)` using `h2.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (Real.exp_pos _).le)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_add, inv_pow]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ |D0| * K * (z.im⁻¹) ^ M := by gcongr`. Conclude with `hK _ hy.le`. Use `_ ≤ _ := by gcongr`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: 0 ≤ |C₁| * A ^ M` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : Real.sqrt z.im ^ k * ‖F z‖ ≤ C₁`. Rewrite using `[sqrt_zpow_eq_rpow hy]`. Establish `hp : 0 < z.im ^ ((k : ℝ) / 2)` using `Real.rpow_pos_of_pos hy _`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : 1 ≤ A ^ M * (z.im⁻¹) ^ M`. Rewrite using `[← mul_pow]`. Conclude with `one_le_pow₀ (by rw [← div_eq_mul_inv]; exact (one_le_div hy).2 h1)`. Establish `h4 : 0 ≤ |D0| * K * (z.im⁻¹) ^ M` using `by positivity`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem real_decay {F : ℍ → ℂ} {k : ℤ} {c C₁ : ℝ} (hc : 0 < c)
     (hO : F =O[atImInfty] fun τ => Real.exp (-c * τ.im))
@@ -254,13 +248,13 @@ theorem real_decay {F : ℍ → ℂ} {k : ℤ} {c C₁ : ℝ} (hc : 0 < c)
 
 open ConjAct Pointwise in
 /- English proof (translation)
-Establish `hD : 0 < (toReal γ).det.val`. Rewrite using `[det_toReal]`. Conclude with `hγ` after adjusting the coercions. Use `haveI hA : (ConjAct.toConjAct (toReal γ)⁻¹ • (CongruenceSubgroup.Gamma1 N : Subgroup (GL (Fin 2) ℝ))).IsArithmetic := by`. Establish `h` using `Subgroup.IsArithmetic.conj (CongruenceSubgroup.Gamma1 N : Subgroup (GL (Fin 2) ℝ)) γ⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e : (γ⁻¹).map (Rat.castHom ℝ) = (toReal γ)⁻¹` using `map_inv toReal γ`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Take `⟨c, hc, hO⟩` from `ModularFormClass.exp_decay_atImInfty' (CuspForm.translate f (toReal γ)) (CuspFormClass.zero_at_infty (CuspForm.translate f (toReal γ)))`. Take `⟨C₁, hC₁⟩` from `CuspFormClass.exists_bound (CuspForm.translate f (toReal γ))`. Take `⟨C, hC⟩` from `real_decay hc hO hC₁ M`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hDs : 0 < Real.sqrt (toReal γ).det.val` using `Real.sqrt_pos.2 hD`. Use `⟨Real.sqrt (toReal γ).det.val ^ k * (toReal γ).det.val ^ (1 - k) * C, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hF : (CuspForm.translate f (toReal γ) : UpperHalfPlane → ℂ) = (f : UpperHalfPlane → ℂ) ∣[k] toReal γ` using `rfl`. Rewrite using `[archLift_translate k _ _ hD z, norm_mul, norm_mul, norm_zpow, norm_zpow, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), Real.norm_of_nonneg hD.le, Real.sqrt_mul hD.le, mul_zpow, ← hF]`. Establish `h` using `hC z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hq : 0 < Real.sqrt (toReal γ).det.val ^ k * (toReal γ).det.val ^ (1 - k)` using `mul_pos (zpow_pos hDs _) (zpow_pos hD _)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem cusp_decay (k : ℤ) (N : ℕ) [NeZero N] (f : CuspForm (CongruenceSubgroup.Gamma1 N) k) (γ : GL (Fin 2) ℚ)
     (hγ : 0 < (γ.det.val : ℚ)) (M : ℕ) :
@@ -289,7 +283,7 @@ theorem cusp_decay (k : ℤ) (N : ℕ) [NeZero N] (f : CuspForm (CongruenceSubgr
     _ ≤ _ := by rw [mul_assoc (_ * _) C]; exact mul_le_mul_of_nonneg_left h hq.le
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[dg2, pri, GroundTheory.Automorphic.AdelicGLn.diagonal, Matrix.GeneralLinearGroup.map]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem dia_dg (α : ℚˣ) : dia2 (dg2 α 1) = dg2 (pri α) 1 := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -297,7 +291,7 @@ theorem dia_dg (α : ℚˣ) : dia2 (dg2 α 1) = dg2 (pri α) 1 := by
     simp [dg2, pri, GroundTheory.Automorphic.AdelicGLn.diagonal, Matrix.GeneralLinearGroup.map]
 
 /- English proof (translation)
-Take `⟨h00, h11, h01⟩` from `realPart_orthogonal κ.2`. Use `⟨GroundTheory.Automorphic.GL2Classical.realPart κ.1, ?_, (prodEquiv ℚ 2 κ.1).2, finPart_mem_integralFiniteGL κ.2, (realEmb_realPart_mul_finEmb κ.1).symm⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two] <;> nlinarith`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem compact_split (κ : KA) : ∃ (r : GL (Fin 2) ℝ), r.val * r.valᵀ = 1 ∧
     ∃ y ∈ integralFiniteGL ℚ 2, κ.1 = realEmb r * finEmb ℚ 2 y := by
@@ -309,7 +303,7 @@ theorem compact_split (κ : KA) : ∃ (r : GL (Fin 2) ℝ), r.val * r.valᵀ = 1
     simp [Matrix.mul_apply, Fin.sum_univ_two] <;> nlinarith
 
 /- English proof (translation)
-Apply `(prodEquiv ℚ 2).injective` to reduce the goal to its premises. Rewrite using `[map_mul, prodEquiv_realEmb, prodEquiv_finEmb, Prod.mk_mul_mk, mul_one, one_mul]`. Use `Prod.ext (Units.ext (Matrix.ext fun i j => ?_)) (Units.ext (Matrix.ext fun i j => ?_))` and prove the remaining obligations. Apply the tactic sequence `change ((dg2 p 1 : G2).val i j).1 = RationalIdeles.realEquiv.symm ((dg2 (RationalIdeles.realPart p) 1 : GL (Fin 2) ℝ).val i j) fin_cases i <;> fin_cases j <;> simp [dg2, RationalIdeles.coe_realPart] <;> rfl`. Apply the tactic sequence `change ((dg2 p 1 : G2).val i j).2 = ((dg2 (IdeleGroup.toFinite ℚ p) 1 : GL (Fin 2) Af).val i j) fin_cases i <;> fin_cases j <;> simp [dg2] <;> rfl`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_split (p : Jd) : (dg2 p 1 : G2) =
     realEmb (dg2 (RationalIdeles.realPart p) 1) * finEmb ℚ 2 (dg2 (IdeleGroup.toFinite ℚ p) 1) := by
@@ -322,16 +316,16 @@ theorem dg_split (p : Jd) : (dg2 p 1 : G2) =
     fin_cases i <;> fin_cases j <;> simp [dg2] <;> rfl
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_mul {R : Type*} [CommRing R] (a b : Rˣ) : (dg2 (a * b) 1 : GL (Fin 2) R) = dg2 a 1 * dg2 b 1 := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `RationalIdeles.mem_positiveSubgroup.1 hp`. Establish `hreal` using `RationalIdeles.isReal_infinitePlace (default : InfinitePlace ℚ)`. Establish `e1 : md p = ‖(p : 𝔸[ℚ]).1 default‖`. Rewrite using `[md, IdeleGroup.ideleModule_apply, IdeleGroup.finiteModule_eq_one_of_mem h1, mul_one, IdeleGroup.infiniteModule]`. Simplify using `[InfinitePlace.mult, hreal]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, RationalIdeles.coe_realPart, RationalIdeles.realEquiv_apply]`. Use `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hreal).norm_map_of_map_zero (map_zero _) ((p : 𝔸[ℚ]).1 default)` as an intermediate fact. Rewrite using `[← this, Real.norm_eq_abs, abs_of_pos]`. Simplify `h2` using `[RationalIdeles.coe_realPart, RationalIdeles.realEquiv_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem md_pos_eq (p : Jd) (hp : p ∈ RationalIdeles.positiveSubgroup) : ((RationalIdeles.realPart p : ℝˣ) : ℝ) = md p := by
   obtain ⟨h1, h2⟩ := RationalIdeles.mem_positiveSubgroup.1 hp
@@ -345,15 +339,15 @@ theorem md_pos_eq (p : Jd) (hp : p ∈ RationalIdeles.positiveSubgroup) : ((Rati
   simpa [RationalIdeles.coe_realPart, RationalIdeles.realEquiv_apply] using h2
 
 /- English proof (translation)
-Take `⟨⟨α, p⟩, hp⟩` from `RationalIdeles.mulMap_bijective.2 a`. Establish `hp' : a = pri α * p.1` using `hp.symm`. Use `⟨α, RationalIdeles.realPart p.1, IdeleGroup.toFinite ℚ p.1, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : md (pri α * p.1) = md p.1`. Unfold `md`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_mul, show pri α = IdeleGroup.diagonal ℚ α from rfl, IdeleGroup.ideleModule_diagonal, one_mul]`. Rewrite using `[md_pos_eq _ p.2, hp', e]`. Take `⟨h1, -⟩` from `RationalIdeles.mem_positiveSubgroup.1 p.2`. Establish `hs` using `(IdeleGroup.mem_standardOpenSubgroup ℚ).1 h1`. Establish `hb : ((IdeleGroup.toFinite ℚ p.1 : Afˣ) : Af) ∈ integralFiniteAdeles (𝓞 ℚ) ℚ` using `fun v => (hs v).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbi : (((IdeleGroup.toFinite ℚ p.1)⁻¹ : Afˣ) : Af) ∈ integralFiniteAdeles (𝓞 ℚ) ℚ` using `fun v => (hs v).2`. Establish `h0 : (0 : Af) ∈ integralFiniteAdeles (𝓞 ℚ) ℚ` using `zero_mem _`. Establish `h1' : (1 : Af) ∈ integralFiniteAdeles (𝓞 ℚ) ℚ` using `one_mem _`. Rewrite using `[GroundTheory.Automorphic.AdelicGLn.mem_integralFiniteGL_iff]`. Establish `hi : ((dg2 (IdeleGroup.toFinite ℚ p.1) 1)⁻¹ : GL (Fin 2) Af) = dg2 (IdeleGroup.toFinite ℚ p.1)⁻¹ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `inv_eq_of_mul_eq_one_right (Units.ext (Matrix.ext fun i j => ?_))` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simpa [dg2]`. Apply the tactic sequence `rw [hi] fin_cases i <;> fin_cases j <;> simpa [dg2]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hp', dg_mul, dg_split p.1, dia_dg, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idele_split (a : Jd) : ∃ (α : ℚˣ) (t : ℝˣ) (b : Afˣ), (t : ℝ) = md a ∧
     dg2 b 1 ∈ integralFiniteGL ℚ 2 ∧
@@ -382,7 +376,7 @@ theorem idele_split (a : Jd) : ∃ (α : ℚˣ) (t : ℝˣ) (b : Afˣ), (t : ℝ
   · rw [hp', dg_mul, dg_split p.1, dia_dg, mul_assoc]
 
 /- English proof (translation)
-Apply `(prodEquiv ℚ 2).injective` to reduce the goal to its premises. Rewrite using `[map_mul, prodEquiv_realEmb, prodEquiv_finEmb, Prod.mk_mul_mk, mul_one, one_mul]`. Use `Prod.ext (Units.ext (Matrix.ext fun i j => ?_)) (Units.ext (Matrix.ext fun i j => ?_))` and prove the remaining obligations. Apply the tactic sequence `change ((uni2 y : G2).val i j).1 = RationalIdeles.realEquiv.symm ((uni2 (RationalIdeles.realEquiv y.1) : GL (Fin 2) ℝ).val i j) fin_cases i <;> fin_cases j <;> simp [uni2] <;> rfl`. Apply the tactic sequence `change ((uni2 y : G2).val i j).2 = ((uni2 y.2 : GL (Fin 2) Af).val i j) fin_cases i <;> fin_cases j <;> simp [uni2] <;> rfl`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem uni_split (y : 𝔸[ℚ]) : (uni2 y : G2) =
     realEmb (uni2 (RationalIdeles.realEquiv y.1)) * finEmb ℚ 2 (uni2 y.2) := by
@@ -395,14 +389,14 @@ theorem uni_split (y : 𝔸[ℚ]) : (uni2 y : G2) =
     fin_cases i <;> fin_cases j <;> simp [uni2] <;> rfl
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, Matrix.mul_apply, Fin.sum_univ_two, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem uni_add {R : Type*} [CommRing R] (a b : R) : (uni2 (a + b) : GL (Fin 2) R) = uni2 a * uni2 b := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   fin_cases i <;> fin_cases j <;> simp [uni2, Matrix.mul_apply, Fin.sum_univ_two, add_comm]
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[uni2, GroundTheory.Automorphic.AdelicGLn.diagonal, Matrix.GeneralLinearGroup.map]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem dia_uni (q : ℚ) : dia2 (uni2 q) = uni2 (algebraMap ℚ 𝔸[ℚ] q) := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -410,7 +404,7 @@ theorem dia_uni (q : ℚ) : dia2 (uni2 q) = uni2 (algebraMap ℚ 𝔸[ℚ] q) :=
     simp [uni2, GroundTheory.Automorphic.AdelicGLn.diagonal, Matrix.GeneralLinearGroup.map]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_sub_mem_integralFiniteAdeles x.2`. Use `⟨s, RationalIdeles.realEquiv (x - algebraMap ℚ 𝔸[ℚ] s).1, (x - algebraMap ℚ 𝔸[ℚ] s).2, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← uni_split, dia_uni, ← uni_add, add_sub_cancel]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem adele_split (x : 𝔸[ℚ]) : ∃ (q : ℚ) (ρ : ℝ) (e : Af), e ∈ integralFiniteAdeles (𝓞 ℚ) ℚ ∧
     (uni2 x : G2) = dia2 (uni2 q) * realEmb (uni2 ρ) * finEmb ℚ 2 (uni2 e) := by
@@ -419,7 +413,7 @@ theorem adele_split (x : 𝔸[ℚ]) : ∃ (q : ℚ) (ρ : ℝ) (e : Af), e ∈ i
   rw [mul_assoc, ← uni_split, dia_uni, ← uni_add, add_sub_cancel]
 
 /- English proof (translation)
-Take `⟨d, h1, h2⟩` from `exists_level_idele N u hu`. Rewrite using `[hL.level u hu d h1 h2 g, norm_mul, Circle.norm_coe, one_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_level {k N : ℕ} [NeZero N] {f : UpperHalfPlane → ℂ} {ω : HeckeCharacter ℚ} {φ : G2 → ℂ}
     (hL : Lift k N f ω φ) {u : FiniteAdelicGL ℚ 2} (hu : u ∈ Gamma0Level N) (g : G2) :
@@ -428,7 +422,7 @@ theorem norm_level {k N : ℕ} [NeZero N] {f : UpperHalfPlane → ℂ} {ω : Hec
   rw [hL.level u hu d h1 h2 g, norm_mul, Circle.norm_coe, one_mul]
 
 /- English proof (translation)
-Rewrite using `[norm_level hL hu, hL.left, hL.real h hpos]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_eq_archLift {k N : ℕ} [NeZero N] {f : UpperHalfPlane → ℂ} {ω : HeckeCharacter ℚ} {φ : G2 → ℂ}
     (hL : Lift k N f ω φ) (γ : GL (Fin 2) ℚ) {h : GL (Fin 2) ℝ} (hpos : 0 < h.det.val) {u : FiniteAdelicGL ℚ 2}
@@ -436,9 +430,9 @@ theorem norm_eq_archLift {k N : ℕ} [NeZero N] {f : UpperHalfPlane → ℂ} {ω
   rw [norm_level hL hu, hL.left, hL.real h hpos]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `CuspFormClass.exists_bound f`. Use `⟨C, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, h, hpos, u, hu, rfl⟩` from `exists_decomposition N g`. Rewrite using `[norm_eq_archLift hL γ hpos hu, norm_archLift _ hpos]`. Use `set z : UpperHalfPlane := h • UpperHalfPlane.I`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy` using `z.im_pos`. Establish `hpow : 0 < z.im ^ (((k : ℤ) : ℝ) / 2)` using `Real.rpow_pos_of_pos hy _`. Establish `h1` using `hC z`. Rewrite using `[sqrt_zpow_eq_rpow hy]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_bound {k N : ℕ} [NeZero N] (f : CuspForm (CongruenceSubgroup.Gamma1 N) (k : ℤ))
     {ω : HeckeCharacter ℚ} {φ : G2 → ℂ} (hL : Lift k N f ω φ) : ∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C := by
@@ -456,11 +450,11 @@ theorem exists_bound {k N : ℕ} [NeZero N] (f : CuspForm (CongruenceSubgroup.Ga
     _ = C := by field_simp
 
 /- English proof (translation)
-Take `⟨δ, u, hu, rfl⟩` from `exists_eq_finiteDiagonal_mul N g`. Establish `hne : (δ.det.val : ℚ) ≠ 0` using `δ.det.ne_zero`. Break down `lt_or_gt_of_ne hne with hneg | hpos` into its components or cases. Use `⟨δ * epsilon, ?_, ?_⟩` and prove the remaining obligations. Establish `he : (epsilon.det.val : ℚ) = -1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Simplify using `[epsilon, Matrix.det_fin_two_of]`. Rewrite using `[map_mul, Units.val_mul, he]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[map_mul, _root_.mul_inv_rev, mul_assoc, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (inv_mem (finiteDiagonal_epsilon_mem N)) hu`. Use `⟨δ, hpos, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_mul_cancel_left]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_pos_coset (N : ℕ) [NeZero N] (g : FiniteAdelicGL ℚ 2) :
     ∃ γ : GL (Fin 2) ℚ, 0 < (γ.det.val : ℚ) ∧
@@ -480,11 +474,11 @@ theorem exists_pos_coset (N : ℕ) [NeZero N] (g : FiniteAdelicGL ℚ 2) :
     rwa [inv_mul_cancel_left]
 
 /- English proof (translation)
-Establish `hK : IsCompact ((fun y => y * hf) '' (integralFiniteGL ℚ 2 : Set (FiniteAdelicGL ℚ 2)))` using `(GroundTheory.Automorphic.AdelicGLn.isCompact_integralFiniteGL ℚ 2).image (continuous_id.mul continuous_const)`. Set `U : {γ : GL (Fin 2) ℚ // 0 < (γ.det.val : ℚ)} → Set (FiniteAdelicGL ℚ 2)` to `fun γ => {g | (GroundTheory.Automorphic.AdelicGLn.finiteDiagonal ℚ 2 γ.1)⁻¹ * g ∈ Gamma0Level N}`. Establish `hU : ∀ γ, IsOpen (U γ)` using `fun γ => (isOpen_Gamma0Level N).preimage (continuous_const.mul continuous_id)`. Establish `hcov : ((fun y => y * hf) '' (integralFiniteGL ℚ 2 : Set (FiniteAdelicGL ℚ 2))) ⊆ ⋃ γ, U γ`. Introduce `g _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨γ, h1, h2⟩` from `exists_pos_coset N g`. Conclude with `Set.mem_iUnion.2 ⟨⟨γ, h1⟩, h2⟩`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover U hU hcov`. Use `⟨t.image Subtype.val, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γ', _, rfl⟩` from `Finset.mem_image.1 hγ`. Conclude with `γ'.2`. Introduce `y hy`. Take `⟨γ, hγ, hyγ⟩` from `Set.mem_iUnion₂.1 (ht ⟨y, hy, rfl⟩)`. Conclude with `⟨γ.1, Finset.mem_image_of_mem _ hγ, _, hyγ, by rw [mul_inv_cancel_left]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cover (N : ℕ) [NeZero N] (hf : FiniteAdelicGL ℚ 2) :
     ∃ S : Finset (GL (Fin 2) ℚ), (∀ γ ∈ S, 0 < (γ.det.val : ℚ)) ∧ ∀ y ∈ integralFiniteGL ℚ 2,
@@ -510,7 +504,7 @@ theorem cover (N : ℕ) [NeZero N] (hf : FiniteAdelicGL ℚ 2) :
     exact ⟨γ.1, Finset.mem_image_of_mem _ hγ, _, hyγ, by rw [mul_inv_cancel_left]⟩
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem uni_dg {R : Type*} [CommRing R] (a : Rˣ) (x : R) :
     (uni2 x * dg2 a 1 : GL (Fin 2) R) = dg2 a 1 * uni2 (((a⁻¹ : Rˣ) : R) * x) := by
@@ -520,7 +514,7 @@ theorem uni_dg {R : Type*} [CommRing R] (a : Rˣ) (x : R) :
 def pointOf (ρ : ℝ) (t : ℝ) (ht : 0 < t) : UpperHalfPlane := ⟨⟨ρ, t⟩, ht⟩
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, dg2, pointOf, Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem borel_pointOf (ρ : ℝ) (t : ℝˣ) (ht : 0 < (t : ℝ)) :
     (uni2 ρ * dg2 t 1 : GL (Fin 2) ℝ) = borelGL (pointOf ρ t ht) := by
@@ -528,7 +522,7 @@ theorem borel_pointOf (ρ : ℝ) (t : ℝˣ) (ht : 0 < (t : ℝ)) :
   fin_cases i <;> fin_cases j <;> simp [uni2, dg2, pointOf, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use `⟨pointOf (-z.re) z.im z.im_pos, rfl, Units.ext (Matrix.ext fun i j => ?_)⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [epsilon, pointOf, toReal, Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsilon_borel (z : UpperHalfPlane) :
     ∃ z' : UpperHalfPlane, z'.im = z.im ∧ toReal epsilon * borelGL z' = borelGL z * toReal epsilon := by
@@ -536,25 +530,23 @@ theorem epsilon_borel (z : UpperHalfPlane) :
   fin_cases i <;> fin_cases j <;> simp [epsilon, pointOf, toReal, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Rewrite using `[← map_inv, epsilon_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem epsilon_inv' : (toReal epsilon)⁻¹ = toReal epsilon := by
   rw [← map_inv, epsilon_inv]
 
 /- English proof (translation)
-Take `⟨α, t, b, ht, hb, hab⟩` from `idele_split a`. Take `⟨r, hr, y, hy, hκ⟩` from `compact_split κ`. Take `⟨q, ρ, e, he, hx⟩` from `adele_split ((((pri α)⁻¹ : Jd) : 𝔸[ℚ]) * x)`. Establish `htpos : 0 < (t : ℝ)`. Rewrite using `[ht]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IdeleGroup.ideleModule ℚ a).2`. Establish `he' : uni2 e ∈ integralFiniteGL ℚ 2`. Rewrite using `[GroundTheory.Automorphic.AdelicGLn.mem_integralFiniteGL_iff]`. Establish `h0 : (0 : Af) ∈ integralFiniteAdeles (𝓞 ℚ) ℚ` using `zero_mem _`. Establish `h1 : (1 : Af) ∈ integralFiniteAdeles (𝓞 ℚ) ℚ` using `one_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : -e ∈ integralFiniteAdeles (𝓞 ℚ) ℚ` using `neg_mem he`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simpa [uni2]`. Establish `hi : ((uni2 e)⁻¹ : GL (Fin 2) Af) = uni2 (-e)`. Use `inv_eq_of_mul_eq_one_right (Units.ext (Matrix.ext fun i j => ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, Matrix.mul_apply, Fin.sum_univ_two]`. Rewrite using `[hi]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simpa [uni2]`. Use `⟨dg2 α 1 * uni2 q, pointOf ρ t htpos, r, hr, ht, uni2 e * dg2 b 1 * y, mul_mem (mul_mem he' hb) hy, ?_⟩` and prove the remaining obligations. Establish `c1 : ∀ (h : GL (Fin 2) ℝ) (u : FiniteAdelicGL ℚ 2), finEmb ℚ 2 u * realEmb h = realEmb h * finEmb ℚ 2 u` using `fun h u => (realEmb_mul_finEmb_comm h u).symm`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : ∀ (h : GL (Fin 2) ℝ) (u : FiniteAdelicGL ℚ 2) (W : G2), finEmb ℚ 2 u * (realEmb h * W) = realEmb h * (finEmb ℚ 2 u * W)` using `fun h u W => by`. Rewrite using `[← mul_assoc, c1, mul_assoc]`. Rewrite using `[hab, hκ, ← borel_pointOf ρ t htpos]`. Establish `e1 : (uni2 x : G2) * dia2 (dg2 α 1) = dia2 (dg2 α 1) * uni2 ((((pri α)⁻¹ : Jd) : 𝔸[ℚ]) * x)`. Rewrite using `[dia_dg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `uni_dg _ _`. Establish `e2 : ∀ W : G2, (uni2 x : G2) * (dia2 (dg2 α 1) * W) = dia2 (dg2 α 1) * (uni2 ((((pri α)⁻¹ : Jd) : 𝔸[ℚ]) * x) * W)` using `fun W => by`. Rewrite using `[← mul_assoc, e1, mul_assoc]`. Simplify using `only [mul_assoc, e2]`. Rewrite using `[hx]`.
-
-Simplify using `only [map_mul, mul_assoc, c1, c2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem selfDualLattice_projection_mem_of_unit_length (x : 𝔸[ℚ]) (a : Jd) (κ : KA) :
     ∃ (γ₀ : GL (Fin 2) ℚ) (z : UpperHalfPlane) (r : GL (Fin 2) ℝ), r.val * r.valᵀ = 1 ∧ z.im = md a ∧
@@ -594,15 +586,15 @@ theorem selfDualLattice_projection_mem_of_unit_length (x : 𝔸[ℚ]) (a : Jd) (
   simp only [map_mul, mul_assoc, c1, c2]
 
 /- English proof (translation)
-Take `⟨γ₀, z, r, hr, hz, y, hy, e⟩` from `selfDualLattice_projection_mem_of_unit_length x a κ`. Establish `hd : r.det.val * r.det.val = 1`. Use `congrArg Matrix.det hr` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_transpose, Matrix.det_one]`. Simplify `this` using `[Matrix.GeneralLinearGroup.val_det_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hd' : r.det.val = 1 ∨ r.det.val = -1` using `mul_self_eq_one_iff.1 hd`. Break down `hd' with h1 | h1` into its components or cases. Conclude with `⟨γ₀, z, r, hr, h1, hz, y, hy, e⟩`. Take `⟨z', hz', hb⟩` from `epsilon_borel z`. Establish `heps : (toReal epsilon)⁻¹ * (borelGL z * r) = borelGL z' * ((toReal epsilon)⁻¹ * r)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : (toReal epsilon)⁻¹ * borelGL z = borelGL z' * (toReal epsilon)⁻¹`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, hb, mul_inv_cancel_right]`. Rewrite using `[← mul_assoc, h2, mul_assoc]`. Use `⟨γ₀ * epsilon, z', (toReal epsilon)⁻¹ * r, ?_, ?_, hz'.trans hz, (GroundTheory.Automorphic.AdelicGLn.finiteDiagonal ℚ 2 epsilon)⁻¹ * y, ?_, ?_⟩` and prove the remaining obligations. Establish `hE : (toReal epsilon).val * (toReal epsilon).valᵀ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [epsilon, toReal, Matrix.mul_apply, Fin.sum_univ_two]`. Rewrite using `[epsilon_inv' , Units.val_mul, Matrix.transpose_mul, mul_assoc, ← mul_assoc r.val, hr, one_mul, hE]`. Rewrite using `[map_mul, Units.val_mul, map_inv, Units.val_inv_eq_inv_val, det_toReal_epsilon, h1]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Conclude with `mul_mem (inv_mem (Gamma0Level_le_integralFiniteGL 1 (finiteDiagonal_epsilon_mem 1))) hy`. Rewrite using `[e, diagonal_mul_realEmb_mul_finEmb γ₀ epsilon, heps]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem full_split (x : 𝔸[ℚ]) (a : Jd) (κ : KA) :
     ∃ (γ₀ : GL (Fin 2) ℚ) (z : UpperHalfPlane) (r : GL (Fin 2) ℝ), r.val * r.valᵀ = 1 ∧ r.det.val = 1 ∧ z.im = md a ∧
@@ -630,31 +622,29 @@ theorem full_split (x : 𝔸[ℚ]) (a : Jd) (κ : KA) :
     · rw [e, diagonal_mul_realEmb_mul_finEmb γ₀ epsilon, heps]
 
 /- English proof (translation)
-Introduce `_ k N _ hk χ hχ f a hf ha ω φ hω hL`. Take `⟨C₀, hC₀⟩` from `exists_bound f hL`. Use `⟨⟨C₀, hC₀⟩, fun h hh M => ?_⟩` and prove the remaining obligations. Establish `hh' : h = finEmb ℚ 2 (prodEquiv ℚ 2 h).2`. Establish `hp : (prodEquiv ℚ 2 h).1 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Units.ext (Matrix.ext fun i j => funext fun w => ?_)` and prove the remaining obligations. Establish `h3 : ((prodEquiv ℚ 2 h).1 : Matrix (Fin 2) (Fin 2) (InfiniteAdeleRing ℚ)) i j w = (h.val i j).1 w` using `rfl`. Establish `h4 : (h.val i j).1 w = (infAt w h).val i j` using `rfl`. Rewrite using `[h3, h4, hh w]`. Apply the tactic sequence `rcases eq_or_ne i j with rfl | hij <;> simp [Matrix.one_apply, *] <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hr : GroundTheory.Automorphic.GL2Classical.realPart h = 1`. Rewrite using `[GroundTheory.Automorphic.GL2Classical.realPart, hp, map_one]`. Use `conv_lhs => rw [← realEmb_realPart_mul_finEmb h, hr, map_one, one_mul]`. Take `⟨S, hS, hcov⟩` from `cover N (prodEquiv ℚ 2 h).2`. Establish `hdec : ∀ γ : GL (Fin 2) ℚ, ∃ C : ℝ, 0 < (γ.det.val : ℚ) → ∀ z : UpperHalfPlane, 1 ≤ z.im → ‖archLift (k : ℤ) (f : UpperHalfPlane → ℂ) (toReal γ⁻¹ * borelGL z)‖ ≤ C * (z.im⁻¹) ^ M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ`. Distinguish the cases in `hγ : 0 < (γ.det.val : ℚ)`. Establish `hγ' : 0 < ((γ⁻¹).det.val : ℚ)`. Rewrite using `[map_inv, Units.val_inv_eq_inv_val]`. Conclude with `inv_pos.2 hγ`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨C, hC⟩` from `cusp_decay (k : ℤ) N f γ⁻¹ hγ' M`. Conclude with `⟨C, fun _ => hC⟩`. Conclude with `⟨0, fun h => absurd h hγ⟩`. Use `choose Cf hCf using hdec`. Use `⟨max C₀ 0 + ∑ γ ∈ S, |Cf γ|, fun x a' κ => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : ∀ γ ∈ S, Cf γ ≤ max C₀ 0 + ∑ γ ∈ S, |Cf γ|` using `fun γ hγ => by`. Establish `h1 : |Cf γ| ≤ ∑ γ ∈ S, |Cf γ|` using `Finset.single_le_sum (f := fun γ => |Cf γ|) (fun _ _ => abs_nonneg _) hγ`. Establish `h2` using `le_abs_self (Cf γ)`. Establish `h3` using `le_max_right C₀ 0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC₀' : C₀ ≤ max C₀ 0 + ∑ γ ∈ S, |Cf γ|`. Establish `h1 : 0 ≤ ∑ γ ∈ S, |Cf γ|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `h3` using `le_max_left C₀ 0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmd : 0 < md a'` using `(IdeleGroup.ideleModule ℚ a').2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h1 : md a' ≤ 1`. Establish `: min 1 (md a')⁻¹ = 1` using `min_eq_left ((one_le_inv₀ hmd).2 h1)`. Rewrite using `[this, one_pow, mul_one]`. Conclude with `(hC₀ _).trans hC₀'`. Establish `h1' : 1 ≤ md a'` using `(not_le.1 h1).le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmin : min 1 (md a')⁻¹ = (md a')⁻¹` using `min_eq_right (inv_le_one_of_one_le₀ h1')`. Rewrite using `[hmin]`. Take `⟨γ₀, z, r, hr, hr1, hz, y, hy, e⟩` from `full_split x a' κ`. Take `⟨γ, hγS, u, hu, hyu⟩` from `hcov y hy`. Establish `hγ` using `hS γ hγS`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : 0 < ((toReal γ⁻¹ * borelGL z).det.val)`. Rewrite using `[map_mul, Units.val_mul, det_toReal]`. Use `mul_pos ?_ (det_borelGL_pos z)` and prove the remaining obligations. Rewrite using `[map_inv, Units.val_inv_eq_inv_val]`. Conclude with `inv_pos.2 hγ` after adjusting the coercions.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : ‖φ (uni2 x * dg2 a' 1 * κ.1 * h)‖ = ‖archLift (k : ℤ) (f : UpperHalfPlane → ℂ) (toReal γ⁻¹ * borelGL z)‖`. Take `⟨w, hw, hrot⟩` from `hL.rot r hr hr1`. Establish `e2 : uni2 x * dg2 a' 1 * κ.1 * h = dia2 (γ₀ * γ) * realEmb (toReal γ⁻¹ * borelGL z) * realEmb r * finEmb ℚ 2 u` using `by conv_lhs => rw [e, hh', mul_assoc, ← map_mul, hyu, diagonal_mul_realEmb_mul_finEmb γ₀ γ, inv_mul_cancel_left]`. Rewrite using `[map_inv, ← mul_assoc ((toReal γ)⁻¹), map_mul realEmb (_ * _) r]`. Simplify using `only [mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, norm_level hL hu, hrot, norm_mul, hw, one_mul, ← norm_eq_archLift hL (γ₀ * γ) hpos (one_mem _), map_one, mul_one]`. Use `show ‖φ (uni2 x * dg2 a' 1 * κ.1 * h)‖ ≤ _`. Rewrite using `[key]`. Establish `hz1 : 1 ≤ z.im` using `hz ▸ h1'`. Use `(hCf γ hγ z hz1).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[hz]`. Conclude with `mul_le_mul_of_nonneg_right (hsum γ hγS) (pow_nonneg (inv_nonneg.2 hmd.le) _)`.
+A detailed English derivation is pending.
 -/
 theorem main : B0 → F5 := by
   intro _ k N _ hk χ hχ f a hf ha ω φ hω hL

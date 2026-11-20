@@ -8,13 +8,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC.RingContH
 
 /- English proof (translation)
-Introduce `R _ F hF J _ _ D c hc n`. Take `⟨_, cl, hsurj, heq, hzero, hpull⟩` from `GlobalTheory.EtC.HCElements.main R F`. Take `⟨h1, h2⟩` from `GlobalTheory.T.ringCohomologyComplex_continuous_filtered_colimit R F hF J D c hc n`. Use `⟨fun x => ?_, fun j y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `hsurj (sp c.pt) n x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨j, w, y, hw, hwy⟩` from `h1 z hz`. Use `⟨j, cl _ n w hw, ?_⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `hpull (sp c.pt) (sp (D.obj j)) (spMap (c.ι.app j).hom) n w hw`. Rewrite using `[hh, heq]`. Conclude with `⟨y, hwy⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨w, hw, rfl⟩` from `hsurj (sp (D.obj j)) n y`. Take `⟨h, hh⟩` from `hpull (sp c.pt) (sp (D.obj j)) (spMap (c.ι.app j).hom) n w hw`. Rewrite `hy` using `[hh, hzero]`. Take `⟨k, f, y', hy'⟩` from `h2 j w hw hy`. Use `⟨k, f, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h', hh'⟩` from `hpull (sp (D.obj k)) (sp (D.obj j)) (spMap (D.map f).hom) n w hw`. Rewrite using `[hh', hzero]`. Conclude with `⟨y', hy'⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem main : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary F → ∀ (J : Type) [SmallCategory J] [IsFiltered J] (D : J ⥤ CommRingCat.{0}) (c : Cocone D), IsColimit c → ∀ n : ℤ, (∀ x : H R (sp c.pt) F n, ∃ j y, pull R (spMap (c.ι.app j).hom) F n y = x) ∧ ∀ j (y : H R (sp (D.obj j)) F n), pull R (spMap (c.ι.app j).hom) F n y = 0 → ∃ (k : J) (f : j ⟶ k), pull R (spMap (D.map f).hom) F n y = 0 := by
   intro R _ F hF J _ _ D c hc n

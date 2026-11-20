@@ -23,16 +23,16 @@ namespace GlobalTheory.GridJoin
 
 variable {D : D7}
 /- English proof (translation)
-Use `group`.
+A detailed English derivation is pending.
 -/
 theorem conj_back {G : Type*} [Group G] (b g : G) : b⁻¹ * (b * g * b⁻¹) * b = g := by group
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `h2`. Use `GlobalTheory.Grid.mem_princGL.2 ⟨y, rfl, fun i j => ?_⟩` and prove the remaining obligations. Establish `e2 : β⁻¹ * frGL β y * β = intGL F E n y` using `conj_back β _`. Rewrite `e` using `[e2]`. Establish `e3` using `congrFun (congrFun e i) j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : ((Ideal.absNorm I : ℕ) : Formalism.L2.Herm.intAf F E) ∈ idS F I`. Rewrite using `[← map_natCast (oToS F E)]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.absNorm_mem I)`. Establish `e4 : ((y : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)) - 1) i j = ((Ideal.absNorm I : ℕ) : Formalism.L2.Herm.intAf F E) * ⟨z i j, hz i j⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (e3.trans ?_)` and prove the remaining obligations. Apply the tactic sequence `simp only [Matrix.sub_apply, Matrix.one_apply] split_ifs <;> rfl`. Simplify using `[nsmul_eq_mul]`. Rewrite using `[e4]`. Conclude with `Ideal.mul_mem_right _ _ hmem`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_princGL_of_cong {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     {β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {I : Ideal (𝓞 E)} (h2 : x ∈ St β)
@@ -56,9 +56,9 @@ theorem mem_princGL_of_cong {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   exact Ideal.mul_mem_right _ _ hmem
 
 /- English proof (translation)
-Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig N.V.gram` as an intermediate fact. Take `⟨π, hπ, -⟩` from `GlobalTheory.Mass.existsUnique_isFinProj D.sp.cm.sig N.V.gram`. Establish `hf : Continuous (finHom N.V)` using `(continuous_subtype_val.comp hπ.continuous).congr fun κ => hπ κ`. Establish `hN : Ideal.absNorm I ≠ 0` using `Ideal.absNorm_eq_zero_iff.not.2 hI`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [GlobalTheory.ThetaIntegrand.eventually_princ N.V N.β ∅, GlobalTheory.FunObj.eventually_cong_mat N.β hN hf (map_one _)] with κ ⟨h1, h2, _⟩ ⟨z, hz, e⟩`. Conclude with `⟨h1, mem_princGL_of_cong h2 hz e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem princ_isOpen (N : GlobalTheory.Grid.Node D) {I : Ideal (𝓞 D.host.E)} (hI : I ≠ ⊥) :
     IsOpen (((N.princ I).comap (Lev.finE N.V) : Subgroup (GA D N.V)) : Set (GA D N.V)) := by
@@ -72,7 +72,7 @@ theorem princ_isOpen (N : GlobalTheory.Grid.Node D) {I : Ideal (𝓞 D.host.E)} 
   exact ⟨h1, mem_princGL_of_cong h2 hz e⟩
 
 /- English proof (translation)
-Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig N.V.gram` as an intermediate fact. Take `⟨C, hC, hCm⟩` from `GlobalTheory.ParahoricCompact.exists_compact N.V N.β`. Use `hC.of_isClosed_subset ((GlobalTheory.Ker.CongTop.isClosed_GfC N.V).inter (Subgroup.isClosed_of_isOpen _ (princ_isOpen N hI))) fun k hk => ?_` and prove the remaining obligations. Take `⟨hk1, hk2⟩` from `Lev.mem_levA.1 hk`. Conclude with `hCm k hk1 (GlobalTheory.Grid.princGL_top N.β ▸ GlobalTheory.Grid.princGL_mono N.β le_top hk2.2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem princ_isCompact (N : GlobalTheory.Grid.Node D) {I : Ideal (𝓞 D.host.E)} (hI : I ≠ ⊥) :
     IsCompact ((Lev.levA N.V (N.princ I) : Subgroup (GA D N.V)) : Set (GA D N.V)) := by
@@ -84,7 +84,7 @@ theorem princ_isCompact (N : GlobalTheory.Grid.Node D) {I : Ideal (𝓞 D.host.E
   exact hCm k hk1 (GlobalTheory.Grid.princGL_top N.β ▸ GlobalTheory.Grid.princGL_mono N.β le_top hk2.2)
 
 /- English proof (translation)
-Use `choose m hm using GlobalTheory.MinfMeasure.exists_isMinf`. Take `⟨μ, hμ⟩` from `GlobalTheory.LevelMeasure.exists_isMeasLevW D V hV K ho hc (fun _ m => Lev.IsMinf m) (fun _ => m _ _) (fun _ => (hm _ _).1) (fun _ => hm _ _) fun _ _ h => GlobalTheory.LevelMeasure.isMinf_unique (hm _ _) h`. Take `⟨𝓕, h𝓕⟩` from `GlobalTheory.FundDomDiscrete.exists_fundDom D V μ hμ.1`. Conclude with `⟨μ, 𝓕, hμ, h𝓕⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isMeasFD (V : HSp D) (hV : V.SigOK) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D)))
     (ho : IsOpen ((K.comap (Lev.finE V) : Subgroup (GA D V)) : Set (GA D V)))
@@ -96,9 +96,9 @@ theorem exists_isMeasFD (V : HSp D) (hV : V.SigOK) (K : Subgroup (GL (Fin V.rank
   exact ⟨μ, 𝓕, hμ, h𝓕⟩
 
 /- English proof (translation)
-Establish `ho` using `princ_isOpen N hI`. Establish `hc` using `princ_isCompact N hI`. Distinguish the cases in `h : df`. Take `⟨μ, 𝓕, e⟩` from `GlobalTheory.FunObj.exists_meas N.V hs (hdf h) (N.princ I) ⟨ho, hc⟩`. Rewrite `e` using `[if_pos rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨⟨μ, 𝓕⟩, by unfold GlobalTheory.Grid.Node.MeasDat.Is; exact ⟨fun _ => e, fun hn => absurd h hn⟩⟩`. Take `⟨μ, 𝓕, e⟩` from `exists_isMeasFD N.V hs _ ho hc`. Conclude with `⟨⟨μ, 𝓕⟩, by unfold GlobalTheory.Grid.Node.MeasDat.Is; exact ⟨fun h' => absurd h' h, fun _ => e⟩⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_measDat (N : GlobalTheory.Grid.Node D) (hs : N.V.SigOK) (df : Prop) (hdf : df → ∀ τ, (N.V.sig τ).2 = 0)
     {I : Ideal (𝓞 D.host.E)} (hI : I ≠ ⊥) : ∃ m : N.MeasDat, m.Is df (N.princ I) := by
@@ -115,25 +115,21 @@ variable {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
 /- English proof (translation)
-Establish `hlvl : G.lvl R ≠ ⊥` using `G.toPlaceDat.ideal_ne_bot R.Pg`. Establish `htop : (⊤ : Ideal (𝓞 D.host.E)) ≠ ⊥` using `top_ne_bot`. Take `⟨m00, h00⟩` from `exists_measDat (G.V 0 0) (D.sp.Y_sig 0) False (fun h => h.elim) hlvl`. Establish `hV : ∀ i j, ∃ m : (G.nV i j).MeasDat, i + 1 ≤ D.R.m → j ≤ D.R.m → m.Is (if j = 0 then False else D.R.m - 1 ≤ j) ((G.nV i j).princ (if j = 0 then G.lvl R else ⊤))`. Introduce `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : i + 1 ≤ D.R.m ∧ j ≤ D.R.m`. Establish `hN` using `hS.vert i j h.1 h.2`. Take `⟨m, hm⟩` from `exists_measDat (G.nV i j) hN.sigOK (if j = 0 then False else D.R.m - 1 ≤ j) (fun hd τ => by`. Rewrite using `[hN.sig τ]`. Use `show (D.R.m - j) / 2 = 0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j = 0`. Rewrite `hd` using `[if_pos hj]`. Conclude with `hd.elim`. Rewrite `hd` using `[if_neg hj]`. Use the proof step `omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use the proof step `(I := if j = 0 then G.lvl R else ⊤) (by split_ifs; exacts [hlvl, htop])`. Conclude with `⟨m, fun _ _ => hm⟩`. Conclude with `⟨⟨0, ∅⟩, fun h1 h2 => absurd ⟨h1, h2⟩ h⟩`. Establish `hP : ∀ i, ∃ m : (G.P i).MeasDat, i ≤ D.R.m → m.Is (i = D.R.m) ((G.P i).princ (G.lvl R))`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i ≤ D.R.m`. Establish `hN` using `hS.P i h`. Take `⟨m, hm⟩` from `exists_measDat (G.P i) hN.sigOK (i = D.R.m) (fun hd τ => by`. Rewrite using `[hN.sig τ]`. Use `show (D.R.m - i + 1) / 2 = 0`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use the proof step `omega) hlvl`. Conclude with `⟨m, fun _ => hm⟩`. Conclude with `⟨⟨0, ∅⟩, fun h1 => absurd h1 h⟩`. Establish `hX : ∀ j, ∃ m : (G.nX j).MeasDat, j + 1 ≤ D.R.m → m.Is True ((G.nX j).princ ⊤)`. Introduce `j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Distinguish the cases in `h : j + 1 ≤ D.R.m`. Establish `hN` using `hS.X j h`. Take `⟨m, hm⟩` from `exists_measDat (G.nX j) hN.sigOK True (fun _ τ => by`. Rewrite using `[hN.sig τ]) htop`. Conclude with `⟨m, fun _ => hm⟩`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `⟨⟨0, ∅⟩, fun h1 => absurd h1 h⟩`. Use `choose mV hmV using hV`. Use `choose mP hmP using hP`. Use `choose mX hmX using hX`. Use `⟨m00, mV, mP, mX, ⟨fun i hi => ?_, fun i j hi hj => ?_, fun i hi => hmP i hi, fun j hj => hmX j hj⟩⟩` and prove the remaining obligations.
-
-Consider the cases of `i with`. Consider the case `zero => exact h00`. Consider the case `succ i`. Use `hmV i 0 hi (Nat.zero_le _)` as an intermediate fact. Rewrite `this` using `[if_pos rfl, if_pos rfl]`.
-
-Conclude with `this`. Use `hmV i (j + 1) hi hj` as an intermediate fact. Rewrite `this` using `[if_neg (Nat.succ_ne_zero j), if_neg (Nat.succ_ne_zero j)]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isMeas (G : GlobalTheory.Grid.GridPre R) (hS : G.IsSpaces) :
     ∃ m00 mV mP mX, (withMeas G m00 mV mP mX).IsMeas := by

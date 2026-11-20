@@ -17,7 +17,7 @@ namespace GlobalTheory.ColLiftAut
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
   {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} {Φ : WO S T → ℂ}
 /- English proof (translation)
-Use `⟨fun γ hγ h => ?_, ?_, lift_continuous hW hΦ hS hν h𝓕 hφ⟩` and prove the remaining obligations. Simplify using `only [kernel_left hW hΦ _ hγ]`. Take `⟨U, hU, hk⟩` from `_root_.GlobalTheory.T.twist_weil_level_eq_conductor ψ S T χS χT om Φ hP hW hΦ`. Use `⟨U, hU, fun k hkU hkf h => ?_⟩` and prove the remaining obligations. Simplify using `only [kernel_right, hk k hkU hkf]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem thetaLift_isAutomorphicFunction (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hW : IsWeilDatumO ψ S T χS χT om) (hΦ : IsThetaFunO ψ S T Φ)
     (hS : ∀ τ, (gramAt D S τ).PosDef) {ν : Measure (GA D S)} {𝓕 : Set (GA D S)} (hν : ν.IsHaarMeasure)
@@ -29,7 +29,7 @@ theorem thetaLift_isAutomorphicFunction (hP : _root_.GlobalTheory.FunPr.ThetaLoc
     refine ⟨U, hU, fun k hkU hkf h => ?_⟩
     simp only [kernel_right, hk k hkU hkf]
 /- English proof (translation)
-The claim follows from `{ toIsAutFun := _root_.GlobalTheory.ColLiftAut.thetaLift_isAutomorphicFunction hP hW hΦ hS hν h𝓕 hφ.toIsAutFun smooth := _root_.GlobalTheory.T.twist_deformation_lift_smooth ψ θ S T χS χT om Φ φ ν 𝓕 hP hW hθ hΦ hS hT hν h𝓕 hφ zfin := _root_.GlobalTheory.T.twist_definite_lift_finit …`.
+A detailed English derivation is pending.
 -/
 theorem thetaLift_isSmoothAutomorphicFunction (θ : InfFam D) (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hW : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ)
     (hΦ : IsThetaFunO ψ S T Φ) (hS : ∀ τ, (gramAt D S τ).PosDef) (hT : ∀ τ, (gramAt D T τ).PosDef)
@@ -43,9 +43,9 @@ theorem thetaLift_isSmoothAutomorphicFunction (θ : InfFam D) (hP : _root_.Globa
 end GlobalTheory.ColLiftAut
 namespace GlobalTheory.ColLiftAut
 /- English proof (translation)
-Introduce `_ hPr D _ G₀ _ _ Pl0 T A Ks _ _ _ R G hRB hG t j hj Φ hΦ φ hφ _`. Establish `hW : IsWeilDatumO R.ψ (G.Xp j).V (G.Xp (j + 1)).V (R.toLevCh.mu t (j + 1)) (R.toLevCh.mu t (j + 1)) (G.col t j).ω` using `(hG.arrows.col t j hj).weil`. Establish `hT : ∀ τ, (gramAt D (G.Xp (j + 1)).V τ).PosDef` using `posDef_of_nodeIs (hG.spaces.X j (by omega)) rfl`. Establish `hSm : (∀ τ, (gramAt D (G.Xp j).V τ).PosDef) ∧ (G.measX j).ν.IsHaarMeasure ∧ IsFundamentalDomain (GQ (G.Xp j).V) (G.measX j).fd (G.measX j).ν`. Consider the cases of `j with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Conclude with `⟨posDef_of_nodeIs (hG.spaces.P D.R.m le_rfl) (by simp), ((hG.meas.P D.R.m le_rfl).1 rfl).1.1, ((hG.meas.P D.R.m le_rfl).1 rfl).2⟩`. Consider the case `succ j'`. Conclude with `⟨posDef_of_nodeIs (hG.spaces.X j' (by omega)) rfl, ((hG.meas.X j' (by omega)).1 trivial).1.1, ((hG.meas.X j' (by omega)).1 trivial).2⟩`. Conclude with `_root_.GlobalTheory.ColLiftAut.thetaLift_isSmoothAutomorphicFunction R.θ hPr hW hRB.inf hΦ hSm.1 hT hSm.2.1 hSm.2.2 hφ.1`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem columnLift_isSmoothAutomorphicFunction : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ t j, j < D.R.m → ∀ Φ, IsThetaFunO R.ψ (G.Xp j).V (G.Xp (j + 1)).V Φ → ∀ φ, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType R.θ (G.Xp j) φ → (∀ h, IntegrableOn (fun g => thetaKO (G.col t j).ω g h Φ * φ g) (G.measX j).fd (G.measX j).ν) → IsAutFunSm R.θ (G.Xp (j + 1)).V (fun h => ∫ g in (G.measX j).fd, thetaKO (G.col t j).ω g h Φ * φ g ∂(G.measX j).ν) := by
   intro _ hPr D _ G₀ _ _ Pl0 T A Ks _ _ _ R G hRB hG t j hj Φ hΦ φ hφ _
@@ -69,7 +69,7 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ColLiftAut.columnLift_isSmoothAutomorphicFunction | exact _root_.GlobalTheory.ColLiftAut.columnLift_isSmoothAutomorphicFunction | (intros; apply _root_.GlobalTheory.ColLiftAut.columnLift_isSmoothAutomorphicFunction <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.columnLift_isAutomorphicFunction : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ t j, j < D.R.m → ∀ Φ, IsThetaFunO R.ψ (G.Xp j).V (G.Xp (j + 1)).V Φ → ∀ φ, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType R.θ (G.Xp j) φ → (∀ h, IntegrableOn (fun g => thetaKO (G.col t j).ω g h Φ * φ g) (G.measX j).fd (G.measX j).ν) → IsAutFunSm R.θ (G.Xp (j + 1)).V (fun h => ∫ g in (G.measX j).fd, thetaKO (G.col t j).ω g h Φ * φ g ∂(G.measX j).ν) := by
   first | exact @_root_.GlobalTheory.ColLiftAut.columnLift_isSmoothAutomorphicFunction | exact _root_.GlobalTheory.ColLiftAut.columnLift_isSmoothAutomorphicFunction | (intros; apply _root_.GlobalTheory.ColLiftAut.columnLift_isSmoothAutomorphicFunction <;> assumption)

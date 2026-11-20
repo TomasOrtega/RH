@@ -25,7 +25,7 @@ end PositivityTheory.Rg.Sw.Glob
 namespace PositivityTheory.Rg.Sw.Glob.LocCellA
 
 /- English proof (translation)
-Simplify using `only [blk4, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_matrix_mul_comm_ring {R : Type} [Ring R] {n : ℕ} (a b c d a' b' c' d' : Matrix (Fin n) (Fin n) R) :
     blk4 a b c d * blk4 a' b' c' d' =
@@ -33,13 +33,13 @@ theorem block_matrix_mul_comm_ring {R : Type} [Ring R] {n : ℕ} (a b c d a' b' 
   simp only [blk4, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Simplify using `only [blk4, Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_matrix_diagonal_one_eq_one {R : Type} [Ring R] {n : ℕ} : (1 : Matrix (Fin (n + n)) (Fin (n + n)) R) = blk4 1 0 0 1 := by
   simp only [blk4, Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
 
 /- English proof (translation)
-Unfold `blk4`. Rewrite using `[← Matrix.fromBlocks_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem block_matrix_map {R S : Type} [Ring R] [Ring S] {n : ℕ} (f : R →+* S) (a b c d : Matrix (Fin n) (Fin n) R) :
     (blk4 a b c d).map f = blk4 (a.map f) (b.map f) (c.map f) (d.map f) := by
@@ -48,7 +48,7 @@ theorem block_matrix_map {R S : Type} [Ring R] [Ring S] {n : ℕ} (f : R →+* S
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(f.mapMatrix) (-1) = -1`. Rewrite using `[map_neg, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_neg_one' {R S : Type} [Ring R] [Ring S] {n : ℕ} (f : R →+* S) :
     (-1 : Matrix (Fin n) (Fin n) R).map f = -1 := by
@@ -56,7 +56,7 @@ theorem map_neg_one' {R S : Type} [Ring R] [Ring S] {n : ℕ} (f : R →+* S) :
   rw [map_neg, map_one]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(f.mapMatrix) 1 = 1`. Rewrite using `[map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_one' {R S : Type} [Ring R] [Ring S] {n : ℕ} (f : R →+* S) :
     (1 : Matrix (Fin n) (Fin n) R).map f = 1 := by
@@ -64,7 +64,7 @@ theorem map_one' {R S : Type} [Ring R] [Ring S] {n : ℕ} (f : R →+* S) :
   rw [map_one]
 
 /- English proof (translation)
-Simplify using `only [blk4, Matrix.transpose_submatrix, Matrix.fromBlocks_transpose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockMatrixTwoByTwoFin_transpose {R : Type} {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) R) :
     (blk4 a b c d)ᵀ = blk4 aᵀ cᵀ bᵀ dᵀ := by
@@ -77,11 +77,11 @@ namespace PositivityTheory.Rg.Sw.Glob
 open LocCellA in
 
 /- English proof (translation)
-Introduce `D n`. Set `M : Matrix (Fin (n + n)) (Fin (n + n)) (AE D)` to `blk4 0 1 (-1) 0`. Set `Mi : Matrix (Fin (n + n)) (Fin (n + n)) (AE D)` to `blk4 0 (-1) 1 0`. Establish `h1 : M * Mi = 1` using `by simp [M, Mi, block_matrix_mul_comm_ring, block_matrix_diagonal_one_eq_one]`. Establish `h2 : Mi * M = 1` using `by simp [M, Mi, block_matrix_mul_comm_ring, block_matrix_diagonal_one_eq_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `u : GL (Fin (n + n)) (AE D)` to `⟨M, Mi, h1, h2⟩`. Establish `hu : u ∈ HR (AF D.host.F) D.sp.cm.sig (Jst D n)` using `by show Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) M * JR (AF D.host.F) (Jst D n) * M = JR (AF D.host.F) (Jst D n)`. Establish `hJ : JR (AF D.host.F) (Jst D n) = M`. Simplify using `[JR, Jst, M, block_matrix_map, map_neg_one', map_one']`. Rewrite using `[hJ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.UG.cT, M, block_matrix_map, blockMatrixTwoByTwoFin_transpose, block_matrix_mul_comm_ring, map_neg_one', map_one']`. Conclude with `⟨⟨u, hu⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem wEx : WEx := by
   intro D n

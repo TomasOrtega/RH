@@ -9,11 +9,11 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `C _ v O _ _ Λ _ h N hv ρ τ hind hsup hrank`. Take `⟨π, hπ1, -, hq⟩` from `GlobalTheory.T.eigen_projection_quotient_lattice C O Λ h ρ τ hind hsup`. Establish `hsurj : Function.Surjective π` using `fun x => ⟨(x : Fin h → C), hπ1 x⟩`. Take `⟨g, hgC, hgO⟩` from `GlobalTheory.T.exists_spanning_image_lattice C O (eig C ρ τ) h π hsurj`. Take `⟨b, hb⟩` from `GlobalTheory.T.exists_basis_of_lattice_span C v O (eig C ρ τ) h N g hv hgC hrank`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hQ : quotLattice C ρ τ = (Submodule.span O (Set.range b) : Set (eig C ρ τ))`. Rewrite using `[hq, hgO, hb]`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.exteriorPower_basis_lattice_principal C O (eig C ρ τ) N b`. Use `⟨b, hQ, h1, h2, ?_⟩` and prove the remaining obligations. Unfold `detLattice`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[hQ]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigenQuotient_basis_detLattice_eq_span_wedge : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (Λ : Type) [CommRing Λ] (h N : ℕ), v.Integers O → ∀ (ρ : Λ → Matrix (Fin h) (Fin h) O) (τ : Λ →+* O), iSupIndep (fun σ : Λ →+* O => eig C ρ σ) → (⨆ σ : Λ →+* O, eig C ρ σ) = ⊤ → Module.finrank C (eig C ρ τ) = N → ∃ b : Module.Basis (Fin N) C (eig C ρ τ), quotLattice C ρ τ = (Submodule.span O (Set.range b) : Set (eig C ρ τ)) ∧ Module.finrank C (detLine C ρ τ N) = 1 ∧ exteriorPower.ιMulti C N b ≠ 0 ∧ detLattice C ρ τ N = Submodule.span O {exteriorPower.ιMulti C N b} := by
   intro C _ v O _ _ Λ _ h N hv ρ τ hind hsup hrank

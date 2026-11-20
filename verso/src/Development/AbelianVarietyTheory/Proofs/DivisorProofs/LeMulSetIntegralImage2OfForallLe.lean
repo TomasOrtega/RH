@@ -4,19 +4,17 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hBfin : μ B ≠ ⊤` using `hB.measure_lt_top.ne`. Establish `hQfin : (volume : Measure (Fin N → ℝ)) Q ≠ ⊤` using `hQ.measure_lt_top.ne`. Establish `hBpos : 0 < μ.real B` using `ENNReal.toReal_pos (Measure.measure_pos_of_mem_nhds μ hB1).ne' hBfin`. Use `⟨K * (volume : Measure (Fin N → ℝ)).real Q / μ.real B, by positivity, ?_⟩` and prove the remaining obligations. Introduce `F a hF hF0 ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Ω : Set G := Set.image2 (fun t b => Θ t * b) Q B with hΩdef`. Establish `hΩ : IsCompact Ω`. Rewrite using `[hΩdef, ← Set.image_prod]`. Conclude with `(hQ.prod hB).image (by fun_prop)`. Establish `hFΩ : IntegrableOn F Ω μ` using `hF.continuousOn.integrableOn_compact hΩ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hstep : ∀ t ∈ Q, ∫ x in B, F (Θ t * x) ∂μ ≤ ∫ x in Ω, F x ∂μ`. Introduce `t ht`. Rewrite using `[← (measurePreserving_mul_left μ (Θ t)).setIntegral_image_emb (measurableEmbedding_mulLeft (Θ t)) F B]`. Use `setIntegral_mono_set hFΩ (Filter.Eventually.of_forall hF0) ?_` and prove the remaining obligations. Use `HasSubset.Subset.eventuallyLE ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `Set.mem_image2_of_mem ht hb`. Establish `hint : Integrable (Function.uncurry fun (x : G) (t : Fin N → ℝ) => F (Θ t * x)) ((μ.restrict B).prod (volume.restrict Q))`. Rewrite using `[Measure.prod_restrict]`. Use `ContinuousOn.integrableOn_compact (hB.prod hQ) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(by fun_prop : Continuous fun p : G × (Fin N → ℝ) => F (Θ p.2 * p.1)).continuousOn`. Establish `h1 : μ.real B * a ≤ ∫ x in B, K * ∫ t in Q, F (Θ t * x) ∂volume ∂μ`. Establish `hc : μ.real B * a = ∫ _x in B, a ∂μ` using `by simp`. Rewrite using `[hc]`. Use `setIntegral_mono_on (integrableOn_const hBfin) ?_ hB.measurableSet ha` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hint.integral_prod_left.const_mul K`. Establish `h2 : ∫ x in B, ∫ t in Q, F (Θ t * x) ∂volume ∂μ ≤ (volume : Measure (Fin N → ℝ)).real Q * ∫ x in Ω, F x ∂μ`. Rewrite using `[integral_integral_swap hint]`. Establish `hc : (volume : Measure (Fin N → ℝ)).real Q * ∫ x in Ω, F x ∂μ = ∫ _t in Q, (∫ x in Ω, F x ∂μ)` using `by simp`. Rewrite using `[hc]`.
-
-Conclude with `setIntegral_mono_on hint.integral_prod_right (integrableOn_const hQfin) hQ.measurableSet hstep`. Rewrite `h1` using `[integral_const_mul]`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hBpos, mul_comm a, mul_assoc]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_left h2 hK)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_mul_setIntegral_image2_of_forall_le (G : Type) [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]

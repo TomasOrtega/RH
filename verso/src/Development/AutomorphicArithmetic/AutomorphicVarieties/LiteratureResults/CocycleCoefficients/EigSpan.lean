@@ -15,14 +15,14 @@ open scoped MatrixGroups ModularForm ComplexConjugate
 namespace UpperTheory.V.Lit.KT.EigenformSpan
 
 /- English proof (translation)
-Rewrite using `[strictPeriods_Gamma1]`. Conclude with `AddSubgroup.mem_zmultiples 1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_mem_per (N : ℕ) :
     (1 : ℝ) ∈ (Subgroup.map (Matrix.SpecialLinearGroup.mapGL ℝ) (Gamma1 N)).strictPeriods := by
   rw [strictPeriods_Gamma1]; exact AddSubgroup.mem_zmultiples 1
 
 /- English proof (translation)
-Unfold `coef`. Rewrite using `[show ((c • f : CuspForm (Gamma1 N) k) : ℍ → ℂ) = c • (f : ℍ → ℂ) from rfl, ModularForm.qExpansion_smul one_pos (one_mem_per N) c f]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem coef_smul {N : ℕ} {k : ℤ} (c : ℂ) (f : CuspForm (Gamma1 N) k) (n : ℕ) :
     coef (c • f : CuspForm (Gamma1 N) k) n = c * coef f n := by
@@ -32,7 +32,7 @@ private theorem coef_smul {N : ℕ} {k : ℤ} (c : ℂ) (f : CuspForm (Gamma1 N)
   simp
 
 /- English proof (translation)
-Unfold `coef`. Rewrite using `[← map_add]`. Use `congr 1`. Conclude with `ModularForm.qExpansion_add one_pos (one_mem_per N) f g`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem coef_add {N : ℕ} {k : ℤ} (f g : CuspForm (Gamma1 N) k) (n : ℕ) :
     coef (f + g : CuspForm (Gamma1 N) k) n = coef f n + coef g n := by
@@ -57,13 +57,13 @@ private theorem fT_apply {K : Type} [Field K] (p : ℕ) (e : K) (c : ℕ → K) 
     fT p e c n = c (p * n) + e * (if p ∣ n then c (n / p) else 0) := rfl
 
 /- English proof (translation)
-Establish `hc : Nat.Coprime p q` using `(Nat.coprime_primes hp hq).2 hpq`. Use function extensionality and compare the values at `n`. Simplify using `only [fT_apply]`. Establish `h1 : q ∣ p * n ↔ q ∣ n` using `hc.symm.dvd_mul_left`. Establish `h2 : p ∣ q * n ↔ p ∣ n` using `hc.dvd_mul_left`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases a : p ∣ n <;> by_cases b : q ∣ n`. Take `⟨m, rfl⟩ : p * q ∣ n` from `hc.mul_dvd_of_dvd_of_dvd a b`. Establish `e1 : p * q * m / p = q * m` using `by rw [mul_assoc, Nat.mul_div_cancel_left _ hp.pos]`. Establish `e2 : p * q * m / q = p * m` using `by rw [mul_comm p q, mul_assoc, Nat.mul_div_cancel_left _ hq.pos]`. Simplify using `only [h1, h2, a, b, if_true, e1, e2, dvd_mul_right, Nat.mul_div_cancel_left _ hp.pos, Nat.mul_div_cancel_left _ hq.pos, Nat.mul_div_assoc _ a, Nat.mul_div_assoc _ b, mul_left_comm q p]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `b' : ¬ q ∣ n / p` using `fun h => b (h.trans (Nat.div_dvd_of_dvd a))`. Simplify using `only [h1, h2, a, b, b', if_true, if_false, Nat.mul_div_assoc _ a, mul_left_comm q p]`. Expand and normalize the polynomial expressions, which then agree. Establish `a' : ¬ p ∣ n / q` using `fun h => a (h.trans (Nat.div_dvd_of_dvd b))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [h1, h2, a, b, a', if_true, if_false, Nat.mul_div_assoc _ b, mul_left_comm q p]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1, h2, a, b, if_false, mul_left_comm q p]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem fT_comm {K : Type} [Field K] {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) (e e' : K)
     (c : ℕ → K) : fT p e (fT q e' c) = fT q e' (fT p e c) := by
@@ -109,17 +109,15 @@ variable {K M : Type} [Field K] [IsAlgClosed K] [AddCommGroup M] [Module K M] [F
 end
 
 /- English proof (translation)
-Use `set S : Set M := {v : M | ∀ j, ∃ a : ℂ, T j v = a • v} with hS`. Assume the negation of the conclusion as `hne`. Establish `hlt : Module.finrank ℂ (Submodule.span ℂ S) < Module.finrank ℂ M` using `Submodule.finrank_lt hne`. Set `b` to `Module.finBasis ℂ (Submodule.span ℂ S)`. Set `L : M →ₗ[ℂ] (Fin (Module.finrank ℂ (Submodule.span ℂ S)) → ℂ)` to `LinearMap.pi fun i => B (b i).1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hker : LinearMap.ker L ≠ ⊥` using `LinearMap.ker_ne_bot_of_finrank_lt (by simpa using hlt)`. Take `⟨y, hy, hy0⟩` from `(Submodule.ne_bot_iff _).1 hker`. Establish `hyS : ∀ v ∈ S, B v y = 0`. Introduce `v hv`. Establish `h1 : (B y).comp (Submodule.span ℂ S).subtype = 0` using `b.ext fun i => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: B (b i).1 y = 0` using `congrFun (LinearMap.mem_ker.1 hy) i`. Express the relevant statement in the definitionally equal form `B y (b i).1 = 0`. Rewrite using `[hB, this, map_zero]`. Establish `h2 : B y v = 0` using `LinearMap.congr_fun h1 ⟨v, Submodule.subset_span hv⟩`. Rewrite using `[hB, h2, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `U : Submodule ℂ M` to `⨅ v : S, LinearMap.ker (B v.1)`. Establish `hU : ∀ x, x ∈ U ↔ ∀ v ∈ S, B v x = 0` using `fun x => by`. Simplify using `only [U, Submodule.mem_iInf, LinearMap.mem_ker, Subtype.forall]`. Take `⟨w, hw, hw0, hwe⟩` from `UpperTheory.V.LinAlg.simEig T hc _ U rfl ((Submodule.ne_bot_iff U).2 ⟨y, (hU y).2 hyS, hy0⟩) (by`. Introduce `j x hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[hU]`. Introduce `v hv`. Take `⟨a, ha⟩` from `hv j`. Establish `h3 : B x v = 0` using `by rw [hB, hx v hv, map_zero]`. Rewrite using `[hadj, ha, hB, map_smul, h3, smul_zero, map_zero, mul_zero])`.
-
-Conclude with `hw0 (h0 w ((hU w).1 hw w hwe))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem span_eig {M J : Type} [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M] (T : J → Module.End ℂ M)
     (hc : ∀ i j, T i * T j = T j * T i) (B : M → M →ₗ[ℂ] ℂ) (hB : ∀ x y, B y x = conj (B x y))
@@ -169,9 +167,9 @@ private theorem Phi_apply (N : ℕ) (k : ℤ) (g : CuspForm (Gamma1 N) k) (n : �
     Phi N k g n = if n = 0 then 0 else coef g n := rfl
 
 /- English proof (translation)
-Establish `h1 : p * n ≠ 0` using `mul_ne_zero hp.ne_zero (by omega)`. Rewrite using `[fT_apply, Phi_apply, if_neg h1]`. Distinguish the cases in `h : p ∣ n`. Establish `: n / p ≠ 0` using `(Nat.div_pos (Nat.le_of_dvd hn h) hp.pos).ne'`. Rewrite using `[if_pos h, if_pos h, Phi_apply, if_neg this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem fT_Phi (N : ℕ) (k : ℤ) (g : CuspForm (Gamma1 N) k)
     {p : ℕ} (hp : p.Prime) (e : ℂ) {n : ℕ} (hn : 1 ≤ n) :
@@ -184,9 +182,9 @@ private theorem fT_Phi (N : ℕ) (k : ℤ) (g : CuspForm (Gamma1 N) k)
   · rw [if_neg h, if_neg h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h n hn`. Use `congrFun h n` as an intermediate fact. Rewrite `this` using `[fT_Phi N k g hp _ hn, Pi.smul_apply, Phi_apply, if_neg (show ¬ n = 0 by omega), smul_eq_mul]`. Then use the resulting hypothesis. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[fT_apply, Phi_apply]`. Rewrite using `[fT_Phi N k g hp _ hn, Pi.smul_apply, Phi_apply, if_neg hn.ne', smul_eq_mul]`. Conclude with `h n hn`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eig_iff (N k : ℕ) (χ : DirichletCharacter ℂ N) (g : CuspForm (Gamma1 N) (k : ℤ)) {p : ℕ} (hp : p.Prime) (c : ℂ) :
     fT p (χ (p : ZMod N) * (p : ℂ) ^ (k - 1)) (Phi N k g) = c • Phi N k g ↔ IsEigAt k χ g p c := by
@@ -202,23 +200,21 @@ private theorem eig_iff (N k : ℕ) (χ : DirichletCharacter ℂ N) (g : CuspFor
       exact h n hn
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `haveI := (finDim N k).1`. Establish `hinj : Function.Injective (Phi N k)` using `(injective_iff_map_eq_zero _).2 fun f h0 => (finDim N k).2 f fun n hn => by`. Use `congrFun h0 n` as an intermediate fact. Rewrite `this` using `[Phi_apply, if_neg (by omega)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `J` to `{p : ℕ // p.Prime ∧ ¬ p ∣ M}`. Set `e : J → ℂ` to `fun p => χ ((p.1 : ℕ) : ZMod N) * ((p.1 : ℕ) : ℂ) ^ (k - 1)`. Establish `hex` using `fun (p : J) (f : chSub N k χ) => heckeEx N k hk χ f.1 f.2 p.1 p.2.1`. Use `choose t ht1 ht2 using hex`. Establish `ht : ∀ (p : J) (f : chSub N k χ), Phi N k (t p f) = fT p.1 (e p) (Phi N k f.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `p f`. Use function extensionality and compare the values at `n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[fT_apply, Phi_apply]`. Rewrite using `[fT_Phi N k f.1 p.2.1 _ hn, Phi_apply, if_neg hn.ne', ht2 p f n hn]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Set `T : J → Module.End ℂ (chSub N k χ)` to `fun p => { toFun := fun f => ⟨t p f, ht1 p f⟩ map_add' := fun f f' => Subtype.ext (hinj (by`. Simplify using `only [Submodule.coe_add, map_add, ht]))`. Use the proof step `map_smul' := fun a f => Subtype.ext (hinj (by`. Simplify using `only [Submodule.coe_smul, map_smul, ht, RingHom.id_apply])) }`. Establish `hT : ∀ p (f : chSub N k χ), (T p f).1 = t p f` using `fun _ _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ p q, T p * T q = T q * T p`. Introduce `p q`. Distinguish the cases in `hpq : p = q`. Rewrite using `[hpq]`. Use `ext1 v`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Subtype.ext (hinj ?_)` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, hT, ht]`. Conclude with `fT_comm p.2.1 q.2.1 (fun h => hpq (Subtype.ext h)) _ _ _`. Take `⟨hadd, hsmul, hherm, hdef⟩` from `petHerm N k hN`. Set `B : chSub N k χ → chSub N k χ →ₗ[ℂ] ℂ` to `fun f => { toFun := fun f' => pet N k f.1 f'.1 map_add' := fun x y => hadd f.1 x.1 y.1 map_smul' := fun a x => hsmul a f.1 x.1 }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htop` using `span_eig T hc B (fun x y => hherm x.1 y.1) (fun x hx => Subtype.ext (hdef x.1 hx)) (fun p => χ (p.1 : ZMod N)) (fun p x y => petAdj N k hN hk χ p.1 p.2.1 (fun h => p.2.2 (h.trans hNM)) x.1 y.1 (t p x) (t p y) x.2 y.2 (ht2 p x) (ht2 p y))`. Establish `hmem : (⟨g, hg⟩ : chSub N k χ) ∈ Submodule.span ℂ {v : chSub N k χ | ∀ j, ∃ a : ℂ, T j v = a • v}`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Establish `h2` using `Submodule.mem_map_of_mem (f := (chSub N k χ).subtype) hmem`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Use `choose a ha using hv`. Use `⟨v.2, fun p => if h : p.Prime ∧ ¬ p ∣ M then a ⟨p, h⟩ else 0, fun p hp hpM => ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [dif_pos (And.intro hp hpM)]`. Use `(eig_iff N k χ v.1 hp _).1 ?_` and prove the remaining obligations. Establish `h3` using `congrArg (fun x : chSub N k χ => Phi N k x.1) (ha ⟨p, hp, hpM⟩)`. Simplify using `only [hT, ht, Submodule.coe_smul, map_smul] at h3`. Conclude with `h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem main (M N k : ℕ) (hN : 0 < N) (hNM : N ∣ M) (hk : 1 ≤ k) (χ : DirichletCharacter ℂ N)
     (g : CuspForm (Gamma1 N) (k : ℤ)) (hg : HasChar k χ g) :
@@ -286,7 +282,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Matrix MatrixGroups ModularForm ComplexConjugate
 
 /- English proof (translation)
-Introduce `M M' k hM hd hk χ' g hg` and use `UpperTheory.V.Lit.KT.EigenformSpan.main M M' k (Nat.pos_of_dvd_of_pos hd hM) hd hk χ' g hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.KT.eigSpan :
     ∀ (M M' k : ℕ), 0 < M → M' ∣ M → 1 ≤ k → ∀ (χ' : DirichletCharacter ℂ M') (g : CuspForm (Gamma1 M') (k : ℤ)), HasChar k χ' g →

@@ -14,13 +14,13 @@ private noncomputable def residueFieldExtension (k A : Type*) [CommRing k] [Comm
     algebraMap_σ := Function.surjInv_eq _ }
 
 /- English proof (translation)
-Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul a x`. Take `⟨a₀, rfl⟩` from `IsLocalRing.residue_surjective a`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨a₀ • x, ?_⟩` and prove the remaining obligations. Establish `h1 : (a₀ • (1 : IsLocalRing.ResidueField A)) = IsLocalRing.residue A a₀`. Rewrite using `[Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Use `show (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (a₀ • x) = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← TensorProduct.smul_tmul, h1]`. Consider the case `add x y hx hy`. Take `⟨u, hu⟩` from `hx`. Take `⟨v, hv⟩` from `hy`. Use `⟨u + v, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (u + v) = _`. Rewrite using `[TensorProduct.tmul_add]`. Rewrite using `[show (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] u = x from hu, show (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] v = y from hv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_tmul_residueField_surjective (A : Type*) [CommRing A] [IsLocalRing A]
     (M : Type*) [AddCommGroup M] [Module A M] :
@@ -45,15 +45,13 @@ private theorem one_tmul_residueField_surjective (A : Type*) [CommRing A] [IsLoc
         show (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] v = y from hv]
 
 /- English proof (translation)
-Rewrite `hx` using `[Ideal.toCotangent_eq_zero]`. Establish `key : ∀ t : A, t ∈ I ^ 2 → t ∈ I ∧ ∀ ht : t ∈ I, (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (⟨t, ht⟩ : ↥I) = 0`. Introduce `t ht`. Rewrite `ht` using `[sq]`. Use `Submodule.mul_induction_on ht ?_ ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha b hb`. Use `⟨Ideal.mul_mem_right _ _ ha, ?_⟩` and prove the remaining obligations. Introduce `hab`. Establish `h2 : (⟨a * b, hab⟩ : ↥I) = a • (⟨b, hb⟩ : ↥I)`. Use `ext`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[smul_eq_mul]`. Establish `h3 : a • (1 : IsLocalRing.ResidueField A) = 0`. Rewrite using `[Algebra.smul_def, mul_one]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hI ha)`. Rewrite using `[h2, ← TensorProduct.smul_tmul, h3, TensorProduct.zero_tmul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `u v ⟨hu, hu2⟩ ⟨hv, hv2⟩`. Use `⟨Ideal.add_mem _ hu hv, ?_⟩` and prove the remaining obligations. Introduce `huv`. Establish `h4 : (⟨u + v, huv⟩ : ↥I) = (⟨u, hu⟩ : ↥I) + ⟨v, hv⟩` using `rfl`. Rewrite using `[h4, TensorProduct.tmul_add, hu2, hv2, add_zero]`.
-
-Conclude with `(key x hx).2 x.2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tmul_eq_zero_of_toCotangent_eq_zero (A : Type*) [CommRing A] [IsLocalRing A]
     (I : Ideal A) (hI : I ≤ IsLocalRing.maximalIdeal A) (x : ↥I)
@@ -98,11 +96,11 @@ private theorem dTensor_apply (k A : Type*) [CommRing k] [CommRing A] [Algebra k
       = (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (KaehlerDifferential.D k A (x : A)) := rfl
 
 /- English proof (translation)
-Establish `: Algebra.FormallySmooth k (residueFieldExtension k A).Ring` using `inferInstanceAs (Algebra.FormallySmooth k A)`. Establish `hs0 : Subsingleton (Algebra.H1Cotangent k (IsLocalRing.ResidueField A))` using `Algebra.FormallySmooth.subsingleton_h1Cotangent`. Establish `hsub : Subsingleton (residueFieldExtension k A).H1Cotangent` using `(Algebra.Extension.equivH1CotangentOfFormallySmooth (residueFieldExtension k A)).toEquiv.subsingleton`. Establish `hsub2 : Subsingleton ↥(LinearMap.ker (residueFieldExtension k A).cotangentComplex)` using `hsub`. Establish `hbot : LinearMap.ker (residueFieldExtension k A).cotangentComplex = ⊥` using `Submodule.eq_bot_of_subsingleton`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2 : (x : A) ∈ (residueFieldExtension k A).ker` using `x.2`. Establish `h0 : (residueFieldExtension k A).cotangentComplex (Algebra.Extension.Cotangent.mk ⟨(x : A), hx2⟩) = 0`. Rewrite using `[Algebra.Extension.cotangentComplex_mk]`. Conclude with `hx`. Establish `hinj` using `LinearMap.ker_eq_bot.mp hbot`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Algebra.Extension.Cotangent.mk (⟨(x : A), hx2⟩ : (residueFieldExtension k A).ker) = 0` using `hinj (by rw [h0, map_zero])`. Rewrite `h1` using `[Algebra.Extension.Cotangent.mk_eq_zero_iff]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_ker_sq_of_tmul_D_eq_zero (k A : Type*) [CommRing k] [CommRing A] [Algebra k A]
     [IsLocalRing A]
@@ -134,13 +132,11 @@ private theorem mem_ker_sq_of_tmul_D_eq_zero (k A : Type*) [CommRing k] [CommRin
   exact h1
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`. Take `⟨x, rfl⟩` from `one_tmul_residueField_surjective A (↥(RingHom.ker (algebraMap A (IsLocalRing.ResidueField A)))) z`. Establish `h1 : LinearMap.liftBaseChange (IsLocalRing.ResidueField A) (kerToTensorResidueField k A) ((1 : IsLocalRing.ResidueField A) ⊗ₜ[A] x) = (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (KaehlerDifferential.D k A (x : A))`. Rewrite using `[LinearMap.liftBaseChange_tmul, one_smul, dTensor_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (KaehlerDifferential.D k A (x : A)) = (0 : IsLocalRing.ResidueField A ⊗[A] KaehlerDifferential k A)`. Rewrite using `[← h1]`. Conclude with `hz`. Establish `h3 : (x : A) ∈ (RingHom.ker (algebraMap A (IsLocalRing.ResidueField A))) ^ 2` using `mem_ker_sq_of_tmul_D_eq_zero k A x h2`. Establish `hle : RingHom.ker (algebraMap A (IsLocalRing.ResidueField A)) ≤ IsLocalRing.maximalIdeal A`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Establish `ha' : algebraMap A (IsLocalRing.ResidueField A) a = 0` using `ha`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp ha'`. Use `tmul_eq_zero_of_toCotangent_eq_zero A (RingHom.ker (algebraMap A (IsLocalRing.ResidueField A))) hle x ?_` and prove the remaining obligations. Rewrite using `[Ideal.toCotangent_eq_zero]`.
-
-Conclude with `h3`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem injective_liftBaseChange_dTensor (k A : Type*) [CommRing k] [CommRing A]
     [Algebra k A] [IsLocalRing A] [Algebra k (IsLocalRing.ResidueField A)]
@@ -184,9 +180,9 @@ variable (k A : Type*) [CommRing k] [CommRing A] [Algebra k A] [IsLocalRing A]
 omit [IsNoetherianRing A] [Module.Free A (KaehlerDifferential k A)]
   [Module.Finite A (KaehlerDifferential k A)] in
 /- English proof (translation)
-Establish `hT0 : LinearMap.ker (LinearMap.liftBaseChange (IsLocalRing.ResidueField A) (kerToTensorResidueField k A)) = ⊥` using `LinearMap.ker_eq_bot.mpr (injective_liftBaseChange_dTensor k A)`. Establish `hmain` using `hm.map' (LinearMap.liftBaseChange (IsLocalRing.ResidueField A) (kerToTensorResidueField k A)) hT0`. Establish `heq : (⇑(LinearMap.liftBaseChange (IsLocalRing.ResidueField A) (kerToTensorResidueField k A)) ∘ fun i : ι => (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (m i)) = fun i : ι => (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (KaehlerDifferential.D k A ((m i : A)))`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, LinearMap.liftBaseChange_tmul, one_smul, dTensor_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `hmain` using `[heq]`. Conclude with `hmain`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndependent_tensor_D_of_ker {ι : Type*}
     (m : ι → (RingHom.ker (algebraMap A (IsLocalRing.ResidueField A)) : Ideal A))
@@ -213,7 +209,7 @@ theorem linearIndependent_tensor_D_of_ker {ι : Type*}
 omit [IsNoetherianRing A] [Module.Free A (KaehlerDifferential k A)]
   [Module.Finite A (KaehlerDifferential k A)] in
 /- English proof (translation)
-Substitute `hI` using the available equality. Conclude with `linearIndependent_tensor_D_of_ker k A m hm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem linearIndependent_tensor_D_of_ideal_eq_ker {ι : Type*} (I : Ideal A)
     (hI : I = RingHom.ker (algebraMap A (IsLocalRing.ResidueField A)))
@@ -229,7 +225,7 @@ private theorem linearIndependent_tensor_D_of_ideal_eq_ker {ι : Type*} (I : Ide
 omit [IsNoetherianRing A] [Module.Free A (KaehlerDifferential k A)]
   [Module.Finite A (KaehlerDifferential k A)] in
 /- English proof (translation)
-The claim follows from `linearIndependent_tensor_D_of_ideal_eq_ker k A (IsLocalRing.maximalIdeal A) (Ideal.mk_ker).symm m hm`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_tensor_D_of_maximalIdeal {ι : Type*}
     (m : ι → (IsLocalRing.maximalIdeal A : Ideal A))
@@ -243,13 +239,13 @@ theorem linearIndependent_tensor_D_of_maximalIdeal {ι : Type*}
 
 omit [Module.Free A (KaehlerDifferential k A)] [Module.Finite A (KaehlerDifferential k A)] in
 /- English proof (translation)
-Establish `hfin : Module.Finite A ↥(IsLocalRing.maximalIdeal A)` using `Module.Finite.iff_fg.mpr (IsNoetherian.noetherian _)`. Establish `hfin2 : Module.Finite (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField A ⊗[A] ↥(IsLocalRing.maximalIdeal A))` using `inferInstance`. Take `⟨y, hy⟩ : ∃ y : Fin (Module.finrank (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField A ⊗[A] ↥(IsLocalRing.maximalIdeal A))) → ↥(IsLocalRing.maximalIdeal A), ∀ i, (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (y i) = Module.finBasis (IsLocalRing.ResidueField A) (IsLocalRing.Residue …` from `by choose y hy using fun i => one_tmul_residueField_surjective A (↥(IsLocalRing.maximalIdeal A)) (Module.finBasis (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField A ⊗[A] ↥(IsLocalRing.maximalIdeal A)) i)`. Conclude with `⟨y, hy⟩`. Establish `hspan : Submodule.span A (Set.range y) = ⊤` using `IsLocalRing.span_eq_top_of_tmul_eq_basis y (Module.finBasis (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField A ⊗[A] ↥(IsLocalRing.maximalIdeal A))) (fun i => hy i)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨_, fun i => ((y i : A)), ?_, ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg (Submodule.map (IsLocalRing.maximalIdeal A).subtype) hspan`. Rewrite `h3` using `[Submodule.map_span, Submodule.map_subtype_top]`. Establish `himg : ((IsLocalRing.maximalIdeal A).subtype '' Set.range y) = Set.range (fun i => ((y i : A)))`. Use extensionality with `t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite `h3` using `[himg]`. Conclude with `h3`. Establish `hfun : (fun i => (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (y i)) = ⇑(Module.finBasis (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField A ⊗[A] ↥(IsLocalRing.maximalIdeal A)))` using `funext hy`. Use `linearIndependent_tensor_D_of_maximalIdeal k A y ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Conclude with `Module.Basis.linearIndependent _`.
+A detailed English derivation is pending.
 -/
 theorem exists_local_parameters :
     ∃ (h : ℕ) (y : Fin h → A),
@@ -294,29 +290,29 @@ theorem exists_local_parameters :
     exact Module.Basis.linearIndependent _
 
 /- English proof (translation)
-Take `⟨h, y, hspan, hind⟩` from `exists_local_parameters k A`. Take `⟨v, hv⟩ : ∃ v : Fin h → (IsLocalRing.ResidueField A ⊗[A] KaehlerDifferential k A), v = fun i => (1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (KaehlerDifferential.D k A (y i))` from `⟨_, rfl⟩`. Rewrite `hind` using `[← hv]`. Establish `hψ : ∀ i : Fin h, ∃ ψ : (IsLocalRing.ResidueField A ⊗[A] KaehlerDifferential k A) →ₗ[IsLocalRing.ResidueField A] IsLocalRing.ResidueField A, ∀ j, ψ (v j) = if i = j then 1 else 0`. Introduce `i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, hg⟩` from `LinearMap.exists_extend ((Finsupp.lapply i).comp (hind.repr : _ →ₗ[IsLocalRing.ResidueField A] _))`. Use `⟨g, fun j => ?_⟩` and prove the remaining obligations. Establish `hmem : v j ∈ Submodule.span (IsLocalRing.ResidueField A) (Set.range v)` using `Submodule.subset_span (Set.mem_range_self j)`. Establish `h1 : hind.repr ⟨v j, hmem⟩ = Finsupp.single j 1` using `hind.repr_eq_single j _ rfl`. Establish `h2` using `LinearMap.congr_fun hg ⟨v j, hmem⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.subtype_apply, h1, Finsupp.lapply_apply, Finsupp.single_apply] at h2`. Rewrite using `[h2]`. Distinguish the cases in `hij : i = j`. Simplify using `[hij]`. Simplify using `[hij, Ne.symm hij]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `choose ψ hψ' using hψ`. Simplify using `only [hv] at hψ'`. Establish `hsurj : Function.Surjective (algebraMap A (IsLocalRing.ResidueField A))` using `Ideal.Quotient.mk_surjective`. Establish `hσ : ∀ c, algebraMap A (IsLocalRing.ResidueField A) (Function.surjInv hsurj c) = c` using `Function.surjInv_eq hsurj`. Take `⟨φ, hφ⟩ : ∃ φ : Fin h → (KaehlerDifferential k A →ₗ[A] A), ∀ i j, φ i (Module.Free.chooseBasis A (KaehlerDifferential k A) j) = Function.surjInv hsurj (ψ i ((1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (Module.Free.chooseBasis A (KaehlerDifferential k A) j)))` from `⟨fun i => (Module.Free.chooseBasis A (KaehlerDifferential k A)).constr A (fun j => Function.surjInv hsurj (ψ i ((1 : IsLocalRing.ResidueField A) ⊗ₜ[A] (Module.Free.chooseBasis A (KaehlerDifferential k A) j)))), fun i j => by simp⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hres : ∀ (i : Fin h) (ω : KaehlerDifferential k A), algebraMap A (IsLocalRing.ResidueField A) (φ i ω) = ψ i ((1 : IsLocalRing.ResidueField A) ⊗ₜ[A] ω)`. Introduce `i`. Establish `hmaps : (Algebra.linearMap A (IsLocalRing.ResidueField A)).comp (φ i) = ((ψ i).restrictScalars A).comp (TensorProduct.mk A (IsLocalRing.ResidueField A) (KaehlerDifferential k A) 1)`. Use `(Module.Free.chooseBasis A (KaehlerDifferential k A)).ext (fun j => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Algebra.linearMap_apply, hφ, hσ, LinearMap.coe_restrictScalars, TensorProduct.mk_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ω`. Establish `hh` using `LinearMap.congr_fun hmaps ω`. Simplify using `using hh`. Take `⟨M, hMdef⟩ : ∃ M : Matrix (Fin h) (Fin h) A, M = Matrix.of fun i j => φ i (KaehlerDifferential.D k A (y j))` from `⟨_, rfl⟩`. Establish `hMapp : ∀ a b, M a b = φ a (KaehlerDifferential.D k A (y b))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Rewrite using `[hMdef]`. Both sides reduce to the same expression. Establish `hMres : ∀ a b, algebraMap A (IsLocalRing.ResidueField A) (M a b) = if a = b then 1 else 0`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMapp, hres a, hψ' a b]`. Establish `hmapM : M.map (algebraMap A (IsLocalRing.ResidueField A)) = 1`. Use extensionality with `a b`. Rewrite using `[Matrix.map_apply, hMres, Matrix.one_apply]`. Establish `hdet1 : algebraMap A (IsLocalRing.ResidueField A) M.det = 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hmapM, Matrix.det_one]`. Establish `hdet : IsUnit M.det`. Assume the negation of the conclusion as `hcon`. Establish `h1 : Ideal.span ({M.det} : Set A) ≠ ⊤` using `fun hq => hcon (Ideal.span_singleton_eq_top.mp hq)`. Establish `hmem : M.det ∈ IsLocalRing.maximalIdeal A` using `IsLocalRing.le_maximalIdeal h1 (Ideal.mem_span_singleton_self _)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzero : algebraMap A (IsLocalRing.ResidueField A) M.det = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr hmem`. Rewrite `hzero` using `[hdet1]`. Conclude with `one_ne_zero hzero`. Establish `hinvMul : M⁻¹ * M = 1` using `Matrix.nonsing_inv_mul M hdet`. Use `⟨h, y, fun i => (∑ l : Fin h, (M⁻¹ i l) • φ l).compDer (KaehlerDifferential.D k A), hspan, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j`. Establish `hsum : (∑ l : Fin h, M⁻¹ i l * M l j) = if i = j then 1 else 0`. Rewrite using `[← Matrix.mul_apply, hinvMul, Matrix.one_apply]`. Use `show (∑ l : Fin h, (M⁻¹ i l) • φ l) (KaehlerDifferential.D k A (y j)) = if i = j then 1 else 0`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `l _`. Rewrite using `[hMapp]`. Use `_ = if i = j then 1 else 0 := hsum`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_parameters_and_dual_derivations :
     ∃ (h : ℕ) (y : Fin h → A) (δ : Fin h → Derivation k A A),

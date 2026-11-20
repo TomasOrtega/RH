@@ -9,11 +9,9 @@ variable {l : ℕ} [Fact l.Prime] {Fm : GFrame l} {n : ℕ} {x : NP Fm n} (k : K
 end UpperTheory.V.Pa.SelmerFractionFieldBaseChange
 
 /- English proof (translation)
-Introduce `N`. Establish `hs` using `Ideal.Quotient.mk_surjective (I := I ^ N)`. Establish `e : (fun g => Ideal.Quotient.mk (J ^ N) (π (f g))) = (fun q => Ideal.Quotient.mk (J ^ N) (π (Function.surjInv hs q))) ∘ (fun g => Ideal.Quotient.mk (I ^ N) (f g))`. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ideal.Quotient.eq, ← map_sub]`. Apply `hπ` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `(Function.surjInv_eq hs _).symm`. Rewrite using `[e]`.
-
-Conclude with `(hf N).comp _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem selMap2_lemma {R S Γ : Type} [CommRing R] [CommRing S] [TopologicalSpace Γ] (I : Ideal R) (J : Ideal S)
     (π : R →+ S) (hπ : ∀ N u, u ∈ I ^ N → π u ∈ J ^ N) (f : Γ → R) (hf : AdicCont I f) :
@@ -33,13 +31,11 @@ private theorem selMap2_lemma {R S Γ : Type} [CommRing R] [CommRing S] [Topolog
   exact (hf N).comp _
 
 /- English proof (translation)
-Rewrite `hu` using `[Ideal.span_singleton_pow, ← map_pow, Ideal.mem_span_singleton']`. Take `⟨r, rfl⟩` from `hu`. Rewrite using `[Ideal.span_singleton_pow]`. Establish `ha : (algebraMap A (DD A g) (t ^ N)).a = t ^ N` using `rfl`. Establish `he : (algebraMap A (DD A g) (t ^ N)).ep = 0` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he' : (algebraMap A (DD A g) (t ^ N)).ep' = 0` using `rfl`. Establish `hη : (algebraMap A (DD A g) (t ^ N)).eta = 0` using `rfl`. Use `⟨?_, fun j => ?_, fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[DD.mul_a, ha]`. Conclude with `Ideal.mem_span_singleton'.mpr ⟨r.a, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DD.mul_ep, ha, he]`. Conclude with `Ideal.mem_span_singleton'.mpr ⟨r.ep j, by simp⟩`. Rewrite using `[DD.mul_ep', ha, he']`. Conclude with `Ideal.mem_span_singleton'.mpr ⟨r.ep' j, by simp⟩`. Rewrite using `[DD.mul_eta, ha, he, he', hη]`.
-
-Conclude with `Ideal.mem_span_singleton'.mpr ⟨r.eta, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dd_components_mem_span_pow_of_mem_span_algebraMap_pow {A : Type} [CommRing A] (g : ℕ) (t : A) (N : ℕ) (u : DD A g)
     (hu : u ∈ Ideal.span {algebraMap A (DD A g) t} ^ N) :
@@ -63,14 +59,14 @@ private theorem dd_components_mem_span_pow_of_mem_span_algebraMap_pow {A : Type}
     exact Ideal.mem_span_singleton'.mpr ⟨r.eta, by simp⟩
 
 /- English proof (translation)
-The claim follows from `DD.ext rfl (funext fun _ => map_zero _) (funext fun _ => map_zero _) (map_zero _)`.
+A detailed English derivation is pending.
 -/
 private theorem dd_map_algebraMap_algebraMap {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (g : ℕ) (c : A) :
     DD.map (algebraMap A B) (algebraMap A (DD A g) c) = algebraMap A (DD B g) c :=
   DD.ext rfl (funext fun _ => map_zero _) (funext fun _ => map_zero _) (map_zero _)
 
 /- English proof (translation)
-Rewrite `hu`, the goal using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨r, rfl⟩` from `hu`. Conclude with `⟨DD.map (algebraMap A B) r, by rw [map_mul, map_pow, dd_map_algebraMap_algebraMap]⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem dd_map_mem_span_algebraMap_pow {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (g : ℕ) (t : A) (N : ℕ) (u : DD A g)
     (hu : u ∈ Ideal.span {algebraMap A (DD A g) t} ^ N) :
@@ -80,11 +76,9 @@ private theorem dd_map_mem_span_algebraMap_pow {A B : Type} [CommRing A] [CommRi
   exact ⟨DD.map (algebraMap A B) r, by rw [map_mul, map_pow, dd_map_algebraMap_algebraMap]⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hu`. Use `⟨fun h => ?_, fun h => ?_, fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Use `show algebraMap A B u.a = 0`. Rewrite using `[h1 h, map_zero]`. Use `show (fun j => algebraMap A B (u.ep j)) = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[h2 h]`. Use function extensionality and compare the values at `j`. Conclude with `map_zero _`. Use `show (fun j => algebraMap A B (u.ep' j)) = 0`. Rewrite using `[h3 h]`.
-
-Use function extensionality and compare the values at `j`. Conclude with `map_zero _`. Use `show algebraMap A B u.eta = 0`. Rewrite using `[h4 h, map_zero]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ddMap_algebraMap_mem_ddPart {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (g : ℕ) (b1 b2 b3 b4 : Bool)
     (u : DD A g) (hu : u ∈ ddPart A A g b1 b2 b3 b4) : DD.map (algebraMap A B) u ∈ ddPart A B g b1 b2 b3 b4 := by
@@ -104,7 +98,7 @@ private theorem ddMap_algebraMap_mem_ddPart {A B : Type} [CommRing A] [CommRing 
     rw [h4 h, map_zero]
 
 /- English proof (translation)
-Introduce `i j`. Conclude with `⟨fun hc => ddMap_algebraMap_mem_ddPart g _ _ _ _ _ ((hZ i j).1 hc), fun hc => ddMap_algebraMap_mem_ddPart g _ _ _ _ _ ((hZ i j).2 hc)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem map_ddMap_algebraMap_mem_W2 {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (n g a : ℕ)
     (Z : Matrix (Fin n) (Fin n) (DD A g)) (hZ : Z ∈ W2 n A A g a) :
@@ -113,7 +107,7 @@ private theorem map_ddMap_algebraMap_mem_W2 {A B : Type} [CommRing A] [CommRing 
   exact ⟨fun hc => ddMap_algebraMap_mem_ddPart g _ _ _ _ _ ((hZ i j).1 hc), fun hc => ddMap_algebraMap_mem_ddPart g _ _ _ _ _ ((hZ i j).2 hc)⟩
 
 /- English proof (translation)
-Conclude with `Matrix.ext fun i j => dd_map_algebraMap_algebraMap (A := A) (B := B) g (M i j)`.
+A detailed English derivation is pending.
 -/
 private theorem map_algebraMap_map_ddMap_algebraMap {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (n g : ℕ)
     (M : Matrix (Fin n) (Fin n) A) :
@@ -121,9 +115,7 @@ private theorem map_algebraMap_map_ddMap_algebraMap {A B : Type} [CommRing A] [C
   exact Matrix.ext fun i j => dd_map_algebraMap_algebraMap (A := A) (B := B) g (M i j)
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => DD.ext ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `map_zero (algebraMap A B)`. Both sides reduce to the same expression. Use function extensionality and compare the values at `m`. Conclude with `map_zero (algebraMap A B)`.
-
-Conclude with `map_zero (algebraMap A B)`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem epM_map_ddMap_algebraMap {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (n g : ℕ)
     (Z : Fin g → Matrix (Fin n) (Fin n) A) :
@@ -136,7 +128,7 @@ private theorem epM_map_ddMap_algebraMap {A B : Type} [CommRing A] [CommRing B] 
   · exact map_zero (algebraMap A B)
 
 /- English proof (translation)
-Establish `e : ∀ M : Matrix (Fin n) (Fin n) (DD x.A k.g), M.map (DD.map (algebraMap x.A B)) = (DD.map (algebraMap x.A B)).mapMatrix M` using `fun _ => rfl`. Unfold `Kap.ρ1 NP.ρX`. Rewrite using `[e, map_mul, map_add, map_one, ← e, ← e, epM_map_ddMap_algebraMap, map_algebraMap_map_ddMap_algebraMap]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem kap_rho1_map_ddMap_algebraMap {l : ℕ} [Fact l.Prime] {Fm : GFrame l} {n : ℕ} {x : NP Fm n} (k : Kap x) (B : Type)
     [CommRing B] [Algebra x.A B] (g : Fm.G₀) :
@@ -148,7 +140,7 @@ private theorem kap_rho1_map_ddMap_algebraMap {l : ℕ} [Fact l.Prime] {Fm : GFr
   rfl
 
 /- English proof (translation)
-Establish `e : ∀ M : Matrix (Fin n) (Fin n) (DD x.A k.g), M.map (DD.map (algebraMap x.A B)) = (DD.map (algebraMap x.A B)).mapMatrix M` using `fun _ => rfl`. Unfold `Kap.w1 NP.wX`. Rewrite using `[e, map_mul, map_sub, map_one, ← e, ← e, epM_map_ddMap_algebraMap, map_algebraMap_map_ddMap_algebraMap]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem w1_map_dd_map_algebraMap {l : ℕ} [Fact l.Prime] {Fm : GFrame l} {n : ℕ} {x : NP Fm n} (k : Kap x) (B : Type)
     [CommRing B] [Algebra x.A B] (v : Fm.Vl) :
@@ -160,7 +152,7 @@ private theorem w1_map_dd_map_algebraMap {l : ℕ} [Fact l.Prime] {Fm : GFrame l
   rfl
 
 /- English proof (translation)
-Establish `e : ∀ M : Matrix (Fin n) (Fin n) (DD x.A k.g), M.map (DD.map (algebraMap x.A B)) = (DD.map (algebraMap x.A B)).mapMatrix M` using `fun _ => rfl`. Unfold `Kap.wi1 NP.wiX`. Rewrite using `[e, map_mul, map_add, map_one, ← e, ← e, epM_map_ddMap_algebraMap, map_algebraMap_map_ddMap_algebraMap]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem wi1_map_dd_map_algebraMap {l : ℕ} [Fact l.Prime] {Fm : GFrame l} {n : ℕ} {x : NP Fm n} (k : Kap x) (B : Type)
     [CommRing B] [Algebra x.A B] (v : Fm.Vl) :
@@ -172,9 +164,9 @@ private theorem wi1_map_dd_map_algebraMap {l : ℕ} [Fact l.Prime] {Fm : GFrame 
   rfl
 
 /- English proof (translation)
-Establish `eM : ∀ M : Matrix (Fin n) (Fin n) R, M.map Φ = Φ.mapMatrix M` using `fun _ => rfl`. Introduce `g`. Take `⟨h1, h2⟩` from `hL g`. Establish `e : wi' v * (z' (F.φ v g) - dY F ρ' (Y.map Φ) (F.φ v g)) * w' v = (wi v * (z (F.φ v g) - dY F ρ Y (F.φ v g)) * w v).map Φ`. Simplify using `only [dY, hρ, hz, hw, hwi, eM, map_mul, map_sub]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun i j hij => ?_, fun hg i => ?_⟩` and prove the remaining obligations. Rewrite using `[e, Matrix.map_apply, h1 i j hij, map_zero]`. Rewrite using `[e, Matrix.map_apply, h2 hg i, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem selMap2_lemma_12 {l : ℕ} [Fact l.Prime] {n : ℕ} (F : GFrame l) {R S : Type} [CommRing R] [CommRing S]
     (Φ : R →+* S) (ρ z : F.G₀ → Matrix (Fin n) (Fin n) R) (w wi : F.Vl → Matrix (Fin n) (Fin n) R)
@@ -194,15 +186,11 @@ private theorem selMap2_lemma_12 {l : ℕ} [Fact l.Prime] {n : ℕ} (F : GFrame 
 
 open UpperTheory.V.Pa.SelmerFractionFieldBaseChange in
 /- English proof (translation)
-Introduce `l _ L G G0 h n x k z hz`. Take `⟨hV, hC, hco, hcj, hIu, hloc⟩` from `hz`. Establish `eM : ∀ M : Matrix (Fin n) (Fin n) (DD x.A k.g), M.map (DD.map (algebraMap x.A x.Fr)) = (DD.map (algebraMap x.A x.Fr)).mapMatrix M` using `fun _ => rfl`. Use `⟨⟨fun g => map_ddMap_algebraMap_mem_W2 n k.g x.a _ (hV g), fun i j => ?_, fun g1 g2 => ?_, fun g => ?_, fun u g hg => ?_, fun v => ?_⟩, fun i j => ⟨?_, fun m => ?_, fun m => ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `selMap2_lemma _ _ (DD.map (algebraMap x.A x.Fr)).toAddMonoidHom (fun N u hu => dd_map_mem_span_algebraMap_pow k.g x.t N u hu) (fun g => z g i j) (hC i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce beta_reduce at hco`. Rewrite using `[hco g1 g2, ← kap_rho1_map_ddMap_algebraMap k x.Fr, ← kap_rho1_map_ddMap_algebraMap k x.Fr]`. Simplify using `only [eM, map_add, map_mul]`. Use `beta_reduce`. Rewrite using `[hcj g]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Matrix.ext fun i j => map_neg (DD.map (algebraMap x.A x.Fr)) (z g j i)`. Use `beta_reduce`. Rewrite using `[hIu u g hg]`. Conclude with `Matrix.map_zero _ (map_zero _)`. Take `⟨Y, hY, hL⟩` from `hloc v`.
-
-Conclude with `⟨Y.map (DD.map (algebraMap x.A x.Fr)), map_ddMap_algebraMap_mem_W2 n k.g x.a _ hY, selMap2_lemma_12 G.frame (DD.map (algebraMap x.A x.Fr)) _ z _ _ _ _ _ _ (fun g => (kap_rho1_map_ddMap_algebraMap k x.Fr _).symm) (fun g => rfl) (fun v => (w1_map_dd_map_algebraMap k x.Fr v).symm) ( …`. Use `⟨0, fun g => (z g i j).a, ?_, fun g => by rw [pow_zero, one_mul]; rfl⟩` and prove the remaining obligations. Conclude with `selMap2_lemma _ _ { toFun := fun u : DD x.A k.g => u.a, map_zero' := rfl, map_add' := fun _ _ => rfl } (fun N u hu => (dd_components_mem_span_pow_of_mem_span_algebraMap_pow k.g x.t N u hu).1) (fun g => z g i j) (hC i j)`. Use `⟨0, fun g => (z g i j).ep m, ?_, fun g => by rw [pow_zero, one_mul]; rfl⟩` and prove the remaining obligations. Conclude with `selMap2_lemma _ _ { toFun := fun u : DD x.A k.g => u.ep m, map_zero' := rfl, map_add' := fun _ _ => rfl } (fun N u hu => (dd_components_mem_span_pow_of_mem_span_algebraMap_pow k.g x.t N u hu).2.1 m) (fun g => z g i j) (hC i j)`.
-
-Use `⟨0, fun g => (z g i j).ep' m, ?_, fun g => by rw [pow_zero, one_mul]; rfl⟩` and prove the remaining obligations. Conclude with `selMap2_lemma _ _ { toFun := fun u : DD x.A k.g => u.ep' m, map_zero' := rfl, map_add' := fun _ _ => rfl } (fun N u hu => (dd_components_mem_span_pow_of_mem_span_algebraMap_pow k.g x.t N u hu).2.2.1 m) (fun g => z g i j) (hC i j)`. Use `⟨0, fun g => (z g i j).eta, ?_, fun g => by rw [pow_zero, one_mul]; rfl⟩` and prove the remaining obligations. Conclude with `selMap2_lemma _ _ { toFun := fun u : DD x.A k.g => u.eta, map_zero' := rfl, map_add' := fun _ _ => rfl } (fun N u hu => (dd_components_mem_span_pow_of_mem_span_algebraMap_pow k.g x.t N u hu).2.2.2) (fun g => z g i j) (hC i j)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.selMap2 :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n), ∀ (k : Kap x), ∀ z ∈ Sel2 h x.A k, (fun g => (z g).map (DD.map (algebraMap x.A x.Fr))) ∈ Sel2 h x.Fr k ∧ BndD x.t fun g => (z g).map (DD.map (algebraMap x.A x.Fr)) := by

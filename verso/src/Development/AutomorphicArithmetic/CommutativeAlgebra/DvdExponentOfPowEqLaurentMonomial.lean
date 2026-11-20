@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `q _ O _ _ c v hv`. Set `φ : LaurentPolynomial O →+* LaurentPolynomial (IsLocalRing.ResidueField O)` to `AddMonoidAlgebra.mapRingHom ℤ (IsLocalRing.residue O)`. Establish `hT : ∀ n : ℤ, φ (LaurentPolynomial.T n) = LaurentPolynomial.T n`. Introduce `n`. Use `show AddMonoidAlgebra.mapRingHom ℤ (IsLocalRing.residue O) (AddMonoidAlgebra.single n 1) = AddMonoidAlgebra.single n 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddMonoidAlgebra.mapRingHom_single, map_one]`. Establish `hw : (φ v) ^ q = LaurentPolynomial.T (c : ℤ)`. Rewrite using `[← map_pow, hv, hT]`. Take `⟨n, p, hp⟩` from `LaurentPolynomial.exists_T_pow (φ v)`. Establish `hpq : p ^ q = Polynomial.X ^ (c + q * n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Polynomial.toLaurent_injective` to reduce the goal to its premises. Rewrite using `[map_pow, hp, mul_pow, hw, LaurentPolynomial.T_pow, ← LaurentPolynomial.T_add, Polynomial.toLaurent_X_pow]`. Use `congr 1`. Establish `hdeg` using `congrArg Polynomial.natDegree hpq`. Rewrite `hdeg` using `[Polynomial.natDegree_pow, Polynomial.natDegree_X_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : q ∣ q * n + c` using `⟨p.natDegree, by rw [add_comm]; exact hdeg.symm⟩`. Conclude with `(Nat.dvd_add_right (dvd_mul_right q n)).mp h1`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.dvd_exponent_of_pow_eq_laurent_monomial :
     ∀ (q : ℕ) [NeZero q] (O : Type) [CommRing O] [IsLocalRing O] (c : ℕ) (v : (LaurentPolynomial O)ˣ), (v : LaurentPolynomial O) ^ q = LaurentPolynomial.T (c : ℤ) → q ∣ c := by

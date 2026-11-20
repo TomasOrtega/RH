@@ -7,45 +7,43 @@ open scoped Matrix CategoryTheory.Obj Topology
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `g d Hm E F τ hH hpos hF hA hFE`. Establish `hexp : ∀ z w : Fin g → ℂ, hermForm Hm z w = ∑ x, ∑ y, z x * Hm x y * star (w y)`. Introduce `z w`. Unfold `hermForm`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => by rw [Pi.star_apply]; ring`. Establish `lin1 : ∀ (c : Fin d → ℂ) (w : Fin g → ℂ), hermForm Hm (∑ i, c i • E i) w = ∑ i, c i * hermForm Hm (E i) w`. Introduce `c w`. Unfold `hermForm`. Rewrite using `[sum_dotProduct]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_dotProduct, smul_eq_mul]`. Establish `symm : ∀ z w : Fin g → ℂ, hermForm Hm w z = star (hermForm Hm z w)`. Introduce `z w`. Simplify using `only [hexp, star_sum, star_mul', star_star]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[show star (Hm x y) = Hm y x from hH.apply y x]`. Expand and normalize the polynomial expressions, which then agree. Establish `lin2 : ∀ (c : Fin d → ℂ) (z : Fin g → ℂ), hermForm Hm z (∑ i, c i • E i) = ∑ i, star (c i) * hermForm Hm z (E i)`. Introduce `c z`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[symm, lin1, star_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul', ← symm]`. Use `set a : Matrix (Fin d) (Fin d) ℝ := Matrix.of fun i k => (hermForm Hm (E i) (E k)).re with ha`. Establish `hAr : ∀ i k, hermForm Hm (E i) (E k) = (a i k : ℂ)` using `fun i k => Complex.ext (by simp [a]) (by simp [a, hA])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `asymm : aᵀ = a`. Use extensionality with `i k`. Simplify using `only [a, Matrix.transpose_apply, Matrix.of_apply]`. Rewrite using `[symm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `set Y : Matrix (Fin d) (Fin d) ℝ := Matrix.of fun i j => (τ i j).im with hY`. Use `set X : Matrix (Fin d) (Fin d) ℝ := Matrix.of fun i j => (τ i j).re with hX`. Establish `hYA : Yᵀ * a = 1`. Use extensionality with `j k`. Establish `h` using `hFE j k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h` using `[hF j, lin1]`. Simplify using `only [hAr, Complex.im_sum, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, mul_zero, add_zero] at h`. Simplify `h` using `[Matrix.mul_apply, Matrix.one_apply, Y]`. Establish `hAY : a * Y = 1`. Establish `h` using `congrArg Matrix.transpose hYA`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.transpose_mul, Matrix.transpose_transpose, asymm, Matrix.transpose_one]`. Then use the resulting hypothesis. Establish `hYs : Yᵀ = Y`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (Yᵀ * a) * Y := by rw [Matrix.mul_assoc]`. Use `_ = Y := by rw [hYA, Matrix.one_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e1 : ∀ i m, ∑ p, Y p i * a p m = if i = m then 1 else 0` using `fun i m => by`. Simplify `congrFun (congrFun hYA i) m` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `e2 : ∀ p j, ∑ m, a p m * Y m j = if p = j then 1 else 0` using `fun p j => by`. Simplify `congrFun (congrFun hAY p) j` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `ys : ∀ i j, Y i j = Y j i` using `fun i j => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `using (congrFun (congrFun hYs j) i)`. Use `⟨fun v hv => ?_, fun i j => ?_⟩` and prove the remaining obligations. Establish `him : (∑ i, ∑ j, (v i : ℂ) * τ i j * (v j : ℂ)).im = v ⬝ᵥ (Y *ᵥ v)`. Simplify using `only [Complex.im_sum, dotProduct, Matrix.mulVec, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Y, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[him]`. Use `set w := Y *ᵥ v with hw`. Establish `hAw : a *ᵥ w = v` using `by rw [hw, Matrix.mulVec_mulVec, hAY, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set Q : Fin g → ℂ := ∑ i, ((w i : ℝ) : ℂ) • E i with hQ`. Establish `hQE : ∀ k, (hermForm Hm Q (E k)).re = v k`. Introduce `k`. Rewrite using `[hQ, lin1, ← hAw]`. Simplify using `only [hAr, Complex.re_sum, Matrix.mulVec, dotProduct]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[Complex.mul_re]`. Rewrite using `[show a k i = a i k from by simpa using congrFun (congrFun asymm i) k]; ring`. Establish `hQQ : (hermForm Hm Q Q).re = v ⬝ᵥ w`. Establish `hl` using `lin2 (fun i => (w i : ℂ)) Q`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `hl` using `[← hQ]`. Rewrite using `[hl]`. Simplify using `only [Complex.re_sum, dotProduct]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hQE k]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree. Establish `hQ0 : Q ≠ 0`. Introduce `h`. Apply `hv` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[← hQE k, h]`. Simplify using `[hermForm]`. Rewrite using `[← hQQ]`. Conclude with `hpos Q hQ0`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : (hermForm Hm (F i) (F j)).im = X i j - X j i`. Rewrite using `[hF i, lin1]`. Simplify using `only [hF j, lin2, hAr, Complex.im_sum, Finset.mul_sum]`. Establish `h1 : ∀ p m, ((τ p i) * (star (τ m j) * (a p m : ℂ))).im = Y p i * a p m * X m j - X p i * (a p m * Y m j)` using `fun p m => by`. Simplify using `[Y, X, Complex.mul_im, Complex.mul_re]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1, Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_mul, ← Finset.mul_sum, e1, e2]`. Simplify using `[X]`.
-
-Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[key, X]`. Simplify using `[Y] at ys`. Simplify using `[ys j i]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.riemann_relations_period_matrix : ∀ (g d : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) (E F : Fin d → Fin g → ℂ) (τ : Fin d → Fin d → ℂ), Hm.IsHermitian → (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) → (∀ j, F j = ∑ i, τ i j • E i) → (∀ i j, (hermForm Hm (E i) (E j)).im = 0) → (∀ i j, (hermForm Hm (F i) (E j)).im = if i = j then 1 else 0) → (∀ v : Fin d → ℝ, v ≠ 0 → 0 < (∑ i, ∑ j, (v i : ℂ) * τ i j * (v j : ℂ)).im) ∧ ∀ i j, τ i j - τ j i = ((hermForm Hm (F i) (F j)).im : ℂ) := by
   intro g d Hm E F τ hH hpos hF hA hFE

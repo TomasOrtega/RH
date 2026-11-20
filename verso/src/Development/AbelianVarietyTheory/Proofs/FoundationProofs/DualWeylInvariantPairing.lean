@@ -13,9 +13,9 @@ namespace GlobalTheory.FischerInvariance
 open MvPolynomial GlobalTheory.DefLift.BilFischer
 
 /- English proof (translation)
-Unfold `Formalism.GradedWeylDivisibility.rowAct lin`. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_single v.2]`. Simplify using `[smul_eq_C_mul]`. Introduce `s _ hs`. Simplify using `[hs]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rowAct_eq_lin {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) g =
@@ -32,9 +32,9 @@ theorem rowAct_eq_lin {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
   · simp
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [AlgHom.comp_apply, Formalism.GradedWeylDivisibility.rowAct, aeval_X, map_sum, map_mul, aeval_C, Matrix.mul_apply, map_sum, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Algebra.algebraMap_eq_smul_one, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowAct_comp {n : ℕ} (g h : Matrix (Fin n) (Fin n) ℂ) :
     (Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) g).comp (Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) h) =
@@ -48,9 +48,9 @@ theorem rowAct_comp {n : ℕ} (g h : Matrix (Fin n) (Fin n) ℂ) :
   simp [Algebra.algebraMap_eq_smul_one, mul_assoc]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun φ => φ u) (rowAct_comp (n := n) (g : Matrix (Fin n) (Fin n) ℂ) ((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ))`. Simplify using `only [AlgHom.comp_apply] at h`. Rewrite using `[h, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `: Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `n) (1 : Matrix (Fin n) (Fin n) ℂ) = AlgHom.id ℂ _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `v`. Simplify using `[Formalism.GradedWeylDivisibility.rowAct, Matrix.one_apply]`. Rewrite using `[this, AlgHom.id_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowAct_inv_cancel {n : ℕ} (g : GL (Fin n) ℂ) (u : MvPolynomial (Fin n × Fin n) ℂ) :
     Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) (g : Matrix (Fin n) (Fin n) ℂ)
@@ -66,9 +66,9 @@ theorem rowAct_inv_cancel {n : ℕ} (g : GL (Fin n) ℂ) (u : MvPolynomial (Fin 
   rw [this, AlgHom.id_apply]
 
 /- English proof (translation)
-Establish `hv : map (starRingEnd ℂ) u = ∑ α ∈ u.support, monomial α (starRingEnd ℂ (coeff α u))` using `by conv_lhs => rw [u.as_sum]`. Rewrite using `[map_sum]`. Simplify using `only [map_monomial]`. Rewrite using `[hv, map_sum, LinearMap.sum_apply, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pair_monomial, Complex.ofReal_mul, Complex.ofReal_prod, wt]`. Use `push_cast`. Rewrite using `[← Complex.mul_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pair_conj_self {σ : Type} [Fintype σ] (u : MvPolynomial σ ℂ) :
     pair (map (starRingEnd ℂ) u) u =
@@ -85,9 +85,9 @@ theorem pair_conj_self {σ : Type} [Fintype σ] (u : MvPolynomial σ ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[pair_conj_self, Ne, Complex.ofReal_eq_zero]`. Apply `ne_of_gt` to reduce the goal to its premises. Apply `Finset.sum_pos` to reduce the goal to its premises. Introduce `α hα`. Apply `mul_pos` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Finset.prod_pos fun i _ => Nat.cast_pos.2 (Nat.factorial_pos _)`. Conclude with `Complex.normSq_pos.2 (mem_support_iff.1 hα)`. Conclude with `support_nonempty.2 hu`.
+A detailed English derivation is pending.
 -/
 theorem pair_conj_self_ne_zero {σ : Type} [Fintype σ] (u : MvPolynomial σ ℂ) (hu : u ≠ 0) :
     pair (map (starRingEnd ℂ) u) u ≠ 0 := by
@@ -101,9 +101,9 @@ theorem pair_conj_self_ne_zero {σ : Type} [Fintype σ] (u : MvPolynomial σ ℂ
   · exact support_nonempty.2 hu
 
 /- English proof (translation)
-Use `⟨pair, fun u hu hu0 => ⟨map (starRingEnd ℂ) u, GlobalTheory.SemilinTransport.map_mem _ hu, pair_conj_self_ne_zero u hu0⟩, fun g v u => ?_⟩` and prove the remaining obligations. Rewrite using `[rowAct_eq_lin, pair_lin]`. Establish `hT : (fun v w : Fin n × Fin n => if v.2 = w.2 then (g : Matrix (Fin n) (Fin n) ℂ).transpose w.1 v.1 else 0) = fun v w => if w.2 = v.2 then (g : Matrix (Fin n) (Fin n) ℂ) v.1 w.1 else 0`. Use function extensionality and compare the values at `v w`. Distinguish the cases in `h : v.2 = w.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h, Matrix.transpose_apply]`. Simplify using `[h, Ne.symm h]`. Rewrite using `[hT, ← rowAct_eq_lin]`. Unfold `Formalism.UG.dwAct`. Rewrite using `[rowAct_inv_cancel]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fischer_dualWeyl_invariant (n : ℕ) (ν : Fin n → ℕ) :
     ∃ b : MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] ℂ,

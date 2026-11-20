@@ -39,15 +39,15 @@ def ExpDat.all : ExpDat Y where
   theta_base_equivariant _ _ _ _ ha := ha.1
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ ha` and use `ha`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ExpDat.all_max : (ExpDat.all Y).Max :=
   fun _ _ _ _ _ ha => ha
 
 /- English proof (translation)
-Introduce `i _ j _ b k Q ψ hψ Sg hSg`. Unfold `ThPsi`. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Simplify using `only [Set.mem_iUnion] at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨a, ha, hxa⟩` from `hx`. Conclude with `(hSg ha).2.2.2 k Q ψ hψ hxa`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ExpDat.all_data_admT4 : admT4 Y (ExpDat.all Y) := by
   intro i _ j _ b k Q ψ hψ Sg hSg
@@ -61,7 +61,7 @@ theorem ExpDat.all_data_admT4 : admT4 Y (ExpDat.all Y) := by
 variable {Y}
 
 /- English proof (translation)
-Introduce `i hi j hj b`. Take `⟨h1, h2, h3, h4, -, -⟩` from `h i hi j hj b`. Conclude with `⟨h1, h2, h3, h4, fun a ha => ha.2.1, fun k Q ψ hψ hu a ha => ha.2.2.1 k Q ψ hψ hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ExpDat.all_data_isotypicPartsInternalDirectSum {E : ExpDat Y} (h : IsotypicPartsInternalDirectSum Y E) : IsotypicPartsInternalDirectSum Y (ExpDat.all Y) := by
   intro i hi j hj b
@@ -69,9 +69,9 @@ theorem ExpDat.all_data_isotypicPartsInternalDirectSum {E : ExpDat Y} (h : Isoty
   exact ⟨h1, h2, h3, h4, fun a ha => ha.2.1, fun k Q ψ hψ hu a ha => ha.2.2.1 k Q ψ hψ hu⟩
 
 /- English proof (translation)
-Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce `ha show DatOk Y i j b a`. Unfold `DatOk`. Use `⟨E.theta_base_equivariant i j b a ha, (hI i hi j hj b).2.2.2.2.1 a ha, fun k Q ψ hψ hu => (hI i hi j hj b).2.2.2.2.2 k Q ψ hψ hu a ha, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k Q ψ hψ x hx`. Establish `hle` using `hT i hi j hj b k Q ψ hψ {a} (Set.singleton_subset_iff.mpr ha)`. Conclude with `hle (Submodule.subset_span (Set.mem_biUnion (Set.mem_singleton a) hx))`. Introduce `ha`. Conclude with `hM i j hj b a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ExpDat.Max.eq_all {E : ExpDat Y} (hM : E.Max) (hI : IsotypicPartsInternalDirectSum Y E) (hT : admT4 Y E) (i : X.Tw) (hi : X.NonzeroIndexPlace i)
     (j : ℕ) (hj : j ∈ Finset.Icc 1 D.R.m) (b : Bool) : E.Dat0 i j b = {a | DatOk Y i j b a} := by
@@ -89,7 +89,7 @@ theorem ExpDat.Max.eq_all {E : ExpDat Y} (hM : E.Max) (hI : IsotypicPartsInterna
     exact hM i j hj b a ha
 
 /- English proof (translation)
-Introduce `i j hj b`. Unfold `ThJ Th SgJ`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `⟨a, h i j hj b a ha, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem ExpDat.thSub_all (Sg0 : ∀ (i : X.Tw) (j : ℕ) (b : Bool), Set (Y.Dat i j b))
     (h : ∀ i, ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b, ∀ a ∈ Sg0 i j b, DatOk Y i j b a) : ThSub Y (ExpDat.all Y) Sg0 := by
@@ -108,7 +108,7 @@ open NumberField Formalism.BasicNotions
 def TwistedAt (D : D7) (w : D.what₂.places.Pl) : Prop := D.what₂.muAt w ≠ D.what₂.mu0
 
 /- English proof (translation)
-Unfold `TwistedAt`. Rewrite using `[D.what₂.muAt_conj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem twistedAt_conj (D : D7) (w : D.what₂.places.Pl) : TwistedAt D (D.what₂.places.conj w) ↔ TwistedAt D w := by
   unfold TwistedAt
@@ -129,7 +129,7 @@ def TwIn.Ok {D : D7} (I : TwIn D) (i : D.ntw.Tw) : Prop :=
 def twEps (D : D7) (i : D.ntw.Tw) : ℝ := ((D.ntw.l i : ℝ) ^ 2)⁻¹
 
 /- English proof (translation)
-Unfold `twEps`. Establish `hl : (0 : ℝ) < (D.ntw.l i : ℝ)` using `by exact_mod_cast (D.ntw.lPrime i).out.pos`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem twEps_pos (D : D7) (i : D.ntw.Tw) : 0 < twEps D i := by
   unfold twEps
@@ -151,9 +151,9 @@ def avPrimes (D : D7) : Finset ℕ :=
 def AvSet (D : D7) : Set (PlE D.host) := ⋃ p ∈ avPrimes D, placesOver D.host.E p
 
 /- English proof (translation)
-Establish `hI : (Ideal.span {((p : ℕ) : 𝓞 E)} : Ideal (𝓞 E)) ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp` after adjusting the coercions. Use `(Ideal.finite_factors hI).subset ?_` and prove the remaining obligations. Introduce `v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show v.asIdeal ∣ _`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hv`.
+A detailed English derivation is pending.
 -/
 theorem placesOver_finite_av (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p ≠ 0) :
     (placesOver E p).Finite := by
@@ -167,7 +167,7 @@ theorem placesOver_finite_av (E : Type) [Field E] [NumberField E] (p : ℕ) (hp 
   exact hv
 
 /- English proof (translation)
-Unfold `AvSet`. Conclude with `Set.Finite.biUnion (Finset.finite_toSet _) fun p hp => placesOver_finite_av _ p (Finset.mem_filter.mp hp).2`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem avSet_finite (D : D7) : (AvSet D).Finite := by
   unfold AvSet
@@ -177,19 +177,17 @@ theorem avSet_finite (D : D7) : (AvSet D).Finite := by
 def AvRec (D : D7) : Finset (PlE D.host) := (avSet_finite D).toFinset
 
 /- English proof (translation)
-Simplify using `only [AvRec, AvSet, Set.Finite.mem_toFinset, Set.mem_iUnion, exists_prop]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_avRec {D : D7} (v : PlE D.host) : v ∈ AvRec D ↔ ∃ p ∈ avPrimes D, v ∈ placesOver D.host.E p := by
   simp only [AvRec, AvSet, Set.Finite.mem_toFinset, Set.mem_iUnion, exists_prop]
 
 /- English proof (translation)
-Unfold `avPrimes at hq`. Rewrite `hq` using `[Finset.mem_filter]`. Take `⟨hq, hq0⟩` from `hq`. Break down `Finset.mem_union.mp hq with hq | hq` into its components or cases. Simplify using `only [Finset.mem_insert, Finset.mem_image, Finset.mem_univ, true_and] at hq`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `hq with rfl | rfl | rfl | rfl | rfl | rfl | rfl | ⟨u, rfl⟩` into its components or cases. Evaluate the numerical expressions. Evaluate the numerical expressions. Conclude with `D.host.g_prime 0`. Conclude with `D.host.g_prime 1`.
+Separate the alternatives or extract the components of the hypothesis. Evaluate the numerical expressions. Evaluate the numerical expressions. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `D.host.pde_prime`. Conclude with `D.host.pde'_prime`. Establish `hS : {p : ℕ | p.Prime ∧ p % (rPrAv D * LevelStarExponents.condE D) = 1 ∧ ¬ p ∣ Ideal.absNorm D.host.ccK}.Nonempty`. Assume the negation of the conclusion as `hS`. Rewrite `hS` using `[Set.not_nonempty_iff_eq_empty]`.
-
-Conclude with `hq0 (by unfold q0Av; rw [hS, Nat.sInf_empty])`. Conclude with `(Nat.sInf_mem hS).1`. Conclude with `(D.mem u).A.T_prime`. Conclude with `Nat.prime_of_mem_primeFactors hq`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prime_of_mem_avPrimes {D : D7} {q : ℕ} (hq : q ∈ avPrimes D) : q.Prime := by
   unfold avPrimes at hq
@@ -214,11 +212,11 @@ theorem prime_of_mem_avPrimes {D : D7} {q : ℕ} (hq : q ∈ avPrimes D) : q.Pri
   · exact Nat.prime_of_mem_primeFactors hq
 
 /- English proof (translation)
-Introduce `hv'`. Take `⟨q, hq, hvq⟩` from `(mem_avRec v).mp hv'`. Distinguish the cases in `hqp : q = p`. Conclude with `hpav (hqp ▸ hq)`. Establish `hcop : Nat.Coprime q p` using `(Nat.coprime_primes (prime_of_mem_avPrimes hq) hp).mpr hqp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((Nat.gcd q p : ℤ) : 𝓞 D.host.E) = (q : 𝓞 D.host.E) * (Nat.gcdA q p : 𝓞 D.host.E) + (p : 𝓞 D.host.E) * (Nat.gcdB q p : 𝓞 D.host.E)`. Rewrite using `[Nat.gcd_eq_gcd_ab]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[Nat.Coprime.gcd_eq_one hcop, Nat.cast_one, Int.cast_one]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hq' : ((q : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal` using `hvq`. Establish `hp' : ((p : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal` using `hv`. Apply `v.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, h1]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ hq') (Ideal.mul_mem_right _ _ hp')`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_mem_avRec_of_over {D : D7} {v : PlE D.host} {p : ℕ} (hp : p.Prime) (hpav : p ∉ avPrimes D)
     (hv : v ∈ placesOver D.host.E p) : v ∉ AvRec D := by
@@ -265,7 +263,7 @@ def TwConjAt (D : D7) (C : NChoice D) : Prop :=
       (D.what₂.places.conj w ≠ w → C.sd (D.what₂.places.conj w) = !C.sd w)
 
 /- English proof (translation)
-The claim follows from `congrArg Sigma.fst (h w hw).1`.
+A detailed English derivation is pending.
 -/
 theorem TwConjAt.twI_conj {D : D7} {C : NChoice D} (h : TwConjAt D C) (w : D.what₂.places.Pl)
     (hw : D.what₂.muAt w ≠ D.what₂.mu0) : C.twI (D.what₂.places.conj w) = C.twI w :=
@@ -289,7 +287,7 @@ def twE {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : I
 def TwGood {eps : ℝ} (Fm : FamP eps) : Prop := TwGoodE Fm (twE Fm)
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [BlochKatoReduction.Gen.psiAt]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem psiAt_psiAt {Γ A : Type} [Group Γ] [CommGroup A] (b : Bool) (ψ : Γ →* A) :
     BlochKatoReduction.Gen.psiAt b (BlochKatoReduction.Gen.psiAt b ψ) = ψ := by
@@ -298,13 +296,13 @@ theorem psiAt_psiAt {Γ A : Type} [Group Γ] [CommGroup A] (b : Bool) (ψ : Γ �
 open Classical in
 
 /- English proof (translation)
-Establish `hne : ∀ i, Nonempty (Σ (Q : Finset (PlE D.host)) (k' : ℕ), D.ntw.RCG i Q →* (D.ntw.Ok i k')ˣ)` using `fun i => ⟨⟨∅, 0, 1⟩⟩`. Set `good : ∀ i, (Σ (Q : Finset (PlE D.host)) (k' : ℕ), D.ntw.RCG i Q →* (D.ntw.Ok i k')ˣ) → Prop` to `fun i s => IntegralHeckeForms.GoodTw D.nexp (BlochKatoReduction.bk0 D) I.E I.N0 i (twEps D i) (I.S i) (AvRec D) s.1 s.2.1 s.2.2`. Set `pk : ∀ i, Σ (Q : Finset (PlE D.host)) (k' : ℕ), D.ntw.RCG i Q →* (D.ntw.Ok i k')ˣ` to `fun i => @Classical.epsilon _ (hne i) (good i)`. Establish `hpk : ∀ i, (∃ s, good i s) → good i (pk i)` using `fun i h => Classical.epsilon_spec h`. Use `⟨fun w => (pk (twI w)).1, fun w => (pk (twI w)).2.1, fun w => BlochKatoReduction.Gen.psiAt (sd w) (pk (twI w)).2.2, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw`. Establish `hP : ∃ s, good (twI w) s`. Take `⟨Q, k', ψ, hg⟩` from `hconds (twI w) (hW1 w hw) (hset w hw) (twEps D (twI w)) (twEps_pos D (twI w)) (hI w hw).1 (I.S (twI w)) (hI w hw).2 (AvRec D)`. Conclude with `⟨⟨Q, k', ψ⟩, hg⟩`. Unfold `TwGoodOne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Rewrite using `[psiAt_psiAt]`. Conclude with `hpk _ hP`. Introduce `w w' h`. Unfold `twPack`. Rewrite using `[psiAt_psiAt, psiAt_psiAt]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (⟨twI w', pk (twI w')⟩ : TwPack D) = ⟨twI w, pk (twI w)⟩`. Rewrite using `[h]`.
+A detailed English derivation is pending.
 -/
 theorem exists_good_of_conditions (D : D7) (I : TwIn D) (twI : D.what₂.places.Pl → D.ntw.Tw)
     (sd : D.what₂.places.Pl → Bool) (hconds : IntegralHeckeForms.aux₃ D (BlochKatoReduction.bk0 D) I.E I.N0)

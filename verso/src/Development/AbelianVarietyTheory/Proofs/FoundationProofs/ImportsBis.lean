@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.AlgebraicIntegerNormBound
 
 /- English proof (translation)
-Introduce `A _ _ Q hQ hQ0 π h1 h2 m hm`. Establish `hP : Prime Q` using `Ideal.prime_of_isPrime hQ0 hQ`. Rewrite `h1`, `h2`, `hm` using `[← Ideal.dvd_span_singleton]`. Take `⟨J, hJ⟩` from `h1`. Establish `hJQ : ¬ Q ∣ J`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨K, hK⟩`. Apply `h2` to reduce the goal to its premises. Conclude with `⟨K, by rw [hJ, hK, pow_two, mul_assoc]⟩`. Rewrite `hm` using `[← Ideal.span_singleton_pow, hJ, mul_pow, pow_succ]`. Establish `hQm : Q ^ m ≠ 0` using `pow_ne_zero _ hQ0`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[mul_dvd_mul_iff_left hQm]`. Conclude with `hJQ (hP.dvd_of_dvd_pow hm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {A : Type} [inst : CommRing A] [IsDedekindDomain A] {Q : Ideal A} [Ideal.IsPrime Q], Q ≠ ⊥ → ∀ {π : A}, π ∈ Q → π ∉ Q ^ (2 : ℕ) → ∀ (m : ℕ), π ^ m ∉ Q ^ (m + (1 : ℕ)) := by
   intro A _ _ Q hQ hQ0 π h1 h2 m hm

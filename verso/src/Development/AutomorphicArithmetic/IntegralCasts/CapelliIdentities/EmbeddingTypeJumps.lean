@@ -8,7 +8,7 @@ noncomputable def UpperTheory.Reformulated.B.EmbeddingTypeJumps.crd :
       {x : Fin W.rank → E | ∑ i : Fin W.rank, x i • (W.frame : Fin W.rank → W.V) i ∈ W.L0}
 
 /- English proof (translation)
-Set `b : NumberField.RingOfIntegers E` to `⟨a, ha⟩`. Establish `h : (algebraMap (NumberField.RingOfIntegers E) E b) • v ∈ W.L0`. Rewrite using `[algebraMap_smul]`. Conclude with `W.L0.smul_mem b hv`. Conclude with `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.EmbeddingTypeJumps.integral_smul_mem {E : Type} [Field E] [NumberField E] [StarRing E]
     (W : Formalism.BasicNotions.HSpace E) {a : E} (ha : IsIntegral ℤ a) {v : W.V} (hv : v ∈ W.L0) :
@@ -20,17 +20,15 @@ private theorem UpperTheory.Reformulated.B.EmbeddingTypeJumps.integral_smul_mem 
   exact h
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span E (W.L0 : Set W.V)`. Rewrite using `[W.standardTuple_isLattice.span_eq_top]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨m, hm, hx⟩` from `hx`. Take `⟨n, hn, hy⟩` from `hy`. Use `⟨m * n, mul_ne_zero hm hn, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h : ((m * n : ℤ) : E) • (x + y) = n • ((m : E) • x) + m • ((n : E) • y)`. Rewrite using `[← Int.cast_smul_eq_zsmul E n, ← Int.cast_smul_eq_zsmul E m, smul_smul, smul_smul, smul_add, Int.cast_mul, mul_comm (n : E)]`. Rewrite using `[h]`. Conclude with `W.L0.add_mem (zsmul_mem hx n) (zsmul_mem hy m)`. Consider the case `smul a x _ hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn, hx⟩` from `hx`. Establish `ha : IsAlgebraic ℤ a` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic a)`. Take `⟨m, hm, hint⟩` from `ha.exists_integral_multiple`. Use `⟨m * n, mul_ne_zero hm hn, ?_⟩` and prove the remaining obligations. Establish `hmem` using `UpperTheory.Reformulated.B.EmbeddingTypeJumps.integral_smul_mem W hint hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : ((m * n : ℤ) : E) • a • x = (m • a) • ((n : E) • x)`. Rewrite using `[smul_smul, smul_smul, zsmul_eq_mul, Int.cast_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`.
-
-Conclude with `hmem`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.EmbeddingTypeJumps.exists_int_smul_mem {E : Type} [Field E] [NumberField E] [StarRing E]
     (W : Formalism.BasicNotions.HSpace E) (v : W.V) : ∃ n : ℤ, n ≠ 0 ∧ (n : E) • v ∈ W.L0 := by
@@ -63,11 +61,11 @@ private theorem UpperTheory.Reformulated.B.EmbeddingTypeJumps.exists_int_smul_me
     exact hmem
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ W`. Use `choose n hn hmem using fun i : Fin W.rank => UpperTheory.Reformulated.B.EmbeddingTypeJumps.exists_int_smul_mem W (W.frame i)`. Use `⟨((∏ i, n i : ℤ) : NumberField.RingOfIntegers F), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Int.cast_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun i _ => hn i)`. Introduce `i e he`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩ : n i ∣ ∏ j, n j` from `Finset.dvd_prod_of_mem n (Finset.mem_univ i)`. Establish `hk' : IsIntegral ℤ (k • e)` using `he.smul k`. Establish `hm` using `UpperTheory.Reformulated.B.EmbeddingTypeJumps.integral_smul_mem W hk' (hmem i)`. Establish `hc : ((((∏ j, n j : ℤ) : NumberField.RingOfIntegers F) : F)) • e = (k • e) * (n i : E)`. Rewrite using `[hk, Algebra.smul_def, NumberField.RingOfIntegers.coe_eq_algebraMap, map_intCast, map_intCast, zsmul_eq_mul, Int.cast_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `show ∑ j : Fin W.rank, (Pi.single i _ : Fin W.rank → E) j • W.frame j ∈ W.L0`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, zero_smul]) (fun h => absurd (Finset.mem_univ i) h), Pi.single_eq_same, hc, mul_smul]`. Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.EmbeddingTypeJumps.crd_low :
     ∀ {F E : Type} [inst : Field F] [NumberField F] [inst_2 : Field E] [inst_3 : NumberField E] [inst_4 : Algebra F E]

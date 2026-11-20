@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.JR.WeilQuad.NormSign
 
 /- English proof (translation)
-Introduce `F _ _ _`. Use `letI rel : ValuativeRel F := ValuativeRel.ofValuation (NormedField.valuation (K := F))`. Establish `hc : (NormedField.valuation (K` using `F)).Compatible := Valuation.Compatible.ofValuation _`. Use `⟨rel, ?_, fun x y => Iff.rfl⟩` and prove the remaining obligations. Use `{ toIsValuativeTopology := ?_, toLocallyCompactSpace := inferInstance, toIsNontrivial := ?_ }` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `IsValuativeTopology.of_mem_nhds_zero_iff_vle (NormedField.valuation (K := F)) (fun {s} => (NormedField.toValued (K := F)).is_topological_valuation s)`. Rewrite using `[ValuativeRel.isNontrivial_iff_isNontrivial (NormedField.valuation (K := F))] infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_valuativeRel_of_normed : ∀ (F : Type) [NontriviallyNormedField F] [IsUltrametricDist F] [LocallyCompactSpace F],
     ∃ _ : ValuativeRel F, IsNonarchimedeanLocalField F ∧ ∀ x y : F, x ≤ᵥ y ↔ ‖x‖ ≤ ‖y‖ := by
@@ -30,7 +30,7 @@ theorem exists_valuativeRel_of_normed : ∀ (F : Type) [NontriviallyNormedField 
     infer_instance
 
 /- English proof (translation)
-Establish `h : Algebra.lmul B (B ⊗[R] L) ((1 : B) ⊗ₜ[R] x) = (Algebra.lmul R L x).baseChange B`. Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `b z`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[Algebra.norm_apply, h, LinearMap.det_baseChange, Algebra.norm_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_one_tmul {R B L : Type} [Field R] [CommRing B] [Algebra R B] [Field L] [Algebra R L]
     [FiniteDimensional R L] (x : L) :
@@ -42,7 +42,7 @@ theorem norm_one_tmul {R B L : Type} [Field R] [CommRing B] [Algebra R B] [Field
   rw [Algebra.norm_apply, h, LinearMap.det_baseChange, Algebra.norm_apply]
 
 /- English proof (translation)
-Introduce `F E K L _ _ _ _ _ _ _ _ _ _ _ _ h z`. Use `haveI := h.symm`. Establish `he : Algebra.IsPushout.equiv F K E L ((1 : K) ⊗ₜ[F] z) = algebraMap E L z`. Simplify using `[Algebra.IsPushout.equiv_tmul]`. Rewrite using `[← he, Algebra.norm_eq_of_algEquiv, norm_one_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_algebraMap_of_isPushout : ∀ (F E K L : Type) [Field F] [Field E] [Field K] [CommRing L] [Algebra F E] [Algebra F K] [Algebra F L]
     [Algebra K L] [Algebra E L] [IsScalarTower F K L] [IsScalarTower F E L] [FiniteDimensional F E],
@@ -54,11 +54,9 @@ theorem norm_algebraMap_of_isPushout : ∀ (F E K L : Type) [Field F] [Field E] 
   rw [← he, Algebra.norm_eq_of_algEquiv, norm_one_tmul]
 
 /- English proof (translation)
-Use `haveI : Algebra.IsQuadraticExtension K L := ⟨h2⟩`. Use `haveI : FiniteDimensional K L := Module.finite_of_finrank_eq_succ h2`. Establish `hN` using `GroundTheory.Automorphic.natCard_quotient_range_normUnits_eq_two (F := K) (E := L)`. Establish `ht' : t ∉ (GroundTheory.LocalField.normUnits K L).range` using `fun h => ht ((GroundTheory.Automorphic.mem_range_normUnits_iff t).1 h)`. Break down `GroundTheory.Automorphic.mem_or_mul_inv_mem_of_natCard_eq_two hN ht' s with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd ((GroundTheory.Automorphic.mem_range_normUnits_iff s).1 h) hs`. Take `⟨z, hz⟩` from `(GroundTheory.Automorphic.mem_range_normUnits_iff _).1 h`. Use `⟨z * algebraMap K L (t : K), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hz, Algebra.norm_algebraMap, h2]`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`.
-
-Use `t.ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem mul_norm_of_not_norm (K L : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] [CharZero K] [Field L] [Algebra K L] (h2 : Module.finrank K L = 2)
@@ -79,17 +77,13 @@ theorem mul_norm_of_not_norm (K L : Type) [Field K] [ValuativeRel K] [Topologica
     field_simp
 
 /- English proof (translation)
-Use `letI : Field A.K := hK.toField`. Use `letI : Field A.L := hL.toField`. Use `haveI := hU.ultraF`. Use `haveI := hU.ultraE`. Use `haveI := hU.lcF`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI := hU.lcE`. Use `haveI := hU.charZero`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ hU.finrank_eq`. Establish `hKL : Module.finrank A.K A.L = 2` using `by haveI := A.push.symm`. Rewrite using `[← (Algebra.IsPushout.equiv F A.K E A.L).toLinearEquiv.finrank_eq, Module.finrank_baseChange, hU.finrank_eq]`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : CharZero A.K := charZero_of_injective_algebraMap (algebraMap F A.K).injective`. Take `⟨vF, hFloc, hFv⟩` from `exists_valuativeRel_of_normed F`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `haveI : FiniteDimensional A.K A.L := Module.finite_of_finrank_eq_succ hKL`. Conclude with `Algebra.norm_zero (R := A.K) (S := A.L)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `s t hs ht`. Take `⟨vK, tK, hKloc, -⟩` from `GroundTheory.LocalField.exists_isNonarchimedeanLocalField_valuativeExtension F A.K`. Conclude with `@mul_norm_of_not_norm A.K A.L _ vK tK hKloc _ _ _ hKL s t hs ht`. Take `⟨vE, hEloc, hEv⟩` from `exists_valuativeRel_of_normed E haveI : ValuativeExtension F E := ⟨fun a b => by rw [hEv, hFv, norm_algebraMap', norm_algebraMap']⟩`.
-
-Take `⟨z, hz⟩` from `GlobalTheory.T.exists_norm_eq_neg_one_of_unramified_values F E (fun y => by`. Take `⟨x, hx⟩` from `hU.unram y`. Conclude with `⟨x, by rw [hEv, norm_algebraMap', hx], by rw [hEv, norm_algebraMap', hx]⟩)`. Use `⟨algebraMap E A.L z, ?_⟩` and prove the remaining obligations. Use `norm_algebraMap_of_isPushout F E A.K A.L A.push z` as an intermediate fact.
-
-Simplify using `only [Et.NL, this, hz, map_neg, map_one, Units.val_neg, Units.val_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norms_of_isField {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [hU : Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A.L) :
@@ -127,21 +121,21 @@ theorem norms_of_isField {F E : Type} [NontriviallyNormedField F] [NontriviallyN
     simp only [Et.NL, this, hz, map_neg, map_one, Units.val_neg, Units.val_one]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ x μ ω h`. Take `⟨hK, hL, -, -, hω⟩` from `h`. Take `⟨hzero, hprod, hneg⟩` from `norms_of_isField A hK hL`. Use `letI : Field A.K := hK.toField`. Use `letI : Field A.L := hL.toField`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Establish `hmul : ∀ s t : A.Kˣ, (∃ y, A.NL y = s) → (∃ y, A.NL y = t) → ∃ y, A.NL y = ((s * t : A.Kˣ) : A.K)`. Introduce and unpack `s t ⟨y, hy⟩ ⟨y', hy'⟩`. Conclude with `⟨y * y', by simp only [Et.NL] at hy hy' ⊢; rw [map_mul, hy, hy', Units.val_mul]⟩`. Establish `hdiv : ∀ s t : A.Kˣ, (∃ y, A.NL y = s) → (∃ y, A.NL y = ((s * t : A.Kˣ) : A.K)) → ∃ y, A.NL y = t`. Introduce and unpack `s t ⟨y, hy⟩ ⟨y', hy'⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[hzero]`. Conclude with `s.ne_zero hy.symm`. Use `⟨y' * y⁻¹, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : A.NL y * A.NL y⁻¹ = 1`. Simplify using `only [Et.NL]`. Rewrite using `[← map_mul, mul_inv_cancel₀ hy0, map_one]`. Simplify using `only [Et.NL] at hy hy' h1 ⊢`. Rewrite using `[map_mul, hy', Units.val_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hy]`. Combine the equalities or inequalities in the displayed calculation. Establish `hval : ∀ s : A.Kˣ, ω s = if ∃ y, A.NL y = s then 1 else -1`. Introduce `s`. Use `split_ifs with hs`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(hω s).1 hs`. Conclude with `(hω s).2 hs`. Use `⟨fun s t => ?_, by rw [hval, if_pos hneg]⟩` and prove the remaining obligations. Rewrite using `[hval s, hval t, hval (s * t)]`. Apply the tactic sequence `by_cases hs : ∃ y, A.NL y = s <;> by_cases ht : ∃ y, A.NL y = t`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[if_pos hs, if_pos ht, if_pos (hmul s t hs ht)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_pos hs, if_neg ht, if_neg (fun h => ht (hdiv s t hs h))]`. Expand and normalize the polynomial expressions, which then agree. Establish `hst : ¬ ∃ y, A.NL y = ((s * t : A.Kˣ) : A.K)` using `fun h => hs (hdiv t s ht (by rwa [mul_comm]))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[if_neg hs, if_pos ht, if_neg hst]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hs, if_neg ht, if_pos (hprod s t hs ht)]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem omega_mul_neg_one : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (x : A.Kˣ) (μ : Measure A.L) (ω : A.K → ℂ), Hyp A ψ x μ ω → (∀ s t : A.Kˣ, ω ((s * t : A.Kˣ) : A.K) = ω s * ω t) ∧ ω ((-1 : A.Kˣ) : A.K) = 1 := by
   classical

@@ -13,23 +13,19 @@ open GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue
 namespace GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue
 
 /- English proof (translation)
-Introduce `ι _ _ A _ P _ _ res hid hcomp hker hext i f`. Establish `inj : ∀ (S S' : Finset ι) (h : S ⊆ S'), S = S' → Function.Injective (res S S' h)`. Introduce and unpack `S _ h rfl a b hab`. Rewrite `hab` using `[hid, hid]`. Then use the resulting hypothesis. Use `set x : MvPolynomial ι A := MvPolynomial.X i with hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1 : ∀ j : ι, ∃ (k : ℕ) (g : P {j}), res {j} {i, j} (sub_pair_right i j) g = x ^ k • res {i} {i, j} (sub_pair_left i j) f`. Introduce `j`. Take `⟨k, g, hg⟩` from `hext {j} i (res {i} {i, j} (sub_pair_left i j) f) (Finset.singleton_nonempty j)`. Conclude with `⟨k, g, hg⟩`. Use `choose k g hg using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set K : ℕ := Finset.univ.sup k with hK`. Establish `hkK : ∀ j, k j ≤ K` using `fun j => Finset.le_sup (Finset.mem_univ j)`. Choose the witnesses or unpack the hypotheses as in `⟨f', hres⟩ : ∃ f' : ∀ j : ι, P {j}, ∀ j, res {j} {i, j} (sub_pair_right i j) (f' j) = x ^ K • res {i} {i, j} (sub_pair_left i j) f := by`. Use `⟨fun j => x ^ (K - k j) • g j, fun j => ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul, hg, smul_smul, ← pow_add, Nat.sub_add_cancel (hkK j)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `htriple : ∀ (j : ι) (T : Finset ι) (hT : ({i, j} : Finset ι) ⊆ T), res {j} T ((sub_pair_right i j).trans hT) (f' j) = x ^ K • res {i} T ((sub_pair_left i j).trans hT) f`. Introduce `j T hT`. Rewrite using `[← hcomp _ _ _ (sub_pair_right i j) hT, hres, map_smul, hcomp]`. Establish `h2 : ∀ j l : ι, ∃ n : ℕ, x ^ n • (res {j} {j, l} (sub_pair_left j l) (f' j) - res {l} {j, l} (sub_pair_right j l) (f' l)) = 0`. Introduce `j l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hker {j, l} i _ (Finset.insert_nonempty _ _) ?_` and prove the remaining obligations. Establish `hj : ({i, j} : Finset ι) ⊆ insert i {j, l}` using `Finset.insert_subset_insert i (sub_pair_left j l)`. Establish `hl : ({i, l} : Finset ι) ⊆ insert i {j, l}` using `Finset.insert_subset_insert i (sub_pair_right j l)`. Rewrite using `[map_sub, hcomp, hcomp, sub_eq_zero]`. Establish `e1` using `htriple j _ hj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2` using `htriple l _ hl`. Conclude with `e1.trans e2.symm`. Use `choose n hn using h2`. Use `set N' : ℕ := Finset.univ.sup (fun p : ι × ι => n p.1 p.2) with hN'`. Establish `hnN : ∀ j l, n j l ≤ N'` using `fun j l => Finset.le_sup (f := fun p : ι × ι => n p.1 p.2) (Finset.mem_univ (j, l))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun j => x ^ N' • f' j, N' + K, ?_, ?_⟩` and prove the remaining obligations. Introduce `j l`. Establish `h0 : x ^ N' • (res {j} {j, l} (sub_pair_left j l) (f' j) - res {l} {j, l} (sub_pair_right j l) (f' l)) = 0`. Rewrite using `[← Nat.sub_add_cancel (hnN j l), pow_add, mul_smul, hn, smul_zero]`. Use `show res {j} {j, l} (sub_pair_left j l) (x ^ N' • f' j) = res {l} {j, l} (sub_pair_right j l) (x ^ N' • f' l)`.
-
-Rewrite using `[map_smul, map_smul, ← sub_eq_zero, ← smul_sub]`. Conclude with `h0`. Establish `hii : ({i} : Finset ι) ⊆ {i, i}` using `sub_pair_left i i`. Establish `hfi : f' i = x ^ K • f`. Apply `inj {i} {i, i} hii (Finset.pair_eq_singleton i).symm` to reduce the goal to its premises.
-
-Rewrite using `[map_smul]`. Conclude with `hres i`. Use `show x ^ N' • f' i = x ^ (N' + K) • f`. Rewrite using `[hfi, smul_smul, ← pow_add]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compatible_family_of_singleton : ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (A : Type) [CommRing A] (P : Finset ι → Type) [∀ S, AddCommGroup (P S)] [∀ S, Module (MvPolynomial ι A) (P S)] (res : ∀ S S' : Finset ι, S ⊆ S' → P S →ₗ[MvPolynomial ι A] P S'), (∀ S (h : S ⊆ S) a, res S S h a = a) → (∀ S S' S'' (h : S ⊆ S') (h' : S' ⊆ S'') a, res S' S'' h' (res S S' h a) = res S S'' (h.trans h') a) → (∀ (S : Finset ι) (j : ι) (a : P S), S.Nonempty → res S (insert j S) (Finset.subset_insert j S) a = 0 → ∃ k : ℕ, (MvPolynomial.X j : MvPolynomial ι A) ^ k • a = 0) → (∀ (S : Finset ι) (j : ι) (b : P (insert j S)), S.Nonempty → ∃ k : ℕ, (MvPolynomial.X j : MvPolynomial ι A) ^ k • b ∈ LinearMap.range (res S (insert j S) (Finset.subset_insert j S))) → (∀ (i : ι) (f : P {i}), ∃ (c : ∀ j : ι, P {j}) (N : ℕ), (∀ j l, res {j} {j, l} (sub_pair_left j l) (c j) = res {l} {j, l} (sub_pair_right j l) (c l)) ∧ c i = (MvPolynomial.X i : MvPolynomial ι A) ^ N • f) := by
   intro ι _ _ A _ P _ _ res hid hcomp hker hext i f

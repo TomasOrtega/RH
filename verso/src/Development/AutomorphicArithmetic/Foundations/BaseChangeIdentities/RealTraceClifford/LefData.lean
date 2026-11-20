@@ -20,9 +20,9 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 /- English proof (translation)
-Unfold `trOn`. Rewrite using `[dif_pos (fun x hx => by simpa using hx)]`. Establish `: (LinearMap.restrict (1 : Module.End ℂ V) (fun x hx => by simpa using hx) : Module.End ℂ S) = 1`. Use extensionality with `x`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Rewrite using `[this, LinearMap.trace_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem trOn_top_one {V : Type} [AddCommGroup V] [Module ℂ V] [Module.Free ℂ V] (S : Submodule ℂ V)
     [FiniteDimensional ℂ S] : trOn S (1 : Module.End ℂ V) = (Module.finrank ℂ S : ℂ) := by
@@ -34,9 +34,9 @@ private theorem trOn_top_one {V : Type} [AddCommGroup V] [Module ℂ V] [Module.
   rw [this, LinearMap.trace_one]
 
 /- English proof (translation)
-Establish `hne : ∀ a, z a ≠ 0` using `fun a h => by simpa [h] using hz a`. Establish `hc : ∀ a, conj (z a) = (z a)⁻¹` using `fun a => (eq_inv_of_mul_eq_one_right (hz a))`. Establish `key : ∀ a b, conj (z a) / conj (z b) = z b / z a`. Introduce `a b`. Rewrite using `[hc, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Clear denominators, using `[hne a, hne b]` for the nonvanishing conditions. Repeatedly rewrite using `[key]`. Conclude with `Finset.prod_comm`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prod_swap {n : ℕ} (z : Fin n → ℂ) (hz : ∀ a, z a * conj (z a) = 1) :
     (∏ a, ∏ b, (1 + conj (z a) / conj (z b))) = ∏ a, ∏ b, (1 + z a / z b) := by
@@ -50,45 +50,43 @@ private theorem prod_swap {n : ℕ} (z : Fin n → ℂ) (hz : ∀ a, z a * conj 
   exact Finset.prod_comm
 
 /- English proof (translation)
-Introduce `n lam hlam E T hL`. Take `⟨hcomm, hTT, htrace⟩` from `hL`. Take `⟨E', e, T', he1, he2, he3⟩` from `dualEx n E T hcomm`. Take `⟨σ', F, hσ, hUF, hder⟩` from `kDer n E'`. Establish `hTρ : ∀ (k : UK n) (v : E'.V), T' (E'.ρ k v) = E'.ρ k (T' v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `k v`. Take `⟨ξ, rfl⟩` from `e.surjective v`. Rewrite using `[← he1, ← he2, ← he2, ← he1]`. Use `congr 1`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `hx` using `congrArg (fun f : E.V →L[ℂ] E.V => f x) (hcomm k⁻¹)`. Simplify using `only [ContinuousLinearMap.mul_apply] at hx`. Use `show ξ (E.ρ k⁻¹ (T x)) = ξ (T (E.ρ k⁻¹ x))`. Rewrite using `[hx]`. Establish `hTF : ∀ a b, T' * F a b = F a b * T'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : T' ∈ homL F F`. Use `((derAt n E'.V σ' F hder).2 E'.V σ' F hder T').1 ?_` and prove the remaining obligations. Introduce `k x`. Rewrite using `[hσ, hσ]`. Conclude with `hTρ k x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `a b`. Use extensionality with `x`. Conclude with `hmem a b x`. Establish `hDom : Dom (fun a => (lam a : ℝ))`. Introduce `a b hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hle` using `hlam hab.le`. Use `⟨(lam a - lam b).toNat, ?_⟩` and prove the remaining obligations. Establish `h0 : ((lam a - lam b).toNat : ℤ) = lam a - lam b` using `Int.toNat_of_nonneg (by omega)`. Establish `h1 : (((lam a - lam b).toNat : ℕ) : ℝ) = ((lam a - lam b : ℤ) : ℝ)` using `by exact_mod_cast h0`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨χ, -, hχ⟩` from `divEx n _ hDom`. Establish `hStop : Stb F (⊤ : Submodule ℂ E'.V)` using `fun a b x _ => trivial`. Take `⟨s, hs, -, -⟩` from `wtDec n E'.V F hUF ⊤ inferInstance hStop`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hCm1 : Cm F ⊤ (1 : Module.End ℂ E'.V)` using `⟨fun a b => by rw [one_mul, mul_one], fun x _ => trivial⟩`. Establish `hCmT : Cm F ⊤ T'` using `⟨hTF, fun x _ => trivial⟩`. Take `⟨c₁, hc₁⟩` from `chEx n E'.V F hUF ⊤ inferInstance hStop 1`. Take `⟨cT, hcT⟩` from `chEx n E'.V F hUF ⊤ inferInstance hStop T'`. Establish `hkey : ∀ (θ : Wt n) (z : Fin n → ℂ), (∀ a, z a = Complex.exp (Complex.I * (θ a : ℂ))) → (Function.Injective fun a => z a ^ 2) → evT θ c₁ = (∏ a, ∏ b, (1 + z a / z b)) * weylChar lam z ^ 2 ∧ evT θ cT = (∏ a, ∏ b, (1 + z a / z b)) * weylChar lam (fun a => z a ^ 2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `θ z hz hinj`. Establish `hzn : ∀ a, z a * conj (z a) = 1`. Introduce `a`. Rewrite using `[Complex.mul_conj, hz a, Complex.normSq_eq_norm_sq, mul_comm, Complex.norm_exp_ofReal_mul_I]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmemU : diagonal z ∈ unitaryGroup (Fin n) ℂ`. Rewrite using `[mem_unitaryGroup_iff, star_eq_conjTranspose, diagonal_conjTranspose, diagonal_mul_diagonal]`. Rewrite using `[← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hzn a`. Use `set k : UK n := ⟨diagonal z, hmemU⟩ with hkdef`. Establish `hk : (k : Matrix (Fin n) (Fin n) ℂ) = diagonal fun a => Complex.exp (Complex.I * (θ a : ℂ))` using `by show diagonal z = _`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `hz a`. Establish `hkinv : ((k⁻¹ : UK n) : Matrix (Fin n) (Fin n) ℂ) = diagonal fun a => conj (z a)`. Rewrite using `[UnitaryGroup.inv_val]`. Use `show star (diagonal z) = _`. Rewrite using `[star_eq_conjTranspose, diagonal_conjTranspose]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hinj' : Function.Injective fun a => conj (z a) ^ 2`. Introduce `a b h`. Apply `hinj` to reduce the goal to its premises. Establish `h'` using `congrArg conj h`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify `h'` using `[map_pow]`. Establish `hσk : (σ' k : Module.End ℂ E'.V) = ((E'.ρ k : E'.V →L[ℂ] E'.V) : Module.End ℂ E'.V)`. Use extensionality with `v`. Conclude with `hσ k v`. Establish `hw` using `(weylEv n lam θ z hz).2.2.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t1, t2⟩` from `htrace k⁻¹ (fun a => conj (z a)) hkinv hinj'`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← chEv n E'.V σ' F hUF hder 1 c₁ hCm1 hc₁ θ k hk, mul_one, hσk, (he3 k).1, t1, prod_swap z hzn, hw z]`. Rewrite using `[← chEv n E'.V σ' F hUF hder T' cT hCmT hcT θ k hk, hσk, (he3 k).2, t2, prod_swap z hzn]`. Establish `: (fun a => conj (z a) ^ 2) = fun a => conj (z a ^ 2)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[map_pow]`. Rewrite using `[this, hw (fun a => z a ^ 2)]`. Take `⟨hT, h1⟩` from `lefForm n lam c₁ cT χ hχ hkey`. Use `⟨E', e, T', σ', F, χ, s, ?_, he2, hUF, hder, hTF, ?_, hχ, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k ξ`. Rewrite using `[he1, hσ]`. Introduce `ν hν`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx' : x ∈ wsp F ν ⊓ ⊤` using `⟨hx.1, trivial⟩`. Rewrite `hx'` using `[hs ν hν]`. Conclude with `hx'`. Introduce `ν hν`. Establish `mT` using `mult n E'.V F hUF ⊤ inferInstance hStop T' cT hCmT hcT ν hν`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `m1` using `mult n E'.V F hUF ⊤ inferInstance hStop 1 c₁ hCm1 hc₁ ν hν`. Rewrite `mT`, `m1` using `[inf_top_eq]`. Rewrite `mT` using `[hT]`. Rewrite `m1` using `[h1]`. Prove the components needed by the constructor for the conclusion.
-
-Rewrite using `[← mT]`. Simplify using `[cf]`. Rewrite using `[← trOn_top_one, ← m1]`. Simplify using `[cf]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.lefData :
     ∀ (n : ℕ) (lam : Fin n → ℤ), Antitone lam → ∀ (E : KMod n) (T : E.V →L[ℂ] E.V), IsLefK lam E T →

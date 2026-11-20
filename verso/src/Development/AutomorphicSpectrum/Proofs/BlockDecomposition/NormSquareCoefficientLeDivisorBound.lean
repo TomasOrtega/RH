@@ -4,7 +4,7 @@ open Ad3 Ad3.S
 namespace GlobalTheory.CompanionTheory.HeckeSq
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨by rintro rfl; exact hpN (dvd_zero p)⟩`. Take `⟨u, hu⟩` from `(ZMod.isUnit_iff_coprime p N).2 ((Nat.Prime.coprime_iff_not_dvd hp).2 hpN)`. Rewrite using `[← hu]`. Conclude with `DirichletCharacter.unit_norm_eq_one χ u`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_char_prime {N : ℕ} (χ : DirichletCharacter ℂ N) {p : ℕ} (hp : p.Prime) (hpN : ¬ p ∣ N) :
     ‖χ (p : ZMod N)‖ = 1 := by
@@ -14,11 +14,11 @@ theorem norm_char_prime {N : ℕ} (χ : DirichletCharacter ℂ N) {p : ℕ} (hp 
   exact DirichletCharacter.unit_norm_eq_one χ u
 
 /- English proof (translation)
-Establish `hsq : ‖α‖ ^ 2 = (p : ℝ) ^ (k - 1)`. Establish `h` using `congrArg norm hm`. Rewrite `h` using `[norm_mul, norm_mul, norm_char_prime χ hp hpN, one_mul, norm_pow, Complex.norm_natCast, ← hn]`. Rewrite using `[sq]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpow]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `hterm : ∀ i ∈ Finset.range (2 * j + 1), ‖α ^ i * β ^ (2 * j - i)‖ = ((p ^ j : ℕ) : ℝ) ^ (k - 1)`. Introduce `i hi`. Establish `hi' : i ≤ 2 * j` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_pow, norm_pow, ← hn, ← pow_add, Nat.add_sub_cancel' hi', pow_mul, hsq]`. Use `push_cast`. Rewrite using `[← pow_mul, ← pow_mul, mul_comm]`. Rewrite using `[Finset.sum_congr rfl hterm]`. Simplify using the standard rewrite rules.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_prime_sq_pow {k N : ℕ} {χ : DirichletCharacter ℂ N} {a : ℕ → ℂ} {p : ℕ} (hp : p.Prime)
     (hpN : ¬ p ∣ N) {α β : ℂ} (hm : α * β = χ p * (p : ℂ) ^ (k - 1)) (hn : ‖α‖ = ‖β‖)
@@ -41,7 +41,7 @@ theorem norm_prime_sq_pow {k N : ℕ} {χ : DirichletCharacter ℂ N} {a : ℕ �
   simp
 
 /- English proof (translation)
-Rewrite using `[← pow_mul, mul_comm j 2, Nat.divisors_prime_pow hp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem card_divisors_prime_sq {p : ℕ} (hp : p.Prime) (j : ℕ) :
     ((p ^ j) ^ 2).divisors.card = 2 * j + 1 := by
@@ -49,17 +49,17 @@ theorem card_divisors_prime_sq {p : ℕ} (hp : p.Prime) (j : ℕ) :
   simp
 
 /- English proof (translation)
-Introduce `k N χ a he hE hS n`. Take `⟨hmul, hpp⟩` from `hE k N χ a he`. Take `⟨h0, h1, -⟩` from `he`. Proceed by induction on `n using Nat.recOnPosPrimePosCoprime with`. Consider the case `prime_pow p j hp hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Introduce `hc`. Establish `hpN : ¬ p ∣ N` using `fun hd => hp.one_lt.ne' (Nat.eq_one_of_dvd_coprimes hc (dvd_pow_self p hj.ne') hd)`. Take `⟨α, β, hs, hm, hn⟩` from `hS p hp hpN`. Establish `hb` using `norm_prime_sq_pow hp hpN hm hn (hpp p hp α β hs hm) j`. Rewrite using `[card_divisors_prime_sq hp j, ← pow_mul, mul_comm j 2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb`. Consider the case `zero`. Introduce `_`. Simplify using `[h0]`. Consider the case `one`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `_`. Simplify using `[h1]`. Consider the case `coprime m n hm hn hmn ihm ihn`. Introduce `hc`. Establish `hcm : Nat.Coprime m N` using `Nat.Coprime.coprime_mul_right hc`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcn : Nat.Coprime n N` using `Nat.Coprime.coprime_mul_left hc`. Establish `hsq : Nat.Coprime (m ^ 2) (n ^ 2)` using `Nat.Coprime.pow 2 2 hmn`. Rewrite using `[mul_pow, hmul _ _ hsq, norm_mul, hsq.card_divisors_mul]`. Use `push_cast`. Rewrite using `[mul_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_sq_le : ∀ (k N : ℕ) (χ : DirichletCharacter ℂ N) (a : ℕ → ℂ), IsEig k N χ a → E2a →
     (∀ p : ℕ, p.Prime → ¬ p ∣ N → ∃ α β : ℂ, α + β = a p ∧ α * β = χ p * (p : ℂ) ^ (k - 1) ∧ ‖α‖ = ‖β‖) →

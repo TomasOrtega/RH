@@ -14,7 +14,7 @@ def tT (k r : ℕ) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := M
 def tTi (k r : ℕ) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := Matrix.diagonal fun i => star (dT k r i)
 
 /- English proof (translation)
-Rewrite using `[star_pow, ← mul_pow]`. Establish `h : star Complex.I * Complex.I = 1`. Rewrite using `[Complex.star_def, Complex.conj_I]`. Simplify using the standard rewrite rules. Rewrite using `[h, one_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem I_pow_unit (n : ℕ) : star (Complex.I ^ n) * Complex.I ^ n = 1 := by
   rw [star_pow, ← mul_pow]
@@ -23,20 +23,20 @@ theorem I_pow_unit (n : ℕ) : star (Complex.I ^ n) * Complex.I ^ n = 1 := by
   rw [h, one_pow]
 
 /- English proof (translation)
-Unfold `dT`. Apply the tactic sequence `split_ifs <;> exact I_pow_unit _`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dT_unit {k r : ℕ} (i : Fin (2 * r + k + 1)) : star (dT k r i) * dT k r i = 1 := by
   unfold dT
   split_ifs <;> exact I_pow_unit _
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `dT_unit i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dT_unit' {k r : ℕ} (i : Fin (2 * r + k + 1)) : dT k r i * star (dT k r i) = 1 := by
   rw [mul_comm]; exact dT_unit i
 
 /- English proof (translation)
-Rewrite using `[tTi, tT, Matrix.diagonal_mul_diagonal]`. Simplify using `only [dT_unit]`. Conclude with `Matrix.diagonal_one`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tTi_mul_tT (k r : ℕ) : tTi k r * tT k r = 1 := by
   rw [tTi, tT, Matrix.diagonal_mul_diagonal]
@@ -44,7 +44,7 @@ theorem tTi_mul_tT (k r : ℕ) : tTi k r * tT k r = 1 := by
   exact Matrix.diagonal_one
 
 /- English proof (translation)
-Rewrite using `[tTi, tT, Matrix.diagonal_mul_diagonal]`. Simplify using `only [dT_unit']`. Conclude with `Matrix.diagonal_one`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tT_mul_tTi (k r : ℕ) : tT k r * tTi k r = 1 := by
   rw [tTi, tT, Matrix.diagonal_mul_diagonal]
@@ -52,33 +52,33 @@ theorem tT_mul_tTi (k r : ℕ) : tT k r * tTi k r = 1 := by
   exact Matrix.diagonal_one
 
 /- English proof (translation)
-Conclude with `Matrix.inv_eq_left_inv (tTi_mul_tT k r)`.
+A detailed English derivation is pending.
 -/
 theorem tT_inv (k r : ℕ) : (tT k r)⁻¹ = tTi k r := by
   exact Matrix.inv_eq_left_inv (tTi_mul_tT k r)
 
 /- English proof (translation)
-Conclude with `Matrix.inv_eq_left_inv (tT_mul_tTi k r)`.
+A detailed English derivation is pending.
 -/
 theorem tTi_inv (k r : ℕ) : (tTi k r)⁻¹ = tT k r := by
   exact Matrix.inv_eq_left_inv (tT_mul_tTi k r)
 
 /- English proof (translation)
-Simplify using `only [tTi, tT, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjI_apply {k r : ℕ} (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i j : Fin (2 * r + k + 1)) :
     (tTi k r * M * tT k r) i j = star (dT k r i) * M i j * dT k r j := by
   simp only [tTi, tT, Matrix.mul_diagonal, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Simplify using `only [tTi, tT, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_apply {k r : ℕ} (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i j : Fin (2 * r + k + 1)) :
     (tT k r * M * tTi k r) i j = dT k r i * M i j * star (dT k r j) := by
   simp only [tTi, tT, Matrix.mul_diagonal, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[conjI_apply]`. Distinguish the cases in `hM : M i j = 0`. Rewrite using `[hM, mul_zero, zero_mul]`. Rewrite using `[h i j hM, mul_comm (star (dT k r j)) (M i j), mul_assoc, dT_unit, mul_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjI_eq_self {k r : ℕ} {M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (h : ∀ i j, M i j ≠ 0 → dT k r i = dT k r j) : tTi k r * M * tT k r = M := by
@@ -89,7 +89,7 @@ theorem conjI_eq_self {k r : ℕ} {M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r 
   · rw [h i j hM, mul_comm (star (dT k r j)) (M i j), mul_assoc, dT_unit, mul_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[conj_apply]`. Distinguish the cases in `hM : M i j = 0`. Rewrite using `[hM, mul_zero, zero_mul]`. Rewrite using `[h i j hM, mul_comm (dT k r j) (M i j), mul_assoc, dT_unit', mul_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_eq_self {k r : ℕ} {M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (h : ∀ i j, M i j ≠ 0 → dT k r i = dT k r j) : tT k r * M * tTi k r = M := by
@@ -100,14 +100,14 @@ theorem conj_eq_self {k r : ℕ} {M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r +
   · rw [h i j hM, mul_comm (dT k r j) (M i j), mul_assoc, dT_unit', mul_one]
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Simplify using `[dT, eI, ha]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dT_eI {k r : ℕ} (a : Fin r) : dT k r (eI k r a) = Complex.I ^ a.val := by
   have ha := a.isLt
   simp [dT, eI, ha]
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Establish `h1 : ¬ (2 * r + k - a.val < r)` using `by omega`. Establish `h2 : r + k < 2 * r + k - a.val` using `by omega`. Establish `h3 : 2 * r + k - (2 * r + k - a.val) = a.val` using `by omega`. Simplify using `[dT, esI, h1, h2, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dT_esI {k r : ℕ} (a : Fin r) : dT k r (esI k r a) = Complex.I ^ a.val := by
   have ha := a.isLt
@@ -117,14 +117,14 @@ theorem dT_esI {k r : ℕ} (a : Fin r) : dT k r (esI k r a) = Complex.I ^ a.val 
   simp [dT, esI, h1, h2, h3]
 
 /- English proof (translation)
-Unfold `dT`. Rewrite using `[if_neg (by omega), if_neg (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dT_mid {k r : ℕ} (i : Fin (2 * r + k + 1)) (h1 : r ≤ i.val) (h2 : i.val ≤ r + k) : dT k r i = Complex.I ^ r := by
   unfold dT
   rw [if_neg (by omega), if_neg (by omega)]
 
 /- English proof (translation)
-Establish `hj` using `j.isLt`. Unfold `dT`. Rewrite using `[if_neg (by omega), if_pos (by omega), if_pos hi]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dT_pair {k r : ℕ} (i j : Fin (2 * r + k + 1)) (hi : i.val < r) (hij : i.val + j.val = 2 * r + k) :
     dT k r j = dT k r i := by
@@ -135,9 +135,7 @@ theorem dT_pair {k r : ℕ} (i j : Fin (2 * r + k + 1)) (hi : i.val < r) (hij : 
   omega
 
 /- English proof (translation)
-Unfold `Hpk at h`. Use `split_ifs at h with h1 h2 h3 h4`. Conclude with `(dT_pair i j h1.1 h1.2).symm`. Conclude with `dT_pair j i h2.1 (by have := h2.2; omega)`. Rewrite using `[h3.2.2]`.
-
-Rewrite using `[h3.2.2]`. Conclude with `absurd rfl h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Hpk_ne_dT {k r : ℕ} (i j : Fin (2 * r + k + 1)) (h : Hpk k r i j ≠ 0) : dT k r i = dT k r j := by
   unfold Hpk at h
@@ -149,14 +147,14 @@ theorem Hpk_ne_dT {k r : ℕ} (i j : Fin (2 * r + k + 1)) (h : Hpk k r i j ≠ 0
   · exact absurd rfl h
 
 /- English proof (translation)
-Rewrite using `[tT, tTi, Matrix.diagonal_conjTranspose]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conjT_tT (k r : ℕ) : (tT k r)ᴴ = tTi k r := by
   rw [tT, tTi, Matrix.diagonal_conjTranspose]
   rfl
 
 /- English proof (translation)
-Rewrite using `[tT, tTi, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem conjT_tTi (k r : ℕ) : (tTi k r)ᴴ = tT k r := by
   rw [tT, tTi, Matrix.diagonal_conjTranspose]
@@ -165,7 +163,7 @@ theorem conjT_tTi (k r : ℕ) : (tTi k r)ᴴ = tT k r := by
   simp
 
 /- English proof (translation)
-Use `show (tT k r)ᴴ * Hpk k r * tT k r = Hpk k r`. Rewrite using `[conjT_tT]`. Conclude with `conjI_eq_self (fun i j h => Hpk_ne_dT i j h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tT_mem_UH (k r : ℕ) : tT k r ∈ UH (Hpk k r) := by
   show (tT k r)ᴴ * Hpk k r * tT k r = Hpk k r
@@ -173,7 +171,7 @@ theorem tT_mem_UH (k r : ℕ) : tT k r ∈ UH (Hpk k r) := by
   exact conjI_eq_self (fun i j h => Hpk_ne_dT i j h)
 
 /- English proof (translation)
-Use `show (tTi k r)ᴴ * Hpk k r * tTi k r = Hpk k r`. Rewrite using `[conjT_tTi]`. Conclude with `conj_eq_self (fun i j h => Hpk_ne_dT i j h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tTi_mem_UH (k r : ℕ) : tTi k r ∈ UH (Hpk k r) := by
   show (tTi k r)ᴴ * Hpk k r * tTi k r = Hpk k r
@@ -181,9 +179,7 @@ theorem tTi_mem_UH (k r : ℕ) : tTi k r ∈ UH (Hpk k r) := by
   exact conj_eq_self (fun i j h => Hpk_ne_dT i j h)
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `hh' : hᴴ * Hpk k r * h = Hpk k r` using `hh`. Use `show (g * h)ᴴ * Hpk k r * (g * h) = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
-
-Use `_ = Hpk k r := by rw [hg']; exact hh'`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UH_mul {k r : ℕ} {g h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r))
     (hh : h ∈ UH (Hpk k r)) : g * h ∈ UH (Hpk k r) := by
@@ -195,21 +191,21 @@ theorem UH_mul {k r : ℕ} {g h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k +
     _ = Hpk k r := by rw [hg']; exact hh'
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, conjT_tT, tT_mul_tTi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tT_unitary (k r : ℕ) : tT k r ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ := by
   rw [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, conjT_tT, tT_mul_tTi]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, conjT_tTi, tTi_mul_tT]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tTi_unitary (k r : ℕ) : tTi k r ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ := by
   rw [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, conjT_tTi, tTi_mul_tT]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [tT, Matrix.mulVec_diagonal, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[hz i hi, mul_zero, mul_zero]`. Use `push_neg at hi`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dT_mid i hi.1 hi.2]`.
+A detailed English derivation is pending.
 -/
 theorem tT_mulVec_Wb {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) :
     tT k r *ᵥ z = Complex.I ^ r • z := by
@@ -221,9 +217,9 @@ theorem tT_mulVec_Wb {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k 
     rw [dT_mid i hi.1 hi.2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [tTi, Matrix.mulVec_diagonal, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[hz i hi, mul_zero, mul_zero]`. Use `push_neg at hi`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dT_mid i hi.1 hi.2]`.
+A detailed English derivation is pending.
 -/
 theorem tTi_mulVec_Wb {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) :
     tTi k r *ᵥ z = star (Complex.I ^ r) • z := by
@@ -235,13 +231,13 @@ theorem tTi_mulVec_Wb {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k
     rw [dT_mid i hi.1 hi.2]
 
 /- English proof (translation)
-Unfold `ell`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Establish `hu` using `I_pow_unit a.val`. Use `split_ifs with h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[conjI_apply, dT_eI, dT_eI] show star (Complex.I ^ a.val) * M (eI k r a) (eI k r ⟨a.val + 1, h⟩) * Complex.I ^ (a.val + 1) = Complex.I * M (eI k r a) (eI k r ⟨a.val + 1, h⟩)`. Rewrite using `[pow_succ]`. Take the linear combination `(M (eI k r a) (eI k r ⟨a.val + 1, h⟩) * Complex.I) * hu`. Establish `ha` using `a.isLt`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, tT_mulVec_Wb hz, Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [tTi, Matrix.mulVec_diagonal, dT_eI, Pi.smul_apply, smul_eq_mul]`. Establish `hr : Complex.I ^ r = Complex.I ^ a.val * Complex.I`. Rewrite using `[← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr]`. Take the linear combination `((M *ᵥ z) (eI k r a) * Complex.I) * hu`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ell_conjI {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
     (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
@@ -265,7 +261,7 @@ theorem ell_conjI {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z
     linear_combination ((M *ᵥ z) (eI k r a) * Complex.I) * hu
 
 /- English proof (translation)
-Unfold `psi`. Rewrite using `[ell_conjI hz, ← mul_assoc, hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_conjI {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {c c' : ℂ} (hc : c' * Complex.I = c)
     (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :

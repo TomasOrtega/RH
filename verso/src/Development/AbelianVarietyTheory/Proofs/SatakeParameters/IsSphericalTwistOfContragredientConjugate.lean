@@ -31,11 +31,11 @@ namespace GlobalTheory.ContraPair.SphTwist
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ u (h : conjSrc (IsCMField.complexConj E).toRingEquiv w = u) (k : GL (Fin a) (u.adicCompletion E)), k ∈ GlobalTheory.LFun.KGL u a → ∃ k' ∈ GlobalTheory.LFun.KGL w a, Matrix.GeneralLinearGroup.map (conjFin (IsCMField.complexConj E).toRingEquiv) (locGL E a u k) = locGL E a w …`. Introduce `u h k hk`. Substitute `h` using the available equality. Use `⟨_, ?_, GlobalTheory.ConjPairLoc.conjFin_locGL _ w k⟩` and prove the remaining obligations. Take `⟨k0, rfl⟩` from `hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `r : Formalism.UG.Ov E (conjSrc (IsCMField.complexConj E).toRingEquiv w) →+* Formalism.UG.Ov E w` to `(conjLoc (IsCMField.complexConj E).toRingEquiv w).restrict _ _ fun x hx => by`. Express the relevant statement in the definitionally equal form `_ ∈ w.adicCompletionIntegers E`. Express the relevant statement in the definitionally equal form `x ∈ (conjSrc (IsCMField.complexConj E).toRingEquiv w).adicCompletionIntegers E at hx`. Rewrite `hx`, the goal using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Rewrite using `[(conjLoc_spec _ w).2.2]`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Use `⟨Matrix.GeneralLinearGroup.map r k0, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression. Conclude with `key w hw k hk`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conjFin_locGL_mem (w : HeightOneSpectrum (𝓞 E))
     (hw : conjSrc (IsCMField.complexConj E).toRingEquiv w = w) (k : GL (Fin a) (w.adicCompletion E))
@@ -65,15 +65,15 @@ end GlobalTheory.ContraPair.SphTwist
 open GlobalTheory.ContraPair.SphTwist in
 
 /- English proof (translation)
-Introduce `E _ _ _ a _ π ψ hP w hns hS`. Take `⟨B0, hB0⟩` from `hS`. Take `⟨B, -, hB2, hfin, -, -⟩` from `hP`. Establish `hsat : GlobalTheory.LFun.HasSatGL w (π.locRep w) B0` using `(CG.hasSat_mk π w B0).1 hB0`. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 hsat.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, B y x ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx0 (hB2 x h)`. Establish `hw : conjSrc (IsCMField.complexConj E).toRingEquiv w = w`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hns ⟨_, h, GlobalTheory.DefU.LocRet.under_conjSrc w⟩`. Establish `hL : ∀ k ∈ GlobalTheory.LFun.KGL w a, B.flip x ((π.twist ψ⁻¹).locRep w k y) = B.flip x y`. Introduce `k hk`. Take `⟨k', hk', e⟩` from `conjFin_locGL_mem w hw k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hx' : π.op (.fin (locGL E a w k')) x = x` using `GlobalTheory.LGrp.mem_fixed.1 hx k' hk'`. Establish `h1` using `hfin (locGL E a w k) y x`. Express the relevant statement in the definitionally equal form `B ((π.twist ψ⁻¹).op (.fin (locGL E a w k)) y) x = B y x`. Use `conv_lhs => rw [← hx']`. Rewrite using `[← e]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Take `⟨v, hv, hve⟩` from `GlobalTheory.SmGL.IwahoriOnto.exists_fixed_map_eq ((π.twist ψ⁻¹).isSmooth_locRep w) GlobalTheory.BcSpehCompare.isCompact_KGL (B.flip x) y hL`. Use `(Submodule.ne_bot_iff _).2 ⟨v, hv, fun h => hy ?_⟩` and prove the remaining obligations. Establish `: B.flip x v = B y x` using `hve`. Rewrite using `[← this, h, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ContraPair.isSpherical_twist_of_dualIsConjBy : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ), 1 ≤ a → ∀ (π : CuspSub E a) (ψ : HChar E), GlobalTheory.ContraPair.DualIsConjBy π ψ → ∀ w : HeightOneSpectrum (𝓞 E), ¬ GlobalTheory.UnitaryBC.IsSplitAt w → (∃ B, (CG.mk π).HasSat w B) → GlobalTheory.LGrp.IsSpherical ((π.twist ψ⁻¹).locRep w) (GlobalTheory.LFun.KGL w a) := by
   intro E _ _ _ a _ π ψ hP w hns hS

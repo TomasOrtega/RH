@@ -8,21 +8,19 @@ open scoped nonZeroDivisors IntermediateField
 namespace GlobalTheory.Mem.RayNorm
 
 /- English proof (translation)
-Establish `hx' : (x : K) ≠ 0` using `by exact_mod_cast hx`. Establish `fibre : ∀ w : InfinitePlace K, ∏ φ ∈ (Finset.univ.filter fun φ : K →+* ℂ => InfinitePlace.mk φ = w), φ (x : K) = ((Complex.normSq (w.embedding (x : K)) : ℝ) : ℂ)`. Introduce `w`. Establish `hset : (Finset.univ.filter fun φ : K →+* ℂ => InfinitePlace.mk φ = w) = {w.embedding, ComplexEmbedding.conjugate w.embedding}`. Use extensionality with `φ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Establish `key` using `InfinitePlace.mk_eq_iff (φ := φ) (ψ := w.embedding)`. Rewrite `key` using `[InfinitePlace.mk_embedding]`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `(h | h)`. Conclude with `Or.inl h`. Use `right`. Rewrite using `[← h]`. Conclude with `(star_star φ).symm`.
+Assume the hypotheses and unpack their components. Prove the first alternative. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Introduce and unpack `(h | h)`. Conclude with `Or.inl h`. Use `right`. Rewrite using `[h]`. Conclude with `star_star w.embedding`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : w.embedding ≠ ComplexEmbedding.conjugate w.embedding`. Introduce `h`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex w)) (InfinitePlace.isReal_iff.mpr (ComplexEmbedding.isReal_iff.mpr h.symm))`. Rewrite using `[hset, Finset.prod_pair hne, ComplexEmbedding.conjugate_coe_eq, Complex.mul_conj]`. Establish `hprod : (algebraMap ℚ ℂ) (Algebra.norm ℚ (x : K)) = ((∏ w : InfinitePlace K, Complex.normSq (w.embedding (x : K)) : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[Algebra.norm_eq_prod_embeddings ℚ ℂ (x : K)]`. Rewrite using `[← Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) (fun φ : K →+* ℂ => φ (x : K)) _ (fun _ => by simp [RingHom.equivRatAlgHom_apply])]`. Rewrite using `[← Finset.prod_fiberwise Finset.univ InfinitePlace.mk (fun φ : K →+* ℂ => φ (x : K))]`. Use `push_cast`. Conclude with `Finset.prod_congr rfl (fun w _ => fibre w)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpos : (0 : ℝ) < ∏ w : InfinitePlace K, Complex.normSq (w.embedding (x : K))` using `Finset.prod_pos fun w _ => Complex.normSq_pos.mpr ((map_ne_zero _).mpr hx')`. Establish `hreal : ((Algebra.norm ℚ (x : K) : ℚ) : ℝ) = ∏ w : InfinitePlace K, Complex.normSq (w.embedding (x : K))`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← hprod]`. Simplify using the standard rewrite rules.
-
-Establish `hq : (0 : ℚ) < Algebra.norm ℚ (x : K)`. Use `hreal ▸ hpos` as an intermediate fact. Conclude with `this` after adjusting the coercions. Rewrite `hq` using `[← Algebra.coe_norm_int]`. Conclude with `hq` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_norm_pos (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] {x : 𝓞 K} (hx : x ≠ 0) :
     0 < Algebra.norm ℤ x := by
@@ -75,11 +73,11 @@ theorem int_norm_pos (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] {
   exact_mod_cast hq
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.mp h`. Establish `hx : x = y + (p : 𝓞 K) * z` using `by rw [mul_comm, hz]; ring`. Set `b` to `RingOfIntegers.basis K`. Establish `h0 : (Int.castRingHom (ZMod p)).mapMatrix (Algebra.leftMulMatrix b (p : 𝓞 K)) = 0`. Rewrite using `[map_natCast, map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hmat : (Int.castRingHom (ZMod p)).mapMatrix (Algebra.leftMulMatrix b x) = (Int.castRingHom (ZMod p)).mapMatrix (Algebra.leftMulMatrix b y)`. Rewrite using `[hx, map_add, map_mul, map_add, map_mul, h0, zero_mul, add_zero]`. Rewrite using `[Algebra.norm_eq_matrix_det b, Algebra.norm_eq_matrix_det b]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `RingHom.map_det (Int.castRingHom (ZMod p)) (Algebra.leftMulMatrix b x)`. Establish `e2` using `RingHom.map_det (Int.castRingHom (ZMod p)) (Algebra.leftMulMatrix b y)`. Simplify using `only [eq_intCast] at e1 e2`. Rewrite using `[e1, e2, hmat]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_cast_eq (K : Type) [Field K] [NumberField K] (p : ℕ) {x y : 𝓞 K}
     (h : x - y ∈ Ideal.span {(p : 𝓞 K)}) :
@@ -102,19 +100,17 @@ theorem norm_cast_eq (K : Type) [Field K] [NumberField K] (p : ℕ) {x y : 𝓞 
   rw [e1, e2, hmat]
 
 /- English proof (translation)
-Introduce `K _ _ _ 𝔮 p h𝔮 I α β hR hI`. Unfold `GlobalTheory.NT.RayPair at hR`. Take `⟨hα, hβ, -, hβq, hαβ, -⟩` from `hR`. Establish `hnorm : (Ideal.absNorm I : ℤ) * Algebra.norm ℤ β = Algebra.norm ℤ α`. Establish `e` using `congrArg Ideal.absNorm hI`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[map_mul, Ideal.absNorm_span_singleton, Ideal.absNorm_span_singleton]`. Establish `e' : ((Ideal.absNorm I * (Algebra.norm ℤ β).natAbs : ℕ) : ℤ) = ((Algebra.norm ℤ α).natAbs : ℤ)` using `by rw [e]`. Move the coercions through the operations in `at e'`. Rewrite `e'` using `[abs_of_pos (int_norm_pos K hβ), abs_of_pos (int_norm_pos K hα)]`. Then use the resulting hypothesis. Establish `htop : Ideal.span {β} ⊔ Ideal.span {(p : 𝓞 K)} = ⊤`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `hβq` using `[Ideal.isCoprime_iff_sup_eq]`. Conclude with `eq_top_mono (sup_le_sup_left h𝔮 _) hβq`. Establish `h1 : (1 : 𝓞 K) ∈ Ideal.span {β} ⊔ Ideal.span {(p : 𝓞 K)}`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, c, hc, hac⟩` from `Submodule.mem_sup.mp h1`. Take `⟨u, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Establish `hu : β * u - 1 ∈ Ideal.span {(p : 𝓞 K)}`. Establish `e : β * u - 1 = -c` using `by rw [← hac]; ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `neg_mem hc`. Establish `hinv` using `norm_cast_eq K p hu`. Rewrite `hinv` using `[map_mul, map_one]`. Move the coercions through the operations in `at hinv`. Establish `hmod` using `norm_cast_eq K p (h𝔮 hαβ)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `key : ((Ideal.absNorm I : ℕ) : ZMod p) * ((Algebra.norm ℤ β : ℤ) : ZMod p) = ((Algebra.norm ℤ β : ℤ) : ZMod p)`. Establish `e` using `congrArg (fun t : ℤ => (t : ZMod p)) hnorm`. Move the coercions through the operations in `at e`. Rewrite using `[e, hmod]`. Apply `(ZMod.natCast_eq_natCast_iff _ _ _).mp` to reduce the goal to its premises.
-
-Rewrite using `[Nat.cast_one]`. Take the linear combination `(1 - ((Ideal.absNorm I : ℕ) : ZMod p)) * hinv + ((Algebra.norm ℤ u : ℤ) : ZMod p) * key`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem absNorm_modEq_one : ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (𝔮 : Ideal (𝓞 K)) (p : ℕ), 𝔮 ≤ Ideal.span {(p : 𝓞 K)} → ∀ (I : Ideal (𝓞 K)) (α β : 𝓞 K), RayPair 𝔮 α β → I * Ideal.span {β} = Ideal.span {α} → Ideal.absNorm I ≡ 1 [MOD p] := by
   intro K _ _ _ 𝔮 p h𝔮 I α β hR hI

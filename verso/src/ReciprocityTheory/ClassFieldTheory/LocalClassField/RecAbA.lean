@@ -8,27 +8,27 @@ open _root_.Neutral.B1 Function
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[QuotientAddGroup.eq_zero_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem qz_mk_eq_zero_iff (q : ℚ) : (QuotientAddGroup.mk q : QZ) = 0 ↔ ∃ k : ℤ, (k : ℚ) = q := by
   rw [QuotientAddGroup.eq_zero_iff]; rfl
 
 /- English proof (translation)
-Rewrite using `[← nsmul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem qz_nsmul_mk (l : ℕ) (q : ℚ) : l • (QuotientAddGroup.mk q : QZ) = QuotientAddGroup.mk ((l : ℚ) * q) := by
   rw [← nsmul_eq_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[← zsmul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem qz_zsmul_mk (l : ℤ) (q : ℚ) : l • (QuotientAddGroup.mk q : QZ) = QuotientAddGroup.mk ((l : ℚ) * q) := by
   rw [← zsmul_eq_mul]; rfl
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Rewrite `hx` using `[qz_nsmul_mk, qz_mk_eq_zero_iff]`. Take `⟨k, hk⟩` from `hx`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[qz_zsmul_mk, hk]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: (n : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 -/
 theorem qz_exists_zsmul (n : ℕ) (hn : n ≠ 0) (x : QZ) (hx : n • x = 0) :
     ∃ k : ℤ, x = k • (QuotientAddGroup.mk ((1 : ℚ) / n) : QZ) := by
@@ -42,11 +42,11 @@ theorem qz_exists_zsmul (n : ℕ) (hn : n ≠ 0) (x : QZ) (hx : n • x = 0) :
   field_simp
 
 /- English proof (translation)
-Establish `hn' : (n : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Rewrite using `[qz_nsmul_mk, qz_mk_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Establish `h : ((k * n : ℤ) : ℚ) = ((l : ℤ) : ℚ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[hk]`. Clear the denominators using the available nonvanishing facts. Establish `h' : k * n = (l : ℤ)` using `Int.cast_injective h`. Conclude with `Int.natCast_dvd_natCast.1 ⟨k, by rw [← h', mul_comm]⟩`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨k, rfl⟩`. Use `⟨k, ?_⟩` and prove the remaining obligations. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem qz_nsmul_inv_eq_zero_iff (n : ℕ) (hn : n ≠ 0) (l : ℕ) :
     l • (QuotientAddGroup.mk ((1 : ℚ) / n) : QZ) = 0 ↔ n ∣ l := by
@@ -107,7 +107,7 @@ theorem homEquivUnits_apply (χ : A →+ QZ) (a : A) :
 scoped instance : NeZero (Monoid.exponent (Multiplicative A)) := ⟨Monoid.exponent_ne_zero_of_finite⟩
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (homEquivUnits A), CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity (Multiplicative A) (Multiplicative QZ)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem card_hom_QZ : Nat.card (A →+ QZ) = Nat.card A := by
   rw [Nat.card_congr (homEquivUnits A),
@@ -120,7 +120,7 @@ scoped instance finite_hom_QZ : Finite (A →+ QZ) :=
 variable {A}
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity (Multiplicative A) (Multiplicative QZ) (a := Multiplicative.ofAdd a) (fun h => ha (Multiplicative.ofAdd.injective h))`. Use `⟨(homEquivUnits A).symm φ, fun h => hφ ?_⟩` and prove the remaining obligations. Rewrite `h` using `[← homEquivUnits_apply, Equiv.apply_symm_apply]`. Conclude with `Units.ext (Multiplicative.toAdd.injective h)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom_QZ_ne_zero {a : A} (ha : a ≠ 0) : ∃ χ : A →+ QZ, χ a ≠ 0 := by
   obtain ⟨φ, hφ⟩ := CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity (Multiplicative A) (Multiplicative QZ)
@@ -130,9 +130,9 @@ theorem exists_hom_QZ_ne_zero {a : A} (ha : a ≠ 0) : ∃ χ : A →+ QZ, χ a 
   exact Units.ext (Multiplicative.toAdd.injective h)
 
 /- English proof (translation)
-Set `ev : A →+ ((A →+ QZ) →+ QZ)` to `AddMonoidHom.flip (AddMonoidHom.id (A →+ QZ))`. Establish `hinj : Injective ev`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨χ, hχ⟩` from `exists_hom_QZ_ne_zero h`. Conclude with `hχ (DFunLike.congr_fun ha χ)`. Establish `hbij : Bijective ev` using `hinj.bijective_of_nat_card_le (by rw [card_hom_QZ, card_hom_QZ])`. Take `⟨a, ha⟩` from `hbij.2 f`. Conclude with `⟨a, fun χ => DFunLike.congr_fun ha χ⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eval_QZ (f : (A →+ QZ) →+ QZ) : ∃ a : A, ∀ χ : A →+ QZ, χ a = f χ := by
   let ev : A →+ ((A →+ QZ) →+ QZ) := AddMonoidHom.flip (AddMonoidHom.id (A →+ QZ))
@@ -166,7 +166,7 @@ theorem pullChar_apply (ψ : A →+ QZ) (g : G) : (pullChar π hc ψ).1 (Additiv
 variable {π}
 
 /- English proof (translation)
-Introduce `ψ ψ' h`. Use extensionality with `a`. Take `⟨g, rfl⟩` from `hπ a`. Conclude with `DFunLike.congr_fun (congrArg Subtype.val h) g`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pullChar_injective (hπ : Surjective π) : Injective (pullChar π hc) := by
   intro ψ ψ' h
@@ -175,7 +175,7 @@ theorem pullChar_injective (hπ : Surjective π) : Injective (pullChar π hc) :=
   exact DFunLike.congr_fun (congrArg Subtype.val h) g
 
 /- English proof (translation)
-Use `⟨π.liftOfSurjective hπ ⟨χ.1, fun g hg => h (Additive.toMul g) hg⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `AddMonoidHom.liftOfRightInverse_comp _ _ _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_pullChar_eq (hπ : Surjective π) (χ : charGrp G)
     (h : ∀ g : G, π (Additive.ofMul g) = 0 → χ.1 (Additive.ofMul g) = 0) : ∃ ψ, pullChar π hc ψ = χ := by
@@ -185,7 +185,7 @@ theorem exists_pullChar_eq (hπ : Surjective π) (χ : charGrp G)
 include hc
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `exists_hom_QZ_ne_zero hg`. Conclude with `⟨pullChar π hc ψ, fun g hg => by rw [pullChar_apply, hg, map_zero], hψ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_character_ne_zero_of_quotient [Finite A] (g : G) (hg : π (Additive.ofMul g) ≠ 0) :
     ∃ χ : charGrp G, (∀ g : G, π (Additive.ofMul g) = 0 → χ.1 (Additive.ofMul g) = 0) ∧ χ.1 (Additive.ofMul g) ≠ 0 := by
@@ -193,9 +193,9 @@ theorem exists_character_ne_zero_of_quotient [Finite A] (g : G) (hg : π (Additi
   exact ⟨pullChar π hc ψ, fun g hg => by rw [pullChar_apply, hg, map_zero], hψ⟩
 
 /- English proof (translation)
-Rewrite using `[← card_hom_QZ A]`. Use `(Nat.card_congr (Equiv.ofBijective (fun ψ : A →+ QZ => (⟨pullChar π hc ψ, fun g hg => by rw [pullChar_apply, hg, map_zero]⟩ : {χ : charGrp G // ∀ g : G, π (Additive.ofMul g) = 0 → χ.1 (Additive.ofMul g) = 0})) ⟨?_, ?_⟩)).symm` and prove the remaining obligations. Introduce `ψ ψ' h`. Conclude with `pullChar_injective hc hπ (congrArg Subtype.val h)`. Introduce and unpack `⟨χ, hχ⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψ⟩` from `exists_pullChar_eq hc hπ χ hχ`. Conclude with `⟨ψ, Subtype.ext hψ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_characters_of_finite_quotient [Finite A] (hπ : Surjective π) :
     Nat.card {χ : charGrp G // ∀ g : G, π (Additive.ofMul g) = 0 → χ.1 (Additive.ofMul g) = 0} = Nat.card A := by
@@ -210,7 +210,7 @@ theorem card_characters_of_finite_quotient [Finite A] (hπ : Surjective π) :
     exact ⟨ψ, Subtype.ext hψ⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_eval_QZ (f.comp (pullChar π hc))`. Take `⟨g, rfl⟩` from `hπ a`. Use `⟨Additive.toMul g, fun χ hχ => ?_⟩` and prove the remaining obligations. Take `⟨ψ, rfl⟩` from `exists_pullChar_eq hc hπ χ hχ`. Conclude with `ha ψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_element_evaluating_characters [Finite A] (hπ : Surjective π) (f : charGrp G →+ QZ) :
     ∃ g : G, ∀ χ : charGrp G, (∀ g : G, π (Additive.ofMul g) = 0 → χ.1 (Additive.ofMul g) = 0) →

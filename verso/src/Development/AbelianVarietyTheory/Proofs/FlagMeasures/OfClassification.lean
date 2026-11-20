@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ConsequencesOfDsClas
 namespace GlobalTheory.DiscreteSeriesConsequences
 
 /- English proof (translation)
-Introduce `h`. Take `⟨hE, -, hU, hI, hM, -, -⟩` from `GlobalTheory.ClassificationConsequences.consequences_of_dsClass (GlobalTheory.Published.discreteSeriesClassification_iff.1 h)`. Conclude with `⟨hM, hI, hE, hU, GlobalTheory.Published.discreteSeriesUpqExists_iff_dsExists.2 hE⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem of_classification : GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Dec.LowKMultOne ∧ GlobalTheory.Dec.DSInfChar ∧
     GlobalTheory.Dec.DSExists ∧ GlobalTheory.Dec.DSUnique ∧ GlobalTheory.Published.DiscreteSeriesUpqExists := by

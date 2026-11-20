@@ -18,19 +18,19 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace Sq
 
 /- English proof (translation)
-The claim follows from `Matrix.det_ne_zero_of_left_inverse y.inv_mul`.
+A detailed English derivation is pending.
 -/
 theorem val_mem {n : ℕ} (y : G n) : y.val ∈ GLs n :=
   Matrix.det_ne_zero_of_left_inverse y.inv_mul
 
 /- English proof (translation)
-The claim follows from `Matrix.det_ne_zero_of_left_inverse (Matrix.mem_unitaryGroup_iff'.mp k.2)`.
+A detailed English derivation is pending.
 -/
 theorem unit_mem {n : ℕ} (k : Matrix.unitaryGroup (Fin n) ℂ) : k.1 ∈ GLs n :=
   Matrix.det_ne_zero_of_left_inverse (Matrix.mem_unitaryGroup_iff'.mp k.2)
 
 /- English proof (translation)
-Establish `h1` using `unit_mem k₁`. Establish `h2` using `unit_mem k₂`. Simplify using `only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at h1 h2 hy ⊢`. Conclude with `mul_ne_zero (mul_ne_zero h1 hy) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_mem {n : ℕ} {y : Mat n} (hy : y ∈ GLs n) (k₁ k₂ : Matrix.unitaryGroup (Fin n) ℂ) :
     k₁.1 * y * k₂.1 ∈ GLs n := by
@@ -42,17 +42,15 @@ theorem mul_mem {n : ℕ} {y : Mat n} (hy : y ∈ GLs n) (k₁ k₂ : Matrix.uni
 end Sq
 
 /- English proof (translation)
-Introduce `n μ hμ M g T k hg hk`. Establish `: BorelSpace (G n)` using `⟨rfl⟩`. Use `hμ` as an intermediate fact. Take `⟨k', hk'⟩` from `hH.2.2.2.2.2.2 n μ M [] g T hg`. Establish `hB` using `hKB hH n μ M [] g k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB'` using `hKB hH n μ M [] g k' hk'`. Establish `h1 : (1 : Mat n) ∈ GLs n` using `by simp [GLs]`. Establish `heq : ∀ y ∈ GLs n, PositivityTheory.RgBcC.Mult.kAdj M k y = k' y`. Use `hKA hH n μ M (PositivityTheory.RgBcC.Mult.kAdj M k) k' hB.2.2.1 hB'.1 hB.2.2.2 hB'.2.1 ?_` and prove the remaining obligations. Introduce `u hu hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hAW hH n μ M [] g T k hg hk u hu hc 1 h1).trans (hk'.2.2.2 u hu 1 h1).symm`. Express the relevant statement in the definitionally equal form `IsKer μ M [] g (PositivityTheory.RgBcC.Mult.kAdj M k)`. Use `⟨hk'.1.congr heq, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨R, hR⟩` from `hk'.2.1`. Conclude with `⟨R, fun y hy h => (heq y hy).trans (hR y hy h)⟩`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy k₁ k₂`. Rewrite using `[heq _ (Sq.mul_mem hy k₁ k₂), heq y hy]`. Conclude with `hk'.2.2.1 y hy k₁ k₂`. Introduce `u hu x hx`. Establish `e : RgBcC.act μ M (PositivityTheory.RgBcC.Mult.kAdj M k) (u 0) x = RgBcC.act μ M k' (u 0) x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `RgBcC.act`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[heq _ (Sq.val_mem y)]`. Rewrite using `[e]`.
-
-Conclude with `hk'.2.2.2 u hu x hx`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjKer0 (hH : PositivityTheory.RgBcC.Mult.Hyp) (hAW : PositivityTheory.RgBcC.Mult.AdjWave) (hKB : PositivityTheory.RgBcC.Mult.KerBasic)
     (hKA : PositivityTheory.RgBcC.Mult.KerAgree) : AdjKer0 := by
@@ -84,19 +82,19 @@ theorem adjKer0 (hH : PositivityTheory.RgBcC.Mult.Hyp) (hAW : PositivityTheory.R
     exact hk'.2.2.2 u hu x hx
 
 /- English proof (translation)
-Introduce `E _ _ _ B t g m ht hg hka hkb`. Take `⟨-, -, -, -, hadjOk, hadjOp, -, -⟩` from `h1 E B t t ht ht`. Establish `hmult : ∀ {n : ℕ} (μ : Measure (G n)), μ.IsHaarMeasure → ∀ (M : Mods E n) (k : Kers M) (va : InfinitePlace E → Inf n → ℂ), (∀ v, IsKer μ (M v) [] g (k v) ∧ ∀ χ, va v χ = coshT g (cas χ)) → IsMults μ (adjK k) va t.T`. Introduce `n μ hμ M k va h v`. Use `⟨1, fun _ => 1, fun _ => [], fun _ => g, fun _ => adjK k v, fun _ => ⟨hg, h0 n μ hμ (M v) g t.T (k v) hg (h v).1⟩, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y _`. Simplify using the standard rewrite rules. Introduce `χ`. Simplify using `[zVal, (h v).2 χ]`. Establish `hadj' : t.adj'.Ok` using `⟨ht.T, ht.r, hmult B.μa B.ha B.Ma t.ka t.va hka, hmult B.μb B.hb B.Mb t.kb t.vb hkb, hadjOk.ψ, hadjOk.size⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw : ∀ s : PT B, s.Ok → (s.pw m).Ok ∧ (s.pw m).op = s.op ^ (m + 1) ∧ ∀ χa χb, (s.pw m).val χa χb = s.val χa χb ^ (m + 1)`. Introduce `s hs`. Take `⟨hO, hop, -, -, -, hval⟩` from `h2 E B (List.replicate m (Sum.inr s)) s (max s.T (s.r + B.c)) (fun x hx => by rw [List.eq_of_mem_replicate hx]; exact hs) hs (le_max_of_le_left hs.T) (fun s' hs' => by`. Consider the cases of `Sum.inr.inj (List.eq_of_mem_replicate hs')`. Conclude with `⟨le_max_left _ _, le_max_right _ _⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 
-Use `⟨hO, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[BGen.sc, BGen.op, List.map_replicate, List.prod_replicate] at hop`. Rewrite using `[pow_succ]`. Conclude with `hop.symm`. Introduce `χa χb`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `hval χa χb`. Simplify using `[List.map_replicate, List.prod_replicate] at e`. Rewrite using `[pow_succ]`. Conclude with `e`. Take `⟨hpO, hpop, hpval⟩` from `hw t ht`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨haO, haop, haval⟩` from `hw t.adj' hadj'`. Take `⟨-, -, hmO, hmop, -, -, hmval, -⟩` from `h1 E B (t.adj'.pw m) (t.pw m) haO hpO`. Establish `eop : t.adj'.op = t.adj.op` using `rfl`. Establish `evl : ∀ χa χb, t.adj'.val χa χb = t.val χa χb` using `fun _ _ => rfl`. Use `⟨hpO, hpop, hmO, ?_, ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ((t.adj'.pw m).mul (t.pw m)).op = _`. Rewrite using `[hmop, haop, hpop, eop, hadjOp, star_pow, ContinuousLinearMap.star_eq_adjoint]`. Introduce `χa χb show ((t.adj'.pw m).mul (t.pw m)).val χa χb = _`. Rewrite using `[hmval, haval, hpval, evl, ← pow_add, two_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqOk (h0 : AdjKer0) (h1 : BlockOperatorsProductAdjoint) (h2 : BlockWordOperators) : SqOk := by
   intro E _ _ _ B t g m ht hg hka hkb

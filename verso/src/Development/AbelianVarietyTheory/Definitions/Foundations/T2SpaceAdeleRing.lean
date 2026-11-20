@@ -35,7 +35,7 @@ def ZetaConvH [TopologicalSpace R] (h : Q = dblGram finSumFinEquiv J) (m : Measu
 variable {σ ν K}
 
 /- English proof (translation)
-The claim follows from `hgtOf_pos g`.
+A detailed English derivation is pending.
 -/
 theorem hgtH_pos (g : HA R σ Q) : 0 < hgtH σ Q ν K g := hgtOf_pos g
 
@@ -46,14 +46,14 @@ theorem flatH_apply (Φ : HA R σ Q → ℂ) (s₀ s : ℂ) (g : HA R σ Q) :
     flatH σ Q ν K Φ s₀ s g = Φ g * npow (hgtH σ Q ν K g) (s - s₀) := rfl
 
 /- English proof (translation)
-The claim follows from `flatSec_self Φ s₀`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem flatH_self (Φ : HA R σ Q → ℂ) (s₀ : ℂ) : flatH σ Q ν K Φ s₀ s₀ = Φ := flatSec_self Φ s₀
 
 variable [TopologicalSpace R]
 
 /- English proof (translation)
-Rewrite using `[mem_degPSOf, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_degPSH {μ : (R ⊗[F] E)ˣ →* Circle} {s : ℂ} {Φ : HA R σ Q → ℂ} : Φ ∈ degPSH σ Q ν K μ s ↔
     (∀ (p : siegelH R σ Q) (g : HA R σ Q),
@@ -67,7 +67,7 @@ theorem zetaH_eq (h : Q = dblGram finSumFinEquiv J) (m : Measure (HA R σ J)) (�
     zetaH σ h m Φ c = ∫ g, Φ (ioH R σ h (g, 1)) * starRingEnd ℂ (c g) ∂m := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem zetaConvH_iff (h : Q = dblGram finSumFinEquiv J) (m : Measure (HA R σ J)) (Φ : HA R σ Q → ℂ)
     (c : HA R σ J → ℂ) :
@@ -76,7 +76,7 @@ theorem zetaConvH_iff (h : Q = dblGram finSumFinEquiv J) (m : Measure (HA R σ J
 omit [TopologicalSpace R] in
 
 /- English proof (translation)
-Establish `h` using `hν (detH R σ J g)`. Rewrite `h` using `[conjUnit_detH hJ, map_inv, inv_eq_iff_eq_inv, ← mul_eq_one_iff_eq_inv₀ (hom_pos ν _).ne', ← sq]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le two_ne_zero).1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abs_detH (hν : ∀ x, ν (conjUnit σ x) = ν x) {m : ℕ} {J : Matrix (Fin m) (Fin m) E} (hJ : J.det ≠ 0)
     (g : HA R σ J) : ν (detH R σ J g) = 1 := by
@@ -85,7 +85,7 @@ theorem abs_detH (hν : ∀ x, ν (conjUnit σ x) = ν x) {m : ℕ} {J : Matrix 
   exact (pow_eq_one_iff_of_nonneg zero_le two_ne_zero).1 h
 
 /- English proof (translation)
-Use `(mem_degPSH.1 hΦ).1 (ioDiag h x) (ioH R σ h (g, g'))` as an intermediate fact. Rewrite `this` using `[coe_ioDiag, ← map_mul, aH_ioDiag, abs_detH hν hJ, one_npow, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem apply_ioH_mul (h : Q = dblGram finSumFinEquiv J) (hν : ∀ x, ν (conjUnit σ x) = ν x) (hJ : J.det ≠ 0)
     {μ : (R ⊗[F] E)ˣ →* Circle} {s : ℂ} {Φ : HA R σ Q → ℂ} (hΦ : Φ ∈ degPSH σ Q ν K μ s) (x g g' : HA R σ J) :
@@ -96,7 +96,7 @@ theorem apply_ioH_mul (h : Q = dblGram finSumFinEquiv J) (hν : ∀ x, ν (conjU
 variable [IsTopologicalRing R] [FiniteDimensional F E]
 
 /- English proof (translation)
-The claim follows from `haveI := isTopologicalRing_tens (F := F) (E := E) (R := R) continuous_aOf (isEmbedding_matHom R σ Q).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_aH : Continuous (aH R σ Q) :=
   haveI := isTopologicalRing_tens (F := F) (E := E) (R := R)
@@ -105,7 +105,7 @@ theorem continuous_aH : Continuous (aH R σ Q) :=
 variable [T2Space R]
 
 /- English proof (translation)
-The claim follows from `haveI := isTopologicalRing_tens (F := F) (E := E) (R := R) haveI := t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := R) isClosed_siegelOf (isEmbedding_matHom R σ Q).continuous`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_siegelH : IsClosed (siegelH R σ Q : Set (HA R σ Q)) :=
   haveI := isTopologicalRing_tens (F := F) (E := E) (R := R)
@@ -116,19 +116,19 @@ variable (hν : Continuous ν) (hK : IsCompact (K : Set (HA R σ Q)))
 include hν hK
 
 /- English proof (translation)
-The claim follows from `triv_of_isCompact (δ := absAOf finSumFinEquiv (matHom R σ Q) ν) isClosed_siegelH (hν.comp continuous_aH) hK p hp`.
+A detailed English derivation is pending.
 -/
 theorem abs_aH_eq_one (p : siegelH R σ Q) (hp : (p : HA R σ Q) ∈ K) : ν (aH R σ Q p) = 1 :=
   triv_of_isCompact (δ := absAOf finSumFinEquiv (matHom R σ Q) ν) isClosed_siegelH (hν.comp continuous_aH) hK p hp
 
 /- English proof (translation)
-The claim follows from `iwAbs_mul_of_triv (δ := absAOf finSumFinEquiv (matHom R σ Q) ν) (abs_aH_eq_one hν hK) p hk`.
+A detailed English derivation is pending.
 -/
 theorem hgtH_mul (p : siegelH R σ Q) {k : HA R σ Q} (hk : k ∈ K) : hgtH σ Q ν K (p * k) = ν (aH R σ Q p) :=
   iwAbs_mul_of_triv (δ := absAOf finSumFinEquiv (matHom R σ Q) ν) (abs_aH_eq_one hν hK) p hk
 
 /- English proof (translation)
-Simplify using `using hgtH_mul hν hK 1 hk`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hgtH_of_mem {k : HA R σ Q} (hk : k ∈ K) : hgtH σ Q ν K k = 1 := by simpa using hgtH_mul hν hK 1 hk
 
@@ -138,24 +138,24 @@ variable (hI : HasIwasawa σ Q K)
 include hI
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hI, abs_aH_eq_one hν hK⟩`.
+Supply the required witnesses or components.
 -/
 theorem iwasawaOf : IwasawaOf finSumFinEquiv (matHom R σ Q) ν K := ⟨hI, abs_aH_eq_one hν hK⟩
 
 /- English proof (translation)
-The claim follows from `IsIwasawa.iwAbs_left (hI.iwasawaOf hν hK) p g`.
+A detailed English derivation is pending.
 -/
 theorem hgtH_left (p : siegelH R σ Q) (g : HA R σ Q) : hgtH σ Q ν K (p * g) = ν (aH R σ Q p) * hgtH σ Q ν K g :=
   IsIwasawa.iwAbs_left (hI.iwasawaOf hν hK) p g
 
 /- English proof (translation)
-The claim follows from `IsIwasawa.iwAbs_right (hI.iwasawaOf hν hK) g hk`.
+A detailed English derivation is pending.
 -/
 theorem hgtH_right (g : HA R σ Q) {k : HA R σ Q} (hk : k ∈ K) : hgtH σ Q ν K (g * k) = hgtH σ Q ν K g :=
   IsIwasawa.iwAbs_right (hI.iwasawaOf hν hK) g hk
 
 /- English proof (translation)
-The claim follows from `haveI := isTopologicalRing_tens (F := F) (E := E) (R := R) haveI := t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := R) (hI.iwasawaOf hν hK).continuous_hgtOf (isEmbedding_matHom R σ Q).continuous hν hK`.
+A detailed English derivation is pending.
 -/
 theorem continuous_hgtH : Continuous (hgtH σ Q ν K) :=
   haveI := isTopologicalRing_tens (F := F) (E := E) (R := R)
@@ -163,7 +163,7 @@ theorem continuous_hgtH : Continuous (hgtH σ Q ν K) :=
   (hI.iwasawaOf hν hK).continuous_hgtOf (isEmbedding_matHom R σ Q).continuous hν hK
 
 /- English proof (translation)
-The claim follows from `haveI := isTopologicalRing_tens (F := F) (E := E) (R := R) haveI := t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := R) (hI.iwasawaOf hν hK).flatOf_mem (isEmbedding_matHom R σ Q).continuous hν hK hΦ s`.
+A detailed English derivation is pending.
 -/
 theorem flatH_mem {μ : (R ⊗[F] E)ˣ →* Circle} {s₀ : ℂ} {Φ : HA R σ Q → ℂ} (hΦ : Φ ∈ degPSH σ Q ν K μ s₀) (s : ℂ) :
     flatH σ Q ν K Φ s₀ s ∈ degPSH σ Q ν K μ s :=
@@ -172,7 +172,7 @@ theorem flatH_mem {μ : (R ⊗[F] E)ˣ →* Circle} {s₀ : ℂ} {Φ : HA R σ Q
   (hI.iwasawaOf hν hK).flatOf_mem (isEmbedding_matHom R σ Q).continuous hν hK hΦ s
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := F) (E := E) (R := R)`. Use `haveI := t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := R)`. Simplify `(hI.iwasawaOf hν hK).spherical_mem (isEmbedding_matHom R σ Q).continuous hν hK s` using `only [Fintype.card_fin]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem spherical_mem (s : ℂ) : (fun g => npow (hgtH σ Q ν K g) (s + (n : ℂ) / 2)) ∈ degPSH σ Q ν K 1 s := by
   haveI := isTopologicalRing_tens (F := F) (E := E) (R := R)
@@ -181,7 +181,7 @@ theorem spherical_mem (s : ℂ) : (fun g => npow (hgtH σ Q ν K g) (s + (n : �
     (hI.iwasawaOf hν hK).spherical_mem (isEmbedding_matHom R σ Q).continuous hν hK s
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hΦ.2.1.continuousOn`. Use `⟨C, fun g => ?_⟩` and prove the remaining obligations. Use `IsIwasawa.norm_le (hI.iwasawaOf hν hK) hΦ.1 hC g` as an intermediate fact. Simplify using `only [Fintype.card_fin, Complex.add_re, Complex.div_ofNat_re, Complex.natCast_re] at this`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_norm_le {μ : (R ⊗[F] E)ˣ →* Circle} {s : ℂ} {Φ : HA R σ Q → ℂ} (hΦ : Φ ∈ degPSH σ Q ν K μ s) :
     ∃ C : ℝ, ∀ g, ‖Φ g‖ ≤ C * (hgtH σ Q ν K g : ℝ) ^ (s.re + (n : ℝ) / 2) := by
@@ -250,7 +250,7 @@ section Lemmas
 variable {σ Q L} {a : GL (Fin n) (AF F ⊗[F] E)}
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_aH_eq_of_mem_ratPts ⟨γ, hγ⟩ hγ'`. Use `(mem_degPSH.1 hΦ).1 ⟨γ, hγ⟩ g` as an intermediate fact. Rewrite `this` using `[hx, hμ, absE_inclR, one_npow, Circle.coe_one, one_mul, one_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem apply_rat_mul {μ : (AF F ⊗[F] E)ˣ →* Circle} (hμ : ∀ x : Eˣ, μ (Units.map (inclR (F := F) (AF F)).toMonoidHom x) = 1)
     {s : ℂ} {Φ : GAd σ Q → ℂ} (hΦ : Φ ∈ degPSAd σ Q L a μ s) {γ : GAd σ Q} (hγ : γ ∈ siegelH _ σ Q)
@@ -261,7 +261,7 @@ theorem apply_rat_mul {μ : (AF F ⊗[F] E)ˣ →* Circle} (hμ : ∀ x : Eˣ, �
 
 omit [NumberField E] in
 /- English proof (translation)
-Introduce `g` and use `by obtain ⟨p, k, hk, e⟩ := hI (emb σ Q v g) exact ⟨projP v p, _, (mem_KAd.1 hk).1 v, by rw [coe_projP, ← map_mul, ← e, proj_emb_self]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HasIwasawa.fin (hI : HasIwasawa σ Q (KAd σ Q L a)) (v : HeightOneSpectrum (𝓞 F)) :
     HasIwasawa σ Q (KFin σ Q L v) := fun g => by
@@ -270,7 +270,7 @@ theorem HasIwasawa.fin (hI : HasIwasawa σ Q (KAd σ Q L a)) (v : HeightOneSpect
 
 omit [NumberField E] in
 /- English proof (translation)
-Introduce `g` and use `by obtain ⟨p, k, hk, e⟩ := hI (embArch σ Q w g) exact ⟨projArchP w p, _, (mem_KAd.1 hk).2 w, by rw [coe_projArchP, ← map_mul, ← e, projArch_embArch_self]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HasIwasawa.arch (hI : HasIwasawa σ Q (KAd σ Q L a)) (w : InfinitePlace F) :
     HasIwasawa σ Q (KArch σ Q w (bc (compInf F E w) a)) := fun g => by
@@ -278,13 +278,13 @@ theorem HasIwasawa.arch (hI : HasIwasawa σ Q (KAd σ Q L a)) (w : InfinitePlace
   exact ⟨projArchP w p, _, (mem_KAd.1 hk).2 w, by rw [coe_projArchP, ← map_mul, ← e, projArch_embArch_self]⟩
 
 /- English proof (translation)
-The claim follows from `Frames.isCompact_stabArch hc Q w _`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_KArch (hc : IsCMExt F E σ) (w : InfinitePlace F) (b : GL (Fin n) (w.Completion ⊗[F] E)) :
     IsCompact (KArch σ Q w b : Set (GArch σ Q w)) := Frames.isCompact_stabArch hc Q w _
 
 /- English proof (translation)
-The claim follows from `hgtH_mul (continuous_absEw w) (isCompact_KArch hc w b) p hk`.
+A detailed English derivation is pending.
 -/
 theorem hgtArch_mul (hc : IsCMExt F E σ) {w : InfinitePlace F} {b : GL (Fin n) (w.Completion ⊗[F] E)}
     (p : siegelH w.Completion σ Q) {k : GArch σ Q w} (hk : k ∈ KArch σ Q w b) :
@@ -293,23 +293,23 @@ theorem hgtArch_mul (hc : IsCMExt F E σ) {w : InfinitePlace F} {b : GL (Fin n) 
 variable [Submodule.IsLattice E L]
 
 /- English proof (translation)
-The claim follows from `isCompact_stabLoc σ Q _ v`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_KFin (v : HeightOneSpectrum (𝓞 F)) : IsCompact (KFin σ Q L v : Set (GLoc σ Q v)) :=
   isCompact_stabLoc σ Q _ v
 
 /- English proof (translation)
-The claim follows from `isOpen_stabLoc σ Q _ v`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_KFin (v : HeightOneSpectrum (𝓞 F)) : IsOpen (KFin σ Q L v : Set (GLoc σ Q v)) := isOpen_stabLoc σ Q _ v
 
 /- English proof (translation)
-The claim follows from `isCompact_levelAll hc Q _ _`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_KAd (hc : IsCMExt F E σ) : IsCompact (KAd σ Q L a : Set (GAd σ Q)) := isCompact_levelAll hc Q _ _
 
 /- English proof (translation)
-The claim follows from `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_infiniteAdeleRing_of_numberField_field F haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F inferInstanceAs (T2Space (Ainf F × Af F))`.
+A detailed English derivation is pending.
 -/
 theorem t2Space_adeleRing' : T2Space (AF F) :=
   haveI := GlobalTheory.AdelicUnitaryTop.t2Space_infiniteAdeleRing_of_numberField_field F
@@ -317,13 +317,13 @@ theorem t2Space_adeleRing' : T2Space (AF F) :=
   inferInstanceAs (T2Space (Ainf F × Af F))
 
 /- English proof (translation)
-The claim follows from `hgtH_mul (continuous_absEv v) (isCompact_KFin v) p hk`.
+A detailed English derivation is pending.
 -/
 theorem hgtFin_mul {v : HeightOneSpectrum (𝓞 F)} (p : siegelH (Fv F v) σ Q) {k : GLoc σ Q v} (hk : k ∈ KFin σ Q L v) :
     hgtFin σ Q L v (p * k) = absEv F E v (aH _ σ Q p) := hgtH_mul (continuous_absEv v) (isCompact_KFin v) p hk
 
 /- English proof (translation)
-The claim follows from `haveI := t2Space_adeleRing' (F := F) hgtH_mul continuous_absE (isCompact_KAd hc) p hk`.
+A detailed English derivation is pending.
 -/
 theorem hgtAd_mul (hc : IsCMExt F E σ) (p : siegelH (AF F) σ Q) {k : GAd σ Q} (hk : k ∈ KAd σ Q L a) :
     hgtAd σ Q L a (p * k) = absE F E (aH _ σ Q p) :=
@@ -331,7 +331,7 @@ theorem hgtAd_mul (hc : IsCMExt F E σ) (p : siegelH (AF F) σ Q) {k : GAd σ Q}
   hgtH_mul continuous_absE (isCompact_KAd hc) p hk
 
 /- English proof (translation)
-The claim follows from `(Filter.eventually_cofinite.1 (h.and (eventually_proj_mem_stabLoc σ Q (sumLat finSumFinEquiv L L) g))).subset fun _ hv h' => hv (h'.1 _ h'.2)`.
+A detailed English derivation is pending.
 -/
 theorem AlmostOne.finite {Φf : ∀ v, GLoc σ Q v → ℂ} (h : AlmostOne σ Q L Φf) (g : GAd σ Q) :
     (Function.mulSupport fun v => Φf v (proj σ Q v g)).Finite :=
@@ -339,16 +339,14 @@ theorem AlmostOne.finite {Φf : ∀ v, GLoc σ Q v → ℂ} (h : AlmostOne σ Q 
     fun _ hv h' => hv (h'.1 _ h'.2)
 
 /- English proof (translation)
-The claim follows from `(Filter.eventually_cofinite.1 (eventually_proj_mem_stabLoc σ Q (sumLat finSumFinEquiv L L) g)).subset fun v hv h' => hv (hgtH_of_mem (continuous_absEv v) (isCompact_KFin v) h')`.
+A detailed English derivation is pending.
 -/
 theorem finite_mulSupport_hgtFin (g : GAd σ Q) : (Function.mulSupport fun v => hgtFin σ Q L v (proj σ Q v g)).Finite :=
   (Filter.eventually_cofinite.1 (eventually_proj_mem_stabLoc σ Q (sumLat finSumFinEquiv L L) g)).subset
     fun v hv h' => hv (hgtH_of_mem (continuous_absEv v) (isCompact_KFin v) h')
 
 /- English proof (translation)
-Take `⟨p, k, hk, rfl⟩` from `hI g`. Rewrite using `[hgtAd_mul hc p hk, absE_apply]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun w _ => by`. Rewrite using `[map_mul, ← coe_projArchP, hgtArch_mul hc _ ((mem_KAd.1 hk).2 w), aH_projArchP]`.
-
-Conclude with `finprod_congr fun v => by rw [map_mul, ← coe_projP, hgtFin_mul _ ((mem_KAd.1 hk).1 v), aH_projP]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasIwasawa.hgtAd_eq (hI : HasIwasawa σ Q (KAd σ Q L a)) (hc : IsCMExt F E σ) (g : GAd σ Q) :
     hgtAd σ Q L a g = (∏ w, hgtArch σ Q w (bc (compInf F E w) a) (projArch σ Q w g)) *
@@ -453,13 +451,13 @@ end Local
 instance isLattice_frameLat_host : Submodule.IsLattice D.host.E (frameLat V) := isLattice_frameLat V
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i j => V.herm.eq (V.frame j) (V.frame i), (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V).ne_zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHermND_gram : IsHermND D.sp.cm.sig V.gram :=
   ⟨fun i j => V.herm.eq (V.frame j) (V.frame i), (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V).ne_zero⟩
 
 /- English proof (translation)
-The claim follows from `(Frames.exists_isLatticeFrame_isMajorantFrame (isCMExt_host D) (isHermND_gram V) (frameLat V)).imp fun _ h => h.2`.
+A detailed English derivation is pending.
 -/
 theorem exists_isMaj : ∃ a, IsMaj V a :=
   (Frames.exists_isLatticeFrame_isMajorantFrame (isCMExt_host D) (isHermND_gram V) (frameLat V)).imp fun _ h => h.2
@@ -477,61 +475,61 @@ theorem matHom_ioSum (W : HSp D) (g : GA D V) (g' : GA D W) : Formalism.L2.Theta
     blkGL finSumFinEquiv (Formalism.L2.Theta.matHom V g, Formalism.L2.Theta.matHom W g') := rfl
 
 /- English proof (translation)
-The claim follows from `matHom_injective _ D.sp.cm.sig (dblSp V).gram ((matHom_ioSum V (negSp V) g g').trans (matHom_io V g (negEquiv V g')).symm)`.
+A detailed English derivation is pending.
 -/
 theorem io_eq_ioSum (g : GA D V) (g' : GA D (negSp V)) : ioSum V (negSp V) (g, g') = io V (g, negEquiv V g') :=
   matHom_injective _ D.sp.cm.sig (dblSp V).gram ((matHom_ioSum V (negSp V) g g').trans (matHom_io V g (negEquiv V g')).symm)
 
 /- English proof (translation)
-The claim follows from `continuous_ioH _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_io : Continuous (io V) := continuous_ioH _
 /- English proof (translation)
-The claim follows from `ioH_injective _`.
+A detailed English derivation is pending.
 -/
 theorem io_injective : Function.Injective (io V) := ioH_injective _
 
 /- English proof (translation)
-The claim follows from `ioH_mem_ratPts _ h h'`.
+A detailed English derivation is pending.
 -/
 theorem io_mem_GQ {g g' : GA D V} (h : g ∈ GQ V) (h' : g' ∈ GQ V) : io V (g, g') ∈ GQ (dblSp V) := ioH_mem_ratPts _ h h'
 
 /- English proof (translation)
-The claim follows from `ioH_mem_siegelH _`.
+A detailed English derivation is pending.
 -/
 theorem io_mem_siegel {g g' : GA D V} : io V (g, g') ∈ siegel V ↔ g = g' := ioH_mem_siegelH _
 
 /- English proof (translation)
-The claim follows from `congrArg (fun L => levelAll D.sp.cm.sig (dblSp V).gram L (blkGL finSumFinEquiv (a, a))) (frameLat_hsum V (hneg V)).symm`.
+A detailed English derivation is pending.
 -/
 theorem Khat_eq : Khat V a = Kmax (dblSp V) (blkGL finSumFinEquiv (a, a)) :=
   congrArg (fun L => levelAll D.sp.cm.sig (dblSp V).gram L (blkGL finSumFinEquiv (a, a))) (frameLat_hsum V (hneg V)).symm
 
 /- English proof (translation)
-The claim follows from `isMajorantFrame_dbl (σ := D.sp.cm.sig) (J := V.gram) (Q := (dblSp V).gram) (a := a) (gram_hdbl V) h`.
+A detailed English derivation is pending.
 -/
 theorem IsMaj.dbl {V : HSp D} {a : GL (Fin V.rank) (AE D)} (h : IsMaj V a) :
     IsMaj (dblSp V) (blkGL finSumFinEquiv (a, a)) :=
   isMajorantFrame_dbl (σ := D.sp.cm.sig) (J := V.gram) (Q := (dblSp V).gram) (a := a) (gram_hdbl V) h
 
 /- English proof (translation)
-The claim follows from `ioH_mem_KAd _`.
+A detailed English derivation is pending.
 -/
 theorem io_mem_Khat {g g' : GA D V} : io V (g, g') ∈ Khat V a ↔ g ∈ Kmax V a ∧ g' ∈ Kmax V a := ioH_mem_KAd _
 
 /- English proof (translation)
-The claim follows from `isCompact_KAd (isCMExt_host D)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_Khat : IsCompact (Khat V a : Set (GA D (dblSp V))) := isCompact_KAd (isCMExt_host D)
 
 /- English proof (translation)
-The claim follows from `hgtAd_mul (Q := (dblSp V).gram) (L := frameLat V) (a := a) (isCMExt_host D) p hk`.
+A detailed English derivation is pending.
 -/
 theorem hgt_mul (p : siegel V) {k : GA D (dblSp V)} (hk : k ∈ Khat V a) : hgt V a (p * k) = absA D (aP V p) :=
   hgtAd_mul (Q := (dblSp V).gram) (L := frameLat V) (a := a) (isCMExt_host D) p hk
 
 /- English proof (translation)
-The claim follows from `mem_degPSH`.
+A detailed English derivation is pending.
 -/
 theorem mem_degPS {μ : (AE D)ˣ →* Circle} {s : ℂ} {Φ : GA D (dblSp V) → ℂ} : Φ ∈ degPS V a μ s ↔
     (∀ (p : siegel V) (g : GA D (dblSp V)),
@@ -539,23 +537,23 @@ theorem mem_degPS {μ : (AE D)ˣ →* Circle} {s : ℂ} {Φ : GA D (dblSp V) →
       Continuous Φ ∧ IsKFinite (Khat V a) Φ := mem_degPSH
 
 /- English proof (translation)
-The claim follows from `apply_rat_mul hμ.2 hΦ hγ.1 hγ.2 g`.
+A detailed English derivation is pending.
 -/
 theorem apply_siegelQ_mul {μ : (AE D)ˣ →* Circle} (hμ : IsHeckeChar D μ) {s : ℂ} {Φ : GA D (dblSp V) → ℂ}
     (hΦ : Φ ∈ degPS V a μ s) {γ : GA D (dblSp V)} (hγ : γ ∈ siegelQ V) (g : GA D (dblSp V)) : Φ (γ * g) = Φ g :=
   apply_rat_mul hμ.2 hΦ hγ.1 hγ.2 g
 
 /- English proof (translation)
-The claim follows from `apply_ioH_mul (gram_hdbl V) (absE_conjUnit _) (isHermND_gram V).2 hΦ x g g'`.
+A detailed English derivation is pending.
 -/
 theorem apply_io_mul {μ : (AE D)ˣ →* Circle} {s : ℂ} {Φ : GA D (dblSp V) → ℂ} (hΦ : Φ ∈ degPS V a μ s)
     (x g g' : GA D V) : Φ (io V (x * g, x * g')) = μ (detA V x) * Φ (io V (g, g')) :=
   apply_ioH_mul (gram_hdbl V) (absE_conjUnit _) (isHermND_gram V).2 hΦ x g g'
 
 /- English proof (translation)
-Take `⟨⟨η, hη⟩, h⟩` from `h`. Use `MonoidHom.ext fun x => eq_inv_of_mul_eq_one_right ?_` and prove the remaining obligations. Establish `h1` using `h η hη (Units.map (Algebra.norm (AF D.host.F) : AE D →* AF D.host.F) x)`. Rewrite `h1` using `[hη.2.2.1, one_pow]`. Rewrite using `[MonoidHom.comp_apply, ← map_mul, ← h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg μ (Units.ext (algebraMap_norm_eq (isCMExt_host D) x.1).symm)`.
+A detailed English derivation is pending.
 -/
 theorem comp_conjUnit_eq_inv {μ : (AE D)ˣ →* Circle} {k : ℕ} (h : ResEta D μ k) :
     μ.comp (conjUnit D.sp.cm.sig) = μ⁻¹ := by
@@ -567,7 +565,7 @@ theorem comp_conjUnit_eq_inv {μ : (AE D)ˣ →* Circle} {k : ℕ} (h : ResEta D
   exact congrArg μ (Units.ext (algebraMap_norm_eq (isCMExt_host D) x.1).symm)
 
 /- English proof (translation)
-Use `hgt_mul V a (ioDiag (gram_hdbl V) g) (one_mem _)` as an intermediate fact. Rewrite `this` using `[mul_one, aH_ioDiag, abs_detH (absE_conjUnit _) (isHermND_gram V).2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 example (g : GA D V) : hgt V a (io V (g, g)) = 1 := by
   have := hgt_mul V a (ioDiag (gram_hdbl V) g) (one_mem _)
@@ -576,9 +574,9 @@ example (g : GA D V) : hgt V a (io V (g, g)) = 1 := by
 end Record
 
 /- English proof (translation)
-Use `letI : Invertible (2 : F) := invertibleOfNonzero two_ne_zero`. Use `letI : Invertible (2 : R ⊗[F] E) := (Invertible.map (algebraMap F (R ⊗[F] E)) 2).copy _ (map_ofNat _ 2).symm`. Take `⟨β, hβ⟩` from `exists_leviElt_mem_UJ finSumFinEquiv (σ := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ) (sigR_invol hσ) (J := JR R J) (by ext i j; exact congrArg (fun x => (1 : R) ⊗ₜ[F] x) (hJ.1 i j)) (isUnit_det_JR hJ.2) α`. Rewrite `hβ` using `[← JR_dblGram, ← h]`. Take `⟨g, hg⟩ : ∃ g : HA R σ Q, matHom R σ Q g = leviElt finSumFinEquiv (α, β)` from `⟨⟨_, hβ⟩, rfl⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : g ∈ siegelH R σ Q` using `Subgroup.mem_comap.2 (hg ▸ leviElt_mem_diag finSumFinEquiv (α, β))`. Establish `e : leviOf finSumFinEquiv (matHom R σ Q) ⟨g, h1⟩ = α` using `Units.ext (by rw [val_leviOf, hg, leviMat_leviElt])`. Conclude with `⟨⟨g, h1⟩, ⟨h1, Subgroup.mem_comap.2 (hg ▸ leviElt_mem_anti finSumFinEquiv (α, β))⟩, e, by rw [aH, aOf, MonoidHom.comp_apply, e]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_leviH {R : Type} [CommRing R] [Algebra F R] {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x)
     {Q : Matrix (Fin (n + n)) (Fin (n + n)) E} (h : Q = dblGram finSumFinEquiv J) (hJ : IsHermND σ J)
@@ -597,7 +595,7 @@ theorem exists_leviH {R : Type} [CommRing R] [Algebra F R] {σ : E →ₐ[F] E} 
     by rw [aH, aOf, MonoidHom.comp_apply, e]⟩
 
 /- English proof (translation)
-Take `⟨p, -, -, hp⟩` from `exists_leviH hσ rfl hJ (Matrix.GeneralLinearGroup.scalar (Fin n) (Units.map (algebraMap (Fv F v) (Fv F v ⊗[F] E)).toMonoidHom c))`. Use `⟨p * 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hgtFin_mul p (one_mem _), hp, pow_mul, ← hd, ← absEv_algebraMap, ← map_pow]`. Use `congr 1`. Use `ext`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -613,7 +611,7 @@ example (hd : Module.finrank F E = 2) {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ 
   simp
 
 /- English proof (translation)
-Introduce `g` and use `⟨⟨g, mem_siegelOf.2 (Subsingleton.elim _ _)⟩, 1, one_mem _, (mul_one g).symm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 example {R : Type} [CommRing R] [Algebra F R] (Q : Matrix (Fin (0 + 0)) (Fin (0 + 0)) E) (K : Subgroup (HA R σ Q)) :
     HasIwasawa σ Q K := fun g =>

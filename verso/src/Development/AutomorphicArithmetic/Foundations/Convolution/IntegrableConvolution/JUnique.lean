@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting
 open GroundTheory.Automorphic
 
 /- English proof (translation)
-Proceed by induction on `x using HarishChandra.U.induction with`. Consider the case `halg r => exact S.algebraMap_mem r`. Consider the case `hι X`. Rewrite using `[HarishChandra.ι_eq_sum_e]`. Conclude with `S.sum_mem fun a _ => S.smul_mem (h a.1 a.2) _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `hmul a b ha hb => exact S.mul_mem ha hb`. Consider the case `hadd a b ha hb => exact S.add_mem ha hb`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.L1.jUnique_mem_of_e {n : ℕ} (S : Subalgebra ℂ (HarishChandra.U n))
     (h : ∀ a b, HarishChandra.e (a, b) ∈ S) (x : HarishChandra.U n) : x ∈ S := by
@@ -21,7 +21,7 @@ private theorem UpperTheory.ConvolutionTheory.L1.jUnique_mem_of_e {n : ℕ} (S :
   | hadd a b ha hb => exact S.add_mem ha hb
 
 /- English proof (translation)
-Introduce `K _ _ _ n τ`. Take `⟨⟨j, hj⟩, hiff⟩` from `UpperTheory.ConvolutionTheory.Dp.jGen K n τ`. Use `⟨⟨j, hj, fun j' hj' => ?_⟩, (UpperTheory.ConvolutionTheory.Dp.capZc K n τ).1⟩` and prove the remaining obligations. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Conclude with `UpperTheory.ConvolutionTheory.L1.jUnique_mem_of_e (AlgHom.equalizer j' j) (fun a b => ((hiff j').1 hj' a b).trans ((hiff j).1 hj a b).symm) x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.jUnique :
     UpperTheory.ConvolutionTheory.L1.JUnique := by

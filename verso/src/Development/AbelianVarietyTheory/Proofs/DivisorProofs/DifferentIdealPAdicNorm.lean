@@ -12,7 +12,7 @@ open IsDedekindDomain UniqueFactorizationMonoid
 namespace GlobalTheory.DiffGenNorm
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]) p, norm_algebraMap', Padic.norm_p]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_natCast_self (p : ℕ) [Fact p.Prime] : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by
   rw [← map_natCast (algebraMap ℚ_[p] ℂ_[p]) p, norm_algebraMap', Padic.norm_p]
@@ -20,7 +20,7 @@ theorem norm_natCast_self (p : ℕ) [Fact p.Prime] : ‖(p : ℂ_[p])‖ = (p : 
 variable {E : Type} [Field E] [NumberField E] {p : ℕ} [Fact p.Prime] (φ : 𝓞 E →+* ↥(intO ℂ_[p]))
 
 /- English proof (translation)
-The claim follows from `(φ x).2`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one (x : 𝓞 E) : ‖((φ x : ↥(intO ℂ_[p])) : ℂ_[p])‖ ≤ 1 := (φ x).2
 
@@ -41,25 +41,25 @@ def smallIdeal : Ideal (𝓞 E) where
     exact (mul_le_of_le_one_left (norm_nonneg _) (norm_le_one φ c)).trans_lt hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_smallIdeal (x : 𝓞 E) : x ∈ smallIdeal φ ↔ ‖((φ x : ↥(intO ℂ_[p])) : ℂ_[p])‖ < 1 := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `le_antisymm (norm_le_one φ x) (not_lt.1 hx)`.
+A detailed English derivation is pending.
 -/
 theorem norm_eq_one_of_not_mem {x : 𝓞 E} (hx : x ∉ smallIdeal φ) : ‖((φ x : ↥(intO ℂ_[p])) : ℂ_[p])‖ = 1 :=
   le_antisymm (norm_le_one φ x) (not_lt.1 hx)
 
 /- English proof (translation)
-Rewrite using `[mem_smallIdeal, map_natCast, Subring.coe_natCast, norm_natCast_self]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_smallIdeal : (p : 𝓞 E) ∈ smallIdeal φ := by
   rw [mem_smallIdeal, map_natCast, Subring.coe_natCast, norm_natCast_self]
   exact inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt)
 
 /- English proof (translation)
-Introduce `h` and use `by have h1 : (1 : 𝓞 E) ∈ smallIdeal φ := h ▸ Submodule.mem_top rw [mem_smallIdeal, map_one, OneMemClass.coe_one, norm_one] at h1 exact lt_irrefl _ h1 mem_or_mem' := by intro x y hxy by_contra hc push_neg at hc rw [mem_smallIdeal, map_mul, Subring.coe_mul, norm_mul, norm_eq_one_of …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smallIdeal_isPrime : (smallIdeal φ).IsPrime where
   ne_top' := fun h => by
@@ -81,9 +81,9 @@ def primeOf : HeightOneSpectrum (𝓞 E) :=
     exact (Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero) h1⟩
 
 /- English proof (translation)
-Establish `hs : (primeOf φ).intValuation x = (primeOf φ).intValuation (π ^ n)`. Rewrite using `[hn, map_pow, hπ, ← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules. Take `⟨u, v, hu, hv, huv⟩` from `GlobalTheory.HTConst.exists_mul_eq_mul (primeOf φ) hx hs`. Establish `h1` using `congrArg (fun t => ‖((φ t : ↥(intO ℂ_[p])) : ℂ_[p])‖) huv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_pow, Subring.coe_mul, Subring.coe_pow, norm_mul, norm_pow] at h1`. Rewrite `h1` using `[norm_eq_one_of_not_mem φ hu, norm_eq_one_of_not_mem φ hv, one_mul, one_mul]`. Conclude with `h1.symm`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eq_pow {π : 𝓞 E} (hπ : (primeOf φ).intValuation π = WithZero.exp (-1)) {x : 𝓞 E} (hx : x ≠ 0) {n : ℕ}
     (hn : (primeOf φ).intValuation x = WithZero.exp (-(n : ℤ))) :
@@ -104,13 +104,13 @@ namespace GlobalTheory.DiffGenNorm
 variable {E : Type} [Field E] [NumberField E] {p : ℕ} [Fact p.Prime] (φ : 𝓞 E →+* ↥(intO ℂ_[p]))
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Use `set w := primeOf φ`. Establish `hpw : (p : 𝓞 E) ∈ w.asIdeal` using `natCast_mem_smallIdeal φ`. Establish `hp0 : (p : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`. Take `⟨n, hn⟩` from `GlobalTheory.HTConst.exists_intValuation_eq w hp0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.liesOver_span E p hp w.isPrime hpw`. Establish `hmap : Ideal.map (algebraMap ℤ (𝓞 E)) (Ideal.span {(p : ℤ)}) = Ideal.span {(p : 𝓞 E)}`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Establish `he : Formalism.BasicNotions.eWL E w = (normalizedFactors (Ideal.span {(p : 𝓞 E)})).count w.asIdeal`. Rewrite using `[Formalism.BasicNotions.eWL, Ideal.IsDedekindDomain.ramificationIdx_eq_normalizedFactors_count (Ideal.span {(p : ℤ)}) w.asIdeal (by rw [hmap]; exact ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.span_nat_ne_bot p), hmap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (p : 𝓞 E) ∈ w.asIdeal ^ n` using `(w.intValuation_le_pow_iff_mem _ n).1 hn.le`. Establish `h2 : (p : 𝓞 E) ∉ w.asIdeal ^ (n + 1)` using `fun hc => by`. Use `(w.intValuation_le_pow_iff_mem _ (n + 1)).2 hc` as an intermediate fact. Rewrite `this` using `[hn, WithZero.exp_le_exp]`. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h3` using `Ideal.count_normalizedFactors_eq (p := w.asIdeal) (x := Ideal.span {(p : 𝓞 E)}) (n := n) ((Ideal.span_singleton_le_iff_mem _).2 h1) (fun hc => h2 ((Ideal.span_singleton_le_iff_mem _).1 hc))`. Rewrite using `[hn, he, h3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intValuation_natCast :
     (primeOf φ).intValuation (p : 𝓞 E) = WithZero.exp (-((Formalism.BasicNotions.eWL E (primeOf φ) : ℕ) : ℤ)) := by
@@ -137,31 +137,27 @@ theorem intValuation_natCast :
   rw [hn, he, h3]
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Use `set w := primeOf φ with hwdef`. Establish `hpw : (p : 𝓞 E) ∈ w.asIdeal` using `natCast_mem_smallIdeal φ`. Establish `hM` using `GlobalTheory.ShFam.Pad.multiplicity_different_eq E hp w hpw`. Use `set M := multiplicity w.asIdeal (differentIdeal ℤ (𝓞 E)) with hMdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set e := Formalism.BasicNotions.eWL E w with hedef`. Establish `hval` using `intValuation_natCast φ`. Rewrite `hval` using `[← hwdef, ← hedef]`. Establish `he0 : e ≠ 0` using `fun h0 => by`. Use `(w.intValuation_lt_one_iff_mem _).2 hpw` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[hval, h0]`. Simplify using `at this`. Take `⟨π, hπ⟩` from `w.intValuation_exists_uniformizer`. Use `set t := ‖((φ π : ↥(intO ℂ_[p])) : ℂ_[p])‖ with htdef`. Establish `ht0 : 0 ≤ t` using `norm_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ht1 : t ≤ 1` using `norm_le_one φ π`. Establish `hte : t ^ e = (p : ℝ)⁻¹`. Establish `h1` using `norm_eq_pow φ hπ (Nat.cast_ne_zero.mpr hp.ne_zero) hval`. Rewrite `h1` using `[map_natCast, Subring.coe_natCast, norm_natCast_self]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD0 : differentIdeal ℤ (𝓞 E) ≠ ⊥` using `differentIdeal_ne_bot`. Establish `hfin : FiniteMultiplicity w.asIdeal (differentIdeal ℤ (𝓞 E))` using `FiniteMultiplicity.of_not_isUnit (by rw [Ideal.isUnit_iff]; exact w.isPrime.ne_top) hD0`. Establish `hle : differentIdeal ℤ (𝓞 E) ≤ w.asIdeal ^ M` using `Ideal.le_of_dvd (pow_multiplicity_dvd _ _)`. Establish `hnle : ¬ differentIdeal ℤ (𝓞 E) ≤ w.asIdeal ^ (M + 1)` using `fun h => hfin.not_pow_dvd_of_multiplicity_lt (Nat.lt_succ_self M) (Ideal.dvd_iff_le.2 h)`. Establish `hmem : ∀ k, d k ∈ w.asIdeal ^ M` using `fun k => hle (hd ▸ Ideal.subset_span ⟨k, rfl⟩)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨k0, hk0⟩ : ∃ k, d k ∉ w.asIdeal ^ (M + 1) := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `hnle (hd ▸ (Ideal.span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hc k`. Establish `hbound : ∀ k, ‖((φ (d k) : ↥(intO ℂ_[p])) : ℂ_[p])‖ ≤ t ^ M`. Introduce `k`. Distinguish the cases in `h0 : d k = 0`. Rewrite using `[h0, map_zero, ZeroMemClass.coe_zero, norm_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `pow_nonneg ht0 _`. Take `⟨n, hn⟩` from `GlobalTheory.HTConst.exists_intValuation_eq w h0`. Establish `hMn : M ≤ n`. Use `(w.intValuation_le_pow_iff_mem _ M).2 (hmem k)` as an intermediate fact. Rewrite `this` using `[hn, WithZero.exp_le_exp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[norm_eq_pow φ hπ h0 hn]`. Conclude with `pow_le_pow_of_le_one ht0 ht1 hMn`. Establish `hexact : ‖((φ (d k0) : ↥(intO ℂ_[p])) : ℂ_[p])‖ = t ^ M`. Establish `h0 : d k0 ≠ 0` using `fun h => hk0 (h ▸ Submodule.zero_mem _)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn⟩` from `GlobalTheory.HTConst.exists_intValuation_eq w h0`. Establish `hMn : M ≤ n`. Use `(w.intValuation_le_pow_iff_mem _ M).2 (hmem k0)` as an intermediate fact. Rewrite `this` using `[hn, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnM : n < M + 1`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hk0` to reduce the goal to its premises. Use `(w.intValuation_le_pow_iff_mem _ (M + 1)).1 ?_` and prove the remaining obligations.
-
-Rewrite using `[hn, WithZero.exp_le_exp]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Rewrite using `[norm_eq_pow φ hπ h0 hn, show n = M by omega]`. Establish `hsup : ‖fun k => ((φ (d k) : ↥(intO ℂ_[p])) : ℂ_[p])‖ = t ^ M` using `le_antisymm ((pi_norm_le_iff_of_nonneg (pow_nonneg ht0 _)).2 hbound) (hexact ▸ norm_le_pi_norm (fun k => ((φ (d k) : ↥(intO ℂ_[p])) : ℂ_[p])) k0)`.
-
-Rewrite using `[hsup]`. Establish `hp' : (p : ℝ) = (t ^ e)⁻¹` using `by rw [hte, inv_inv]`. Establish `hte0 : 0 ≤ t ^ e` using `pow_nonneg ht0 _`. Rewrite using `[hp', Real.inv_rpow hte0, Real.rpow_neg hte0, inv_inv, ← Real.rpow_natCast t e, ← Real.rpow_mul ht0, ← hM, Real.rpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_diffGens [IsGalois ℚ E] {m : ℕ} (d : Fin m → 𝓞 E)
     (hd : Ideal.span (Set.range d) = differentIdeal ℤ (𝓞 E)) :
@@ -246,7 +242,7 @@ end GlobalTheory.DiffGenNorm
 namespace GlobalTheory.DiffGenNorm
 
 /- English proof (translation)
-Introduce `E _ _ hG`. Take `⟨m, d, hd⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 (IsNoetherian.noetherian (differentIdeal ℤ (𝓞 E)))`. Establish `hd' : Ideal.span (Set.range d) = differentIdeal ℤ (𝓞 E)` using `hd`. Use `⟨m, d, ⟨Ideal.absNorm (differentIdeal ℤ (𝓞 E)), ?_, hd' ▸ Ideal.absNorm_mem _⟩, fun p _ φ => norm_diffGens φ d hd'⟩` and prove the remaining obligations. Conclude with `(Ideal.absNorm_eq_zero_iff.not).2 differentIdeal_ne_bot`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_diffGens_norm : ∀ (E : Type) [Field E] [NumberField E], IsGalois ℚ E → ∃ (m : ℕ) (d : Fin m → 𝓞 E), (∃ n : ℕ, n ≠ 0 ∧ (n : 𝓞 E) ∈ Ideal.span (Set.range d)) ∧ ∀ (p : ℕ) [Fact p.Prime] (φ : 𝓞 E →+* ↥(intO ℂ_[p])), ‖fun k => ((φ (d k) : ↥(intO ℂ_[p])) : ℂ_[p])‖ = (p : ℝ) ^ (-vDiff E p) := by
   intro E _ _ hG

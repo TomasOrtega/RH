@@ -22,7 +22,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.DiagWeil
 
 /- English proof (translation)
-Establish `hI : I = ∅ ∨ I = {0} ∨ I = {1} ∨ I = {0, 1}` using `by revert I; decide`. Apply the tactic sequence `rcases hI with rfl | rfl | rfl | rfl <;>`. Simplify using `[psum, padd, pzero, x2, List.finRange_succ]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem diag_psum (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (I : Finset (Fin 2)) :
     lift (𝟙 A) (𝟙 A) ≫ psum A (x2 A) I = psum A ![𝟙 A, 𝟙 A] I := by
@@ -31,7 +31,7 @@ theorem diag_psum (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (I : Finset (F
     simp [psum, padd, pzero, x2, List.finRange_succ]
 
 /- English proof (translation)
-Use `GlobalTheory.PrimNorm.lbIso_nested hM _ _ _ _ _ _ ?_` and prove the remaining obligations. Simplify using `only [Finset.univ_unique, Finset.prod_singleton, zpow_one]`. Use `Finset.prod_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, diag_psum]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lbIso_lam_diag (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] {M : LB A.left} (hM : M.IsLB) :
     LBIso ((abelian₂ A M).pull (lift (𝟙 A) (𝟙 A)).left) (cubeLB A ![𝟙 A, 𝟙 A] M) := by
@@ -45,13 +45,13 @@ end GlobalTheory.DiagWeil
 open GlobalTheory.TorusRM.DiagFrame in
 
 /- English proof (translation)
-Introduce `A _ _ g hA _ M u Hm χ hM hF N hN hNc hamp k a b c hk ha hb hc`. Establish `: IsProper A.hom` using `hA.proper`. Establish `hL : ((abelian₂ A M).pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB (LB.isLB_linComb hM _ _) _`. Establish `hcube : (cubeLB A ![𝟙 A, 𝟙 A] M).IsLB` using `LB.isLB_linComb hM _ _`. Establish `hLN : LBIso ((abelian₂ A M).pull (lift (𝟙 A) (𝟙 A)).left) N` using `LBIso.trans hL hcube hN (GlobalTheory.DiagWeil.lbIso_lam_diag A hM) hNc.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hampL : Out.RelAmple A ((abelian₂ A M).pull (lift (𝟙 A) (𝟙 A)).left)` using `GlobalTheory.AmpleApprox.relAmple_of_lbIso_self hN hL hLN hamp`. Establish `hF'` using `isFactorAH_diagUnif u hF`. Establish `hpos` using `GlobalTheory.AmpleHermPos.re_form_pos_of_relAmple A hA _ hL hampL g (diagUnif u) _ _ hF'.1 hF'.2.1 hF'.2.2`. Establish `hAH` using `GlobalTheory.TorusRM.isAH_of_isFactorAH hF' hpos`. Establish `hc' : (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (((a ⬝ᵥ ((2 : ℂ) • Hm).mulVec (star b)).im : ℝ) : ℂ) / k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hc]`. Use `congr 4`. Rewrite using `[Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, Complex.mul_im]`. Simplify using `[hermForm]`. Establish `hw` using `GlobalTheory.AHWeilAny.weilIs_exp_riemannForm A hA _ hL g (diagUnif u) _ _ hAH k a b c hk ha hb hc'`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hw` using `[diagUnif_ex]`. Conclude with `GlobalTheory.PELFamily.weilIs_of_lbIso GlobalTheory.globalFns_holds hA hN hL (LBIso.trans hN hL (pull_isLB hL _) hLN.symm (GlobalTheory.ThetaAffineGlue.lbIso_pull_id hL)) hw`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DiagWeil.weilIs_diag_lam : ∀ (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (M : LB A.left) (u : HolUnif A M g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ), M.IsLB → GlobalTheory.TorusRM.IsFactorAH u Hm χ → ∀ (N : LB A.left), N.IsLB → LBIso N (cubeLB A ![𝟙 A, 𝟙 A] M) → Out.RelAmple A N → ∀ (k : ℕ) (a b : Fin g → ℂ) (c : ℂˣ), 0 < k → a ∈ u.Λ → b ∈ u.Λ → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (((2 * (hermForm Hm a b).im : ℝ)) : ℂ) / k) → Out.WeilIs A N k (u.ex ((k : ℂ)⁻¹ • a)) (u.ex ((k : ℂ)⁻¹ • b)) (unitOn c) := by
   intro A _ _ g hA _ M u Hm χ hM hF N hN hNc hamp k a b c hk ha hb hc

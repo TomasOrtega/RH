@@ -16,28 +16,28 @@ section Adic
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smodEq_span_pow_iff (π x y : R) (n : ℕ) :
     x ≡ y [SMOD (Ideal.span {π} ^ n • (⊤ : Submodule R R))] ↔ π ^ n ∣ x - y := by
   rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-The claim follows from `h.haus x fun n => (smodEq_span_pow_iff π x 0 n).2 (by simpa using hx n)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_pow_dvd {π x : R} (h : IsHausdorff (Ideal.span {π}) R)
     (hx : ∀ n : ℕ, π ^ n ∣ x) : x = 0 :=
   h.haus x fun n => (smodEq_span_pow_iff π x 0 n).2 (by simpa using hx n)
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Yra6.main h f hf`.
+A detailed English derivation is pending.
 -/
 theorem exists_limit_of_pow_dvd {π : R} (h : IsPrecomplete (Ideal.span {π}) R) (f : ℕ → R)
     (hf : ∀ n : ℕ, π ^ n ∣ f (n + 1) - f n) : ∃ L, ∀ n : ℕ, π ^ n ∣ f n - L :=
   _root_.UpperTheory.Reformulated.B.Yra6.main h f hf
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ', pow_mul, ← add_assoc, hv, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_pow_of_compatible {M : Type*} [Monoid M] {l : ℕ} {v : ℕ → M}
     (hv : ∀ i, v (i + 1) ^ l = v i) (i j : ℕ) : v (i + j) ^ l ^ j = v i := by
@@ -51,7 +51,7 @@ end Adic
 variable {l : ℕ} [Fact l.Prime] (A : PAlg l)
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ, pow_mul, ih, pow_mul, pow_mul]`. Conclude with `map_sub A.frob _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_pow_pow (x y : A.A) (j : ℕ) : (x - y) ^ l ^ j = x ^ l ^ j - y ^ l ^ j := by
   induction j with
@@ -61,9 +61,9 @@ theorem sub_pow_pow (x y : A.A) (j : ℕ) : (x - y) ^ l ^ j = x ^ l ^ j - y ^ l 
     exact map_sub A.frob _ _
 
 /- English proof (translation)
-Establish `hl : 1 < l` using `(Fact.out : l.Prime).one_lt`. Use `exists_limit_of_pow_dvd (π := A.pi) A.compl.toIsPrecomplete (fun n => b (i + n) ^ l ^ n) fun n => ?_` and prove the remaining obligations. Establish `e : b (i + (n + 1)) ^ l ^ (n + 1) - b (i + n) ^ l ^ n = (b (i + n + 1) ^ l - b (i + n)) ^ l ^ n`. Rewrite using `[sub_pow_pow, ← pow_mul, ← pow_succ', add_assoc]`. Express the relevant statement in the definitionally equal form `A.pi ^ n ∣ b (i + (n + 1)) ^ l ^ (n + 1) - b (i + n) ^ l ^ n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`. Conclude with `(pow_dvd_pow _ (Nat.lt_pow_self hl).le).trans (pow_dvd_pow_of_dvd (hb _) _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_limit_pow (b : ℕ → A.A) (hb : ∀ j, A.pi ∣ b (j + 1) ^ l - b j) (i : ℕ) :
     ∃ L, ∀ n : ℕ, A.pi ^ n ∣ b (i + n) ^ l ^ n - L := by
@@ -78,21 +78,19 @@ theorem exists_limit_pow (b : ℕ → A.A) (hb : ∀ j, A.pi ∣ b (j + 1) ^ l -
   exact (pow_dvd_pow _ (Nat.lt_pow_self hl).le).trans (pow_dvd_pow_of_dvd (hb _) _)
 
 /- English proof (translation)
-Introduce `l _ A u hu`. Take `⟨hsurj, hker⟩` from `sharp_map_surjective_ker A`. Use `choose b hb using fun j => hsurj (Ideal.Quotient.mk _ (u j))`. Establish `hbd : ∀ j, A.pi ∣ b (j + 1) ^ l - b j` using `fun j => by`. Rewrite using `[← Ideal.mem_span_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hker, RingHom.mem_ker, map_sub, map_pow, hb, hb, ← map_pow, hu, sub_self]`. Use `choose a ha using exists_limit_pow A b hbd`. Establish `hA : IsHausdorff (Ideal.span {A.pi}) A.A` using `A.compl.toIsHausdorff`. Establish `hroot : ∀ i, a (i + 1) ^ l = a i` using `fun i => by`. Use `sub_eq_zero.1 (eq_zero_of_forall_pow_dvd hA fun n => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : A.pi ^ n ∣ b (i + 1 + n) ^ l ^ (n + 1) - a (i + 1) ^ l`. Rewrite using `[pow_succ, pow_mul]`. Conclude with `(ha (i + 1) n).trans (sub_dvd_pow_sub_pow _ _ l)`. Establish `h2 : A.pi ^ n ∣ b (i + 1 + n) ^ l ^ (n + 1) - a i`. Use `ha i (n + 1)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[show i + (n + 1) = i + 1 + n by ring]`. Conclude with `(pow_dvd_pow _ (Nat.le_succ n)).trans this`. Use `dvd_sub h2 h1` as an intermediate fact. Simplify using `using this`. Establish `hmod : ∀ i, A.pi ∣ a i - b i` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1` using `ha i 1`. Rewrite `h1` using `[pow_one, pow_one]`. Use `dvd_sub (hbd i) h1` as an intermediate fact. Simplify using `using this`. Establish `hl1 : ∀ i, (l : A.U) ∣ A.sharp (a i) - u i` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : A.aToU1 (a i) = A.aToU1 (b i)`. Rewrite using `[← sub_eq_zero, ← map_sub, ← RingHom.mem_ker, hker, Ideal.mem_span_singleton]`. Conclude with `hmod i`. Rewrite `h0` using `[hb, sharpMap_eq]`. Use `Ideal.Quotient.eq.1 h0` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[pow_one, Ideal.mem_span_singleton]`. Then use the resulting hypothesis. Use `⟨a, hroot, fun i => sub_eq_zero.1 ?_⟩` and prove the remaining obligations. Use `eq_zero_of_forall_pow_dvd (π := (l : A.U)) (GlobalTheory.T.untilt_adic_complete A).toIsHausdorff fun n => ?_` and prove the remaining obligations. Establish `h1` using `dvd_sub_pow_of_dvd_sub (hl1 (i + n)) n`. Rewrite `h1` using `[← map_pow, pow_pow_of_compatible hroot, pow_pow_of_compatible hu]`.
-
-Conclude with `(pow_dvd_pow _ (Nat.le_succ n)).trans h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_compatible_roots_of_sharp : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (u : ℕ → A.U),
     (∀ i, u (i + 1) ^ l = u i) →

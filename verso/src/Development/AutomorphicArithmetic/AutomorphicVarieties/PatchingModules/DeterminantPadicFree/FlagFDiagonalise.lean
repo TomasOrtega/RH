@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hA (show id k < id i from h), zero_mul]`. Rewrite using `[hB (show id i < id k from h), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -17,17 +17,17 @@ private theorem flagF_diag_mul {F : Type} [Field F] {n : ℕ} {A B : Matrix (Fin
   · simp
 
 /- English proof (translation)
-Establish `key : ∀ m : ℕ, ∀ i j : Fin n, j < i → n + (j : ℕ) ≤ i + m → E i j = 0`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro i j _ h`. Use `i.2` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `succ m ih`. Introduce `i j hji h`. Take `⟨s, hs⟩` from `hsep i j hji.ne'`. Establish `h1 : (T s * E) i j = T s i i * E i j`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h' | h'` into its components or cases. Rewrite using `[hT s (show id k < id i from h'), zero_mul]`. Rewrite using `[ih k j (hji.trans h') (by rw [Fin.lt_def] at h'; omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h2 : (E * T s) i j = E i j * T s j j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h' | h'` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[ih i k (h'.trans hji) (by rw [Fin.lt_def] at h'; omega), zero_mul]`. Rewrite using `[hT s (show id j < id k from h'), mul_zero]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[hc, h2, mul_comm]`. Assume the negation of the conclusion as `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hs (mul_right_cancel₀ h0 h1).symm`. Introduce `i j hji`. Conclude with `key n i j hji (by have : (j : ℕ) < i := hji; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem flagF_tri {F H : Type} [Field F] {n : ℕ} (T : H → Matrix (Fin n) (Fin n) F)
     (E : Matrix (Fin n) (Fin n) F) (hT : ∀ s, (T s).BlockTriangular id)
@@ -61,11 +61,11 @@ private theorem flagF_tri {F H : Type} [Field F] {n : ℕ} (T : H → Matrix (Fi
   exact key n i j hji (by have : (j : ℕ) < i := hji; omega)
 
 /- English proof (translation)
-Establish `hd : ∀ i, E i i * E i i = E i i` using `fun i => by rw [← flagF_diag_mul hE hE, hEE]`. Establish `hDD : diagonal (fun i => E i i) * diagonal (fun i => E i i) = diagonal (fun i => E i i)`. Rewrite using `[diagonal_mul_diagonal]`. Simplify using `only [hd]`. Establish `hD : (diagonal (fun i => E i i)).BlockTriangular id` using `blockTriangular_diagonal _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : (1 : Matrix (Fin n) (Fin n) F).BlockTriangular id` using `blockTriangular_one`. Use `⟨E * diagonal (fun i => E i i) + (1 - E) * (1 - diagonal (fun i => E i i)), (hE.mul hD).add ((h1.sub hE).mul (h1.sub hD)), fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, flagF_diag_mul hE hD, flagF_diag_mul (h1.sub hE) (h1.sub hD)]`. Simplify using `only [Matrix.sub_apply, diagonal_apply_eq, one_apply_eq]`. Take the linear combination `2 * hd i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Generalize the expression as in `diagonal (fun i => E i i) = D at hDD`. Establish `a1 : E * (1 - E) = 0` using `by rw [mul_sub, mul_one, hEE, sub_self]`. Establish `a2 : (1 - D) * D = 0` using `by rw [sub_mul, one_mul, hDD, sub_self]`. Rewrite using `[mul_add, add_mul, ← mul_assoc, ← mul_assoc, hEE, a1, zero_mul, mul_assoc, mul_assoc, hDD, a2, mul_zero]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem flagF_diagonalise {F : Type} [Field F] {n : ℕ} (E : Matrix (Fin n) (Fin n) F)
     (hE : E.BlockTriangular id) (hEE : E * E = E) :
@@ -88,29 +88,25 @@ private theorem flagF_diagonalise {F : Type} [Field F] {n : ℕ} (E : Matrix (Fi
       mul_zero]
 
 /- English proof (translation)
-Introduce `F H _ _ _ n a r ψ hev hinj ⟨g, hg⟩`. Use `set e : Matrix (Fin n) (Fin n) F := diagonal fun i => if (i : ℕ) < a then 1 else 0 with he`. Establish `hee : e * e = e`. Apply the tactic sequence `rw [he, diagonal_mul_diagonal]; congr 1; ext i; split_ifs <;> simp`. Establish `hce : ∀ s, (r s : Matrix (Fin n) (Fin n) F) * e = e * r s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Use extensionality with `i j`. Rewrite using `[he, mul_diagonal, diagonal_mul]`. Establish `h : ¬ (((i : ℕ) < a) ↔ ((j : ℕ) < a)) → (r s : Matrix (Fin n) (Fin n) F) i j = 0` using `fun h => (Submodule.mem_bot F).1 ((hev s i j).2 h)`. Apply the tactic sequence `by_cases hi : (i : ℕ) < a <;> by_cases hj : (j : ℕ) < a <;> simp [hi, hj] at h ⊢ <;> simp [h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `set E : Matrix (Fin n) (Fin n) F := (g : Matrix (Fin n) (Fin n) F) * e * (g⁻¹ : GL (Fin n) F) with hE`. Establish `hEE : E * E = E`. Simplify using `only [hE, mul_assoc, Units.inv_mul_cancel_left]`. Rewrite using `[← mul_assoc e, hee]`. Establish `hT : ∀ s, ((g * r s * g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).BlockTriangular id` using `fun s i j h => (hg s).1 i j h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hEt : E.BlockTriangular id`. Use `flagF_tri (fun s => ((g * r s * g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) E hT ?_ ?_` and prove the remaining obligations. Introduce `i j hij`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hij (hinj (MonoidHom.ext fun s => Units.ext ?_))` and prove the remaining obligations. Rewrite using `[← (hg s).2 i, ← (hg s).2 j]`. Conclude with `hcon s`. Introduce `s`. Simplify using `only [hE, Units.val_mul, mul_assoc, Units.inv_mul_cancel_left]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← mul_assoc (r s : Matrix (Fin n) (Fin n) F), hce, mul_assoc]`. Take `⟨U, hU, hU1, hEU⟩` from `flagF_diagonalise E hEt hEE`. Establish `hdet : U.det ≠ 0` using `by rw [det_of_upperTriangular hU]; simp [hU1]`. Take `⟨u, rfl⟩ : ∃ u : GL (Fin n) F, (u : Matrix (Fin n) (Fin n) F) = U` from `⟨GeneralLinearGroup.mkOfDetNeZero U hdet, rfl⟩`. Establish `hUi : ((u⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).BlockTriangular id`.
+Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `letI := u.invertible`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `blockTriangular_inv_of_blockTriangular hU`. Use `⟨g⁻¹ * u, fun j => decide (E j j = 1), fun i j hij => ?_, fun s => ?_⟩` and prove the remaining obligations. Establish `h : e * ((g⁻¹ * u : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = ((g⁻¹ * u : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * diagonal (fun i => E i i)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[Units.val_mul, mul_assoc, ← hEU]`. Simplify using `only [hE, mul_assoc, Units.inv_mul_cancel_left]`. Establish `h2` using `congrFun (congrFun h i) j`. Rewrite `h2` using `[he, mul_diagonal, diagonal_mul, mul_comm]`. Assume the negation of the conclusion as `h0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h3` using `mul_left_cancel₀ h0 h2`. Apply `hij` to reduce the goal to its premises. Distinguish the cases in `hi : (i : ℕ) < a`. Simplify using `[hi] at h3 ⊢`. Conclude with `h3.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hi] at h3 ⊢`. Simplify using `[← h3]`. Establish `e1 : (g⁻¹ * u)⁻¹ * r s * (g⁻¹ * u) = u⁻¹ * ((g * r s * g⁻¹) * u)` using `by group`. Establish `t1 : ((u⁻¹ * ((g * r s * g⁻¹) * u) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).BlockTriangular id`. Rewrite using `[Units.val_mul, Units.val_mul]`.
-
-Conclude with `hUi.mul ((hT s).mul hU)`. Rewrite using `[e1]`. Use `⟨fun i j h => t1 h, fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `flagF_diag_mul hU t1 i`. Rewrite `h1` using `[← Units.val_mul, mul_inv_cancel_left, Units.val_mul, flagF_diag_mul (hT s) hU, hU1, mul_one, one_mul]`.
-
-Rewrite using `[← (hg s).2 i]`. Conclude with `h1.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.flagF :
     ∀ {F H : Type} [Field F] [Infinite F] [Group H] {n a : ℕ} (r : H →* GL (Fin n) F) (ψ : Fin n → H →* Fˣ), (∀ g, mat r g ∈ Ev F F n a) → Function.Injective ψ → HasFlag r ψ → ∃ (w : GL (Fin n) F) (ty : Fin n → Bool), (∀ i j : Fin n, decide ((i : ℕ) < a) ≠ ty j → w i j = 0) ∧ ∀ g, (∀ i j, j < i → (w⁻¹ * r g * w : GL (Fin n) F) i j = 0) ∧ ∀ i, (w⁻¹ * r g * w : GL (Fin n) F) i i = (ψ i g : F) := by

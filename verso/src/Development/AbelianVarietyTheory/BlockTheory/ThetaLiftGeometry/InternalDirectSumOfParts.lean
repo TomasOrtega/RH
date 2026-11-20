@@ -15,7 +15,7 @@ def PartsSumIn (R : Ranks) {FT : Type u} (A : ℕ → Type v) [∀ j, AddCommGro
   ∀ j : ℕ, 1 ≤ j → j ≤ R.m → iSupIndep (part j) ∧ ⨆ π, part j π = M j
 
 /- English proof (translation)
-Simplify using `only [PartsSum, DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`.
+Simplify using the standard rewrite rules.
 -/
 theorem partsSum_iff_isInternal (R : Ranks) {FT : Type u} [DecidableEq FT] (M : ℕ → Type v)
     [∀ j, AddCommGroup (M j)] [∀ j, Module ℂ (M j)] (part : ∀ j, FT → Submodule ℂ (M j)) :
@@ -23,16 +23,16 @@ theorem partsSum_iff_isInternal (R : Ranks) {FT : Type u} [DecidableEq FT] (M : 
   simp only [PartsSum, DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem partsSum_iff_partsSumIn_top (R : Ranks) {FT : Type u} (M : ℕ → Type v)
     [∀ j, AddCommGroup (M j)] [∀ j, Module ℂ (M j)] (part : ∀ j, FT → Submodule ℂ (M j)) :
     PartsSum R M part ↔ PartsSumIn R M (fun _ => ⊤) part := Iff.rfl
 
 /- English proof (translation)
-Introduce `j _ _`. Establish `h` using `LinearMap.isCompl_range_inl_inr (R := ℂ) (M := ℂ) (M₂ := ℂ)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [iSupIndep_pair (i := true) (j := false) (by simp) (by intro k; cases k <;> simp)]`. Conclude with `h.disjoint`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iSup_bool_eq]`. Conclude with `h.sup_eq_top`.
+A detailed English derivation is pending.
 -/
 theorem partsSum_plane (R : Ranks) :
     PartsSum R (fun _ => ℂ × ℂ)
@@ -46,7 +46,7 @@ theorem partsSum_plane (R : Ranks) :
     exact h.sup_eq_top
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `(h 1 le_rfl (by have := R.two_le_m; omega)).1`. Apply the tactic sequence `rw [iSupIndep_pair (i := true) (j := false) (by simp) (by intro k; cases k <;> simp)] at h1`. Simplify using `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem not_partsSum_repeated (R : Ranks) :
     ¬ PartsSum R (fun _ => ℂ) (fun _ (_ : Bool) => (⊤ : Submodule ℂ ℂ)) := by
@@ -56,7 +56,7 @@ theorem not_partsSum_repeated (R : Ranks) :
   simp at h1
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `(h 1 le_rfl (by have := R.two_le_m; omega)).2`. Simplify using `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_partsSum_zero (R : Ranks) :
     ¬ PartsSum R (fun _ => ℂ) (fun _ (_ : Unit) => (⊥ : Submodule ℂ ℂ)) := by

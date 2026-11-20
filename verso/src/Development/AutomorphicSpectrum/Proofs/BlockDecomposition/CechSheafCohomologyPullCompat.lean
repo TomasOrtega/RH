@@ -8,11 +8,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Opposite Limits GroundThe
 namespace GlobalTheory.CompanionTheory.CechStep
 
 /- English proof (translation)
-Establish `h₁₂ : ∀ W z, α.τ₂.hom.app W (S.f.hom.app W z) = S'.f.hom.app ((Opens.map f).op.obj W) (α.τ₁.hom.app W z)` using `fun W z => by`. Establish `h` using `congrArg (fun k => k.hom.app W) α.comm₁₂`. Conclude with `(ConcreteCategory.congr_hom h z).symm`. Establish `h₂₃ : ∀ W z, α.τ₃.hom.app W (S.g.hom.app W z) = S'.g.hom.app ((Opens.map f).op.obj W) (α.τ₂.hom.app W z)` using `fun W z => by`. Establish `h` using `congrArg (fun k => k.hom.app W) α.comm₂₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(ConcreteCategory.congr_hom h z).symm`. Take `⟨y, rfl⟩` from `(hC.deltaEquiv hI m).surjective x`. Establish `hδ : (hC'.deltaEquiv hI' m).symm (cechPullH f α.τ₁.hom V U τ hτ (m + 2) (hC.deltaEquiv hI m y)) = cechPullH f α.τ₃.hom V U τ hτ (m + 1) y`. Rewrite using `[AddEquiv.symm_apply_eq]`. Take `⟨σ, hσ, rfl⟩` from `GroundTheory.Arith.SchemeCoh.exists_cls y`.
-
-Conclude with `(GlobalTheory.T.cech_short_exact_pull_compat f V U τ hτ hC hC' α.τ₁.hom α.τ₂.hom α.τ₃.hom h₁₂ h₂₃ (m + 1) ⟨σ, (GroundTheory.Arith.SchemeCoh.mem_cocycles σ).2 hσ⟩).trans rfl`. Simplify using `only [cechHEquivStep, AddEquiv.trans_apply, AddEquiv.symm_apply_apply, hδ, he]`. Conclude with `(GlobalTheory.T.sheaf_pull_connecting_compat f hS hS' α (m + 1) (e y)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cechHEquivStep_pull {X Y : TopCat.{0}} (f : X ⟶ Y) {κ ι : Type} (V : κ → Opens Y) (U : ι → Opens X) (τ : ι → κ)
     (hτ : ∀ i, U i ≤ (Opens.map f).obj (V (τ i))) {S : ShortComplex (AbSheaf Y)} {S' : ShortComplex (AbSheaf X)}

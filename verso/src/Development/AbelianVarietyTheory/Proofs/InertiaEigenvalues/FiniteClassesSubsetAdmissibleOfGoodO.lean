@@ -19,19 +19,19 @@ section Alg
 variable {O G : Type} [CommRing O] [Group G]
 
 /- English proof (translation)
-Set `f : A →ₗ[O] M` to `e.symm.toLinearMap ∘ₗ LinearMap.inl O A O`. Set `p : M →ₗ[O] O` to `LinearMap.snd O A O ∘ₗ e.toLinearMap`. Set `r : M →ₗ[O] A` to `LinearMap.fst O A O ∘ₗ e.toLinearMap`. Establish `hp : Function.Surjective p` using `Prod.snd_surjective.comp e.surjective`. Establish `hex : Function.Exact f p`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨(e x).1, e.injective ?_⟩` and prove the remaining obligations. Establish `hx' : (e x).2 = 0` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[f, Prod.ext_iff, hx']`. Introduce and unpack `⟨y, rfl⟩`. Simplify using `[f, p]`. Use `SameSS.of_exact_of_exact (α := modRep α c) (γ := modRep (scalRep O χ) c) (f := QuotSMulTop.map c f) (p := QuotSMulTop.map c p) ?_ ?_ ?_ (QuotSMulTop.map_surjective c hp) (QuotSMulTop.map_exact c hex hp) (f' := LinearMap.inl O _ _) (p' := LinearMap.snd O _ _) (fun g x => by simp) …` and prove the remaining obligations. Introduce `g x`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (f (α g x)) = Submodule.Quotient.mk (π g (f x))`. Use `congr 1`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[f]`. Introduce `g x`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p (π g x)) = Submodule.Quotient.mk ((χ g : O) • (p x))`. Use `congr 1`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `(e (π g x)).2 = _`. Rewrite using `[he]`. Both sides reduce to the same expression. Use `Function.LeftInverse.injective (g := QuotSMulTop.map c r) fun x => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (r (f x)) = Submodule.Quotient.mk x`. Simplify using `[r, f]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem sameSS_red_ext {A M R : Type} [AddCommGroup A] [Module O A] [AddCommGroup M] [Module O M]
     [AddCommGroup R] [Module O R] (α : Representation O G A) (π : Representation O G M) (χ : G →* Oˣ)
@@ -87,11 +87,11 @@ def lastEquiv (O A B : Type) [CommRing O] [AddCommGroup A] [Module O A] [AddComm
   right_inv y := by simp
 
 /- English proof (translation)
-Take `⟨m, n, hmn, h⟩` from `Finite.exists_ne_map_eq_of_infinite (fun n : ℕ => fun x : X => c ^ n • x)`. Use `wlog hlt : m < n generalizing m n`. Conclude with `this n m hmn.symm h.symm (by omega)`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_lt hlt`. Establish `hu : IsUnit (1 - c ^ (k + 1))` using `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ fun h => hc ((isUnit_pow_iff (by omega)).mp h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨m + 1, by omega, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : c ^ m • x = c ^ (m + k + 1) • x` using `congrFun h x`. Establish `h2 : (1 - c ^ (k + 1)) • c ^ m • x = 0`. Rewrite using `[sub_smul, one_smul, smul_smul, ← pow_add, h1, sub_eq_zero]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[pow_succ', mul_smul, (hu.smul_eq_zero).mp h2, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_eq_zero [IsLocalRing O] {c : O} (hc : ¬ IsUnit c) (X : Type) [AddCommGroup X]
     [Module O X] [Finite X] : ∃ a : ℕ, 1 ≤ a ∧ ∀ x : X, c ^ a • x = 0 := by
@@ -117,13 +117,13 @@ variable {LL O V : Type} [Field LL] [CommRing O] [Algebra O LL] [TopologicalSpac
   [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V] [TopologicalSpace V] [IsModuleTopology LL V]
 
 /- English proof (translation)
-Take `⟨n, v, rfl⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp hT`. Rewrite `hs` using `[Submodule.span_span_of_tower]`. Set `f : (Fin n → LL) →ₗ[LL] V` to `Fintype.linearCombination LL v`. Establish `hf : Function.Surjective f`. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination, hs]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ho : IsOpenMap f` using `(IsModuleTopology.isOpenQuotientMap_of_surjective hf).isOpenMap`. Establish `h : (Submodule.span O (Set.range v) : Set V) = f '' Set.pi Set.univ (fun _ => Set.range (algebraMap O LL))`. Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨fun i => algebraMap O LL (c i), fun i _ => ⟨_, rfl⟩, by simp [f, Fintype.linearCombination_apply]⟩`. Introduce and unpack `⟨y, hy, rfl⟩ choose c hc using fun i => hy i (Set.mem_univ i)`. Conclude with `⟨c, by simp [f, Fintype.linearCombination_apply, ← hc]⟩`. Rewrite using `[h]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ho _ (isOpen_set_pi Set.finite_univ fun _ _ => hO)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_of_fg (hO : IsOpen (Set.range (algebraMap O LL))) (T : Submodule O V) (hT : T.FG)
     (hs : Submodule.span LL (T : Set V) = ⊤) : IsOpen (T : Set V) := by
@@ -147,11 +147,9 @@ theorem isOpen_of_fg (hO : IsOpen (Set.range (algebraMap O LL))) (T : Submodule 
   exact ho _ (isOpen_set_pi Set.finite_univ fun _ _ => hO)
 
 /- English proof (translation)
-Use `haveI : ContinuousSMul LL V := IsModuleTopology.toContinuousSMul LL V`. Use `haveI : IsTopologicalAddGroup V := IsModuleTopology.topologicalAddGroup LL V`. Establish `hT'` using `isOpen_of_fg hO T hT hs`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(fun h => (algebraMap O LL c)⁻¹ • ((z h : V) - z g)) ⁻¹' (T : Set V), hT'.preimage ((hz.sub continuous_const).const_smul _), by simp, fun h hh => ?_⟩` and prove the remaining obligations. Establish `h1 : z h - z g = c • (⟨_, hh⟩ : ↥T)`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(z h : V) - z g = c • (algebraMap O LL c)⁻¹ • ((z h : V) - z g)`. Rewrite using `[← algebraMap_smul LL c, smul_inv_smul₀ hc]`.
-
-Rewrite using `[← sub_eq_zero, ← map_sub, h1, map_smul, hN]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_comp {G N : Type} [TopologicalSpace G] [AddCommGroup N] [Module O N]
     (hO : IsOpen (Set.range (algebraMap O LL))) (T : Submodule O V) (hT : T.FG)
@@ -251,15 +249,15 @@ abbrev TwistCrys : Prop :=
     IsCrysChar PD emb θ⁻¹ (fun i => -a i)
 
 /- English proof (translation)
-Establish `hχ'` using `(htw T U χ a hT hχ).2`. Establish `h1` using `(htw T U χ⁻¹ _ hT hχ').1`. Set `T₁` to `twLat T χ⁻¹ hχ'.1`. Set `T₂` to `extLat hinj T₁ z`. Set `z' : ↥(continuousCocycles (twistRep T.ρ (chiLL LL χ⁻¹)))` to `⟨z.1, z.2.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h0` using `GlobalTheory.IndefiniteRowSideFullHecke.CrystallineExtensions.extRep_isExt (twistRep T.ρ (chiLL LL χ⁻¹)) z'`. Establish `hcont : ∀ x : T.V, Continuous fun g => twistRep T.ρ (chiLL LL χ⁻¹) g x` using `T₁.cont`. Establish `h2` using `hext T.V (twistRep T.ρ (chiLL LL χ⁻¹)) hcont h1.1 (T.V × LL) _ _ _ h0.1 z' h0.2`. Establish `h3` using `h2.1.mpr ((GlobalTheory.IndefiniteRowSideFullHecke.CrystallineExtensions.mk_mem_H1fSub PD _ z').mpr hz)`. Establish `h4` using `(htw T₂ _ χ a ⟨h3, fun i => h2.2 h3 i _ (h1.2 i)⟩ hχ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨twLat T₂ χ hχ.1, ?_, (extEquiv hinj T.L.T).symm, fun g x => ?_⟩` and prove the remaining obligations. Establish `h5 : (fun i => U i + {a i}) = fun i => ((U i).map (· + -a i) + {0}).map (· + a i)`. Use function extensionality and compare the values at `i`. Simplify using `[Multiset.map_map]`. Rewrite using `[h5]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h4`. Take `⟨⟨v, y⟩, rfl⟩` from `(extEquiv hinj T.L.T).surjective x`. Use `(extEquiv hinj T.L.T).symm_apply_eq.mpr ?_` and prove the remaining obligations. Use `erw [(extEquiv hinj T.L.T).symm_apply_apply]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `algebraMap O LL (χ g) • ((algebraMap O LL (χ⁻¹ g) • T.ρ g v + algebraMap O LL y • (z : G → T.V) g, algebraMap O LL y) : T.V × LL) = (T.ρ g v + ((χ g : O) * y) • (z : G → T.V) g, algebraMap O LL (χ g * y))`. Simplify using `only [Prod.smul_mk, smul_add, algebraMap_smul, smul_smul, map_mul, Algebra.smul_def]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ext (hinj : Function.Injective (algebraMap O LL)) (hext : GlobalTheory.IndefiniteRowSideFullHecke.CrystallineExtensions.ExtCrysAt PD emb)
     (htw : TwistCrys PD O emb) (T : LocLat G Qp LL O) {U : ZMod n → Multiset ℤ} (hT : CrysWith PD emb T.ρ U)
@@ -295,11 +293,11 @@ theorem exists_ext (hinj : Function.Injective (algebraMap O LL)) (hext : GlobalT
     simp
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => simpa using h1`. Consider the case `succ s ih`. Establish `h2` using `(htw (charLat Qp hinj _ ih.1) _ _ _ ih.2 hε).2`. Establish `h3` using `(htw (charLat Qp hinj _ ih.1) _ _ _ ih.2 h2).1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GalData.chi_succ]`. Use `⟨(ih.1.mul h2.1).congr fun g => by simp, ?_⟩` and prove the remaining obligations. Establish `h4 : charRep (chiLL LL (Γ.chi (s + 1) * Γ.ε⁻¹)) = twistRep (charRep (chiLL LL (Γ.chi (s + 1)))) (chiLL LL Γ.ε⁻¹)`. Use extensionality with `g`. Simplify using `[charRep, twistRep, mul_comm, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h5 : (fun i => ({w i + ((s + 1 : ℕ) : ℤ)} : Multiset ℤ)) = fun i => ({w i + (s : ℤ)} : Multiset ℤ).map (· + - -1)`. Use function extensionality and compare the values at `i`. Simplify using `[add_assoc]`. Rewrite using `[h4, h5]`. Conclude with `h3`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCrysChar_chi (hinj : Function.Injective (algebraMap O LL)) (htw : TwistCrys PD O emb)
     (Γ : GalData G Qp LL O) {w : ZMod n → ℤ} (h1 : IsCrysChar PD emb Γ.χ₁ w)
@@ -326,13 +324,11 @@ theorem isCrysChar_chi (hinj : Function.Injective (algebraMap O LL)) (htw : Twis
 variable [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL]
 
 /- English proof (translation)
-Use `haveI := T.L.free`. Use `haveI : Module.Finite O ↥T.L.T := Module.Finite.iff_fg.mpr T.L.fg`. Set `L₂ : Lattice (O` to `O) T.ρ := { T := (LinearMap.ker p).map T.L.T.subtype stable := by`. Introduce and unpack `g _ ⟨x, hx, rfl⟩`. Use `⟨latRep T.L g x, ?_, rfl⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[SetLike.mem_coe, LinearMap.mem_ker]`. Rewrite using `[hg, hx, map_zero]`. Use `fg := (IsNoetherian.noetherian _).map _`. Use `free := Module.Free.of_equiv (Submodule.equivMapOfInjective _ T.L.T.subtype_injective (LinearMap.ker p))`. Use `span := by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff, ← T.L.span, Submodule.span_le]`. Introduce `x hx`. Establish `h0 : algebraMap O LL c ≠ 0` using `by simpa using hc`. Use `(Submodule.smul_mem_iff _ h0).mp (Submodule.subset_span ⟨c • ⟨x, hx⟩, ?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, map_smul, hM]`.
-
-Simplify using `}`. Use `⟨inferInstance, 1, T, hT.sumFull, L₂, p, Submodule.map_subtype_le _ _, hp, hg, fun x => ⟨fun h => ⟨x, h, rfl⟩, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, h⟩`. Rewrite using `[← Subtype.ext h]` and apply the resulting hypothesis.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem admissible_of_surjective {Γ : GalData G Qp LL O} {t : ℕ} {Ut : ZMod n → Multiset ℤ}
     {T : LocLat G Qp LL O} (hT : Full PD emb Γ t Ut T) {M : Type} [AddCommGroup M] [Module O M] [Finite M]
@@ -362,13 +358,11 @@ theorem admissible_of_surjective {Γ : GalData G Qp LL O} {t : ℕ} {Ut : ZMod n
   rwa [← Subtype.ext h]
 
 /- English proof (translation)
-Take `⟨T', h1, e, he⟩` from `exists_ext (IsFractionRing.injective O LL) hext htw T hT hχ z hz`. Use `⟨T', ?_, ?_, e, he⟩` and prove the remaining obligations. Use `h1 using 2 with i` and compare the differences between its conclusion and the goal. Rewrite using `[add_assoc]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `block`. Rewrite using `[Nat.cast_succ, ← add_assoc, ← Finset.insert_Ico_right_eq_Ico_add_one (by omega), Finset.insert_val_of_notMem (by simp), ← Multiset.singleton_add]`. Conclude with `add_comm _ _`. Establish `h2` using `sameSS_red_ext (latRep T.L) (latRep T'.L) χ e _ he Γ.lam _ hss (finiteLength_of_smul_eq_zero hlam fun x => by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_mem_pointwise_smul _ _ _ Submodule.mem_top)`. Substitute `hχs` using the available equality. Conclude with `(h2.symm.congr_left (lastEquiv O _ _ s).symm fun g x => by`. Apply `(lastEquiv O _ _ s).injective` to reduce the goal to its premises.
-
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Use `conv_lhs => rw [← (lastEquiv O _ _ s).apply_symm_apply x]`. Use the proof step `rfl).symm`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_step (hext : GlobalTheory.IndefiniteRowSideFullHecke.CrystallineExtensions.ExtCrysAt PD emb) (htw : TwistCrys PD O emb)
     (Γ : GalData G Qp LL O) (hlam : Γ.lam ≠ 0) {U : ZMod n → Multiset ℤ} {w : ZMod n → ℤ} {s : ℕ}
@@ -403,13 +397,13 @@ theorem exists_step (hext : GlobalTheory.IndefiniteRowSideFullHecke.CrystallineE
       rfl).symm
 
 /- English proof (translation)
-Establish `hch` using `isCrysChar_chi (IsFractionRing.injective O LL) htw Γ hD.2.2.1 hε`. Establish `key : ∀ s : ℕ, ∃ T : LocLat G Qp LL O, CrysWith PD emb T.ρ (fun i => D.U i + block (D.w i) (s + 1 : ℕ)) ∧ SameSS (modRep (latRep T.L) Γ.lam) (Γ.refRep (s + 1)) ∧ ∃ e : ↥T.L.T →ₗ[O] (↥Γ.T₀.L.T × O), Function.Surjective e ∧ ∀ g x, e (latRep T.L g x) = (Γ.W₀ g (e x).1 + ((Γ.χ₁ g : O …`. Introduce `s`. Proceed by induction on `s with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨T, h1, h2, e, he⟩` from `exists_step hext htw Γ hlam.ne_zero (U := D.U) (w := D.w) (s := 0) Γ.T₀ (by simpa [block] using hD.2.1) ((lattice_reduction_sameSS hlam Γ.T₀.L Γ.T₀.L).congr_right (LinearEquiv.prodUnique).symm fun g x => Prod.ext rfl (Subsingleton.elim _ _)) (χ := Γ.χ₁) (Γ.chi_one).symm (by simpa …`. Conclude with `⟨T, h1, h2, e, e.surjective, he⟩`. Consider the case `succ s ih`. Take `⟨T, h1, h2, p, hp, hg⟩` from `ih`. Take `⟨T', h3, h4, e, he⟩` from `exists_step hext htw Γ hlam.ne_zero T h1 h2 rfl (hch (s + 1)) 0 (Submodule.zero_mem _)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨T', h3, h4, p ∘ₗ LinearMap.fst O _ _ ∘ₗ e.toLinearMap, hp.comp (Prod.fst_surjective.comp e.surjective), fun g x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p (e (latRep T'.L g x)).1 = _`. Rewrite using `[he, map_zero, smul_zero, add_zero]`. Conclude with `hg g _`. Take `⟨s, hs⟩` from `Nat.exists_eq_add_of_le' D.one_le_letterBlockLength`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T, h1, h2, h3⟩` from `key s`. Rewrite `h1`, `h2` using `[← hs]`. Conclude with `⟨T, ⟨h1, fun L => (lattice_reduction_sameSS hlam L T.L).trans h2⟩, h3⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_full (hext : GlobalTheory.IndefiniteRowSideFullHecke.CrystallineExtensions.ExtCrysAt PD emb) (htw : TwistCrys PD O emb)
     (Γ : GalData G Qp LL O) (hlam : Irreducible Γ.lam) {r : ℕ} (D : TopData n r) (hD : IsTopGal PD emb D Γ)
@@ -462,11 +456,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {emb : ZMod n → (K₀ →ₐ[Qp] LL)} [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL]
 
 /- English proof (translation)
-Use `⟨⟨?_, fun _ => Submodule.mem_top⟩, ?_⟩` and prove the remaining obligations. Conclude with `isLocallyConstant_comp hO T.L.T T.L.fg T.L.span (c := c) (by simpa using hc) ((TensorProduct.mk O ↥T.L.T X).flip x) (smul_tensor_eq_zero hX) (fun g => evT (twLattice T.L χ⁻¹) g z) z.2.1.1`. Use function extensionality and compare the values at `gh`. Take `⟨g, h⟩` from `gh`. Express the relevant statement in the definitionally equal form `twistRep (latRep T.L) χ⁻¹ g (evT (twLattice T.L χ⁻¹) h z) ⊗ₜ[O] x - (evT (twLattice T.L χ⁻¹) (g * h) z : ↥T.L.T) ⊗ₜ[O] x + (evT (twLattice T.L χ⁻¹) g z : ↥T.L.T) ⊗ₜ[O] x = 0`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_tmul, ← add_tmul, ← latRep_twLattice, ← zero_tmul ↥T.L.T x]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `twistRep T.ρ (chiLL LL χ⁻¹) g ((z : G → T.V) h) - (z : G → T.V) (g * h) + (z : G → T.V) g = 0`. Rewrite using `[z.2.1.2 g h]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem tensCoc_mem (hO : IsOpen (Set.range (algebraMap O LL))) (T : LocLat G Qp LL O) (χ : G →* Oˣ)
     {X : Type} [AddCommGroup X] [Module O X] {c : O} (hc : c ≠ 0) (hX : ∀ x : X, c • x = 0)
@@ -487,17 +481,15 @@ theorem tensCoc_mem (hO : IsOpen (Set.range (algebraMap O LL))) (T : LocLat G Qp
     abel
 
 /- English proof (translation)
-Establish `hX : ∀ x : O ⧸ Ideal.span {Γ.lam ^ a}, Γ.lam ^ a • x = 0` using `fun x => by`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`. Use `⟨a, hX, ha, _, rfl, ?_⟩` and prove the remaining obligations. Take `⟨T, hT, e, he, hg⟩` from `exists_full hext htw Γ hlam D hD hε z hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : Module.Finite O ↥Γ.T₀.L.T := Module.Finite.iff_fg.mpr Γ.T₀.L.fg`. Use `haveI : Finite (↥Γ.T₀.L.T ⊗[O] (O ⧸ Ideal.span {Γ.lam ^ a})) := by haveI : Finite ((O ⧸ Ideal.span {Γ.lam ^ a}) ⊗[O] ↥Γ.T₀.L.T) := Module.finite_of_finite (O ⧸ Ideal.span {Γ.lam ^ a})`. Conclude with `Finite.of_equiv _ (TensorProduct.comm O _ _).toEquiv`. Set `q : ↥Γ.T₀.L.T →ₗ[O] ↥Γ.T₀.L.T ⊗[O] (O ⧸ Ideal.span {Γ.lam ^ a})` to `(TensorProduct.mk O _ _).flip 1`. Establish `hq : Function.Surjective q` using `fun y => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero q⟩`. Consider the case `add _ _ h1 h2`. Take `⟨u, rfl⟩` from `h1`. Take `⟨v, rfl⟩` from `h2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨u + v, map_add q u v⟩`. Consider the case `tmul t y`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `⟨y • t, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(y • t) ⊗ₜ[O] 1 = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[smul_tmul, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Use `admissible_of_surjective hT _ ((q.prodMap (Submodule.mkQ (Ideal.span {Γ.lam ^ a}))) ∘ₗ e) ((hq.prodMap (Submodule.mkQ_surjective _)).comp he) (fun g x => ?_) (pow_ne_zero a hlam.ne_zero) (fun y => Prod.ext (smul_tensor_eq_zero hX y.1) (hX y.2))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(q (e (latRep T.L g x)).1, Ideal.Quotient.mk _ (e (latRep T.L g x)).2) = Ea Γ.W₀ Γ.χ₁ hX _ g (q (e x).1, Ideal.Quotient.mk _ (e x).2)`. Rewrite using `[Ea_apply, hg, map_add, map_smul]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cyclic_mem_adm (hext : GlobalTheory.IndefiniteRowSideFullHecke.CrystallineExtensions.ExtCrysAt PD emb) (htw : TwistCrys PD O emb)
     (Γ : GalData G Qp LL O) (hlam : Irreducible Γ.lam) {r : ℕ} (D : TopData n r) (hD : IsTopGal PD emb D Γ)
@@ -540,17 +532,15 @@ theorem cyclic_mem_adm (hext : GlobalTheory.IndefiniteRowSideFullHecke.Crystalli
   rfl
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `hA`. Take `⟨a, ha, hX⟩` from `exists_pow_smul_eq_zero hlam.not_isUnit X`. Establish `h0` using `pow_ne_zero a hlam.ne_zero`. Use `haveI := hfin _ h0`. Introduce and unpack `c ⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `key : ((tensAmb Γ.T₀.L Γ.χ₁ X).comp ((latticeFiniteCohomology PD (twLattice Γ.T₀.L Γ.χ₁⁻¹)).subtype.rTensor X)) y ∈ A.map (toAmb (twCoef Γ.W₀ Γ.χ₁ X))` using `by clear hy`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add _ _ h1 h2 => rw [map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `tmul κ x`. Take `⟨_, z, hz, rfl⟩` from `κ`. Establish `hY : ∀ x : O ⧸ Ideal.span {Γ.lam ^ a}, Γ.lam ^ a • x = 0` using `fun x => by`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`. Establish `h1` using `hmap _ (cycMap hX x) _ (cyclic_mem_adm hext htw Γ hlam D hD hε z hz.2 ha (tensCoc_mem hO Γ.T₀ Γ.χ₁ h0 hY z 1))`. Rewrite `h1` using `[hA]`. Use `⟨_, h1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = Submodule.Quotient.mk (tensCoc Γ.T₀.L Γ.χ₁ X z x)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `(evT (twLattice Γ.T₀.L Γ.χ₁⁻¹) g z : ↥Γ.T₀.L.T) ⊗ₜ[O] ((1 : O) • x) = (evT (twLattice Γ.T₀.L Γ.χ₁⁻¹) g z : ↥Γ.T₀.L.T) ⊗ₜ[O] x`. Rewrite using `[one_smul]`. Take `⟨c', hc', h⟩` from `key`.
-
-Rewrite using `[hA, ← toAmb_injective _ (h.trans hy)]`. Conclude with `hc'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_subset_adm (hO : IsOpen (Set.range (algebraMap O LL)))
     (hfin : ∀ c : O, c ≠ 0 → Finite (O ⧸ Ideal.span {c}))
@@ -595,7 +585,7 @@ theorem finite_subset_adm (hO : IsOpen (Set.range (algebraMap O LL)))
 omit [IsTopologicalRing LL] [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL] in
 
 /- English proof (translation)
-Take `⟨⟨_, _, _⟩, -, -, _, hO⟩` from `hO`. Conclude with `finite_subset_adm hO hfin hext htw Γ hlam D hD hε X hA hmap`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_classes_subset_admissible_of_goodO [TopologicalSpace Qp] (hO : Formalism.MainNotions.N.GoodO (Qp := Qp) LL O)
     (hfin : ∀ c : O, c ≠ 0 → Finite (O ⧸ Ideal.span {c}))
@@ -613,9 +603,9 @@ theorem finite_classes_subset_admissible_of_goodO [TopologicalSpace Qp] (hO : Fo
 end Main
 
 /- English proof (translation)
-Establish `h1 : (Ideal.span {c}).comap (algebraMap ℤ_[l] ↥(OL LL)) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem hc (Ideal.mem_span_singleton_self c) (integralClosure.isIntegral c)`. Take `⟨m, hm⟩` from `PadicInt.ideal_eq_span_pow_p h1`. Establish `h2 : Ideal.span {((l : ℕ) : ↥(OL LL)) ^ m} ≤ Ideal.span {c}`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Establish `h3 : ((l : ℕ) : ℤ_[l]) ^ m ∈ (Ideal.span {c}).comap (algebraMap ℤ_[l] ↥(OL LL))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hm]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite `h3` using `[Ideal.mem_comap, map_pow, map_natCast]`. Then use the resulting hypothesis. Use `haveI := (GlobalTheory.LocalIntegers.good_integers l LL).2 m`. Conclude with `Finite.of_surjective _ (Ideal.Quotient.factor_surjective h2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finite_quotient (l : ℕ) [Fact l.Prime] (LL : FinExt l) (c : ↥(OL LL)) (hc : c ≠ 0) :
     Finite (↥(OL LL) ⧸ Ideal.span {c}) := by
@@ -632,9 +622,9 @@ theorem finite_quotient (l : ℕ) [Fact l.Prime] (LL : FinExt l) (c : ↥(OL LL)
   exact Finite.of_surjective _ (Ideal.Quotient.factor_surjective h2)
 
 /- English proof (translation)
-Introduce `l _ P S hC hE _ _ hL X i1 i2 i3`. Establish `h1 : TwistCrys (P.PD S.K) S.O S.emb` using `hC.2.1`. Establish `h2` using `hE S.K S.LL S.n S.emb S.Γ.lam S.hyp.1`. Establish `h3` using `finite_classes_subset_admissible_of_goodO (GlobalTheory.LocalIntegers.good_integers l S.LL).1 (finite_quotient l S.LL) h2 h1 S.Γ S.hyp.1.2.2.2.2.2 S.D S.hyp.2.1 hC.2.2.1 X`. Establish `h4` using `h3 (hL X).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `h4 (fun Y j1 j2 j3 f c => ((@hL Y j1 j2 j3).2.2 X f c).1)`. Conclude with `h5`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finAdm : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P),
     S.CrysCalc → GlobalTheory.IndefiniteRowSideFullHecke.CrystallineExtensions.ExtCrys P → S.Closed → S.StdAdm → S.Lem0 S.Γ.W₀ → S.FinAdm := by

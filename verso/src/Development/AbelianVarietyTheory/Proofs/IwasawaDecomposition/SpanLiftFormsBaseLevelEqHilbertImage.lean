@@ -16,19 +16,19 @@ namespace GlobalTheory.LiftSpan
 set_option maxHeartbeats 10000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hB _ _ i t`. Establish `hHV` using `hB.models.HV i t`. Establish `hjV` using `hB.models.jV`. Establish `hExt : (R.B.L i t).pres.ExtBij` using `(GlobalTheory.classPres_extMem_extBij_isom _ _ _ _ _ _ _ _ _ _ (R.B.L i t).pres).2.1`. Establish `key : (fun x => R.extV i t (R.jV i t (liftForm A F.P0 F.ψ0 i t x))) = fun x => (R.cV i).ext ((R.B.L i t).pres.extL (GlobalTheory.OnTies.srcForm A i t F.P0 F.ψ0⁻¹ x))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Conclude with `congrArg (R.cV i).ext (hjV i t _)`. Establish `hR : Set.range (fun x => R.extV i t (R.jV i t (liftForm A F.P0 F.ψ0 i t x))) = (R.cV i).ext '' ((R.B.L i t).pres.extL '' {f | ∀ u : F.P0, A.leftGroupActionLift i t (u : G) f = ((F.ψ0⁻¹ u : D.what₂.LLˣ) : D.what₂.LL) • f})`. Rewrite using `[key]`. Use extensionality with `Y`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, ⟨_, (GlobalTheory.TraceIncl.mem_range_srcForm i t F.P0 F.ψ0⁻¹ _).1 ⟨x, rfl⟩, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨f, hf, rfl⟩, rfl⟩`. Take `⟨x, rfl⟩` from `(GlobalTheory.TraceIncl.mem_range_srcForm i t F.P0 F.ψ0⁻¹ f).2 hf`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, rfl⟩`. Rewrite using `[hR, Submodule.span_image]`. Use extensionality with `Y`. Simplify using `only [Submodule.mem_map, Submodule.mem_inf, LinearMap.mem_range]`. Establish `hs1` using `GlobalTheory.T.span_eigenforms_adelic_forms_iff_class_presentation (W := (R.cV i).W) (Bridge.ratF (Vc D i)) (A.MtCSD i t) D.what₂.embLL (R.cV i).coef.ρ (levEnv (Vc D i) (R.βV i) (R.datVt i t)).J (levEnv (Vc D i) (R.βV i) (R.datVt i t)).χ (levEnv (Vc D i) (R.βV i) (R.datVt i t)).Q …`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs2a` using `GlobalTheory.T.base_level_adelic_type_implies_lift_law D G Pl0 T A Ks R F hB.models.cV hB.grp.red_L i t`. Establish `hs2b` using `GlobalTheory.T.lift_law_implies_adelic_extension_base_level D G Pl0 T A Ks R F hB.models.cV hB.grp.red_L i t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Φ, hΦ, rfl⟩`. Take `⟨hAd, hq⟩` from `(hs1 Φ).1 hΦ`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hs2b Φ hq⟩` and prove the remaining obligations. Establish `h1 : Φ ∈ LinearMap.range (R.HV i t).e` using `by rw [hHV.2.1]; exact hAd`. Take `⟨y, hy⟩` from `h1`. Conclude with `⟨y, by rw [← hy]; rfl⟩`. Introduce and unpack `⟨⟨y, rfl⟩, hlev⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : (R.HV i t).e y ∈ LinearMap.range (R.HV i t).e` using `LinearMap.mem_range_self _ y`. Rewrite `h1` using `[hHV.2.1]`. Conclude with `⟨(R.HV i t).e y, (hs1 _).2 ⟨h1, hs2a _ hlev⟩, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem span_liftForm_eq : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.BaseW F → A.fam.Ok 1 → (∀ i t, Function.Injective (R.extV i t)) → ∀ (i : Fin D.R.m) (t : T), Submodule.span ℂ (Set.range fun x => R.extV i t (R.jV i t (liftForm A F.P0 F.ψ0 i t x))) = LinearMap.range (R.extV i t) ⊓ levSubV (Vc D i) (R.cV i).W (levS _ (R.βV i) (datVP R i t (R.levR F false))) (levChi _ (R.βV i) (datVP R i t (R.levR F false))) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hB _ _ i t

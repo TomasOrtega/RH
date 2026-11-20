@@ -8,7 +8,7 @@ open scoped TensorProduct
 namespace GlobalTheory.RankHostFacts
 
 /- English proof (translation)
-Use `⟨Formalism.L2.Geo.two_le_r D, ?_⟩` and prove the remaining obligations. Unfold `ReciprocityTheory.ChartRestriction.G.FD.fdeg`. Rewrite using `[Formalism.L2.Pj.hostSize_finrank D]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_le_r_and_fdeg (D : D7) : 2 ≤ D.R.r ∧ ReciprocityTheory.ChartRestriction.G.FD.fdeg D.host.E = D.R.f := by
   refine ⟨Formalism.L2.Geo.two_le_r D, ?_⟩
@@ -17,7 +17,7 @@ theorem two_le_r_and_fdeg (D : D7) : 2 ≤ D.R.r ∧ ReciprocityTheory.ChartRest
   omega
 
 /- English proof (translation)
-The claim follows from `two_le_r_and_fdeg`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ D : D7, 2 ≤ D.R.r ∧ ReciprocityTheory.ChartRestriction.G.FD.fdeg D.host.E = D.R.f :=
   two_le_r_and_fdeg

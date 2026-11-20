@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HidaC
 open UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite TensorProduct
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `y hy _ h`. Rewrite `h` using `[pow_zero, Module.End.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h hy`. Consider the case `succ k ih`. Introduce `y hy hfy hk`. Distinguish the cases in `hw : (U - μ • (1 : Module.End K V)) y = 0`. Use `⟨y, hy, hfy, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `hw`. Apply `ih _ hw` to reduce the goal to its premises. Establish `hc' : Commute (U - μ • (1 : Module.End K V)) f` using `hc.sub_left (Commute.smul_left (Commute.one_left f) μ)`. Use `LinearMap.congr_fun hc'.eq y` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Module.End.mul_apply, Module.End.mul_apply, hfy]`. Conclude with `this.symm`. Rewrite using `[← Module.End.mul_apply, ← pow_succ]`. Conclude with `hk`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.exists_eigenvector_fixed_idempotent {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     (U f : Module.End K V) (hc : Commute U f) (μ : K) :
@@ -38,7 +38,7 @@ private theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.exists_eige
         exact hk
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace U μ y).mp hy`. Establish `hc' : Commute ((U - μ • (1 : Module.End K V)) ^ k) f` using `(hc.sub_left (Commute.smul_left (Commute.one_left f) μ)).pow_left k`. Take `⟨z, hz, hfz, hUz⟩` from `exists_eigenvector_fixed_idempotent U f hc μ k (f y) hne (by rw [← Module.End.mul_apply, hf.eq]) (by rw [← Module.End.mul_apply, hc'.eq, Module.End.mul_apply, hk, map_zero])`. Conclude with `h z hz hfz hUz`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.idempotent_kills_generalized_eigenspace {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     (U f : Module.End K V) (hf : IsIdempotentElem f) (hc : Commute U f) (μ : K)
@@ -54,15 +54,15 @@ private theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.idempotent_
   exact h z hz hfz hUz
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ U e S he hc h1 h2`. Establish `hE : ∀ μ, Submodule.map e (U.maxGenEigenspace μ) ≤ U.maxGenEigenspace μ`. Introduce `μ`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace U μ y).mp hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Module.End.mem_maxGenEigenspace]`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hc' : Commute ((U - μ • (1 : Module.End K V)) ^ k) e` using `(hc.sub_left (Commute.smul_left (Commute.one_left e) μ)).pow_left k`. Rewrite using `[← Module.End.mul_apply, hc'.eq, Module.End.mul_apply, hk, map_zero]`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[LinearMap.range_eq_map, ← Module.End.iSup_maxGenEigenspace_eq_top U, Submodule.map_iSup]`. Use `iSup_le fun μ => ?_` and prove the remaining obligations. Distinguish the cases in `hμ : μ ∈ S`. Conclude with `(hE μ).trans (le_iSup₂_of_le μ hμ le_rfl)`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h0 : e y = 0` using `idempotent_kills_generalized_eigenspace U e he hc μ (fun z hz hez hUz => hμ (h1 μ z hz hez hUz)) y hy`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Use `iSup₂_le fun μ hμ => ?_` and prove the remaining obligations. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : IsIdempotentElem (1 - e)` using `he.one_sub`. Establish `hc1 : Commute U (1 - e)` using `(Commute.one_right U).sub_right hc`. Establish `h0` using `idempotent_kills_generalized_eigenspace U (1 - e) hf hc1 μ (fun z hz hez hUz => h2 μ z hz (by rw [LinearMap.sub_apply, Module.End.one_apply, sub_eq_self] at hez; exact hez) hUz hμ) y hy`. Rewrite `h0` using `[LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `⟨y, h0.symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.eigSum :
     ∀ {K V : Type*} [Field K] [IsAlgClosed K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] (U e : Module.End K V) (S : Set K), IsIdempotentElem e → Commute U e → (∀ μ y, y ≠ 0 → e y = y → U y = μ • y → μ ∈ S) → (∀ μ y, y ≠ 0 → e y = 0 → U y = μ • y → μ ∉ S) → LinearMap.range e = ⨆ μ ∈ S, U.maxGenEigenspace μ := by

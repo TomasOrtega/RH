@@ -5,13 +5,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.Chart
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `ι a i0 k0 h0 h1 hlt hs N`. Establish `hlim : Filter.Tendsto (fun k : ℕ => ∑' i, a i ^ k) Filter.atTop (nhds (∑' i, (if i = i0 then (1:ℂ) else 0)))`. Apply `tendsto_tsum_of_dominated_convergence (bound := fun i => ‖a i‖ ^ k0) hs` to reduce the goal to its premises. Introduce `i`. Distinguish the cases in `hi : i = i0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Simplify using `[h0]`. Simplify using `only [hi, if_false]`. Conclude with `tendsto_pow_atTop_nhds_zero_of_norm_lt_one (hlt i hi)`. Use `filter_upwards [Filter.eventually_ge_atTop k0] with k hk i`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[norm_pow]`. Conclude with `pow_le_pow_of_le_one (norm_nonneg _) (h1 i) hk`. Rewrite `hlim` using `[tsum_ite_eq]`. Establish `hev` using `hlim.eventually_ne one_ne_zero`. Take `⟨M, hM⟩` from `Filter.eventually_atTop.1 hev`.
-
-Conclude with `⟨max N M, le_max_left _ _, hM _ (le_max_right _ _)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tsum_pow_eventually_ne_zero : ∀ {ι : Type} (a : ι → ℂ) (i0 : ι) (k0 : ℕ), a i0 = 1 → (∀ i, ‖a i‖ ≤ 1) → (∀ i, i ≠ i0 → ‖a i‖ < 1) → Summable (fun i => ‖a i‖ ^ k0) → ∀ N : ℕ, ∃ k : ℕ, N ≤ k ∧ ∑' i, a i ^ k ≠ 0 := by
   intro ι a i0 k0 h0 h1 hlt hs N

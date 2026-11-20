@@ -17,20 +17,20 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz)
 
 /- English proof (translation)
-The claim follows from `p.bar`.
+A detailed English derivation is pending.
 -/
 theorem conjugateReadingsVanishing_splitPart : BarTie (fw2 p) := p.bar
 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(p.pins i).1, { (p.pins i).2 with lift := { (p.pins i).2.lift with }, tuple := fun t => { (p.pins i).2.tuple t with } }⟩`.
+Supply the required witnesses or components.
 -/
 theorem thetaRowData_pins_splitPart (i : Fin D.R.m) : OMPins p.T (R2 p) p.κ p.v₀ (om2 p) i :=
   ⟨(p.pins i).1, { (p.pins i).2 with lift := { (p.pins i).2.lift with }, tuple := fun t => { (p.pins i).2.tuple t with } }⟩
 
 /- English proof (translation)
-Establish `h` using `p.phase i hU`. Establish `he : phEff p.R = fun _ => 1` using `funext fun j => p.phEff_one j`. Rewrite `h` using `[he]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phaseCompatible_splitPart_of_liftUniformisation (hU : p.R.toRealDat.LUnif) (i : Fin D.R.m) :
     PhaseTie p.T (R2 p) p.κ p.v₀ (om2 p) (fun _ => 1) i := by
@@ -42,7 +42,7 @@ theorem phaseCompatible_splitPart_of_liftUniformisation (hU : p.R.toRealDat.LUni
 end
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ p what₂` and use `⟨conjugateReadingsVanishing_splitPart p, thetaRowData_pins_splitPart p, phaseCompatible_splitPart_of_liftUniformisation p what₂.prim.unif⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ompins_onto : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D)
     (Kc : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Y cX) (Csz : ℝ) (p : PtAt ex Csz), p.Rows →

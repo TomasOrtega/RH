@@ -15,9 +15,9 @@ namespace PSumH
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hW : ∀ W : Submodule ℂ (Fin n → ℂ), IsClosed (W : Set (Fin n → ℂ))` using `fun W => W.closed_of_finiteDimensional`. Establish `hc : ∀ y : Fin n → ℂ, Continuous fun X : Matrix (Fin n) (Fin n) ℂ => X *ᵥ y` using `fun y => continuous_id.matrix_mulVec continuous_const`. Establish `e : (nilrad W₁ W₂ : Set (Matrix (Fin n) (Fin n) ℂ)) = (⋂ y, (fun X : Matrix (Fin n) (Fin n) ℂ => X *ᵥ y) ⁻¹' W₂) ∩ ((⋂ y ∈ W₂, (fun X : Matrix (Fin n) (Fin n) ℂ => X *ᵥ y) ⁻¹' W₁) ∩ ⋂ y ∈ W₁, (fun X : Matrix (Fin n) (Fin n) ℂ => X *ᵥ y) ⁻¹' {0})`. Use extensionality with `X`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe, Set.mem_singleton_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `Iff.rfl`. Rewrite using `[e]`. Use `(isClosed_iInter fun y => (hW W₂).preimage (hc y)).inter ((isClosed_biInter fun y _ => (hW W₁).preimage (hc y)).inter (isClosed_biInter fun y _ => isClosed_singleton.preimage (hc y)))` and prove the remaining obligations.
+Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isClosed_nilrad (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) :
     IsClosed (nilrad W₁ W₂ : Set (Matrix (Fin n) (Fin n) ℂ)) := by
@@ -38,11 +38,11 @@ theorem isClosed_nilrad (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) :
       (isClosed_biInter fun y _ => isClosed_singleton.preimage (hc y)))
 
 /- English proof (translation)
-Establish `hu' : u = fun X => ((PVC.eH W₁ W₂ X : PVC.nilSub W₁ W₂) : GL (Fin n) ℂ)`. Use function extensionality and compare the values at `fun X => Units.ext (by rw [hu X]; rfl)`. Establish `hcu : Continuous u`. Rewrite using `[hu']`. Conclude with `continuous_subtype_val.comp (PVC.eH W₁ W₂).continuous`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF : Continuous fun X => f (u X * d)` using `hf.comp (hcu.mul continuous_const)`. Use `hF.integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Establish `hL : IsCompact ((fun k : GL (Fin n) ℂ => (k * d⁻¹).val - 1) '' tsupport f)` using `hfc.isCompact.image ((Units.continuous_val.comp (continuous_id.mul continuous_const)).sub continuous_const)`. Establish `hK : IsCompact (Subtype.val ⁻¹' ((fun k : GL (Fin n) ℂ => (k * d⁻¹).val - 1) '' tsupport f) : Set (nilrad W₁ W₂))` using `(isClosed_nilrad W₁ W₂).isClosedEmbedding_subtypeVal.isCompact_preimage hL`. Use `HasCompactSupport.intro hK fun X hX => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Apply `hX` to reduce the goal to its premises. Use `⟨u X * d, subset_tsupport _ h, ?_⟩` and prove the remaining obligations. Use `show ((u X * d) * d⁻¹).val - 1 = X.1`. Rewrite using `[mul_inv_cancel_right, hu X, add_sub_cancel_left]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_nil {f : GL (Fin n) ℂ → ℂ} (hf : Continuous f) (hfc : HasCompactSupport f)
     {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (u : nilrad W₁ W₂ → GL (Fin n) ℂ) (hu : ∀ X, (u X).val = 1 + X.1)
@@ -67,7 +67,7 @@ theorem integrable_nil {f : GL (Fin n) ℂ → ℂ} (hf : Continuous f) (hfc : H
   rw [mul_inv_cancel_right, hu X, add_sub_cancel_left]
 
 /- English proof (translation)
-Use `⟨fun k d hk => by dsimp only; rw [hf'.1 k d hk, hg'.1 k d hk], fun d W₁ W₂ hne hle hp1 hp2 u hu _ _ ν _ => ?_⟩` and prove the remaining obligations. Rewrite using `[integral_add (integrable_nil hf hfc u hu d ν) (integrable_nil hg hgc u hu d ν), hf'.2 d W₁ W₂ hne hle hp1 hp2 u hu ν, hg'.2 d W₁ W₂ hne hle hp1 hp2 u hu ν, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem veryCusp_add {f g : GL (Fin n) ℂ → ℂ} (hf : Continuous f) (hfc : HasCompactSupport f) (hg : Continuous g)
     (hgc : HasCompactSupport g) (hf' : VeryCusp f) (hg' : VeryCusp g) : VeryCusp fun x => f x + g x := by
@@ -76,7 +76,7 @@ theorem veryCusp_add {f g : GL (Fin n) ℂ → ℂ} (hf : Continuous f) (hfc : H
     hf'.2 d W₁ W₂ hne hle hp1 hp2 u hu ν, hg'.2 d W₁ W₂ hne hle hp1 hp2 u hu ν, add_zero]
 
 /- English proof (translation)
-Use `⟨fun k d hk => by dsimp only; rw [hf.1 k d hk], fun d W₁ W₂ hne hle hp1 hp2 u hu _ _ ν _ => ?_⟩` and prove the remaining obligations. Rewrite using `[integral_const_mul, hf.2 d W₁ W₂ hne hle hp1 hp2 u hu ν, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem veryCusp_smul {f : GL (Fin n) ℂ → ℂ} (c : ℂ) (hf : VeryCusp f) : VeryCusp fun x => c * f x := by
   refine ⟨fun k d hk => by dsimp only; rw [hf.1 k d hk], fun d W₁ W₂ hne hle hp1 hp2 u hu _ _ ν _ => ?_⟩
@@ -85,7 +85,7 @@ theorem veryCusp_smul {f : GL (Fin n) ℂ → ℂ} (c : ℂ) (hf : VeryCusp f) :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `e : embInf n v d = infP n (Pi.mulSingle v d)` using `rfl`. Rewrite using `[e, gInf_infP, Pi.mulSingle_eq_same]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gInf_embInf (v : InfinitePlace E) (d : GL (Fin n) ℂ) : gInf v (embInf n v d) = d := by
   classical
@@ -93,7 +93,7 @@ theorem gInf_embInf (v : InfinitePlace E) (d : GL (Fin n) ℂ) : gInf v (embInf 
   rw [e, gInf_infP, Pi.mulSingle_eq_same]
 
 /- English proof (translation)
-Establish `e : (embInf (E` using `E) n v : GL (Fin n) ℂ → GA E n) = fun d => infP n (Pi.mulSingle v d) := rfl`. Rewrite using `[e]`. Conclude with `(continuous_infP n).comp (continuous_mulSingle (A := fun _ : InfinitePlace E => GL (Fin n) ℂ) v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_embInf (v : InfinitePlace E) : Continuous (embInf (E := E) n v) := by
   classical
@@ -102,9 +102,9 @@ theorem continuous_embInf (v : InfinitePlace E) : Continuous (embInf (E := E) n 
   exact (continuous_infP n).comp (continuous_mulSingle (A := fun _ : InfinitePlace E => GL (Fin n) ℂ) v)
 
 /- English proof (translation)
-Use `⟨hφ.comp ((continuous_embInf v).mul continuous_const), ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro (hc.isCompact.image (continuous_gInf n v)) fun d hd => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Apply `hd` to reduce the goal to its premises. Use `⟨embInf n v d * g, subset_tsupport _ h, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg' : gInf v g = 1` using `hg`. Rewrite using `[map_mul, gInf_embInf, hg', mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem slice {φ : GA E n → ℂ} (hφ : Continuous φ) (hc : HasCompactSupport φ) (v : InfinitePlace E) (g : GA E n)
     (hg : GeneralLinearGroup.map (cV v) g = 1) :
@@ -119,7 +119,7 @@ theorem slice {φ : GA E n → ℂ} (hφ : Continuous φ) (hc : HasCompactSuppor
 
 omit [IsCMField E] in
 /- English proof (translation)
-Take `⟨U, hU, hUφ⟩` from `hφ.level`. Take `⟨U', hU', hUψ⟩` from `hψ.level`. Use `⟨hφ.cont.add hψ.cont, hφ.supp.add hψ.supp, U ⊓ U', by rw [Subgroup.coe_inf]; exact hU.inter hU', fun u hu g => ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[Subgroup.mem_inf]`. Conclude with `⟨by rw [(hUφ u hu.1 g).1, (hUψ u hu.2 g).1], by rw [(hUφ u hu.1 g).2, (hUψ u hu.2 g).2]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isTest_add [IsTotallyComplex E] {φ ψ : GA E n → ℂ} (hφ : IsTest φ) (hψ : IsTest ψ) : IsTest fun x => φ x + ψ x := by
   obtain ⟨U, hU, hUφ⟩ := hφ.level
@@ -131,7 +131,7 @@ theorem isTest_add [IsTotallyComplex E] {φ ψ : GA E n → ℂ} (hφ : IsTest �
 
 omit [IsCMField E] in
 /- English proof (translation)
-Take `⟨U, hU, hUφ⟩` from `hφ.level`. Use `⟨continuous_const.mul hφ.cont, hφ.supp.mono fun x hx => right_ne_zero_of_mul hx, U, hU, fun u hu g => ?_⟩` and prove the remaining obligations. Conclude with `⟨by rw [(hUφ u hu g).1], by rw [(hUφ u hu g).2]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem isTest_smul [IsTotallyComplex E] {φ : GA E n → ℂ} (c : ℂ) (hφ : IsTest φ) : IsTest fun x => c * φ x := by
   obtain ⟨U, hU, hUφ⟩ := hφ.level
@@ -140,7 +140,7 @@ theorem isTest_smul [IsTotallyComplex E] {φ : GA E n → ℂ} (c : ℂ) (hφ : 
   exact ⟨by rw [(hUφ u hu g).1], by rw [(hUφ u hu g).2]⟩
 
 /- English proof (translation)
-Introduce `d x h`. Simplify using `only at h`. Distinguish the cases in `h0 : φ (twConj (thetaA E n) x (ratGL E n d)) = 0`. Conclude with `hψ d x (by rwa [h0, zero_add] at h)`. Conclude with `hφ d x h0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem regSupp_add {φ ψ : GA E n → ℂ} (hφ : RegSupp φ) (hψ : RegSupp ψ) : RegSupp fun x => φ x + ψ x := by
   intro d x h
@@ -150,13 +150,13 @@ theorem regSupp_add {φ ψ : GA E n → ℂ} (hφ : RegSupp φ) (hψ : RegSupp �
   · exact hφ d x h0
 
 /- English proof (translation)
-Introduce `d x h` and use `hφ d x (right_ne_zero_of_mul h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem regSupp_smul {φ : GA E n → ℂ} (c : ℂ) (hφ : RegSupp φ) : RegSupp fun x => c * φ x :=
   fun d x h => hφ d x (right_ne_zero_of_mul h)
 
 /- English proof (translation)
-Introduce `g hg` and use `veryCusp_add (slice hφ.cont hφ.supp v g hg).1 (slice hφ.cont hφ.supp v g hg).2 (slice hψ.cont hψ.supp v g hg).1 (slice hψ.cont hψ.supp v g hg).2 (h₁ g hg) (h₂ g hg)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vCAt_add {φ ψ : GA E n → ℂ} (hφ : IsTest φ) (hψ : IsTest ψ) (v : InfinitePlace E) (h₁ : VCAt v φ)
     (h₂ : VCAt v ψ) : VCAt v fun x => φ x + ψ x := fun g hg =>
@@ -164,7 +164,7 @@ theorem vCAt_add {φ ψ : GA E n → ℂ} (hφ : IsTest φ) (hψ : IsTest ψ) (v
     (slice hψ.cont hψ.supp v g hg).1 (slice hψ.cont hψ.supp v g hg).2 (h₁ g hg) (h₂ g hg)
 
 /- English proof (translation)
-Introduce `g hg` and use `veryCusp_smul c (h g hg)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vCAt_smul {φ : GA E n → ℂ} (c : ℂ) (v : InfinitePlace E) (h : VCAt v φ) : VCAt v fun x => c * φ x :=
   fun g hg => veryCusp_smul c (h g hg)
@@ -176,7 +176,7 @@ open PSumH
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨continuous_const, HasCompactSupport.zero, fun _ h => absurd rfl h, fun _ => ⟨isTest_zero, regSupp_zero, fun _ _ _ => veryCusp_zero⟩, fun _ => ⟨isTest_zero, regSupp_zero, fun _ _ _ => veryCusp_zero⟩⟩, ⊤, ⊤, isOpen_univ, isOpen_univ, fun _ _ _ _ _ => ⟨rfl, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTest2J_zero (r : ℝ) : IsTest2J (0 : GA E a × GA E b → ℂ) r :=
   ⟨⟨continuous_const, HasCompactSupport.zero, fun _ h => absurd rfl h,
@@ -185,9 +185,9 @@ theorem isTest2J_zero (r : ℝ) : IsTest2J (0 : GA E a × GA E b → ℂ) r :=
     ⊤, ⊤, isOpen_univ, isOpen_univ, fun _ _ _ _ _ => ⟨rfl, rfl⟩⟩
 
 /- English proof (translation)
-Take `⟨U₁, U₂, hU₁, hU₂, hU⟩` from `h.level`. Use `⟨⟨h.cont.const_smul c, h.supp.mono fun x hx => right_ne_zero_of_mul hx, fun g hg => h.size g (right_ne_zero_of_mul hg), fun g₂ => ?_, fun g₁ => ?_⟩, U₁, U₂, hU₁, hU₂, fun u₁ h₁ u₂ h₂ g => ?_⟩` and prove the remaining obligations. Take `⟨t, s, w⟩` from `h.test₁ g₂`. Conclude with `⟨isTest_smul c t, regSupp_smul c s, fun v => vCAt_smul c v (w v)⟩`. Take `⟨t, s, w⟩` from `h.test₂ g₁`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨isTest_smul c t, regSupp_smul c s, fun v => vCAt_smul c v (w v)⟩`. Conclude with `⟨by simp only [Pi.smul_apply, (hU u₁ h₁ u₂ h₂ g).1], by simp only [Pi.smul_apply, (hU u₁ h₁ u₂ h₂ g).2]⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem isTest2J_smul {φ : GA E a × GA E b → ℂ} {r : ℝ} (c : ℂ) (h : IsTest2J φ r) : IsTest2J (c • φ) r := by
   obtain ⟨U₁, U₂, hU₁, hU₂, hU⟩ := h.level
@@ -201,11 +201,11 @@ theorem isTest2J_smul {φ : GA E a × GA E b → ℂ} {r : ℝ} (c : ℂ) (h : I
   · exact ⟨by simp only [Pi.smul_apply, (hU u₁ h₁ u₂ h₂ g).1], by simp only [Pi.smul_apply, (hU u₁ h₁ u₂ h₂ g).2]⟩
 
 /- English proof (translation)
-Take `⟨U₁, U₂, hU₁, hU₂, hU⟩` from `h.level`. Take `⟨U₁', U₂', hU₁', hU₂', hU'⟩` from `h'.level`. Use `⟨⟨h.cont.add h'.cont, h.supp.add h'.supp, fun g hg => ?_, fun g₂ => ?_, fun g₁ => ?_⟩, U₁ ⊓ U₁', U₂ ⊓ U₂', by rw [Subgroup.coe_inf]; exact hU₁.inter hU₁', by rw [Subgroup.coe_inf]; exact hU₂.inter hU₂', fun u₁ h₁ u₂ h₂ g => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : φ g = 0`. Conclude with `h'.size g (by simpa [h0] using hg)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `h.size g h0`. Take `⟨t, s, w⟩` from `h.test₁ g₂`. Take `⟨t', s', w'⟩` from `h'.test₁ g₂`. Conclude with `⟨isTest_add t t', regSupp_add s s', fun v => vCAt_add t t' v (w v) (w' v)⟩`. Take `⟨t, s, w⟩` from `h.test₂ g₁`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨t', s', w'⟩` from `h'.test₂ g₁`. Conclude with `⟨isTest_add t t', regSupp_add s s', fun v => vCAt_add t t' v (w v) (w' v)⟩`. Rewrite `h₁`, `h₂` using `[Subgroup.mem_inf]`. Conclude with `⟨by simp only [Pi.add_apply, (hU u₁ h₁.1 u₂ h₂.1 g).1, (hU' u₁ h₁.2 u₂ h₂.2 g).1], by simp only [Pi.add_apply, (hU u₁ h₁.1 u₂ h₂.1 g).2, (hU' u₁ h₁.2 u₂ h₂.2 g).2]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isTest2J_add {φ ψ : GA E a × GA E b → ℂ} {r : ℝ} (h : IsTest2J φ r) (h' : IsTest2J ψ r) :
     IsTest2J (φ + ψ) r := by
@@ -228,15 +228,13 @@ theorem isTest2J_add {φ ψ : GA E a × GA E b → ℂ} {r : ℝ} (h : IsTest2J 
       by simp only [Pi.add_apply, (hU u₁ h₁.1 u₂ h₂.1 g).2, (hU' u₁ h₁.2 u₂ h₂.2 g).2]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨h.cont, h.supp, fun g hg => ⟨(h.size g hg).1.trans hr, (h.size g hg).2.trans hr⟩, h.test₁, h.test₂⟩, h.level⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTest2J_mono {φ : GA E a × GA E b → ℂ} {r r' : ℝ} (h : IsTest2J φ r) (hr : r ≤ r') : IsTest2J φ r' :=
   ⟨⟨h.cont, h.supp, fun g hg => ⟨(h.size g hg).1.trans hr, (h.size g hg).2.trans hr⟩, h.test₁, h.test₂⟩, h.level⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `isTest2J_zero r`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`.
-
-Conclude with `isTest2J_add (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTest2J_sum {ι : Type*} (s : Finset ι) {φ : ι → GA E a × GA E b → ℂ} {r : ℝ}
     (h : ∀ i ∈ s, IsTest2J (φ i) r) : IsTest2J (∑ i ∈ s, φ i) r := by

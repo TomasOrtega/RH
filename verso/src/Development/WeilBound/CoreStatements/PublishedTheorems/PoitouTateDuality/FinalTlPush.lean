@@ -16,7 +16,7 @@ section Generic
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Use `show inv ((cohomologyMap μ 2).hom (cohomologyULiftIntAddEquiv A 2 (cohomologyπ A 2 x))) = _`. Rewrite using `[cohomologyULiftIntAddEquiv_cohomologyπ']`. Conclude with `congrArg inv (cohomologyMap_cohomologyπ μ (cocyclesULiftInt A x))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_push (A : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep A] (B : Rep.{0} ℤ G) [IsDiscreteRep B]
     [IsDiscreteRep (uliftIntToIntRep A)] (μ : uliftIntToIntRep A ⟶ B) (inv : cohomology B 2 →+ QZ)
@@ -29,7 +29,7 @@ theorem inv_push (A : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep A] (B : Rep.{0} 
   exact congrArg inv (cohomologyMap_cohomologyπ μ (cocyclesULiftInt A x))
 
 /- English proof (translation)
-Rewrite using `[cochainOf_cocycleι_cyclesMap, cochainOf_cocycleι_cocyclesULiftInt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cochain_push (A : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep A] (B : Rep.{0} ℤ G) [IsDiscreteRep B]
     [IsDiscreteRep (uliftIntToIntRep A)] (μ : uliftIntToIntRep A ⟶ B) (x : cocycles A 2)
@@ -48,7 +48,7 @@ variable {Kf : FiniteSubfield} [NumberField Kf.1] [IsAlgClosure Kf.1 (AlgebraicC
   {v : S} {A : ValuationSubring (AlgebraicClosure ℚ)}
 
 /- English proof (translation)
-Introduce `h`. Rewrite `hϖ` using `[h, ord_zero]`. Conclude with `zero_ne_one hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_ne_zero_loc {ϖ : 𝓞 Kf.1} (hϖ : ord (((ϖ : Kf.1) : ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1))) = 1) :
     (((ϖ : Kf.1) : ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1))) ≠ 0 := by
@@ -57,7 +57,7 @@ theorem ord_ne_zero_loc {ϖ : 𝓞 Kf.1} (hϖ : ord (((ϖ : Kf.1) : ((v : Height
   exact zero_ne_one hϖ
 
 /- English proof (translation)
-Use `show (ιs v y) ^ (l ^ r) = _`. Rewrite using `[← map_pow, hy, AlgHom.commutes, Units.val_mk0, IsScalarTower.algebraMap_apply Kf.1 ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1))]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem root_loc {ϖ : 𝓞 Kf.1} (hϖ0 : (((ϖ : Kf.1) : ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1))) ≠ 0) {y : AlgebraicClosure ℚ}
     (hy : y ^ (l ^ r) = algebraMap Kf.1 (AlgebraicClosure ℚ) (ϖ : Kf.1)) :
@@ -69,7 +69,7 @@ theorem root_loc {ϖ : 𝓞 Kf.1} (hϖ0 : (((ϖ : Kf.1) : ((v : HeightOneSpectru
   rfl
 
 /- English proof (translation)
-The claim follows from `hζ.map_of_injective (ιs v).toRingHom.injective`.
+A detailed English derivation is pending.
 -/
 theorem prim_loc {ζ : AlgebraicClosure ℚ} (hζ : IsPrimitiveRoot ζ (l ^ r)) :
     IsPrimitiveRoot (ιs v ζ) ((⟨l ^ r, pow_pos (Fact.out : l.Prime).pos r⟩ : ℕ+) : ℕ) :=
@@ -77,7 +77,7 @@ theorem prim_loc {ζ : AlgebraicClosure ℚ} (hζ : IsPrimitiveRoot ζ (l ^ r)) 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `h1` using `hev g y`. Rewrite `h1` using `[hκ (ev g), map_mul, map_pow]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kummer_loc
     {ev : ((AlgebraicClosure ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1)) ≃ₐ[((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1)] (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1))) ≃* Dec (F := Kf.1) A}
@@ -94,11 +94,11 @@ end Local
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `haveI : NeZero (l ^ r) := ⟨pow_ne_zero r (Fact.out : l.Prime).ne_zero⟩`. Use `(DFunLike.congr_fun (gsLocalInvRootsQZ_eq S ιs (l ^ r) v) (cohomologyπ _ 2 x0)).trans ?_` and prove the remaining obligations. Use `(inv_push _ _ (rootsLocalMorZ S ιs (l ^ r) v) _ x0).trans ?_` and prove the remaining obligations. Establish `hϖ0` using `ord_ne_zero_loc (Kf := Kf) (v := v) hϖ`. Establish `hY` using `root_loc (ιs := ιs) (v := v) (l := l) (r := r) hϖ0 hy`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζv` using `prim_loc (ιs := ιs) (v := v) hζ`. Establish `hκv` using `kummer_loc (ιs := ιs) (v := v) (ev := ev) hev κ hκ`. Use `hasse_kummer_unram' ⟨l ^ r, pow_pos (Fact.out : l.Prime).pos r⟩ (Units.mk0 _ hϖ0) (by rw [Units.val_mk0]; exact hϖ) (ιs v y) hY (ιs v ζ) hζv (fun σ => κ (ev σ)) hκv _ fun s => ?_` and prove the remaining obligations. Rewrite using `[cochain_push]`. Use `(rootsLocalMorZ_hom_apply S ιs (l ^ r) v _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx0 s, map_pow]`. Conclude with `congrArg (fun m : ZMod (l ^ r) => ιs v ζ ^ m.val) (congrArg (κ (ev (s 0)) * ·) (hχ (s 1)))`.
+A detailed English derivation is pending.
 -/
 theorem found_side_inv' (Kf : FiniteSubfield) [NumberField Kf.1] [IsAlgClosure Kf.1 (AlgebraicClosure ℚ)]
     (S : Set (HeightOneSpectrum (𝓞 Kf.1))) [Fintype S] {l r : ℕ} [Fact l.Prime] (hr : 0 < r)

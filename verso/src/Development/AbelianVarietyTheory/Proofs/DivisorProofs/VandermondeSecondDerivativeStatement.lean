@@ -14,7 +14,7 @@ open ReciprocityTheory.L2DbarEstimates (V cHess bas)
 open scoped ContDiff ComplexOrder Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.VdmApolarPair.apolar_psq_vdm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FVandermondeSecondDerivative.lean&line=260#L260)
 -/

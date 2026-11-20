@@ -18,7 +18,7 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LVs
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `conv_lhs => rw [← fromBlocks_toBlocks A, ← fromBlocks_toBlocks B, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toBlocks₁₁_mul' (A B : M2 n) :
     (A * B).toBlocks₁₁ = A.toBlocks₁₁ * B.toBlocks₁₁ + A.toBlocks₁₂ * B.toBlocks₂₁ := by
@@ -26,7 +26,7 @@ theorem toBlocks₁₁_mul' (A B : M2 n) :
   simp
 
 /- English proof (translation)
-Rewrite using `[toBlocks₁₁_mul', Cmi, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, ub1]`. Simplify using `only [Matrix.smul_mul, Matrix.one_mul, smul_add, smul_smul]`. Use `congr 1`. Rewrite using `[show (2 * Complex.I * (-Complex.I / 2)) = 1 by ring_nf; simp [Complex.I_sq]]; simp`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -38,9 +38,9 @@ theorem inverse_first_block_eq_cayley (x : M2 n) : ub1 x = (2 * Complex.I) • (
   · congr 1; ring
 
 /- English proof (translation)
-Rewrite using `[toBlocks₂₁_mul, Cmi, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, ub2]`. Simplify using `only [Matrix.smul_mul, Matrix.one_mul, smul_add, smul_smul]`. Establish `h1 : (2 * Complex.I * (Complex.I / 2)) = -1` using `by ring_nf; simp [Complex.I_sq]`. Rewrite using `[h1]`. Simplify using `only [neg_smul, one_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inverse_second_block_eq_cayley (x : M2 n) : ub2 x = (2 * Complex.I) • (Cmi n * x⁻¹).toBlocks₂₁ := by
   rw [toBlocks₂₁_mul, Cmi, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, ub2]
@@ -52,13 +52,13 @@ theorem inverse_second_block_eq_cayley (x : M2 n) : ub2 x = (2 * Complex.I) • 
   congr 1; ring
 
 /- English proof (translation)
-Rewrite using `[← cm_inv]`. Conclude with `Cinv_mul_Cm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmi_mul_cm : Cmi n * Cm n = 1 := by
   rw [← cm_inv]; exact Cinv_mul_Cm
 
 /- English proof (translation)
-Rewrite using `[mX, mX, cm_inv, show Cm n * fromBlocks 1 Q R 1 * Cmi n * (Cm n * fromBlocks 1 (-Q) (-R) 1 * Cmi n) = Cm n * (fromBlocks 1 Q R 1 * (Cmi n * Cm n) * fromBlocks 1 (-Q) (-R) 1) * Cmi n by`. Simplify using `only [Matrix.mul_assoc]]`. Rewrite using `[cmi_mul_cm, Matrix.mul_one, fromBlocks_multiply]`. Simplify using `only [Matrix.one_mul, Matrix.mul_one, Matrix.mul_neg, hQR, hRQ, neg_zero, add_zero, add_neg_cancel, neg_add_cancel, zero_add]`. Rewrite using `[show fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) 0 0 1 = 1 from fromBlocks_one, Matrix.mul_one, cm_mul_cmi]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mX_mul_mX_neg (Q R : Matrix (Fin n) (Fin n) ℂ) (hQR : Q * R = 0) (hRQ : R * Q = 0) :
     mX 1 Q R 1 * mX 1 (-Q) (-R) 1 = 1 := by
@@ -71,20 +71,20 @@ theorem mX_mul_mX_neg (Q R : Matrix (Fin n) (Fin n) ℂ) (hQR : Q * R = 0) (hRQ 
   rw [show fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) 0 0 1 = 1 from fromBlocks_one, Matrix.mul_one, cm_mul_cmi]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv (mX_mul_mX_neg Q R hQR hRQ)`.
+A detailed English derivation is pending.
 -/
 theorem mX_inv (Q R : Matrix (Fin n) (Fin n) ℂ) (hQR : Q * R = 0) (hRQ : R * Q = 0) :
     (mX 1 Q R 1)⁻¹ = mX 1 (-Q) (-R) 1 := Matrix.inv_eq_right_inv (mX_mul_mX_neg Q R hQR hRQ)
 
 /- English proof (translation)
-Rewrite using `[mX, cm_inv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, cmi_mul_cm, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cmi_mX_neg (Q R : Matrix (Fin n) (Fin n) ℂ) :
     Cmi n * mX 1 (-Q) (-R) 1 = fromBlocks 1 (-Q) (-R) 1 * Cmi n := by
   rw [mX, cm_inv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, cmi_mul_cm, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hM : IsUnit (mX 1 Q R 1).det`. Establish `h` using `mX_mul_mX_neg Q R hQR hRQ`. Conclude with `Matrix.isUnit_det_of_right_inverse h`. Rewrite using `[inverse_first_block_eq_cayley, inverse_first_block_eq_cayley, inverse_second_block_eq_cayley, Matrix.mul_inv_rev, mX_inv Q R hQR hRQ, ← Matrix.mul_assoc, cmi_mX_neg, Matrix.mul_assoc, toBlocks₁₁_mul', toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, Matrix.one_mul]`. Rewrite using `[Matrix.mul_smul, smul_add, neg_mul, smul_neg, sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inverse_first_block_mul_unipotent (x : M2 n) (hx : IsUnit x.det) (Q R : Matrix (Fin n) (Fin n) ℂ) (hQR : Q * R = 0) (hRQ : R * Q = 0) :
     ub1 (x * mX 1 Q R 1) = ub1 x - Q * ub2 x := by
@@ -96,7 +96,7 @@ theorem inverse_first_block_mul_unipotent (x : M2 n) (hx : IsUnit x.det) (Q R : 
   rw [Matrix.mul_smul, smul_add, neg_mul, smul_neg, sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[inverse_first_block_eq_cayley, inverse_second_block_eq_cayley, ← mul_cm₂₁, ← mul_cm₂₂, Matrix.mul_smul, Matrix.mul_smul, ← smul_add, ← toBlocks₂₁_mul, show x * Cm n * (Cmi n * x⁻¹) = x * (Cm n * Cmi n) * x⁻¹ by simp only [Matrix.mul_assoc], cm_mul_cmi, Matrix.mul_one, Matrix.mul …`. Rewrite using `[← fromBlocks_one, toBlocks_fromBlocks₂₁, smul_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem u_ub_rel (x : M2 n) (hx : IsUnit x.det) : u1 x * ub1 x + u2 x * ub2 x = 0 := by
   rw [inverse_first_block_eq_cayley, inverse_second_block_eq_cayley, ← mul_cm₂₁, ← mul_cm₂₂, Matrix.mul_smul, Matrix.mul_smul, ← smul_add, ← toBlocks₂₁_mul,
@@ -105,9 +105,9 @@ theorem u_ub_rel (x : M2 n) (hx : IsUnit x.det) : u1 x * ub1 x + u2 x * ub2 x = 
   rw [← fromBlocks_one, toBlocks_fromBlocks₂₁, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[inverse_first_block_mul_unipotent x hx.1 Q R hQR hRQ]`. Establish `h2 : IsUnit (u2 x).det` using `isUnit_iff_ne_zero.2 hx.2.2.1`. Establish `hrel` using `u_ub_rel x hx.1`. Establish `e : ub2 x = -(wM x * ub1 x)`. Establish `: u2 x * ub2 x = -(u1 x * ub1 x)` using `by rw [eq_neg_iff_add_eq_zero, add_comm]; exact hrel`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, Matrix.mul_neg, sub_neg_eq_add, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem inverse_first_block_mul_unipotent_domain (x : M2 n) (hx : x ∈ Dom n) (Q R : Matrix (Fin n) (Fin n) ℂ) (hQR : Q * R = 0)
     (hRQ : R * Q = 0) : ub1 (x * mX 1 Q R 1) = (1 + Q * wM x) * ub1 x := by
@@ -121,7 +121,7 @@ theorem inverse_first_block_mul_unipotent_domain (x : M2 n) (hx : x ∈ Dom n) (
   rw [e, Matrix.mul_neg, sub_neg_eq_add, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[mX, det_mul, det_mul, det_fromBlocks_one₁₁, hRQ, sub_zero, det_one, mul_one, ← det_mul, Matrix.mul_nonsing_inv]`. Conclude with `det_one`. Conclude with `Matrix.isUnit_det_of_right_inverse cm_mul_cmi`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mX_one (Q R : Matrix (Fin n) (Fin n) ℂ) (hRQ : R * Q = 0) : (mX 1 Q R 1).det = 1 := by
   rw [mX, det_mul, det_mul, det_fromBlocks_one₁₁, hRQ, sub_zero, det_one, mul_one, ← det_mul, Matrix.mul_nonsing_inv]
@@ -129,7 +129,7 @@ theorem det_mX_one (Q R : Matrix (Fin n) (Fin n) ℂ) (hRQ : R * Q = 0) : (mX 1 
   · exact Matrix.isUnit_det_of_right_inverse cm_mul_cmi
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> ext a b <;> simp only [Matrix.mul_apply, Matrix.zero_apply, embOn] <;>`. Apply the tactic sequence `refine Finset.sum_eq_zero fun k _ => ?_ <;> by_cases hk : k ∈ blkA j <;> simp_all [blkB]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem embOn_mul_embOn_compl (j : ℕ) (T : Matrix (blkA (n := n) j) (blkA j) ℂ) (S : Matrix (blkB (n := n) j) (blkB j) ℂ) :
     embOn (blkA j) T * embOn (blkB j) S = 0 ∧ embOn (blkB j) S * embOn (blkA j) T = 0 := by

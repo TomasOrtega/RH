@@ -20,15 +20,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.IwLevel
 
 /- English proof (translation)
-Introduce `S _ A _ H _ i hA hi hm hf hfl`. Use `hA.comm` as an intermediate fact. Use `choose B instB q hq using GlobalTheory.T.exists_abelianQuotient_affineCover S A H i hA hi hm hf hfl`. Establish `hfin : ∀ j, IsFinite (q j).left` using `fun j => (hq j).2.2.1`. Establish `hflat : ∀ j, Flat (q j).left` using `fun j => (hq j).2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : ∀ j, Surjective (q j).left` using `fun j => (hq j).2.2.2.2.1`. Establish `hqc : ∀ j, QuasiCompact (q j).left` using `fun j => by have := hfin j; infer_instance`. Establish `hsq : ∀ j, _` using `fun j => (hq j).2.2.2.2.2`. Take `⟨b, hb1, hb2, hchar⟩` from `GlobalTheory.T.exists_local_quotient_transition_isomorphisms S S.affineCover A H i B q hflat hsurj hqc hsq`. Establish `hcoc` using `GlobalTheory.T.local_quotient_transition_cocycle S S.affineCover A H i B q b hflat hsurj hqc hb1 hchar`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨G0, F, ψ, hψ, hψ2⟩` from `GlobalTheory.CocycleGlue.exists_glue (fun j => S.affineCover.X j) (fun j => (B j).left) (fun j => S.affineCover.f j) (fun j => inferInstance) (fun j => (B j).hom) (fun j k => pullback ((B j).hom ≫ S.affineCover.f j) (S.affineCover.f k)) (fun j k => pullback.fst _ _) b (fun j k => …`. Take `⟨Qm, hQF, hQm⟩` from `GlobalTheory.T.exists_gluedQuotientMap_of_local_quotients S S.affineCover A H i B q b G0 F ψ hchar (fun j k => (hψ2 j k).w) (fun j => (hψ j).w)`. Set `G : Over S` to `Over.mk F`. Set `Q : A ⟶ G` to `Over.homMk Qm hQF`. Establish `hpb : IsPullback ((fst H A ≫ i) * snd H A) (snd H A) Q Q` using `GlobalTheory.T.isPullback_gluedQuotient_kernelPair_of_cover S S.affineCover A H G i Q B ψ q hψ hQm hsq`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hQfin, hQfl, hQs⟩` from `GlobalTheory.T.gluedQuotientMap_finite_flat_surjective S S.affineCover A G Q B ψ q hψ hQm hfin hflat hsurj`. Establish `: IsCommMonObj A` using `hA.comm`. Establish `: IsMonHom i` using `hi`. Establish `: QuasiCompact Q.left` using `inferInstance`. Take `⟨instG, hcomm, hhom, -⟩` from `GlobalTheory.AbelianQuotient.exists_grpObj i Q hpb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨G, instG, Q, GlobalTheory.T.isAbelianScheme_of_charts_surjective_image S S.affineCover A G Q B ψ hA hcomm hQs hψ (fun j => (hq j).1), hhom, hQfin, hQfl, hQs, hpb⟩`.
+A detailed English derivation is pending.
 -/
 theorem quotGlobal_holds : QuotGlobal := by
   intro S _ A _ H _ i hA hi hm hf hfl

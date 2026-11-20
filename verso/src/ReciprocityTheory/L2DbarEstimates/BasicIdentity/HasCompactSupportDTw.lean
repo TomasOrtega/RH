@@ -9,7 +9,7 @@ open scoped ComplexConjugate ContDiff
 noncomputable section
 
 /- English proof (translation)
-Introduce `e he`. Establish `hg : ContDiff ℝ k (fun c : ℂ => ((Real.exp (-c.re) : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp (Real.contDiff_exp.comp Complex.reCLM.contDiff.neg)`. Use `(hg.comp_contDiffOn (hph e he)).congr fun w _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ck_expNeg {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (ph : M → ℝ) (hph : CkR n z k ph) :
     Ck n z k (fun x => (Real.exp (-ph x) : ℂ)) := by
@@ -20,7 +20,7 @@ theorem ck_expNeg {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k 
   simp
 
 /- English proof (translation)
-Rewrite using `[he hx]`. Conclude with `((hf e he).differentiableOn (by simp)).differentiableAt (e.open_target.mem_nhds (e.map_source hx))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem differentiableAt_comp_chart_symm_of_ck_one {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ)
     (hf : Ck n z 1 f) (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (x : M)
@@ -30,13 +30,13 @@ private theorem differentiableAt_comp_chart_symm_of_ck_one {M : Type*} [Topologi
     (e.open_target.mem_nhds (e.map_source hx))
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Simplify using `only [db, dif_pos h]`. Take `⟨he, hx⟩` from `Classical.choose_spec h`. Use `set e := Classical.choose h`. Establish `hzx : z x = e x` using `he hx`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : e.symm (z x) = x`. Rewrite using `[hzx]`. Conclude with `e.left_inv hx`. Establish `hP` using `differentiableAt_comp_chart_symm_of_ck_one n z (fun y => (ph y : ℂ)) hph e he x hx`. Establish `hQ : DifferentiableAt ℝ (fun w => ph (e.symm w)) (z x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Complex.reCLM.differentiableAt.comp (z x) hP` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Establish `h1 : fderiv ℝ ((fun y => (Real.exp (-ph y) : ℂ)) ∘ e.symm) (z x) = Complex.ofRealCLM.comp (Real.exp (-ph (e.symm (z x))) • -(fderiv ℝ (fun w => ph (e.symm w)) (z x)))` using `(Complex.ofRealCLM.hasFDerivAt.comp (z x) hQ.hasFDerivAt.neg.exp).fderiv`. Establish `h2 : fderiv ℝ ((fun y => (ph y : ℂ)) ∘ e.symm) (z x) = Complex.ofRealCLM.comp (fderiv ℝ (fun w => ph (e.symm w)) (z x))` using `(Complex.ofRealCLM.hasFDerivAt.comp (z x) hQ.hasFDerivAt).fderiv`. Simplify using `only [wdb]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2]`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.neg_apply, Complex.ofRealCLM_apply, smul_eq_mul, hex]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[db, dif_neg h]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem db_expNeg {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (ph : M → ℝ) (hph : CkR n z 1 ph) (j : Fin n)
     (x : M) :
@@ -70,17 +70,15 @@ theorem db_expNeg {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (ph
   · simp [db, dif_neg h]
 
 /- English proof (translation)
-Establish `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source` using `⟨e, he, hx⟩`. Rewrite using `[d, dif_pos h]`. Take `⟨he', hx'⟩` from `Classical.choose_spec h`. Use `set e' := Classical.choose h`. Establish `hzx : z x = e x` using `he hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzx' : z x = e' x` using `he' hx'`. Establish `hev : ∀ᶠ w in nhds (z x), e'.symm w = e.symm w`. Establish `ht : ∀ᶠ w in nhds (z x), w ∈ e.target`. Rewrite using `[hzx]`. Conclude with `e.open_target.mem_nhds (e.map_source hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht' : ∀ᶠ w in nhds (z x), w ∈ e'.target`. Rewrite using `[hzx']`. Conclude with `e'.open_target.mem_nhds (e'.map_source hx')`. Establish `hsrc : ∀ᶠ w in nhds (z x), e'.symm w ∈ e.source`. Establish `hc : ContinuousAt e'.symm (z x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hzx']`. Conclude with `e'.continuousAt_symm (e'.map_source hx')`. Establish `hx0 : e'.symm (z x) = x`. Rewrite using `[hzx']`. Conclude with `e'.left_inv hx'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hc.preimage_mem_nhds (by rw [hx0]; exact e.open_source.mem_nhds hx)`. Use `filter_upwards [ht, ht', hsrc] with w hw hw' hws`. Apply `e.injOn hws (e.map_target hw)` to reduce the goal to its premises. Rewrite using `[e.right_inv hw, ← he hws, he' (e'.map_target hw'), e'.right_inv hw']`. Establish `hf : u ∘ e'.symm =ᶠ[nhds (z x)] u ∘ e.symm` using `hev.mono fun w hw => by`.
-
-Simplify using `only [Function.comp_apply, hw]`. Simplify using `only [wd, hf.fderiv_eq]`.
+A detailed English derivation is pending.
 -/
 private theorem d_eq_wd_comp_chart_symm {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n)
     (u : M → ℂ) (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (x : M)
@@ -115,7 +113,7 @@ private theorem d_eq_wd_comp_chart_symm {M : Type*} [TopologicalSpace M] (n : �
   simp only [wd, hf.fderiv_eq]
 
 /- English proof (translation)
-Establish `hD : ContDiffOn ℝ k (fun y => fderiv ℝ U y) s` using `hU.fderiv_of_isOpen hs (by exact_mod_cast le_rfl)`. Establish `h1` using `hD.clm_apply (contDiffOn_const (c := bas n j))`. Establish `h2` using `hD.clm_apply (contDiffOn_const (c := Complex.I • bas n j))`. Conclude with `(h1.sub (contDiffOn_const.mul h2)).div_const 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem contDiffOn_wd_of_contDiffOn_succ (n : ℕ) (j : Fin n) (k : ℕ) (U : V n → ℂ) (s : Set (V n))
     (hs : IsOpen s) (hU : ContDiffOn ℝ ((k + 1 : ℕ)) U s) : ContDiffOn ℝ k (wd n j U) s := by
@@ -126,11 +124,9 @@ private theorem contDiffOn_wd_of_contDiffOn_succ (n : ℕ) (j : Fin n) (k : ℕ)
   exact (h1.sub (contDiffOn_const.mul h2)).div_const 2
 
 /- English proof (translation)
-Introduce `e he`. Establish `key : ∀ w ∈ e.target, (dTw n z ph j u ∘ e.symm) w = wd n j (u ∘ e.symm) w - (u ∘ e.symm) w * wd n j ((fun y => (ph y : ℂ)) ∘ e.symm) w`. Introduce `w hw`. Establish `hs : e.symm w ∈ e.source` using `e.map_target hw`. Establish `hz : z (e.symm w) = w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[he hs]`. Conclude with `e.right_inv hw`. Simplify using `only [Function.comp_apply, dTw]`. Rewrite using `[d_eq_wd_comp_chart_symm n z j u e he _ hs, d_eq_wd_comp_chart_symm n z j _ e he _ hs, hz]`. Use `ContDiffOn.congr ?_ key` and prove the remaining obligations.
-
-Conclude with `(contDiffOn_wd_of_contDiffOn_succ n j k _ _ e.open_target (hu e he)).sub (((hu e he).of_le (by exact_mod_cast Nat.le_succ k)).mul (contDiffOn_wd_of_contDiffOn_succ n j k _ _ e.open_target (hph e he)))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ck_dTw {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (ph : M → ℝ) (j : Fin n) (u : M → ℂ)
     (hph : CkR n z (k + 1) ph) (hu : Ck n z (k + 1) u) : Ck n z k (dTw n z ph j u) := by
@@ -150,13 +146,11 @@ theorem ck_dTw {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : �
       (contDiffOn_wd_of_contDiffOn_succ n j k _ _ e.open_target (hph e he)))
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Rewrite using `[d, dif_pos h]`. Take `⟨he, hx⟩` from `Classical.choose_spec h`. Use `set e := Classical.choose h`. Establish `hzx : z x = e x` using `he hx`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ContinuousAt e.symm (z x)`. Rewrite using `[hzx]`. Conclude with `e.continuousAt_symm (e.map_source hx)`. Establish `hx0 : e.symm (z x) = x`. Rewrite using `[hzx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e.left_inv hx`. Establish `hev : u ∘ e.symm =ᶠ[nhds (z x)] fun _ => (0 : ℂ)`. Establish `ht` using `hc.tendsto`. Rewrite `ht` using `[hx0]`. Conclude with `ht.eventually hu`.
-
-Simplify using `only [wd, hev.fderiv_eq]`. Simplify using the standard rewrite rules. Rewrite using `[d, dif_neg h]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem d_eq_zero_of_eventuallyEq_zero {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n)
     (u : M → ℂ) (x : M) (hu : u =ᶠ[nhds x] 0) : d n z j u x = 0 := by
@@ -180,13 +174,11 @@ private theorem d_eq_zero_of_eventuallyEq_zero {M : Type*} [TopologicalSpace M] 
   · rw [d, dif_neg h]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Rewrite using `[db, dif_pos h]`. Take `⟨he, hx⟩` from `Classical.choose_spec h`. Use `set e := Classical.choose h`. Establish `hzx : z x = e x` using `he hx`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ContinuousAt e.symm (z x)`. Rewrite using `[hzx]`. Conclude with `e.continuousAt_symm (e.map_source hx)`. Establish `hx0 : e.symm (z x) = x`. Rewrite using `[hzx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e.left_inv hx`. Establish `hev : u ∘ e.symm =ᶠ[nhds (z x)] fun _ => (0 : ℂ)`. Establish `ht` using `hc.tendsto`. Rewrite `ht` using `[hx0]`. Conclude with `ht.eventually hu`.
-
-Simplify using `only [wdb, hev.fderiv_eq]`. Simplify using the standard rewrite rules. Rewrite using `[db, dif_neg h]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem db_eq_zero_of_eventuallyEq_zero {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n)
     (u : M → ℂ) (x : M) (hu : u =ᶠ[nhds x] 0) : db n z j u x = 0 := by
@@ -210,9 +202,9 @@ private theorem db_eq_zero_of_eventuallyEq_zero {M : Type*} [TopologicalSpace M]
   · rw [db, dif_neg h]
 
 /- English proof (translation)
-Use `closure_minimal (fun x hx => ?_) (isClosed_tsupport u)` and prove the remaining obligations. Assume the negation of the conclusion as `hxu`. Apply `hx` to reduce the goal to its premises. Establish `hu0 : u =ᶠ[nhds x] 0` using `notMem_tsupport_iff_eventuallyEq.1 hxu`. Simplify using `only [dTw]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[d_eq_zero_of_eventuallyEq_zero n z j u x hu0, hu0.eq_of_nhds]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tsupport_dTw_subset {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (ph : M → ℝ) (j : Fin n) (u : M → ℂ) :
     tsupport (dTw n z ph j u) ⊆ tsupport u := by
@@ -225,7 +217,7 @@ theorem tsupport_dTw_subset {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M �
   simp
 
 /- English proof (translation)
-Use `hu.mono' fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hxu`. Conclude with `hx (d_eq_zero_of_eventuallyEq_zero n z j u x (notMem_tsupport_iff_eventuallyEq.1 hxu))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_d {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n) (u : M → ℂ)
     (hu : HasCompactSupport u) : HasCompactSupport (d n z j u) := by
@@ -234,7 +226,7 @@ theorem hasCompactSupport_d {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M �
   exact hx (d_eq_zero_of_eventuallyEq_zero n z j u x (notMem_tsupport_iff_eventuallyEq.1 hxu))
 
 /- English proof (translation)
-Use `hu.mono' fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hxu`. Conclude with `hx (db_eq_zero_of_eventuallyEq_zero n z j u x (notMem_tsupport_iff_eventuallyEq.1 hxu))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_db {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n) (u : M → ℂ)
     (hu : HasCompactSupport u) : HasCompactSupport (db n z j u) := by
@@ -243,7 +235,7 @@ theorem hasCompactSupport_db {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M �
   exact hx (db_eq_zero_of_eventuallyEq_zero n z j u x (notMem_tsupport_iff_eventuallyEq.1 hxu))
 
 /- English proof (translation)
-Conclude with `hu.mono' ((subset_tsupport _).trans (tsupport_dTw_subset n z ph j u))`.
+A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_dTw {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (ph : M → ℝ) (j : Fin n) (u : M → ℂ)
     (hu : HasCompactSupport u) : HasCompactSupport (dTw n z ph j u) := by

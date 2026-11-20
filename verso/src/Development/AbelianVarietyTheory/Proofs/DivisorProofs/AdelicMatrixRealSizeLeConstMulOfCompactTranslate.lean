@@ -14,11 +14,9 @@ namespace GlobalTheory.Unf.RealMove
 open GlobalTheory.Unf GlobalTheory.Unf.MajMeas
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [realSize, compAt_mul, Matrix.mul_apply]`. Use `_ ≤ ∑ τ, ∑ i, ∑ _j : Fin n, ∑ l, ‖compAt θ τ Y i l‖ * realSize θ a := by gcongr with τ _ i _ j _`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left (norm_compAt_le_realSize θ a τ l j) (norm_nonneg _)`. Use `_ = n * realSize θ Y * realSize θ a := by`. Establish `h : ∀ τ i, ∑ _j : Fin n, ∑ l, ‖compAt θ τ Y i l‖ * realSize θ a = n * (∑ l, ‖compAt θ τ Y i l‖) * realSize θ a`. Introduce `τ i`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, ← Finset.sum_mul, mul_assoc]`.
-
-Repeatedly rewrite using `[h, ← Finset.sum_mul, ← Finset.mul_sum]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem realSize_mul_le_mul {D : D7} (θ : InfFam D) {m r n : ℕ} (Y : Mx D m r) (a : Mx D r n) :
     realSize θ (Y * a) ≤ n * realSize θ Y * realSize θ a := by
@@ -38,11 +36,11 @@ theorem realSize_mul_le_mul {D : D7} (θ : InfFam D) {m r n : ℕ} (Y : Mx D m r
         rfl
 
 /- English proof (translation)
-Introduce `D θ hθ V n Q hQ`. Establish `hc : Continuous (fun y : GA D V => realSize θ (Formalism.L2.Theta.mt V y))` using `(continuous_realSize hθ).comp (GlobalTheory.Core.Rk.Level.continuous_mt' V)`. Take `⟨M, hM⟩` from `(hQ.image hc).bddAbove`. Use `⟨max 1 (n * M), le_max_left _ _, fun y hy x => ?_⟩` and prove the remaining obligations. Use `set a : Mx D V.rank n := HMul.hMul (Formalism.L2.Theta.mt V y⁻¹) x with ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : x = (HMul.hMul (Formalism.L2.Theta.mt V y) a : Mx D V.rank n)`. Rewrite using `[ha]`. Rewrite using `[← Matrix.mul_assoc, ← GlobalTheory.Core.Rk.Level.mt_mul', mul_inv_cancel, GlobalTheory.Core.Rk.Level.mt_one', Matrix.one_mul]`. Establish `hyM : realSize θ (Formalism.L2.Theta.mt V y) ≤ M` using `hM ⟨y, hy, rfl⟩`. Establish `h0` using `realSize_nonneg θ a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `realSize_nonneg θ (Formalism.L2.Theta.mt V y)`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem realSize_le_of_isCompact : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (n : ℕ) (Q : Set (GA D V)), IsCompact Q → ∃ C : ℝ, 1 ≤ C ∧ ∀ y ∈ Q, ∀ x : Mx D V.rank n, GlobalTheory.Unf.realSize θ x ≤ C * GlobalTheory.Unf.realSize θ (HMul.hMul (Formalism.L2.Theta.mt V y⁻¹) x : Mx D V.rank n) := by
   intro D θ hθ V n Q hQ

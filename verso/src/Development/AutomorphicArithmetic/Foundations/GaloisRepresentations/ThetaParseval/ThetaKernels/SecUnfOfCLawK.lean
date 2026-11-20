@@ -19,9 +19,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.Act
 /- English proof (translation)
-Introduce `hA hL F E _ _ _ _ _ σ d R L s₁ f hf he`. Take `⟨t, ht⟩` from `hA F E σ d L s₁ f hf he`. Use `⟨t, fun z hz nb lam 𝓖 hc hk uM ν 𝓤 hU hkU T T' hT nb' lam' 𝓖' hc' hk' => ?_⟩` and prove the remaining obligations. Take `⟨w₁, cM, κ, hlaw, hw, hwf, hcM, hκ, δ, hδ, hcf⟩` from `hL F E σ d R L`. Establish `h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb uM nb' w₁ cM δ` using `{ nb := hc.1, uM := hU.1, nb' := hc'.1, wr := hw, wf := hwf, cf := hcf, δ0 := hδ }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨K, hK⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C5.unf_k R hf z hc hU hT hc' (fun x => ht z hz nb lam 𝓖 hc hk uM ν 𝓤 hU hkU T x) h hcM hκ`. Conclude with `⟨w₁, cM, κ, hlaw, K, fun x => hK x⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem secUnf_of_cLaw_k : _root_.PositivityTheory.SiegelWeilFormula.Act.AbsConv_k → _root_.PositivityTheory.SiegelWeilFormula.Act.CLawEx_k → _root_.PositivityTheory.SiegelWeilFormula.Act.SecUnf_k := by
   intro hA hL F E _ _ _ _ _ σ d R L s₁ f hf he
@@ -33,7 +33,7 @@ theorem secUnf_of_cLaw_k : _root_.PositivityTheory.SiegelWeilFormula.Act.AbsConv
   obtain ⟨K, hK⟩ := _root_.PositivityTheory.SiegelWeilFormula.Act.C5.unf_k R hf z hc hU hT hc' (fun x => ht z hz nb lam 𝓖 hc hk uM ν 𝓤 hU hkU T x) h hcM hκ
   exact ⟨w₁, cM, κ, hlaw, K, fun x => hK x⟩
 /- English proof (translation)
-Introduce `hA` and use `_root_.PositivityTheory.SiegelWeilFormula.Act.secUnf_of_cLaw_k hA _root_.PositivityTheory.SiegelWeilFormula.Act.cLawEx_k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem secUnf_of_k : _root_.PositivityTheory.SiegelWeilFormula.Act.AbsConv_k → _root_.PositivityTheory.SiegelWeilFormula.Act.SecUnf_k := fun hA => _root_.PositivityTheory.SiegelWeilFormula.Act.secUnf_of_cLaw_k hA _root_.PositivityTheory.SiegelWeilFormula.Act.cLawEx_k
 end PositivityTheory.SiegelWeilFormula.Act

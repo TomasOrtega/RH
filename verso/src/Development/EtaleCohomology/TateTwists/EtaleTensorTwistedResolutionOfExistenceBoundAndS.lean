@@ -26,9 +26,9 @@ def tt_res_side : Prop :=
           τ.mul U 0 0 0 (add_zero 0) (e U ζ) b
 
 /- English proof (translation)
-Introduce `q _ i j k hk I J T e e' hI hJ hflat τ hτ`. Take `⟨M, σ, hσ⟩` from `hex (ZMod q) (sgl (tw q i)) J`. Take `⟨-, ε₁, hε₁, hgen₁⟩` from `htw q i j k hk e' hJ hflat σ hσ`. Take `⟨m, hm, hgen⟩` from `hres q i e hI hJ.1 hflat σ τ hσ hτ`. Use `⟨hge (ZMod q) τ hI.1 hJ.1 hτ, ε₁ ≫ m, inferInstance, fun U ζ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (hgen U ζ (e' U ζ))` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (Sec.map (m.f 0)) (hgen₁ U ζ))` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem etale_tensor_twisted_resolution_of_existence_bound_and_sides (hex : tt_tens_ex) (hge : tt_tens_ge) (htw : tt_twist_side) (hres : tt_res_side) :
     EtaleTensorPairTwistResolutionMul := by

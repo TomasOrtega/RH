@@ -23,9 +23,9 @@ noncomputable section
 namespace GlobalTheory.LevelTower
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Establish `hn : 0 < n` using `Nat.pos_of_mul_pos_right hm`. Establish `hc : 0 < c` using `Nat.pos_of_mul_pos_left hm`. Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hn.ne'`. Establish `hc' : (c : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hc.ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.mul_div_cancel_left c hn, zeta, zeta, ← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem zeta_eq_pow {n m : ℕ} (hm : 0 < m) (h : n ∣ m) : zeta n = zeta m ^ (m / n) := by
   obtain ⟨c, rfl⟩ := h
@@ -41,7 +41,7 @@ theorem zeta_eq_pow {n m : ℕ} (hm : 0 < m) (h : n ∣ m) : zeta n = zeta m ^ (
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl)`. Conclude with `(baseKA l₂).ρ.2`. Rewrite using `[zeta_eq_pow l₂.A_pos h]`. Conclude with `pow_mem (baseKA l₂).ζ.2 _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KA_le {l l₂ : Level H} (h : l.A ∣ l₂.A) : KA l ≤ KA l₂ := by
   refine IntermediateField.adjoin_le_iff.mpr ?_
@@ -61,14 +61,14 @@ Both sides reduce to the same expression.
 theorem base_zeta (l : Level H) : (((baseKA l).ζ : KA l) : ℂ) = zeta l.A := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(IntermediateField.inclusion h).toRingHom, fun x => IntermediateField.coe_inclusion h x⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_inclusion' {F F' : IntermediateField ℚ ℂ} (h : F ≤ F') :
     ∃ j : F →+* F', ∀ x, ((j x : F') : ℂ) = ((x : F) : ℂ) :=
   ⟨(IntermediateField.inclusion h).toRingHom, fun x => IntermediateField.coe_inclusion h x⟩
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `exists_inclusion' (KA_le h)`. Use `⟨j, hj, Subtype.ext ?_, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hj, base_rho, base_rho]`. Rewrite using `[hj, IntermediateField.coe_pow, base_zeta, base_zeta]`. Conclude with `zeta_eq_pow l₂.A_pos h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inclusion {l l₂ : Level H} (h : l.A ∣ l₂.A) :
     ∃ j : KA l →+* KA l₂, (∀ x, ((j x : KA l₂) : ℂ) = ((x : KA l) : ℂ)) ∧ j (baseKA l).ρ = (baseKA l₂).ρ ∧
@@ -80,9 +80,9 @@ theorem exists_inclusion {l l₂ : Level H} (h : l.A ∣ l₂.A) :
     exact zeta_eq_pow l₂.A_pos h
 
 /- English proof (translation)
-Use `IntermediateField.finiteDimensional_adjoin ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl)`. Use `IsIntegral.of_pow (n := 2) two_pos ?_` and prove the remaining obligations. Rewrite using `[H.sqrt_neg_disc_sq]`. Conclude with `(isIntegral_natCast H.d).neg`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsIntegral.of_pow l.A_pos ?_` and prove the remaining obligations. Rewrite using `[show zeta l.A ^ l.A = 1 from (Complex.isPrimitiveRoot_exp l.A l.A_pos.ne').pow_eq_one]`. Conclude with `isIntegral_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_KA (l : Level H) : FiniteDimensional ℚ (KA l) := by
   refine IntermediateField.finiteDimensional_adjoin ?_
@@ -95,7 +95,7 @@ theorem finiteDimensional_KA (l : Level H) : FiniteDimensional ℚ (KA l) := by
     exact isIntegral_one
 
 /- English proof (translation)
-Use `letI := j.toAlgebra`. Conclude with `Module.Finite.of_restrictScalars_finite ℚ K K'`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem finite_of_numberField {K K' : Type} [Field K] [Field K'] [CharZero K] [CharZero K']
     [FiniteDimensional ℚ K'] (j : K →+* K') : j.Finite := by
@@ -103,9 +103,7 @@ theorem finite_of_numberField {K K' : Type} [Field K] [Field K'] [CharZero K] [C
   exact Module.Finite.of_restrictScalars_finite ℚ K K'
 
 /- English proof (translation)
-Use `letI := j.toAlgebra`. Use `haveI : Module.Finite K K' := finite_of_numberField j`. Use `haveI : Algebra.FormallyEtale K K' := Algebra.FormallyEtale.of_isSeparable K K'`. Use `haveI : Algebra.FinitePresentation K K' := Algebra.FinitePresentation.of_finiteType.mp inferInstance`. Establish `: Algebra.Etale K K'` using `⟨inferInstance, inferInstance⟩`.
-
-Conclude with `(HasRingHomProperty.Spec_iff (P := @Etale)).mpr this`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etale_of_numberField {K K' : Type} [Field K] [Field K'] [CharZero K] [CharZero K']
     [FiniteDimensional ℚ K'] (j : K →+* K') : Etale (spMap j) := by
@@ -123,15 +121,13 @@ namespace GlobalTheory
 open LevelTower
 
 /- English proof (translation)
-Introduce `hL hL2 hTh E _ _ _ H D l l₂ Xo₂ hpq hdvd`. Establish `hA : l.A ∣ l₂.A` using `hdvd.2.2`. Take `⟨jK, hj, hjρ, hjζ⟩` from `exists_inclusion hA`. Use `haveI := finiteDimensional_KA l₂`. Take `⟨Ga, _, _, ρ, ν, h1, hmul, hν1, hνmul, hover, hlow, hfree, htrans⟩` from `GlobalTheory.LevelGroup.exists_group_action hL hL2 E H D l l₂ Xo₂ jK hpq hdvd hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq : IsQProjOver (Xo₂.s ≫ spMap jK)` using `(isQProjOver_baseChange_and_finite_restrict _ _ jK Xo₂.X (Xo₂.s ≫ spMap jK)).2 Xo₂.s (finite_of_numberField jK) Xo₂.qproj`. Take `⟨Y, π, sY, hπ, hG, hsep, hft, -⟩` from `exists_isGaloisCover_of_isQProjOver (KA l) Xo₂.X (Xo₂.s ≫ spMap jK) Ga ρ hq h1 hmul hover hfree`. Establish `hqY : IsQProjOver sY` using `GlobalTheory.T.isQProjOver_target_of_isGaloisCover (KA l) _ Y π sY Ga ρ hG hsep hft (by rw [hπ]; exact hq)`. Establish `hsm : SmoothOfRelativeDimension D.dim (π ≫ sY)`. Rewrite using `[hπ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := Xo₂.smooth`. Use `haveI : Etale (spMap jK) := etale_of_numberField jK`. Use `haveI : SmoothOfRelativeDimension 0 (spMap jK) := inferInstance`. Use `smoothOfRelativeDimension_comp D.dim 0 Xo₂.s (spMap jK)` as an intermediate fact. Rewrite `this` using `[Nat.add_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsY : SmoothOfRelativeDimension D.dim sY` using `GlobalTheory.T.smoothOfRelativeDimension_descends_etale_cover (KA l) _ Y π sY _ hG.etale hG.onto hft hsm`. Take `⟨t', m, hνm, hp, ha, hk⟩` from `GlobalTheory.T.exists_abelianTriple_descent_galoisCover hL hL2 hTh E H (KA l) _ Y π sY Ga ρ Xo₂.univ.t _ ν hG hqY Xo₂.univ.proper (obj_isAbelianScheme_dim_rigidified_sym E H D l₂ _ _ _ _ Xo₂.univ).2.1 Xo₂.univ.ample Xo₂.univ.ktriv hν1 hνmul`. Take `⟨ob, m', hη, hηA⟩` from `obj_descend_lower_level hL hL2 E H D l l₂ _ _ (baseKA l) (baseKA l₂) jK _ Y π sY Xo₂.s Ga ρ Xo₂.univ (fun a => (ν a).φ) t' m hdvd hjρ hjζ hπ hG hνm hlow hp ha hk`. Use `⟨⟨Y, sY, hqY, hsY, ob, π, jK, hj, hπ, hG.fin, hG.etale, hG.onto, m', hη, hηA, ?_⟩⟩` and prove the remaining obligations. Introduce `K _ _ y y' t mu mu' eM eA h₀ h₁ h₂`.
-
-Take `⟨a, rfl⟩` from `htrans K y y' t mu mu' eM eA h₀ h₁ h₂`. Rewrite using `[Category.assoc, hG.inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_levelQuot : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l l₂ : Level H) (Xo₂ : Moduli D l₂), 1 ≤ D.p + D.q → l.Dvd l₂ → Nonempty (LevelQuot l Xo₂) := by
   intro hL hL2 hTh E _ _ _ H D l l₂ Xo₂ hpq hdvd

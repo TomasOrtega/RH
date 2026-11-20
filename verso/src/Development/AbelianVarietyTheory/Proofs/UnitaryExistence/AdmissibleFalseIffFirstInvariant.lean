@@ -17,19 +17,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 def cls (l : Level H) {n : ℕ} (x : Fin n → D.La) : Fin n → ConjCl D l := fun b => Submodule.Quotient.mk (x b)
 
 /- English proof (translation)
-Introduce `a` and use `⟨fun b => qRep (a b), funext fun b => Classical.choose_spec (Submodule.Quotient.mk_surjective _ (a b))⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem cls_surjective (l : Level H) (n : ℕ) : Function.Surjective (cls (D := D) l (n := n)) := fun a =>
   ⟨fun b => qRep (a b), funext fun b => Classical.choose_spec (Submodule.Quotient.mk_surjective _ (a b))⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Simplify using `[cls]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cls_neg {n : ℕ} (x : Fin n → D.La) : cls l (-x) = -cls l x := by
   funext b; simp [cls]
 
 /- English proof (translation)
-Establish `h : ∃ c, c ∈ Mfr l ∧ c - 1 ∈ l.Mb` using `exists_isSep l`. Rewrite using `[cSep, dif_pos h]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSep_cSep (l : Level H) : IsSep l (cSep l) := by
   have h : ∃ c, c ∈ Mfr l ∧ c - 1 ∈ l.Mb := exists_isSep l
@@ -37,38 +37,38 @@ theorem isSep_cSep (l : Level H) : IsSep l (cSep l) := by
   exact h.choose_spec
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (Submodule.Quotient.mk_surjective _ q)`.
+A detailed English derivation is pending.
 -/
 theorem mk_levRep (q : LevQ D l) : (Submodule.Quotient.mk (levRep q) : NamedCl D l) = q :=
   Classical.choose_spec (Submodule.Quotient.mk_surjective _ q)
 
 /- English proof (translation)
-Rewrite using `[← levPtCl_mk, mk_levRep]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levPt_levRep (Xo : Moduli D l) {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) (q : LevQ D l) :
     levPt Xo x0 (levRep q) = levPtCl Xo x0 q := by
   rw [← levPtCl_mk, mk_levRep]
 
 /- English proof (translation)
-Simplify using `only [pairL, pairing, cls, Int.cast_sum, pairOne_mk D l (isSep_cSep l)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairL_cast {n : ℕ} (x0 x : Fin n → D.La) :
     ((pairL (l := l) x0 x : ℤ) : ZMod l.M) = pairing D l (cls l x0) (fun b => Submodule.Quotient.mk (x b)) := by
   simp only [pairL, pairing, cls, Int.cast_sum, pairOne_mk D l (isSep_cSep l)]
 
 /- English proof (translation)
-Rewrite using `[pairL_cast]`. Simplify using `only [mk_levRep]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pairL_levRep {n : ℕ} (x0 : Fin n → D.La) (q : Fin n → LevQ D l) :
     ((pairL (l := l) x0 (fun b => levRep (q b)) : ℤ) : ZMod l.M) = pairing D l (cls l x0) q := by
   rw [pairL_cast]; simp only [mk_levRep]
 
 /- English proof (translation)
-Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Take `⟨k, hk⟩ : l.M ∣ l.M'` from `Nat.dvd_lcm_left _ _`. Establish `hM' : l.M' ≠ 0` using `Nat.lcm_ne_zero hM l.A_pos.ne'`. Establish `hk0 : k ≠ 0` using `by rintro rfl; simp at hk; exact hM' hk`. Establish `hd : l.M' / l.M = k` using `by rw [hk, Nat.mul_div_cancel_left _ (Nat.pos_of_ne_zero hM)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Formalism.L2.Pj.zetaM, hd, GlobalTheory.IndefiniteRowSideFullHecke.LevelSpanSeparation.zetaM]`. Express the relevant statement in the definitionally equal form `zeta l.M' ^ k = zeta l.M`. Rewrite using `[zeta, zeta, ← Complex.exp_nat_mul, hk]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk0`. Establish `: (l.M : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hM`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem zetaM_eq (c : Coeff l) : Formalism.L2.Pj.zetaM c = GlobalTheory.IndefiniteRowSideFullHecke.LevelSpanSeparation.zetaM c := by
   have hM : l.M ≠ 0 := by have := l.three_le; omega
@@ -87,9 +87,7 @@ theorem zetaM_eq (c : Coeff l) : Formalism.L2.Pj.zetaM c = GlobalTheory.Indefini
   field_simp
 
 /- English proof (translation)
-Use `haveI : NeZero l.M := ⟨by have := l.three_le; omega⟩`. Establish `hz` using `zetaM_prim c`. Establish `hne : GlobalTheory.IndefiniteRowSideFullHecke.LevelSpanSeparation.zetaM c ≠ 0` using `hz.ne_zero (NeZero.ne _)`. Rewrite using `[← zpow_natCast, ZMod.val_intCast]`. Use `conv_lhs => rw [← Int.emod_add_mul_ediv m l.M]`.
-
-Rewrite using `[zpow_add₀ hne, zpow_mul, zpow_natCast, hz.pow_eq_one, one_zpow, _root_.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeta_zpow (c : Coeff l) (m : ℤ) :
     GlobalTheory.IndefiniteRowSideFullHecke.LevelSpanSeparation.zetaM c ^ m = GlobalTheory.IndefiniteRowSideFullHecke.LevelSpanSeparation.zetaM c ^ (m : ZMod l.M).val := by
@@ -101,14 +99,14 @@ theorem zeta_zpow (c : Coeff l) (m : ℤ) :
   rw [zpow_add₀ hne, zpow_mul, zpow_natCast, hz.pow_eq_one, one_zpow, _root_.mul_one]
 
 /- English proof (translation)
-Rewrite using `[x0Dat, eChar, zetaM_eq, zeta_zpow, pairL_levRep]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem datum_eq_character_pairing (c : Coeff l) {n : ℕ} (x0 : Fin n → D.La) (q : Fin n → LevQ D l) :
     x0Dat c x0 q = eChar D c (cls l x0) q := by
   rw [x0Dat, eChar, zetaM_eq, zeta_zpow, pairL_levRep]
 
 /- English proof (translation)
-Simplify using `only [x0Dat, ← zpow_neg]`. Use `congr 1`. Simplify using `[pairL]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem datum_neg_eq_inv (c : Coeff l) {n : ℕ} (x0 : Fin n → D.La) (q : Fin n → LevQ D l) :
     x0Dat c (-x0) q = (x0Dat c x0 q)⁻¹ := by
@@ -117,14 +115,14 @@ theorem datum_neg_eq_inv (c : Coeff l) {n : ℕ} (x0 : Fin n → D.La) (q : Fin 
   simp [pairL]
 
 /- English proof (translation)
-Rewrite using `[indCoeff_eq, datum_neg_eq_inv, datum_eq_character_pairing, eChar]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem indCoeff_cls (c : Coeff l) {n : ℕ} (x0 : Fin n → D.La) (q : Fin n → LevQ D l) :
     indCoeff c (cls l x0) q = (Nat.card (Fin n → LevQ D l) : c.F)⁻¹ * x0Dat c (-x0) q := by
   rw [indCoeff_eq, datum_neg_eq_inv, datum_eq_character_pairing, eChar]
 
 /- English proof (translation)
-Rewrite using `[← cls_neg, indCoeff_cls, neg_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem normalized_datum_eq_induced_coeff (c : Coeff l) {n : ℕ} (x0 : Fin n → D.La) (q : Fin n → LevQ D l) :
     (Nat.card (Fin n → LevQ D l) : c.F)⁻¹ * x0Dat c x0 q = indCoeff c (-cls l x0) q := by

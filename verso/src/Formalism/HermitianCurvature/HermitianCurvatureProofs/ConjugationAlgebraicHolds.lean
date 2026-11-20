@@ -11,11 +11,11 @@ noncomputable section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Take `⟨-, hHH, -⟩` from `Formalism.QuantumDeterminants.hermitian_pos_facts_hold k r`. Establish `hg0 : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `hl : (Hpk k r * gᴴ * Hpk k r) * g = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hr : g * (Hpk k r * gᴴ * Hpk k r) = 1` using `mul_eq_one_comm.mp hl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hinv : g⁻¹ = Hpk k r * gᴴ * Hpk k r` using `Matrix.inv_eq_left_inv hl`. Establish `hgi : g⁻¹ * g = 1` using `by rw [hinv]; exact hl`. Establish `hig : g * g⁻¹ = 1` using `by rw [hinv]; exact hr`. Use `⟨hgi, hig, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Matrix.conjTranspose_mul, hig, Matrix.conjTranspose_one, Matrix.one_mul]`. Use `_ = (g⁻¹)ᴴ * (gᴴ * Hpk k r * g) := by simp only [Matrix.mul_assoc]`. Use `_ = (g⁻¹)ᴴ * Hpk k r := by rw [hg0]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gv_facts {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k r) :
     g⁻¹ * g = 1 ∧ g * g⁻¹ = 1 ∧ Hpk k r * g = (g⁻¹)ᴴ * Hpk k r ∧ gᴴ * Hpk k r = Hpk k r * g⁻¹ := by
@@ -38,17 +38,17 @@ theorem gv_facts {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k r) :
       _ = Hpk k r * g⁻¹ := by rw [hg0]
 
 /- English proof (translation)
-Introduce `k r g hg`. Take `⟨hgi, hig, hHg, hgH⟩` from `gv_facts hg`. Use `⟨fun A hA => ?_, fun A hA => ?_, fun A h0 => ?_, fun A X => ?_⟩` and prove the remaining obligations. Unfold `B.inLie at hA ⊢`. Establish `e1 : (g * A * g⁻¹)ᴴ * Hpk k r = (g⁻¹)ᴴ * (Aᴴ * Hpk k r) * g⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hgH]`. Establish `e2 : Hpk k r * (g * A * g⁻¹) = (g⁻¹)ᴴ * (Hpk k r * A) * g⁻¹`. Simplify using `only [← Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hHg]`. Rewrite using `[e1, e2, ← Matrix.add_mul, ← Matrix.mul_add, hA, Matrix.mul_zero, Matrix.zero_mul]`. Take `⟨n, hn⟩` from `hA`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hp : ∀ m : ℕ, (g * A * g⁻¹) ^ m = g * A ^ m * g⁻¹`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp [hig]`. Consider the case `succ m ih`. Rewrite using `[pow_succ, ih, pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = g * (A ^ m * A) * g⁻¹ := by rw [hgi, Matrix.mul_one]; simp only [Matrix.mul_assoc]`. Rewrite using `[hp, hn, Matrix.mul_zero, Matrix.zero_mul]`. Introduce `h`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `e : (g * A * g⁻¹) * (g * X * g⁻¹) = g * (A * X * g⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, Matrix.trace_mul_comm, Matrix.mul_assoc, hgi, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjugation_algebraic_holds : ConjAlg := by
   intro k r g hg

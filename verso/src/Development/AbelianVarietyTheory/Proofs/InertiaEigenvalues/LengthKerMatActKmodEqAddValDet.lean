@@ -7,7 +7,7 @@ namespace GlobalTheory
 open Formalism.MainNotions.BlochKatoReduction Formalism.BasicNotions
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[matAct, map_sum, map_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matAct_comp_linear {R M N : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] {n : ℕ} (A : Matrix (Fin n) (Fin n) R) (f : M →ₗ[R] N)
@@ -16,7 +16,7 @@ theorem matAct_comp_linear {R M N : Type*} [CommRing R] [AddCommGroup M] [Module
   simp [matAct, map_sum, map_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[matAct, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matAct_self_apply {R : Type*} [CommRing R] {n : ℕ} (A : Matrix (Fin n) (Fin n) R)
     (v : Fin n → R) : matAct (M := R) A v = A.mulVec v := by
@@ -24,7 +24,7 @@ theorem matAct_self_apply {R : Type*} [CommRing R] {n : ℕ} (A : Matrix (Fin n)
   simp [matAct, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[matAct, Matrix.mulVec, dotProduct, Algebra.smul_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem matAct_fractionRing {O : Type} [CommRing O] [IsDomain O] {n : ℕ}
     (A : Matrix (Fin n) (Fin n) O) (v : Fin n → FractionRing O) :
@@ -33,9 +33,9 @@ private theorem matAct_fractionRing {O : Type} [CommRing O] [IsDomain O] {n : �
   simp [matAct, Matrix.mulVec, dotProduct, Algebra.smul_def]
 
 /- English proof (translation)
-Use `set B := A.map (algebraMap O (FractionRing O)) with hB`. Establish `hd : B.det = algebraMap O (FractionRing O) A.det`. Rewrite using `[hB, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hU : IsUnit B`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, hd, isUnit_iff_ne_zero]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective O (FractionRing O))).mpr h`. Establish `hf : ⇑(matAct (M` using `FractionRing O) A) = B.mulVec := funext (matAct_fractionRing A)`. Rewrite using `[hf]`. Conclude with `⟨Matrix.mulVec_injective_iff_isUnit.mpr hU, Matrix.mulVec_surjective_iff_isUnit.mpr hU⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem matAct_fraction_bijective {O : Type} [CommRing O] [IsDomain O] {n : ℕ}
     (A : Matrix (Fin n) (Fin n) O) (h : A.det ≠ 0) :
@@ -51,29 +51,27 @@ theorem matAct_fraction_bijective {O : Type} [CommRing O] [IsDomain O] {n : ℕ}
   exact ⟨Matrix.mulVec_injective_iff_isUnit.mpr hU, Matrix.mulVec_surjective_iff_isUnit.mpr hU⟩
 
 /- English proof (translation)
-Set `ι : (Fin n → O) →ₗ[O] (Fin n → FractionRing O)` to `(Algebra.linearMap O (FractionRing O)).compLeft (Fin n)`. Set `π : (Fin n → FractionRing O) →ₗ[O] (Fin n → KmodO O)` to `(LinearMap.range (Algebra.linearMap O (FractionRing O))).mkQ.compLeft (Fin n)`. Set `e : (Fin n → FractionRing O) ≃ₗ[O] (Fin n → FractionRing O)` to `LinearEquiv.ofBijective (matAct (M := FractionRing O) A) (matAct_fraction_bijective A h)`. Establish `he : ∀ x, e x = matAct (M` using `FractionRing O) A x := fun x => rfl`. Establish `hAι : ∀ y, matAct (M` using `FractionRing O) A (ι y) = ι (A.mulVec y) := by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Establish `key` using `matAct_comp_linear A (Algebra.linearMap O (FractionRing O)) y`. Rewrite `key` using `[matAct_self_apply]`. Conclude with `key`. Establish `hAπ : ∀ x, matAct (M` using `KmodO O) A (π x) = π (matAct (M := FractionRing O) A x) := fun x => matAct_comp_linear A (LinearMap.range (Algebra.linearMap O (FractionRing O))).mkQ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπι : ∀ y, π (ι y) = 0`. Introduce `y`. Use function extensionality and compare the values at `i`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨y i, rfl⟩`. Establish `hιinj : Function.Injective ι`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `a b hab`. Use function extensionality and compare the values at `i`. Conclude with `IsFractionRing.injective O (FractionRing O) (congrFun hab i)`. Establish `hlift : ∀ x, π x = 0 → ∃ y, ι y = x`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ∀ i, ∃ a : O, algebraMap O (FractionRing O) a = x i`. Introduce `i`. Take `⟨a, ha⟩` from `(Submodule.Quotient.mk_eq_zero _).1 (congrFun hx i)`. Conclude with `⟨a, ha⟩`. Use `choose y hy using hmem`.
+Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨y, funext hy⟩`. Set `φ0 : (Fin n → O) →ₗ[O] (Fin n → KmodO O)` to `π ∘ₗ e.symm.toLinearMap ∘ₗ ι`. Establish `hφ0 : ∀ y, φ0 y ∈ LinearMap.ker (matAct (M` using `KmodO O) A) := by`. Introduce `y`. Rewrite using `[LinearMap.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show matAct (M := KmodO O) A (π (e.symm (ι y))) = 0`. Rewrite using `[hAπ, ← he, e.apply_symm_apply, hπι]`. Set `φ` to `φ0.codRestrict _ hφ0`. Establish `hφ : ∀ y, (φ y : Fin n → KmodO O) = π (e.symm (ι y))` using `fun y => rfl`. Establish `hsurj : Function.Surjective φ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, hx⟩`. Establish `hpre : ∀ i, ∃ k : FractionRing O, Submodule.Quotient.mk k = x i` using `fun i => Submodule.Quotient.mk_surjective _ (x i)`. Use `choose k hk using hpre`. Establish `hπk : π k = x` using `funext hk`. Take `⟨y, hy⟩` from `hlift (matAct (M := FractionRing O) A k) (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hAπ, hπk]`. Conclude with `hx)`. Use `⟨y, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, hy, ← he, e.symm_apply_apply, hπk]`. Establish `hkerφ : LinearMap.range A.mulVecLin = LinearMap.ker φ`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use extensionality with `y`. Rewrite using `[LinearMap.mem_range, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hφ, Matrix.mulVecLin_apply, ← hAι, ← he, e.symm_apply_apply, hπι]`. Both sides reduce to the same expression. Introduce `hy`. Establish `h0 : π (e.symm (ι y)) = 0`. Rewrite using `[← hφ, hy]`.
-
-Both sides reduce to the same expression. Take `⟨z, hz⟩` from `hlift _ h0`. Use `⟨z, hιinj ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, ← hAι, hz, ← he, e.apply_symm_apply]`. Conclude with `⟨(Submodule.quotEquivOfEq _ _ hkerφ).trans (φ.quotKerEquivOfSurjective hsurj)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_coker_equiv_ker_matAct {O : Type} [CommRing O] [IsDomain O] {n : ℕ}
     (A : Matrix (Fin n) (Fin n) O) (h : A.det ≠ 0) :
@@ -147,25 +145,23 @@ theorem nonempty_coker_equiv_ker_matAct {O : Type} [CommRing O] [IsDomain O] {n 
   exact ⟨(Submodule.quotEquivOfEq _ _ hkerφ).trans (φ.quotKerEquivOfSurjective hsurj)⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hfl` using `Module.length_ne_top_iff.mp hne`. Establish `: IsNoetherian O (LinearMap.ker (matAct (M` using `KmodO O) A)) := (isFiniteLength_iff_isNoetherian_isArtinian.mp hfl).1`. Use `set B := A.map (algebraMap O (FractionRing O)) with hB`. Establish `hd : B.det = 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h, map_zero]`. Take `⟨v, hv0, hBv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hd`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i, v i ≠ 0 := by`. Assume the negation of the conclusion as `hh`. Conclude with `hv0 (funext fun i => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Assume the negation of the conclusion as `hi`. Conclude with `hh ⟨i, hi⟩)`. Set `π : (Fin n → FractionRing O) →ₗ[O] (Fin n → KmodO O)` to `(LinearMap.range (Algebra.linearMap O (FractionRing O))).mkQ.compLeft (Fin n)`. Set `g0 : FractionRing O →ₗ[O] (Fin n → KmodO O)` to `π ∘ₗ LinearMap.pi (fun i => LinearMap.mulRight O (v i))`. Establish `hg0 : ∀ t, g0 t = π (t • v)` using `fun t => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hg0mem : ∀ t, g0 t ∈ LinearMap.ker (matAct (M` using `KmodO O) A) := by`. Introduce `t`. Rewrite using `[LinearMap.mem_ker, hg0]`. Use `(matAct_comp_linear A (LinearMap.range (Algebra.linearMap O (FractionRing O))).mkQ (t • v)).trans ?_` and prove the remaining obligations. Rewrite using `[matAct_fractionRing, ← hB, Matrix.mulVec_smul, hBv, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Set `g` to `g0.codRestrict _ hg0mem`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hϖ0 : algebraMap O (FractionRing O) ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O (FractionRing O))).mpr hϖ.ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hle : LinearMap.range g ≤ IsLocalRing.maximalIdeal O • LinearMap.range g`. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `ht : t = ϖ • (t / algebraMap O (FractionRing O) ϖ)`. Rewrite using `[Algebra.smul_def]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ht, map_smul]`. Conclude with `Submodule.smul_mem_smul ((IsLocalRing.mem_maximalIdeal _).mpr hϖ.not_isUnit) ⟨_, rfl⟩`. Establish `hbot` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (IsLocalRing.maximalIdeal O) (LinearMap.range g) (IsNoetherian.noetherian _) hle (IsLocalRing.maximalIdeal_le_jacobson ⊥)`. Use `set t := (algebraMap O (FractionRing O) ϖ * v i0)⁻¹ with ht`. Establish `hgt : g t = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hm : g t ∈ LinearMap.range g` using `⟨t, rfl⟩`. Rewrite `hm` using `[hbot]`. Conclude with `(Submodule.mem_bot O).mp hm`. Establish `hcomp : π (t • v) i0 = 0`. Rewrite using `[← hg0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrFun (congrArg Subtype.val hgt) i0`. Take `⟨a, ha⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hcomp`. Establish `ha' : algebraMap O (FractionRing O) a * algebraMap O (FractionRing O) ϖ = 1`. Establish `h1 : algebraMap O (FractionRing O) a = t * v i0` using `ha`. Rewrite using `[h1, ht]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite `ha'` using `[← map_mul, ← map_one (algebraMap O (FractionRing O))]`. Establish `hmul : a * ϖ = 1` using `IsFractionRing.injective O (FractionRing O) ha'`. Establish `hunit : IsUnit ϖ` using `⟨⟨ϖ, a, by rw [mul_comm]; exact hmul, hmul⟩, rfl⟩`. Conclude with `hϖ.not_isUnit hunit`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem length_ker_matAct_eq_top {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {n : ℕ} (A : Matrix (Fin n) (Fin n) O) (h : A.det = 0) :
@@ -229,9 +225,9 @@ theorem length_ker_matAct_eq_top {O : Type} [CommRing O] [IsDomain O] [IsDiscret
   exact hϖ.not_isUnit hunit
 
 /- English proof (translation)
-Introduce `O _ _ _ a Φ`. Distinguish the cases in `h : Φ.det = 0`. Rewrite using `[length_ker_matAct_eq_top Φ h, h, IsDiscreteValuationRing.addVal_zero]`. Take `⟨e⟩` from `nonempty_coker_equiv_ker_matAct Φ h`. Rewrite using `[← e.length_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RelativeLengthSpanDet.length_coker Φ`.
+A detailed English derivation is pending.
 -/
 theorem length_ker_matAct_kmod_eq_addVal_det :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (a : ℕ)

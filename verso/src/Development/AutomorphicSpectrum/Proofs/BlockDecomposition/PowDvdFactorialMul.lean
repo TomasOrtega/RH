@@ -14,7 +14,7 @@ open CategoryTheory AlgebraicGeometry Polynomial DividedPowers GlobalTheory.LogC
 namespace GlobalTheory.CompanionTheory.ThickLine
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Rewrite using `[Nat.mul_succ, pow_succ]`. Conclude with `(mul_dvd_mul ih (Nat.dvd_factorial hp.pos le_rfl)).trans (Nat.factorial_mul_factorial_dvd_factorial_add _ _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_dvd_factorial_mul {p : ℕ} (hp : p.Prime) (N : ℕ) : p ^ N ∣ (p * N).factorial := by
   induction N with
@@ -25,9 +25,9 @@ theorem pow_dvd_factorial_mul {p : ℕ} (hp : p.Prime) (N : ℕ) : p ^ N ∣ (p 
       (Nat.factorial_mul_factorial_dvd_factorial_add _ _)
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `hn`. Take `⟨k, hk⟩` from `pow_dvd_factorial_mul hp N`. Use `⟨p * N, ?_⟩` and prove the remaining obligations. Rewrite using `[← δ.factorial_mul_dpow_eq_pow hx, hk]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hN]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isNilpotent_of_mem {A : Type} [CommRing A] {J : Ideal A} (δ : DividedPowers J) {p : ℕ} (hp : p.Prime)
     (hn : IsNilpotent (p : A)) {x : A} (hx : x ∈ J) : IsNilpotent x := by
@@ -40,9 +40,9 @@ theorem isNilpotent_of_mem {A : Type} [CommRing A] {J : Ideal A} (δ : DividedPo
   simp
 
 /- English proof (translation)
-Use extensionality with `p`. Establish `hp : p ∈ Submodule.span B (Set.range Q.e)` using `Q.e.mem_span p`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨k, rfl⟩ := hx`. Conclude with `h2 k`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `smul b x _ hx => rw [Algebra.smul_def, map_mul, map_mul, hx, h1]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ringHom_eq {B C : Type} [CommRing B] [CommRing C] (Q : PDPoly B) {f g : Q.P →+* C}
     (h1 : ∀ b, f (algebraMap B Q.P b) = g (algebraMap B Q.P b)) (h2 : ∀ k, f (Q.e k) = g (Q.e k)) : f = g := by
@@ -55,13 +55,13 @@ theorem ringHom_eq {B C : Type} [CommRing B] [CommRing C] (Q : PDPoly B) {f g : 
   | smul b x _ hx => rw [Algebra.smul_def, map_mul, map_mul, hx, h1]
 
 /- English proof (translation)
-The claim follows from `Ideal.mem_sup_right (Ideal.subset_span ⟨0, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem e_one_mem {B : Type} [CommRing B] (Q : PDPoly B) (J : Ideal B) : Q.e 1 ∈ Q.ext J :=
   Ideal.mem_sup_right (Ideal.subset_span ⟨0, rfl⟩)
 
 /- English proof (translation)
-Introduce `_ hx` and use `Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_comap_ext {B : Type} [CommRing B] (Q : PDPoly B) (J : Ideal B) :
     J ≤ (Q.ext J).comap (algebraMap B Q.P) :=
@@ -70,7 +70,7 @@ theorem le_comap_ext {B : Type} [CommRing B] (Q : PDPoly B) (J : Ideal B) :
 variable {O : Type} [CommRing O] {F : Fn O} {b : Base} {ht : b.t = 1} {κ : O →+* b.R ⧸ b.I}
 
 /- English proof (translation)
-Establish `h : (1 : T.B) = T.s * T.i b.t` using `(Finset.prod_of_isEmpty (ι := Empty) _).symm.trans T.hs`. Rewrite `h` using `[ht, map_one, mul_one]`. Conclude with `Units.ext h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem s_eq_one (T : Thick (F.cr b ht κ)) : T.s = 1 := by
   have h : (1 : T.B) = T.s * T.i b.t := (Finset.prod_of_isEmpty (ι := Empty) _).symm.trans T.hs
@@ -119,15 +119,13 @@ def toLine : T ⟶ line T Q η₀ hη hp where
 variable {T Q η₀ hη hp}
 
 /- English proof (translation)
-Take `⟨G, hG1, hG2⟩` from `FubiniStudyChowHeightFormula₂.Adr.Fil.exists_lift Q T'.B φ.φ (fun k => T'.δ.dpow k c) (T'.δ.dpow_zero hc) (fun m k => T'.δ.mul_dpow hc)`. Establish `hGa : G.comp (algebraMap T.B Q.P) = φ.φ` using `RingHom.ext hG1`. Establish `hGdp : IsDPMorphism η₀ T'.δ G` using `FubiniStudyChowHeightFormula₂.Adr.dp_of_std T.δ Q η₀ hη T'.δ G c hc (by rw [hGa]; exact φ.dp) hG2`. Establish `hle : Q.ext T.J ≤ T'.J.comap G` using `Ideal.map_le_iff_le_comap.1 hGdp.1`. Use `⟨{ φ := G, u := fun j => j.elim, comm := fun r => ?_, dp := hGdp, hle := hle, pt := ?_, hx := fun j => j.elim, hs := ?_, hv := fun j => j.elim }, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hG1 _).trans (φ.comm r)`. Use `Eq.trans ?_ φ.pt` and prove the remaining obligations. Establish `e : CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle) = CommRingCat.ofHom (Ideal.quotientMap (Q.ext T.J) (algebraMap T.B Q.P) (le_comap_ext Q T.J)) ≫ CommRingCat.ofHom (Ideal.quotientMap T'.J G hle)`. Use `CommRingCat.hom_ext (RingHom.ext fun z => ?_)` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk T'.J (φ.φ a) = Ideal.Quotient.mk T'.J (G (algebraMap T.B Q.P a))`. Rewrite using `[hG1]`. Rewrite using `[e, Functor.map_comp]`. Both sides reduce to the same expression. Rewrite using `[s_eq_one T']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : T'.B) = ((∏ j : Empty, (j.elim : T'.Bˣ)) * Units.map G.toMonoidHom 1 : T'.Bˣ)`. Simplify using the standard rewrite rules. Conclude with `Thick.Hom.ext hGa (funext fun j => j.elim)`. Express the relevant statement in the definitionally equal form `G (Q.e 1) = c`.
-
-Rewrite using `[hG2 1]`. Conclude with `T'.δ.dpow_one hc`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext {T' : Thick (F.cr b ht κ)} (φ : T ⟶ T') {c : T'.B} (hc : c ∈ T'.J) :
     ∃ ψ : line T Q η₀ hη hp ⟶ T', toLine T Q η₀ hη hp ≫ ψ = φ ∧ ψ.φ (Q.e 1) = c := by
@@ -159,9 +157,9 @@ theorem exists_ext {T' : Thick (F.cr b ht κ)} (φ : T ⟶ T') {c : T'.B} (hc : 
     exact T'.δ.dpow_one hc
 
 /- English proof (translation)
-Use `Thick.Hom.ext (ringHom_eq Q (fun a => ?_) fun k => ?_) (funext fun j => j.elim)` and prove the remaining obligations. Conclude with `congrArg (fun f : T ⟶ T' => f.φ a) h`. Establish `h1 : T'.δ.dpow k (ψ.φ (Q.e 1)) = ψ.φ (η₀.dpow k (Q.e 1))` using `ψ.dp.2 (Q.e 1) (e_one_mem Q T.J)`. Establish `h2 : T'.δ.dpow k (ψ'.φ (Q.e 1)) = ψ'.φ (η₀.dpow k (Q.e 1))` using `ψ'.dp.2 (Q.e 1) (e_one_mem Q T.J)`. Rewrite `h1`, `h2` using `[hη.var k]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : T'.δ.dpow k (ψ.φ (Q.e 1)) = T'.δ.dpow k (ψ'.φ (Q.e 1))` using `congrArg _ he`. Conclude with `h1.symm.trans (h3.trans h2)`.
+A detailed English derivation is pending.
 -/
 theorem hom_unique {T' : Thick (F.cr b ht κ)} {ψ ψ' : line T Q η₀ hη hp ⟶ T'}
     (h : toLine T Q η₀ hη hp ≫ ψ = toLine T Q η₀ hη hp ≫ ψ') (he : ψ.φ (Q.e 1) = ψ'.φ (Q.e 1)) : ψ = ψ' := by
@@ -182,7 +180,7 @@ def lineU (q : b.Rˣ) (hq : (q : b.R) - 1 ∈ b.I) (hpp : b.p.Prime) :
       exact Ideal.Quotient.eq.2 (by simpa using e_one_mem Q T.J)))⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(ψ.φ : Q.P →+* T'.B) ((1 : Q.P) + Q.e 1) = 1 + _`. Conclude with `(map_add (ψ.φ : Q.P →+* T'.B) 1 (Q.e 1)).trans (by rw [map_one]; rfl)`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem map_lineU {T' : Thick (F.cr b ht κ)} (q : b.Rˣ) (hq : (q : b.R) - 1 ∈ b.I) (hpp : b.p.Prime)
     (ψ : line T Q η₀ hη hpp.ne_zero ⟶ T') :
@@ -191,21 +189,21 @@ theorem map_lineU {T' : Thick (F.cr b ht κ)} (q : b.Rˣ) (hq : (q : b.R) - 1 �
   exact (map_add (ψ.φ : Q.P →+* T'.B) 1 (Q.e 1)).trans (by rw [map_one]; rfl)
 
 /- English proof (translation)
-Introduce `O _ F b ht κ Λ _ c ρ hρ μ hμ q hq x hpp hqx hcμ hsum T`. Establish `hp0` using `hpp.ne_zero`. Take `⟨Q⟩ : Nonempty (PDPoly T.B)` from `⟨GlobalTheory.PDA.Model.pdPoly T.B⟩`. Take `⟨η₀, hη⟩` from `FubiniStudyChowHeightFormula₂.Adr.exists_std T.B T.J T.δ Q`. Use `⟨line T Q η₀ hη hp0, toLine T Q η₀ hη hp0, lineU q hq hpp, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `T' φ a`. Establish `hc : ((a.1 : T'.Bˣ) : T'.B) - 1 ∈ T'.J`. Establish `h : Ideal.Quotient.mk T'.J ((a.1 : T'.Bˣ) : T'.B) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 a.2)`. Conclude with `Ideal.Quotient.eq.1 (h.trans (map_one _).symm) |> fun h => by simpa using h`. Take `⟨ψ, h1, h2⟩` from `exists_ext (Q := Q) (η₀ := η₀) (hη := hη) (hp := hp0) φ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ψ, ⟨h1, ?_⟩, ?_⟩` and prove the remaining obligations. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `(map_lineU q hq hpp ψ).trans ?_` and prove the remaining obligations. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `ψ' ⟨h1', h2'⟩`. Establish `e : 1 + ψ'.φ (Q.e 1) = ((a.1 : T'.Bˣ) : T'.B)` using `(map_lineU q hq hpp ψ').symm.trans (congrArg (fun u : (thU (F.cr b ht κ) q hq).U T' => ((u.1 : T'.Bˣ) : T'.B)) h2')`. Use `hom_unique (h1'.trans h1.symm) ?_` and prove the remaining obligations. Rewrite using `[h2]`. Conclude with `eq_sub_of_add_eq' e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `g hg hgη`. Set `gφ : Q.P →+* Q.P` to `g.φ`. Establish `hgφ : gφ.comp (algebraMap T.B Q.P) = algebraMap T.B Q.P` using `congrArg (fun f : T ⟶ line T Q η₀ hη hp0 => f.φ) hg`. Establish `hmul : gφ (1 + Q.e 1) = algebraMap T.B Q.P ((T.i x) ^ b.p) * (1 + Q.e 1)`. Establish `e : gφ (1 + Q.e 1) = algebraMap T.B Q.P (T.i (q : b.R)) * (1 + Q.e 1)` using `congrArg (fun u : (thU (F.cr b ht κ) q hq).U (line T Q η₀ hη hp0) => ((u.1 : (line T Q η₀ hη hp0).Bˣ) : (line T Q η₀ hη hp0).B)) hgη`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, hqx, map_pow]`. Establish `hsum' : (∑ i ∈ Finset.range b.p, (T.i x) ^ i) ∈ T.J`. Use `T.i_mem hsum` as an intermediate fact. Simplify `this` using `[map_sum, map_pow]`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.CompanionTheory.PDAcyc.main T.δ Q η₀ hη b.p hpp (T.adm.1 hp0) (T.i x) hsum' gφ hgφ g.dp hmul`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hμ' : ∀ z : Q.P, algebraMap T.B Q.P ((T.i x) ^ b.p - 1) * z = algebraMap T.B Q.P (T.i (c μ)) * z`. Introduce `z`. Rewrite using `[hcμ, hqx, map_sub T.i, map_pow, map_one]`. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations. Introduce `r z hz hz'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨m, hm, e⟩` from `h2 (ρ r) z hz hz'`. Conclude with `⟨m, T.pdPow_anti (hρ.2 r) hm, e.trans (hμ' z)⟩`. Introduce `r z hz`. Take `⟨y, hy, e⟩` from `h3 (ρ r) z hz`. Conclude with `⟨y, (line T Q η₀ hη hp0).pdPow_anti (hρ.2 r) hy, e.trans (hμ' z)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ {O : Type} [CommRing O] (F : Fn O) (b : Base) (ht : b.t = 1) (κ : O →+* b.R ⧸ b.I) {Λ : Type} [CommRing Λ] (c : Λ →+* b.R) (ρ : ℕ → ℕ) (hρ : Slow ρ) (μ : Λ) (hμ : c μ ∈ b.I) (q : b.Rˣ) (hq : (q : b.R) - 1 ∈ b.I) (x : b.R), b.p.Prime → (q : b.R) = x ^ b.p → c μ = q - 1 → (∑ i ∈ Finset.range b.p, x ^ i) ∈ b.I → ∀ T : Thick (F.cr b ht κ), ∃ (T₁ : Thick (F.cr b ht κ)) (i : T ⟶ T₁) (η : (thU (F.cr b ht κ) q hq).U T₁), (∀ (T' : Thick (F.cr b ht κ)) (φ : T ⟶ T') (a : (thU (F.cr b ht κ) q hq).U T'), ∃! ψ : T₁ ⟶ T', i ≫ ψ = φ ∧ (thU (F.cr b ht κ) q hq).map ψ η = a) ∧ ∀ g : T₁ ⟶ T₁, i ≫ g = i → (thU (F.cr b ht κ) q hq).map g η = (thU (F.cr b ht κ) q hq).q _ * η → (pdFlt (F.cr b ht κ) c ρ hρ μ hμ).FAcyc i g := by
   intro O _ F b ht κ Λ _ c ρ hρ μ hμ q hq x hpp hqx hcμ hsum T

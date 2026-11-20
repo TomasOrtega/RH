@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeNormal
 namespace GlobalTheory.Proof.latticeNormalForm_modulo_unipotentSemidirect
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Proof.LatticeNormalFormUnipotent.latticeNormalForm`.
+A detailed English derivation is pending.
 -/
 theorem latticeNormalForm : GlobalTheory.IndefiniteRowSideFullHecke.FlagUnipotentSemidirect.LatticeNormalForm :=
   GlobalTheory.Proof.LatticeNormalFormUnipotent.latticeNormalForm

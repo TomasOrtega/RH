@@ -14,11 +14,9 @@ noncomputable section
 namespace GlobalTheory.Mem.Col2.TC
 
 /- English proof (translation)
-Introduce `u`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (t.O u I.mu0).mt = _`. Rewrite using `[hS.O.mt u I.mu0, hOk.trueColumnChoices_heckeChar_reference_eq_one, tildeQ_one]`. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use `split_ifs`. Conclude with `mul_one _`. Both sides reduce to the same expression. Introduce `i c show (t.O u I.mu0).dt i c = _`. Rewrite using `[hS.O.dt u I.mu0 i c]`.
-
-Both sides reduce to the same expression. Rewrite using `[hpi]`. Conclude with `memLatAt_std I hOk hP l Z u (t.memObj u) fun i c => hS.O.lat u I.mu0 i c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memSideU_std {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : G.Inst (I.rec7 l Z) L} {Gl : G.LatInst (I.rec7 l Z)} {K : G.Consts} {Y : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX} (t : KerEntTied ex) (hOk : I.Ok) (hP : TC.Pins B X) (hS : I.StdKer l Z t) (hpi : ex.errX.piT = X.piT) : t.MemSideU := by
   intro u
@@ -37,9 +35,9 @@ theorem memSideU_std {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z 
     exact memLatAt_std I hOk hP l Z u (t.memObj u) fun i c => hS.O.lat u I.mu0 i c
 
 /- English proof (translation)
-Take `⟨hX, hseam, hPr, -, -, -, hword, -⟩` from `hS`. Consider the cases of `t`. Simplify using `only at *`. Substitute `hX` using the available equality. Consider the cases of `hseam`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hPr`. Consider the cases of `hword`. Introduce `u`. Rewrite using `[hpi]`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem piSide_std {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : G.Inst (I.rec7 l Z) L} {Gl : G.LatInst (I.rec7 l Z)} {K : G.Consts} {Y : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX} (t : KerEntTied ex) (hS : I.StdKer l Z t) (hpi : ex.errX.piT = X.piT) : t.PiSide := by
   obtain ⟨hX, hseam, hPr, -, -, -, hword, -⟩ := hS
@@ -54,11 +52,11 @@ theorem piSide_std {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : 
   rfl
 
 /- English proof (translation)
-Take `⟨hX, hseam, hPr, hCh, hsel, hSS, hword, htup, hcst, hidx, hm2, hglob, -⟩` from `hS`. Consider the cases of `t`. Simplify using `only at *`. Substitute `hX` using the available equality. Consider the cases of `hPr`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hCh`. Consider the cases of `hsel`. Substitute `hSS` using the available equality. Consider the cases of `htup`. Consider the cases of `hcst`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hglob`. Conclude with `⟨hOk.ch_ok, fun j v h => hOk.ch_tied.muVal j v h, fun a => hOk.sharp a⟩`.
+Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem chOk_std {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : G.Inst (I.rec7 l Z) L} {Gl : G.LatInst (I.rec7 l Z)} {K : G.Consts} {Y : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX} (t : KerEntTied ex) (hOk : I.Ok) (hS : I.StdKer l Z t) : t.Ch.Ok ∧ MuValTie t.Ch t.glob ∧ ∀ a, (t.cst a).sharp = true := by
   obtain ⟨hX, hseam, hPr, hCh, hsel, hSS, hword, htup, hcst, hidx, hm2, hglob, -⟩ := hS
@@ -75,29 +73,27 @@ theorem chOk_std {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC
   exact ⟨hOk.ch_ok, fun j v h => hOk.ch_tied.muVal j v h, fun a => hOk.sharp a⟩
 
 /- English proof (translation)
-Establish `hU : t.MemSideU`. Introduce `u`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (t.O u I.mu0).mt = _`. Rewrite using `[hO.mt u I.mu0, hOk.trueColumnChoices_heckeChar_reference_eq_one, tildeQ_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Use `split_ifs`. Conclude with `mul_one _`. Both sides reduce to the same expression. Introduce `i c show (t.O u I.mu0).dt i c = _`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hO.dt u I.mu0 i c]`. Both sides reduce to the same expression. Rewrite using `[hpi]`. Conclude with `memLatAt_std I hOk hP l Z u (t.memObj u) fun i c => hO.lat u I.mu0 i c`. Establish `hPi : t.PiSide` using `by clear hU hO hglob hcst htup hSS hsel hCh`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `t`. Simplify using `only at *`. Substitute `hX` using the available equality. Consider the cases of `hseam`. Consider the cases of `hPr`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the cases of `hword`. Introduce `u`. Rewrite using `[hpi]`. Both sides reduce to the same expression. Establish `hC : t.Ch.Ok ∧ MuValTie t.Ch t.glob ∧ ∀ a, (t.cst a).sharp = true` using `by clear hU hPi`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `t`. Simplify using `only at *`. Substitute `hX` using the available equality. Consider the cases of `hPr`. Consider the cases of `hCh`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hsel`. Substitute `hSS` using the available equality. Consider the cases of `htup`. Consider the cases of `hcst`. Consider the cases of `hglob`.
+Split into cases according to the possible forms of the given data. Supply the required witnesses or components. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions.
 
-Conclude with `⟨hOk.ch_ok, fun j v h => hOk.ch_tied.muVal j v h, fun a => hOk.sharp a⟩`. Establish `hM : t.MtTwTie` using `by clear hU hPi hC`. Consider the cases of `t`. Simplify using `only at *`. Substitute `hX` using the available equality.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Substitute using the available equality. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations.
 
-Consider the cases of `hseam`. Substitute `hSS` using the available equality. Consider the cases of `htup`. Use `⟨(QuotientGroup.mk' (KDq B.host I.SQ)).comp (finIdele (afIso B.host.F B.host.E)), ⟨fun y => ?_, fun k z hz => ?_⟩, fun μ _ _ => ⟨tildeQ B.host I.SQ (I.xi μ), fun x => ?_, fun u => ?_⟩⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective (show DtQ B.host I.SQ from y)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨finAf B.host.F B.host.E a, ?_⟩` and prove the remaining obligations. Conclude with `mk_eq_of_snd_eq B.host I.SQ (afIso_finAf B.host.F B.host.E a)`. Establish `hz' : (show B.host.E from z.1) * B.host.conj (k : B.host.E) = k` using `hz show (QuotientGroup.mk (finIdele (afIso B.host.F B.host.E) (ratId B.host.F B.host.E k)) : DtQ B.host I.SQ) = e1Q B.host I.SQ z`. Rewrite using `[← isUnitaryPointsMap_unitaryRationalPointsFiner B.host I.SQ k z hz']`. Use `mk_eq_of_snd_eq B.host I.SQ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show afIso B.host.F B.host.E ((k : B.host.E) ⊗ₜ[B.host.F] 1) = _`. Rewrite using `[afIso_tmul_one]`. Both sides reduce to the same expression. Establish `hk : KDq B.host I.SQ ≤ ((I.xi μ).1.comp (finPartI B.host.E)).ker` using `(KDq_anti B.host (I.Q_subset_SQ μ)).trans ((GlobalTheory.Mem.LevTwist.levOk_twists B X I hOk).2.2 μ).1 show tildeQ B.host I.SQ (I.xi μ) (QuotientGroup.mk (finIdele (afIso B.host.F B.host.E) x)) = _`. Rewrite using `[tildeQ_mk B.host I.SQ hk, finPartI_eq_self fun _ => rfl]`.
-
-Conclude with `Units.ext ((hOk.xi_reads μ).apply _ x rfl)`. Rewrite using `[hO.mt u μ]`. Both sides reduce to the same expression. Conclude with `⟨⟨hC.1, hC.2.1, hPi, fun u _ => hU u⟩, hU, hM, hC.2.2⟩`.
+Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem k_pins_of_fields {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : G.Inst (I.rec7 l Z) L} {Gl : G.LatInst (I.rec7 l Z)} {K : G.Consts} {Y : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX} (t : KerEntTied ex) (hOk : I.Ok) (hP : TC.Pins B X)
     (hX : t.X = B.fields) (hseam : HEq t.seam (seamOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G)) (hPr : HEq t.Pr (B.primes X))
@@ -173,14 +169,14 @@ theorem k_pins_of_fields {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws)
   exact ⟨⟨hC.1, hC.2.1, hPi, fun u _ => hU u⟩, hU, hM, hC.2.2⟩
 
 /- English proof (translation)
-Introduce `B X I hOk hP l Z L hT Gi Gl K Y cX ex t hS hpi`. Conclude with `k_pins_of_fields I l Z t hOk hP hS.X_eq hS.seam hS.Pr hS.Ch hS.sel hS.S hS.word hS.tup hS.cst hS.glob hS.O hpi`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem k_pins_tie : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (t : KerEntTied ex), I.StdKerTie l Z t → ex.errX.piT = X.piT → t.ChTie ∧ t.MemSideU ∧ t.MtTwTie ∧ ∀ a, (t.cst a).sharp = true := by
   intro B X I hOk hP l Z L hT Gi Gl K Y cX ex t hS hpi
   exact k_pins_of_fields I l Z t hOk hP hS.X_eq hS.seam hS.Pr hS.Ch hS.sel hS.S hS.word hS.tup hS.cst hS.glob hS.O hpi
 
 /- English proof (translation)
-Introduce `B X I hOk hP l Z L hT Gi Gl K Y cX ex t hS hpi`. Establish `hU` using `memSideU_std I l Z t hOk hP hS hpi`. Take `⟨h1, h2, h3⟩` from `chOk_std I l Z t hOk hS`. Conclude with `⟨⟨h1, h2, piSide_std I l Z t hS hpi, fun u _ => hU u⟩, hU, mtTwTie_std I hOk l Z L hT Gi Gl K Y cX ex t hS, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem k_pins : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (t : KerEntTied ex), I.StdKer l Z t → ex.errX.piT = X.piT → t.ChTie ∧ t.MemSideU ∧ t.MtTwTie ∧ ∀ a, (t.cst a).sharp = true := by
   intro B X I hOk hP l Z L hT Gi Gl K Y cX ex t hS hpi

@@ -14,7 +14,7 @@ set_option maxHeartbeats 4000000
 open GlobalTheory.OneMapAll GlobalTheory.AdTh GlobalTheory.Mem.R3.Rw.GeoTies
 
 /- English proof (translation)
-Substitute `hG ha` using the available equality. Consider the cases of `hi`. Consider the cases of `hz`. Consider the cases of `hq`. Conclude with `congrArg _ (adOver_rulBC O hact c hle h₃ (eq_of_heq hlev) cc _ hf _)`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.omega_lowering_action {D : D7} {G : Type} [iG : Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {C : Formalism.L2.Pj.Core D} [Algebra C.Q.c.F D.what₂.LL] {R : RealDat D A C.Q.c.F} {i : Fin D.R.m} {Tp : Type}
@@ -33,7 +33,7 @@ private theorem UpperTheory.omega_lowering_action {D : D7} {G : Type} [iG : Grou
 
 open Classical in
 /- English proof (translation)
-Consider the cases of `hP`. Consider the cases of `hM`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 private theorem UpperTheory.weight_function_eq {D : D7} {j : ℕ} (b : WeightFamilies.Wt D j) (aP : type_of% b.aP) (aM : type_of% b.aM) (hP : HEq aP b.aP)
     (hM : HEq aM b.aM) :
@@ -42,40 +42,32 @@ private theorem UpperTheory.weight_function_eq {D : D7} {j : ℕ} (b : WeightFam
   cases hP; cases hM; rfl
 
 /- English proof (translation)
-The claim follows from `ha ▸ GlobalTheory.FieldBCModel.rulBC_mem_sec hle hf`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.base_change_mem_section {D : D7} {C : Formalism.L2.Pj.Core D} {j : ℕ} {c c' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff C.Q.l} (hle : c.F ≤ c'.F)
     {a a' : (D.host.E →+* ℂ) × ℕ → ℕ} (ha : a' = a) {n : ℕ} {f : Rul (C.Q.Xo j) c} (hf : f ∈ sec (C.Q.Xo j) c a n) :
     GlobalTheory.FieldBC.rulBC hle f ∈ sec (C.Q.Xo j) c' a' n := ha ▸ GlobalTheory.FieldBCModel.rulBC_mem_sec hle hf
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Wt' z hE hpx core' alg' halg' hcore Xg tr R' cG' hP hRS κ' hκ O' i i' hii hlev φ hφ pt hpt c hle hcc f₀ hf₀`. Establish `hk` using `hκ i i' hii`. Establish `a1` using `hk.1`. Establish `a2` using `hk.2.1`. Establish `a3` using `hk.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `clear hk hκ`. Take `⟨h1, -, -, -⟩` from `hE`. Use `clear hP hRS halg'`. Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at h1`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `h1` using the available equality. Establish `hpx' : w'.px = w.px` using `eq_of_heq hpx`. Establish `hG : Gc _ w'.px = Gc B w.px` using `by rw [hpx']; rfl`. Establish `hi : HEq (inferInstance : Group (Gc _ w'.px)) (inferInstance : Group (Gc B w.px))` using `by rw [hpx']; exact HEq.rfl`. Break down `core' with ⟨⟨⟨H', l', c', Dw', Xo', eO'⟩, U', V', dict', mu', Kf', pb'⟩, cE', chiW', x₀', iota'⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hH, hl, hc, hDw, hXo, hU, hV, hdict, hmu, -, hcE, -, -, -⟩` from `hcore`. Use the proof step `( (`. Establish `e : @Eq (type_of% (H')) ((by with_unfolding_all exact ((z.core.Q.H) :))) (H')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (H')) (H') (((z.core.Q.H))) (((hH)))).symm : _))`. Use `clear (hH)`. Substitute `e))` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Use the proof step `( (`. Establish `e : @Eq (type_of% (l')) ((by with_unfolding_all exact ((z.core.Q.l) :))) (l')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (l')) (l') (((z.core.Q.l))) (((hl)))).symm : _))`. Use `clear (hl)`. Substitute `e))` using the available equality. Use the proof step `( (`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `e : @Eq (type_of% (c')) ((by with_unfolding_all exact ((z.core.Q.c) :))) (c')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (c')) (c') (((z.core.Q.c))) (((hc)))).symm : _))`. Use `clear (hc)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (Dw')) ((by with_unfolding_all exact ((z.core.Q.Dw) :))) (Dw')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (Dw')) (Dw') (((z.core.Q.Dw))) (((hDw)))).symm : _))`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Use `clear (hDw)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (Xo')) ((by with_unfolding_all exact ((z.core.Q.Xo) :))) (Xo')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (Xo')) (Xo') (((z.core.Q.Xo))) (((hXo)))).symm : _))`. Use `clear (hXo)`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (U')) ((by with_unfolding_all exact ((z.core.U) :))) (U')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (U')) (U') (((z.core.U))) (((hU)))).symm : _))`. Use `clear (hU)`. Substitute `e))` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `( (`. Establish `e : @Eq (type_of% (V')) ((by with_unfolding_all exact ((z.core.V) :))) (V')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (V')) (V') (((z.core.V))) (((hV)))).symm : _))`. Use `clear (hV)`. Substitute `e))` using the available equality. Use the proof step `( (`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 
-Establish `e : @Eq (type_of% (dict')) ((by with_unfolding_all exact ((z.core.dict) :))) (dict')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (dict')) (dict') (((z.core.dict))) (((hdict)))).symm : _))`. Use `clear (hdict)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (mu')) ((by with_unfolding_all exact ((z.core.mu) :))) (mu')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (mu')) (mu') (((z.core.mu))) (((hmu)))).symm : _))`.
-
-Use `clear (hmu)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (cE')) ((by with_unfolding_all exact ((z.core.cE) :))) (cE')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (cE')) (cE') (((z.core.cE))) (((hcE)))).symm : _))`. Use `clear (hcE)`.
-
-Substitute `e))` using the available equality. Establish `ei : @Eq (type_of% i') ((by with_unfolding_all exact (i :))) i'` using `(by with_unfolding_all exact ((@Fin.ext (w'.st Z').toD7.R.m ((i)) i' ((hii))) : _))`. Substitute `ei` using the available equality. Establish `ha : @Eq (type_of% (wtA (z.geo.κ i))) ((by with_unfolding_all exact ((wtA (κ' ((i)))) : _))) (wtA (z.geo.κ i))` using `(by with_unfolding_all exact ((UpperTheory.weight_function_eq (z.geo.κ i) ((by with_unfolding_all exact ((κ' ((i))).aP : _))) ((by with_unfolding_all exact ((κ' ((i))).aM : _))) ((by with_unfolding_all exact (a1 :))) ((by with_unfolding_all exact (a2 :)))) :))`. Use `letI := z.alg`.
-
-Establish `hm` using `UpperTheory.base_change_mem_section (C := z.core.toCore) hle ha hf₀`. Establish `key` using `fun (g : Gc B w.px) (q : AutQ (Wc (w'.st Z').toD7 ((by with_unfolding_all exact (i :))))) => UpperTheory.omega_lowering_action (z.geo.O i) (z.geo.pins i).2.act.1 c hle (le_trans (z.geo.O i).hle hle) hG hi (lev := (by with_unfolding_all exact ((O' ((i))).lev : _))) ((by with_unfol …`. Establish `hr : HEq (GlobalTheory.FieldBC.rulBC hle f₀) (GlobalTheory.FieldBC.rulBC hle f₀)` using `HEq.rfl`. Set `F1` to `GlobalTheory.FieldBC.rulBC hle f₀`. Use the proof step `( (`.
-
-Establish `e : @Eq (type_of% (c)) ((by with_unfolding_all exact (((O' ((by with_unfolding_all exact (i :)))).c') :))) (c)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (c)) ((((O' ((by with_unfolding_all exact (i :)))).c'))) (c) (((hcc)))) : _))`. Use `clear (hcc)`. Substitute `e))` using the available equality. Conclude with `⟨(by with_unfolding_all exact (F1 :)), (by with_unfolding_all exact (hm :)), (by with_unfolding_all exact (hr :)), (by with_unfolding_all exact (key :))⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.cusp_sections_over_coefficient_extension :
     ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} (w : ColW B f T) (w' : ColW B' f' T')

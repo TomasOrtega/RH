@@ -35,7 +35,7 @@ open Classical
 variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
 /- English proof (translation)
-Unfold `grpSum`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `[Formalism.MainNotions.IntegralHeckeForms.specU, AddMonoidAlgebra.lift_single]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem specU_grpSum (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) {j : ℕ} {b : Bool} (ch : Set (Pl D.host.E))
     (Q : Finset (Pl D.host.E)) (M k : ℕ) (χ : Multiplicative (DelQM D.host (X.l i) Q M) →* (X.Ok i k)ˣ)
@@ -48,7 +48,7 @@ theorem specU_grpSum (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) {j : �
   simp [Formalism.MainNotions.IntegralHeckeForms.specU, AddMonoidAlgebra.lift_single]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.TwSys.PqF, LinearMap.add_apply, Module.End.one_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.baseChange_tmul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem PqF_tmul (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (j : ℕ) (b : Bool) (k : ℕ) (P : PlE D.host)
     (y o : X.Ok i k) (f : Y.Fm i j b) :
@@ -66,7 +66,7 @@ open Classical
 variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
 /- English proof (translation)
-Rewrite using `[coord_apply Y i Q M hv τ, hU i Q M, GlobalTheory.GalChar.delU_apply, GlobalTheory.GalChar.delCoord_of_closed _ _ _ hQc M hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_eq_delOf {Y : NExp D.R D.host D.what₂ D.LL0 N X} (hU : GlobalTheory.UnivChar.IsUnivChar Y) (i : X.Tw) (M : ℕ)
     {Q : Finset (Pl D.host.E)} (hQc : ∀ P ∈ Q, ∀ P', Formalism.BasicNotions.IsConjPl D.host P P' → P' ∈ Q) {v : Pl D.host.E} (hv : v ∈ Q)
@@ -76,7 +76,7 @@ theorem coord_eq_delOf {Y : NExp D.R D.host D.what₂ D.LL0 N X} (hU : GlobalThe
   rw [coord_apply Y i Q M hv τ, hU i Q M, GlobalTheory.GalChar.delU_apply, GlobalTheory.GalChar.delCoord_of_closed _ _ _ hQc M hv]
 
 /- English proof (translation)
-Use extensionality with `τ`. Conclude with `congrArg Multiplicative.ofAdd ((coord_eq_delOf hU i M hQc hv τ).trans (coord_eq_delOf hU i M hQc' hv' τ).symm)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem coord_congr {Y : NExp D.R D.host D.what₂ D.LL0 N X} (hU : GlobalTheory.UnivChar.IsUnivChar Y) (i : X.Tw) (M : ℕ)
     {Q Q' : Finset (Pl D.host.E)} (hQc : ∀ P ∈ Q, ∀ P', Formalism.BasicNotions.IsConjPl D.host P P' → P' ∈ Q)
@@ -86,9 +86,9 @@ theorem coord_congr {Y : NExp D.R D.host D.what₂ D.LL0 N X} (hU : GlobalTheory
   exact congrArg Multiplicative.ofAdd ((coord_eq_delOf hU i M hQc hv τ).trans (coord_eq_delOf hU i M hQc' hv' τ).symm)
 
 /- English proof (translation)
-Distinguish the cases in `hv : v ∈ Q`. Use `Subgroup.isOpen_mono (H₁ := (Y.delU i Q M).ker) (fun g hg => ?_) (Y.delU_open i Q M)` and prove the remaining obligations. Use `MonoidHom.mem_ker.2 (Multiplicative.toAdd.injective ?_)` and prove the remaining obligations. Rewrite using `[coord_apply Y i Q M hv, MonoidHom.mem_ker.1 hg]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `: coord Y i Q M v = 1` using `by unfold coord; rw [dif_neg hv]`. Rewrite using `[this, MonoidHom.ker_one]`. Conclude with `isOpen_univ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_coord (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (Q : Finset (Pl D.host.E)) (M : ℕ) (v : Pl D.host.E) :
     IsOpen ((coord Y i Q M v).ker : Set (G D.host.E N.Om)) := by
@@ -108,13 +108,13 @@ open Classical
 variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
 /- English proof (translation)
-Establish `hoff : GlobalTheory.HeckeParts.OffLevel (V` using `Links.Wc D j) (Lev.flag1L (ρ.B i j b).G.levT) 1 P := by`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hP`. Take `⟨x, hx, hy⟩` from `hk.2.2.1`. Use `hy (GlobalTheory.ChoiceAdm.cnj D x) rfl ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hP]`. Conclude with `Ideal.subset_span ⟨x, hx, by`. Express the relevant statement in the definitionally equal form `((GlobalTheory.ChoiceAdm.cnj D x : 𝓞 D.host.E) : D.host.E) = star (x : D.host.E)`. Rewrite using `[GlobalTheory.ChoiceAdm.cnj_coe, GlobalTheory.ChoiceAdm.star_eq_conj]⟩`. Rewrite using `[Nat.cast_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h1 => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Introduce and unpack `PP (hPP | hPP)`. Establish `hS : PP ∈ X.S0 i`. Take `⟨k', hk'⟩` from `hρ.Pg i j b PP hPP`. Conclude with `Finset.mem_coe.1 (X.placesOver_subset_exceptional i k' hk')`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨fun e => hk.2.2.2 (e ▸ hS), fun hc => hk.2.2.2 (hρ.goodSetup_badPlaces_conj i PP hS P (GlobalTheory.ChoiceAdm.isConjPl_of_lev hc))⟩`. Conclude with `absurd hPP (Finset.notMem_empty _)`. Take `⟨Lp, hLp, -, hs, hK⟩` from `GlobalTheory.HeckeParts.loc_package (hρ.latT i j b) hoff he`. Conclude with `⟨GlobalTheory.HeckeParts.isDC_of_splits hs GlobalTheory.HeckeParts.levG_le_flag ((hLp α).2 hαs) (fun a ha => (hLp a).2 (hR a ha)) hK (fun γ hγ => (hc.1 γ hγ).2) hc.2, (hK 1).2 ⟨one_mem _, one_mem _⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isDC_of_rep {ρ : Setup X} (hρ : ρ.Good) {i : X.Tw} (j : Fin D.R.m) (b : Bool) {k : ℕ} {P : Pl D.host.E}
     (hk : Formalism.MainNotions.IntegralHeckeForms.HkIdx i k P) {e : AE D} (he : IsIdemAt e P) {α : GA D (Links.Wc D j)} {R : Finset (GA D (Links.Wc D j))}
@@ -150,16 +150,16 @@ open Formalism.IndefR.Links (PolF)
 variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem absNorm_eq_normV (P : Pl D.host.E) : Ideal.absNorm P.asIdeal = normV P := by
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
   rfl
 
 /- English proof (translation)
-Introduce `v hv w hw`. Establish `hv1` using `Finset.ne_of_mem_erase hv`. Establish `hv2` using `Finset.ne_of_mem_erase (Finset.mem_of_mem_erase hv)`. Establish `hvQ` using `Finset.mem_of_mem_erase (Finset.mem_of_mem_erase hv)`. Use `Finset.mem_erase.2 ⟨fun e => ?_, Finset.mem_erase.2 ⟨fun e => ?_, hQc v hvQ w hw⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `e` using the available equality. Conclude with `hv2 (GlobalTheory.GalChar.isConjPl_unique (GlobalTheory.GalChar.isConjPl_symm hw) (GlobalTheory.GalChar.isConjPl_symm hc))`. Substitute `e` using the available equality. Conclude with `hv1 (GlobalTheory.GalChar.isConjPl_unique (GlobalTheory.GalChar.isConjPl_symm hw) hc)`.
+Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem closed_erase {Q : Finset (Pl D.host.E)} (hQc : ∀ P ∈ Q, ∀ P', Formalism.BasicNotions.IsConjPl D.host P P' → P' ∈ Q)
     {P Pb : Pl D.host.E} (hc : Formalism.BasicNotions.IsConjPl D.host P Pb) :
@@ -184,67 +184,59 @@ variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `i hi j hj b`. Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by have := (Finset.mem_Icc.1 hj).1; omega⟩`. Establish `hj' : j' < D.R.m` using `by have := (Finset.mem_Icc.1 hj).2; omega`. Use `set J : Fin D.R.m := ⟨j', hj'⟩ with hJ`. Use `⟨ρ.ch i, true, (hρ.ch i).pair, fun M k χ a => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(T i J b).thU_empty M a]`. Simplify using `[Formalism.MainNotions.IntegralHeckeForms.specU]`. Both sides reduce to the same expression. Introduce `M d Q a _ hQ hcls hlev hgood P Pb hP hPb hne hconj hch k χ χ' hχ σ hσ`. Establish `hQ'Q : ((Q.erase P).erase Pb) ⊆ Q` using `(Finset.erase_subset _ _).trans (Finset.erase_subset _ _)`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : ∀ v ∈ Q, IsSplitPl D.host v` using `hQ.1`. Establish `hS0 : Disjoint Q (X.S0 i)` using `hQ.2.1`. Establish `hclQ : ∀ v ∈ Q, ∀ w, Formalism.BasicNotions.IsConjPl D.host v w → w ∈ Q` using `hQ.2.2`. Establish `hclQ'` using `closed_erase hclQ hconj`. Establish `hlQ : ∀ v ∈ Q, v ∉ placesOver D.host.E (X.l i)` using `fun v hv hl => Finset.disjoint_left.1 hS0 hv (X.twistExcludedPlaces_contains_residueChar i hl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : admissibleConjugatePairPlaces X i Q M = Q` using `GlobalTheory.T.admissibleConjugatePairPlaces_eq_self_of_good_chars D N X i M Q d hsplit hclQ hgood (Or.inr hlQ)`. Establish `hA' : admissibleConjugatePairPlaces X i ((Q.erase P).erase Pb) M = ((Q.erase P).erase Pb)` using `GlobalTheory.T.admissibleConjugatePairPlaces_eq_self_of_good_chars D N X i M ((Q.erase P).erase Pb) d (fun v hv => hsplit v (hQ'Q hv)) hclQ' (fun v hv => hgood v (hQ'Q hv)) (Or.inr fun v hv => hlQ v (hQ'Q hv))`. Establish `hPQ' : P ∉ ((Q.erase P).erase Pb)` using `fun h => Finset.ne_of_mem_erase (Finset.mem_of_mem_erase h) rfl`. Establish `hPbQ' : Pb ∉ ((Q.erase P).erase Pb)` using `fun h => Finset.ne_of_mem_erase h rfl`. Establish `hPbch : Pb ∉ ρ.ch i` using `((hρ.ch i).pair P Pb hconj hne).1 hch`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set H := half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M) with hHdef`. Use `set H' := half (ρ.ch i) (admissibleConjugatePairPlaces X i ((Q.erase P).erase Pb) M) with hH'def`. Establish `hsubH : ∀ w ∈ H', w ∈ H` using `fun w hw => by`. Rewrite `hw` using `[hH'def, mem_half, hA']`. Rewrite using `[hHdef, mem_half, hA]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨hQ'Q hw.1, hw.2⟩`. Establish `hPH : P ∈ H` using `by rw [hHdef, mem_half, hA]; exact ⟨hP, hch⟩`. Establish `hHH : ∀ v ∈ H, v ∈ H' ↔ v ≠ P` using `fun v hv => by`. Rewrite `hv` using `[hHdef, mem_half, hA]`. Rewrite using `[hH'def, mem_half, hA']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, -⟩ rfl`. Conclude with `hPQ' h1`. Introduce `h`. Use `⟨Finset.mem_erase.2 ⟨fun e => hPbch (e ▸ hv.2), Finset.mem_erase.2 ⟨h, hv.1⟩⟩, hv.2⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hclA : ∀ v ∈ admissibleConjugatePairPlaces X i Q M, ∀ w, Formalism.BasicNotions.IsConjPl D.host v w → w ∈ admissibleConjugatePairPlaces X i Q M` using `by rw [hA]; exact hclQ`. Establish `hclA' : ∀ v ∈ admissibleConjugatePairPlaces X i ((Q.erase P).erase Pb) M, ∀ w, Formalism.BasicNotions.IsConjPl D.host v w → w ∈ admissibleConjugatePairPlaces X i ((Q.erase P).erase Pb) M`. Rewrite using `[hA']`. Conclude with `hclQ'`. Establish `hcoord : ∀ v ∈ H', coord Y i (admissibleConjugatePairPlaces X i Q M) M v = coord Y i (admissibleConjugatePairPlaces X i ((Q.erase P).erase Pb) M) M v` using `fun v hv => coord_congr hU i M hclA hclA' (mem_half.1 (hsubH v hv)).1 (mem_half.1 hv).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdel : ∀ v ∈ H', (univOf Y i (admissibleConjugatePairPlaces X i ((Q.erase P).erase Pb) M) M ρ.rc).del v = (univOf Y i (admissibleConjugatePairPlaces X i Q M) M ρ.rc).del v` using `fun v hv => by simp only [univOf]; rw [hcoord v hv]`. Establish `hkap : ∀ v ∈ H', (univOf Y i (admissibleConjugatePairPlaces X i ((Q.erase P).erase Pb) M) M ρ.rc).kap v = (univOf Y i (admissibleConjugatePairPlaces X i Q M) M ρ.rc).kap v` using `fun v hv => by simp only [univOf]; rw [hcoord v hv]`. Establish `hsplitP` using `hsplit P hP`. Take `⟨e0, he0⟩` from `GlobalTheory.ChoiceAdm.exists_idem hsplitP`. Establish `he : IsIdemAt (idemAt P) P` using `by rw [idemAt_eq he0]; exact he0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨ϖ, hϖ1, hϖ2⟩` from `SetLike.exists_of_lt (Ideal.pow_lt_self P.asIdeal P.ne_bot P.isPrime.ne_top 2 le_rfl)`. Establish `hϖ0 : (ϖ : D.host.E) ≠ 0` using `fun h0 => hϖ2 (by rw [show ϖ = 0 from Subtype.ext h0]; exact zero_mem _)`. Establish `hee : idemAt P * idemAt P = idemAt P` using `he.1.1`. Set `x : (AE D)ˣ` to `Units.mkOfMulEqOne (idemAt P * incA D (ϖ : D.host.E) + (1 - idemAt P)) (idemAt P * incA D (ϖ : D.host.E)⁻¹ + (1 - idemAt P)) (by`. Establish `h1 : incA D (ϖ : D.host.E) * incA D (ϖ : D.host.E)⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel₀ hϖ0, map_one]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `(incA D (ϖ : D.host.E) * incA D (ϖ : D.host.E)⁻¹ - incA D (ϖ : D.host.E) - incA D (ϖ : D.host.E)⁻¹ + 1) * hee + idemAt P * h1)`. Establish `hx : (x : AE D) = idemAt P * incA D (ϖ : D.host.E) + (1 - idemAt P)` using `rfl`. Take `⟨α, R, -, hαR, -⟩` from `GlobalTheory.Hk3.SplitMatch.exists_data he hϖ1 hϖ2 (Links.Wc D J)`. Establish `hα : ∀ k ∈ Finset.Icc 1 (Links.Wc D J).rank, IsHeckeElt (Links.Wc D J) (idemAt P) (ϖ : D.host.E) k (α k) ∧ (∀ γ ∈ R k, SuppAt (idemAt P) (Links.Wc D J) γ) ∧ Mult.IsCosetRep (Links.Wc D J) (Mult.locPart (Links.Wc D J) (KsphC (Links.Wc D J) ∅) (idemAt P)) (α k) (R k)` using `fun k hk => hαR k (Finset.mem_Icc.1 hk).2`. Establish `hadm` using `GlobalTheory.ChoiceAdm.adm_half_of_good_of_split_disjoint D N X ρ hρ i J b (admissibleConjugatePairPlaces X i Q M) (by rw [hA]; exact hsplit) (by rw [hA]; exact hS0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hXi` using `xi_rel (ρ.B i J b) (hρ.base i J b) (hρ.latT i J b) (hρ.weil_base i J b) (univOf Y i (admissibleConjugatePairPlaces X i Q M) M ρ.rc) (univOf Y i (admissibleConjugatePairPlaces X i ((Q.erase P).erase Pb) M) M ρ.rc) (ρ.β J) hadm (GlobalTheory.UnivGood.univOf_good D N X ρ hρ Y i Q M) …`. Establish `hIR : InRange X i Q` using `⟨hsplit, hcls, hS0⟩`. Establish `hIR' : InRange X i ((Q.erase P).erase Pb)` using `⟨fun v hv => hsplit v (hQ'Q hv), fun v hv => hcls v (hQ'Q hv), Finset.disjoint_of_subset_left hQ'Q hS0⟩`. Take `⟨x1, hx1, hT1⟩` from `(T i J b).thU_of_rat (hR i hi J b) M hIR hlev`. Take `⟨x2, hx2, hT2⟩` from `(T i J b).thU_of_rat (hR i hi J b) M hIR' (Finset.disjoint_of_subset_left hQ'Q hlev)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Formalism.MainNotions.IntegralHeckeForms.specU Y i ((J : ℕ) + 1) b Q M k χ (Y.thU i ((J : ℕ) + 1) b Q M a) = GlobalTheory.TwSys.PqF Y i ((J : ℕ) + 1) b k P _ (Formalism.MainNotions.IntegralHeckeForms.specU Y i ((J : ℕ) + 1) b ((Q.erase P).erase Pb) M k χ' (Y.thU i ((J : ℕ) + 1) b …`. Rewrite using `[hT1, hT2, specU_grpSum, specU_grpSum, map_sum]`. Apply `(T i J b).injective_rdK k` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `set E : (↥H → ZMod (X.l i ^ M)) → ℂ := fun c => ρ.eOk i b k ((χ (Multiplicative.ofAdd (spread Y i Q M (ρ.ch i) c)) : (X.Ok i k)ˣ) : X.Ok i k) with hE`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set E' : (↥H' → ZMod (X.l i ^ M)) → ℂ := fun c => ρ.eOk i b k ((χ' (Multiplicative.ofAdd (spread Y i ((Q.erase P).erase Pb) M (ρ.ch i) c)) : (X.Ok i k)ˣ) : X.Ok i k) with hE'`. Use `set Ξ := ρ.xi i J b Y Q M ((T i J b).cls a) ((T i J b).coef a) with hΞ`. Use `set Ξ' := ρ.xi i J b Y ((Q.erase P).erase Pb) M ((T i J b).cls a) ((T i J b).coef a) with hΞ'`. Use `set yv : ℂ := ρ.eOk i b k ((χ' (Y.delU i ((Q.erase P).erase Pb) M σ) : (X.Ok i k)ˣ) : X.Ok i k) with hyv`. Use `set q : ℂ := ((normV P : ℕ) : ℂ) with hq`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hHk : ∀ n ∈ Finset.Icc 1 D.R.r, ∀ (f : Y.Fm i ((J : ℕ) + 1) b), rd i J b (Y.hkF i ((J : ℕ) + 1) b n P f) g = ((((ρ.B i J b).mu x : Circle) : ℂ) ^ n)⁻¹ * (q ^ (n * ((Links.Vc D J).rank / 2)))⁻¹ * ∑ γ ∈ R n, rd i J b f (g * γ)`. Introduce `n hn f`. Establish `hn' : n ∈ Finset.Icc 1 (Links.Wc D J).rank` using `by rw [FWT.rank_Wc]; exact hn`. Establish `hk : Formalism.MainNotions.IntegralHeckeForms.HkIdx i n P` using `⟨(Finset.mem_Icc.1 hn).1, (Finset.mem_Icc.1 hn).2, hsplitP, fun h => Finset.disjoint_left.1 hS0 hP h⟩`. Take `⟨hdc, h1⟩` from `isDC_of_rep hρ J b hk he (hα n hn').1.2.1 (hα n hn').2.1 (hα n hn').2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hmu` using `(GlobalTheory.T.modulus_unramifiedChar_det_heckeDoubleCoset_split D (Links.Wc D J) P (idemAt P) he ϖ hϖ1 hϖ2 x hx n (α n) (hα n hn').1 1 h1 1 h1 (GlobalTheory.VecInv.detAt (idemAt P) hee (Links.Wc D J) (α n)) (by`. Rewrite using `[one_mul, mul_one]`. Conclude with `GlobalTheory.VecInv.isDetAt_detAt _ hee _ _)).2 Circle ((ρ.B i J b).mu)`. Use the proof step `(fun y h1 h2 h3 => mu_unram (ρ.B i J b) (hρ.base i J b) hadm hPH y h1 h2 h3)`. Rewrite using `[hH i J b n P hk (α n) (R n) _ ⟨idemAt P, ϖ, he, hϖ1, hϖ2, (hα n hn').1⟩ hdc (GlobalTheory.VecInv.isDetAt_detAt _ hee _ _) f g, hmu]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Both sides reduce to the same expression. Use `set δ : ↥H' → ZMod (X.l i ^ M) := Multiplicative.toAdd ((univOf Y i (admissibleConjugatePairPlaces X i ((Q.erase P).erase Pb) M) M ρ.rc).delQ H' x) with hδ`. Establish `hδw : ∀ w : ↥H', δ w = -Multiplicative.toAdd (coord Y i (admissibleConjugatePairPlaces X i ((Q.erase P).erase Pb) M) M w.1 σ)`. Introduce `w`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwA : w.1 ∈ admissibleConjugatePairPlaces X i ((Q.erase P).erase Pb) M` using `(mem_half.1 w.2).1`. Establish `hwQ' : w.1 ∈ (Q.erase P).erase Pb` using `by rw [← hA']; exact hwA`. Establish `hPw : P ∉ GlobalTheory.GalChar.pair D.host w.1`. Introduce and unpack `(h | h)`. Conclude with `hPQ' (h ▸ hwQ')`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hPbQ' (GlobalTheory.GalChar.isConjPl_unique hconj (GlobalTheory.GalChar.isConjPl_symm h) ▸ hwQ')`. Establish `hunr : ∀ τ ∈ Ine (F` using `D.host.E) (N.plOm.1 P), coord Y i (admissibleConjugatePairPlaces X i ((Q.erase P).erase Pb) M) M w.1 τ = 1 := by`. Introduce `τ hτ`. Use `Multiplicative.toAdd.injective ?_` and prove the remaining obligations. Rewrite using `[coord_eq_delOf hU i M hclA' hwA τ, (GlobalTheory.GalChar.delOf_laws D.host X.cc (X.l i) M _).2.2.2 P hPw (N.plOm.1 P) (N.plOm.2 P) τ hτ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hart` using `GlobalTheory.T.artinMap_splitPlaceUniformiser_eq_frobenius_inv D N.Om (Multiplicative (ZMod (X.l i ^ M))) ρ.rc hρ.rc (coord Y i (admissibleConjugatePairPlaces X i ((Q.erase P).erase Pb) M) M w.1) (isOpen_coord _ _ _ _ _) P (idemAt P) he ϖ hϖ1 hϖ2 x hx (N.plOm.1 P) (N.plOm.2 P) hu …`. Simplify using `only [hδ, UnivTwist.delQ, MonoidHom.coe_mk, OneHom.coe_mk, toAdd_ofAdd]`. Express the relevant statement in the definitionally equal form `Multiplicative.toAdd (ρ.rc.pull (coord Y i (admissibleConjugatePairPlaces X i ((Q.erase P).erase Pb) M) M w.1) x) = _`. Rewrite using `[hart, toAdd_inv]`. Establish `hTW : Formalism.MainNotions.NAdm.TWSet X i ((Q.erase P).erase Pb)` using `fun v hv => ⟨hsplit v (hQ'Q hv), hlQ v (hQ'Q hv)⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hspδ : spread Y i ((Q.erase P).erase Pb) M (ρ.ch i) δ = -Multiplicative.toAdd (Y.delU i ((Q.erase P).erase Pb) M σ)`. Rewrite using `[delU_eq_spread hU hTW (hρ.ch i) σ, ← map_neg]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[hδw w]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hE'shift : ∀ (n : ℕ) (c : ↥H' → ZMod (X.l i ^ M)), E' (c - n • δ) = E' c * yv ^ n`. Introduce `n c`. Simplify using `only [hE', hyv, map_sub, map_nsmul, hspδ, smul_neg, sub_neg_eq_add, ofAdd_add, ofAdd_nsmul, ofAdd_toAdd, map_mul, map_pow, Units.val_mul, Units.val_pow_eq_pow_val]`. Establish `eL : (rdK (rd i J b) hρ k (∑ c, ((χ (Multiplicative.ofAdd (spread Y i Q M (ρ.ch i) c)) : (X.Ok i k)ˣ) : X.Ok i k) ⊗ₜ[X.O i] x1 c)) g = ∑ c, E c * Ξ c g`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_sum, rdK_tmul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hx1]`. Both sides reduce to the same expression. Establish `eR : (rdK (rd i J b) hρ k (∑ c, GlobalTheory.TwSys.PqF Y i ((J : ℕ) + 1) b k P ((Formalism.MainNotions.BlochKatoReduction.Gen.psiAt true χ' (Y.delU i ((Q.erase P).erase Pb) M σ) : (X.Ok i k)ˣ) : X.Ok i k) (((χ' (Multiplicative.ofAdd (spread Y i ((Q.erase P).erase Pb) M (ρ.ch i) c …`. Simplify using `only [map_sum, PqF_tmul, map_add, map_smulₛₗ, rdK_tmul, Finset.sum_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx2]`. Use `congr 1`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Rewrite using `[hHk n hn, hx2]`. Simplify using `only [map_mul, map_pow, map_neg, map_one, map_natCast, Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, if_true, hyv, hq, hE', hΞ']`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eL, eR]`. Establish `hfib : ∑ c, E c * Ξ c g = ∑ c' : ↥H' → ZMod (X.l i ^ M), E' c' * ∑ c ∈ Finset.univ.filter (fun c : ↥H → ZMod (X.l i ^ M) => ∀ v : ↥H', c ⟨v.1, hsubH v.1 v.2⟩ = c' v), Ξ c g`. Rewrite using `[← Finset.sum_fiberwise (s := Finset.univ) (g := fun c : ↥H → ZMod (X.l i ^ M) => fun w : ↥H' => c ⟨w.1, hsubH w.1 w.2⟩) (f := fun c => E c * Ξ c g)]`. Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hfl : Finset.univ.filter (fun c : ↥H → ZMod (X.l i ^ M) => (fun w : ↥H' => c ⟨w.1, hsubH w.1 w.2⟩) = c') = Finset.univ.filter (fun c : ↥H → ZMod (X.l i ^ M) => ∀ v : ↥H', c ⟨v.1, hsubH v.1 v.2⟩ = c' v)` using `Finset.filter_congr fun c _ => funext_iff`. Rewrite using `[hfl]`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations. Establish `hc' : (fun w : ↥H' => c ⟨w.1, hsubH w.1 w.2⟩) = c'` using `funext (Finset.mem_filter.1 hc).2`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hE, hE']`. Rewrite using `[hχ, ← hc']`. Use `congr 4`. Use function extensionality and compare the values at `v`. Conclude with `GlobalTheory.T.universalChar_spread_commutes_with_restriction D N X Y hU i M (ρ.ch i) (hρ.ch i) Q ((Q.erase P).erase Pb) hQ'Q hA hA' hsubH c v.1 v.2`.
-
-Establish `hIcc : Finset.Icc 1 (Links.Wc D J).rank = Finset.Icc 1 D.R.r` using `by rw [FWT.rank_Wc]`. Establish `hX2 : ∀ c' : ↥H' → ZMod (X.l i ^ M), ∑ c ∈ Finset.univ.filter (fun c : ↥H → ZMod (X.l i ^ M) => ∀ v : ↥H', c ⟨v.1, hsubH v.1 v.2⟩ = c' v), Ξ c g = Ξ' c' g + ∑ n ∈ Finset.Icc 1 D.R.r, ((-1 : ℂ) ^ n * q ^ (n * (n - 1) / 2) * ((((ρ.B i J b).mu x : Circle) : ℂ) ^ n * q ^ (n * ((Links …`. Introduce `c'`. Establish `h` using `hXi ((T i J b).cls a) ((T i J b).coef a) c' g`. Simplify using `only [hIcc, absNorm_eq_normV] at h`.
-
-Use `h using 3` and compare the differences between its conclusion and the goal. Rewrite using `[hfib]`. Simplify using `only [hX2, mul_add, Finset.sum_add_distrib]`. Use `congr 1`. Establish `hL : ∀ c' : ↥H' → ZMod (X.l i ^ M), E' c' * ∑ n ∈ Finset.Icc 1 D.R.r, ((-1 : ℂ) ^ n * q ^ (n * (n - 1) / 2) * ((((ρ.B i J b).mu x : Circle) : ℂ) ^ n * q ^ (n * ((Links.Vc D J).rank / 2)))⁻¹) * ∑ γ ∈ R n, Ξ' (c' + n • δ) (g * γ) = ∑ n ∈ Finset.Icc 1 D.R.r, E' c' * (((-1 : ℂ) ^ n * …` using `fun c' => Finset.mul_sum _ _ _`.
-
-Rewrite using `[Finset.sum_congr rfl fun c' _ => hL c', Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← Equiv.sum_comp (Equiv.subRight (n • δ))]`. Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations.
-
-Simplify using `only [Equiv.subRight_apply, sub_add_cancel]`. Rewrite using `[hE'shift, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem thURel_of_tie {ρ : Setup X} (hρ : ρ.Good) {Y : NExp D.R D.host D.what₂ D.LL0 N X} (rd : Rds Y ρ) (T : Comparison₂ hρ rd)
     (hU : GlobalTheory.UnivChar.IsUnivChar Y) (hH : ∀ i j b, HeckeRead (rd i j b))
@@ -465,7 +457,7 @@ namespace GlobalTheory.DistRel
 open Classical
 
 /- English proof (translation)
-The claim follows from `thURel_of_tie Z.good Z.rd Z.tie Z.univ (fun _ _ _ => Z.heckeRead (hRH _ _ _)) hRat`.
+A detailed English derivation is pending.
 -/
 theorem thURel_of_exportTie {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
@@ -481,7 +473,7 @@ open Formalism.MainNotions.IntegralHeckeForms (TwOK ClsQ HkIdx V0 Fm0 FullRk SgJ
 open GlobalTheory.TwInputs GlobalTheory.TwSys GlobalTheory.TwAll GlobalTheory.SupLaw GlobalTheory.LiftLeaf
 
 /- English proof (translation)
-Introduce `_ _ hρ rd F L` and use `thURel_of_tie hρ rd F.tie F.univ L.hecke (fun i hi j b => (L.rat i hi j b).2.2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thURel_of_fullTie : ∀ (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (rd : Rds D.nexp ρ), FullTie hρ rd → Laws hρ rd →
     ThURel D.nexp :=

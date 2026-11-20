@@ -13,33 +13,31 @@ noncomputable section
 namespace GlobalTheory.BesFrameCols
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p ρ B n _ _ c s FA F hF i`. Take `⟨hc, h1, h2, h3, h4⟩` from `hF`. Substitute `hc` using the available equality. Use `set G := B.V.gram with hGdef`. Establish `hGh : Gᴴ = G`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Simplify using `only [G, Matrix.conjTranspose_apply]`. Conclude with `GlobalTheory.DualPairCheck.gram_star B.V b a`. Establish `heG0 : (B.d.e)ᴴ * G * B.d.i₀ = 0`. Establish `h` using `congrArg Matrix.conjTranspose B.d.i₀e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_zero] at h`. Rewrite `h` using `[← hGdef, hGh]`. Rewrite using `[← h, Matrix.mul_assoc]`. Establish `heGe : (B.d.e)ᴴ * G * B.d.e = 0` using `B.d.ee`. Establish `heGe' : (B.d.e)ᴴ * G * B.d.e' = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `congrArg Matrix.conjTranspose B.d.e'e`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_one] at h`. Rewrite `h` using `[← hGdef, hGh]`. Rewrite using `[← h, Matrix.mul_assoc]`. Establish `key : ∀ x : Fin B.V.rank → D.host.E, ∑ r, ∑ r', p.pr (star (B.d.e r i)) * p.pr (G r r') * p.pr (x r') = p.pr ((((B.d.e)ᴴ * G) *ᵥ x) i)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `x`. Express the relevant statement in the definitionally equal form `∑ r, ∑ r', LocMod.Witness.prH p _ * LocMod.Witness.prH p _ * LocMod.Witness.prH p _ = LocMod.Witness.prH p _`. Simplify using `only [← map_mul, ← map_sum]`. Use `congr 1`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm]`. Establish `keyc : ∀ (a : k) (x : Fin B.V.rank → D.host.E), ∑ r, ∑ r', p.pr (star (B.d.e r i)) * p.pr (G r r') * (a * p.pr (x r')) = a * p.pr ((((B.d.e)ᴴ * G) *ᵥ x) i)`. Introduce `a x`. Rewrite using `[← key, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `colM : ∀ {κ : Type} (M : Matrix (Fin B.V.rank) κ D.host.E) (j : κ), (((B.d.e)ᴴ * G) *ᵥ fun r => M r j) i = ((B.d.e)ᴴ * G * M) i j`. Introduce `κ M j`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_apply]`. Use `⟨Sum.inr ⟨i.val, by omega⟩, Sum.inr ⟨2 * ρ - i.val, by omega⟩, fun r => h2 i _ rfl r, fun r => h4 i _ (by simp only; omega) r, ?_⟩` and prove the remaining obligations. Introduce and unpack `(a | ⟨j, hj⟩) hm`. Establish `hM : ((B.d.e)ᴴ * G * (B.d.i₀ * B.o.iA)) = 0` using `by rw [← Matrix.mul_assoc, heG0, Matrix.zero_mul]`. Generalize the expression as in `B.d.i₀ * B.o.iA = M at h1 hM`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[h1 _ a, Matrix.mul_apply, Matrix.map_apply, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun r' _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by`. Use `Finset.sum_eq_zero fun u _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[key (fun r' => M r' u), colM, hM]`. Simplify using `[LocMod.Place.pr]`. Establish `hne : j ≠ 2 * ρ - i.val` using `fun h => hm (by subst h; rfl)`. Break down `lt_trichotomy j ρ with hlt | heq | hgt` into its components or cases. Repeatedly rewrite using `[h2 ⟨j, hlt⟩ ⟨j, hj⟩ rfl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(keyc _ (fun r' => B.d.e r' ⟨j, hlt⟩)).trans ?_` and prove the remaining obligations. Rewrite using `[colM, heGe]`. Simplify using `[LocMod.Place.pr]`. Repeatedly rewrite using `[h3 ⟨j, hj⟩ heq]`. Use `(keyc _ (B.d.i₀ *ᵥ vecB B.o B.ζ)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mulVec_mulVec, heG0, Matrix.zero_mulVec]`. Simplify using `[LocMod.Place.pr]`. Establish `hlt' : 2 * ρ - j < ρ` using `by omega`. Repeatedly rewrite using `[h4 ⟨2 * ρ - j, hlt'⟩ ⟨j, hj⟩ (by simp only; omega)]`. Use `(keyc _ (fun r' => B.d.e' r' ⟨2 * ρ - j, hlt'⟩)).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[colM, heGe', Matrix.one_apply_ne (fun h => hne (by rw [Fin.ext_iff] at h; simp only at h; omega))]`. Simplify using `[LocMod.Place.pr]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cols_pair : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (ρ : ℕ) (B : BesLev D ρ) (n : Type) [Fintype n] [DecidableEq n] (c : ℕ) (s : k) (FA : Frame k B.A.rank n) (F : Frame k B.V.rank (n ⊕ Fin c)), p.IsBesFrame B s FA F → ∀ i : Fin ρ, ∃ m₀ m₁ : n ⊕ Fin c, (∀ r, F.β r m₀ = s * p.xi ^ (ρ - i.val) * p.pr (B.d.e r i)) ∧ (∀ r, F.β r m₁ = s * (-p.hz B / p.xi) * (-1 / p.xi) ^ (ρ - 1 - i.val) * p.pr (B.d.e' r i)) ∧ ∀ m, m ≠ m₁ → ∑ r, ∑ r', p.pr (star (B.d.e r i)) * p.pr (B.V.gram r r') * F.β r' m = 0 := by
   intro D k _ _ _ _ p ρ B n _ _ c s FA F hF i

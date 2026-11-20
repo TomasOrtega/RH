@@ -12,31 +12,27 @@ open ReciprocityTheory.ChartRestriction.DS.S7 ReciprocityTheory.ChartRestriction
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `η hη`. Use `set η' : ℝ := min (η / 3) (1 / 2) with hη'def`. Establish `hη'0 : 0 < η'` using `lt_min (by positivity) (by norm_num)`. Establish `hη'1 : η' ≤ 1 / 2` using `min_le_right _ _`. Establish `hη'3 : η' ≤ η / 3` using `min_le_left _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨δ1, hδ1, hE⟩` from `h η' hη'0`. Take `⟨δ4, hδ4, hE2⟩` from `h 2 (by norm_num)`. Take `⟨δ2, hδ2, hI⟩` from `HPol.image_est ε hη'0`. Take `⟨δ3, hδ3, hP⟩` from `HPol.polSet_eq_expSet ε`. Use `⟨min (min δ2 δ3) (min (δ1 / 2) (δ4 / 2)), lt_min (lt_min hδ2 hδ3) (lt_min (by positivity) (by positivity)), fun S hS hsmall => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs2 : ∀ s ∈ S, ‖s‖ < δ2` using `fun s hs => lt_of_lt_of_le (hsmall s hs) ((min_le_left _ _).trans (min_le_left _ _))`. Establish `hs3 : ∀ s ∈ S, ‖s‖ < δ3` using `fun s hs => lt_of_lt_of_le (hsmall s hs) ((min_le_left _ _).trans (min_le_right _ _))`. Establish `hs1 : ∀ s ∈ S, ‖s‖ < δ1 / 2` using `fun s hs => lt_of_lt_of_le (hsmall s hs) ((min_le_right _ _).trans (min_le_left _ _))`. Establish `hs4 : ∀ s ∈ S, ‖s‖ < δ4 / 2` using `fun s hs => lt_of_lt_of_le (hsmall s hs) ((min_le_right _ _).trans (min_le_right _ _))`. Take `⟨hmeas, hnorm, hup, hlo⟩` from `hI S hS hs2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsm1 : ∀ t ∈ HPol.Lm '' S, ‖t‖ < δ1`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Use `hs1 s hs` as an intermediate fact. Combine the linear relations using `[hnorm s hs]`. Establish `hsm4 : ∀ t ∈ HPol.Lm '' S, ‖t‖ < δ4`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨s, hs, rfl⟩`. Use `hs4 s hs` as an intermediate fact. Combine the linear relations using `[hnorm s hs]`. Take `⟨hEu, hEl⟩` from `hE _ hmeas hsm1`. Use `beta_reduce at hEu hEl ⊢`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hP S hs3]`. Establish `hsq1 : (1 + η') * (1 + η') ≤ 1 + η` using `by nlinarith`. Establish `hsq2 : 1 - η ≤ (1 - η') * (1 - η')` using `by nlinarith`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[mul_assoc]`. Use `_ ≤ ENNReal.ofReal ((1 + η) * d) * volume S := by gcongr`. Break down `le_or_gt 0 d with hd | hd` into its components or cases. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_of_nonpos (by nlinarith), zero_mul]`. Conclude with `zero_le`. Break down `le_or_gt 0 d with hd | hd` into its components or cases. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_mul (mul_nonneg (by linarith) hd)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `_ = ENNReal.ofReal ((1 - η') * d) * (ENNReal.ofReal (1 - η') * volume S) := by`. Rewrite using `[mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ ≤ ENNReal.ofReal ((1 - η') * d) * volume (HPol.Lm '' S) := by gcongr`. Use `_ ≤ μ (expSet (HPol.Lm '' S)) := hEl`. Take `⟨hE2u, hE2l⟩` from `hE2 _ hmeas hsm4`. Use `beta_reduce at hE2u hE2l`. Establish `h3 : ENNReal.ofReal ((1 + 2) * d) = 0` using `ENNReal.ofReal_of_nonpos (by linarith)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hE2u` using `[h3, zero_mul]`. Establish `h0 : ENNReal.ofReal ((1 - 2) * d) * volume (HPol.Lm '' S) = 0` using `le_antisymm (hE2l.trans hE2u) (zero_le)`. Establish `hpos : ENNReal.ofReal ((1 - 2) * d) ≠ 0`. Rewrite using `[Ne, ENNReal.ofReal_eq_zero, not_le]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hvL : volume (HPol.Lm '' S) = 0` using `(mul_eq_zero.mp h0).resolve_left hpos`. Rewrite `hlo` using `[hvL]`. Establish `hpos' : ENNReal.ofReal (1 - η') ≠ 0`. Rewrite using `[Ne, ENNReal.ofReal_eq_zero, not_le]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hvS : volume S = 0` using `(mul_eq_zero.mp (le_antisymm hlo (zero_le))).resolve_left hpos'`. Rewrite using `[hvS, mul_zero]`. Conclude with `zero_le`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_pol_density {ε : Fin n → Bool} (μ : Measure (UJ ε)) [μ.IsHaarMeasure] (d : ℝ)
     (h : DensOn (fun S => μ (expSet S)) d) : DensOn (fun S => μ (polSet S)) d := by

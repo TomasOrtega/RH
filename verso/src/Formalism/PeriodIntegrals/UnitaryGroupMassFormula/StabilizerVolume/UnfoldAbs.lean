@@ -25,7 +25,7 @@ instance subMeasurableInv (H : Subgroup G) : MeasurableInv H where
       Measurable fun x : H => (⟨(x : G)⁻¹, H.inv_mem x.2⟩ : H))
 
 /- English proof (translation)
-Use `Function.Injective.countable (f := fun x : (Γ ⊓ H).subgroupOf H => (⟨((x : H) : G), (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 x.2)).1⟩ : Γ)) ?_` and prove the remaining obligations. Introduce `a b hab`. Establish `e : ((a : H) : G) = ((b : H) : G)` using `congrArg (fun z : Γ => (z : G)) hab`. Conclude with `Subtype.ext (Subtype.ext e)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem countable_subgroupOf {Γ H : Subgroup G} [Countable Γ] :
     Countable ((Γ ⊓ H).subgroupOf H) := by
@@ -44,13 +44,13 @@ def repO (Γ : Subgroup G) (y0 : Y) (x : orbS Γ y0) : G :=
   Classical.choose (x.2 : ∃ γ ∈ Γ, γ • y0 = (x : Y))
 
 /- English proof (translation)
-Conclude with `(Classical.choose_spec x.2).1`.
+A detailed English derivation is pending.
 -/
 theorem repO_mem (Γ : Subgroup G) (y0 : Y) (x : orbS Γ y0) : repO Γ y0 x ∈ Γ := by
   exact (Classical.choose_spec x.2).1
 
 /- English proof (translation)
-Conclude with `(Classical.choose_spec x.2).2`.
+A detailed English derivation is pending.
 -/
 theorem repO_smul (Γ : Subgroup G) (y0 : Y) (x : orbS Γ y0) : repO Γ y0 x • y0 = x := by
   exact (Classical.choose_spec x.2).2
@@ -62,7 +62,7 @@ def cfun (Γ : Subgroup G) (A : Set G) (y0 : Y) (g : G) : ℝ≥0∞ :=
   ∑' x : orbS Γ y0, A.indicator (fun _ => (1 : ℝ≥0∞)) (repO Γ y0 x * g⁻¹)
 
 /- English proof (translation)
-Unfold `cfun`. Conclude with `Measurable.ennreal_tsum fun x => (measurable_const.indicator hA).comp ((measurable_const_mul (repO Γ y0 x)).comp measurable_inv)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem meas_cfun (Γ : Subgroup G) (y0 : Y) [Countable (orbS Γ y0)] {A : Set G}
     (hA : MeasurableSet A) : Measurable (cfun Γ A y0) := by
@@ -71,13 +71,13 @@ theorem meas_cfun (Γ : Subgroup G) (y0 : Y) [Countable (orbS Γ y0)] {A : Set G
     (measurable_const.indicator hA).comp ((measurable_const_mul (repO Γ y0 x)).comp measurable_inv)
 
 /- English proof (translation)
-Set `F : orbS Γ y0 × (Γ ⊓ H).subgroupOf H → Γ` to `fun p => ⟨repO Γ y0 p.1 * ((p.2 : H) : G), Γ.mul_mem (repO_mem Γ y0 p.1) (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 p.2.2)).1⟩`. Establish `hF : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, δ⟩ ⟨x', δ'⟩ he`. Establish `he' : repO Γ y0 x * ((δ : H) : G) = repO Γ y0 x' * ((δ' : H) : G)` using `congrArg Subtype.val he`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hδ : ((δ : H) : G) • y0 = y0` using `(hH _).1 (δ : H).2`. Establish `hδ' : ((δ' : H) : G) • y0 = y0` using `(hH _).1 (δ' : H).2`. Establish `hx : (x : Y) = x'`. Combine the equalities or inequalities in the displayed calculation. Establish `hxx : x = x'` using `Subtype.ext hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Substitute `hxx` using the available equality. Establish `e : ((δ : H) : G) = ((δ' : H) : G)` using `mul_left_cancel he'`. Conclude with `Prod.ext rfl (Subtype.ext (Subtype.ext e))`. Introduce `γ`. Establish `hd : (repO Γ y0 ⟨(γ : G) • y0, γ, γ.2, rfl⟩)⁻¹ * γ ∈ H`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hH, mul_smul, inv_smul_eq_iff, repO_smul]`. Use `⟨(⟨(γ : G) • y0, γ, γ.2, rfl⟩, ⟨⟨_, hd⟩, Subgroup.mem_subgroupOf.2 (Subgroup.mem_inf.2 ⟨Γ.mul_mem (Γ.inv_mem (repO_mem Γ y0 _)) γ.2, hd⟩)⟩), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `mul_inv_cancel_left _ _`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_rep_eq {Γ H : Subgroup G} (y0 : Y) (hH : ∀ k : G, k ∈ H ↔ k • y0 = y0)
     (u : G → ℝ≥0∞) :

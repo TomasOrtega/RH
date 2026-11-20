@@ -16,7 +16,7 @@ open GlobalTheory.Unf
 namespace GlobalTheory.Unf.SkewConjQmp
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [skewConj, adj_mul, Matrix.mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem skewConj_matMul {D : D7} {ρ : ℕ} (a b : Mx D ρ ρ) (c : skewA D ρ) :
     skewConj (a ⬝ b) c = skewConj a (skewConj b c) := by
@@ -24,14 +24,14 @@ theorem skewConj_matMul {D : D7} {ρ : ℕ} (a b : Mx D ρ ρ) (c : skewA D ρ) 
   simp only [skewConj, adj_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [skewConj, adj_one, Matrix.one_mul, Matrix.mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem skewConj_matOne {D : D7} {ρ : ℕ} (c : skewA D ρ) : skewConj (1 : Mx D ρ ρ) c = c := by
   apply Subtype.ext
   simp only [skewConj, adj_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [skewConj, AddSubgroup.coe_add, Matrix.mul_add, Matrix.add_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem skewConj_addArg {D : D7} {ρ : ℕ} (a : Mx D ρ ρ) (c d : skewA D ρ) :
     skewConj a (c + d) = skewConj a c + skewConj a d := by
@@ -39,7 +39,7 @@ theorem skewConj_addArg {D : D7} {ρ : ℕ} (a : Mx D ρ ρ) (c d : skewA D ρ) 
   simp only [skewConj, AddSubgroup.coe_add, Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun c : skewA D ρ => (a ⬝ c.1 : Mx D ρ ρ)` using `continuous_const.matrix_mul continuous_subtype_val`. Establish `h2 : Continuous fun c : skewA D ρ => (a ⬝ c.1 ⬝ adj a : Mx D ρ ρ)` using `h1.matrix_mul continuous_const`. Conclude with `Continuous.subtype_mk h2 _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_skewConj_arg {D : D7} {ρ : ℕ} (a : Mx D ρ ρ) : Continuous (skewConj a : skewA D ρ → skewA D ρ) := by
   have h1 : Continuous fun c : skewA D ρ => (a ⬝ c.1 : Mx D ρ ρ) := continuous_const.matrix_mul continuous_subtype_val
@@ -62,11 +62,11 @@ noncomputable def skewConjEquiv {D : D7} {ρ : ℕ} (g : GL (Fin ρ) (AE D)) : s
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Introduce `D ρ lC hC u`. Take `⟨a1, a2, a3, a4, -⟩` from `lattice_Mx D ρ ρ`. Establish `: BorelSpace (Mx D ρ ρ)` using `⟨rfl⟩`. Establish `: BorelSpace (skewA D ρ)` using `Subtype.borelSpace _`. Establish `hcl : IsClosed (skewA D ρ : Set (Mx D ρ ρ))` using `isClosed_eq continuous_adj continuous_neg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyCompactSpace (skewA D ρ)` using `hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: IsTopologicalAddGroup (skewA D ρ)` using `inferInstance`. Establish `: SecondCountableTopology (skewA D ρ)` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `hc` using `continuous_skewConj_arg (u.1.1 : Mx D ρ ρ)`. Establish `hH : (lC.map (skewConj u.1.1)).IsAddHaarMeasure` using `AddEquiv.isAddHaarMeasure_map lC (skewConjEquiv u.1) hc (continuous_skewConj_arg (u.1⁻¹).val)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hc.measurable, ?_⟩` and prove the remaining obligations. Conclude with `Measure.absolutelyContinuous_isAddHaarMeasure _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem quasiMeasurePreserving_skewConj : ∀ (D : D7) (ρ : ℕ) (lC : Measure (skewA D ρ)), lC.IsAddHaarMeasure →
     ∀ u : UX D ρ, Measure.QuasiMeasurePreserving (skewConj u.1.1) lC lC := by

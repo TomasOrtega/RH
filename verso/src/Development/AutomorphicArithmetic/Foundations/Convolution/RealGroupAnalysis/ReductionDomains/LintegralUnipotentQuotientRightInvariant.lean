@@ -10,11 +10,11 @@ open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F _ _ M₀ u hu hinv g₀`. Take `⟨β, hβ⟩` from `UpperTheory.ConvolutionTheory.R2.M.wtEx F`. Use `haveI := M₀.right`. Establish `hone` using `UpperTheory.ConvolutionTheory.R2.M.wtOne F β hβ`. Establish `hm : ∀ h : G1 F, Measurable fun g : G1 F => g * h` using `fun h => measurable_mul_const h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `UpperTheory.ConvolutionTheory.R2.M.wtA F M₀ β (fun g => u (g * g₀)) 1 hβ.1 hone (hu.comp (hm g₀)) (fun b g => by rw [mul_assoc, hinv])`. Establish `h2` using `UpperTheory.ConvolutionTheory.R2.M.wtA F M₀ (fun g => β (g * g₀⁻¹)) u 1 (hβ.1.comp (hm g₀⁻¹)) (fun g => by simpa only [mul_assoc] using hone (g * g₀⁻¹)) hu hinv`. Establish `h3` using `lintegral_mul_right_eq_self (μ := M₀.μ) (fun g => u g * β (g * g₀⁻¹)) g₀`. Simplify using `only [mul_inv_cancel_right] at h3`. Rewrite `h1`, `h2` using `[one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, ← h2, h3]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.M.lintegral_unipotent_quotient_right_invariant :
     ∀ (F : Type) [Field F] [NumberField F] (M₀ : Meas F) (u : G1 F → ℝ≥0∞), Measurable u → (∀ b g, u (nU b * g) = u g) → ∀ g₀, (M.J0 M₀ fun g => u (g * g₀)) = M.J0 M₀ u := by

@@ -7,15 +7,15 @@ open Formalism.MainNotions.product_first_zeroth_parts (Ow tops wsum ten blk nfAl
 namespace GlobalTheory.LvT
 
 /- English proof (translation)
-Introduce `D u X i M φ`. Rewrite using `[M.mem_Fi]`. Prove the components needed by the constructor for the conclusion. Introduce `h choose y hy hfix using h choose cl gp hp using M.rep_surj`. Establish `key : ∀ (c c' : X.C.cls i) (g g' : M.G), g • M.rep c = g' • M.rep c' → M.act g (y c) = M.act g' (y c')`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c c' g g' hgg`. Establish `h1 : (g'⁻¹ * g) • M.rep c = M.rep c'`. Rewrite using `[mul_smul, hgg, inv_smul_smul]`. Establish `hc` using `M.rep_inj c c' _ h1`. Substitute `hc` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `h2` using `hfix c _ h1`. Establish `h3 : g = g' * (g'⁻¹ * g)` using `by group`. Use `conv_lhs => rw [h3, map_mul, Module.End.mul_apply, h2]`. Use `⟨fun p => M.act (gp p) (y (cl p)), fun c => ?_, fun g p => ?_⟩` and prove the remaining obligations. Use `key (cl (M.rep c)) c (gp (M.rep c)) 1 (by rw [hp, one_smul])` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy c]`. Simplify using `only [this, map_one, Module.End.one_apply]`. Use `key (cl (g • p)) (cl p) (gp (g • p)) (g * gp p) (by rw [hp, mul_smul, hp])` as an intermediate fact. Simplify using `only [this, map_mul, Module.End.mul_apply]`. Introduce and unpack `⟨Φ, h1, h2⟩ c`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Φ (M.rep c), h1 c, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, hg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PtModel.mem_Fi_iff_exists_isExt : ∀ (D : D7) (u : D.what₂.Word) (X : Ch D u) (i : ℕ) (M : PtModel X i)
     (φ : Fn X i), φ ∈ X.fm.Fi i ↔ ∃ Φ, M.IsExt φ Φ := by

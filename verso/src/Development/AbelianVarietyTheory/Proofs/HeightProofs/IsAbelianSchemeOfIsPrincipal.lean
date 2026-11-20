@@ -39,7 +39,7 @@ section Comb
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Take `⟨i, hi, hφ⟩` from `grpPullback_iso h h'`. Establish `: v' = fun j => v j ≫ i.hom` using `funext fun j => Over.OverMorphism.ext (h'.1.hom_ext (by rw [e, Over.comp_left, Category.assoc, hφ]) ((Over.w _).trans (Over.w _).symm))`. Substitute `this` using the available equality. Conclude with `⟨w ≫ i.hom, DiffCoord.isLieComb_comp_hom i.hom hw, by rw [Over.comp_left, Category.assoc, hφ]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem comb_transfer {S : Scheme.{0}} {G : Over S} {A A' : Over (Sp R)} [GrpObj G] [GrpObj A] [GrpObj A']
     {f : Sp R ⟶ S} {φ : A.left ⟶ G.left} {φ' : A'.left ⟶ G.left} (h : IsGrpPullback A G f φ)
@@ -53,7 +53,7 @@ theorem comb_transfer {S : Scheme.{0}} {G : Over S} {A A' : Over (Sp R)} [GrpObj
   exact ⟨w ≫ i.hom, DiffCoord.isLieComb_comp_hom i.hom hw, by rw [Over.comp_left, Category.assoc, hφ]⟩
 
 /- English proof (translation)
-Use `⟨fun j => DiffCoord.isTangent_comp_hom _ (hv.1 j), fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hu⟩` from `hv.2 _ (DiffCoord.isTangent_comp_hom i.inv hw)`. Use `⟨c, by simpa using DiffCoord.isLieComb_comp_hom i.hom hc, fun c' hc' => hu c' ?_⟩` and prove the remaining obligations. Simplify using `using DiffCoord.isLieComb_comp_hom i.inv hc'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isLieBasis_iso {A A' : Over (Sp R)} [GrpObj A] [GrpObj A'] (i : A ≅ A') [IsMonHom i.hom] {n : ℕ}
     {v : Fin n → (epsR R ⟶ A)} (hv : IsLieBasis v) : IsLieBasis fun j => v j ≫ i.hom := by
@@ -63,11 +63,11 @@ theorem isLieBasis_iso {A A' : Over (Sp R)} [GrpObj A] [GrpObj A'] (i : A ≅ A'
   simpa using DiffCoord.isLieComb_comp_hom i.inv hc'
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `DiffCoord.exists_linearMap (𝟙 A) hv hv'`. Establish `a` using `LieComb.lieComb_algebra k A n v hv.1`. Establish `a'` using `LieComb.lieComb_algebra k A m v' hv'.1`. Establish `hi : Function.Injective M` using `fun c c' e => by`. Take `⟨w, hw⟩` from `(a.1 c).exists`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hw'⟩` from `(a.1 c').exists`. Establish `h₁` using `hM c w hw`. Establish `h₂` using `hM c' w' hw'`. Rewrite `h₁`, `h₂` using `[Category.comp_id]`. Take `rfl : w = w'` from `(a'.1 (M c')).unique (e ▸ h₁) h₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(hv.2 w (a.2.1 c w hw)).unique hw hw'`. Simplify using `using LinearMap.finrank_le_finrank_of_injective hi`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_le_of_isLieBasis {k : Type} [Field k] {A : Over (Sp k)} [GrpObj A] [IsCommMonObj A] {n m : ℕ}
     {v : Fin n → (epsR k ⟶ A)} {v' : Fin m → (epsR k ⟶ A)} (hv : IsLieBasis v) (hv' : IsLieBasis v') : n ≤ m := by
@@ -93,7 +93,7 @@ section Vec
 variable {t : SAB H (Sp (𝓞 K))} (G : EigenLatticeFibres.GenFib t)
 
 /- English proof (translation)
-Take `⟨w, hw, rfl⟩` from `h`. Take `⟨w', hw', rfl⟩` from `h'`. Rewrite using `[((LieComb.lieComb_algebra K _ _ G.v G.basis.1).1 c).unique hw hw']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isVec_unique {c : Fin G.g → K} {x x' : Sp (DualNumber K) ⟶ t.G.left} (h : G.IsVec c x) (h' : G.IsVec c x') :
     x = x' := by
@@ -102,7 +102,7 @@ theorem isVec_unique {c : Fin G.g → K} {x x' : Sp (DualNumber K) ⟶ t.G.left}
   rw [((LieComb.lieComb_algebra K _ _ G.v G.basis.1).1 c).unique hw hw']
 
 /- English proof (translation)
-Take `⟨w, hw, rfl⟩` from `h`. Take `⟨w', hw', e⟩` from `h'`. Take `rfl : w = w'` from `Over.OverMorphism.ext (G.m.cart.1.hom_ext e ((Over.w _).trans (Over.w _).symm))`. Conclude with `(G.basis.2 w ((LieComb.lieComb_algebra K _ _ G.v G.basis.1).2.1 c w hw)).unique hw hw'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coord_unique {c c' : Fin G.g → K} {x : Sp (DualNumber K) ⟶ t.G.left} (h : G.IsVec c x) (h' : G.IsVec c' x) :
     c = c' := by
@@ -112,7 +112,7 @@ theorem coord_unique {c c' : Fin G.g → K} {x : Sp (DualNumber K) ⟶ t.G.left}
   exact (G.basis.2 w ((LieComb.lieComb_algebra K _ _ G.v G.basis.1).2.1 c w hw)).unique hw hw'
 
 /- English proof (translation)
-Take `⟨w, hw, rfl⟩` from `h`. Use `⟨IntCoord.sc a ≫ w, ?_, (Category.assoc _ _ _).symm⟩` and prove the remaining obligations. Use `(LieComb.lieComb_algebra K _ _ G.v G.basis.1).2.2.1 1 ![c] ![w] ![a] _ (fun i => by fin_cases i; exact hw) ((IntCoord.isLieComb_one_iff a w _).2 rfl)` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isVec_smul (a : K) {c : Fin G.g → K} {x : Sp (DualNumber K) ⟶ t.G.left} (h : G.IsVec c x) :
     G.IsVec (a • c) (spMap (epsScaleR a) ≫ x) := by
@@ -123,7 +123,7 @@ theorem isVec_smul (a : K) {c : Fin G.g → K} {x : Sp (DualNumber K) ⟶ t.G.le
   simpa using this
 
 /- English proof (translation)
-Use `G.tK.act.hom a` as an intermediate fact. Take `⟨r, hr⟩` from `DiffCoord.exists_linearMap (G.tK.act.act a) G.basis G.basis`. Use `⟨r, ?_⟩` and prove the remaining obligations. Introduce and unpack `c _ ⟨w, hw, rfl⟩`. Conclude with `⟨_, hr c w hw, by rw [Over.comp_left, Category.assoc, Category.assoc]; exact congrArg _ (G.m.act a).symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_isDiff_act (a : 𝓞 E) : ∃ r, G.IsDiff G (t.act.act a) r := by
   have := G.tK.act.hom a
@@ -133,9 +133,9 @@ theorem exists_isDiff_act (a : 𝓞 E) : ∃ r, G.IsDiff G (t.act.act a) r := by
   exact ⟨_, hr c w hw, by rw [Over.comp_left, Category.assoc, Category.assoc]; exact congrArg _ (G.m.act a).symm⟩
 
 /- English proof (translation)
-Use `choose r hr using exists_isDiff_act G`. Establish `key : ∀ c, G.IsEigenVec τ c ↔ ∀ a, r a c = τ (a : E) • c` using `fun c => by`. Use `forall_congr' fun a => ⟨fun h => ?_, fun h x hx => h ▸ hr a c x hx⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `G.exists_isVec c`. Conclude with `coord_unique G (hr a c x hx) (h x hx)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun h => (key c).2 fun a => ?_, fun h => Submodule.subset_span h⟩` and prove the remaining obligations. Use `Submodule.span_induction (p := fun c _ => r a c = τ (a : E) • c) (fun c hc => (key c).1 hc a) (by simp) (fun x y _ _ hx hy => by rw [map_add, hx, hy, smul_add]) (fun b x _ hx => by rw [map_smul, hx, smul_comm]) h` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem mem_eigenSp_iff (τ : E →+* K) (c : Fin G.g → K) : c ∈ G.eigenSp τ ↔ G.IsEigenVec τ c := by
   choose r hr using exists_isDiff_act G
@@ -164,7 +164,7 @@ variable {T T' : PAT H (Sp (𝓞 K))}
 abbrev Partner.fib {F : GenFib T.pol} (Q : Partner F) : EigenLatticeFibres.GenFib T.t := ⟨Q.tK, Q.m, F.P₀.g, Q.v, Q.basis⟩
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap (algebraMap (𝓞 K) K)) T.t`. Take `⟨i, hi, e⟩` from `grpPullback_iso F.fib.2.1 m.cart`. Conclude with `⟨⟨_, m, fun j => F.v j ≫ i.hom, isLieBasis_iso i F.basis, fun j => by`. Rewrite using `[Over.comp_left, Category.assoc]`. Conclude with `congrArg _ e⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_partner (F : GenFib T.pol) : Nonempty (Partner F) := by
   obtain ⟨_, _, _, _, _, m, -⟩ := sabPull Out.CubePf.cubePull (spMap (algebraMap (𝓞 K) K)) T.t
@@ -173,9 +173,9 @@ theorem nonempty_partner (F : GenFib T.pol) : Nonempty (Partner F) := by
     rw [Over.comp_left, Category.assoc]; exact congrArg _ e⟩⟩
 
 /- English proof (translation)
-Take `⟨⟨T', e, hg⟩, w⟩` from `PAT.exists_of_sabMap E H _ _ _ T G.tK G.m`. Take `⟨t, ab, g, dim, sym, ample, ktriv⟩` from `T'`. Simplify using `only at e hg`. Substitute `e` using the available equality. Take `⟨v, hv⟩` from `TenDim.exists_isLieBasis _ dim`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `rfl : g = G.g` from `le_antisymm (card_le_of_isLieBasis hv G.basis) (card_le_of_isLieBasis G.basis hv)`. Conclude with `⟨⟨(⟨G.tK, ab, G.g, dim, sym, ample, ktriv⟩ : PAT H (Sp K)).pol, G.m.φ, ⟨hg, G.m.cart, w⟩, G.v, G.basis⟩, ⟨G.tK, G.m, G.v, G.basis, fun _ => rfl⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_partner (G : EigenLatticeFibres.GenFib T.t) : ∃ (F : GenFib T.pol) (Q : Partner F), Q.fib = G := by
   obtain ⟨⟨T', e, hg⟩, w⟩ := PAT.exists_of_sabMap E H _ _ _ T G.tK G.m
@@ -192,9 +192,9 @@ namespace Partner
 variable {F : GenFib T.pol} {F' : GenFib T'.pol} (Q : Partner F) (Q' : Partner F')
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Take `⟨w', h, e⟩` from `comb_transfer Q.m.cart F.fib.2.1 (fun i => (Q.same i).symm) hw`. Conclude with `⟨w', h, e.symm⟩`. Introduce and unpack `⟨w, hw, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨w', h, e⟩` from `comb_transfer F.fib.2.1 Q.m.cart Q.same hw`. Conclude with `⟨w', h, e.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isVec_iff (c : Fin F.P₀.g → K) (x : Sp (DualNumber K) ⟶ T.t.G.left) :
     Q.fib.IsVec c x ↔ ∃ w, IsLieComb c F.v w ∧ x = w.left ≫ F.φ := by
@@ -207,7 +207,7 @@ theorem isVec_iff (c : Fin F.P₀.g → K) (x : Sp (DualNumber K) ⟶ T.t.G.left
     exact ⟨w', h, e.symm⟩
 
 /- English proof (translation)
-Rewrite using `[Q.isVec_iff]`. Conclude with `and_congr_right fun _ => exists_congr fun w => ⟨fun h => ⟨h.2, h.1.symm⟩, fun h => ⟨h.2.symm, h.1⟩⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCoord_iff (u : epsR (𝓞 K) ⟶ T.t.G) (c : Fin F.P₀.g → K) :
     F.IsCoord u c ↔ IsTangent u ∧ Q.fib.IsVec c (spMap (Chart.dualMapR (algebraMap (𝓞 K) K)) ≫ u.left) := by
@@ -215,7 +215,7 @@ theorem isCoord_iff (u : epsR (𝓞 K) ⟶ T.t.G) (c : Fin F.P₀.g → K) :
   exact and_congr_right fun _ => exists_congr fun w => ⟨fun h => ⟨h.2, h.1.symm⟩, fun h => ⟨h.2.symm, h.1⟩⟩
 
 /- English proof (translation)
-Take `⟨w, hw, e⟩` from `(Q.isVec_iff _ _).1 h`. Use `F.P₀.isAb.comm` as an intermediate fact. Establish `: IsSeparated T.pol.A.hom` using `T.t.semi.separated`. Conclude with `⟨LieGlue.isTangent_of_isVecOver RingOfIntegers.coe_injective F.fib.2.1 e.symm ((LieComb.lieComb_algebra K _ _ F.v F.basis.1).2.1 c w hw), w, e.symm, hw⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isCoord_of_isVec {u : epsR (𝓞 K) ⟶ T.t.G} {c : Fin F.P₀.g → K}
     (h : Q.fib.IsVec c (spMap (Chart.dualMapR (algebraMap (𝓞 K) K)) ≫ u.left)) : F.IsCoord u c := by
@@ -226,21 +226,21 @@ theorem isCoord_of_isVec {u : epsR (𝓞 K) ⟶ T.t.G} {c : Fin F.P₀.g → K}
     ((LieComb.lieComb_algebra K _ _ F.v F.basis.1).2.1 c w hw), w, e.symm, hw⟩
 
 /- English proof (translation)
-The claim follows from `congrArg (Submodule.span (𝓞 K)) (Set.ext fun c => exists_congr fun u => Q.isCoord_iff u c)`.
+A detailed English derivation is pending.
 -/
 theorem lieLat_eq : F.lieLat = Q.fib.lieLat :=
   congrArg (Submodule.span (𝓞 K)) (Set.ext fun c => exists_congr fun u => Q.isCoord_iff u c)
 
 /- English proof (translation)
-Establish `hc : c ∈ Submodule.span K (F.lieLat : Set (Fin F.P₀.g → K))` using `(LieLattice.lieLat_fg_and_span_eq_top K _ F).2 ▸ Submodule.mem_top`. Establish `hl` using `(integral_tangent_coordinates K _ F).2.2.2.2.1`. It suffices to establish `h : ∃ n : 𝓞 K, n ≠ 0 ∧ n • c ∈ F.lieLat from h.imp fun n hn => ⟨hn.1, (hl _).1 hn.2⟩`. Use `Submodule.span_induction (p := fun c _ => ∃ n : 𝓞 K, n ≠ 0 ∧ n • c ∈ F.lieLat) (fun c hc => ⟨1, one_ne_zero, by rwa [one_smul]⟩) ⟨1, one_ne_zero, by simp⟩ ?_ ?_ hc` and prove the remaining obligations. Introduce and unpack `x y - - ⟨n, hn, hx⟩ ⟨m, hm, hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨n * m, mul_ne_zero hn hm, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `F.lieLat.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_comm, mul_smul]`. Conclude with `F.lieLat.smul_mem _ hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul]`. Conclude with `F.lieLat.smul_mem _ hy`. Introduce and unpack `a x - ⟨n, hn, hx⟩`. Take `⟨r, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) a`. Establish `hs'` using `nonZeroDivisors.ne_zero hs`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨n * s, mul_ne_zero hn hs', ?_⟩` and prove the remaining obligations. Establish `hs'' : algebraMap (𝓞 K) K s ≠ 0` using `fun h => hs' (RingOfIntegers.coe_injective (h.trans (map_zero _).symm))`. Establish `: (n * s) • (algebraMap (𝓞 K) K r / algebraMap (𝓞 K) K s) • x = r • n • x`. Rewrite using `[← algebraMap_smul K (n * s), ← algebraMap_smul K r, ← algebraMap_smul K n, smul_smul, smul_smul, map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `F.lieLat.smul_mem _ hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_isCoord (F : GenFib T.pol) (c : Fin F.P₀.g → K) :
     ∃ n : 𝓞 K, n ≠ 0 ∧ ∃ u, F.IsCoord u ((n : K) • c) := by
@@ -269,9 +269,9 @@ theorem exists_smul_isCoord (F : GenFib T.pol) (c : Fin F.P₀.g → K) :
     exact F.lieLat.smul_mem _ hx
 
 /- English proof (translation)
-Use `⟨fun h c x hx => ?_, fun h u c hu => Q'.isCoord_of_isVec ?_⟩` and prove the remaining obligations. Take `⟨n, hn, u, hu⟩` from `exists_smul_isCoord F c`. Establish `hn' : (n : K) ≠ 0` using `fun h => hn (RingOfIntegers.coe_injective (h.trans (map_zero _).symm))`. Establish `h₁` using `isVec_smul Q.fib (n : K)⁻¹ ((Q.isCoord_iff _ _).1 hu).2`. Establish `h₂` using `isVec_smul Q'.fib (n : K)⁻¹ ((Q'.isCoord_iff _ _).1 (h u _ hu)).2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h₁` using `[inv_smul_smul₀ hn']`. Rewrite `h₂` using `[map_smul, inv_smul_smul₀ hn']`. Rewrite using `[isVec_unique Q.fib hx h₁]`. Simplify using `using h₂`. Simplify using `using h c _ ((Q.isCoord_iff u c).1 hu).2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isDiffOf_iff (f : T.t.G ⟶ T'.t.G) (M : (Fin F.P₀.g → K) →ₗ[K] (Fin F'.P₀.g → K)) :
     F.IsDiffOf F' f M ↔ Q.fib.IsDiff Q'.fib f M := by
@@ -287,13 +287,11 @@ theorem isDiffOf_iff (f : T.t.G ⟶ T'.t.G) (M : (Fin F.P₀.g → K) →ₗ[K] 
   · simpa using h c _ ((Q.isCoord_iff u c).1 hu).2
 
 /- English proof (translation)
-Take `⟨-, h₂, -, h₄, h₅, h₆⟩` from `integral_tangent_coordinates K _ F`. Use extensionality with `c`. Rewrite using `[h₆, EigenLatticeFibres.GenFib.eigenLat, Submodule.mem_inf, ← Q.lieLat_eq, h₅, Submodule.restrictScalars_mem, mem_eigenSp_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, he⟩`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨u, hu⟩, fun a x hx => ?_⟩` and prove the remaining obligations. Use `((Q.isCoord_iff _ _).1 (h₄ _ _ _ _ hu (he a))).2` as an intermediate fact. Rewrite using `[isVec_unique Q.fib hx ((Q.isCoord_iff _ _).1 hu).2, hτ, Category.assoc]`. Conclude with `this`. Introduce and unpack `⟨⟨u, hu⟩, he⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, hu, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `he a _ ((Q.isCoord_iff _ _).1 hu).2`. Rewrite `h` using `[hτ, Category.assoc]`. Establish `h'` using `(IntCoord.isLieComb_one_iff (τ a) u _).2 rfl`. Rewrite using `[h₂ _ _ _ (Q.isCoord_of_isVec (u := u ≫ T.t.act.act a) h) (h₄ _ _ _ _ hu h')]`.
-
-Conclude with `h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigLat_eq (τ : 𝓞 E →+* 𝓞 K) (τ' : E →+* K) (hτ : ∀ a : 𝓞 E, τ' (a : E) = (τ a : K)) :
     F.eigLat T.t.act τ = Q.fib.eigenLat τ' := by
@@ -320,7 +318,7 @@ end Partner
 section Metric
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Take `⟨w, hw⟩` from `w`. Establish `hM` using `pull_isLB G.tK.PP.isLB φ`. Conclude with `⟨⟨A, φ, hφ, TorsionTauCompare.transport hL hM hw u, Hm, χ, TorsionTauCompare.isAH_transport hL hM hw u hu, v', fun i => (hv i).1, W, fun i => (hv i).2⟩, fun _ _ => rfl⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_cxFib {t : SAB H (Sp (𝓞 K))} (G : EigenLatticeFibres.GenFib t) (s : K →+* ℂ) {A : Over (Sp ℂ)} [GrpObj A]
     {L : LB A.left} (hL : L.IsLB) {φ : A.left ⟶ G.tK.G.left} (hφ : IsGrpPullback A G.tK.G (spMap s) φ)
@@ -337,7 +335,7 @@ theorem exists_cxFib {t : SAB H (Sp (𝓞 K))} (G : EigenLatticeFibres.GenFib t)
 variable {T : PAT H (Sp (𝓞 K))} {F : GenFib T.pol} (Q : Partner F)
 
 /- English proof (translation)
-Establish `h₁` using `EllComp.lbIso_pull_comp F.fib.2.2 a`. Establish `h₂` using `EllComp.lbIso_pull_comp (PAT.exists_of_sabMap E H _ _ _ T Q.tK Q.m).2 b`. Rewrite `h₁` using `[e]`. Conclude with `LBIso.trans (pull_isLB F.P₀.isLB _) (pull_isLB T.t.PP.isLB _) (pull_isLB Q.tK.PP.isLB _) h₁.symm h₂`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Partner.lbIso {Z : Scheme.{0}} {a : Z ⟶ F.P₀.A.left} {b : Z ⟶ Q.tK.G.left} (e : a ≫ F.φ = b ≫ Q.m.φ) :
     LBIso (F.P₀.L.pull a) (Q.tK.PP.L.pull b) := by
@@ -347,17 +345,17 @@ theorem Partner.lbIso {Z : Scheme.{0}} {a : Z ⟶ F.P₀.A.left} {b : Z ⟶ Q.tK
   exact LBIso.trans (pull_isLB F.P₀.isLB _) (pull_isLB T.t.PP.isLB _) (pull_isLB Q.tK.PP.isLB _) h₁.symm h₂
 
 /- English proof (translation)
-Take `⟨i, hi, e⟩` from `grpPullback_iso F.fib.2.1 Q.m.cart`. Establish `hv : ∀ j, Q.v j = F.v j ≫ i.hom` using `fun j => Over.OverMorphism.ext (Q.m.cart.1.hom_ext ((Q.same j).trans (by rw [Over.comp_left, Category.assoc]; exact congrArg _ e.symm)) ((Over.w _).trans (Over.w _).symm))`. Use `forall_congr' fun s => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨P, ψ, v', u, Hm, χ, W, hψ, hu, hW, hh⟩`. Take `⟨C, hC⟩` from `exists_cxFib Q.fib s P.isLB (φ := ψ ≫ i.hom.left) ((hψ.2.1.comp (isGrpPullback_of_iso i)).congr (Category.comp_id _) rfl) (LBIso.trans P.isLB (pull_isLB F.P₀.isLB _) (pull_isLB Q.tK.PP.isLB _) hψ.2.2.symm (Q.lbIso (by rw [Category.assoc]; exact congrArg _ e.symm))) hψ.1 u hu (v' …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `(hW j).1` as an intermediate fact. Unfold `IsVecOver at this ⊢`. Rewrite using `[← Category.assoc, this, Category.assoc]`. Conclude with `congrArg _ (congrArg (·.left) (hv j)).symm, (hW j).2⟩`. Conclude with `⟨C, fun x y => by rw [hC, HermHom.form_eq h s Hm W _ hh]⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨C, hC⟩`. Establish `: IsMonHom i.symm.hom` using `inferInstanceAs (IsMonHom i.inv)`. Establish `hp : IsGrpPullback C.A F.P₀.A (spMap s) (C.φ ≫ i.inv.left)` using `(C.cart.comp (isGrpPullback_of_iso i.symm)).congr (Category.comp_id _) rfl`. Use `F.P₀.isAb.comm` as an intermediate fact. Use `PolPull.isCommMonObj_of_isGrpPullback hp` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : i.inv.left ≫ F.φ = Q.m.φ`. Rewrite using `[← e, ← Category.assoc, ← Over.comp_left, i.inv_hom_id]`. Conclude with `Category.id_comp _`. Take `⟨w, hw⟩` from `(Q.lbIso (a := C.φ ≫ i.inv.left) (b := C.φ) (by rw [Category.assoc, e'])).symm`. Establish `hL` using `pull_isLB Q.tK.PP.isLB C.φ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM` using `pull_isLB F.P₀.isLB (C.φ ≫ i.inv.left)`. Use `⟨TorsionTauCompare.polOfPullback F.P₀ C.A hp, C.φ ≫ i.inv.left, C.vC, TorsionTauCompare.transport hL hM hw C.u, C.Hm, C.χ, C.W, ⟨rfl, hp, PolBaseChange.lbIso_refl hM⟩, TorsionTauCompare.isAH_transport hL hM hw C.u C.ah, fun j => ⟨?_, C.diff j⟩, fun j k => ?_⟩` and prove the remaining obligations. Use `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ i.inv.left) (C.vC_base j)).trans ((Category.assoc _ _ _).trans (congrArg _ ?_)))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Q.v j ≫ i.inv).left = _`. Rewrite using `[hv, Category.assoc, i.hom_inv_id, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs : ∀ j, C.vec (Pi.single j 1) = C.W j` using `fun j => by`. Simplify using `[EigenLatticeFibres.GenFib.CxFib.vec, Pi.single_apply, apply_ite s]`. Rewrite using `[hC, EigenLatticeFibres.GenFib.CxFib.piH, hs, hs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Partner.isHerm_iff (h : HermFam K (Fin F.P₀.g → K)) : F.IsHerm h ↔ Q.fib.IsPiH h := by
   obtain ⟨i, hi, e⟩ := grpPullback_iso F.fib.2.1 Q.m.cart
@@ -404,7 +402,7 @@ end Metric
 section Embeddings
 
 /- English proof (translation)
-Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) (eq_bot_iff.2 fun n hn => ?_)` and prove the remaining obligations. Simplify `hn` using `[RingHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem injective_of_charZero {k : Type} [CommRing k] [CharZero k] (β : 𝓞 K →+* k) : Function.Injective β := by
   rw [RingHom.injective_iff_ker_eq_bot]
@@ -412,7 +410,7 @@ theorem injective_of_charZero {k : Type} [CommRing k] [CharZero k] (β : 𝓞 K 
   simpa [RingHom.mem_ker] using hn
 
 /- English proof (translation)
-Use `⟨fun f g e => IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => ?_), fun τ => ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun x : 𝓞 E →+* 𝓞 K => (x a : K)) e`. Establish `hi` using `injective_of_charZero ((algebraMap (𝓞 K) K).comp τ)`. Conclude with `⟨IsFractionRing.lift hi, RingHom.ext fun a => Subtype.ext (IsFractionRing.lift_algebraMap hi a)⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mapRingHom_bijective (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] :
     Function.Bijective (RingOfIntegers.mapRingHom : (E →+* K) → (𝓞 E →+* 𝓞 K)) := by
@@ -422,14 +420,14 @@ theorem mapRingHom_bijective (E K : Type) [Field E] [NumberField E] [Field K] [N
     exact ⟨IsFractionRing.lift hi, RingHom.ext fun a => Subtype.ext (IsFractionRing.lift_algebraMap hi a)⟩
 
 /- English proof (translation)
-Rewrite using `[Splits, EigenLatticeFibres.SplitsE, Nat.card_eq_of_bijective _ (mapRingHom_bijective E K)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem splits_iff (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] :
     Splits E K ↔ EigenLatticeFibres.SplitsE E K := by
   rw [Splits, EigenLatticeFibres.SplitsE, Nat.card_eq_of_bijective _ (mapRingHom_bijective E K)]
 
 /- English proof (translation)
-The claim follows from `and_congr_right fun _ => ⟨fun h k _ _ β hβ => have : CharZero k := charZero_of_injective_ringHom hβ h k β, fun h k _ _ _ β => h k β (injective_of_charZero β)⟩`.
+A detailed English derivation is pending.
 -/
 theorem hasSig_iff {G : Over (Sp (𝓞 K))} [GrpObj G] (act : OAct (𝓞 E) G) (ρ : 𝓞 K) (p q : ℕ) :
     CMCurveHermitianForms.HasSig H p q act ρ ↔ ρ ^ 2 = -(H.d : 𝓞 K) ∧ HasType H act ρ p q :=
@@ -442,13 +440,11 @@ end Embeddings
 section Isogeny
 
 /- English proof (translation)
-Establish `hL` using `GlobalTheory.T.abelianScheme_laws_unconditional.1`. Establish `hs` using `(OntoSurj.surjective_of_onto_complex_points _ _ (injective_of_charZero _) _ _ Φ P'.isAb P.isAb h).1`. Take `⟨N, ψ, hN, -, h₁, -⟩` from `LamF.exists_inverse_isogeny_ringOfIntegers thetaUnifAV_all hL homExtension_semiAbelian_dvr_unconditional K σ P P' Φ hg hΦ h`. Use `P.isAb.proper` as an intermediate fact. Use `P'.isAb.proper` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `P.isAb.smooth` as an intermediate fact. Use `P.isAb.comm` as an intermediate fact. Establish `: IsSeparated ψ.left`. Establish `: IsSeparated (ψ.left ≫ P.A.hom)` using `by rw [Over.w]; infer_instance`. Conclude with `IsSeparated.of_comp ψ.left P.A.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : IsFinite Φ.left`. Establish `: IsFinite (Φ.left ≫ ψ.left)`. Rewrite using `[← Over.comp_left, h₁]`. Conclude with `(hL.mulN _ P N hN).1`. Conclude with `IsFinite.of_comp Φ.left ψ.left`.
-
-Use `⟨hf, flat_of_isFinite_of_flat_geometric_fibres _ _ _ Φ inferInstance inferInstance hf fun k _ _ t => ?_, hs⟩` and prove the remaining obligations. Use `(isogeny_of_surjective_of_dim_eq hL k (TorsionTauCompare.polOfPullback P _ (isGrpPullback_pullback P.A t)) _ ((Over.pullback t).map Φ) (PolPull.isAbelianScheme_of_isGrpPullback P'.isAb (isGrpPullback_pullback P'.A t)) ?_ (inferInstanceAs (IsMonHom ((Over.pullback t).map Φ))) (Mor …` and prove the remaining obligations. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (isGrpPullback_pullback P'.A t).1 (hg ▸ P'.smoothDim)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isFinFlatSurj_of_onto (σ : K →+* ℂ) (P P' : Out.PolAV (Sp (𝓞 K))) (Φ : P.A ⟶ P'.A) (hg : P.g = P'.g)
     [hΦ : IsMonHom Φ] (h : ∀ y : Over.mk (spMap (σ.comp (algebraMap (𝓞 K) K))) ⟶ P'.A,
@@ -479,7 +475,7 @@ theorem isFinFlatSurj_of_onto (σ : K →+* ℂ) (P P' : Out.PolAV (Sp (𝓞 K))
     (hg ▸ P'.smoothDim)
 
 /- English proof (translation)
-Simplify using `only [EigenLatticeFibres.sumMap, EigenLatticeFibres.sumPow, List.prod_ofFn, MonObj.comp_mul, LamF.IsogSum.comp_prod, Category.assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comp_sumMap {S : Scheme.{0}} {A A' B Z : Over S} [GrpObj B] [IsCommMonObj B] {p q : ℕ} (f : Fin p → (A ⟶ B))
     (f' : Fin q → (A' ⟶ B)) (x : Z ⟶ (∏ᶜ fun _ : Fin p => A) ⊗ (∏ᶜ fun _ : Fin q => A')) :
@@ -487,21 +483,21 @@ theorem comp_sumMap {S : Scheme.{0}} {A A' B Z : Over S} [GrpObj B] [IsCommMonOb
   simp only [EigenLatticeFibres.sumMap, EigenLatticeFibres.sumPow, List.prod_ofFn, MonObj.comp_mul, LamF.IsogSum.comp_prod, Category.assoc]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h₁, -, h₃⟩ y`. Take `⟨z, hz⟩` from `GeomSurj.exists_lift_of_surjective (EigenLatticeFibres.sumMap f f').left y.left`. Set `x : Over.mk (spMap (σ.comp (algebraMap (𝓞 K) K))) ⟶ (∏ᶜ fun _ : Fin p => A.A) ⊗ (∏ᶜ fun _ : Fin q => A'.A)` to `Over.homMk z (by rw [← Over.w (EigenLatticeFibres.sumMap f f'), ← Category.assoc, ← hz]; exact Over.w y)`. Conclude with `⟨_, _, (Over.OverMorphism.ext hz : y = x ≫ _).trans (comp_sumMap f f' x)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Introduce `hs`. Take `⟨P, pP, hP⟩` from `GlobalTheory.T.exists_polarisedAbelianScheme_power (𝓞 K) A p`. Take `⟨P', pP', hP'⟩` from `GlobalTheory.T.exists_polarisedAbelianScheme_power (𝓞 K) A' q`. Take `⟨Q, u, v, hu, hv, huv, hQ⟩` from `GlobalTheory.T.exists_prod_polAV_add_g GlobalTheory.T.abelianScheme_laws_unconditional.1 (𝓞 K) P P'`. Use `pP.hom` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `pP'.hom` as an intermediate fact. Use `Q.isAb.comm` as an intermediate fact. Use `A.isAb.comm` as an intermediate fact. Use `A'.isAb.comm` as an intermediate fact. Set `a` to `pP.lim.conePointUniqueUpToIso (productIsProduct fun _ : Fin p => A.A)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b` to `pP'.lim.conePointUniqueUpToIso (productIsProduct fun _ : Fin q => A'.A)`. Establish `ha : ∀ i, a.hom ≫ Pi.π _ i = pP.pr i` using `fun i => pP.lim.conePointUniqueUpToIso_hom_comp (productIsProduct fun _ : Fin p => A.A) ⟨i⟩`. Establish `hb : ∀ i, b.hom ≫ Pi.π _ i = pP'.pr i` using `fun i => pP'.lim.conePointUniqueUpToIso_hom_comp (productIsProduct fun _ : Fin q => A'.A) ⟨i⟩`. Set `e : Q.A ≅ (∏ᶜ fun _ : Fin p => A.A) ⊗ (∏ᶜ fun _ : Fin q => A'.A)` to `asIso (lift u v) ≪≫ (a ⊗ᵢ b)`. Establish `e₁ : e.hom ≫ fst _ _ = u ≫ a.hom` using `by simp [e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₂ : e.hom ≫ snd _ _ = v ≫ b.hom` using `by simp [e]`. Establish `hΦ : ∀ {Z : Over (Sp (𝓞 K))} (x : Z ⟶ Q.A), x ≫ e.hom ≫ EigenLatticeFibres.sumMap f f' = (∏ i, (x ≫ u ≫ pP.pr i) ≫ f i) * ∏ i, (x ≫ v ≫ pP'.pr i) ≫ f' i` using `fun x => by`. Rewrite using `[← Category.assoc, comp_sumMap]`. Simplify using `only [Category.assoc, reassoc_of% e₁, reassoc_of% e₂, ← ha, ← hb]`. Establish `hm : IsMonHom (e.hom ≫ EigenLatticeFibres.sumMap f f')` using `LamF.IsogSum.isMonHom_of_points _ fun Z x y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hΦ, MonObj.mul_comp, Finset.prod_mul_distrib]`. Conclude with `mul_mul_mul_comm _ _ _ _`. Take `⟨h₁, h₂, h₃⟩` from `isFinFlatSurj_of_onto σ Q B (e.hom ≫ EigenLatticeFibres.sumMap f f') (by rw [hQ, hP, hP', hg]) fun y => by`. Take `⟨x, x', hx⟩` from `hs y`. Take `⟨z, hz, hz'⟩` from `LamF.IsogSum.exists_point pP pP' u v x x'`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨z, by rw [hΦ, hx]; simp only [hz, hz']⟩`. Establish `: IsIso e.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map e.inv))`. Establish `he : (EigenLatticeFibres.sumMap f f').left = e.inv.left ≫ (e.hom ≫ EigenLatticeFibres.sumMap f f').left`. Rewrite using `[← Over.comp_left, e.inv_hom_id_assoc]`. Unfold `EigenLatticeFibres.IsFinFlatSurj`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFinFlatSurj_sumMap_iff (σ : K →+* ℂ) (A A' B : Out.PolAV (Sp (𝓞 K))) [IsCommMonObj B.A] {p q : ℕ}
     (f : Fin p → (A.A ⟶ B.A)) (f' : Fin q → (A'.A ⟶ B.A)) (hf : ∀ i, IsMonHom (f i)) (hf' : ∀ i, IsMonHom (f' i))
@@ -556,7 +552,7 @@ end Isogeny
 section Object
 
 /- English proof (translation)
-Use `⟨fun w n x y c hn hx hy => w n hn _ x y hx hy (unitOn c), fun w k hk Z x y hx hy c => ?_⟩` and prove the remaining obligations. Establish `hL` using `GlobalTheory.T.abelianScheme_laws_unconditional.1`. Establish `h₁ : IsMonHom (𝟙 A.pol.A)` using `inferInstance`. Conclude with `PairingScheme.weilIs_iff_of_lamEq hL (𝓞 K) A.pol A.pol B.pol A.pol _ _ _ _ hf hf (A.t.act.hom h) h₁ ((PairingFibre.lamEq_weilEq_over_ring hL (𝓞 K) A.pol A.pol B.pol A.pol _ _ _ _ hf hf (A.t.act.hom h) h₁ ℂ (σ.comp (algebraMap (𝓞 K) K))).2 inferInstance (injective_of_charZero _) w …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem polId_iff (σ : K →+* ℂ) (A B : PAT H (Sp (𝓞 K))) (f : A.t.G ⟶ B.t.G) (hf : IsMonHom f) (h : 𝓞 E) :
     EigenLatticeFibres.PolId f h ↔ WeilEq B.t.PP.L f f A.t.PP.L (A.t.act.act h) (𝟙 _) (spMap (σ.comp (algebraMap (𝓞 K) K))) := by
@@ -568,25 +564,25 @@ theorem polId_iff (σ : K →+* ℂ) (A B : PAT H (Sp (𝓞 K))) (f : A.t.G ⟶ 
       (σ.comp (algebraMap (𝓞 K) K))).2 inferInstance (injective_of_charZero _) w) Z k x y c hk hx hy
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1, h.2⟩, fun h => ⟨h.1, h.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLinHom_iff {S : Scheme.{0}} {t t' : SAB H S} (f : t.G ⟶ t'.G) :
     EigenLatticeFibres.IsLinHom f ↔ Serre.IsLinearHom t.act t'.act f :=
   ⟨fun h => ⟨h.1, h.2⟩, fun h => ⟨h.1, h.2⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨T.ab.proper, T.ample, T.ktriv⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPrincipal {S : Scheme.{0}} (T : PAT H S) : CMCurveHermitianForms.IsPrincipal T.t := ⟨T.ab.proper, T.ample, T.ktriv⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨t.semi.comm, t.semi.smooth, h.proper, t.semi.geomConnected⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAbelianScheme_of_isPrincipal {S : Scheme.{0}} {t : SAB H S} (h : CMCurveHermitianForms.IsPrincipal t) :
     IsAbelianScheme t.G := ⟨t.semi.comm, t.semi.smooth, h.proper, t.semi.geomConnected⟩
 
 /- English proof (translation)
-The claim follows from `have : ConnectedSpace (Sp (𝓞 K)) := inferInstanceAs (ConnectedSpace (PrimeSpectrum (𝓞 K))) AbelianDim.exists_relDim_of_connected t.G (isAbelianScheme_of_isPrincipal h)`.
+A detailed English derivation is pending.
 -/
 theorem exists_dim {t : SAB H (Sp (𝓞 K))} (h : CMCurveHermitianForms.IsPrincipal t) : ∃ g, SmoothOfRelativeDimension g t.G.hom :=
   have : ConnectedSpace (Sp (𝓞 K)) := inferInstanceAs (ConnectedSpace (PrimeSpectrum (𝓞 K)))
@@ -604,7 +600,7 @@ def patOf (t : SAB H (Sp (𝓞 K))) (h : CMCurveHermitianForms.IsPrincipal t) : 
   ktriv := h.ktriv
 
 /- English proof (translation)
-Use `P.isAb.comm` as an intermediate fact. Establish `h` using `isGrpPullback_pullback P.A (spMap (algebraMap (𝓞 K) K))`. Take `⟨v, hv⟩` from `TenDim.exists_isLieBasis _ (TorsionTauCompare.polOfPullback P _ h).smoothDim`. Conclude with `⟨⟨TorsionTauCompare.polOfPullback P _ h, _, ⟨rfl, h, PolBaseChange.lbIso_refl (pull_isLB P.isLB _)⟩, v, hv⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_genFib (P : Out.PolAV (Sp (𝓞 K))) : Nonempty (GenFib P) := by
   have := P.isAb.comm
@@ -613,7 +609,7 @@ theorem nonempty_genFib (P : Out.PolAV (Sp (𝓞 K))) : Nonempty (GenFib P) := b
   exact ⟨⟨TorsionTauCompare.polOfPullback P _ h, _, ⟨rfl, h, PolBaseChange.lbIso_refl (pull_isLB P.isLB _)⟩, v, hv⟩⟩
 
 /- English proof (translation)
-Take `⟨F⟩` from `nonempty_genFib T.pol`. Conclude with `(EigDec.eigen_decomposition E H K ρ T F p q hs ht hρ).2.2.2.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dim_eq {ρ : 𝓞 K} {p q : ℕ} (T : PAT H (Sp (𝓞 K))) (hs : Splits E K) (ht : HasType H T.t.act ρ p q)
     (hρ : ρ ^ 2 = -(H.d : 𝓞 K)) : T.g = Module.finrank ℚ E / 2 * (p + q) := by
@@ -621,16 +617,16 @@ theorem dim_eq {ρ : 𝓞 K} {p q : ℕ} (T : PAT H (Sp (𝓞 K))) (hs : Splits 
   exact (EigDec.eigen_decomposition E H K ρ T F p q hs ht hρ).2.2.2.1
 
 /- English proof (translation)
-Rewrite using `[List.prod_ofFn, Equiv.prod_comp finSumFinEquiv.symm f, Fintype.prod_sum_type]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_ofFn_sum {M : Type} [CommMonoid M] {p q : ℕ} (f : Fin p ⊕ Fin q → M) :
     (List.ofFn fun i : Fin (p + q) => f (finSumFinEquiv.symm i)).prod = (∏ i, f (Sum.inl i)) * ∏ j, f (Sum.inr j) := by
   rw [List.prod_ofFn, Equiv.prod_comp finSumFinEquiv.symm f, Fintype.prod_sum_type]
 
 /- English proof (translation)
-Use `(isFinFlatSurj_sumMap_iff σ (A true).pol (A false).pol B.pol _ _ (fun i => hφ (Sum.inl i)) (fun i => hφ (Sum.inr i)) ?_).trans (forall_congr' fun y => ⟨?_, ?_⟩)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `B.g = p * (A true).g + q * (A false).g`. Rewrite using `[dim_eq _ hs h₁ hρ, dim_eq _ hs h₂ hρ, dim_eq _ hs h₃ hρ]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨x, x', h⟩`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun j => Sum.rec (motive := fun j => _ ⟶ (A j.isLeft).t.G) x x' j, h.trans (prod_ofFn_sum fun j => Sum.rec (motive := fun j => _ ⟶ (A j.isLeft).t.G) x x' j ≫ φ j).symm⟩`. Introduce and unpack `⟨x, h⟩`. Conclude with `⟨fun i => x (Sum.inl i), fun i => x (Sum.inr i), h.trans (prod_ofFn_sum fun j => x j ≫ φ j)⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isog_iff {ρ : 𝓞 K} {p q : ℕ} (σ : K →+* ℂ) (hs : Splits E K) (hρ : ρ ^ 2 = -(H.d : 𝓞 K))
     (A : Bool → PAT H (Sp (𝓞 K))) (B : PAT H (Sp (𝓞 K))) (h₁ : HasType H (A true).t.act ρ 1 0)
@@ -683,7 +679,7 @@ def homs (Y : EigenLatticeFibres.CMObj H K ρ p q) : ∀ j : Fin p ⊕ Fin q, (p
   | Sum.inr j => Y.ph' j
 
 /- English proof (translation)
-The claim follows from `| Sum.inl i => (isLinHom_iff _).1 (Y.lin i) | Sum.inr j => (isLinHom_iff _).1 (Y.lin' j)`.
+A detailed English derivation is pending.
 -/
 theorem homs_lin (Y : EigenLatticeFibres.CMObj H K ρ p q) : ∀ j, Serre.IsLinearHom (pure Y j.isLeft).t.act Y.B.act (homs Y j)
   | Sum.inl i => (isLinHom_iff _).1 (Y.lin i)
@@ -713,7 +709,7 @@ theorem toCMObj_ofCMObj (hs : EigenLatticeFibres.SplitsE E K) (σ₁ : K →+* �
     toIndefiniteRowSideFullHecke (split_model_to_place_model hs σ₁ Y) = Y := rfl
 
 /- English proof (translation)
-Consider the cases of `T`. Consider the cases of `T'`. Consider the cases of `h`. Consider the cases of `hg`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem pat_ext {S : Scheme.{0}} {T T' : PAT H S} (h : T.t = T'.t) (hg : T.g = T'.g) : T = T' := by
   cases T
@@ -723,13 +719,13 @@ theorem pat_ext {S : Scheme.{0}} {T T' : PAT H S} (h : T.t = T'.t) (hg : T.g = T
   rfl
 
 /- English proof (translation)
-Introduce `X X' h`. Establish `hA : X.A = X'.A` using `funext fun`. Consider the case `true => pat_ext (congrArg EigenLatticeFibres.CMObj.A h) ((dim_eq _ X.split X.typeP X.ρ_sq).trans (dim_eq _ X.split X'.typeP X.ρ_sq).symm)`. Consider the case `false => pat_ext (congrArg EigenLatticeFibres.CMObj.A' h) ((dim_eq _ X.split X.typeM X.ρ_sq).trans (dim_eq _ X.split X'.typeM X.ρ_sq).symm)`. Establish `hB : X.B = X'.B` using `pat_ext (congrArg EigenLatticeFibres.CMObj.B h) ((dim_eq _ X.split X.typeB X.ρ_sq).trans (dim_eq _ X.split X'.typeB X.ρ_sq).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Take `⟨_, _, A, B, _, _, _, hh, φ, _, _, _⟩` from `X`. Take `⟨_, _, A', B', _, _, _, hh', φ', _, _, _⟩` from `X'`. Consider the cases of `hA`. Consider the cases of `hB`. Unfold `toIndefiniteRowSideFullHecke at h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Replace the relevant objects with their definitions.
 
-Use `injection h with _ _ _ h₁ h₂ h₃ h₄`. Take `rfl : φ = φ'` from `funext fun`. Consider the case `Sum.inl i => congrFun h₁ i`. Consider the case `Sum.inr i => congrFun h₂ i`. Take `rfl : hh = hh'` from `funext fun`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `Sum.inl i => congrFun h₃ i`. Consider the case `Sum.inr i => congrFun h₄ i`. Both sides reduce to the same expression.
+Treat this case separately. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem toCMObj_injective : Function.Injective (toIndefiniteRowSideFullHecke : CMObj H K ρ σ₁ p q → _) := by
   intro X X' h
@@ -764,7 +760,7 @@ def cmObjEquiv (H : Host E) (K : Type) [Field K] [NumberField K] (ρ : 𝓞 K) (
 end Object
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => ⟨nonempty_partner, exists_partner, fun _ Q => ⟨Q.isCoord_iff, Q.lieLat_eq, fun τ => Q.eigLat_eq _ τ fun _ => rfl, Q.isHerm_iff, fun _ _ Q' => Q.isDiffOf_iff Q'⟩⟩, fun t => ⟨fun h => ⟨patOf t h, rfl⟩, fun ⟨T, h⟩ => h ▸ isPrincipal T⟩, mapRingHom_bijective E K, splits_iff …`.
+Supply the required witnesses or components.
 -/
 theorem typings_agree (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K : Type) [Field K]
     [NumberField K] :

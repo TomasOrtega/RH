@@ -22,7 +22,7 @@ def fcAt (u u' : D.what₂.Word) (τ : D.what₂.Tau) (a b : X.B.H (vOf X τ)) (
     (torS (muT D) D.R.k D.R.rS * g * torS (muT D)⁻¹ D.R.k D.R.rS)
 
 /- English proof (translation)
-Unfold `Qc Qic Qcs Qics`. Rewrite using `[pl_vOf, ← torS_conj]`. Simplify using `only [gB, trG, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gStd_eq (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
     gStd (kaB D) (gB C τ γ) = trG (Qc X C (vOf X τ)) (Qic X C (vOf X τ)) γ := by
@@ -31,7 +31,7 @@ theorem gStd_eq (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ
   simp only [gB, trG, Matrix.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `(Formalism.L2.SG.Pf.WuBL.trG_closedEmb' (Formalism.L2.SG.Pf.Choice.n_eq' X) _ h2).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_trG {τ : D.what₂.Tau} {Q : Matrix (Fin X.B.I.n) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ}
     {Qi : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin X.B.I.n) ℂ} (h2 : Q * Qi = 1) :
@@ -40,11 +40,9 @@ theorem measurable_trG {τ : D.what₂.Tau} {Q : Matrix (Fin X.B.I.n) (Fin (2 * 
   (Formalism.L2.SG.Pf.WuBL.trG_closedEmb' (Formalism.L2.SG.Pf.Choice.n_eq' X) _ h2).measurable
 
 /- English proof (translation)
-Establish `hQ` using `(C.isT τ).2.1`. Establish `hQc : Qc X C (vOf X τ) * Qic X C (vOf X τ) = 1` using `(transpC X C (vOf X τ)).2.1`. Unfold `muStd muRB`. Rewrite using `[← cAE_coe, ← cjE_coe (inv_pos.mpr (kaB_pos D)) one_pos, Measure.map_map (cAE D.R.k D.R.rS).measurable (measurable_trG hQ), Measure.map_map (cjE (k := D.R.k) (r := D.R.rS) (inv_pos.mpr (kaB_pos D)) one_pos).measurable ((cAE D.R.k D.R.rS).measurable.comp (measurable_trG hQ))]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Use `show cjT D.R.k D.R.rS (kaB D)⁻¹ 1 (cA D.R.k D.R.rS (Matrix.of.symm (trG (C.Q τ) (C.Qi τ) x))) = _`. Use function extensionality and compare the values at `i j`. Use `show cj D.R.k D.R.rS (kaB D)⁻¹ 1 (Matrix.of (cA D.R.k D.R.rS (Matrix.of.symm (trG (C.Q τ) (C.Qi τ) x)))) i j = _`. Rewrite using `[of_cA, ← gStd_eq C τ x]`.
-
-Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem muStd_eq (τ : D.what₂.Tau) (μRv : Measure (Formalism.REAL.UJ (X.B.I.ε (vOf X τ)))) :
     muStd (kaB D) (muRB C τ μRv) =
@@ -65,7 +63,7 @@ theorem muStd_eq (τ : D.what₂.Tau) (μRv : Measure (Formalism.REAL.UJ (X.B.I.
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Unfold `fcAt Formalism.L2.SG.Pf.CarrierT.coef0`. Rewrite using `[torS_conjI]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fcAt_eq (u u' : D.what₂.Word) (τ : D.what₂.Tau)
     (hW : GoodW D τ u u' θ (locW C u u' τ)) (hA : GoodS D (lamD D τ) (locS hB u u' τ))
@@ -79,7 +77,7 @@ theorem fcAt_eq (u u' : D.what₂.Word) (τ : D.what₂.Tau)
   rfl
 
 /- English proof (translation)
-Unfold `lamPl`. Establish `hs` using `tN_toReal_ne D θ κ₀ h0 h1 hk0`. Use `inv_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero (inv_ne_zero ?_) hscl) hκ) ?_)` and prove the remaining obligations. Conclude with `hcO` after adjusting the coercions. Conclude with `hs` after adjusting the coercions.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lamPl_ne (cO : ℝ) (scl κ : ℂ) (D : D7) (θ : ℝ) (κ₀ : ENNReal) (hcO : cO ≠ 0) (hscl : scl ≠ 0) (hκ : κ ≠ 0)
     (h0 : κ₀ ≠ 0) (h1 : κ₀ ≠ ⊤) (hk0 : kapN D θ ≠ 0) : lamPl cO scl κ D θ κ₀ ≠ 0 := by
@@ -90,13 +88,13 @@ theorem lamPl_ne (cO : ℝ) (scl κ : ℂ) (D : D7) (θ : ℝ) (κ₀ : ENNReal)
   · exact_mod_cast hs
 
 /- English proof (translation)
-Establish `hk0 : kapN D θ ≠ 0` using `Formalism.L2.SG.AmpOrbPf.kapN_ne_zero hW`. Establish `hl` using `lamPl_ne (cOf hB u τ) (sclOf hB u u' τ) κ D θ κ₀ hcO hscl hκ h0 h1 hk0`. Rewrite `hcut`, the goal using `[fcAt_eq C hB u u' τ hW hA hT hT' a b ξ ξ' c]`. Rewrite `hcut`, the goal using `[← gStd_eq C τ γ, ← muStd_eq C τ μRv]`. Take `⟨θ', hθ', hint⟩` from `hcut`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hcut' : ∃ θ', Formalism.FourierDecayAlt.D.IsNormCut (baseOf X C u u' (vOf X τ)) (gStd (kaB D) (gB C τ γ)) (muStd (kaB D) (muRB C τ μRv)) θ' ∧ Integrable (fun p => θ' p • Formalism.FourierDecayAlt.D.orbIntegrand (baseOf X C u u' (vOf X τ)) (gStd (kaB D) (gB C τ γ)) (stdF (toBessel …`. Use `⟨θ', hθ', ?_⟩` and prove the remaining obligations. Establish `h : Integrable (c • (fun p => θ' p • Formalism.FourierDecayAlt.D.orbIntegrand (baseOf X C u u' (vOf X τ)) (gStd (kaB D) (gB C τ γ)) (stdF (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT') (kaB D) (Formalism.MainNotions.S.Pv.BetaCut.coefM (sigB X (C.Q …`. Use `hint.congr (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Conclude with `(congrArg (fun Y => θ' p • Y) (Formalism.L2.SG.Pf.Carrier.CarPin.orbIntegrand_smul (baseOf X C u u' (vOf X τ)) (gStd (kaB D) (gB C τ γ)) (stdF (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT') (kaB D) (Formalism.MainNotions.S.Pv.BetaCut.coefM (sigB X …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(integrable_smul_iff hc0 _).mp h`. Establish `hP` using `pinPlace C hB u u' τ hW hA hT hT' _ κ hAmp κ₀ h0 h1 hN hWc hWc' γ μRv ν νB hcell hG hcut'`. Establish `hS` using `Formalism.L2.SG.Pf.Carrier.CarPin.orbJ_smulF (baseOf X C u u' (vOf X τ)) (gStd (kaB D) (gB C τ γ)) (muStd (kaB D) (muRB C τ μRv)) (stdF (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT') (kaB D) (Formalism.MainNotions.S.Pv.BetaCut.coefM (sigB X (C.Q τ) …`. Use `Eq.trans ?_ (congrArg (fun Y => (lamPl (cOf hB u τ) (sclOf hB u u' τ) κ D θ κ₀ * c⁻¹) • Y) hS.symm)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (fun Y => (lamPl (cOf hB u τ) (sclOf hB u u' τ) κ D θ κ₀ * c⁻¹) • c • Y) hP.symm)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ (a b d : ℂ) (Y : X.Vloc u' (vOf X τ) →L[ℂ] X.Vloc u (vOf X τ)), a • b • d • Y = (a * b * d) • Y` using `fun a b d Y => by rw [smul_smul, smul_smul]`. Use `Eq.trans ?_ (key _ _ _ _).symm` and prove the remaining obligations. Establish `e1 : lamPl (cOf hB u τ) (sclOf hB u u' τ) κ D θ κ₀ * c⁻¹ * c * (lamPl (cOf hB u τ) (sclOf hB u u' τ) κ D θ κ₀)⁻¹ = 1` using `by field_simp`. Rewrite using `[e1, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pinAt (u u' : D.what₂.Word) (τ : D.what₂.Tau)
     (hW : GoodW D τ u u' θ (locW C u u' τ)) (hA : GoodS D (lamD D τ) (locS hB u u' τ))

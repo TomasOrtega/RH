@@ -17,9 +17,9 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 namespace GlobalTheory.FinPartAt
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `Spec.map_surjective x.left`. Establish `hw : x.left ≫ (specO O B).hom = (specO O D).hom` using `Over.w x`. Rewrite `hw` using `[← hf]`. Express the relevant statement in the definitionally equal form `Spec.map f ≫ Spec.map (CommRingCat.ofHom (algebraMap O B)) = Spec.map (CommRingCat.ofHom (algebraMap O D)) at hw`. Rewrite `hw` using `[← Spec.map_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc` using `Spec.map_injective hw`. Use `⟨{ f.hom with commutes' := fun c => congrArg (fun g : CommRingCat.of O ⟶ CommRingCat.of D => g.hom c) hc }, ?_⟩` and prove the remaining obligations. Use `ext1`. Rewrite using `[← hf]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_ptMap' {O : Type} [CommRing O] {D B : Type} [CommRing D] [Algebra O D] [CommRing B] [Algebra O B]
     (x : specO O D ⟶ specO O B) : ∃ α : B →ₐ[O] D, x = ptMap α := by
@@ -40,9 +40,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Sc
   {G' : Over (Sp O)} [GrpObj G'] {π : G'.left ⟶ t.G.left}
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, inB_str]`. Conclude with `RingHom.ext fun r => α.commutes (x0 r)`. Rewrite using `[Over.comp_left, Category.assoc, aH_left_π]`. Express the relevant statement in the definitionally equal form `spMap _ ≫ P'.u.left = spMap α.toRingHom ≫ spMap (inB P' x0 hu) ≫ P'.u.left`.
-
-Conclude with `(GlobalTheory.HTMap.spc_assoc _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem at_ptMap {D : Type} [CommRing D] [Algebra O D] (α : Bt P' x0 hu →ₐ[O] D)
     (hπ : IsPullback π G'.hom t.G.hom (spMap x0 ≫ ξ)) :
@@ -55,7 +53,7 @@ theorem at_ptMap {D : Type} [CommRing D] [Algebra O D] (α : Bt P' x0 hu →ₐ[
     exact (GlobalTheory.HTMap.spc_assoc _ _ _).symm
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.GmPoints.unitOf_ptMap, unitOf_chi]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unitOf_ptMap_chi {D : Type} [CommRing D] [Algebra O D] (α : Bt P' x0 hu →ₐ[O] D) (b : P'.Bˣ) :
     (unitOf (ptMap α ≫ chi P' x0 hu b) : D) = α (inB P' x0 hu b) := by
@@ -72,13 +70,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Sc
   {G' : Over (Sp O)} [GrpObj G'] {π : G'.left ⟶ t.G.left}
 
 /- English proof (translation)
-Take `⟨αx, rfl⟩` from `eq_ptMap' x`. Take `⟨αy, rfl⟩` from `eq_ptMap' y`. Take `⟨αz, rfl⟩` from `eq_ptMap' z`. Establish `hw : ∀ α : Bt P' x0 hu →ₐ[O] D, ((ptMap α ≫ aH P' x0 hu hg.1).left ≫ π) ≫ t.G.hom = (specO O D).hom ≫ spMap x0 ≫ ξ` using `fun α => by`. Rewrite using `[Category.assoc, hg.1.w, ← Category.assoc, Over.w]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `w : (Bt P' x0 hu →ₐ[O] D) → (Over.mk ((specO O D).hom ≫ spMap x0 ≫ ξ) ⟶ t.G)` to `fun α => Over.homMk _ (hw α)`. Establish `hm` using `hg.2 (specO O D) (ptMap αx ≫ aH P' x0 hu hg.1) (ptMap αy ≫ aH P' x0 hu hg.1) (w αx) (w αy) rfl rfl`. Rewrite `hm` using `[← h]`. Establish `hz : P'.At ((algebraMap O D).comp x0) (w αx * w αy).left (αz.toRingHom.comp (inB P' x0 hu))`. Rewrite using `[hm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `at_ptMap P' x0 hu αz hg.1`. Establish `e` using `hb.2 D _ _ (w αx) (w αy) _ _ _ (at_ptMap P' x0 hu αx hg.1) (at_ptMap P' x0 hu αy hg.1) hz`. Apply `GlobalTheory.GmPoints.unitOf_bijective.1` to reduce the goal to its premises. Rewrite using `[GlobalTheory.GmPoints.unitOf_mul]`. Use `ext1`.
-
-Rewrite using `[Units.val_mul, unitOf_ptMap_chi, unitOf_ptMap_chi, unitOf_ptMap_chi]`. Conclude with `e`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_mul_aff (hg : IsGrpPullback G' t.G (spMap x0 ≫ ξ) π) {κ : (Sp (FractionRing R) ⟶ t.G.left) → Rˣ}
     {b : P'.Bˣ} (hb : P'.Gl κ b) {D : Type} [CommRing D] [Algebra O D] (x y z : specO O D ⟶ Hs P' x0 hu)
@@ -106,11 +102,11 @@ theorem chi_mul_aff (hg : IsGrpPullback G' t.G (spMap x0 ≫ ξ) π) {κ : (Sp (
 end GlobalTheory.FinPartAt
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t R _ ξ q P' O _ x0 hu G' _ π hg κ b hb S x y z h`. Establish `loc : ∀ (R' : CommRingCat.{0}) (f : Spec R' ⟶ S.left), f ≫ (z ≫ chi P' x0 hu b).left = f ≫ ((x ≫ chi P' x0 hu b) * (y ≫ chi P' x0 hu b)).left`. Introduce `R' f`. Use `letI : Algebra O R' := (Spec.preimage (f ≫ S.hom)).hom.toAlgebra`. Set `c : specO O R' ⟶ S` to `Over.homMk f (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `f ≫ S.hom = Spec.map (CommRingCat.ofHom (Spec.preimage (f ≫ S.hom)).hom)`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage])`. Establish `h' : (c ≫ z) ≫ aH P' x0 hu hg.1 = ((c ≫ x) ≫ aH P' x0 hu hg.1) * ((c ≫ y) ≫ aH P' x0 hu hg.1)`. Rewrite using `[Category.assoc, h, MonObj.comp_mul, Category.assoc, Category.assoc]`. Establish `k` using `GlobalTheory.FinPartAt.chi_mul_aff P' x0 hu hg hb _ _ _ h'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `k` using `[Category.assoc, Category.assoc, Category.assoc, ← MonObj.comp_mul]`. Conclude with `congrArg CommaMorphism.left k`. Conclude with `Over.OverMorphism.ext (S.left.affineCover.hom_ext _ _ fun i => loc _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinPartAt.chi_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (R : Type) [CommRing R] (ξ : Sp R ⟶ X) (q : ℕ) (P' : GlobalTheory.HTMap.FP t ξ q) (O : Type) [CommRing O] (x0 : R →+* O) (hu : IsUnit (x0 P'.f)) (G' : Over (Sp O)) [GrpObj G'] (π : G'.left ⟶ t.G.left) (hg : IsGrpPullback G' t.G (spMap x0 ≫ ξ) π) (κ : (Sp (FractionRing R) ⟶ t.G.left) → Rˣ) (b : P'.Bˣ), P'.Gl κ b → ∀ (S : Over (Sp O)) (x y z : S ⟶ Hs P' x0 hu), z ≫ aH P' x0 hu hg.1 = (x ≫ aH P' x0 hu hg.1) * (y ≫ aH P' x0 hu hg.1) → z ≫ chi P' x0 hu b = (x ≫ chi P' x0 hu b) * (y ≫ chi P' x0 hu b) := by
   intro E _ _ _ H X t R _ ξ q P' O _ x0 hu G' _ π hg κ b hb S x y z h

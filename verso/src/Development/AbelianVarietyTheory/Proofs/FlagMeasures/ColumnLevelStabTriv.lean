@@ -10,7 +10,7 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D X hK u h γ hγ`. Establish `hfin : IsOfFinOrder γ` using `Formalism.L2.SG.PoincareInHH.Cut.gamFinKu_of X u hK (Formalism.L2.SG.PoincareInHH.Cut.latOfLattice_holds X u) h γ hγ`. Conclude with `Formalism.L2.SG.PoincareInHH.Cut.gamUnipKu_holds X u hK h γ hγ hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem columnLevel_stabTriv :
     ∀ (D : D7) (X : HidaSetting D) (hK : X.LevelSubgroupCharacter) (u : D.what₂.Word),

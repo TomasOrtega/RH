@@ -8,11 +8,11 @@ open scoped ENNReal
 namespace GlobalTheory.EvalAbs
 
 /- English proof (translation)
-Establish `e : m₁.map a = m₂.map b`. Use extensionality with `A hA`. Rewrite using `[Measure.map_apply ha hA, Measure.map_apply hb hA]`. Take `⟨h1, h2⟩` from `h (A.indicator fun _ => 1) (measurable_const.indicator hA)`. Establish `e1 : (fun x => A.indicator (fun _ => (1 : ℂ)) (a x)) = (a ⁻¹' A).indicator fun _ => 1` using `rfl`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : (fun x => A.indicator (fun _ => (1 : ℂ)) (b x)) = (b ⁻¹' A).indicator fun _ => 1` using `rfl`. Rewrite `h1` using `[e1, e2, integrable_indicator_iff (ha hA), integrable_indicator_iff (hb hA), integrableOn_const_iff, integrableOn_const_iff]`. Rewrite `h2` using `[e1, e2, integrable_indicator_iff (hb hA), integrableOn_const_iff, integral_indicator (ha hA), integral_indicator (hb hA)]`. Simplify using `only [enorm_eq_zero, one_ne_zero, false_or, integral_const, MeasurableSet.univ, measureReal_restrict_apply, Set.univ_inter, Complex.real_smul, mul_one, Complex.ofReal_inj] at h1 h2`. Distinguish the cases in `hf : m₂ (b ⁻¹' A) < ∞`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Conclude with `(ENNReal.toReal_eq_toReal_iff' (h1.2 hf).ne hf.ne).1 (h2 hf)`. Rewrite using `[not_lt_top_iff.1 hf, not_lt_top_iff.1 (fun h' => hf (h1.1 h'))]`. Rewrite using `[← lintegral_map hF ha, e, lintegral_map hF hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_eq_of_integral {α β γ : Type} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ]
     {m₁ : Measure α} {m₂ : Measure β} {a : α → γ} {b : β → γ} (ha : Measurable a) (hb : Measurable b)
@@ -37,9 +37,9 @@ theorem lintegral_eq_of_integral {α β γ : Type} [MeasurableSpace α] [Measura
   rw [← lintegral_map hF ha, e, lintegral_map hF hb]
 
 /- English proof (translation)
-Establish `hp : MeasurePreserving (· * m) μ μ` using `measurePreserving_mul_right μ m`. Establish `h2 : IsFundamentalDomain Γ ((· * m) ⁻¹' 𝓡) μ` using `h.preimage_of_equiv hp.quasiMeasurePreserving (e := id) Function.bijective_id fun γ x => by`. Simplify using `only [id, Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Rewrite using `[h.setLIntegral_eq h2 (fun r => q (r * m)) fun γ r => by`. Rewrite using `[Subgroup.smul_def, smul_eq_mul, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq _ γ.2 _]`. Conclude with `hp.setLIntegral_comp_preimage_emb (MeasurableEquiv.mulRight m).measurableEmbedding q 𝓡`.
+A detailed English derivation is pending.
 -/
 theorem setLIntegral_mul_right {R : Type} [Group R] [MeasurableSpace R] [MeasurableMul R] {μ : Measure R}
     [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] {Γ : Subgroup R} [Countable Γ] {𝓡 : Set R}
@@ -60,13 +60,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   {R Γ : Subgroup G} {μR : Measure R} [μR.IsHaarMeasure] [μR.IsInvInvariant] {𝓡 : Set R} {𝓑 : Set G}
 
 /- English proof (translation)
-Use `⟨_, (isQuotIntL1_iff hR hf).2 ⟨hfR, ⟨(measurable_comp_out hf hfR).aestronglyMeasurable, ?_⟩, rfl⟩⟩` and prove the remaining obligations. Take `⟨S, hSm, hS⟩` from `GlobalTheory.FundDomDiscrete.exists_measurable_section Γ`. Establish `: Countable (Γ.subgroupOf R)` using `(Subgroup.subgroupOfEquivOfLe hΓR).toEquiv.countable_iff.2 inferInstance`. Establish `hSfd : IsFundamentalDomain Γ S μ` using `IsFundamentalDomain.mk' hSm.nullMeasurableSet hS`. Establish `hSh : ∀ h : G, MeasurableSet {r : R | (r : G) * h ∈ S}` using `fun h => (continuous_subtype_val.mul continuous_const).measurable hSm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ h : G, ∫⁻ r in 𝓡, K (r * h) ∂μR = ∫⁻ r : R, S.indicator K (r * h) ∂μR` using `fun h => by`. Establish `hfd : IsFundamentalDomain (Γ.subgroupOf R) {r : R | (r : G) * h ∈ S} μR` using `IsFundamentalDomain.mk' (hSh h).nullMeasurableSet (GlobalTheory.QuotDiscrete.existsUnique_subgroupOf hΓR hS h)`. Rewrite using `[h𝓡.setLIntegral_eq hfd (fun r : R => K (r * h)) fun γ r => by`. Express the relevant statement in the definitionally equal form `K ((((γ : R) : G) * r) * h) = _`. Rewrite using `[mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hKΓ _ γ.2 _, ← lintegral_indicator (hSh h)]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_indicator hSm]`. Conclude with `hSfd.setLIntegral_eq h𝓑 K fun γ x => hKΓ _ γ.2 x`.
-
-Use `_ < ∞ := hfin`.
+Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_quotientIntegrable_of_le_mean (hΓR : Γ ≤ R) (hR : IsClosed (R : Set G)) [Countable Γ] [DiscreteTopology Γ]
     (h𝓡 : IsFundamentalDomain (Γ.subgroupOf R) 𝓡 μR) (h𝓑 : IsFundamentalDomain Γ 𝓑 μ) {K : G → ℝ≥0∞}
@@ -97,19 +95,17 @@ theorem exists_quotientIntegrable_of_le_mean (hΓR : Γ ≤ R) (hR : IsClosed (R
     _ < ∞ := hfin
 
 /- English proof (translation)
-Establish `: LocallyCompactSpace R` using `hR.locallyCompactSpace`. Establish `: SecondCountableTopology R` using `TopologicalSpace.Subtype.secondCountableTopology (R : Set G)`. Establish `: μR.IsMulRightInvariant` using `by rw [← Measure.inv_eq_self μR]; infer_instance`. Establish `: ν.IsMulRightInvariant` using `by rw [← Measure.inv_eq_self ν]; infer_instance`. Establish `: Countable (Γ.subgroupOf R)` using `(Subgroup.subgroupOfEquivOfLe hΓR).toEquiv.countable_iff.2 inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : ∀ r ∈ R, ∀ g, ∫⁻ u, q g (r * j u) ∂ν = ∫⁻ u, q g (j u) ∂ν` using `fun r hr g => by`. Take `⟨v, hv⟩` from `hqR r hr`. Simplify using `only [hv]`. Conclude with `lintegral_mul_left_eq_self (fun u => q g (j u)) v`. Use `exists_quotientIntegrable_of_le_mean hΓR hR h𝓡 h𝓑 (K := fun g => ∫⁻ u, q g (j u) ∂ν) ?_ (fun γ hγ g => ?_) hfin ?_ (fun r hr g => ?_) fun h => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hq.comp (measurable_fst.prodMk (hj.comp measurable_snd))).lintegral_prod_right'`. Rewrite using `[← hU γ⁻¹ (inv_mem (hΓR hγ)) g]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Rewrite using `[← hqΓ γ hγ g _ (mul_mem (inv_mem (hΓR hγ)) (hjR u)), mul_inv_cancel_left]`. Use `Complex.measurable_ofReal.comp (StronglyMeasurable.measurable ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `(hP.comp ((hj.comp measurable_snd).mul measurable_fst)).norm.stronglyMeasurable.integral_prod_right'`. Take `⟨v, hv⟩` from `hPR r hr`. Simplify using `only [hv]`. Rewrite using `[integral_mul_right_eq_self (fun u => ‖P (j u * g)‖) v]`. Establish `hm : Measurable fun p : U × R => q (p.2 * h) (p.2 * j p.1⁻¹)` using `hq.comp (((measurable_subtype_coe.comp measurable_snd).mul_const h).prodMk ((measurable_subtype_coe.comp measurable_snd).mul (hj.comp measurable_fst.inv)))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [enorm, Complex.nnnorm_real]`. Use `_ ≤ ∫⁻ u, ‖‖P (j u * h)‖‖ₑ ∂ν := enorm_integral_le_lintegral_enorm _`. Use `_ ≤ ∫⁻ u, ∫⁻ r in 𝓡, q (r * h) (r * j u⁻¹) ∂μR ∂ν := by`. Use `lintegral_mono fun u => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[enorm_norm]`. Use `(hle _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← setLIntegral_mul_right h𝓡 (fun r : R => q (r * h) (r * j u⁻¹)) (fun γ hγ r => by`. Simplify using `only [Subgroup.coe_mul, mul_assoc]`. Conclude with `hqΓ _ hγ _ _ (mul_mem r.2 (hjR _))) ⟨j u, hjR u⟩]`.
-
-Simplify using `only [Subgroup.coe_mul, mul_assoc, map_inv, mul_inv_cancel, mul_one]`. Use `_ = ∫⁻ r in 𝓡, ∫⁻ u, q (r * h) (r * j u⁻¹) ∂ν ∂μR := lintegral_lintegral_swap hm.aemeasurable`. Use `_ = _ := by`. Use `lintegral_congr fun r => ?_` and prove the remaining obligations. Rewrite using `[lintegral_inv_eq_self (μ := ν) fun u => q (r * h) (r * j u), hU r r.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_quotientIntegrable_fold_unimodular (hΓR : Γ ≤ R) (hR : IsClosed (R : Set G)) [Countable Γ] [DiscreteTopology Γ]
     (h𝓡 : IsFundamentalDomain (Γ.subgroupOf R) 𝓡 μR) (h𝓑 : IsFundamentalDomain Γ 𝓑 μ)

@@ -36,13 +36,13 @@ def ProperLE (Dw : Datum H) (ty' ty : (E →+* ℂ) → Finset ℕ) : Prop :=
   ∀ σ, ∀ k ∈ ty' σ, 0 < k → k < Dw.mult σ → k ∈ ty σ
 
 /- English proof (translation)
-Introduce `σ _ hk _ _` and use `h σ hk`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ProperLE.of_subset {ty' ty : (E →+* ℂ) → Finset ℕ} (h : ∀ σ, ty' σ ⊆ ty σ) : ProperLE Dw ty' ty :=
   fun σ _ hk _ _ => h σ hk
 
 /- English proof (translation)
-Introduce `σ k hk i hi`. Distinguish the cases in `hlt : k < Dw.mult σ`. Conclude with `h σ k (hty σ k hk (by omega) hlt) i hi`. Take `⟨cf, hcf, -⟩` from `hu.2 σ _ (hu'.1 σ i).1 (hu'.1 σ i).2`. Conclude with `⟨cf, fun j hj => absurd j.2 (by omega), hcf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem SameFlag.of_properLE {l : Level H} {c : Coeff l} {X : Scheme.{0}} {t : SAB H X} {R : Type} [CommRing R]
     {f : c.F →+* R} {x : Sp R ⟶ X} {u u' : Vecs Dw t R} {ty' ty : (E →+* ℂ) → Finset ℕ} (hu : IsFrame t f x u)
@@ -180,7 +180,7 @@ def ofMod (F : Z.X.Modules) : Z.Sh :=
   if h : ∃ S : Z.Sh, Nonempty (S.toMod ≅ F) then h.choose else ⟨0, 0, 0, 0, 0⟩
 
 /- English proof (translation)
-Rewrite using `[ofMod, dif_pos h]`. Conclude with `h.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofMod_iso {F : Z.X.Modules} (h : ∃ S : Z.Sh, Nonempty (S.toMod ≅ F)) : Nonempty ((Z.ofMod F).toMod ≅ F) := by
   rw [ofMod, dif_pos h]
@@ -238,76 +238,76 @@ open Classical in
 def diagCl (Z₁ Z₂ : Mdl Y i₀) : Mdl Y i₀ := if h : ∃ Z', IsDiag Z₁ Z₂ Z' then h.choose else Z₁
 
 /- English proof (translation)
-Rewrite using `[blowUp, dif_pos h]`. Conclude with `h.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blowUp_spec {Z : Mdl Y i₀} {J : Z.Idl} (h : ∃ Z', IsNBlow Z J Z') : IsNBlow Z J (blowUp Z J) := by
   rw [blowUp, dif_pos h]
   exact h.choose_spec
 
 /- English proof (translation)
-Rewrite using `[natDiagCl, dif_pos h]`. Conclude with `h.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natDiagCl_spec {Z₁ Z₂ : Mdl Y i₀} (h : ∃ Z', IsNatDiag Z₁ Z₂ Z') : IsNatDiag Z₁ Z₂ (natDiagCl Z₁ Z₂) := by
   rw [natDiagCl, dif_pos h]
   exact h.choose_spec
 
 /- English proof (translation)
-Rewrite using `[diagCl, dif_pos h]`. Conclude with `h.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagCl_spec {Z₁ Z₂ : Mdl Y i₀} (h : ∃ Z', IsDiag Z₁ Z₂ Z') : IsDiag Z₁ Z₂ (diagCl Z₁ Z₂) := by
   rw [diagCl, dif_pos h]
   exact h.choose_spec
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨dvd_rfl, le_rfl, dvd_rfl⟩, le_rfl, fun _ _ hk _ _ => hk⟩`.
+Supply the required witnesses or components.
 -/
 theorem NatCorr.refl (Z : Mdl Y i₀) : NatCorr Z Z := ⟨⟨dvd_rfl, le_rfl, dvd_rfl⟩, le_rfl, fun _ _ hk _ _ => hk⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨h'.1.1.trans h.1.1, h.1.2.1.trans h'.1.2.1, h'.1.2.2.trans h.1.2.2⟩, h'.2.1.trans h.2.1, fun σ k hk h₀ h₁ => h.2.2 σ k (h'.2.2 σ k hk h₀ h₁) h₀ h₁⟩`.
+Supply the required witnesses or components.
 -/
 theorem NatCorr.trans {Z₁ Z₂ Z₃ : Mdl Y i₀} (h : NatCorr Z₁ Z₂) (h' : NatCorr Z₂ Z₃) : NatCorr Z₁ Z₃ :=
   ⟨⟨h'.1.1.trans h.1.1, h.1.2.1.trans h'.1.2.1, h'.1.2.2.trans h.1.2.2⟩, h'.2.1.trans h.2.1,
     fun σ k hk h₀ h₁ => h.2.2 σ k (h'.2.2 σ k hk h₀ h₁) h₀ h₁⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, .of_subset h.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem Corr.natCorr {Z₁ Z₂ : Mdl Y i₀} (h : Corr Z₁ Z₂) : NatCorr Z₁ Z₂ := ⟨h.1, h.2.1, .of_subset h.2.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.natCorr, h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsMap.isNatMap {Z₁ Z₂ : Mdl Y i₀} {f : Z₁.X ⟶ Z₂.X} (h : IsMap Z₁ Z₂ f) : IsNatMap Z₁ Z₂ f := ⟨h.1.natCorr, h.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨h.1.1, h.1.2.1, hty⟩, h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsNatMap.isMap {Z₁ Z₂ : Mdl Y i₀} {f : Z₁.X ⟶ Z₂.X} (h : IsNatMap Z₁ Z₂ f) (hty : ∀ σ, Z₂.ty σ ⊆ Z₁.ty σ) :
     IsMap Z₁ Z₂ f := ⟨⟨h.1.1, h.1.2.1, hty⟩, h.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨a, b, f₁, f₂, c, d, e⟩ => ⟨a, b, f₁, f₂, c, d.isMap (b ▸ hty), e⟩, fun ⟨a, b, f₁, f₂, c, d, e⟩ => ⟨a, b, f₁, f₂, c, d.isNatMap, e⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isNatDiag_iff_isDiag {Z₁ Z₂ Z' : Mdl Y i₀} (hty : ∀ σ, Z₂.ty σ ⊆ Z₁.ty σ) : IsNatDiag Z₁ Z₂ Z' ↔ IsDiag Z₁ Z₂ Z' :=
   ⟨fun ⟨a, b, f₁, f₂, c, d, e⟩ => ⟨a, b, f₁, f₂, c, d.isMap (b ▸ hty), e⟩,
     fun ⟨a, b, f₁, f₂, c, d, e⟩ => ⟨a, b, f₁, f₂, c, d.isNatMap, e⟩⟩
 
 /- English proof (translation)
-Introduce `σ k hk h₀ h₁` and use `by simp only [Finset.mem_insert, Finset.mem_singleton] at hk omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ProperLE Dw (fun σ => {0, Dw.mult σ}) (fun _ => ∅) := fun σ k hk h₀ h₁ => by
   simp only [Finset.mem_insert, Finset.mem_singleton] at hk
   omega
 
 /- English proof (translation)
-Introduce `h'` and use `Finset.notMem_empty 1 (h' σ 1 (Finset.mem_singleton_self 1) one_pos (by omega))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (σ : E →+* ℂ) (h : Dw.mult σ = 2) : ¬ ProperLE Dw (fun _ => {1}) (fun _ => ∅) := fun h' =>
   Finset.notMem_empty 1 (h' σ 1 (Finset.mem_singleton_self 1) one_pos (by omega))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hi ▸ (NatCorr.refl Z₁).1, hi ▸ le_rfl, fun σ k hk _ _ => by have := h₂ σ hk simp only [Finset.mem_insert, Finset.mem_singleton] at this omega⟩`.
+Supply the required witnesses or components.
 -/
 example (Z₁ Z₂ : Mdl Y i₀) (hi : Z₁.i = Z₂.i) (h₂ : ∀ σ, Z₂.ty σ ⊆ {0, Dw.mult σ}) : NatCorr Z₁ Z₂ :=
   ⟨hi ▸ (NatCorr.refl Z₁).1, hi ▸ le_rfl, fun σ k hk _ _ => by
@@ -331,7 +331,7 @@ structure Bases (Y : LocalSystem Xo p W) (i₀ : Idx H p) : Type where
   ty : ∀ b σ, (X b).ty σ = ∅
 
 /- English proof (translation)
-Establish `h : (B.X none).i = i₀` using `B.lvl none`. Conclude with `⟨by rw [h]; exact Z.dvd, by rw [h]; exact Z.le, fun σ k hk => by simp [B.ty none σ] at hk⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Bases.natCorr_base (B : Bases Y i₀) (Z : Mdl Y i₀) : NatCorr Z (B.X none) := by
   have h : (B.X none).i = i₀ := B.lvl none

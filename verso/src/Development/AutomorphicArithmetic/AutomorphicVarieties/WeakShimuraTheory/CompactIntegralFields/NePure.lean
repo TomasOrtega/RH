@@ -32,23 +32,21 @@ private def blockChar {H K : Type} [Group H] [CommRing K] (r : H →* M4 K) (h :
       rfl
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D hD ι 𝔞 e he r u hp hb ⟨H, M, hH, hM, hP⟩`. Take `⟨-, f2, -, f4, -⟩` from `facts D hD`. Take `⟨a1, -, a3⟩` from `f2 l (Finset.mem_insert_self _ _)`. Use `set φ : 𝔞.V →+* PadicAlgCl l := (e : 𝔞.K →+* PadicAlgCl l).comp 𝔞.toK with hφ`. Use `set ρ := mapRep φ r with hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : ∀ g, IsBlock (ρ g)` using `fun g i j h => by rw [hρ, mapRep_apply, hb g i j h, map_zero]`. Establish `hc : Continuous ρ` using `smallCont 𝔞 e he _ hp.small`. Use `haveI : CharZero 𝔞.V := φ.charZero`. Establish `hu : adj u * u = 1` using `by simpa [IsGSp] using hp.sp`. Establish `hdet : ∀ s ∈ D.Ip l, ((r s).submatrix ixA ixA).det = 𝔞.a c (D.ps 0 s) * 𝔞.a c (D.ps 2 s) ∧ ((r s).submatrix ixB ixB).det = 𝔞.a c (D.ps 1 s) * 𝔞.a c (D.ps 3 s)` using `fun s hs => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `blockDet (maximalIdeal 𝔞.V) (fun i => 𝔞.a c (D.ps i (D.sg l))) u (adj u) (r (D.sg l)) (r s) hu (fun i j hij hm => a3 i j hij (by`. Rewrite `hm` using `[← map_sub, mem_maximalIdeal, mem_nonunits_iff, isUnit_map_iff]`. Conclude with `Ideal.Quotient.eq.2 hm))`. Use the proof step `(hb _) (fun i j => by`. Establish `h1` using `hp.red (D.sg l) i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : 𝔞.a c (D.r0 (D.sg l) i j) = Matrix.diagonal (fun i => 𝔞.a c (D.ps i (D.sg l))) i j` using `by show 𝔞.a c (Matrix.diagonal (fun i => (D.ps i (D.sg l) : c.O)) i j) = _`. Rewrite using `[Matrix.diagonal_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[h2] at h1)` and apply the resulting hypothesis. Use the proof step `(hp.flag _ a1) (hp.char _ a1) (hb _) (hp.flag s (Ine_le_Dec _ hs))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h` using `only [hp.inert s hs]`. Establish `hps : ∀ i, ∀ s ∈ D.Ip l ⊓ D.ψ.ker ⊓ D.om.ker, φ (𝔞.a c (D.ps i s)) = algebraMap ℤ_[l] (PadicAlgCl l) (cycZ ℚ Ω l s : ℤ_[l]) ^ D.wts4 i` using `fun i s hs => by`. Rewrite using `[f4 i s hs, Units.val_pow_eq_pow_val, map_pow, map_pow]`. Conclude with `congrArg (· ^ _) (he.1 c _)`. Establish `key : ∀ (ix : Fin 2 → Fin 4) (hix : ix = ixA ∨ ix = ixB) (i j : Fin 4), (∀ s ∈ D.Ip l, ((r s).submatrix ix ix).det = 𝔞.a c (D.ps i s) * 𝔞.a c (D.ps j s)) → ∃ U : Subgroup (G ℚ Ω), IsOpen (U : Set (G ℚ Ω)) ∧ ∀ g ∈ U, ((ρ g).submatrix ix ix).det = algebraMap ℤ_[l] (PadicAlgCl l) (c …` using `fun ix hix i j h => by`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ g, r g = 1 → blockChar ρ hb' ix hix g = 1` using `fun g hg => by`. Establish `: ρ g = ρ 1`. Use extensionality with `i j`. Rewrite using `[hρ, mapRep_apply, mapRep_apply, hg, map_one r]`. Rewrite using `[← map_one (blockChar ρ hb' ix hix)]`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `congrArg (fun X : M4 _ => (X.submatrix ix ix).det) this`. Use `wtChar D hD (blockChar ρ hb' ix hix) _ (hc.matrix_submatrix ix ix).matrix_det (fun A hA g hg h2 => h1 g (hp.unr A hA g hg h2)) (fun p h2 g hg => h1 g (hp.atP p h2 g hg)) fun s hs => ?_` and prove the remaining obligations. Rewrite using `[pow_add, ← hps i s hs, ← hps j s hs, ← map_mul, ← h s hs.1.1, RingHom.map_det]`. Both sides reduce to the same expression. Take `⟨U, hU, hU'⟩` from `key ixA (Or.inl rfl) 0 2 fun s hs => (hdet s hs).1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨W, hW, hW'⟩` from `key ixB (Or.inr rfl) 1 3 fun s hs => (hdet s hs).2`. Take `⟨p, A, f, σ, h1, h2, h3, h4, h5, h6, h7⟩` from `frobIn Ω l (H ⊓ (U ⊓ W)) M (hH.inter (hU.inter hW)) hM`. Establish `h8` using `pureDet (ι : PadicAlgCl l →+* ℂ) (ρ σ) (hb' σ) (hP p h1 h2 A h3 f σ h4 h5.1 h6)`. Rewrite `h8` using `[hU' σ h5.2.1, hW' σ h5.2.2, h7]`. Simplify using `only [map_pow, map_natCast, norm_pow, Complex.norm_natCast] at h8`.
-
-Establish `h9 : (1 : ℝ) < (p : ℝ) ^ f` using `one_lt_pow₀ (by exact_mod_cast h1.one_lt) h4.ne'`. Establish `h10 : D.e + 1 + 1 = D.e + 0` using `pow_right_injective₀ (zero_lt_one.trans h9) h9.ne' h8`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.nePure :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (ι : PadicAlgCl l ≃+* ℂ) (𝔞 : Amb l) (e : 𝔞.K ≃+* PadicAlgCl l), 𝔞.IsZero e → ∀ r u, KPair D 𝔞 r u → (∀ g, IsBlock (r g)) →

@@ -6,11 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CochainCo
 namespace LateralTheory.E.shiftPf
 
 /- English proof (translation)
-Establish `hG : G = e2 ∘ F ∘ e1.symm` using `funext fun y => by simpa using h (e1.symm y)`. Establish `hF : F = e2.symm ∘ G ∘ e1` using `funext fun x => by simp [h]`. Use `⟨⟨fun hb => ?_, fun hb => ?_⟩, ⟨fun hb => ?_, fun hb => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hG]`. Conclude with `e2.bijective.comp (hb.comp e1.symm.bijective)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF]`. Conclude with `e2.symm.bijective.comp (hb.comp e1.bijective)`. Rewrite using `[hG]`. Conclude with `e2.injective.comp (hb.comp e1.symm.injective)`. Rewrite using `[hF]`.
-
-Conclude with `e2.symm.injective.comp (hb.comp e1.injective)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_iff {α β γ δ : Type*} (F : α → β) (G : γ → δ) (e1 : α ≃ γ) (e2 : β ≃ δ)
     (h : ∀ x, G (e1 x) = e2 (F x)) :
@@ -29,7 +27,7 @@ variable {C : Type*} [Category C]
 abbrev pre {X X' : C} (u : X ⟶ X') (Y : C) : (X' ⟶ Y) → (X ⟶ Y) := fun h => u ≫ h
 
 /- English proof (translation)
-The claim follows from `conj_iff _ _ ((Iso.homCongr b.symm (Iso.refl Y))) ((Iso.homCongr a.symm (Iso.refl Y))) (fun x => by simp only [pre, Iso.homCongr_apply, Iso.symm_inv, Iso.refl_hom, Category.comp_id] rw [← Category.assoc, h, Category.assoc])`.
+A detailed English derivation is pending.
 -/
 theorem pre_conj {W W' X X' : C} (u' : W ⟶ W') (u : X ⟶ X') (a : W ≅ X) (b : W' ≅ X')
     (h : u' ≫ b.hom = a.hom ≫ u) (Y : C) :
@@ -40,7 +38,7 @@ theorem pre_conj {W W' X X' : C} (u' : W ⟶ W') (u : X ⟶ X') (a : W ≅ X) (b
     rw [← Category.assoc, h, Category.assoc])
 
 /- English proof (translation)
-The claim follows from `conj_iff _ _ (Iso.homCongr (Iso.refl X') e) (Iso.homCongr (Iso.refl X) e) (fun x => by simp [pre, Iso.homCongr_apply])`.
+A detailed English derivation is pending.
 -/
 theorem pre_target {X X' Y Y' : C} (u : X ⟶ X') (e : Y ≅ Y') :
     (Function.Bijective (pre u Y) ↔ Function.Bijective (pre u Y')) ∧
@@ -49,7 +47,7 @@ theorem pre_target {X X' Y Y' : C} (u : X ⟶ X') (e : Y ≅ Y') :
     simp [pre, Iso.homCongr_apply])
 
 /- English proof (translation)
-The claim follows from `conj_iff _ _ ((shiftEquiv C p).toAdjunction.homEquiv X' Y) ((shiftEquiv C p).toAdjunction.homEquiv X Y) (fun x => by simp only [pre] exact ((shiftEquiv C p).toAdjunction.homEquiv_naturality_left u x).symm)`.
+A detailed English derivation is pending.
 -/
 theorem pre_shift [HasShift C ℤ] {X X' : C} (u : X ⟶ X') (p : ℤ) (Y : C) :
     (Function.Bijective (pre (u⟦p⟧') Y) ↔ Function.Bijective (pre u (Y⟦-p⟧))) ∧
@@ -65,7 +63,7 @@ variable {R : Type} [CommRing R]
 abbrev Qt (R : Type) [CommRing R] := HomotopyCategory.quotient (Shv R) (ComplexShape.up ℤ)
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `x.mk_surjective`. Rewrite using `[cpull, cpre_mk, CohomologyClass.toHom_mk, CohomologyClass.toHom_mk, ← Functor.map_comp, ← Cocycle.equivHomShift_symm_precomp]`. Use `congr 2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem toHom_cpull {K L : Cx R} (f : K ⟶ L) (I : Cx R) (n : ℤ) (x : CohomologyClass L I n) :
     CohomologyClass.toHom (cpull f I n x) = (Qt R).map f ≫ CohomologyClass.toHom x := by
@@ -75,7 +73,7 @@ theorem toHom_cpull {K L : Cx R} (f : K ⟶ L) (I : Cx R) (n : ℤ) (x : Cohomol
   congr 2
 
 /- English proof (translation)
-The claim follows from `conj_iff _ _ (CohomologyClass.homAddEquiv (K := L) (L := I) (n := n)).toEquiv (CohomologyClass.homAddEquiv (K := K) (L := I) (n := n)).toEquiv (fun x => by simp [toHom_cpull])`.
+A detailed English derivation is pending.
 -/
 theorem cpull_iff {K L : Cx R} (f : K ⟶ L) (I : Cx R) (n : ℤ) :
     (Function.Bijective (cpull f I n) ↔ Function.Bijective (pre ((Qt R).map f) ((Qt R).obj (I⟦n⟧)))) ∧
@@ -85,11 +83,11 @@ theorem cpull_iff {K L : Cx R} (f : K ⟶ L) (I : Cx R) (n : ℤ) :
       simp [toHom_cpull])
 
 /- English proof (translation)
-Set `s0` to `(CochainComplex.singleFunctor (Shv R) 0).map φ`. Set `sp` to `(CochainComplex.singleFunctor (Shv R) (-P)).map φ`. Set `E` to `(CochainComplex.singleFunctors (Shv R)).shiftIso P (-P) 0 (by omega)`. Take `⟨b1, i1⟩` from `cpull_iff sp I j`. Take `⟨b2, i2⟩` from `pre_conj ((Qt R).map sp) ((Qt R).map (s0⟦P⟧')) ((Qt R).mapIso (E.symm.app A)) ((Qt R).mapIso (E.symm.app B)) (by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Functor.mapIso_hom, Iso.app_hom, Iso.symm_hom, ← Functor.map_comp]`. Use `congr 1`. Conclude with `E.inv.naturality φ) ((Qt R).obj (I⟦j⟧))`. Take `⟨b3, i3⟩` from `pre_conj ((Qt R).map (s0⟦P⟧')) (((Qt R).map s0)⟦P⟧') (((Qt R).commShiftIso P).app _) (((Qt R).commShiftIso P).app _) (((Qt R).commShiftIso P).hom.naturality s0) ((Qt R).obj (I⟦j⟧))`. Take `⟨b4, i4⟩` from `pre_shift ((Qt R).map s0) P ((Qt R).obj (I⟦j⟧))`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b5, i5⟩` from `pre_target ((Qt R).map s0) ((((Qt R).commShiftIso (-P)).symm.app (I⟦j⟧)) ≪≫ (Qt R).mapIso ((shiftFunctorAdd' (Cx R) j (-P) (j - P) (by omega)).symm.app I))`. Take `⟨b6, i6⟩` from `cpull_iff s0 I (j - P)`. Conclude with `⟨b6.trans (b5.symm.trans (b4.symm.trans (b3.trans (b2.trans b1.symm)))), i6.trans (i5.symm.trans (i4.symm.trans (i3.trans (i2.trans i1.symm))))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main_iff (I : Cx R) {A B : Shv R} (φ : A ⟶ B) (P j : ℤ) :
     (Function.Bijective (cpull ((CochainComplex.singleFunctor (Shv R) 0).map φ) I (j - P)) ↔
@@ -117,7 +115,7 @@ theorem main_iff (I : Cx R) {A B : Shv R} (φ : A ⟶ B) (P j : ℤ) :
     i6.trans (i5.symm.trans (i4.symm.trans (i3.trans (i2.trans i1.symm))))⟩
 
 /- English proof (translation)
-Introduce `R _ I A B φ p j`. Take `⟨hb, hi⟩` from `main_iff I φ (p : ℤ) j`. Conclude with `⟨hb.1, hi.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem shift_of : LateralTheory.E.CxDescPf.shift := by
   intro R _ I A B φ p j

@@ -6,7 +6,7 @@ open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare
 
 /- English proof (translation)
-Unfold `mass`. Rewrite using `[Finset.sum_filter]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mass_eq_sum_ite_union (g : ℕ) [Fact g.Prime] (N : ℕ) (A : (ZMod g)[X] → Prop) :
     mass g N A = ∑ f ∈ sqSet g N, if A f then ((torusCard g f : ℝ))⁻¹ else 0 := by
@@ -14,19 +14,17 @@ theorem mass_eq_sum_ite_union (g : ℕ) [Fact g.Prime] (N : ℕ) (A : (ZMod g)[X
   rw [Finset.sum_filter]
 
 /- English proof (translation)
-Introduce `g _ N`. Establish `hw : ∀ f : (ZMod g)[X], (0 : ℝ) ≤ ((torusCard g f : ℝ))⁻¹` using `fun f => by positivity`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `A B h`. Simplify using `only [mass_eq_sum_ite_union]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_le_sum fun f hf => ?_` and prove the remaining obligations. Distinguish the cases in `hA : A f`. Rewrite using `[if_pos hA, if_pos (h f hf hA)]`. Rewrite using `[if_neg hA] split_ifs`. Conclude with `hw f`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_rfl`. Introduce `A`. Conclude with `Finset.sum_nonneg fun f _ => hw f`. Introduce `κ s A B h`. Simplify using `only [mass_eq_sum_ite_union]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_le_sum fun f hf => ?_` and prove the remaining obligations. Establish `hn : ∀ i ∈ s, (0 : ℝ) ≤ if B i f then ((torusCard g f : ℝ))⁻¹ else 0`. Introduce `i _`. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hw f`. Conclude with `le_rfl`. Distinguish the cases in `hA : A f`. Take `⟨i, hi, hB⟩` from `h f hf hA`. Rewrite using `[if_pos hA]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.single_le_sum hn hi` as an intermediate fact. Simplify `this` using `only [if_pos hB]`. Rewrite using `[if_neg hA]`. Conclude with `Finset.sum_nonneg hn`. Introduce `A`.
-
-Rewrite using `[mass_eq_sum_ite_union, mass_eq_sum_ite_union, mass_eq_sum_ite_union, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hA : A f <;> simp [hA]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mass_union_bounds : ∀ (g : ℕ) [Fact g.Prime], ∀ (N : ℕ), (∀ A B : (ZMod g)[X] → Prop, (∀ f ∈ sqSet g N, A f → B f) → mass g N A ≤ mass g N B) ∧ (∀ A, 0 ≤ mass g N A) ∧ (∀ (κ : Type) (s : Finset κ) (A : (ZMod g)[X] → Prop) (B : κ → (ZMod g)[X] → Prop), (∀ f ∈ sqSet g N, A f → ∃ i ∈ s, B i f) → mass g N A ≤ ∑ i ∈ s, mass g N (B i)) ∧ ∀ A : (ZMod g)[X] → Prop, mass g N A + mass g N (fun f => ¬ A f) = mass g N fun _ => True := by
   intro g _ N

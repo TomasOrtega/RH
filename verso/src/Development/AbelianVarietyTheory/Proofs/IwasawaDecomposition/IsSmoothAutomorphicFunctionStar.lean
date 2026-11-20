@@ -25,11 +25,9 @@ instance (A : Type) [Ring A] [Algebra ℂ A] : Algebra ℂ (ConjAlg A) :=
     fun c x => Algebra.commutes (A := A) (star c) x
 
 /- English proof (translation)
-Establish `hs : ∀ (c : ℂ) (u : ConjAlg (UniversalEnvelopingAlgebra ℂ (ℂ ⊗[ℝ] L))), c • u = (star c • (show UniversalEnvelopingAlgebra ℂ (ℂ ⊗[ℝ] L) from u) : UniversalEnvelopingAlgebra ℂ (ℂ ⊗[ℝ] L))` using `fun c u => (Algebra.smul_def (A := UniversalEnvelopingAlgebra ℂ (ℂ ⊗[ℝ] L)) (star c) u).symm`. Take `⟨π, hπ⟩` from `GlobalTheory.EnvelopingExtension.exists_algHom_of_real L (ConjAlg (UniversalEnvelopingAlgebra ℂ (ℂ ⊗[ℝ] L))) (fun X => (UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] X) : UniversalEnvelopingAlgebra ℂ (ℂ ⊗[ℝ] L))) (fun X Y => by rw [TensorProduct.tmul_add, map_add]; rfl) (fun c X …`. Use `Eq.trans ?_ (hs _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] (c • X)) = star (c : ℂ) • UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] X)`. Rewrite using `[← map_smul, TensorProduct.tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Use the proof step `(fun X Y => by`. Establish `: UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] ⁅X, Y⁆) = UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] X) * UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] Y) - UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] Y) * UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] X)`. Rewrite using `[← Ring.lie_def, ← LieHom.map_lie, LieAlgebra.ExtendScalars.bracket_tmul, one_mul]`. Conclude with `this)`.
-
-Conclude with `⟨π.toRingHom, fun c u => (map_smul π c u).trans (hs c _), hπ⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_conj (L : Type) [LieRing L] [LieAlgebra ℝ L] :
     ∃ π : UniversalEnvelopingAlgebra ℂ (ℂ ⊗[ℝ] L) →+* UniversalEnvelopingAlgebra ℂ (ℂ ⊗[ℝ] L),
@@ -62,17 +60,17 @@ variable {D : D7} {θ : InfF D} {V : HSp D}
 def conjWord {α : Type} (w : α →₀ ℂ) : α →₀ ℂ := w.mapRange star (star_zero ℂ)
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[conjWord]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjWord_conjWord {α : Type} (w : α →₀ ℂ) : conjWord (conjWord w) = w := by
   ext a; simp [conjWord]
 
 /- English proof (translation)
-Take `⟨π, h1, h2⟩` from `exists_conj (LieAt V τ)`. Establish `key : ∀ w : List (LieAt V τ) →₀ ℂ, envOf V τ (conjWord w) = π (envOf V τ w)` using `fun w => by`. Rewrite using `[envOf, envOf, conjWord, Finsupp.sum_mapRange_index (fun _ => by rw [zero_smul]), map_finsuppSum]`. Use `Finsupp.sum_congr fun l _ => ?_` and prove the remaining obligations. Rewrite using `[h1, map_list_prod, List.map_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `List.map_congr_left fun X _ => (h2 X).symm`. Rewrite `hw`, the goal using `[Subalgebra.mem_center_iff]`. Introduce `u`. Take `⟨w', rfl⟩` from `GlobalTheory.T.enveloping_map_surjective D V τ u`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← conjWord_conjWord w', key (conjWord w'), key w, ← map_mul, ← map_mul, hw]`.
+A detailed English derivation is pending.
 -/
 theorem conjWord_center (τ : D.what₂.Tau) {w : List (LieAt V τ) →₀ ℂ}
     (hw : envOf V τ w ∈ Subalgebra.center ℂ (EnvAt V τ)) :
@@ -90,9 +88,9 @@ theorem conjWord_center (τ : D.what₂.Tau) {w : List (LieAt V τ) →₀ ℂ}
   rw [← conjWord_conjWord w', key (conjWord w'), key w, ← map_mul, ← map_mul, hw]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih`. Express the relevant statement in the definitionally equal form `lieDer V e X (wordDer V e l (star φ)) = star (lieDer V e X (wordDer V e l φ))`. Rewrite using `[ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Conclude with `deriv.star`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem wordDer_star (e : LieInf V → GA D V) (l : List (LieInf V)) (φ : GA D V → ℂ) :
     wordDer V e l (star φ) = star (wordDer V e l φ) := by
@@ -105,7 +103,7 @@ theorem wordDer_star (e : LieInf V → GA D V) (l : List (LieInf V)) (φ : GA D 
     exact deriv.star
 
 /- English proof (translation)
-Rewrite using `[envDer, envDer, conjWord, Finsupp.sum_mapRange_index (fun _ => by rw [zero_smul]), Finsupp.sum, Finsupp.sum, star_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[wordDer_star, star_smul, star_star]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem envDer_star (e : LieInf V → GA D V) (τ : D.what₂.Tau) (w : List (LieAt V τ) →₀ ℂ) (φ : GA D V → ℂ) :
     envDer V e τ w (star φ) = star (envDer V e τ (conjWord w) φ) := by
@@ -114,11 +112,11 @@ theorem envDer_star (e : LieInf V → GA D V) (τ : D.what₂.Tau) (w : List (Li
   rw [wordDer_star, star_smul, star_star]
 
 /- English proof (translation)
-Take `⟨t, ht, e⟩` from `Submodule.fg_def.1 (Module.Finite.iff_fg.1 h)`. Use `FiniteDimensional.span_of_finite ℂ (ht.image star)` as an intermediate fact. Establish `key : ∀ f ∈ Submodule.span ℂ t, star f ∈ Submodule.span ℂ (star '' t)`. Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => rw [star_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [star_add]`. Conclude with `add_mem hx hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `smul c x _ hx => rw [star_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (star '' t)) (Submodule.span_le.2 fun f hf => ?_)` and prove the remaining obligations. Use `key (star f) (e ▸ Submodule.subset_span (hs f hf))` as an intermediate fact. Rewrite `this` using `[star_star]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_span_star {G : Type} {S S' : Set (G → ℂ)} (h : FiniteDimensional ℂ (Submodule.span ℂ S))
     (hs : ∀ f ∈ S', star f ∈ S) : FiniteDimensional ℂ (Submodule.span ℂ S') := by
@@ -136,7 +134,7 @@ theorem finiteDimensional_span_star {G : Type} {S S' : Set (G → ℂ)} (h : Fin
   rwa [star_star] at this
 
 /- English proof (translation)
-Use `finiteDimensional_span_star h ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `⟨conjWord w, conjWord_center τ hw, by rw [envDer_star, star_star]⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isZFiniteAt_star {e : LieInf V → GA D V} {τ : D.what₂.Tau} {φ : GA D V → ℂ} (h : IsZFiniteAt V e τ φ) :
     IsZFiniteAt V e τ (star φ) := by
@@ -145,9 +143,9 @@ theorem isZFiniteAt_star {e : LieInf V → GA D V} {τ : D.what₂.Tau} {φ : GA
   exact ⟨conjWord w, conjWord_center τ hw, by rw [envDer_star, star_star]⟩
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, ih]`. Use function extensionality and compare the values at `g`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `deriv.star`.
+A detailed English derivation is pending.
 -/
 theorem foldr_Rder_star (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)) (φ : GA D V → ℂ) :
     l.foldr (fun p f => Rder θ V p.1 p.2 f) (star φ) = star (l.foldr (fun p f => Rder θ V p.1 p.2 f) φ) := by
@@ -159,11 +157,11 @@ theorem foldr_Rder_star (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.r
     exact deriv.star
 
 /- English proof (translation)
-Introduce `D θ hθ V φ h`. Establish `R` using `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V`. Establish `hsm : ∀ (k : ℕ) (τs : Fin k → D.what₂.Tau) (Xs : Fin k → Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ i, Xs i ∈ lieAt V (τs i)) → ∀ g, ContDiff ℝ ∞ fun t : Fin k → ℝ => (star φ) (g * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod)` using `fun k τs Xs hX g => Complex.conjCLE.contDiff.comp (h.smooth k τs Xs hX g)`. Express the relevant statement in the definitionally equal form `IsAutFunSm θ V (star φ)`. Use `⟨⟨fun γ hγ g => ?_, ?_, h.cont.star⟩, hsm, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.star_apply, h.left γ hγ g]`. Take `⟨U, hU, hk⟩` from `h.level`. Conclude with `⟨U, hU, fun k h1 h2 g => by simp only [Pi.star_apply, hk k h1 h2 g]⟩`. Conclude with `(zfin_iff R ((smooth_iff R _).1 hsm)).2 fun τ => isZFiniteAt_star ((zfin_iff R ((smooth_iff R φ).1 h.smooth)).1 h.zfin τ)`. Take `⟨N, hN⟩` from `h.growth`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N, fun l hl x => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hN l hl x`. Use `⟨C, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[foldr_Rder_star, Pi.star_apply, norm_star]`. Conclude with `hC g hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAutFunSm_star : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V : HSp D) (φ : GA D V → ℂ),
     IsAutFunSm θ V φ → IsAutFunSm θ V (fun g => star (φ g)) := by

@@ -18,19 +18,19 @@ def upO (A : Submodule (𝓞 B.KO) X.Forms) : Submodule (Op X la N) (Rp X la N) 
 variable {X}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨F, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem emb_mem_upO {A : Submodule (𝓞 B.KO) X.Forms} {F : X.Forms} (h : F ∈ A) : emb X la N F ∈ upO X la N A :=
   Submodule.subset_span ⟨F, h, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono h)`.
+A detailed English derivation is pending.
 -/
 theorem upO_mono {A A' : Submodule (𝓞 B.KO) X.Forms} (h : A ≤ A') : upO X la N A ≤ upO X la N A' :=
   Submodule.span_mono (Set.image_mono h)
 
 /- English proof (translation)
-Unfold `upO`. Rewrite using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨a, ha, rfl⟩, _, ⟨b, hb, rfl⟩, rfl⟩`. Conclude with `⟨a * b, Submodule.mul_mem_mul ha hb, map_mul _ _ _⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem upO_mul_le (A A' : Submodule (𝓞 B.KO) X.Forms) : upO X la N A * upO X la N A' ≤ upO X la N (A * A') := by
   unfold upO
@@ -40,9 +40,9 @@ theorem upO_mul_le (A A' : Submodule (𝓞 B.KO) X.Forms) : upO X la N A * upO X
   exact ⟨a * b, Submodule.mul_mem_mul ha hb, map_mul _ _ _⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero, Submodule.one_le]`. Conclude with `Submodule.subset_span ⟨1, Submodule.one_le.1 le_rfl, map_one _⟩`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, pow_succ]`. Conclude with `(mul_le_mul' ih le_rfl).trans (upO_mul_le la N _ _)`.
+A detailed English derivation is pending.
 -/
 theorem upO_pow_le (A : Submodule (𝓞 B.KO) X.Forms) (n : ℕ) : upO X la N A ^ n ≤ upO X la N (A ^ n) := by
   induction n with
@@ -54,9 +54,9 @@ theorem upO_pow_le (A : Submodule (𝓞 B.KO) X.Forms) (n : ℕ) : upO X la N A 
     exact (mul_le_mul' ih le_rfl).trans (upO_mul_le la N _ _)
 
 /- English proof (translation)
-Rewrite using `[mem_span_subtype_iff (R := Op X la N) (Vw X la N ka)]`. Establish `h : ((↑) '' {f : ↥(Vw X la N ka) | ∃ F ∈ M, (f : Rp X la N) = emb X la N F} : Set (Rp X la N)) = emb X la N '' (M : Set X.Forms)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, ⟨F, hF, hf⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨F, hF, hf.symm⟩`. Introduce and unpack `⟨F, hF, rfl⟩`. Take `⟨F', _, rfl⟩` from `hM hF`. Conclude with `⟨⟨_, emb_mem_Vw X la N ka F'⟩, ⟨_, hF, rfl⟩, rfl⟩`. Rewrite using `[h]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -83,7 +83,7 @@ variable {X : PJ D B P j} (la : HeightOneSpectrum (𝓞 B.KO)) {N : ℕ} {wL : W
   {W : Submodule (𝓞 B.KO) (B.Cusp j wL)}
 
 /- English proof (translation)
-Unfold `sec`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (emb_mem_upO la N ⟨w k, hw k, rfl⟩)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_mem_upO (hw : ∀ k, w k ∈ W) (i : Fin (WeightFamilies.dimY D j + 1)) : sec X la w i ∈ upO X la N (X.emb wL W) := by
   unfold sec
@@ -92,9 +92,9 @@ theorem sec_mem_upO (hw : ∀ k, w k ∈ W) (i : Fin (WeightFamilies.dimY D j + 
   exact Submodule.smul_mem _ _ (emb_mem_upO la N ⟨w k, hw k, rfl⟩)
 
 /- English proof (translation)
-Unfold `secPow`. Establish `h : ∀ s : Finset (Fin (WeightFamilies.dimY D j)), ∏ i ∈ s, sec X la w i.succ ^ al i ∈ upO X la N (X.emb wL W) ^ ∑ i ∈ s, al i`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.prod_empty, Finset.sum_empty, pow_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `Submodule.one_le.1 le_rfl`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, pow_add]`. Conclude with `Submodule.mul_mem_mul (Submodule.pow_mem_pow _ (sec_mem_upO la w hw _) _) ih`. Conclude with `h Finset.univ`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secPow_mem_upO (hw : ∀ k, w k ∈ W) (al : Fin (WeightFamilies.dimY D j) → ℕ) :
     secPow X la w al ∈ upO X la N (X.emb wL W) ^ ∑ i, al i := by
@@ -111,7 +111,7 @@ theorem secPow_mem_upO (hw : ∀ k, w k ∈ W) (al : Fin (WeightFamilies.dimY D 
   exact h Finset.univ
 
 /- English proof (translation)
-Use `upO_mul_le la N _ _ (Submodule.mul_mem_mul (upO_pow_le la N _ _ ?_) (emb_mem_upO la N hF))` and prove the remaining obligations. Establish `h` using `Submodule.mul_mem_mul (secPow_mem_upO (X := X) la w hw al) (Submodule.pow_mem_pow _ (sec_mem_upO (X := X) la w hw 0) (n - ∑ i, al i))`. Rewrite `h` using `[← pow_add, Nat.add_sub_cancel' hn]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem secPow_mul_mem_upO (hw : ∀ k, w k ∈ W) (al : Fin (WeightFamilies.dimY D j) → ℕ) {n : ℕ} (hn : ∑ i, al i ≤ n)
     {A : Submodule (𝓞 B.KO) X.Forms} {F : X.Forms} (hF : F ∈ A) :
@@ -129,14 +129,14 @@ variable {X : PJ D B P j} {wL wF : WeightFamilies.Wt D j} {T : ℕ} (G : GlobalF
   (la : HeightOneSpectrum (𝓞 B.KO)) (S : Scal B)
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono (Submodule.comap_mono (Submodule.span_mono (Set.image_mono hΘ))))`.
+A detailed English derivation is pending.
 -/
 theorem thetaSpan_le_integralForms (hΘ : X.Theta S (addL wF wL T) wL wF T ≤ X.Msup (addL wF wL T)) :
     Th1 X la G.N (addL wF wL T) S wL wF T ≤ M1 X la G.N (addL wF wL T) :=
   Submodule.span_mono (Set.image_mono (Submodule.comap_mono (Submodule.span_mono (Set.image_mono hΘ))))
 
 /- English proof (translation)
-Rewrite using `[Th1_eq X la G.N _ S wL wF T hΘ]`. Conclude with `mem_span_emb_iff la G.N hΘ f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_thetaSpan_iff (hΘ : X.Theta S (addL wF wL T) wL wF T ≤ X.Msup (addL wF wL T))
     (f : ↥(Vw X la G.N (addL wF wL T))) : f ∈ Th1 X la G.N (addL wF wL T) S wL wF T ↔
@@ -145,9 +145,9 @@ theorem mem_thetaSpan_iff (hΘ : X.Theta S (addL wF wL T) wL wF T ≤ X.Msup (ad
   exact mem_span_emb_iff la G.N hΘ f
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f ⟨al, i, hal, hf⟩`. Use `(mem_thetaSpan_iff G la S hΘ f).2 ?_` and prove the remaining obligations. Rewrite using `[hf]`. Establish `hle : ∑ i, al i ≤ T` using `le_trans hal.le (Nat.sub_le _ _)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `upO_mono la G.N (le_sup_of_le_left le_sup_left) (secPow_mul_mem_upO la G.w hw al hle (A := X.emb wF (X.Thc S.sF wF)) ⟨G.th' i, hth i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem generators_le_thetaSpan (hΘ : X.Theta S (addL wF wL T) wL wF T ≤ X.Msup (addL wF wL T))
     (hw : ∀ k, G.w k ∈ X.WWc S.sW wL) (hth : ∀ i, G.th' i ∈ X.Thc S.sF wF) :
@@ -161,9 +161,9 @@ theorem generators_le_thetaSpan (hΘ : X.Theta S (addL wF wL T) wL wF T ≤ X.Ms
     (secPow_mul_mem_upO la G.w hw al hle (A := X.emb wF (X.Thc S.sF wF)) ⟨G.th' i, hth i, rfl⟩)
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f ⟨k, hf⟩`. Use `(mem_thetaSpan_iff G la S hΘ f).2 ?_` and prove the remaining obligations. Rewrite using `[hf]`. Establish `h` using `secPow_mul_mem_upO la G.w hw (G.alz k) (n := a0 D j T) (hal k).le (A := X.emb (X.wF0 wL wF) (X.Thc S.s0 (X.wF0 wL wF))) ⟨G.th0 k, hth k, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hal k, Nat.sub_self, pow_zero, mul_one]`. Conclude with `upO_mono la G.N (le_sup_of_le_left le_sup_right) h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeroGenerators_le_thetaSpan (hΘ : X.Theta S (addL wF wL T) wL wF T ≤ X.Msup (addL wF wL T))
     (hw : ∀ k, G.w k ∈ X.WWc S.sW wL) (hth : ∀ k, G.th0 k ∈ X.Thc S.s0 (X.wF0 wL wF))

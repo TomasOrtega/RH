@@ -26,7 +26,7 @@ variable {T : Type} {D : D7} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {
   {ρ : RealMatch W} {t : T}
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _ => hF | n + 1, hn, f, hf => by obtain ⟨φ, g, Q, hl, e1⟩ := hf (Fin.last n) have ih := rowFam_cusp hS he hF n (by omega) (fun i => f i.castSucc) (fun i => hf i.castSucc) have h1 := (hS (.right n D.R.m) (Or.inl ⟨n, D.R.m, by omega, le_rfl, rfl⟩) e he φ g hl Q _ ih).2 s …`.
+A detailed English derivation is pending.
 -/
 theorem rowFam_cusp (hS : GlobalTheory.FlipRun.CuspStep W M ρ t) {e : AE D} (he : IsIdemSum e (locPl G t))
     {F : Fn G (.grid 0 D.R.m)} (hF : GlobalTheory.FlipRun.IsCuspListed W.θ (.grid 0 D.R.m) F) :
@@ -44,7 +44,7 @@ theorem rowFam_cusp (hS : GlobalTheory.FlipRun.CuspStep W M ρ t) {e : AE D} (he
     exact h1
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _, _, hF => hF | n + 1, hn, f, hf, F, hF => by obtain ⟨φ, g, Q, hl, e1⟩ := hf (Fin.last n) have h1 := (hS (.down t D.R.m n) (Or.inr ⟨D.R.m, n, le_rfl, by omega, rfl⟩) e he φ g hl Q F hF).2 have h1' : GlobalTheory.FlipRun.IsCuspListed W.θ (.grid D.R.m n) (liftA W M (.do …`.
+A detailed English derivation is pending.
 -/
 theorem downFam_cusp (hS : GlobalTheory.FlipRun.CuspStep W M ρ t) {e : AE D} (he : IsIdemSum e (locPl G t)) :
     ∀ n, n ≤ D.R.m → ∀ (f : ∀ j : Fin n, Sch G (.down t D.R.m j)),
@@ -66,9 +66,9 @@ theorem downFam_cusp (hS : GlobalTheory.FlipRun.CuspStep W M ρ t) {e : AE D} (h
     exact downFam_cusp hS he n (by omega) (fun j => f j.castSucc) (fun j => hf j.castSucc) _ h1'
 
 /- English proof (translation)
-Establish `hr` using `rowFam_cusp (M := M) hS he hF D.R.m le_rfl _ fun i => ⟨φ.1 i, d.1 i, P.1 i, hd.1 i, rfl⟩`. Establish `hdn` using `downFam_cusp hS he D.R.m le_rfl _ (fun j => ⟨φ.2 j, d.2 j, P.2 j, hd.2 j, rfl⟩) _ hr`. Establish `key : liftP W M (oppPath t D.R.m) (oppPure W t P d) F = liftP W M (downPath t D.R.m D.R.m) (downFam t D.R.m D.R.m fun j => W.fock (.mu t D.R.m j) (d.2 j) (P.2 j)) (liftP W M (rowPath T D.R.m D.R.m) (rowFam D.R.m D.R.m fun i => W.fock (.chi i D.R.m) (d.1 i) (P.1 i)) F)` using `pathLift_comp W M _ _ F _ _`. Rewrite using `[key]`. Establish `hrd` using `rapidDec_of_cuspForm hP hθ hdn.1 hdn.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨hrd.1, hrd.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem opp_contAut (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfFam W.θ) (hS : GlobalTheory.FlipRun.CuspStep W M ρ t) {e : AE D}
     (he : IsIdemSum e (locPl G t)) {F : Fn G (.grid 0 D.R.m)} (hF : GlobalTheory.FlipRun.IsCuspListed W.θ (.grid 0 D.R.m) F)
@@ -87,7 +87,7 @@ theorem opp_contAut (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfFam
   exact ⟨hrd.1, hrd.2.1⟩
 
 /- English proof (translation)
-Rewrite using `[bplus_indep G W M₀ M h₀ hM.isRow φ _ hφ (GlobalTheory.SeeSaw.TrcProof.contAut_sum s a f hf), bplus_eq_per G W t M hM]`. Use `((per_linear_trc D W.ψ W.ψ_std _ (topLev G hM) φ hφ).1 I s a f hf).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[bplus_indep G W M₀ M h₀ hM.isRow φ _ hφ (hf i hi), bplus_eq_per G W t M hM]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bplus_fsum {M₀ : Vol G} (h₀ : M₀.IsRow) (hM : M.Is t) {φ : Fn G (.top 0)} (hφ : GlobalTheory.Unf.IsContAut _ φ) {I : Type}
     (s : Finset I) (a : I → ℂ) (f : I → Fn G (.grid D.R.m 0)) (hf : ∀ i ∈ s, GlobalTheory.Unf.IsContAut _ (f i)) :
@@ -98,7 +98,7 @@ theorem bplus_fsum {M₀ : Vol G} (h₀ : M₀.IsRow) (hM : M.Is t) {φ : Fn G (
   rw [bplus_indep G W M₀ M h₀ hM.isRow φ _ hφ (hf i hi), bplus_eq_per G W t M hM]
 
 /- English proof (translation)
-Establish `e : liftT W M (oppPath t D.R.m) (oppTens W t τi τ) F = AddMonoidHom.mk' (fun x => liftT W M (oppPath t D.R.m) x F) (fun x y => liftT_add W M _ x y F) (oppTens W t τi τ)` using `rfl`. Rewrite using `[e]`. Simplify using `only [oppTens, Finsupp.sum, map_sum, AddMonoidHom.mk'_apply, liftT_single, Finset.smul_sum, smul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem liftT_oppTens (τi : PolRow G × PolDown G →₀ ℂ) (τ : SchRow G × SchDown G t →₀ ℂ) (F : Fn G (.grid 0 D.R.m)) :
     liftT W M (oppPath t D.R.m) (oppTens W t τi τ) F =
@@ -111,13 +111,13 @@ theorem liftT_oppTens (τi : PolRow G × PolDown G →₀ ℂ) (τ : SchRow G ×
 end Lin
 
 /- English proof (translation)
-Introduce `hP hL`. Take `⟨a0, ha⟩` from `Big.and (Big.and (GlobalTheory.T.cuspidal_flip_on_volumes hL hP) (GlobalTheory.EndCusp.formTop_isCuspListed hP)) colFn_cont_left`. Use `⟨a0, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `ha ε CF hC`. Use `⟨x, fun D large₂ he hxx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch hsc => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨hstep, htop⟩, hcol⟩` from `hx D large₂ he hxx Γ Pl0 T A Ks R F hS ch hch hsc`. Establish `hθ : IsInfFam ch.W.θ`. Rewrite using `[hch.toIsBase.weil.θ]`. Conclude with `hS.core.models.inf`. Introduce `t a τ hτ M hM τi y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he', φ, hφ, -⟩` from `hτ`. Establish `hca : GlobalTheory.Unf.IsContAut _ (colFn ch a)` using `⟨(hcol a).2, (hcol a).1⟩`. Establish `hFP : ∀ P : PolRow ch.G × PolDown ch.G, GlobalTheory.Unf.IsContAut _ (∑ d ∈ τ.support, τ d • liftP ch.W M (oppPath t D.R.m) (oppPure ch.W t P d) (formTop ch t y))` using `fun P => GlobalTheory.SeeSaw.TrcProof.contAut_sum _ _ _ fun d hd => opp_contAut hP.cuspRapidDecay hθ (hstep t M hM) he' (htop t y) P d (φ d) (hφ d hd)`. Simplify using `only [lhs, liftT_oppTens]`. Rewrite using `[bplus_fsum hch.toIsBase.vol hM hca _ _ _ fun P _ => hFP P, Finsupp.sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun P _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linAt_big : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → Big fun ch => LinAt ch := by
   intro hP hL

@@ -7,9 +7,9 @@ open scoped ContDiff Topology
 namespace GlobalTheory.SchurExt
 
 /- English proof (translation)
-Use `⟨Matrix.ext fun i j => ?_, Matrix.ext fun i j => ?_, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun h ((eqv m r).symm (Sum.inl i))) ((eqv m r).symm (Sum.inl j))` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this ⊢`. Simplify using `only [Aof, blk, Matrix.toBlocks₁₁, Matrix.submatrix_apply, Matrix.of_apply, this, Matrix.one_apply, (eqv m r).symm.injective.eq_iff, Sum.inl.injEq]`. Use `congrFun (congrFun h ((eqv m r).symm (Sum.inl i))) ((eqv m r).symm (Sum.inr j))` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_apply] at this ⊢`. Simplify using `only [Bof, blk, Matrix.toBlocks₁₂, Matrix.submatrix_apply, Matrix.of_apply, this, Matrix.one_apply, (eqv m r).symm.injective.eq_iff, reduceCtorEq, if_false, Matrix.zero_apply]`. Use `congrFun (congrFun h ((eqv m r).symm (Sum.inr i))) ((eqv m r).symm (Sum.inl j))` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this ⊢`. Simplify using `only [Cof, blk, Matrix.toBlocks₂₁, Matrix.submatrix_apply, Matrix.of_apply, this, Matrix.one_apply, (eqv m r).symm.injective.eq_iff, reduceCtorEq, if_false, Matrix.zero_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_blocks_of_map_eq_one {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {m r : ℕ}
     (M : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) R) (h : M.map f = 1) :
@@ -29,7 +29,7 @@ theorem map_blocks_of_map_eq_one {R S : Type} [CommRing R] [CommRing S] (f : R �
       (eqv m r).symm.injective.eq_iff, reduceCtorEq, if_false, Matrix.zero_apply]
 
 /- English proof (translation)
-Take `⟨hA, hB, hC⟩` from `map_blocks_of_map_eq_one f M h`. Establish `hmul : ∀ {a b c : ℕ} (P : Matrix (Fin a) (Fin b) R) (Q : Matrix (Fin b) (Fin c) R), (P * Q).map f = P.map f * Q.map f` using `fun P Q => Matrix.map_mul`. Rewrite using `[Scof, Matrix.map_sub _ (map_sub f), hmul, hmul, hA, hB, hC, Matrix.zero_mul, Matrix.mul_zero, sub_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_Scof_eq_one {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {m r : ℕ}
     (M : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) R) (h : M.map f = 1) :
@@ -42,11 +42,11 @@ theorem map_Scof_eq_one {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {
 end GlobalTheory.SchurExt
 
 /- English proof (translation)
-Introduce `E _ _ m r S x hx _ w hw`. Establish `h1` using `hx w hw`. Use `set f := (pLoc E w).comp (pFin E)`. Establish `hM : (x : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E)).map f = 1`. Use `Units.ext_iff.mp h1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hS` using `map_Scof_eq_one f _ hM`. Distinguish the cases in `hu : IsUnit (Scof (x : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))).det`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((mkGL (Scof (x : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))) : GL (Fin (m + 1)) (Ad E)) : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)).map f = 1`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_mkGL hu]`. Conclude with `hS`. Rewrite using `[mkGL, dif_neg hu, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SchurExt.mkGL_Scof_mem_supS : ∀ (E : Type) [Field E] [NumberField E] (m r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (x : GA E (m + r + 1 + 1)), x ∈ GlobalTheory.JSW.supS E (m + r + 1 + 1) S → IsUnit (Dof (x : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))).det → mkGL (Scof (x : Matrix (Fin (m + r + 1 + 1)) (Fin (m + r + 1 + 1)) (Ad E))) ∈ GlobalTheory.JSW.supS E (m + 1) S := by
   intro E _ _ m r S x hx _ w hw

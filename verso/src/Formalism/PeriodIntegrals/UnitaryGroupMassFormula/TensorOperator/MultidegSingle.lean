@@ -11,14 +11,14 @@ open PI.TO PI.TOW
 variable {K : Type} [Field K] {n' k : ℕ}
 
 /- English proof (translation)
-Simplify using `only [multideg, Finsupp.add_apply, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem multideg_add (a b : Fin n' × Fin k →₀ ℕ) (i : Fin n') :
     multideg (a + b) i = multideg a i + multideg b i := by
   simp only [multideg, Finsupp.add_apply, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Take `⟨j₁, j₂⟩` from `j`. Apply the tactic sequence `by_cases h : j₁ = i <;> simp [multideg, Finsupp.single_apply, Prod.ext_iff, h]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem multideg_single (j : Fin n' × Fin k) (i : Fin n') :
     multideg (Finsupp.single j 1) i = if j.1 = i then 1 else 0 := by
@@ -26,15 +26,15 @@ theorem multideg_single (j : Fin n' × Fin k) (i : Fin n') :
   by_cases h : j₁ = i <;> simp [multideg, Finsupp.single_apply, Prod.ext_iff, h]
 
 /- English proof (translation)
-Rewrite `hG` using `[Pol, MvPolynomial.mem_restrictSupport_iff]`. Rewrite using `[G.as_sum, map_sum, Finset.mul_sum]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Establish `hdm : ∀ i, multideg m i = d i` using `hG hm`. Rewrite using `[MvPolynomial.pderiv_monomial, MvPolynomial.X, MvPolynomial.monomial_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hmb : m (t, b) = 0`. Simplify using `[hmb]`. Establish `hle : Finsupp.single (t, b) 1 ≤ m`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hsplit : m = (m - Finsupp.single (t, b) 1) + Finsupp.single (t, b) 1` using `(tsub_add_cancel_of_le hle).symm`. Establish `hexp : ∀ i, multideg (Finsupp.single (t, a) 1 + (m - Finsupp.single (t, b) 1)) i = d i`. Introduce `i`. Establish `h1` using `multideg_add (m - Finsupp.single (t, b) 1) (Finsupp.single (t, b) 1) i`. Rewrite `h1` using `[← hsplit, hdm i, multideg_single]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[multideg_add, multideg_single]`. Simplify using `only at h1 ⊢`. Apply the tactic sequence `split_ifs at h1 ⊢ <;> omega`. Rewrite using `[Pol, MvPolynomial.mem_restrictSupport_iff]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx'` using `MvPolynomial.support_monomial_subset (Finset.mem_coe.mp hx)`. Rewrite `hx'` using `[Finset.mem_singleton]`. Substitute `hx'` using the available equality. Conclude with `hexp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem step_mem (t : Fin n') (a b : Fin k) (d : Fin n' → ℕ) (G : MvPolynomial (Fin n' × Fin k) K)
     (hG : G ∈ Pol K (ι := Fin n') k d) :
@@ -65,9 +65,9 @@ theorem step_mem (t : Fin n') (a b : Fin k) (d : Fin n' → ℕ) (G : MvPolynomi
   exact hexp
 
 /- English proof (translation)
-Introduce `K _ n' k d l G hG`. Proceed by induction on `l with`. Consider the case `nil => exact hG`. Consider the case `cons y l ih`. Simplify using `only [opWord, List.foldr_cons] at ih ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `step_mem y.1 y.2.1 y.2.2 d _ ih`.
+A detailed English derivation is pending.
 -/
 theorem stepDeg : StepDeg := by
   intro K _ n' k d l G hG

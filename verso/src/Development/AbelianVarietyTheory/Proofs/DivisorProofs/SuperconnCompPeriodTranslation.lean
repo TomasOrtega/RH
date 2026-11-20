@@ -13,7 +13,7 @@ namespace GlobalTheory.TranslNatural
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [per, Matrix.vecMul, dotProduct, Pi.add_apply, Complex.ofReal_add, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem per_add' (τ : Matrix (Fin g) (Fin g) ℂ) (y x : Fl g) : per τ (y + x) = per τ y + per τ x := by
   ext i
@@ -22,9 +22,7 @@ theorem per_add' (τ : Matrix (Fin g) (Fin g) ℂ) (y x : Fl g) : per τ (y + x)
   ring
 
 /- English proof (translation)
-Establish `: DifferentiableOn ℂ (fun b => per (τ b) y) B`. Rewrite using `[differentiableOn_pi]`. Introduce `i`. Simplify using `only [per, Matrix.vecMul, dotProduct, Pi.add_apply]`. Conclude with `(DifferentiableOn.fun_sum fun j _ => (hτ.2.1 j i).const_mul _).add_const _`.
-
-Conclude with `this.differentiableAt (hτ.1.mem_nhds hb)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableAt_per {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hτ : IsPeriodMap B τ) (y : Fl g) {b : E} (hb : b ∈ B) :
@@ -41,7 +39,7 @@ def dTransl (τ : E → Matrix (Fin g) (Fin g) ℂ) (x : Fl g) (b : E) : Pt E g 
     (fderiv ℂ (fun b => per (τ b) x) b).comp (ContinuousLinearMap.fst ℂ E (Fin g → ℂ)))
 
 /- English proof (translation)
-Establish `h1 : HasFDerivAt (fun Q : Pt E g => per (τ Q.1) x) ((fderiv ℂ (fun b => per (τ b) x) P.1).comp (ContinuousLinearMap.fst ℂ E (Fin g → ℂ))) P` using `(differentiableAt_per hτ x hP).hasFDerivAt.comp P hasFDerivAt_fst`. Conclude with `hasFDerivAt_fst.prodMk (hasFDerivAt_snd.add h1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_transl {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hτ : IsPeriodMap B τ) (x : Fl g) {P : Pt E g} (hP : P.1 ∈ B) :
@@ -52,7 +50,7 @@ theorem hasFDerivAt_transl {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
   exact hasFDerivAt_fst.prodMk (hasFDerivAt_snd.add h1)
 
 /- English proof (translation)
-The claim follows from `((hasFDerivAt_transl hτ x hP).restrictScalars ℝ).fderiv`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_transl {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hτ : IsPeriodMap B τ) (x : Fl g) {P : Pt E g} (hP : P.1 ∈ B) :
@@ -60,11 +58,11 @@ theorem fderiv_transl {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
   ((hasFDerivAt_transl hτ x hP).restrictScalars ℝ).fderiv
 
 /- English proof (translation)
-Establish `hT : DifferentiableAt ℝ (transl τ x) P` using `((hasFDerivAt_transl hτ x hP).restrictScalars ℝ).differentiableAt`. Establish `hT' : DifferentiableAt ℝ (transl τ (-x)) (transl τ x P)` using `((hasFDerivAt_transl hτ (-x) (P := transl τ x P) hP).restrictScalars ℝ).differentiableAt`. Distinguish the cases in `hf : DifferentiableAt ℝ f (transl τ x P)`. Conclude with `fderiv_comp (g := f) P hf hT`. Establish `hnd : ¬ DifferentiableAt ℝ (fun Q => f (transl τ x Q)) P`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hc`. Apply `hf` to reduce the goal to its premises. Establish `: DifferentiableAt ℝ ((fun Q => f (transl τ x Q)) ∘ transl τ (-x)) (transl τ x P)`. Apply `DifferentiableAt.comp _ _ hT'` to reduce the goal to its premises. Rewrite using `[GlobalTheory.TranslFlat.transl_neg_transl]` and apply the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `he : (fun Q => f (transl τ x Q)) ∘ transl τ (-x) = f`. Use function extensionality and compare the values at `Q`. Simplify using `[GlobalTheory.TranslFlat.transl_transl_neg]`. Rewrite `this` using `[he]`. Then use the resulting hypothesis. Rewrite using `[fderiv_zero_of_not_differentiableAt hf, fderiv_zero_of_not_differentiableAt hnd, ContinuousLinearMap.zero_comp]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_comp_transl {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W]
     {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
@@ -90,7 +88,7 @@ theorem fderiv_comp_transl {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W]
       ContinuousLinearMap.zero_comp]
 
 /- English proof (translation)
-Rewrite using `[fderiv_transl hτ x hP]`. Conclude with `(dTransl τ x P.1).map_smul Complex.I v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_transl_smul {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hτ : IsPeriodMap B τ) (x : Fl g) {P : Pt E g} (hP : P.1 ∈ B) (v : Pt E g) :
@@ -99,7 +97,7 @@ theorem fderiv_transl_smul {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
   exact (dTransl τ x P.1).map_smul Complex.I v
 
 /- English proof (translation)
-Rewrite using `[fderiv_transl hτ x hP]`. Simplify using `[dTransl, vert]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_transl_vert {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hτ : IsPeriodMap B τ) (x : Fl g) {P : Pt E g} (hP : P.1 ∈ B) (a : Fin g) :
@@ -108,11 +106,9 @@ theorem fderiv_transl_vert {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
   simp [dTransl, vert]
 
 /- English proof (translation)
-Establish `hfl : flat τ (transl τ x P) = flat τ P + x` using `GlobalTheory.TranslFlat.flat_transl hτ x (P := P) ⟨hP, Set.mem_univ _⟩`. Establish `e : (fun b => per (τ b) (flat τ P + x)) = fun b => per (τ b) (flat τ P) + per (τ b) x`. Use function extensionality and compare the values at `b`. Conclude with `per_add' _ _ _`. Establish `hd : fderiv ℂ (fun b => per (τ b) (flat τ P + x)) P.1 = fderiv ℂ (fun b => per (τ b) (flat τ P)) P.1 + fderiv ℂ (fun b => per (τ b) x) P.1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `fderiv_add (differentiableAt_per hτ _ hP) (differentiableAt_per hτ _ hP)`. Rewrite using `[fderiv_transl hτ x hP]`. Simplify using `only [hor, hfl]`. Use `show _ = (v, fderiv ℂ (fun b => per (τ b) (flat τ P + x)) P.1 v)`.
-
-Rewrite using `[hd]`. Simplify using `[dTransl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fderiv_transl_hor {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hτ : IsPeriodMap B τ) (x : Fl g) {P : Pt E g} (hP : P.1 ∈ B) (v : E) :
@@ -137,7 +133,7 @@ section D
 variable {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [SMul ℂ W]
 
 /- English proof (translation)
-Simplify using `only [d10, fderiv_comp_transl hτ x hP f, ContinuousLinearMap.comp_apply, fderiv_transl_smul hτ x hP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem d10_comp_transl_eq_of_isPeriodMap {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hτ : IsPeriodMap B τ) (x : Fl g) {P : Pt E g} (hP : P.1 ∈ B) (f : Pt E g → W) (v : Pt E g) :
@@ -146,7 +142,7 @@ theorem d10_comp_transl_eq_of_isPeriodMap {B : Set E} {τ : E → Matrix (Fin g)
     fderiv_transl_smul hτ x hP]
 
 /- English proof (translation)
-Simplify using `only [d01, fderiv_comp_transl hτ x hP f, ContinuousLinearMap.comp_apply, fderiv_transl_smul hτ x hP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem d01_comp_transl_eq_of_isPeriodMap {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hτ : IsPeriodMap B τ) (x : Fl g) {P : Pt E g} (hP : P.1 ∈ B) (f : Pt E g → W) (v : Pt E g) :
@@ -157,9 +153,9 @@ theorem d01_comp_transl_eq_of_isPeriodMap {B : Set E} {τ : E → Matrix (Fin g)
 end D
 
 /- English proof (translation)
-Introduce `E _ _ g n B τ hτ h β u x s P hP`. Establish `e1 : ∀ v, d10 (fun Q => s (transl τ x Q)) P v = d10 s (transl τ x P) (fderiv ℝ (transl τ x) P v)` using `d10_comp_transl_eq_of_isPeriodMap hτ x hP s`. Establish `e2 : ∀ v, d10 (fun Q => (Real.log (h (transl τ x Q)) : ℂ)) P v = d10 (fun Q => (Real.log (h Q) : ℂ)) (transl τ x P) (fderiv ℝ (transl τ x) P v)` using `d10_comp_transl_eq_of_isPeriodMap hτ x hP (fun Q => (Real.log (h Q) : ℂ))`. Establish `e3 : ∀ v, d01 (fun Q => s (transl τ x Q)) P v = d01 s (transl τ x P) (fderiv ℝ (transl τ x) P v)` using `d01_comp_transl_eq_of_isPeriodMap hτ x hP s`. Establish `e4 : (transl τ x P).1 = P.1` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [superconn, nablaE, dbarV, dbarAdj, pointDifference, e1, e2, e3, e4, fderiv_transl_hor hτ x hP, fderiv_transl_vert hτ x hP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem superconn_transl : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g n : ℕ} {B : Set E}
     {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap B τ → ∀ (h : Pt E g → ℝ) (β : Fin n → E) (u : ℝ)

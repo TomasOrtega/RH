@@ -7,21 +7,21 @@ open Polynomial
 namespace GlobalTheory.AlgPointsDense
 
 /- English proof (translation)
-Introduce `K _ _ R _ _ _ p _ ε s η hη`. Use `letI : Algebra K ℂ_[p] := (ε.comp (algebraMap K R)).toAlgebra`. Set `ε' : R →ₐ[K] ℂ_[p]` to `{ ε with commutes' := fun c => rfl }`. Set `ι₀ : AlgebraicClosure K →ₐ[K] ℂ_[p]` to `IsAlgClosed.lift`. Establish `hc : (ι₀ : AlgebraicClosure K →+* ℂ_[p]).comp (algebraMap K _) = algebraMap K ℂ_[p]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `c`. Conclude with `ι₀.commutes c`. Establish `hdense` using `GlobalTheory.T.algClosed_dense_in_Cp p (AlgebraicClosure K) (ι₀ : AlgebraicClosure K →+* ℂ_[p])`. Take `⟨s0, hs0⟩` from `Algebra.FiniteType.out (R := K) (A := R)`. Set `S : Finset R` to `s0 ∪ s`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e : Fin S.card ≃ S` to `S.equivFin.symm`. Set `a : Fin S.card → ℂ_[p]` to `fun j => ε (e j)`. Take `⟨d, t, θ, P, Δ, Q, hPm, hPθ, hΔ, hQ, huniv⟩` from `GlobalTheory.T.polynomial_system_specialization K ℂ_[p] S.card a`. Take `⟨t', θ', hΔ', hP', hclose⟩` from `GlobalTheory.T.p_adic_algebraic_approximation p K (AlgebraicClosure K) (ι₀ : AlgebraicClosure K →+* ℂ_[p]) hdense hc d S.card t θ P Δ Q η hη hPm hPθ hΔ`. Take `⟨f, hf⟩` from `huniv (AlgebraicClosure K) t' θ' hΔ' hP'`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : ∀ r : R, ε' r ∈ Algebra.adjoin K (Set.range a)`. Introduce `r`. Establish `hr : r ∈ Algebra.adjoin K (s0 : Set R)` using `by rw [hs0]; trivial`. Establish `h1 : ε' r ∈ (Algebra.adjoin K (s0 : Set R)).map ε'` using `Subalgebra.mem_map.2 ⟨r, hr, rfl⟩`. Rewrite `h1` using `[← Algebra.adjoin_image]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Algebra.adjoin_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨e.symm ⟨x, Finset.mem_union_left _ hx⟩, by simp [a, ε']⟩`. Set `g : R →ₐ[K] Algebra.adjoin K (Set.range a)` to `ε'.codRestrict _ hmem`. Use `⟨(ι₀ : AlgebraicClosure K →+* ℂ_[p]), f.comp g, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh`. Set `j` to `e.symm ⟨h, Finset.mem_union_right _ hh⟩`. Establish `haj : a j = ε h` using `by simp [a, j]`. Establish `hg : g h = ⟨a j, Algebra.subset_adjoin (Set.mem_range_self j)⟩` using `Subtype.ext (show ε h = a j from haj.symm)`. Establish `h1 : f (g h) = Polynomial.eval₂ (MvPolynomial.aeval t').toRingHom θ' (Q j) / MvPolynomial.aeval t' Δ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, hf j]`. Clear the denominators using the available nonvanishing facts. Establish `h2 : ε h = Polynomial.eval₂ (MvPolynomial.aeval t).toRingHom θ (Q j) / MvPolynomial.aeval t Δ`. Rewrite using `[← haj, hQ j]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `hclose j` as an intermediate fact. Rewrite using `[AlgHom.comp_apply, h1, map_div₀, h2]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algebraic_approx : ∀ (K : Type) [Field K] [NumberField K] (R : Type) [CommRing R] [Algebra K R] [Algebra.FiniteType K R] (p : ℕ) [Fact p.Prime] (ε : R →+* ℂ_[p]) (s : Finset R) (η : ℝ), 0 < η → ∃ (ι : AlgebraicClosure K →+* ℂ_[p]) (φ : R →ₐ[K] AlgebraicClosure K), ∀ h ∈ s, ‖ι (φ h) - ε h‖ < η := by
   intro K _ _ R _ _ _ p _ ε s η hη

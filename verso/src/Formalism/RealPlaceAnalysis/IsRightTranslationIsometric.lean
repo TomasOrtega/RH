@@ -61,7 +61,7 @@ def settingQ {n : ℕ} (ε : Fin n → Bool) (S : Subgroup (UJ ε)) (E : Type) [
   { E := E, S := S, σ := σ, ν := (muG ε).withDensity ph }
 
 /- English proof (translation)
-Introduce `s g`. Establish `hs : (s : UJ ε) = 1` using `Subgroup.mem_bot.mp s.2`. Simplify using `only [settingG, hs, one_mul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma mem_admissible_setting {n : ℕ} (ε : Fin n → Bool) (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [CompleteSpace E] (F : UJ ε → E) : F ∈ (settingG ε E).adm := by
@@ -71,7 +71,7 @@ lemma mem_admissible_setting {n : ℕ} (ε : Fin n → Bool) (E : Type) [NormedA
   rfl
 
 /- English proof (translation)
-Introduce `s g`. Simplify using `only [Rs, mul_assoc]`. Conclude with `hF s (g * h)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma rs_mem_adm {n : ℕ} {ε : Fin n → Bool} (P : HidaSetting n ε) (F : UJ ε → P.E) (hF : F ∈ P.adm)
     (h : UJ ε) : Rs h F ∈ P.adm := by
@@ -80,7 +80,7 @@ lemma rs_mem_adm {n : ℕ} {ε : Fin n → Bool} (P : HidaSetting n ε) (F : UJ 
   exact hF s (g * h)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [Rs, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma rs_mul {n : ℕ} {ε : Fin n → Bool} {E : Type*} (h₁ h₂ : UJ ε) (F : UJ ε → E) :
     Rs (h₁ * h₂) F = Rs h₁ (Rs h₂ F) := by

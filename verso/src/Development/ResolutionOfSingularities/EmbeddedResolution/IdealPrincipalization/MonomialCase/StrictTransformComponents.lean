@@ -25,23 +25,19 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Take `⟨S, hirr, hsup⟩` from `TopologicalSpace.NoetherianSpace.exists_finset_irreducible (⟨A, hA⟩ : TopologicalSpace.Closeds α)`. Establish `hcoe : ∀ S' : Finset (TopologicalSpace.Closeds α), ((S'.sup id : TopologicalSpace.Closeds α) : Set α) = ⋃ k ∈ S', (k : Set α)`. Introduce `S'`. Use `Finset.induction_on S' ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `a S'' _ ih`. Simplify using `[Finset.sup_insert, ih]`. Establish `hA' : A = ⋃ k ∈ S, (k : Set α)` using `(congrArg (fun s : TopologicalSpace.Closeds α => (s : Set α)) hsup).trans (hcoe S)`. Take `⟨T, hTdef⟩ : ∃ T : Finset (TopologicalSpace.Closeds α), T = S.filter (fun k : TopologicalSpace.Closeds α => ¬ ((k : Set α) ⊆ C))` from `⟨_, rfl⟩`. Establish `hmemT : ∀ k : TopologicalSpace.Closeds α, k ∈ T ↔ k ∈ S ∧ ¬ ((k : Set α) ⊆ C)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[hTdef]`. Conclude with `Finset.mem_filter`. Establish `hTcl : IsClosed (⋃ k ∈ T, (k : Set α))` using `Set.Finite.isClosed_biUnion (Finset.finite_toSet _) (fun k _ => k.2)`. Use `⟨(⋃ k ∈ T, (k : Set α))ᶜ, hTcl.isOpen_compl, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hemp`. Establish `hAsub : A ⊆ ⋃ k ∈ T, (k : Set α)`. Introduce `z hz`. Assume the negation of the conclusion as `hz'`. Conclude with `hemp ⟨z, hz', hz⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hsT, hCs⟩` from `isIrreducible_iff_sUnion_isClosed.mp hC (T.image fun k : TopologicalSpace.Closeds α => (k : Set α)) (by`. Introduce `z hz`. Take `⟨k, -, rfl⟩` from `Finset.mem_image.mp hz`. Conclude with `k.2)`. Use the proof step `(by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hCA.trans (hAsub.trans ?_)` and prove the remaining obligations. Introduce `z hz`. Take `⟨k, hk, hzk⟩` from `Set.mem_iUnion₂.mp hz`. Conclude with `Set.mem_sUnion.mpr ⟨(k : Set α), Finset.mem_coe.mpr (Finset.mem_image_of_mem _ hk), hzk⟩)`. Take `⟨k, hkT, rfl⟩` from `Finset.mem_image.mp hsT`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components.
 
-Establish `hkS : k ∈ S` using `((hmemT k).mp hkT).1`. Establish `hkA : (k : Set α) ⊆ A`. Rewrite using `[hA']`. Conclude with `fun z hz => Set.mem_iUnion₂.mpr ⟨k, hkS, hz⟩`. Conclude with `((hmemT k).mp hkT).2 (le_of_eq (hmax (k : Set α) (hirr ⟨k, hkS⟩) hCs hkA))`.
-
-Introduce and unpack `z ⟨hzO, hzA⟩`. Rewrite `hzA` using `[hA']`. Take `⟨k, hkS, hzk⟩` from `Set.mem_iUnion₂.mp hzA`. Distinguish the cases in `hk : (k : Set α) ⊆ C`. Conclude with `hk hzk`.
-
-Conclude with `absurd (Set.mem_iUnion₂.mpr ⟨k, (hmemT k).mpr ⟨hkS, hk⟩, hzk⟩) hzO`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem exists_isOpen_inter_subset_of_maximal {α : Type*} [TopologicalSpace α]
     [TopologicalSpace.NoetherianSpace α] (A : Set α) (hA : IsClosed A) (C : Set α)
@@ -103,11 +99,11 @@ theorem exists_isOpen_inter_subset_of_maximal {α : Type*} [TopologicalSpace α]
     · exact absurd (Set.mem_iUnion₂.mpr ⟨k, (hmemT k).mpr ⟨hkS, hk⟩, hzk⟩) hzO
 
 /- English proof (translation)
-Use `⟨((e.symm ⟨ξ, hξ⟩ : {x : α // p x}) : α), (e.symm ⟨ξ, hξ⟩).2, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `he (e.symm ⟨ξ, hξ⟩)`. Rewrite using `[← h1]`. Simplify using the standard rewrite rules. Establish `h2 : ((e ⟨y, hy⟩ : {z : β // q z}) : β) ∈ closure ({ξ} : Set β)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[he ⟨y, hy⟩]`. Conclude with `hs`. Establish `h3 : (e ⟨y, hy⟩) ∈ closure ({(⟨ξ, hξ⟩ : {z : β // q z})} : Set {z : β // q z})`. Rewrite using `[closure_subtype, Set.image_singleton]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `Set.mem_image_of_mem (⇑e.symm) h3`. Rewrite `h4` using `[e.symm.image_closure, Set.image_singleton, Homeomorph.symm_apply_apply]`. Establish `h5` using `closure_subtype.mp h4`. Rewrite `h5` using `[Set.image_singleton]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_specializes_of_homeomorph {α β : Type*} [TopologicalSpace α] [TopologicalSpace β]
     (p : α → Prop) (q : β → Prop) (f : α → β) (e : {x : α // p x} ≃ₜ {y : β // q y})
@@ -130,9 +126,9 @@ theorem exists_specializes_of_homeomorph {α β : Type*} [TopologicalSpace α] [
     rwa [Set.image_singleton] at h5
 
 /- English proof (translation)
-Establish `h1` using `h.restrict Z.support.compl`. Rewrite `h1` using `[Blowup.comap_ι_support_compl_eq_top Z]`. Establish `hiso : IsIso (π ∣_ Z.support.compl)` using `h1.isIso_of_top`. Take `⟨e, he⟩ : ∃ e : {a : ↥X' // a ∈ (π ⁻¹ᵁ Z.support.compl)} ≃ₜ {b : ↥X // b ∈ Z.support.compl}, ∀ a : {a : ↥X' // a ∈ (π ⁻¹ᵁ Z.support.compl)}, ((e a : ↥X)) = (⇑π.base) (a : ↥X')` from `⟨Scheme.homeoOfIso (asIso (π ∣_ Z.support.compl)), fun a => morphismRestrict_base_coe π Z.support.compl a⟩`. Establish `hξ' : ξ ∈ Z.support.compl` using `hξ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy' : y ∈ (π ⁻¹ᵁ Z.support.compl)` using `hy`. Take `⟨x, -, hx1, hx2⟩` from `exists_specializes_of_homeomorph (fun a : ↥X' => a ∈ (π ⁻¹ᵁ Z.support.compl)) (fun b : ↥X => b ∈ Z.support.compl) (fun a => (⇑π.base) a) e he ξ hξ' y hy' hs`. Conclude with `⟨x, hx1, hx2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lift_of_specializes_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}} (π : X' ⟶ X)
     (Z : X.IdealSheafData) (h : Blowup.IsBlowupAlongIdealSheaf π Z) (ξ : ↥X) (hξ : ξ ∉ Z.support)
@@ -155,11 +151,9 @@ theorem exists_lift_of_specializes_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}
   exact ⟨x, hx1, hx2⟩
 
 /- English proof (translation)
-Establish `h1` using `h.restrict Z.support.compl`. Rewrite `h1` using `[Blowup.comap_ι_support_compl_eq_top Z]`. Establish `hiso : IsIso (π ∣_ Z.support.compl)` using `h1.isIso_of_top`. Take `⟨e, he⟩ : ∃ e : {a : ↥X' // a ∈ (π ⁻¹ᵁ Z.support.compl)} ≃ₜ {b : ↥X // b ∈ Z.support.compl}, ∀ a : {a : ↥X' // a ∈ (π ⁻¹ᵁ Z.support.compl)}, ((e a : ↥X)) = (⇑π.base) (a : ↥X')` from `⟨Scheme.homeoOfIso (asIso (π ∣_ Z.support.compl)), fun a => morphismRestrict_base_coe π Z.support.compl a⟩`. Establish `hx' : x ∈ (π ⁻¹ᵁ Z.support.compl)` using `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy' : y ∈ (π ⁻¹ᵁ Z.support.compl)` using `hy`. Establish `key : e ⟨x, hx'⟩ = e ⟨y, hy'⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[he ⟨x, hx'⟩, he ⟨y, hy'⟩]`. Conclude with `hxy`.
-
-Conclude with `congrArg Subtype.val (e.injective key)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_isBlowupAlongIdealSheaf_of_notMem_support {X X' : Scheme.{u}} (π : X' ⟶ X)
     (Z : X.IdealSheafData) (h : Blowup.IsBlowupAlongIdealSheaf π Z) (x y : ↥X')
@@ -182,9 +176,9 @@ theorem eq_of_isBlowupAlongIdealSheaf_of_notMem_support {X X' : Scheme.{u}} (π 
   exact congrArg Subtype.val (e.injective key)
 
 /- English proof (translation)
-Establish `h1 : (((Z.comap π).support : TopologicalSpace.Closeds ↥X') : Set ↥X') = ⇑π.base ⁻¹' ((Z.support : TopologicalSpace.Closeds ↥X) : Set ↥X)`. Rewrite using `[Scheme.IdealSheafData.support_comap]`. Both sides reduce to the same expression. Introduce `hmem`. Establish `hmem' : y ∈ (((Z.comap π).support : TopologicalSpace.Closeds ↥X') : Set ↥X')` using `hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hmem'` using `[h1]`. Conclude with `hy hmem'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem notMem_support_exceptionalIdeal {X X' : Scheme.{u}} (π : X' ⟶ X)
     (Z : X.IdealSheafData) (y : ↥X') (hy : π y ∉ Z.support) :
@@ -198,41 +192,35 @@ theorem notMem_support_exceptionalIdeal {X X' : Scheme.{u}} (π : X' ⟶ X)
   exact hy hmem'
 
 /- English proof (translation)
-Introduce `T hT Z _hsm _hsnc X' π hπ D _hD C' hC'`. Establish `hTnoeth : AlgebraicGeometry.IsNoetherian T.scheme` using `hT.isNoetherian`. Establish `hX'noeth : AlgebraicGeometry.IsNoetherian X'` using `isNoetherian_of_isBlowupAlongIdealSheaf hπ`. Establish `hX'loc : AlgebraicGeometry.IsLocallyNoetherian X'` using `inferInstance`. Establish `hX'top : TopologicalSpace.NoetherianSpace ↥X'` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hC'irr, hC'sub, hC'max⟩` from `hC'`. Establish `hcont : Continuous (⇑π.base)` using `π.continuous`. Establish `hSclosed : IsClosed (↑(Blowup.strictTransform π Z D).support : Set ↥X')` using `(Blowup.strictTransform π Z D).support.2`. Establish `hSeq : (↑(Blowup.strictTransform π Z D).support : Set ↥X') = closure (⇑π.base ⁻¹' ((↑D.support : Set ↥T.scheme) \ (↑Z.support : Set ↥T.scheme)))` using `support_strictTransform_eq_closure_preimage π Z D`. Establish `hC'closed : IsClosed C'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : closure C' = C'` using `hC'max (closure C') hC'irr.closure subset_closure (hSclosed.closure_subset_iff.mpr hC'sub)`. Rewrite using `[← h1]`. Conclude with `isClosed_closure`. Take `⟨η', hgen⟩` from `QuasiSober.sober hC'irr hC'closed`. Establish `hη'' : closure ({η'} : Set ↥X') = C'` using `hgen`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨O, hOopen, hOne, hOsub⟩` from `exists_isOpen_inter_subset_of_maximal (↑(Blowup.strictTransform π Z D).support : Set ↥X') hSclosed C' hC'irr hC'sub hC'max`. Take `⟨w, hwO, hwS⟩` from `hOne`. Establish `hwA : w ∈ closure (⇑π.base ⁻¹' ((↑D.support : Set ↥T.scheme) \ (↑Z.support : Set ↥T.scheme)))`. Rewrite using `[← hSeq]`. Conclude with `hwS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, haO, haA⟩` from `mem_closure_iff.mp hwA O hOopen hwO`. Establish `haA' : (⇑π.base) a ∈ ((↑D.support : Set ↥T.scheme) \ (↑Z.support : Set ↥T.scheme))` using `haA`. Establish `haS : a ∈ (↑(Blowup.strictTransform π Z D).support : Set ↥X')`. Rewrite using `[hSeq]`. Conclude with `subset_closure haA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haC' : a ∈ C'` using `hOsub ⟨haO, haS⟩`. Establish `hVopen : IsOpen ((π ⁻¹ᵁ Z.support.compl : X'.Opens) : Set ↥X')` using `(π ⁻¹ᵁ Z.support.compl).isOpen`. Establish `haV : a ∈ ((π ⁻¹ᵁ Z.support.compl : X'.Opens) : Set ↥X')` using `haA'.2`. Establish `hη'V : η' ∈ ((π ⁻¹ᵁ Z.support.compl : X'.Opens) : Set ↥X')`. Establish `h1 : a ∈ closure ({η'} : Set ↥X')` using `by rw [hη'']; exact haC'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨z, hzV, hz⟩` from `mem_closure_iff.mp h1 _ hVopen haV`. Establish `hz' : z = η'` using `hz`. Rewrite `hzV` using `[hz']`. Then use the resulting hypothesis. Establish `hπη' : (⇑π.base) η' ∉ (↑Z.support : Set ↥T.scheme)` using `hη'V`. Establish `hη'S : η' ∈ (↑(Blowup.strictTransform π Z D).support : Set ↥X')`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hC'sub ?_` and prove the remaining obligations. Rewrite using `[← hη'']`. Conclude with `subset_closure rfl`. Establish `hπη'D : (⇑π.base) η' ∈ (↑D.support : Set ↥T.scheme)`. Establish `h2 : η' ∈ closure (⇑π.base ⁻¹' ((↑D.support : Set ↥T.scheme) \ (↑Z.support : Set ↥T.scheme)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hSeq]`. Conclude with `hη'S`. Establish `h3 : closure (⇑π.base ⁻¹' ((↑D.support : Set ↥T.scheme) \ (↑Z.support : Set ↥T.scheme))) ⊆ ⇑π.base ⁻¹' (↑D.support : Set ↥T.scheme)` using `closure_minimal (Set.preimage_mono Set.sdiff_subset) (IsClosed.preimage hcont D.support.2)`. Conclude with `h3 h2`. Establish `hCirr : IsIrreducible (closure ({((⇑π.base) η')} : Set ↥T.scheme))` using `isIrreducible_singleton.closure`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCsub : closure ({((⇑π.base) η')} : Set ↥T.scheme) ⊆ (↑D.support : Set ↥T.scheme)` using `closure_minimal (Set.singleton_subset_iff.mpr hπη'D) D.support.2`. Establish `hCmax : ∀ C₂ : Set ↥T.scheme, IsIrreducible C₂ → closure ({((⇑π.base) η')} : Set ↥T.scheme) ⊆ C₂ → C₂ ⊆ (↑D.support : Set ↥T.scheme) → C₂ = closure ({((⇑π.base) η')} : Set ↥T.scheme)`. Introduce `C₂ hC₂irr hCC₂ hC₂D`. Take `⟨ξ, hgen2⟩` from `QuasiSober.sober hC₂irr.closure isClosed_closure`. Establish `hξ2 : closure ({ξ} : Set ↥T.scheme) = closure C₂` using `hgen2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hξD : ξ ∈ (↑D.support : Set ↥T.scheme)`. Establish `h4 : ξ ∈ closure C₂` using `by rw [← hξ2]; exact subset_closure rfl`. Conclude with `(closure_minimal hC₂D D.support.2) h4`. Establish `hspec : (⇑π.base) η' ∈ closure ({ξ} : Set ↥T.scheme)`. Rewrite using `[hξ2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `subset_closure (hCC₂ (subset_closure rfl))`. Establish `hξZ : ξ ∉ (↑Z.support : Set ↥T.scheme)`. Introduce `hmem`. Conclude with `hπη' ((closure_minimal (Set.singleton_subset_iff.mpr hmem) Z.support.2) hspec)`. Take `⟨x, hx1, hx2⟩` from `exists_lift_of_specializes_of_isBlowupAlongIdealSheaf π Z hπ ξ hξZ η' hπη' hspec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx1' : (⇑π.base) x = ξ` using `hx1`. Establish `hxmem : (⇑π.base) x ∈ ((↑D.support : Set ↥T.scheme) \ (↑Z.support : Set ↥T.scheme))`. Rewrite using `[hx1']`. Conclude with `⟨hξD, hξZ⟩`. Establish `hxS : x ∈ (↑(Blowup.strictTransform π Z D).support : Set ↥X')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hSeq]`. Conclude with `subset_closure hxmem`. Establish `hclx : closure ({x} : Set ↥X') ⊆ (↑(Blowup.strictTransform π Z D).support : Set ↥X')` using `closure_minimal (Set.singleton_subset_iff.mpr hxS) hSclosed`. Establish `hsub2 : C' ⊆ closure ({x} : Set ↥X')`. Rewrite using `[← hη'']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `closure_minimal (Set.singleton_subset_iff.mpr hx2) isClosed_closure`. Establish `heq : closure ({x} : Set ↥X') = C'` using `hC'max (closure ({x} : Set ↥X')) isIrreducible_singleton.closure hsub2 hclx`. Establish `hxC' : x ∈ closure ({η'} : Set ↥X')`. Rewrite using `[hη'', ← heq]`. Conclude with `subset_closure rfl`.
-
-Establish `himg : (⇑π.base) x ∈ closure (⇑π.base '' ({η'} : Set ↥X'))` using `image_closure_subset_closure_image hcont ⟨x, hxC', rfl⟩`. Rewrite `himg` using `[Set.image_singleton]`. Establish `hξC : ξ ∈ closure ({((⇑π.base) η')} : Set ↥T.scheme)`. Rewrite using `[← hx1']`. Conclude with `himg`.
-
-Use `Set.Subset.antisymm ?_ hCC₂` and prove the remaining obligations. Use `subset_trans subset_closure ?_` and prove the remaining obligations. Rewrite using `[← hξ2]`. Conclude with `closure_minimal (Set.singleton_subset_iff.mpr hξC) isClosed_closure`. Establish `hcomp : IsIrreducibleComponentOf (closure ({((⇑π.base) η')} : Set ↥T.scheme)) (↑D.support : Set ↥T.scheme)` using `⟨hCirr, hCsub, hCmax⟩`.
-
-Use `⟨η', closure ({((⇑π.base) η')} : Set ↥T.scheme), hη''.symm, notMem_support_exceptionalIdeal π Z η' hπη', hcomp, ?_, rfl⟩` and prove the remaining obligations. Introduce `hsub`. Conclude with `hπη' (hsub (subset_closure rfl))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_eq_closure_of_isIrreducibleComponentOf_strictTransform :
     ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →

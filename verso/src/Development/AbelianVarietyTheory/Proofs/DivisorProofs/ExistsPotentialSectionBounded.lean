@@ -24,9 +24,9 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 namespace GlobalTheory.ArchLim
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun y => ?_` and prove the remaining obligations. Establish `hy` using `mem_pick ψ.isLB y`. Establish `hO` using `(isOpen_ptsIn (p := p) (σ := σ) (B.U (pick ψ.isLB y))).mem_nhds hy`. Establish `e : ψ.nsq (secVal p σ s) =ᶠ[𝓝 y] fun z => ‖secVal p σ s (pick ψ.isLB y) z‖ ^ 2 * Real.exp (-ψ.φ (pick ψ.isLB y) z)` using `Filter.eventually_of_mem hO fun z hz => ψ.nsq_eq (secVal_mem s) hz`. Use `ContinuousAt.congr ?_ e.symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((((continuousOn_ev _).continuousAt hO).norm.pow 2).mul ((hψ _ y hy).continuousAt.neg.rexp))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_nsq_secVal {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {B : LB Y}
     (ψ : Weight p σ B) (hψ : ψ.IsCInf) (s : B.Sec) : Continuous (ψ.nsq (secVal p σ s)) := by
@@ -41,21 +41,19 @@ theorem continuous_nsq_secVal {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y �
     ((hψ _ y hy).continuousAt.neg.rexp))
 
 /- English proof (translation)
-Introduce `D O c M m sc σ _`. Establish `hce : IsClosedEmbedding (up M.b rfl σ)` using `GlobalTheory.T.closed_subscheme_model_generic_fibre O.s.T.Z M.b rfl σ`. Establish `hoe : IsOpenEmbedding (up M.b rfl σ)` using `⟨hce.isEmbedding, GlobalTheory.T.isOpen_range_complex_uniformization D O c M σ⟩`. Establish `hcl : IsClosed (Set.range (up M.b rfl σ))` using `hce.isClosed_range`. Establish `hlift` using `GlobalTheory.T.closed_subscheme_model_complex_points O.s.T.Z M.b rfl σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `GlobalTheory.T.closed_subscheme_smooth_model_dimension O.s.T.Z M.b rfl σ hoe hcl hlift (((M.lam 2).pow m).φ (σ.comp _)) (((M.lam 2).pow m).cInf _)`. Establish `hS` using `GlobalTheory.T.closed_subscheme_smooth_model_tangent O.s.T.Z M.b rfl σ hoe hcl hlift (((M.lam 2).pow m).φ (σ.comp _)) sc`. Use `set ψ := ((M.lam 2).pow m).φ (σ.comp _) with hψdef`. Use `set P := ClopenPush.pot (up M.b rfl σ) hoe hcl ψ.locPot with hPdef`. Use `set S := ClopenPush.sec (up M.b rfl σ) (ψ.locSec (secVal M.q _ sc)) with hSdef`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : CompactSpace (CxPts M.q (σ.comp (algebraMap (𝓞 O.κ.c.F) O.κ.c.F))) := M.ar.compactSpace _`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn (continuous_nsq_secVal ψ (((M.lam 2).pow m).cInf _) sc).continuousOn`. Establish `hval : ∀ y, normSec P S (up M.b rfl σ y) = √(ψ.nsq (secVal M.q _ sc) y)` using `fun y => by`. Rewrite using `[hPdef, hSdef, ClopenPush.normSec_up]`. Conclude with `ψ.norm_mul_exp_eq_sqrt (secVal_mem sc) (mem_pick ψ.isLB y)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set t := Real.log (√C + 1) with ht`. Establish `hC1 : 0 < √C + 1` using `by positivity`. Establish `het : Real.exp (-t) = (√C + 1)⁻¹` using `by rw [Real.exp_neg, ht, Real.exp_log hC1]`. Set `L : LocPot (CxPts (genStr O.s.T.Z) σ)` to `{ U := P.U, isOpen_U := P.isOpen_U, mem_U := P.mem_U, φ := fun x z => P.φ x z + t }`. Establish `hnL : ∀ y, normSec L S y = normSec P S y * Real.exp (-t)` using `fun y => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [normSec, L, neg_add, Real.exp_add, mul_assoc]`. Use `⟨L, S, Real.exp (-(2 * t)), Real.exp_pos _, ⟨fun x j => (hP.1 x j).add contDiffOn_const, fun x x' y hy => ?_⟩, ⟨hS.1, fun x x' y hy => ?_⟩, fun y => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨W, hW, hyW, G, hG, e⟩` from `hP.2 x x' y hy`. Conclude with `⟨W, hW, hyW, G, hG, fun z hz => by rw [← e z hz]; simp only [L]; ring⟩`. Establish `e` using `hS.2 x x' y hy`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [L, neg_add, Real.exp_add, ← mul_assoc, e]`. Rewrite using `[hnL]`. Distinguish the cases in `hy : y ∈ Set.range (up M.b rfl σ)`. Take `⟨y₀, rfl⟩` from `hy`. Rewrite using `[hval, het, ← div_eq_mul_inv, div_le_one hC1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ψ.nsq (secVal M.q _ sc) y₀ ≤ C`. Use `hC y₀ (Set.mem_univ _)` as an intermediate fact. Rewrite `this` using `[Real.norm_of_nonneg (ψ.nsq_nonneg _ _)]`. Then use the resulting hypothesis. Combine the linear relations using `[Real.sqrt_le_sqrt h1]`. Rewrite using `[hPdef, hSdef, ClopenPush.normSec_of_not _ _ _ _ hy, zero_mul]`.
-
-Conclude with `zero_le_one`. Rewrite using `[hnL, hval, mul_pow, Real.sq_sqrt (ψ.nsq_nonneg _ _), ← Real.exp_nat_mul]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem exists_section_norm_le_one : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (M : DRBase O c) (m : ℕ) (sc : (lbPow M.lamB m).Sec) (σ : O.κ.c.F →+* ℂ) [CompactSpace (CxPts (genStr O.s.T.Z) σ)], ∃ (L : LocPot (CxPts (genStr O.s.T.Z) σ)) (sg : CxPts (genStr O.s.T.Z) σ → CxPts (genStr O.s.T.Z) σ → ℂ) (a : ℝ), 0 < a ∧ IsPotential (manifold O.s.T.Z σ).finAtlas L ∧ IsSection (manifold O.s.T.Z σ).finAtlas L sg ∧ (∀ y, normSec L sg y ≤ 1) ∧ ∀ y : CxPts M.q (σ.comp _), normSec L sg (up M.b rfl σ y) ^ 2 = a * (((M.lam 2).pow m).φ _).nsq (secVal M.q _ sc) y := by
   intro D O c M m sc σ _

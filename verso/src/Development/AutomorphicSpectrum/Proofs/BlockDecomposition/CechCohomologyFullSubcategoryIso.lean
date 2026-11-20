@@ -17,7 +17,7 @@ section Complexes
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (ψ.mapZ p (φ.mapZ p z)) = Submodule.Quotient.mk z`. Conclude with `congrArg _ (Subtype.ext (h p z.1))`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem mapH_mapH_of_inv {K : Cx.{w} R} {L : Cx.{w} R} (φ : Cx.Hom K L (RingHom.id R))
     (ψ : Cx.Hom L K (RingHom.id R)) (h : ∀ n x, ψ.f n (φ.f n x) = x) (p : ℕ) (x : K.H p) :
@@ -45,7 +45,7 @@ section Cat
 variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C]
 
 /- English proof (translation)
-The claim follows from `mapH_mapH_of_inv m.hom m'.hom h p x`.
+A detailed English derivation is pending.
 -/
 theorem pull_pull_of_inv {C' : Type u} [Category.{v} C'] {G : C ⥤ ModuleCat.{w} R} {G' : C' ⥤ ModuleCat.{w} R}
     (m : CH.Mor G G' (RingHom.id R)) (m' : CH.Mor G' G (RingHom.id R))
@@ -108,7 +108,7 @@ def downX (q n : ℕ) :
   LinearMap.pi fun i => ((downM F i).pull q).comp (LinearMap.proj i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (x (t ∘ k.succAbove))`. Express the relevant statement in the definitionally equal form `(resU F _).pull q ((upM F hW (t ∘ k.succAbove)).pull q (x (t ∘ k.succAbove))) = (upM F hW t).pull q ((resU (Q.ι ⋙ F) _).pull q (x (t ∘ k.succAbove)))`. Rewrite using `[← hz]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem upX_δ (hW : ∀ α, W α ≤ Q) (q n : ℕ) (k : Fin (n + 2))
     (x : (cechH (Q.ι ⋙ F) (subFam Q W) q).X n) :
@@ -121,7 +121,7 @@ theorem upX_δ (hW : ∀ α, W α ≤ Q) (q n : ℕ) (k : Fin (n + 2))
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (x (t ∘ k.succAbove))`. Express the relevant statement in the definitionally equal form `(resU (Q.ι ⋙ F) _).pull q ((downM F (t ∘ k.succAbove)).pull q (x (t ∘ k.succAbove))) = (downM F t).pull q ((resU F _).pull q (x (t ∘ k.succAbove)))`. Rewrite using `[← hz]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem downX_δ (q n : ℕ) (k : Fin (n + 2)) (x : (cechH F W q).X n) :
     (cechH (Q.ι ⋙ F) (subFam Q W) q).δ n k (downX (Q := Q) F q n x) =
@@ -136,7 +136,7 @@ theorem downX_δ (q n : ℕ) (k : Fin (n + 2)) (x : (cechH F W q).X n) :
 end Assemble
 
 /- English proof (translation)
-Introduce `R _ C _ F Q ι W hW q p`. Conclude with `⟨equivH (cosHom (upX F hW q) (upX_δ F hW q)) (cosHom (downX (Q := Q) F q) (downX_δ F q)) (fun n x => funext fun i => pull_pull_of_inv (upM F hW i) (downM F i) (down_up_pullC F hW i) q (x i)) (fun n x => funext fun i => pull_pull_of_inv (downM F i) (upM F hW i) (up_down_pullC F hW …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem cechH_fullSubcategory_H : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ ModuleCat.{w} R)
     (Q : ObjectProperty C) {ι : Type} (W : ι → ObjectProperty C), (∀ α, W α ≤ Q) → ∀ q p,

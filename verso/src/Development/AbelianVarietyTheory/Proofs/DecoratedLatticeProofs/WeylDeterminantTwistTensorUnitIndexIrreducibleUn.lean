@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.KJInf
 
 /- English proof (translation)
-Establish `: (lft (fun _ : Unit => u)).comp (rename (Prod.mk ())) = (rename (Prod.mk ())).comp (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `a) u) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[lft, Formalism.GradedWeylDivisibility.rowAct, rename_X, aeval_X, map_sum]`. Conclude with `congrArg (fun φ => φ f) this`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lft_rename_unit {a : ℕ} (u : Matrix (Fin a) (Fin a) ℂ) (f : MvPolynomial (Fin a × Fin a) ℂ) :
     lft (fun _ : Unit => u) (rename (Prod.mk ()) f) = rename (Prod.mk ()) (Formalism.GradedWeylDivisibility.rowAct ℂ u f) := by
@@ -20,9 +20,9 @@ theorem lft_rename_unit {a : ℕ} (u : Matrix (Fin a) (Fin a) ℂ) (f : MvPolyno
   exact congrArg (fun φ => φ f) this
 
 /- English proof (translation)
-Unfold `frDet`. Rewrite using `[AlgHom.map_det]`. Establish `: (lft (fun _ : Unit => u)).mapMatrix (Matrix.of fun α s : Fin a => (X ((), α, s) : PY Unit a)) = u.map C * Matrix.of fun α s : Fin a => (X ((), α, s) : PY Unit a)`. Use extensionality with `i j`. Simplify using `[lft, aeval_X, Matrix.mul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Matrix.det_mul, RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lft_frDet_unit {a : ℕ} (u : Matrix (Fin a) (Fin a) ℂ) :
     lft (fun _ : Unit => u) (frDet ℂ a ()) = C u.det * frDet ℂ a () := by
@@ -36,9 +36,9 @@ theorem lft_frDet_unit {a : ℕ} (u : Matrix (Fin a) (Fin a) ℂ) :
   rfl
 
 /- English proof (translation)
-Establish `h : frDet ℂ a () = rename (Prod.mk ()) (Matrix.mvPolynomialX (Fin a) (Fin a) ℂ).det`. Unfold `frDet`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mvPolynomialX]`. Rewrite using `[h]`. Introduce `e`. Apply `Matrix.det_mvPolynomialX_ne_zero (Fin a) ℂ` to reduce the goal to its premises. Conclude with `rename_injective _ (Prod.mk_right_injective ()) (e.trans (map_zero _).symm)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem frDet_unit_ne_zero (a : ℕ) : frDet ℂ a () ≠ 0 := by
   have h : frDet ℂ a () = rename (Prod.mk ()) (Matrix.mvPolynomialX (Fin a) (Fin a) ℂ).det := by
@@ -53,9 +53,9 @@ theorem frDet_unit_ne_zero (a : ℕ) : frDet ℂ a () ≠ 0 := by
   exact rename_injective _ (Prod.mk_right_injective ()) (e.trans (map_zero _).symm)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Unfold `CSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Use `⟨f (), hf (), ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[ten]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun _ => f, fun _ => hf, ?_⟩` and prove the remaining obligations. Simplify using `[ten]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem CSpan_unit {a : ℕ} (lam : Unit → DomWeight a) :
     CSpan lam = (delSq ℂ a (lam ())).map (rename (R := ℂ) (Prod.mk ())).toLinearMap := by
@@ -71,29 +71,25 @@ theorem CSpan_unit {a : ℕ} (lam : Unit → DomWeight a) :
     simp [ten]
 
 /- English proof (translation)
-Introduce `a _ lam n`. Use `set D : PY Unit a := ∏ τ, frDet ℂ a τ ^ n τ with hDdef`. Establish `hD : D = frDet ℂ a () ^ n ()` using `by simp [D]`. Establish `hD0 : D ≠ 0` using `hD ▸ pow_ne_zero _ (frDet_unit_ne_zero a)`. Set `φ : MvPolynomial (Fin a × Fin a) ℂ →ₗ[ℂ] PY Unit a` to `LinearMap.mulRight ℂ D ∘ₗ (rename (R := ℂ) (Prod.mk ())).toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : ∀ f, φ f = rename (Prod.mk ()) f * D` using `fun f => rfl`. Establish `hVn : Vn lam n = (delSq ℂ a (lam ())).map φ`. Rewrite using `[Vn, CSpan_unit, ← Submodule.map_comp]`. Establish `hinj : Function.Injective φ`. Introduce `f g e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hφ, hφ]`. Conclude with `rename_injective _ (Prod.mk_right_injective ()) (mul_right_cancel₀ hD0 e)`. Establish `hdel : delSq ℂ a (lam ()) = Formalism.GradedWeylDivisibility.dualWeyl ℂ a a (lam ()).natW`. Rewrite using `[← Formalism.L2.Col.nablaSq_eq_delSq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hanti : Antitone (lam ()).natW` using `fun i j hij => by`. Use `(lam ()).anti hij` as an intermediate fact. Simplify using `only [DomWeight.natW]`. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `h` using `[hVn]`. Establish `h2 : delSq ℂ a (lam ()) = ⊥` using `Submodule.map_injective_of_injective hinj (h.trans (Submodule.map_bot _).symm)`. Establish `hne : nablaSq ℂ a (lam ()) ≠ ⊥` using `Submodule.nontrivial_iff_ne_bot.mp inferInstance`. Conclude with `hne (by rw [Formalism.L2.Col.nablaSq_eq_delSq]; exact h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `U hU hst`. Set `M : Submodule ℂ (MvPolynomial (Fin a × Fin a) ℂ)` to `U.comap φ`. Establish `hMU : M.map φ = U`. Apply `Submodule.map_comap_eq_self` to reduce the goal to its premises. Use `hU.trans ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hVn]`. Conclude with `LinearMap.map_le_range`. Establish `hMd : M ≤ delSq ℂ a (lam ())`. Introduce `f hf`. Establish `h1 : φ f ∈ (delSq ℂ a (lam ())).map φ` using `hVn ▸ hU hf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨g, hg, e⟩` from `h1`. Conclude with `hinj e ▸ hg`. Establish `hrow : ∀ u ∈ Matrix.unitaryGroup (Fin a) ℂ, ∀ f ∈ M, Formalism.GradedWeylDivisibility.rowAct ℂ u f ∈ M`. Introduce `u hu f hf`. Establish `h1` using `hst (fun _ => u) (fun _ => hu) (φ f) hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdet : u.det ≠ 0`. Establish `h` using `(Matrix.mem_unitaryGroup_iff.mp hu)`. Establish `h'` using `congrArg Matrix.det h`. Rewrite `h'` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `left_ne_zero_of_mul_eq_one h'`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `e : lft (fun _ : Unit => u) (φ f) = (u.det ^ n ()) • φ (Formalism.GradedWeylDivisibility.rowAct ℂ u f)`. Rewrite using `[hφ, hφ, map_mul, lft_rename_unit, hD, map_pow, lft_frDet_unit, smul_eq_C_mul, map_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e]`. Conclude with `(U.smul_mem_iff (pow_ne_zero _ hdet)).1 h1`.
-
-Distinguish the cases in `hM : M = ⊥`. Use `left`. Rewrite using `[← hMU, hM, Submodule.map_bot]`. Use `right`. Apply `le_antisymm hU` to reduce the goal to its premises.
-
-Rewrite using `[hVn, ← hMU]`. Apply `Submodule.map_mono` to reduce the goal to its premises. Rewrite using `[hdel]`. Conclude with `GlobalTheory.Branching.dualWeyl_le_of_rowDivClosed le_rfl _ hanti M (hdel ▸ hMd) (GlobalTheory.Branching.rowDivClosed_of_rowAct_stable M (GlobalTheory.Branching.rowAct_mem_of_unitary_stable M hrow)) hM`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Vn_unit_irreducible : ∀ (a : ℕ), 0 < a → ∀ (lam : Unit → DomWeight a) (n : Unit → ℕ), Vn lam n ≠ ⊥ ∧
     ∀ U : Submodule ℂ (PY Unit a), U ≤ Vn lam n → (∀ k, IsUni k → ∀ F ∈ U, lft k F ∈ U) → U = ⊥ ∨ U = Vn lam n := by

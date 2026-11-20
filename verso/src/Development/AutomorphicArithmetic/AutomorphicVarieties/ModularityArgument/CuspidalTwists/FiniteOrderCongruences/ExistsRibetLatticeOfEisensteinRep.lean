@@ -37,7 +37,7 @@ structure RibetLatticeEisensteinRep (Φ φ θ : G ℚ Ω →* (Qbar l)ˣ) (k : �
     ρ s 0 0 + ρ s 0 1 * x A = (cycBar ℚ Ω l s ^ (k - 1) : (Qbar l)ˣ) ∧ ρ s 1 1 - x A * ρ s 0 1 = 1
 
 /- English proof (translation)
-Use `IsUltrametricDist.norm_add_le_max (a - b) (b - c)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Conclude with `this.trans_lt (max_lt h h')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem near_trans {a b c : Qbar l} (h : ‖a - b‖ < 1) (h' : ‖b - c‖ < 1) : ‖a - c‖ < 1 := by
   have := IsUltrametricDist.norm_add_le_max (a - b) (b - c)
@@ -45,9 +45,9 @@ private theorem near_trans {a b c : Qbar l} (h : ‖a - b‖ < 1) (h' : ‖b - c
   exact this.trans_lt (max_lt h h')
 
 /- English proof (translation)
-Establish `e : (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) k) * !![0, 1; 1, 0] = 1`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`. Set `P : GL (Fin 2) k` to `⟨!![0, 1; 1, 0], !![0, 1; 1, 0], e, e⟩`. Use `⟨(MulAut.conj P).toMonoidHom.comp ρ, ⟨P, fun s => rfl⟩, fun s => ?_⟩` and prove the remaining obligations. Establish `h : ((((MulAut.conj P).toMonoidHom.comp ρ) s : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) = !![0, 1; 1, 0] * (ρ s : Matrix (Fin 2) (Fin 2) k) * !![0, 1; 1, 0]` using `rfl`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem swap_basis {Γ k : Type} [Group Γ] [Field k] (ρ : Γ →* GL (Fin 2) k) :
     ∃ σ : Γ →* GL (Fin 2) k, RepIso ρ σ ∧ ∀ s, σ s 0 0 = ρ s 1 1 ∧ σ s 0 1 = ρ s 1 0 ∧ σ s 1 0 = ρ s 0 1 ∧ σ s 1 1 = ρ s 0 0 := by
@@ -61,7 +61,7 @@ private theorem swap_basis {Γ k : Type} [Group Γ] [Field k] (ρ : Γ →* GL (
   simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct]
 
 /- English proof (translation)
-Rewrite using `[← map_one (residue c.O), ← sub_eq_zero, ← map_sub, residue_eq_zero_iff, (UpperTheory.V.Fr.sc_norm l c _).2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cong_iff {c : Coef l} (a : c.Oˣ) :
     Cong (Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom a) 1 ↔ residue c.O a = 1 := by
@@ -69,38 +69,36 @@ private theorem cong_iff {c : Coef l} (a : c.Oˣ) :
   rfl
 
 /- English proof (translation)
-Use `le_antisymm (UpperTheory.V.Fr.sc_norm l c _).1 (not_lt.1 fun h => ?_)` and prove the remaining obligations. Conclude with `(mem_maximalIdeal _).1 ((UpperTheory.V.Fr.sc_norm l c _).2.2 h) a.isUnit`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem norm_unit {c : Coef l} (a : c.Oˣ) : ‖((a : c.O) : PadicAlgCl l)‖ = 1 := by
   refine le_antisymm (UpperTheory.V.Fr.sc_norm l c _).1 (not_lt.1 fun h => ?_)
   exact (mem_maximalIdeal _).1 ((UpperTheory.V.Fr.sc_norm l c _).2.2 h) a.isUnit
 
 /- English proof (translation)
-Establish `hres : ResSum ρ ![1, Φ]` using `by rw [hΦ]; exact hρ.res`. Take `⟨ρ₁, i1, d01, d10, r1, s₀, hs₀⟩` from `UpperTheory.V.Sd.ribetLat l (G ℚ Ω) ρ 1 Φ hρ.cont hρ.irr (fun s => ⟨by simp, hΦn s⟩) hres g0 (fun h => hg0 (by unfold Cong at h ⊢; rw [norm_sub_rev]; exact h))`. Take `⟨σ, i2, hσ⟩` from `swap_basis ρ₁`. Establish `iso : RepIso ρ σ`. Take `⟨a, ha⟩` from `i1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `i2`. Conclude with `⟨b * a, fun s => by rw [hb, ha]; group⟩`. Establish `red : ∀ g, ‖σ g 0 0 - Φ g‖ < 1 ∧ ‖σ g 1 1 - 1‖ < 1 ∧ ‖σ g 0 1‖ < 1 ∧ ‖σ g 1 0‖ ≤ 1` using `fun g => by`. Take `⟨a, b, c, d⟩` from `hσ g`. Rewrite using `[a, b, c, d]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(r1 g).2.1, (r1 g).1, (r1 g).2.2.1, (r1 g).2.2.2⟩`. Establish `hx : ∀ A : ValuationSubring Ω, ∃ x : Qbar l, ‖x‖ ≤ 1 ∧ (¬ A.valuation (l : Ω) < 1 → x = 0) ∧ (A.valuation (l : Ω) < 1 → (∀ s ∈ Dec (F` using `ℚ) A, σ s 1 0 + σ s 1 1 * x = (σ s 0 0 + σ s 0 1 * x) * x) ∧ ∀ s ∈ Ine (F := ℚ) A, σ s 0 0 + σ s 0 1 * x = (cycBar ℚ Ω l s ^ (k - 1) : (Qbar l)ˣ) ∧ σ s 1 1 - x * σ s 0 1 = 1) := by`. Introduce `A`. Distinguish the cases in `hA : A.valuation (l : Ω) < 1`. Take `⟨κ, k1, k2, k3⟩` from `hρ.above A hA`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨x, x1, x2⟩` from `UpperTheory.symmetric_cube_line_exists l (G ℚ Ω) (Dec (F := ℚ) A) σ Φ κ (fun g => ⟨(red g).2.1, (red g).2.2.2⟩) (k1.of_iso iso) (fun s => by rw [hΦ]; exact k3 0 s) (hloc A hA)`. Use `⟨x, x1, fun h => absurd hA h, fun _ => ⟨fun s hs => ?_, fun s hs => ?_⟩⟩` and prove the remaining obligations. Take `⟨a, b, -⟩` from `x2 ⟨s, hs⟩`. Conclude with `b.trans (congrArg (· * x) a.symm)`. Take `⟨a, -, c⟩` from `x2 ⟨s, hs.1⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e0` using `k2 0 ⟨s, hs.1⟩ hs`. Establish `e1` using `k2 1 ⟨s, hs.1⟩ hs`. Rewrite `a` using `[e0]`. Rewrite `c` using `[e1]`. Use `⟨a.trans ?_, c.trans ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: ((k : ℤ) - 1) = ((k - 1 : ℕ) : ℤ)` using `by omega`. Simplify using `[this]`. Simplify using the standard rewrite rules. Conclude with `⟨0, by simp, fun _ => rfl, fun h => absurd h hA⟩`. Use `choose x x1 x2 x3 using hx`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨σ, x, iso, continuous_of_iso hρ.cont iso, red, ⟨s₀, by rw [(hσ s₀).2.2.1]; exact hs₀⟩, ⟨(hσ g0).2.1.trans d10, (hσ g0).2.2.1.trans d01⟩, ?_, fun A hA g hg h1 h2 => ?_, x1, fun E hE A => ?_, fun A hA => (x3 A hA).1, fun A hA => (x3 A hA).2⟩` and prove the remaining obligations. Rewrite using `[← hρ.det]`. Take `⟨a, ha⟩` from `iso`. Use extensionality with `s`. Simplify using `only [MonoidHom.comp_apply, ha, map_mul, map_inv, mul_inv_cancel_comm]`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `(hρ.away A hA).of_iso iso`. Establish `e : a * σ g * a⁻¹ = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[ha g hg, Units.val_one, ← Matrix.diagonal_one]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [h1, h2]`. Rewrite `e` using `[mul_inv_eq_one, mul_eq_left]`. Conclude with `e`. Distinguish the cases in `hA : A.valuation (l : Ω) < 1`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨s, hs, hn⟩` from `hloc A hA`. Use `UpperTheory.symmetric_cube_root_mem l E _ _ _ _ _ (hE s 0 0) (hE s 0 1) (hE s 1 0) (hE s 1 1) (red s).2.2.1 ?_ (x1 A) ((x3 A hA).1 s hs)` and prove the remaining obligations. Establish `a` using `(red s).1`. Establish `d` using `(red s).2.1`. Use `le_antisymm ?_ (not_lt.1 fun h => hn ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e : σ s 0 0 - σ s 1 1 = ((σ s 0 0 - Φ s) + Φ s) + (-(σ s 1 1 - 1) + -1)` using `by ring`. Rewrite using `[e]`. Apply the tactic sequence `refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_) <;>`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `a.le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hΦn s).le`. Rewrite using `[norm_neg]`. Conclude with `d.le`. Simplify using the standard rewrite rules. Rewrite `a` using `[norm_sub_rev]`.
-
-Conclude with `near_trans (near_trans a h) d`. Rewrite using `[x2 A hA]`. Conclude with `E.zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem exists_ribetLattice_of_eisensteinRep (ι : Qbar l ≃+* ℂ) (φ θ Φ : G ℚ Ω →* (Qbar l)ˣ) (k : ℕ) (hk : 1 ≤ k)
     (hΦ : Φ = cycBar ℚ Ω l ^ (k - 1) * φ) (ρ : G ℚ Ω →* GL (Fin 2) (Qbar l)) (hρ : EisRep ι φ θ k ρ)
@@ -182,37 +180,33 @@ end ModEx4
 
 open ModEx4 in
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ ι c D pr θ k hk ρ hρ hloc g0 hg0 c₀`. Use `haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω`. Use `haveI : CompactSpace (G ℚ Ω) := inferInstanceAs (CompactSpace (Ω ≃ₐ[ℚ] Ω))`. Establish `hT : ∀ g, ((toB (Phi D pr k) g : (Qbar l)ˣ) : Qbar l) = ((cycBar ℚ Ω l ^ (k - 1) * toB (phi D pr)) g : (Qbar l)ˣ)` using `fun g => by`. Express the relevant statement in the definitionally equal form `(((Phi D pr k g : c.Oˣ) : c.O) : PadicAlgCl l) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [Phi, MonoidHom.mul_apply, MonoidHom.pow_apply, Units.val_mul, Units.val_pow_eq_pow_val, Subalgebra.coe_mul, Subalgebra.coe_pow]`. Both sides reduce to the same expression. Establish `hTh : toB (Phi D pr k) = cycBar ℚ Ω l ^ (k - 1) * toB (phi D pr)` using `MonoidHom.ext fun g => Units.ext (hT g)`. Establish `hbar : ∀ s, ¬ Cong (toB (Phi D pr k) s) 1 → Raw.bar (Phi D pr k) s ≠ 1` using `fun s h e => h ((cong_iff _).2 e)`. Take `⟨ρ', x, hiso, hB⟩` from `exists_ribetLattice_of_eisensteinRep ι (toB (phi D pr)) θ (toB (Phi D pr k)) k hk hTh ρ hρ (fun g => norm_unit (Phi D pr k g)) (fun A hA => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨s, hs, hn⟩` from `hloc A hA`. Conclude with `⟨s, hs, fun h => hn ((cong_iff _).1 h)⟩)`. Use `g0 (fun h => hg0 ((cong_iff _).1 h))`. Take `⟨E, hE, hmem⟩` from `UpperTheory.V.Sd.finCoef l (G ℚ Ω) 2 ρ' hB.cont`. Take `⟨hC1, hC2⟩` from `UpperTheory.integrality_of_norm_coefficients l`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c', hcc', hc0⟩` from `(UpperTheory.V.HV.coefSup l).1 c c₀`. Take `⟨c₁, h', hc₁⟩` from `hC1 c' E hE`. Establish `h : c.O ≤ c₁.O` using `hcc'.trans h'`. Establish `hinc : ∀ y : c.O, ((inc h y : c₁.O) : PadicAlgCl l) = (y : PadicAlgCl l)` using `fun y => rfl`. Establish `hchi : ∀ (c' : Coef l) g, ((chiO ℚ Ω l c'.O g : c'.O) : PadicAlgCl l) = (cycBar ℚ Ω l g : Qbar l)` using `fun c' g => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hint : ∀ g i j, ‖ρ' g i j‖ ≤ 1`. Introduce `g i j`. Take `⟨h0, h1, h2, h3⟩` from `hB.red g`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Establish `e : ρ' g 0 0 = (ρ' g 0 0 - toB (Phi D pr k) g) + toB (Phi D pr k) g` using `by ring show ‖ρ' g 0 0‖ ≤ 1`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h0.le (UpperTheory.V.Fr.sc_norm l c (Phi D pr k g)).1)`. Conclude with `h2.le`. Conclude with `h3`. Establish `e : ρ' g 1 1 = (ρ' g 1 1 - 1) + 1` using `by ring show ‖ρ' g 1 1‖ ≤ 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1.le norm_one.le)`. Establish `hO : ∀ g i j, ρ' g i j ∈ c₁.O` using `fun g i j => hc₁ _ (hmem g i j) (hint g i j)`. Set `ρ₁ : G ℚ Ω →* M2 c₁.O` to `{ toFun := fun g => Matrix.of fun i j => ⟨ρ' g i j, hO g i j⟩ map_one' := by`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `only [Matrix.of_apply, map_one, Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Use the proof step `map_mul' := by`. Introduce `g g'`. Use extensionality with `i j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] }`. Establish `hρ₁ : ∀ g i j, ((ρ₁ g i j : c₁.O) : PadicAlgCl l) = ρ' g i j` using `fun g i j => rfl`. Set `x₁ : ValuationSubring Ω → c₁.O` to `fun A => ⟨x A, hc₁ _ (hB.mem E hmem A) (hB.int A)⟩`. Establish `hm : ∀ y : c₁.O, y ∈ maximalIdeal c₁.O ↔ ‖(y : PadicAlgCl l)‖ < 1` using `fun y => (UpperTheory.V.Fr.sc_norm l c₁ y).2`. Use `⟨c₁, h, ρ₁, x₁, hc0.trans h', ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨P, hP⟩` from `hiso`. Use `⟨P, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[← hP]`. Conclude with `Units.ext (Matrix.ext fun i j => rfl)`. Introduce `i j`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hC2]`. Conclude with `(Units.continuous_val.comp hB.cont).matrix_elem i j`. Introduce `g`. Take `⟨h0, h1, h2, -⟩` from `hB.red g`. Conclude with `⟨(hm _).2 h0, (hm _).2 h1, (hm _).2 h2⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨g, hg⟩` from `hB.ne`. Conclude with `⟨g, fun hh => ((hm _).1 hh).ne hg⟩`. Conclude with `⟨Subtype.ext hB.nrm.1, Subtype.ext hB.nrm.2⟩`. Introduce `g hg`. Establish `e` using `congrArg Units.val (DFunLike.congr_fun hB.det g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2` using `hT g`. Simplify using `only [MonoidHom.comp_apply, MonoidHom.mul_apply, MonoidHom.pow_apply, hg, mul_one, Units.val_mul, Units.val_pow_eq_pow_val, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two] at e e2`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hinc, Matrix.det_fin_two]`. Simplify using `only [Subalgebra.coe_mul, Subalgebra.coe_sub, hρ₁]`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `e.trans e2.symm`. Introduce `A hA g hg h1 h2`. Establish `e` using `hB.away A hA g hg (by simp [toB, h1]) h2`. Use extensionality with `i j`. Rewrite using `[hρ₁, e]`.
-
-Simplify using `only [Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Introduce `A hA s hs`. Conclude with `Subtype.ext (hB.flag A hA s hs)`. Introduce `A hA s hs`.
-
-Take `⟨h1, h2⟩` from `hB.ine A hA s hs`. Use `⟨Subtype.ext ?_, Subtype.ext h2⟩` and prove the remaining obligations. Simplify using `only [Units.val_pow_eq_pow_val, Subalgebra.coe_pow, hchi] at h1 ⊢`. Conclude with `h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem modEx4 : ModEx4 := by
   intro Ω _ _ _ l _ ι c D pr θ k hk ρ hρ hloc g0 hg0 c₀

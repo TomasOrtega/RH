@@ -21,7 +21,7 @@ def repStabilizer (ρ : Representation k G V) (v : V) : Subgroup G where
         Module.End.one_apply]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem mem_repStabilizer (ρ : Representation k G V) (v : V) (g : G) :
     g ∈ repStabilizer ρ v ↔ ρ g v = v := Iff.rfl
@@ -48,7 +48,7 @@ def clmStabilizer (π : G →* (E →L[𝕜] E)) (v : E) : Subgroup G where
         ContinuousLinearMap.one_apply]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem mem_clmStabilizer (π : G →* (E →L[𝕜] E)) (v : E) (g : G) :
     g ∈ clmStabilizer π v ↔ π g v = v := Iff.rfl

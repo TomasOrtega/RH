@@ -7,7 +7,7 @@ open MeasureTheory Matrix NumberField IsDedekindDomain Formalism.BasicNotions Fo
 namespace GlobalTheory.PlaceOverPair
 
 /- English proof (translation)
-Take `⟨w, h1, h2⟩` from `exists_over_both H hp 𝔭 h𝔭 v hv`. Use `⟨w, ?_, h2⟩` and prove the remaining obligations. Rewrite using `[aboveF, Set.Finite.mem_toFinset]`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_pvSet {R : Ranks} (H : Formalism.BasicNotions.Host R) {p : ℕ} (hp : p.Prime) (𝔭 : HeightOneSpectrum (𝓞 H.K))
     (h𝔭 : (p : 𝓞 H.K) ∈ 𝔭.asIdeal) (v : HeightOneSpectrum (𝓞 H.F)) (hv : OverPF H p v) : ∃ w, w ∈ PvSet H 𝔭 v := by
@@ -17,7 +17,7 @@ theorem exists_mem_pvSet {R : Ranks} (H : Formalism.BasicNotions.Host R) {p : �
   exact h1
 
 /- English proof (translation)
-Introduce `R H 𝔭 𝔭' h h'`. Use `choose P hP using exists_mem_pvSet H H.pde_prime 𝔭 h`. Use `choose P' hP' using exists_mem_pvSet H H.pde'_prime 𝔭' h'`. Conclude with `⟨⟨𝔭, 𝔭', h, h', P, P', hP, hP'⟩, rfl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_places : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (𝔭 𝔭' : HeightOneSpectrum (𝓞 H.K)),
     ((H.pde : ℕ) : 𝓞 H.K) ∈ 𝔭.asIdeal → ((H.pde' : ℕ) : 𝓞 H.K) ∈ 𝔭'.asIdeal →

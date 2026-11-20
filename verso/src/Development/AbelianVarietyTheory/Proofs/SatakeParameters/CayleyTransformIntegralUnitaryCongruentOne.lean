@@ -10,41 +10,37 @@ namespace GlobalTheory.Hk3.CayleyCong
 open GlobalTheory.Hk3.CayleyPhase GlobalTheory.Hk3.IntWitt
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q hU hq n' JT hJT hermT C hskew hCI k hk`. Establish `h2 : Valued.v (2 : L) = 1` using `GlobalTheory.Hk3.Inh.v_two hU hq`. Establish `hσv` using `hU.2.1`. Establish `hσϖ : σ ϖ = ϖ` using `hU.2.2.1`. Establish `hvϖ : Valued.v ϖ < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hU.2.2.2.1]; exact_mod_cast (show (Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) < 1 by decide)`. Establish `hϖI : ϖ ∈ Formalism.UG.intL L` using `le_of_lt hvϖ`. Establish `hvϖk : Valued.v (ϖ ^ k) < 1`. Rewrite using `[map_pow]; exact pow_lt_one₀ zero_le' hvϖ (by omega)`. Establish `hhalf : Valued.v ((2 : L)⁻¹) ≤ 1` using `by rw [map_inv₀, h2, inv_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hσhalf : σ ((2 : L)⁻¹) = 2⁻¹` using `by rw [map_inv₀, map_ofNat]`. Use `set Jt : Matrix (Fin n') (Fin n') L := (JT : Matrix (Fin n') (Fin n') L) with hJt`. Use `set Jti : Matrix (Fin n') (Fin n') L := ((JT⁻¹ : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) with hJti`. Establish `hJtiI : IsIntM Jti` using `GlobalTheory.Hk3.HoweDuality.entry_mem_of_mem_GLint (inv_mem hJT)`. Establish `hJJi : Jt * Jti = 1` using `by rw [hJt, hJti, ← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcJt : Formalism.UG.cT σ Jt = Jt` using `cT_herm σ hermT`. Establish `hcC : Formalism.UG.cT σ C = -C` using `cT_skew σ hskew`. Establish `hcJti : Formalism.UG.cT σ Jti * Jt = 1`. Combine the equalities or inequalities in the displayed calculation. Use `set M : Matrix (Fin n') (Fin n') L := Jti * C with hMdef`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMI : IsIntM M` using `isIntM_mul hJtiI hCI`. Use `set Y : Matrix (Fin n') (Fin n') L := ϖ ^ k • M with hYdef`. Establish `hσϖk : σ (ϖ ^ k) = ϖ ^ k` using `by rw [map_pow, hσϖ]`. Establish `hY : Formalism.UG.cT σ Y * Jt = -(ϖ ^ k • C)`. Rewrite using `[hYdef, cT_smul, hσϖk, Matrix.smul_mul, hMdef, Formalism.UG.cT_mul, hcC, Matrix.mul_assoc, hcJti, Matrix.mul_one, smul_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJY : Jt * Y = ϖ ^ k • C`. Rewrite using `[hYdef, Matrix.mul_smul, hMdef, ← Matrix.mul_assoc, hJJi, Matrix.one_mul]`. Use `set Z : Matrix (Fin n') (Fin n') L := (2⁻¹ : L) • Y with hZdef`. Establish `hZZ : Z + Z = Y`. Rewrite using `[hZdef, ← add_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Establish `: (2⁻¹ + 2⁻¹ : L) = 1`. Establish `h2ne : (2 : L) ≠ 0` using `fun h => by rw [h, map_zero] at h2; exact zero_ne_one h2`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Rewrite using `[this, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hZ : Formalism.UG.cT σ Z * Jt = -(Jt * Z)`. Rewrite using `[hZdef, cT_smul, hσhalf, Matrix.smul_mul, hY, Matrix.mul_smul, hJY, smul_neg]`. Establish `hYsmall : IsSmallM Y` using `fun i j => by`. Rewrite using `[hYdef, Matrix.smul_apply, smul_eq_mul]`. Conclude with `lt_one_mul hvϖk (hMI i j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZsmall : IsSmallM Z` using `small_smul hhalf hYsmall`. Take `⟨hPdet, hPiI⟩` from `inv_one_sub hZsmall`. Take `⟨hQdet, hQiI⟩` from `inv_one_add hZsmall`. Use `set Pi := (1 - Z)⁻¹ with hPi`. Use `set Qi := (1 + Z)⁻¹ with hQi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hP1 : Pi * (1 - Z) = 1` using `Matrix.nonsing_inv_mul _ hPdet`. Establish `hP2 : (1 - Z) * Pi = 1` using `Matrix.mul_nonsing_inv _ hPdet`. Establish `hQ1 : Qi * (1 + Z) = 1` using `Matrix.nonsing_inv_mul _ hQdet`. Establish `hQ2 : (1 + Z) * Qi = 1` using `Matrix.mul_nonsing_inv _ hQdet`. Establish `hPs : Formalism.UG.cT σ Pi * (1 - Formalism.UG.cT σ Z) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Formalism.UG.cT_one σ, ← cT_sub, ← Formalism.UG.cT_mul, hP2]`. Set `g : GL (Fin n') L` to `⟨Pi * (1 + Z), Qi * (1 - Z), by`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (1 + Z), hQ2, Matrix.one_mul, hP1], by`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (1 - Z), hP2, Matrix.one_mul, hQ1]⟩`. Establish `hgU : g ∈ Formalism.UG.UJ σ Jt` using `by show Formalism.UG.cT σ (Pi * (1 + Z)) * Jt * (Pi * (1 + Z)) = Jt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Formalism.UG.cT_mul, cT_add, Formalism.UG.cT_one]`. Conclude with `cayley_unitary_ring hZ hP1 hP2 hQ1 hQ2 hPs`. Establish `hone : IsIntM (1 : Matrix (Fin n') (Fin n') L)` using `fun i j => by`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `one_mem _`. Conclude with `zero_mem _`. Establish `hIZ : IsIntM (1 + Z)` using `isIntM_add hone (isIntM_of_small hZsmall)`. Establish `hIZ' : IsIntM (1 - Z)`. Rewrite using `[sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntM_add hone (isIntM_neg (isIntM_of_small hZsmall))`. Establish `hgI : g ∈ Formalism.UG.GLint (Fin n') (Formalism.UG.intL L)` using `mem_GLint_of_int (isIntM_mul hPiI hIZ) (isIntM_mul hQiI hIZ')`. Take `⟨hr1, hr2⟩` from `cayley_ring hP1 hP2`. Establish `hg1 : Pi * (1 + Z) - 1 = ϖ ^ k • (M * Pi)`. Rewrite using `[hr1, hZZ, hYdef, Matrix.smul_mul]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg2 : Pi * (1 + Z) - 1 - Y = (ϖ ^ (k + 1) * (ϖ ^ (k - 1) * 2⁻¹)) • (M * Pi * M)`. Establish `e : ϖ ^ (k + 1) * (ϖ ^ (k - 1) * 2⁻¹) = ϖ ^ k * (2⁻¹ * ϖ ^ k)`. Establish `: k + 1 + (k - 1) = k + k` using `by omega`. Rewrite using `[← mul_assoc, ← pow_add, this, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, hr1, hZZ]`. Establish `e2 : Y * Pi - Y = Y * (Pi - 1)` using `by rw [Matrix.mul_sub, Matrix.mul_one]`. Rewrite using `[e2, hr2, hZdef, hYdef]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, ← Matrix.mul_assoc]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨g, hgU⟩, hgI, fun r s => ?_, fun r s => ?_⟩` and prove the remaining obligations. Establish `: ((g : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) r s - (1 : Matrix (Fin n') (Fin n') L) r s = (Pi * (1 + Z) - 1) r s` using `by rw [Matrix.sub_apply]`. Rewrite using `[this, hg1, Matrix.smul_apply, smul_eq_mul]`. Conclude with `⟨_, isIntM_mul hMI hPiI r s, rfl⟩`.
-
-Establish `: ((g : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) r s - (1 : Matrix (Fin n') (Fin n') L) r s - (ϖ ^ k • (((JT⁻¹ : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) * C)) r s = (Pi * (1 + Z) - 1 - Y) r s` using `by rw [Matrix.sub_apply, Matrix.sub_apply]`. Rewrite using `[this, hg2, Matrix.smul_apply, smul_eq_mul, mul_assoc]`. Use `⟨_, mul_mem (mul_mem (pow_mem hϖI _) hhalf) (isIntM_mul (isIntM_mul hMI hPiI) hMI r s), rfl⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem cayley_cong : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ),
     Formalism.UG.IsUnramInv ϖ σ q → Odd q → ∀ (n' : ℕ) (JT : GL (Fin n') L),

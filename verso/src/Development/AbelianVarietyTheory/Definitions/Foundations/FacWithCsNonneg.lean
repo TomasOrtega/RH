@@ -40,7 +40,7 @@ def refConst : ℝ := 1 / 2500
 def ccOf : ℝ := (refSum U refConst (gOne Q T j)).toReal + aSum Q j + cInf Q j
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ _ _ Xo c (by rw [(sig_eq h hj).2.2] have := D.R.m_add_three_le_k simp only [Ranks.r]; omega)).1`.
+A detailed English derivation is pending.
 -/
 theorem comp_nonempty (h : T.Pins) (hj : InR D j) : Nonempty (Comp Xo c) :=
   (GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ _ _ Xo c (by
@@ -106,17 +106,17 @@ def facWith : SlopeBoundLiftData c.F (pageOf Q) where
 local notation "𝐅" => facWith Q U dict h hj CI C2 Vs Hb NN Ph e g
 
 /- English proof (translation)
-The claim follows from `T_eq Q _ rfl`.
+A detailed English derivation is pending.
 -/
 theorem facWith_T : (𝐅).T = tR Q := T_eq Q _ rfl
 
 /- English proof (translation)
-Rewrite using `[SlopeBoundLiftData.z, facWith_T]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem facWith_z : (𝐅).z = zed Q j := by rw [SlopeBoundLiftData.z, facWith_T]; rfl
 
 /- English proof (translation)
-Rewrite using `[SlopeBoundLiftData.ε, facWith_T]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem facWith_eps : (𝐅).ε = epsR Q j := by rw [SlopeBoundLiftData.ε, facWith_T]; rfl
 
@@ -126,7 +126,7 @@ Both sides reduce to the same expression.
 theorem facWith_U : (𝐅).U = nU D j := rfl
 
 /- English proof (translation)
-Rewrite using `[facWith_z, facWith_T]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem facWith_A : (𝐅).A = 26 * (26 * (𝐅).DY ^ 2 + 2 * (𝐅).z * (𝐅).T) := by rw [facWith_z, facWith_T]; rfl
 
@@ -136,26 +136,26 @@ Both sides reduce to the same expression.
 theorem facWith_main : (𝐅).main = ∑ τ, ((pp D j : ℝ) - qq D j) * wj D j τ * L.logOm := rfl
 
 /- English proof (translation)
-Rewrite using `[dimFlag_eq h hj]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem facWith_DY : (𝐅).DY = dimFlag (T.Dw j) := by rw [dimFlag_eq h hj]; rfl
 
 /- English proof (translation)
-The claim follows from `(rhoB_toWt Q h hj).symm`.
+A detailed English derivation is pending.
 -/
 theorem facWith_rho : (𝐅).ρ = GlobalTheory.CompHt.rhoB (T.Dw j) (toWt (T.Dw j) (uOne Q j)) := (rhoB_toWt Q h hj).symm
 
 /- English proof (translation)
-The claim follows from `compMean_eq (fun Z Z' => by rw [delPrime, delPrime, topDeg, topDeg, hv Z Z']) Z`.
+A detailed English derivation is pending.
 -/
 theorem facWith_delPrime (hv : ∀ Z Z' : Comp Xo c, vZero U Z = vZero U Z') (Z : Comp Xo c) :
     (𝐅).δ' = delPrime U Z (toWt (T.Dw j) (uOne Q j)) :=
   compMean_eq (fun Z Z' => by rw [delPrime, delPrime, topDeg, topDeg, hv Z Z']) Z
 
 /- English proof (translation)
-Establish `h1` using `hj.1`. Establish `h2` using `hj.2`. Establish `h3` using `D.R.m_add_three_le_k`. Establish `a : qq D j + 1 ≤ D.R.m` using `by simp only [qq, Ranks.sigW]; omega`. Establish `b : pp D j + qq D j + 1 = D.R.k + D.R.m` using `by simp only [pp, qq, Ranks.sigW]; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b' : (pp D j : ℝ) + qq D j + 1 = D.R.k + D.R.m` using `by exact_mod_cast b`. Use `⟨by show (qq D j : ℝ) + 1 ≤ (D.R.m : ℝ); exact_mod_cast a, ?_⟩` and prove the remaining obligations. Use `show (pp D j : ℝ) - qq D j = (D.R.k : ℝ) + D.R.m - 1 - 2 * (qq D j : ℝ)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem facWith_sig : ((𝐅).q' : ℝ) + 1 ≤ (pageOf Q).m ∧
     (𝐅).pq = (pageOf Q).k + (pageOf Q).m - 1 - 2 * ((𝐅).q' : ℝ) := by
@@ -175,46 +175,46 @@ Both sides reduce to the same expression.
 theorem facWith_q : (𝐅).q' = D.R.m - j := rfl
 
 /- English proof (translation)
-The claim follows from `cStarInf_nonneg`.
+A detailed English derivation is pending.
 -/
 theorem facWith_cs_nonneg : 0 ≤ (𝐅).cs := cStarInf_nonneg
 
 variable {U dict}
 
 /- English proof (translation)
-The claim follows from `muDef_latCo hG.1 hG.2.1`.
+A detailed English derivation is pending.
 -/
 theorem facWith_muA (hG : GoodAt U dict (gKapMinus T j)) :
     (𝐅).muA = slopeW_sq U (xiR D) (fun _ => D.sp.W j) dict (gKapMinus T j) := muDef_latCo hG.1 hG.2.1
 
 /- English proof (translation)
-The claim follows from `muDef_latCo hG hN`.
+A detailed English derivation is pending.
 -/
 theorem facWith_muN (hG : HasGram (nrmAt U dict (gKap T j))) (hN : NN.FG) :
     (𝐅).muN = slope_sq (nrmAt U dict (gKap T j)) NN := muDef_latCo hG hN
 
 /- English proof (translation)
-The claim follows from `muMaxDef_latCo hG.1 hG.2.1 h0`.
+A detailed English derivation is pending.
 -/
 theorem facWith_mmax (hG : GoodAt U dict (gKap T j)) (h0 : latW U (gKap T j) ≠ ⊥) :
     (𝐅).mmax = slopeMax_sq (nrmAt U dict (gKap T j)) (latW U (gKap T j)) := muMaxDef_latCo hG.1 hG.2.1 h0
 
 /- English proof (translation)
-Rewrite using `[latCo_inf hG, ← range_mapCo hG]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem facWith_good (hG : HasGram (nrmAt U dict (gKap T j))) :
     (𝐅).good = latCo (nrmAt U dict (gKap T j)) (NN ⊓ (LinearMap.range e).restrictScalars (𝓞 c.F)) := by
   rw [latCo_inf hG, ← range_mapCo hG]; rfl
 
 /- English proof (translation)
-Rewrite using `[latCo_inf hG, ← ker_mapCo hG]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem facWith_bad (hG : HasGram (nrmAt U dict (gKap T j))) :
     (𝐅).bad = latCo (nrmAt U dict (gKap T j)) (NN ⊓ (LinearMap.ker e).restrictScalars (𝓞 c.F)) := by
   rw [latCo_inf hG, ← ker_mapCo hG]; rfl
 
 /- English proof (translation)
-Rewrite using `[SlopeBoundLiftData.muG, facWith_good Q h hj CI C2 Vs Hb NN Ph e g hG]`. Conclude with `muDef_latCo hG hN`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem facWith_muG (hG : HasGram (nrmAt U dict (gKap T j)))
     (hN : (NN ⊓ (LinearMap.range e).restrictScalars (𝓞 c.F)).FG) :
@@ -222,20 +222,20 @@ theorem facWith_muG (hG : HasGram (nrmAt U dict (gKap T j)))
   rw [SlopeBoundLiftData.muG, facWith_good Q h hj CI C2 Vs Hb NN Ph e g hG]; exact muDef_latCo hG hN
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rkK_latCo hG _, by rw [facWith_bad Q h hj CI C2 Vs Hb NN Ph e g hG]; exact rkK_latCo hG _, rkK_latCo (hasGram_piNorm Hb hG) _⟩`.
+Supply the required witnesses or components.
 -/
 theorem facWith_rk (hG : HasGram (nrmAt U dict (gKap T j))) : rkK (𝐅).NN = rkK NN ∧
     rkK (𝐅).bad = rkK (NN ⊓ (LinearMap.ker e).restrictScalars (𝓞 c.F)) ∧ rkK (𝐅).LB = rkK (piLat Hb NN) :=
   ⟨rkK_latCo hG _, by rw [facWith_bad Q h hj CI C2 Vs Hb NN Ph e g hG]; exact rkK_latCo hG _, rkK_latCo (hasGram_piNorm Hb hG) _⟩
 
 /- English proof (translation)
-The claim follows from `rkK_latCo hG _`.
+A detailed English derivation is pending.
 -/
 theorem facWith_rkA (hG : HasGram (nrmAt U dict (gKapMinus T j))) : rkK (𝐅).LA = rankW U (gKapMinus T j) :=
   rkK_latCo hG _
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FlatLine.FlatExistsAt.c1_eq hF (comp_nonempty h hj) _`.
+A detailed English derivation is pending.
 -/
 example (hF : GlobalTheory.FlatLine.FlatDegree U (xiR D) L.logOm) (τ : D.what₂.Tau) :
     (𝐅).c1 τ = -GlobalTheory.FlatLine.flatDegVal (T.Dw j) L.logOm :=

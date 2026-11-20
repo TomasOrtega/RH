@@ -18,7 +18,7 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Establish `hex : ∃ b : Ω', f = b • g` using `⟨a, hf⟩`. Unfold `ratio`. Rewrite using `[dif_pos hex]`. Establish `h2 : hex.choose • g = a • g` using `hex.choose_spec.symm.trans hf`. Conclude with `smul_left_injective Ω' hg h2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem x4v4_ratio_spec {Ω' V : Type*} [Field Ω'] [AddCommGroup V] [Module Ω' V] {f g : V}
     (hg : g ≠ 0) {a : Ω'} (hf : f = a • g) : ratio (Ω := Ω') f g = a := by
@@ -29,11 +29,11 @@ theorem x4v4_ratio_spec {Ω' V : Type*} [Field Ω'] [AddCommGroup V] [Module Ω'
   exact smul_left_injective Ω' hg h2
 
 /- English proof (translation)
-Establish `hw0 : d.w (d.jc c) c ≠ 0` using `hd.w_base c`. Establish `hv : (⟨d.w (d.jc c) c, hd.w_mem _ c⟩ : 𝒜 c d.wL) ≠ 0`. Introduce `h0`. Apply `hw0` to reduce the goal to its premises. Simplify using `using congrArg Subtype.val h0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' _ hv).1 (hd.finrank_one c d.wL) ⟨f, hf⟩`. Establish `hfa : f = a • d.w (d.jc c) c`. Establish `h1` using `congrArg Subtype.val ha`. Simplify using `using h1.symm`. Rewrite using `[x4v4_ratio_spec hw0 hfa]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfa`.
+A detailed English derivation is pending.
 -/
 theorem x4v4_eq_smul (hd : d.AxH 𝒜) (c : ι) {f : A c} (hf : f ∈ 𝒜 c d.wL) :
     f = ratio (Ω := Ω c) f (d.w (d.jc c) c) • d.w (d.jc c) c := by
@@ -50,7 +50,7 @@ theorem x4v4_eq_smul (hd : d.AxH 𝒜) (c : ι) {f : A c} (hf : f ∈ 𝒜 c d.w
   exact hfa
 
 /- English proof (translation)
-Introduce `h0`. Apply `hf0` to reduce the goal to its premises. Rewrite using `[x4v4_eq_smul d hd c hf, h0, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem x4v4_ratio_ne (hd : d.AxH 𝒜) (c : ι) {f : A c} (hf : f ∈ 𝒜 c d.wL) (hf0 : f ≠ 0) :
     ratio (Ω := Ω c) f (d.w (d.jc c) c) ≠ 0 := by
@@ -59,9 +59,9 @@ theorem x4v4_ratio_ne (hd : d.AxH 𝒜) (c : ι) {f : A c} (hf : f ∈ 𝒜 c d.
   rw [x4v4_eq_smul d hd c hf, h0, zero_smul]
 
 /- English proof (translation)
-Use `haveI := hd.tower c`. Establish `e : d.wx x c = ∑ j, x j • d.w j c`. Simplify using `only [Data.wx, Finset.sum_apply, Pi.smul_apply]`. Rewrite using `[e]`. Use `Submodule.sum_mem _ (fun j _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul (Ω c) (x j) (d.w j c)]`. Conclude with `Submodule.smul_mem _ _ (hd.w_mem j c)`.
+A detailed English derivation is pending.
 -/
 theorem x4v4_wx_mem (hd : d.AxH 𝒜) (x : Fin (d.N + 1) → K) (c : ι) : d.wx x c ∈ 𝒜 c d.wL := by
   haveI := hd.tower c
@@ -73,9 +73,9 @@ theorem x4v4_wx_mem (hd : d.AxH 𝒜) (x : Fin (d.N + 1) → K) (c : ι) : d.wx 
   exact Submodule.smul_mem _ _ (hd.w_mem j c)
 
 /- English proof (translation)
-Use `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).mpr ?_` and prove the remaining obligations. Take `⟨hprime, hh⟩` from `hp`. Establish `hpr` using `UniqueFactorizationMonoid.isPrincipal_of_height_eq_one hh`. Unfold `gen`. Rewrite using `[dif_pos hpr]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Conclude with `p.ne_bot_of_height_eq_one hh ((Submodule.IsPrincipal.eq_bot_iff_generator_eq_zero p).mpr h0)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem x4v4_gen_ne {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne) :
     algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ≠ 0 := by
@@ -88,13 +88,13 @@ theorem x4v4_gen_ne {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne) :
   exact p.ne_bot_of_height_eq_one hh ((Submodule.IsPrincipal.eq_bot_iff_generator_eq_zero p).mpr h0)
 
 /- English proof (translation)
-Establish `hA` using `d.good_adm hd h c hp hw`. Establish `e : ((d.ord c (d.Wres c w) d.wL f : ℤ) : WithTop ℤ) = d.Wres c w (ratio (Ω` using `Ω c) f (d.w (d.jc c) c)) + (d.ord c (d.Wres c w) d.wL (d.w (d.jc c) c) : WithTop ℤ) := by conv_lhs => rw [d.x4v4_eq_smul hd c hf]`. Conclude with `hd.ord_smul c _ hA _ (hd.w_mem _ _) (hd.w_base c) (d.x4v4_ratio_ne hd c hf hf0)`. Establish `hfin : d.Wres c w (ratio (Ω` using `Ω c) f (d.w (d.jc c) c)) = ((d.ord c (d.Wres c w) d.wL f - d.ord c (d.Wres c w) d.wL (d.w (d.jc c) c) : ℤ) : WithTop ℤ) := by revert e`. Generalize the expression as in `d.Wres c w (ratio (Ω := Ω c) f (d.w (d.jc c) c)) = t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Proceed by induction on `t using WithTop.recTopCoe with`. Consider the case `top => simp at e`. Consider the case `coe t`. Establish `e' : d.ord c (d.Wres c w) d.wL f = t + d.ord c (d.Wres c w) d.wL (d.w (d.jc c) c)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e` after adjusting the coercions. Rewrite using `[e']`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Unfold `ordMM`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hfin, WithTop.untopD_coe]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem x4v4_ordMM (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne)
     {w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)} (hw : w ∈ d.GoodP c p) {f : A c}
@@ -125,7 +125,7 @@ theorem x4v4_ordMM (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {p : Ideal (KTp K d.D d
   ring
 
 /- English proof (translation)
-Establish `hfin` using `d.goodP_finite hd h c hp`. Unfold `nPMM`. Rewrite using `[← finsum_mem_add_distrib hfin]`. Use `finsum_mem_congr rfl fun w hw => ?_` and prove the remaining obligations. Rewrite using `[d.x4v4_ordMM hd h c hp hw hf hf0]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -143,19 +143,17 @@ theorem x4v4_split (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {p : Ideal (KTp K d.D d
   ring
 
 /- English proof (translation)
-Establish `hmem` using `d.x4v4_wx_mem hd x c`. Establish `hg0` using `d.x4v4_ratio_ne hd c hmem hx`. Take `⟨κ, hκ, hN⟩` from `d.norm_factorization_clause hd h c _ hg0`. Use `⟨κ, hκ, ?_⟩` and prove the remaining obligations. Rewrite using `[hN, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `set na : Ideal (KTp K d.D d.N) → ℤ := fun p => ∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.GoodP c p), (d.fze h c w : ℤ) * WithTop.untopD 0 (d.Wres c w (ratio (Ω := Ω c) (d.wx x c) (d.w (d.jc c) c))) with hna`. Use `set G : Ideal (KTp K d.D d.N) → KTf K d.D d.N := fun p => algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) with hG`. Establish `hsplit : ∀ p ∈ d.HtOne, d.nPMM h c (d.wx x c) p = na p + d.nPMM h c (d.w (d.jc c) c) p` using `fun p hp => d.x4v4_split hd h c hp hmem hx`. Establish `hSx` using `(d.good_primes_properties hd h c).2.2.2 _ hmem hx`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSj` using `(d.good_primes_properties hd h c).2.2.2 _ (hd.w_mem _ c) (hd.w_base c)`. Establish `hfa : (d.HtOne ∩ Function.mulSupport fun p => G p ^ na p).Finite`. Use `(hSx.union hSj).subset fun p hp => ?_` and prove the remaining obligations. Establish `hn : na p ≠ 0`. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `hp.2` to reduce the goal to its premises. Simplify using `only [h0, zpow_zero]`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_and, not_not] at hc`. Apply `hn` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hsplit p hp.1`. Rewrite `e` using `[hc.1 hp.1, hc.2 hp.1]`. Use linear arithmetic over natural numbers and integers. Establish `hfj : (d.HtOne ∩ Function.mulSupport fun p => G p ^ d.nPMM h c (d.w (d.jc c) c) p).Finite`. Use `hSj.subset fun p hp => ⟨hp.1, ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Apply `hp.2` to reduce the goal to its premises. Simplify using `only [h0, zpow_zero]`. Use `show (∏ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), G p ^ na p) * (∏ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), G p ^ d.nPMM h c (d.w (d.jc c) c) p) = ∏ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), G p ^ d.nPMM h c (d.wx x c) p`. Rewrite using `[← finprod_mem_mul_distrib' hfa hfj]`.
-
-Use `finprod_mem_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[hsplit p hp, zpow_add₀ (d.x4v4_gen_ne hp)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_ratio_pi (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (x : Fin (d.N + 1) → K)
     (hx : d.wx x c ≠ 0) :

@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FlagLines
 
 /- English proof (translation)
-Introduce `hP2 hPH D O hO c P M q _ hqP hqd`. Take `⟨W, a, b, hp, hs, hF⟩` from `GlobalTheory.T.exists_triangular_frames_good_primes hP2 hPH D O hO c P M q hqP hqd`. Use `⟨W, a, b, hp, hs, fun k _ _ _ C _ _ hC g G _ _ i φ hφ β hβ τ => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.triangular_frames_on_smooth_curves O.s.T.Z.t O.s.T.Z.s (intEmb O.κ.c τ) q b a (O.S.Dw.mult τ) (fun m => (M.line P (.inl (τ, m))).B) (fun m => (M.line P (.inl (τ, m))).isLB) (hF τ) k C hC g G i φ hφ β hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (c : O.s.Comp) (P : Finset ℕ) (M : O.LatModel P c)
   (q : ℕ) [Fact q.Prime], q ∉ P → ¬ q ∣ (discr D.host.E).natAbs →

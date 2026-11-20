@@ -5,9 +5,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Set `_ : Algebra Γ(X, U) (X.presheaf.stalk y)` to `TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨y, hy⟩ : U)`. Establish `hl : IsLocalization.AtPrime (X.presheaf.stalk y) (hU.primeIdealOf ⟨y, hy⟩).asIdeal` using `hU.isLocalization_stalk ⟨y, hy⟩`. Use `⟨fun a => ?_, fun g => ?_⟩` and prove the remaining obligations. Conclude with `IsLocalization.AtPrime.isUnit_to_map_iff (X.presheaf.stalk y) (hU.primeIdealOf ⟨y, hy⟩).asIdeal a`. Take `⟨⟨c, ⟨b, hb⟩⟩, h⟩` from `IsLocalization.surj (hU.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨b, c, hb, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem germ_isUnit_and_surj {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (y : X) (hy : y ∈ U) :
     (∀ a : Γ(X, U), IsUnit (X.presheaf.germ U y hy a) ↔ a ∉ (hU.primeIdealOf ⟨y, hy⟩).asIdeal) ∧
@@ -26,7 +26,7 @@ theorem germ_isUnit_and_surj {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
 
 /- English proof (translation)
-Establish `h : X.presheaf.germ U p.1 hp ≫ X.presheaf.stalkSpecializes p.2 = X.presheaf.germ U (genPt ξ) hg` using `TopCat.Presheaf.germ_stalkSpecializes _ _ _`. Simplify using `only [genMap, CommRingCat.hom_comp, RingHom.comp_apply]`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem genMap_germ {U : X.Opens} (p : Cpt ξ) (hp : p.1 ∈ U) (hg : genPt ξ ∈ U) (a : Γ(X, U)) :
     genMap ξ p (X.presheaf.germ U p.1 hp a) =
@@ -38,7 +38,7 @@ theorem genMap_germ {U : X.Opens} (p : Cpt ξ) (hp : p.1 ∈ U) (hg : genPt ξ �
   rfl
 
 /- English proof (translation)
-Establish `h2 : X.presheaf.stalkSpecializes h ≫ X.presheaf.stalkSpecializes q.2 = X.presheaf.stalkSpecializes p.2` using `TopCat.Presheaf.stalkSpecializes_comp _ _ _`. Simplify using `only [genMap]`. Rewrite using `[← h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem genMap_stalkSpecializes (p q : Cpt ξ) (h : q.1 ⤳ p.1) (g : X.presheaf.stalk p.1) :
     genMap ξ q ((X.presheaf.stalkSpecializes h).hom g) = genMap ξ p g := by
@@ -53,37 +53,35 @@ end GlobalTheory.CompanionTheory.Ar
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Introduce `X Ω _ ξ hξ p I hI`. Take `⟨U, hU, hpU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (x := p.1) (U := ⊤) trivial`. Establish `hgU : genPt ξ ∈ U` using `p.2.mem_open U.isOpen hpU`. Set `ρ : X.presheaf.stalk p.1 →+* regAt ξ p` to `(genMap ξ p).rangeRestrict`. Establish `hρ : ∀ r, ((ρ r : regAt ξ p) : Ω) = genMap ξ p r` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hρs : Function.Surjective ρ` using `(genMap ξ p).rangeRestrict_surjective`. Set `J : Ideal (X.presheaf.stalk p.1)` to `I.comap ρ`. Establish `hJ : J.IsPrime` using `Ideal.comap_isPrime ρ I`. Set `gp : Γ(X, U) →+* X.presheaf.stalk p.1` to `(X.presheaf.germ U p.1 hpU).hom`. Set `Q0 : PrimeSpectrum Γ(X, U)` to `⟨J.comap gp, Ideal.comap_isPrime gp J⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hspec : ∀ P Q : PrimeSpectrum Γ(X, U), hU.fromSpec P ⤳ hU.fromSpec Q ↔ P ≤ Q`. Introduce `P Q`. Rewrite using `[PrimeSpectrum.le_iff_specializes]`. Conclude with `hU.fromSpec.isOpenEmbedding.isInducing.specializes_iff`. Establish `hqU : hU.fromSpec Q0 ∈ U`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: hU.fromSpec Q0 ∈ Set.range hU.fromSpec` using `⟨Q0, rfl⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Establish `hQ0 : hU.primeIdealOf ⟨_, hqU⟩ = Q0` using `hU.fromSpec.isOpenEmbedding.injective (hU.fromSpec_primeIdealOf _)`. Establish `hP` using `hU.fromSpec_primeIdealOf ⟨p.1, hpU⟩`. Establish `hG` using `hU.fromSpec_primeIdealOf ⟨genPt ξ, hgU⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hPu, hPs⟩` from `germ_isUnit_and_surj hU p.1 hpU`. Take `⟨hGu, -⟩` from `germ_isUnit_and_surj hU (genPt ξ) hgU`. Take `⟨hQu, hQs⟩` from `germ_isUnit_and_surj hU _ hqU`. Rewrite `hQu`, `hQs` using `[hQ0]`. Establish `hunitJ : ∀ r, IsUnit r → r ∉ J` using `fun r hr hrJ => hJ.ne_top (Ideal.eq_top_of_isUnit_mem _ hrJ hr)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGQ : hU.primeIdealOf ⟨genPt ξ, hgU⟩ ≤ Q0`. Introduce `a ha`. Set `φ : X.presheaf.stalk (genPt ξ) →+* Ω` to `(Scheme.stalkClosedPointTo ξ).hom`. Establish `hφ : Function.Bijective φ` using `hξ.bij`. Establish `h0 : φ (X.presheaf.germ U (genPt ξ) hgU a) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Take `⟨d, hd⟩` from `hφ.2 (φ (X.presheaf.germ U (genPt ξ) hgU a))⁻¹`. Establish `h1 : X.presheaf.germ U (genPt ξ) hgU a * d = 1`. Apply `hφ.1` to reduce the goal to its premises. Rewrite using `[map_mul, hd, map_one, mul_inv_cancel₀ hne]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(not_not.mpr ha) ((hGu a).1 (IsUnit.of_mul_eq_one _ h1))`. Establish `h2 : gp a = 0`. Apply `hξ.inj p` to reduce the goal to its premises. Rewrite using `[map_zero, ← h0]`. Conclude with `genMap_germ ξ p hpU hgU a`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show gp a ∈ J`. Rewrite using `[h2]`. Conclude with `J.zero_mem`. Establish `hQP : Q0 ≤ hU.primeIdealOf ⟨p.1, hpU⟩`. Introduce `a ha`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Conclude with `hunitJ _ ((hPu a).2 hn) ha`. Establish `hqp : hU.fromSpec Q0 ⤳ p.1`. Use `(hspec _ _).2 hQP` as an intermediate fact. Rewrite `this` using `[hP]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hgq : genPt ξ ⤳ hU.fromSpec Q0`. Use `(hspec _ _).2 hGQ` as an intermediate fact. Rewrite `this` using `[hG]`. Then use the resulting hypothesis. Set `q : Cpt ξ` to `⟨hU.fromSpec Q0, hgq⟩`. Set `σ : X.presheaf.stalk p.1 →+* X.presheaf.stalk q.1` to `(X.presheaf.stalkSpecializes hqp).hom`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hσ : ∀ g, genMap ξ q (σ g) = genMap ξ p g` using `genMap_stalkSpecializes ξ p q hqp`. Establish `hσg : ∀ a : Γ(X, U), σ (X.presheaf.germ U p.1 hpU a) = X.presheaf.germ U q.1 hqU a` using `fun a => X.presheaf.germ_stalkSpecializes_apply hpU hqp a`. Use `⟨q, hqp, fun a => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨g, rfl⟩`. Take `⟨b, c, hb, hbc⟩` from `hQs g`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨ρ (X.presheaf.germ U p.1 hpU b), hb, ⟨X.presheaf.germ U p.1 hpU c, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hρ, ← hσ, ← hσ, hσg, hσg, ← hbc, map_mul, mul_comm]`. Introduce and unpack `⟨s, hs, t, ht⟩`. Take `⟨r, rfl⟩` from `hρs s`. Establish `hrJ : r ∉ J` using `hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨b, c, hb, hbc⟩` from `hPs r`. Establish `hbu` using `(hPu b).2 hb`. Establish `hcJ : X.presheaf.germ U p.1 hpU c ∉ J`. Rewrite using `[← hbc]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(hJ.mem_or_mem h).elim hrJ (hunitJ _ hbu)`. Establish `hcu` using `(hQu c).2 hcJ`. Establish `hσr : IsUnit (σ r)`. Rewrite `hcu` using `[← hσg, ← hbc, map_mul]`. Conclude with `isUnit_of_mul_isUnit_left hcu`.
-
-Take `⟨u, hu⟩` from `hσr`. Use `⟨(↑u⁻¹ : X.presheaf.stalk q.1) * σ t, ?_⟩` and prove the remaining obligations. Establish `hne : genMap ξ q (σ r) * genMap ξ q (↑u⁻¹ : X.presheaf.stalk q.1) = 1`. Rewrite using `[← map_mul, ← hu, Units.mul_inv, map_one]`. Rewrite using `[map_mul, hσ, ht, hρ, ← hσ r, ← _root_.mul_assoc, mul_comm (genMap ξ q _), hne, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regAt_prime_generisation : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X), IsCptGen ξ → ∀ (p : Cpt ξ) (I : Ideal (regAt ξ p)), I.IsPrime → ∃ q : Cpt ξ, q.1 ⤳ p.1 ∧ ∀ a : Ω, a ∈ regAt ξ q ↔ ∃ s : regAt ξ p, s ∉ I ∧ (s : Ω) * a ∈ regAt ξ p := by
   intro X Ω _ ξ hξ p I hI

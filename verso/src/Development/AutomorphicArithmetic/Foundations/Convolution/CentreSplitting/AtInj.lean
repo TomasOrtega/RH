@@ -12,11 +12,11 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Introduce `E _ _ _ n μ _ V V' hV hV' S hS t h h'`. Take `⟨π, hπ, -⟩` from `exCusp E n μ V hV`. Take `⟨π', hπ', -⟩` from `exCusp E n μ V' hV'`. Establish `e : π = π'`. Use `GlobalTheory.CuspRep.CuspSub.ext (UpperTheory.V.Af.strongMultOneC E n π π' ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hS.compl_mem_cofinite] with w hw`. Take `⟨B, hB, h1⟩` from `(sSatIff E n μ π V hπ w _).1 (h w hw)`. Take `⟨B', hB', h2⟩` from `(sSatIff E n μ π' V' hπ' w _).1 (h' w hw)`. Establish `: B' = B` using `Multiset.map_injective (fun a b e => Units.ext e) (hB'.symm.trans hB)`. Substitute `this` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨B', h1, h2⟩`. Substitute `e` using the available equality. Rewrite using `[((exSummand E n μ π V).1 hπ).2, ((exSummand E n μ π V').1 hπ').2]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.atInj :
     UpperTheory.ConvolutionTheory.Dp.AtInj := by

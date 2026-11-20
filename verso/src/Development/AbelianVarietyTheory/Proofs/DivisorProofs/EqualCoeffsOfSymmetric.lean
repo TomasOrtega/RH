@@ -8,7 +8,7 @@ open MvPolynomial Formalism.DegreeFormula GlobalTheory.FlagPoly
 namespace GlobalTheory.FlagPoly
 
 /- English proof (translation)
-Unfold `invForm`. Rewrite using `[map_sum]`. Use `conv_rhs => rw [← Equiv.sum_comp σ]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `[pLow, pHigh, map_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rename_perm_invForm {ι : Type} [Fintype ι] (N j : ℕ) (σ : ι ≃ ι) (al be : ι → ℝ) :
     rename (fun x : ι × Fin N => (σ x.1, x.2)) (invForm (N := N) j al be)
@@ -20,11 +20,11 @@ theorem rename_perm_invForm {ι : Type} [Fintype ι] (N j : ℕ) (σ : ι ≃ ι
   simp [pLow, pHigh, map_sum]
 
 /- English proof (translation)
-Introduce `m`. Set `E : ι × Fin N ≃ ι × Fin N` to `σ.prodCongr (Equiv.refl _)`. Establish `hE : (fun x : ι × Fin N => (σ x.1, x.2)) = E`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Rewrite using `[hE]`. Establish `hm : m = Finsupp.mapDomain E (Finsupp.mapDomain E.symm m)`. Rewrite using `[← Finsupp.mapDomain_comp]`. Simplify using the standard rewrite rules. Rewrite using `[hm, coeff_rename_mapDomain _ E.injective]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _`.
+A detailed English derivation is pending.
 -/
 theorem CoefLe.rename_perm {ι : Type} {N : ℕ} (σ : ι ≃ ι) {P : Pol ι N} {e : ℝ} (h : CoefLe P e) :
     CoefLe (rename (fun x : ι × Fin N => (σ x.1, x.2)) P) e := by
@@ -39,9 +39,9 @@ theorem CoefLe.rename_perm {ι : Type} {N : ℕ} (σ : ι ≃ ι) {P : Pol ι N}
   exact h _
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty ι with h | ⟨⟨τ₀⟩⟩` into its components or cases. Conclude with `⟨0, fun τ => h.elim τ⟩`. Use `⟨∑ g : G, f (g⁻¹ • τ₀), fun τ => ?_⟩` and prove the remaining obligations. Take `⟨h, rfl⟩` from `MulAction.exists_smul_eq G τ₀ τ`. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft h)]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `[smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sum_inv_smul_const {ι G : Type} [Group G] [Fintype G] [MulAction G ι]
     [MulAction.IsPretransitive G ι] (f : ι → ℝ) :

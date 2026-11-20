@@ -7,13 +7,11 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `P R E _ _ _ _ _ _ _ _ Q _ hloc`. Use `letI : Algebra (R ⊗[P] E) (R ⊗[P] Localization.AtPrime Q) := (Algebra.TensorProduct.map (AlgHom.id P R) (IsScalarTower.toAlgHom P E (Localization.AtPrime Q))).toAlgebra`. Use `haveI : IsScalarTower R (R ⊗[P] E) (R ⊗[P] Localization.AtPrime Q) := .of_algebraMap_eq <| by intro; simp [RingHom.algebraMap_toAlgebra]`. Use `haveI hl := IsLocalization.tensorProduct_tensorProduct_right P R Q.primeCompl (Localization.AtPrime Q) (by ext; simp [RingHom.algebraMap_toAlgebra])`. Set `𝔭 : Ideal (R ⊗[P] E)` to `(maximalIdeal (R ⊗[P] Localization.AtPrime Q)).comap (algebraMap (R ⊗[P] E) (R ⊗[P] Localization.AtPrime Q))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : 𝔭.IsPrime := Ideal.comap_isPrime _ _`. Establish `hle : Q.primeCompl.map (Algebra.TensorProduct.includeRight (R` using `P) (A := R)) ≤ 𝔭.primeCompl := by`. Introduce `x hx`. Establish `hu` using `IsLocalization.map_units (R ⊗[P] Localization.AtPrime Q) (⟨x, hx⟩ : Q.primeCompl.map (Algebra.TensorProduct.includeRight (R := P) (A := R)))`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `((mem_maximalIdeal _).mp (Ideal.mem_comap.mp h)) hu`. Use `haveI : IsLocalization 𝔭.primeCompl (R ⊗[P] Localization.AtPrime Q) := IsLocalization.of_le _ _ hle (fun r hr => by`. Assume the negation of the conclusion as `hu`. Conclude with `hr (Ideal.mem_comap.mpr ((mem_maximalIdeal _).mpr hu)))`. Take `⟨hd, -⟩` from `etale_localization_atPrime_isDomain_isIntegrallyClosed R (R ⊗[P] E) 𝔭`.
-
-Set `e : Localization.AtPrime 𝔭 ≃ₐ[R ⊗[P] E] (R ⊗[P] Localization.AtPrime Q)` to `IsLocalization.algEquiv 𝔭.primeCompl _ _`. Conclude with `e.symm.injective.isDomain _`.
+A detailed English derivation is pending.
 -/
 theorem tensor_localization_atPrime_isDomain_of_isLocalRing_etale :
     ∀ (P R E : Type) [CommRing P] [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Algebra P R]

@@ -16,16 +16,16 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : GSD K) (h : S.Ok
   (ρ : Representation K A S.EqFun)
 
 /- English proof (translation)
-Rewrite using `[Representation.asAlgebraHom_def, MonoidAlgebra.lift_apply]`. Simplify using `[Finsupp.sum_fintype]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rf_asAlgebraHom_eq (a : MonoidAlgebra K A) : ρ.asAlgebraHom a = ∑ t : A, a.coeff t • ρ t := by
   rw [Representation.asAlgebraHom_def, MonoidAlgebra.lift_apply]
   simp [Finsupp.sum_fintype]
 
 /- English proof (translation)
-Establish `c : ∀ x, S.coordOf h S.outSec x = ⇑((S.toCSD h).basis.repr (S.res h x))` using `fun x => rfl`. Establish `e1 : (S.repCSD h ρ) t (S.res h φ) = S.res h (ρ t φ)` using `by show (S.res h) (ρ t ((S.res h).symm (S.res h φ))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Rewrite using `[c, c]`. Unfold `CSD.actMat`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[LinearMap.toMatrix_mulVec_repr, e1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rf_coord_act (t : A) (φ : S.EqFun) :
     S.coordOf h S.outSec (ρ t φ) = ((S.toCSD h).actMat (S.repCSD h ρ) t).mulVec (S.coordOf h S.outSec φ) := by
@@ -38,9 +38,9 @@ theorem rf_coord_act (t : A) (φ : S.EqFun) :
   rw [LinearMap.toMatrix_mulVec_repr, e1]
 
 /- English proof (translation)
-Establish `hsum : ∀ {m : ℕ} (M : A → Matrix (Fin m) (Fin m) K) (c : A → K) (v : Fin m → K), (∑ t, c t • M t).mulVec v = ∑ t, c t • (M t).mulVec v`. Introduce `m M c v`. Rewrite using `[← Matrix.toLin'_apply, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.smul_apply, Matrix.toLin'_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rf_asAlgebraHom_eq, LinearMap.sum_apply, map_sum]`. Unfold `CSD.gaMat`. Rewrite using `[hsum]`. Use `Finset.sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smul, rf_coord_act]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rf_coord_ga (a : MonoidAlgebra K A) (φ : S.EqFun) :
     S.coordOf h S.outSec (ρ.asAlgebraHom a φ) =
@@ -59,7 +59,7 @@ theorem rf_coord_ga (a : MonoidAlgebra K A) (φ : S.EqFun) :
   rw [LinearMap.smul_apply, map_smul, rf_coord_act]
 
 /- English proof (translation)
-Establish `e : (S.coordOf h S.outSec).toLinearMap ∘ₗ ρ.asAlgebraHom a = ((S.toCSD h).gaMat (S.repCSD h ρ) a).mulVecLin ∘ₗ (S.coordOf h S.outSec).toLinearMap`. Use `LinearMap.ext fun φ => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, Matrix.mulVecLin_apply]`. Conclude with `rf_coord_ga S h ρ a φ`. Rewrite using `[← LinearMap.range_comp, e, LinearMap.range_comp, LinearEquiv.range, Submodule.map_top]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rf_range_ga (a : MonoidAlgebra K A) :
     (LinearMap.range (ρ.asAlgebraHom a)).map (S.coordOf h S.outSec).toLinearMap =
@@ -79,7 +79,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
 
 /- English proof (translation)
-Rewrite using `[Matrix.range_mulVecLin]`. Establish `e : (subE Z).col = ⇑Z.subtype ∘ ⇑(subBasis Z)`. Use function extensionality and compare the values at `j i`. Both sides reduce to the same expression. Rewrite using `[e, Set.range_comp, Submodule.span_image, Basis.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem range_subE_lemma {K : Type} [Field K] [NumberField K] [StarRing K] {n : ℕ} (Z : Submodule K (Fin n → K)) :
     LinearMap.range (subE Z).mulVecLin = Z := by
@@ -90,7 +90,7 @@ private theorem range_subE_lemma {K : Type} [Field K] [NumberField K] [StarRing 
   rw [e, Set.range_comp, Submodule.span_image, Basis.span_eq, Submodule.map_top, Submodule.range_subtype]
 
 /- English proof (translation)
-Unfold `V0X`. Rewrite using `[rf_range_ga]`. Conclude with `(range_subE_lemma _).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariantSubspace_coords_X (Xg : Finset (G0 X.E Pr.vGs R.r → X.K)) (P : LevFam X.E X.K R.r Pr.vGs)
     (h : (mtildeKGSD W Ch sel mu).Ok) :
@@ -108,7 +108,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : GSD K) (h : S.Ok
   (ρ : Representation K A S.EqFun)
 
 /- English proof (translation)
-Use `show (∀ a : P, ((S.toCSD h).actMat (S.repCSD h ρ) (a : A)).mulVec (S.coordOf h S.outSec φ) = ((ψ a : Kˣ) : K) • S.coordOf h S.outSec φ) ↔ _`. Use `forall_congr' (fun a => ?_)` and prove the remaining obligations. Rewrite using `[← rf_coord_act, ← map_smul]`. Conclude with `(S.coordOf h S.outSec).injective.eq_iff`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rf_mem_lvlPart_iff (P : Subgroup A) (ψ : P →* Kˣ) (φ : S.EqFun) :
     S.coordOf h S.outSec φ ∈ (S.toCSD h).lvlPart (S.repCSD h ρ) P ψ ↔
@@ -128,7 +128,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (P : LevFam X.E X.K R.r Pr.vGs)
 
 /- English proof (translation)
-Use `Iff.trans ?_ (mem_MtildeV_iff W Ch sel mu P φ.1).symm` and prove the remaining obligations. Conclude with `(rf_mem_lvlPart_iff _ h (g0HatRepEqFunX W Ch sel mu) P.grp P.chr φ).trans ⟨fun H => ⟨φ.2, H⟩, fun ⟨_, H⟩ => H⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_lvlPartX_iff (h : (mtildeKGSD W Ch sel mu).Ok) (φ : (mtildeKGSD W Ch sel mu).EqFun) :
     (mtildeKGSD W Ch sel mu).coordOf h (mtildeKGSD W Ch sel mu).outSec φ ∈

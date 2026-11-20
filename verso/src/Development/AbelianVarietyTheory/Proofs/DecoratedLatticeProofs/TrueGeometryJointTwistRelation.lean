@@ -10,15 +10,15 @@ attribute [local instance] GlobalTheory.Fam.GeoAll.fld GlobalTheory.Fam.GeoAll.v
 namespace GlobalTheory.Fam
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a _ha hat J hJ k`. Use `letI := a.fld`. Use `letI := a.val`. Use `letI := a.top`. Use `letI := a.loc`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `choose S hS using fun t => GlobalTheory.T.levelPrimeOperators_act_ramifiedColumns_vanishing I hW.tr.ok hW.tr.pins.some l Z u (W.P.I.tup t) _ _ (J t).A (J t).ι (hJ t).is (pk W).θ hat.pinX.inf a.k a.ι a.o.p a.o.β a.o.Q (fun j => (a.g.x j).L) hat.std a.o.I a.o.q a.o.χ a.o.hχ`. Use `⟨S, fun t => ⟨fun j hj η φ hφ => ((hS t j hj φ hφ).2 η).1, fun row kom dd s cV cK cP => ?_⟩⟩` and prove the remaining obligations. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j hj ψ hψ α y`. Establish `h` using `(hS t j hj ψ hψ).1 ((J t).ι j α) y`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(if hj' : j ≤ B.R.m then (J t).A.rd (pk W).θ j hj' ((J t).ι j α) ψ y else 0) ∈ a.o.Ram j`. Establish `hj2 : j ≤ B.R.m` using `hj`. Rewrite using `[dif_pos hj2]`. Conclude with `h`. Introduce `j hj ψ hψ α y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hj' : j ≤ B.R.m` using `by change j + 2 ≤ B.R.m at hj; omega`. Express the relevant statement in the definitionally equal form `(if h : j ≤ B.R.m then (J t).A.rd (pk W).θ j h ((J t).ι j α) (S t j (k.ε j) ψ) y else 0) = a.o.S k.ε j (if h : j ≤ B.R.m then (J t).A.rd (pk W).θ j h ((J t).ι j α) ψ y else 0)`. Rewrite using `[dif_pos hj', dif_pos hj']`. Conclude with `((hS t j hj' ψ hψ).2 (k.ε j)).2 _ y`. Introduce `η ψ hψ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h0 : (0 : ℕ) ≤ B.R.m` using `Nat.zero_le _`. Use `⟨((hS t 0 h0 ψ hψ).2 η).1, fun α y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(if h : 0 ≤ B.R.m then (J t).A.rd (pk W).θ 0 h ((J t).ι 0 α) (S t 0 η ψ) y else 0) = a.o.S (fun _ => η) 0 (if h : 0 ≤ B.R.m then (J t).A.rd (pk W).θ 0 h ((J t).ι 0 α) ψ y else 0)`. Rewrite using `[dif_pos h0, dif_pos h0]`. Conclude with `((hS t 0 h0 ψ hψ).2 η).2 _ y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colOf_readS : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ (J : ∀ t, QJ a t), (∀ t, (J t).Reads) → ∀ (k : Cst a),
     ∃ S' : ∀ (t : W.P.T) j, type_of% (k.ε 0) → GlobalTheory.AdForm.ColT I l u (W.P.I.tup t) j → GlobalTheory.AdForm.ColT I l u (W.P.I.tup t) j,

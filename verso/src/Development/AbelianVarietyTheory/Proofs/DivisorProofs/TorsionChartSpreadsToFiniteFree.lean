@@ -16,29 +16,27 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.OrdLocProd
 
 /- English proof (translation)
-Establish `hext' : ∀ a b : C, (∀ ψ : C →ₐ[R] K, ψ a = ψ b) → a = b` using `fun a b h => by`. Rewrite using `[← sub_eq_zero]`. Conclude with `hsep _ fun ψ => by rw [map_sub, h, sub_self]`. Use `choose φ hφ using hres`. Set `ϕ : O →ₗ[R] (T ⧸ H → C)` to `{ toFun := fun f s => φ f.1 f.2 s.out map_add' := fun f g => funext fun s => hext' _ _ fun ψ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Pi.add_apply, map_add, hφ, hφ, hφ]`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun a f => funext fun s => hext' _ _ fun ψ => by`. Rewrite using `[Pi.smul_apply, map_smul, hφ, hφ]`. Use `rfl }`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hϕ : ∀ (f : O) (s : T ⧸ H) (ψ : C →ₐ[R] K), ψ (ϕ f s) = f.1 (s.out * t ψ)` using `fun f s ψ => hφ _ _ _ _`. Use `⟨ϕ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, rfl⟩`. Take `⟨v, hv⟩` from `hr.pow n`. Rewrite using `[Module.End.isUnit_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hv' : ∀ x : T ⧸ H → C, algebraMap R (Module.End R (T ⧸ H → C)) (r ^ n) x = (v : C) • x` using `fun x => by`. Rewrite using `[hv, ← map_pow, algebraMap_smul, Module.algebraMap_end_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Establish `h' : (v : C) • x = (v : C) • y` using `by rw [← hv', ← hv']; exact h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun z => ((v⁻¹ : Cˣ) : C) • z) h'` as an intermediate fact. Simplify `this` using `[smul_smul]`. Introduce `y`. Use `⟨((v⁻¹ : Cˣ) : C) • y, ?_⟩` and prove the remaining obligations. Use `show algebraMap R (Module.End R (T ⧸ H → C)) (r ^ n) _ = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Rewrite using `[hv', smul_smul, Units.mul_inv, one_smul]`. Introduce `u`. Use `letI : Fintype (T ⧸ H) := Fintype.ofFinite _`. Use `choose k g hgO hg1 hg0 using fun s : T ⧸ H => hext s.out (u s)`. Set `M : ℕ` to `Finset.univ.sup k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hM : ∀ s, k s ≤ M` using `fun s => Finset.le_sup (f := k) (Finset.mem_univ s)`. Use `⟨(∑ s, r ^ (M - k s) • (⟨g s, hgO s⟩ : O), ⟨r ^ M, M, rfl⟩), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Apply `hext'` to reduce the goal to its premises. Introduce `ψ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show ψ (r ^ M • u s) = _`. Rewrite using `[map_sum, Finset.sum_apply, map_sum, Finset.sum_eq_single s]`. Rewrite using `[map_smul, map_smul, Pi.smul_apply, map_smul, hϕ] show _ = r ^ (M - k s) • g s _`. Rewrite using `[hg1, ← map_pow, ← Algebra.smul_def, smul_smul, ← pow_add, Nat.sub_add_cancel (hM s)]`. Introduce `s' _ hs'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, Pi.smul_apply, map_smul, hϕ]`. Use `show r ^ (M - k s') • g s' _ = 0`. Rewrite using `[hg0, smul_zero]`. Introduce `ψ' h`. Apply `hs'` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : ∀ (a : T ⧸ H) (χ : C →ₐ[R] K), ((a.out * t χ : T) : T ⧸ H) = a` using `fun a χ => by`. Rewrite using `[QuotientGroup.mk_mul_of_mem _ ((hH _).2 ⟨χ, rfl⟩), QuotientGroup.out_eq']`. Rewrite using `[← h1 s' ψ', ← h, h1]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ s) h`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `f g h`. Use `⟨1, ?_⟩` and prove the remaining obligations. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
-
-Take `⟨y, hy⟩` from `QuotientGroup.mk_out_eq_mul H x`. Take `⟨ψ, hψ⟩` from `(hH _).1 (H.inv_mem y.2)`. Establish `hx : x = (x : T ⧸ H).out * t ψ` using `by rw [hy, hψ, mul_inv_cancel_right]`. Rewrite using `[hx, ← hϕ, ← hϕ, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isLocalizedModule_pi {R K C T : Type} [CommRing R] [CommRing K] [Algebra R K] [CommRing C] [Algebra R C]
     [CommGroup T] [Finite T] (r : R) (hr : IsUnit (algebraMap R C r)) (t : (C →ₐ[R] K) → T) (H : Subgroup T)
@@ -111,17 +109,15 @@ theorem exists_isLocalizedModule_pi {R K C T : Type} [CommRing R] [CommRing K] [
     rw [hx, ← hϕ, ← hϕ, h]
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG N hN q c hc`. Establish `hsep` using `(GlobalTheory.T.torsion_prechart_points_separate R K G hG N hN q c).2`. Establish `hext` using `GlobalTheory.T.prechart_translate_order R K G hG N hN q c hc`. Use `haveI : Finite (Tors G N K) := GlobalTheory.T.torsion_finite_semiabelian_over_alg_closed R K G hG N hN`. Establish `hr0 : c.r ≠ 0` using `fun h => c.hr (h ▸ q.asIdeal.zero_mem)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrK : IsUnit (algebraMap R K c.r)` using `isUnit_iff_ne_zero.2 fun h => hr0 (IsFractionRing.injective R K (by rw [h, map_zero]))`. Establish `hr : IsUnit (algebraMap R c.C c.r)`. Rewrite using `[IsScalarTower.algebraMap_apply R (Localization.Away c.r) c.C]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit c.r).map _`. Set `H₀ : Submonoid (Tors G N K)` to `{ carrier := {x | ∃ ψ : c.C →ₐ[R] K, torsMap ψ c.j = x} mul_mem' := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ _ ⟨ψ, rfl⟩ ⟨ψ', rfl⟩`. Conclude with `hc.2 K ψ ψ'`. Use the proof step `one_mem' := by`. Take `⟨ψ, hψ⟩` from `hc.1`. Set `l : Localization.Away c.r →ₐ[R] K` to `{ IsLocalization.Away.lift c.r hrK with commutes' := IsLocalization.Away.lift_eq c.r hrK }`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `⟨l.comp ψ, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h1 : spOver ψ ≫ c.j.1 = 1` using `congrArg Subtype.val hψ`. Rewrite using `[torsMap_val, ← spOver_comp, Category.assoc, h1, tors_one_val, MonObj.comp_one] }`. Set `H : Subgroup (Tors G N K)` to `{ H₀ with inv_mem' := fun {x} hx => by`. Establish `h1 : x⁻¹ = x ^ (orderOf x - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hp : 0 < orderOf x` using `orderOf_pos x`. Rewrite using `[inv_eq_iff_mul_eq_one, ← pow_succ', Nat.sub_add_cancel hp, pow_orderOf_eq_one]`. Use `show x⁻¹ ∈ H₀`. Rewrite using `[h1]`. Conclude with `H₀.pow_mem hx _ }`.
-
-Take `⟨ϕ, hϕ⟩` from `exists_isLocalizedModule_pi c.r hr (fun ψ : c.C →ₐ[R] K => torsMap ψ c.j) H (fun _ => Iff.rfl) (ord G N K) hsep (fun f hf s => by`. Take `⟨σ, hσ, hσf⟩` from `hf s`. Conclude with `⟨σ c.C c.j, fun ψ => by rw [← hσ, hσf]⟩) hext`. Conclude with `⟨Tors G N K ⧸ H → c.C, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, ϕ, hϕ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ord_isLocalizedModule : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 → ∀ (q : PrimeSpectrum R) (c : PreChart G N q), c.IsGrp → ∃ (F : Type) (_ : AddCommGroup F) (_ : Module R F) (_ : Module (Localization.Away c.r) F) (_ : IsScalarTower R (Localization.Away c.r) F) (_ : Module.Finite (Localization.Away c.r) F) (_ : Module.Free (Localization.Away c.r) F) (ϕ : ord G N K →ₗ[R] F), IsLocalizedModule (Submonoid.powers c.r) ϕ := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG N hN q c hc

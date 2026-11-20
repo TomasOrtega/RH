@@ -26,9 +26,9 @@ private theorem support_comap_subset_preimage {X X₁ : Scheme.{u}} (π : X₁ �
   simp
 
 /- English proof (translation)
-Use `subset_trans ?_ (support_comap_subset_preimage π D)` and prove the remaining obligations. Introduce `x hx`. Establish `h1 : stalkIdeal (Blowup.strictTransform π Z D) x ≠ ⊤` using `(mem_support_iff_stalkIdeal_ne_top (Blowup.strictTransform π Z D) x).mp hx`. Establish `h2 : stalkIdeal (D.comap π) x ≤ stalkIdeal (Blowup.strictTransform π Z D) x` using `stalkIdeal_mono (comap_le_strictTransform π Z D) x`. Establish `h3 : stalkIdeal (D.comap π) x ≠ ⊤`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `htop`. Rewrite `h2` using `[htop, top_le_iff]`. Conclude with `h1 h2`. Conclude with `(mem_support_iff_stalkIdeal_ne_top (D.comap π) x).mpr h3`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem support_strictTransform_subset_preimage {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) :
@@ -51,7 +51,7 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of
 
 @[simp]
 /- English proof (translation)
-The claim follows from `c.restrict_map hVU`.
+A detailed English derivation is pending.
 -/
 theorem EtaleChart.map_restrict {U : X.Opens} {n : ℕ} (c : EtaleChart p U n)
     {V : X.Opens} (hVU : V ≤ U) :
@@ -59,7 +59,7 @@ theorem EtaleChart.map_restrict {U : X.Opens} {n : ℕ} (c : EtaleChart p U n)
   c.restrict_map hVU
 
 /- English proof (translation)
-Rewrite using `[EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, c.restrict_map hVU]`. Simplify using `only [Scheme.IdealSheafData.comap_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem EtaleChart.coordIdeal_restrict {U : X.Opens} {n : ℕ} (c : EtaleChart p U n)
     {V : X.Opens} (hVU : V ≤ U) (S : Finset (Fin n)) :
@@ -68,11 +68,11 @@ theorem EtaleChart.coordIdeal_restrict {U : X.Opens} {n : ℕ} (c : EtaleChart p
   simp only [Scheme.IdealSheafData.comap_comp]
 
 /- English proof (translation)
-Introduce `L₁`. Proceed by induction on `L₁ with`. Consider the case `nil => intro i`. Simplify using the standard rewrite rules. Consider the case `cons b L ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `i`. Establish `hlen : (b :: L).length + i = (L.length + i) + 1`. Simplify using `only [List.length_cons]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[List.cons_append, hlen, List.getElem?_cons_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ih i`.
+A detailed English derivation is pending.
 -/
 private theorem getElemOpt_append_length_add.{v} {α : Type v} (L₂ : List α) :
     ∀ (L₁ : List α) (i : ℕ), (L₁ ++ L₂)[L₁.length + i]? = L₂[i]? := by
@@ -87,7 +87,7 @@ private theorem getElemOpt_append_length_add.{v} {α : Type v} (L₂ : List α) 
       exact ih i
 
 /- English proof (translation)
-Establish `h1` using `getElemOpt_append_length_add L₂ L₁ i`. Rewrite `h1` using `[List.getElem?_eq_getElem hi', List.getElem?_eq_getElem hi]`. Conclude with `Option.some.inj h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem getElem_append_length_add.{v} {α : Type v} (L₁ L₂ : List α) (i : ℕ)
     (hi : i < L₂.length) (hi' : L₁.length + i < (L₁ ++ L₂).length) :
@@ -97,15 +97,15 @@ private theorem getElem_append_length_add.{v} {α : Type v} (L₁ L₂ : List α
   exact Option.some.inj h1
 
 /- English proof (translation)
-Use `hasStrictNormalCrossingsWith_of_forall_exists_etaleChart ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨U, hxU, m, c, a, S, hinj, hnone, hsome, hZ⟩` from `h.exists_etaleChart hx`. Use `⟨U, hxU, m, c, fun i => a (L₁.length + i), S, ?_, ?_, ?_, hZ⟩` and prove the remaining obligations. Introduce `i hi j hj t hti htj`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi' : L₁.length + i < (L₁ ++ L₂).length`. Rewrite using `[List.length_append]`. Use linear arithmetic over natural numbers and integers. Establish `hj' : L₁.length + j < (L₁ ++ L₂).length`. Rewrite using `[List.length_append]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `heq` using `hinj _ hi' _ hj' t hti htj`. Use linear arithmetic over natural numbers and integers. Introduce `i hi hni`. Establish `hi' : L₁.length + i < (L₁ ++ L₂).length`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[List.length_append]`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `hnone _ hi' hni`. Rewrite `h2` using `[getElem_append_length_add L₁ L₂ i hi hi']`. Then use the resulting hypothesis. Introduce `i hi t hti`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi' : L₁.length + i < (L₁ ++ L₂).length`. Rewrite using `[List.length_append]`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `hsome _ hi' t hti`. Rewrite `h2` using `[getElem_append_length_add L₁ L₂ i hi hi']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem HasStrictNormalCrossingsWith.of_append {Z : X.IdealSheafData} {L₁ L₂ : List X.IdealSheafData}
     (h : HasStrictNormalCrossingsWith p Z (L₁ ++ L₂)) : HasStrictNormalCrossingsWith p Z L₂ := by
@@ -132,29 +132,27 @@ theorem HasStrictNormalCrossingsWith.of_append {Z : X.IdealSheafData} {L₁ L₂
     rwa [getElem_append_length_add L₁ L₂ i hi hi'] at h2
 
 /- English proof (translation)
-Use `hasStrictNormalCrossingsWith_of_forall_exists_etaleChart ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨U, hxU, m, c, a, S, hinj, hnone, hsome, hZU⟩` from `h.exists_etaleChart hx`. Establish `hxD : x ∉ (D.support : Set ↥X)`. Introduce `hxD`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : x ∈ (D.support : Set ↥X) ∩ (Z.support : Set ↥X)` using `⟨hxD, hx⟩`. Rewrite `hmem` using `[hD]`. Conclude with `hmem`. Choose the witnesses or unpack the hypotheses as in `⟨V, hVU, hxV, hVD⟩ : ∃ V : X.Opens, V ≤ U ∧ x ∈ V ∧ ∀ y : ↥X, y ∈ V → y ∉ D.support := by`. Use `⟨⟨(U : Set ↥X) ∩ ((D.support : Set ↥X))ᶜ, U.2.inter D.support.2.isOpen_compl⟩, ?_, ⟨hxU, hxD⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Conclude with `hy.1`. Introduce `y hy`. Conclude with `hy.2`. Use `⟨V, hxV, m, c.restrict hVU, fun i => if i = 0 then none else a (i - 1), S, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Introduce `i hi j hj t hti htj`. Consider the cases of `i with`. Consider the case `zero => simp at hti`. Consider the case `succ i'`. Consider the cases of `j with`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp at htj`. Consider the case `succ j'`. Establish `hi' : i' < M.length`. Simplify using `only [List.length_cons] at hi`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hj' : j' < M.length`. Simplify using `only [List.length_cons] at hj`. Use linear arithmetic over natural numbers and integers. Establish `hti' : a i' = some t` using `by simpa using hti`. Establish `htj' : a j' = some t` using `by simpa using htj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `heq` using `hinj i' hi' j' hj' t hti' htj'`. Use linear arithmetic over natural numbers and integers. Introduce `i hi hni`. Consider the cases of `i with`. Consider the case `zero`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Use `(restrictIdeal_eq_top_iff_forall_notMem_support _ V).mpr ?_` and prove the remaining obligations. Introduce `y hy`. Conclude with `hVD y hy`. Consider the case `succ i'`. Establish `hi' : i' < M.length`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [List.length_cons] at hi`. Use linear arithmetic over natural numbers and integers. Establish `ha : a i' = none` using `by simpa using hni`. Establish `key : restrictIdeal (M[i']'hi') U = ⊤` using `hnone i' hi' ha`. Use `show restrictIdeal (M[i']'hi') V = ⊤`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Rewrite using `[restrictIdeal_eq_comap_homOfLE_restrictIdeal _ hVU, key]`. Simplify using the standard rewrite rules. Introduce `i hi t hti`. Consider the cases of `i with`. Consider the case `zero => simp at hti`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Consider the case `succ i'`. Establish `hi' : i' < M.length`. Simplify using `only [List.length_cons] at hi`. Use linear arithmetic over natural numbers and integers. Establish `ha : a i' = some t` using `by simpa using hti`.
-
-Establish `key : restrictIdeal (M[i']'hi') U = c.coordIdeal {t}` using `hsome i' hi' t ha`. Use `show restrictIdeal (M[i']'hi') V = (c.restrict hVU).coordIdeal {t}`. Rewrite using `[restrictIdeal_eq_comap_homOfLE_restrictIdeal _ hVU, key, EtaleChart.coordIdeal_restrict]`. Rewrite using `[restrictIdeal_eq_comap_homOfLE_restrictIdeal _ hVU, hZU, EtaleChart.coordIdeal_restrict]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hasStrictNormalCrossingsWith_cons_of_disjoint_support {Z : X.IdealSheafData}
     {M : List X.IdealSheafData} (h : HasStrictNormalCrossingsWith p Z M) {D : X.IdealSheafData}
@@ -224,9 +222,9 @@ private theorem hasStrictNormalCrossingsWith_cons_of_disjoint_support {Z : X.Ide
   · rw [restrictIdeal_eq_comap_homOfLE_restrictIdeal _ hVU, hZU, EtaleChart.coordIdeal_restrict]
 
 /- English proof (translation)
-Use `revert hL`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `_`. Conclude with `h`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `cons D L ih`. Introduce `hL`. Conclude with `hasStrictNormalCrossingsWith_cons_of_disjoint_support (ih fun E hE => hL E (List.mem_cons.mpr (Or.inr hE))) (hL D (List.mem_cons.mpr (Or.inl rfl)))`.
+A detailed English derivation is pending.
 -/
 theorem HasStrictNormalCrossingsWith.append_of_support_disjoint {Z : X.IdealSheafData} {N : List X.IdealSheafData}
     (h : HasStrictNormalCrossingsWith p Z N) {L : List X.IdealSheafData}
@@ -251,11 +249,11 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of
   {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
 
 /- English proof (translation)
-Use `revert ht`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `_`. Simplify using `[u.boundary_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ j ih`. Introduce `ht`. Establish `hj : j < u.length` using `ht`. Rewrite using `[u.boundary_succ j hj, List.length_append, List.length_map, ih (le_of_lt hj)]`. Simplify using `only [List.length_cons, List.length_nil]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem boundary_length (u : MarkedBlowupSequenceData p I m E) (t : ℕ) (ht : t ≤ u.length) :
     (u.boundary t).length = E.length + t := by
@@ -272,7 +270,7 @@ theorem boundary_length (u : MarkedBlowupSequenceData p I m E) (t : ℕ) (ht : t
       omega
 
 /- English proof (translation)
-Rewrite using `[u.boundary_length t ht]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem index_lt_boundary_length (u : MarkedBlowupSequenceData p I m E) {t : ℕ} (ht : t ≤ u.length)
     {i : ℕ} (hi : i < E.length) : i < (u.boundary t).length := by
@@ -280,7 +278,7 @@ theorem index_lt_boundary_length (u : MarkedBlowupSequenceData p I m E) {t : ℕ
   omega
 
 /- English proof (translation)
-Establish `hlen : n ≤ ((u.boundary t).map (Blowup.strictTransform (u.map t) (u.center t))).length`. Rewrite using `[List.length_map]`. Conclude with `hn`. Rewrite using `[u.boundary_succ t ht, List.drop_append_of_le_length hlen, ← List.map_drop]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boundary_succ_drop (u : MarkedBlowupSequenceData p I m E) {t : ℕ} (ht : t < u.length)
     (n : ℕ) (hn : n ≤ (u.boundary t).length) :
@@ -293,15 +291,15 @@ theorem boundary_succ_drop (u : MarkedBlowupSequenceData p I m E) {t : ℕ} (ht 
   rw [u.boundary_succ t ht, List.drop_append_of_le_length hlen, ← List.map_drop]
 
 /- English proof (translation)
-Establish `hlocNoeth : IsLocallyNoetherian (u.obj (t + 1))` using `hN (t + 1) ht`. Introduce `x hx`. Take `⟨D, hD, hxD0⟩` from `Set.mem_iUnion₂.mp (Set.mem_preimage.mp hx)`. Establish `hxD : ⇑(u.map t) x ∈ ((D.support : Set ↥(u.obj t)))` using `hxD0`. Distinguish the cases in `hc : ⇑(u.map t) x ∈ ((u.center t).support : Set ↥(u.obj t))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hmem : Blowup.exceptionalIdeal (u.map t) (u.center t) ∈ u.boundary (t + 1)`. Rewrite using `[u.boundary_succ t ht, List.mem_append]`. Conclude with `Or.inr (List.mem_singleton_self _)`. Establish `h2 : x ∈ ((Blowup.exceptionalIdeal (u.map t) (u.center t)).support : Set ↥(u.obj (t + 1)))`. Rewrite using `[Blowup.exceptionalIdeal_eq_comap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the second alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hEq : ((((u.center t).comap (u.map t)).support) : Set ↥(u.obj (t + 1))) = ⇑(u.map t) ⁻¹' ((u.center t).support : Set ↥(u.obj t))`. Simplify using the standard rewrite rules. Rewrite using `[hEq]`. Conclude with `hc`. Conclude with `Set.mem_iUnion₂.mpr ⟨_, hmem, h2⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : Blowup.strictTransform (u.map t) (u.center t) D ∈ u.boundary (t + 1)`. Rewrite using `[u.boundary_succ t ht, List.mem_append]`. Use `Or.inl ?_` and prove the remaining obligations. Rewrite using `[List.mem_map]`. Conclude with `⟨D, hD, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : x ∈ ((Blowup.strictTransform (u.map t) (u.center t) D).support : Set ↥(u.obj (t + 1)))`. Rewrite using `[support_strictTransform_eq_closure_preimage (u.map t) (u.center t) D]`. Conclude with `subset_closure (Set.mem_preimage.mpr (Set.mem_sdiff_of_mem hxD hc))`. Conclude with `Set.mem_iUnion₂.mpr ⟨_, hmem, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem preimage_iUnion_support_boundary_subset (u : MarkedBlowupSequenceData p I m E)
     (hN : ∀ i ≤ u.length, IsLocallyNoetherian (u.obj i)) {t : ℕ} (ht : t < u.length) :
@@ -334,7 +332,7 @@ theorem preimage_iUnion_support_boundary_subset (u : MarkedBlowupSequenceData p 
     exact Set.mem_iUnion₂.mpr ⟨_, hmem, h2⟩
 
 /- English proof (translation)
-Rewrite `e` using `[Blowup.exceptionalIdeal_eq_comap]`. Conclude with `eq_of_isLocallyGeneratedByNonZeroDivisor_pow_mul_eq_mul h.1 n e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_of_exceptionalIdeal_pow_mul_eq_mul {Y Y' : Scheme.{u}} {π : Y' ⟶ Y}
     {Z : Y.IdealSheafData} (h : Blowup.IsBlowupAlongIdealSheaf π Z) (n : ℕ) {A B : Y'.IdealSheafData}
@@ -343,7 +341,7 @@ private theorem eq_of_exceptionalIdeal_pow_mul_eq_mul {Y Y' : Scheme.{u}} {π : 
   exact eq_of_isLocallyGeneratedByNonZeroDivisor_pow_mul_eq_mul h.1 n e
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => rw [u.proj_zero, BlowupSequenceData.projectionToBase_zero]`. Consider the case `succ j ih => rw [u.proj_succ j, BlowupSequenceData.projectionToBase_succ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem projectionToBase_eq_projectionToBase_toBlowupSequenceData (u : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     u.proj i = u.toBlowupSequenceData.projectionToBase i := by
@@ -352,9 +350,9 @@ private theorem projectionToBase_eq_projectionToBase_toBlowupSequenceData (u : M
   | succ j ih => rw [u.proj_succ j, BlowupSequenceData.projectionToBase_succ, ih]
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Rewrite using `[BlowupSequenceData.boundary_zero, u.boundary_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ j ih`. Introduce `hj`. Establish `hjlt : j < u.length` using `hj`. Rewrite using `[BlowupSequenceData.boundary_succ, ih (le_of_lt hjlt), u.boundary_succ j hjlt]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem toBlowupSequenceData_boundary_eq_boundary (u : MarkedBlowupSequenceData p I m E) :
     ∀ i, i ≤ u.length → u.toBlowupSequenceData.boundaryFrom E i = u.boundary i := by
@@ -369,13 +367,13 @@ private theorem toBlowupSequenceData_boundary_eq_boundary (u : MarkedBlowupSeque
       rw [BlowupSequenceData.boundary_succ, ih (le_of_lt hjlt), u.boundary_succ j hjlt]
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Rewrite using `[BlowupSequenceData.controlledTransform_zero, u.ideal_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ j ih`. Introduce `hj`. Establish `hjlt : j < u.length` using `hj`. Establish `hIH : u.toBlowupSequenceData.controlledTransform I m j = u.ideal j` using `ih (le_of_lt hjlt)`. Establish `hex : ∃ B : (u.obj (j + 1)).IdealSheafData, Blowup.exceptionalIdeal (u.map j) (u.center j) ^ m * B = (u.toBlowupSequenceData.controlledTransform I m j).comap (u.map j)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨u.ideal (j + 1), ?_⟩` and prove the remaining obligations. Rewrite using `[hIH]`. Conclude with `u.ideal_succ j hjlt`. Establish `key` using `u.toBlowupSequenceData.pow_exceptionalIdeal_mul_controlledTransform_succ I m j hex`. Use `eq_of_exceptionalIdeal_pow_mul_eq_mul (u.isBlowup j hjlt) m ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, hIH]`. Conclude with `(u.ideal_succ j hjlt).symm`.
+A detailed English derivation is pending.
 -/
 private theorem toBlowupSequenceData_controlledTransform_eq_ideal (u : MarkedBlowupSequenceData p I m E) :
     ∀ i, i ≤ u.length → u.toBlowupSequenceData.controlledTransform I m i = u.ideal i := by
@@ -400,11 +398,11 @@ private theorem toBlowupSequenceData_controlledTransform_eq_ideal (u : MarkedBlo
       exact (u.ideal_succ j hjlt).symm
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Use `⟨u.ideal (i + 1), ?_⟩` and prove the remaining obligations. Rewrite using `[toBlowupSequenceData_controlledTransform_eq_ideal u i (le_of_lt hi)]`. Conclude with `u.ideal_succ i hi`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Rewrite using `[toBlowupSequenceData_controlledTransform_eq_ideal u i (le_of_lt hi)]`. Conclude with `u.center_order i hi`. Introduce `i hi`. Establish `h` using `u.center_smooth i hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[projectionToBase_eq_projectionToBase_toBlowupSequenceData u i]`. Then use the resulting hypothesis. Introduce `i hi`. Establish `h` using `u.center_snc i hi`. Rewrite `h` using `[projectionToBase_eq_projectionToBase_toBlowupSequenceData u i, ← toBlowupSequenceData_boundary_eq_boundary u i (le_of_lt hi)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isMarked (u : MarkedBlowupSequenceData p I m E) : u.toBlowupSequenceData.IsMarked p I m E := by
   refine ⟨?_, ?_, ?_, ?_⟩
@@ -423,11 +421,11 @@ theorem isMarked (u : MarkedBlowupSequenceData p I m E) : u.toBlowupSequenceData
     rwa [projectionToBase_eq_projectionToBase_toBlowupSequenceData u i, ← toBlowupSequenceData_boundary_eq_boundary u i (le_of_lt hi)] at h
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `i hi`. Simplify using `at hi`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `cons a L ih`. Introduce `i hi`. Consider the cases of `i with`. Consider the case `zero => simp`. Consider the case `succ j`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `hj : j < L.length`. Simplify using `only [List.length_cons] at hi`. Use linear arithmetic over natural numbers and integers. Simplify using `only [List.map_cons, List.cons_append, List.getElem?_cons_succ]`. Conclude with `ih j hj`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem getElemOpt_map_append.{v, w} {α : Type v} {β : Type w} (f : α → β) (T : List β) :
     ∀ (L : List α) (i : ℕ), i < L.length → (List.map f L ++ T)[i]? = Option.map f (L[i]?) := by
@@ -448,7 +446,7 @@ private theorem getElemOpt_map_append.{v, w} {α : Type v} {β : Type w} (f : α
           exact ih j hj
 
 /- English proof (translation)
-Establish `h` using `getElemOpt_map_append f T L i hi`. Rewrite `h` using `[List.getElem?_eq_getElem hi', List.getElem?_eq_getElem hi]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem getElem_map_append.{v, w} {α : Type v} {β : Type w} (f : α → β)
     (L : List α) (T : List β) (i : ℕ) (hi : i < L.length)
@@ -459,15 +457,15 @@ private theorem getElem_map_append.{v, w} {α : Type v} {β : Type w} (f : α �
   simpa using h
 
 /- English proof (translation)
-Introduce `t hrt`. Proceed by induction on `t, hrt using Nat.le_induction with`. Consider the case `base`. Introduce `ht`. Conclude with `hsep`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ t hrt ih`. Introduce `ht`. Establish `htlt : t < u.length` using `ht`. Establish `ihy` using `ih (le_of_lt htlt)`. Establish `hxl : i < (u.boundary t).length` using `u.index_lt_boundary_length (le_of_lt htlt) hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlen2 : i < (List.map (Blowup.strictTransform (u.map t) (u.center t)) (u.boundary t) ++ [Blowup.exceptionalIdeal (u.map t) (u.center t)]).length`. Rewrite using `[List.length_append, List.length_map]`. Use linear arithmetic over natural numbers and integers. Establish `hbeq : (u.boundary (t + 1))[i]'(u.index_lt_boundary_length ht hi) = Blowup.strictTransform (u.map t) (u.center t) ((u.boundary t)[i]'hxl)`. Use `Eq.trans (List.getElem_of_eq (u.boundary_succ t htlt) (u.index_lt_boundary_length ht hi)) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `getElem_map_append (Blowup.strictTransform (u.map t) (u.center t)) (u.boundary t) [Blowup.exceptionalIdeal (u.map t) (u.center t)] i hxl hlen2`. Use `Set.eq_empty_of_subset_empty ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hx1, hx2⟩`. Rewrite `hx2` using `[hbeq]`. Establish `hx1' : ⇑(u.map t) x ∈ orderAtLeastLocus (u.ideal t) m` using `Set.mem_preimage.mp (hdesc t htlt hx1)`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2' : ⇑(u.map t) x ∈ ((((u.boundary t)[i]'hxl).support : Set ↥(u.obj t)))` using `Set.mem_preimage.mp (support_strictTransform_subset_preimage (u.map t) (u.center t) ((u.boundary t)[i]'hxl) hx2)`. Establish `hfalse : (⇑(u.map t) x) ∈ (∅ : Set ↥(u.obj t))`. Rewrite using `[← ihy]`. Conclude with `Set.mem_inter hx1' hx2'`. Simplify using `at hfalse`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orderAtLeastLocus_disjoint_boundary_of_le (u : MarkedBlowupSequenceData p I m E)
     (hdesc : ∀ t < u.length,

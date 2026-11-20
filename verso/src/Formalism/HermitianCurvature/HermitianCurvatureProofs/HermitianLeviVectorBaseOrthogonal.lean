@@ -31,7 +31,7 @@ Both sides reduce to the same expression.
 lemma dual_base_vector_eq_single : es0 k r' = Pi.single (iL k r') 1 := rfl
 
 /- English proof (translation)
-Simplify using `only [Hpk, iF, iL, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (exfalso; simp only [Fin.val_mk] at *; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Hpk_first (j : Fin (2 * (1 + r') + k + 1)) :
     Hpk k (1 + r') (iF k r') j = if j = iL k r' then 1 else 0 := by
@@ -39,7 +39,7 @@ lemma Hpk_first (j : Fin (2 * (1 + r') + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega) | (exfalso; simp only [Fin.val_mk] at *; omega)
 
 /- English proof (translation)
-Simplify using `only [Hpk, iF, iL, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (exfalso; simp only [Fin.val_mk] at *; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Hpk_last (i : Fin (2 * (1 + r') + k + 1)) :
     Hpk k (1 + r') i (iL k r') = if i = iF k r' then 1 else 0 := by
@@ -47,7 +47,7 @@ lemma Hpk_last (i : Fin (2 * (1 + r') + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega) | (exfalso; simp only [Fin.val_mk] at *; omega)
 
 /- English proof (translation)
-Use extensionality with `j`. Distinguish the cases in `h : j = p`. Substitute `h` using the available equality. Simplify using `[bvec]`. Simplify using `[bvec, Pi.single_apply, h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma star_bvec' {m : ℕ} (p : Fin m) : star (bvec p) = bvec p := by
   ext j
@@ -56,7 +56,7 @@ private lemma star_bvec' {m : ℕ} (p : Fin m) : star (bvec p) = bvec p := by
   · simp [bvec, Pi.single_apply, h]
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[star_bvec']`. Simplify using `[bvec, dotProduct, Pi.single_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma herm_bvec_right_eq_mulVec_apply {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (u : Fin m → ℂ) (p : Fin m) :
     herm H u (bvec p) = (H *ᵥ u) p := by
@@ -65,21 +65,21 @@ private lemma herm_bvec_right_eq_mulVec_apply {m : ℕ} (H : Matrix (Fin m) (Fin
   simp [bvec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[show e0 k r' = bvec (iF k r') from rfl, herm_bvec_right_eq_mulVec_apply]`. Simplify using `[mulVec, dotProduct, Hpk_first]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma hermitian_form_base_vector_right (u : Fin (2 * (1 + r') + k + 1) → ℂ) : herm (Hpk k (1 + r')) u (e0 k r') = u (iL k r') := by
   rw [show e0 k r' = bvec (iF k r') from rfl, herm_bvec_right_eq_mulVec_apply]
   simp [mulVec, dotProduct, Hpk_first]
 
 /- English proof (translation)
-Rewrite using `[dual_base_vector_eq_single]`. Simplify using `[herm, dotProduct, mulVec, Pi.single_apply, Hpk_last]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma hermitian_dual_base_vector_left (v : Fin (2 * (1 + r') + k + 1) → ℂ) : herm (Hpk k (1 + r')) (es0 k r') v = star (v (iF k r')) := by
   rw [dual_base_vector_eq_single]
   simp [herm, dotProduct, mulVec, Pi.single_apply, Hpk_last]
 
 /- English proof (translation)
-Unfold `liftVec`. Rewrite using `[dif_neg]`. Simplify using `only [iF, Fin.val_mk]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma liftVec_first (y : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' y (iF k r') = 0 := by
   unfold liftVec
@@ -88,7 +88,7 @@ lemma liftVec_first (y : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' y (iF k 
   omega
 
 /- English proof (translation)
-Unfold `liftVec`. Rewrite using `[dif_neg]`. Simplify using `only [iL, Fin.val_mk]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma liftVec_last (y : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' y (iL k r') = 0 := by
   unfold liftVec
@@ -97,7 +97,7 @@ lemma liftVec_last (y : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' y (iL k r
   omega
 
 /- English proof (translation)
-Establish `hj` using `j.isLt`. Unfold `liftVec`. Rewrite using `[dif_pos (show 1 ≤ (levPos k 1 r' j).val ∧ (levPos k 1 r' j).val < 2 * r' + k + 1 + 1 from ⟨show 1 ≤ j.val + 1 by omega, show j.val + 1 < 2 * r' + k + 1 + 1 by omega⟩)]`. Use `congr 1`. Apply the tactic sequence `all_goals exact Fin.ext (show j.val + 1 - 1 = j.val by omega)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma liftVec_mid (y : Fin (2 * r' + k + 1) → ℂ) (j : Fin (2 * r' + k + 1)) :
     liftVec k 1 r' y (levPos k 1 r' j) = y j := by
@@ -109,7 +109,7 @@ lemma liftVec_mid (y : Fin (2 * r' + k + 1) → ℂ) (j : Fin (2 * r' + k + 1)) 
   all_goals exact Fin.ext (show j.val + 1 - 1 = j.val by omega)
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : j.val + 1 = 0` using `congrArg Fin.val h`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma levPos_ne_first (j : Fin (2 * r' + k + 1)) : levPos k 1 r' j ≠ iF k r' := by
   intro h
@@ -117,7 +117,7 @@ lemma levPos_ne_first (j : Fin (2 * r' + k + 1)) : levPos k 1 r' j ≠ iF k r' :
   omega
 
 /- English proof (translation)
-Introduce `h`. Establish `hj` using `j.isLt`. Establish `h2 : j.val + 1 = 2 * (1 + r') + k` using `congrArg Fin.val h`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma levPos_ne_last (j : Fin (2 * r' + k + 1)) : levPos k 1 r' j ≠ iL k r' := by
   intro h
@@ -126,7 +126,7 @@ lemma levPos_ne_last (j : Fin (2 * r' + k + 1)) : levPos k 1 r' j ≠ iL k r' :=
   omega
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : (0 : ℕ) = 2 * (1 + r') + k` using `congrArg Fin.val h`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma first_ne_last : iF k r' ≠ iL k r' := by
   intro h
@@ -140,23 +140,23 @@ def eta (k r' : ℕ) (v : Fin (2 * (1 + r') + k + 1) → ℂ) : ℂ × HPar k r'
   (v (iL k r'), (fun j => v (levPos k 1 r' j) / v (iL k r'), (v (iF k r') / v (iL k r')).im))
 
 /- English proof (translation)
-Simplify using `[xi, dual_base_vector_eq_single, e0_eq, liftVec_last, Pi.single_apply, (first_ne_last (k := k) (r' := r')).symm]`.
+Simplify using the standard rewrite rules.
 -/
 lemma xi_last (p : ℂ × HPar k r') : xi k r' p (iL k r') = p.1 := by
   simp [xi, dual_base_vector_eq_single, e0_eq, liftVec_last, Pi.single_apply, (first_ne_last (k := k) (r' := r')).symm]
 
 /- English proof (translation)
-Simplify using `[hb]`.
+Simplify using the standard rewrite rules.
 -/
 lemma hb_im (y : Fin (2 * r' + k + 1) → ℂ) (s : ℝ) : (hb k r' y s).im = s := by
   simp [hb]
 
 /- English proof (translation)
-Take `⟨c, y, s⟩` from `p`. Simplify using `only at hc`. Establish `hL : xi k r' (c, y, s) (iL k r') = c` using `xi_last _`. Establish `hM : ∀ j, xi k r' (c, y, s) (levPos k 1 r' j) = c * y j`. Introduce `j`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[xi, dual_base_vector_eq_single, e0_eq, liftVec_mid, Pi.single_apply, levPos_ne_first, levPos_ne_last]`. Establish `hF : xi k r' (c, y, s) (iF k r') = c * hb k r' y s`. Simplify using `[xi, dual_base_vector_eq_single, e0_eq, liftVec_first, Pi.single_apply, first_ne_last]`. Simplify using `only [eta, hL, hM, hF]`. Use `Prod.ext rfl (Prod.ext ?_ ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `j show c * y j / c = y j`. Rewrite using `[mul_comm, mul_div_assoc, div_self hc, mul_one]`. Use `show (c * hb k r' y s / c).im = s`. Rewrite using `[mul_comm, mul_div_assoc, div_self hc, mul_one, hb_im]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eta_xi (p : ℂ × HPar k r') (hc : p.1 ≠ 0) : eta k r' (xi k r' p) = p := by
   obtain ⟨c, y, s⟩ := p
@@ -176,7 +176,7 @@ lemma eta_xi (p : ℂ × HPar k r') (hc : p.1 ≠ 0) : eta k r' (xi k r' p) = p 
     rw [mul_comm, mul_div_assoc, div_self hc, mul_one, hb_im]
 
 /- English proof (translation)
-Unfold `heis0`. Rewrite using `[HA k r', hermitian_dual_base_vector_left, hermitian_dual_base_vector_left, liftVec_first]`. Establish `he : e0 k r' (iF k r') = 1` using `by rw [e0_eq]; exact Pi.single_eq_same _ _`. Rewrite using `[he]`. Simplify using `only [star_zero, zero_smul, sub_zero, star_one, one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -190,11 +190,9 @@ lemma heisenberg_dual_base_vector_formula (HA : HeisAct) (x : HPar k r') :
   abel
 
 /- English proof (translation)
-Establish `h0 : (iF k r').val = 0` using `rfl`. Use `show (if i.val = 0 ∧ (iF k r').val = 2 * (1 + r') + k then (star c)⁻¹ else if i.val = 2 * (1 + r') + k ∧ (iF k r').val = 0 then c else if i = iF k r' ∧ 0 < i.val ∧ i.val < 2 * (1 + r') + k then (1 : ℂ) else 0) = _`. Establish `h3 : ¬ (i = iF k r' ∧ 0 < i.val ∧ i.val < 2 * (1 + r') + k)`. Introduce and unpack `⟨h1, h2, -⟩`. Rewrite `h2` using `[h1, h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `lt_irrefl 0 h2`. Distinguish the cases in `h : i = iL k r'`. Establish `hi : i.val = 2 * (1 + r') + k` using `by rw [h]; rfl`. Rewrite using `[if_neg (by omega), if_pos ⟨hi, h0⟩, if_pos h]`. Establish `hi : i.val ≠ 2 * (1 + r') + k` using `fun h' => h (Fin.ext h')`.
-
-Rewrite using `[if_neg (by omega), if_neg (by omega), if_neg h3, if_neg h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma w0_apply_iF_col (c : ℂ) (i : Fin (2 * (1 + r') + k + 1)) :
     w0 k r' c i (iF k r') = if i = iL k r' then c else 0 := by
@@ -213,9 +211,9 @@ private lemma w0_apply_iF_col (c : ℂ) (i : Fin (2 * (1 + r') + k + 1)) :
     rw [if_neg (by omega), if_neg (by omega), if_neg h3, if_neg h]
 
 /- English proof (translation)
-Rewrite using `[e0_eq, dual_base_vector_eq_single]`. Use extensionality with `i`. Establish `hcol : (w0 k r' c *ᵥ Pi.single (iF k r') 1) i = w0 k r' c i (iF k r')`. Simplify using `only [mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[hcol, w0_apply_iF_col, Pi.smul_apply, Pi.single_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma long_weyl_sends_base_to_dual (c : ℂ) : w0 k r' c *ᵥ e0 k r' = c • es0 k r' := by
   rw [e0_eq, dual_base_vector_eq_single]
@@ -229,7 +227,7 @@ lemma long_weyl_sends_base_to_dual (c : ℂ) : w0 k r' c *ᵥ e0 k r' = c • es
 def tau (k r' : ℕ) (p : ℂ × HPar k r') : Mt k (1 + r') := heis0 k r' p.2 * w0 k r' p.1
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(heis0 k r' p.2 * w0 k r' p.1) *ᵥ e0 k r' = xi k r' p`. Rewrite using `[← mulVec_mulVec, long_weyl_sends_base_to_dual, mulVec_smul, heisenberg_dual_base_vector_formula HA]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma parametrisation_base_vector_image (HA : HeisAct) (p : ℂ × HPar k r') : (Matrix.of (tau k r' p) : Mat k (1 + r')) *ᵥ e0 k r' = xi k r' p := by
   change (heis0 k r' p.2 * w0 k r' p.1) *ᵥ e0 k r' = xi k r' p
@@ -237,21 +235,21 @@ lemma parametrisation_base_vector_image (HA : HeisAct) (p : ℂ × HPar k r') : 
   rfl
 
 /- English proof (translation)
-Use extensionality with `p`. Simplify using `[liftVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma liftVec_zero : liftVec k 1 r' 0 = 0 := by
   ext p
   simp [liftVec]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[heis0, heisG, liftVec_zero, hb, herm, vecMulVec_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma heis_zero : heis0 k r' (0, 0) = 1 := by
   ext i j
   simp [heis0, heisG, liftVec_zero, hb, herm, vecMulVec_apply]
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [ιLev, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff] at *) <;> first | rfl | (exfalso; omega) | (exfalso; simp only [Fin.val_mk] at *; omega)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma lev_one : ιLev k 1 r' 1 = 1 := by
   ext p q
@@ -259,7 +257,7 @@ lemma lev_one : ιLev k 1 r' 1 = 1 := by
   split_ifs <;> (try simp only [Fin.ext_iff] at *) <;> first | rfl | (exfalso; omega) | (exfalso; simp only [Fin.val_mk] at *; omega)
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Unfold `ιLev levPos`. Rewrite using `[dif_pos (show 1 ≤ i.val + 1 ∧ i.val + 1 < 2 * r' + k + 1 + 1 by omega), dif_pos (show 1 ≤ j.val + 1 ∧ j.val + 1 < 2 * r' + k + 1 + 1 by omega)]`. Apply the tactic sequence `congr 1 <;> exact Fin.ext (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma lev_mid (g : Mat k r') (i j : Fin (2 * r' + k + 1)) : ιLev k 1 r' g (levPos k 1 r' i) (levPos k 1 r' j) = g i j := by
   have hi := i.isLt
@@ -270,7 +268,7 @@ lemma lev_mid (g : Mat k r') (i j : Fin (2 * r' + k + 1)) : ιLev k 1 r' g (levP
   congr 1 <;> exact Fin.ext (by simp)
 
 /- English proof (translation)
-Distinguish the cases in `h : 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1`. Use `left`. Conclude with `⟨⟨p.val - 1, by omega⟩, Fin.ext (show p.val = p.val - 1 + 1 by omega)⟩`. Use `right`. Conclude with `h`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma mid_or (p : Fin (2 * (1 + r') + k + 1)) : (∃ i, p = levPos k 1 r' i) ∨ ¬ (1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1) := by
   by_cases h : 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1
@@ -279,7 +277,7 @@ lemma mid_or (p : Fin (2 * (1 + r') + k + 1)) : (∃ i, p = levPos k 1 r' i) ∨
   · right; exact h
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h2 : a.val + 1 = b.val + 1` using `congrArg Fin.val h`. Conclude with `Fin.ext (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma levPos_inj : Function.Injective (levPos k 1 r') := by
   intro a b h
@@ -287,14 +285,14 @@ lemma levPos_inj : Function.Injective (levPos k 1 r') := by
   exact Fin.ext (by omega)
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Conclude with `⟨show 1 ≤ i.val + 1 by omega, show i.val + 1 < 2 * r' + k + 1 + 1 by omega⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 lemma levPos_mid (i : Fin (2 * r' + k + 1)) : 1 ≤ (levPos k 1 r' i).val ∧ (levPos k 1 r' i).val < 2 * r' + k + 1 + 1 := by
   have hi := i.isLt
   exact ⟨show 1 ≤ i.val + 1 by omega, show i.val + 1 < 2 * r' + k + 1 + 1 by omega⟩
 
 /- English proof (translation)
-Unfold `ιLev`. Rewrite using `[dif_pos (levPos_mid i), dif_neg hm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma iotaLev_levPos_apply_of_col_outside (g : Mat k r') (i : Fin (2 * r' + k + 1)) (m : Fin (2 * (1 + r') + k + 1))
     (hm : ¬ (1 ≤ m.val ∧ m.val < 2 * r' + k + 1 + 1)) : ιLev k 1 r' g (levPos k 1 r' i) m = 0 := by
@@ -302,7 +300,7 @@ private lemma iotaLev_levPos_apply_of_col_outside (g : Mat k r') (i : Fin (2 * r
   rw [dif_pos (levPos_mid i), dif_neg hm]
 
 /- English proof (translation)
-Unfold `ιLev`. Rewrite using `[dif_neg hp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma iotaLev_apply_of_first_index_outside (g : Mat k r') (p : Fin (2 * (1 + r') + k + 1))
     (hp : ¬ (1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1)) (m : Fin (2 * (1 + r') + k + 1)) :
@@ -311,17 +309,17 @@ private lemma iotaLev_apply_of_first_index_outside (g : Mat k r') (p : Fin (2 * 
   rw [dif_neg hp]
 
 /- English proof (translation)
-Use extensionality with `p q`. Rewrite using `[Matrix.mul_apply]`. Break down `mid_or p with ⟨i, rfl⟩ | hp` into its components or cases. Break down `mid_or q with ⟨j, rfl⟩ | hq` into its components or cases. Rewrite using `[lev_mid, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : ∑ m, ιLev k 1 r' g (levPos k 1 r' i) m * ιLev k 1 r' h m (levPos k 1 r' j) = ∑ m ∈ Finset.univ.map ⟨levPos k 1 r', levPos_inj⟩, ιLev k 1 r' g (levPos k 1 r' i) m * ιLev k 1 r' h m (levPos k 1 r' j)`. Use `symm`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `m _ hm`. Break down `mid_or m with ⟨l, rfl⟩ | hm'` into its components or cases.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd (Finset.mem_map_of_mem _ (Finset.mem_univ l)) hm`. Rewrite using `[iotaLev_levPos_apply_of_col_outside g i m hm', zero_mul]`. Rewrite using `[hsub, Finset.sum_map]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.Embedding.coeFn_mk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lev_mid, lev_mid]`. Rewrite using `[iotaLev_levPos_apply_of_col_outside _ i q hq]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `m _`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mid_or m with ⟨l, rfl⟩ | hm` into its components or cases. Rewrite using `[iotaLev_levPos_apply_of_col_outside h l q hq, mul_zero]`. Rewrite using `[iotaLev_levPos_apply_of_col_outside g i m hm, zero_mul]`. Rewrite using `[iotaLev_apply_of_first_index_outside (g * h) p hp q]`. Simplify using `only [iotaLev_apply_of_first_index_outside g p hp, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iotaLev_apply_of_first_index_outside h p hp q]`.
+A detailed English derivation is pending.
 -/
 lemma lev_mul (g h : Mat k r') : ιLev k 1 r' (g * h) = ιLev k 1 r' g * ιLev k 1 r' h := by
   ext p q
@@ -355,7 +353,7 @@ lemma lev_mul (g h : Mat k r') : ιLev k 1 r' (g * h) = ιLev k 1 r' g * ιLev k
     rw [iotaLev_apply_of_first_index_outside h p hp q]
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← lev_mul, Matrix.mul_nonsing_inv _ hg, lev_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 lemma lev_inv (g : Mat k r') (hg : IsUnit g.det) : (ιLev k 1 r' g)⁻¹ = ιLev k 1 r' g⁻¹ := by
   apply Matrix.inv_eq_right_inv
@@ -373,7 +371,7 @@ def adjF (x : Mt k r) : Mt k r := (Matrix.of x : Mat k r).adjugate
 def detF (x : Mt k r) : ℂ := (Matrix.of x : Mat k r).det
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Continuous.matrix_det continuous_id`. Consider the case `(unfold detF; fun_prop)`. Consider the case `(unfold detF; continuity)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem detF_cont : Continuous (detF (k := k) (r := r)) := by
   first
@@ -381,7 +379,7 @@ theorem detF_cont : Continuous (detF (k := k) (r := r)) := by
     | (unfold detF; fun_prop)
     | (unfold detF; continuity)
 /- English proof (translation)
-Use `first`. Consider the case `exact Continuous.matrix_adjugate continuous_id`. Consider the case `(unfold adjF; fun_prop)`. Consider the case `(unfold adjF; continuity)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem adjF_cont : Continuous (adjF (k := k) (r := r)) := by
   first
@@ -390,7 +388,7 @@ theorem adjF_cont : Continuous (adjF (k := k) (r := r)) := by
     | (unfold adjF; continuity)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `show (Matrix.of x : Mat k r)⁻¹ = (Matrix.of x : Mat k r).det⁻¹ • (Matrix.of x : Mat k r).adjugate`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invM_smul : (invM : Mt k r → Mt k r) = fun x => (detF x)⁻¹ • adjF x := by
   funext x
@@ -398,7 +396,7 @@ theorem invM_smul : (invM : Mt k r → Mt k r) = fun x => (detF x)⁻¹ • adjF
   rw [Matrix.inv_def, Ring.inverse_eq_inv']
 
 /- English proof (translation)
-Rewrite using `[invM_smul]`. Use `first`. Consider the case `exact (detF_cont.measurable.inv).smul adjF_cont.measurable`. Consider the case `(apply measurable_pi_lambda; intro i; apply measurable_pi_lambda; intro j`. Conclude with `(detF_cont.measurable.inv).mul (((continuous_apply j).comp ((continuous_apply i).comp adjF_cont)).measurable))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem invM_meas : Measurable (invM : Mt k r → Mt k r) := by
   rw [invM_smul]
@@ -408,14 +406,14 @@ theorem invM_meas : Measurable (invM : Mt k r → Mt k r) := by
        exact (detF_cont.measurable.inv).mul (((continuous_apply j).comp ((continuous_apply i).comp adjF_cont)).measurable))
 
 /- English proof (translation)
-Rewrite using `[invM_smul]`. Conclude with `(detF_cont.continuousOn.inv₀ (fun x hx => hx)).smul adjF_cont.continuousOn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invM_contOn : ContinuousOn (invM : Mt k r → Mt k r) {x | detF x ≠ 0} := by
   rw [invM_smul]
   exact (detF_cont.continuousOn.inv₀ (fun x hx => hx)).smul adjF_cont.continuousOn
 
 /- English proof (translation)
-Use `first`. Consider the case `exact continuous_const.matrix_mul continuous_id`. Consider the case `(unfold lmulM; fun_prop)`. Consider the case `(unfold lmulM; continuity)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lmulM_cont (a : Mat k r) : Continuous (lmulM a : Mt k r → Mt k r) := by
   first
@@ -424,7 +422,7 @@ theorem lmulM_cont (a : Mat k r) : Continuous (lmulM a : Mt k r → Mt k r) := b
     | (unfold lmulM; continuity)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact continuous_fst.matrix_mul continuous_snd`. Consider the case `(unfold mulM; fun_prop)`. Consider the case `(unfold mulM; continuity)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mulM_cont : Continuous (mulM : Mt k r × Mt k r → Mt k r) := by
   first
@@ -433,16 +431,16 @@ theorem mulM_cont : Continuous (mulM : Mt k r × Mt k r → Mt k r) := by
     | (unfold mulM; continuity)
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨@fun K hK => h.finite_compact K hK⟩`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem sigmaFinite_of_haar {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) : SigmaFinite μ := by
   haveI : IsFiniteMeasureOnCompacts μ := ⟨@fun K hK => h.finite_compact K hK⟩
   infer_instance
 
 /- English proof (translation)
-Apply `continuous_pi` to reduce the goal to its premises. Introduce `p`. Unfold `liftVec`. Distinguish the cases in `hp : 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1`. Simplify using `only [dif_pos hp]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_apply _`. Simplify using `only [dif_neg hp]`. Conclude with `continuous_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma liftVec_cont : Continuous (liftVec k 1 r') := by
   apply continuous_pi
@@ -453,7 +451,7 @@ lemma liftVec_cont : Continuous (liftVec k 1 r') := by
   · simp only [dif_neg hp]; exact continuous_const
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [herm, dotProduct, mulVec]; fun_prop)`. Consider the case `(simp only [herm, dotProduct, mulVec]; continuity)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma herm_cont {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) : Continuous fun p : (Fin m → ℂ) × (Fin m → ℂ) => herm H p.1 p.2 := by
   first
@@ -461,7 +459,7 @@ lemma herm_cont {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) : Continuous fun p : 
     | (simp only [herm, dotProduct, mulVec]; continuity)
 
 /- English proof (translation)
-Establish `h1 : Continuous fun x : HPar k r' => herm (Hpk k r') x.1 x.1` using `(herm_cont (Hpk k r')).comp (by fun_prop : Continuous fun x : HPar k r' => (x.1, x.1))`. Unfold `hb`. Conclude with `(Complex.continuous_ofReal.comp ((Complex.continuous_re.comp h1).neg.div_const 2)).add ((Complex.continuous_ofReal.comp continuous_snd).mul continuous_const)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma hb_cont : Continuous fun x : HPar k r' => hb k r' x.1 x.2 := by
   have h1 : Continuous fun x : HPar k r' => herm (Hpk k r') x.1 x.1 :=
@@ -475,11 +473,9 @@ def heisF (k r' : ℕ) (x : HPar k r') : Mt k (1 + r') := heis0 k r' x
 def w0F (k r' : ℕ) (c : ℂ) : Mt k (1 + r') := w0 k r' c
 
 /- English proof (translation)
-Establish `hl : Continuous fun x : HPar k r' => liftVec k 1 r' x.1` using `liftVec_cont.comp continuous_fst`. Establish `hb' : Continuous fun x : HPar k r' => hb k r' x.1 x.2` using `hb_cont`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `i`. Apply `continuous_pi` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j`. Establish `h1 : Continuous fun x : HPar k r' => herm (Hpk k (1 + r')) (bvec j) (liftVec k 1 r' x.1)` using `(herm_cont (Hpk k (1 + r'))).comp (continuous_const.prodMk hl)`. Establish `h2 : Continuous fun x : HPar k r' => liftVec k 1 r' x.1 i` using `(continuous_apply i).comp hl`. Use `show Continuous fun x : HPar k r' => heisG k r' (liftVec k 1 r' x.1) (hb k r' x.1 x.2) i j`. Simplify using `only [heisG, Matrix.add_apply, Matrix.sub_apply, vecMulVec_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
-
-Conclude with `(continuous_const.sub (continuous_const.mul h1)).add ((h2.add (hb'.mul continuous_const)).mul continuous_const)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma heisenberg_map_continuous : Continuous (heisF k r') := by
   have hl : Continuous fun x : HPar k r' => liftVec k 1 r' x.1 := liftVec_cont.comp continuous_fst
@@ -494,9 +490,9 @@ lemma heisenberg_map_continuous : Continuous (heisF k r') := by
   exact (continuous_const.sub (continuous_const.mul h1)).add ((h2.add (hb'.mul continuous_const)).mul continuous_const)
 
 /- English proof (translation)
-Apply `measurable_pi_lambda` to reduce the goal to its premises. Introduce `i`. Apply `measurable_pi_lambda` to reduce the goal to its premises. Introduce `j`. Unfold `w0F w0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `first`. Consider the case `exact Measurable.ite (MeasurableSet.const _) (continuous_star.measurable.inv) (Measurable.ite (MeasurableSet.const _) measurable_id (Measurable.ite (MeasurableSet.const _) measurable_const measurable_const))`. Consider the case `measurability`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma long_weyl_family_measurable : Measurable (w0F k r') := by
   apply measurable_pi_lambda; intro i; apply measurable_pi_lambda; intro j
@@ -507,11 +503,11 @@ lemma long_weyl_family_measurable : Measurable (w0F k r') := by
     | measurability
 
 /- English proof (translation)
-Apply `continuous_pi` to reduce the goal to its premises. Introduce `p`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `q`. Unfold `levM ιLev`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hp : 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1`. Distinguish the cases in `hq : 1 ≤ q.val ∧ q.val < 2 * r' + k + 1 + 1`. Apply the tactic sequence `simp only [dif_pos hp, dif_pos hq] first | exact continuous_apply_apply _ _ | fun_prop | continuity`. Simplify using `only [dif_pos hp, dif_neg hq]`. Conclude with `continuous_const`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_neg hp]`. Conclude with `continuous_const`.
+A detailed English derivation is pending.
 -/
 lemma levM_cont : Continuous (levM k r') := by
   apply continuous_pi; intro p; apply continuous_pi; intro q
@@ -524,11 +520,11 @@ lemma levM_cont : Continuous (levM k r') := by
   · simp only [dif_neg hp]; exact continuous_const
 
 /- English proof (translation)
-Establish `h1 : Measurable fun p : ℂ × HPar k r' => heisF k r' p.2` using `heisenberg_map_continuous.measurable.comp measurable_snd`. Establish `h2 : Measurable fun p : ℂ × HPar k r' => w0F k r' p.1` using `long_weyl_family_measurable.comp measurable_fst`. Unfold `tau`. Apply `measurable_pi_lambda` to reduce the goal to its premises. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `measurable_pi_lambda` to reduce the goal to its premises. Introduce `j`. Simplify using `only [Matrix.mul_apply]`. Apply `Finset.measurable_sum` to reduce the goal to its premises. Introduce `l _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((measurable_pi_apply l).comp ((measurable_pi_apply i).comp h1)).mul ((measurable_pi_apply j).comp ((measurable_pi_apply l).comp h2))`.
+A detailed English derivation is pending.
 -/
 lemma tau_meas : Measurable (tau k r') := by
   have h1 : Measurable fun p : ℂ × HPar k r' => heisF k r' p.2 := heisenberg_map_continuous.measurable.comp measurable_snd
@@ -541,7 +537,7 @@ lemma tau_meas : Measurable (tau k r') := by
     ((measurable_pi_apply j).comp ((measurable_pi_apply l).comp h2))
 
 /- English proof (translation)
-Unfold `xi`. Establish `hl : Continuous fun p : ℂ × HPar k r' => liftVec k 1 r' p.2.1` using `liftVec_cont.comp (continuous_fst.comp continuous_snd)`. Establish `hh : Continuous fun p : ℂ × HPar k r' => hb k r' p.2.1 p.2.2` using `hb_cont.comp continuous_snd`. Conclude with `continuous_fst.smul ((continuous_const.add hl).add (hh.smul continuous_const))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma xi_cont : Continuous (xi k r') := by
   unfold xi
@@ -551,7 +547,7 @@ lemma xi_cont : Continuous (xi k r') := by
   exact continuous_fst.smul ((continuous_const.add hl).add (hh.smul continuous_const))
 
 /- English proof (translation)
-Unfold `eta`. Use `first`. Consider the case `fun_prop`. Consider the case `exact (measurable_pi_apply _).prodMk ((measurable_pi_lambda _ fun j => ((measurable_pi_apply _).div (measurable_pi_apply _))).prodMk (Complex.measurable_im.comp ((measurable_pi_apply _).div (measurable_pi_apply _))))`. Consider the case `measurability`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma eta_meas : Measurable (eta k r') := by
   unfold eta
@@ -566,9 +562,9 @@ def Psi (k r' : ℕ) (p : ℂ × ((HPar k r' × HPar k r') × Mt k r')) : Mt k (
   oneStep k r' p.2.1.1 p.1 (Matrix.of p.2.2) p.2.1.2
 
 /- English proof (translation)
-Establish `hm : ∀ {α : Type} [MeasurableSpace α] (f g : α → Mt k (1 + r')), Measurable f → Measurable g → Measurable fun p => mulM (f p, g p)` using `fun f g hf hg => mulM_cont.measurable.comp (hf.prodMk hg)`. Establish `hx : Measurable fun p : ℂ × ((HPar k r' × HPar k r') × Mt k r') => heisF k r' p.2.1.1` using `heisenberg_map_continuous.measurable.comp (measurable_fst.comp (measurable_fst.comp measurable_snd))`. Establish `hx' : Measurable fun p : ℂ × ((HPar k r' × HPar k r') × Mt k r') => heisF k r' p.2.1.2` using `heisenberg_map_continuous.measurable.comp (measurable_snd.comp (measurable_fst.comp measurable_snd))`. Establish `hw : Measurable fun p : ℂ × ((HPar k r' × HPar k r') × Mt k r') => w0F k r' p.1` using `long_weyl_family_measurable.comp measurable_fst`. Establish `hg : Measurable fun p : ℂ × ((HPar k r' × HPar k r') × Mt k r') => levM k r' p.2.2` using `levM_cont.measurable.comp (measurable_snd.comp measurable_snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : Measurable fun p : ℂ × ((HPar k r' × HPar k r') × Mt k r') => invM (heisF k r' p.2.1.1)` using `invM_meas.comp hx`. Conclude with `hm _ _ (hm _ _ (hm _ _ hi hw) hg) hx'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma Psi_meas : Measurable (Psi k r') := by
   have hm : ∀ {α : Type} [MeasurableSpace α] (f g : α → Mt k (1 + r')), Measurable f → Measurable g →
@@ -587,9 +583,9 @@ lemma Psi_meas : Measurable (Psi k r') := by
   exact hm _ _ (hm _ _ (hm _ _ hi hw) hg) hx'
 
 /- English proof (translation)
-Establish `h1 : (1 : Mat k r') ∈ GV k r'` using `by first`. Consider the case `exact (hG k r').one_mem`. Consider the case `exact (hG k r').2.1`. Consider the case `exact (hG k r').1.1`. Consider the case `exact (hG k r').one`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (hG k r').2.2.1`. Rewrite using `[SD k r']`. Unfold `mulSet Hset`. Use `show ∃ a ∈ Set.range (heis0 k r'), ∃ b ∈ ιLev k 1 r' '' GV k r', heis0 k r' x = a * b`. Conclude with `⟨heis0 k r' x, ⟨x, rfl⟩, ιLev k 1 r' 1, ⟨1, h1, rfl⟩, by rw [lev_one, Matrix.mul_one]⟩`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma heis_mem_P (hG : ClosedG) (SD : StabDecomp) (x : HPar k r') : heis0 k r' x ∈ P1set k r' := by
   have h1 : (1 : Mat k r') ∈ GV k r' := by
@@ -605,7 +601,7 @@ lemma heis_mem_P (hG : ClosedG) (SD : StabDecomp) (x : HPar k r') : heis0 k r' x
   exact ⟨heis0 k r' x, ⟨x, rfl⟩, ιLev k 1 r' 1, ⟨1, h1, rfl⟩, by rw [lev_one, Matrix.mul_one]⟩
 
 /- English proof (translation)
-Rewrite using `[SD k r']`. Unfold `mulSet Hset`. Use `show ∃ a ∈ Set.range (heis0 k r'), ∃ b ∈ ιLev k 1 r' '' GV k r', ιLev k 1 r' g₁ = a * b`. Conclude with `⟨1, ⟨(0, 0), heis_zero⟩, ιLev k 1 r' g₁, ⟨g₁, h, rfl⟩, (Matrix.one_mul _).symm⟩`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma lev_mem_P (SD : StabDecomp) (g₁ : Mat k r') (h : g₁ ∈ GV k r') : ιLev k 1 r' g₁ ∈ P1set k r' := by
   rw [SD k r']
@@ -614,7 +610,7 @@ lemma lev_mem_P (SD : StabDecomp) (g₁ : Mat k r') (h : g₁ ∈ GV k r') : ιL
   exact ⟨1, ⟨(0, 0), heis_zero⟩, ιLev k 1 r' g₁, ⟨g₁, h, rfl⟩, (Matrix.one_mul _).symm⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `heis0 k r' p.2 * w0 k r' p.1 = oneStep k r' (-p.2.1, -p.2.2) p.1 1 (0, 0)`. Unfold `oneStep`. Rewrite using `[HI k r', lev_one, heis_zero]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma tau_eq_oneStep (HI : HeisInv) (p : ℂ × HPar k r') :
     (Matrix.of (tau k r' p) : Mat k (1 + r')) = oneStep k r' (-p.2.1, -p.2.2) p.1 1 (0, 0) := by
@@ -624,9 +620,9 @@ lemma tau_eq_oneStep (HI : HeisInv) (p : ℂ × HPar k r') :
   simp
 
 /- English proof (translation)
-Establish `h1 : (1 : Mat k r') ∈ GV k r'` using `by first`. Consider the case `exact (hG k r').one_mem`. Consider the case `exact (hG k r').2.1`. Consider the case `exact (hG k r').1.1`. Consider the case `exact (hG k r').one`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (hG k r').2.2.1`. Rewrite using `[tau_eq_oneStep HI p]`. Conclude with `(OM k r' (-p.2.1, -p.2.2) (0, 0) p.1 hc 1 h1).1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma tau_mem (hG : ClosedG) (HI : HeisInv) (OM : OneStepMem) (p : ℂ × HPar k r') (hc : p.1 ≠ 0) :
     (Matrix.of (tau k r' p) : Mat k (1 + r')) ∈ GV k (1 + r') := by
@@ -641,7 +637,7 @@ lemma tau_mem (hG : ClosedG) (HI : HeisInv) (OM : OneStepMem) (p : ℂ × HPar k
   exact (OM k r' (-p.2.1, -p.2.2) (0, 0) p.1 hc 1 h1).1
 
 /- English proof (translation)
-Unfold `oneStep`. Rewrite using `[HI k r']`. Express the relevant statement in the definitionally equal form `_ = heis0 k r' (-x.1, -x.2) * w0 k r' c * (ιLev k 1 r' g * heis0 k r' x')`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 lemma oneStep_eq (HI : HeisInv) (x x' : HPar k r') (c : ℂ) (g : Mat k r') :
     oneStep k r' x c g x' = (Matrix.of (tau k r' (c, (-x.1, -x.2))) : Mat k (1 + r')) * (ιLev k 1 r' g * heis0 k r' x') := by
@@ -651,13 +647,11 @@ lemma oneStep_eq (HI : HeisInv) (x x' : HPar k r') (c : ℂ) (g : Mat k r') :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Use `set g : Mat k (1 + r') := a * (Matrix.of (tau k r' p) : Mat k (1 + r')) with hg`. Establish `hgG : g ∈ GV k (1 + r')` using `(hG k (1 + r')).mul_mem _ ha _ (tau_mem hG HI OM p hc)`. Establish `hge : g *ᵥ e0 k r' = a *ᵥ xi k r' p`. Rewrite using `[hg, ← Matrix.mulVec_mulVec, parametrisation_base_vector_image HA]`. Establish `hc' : herm (Hpk k (1 + r')) (g *ᵥ e0 k r') (e0 k r') ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hermitian_form_base_vector_right, hge]`. Conclude with `hv`. Take `⟨⟨x₁, g₁, x₂⟩, ⟨hg₁, hdec⟩, _⟩` from `OC k r' g hgG hc'`. Simplify using `only at hg₁ hdec`. Rewrite `hdec` using `[oneStep_eq HI]`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq : ιLev k 1 r' g₁ * heis0 k r' x₂ ∈ P1set k r'` using `hP.mul_mem _ (lev_mem_P SD g₁ hg₁) _ (heis_mem_P hG SD x₂)`. Use `⟨_, hq, ?_⟩` and prove the remaining obligations. Establish `h2 : a *ᵥ xi k r' p = xi k r' (herm (Hpk k (1 + r')) (g *ᵥ e0 k r') (e0 k r'), (-x₁.1, -x₁.2))`. Rewrite using `[← hge]`. Use `conv_lhs => rw [hdec]`.
-
-Rewrite using `[← Matrix.mulVec_mulVec, hq.2, parametrisation_base_vector_image HA]`. Rewrite using `[h2, eta_xi _ hc']`. Conclude with `hdec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma key (hG : ClosedG) (HA : HeisAct) (HI : HeisInv) (OM : OneStepMem) (OC : OneStepCoord) (SD : StabDecomp)
     (hP : IsClosedSubgroup (P1set k r')) (a : Mat k (1 + r')) (ha : a ∈ GV k (1 + r')) (p : ℂ × HPar k r') (hc : p.1 ≠ 0)
@@ -694,7 +688,7 @@ variable {k r' : ℕ}
 def wt (k r' : ℕ) (c : ℂ) : ℝ≥0∞ := ENNReal.ofReal (‖c‖ ^ (2 * (2 * r' + k + 1)))
 
 /- English proof (translation)
-Unfold `wt`. Use `first`. Consider the case `exact (continuous_norm.pow _).measurable.ennreal_ofReal`. Consider the case `fun_prop`. Consider the case `measurability`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma wt_meas : Measurable (wt k r') := by
   unfold wt
@@ -717,7 +711,7 @@ def muP (μG₁ : Measure (Mt k r')) : Measure (Mt k (1 + r')) := ((μHeis k r')
 def Ff (μP : Measure (Mt k (1 + r'))) (f : Mt k (1 + r') → ℝ≥0∞) (g : Mt k (1 + r')) : ℝ≥0∞ := ∫⁻ q, f (mulM (g, q)) ∂μP
 
 /- English proof (translation)
-Unfold `Ff`. Conclude with `Measurable.lintegral_prod_right' (hf.comp mulM_cont.measurable)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma Ff_meas (μP : Measure (Mt k (1 + r'))) [SFinite μP] {f : Mt k (1 + r') → ℝ≥0∞} (hf : Measurable f) :
     Measurable (Ff μP f) := by
@@ -725,7 +719,7 @@ lemma Ff_meas (μP : Measure (Mt k (1 + r'))) [SFinite μP] {f : Mt k (1 + r') �
   exact Measurable.lintegral_prod_right' (hf.comp mulM_cont.measurable)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact ae_iff.2 h.conc`. Consider the case `(rw [ae_iff]; exact h.conc)`. Consider the case `(rw [ae_iff]; simpa using h.conc)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma ae_mem {k r : ℕ} {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) : ∀ᵐ x : Mt k r ∂μ, x ∈ (U : Set (Mt k r)) := by
   first
@@ -734,7 +728,7 @@ lemma ae_mem {k r : ℕ} {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaar
     | (rw [ae_iff]; simpa using h.conc)
 
 /- English proof (translation)
-Rewrite using `[Measure.volume_eq_prod]`. Establish `: (Neg.neg : HPar k r' → HPar k r') = Prod.map Neg.neg Neg.neg` using `rfl`. Rewrite using `[this, ← Measure.map_prod_map _ _ measurable_neg measurable_neg, Measure.map_neg_eq_self, Measure.map_neg_eq_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma neg_HPar : (volume : Measure (HPar k r')).map Neg.neg = volume := by
   rw [Measure.volume_eq_prod]
@@ -742,17 +736,15 @@ lemma neg_HPar : (volume : Measure (HPar k r')).map Neg.neg = volume := by
   rw [this, ← Measure.map_prod_map _ _ measurable_neg measurable_neg, Measure.map_neg_eq_self, Measure.map_neg_eq_self]
 
 /- English proof (translation)
-Use `sigmaFinite_of_haar h₁` as an intermediate fact. Establish `e1 : (μHeis k r').prod (μG₁.map (levM k r')) = ((volume : Measure (HPar k r')).prod μG₁).map (Prod.map (heisF k r') (levM k r'))` using `Measure.map_prod_map _ _ heisenberg_map_continuous.measurable levM_cont.measurable`. Establish `hPM : Measurable (Prod.map (heisF k r') (levM k r'))` using `heisenberg_map_continuous.measurable.prodMap levM_cont.measurable`. Establish `hH : Measurable fun p : HPar k r' × Mt k r' => h (mulM (levM k r' p.2, heisF k r' p.1))` using `hh.comp (mulM_cont.measurable.comp ((levM_cont.measurable.comp measurable_snd).prodMk (heisenberg_map_continuous.measurable.comp measurable_fst)))`. Establish `hNI : Measurable (Prod.map (Neg.neg : HPar k r' → HPar k r') (invM : Mt k r' → Mt k r'))` using `measurable_neg.prodMap invM_meas`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ p : HPar k r' × Mt k r' ∂((volume : Measure (HPar k r')).prod μG₁), p.2 ∈ (GV k r' : Set (Mt k r'))`. Rewrite using `[ae_iff]`. Establish `: {p : HPar k r' × Mt k r' | ¬ p.2 ∈ (GV k r' : Set (Mt k r'))} = Set.univ ×ˢ ((GV k r')ᶜ : Set (Mt k r'))`. Use extensionality with `p`. Simplify using `only [Set.mem_prod, Set.mem_univ, true_and]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `Iff.rfl`. Rewrite using `[this, Measure.prod_prod, h₁.conc, mul_zero]`. Combine the equalities or inequalities in the displayed calculation. Unfold `muP`. Rewrite using `[e1, Measure.map_map mulM_cont.measurable hPM]`.
+Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lintegral_map (f := fun q => h (invM q)) (hh.comp invM_meas) (mulM_cont.measurable.comp hPM)`. Use `_ = ∫⁻ p : HPar k r' × Mt k r', (fun p' : HPar k r' × Mt k r' => h (mulM (levM k r' p'.2, heisF k r' p'.1))) (Prod.map (Neg.neg : HPar k r' → HPar k r') (invM : Mt k r' → Mt k r') p) ∂((volume : Measure (HPar k r')).prod μG₁) := by`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with p hp`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `show ((heis0 k r' p.1 * ιLev k 1 r' (Matrix.of p.2) : Mat k (1 + r'))⁻¹ : Mat k (1 + r')) = ιLev k 1 r' ((Matrix.of p.2 : Mat k r')⁻¹ : Mat k r') * heis0 k r' (-p.1)`. Rewrite using `[Matrix.mul_inv_rev, HI, lev_inv (Matrix.of p.2) ((hG k r').unit _ hp)]`. Both sides reduce to the same expression. Use `_ = ∫⁻ p', h (mulM (levM k r' p'.2, heisF k r' p'.1)) ∂(((volume : Measure (HPar k r')).prod μG₁).map (Prod.map (Neg.neg : HPar k r' → HPar k r') (invM : Mt k r' → Mt k r'))) := (lintegral_map hH hNI).symm`. Use `_ = _ := by`.
-
-Rewrite using `[← Measure.map_prod_map _ _ measurable_neg invM_meas, neg_HPar, HIv _ _ _ _ (hG k r') h₁]`.
+A detailed English derivation is pending.
 -/
 lemma swap (HIv : HaarInv) (hG : ClosedG) (HI : HeisInv) (μG₁ : Measure (Mt k r')) (h₁ : IsHaarOn (GV k r') μG₁)
     (hP : IsClosedSubgroup (P1set k r')) (hμP : IsHaarOn (P1set k r') (muP μG₁)) (h : Mt k (1 + r') → ℝ≥0∞) (hh : Measurable h) :
@@ -798,15 +790,13 @@ def II (μG₁ : Measure (Mt k r')) (f : Mt k (1 + r') → ℝ≥0∞) : ℝ≥0
           ∂((volume : Measure (HPar k r' × HPar k r')).prod μG₁)
 
 /- English proof (translation)
-Use `haveI := sigmaFinite_of_haar h₁`. Use `haveI : SigmaFinite (muP μG₁) := sigmaFinite_of_haar hμP`. Establish `hPsi : ∀ (x x' : HPar k r') (g : Mt k r'), Psi k r' (c, ((x, x'), g)) = mulM (tau k r' (c, (-x.1, -x.2)), mulM (levM k r' g, heisF k r' x'))`. Introduce `x x' g`. Use `show oneStep k r' x c (Matrix.of g) x' = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[oneStep_eq HI]`. Both sides reduce to the same expression. Establish `hmF : Measurable fun p : (HPar k r' × HPar k r') × Mt k r' => f (Psi k r' (c, p))` using `hf.comp (Psi_meas.comp (measurable_const.prodMk measurable_id))`. Establish `hG' : Measurable fun x : HPar k r' => Ff (muP μG₁) f (tau k r' (c, x))` using `(Ff_meas _ hf).comp (tau_meas.comp (measurable_const.prodMk measurable_id))`. Establish `hin : ∀ x : HPar k r', ∫⁻ y : HPar k r', ∫⁻ g, f (Psi k r' (c, ((x, y), g))) ∂μG₁ ∂volume = Ff (muP μG₁) f (tau k r' (c, (-x.1, -x.2)))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Establish `hh : Measurable fun q => f (mulM (tau k r' (c, (-x.1, -x.2)), q))` using `hf.comp (mulM_cont.comp (continuous_const.prodMk continuous_id)).measurable`. Establish `hm2 : Measurable fun p : HPar k r' × Mt k r' => f (Psi k r' (c, ((x, p.1), p.2)))` using `hmF.comp ((measurable_const.prodMk measurable_fst).prodMk measurable_snd)`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr (fun p => ?_)` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hPsi]`. Use `_ = Ff (muP μG₁) f (tau k r' (c, (-x.1, -x.2))) := (swap HIv hG HI μG₁ h₁ hP hμP _ hh).symm`. Rewrite using `[lintegral_prod (fun p => f (Psi k r' (c, p))) hmF.aemeasurable, Measure.volume_eq_prod (α := HPar k r') (β := HPar k r'), lintegral_prod (fun xx : HPar k r' × HPar k r' => ∫⁻ g, f (Psi k r' (c, (xx, g))) ∂μG₁) hmF.lintegral_prod_right'.aemeasurable]`. Simplify using `only [hin]`. Use `conv_rhs => rw [← neg_HPar]`.
-
-Rewrite using `[lintegral_map (f := fun x => Ff (muP μG₁) f (tau k r' (c, x))) hG' measurable_neg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma inner_eq (HIv : HaarInv) (hG : ClosedG) (HI : HeisInv) (μG₁ : Measure (Mt k r')) (h₁ : IsHaarOn (GV k r') μG₁)
     (hP : IsClosedSubgroup (P1set k r')) (hμP : IsHaarOn (P1set k r') (muP μG₁)) (f : Mt k (1 + r') → ℝ≥0∞) (hf : Measurable f)
@@ -850,9 +840,9 @@ lemma inner_eq (HIv : HaarInv) (hG : ClosedG) (HI : HeisInv) (μG₁ : Measure (
   rfl
 
 /- English proof (translation)
-Use `haveI := sigmaFinite_of_haar h₁`. Use `haveI : SigmaFinite (muP μG₁) := sigmaFinite_of_haar hμP`. Establish `hm : Measurable fun p : ℂ × HPar k r' => Ff (muP μG₁) f (tau k r' p)` using `(Ff_meas _ hf).comp tau_meas`. Unfold `II mCone`. Rewrite using `[lintegral_prod (fun p => Ff (muP μG₁) f (tau k r' p)) hm.aemeasurable]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `mC`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ wt_meas hm.lintegral_prod_right']`. Use `lintegral_congr (fun c => ?_)` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`. Rewrite using `[inner_eq HIv hG HI μG₁ h₁ hP hμP f hf c]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma II_eq (HIv : HaarInv) (hG : ClosedG) (HI : HeisInv) (μG₁ : Measure (Mt k r')) (h₁ : IsHaarOn (GV k r') μG₁)
     (hP : IsClosedSubgroup (P1set k r')) (hμP : IsHaarOn (P1set k r') (muP μG₁)) (f : Mt k (1 + r') → ℝ≥0∞) (hf : Measurable f) :
@@ -877,7 +867,7 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 variable {k r' : ℕ}
 
 /- English proof (translation)
-Unfold `mC`. Rewrite using `[withDensity_apply _ (measurableSet_singleton 0)]`. Use `first`. Consider the case `exact setLIntegral_measure_zero _ _ (measure_singleton 0)`. Consider the case `simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma mC_zero : mC k r' {0} = 0 := by
   unfold mC
@@ -887,7 +877,7 @@ lemma mC_zero : mC k r' {0} = 0 := by
     | simp
 
 /- English proof (translation)
-Rewrite using `[ae_iff]`. Establish `hs : {p : ℂ × HPar k r' | ¬ p.1 ≠ 0} = {0} ×ˢ Set.univ` using `by ext p; simp`. Rewrite using `[hs, mCone, Measure.prod_prod, mC_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma ae_ne : ∀ᵐ p : ℂ × HPar k r' ∂(mCone k r'), p.1 ≠ 0 := by
   rw [ae_iff]
@@ -895,7 +885,7 @@ lemma ae_ne : ∀ᵐ p : ℂ × HPar k r' ∂(mCone k r'), p.1 ≠ 0 := by
   rw [hs, mCone, Measure.prod_prod, mC_zero, zero_mul]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact continuous_const.matrix_mulVec continuous_id`. Consider the case `fun_prop`. Consider the case `(simp only [mulVec, dotProduct]; fun_prop)`. Consider the case `continuity`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma mulVec_cont (a : Mat k (1 + r')) : Continuous fun v : Fin (2 * (1 + r') + k + 1) → ℂ => a *ᵥ v := by
   first
@@ -905,11 +895,11 @@ lemma mulVec_cont (a : Mat k (1 + r')) : Continuous fun v : Fin (2 * (1 + r') + 
     | continuity
 
 /- English proof (translation)
-Establish `hx : Measurable (xi k r')` using `xi_cont.measurable`. Establish `ha' : Measurable fun v : Fin (2 * (1 + r') + k + 1) → ℂ => a *ᵥ v` using `(mulVec_cont a).measurable`. Establish `hS : MeasurableSet {v : Fin (2 * (1 + r') + k + 1) → ℂ | v (iL k r') ≠ 0}` using `by first`. Consider the case `exact (measurableSet_eq_fun (measurable_pi_apply _) measurable_const).compl`. Consider the case `measurability`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `h1 : ∀ᵐ v ∂(coneMeas k r'), v (iL k r') ≠ 0`. Rewrite using `[cone_eq, ae_map_iff hx.aemeasurable hS]`. Use `filter_upwards [ae_ne (k := k) (r' := r')] with p hp`. Rewrite using `[xi_last]` and apply the resulting hypothesis. Establish `h2 : ∀ᵐ v ∂(coneMeas k r'), (a *ᵥ v) (iL k r') ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← CI k r' a ha]`. Conclude with `(ae_map_iff ha'.aemeasurable hS).1 h1`. Rewrite `h2` using `[cone_eq]`. Conclude with `(ae_map_iff hx.aemeasurable (ha' hS)).1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ae_ne' (CI : ConeInv) (a : Mat k (1 + r')) (ha : a ∈ GV k (1 + r')) :
     ∀ᵐ p : ℂ × HPar k r' ∂(mCone k r'), (a *ᵥ xi k r' p) (iL k r') ≠ 0 := by
@@ -930,9 +920,9 @@ lemma ae_ne' (CI : ConeInv) (a : Mat k (1 + r')) (ha : a ∈ GV k (1 + r')) :
   exact (ae_map_iff hx.aemeasurable (ha' hS)).1 h2
 
 /- English proof (translation)
-Unfold `Ff`. Establish `hmeas : Measurable fun q' : Mt k (1 + r') => f (mulM (g, q'))` using `hf.comp (mulM_cont.comp (continuous_const.prodMk continuous_id)).measurable`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `q'`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use `show Matrix.of g * Matrix.of q * Matrix.of q' = Matrix.of g * (Matrix.of q * Matrix.of q')`. Conclude with `Matrix.mul_assoc _ _ _`. Use `_ = ∫⁻ q', f (mulM (g, q')) ∂(μP.map (lmulM q)) := (lintegral_map hmeas (lmulM_cont q).measurable).symm`. Use `_ = ∫⁻ q', f (mulM (g, q')) ∂μP := by rw [hμP.left q hq]`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma Ff_right (μP : Measure (Mt k (1 + r'))) (hμP : IsHaarOn (P1set k r') μP) {f : Mt k (1 + r') → ℝ≥0∞} (hf : Measurable f)
     (g q : Mt k (1 + r')) (hq : q ∈ (P1set k r' : Set (Mt k (1 + r')))) : Ff μP f (mulM (g, q)) = Ff μP f g := by
@@ -948,17 +938,15 @@ lemma Ff_right (μP : Measure (Mt k (1 + r'))) (hμP : IsHaarOn (P1set k r') μP
     _ = ∫⁻ q', f (mulM (g, q')) ∂μP := by rw [hμP.left q hq]
 
 /- English proof (translation)
-Use `haveI := sigmaFinite_of_haar h₁`. Use `haveI : SigmaFinite (muP μG₁) := sigmaFinite_of_haar hμP`. Establish `hfa : Measurable fun g => f (lmulM a g)` using `hf.comp (lmulM_cont a).measurable`. Rewrite using `[II_eq HIv hG HI μG₁ h₁ hP hμP _ hfa, II_eq HIv hG HI μG₁ h₁ hP hμP f hf]`. Establish `hE : Measurable fun v : Fin (2 * (1 + r') + k + 1) → ℂ => Ff (muP μG₁) f (tau k r' (eta k r' v))` using `(Ff_meas _ hf).comp (tau_meas.comp eta_meas)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ∀ x, Ff (muP μG₁) (fun g => f (lmulM a g)) x = Ff (muP μG₁) f (lmulM a x)`. Introduce `x`. Simplify using `only [Ff]`. Use `congr 1`. Use function extensionality and compare the values at `q'`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Use `show a * (Matrix.of x * Matrix.of q') = a * Matrix.of x * Matrix.of q'`. Conclude with `(Matrix.mul_assoc _ _ _).symm`. Establish `step1 : ∀ᵐ p ∂(mCone k r'), Ff (muP μG₁) (fun g => f (lmulM a g)) (tau k r' p) = Ff (muP μG₁) f (tau k r' (eta k r' (a *ᵥ xi k r' p)))` using `by filter_upwards [ae_ne (k := k) (r' := r'), ae_ne' CI a ha] with p hc hv`. Take `⟨q, hq, hq'⟩` from `key hG HA HI OM OC SD hP a ha p hc hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : lmulM a (tau k r' p) = mulM (tau k r' (eta k r' (a *ᵥ xi k r' p)), q)` using `hq'`. Rewrite using `[e1, hk, Ff_right _ hμP hf _ _ hq]`. Rewrite using `[lintegral_congr_ae step1]`. Establish `hxi : Measurable (xi k r')` using `xi_cont.measurable`. Establish `hav : Measurable fun v : Fin (2 * (1 + r') + k + 1) → ℂ => a *ᵥ v` using `(mulVec_cont a).measurable`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cone_eq, lintegral_map (f := fun v => Ff (muP μG₁) f (tau k r' (eta k r' (a *ᵥ v)))) (hE.comp hav) hxi]`. Use `_ = ∫⁻ v, Ff (muP μG₁) f (tau k r' (eta k r' v)) ∂(coneMeas k r') := by conv_rhs => rw [← CI k r' a ha]`. Rewrite using `[lintegral_map (f := fun v => Ff (muP μG₁) f (tau k r' (eta k r' v))) hE hav]`. Use `_ = ∫⁻ p, Ff (muP μG₁) f (tau k r' (eta k r' (xi k r' p))) ∂(mCone k r') := by`.
-
-Rewrite using `[cone_eq, lintegral_map (f := fun v => Ff (muP μG₁) f (tau k r' (eta k r' v))) hE hxi]`. Use `_ = ∫⁻ p, Ff (muP μG₁) f (tau k r' p) ∂(mCone k r') := by`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [ae_ne (k := k) (r' := r')] with p hc`. Rewrite using `[eta_xi p hc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma II_inv (HIv : HaarInv) (hG : ClosedG) (HA : HeisAct) (HI : HeisInv) (OM : OneStepMem) (OC : OneStepCoord) (CI : ConeInv)
     (SD : StabDecomp) (μG₁ : Measure (Mt k r')) (h₁ : IsHaarOn (GV k r') μG₁)
@@ -999,7 +987,7 @@ lemma II_inv (HIv : HaarInv) (hG : ClosedG) (HA : HeisAct) (HI : HeisInv) (OM : 
         rw [eta_xi p hc]
 
 /- English proof (translation)
-Unfold `Ff`. Establish `hm : MeasurableSet ((fun q => mulM (g, q)) ⁻¹' S)` using `(mulM_cont.comp (continuous_const.prodMk continuous_id)).measurable hS`. Rewrite using `[← lintegral_indicator_one hm]`. Apply the tactic sequence `first | rfl | (congr 1; ext q; simp [Set.indicator_apply])`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Ff_ind (μP : Measure (Mt k (1 + r'))) (S : Set (Mt k (1 + r'))) (hS : MeasurableSet S) (g : Mt k (1 + r')) :
     Ff μP (S.indicator 1) g = μP ((fun q => mulM (g, q)) ⁻¹' S) := by
@@ -1013,9 +1001,9 @@ def nu (μG₁ : Measure (Mt k r')) : Measure (Mt k (1 + r')) :=
   ((mC k r').prod ((volume : Measure (HPar k r' × HPar k r')).prod μG₁)).map (Psi k r')
 
 /- English proof (translation)
-Unfold `nu II`. Rewrite using `[lintegral_map hf Psi_meas]`. Use `first`. Consider the case `rw [lintegral_prod (fun a => f (Psi k r' a)) ((hf.comp Psi_meas).aemeasurable)]`. Consider the case `rw [lintegral_prod _ (hf.comp Psi_meas).aemeasurable]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions.
 
-Unfold `mC`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ wt_meas]`. Both sides reduce to the same expression. Conclude with `(hf.comp Psi_meas).lintegral_prod_right'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma lintegral_nu (μG₁ : Measure (Mt k r')) [SFinite μG₁] (f : Mt k (1 + r') → ℝ≥0∞) (hf : Measurable f) :
     ∫⁻ g, f g ∂(nu μG₁) = II μG₁ f := by
@@ -1030,16 +1018,16 @@ lemma lintegral_nu (μG₁ : Measure (Mt k r')) [SFinite μG₁] (f : Mt k (1 + 
   · exact (hf.comp Psi_meas).lintegral_prod_right'
 
 /- English proof (translation)
-Rewrite using `[← lintegral_nu μG₁ _ (measurable_one.indicator hS), lintegral_indicator_one hS]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma nu_apply (μG₁ : Measure (Mt k r')) [SFinite μG₁] (S : Set (Mt k (1 + r'))) (hS : MeasurableSet S) :
     nu μG₁ S = II μG₁ (S.indicator 1) := by
   rw [← lintegral_nu μG₁ _ (measurable_one.indicator hS), lintegral_indicator_one hS]
 
 /- English proof (translation)
-Use `haveI := sigmaFinite_of_haar h₁`. Use extensionality with `S hS`. Rewrite using `[Measure.map_apply (lmulM_cont a).measurable hS, nu_apply _ _ ((lmulM_cont a).measurable hS), nu_apply _ _ hS]`. Establish `hi : (lmulM a ⁻¹' S).indicator (1 : Mt k (1 + r') → ℝ≥0∞) = fun g => S.indicator 1 (lmulM a g)`. Use function extensionality and compare the values at `g`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `first | rfl | simp [Set.indicator_apply]`. Rewrite using `[hi]`. Conclude with `II_inv HIv hG HA HI OM OC CI SD μG₁ h₁ hP hμP _ (measurable_one.indicator hS) a ha`.
+A detailed English derivation is pending.
 -/
 lemma nu_left (HIv : HaarInv) (hG : ClosedG) (HA : HeisAct) (HI : HeisInv) (OM : OneStepMem) (OC : OneStepCoord) (CI : ConeInv)
     (SD : StabDecomp) (μG₁ : Measure (Mt k r')) (h₁ : IsHaarOn (GV k r') μG₁)
@@ -1056,17 +1044,13 @@ lemma nu_left (HIv : HaarInv) (hG : ClosedG) (HA : HeisAct) (HI : HeisInv) (OM :
   exact II_inv HIv hG HA HI OM OC CI SD μG₁ h₁ hP hμP _ (measurable_one.indicator hS) a ha
 
 /- English proof (translation)
-Use `haveI := sigmaFinite_of_haar h₁`. Establish `hGc : @IsClosed (Mt k (1 + r')) _ (GV k (1 + r'))`. Establish `hG'` using `hG k (1 + r')`. Apply the tactic sequence `first | exact hG'.1 | exact hG'.isClosed | exact hG'.closed | exact hG'.2`. Rewrite using `[nu_apply _ _ ?hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `swap`. Conclude with `hGc.measurableSet.compl`. Unfold `II`. Use `(lintegral_congr (fun c => ?_)).trans lintegral_zero` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Establish `hw : wt k r' 0 = 0`. Unfold `wt`. Rewrite using `[norm_zero, zero_pow (by omega), ENNReal.ofReal_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, zero_mul]`. Establish `hae : ∀ᵐ p ∂((volume : Measure (HPar k r' × HPar k r')).prod μG₁), p.2 ∈ (GV k r' : Set (Mt k r'))`. Rewrite using `[ae_iff]`. Use `measure_mono_null (t := Set.univ ×ˢ {g : Mt k r' | g ∉ (GV k r' : Set (Mt k r'))}) (fun p hp => ⟨Set.mem_univ _, hp⟩) ?_` and prove the remaining obligations. Rewrite using `[Measure.prod_prod]`.
-
-Conclude with `mul_eq_zero_of_right _ h₁.conc`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Rewrite using `[lintegral_congr_ae (g := fun _ => 0) ?_, lintegral_zero]`. Use `filter_upwards [hae] with p hp`. Establish `hmem` using `(OM k r' p.1.1 p.1.2 c hc (Matrix.of p.2) hp).1`.
-
-Rewrite using `[Set.indicator_apply, if_neg (fun hn => hn hmem)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma nu_conc (HIv : HaarInv) (hG : ClosedG) (HI : HeisInv) (OM : OneStepMem)
     (μG₁ : Measure (Mt k r')) (h₁ : IsHaarOn (GV k r') μG₁)
@@ -1102,7 +1086,7 @@ lemma nu_conc (HIv : HaarInv) (hG : ClosedG) (HI : HeisInv) (OM : OneStepMem)
     rw [Set.indicator_apply, if_neg (fun hn => hn hmem)]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact continuous_id.matrix_mulVec continuous_const`. Consider the case `fun_prop`. Consider the case `(simp only [mulVec, dotProduct]; fun_prop)`. Consider the case `continuity`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma evalE_cont : Continuous fun g : Mt k (1 + r') => (Matrix.of g : Mat k (1 + r')) *ᵥ e0 k r' := by
   first
@@ -1112,25 +1096,19 @@ lemma evalE_cont : Continuous fun g : Mt k (1 + r') => (Matrix.of g : Mat k (1 +
     | continuity
 
 /- English proof (translation)
-Use `sigmaFinite_of_haar h₁` as an intermediate fact. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Use `set K' : Set (Mt k (1 + r')) := K ∩ (GV k (1 + r') : Set (Mt k (1 + r'))) with hK'`. Establish `hK'c : IsCompact K'` using `hK.inter_right (hG k (1 + r')).closed`. Establish `hinvc : IsCompact ((invM : Mt k (1 + r') → Mt k (1 + r')) '' K')` using `hK'c.image_of_continuousOn (invM_contOn.mono fun x hx => ((hG k (1 + r')).unit x hx.2).ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D : Set (Mt k (1 + r')) := mulM '' (((invM : Mt k (1 + r') → Mt k (1 + r')) '' K') ×ˢ K') with hD`. Establish `hDc : IsCompact D` using `(hinvc.prod hK'c).image mulM_cont`. Use `set Ke : Set (Fin (2 * (1 + r') + k + 1) → ℂ) := (fun g : Mt k (1 + r') => (Matrix.of g : Mat k (1 + r')) *ᵥ e0 k r') '' K with hKe`. Establish `hKec : IsCompact Ke` using `hK.image evalE_cont`. Establish `hKem : MeasurableSet Ke` using `hKec.isClosed.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `bound : ∀ p : ℂ × HPar k r', p.1 ≠ 0 → Ff (muP μG₁) (K.indicator 1) (tau k r' p) ≤ muP μG₁ D * (xi k r' ⁻¹' Ke).indicator 1 p`. Introduce `p hp`. Rewrite using `[Ff_ind _ _ hKm]`. Use `set T : Set (Mt k (1 + r')) := (fun q => mulM (tau k r' p, q)) ⁻¹' K with hT`. Establish `hgG` using `tau_mem hG HI OM p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hT' : muP μG₁ (T ∩ (P1set k r' : Set (Mt k (1 + r')))) = muP μG₁ T` using `measure_inter_conull hμP.conc`. Rewrite using `[← hT']`. Distinguish the cases in `hne : (T ∩ (P1set k r' : Set (Mt k (1 + r')))).Nonempty`. Take `⟨q₀, hq₀T, hq₀P⟩` from `hne`. Establish `hq₀K' : mulM (tau k r' p, q₀) ∈ K'` using `⟨hq₀T, (hG k (1 + r')).mul_mem _ hgG _ hq₀P.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxi : xi k r' p ∈ Ke`. Use `⟨mulM (tau k r' p, q₀), hq₀T, ?_⟩` and prove the remaining obligations. Use `show ((Matrix.of (tau k r' p) : Mat k (1 + r')) * (Matrix.of q₀ : Mat k (1 + r'))) *ᵥ e0 k r' = _`. Rewrite using `[← Matrix.mulVec_mulVec]`. Establish `: (Matrix.of q₀ : Mat k (1 + r')) *ᵥ e0 k r' = e0 k r'` using `hq₀P.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[this, parametrisation_base_vector_image HA]`. Rewrite using `[Set.indicator_of_mem (show p ∈ xi k r' ⁻¹' Ke from hxi)]`. Simplify using `only [Pi.one_apply, mul_one]`. Establish `hq₀inv : ((Matrix.of q₀ : Mat k (1 + r'))⁻¹ : Mat k (1 + r')) ∈ P1set k r'` using `hP.inv_mem _ hq₀P`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `measure_mono ?_` and prove the remaining obligations. Introduce and unpack `q ⟨hqT, hqP⟩`. Use `⟨(invM (mulM (tau k r' p, q₀)), mulM (tau k r' p, q)), ⟨⟨_, hq₀K', rfl⟩, ⟨hqT, (hG k (1 + r')).mul_mem _ hgG _ hqP.1⟩⟩, ?_⟩` and prove the remaining obligations. Use `show (((Matrix.of (tau k r' p) : Mat k (1 + r')) * (Matrix.of q₀ : Mat k (1 + r')))⁻¹ : Mat k (1 + r')) * ((Matrix.of (tau k r' p) : Mat k (1 + r')) * (Matrix.of q : Mat k (1 + r'))) = ((Matrix.of q₀ : Mat k (1 + r'))⁻¹ : Mat k (1 + r')) * (Matrix.of q : Mat k (1 + r'))`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_assoc, ← Matrix.mul_assoc _ (Matrix.of (tau k r' p) : Mat k (1 + r')), Matrix.nonsing_inv_mul _ ((hG k (1 + r')).unit _ hgG), Matrix.one_mul]`.
-
-Use `_ = (muP μG₁).map (lmulM ((Matrix.of q₀ : Mat k (1 + r'))⁻¹ : Mat k (1 + r'))) D := (Measure.map_apply (lmulM_cont _).measurable hDc.isClosed.measurableSet).symm`. Use `_ = muP μG₁ D := by rw [hμP.left _ hq₀inv]`. Rewrite using `[Set.not_nonempty_iff_eq_empty.1 hne, measure_empty]`. Conclude with `bot_le`. Rewrite using `[nu_apply _ _ hKm, II_eq HIv hG HI μG₁ h₁ hP hμP _ (measurable_one.indicator hKm)]`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_ne] with p hp`. Conclude with `bound p hp`. Use `_ = muP μG₁ D * coneMeas k r' Ke := by`.
-
-Rewrite using `[lintegral_const_mul _ (measurable_one.indicator (xi_cont.measurable hKem)), lintegral_indicator_one (xi_cont.measurable hKem), cone_eq, Measure.map_apply xi_cont.measurable hKem]`. Use `_ < ∞ := ENNReal.mul_lt_top (hμP.finite_compact D hDc) (CF k r' Ke hKec)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma nu_fin (HIv : HaarInv) (hG : ClosedG) (HA : HeisAct) (HI : HeisInv) (OM : OneStepMem) (CF : ConeFinite)
     (μG₁ : Measure (Mt k r')) (h₁ : IsHaarOn (GV k r') μG₁)
@@ -1194,13 +1172,13 @@ lemma nu_fin (HIv : HaarInv) (hG : ClosedG) (HA : HeisAct) (HI : HeisInv) (OM : 
     _ < ∞ := ENNReal.mul_lt_top (hμP.finite_compact D hDc) (CF k r' Ke hKec)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : wt k r' =ᵐ[volume] 0`. Unfold `mC at h`. Use `first`. Consider the case `exact withDensity_eq_zero wt_meas.aemeasurable h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (withDensity_eq_zero_iff wt_meas.aemeasurable).1 h`. Establish `h2 : ∀ᵐ c : ℂ ∂volume, c = 0` using `by filter_upwards [h1] with c hc`. Simplify using `only [wt, Pi.zero_apply, ENNReal.ofReal_eq_zero] at hc`. Assume the negation of the conclusion as `hne`. Establish `: 0 < ‖c‖ ^ (2 * (2 * r' + k + 1))` using `pow_pos (norm_pos_iff.2 hne) _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : ∀ᵐ c : ℂ ∂volume, c ≠ 0`. Rewrite using `[ae_iff]`. Simplify using `using (measure_singleton (0 : ℂ) : (volume : Measure ℂ) {0} = 0)`. Establish `h4 : ∀ᵐ _c : ℂ ∂volume, False` using `by filter_upwards [h2, h3] with c a b using b a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[ae_iff]`. Use `first`. Consider the case `simp at h4`. Consider the case `exact (NeZero.ne (volume : Measure ℂ)) (Measure.measure_univ_eq_zero.1 (by simpa using h4))`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma mC_ne : mC k r' ≠ 0 := by
   intro h
@@ -1226,7 +1204,7 @@ lemma mC_ne : mC k r' ≠ 0 := by
     | exact (NeZero.ne (volume : Measure ℂ)) (Measure.measure_univ_eq_zero.1 (by simpa using h4))
 
 /- English proof (translation)
-Introduce `h`. Establish `hz : μ.prod ν (Set.univ ×ˢ Set.univ) = 0` using `by simp [h]`. Rewrite `hz` using `[Measure.prod_prod, mul_eq_zero, Measure.measure_univ_eq_zero, Measure.measure_univ_eq_zero]`. Conclude with `hz.elim h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma prod_ne {α β : Type*} [MeasurableSpace α] [MeasurableSpace β] (μ : Measure α) (ν : Measure β) [SFinite ν]
     (h1 : μ ≠ 0) (h2 : ν ≠ 0) : μ.prod ν ≠ 0 := by
@@ -1236,7 +1214,7 @@ lemma prod_ne {α β : Type*} [MeasurableSpace α] [MeasurableSpace β] (μ : Me
   exact hz.elim h1 h2
 
 /- English proof (translation)
-Use `first`. Consider the case `exact NeZero.ne _`. Consider the case `exact prod_ne _ _ (NeZero.ne _) (NeZero.ne _)`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma vol_ne : (volume : Measure (HPar k r' × HPar k r')) ≠ 0 := by
   first
@@ -1245,7 +1223,7 @@ lemma vol_ne : (volume : Measure (HPar k r' × HPar k r')) ≠ 0 := by
     | simp
 
 /- English proof (translation)
-Unfold `nu`. Rewrite using `[Ne, Measure.map_eq_zero_iff Psi_meas.aemeasurable]`. Conclude with `prod_ne _ _ mC_ne (prod_ne _ _ vol_ne h0)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma nu_ne (μG₁ : Measure (Mt k r')) [SFinite μG₁] (h0 : μG₁ ≠ 0) : nu μG₁ ≠ 0 := by
   unfold nu
@@ -1253,11 +1231,11 @@ lemma nu_ne (μG₁ : Measure (Mt k r')) [SFinite μG₁] (h0 : μG₁ ≠ 0) : 
   exact prod_ne _ _ mC_ne (prod_ne _ _ vol_ne h0)
 
 /- English proof (translation)
-Introduce `HU HIv hG HA HI OM OC CI CF SD SH k r' μG μG₁ hμG h₁`. Take `⟨hP, hμP⟩` from `SH k r' μG₁ h₁`. Use `sigmaFinite_of_haar h₁` as an intermediate fact. Take `⟨c, hc⟩` from `HU k (1 + r') (GV k (1 + r')) μG (nu μG₁) (hG _ _) hμG (nu_conc HIv hG HI OM μG₁ h₁ hP hμP) (fun a ha => nu_left HIv hG HA HI OM OC CI SD μG₁ h₁ hP hμP a ha) (fun K hK => nu_fin HIv hG HA HI OM CF μG₁ h₁ hP hμP K hK)`. Establish `hc0 : c ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hc` using `[zero_smul]`. Conclude with `nu_ne μG₁ h₁.ne_zero hc`. Use `⟨c⁻¹, inv_pos.2 (pos_iff_ne_zero.2 hc0), fun f hf => ?_⟩` and prove the remaining obligations. Establish `h2 : II μG₁ f = (c : ℝ≥0∞) * ∫⁻ g, f g ∂μG`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lintegral_nu μG₁ f hf, hc, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Use `show _ = ((c⁻¹ : ℝ≥0) : ℝ≥0∞) * II μG₁ f`. Rewrite using `[h2, ← mul_assoc, ← ENNReal.coe_mul, inv_mul_cancel₀ hc0, ENNReal.coe_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem assembleOneStep : AssembleOneStep := by
   intro HU HIv hG HA HI OM OC CI CF SD SH k r' μG μG₁ hμG h₁
@@ -1285,21 +1263,21 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 variable {k r' : ℕ}
 
 /- English proof (translation)
-Rewrite using `[herm_bvec_right_eq_mulVec_apply]`. Simplify using `[bvec, mulVec, dotProduct, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma herm_bvec {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (p q : Fin m) : herm H (bvec q) (bvec p) = H p q := by
   rw [herm_bvec_right_eq_mulVec_apply]
   simp [bvec, mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[e0_eq]`. Simplify using `[Pi.single_apply, levPos_ne_first]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma base_vector_levi_coordinate_zero (i : Fin (2 * r' + k + 1)) : e0 k r' (levPos k 1 r' i) = 0 := by
   rw [e0_eq]
   simp [Pi.single_apply, levPos_ne_first]
 
 /- English proof (translation)
-Rewrite using `[show e0 k r' = bvec (iF k r') from rfl, herm_bvec, Hpk_first]`. Simplify using `[levPos_ne_last]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma hermitian_levi_vector_base_orthogonal (j : Fin (2 * r' + k + 1)) :
     herm (Hpk k (1 + r')) (bvec (levPos k 1 r' j)) (e0 k r') = 0 := by
@@ -1307,7 +1285,7 @@ lemma hermitian_levi_vector_base_orthogonal (j : Fin (2 * r' + k + 1)) :
   simp [levPos_ne_last]
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h2 : a.val + 1 = b.val + 1` using `congrArg Fin.val h`. Conclude with `Fin.ext (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma levPos_inj : Function.Injective (levPos k 1 r') := by
   intro a b h
@@ -1315,7 +1293,7 @@ lemma levPos_inj : Function.Injective (levPos k 1 r') := by
   exact Fin.ext (by omega)
 
 /- English proof (translation)
-Simplify using `only [heis0, heisG, Matrix.add_apply, Matrix.sub_apply, vecMulVec_apply, base_vector_levi_coordinate_zero, hermitian_levi_vector_base_orthogonal, zero_mul, mul_zero, sub_zero, add_zero, Matrix.one_apply, levPos_inj.eq_iff]`.
+Simplify using the standard rewrite rules.
 -/
 lemma heis_block (x : HPar k r') (i j : Fin (2 * r' + k + 1)) :
     heis0 k r' x (levPos k 1 r' i) (levPos k 1 r' j) = if i = j then 1 else 0 := by
@@ -1323,16 +1301,16 @@ lemma heis_block (x : HPar k r') (i j : Fin (2 * r' + k + 1)) :
     hermitian_levi_vector_base_orthogonal, zero_mul, mul_zero, sub_zero, add_zero, Matrix.one_apply, levPos_inj.eq_iff]
 
 /- English proof (translation)
-Conclude with `lev_mid g i j`.
+A detailed English derivation is pending.
 -/
 lemma lev_block (g : Mat k r') (i j : Fin (2 * r' + k + 1)) :
     ιLev k 1 r' g (levPos k 1 r' i) (levPos k 1 r' j) = g i j := by
   exact lev_mid g i j
 
 /- English proof (translation)
-Unfold `ιLev`. Establish `hp : ¬ (1 ≤ m.val ∧ m.val < 2 * r' + k + 1 + 1)`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hm ⟨⟨m.val - 1, by omega⟩, Fin.ext (show m.val - 1 + 1 = m.val by omega)⟩`. Rewrite using `[dif_neg hp, if_neg]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `hm ⟨j, h.symm⟩`.
+A detailed English derivation is pending.
 -/
 lemma lev_off (g : Mat k r') (m : Fin (2 * (1 + r') + k + 1)) (hm : m ∉ Set.range (levPos k 1 r'))
     (j : Fin (2 * r' + k + 1)) : ιLev k 1 r' g m (levPos k 1 r' j) = 0 := by
@@ -1345,9 +1323,9 @@ lemma lev_off (g : Mat k r') (m : Fin (2 * (1 + r') + k + 1)) (hm : m ∉ Set.ra
   exact hm ⟨j, h.symm⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (levPos k 1 r' i)]`. Rewrite using `[heis_block, if_pos rfl, one_mul, lev_block]`. Introduce `m _ hm`. Distinguish the cases in `hr : m ∈ Set.range (levPos k 1 r')`. Take `⟨l, rfl⟩` from `hr`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[heis_block, if_neg (fun h => hm (by rw [h])), zero_mul]`. Rewrite using `[lev_off g m hr, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma prod_block (x : HPar k r') (g : Mat k r') (i j : Fin (2 * r' + k + 1)) :
     (heis0 k r' x * ιLev k 1 r' g) (levPos k 1 r' i) (levPos k 1 r' j) = g i j := by
@@ -1364,7 +1342,7 @@ def rho (k r' : ℕ) (g : Mt k (1 + r')) : Mt k (1 + r') :=
   ιLev k 1 r' (fun i j => g (levPos k 1 r' i) (levPos k 1 r' j))
 
 /- English proof (translation)
-Use `first`. Consider the case `exact levM_cont.comp (continuous_pi fun i => continuous_pi fun j => continuous_apply_apply _ _)`. Consider the case `exact levM_cont.comp (by fun_prop)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma rho_cont : Continuous (rho k r') := by
   first
@@ -1372,7 +1350,7 @@ lemma rho_cont : Continuous (rho k r') := by
     | exact levM_cont.comp (by fun_prop)
 
 /- English proof (translation)
-Unfold `rho`. Use `congr 1`. Use extensionality with `i j`. Conclude with `prod_block x g i j`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 lemma rho_prod (x : HPar k r') (g : Mat k r') : rho k r' (heis0 k r' x * ιLev k 1 r' g) = ιLev k 1 r' g := by
   unfold rho
@@ -1381,9 +1359,9 @@ lemma rho_prod (x : HPar k r') (g : Mat k r') : rho k r' (heis0 k r' x * ιLev k
   exact prod_block x g i j
 
 /- English proof (translation)
-Apply the tactic sequence `have hc : IsClosed {g : Mat k (1 + r') | g *ᵥ e0 k r' = e0 k r'} := isClosed_eq (by first | exact continuous_id.matrix_mulVec continuous_const | fun_prop | continuity) continuous_const`. Establish `hG'` using `hG k (1 + r')`. Use `first`. Consider the case `exact hG'.1.inter hc`. Consider the case `exact hG'.isClosed.inter hc`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact hG'.closed.inter hc`. Consider the case `exact hG'.2.inter hc`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma parabolic_subgroup_closed (hG : ClosedG) : IsClosed (P1set k r') := by
   have hc : IsClosed {g : Mat k (1 + r') | g *ᵥ e0 k r' = e0 k r'} :=
@@ -1397,13 +1375,9 @@ lemma parabolic_subgroup_closed (hG : ClosedG) : IsClosed (P1set k r') := by
     | exact hG'.2.inter hc
 
 /- English proof (translation)
-Introduce `hSemi hLev hG hHC hHH hConj hConjM hStab k r' μG₁ hμ`. Take `⟨hBcl, hBhaar⟩` from `hLev k r' (GV k r') μG₁ (hG k r') hμ`. Establish `key` using `hSemi k (1 + r') (Hset k r') (ιLev k 1 r' '' GV k r') (μHeis k r') (μG₁.map (levM k r')) (rho k r') (hHC k r').2 hBcl (by`. Introduce and unpack `_ ⟨g, hg, rfl⟩ _ ⟨x, rfl⟩`. Conclude with `⟨_, (hConj k r' g hg x).symm⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use the proof step `(by rw [← hStab]; exact parabolic_subgroup_closed hG)`. Use `rho_cont`. Use the proof step `(by`. Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨g, _, rfl⟩`. Conclude with `rho_prod x g)`.
-
-Use the proof step `(hHH k r') hBhaar`. Use the proof step `(by`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `hConjM k r' g hg)`. Rewrite `key` using `[← hStab]`.
-
-Conclude with `key`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem assembleStab : AssembleStab := by
   intro hSemi hLev hG hHC hHH hConj hConjM hStab k r' μG₁ hμ
@@ -1432,29 +1406,27 @@ namespace Formalism.FourierDecayAlt.P.B2x9.S2
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Conclude with `((herm_cont _).comp (evalE_cont.prodMk continuous_const)).measurable`.
+A detailed English derivation is pending.
 -/
 theorem cOf_meas (k r' : ℕ) :
     Measurable fun g : Mt k (1 + r') => herm (Hpk k (1 + r')) (Matrix.of g *ᵥ e0 k r') (e0 k r') := by
   exact ((herm_cont _).comp (evalE_cont.prodMk continuous_const)).measurable
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨@fun K hK => h.finite_compact K hK⟩`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem sigmaFinite_of_haar {k r : ℕ} {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) : SigmaFinite μ := by
   haveI : IsFiniteMeasureOnCompacts μ := ⟨@fun K hK => h.finite_compact K hK⟩
   infer_instance
 
 /- English proof (translation)
-Introduce `hInt hEx OM k r' μG hG`. Take `⟨μG₁, h₁⟩` from `hEx k r'`. Use `haveI := sigmaFinite_of_haar h₁`. Take `⟨C, _, hF⟩` from `hInt k r' μG μG₁ hG h₁`. Establish `hSm : MeasurableSet {g : Mt k (1 + r') | herm (Hpk k (1 + r')) (Matrix.of g *ᵥ e0 k r') (e0 k r') = 0}` using `measurableSet_eq_fun (cOf_meas k r') measurable_const`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lintegral_indicator_one hSm, hF _ (measurable_one.indicator hSm)]`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Use `(lintegral_congr (fun c => ?_)).trans lintegral_zero` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Distinguish the cases in `hc : c = 0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hc` using the available equality. Rewrite using `[norm_zero, zero_pow (by omega), ENNReal.ofReal_zero, zero_mul]`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Establish `hae : ∀ᵐ p ∂((volume : Measure (HPar k r' × HPar k r')).prod μG₁), p.2 ∈ (GV k r' : Set (Mt k r'))`. Rewrite using `[ae_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `measure_mono_null (t := Set.univ ×ˢ {g : Mt k r' | g ∉ (GV k r' : Set (Mt k r'))}) (fun p hp => ⟨Set.mem_univ _, hp⟩) ?_` and prove the remaining obligations. Rewrite using `[Measure.prod_prod]`. Conclude with `mul_eq_zero_of_right _ h₁.conc`. Rewrite using `[lintegral_congr_ae (g := fun _ => 0) ?_, lintegral_zero]`. Use `filter_upwards [hae] with p hp`.
-
-Establish `hv` using `(OM k r' p.1.1 p.1.2 c hc (Matrix.of p.2) hp).2`. Use `Set.indicator_apply_eq_zero.2 (fun hn => ?_)` and prove the remaining obligations. Establish `hn' : herm (Hpk k (1 + r')) (oneStep k r' p.1.1 c (Matrix.of p.2) p.1.2 *ᵥ e0 k r') (e0 k r') = 0` using `hn`. Conclude with `absurd (hv.symm.trans hn') hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem oneStepNullFromInt : OneStepNullFromInt := by
   intro hInt hEx OM k r' μG hG
@@ -1491,26 +1463,26 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.P.B2x9.S1.assembleStab`.
+A detailed English derivation is pending.
 -/
 theorem stabilizer_haar_of_parts : Formalism.FourierDecayAlt.B2.AssembleStab := by
   exact Formalism.FourierDecayAlt.P.B2x9.S1.assembleStab
 
 /- English proof (translation)
-Conclude with `stabilizer_haar_of_parts semidirect_product_haar levi_haar_measure_exists unitary_group_closed heisenberg_subgroup_closed heisenberg_haar_measure heisenberg_conjugation_by_levi heisenberg_levi_conjugation_measure stabilizer_factorization`.
+A detailed English derivation is pending.
 -/
 theorem stabilizer_haar_measure : Formalism.FourierDecayAlt.B2.StabHaar := by
   exact stabilizer_haar_of_parts semidirect_product_haar levi_haar_measure_exists unitary_group_closed heisenberg_subgroup_closed
     heisenberg_haar_measure heisenberg_conjugation_by_levi heisenberg_levi_conjugation_measure stabilizer_factorization
 
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.P.B2x9.assembleOneStep`.
+A detailed English derivation is pending.
 -/
 theorem stabilizer_integration_of_parts : Formalism.FourierDecayAlt.B2.AssembleOneStep := by
   exact Formalism.FourierDecayAlt.P.B2x9.assembleOneStep
 
 /- English proof (translation)
-Conclude with `stabilizer_integration_of_parts haar_measure_unique_up_to_scalar haar_measure_inversion unitary_group_closed heisenberg_action_formula heisenberg_inverse stabilizer_one_parameter_mem rank_one_coordinates_formula isotropic_cone_invariance isotropic_cone_finite_measure stabilizer_f …`.
+A detailed English derivation is pending.
 -/
 theorem stabilizer_integration_formula : Formalism.FourierDecayAlt.B2.OneStepInt := by
   exact stabilizer_integration_of_parts haar_measure_unique_up_to_scalar haar_measure_inversion unitary_group_closed heisenberg_action_formula
@@ -1518,13 +1490,13 @@ theorem stabilizer_integration_formula : Formalism.FourierDecayAlt.B2.OneStepInt
     stabilizer_factorization stabilizer_haar_measure
 
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.P.B2x9.S2.oneStepNullFromInt`.
+A detailed English derivation is pending.
 -/
 theorem stabilizer_null_of_integrable : Formalism.FourierDecayAlt.B2.OneStepNullFromInt := by
   exact Formalism.FourierDecayAlt.P.B2x9.S2.oneStepNullFromInt
 
 /- English proof (translation)
-Conclude with `stabilizer_null_of_integrable stabilizer_integration_formula unitary_group_haar_exists stabilizer_one_parameter_mem`.
+A detailed English derivation is pending.
 -/
 theorem stabilizer_null_set : Formalism.FourierDecayAlt.B2.OneStepNull := by
   exact stabilizer_null_of_integrable stabilizer_integration_formula unitary_group_haar_exists stabilizer_one_parameter_mem

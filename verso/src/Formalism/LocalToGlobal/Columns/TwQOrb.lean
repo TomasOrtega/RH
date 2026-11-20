@@ -17,7 +17,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 variable {hc : Formalism.BasicNotions.CMData F E} {n : ℕ} [NeZero n] {ST SG Q : Finset (Pl E)} {K : Type} [Field K] {Θ : LevQFam E K n Q}
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem qdf_at_rat (q : QLoc hc n Q Θ) (P : Q) (γ : GL (Fin n) E) : q.at P (bc (iA F E) γ) = bc (q.phi P) γ := by
   apply Units.ext
@@ -25,26 +25,26 @@ theorem qdf_at_rat (q : QLoc hc n Q Θ) (P : Q) (γ : GL (Fin n) E) : q.at P (bc
   rfl
 
 /- English proof (translation)
-Use `show bc _ (bc _ (x * y)) = _`. Rewrite using `[map_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qdf_at_mul (q : QLoc hc n Q Θ) (P : Q) (x y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : q.at P (x * y) = q.at P x * q.at P y := by
   show bc _ (bc _ (x * y)) = _
   rw [map_mul, map_mul]
 
 /- English proof (translation)
-Use `show bc _ (bc _ x⁻¹) = _`. Rewrite using `[map_inv, map_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qdf_at_inv (q : QLoc hc n Q Θ) (P : Q) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : q.at P x⁻¹ = (q.at P x)⁻¹ := by
   show bc _ (bc _ x⁻¹) = _
   rw [map_inv, map_inv]
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem qdf_levUQ_le (H : Subgroup (GLG E n SG)) (q : QLoc hc n Q Θ) : levUQ hc n ST SG Q H q ≤ levU hc n ST SG H := inf_le_left
 
 /- English proof (translation)
-The claim follows from `(Subgroup.mem_iInf.1 h.2) P`.
+A detailed English derivation is pending.
 -/
 theorem qdf_levUQ_at (H : Subgroup (GLG E n SG)) (q : QLoc hc n Q Θ) {κ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}
     (h : κ ∈ levUQ hc n ST SG Q H q) (P : Q) : q.at P κ ∈ q.U P :=
@@ -59,19 +59,17 @@ theorem qdf_ratio_val (p p' : DecoF E n ST SG Q) (γ : Sp E n ≃ₗ[E] Sp E n) 
 variable (H : Subgroup (GLG E n SG))
 
 /- English proof (translation)
-Establish `hκ : (κ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) ∈ levU hc n ST SG H` using `qdf_levUQ_le H q κ.2`. Establish `hd : decoOf ST SG (x' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = ((ratHom hc n γ, levRed hc n ST SG H ⟨_, hκ⟩) : UF E n × H) • decoOf ST SG (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))`. Rewrite using `[e]`. Conclude with `rlc_decoOf_sm hc n ST SG H γ ⟨_, hκ⟩ x`. Rewrite `hd` using `[hx.1, hx'.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : p'.deco.1.N = gmap (ratHom hc n γ).1 p.deco.1.N` using `by rw [hd]; rfl`. Establish `hinj : ∀ a b : GL (Fin n) E, Formalism.UG.glEquiv a = Formalism.UG.glEquiv b → a = b` using `fun a b h => Units.ext (Matrix.ext_of_mulVec_single fun j => by`. Use `congrArg (fun g : Sp E n ≃ₗ[E] Sp E n => g (Pi.single j 1)) h` as an intermediate fact. Simplify `this)` using `[Formalism.UG.glEquiv]`. Establish `hγ : toGLm E n (ratHom hc n γ).1 = (γ : GL (Fin n) E)` using `hinj _ _ (by rw [glEquiv_toGLm]; rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ : ∀ P : Q, qdRatio p p' (ratHom hc n γ).1 hN P ∈ (Θ P).H`. Introduce `P`. Rewrite using `[← q.U_rat P]`. Establish `h1` using `hx.2 P`. Establish `h2` using `hx'.2 P`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `qdf_levUQ_at H q κ.2 P`. Establish `hx'P : q.at P (x' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = bc (q.phi P) (γ : GL (Fin n) E) * q.at P x * (q.at P κ)⁻¹`. Rewrite using `[e, qdf_at_mul, qdf_at_mul, qdf_at_inv, qdf_at_rat]`. Establish `key : bc (q.phi P) (qGL n (qdRatio p p' (ratHom hc n γ).1 hN P).1) = ((bc (q.phi P) (qGL n (p'.fr P)))⁻¹ * q.at P x') * q.at P κ * ((bc (q.phi P) (qGL n (p.fr P)))⁻¹ * q.at P x)⁻¹`. Rewrite using `[qdf_ratio_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [qGL, map_mul, map_inv]`. Rewrite using `[hγ, hx'P]`. Use `group`. Rewrite using `[key]`. Conclude with `mul_mem (mul_mem h2 h3) (inv_mem h1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨(ratHom hc n γ, levRed hc n ST SG H ⟨_, hκ⟩, ⟨fun P => qdRatio p p' (ratHom hc n γ).1 hN P, (Subgroup.mem_pi _).2 fun P _ => hθ P⟩), rfl, rfl, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Conclude with `hd`. Use function extensionality and compare the values at `P show p'.fr P = (ratHom hc n γ).1 * p.fr P * ((qdRatio p p' (ratHom hc n γ).1 hN P)⁻¹).1`.
-
-Rewrite using `[Subgroup.coe_inv, qdf_ratio_val]`. Use `group`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qdf_orbit_of_rel (q : QLoc hc n Q Θ) {x x' : UAd hc n} {p p' : DecoF E n ST SG Q}
     (hx : FrOver q x.1 p) (hx' : FrOver q x'.1 p') (γ : URat hc n) (κ : levUQ hc n ST SG Q H q)

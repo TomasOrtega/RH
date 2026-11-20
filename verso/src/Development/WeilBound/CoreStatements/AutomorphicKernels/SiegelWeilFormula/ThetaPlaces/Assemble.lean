@@ -29,7 +29,7 @@ def RelRealP : Prop := ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
     HeckeCharacterZeroLocus.SiegelWeilU.IsPureFin d.bs Φf Φv ∧ HeckeCharacterZeroLocus.SiegelWeilU.IsProdInfFin Φg (Gen.phiInf θ l fr g P) Φf
 
 /- English proof (translation)
-Unfold `RelRealP`. Introduce `F E _ _ _ _ _ σ d R Φ P gf hP x t u hx η hη herm`. Establish `hB : d.B.IsGood σ` using `d.ok.good`. Take `⟨Φf, Φv, hpf, hprod⟩` from `pure_prod_of' R Φ P gf hP u η (thW d.B) (thW_th' d.B) (frW R η hη) (frW_frc R η hη) (gW d u η hη) (gW_gc d u η hη) (fun _ => -1) (fun _ => by simp)`. Conclude with `⟨thW d.B, frW R η hη, gW d u η hη, fun _ => -1, εsW R η, fun Y => d.T Φ (toMx Y * ((u⁻¹ : GL (Fin d.n) (AE F E)).1)ᵀ), Φf, Φv, thW_th' d.B, frW_frc R η hη, gW_gc d u η hη, fun _ => rfl, ⟨fun w => decide (0 < (((d.B.emb w).1 η / R.ζ) * ((R.sg w : ℤ) : ℂ)).re), rfl⟩, isCharAF_of_go …`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem relReal : RelRealP := by
   unfold RelRealP

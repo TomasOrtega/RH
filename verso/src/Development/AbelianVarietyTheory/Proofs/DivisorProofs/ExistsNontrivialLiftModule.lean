@@ -21,14 +21,14 @@ def act2 (t : ℚ) : Mat R S →ₗ[ℂ] Module.End ℂ (Pol P Q R S) :=
   fockAct2 P Q R S + (Matrix.traceLinearMap (Ix R S) ℂ ℂ).smulRight ((t : ℂ) • (1 : Module.End ℂ (Pol P Q R S)))
 
 /- English proof (translation)
-Simplify using `[act2, mul_comm, smul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fockSecondActionTraceShift_apply (t : ℚ) (Y : Mat R S) (f : Pol P Q R S) :
     act2 P Q R S t Y f = fockAct2 P Q R S Y f + ((t : ℂ) * Y.trace) • f := by
   simp [act2, mul_comm, smul_smul]
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `g ⟨X, f, rfl⟩`. Establish `hc : fockAct2 P Q R S Y (fockAct1 P Q R S X f) = fockAct1 P Q R S X (fockAct2 P Q R S Y f)` using `(LinearMap.congr_fun ((GlobalTheory.FockAlg.fock_lie_and_commute P Q R S).2.2.2 X Y) f).symm`. Use `Submodule.subset_span ⟨X, act2 P Q R S t Y f, ?_⟩` and prove the remaining obligations. Simplify using `only [fockSecondActionTraceShift_apply, map_sub, map_add, map_smul, hc]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem fockTraceCharacterRelations_le_comap_secondAction (x t : ℚ) (Y : Mat R S) : rel P Q R S x ≤ (rel P Q R S x).comap (act2 P Q R S t Y) := by
   refine Submodule.span_le.2 ?_
@@ -39,9 +39,9 @@ theorem fockTraceCharacterRelations_le_comap_secondAction (x t : ℚ) (Y : Mat R
   simp only [fockSecondActionTraceShift_apply, map_sub, map_add, map_smul, hc]
 
 /- English proof (translation)
-Introduce `X Y`. Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun ((GlobalTheory.FockAlg.fock_lie_and_commute P Q R S).2.2.1 X Y) f`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, fockSecondActionTraceShift_apply, map_add, map_smul, h, Matrix.trace_sub, Matrix.trace_mul_comm X Y, sub_self, mul_zero, zero_smul, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem isLieAct_fockSecondActionTraceShift (t : ℚ) : IsLieAct (act2 P Q R S t) := by
   intro X Y
@@ -70,9 +70,9 @@ theorem actQ_mk (x t : ℚ) (Y : Mat R S) (f : Pol P Q R S) :
     actQ P Q R S x t Y (Submodule.Quotient.mk f) = Submodule.Quotient.mk (act2 P Q R S t Y f) := rfl
 
 /- English proof (translation)
-Introduce `X Y`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ v`. Establish `h` using `LinearMap.congr_fun (isLieAct_fockSecondActionTraceShift P Q R S t X Y) f`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [actQ_mk, h, Submodule.Quotient.mk_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actQ_lie (x t : ℚ) : IsLieAct (actQ P Q R S x t) := by
   intro X Y
@@ -83,9 +83,9 @@ theorem actQ_lie (x t : ℚ) : IsLieAct (actQ P Q R S x t) := by
   simp only [actQ_mk, h, Submodule.Quotient.mk_sub]
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ v`. Take `⟨W₀, hW₀, hf, hst⟩` from `((GlobalTheory.FockPolGK.pol_locFin_weights P Q R S).2 f).1`. Use `⟨W₀.map (rel P Q R S x).mkQ, inferInstance, ⟨f, hf, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `X hX _ ⟨w, hw, rfl⟩`. Use `⟨act2 P Q R S t X w, ?_, rfl⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[fockSecondActionTraceShift_apply]`. Conclude with `W₀.add_mem (hst X hX w hw) (W₀.smul_mem _ hw)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actQ_kfin (x t : ℚ) (v : Pol P Q R S ⧸ rel P Q R S x) :
     ∃ W : Submodule ℂ (Pol P Q R S ⧸ rel P Q R S x), FiniteDimensional ℂ W ∧ v ∈ W ∧
@@ -99,7 +99,7 @@ theorem actQ_kfin (x t : ℚ) (v : Pol P Q R S ⧸ rel P Q R S x) :
   exact W₀.add_mem (hst X hX w hw) (W₀.smul_mem _ hw)
 
 /- English proof (translation)
-Simplify using `only [wtSub, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero] at hg ⊢`. Introduce `a`. Rewrite using `[actQ_mk, fockSecondActionTraceShift_apply, hg a]`. Simplify using `[Eab, Matrix.trace_single_eq_same, add_smul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem actQ_wt (x t : ℚ) (μ : Ix R S → ℚ) (g : Pol P Q R S) (hg : g ∈ wtSub (fockAct2 P Q R S) μ) :
     (Submodule.Quotient.mk g : Pol P Q R S ⧸ rel P Q R S x) ∈ wtSub (actQ P Q R S x t) (fun a => μ a + t) := by
@@ -109,9 +109,9 @@ theorem actQ_wt (x t : ℚ) (μ : Ix R S → ℚ) (g : Pol P Q R S) (hg : g ∈ 
   simp [Eab, Matrix.trace_single_eq_same, add_smul]
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ v`. Establish `hf` using `((GlobalTheory.FockPolGK.pol_locFin_weights P Q R S).2 f).2`. Use `Submodule.iSup_induction (fun μ => wtSub (fockAct2 P Q R S) μ) (motive := fun g => (Submodule.Quotient.mk g : Pol P Q R S ⧸ rel P Q R S x) ∈ ⨆ μ : Ix R S → ℚ, wtSub (actQ P Q R S x t) μ) hf ?_ ?_ ?_` and prove the remaining obligations. Introduce `μ g hg`. Conclude with `Submodule.mem_iSup_of_mem _ (actQ_wt P Q R S x t μ g hg)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `g h hg hh`. Rewrite using `[Submodule.Quotient.mk_add]`. Conclude with `Submodule.add_mem _ hg hh`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actQ_wts (x t : ℚ) (v : Pol P Q R S ⧸ rel P Q R S x) :
     v ∈ ⨆ μ : Ix R S → ℚ, wtSub (actQ P Q R S x t) μ := by
@@ -135,7 +135,7 @@ def gkQ (x t : ℚ) : GKMod R S where
   wts := actQ_wts P Q R S x t
 
 /- English proof (translation)
-Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`. Conclude with `Submodule.subset_span ⟨X, f, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_fockFirstAction_eq_trace_smul (x : ℚ) (X : Mat P Q) (f : Pol P Q R S) :
     (Submodule.Quotient.mk (fockAct1 P Q R S X f) : Pol P Q R S ⧸ rel P Q R S x) =
@@ -144,11 +144,9 @@ theorem mk_fockFirstAction_eq_trace_smul (x : ℚ) (X : Mat P Q) (f : Pol P Q R 
   exact Submodule.subset_span ⟨X, f, rfl⟩
 
 /- English proof (translation)
-Establish `hK : rel P Q R S x ≤ LinearMap.ker l`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `g ⟨X, f, rfl⟩`. Simplify using `[hlX]`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f, l f ≠ 0 := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hl (LinearMap.ext fun f => by simpa using h f)`. Use `⟨⟨Submodule.Quotient.mk f, 0, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Ne, Submodule.Quotient.mk_eq_zero]`.
-
-Conclude with `fun hm => hf (hK hm)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem nontrivial_of_form (x : ℚ) (l : Pol P Q R S →ₗ[ℂ] ℂ) (hl : l ≠ 0)
     (hlX : ∀ X f, l (fockAct1 P Q R S X f) = (x : ℂ) * X.trace * l f) : Nontrivial (Pol P Q R S ⧸ rel P Q R S x) := by
@@ -165,9 +163,9 @@ theorem nontrivial_of_form (x : ℚ) (l : Pol P Q R S →ₗ[ℂ] ℂ) (hl : l �
   exact fun hm => hf (hK hm)
 
 /- English proof (translation)
-Introduce `P Q R S x t ⟨l, hl, hlX⟩`. Use `⟨gkQ P Q R S x t, (rel P Q R S x).mkQ, ⟨Submodule.mkQ_surjective _, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `X f`. Conclude with `mk_fockFirstAction_eq_trace_smul P Q R S x X f`. Introduce `Y f show actQ P Q R S x t Y (Submodule.Quotient.mk f) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[actQ_mk, fockSecondActionTraceShift_apply]`. Both sides reduce to the same expression. Conclude with `nontrivial_of_form P Q R S x l hl hlX`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_lift : ∀ (P Q R S : ℕ) (x t : ℚ), GlobalTheory.RealLift.HasForm P Q R S x →
     ∃ (M : Formalism.BasicNotions.TH.GKMod R S) (pr : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] M.V),

@@ -18,11 +18,9 @@ abbrev BSx.res {X : SimplicialObject Spc} {a b : ℕ} {V U : Scheme.{0}} (g : V 
   ((X.obj (op (SimplexCategory.mk a))).obj (op (SimplexCategory.mk b))).map g.op y
 
 /- English proof (translation)
-Break down `h with h | h` into its components or cases. Conclude with `(HomologicalComplex.eval _ _ l).map_isZero (HomologicalComplex.isZero_extend_X _ _ c (fun i hi => by`. Express the relevant statement in the definitionally equal form `-((i : ℕ) : ℤ) = c at hi`. Use the proof step `omega))`. Distinguish the cases in `hc : c ≤ 0`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, rfl⟩ : ∃ a : ℕ, c = -(a : ℤ)` from `⟨(-c).toNat, by omega⟩`. Use `IsZero.of_iso ?_ ((HomologicalComplex.eval _ _ l).mapIso (HomologicalComplex.extendXIso _ ComplexShape.embeddingDownNat (i := a) rfl))` and prove the remaining obligations. Conclude with `HomologicalComplex.isZero_extend_X _ _ l (fun i hi => by`. Express the relevant statement in the definitionally equal form `-((i : ℕ) : ℤ) = l at hi`. Use the proof step `omega)`.
-
-Conclude with `(HomologicalComplex.eval _ _ l).map_isZero (HomologicalComplex.isZero_extend_X _ _ c (fun i hi => by`. Express the relevant statement in the definitionally equal form `-((i : ℕ) : ℤ) = c at hi`. Use the proof step `omega))`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem biChains_isZero (X : SimplicialObject Spc) (c l : ℤ) (h : 0 < c ∨ 0 < l) :
     IsZero (((biChains R X).X c).X l) := by
@@ -47,11 +45,9 @@ def evT {X : SimplicialObject Spc} {K : Cx R} {n : ℤ} (γ : Cochain (totChains
       (-((a + b : ℕ) : ℤ)) (by simp only [ComplexShape.π_def]; push_cast; ring) ≫ γ.v _ s h) (freeGen R _ U y)
 
 /- English proof (translation)
-Use extensionality with `t s hs : 1`. Apply `HomologicalComplex₂.total.hom_ext` to reduce the goal to its premises. Introduce `c l hcl`. Establish `hcl' : c + l = t` using `hcl`. Distinguish the cases in `hc : c ≤ 0 ∧ l ≤ 0`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨a, rfl⟩ : ∃ a : ℕ, c = -(a : ℤ)` from `⟨(-c).toNat, by omega⟩`. Take `⟨b, rfl⟩ : ∃ b : ℕ, l = -(b : ℤ)` from `⟨(-l).toNat, by omega⟩`. Take `rfl : t = -((a + b : ℕ) : ℤ)` from `by push_cast; omega`. Rewrite using `[← cancel_epi (biChainsXIso R X a b).inv]`. Conclude with `free_ext _ _ fun U y => h a b s hs U y`.
-
-Conclude with `(biChains_isZero X c l (by omega)).eq_of_src _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evT_ext {X : SimplicialObject Spc} {K : Cx R} {n : ℤ} (γ γ' : Cochain (totChains R X) K n)
     (h : ∀ a b s h U y, evT γ a b s h U y = evT γ' a b s h U y) : γ = γ' := by
@@ -68,15 +64,13 @@ theorem evT_ext {X : SimplicialObject Spc} {K : Cx R} {n : ℤ} (γ γ' : Cochai
   · exact (biChains_isZero X c l (by omega)).eq_of_src _ _
 
 /- English proof (translation)
-Establish `key : ∀ (c l s : ℤ) (hs : c + l + n = s), ∃ ψ : ((biChains R X).X c).X l ⟶ K.X s, ∀ (a b : ℕ) (hc : c = -(a : ℤ)) (hl : l = -(b : ℤ)) U y, Sec.map ((biChainsXIso R X a b).inv ≫ eqToHom (by rw [hc, hl]) ≫ ψ) (freeGen R _ U y) = f a b s (by push_cast; omega) U y`. Introduce `c l s hs`. Distinguish the cases in `hc : c ≤ 0 ∧ l ≤ 0`. Take `⟨a, rfl⟩ : ∃ a : ℕ, c = -(a : ℤ)` from `⟨(-c).toNat, by omega⟩`. Take `⟨b, rfl⟩ : ∃ b : ℕ, l = -(b : ℤ)` from `⟨(-l).toNat, by omega⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩` from `free_exists (R := R) _ _ (f a b s (by push_cast; omega)) (fun V U g y => hf a b s _ V U g y)`. Use `⟨(biChainsXIso R X a b).hom ≫ φ, fun a' b' hc hl U y => ?_⟩` and prove the remaining obligations. Take `rfl : a' = a` from `by omega`. Take `rfl : b' = b` from `by omega`. Rewrite using `[eqToHom_refl, Category.id_comp, Iso.inv_hom_id_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hφ U y`. Conclude with `⟨0, fun a b hc' hl' => by omega⟩`. Use `choose ψ hψ using key`. Use `⟨Cochain.mk fun t s h => (biChains R X).totalDesc fun c l hcl => ψ c l s (by` and prove the remaining obligations. Establish `: c + l = t` using `hcl`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `omega), fun a b s h U y => ?_⟩`. Unfold `evT`. Rewrite using `[Cochain.mk_v, HomologicalComplex₂.ι_totalDesc]`. Use `hψ (-(a : ℤ)) (-(b : ℤ)) s (by push_cast at h ⊢; omega) a b rfl rfl U y` as an intermediate fact. Rewrite `this` using `[eqToHom_refl, Category.id_comp]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evT_exists {X : SimplicialObject Spc} {K : Cx R} {n : ℤ}
     (f : ∀ (a b : ℕ) (s : ℤ), -((a + b : ℕ) : ℤ) + n = s → ∀ U : Scheme.{0}, BSx X a b U → Sec (K.X s) U)
@@ -125,7 +119,7 @@ theorem baseS_res {a b : ℕ} {W U : Scheme.{0}} (g : W ⟶ U) (y : BSx (twX E V
     baseS V (y.res g) = (baseS V y).res g := rfl
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.congr_hom (((ℓ.app (op (SimplexCategory.mk a))).app (op (SimplexCategory.mk b))).naturality g.op) y`.
+A detailed English derivation is pending.
 -/
 theorem vertS_res {a b : ℕ} {W U : Scheme.{0}} (g : W ⟶ U) (y : BSx (twX E V) a b U) :
     vertS V ℓ (y.res g) = (vertS V ℓ y).res g :=
@@ -140,7 +134,7 @@ def crossVal (a b : ℕ) (s : ℤ) (h : -((a + b : ℕ) : ℤ) + k = s) (U : Sch
     (ev α a _ rfl U (baseS V y)) (ev z b _ rfl U (vertS V ℓ y))
 
 /- English proof (translation)
-Unfold `crossVal`. Rewrite using `[Units.smul_def, Units.smul_def, Sec.res, map_zsmul, ← Sec.res, μ.nat, ev_res, ev_res, baseS_res, vertS_res]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem crossVal_res (a b : ℕ) (s : ℤ) (h : -((a + b : ℕ) : ℤ) + k = s) {W U : Scheme.{0}} (g : W ⟶ U)
     (y : BSx (twX E V) a b U) :
@@ -152,7 +146,7 @@ def crossT : Cochain (totChains R (twX E V)) K k :=
   (evT_exists (crossVal V ℓ μ hk α z) (fun a b s h W U g y => crossVal_res V ℓ μ hk α z a b s h g y)).choose
 
 /- English proof (translation)
-The claim follows from `(evT_exists (crossVal V ℓ μ hk α z) (fun a b s h W U g y => crossVal_res V ℓ μ hk α z a b s h g y)).choose_spec a b s h U y`.
+A detailed English derivation is pending.
 -/
 theorem evT_crossT (a b : ℕ) (s : ℤ) (h : -((a + b : ℕ) : ℤ) + k = s) (U : Scheme.{0}) (y : BSx (twX E V) a b U) :
     evT (crossT V ℓ μ hk α z) a b s h U y =
@@ -161,7 +155,7 @@ theorem evT_crossT (a b : ℕ) (s : ℤ) (h : -((a + b : ℕ) : ℤ) + k = s) (U
   (evT_exists (crossVal V ℓ μ hk α z) (fun a b s h W U g y => crossVal_res V ℓ μ hk α z a b s h g y)).choose_spec a b s h U y
 
 /- English proof (translation)
-Unfold `evT`. Rewrite using `[Cochain.add_v, Preadditive.comp_add, Preadditive.comp_add]`. Conclude with `map_add (mapHom _ _ (freeGen R _ U y)) _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evT_add {X : SimplicialObject Spc} {L : Cx R} {t : ℤ} (γ γ' : Cochain (totChains R X) L t) (a b : ℕ) (s : ℤ)
     (h : -((a + b : ℕ) : ℤ) + t = s) (U : Scheme.{0}) (y : BSx X a b U) :
@@ -171,7 +165,7 @@ theorem evT_add {X : SimplicialObject Spc} {L : Cx R} {t : ℤ} (γ γ' : Cochai
   exact map_add (mapHom _ _ (freeGen R _ U y)) _ _
 
 /- English proof (translation)
-The claim follows from `evT_ext _ _ fun a b s h U y => by rw [evT_add, evT_crossT, evT_crossT, evT_crossT, ev_add, map_add, LinearMap.add_apply, smul_add]`.
+A detailed English derivation is pending.
 -/
 theorem crossT_add_left (α' : Cochain ((chains R).obj E) I n) :
     crossT V ℓ μ hk (α + α') z = crossT V ℓ μ hk α z + crossT V ℓ μ hk α' z :=
@@ -179,7 +173,7 @@ theorem crossT_add_left (α' : Cochain ((chains R).obj E) I n) :
     rw [evT_add, evT_crossT, evT_crossT, evT_crossT, ev_add, map_add, LinearMap.add_apply, smul_add]
 
 /- English proof (translation)
-Unfold `evT`. Rewrite using `[Cochain.zero_v, comp_zero, comp_zero]`. Conclude with `map_zero (mapHom _ _ (freeGen R _ U y))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evT_zero {X : SimplicialObject Spc} {L : Cx R} {t : ℤ} (a b : ℕ) (s : ℤ)
     (h : -((a + b : ℕ) : ℤ) + t = s) (U : Scheme.{0}) (y : BSx X a b U) :
@@ -189,7 +183,7 @@ theorem evT_zero {X : SimplicialObject Spc} {L : Cx R} {t : ℤ} (a b : ℕ) (s 
   exact map_zero (mapHom _ _ (freeGen R _ U y))
 
 /- English proof (translation)
-The claim follows from `evT_ext _ _ fun a b s h U y => by rw [evT_crossT, evT_zero, ev_zero, map_zero, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem crossT_zero_right : crossT V ℓ μ hk α (0 : Cochain ((chains R).obj B) J m) = 0 :=
   evT_ext _ _ fun a b s h U y => by

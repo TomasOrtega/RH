@@ -14,18 +14,18 @@ section general
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smodEq_iff (p : R) (k : ℕ) (a b : R) :
     (a ≡ b [SMOD (Ideal.span {p} ^ k • ⊤ : Submodule R R)]) ↔ p ^ k ∣ a - b := by
   rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Consider the cases of `n with`. Consider the case `zero => intro a _`. Simplify using the standard rewrite rules. Consider the case `succ n => subst hx`.
+Consider separately whether the proposition holds or fails. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `using h`. Proceed by induction on `n with`. Consider the case `zero => intro a _`. Simplify using the standard rewrite rules. Consider the case `succ n ih`.
+Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `a ha`. Take `⟨b, rfl⟩` from `h a ((dvd_pow_self x n.succ_ne_zero).trans ha)`. Rewrite `ha`, the goal using `[pow_succ']`. Rewrite `ha` using `[mul_left_comm, mul_dvd_mul_iff_left hx]`. Conclude with `mul_dvd_mul_left x (ih b ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sat_pow [IsDomain R] (p x : R) (h : ∀ a, x ∣ p * a → x ∣ a) (n : ℕ) :
     ∀ a, x ^ n ∣ p * a → x ^ n ∣ a := by
@@ -43,9 +43,9 @@ theorem sat_pow [IsDomain R] (p x : R) (h : ∀ a, x ∣ p * a → x ∣ a) (n :
     exact mul_dvd_mul_left x (ih b ha)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro a ha`. Simplify using `using ha`. Consider the case `succ k ih`. Introduce `a ha`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ha` using `[pow_succ', mul_assoc]`. Conclude with `ih a (h _ ha)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sat_ppow (p y : R) (h : ∀ a, y ∣ p * a → y ∣ a) (k : ℕ) :
     ∀ a, y ∣ p ^ k * a → y ∣ a := by
@@ -57,9 +57,9 @@ theorem sat_ppow (p y : R) (h : ∀ a, y ∣ p * a → y ∣ a) (k : ℕ) :
     exact ih a (h _ ha)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Rewrite `hc` using `[← map_pow, ← map_mul, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Take `⟨b, hb⟩` from `hc`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, c, by linear_combination hb⟩`. Introduce and unpack `⟨b, c, rfl⟩`. Use `⟨Ideal.Quotient.mk _ c, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_mul, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Conclude with `⟨b, by ring⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem quot_dvd_iff (p y : R) (k : ℕ) (a : R) :
     (Ideal.Quotient.mk (Ideal.span {y}) p) ^ k ∣ Ideal.Quotient.mk (Ideal.span {y}) a ↔
@@ -76,23 +76,21 @@ theorem quot_dvd_iff (p y : R) (k : ℕ) (a : R) :
     exact ⟨b, by ring⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Simplify using `only [smodEq_iff, sub_zero, quot_dvd_iff] at hx`. Use `choose b c hbc using hx`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Distinguish the cases in `hy : y = 0`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hy` using the available equality. Establish `: a = 0` using `IsHausdorff.haus' (I := Ideal.span {p}) a fun k => by`. Rewrite using `[smodEq_iff]`. Conclude with `⟨c k, by linear_combination hbc k⟩`. Simplify using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {p}) b fun {m n} hmn => by`. Rewrite using `[smodEq_iff]`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Establish `e : y * (b m - b (m + d)) = p ^ m * (p ^ d * c (m + d) - c m)`. Take the linear combination `hbc (m + d) - hbc m`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `sat_ppow p y h m _ ⟨_, e.symm⟩`. Use `⟨w, mul_left_cancel₀ hy ?_⟩` and prove the remaining obligations. Rewrite using `[e, hw]`. Expand and normalize the polynomial expressions, which then agree. Establish `: a - y * L = 0` using `IsHausdorff.haus' (I := Ideal.span {p}) _ fun k => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `(smodEq_iff p k _ _).1 (hL k)`. Rewrite using `[smodEq_iff]`. Conclude with `⟨c k + y * w, by linear_combination hbc k + y * hw⟩`. Conclude with `⟨L, by linear_combination this⟩`. Use the proof step `prec' f hf := by choose g hg using fun n => Ideal.Quotient.mk_surjective (f n)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ n, ∃ b c, g n - g (n + 1) = y * b + p ^ n * c` using `fun n => by`. Use `(smodEq_iff _ n _ _).1 (hf (Nat.le_succ n))` as an intermediate fact. Rewrite `this` using `[← hg, ← hg, ← map_sub, quot_dvd_iff]`. Then use the resulting hypothesis. Use `choose b c hbc using h1`. Set `u : ℕ → R` to `fun n => g n + y * ∑ i ∈ Finset.range n, b i`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : ∀ n, p ^ n ∣ u n - u (n + 1)` using `fun n => ⟨c n, by simp only [u, Finset.sum_range_succ]; linear_combination hbc n⟩`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {p}) u fun {m n} hmn => by`. Rewrite using `[smodEq_iff]`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Consider the case `succ n hmn ih`. Use `dvd_add ih ((pow_dvd_pow p hmn).trans (hu n))` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Use `⟨Ideal.Quotient.mk _ L, fun n => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `(smodEq_iff p n _ _).1 (hL n)`.
-
-Rewrite using `[smodEq_iff, ← hg, ← map_sub, quot_dvd_iff]`. Conclude with `⟨-∑ i ∈ Finset.range n, b i, w, by simp only [u] at hw; linear_combination hw⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem complete_quot [IsDomain R] (p y : R) [hc : IsAdicComplete (Ideal.span {p}) R]
     (h : ∀ a, y ∣ p * a → y ∣ a) :
@@ -145,11 +143,11 @@ theorem complete_quot [IsDomain R] (p y : R) [hc : IsAdicComplete (Ideal.span {p
 end general
 
 /- English proof (translation)
-Introduce `l _ e he n`. Use `(GlobalTheory.T.usage l).1` as an intermediate fact. Establish `hk` using `GlobalTheory.T.fontaineTheta_eq_zero_iff_fontaineXiElement_dvd l e he`. Establish `h1 : ∀ a : Per.Ainf l, xi e ∣ (l : Per.Ainf l) * a → xi e ∣ a` using `fun a ha => by`. Rewrite `ha`, the goal using `[← hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `ha` using `[map_mul, map_natCast, mul_eq_zero]`. Use `ha.resolve_left fun h0 => GlobalTheory.RingBasics.p_ne_zero (p := l) ?_` and prove the remaining obligations. Simplify using `using congrArg Subtype.val h0`. Establish `h2` using `sat_pow _ _ h1 n`. Use `⟨h2, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: IsAdicComplete (Ideal.span {(l : Per.Ainf l)}) (Per.Ainf l)` using `inferInstance`. Use `complete_quot (l : Per.Ainf l) (xi e ^ n) h2` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem xi_sat : ∀ (l : ℕ) [Fact l.Prime], ∀ e : Per.Fl l, IsEps e → ∀ n : ℕ, (∀ a : Per.Ainf l, xi e ^ n ∣ (l : Per.Ainf l) * a → xi e ^ n ∣ a) ∧ IsAdicComplete (Ideal.span {(l : Per.Ainf l ⧸ Ideal.span {xi e ^ n})}) (Per.Ainf l ⧸ Ideal.span {xi e ^ n}) := by
   intro l _ e he n

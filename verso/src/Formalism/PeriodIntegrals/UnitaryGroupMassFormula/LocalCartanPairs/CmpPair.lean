@@ -10,7 +10,7 @@ namespace PI.SqPair.LocCartanPairW
 variable {R : Type*} [CommRing R] (σ : R ≃+* R)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cmp_map_mulVec {ι : Type*} [Fintype ι] (h : Matrix ι ι R) (v : ι → R) :
     (fun i => σ ((h *ᵥ v) i)) = h.map σ *ᵥ (fun i => σ (v i)) := by
@@ -18,7 +18,7 @@ theorem cmp_map_mulVec {ι : Type*} [Fintype ι] (h : Matrix ι ι R) (v : ι �
   simp [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]
 
 /- English proof (translation)
-Rewrite using `[cmp_map_mulVec σ h v, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec _ (h.map σ)ᵀ, Matrix.vecMul_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cmp_gram_pull {ι : Type*} [Fintype ι] (A h : Matrix ι ι R) (v w : ι → R) :
     (fun i => σ ((h *ᵥ v) i)) ⬝ᵥ (A *ᵥ (h *ᵥ w)) =
@@ -27,9 +27,9 @@ theorem cmp_gram_pull {ι : Type*} [Fintype ι] (A h : Matrix ι ι R) (v w : ι
     Matrix.dotProduct_mulVec _ (h.map σ)ᵀ, Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Establish `h1 : (fun i => σ ((a • v) i)) = σ a • fun i => σ (v i)`. Use function extensionality and compare the values at `i`. Simplify using `[map_mul]`. Rewrite using `[h1, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`. Establish `h2 : (fun i => σ a * σ (v i)) ⬝ᵥ (A *ᵥ w) = σ a * ((fun i => σ (v i)) ⬝ᵥ (A *ᵥ w))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [dotProduct, Finset.mul_sum, mul_assoc]`. Establish `h3 : (σ a • fun i => σ (v i)) = fun i => σ a * σ (v i)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[h3, h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -45,7 +45,7 @@ theorem cmp_gram_smul {ι : Type*} [Fintype ι] (A : Matrix ι ι R) (a b : R) (
   rw [h3, h2]; ring
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma smulMulVec_lemma {ι : Type*} [Fintype ι] (a : R) (M : Matrix ι ι R) (v : ι → R) :
     (a • M) *ᵥ v = a • (M *ᵥ v) := by
@@ -53,7 +53,7 @@ private lemma smulMulVec_lemma {ι : Type*} [Fintype ι] (a : R) (M : Matrix ι 
   simp [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `key : s • ((fun i => σ (v i)) ⬝ᵥ (A' *ᵥ w)) = (fun i => σ (x i)) ⬝ᵥ (A *ᵥ y) * (σ c * d)`. Rewrite using `[← dotProduct_smul, ← smulMulVec_lemma, ← hh, ← cmp_gram_pull σ A h v w, hv, hw, cmp_gram_smul σ A c d x y]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hxy, smul_eq_mul]`. Conclude with `mul_left_cancel₀ hs key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmp_gram_pre [IsDomain R] {ι : Type*} [Fintype ι] (A A' h : Matrix ι ι R) (s : R)
     (hs : s ≠ 0) (hh : (h.map σ)ᵀ * A * h = s • A') (v w x y : ι → R) (c d t : R)
@@ -69,9 +69,9 @@ theorem cmp_gram_pre [IsDomain R] {ι : Type*} [Fintype ι] (A A' h : Matrix ι 
   exact mul_left_cancel₀ hs key
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, hp, hq, hw]`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, hp, hq]`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cmp_pre {ι : Type*} [Fintype ι] (h : Matrix ι ι R) (p q x y : ι → R) (c₁ d α' s' : R)
     (w : Matrix (Fin 2) (Fin 2) R) (hp : h *ᵥ p = c₁ • x) (hq : h *ᵥ q = (c₁ * d) • y)
@@ -89,7 +89,7 @@ theorem cmp_pre {ι : Type*} [Fintype ι] (h : Matrix ι ι R) (p q x y : ι →
     ring
 
 /- English proof (translation)
-Use `⟨cmp_gram_pre σ A A' h s hs hh v₁ v₁ x₁ x₁ c₁ c₁ 0 hv hv (by rw [hxx]; ring), cmp_gram_pre σ A A' h s hs hh w₁ w₁ y₁ y₁ c₂ c₂ 0 hw hw (by rw [hyy]; ring), cmp_gram_pre σ A A' h s hs hh v₁ w₁ x₁ y₁ c₁ c₂ 1 hv hw (by rw [hxy, hc]; ring)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem cmp_hyp [IsDomain R] {ι : Type*} [Fintype ι] (A A' h : Matrix ι ι R) (s : R) (hs : s ≠ 0)
     (hh : (h.map σ)ᵀ * A * h = s • A') (c₁ c₂ : R) (hc : σ c₁ * c₂ = s)
@@ -103,7 +103,7 @@ theorem cmp_hyp [IsDomain R] {ι : Type*} [Fintype ι] (A A' h : Matrix ι ι R)
     cmp_gram_pre σ A A' h s hs hh v₁ w₁ x₁ y₁ c₁ c₂ 1 hv hw (by rw [hxy, hc]; ring)⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, map_sum, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma mapMul_lemma_2 {α β γ : Type*} [Fintype β] (X : Matrix α β R) (Y : Matrix β γ R) :
     (X * Y).map σ = X.map σ * Y.map σ := by
@@ -111,31 +111,29 @@ private lemma mapMul_lemma_2 {α β γ : Type*} [Fintype β] (X : Matrix α β R
   simp [Matrix.mul_apply, map_sum, map_mul]
 
 /- English proof (translation)
-Take `⟨M, hMdef⟩ : ∃ M, M = v * h * u'` from `⟨_, rfl⟩`. Establish `hcol : ∀ b : Fin 2, ∀ i, (h * u') i (.inl b) = ![c₁, c₂] b * u i (.inl b)`. Rewrite using `[Fin.forall_fin_two]`. Prove the components needed by the constructor for the conclusion. Introduce `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `congrFun hv i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at e`. Simplify using `[Matrix.mul_apply, hu0', hu0, e]`. Introduce `i`. Establish `e` using `congrFun hw i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at e`. Simplify using `[Matrix.mul_apply, hu1', hu1, e]`. Establish `hM1 : ∀ a (b : Fin 2), M a (.inl b) = ![c₁, c₂] b * (1 : Matrix (Fin 2 ⊕ κ) (Fin 2 ⊕ κ) R) a (.inl b)`. Introduce `a b`. Rewrite using `[hMdef, Matrix.mul_assoc, Matrix.mul_apply, ← hvu, Matrix.mul_apply, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hcol b i]`. Expand and normalize the polynomial expressions, which then agree. Establish `hUM : u * M = h * u'`. Rewrite using `[hMdef, ← Matrix.mul_assoc, ← Matrix.mul_assoc, huv, Matrix.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hGram : (M.map σ)ᵀ * fromBlocks !![0, 1; 1, 0] 0 0 A₁ * M = s • fromBlocks !![0, 1; 1, 0] 0 0 A₁'`. Rewrite using `[← hG, ← hG']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mapMul_lemma_2 σ, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = ((h * u').map σ)ᵀ * A * (h * u') := by rw [hUM]`. Use `_ = (u'.map σ)ᵀ * ((h.map σ)ᵀ * A * h) * u' := by`. Rewrite using `[mapMul_lemma_2 σ, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = s • ((u'.map σ)ᵀ * A' * u') := by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hh, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hMb : M = fromBlocks (diagonal ![c₁, c₂]) M.toBlocks₁₂ 0 M.toBlocks₂₂`. Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Rewrite using `[hM1 (.inl a) b]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[Matrix.one_apply, Matrix.diagonal_apply]`. Simplify using `[Matrix.one_apply, Matrix.diagonal_apply, hab]`. Simplify using `[Matrix.toBlocks₁₂]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hM1 (.inr a) b]`. Simplify using `[Matrix.one_apply]`. Simplify using `[Matrix.toBlocks₂₂]`. Rewrite `hGram` using `[hMb]`. Simplify using `only [Matrix.fromBlocks_map, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_smul, Matrix.map_zero, map_zero, Matrix.transpose_zero, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, smul_zero] at hGram`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, hQ, -, hS⟩` from `Matrix.fromBlocks_inj.mp hGram`. Establish `hc₁' : σ c₁ ≠ 0` using `by simpa using hc₁`. Establish `hc₂' : σ c₂ ≠ 0` using `by simpa using hc₂`. Establish `hB : M.toBlocks₁₂ = 0`. Use extensionality with `a l`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e0` using `congrFun (congrFun hQ 0) l`. Establish `e1` using `congrFun (congrFun hQ 1) l`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal_apply, hc₁', hc₂'] at e0 e1`. Use `fin_cases a`. Simplify using `using e1`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using e0`. Use `⟨M.toBlocks₂₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hMdef] nth_rewrite 1 [hMb]`. Rewrite using `[hB]`. Rewrite `hS` using `[hB]`.
-
-Simplify using `using hS`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cmp_split [IsDomain R] {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
     [DecidableEq κ] (A A' h : Matrix ι ι R) (s : R) (hh : (h.map σ)ᵀ * A * h = s • A')
@@ -217,11 +215,11 @@ theorem cmp_split [IsDomain R] {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fi
     simpa using hS
 
 /- English proof (translation)
-Establish `e1 : h *ᵥ Pi.single j 1 = ϖ ^ m • x`. Rewrite using `[hh₁, smulMulVec_lemma, hx]`. Establish `e2 : h *ᵥ (g₁ *ᵥ y) = (ϖ ^ m * ϖ ^ (2 * a)) • y`. Rewrite using `[hh₁, smulMulVec_lemma, Matrix.mulVec_mulVec, hg, smulMulVec_lemma, Matrix.one_mulVec, smul_smul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, e1, e2, hw, hα]`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, e1, e2]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cmp_pre_sel {ι : Type*} [Fintype ι] [DecidableEq ι] (h h₁ g₁ : Matrix ι ι R) (ϖ : R)
     (m a : ℕ) (hh₁ : h = ϖ ^ m • h₁) (hg : h₁ * g₁ = ϖ ^ (2 * a) • (1 : Matrix ι ι R)) (j : ι)
@@ -245,7 +243,7 @@ theorem cmp_pre_sel {ι : Type*} [Fintype ι] [DecidableEq ι] (h h₁ g₁ : Ma
     ring
 
 /- English proof (translation)
-Rewrite using `[map_pow, hϖ, ← hk]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cmp_pow (ϖ : R) (hϖ : σ ϖ = ϖ) (m a k : ℕ) (hk : m + a = k) :
     σ (ϖ ^ m) * (ϖ ^ m * ϖ ^ (2 * a)) = ϖ ^ (2 * k) := by
@@ -259,11 +257,11 @@ namespace PI.SqPair.LCP
 open PI.SqPair.LocCartanPairW
 
 /- English proof (translation)
-Use `haveI := hI.dom`. Establish `key : ∀ x : R, ¬ IsUnit x → ϖ ∣ x`. Introduce `x hx`. Distinguish the cases in `h0 : x = 0`. Conclude with `⟨0, by rw [h0, mul_zero]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨m, u, hu, rfl⟩` from `hI.val x h0`. Consider the cases of `m with`. Consider the case `zero => exact absurd (by simpa using hu) hx`. Consider the case `succ k => exact ⟨ϖ ^ k * u, by ring⟩`. Establish `back : ∀ x : R, ϖ ∣ x → ¬ IsUnit x`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x ⟨c, rfl⟩ hu`. Conclude with `hI.pi_nonunit (isUnit_of_mul_isUnit_left hu)`. Use `IsLocalRing.of_nonunits_add ?_` and prove the remaining obligations. Introduce `a b ha hb`. Conclude with `back _ (dvd_add (key a ha) (key b hb))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inert_isLocalRing {R : Type} [CommRing R] [StarRing R] {R₀ : Subring R} {ϖ : R}
     (hI : Inert R₀ ϖ) : IsLocalRing R := by
@@ -284,13 +282,13 @@ theorem inert_isLocalRing {R : Type} [CommRing R] [StarRing R] {R₀ : Subring R
   exact back _ (dvd_add (key a ha) (key b hb))
 
 /- English proof (translation)
-Introduce `R _ _ R₀ ϖ hI κ _ _ A A' h k a hP hak x y v w hxx hyy hxy hv hw`. Use `hI.dom` as an intermediate fact. Establish `: IsLocalRing R` using `inert_isLocalRing hI`. Take `⟨⟨hAh, -⟩, ⟨hAh', -⟩, hh⟩` from `hP`. Establish `hϖ : star ϖ = ϖ` using `(hI.fix ϖ).mp hI.pi_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card κ + 2 = Fintype.card (Fin 2 ⊕ κ)`. Simplify using `[Fintype.card_sum, add_comm]`. Take `⟨u, ui, A₁, huv, hvu, hu0, hu1, hG⟩` from `hS R (Fin 2 ⊕ κ) κ hcard A hAh x y hxx hyy hxy`. Establish `hs : ϖ ^ (2 * k) ≠ 0` using `pow_ne_zero _ hI.pi_ne`. Establish `hc : (starRingAut : R ≃+* R) (ϖ ^ (k - a)) * ϖ ^ (k + a) = ϖ ^ (2 * k)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_pow, starRingAut_apply, hϖ, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Take `⟨h1, h2, h3⟩` from `cmp_hyp (starRingAut : R ≃+* R) A A' h _ hs hh (ϖ ^ (k - a)) (ϖ ^ (k + a)) hc x y v w hv hw hxx hyy hxy`. Take `⟨u', ui', A₁', huv', -, hu0', hu1', hG'⟩` from `hS R (Fin 2 ⊕ κ) κ hcard A' hAh' v w h1 h2 h3`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h₂, hM, -⟩` from `cmp_split (starRingAut : R ≃+* R) A A' h _ hh (ϖ ^ (k - a)) (ϖ ^ (k + a)) (pow_ne_zero _ hI.pi_ne) (pow_ne_zero _ hI.pi_ne) x y v w hv hw u u' ui A₁ A₁' huv hvu hu0 hu1 hu0' hu1' hG hG'`. Use `⟨u, u', A₁, A₁', h₂, ![ϖ ^ (k - a), ϖ ^ (k + a)], isUnit_det_of_right_inverse huv, isUnit_det_of_right_inverse huv', hG, hG', ?_⟩` and prove the remaining obligations. Rewrite using `[← hM, ← Matrix.mul_assoc, ← Matrix.mul_assoc, huv, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem split_of (hS : SplitOff) : Split := by
   intro R _ _ R₀ ϖ hI κ _ _ A A' h k a hP hak x y v w hxx hyy hxy hv hw

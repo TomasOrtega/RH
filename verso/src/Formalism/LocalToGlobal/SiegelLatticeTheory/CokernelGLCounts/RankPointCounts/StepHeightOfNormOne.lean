@@ -26,7 +26,7 @@ def SizesRec (Cg CT : ℝ) (r f : ℕ) (b rd g TT : ℝ) : Prop :=
   1 ≤ f ∧ 16 ≤ b ∧ 0 < rd ∧ rd ≤ b ∧ 1 ≤ g ∧ g ≤ b ^ Cg ∧ 0 < TT ∧ TT ≤ b ^ (2 * CT * ((2 * r + 2 : ℕ) : ℝ))
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4, a5, a6, a7, a8⟩` from `h`. Conclude with `⟨a1, a2, a3, a4, a5, a6, a7, a8, h1, h2, h3, h4⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ngSizes_of {Cg CT CSt : ℝ} {r f : ℕ} {b rd g TT cSt e1 : ℝ} (h : SizesRec Cg CT r f b rd g TT)
     (h1 : 0 ≤ cSt) (h2 : cSt ≤ b ^ (CSt * ((2 * r + 2 : ℕ) : ℝ) ^ 3 * f)) (h3 : 0 ≤ e1) (h4 : e1 ≤ 2) :
@@ -91,13 +91,13 @@ def StepAnalytic : Prop :=
           (Real.exp (CB * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b) * Ire)
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨B1, B2, hB'⟩` from `hB Cg cb Cw cT CT C0`. Take `⟨Cgs, CTs, hCgs, hCTs, S1, S2, hS'⟩` from `hS Cg cb Cw cT CT C0`. Take `⟨N1, N2, hN'⟩` from `hN Cg cb Cw cT CT C0`. Take `⟨P1, P2, hP'⟩` from `hP Cg cb Cw cT CT C0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨H1, H2, hH'⟩` from `hH Cg cb Cw cT CT C0`. Take `⟨C1, C0n, hA1⟩` from `hA Cg cb Cw cT CT C0`. Take `⟨CB, CSt, hCB, hCSt, A1, A2, hA'⟩` from `hA1 (C1 + C0n + 38)`. Use `⟨C1, C0n, C1 + C0n + 38, CB, CSt, Cgs, CTs, hCB, hCSt, hCgs, hCTs, le_refl _, max B1 (max S1 (max N1 (max P1 (max H1 A1)))), max B2 (max S2 (max N2 (max P2 (max H2 A2)))), ?_⟩` and prove the remaining obligations. Introduce `C' Cl hC' hCl D large₂ X Y u u' h0 hst hct`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hctx : Ctx Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u'` using `⟨h0, hst, hct⟩`. Take `⟨P, hPf, Bk, Irat, Ire, hBk⟩` from `hB' C' Cl (le_trans (by simp) hC') (le_trans (by simp) hCl) D large₂ X Y u u' hctx`. Use `letI := hPf`. Establish `hsz` using `hS' C' Cl (le_trans (by simp) hC') (le_trans (by simp) hCl) D large₂ X Y u u' hctx`. Establish `hnm` using `hN' C' Cl (le_trans (by simp) hC') (le_trans (by simp) hCl) D large₂ X Y u u' hctx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt` using `hP' C' Cl (le_trans (by simp) hC') (le_trans (by simp) hCl) D large₂ X Y u u' hctx`. Establish `hht` using `hH' C' Cl (le_trans (by simp) hC') (le_trans (by simp) hCl) D large₂ X Y u u' hctx`. Take `⟨νL, νB, ng, cSt, e1, hL, hB2, hc0, hc1, he0, he1, hamp, hloc, hgm, hms, hps⟩` from `hA' C' Cl (le_trans (by simp) hC') (le_trans (by simp) hCl) D large₂ X Y u u' hctx P Bk Irat Ire hBk`. Take `⟨g1, g2, g3, g4⟩` from `hBk`. Conclude with `⟨P, hPf, Bk, cSt, e1, Irat, Ire, νL, νB, ng, hL, hB2, g1, g2, g3, g4, ngSizes_of hsz hc0 hc1 he0 he1, ⟨hC D X Y u u' hct νL νB ng, Formalism.L2.SG.NGData.ampInput_of_vanish (Y := Y) (u := u) (u' := u') νL νB ng hamp, hnm νL νB ng, hpt νL νB ng, hloc, hgm, hht νL νB ng⟩, ⟨hms, hps …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ngCut2C_of_steps (hB : StepConstants) (hS : StepSizes) (hC : StepClass) (hN : StepNormals) (hP : StepPoints)
     (hH : StepHeight) (hA : StepAnalytic) : NGCut2C := by
@@ -129,40 +129,40 @@ theorem ngCut2C_of_steps (hB : StepConstants) (hS : StepSizes) (hC : StepClass) 
       hnm νL νB ng, hpt νL νB ng, hloc, hgm, hht νL νB ng⟩, ⟨hms, hps⟩⟩
 
 /- English proof (translation)
-Conclude with `Formalism.L2.SG.NGData.counting_bound_of_joint_chain hR hCh (ngCut2C_of_steps hB hS hC hN hP hH hA)`.
+A detailed English derivation is pending.
 -/
 theorem rowNGC_of_steps (hR : PN.RowNGJoint) (hCh : PN.NGChain) (hB : StepConstants) (hS : StepSizes) (hC : StepClass)
     (hN : StepNormals) (hP : StepPoints) (hH : StepHeight) (hA : StepAnalytic) : RowNGC := by
   exact Formalism.L2.SG.NGData.counting_bound_of_joint_chain hR hCh (ngCut2C_of_steps hB hS hC hN hP hH hA)
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Use `⟨max (2 * Cg) 0, max CT 0, le_max_right _ _, le_max_right _ _, 0, 2, fun C' Cl _ hCl D large₂ X Y u u' hc => ?_⟩` and prove the remaining obligations. Take `⟨⟨hH, _, _⟩, _, _⟩` from `hc`. Unfold `Formalism.MainNotions.S.StandingHypotheses at hH`. Simplify using `only at hH`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify by unfolding definitions.
 
-Take `⟨-, -, h3, h4, -, -, -, -, -, -, h11, h12, h13, h14, h15, h16, -, -, h19, -, -, -, h23, -, h25⟩` from `hH`. Establish `hm2` using `D.R.two_le_m`. Take `⟨j, hj⟩` from `D.R.m_even`. Establish `hmr : ((2 * D.R.rS + 2 : ℕ) : ℝ) = (D.R.m : ℝ)`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Formalism.BasicNotions.Ranks.rS]`. Use linear arithmetic over natural numbers and integers. Establish `hf1 : 1 ≤ D.R.f`. Establish `: 1 ≤ D.R.m ^ 4` using `Nat.one_le_pow _ _ (by omega)`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hk16 : (16 : ℝ) ≤ D.R.k`. Establish `: 2 ^ 4 ≤ D.R.m ^ 4` using `Nat.pow_le_pow_left hm2 4`. Establish `: 16 ≤ D.R.k` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hbpos : 0 < large₂.sc.b` using `Real.exp_pos _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨τ⟩ : Nonempty D.what₂.Tau` from `⟨X.pl (Classical.arbitrary _)⟩`. Establish `hb1` using `(h16 τ 1 le_rfl (by omega)).1`. Establish `hb2` using `(h16 τ 1 le_rfl (by omega)).2`. Establish `hkCl : (D.R.k : ℝ) ^ (2 : ℝ) ≤ (D.R.k : ℝ) ^ Cl` using `Real.rpow_le_rpow_of_exponent_le (by linarith) hCl`. Establish `hb256 : (256 : ℝ) ≤ large₂.sc.b ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (D.R.k : ℝ) ^ (2 : ℝ) = (D.R.k : ℝ) ^ 2` using `Real.rpow_two _`. Establish `e2 : large₂.sc.b ^ (2 : ℝ) = large₂.sc.b ^ 2` using `Real.rpow_two _`. Establish `h256 : (D.R.k : ℝ) ^ 2 ≥ 256` using `by nlinarith`. Establish `h5` using `le_trans (le_max_left _ _) hb1`. Rewrite `hkCl` using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb2` using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb16 : (16 : ℝ) ≤ large₂.sc.b` using `by nlinarith`. Establish `hb1' : (1 : ℝ) ≤ large₂.sc.b` using `by linarith`. Establish `hv : 2 * D.host.v = D.host.rdE`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.BasicNotions.Host.v]`. Expand and normalize the polynomial expressions, which then agree. Establish `hrd_pos : 0 < D.host.rdE` using `by rw [← hv]; linarith`. Establish `hL : large₂.sc.L = Real.log large₂.sc.b` using `by simp [Formalism.BasicNotions.Scale.b]`. Establish `hLpos : 0 < large₂.sc.L` using `by rw [hL]; exact Real.log_pos (by linarith)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrd : D.host.rdE ≤ large₂.sc.b`. Establish `: Real.log D.host.rdE ≤ large₂.sc.L`. Use `h11.trans ?_` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hL]`. Conclude with `(Real.log_le_log_iff hrd_pos hbpos).1 this`. Establish `hkb : (1 : ℝ) ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 8`. Apply `one_le_pow₀` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : (1 : ℝ) ≤ (D.host.g 0 : ℝ)` using `hkb.trans h12`. Establish `hg1 : (1 : ℝ) ≤ (D.host.g 1 : ℝ)` using `hkb.trans h14`. Establish `hgX : (X.B.g : ℝ) = (D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)`. Rewrite using `[X.g_eq]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨hT1, hT2⟩` from `h23 u`. Take `⟨hT1', hT2'⟩` from `h23 u'`. Establish `hTpos : 0 < ((Lat.Tu D u : ℕ) : ℝ)` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hbpos _) hT1`. Establish `hTpos' : 0 < ((Lat.Tu D u' : ℕ) : ℝ)` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hbpos _) hT1'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hf1, hb16, by rw [hv]; exact hrd_pos, by rw [hv]; exact hrd, ?_, ?_, mul_pos hTpos hTpos', ?_⟩` and prove the remaining obligations. Rewrite using `[hgX]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hgX]`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hmr]`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.rpow_le_rpow_of_exponent_le hb1'` to reduce the goal to its premises. Establish `: (0 : ℝ) ≤ D.R.m` using `by positivity`. Use polynomial arithmetic with `[le_max_left CT 0]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sizes_of_hypotheses : StepSizes := by
   intro Cg cb Cw cT CT C0
@@ -248,13 +248,13 @@ def CorankOneEquivalence : Prop :=
       (Y.tO u u').s0 t t' = 1 → (Y.tO u u').s0 t' t'' = 1 → (Y.tO u u').s0 t t'' = 1)
 
 /- English proof (translation)
-Introduce `D X Y u u' hct νL νB ng`. Take `⟨hr, hs, htr⟩` from `h D X Y u u' hct`. Introduce `t ht t' ht'`. Use `show ((Y.tO u u').rowOf t = (Y.tO u u').rowOf t' ∧ (Y.tO u u').s0 t t' = 1) ↔ clsOf Y u u' t = clsOf Y u u' t'`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hrow, hst⟩`. Use extensionality with `t''`. Simplify using `only [clsOf, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨h1, h2.trans hrow, htr t' ht' t ht t'' h1 hrow.symm h2.symm (hs t ht t' ht' hrow hst) h3⟩`. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h1, h2.trans hrow.symm, htr t ht t' ht' t'' h1 hrow h2.symm hst h3⟩`. Introduce `he`. Establish `hmem : t' ∈ clsOf Y u u' t'` using `⟨ht', rfl, hr t' ht'⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[← he]`. Conclude with `⟨hmem.2.1.symm, hmem.2.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stepClass_of_equiv (h : CorankOneEquivalence) : StepClass := by
   intro D X Y u u' hct νL νB ng
@@ -276,7 +276,7 @@ theorem stepClass_of_equiv (h : CorankOneEquivalence) : StepClass := by
     exact ⟨hmem.2.1.symm, hmem.2.2⟩
 
 /- English proof (translation)
-Conclude with `rowNGC_of_steps hR hCh hB sizes_of_hypotheses (stepClass_of_equiv hE) hN hP hH hA`.
+A detailed English derivation is pending.
 -/
 theorem rowNGC_of_rest (hR : PN.RowNGJoint) (hCh : PN.NGChain) (hB : StepConstants) (hE : CorankOneEquivalence) (hN : StepNormals)
     (hP : StepPoints) (hH : StepHeight) (hA : StepAnalytic) : RowNGC := by
@@ -291,13 +291,11 @@ def StepNormOne : Prop :=
         1 ≤ NGPt D.host.rdE ((Tu D u : ℕ) * (Tu D u' : ℕ)) γ ∧ 1 ≤ NDPt D.host.rdE γ
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨C1, C2, hh⟩` from `h Cg cb Cw cT CT C0`. Use `⟨C1, C2, fun C' Cl hC' hCl D large₂ X Y u u' hctx νL νB ng γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨hNG, hND⟩` from `hh C' Cl hC' hCl D large₂ X Y u u' hctx νL νB ng γ hγ`. Use `⟨hNG, hND, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [NOf2]`. Unfold `HPt`. Establish `hpos : 0 ≤ NGPt D.host.rdE ((Tu D u : ℕ) * (Tu D u' : ℕ)) γ * NDPt D.host.rdE γ` using `mul_nonneg (by linarith) (by linarith)`. Rewrite using `[mul_assoc, mul_assoc]`. Use `mul_le_mul_of_nonneg_right ?_ hpos` and prove the remaining obligations.
+Simplify by unfolding definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Nat.eq_zero_or_pos X.B.g with hg | hg` into its components or cases. Establish `ha : 0 < (2 * D.R.rS + 1) * Fintype.card (InfinitePlace D.host.E)` using `Nat.mul_pos (by omega) Fintype.card_pos`. Simplify using `[hg, zero_pow ha.ne']`. Apply the tactic sequence `try positivity`. Establish `hg1 : (1 : ℝ) ≤ X.B.g` using `by exact_mod_cast hg`.
-
-Conclude with `(inv_le_one_of_one_le₀ (one_le_pow₀ hg1)).trans (one_le_pow₀ hg1)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stepHeight_of_normOne (h : StepNormOne) : StepHeight := by
   intro Cg cb Cw cT CT C0
@@ -320,7 +318,7 @@ theorem stepHeight_of_normOne (h : StepNormOne) : StepHeight := by
     exact (inv_le_one_of_one_le₀ (one_le_pow₀ hg1)).trans (one_le_pow₀ hg1)
 
 /- English proof (translation)
-Conclude with `rowNGC_of_rest hR hCh hB hE hN hP (stepHeight_of_normOne hO) hA`.
+A detailed English derivation is pending.
 -/
 theorem rowNGC_of_rest2 (hR : PN.RowNGJoint) (hCh : PN.NGChain) (hB : StepConstants) (hE : CorankOneEquivalence) (hN : StepNormals)
     (hP : StepPoints) (hO : StepNormOne) (hA : StepAnalytic) : RowNGC := by

@@ -17,13 +17,13 @@ def cmFock (i a : Fin n) : Module.End ℂ (Fock n) :=
   CliffordAlgebra.contractLeft (LinearMap.proj (R := ℂ) (φ := fun _ : Fin n × Fin n => ℂ) (i, a))
 
 /- English proof (translation)
-Introduce `i a j b`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, cpFock, LinearMap.mulLeft_apply, LinearMap.zero_apply]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← add_mul, ExteriorAlgebra.ι_add_mul_swap, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, cmFock, LinearMap.zero_apply]`. Rewrite using `[CliffordAlgebra.contractLeft_comm, neg_add_cancel]`. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, cmFock, cpFock, LinearMap.mulLeft_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[CliffordAlgebra.contractLeft_ι_mul, sub_add_cancel]`. Distinguish the cases in `h : i = j ∧ a = b`. Take `⟨rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : (i, a) ≠ (j, b)` using `fun e => h ⟨congrArg Prod.fst e, congrArg Prod.snd e⟩`. Simplify using `[LinearMap.proj_apply, Pi.single_apply, hne]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isCAR_fock : IsCAR (cpFock (n := n)) cmFock := by
   intro i a j b
@@ -46,7 +46,7 @@ theorem isCAR_fock : IsCAR (cpFock (n := n)) cmFock := by
       simp [LinearMap.proj_apply, Pi.single_apply, hne]
 
 /- English proof (translation)
-Use `⟨fun a b c d => ?_, isCAR_fock, fun a b i j => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem car_setting_inhabited :
     IsGlRep (0 : Fin n → Fin n → Module.End ℂ (Fock n)) ∧ IsCAR (cpFock (n := n)) cmFock ∧
@@ -60,9 +60,9 @@ def cpOne : Module.End ℂ (EuclideanSpace ℂ (Fin 2)) := Matrix.toEuclideanLin
 def cmOne : Module.End ℂ (EuclideanSpace ℂ (Fin 2)) := Matrix.toEuclideanLin !![0, 1; 0, 0]
 
 /- English proof (translation)
-Use `⟨fun i a j b => ?_, fun x y => ?_⟩` and prove the remaining obligations. Establish `hi : i = j` using `Subsingleton.elim _ _`. Establish `ha : a = b` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Substitute `ha` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality.
 
-Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> refine LinearMap.ext fun x => ?_ <;> ext k <;> fin_cases k <;>`. Simplify using `[cpOne, cmOne, Matrix.toEuclideanLin, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Simplify using `[cpOne, cmOne, Matrix.toEuclideanLin, Matrix.mulVec, dotProduct, Fin.sum_univ_two, PiLp.inner_apply, mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem car_one_mode :
     IsCAR (fun _ _ : Fin 1 => cpOne) (fun _ _ : Fin 1 => cmOne) ∧

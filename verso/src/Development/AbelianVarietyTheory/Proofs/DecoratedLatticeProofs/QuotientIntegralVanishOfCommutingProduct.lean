@@ -78,15 +78,13 @@ end GlobalTheory.CommProd
 namespace GlobalTheory.CommProd
 
 /- English proof (translation)
-Introduce `X Y H _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ e ρ ν μH _ _ _ _ h`. Establish `he : Measurable e` using `e.continuous.measurable`. Establish `h1 : (ρ.prod ν.inv).map e = μH`. Establish `hp : ρ.prod ν.inv = (ρ.prod ν).map (fun p => p⁻¹)`. Rewrite using `[show (fun p : Y × X => p⁻¹) = Prod.map (·⁻¹) (·⁻¹) from rfl, ← Measure.map_prod_map _ _ measurable_inv measurable_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ρ.prod ν.inv = ρ.inv.prod ν.inv`. Rewrite using `[Measure.inv_eq_self ρ]`. Establish `hc : (e ∘ fun p : Y × X => p⁻¹) = (fun q : H => q⁻¹) ∘ e` using `funext fun p => map_inv e p`. Rewrite using `[hp, Measure.map_map he measurable_inv, hc, ← Measure.map_map measurable_inv he, h]`. Conclude with `Measure.inv_eq_self μH`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ρ.prod ν.inv = ρ.prod ν`. Set `E` to `e.toHomeomorph.toMeasurableEquiv`. Establish `hE : (E : Y × X → H) = e` using `rfl`. Rewrite using `[← E.map_symm_map (μ := ρ.prod ν.inv), ← E.map_symm_map (μ := ρ.prod ν), hE, h1, h]`. Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : Y)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hK0 : ρ K ≠ 0` using `(Measure.measure_pos_of_mem_nhds (μ := ρ) hK1).ne'`. Establish `hKt : ρ K ≠ ⊤` using `hK.measure_lt_top.ne`. Use `⟨Measure.ext fun S hS => ?_⟩` and prove the remaining obligations. Use `congrArg (fun m : Measure (Y × X) => m (K ×ˢ S)) h2` as an intermediate fact. Simplify using `only [Measure.prod_prod] at this`.
-
-Conclude with `(ENNReal.mul_right_inj hK0 hKt).1 this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem invInv : ∀ {X Y H : Type} [Group X] [Group Y] [Group H] [TopologicalSpace X] [TopologicalSpace Y]
     [TopologicalSpace H] [IsTopologicalGroup X] [IsTopologicalGroup Y] [IsTopologicalGroup H] [MeasurableSpace X]
@@ -119,15 +117,13 @@ theorem invInv : ∀ {X Y H : Type} [Group X] [Group Y] [Group H] [TopologicalSp
   exact (ENNReal.mul_right_inj hK0 hKt).1 this
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ A B R hc e he hR μR ρ ν βB βA _ _ hm hB hA`. Establish `hs : Measurable fun g : G => e.symm g` using `e.symm.continuous.measurable`. Establish `hmeas : Measurable fun g : G => βB (e.symm g).2 * βA (e.symm g).1` using `(hB.1.comp (measurable_snd.comp hs)).mul (hA.1.comp (measurable_fst.comp hs))`. Use `⟨hmeas, fun x => ?_⟩` and prove the remaining obligations. Use `set ψ := mulEquivSub A B R hc e he hR`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hψ : Measurable ψ` using `ψ.continuous.measurable`. Establish `hmx : Measurable fun r : R => ((βB (e.symm ((r : G) * x)).2 * βA (e.symm ((r : G) * x)).1 : NNReal) : ℝ≥0∞)` using `(hmeas.comp (measurable_subtype_coe.mul_const x)).coe_nnreal_ennreal`. Rewrite using `[← hm, lintegral_map hmx hψ]`. Establish `key : ∀ p : R.subgroupOf B × R.subgroupOf A, e.symm ((ψ p : G) * x) = ((p.2 : A) * (e.symm x).1, (p.1 : B) * (e.symm x).2)`. Introduce `p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Homeomorph.symm_apply_eq, he, mulEquivSub_apply]`. Establish `hx : x = ((e.symm x).1 : G) * (e.symm x).2` using `by rw [← he, e.apply_symm_apply]`. Establish `h1 : ((p.1 : B) : G) * ((p.2 : A) : G) = ((p.2 : A) : G) * ((p.1 : B) : G)` using `(hc _ (p.2 : A).2 _ (p.1 : B).2).symm`. Establish `h2 : ((p.1 : B) : G) * ((e.symm x).1 : G) = ((e.symm x).1 : G) * ((p.1 : B) : G)` using `(hc _ (e.symm x).1.2 _ (p.1 : B).2).symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use `conv_lhs => rw [hx]`. Simplify using `only [mul_assoc]`. Use `_ = _ := by rw [h2]; simp only [Subgroup.coe_mul, mul_assoc]`. Simplify using `only [key, ENNReal.coe_mul]`.
-
-Use `(lintegral_prod _ ((hB.1.coe_nnreal_ennreal.comp ((measurable_subtype_coe.comp measurable_fst).mul_const _)).mul (hA.1.coe_nnreal_ennreal.comp ((measurable_subtype_coe.comp measurable_snd).mul_const _))).aemeasurable).trans ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Function.comp_apply, lintegral_const_mul' _ _ ENNReal.coe_ne_top, hA.2, mul_one, hB.2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cutProd : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
     [LocallyCompactSpace G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (A B R : Subgroup G)
@@ -174,19 +170,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.CommProd in
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ A B R hA hB hR hc ⟨e, he⟩ hdec μR μG ρ μ _ _ _ _ _ _ f z hf hz`. Establish `: LocallyCompactSpace A` using `hA.locallyCompactSpace`. Establish `: LocallyCompactSpace B` using `hB.locallyCompactSpace`. Establish `hRA : IsClosed ((R.subgroupOf A : Subgroup A) : Set A)` using `hR.preimage continuous_subtype_val`. Establish `hRB : IsClosed ((R.subgroupOf B : Subgroup B) : Set B)` using `hR.preimage continuous_subtype_val`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyCompactSpace (R.subgroupOf A)` using `hRA.locallyCompactSpace`. Establish `: LocallyCompactSpace (R.subgroupOf B)` using `hRB.locallyCompactSpace`. Establish `: LocallyCompactSpace R` using `hR.locallyCompactSpace`. Set `φ` to `mulEquiv A B hc e he`. Set `ψ` to `mulEquivSub A B R hc e he hdec`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨μA, hμA, hG⟩` from `GlobalTheory.St.HaarSplit.exists_haar_map_prod_eq φ μ μG`. Take `⟨ν, hν, hRm⟩` from `GlobalTheory.St.HaarSplit.exists_haar_map_prod_eq ψ ρ μR`. Establish `: ν.IsInvInvariant` using `invInv ψ ρ ν μR inferInstance inferInstance hν inferInstance hRm`. Take `⟨βB, -, hβB⟩` from `GlobalTheory.Tw.exists_isCosetCutoff (μT := ρ) hRB`. Take `⟨βA, -, hβA⟩` from `GlobalTheory.Tw.exists_isCosetCutoff (μT := ν) hRA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hβ` using `cutProd G A B R hc e he hdec μR ρ ν βB βA inferInstance inferInstance hRm hβB hβA`. Take `⟨hi, rfl⟩` from `hf.cutoff hβ`. Establish `hφs : ∀ p : B × A, e.symm (φ p) = (p.2, p.1)` using `fun p => by`. Rewrite using `[Homeomorph.symm_apply_eq, he, mulEquiv_apply, hc _ p.2.2 _ p.1.2]`. Establish `hme : MeasurableEmbedding φ` using `φ.toHomeomorph.measurableEmbedding`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hi`, the goal using `[← hG]`. Rewrite using `[hme.integral_map]`. Rewrite `hi` using `[hme.integrable_map_iff]`. Use `(integral_prod_symm _ hi).trans ?_` and prove the remaining obligations. Establish `hin : ∀ a : A, ∫ b : B, ((fun g => ((βB (e.symm g).2 * βA (e.symm g).1 : NNReal) : ℝ) • f g) ∘ φ) (b, a) ∂μ = 0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `a`. Take `⟨-, h0⟩` from `(hz a a.2).cutoff hβB`. Establish `e1 : ∀ b : B, ((fun g => ((βB (e.symm g).2 * βA (e.symm g).1 : NNReal) : ℝ) • f g) ∘ φ) (b, a) = (βA a : ℝ) • ((βB b : ℝ) • f (a * b))` using `fun b => by`. Simplify using `only [Function.comp_apply, hφs, mulEquiv_apply, NNReal.coe_mul, smul_smul]`. Rewrite using `[show φ (b, a) = (b : G) * a from rfl, hc _ a.2 _ b.2, mul_comm (βB b : ℝ)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [e1, integral_smul, ← h0, smul_zero]`. Conclude with `(integral_congr_ae (Filter.Eventually.of_forall hin)).trans (integral_zero _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CommProd.quot_vanish_of_prod : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [LocallyCompactSpace G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (A B R : Subgroup G), IsClosed (A : Set G) → IsClosed (B : Set G) → IsClosed (R : Set G) → (∀ a ∈ A, ∀ b ∈ B, a * b = b * a) → (∃ e : (A × B) ≃ₜ G, ∀ p, e p = p.1 * p.2) → (∀ a ∈ A, ∀ b ∈ B, a * b ∈ R → a ∈ R ∧ b ∈ R) → ∀ (μR : Measure R) (μG : Measure G) (ρ : Measure (R.subgroupOf B)) (μ : Measure B), μR.IsHaarMeasure → μR.IsInvInvariant → μG.IsHaarMeasure → ρ.IsHaarMeasure → ρ.IsInvInvariant → μ.IsHaarMeasure → ∀ (f : G → ℂ) (z : ℂ), IsQuotIntL1 μR μG f z → (∀ a ∈ A, IsQuotIntL1 ρ μ (fun b => f (a * b.1)) 0) → z = 0 := by
   intro G _ _ _ _ _ _ _ _ A B R hA hB hR hc ⟨e, he⟩ hdec μR μG ρ μ _ _ _ _ _ _ f z hf hz

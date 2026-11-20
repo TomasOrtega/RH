@@ -6,17 +6,17 @@ namespace ReciprocityTheory.PGsh
 open Finset
 
 /- English proof (translation)
-Repeatedly rewrite using `[_root_.trace_eq_sum_automorphisms, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm, ← Finset.add_sum_erase _ _ (Finset.mem_univ 1)]`. Establish `h1 : ∑ a : F, a⁻¹ * (1 : F ≃ₐ[ZMod p] F) a = -1`. Establish `: ∀ a : F, a⁻¹ * (1 : F ≃ₐ[ZMod p] F) a = 1 - if a = 0 then 1 else 0`. Introduce `a`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : a = 0`. Simplify using `[h]`. Simplify using `[h]`. Simplify using `only [this, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Finset.sum_ite_eq', Finset.mem_univ, if_true, nsmul_eq_mul, mul_one, FiniteField.cast_card_eq_zero, zero_sub]`. Establish `h2 : ∀ σ : F ≃ₐ[ZMod p] F, σ ≠ 1 → ∑ a : F, a⁻¹ * σ a = 0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `σ hσ`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b, σ b ≠ b := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hσ (AlgEquiv.ext h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hb`. Establish `key : ∑ a : F, (b⁻¹ * σ b) * (a⁻¹ * σ a) = ∑ a : F, a⁻¹ * σ a`. Use `Fintype.sum_equiv (Equiv.mulLeft₀ b hb0) _ _ (fun a => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Equiv.mulLeft₀_apply, map_mul, mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[← Finset.mul_sum]`. Establish `hne : b⁻¹ * σ b ≠ 1` using `fun h => hb ((inv_mul_eq_one₀ hb0).mp h).symm`. Establish `: (b⁻¹ * σ b - 1) * ∑ a : F, a⁻¹ * σ a = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_mul, key, one_mul, sub_self]`. Conclude with `(mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr hne)`. Rewrite using `[h1, Finset.sum_eq_zero (fun σ hσ => h2 σ (Finset.ne_of_mem_erase hσ)), add_zero]`.
+A detailed English derivation is pending.
 -/
 private lemma sum_inv_mul_trace (p : ℕ) [Fact p.Prime] (F : Type) [Field F] [Fintype F]
     [inst : Algebra (ZMod p) F] :
@@ -54,29 +54,25 @@ private lemma sum_inv_mul_trace (p : ℕ) [Fact p.Prime] (F : Type) [Field F] [F
   rw [h1, Finset.sum_eq_zero (fun σ hσ => h2 σ (Finset.ne_of_mem_erase hσ)), add_zero]
 
 /- English proof (translation)
-Introduce `p _ F _ _ _ O _ _ m _ ι ω ζ hF hζ hω`. Set `_ : Algebra (ZMod p) F` to `ZMod.algebra F p`. Use `show ∃ y ∈ m, (∑ a : F, ω⁻¹ a * ζ ^ (Algebra.trace (ZMod p) F a).val) = (ζ - 1) * (y - 1)`. Take `⟨c, rfl⟩ : ∃ c, ζ = 1 + c` from `⟨ζ - 1, by ring⟩`. Simplify using `only [add_sub_cancel_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: CharP (O ⧸ m) p` using `charP_of_injective_ringHom ι.injective p`. Establish `hc : c ∈ m`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `h : (Ideal.Quotient.mk m c) ^ p = 0`. Establish `e : Ideal.Quotient.mk m c = Ideal.Quotient.mk m (1 + c) - 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, sub_pow_char, one_pow, ← map_pow, hζ, map_one, sub_self]`. Conclude with `pow_eq_zero_iff (Fact.out : p.Prime).ne_zero |>.mp h`. Establish `hbin : ∀ n : ℕ, ∃ r : O, (1 + c) ^ n = 1 + (n : O) * c + c ^ 2 * r`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ n ih`. Take `⟨r, hr⟩` from `ih`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n + r + c * r, by rw [pow_succ, hr]; push_cast; ring⟩`. Use `choose r hr using hbin`. Take `⟨b, hb0, hb1⟩ : ∃ b : F, b ≠ 0 ∧ b ≠ 1` from `by classical`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Apply `hF` to reduce the goal to its premises. Establish `h1 : (Finset.univ : Finset F) ⊆ {0, 1}` using `fun x _ => by`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Simplify using `[h x hx]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `Finset.card_le_card h1`. Establish `h3 : ({0, 1} : Finset F).card ≤ 2` using `Finset.card_le_two`. Establish `h4` using `Fintype.one_lt_card (α := F)`. Rewrite `h2` using `[Finset.card_univ]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hω1 : ω ≠ 1`. Introduce `h`. Establish `e` using `hω b`. Establish `e1` using `MulChar.one_apply_coe (R' := O) (Units.mk0 b hb0)`. Rewrite `e1` using `[Units.val_mk0]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e` using `[h, e1, map_one]`. Conclude with `hb1 (ι.injective (e.symm.trans ι.map_one.symm))`. Establish `hsum0 : ∑ a : F, ω⁻¹ a = 0` using `MulChar.sum_eq_zero_of_ne_one (inv_ne_one.mpr hω1)`. Use `set t : F → ℕ := fun a => (Algebra.trace (ZMod p) F a).val with ht`. Use `⟨1 + ∑ a : F, ω⁻¹ a * (t a : O) + c * ∑ a : F, ω⁻¹ a * r (t a), ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Ideal.add_mem _ ?_ (Ideal.mul_mem_right _ _ hc)` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_add, map_one, map_sum]`. Establish `e : ∀ a : F, Ideal.Quotient.mk m (ω⁻¹ a * (t a : O)) = ι (a⁻¹ * algebraMap (ZMod p) F (Algebra.trace (ZMod p) F a))`. Introduce `a`. Rewrite using `[map_mul, map_mul, MulChar.inv_apply', hω, map_natCast, ← map_natCast ι, ht, ZMod.natCast_val]`.
-
-Both sides reduce to the same expression. Repeatedly rewrite using `[e]`. Rewrite using `[← map_sum, sum_inv_mul_trace p F, map_neg, map_one, add_neg_cancel]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_add_distrib, ← Finset.mul_sum]`.
-
-Use `_ = _ := by rw [hsum0]; ring`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussCongruence : GaussCongruenceStatement := by
   intro p _ F _ _ _ O _ _ m _ ι ω ζ hF hζ hω

@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCot
 open IsLocalRing UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Establish `h` using `(regular_quotient_cotInd R s (x ∘ ((↑) : s → κ)) (hx.comp _ Subtype.val_injective)).2.2`. Establish `e : Set.range (x ∘ ((↑) : s → κ)) = x '' (s : Set κ)`. Rewrite using `[Set.range_comp]`. Use `congr 1`. Use extensionality with `a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem prime_sub (R : Type) [CommRing R] [IsRegularLocalRing R] (κ : Type) [Fintype κ]
     (x : κ → R) (hx : CotInd R x) (s : Finset κ) : (Ideal.span (x '' (s : Set κ))).IsPrime := by
@@ -21,13 +21,11 @@ private theorem prime_sub (R : Type) [CommRing R] [IsRegularLocalRing R] (κ : T
   rwa [e] at h
 
 /- English proof (translation)
-Introduce `hmem`. Take `⟨l, hl, hlx⟩` from `(Finsupp.mem_span_image_iff_linearCombination R).mp hmem`. Rewrite `hlx` using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (fun i => zero_smul R (x i))]`. Simplify using `only [smul_eq_mul] at hlx`. Set `b : κ → R` to `Pi.single a 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `h0 : ∑ k, (b k - l k) * x k ∈ maximalIdeal R ^ 2`. Establish `hz : ∑ k, (b k - l k) * x k = 0`. Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[sub_eq_zero, hlx]`. Simplify using `[b, Pi.single_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hz]`. Conclude with `zero_mem _`. Establish `h1` using `hx.indep _ h0 a`. Rewrite `h1` using `[(Finsupp.mem_supported' R l).mp hl a ha, sub_zero]`. Simplify using `only [b, Pi.single_eq_same] at h1`.
-
-Conclude with `(IsLocalRing.maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).mpr h1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem not_mem_sub (R : Type) [CommRing R] [IsLocalRing R] (κ : Type) [Fintype κ]
     (x : κ → R) (hx : CotInd R x) (s : Finset κ) (a : κ) (ha : a ∉ s) :
@@ -51,11 +49,9 @@ private theorem not_mem_sub (R : Type) [CommRing R] [IsLocalRing R] (κ : Type) 
   exact (IsLocalRing.maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).mpr h1)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => haveI := prime_sub R κ x hx s haveI := prime_sub R κ x hx (insert a s)`. Establish `hlt : Ideal.span (x '' (s : Set κ)) < Ideal.span (x '' ((insert a s : Finset κ) : Set κ))`. Use `lt_of_le_of_ne (Ideal.span_mono (Set.image_mono (by simp))) fun e => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `not_mem_sub R κ x hx s a ha` to reduce the goal to its premises. Rewrite using `[e]`. Conclude with `Ideal.subset_span ⟨a, by simp, rfl⟩`. Establish `h1` using `Ideal.height_strict_mono_of_isPrime hlt`. Rewrite using `[Finset.card_insert_of_notMem ha, Nat.cast_succ]`.
-
-Conclude with `Order.add_one_le_of_lt (ih.trans_lt h1)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem height_sub (R : Type) [CommRing R] [IsRegularLocalRing R] (κ : Type) [Fintype κ]
     (x : κ → R) (hx : CotInd R x) (s : Finset κ) :
@@ -76,15 +72,13 @@ private theorem height_sub (R : Type) [CommRing R] [IsRegularLocalRing R] (κ : 
     exact Order.add_one_le_of_lt (ih.trans_lt h1)
 
 /- English proof (translation)
-Introduce `R _ _ κ _ x hx p _ hp`. Establish `hge : ((Fintype.card κ : ℕ) : ℕ∞) ≤ p.height`. Establish `h1` using `height_sub R κ x hx Finset.univ`. Rewrite `h1` using `[Finset.card_univ, Finset.coe_univ, Set.image_univ, ← hp]`. Then use the resulting hypothesis. Establish `hle : p.height ≤ ((Fintype.card κ : ℕ) : ℕ∞)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e : Ideal.span ((Finset.univ.image x : Finset R) : Set R) = p`. Rewrite using `[Finset.coe_image, Finset.coe_univ, Set.image_univ, hp]`. Establish `hmin : p ∈ (Ideal.span ((Finset.univ.image x : Finset R) : Set R)).minimalPrimes`. Rewrite using `[e, Ideal.minimalPrimes_eq_subsingleton_self]`. Conclude with `Set.mem_singleton p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Ideal.height_le_card_of_mem_minimalPrimes_span_finset hmin).trans ?_` and prove the remaining obligations. Conclude with `Finset.card_image_le` after adjusting the coercions. Establish `heq : p.height = ((Fintype.card κ : ℕ) : ℕ∞)` using `le_antisymm hle hge`. Use `⟨heq, ?_⟩` and prove the remaining obligations. Apply `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← maximalIdeal_height_eq_ringKrullDim, ← IsLocalization.height_under p.primeCompl, IsLocalization.AtPrime.under_maximalIdeal _ p, heq, ← Localization.AtPrime.map_eq_maximalIdeal]`. Establish `hmap : Ideal.map (algebraMap R (Localization.AtPrime p)) p = Ideal.map (algebraMap R (Localization.AtPrime p)) (Ideal.span (Set.range x))` using `congrArg _ hp`. Rewrite using `[hmap, Ideal.map_span, ← Set.range_comp]`. Establish `h3` using `Submodule.spanFinrank_span_le_ncard_of_finite (R := Localization.AtPrime p) (Set.finite_range (algebraMap R (Localization.AtPrime p) ∘ x))`. Establish `h4 : (Set.range (algebraMap R (Localization.AtPrime p) ∘ x)).ncard ≤ Fintype.card κ`.
-
-Rewrite using `[← Set.image_univ, ← Finset.coe_univ]`. Conclude with `(Set.ncard_coe_finset _ ▸ Set.ncard_image_le (Finset.finite_toSet _)).trans (by simp)`. Conclude with `h3.trans h4` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.regular_localization_cotInd :
     ∀ (R : Type) [CommRing R] [IsRegularLocalRing R] (κ : Type) [Fintype κ] (x : κ → R), CotInd R x →

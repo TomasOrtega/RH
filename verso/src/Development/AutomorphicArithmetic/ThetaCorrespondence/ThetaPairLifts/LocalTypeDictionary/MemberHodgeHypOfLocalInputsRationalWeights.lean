@@ -10,7 +10,7 @@ section
 open GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.LiteralAutomorphy
 namespace GlobalTheory.Mem
 /- English proof (translation)
-Introduce `m hm dc cw ws sw e1 e2 ud bz so r` and use `_root_.GlobalTheory.Mem.LiteralAutomorphy.condition_of_memberHypotheses dc (_root_.GlobalTheory.twisted_siegel_weil_identity_of_siegel_weil_formula GlobalTheory.Hk3.howeUnram_holds m.m3 m.m4 hm dc cw ws sw e1 e2 ud bz m.m14 so) GlobalTheory.Published.HeckeLPartialContinuation_hol …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem member_hodgeHyp_of_localInputs_rationalWeights : _root_.GlobalTheory.Mem.LiteralAutomorphy.MemberHypotheses → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitarySchrodinger → GlobalTheory.Published.SiegelEisensteinContinuation → _root_.GlobalTheory.Published.UnusedSlot72 → GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.SchurOrthogonalitySquareIntegrable → RowRatW → _root_.GlobalTheory.Mem.Top.Bl.MultiplicityCoverHypotheses :=
   fun m hm dc cw ws sw e1 e2 ud bz so r =>
@@ -23,7 +23,7 @@ section
 open GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.LiteralAutomorphy
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.Mem.member_hodgeHyp_of_localInputs_rationalWeights | exact _root_.GlobalTheory.Mem.member_hodgeHyp_of_localInputs_rationalWeights | (intros; apply _root_.GlobalTheory.Mem.member_hodgeHyp_of_localInputs_rationalWeights <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.compatibleSystem_member_rationalWeights : _root_.GlobalTheory.Mem.LiteralAutomorphy.MemberHypotheses → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitarySchrodinger → GlobalTheory.Published.SiegelEisensteinContinuation → _root_.GlobalTheory.Published.UnusedSlot72 → GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.SchurOrthogonalitySquareIntegrable → RowRatW → _root_.GlobalTheory.Mem.Top.Bl.MultiplicityCoverHypotheses := by
   first | exact @_root_.GlobalTheory.Mem.member_hodgeHyp_of_localInputs_rationalWeights | exact _root_.GlobalTheory.Mem.member_hodgeHyp_of_localInputs_rationalWeights | (intros; apply _root_.GlobalTheory.Mem.member_hodgeHyp_of_localInputs_rationalWeights <;> assumption)

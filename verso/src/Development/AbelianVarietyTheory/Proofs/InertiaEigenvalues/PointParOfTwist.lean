@@ -8,15 +8,15 @@ namespace GlobalTheory.TypeLeaf
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.ArithmeticCylinders Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `i x π hx`. Take `⟨P, -, hB⟩` from `hx`. Establish `hp : (⟨D.R.r, D.naut.tw π D.naut.etaTinv, 1⟩ : Formalism.BasicNotions.Part D.naut.CG) ∈ twistIso D.nd D.naut ([⟨D.R.r, π, 1⟩] ++ [muPart D.nd D.naut i]) D.naut.etaTinv` using `List.mem_cons_self`. Take `⟨h1, -, h2⟩` from `hB.1 _ hp`. Use `⟨?_, (D.naut.ralg_def π).2 fun τ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `D.naut.csd_tw _ _ hc h2` as an intermediate fact. Rewrite `this` using `[hT.2 _ π h1]`. Then use the resulting hypothesis. Take `⟨s, hs⟩` from `Multiset.card_eq_one.mp (D.naut.infG_card D.naut.etaTinv τ)`. Take `⟨k0, hk0⟩` from `hz τ s (by rw [hs]; exact Multiset.mem_singleton_self s)`. Establish `hW : (D.naut.infWt i τ).Nodup ∧ ∀ z ∈ D.naut.infWt i τ, ∃ k : ℤ, z = (k : ℂ) + ((D.R.nV : ℂ) - 1) / 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[D.nbc.embAV_inf i P]`. Conclude with `D.nbc.infW_alg _ _ τ`. Establish `hle : (D.naut.infG π τ).map (· + s) ≤ D.naut.infWt i τ`. Rewrite using `[← hB.2.2.2.2.2 τ, ← D.naut.infG_tw π _ τ s hs]`. Simplify using `[isoInf, twistIso]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Multiset.Nodup.of_map _ (Multiset.nodup_of_le hle hW.1), fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hW.2 _ (Multiset.mem_of_le hle (Multiset.mem_map_of_mem _ hy))`. Use `⟨k - k0, ?_⟩` and prove the remaining obligations. Rewrite `hk` using `[Ranks.nV]`. Move the coercions through the operations in `at hk hk0 ⊢`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hk - hk0`.
+A detailed English derivation is pending.
 -/
 theorem pointPar_of_twist (D : D7) (hT : TwistInv D) (hc : D.naut.csd D.naut.etaT)
     (hz : ∀ τ : D.host.E →+* ℂ, ∀ z ∈ D.naut.infG D.naut.etaTinv τ,

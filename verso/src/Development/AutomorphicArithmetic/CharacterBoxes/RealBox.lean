@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.CharacterBoxes.RealSplit
 open Formalism.HC UpperTheory.Top
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `h`. Rewrite `hθ` using `[H.isPrimOf_iff]`. Substitute `hθ` using the available equality. Conclude with `DirichletCharacter.conductor_dvd_level _`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Top.realBox_level {φ : Frame} (H : HostRaw φ) (χ : PChar)
     (h : H.IsCharE χ.χ) : χ.N ∣ H.QS * H.q * H.d := by
@@ -14,35 +14,31 @@ private theorem UpperTheory.Top.realBox_level {φ : Frame} (H : HostRaw φ) (χ 
   exact DirichletCharacter.conductor_dvd_level _
 
 /- English proof (translation)
-Establish `hP` using `hg.pair`. Establish `hq` using `hP.q_prime`. Establish `hd` using `hP.d_prime`. Establish `hq8` using `hP.q_mod`. Establish `hd16` using `hP.d_mod`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq2 : H.q ≠ 2` using `by intro h; rw [h] at hq8; norm_num at hq8`. Establish `hd2 : H.d ≠ 2` using `by intro h; rw [h] at hd16; norm_num at hd16`. Establish `hqd' : H.q ≠ H.d` using `by intro h; rw [h] at hq8; omega`. Establish `hlev` using `UpperTheory.Top.realBox_level H χ hχ`. Take `⟨ρ, i, j, hρr, hρN, hN, hval⟩` from `realSplit χ H.QS H.q H.d hr H.QS_pos hq hd hq2 hd2 hqd' H.QS_coprime hlev`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hKdvd : ordCompl[2] H.QS ∣ H.QS` using `Nat.ordCompl_dvd _ _`. Establish `hK0 : 0 < ordCompl[2] H.QS` using `Nat.ordCompl_pos 2 H.QS_pos.ne'`. Establish `hnot : ∀ l, l.Prime → l ≠ 2 → l ∣ H.q * H.d → ¬ l ∣ ρ.N`. Introduce `l hl hl2 hlqd hlρ`. Establish `h8` using `hlρ.trans hρN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Break down `(Nat.Prime.dvd_mul hl).1 h8 with h | h` into its components or cases. Establish `: l ∣ 2` using `hl.dvd_of_dvd_pow (n := 3) (by norm_num; exact h)`. Conclude with `hl2 ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).1 this)`. Establish `h1` using `Nat.dvd_gcd (h.trans hKdvd) hlqd`. Rewrite `h1` using `[H.QS_coprime.gcd_eq_one]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hl.not_dvd_one h1`. Establish `hqρ` using `hnot _ hq hq2 (dvd_mul_right _ _)`. Establish `hdρ` using `hnot _ hd hd2 (dvd_mul_left _ _)`. Establish `hcopN : ∀ a : ℕ, a.Coprime (2 * M * H.q * H.d) → a.Coprime χ.N`. Introduce `a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Nat.coprime_of_dvd fun l hl hla hlN => ?_` and prove the remaining obligations. Establish `hl' : l ∣ 2 * M * H.q * H.d`. Break down `(Nat.Prime.dvd_mul hl).1 (hlN.trans hlev) with h | h` into its components or cases. Break down `(Nat.Prime.dvd_mul hl).1 h with h | h` into its components or cases. Conclude with `Dvd.dvd.mul_right (Dvd.dvd.mul_right (hpr l hl h) _) _`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Dvd.dvd.mul_right (Dvd.dvd.mul_left h _) _`. Conclude with `Dvd.dvd.mul_left h _`. Establish `h1` using `Nat.dvd_gcd hla hl'`. Rewrite `h1` using `[ha.gcd_eq_one]`. Conclude with `hl.not_dvd_one h1`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hind : An.Induces χ.χ (tw ρ.val H.q H.d i j) (2 * M * H.q * H.d)`. Unfold `An.Induces`. Conclude with `⟨χ.prim, fun a ha => hval a (hcopN a ha)⟩`. Apply the tactic sequence `have hi01 : i = 0 ∨ i = 1 := by fin_cases i <;> simp`. Apply the tactic sequence `have hj01 : j = 0 ∨ j = 1 := by fin_cases j <;> simp`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hij : i ≠ 0 ∨ j ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨rfl, rfl⟩` from `hc`. Rewrite `hN` using `[show H.q ^ ((0 : Fin 2) : ℕ) = 1 by simp, show H.d ^ ((0 : Fin 2) : ℕ) = 1 by simp, mul_one, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases hqd with h | h <;> rw [hN] at h`. Use `exacts [hqρ h, hdρ h]`. Establish `hbox` using `hg.boxes ρ hρr (hρN.trans (mul_dvd_mul_left 8 hM)) i j hij χ.N χ.χ hind`. Establish `hdq : ¬ H.d ∣ H.q` using `fun h => hqd' ((Nat.prime_dvd_prime_iff_eq hd hq).1 h).symm`. Establish `hdqi : ∀ k : ℕ, ¬ H.d ∣ H.q ^ k` using `fun k h => hdq (hd.dvd_of_dvd_pow h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hjd : (if H.d ∣ χ.N then (1 : Fin 2) else 0) = j`. Break down `hj01 with rfl | rfl` into its components or cases. Rewrite using `[if_neg]`. Rewrite using `[hN, show H.d ^ ((0 : Fin 2) : ℕ) = 1 by simp, mul_one]`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `(Nat.Prime.dvd_mul hd).1 h with h | h` into its components or cases. Use `exacts [hdρ h, hdqi _ h]`. Rewrite using `[if_pos]`. Rewrite using `[hN]`. Conclude with `dvd_mul_of_dvd_right (dvd_pow_self _ (by simp)) _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hqe : (H.q : ℝ) ≤ Real.exp (Y ^ (eps / 5))` using `(Real.log_le_iff_le_exp (by exact_mod_cast hq.pos)).1 hP.q_up`. Establish `hde : (H.d : ℝ) ≤ Real.exp (Y ^ (eps / 5) * Real.log Y ^ 2)` using `(Real.log_le_iff_le_exp (by exact_mod_cast hd.pos)).1 hP.d_up`. Establish `hρle : (ρ.N : ℝ) ≤ 8 * ((ordCompl[2] H.QS : ℕ) : ℝ)`. Conclude with `Nat.le_of_dvd (Nat.mul_pos (by norm_num) hK0) hρN` after adjusting the coercions. Establish `hbound : (χ.N : ℝ) ≤ height (ordCompl[2] H.QS) eps Y j`.
-
-Establish `hq1 : (1:ℝ) ≤ H.q` using `by exact_mod_cast hq.one_lt.le`. Establish `hqi : (H.q:ℝ) ^ (i:ℕ) ≤ Real.exp (Y ^ (eps / 5))` using `(pow_le_pow_right₀ hq1 (Nat.lt_succ_iff.1 i.isLt)).trans (by rw [pow_one]; exact hqe)`. Establish `hdj : (H.d:ℝ) ^ (j:ℕ) ≤ Real.exp (Y ^ (eps / 5) * Real.log Y ^ 2) ^ (j:ℕ)` using `pow_le_pow_left₀ (Nat.cast_nonneg _) hde _`. Rewrite using `[hN, Nat.cast_mul, Nat.cast_mul, Nat.cast_pow, Nat.cast_pow]`. Unfold `height`.
-
-Conclude with `mul_le_mul (mul_le_mul hρle hqi (by positivity) (by positivity)) hdj (by positivity) (by positivity)`. Rewrite using `[hjd]`. Conclude with `⟨hbox, hbound⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Top.realBox_main (M : ℕ) (φ : Frame) (H : HostRaw φ) (eps Y X : ℝ)
     (hpr : ∀ l : ℕ, l.Prime → l ∣ H.QS → l ∣ 2 * M) (hM : ordCompl[2] H.QS ∣ M) (hg : PairGood M eps Y X H.q H.d)
@@ -131,9 +127,9 @@ private theorem UpperTheory.Top.realBox_main (M : ℕ) (φ : Frame) (H : HostRaw
   exact ⟨hbox, hbound⟩
 
 /- English proof (translation)
-Introduce `M φ H eps Y X _ hpr hM hg`. Use `⟨fun χ hχ hr hqd => UpperTheory.Top.realBox_main M φ H eps Y X hpr hM hg χ hχ hr hqd, ?_⟩` and prove the remaining obligations. Introduce `ψ hψ hr hqd β hβ`. Establish `h` using `(UpperTheory.Top.realBox_main M φ H eps Y X hpr hM hg ψ hψ hr hqd).1`. Use `h (β : ℂ) (by simpa using hβ) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Complex.ofReal_im, abs_zero]`. Unfold `height`. Check the signs of the components of the expression.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem UpperTheory.Top.realBox :
     ∀ (M : ℕ) (φ : Frame) (H : HostRaw φ) (eps Y X : ℝ), 0 < M → (∀ l : ℕ, l.Prime → l ∣ H.QS → l ∣ 2 * M) → ordCompl[2] H.QS ∣ M →

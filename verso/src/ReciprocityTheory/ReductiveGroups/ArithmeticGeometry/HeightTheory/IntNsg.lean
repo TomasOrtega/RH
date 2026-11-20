@@ -17,9 +17,9 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Establish `h1` using `d.hint_intNorm hd h c sg (ratio (Ω := Ω c) f e) (d.hint_ratio_ne hd he he0 hf hf0)`. Establish `h2` using `d.hintIS_lin hd h (φ₁ := fun P => Real.log ‖P (ratio (Ω := Ω c) f e)‖) h1 hI 1 1 0`. Use `d.hintIS_congr hd h (ψ := fun P => Real.log (d.nrm c G f P)) h2 ?_` and prove the remaining obligations. Introduce `P _`. Apply the tactic sequence `try dsimp only`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[d.hint_log_line hd he he0 hf hf0 P]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem hintIS_log_nrm_of_mem_graded (hd : d.AxH 𝒜) (h : d.S1) {c : ι} {sg : K →+* ℂ} {G : WT}
     {f e : A c} (he : e ∈ 𝒜 c G) (he0 : e ≠ 0) (hf : f ∈ 𝒜 c G) (hf0 : f ≠ 0)
@@ -34,15 +34,13 @@ private theorem hintIS_log_nrm_of_mem_graded (hd : d.AxH 𝒜) (h : d.S1) {c : �
   ring
 
 /- English proof (translation)
-Take `⟨h_et, h_w, h_ta1, ⟨e, he, he0, h_e⟩, h_ta2⟩` from `d.hint_chain hd h hI2be c sg`. Establish `hL : ∀ f : A c, f ∈ 𝒜 c d.wL → f ≠ 0 → d.HintIS c sg (fun P => Real.log (d.nrm c d.wL f P))` using `fun f hf hf0 => hintIS_log_nrm_of_mem_graded d hd h (hd.w_mem (d.jc c) c) (hd.w_base c) hf hf0 h_w`. Use `⟨fun G f hG hf hf0 => ?_, fun f hf hf0 => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hG`. Break down `hG with rfl | rfl | rfl | rfl | rfl` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hL f hf hf0`. Conclude with `hintIS_log_nrm_of_mem_graded d hd h (hd.et_mem c) (hd.et_ne c) hf hf0 h_et`. Conclude with `hintIS_log_nrm_of_mem_graded d hd h (hd.firstSectionMem c) (hd.firstSectionNeZero c) hf hf0 h_ta1`. Conclude with `hintIS_log_nrm_of_mem_graded d hd h he he0 hf hf0 h_e`. Conclude with `hintIS_log_nrm_of_mem_graded d hd h (hd.secondSectionMem c) (hd.secondSectionNeZero c) hf hf0 h_ta2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3` using `d.hintIS_lin hd h (hL f hf hf0) h_w 1 (-1) 0`. Establish `h4` using `d.hintIS_lin hd h (φ₂ := fun P => Real.log ‖d.hintU c P‖) h3 (d.hint_intU hd h c sg) 1 (-1) 0`. Use `d.hintIS_congr hd h (ψ := fun P => Real.log (d.nrm c d.wL f P / d.be c P)) h4 ?_` and prove the remaining obligations. Introduce `P _`. Apply the tactic sequence `try dsimp only`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos` using `hd.nrm_pos c P hf hf0`. Establish `hw` using `hd.nrm_pos c P (hd.w_mem (d.jc c) c) (hd.w_base c)`. Establish `hU` using `d.hint_one_le_U hd c P`. Establish `hbe : d.be c P ≠ 0`. Rewrite using `[d.hint_be_eq hd c P]`.
-
-Conclude with `(mul_pos hw (lt_of_lt_of_le one_pos hU)).ne'`. Rewrite using `[Real.log_div hpos.ne' hbe, d.hint_log_be hd c P]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem int_Nsg (hd : d.AxH 𝒜) (h : d.S1) (hI2be : d.HeightIntegralBoundEstimate) (c : ι) (sg : K →+* ℂ) :
     (∀ (G : WT) (f : A c), G ∈ ({d.wL, d.n1 • d.wde, (2 : ℕ) • d.G1, d.wF, d.G2} : Set WT) →

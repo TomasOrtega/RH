@@ -27,37 +27,33 @@ def Good (h : V → V → K) (L : AddSubgroup V) (p : ℕ) {ι : Type} (v : ι �
 variable {c : K →+* K} {h : V → V → K} {O : Subring K} {L : AddSubgroup V} {p : ℕ}
 
 /- English proof (translation)
-The claim follows from `(H.hl y).map_zero`.
+A detailed English derivation is pending.
 -/
 theorem Herm4.zero_left (H : Herm4 c h) (y : V) : h 0 y = 0 := (H.hl y).map_zero
 
 /- English proof (translation)
-Rewrite using `[H.symm (y + z) x, H.add_left, map_add, ← H.symm, ← H.symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Herm4.add_right (H : Herm4 c h) (x y z : V) : h x (y + z) = h x y + h x z := by
   rw [H.symm (y + z) x, H.add_left, map_add, ← H.symm, ← H.symm]
 
 /- English proof (translation)
-Rewrite using `[H.add_left, H.add_right, H.add_right, H.symm y z]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Herm4.norm_add (H : Herm4 c h) (y z : V) :
     h (y + z) (y + z) = h y y + h y z + c (h y z) + h z z := by
   rw [H.add_left, H.add_right, H.add_right, H.symm y z]; ring
 
 /- English proof (translation)
-Take `⟨gL, gn, gp, go⟩` from `G`. Establish `H` using `P.herm`. Use `set S : V := ∑ i, (((∏ j ∈ Finset.univ.erase i, n j : ℕ) : K) * h x (v i)) • v i with hS`. Establish `hSL : S ∈ L` using `AddSubgroup.sum_mem _ fun i _ => P.smul _ (O.mul_mem (natCast_mem O _) (P.int _ hx _ (gL i))) _ (gL i)`. Use `⟨((∏ j, n j : ℕ) : K) • x - S, L.sub_mem (P.smul _ (natCast_mem O _) _ hx) hSL, ?_, ∏ j, n j, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `e1 : h (((∏ j, n j : ℕ) : K) • x - S) (v j) = H.hl (v j) (((∏ j, n j : ℕ) : K) • x - S)` using `rfl`. Rewrite using `[e1, map_sub, map_smul, hS, map_sum, Finset.sum_eq_single j]`. Rewrite using `[map_smul] show ((∏ j, n j : ℕ) : K) • h x (v j) - (((∏ i ∈ Finset.univ.erase j, n i : ℕ) : K) * h x (v j)) • h (v j) (v j) = 0`. Rewrite using `[gn j, ← Finset.mul_prod_erase Finset.univ n (Finset.mem_univ j)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `i _ hij`. Rewrite using `[map_smul]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ • h (v i) (v j) = 0`. Rewrite using `[go i j hij, smul_zero]`. Introduce `hj`. Conclude with `absurd (Finset.mem_univ j) hj`. Conclude with `Nat.Coprime.prod_left fun i _ => ((Nat.Prime.coprime_iff_not_dvd P.prime).2 (gp i)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun i _ hi => gp i (hi ▸ dvd_zero p)`. Rewrite using `[sub_sub_cancel]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Introduce `y hy`. Establish `e1 : h (((∏ j, n j : ℕ) : K) • x - S) y = H.hl y (((∏ j, n j : ℕ) : K) • x - S)` using `rfl`.
-
-Rewrite using `[e1, map_sub, map_smul, hS, map_sum, Finset.sum_eq_zero, sub_zero]`. Both sides reduce to the same expression. Introduce `i _`. Rewrite using `[map_smul]`. Use `show _ • h (v i) y = 0`.
-
-Rewrite using `[H.ortho_symm (hy i), smul_zero]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PLat.proj (P : PLat c h O L p) {ι : Type} [Fintype ι] [DecidableEq ι] {v : ι → V} {n : ι → ℕ}
     (G : Good h L p v n) (x : V) (hx : x ∈ L) :
@@ -104,11 +100,11 @@ variable (P : PLat c h O L p) {ι : Type} [Fintype ι] [DecidableEq ι] {v : ι 
 include P G hdiv
 
 /- English proof (translation)
-Establish `H` using `P.herm`. Establish `tr : ∀ y z : V, y ∈ L → (∀ i, h y (v i) = 0) → z ∈ L → (∀ i, h z (v i) = 0) → ∃ k : ℤ, h y z + c (h y z) = (p : K) * k`. Introduce `y z hy hy' hz hz'`. Take `⟨k1, e1⟩` from `hdiv (y + z) (L.add_mem hy hz) (fun i => by rw [H.add_left, hy' i, hz' i, add_zero])`. Take `⟨k2, e2⟩` from `hdiv y hy hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k3, e3⟩` from `hdiv z hz hz'`. Establish `E0` using `H.norm_add y z`. Use `⟨(k1 : ℤ) - k2 - k3, ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `e1 - E0 - e2 - e3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨ω, hω, crit⟩` from `P.crit`. Use `crit _ (P.int _ hy _ hz) (tr y z hy hy' hz hz') ?_` and prove the remaining obligations. Use `tr (ω • y) z (P.smul _ hω _ hy) (fun i => by rw [H.smul_left, hy' i, mul_zero]) hz hz'` as an intermediate fact. Rewrite `this` using `[H.smul_left]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem PLat.pair_div (y z : V) (hy : y ∈ L) (hy' : ∀ i, h y (v i) = 0) (hz : z ∈ L) (hz' : ∀ i, h z (v i) = 0) :
     ∃ t' ∈ O, h y z = (p : K) * t' := by
@@ -129,11 +125,11 @@ theorem PLat.pair_div (y z : V) (hy : y ∈ L) (hy' : ∀ i, h y (v i) = 0) (hz 
   rwa [H.smul_left] at this
 
 /- English proof (translation)
-Establish `H` using `P.herm`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast P.prime.ne_zero`. Use `⟨P.unim _ fun x hx => ?_, fun i => by rw [H.smul_left, hy' i, mul_zero]⟩` and prove the remaining obligations. Take `⟨x', hx'L, hx'o, N, hcop, -, -, hform⟩` from `P.proj G x hx`. Take `⟨t', ht', e⟩` from `P.pair_div G hdiv x' y hx'L hx'o hy hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `e` using `[hform y hy']`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hcop`. Establish `habK : (a : K) * (N : K) + (b : K) * (p : K) = 1` using `by exact_mod_cast hab`. Establish `e2 : h x y = (p : K) * ((a : K) * t' + (b : K) * h x y)`. Take the linear combination `(a : K) * e - (h x y) * habK`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hmem : (a : K) * t' + (b : K) * h x y ∈ O` using `O.add_mem (O.mul_mem (intCast_mem O a) ht') (O.mul_mem (intCast_mem O b) (P.int _ hx _ hy))`. Rewrite using `[H.smul_left, H.symm x y, e2, map_mul, map_natCast, ← mul_assoc, inv_mul_cancel₀ hp0, one_mul]`. Conclude with `P.cO _ hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PLat.div (y : V) (hy : y ∈ L) (hy' : ∀ i, h y (v i) = 0) :
     (p : K)⁻¹ • y ∈ L ∧ ∀ i, h ((p : K)⁻¹ • y) (v i) = 0 := by
@@ -153,19 +149,17 @@ theorem PLat.div (y : V) (hy : y ∈ L) (hy' : ∀ i, h y (v i) = 0) :
   exact P.cO _ hmem
 
 /- English proof (translation)
-Establish `H` using `P.herm`. Establish `hp0 : (p : K) ≠ 0` using `by exact_mod_cast P.prime.ne_zero`. Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `y hy hy' hm`. Assume the negation of the conclusion as `hne`. Take `⟨h1, h2⟩` from `P.div G hdiv y hy hy'`. Take `⟨m', hm'⟩` from `P.nat _ h1`. Establish `e : h ((p : K)⁻¹ • y) ((p : K)⁻¹ • y) = (p : K)⁻¹ * ((p : K)⁻¹ * (m : K))`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[H.smul_left, H.symm ((p : K)⁻¹ • y) y, H.smul_left, hm, map_mul, map_inv₀, map_natCast, map_natCast]`. Establish `e2 : (m' : K) * (p : K) * (p : K) = (m : K)`. Rewrite using `[← hm', e]`. Clear the denominators using the available nonvanishing facts. Establish `e3 : m' * p * p = m` using `by exact_mod_cast e2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hm0 : m ≠ 0`. Introduce `h0`. Rewrite `hm` using `[h0, Nat.cast_zero]`. Conclude with `(H.pos y hne).1 hm`. Establish `hp2` using `P.prime.two_le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : m' < m`. Establish `hm'0 : 0 < m'`. Break down `Nat.eq_zero_or_pos m' with h0 | h0` into its components or cases. Rewrite `e3` using `[h0]`. Simplify using `at e3`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Conclude with `absurd e3.symm hm0`. Conclude with `h0`. Combine the equalities or inequalities in the displayed calculation. Use `ih m' hlt _ h1 h2 hm'` as an intermediate fact. Break down `smul_eq_zero.1 this with h0 | h0` into its components or cases.
-
-Conclude with `inv_ne_zero hp0 h0`. Conclude with `hne h0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem PLat.zero_of_div : ∀ (m : ℕ) (y : V), y ∈ L → (∀ i, h y (v i) = 0) → h y y = (m : K) → y = 0 := by
   have H := P.herm
@@ -203,29 +197,27 @@ theorem PLat.zero_of_div : ∀ (m : ℕ) (y : V), y ∈ L → (∀ i, h y (v i) 
 end Desc
 
 /- English proof (translation)
-Establish `H` using `P.herm`. Proceed by induction on `m with`. Consider the case `zero => exact ⟨Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0⟩`. Consider the case `succ m ih`. Take `⟨v, n, G⟩` from `ih (Nat.le_of_succ_le hm)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hne : Submodule.span K (Set.range v) ≠ ⊤`. Introduce `e`. Establish `h1` using `finrank_range_le_card (R := K) v`. Rewrite `h1` using `[Set.finrank, e, finrank_top, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, x ∉ Submodule.span K (Set.range v) := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hne (Submodule.eq_top_iff'.2 hcon)`. Take `⟨k, hk, hkx⟩` from `P.full x`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x', hx'L, hx'o, N, -, hN, hspan, -⟩` from `P.proj G _ hkx`. Establish `hx'0 : x' ≠ 0`. Introduce `e`. Rewrite `hspan` using `[e, sub_zero, smul_smul]`. Establish `hc : (N : K) * (k : K) ≠ 0` using `mul_ne_zero (by exact_mod_cast hN) (by exact_mod_cast hk.ne')`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.smul_mem _ ((N : K) * (k : K))⁻¹ hspan` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Conclude with `hx this`. Distinguish the cases in `hex : ∃ y ∈ L, (∀ i, h y (v i) = 0) ∧ ∃ ny : ℕ, h y y = (ny : K) ∧ ¬ p ∣ ny`. Take `⟨y, hyL, hyo, ny, hny, hpy⟩` from `hex`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨gL, gn, gp, go⟩` from `G`. Use `⟨Fin.cons y v, Fin.cons ny n, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using hyL`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using gL i`. Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using hny`. Simplify using `using gn i`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using hpy`. Simplify using `using gp i`. Introduce `i j`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Introduce `e`. Conclude with `absurd rfl e`. Introduce `_`. Simplify using `using hyo j`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `_`. Simplify using `using H.ortho_symm (hyo i)`. Introduce `e`. Establish `: i ≠ j` using `fun e' => e (congrArg Fin.succ e')`. Simplify using `using go i j this`.
+Simplify to obtain the desired conclusion from the available facts. It suffices to derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-It suffices to derive a contradiction. Establish `hdiv : ∀ y ∈ L, (∀ i, h y (v i) = 0) → ∃ k : ℕ, h y y = (p : K) * k`. Introduce `y hy hy'`. Take `⟨ny, hny⟩` from `P.nat y hy`. Distinguish the cases in `hd : p ∣ ny`.
-
-Take `⟨k, rfl⟩` from `hd`. Conclude with `⟨k, by rw [hny]; push_cast; ring⟩`. Conclude with `absurd ⟨y, hy, hy', ny, hny, hd⟩ hex`. Take `⟨nx, hnx⟩` from `P.nat x' hx'L`. Conclude with `hx'0 (P.zero_of_div G hdiv nx x' hx'L hx'o hnx)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem PLat.fam (P : PLat c h O L p) (m : ℕ) (hm : m ≤ finrank K V) :
     ∃ (v : Fin m → V) (n : Fin m → ℕ), Good h L p v n := by
@@ -285,15 +277,13 @@ theorem PLat.fam (P : PLat c h O L p) (m : ℕ) (hm : m ≤ finrank K V) :
       exact hx'0 (P.zero_of_div G hdiv nx x' hx'L hx'o hnx)
 
 /- English proof (translation)
-Establish `H` using `P.herm`. Take `⟨v, n, gL, gn, gp, go⟩` from `P.fam (finrank K V) le_rfl`. Set `e : ι ≃ Fin (finrank K V)` to `Fintype.equivFinOfCardEq hι`. Establish `hv0 : ∀ i, v i ≠ 0`. Introduce `i e0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `gn i`. Rewrite `h1` using `[e0, H.zero_left]`. Establish `: n i = 0` using `by exact_mod_cast h1.symm`. Conclude with `gp i (this ▸ dvd_zero p)`. Establish `hv' : ∀ i j : ι, i ≠ j → h (v (e i)) (v (e j)) = 0` using `fun i j hij => go _ _ (fun e' => hij (e.injective e'))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent K (fun i => v (e i))` using `H.linInd _ (fun i => hv0 _) hv'`. Establish `hsp` using `hli.span_eq_top_of_card_eq_finrank' hι`. Use `⟨Basis.mk hli (le_of_eq hsp.symm), fun i => n (e i), ?_, ?_, fun i => gp _, ?_⟩` and prove the remaining obligations. Introduce `i`. Rewrite using `[Basis.mk_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `gL _`. Introduce `i`. Rewrite using `[Basis.mk_apply]`. Conclude with `gn _`. Introduce `i j hij`.
-
-Rewrite using `[Basis.mk_apply, Basis.mk_apply]`. Conclude with `hv' i j hij`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PLat.basis (P : PLat c h O L p) {ι : Type} [Fintype ι] [DecidableEq ι] (hι : Fintype.card ι = finrank K V) :
     ∃ (b : Basis ι K V) (n : ι → ℕ), Good h L p b n := by
@@ -315,30 +305,30 @@ theorem PLat.basis (P : PLat c h O L p) {ι : Type} [Fintype ι] [DecidableEq ι
   · intro i j hij; rw [Basis.mk_apply, Basis.mk_apply]; exact hv' i j hij
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases β <;> fin_cases a <;> simp [qM, hp, hq, hr, hs]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qM_mem (O : Subring K) {p q r s : K} (hp : p ∈ O) (hq : q ∈ O) (hr : r ∈ O) (hs : s ∈ O) (β a : Fin 4) :
     qM p q r s β a ∈ O := by
   fin_cases β <;> fin_cases a <;> simp [qM, hp, hq, hr, hs]
 
 /- English proof (translation)
-Establish `H` using `P.herm`. Take `⟨b, n, gL, gn, gp, go⟩` from `P.basis hι`. Use `choose a1 a2 a3 a4 h4 using fun i => Nat.sum_four_squares (n i)`. Take `⟨g, hg, hform⟩` from `H.iso_of b go (fun i => (a1 i : K)) (fun i => (a2 i : K)) (fun i => (a3 i : K)) (fun i => (a4 i : K)) (fun i => map_natCast c _) (fun i => map_natCast c _) (fun i => map_natCast c _) (fun i => map_natCast c _) (fun i => by rw [gn i, ← h4 i]; push_cast; ring)`. Establish `hn0 : ∀ i, (n i : K) ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i e0`. Establish `: n i = 0` using `by exact_mod_cast e0`. Conclude with `gp i (this ▸ dvd_zero p)`. Establish `hcop : Nat.Coprime (∏ j, n j) p` using `Nat.Coprime.prod_left fun i _ => ((Nat.Prime.coprime_iff_not_dvd P.prime).2 (gp i)).symm`. Establish `h1 : ∀ x : Fin 4 → V, (∀ a, x a ∈ L) → ∀ w, ((∏ j, n j : ℕ) : K) * g x w ∈ O`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx w`. Rewrite using `[hform, Finset.mul_sum]`. Use `O.sum_mem fun a _ => ?_` and prove the remaining obligations. Establish `e : ((∏ j, n j : ℕ) : K) * b.repr (x a) w.2 = ((∏ j ∈ Finset.univ.erase w.2, n j : ℕ) : K) * h (x a) (b w.2)`. Rewrite using `[H.coord b go, gn, ← Finset.mul_prod_erase Finset.univ n (Finset.mem_univ w.2)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e' : ((∏ j, n j : ℕ) : K) * (qM (a1 w.2 : K) (a2 w.2 : K) (a3 w.2 : K) (a4 w.2 : K) w.1 a * b.repr (x a) w.2) = qM (a1 w.2 : K) (a2 w.2 : K) (a3 w.2 : K) (a4 w.2 : K) w.1 a * (((∏ j ∈ Finset.univ.erase w.2, n j : ℕ) : K) * h (x a) (b w.2))`. Rewrite using `[← e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e']`. Conclude with `O.mul_mem (qM_mem O (natCast_mem O _) (natCast_mem O _) (natCast_mem O _) (natCast_mem O _) _ _) (O.mul_mem (natCast_mem O _) (P.int _ (hx a) _ (gL _)))`. Use `⟨g, hg, ∏ j, n j, hcop, h1, ?_⟩` and prove the remaining obligations. Introduce `u hu a`. Use `P.unim _ fun y hy => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hg (g.symm u) (Pi.single a y)`. Rewrite `e` using `[LinearEquiv.apply_symm_apply, Finset.sum_eq_single a]`. Rewrite `e` using `[Pi.single_eq_same]`. Rewrite using `[H.smul_left, ← e, Finset.mul_sum]`. Use `O.sum_mem fun w _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : ((∏ j, n j : ℕ) : K) * (u w * c (g (Pi.single a y) w)) = u w * c (((∏ j, n j : ℕ) : K) * g (Pi.single a y) w)`. Rewrite using `[map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Use `O.mul_mem (hu w) (P.cO _ (h1 _ ?_ w))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `a'`. Distinguish the cases in `ha : a' = a`. Substitute `ha` using the available equality. Rewrite using `[Pi.single_eq_same]` and apply the resulting hypothesis. Rewrite using `[Pi.single_eq_of_ne ha]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `L.zero_mem`. Introduce `a' _ ha'`. Rewrite using `[Pi.single_eq_of_ne ha', H.symm 0 _, H.zero_left, map_zero]`. Introduce `ha`. Conclude with `absurd (Finset.mem_univ a) ha`.
+A detailed English derivation is pending.
 -/
 theorem PLat.iso (P : PLat c h O L p) {ι : Type} [Fintype ι] [DecidableEq ι] (hι : Fintype.card ι = finrank K V) :
     ∃ g : (Fin 4 → V) ≃ₗ[K] (Fin 4 × ι → K), (∀ x y, ∑ w, g x w * c (g y w) = ∑ a, h (x a) (y a)) ∧
@@ -395,7 +385,7 @@ theorem PLat.iso (P : PLat c h O L p) {ι : Type} [Fintype ι] [DecidableEq ι] 
 namespace Test
 
 /- English proof (translation)
-The claim follows from `add_mul x x' y smul_left k x y := by simp [mul_assoc] symm x y := mul_comm y x pos x hx := ⟨mul_self_ne_zero.2 hx, x, 0, 0, 0, rfl, rfl, rfl, rfl, by ring⟩`.
+A detailed English derivation is pending.
 -/
 theorem herm : Herm4 (RingHom.id ℚ) (fun x y : ℚ => x * y) where
   add_left x x' y := add_mul x x' y
@@ -404,7 +394,7 @@ theorem herm : Herm4 (RingHom.id ℚ) (fun x y : ℚ => x * y) where
   pos x hx := ⟨mul_self_ne_zero.2 hx, x, 0, 0, 0, rfl, rfl, rfl, rfl, by ring⟩
 
 /- English proof (translation)
-The claim follows from `herm prime := Nat.prime_three cO t ht := ht smul := by rintro _ ⟨a, rfl⟩ _ ⟨b, rfl⟩ exact ⟨a * b, by simp⟩ int := by rintro _ ⟨a, rfl⟩ _ ⟨b, rfl⟩ exact ⟨a * b, by simp⟩ unim x h := by obtain ⟨a, ha⟩ := h 1 ⟨1, by simp⟩ exact ⟨a, by simpa using ha⟩ full x := ⟨x.den, x.den_pos, ⟨x. …`.
+A detailed English derivation is pending.
 -/
 theorem plat : PLat (RingHom.id ℚ) (fun x y : ℚ => x * y) (Int.castRingHom ℚ).range (Int.castAddHom ℚ).range 3 where
   herm := herm

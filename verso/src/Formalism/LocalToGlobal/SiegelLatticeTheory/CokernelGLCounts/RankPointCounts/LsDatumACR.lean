@@ -19,7 +19,7 @@ def GamG (t : Term V M r) (g : Fin (r + 1) → V) : Set (DDt H t × H.Wb g) :=
   {p | ∃ (u : ↥(MMsharp H t)) (hu : (u : V) ∈ H.perp (H.X g)), p = (ddMk H t u, H.mkW g ⟨u, hu⟩)}
 
 /- English proof (translation)
-Rewrite using `[← map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mkW_add {g : Fin (r + 1) → V} (a b : V) (ha : a ∈ H.perp (H.X g)) (hb : b ∈ H.perp (H.X g)) :
     H.mkW g ⟨a + b, Submodule.add_mem _ ha hb⟩ = H.mkW g ⟨a, ha⟩ + H.mkW g ⟨b, hb⟩ := by
@@ -27,7 +27,7 @@ theorem mkW_add {g : Fin (r + 1) → V} (a b : V) (ha : a ∈ H.perp (H.X g)) (h
   rfl
 
 /- English proof (translation)
-Rewrite using `[← map_sub]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mkW_sub {g : Fin (r + 1) → V} (a b : V) (ha : a ∈ H.perp (H.X g)) (hb : b ∈ H.perp (H.X g)) :
     H.mkW g ⟨a - b, Submodule.sub_mem _ ha hb⟩ = H.mkW g ⟨a, ha⟩ - H.mkW g ⟨b, hb⟩ := by
@@ -35,7 +35,7 @@ theorem mkW_sub {g : Fin (r + 1) → V} (a b : V) (ha : a ∈ H.perp (H.X g)) (h
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem mkW_congr {g : Fin (r + 1) → V} {a b : V} (ha : a ∈ H.perp (H.X g)) (hb : b ∈ H.perp (H.X g))
     (h : a = b) : H.mkW g ⟨a, ha⟩ = H.mkW g ⟨b, hb⟩ := by
@@ -43,7 +43,7 @@ theorem mkW_congr {g : Fin (r + 1) → V} {a b : V} (ha : a ∈ H.perp (H.X g)) 
   rfl
 
 /- English proof (translation)
-Establish `hsup : Submodule.span E (Set.range (Sum.elim t.f t.f')) = H.Xp t.f ⊔ H.Xp t.f'`. Rewrite using `[Set.Sum.elim_range, Submodule.span_union]`. Both sides reduce to the same expression. Rewrite using `[hsup]`. Conclude with `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact MMfam_mem_sup H t i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanMM_le_U (t : Term V M r) :
     Submodule.span E (Set.range (H.MMfam t)) ≤ Submodule.span E (Set.range (Sum.elim t.f t.f')) := by
@@ -54,61 +54,57 @@ theorem spanMM_le_U (t : Term V M r) :
   exact Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact MMfam_mem_sup H t i)
 
 /- English proof (translation)
-Establish `hsep₂ : ∀ (a b : V) (ha : a ∈ Submodule.span E (Set.range (Sum.elim t₂.f t₂.f'))) (hb : b ∈ H.W0 t₂.f t₂.f') (ha' : a ∈ H.perp (H.X g₂)), H.mkW g₂ ⟨a, ha'⟩ = H.mkW g₂ ⟨b, hW₂ hb⟩ → b = 0`. Introduce `a b ha hb ha' hab`. Establish `h1` using `sub_mem_X_of_mkW_eq H hab`. Establish `h2 : b = a - (a - b)` using `by abel`. Establish `h3 : b ∈ Submodule.span E (Set.range (Sum.elim t₂.f t₂.f'))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `Submodule.sub_mem _ ha (hY₂ h1)`. Conclude with `(Submodule.disjoint_def.1 hU₂.disjoint) b h3 hb`. Establish `hpart : ∀ (t : Term V M r) (Λ : Submodule M.L.O V), H.IsSelfDual Λ → MMo H t ≤ Λ → ∀ a b : V, a ∈ Submodule.span E (Set.range (Sum.elim t.f t.f')) → b ∈ H.W0 t.f t.f' → a + b ∈ Λ → a ∈ MMsharp H t`. Introduce `t Λ hsd hMM a b ha hb hab`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨span_frames_le_MM H t ha, fun μ hμ => ?_⟩` and prove the remaining obligations. Establish `hμU : μ ∈ Submodule.span E (Set.range (H.MMfam t))` using `Submodule.span_le_restrictScalars M.L.O E _ hμ`. Establish `h1 : H.h (a + b) μ ∈ M.L.O` using `(hsd.2.2 _).1 hab μ (hMM hμ)`. Rewrite `h1` using `[H.h_add_left, hermitian_W0_span_zero H t hb hμU, add_zero]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdec : ∀ (U W : Submodule E V), IsCompl U W → ∀ x : V, ∃ a ∈ U, ∃ b ∈ W, a + b = x`. Introduce `U W hUW x`. Establish `hx : x ∈ U ⊔ W` using `by rw [hUW.sup_eq_top]; exact Submodule.mem_top`. Conclude with `Submodule.mem_sup.1 hx`. Establish `hperp_a : ∀ {g : Fin (r + 1) → V} (a b : V), b ∈ H.perp (H.X g) → a + b ∈ H.perp (H.X g) → a ∈ H.perp (H.X g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g a b hb hab`. Establish `: a = (a + b) - b` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ hab hb`. Establish `hθs : ∀ m₂ : ↥(MMsharp H t₂), ∃ m₁ : ↥(MMsharp H t₁), θ (ddMk H t₁ m₁) = ddMk H t₂ m₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `m₂`. Take `⟨m₁, hm₁⟩` from `Submodule.Quotient.mk_surjective _ (θ.symm (ddMk H t₂ m₂))`. Use `⟨m₁, ?_⟩` and prove the remaining obligations. Rewrite using `[show ddMk H t₁ m₁ = θ.symm (ddMk H t₂ m₂) from hm₁, LinearEquiv.apply_symm_apply]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `hL`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨q, ⟨u₁, hu₁, rfl⟩, rfl⟩`. Take `⟨n₁, hn₁⟩` from `hsurj₁ u₁`. Establish `hx₁p : (u₁ : V) + n₁ ∈ H.perp (H.X g₁)` using `Submodule.add_mem _ hu₁ (hW₁ n₁.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmem : χ (H.mkW g₁ ⟨(u₁ : V) + n₁, hx₁p⟩) ∈ H.Lset Λ₂ g₂`. Rewrite using `[← hL]`. Conclude with `⟨_, ⟨⟨_, hx₁p⟩, hn₁, rfl⟩, rfl⟩`. Take `⟨x₂, hx₂Λ, hx₂e⟩` from `hmem`. Take `⟨a, ha, b, hb, hab⟩` from `hdec _ _ hU₂ (x₂ : V)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hap : a ∈ H.perp (H.X g₂)` using `hperp_a a b (hW₂ hb) (by rw [hab]; exact x₂.2)`. Establish `haMM : a ∈ MMsharp H t₂` using `hpart t₂ Λ₂ hsd₂ hMM₂ a b ha hb (by rw [hab]; exact hx₂Λ)`. Take `⟨u', hu'U, hu'p, hχu⟩` from `hC2 u₁ (spanMM_le_U H t₁ u₁.2.1) hu₁`. Establish `e1 : χ (H.mkW g₁ ⟨(u₁ : V) + n₁, hx₁p⟩) = H.mkW g₂ ⟨u', hu'p⟩ + H.mkW g₂ ⟨ψ n₁, hW₂ (ψ n₁).2⟩`. Rewrite using `[mkW_add H _ _ hu₁ (hW₁ n₁.2), map_add, hχu, hC1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : H.mkW g₂ x₂ = H.mkW g₂ ⟨a, hap⟩ + H.mkW g₂ ⟨b, hW₂ hb⟩`. Rewrite using `[← mkW_add H _ _ hap (hW₂ hb)]`. Conclude with `mkW_congr H _ _ hab.symm`. Establish `e3 : H.mkW g₂ ⟨a - u', Submodule.sub_mem _ hap hu'p⟩ = H.mkW g₂ ⟨(ψ n₁ : V) - b, Submodule.sub_mem _ (hW₂ (ψ n₁).2) (hW₂ hb)⟩`. Rewrite using `[mkW_sub H a u' hap hu'p, mkW_sub H (ψ n₁ : V) b (hW₂ (ψ n₁).2) (hW₂ hb), sub_eq_sub_iff_add_eq_add, ← e2, hx₂e, e1, add_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb0` using `hsep₂ (a - u') ((ψ n₁ : V) - b) (Submodule.sub_mem _ ha hu'U) (Submodule.sub_mem _ (ψ n₁).2 hb) (Submodule.sub_mem _ hap hu'p) e3`. Establish `hbψ : b = (ψ n₁ : V)` using `(sub_eq_zero.1 hb0).symm`. Establish `e4 : H.mkW g₂ ⟨a, hap⟩ = H.mkW g₂ ⟨u', hu'p⟩`. Use `e3` as an intermediate fact. Rewrite `this` using `[mkW_sub H a u' hap hu'p, mkW_sub H (ψ n₁ : V) b (hW₂ (ψ n₁).2) (hW₂ hb)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite `this` using `[mkW_congr H (hW₂ (ψ n₁).2) (hW₂ hb) hbψ.symm, sub_self, sub_eq_zero]`. Conclude with `this`. Establish `hθu : θ (ddMk H t₁ u₁) = ddMk H t₂ ⟨a, haMM⟩` using `(hθ u₁ ⟨a, haMM⟩).2 ⟨n₁, hn₁, by rw [← hbψ, hab]; exact hx₂Λ⟩`. Use `⟨⟨a, haMM⟩, hap, ?_⟩` and prove the remaining obligations. Simplify using `only [Prod.mk.injEq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hθu, hχu.trans e4.symm⟩`. Introduce and unpack `_ ⟨u₂, hu₂, rfl⟩`. Take `⟨m₁, hm₁⟩` from `hθs u₂`. Take `⟨n₁, hn₁, hx₂Λ⟩` from `(hθ m₁ u₂).1 hm₁`. Establish `hx₂p : (u₂ : V) + ψ n₁ ∈ H.perp (H.X g₂)` using `Submodule.add_mem _ hu₂ (hW₂ (ψ n₁).2)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : H.mkW g₂ ⟨(u₂ : V) + ψ n₁, hx₂p⟩ ∈ χ '' H.Lset t₁.abelian₂ g₁`. Rewrite using `[hL]`. Conclude with `⟨⟨_, hx₂p⟩, hx₂Λ, rfl⟩`. Take `⟨_, ⟨x₁, hx₁Λ, rfl⟩, hx₁e⟩` from `hmem`. Take `⟨a₁, ha₁, b₁, hb₁, hab₁⟩` from `hdec _ _ hU₁ (x₁ : V)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha₁p : a₁ ∈ H.perp (H.X g₁)` using `hperp_a a₁ b₁ (hW₁ hb₁) (by rw [hab₁]; exact x₁.2)`. Establish `ha₁MM : a₁ ∈ MMsharp H t₁` using `hpart t₁ t₁.abelian₂ hsd₁ hMM₁ a₁ b₁ ha₁ hb₁ (by rw [hab₁]; exact hx₁Λ)`. Take `⟨u', hu'U, hu'p, hχu⟩` from `hC2 a₁ ha₁ ha₁p`. Establish `e1 : χ (H.mkW g₁ x₁) = H.mkW g₂ ⟨u', hu'p⟩ + H.mkW g₂ ⟨ψ ⟨b₁, hb₁⟩, hW₂ (ψ ⟨b₁, hb₁⟩).2⟩`. Rewrite using `[mkW_congr H x₁.2 (Submodule.add_mem _ ha₁p (hW₁ hb₁)) hab₁.symm, mkW_add H _ _ ha₁p (hW₁ hb₁), map_add, hχu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hC1 ⟨b₁, hb₁⟩]`. Establish `e3 : H.mkW g₂ ⟨(u₂ : V) - u', Submodule.sub_mem _ hu₂ hu'p⟩ = H.mkW g₂ ⟨(ψ ⟨b₁, hb₁⟩ : V) - ψ n₁, Submodule.sub_mem _ (hW₂ (ψ ⟨b₁, hb₁⟩).2) (hW₂ (ψ n₁).2)⟩`. Rewrite using `[mkW_sub H (u₂ : V) u' hu₂ hu'p, mkW_sub H (ψ ⟨b₁, hb₁⟩ : V) (ψ n₁ : V) (hW₂ (ψ ⟨b₁, hb₁⟩).2) (hW₂ (ψ n₁).2), sub_eq_sub_iff_add_eq_add, ← mkW_add H _ _ hu₂ (hW₂ (ψ n₁).2), ← hx₁e, e1, add_comm]`. Establish `hb0` using `hsep₂ ((u₂ : V) - u') ((ψ ⟨b₁, hb₁⟩ : V) - ψ n₁) (Submodule.sub_mem _ (spanMM_le_U H t₂ u₂.2.1) hu'U) (Submodule.sub_mem _ (ψ ⟨b₁, hb₁⟩).2 (ψ n₁).2) (Submodule.sub_mem _ hu₂ hu'p) e3`. Establish `hψeq : ψ ⟨b₁, hb₁⟩ = ψ n₁` using `Subtype.ext (sub_eq_zero.1 hb0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbn : (⟨b₁, hb₁⟩ : ↥(H.W0 t₁.f t₁.f')) = n₁` using `ψ.injective hψeq`. Establish `e4 : H.mkW g₂ ⟨u₂, hu₂⟩ = H.mkW g₂ ⟨u', hu'p⟩`. Use `e3` as an intermediate fact. Rewrite `this` using `[mkW_sub H (u₂ : V) u' hu₂ hu'p, mkW_sub H (ψ ⟨b₁, hb₁⟩ : V) (ψ n₁ : V) (hW₂ (ψ ⟨b₁, hb₁⟩).2) (hW₂ (ψ n₁).2)]`. Rewrite `this` using `[mkW_congr H (hW₂ (ψ ⟨b₁, hb₁⟩).2) (hW₂ (ψ n₁).2) (congrArg Subtype.val hψeq), sub_self, sub_eq_zero]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Conclude with `this`. Establish `hθa : θ (ddMk H t₁ ⟨a₁, ha₁MM⟩) = ddMk H t₂ u₂` using `(hθ ⟨a₁, ha₁MM⟩ u₂).2 ⟨⟨b₁, hb₁⟩, by rw [hab₁]; exact hx₁Λ, by rw [hψeq]; exact hx₂Λ⟩`. Use `⟨(ddMk H t₁ ⟨a₁, ha₁MM⟩, H.mkW g₁ ⟨a₁, ha₁p⟩), ⟨⟨a₁, ha₁MM⟩, ha₁p, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Prod.mk.injEq]`. Conclude with `⟨hθa, hχu.trans e4.symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hG`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨x₁, hx₁Λ, rfl⟩, rfl⟩`. Take `⟨a₁, ha₁, b₁, hb₁, hab₁⟩` from `hdec _ _ hU₁ (x₁ : V)`. Establish `ha₁p : a₁ ∈ H.perp (H.X g₁)` using `hperp_a a₁ b₁ (hW₁ hb₁) (by rw [hab₁]; exact x₁.2)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha₁MM : a₁ ∈ MMsharp H t₁` using `hpart t₁ t₁.abelian₂ hsd₁ hMM₁ a₁ b₁ ha₁ hb₁ (by rw [hab₁]; exact hx₁Λ)`. Establish `hin : (θ (ddMk H t₁ ⟨a₁, ha₁MM⟩), χ (H.mkW g₁ ⟨a₁, ha₁p⟩)) ∈ GamG H t₂ g₂`. Rewrite using `[← hG]`. Conclude with `⟨_, ⟨⟨a₁, ha₁MM⟩, ha₁p, rfl⟩, rfl⟩`. Take `⟨u₂, hu₂, hue⟩` from `hin`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Prod.mk.injEq] at hue`. Take `⟨n₁, hn₁, hx₂'⟩` from `(hθ ⟨a₁, ha₁MM⟩ u₂).1 hue.1`. Establish `hd : (⟨b₁, hb₁⟩ : ↥(H.W0 t₁.f t₁.f')) - n₁ ∈ {w : ↥(H.W0 t₁.f t₁.f') | (w : V) ∈ t₁.abelian₂}` using `by show b₁ - (n₁ : V) ∈ t₁.abelian₂`. Use `t₁.abelian₂.sub_mem hx₁Λ hn₁` as an intermediate fact. Rewrite `this` using `[← hab₁, show a₁ + b₁ - (a₁ + (n₁ : V)) = b₁ - n₁ by abel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hdψ` using `(hth _).1 hd`. Rewrite `hdψ` using `[map_sub, Submodule.coe_sub]`. Establish `hx₂Λ : (u₂ : V) + ψ ⟨b₁, hb₁⟩ ∈ Λ₂`. Use `Λ₂.add_mem hx₂' hdψ` as an intermediate fact. Rewrite `this` using `[show (u₂ : V) + ψ n₁ + ((ψ ⟨b₁, hb₁⟩ : V) - ψ n₁) = u₂ + ψ ⟨b₁, hb₁⟩ by abel]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx₂p : (u₂ : V) + ψ ⟨b₁, hb₁⟩ ∈ H.perp (H.X g₂)` using `Submodule.add_mem _ hu₂ (hW₂ (ψ ⟨b₁, hb₁⟩).2)`. Use `⟨⟨_, hx₂p⟩, hx₂Λ, ?_⟩` and prove the remaining obligations. Rewrite using `[mkW_add H _ _ hu₂ (hW₂ (ψ ⟨b₁, hb₁⟩).2), ← hC1 ⟨b₁, hb₁⟩, ← hue.2, ← map_add, ← mkW_add H _ _ ha₁p (hW₁ hb₁)]`. Conclude with `congrArg χ (mkW_congr H _ _ hab₁)`. Introduce and unpack `_ ⟨x₂, hx₂Λ, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, b, hb, hab⟩` from `hdec _ _ hU₂ (x₂ : V)`. Establish `hap : a ∈ H.perp (H.X g₂)` using `hperp_a a b (hW₂ hb) (by rw [hab]; exact x₂.2)`. Establish `haMM : a ∈ MMsharp H t₂` using `hpart t₂ Λ₂ hsd₂ hMM₂ a b ha hb (by rw [hab]; exact hx₂Λ)`. Establish `hin : (ddMk H t₂ ⟨a, haMM⟩, H.mkW g₂ ⟨a, hap⟩) ∈ (fun p => (θ p.1, χ p.2)) '' GamG H t₁ g₁`. Rewrite using `[hG]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `⟨⟨a, haMM⟩, hap, rfl⟩`. Take `⟨_, ⟨u₁, hu₁, rfl⟩, hue⟩` from `hin`. Simplify using `only [Prod.mk.injEq] at hue`. Take `⟨n₁, hn₁, hx₂'⟩` from `(hθ u₁ ⟨a, haMM⟩).1 hue.1`. Use `set bb : ↥(H.W0 t₁.f t₁.f') := ψ.symm ⟨b, hb⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hψbb : (ψ bb : V) = b` using `by simp [bb]`. Establish `hd2 : (ψ (bb - n₁) : V) ∈ Λ₂`. Rewrite using `[map_sub, Submodule.coe_sub, hψbb]`. Use `Λ₂.sub_mem hx₂Λ hx₂'` as an intermediate fact. Rewrite `this` using `[← hab, show a + b - (a + (ψ n₁ : V)) = b - ψ n₁ by abel]`. Then use the resulting hypothesis.
-
-Establish `hd1 : ((bb - n₁ : ↥(H.W0 t₁.f t₁.f')) : V) ∈ t₁.abelian₂` using `(hth _).2 hd2`. Establish `hx₁Λ : (u₁ : V) + bb ∈ t₁.abelian₂`. Use `t₁.abelian₂.add_mem hn₁ hd1` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sub, show (u₁ : V) + n₁ + ((bb : V) - n₁) = u₁ + bb by abel]`. Then use the resulting hypothesis. Establish `hx₁p : (u₁ : V) + bb ∈ H.perp (H.X g₁)` using `Submodule.add_mem _ hu₁ (hW₁ bb.2)`.
-
-Use `⟨_, ⟨⟨_, hx₁p⟩, hx₁Λ, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mkW_add H _ _ hu₁ (hW₁ bb.2), map_add, hue.2, hC1]`. Rewrite using `[← mkW_add H _ _ hap (hW₂ (ψ bb).2)]`. Conclude with `mkW_congr H _ _ (by rw [hψbb, hab])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem claimR_side (t₁ t₂ : Term V M r) (Λ₂ : Submodule M.L.O V)
     (ψ : ↥(H.W0 t₁.f t₁.f') ≃ₗ[E] ↥(H.W0 t₂.f t₂.f'))

@@ -35,17 +35,17 @@ namespace GlobalTheory.MixSupport
 open GlobalTheory.CondBound
 
 /- English proof (translation)
-Establish `hΛ` using `GlobalTheory.PlaceModel.isSelfDualC_latFrame (line D)`. Take `⟨M, hM, hden⟩` from `den_latL D`. Take `⟨K0, hK0c, mem0⟩` from `exists_compact_fin D M hM`. Establish `memL : ∀ u ∈ latL D, u (o D) (o D) ∈ K0` using `fun u hu => mem0 _ (infPart_latL D hu) (hden u hu)`. Set `c0 : AE D` to `incA D D.host.xi0 * incA D ((line D).gram⁻¹ (o D) (o D)) * incA D ((line D).gram (o D) (o D))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨n, hn⟩` from `exists_small D _ (isCompact_mul_conj D c0 hK0c) U hU`. Set `r : AE D` to `algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 ((n.factorial : ℕ) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F))`. Use `⟨M * n.factorial, Nat.mul_pos hM (Nat.factorial_pos n), fun x hx => ?_⟩` and prove the remaining obligations. Set `u : WO (line D) (line D)` to `Matrix.of fun _ _ => x * r`. Establish `hu0 : u.map (infPart D) = 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `i j`. Use `show infPart D (x * r) = 0`. Rewrite using `[RingHom.map_mul, infPart_r, mul_zero]`. Establish `huL : u ∈ latL D`. Use `((GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ (line D) (line D) _ _ hψ hΛ hΛ).1 u hu0).2 fun u' hu' => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ha : r * (c0 * cA D (u' (o D) (o D))) ∈ U` using `hn _ ⟨_, memL u' hu', rfl⟩`. Establish `hai : infPart D (r * (c0 * cA D (u' (o D) (o D)))) = 0`. Rewrite using `[RingHom.map_mul, infPart_r, zero_mul]`. Establish `h` using `hx _ ha hai`. Rewrite using `[symplO, hO_line]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h using 3` and compare the differences between its conclusion and the goal. Use `show _ = x * _`. Simplify using `only [c0, u, Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `hden u huL`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : finPart D (u (o D) (o D)) = n.factorial • finPart D x` using `by show finPart D (x * r) = _`. Rewrite using `[RingHom.map_mul, finPart_r, map_natCast, map_natCast, nsmul_eq_mul, mul_comm]`. Rewrite `h` using `[e, ← mul_nsmul']`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annih_den (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (U : AddSubgroup (AE D))
     (hU : IsOpen (U : Set (AE D))) : ∃ N : ℕ, 0 < N ∧ ∀ x : AE D,
@@ -82,9 +82,9 @@ theorem annih_den (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D �
   exact h
 
 /- English proof (translation)
-Take `⟨e, he, -, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Apply `e.injective` to reduce the goal to its premises. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[(he _).1, (he _).1] show infPart D (z * c) = infPart D 0`. Rewrite using `[map_mul, hc, mul_zero, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(he _).2, (he _).2] show finPart D (z * c) = finPart D 0`. Rewrite using `[map_mul, hz, zero_mul, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_eq_zero_of_parts {D : D7} (z c : AE D) (hz : finPart D z = 0) (hc : infPart D c = 0) : z * c = 0 := by
   obtain ⟨e, he, -, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E
@@ -98,9 +98,7 @@ theorem mul_eq_zero_of_parts {D : D7} (z c : AE D) (hz : finPart D z = 0) (hc : 
     rw [map_mul, hz, zero_mul, map_zero]
 
 /- English proof (translation)
-Use `choose n hn hint using fun p : Fin m × Fin m => GlobalTheory.IwaPlace.SDBound.exists_nat_mul_isIntegral (D := D) (A p.1 p.2)`. Use `⟨∏ p, n p, Finset.prod_pos fun p _ => hn p, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ (i, j)), Nat.cast_mul, mul_comm ((n (i, j) : ℕ) : D.host.E), mul_assoc]`. Establish `hc : IsIntegral ℤ (((∏ p ∈ Finset.univ.erase (i, j), n p : ℕ) : D.host.E))`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := D.host.E) (x := ((∏ p ∈ Finset.univ.erase (i, j), n p : ℕ) : ℤ)))`.
-
-Conclude with `hc.mul (hint (i, j))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mat_den {D : D7} {m : ℕ} (A : Matrix (Fin m) (Fin m) D.host.E) :
     ∃ d : ℕ, 0 < d ∧ ∀ i j, IsIntegral ℤ ((d : D.host.E) * A i j) := by
@@ -115,39 +113,33 @@ set_option maxHeartbeats 2000000 in
 open GlobalTheory.MixModel in
 
 /- English proof (translation)
-Introduce `D ψ hψ V X S₀ r d μ' 𝓕' hμ K₀ hK₀ _`. Take `⟨U, hUo, hU⟩` from `GlobalTheory.MixSumBound.finite_points_in_nhds D X.rank V.rank K₀ hK₀`. Set `g : Fin X.rank → Fin r → (AE D →+ Mx D X.rank r)` to `fun i j => { toFun := fun c => Matrix.single i j (cA D c) map_zero' := by simp map_add' := fun a b => by simp [Matrix.single_add] }`. Establish `hg : ∀ i j, Continuous (g i j)` using `fun i j => by show Continuous fun c => Matrix.single i j (cA D c)`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.single_apply]`. Use `split_ifs`. Conclude with `GlobalTheory.AnnihBox.continuous_cA'`. Conclude with `continuous_const`. Establish `hf : ∀ i j, Continuous ((d.extY X).comp (g i j))` using `fun i j => by show Continuous fun c => d.extY X (g i j c)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [HypDec.extY_apply]`. Conclude with `(hg i j).matrix_mul continuous_const`. Establish `hg0 : ∀ i j c, infPart D c = 0 → (g i j c).map (infPart D) = 0` using `fun i j c hc0 => by`. Use extensionality with `a b`. Use `show infPart D (Matrix.single i j (cA D c) a b) = 0`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.single_apply]`. Use `split_ifs`. Conclude with `GlobalTheory.AnnihBox.infPart_cA' c hc0`. Conclude with `map_zero _`. Set `U' : AddSubgroup (AE D)` to `⨅ i, ⨅ j, U.comap ((d.extY X).comp (g i j))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hU'o : IsOpen (U' : Set (AE D))`. Establish `e : (U' : Set (AE D)) = ⋂ i, ⋂ j, ((d.extY X).comp (g i j)) ⁻¹' (U : Set (WO V X))`. Use extensionality with `c`. Simplify using `[U', AddSubgroup.mem_iInf]`. Rewrite using `[e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hUo.preimage (hf i j)`. Take `⟨N, hN, hNden⟩` from `annih_den D ψ hψ U' hU'o`. Take `⟨M₂, hM₂, hM₂i⟩` from `mat_den (D := D) (D.host.xi0⁻¹ • X.gram⁻¹)`. Use `⟨M₂ * N, Nat.mul_pos hM₂ hN, fun n hn Ψ hΨ hfix ξ x hx hne i j => ?_⟩` and prove the remaining obligations. Set `v : GlobalTheory.Unf.VolM D X.rank r` to `⟨μ', 𝓕', hμ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmix` using `(GlobalTheory.HeisMixSource.heis_mixS D ψ hψ V S₀ X r d v Ψ hΨ).2.1`. Establish `hxr : (x - rat ξ).map (finPart D) = 0`. Rewrite using `[Matrix.map_sub _ (map_sub (finPart D))]`. Conclude with `sub_eq_zero.2 hx`. Establish `key : ∀ k l, IsIntegral ℤ ((N : D.host.E) * ((n : D.host.E) * (D.host.xi0 * (X.gram * ξ) k l)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `k l`. Establish `hann : ∀ c ∈ U', infPart D c = 0 → ψ (Algebra.trace (AF D.host.F) (AE D) (incA D ((n : D.host.E) * (D.host.xi0 * (X.gram * ξ) k l)) * c)) = 1`. Introduce `c hc hc0`. Establish `hcU : d.extY X (g k l c) ∈ U` using `AddSubgroup.mem_iInf.1 (AddSubgroup.mem_iInf.1 hc k) l`. Establish `hfin : (d.extY X (g k l c)).map (infPart D) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[HypDec.extY_apply, Matrix.map_mul, hg0 k l c hc0, Matrix.zero_mul]`. Establish `hfx` using `hfix _ (hU _ hcU hfin) hfin`. Establish `h2` using `congrFun (hmix x (n • g k l c)) 0`. Rewrite `h2` using `[map_nsmul, hfx, Pi.smul_apply, smul_eq_mul]`. Establish `h3 : ψ (symplO V X (d.extX X x) (n • d.extY X (g k l c))) = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hne' : d.mixS X ψ v.μ v.𝓕 Ψ x 0 ≠ 0` using `hne`. Conclude with `mul_right_cancel₀ hne' (h2.symm.trans (one_mul _).symm)`. Rewrite `h3` using `[← map_nsmul (d.extY X), ← map_nsmul (g k l), show g k l (n • c) = Matrix.single k l (cA D (n • c)) from rfl, GlobalTheory.AnnihBox.symplO_extX_extY_single]`. Rewrite using `[← h3]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hxc : (gA X * x) k l * c = incA D ((X.gram * ξ) k l) * c`. Rewrite using `[← sub_eq_zero, ← sub_mul]`. Use `mul_eq_zero_of_parts _ _ ?_ hc0` and prove the remaining obligations. Establish `e1 : incA D ((X.gram * ξ) k l) = (gA X * rat ξ) k l`. Rewrite using `[gA, ← rat_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[e1, ← Matrix.sub_apply, ← Matrix.mul_sub]`. Conclude with `congrFun (congrFun (map_mul_eq_zero_right (finPart D) (gA X) hxr) k) l`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = (n : AE D) * (incA D D.host.xi0 * ((gA X * x) k l * c)) := by rw [hxc]`. Use `_ = incA D D.host.xi0 * (gA X * x) k l * (n • c) := by rw [nsmul_eq_mul]; ring`. Establish `h` using `hNden _ hann`. Establish `e : finPart D (incA D ((N : D.host.E) * ((n : D.host.E) * (D.host.xi0 * (X.gram * ξ) k l)))) = N • finPart D (incA D ((n : D.host.E) * (D.host.xi0 * (X.gram * ξ) k l)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[map_mul (incA D), map_mul (finPart D), map_natCast, map_natCast, nsmul_eq_mul]`. Rewrite `h` using `[← e]`. Take `⟨y, hy⟩` from `GlobalTheory.FinalJoin.CondTest.integral_of_mem_intAE h`. Establish `e2 : ((N : D.host.E) * ((n : D.host.E) * (D.host.xi0 * (X.gram * ξ) k l))) = (y : D.host.E)` using `hy.symm`. Rewrite using `[e2]`.
-
-Use `NumberField.RingOfIntegers.isIntegral_coe y` and compare the differences between its conclusion and the goal. Establish `hξ : ξ = X.gram⁻¹ * (X.gram * ξ)`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (gram_isUnit_det X), Matrix.one_mul]`. Establish `e : (((M₂ * N * n : ℕ)) : D.host.E) * ξ i j = ∑ k, ((M₂ : D.host.E) * (D.host.xi0⁻¹ • X.gram⁻¹) i k) * ((N : D.host.E) * ((n : D.host.E) * (D.host.xi0 * (X.gram * ξ) k j)))` using `by conv_lhs => rw [hξ]`. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[e]`. Conclude with `IsIntegral.sum _ fun k _ => (hM₂i i k).mul (key k j)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixS_support_integral : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (V X S₀ : HSp D) (r : ℕ) (d : GlobalTheory.MixModel.HypDec V S₀ r) (μ' : Measure (Mx D X.rank r))

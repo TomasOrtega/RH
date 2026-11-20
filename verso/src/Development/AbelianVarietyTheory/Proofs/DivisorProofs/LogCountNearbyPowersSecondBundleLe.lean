@@ -11,9 +11,9 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSNef
 
 /- English proof (translation)
-Establish `hsub : P.Bl a b R ⊆ P.Bl a b R'` using `fun f hf => ⟨hf.1, fun σ y => (hf.2 σ y).trans h⟩`. Establish `hfin : (P.Bl a b R').Finite` using `GlobalTheory.T.hermLineBundlePair_sectionBall_finite k X p D hX P a b R'`. Establish `hle : (P.Bl a b R).ncard ≤ (P.Bl a b R').ncard` using `Set.ncard_le_ncard hsub hfin`. Unfold `VolBr.Pair.lc`. Break down `Nat.eq_zero_or_pos (P.Bl a b R).ncard with h0 | h0` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h0, Nat.cast_zero, Real.log_zero]`. Conclude with `Real.log_natCast_nonneg _`. Conclude with `Real.log_le_log (by exact_mod_cast h0) (by exact_mod_cast hle)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lc_mono_radius {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}
     (hX : IsArithVar p D) (P : Pair p) (a b : ℤ) {R R' : ℝ} (h : R ≤ R') : P.lc a b R ≤ P.lc a b R' := by
@@ -27,9 +27,9 @@ theorem lc_mono_radius {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {
   · exact Real.log_le_log (by exact_mod_cast h0) (by exact_mod_cast hle)
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX P b c hb hR ε hε`. Take `⟨α, β, hαβ⟩` from `hR`. Use `GlobalTheory.eventually_le_at_nearby_indices (D + 1) b c (fun η j => P.lc 0 (j : ℤ) (Real.exp (η * j))) (fun j => P.lc 0 j 2) (fun j => P.lc 0 j 1) α β (Nat.succ_pos D) hb hαβ ?_ ?_ ε hε` and prove the remaining obligations. Introduce `j`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `η hη`. Establish `ht : Tendsto (fun j : ℕ => Real.exp (η * j)) atTop atTop` using `Real.tendsto_exp_atTop.comp (Tendsto.const_mul_atTop hη tendsto_natCast_atTop_atTop)`. Use `filter_upwards [ht.eventually (eventually_ge_atTop 2)] with j hj`. Conclude with `lc_mono_radius hX P 0 (j : ℤ) hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lc_nearby_le : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D →
     ∀ (P : Pair p) (b c : ℕ), 0 < b → Regime P D → ∀ ε : ℝ, 0 < ε → ∀ᶠ n : ℕ in atTop, ∀ᶠ M : ℕ in atTop,

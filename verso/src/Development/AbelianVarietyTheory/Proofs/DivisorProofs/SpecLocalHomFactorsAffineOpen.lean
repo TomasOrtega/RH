@@ -4,9 +4,9 @@ open AlgebraicGeometry CategoryTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X V hV A _ _ f hf`. Establish `H : Set.range f ⊆ Set.range hV.fromSpec`. Rewrite using `[hV.range_fromSpec]`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hs : x ⤳ IsLocalRing.closedPoint A` using `IsLocalRing.specializes_closedPoint x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(hs.map f.continuous).mem_open V.isOpen hf`. Use `⟨(Spec.preimage (IsOpenImmersion.lift hV.fromSpec f H)).hom, ?_⟩` and prove the remaining obligations. Simplify using `[IsOpenImmersion.lift_fac]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spec_local_hom_factors_affineOpen : ∀ (X : Scheme.{0}) (V : X.Opens) (hV : IsAffineOpen V)
     (A : Type) [CommRing A] [IsLocalRing A]

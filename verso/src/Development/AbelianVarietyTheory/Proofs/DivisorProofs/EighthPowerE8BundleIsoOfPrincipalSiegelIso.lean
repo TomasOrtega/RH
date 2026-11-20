@@ -23,21 +23,17 @@ noncomputable section
 namespace GlobalTheory.SharpIso
 
 /- English proof (translation)
-Introduce `g n N B _ ζ K _ s c b C W J a bas t Q pr hpr huniv hQ hrel hsharp`. Take `⟨φ, hpb, ⟨φ₂, hsq, hP⟩, -⟩` from `hrel`. Take `⟨pr', hpr', huniv', ht, -, -⟩` from `hsharp`. Establish `w : φ ≫ c.A.hom = C.A.hom` using `by simpa using hpb.1.w`. Set `f : C.A ⟶ c.A` to `Over.homMk φ w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : IsIso φ := hpb.1.isIso_fst_of_isIso`. Use `haveI : IsIso f := by`. Establish `: IsIso ((Over.forget _).map f)` using `by simpa [f] using (inferInstance : IsIso φ)`. Conclude with `isIso_of_reflects_iso f (Over.forget _)`. Use `haveI hf : IsMonHom f := ReciprocityTheory.ChartRestriction.G.Geo.Tor.isMonHom_of_mul f (fun _ x y => GlobalTheory.AbelianLetters.mul_comp_of_isGrpPullback_id f hpb x y)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ψ, hψ, -⟩` from `huniv t.A (fun u => pr' u ≫ f)`. Take `⟨χ, hχ, -⟩` from `huniv' Q.A (fun u => pr u ≫ inv f)`. Establish `h1 : ψ ≫ χ = 𝟙 _` using `(huniv' t.A pr').unique (fun u => by`. Rewrite using `[Category.assoc, hχ, ← Category.assoc, hψ, Category.assoc, IsIso.hom_inv_id, Category.comp_id])`. Use the proof step `(fun u => Category.id_comp _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : χ ≫ ψ = 𝟙 _` using `(huniv Q.A pr).unique (fun u => by`. Rewrite using `[Category.assoc, hψ, ← Category.assoc, hχ, Category.assoc, IsIso.inv_hom_id, Category.comp_id])`. Use the proof step `(fun u => Category.id_comp _)`. Establish `hm : ∀ u, IsMonHom (ψ ≫ pr u)` using `fun u => by`. Rewrite using `[hψ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := hpr' u`. Use `infer_instance`. Establish `hψm : IsMonHom ψ`. Use `⟨(huniv _ fun u => η[Q.A] ≫ pr u).unique (fun u => ?_) fun _ => rfl, (huniv _ fun u => μ[t.A] ≫ ψ ≫ pr u).unique (fun u => Category.assoc _ _ _) fun u => ?_⟩` and prove the remaining obligations. Use `hm u` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hpr u` as an intermediate fact. Rewrite using `[Category.assoc, IsMonHom.one_hom, IsMonHom.one_hom]`. Use `hm u` as an intermediate fact. Use `hpr u` as an intermediate fact. Rewrite using `[Category.assoc, IsMonHom.mul_hom, IsMonHom.mul_hom, ← Category.assoc, tensorHom_comp_tensorHom]`.
-
-Use `⟨⟨ψ, χ, h1, h2⟩, hψm, ?_⟩` and prove the remaining obligations. Establish `hsq' : Geo.Tor.IsSquare φ (f ⊗ₘ f).left` using `⟨by rw [← Over.comp_left, tensorHom_fst]; rfl, by rw [← Over.comp_left, tensorHom_snd]; rfl⟩`. Take `rfl` from `GlobalTheory.LamPull.isSquare_unique hsq hsq'`. Establish `key : ∀ uv : Fin 8 × Fin 8, (lift (pr' uv.1) (pr' uv.2)).left ≫ (f ⊗ₘ f).left = ψ.left ≫ (lift (pr uv.1) (pr uv.2)).left` using `fun uv => by`. Rewrite using `[← Over.comp_left, ← Over.comp_left, lift_map, comp_lift, hψ, hψ]`.
-
-Rewrite using `[← cls_eq_iff t.isLB (pull_isLB Q.isLB _), (cls_eq_iff t.isLB (LB.isLB_linComb C.isLB _ _)).2 ht, cls_linComb C.isLB, (cls_eq_iff C.isLB (pull_isLB c.isLB _)).2 hP, cls_pull c.isLB, cls_pull Q.isLB, (cls_eq_iff Q.isLB (LB.isLB_linComb c.isLB _ _)).2 hQ, cls_linComb c.isLB]`. Simplify using `only [map_sum, map_zsmul, ← pull_comp, key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iso_of_sRel : ∀ (g n N : ℕ) (B : Type) [CommRing B] (ζ : B) (K : Type) [Field K] (s : Sp K ⟶ Sp B) (c : SiegPre g n ζ s) (b : TBase K N) (C : SiegPre g N (b.ζ : K) (𝟙 (Sp K))) (W : Matrix (Fin 8) (Fin 8) ℤ) (J : Type) (a : J → Matrix (Fin 8) (Fin 8) ℤ) (bas : (Fin (2 * (8 * g)) → ℤ) ≃ₗ[ℤ] (Fin 8 → (Fin g ⊕ Fin g → ℤ))) (t : TObj (8 * g) N J b (𝟙 (Sp K))) (Q : PolAV (Sp K)) (pr : Fin 8 → (Q.A ⟶ c.A)), (∀ u, IsMonHom (pr u)) → (∀ (T' : Over (Sp K)) (y : Fin 8 → (T' ⟶ c.A)), ∃! x : T' ⟶ Q.A, ∀ u, x ≫ pr u = y u) → LBIso Q.L (LB.LinComb c.P (K := Fin 8 × Fin 8) (fun uv => (lift (pr uv.1) (pr uv.2)).left) (fun uv => W uv.1 uv.2)) → SRel C c 0 0 (𝟙 _) → IsSharp W a bas t C → ∃ φ : t.A ≅ Q.A, IsMonHom φ.hom ∧ LBIso t.L (Q.L.pull φ.hom.left) := by
   intro g n N B _ ζ K _ s c b C W J a bas t Q pr hpr huniv hQ hrel hsharp

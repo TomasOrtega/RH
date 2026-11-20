@@ -18,9 +18,9 @@ def mulRat (V W : HSp D) (γ : Matrix (Fin V.rank) (Fin W.rank) D.host.E) : AF D
   map_add' x y := by ext i j; exact TensorProduct.add_tmul _ _ _
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `e : (fun a : AF D.host.F => mulRat V W γ a i j) = fun a => a • ((1 : AF D.host.F) ⊗ₜ[D.host.F] γ i j : AE D)`. Use function extensionality and compare the values at `a`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Establish `: ContinuousSMul (AF D.host.F) (AE D)` using `IsModuleTopology.toContinuousSMul _ _`. Conclude with `Continuous.smul (M := AF D.host.F) (X := AE D) (f := fun a : AF D.host.F => a) continuous_id continuous_const`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_mulRat (V W : HSp D) (γ : Matrix (Fin V.rank) (Fin W.rank) D.host.E) :
     Continuous (mulRat V W γ) := by
@@ -34,14 +34,14 @@ theorem continuous_mulRat (V W : HSp D) (γ : Matrix (Fin V.rank) (Fin W.rank) D
   exact Continuous.smul (M := AF D.host.F) (X := AE D) (f := fun a : AF D.host.F => a) continuous_id continuous_const
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem mulRat_one (V W : HSp D) (γ : Matrix (Fin V.rank) (Fin W.rank) D.host.E) :
     mulRat V W γ 1 = ratW V W γ := by
   ext i j; rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `(incA D).toAddMonoidHom.map_nsmul N (γ i j)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem ratW_nsmul (V W : HSp D) (γ : Matrix (Fin V.rank) (Fin W.rank) D.host.E) (N : ℕ) :
     ratW V W (N • γ) = N • ratW V W γ := by
@@ -49,19 +49,17 @@ theorem ratW_nsmul (V W : HSp D) (γ : Matrix (Fin V.rank) (Fin W.rank) D.host.E
   exact (incA D).toAddMonoidHom.map_nsmul N (γ i j)
 
 /- English proof (translation)
-Take `⟨U, hUo, hUf⟩` from `hf.level`. Take `⟨N, hN, hmem⟩` from `hU (U.comap (mulRat V W γ)) (hUo.preimage (continuous_mulRat V W γ))`. Use `⟨N, hN, fun w => ?_⟩` and prove the remaining obligations. Use `set u : WA V W := mulRat V W γ (pairA D.host.F 0 (N : Af D.host.F)) with hu`. Use `set r : WA V W := mulRat V W γ (pairA D.host.F (N : Ainf D.host.F) 0) with hr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hu0 : u.map (infPart D) = 0`. Use extensionality with `i j`. Conclude with `TensorProduct.zero_tmul _ (γ i j)`. Establish `hr0 : IsRealW V W r`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `TensorProduct.zero_tmul _ (γ i j)`. Establish `hsum : r + u = N • ratW V W γ`. Rewrite using `[hr, hu, ← AddMonoidHom.map_add, ← mulRat_one, ← AddMonoidHom.map_nsmul]`. Use `congr 1`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show (N : Ainf D.host.F) + 0 = N • (1 : Ainf D.host.F)`. Rewrite using `[add_zero, nsmul_one]`. Use `show 0 + (N : Af D.host.F) = N • (1 : Af D.host.F)`. Rewrite using `[zero_add, nsmul_one]`. Establish `hpu : piW θ V W u = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ i j`. Establish `: infPart D (u i j) = 0` using `congrFun (congrFun hu0 i) j`. Use `show θ τ (infPart D (u i j)) = 0`. Rewrite using `[this, RingHom.map_zero]`. Establish `hi : iotaW σ V W ((N : ℝ) • piW θ V W (ratW V W γ)) = r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_smul_eq_nsmul, ← AddMonoidHom.map_nsmul, ← hsum, AddMonoidHom.map_add, hpu, add_zero, h.iota_pi hr0]`. Establish `h1 : ∀ x, ‖f (x + u)‖ = ‖f x‖` using `fun x => by`. Use `congrFun (hUf u hmem hu0) x` as an intermediate fact. Rewrite using `[← this, Heisenberg₂, norm_mul, hψ, one_mul]`. Establish `h2` using `congrArg norm (hf.quasi (N • γ) w)`.
-
-Rewrite `h2` using `[norm_mul, hψ, one_mul, ratW_nsmul, ← hsum]`. Rewrite using `[hi, ← h1, ← h2, add_assoc, add_comm]`.
+A detailed English derivation is pending.
 -/
 theorem norm_periodic (D : D7) (θ : InfFam D) (σ : (D.what₂.Tau → ℂ) →+ AE D) (h : Chart θ σ)
     (ψ : AddChar (AF D.host.F) ℂ) (hψ : ∀ x, ‖ψ x‖ = 1)

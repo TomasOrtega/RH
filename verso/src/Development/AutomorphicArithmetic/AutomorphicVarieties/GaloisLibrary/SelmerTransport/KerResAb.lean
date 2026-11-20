@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open ReciprocityTheory.Gal UpperTheory.V.Base
 
 /- English proof (translation)
-Rewrite using `[← Module.length_pi_of_fintype]`. Set `φ : W →ₗ[R] (∀ i, H i)` to `LinearMap.pi fun i => LinearMap.codRestrict (H i) ((LinearMap.proj i).comp (ev.comp W.subtype)) fun z => hW z.1 z.2 i`. Use `Module.length_le_of_injective φ fun x y hxy => ?_` and prove the remaining obligations. Use `Subtype.ext (hev (funext fun i => ?_))` and prove the remaining obligations. Conclude with `congrArg Subtype.val (congrFun hxy i)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem len_le_pi {R Z M ι : Type} [CommRing R] [AddCommGroup Z] [Module R Z] [AddCommGroup M] [Module R M]
     [Fintype ι] (ev : Z →ₗ[R] (ι → M)) (hev : Function.Injective ev) (W : Submodule R Z) (H : ι → Submodule R M)
@@ -17,15 +17,15 @@ private theorem len_le_pi {R Z M ι : Type} [CommRing R] [AddCommGroup Z] [Modul
   exact congrArg Subtype.val (congrFun hxy i)
 
 /- English proof (translation)
-Establish `hZ : ∀ z : Z, Module.length R (Submodule.span R {z}) ≠ ⊤`. Introduce `z`. Use `ne_top_of_le_ne_top ?_ (len_le_pi ev hev _ (fun i => Submodule.span R {ev z i}) ?_)` and prove the remaining obligations. Conclude with `ENat.sum_ne_top.2 fun i _ => hM _`. Introduce `w hw i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.1 hw`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`. Establish `h1` using `lenCokerLe R Z hZ a`. Establish `h2` using `len_le_pi ev hev (LinearMap.ker (a • (LinearMap.id : Z →ₗ[R] Z))) (fun _ => H) (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `z hz i`. Apply `hH` to reduce the goal to its premises. Establish `: a • z = 0` using `hz`. Establish `e` using `congrFun (congrArg ev this) i`. Simplify using `using e)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : Module.length R K ≤ Module.length R (Z ⧸ LinearMap.range (a • (LinearMap.id : Z →ₗ[R] Z)))`. Use `Module.length_le_of_surjective (Submodule.liftQ _ π ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `ha z`. Introduce `k`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, rfl⟩` from `hπ k`. Conclude with `⟨Submodule.Quotient.mk z, rfl⟩`. Use `h3.trans (h1.trans (h2.trans ?_))` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem len_abs {R Z K M ι : Type} [CommRing R] [AddCommGroup Z] [Module R Z] [AddCommGroup M] [Module R M]
     [AddCommGroup K] [Module R K] [Fintype ι] (hM : ∀ m : M, Module.length R (Submodule.span R {m}) ≠ ⊤)
@@ -58,41 +58,35 @@ private theorem len_abs {R Z K M ι : Type} [CommRing R] [AddCommGroup Z] [Modul
   simp
 
 /- English proof (translation)
-Introduce `R G M _ _ _ _ _ _ _ _ _ _ ρ _ hρ hM hc U' U h hab T hT hU`. Use `choose c hc using hc`. Establish `hρU : ContAction (ρ.comp U.subtype : Representation R U M)` using `hρ.comp ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd)`. Set `Z0 : Submodule R (Z1U ρ U)` to `{ carrier := {z | ∀ u : U, u.1 ∈ U' → z.1 u = 0} zero_mem' := fun _ _ => rfl add_mem' := fun {x y} hx hy u hu => by show x.1 u + y.1 u = 0`. Rewrite using `[hx u hu, hy u hu, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `smul_mem' := fun r x hx u hu => by show r • x.1 u = 0`. Rewrite using `[hx u hu, smul_zero] }`. Establish `hcoc : ∀ (z : Z1U ρ U) (u v : U), z.1 (u * v) = z.1 u + ρ u (z.1 v)` using `fun z u v => z.2.2 u v`. Set `ev : Z0 →ₗ[R] (T → M)` to `LinearMap.pi fun t => (LinearMap.proj (⟨t.1, hT t.2⟩ : U)).comp ((Z1U ρ U).subtype.comp Z0.subtype)`. Establish `hev : Function.Injective ev`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Establish `h1 : z.1.1 1 = 0` using `z.2 1 U'.one_mem`. Set `K : Subgroup U` to `{ carrier := {u | z.1.1 u = 0} one_mem' := h1 mul_mem' := fun {u v} hu hv => by`. Establish `hu' : z.1.1 u = 0` using `hu`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv' : z.1.1 v = 0` using `hv`. Use `show z.1.1 (u * v) = 0`. Rewrite using `[hcoc, hu', hv', map_zero, add_zero]`. Use the proof step `inv_mem' := fun {u} hu => by`. Establish `hu' : z.1.1 u = 0` using `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `hcoc z.1 u⁻¹ u`. Rewrite `e` using `[inv_mul_cancel, h1, hu', map_zero, add_zero]`. Conclude with `e.symm }`. Establish `hK : IsClosed (K : Set U)` using `isClosed_eq z.1.2.1 continuous_const`. Establish `hle : Subgroup.closure (T : Set G) ⊔ U' ≤ K.map U.subtype`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `sup_le ((Subgroup.closure_le _).2 fun t ht => ?_) fun u hu => ?_` and prove the remaining obligations. Conclude with `⟨⟨t, hT ht⟩, congrFun hz ⟨t, ht⟩, rfl⟩`. Conclude with `⟨⟨u, h hu⟩, z.2 _ hu, rfl⟩`. Use `Subtype.ext (Subtype.ext (funext fun u => ?_))` and prove the remaining obligations. Establish `: u ∈ closure (K : Set U)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Topology.IsInducing.subtypeVal.closure_eq_preimage_closure_image]`. Conclude with `closure_mono hle (hU u.2)`. Rewrite `this` using `[hK.closure_eq]`. Conclude with `this`. Set `π : Z0 →ₗ[R] LinearMap.ker (resU ρ h)` to `LinearMap.codRestrict _ ((Submodule.mkQ _).comp Z0.subtype) fun z => (resU_mk_eq_zero ρ h z.1).2 ⟨0, fun u => by rw [z.2 _ u.2]; simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hπ : Function.Surjective π`. Introduce and unpack `⟨x, hx⟩`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨m, hm⟩` from `(resU_mk_eq_zero ρ h z).1 hx`. Set `b : Z1U ρ U` to `⟨d0 _ m, coboundaries_le_cocycles _ hρU ⟨m, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨z - b, fun u hu => ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show z.1 u - (ρ u m - m) = 0`. Conclude with `sub_eq_zero.2 (hm ⟨u.1, hu⟩)`. Use `(mk_eq_mk ρ U (z - b) z).2 ⟨-m, fun u => ?_⟩ show z.1 u - (ρ u m - m) - z.1 u = _` and prove the remaining obligations. Rewrite using `[map_neg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Normalize the expressions using the abelian group laws. Take `⟨a, ha⟩` from `(IsPrincipalIdealRing.principal (Ideal.span (Set.range fun u : U => c u - 1))).principal`. Establish `hkill : ∀ (u : U) (z : Z0), π ((c u - 1) • z) = 0`. Introduce `u z`. Use `Subtype.ext ((Submodule.Quotient.mk_eq_zero _).2 ((mem_coboundaries1 _ _).2 ⟨z.1.1 u, fun g => ?_⟩))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show (c u - 1) • z.1.1 g = ρ g (z.1.1 u) - z.1.1 u`. Establish `e0 : u * g = (u * g * u⁻¹ * g⁻¹) * (g * u)` using `by group`. Establish `e1 : ρ ((u * g * u⁻¹ * g⁻¹ : U) : G) = 1`. Establish `: ρ u * ρ g = ρ g * ρ u`. Use extensionality with `m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Module.End.mul_apply, hc, smul_smul, mul_comm]`. Establish `e : ((u * g * u⁻¹ * g⁻¹ : U) : G) = u * g * ((u : G)⁻¹ * (g : G)⁻¹)`. Simplify using `[mul_assoc]`. Rewrite using `[e, map_mul, map_mul, this, ← map_mul, ← map_mul]`. Simplify using the standard rewrite rules.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e2 : z.1.1 (u * g) = z.1.1 (g * u)`. Rewrite using `[e0, hcoc, e1, z.2 _ (hab u u.2 g g.2)]`. Simplify using the standard rewrite rules. Rewrite `e2` using `[hcoc, hcoc, hc u]`. Rewrite using `[sub_smul, one_smul, eq_sub_of_add_eq' e2]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hamem : a ∈ Ideal.span (Set.range fun u : U => c u - 1)`. Rewrite using `[ha]`. Conclude with `Submodule.mem_span_singleton_self a`. Establish `key` using `len_abs hM ev hev π hπ a (fun z => ?_) (H0U ρ U) (fun m hm => ?_)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using key`. Use `Submodule.span_induction (p := fun r _ => π (r • z) = 0) ?_ ?_ ?_ ?_ hamem` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Conclude with `hkill u z`. Simplify using the standard rewrite rules.
-
-Introduce `x y _ _ hx hy`. Rewrite using `[add_smul, map_add, hx, hy, add_zero]`. Introduce `r x _ hx`. Rewrite using `[smul_assoc, map_smul, hx, smul_zero]`. Introduce `u`.
-
-Establish `: c u - 1 ∈ Ideal.span (Set.range fun u : U => c u - 1)` using `Ideal.subset_span ⟨u, rfl⟩`. Rewrite `this` using `[ha]`. Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.1 this`. Use `show ρ u m = m`. Establish `e : (c u - 1) • m = 0` using `by rw [← hr, smul_assoc, hm, smul_zero]`.
-
-Rewrite using `[hc, ← sub_eq_zero]`. Rewrite `e` using `[sub_smul, one_smul]`. Conclude with `e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.kerResAb :
     ∀ (R G M : Type) [CommRing R] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup M] [Module R M]

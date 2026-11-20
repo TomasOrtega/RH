@@ -38,7 +38,7 @@ theorem fixedFieldMulEquiv_smul_ringOfIntegers (h : H) (y : 𝓞 L) :
 
 omit [IsGalois K L] in
 /- English proof (translation)
-Rewrite using `[Ideal.pointwise_smul_def]`. Express the relevant statement in the definitionally equal form `_ = (h : Gal(L/K)) • P`. Rewrite using `[Ideal.pointwise_smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fixedFieldMulEquiv_smul_ideal (h : H) (P : Ideal (𝓞 L)) :
     fixedFieldMulEquiv H h • P = h • P := by
@@ -50,7 +50,7 @@ theorem fixedFieldMulEquiv_smul_ideal (h : H) (P : Ideal (𝓞 L)) :
 omit [IsGalois K L] in
 
 /- English proof (translation)
-Use extensionality with `σ`. Rewrite using `[Subgroup.mem_map_equiv, MulAction.mem_stabilizer_iff, MulAction.mem_stabilizer_iff, ← fixedFieldMulEquiv_smul_ideal, MulEquiv.apply_symm_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem stabilizer_fixedField_eq (P : Ideal (𝓞 L)) :
     MulAction.stabilizer Gal(L/fixedField H) P =
@@ -62,7 +62,7 @@ theorem stabilizer_fixedField_eq (P : Ideal (𝓞 L)) :
 omit [IsGalois K L] in
 
 /- English proof (translation)
-Use extensionality with `σ`. Rewrite using `[Subgroup.mem_map_equiv]`. Express the relevant statement in the definitionally equal form `(∀ y, σ • y - y ∈ P) ↔ ∀ y, (fixedFieldMulEquiv H).symm σ • y - y ∈ P`. Repeatedly rewrite using `[← fixedFieldMulEquiv_smul_ringOfIntegers, MulEquiv.apply_symm_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem inertia_fixedField_eq (P : Ideal (𝓞 L)) :
     P.inertia Gal(L/fixedField H) = (P.inertia H).map (fixedFieldMulEquiv H).toMonoidHom := by
@@ -72,7 +72,7 @@ theorem inertia_fixedField_eq (P : Ideal (𝓞 L)) :
   simp_rw [← fixedFieldMulEquiv_smul_ringOfIntegers, MulEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isArithFrobAt_fixedFieldMulEquiv_iff (h : H) (P : Ideal (𝓞 L)) :
     IsArithFrobAt (𝓞 (fixedField H)) (fixedFieldMulEquiv H h) P ↔
@@ -82,7 +82,7 @@ theorem isArithFrobAt_fixedFieldMulEquiv_iff (h : H) (P : Ideal (𝓞 L)) :
 omit [IsGalois K L] in
 
 /- English proof (translation)
-Rewrite using `[stabilizer_fixedField_eq]`. Use `congr 1`. Conclude with `stabilizer_smul_eq H x w.asIdeal`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem stabilizer_fixedField_smul_eq (w : HeightOneSpectrum (𝓞 L)) (x : Gal(L/K)) :
     MulAction.stabilizer Gal(L/fixedField H) (x • w.asIdeal) =
@@ -95,7 +95,7 @@ theorem stabilizer_fixedField_smul_eq (w : HeightOneSpectrum (𝓞 L)) (x : Gal(
 omit [IsGalois K L] in
 
 /- English proof (translation)
-Rewrite using `[inertia_fixedField_eq]`. Use `congr 1`. Conclude with `inertia_smul_eq H x w.asIdeal`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem inertia_fixedField_smul_eq (w : HeightOneSpectrum (𝓞 L)) (x : Gal(L/K)) :
     (x • w.asIdeal).inertia Gal(L/fixedField H) =

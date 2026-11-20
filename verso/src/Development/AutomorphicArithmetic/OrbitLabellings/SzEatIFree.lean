@@ -9,23 +9,19 @@ namespace UpperTheory.G2
 open Formalism.BasicNotions Formalism.MainNotions.G PI.SzEatI.W
 
 /- English proof (translation)
-Introduce `K ce eps Ct CGam Cc CT2 PK`. Take `⟨x0, hx0⟩` from `hA K eps`. Take `⟨C, hC, x1, hx1⟩` from `UpperTheory.sum_log_mul_max_zero_le_of_odd_addOrderOf ce eps Ct CGam Cc CT2 PK`. Establish `hc1 : 0 ≤ c1 ce` using `by unfold c1; positivity`. Use `⟨c1 ce + 1 + C, by positivity, max x0 x1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `D L P hU hx hSz j hj S hS`. Take `⟨hbb, hR0, hYR, hY1, hlog⟩` from `hx0 D L hU.1 (le_trans (le_max_left _ _) hx) hSz`. Establish `hX` using `hx1 D L P hU (le_trans (le_max_right _ _) hx) hSz j hj (S.filter fun p => IsCs D p) (by`. Introduce `p hp`. Take `⟨hpS, hcs⟩` from `Finset.mem_filter.1 hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(hS p hpS).1, hcs.1, hcs.2.1, (hS p hpS).2.2.2⟩)`. Establish `hXs : ∑ p ∈ S, Real.log p * EatX L ce j p ≤ C * (D.R.f : ℝ) * L.sc.b * Real.log (L.sc.X'' D.R.n)`. Use `le_trans ?_ hX` and prove the remaining obligations. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_le_sum fun p _ => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `EatX`. Use `split_ifs`. Conclude with `mul_le_mul_of_nonneg_left (le_max_right _ _) (Real.log_natCast_nonneg p)`. Simplify using the standard rewrite rules. Use `set Y := L.sc.X'' D.R.n with hYdef`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f : ℝ := (D.R.f : ℝ) with hfdef`. Establish `hf : 0 ≤ f` using `Nat.cast_nonneg _`. Establish `hb : 0 ≤ L.sc.b` using `(Real.exp_pos _).le`. Establish `hpt : ∀ p ∈ S, Real.log p * (EatI L K ce j p - max 0 ((∑ z ∈ kindA D p, FOrb D j p z) / (nP D p : ℝ))) ≤ c1 ce * f * L.sc.b * (Real.log p / p) + f * Rt L K + Real.log p * EatX L ce j p`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hpr, -, -, hpY⟩` from `hS p hp`. Establish `h` using `prime_weighted_remainder_bound K ce D L hSz hbb j hj p hpr hpY`. Unfold `rest at h`. Rewrite `h` using `[mul_sub]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : ∑ p ∈ S, Real.log (p : ℝ) / (p : ℝ) ≤ Real.log Y` using `sum_log_p_over_p Y hY1 S (fun p hp => ⟨(hS p hp).1, (hS p hp).2.2.2⟩)`. Establish `hcard : (S.card : ℝ) ≤ Y` using `card_le_of_le S Y (by linarith) (fun p hp => ⟨(hS p hp).1.one_lt.le, (hS p hp).2.2.2⟩)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ c1 ce * f * L.sc.b * Real.log Y + Y * (f * Rt L K) + C * f * L.sc.b * Real.log Y := by`.
-
-Establish `h0 : 0 ≤ c1 ce * f * L.sc.b` using `mul_nonneg (mul_nonneg hc1 hf) hb`. Conclude with `add_le_add (add_le_add (mul_le_mul_of_nonneg_left hM h0) (mul_le_mul_of_nonneg_right hcard (mul_nonneg hf hR0))) hXs`. Use `_ = c1 ce * f * L.sc.b * Real.log Y + f * (Y * Rt L K) + C * f * L.sc.b * Real.log Y := by ring`. Use `_ ≤ c1 ce * f * L.sc.b * Real.log Y + f * (L.sc.b * Real.log Y) + C * f * L.sc.b * Real.log Y := by`. Use `add_le_add (add_le_add le_rfl (mul_le_mul_of_nonneg_left ?_ hf)) le_rfl` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Use `_ = (c1 ce + 1 + C) * f * L.sc.b * Real.log Y := by ring`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem szEatI_of_stepA (hA : StepA) : PI.SzEatI.SzEatI := by
   classical

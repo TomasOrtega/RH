@@ -7,7 +7,7 @@ namespace LateralTheory.KummerTheory.PlaceZornPf
 variable {k K : Type} [Field k] [Field K] [Algebra k K]
 
 /- English proof (translation)
-Use `⟨fun c => ⟨c, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨c, rfl⟩`. Conclude with `⟨c, Or.inl rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem good_range : PlaceGood k K (LocalSubring.range (algebraMap k K)) := by
   refine ⟨fun c => ⟨c, rfl⟩, ?_⟩
@@ -15,21 +15,21 @@ theorem good_range : PlaceGood k K (LocalSubring.range (algebraMap k K)) := by
   exact ⟨c, Or.inl rfl⟩
 
 /- English proof (translation)
-Establish `inst : Nonempty s` using `⟨⟨y, hys⟩⟩`. Establish `hdir` using `H.directed.mono_comp _ LocalSubring.toSubring_mono`. Use `⟨@LocalSubring.mk _ _ (⨆ i : s, i.1.toSubring) ⟨?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `⟨a, ha⟩ ⟨b, hb⟩ e`. Take `⟨A, haA : a ∈ A.1.toSubring⟩` from `(Subring.mem_iSup_of_directed hdir).mp ha`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hbB : b ∈ B.1.toSubring⟩` from `(Subring.mem_iSup_of_directed hdir).mp hb`. Take `⟨C, hCA, hCB⟩` from `hdir A B`. Use `(C.1.2.2 (a := ⟨a, hCA haA⟩) (b := ⟨b, hCB hbB⟩) (Subtype.ext congr(($e).1))).imp ?_ ?_` and prove the remaining obligations. Conclude with `fun h ↦ h.map (Subring.inclusion (le_iSup (fun i : s ↦ i.1.toSubring) C))`. Conclude with `fun h ↦ h.map (Subring.inclusion (le_iSup (fun i : s ↦ i.1.toSubring) C))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `⟨fun c => ?_, ?_⟩` and prove the remaining obligations. Conclude with `le_iSup (fun i : s ↦ i.1.toSubring) ⟨y, hys⟩ ((hs hys).1 c)`. Introduce `a ha`. Take `⟨A, haA : a ∈ A.1.toSubring⟩` from `(Subring.mem_iSup_of_directed hdir).mp ha`. Take `⟨c, hc⟩` from `(hs A.2).2 a haA`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, hc.imp_right fun hn hinv => hn ?_⟩` and prove the remaining obligations. Take `⟨B, hbB : (a - algebraMap k K c)⁻¹ ∈ B.1.toSubring⟩` from `(Subring.mem_iSup_of_directed hdir).mp hinv`. Take `⟨C, hCA, hCB⟩` from `H.directed A B`. Establish `hd : a - algebraMap k K c ∈ A.1.toSubring` using `sub_mem haA ((hs A.2).1 c)`. Establish `hne : a - algebraMap k K c ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `hn` using `[h0, inv_zero]`. Conclude with `hn (zero_mem _)`. Establish `hu : IsUnit (⟨a - algebraMap k K c, hCA.1 hd⟩ : C.1.toSubring)` using `isUnit_iff_exists_inv.mpr ⟨⟨_, hCB.1 hbB⟩, Subtype.ext (by simp [mul_inv_cancel₀ hne])⟩`. Establish `hu' : IsUnit (⟨a - algebraMap k K c, hd⟩ : A.1.toSubring)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `hCA.2` as an intermediate fact. Apply `IsUnit.of_map (Subring.inclusion hCA.1)` to reduce the goal to its premises. Conclude with `hu`. Take `⟨w, hw⟩` from `isUnit_iff_exists_inv.mp hu'`. Establish `: (a - algebraMap k K c)⁻¹ = (w : K)` using `inv_eq_of_mul_eq_one_right (by simpa using congrArg Subtype.val hw)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Conclude with `w.2`. Introduce `A hA`. Use `⟨le_iSup (fun i : s ↦ i.1.toSubring) ⟨A, hA⟩, ⟨?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨a, haA⟩ h`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨⟨b, hb⟩, e⟩` from `isUnit_iff_exists_inv.mp h`. Take `⟨B, hbB : b ∈ B.1.toSubring⟩` from `(Subring.mem_iSup_of_directed hdir).mp hb`. Take `⟨C, hCA, hCB⟩` from `H.directed ⟨A, hA⟩ B`. Apply `hCA.2.1` to reduce the goal to its premises. Conclude with `isUnit_iff_exists_inv.mpr ⟨⟨b, hCB.1 hbB⟩, Subtype.ext congr(($e).1)⟩`.
+A detailed English derivation is pending.
 -/
 theorem ub (s : Set (LocalSubring K)) (hs : s ⊆ {A | PlaceGood k K A}) (H : IsChain (· ≤ ·) s)
     (y : LocalSubring K) (hys : y ∈ s) :
@@ -77,7 +77,7 @@ theorem ub (s : Set (LocalSubring K)) (hs : s ⊆ {A | PlaceGood k K A}) (H : Is
 end LateralTheory.KummerTheory.PlaceZornPf
 
 /- English proof (translation)
-Introduce `k K _ _ _ _`. Take `⟨m, -, hm⟩` from `zorn_le_nonempty₀ {A : LocalSubring K | LateralTheory.KummerTheory.PlaceGood k K A} (fun s hs H y hy => LateralTheory.KummerTheory.PlaceZornPf.ub s hs H y hy) _ LateralTheory.KummerTheory.PlaceZornPf.good_range`. Conclude with `⟨m, hm.1, fun B hB hgB => hm.2 hgB hB⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LateralTheory.KummerTheory.PlaceZorn_of : LateralTheory.KummerTheory.PlaceZorn := by
   intro k K _ _ _ _
@@ -86,7 +86,7 @@ theorem LateralTheory.KummerTheory.PlaceZorn_of : LateralTheory.KummerTheory.Pla
   exact ⟨m, hm.1, fun B hB hgB => hm.2 hgB hB⟩
 
 /- English proof (translation)
-The claim follows from `LateralTheory.KummerTheory.PlaceEx_of LateralTheory.KummerTheory.PlaceZorn_of h`.
+A detailed English derivation is pending.
 -/
 theorem LateralTheory.KummerTheory.PlaceEx_of_step (h : LateralTheory.KummerTheory.PlaceStep) : LateralTheory.KummerTheory.PlaceEx :=
   LateralTheory.KummerTheory.PlaceEx_of LateralTheory.KummerTheory.PlaceZorn_of h

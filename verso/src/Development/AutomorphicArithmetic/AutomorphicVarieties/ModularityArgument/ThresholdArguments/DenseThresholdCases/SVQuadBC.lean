@@ -9,7 +9,7 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ h2 a ha2 _ π hr`. Take `rfl` from `ha2.out`. Conclude with `(UpperTheory.ConvolutionTheory.R2.quadBC2 F E h2 π hr).imp_right fun ⟨P, hP⟩ => ⟨P, UpperTheory.V.Br.IsBCw.of_isBC hP⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.SV.quad_base_change_w_of_printed_results (_P : _root_.UpperTheory.V.Af.Hypotheses') : UpperTheory.V.Br.QuadBCw := by
   intro F E _ _ _ _ _ _ _ h2 a ha2 _ π hr

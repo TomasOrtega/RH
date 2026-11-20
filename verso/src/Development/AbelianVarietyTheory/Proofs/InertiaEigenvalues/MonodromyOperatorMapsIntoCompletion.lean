@@ -13,15 +13,15 @@ open scoped Formalism.Per
 namespace GlobalTheory.NgalENM
 
 /- English proof (translation)
-Introduce `hB l _ a e _ _ ϖ LL _ _ hl ι _ _ P T I jB Pl AI hS hC hH m hm`. Take `⟨n, hn⟩` from `GlobalTheory.T.exists_eisensteinPow_smul_monodromy_mem_breuilKisin _ _ l e a ι P`. Establish `hv` using `hn m hm`. Take `⟨jD, hjD⟩` from `GlobalTheory.T.kisinModule_tensor_bdRPlus_eq_lattice l a e _ _ (thetaW a LL) ϖ ι P T I`. Set `w : ZMod a → ι → Ahat ↥(OL LL) ↥LL.1 l e` to `fun τ i => toHat _ _ l e ⟨(E ↥LL.1 l e ^ n • P.EN m) τ i, mem_tot.1 hv τ i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hw : ∀ τ i, algebraMap _ (AhatE ↥(OL LL) ↥LL.1 l e) (w τ i) = hat ↥(OL LL) l e ((E ↥LL.1 l e ^ n • P.EN m) τ i)` using `fun τ i => (hat_coe_Rpi l e _).symm`. Use `clear_value w`. Establish `h3` using `GlobalTheory.T.monodromy_image_mem_BdRplus_lattice hB l a e ϖ LL hl ι P T I jB Pl AI hS hC hH jD hjD m hm n hv w hw`. Use `choose y hy using fun i => GlobalTheory.T.ideal_power_membership_divisible l a e _ _ (thetaW a LL) ϖ n (fun τ => w τ i) (h3 i)`. Establish `hE : P.EN m ∈ P.Mext (RpiE ↥(OL LL) ↥LL.1 l e)` using `P.mem_Mext_invE_of_mem_divE hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← P.hatTot_mem_Mhat_iff hE, P.mem_Mhat]`. Introduce `τ i`. Use `⟨y i τ, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun (hy i) τ`. Establish `h2` using `hw τ i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `hat_E_pow_mul (O := ↥(OL LL)) l e n (mem_tot.1 hE τ i)`. Establish `h1' : w τ i = Ehat ↥(OL LL) ↥LL.1 l e ^ n * y i τ` using `by rw [h1]; rfl`. Establish `h5 : (E ↥LL.1 l e ^ n • P.EN m) τ i = E ↥LL.1 l e ^ n * P.EN m τ i` using `rfl`. Establish `h7` using `((congrArg (algebraMap _ (AhatE ↥(OL LL) ↥LL.1 l e)) h1').symm.trans h2).trans ((congrArg (hat ↥(OL LL) l e) h5).trans h4)`. Establish `h8` using `(map_mul (algebraMap (Ahat ↥(OL LL) ↥LL.1 l e) (AhatE ↥(OL LL) ↥LL.1 l e)) _ _).symm.trans h7`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : IsUnit (algebraMap (Ahat ↥(OL LL) ↥LL.1 l e) (AhatE ↥(OL LL) ↥LL.1 l e) (Ehat ↥(OL LL) ↥LL.1 l e ^ n))`. Rewrite using `[map_pow]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit (Ehat ↥(OL LL) ↥LL.1 l e)).pow n`. Conclude with `hu.mul_left_cancel h8`.
+A detailed English derivation is pending.
 -/
 theorem EN_mem_Man : GlobalTheory.Published.FontaineBcris → ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a], l ≠ 2 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : QLat LL) (I : Ident (thetaW a LL) ϖ P T) (jB : (ι → OB l ↥(OL LL)) ≃ₗ[OB l ↥(OL LL)] TW (OB l ↥(OL LL)) T) (Pl : LocPrime l) (AI : LocAinf l Pl), IsStd Pl AI → IsCrisCmp I jB → IsHoriz (thetaW a LL) ϖ (sQ l) P jB → ∀ m ∈ P.M, P.EN m ∈ P.Man := by
   intro hB l _ a e _ _ ϖ LL _ _ hl ι _ _ P T I jB Pl AI hS hC hH m hm

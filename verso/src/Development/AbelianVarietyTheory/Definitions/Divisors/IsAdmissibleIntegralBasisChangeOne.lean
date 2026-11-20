@@ -64,7 +64,7 @@ open scoped WithZero
 open IsDedekindDomain GroundTheory.FunctionField
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h⟩, fun h => h.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFF_iff : IsFF k F ↔ IsFunctionField k F := ⟨fun h => ⟨h⟩, fun h => h.1⟩
 
@@ -82,7 +82,7 @@ def toRing (v : Nef.Place k F) : GroundTheory.FunctionField.Place k F where
     · exact (v.2.2 c hc).le
 
 /- English proof (translation)
-The claim follows from `valuation_eq_of_isEquiv (Valuation.isEquiv_iff_val_le_one.2 fun {x} => (toRing v).valuation_le_one_iff x) (toRing v).valuation_surjective v.2.1`.
+A detailed English derivation is pending.
 -/
 theorem valuation_toRing [IsFunctionField k F] (v : Nef.Place k F) : (toRing v).valuation = v.1 :=
   valuation_eq_of_isEquiv (Valuation.isEquiv_iff_val_le_one.2 fun {x} => (toRing v).valuation_le_one_iff x)
@@ -97,7 +97,7 @@ def placeEquiv [IsFunctionField k F] : Nef.Place k F ≃ GroundTheory.FunctionFi
     exact w.valuation_le_one_iff x)
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.FunctionField.Place.ord, valuation_toRing, ord]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_toRing [IsFunctionField k F] (v : Nef.Place k F) (x : F) : (toRing v).ord x = ord v x := by
   rw [GroundTheory.FunctionField.Place.ord, valuation_toRing, ord]
@@ -140,9 +140,9 @@ end Line
 section Product
 
 /- English proof (translation)
-Rewrite using `[← v.sum_ramificationIdx_mul_inertiaDeg (K' := E)]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `d1 : v.deg = 1`. Establish `: Algebra.IsIntegral k v.ResidueField` using `Algebra.IsIntegral.of_finite _ _`. Conclude with `(LinearEquiv.ofBijective (Algebra.linearMap k v.ResidueField) IsAlgClosed.algebraMap_bijective_of_isIntegral).finrank_eq.symm.trans (Module.finrank_self k)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d2 : w.deg = 1`. Establish `: Algebra.IsIntegral k w.ResidueField` using `Algebra.IsIntegral.of_finite _ _`. Conclude with `(LinearEquiv.ofBijective (Algebra.linearMap k w.ResidueField) IsAlgClosed.algebraMap_bijective_of_isIntegral).finrank_eq.symm.trans (Module.finrank_self k)`. Simplify using `[GroundTheory.FunctionField.Place.inertiaDeg, d1, d2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_ramificationIdx [IsAlgClosed k] {E : Type} [Field E] [Algebra k E] [Algebra F E] [IsScalarTower k F E]
     [IsFunctionField k F] [IsFunctionField k E] [FiniteDimensional F E] [Algebra.IsSeparable F E]

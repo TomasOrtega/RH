@@ -21,7 +21,7 @@ variable {S : Type} [CommRing S] {K : Type} [Fintype K] [LinearOrder K] {ι : K 
   [∀ k, Fintype (ι k)] [∀ k, LinearOrder (ι k)]
 
 /- English proof (translation)
-Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[Subtype.ext (Subsingleton.elim (x : KH.CechC S ι M n) y)]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cechHc_subsingleton_of_cochains {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M]
     [IsScalarTower S (MRingOver S ι) M] (𝓜 : (K → ℤ) → Submodule S M) (c : K → ℤ) (n : ℕ)
@@ -32,7 +32,7 @@ theorem cechHc_subsingleton_of_cochains {M : Type} [AddCommGroup M] [Module (MRi
   rw [Subtype.ext (Subsingleton.elim (x : KH.CechC S ι M n) y)]
 
 /- English proof (translation)
-The claim follows from `cechHc_subsingleton_of_cochains _ c n ⟨fun _ _ => funext fun _ => Subsingleton.elim (α := LocalizedModule _ PUnit) _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem cechHc_punit (c : K → ℤ) (n : ℕ) :
     Subsingleton (KH.cechHc ι (fun _ : K → ℤ => (⊥ : Submodule S PUnit)) c n) :=
@@ -40,17 +40,15 @@ theorem cechHc_punit (c : K → ℤ) (n : ℕ) :
     ⟨fun _ _ => funext fun _ => Subsingleton.elim (α := LocalizedModule _ PUnit) _ _⟩
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `hs m''`. Establish `key : ∃ y ∈ 𝓜 c, h x - h y ∈ ⨆ (j) (_ : j ≠ c), 𝓜'' j`. Establish `hx : x ∈ ⨆ j, 𝓜 j`. Rewrite using `[h𝓜.1.submodule_iSup_eq_top]`. Conclude with `Submodule.mem_top`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.iSup_induction (motive := fun x => ∃ y ∈ 𝓜 c, h x - h y ∈ ⨆ (j) (_ : j ≠ c), 𝓜'' j) 𝓜 hx ?_ ?_ ?_` and prove the remaining obligations. Introduce `j x hx`. Distinguish the cases in `hj : j = c`. Substitute `hj` using the available equality. Conclude with `⟨x, hx, by rw [sub_self]; exact zero_mem _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, sub_zero]`. Conclude with `Submodule.mem_iSup_of_mem j (Submodule.mem_iSup_of_mem hj (hh j x hx))`. Conclude with `⟨0, zero_mem _, by rw [map_zero, sub_zero]; exact zero_mem _⟩`. Introduce `x₁ x₂ h₁ h₂`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y₁, hy₁, e₁⟩` from `h₁`. Take `⟨y₂, hy₂, e₂⟩` from `h₂`. Use `⟨y₁ + y₂, add_mem hy₁ hy₂, ?_⟩` and prove the remaining obligations. Establish `: h (x₁ + x₂) - h (y₁ + y₂) = (h x₁ - h y₁) + (h x₂ - h y₂)`. Simplify using `only [map_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `add_mem e₁ e₂`. Take `⟨y, hy, hd⟩` from `key`. Establish `hc : h x - h y ∈ 𝓜'' c` using `sub_mem hm (hh c y hy)`.
-
-Establish `h0 : h x - h y = 0` using `Submodule.disjoint_def.mp (h𝓜''.1.submodule_iSupIndep c) _ hc hd`. Conclude with `⟨y, hy, (sub_eq_zero.mp h0).symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_of_surjective {M M'' : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M]
     [IsScalarTower S (MRingOver S ι) M] [AddCommGroup M''] [Module (MRingOver S ι) M''] [Module S M'']
@@ -94,7 +92,7 @@ abbrev lmap {M N : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [AddCommGr
   IsLocalizedModule.map T (LocalizedModule.mkLinearMap T M) (LocalizedModule.mkLinearMap T N) g
 
 /- English proof (translation)
-Rewrite using `[IsLocalizedModule.mk_eq_mk', IsLocalizedModule.map_mk', ← IsLocalizedModule.mk_eq_mk']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lmap_mk {M N : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [AddCommGroup N]
     [Module (MRingOver S ι) N] {T : Submonoid (MRingOver S ι)} (g : M →ₗ[MRingOver S ι] N) (m : M) (t : T) :
@@ -109,9 +107,9 @@ theorem cechMap_apply {M N : Type} [AddCommGroup M] [Module (MRingOver S ι) M] 
     KH.cechMap S ι g n z I = lmap (KH.cellMon S I.1) g (z I) := rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : KH.cellMon S J ≤ KH.cellMon S I`. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m t`. Rewrite using `[lmap_mk, GenTwistGenerated.cellRes_mk h, GenTwistGenerated.cellRes_mk h, lmap_mk]`. Unfold `KH.cellRes`.
+Consider separately whether the proposition holds or fails. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_neg h, dif_neg h, LinearMap.zero_apply, LinearMap.zero_apply, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cellRes_locMap {M N : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [AddCommGroup N]
     [Module (MRingOver S ι) N] (g : M →ₗ[MRingOver S ι] N) (J I : ∀ k, Finset (ι k))
@@ -127,9 +125,9 @@ theorem cellRes_locMap {M N : Type} [AddCommGroup M] [Module (MRingOver S ι) M]
     rw [dif_neg h, dif_neg h, LinearMap.zero_apply, LinearMap.zero_apply, map_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Rewrite using `[cechMap_apply]`. Simplify using `only [KH.cechD, LinearMap.pi_apply, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with hI`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `KH.faceSign I.1 k i • KH.cellRes S N _ I.1 (KH.cechMap S ι g n z ⟨_, hI⟩) = lmap (KH.cellMon S I.1) g (KH.faceSign I.1 k i • KH.cellRes S M _ I.1 (z ⟨_, hI⟩))`. Conclude with `(congrArg (KH.faceSign I.1 k i • ·) (cellRes_locMap g (Function.update I.1 k ((I.1 k).erase i)) I.1 (z ⟨_, hI⟩))).trans (map_zsmul (lmap (KH.cellMon S I.1) g) _ _).symm`. Simplify using `only [LinearMap.zero_apply, map_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cechD_cechMap {M N : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [AddCommGroup N]
     [Module (MRingOver S ι) N] (g : M →ₗ[MRingOver S ι] N) (n : ℕ) (z : KH.CechC S ι M n) :
@@ -146,11 +144,9 @@ theorem cechD_cechMap {M N : Type} [AddCommGroup M] [Module (MRingOver S ι) M] 
   · simp only [LinearMap.zero_apply, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, t, a, ht, hm, rfl⟩` from `hx`. Rewrite using `[lmap_mk]`. Conclude with `GenSESStep.mk_mem_locPart _ t a ht (hg _ m hm)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul s x _ hx => rw [LinearMap.map_smul_of_tower]`.
-
-Conclude with `Submodule.smul_mem _ s hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem locMap_mem_locPart {M N : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M]
     [IsScalarTower S (MRingOver S ι) M] [AddCommGroup N] [Module (MRingOver S ι) N] [Module S N]
@@ -167,7 +163,7 @@ theorem locMap_mem_locPart {M N : Type} [AddCommGroup M] [Module (MRingOver S ι
   | smul s x _ hx => rw [LinearMap.map_smul_of_tower]; exact Submodule.smul_mem _ s hx
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hz`. Use `⟨Submodule.mem_pi.mpr fun I _ => ?_, LinearMap.mem_ker.mpr ?_⟩` and prove the remaining obligations. Rewrite using `[cechMap_apply]`. Conclude with `locMap_mem_locPart hg (Submodule.mem_pi.mp h1 I (Set.mem_univ _))`. Rewrite using `[cechD_cechMap, LinearMap.mem_ker.mp h2, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cechMap_mem_cechZc {M N : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M]
     [IsScalarTower S (MRingOver S ι) M] [AddCommGroup N] [Module (MRingOver S ι) N] [Module S N]
@@ -181,9 +177,9 @@ theorem cechMap_mem_cechZc {M N : Type} [AddCommGroup M] [Module (MRingOver S ι
   · rw [cechD_cechMap, LinearMap.mem_ker.mp h2, map_zero]
 
 /- English proof (translation)
-Use `⟨Submodule.mem_pi.mpr fun I _ => ?_, LinearMap.mem_ker.mpr ?_⟩` and prove the remaining obligations. Establish `e : (c + fun k => (((0 : K → ℕ) k : ℕ) : ℤ)) = c`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Conclude with `GenSESStep.mk_mem_locPart (c := c) m 1 0 isMultiHomog_one_zero (by rw [e]; exact hm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `I`. Take `⟨J₁, J₂, h₁, h₂, σ, -, hd⟩` from `GenTwistGenerated.cechD_zero_apply (S := S) (M := M) I`. Rewrite using `[hd, GenTwistGenerated.cellRes_mk (GenTwistGenerated.cellMon_mono h₁), GenTwistGenerated.cellRes_mk (GenTwistGenerated.cellMon_mono h₂)]`. Conclude with `(congrArg (σ • ·) (sub_self _)).trans (zsmul_zero σ)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_mem_cechZc {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M]
     [IsScalarTower S (MRingOver S ι) M] {𝓜 : (K → ℤ) → Submodule S M} {c : K → ℤ} {m : M} (hm : m ∈ 𝓜 c) :
@@ -200,43 +196,41 @@ theorem const_mem_cechZc {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M]
     exact (congrArg (σ • ·) (sub_self _)).trans (zsmul_zero σ)
 
 /- English proof (translation)
-Establish `hiso : ∀ (A : Type) [AddCommGroup A] [Module (MRingOver S ι) A] [Module S A] [IsScalarTower S (MRingOver S ι) A] (B : Type) [AddCommGroup B] [Module (MRingOver S ι) B] [Module S B] [IsScalarTower S (MRingOver S ι) B] (𝓐 : (K → ℤ) → Submodule S A) (𝓑 : (K → ℤ) → Submodule S B) (g …`. Introduce `A _ _ _ _ B _ _ _ _ 𝓐 𝓑 g hA hB hg hinj hsurj hC`. Use `hext A B PUnit 𝓐 𝓑 (fun _ => ⊥) g 0 hA hB GroundTheory.Heights₂.Heights.HilbertSamuel.isMGraded_punit hg (fun _ _ _ => Submodule.zero_mem _) hinj (fun _ => ⟨0, Subsingleton.elim _ _⟩) ?_ hC h0` and prove the remaining obligations. Rewrite using `[LinearMap.range_eq_top.2 hsurj, LinearMap.ker_zero]`. Take `⟨r, m, c, 𝔭, hm, h𝔭, hcol, hspan⟩` from `hPF S K ι M 𝓜 hS hfin hgr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `G : ℕ → Set M` to `fun j => m '' {l | (l : ℕ) < j}`. Set `F : ℕ → Submodule (MRingOver S ι) M` to `fun j => Submodule.span _ (G j)`. Establish `hGh : ∀ j, ∀ x ∈ G j, ∃ c', x ∈ 𝓜 c'`. Introduce and unpack `j _ ⟨l, -, rfl⟩`. Conclude with `⟨c l, hm l⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hFmono : ∀ {i j : ℕ}, i ≤ j → F i ≤ F j` using `fun hij => Submodule.span_mono (Set.image_mono fun l (hl : (l : ℕ) < _) => lt_of_lt_of_le hl hij)`. Establish `hgrF : ∀ j, KH.IsMGraded S ι (subGrading 𝓜 (F j))` using `fun j => (GradedSubquot.proof S K ι M 𝓜 (G j) (G j) hgr (hGh j) (hGh j) le_rfl).1`. Establish `key : ∀ j ≤ r, C (F j) (subGrading 𝓜 (F j))`. Introduce `j`. Proceed by induction on `j with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `_`. Establish `hF0 : F 0 = ⊥` using `by simp [F, G]`. Use `hiso PUnit (F 0) _ _ 0 GroundTheory.Heights₂.Heights.HilbertSamuel.isMGraded_punit (hgrF 0) (fun _ _ _ => Submodule.zero_mem _) (fun _ _ _ => Subsingleton.elim _ _) (fun y => ⟨0, ?_⟩) h0` and prove the remaining obligations. Establish `hy : (y : M) ∈ (⊥ : Submodule (MRingOver S ι) M)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hF0]`. Conclude with `y.2`. Conclude with `(Subtype.ext ((Submodule.mem_bot _).1 hy)).symm`. Consider the case `succ j ih`. Introduce `hj`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hCj` using `ih (Nat.le_of_succ_le hj)`. Set `l : Fin r` to `⟨j, hj⟩`. Set `L : Submodule (MRingOver S ι) (F (j + 1))` to `(F j).comap (F (j + 1)).subtype`. Establish `hq'` using `(GradedSubquot.proof S K ι M 𝓜 (G j) (G (j + 1)) hgr (hGh j) (hGh (j + 1)) (hFmono (Nat.le_succ j))).2`. Establish `hml : m l ∈ F (j + 1)` using `Submodule.subset_span ⟨l, Nat.lt_succ_self j, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : MRingOver S ι →ₗ[MRingOver S ι] (F (j + 1) ⧸ L)` to `LinearMap.toSpanSingleton _ _ (L.mkQ ⟨m l, hml⟩)`. Establish `hψ : ∀ p, ψ p = L.mkQ (p • ⟨m l, hml⟩)` using `fun p => (L.mkQ.map_smul p _).symm`. Establish `hker : ∀ p, ψ p = 0 ↔ p ∈ 𝔭 l`. Introduce `p`. Rewrite using `[hψ, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hcol l p`. Set `φ : (MRingOver S ι ⧸ 𝔭 l) →ₗ[MRingOver S ι] (F (j + 1) ⧸ L)` to `(𝔭 l).liftQ ψ fun p hp => (LinearMap.mem_ker).2 ((hker p).2 hp)`. Establish `hφ : ∀ p, φ (Ideal.Quotient.mk (𝔭 l) p) = ψ p` using `fun _ => rfl`. Establish `hinj : Function.Injective φ` using `LinearMap.ker_eq_bot.1 (Submodule.ker_liftQ_eq_bot _ _ _ fun p hp => (hker p).1 (LinearMap.mem_ker.1 hp))`. Establish `hdec : ∀ y ∈ F (j + 1), ∃ p : MRingOver S ι, y - p • m l ∈ F j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l', hl', rfl⟩` from `hx`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hl' with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨0, by rw [zero_smul, sub_zero]; exact Submodule.subset_span ⟨l', h, rfl⟩⟩`. Conclude with `⟨1, by rw [one_smul, show l' = l from Fin.ext h, sub_self]; exact (F j).zero_mem⟩`. Consider the case `zero => exact ⟨0, by rw [zero_smul, sub_zero]; exact (F j).zero_mem⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨p, hp⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨p', hp'⟩` from `hy`. Use `⟨p + p', ?_⟩` and prove the remaining obligations. Establish `: x + y - (p + p') • m l = (x - p • m l) + (y - p' • m l)` using `by rw [add_smul]; abel`. Rewrite using `[this]`. Conclude with `(F j).add_mem hp hp'`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul a x _ hx`. Take `⟨p, hp⟩` from `hx`. Use `⟨a * p, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, ← smul_sub]`. Conclude with `(F j).smul_mem a hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsurj : Function.Surjective φ`. Introduce `q`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective L q`. Take `⟨p, hp⟩` from `hdec y y.2`. Use `⟨Ideal.Quotient.mk (𝔭 l) p, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hφ, hψ, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Use `show ((p • ⟨m l, hml⟩ - y : F (j + 1)) : M) ∈ F j`. Rewrite using `[Submodule.coe_sub, Submodule.coe_smul, ← neg_sub]`. Conclude with `(F j).neg_mem hp`. Establish `hA` using `H1VanishingDevissage.isMGraded_shift (QuotPartGraded.proof S K ι (𝔭 l) (h𝔭 l).2.1) (-c l)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : KH.IsMGradedMap S ι (fun d => KH.quotPart S (𝔭 l) (d + -c l)) (quotGrading (subGrading 𝓜 (F (j + 1))) L) φ`. Introduce `d x hx`. Use `(Submodule.span_le (p := (quotGrading (subGrading 𝓜 (F (j + 1))) L d).comap (φ.restrictScalars S))).2 ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨p, ⟨h0, hp⟩, rfl⟩`. Use `⟨p • ⟨m l, hml⟩, ?_, (hψ p).symm⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h` using `hgr.2 _ (c l) p (m l) hp (hm l)`. Establish `hd : c l + (fun k => (((d + -c l) k).toNat : ℤ)) = d`. Use function extensionality and compare the values at `k`. Use `h0 k` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.neg_apply] at this ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Int.toNat_of_nonneg this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[hd]`. Conclude with `h`. Establish `hCq` using `hiso _ _ _ _ φ hA hq' hG hinj hsurj (hq (𝔭 l) (h𝔭 l).1 (h𝔭 l).2.1 (-c l))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `g` to `Submodule.inclusion (hFmono (Nat.le_succ j))`. Establish `hex : LinearMap.range g = LinearMap.ker L.mkQ`. Rewrite using `[Submodule.range_inclusion, Submodule.ker_mkQ]`. Establish `hgG : KH.IsMGradedMap S ι (subGrading 𝓜 (F j)) (subGrading 𝓜 (F (j + 1))) g` using `fun _ _ hx => hx`. Establish `hhG : KH.IsMGradedMap S ι (subGrading 𝓜 (F (j + 1))) (quotGrading (subGrading 𝓜 (F (j + 1))) L) L.mkQ` using `fun _ _ hx => Submodule.mem_map_of_mem hx`.
-
-Conclude with `hext _ _ _ _ _ _ g L.mkQ (hgrF j) (hgrF (j + 1)) hq' hgG hhG (Submodule.inclusion_injective _) (Submodule.mkQ_surjective _) hex hCj hCq`. Establish `hFr : F r = ⊤`. Rewrite using `[← hspan]`. Simplify using `[F, G]`. Conclude with `hiso _ M _ 𝓜 (F r).subtype (hgrF r) hgr (fun _ _ hx => hx) (Submodule.injective_subtype _) (fun y => ⟨⟨y, hFr ▸ Submodule.mem_top⟩, rfl⟩) (key r le_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem devissage (hPF : KH.PrimeFiltStatement) (hS : IsNoetherianRing S)
     (C : ∀ (M : Type) [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M]
@@ -383,21 +377,21 @@ def quotMap (V : Ideal (MRingOver S ι)) :
   Submodule.liftQ ⊥ (Submodule.mkQ V) (by simp)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨∅, fun _ h => absurd h (Set.notMem_empty _), by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem bot_isMultiHomogIdeal : IsMultiHomogIdeal (⊥ : Ideal (MRingOver S ι)) :=
   ⟨∅, fun _ h => absurd h (Set.notMem_empty _), by simp⟩
 
 /- English proof (translation)
-Establish `hF` using `H1VanishingDevissage.isMGraded_shift (QuotPartGraded.proof S K ι ⊥ bot_isMultiHomogIdeal) e`. Use `⟨?_, hF, H1VanishingDevissage.isMGraded_shift (QuotPartGraded.proof S K ι V hV) e, fun _ _ hx => hx, ?_, Submodule.injective_subtype _, ?_, ?_⟩` and prove the remaining obligations. Take `⟨T, hT, rfl⟩` from `hV`. Establish `hN : idealSub (Ideal.span T) = Submodule.span (MRingOver S ι) (Ideal.Quotient.mk (⊥ : Ideal (MRingOver S ι)) '' T)`. Rewrite using `[idealSub, Ideal.span, Submodule.map_span]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hH : ∀ x ∈ Ideal.Quotient.mk (⊥ : Ideal (MRingOver S ι)) '' T, ∃ c', x ∈ KH.quotPart S (⊥ : Ideal (MRingOver S ι)) (c' + e)`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨a, ha⟩` from `hT f hf`. Use `⟨(fun k => (a k : ℤ)) - e, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sub_add_cancel]`. Use `Submodule.subset_span ⟨f, ⟨fun k => Int.natCast_nonneg _, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `: (fun k => ((a k : ℤ)).toNat) = a` using `funext fun k => Int.toNat_natCast _`. Rewrite using `[this]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN]`. Conclude with `(GradedSubquot.proof S K ι _ _ _ _ hF hH hH le_rfl).1`. Introduce `d x hx`. Use `(Submodule.span_le (p := (KH.quotPart S V (d + e)).comap ((quotMap V).restrictScalars S))).2 ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span ⟨p, hp, rfl⟩`. Introduce `y`. Take `⟨p, rfl⟩` from `Submodule.Quotient.mk_surjective V y`. Conclude with `⟨Submodule.Quotient.mk p, rfl⟩`. Rewrite using `[Submodule.range_subtype, quotMap, Submodule.ker_liftQ, Submodule.ker_mkQ, idealSub]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotSES (V : Ideal (MRingOver S ι)) (hV : IsMultiHomogIdeal V) (e : K → ℤ) :
     KH.IsMGraded S ι (subGrading (fun d => KH.quotPart S (⊥ : Ideal (MRingOver S ι)) (d + e)) (idealSub V)) ∧
@@ -439,7 +433,7 @@ theorem quotSES (V : Ideal (MRingOver S ι)) (hV : IsMultiHomogIdeal V) (e : K �
   · rw [Submodule.range_subtype, quotMap, Submodule.ker_liftQ, Submodule.ker_mkQ, idealSub]
 
 /- English proof (translation)
-Establish `: IsNoetherianRing (MRingOver S ι)` using `inferInstance`. Establish `: IsNoetherian (MRingOver S ι) (MRingOver S ι ⧸ (⊥ : Ideal (MRingOver S ι)))` using `inferInstance`. Conclude with `Module.IsNoetherian.finite _ _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem idealSub_finite (hS : IsNoetherianRing S) (V : Ideal (MRingOver S ι)) :
     Module.Finite (MRingOver S ι) (idealSub V) := by
@@ -450,7 +444,7 @@ theorem idealSub_finite (hS : IsNoetherianRing S) (V : Ideal (MRingOver S ι)) :
 end KHTheoremS
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ _ M _ _ _ _ 𝓜 c n hn`. Use `KHTheoremS.cechHc_subsingleton_of_cochains 𝓜 c n ⟨fun _ _ => funext fun I => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction. Establish `hle : ∑ k, ((I.1 k).card - 1) ≤ ∑ k, (Fintype.card (ι k) - 1)` using `Finset.sum_le_sum fun k _ => Nat.sub_le_sub_right (Finset.card_le_univ _) 1`. Rewrite `hle` using `[I.2.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/

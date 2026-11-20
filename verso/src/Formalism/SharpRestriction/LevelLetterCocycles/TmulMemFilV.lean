@@ -21,7 +21,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x ⊗ₜ[Qp] (⟨y, hy⟩ : ↥((PD.Fil a).restrictScalars Qp)), by simp [TensorProduct.AlgebraTensorModule.map_tmul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem tmul_mem_filV (x : V) {y : BdR} {a : ℤ} (hy : y ∈ PD.Fil a) :
     x ⊗ₜ[Qp] y ∈ FilV PD (LL := LL) (V := V) a :=
@@ -29,9 +29,9 @@ theorem tmul_mem_filV (x : V) {y : BdR} {a : ℤ} (hy : y ∈ PD.Fil a) :
     simp [TensorProduct.AlgebraTensorModule.map_tmul]⟩
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _⟩`. Consider the case `tmul x y`. Take `⟨a, ha⟩` from `PD.Fil_exh y`. Conclude with `⟨a, tmul_mem_filV x ha⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨min a b, Submodule.add_mem _ (Formalism.MainNotions.UnusedSlot80.LevR.filV_anti (min_le_left a b) ha) (Formalism.MainNotions.UnusedSlot80.LevR.filV_anti (min_le_right a b) hb)⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem filV_exh (z : V ⊗[Qp] BdR) : ∃ a, z ∈ FilV PD (LL := LL) (V := V) a := by
   induction z using TensorProduct.induction_on with
@@ -46,15 +46,13 @@ theorem filV_exh (z : V ⊗[Qp] BdR) : ∃ a, z ∈ FilV PD (LL := LL) (V := V) 
       (Formalism.MainNotions.UnusedSlot80.LevR.filV_anti (min_le_right a b) hb)⟩
 
 /- English proof (translation)
-Establish `hfree : Module.Free Qp V` using `Module.Free.of_divisionRing Qp V`. Set `𝔟` to `Module.Free.chooseBasis Qp V`. Set `E` to `TensorProduct.equivFinsuppOfBasisLeft (N := BdR) 𝔟`. Establish `hcoord : ∀ a, ∀ w ∈ FilV PD (LL` using `LL) (V := V) a, ∀ i, E w i ∈ PD.Fil a := by`. Introduce `a w hw i`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, rfl⟩` from `hw`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp [(PD.Fil a).zero_mem]`. Consider the case `tmul x y`. Simplify using `only [TensorProduct.AlgebraTensorModule.map_tmul, LinearMap.id_apply, Submodule.coe_subtype]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[TensorProduct.equivFinsuppOfBasisLeft_apply_tmul]`. Simplify using `only [Finsupp.mapRange_apply]`. Establish `: (𝔟.repr x i) • (y : BdR) = algebraMap Qp K (𝔟.repr x i) • (y : BdR)`. Rewrite using `[algebraMap_smul]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(PD.Fil a).smul_mem _ y.2`. Consider the case `add u₁ u₂ h₁ h₂`. Rewrite using `[map_add, map_add, Finsupp.add_apply]`. Conclude with `(PD.Fil a).add_mem h₁ h₂`. Establish `hE : E z = 0`.
-
-Use extensionality with `i`. Conclude with `PD.Fil_sep _ fun a => hcoord a z (h a) i`. Conclude with `E.injective (by rw [hE, map_zero])`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem filV_sep (z : V ⊗[Qp] BdR) (h : ∀ a, z ∈ FilV PD (LL := LL) (V := V) a) : z = 0 := by
   have hfree : Module.Free Qp V := Module.Free.of_divisionRing Qp V
@@ -95,9 +93,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 open Formalism.MainNotions.ArcLiftingSetup
 
 /- English proof (translation)
-Establish `hι : ιV PD (LL` using `LL) (V := T.V) x ∈ DdRE PD T.ρ τ := Formalism.MainNotions.UnusedSlot80.LevR.ιDi_le W T c τ hover hsurj ⟨x, hxD, rfl⟩`. Establish `h1 : ιV PD (LL` using `LL) (V := T.V) x ∈ FildR PD T.ρ τ a := ⟨hι, hx.2⟩`. Establish `heq : FildR PD T.ρ τ (a + 1) = FildR PD T.ρ τ a`. Assume the negation of the conclusion as `hne`. Conclude with `hna hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← heq]`. Conclude with `⟨hx.1, h1.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fil_step (T : LocLat G Qp LL O) (c : ZMod n) (τ : K →ₐ[Qp] LL)
     (hover : ∀ x : K₀, τ (algebraMap K₀ K x) = W.emb c x) (hsurj : Function.Surjective (algebraMap K₀ K))
@@ -112,13 +110,13 @@ theorem fil_step (T : LocLat G Qp LL O) (c : ZMod n) (τ : K →ₐ[Qp] LL)
   exact ⟨hx.1, h1.2⟩
 
 /- English proof (translation)
-Take `⟨u₀, hu₀⟩` from `filV_exh (PD := PD) (LL := LL) (ιV PD (LL := LL) (V := T.V) x)`. Establish `hx0 : x ∈ FilCris PD T.ρ u₀` using `⟨hxD.1, hu₀⟩`. Distinguish the cases in `hle : -(H : ℤ) ≤ u₀`. Conclude with `Formalism.MainNotions.UnusedSlot80.LevR.filCris_anti T.ρ hle hx0`. Establish `key : ∀ k : ℕ, u₀ + k ≤ -(H : ℤ) → x ∈ FilCris PD T.ρ (u₀ + k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _`. Simplify using `using hx0`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hk`. Use `fil_step W T c τ hover hsurj (u₀ + k) (fun hj => by have := hJ _ hj; push_cast at hk; omega) hxD (ih (by push_cast at hk; omega))` as an intermediate fact. Use `push_cast`. Rewrite using `[← add_assoc]` and apply the resulting hypothesis. Use `key (-(H : ℤ) - u₀).toNat (by omega)` as an intermediate fact.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[show u₀ + ((-(H : ℤ) - u₀).toNat : ℤ) = -(H : ℤ) by omega]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem fil_low (T : LocLat G Qp LL O) (c : ZMod n) (τ : K →ₐ[Qp] LL)
     (hover : ∀ x : K₀, τ (algebraMap K₀ K x) = W.emb c x) (hsurj : Function.Surjective (algebraMap K₀ K))
@@ -141,13 +139,11 @@ theorem fil_low (T : LocLat G Qp LL O) (c : ZMod n) (τ : K →ₐ[Qp] LL)
     rwa [show u₀ + ((-(H : ℤ) - u₀).toNat : ℤ) = -(H : ℤ) by omega] at this
 
 /- English proof (translation)
-Establish `key : ∀ k : ℕ, x ∈ FilCris PD T.ρ (u + k)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hx`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `fil_step W T c τ hover hsurj (u + k) (fun hj => by have := hJ _ hj; omega) hxD ih` as an intermediate fact. Use `push_cast`. Rewrite using `[← add_assoc]` and apply the resulting hypothesis. Establish `hall : ∀ a, ιV PD (LL` using `LL) (V := T.V) x ∈ FilV PD (LL := LL) (V := T.V) a := by`. Introduce `a`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `ha : a ≤ u`. Conclude with `Formalism.MainNotions.UnusedSlot80.LevR.filV_anti ha hx.2`. Use `(key (a - u).toNat).2` as an intermediate fact. Rewrite `this` using `[show u + ((a - u).toNat : ℤ) = a by omega]`. Then use the resulting hypothesis. Establish `h0` using `filV_sep (PD := PD) _ hall`.
-
-Conclude with `Formalism.MainNotions.UnusedSlot80.LevR.ιV_inj (by rw [h0, map_zero])`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fil_high (T : LocLat G Qp LL O) (c : ZMod n) (τ : K →ₐ[Qp] LL)
     (hover : ∀ x : K₀, τ (algebraMap K₀ K x) = W.emb c x) (hsurj : Function.Surjective (algebraMap K₀ K))

@@ -15,7 +15,7 @@ open scoped nonZeroDivisors
 variable {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E]
 
 /- English proof (translation)
-Apply `φ₀.injective` to reduce the goal to its premises. Rewrite using `[hc, hc, Complex.conj_conj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 lemma conj_conj (c : E ≃ₐ[ℚ] E) (φ₀ : E →+* ℂ)
     (hc : ∀ (φ : E →+* ℂ) (x : E), φ (c x) = starRingEnd ℂ (φ x)) (x : E) : c (c x) = x := by
@@ -23,15 +23,15 @@ lemma conj_conj (c : E ≃ₐ[ℚ] E) (φ₀ : E →+* ℂ)
   rw [hc, hc, Complex.conj_conj]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rintro ⟨y, rfl⟩; exact RingOfIntegers.isIntegral_coe y, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 lemma mem_range_iff (x : K) : x ∈ (algebraMap (𝓞 K) K).range ↔ IsIntegral ℤ x :=
   ⟨by rintro ⟨y, rfl⟩; exact RingOfIntegers.isIntegral_coe y, fun h => ⟨⟨x, h⟩, rfl⟩⟩
 
 /- English proof (translation)
-Use `letI : Algebra K ℂ := (φ₀.comp (algebraMap K E)).toAlgebra`. Establish `h1 : algebraMap K ℂ (Algebra.trace K E (c z)) = starRingEnd ℂ (algebraMap K ℂ (Algebra.trace K E z))`. Rewrite using `[trace_eq_sum_embeddings ℂ, trace_eq_sum_embeddings ℂ, map_sum]`. Conclude with `Finset.sum_congr rfl fun σ _ => hc (σ : E →+* ℂ) z`. Establish `h2 : IsIntegral ℤ (algebraMap K ℂ (Algebra.trace K E (c z)))`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `(hz.map (algebraMap K ℂ).toIntAlgHom).map (starRingEnd ℂ).toIntAlgHom`. Conclude with `(isIntegral_algHom_iff (algebraMap K ℂ).toIntAlgHom (algebraMap K ℂ).injective).mp h2`.
+A detailed English derivation is pending.
 -/
 lemma isIntegral_trace_conj (c : E ≃ₐ[ℚ] E) (φ₀ : E →+* ℂ)
     (hc : ∀ (φ : E →+* ℂ) (x : E), φ (c x) = starRingEnd ℂ (φ x)) (z : E)
@@ -47,9 +47,9 @@ lemma isIntegral_trace_conj (c : E ≃ₐ[ℚ] E) (φ₀ : E →+* ℂ)
   exact (isIntegral_algHom_iff (algebraMap K ℂ).toIntAlgHom (algebraMap K ℂ).injective).mp h2
 
 /- English proof (translation)
-Use `isLocalizedModule_id (𝓞 K)⁰ E K` as an intermediate fact. Conclude with `IsLocalizedModule.map_units (S := (𝓞 K)⁰) (LinearMap.id : E →ₗ[𝓞 K] _) s`. Use `surj y := by`. Establish `hy : y ∈ Submodule.span K (Λ : Set E)` using `h ▸ Submodule.mem_top`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (𝓞 K)⁰ K _ y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨(⟨_, ht⟩, t), rfl⟩`. Use `exists_of_eq h := ⟨1, by simpa using h⟩`.
+A detailed English derivation is pending.
 -/
 lemma isLocalizedModule_subtype (Λ : Submodule (𝓞 K) E)
     (h : Submodule.span K (Λ : Set E) = ⊤) : IsLocalizedModule (𝓞 K)⁰ Λ.subtype where
@@ -64,35 +64,31 @@ lemma isLocalizedModule_subtype (Λ : Submodule (𝓞 K) E)
   exists_of_eq h := ⟨1, by simpa using h⟩
 
 /- English proof (translation)
-Establish `hI0 : I ≠ 0`. Introduce and unpack `rfl`. Use `(hI 1).mpr (by` as an intermediate fact. Introduce `y hy`. Rewrite `hy` using `[FractionalIdeal.mem_zero_iff]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hy` using the available equality. Use the proof step `simp)`. Rewrite `this` using `[FractionalIdeal.mem_zero_iff]`. Conclude with `one_ne_zero this`. Set `Λ : Submodule (𝓞 K) E` to `(I : Submodule (𝓞 E) E).restrictScalars (𝓞 K)`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsp : Submodule.span K (Λ : Set E) = ⊤`. Take `⟨x, hx, hx0⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger hI0`. Rewrite using `[eq_top_iff]`. Introduce `t _`. Establish `hx' : algebraMap (𝓞 E) E x ≠ 0` using `by simpa using hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `halg : IsAlgebraic ℤ (t / algebraMap (𝓞 E) E x)` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic _)`. Take `⟨n, hn0, hn⟩` from `halg.exists_integral_multiple`. Establish `hmem : (n : E) * t ∈ Λ`. Use `(I : Submodule (𝓞 E) E).smul_mem (⟨_, hn⟩ : 𝓞 E) hx0` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ ↔ (n • (t / algebraMap (𝓞 E) E x)) * algebraMap (𝓞 E) E x ∈ _`. Rewrite using `[zsmul_eq_mul, mul_assoc, div_mul_cancel₀ _ hx']`. Both sides reduce to the same expression. Establish `hnK : (n : K) ≠ 0` using `by exact_mod_cast hn0`. Establish `: t = (n : K)⁻¹ • ((n : E) * t)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnE : (n : E) ≠ 0` using `by exact_mod_cast hn0`. Rewrite using `[Algebra.smul_def, map_inv₀, map_intCast, inv_mul_cancel_left₀ hnE]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`. Establish `: Module.Finite (𝓞 K) Λ` using `Module.Finite.iff_fg.mpr (Submodule.FG.restrictScalars (FractionalIdeal.fg_of_isNoetherianRing le_rfl I))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Module.FinitePresentation (𝓞 K) Λ` using `Module.finitePresentation_of_finite _ _`. Establish `: Module.Projective (𝓞 K) Λ` using `Module.Flat.projective_of_finitePresentation`. Take `⟨m, f, g, -, -, hfg'⟩` from `Module.Finite.exists_comp_eq_id_of_projective (𝓞 K) Λ`. Use `isLocalizedModule_subtype Λ hsp` as an intermediate fact. Establish `hext : ∀ i : Fin m, ∃ w : E, ∀ y : Λ, Algebra.trace K E ((y : E) * c w) = (g y i : K)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `i`. Set `φ : Λ →ₗ[𝓞 K] K` to `Algebra.linearMap (𝓞 K) K ∘ₗ LinearMap.proj i ∘ₗ g`. Set `ψ : E →ₗ[𝓞 K] K` to `IsLocalizedModule.lift (𝓞 K)⁰ Λ.subtype φ (IsLocalizedModule.map_units (S := (𝓞 K)⁰) (Algebra.linearMap (𝓞 K) K))`. Take `⟨u, hu⟩` from `((Algebra.traceForm K E).toDual (traceForm_nondegenerate K E)).surjective (ψ.extendScalarsOfIsLocalization (𝓞 K)⁰ K)`. Use `⟨c.symm u, fun y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `LinearMap.congr_fun hu (y : E)`. Rewrite `h1` using `[LinearMap.BilinForm.toDual_def, Algebra.traceForm_apply]`. Rewrite using `[AlgEquiv.apply_symm_apply, mul_comm, h1]`. Conclude with `IsLocalizedModule.lift_apply (𝓞 K)⁰ Λ.subtype φ (IsLocalizedModule.map_units (S := (𝓞 K)⁰) (Algebra.linearMap (𝓞 K) K)) y`. Use `choose w hw using hext`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, fun i => (f (Pi.single i 1) : E), w, fun i => Subtype.prop (f (Pi.single i 1)), fun i => ?_, ?_⟩` and prove the remaining obligations. Use `(hI _).mpr fun y hy => (mem_range_iff _).mpr ?_` and prove the remaining obligations. Establish `e : w i * c y = c (y * c (w i))` using `by rw [map_mul, conj_conj c φ₀ hc, mul_comm]`. Rewrite using `[e]`. Use `isIntegral_trace_conj c φ₀ hc _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Rewrite using `[hw i ⟨y, hy⟩]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Introduce `u`. Establish `hu : u ∈ Submodule.span K (Λ : Set E)` using `hsp ▸ Submodule.mem_top`. Proceed by induction on `hu using Submodule.span_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `mem y hy`. Establish `h1 : f (g ⟨y, hy⟩) = ⟨y, hy⟩` using `LinearMap.congr_fun hfg' _`. Establish `h2 : g ⟨y, hy⟩ = ∑ i, g ⟨y, hy⟩ i • (Pi.single i 1 : Fin m → 𝓞 K)`. Use extensionality with `j`. Simplify using `[Pi.single_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite `h1` using `[h2, map_sum]`. Establish `h3` using `congrArg Subtype.val h1`. Simplify using `only [map_smul, Submodule.coe_sum, Submodule.coe_smul] at h3`. Use `h3.symm.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hw i ⟨y, hy⟩]`.
-
-Conclude with `(algebraMap_smul K _ _).symm`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => conv_lhs => rw [hx, hy]`. Simplify using `[add_mul, Finset.sum_add_distrib, add_smul]`. Consider the case `smul a x _ hx => conv_lhs => rw [hx]`.
-
-Simplify using `[Finset.smul_sum, mul_smul]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_family (c : E ≃ₐ[ℚ] E) (φ₀ : E →+* ℂ)
     (hc : ∀ (φ : E →+* ℂ) (x : E), φ (c x) = starRingEnd ℂ (φ x))
@@ -182,7 +178,7 @@ theorem exists_family (c : E ≃ₐ[ℚ] E) (φ₀ : E →+* ℂ)
 end TraceDualFamily
 
 /- English proof (translation)
-Introduce `D` and use `TraceDualFamily.exists_family D.host.conj D.host.φ₀ (fun φ x => D.host.conjE_apply φ x) D.host.AA0 (factMMUnimodular D.R D.host)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_trace_dual_family_halfDifferent : ∀ (D : D7), ∃ (r : ℕ) (a a' : Fin r → D.host.E), (∀ k, a k ∈ D.host.AA0) ∧ (∀ k, a' k ∈ D.host.AA0) ∧ ∀ t : D.host.E, t = ∑ k, (Algebra.trace D.host.K D.host.E (t * D.host.conj (a' k))) • a k :=
   fun D => TraceDualFamily.exists_family D.host.conj D.host.φ₀

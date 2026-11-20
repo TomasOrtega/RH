@@ -17,7 +17,7 @@ def EvNat : Prop :=
       (y : FrPt Xo c S) (z : FrPt Xo c T), FrMap φ y z → evR Xo c f z = φ (evR Xo c f y)
 
 /- English proof (translation)
-Introduce `f hf S T _ _ _ _ _ φ y z hz`. Take `⟨p, ψ, y', hy'⟩` from `hA S y`. Establish `h1 : evR Xo c f y = ψ (f p y')` using `evalAt_eq_of (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) hWD f hf p ψ y' y hy'`. Establish `h2 : evR Xo c f z = (φ.comp ψ) (f p y')` using `evalAt_eq_of (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) hWD f hf p (φ.comp ψ) y' z (frMap_trans (Xo := Xo) (c := c) _ _ _ ψ φ y' y z hy' hz)`. Rewrite using `[h2, h1, AlgHom.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem evNat_of (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z))
     (hA : AllTest Xo c) : EvNat Xo c := by

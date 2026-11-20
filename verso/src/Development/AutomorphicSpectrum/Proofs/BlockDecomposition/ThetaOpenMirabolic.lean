@@ -15,7 +15,7 @@ def lastCol {n : ℕ} (u : MirUin k n) : Fin n → k :=
   fun i => (((u : Mir k n) : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.castSucc i) (Fin.last n)
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Establish `h : Continuous fun u : MirUin k n => (((u : Mir k n) : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Conclude with `h.matrix_elem _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_lastCol (n : ℕ) : Continuous (lastCol k (n := n)) := by
   refine continuous_pi fun i => ?_
@@ -25,11 +25,9 @@ theorem continuous_lastCol (n : ℕ) : Continuous (lastCol k (n := n)) := by
   exact h.matrix_elem _ _
 
 /- English proof (translation)
-Take `⟨w, hw⟩ : ((u : Mir k n) : GL (Fin (n + 1)) k) ∈ MirU k n` from `Subgroup.mem_subgroupOf.1 u.2`. Establish `key : (unipEquiv k n).symm ((Subgroup.subgroupOfEquivOfLe (MirU_le_Mir k n)) u) = w`. Rewrite using `[MulEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hw.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hcol : lastCol k u = w.toAdd`. Use function extensionality and compare the values at `i`. Simplify using `only [lastCol, ← hw]`. Conclude with `unip_apply_castSucc_last k n w i`. Use `show Circle.toUnits (ψ (a ⬝ᵥ ((unipEquiv k n).symm ((Subgroup.subgroupOfEquivOfLe (MirU_le_Mir k n)) u)).toAdd)) = _`.
-
-Rewrite using `[key, hcol]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaA_apply (ψ : AddChar k Circle) {n : ℕ} (a : Fin n → k) (u : MirUin k n) :
     thetaA k ψ a u = Circle.toUnits (ψ (a ⬝ᵥ lastCol k u)) := by
@@ -47,11 +45,9 @@ theorem thetaA_apply (ψ : AddChar k Circle) {n : ℕ} (a : Fin n → k) (u : Mi
   rw [key, hcol]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_cball_addChar_eq_one ψ hψ`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Establish `hx' : ψ x = 1` using `hx`. Establish `ht : Filter.Tendsto (fun y : k => y - x) (𝓝 x) (𝓝 0)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using (continuous_sub_right x).tendsto x`. Use `filter_upwards [ht (cball_mem_nhds s)] with y hy`. Establish `h1 : ψ (y - x) = 1` using `hs _ hy`. Establish `h2 : ψ y = ψ (y - x) * ψ x` using `by rw [← AddChar.map_add_eq_mul, sub_add_cancel]`. Use `show ψ y = 1`.
-
-Rewrite using `[h2, h1, hx', one_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_addChar_eq_one (ψ : AddChar k Circle) (hψ : Continuous ψ) : IsOpen {x : k | ψ x = 1} := by
   obtain ⟨s, hs⟩ := exists_cball_addChar_eq_one ψ hψ
@@ -67,13 +63,11 @@ theorem isOpen_addChar_eq_one (ψ : AddChar k Circle) (hψ : Continuous ψ) : Is
   rw [h2, h1, hx', one_mul]
 
 /- English proof (translation)
-Introduce `ψ hψ n a`. Establish `hc : Continuous fun u : MirUin k n => a ⬝ᵥ lastCol k u`. Establish `h` using `continuous_lastCol k n`. Simplify using `only [dotProduct]`. Conclude with `continuous_finset_sum _ fun i _ => continuous_const.mul ((continuous_apply i).comp h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `he : ((thetaA k ψ a).ker : Set (MirUin k n)) = (fun u : MirUin k n => a ⬝ᵥ lastCol k u) ⁻¹' {x : k | ψ x = 1}`. Use extensionality with `u`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, thetaA_apply, Set.mem_preimage, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Circle.ext` to reduce the goal to its premises. Simplify using `using congrArg Units.val h`. Introduce `h`. Rewrite using `[h, map_one]`. Rewrite using `[he]`.
-
-Conclude with `(isOpen_addChar_eq_one k ψ hψ).preimage hc`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaOpen : ThetaOpen k := by
   intro ψ hψ n a

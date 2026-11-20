@@ -7,11 +7,11 @@ open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.Compan
 namespace BaseChangeColon
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp at hl`. Consider the case `cons b l ih`. Rewrite using `[List.foldr_cons]`. Break down `List.mem_cons.mp hl with hb | hb` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `hb` using the available equality. Use function extensionality and compare the values at `m`. Simplify using `[diffStep]`. Rewrite using `[ih hb]`. Use function extensionality and compare the values at `m`.
+Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[diffStep]`.
+Simplify using the standard rewrite rules.
 -/
 theorem foldr_diffStep_zero {K : Type} (l : List (K → ℤ)) (hl : (0 : K → ℤ) ∈ l) (h : (K → ℤ) → ℤ) :
     l.foldr diffStep h = 0 := by
@@ -28,9 +28,9 @@ theorem foldr_diffStep_zero {K : Type} (l : List (K → ℤ)) (hl : (0 : K → �
       simp [diffStep]
 
 /- English proof (translation)
-Unfold `intNumL intNum mixedDiff`. Rewrite using `[List.ofFn_get, foldr_diffStep_zero l hl]`. Unfold `eventualValue`. Use `split_ifs with h`. Take `⟨m, hm⟩` from `h.choose_spec.exists`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Conclude with `hm.symm`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem intNumL_of_zero_mem {F : Type} [Field F] {K : Type} [DecidableEq K] {ι : K → Type}
     (V : Ideal (MRing ι F)) (l : List (K → ℤ)) (hl : (0 : K → ℤ) ∈ l) : intNumL F V l = 0 := by
@@ -43,13 +43,13 @@ theorem intNumL_of_zero_mem {F : Type} [Field F] {K : Type} [DecidableEq K] {ι 
   · rfl
 
 /- English proof (translation)
-Introduce `hS F _ Ω _ _ K _ _ ι _ y e hP hd N w b hw a ha Y hY`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Take `⟨a, rfl⟩ : ∃ a', a = a' + 1` from `⟨a - 1, by omega⟩`. Conclude with `Finset.sum_eq_zero fun α hα => by`. Rewrite `hα` using `[Finset.Nat.mem_antidiagonalTuple]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at hα`. Establish `ht : AlgebraicIndependent Ω ((IsScalarTower.toAlgHom Ω (MvPolynomial (Fin N) Ω) (FractionRing (MvPolynomial (Fin N) Ω))) ∘ X)` using `(MvPolynomial.algebraicIndependent_X (Fin N) Ω).map' (IsFractionRing.injective (MvPolynomial (Fin N) Ω) (FractionRing (MvPolynomial (Fin N) Ω)))`. Establish `h1` using `hS F Ω K ι y e hP hd N hN _ _ w b hw N 0 _ (isTwistedDualGens_triv F y N) _ _ ht (N - 1 + a) Y (by omega)`. Establish `h2` using `hS F Ω K ι y e hP hd N hN _ _ _ _ (isFlagFrame_scaledTriv F y N (one_ne_zero (α := Ω))) N 0 _ (isTwistedDualGens_triv F y N) _ _ ht (N - 1 + a) Y (by omega)`. Rewrite `h1` using `[projIdeal_independent_of_basis F Ω K ι y N N _ w (scaledBasis N (one_ne_zero (α := Ω))) _ _ _ ht, h2, if_pos (Nat.le_add_right _ _), if_pos (Nat.le_add_right _ _), Nat.add_sub_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [zero_sub] at h1`. Rewrite using `[← h1]`. Use `Finset.sum_eq_zero fun α hα => intNumL_of_zero_mem _ _ ?_` and prove the remaining obligations. Rewrite `hα` using `[Finset.Nat.mem_antidiagonalTuple]`. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (s := Finset.univ) (f := α) (by omega)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `List.mem_append_left _ ?_` and prove the remaining obligations. Unfold `rootList`. Use `List.mem_flatMap.mpr ⟨i, List.mem_finRange i, List.mem_replicate.mpr ⟨hi, by simp⟩⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem flag_frame_of_point_ideal : NumericalSegre.Statement → ∀ (F : Type) [Field F] (Ω : Type) [Field Ω] [Algebra F Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (y : (Σ k, ι k) → Ω) (e : ℕ), IsMultiProjPrime (pointIdeal F y) → ringKrullDim (MRing ι F ⧸ pointIdeal F y) = ((e + Fintype.card K : ℕ) : WithBot ℕ∞) → ∀ (N : ℕ) (w : Module.Basis (Fin N) Ω (Fin N → Ω)) (b : Fin N → K → ℤ), IsFlagFrame y (scaledTrivBundle F (segreVec y) N (one_ne_zero (α := Ω))) w b → ∀ a : ℕ, 1 ≤ a → ∀ Y : List (K → ℤ), a + Y.length = e → ∑ α ∈ Finset.Nat.antidiagonalTuple N a, intNumL F (pointIdeal F y) (rootList (fun i => -b i) α ++ Y) = 0 := by
   intro hS F _ Ω _ _ K _ _ ι _ y e hP hd N w b hw a ha Y hY

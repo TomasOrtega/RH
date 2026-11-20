@@ -37,17 +37,15 @@ open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeD
 open scoped InnerProductSpace ENNReal
 
 /- English proof (translation)
-Use `choose l hlm hlp hle using fun a => GlobalTheory.MomentHolder.exists_pos_version ν (len a) (hm a) (hpos a)`. Establish `hall : ∀ᵐ x ∂ν, ∀ a, len a x = l a x` using `ae_all_iff.2 hle`. Use `set μ : Measure Ω := ν.withDensity fun x => ENNReal.ofReal (Ph x) with hμ`. Establish `: IsProbabilityMeasure μ` using `⟨by`. Rewrite using `[hμ, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ, hmass]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR0 : 0 ≤ Rr` using `zero_le_one.trans hR`. Establish `hsq : ∀ q : ℕ, Real.sqrt A ^ (2 * q) = A ^ q` using `fun q => by`. Rewrite using `[pow_mul, Real.sq_sqrt hA]`. Establish `hup` using `Formalism.HermitianLatticeCounting.P.corollary_upper_estimate_holds Ω μ r q l (Real.sqrt A) Rr hlm hlp (Real.sqrt_nonneg A) hR0 (fun q hq => by`. Rewrite using `[hμ, GlobalTheory.MomentHolder.lintegral_density ν Ph hPh h0 _ ((hlm 0).pow_const _), hsq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_of_eq_of_le (lintegral_congr_ae ?_) (h1 q hq)` and prove the remaining obligations. Use `filter_upwards [hall] with x hx`. Rewrite using `[hx])`. Use the proof step `(fun c q hq => by`. Rewrite using `[hμ, GlobalTheory.MomentHolder.lintegral_density ν Ph hPh h0 (fun ω => (l c.succ ω / l c.castSucc ω) ^ (2 * q)) (((hlm _).div (hlm _)).pow_const _)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_of_eq_of_le (lintegral_congr_ae ?_) (h2 c q hq)` and prove the remaining obligations. Use `filter_upwards [hall] with x hx`. Rewrite using `[hx, hx]) a`. Rewrite `hup` using `[hμ, GlobalTheory.MomentHolder.lintegral_density ν Ph hPh h0 _ ((hlm a).pow_const _), hsq]`. Use `le_of_eq_of_le (lintegral_congr_ae ?_) (hup.trans (ENNReal.ofReal_le_ofReal ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `filter_upwards [hall] with x hx`. Rewrite using `[hx]`. Rewrite using `[mul_pow, ← pow_mul Rr]`. Use `mul_le_mul_of_nonneg_left (pow_le_pow_right₀ hR ?_) (by positivity)` and prove the remaining obligations. Use `Nat.mul_le_mul_left (2 * q) (Nat.lt_succ_iff.1 a.isLt)` as an intermediate fact.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem single_moment_le (Ω : Type) [MeasurableSpace Ω] (ν : Measure Ω) (r q : ℕ) (len : Fin (r + 1) → Ω → ℝ)
     (Ph : Ω → ℝ) (A Rr : ℝ) (hm : ∀ a, AEMeasurable (len a) ν) (hpos : ∀ a, ∀ᵐ x ∂ν, 0 < len a x)
@@ -92,11 +90,11 @@ theorem single_moment_le (Ω : Type) [MeasurableSpace Ω] (ν : Measure Ω) (r q
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `h1 : star g * g = 1` using `Matrix.mem_unitaryGroup_iff'.1 hg`. Establish `h2 : g * star g = 1` using `Matrix.mem_unitaryGroup_iff.1 hg`. Establish `hinv : g⁻¹ = star g` using `Matrix.inv_eq_left_inv h1`. Set `L : EuclideanSpace ℂ (Fin (2 * r + k + 1)) →ₗ[ℂ] EuclideanSpace ℂ (Fin (2 * r + k + 1))` to `Matrix.toEuclideanLin (star g)`. Establish `hL : ∀ v, WithLp.toLp 2 (star g *ᵥ v) = L (WithLp.toLp 2 v)` using `fun v => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply the tactic sequence `have hiso : Isometry L := by`. Use `AddMonoidHomClass.isometry_of_norm L ((LinearMap.norm_map_iff_inner_map_map L).2 fun v w => ?_)` and prove the remaining obligations. Rewrite using `[EuclideanSpace.inner_eq_star_dotProduct, EuclideanSpace.inner_eq_star_dotProduct]`. Use `show (star g *ᵥ w.ofLp) ⬝ᵥ star (star g *ᵥ v.ofLp) = _`. Rewrite using `[Matrix.star_mulVec, dotProduct_comm, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.star_eq_conjTranspose, star_star, h2, Matrix.vecMul_one, dotProduct_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `lenA`. Simplify using `only [Matrix.mul_inv_rev, hinv, ← Matrix.mulVec_mulVec, hL]`. Rewrite using `[← Set.image_image L, ← Submodule.map_span, Submodule.map_coe, Metric.infDist_image hiso]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lenA_mul_unitary (z : Fin (2 * r + k + 1) → ℂ) (x : Mx k r) {g : Mx k r}
     (hg : g ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ) (a : Fin (r + 1)) :
@@ -118,15 +116,13 @@ theorem lenA_mul_unitary (z : Fin (2 * r + k + 1) → ℂ) (x : Mx k r) {g : Mx 
   rw [← Set.image_image L, ← Submodule.map_span, Submodule.map_coe, Metric.infDist_image hiso]
 
 /- English proof (translation)
-Take `⟨hz, hT, -, -, hW, hN, hG, hq⟩` from `hS`. Take `⟨hGG, hGH⟩` from `GlobalTheory.unitaryGroup_matGroup_unimodular k r`. Take `⟨hGH1, hGH2⟩` from `hGH μG hG`. Take `⟨hSG, hsub, hS1, hS2⟩` from `GlobalTheory.muSof_isHaar k r z μW μN hz hT hW hN`. Establish `hset : PI.QuotientSetting (GG k r) (Formalism.QuantumDeterminants.Sset k r z) μG (muSof μW μN) νq` using `⟨hGG, hSG, hsub, hGH1, hS1, hGH2, hS2, hq⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h0, h1⟩` from `Formalism.FourierDecayAlt.P.DDSmoothness.muSof_facts hW hN`. Establish `hae` using `Formalism.FourierDecayAlt.P.DDSmoothness.ae_UH_of_quot hG.2.2.1 h0 h1 hq`. Use `set A : Set (Formalism.QuantumDeterminants.Mt k r) := {x | Matrix.of x ∈ GG k r} with hA`. Establish `hAm : MeasurableSet A`. Use `(Formalism.FourierDecayAlt.P.DDSmoothness.uh_measurableSet (k := k) (r := r)).compl` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `[hA]`. Establish `hc : ContinuousOn (fun x : Formalism.QuantumDeterminants.Mt k r => F (Matrix.of x)) A` using `hF`. Establish `hm : Measurable (A.piecewise (fun x : Formalism.QuantumDeterminants.Mt k r => F (Matrix.of x)) (fun _ => 0))` using `hc.measurable_piecewise continuousOn_const hAm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : ∀ x : Formalism.QuantumDeterminants.Mt k r, Matrix.of x ∈ GG k r → A.piecewise (fun x : Formalism.QuantumDeterminants.Mt k r => F (Matrix.of x)) (fun _ => 0) x = F (Matrix.of x)` using `fun x hx => Set.piecewise_eq_of_mem _ _ _ hx`. Establish `key` using `GlobalTheory.QuotRightInv.quotInv _ _ _ _ _ _ hset _ hm.ennreal_ofReal (fun s hs x hx => by`. Rewrite using `[hval x hx]`. Conclude with `congrArg ENNReal.ofReal ((hval (fun i j => (s * Matrix.of x) i j) (hGG.2.2.1 s (hsub hs) _ hx)).trans (hinv s hs _ hx))) g hg`. Use `Eq.trans (lintegral_congr_ae (hae.mono fun x hx => ?_)) (key.trans (lintegral_congr_ae (hae.mono fun x hx => congrArg ENNReal.ofReal (hval x hx))))` and prove the remaining obligations.
-
-Conclude with `congrArg ENNReal.ofReal (hval (fun i j => (Matrix.of x * g) i j) (hGG.2.2.1 _ hx g hg)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lintegral_rmul {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
     {z : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)} {u : ℕ → ℝ}
@@ -164,11 +160,11 @@ theorem lintegral_rmul {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   exact congrArg ENNReal.ofReal (hval (fun i j => (Matrix.of x * g) i j) (hGG.2.2.1 _ hx g hg)).symm
 
 /- English proof (translation)
-Establish `q1 : Qᴴ * Q = 1` using `Matrix.mem_unitaryGroup_iff'.1 hQ.2`. Establish `q2 : Q * Qᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hQ.2`. Establish `qi : Q⁻¹ = Qᴴ` using `Matrix.inv_eq_left_inv q1`. Establish `hJ : gᴴ * PI.UpqRep.Jm ε * g = PI.UpqRep.Jm ε` using `GlobalTheory.CayleyChoice.Kset_sub hg`. Establish `hH : Qᴴ * PI.UpqRep.Jm ε * Q = Formalism.QuantumDeterminants.Hpk k r` using `hQ.1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[qi]`. Use `⟨?_, Submonoid.mul_mem _ (Submonoid.mul_mem _ (Unitary.star_mem hQ.2) hg.1) hQ.2⟩` and prove the remaining obligations. Use `show (Qᴴ * g * Q)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (Qᴴ * g * Q) = Formalism.QuantumDeterminants.Hpk k r`. Rewrite using `[← hH]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Use `_ = _ := by rw [q2, Matrix.mul_one, Matrix.mul_one, hJ]`.
+A detailed English derivation is pending.
 -/
 theorem conj_back {ε : Fin (2 * r + k + 1) → Bool} {Q g : Mx k r} (hQ : PI.UpqRep.IsCayleyU k r ε Q)
     (hg : g ∈ PI.UpqRep.Kset ε) :
@@ -188,15 +184,13 @@ theorem conj_back {ε : Fin (2 * r + k + 1) → Bool} {Q g : Mx k r} (hQ : PI.Up
     _ = _ := by rw [q2, Matrix.mul_one, Matrix.mul_one, hJ]
 
 /- English proof (translation)
-Establish `hK : PI.KFinSmooth` using `hH.1.2.2.1`. Take `⟨-, hS2⟩` from `GlobalTheory.CompactStable.kStable_smooth_and_stable hK k r ε mu R hR Q hQ S hfin hst`. Take `⟨hw1, hw2⟩` from `GlobalTheory.TorusWeight.torus_weight_action hK k r ε mu R hR Q E hQ hE (Formalism.QuantumDeterminants.lowK ε mu) w hw`. Establish `hMod` using `GlobalTheory.isMod_smooth_of_isDS hH k r ε mu R hk hR Q E hQ hE`. Use `GlobalTheory.lev_zero_of_kHighest _ _ _ E _ w hMod.1 hMod.2.1 ⟨hw1, ?_⟩ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b hab he`. Assume the negation of the conclusion as `h0`. Establish `hmem : ((E a b w : R.smSub) : R.H) ∈ S`. Rewrite using `[hE a b w]`. Conclude with `hS2 a b he _ hwS`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0' : ((E a b w : R.smSub) : R.H) ≠ 0` using `fun h => h0 (Subtype.ext h)`. Conclude with `GlobalTheory.DominantRootSums.not_cDom_add_root _ ε _ a b hab (hmax _ _ hmem h0' (hw2 a b))`. Establish `hle : Formalism.REAL.kSpan ε E w ≤ S.comap R.smSub.subtype`. Use `sInf_le ⟨hwS, ?_⟩` and prove the remaining obligations. Introduce `a b he x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show ((E a b x : R.smSub) : R.H) ∈ S`. Rewrite using `[hE a b x]`. Conclude with `hS2 a b he _ hx`. Establish `: FiniteDimensional ℂ (S.comap R.smSub.subtype)` using `FiniteDimensional.of_injective ((R.smSub.subtype.comp (S.comap R.smSub.subtype).subtype).codRestrict S (fun x => x.2)) (fun x y h => by`. Establish `h'` using `congrArg Subtype.val h`.
-
-Conclude with `Subtype.ext (Subtype.ext h'))`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lev_zero_of_wt (hH : Hyps) (hk : 1 ≤ k) {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ}
     {R : Rep k r} (hR : R.IsDS ε mu) {Q : Mx k r}
@@ -234,7 +228,7 @@ theorem lev_zero_of_wt (hH : Hyps) (hk : 1 ≤ k) {ε : Fin (2 * r + k + 1) → 
     exact Submodule.finiteDimensional_of_le hle
 
 /- English proof (translation)
-Rewrite using `[norm_smul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs, mul_pow, Real.sq_sqrt hd]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_sq_scaled {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] (t : ℝ) (q : ℕ) {d : ℝ}
     (hd : 0 ≤ d) (v : Wp) : ‖((t ^ q * Real.sqrt d : ℝ) : ℂ) • v‖ ^ 2 = t ^ (2 * q) * (d * ‖v‖ ^ 2) := by
@@ -242,39 +236,35 @@ theorem norm_sq_scaled {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   ring
 
 /- English proof (translation)
-Establish `hK : PI.KFinSmooth` using `hH.1.2.2.1`. Establish `hNum` using `hS.1`. Establish `hFam` using `hS.2.1`. Establish `hSide` using `hS.2.2.1`. Establish `hSF` using `hS.2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : 1 ≤ k` using `hNum.1`. Establish `hν0 : n1 ν ≤ q0` using `le_trans (Nat.le_add_right _ _) hν`. Take `⟨Q, hQ, hw1, hwL⟩` from `hw`. Establish `hQu : IsUnit Q` using `hQ.1.1`. Establish `hE : ∀ ν', ∃ E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ (R ν').smSub, n1 ν' ≤ q0 → (R ν').IsE Q E ∧ Formalism.REAL.GlRel E`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ν'`. Distinguish the cases in `h' : n1 ν' ≤ q0`. Take `⟨E, hE⟩` from `GlobalTheory.smooth_gl_module hK k r _ _ (R ν') (hFam ν' h') Q hQu`. Conclude with `⟨E, fun _ => hE⟩`. Conclude with `⟨fun _ _ => 0, fun h'' => absurd h'' h'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose E hE using hE`. Establish `hDS` using `hFam ν hν0`. Establish `hD` using `(GlobalTheory.CayleyChoice.cayley_exists_and_any k r).2 _ _ _ hDS Q hQ`. Take `⟨hG, -, hlen, hmeas⟩` from `GlobalTheory.quotMeas_ae_mem_and_measurable hK k r _ _ (R ν) Wp z π u μW μN μG νq hDS hSide`. Take `⟨hBeL, hdg, -⟩` from `hSF ν hν0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hmul, -, -, hsm, -⟩` from `GlobalTheory.rep_basic_of_isDS hK k r _ _ (R ν) hDS`. Establish `hT : 0 < Formalism.QuantumDeterminants.Tz k r z` using `hSide.2.1`. Take `⟨⟨hb1, hb2, -, -, -⟩, -⟩` from `GlobalTheory.NumFam.num_fam k r lam u b bv ga h q0 hNum`. Establish `hb : (1 : ℝ) ≤ b` using `by linarith`. Establish `hA : 0 ≤ (((2 * r + k + 1) : ℝ) ^ 2 * (Formalism.QuantumDeterminants.Tz k r z * b ^ 4) * (6 * bv) ^ (2 * (2 * r + 2)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 ≤ bv` using `by linarith`. Check the signs of the components of the expression. Establish `hA'` using `mul_nonneg hA (by positivity : (0 : ℝ) ≤ (b ^ 2) ^ (2 * r))`. Establish `hnum` using `GlobalTheory.MomNum.mom_num k r lam u b bv ga h q0 _ hNum hT`. Establish `hsmS : ∀ S : Submodule ℂ (R ν).H, FiniteDimensional ℂ S → PI.UpqRep.IsKStableOn (PI.BesselPeriodGGP.eps48 k r) (fun g => (R ν).σ (Q⁻¹ * g * Q)) S → S ≤ (R ν).smSub` using `fun S h1 h2 v hv => ((GlobalTheory.CompactStable.kStable_smooth_and_stable hK k r _ _ (R ν) hDS Q hQ S h1 h2).1 v hv).2`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `lintegral_le_of_highest (m := νq) hD.2.2.1 _ (R ν).smSub hsmS (fun v x => ((lenA k r z (Matrix.of x) a ^ q * Real.sqrt (dg ν) : ℝ) : ℂ) • l ν ((R ν).σ (Matrix.of x) v)) ?_ ?_ ?_ ?_ (Hsq r (Formalism.QuantumDeterminants.Tz k r z) b ^ q) (pow_nonneg (hA'.trans hnum) q) ?_ w hwL hw1`. Simplify `key` using `only [norm_sq_scaled _ _ hdg.le]`. Introduce `v hv v' hv' filter_upwards [hG] with x hx`. Simplify using `only [Pi.add_apply]`. Rewrite using `[map_add, hBeL.1.1 _ (hsm _ hx v hv) _ (hsm _ hx v' hv'), smul_add]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c v hv filter_upwards [hG] with x hx`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[map_smul, hBeL.1.2.1 c _ (hsm _ hx v hv), smul_comm]`. Introduce `v hv`. Conclude with `(Complex.continuous_ofReal.comp_aestronglyMeasurable ((((hlen a).pow_const q).mul_const _).aestronglyMeasurable)).smul (hmeas (l ν) hBeL.1 v hv)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g hg v hv`. Take `⟨hgG, hgU⟩` from `conj_back hQ hg`. Simplify using `only [norm_sq_scaled _ _ hdg.le]`. Use `lintegral_rmul hSide (fun x => lenA k r z x a ^ (2 * q) * (dg ν * ‖l ν ((R ν).σ x v)‖ ^ 2)) (((GlobalTheory.LengthCont.lenA_continuousOn k r z hSide.1 hT a).pow _).mul (continuousOn_const.mul ((GlobalTheory.cwCont_continuousOn_hasDerivAt hK k r _ _ (R ν) hDS Wp (l ν) hBeL.1.1 hBe …` as an intermediate fact. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hG] with x hx`. Rewrite using `[lenA_mul_unitary z _ hgU, hmul _ hx _ hgG]`. Introduce `s hs x hx`. Establish `e` using `(GlobalTheory.TensLen.lengths k r z hSide.1 hT _ hx).2.2.2 s hs a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h', hh, m, hmN, rfl⟩` from `hs`. Take `⟨u₀, hπ⟩` from `hSide.2.2.1`. Establish `hsG : h' * m ∈ GG k r` using `Formalism.FourierDecayAlt.P.DDSmoothness.uh_mul hh.1 hmN.1`. Use `beta_reduce`. Rewrite using `[e, hmul _ hsG _ hx, hBeL.1.2.2.1 h' hh m hmN _ (hsm _ hx v hv), norm_smul, Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.psi_norm, one_mul, Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_unitary hT hπ h' hh]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Introduce `S hfd hst hcd v hv hv1 hwt`. Simplify using `only [norm_sq_scaled _ _ hdg.le]`. Establish `hvs : v ∈ (R ν).sm` using `hsmS S hfd hst hv`. Distinguish the cases in `hnz : NzOn (R ν) (l ν)`. Establish `hLev` using `lev_zero_of_wt hH hk hDS hQ (hE ν hν0).1 S hfd hst hcd ⟨v, hvs⟩ hv hwt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hv1' : ‖(⟨v, hvs⟩ : (R ν).smSub)‖ = 1` using `hv1`. Establish `hmain` using `single_moment_le (Formalism.QuantumDeterminants.Mt k r) νq r q (fun a x => lenA k r z (Matrix.of x) a) (fun x => dg ν * ‖l ν ((R ν).σ (Matrix.of x) v)‖ ^ 2) (((2 * r + k + 1) : ℝ) ^ 2 * (Formalism.QuantumDeterminants.Tz k r z * b ^ 4) * (6 * bv) ^ (2 * (2 * r + 2))) (b ^ 2) hlen …`. Use `((GlobalTheory.MomMass.mom_mass hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg hS ν hν0).2 hnz).2 v hvs` as an intermediate fact. Simplify `this)` using `only [one_mul, hv1, one_pow, ENNReal.ofReal_one]`. Use `hA (one_le_pow₀ hb)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use the proof step `(fun q' hq' => by`. Use `GlobalTheory.Moment.moment_first_length hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg Q E hS hQ hE q' ν (by omega) 0 (by omega) ⟨v, hvs⟩ hLev` as an intermediate fact. Simplify `this)` using `only [hv1', one_pow, mul_one]`. Use the proof step `(fun a q' hq' => by`. Use `GlobalTheory.RatioMoment.ratio_moment hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg Q E hS hQ hE ν hν0 0 q' (by omega) a ⟨v, hvs⟩ hLev` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this) a` using `only [hv1', one_pow, mul_one]`. Conclude with `hmain.trans (ENNReal.ofReal_le_ofReal (pow_le_pow_left₀ hA' hnum _))`. Establish `hz : ∀ v ∈ (R ν).sm, l ν v = 0`. Introduce `v hv`. Assume the negation of the conclusion as `hne`.
-
-Conclude with `hnz ⟨v, hv, hne⟩`. Use `le_of_eq_of_le ?_ bot_le` and prove the remaining obligations. Rewrite using `[bot_eq_zero, ← lintegral_zero (μ := νq)]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hG] with x hx`.
-
-Rewrite using `[hz _ (hsm _ hx v hvs)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem oneLength_moment_lowestType_largeGap (hH : Hyps) (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ)
@@ -399,7 +389,7 @@ open BranchingSupport GlobalTheory.CellAmp GlobalTheory.Amp Formalism.BasicNotio
 open scoped InnerProductSpace ENNReal
 
 /- English proof (translation)
-Introduce `hH k r Wp _ _ _ _ lam u b bv ga h q0 z π μW μN μG νq R lb dg hS ν q hν hq w hw a` and use `oneLength_moment_lowestType_largeGap hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R lb dg hS ν q hν hq w hw a`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem moment_one : Hyps → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (Wp →L[ℂ] Wp)) (μW μN μG νq : Measure (Mt k r)) (R : (Fin (2 * r + k + 1) → ℤ) → Rep k r) (lb : ∀ ν, (R ν).H → Wp) (dg : (Fin (2 * r + k + 1) → ℤ) → ℝ), Setup lam u b bv ga h q0 z π μW μN μG νq R lb dg → ∀ ν (q : ℕ), n1 ν + (r + 1) * q ≤ q0 → (r + 1) * q ≤ 2 * (2 * r + k + 1) ^ 2 → ∀ w : (R ν).H, PI.UpqRep.IsLowUnitH k r (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν a : ℝ)) (R ν).σ w → ∀ a : Fin (r + 1), ∫⁻ x, ENNReal.ofReal (lenA k r z (Matrix.of x) a ^ (2 * q) * (dg ν * ‖lb ν ((R ν).σ (Matrix.of x) w)‖ ^ 2)) ∂νq ≤ ENNReal.ofReal (Hsq r (Tz k r z) b ^ q) :=
   fun hH k r Wp _ _ _ _ lam u b bv ga h q0 z π μW μN μG νq R lb dg hS ν q hν hq w hw a =>

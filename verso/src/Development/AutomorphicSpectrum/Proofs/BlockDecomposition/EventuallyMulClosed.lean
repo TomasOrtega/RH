@@ -17,9 +17,9 @@ def twistT {A : Type} [CommRing A] {n M : ℕ} (m : Matrix (Fin n) (Fin n) A) (Y
   fun j i => ∑ k, Y k i * m k j
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j i`. Simplify using `only [twistT, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.mul_sum]`. Establish `hm : ∀ k, ∑ l, m k l * m' l j = (1 : Matrix (Fin n) (Fin n) A) k j` using `fun k => by`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h, Matrix.mul_apply]`. Simplify using `[hm, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem twistT_twistT {A : Type} [CommRing A] {n M : ℕ} {m m' : Matrix (Fin n) (Fin n) A} (h : m * m' = 1)
     (Y : Fin n → Fin M → A) : twistT m' (twistT m Y) = Y := by
@@ -52,14 +52,14 @@ def intE (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (NumberField.Ring
   {x | ∀ k, (Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) b).repr x k ∈ v.adicCompletionIntegers F}
 
 /- English proof (translation)
-Simplify using `[Algebra.TensorProduct.basis_repr_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem repr_tmul (b : Module.Basis (Fin d) F E) {R : Type} [CommRing R] [Algebra F R] (x : R) (e : E) (k : Fin d) :
     (Algebra.TensorProduct.basis R b).repr (x ⊗ₜ[F] e) k = x * algebraMap F R (b.repr e k) := by
   simp [Algebra.TensorProduct.basis_repr_tmul]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (Algebra.TensorProduct.basis R b).sum_repr x]`. Simplify using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_sum_tmul (b : Module.Basis (Fin d) F E) {R : Type} [CommRing R] [Algebra F R] (x : R ⊗[F] E) :
     x = ∑ k, (Algebra.TensorProduct.basis R b).repr x k ⊗ₜ[F] b k := by
@@ -67,7 +67,7 @@ theorem eq_sum_tmul (b : Module.Basis (Fin d) F E) {R : Type} [CommRing R] [Alge
   simp [Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']
 
 /- English proof (translation)
-Conclude with `t.2`.
+A detailed English derivation is pending.
 -/
 theorem eventually_adele (t : HeckeCharacterZeroLocus.SiegelWeilU.Af F) :
     ∀ᶠ v : HeightOneSpectrum (NumberField.RingOfIntegers F) in Filter.cofinite,
@@ -75,7 +75,7 @@ theorem eventually_adele (t : HeckeCharacterZeroLocus.SiegelWeilU.Af F) :
   exact t.2
 
 /- English proof (translation)
-Use `filter_upwards [eventually_adele (F := F) (algebraMap F (HeckeCharacterZeroLocus.SiegelWeilU.Af F) c)] with v hv`. Rewrite `hv` using `[AlgHom.commutes]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eventually_const (c : F) :
     ∀ᶠ v : HeightOneSpectrum (NumberField.RingOfIntegers F) in Filter.cofinite,
@@ -84,7 +84,7 @@ theorem eventually_const (c : F) :
   rwa [AlgHom.commutes] at hv
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[map_sum, Finsupp.finsetSum_apply]`. Conclude with `sum_mem fun i hi => h i hi k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_mem_intE (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (NumberField.RingOfIntegers F))
     {ι : Type} (s : Finset ι) (f : ι → HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E) (h : ∀ i ∈ s, f i ∈ intE b v) :
@@ -94,9 +94,9 @@ theorem sum_mem_intE (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (Numb
   exact sum_mem fun i hi => h i hi k
 
 /- English proof (translation)
-Simplify using `only [intE, Set.mem_ofPred_eq] at hx hy ⊢`. Introduce `k`. Rewrite using `[eq_sum_tmul b x, eq_sum_tmul b y, Finset.sum_mul_sum]`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, map_sum, Finsupp.finsetSum_apply, repr_tmul]`. Use `sum_mem fun i _ => sum_mem fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_mem (mul_mem (hx i) (hy j)) (hc i j k)`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_intE (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (NumberField.RingOfIntegers F))
     (hc : ∀ i j k, algebraMap F (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) (b.repr (b i * b j) k) ∈ v.adicCompletionIntegers F)
@@ -109,7 +109,7 @@ theorem mul_mem_intE (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (Numb
   exact mul_mem (mul_mem (hx i) (hy j)) (hc i j k)
 
 /- English proof (translation)
-Simplify using `only [Filter.eventually_all]`. Introduce `i j k`. Conclude with `eventually_const _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eventually_mul_closed (b : Module.Basis (Fin d) F E) :
     ∀ᶠ v : HeightOneSpectrum (NumberField.RingOfIntegers F) in Filter.cofinite,
@@ -119,11 +119,9 @@ theorem eventually_mul_closed (b : Module.Basis (Fin d) F E) :
   exact eventually_const _
 
 /- English proof (translation)
-Establish `hall : ∀ᶠ v : HeightOneSpectrum (NumberField.RingOfIntegers F) in Filter.cofinite, ∀ k, HeckeCharacterZeroLocus.SiegelWeilU.evalV F v (HeckeCharacterZeroLocus.SiegelWeilU.sndA F ((Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.AF F) b).repr x k)) ∈ v.adicComplet …` using `Filter.eventually_all.mpr fun k => eventually_adele _`. Use `filter_upwards [hall] with v hv`. Rewrite using `[eq_sum_tmul b x]`. Simplify using `only [map_sum, Algebra.TensorProduct.map_tmul, AlgHom.coe_comp, Function.comp_apply, AlgHom.id_apply]`. Use `sum_mem_intE b v _ _ fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k'`. Rewrite using `[repr_tmul, Module.Basis.repr_self, Finsupp.single_apply]`. Use `split_ifs with hk`. Substitute `hk` using the available equality. Rewrite using `[map_one, mul_one]`.
-
-Conclude with `hv _`. Rewrite using `[map_zero, mul_zero]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_mem_intE (b : Module.Basis (Fin d) F E) (x : HeckeCharacterZeroLocus.SiegelWeilU.AF F ⊗[F] E) :
     ∀ᶠ v : HeightOneSpectrum (NumberField.RingOfIntegers F) in Filter.cofinite,
@@ -146,7 +144,7 @@ theorem eventually_mem_intE (b : Module.Basis (Fin d) F E) (x : HeckeCharacterZe
     exact zero_mem _
 
 /- English proof (translation)
-Simplify using `only [Filter.eventually_all]`. Introduce `k j`. Use `filter_upwards [eventually_mem_intE b (h k j)] with v hv`. Simplify `hv` using `[PositivityTheory.SiegelWeilFormula.Gen.matV]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eventually_matV_mem (b : Module.Basis (Fin d) F E) {n : ℕ}
     (h : Matrix (Fin n) (Fin n) (HeckeCharacterZeroLocus.SiegelWeilU.AF F ⊗[F] E)) :
@@ -158,7 +156,7 @@ theorem eventually_matV_mem (b : Module.Basis (Fin d) F E) {n : ℕ}
   simpa [PositivityTheory.SiegelWeilFormula.Gen.matV] using hv
 
 /- English proof (translation)
-Introduce `a i`. Conclude with `sum_mem_intE b v _ _ fun k _ => mul_mem_intE b v hc (hY k i) (hm k a)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem twistT_mem_latV (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (NumberField.RingOfIntegers F))
     (hc : ∀ i j k, algebraMap F (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) (b.repr (b i * b j) k) ∈ v.adicCompletionIntegers F)
@@ -169,7 +167,7 @@ theorem twistT_mem_latV (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (N
   exact sum_mem_intE b v _ _ fun k _ => mul_mem_intE b v hc (hY k i) (hm k a)
 
 /- English proof (translation)
-Simplify using `only [PositivityTheory.SiegelWeilFormula.Gen.matV]`. Rewrite using `[← AlgHom.mapMatrix_apply, ← AlgHom.mapMatrix_apply, ← map_mul, e, map_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem matV_mul_eq_one {n : ℕ} (v : HeightOneSpectrum (NumberField.RingOfIntegers F))
     {h h' : Matrix (Fin n) (Fin n) (HeckeCharacterZeroLocus.SiegelWeilU.AF F ⊗[F] E)} (e : h * h' = 1) :
@@ -180,9 +178,9 @@ theorem matV_mul_eq_one {n : ℕ} (v : HeightOneSpectrum (NumberField.RingOfInte
 end Int
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Simplify using `only [Formalism.L2.Theta.finPart, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.coe_comp, Function.comp_apply, AlgHom.id_apply]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem map_evalV_finPart (D : D7) (v : HeightOneSpectrum (NumberField.RingOfIntegers D.host.F)) (x : AE D) :
     Algebra.TensorProduct.map (HeckeCharacterZeroLocus.SiegelWeilU.evalV D.host.F v) (AlgHom.id D.host.F D.host.E) (finPart D x) =
@@ -197,17 +195,17 @@ theorem map_evalV_finPart (D : D7) (v : HeightOneSpectrum (NumberField.RingOfInt
   | add x y hx hy => rw [map_add, map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Introduce `D n M d bs g gv a H`. Take `⟨hSB, hev, hprod⟩` from `H`. Establish `e1 : a.1 * a⁻¹.1 = 1` using `a.mul_inv`. Establish `e2 : a⁻¹.1 * a.1 = 1` using `a.inv_mul`. Use `⟨fun v => ?_, ?_, fun Y => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `T` to `twistH (M := M) (matV_mul_eq_one v e1) (matV_mul_eq_one v e2)`. Take `⟨hlc, hcs⟩` from `hSB v`. Conclude with `⟨hlc.comp_continuous T.continuous, hcs.comp_homeomorph T⟩`. Use `filter_upwards [hev, eventually_mul_closed bs, eventually_matV_mem bs a.1, eventually_matV_mem bs a⁻¹.1] with v hv hc hm hm'`. Use function extensionality and compare the values at `Y`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv]`. Use `show (HeckeCharacterZeroLocus.SiegelWeilU.latV bs v).indicator 1 (twistT (PositivityTheory.SiegelWeilFormula.Gen.matV v a.1) Y) = _`. Establish `hiff : twistT (PositivityTheory.SiegelWeilFormula.Gen.matV v a.1) Y ∈ HeckeCharacterZeroLocus.SiegelWeilU.latV bs v ↔ Y ∈ HeckeCharacterZeroLocus.SiegelWeilU.latV bs v`. Prove the components needed by the constructor for the conclusion. Introduce `hY`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `twistT_mem_latV bs v hc hm' hY`. Rewrite `h1` using `[twistT_twistT (matV_mul_eq_one v e1)]`. Then use the resulting hypothesis. Conclude with `twistT_mem_latV bs v hc hm`. Distinguish the cases in `hY : Y ∈ HeckeCharacterZeroLocus.SiegelWeilU.latV bs v`. Rewrite using `[Set.indicator_of_mem hY, Set.indicator_of_mem (hiff.mpr hY)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Pi.one_apply]`. Rewrite using `[Set.indicator_of_notMem hY, Set.indicator_of_notMem (mt hiff.mp hY)]`. Establish `h3` using `hprod (fun j i => ∑ k, Y k i * finPart D (a.1 k j)) dsimp only at h3 ⊢`. Rewrite using `[h3]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `j i`. Simplify using `[HeckeCharacterZeroLocus.SiegelWeilU.projV, PositivityTheory.SiegelWeilFormula.Gen.matV, map_evalV_finPart]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPureFin_twist : ∀ (D : D7) (n M d : ℕ) (bs : Module.Basis (Fin d) D.host.F D.host.E) (g : (Fin M → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ) (gv : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F), (Fin n → Fin M → HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E) → ℂ) (a : GL (Fin n) (AE D)), HeckeCharacterZeroLocus.SiegelWeilU.IsPureFin bs (fun X => g fun i j => X j i) gv → HeckeCharacterZeroLocus.SiegelWeilU.IsPureFin bs (fun Y => g fun i j => ∑ k, Y k i * finPart D (a.1 k j)) (fun v Y => gv v (fun j i => ∑ k, Y k i * PositivityTheory.SiegelWeilFormula.Gen.matV v a.1 k j)) := by
   intro D n M d bs g gv a H

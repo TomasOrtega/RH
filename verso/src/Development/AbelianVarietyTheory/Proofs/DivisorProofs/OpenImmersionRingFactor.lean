@@ -16,9 +16,9 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Introduce `X R _ ξ _`. Establish `hU : IsAffineOpen ξ.opensRange` using `isAffineOpen_opensRange ξ`. Establish `hr : Set.range hU.fromSpec.base ⊆ Set.range ξ.base`. Rewrite using `[hU.range_fromSpec]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨(Spec.preimage (IsOpenImmersion.lift ξ hU.fromSpec hr)).hom, ?_⟩` and prove the remaining obligations. Introduce `Y f V hV hVU`. Rewrite using `[← hU.SpecMap_appLE_fromSpec f hV hVU]`. Use `conv_lhs => rw [← IsOpenImmersion.lift_fac ξ hU.fromSpec hr]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, CommRingCat.ofHom_hom, Spec.map_preimage]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chart_sections_factor : ∀ (X : Scheme.{0}) (R : Type) [CommRing R] (ξ : Sp R ⟶ X) [IsOpenImmersion ξ],
     ∃ e : R →+* Γ(X, ξ.opensRange), ∀ (Y : Scheme.{0}) (f : Y ⟶ X) (V : Y.Opens) (hV : IsAffineOpen V)

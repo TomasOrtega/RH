@@ -11,51 +11,51 @@ namespace TwistData
 variable {K : Type} [Field K] (D : TwistData K)
 
 /- English proof (translation)
-Rewrite using `[eIn_apply]`. Simplify using `[outP, outB, mb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eIn_apply_mb (ζ : D.EM) (b : D.Lb) (a : Fin D.r) : eIn D.outP ζ (D.mb b, a) = ζ (D.mb b, a) := by
   rw [eIn_apply]
   simp [outP, outB, mb]
 
 /- English proof (translation)
-Rewrite using `[eIn_apply]`. Simplify using `[outP, outB, mw]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eIn_apply_mw (ζ : D.EM) (t : D.Tau) (a : Fin D.r) : eIn D.outP ζ (D.mw t, a) = ζ (D.mw t, a) := by
   rw [eIn_apply]
   simp [outP, outB, mw]
 
 /- English proof (translation)
-Rewrite using `[eIn_apply]`. Simplify using `[outP, outB, mlab]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eIn_apply_mlab (ζ : D.EM) (t : D.Tau) (a : Fin D.r) : eIn D.outP ζ (D.mlab t, a) = 0 := by
   rw [eIn_apply]
   simp [outP, outB, mlab]
 
 /- English proof (translation)
-Rewrite using `[eIn_apply]`. Simplify using `[outP, outB, mtp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eIn_apply_mtp (ζ : D.EM) (t : D.Tau) (a : Fin D.r) : eIn D.outP ζ (D.mtp t, a) = 0 := by
   rw [eIn_apply]
   simp [outP, outB, mtp]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hcl, hlift⟩`. Use extensionality with `⟨i, a⟩`. Break down `i with b | t` into its components or cases. Establish `h2` using `congrArg (fun f => f (D.mb b, a)) hlift beta_reduce at h2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `h2` using `[eIn_apply_mb]`. Establish `h1 : D.liftE p α (D.mb b, a) = α (Sum.inl b, a)` using `by simp [liftE, mb]`. Rewrite `h2` using `[h1]`. Rewrite using `[h2]`. Simplify using `[collapseExponent, mb]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg (fun f => f (D.mw t, a)) hlift beta_reduce at h2`. Rewrite `h2` using `[eIn_apply_mw]`. Establish `h1 : D.liftE p α (D.mw t, a) = α (Sum.inr t, a) / D.P p t` using `by simp [liftE, mw]`. Rewrite `h2` using `[h1]`. Establish `h3 : α (Sum.inr t, a) % D.P p t = ζ (D.mlab t, a)` using `hcl t a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : D.collapseExponent p ζ (Sum.inr t, a) = ζ (D.mlab t, a) + D.P p t * ζ (D.mw t, a)`. Simplify using `[collapseExponent, mlab, mw]`. Rewrite using `[h4, ← Nat.mod_add_div (α (Sum.inr t, a)) (D.P p t), h3, h2]`. Introduce and unpack `rfl`. Use `⟨fun t a => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hP : 0 < D.P p t` using `(Nat.zero_le _).trans_lt (hζ t a) show D.collapseExponent p ζ (Sum.inr t, a) % D.P p t = ζ (D.mlab t, a)`. Establish `h4 : D.collapseExponent p ζ (Sum.inr t, a) = ζ (D.mlab t, a) + D.P p t * ζ (D.mw t, a)`. Simplify using `[collapseExponent, mlab, mw]`. Rewrite using `[h4, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt (hζ t a)]`. Use extensionality with `⟨i, a⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Break down `i with b | t | t | t` into its components or cases. Express the relevant statement in the definitionally equal form `_ = eIn D.outP ζ (D.mb b, a)`. Rewrite using `[eIn_apply_mb]`. Simplify using `[liftE, collapseExponent, mb]`. Express the relevant statement in the definitionally equal form `_ = eIn D.outP ζ (D.mlab t, a)`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[eIn_apply_mlab]`. Simplify using `[liftE]`. Express the relevant statement in the definitionally equal form `_ = eIn D.outP ζ (D.mw t, a)`. Rewrite using `[eIn_apply_mw]`. Establish `hP : 0 < D.P p t` using `(Nat.zero_le _).trans_lt (hζ t a)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : D.collapseExponent p ζ (Sum.inr t, a) = ζ (D.mlab t, a) + D.P p t * ζ (D.mw t, a)`. Simplify using `[collapseExponent, mlab, mw]`. Establish `h1 : D.liftE p (D.collapseExponent p ζ) (Sum.inr (Sum.inr (Sum.inl t)), a) = D.collapseExponent p ζ (Sum.inr t, a) / D.P p t` using `by simp [liftE]`. Rewrite using `[h1, h4, Nat.add_mul_div_left _ _ hP, Nat.div_eq_of_lt (hζ t a), zero_add]`. Express the relevant statement in the definitionally equal form `_ = eIn D.outP ζ (D.mtp t, a)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[eIn_apply_mtp]`. Simplify using `[liftE]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem class_iff (p : ℕ) {ζ : D.EM} (hζ : D.LabLowE p ζ) (α : D.EA) :
     (D.InClass p (D.labF ζ) α ∧ D.liftE p α = eIn D.outP ζ) ↔ α = D.collapseExponent p ζ := by
@@ -107,11 +107,11 @@ theorem class_iff (p : ℕ) {ζ : D.EM} (hζ : D.LabLowE p ζ) (α : D.EA) :
         simp [liftE]
 
 /- English proof (translation)
-Unfold `digitPart`. Rewrite using `[MvPolynomial.coeff_sum]`. Establish `h : ∀ α ∈ G.support, (if D.InClass p (D.labF ζ) α then monomial (D.liftE p α) (G.coeff α) else 0 : MvPolynomial (D.ML × Fin D.r) K).coeff (eIn D.outP ζ) = if α = D.collapseExponent p ζ then G.coeff α else 0`. Introduce `α _`. Use `split_ifs with h1 h2 h2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.coeff_monomial, if_pos ((D.class_iff p hζ α).2 h2).2]`. Rewrite using `[MvPolynomial.coeff_monomial, if_neg]`. Introduce `h3`. Conclude with `h2 ((D.class_iff p hζ α).1 ⟨h1, h3⟩)`. Conclude with `absurd ((D.class_iff p hζ α).2 h2).1 h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl h, Finset.sum_ite_eq']`. Use `split_ifs with h0`. Both sides reduce to the same expression. Conclude with `(by simpa using h0 : G.coeff (D.collapseExponent p ζ) = 0).symm`.
+A detailed English derivation is pending.
 -/
 theorem coeff_digitPart_eIn (p : ℕ) {ζ : D.EM} (hζ : D.LabLowE p ζ) (G : MvPolynomial (D.OL × Fin D.r) K) :
     (D.digitPart p (D.labF ζ) G).coeff (eIn D.outP ζ) = G.coeff (D.collapseExponent p ζ) := by
@@ -134,7 +134,7 @@ theorem coeff_digitPart_eIn (p : ℕ) {ζ : D.EM} (hζ : D.LabLowE p ζ) (G : Mv
   · exact (by simpa using h0 : G.coeff (D.collapseExponent p ζ) = 0).symm
 
 /- English proof (translation)
-Simplify using `only [Finsupp.prod, Finsupp.coe_add, Pi.add_apply, Nat.cast_prod]`. Use `Finset.prod_subset (Finset.subset_univ _) fun x _ hx => ?_` and prove the remaining obligations. Establish `h0 : β x = 0 ∧ M x = 0` using `by simpa [Finsupp.mem_support_iff] using hx`. Simplify using `[h0.1, h0.2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem prod_choose_add {σ : Type} [Fintype σ] (β M : σ →₀ ℕ) :
     ((β + M).prod fun x k => (k.choose (M x) : K)) = ((∏ x, (β x + M x).choose (M x) : ℕ) : K) := by
@@ -147,11 +147,11 @@ def GM (F : MvPolynomial (D.OL × Fin D.r) K) (M : D.EA) : MvPolynomial (D.OL ×
   dg (fun α => (D.ga α)⁻¹) (ddiv M (D.gaAct F))
 
 /- English proof (translation)
-Establish `hga : ∀ β, (D.gaAct F).coeff β = D.ga β * F.coeff β`. Introduce `β`. Unfold `gaAct`. Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_monomial]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[show F.coeff β = 0 by simpa using h, mul_zero]`. Unfold `GM`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_dg, coeff_ddiv, prod_choose_add, hga]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coeff_GM (p : ℕ) (F : MvPolynomial (D.OL × Fin D.r) K) (ζ : D.EM) :
     (D.GM F (D.tpE ζ)).coeff (D.collapseExponent p ζ) =
@@ -173,7 +173,7 @@ theorem coeff_GM (p : ℕ) (F : MvPolynomial (D.OL × Fin D.r) K) (ζ : D.EM) :
 variable [CharZero K] {v : AddValuation K (WithTop ℚ)} {p : ℕ}
 
 /- English proof (translation)
-Unfold `gaP`. Rewrite using `[AddValuation.map_mul, hV.2.2.2.2.2.2.1 (D.collapseExponent p ζ), zero_add]`. Conclude with `Finset.prod_induction _ (fun x => v x = 0) (fun a b ha hb => by rw [AddValuation.map_mul, ha, hb, add_zero]) (AddValuation.map_one v) (fun t _ => ((hdig.1 t (D.labF ζ t) (fun a => hζ t a)).2 (D.wF ζ t)).1)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_gaP (hV : D.Valid v p) {cst : D.Tau → (Fin D.r → ℕ) → ℕ → K}
     {gam : D.Tau → (Fin D.r → ℕ) → (Fin D.r → ℕ) → K} (hdig : D.DigOK v p cst gam) {ζ : D.EM}
@@ -185,7 +185,7 @@ theorem v_gaP (hV : D.Valid v p) {cst : D.Tau → (Fin D.r → ℕ) → ℕ → 
     (fun t _ => ((hdig.1 t (D.labF ζ t) (fun a => hζ t a)).2 (D.wF ζ t)).1)
 
 /- English proof (translation)
-Introduce `hx`. Substitute `hx` using the available equality. Simplify using `at h`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem ne_zero_of_v_eq_zero {x : K} (h : v x = 0) : x ≠ 0 := by
   intro hx
@@ -193,11 +193,11 @@ theorem ne_zero_of_v_eq_zero {x : K} (h : v x = 0) : x ≠ 0 := by
   simp at h
 
 /- English proof (translation)
-Establish `h0 : D.ga (D.collapseExponent p ζ) ≠ 0` using `ne_zero_of_v_eq_zero (hV.2.2.2.2.2.2.1 _)`. Establish `h1` using `D.fact_eq_kapC hdig hζ`. Establish `h2 : (fact (D.phE p ζ) : K) = ((∏ x, (D.collapseExponent p ζ x + D.tpE ζ x).choose (D.tpE ζ x) : ℕ) : K) * (fact (D.collapseExponent p ζ) : K) * (fact (D.tpE ζ) : K)`. Rewrite using `[phE, fact_add_eq]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Lam_monomial, coeff_GM, h2, gaP]`. Use `set B := ((∏ x, (D.collapseExponent p ζ x + D.tpE ζ x).choose (D.tpE ζ x) : ℕ) : K)`. Use `set g := ∏ t, gam t (D.labF ζ t) (D.wF ζ t)`. Establish `h3 : D.kapC cst ζ * (D.ga (D.collapseExponent p ζ) * g * ((D.ga (D.collapseExponent p ζ))⁻¹ * (D.ga (D.phE p ζ) * F.coeff (D.phE p ζ) * B)) * (fact ζ : K)) = (D.ga (D.phE p ζ) * F.coeff (D.phE p ζ) * B) * (D.kapC cst ζ * g * (fact ζ : K))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[h3, ← h1]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Lam_monomial_blk (hV : D.Valid v p) {cst : D.Tau → (Fin D.r → ℕ) → ℕ → K}
     {gam : D.Tau → (Fin D.r → ℕ) → (Fin D.r → ℕ) → K} (hdig : D.DigOK v p cst gam)
@@ -219,9 +219,9 @@ theorem Lam_monomial_blk (hV : D.Valid v p) {cst : D.Tau → (Fin D.r → ℕ) �
   rw [h3, ← h1]; ring
 
 /- English proof (translation)
-Rewrite using `[coeff_GM]`. Establish `a1` using `(vge_unit v (hV.2.2.2.2.2.2.1 (D.collapseExponent p ζ))).2.1`. Establish `a2` using `(vge_unit v (hV.2.2.2.2.2.2.1 (D.phE p ζ))).1`. Establish `a3 : vge v (-D.n0 v) (F.coeff (D.phE p ζ))`. Use `cge_of_bge hD hF hF0 (D.phE p ζ)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_sub]`. Conclude with `this`. Establish `a4` using `vge_natCast v (∏ x, (D.collapseExponent p ζ x + D.tpE ζ x).choose (D.tpE ζ x))`. Use `vge_mul v a1 (vge_mul v (vge_mul v a2 a3) a4)` as an intermediate fact. Conclude with `vge_mono v (by linarith) this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vge_coeff_GM (hD : DVRHyp v p) (hV : D.Valid v p) {F : MvPolynomial (D.OL × Fin D.r) K}
     (hF : F ∈ PolK K D.r D.dO) (hF0 : bge v 0 F) (ζ : D.EM) :
@@ -237,9 +237,9 @@ theorem vge_coeff_GM (hD : DVRHyp v p) (hV : D.Valid v p) {F : MvPolynomial (D.O
   exact vge_mono v (by linarith) this
 
 /- English proof (translation)
-Rewrite using `[Lam_monomial]`. Establish `a1` using `hF0 (D.phE p ζ)`. Establish `a2` using `(vge_unit v (hV.2.2.2.2.2.2.1 (D.phE p ζ))).1`. Establish `a3` using `vge_vN hD (fact_ne_zero (D.phE p ζ))`. Establish `a4` using `D.fact_phE_lower hD hV.1 hζ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `vge_mul v (vge_mul v a1 (vge_mul v a2 (vge_one v))) a3` as an intermediate fact. Conclude with `vge_mono v (by linarith) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vge_Lam_monomial (hD : DVRHyp v p) (hV : D.Valid v p) {F : MvPolynomial (D.OL × Fin D.r) K}
     (hF0 : bge v 0 F) {ζ : D.EM} (hζ : D.GoodE p ζ) :
@@ -253,9 +253,9 @@ theorem vge_Lam_monomial (hD : DVRHyp v p) (hV : D.Valid v p) {F : MvPolynomial 
   exact vge_mono v (by linarith) this
 
 /- English proof (translation)
-Unfold `abelian₂ fock`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Use `congr 2`. Unfold `gaAct`. Rewrite using `[MvPolynomial.coeff_sum]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MvPolynomial.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[show (D.ph p Z).coeff α = 0 by simpa using h, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lam_eq_sum_coeff_mul_ga_mul_fact (p : ℕ) (F : MvPolynomial (D.OL × Fin D.r) K)
     (Z : MvPolynomial (D.ML × Fin D.r) K) :
@@ -272,7 +272,7 @@ private theorem lam_eq_sum_coeff_mul_ga_mul_fact (p : ℕ) (F : MvPolynomial (D.
   · rw [show (D.ph p Z).coeff α = 0 by simpa using h, mul_zero]
 
 /- English proof (translation)
-Simplify using `only [lam_eq_sum_coeff_mul_ga_mul_fact, map_sum, MvPolynomial.coeff_sum, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem lam_sum_right (p : ℕ) (F : MvPolynomial (D.OL × Fin D.r) K) {ι : Type} (s : Finset ι)
     (f : ι → MvPolynomial (D.ML × Fin D.r) K) :
@@ -281,7 +281,7 @@ private theorem lam_sum_right (p : ℕ) (F : MvPolynomial (D.OL × Fin D.r) K) {
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [lam_eq_sum_coeff_mul_ga_mul_fact, map_smul, MvPolynomial.coeff_smul, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem lam_smul_right (p : ℕ) (F : MvPolynomial (D.OL × Fin D.r) K) (c : K)
     (Z : MvPolynomial (D.ML × Fin D.r) K) : D.abelian₂ p F (c • Z) = c * D.abelian₂ p F Z := by
@@ -290,7 +290,7 @@ private theorem lam_smul_right (p : ℕ) (F : MvPolynomial (D.OL × Fin D.r) K) 
   ring
 
 /- English proof (translation)
-Rewrite using `[show (monomial ζ c : MvPolynomial (D.ML × Fin D.r) K) = c • monomial ζ 1 by`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one], lam_smul_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Lam_monomial_c (F : MvPolynomial (D.OL × Fin D.r) K) (ζ : D.EM) (c : K) :
     D.abelian₂ p F (monomial ζ c) = c * D.abelian₂ p F (monomial ζ 1) := by
@@ -298,7 +298,7 @@ theorem Lam_monomial_c (F : MvPolynomial (D.OL × Fin D.r) K) (ζ : D.EM) (c : K
     rw [MvPolynomial.smul_monomial, smul_eq_mul, mul_one], lam_smul_right]
 
 /- English proof (translation)
-Rewrite using `[dg_eq_lsup, lsup_apply, lam_sum_right]`. Use `Finset.sum_congr rfl fun ζ _ => ?_` and prove the remaining obligations. Rewrite using `[lam_smul_right, Lam_monomial_c]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Lam_dg (F : MvPolynomial (D.OL × Fin D.r) K) (g : D.EM → K) (W : MvPolynomial (D.ML × Fin D.r) K) :
     D.abelian₂ p F (dg g W) = ∑ ζ ∈ W.support, g ζ * W.coeff ζ * D.abelian₂ p F (monomial ζ 1) := by
@@ -308,16 +308,16 @@ theorem Lam_dg (F : MvPolynomial (D.OL × Fin D.r) K) (g : D.EM → K) (W : MvPo
   ring
 
 /- English proof (translation)
-Unfold `ldeg`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem ldeg_tpE (ζ : D.EM) (t : D.Tau) : ldeg (D.tpE ζ) (Sum.inr t) = ldeg ζ (D.mtp t) := by
   unfold ldeg
   rfl
 
 /- English proof (translation)
-Rewrite `h` using `[eOut_apply]`. Use `split_ifs at h with hi`. Break down `i with b | t | t | t` into its components or cases. Simplify using `[outP, outB] at hi`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `[outP, outB] at hi`. Both sides reduce to the same expression. Conclude with `absurd rfl h`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem msg_of_eOut_ne_zero (ζ : D.EM) (i : D.ML) (a : Fin D.r) (h : eOut D.outP ζ (i, a) ≠ 0) :
     D.msg i = true := by
@@ -331,33 +331,29 @@ theorem msg_of_eOut_ne_zero (ζ : D.EM) (i : D.ML) (a : Fin D.r) (h : eOut D.out
   · exact absurd rfl h
 
 /- English proof (translation)
-Establish `hDm` using `D.Dm_nonneg (two_le_p hD) hV.1 h1`. Take `⟨Q0, E', hQ, hQ0, hE'⟩` from `hE hD D hV hH F hF hF0 (D.tpE ζ) (fun b a => by simp [tpE]) (fun t => by rw [ldeg_tpE]; exact hζ.2.2.2.2 t) (D.labF ζ)`. Use `set μ := eOut D.outP ζ with hμ`. Use `set A := hcomp (fun i => ldeg ζ i) (monomial μ 1 * Q0) with hA`. Use `set κ := D.kapC cst ζ with hκ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set e : D.EM → K := fun ζ' => gm ζ' * D.gaP p gam ζ' * (D.GM F (D.tpE ζ)).coeff (D.collapseExponent p ζ') - A.coeff ζ' with he`. Establish `key : ∀ W : MvPolynomial (D.ML × Fin D.r) K, (∀ ζ' ∈ W.support, D.SameBlockAlt ζ ζ') → D.abelian₂ p F (dg gm W) = κ * fock A W + ∑ ζ' ∈ W.support, κ * (W.coeff ζ' * e ζ' * (fact ζ' : K))`. Introduce `W hW`. Rewrite using `[Lam_dg, fock_eq_sum_right, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun ζ' hζ' => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hb` using `hW ζ' hζ'`. Rewrite using `[D.Lam_monomial_blk hV hdig F (hζ.good_exponent_same_block D hb).1, D.tangent_exponent_same_block hb, D.kappa_constant_same_block cst hb, he]`. Expand and normalize the polynomial expressions, which then agree. Establish `herr : ∀ ζ', D.SameBlockAlt ζ ζ' → vge v (D.c - D.n0 v) (e ζ')`. Introduce `ζ' hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hl` using `(hζ.good_exponent_same_block D hb).1`. Establish `c1 : A.coeff ζ' = Q0.coeff (eIn D.outP ζ')`. Rewrite using `[hA, coeff_hcomp, if_pos hb.1]`. Use `conv_lhs => rw [← eOut_add_eIn D.outP ζ', D.output_exponent_same_block hb]`. Rewrite using `[coeff_monomial_mul, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : (D.GM F (D.tpE ζ)).coeff (D.collapseExponent p ζ') = Q0.coeff (eIn D.outP ζ') + E'.coeff (eIn D.outP ζ')`. Rewrite using `[← D.coeff_digitPart_eIn p hl, D.label_function_same_block hb, ← coeff_add, ← hQ]`. Both sides reduce to the same expression. Establish `hu` using `D.v_gaP hV hdig hl`. Establish `hu0` using `ne_zero_of_v_eq_zero hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `c3 : e ζ' = (gm ζ' - (D.gaP p gam ζ')⁻¹) * D.gaP p gam ζ' * (D.GM F (D.tpE ζ)).coeff (D.collapseExponent p ζ') + E'.coeff (eIn D.outP ζ')`. Rewrite using `[he]`. Simplify using `only`. Rewrite using `[c1, sub_mul, inv_mul_cancel₀ hu0]`. Use `c2` as an intermediate fact.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `this`. Rewrite using `[c3]`. Establish `b1 : vge v (D.c : ℝ) (gm ζ' - (D.gaP p gam ζ')⁻¹)` using `(vge_natCast_bound v _ _).mpr (hgm ζ' hl)`. Establish `b2` using `(vge_unit v hu).1`. Establish `b3 : vge v (-D.n0 v) ((D.GM F (D.tpE ζ)).coeff (D.collapseExponent p ζ'))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← D.tangent_exponent_same_block hb]`. Conclude with `D.vge_coeff_GM hD hV hF.1 hF0 ζ'`. Use `vge_add v ?_ (hE' _)` and prove the remaining obligations. Conclude with `vge_mono v (by linarith) (vge_mul v (vge_mul v b1 b2) b3)`. Establish `hterm : ∀ ζ', D.SameBlockAlt ζ ζ' → ∀ w : K, vge v (vN v (fact ζ) / 2 - D.Dm p C0 - vN v (fact ζ') / 2) w → vge v (D.c + D.n0 v - 2 * D.kapD p - D.Dm p C0) (κ * (w * e ζ' * (fact ζ' : K)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ζ' hb w hw`. Establish `hg'` using `hζ.good_exponent_same_block D hb`. Establish `k1` using `D.vge_kapC hD hdig hg'.1`. Rewrite `k1` using `[D.kappa_constant_same_block cst hb]`. Establish `k2` using `D.vge_kapC hD hdig hζ.1`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w1` using `D.wt_lower hD hV.1 hg'`. Establish `w2` using `D.wt_lower hD hV.1 hζ`. Establish `f1` using `vge_vN hD (fact_ne_zero ζ')`. Establish `t1` using `vge_mul v (vge_mul v hw (herr ζ' hb)) f1`. Break down `le_total (vN v (fact ζ')) (vN v (fact ζ)) with hle | hle` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `vge_mono v (by linarith) (vge_mul v k1 t1)`. Conclude with `vge_mono v (by linarith) (vge_mul v k2 t1)`. Establish `hs1 : ∀ ζ' ∈ (Pj (monomial ζ 1)).support, D.SameBlockAlt ζ ζ'` using `fun ζ' h => hP1 ζ ζ' h`. Establish `hs2 : ∀ ζ' ∈ (monomial ζ (1 : K)).support, D.SameBlockAlt ζ ζ'`. Introduce `ζ' h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `support_monomial_subset h` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Rewrite using `[this]`. Conclude with `TwistData.SameBlockAlt.refl D ζ`. Establish `hAv : ∀ (j : Fin D.J) (i : Fin (D.nch j)), vala D.msg (D.chainSet j i) (D.th j i - D.sl j i) A` using `fun j i => vala_hcomp _ (vala_mul_left_nonneg (valS_monomial_nonneg_of_vec μ 1 (D.msg_of_eOut_ne_zero ζ)) (hQ0 j i))`.
-
-Rewrite using `[key _ hs1, key _ hs2, hP4 A ζ (hcomp_mem_PolK _ _) hAv, add_sub_add_left_eq_sub]`. Use `vge_sub v (vge_sum v _ _ fun ζ' h => hterm ζ' (hs1 ζ' h) _ (hP2 ζ hζ ζ')) (vge_sum v _ _ fun ζ' h => hterm ζ' (hs2 ζ' h) _ ?_)` and prove the remaining obligations. Use `support_monomial_subset h` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Rewrite using `[this, coeff_monomial, if_pos rfl]`.
-
-Conclude with `vge_mono v (by linarith) (vge_one v)`.
+A detailed English derivation is pending.
 -/
 theorem value_monomial {C0 : ℝ} (hD : DVRHyp v p) (h1 : 1 ≤ C0) (hV : D.Valid v p) (hH : D.HypH p 13)
     (hE : StepE K v p) {F : MvPolynomial (D.OL × Fin D.r) K} (hF : D.InXX p F) (hF0 : bge v 0 F)

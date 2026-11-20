@@ -164,7 +164,7 @@ def elim (L0 : R × ℕ × G) (rest : List (R × ℕ × G)) : List (R × ℕ × 
   rest ++ rest.flatMap (fun L => (List.range N).map (fun k => newL L0 L (k + 1)))
 
 /- English proof (authored)
-Work in the coefficient ring modulo X^(N+1). Let x be the matrix term of L₀ there. The positive X-degree of L₀ makes x^(N+1) zero. For each term y from the rest of the list, the new triples represent the products xy through xᴺy by term_newL. Thus the eliminated list sums to (1+x+⋯+xᴺ)Y, where Y is the original sum of the rest.
+Work in the coefficient ring modulo X^(N+1). Let x be the matrix term of L₀ there. The positive X-degree of L₀ makes x^(N+1) zero. For each term y from the rest of the list, the new triples represent the products xy through xᴺy by the formula for the new matrix terms. Thus the eliminated list sums to (1+x+⋯+xᴺ)Y, where Y is the original sum of the rest.
 
 Apply the algebraic identity to factor I−(x+Y) as (I−x) times the identity minus the new sum. The quotient map commutes with determinants, and the determinant of a matrix product is the product of determinants over the commutative coefficient ring. This gives the asserted factorization in the quotient.
 -/
@@ -225,7 +225,7 @@ lemma letter_mem (ρ : G →* Matrix n n R) (hS : ∀ g k, (Matrix.charpolyRev (
 def Valid (S : Subring R) (D : ℕ) (l : List (R × ℕ × G)) : Prop := ∀ L ∈ l, L.1 ∈ S ∧ D ≤ L.2.1
 
 /- English proof (authored)
-Induct on the number of letters of degree exactly D. With no such letters, all degrees are at least D+1 and the given higher-degree result applies. Otherwise move one degree-D letter to the front and factor it out using key. Its single-letter factor belongs to the image subring by letter_mem.
+Induct on the number of letters of degree exactly D. With no such letters, all degrees are at least D+1 and the given higher-degree result applies. Otherwise move one degree-D letter to the front and factor it out by the determinant factorization. Its single-letter factor belongs to the image subring by the single-letter coefficient result.
 
 In the remaining list, the old letters retain their coefficients and degrees. Each new letter multiplies an old coefficient by a positive power of the removed one, so the coefficient remains in S. Its degree is the old degree plus a positive multiple of D and is strictly larger than D. Thus the number of degree-D letters drops by exactly one, and the induction hypothesis puts the remaining determinant in the image subring. Multiply the two factors there.
 -/
@@ -283,7 +283,7 @@ lemma stepD (ρ : G →* Matrix n n R) (hS : ∀ g k, (Matrix.charpolyRev (ρ g)
       omega
 
 /- English proof (authored)
-Induct on the amount j by which the lower degree bound can be raised before it reaches N+1. If j = 0, all terms vanish in the truncation and base gives 1. For the successor step, increasing the minimum degree from D to D+1 makes the induction hypothesis available. The degree-elimination lemma stepD transfers that result back to lists of minimum degree D.
+Induct on the amount j by which the lower degree bound can be raised before it reaches N+1. If j = 0, all terms vanish in the truncation and the determinant equals 1. For the successor step, increasing the minimum degree from D to D+1 makes the induction hypothesis available. The degree-elimination lemma transfers that result back to lists of minimum degree D.
 -/
 lemma allD (ρ : G →* Matrix n n R) (hS : ∀ g k, (Matrix.charpolyRev (ρ g)).coeff k ∈ S) :
     ∀ j D, 1 ≤ D → N + 1 ≤ D + j → ∀ l : List (R × ℕ × G), Valid S D l → piN N (F ρ l) ∈ SQ N S := by
@@ -341,7 +341,7 @@ def MainNotions (T : Subalgebra O (Xs → O)) : Subring (Xs → K) where
     exact ⟨-t, T.neg_mem ht, fun x => by simp [hf]⟩
 
 /- English proof (authored)
-The carrier of MainNotions is defined by FromT. The two membership statements are therefore the same proposition.
+The carrier of the subalgebra is defined to consist of the functions from T. Membership therefore says exactly that the function comes from T.
 -/
 lemma mem_mainNotions_iff_fromT {T : Subalgebra O (Xs → O)} {f : Xs → K} : f ∈ MainNotions T ↔ FromT T f := Iff.rfl
 
@@ -394,7 +394,7 @@ def S1 (T : Subalgebra O (Xs → O)) (m : ℕ) : Subring (Xs → MvPolynomial (F
     rw [e]; exact (MainNotions T).neg_mem (hf α)
 
 /- English proof (authored)
-The carrier of S1 requires each multivariate coefficient function to lie in MainNotions. Unfolding that carrier replaces each such membership by the assertion that the coefficient function comes from T, which is the right-hand side.
+The carrier of S1 requires each multivariate coefficient function to lie in the subalgebra of functions from T. Unfolding that carrier replaces each such membership by the assertion that the coefficient function comes from T, which is the right-hand side.
 -/
 lemma S1_mem_OmF {T : Subalgebra O (Xs → O)} {m : ℕ} {f : Xs → MvPolynomial (Fin m) K} :
     f ∈ S1 T m ↔ ∀ α, FromT T (fun x => (f x).coeff α) := Iff.rfl

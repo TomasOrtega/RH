@@ -28,7 +28,7 @@ Both sides reduce to the same expression.
 theorem datR_h (x y : Fin M → R ⊗[F] E) : (datR R σ J P T).h x y = hR R σ J x y := rfl
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (AlgHom.id F R) σ (Algebra.TensorProduct.includeRight x) = Algebra.TensorProduct.includeRight (σ x)`. Rewrite using `[Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigR_inclR (x : E) : sigR R σ (inclR (F := F) R x) = inclR (F := F) R (σ x) := by
   show Algebra.TensorProduct.map (AlgHom.id F R) σ (Algebra.TensorProduct.includeRight x) =
@@ -37,9 +37,9 @@ theorem sigR_inclR (x : E) : sigR R σ (inclR (F := F) R x) = inclR (F := F) R (
     Algebra.TensorProduct.map_tmul, AlgHom.id_apply]
 
 /- English proof (translation)
-Unfold `hR hE Formalism.UG.hform JR ratV`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_mul, sigR_inclR, Matrix.map_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hR_ratV (x y : Fin M → E) :
     hR R σ J (ratV (F := F) R x) (ratV (F := F) R y) = inclR (F := F) R (hE σ J x y) := by
@@ -54,15 +54,15 @@ theorem hR_ratV (x y : Fin M → E) :
 variable {R σ J P T}
 
 /- English proof (translation)
-Establish `hT : algebraMap F E (-T) ≠ 0`. Rewrite using `[map_neg]`. Conclude with `neg_ne_zero.mpr ((map_ne_zero _).mpr hP.2.2.2.2.2.2)`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x show sigR R σ (sigR R σ x) = x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => show Algebra.TensorProduct.map (AlgHom.id F R) σ (Algebra.TensorProduct.map (AlgHom.id F R) σ (a ⊗ₜ b)) = a ⊗ₜ b`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, AlgHom.id_apply, hσσ]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j show sigR R σ (inclR R (J j i)) = inclR R (J i j)`. Rewrite using `[sigR_inclR, hJ.1]`. Introduce `a b show hR R σ J (ratV (F := F) R (P.e a)) (ratV (F := F) R (P.e b)) = 0`. Rewrite using `[hR_ratV, hP.1 a b, map_zero]`. Introduce `a b show hR R σ J (ratV (F := F) R (P.f a)) (ratV (F := F) R (P.f b)) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR_ratV, hP.2.1 a b, map_zero]`. Introduce `a b show hR R σ J (ratV (F := F) R (P.e a)) (ratV (F := F) R (P.f b)) = if a = b then 1 else 0`. Rewrite using `[hR_ratV, hP.2.2.1 a b]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `a show hR R σ J (ratV (F := F) R (P.e a)) (ratV (F := F) R P.z) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR_ratV, hP.2.2.2.1 a, map_zero]`. Introduce `a show hR R σ J (ratV (F := F) R (P.f a)) (ratV (F := F) R P.z) = 0`. Rewrite using `[hR_ratV, hP.2.2.2.2.1 a, map_zero]`. Use `show inclR (F := F) R ((algebraMap F E (-T))⁻¹) * hR R σ J (ratV (F := F) R P.z) (ratV (F := F) R P.z) = 1`. Rewrite using `[hR_ratV, hP.2.2.2.2.2.1, ← map_mul, inv_mul_cancel₀ hT, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem datR_hyp (hσσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (hP : P.IsStd σ J T) :
     (datR R σ J P T).Hyp := by
@@ -103,7 +103,7 @@ theorem datR_hyp (hσσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (hP : P.IsS
     rw [hR_ratV, hP.2.2.2.2.2.1, ← map_mul, inv_mul_cancel₀ hT, map_one]
 
 /- English proof (translation)
-Establish `h` using `congrFun (MulAction.mem_stabilizer_iff.mp hg) (Fin.last r)`. Express the relevant statement in the definitionally equal form `(HA.mat R σ J g : Matrix (Fin M) (Fin M) (R ⊗[F] E)).mulVec (fun i => inclR R (F0 P (Fin.last r) i)) = fun i => inclR R (F0 P (Fin.last r) i) at h`. Simplify using `only [F0, Fin.snoc_last] at h`. Conclude with `h`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stabilizer_fixes_normal_vector {g : HA R σ J} (hg : g ∈ S0 R σ J P) :
     lin R σ J g (ratV (F := F) R P.z) = ratV (F := F) R P.z := by
@@ -114,14 +114,14 @@ theorem stabilizer_fixes_normal_vector {g : HA R σ J} (hg : g ∈ S0 R σ J P) 
   exact h
 
 /- English proof (translation)
-Conclude with `⟨fun a => stabilizer_fixes_frame_vector R σ J P hg a, stabilizer_fixes_normal_vector hg⟩`.
+Supply the required witnesses or components.
 -/
 theorem stabilizer_fixes_frame_and_normal {g : HA R σ J} (hg : g ∈ S0 R σ J P) :
     (datR R σ J P T).FixEZ (lin R σ J g) := by
   exact ⟨fun a => stabilizer_fixes_frame_vector R σ J P hg a, stabilizer_fixes_normal_vector hg⟩
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hform_eq_dotProduct_mulVec {A : Type} [CommRing A] {n : Type} [Fintype n] (σA : A →+* A)
     (JA : Matrix n n A) (x y : n → A) :
@@ -129,11 +129,9 @@ private theorem hform_eq_dotProduct_mulVec {A : Type} [CommRing A] {n : Type} [F
   simp only [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : (fun i => σA (Matrix.mulVec Mx x i)) = Matrix.mulVec (Mx.map σA) (fun i => σA (x i))`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec σA Mx x i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hform_eq_dotProduct_mulVec, h1]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `_ = dotProduct (fun i => σA (x i)) (Matrix.mulVec (Mx.map σA).transpose (Matrix.mulVec JA (Matrix.mulVec Mx y))) := by`. Use `symm`. Rewrite using `[Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`. Use `_ = dotProduct (fun i => σA (x i)) (Matrix.mulVec (Formalism.UG.cT σA Mx * JA * Mx) y) := by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
-
-Both sides reduce to the same expression. Use `_ = Formalism.UG.hform σA (Formalism.UG.cT σA Mx * JA * Mx) x y := (hform_eq_dotProduct_mulVec _ _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem hform_mulVec_mulVec_eq_hform_cT_mul_mul {A : Type} [CommRing A] {n : Type} [Fintype n] (σA : A →+* A)
     (JA Mx : Matrix n n A) (x y : n → A) :
@@ -157,7 +155,7 @@ private theorem hform_mulVec_mulVec_eq_hform_cT_mul_mul {A : Type} [CommRing A] 
     _ = Formalism.UG.hform σA (Formalism.UG.cT σA Mx * JA * Mx) x y := (hform_eq_dotProduct_mulVec _ _ _ _).symm
 
 /- English proof (translation)
-Unfold `Formalism.UG.hform`. Rewrite using `[Finset.sum_eq_single i (fun b _ hb => by simp [Pi.single_apply, hb]) (by simp)]`. Rewrite using `[Finset.sum_eq_single j (fun b _ hb => by simp [Pi.single_apply, hb]) (by simp)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem hform_single_single_semidirect_volume {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
     (σA : A →+* A) (N : Matrix n n A) (i j : n) :
@@ -168,7 +166,7 @@ private theorem hform_single_single_semidirect_volume {A : Type} [CommRing A] {n
   simp
 
 /- English proof (translation)
-Introduce `x y`. Establish `hg : Formalism.UG.cT (sigR R σ) ((HA.mat R σ J g : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * JR R J * ((HA.mat R σ J g : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = JR R J` using `g.2`. Use `show Formalism.UG.hform (sigR R σ) (JR R J) (Matrix.mulVec ((HA.mat R σ J g : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) x) (Matrix.mulVec ((HA.mat R σ J g : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) y) = Formalism.UG.hform (sigR R σ) (JR R J) x …`. Rewrite using `[hform_mulVec_mulVec_eq_hform_cT_mul_mul, hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uni_lin (g : HA R σ J) : (datR R σ J P T).Uni (lin R σ J g) := by
   intro x y
@@ -183,7 +181,7 @@ theorem uni_lin (g : HA R σ J) : (datR R σ J P T).Uni (lin R σ J g) := by
   rw [hform_mulVec_mulVec_eq_hform_cT_mul_mul, hg]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h1` using `h (Pi.single i 1) (Pi.single j 1)`. Rewrite `h1` using `[hform_mulVec_mulVec_eq_hform_cT_mul_mul, hform_single_single_semidirect_volume, hform_single_single_semidirect_volume]`. Conclude with `h1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uj_of_uni {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (σA : A →+* A)
     (JA : Matrix n n A) (Mx : Matrix n n A)
@@ -198,7 +196,7 @@ def piMat (g : HA R σ J) : Matrix (Fin M) (Fin M) (R ⊗[F] E) :=
   LinearMap.toMatrix' ((datR R σ J P T).Pi (lin R σ J g))
 
 /- English proof (translation)
-Conclude with `LinearMap.toMatrix'_mulVec _ v`.
+A detailed English derivation is pending.
 -/
 theorem piMat_mulVec (g : HA R σ J) (v : Fin M → R ⊗[F] E) :
     Matrix.mulVec (piMat (P := P) (T := T) g) v = (datR R σ J P T).Pi (lin R σ J g) v := by
@@ -208,9 +206,9 @@ variable (hσσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (hP : P.IsStd σ J 
 include hσσ hJ hP
 
 /- English proof (translation)
-Establish `H` using `datR_hyp (R := R) (T := T) hσσ hJ hP`. Establish `hl : lin R σ J (g * g') = lin R σ J g ∘ₗ lin R σ J g'`. Unfold `lin`. Rewrite using `[← Matrix.mulVecLin_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `LinearMap.ext (fun v => ?_)` and prove the remaining obligations. Rewrite using `[hl, LinearMap.comp_apply]`. Conclude with `(PG.Dat.Pi_comp H (fun a => stabilizer_fixes_frame_vector R σ J P hg a) (stabilizer_fixes_frame_and_normal hg') (uni_lin g') v).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pi_lin_mul {g g' : HA R σ J} (hg : g ∈ S0 R σ J P) (hg' : g' ∈ S0 R σ J P) :
     (datR R σ J P T).Pi (lin R σ J (g * g')) =
@@ -225,9 +223,9 @@ theorem Pi_lin_mul {g g' : HA R σ J} (hg : g ∈ S0 R σ J P) (hg' : g' ∈ S0 
   exact (PG.Dat.Pi_comp H (fun a => stabilizer_fixes_frame_vector R σ J P hg a) (stabilizer_fixes_frame_and_normal hg') (uni_lin g') v).symm
 
 /- English proof (translation)
-Establish `H` using `datR_hyp (R := R) (T := T) hσσ hJ hP`. Establish `hl : lin R σ J (1 : HA R σ J) = LinearMap.id`. Unfold `lin`. Rewrite using `[show ((HA.mat R σ J 1 : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = 1 from rfl, Matrix.mulVecLin_one]`. Rewrite using `[hl]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.ext (fun v => PG.Dat.Pi_id H v)`.
+A detailed English derivation is pending.
 -/
 theorem Pi_lin_one :
     (datR R σ J P T).Pi (lin R σ J 1) = LinearMap.id := by
@@ -252,9 +250,7 @@ def piU (g : HA R σ J) (hg : g ∈ S0 R σ J P) : GL (Fin M) (R ⊗[F] E) where
       Pi_lin_one hσσ hJ hP, LinearMap.toMatrix'_id]
 
 /- English proof (translation)
-Establish `H` using `datR_hyp (R := R) (T := T) hσσ hJ hP`. Use `show Formalism.UG.cT (sigR R σ) (piMat (P := P) (T := T) g) * JR R J * piMat (P := P) (T := T) g = JR R J`. Apply `uj_of_uni` to reduce the goal to its premises. Introduce `x y`. Rewrite using `[piMat_mulVec, piMat_mulVec]`.
-
-Conclude with `PG.Dat.Pi_uni H (stabilizer_fixes_frame_and_normal hg) (uni_lin g) x y`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piU_mem (g : HA R σ J) (hg : g ∈ S0 R σ J P) : piU hσσ hJ hP g hg ∈ HR R σ J := by
   have H := datR_hyp (R := R) (T := T) hσσ hJ hP
@@ -267,7 +263,7 @@ theorem piU_mem (g : HA R σ J) (hg : g ∈ S0 R σ J P) : piU hσσ hJ hP g hg 
 def piG (g : HA R σ J) (hg : g ∈ S0 R σ J P) : HA R σ J := ⟨piU hσσ hJ hP g hg, piU_mem hσσ hJ hP g hg⟩
 
 /- English proof (translation)
-Conclude with `LinearMap.ext (fun v => piMat_mulVec (P := P) (T := T) g v)`.
+A detailed English derivation is pending.
 -/
 theorem lin_piG (g : HA R σ J) (hg : g ∈ S0 R σ J P) :
     lin R σ J (piG hσσ hJ hP g hg) = (datR R σ J P T).Pi (lin R σ J g) := by

@@ -28,13 +28,13 @@ def AmpValLowerAll : Prop :=
         (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) i0 i0' νq
 
 /- English proof (translation)
-Establish `hP` using `Formalism.L2.SG.Pf.placesOver_holds D`. Use `set s := D.R.k - 2 * D.R.rS - 2 with hs`. Establish `hs2 : 2 ≤ s` using `by omega`. Use `set a : PlF D → ℝ := fun p => (Formalism.L2.SG.DataCut.qP p ^ s)⁻¹ with ha`. Establish `ha0 : ∀ p, 0 ≤ a p` using `fun p => inv_nonneg.2 (pow_nonneg (Formalism.L2.SG.DataCut.qP_nonneg p) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∀ S : Finset (PlF D), ∑ p ∈ S, a p ≤ 3 * (D.R.f : ℝ) * ((2 : ℝ) ^ s)⁻¹`. Introduce `S`. Conclude with `Formalism.FourierDecayAlt.P.DensitySumsAndDomination.densSum (PlF D) S Formalism.L2.SG.DataCut.qP Loc.resChar D.R.f s hs2 (fun p _ => ⟨(D.s.atP p).ellPrime.out, hP.1 p⟩) (fun m => hP.2 m _ (fun p hp => (Finset.mem_filter.1 hp).2))`. Establish `haS : Summable a` using `summable_of_sum_le ha0 hsum`. Establish `hαb` using `Formalism.L2.SG.Pf.alpBound_holds D hk u u'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hal0 : ∀ p, 0 < alpD u u' p` using `fun p => lt_of_lt_of_le (Real.exp_pos _) (hαb p).1`. Establish `hlogα : Summable fun p => Real.log (alpD u u' p)`. Use `Summable.of_norm_bounded (g := fun p => 2 * a p) (haS.mul_left 2) (fun p => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_le]`. Establish `h1` using `Real.log_le_log (Real.exp_pos _) (hαb p).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2` using `Real.log_le_log (hal0 p) (hαb p).2`. Rewrite `h1`, `h2` using `[Real.log_exp]`. Apply the tactic sequence `constructor <;> linarith`. Rewrite using `[← Real.rexp_tsum_eq_tprod hal0 hlogα]`. Conclude with `Real.exp_pos _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tprod_alpD_pos (D : D7) (hk : 2 * D.R.rS + 2 + D.R.f + 5 ≤ D.R.k) (u u' : D.what₂.Word) :
     0 < ∏' p, alpD u u' p := by
@@ -62,11 +62,9 @@ theorem tprod_alpD_pos (D : D7) (hk : 2 * D.R.rS + 2 + D.R.f + 5 ≤ D.R.k) (u u
   exact Real.exp_pos _
 
 /- English proof (translation)
-Introduce `D T u u' i0 i0' νq Lsp κ hne hSt hCT _hg3 hk hcong hi hPR hNu hRL`. Establish `hWD : Formalism.L2.SG.WuDecay.WuDecay T.X` using `hCT.2.2.2.2.1`. Establish `hAbs : (T.Y.tO u u').AbsConv` using `Formalism.L2.SG.Pf.absConvC_outright D T.X T.Y u u' (Formalism.L2.SG.Closed.FoldOKC_outright D T.X T.Y u (Formalism.L2.SG.Closed.level_subgroup_properties T.X) hWD) (Formalism.L2.SG.Closed.FoldOKC_outright D T.X T.Y u' (Formalism.L2.SG.Closed.level_subgroup_properties T.X) hWD) ( …`. Establish `hL` using `Formalism.L2.SG.Pf.liftOntoC_of (fun D => Formalism.L2.SG.Pf.WittFlags.LatIso_holds D) D T.X T.Y u u'`. Establish `hAF : Formalism.L2.SG.PairVal.AutFin D (T.X.Fu u) (T.Y.what₂ u)` using `fun Λ hΛ => _root_.automorphism_lattice_finite D (D.sp.Y_sig 0) _ (D.mem u).A.T_prime.pos (T.X.Fu u) Λ ((T.Y.rowsOK u).1 Λ hΛ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAF' : Formalism.L2.SG.PairVal.AutFin D (T.X.Fu u') (T.Y.what₂ u')` using `fun Λ hΛ => _root_.automorphism_lattice_finite D (D.sp.Y_sig 0) _ (D.mem u').A.T_prime.pos (T.X.Fu u') Λ ((T.Y.rowsOK u').1 Λ hΛ)`. Establish `hLT : Formalism.L2.SG.Pf.LocCP.LocTied D`. Take `⟨_, _, _, _, _, _, _, hL⟩` from `hCT.2.2.2.2.2.2.1`. Conclude with `hL`. Establish `hnc : 0 < Formalism.L2.SG.Pf.Cnt.cExpl D (T.X.Fu u) (T.Y.what₂ u) * ∏' p, alpD u u' p` using `mul_pos (hFC D T u u' Lsp hLT hSt hcong).1 (tprod_alpD_pos D hk u u')`.
-
-Conclude with `Formalism.L2.SG.RowsAbsX.rowsSum_of_val _ κ _ i0 i0' (T.Y.FN u) (T.Y.FN u') νq hAbs hL (hAV D T u u' i0 i0' νq hne hSt hCT hi hPR hNu) hAF hAF' hnc`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rowsSumC_of (hFC : FormulaC) (hAV : AmpValLowerAll) : RowsSumC := by
   intro D T u u' i0 i0' νq Lsp κ hne hSt hCT _hg3 hk hcong hi hPR hNu hRL

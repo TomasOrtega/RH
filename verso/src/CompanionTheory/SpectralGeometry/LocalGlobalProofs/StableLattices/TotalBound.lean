@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.RgExhFar
 open CompanionTheory.RgExh.U
 
 /- English proof (translation)
-The claim follows from `|x a0| ≤ B + M + K := by have hm : (1 : ℝ) ≤ (s.card : ℝ) := by exact_mod_cast Finset.card_pos.mpr ⟨a0, h0⟩ have e : (s.card : ℝ) * x a0 = ∑ a ∈ s, y a - ∑ a ∈ s, (y a - x a) + ∑ a ∈ s, (x a0 - x a) := by simp only [Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul] ring hav …`.
+A detailed English derivation is pending.
 -/
 theorem x_bound {ι : Type*} (s : Finset ι) (x y : ι → ℝ) (a0 : ι) (h0 : a0 ∈ s) (B M K : ℝ) (hK0 : 0 ≤ K)
     (hy : ∀ a ∈ s, |y a| ≤ B) (hM : ∀ a ∈ s, |x a0 - x a| ≤ M) (hK : |∑ a ∈ s, (y a - x a)| ≤ K) :
@@ -40,11 +40,11 @@ theorem x_bound {ι : Type*} (s : Finset ι) (x y : ι → ℝ) (a0 : ι) (h0 : 
   exact le_of_mul_le_mul_left h4 (by linarith)
 
 /- English proof (translation)
-Establish `h1 : ∀ a ∈ s, ((y a - x a) ^ 2 / 2 - 2 * M ^ 2) + 2 * x a0 * (y a - x a) ≤ y a ^ 2 - x a ^ 2`. Introduce `a ha`. Establish `he : (x a - x a0) ^ 2 ≤ M ^ 2` using `sq_le_sq' (by linarith [(abs_le.mp (hM a ha)).1]) (abs_le.mp (hM a ha)).2`. Use polynomial arithmetic with `[sq_nonneg ((y a - x a) + 2 * (x a - x a0))]`. Establish `h2` using `Finset.sum_le_sum h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Finset.sum_add_distrib, ← Finset.mul_sum]`. Establish `h3 : -(2 * X * K) ≤ 2 * x a0 * ∑ a ∈ s, (y a - x a)`. Establish `: |x a0 * ∑ a ∈ s, (y a - x a)| ≤ X * K`. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul hX hK (abs_nonneg _) hX0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[(abs_le.mp this).1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem fiber_bound {ι : Type*} (s : Finset ι) (x y : ι → ℝ) (a0 : ι) (M X K : ℝ) (hX0 : 0 ≤ X)
     (hX : |x a0| ≤ X) (hM : ∀ a ∈ s, |x a - x a0| ≤ M) (hK : |∑ a ∈ s, (y a - x a)| ≤ K) :
@@ -64,11 +64,11 @@ theorem fiber_bound {ι : Type*} (s : Finset ι) (x y : ι → ℝ) (a0 : ι) (M
   linarith
 
 /- English proof (translation)
-Establish `hmaps : ∀ a ∈ (univ : Finset (Fin n)), lev a ∈ univ.image lev` using `fun a _ => Finset.mem_image_of_mem _ (Finset.mem_univ a)`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to hmaps (fun a => y a ^ 2 - x a ^ 2), ← Finset.sum_fiberwise_of_maps_to hmaps (fun a => (y a - x a) ^ 2 / 2 - 2 * M ^ 2)]`. Establish `hcard : ((univ.image lev).card : ℝ) ≤ n`. Use `Finset.card_image_le (s := (univ : Finset (Fin n))) (f := lev)` as an intermediate fact. Simplify using `only [Finset.card_univ, Fintype.card_fin] at this`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this` after adjusting the coercions. Establish `h1 : ∑ c ∈ univ.image lev, (∑ a ∈ univ.filter (fun a => lev a = c), ((y a - x a) ^ 2 / 2 - 2 * M ^ 2) - 2 * X * K) ≤ ∑ c ∈ univ.image lev, ∑ a ∈ univ.filter (fun a => lev a = c), (y a ^ 2 - x a ^ 2)`. Use `Finset.sum_le_sum fun c hc => ?_` and prove the remaining obligations. Take `⟨a0, -, rfl⟩` from `Finset.mem_image.mp hc`. Use `fiber_bound _ x y a0 M X K hX0 (hX a0) (fun a ha => ?_) (hK _)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hM a a0 (Finset.mem_filter.mp ha).2`. Rewrite `h1` using `[Finset.sum_sub_distrib]`. Simplify using `only [Finset.sum_const, nsmul_eq_mul] at h1`. Establish `h2 : ((univ.image lev).card : ℝ) * (2 * X * K) ≤ n * (2 * X * K)` using `mul_le_mul_of_nonneg_right hcard (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem total_bound {n : ℕ} (x y : Fin n → ℝ) (lev : Fin n → ℕ) (M X K : ℝ) (hX0 : 0 ≤ X) (hK0 : 0 ≤ K)
     (hX : ∀ a, |x a| ≤ X) (hM : ∀ a b, lev a = lev b → |x a - x b| ≤ M)
@@ -96,9 +96,9 @@ theorem total_bound {n : ℕ} (x y : Fin n → ℝ) (lev : Fin n → ℕ) (M X K
   linarith
 
 /- English proof (translation)
-Establish `h1 : d a ^ 2 + d b ^ 2 ≤ ∑ c, d c ^ 2`. Rewrite using `[← Finset.sum_pair (f := fun c => d c ^ 2) hab]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) (fun _ _ _ => sq_nonneg _)`. Establish `h2 : D ^ 2 ≤ (d a - d b) ^ 2`. Rewrite using `[← sq_abs (d a - d b)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `pow_le_pow_left₀ hD h 2`. Use polynomial arithmetic with `[sq_nonneg (d a + d b)]`.
+A detailed English derivation is pending.
 -/
 theorem two_bound {n : ℕ} (d : Fin n → ℝ) (a b : Fin n) (hab : a ≠ b) (D : ℝ) (hD : 0 ≤ D)
     (h : D ≤ |d a - d b|) : D ^ 2 / 2 ≤ ∑ c, d c ^ 2 := by
@@ -111,49 +111,45 @@ theorem two_bound {n : ℕ} (d : Fin n → ℝ) (a b : Fin n) (hab : a ≠ b) (D
   nlinarith [sq_nonneg (d a + d b)]
 
 /- English proof (translation)
-Introduce `n C δ K hδ`. Take `⟨C', hC'⟩ : ∃ C' : ℝ, C' = |C|` from `⟨_, rfl⟩`. Take `⟨K', hK'⟩ : ∃ K' : ℝ, K' = |K|` from `⟨_, rfl⟩`. Take `⟨M, hMdef⟩ : ∃ M : ℝ, M = n * Lc n` from `⟨_, rfl⟩`. Establish `hC0 : 0 ≤ C'` using `hC' ▸ abs_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hK0 : 0 ≤ K'` using `hK' ▸ abs_nonneg _`. Establish `hM0 : 0 ≤ M` using `by rw [hMdef, Lc]; positivity`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Take `⟨A, hA⟩ : ∃ A : ℝ, A = 2 * n * M ^ 2 + 2 * n * K' * (M + K') + 2 * (n : ℝ) ^ 2 * (M + K') + (n : ℝ) ^ 3 + n * C' ^ 2 + K'` from `⟨_, rfl⟩`. Take `⟨Bc, hBc⟩ : ∃ Bc : ℝ, Bc = 2 * n * K' * C' + 2 * (n : ℝ) ^ 2 * C'` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hA0 : 0 ≤ A` using `by rw [hA]; positivity`. Establish `hB0 : 0 ≤ Bc` using `by rw [hBc]; positivity`. Use `⟨1 + 2 * M / δ + 16 * (A + Bc) / δ ^ 2, ?_⟩` and prove the remaining obligations. Introduce `χ x r lev σ N _ _ hr hsp hblk hineq hsep hbd hN a b hab`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hq1 : 0 ≤ 2 * M / δ` using `by positivity`. Establish `hq2 : 0 ≤ 16 * (A + Bc) / δ ^ 2` using `by positivity`. Establish `hN1 : 1 ≤ N` using `by linarith`. Establish `hN0 : 0 ≤ N` using `by linarith`. Establish `hδN : 2 * M ≤ δ * N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 2 * M / δ ≤ N` using `by linarith`. Rewrite `this` using `[div_le_iff₀ hδ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hδ2 : 16 * (A + Bc) + δ ^ 2 ≤ δ ^ 2 * N`. Establish `: 16 * (A + Bc) / δ ^ 2 ≤ N - 1` using `by linarith`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[div_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨y, hy⟩ : ∃ y : Fin n → ℝ, y = fun a => (χ (σ a)).re` from `⟨_, rfl⟩`. Establish `hyb : ∀ a, |y a| ≤ C' * N`. Introduce `a`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hy]`. Use `(hbd (σ a)).1.trans ?_` and prove the remaining obligations. Rewrite using `[hC']`. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self C) hN0`. Establish `hblk' : ∀ c, |∑ a ∈ univ.filter (fun a => lev a = c), (y a - x a)| ≤ K'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Establish `h1` using `Complex.abs_re_le_norm (∑ a ∈ univ.filter (fun a => lev a = c), χ (σ a) - ∑ a ∈ univ.filter (fun a => lev a = c), ((x a : ℝ) : ℂ))`. Establish `h2 : (∑ a ∈ univ.filter (fun a => lev a = c), χ (σ a) - ∑ a ∈ univ.filter (fun a => lev a = c), ((x a : ℝ) : ℂ)).re = ∑ a ∈ univ.filter (fun a => lev a = c), (y a - x a)`. Rewrite using `[hy, Finset.sum_sub_distrib]`. Simplify using `[Complex.re_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Conclude with `h1.trans ((hblk c).trans (hK' ▸ le_abs_self K))`. Establish `hspM : ∀ a b, lev a = lev b → |x a - x b| ≤ M` using `fun a b h => hMdef ▸ hsp a b h`. Take `⟨X, hXdef⟩ : ∃ X : ℝ, X = C' * N + M + K'` from `⟨_, rfl⟩`. Establish `hX0 : 0 ≤ X` using `by rw [hXdef]; positivity`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hX : ∀ a, |x a| ≤ X`. Introduce `a`. Rewrite using `[hXdef]`. Use `x_bound (univ.filter fun c => lev c = lev a) x y a (by simp) _ _ _ hK0 (fun c _ => hyb c) (fun c hc => hspM a c (Finset.mem_filter.mp hc).2.symm) (hblk' _)` and prove the remaining obligations. Establish `hlow` using `total_bound x y lev M X K' hX0 hK0 hX hspM hblk'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hD : (δ * N - M) ^ 2 / 2 ≤ ∑ c, (y c - x c) ^ 2`. Use `two_bound (fun c => y c - x c) a b hne _ (by linarith) ?_` and prove the remaining obligations. Establish `h1 : δ * N ≤ |y a - y b|`. Rewrite using `[hy]`. Conclude with `hsep (σ a) (σ b) (fun h => hne (σ.injective h))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hspM a b hab`. Establish `h3 : |y a - y b| ≤ |(y a - x a) - (y b - x b)| + |x a - x b|`. Establish `: y a - y b = ((y a - x a) - (y b - x b)) + (x a - x b)` using `by ring`. Rewrite using `[this]`. Conclude with `abs_add_le _ _`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show δ * N - M ≤ |(y a - x a) - (y b - x b)|`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hYsum : ∑ a, y a ^ 2 = ∑ a, (χ a).re ^ 2`. Rewrite using `[hy]`. Conclude with `Equiv.sum_comp σ (fun a => (χ a).re ^ 2)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIm : ∑ a, (χ a).im ^ 2 ≤ n * C' ^ 2`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← sq_abs (χ a).im]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) ((hbd a).2.trans (hC' ▸ le_abs_self C)) 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = n * C' ^ 2 := by simp`. Establish `hxr : ∑ a, (x a - r a) ^ 2 ≤ ∑ a, x a ^ 2 + n * (2 * X * n + (n : ℝ) ^ 2)`. Establish `: ∀ a ∈ (univ : Finset (Fin n)), (x a - r a) ^ 2 ≤ x a ^ 2 + (2 * X * n + (n : ℝ) ^ 2)`. Introduce `a _`. Establish `h1 : |x a * r a| ≤ X * n`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[abs_mul]`. Conclude with `mul_le_mul (hX a) (hr a) (abs_nonneg _) hX0`. Establish `h2 : r a ^ 2 ≤ (n : ℝ) ^ 2`. Rewrite using `[← sq_abs (r a)]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) (hr a) 2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Use polynomial arithmetic with `[(abs_le.mp h1).1]`. Use `(Finset.sum_le_sum this).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib]`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Conclude with `le_refl _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hKK : K ≤ K'` using `hK' ▸ le_abs_self K`. Rewrite `hineq` using `[Finset.sum_sub_distrib]`. Establish `hup : ∑ a, y a ^ 2 ≤ ∑ a, x a ^ 2 + n * (2 * X * n + (n : ℝ) ^ 2) + n * C' ^ 2 + K'`. Rewrite using `[hYsum]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `hlow` using `[Finset.sum_sub_distrib, Finset.sum_sub_distrib, ← Finset.sum_div]`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at hlow`. Establish `hδM : (δ * N / 2) ^ 2 ≤ (δ * N - M) ^ 2`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (δ * N / 2) ^ 2 = (δ * N) ^ 2 / 4` using `by ring`. Establish `h5 : (δ * N) ^ 2 / 16 ≤ n * (2 * M ^ 2) + n * (2 * X * K') + n * (2 * X * n + (n : ℝ) ^ 2) + n * C' ^ 2 + K'`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2 : n * (2 * M ^ 2) + n * (2 * X * K') + n * (2 * X * n + (n : ℝ) ^ 2) + n * C' ^ 2 + K' = A + Bc * N`. Rewrite using `[hA, hBc, hXdef]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h5` using `[e2]`. Establish `h6 : 16 * (A + Bc) < δ ^ 2 * N` using `by linarith [pow_pos hδ 2]`. Establish `h7 : 16 * (A + Bc) * N < δ ^ 2 * N * N` using `mul_lt_mul_of_pos_right h6 (by linarith)`. Establish `e3 : (δ * N) ^ 2 = δ ^ 2 * N * N` using `by ring`.
-
-Establish `h8 : A ≤ A * N` using `le_mul_of_one_le_right hA0 hN1`. Rewrite `h5` using `[e3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem farNum : FarNum := by
   intro n C δ K hδ

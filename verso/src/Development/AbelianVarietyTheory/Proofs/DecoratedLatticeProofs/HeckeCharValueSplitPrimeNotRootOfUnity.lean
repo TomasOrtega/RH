@@ -15,9 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SplitValueAdelic
 
 /- English proof (translation)
-Introduce `D χ hχ ha p hp w hw _`. Take `⟨H, hH⟩` from `GlobalTheory.HeckeTensorRead.exists_hchar_chrEq D χ hχ`. Use `choose a ha0 ha using ha`. Establish `h1` using `(GlobalTheory.HeckeInfExp.hasInfExp_iff_hasInfQ D χ H a hH).1 ha`. Rewrite using `[(GlobalTheory.ChrTie.unrAt_iff_and_val_eq D χ H hH w).2]`.
-
-Conclude with `GlobalTheory.T.not_isOfFinOrder_heckeCharacter_value_completelySplitPrime D H a p h1 ha0 hp w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_isOfFinOrder_val : ∀ (D : D7) (χ : (AE D)ˣ →* Circle), IsHeckeChar D χ → (∀ τ : D.what₂.Tau, ∃ a : ℚ, a ≠ 0 ∧ HasInfExp D χ τ a) → ∀ p : ℕ, GlobalTheory.IndefiniteRowSideFullHecke.IteratedLiftChains.SplitsCompletely D p → ∀ w : HeightOneSpectrum (𝓞 D.host.E), (p : 𝓞 D.host.E) ∈ w.asIdeal → GlobalTheory.LFun.UnrAt χ w → ¬ IsOfFinOrder (GlobalTheory.LFun.val (F := D.host.F) χ w) := by
   intro D χ hχ ha p hp w hw _

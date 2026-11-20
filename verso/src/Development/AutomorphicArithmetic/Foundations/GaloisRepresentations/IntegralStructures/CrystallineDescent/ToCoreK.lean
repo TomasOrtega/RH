@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Theta
 namespace UpperTheory.Gal.Int.Core
 
 /- English proof (translation)
-The claim follows from `toCore (UpperTheory.Gal.TP.twoUpOK_of_k hT)`.
+A detailed English derivation is pending.
 -/
 theorem toCoreK (hT : UpperTheory.TP.TLiftK) :
     GlobalTheory.CongPhi.ClosedPhi → GlobalTheory.Cong.DescOffT → GlobalTheory.CongL.LimFinOdd → GlobalTheory.RoadU.Core :=

@@ -26,7 +26,7 @@ def coneIso {A B A' B' : CochainComplex C ℤ} (φ : A ⟶ B) (ψ : A' ⟶ B') (
     exact mappingCone.map_id ψ
 
 /- English proof (translation)
-Rewrite using `[(CohomologyClass.homAddEquiv (K := K) (L := L) (n := n)).toEquiv.subsingleton_congr]`. Rewrite `h` using `[(CohomologyClass.homAddEquiv (K := K') (L := L) (n := n)).toEquiv.subsingleton_congr]`. Conclude with `@Equiv.subsingleton _ _ ((((HomotopyCategory.quotient C (ComplexShape.up ℤ)).mapIso e).homCongr (Iso.refl ((HomotopyCategory.quotient C (ComplexShape.up ℤ)).obj (L⟦n⟧))))) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_of_iso {K K' : CochainComplex C ℤ} (L : CochainComplex C ℤ) (n : ℤ) (e : K ≅ K')
     (h : Subsingleton (CohomologyClass K' L n)) : Subsingleton (CohomologyClass K L n) := by
@@ -35,9 +35,9 @@ theorem sub_of_iso {K K' : CochainComplex C ℤ} (L : CochainComplex C ℤ) (n :
   exact @Equiv.subsingleton _ _ ((((HomotopyCategory.quotient C (ComplexShape.up ℤ)).mapIso e).homCongr (Iso.refl ((HomotopyCategory.quotient C (ComplexShape.up ℤ)).obj (L⟦n⟧))))) h
 
 /- English proof (translation)
-Rewrite using `[(CohomologyClass.homAddEquiv (K := Ap) (L := I) (n := n)).toEquiv.subsingleton_congr]`. Rewrite `h` using `[(CohomologyClass.homAddEquiv (K := A0) (L := I) (n := n - p)).toEquiv.subsingleton_congr]`. Set `Q` to `HomotopyCategory.quotient C (ComplexShape.up ℤ)`. Set `α : (Q.obj A0)⟦p⟧ ≅ Q.obj Ap` to `((Q.commShiftIso p).app A0).symm ≪≫ Q.mapIso e.symm`. Set `β : (Q.obj (I⟦n - p⟧))⟦p⟧ ≅ Q.obj (I⟦n⟧)` to `((Q.commShiftIso p).app _).symm ≪≫ Q.mapIso ((CategoryTheory.shiftFunctorAdd' (CochainComplex C ℤ) (n - p) p n (by omega)).app I).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `e1` using `(Functor.FullyFaithful.ofFullyFaithful (CategoryTheory.shiftFunctor (HomotopyCategory C (ComplexShape.up ℤ)) p)).homEquiv (X := Q.obj A0) (Y := Q.obj (I⟦n - p⟧))`. Conclude with `@Equiv.subsingleton _ _ (e1.trans (α.homCongr β)).symm h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sub_of_shift {A0 Ap : CochainComplex C ℤ} (I : CochainComplex C ℤ) (p n : ℤ) (e : Ap ≅ A0⟦p⟧)
     (h : Subsingleton (CohomologyClass A0 I (n - p))) : Subsingleton (CohomologyClass Ap I n) := by
@@ -61,9 +61,9 @@ def singleConeIso {X Y : C} (f : X ⟶ Y) (p : ℤ) :
 end General
 
 /- English proof (translation)
-Unfold `chains chainsXIso`. Rewrite using `[Functor.comp_map]`. Use `show (HomologicalComplex.extendMap ((chainsN R).map g) ComplexShape.embeddingDownNat).f (ComplexShape.embeddingDownNat.f p) ≫ (HomologicalComplex.extendXIso ((chainsN R).obj E) ComplexShape.embeddingDownNat (i := p) rfl).hom = (HomologicalComplex.extendXIso ((chainsN R).obj E₀) C …`. Rewrite using `[HomologicalComplex.extendMap_f _ _ (i := p) rfl]`. Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`.
+A detailed English derivation is pending.
 -/
 theorem chains_f_comm (R : Type) [CommRing R] {E₀ E : Spc} (g : E₀ ⟶ E) (p : ℕ) :
     ((chains R).map g).f (-(p : ℤ)) ≫ (chainsXIso R E p).hom =
@@ -78,7 +78,7 @@ theorem chains_f_comm (R : Type) [CommRing R] {E₀ E : Spc} (g : E₀ ⟶ E) (p
   congr 1
 
 /- English proof (translation)
-Introduce `R _ F E₀ E g p n h`. Establish `h1` using `sub_of_shift (res R F) (p : ℤ) n (singleConeIso ((free R).map (g.app (op (SimplexCategory.mk p)))) (p : ℤ)) h`. Use `sub_of_iso (res R F) n ?_ h1` and prove the remaining obligations. Conclude with `coneIso _ _ ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) (-(p : ℤ))).mapIso (chainsXIso R E₀ p)) ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) (-(p : ℤ))).mapIso (chainsXIso R E p)) (by simp only [Functor.mapIso_hom, ← Functor.map_comp, chains_f_comm])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ShiftLvl_of : LateralTheory.E.CechFiltPf.ShiftLvl := by
   intro R _ F E₀ E g p n h

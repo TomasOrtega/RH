@@ -14,7 +14,7 @@ namespace GlobalTheory.FinMComp
 variable {D : D7}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Take `⟨m, rfl⟩` from `WithZero.ne_zero_iff_exists.1 hx`. Establish `h1` using `h (Int.toNat (-(Multiplicative.toAdd m)) + 1)`. Establish `e : ((m : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) = WithZero.exp (Multiplicative.toAdd m)` using `rfl`. Rewrite `h1` using `[e, WithZero.exp_le_exp]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -27,9 +27,9 @@ theorem eq_zero_of_le_exp (x : WithZero (Multiplicative ℤ)) (h : ∀ n : ℕ, 
   omega
 
 /- English proof (translation)
-Establish `hs` using `fun n => (GlobalTheory.AdeleBaseChange.exists_finiteAdele_baseChange_equiv D.host.F D.host.E).choose_spec.2.2.2 (GlobalTheory.FinPl.KOpen.indP D (· = w)) 1 P n`. Establish `h0 : (GlobalTheory.FinPl.KOpen.indP D (· = w)) (P.under (𝓞 D.host.F)) - algebraMap D.host.F _ 1 = 0`. Use `GlobalTheory.FinPl.KOpen.evalV_indP (D := D) (· = w) (P.under (𝓞 D.host.F))` as an intermediate fact. Rewrite `this` using `[if_pos hP]`. Rewrite using `[map_one, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `h1 : ∀ n : ℕ, Valued.v (GlobalTheory.Mem.Col2.afIso D.host.F D.host.E ((1 : D.host.E) ⊗ₜ[D.host.F] GlobalTheory.FinPl.KOpen.indP D (· = w)) P - algebraMap D.host.E _ (algebraMap D.host.F D.host.E 1)) ≤ WithZero.exp (-(n : ℤ))` using `fun n => hs n (by rw [h0, Valuation.map_zero]; exact zero_le')`. Establish `h2` using `eq_zero_of_le_exp _ h1`. Rewrite `h2` using `[Valuation.zero_iff, map_one, map_one, sub_eq_zero]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem afIso_indP (w : GlobalTheory.FinPl.Pl D) (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : P.under (𝓞 D.host.F) = w) :
     GlobalTheory.Mem.Col2.afIso D.host.F D.host.E ((1 : D.host.E) ⊗ₜ[D.host.F] GlobalTheory.FinPl.KOpen.indP D (· = w)) P = 1 := by
@@ -50,9 +50,9 @@ theorem afIso_indP (w : GlobalTheory.FinPl.Pl D) (P : HeightOneSpectrum (𝓞 D.
   exact h2
 
 /- English proof (translation)
-Use `GlobalTheory.LatticeLocalGlobal.ext_components _ _ fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D v _ = GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D v 0`. Rewrite using `[map_mul, map_zero, GlobalTheory.FinPl.KOpen.compFin_e]`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hz, mul_zero]`. Rewrite using `[if_neg hv, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem indicatorAdele_mul_eq_zero (w : GlobalTheory.FinPl.Pl D) (z : Af D.host.F ⊗[D.host.F] D.host.E)
     (hz : GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D w z = 0) :
@@ -65,7 +65,7 @@ theorem indicatorAdele_mul_eq_zero (w : GlobalTheory.FinPl.Pl D) (z : Af D.host.
   · rw [if_neg hv, zero_mul]
 
 /- English proof (translation)
-Establish `h0` using `congrArg (fun y => GlobalTheory.Mem.Col2.adAt D.host.F P ((Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).toAlgHom.toRingHom y)) (indicatorAdele_mul_eq_zero w (finPart D a) ha)`. Simplify using `only [map_mul, map_zero] at h0`. Establish `e1 : (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).toAlgHom.toRingHom (GlobalTheory.FinPl.KOpen.indP D (· = w) ⊗ₜ[D.host.F] (1 : D.host.E)) = (1 : D.host.E) ⊗ₜ[D.host.F] GlobalTheory.FinPl.KOpen.indP D (· = w)` using `rfl`. Rewrite `h0` using `[e1, GlobalTheory.Mem.Col2.adAt_apply D.host.F P ((1 : D.host.E) ⊗ₜ[D.host.F] _), afIso_indP w P hP, one_mul]`. Conclude with `h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adAt_toEAf_eq_zero (w : GlobalTheory.FinPl.Pl D) (a : AE D) (ha : GlobalTheory.FinPl.compAt D w a = 0)
     (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : P.under (𝓞 D.host.F) = w) :
@@ -81,11 +81,11 @@ theorem adAt_toEAf_eq_zero (w : GlobalTheory.FinPl.Pl D) (a : AE D) (ha : Global
   exact h0
 
 /- English proof (translation)
-Introduce `D V n hn Pset h hh P hP r k`. Substitute `hn` using the available equality. Rewrite using `[GlobalTheory.AdForm.CongAtIdem.finM_rfl, Matrix.map_apply]`. Establish `hmem` using `(GlobalTheory.FinPl.SetCut.mem_congGrp_iff V _ h).1 hh r k`. Establish `hz` using `adAt_toEAf_eq_zero _ _ (((GlobalTheory.FinPl.mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere D Pset _).1 hmem).2 _ hP) P rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Formalism.L2.Theta.mt V h r k = (Formalism.L2.Theta.mt V h - 1) r k + (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) r k`. Rewrite using `[Matrix.sub_apply, sub_add_cancel]`. Rewrite using `[e, RingHom.map_add (toEAf D), RingHom.map_add (GlobalTheory.Mem.Col2.adAt D.host.F P), hz, zero_add]`. Distinguish the cases in `hrk : r = k`. Substitute `hrk` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Matrix.one_apply]`. Simplify using `[Matrix.one_apply, hrk]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem adAt_finM_eq_one : ∀ (D : D7) (V : HSp D) {n : ℕ} (hn : V.rank = n) (Pset : GlobalTheory.FinPl.Pl D → Prop) (h : GA D V),
     h ∈ GlobalTheory.FinPl.grpAt V Pset → ∀ P : HeightOneSpectrum (𝓞 D.host.E), ¬ Pset (P.under (𝓞 D.host.F)) → ∀ r k,

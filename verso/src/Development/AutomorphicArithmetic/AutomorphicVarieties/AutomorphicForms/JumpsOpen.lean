@@ -6,19 +6,17 @@ open UpperTheory.V UpperTheory.V.Af
 open private UpperTheory.V.Af.JumpsAbove.char_mult UpperTheory.V.Af.JumpsAbove.flag_mult from Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.JumpsAbove
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `hfl`. Take `⟨L, r', hL, hd, τ', -, hc⟩` from `(GlobalTheory.ConjLocal.local_conj l (Loc.PP l) F Ω O _ Bw n _ ((MulAut.conj g).toMonoidHom.comp (r.comp (Dec (F := F) A).subtype)) g (fun _ => rfl)).2.2.2 τ J hJ`. Establish `he : ∀ s i j, ((r' s i j : ↥L.1) : Om l) = (g * r s * g⁻¹ : GL (Fin n) (Om l)) i j` using `fun s i j => congrArg (fun f : ↥(Dec (F := F) A) →* GL (Fin n) (Om l) => (f s).val i j) hL.2`. Establish `hκ : ∀ s i, ((r' s i i : ↥L.1) : Om l) = κ i s` using `fun s i => (he s i i).trans ((hg s).2 i)`. Set `κ' : Fin n → ↥(GK Bw.Kw) →* (↥L.1)ˣ` to `fun i => MonoidHom.toHomUnits { toFun := fun s => r' (Bw.e.symm s) i i map_one' := by simp map_mul' := fun s t => Subtype.ext (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[IntermediateField.coe_mul, hκ, hκ, hκ, map_mul, map_mul, Units.val_mul]) }`. Establish `hκ' : ∀ i s, ((κ' i s : ↥L.1) : Om l) = κ i (Bw.e.symm s)` using `fun i s => hκ _ _`. Take `⟨d, hm⟩` from `UpperTheory.V.Af.JumpsAbove.flag_mult Bw.Kw L n (Bw.repE L r') (fun s => (r' (Bw.e.symm s)).val) κ' (fun _ _ => rfl) (fun s i j h => Subtype.ext ((he _ i j).trans ((hg _).1 i j h))) (fun _ _ => rfl) (by rw [IsDR, Module.finrank_fin_fun]; exact hd)`. Set `U : Subgroup ↥(GK Bw.Kw)` to `H.comap ((Dec (F := F) A).subtype.comp Bw.e.symm.toMonoidHom)`. Establish `hU : IsOpen (U : Set ↥(GK Bw.Kw))` using `hH.preimage (continuous_subtype_val.comp Bw.e_symm_cont)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcm : ∀ (s : ↥(GK Bw.Kw)) x, (s : GQ l) (Bw.j x) = Bw.j ((Bw.e.symm s : G F Ω) x)` using `fun s x => by`. Rewrite using `[← Bw.e_comm, MulEquiv.apply_symm_apply]`. Establish `key : ∀ i a, multV ((Loc.PP l).PD Bw.Kw) (Formalism.WeaklyAdmissibleFiltrations.charRep (κ' i)) τ' a = if a = -m i then 1 else 0` using `fun i a => by`. Use `UpperTheory.V.Af.JumpsAbove.char_mult Bw.Kw L (κ' i) (continuous_induced_rng.2 ?_) (m i) ⟨U, hU, fun s hs hq => ?_⟩ (d i) τ' a` and prove the remaining obligations. Establish `h1 : Continuous fun s : ↥(GK Bw.Kw) => g * r (Bw.e.symm s) * g⁻¹` using `(continuous_const.mul (hr.comp (continuous_subtype_val.comp Bw.e_symm_cont))).mul continuous_const`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `((Units.continuous_val.comp h1).matrix_elem i i).congr fun s => (he _ i i).symm`. Establish `hine : (Bw.e.symm s : G F Ω) ∈ Ine (F` using `F) A := by`. Use `⟨(Bw.e.symm s).2, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hj.valuation_lt_one_iff, map_sub, ← hcm]`. Conclude with `((Loc.iqBasic l).2.2.1 _).1 hq _ ((hj x).1 ((A.valuation_le_one_iff x).1 hx))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `(GlobalTheory.Survey.CrystallineCharacterRatio.chi_eq_cyc (Loc.PP l) Bw.j _ _ (hcm s)).symm.trans ((Loc.cycFacts l l).2.2 s)`. Use `Units.ext (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[hκ', hI i (Bw.e.symm s) ⟨hs, hine⟩, Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val]`. Use `Eq.trans ?_ (map_zpow₀ (algebraMap ↥L.1 (Om l)) _ _).symm` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `congrArg (algebraMap ℚ_[l] (Om l)) h2`. Use extensionality with `a`. Establish `h` using `hc a`. Rewrite `h` using `[LocBridge.multE, hm]`. Simplify using `only [key] at h`.
-
-Rewrite using `[Multiset.count_map, ← Nat.cast_inj (R := ℤ), h]`. Simplify using `[Finset.card_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.jumpsOpen {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
     {n : ℕ} (m : Fin n → ℤ) (r : G F Ω →* GL (Fin n) (Qbar l)) (hr : Continuous r) (A : ValuationSubring Ω)

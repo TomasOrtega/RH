@@ -28,17 +28,13 @@ section Gen
 variable {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X]
 
 /- English proof (translation)
-Set `V : AddSubgroup X` to `{ carrier := {v | ∀ x, Φ.1 (x + v) = Φ.1 x} zero_mem' := fun x => by rw [add_zero] add_mem' := fun {a b} ha hb x => by rw [← add_assoc, hb, ha] neg_mem' := fun {a} ha x => by rw [← ha (x + -a), neg_add_cancel_right] }`. Establish `key : ∀ᶠ v in 𝓝 (0 : X), ∀ x ∈ tsupport Φ.1, Φ.1 (x + v) = Φ.1 x`. Use `IsCompact.eventually_forall_of_forall_eventually Φ.2.2 fun x _ => ?_` and prove the remaining obligations. Establish `h1 : IsLocallyConstant fun p : X × X => (Φ.1 (p.2 + p.1), Φ.1 p.2)` using `(Φ.2.1.comp_continuous (continuous_snd.add continuous_fst)).prodMk (Φ.2.1.comp_continuous continuous_snd)`. Use `filter_upwards [h1.eventually_eq (0, x)] with p hp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[Prod.mk.injEq, add_zero]`. Rewrite using `[hp.1, hp.2]`. Establish `key' : ∀ᶠ v in 𝓝 (0 : X), ∀ x ∈ tsupport Φ.1, Φ.1 (x + -v) = Φ.1 x` using `(continuous_neg.tendsto' (0 : X) 0 neg_zero).eventually key`. Establish `hV : IsOpen (V : Set X)`. Use `V.isOpen_of_mem_nhds (g := 0) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `filter_upwards [key, key'] with v h1 h2 x`. Distinguish the cases in `hx : x ∈ tsupport Φ.1`. Conclude with `h1 x hx`. Distinguish the cases in `hv : x + v ∈ tsupport Φ.1`. Rewrite using `[← h2 _ hv, add_neg_cancel_right]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hv]`. Use `haveI : DiscreteTopology (X ⧸ V) := QuotientAddGroup.discreteTopology hV`. Establish `hfin : ((A.map (QuotientAddGroup.mk' V) : AddSubgroup (X ⧸ V)) : Set (X ⧸ V)).Finite`. Rewrite using `[AddSubgroup.coe_map]`. Conclude with `(hA.image QuotientAddGroup.continuous_mk).finite_of_discrete`.
-
-Use `haveI : Finite (A.map (QuotientAddGroup.mk' V)) := hfin`. Use `⟨Nat.card (A.map (QuotientAddGroup.mk' V)), Nat.card_pos, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h` using `card_nsmul_eq_zero' (x := (⟨QuotientAddGroup.mk' V a, a, ha, rfl⟩ : A.map (QuotientAddGroup.mk' V)))`. Establish `h2` using `congrArg Subtype.val h`. Simplify using `only [AddSubgroup.coe_nsmul, ZeroMemClass.coe_zero, ← map_nsmul] at h2`.
-
-Conclude with `(QuotientAddGroup.eq_zero_iff _).1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_inv (Φ : SB X) (A : AddSubgroup X) (hA : IsCompact (A : Set X)) :
     ∃ N : ℕ, 0 < N ∧ ∀ a ∈ A, ∀ x, Φ.1 (x + N • a) = Φ.1 x := by
@@ -76,9 +72,9 @@ theorem exists_inv (Φ : SB X) (A : AddSubgroup X) (hA : IsCompact (A : Set X)) 
   exact (QuotientAddGroup.eq_zero_iff _).1 h2
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hK.elim_finite_subcover (fun n : ℕ+ => {x | (n : ℕ) • x ∈ A}) (fun n => hA.preimage (continuous_nsmul _)) fun x _ => by`. Take `⟨n, hn, hx⟩` from `h x`. Conclude with `Set.mem_iUnion.2 ⟨⟨n, hn⟩, hx⟩`. Use `⟨∏ n ∈ s, (n : ℕ), Finset.prod_pos fun n _ => n.pos, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, hx⟩` from `Set.mem_iUnion₂.1 (hs hx)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem (fun n : ℕ+ => (n : ℕ)) hn`. Rewrite using `[hm, mul_nsmul]`. Conclude with `nsmul_mem hx _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_supp {K : Set X} (hK : IsCompact K) (A : AddSubgroup X) (hA : IsOpen (A : Set X))
     (h : ∀ x, ∃ n : ℕ, 0 < n ∧ n • x ∈ A) : ∃ N : ℕ, 0 < N ∧ ∀ x ∈ K, N • x ∈ A := by
@@ -97,7 +93,7 @@ end Gen
 variable {D : D7}
 
 /- English proof (translation)
-Establish `: π (e - 1) = 0` using `(hπ.2.1 _).2 (by rw [mul_sub, h1, mul_one, sub_self])`. Rewrite `this` using `[RingHom.map_sub, RingHom.map_one, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem chart_one {e : AE D} (h1 : e * e = e) {v : HeightOneSpectrum (𝓞 D.host.F)}
     {π : AE D →+* Fv D.host.F v} (hπ : GlobalTheory.SplitHecke.Chart e v π) : π e = 1 := by
@@ -105,9 +101,9 @@ theorem chart_one {e : AE D} (h1 : e * e = e) {v : HeightOneSpectrum (𝓞 D.hos
   rwa [RingHom.map_sub, RingHom.map_one, sub_eq_zero] at this
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `he`. Establish `tA : ∀ z : AE D, algebraMap (AF D.host.F) (AE D) (Algebra.trace (AF D.host.F) (AE D) z) = z + cA D z` using `GlobalTheory.FockCompare.SymplVal.trace_tensor D.sp.cm.deg2 D.sp.cm.sig (fun e => star_star e) (fun e he => (D.sp.cm.fixed e).1 he) (AF D.host.F)`. Establish `ht : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `hc : Continuous fun x : AE D => Algebra.trace (AF D.host.F) (AE D) (e * x)` using `ht.comp (continuous_const.mul continuous_id)`. Establish `hev : Continuous fun y : AF D.host.F => evalV D.host.F v (sndA D.host.F y)` using `(RestrictedProduct.continuous_eval v).comp continuous_snd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hev.comp hc).congr fun x => ?_` and prove the remaining obligations. Establish `h4 : π (cA D (e * x)) = 0` using `(hπ.2.1 _).2 (by rw [RingHom.map_mul, ← mul_assoc, h2, zero_mul])`. Establish `h5` using `hπ.2.2.1 (Algebra.trace (AF D.host.F) (AE D) (e * x))`. Rewrite `h5` using `[tA, RingHom.map_add, h4, add_zero, RingHom.map_mul, chart_one h1 hπ, one_mul]`. Conclude with `h5.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_cont {e : AE D} (he : IsSplitIdem D e) {v : HeightOneSpectrum (𝓞 D.host.F)}
     {π : AE D →+* Fv D.host.F v} (hπ : GlobalTheory.SplitHecke.Chart e v π) : Continuous π := by
@@ -127,9 +123,9 @@ theorem chart_cont {e : AE D} (he : IsSplitIdem D e) {v : HeightOneSpectrum (�
   exact h5.symm
 
 /- English proof (translation)
-Use `RestrictedProduct.ext _ _ fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV F w (singleV F v (a + b)) = evalV F w (singleV F v a + singleV F v b)`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[map_add, GlobalTheory.SplitCoord.evalV_single, GlobalTheory.SplitCoord.evalV_single, GlobalTheory.SplitCoord.evalV_single]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, GlobalTheory.SplitCoord.evalV_single_ne hw, GlobalTheory.SplitCoord.evalV_single_ne hw, GlobalTheory.SplitCoord.evalV_single_ne hw, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem single_add {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (a b : Fv F v) :
     singleV F v (a + b) = singleV F v a + singleV F v b := by
@@ -148,7 +144,7 @@ def sec (e : AE D) (v : HeightOneSpectrum (𝓞 D.host.F)) : Fv D.host.F v →+ 
     exact Prod.ext (add_zero _).symm rfl
 
 /- English proof (translation)
-Establish `ha : Continuous (Algebra.linearMap (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `hb : Continuous fun a => pairA D.host.F 0 (singleV D.host.F v a)` using `Continuous.prodMk continuous_const (GlobalTheory.LocalComponentChar.continuous_singleV D.host.F v)`. Conclude with `continuous_const.mul (ha.comp hb)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sec_cont (e : AE D) (v : HeightOneSpectrum (𝓞 D.host.F)) : Continuous (sec e v) := by
   have ha : Continuous (Algebra.linearMap (AF D.host.F) (AE D)) := IsModuleTopology.continuous_of_linearMap _
@@ -157,7 +153,7 @@ theorem sec_cont (e : AE D) (v : HeightOneSpectrum (𝓞 D.host.F)) : Continuous
   exact continuous_const.mul (ha.comp hb)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `π (e * algebraMap (AF D.host.F) _ (pairA D.host.F 0 (singleV D.host.F v a))) = a`. Rewrite using `[RingHom.map_mul, chart_one h1 hπ, one_mul, hπ.2.2.1]`. Conclude with `GlobalTheory.SplitCoord.evalV_single v a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_sec {e : AE D} (h1 : e * e = e) {v : HeightOneSpectrum (𝓞 D.host.F)}
     {π : AE D →+* Fv D.host.F v} (hπ : GlobalTheory.SplitHecke.Chart e v π) (a) : π (sec e v a) = a := by
@@ -166,7 +162,7 @@ theorem chart_sec {e : AE D} (h1 : e * e = e) {v : HeightOneSpectrum (𝓞 D.hos
   exact GlobalTheory.SplitCoord.evalV_single v a
 
 /- English proof (translation)
-Use `(hπ.2.1 (sec e v (π x) - x)).1 (by rw [RingHom.map_sub, chart_sec h1 hπ, sub_self])` as an intermediate fact. Rewrite `this` using `[mul_sub, sub_eq_zero]`. Rewrite using `[← this]`. Express the relevant statement in the definitionally equal form `e * _ = e * (e * _)`. Rewrite using `[← mul_assoc, h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_chart {e : AE D} (h1 : e * e = e) {v : HeightOneSpectrum (𝓞 D.host.F)}
     {π : AE D →+* Fv D.host.F v} (hπ : GlobalTheory.SplitHecke.Chart e v π) (x) : sec e v (π x) = e * x := by
@@ -177,11 +173,11 @@ theorem sec_chart {e : AE D} (h1 : e * e = e) {v : HeightOneSpectrum (𝓞 D.hos
   rw [← mul_assoc, h1]
 
 /- English proof (translation)
-Establish `h2 : ¬ IsUnit (2 : 𝓞 D.host.F)`. Introduce `hu`. Establish `hn` using `hu.map (Algebra.norm ℤ (S := 𝓞 D.host.F))`. Rewrite `hn` using `[show (2 : 𝓞 D.host.F) = algebraMap ℤ (𝓞 D.host.F) 2 by simp, Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne']`. Apply the tactic sequence `rcases Int.isUnit_iff.mp hn with h | h <;> omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨M, hM, h2M⟩` from `Ideal.exists_le_maximal (Ideal.span {(2 : 𝓞 D.host.F)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Establish `hm : (2 : 𝓞 D.host.F) ∈ M` using `h2M (Ideal.mem_span_singleton_self 2)`. Establish `hM0 : M ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `two_ne_zero ((Submodule.mem_bot _).mp hm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨e, a, b, c, -⟩` from `GlobalTheory.SplitIdem.exists_split_idempotent D ⟨M, hM.isPrime, hM0⟩ hm`. Conclude with `⟨e, a, b, _, _, ⟨_, rfl, GlobalTheory.SplitCoord.evalV_single _ 1, fun w hw => GlobalTheory.SplitCoord.evalV_single_ne hw 1⟩, c⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_idem (D : D7) : ∃ e, IsSplitIdem D e := by
   have h2 : ¬ IsUnit (2 : 𝓞 D.host.F) := by
@@ -200,9 +196,9 @@ theorem exists_idem (D : D7) : ∃ e, IsSplitIdem D e := by
   exact ⟨e, a, b, _, _, ⟨_, rfl, GlobalTheory.SplitCoord.evalV_single _ 1, fun w hw => GlobalTheory.SplitCoord.evalV_single_ne hw 1⟩, c⟩
 
 /- English proof (translation)
-Take `⟨v, π, hπ⟩` from `GlobalTheory.SplitChart.exists_chart e he`. Establish `h` using `(GlobalTheory.PlaceCoord.isOpen_isCompact_map (S := S) (T := T) hS.1 hT.1 hπ he.1 (chart_one he.1 hπ) (GlobalTheory.PlaceCoord.infPart_split he)).2`. Establish `hc : Continuous fun y : Matrix (Fin T.rank) (Fin S.rank) (Fv D.host.F v) => (y.map (sec e v) : WO S T)` using `continuous_id.matrix_map (sec_cont e v)`. Establish `h2` using `h.image hc`. Rewrite `h2` using `[Set.image_image]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Use `(Set.EqOn.image_eq_self fun t ht => ?_).symm` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `(sec_chart he.1 hπ _).trans (ht.2 i j)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isCompact_half {e : AE D} (he : IsSplitIdem D e) {S T : HSp D}
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
@@ -223,9 +219,9 @@ theorem isCompact_half {e : AE D} (he : IsSplitIdem D e) {S T : HSp D}
 variable {S : HSp D}
 
 /- English proof (translation)
-Establish `z1 : e' * e = 0` using `by rw [mul_comm, h2]`. Establish `z2 : e' * f = 0` using `by rw [hf]; linear_combination -h1' - h2`. Establish `z3 : e * f = 0` using `by rw [hf]; linear_combination -h1 - h2`. Establish `z4 : f * e = 0` using `by rw [mul_comm, z3]`. Establish `z5 : f * e' = 0` using `by rw [mul_comm, z2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z6 : f * f = f` using `by rw [hf]; linear_combination h1 + h1' + 2 * h2`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, z1, z2, z3, z4, z5, z6, h1, h1', h2, zero_smul, add_zero, zero_add, Matrix.mul_assoc, g1, g2, Matrix.one_mul, Matrix.mul_one, hba, smul_add]`. Rewrite using `[← Matrix.mul_assoc, hab', Matrix.smul_mul, smul_smul, h1', Matrix.one_mul, ← add_smul, ← add_smul, show e + e' + f = 1 by rw [hf]; ring, one_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem units_mul_relation_rearrange_commRing {R : Type} [CommRing R] {n : ℕ} (e e' f : R) (G Gi a a' b b' : Matrix (Fin n) (Fin n) R) (h1 : e * e = e)
     (h1' : e' * e' = e') (h2 : e * e' = 0) (hf : f = 1 - e - e') (hba : b * a = e • (1 : Matrix (Fin n) (Fin n) R))
@@ -245,9 +241,9 @@ theorem units_mul_relation_rearrange_commRing {R : Type} [CommRing R] {n : ℕ} 
     show e + e' + f = 1 by rw [hf]; ring, one_smul]
 
 /- English proof (translation)
-Establish `h1' : e' * e' = e'` using `by rw [← c1, ← RingHom.map_mul, h1]`. Establish `hab' : adj a * adj b = e' • (1 : Mx D S.rank S.rank)` using `by rw [← adj_mul, hba, adj_smul, adj_one, c1]`. Establish `hcc : cA D e' = e` using `by rw [← c1]; exact GlobalTheory.DualPairCheck.cA_cA _`. Establish `cf : cA D f = f` using `by rw [hf, RingHom.map_sub, RingHom.map_sub, RingHom.map_one, hcc, c1]; exact sub_right_comm _ _ _`. Establish `q : adj (giA S * (adj b * gA S)) = gA S * b * giA S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[adj_mul (giA S), adj_mul (adj b), adj_adj, adj_gA, adj_giA]`. Establish `q2 : adj (e • a + e' • (giA S * (adj b * gA S)) + f • (1 : Mx D S.rank S.rank)) = e' • adj a + e • (gA S * b * giA S) + f • (1 : Mx D S.rank S.rank)`. Rewrite using `[adj_add, adj_add, adj_smul e, adj_smul e', adj_smul f, q, hcc, cf, c1, adj_one (n := S.rank)]`. Rewrite using `[q2]`. Conclude with `units_mul_relation_rearrange_commRing e e' f _ _ a _ b _ h1 h1' h2 hf hba hab' (giA_gA_cancel S) (gA_giA_cancel S)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reflectionBoost_matrix_conjTranspose_mul_self (e e' f : AE D) (a b : Mx D S.rank S.rank) (h1 : e * e = e) (h2 : e * e' = 0) (c1 : cA D e = e')
     (hf : f = 1 - e - e') (hba : b * a = e • (1 : Mx D S.rank S.rank)) :

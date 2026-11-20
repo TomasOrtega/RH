@@ -19,9 +19,9 @@ end GlobalTheory.EtC.DescZero
 namespace GlobalTheory.EtC.DescZero
 
 /- English proof (translation)
-Use `⟨IsIntegralHom.SpecMap_iff.2 hi, ⟨fun (x : PrimeSpectrum A) => ?_⟩⟩` and prove the remaining obligations. Use `letI := φ.toAlgebra`. Use `haveI : Algebra.IsIntegral A B := ⟨hi⟩`. Establish `hle : (⊥ : Ideal B).comap (algebraMap A B) ≤ x.asIdeal`. Rewrite using `[← RingHom.ker_eq_comap_bot]`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hk.trans (nilradical_le_prime x.asIdeal)`. Take `⟨Q, -, hQ, hQx⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral x.asIdeal ⊥ hle`. Establish `: x ∈ Set.range (PrimeSpectrum.comap φ)` using `⟨⟨Q, hQ⟩, PrimeSpectrum.ext hQx⟩`. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spec_integral_surj (A B : Type) [CommRing A] [CommRing B] (φ : A →+* B) (hi : φ.IsIntegral)
     (hk : RingHom.ker φ ≤ nilradical A) :
@@ -48,21 +48,21 @@ def cπ {Y X : Scheme.{0}} (f : Y ⟶ X) (n : ℕ) (k : Fin (n + 1)) : (cech f).
   WidePullback.π (fun _ : Fin (n + 1) => yoneda.map f) k
 
 /- English proof (translation)
-The claim follows from `WidePullback.lift_π _ _ _ _ 0`.
+A detailed English derivation is pending.
 -/
 theorem cech_δ0_π {Y X : Scheme.{0}} (f : Y ⟶ X) :
     SimplicialObject.δ (cech f) (0 : Fin 2) ≫ cπ f 0 0 = cπ f (0 + 1) 1 :=
   WidePullback.lift_π _ _ _ _ 0
 
 /- English proof (translation)
-The claim follows from `WidePullback.lift_π _ _ _ _ 0`.
+A detailed English derivation is pending.
 -/
 theorem cech_δ1_π {Y X : Scheme.{0}} (f : Y ⟶ X) :
     SimplicialObject.δ (cech f) (1 : Fin 2) ≫ cπ f 0 0 = cπ f (0 + 1) 0 :=
   WidePullback.lift_π _ _ _ _ 0
 
 /- English proof (translation)
-The claim follows from `WidePullback.lift_π _ _ _ _ 0`.
+A detailed English derivation is pending.
 -/
 theorem cechDiag_π {Y X : Scheme.{0}} (f : Y ⟶ X) :
     (GlobalTheory.CechOne.cechDiag f).app (op ⦋0⦌) ≫ cπ f 0 0 = 𝟙 _ :=
@@ -75,7 +75,7 @@ namespace GlobalTheory.EtC.DescZero
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial in
 open scoped TensorProduct in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x`. Set `p : PrimeSpectrum A` to `x`. Take `⟨Q, -, hQ, hQx⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral p.asIdeal (⊥ : Ideal A') (by rw [← RingHom.ker_eq_comap_bot]; exact hker.trans (nilradical_le_prime _))`. Conclude with `⟨(⟨Q, hQ⟩ : PrimeSpectrum A'), PrimeSpectrum.ext hQx⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma spec_map_surjective_of_integral_ker_le_nilradical (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A']
     [Algebra.IsIntegral A A'] (hker : RingHom.ker (algebraMap A A') ≤ nilradical A) :
@@ -90,7 +90,7 @@ private lemma spec_map_surjective_of_integral_ker_le_nilradical (A A' : Type) [C
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial in
 open scoped TensorProduct in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.EtC.Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma sec_res_comp_divisor {R : Type} [CommRing R] {F : _root_.GlobalTheory.EtC.Shv R} {W V U : Scheme}
     (h : W ⟶ V) (g : V ⟶ U) (s : _root_.GlobalTheory.EtC.Sec F U) :
@@ -101,7 +101,7 @@ private lemma sec_res_comp_divisor {R : Type} [CommRing R] {F : _root_.GlobalThe
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial in
 open scoped TensorProduct in
 /- English proof (translation)
-Apply the tactic sequence `first | rfl | simp [SimplicialObject.δ, _root_.GlobalTheory.EtC.disc]`.
+A detailed English derivation is pending.
 -/
 private lemma disc_face_eq_id (P : _root_.GlobalTheory.EtC.PSh) (n : ℕ) (i : Fin (n + 2)) :
     SimplicialObject.δ (_root_.GlobalTheory.EtC.disc.obj P) i = 𝟙 _ := by
@@ -110,7 +110,7 @@ private lemma disc_face_eq_id (P : _root_.GlobalTheory.EtC.PSh) (n : ℕ) (i : F
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial in
 open scoped TensorProduct in
 /- English proof (translation)
-Establish `h : ∀ i : Fin 2, SimplicialObject.δ (_root_.GlobalTheory.EtC.sch.obj X) i = 𝟙 _` using `fun i => disc_face_eq_id (yoneda.obj X) 0 i`. Unfold `_root_.GlobalTheory.EtC.cobd`. Simplify using `[Fin.sum_univ_two, h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma cobd_eq_zero_of_scheme {R : Type} [CommRing R] {F : _root_.GlobalTheory.EtC.Shv R} (X : Scheme)
     (t : (_root_.GlobalTheory.EtC.free R).obj ((_root_.GlobalTheory.EtC.sch.obj X) _⦋0⦌) ⟶ F) :
@@ -123,11 +123,11 @@ private lemma cobd_eq_zero_of_scheme {R : Type} [CommRing R] {F : _root_.GlobalT
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial in
 open scoped TensorProduct in
 /- English proof (translation)
-Take `⟨hex, -, -, -, -⟩` from `_root_.GlobalTheory.EtC.isCls_basic R F (_root_.GlobalTheory.EtC.sch.obj X) 0`. Take `⟨x, hx⟩` from `hex t (cobd_eq_zero_of_scheme X t)`. It suffices to establish `hxs : x = _root_.GlobalTheory.EtC.secClass F s by rw [← hxs]; exact hx`. Take `⟨z, hz, hzv⟩` from `hx`. Rewrite using `[← hz]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `((_root_.GlobalTheory.EtC.secClass_props R F X).1 s z).1 ?_` and prove the remaining obligations. Establish `key : ∀ h, (z : Cochain _ _ ((0 : ℕ) : ℤ)).v (-((0 : ℕ) : ℤ)) 0 h = (_root_.GlobalTheory.EtC.chainsXIso R (_root_.GlobalTheory.EtC.sch.obj X) 0).hom ≫ t ≫ _root_.GlobalTheory.EtC.resι R F`. Introduce `h`. Rewrite using `[hzv]`. Conclude with `Cochain.single_v _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `erw [_root_.GlobalTheory.EtC.CupSpec.ev_def, key, Iso.inv_hom_id_assoc]`. Establish `hval` using `ht X (𝟙 X)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma isCls_secClass_of_val_eq_res {R : Type} [CommRing R] (F : _root_.GlobalTheory.EtC.Shv R)
     (X : Scheme) (s : _root_.GlobalTheory.EtC.Sec F X)
@@ -156,7 +156,7 @@ private lemma isCls_secClass_of_val_eq_res {R : Type} [CommRing R] (F : _root_.G
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial in
 open scoped TensorProduct in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.EtC.cobd`. Simplify using `[Fin.sum_univ_two, h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma cobd_eq_zero_of_face_comp_eq {R : Type} [CommRing R] {F : _root_.GlobalTheory.EtC.Shv R}
     {E : _root_.GlobalTheory.EtC.Spc} (T : (_root_.GlobalTheory.EtC.free R).obj (E _⦋0⦌) ⟶ F)
@@ -169,7 +169,7 @@ private lemma cobd_eq_zero_of_face_comp_eq {R : Type} [CommRing R] {F : _root_.G
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial in
 open scoped TensorProduct in
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;>`. Simplify using `only [_root_.GlobalTheory.EtC.DescZero.cπ, _root_.GlobalTheory.EtC.cech, SimplicialObject.δ, Arrow.cechNerve] erw [WidePullback.lift_π]`. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private lemma cech_face_comp_cπ_eq_cπ_rev {Y X : Scheme.{0}} (f : Y ⟶ X) (i : Fin 2) :
     SimplicialObject.δ (_root_.GlobalTheory.EtC.cech f) i ≫ _root_.GlobalTheory.EtC.DescZero.cπ f 0 0 =
@@ -182,11 +182,9 @@ private lemma cech_face_comp_cπ_eq_cπ_rev {Y X : Scheme.{0}} (f : Y ⟶ X) (i 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial in
 open scoped TensorProduct in
 /- English proof (translation)
-Set `u` to `pullback.lift y₀ y₁ hy ≫ (pullbackSpecIso A A' A').hom`. Establish `hu₀ : u ≫ Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeLeft : A' →ₐ[A] A' ⊗[A] A').toRingHom) = y₀`. Simplify using `only [u, Category.assoc]`. Use `erw [pullbackSpecIso_hom_fst]`. Conclude with `pullback.lift_fst _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hu₁ : u ≫ Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : A' →ₐ[A] A' ⊗[A] A').toRingHom) = y₁`. Simplify using `only [u, Category.assoc]`. Use `erw [pullbackSpecIso_hom_snd]`. Conclude with `pullback.lift_snd _ _ _`. Use `clear_value u`.
-
-Rewrite using `[← hu₀, ← hu₁, sec_res_comp_divisor, sec_res_comp_divisor, hs]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma res_eq_of_tensorSquare_res_eq_lemma_6 {R : Type} [CommRing R] {F : _root_.GlobalTheory.EtC.Shv R}
     (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A']
@@ -216,7 +214,7 @@ private lemma res_eq_of_tensorSquare_res_eq_lemma_6 {R : Type} [CommRing R] {F :
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial in
 open scoped TensorProduct in
 /- English proof (translation)
-Establish `h` using `(WidePullback.π_arrow (fun _ : Fin (n + 1) => yoneda.map f) k).trans (WidePullback.π_arrow (fun _ : Fin (n + 1) => yoneda.map f) l).symm`. Conclude with `congr_arg (fun φ => φ.app (op U) e) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma cπ_comp_eq_cπ_comp {Y X : Scheme.{0}} (f : Y ⟶ X) (n : ℕ) (k l : Fin (n + 1))
     (U : Scheme.{0}) (e : ((_root_.GlobalTheory.EtC.cech f).obj (op ⦋n⦌)).obj (op U)) :
@@ -229,7 +227,7 @@ private lemma cπ_comp_eq_cπ_comp {Y X : Scheme.{0}} (f : Y ⟶ X) (n : ℕ) (k
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex Simplicial in
 open scoped TensorProduct in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.CechOne.cechDiag, _root_.GlobalTheory.EtC.DescZero.cπ]`. Use `erw [WidePullback.lift_π]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma cechDiag_comp_cπ_eq_id {Y X : Scheme.{0}} (f : Y ⟶ X) :
     (_root_.GlobalTheory.CechOne.cechDiag f).app (op ⦋0⦌) ≫ _root_.GlobalTheory.EtC.DescZero.cπ f 0 0 = 𝟙 _ := by
@@ -241,21 +239,19 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 open scoped TensorProduct in
 
 /- English proof (translation)
-Introduce `q _ A A' _ _ _ hint hker hq j b hb`. Set `f : Spec (CommRingCat.of A') ⟶ Spec (CommRingCat.of A)` to `Spec.map (CommRingCat.ofHom (algebraMap A A'))`. Use `haveI : IsIntegralHom f := by rw [IsIntegralHom.SpecMap_iff]; exact hint.isIntegral`. Use `haveI : Surjective f := spec_map_surjective_of_integral_ker_le_nilradical A A' hker`. Establish `hbij : Function.Bijective (_root_.GlobalTheory.EtC.pull (ZMod q) (_root_.GlobalTheory.EtC.cechAug f) (_root_.GlobalTheory.EtC.tw q j) 0)` using `_root_.GlobalTheory.EtC.b4 q f (by simpa using hq.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom) j 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set F := _root_.GlobalTheory.EtC.tw q j with hF`. Take `⟨-, hbijc, -, hres, -⟩` from `_root_.GlobalTheory.EtC.secClass_props (ZMod q) F (Spec (CommRingCat.of A'))`. Take `⟨s, rfl⟩` from `hbijc.2 b`. Establish `hs : _root_.GlobalTheory.EtC.Sec.res (Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeLeft : A' →ₐ[A] A' ⊗[A] A').toRingHom)) s = _root_.GlobalTheory.EtC.Sec.res (Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : A' →ₐ[A] A' ⊗[A] A').toRingHom)) s`. Apply `(_root_.GlobalTheory.EtC.secClass_props (ZMod q) F _).2.1.1` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hres, ← hres]`. Conclude with `hb`. Establish `hfreeY` using `_root_.GlobalTheory.EtC.FreeHom.main (ZMod q) ((_root_.GlobalTheory.EtC.sch.obj (Spec (CommRingCat.of A'))) _⦋0⦌) F`. Take `⟨t, ht⟩` from `hfreeY.2.1 (fun U x => _root_.GlobalTheory.EtC.Sec.res (show U ⟶ Spec (CommRingCat.of A') from x) s) (fun V U g x => sec_res_comp_divisor g (show U ⟶ Spec (CommRingCat.of A') from x) s)`. Establish `hrep` using `isCls_secClass_of_val_eq_res F _ s t ht`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hex, -, -, -, hpull⟩` from `_root_.GlobalTheory.EtC.isCls_basic (ZMod q) F (_root_.GlobalTheory.EtC.cech f) 0`. Take `⟨T, hTdef⟩ : ∃ T, T = (_root_.GlobalTheory.EtC.free (ZMod q)).map (_root_.GlobalTheory.EtC.DescZero.cπ f 0 0) ≫ t` from `⟨_, rfl⟩`. Establish `hT : _root_.GlobalTheory.EtC.cobd T = 0`. Use `cobd_eq_zero_of_face_comp_eq T ?_` and prove the remaining obligations. Establish `hfree` using `_root_.GlobalTheory.EtC.FreeHom.main (ZMod q) ((_root_.GlobalTheory.EtC.cech f) _⦋1⦌) F`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `hfree.1` to reduce the goal to its premises. Introduce `U e`. Simplify using `only [hTdef, ← Functor.map_comp_assoc, cech_face_comp_cπ_eq_cπ_rev]`. Rewrite using `[hfreeY.2.2.2.1, hfreeY.2.2.2.1, ht, ht]`. Conclude with `res_eq_of_tensorSquare_res_eq_lemma_6 A A' s hs _ _ (cπ_comp_eq_cπ_comp f 1 (Fin.rev 0) (Fin.rev 1) U e)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `hex T hT`. Establish `hcx : _root_.GlobalTheory.EtC.pull (ZMod q) (_root_.GlobalTheory.CechOne.cechDiag f) F 0 x = _root_.GlobalTheory.EtC.secClass F s`. Use `(_root_.GlobalTheory.EtC.isCls_basic (ZMod q) F (_root_.GlobalTheory.EtC.sch.obj (Spec (CommRingCat.of A'))) 0).2.2.1 t _ _ ?_ hrep` and prove the remaining obligations. Establish `h` using `hpull _ (_root_.GlobalTheory.CechOne.cechDiag f) T x hx`. Establish `hcomp : (_root_.GlobalTheory.EtC.free (ZMod q)).map ((_root_.GlobalTheory.CechOne.cechDiag f).app (op ⦋0⦌)) ≫ T = t`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hTdef, ← Functor.map_comp_assoc]`. Use `erw [cechDiag_comp_cπ_eq_id]`. Rewrite using `[CategoryTheory.Functor.map_id, Category.id_comp]`. Rewrite `h` using `[hcomp]`. Conclude with `h`.
-
-Take `⟨a, ha⟩` from `hbij.2 x`. Use `⟨a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_root_.GlobalTheory.EtC.pull (ZMod q) (_root_.GlobalTheory.EtC.sch.map f) F 0 a = _`. Rewrite using `[← _root_.GlobalTheory.CechOne.cechDiag_aug, _root_.GlobalTheory.EtC.pull_comp, ha, hcx]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.EtC.DescZero.desc_zero : ∀ (q : ℕ) [NeZero q] (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A'],
     Algebra.IsIntegral A A' → RingHom.ker (algebraMap A A') ≤ nilradical A → IsUnit (q : A) →

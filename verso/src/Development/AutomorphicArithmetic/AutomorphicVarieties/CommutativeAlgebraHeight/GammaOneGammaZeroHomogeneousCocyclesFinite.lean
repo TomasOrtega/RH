@@ -3,25 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-Use `letI := ZMod.algebra k l`. Use `haveI : Module.Finite (ZMod l) k := Module.Finite.of_finite`. Set `N : Subgroup G` to `χ.ker ⊓ ψ.ker`. Establish `hNo : IsOpen (N : Set G)` using `by show IsOpen ((χ.ker ⊓ ψ.ker : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_inf]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hχ.inter hψ`. Use `haveI : Finite (G ⧸ N) := Subgroup.quotient_finite_of_isOpen N hNo`. Use `haveI := hΦ N hNo`. Set `b` to `Module.finBasis (ZMod l) k`. Establish `mem : ∀ a ∈ Z1 χ ψ, IsLocallyConstant a ∧ ∀ g h : G, a (g * h) = (χ g : k) * a h + a g * (ψ h : k)` using `fun a ha => ha`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd : ∀ a ∈ Z1 χ ψ, ∀ x y : N, a ((x : G) * (y : G)) = a x + a y`. Introduce `a ha x y`. Establish `hx : χ (x : G) = 1` using `MonoidHom.mem_ker.mp (Subgroup.mem_inf.mp x.2).1`. Establish `hy : ψ (y : G) = 1` using `MonoidHom.mem_ker.mp (Subgroup.mem_inf.mp y.2).2`. Rewrite using `[(mem a ha).2, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[add_comm]`. Set `φ : ∀ a ∈ Z1 χ ψ, Fin (Module.finrank (ZMod l) k) → (N →* Multiplicative (ZMod l))` to `fun a ha i => MonoidHom.mk' (fun x => Multiplicative.ofAdd (b.repr (a x) i)) (by`. Introduce `x y`. Simplify using `[hadd a ha x y, ofAdd_add])`. Establish `hφo : ∀ a (ha : a ∈ Z1 χ ψ) i, IsOpen ((φ a ha i).ker : Set N)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `a ha i`. Establish `hlc : IsLocallyConstant (fun x : N => b.repr (a x) i)` using `((mem a ha).1.comp_continuous continuous_subtype_val).comp (fun y => b.repr y i)`. Establish `e : ((φ a ha i).ker : Set N) = {x | (fun x : N => b.repr (a x) i) x = 0}`. Use extensionality with `x`. Simplify using `[φ, MonoidHom.mem_ker]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[e]`. Conclude with `hlc.isOpen_fiber 0`. Set `F : Z1 χ ψ → (G ⧸ N → k) × (Fin (Module.finrank (ZMod l) k) → {φ : N →* Multiplicative (ZMod l) // IsOpen (φ.ker : Set N)})` to `fun a => (fun q => (a : G → k) q.out, fun i => ⟨φ a a.2 i, hφo a a.2 i⟩)`. Use `Finite.of_injective F ?_` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩ ⟨a', ha'⟩ h`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [F, Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Establish `hN' : ∀ x : N, a x = a' x`. Introduce `x`. Apply `b.repr.injective` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `i`. Conclude with `congrArg (fun f => Multiplicative.toAdd ((f i).1 x)) h2`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Take `⟨n, hn⟩` from `QuotientGroup.mk_out_eq_mul N g`.
-
-Establish `e1 : a (QuotientGroup.mk g : G ⧸ N).out = a' (QuotientGroup.mk g : G ⧸ N).out` using `congrFun h1 _`. Establish `hg : g = (QuotientGroup.mk g : G ⧸ N).out * ((n⁻¹ : N) : G)`. Rewrite using `[hn]`. Simplify using `[mul_assoc]`. Use `show a g = a' g`.
-
-Rewrite using `[hg, (mem a ha).2, (mem a' ha').2, hN' n⁻¹, e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem module_finite_z1_padicInt (l : ℕ) [Fact l.Prime] {k G : Type} [Field k] [Finite k] [CharP k l] [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] (χ ψ : G →* kˣ) (hΦ : PhiCond G l)
@@ -80,7 +76,7 @@ private theorem module_finite_z1_padicInt (l : ℕ) [Fact l.Prime] {k G : Type} 
   rw [hg, (mem a ha).2, (mem a' ha').2, hN' n⁻¹, e1]
 
 /- English proof (translation)
-Introduce `l _ n k G _ _ _ _ _ _ _ _ χ hΦ hopen hinj`. Use `⟨∑ i, ∑ j, Module.finrank k (Z1 (χ i) (χ j)), hopen, hinj, fun i j _ => ?_⟩` and prove the remaining obligations. Use `haveI := module_finite_z1_padicInt l (χ i) (χ j) hΦ (hopen i) (hopen j)`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.exists_multFree_of_phiCond_of_injective_chars :
     ∀ (l : ℕ) [Fact l.Prime] {n : ℕ} {k G : Type} [Field k] [Finite k] [CharP k l] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] (χ : Fin n → G →* kˣ), PhiCond G l → (∀ i, IsOpen ((χ i).ker : Set G)) → Function.Injective χ → ∃ h, MultFree χ h := by

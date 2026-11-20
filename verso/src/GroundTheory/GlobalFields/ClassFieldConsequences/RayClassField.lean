@@ -26,11 +26,9 @@ def normSubgroup : OpenFiniteIndexSubgroup K :=
     𝔪.finiteIndex_map_congruenceSubgroup⟩
 
 /- English proof (translation)
-Use `𝔪.mem_congruenceSubgroup.2 ⟨fun w ↦ ?_, fun w _ ↦ ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality. Rewrite using `[finiteProj_finiteEmbedding, (𝔪.exponent_eq_zero_iff w).2 hv]`. Use `mem_unitsLevel.2 ⟨hu, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.cast_zero, neg_zero, exp_zero]`. Conclude with `Valuation.map_sub_le _ hu.le (by simp)`. Rewrite using `[finiteProj_finiteEmbedding_of_ne hwv]`. Conclude with `one_mem _`. Express the relevant statement in the definitionally equal form `0 < InfinitePlace.Completion.extensionEmbeddingOfIsReal w.2 (1 : w.1.Completion)`.
-
-Rewrite using `[map_one]`. Conclude with `one_pos`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteEmbedding_mem_congruenceSubgroup {v : HeightOneSpectrum (𝓞 K)}
     (hv : ¬ v.asIdeal ∣ 𝔪.ideal) {u : (v.adicCompletion K)ˣ}
@@ -50,11 +48,9 @@ theorem finiteEmbedding_mem_congruenceSubgroup {v : HeightOneSpectrum (𝓞 K)}
     exact one_pos
 
 /- English proof (translation)
-Take `⟨π, hπ, hval⟩` from `exists_ord_eq_one_valued v`. Use `⟨π, hπ, 𝔪.mem_idelesOneMod.2 ⟨fun w hw ↦ ?_, fun w _ ↦ ?_⟩, toFractionalIdeal_eq_iff.2 fun w ↦ ?_⟩` and prove the remaining obligations. Establish `hwv : w ≠ v` using `fun h ↦ hv (h ▸ hw)`. Rewrite using `[finiteProj_finiteEmbedding_of_ne hwv]`. Conclude with `one_mem _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `0 < InfinitePlace.Completion.extensionEmbeddingOfIsReal w.2 (1 : w.1.Completion)`. Rewrite using `[map_one]`. Conclude with `one_pos`. Rewrite using `[count_primeIdealUnit] split_ifs with h`. Substitute `h` using the available equality.
-
-Rewrite using `[ord_finiteEmbedding_self, hval, log_exp, neg_neg]`. Conclude with `ord_finiteEmbedding_of_ne h _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_uniformizer_finiteEmbedding_mem_idelesOneMod {v : HeightOneSpectrum (𝓞 K)}
     (hv : ¬ v.asIdeal ∣ 𝔪.ideal) :
@@ -78,7 +74,7 @@ theorem exists_uniformizer_finiteEmbedding_mem_idelesOneMod {v : HeightOneSpectr
     · exact ord_finiteEmbedding_of_ne h _
 
 /- English proof (translation)
-The claim follows from `fun w hw ↦ by rw [count_primeIdealUnit, if_neg] rintro rfl exact hv hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem primeIdealUnit_mem_coprimeIdeals {v : HeightOneSpectrum (𝓞 K)} (hv : ¬ v.asIdeal ∣ 𝔪.ideal) :
     primeIdealUnit v ∈ 𝔪.coprimeIdeals := fun w hw ↦ by
@@ -104,7 +100,7 @@ instance isAbelianGalois_rayClassField : IsAbelianGalois K (𝔪.rayClassField �
   (𝔪.rayClassFieldSubfield Ω).2.2
 
 /- English proof (translation)
-Establish `h : normGroup (𝔪.rayClassFieldSubfield Ω) = 𝔪.normSubgroup`. Rewrite using `[← normGroupOrderIso_apply, rayClassFieldSubfield, OrderIso.apply_symm_apply]`. Both sides reduce to the same expression. Conclude with `congrArg Subtype.val h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem range_ideleClassNorm_rayClassField :
     (ideleClassNorm K (𝔪.rayClassField Ω)).range = 𝔪.congruenceSubgroup.map (IdeleClassGroup.mk K) := by
@@ -119,7 +115,7 @@ def rayClassGroupGalEquiv : 𝔪.RayClassGroup ≃* (𝔪.rayClassField Ω ≃�
       (reciprocityMapEquiv K (𝔪.rayClassField Ω)))
 
 /- English proof (translation)
-Rewrite using `[rayClassGroupGalEquiv, MulEquiv.trans_apply, MulEquiv.trans_apply, ← quotientMapCongruenceEquiv_mk, MulEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rayClassGroupGalEquiv_mk (x : IdeleGroup K) :
     𝔪.rayClassGroupGalEquiv Ω (QuotientGroup.mk x) =
@@ -132,7 +128,7 @@ def rayClassArtinEquiv : 𝔪.IdealRayClassGroup ≃* (𝔪.rayClassField Ω ≃
   𝔪.rayClassGroupEquiv.symm.trans (𝔪.rayClassGroupGalEquiv Ω)
 
 /- English proof (translation)
-Rewrite using `[rayClassArtinEquiv, MulEquiv.trans_apply, ← 𝔪.rayClassGroupEquiv_mk hx, MulEquiv.symm_apply_apply, rayClassGroupGalEquiv_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rayClassArtinEquiv_mk {x : IdeleGroup K} (hx : x ∈ 𝔪.idelesOneMod) :
     𝔪.rayClassArtinEquiv Ω (QuotientGroup.mk ⟨toFractionalIdeal x,
@@ -142,9 +138,9 @@ theorem rayClassArtinEquiv_mk {x : IdeleGroup K} (hx : x ∈ 𝔪.idelesOneMod) 
     MulEquiv.symm_apply_apply, rayClassGroupGalEquiv_mk]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `hx : IdeleClassGroup.mk K (finiteEmbedding v u) ∈ (ideleClassNorm K (𝔪.rayClassField Ω)).range`. Rewrite using `[𝔪.range_ideleClassNorm_rayClassField Ω]`. Conclude with `⟨_, 𝔪.finiteEmbedding_mem_congruenceSubgroup hv (mem_unitFiltrationUnits_zero_iff_valued.1 hu), rfl⟩`. Rewrite `hx` using `[← ker_reciprocityMap, MonoidHom.mem_ker, reciprocityMap_mk, ideleSymbol_finiteEmbedding]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem unitFiltrationUnits_le_ker_localSymbol {v : HeightOneSpectrum (𝓞 K)} (hv : ¬ v.asIdeal ∣ 𝔪.ideal) :
     LocalField.unitFiltrationUnits (v.adicCompletion K) 0 ≤ (localSymbol (𝔪.rayClassField Ω) v).ker := by
@@ -158,7 +154,7 @@ theorem unitFiltrationUnits_le_ker_localSymbol {v : HeightOneSpectrum (𝓞 K)} 
   exact hx
 
 /- English proof (translation)
-The claim follows from `ramificationIdx_eq_one_of_units_le_ker_localSymbol v (𝔪.unitFiltrationUnits_le_ker_localSymbol Ω hv) w`.
+A detailed English derivation is pending.
 -/
 theorem ramificationIdx_rayClassField_eq_one {v : HeightOneSpectrum (𝓞 K)} (hv : ¬ v.asIdeal ∣ 𝔪.ideal)
     (w : HeightOneSpectrum (𝓞 (𝔪.rayClassField Ω))) [w.asIdeal.LiesOver v.asIdeal] :
@@ -166,9 +162,9 @@ theorem ramificationIdx_rayClassField_eq_one {v : HeightOneSpectrum (𝓞 K)} (h
   ramificationIdx_eq_one_of_units_le_ker_localSymbol v (𝔪.unitFiltrationUnits_le_ker_localSymbol Ω hv) w
 
 /- English proof (translation)
-Take `⟨π, hπ, hx, hxp⟩` from `𝔪.exists_uniformizer_finiteEmbedding_mem_idelesOneMod hv`. Establish `hc : 𝔪.primeClass hv = QuotientGroup.mk ⟨toFractionalIdeal (finiteEmbedding v π), 𝔪.toFractionalIdeal_mem_coprimeIdeals hx⟩`. Rewrite using `[primeClass]`. Use `congr 2`. Conclude with `hxp.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, 𝔪.rayClassArtinEquiv_mk Ω hx, reciprocityMap_mk, ideleSymbol_finiteEmbedding_eq_arithFrobAt v w (𝔪.ramificationIdx_rayClassField_eq_one Ω hv w) hπ]`.
+A detailed English derivation is pending.
 -/
 theorem rayClassArtinEquiv_primeClass {v : HeightOneSpectrum (𝓞 K)} (hv : ¬ v.asIdeal ∣ 𝔪.ideal)
     (w : HeightOneSpectrum (𝓞 (𝔪.rayClassField Ω))) [w.asIdeal.LiesOver v.asIdeal] :
@@ -184,7 +180,7 @@ theorem rayClassArtinEquiv_primeClass {v : HeightOneSpectrum (𝓞 K)} (hv : ¬ 
     ideleSymbol_finiteEmbedding_eq_arithFrobAt v w (𝔪.ramificationIdx_rayClassField_eq_one Ω hv w) hπ]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `nonempty_placesOver (𝔪.rayClassField Ω) v`. Rewrite using `[splitsCompletely_iff_arithFrobAt_eq_one v (𝔪.unitFiltrationUnits_le_ker_localSymbol Ω hv) w, ← 𝔪.rayClassArtinEquiv_primeClass Ω hv w, MulEquiv.map_eq_one_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem splitsCompletely_rayClassField_iff {v : HeightOneSpectrum (𝓞 K)} (hv : ¬ v.asIdeal ∣ 𝔪.ideal) :
     SplitsCompletely (𝔪.rayClassField Ω) v ↔ 𝔪.primeClass hv = 1 := by
@@ -195,7 +191,7 @@ theorem splitsCompletely_rayClassField_iff {v : HeightOneSpectrum (𝓞 K)} (hv 
 end Modulus
 
 /- English proof (translation)
-Take `⟨𝔪, -, hle⟩` from `IdeleClassGroup.exists_map_congruenceSubgroup_le _ (isOpen_range_ideleClassNorm (K := K) (L := L))`. Use `⟨𝔪, (range_ideleClassNorm_le_range_iff L (𝔪.rayClassField Ω)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[𝔪.range_ideleClassNorm_rayClassField Ω]`. Conclude with `hle`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_le_rayClassField (Ω : Type u) [Field Ω] [Algebra K Ω] [IsAlgClosed Ω]
     (L : IntermediateField K Ω) [FiniteDimensional K L] [IsAbelianGalois K L] :

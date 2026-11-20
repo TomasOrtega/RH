@@ -12,11 +12,11 @@ def elemMat (R : Type) [CommRing R] {r : ℕ} (a b : Fin r) (t : R) : Matrix (Fi
   fun c d => (if c = d then 1 else 0) + (if c = b ∧ d = a then t else 0)
 
 /- English proof (translation)
-Establish `: (Polynomial.evalRingHom (C t)).comp (rowGen R (n` using `n) a b).toRingHom = (rowAct R (n := n) (elemMat R a b t)).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[rowGen, rowAct]`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rowGen, rowAct, aeval_X, Polynomial.coe_evalRingHom, elemMat, map_add, add_mul, Finset.sum_add_distrib]`. Use `congr 1`. Simplify using the standard rewrite rules. Distinguish the cases in `hb : v.1 = b`. Simplify using `only [hb, true_and, if_true, Polynomial.eval_mul, Polynomial.eval_X, Polynomial.eval_C]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single a (fun x _ hx => by simp [hx]) (by simp), if_pos rfl, mul_comm]`. Simplify using `[hb]`. Conclude with `congrArg (fun φ => φ f) this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_rowGen_gen (R : Type) [CommRing R] {r n : ℕ} (a b : Fin r) (t : R)
     (f : MvPolynomial (Fin r × Fin n) R) :
@@ -38,7 +38,7 @@ theorem eval_rowGen_gen (R : Type) [CommRing R] {r n : ℕ} (a b : Fin r) (t : R
   exact congrArg (fun φ => φ f) this
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eval_eq_sum_range' hN]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_C_gen (R : Type) [CommRing R] {σ : Type} (P : Polynomial (MvPolynomial σ R)) (N : ℕ)
     (hN : P.natDegree < N) (t : R) :
@@ -48,11 +48,11 @@ theorem eval_C_gen (R : Type) [CommRing R] {σ : Type} (P : Polynomial (MvPolyno
   rw [map_pow, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `c d`. Unfold `Formalism.BranchingDeterminantCap.extM elemMat`. Simplify using `only [Matrix.of_apply]`. Distinguish the cases in `h : c.val < n ∧ d.val < n`. Rewrite using `[dif_pos h]`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[Fin.ext_iff]`. Simplify using `[Fin.ext_iff]`. Rewrite using `[dif_neg h]`. Establish `: ¬ (c = b.castSucc ∧ d = a.castSucc)`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h ⟨b.isLt, a.isLt⟩`. Rewrite using `[if_neg this, add_zero]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extM_elemMat (R : Type) [CommRing R] {n : ℕ} (a b : Fin n) (t : R) :
     Formalism.BranchingDeterminantCap.extM R (elemMat R a b t) = elemMat R a.castSucc b.castSucc t := by
@@ -77,21 +77,21 @@ def RowNat (R : Type) [CommRing R] {n : ℕ} (σ : Fin n → ℕ)
       io f' = rowAct R (Formalism.BranchingDeterminantCap.extM R g) (io f)
 
 /- English proof (translation)
-Establish `hmem : ∀ i, rowDiv R a b i (f : MvPolynomial (Fin n × Fin n) R) ∈ dualWeyl R n n σ` using `fun i => Formalism.GradedWeylDivisibility.dualWeylModuleRowDividedPowerStable R n n σ a b i _ f.2`. Use `set N := (rowGen R a b (f : MvPolynomial (Fin n × Fin n) R)).natDegree + (rowGen R a.castSucc b.castSucc (io f)).natDegree + k + 1 with hN`. Establish `h1 : (rowGen R a b (f : MvPolynomial (Fin n × Fin n) R)).natDegree < N` using `by omega`. Establish `h2 : (rowGen R a.castSucc b.castSucc (io f)).natDegree < N` using `by omega`. Establish `hk' : k ∈ Finset.range N` using `Finset.mem_range.mpr (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ t : R, ∑ i ∈ Finset.range N, t ^ i • io ⟨_, hmem i⟩ = ∑ i ∈ Finset.range N, t ^ i • rowDiv R a.castSucc b.castSucc i (io f)`. Introduce `t`. Establish `hrow : rowAct R (elemMat R a b t) (f : MvPolynomial (Fin n × Fin n) R) ∈ dualWeyl R n n σ` using `Formalism.GradedWeylDivisibility.dualWeylRowStable R n n σ _ _ f.2`. Establish `e` using `hio2 (elemMat R a b t) f ⟨_, hrow⟩ rfl`. Establish `e2 : rowAct R (elemMat R a.castSucc b.castSucc t) (io f) = ∑ i ∈ Finset.range N, C (t ^ i) * (rowGen R a.castSucc b.castSucc (io f)).coeff i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← eval_rowGen_gen, eval_C_gen R _ N h2]`. Rewrite `e` using `[extM_elemMat, e2]`. Establish `hsub : (⟨_, hrow⟩ : ↥(dualWeyl R n n σ)) = ∑ i ∈ Finset.range N, t ^ i • ⟨_, hmem i⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_smul]`. Rewrite using `[← eval_rowGen_gen, eval_C_gen R _ N h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hsub, map_sum]`. Simplify using `only [map_smul] at e`. Rewrite using `[e]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use extensionality with `m`. Use `set P : Polynomial R := ∑ i ∈ Finset.range N, Polynomial.monomial i (coeff m (io ⟨_, hmem i⟩)) with hP`. Use `set Q : Polynomial R := ∑ i ∈ Finset.range N, Polynomial.monomial i (coeff m (rowDiv R a.castSucc b.castSucc i (io f))) with hQ`. Establish `hPQ : P = Q`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `t`. Simplify using `only [hP, hQ, Polynomial.eval_finsetSum, Polynomial.eval_monomial]`. Use `congrArg (coeff m) (key t)` as an intermediate fact. Simplify using `only [coeff_sum, coeff_smul, smul_eq_mul] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[mul_comm]`. Use `congrArg (fun p => Polynomial.coeff p k) hPQ` as an intermediate fact. Simplify using `only [hP, hQ, Polynomial.finsetSum_coeff, Polynomial.coeff_monomial, Finset.sum_ite_eq', if_pos hk'] at this`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem io_rowDiv_gen (R : Type) [CommRing R] [IsDomain R] [Infinite R] {n : ℕ} (σ : Fin n → ℕ)
     (io : ↥(dualWeyl R n n σ) →ₗ[R] MvPolynomial (Fin (n + 1) × Fin n) R) (hio2 : RowNat R σ io)
@@ -145,7 +145,7 @@ theorem io_rowDiv_gen (R : Type) [CommRing R] [IsDomain R] [Infinite R] {n : ℕ
   exact this
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons x w ih => exact Formalism.GradedWeylDivisibility.dualWeylModuleRowDividedPowerStable R n n σ _ _ _ _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem applyWord_mem_dual_gen (R : Type) [CommRing R] {n : ℕ} (σ : Fin n → ℕ) (w : List (Fin n × Fin n × ℕ))
     (f : MvPolynomial (Fin n × Fin n) R) (hf : f ∈ dualWeyl R n n σ) : applyWord R w f ∈ dualWeyl R n n σ := by
@@ -154,9 +154,9 @@ theorem applyWord_mem_dual_gen (R : Type) [CommRing R] {n : ℕ} (σ : Fin n →
   | cons x w ih => exact Formalism.GradedWeylDivisibility.dualWeylModuleRowDividedPowerStable R n n σ _ _ _ _ ih
 
 /- English proof (translation)
-Use `revert hw`. Proceed by induction on `w with`. Consider the case `nil => intro hw`. Both sides reduce to the same expression. Consider the case `cons x w ih`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hw`. Establish `hw'` using `applyWord_mem_dual_gen R σ w _ f.2`. Express the relevant statement in the definitionally equal form `io ⟨rowDiv R x.1 x.2.1 x.2.2 (applyWord R w (f : MvPolynomial (Fin n × Fin n) R)), hw⟩ = rowDiv R x.1.castSucc x.2.1.castSucc x.2.2 (applyWord R (liftWord w) (io f))`. Rewrite using `[io_rowDiv_gen R σ io hio2 x.1 x.2.1 x.2.2 ⟨_, hw'⟩ hw, ih hw']`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem io_applyWord_gen (R : Type) [CommRing R] [IsDomain R] [Infinite R] {n : ℕ} (σ : Fin n → ℕ)
     (io : ↥(dualWeyl R n n σ) →ₗ[R] MvPolynomial (Fin (n + 1) × Fin n) R) (hio2 : RowNat R σ io)
@@ -174,7 +174,7 @@ theorem io_applyWord_gen (R : Type) [CommRing R] [IsDomain R] [Infinite R] {n : 
     rw [io_rowDiv_gen R σ io hio2 x.1 x.2.1 x.2.2 ⟨_, hw'⟩ hw, ih hw']
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih`. Express the relevant statement in the definitionally equal form `rowDiv R x.1 x.2.1 x.2.2 (applyWord R w (c • f)) = c • rowDiv R x.1 x.2.1 x.2.2 (applyWord R w f)`. Rewrite using `[ih, Formalism.GradedWeylDivisibility.rowDiv_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem applyWord_smul_gen (R : Type) [CommRing R] {r n : ℕ} (w : List (Fin r × Fin r × ℕ)) (c : R)
     (f : MvPolynomial (Fin r × Fin n) R) : applyWord R w (c • f) = c • applyWord R w f := by
@@ -190,7 +190,7 @@ def HwVal (R : Type) [CommRing R] {n : ℕ} (lam σ : Fin n → ℕ)
     io h = ((Formalism.BranchingDeterminantCap.cCap (Formalism.BranchingDeterminantCap.lamZ lam) (fun i => (σ i : ℤ)) : ℤ) : R) • Formalism.BranchingDeterminantCap.xiB R lam σ
 
 /- English proof (translation)
-Establish `hhw : hw R le_rfl σ ∈ dualWeyl R n n σ` using `Formalism.GradedWeylDivisibility.weylLeDual R n n le_rfl _ hσ (Submodule.subset_span ⟨[], rfl⟩)`. Rewrite using `[io_applyWord_gen R σ io hio2 w ⟨_, hhw⟩ hwd, hio3 ⟨_, hhw⟩ rfl, applyWord_smul_gen]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem io_weyl_gen (R : Type) [CommRing R] [IsDomain R] [Infinite R] {n : ℕ} (lam σ : Fin n → ℕ) (hσ : Antitone σ)
     (io : ↥(dualWeyl R n n σ) →ₗ[R] MvPolynomial (Fin (n + 1) × Fin n) R) (hio2 : RowNat R σ io)
@@ -203,7 +203,7 @@ theorem io_weyl_gen (R : Type) [CommRing R] [IsDomain R] [Infinite R] {n : ℕ} 
   rw [io_applyWord_gen R σ io hio2 w ⟨_, hhw⟩ hwd, hio3 ⟨_, hhw⟩ rfl, applyWord_smul_gen]
 
 /- English proof (translation)
-Unfold `initMinor`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `p q`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_initMinor_gen {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n s : ℕ} (I : Fin s → Fin r)
     (hs : s ≤ n) : map φ (initMinor R I hs) = initMinor S I hs := by
@@ -214,7 +214,7 @@ theorem map_initMinor_gen {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S
   simp
 
 /- English proof (translation)
-Unfold `Formalism.BranchingDeterminantCap.xiB`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_pow, map_initMinor_gen, map_initMinor_gen]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_xiB {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {n : ℕ} (lam σ : Fin n → ℕ) :
     map φ (Formalism.BranchingDeterminantCap.xiB R lam σ) = Formalism.BranchingDeterminantCap.xiB S lam σ := by
@@ -224,26 +224,26 @@ theorem map_xiB {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {n : ℕ
   rw [map_mul, map_pow, map_pow, map_initMinor_gen, map_initMinor_gen]
 
 /- English proof (translation)
-Rewrite using `[smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul_gen {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {κ : Type} (c : R) (f : MvPolynomial κ R) :
     map φ (c • f) = φ c • map φ f := by
   rw [smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul]
 
 /- English proof (translation)
-Establish `hle` using `Formalism.GradedWeylDivisibility.weylLeDual R n n le_rfl σ hσ`. Establish `hmp : ∀ x, x ∈ dualWeyl R n n σ → map φ x ∈ dualWeyl S n n σ` using `fun x hx => Formalism.GradedWeylDivisibility.dualWeylMap R S φ n n σ x hx`. Unfold `weyl at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨w, rfl⟩` from `hx`. Introduce `h1 h2`. Establish `h2' : applyWord S w (hw S le_rfl σ) ∈ dualWeyl S n n σ`. Rewrite using `[← lclosedeq_hw_map φ, lclosedeq_applyWord_map]`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (⟨_, h2⟩ : ↥(dualWeyl S n n σ)) = ⟨_, h2'⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show map φ (applyWord R w (hw R le_rfl σ)) = applyWord S w (hw S le_rfl σ)`. Rewrite using `[← lclosedeq_hw_map φ, lclosedeq_applyWord_map]`. Rewrite using `[e, io_weyl_gen S lam σ hσ ioS hS2 hS3 w h2']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `io_weyl_gen R lam σ hσ ioR hR2 hR3 w h1`. Rewrite using `[e1, map_smul_gen, ← lclosedeq_applyWord_map, map_xiB, map_intCast]`. Consider the case `zero`. Introduce `h1 h2`. Establish `e1 : (⟨_, h1⟩ : ↥(dualWeyl R n n σ)) = 0` using `rfl`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (⟨_, h2⟩ : ↥(dualWeyl S n n σ)) = 0` using `Subtype.ext (map_zero _)`. Rewrite using `[e1, e2, map_zero, map_zero, map_zero]`. Consider the case `add x y hx hy ihx ihy`. Introduce `h1 h2`. Establish `hx1` using `hle hx`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy1` using `hle hy`. Establish `e1 : (⟨_, h1⟩ : ↥(dualWeyl R n n σ)) = ⟨x, hx1⟩ + ⟨y, hy1⟩` using `rfl`. Establish `e2 : (⟨_, h2⟩ : ↥(dualWeyl S n n σ)) = ⟨_, hmp x hx1⟩ + ⟨_, hmp y hy1⟩` using `Subtype.ext (map_add _ _ _)`. Rewrite using `[e1, e2, map_add, map_add, map_add, ihx hx1 (hmp x hx1), ihy hy1 (hmp y hy1)]`. Consider the case `smul c x hx ihx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h1 h2`. Establish `hx1` using `hle hx`. Establish `e1 : (⟨_, h1⟩ : ↥(dualWeyl R n n σ)) = c • ⟨x, hx1⟩` using `rfl`. Establish `e2 : (⟨_, h2⟩ : ↥(dualWeyl S n n σ)) = φ c • ⟨_, hmp x hx1⟩` using `Subtype.ext (map_smul_gen φ c x)`. Rewrite using `[e1, e2, map_smul, map_smul, map_smul_gen, ihx hx1 (hmp x hx1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem io_bc_weyl {R S : Type} [CommRing R] [IsDomain R] [Infinite R] [CommRing S] [IsDomain S] [Infinite S]
     (φ : R →+* S) {n : ℕ} (lam σ : Fin n → ℕ) (hσ : Antitone σ)
@@ -291,9 +291,9 @@ theorem io_bc_weyl {R S : Type} [CommRing R] [IsDomain R] [Infinite R] [CommRing
     rw [e1, e2, map_smul, map_smul, map_smul_gen, ihx hx1 (hmp x hx1)]
 
 /- English proof (translation)
-Establish `h1' : N • q ∈ dualWeyl R n n σ` using `Submodule.smul_mem _ _ h1`. Establish `h2' : map φ (N • q) ∈ dualWeyl S n n σ` using `Formalism.GradedWeylDivisibility.dualWeylMap R S φ n n σ _ h1'`. Establish `key` using `io_bc_weyl φ lam σ hσ ioR hR2 hR3 ioS hS2 hS3 (N • q) hq h1' h2'`. Establish `e1 : (⟨_, h1'⟩ : ↥(dualWeyl R n n σ)) = N • ⟨q, h1⟩` using `rfl`. Establish `e2 : (⟨_, h2'⟩ : ↥(dualWeyl S n n σ)) = φ N • ⟨_, h2⟩` using `Subtype.ext (map_smul_gen φ N q)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `key` using `[e1, e2, map_smul, map_smul, map_smul_gen, smul_eq_C_mul, smul_eq_C_mul]`. Establish `hC : (C (φ N) : MvPolynomial (Fin (n + 1) × Fin n) S) ≠ 0`. Rewrite using `[Ne, C_eq_zero]`. Conclude with `fun h => hN (hφ (by rw [h, map_zero]))`. Conclude with `mul_left_cancel₀ hC key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem io_bc {R S : Type} [CommRing R] [IsDomain R] [Infinite R] [CommRing S] [IsDomain S] [Infinite S]
     (φ : R →+* S) (hφ : Function.Injective φ) {n : ℕ} (lam σ : Fin n → ℕ) (hσ : Antitone σ)

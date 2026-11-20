@@ -5,29 +5,27 @@ open GlobalTheory.AffineCurveNbhd
 namespace GlobalTheory.AffineCurveNbhd
 
 /- English proof (translation)
-Use `set F := algebraMap B A' f with hF`. Establish `hpow : ∀ m : ℕ, F ∣ h ^ m - 1`. Introduce `m`. Establish `h1 : F ∣ h - 1` using `⟨-c, by linear_combination hh⟩`. Use `sub_dvd_pow_sub_pow h 1 m` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[one_pow]`. Conclude with `h1.trans this`. Establish `hL : ∀ b : B, algebraMap B (Localization.Away h) b = algebraMap A' (Localization.Away h) (algebraMap B A' b)` using `fun b => IsScalarTower.algebraMap_apply B A' (Localization.Away h) b`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨x, s⟩, hs⟩` from `IsLocalization.surj (Submonoid.powers h) a'`. Take `⟨n, hn⟩` from `(Submonoid.mem_powers_iff _ _).mp s.2`. Simplify using `only at hs`. Rewrite `hs` using `[← hn]`. Take `⟨b, hb⟩` from `hN.1 x`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hb` using `[Ideal.mem_span_singleton]`. Take `⟨d, hd⟩` from `hb`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_span_singleton, hL b, hL f]`. Take `⟨u, hu⟩` from `IsLocalization.Away.algebraMap_isUnit (S := Localization.Away h) h |>.exists_right_inv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu1 : algebraMap A' (Localization.Away h) F ∣ u - 1`. Use `⟨algebraMap A' (Localization.Away h) c * u, ?_⟩` and prove the remaining obligations. Use `congrArg (algebraMap A' (Localization.Away h)) hh` as an intermediate fact. Simplify using `only [map_add, map_mul, map_one] at this`. Take the linear combination `hu - u * this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hun : algebraMap A' (Localization.Away h) F ∣ u ^ n - 1`. Use `sub_dvd_pow_sub_pow u 1 n` as an intermediate fact. Rewrite `this` using `[one_pow]`. Conclude with `hu1.trans this`. Take `⟨e, he⟩` from `hun`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha' : a' = algebraMap A' (Localization.Away h) x * u ^ n`. Establish `: a' * (algebraMap A' (Localization.Away h) h * u) ^ n = a'` using `by rw [hu, one_pow, mul_one]`. Rewrite using `[← this, mul_pow, ← mul_assoc, ← map_pow, hs]`. Use `⟨algebraMap A' (Localization.Away h) x * e + algebraMap A' (Localization.Away h) d, ?_⟩` and prove the remaining obligations. Establish `hx : algebraMap A' (Localization.Away h) x = algebraMap A' (Localization.Away h) (algebraMap B A' b) + algebraMap A' (Localization.Away h) F * algebraMap A' (Localization.Away h) d`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, ← map_add, ← hd]`. Put the polynomial expressions in normal form. Rewrite using `[ha']`. Take the linear combination `(algebraMap A' (Localization.Away h) x) * he + hx`. Introduce `a ha`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `ha` using `[Ideal.mem_span_singleton, hL a, hL f]`. Take `⟨y, hy⟩` from `ha`. Take `⟨⟨x, s⟩, hs⟩` from `IsLocalization.surj (Submonoid.powers h) y`. Take `⟨n, hn⟩` from `(Submonoid.mem_powers_iff _ _).mp s.2`. Simplify using `only at hs`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `heq : algebraMap A' (Localization.Away h) (algebraMap B A' a * h ^ n) = algebraMap A' (Localization.Away h) (F * x)`. Rewrite using `[map_mul, map_mul, hy, ← hs, hn]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨⟨k, hk⟩, hk'⟩` from `(IsLocalization.eq_iff_exists (Submonoid.powers h) _).mp heq`. Take `⟨m, rfl⟩` from `(Submonoid.mem_powers_iff _ _).mp hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only at hk'`. Apply `hN.2` to reduce the goal to its premises. Rewrite using `[Ideal.mem_span_singleton]`. Take `⟨g, hg⟩` from `hpow (m + n)`. Use `⟨h ^ m * x - g * algebraMap B A' a, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hF]`. Take the linear combination `hk' - algebraMap B A' a * hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isNbhd_away_of_add_mul_eq_one (B A' : Type) [CommRing B] [CommRing A'] [Algebra B A'] (f : B) (h c : A')
     (hN : IsNbhd B A' f) (hh : h + algebraMap B A' f * c = 1) : IsNbhd B (Localization.Away h) f := by

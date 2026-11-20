@@ -35,7 +35,7 @@ variable {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module ℂ V]
     (hmul : ∀ k ∈ K, ∀ k' ∈ K, k * k' ∈ K) (hst : ∀ k ∈ K, ∀ x ∈ D, ρ k x ∈ D)
 
 /- English proof (translation)
-Rewrite using `[Representation.asModuleEquiv_map_smul, Representation.asAlgebraHom_def, MonoidAlgebra.lift_apply]`. Simplify using `[Finsupp.sum, repD_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem smul_val (a : MonoidAlgebra ℂ (subK K h1 hmul)) (u : (repD ρ D K h1 hmul hst).asModule) :
     (((repD ρ D K h1 hmul hst).asModuleEquiv (a • u) : D) : V) =

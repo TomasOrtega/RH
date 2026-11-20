@@ -9,9 +9,9 @@ namespace GlobalTheory.TwV.Xc
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S _ _ j c La Lb`. Use function extensionality and compare the values at `v`. Consider the cases of `j with`. Consider the case `zero`. Simplify using `only [Joint.fd, fdAtL, fdAt, fdOfCharts, cpAt, chAt]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Consider the case `succ i => exact Formalism.MainNotions.G.KAat.frM_comp i c La Lb v`.
+Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem frM_fd_comp : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => ∀ j (c : (sysS H X std).Lv.comp j) (La Lb : ((sysS H X std).Pj j).Tup), (J.fd std).frM j (c, La) = (J.fd std).frM j (c, Lb)) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S _ _ j c La Lb

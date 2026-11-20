@@ -13,9 +13,9 @@ noncomputable section
 namespace CurveVerticalPointLength
 
 /- English proof (translation)
-Use `choose c hc using hW.2`. Take `⟨hmax, hrat, hmem⟩` from `hCh K ι Ω y s d hP hs hsP W hW c hc`. Establish `hPW : mCoordIdeal y ≤ W` using `le_trans le_sup_left hW.1.1.2`. Establish `hsW : s ∈ W` using `hW.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))`. Establish `hyc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => ne_zero_of_X_notMem fun h => hc k (hPW h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, -, hb, hab⟩` from `(hmem d s hs).mp hsW`. Use `⟨hmax, ?_⟩` and prove the remaining obligations. Rewrite using `[hMC K ι Ω y s d hP hs hsP W hW c hc a b hb hab, hSQ K ι Ω y s d hP hs hsP _ c hmax.isPrime hyc hrat a b hb hab]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maximal_and_mult_eq (hCh : CurveVertPointChart.Statement) (hMC : CurveVertPointMultChart.Statement)
     (hSQ : CurveSectionQuotLocal.Statement) {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
@@ -38,7 +38,7 @@ theorem maximal_and_mult_eq (hCh : CurveVertPointChart.Statement) (hMC : CurveVe
 end CurveVerticalPointLength
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y s d hP hs hsP`. Use `⟨⟨fun W hW => ?_, hInj K ι Ω y s d hP hs hsP, fun m hm => hSurj K ι Ω y s d hP hs hsP m hm.1 hm.2⟩, fun W hW => (CurveVerticalPointLength.maximal_and_mult_eq hCh hMC hSQ hP hs hsP hW).2⟩` and prove the remaining obligations. Take `⟨hmax, hmult⟩` from `CurveVerticalPointLength.maximal_and_mult_eq hCh hMC hSQ hP hs hsP hW`. Conclude with `⟨hmax, hmult ▸ (IndefiniteRowSideFullHecke.Inter.multAt_pos_of_mem_divSupp hW).ne'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CurveVertPointLength.proof (hCh : CurveVertPointChart.Statement) (hInj : CurveVertPointInj.Statement)
     (hSurj : CurveVertPointSurj.Statement) (hMC : CurveVertPointMultChart.Statement)

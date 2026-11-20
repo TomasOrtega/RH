@@ -5,12 +5,12 @@ import CompanionTheory.AutomorphicTheory.ZuckermanCommutation.ZuckermanFunctors.
 namespace CompanionTheory.Zuck
 
 /- English proof (translation)
-The claim follows from `zuckSm_of zuckerman_ingredients zuckerman_library_bounds`.
+A detailed English derivation is pending.
 -/
 theorem zuckerman_gap_small : ZuckSm thr := zuckSm_of zuckerman_ingredients zuckerman_library_bounds
 
 /- English proof (translation)
-The claim follows from `zuckG_of_sm (fun _ hn ε => thr_le hn ε) zuckerman_gap_small`.
+A detailed English derivation is pending.
 -/
 theorem zuckerman_gap : BranchingSupport.ZuckG := zuckG_of_sm (fun _ hn ε => thr_le hn ε) zuckerman_gap_small
 

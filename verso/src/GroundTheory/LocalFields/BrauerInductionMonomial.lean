@@ -16,33 +16,29 @@ open scoped commutatorElement
 variable {G : Type*} [Group G]
 
 /- English proof (translation)
-Set `ρ'` to `ρ.toHomUnits`. Set `cent : Set G → Subgroup G` to `fun s ↦ (Subgroup.centralizer (ρ' '' s)).comap ρ'`. Establish `hcent : ∀ (s : Set G) (x : G), x ∈ cent s ↔ ∀ y ∈ s, ρ y * ρ x = ρ x * ρ y`. Introduce `s x`. Simplify using `only [cent, Subgroup.mem_comap, Subgroup.mem_centralizer_iff, Set.forall_mem_image, Units.ext_iff, Units.val_mul, ρ', MonoidHom.coe_toHomUnits]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `S` to `cent Set.univ`. Establish `hS : ∀ x, x ∈ S ↔ ∀ y, ρ y * ρ x = ρ x * ρ y` using `fun x ↦ by`. Simplify using `[S, hcent]`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz2, hz1⟩ : ∃ z, (∀ y, ⁅z, y⁆ ∈ S) ∧ z ∉ S := by`. Assume the negation of the conclusion as `hcon`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hcon`. Establish `hle : ∀ n, Subgroup.upperCentralSeries G n ≤ S`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite `hx` using `[Subgroup.upperCentralSeries_zero, Subgroup.mem_bot]`. Rewrite using `[hx]`. Conclude with `S.one_mem`. Consider the case `succ n ih`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Conclude with `hcon x fun y ↦ ih (Subgroup.mem_upperCentralSeries_succ_iff.mp hx y)`. Take `⟨n, hn⟩` from `Group.IsNilpotent.nilpotent G`. Take `⟨a, b, hab⟩` from `h`. Conclude with `hab ((hS b).mp (hle n (hn ▸ Subgroup.mem_top b)) a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hzmem : z ∈ insert z (S : Set G)` using `Set.mem_insert z _`. Establish `hSmem : ∀ x ∈ S, x ∈ insert z (S : Set G)` using `fun x hx ↦ Set.mem_insert_of_mem z hx`. Use `⟨Subgroup.closure (insert z (S : Set G)), ⟨fun n hn g ↦ ?_⟩, fun a ha b hb ↦ ?_, ?_⟩` and prove the remaining obligations. Establish `hle : Subgroup.closure (insert z (S : Set G)) ≤ (Subgroup.closure (insert z (S : Set G))).comap (MulAut.conj g).toMonoidHom`. Rewrite using `[Subgroup.closure_le]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `x hx`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_comap, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Break down `hx with rfl | hx` into its components or cases. Rewrite using `[show g * x * g⁻¹ = ⁅x, g⁆⁻¹ * x by rw [commutatorElement_inv, commutatorElement_def]; group]`. Conclude with `Subgroup.mul_mem _ (Subgroup.inv_mem _ (Subgroup.subset_closure (hSmem _ (hz2 g)))) (Subgroup.subset_closure hzmem)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Subgroup.subset_closure` to reduce the goal to its premises. Apply `hSmem` to reduce the goal to its premises. Rewrite using `[hS]`. Introduce `y`. Establish `hx' : ρ (g * x * g⁻¹) = ρ x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, (hS x).mp hx g, mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`. Rewrite using `[hx']`. Conclude with `(hS x).mp hx y`. Conclude with `hle hn`. Establish `h1 : ∀ y ∈ insert z (S : Set G), Subgroup.closure (insert z (S : Set G)) ≤ cent {y}`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `y hy`. Rewrite using `[Subgroup.closure_le]`. Introduce `x hx`. Rewrite using `[SetLike.mem_coe, hcent]`. Introduce `y' hy'`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.mem_singleton_iff.mp hy']`. Break down `hx with rfl | hx` into its components or cases. Break down `hy with rfl | hy` into its components or cases. Both sides reduce to the same expression. Conclude with `((hS y).mp hy x).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hS x).mp hx y`. Establish `h2 : Subgroup.closure (insert z (S : Set G)) ≤ cent {a}`. Rewrite using `[Subgroup.closure_le]`. Introduce `y hy`. Rewrite using `[SetLike.mem_coe, hcent]`.
-
-Introduce `a' ha'`. Rewrite using `[Set.mem_singleton_iff.mp ha']`. Conclude with `((hcent {y} a).mp (h1 y hy ha) y rfl).symm`. Conclude with `((hcent {a} b).mp (h2 hb) a rfl)`. Use `⟨z, Subgroup.subset_closure hzmem, ?_⟩` and prove the remaining obligations.
-
-Rewrite `hz1` using `[hS]`. Use `push Not at hz1`. Conclude with `hz1`.
+A detailed English derivation is pending.
 -/
 theorem exists_normal_commute_of_not_commute {M : Type*} [Monoid M] [Group.IsNilpotent G] (ρ : G →* M)
     (h : ∃ a b, ρ a * ρ b ≠ ρ b * ρ a) :
@@ -130,17 +126,15 @@ section Scalar
 variable {G : Type*} [Group G] {A : Subgroup G} [A.Normal] [Fintype A]
 
 /- English proof (translation)
-Establish `hrank : finrank ℂ (IntertwiningMap (linRep l) (ρ.comp A.subtype)) ≠ 0`. Rewrite using `[← Nat.cast_ne_zero (R := ℂ), ← charInner_character_character, character_linRep]`. Conclude with `h`. Establish `: Nontrivial (IntertwiningMap (linRep l) (ρ.comp A.subtype))` using `Module.nontrivial_of_finrank_pos (Nat.pos_of_ne_zero hrank)`. Take `⟨F, hF⟩` from `exists_ne (0 : IntertwiningMap (linRep l) (ρ.comp A.subtype))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `W : Subrepresentation ρ` to `{ toSubmodule := { carrier := {w | ∀ a : A, ρ a w = (l a : ℂ) • w} add_mem' := fun {w w'} hw hw' a ↦ by rw [map_add, hw a, hw' a, smul_add] zero_mem' := fun a ↦ by rw [map_zero, smul_zero] smul_mem' := fun c w hw a ↦ by rw [map_smul, hw a, smul_comm] } apply_mem_toSubmodule := fu …`. Establish `hag : (a : G) * g = g * (conjNormal A g a : G)` using `by simp [mul_assoc]`. Express the relevant statement in the definitionally equal form `ρ a (ρ g w) = (l a : ℂ) • ρ g w`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hag, map_mul, Module.End.mul_apply]`. Rewrite using `[show ρ (conjNormal A g a : G) w = (l (conjNormal A g a) : ℂ) • w from hw _, hl, map_smul] }`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF1 : F 1 ∈ W.toSubmodule` using `fun a ↦ by`. Use `IntertwiningMap.isIntertwining _ _ F a 1` as an intermediate fact. Rewrite `this` using `[linRep_apply, mul_one, show ((l a : ℂˣ) : ℂ) = (l a : ℂ) • (1 : ℂ) by rw [smul_eq_mul, mul_one], map_smul]`. Conclude with `this.symm`. Establish `hW : W = ⊤`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hρ.eq_bot_or_eq_top W).resolve_left fun hb ↦ hF ?_` and prove the remaining obligations. Establish `h0 : F 1 = 0`. Use `hF1` as an intermediate fact. Rewrite `this` using `[hb]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext_ring` to reduce the goal to its premises. Rewrite using `[IntertwiningMap.toLinearMap_apply, h0]`. Both sides reduce to the same expression. Establish `hv : v ∈ W.toSubmodule`.
-
-Rewrite using `[hW]`. Conclude with `Submodule.mem_top`. Conclude with `hv a`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_eq_smul_of_forall_conj {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (ρ : Representation ℂ G V) [hρ : ρ.IsIrreducible] (l : A →* ℂˣ)
@@ -193,27 +187,25 @@ universe u
 open Classical in
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `G _ _ _ hn χ hχ`. Take `⟨V, _, _, _, ρ, hρ, rfl⟩` from `hχ`. Distinguish the cases in `hc : ∀ a b : G, ρ a * ρ b = ρ b * ρ a`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨l, hl⟩` from `exists_hom_of_isIrreducible_of_commute ρ hc`. Conclude with `⟨⊤, l.comp (⊤ : Subgroup G).subtype, by rw [hl, indFun_top_hom]⟩`. Use `push Not at hc`. Take `⟨A, hAn, hAc, a₀, ha₀, g₀, hg₀⟩` from `exists_normal_commute_of_not_commute ρ hc`. Establish `hχA : IsCharacter (ρ.character ∘ A.subtype)` using `(isCharacter_character ρ).comp _`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne0 : ρ.character ∘ A.subtype ≠ 0` using `fun h0 ↦ (isIrrCharacter_character ρ).one_ne_zero (by simpa using congrFun h0 1)`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ, hφne⟩ : ∃ φ ∈ irrChars A, charInner A (ρ.character ∘ A.subtype) φ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hne0 (eq_zero_of_isClassFun_of_charInner hχA.isClassFun hcon)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨W, _, _, _, σ, hσ, rfl⟩` from `mem_irrChars.mp hφ`. Establish `hrank : finrank ℂ (IntertwiningMap σ (ρ.comp A.subtype)) ≠ 0`. Rewrite using `[← Nat.cast_ne_zero (R := ℂ), ← charInner_character_character]`. Conclude with `hφne`. Establish `: Nontrivial (IntertwiningMap σ (ρ.comp A.subtype))` using `Module.nontrivial_of_finrank_pos (Nat.pos_of_ne_zero hrank)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨F, hF⟩` from `exists_ne (0 : IntertwiningMap σ (ρ.comp A.subtype))`. Establish `hFinj : Function.Injective F` using `(IsIrreducible.injective_or_eq_zero F).resolve_right hF`. Establish `hσc : ∀ a b : A, σ a * σ b = σ b * σ a`. Introduce `a b`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Apply `hFinj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `F (σ a (σ b w)) = F (σ b (σ a w))`. Rewrite using `[IntertwiningMap.isIntertwining _ _ F, IntertwiningMap.isIntertwining _ _ F, IntertwiningMap.isIntertwining _ _ F, IntertwiningMap.isIntertwining _ _ F]`. Express the relevant statement in the definitionally equal form `(ρ a * ρ b) (F w) = (ρ b * ρ a) (F w)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hAc a a.2 b b.2]`. Take `⟨l, hl⟩` from `exists_hom_of_isIrreducible_of_commute σ hσc`. Rewrite `hφne` using `[hl]`. Distinguish the cases in `hT : inertia A (fun a ↦ (l a : ℂ)) = ⊤`. It suffices to derive a contradiction.
+It suffices to derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hlinv : ∀ (g : G) (a : A), l (conjNormal A g a) = l a`. Introduce `g a`. Establish `hg : g ∈ inertia A (fun a ↦ (l a : ℂ))` using `hT ▸ Subgroup.mem_top g`. Conclude with `Units.ext (hg a)`. Apply `hg₀` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Express the relevant statement in the definitionally equal form `ρ g₀ (ρ ((⟨a₀, ha₀⟩ : A) : G) v) = ρ ((⟨a₀, ha₀⟩ : A) : G) (ρ g₀ v)`. Rewrite using `[apply_eq_smul_of_forall_conj ρ l hφne hlinv, apply_eq_smul_of_forall_conj ρ l hφne hlinv, map_smul]`. Take `⟨ψ, hψ, hχψ⟩` from `(isIrrCharacter_character ρ).exists_eq_indFun_inertia (isIrrCharacter_hom l) hφne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `set T := inertia A (fun a ↦ (l a : ℂ))`. Establish `hlt : Nat.card T < n` using `hn ▸ lt_of_le_of_ne (Subgroup.card_le_card_group T) fun h ↦ hT ((Subgroup.card_eq_iff_eq_top T).mp h)`. Take `⟨K, l', hK⟩` from `ih (Nat.card T) hlt T rfl hψ`. Use `⟨K.map T.subtype, l'.comp (K.equivMapOfInjective T.subtype T.subtype_injective).symm.toMonoidHom, ?_⟩` and prove the remaining obligations. Rewrite using `[hχψ, hK, indFun_subtype_indFun_subtype]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_indFun_of_isNilpotent_of_card (n : ℕ) :
     ∀ (G : Type u) [Group G] [Fintype G] [Group.IsNilpotent G], Nat.card G = n →
@@ -286,7 +278,7 @@ theorem exists_eq_indFun_of_isNilpotent_of_card (n : ℕ) :
 open Classical in
 
 /- English proof (translation)
-The claim follows from `exists_eq_indFun_of_isNilpotent_of_card _ G rfl h`.
+A detailed English derivation is pending.
 -/
 theorem IsIrrCharacter.exists_eq_indFun_of_isNilpotent {G : Type*} [Group G] [Fintype G]
     [Group.IsNilpotent G] {χ : G → ℂ} (h : IsIrrCharacter χ) :

@@ -15,11 +15,11 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing a l with`. Consider the case `nil`. Simplify using `only [modBlocks, Option.some.injEq] at h`. Substitute `h` using the available equality. Simplify using `[mapBlocks]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Consider the case `cons b rest ih`. Take `⟨t, s⟩` from `b`. Simplify using `only [modBlocks] at h`. Use `split_ifs at h with hu`. Take `⟨l', hl', rfl⟩` from `Option.map_eq_some_iff.mp h`.
+Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[mapBlocks, ih (a + s) l' hl']`.
+A detailed English derivation is pending.
 -/
 theorem modBlocks_some {A B : Type} [Monoid B] (f : ℕ → ℕ → A → B) (bs : List (A × ℕ)) (a : ℕ)
     (l : List (Bˣ × ℕ+)) (h : modBlocks f a bs = some l) :
@@ -37,7 +37,7 @@ theorem modBlocks_some {A B : Type} [Monoid B] (f : ℕ → ℕ → A → B) (bs
     simp [mapBlocks, ih (a + s) l' hl']
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing a with`. Consider the case `nil => simp [mapBlocks]`. Consider the case `cons b rest ih`. Take `⟨t, s⟩` from `b`. Simplify using `[mapBlocks, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem mapBlocks_snd {A B : Type} (f : ℕ → ℕ → A → B) (bs : List (A × ℕ)) (a : ℕ) :
     (mapBlocks f a bs).map Prod.snd = bs.map Prod.snd := by
@@ -48,7 +48,7 @@ theorem mapBlocks_snd {A B : Type} (f : ℕ → ℕ → A → B) (bs : List (A �
     simp [mapBlocks, ih]
 
 /- English proof (translation)
-Proceed by induction on `l1 with`. Consider the case `nil => simp [blkDet]`. Consider the case `cons b rest ih`. Take `⟨t, s⟩` from `b`. Simplify using `only [List.cons_append, blkDet, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -62,9 +62,9 @@ theorem blkDet_append {K : Type} [CommRing K] (l1 l2 : List (K × ℕ)) :
     ring
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing a with`. Consider the case `nil => simp [mapBlocks, blkDet, prodFac]`. Consider the case `cons b rest ih`. Take `⟨t, s⟩` from `b`. Establish `ht : t ≠ 0` using `h (t, s) (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : ∀ b ∈ rest, b.1 ≠ 0` using `fun b hb => h b (by simp [hb])`. Simplify using `only [mapBlocks, blkDet, prodFac, ih (a + s) hr, blkTop_eq D δ T T' p a s t ht, map_mul, map_pow, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem blkDet_map (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D)
     (bs : List (D.host.E × ℕ)) (a : ℕ) (h : ∀ b ∈ bs, b.1 ≠ 0) :
@@ -86,11 +86,11 @@ def cKind (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (
   | some ζ => Hm D δ p 1 D.R.rS * gF D δ T T' p (D.R.rS + 1) 1 ζ
 
 /- English proof (translation)
-Unfold `modPt at ha`. Use `split at ha`. Simplify using `at ha`. Name the introduced variables `l hl split_ifs at ha with hsum`. Consider the cases of `ha`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap` using `modBlocks_some _ _ _ l hl`. Apply the tactic sequence `have hmat : (⟨l, hsum⟩ : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1)).mat = Matrix.of fun i j : Fin (D.R.rS + 1) => ptEntry (mapBlocks (blkTop δ T T' p) 1 w.1) i.val j.val := by`. Use extensionality with `i j`. Simplify using `only [Loc.Pt.mat, Matrix.of_apply]`. Rewrite using `[ptEntryL_eq, hmap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hmat]`. Apply `ptEntry_det` to reduce the goal to its premises. Rewrite using `[mapBlocks_snd]`. Conclude with `w.2.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modPt_det (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D)
     (w : Point D.host.E (D.R.rS + 1)) (a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1))
@@ -115,25 +115,25 @@ theorem modPt_det (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP 
       exact w.2.2
 
 /- English proof (translation)
-Introduce `D δ p T T'`. Use `⟨cKind D δ T T' p, fun w a ha => ?_⟩` and prove the remaining obligations. Establish `hne : ∀ b ∈ w.1, b.1 ≠ 0` using `fun b hb => (w.2.1 b hb).1`. Rewrite using `[modPt_det D δ T T' p w a ha, blkDet_map D δ T T' p w.1 1 hne, dmin_top]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Choose the witnesses or unpack the hypotheses as in `⟨head, ⟨t, s⟩, hw⟩ : ∃ head b, w.1 = head ++ [b] := by`. Establish `hnil : w.1 ≠ []`. Introduce `h0`. Establish `h1` using `w.2.2`. Rewrite `h1` using `[h0, List.map_nil, List.sum_nil]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `⟨w.1.dropLast, w.1.getLast hnil, (List.dropLast_append_getLast hnil).symm⟩`. Establish `hsum` using `w.2.2`. Rewrite `hsum` using `[hw]`. Simplify using `only [List.map_append, List.sum_append, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero] at hsum`.
+Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hts` using `w.2.1 (t, s) (by rw [hw]; simp)`. Establish `hhead : ∀ b ∈ head, 1 ≤ b.2` using `fun b hb => (w.2.1 b (by rw [hw]; simp [hb])).2`. Establish `hs1 : 1 ≤ s` using `hts.2`. Rewrite using `[hw, prodFac_append, prodFac_noTop D δ T T' p head 1 le_rfl hhead (by omega)]`. Simplify using `only [prodFac, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `Nat.lt_or_ge s 2 with hs | hs` into its components or cases. Establish `hs' : s = 1` using `by omega`. Substitute `hs'` using the available equality. Establish `hk : Dmin w D.R.rS = blkDet head` using `dmin_last_one D w head t hw`. Establish `hkne : blkDet head ≠ 0` using `blkDet_ne_zero head (fun b hb => hne b (by rw [hw]; simp [hb]))`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : zetaOf w = t`. Unfold `zetaOf`. Rewrite using `[hk, dmin_top, hw, blkDet_append]`. Establish `h1 : blkDet [(t, 1)] = t` using `by simp [blkDet]`. Rewrite using `[h1, mul_div_cancel_left₀ t hkne]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hkind : kind w = some t`. Unfold `kind`. Rewrite using `[if_neg (by rw [hk]; exact hkne), hz]`. Rewrite using `[hkind]`. Simplify using `only [cKind, pow_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : (head.map Prod.snd).sum = D.R.rS` using `by omega`. Rewrite using `[h2, Nat.add_comm 1 D.R.rS]`. Establish `hk : Dmin w D.R.rS = 0` using `dmin_last_big D w head t s hw hs`. Establish `hkind : kind w = none`. Unfold `kind`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos hk]`. Rewrite using `[hkind]`. Simplify using `only [cKind]`. Establish `hg : gF D δ T T' p (1 + (head.map Prod.snd).sum) s t = hF D δ p (1 + (head.map Prod.snd).sum) s`. Unfold `gF`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg (by omega)]`. Rewrite using `[hg, hF_pow D δ p _ s (by omega) (by omega), ← Hm_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem determinant_form_identity : DetForm := by
   intro D δ p T T'

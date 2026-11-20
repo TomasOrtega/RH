@@ -14,11 +14,11 @@ namespace GlobalTheory.LineStabClosed
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hu : IsUnit (incV F x i)` using `(Ne.isUnit hi).map (inclR (F := F) (AF F))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩ r`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `h`. Take `⟨c, hc⟩` from `hu`. Use `⟨v i * (c⁻¹ : (AE F E)ˣ), funext fun r => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use `h r` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[← hc]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem mem_line_iff {n : ℕ} (x : Fin n → E) {i : Fin n} (hi : x i ≠ 0) (v : Fin n → AE F E) :
     (∃ a : AE F E, v = a • incV F x) ↔ ∀ r, v r * incV F x i = v i * incV F x r := by
@@ -36,9 +36,7 @@ theorem mem_line_iff {n : ℕ} (x : Fin n → E) {i : Fin n} (hi : x i ≠ 0) (v
       _ = _ := by rw [this]; ring
 
 /- English proof (translation)
-Establish `: {v : Fin n → AE F E | ∃ a : AE F E, v = a • incV F x} = ⋂ r, {v | v r * incV F x i = v i * incV F x r}`. Use extensionality with `v`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`. Conclude with `mem_line_iff x hi v`. Rewrite using `[this]`.
-
-Conclude with `isClosed_iInter fun r => isClosed_eq ((continuous_apply r).mul continuous_const) ((continuous_apply i).mul continuous_const)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_line [TopologicalSpace (AE F E)] [ContinuousMul (AE F E)] [T2Space (AE F E)] {n : ℕ} (x : Fin n → E) {i : Fin n} (hi : x i ≠ 0) :
     IsClosed {v : Fin n → AE F E | ∃ a : AE F E, v = a • incV F x} := by
@@ -49,21 +47,19 @@ theorem isClosed_line [TopologicalSpace (AE F E)] [ContinuousMul (AE F E)] [T2Sp
 
 variable (F E) in
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : T2Space (AE F E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension`. Take `⟨i, hi'⟩` from `Function.ne_iff.1 hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : x i ≠ 0` using `hi'`. Establish `hL` using `isClosed_line (F := F) x hi`. Establish `hm : Continuous fun g : UA σ J => mat g` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hmi : Continuous fun g : UA σ J => mat g⁻¹` using `hm.comp continuous_inv`. Establish `hu : IsUnit (incV F x i)` using `(Ne.isUnit hi).map (inclR (F := F) (AF F))`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Establish `e : (GlobalTheory.IwLine.lineStab σ J x : Set (UA σ J)) = (fun g : UA σ J => mat g *ᵥ incV F x) ⁻¹' {v | ∃ a : AE F E, v = a • incV F x} ∩ (fun g : UA σ J => mat g⁻¹ *ᵥ incV F x) ⁻¹' {v | ∃ a : AE F E, v = a • incV F x}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, Set.mem_inter_iff, Set.mem_preimage, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `hg`. Take `⟨a, ha⟩` from `(GlobalTheory.IwLine.mem_lineStab σ J).1 hg`. Take `⟨b, hb⟩` from `(GlobalTheory.IwLine.mem_lineStab σ J).1 ((GlobalTheory.IwLine.lineStab σ J x).inv_mem hg)`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩⟩`. Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : incV F x = (b * a) • incV F x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_mulVec, GlobalTheory.StabHaar.mat_inv_mul, Matrix.one_mulVec]`. Use `_ = _ := by rw [ha, Matrix.mulVec_smul, hb, smul_smul, mul_comm]`. Establish `e2 : incV F x i * 1 = incV F x i * (b * a)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun e1 i` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[mul_one, mul_comm]`. Conclude with `this`. Establish `hba : b * a = 1` using `(hu.mul_left_cancel e2).symm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.IwLine.mem_lineStab σ J).2 ⟨⟨a, b, by rw [mul_comm]; exact hba, hba⟩, ha⟩`. Rewrite using `[e]`. Conclude with `(hL.preimage (hm.matrix_mulVec continuous_const)).inter (hL.preimage (hmi.matrix_mulVec continuous_const))`. Establish `e : {u : UA σ J | mat u *ᵥ incV F x = incV F x ∧ ∀ z, ∃ a : AE F E, mat u *ᵥ (incM F ι *ᵥ z) = incM F ι *ᵥ z + a • incV F x} = {u : UA σ J | mat u *ᵥ incV F x = incV F x} ∩ ⋂ z, (fun u : UA σ J => mat u *ᵥ (incM F ι *ᵥ z) - incM F ι *ᵥ z) ⁻¹' {v | ∃ a : AE F E, v = a • incV F x}`. Use extensionality with `u`.
-
-Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]`. Use `and_congr Iff.rfl (forall_congr' fun z => exists_congr fun a => ?_)` and prove the remaining obligations. Rewrite using `[sub_eq_iff_eq_add']`. Rewrite using `[e]`. Conclude with `(isClosed_eq (hm.matrix_mulVec continuous_const) continuous_const).inter (isClosed_iInter fun z => hL.preimage ((hm.matrix_mulVec continuous_const).sub continuous_const))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_lineStab_unip (σ : E →ₐ[F] E) (n n₁ : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) (ι : Matrix (Fin n) (Fin n₁) E) (hx : x ≠ 0) :

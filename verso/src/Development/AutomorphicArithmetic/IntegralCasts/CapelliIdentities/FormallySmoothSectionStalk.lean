@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `ha.exists_right_inv`. Take `⟨b, rfl⟩` from `hs c`. Establish `h0 : π (a * b - 1) = 0` using `by rw [map_sub, map_mul, hc, map_one, sub_self]`. Establish `hn : IsNilpotent (a * b - 1)` using `⟨2, by rw [pow_two]; exact hk _ h0⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (a * b)` using `by simpa using hn.isUnit_add_one`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma UpperTheory.isLocalHom_of_square_zero {A B : Type*} [CommRing A] [CommRing B] (π : A →+* B)
     (hs : Function.Surjective π) (hk : ∀ x, π x = 0 → x * x = 0) : IsLocalHom π := by
@@ -16,17 +16,15 @@ private lemma UpperTheory.isLocalHom_of_square_zero {A B : Type*} [CommRing A] [
   exact isUnit_of_mul_isUnit_left hu
 
 /- English proof (translation)
-Apply the tactic sequence `open AlgebraicGeometry CategoryTheory in`. Introduce `X Y f _ s hs p`. Establish `hp : f (s p) = p`. Rewrite using `[← Scheme.Hom.comp_apply, hs]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hi : Inseparable p (f (s p))` using `Inseparable.of_eq hp.symm`. Establish `hfs : (f.stalkMap (s p)).hom.FormallySmooth`. Rewrite using `[← Scheme.Hom.mem_smoothLocus, f.smoothLocus_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Establish `hft : (f.stalkMap (s p)).hom.EssFiniteType` using `LocallyOfFiniteType.stalkMap f (s p)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Y.presheaf.stalk (s p), (X.presheaf.stalkCongr hi).hom ≫ f.stalkMap (s p), s.stalkMap p, Y.fromSpecStalk (s p), ?_, ?_, inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(RingHom.FormallySmooth.respectsIso.cancel_left_isIso _ _).mpr hfs`. Conclude with `(RingHom.EssFiniteType.respectsIso.cancel_left_isIso _ _).mpr hft`. Establish `h : Spec.map (X.presheaf.stalkCongr hi).hom ≫ X.fromSpecStalk p = X.fromSpecStalk (f (s p))` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hi.specializes'`. Rewrite using `[Spec.map_comp, Category.assoc, h, Scheme.SpecMap_stalkMap_fromSpecStalk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Scheme.SpecMap_stalkMap_fromSpecStalk s`. Introduce `R R' _ π φ v hπ hk hv haveI : IsLocalHom π.hom := UpperTheory.isLocalHom_of_square_zero π.hom hπ hk haveI : IsLocalRing R' := π.hom.domain_isLocalRing`. Establish `hsp : v (IsLocalRing.closedPoint R') ⤳ s p`. Establish `h1 : v (IsLocalRing.closedPoint R') = s (X.fromSpecStalk p (Spec.map φ (IsLocalRing.closedPoint R)))`. Establish `h3 : v (Spec.map π (IsLocalRing.closedPoint R)) = s (X.fromSpecStalk p (Spec.map φ (IsLocalRing.closedPoint R)))` using `congrArg (fun k : Spec R ⟶ Y => k (IsLocalRing.closedPoint R)) hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg v (Spec_closedPoint (f := π)).symm).trans h3`. Establish `h2 : X.fromSpecStalk p (Spec.map φ (IsLocalRing.closedPoint R)) ⤳ p`. Establish `: X.fromSpecStalk p (Spec.map φ (IsLocalRing.closedPoint R)) ∈ Set.range (X.fromSpecStalk p)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Rewrite using `[h1]`.
-
-Conclude with `h2.map s.continuous`. Use `⟨Y.presheaf.stalkSpecializes hsp ≫ Scheme.stalkClosedPointTo v, ?_⟩` and prove the remaining obligations. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.formally_smooth_section_stalk :
     open AlgebraicGeometry CategoryTheory in

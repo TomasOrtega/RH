@@ -13,7 +13,7 @@ namespace GlobalTheory.NodalCubic
 
 open WeierstrassCurve WeierstrassCurve.Projective in
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;>`. Apply the tactic sequence `simp [addXYZ, addX, addY, addZ, negAddY, negY] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem addXYZ_param {k : Type} [Field k] (u v : k) :
     (⟨1, 0, 0, 0, 0⟩ : WeierstrassCurve k).toProjective.addXYZ
@@ -25,7 +25,7 @@ theorem addXYZ_param {k : Type} [Field k] (u v : k) :
 
 open WeierstrassCurve WeierstrassCurve.Projective in
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;>`. Apply the tactic sequence `simp [dblXYZ, dblX, dblY, dblZ, negDblY, negY] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dblXYZ_param {k : Type} [Field k] (u : k) :
     (⟨1, 0, 0, 0, 0⟩ : WeierstrassCurve k).toProjective.dblXYZ
@@ -36,9 +36,9 @@ theorem dblXYZ_param {k : Type} [Field k] (u : k) :
     simp [dblXYZ, dblX, dblY, dblZ, negDblY, negY] <;> ring
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Establish `h0` using `congrFun hc 0`. Establish `h1` using `congrFun hc 1`. Simplify using `[Units.smul_def] at h0 h1`. Establish `h2 : (c : k) * v = u` using `by linear_combination h0 + h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3 : u * v = u * u` using `by linear_combination h1 - v * h2`. Conclude with `(mul_left_cancel₀ hu h3).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_param_equiv {k : Type} [Field k] {u v : k} (hu : u ≠ 0) (hv : v ≠ 0)
     (h : ∃ c : kˣ, c • ![v * (1 - v), v ^ 2, (1 - v) ^ 3] = ![u * (1 - u), u ^ 2, (1 - u) ^ 3]) :
@@ -53,7 +53,7 @@ theorem eq_of_param_equiv {k : Type} [Field k] {u v : k} (hu : u ≠ 0) (hv : v 
 
 open WeierstrassCurve WeierstrassCurve.Projective in
 /- English proof (translation)
-Rewrite using `[nonsingular_iff, equation_iff]`. Simplify using `[sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nonsingular_iff_nodal {k : Type} [Field k] (P : Fin 3 → k) :
     (⟨1, 0, 0, 0, 0⟩ : WeierstrassCurve k).toProjective.Nonsingular P ↔
@@ -63,21 +63,19 @@ theorem nonsingular_iff_nodal {k : Type} [Field k] (P : Fin 3 → k) :
   simp [sub_eq_zero]
 
 /- English proof (translation)
-Introduce `k _`. Use `⟨fun u => ?_, fun u v => ?_, fun P hP => ?_⟩` and prove the remaining obligations. Rewrite using `[nonsingular_iff_nodal]`. Use `⟨by simp; ring, Or.inr (Or.inr ?_)⟩` and prove the remaining obligations. Establish `: ((u : k) ^ 2) ^ 2 + (u : k) * (1 - u) * (u : k) ^ 2 = (u : k) ^ 3` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Matrix.cons_val_one, Matrix.cons_val_zero, this]`. Conclude with `pow_ne_zero 3 u.ne_zero`. Distinguish the cases in `h : (u : k) = v`. Use `⟨u ^ 3, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← h, WeierstrassCurve.Projective.add_self, dblXYZ_param, Units.val_pow_eq_pow_val]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Units.mk0 (((u : k) - v) ^ 3) (pow_ne_zero 3 (sub_ne_zero.mpr h)), ?_⟩` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.Projective.add_of_not_equiv (fun h' => h (eq_of_param_equiv u.ne_zero v.ne_zero h')), addXYZ_param, Units.val_mul, Units.val_mk0]`. Rewrite `hP` using `[nonsingular_iff_nodal]`. Take `⟨he, hn⟩` from `hP`. Establish `key : P 1 * (P 0 + P 1) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `hx : P 0 = 0`. Establish `: P 0 ^ 3 = 0` using `by linear_combination P 2 * h0 - he`. Conclude with `pow_eq_zero_iff (by norm_num) |>.mp this`. Establish `hy : P 1 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h0` using `[hx, zero_add]`. Conclude with `mul_self_eq_zero.mp h0`. Simplify using `[hx, hy] at hn`. Establish `hy : P 1 ≠ 0` using `left_ne_zero_of_mul key`. Establish `hs : P 0 + P 1 ≠ 0` using `right_ne_zero_of_mul key`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨hy, hs, Units.mk0 ((P 0 + P 1) ^ 2 / P 1) (div_ne_zero (pow_ne_zero 2 hs) hy), ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Use `fin_cases i`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
-
-Take the linear combination `he`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem nonsingular_points : ∀ (k : Type) [Field k], (∀ u : kˣ, (⟨1, 0, 0, 0, 0⟩ : WeierstrassCurve k).toProjective.Nonsingular ![(u : k) * (1 - u), (u : k) ^ 2, (1 - (u : k)) ^ 3]) ∧ (∀ u v : kˣ, ∃ c : kˣ, (⟨1, 0, 0, 0, 0⟩ : WeierstrassCurve k).toProjective.add ![(u : k) * (1 - u), (u : k) ^ 2, (1 - (u : k)) ^ 3] ![(v : k) * (1 - v), (v : k) ^ 2, (1 - (v : k)) ^ 3] = (c : k) • ![((u * v : kˣ) : k) * (1 - (u * v : kˣ)), ((u * v : kˣ) : k) ^ 2, (1 - ((u * v : kˣ) : k)) ^ 3]) ∧ ∀ P : Fin 3 → k, (⟨1, 0, 0, 0, 0⟩ : WeierstrassCurve k).toProjective.Nonsingular P → P 1 ≠ 0 ∧ P 0 + P 1 ≠ 0 ∧ ∃ c : kˣ, P = (c : k) • ![(P 1 / (P 0 + P 1)) * (1 - P 1 / (P 0 + P 1)), (P 1 / (P 0 + P 1)) ^ 2, (1 - P 1 / (P 0 + P 1)) ^ 3] := by
   intro k _

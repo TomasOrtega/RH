@@ -16,7 +16,7 @@ universe u
 attribute [local instance] QuotientGroup.subsingleton_quotient_top
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_sigma]`. Use `Nat.card_congr { toFun := fun p => ⟨p.1.1, p.1.2, ?_⟩ invFun := fun p => ⟨⟨p.1, p.2.1⟩, ?_⟩ left_inv := fun p => rfl right_inv := fun p => rfl }` and prove the remaining obligations. Take `⟨⟨j, y⟩, hp⟩` from `p`. Conclude with `sigma_mk_injective hp`. Rewrite using `[mem_fixedBy, Sigma.smul_mk, (mem_fixedBy.1 p.2.2)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_fixedBy_sigma {G : Type*} [Group G] {J : Type*} [Fintype J] (Y : J → Type*)
     [∀ j, MulAction G (Y j)] [∀ j, Finite (Y j)] (x : G) :
@@ -36,13 +36,13 @@ namespace AdditiveFunction
 variable {l : ℕ} {Γ : Type u} [Group Γ] (d : AdditiveFunction.{u} l Γ)
 
 /- English proof (translation)
-Use `revert V`. Use `Fintype.induction_empty_option (P := fun J _ => ∀ (V : J → Type u) [∀ j, AddCommGroup (V j)] [∀ j, Module (ZMod l) (V j)] [∀ j, Finite (V j)] (ρ : ∀ j, Representation (ZMod l) Γ (V j)), d.toFun (∀ j, V j) (piFamilyRep V ρ) = ∑ j, d.toFun (V j) (ρ j)) ?_ ?_ ?_ J` and prove the remaining obligations. Introduce `α β _ e h V _ _ _ ρ`. Set `: Fintype α` to `Fintype.ofEquiv β e.symm`. Establish `h'` using `h (fun a => V (e a)) (fun a => ρ (e a))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Equiv.sum_comp e, ← h']`. Use `(d.toFun_congr _ _ (LinearEquiv.piCongrLeft (ZMod l) V e) fun γ x => ?_).symm` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Take `⟨a, rfl⟩` from `e.surjective b`. Express the relevant statement in the definitionally equal form `Equiv.piCongrLeft V e _ (e a) = ρ (e a) γ (Equiv.piCongrLeft V e x (e a))`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.piCongrLeft_apply_apply, Equiv.piCongrLeft_apply_apply]`. Both sides reduce to the same expression. Introduce `V _ _ _ ρ`. Rewrite using `[d.toFun_eq_zero_of_subsingleton]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `α _ ih V _ _ _ ρ`. Rewrite using `[Fintype.sum_option, ← ih (fun a => V (some a)) (fun a => ρ (some a)), ← d.toFun_prod]`. Conclude with `d.toFun_congr _ _ (LinearEquiv.piOptionEquivProd (ZMod l)) fun γ x => rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toFun_piFamilyRep (J : Type u) [Fintype J] (V : J → Type u) [∀ j, AddCommGroup (V j)]
     [∀ j, Module (ZMod l) (V j)] [∀ j, Finite (V j)] (ρ : ∀ j, Representation (ZMod l) Γ (V j)) :
@@ -70,7 +70,7 @@ theorem toFun_piFamilyRep (J : Type u) [Fintype J] (V : J → Type u) [∀ j, Ad
     exact d.toFun_congr _ _ (LinearEquiv.piOptionEquivProd (ZMod l)) fun γ x => rfl
 
 /- English proof (translation)
-Use `Fintype.ofFinite Y` as an intermediate fact. Use `finite_tensorProduct_zmod l (Y → ZMod l) N` as an intermediate fact. Rewrite using `[tensorRep_apply]`. Conclude with `d.toFun_congr _ _ funTensorEquiv fun γ t => funext fun y => funTensorEquiv_tprod σ γ t y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensorRep_funPermRep [Fact l.Prime] {N : Type u} [AddCommGroup N] [Module (ZMod l) N]
     [Finite N] (σ : Representation (ZMod l) Γ N) (Y : Type u) [MulAction Γ Y] [Finite Y] :
@@ -83,7 +83,7 @@ theorem tensorRep_funPermRep [Fact l.Prime] {N : Type u} [AddCommGroup N] [Modul
   exact d.toFun_congr _ _ funTensorEquiv fun γ t => funext fun y => funTensorEquiv_tprod σ γ t y
 
 /- English proof (translation)
-Rewrite using `[← d.toFun_piFamilyRep J (fun j => Y j → N) (fun j => funRep (Y j) σ)]`. Conclude with `d.toFun_congr _ _ (LinearEquiv.piCurry (ZMod l) fun j (_ : Y j) => N) fun γ F => rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toFun_funRep_sigma {N : Type u} [AddCommGroup N] [Module (ZMod l) N] [Finite N]
     (σ : Representation (ZMod l) Γ N) {J : Type u} [Fintype J] (Y : J → Type u)
@@ -93,7 +93,7 @@ theorem toFun_funRep_sigma {N : Type u} [AddCommGroup N] [Module (ZMod l) N] [Fi
   exact d.toFun_congr _ _ (LinearEquiv.piCurry (ZMod l) fun j (_ : Y j) => N) fun γ F => rfl
 
 /- English proof (translation)
-Set `e : ((Γ ⧸ (⊤ : Subgroup Γ)) → N) ≃ₗ[ZMod l] N` to `{ toFun := fun F => F ((1 : Γ) : Γ ⧸ (⊤ : Subgroup Γ)) invFun := fun n _ => n map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun F => funext fun q => congrArg F (Subsingleton.elim _ _) right_inv := fun _ => rfl }`. Use `d.toFun_congr _ _ e fun γ F => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ γ (F (γ⁻¹ • _)) = σ γ (F _)`. Rewrite using `[Subsingleton.elim (γ⁻¹ • ((1 : Γ) : Γ ⧸ (⊤ : Subgroup Γ))) _]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toFun_funRep_quotient_top {N : Type u} [AddCommGroup N] [Module (ZMod l) N] [Finite N]
     (σ : Representation (ZMod l) Γ N) :
@@ -112,7 +112,7 @@ theorem toFun_funRep_quotient_top {N : Type u} [AddCommGroup N] [Module (ZMod l)
 end AdditiveFunction
 
 /- English proof (translation)
-The claim follows from `Nat.card_eq_one_iff_unique.2 ⟨inferInstance, ⟨⟨((1 : Γ) : Γ ⧸ (⊤ : Subgroup Γ)), Subsingleton.elim _ _⟩⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem natCard_fixedBy_quotient_top {Γ : Type*} [Group Γ] (x : Γ) :
     Nat.card (fixedBy (Γ ⧸ (⊤ : Subgroup Γ)) x) = 1 :=
@@ -124,19 +124,19 @@ namespace AdditiveFunction
 variable {l : ℕ} {Γ : Type u} [Group Γ] (d : AdditiveFunction.{u} l Γ)
 
 /- English proof (translation)
-Set `Jp` to `Σ D : s, Fin (c D).toNat`. Set `Jn` to `Fin (Nat.card Γ) ⊕ Σ D : s, Fin (-c D).toNat`. Set `Hp : Jp → Subgroup Γ` to `fun j => j.1`. Set `Hn : Jn → Subgroup Γ` to `Sum.elim (fun _ => ⊤) (fun j => j.1)`. Establish `hsides : ∀ φ : Subgroup Γ → ℤ, (∑ j : Jp, φ (Hp j)) = ∑ D : s, ((c D).toNat : ℤ) * φ D ∧ (∑ j : Jn, φ (Hn j)) = Nat.card Γ * φ ⊤ + ∑ D : s, ((-c D).toNat : ℤ) * φ D`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `φ`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Fintype.sum_sigma]`. Simplify using `[Hp]`. Rewrite using `[Fintype.sum_sum_type, Fintype.sum_sigma]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Hn]`. Establish `hdiff : ∀ φ : Subgroup Γ → ℤ, (∑ D : s, ((c D).toNat : ℤ) * φ D) - ∑ D : s, ((-c D).toNat : ℤ) * φ D = ∑ D ∈ s, c D * φ D`. Introduce `φ`. Rewrite using `[← Finset.sum_sub_distrib, ← Finset.sum_coe_sort s]`. Use `Finset.sum_congr rfl fun D _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sub_mul, Int.toNat_sub_toNat_neg]`. Establish `hfix : ∀ x : Γ, Nat.card (fixedBy (Σ j : Jp, Γ ⧸ Hp j) x) = Nat.card (fixedBy (Σ j : Jn, Γ ⧸ Hn j) x)`. Introduce `x`. Rewrite using `[natCard_fixedBy_sigma, natCard_fixedBy_sigma]`. Establish `h1` using `(hsides fun D => Nat.card (fixedBy (Γ ⧸ D) x)).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(hsides fun D => Nat.card (fixedBy (Γ ⧸ D) x)).2`. Establish `h3` using `hdiff fun D => Nat.card (fixedBy (Γ ⧸ D) x)`. Rewrite `h2` using `[natCard_fixedBy_quotient_top, Nat.cast_one, mul_one]`. Establish `h4` using `hc x`. Use `zify`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hP` using `(d.tensorRep σ).toFun_funPermRep_eq_of_card_fixedBy_eq hfix`. Rewrite `hP` using `[tensorRep_funPermRep, tensorRep_funPermRep, toFun_funRep_sigma, toFun_funRep_sigma]`. Establish `h1` using `(hsides fun D => d.toFun ((Γ ⧸ D) → N) (funRep (Γ ⧸ D) σ)).1`. Establish `h2` using `(hsides fun D => d.toFun ((Γ ⧸ D) → N) (funRep (Γ ⧸ D) σ)).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hdiff fun D => d.toFun ((Γ ⧸ D) → N) (funRep (Γ ⧸ D) σ)`. Rewrite `h2` using `[toFun_funRep_quotient_top]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem card_mul_toFun_eq_sum [Fact l.Prime] [Finite Γ] (s : Finset (Subgroup Γ)) (c : Subgroup Γ → ℤ)
     (hc : ∀ x : Γ, (Nat.card Γ : ℤ) = ∑ D ∈ s, c D * Nat.card (fixedBy (Γ ⧸ D) x))
@@ -186,7 +186,7 @@ theorem card_mul_toFun_eq_sum [Fact l.Prime] [Finite Γ] (s : Finset (Subgroup �
   linarith
 
 /- English proof (translation)
-Take `⟨s, c, hs, hc⟩` from `exists_artin_relation (Γ := Γ)`. Establish `key` using `d.card_mul_toFun_eq_sum s c hc σ`. Rewrite `key` using `[Finset.sum_eq_zero fun D hD => by rw [h D (hs D hD), mul_zero]]`. Establish `hm : (Nat.card Γ : ℤ) ≠ 0` using `by exact_mod_cast Nat.card_pos.ne'`. Conclude with `(mul_eq_zero.1 key).resolve_left hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toFun_eq_zero_of_forall_isCyclic [Fact l.Prime] [Finite Γ] {N : Type u} [AddCommGroup N]
     [Module (ZMod l) N] [Finite N] (σ : Representation (ZMod l) Γ N)

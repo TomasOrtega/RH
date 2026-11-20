@@ -20,7 +20,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Use `haveI : LeftCommutative (WD.lpSum (h := h)) := ⟨fun a b c => by rw [← WD.lpSum_assoc, WD.lpSum_comm a b, WD.lpSum_assoc]⟩`. Conclude with `hp.foldr_eq _`.
+A detailed English derivation is pending.
 -/
 theorem sumList_perm {l l' : List (WD h)} (hp : l.Perm l') : sumList l = sumList l' := by
   haveI : LeftCommutative (WD.lpSum (h := h)) :=
@@ -28,7 +28,7 @@ theorem sumList_perm {l l' : List (WD h)} (hp : l.Perm l') : sumList l = sumList
   exact hp.foldr_eq _
 
 /- English proof (translation)
-The claim follows from `charZero_of_injective_algebraMap (algebraMap E (w.adicCompletion E)).injective`.
+A detailed English derivation is pending.
 -/
 theorem charZero_adicCompletion : CharZero (w.adicCompletion E) :=
   charZero_of_injective_algebraMap (algebraMap E (w.adicCompletion E)).injective
@@ -38,15 +38,13 @@ end GlobalTheory.LocLanglands.LangExt
 open GlobalTheory.LocLanglands.LangExt in
 
 /- English proof (translation)
-Introduce `hX hM E Ω _ _ _ _ _ A w h r`. Use `haveI : CharZero (w.adicCompletion E) := charZero_adicCompletion`. Use `⟨⟨fun x => segSum r (Classical.choose (hX (w.adicCompletion E) x)).toList, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `l x hl`. Establish `hm` using `Classical.choose_spec (hX (w.adicCompletion E) x)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `(hM (w.adicCompletion E)).1 _ _ x hm hl`. Use `show segSum r (Classical.choose (hX (w.adicCompletion E) x)).toList = segSum r l`. Unfold `segSum`. Apply `sumList_perm` to reduce the goal to its premises. Apply `List.Perm.map` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Multiset.coe_eq_coe.1` to reduce the goal to its premises. Rewrite using `[Multiset.coe_toList]`. Conclude with `he`. Introduce `rc hrc x hx`. Establish `h1` using `hrc [.single x hx] x (single_spec hx).2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `(((r x).lpTw ((((1 : ℕ) : ℝ) - 1) / 2)).lpChar (WD.lpSp h 1)).lpSum (WD.lpZero h) = r x`. Rewrite using `[WD.lpSum_zero]`. Establish `h2` using `(GlobalTheory.WeilDeligne.charPol_lpTw_lpChar_lpSp E Ω A w h (r x)).1`. Establish `h3 : ((((1 : ℕ) : ℝ) - 1) / 2) = 0` using `by norm_num`.
-
-Rewrite using `[h3]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LocLanglands.exists_isLExt : LanglandsExhaustionGL → LanglandsMultisegments → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (r : IrrGL (w.adicCompletion E) → WD h), (∃ rc, IsLExt r rc) ∧ ∀ rc, IsLExt r rc → ∀ x : IrrGL (w.adicCompletion E), x.IsCusp → rc x = r x := by
   intro hX hM E Ω _ _ _ _ _ A w h r

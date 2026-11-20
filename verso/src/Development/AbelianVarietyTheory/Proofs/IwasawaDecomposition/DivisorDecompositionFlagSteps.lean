@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.FlagAmple.BorelWeil
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_range_succ, ih, Finset.sum_Ico_succ_top hn, Finset.sum_range_succ (fun a => g a), Nat.add_sub_cancel]`. Simplify using `only [smul_add, smul_neg, sub_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem sum_smul_telescope {M : Type*} [AddCommGroup M] (f : ℕ → ℤ) (g : ℕ → M) (n : ℕ) :
     ∑ b ∈ Finset.range n, f b • g b =
@@ -31,19 +31,17 @@ theorem sum_smul_telescope {M : Type*} [AddCommGroup M] (f : ℕ → ℤ) (g : �
       abel
 
 /- English proof (translation)
-Use `set f' : ℕ → ℤ := fun n => if h : n < m then F ⟨n, h⟩ else 0 with hf'`. Use `set g' : ℕ → M := fun n => if h : n < m then G ⟨n, h⟩ else 0 with hg'`. Establish `inner : ∀ i, i ≤ m → (∑ a : Fin m, if (a : ℕ) < i then G a else 0) = ∑ a ∈ Finset.range i, g' a`. Introduce `i hi`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Finset.sum_filter]`. Use `congr 1`. Use extensionality with `a`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∑ a, F a • G a = ∑ b ∈ Finset.range m, f' b • g' b`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun b => f' b • g' b)]`. Simplify using `[f', g']`. Rewrite using `[h1, sum_smul_telescope, inner m le_rfl]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation.
 
-Use `symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[inner i i.isLt.le]`. Simplify using `[f', i.isLt, show (i : ℕ) - 1 < m by omega, h.ne']`. Simplify using `[h]`. Use `_ = ∑ i ∈ Finset.range m, (if 0 < i then (f' i - f' (i - 1)) • -(∑ a ∈ Finset.range i, g' a) else 0) := Fin.sum_univ_eq_sum_range (fun i : ℕ => if 0 < i then (f' i - f' (i - 1)) • -(∑ a ∈ Finset.range i, g' a) else 0) m`. Use `_ = _ := by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← Finset.sum_filter]`. Use `congr 1`. Use extensionality with `a`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers.
-
-Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[f', hm]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fin_telescope {M : Type*} [AddCommGroup M] (m : ℕ) (G : Fin m → M) (F : Fin m → ℤ) :
     ∑ a, F a • G a =
@@ -109,11 +107,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Z : Model Xo c β} {F : Type} [Field F] {e : F ≃+* c.F}
 
 /- English proof (translation)
-Establish `hlt : ∀ (τ : E →+* ℂ) (i : Fin (Dw.mult τ)), 0 < (i : ℕ) → f ⟨τ, ⟨i - 1, lt_of_le_of_lt (Nat.sub_le _ _) i.isLt⟩⟩ < f ⟨τ, i⟩` using `fun τ i hi => hf τ _ _ (Fin.lt_def.2 (by simp only; omega))`. Use `⟨fun x => (f ⟨x.1, x.2.1⟩ - f ⟨x.1, ⟨x.2.1 - 1, lt_of_le_of_lt (Nat.sub_le _ _) x.2.1.isLt⟩⟩).toNat, fun τ => if h : 0 < Dw.mult τ then f ⟨τ, ⟨Dw.mult τ - 1, Nat.sub_lt h one_pos⟩⟩ else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨τ, i, hi⟩`. Conclude with `Int.lt_toNat.2 (sub_pos.2 (hlt τ i hi))`. Simplify using `only [divOf, Fintype.sum_sigma, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[fin_telescope (Dw.mult τ) (C.gr τ) (fun a => f ⟨τ, a⟩)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg (sub_nonneg.2 (hlt τ i.1 i.2).le)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_steps (C : FlagCpt Z e) (f : Letter Dw → ℤ)
     (hf : ∀ τ (a b : Fin (Dw.mult τ)), a < b → f ⟨τ, a⟩ < f ⟨τ, b⟩) :
@@ -145,9 +143,9 @@ section Letters
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
 
 /- English proof (translation)
-Take `⟨τ', a⟩` from `x`. Simplify using `only [letterOf]`. Prove the components needed by the constructor for the conclusion. Introduce `h split_ifs at h with hk`. Take `⟨rfl, h2⟩` from `Sigma.mk.inj_iff.1 (Option.some.inj h)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨rfl, by simpa [Fin.ext_iff] using h2⟩`. Introduce and unpack `⟨rfl, rfl⟩`. Rewrite using `[dif_pos a.isLt]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem letterOf_inl_eq_some (τ : E →+* ℂ) (k : ℕ) (x : Letter Dw) :
     letterOf Dw (.inl (τ, k)) = some x ↔ τ = x.1 ∧ k = x.2 := by
@@ -164,7 +162,7 @@ theorem letterOf_inl_eq_some (τ : E →+* ℂ) (k : ℕ) (x : Letter Dw) :
 open Classical in
 
 /- English proof (translation)
-Simplify using `only [rootEx, rootSym]`. Apply the tactic sequence `split_ifs <;> rw [expo_single] <;> simp_all [letterOf_inl_eq_some]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rootEx_apply (τ : E →+* ℂ) (i : ℕ) (x : Letter Dw) :
     rootEx Dw τ i x = if i < Dw.p then (if τ = x.1 ∧ i = x.2 then 1 else 0)
@@ -185,9 +183,9 @@ section Places
 variable {D : D7} (A : Amb D)
 
 /- English proof (translation)
-Introduce `h`. Establish `him : A.H.rt0.im = 0` using `Complex.conj_eq_iff_im.1 h`. Establish `hre` using `congrArg Complex.re A.H.sqrt_neg_disc_sq`. Simplify using `only [pow_two, Complex.mul_re, him, mul_zero, sub_zero, Complex.neg_re, Complex.natCast_re] at hre`. Establish `: (0 : ℝ) < A.H.d` using `by exact_mod_cast A.H.d_prime.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_self_nonneg A.H.rt0.re]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem conj_cmHostRoot_ne_self : (starRingEnd ℂ) A.H.rt0 ≠ A.H.rt0 := by
   intro h
@@ -198,16 +196,16 @@ theorem conj_cmHostRoot_ne_self : (starRingEnd ℂ) A.H.rt0 ≠ A.H.rt0 := by
   nlinarith [mul_self_nonneg A.H.rt0.re]
 
 /- English proof (translation)
-Simplify using `only [conjEmb, RingHom.coe_comp, Function.comp_apply, A.cm t]`. Conclude with `conj_cmHostRoot_ne_self A`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conjEmb_tauEmb_rt (t : D.what₂.Tau) : conjEmb (DV.tauEmb D t) (A.H.rt : D.host.E) ≠ A.H.rt0 := by
   simp only [conjEmb, RingHom.coe_comp, Function.comp_apply, A.cm t]
   exact conj_cmHostRoot_ne_self A
 
 /- English proof (translation)
-Establish `hb : Function.Bijective fun t => InfinitePlace.mk (DV.tauEmb D t)` using `(Fintype.bijective_iff_injective_and_card _).2 ⟨Formalism.L2.Geo.Rec.StarEmbeddingNorm.mk_tauEmb_injective D, (Formalism.L2.Geo.Rec.StarEmbeddingNorm.card_places D).symm⟩`. Take `⟨t, ht⟩` from `hb.2 (InfinitePlace.mk τ)`. Use `⟨t, ?_⟩` and prove the remaining obligations. Break down `InfinitePlace.mk_eq_iff.1 ht with h | h` into its components or cases. Conclude with `Or.inl h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use `right`. Rewrite using `[← h]`. Use extensionality with `x`. Simplify using `[conjEmb, ComplexEmbedding.conjugate_coe_eq]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_of_places (τ : D.host.E →+* ℂ) : ∃ t, DV.tauEmb D t = τ ∨ conjEmb (DV.tauEmb D t) = τ := by
   have hb : Function.Bijective fun t => InfinitePlace.mk (DV.tauEmb D t) :=
@@ -223,7 +221,7 @@ theorem exists_of_places (τ : D.host.E →+* ℂ) : ∃ t, DV.tauEmb D t = τ �
     simp [conjEmb, ComplexEmbedding.conjugate_coe_eq]
 
 /- English proof (translation)
-Take `⟨t, h1 | h1⟩` from `exists_of_places τ`. Conclude with `⟨t, h1⟩`. Conclude with `absurd (h1 ▸ h) (conjEmb_tauEmb_rt A t)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_tauEmb (τ : D.host.E →+* ℂ) (h : τ (A.H.rt : D.host.E) = A.H.rt0) : ∃ t, DV.tauEmb D t = τ := by
   obtain ⟨t, h1 | h1⟩ := exists_of_places τ
@@ -231,7 +229,7 @@ theorem exists_tauEmb (τ : D.host.E →+* ℂ) (h : τ (A.H.rt : D.host.E) = A.
   · exact absurd (h1 ▸ h) (conjEmb_tauEmb_rt A t)
 
 /- English proof (translation)
-Take `⟨t, h1 | h1⟩` from `exists_of_places τ`. Conclude with `absurd (h1 ▸ A.cm t) h`. Conclude with `⟨t, h1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_conjEmb (τ : D.host.E →+* ℂ) (h : τ (A.H.rt : D.host.E) ≠ A.H.rt0) :
     ∃ t, conjEmb (DV.tauEmb D t) = τ := by
@@ -254,13 +252,11 @@ variable {D : D7} {A : Amb D} {N j : ℕ} (S : Sig A N j) (μ : Fin N → ℤ)
 open Classical in
 
 /- English proof (translation)
-Establish `hp : (a : ℕ) < S.Dw.p`. Use `a.isLt` as an intermediate fact. Simplify using `only [Datum.mult, if_pos hτ] at this`. Conclude with `this`. Rewrite using `[Fintype.sum_prod_type]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single ⟨a, ha⟩]`. Rewrite using `[rootEx_apply, if_pos hp]`. Apply the tactic sequence `by_cases h : DV.tauEmb D t = τ <;> simp [h]`. Introduce `i _ hi`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rootEx_apply]`. Use `split_ifs with h1 h2 h3`. Conclude with `absurd (Fin.ext h2.2) hi`. Simplify using the standard rewrite rules. Conclude with `absurd (h3.1 ▸ hτ) (conjEmb_tauEmb_rt A t)`.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_cm (τ : D.host.E →+* ℂ) (hτ : τ (A.H.rt : D.host.E) = A.H.rt0) (a : Fin (S.Dw.mult τ))
     (ha : (a : ℕ) < N) :
@@ -287,15 +283,13 @@ theorem coeff_cm (τ : D.host.E →+* ℂ) (hτ : τ (A.H.rt : D.host.E) = A.H.r
 open Classical in
 
 /- English proof (translation)
-Establish `hq : (a : ℕ) < S.Dw.q`. Use `a.isLt` as an intermediate fact. Simplify using `only [Datum.mult, if_neg hτ] at this`. Conclude with `this`. Establish `hN` using `S.rank_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single ⟨S.Dw.p + S.Dw.q - 1 - a, hi⟩]`. Establish `e : S.Dw.p + S.Dw.q - 1 - (S.Dw.p + S.Dw.q - 1 - (a : ℕ)) = a` using `by omega`. Rewrite using `[rootEx_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Simplify using `only`. Rewrite using `[if_neg (by omega)]`. Apply the tactic sequence `by_cases h : conjEmb (DV.tauEmb D t) = τ <;> simp [h, e]`. Introduce `i _ hne`. Rewrite using `[rootEx_apply]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Simplify using `only`. Use `split_ifs with h1 h2 h3`. Conclude with `absurd (h2.1 ▸ A.cm t) hτ`. Simplify using the standard rewrite rules. Conclude with `absurd (Fin.ext (by have := i.isLt; simp only; omega)) hne`.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_conj (τ : D.host.E →+* ℂ) (hτ : τ (A.H.rt : D.host.E) ≠ A.H.rt0) (a : Fin (S.Dw.mult τ))
     (hi : S.Dw.p + S.Dw.q - 1 - a < N) :
@@ -333,19 +327,17 @@ namespace GlobalTheory.FlagAmple.BorelWeil
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O
 
 /- English proof (translation)
-Use `set f : Letter S.Dw → ℤ := fun x => -∑ y : DV.Rt D.what₂.Tau N, μ y.2 * rootEx S.Dw (DV.tauEmb D y.1) y.2 x with hf`. Establish `hL : -∑ x : DV.Rt D.what₂.Tau N, μ x.2 • divOf (Φ.C k) (rootEx S.Dw (DV.tauEmb D x.1) x.2) = divOf (Φ.C k) f`. Simplify using `only [divOf, hf, Finset.smul_sum, smul_smul, neg_smul, Finset.sum_smul, Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Establish `hmono : ∀ τ (a b : Fin (S.Dw.mult τ)), a < b → f ⟨τ, a⟩ < f ⟨τ, b⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ a b hab`. Establish `hab' : (a : ℕ) < b` using `hab`. Establish `hN` using `S.rank_eq`. Distinguish the cases in `hτ : τ (A.H.rt : D.host.E) = A.H.rt0`. Establish `hm : S.Dw.mult τ = S.Dw.p` using `if_pos hτ`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : (a : ℕ) < N` using `by have := a.isLt; omega`. Establish `hb : (b : ℕ) < N` using `by have := b.isLt; omega`. Establish `hμab : μ ⟨b, hb⟩ < μ ⟨a, ha⟩` using `hμ (Fin.mk_lt_mk.2 hab')`. Simplify using `only [hf, coeff_cm S μ τ hτ a ha, coeff_cm S μ τ hτ b hb, neg_lt_neg_iff]`. Take `⟨t0, ht0⟩` from `exists_tauEmb A τ hτ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_lt_sum` to reduce the goal to its premises. Introduce `t _ split_ifs`. Conclude with `hμab.le`. Conclude with `le_rfl`. Conclude with `⟨t0, Finset.mem_univ _, by simp only [ht0, if_true]; exact hμab⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : S.Dw.mult τ = S.Dw.q` using `if_neg hτ`. Establish `ha : S.Dw.p + S.Dw.q - 1 - (a : ℕ) < N` using `by have := a.isLt; omega`. Establish `hb : S.Dw.p + S.Dw.q - 1 - (b : ℕ) < N` using `by have := b.isLt; omega`. Establish `hμab : μ ⟨_, ha⟩ < μ ⟨_, hb⟩` using `hμ (Fin.mk_lt_mk.2 (by have := b.isLt; omega))`. Simplify using `only [hf, coeff_conj S μ τ hτ a ha, coeff_conj S μ τ hτ b hb, neg_lt_neg_iff]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t0, ht0⟩` from `exists_conjEmb A τ hτ`. Apply `Finset.sum_lt_sum` to reduce the goal to its premises. Introduce `t _ split_ifs`. Conclude with `neg_le_neg hμab.le`. Conclude with `le_rfl`.
-
-Conclude with `⟨t0, Finset.mem_univ _, by simp only [ht0, if_true]; exact neg_lt_neg hμab⟩`. Take `⟨w, c, hw, h⟩` from `exists_steps (Φ.C k) f hmono`. Conclude with `⟨w, c, hw, hL.trans h⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lmu_div_eq (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp)
     (μ : Fin N → ℤ) (hμ : StrictAnti μ) :

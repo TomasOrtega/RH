@@ -8,7 +8,7 @@ namespace GlobalTheory.CompanionTheory.UnrDens.NormUnit
 variable {E : Type} [CommRing E] {τ : E →+* E} {q : ℕ} {ε : ℤ}
 
 /- English proof (translation)
-Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[h.card]`. Use `h.one_lt` as an intermediate fact. Conclude with `pow_ne_zero 2 (by omega)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_of_resAlg (h : ResAlg E τ q ε) : Finite E := by
   apply Nat.finite_of_card_ne_zero
@@ -17,7 +17,7 @@ theorem finite_of_resAlg (h : ResAlg E τ q ε) : Finite E := by
   exact pow_ne_zero 2 (by omega)
 
 /- English proof (translation)
-Use `finite_of_resAlg h` as an intermediate fact. Rewrite using `[← Finite.one_lt_card_iff_nontrivial, h.card]`. Use `h.one_lt` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem nontrivial_of_resAlg (h : ResAlg E τ q ε) : Nontrivial E := by
   have := finite_of_resAlg h
@@ -26,15 +26,15 @@ theorem nontrivial_of_resAlg (h : ResAlg E τ q ε) : Nontrivial E := by
   nlinarith
 
 /- English proof (translation)
-Use `finite_of_resAlg h` as an intermediate fact. Take `⟨u, hu, hb⟩` from `h.basis`. Establish `hbij : Function.Bijective (fun p : {x : E // τ x = x} × {x : E // τ x = x} => (p.1 : E) + p.2 * u)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, hx⟩, ⟨y, hy⟩⟩ ⟨⟨x', hx'⟩, ⟨y', hy'⟩⟩ hxy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only at hxy`. Establish `h2` using `congrArg τ hxy`. Simplify using `only [map_add, map_mul, hx, hy, hx', hy'] at h2`. Establish `hyy : y = y'`. Establish `h3 : (y - y') * (u - τ u) = 0` using `by linear_combination hxy - h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[hu.mul_left_eq_zero, sub_eq_zero]`. Conclude with `h3`. Substitute `hyy` using the available equality. Establish `hxx : x = x'` using `by linear_combination hxy`. Substitute `hxx` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `a`. Take `⟨x, y, hx, hy, rfl⟩` from `hb a`. Conclude with `⟨(⟨x, hx⟩, ⟨y, hy⟩), rfl⟩`. Establish `hc` using `Nat.card_congr (Equiv.ofBijective _ hbij)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[Nat.card_prod, h.card]`. Establish `h4 : Nat.card {x : E // τ x = x} ^ 2 = q ^ 2` using `by rw [sq]; exact hc`. Conclude with `Nat.pow_left_injective (by norm_num) h4`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_fixed (h : ResAlg E τ q ε) : Nat.card {x : E // τ x = x} = q := by
   have := finite_of_resAlg h
@@ -63,7 +63,7 @@ theorem card_fixed (h : ResAlg E τ q ε) : Nat.card {x : E // τ x = x} = q := 
   exact Nat.pow_left_injective (by norm_num) h4
 
 /- English proof (translation)
-Use `finite_of_resAlg h` as an intermediate fact. Establish `e1 : Nat.card {x : E // τ x = x ∧ x ≠ 0} = Nat.card {y : {x : E // τ x = x} // y ≠ ⟨0, map_zero τ⟩}` using `Nat.card_congr { toFun := fun x => ⟨⟨x.1, x.2.1⟩, fun h0 => x.2.2 (congrArg Subtype.val h0)⟩ invFun := fun y => ⟨y.1.1, y.1.2, fun h0 => y.2 (Subtype.ext h0)⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `e2` using `Nat.card_congr (Equiv.optionSubtypeNe (⟨0, map_zero τ⟩ : {x : E // τ x = x}))`. Rewrite `e2` using `[Finite.card_option, card_fixed h]`. Rewrite using `[e1, ← e2, Nat.add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_fixed_ne (h : ResAlg E τ q ε) : Nat.card {x : E // τ x = x ∧ x ≠ 0} = q - 1 := by
   classical
@@ -79,7 +79,7 @@ theorem card_fixed_ne (h : ResAlg E τ q ε) : Nat.card {x : E // τ x = x ∧ x
   rw [e1, ← e2, Nat.add_sub_cancel]
 
 /- English proof (translation)
-Establish `h2 : s * τ v = 1`. Establish `h3` using `congrArg τ hv`. Rewrite `h3` using `[map_mul, map_one, hs]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 -/
 theorem fixed_inv {s v : E} (hs : τ s = s) (hv : s * v = 1) : τ v = v := by
   have h2 : s * τ v = 1 := by
@@ -89,19 +89,17 @@ theorem fixed_inv {s v : E} (hs : τ s = s) (hv : s * v = 1) : τ v = v := by
     _ = v := by rw [mul_assoc, h2, mul_one]
 
 /- English proof (translation)
-Use `nontrivial_of_resAlg h` as an intermediate fact. Take `⟨u, hu, -⟩` from `h.basis`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha0, hau⟩ : ∃ a : E, a ≠ 0 ∧ ¬ IsUnit a := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hnf ⟨exists_pair_ne E, mul_comm, fun {a} ha => by`. Take `⟨b, hb⟩` from `(hc a ha).exists_right_inv`. Conclude with `⟨b, hb⟩⟩`. Establish `haτ : a * τ a = 0`. Assume the negation of the conclusion as `hne`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hau` to reduce the goal to its premises. Establish `hfix : τ (a * τ a) = a * τ a` using `by rw [map_mul, h.inv, mul_comm]`. Conclude with `isUnit_of_mul_isUnit_left (h.fixedUnit _ hfix hne)`. Establish `hw : ∃ w : E, a * w + τ (a * w) ≠ 0`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push Not at hc`. Establish `h1` using `hc 1`. Establish `h2` using `hc u`. Rewrite `h1` using `[mul_one]`. Apply `ha0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `h3 : a * (u - τ u) = 0`. Rewrite `h2` using `[map_mul]`. Take the linear combination `h2 - τ u * h1`. Conclude with `hu.mul_left_eq_zero.1 h3`. Take `⟨w, hw⟩` from `hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hTfix : τ (a * w + τ (a * w)) = a * w + τ (a * w)` using `by rw [map_add, h.inv, add_comm]`. Take `⟨s, hs⟩` from `(h.fixedUnit _ hTfix hw).exists_right_inv`. Establish `hsf : τ s = s` using `fixed_inv hTfix hs`. Use `⟨a * w * s, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hsf]`.
-
-Take the linear combination `hs`. Rewrite using `[map_mul, hsf, map_mul]`. Take the linear combination `(w * τ w * s * s) * haτ`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_idem (h : ResAlg E τ q ε) (hnf : ¬ IsField E) :
     ∃ e : E, e + τ e = 1 ∧ e * τ e = 0 := by
@@ -140,21 +138,19 @@ theorem exists_idem (h : ResAlg E τ q ε) (hnf : ¬ IsField E) :
     linear_combination (w * τ w * s * s) * haτ
 
 /- English proof (translation)
-Take `⟨e, he1, he0⟩` from `exists_idem h hnf`. Establish `hτe : τ (τ e) = e` using `h.inv e`. Establish `hee : e * e = e` using `by linear_combination e * he1 - he0`. Establish `hff : τ e * τ e = τ e` using `by linear_combination τ e * he1 - he0`. Establish `hiso : ∀ α : E, ∃ s : E, τ α = α → α ≠ 0 → α * s = 1 ∧ τ s = s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `α`. Distinguish the cases in `hc : τ α = α ∧ α ≠ 0`. Take `⟨s, hs⟩` from `(h.fixedUnit α hc.1 hc.2).exists_right_inv`. Conclude with `⟨s, fun _ _ => ⟨hs, fixed_inv hc.1 hs⟩⟩`. Conclude with `⟨0, fun h1 h2 => absurd ⟨h1, h2⟩ hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose s hs using hiso`. Establish `hfixA : ∀ a : E, τ (a * e + τ a * τ e) = a * e + τ a * τ e`. Introduce `a`. Simplify using `only [map_add, map_mul, h.inv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hneA : ∀ a : E, a * τ a = t → a * e + τ a * τ e ≠ 0`. Introduce `a ha hα`. Apply `t0` to reduce the goal to its premises. Establish `h1 : a * e = 0` using `by linear_combination e * hα - a * hee - τ a * he0`. Establish `h2 : τ a * τ e = 0` using `by linear_combination τ e * hα - τ a * hff - a * he0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-ha + τ a * h1 + a * h2 - a * τ a * he1`. Rewrite using `[← card_fixed_ne h]`. Conclude with `Nat.card_congr { toFun := fun a => ⟨a.1 * e + τ a.1 * τ e, hfixA a.1, hneA a.1 a.2⟩ invFun := fun x => ⟨x.1 * e + t * s x.1 * τ e, by`. Take `⟨hs1, hs2⟩` from `hs x.1 x.2.1 x.2.2`. Simplify using `only [map_add, map_mul, x.2.1, ht, hs2, hτe]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take the linear combination `(x.1 ^ 2 + t ^ 2 * s x.1 ^ 2) * he0 + x.1 * t * s x.1 * hee + x.1 * t * s x.1 * hff + x.1 * t * s x.1 * he1 + t * hs1⟩`. Use `left_inv := fun a => by`. Take `⟨hs1, -⟩` from `hs _ (hfixA a.1) (hneA a.1 a.2)`. Establish `ha` using `a.2`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Simplify using `only`. Take the linear combination `a.1 * hee + (τ a.1 - a.1 ^ 2 * s (a.1 * e + τ a.1 * τ e)) * he0 + a.1 * he1 - s (a.1 * e + τ a.1 * τ e) * τ e * ha + a.1 * τ e * hs1 - a.1 * τ a.1 * s (a.1 * e + τ a.1 * τ e) * hff`. Use `right_inv := fun x => by`. Take `⟨-, hs2⟩` from `hs x.1 x.2.1 x.2.2`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Simplify using `only`. Simplify using `only [map_add, map_mul, x.2.1, ht, hs2, hτe]`. Take the linear combination `x.1 * hee + 2 * t * s x.1 * he0 + x.1 * hff + x.1 * he1 }`.
+Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem card_fibre_split (h : ResAlg E τ q ε) (hnf : ¬ IsField E) {t : E} (ht : τ t = t)
     (t0 : t ≠ 0) : Nat.card {a : E // a * τ a = t} = q - 1 := by
@@ -203,16 +199,16 @@ theorem card_fibre_split (h : ResAlg E τ q ε) (hnf : ¬ IsField E) {t : E} (ht
         linear_combination x.1 * hee + 2 * t * s x.1 * he0 + x.1 * hff + x.1 * he1 }
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `hf.mul_inv_cancel ha`. Conclude with `IsUnit.of_mul_eq_one b hb`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isUnit_of_ne (hf : IsField E) {a : E} (ha : a ≠ 0) : IsUnit a := by
   obtain ⟨b, hb⟩ := hf.mul_inv_cancel ha
   exact IsUnit.of_mul_eq_one b hb
 
 /- English proof (translation)
-Use `finite_of_resAlg h` as an intermediate fact. Use `nontrivial_of_resAlg h` as an intermediate fact. Establish `e1 : Nat.card Eˣ = Nat.card {a : E // a ≠ 0}` using `Nat.card_congr { toFun := fun u => ⟨u, u.ne_zero⟩ invFun := fun a => (isUnit_of_ne hf a.2).unit left_inv := fun u => Units.ext rfl right_inv := fun a => rfl }`. Establish `e2` using `Nat.card_congr (Equiv.optionSubtypeNe (0 : E))`. Rewrite `e2` using `[Finite.card_option, h.card]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e1, ← e2, Nat.add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_units (h : ResAlg E τ q ε) (hf : IsField E) : Nat.card Eˣ = q ^ 2 - 1 := by
   classical
@@ -249,32 +245,32 @@ Both sides reduce to the same expression.
 theorem coe_tauU (b : Eˣ) : ((tauU τ b : Eˣ) : E) = τ b := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_tauU, coe_tauU, h.inv]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tauU_tauU (h : ResAlg E τ q ε) (b : Eˣ) : tauU τ (tauU τ b) = b := by
   apply Units.ext
   rw [coe_tauU, coe_tauU, h.inv]
 
 /- English proof (translation)
-Rewrite using `[ratioU_apply, div_eq_iff_eq_mul, Units.ext_iff, Units.val_mul, coe_tauU]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ratioU_eq_iff {c a : Eˣ} : ratioU τ c = a ↔ (c : E) = a * τ c := by
   rw [ratioU_apply, div_eq_iff_eq_mul, Units.ext_iff, Units.val_mul, coe_tauU]
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.mem_ker, normU_apply, Units.ext_iff, Units.val_mul, coe_tauU, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_ker_normU {k : Eˣ} : k ∈ (normU τ).ker ↔ (k : E) * τ k = 1 := by
   rw [MonoidHom.mem_ker, normU_apply, Units.ext_iff, Units.val_mul, coe_tauU, Units.val_one]
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.mem_ker, ratioU_eq_iff, Units.val_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_ker_ratioU {k : Eˣ} : k ∈ (ratioU τ).ker ↔ (k : E) = τ k := by
   rw [MonoidHom.mem_ker, ratioU_eq_iff, Units.val_one, one_mul]
 
 /- English proof (translation)
-Use `nontrivial_of_resAlg h` as an intermediate fact. Rewrite using `[← card_fixed_ne h]`. Conclude with `Nat.card_congr { toFun := fun k => ⟨((k : Eˣ) : E), (mem_ker_ratioU.1 k.2).symm, (k : Eˣ).ne_zero⟩ invFun := fun x => ⟨(h.fixedUnit x.1 x.2.1 x.2.2).unit, mem_ker_ratioU.2 x.2.1.symm⟩ left_inv := fun k => Subtype.ext (Units.ext rfl) right_inv := fun x => rfl }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_ker_ratioU (h : ResAlg E τ q ε) : Nat.card (ratioU τ).ker = q - 1 := by
   have := nontrivial_of_resAlg h
@@ -286,15 +282,15 @@ theorem card_ker_ratioU (h : ResAlg E τ q ε) : Nat.card (ratioU τ).ker = q - 
       right_inv := fun x => rfl }
 
 /- English proof (translation)
-Use `nontrivial_of_resAlg h` as an intermediate fact. Use extensionality with `k`. Prove the components needed by the constructor for the conclusion. Introduce `hk`. Take `⟨c, rfl⟩` from `MonoidHom.mem_range.1 hk`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[MonoidHom.mem_ker, normU_apply, ratioU_apply, map_div, tauU_tauU h]`. Simplify using `[div_eq_mul_inv, mul_assoc]`. Introduce `hk`. Rewrite `hk` using `[mem_ker_normU]`. Take `⟨u, hu, -⟩` from `h.basis`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ x : E, x + k * τ x = k * τ (x + k * τ x)`. Introduce `x`. Rewrite using `[map_add, map_mul, h.inv]`. Take the linear combination `(-x) * hk`. Establish `hx : ∃ x : E, x + k * τ x ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `h1` using `hc 1`. Establish `h2` using `hc u`. Rewrite `h1` using `[map_one, mul_one]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hu.ne_zero` to reduce the goal to its premises. Take the linear combination `h2 - τ u * h1`. Take `⟨x, hx⟩` from `hx`. Conclude with `MonoidHom.mem_range.2 ⟨(isUnit_of_ne hf hx).unit, ratioU_eq_iff.2 (key x)⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem range_ratioU (h : ResAlg E τ q ε) (hf : IsField E) :
     (ratioU τ).range = (normU τ).ker := by
@@ -324,7 +320,7 @@ theorem range_ratioU (h : ResAlg E τ q ε) (hf : IsField E) :
     exact MonoidHom.mem_range.2 ⟨(isUnit_of_ne hf hx).unit, ratioU_eq_iff.2 (key x)⟩
 
 /- English proof (translation)
-Take `⟨r, rfl⟩ : ∃ r, q = r + 1` from `⟨q - 1, by omega⟩`. Establish `h2 : (r + 1) ^ 2 = r * (r + 1 + 1) + 1` using `by ring`. Rewrite using `[h2, Nat.add_sub_cancel, Nat.add_sub_cancel]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sq_sub_one (hq : 1 < q) : q ^ 2 - 1 = (q - 1) * (q + 1) := by
   obtain ⟨r, rfl⟩ : ∃ r, q = r + 1 := ⟨q - 1, by omega⟩
@@ -332,27 +328,23 @@ theorem sq_sub_one (hq : 1 < q) : q ^ 2 - 1 = (q - 1) * (q + 1) := by
   rw [h2, Nat.add_sub_cancel, Nat.add_sub_cancel]
 
 /- English proof (translation)
-Use `finite_of_resAlg h` as an intermediate fact. Use `nontrivial_of_resAlg h` as an intermediate fact. Establish `hq` using `h.one_lt`. Establish `hU : Nat.card Eˣ = q ^ 2 - 1` using `card_units h hf`. Establish `hsq` using `sq_sub_one hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lag : ∀ f : Eˣ →* Eˣ, Nat.card Eˣ = Nat.card f.range * Nat.card f.ker` using `fun f => by`. Rewrite using `[Subgroup.card_eq_card_quotient_mul_card_subgroup f.ker, Nat.card_congr (QuotientGroup.quotientKerEquivRange f).toEquiv]`. Establish `hR : Nat.card (ratioU τ).range = q + 1`. Establish `e` using `lag (ratioU τ)`. Rewrite `e` using `[card_ker_ratioU h, hU, hsq, mul_comm (q - 1)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Nat.eq_of_mul_eq_mul_right (by omega) e).symm`. Establish `hK : Nat.card (normU τ).ker = q + 1`. Rewrite using `[← range_ratioU h hf]`. Conclude with `hR`. Establish `hN : Nat.card (normU τ).range = q - 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `lag (normU τ)`. Rewrite `e` using `[hK, hU, hsq]`. Conclude with `(Nat.eq_of_mul_eq_mul_right (by omega) e).symm`. Set `S : Set Eˣ` to `{k | τ (k : E) = k}`. Establish `hS : Nat.card S = q - 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← card_fixed_ne h]`. Conclude with `Nat.card_congr { toFun := fun k => ⟨((k.1 : Eˣ) : E), k.2, k.1.ne_zero⟩ invFun := fun x => ⟨(h.fixedUnit x.1 x.2.1 x.2.2).unit, x.2.1⟩ left_inv := fun k => Subtype.ext (Units.ext rfl) right_inv := fun x => rfl }`. Establish `hsub : ((normU τ).range : Set Eˣ) ⊆ S`. Introduce `k hk`. Take `⟨b, rfl⟩` from `MonoidHom.mem_range.1 hk`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show τ ((normU τ b : Eˣ) : E) = normU τ b`. Rewrite using `[normU_apply, Units.val_mul, coe_tauU, map_mul, h.inv, mul_comm]`. Establish `heq : ((normU τ).range : Set Eˣ) = S`. Use `Set.eq_of_subset_of_ncard_le hsub ?_ (Set.toFinite S)` and prove the remaining obligations. Rewrite using `[← Nat.card_coe_set_eq, ← Nat.card_coe_set_eq, hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hN.ge`. Establish `htu : IsUnit t` using `isUnit_of_ne hf t0`. Establish `hmem : htu.unit ∈ (normU τ).range`. Rewrite using `[← SetLike.mem_coe, heq]`. Conclude with `ht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a₀, ha₀⟩` from `MonoidHom.mem_range.1 hmem`. Establish `hn : ∀ b : Eˣ, (b : E) * τ b = t → normU τ b = htu.unit` using `fun b hb => Units.ext (by rw [normU_apply, Units.val_mul, coe_tauU, IsUnit.unit_spec]; exact hb)`. Establish `hna : (a₀ : E) * τ a₀ = t`. Establish `h5` using `congrArg Units.val ha₀`. Rewrite `h5` using `[normU_apply, Units.val_mul, coe_tauU, IsUnit.unit_spec]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hau : ∀ a : {a : E // a * τ a = t}, IsUnit a.1` using `fun a => isUnit_of_mul_isUnit_left (show IsUnit (a.1 * τ a.1) by rw [a.2]; exact htu)`. Establish `hna' : ∀ a : {a : E // a * τ a = t}, normU τ (hau a).unit = htu.unit` using `fun a => hn _ (by rw [IsUnit.unit_spec]; exact a.2)`. Rewrite using `[← hK]`. Use `symm`. Conclude with `Nat.card_congr { toFun := fun k => ⟨(((k : Eˣ) * a₀ : Eˣ) : E), by`.
-
-Establish `hk` using `mem_ker_normU.1 k.2`. Rewrite using `[Units.val_mul, map_mul]`. Take the linear combination `((a₀ : E) * τ (a₀ : E)) * hk + hna⟩`. Use `invFun := fun a => ⟨(hau a).unit * a₀⁻¹, by`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, ha₀, hna' a, mul_inv_cancel]⟩`.
-
-Use `left_inv := fun k => Subtype.ext (Units.ext (by simp [mul_assoc]))`. Use `right_inv := fun a => Subtype.ext (by simp [mul_assoc]) }`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_fibre_field (h : ResAlg E τ q ε) (hf : IsField E) {t : E} (ht : τ t = t)
     (t0 : t ≠ 0) : Nat.card {a : E // a * τ a = t} = q + 1 := by
@@ -419,9 +411,9 @@ theorem card_fibre_field (h : ResAlg E τ q ε) (hf : IsField E) {t : E} (ht : �
       right_inv := fun a => Subtype.ext (by simp [mul_assoc]) }
 
 /- English proof (translation)
-Introduce `E _ τ q ε h t ht t0`. Establish `hq` using `h.one_lt`. Break down `h.eps with ⟨rfl, hf⟩ | ⟨rfl, hnf⟩` into its components or cases. Rewrite using `[card_fibre_field h hf ht t0]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[card_fibre_split h hnf ht t0]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_fibre : ∀ (E : Type) [CommRing E] (τ : E →+* E) (q : ℕ) (ε : ℤ), ResAlg E τ q ε →
     ∀ t : E, τ t = t → t ≠ 0 → (Nat.card {a : E // a * τ a = t} : ℤ) = q - ε := by

@@ -3,11 +3,11 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLe
 namespace ReciprocityTheory.ChartRestriction.DS.Lap.LemK
 
 /- English proof (translation)
-Use `⟨fun 𝒰 _ _ n E x => ?_, fun n lam ω => ?_⟩` and prove the remaining obligations. Unfold `Capelli.capelliC Capelli.cminor Formalism.REAL.qdet Formalism.REAL.qminor`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[zsmul_eq_mul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `congrArg List.ofFn (funext fun j => ?_)` and prove the remaining obligations. Simplify using `only [Capelli.capEntry, Formalism.REAL.Tm, id, add_comm]`. Unfold `Formalism.QuantumDeterminants.capP thV`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem capelliQdet : CapelliQdetStatement := by
   refine ⟨fun 𝒰 _ _ n E x => ?_, fun n lam ω => ?_⟩

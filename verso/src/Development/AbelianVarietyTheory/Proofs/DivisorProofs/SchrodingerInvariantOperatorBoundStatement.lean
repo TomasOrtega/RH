@@ -6,7 +6,7 @@ open scoped SchwartzMap
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ArchUniq.rapidDecay_omega_of_invariant | exact GlobalTheory.ArchUniq.rapidDecay_omega_of_invariant | (intros; apply GlobalTheory.ArchUniq.rapidDecay_omega_of_invariant <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.schrodinger_invariant_operator_bound : ∀ {V V₁ : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [NormedAddCommGroup V₁] [NormedSpace ℝ V₁] (P : V → V → ℝ), GlobalTheory.ArchUniq.IsPairing P →

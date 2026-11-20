@@ -15,9 +15,9 @@ section Tens
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteDimensional F E]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, Finsupp.zero_apply]`. Both sides reduce to the same expression. Consider the case `tmul a e => show _ = ((bA F E).equivFun (a ⊗ₜ[F] e) k).2`. Rewrite using `[Algebra.TensorProduct.map_tmul, Module.Basis.equivFun_apply, Algebra.TensorProduct.basis_repr_tmul, Algebra.TensorProduct.basis_repr_tmul]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[sndA]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy, Pi.add_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem repr_snd (z : AF F ⊗[F] E) (k : Fin (Module.finrank F E)) :
     (Algebra.TensorProduct.basis (Af F) (Module.finBasis F E)).repr
@@ -33,9 +33,9 @@ theorem repr_snd (z : AF F ⊗[F] E) (k : Fin (Module.finrank F E)) :
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy, Pi.add_apply]; rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, Finsupp.zero_apply]`. Both sides reduce to the same expression. Consider the case `tmul a e => show _ = ((bA F E).equivFun (a ⊗ₜ[F] e) k).1`. Rewrite using `[Algebra.TensorProduct.map_tmul, Module.Basis.equivFun_apply, Algebra.TensorProduct.basis_repr_tmul, Algebra.TensorProduct.basis_repr_tmul]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[fstA]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy, Pi.add_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem repr_fst (z : AF F ⊗[F] E) (k : Fin (Module.finrank F E)) :
     (Algebra.TensorProduct.basis (Ainf F) (Module.finBasis F E)).repr
@@ -51,9 +51,9 @@ theorem repr_fst (z : AF F ⊗[F] E) (k : Fin (Module.finrank F E)) :
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy, Pi.add_apply]; rfl
 
 /- English proof (translation)
-Establish `h : Algebra.lmul (AF F) (AF F ⊗[F] E) ((1 : AF F) ⊗ₜ[F] e) = (Algebra.lmul F E e).baseChange (AF F)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a m => simp [LinearMap.baseChange_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Rewrite using `[Algebra.trace_apply, h, LinearMap.trace_baseChange]`. Both sides reduce to the same expression.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trace_tmul (e : E) :
     Algebra.trace (AF F) (AF F ⊗[F] E) ((1 : AF F) ⊗ₜ[F] e) = algebraMap F (AF F) (Algebra.trace F E e) := by
@@ -75,7 +75,7 @@ section Sympl
 variable {D : D7}
 
 /- English proof (translation)
-Use `show (Algebra.TensorProduct.map (AlgHom.id D.host.F (AF D.host.F)) D.sp.cm.sig) (c ⊗ₜ[D.host.F] (1 : D.host.E)) = c ⊗ₜ[D.host.F] (1 : D.host.E)`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cA_algebraMap (c : AF D.host.F) :
     cA D (algebraMap (AF D.host.F) (AE D) c) = algebraMap (AF D.host.F) (AE D) c := by
@@ -85,13 +85,13 @@ theorem cA_algebraMap (c : AF D.host.F) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul, cA_algebraMap, ← Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_smul (c : AF D.host.F) (z : AE D) : cA D (c • z) = c • cA D z := by
   rw [Algebra.smul_def, map_mul, cA_algebraMap, ← Algebra.smul_def]
 
 /- English proof (translation)
-Use `show (Algebra.TensorProduct.map (AlgHom.id D.host.F (AF D.host.F)) D.sp.cm.sig) ((1 : AF D.host.F) ⊗ₜ[D.host.F] e) = (1 : AF D.host.F) ⊗ₜ[D.host.F] D.sp.cm.sig e`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cA_incA (e : D.host.E) : cA D (incA D e) = incA D (D.sp.cm.sig e) := by
   show (Algebra.TensorProduct.map (AlgHom.id D.host.F (AF D.host.F)) D.sp.cm.sig) ((1 : AF D.host.F) ⊗ₜ[D.host.F] e) =
@@ -100,7 +100,7 @@ theorem cA_incA (e : D.host.E) : cA D (incA D e) = incA D (D.sp.cm.sig e) := by
   rfl
 
 /- English proof (translation)
-Unfold `hHom`. Apply the tactic sequence `split_ifs <;> simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hHom_add_right (V W : HSp D) (x y y' : WA V W) :
     hHom V W x (y + y') = hHom V W x y + hHom V W x y' := by
@@ -108,7 +108,7 @@ theorem hHom_add_right (V W : HSp D) (x y y' : WA V W) :
   split_ifs <;> simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `hHom`. Apply the tactic sequence `split_ifs <;> simp only [Matrix.smul_apply, mul_smul_comm, Finset.smul_sum]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hHom_smul_right (V W : HSp D) (c : AF D.host.F) (x y : WA V W) :
     hHom V W x (c • y) = c • hHom V W x y := by
@@ -116,7 +116,7 @@ theorem hHom_smul_right (V W : HSp D) (c : AF D.host.F) (x y : WA V W) :
   split_ifs <;> simp only [Matrix.smul_apply, mul_smul_comm, Finset.smul_sum]
 
 /- English proof (translation)
-Unfold `hHom`. Apply the tactic sequence `split_ifs <;> simp only [Matrix.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hHom_add_left (V W : HSp D) (x x' y : WA V W) :
     hHom V W (x + x') y = hHom V W x y + hHom V W x' y := by
@@ -124,7 +124,7 @@ theorem hHom_add_left (V W : HSp D) (x x' y : WA V W) :
   split_ifs <;> simp only [Matrix.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `hHom`. Apply the tactic sequence `split_ifs <;> simp only [Matrix.smul_apply, cA_smul, smul_mul_assoc, Finset.smul_sum]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hHom_smul_left (V W : HSp D) (c : AF D.host.F) (x y : WA V W) :
     hHom V W (c • x) y = c • hHom V W x y := by
@@ -132,14 +132,14 @@ theorem hHom_smul_left (V W : HSp D) (c : AF D.host.F) (x y : WA V W) :
   split_ifs <;> simp only [Matrix.smul_apply, cA_smul, smul_mul_assoc, Finset.smul_sum]
 
 /- English proof (translation)
-Simplify using `only [symplH, Formalism.L2.Theta.sympl, hHom_add_right, mul_add, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplH_add_left (V W : HSp D) (x x' y : WA V W) :
     symplH V W (x + x') y = symplH V W x y + symplH V W x' y := by
   simp only [symplH, Formalism.L2.Theta.sympl, hHom_add_right, mul_add, map_add]
 
 /- English proof (translation)
-Simplify using `only [symplH, Formalism.L2.Theta.sympl, hHom_smul_right, mul_smul_comm, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem symplH_smul_left (V W : HSp D) (c : AF D.host.F) (x y : WA V W) :
     symplH V W (c • x) y = c * symplH V W x y := by
@@ -147,14 +147,14 @@ theorem symplH_smul_left (V W : HSp D) (c : AF D.host.F) (x y : WA V W) :
   ring
 
 /- English proof (translation)
-Simplify using `only [symplH, Formalism.L2.Theta.sympl, hHom_add_left, mul_add, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplH_add_right (V W : HSp D) (x y y' : WA V W) :
     symplH V W x (y + y') = symplH V W x y + symplH V W x y' := by
   simp only [symplH, Formalism.L2.Theta.sympl, hHom_add_left, mul_add, map_add]
 
 /- English proof (translation)
-Simplify using `only [symplH, Formalism.L2.Theta.sympl, hHom_smul_left, mul_smul_comm, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem symplH_smul_right (V W : HSp D) (c : AF D.host.F) (x y : WA V W) :
     symplH V W x (c • y) = c * symplH V W x y := by
@@ -170,9 +170,9 @@ def eV (V W : HSp D) (a : Ix V W) : WA V W :=
   Matrix.single a.1 a.2.1 (incA D (Module.finBasis D.host.F D.host.E a.2.2))
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, eV, Matrix.single_apply, Fintype.sum_prod_type, Co, Phi, smul_ite, smul_zero, ite_and]`. Simplify using `only [Finset.sum_ite_irrel, Finset.sum_const_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `conv_rhs => rw [← (bA D.host.F D.host.E).sum_repr (x i j)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_eV (V W : HSp D) (x : WA V W) : ∑ a, Co V W x a • eV V W a = x := by
   ext i j

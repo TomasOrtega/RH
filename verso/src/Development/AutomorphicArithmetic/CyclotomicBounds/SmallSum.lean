@@ -5,7 +5,7 @@ namespace UpperTheory.SmallSum
 open Finset
 
 /- English proof (translation)
-Establish `hdvd : (∏ l ∈ T, l) ∣ N` using `Finset.prod_primes_dvd N (fun l hl => (hT l hl).1.prime) (fun l hl => (hT l hl).2)`. Establish `hpos : 0 < ∏ l ∈ T, l` using `Nat.pos_of_ne_zero (fun h => hN (Nat.eq_zero_of_zero_dvd (h ▸ hdvd)))`. Rewrite using `[← Real.log_prod (fun l hl => by exact_mod_cast (hT l hl).1.ne_zero), ← Nat.cast_prod]`. Conclude with `Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast Nat.le_of_dvd (Nat.pos_of_ne_zero hN) hdvd)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_log_le_of_dvd {N : ℕ} (hN : N ≠ 0) (T : Finset ℕ) (hT : ∀ l ∈ T, l.Prime ∧ l ∣ N) :
     ∑ l ∈ T, Real.log l ≤ Real.log N := by
@@ -18,13 +18,13 @@ theorem sum_log_le_of_dvd {N : ℕ} (hN : N ≠ 0) (T : Finset ℕ) (hT : ∀ l 
     (by exact_mod_cast Nat.le_of_dvd (Nat.pos_of_ne_zero hN) hdvd)
 
 /- English proof (translation)
-Establish `hsub : T ⊆ insert 3 (T.erase 3)`. Introduce `l hl`. Distinguish the cases in `h : l = 3`. Simplify using `[h]`. Conclude with `Finset.mem_insert_of_mem (Finset.mem_erase.mpr ⟨h, hl⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : ∑ l ∈ T, Real.log l ≤ ∑ l ∈ insert 3 (T.erase 3), Real.log l` using `Finset.sum_le_sum_of_subset_of_nonneg hsub (fun l _ _ => Real.log_natCast_nonneg l)`. Rewrite `h1` using `[Finset.sum_insert (Finset.notMem_erase 3 T)]`. Establish `h2 : ∑ l ∈ T.erase 3, Real.log l ≤ Real.log Q`. Apply `sum_log_le_of_dvd hQ` to reduce the goal to its premises. Introduce `l hl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hl3, hlT⟩` from `Finset.mem_erase.mp hl`. Break down `hT l hlT with h | h` into its components or cases. Conclude with `⟨Nat.prime_of_mem_primeFactors h, Nat.dvd_of_mem_primeFactors h⟩`. Conclude with `absurd h hl3`. Establish `h3 : Real.log ((3 : ℕ) : ℝ) ≤ 2`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Use `Real.log_le_sub_one_of_pos (x := ((3 : ℕ) : ℝ)) (by norm_num)` as an intermediate fact. Evaluate the numerical expressions using `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_log_small_le {Q : ℕ} (hQ : Q ≠ 0) (T : Finset ℕ) (hT : ∀ l ∈ T, l ∈ Q.primeFactors ∨ l = 3) :
     ∑ l ∈ T, Real.log l ≤ Real.log Q + 2 := by
@@ -51,11 +51,11 @@ theorem sum_log_small_le {Q : ℕ} (hQ : Q ≠ 0) (T : Finset ℕ) (hT : ∀ l �
   linarith
 
 /- English proof (translation)
-Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hQn`. Conclude with `hQ hQn`. Establish `h1` using `sum_log_small_le hQ T hT`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Real.log Q ≤ Real.log ((n : ℝ) ^ 2)` using `Real.log_le_log (by exact_mod_cast Nat.pos_of_ne_zero hQ) (by exact_mod_cast hQn)`. Establish `h3 : Real.log (n : ℝ) ≤ C * Real.log x`. Rewrite using `[← Real.log_rpow hx]`. Conclude with `Real.log_le_log (by exact_mod_cast Nat.pos_of_ne_zero hn0) hn`. Rewrite `h2` using `[Real.log_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Move the coercions through the operations in `at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem sum_log_small_le_log {Q n : ℕ} {x C : ℝ} (hQ : Q ≠ 0) (hQn : Q ≤ n ^ 2) (hx : 0 < x) (hn : (n : ℝ) ≤ x ^ C)
     (T : Finset ℕ) (hT : ∀ l ∈ T, l ∈ Q.primeFactors ∨ l = 3) :
@@ -75,17 +75,17 @@ theorem sum_log_small_le_log {Q n : ℕ} {x C : ℝ} (hQ : Q ≠ 0) (hQn : Q ≤
   linarith
 
 /- English proof (translation)
-Establish `hy : 0 ≤ Real.log x` using `Real.log_nonneg hx`. Establish `hP : 0 ≤ x ^ C` using `Real.rpow_nonneg (by linarith) C`. Establish `hsum` using `sum_log_small_le_log hQ hQn (by linarith : (0 : ℝ) < x) hn T hT`. Establish `hL1 : 1 ≤ L`. Establish `a1 : 1 ≤ (C + 3) ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : 1 ≤ (1 + Real.log x) ^ 2` using `by nlinarith`. Conclude with `le_trans (one_le_mul_of_one_le_of_one_le a1 a2) hL`. Establish `hL0 : 0 ≤ L` using `by linarith`. Establish `hb0 : 0 ≤ b` using `le_trans (mul_nonneg hP hL0) hb`. Establish `hw0 : 0 ≤ 2 * C * Real.log x + 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : 2 * C * Real.log x + 2 ≤ (2 * C + 2) * (1 + Real.log x)` using `by nlinarith`. Establish `e2 : 2 * C + 2 ≤ (C + 3) ^ 2` using `by nlinarith`. Establish `e3 : (2 * C * Real.log x + 2) * (1 + Real.log x) ≤ L`. Combine the equalities or inequalities in the displayed calculation. Establish `hw2 : 2 * C * Real.log x + 2 ≤ L` using `le_trans (le_mul_of_one_le_right hw0 (by linarith)) e3`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw1 : (2 * C * Real.log x + 2) * Real.log x ≤ L ^ 2`. Establish `: (2 * C * Real.log x + 2) * Real.log x ≤ (2 * C * Real.log x + 2) * (1 + Real.log x)` using `mul_le_mul_of_nonneg_left (by linarith) hw0`. Use the polynomial consequences of the given equalities and inequalities. Establish `hCfb : 0 ≤ C * fm * b` using `mul_nonneg (mul_nonneg hC.le (by linarith)) hb0`. Establish `hS : 0 ≤ C * fm * b * Real.log x + C * x ^ C * L ^ 2` using `add_nonneg (mul_nonneg hCfb hy) (mul_nonneg (mul_nonneg hC.le hP) (sq_nonneg _))`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1 : (2 * C * Real.log x + 2) * (C * fm * b * Real.log x) ≤ C * fm * b * L ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `t2 : (2 * C * Real.log x + 2) * (C * x ^ C * L ^ 2) ≤ C * fm * b * L ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 ≤ C * fm * b * L ^ 2` using `mul_nonneg hCfb (sq_nonneg _)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_row_small_le {Q n : ℕ} {x C L fm b : ℝ} (hQ : Q ≠ 0) (hQn : Q ≤ n ^ 2) (hx : 1 ≤ x) (hC : 0 < C)
     (hn : (n : ℝ) ≤ x ^ C) (hL : (C + 3) ^ 2 * (1 + Real.log x) ^ 2 ≤ L) (hb : x ^ C * L ≤ b) (hfm : 1 ≤ fm)

@@ -3,17 +3,15 @@ import Mathlib
 namespace UpperTheory.Reformulated.B.S1
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on generalizing f with`. Consider the case `empty`. Establish `h0 : f = 0`. Use extensionality with `n`. Simplify using `using hf n (by simp)`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[h0]`. Conclude with `I.zero_mem`. Consider the case `insert a s _ ih`. Set `g : MvPowerSeries σ O` to `fun n => if n (e a) = 0 then MvPowerSeries.coeff n f else 0`. Establish `hg : ∀ n : σ →₀ ℕ, MvPowerSeries.coeff n g = if n (e a) = 0 then MvPowerSeries.coeff n f else 0` using `fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgI : g ∈ I`. Use `ih (fun i hi => hs i (Finset.mem_insert_of_mem hi)) g ?_` and prove the remaining obligations. Introduce `n hn`. Rewrite using `[hg]`. Use `split_ifs with h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hf n ?_` and prove the remaining obligations. Introduce `i hi`. Break down `Finset.mem_insert.mp hi with rfl | hi` into its components or cases. Conclude with `h`. Conclude with `hn i hi`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hd : (MvPowerSeries.X (e a) : MvPowerSeries σ O) ∣ f - g`. Rewrite using `[MvPowerSeries.X_dvd_iff]`. Introduce `n hn`. Rewrite using `[map_sub, hg, if_pos hn, sub_self]`.
-
-Establish `hfg : f - g ∈ I` using `Ideal.mem_of_dvd I hd (hs a (Finset.mem_insert_self a s))`. Simplify using `using I.add_mem hfg hgI`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_coeff {O σ ι : Type} [CommRing O] (I : Ideal (MvPowerSeries σ O)) (e : ι → σ) (s : Finset ι)
     (hs : ∀ i ∈ s, MvPowerSeries.X (e i) ∈ I) (f : MvPowerSeries σ O)

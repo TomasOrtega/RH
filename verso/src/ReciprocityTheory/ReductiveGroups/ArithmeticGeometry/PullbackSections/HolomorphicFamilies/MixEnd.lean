@@ -22,11 +22,11 @@ section Pmaps
 variable {X X' Y Y' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X}
 
 /- English proof (translation)
-Establish `hp : ∀ k, (r ≫ h) ≫ φ k = (r ≫ φ' k) ≫ F` using `fun k => by`. Rewrite using `[Category.assoc, Category.assoc, hc]`. Establish `h1 : ∀ k, F (φ' k (r z)) ∈ L.U (J₀ ((r ≫ h) ≫ φ k))`. Introduce `k`. Use `hJ₀ ((r ≫ h) ≫ φ k) using 2` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[hp]`. Apply the tactic sequence `first | rfl | simp`. Establish `h2 : ∀ k, φ' k (r z) ∈ L'.U (J (r ≫ φ' k))` using `fun k => hJ (r ≫ φ' k)`. Establish `key` using `hm Z r z (fun k => J₀ ((r ≫ h) ≫ φ k)) (fun k => J (r ≫ φ' k)) h1 h2`. Unfold `val`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `key.trans ?_` and prove the remaining obligations. Simplify using `only [hp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_pmaps' (w : LB.Iso L' (L.pull F)) {K : Type} [Fintype K] {φ' : K → (Y' ⟶ X')} {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} {a : LB.Gen (LB.LinComb L' φ' ε)} {t : LB.Gen (LB.LinComb L φ ε)} {h : Y' ⟶ Y}
@@ -50,7 +50,7 @@ theorem val_pmaps' (w : LB.Iso L' (L.pull F)) {K : Type} [Fintype K] {φ' : K �
 end Pmaps
 
 /- English proof (translation)
-Unfold `val`. Simplify using `only [rigPow]`. Conclude with `map_zpow _ _ _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_rigPow {S : Scheme.{0}} {A : Over S} [GrpObj A] (L : LB A.left) (rig : LB.Gen (L.pull (eSec A))) (k : ℤ)
     {Z : Scheme.{0}} (r : Z ⟶ (𝟙_ (Over S)).left) (z : Z) (J : (Z ⟶ A.left) → L.ι) :
@@ -60,7 +60,7 @@ theorem val_rigPow {S : Scheme.{0}} {A : Over S} [GrpObj A] (L : LB A.left) (rig
   exact map_zpow _ _ _
 
 /- English proof (translation)
-Use `show η[A].left ≫ φ.left = η[A].left`. Rewrite using `[← Over.comp_left, IsMonHom.one_hom]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eSec_mon {S : Scheme.{0}} {A : Over S} [GrpObj A] (φ : A ⟶ A) (hφ : IsMonHom φ) :
     eSec A ≫ φ.left = eSec A := by
@@ -72,11 +72,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' :
   {T : Over S'} {T₀ : Over S} (τ : T.left ⟶ T₀.left) (hτ : τ ≫ T₀.hom = T.hom ≫ f)
 
 /- English proof (translation)
-Establish `h : psiO m.cart τ hτ ≫ snd T₀ t.G = pushPt m.cart.1.w (snd T t'.G)`. Unfold `psiO`. Conclude with `lift_snd _ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Over.comp_left, Category.assoc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try rfl`. Use `_ = ((snd T t'.G).left ≫ m.cm.F) ≫ (t.act.act π).left := by`. Rewrite using `[m.act π, Category.assoc]`. Use `_ = (pushPt m.cart.1.w (snd T t'.G)).left ≫ (t.act.act π).left := rfl`. Use `_ = (psiO m.cart τ hτ).left ≫ (snd T₀ t.G ≫ t.act.act π).left := by`.
-
-Rewrite using `[← h, Over.comp_left, Over.comp_left, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sndAct_push (π : 𝓞 E) :
     (snd T t'.G ≫ t'.act.act π).left ≫ m.φ = (psiO m.cart τ hτ).left ≫ (snd T₀ t.G ≫ t.act.act π).left := by
@@ -94,21 +92,21 @@ theorem sndAct_push (π : 𝓞 E) :
         rw [← h, Over.comp_left, Over.comp_left, Category.assoc]
 
 /- English proof (translation)
-The claim follows from `pullback.hom_ext h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext₀' {Y : Scheme.{0}} {a b : Y ⟶ (T₀ ⊗ t.G).left} (h1 : a ≫ (fst T₀ t.G).left = b ≫ (fst T₀ t.G).left)
     (h2 : a ≫ (snd T₀ t.G).left = b ≫ (snd T₀ t.G).left) : a = b := pullback.hom_ext h1 h2
 
 /- English proof (translation)
-Establish `hf : (psiO m.cart τ hτ).left ≫ (fst T₀ t.G).left = (fst T t'.G).left ≫ τ`. Rewrite using `[← Over.comp_left]`. Unfold `psiO`. Rewrite using `[lift_fst]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hs : (psiO m.cart τ hτ).left ≫ (snd T₀ t.G).left = (snd T t'.G).left ≫ m.cm.F`. Rewrite using `[← Over.comp_left]`. Unfold `psiO`. Rewrite using `[lift_snd]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `he' : (endT t'.G T (t'.act.act π)).left ≫ (fst T t'.G).left = (fst T t'.G).left`. Rewrite using `[← Over.comp_left, lift_fst]`. Establish `he₀ : (endT t.G T₀ (t.act.act π)).left ≫ (fst T₀ t.G).left = (fst T₀ t.G).left`. Rewrite using `[← Over.comp_left, lift_fst]`. Establish `hes' : (endT t'.G T (t'.act.act π)).left ≫ (snd T t'.G).left = (snd T t'.G ≫ t'.act.act π).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, lift_snd]`. Establish `hes₀ : (endT t.G T₀ (t.act.act π)).left ≫ (snd T₀ t.G).left = (snd T₀ t.G ≫ t.act.act π).left`. Rewrite using `[← Over.comp_left, lift_snd]`. Apply `hom_ext₀'` to reduce the goal to its premises. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[he₀, hf, ← Category.assoc, he']`. Simplify using `only [Category.assoc]`. Rewrite using `[hes₀, ← sndAct_push m τ hτ π, hs, ← Category.assoc, hes']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem endT_push (π : 𝓞 E) :
     (endT t'.G T (t'.act.act π)).left ≫ (psiO m.cart τ hτ).left =
@@ -138,15 +136,15 @@ theorem endT_push (π : 𝓞 E) :
     rw [hes₀, ← sndAct_push m τ hτ π, hs, ← Category.assoc, hes']
 
 /- English proof (translation)
-Establish `hc : ∀ k, (![𝟙 t'.G.left, (t'.act.act π).left] : Fin 2 → _) k ≫ m.φ = m.φ ≫ (![𝟙 t.G.left, (t.act.act π).left] : Fin 2 → _) k`. Introduce `k`. Use `fin_cases k`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero, Category.id_comp, Category.comp_id]`. Conclude with `m.act π`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨α₀', g', hm⟩` from `exists_gen_move t.PP.isLB t'.PP.isLB w ((isGen_iff w).1 hw.1) _ _ ![a, -b] m.φ hc α₀ hα`. Use `⟨α₀', g', hm, ?_⟩` and prove the remaining obligations. Establish `hr` using `rig_pmaps m w hw`. Establish `hce : ∀ k : PUnit.{1}, (fun _ => eSec t'.G) k ≫ m.φ = m.cm.e ≫ (fun _ => eSec t.G) k` using `fun _ => m.cm.e_comm`. Establish `hact : eSec t'.G ≫ (t'.act.act π).left = eSec t'.G` using `eSec_mon _ (t'.act.hom π)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `IsNormEnd`. Use `corr_of_val t'.PP.isLB fun y J hJ => ?_` and prove the remaining obligations. Use `choose J₀ hJ₀ using fun χ : (𝟙_ (Over S')).left ⟶ t.G.left => exists_chart t.PP.isLB (χ y)`. Establish `hJ₀' : Good t.PP.L y J₀` using `hJ₀`. Establish `c0` using `val_corr hJ₀' hN m.cm.e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `c0` using `[val_pull hJ₀', val_mul hJ₀', val_rigPow, val_rigPow]`. Establish `p1` using `val_pmaps' w hc hm (eSec t'.G) y J₀ J hJ₀' hJ`. Establish `p2` using `val_pmaps' w hce hr (𝟙 _) y J₀ J hJ₀' hJ`. Rewrite `p1` using `[show eSec t'.G ≫ m.φ = m.cm.e ≫ eSec t.G from m.cm.e_comm, c0]`. Simplify using `only [Fin.prod_univ_two, Fin.isValue, Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id, hact] at p1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Finset.univ_unique, Finset.prod_singleton, Category.id_comp, zpow_one] at p2`. Rewrite using `[val_pull hJ, val_mul hJ, val_rigPow, val_rigPow, Category.id_comp]`. Rewrite `p1` using `[p2, mul_zpow, mul_zpow]`. Conclude with `mul_left_cancel (p1.symm.trans (mul_mul_mul_comm _ _ _ _))`.
+A detailed English derivation is pending.
 -/
 theorem endGen_move (w : LB.Iso t'.PP.L (t.PP.L.pull m.φ)) (hw : RigIso m w) (π : 𝓞 E) (a b : ℤ)
     (α₀ : LB.Gen (LB.LinComb t.PP.L (K := Fin 2) ![𝟙 t.G.left, (t.act.act π).left] ![a, -b])) (hα : α₀.IsGen)
@@ -190,15 +188,13 @@ variable {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {A : Over S'} [GrpObj A]
   {L₀ : LB G.left} {L₁ : LB A.left}
 
 /- English proof (translation)
-Establish `hc1 : ∀ k, (![(snd T A).left, mA.left] : Fin 2 → _) k ≫ φ = (psiO hp τ hτ).left ≫ (![(snd T₀ G).left, mG.left] : Fin 2 → _) k`. Introduce `k`. Use `fin_cases k`. Conclude with `(psi_snd hp τ hτ).symm`. Use `show mA.left ≫ φ = (psiO hp τ hτ).left ≫ mG.left`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hmA, hmG, Category.assoc, hce, ← Category.assoc, ← psi_snd hp τ hτ, Category.assoc]`. Establish `hc2 : ∀ k, (![𝟙 A.left, eA] : Fin 2 → _) k ≫ φ = φ ≫ (![𝟙 G.left, eG] : Fin 2 → _) k`. Introduce `k`. Use `fin_cases k`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero, Category.id_comp, Category.comp_id]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hce`. Take `⟨α', g', hm⟩` from `exists_gen_move hL₀ hL₁ w hw _ _ ε (psiO hp τ hτ).left hc1 α hα`. Use `⟨α', g', hm, corr_of_val hL₁ fun y J hJ => ?_⟩` and prove the remaining obligations. Use `choose J₀ hJ₀ using fun χ : (T ⊗ A).left ⟶ G.left => exists_chart hL₀ (χ y)`. Establish `hJ₀' : Good L₀ y J₀` using `hJ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `p1` using `val_pmaps' w hc1 hm (𝟙 _) y J₀ J hJ₀' hJ`. Establish `p2` using `val_pmaps' w hc2 hPM (snd T A).left y J₀ J hJ₀' hJ`. Establish `c` using `val_corr hJ₀' hαc (psiO hp τ hτ).left`. Rewrite `c` using `[val_pull hJ₀', psi_snd hp τ hτ]`. Rewrite `p1` using `[Category.id_comp, c, p2]`.
-
-Simplify using `only [Fin.prod_univ_two, Fin.isValue, Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id, Category.id_comp, hmA] at p1`. Rewrite using `[val_pull hJ, Category.id_comp]`. Conclude with `(mul_left_cancel p1).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genSnd_move (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (w : LB.Iso L₁ (L₀.pull φ)) (hw : PGen w)
     (eA : A.left ⟶ A.left) (eG : G.left ⟶ G.left) (hce : eA ≫ φ = φ ≫ eG) (ε : Fin 2 → ℤ)

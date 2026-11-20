@@ -14,11 +14,11 @@ namespace KHCechSES
 set_option linter.unusedSectionVars false
 
 /- English proof (translation)
-Establish `hle : LinearMap.ker ε ≤ LinearMap.ker (A.mkQ ∘ₗ π)` using `fun e he => by`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hk e he`. Establish `hs : Function.Surjective ((LinearMap.ker ε).liftQ (A.mkQ ∘ₗ π) hle ∘ₗ ε.quotKerEquivRange.symm.toLinearMap)`. Introduce `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective A x`. Take `⟨e, rfl⟩` from `hπ x`. Use `⟨ε.quotKerEquivRange (Submodule.Quotient.mk e), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `: IsNoetherian S Y` using `isNoetherian_of_isNoetherianRing_of_finite S Y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite S (X ⧸ A)` using `Module.Finite.of_surjective _ hs`. Use `⟨Submodule.fg_of_fg_map_of_fg_inf_ker A.mkQ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_top, Submodule.range_mkQ]`. Conclude with `Module.Finite.fg_top`. Rewrite using `[top_inf_eq, Submodule.ker_mkQ]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finite_of_ker_le {S : Type} [CommRing S] [IsNoetherianRing S] {X E Y : Type*} [AddCommGroup X] [Module S X]
     [AddCommGroup E] [Module S E] [AddCommGroup Y] [Module S Y] [Module.Finite S Y]
@@ -51,16 +51,16 @@ variable {M N : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M]
   [IsScalarTower S (MRingOver S ι) N]
 
 /- English proof (translation)
-Simplify using `[KH.cechCc, Submodule.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_cechCc_iff {𝓜 : (K → ℤ) → Submodule S M} {c : K → ℤ} {n : ℕ} {x : KH.CechC S ι M n} :
     x ∈ KH.cechCc ι 𝓜 c n ↔ ∀ I, x I ∈ KH.locPart ι 𝓜 (KH.cellMon S I.1) c := by
   simp [KH.cechCc, Submodule.mem_pi]
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).mpr fun x hx => ?_` and prove the remaining obligations. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m t`. Rewrite `hx` using `[KHTheoremS.lmap_mk, ← LocalizedModule.zero_mk t, LocalizedModule.mk_eq]`. Take `⟨u, hu⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← LocalizedModule.zero_mk t, LocalizedModule.mk_eq]`. Use `⟨u, hf ?_⟩` and prove the remaining obligations. Simplify using `only [Submonoid.smul_def, smul_zero, map_smul, map_zero] at hu ⊢`. Conclude with `hu`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lmap_injective {T : Submonoid (MRingOver S ι)} {f : M →ₗ[MRingOver S ι] N}
     (hf : Function.Injective f) : Function.Injective (KHTheoremS.lmap T f) := by
@@ -75,7 +75,7 @@ theorem lmap_injective {T : Submonoid (MRingOver S ι)} {f : M →ₗ[MRingOver 
     exact hu
 
 /- English proof (translation)
-Introduce `x y hxy` and use `funext fun I => lmap_injective hf (by have := congrFun hxy I rwa [KHTheoremS.cechMap_apply, KHTheoremS.cechMap_apply] at this)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cechMap_injective {f : M →ₗ[MRingOver S ι] N} (hf : Function.Injective f) (n : ℕ) :
     Function.Injective (KH.cechMap S ι f n) := fun x y hxy =>
@@ -84,7 +84,7 @@ theorem cechMap_injective {f : M →ₗ[MRingOver S ι] N} (hf : Function.Inject
     rwa [KHTheoremS.cechMap_apply, KHTheoremS.cechMap_apply] at this)
 
 /- English proof (translation)
-Take `⟨m, t, a, ht, hm, rfl⟩` from `GenSESStep.locPart_normal h𝓝 hx`. Take `⟨y, hy, rfl⟩` from `KHTheoremS.exists_mem_of_surjective h𝓜 h𝓝 hf hs hm`. Conclude with `⟨_, GenSESStep.mk_mem_locPart y t a ht hy, KHTheoremS.lmap_mk f y t⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem locPart_lift {𝓜 : (K → ℤ) → Submodule S M} {𝓝 : (K → ℤ) → Submodule S N}
     (h𝓜 : KH.IsMGraded S ι 𝓜) (h𝓝 : KH.IsMGraded S ι 𝓝) {f : M →ₗ[MRingOver S ι] N}
@@ -96,7 +96,7 @@ theorem locPart_lift {𝓜 : (K → ℤ) → Submodule S M} {𝓝 : (K → ℤ) 
   exact ⟨_, GenSESStep.mk_mem_locPart y t a ht hy, KHTheoremS.lmap_mk f y t⟩
 
 /- English proof (translation)
-Use `fun I : KH.Cell K ι n => locPart_lift h𝓜 h𝓝 hf hs (mem_cechCc_iff.mp hx I)` as an intermediate fact. Use `choose y hy hyx using this`. Conclude with `⟨y, mem_cechCc_iff.mpr hy, funext hyx⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cechMap_lift {𝓜 : (K → ℤ) → Submodule S M} {𝓝 : (K → ℤ) → Submodule S N}
     (h𝓜 : KH.IsMGraded S ι 𝓜) (h𝓝 : KH.IsMGraded S ι 𝓝) {f : M →ₗ[MRingOver S ι] N}
@@ -108,7 +108,7 @@ theorem cechMap_lift {𝓜 : (K → ℤ) → Submodule S M} {𝓝 : (K → ℤ) 
   exact ⟨y, mem_cechCc_iff.mpr hy, funext hyx⟩
 
 /- English proof (translation)
-The claim follows from `| 0, z, hz => by have hz0 : z = 0 := (Submodule.mem_bot S).mp hz rw [hz0, map_zero] exact zero_mem _ | n + 1, _, ⟨y, hy, rfl⟩ => ⟨KH.cechMap S ι f n y, (KHCechMapDeg.full S K ι M N 𝓜 𝓝 f c n hf).1 y hy, KHTheoremS.cechD_cechMap f n y⟩`.
+A detailed English derivation is pending.
 -/
 theorem cechMap_mem_cechBc {𝓜 : (K → ℤ) → Submodule S M} {𝓝 : (K → ℤ) → Submodule S N}
     {f : M →ₗ[MRingOver S ι] N} (hf : KH.IsMGradedMap S ι 𝓜 𝓝 f) {c : K → ℤ} :
@@ -121,7 +121,7 @@ theorem cechMap_mem_cechBc {𝓜 : (K → ℤ) → Submodule S M} {𝓝 : (K →
     ⟨KH.cechMap S ι f n y, (KHCechMapDeg.full S K ι M N 𝓜 𝓝 f c n hf).1 y hy, KHTheoremS.cechD_cechMap f n y⟩
 
 /- English proof (translation)
-The claim follows from `| 0 => bot_le | n + 1 => by rintro _ ⟨y, hy, rfl⟩ refine ⟨hDeg S K ι M 𝓜 c n y hy, LinearMap.mem_ker.mpr ?_⟩ exact LinearMap.congr_fun (hSq S K ι M n) y`.
+A detailed English derivation is pending.
 -/
 theorem cechBc_le_cechZc (hSq : KH.CechDSqStatement) (hDeg : KH.CechDDegStatement)
     (𝓜 : (K → ℤ) → Submodule S M) (c : K → ℤ) : ∀ n : ℕ, KH.cechBc ι 𝓜 c n ≤ KH.cechZc ι 𝓜 c n
@@ -162,9 +162,9 @@ variable {M' M M'' : Type} [AddCommGroup M'] [Module (MRingOver S ι) M'] [Modul
   {g : M' →ₗ[MRingOver S ι] M} {h : M →ₗ[MRingOver S ι] M''}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Rewrite using `[KHTheoremS.cechMap_apply, KHTheoremS.cechMap_apply, Pi.zero_apply]`. Proceed by induction on `x I using LocalizedModule.induction_on with`. Consider the case `h m t`. Establish `hgm : h (g m) = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.mem_ker, ← hex]`. Conclude with `LinearMap.mem_range_self g m`. Rewrite using `[KHTheoremS.lmap_mk, KHTheoremS.lmap_mk, hgm, LocalizedModule.zero_mk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cechMap_comp_eq_zero (hex : LinearMap.range g = LinearMap.ker h) (n : ℕ) (x : KH.CechC S ι M' n) :
     KH.cechMap S ι h n (KH.cechMap S ι g n x) = 0 := by
@@ -178,13 +178,13 @@ theorem cechMap_comp_eq_zero (hex : LinearMap.range g = LinearMap.ker h) (n : �
     rw [KHTheoremS.lmap_mk, KHTheoremS.lmap_mk, hgm, LocalizedModule.zero_mk]
 
 /- English proof (translation)
-Take `⟨m, t, a, ht, hm, rfl⟩` from `GenSESStep.locPart_normal h𝓜 hx`. Rewrite `h0` using `[KHTheoremS.lmap_mk, ← LocalizedModule.zero_mk t, LocalizedModule.mk_eq]`. Take `⟨u, hu⟩` from `h0`. Use `set v : KH.cellMon S I := u * t with hv_def`. Establish `hv : h ((v : MRingOver S ι) • m) = 0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul]`. Simplify `hu` using `[v, Submonoid.smul_def, mul_smul]`. Take `⟨e, he⟩` from `GenSESStep.cellMon_homog v.2`. Establish `hvm : (v : MRingOver S ι) • m ∈ 𝓜 ((c + fun k => (a k : ℤ)) + fun k => (e k : ℤ))` using `h𝓜.2 e _ _ m he hm`. Choose the witnesses or unpack the hypotheses as in `⟨m', hm'⟩ : (v : MRingOver S ι) • m ∈ LinearMap.range g := by`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hex]`. Conclude with `LinearMap.mem_ker.mpr hv`. Establish `hm'deg` using `GenSESStep.mem_of_map_mem h𝓜' h𝓜 hg hinj (hm' ▸ hvm)`. Use `⟨LocalizedModule.mk m' (v * t), ?_, ?_⟩` and prove the remaining obligations. Use `GenSESStep.mk_mem_locPart m' (v * t) (e + a) (GenSESStep.isMultiHomog_mul he ht) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hm'deg using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Nat.cast_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[KHTheoremS.lmap_mk, hm', ← Submonoid.smul_def, LocalizedModule.mk_cancel_common_left]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locPart_exact (h𝓜' : KH.IsMGraded S ι 𝓜') (h𝓜 : KH.IsMGraded S ι 𝓜)
     (hg : KH.IsMGradedMap S ι 𝓜' 𝓜 g) (hinj : Function.Injective g)
@@ -215,7 +215,7 @@ theorem locPart_exact (h𝓜' : KH.IsMGraded S ι 𝓜') (h𝓜 : KH.IsMGraded S
   · rw [KHTheoremS.lmap_mk, hm', ← Submonoid.smul_def, LocalizedModule.mk_cancel_common_left]
 
 /- English proof (translation)
-Use `fun I : KH.Cell K ι n => locPart_exact h𝓜' h𝓜 hg hinj hex (mem_cechCc_iff.mp hx I) (congrFun h0 I)` as an intermediate fact. Use `choose y hy hyx using this`. Conclude with `⟨y, mem_cechCc_iff.mpr hy, funext hyx⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cechMap_exact (h𝓜' : KH.IsMGraded S ι 𝓜') (h𝓜 : KH.IsMGraded S ι 𝓜)
     (hg : KH.IsMGradedMap S ι 𝓜' 𝓜 g) (hinj : Function.Injective g)
@@ -228,7 +228,7 @@ theorem cechMap_exact (h𝓜' : KH.IsMGraded S ι 𝓜') (h𝓜 : KH.IsMGraded S
   exact ⟨y, mem_cechCc_iff.mpr hy, funext hyx⟩
 
 /- English proof (translation)
-The claim follows from `| 0, x, hx => by have hx0 : x = 0 := (Submodule.mem_bot S).mp hx exact ⟨0, zero_mem _, by rw [hx0, map_zero]⟩ | n + 1, _, ⟨y, hy, rfl⟩ => by obtain ⟨z, hz, rfl⟩ := cechMap_lift h𝓜 h𝓜'' hh hsurj hy exact ⟨KH.cechD S ι M n z, ⟨z, hz, rfl⟩, (KHTheoremS.cechD_cechMap h n z).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem cechBc_lift (h𝓜 : KH.IsMGraded S ι 𝓜) (h𝓜'' : KH.IsMGraded S ι 𝓜'')
     (hh : KH.IsMGradedMap S ι 𝓜 𝓜'' h) (hsurj : Function.Surjective h) {c : K → ℤ} :
@@ -242,9 +242,9 @@ theorem cechBc_lift (h𝓜 : KH.IsMGraded S ι 𝓜) (h𝓜'' : KH.IsMGraded S �
     exact ⟨KH.cechD S ι M n z, ⟨z, hz, rfl⟩, (KHTheoremS.cechD_cechMap h n z).symm⟩
 
 /- English proof (translation)
-Take `⟨hzC, hzD⟩` from `hz`. Take `⟨b, hb, hbz⟩` from `cechBc_lift h𝓜 h𝓜'' hh hsurj hzb`. Take `⟨hbC, hbD⟩` from `cechBc_le_cechZc hSq hDeg 𝓜 c n hb`. Take `⟨w, hw, hwz⟩` from `cechMap_exact h𝓜' h𝓜 hg hinj hex (x := z - b) (sub_mem hzC hbC) (by rw [map_sub, hbz, sub_self])`. Establish `hDz : KH.cechD S ι M n z = 0` using `hzD`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hDb : KH.cechD S ι M n b = 0` using `hbD`. Use `⟨w, ⟨hw, LinearMap.mem_ker.mpr (cechMap_injective hinj (n + 1) ?_)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← KHTheoremS.cechD_cechMap, hwz, map_sub, hDz, hDb, sub_zero, map_zero]`. Rewrite using `[hwz, sub_sub_cancel]`. Conclude with `hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sub_mem_cechBc (hSq : KH.CechDSqStatement) (hDeg : KH.CechDDegStatement)
     (h𝓜' : KH.IsMGraded S ι 𝓜') (h𝓜 : KH.IsMGraded S ι 𝓜) (h𝓜'' : KH.IsMGraded S ι 𝓜'')
@@ -265,9 +265,9 @@ theorem exists_sub_mem_cechBc (hSq : KH.CechDSqStatement) (hDeg : KH.CechDDegSta
     exact hb
 
 /- English proof (translation)
-Take `⟨hzC, hzD⟩` from `hz''`. Take `⟨y, hy, rfl⟩` from `cechMap_lift h𝓜 h𝓜'' hh hsurj hzC`. Establish `hDy` using `hDeg S K ι M 𝓜 c n y hy`. Take `⟨w, hw, hwy⟩` from `cechMap_exact h𝓜' h𝓜 hg hinj hex hDy (by rw [← KHTheoremS.cechD_cechMap]; exact hzD)`. Use `⟨y, hy, w, ⟨hw, LinearMap.mem_ker.mpr (cechMap_injective hinj (n + 1 + 1) ?_)⟩, hwy.symm, rfl⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← KHTheoremS.cechD_cechMap, hwy, map_zero]`. Conclude with `LinearMap.congr_fun (hSq S K ι M n) y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_cocycle (hSq : KH.CechDSqStatement) (hDeg : KH.CechDDegStatement)
     (h𝓜' : KH.IsMGraded S ι 𝓜') (h𝓜 : KH.IsMGraded S ι 𝓜) (h𝓜'' : KH.IsMGraded S ι 𝓜'')
@@ -286,7 +286,7 @@ theorem lift_cocycle (hSq : KH.CechDSqStatement) (hDeg : KH.CechDDegStatement)
   exact LinearMap.congr_fun (hSq S K ι M n) y
 
 /- English proof (translation)
-Use `⟨⟨sub_mem hy ((KHCechMapDeg.full S K ι M' M 𝓜' 𝓜 g c n hg).1 v hv), LinearMap.mem_ker.mpr ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, KHTheoremS.cechD_cechMap, hvw, hyw, sub_self]`. Rewrite using `[map_sub, cechMap_comp_eq_zero hex, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjust (hg : KH.IsMGradedMap S ι 𝓜' 𝓜 g)
     (hex : LinearMap.range g = LinearMap.ker h) {c : K → ℤ} {n : ℕ} {y : KH.CechC S ι M n}
@@ -300,7 +300,7 @@ theorem adjust (hg : KH.IsMGradedMap S ι 𝓜' 𝓜 g)
   · rw [map_sub, cechMap_comp_eq_zero hex, sub_zero]
 
 /- English proof (translation)
-Take `⟨y, hy, w, hw, hyw, rfl⟩` from `lift_cocycle hSq hDeg h𝓜' h𝓜 h𝓜'' hg hh hinj hsurj hex hz''`. Take `⟨v, hv, hvw⟩` from `hZ' hw`. Take `⟨hz, he⟩` from `adjust hg hex hy hyw hv hvw`. Conclude with `⟨_, hz, he⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cocycle_of_vanish (hSq : KH.CechDSqStatement) (hDeg : KH.CechDDegStatement)
     (h𝓜' : KH.IsMGraded S ι 𝓜') (h𝓜 : KH.IsMGraded S ι 𝓜) (h𝓜'' : KH.IsMGraded S ι 𝓜'')
@@ -315,7 +315,7 @@ theorem exists_cocycle_of_vanish (hSq : KH.CechDSqStatement) (hDeg : KH.CechDDeg
   exact ⟨_, hz, he⟩
 
 /- English proof (translation)
-Take `⟨hzC, hzD⟩` from `hz`. Take `⟨w, hw, rfl⟩` from `cechMap_exact h𝓜' h𝓜 hg hinj hex hzC h0`. Use `⟨w, ⟨hw, LinearMap.mem_ker.mpr (cechMap_injective hinj (n + 1) ?_)⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← KHTheoremS.cechD_cechMap, map_zero]`. Conclude with `hzD`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_preimage_cocycle (h𝓜' : KH.IsMGraded S ι 𝓜') (h𝓜 : KH.IsMGraded S ι 𝓜)
     (hg : KH.IsMGradedMap S ι 𝓜' 𝓜 g) (hinj : Function.Injective g)
@@ -329,11 +329,11 @@ theorem exists_preimage_cocycle (h𝓜' : KH.IsMGraded S ι 𝓜') (h𝓜 : KH.I
   exact hzD
 
 /- English proof (translation)
-Use `finite_of_ker_le LinearMap.id Function.surjective_id (hMap h hh c n) (LinearMap.range (hMap g hg c n)) ?_ ?_` and prove the remaining obligations. Rewrite using `[LinearMap.range_eq_map]`. Conclude with `Module.Finite.fg_top.map _`. Introduce `x hx`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[hMap_mk, Submodule.Quotient.mk_eq_zero]`. Take `⟨z', hz', hzz⟩` from `exists_sub_mem_cechBc hSq hDeg h𝓜' h𝓜 h𝓜'' hg hh hinj hsurj hex z.2 hx`. Use `⟨Submodule.Quotient.mk ⟨z', hz'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hMap_mk, LinearMap.id_apply, Submodule.Quotient.eq]`. Use `neg_mem hzz` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[neg_sub]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem finite_middle (hSq : KH.CechDSqStatement) (hDeg : KH.CechDDegStatement)
     (h𝓜' : KH.IsMGraded S ι 𝓜') (h𝓜 : KH.IsMGraded S ι 𝓜) (h𝓜'' : KH.IsMGraded S ι 𝓜'')
@@ -367,13 +367,13 @@ def pairs (g : M' →ₗ[MRingOver S ι] M) (𝓜 : (K → ℤ) → Submodule S 
     rw [Prod.smul_fst, Prod.smul_snd, LinearMap.map_smul_of_tower, LinearMap.map_smul_of_tower, hp.2.2]⟩
 
 /- English proof (translation)
-Establish `hπ : ∀ p : pairs g 𝓜 𝓜' c n, KH.cechMap S ι h n p.1.1 ∈ KH.cechZc ι 𝓜'' c n` using `fun p => ⟨(KHCechMapDeg.full S K ι M M'' 𝓜 𝓜'' h c n hh).1 _ p.2.1, LinearMap.mem_ker.mpr (by`. Rewrite using `[KHTheoremS.cechD_cechMap, p.2.2.2, cechMap_comp_eq_zero hex])⟩`. Use `finite_of_ker_le (Submodule.mkQ ((KH.cechBc ι 𝓜'' c n).comap (KH.cechZc ι 𝓜'' c n).subtype) ∘ₗ LinearMap.codRestrict (KH.cechZc ι 𝓜'' c n) (((KH.cechMap S ι h n).restrictScalars S) ∘ₗ LinearMap.fst S _ _ ∘ₗ (pairs g 𝓜 𝓜' c n).subtype) hπ) ?_ (Submodule.mkQ ((KH.cechBc ι 𝓜' c (n + …` and prove the remaining obligations. Introduce `x`. Take `⟨z'', rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, w, hw, hyw, hyz⟩` from `lift_cocycle hSq hDeg h𝓜' h𝓜 h𝓜'' hg hh hinj hsurj hex z''.2`. Use `⟨⟨(y, w), hy, hw, hyw⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, Submodule.mkQ_apply]`. Use `congr 1`. Conclude with `Subtype.ext hyz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.range_eq_map]`. Conclude with `Module.Finite.fg_top.map _`. Introduce `p hp`. Rewrite `hp` using `[LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨v, hv, hvw⟩` from `(hp : p.1.2 ∈ KH.cechBc ι 𝓜' c (n + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hz, he⟩` from `adjust hg hex p.2.1 p.2.2.2 hv hvw`. Use `⟨Submodule.Quotient.mk ⟨_, hz⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hMap_mk, LinearMap.comp_apply, Submodule.mkQ_apply]`. Use `congr 1`. Conclude with `Subtype.ext he`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem finite_right (hSq : KH.CechDSqStatement) (hDeg : KH.CechDDegStatement)
     (h𝓜' : KH.IsMGraded S ι 𝓜') (h𝓜 : KH.IsMGraded S ι 𝓜) (h𝓜'' : KH.IsMGraded S ι 𝓜'')
@@ -416,13 +416,11 @@ end SES
 end KHCechSES
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ _ M' _ _ _ _ M _ _ _ _ M'' _ _ _ _ 𝓜' 𝓜 𝓜'' g h h𝓜' h𝓜 h𝓜'' hg hh hinj hsurj hex c n`. Use `⟨fun h1 h2 => ?_, fun h1 h2 => ?_, fun hS h1 h2 => ?_, fun hS h1 h2 => ?_, fun h1 => ?_, fun z hz h0 => ?_⟩` and prove the remaining obligations. Rewrite `h1`, `h2`, the goal using `[H1VanishingDevissage.cechHc_subsingleton_iff]`. Introduce `z hz`. Take `⟨z', hz', hzz⟩` from `KHCechSES.exists_sub_mem_cechBc hSq hDeg h𝓜' h𝓜 h𝓜'' hg hh hinj hsurj hex hz (h2 (KHTheoremS.cechMap_mem_cechZc hh hz))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `add_mem hzz (KHCechSES.cechMap_mem_cechBc hg (h1 hz'))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Rewrite `h1`, `h2`, the goal using `[H1VanishingDevissage.cechHc_subsingleton_iff]`. Introduce `z'' hz''`. Take `⟨z, hz, rfl⟩` from `KHCechSES.exists_cocycle_of_vanish hSq hDeg h𝓜' h𝓜 h𝓜'' hg hh hinj hsurj hex h2 hz''`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `KHCechSES.cechMap_mem_cechBc hh (h1 hz)`. Conclude with `KHCechSES.finite_middle hSq hDeg h𝓜' h𝓜 h𝓜'' hg hh hinj hsurj hex hS c n h1 h2`. Conclude with `KHCechSES.finite_right hSq hDeg h𝓜' h𝓜 h𝓜'' hg hh hinj hsurj hex hS c n h1 h2`. Rewrite `h1` using `[H1VanishingDevissage.cechHc_subsingleton_iff]`. Introduce `z'' hz''`.
-
-Conclude with `KHCechSES.exists_cocycle_of_vanish hSq hDeg h𝓜' h𝓜 h𝓜'' hg hh hinj hsurj hex h1 hz''`. Conclude with `KHCechSES.exists_preimage_cocycle h𝓜' h𝓜 hg hinj hex hz h0`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem KHCechSES.proof (hSq : KH.CechDSqStatement) (hDeg : KH.CechDDegStatement) : KH.CechSESStatement := by
   intro S _ K _ _ ι _ _ M' _ _ _ _ M _ _ _ _ M'' _ _ _ _ 𝓜' 𝓜 𝓜'' g h h𝓜' h𝓜 h𝓜'' hg hh hinj hsurj hex c n

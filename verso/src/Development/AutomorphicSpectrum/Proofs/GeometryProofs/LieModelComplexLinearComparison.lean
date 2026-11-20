@@ -21,7 +21,7 @@ def push (hφ : IsGrpPullback G' G f φ) {T : Over S'} (x : T ⟶ G') : Over.mk 
     rw [h1, ← Category.assoc, h2])
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `(hφ.2 T x y (push hφ x) (push hφ y) rfl rfl).symm`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem push_mul (hφ : IsGrpPullback G' G f φ) {T : Over S'} (x y : T ⟶ G') :
     push hφ (x * y) = push hφ x * push hφ y := by
@@ -29,7 +29,7 @@ theorem push_mul (hφ : IsGrpPullback G' G f φ) {T : Over S'} (x y : T ⟶ G') 
   exact (hφ.2 T x y (push hφ x) (push hφ y) rfl rfl).symm
 
 /- English proof (translation)
-Establish `h` using `push_mul hφ (1 : T ⟶ G') 1`. Rewrite `h` using `[_root_.mul_one]`. Conclude with `left_eq_mul.mp h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_one (hφ : IsGrpPullback G' G f φ) (T : Over S') :
     push hφ (1 : T ⟶ G') = 1 := by
@@ -40,7 +40,7 @@ theorem push_one (hφ : IsGrpPullback G' G f φ) (T : Over S') :
 end Push
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun a => ?_)` and prove the remaining obligations. Simplify using `[dualMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem spec_fst_dualMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom B B B).toRingHom) ≫
@@ -52,7 +52,7 @@ theorem spec_fst_dualMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) 
   simp [dualMap]
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun a => ?_)` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem spec_alg_dualMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     Spec.map (CommRingCat.ofHom (dualMap f)) ≫ Spec.map (CommRingCat.ofHom (algebraMap A (DualNumber A))) =
@@ -63,7 +63,7 @@ theorem spec_alg_dualMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) 
   ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun a => ?_)` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap, epsMul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem spec_epsMul_dualMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (c : A) :
     Spec.map (CommRingCat.ofHom (epsMul (f c))) ≫ Spec.map (CommRingCat.ofHom (dualMap f)) =
@@ -74,23 +74,21 @@ theorem spec_epsMul_dualMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* 
   ext <;> simp [dualMap, epsMul, mul_comm]
 
 /- English proof (translation)
-Set `c : epsAt (spMap ψ ≫ h) ⟶ Over.mk ((epsAt (𝟙 (Sp R))).hom ≫ h)` to `Over.homMk (spMap (dualMap ψ)) (by`. Establish `key` using `spec_alg_dualMap ψ`. Simplify using `only [Over.mk_hom, Category.comp_id]`. Rewrite using `[← Category.assoc, key, Category.assoc])`. Set `w : (Fin g → R) → (epsAt (spMap ψ ≫ h) ⟶ G)` to `fun x => c ≫ push hφ (M.pt x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `wl : ∀ x, (w x).left = spMap (dualMap ψ) ≫ (M.pt x).left ≫ φ` using `fun _ => rfl`. Establish `wt : ∀ x, IsTanAt G (spMap ψ ≫ h) (w x)`. Introduce `x`. Set `c0 : Over.mk (spMap ψ ≫ h) ⟶ Over.mk ((Over.mk (𝟙 (Sp R))).hom ≫ h)` to `Over.homMk (spMap ψ) (by simp)`. Establish `h0 : c0 ≫ push hφ (1 : Over.mk (𝟙 (Sp R)) ⟶ G') = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[push_one]`. Conclude with `MonObj.comp_one c0`. Establish `h1 : spMap ψ ≫ (1 : Over.mk (𝟙 (Sp R)) ⟶ G').left ≫ φ = (1 : Over.mk (spMap ψ ≫ h) ⟶ G).left` using `congrArg CommaMorphism.left h0`. Establish `h2` using `M.tan x`. Unfold `IsTanAt at h2 ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wl, ← h1, ← h2, ← Category.assoc, spec_fst_dualMap ψ]`. Simplify using `only [Category.assoc]`. Use `choose j hj using fun x => MR.onto (w x) (wt x)`. Establish `jadd : ∀ x y, j (x + y) = j x + j y`. Introduce `x y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `MR.inj` to reduce the goal to its premises. Rewrite using `[MR.add, hj, hj, hj]`. Simplify using `only [w, M.add, push_mul, MonObj.comp_mul]`. Establish `jsmul : ∀ (a : R) x, j (a • x) = ψ a • j x`. Introduce `a x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MR.inj` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[MR.smul, hj, hj, wl, wl, M.smul, ← Category.assoc (Spec.map _) (spMap (dualMap ψ)), spec_epsMul_dualMap]`. Simplify using `only [Category.assoc]`. Set `J : (Fin g → R) →+ Vz` to `AddMonoidHom.mk' j jadd`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨∑ i, (LinearMap.proj i : (Fin g → ℂ) →ₗ[ℂ] ℂ).smulRight (j (Pi.single i 1)), fun x => ?_⟩` and prove the remaining obligations. Establish `hΘ : (∑ i, (LinearMap.proj i : (Fin g → ℂ) →ₗ[ℂ] ℂ).smulRight (j (Pi.single i 1))) (fun e => ψ (x e)) = j x`. Establish `hx : x = ∑ i, x i • (Pi.single i 1 : Fin g → R)` using `by conv_lhs => rw [← Finset.univ_sum_single x]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Pi.single_smul, smul_eq_mul, _root_.mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : J x = ∑ i, J (x i • (Pi.single i 1 : Fin g → R))` using `by conv_lhs => rw [hx]`. Conclude with `map_sum J _ _`. Establish `hJ' : j x = ∑ i, ψ (x i) • j (Pi.single i 1)`. Use `hJ.trans (Finset.sum_congr rfl fun i _ => jsmul _ _)` and prove the remaining obligations. Rewrite using `[hJ']`.
-
-Simplify using `[LinearMap.sum_apply]`. Rewrite using `[hΘ, hj, wl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_linear_of_pullback {X : Scheme.{0}} {R : Type} [CommRing R] {G' : Over (Sp R)} [GrpObj G']
     {G : Over X} [GrpObj G] {h : Sp R ⟶ X} {φ : G'.left ⟶ G.left} (hφ : IsGrpPullback G' G h φ) {g : ℕ}
@@ -148,7 +146,7 @@ theorem exists_linear_of_pullback {X : Scheme.{0}} {R : Type} [CommRing R] {G' :
   rw [hΘ, hj, wl]
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t R _ t' h m g M ψ Vz _ _ MR`. Conclude with `exists_linear_of_pullback m.cart M ψ MR`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_linear_fibre : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (R : Type) [CommRing R] (t' : SAB H (Sp R)) (h : Sp R ⟶ X) (m : SABMap t' t h) (g : ℕ) (M : LieModel t'.G (𝟙 (Sp R)) (Fin g → R)) (ψ : R →+* ℂ) (Vz : Type) [AddCommGroup Vz] [Module ℂ Vz] (MR : LieModel t.G (spMap ψ ≫ h) Vz), ∃ Θ : (Fin g → ℂ) →ₗ[ℂ] Vz, ∀ x : Fin g → R, (MR.pt (Θ (fun e => ψ (x e)))).left = spMap (dualMap ψ) ≫ (M.pt x).left ≫ m.φ := by
   intro E _ _ _ H X t R _ t' h m g M ψ Vz _ _ MR

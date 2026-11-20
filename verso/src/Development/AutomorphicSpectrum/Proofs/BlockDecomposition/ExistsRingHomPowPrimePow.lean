@@ -6,7 +6,7 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.Frobenius
 
 /- English proof (translation)
-Introduce `p hp A _ hpA k`. Use `⟨{ toFun := fun x => x ^ p ^ k map_one' := one_pow _ map_mul' := fun x y => mul_pow x y _ map_zero' := zero_pow (pow_ne_zero k hp.out.ne_zero) map_add' := fun x y => ?_ }, fun x => rfl⟩` and prove the remaining obligations. Use `show (x + y) ^ p ^ k = x ^ p ^ k + y ^ p ^ k`. Rewrite using `[add_pow_prime_pow_eq hp.out x y k, hpA]`. Simplify using `only [zero_mul, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_pow_prime_pow :
     ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A], (p : A) = 0 → ∀ k : ℕ,

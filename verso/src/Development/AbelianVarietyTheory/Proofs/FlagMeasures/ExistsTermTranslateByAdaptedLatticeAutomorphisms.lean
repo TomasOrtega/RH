@@ -25,34 +25,34 @@ def IA (P : HeightOneSpectrum (𝓞 E)) (x : E) : Prop :=
   ∃ s : 𝓞 E, s ∉ P.asIdeal ∧ ∃ o : 𝓞 E, (s : E) * x = o
 
 /- English proof (translation)
-Introduce `h` and use `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_nmem (P : HeightOneSpectrum (𝓞 E)) : (1 : 𝓞 E) ∉ P.asIdeal :=
   fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)
 
 /- English proof (translation)
-Introduce `h` and use `(P.isPrime.mem_or_mem h).elim hs ht`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_nmem (P : HeightOneSpectrum (𝓞 E)) {s t : 𝓞 E} (hs : s ∉ P.asIdeal) (ht : t ∉ P.asIdeal) :
     s * t ∉ P.asIdeal := fun h => (P.isPrime.mem_or_mem h).elim hs ht
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_nmem P, o, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem IA_coe (P : HeightOneSpectrum (𝓞 E)) (o : 𝓞 E) : IA P (o : E) := ⟨1, one_nmem P, o, by simp⟩
 
 /- English proof (translation)
-Simplify using `using IA_coe P 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IA_zero (P : HeightOneSpectrum (𝓞 E)) : IA P (0 : E) := by simpa using IA_coe P 0
 
 /- English proof (translation)
-Simplify using `using IA_coe P 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IA_one (P : HeightOneSpectrum (𝓞 E)) : IA P (1 : E) := by simpa using IA_coe P 1
 
 /- English proof (translation)
-Take `⟨s, hs, o, e1⟩` from `hx`. Take `⟨t, ht, p, e2⟩` from `hy`. Use `⟨s * t, mul_nmem P hs ht, t * o + s * p, ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `(t : E) * e1 + (s : E) * e2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem IA_add {P : HeightOneSpectrum (𝓞 E)} {x y : E} (hx : IA P x) (hy : IA P y) : IA P (x + y) := by
   obtain ⟨s, hs, o, e1⟩ := hx
@@ -62,7 +62,7 @@ theorem IA_add {P : HeightOneSpectrum (𝓞 E)} {x y : E} (hx : IA P x) (hy : IA
   linear_combination (t : E) * e1 + (s : E) * e2
 
 /- English proof (translation)
-Take `⟨s, hs, o, e1⟩` from `hx`. Take `⟨t, ht, p, e2⟩` from `hy`. Use `⟨s * t, mul_nmem P hs ht, o * p, ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `((t : E) * y) * e1 + (o : E) * e2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem IA_mul {P : HeightOneSpectrum (𝓞 E)} {x y : E} (hx : IA P x) (hy : IA P y) : IA P (x * y) := by
   obtain ⟨s, hs, o, e1⟩ := hx
@@ -72,18 +72,18 @@ theorem IA_mul {P : HeightOneSpectrum (𝓞 E)} {x y : E} (hx : IA P x) (hy : IA
   linear_combination ((t : E) * y) * e1 + (o : E) * e2
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction f (IA P) (fun _ _ => IA_add) (IA_zero P) (fun i _ => h i)`.
+A detailed English derivation is pending.
 -/
 theorem IA_sum {P : HeightOneSpectrum (𝓞 E)} {ι : Type*} (s : Finset ι) (f : ι → E) (h : ∀ i, IA P (f i)) :
     IA P (∑ i ∈ s, f i) :=
   Finset.sum_induction f (IA P) (fun _ _ => IA_add) (IA_zero P) (fun i _ => h i)
 
 /- English proof (translation)
-Take `⟨s, hs, o, ho⟩` from `hk`. Take `⟨t, ht, htx⟩` from `hx`. Use `⟨s * t, P.asIdeal.primeCompl.mul_mem hs ht, ?_⟩` and prove the remaining obligations. Establish `e : (s * t) • (k • x) = o • (t • x)`. Rewrite using `[Formalism.L2.SG.Pf.smul_O, Formalism.L2.SG.Pf.smul_O o, Formalism.L2.SG.Pf.smul_O t, smul_smul, smul_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Rewrite using `[← ho]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.smul_mem o htx`.
+A detailed English derivation is pending.
 -/
 theorem locP_smul (P : HeightOneSpectrum (𝓞 E)) (M : Submodule (𝓞 E) S.V) {k : E} (hk : IA P k) {x : S.V}
     (hx : x ∈ (haveI := P.isPrime; Formalism.HermitianLatticesTheory.localization₂ P.asIdeal M)) :
@@ -100,21 +100,21 @@ theorem locP_smul (P : HeightOneSpectrum (𝓞 E)) (M : Submodule (𝓞 E) S.V) 
   exact M.smul_mem o htx
 
 /- English proof (translation)
-Introduce `P hP` and use `locP_smul P _ (hk P hP) (hx P hP)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem modG_smul {Λ : Submodule (𝓞 E) S.V} {g : ℕ} {k : E}
     (hk : ∀ P : HeightOneSpectrum (𝓞 E), (g : 𝓞 E) ∈ P.asIdeal → IA P k) {x : S.V} (hx : ModG S Λ g x) :
     ModG S Λ g (k • x) := fun P hP => locP_smul P _ (hk P hP) (hx P hP)
 
 /- English proof (translation)
-Introduce `P hP` and use `Submodule.sum_mem _ fun i _ => h i P hP`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem modG_sum {Λ : Submodule (𝓞 E) S.V} {g : ℕ} {ι : Type*} (s : Finset ι) (f : ι → S.V)
     (h : ∀ i, ModG S Λ g (f i)) : ModG S Λ g (∑ i ∈ s, f i) := fun P hP =>
   Submodule.sum_mem _ fun i _ => h i P hP
 
 /- English proof (translation)
-Use `haveI := P.isPrime`. Rewrite using `[← ha, Formalism.L2.SG.Pf.gmap_locP, Formalism.L2.SG.Pf.gmap_apply_mem]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_localization_aut (P : HeightOneSpectrum (𝓞 E)) {Λ : Submodule (𝓞 E) S.V} {a : S.V ≃ₗ[E] S.V}
     (ha : Formalism.HermitianLatticesTheory.gmap a Λ = Λ) {x : S.V} (hx : x ∈ (haveI := P.isPrime; Formalism.HermitianLatticesTheory.localization₂ P.asIdeal Λ)) :
@@ -124,13 +124,11 @@ theorem mem_localization_aut (P : HeightOneSpectrum (𝓞 E)) {Λ : Submodule (�
   exact hx
 
 /- English proof (translation)
-Introduce `P hP b`. Use `haveI := P.isPrime`. Establish `hsub : ∀ (M : Submodule (𝓞 E) S.V), ∀ y ∈ M, y ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal M` using `fun M y hy => ⟨1, P.asIdeal.primeCompl.one_mem, by simpa using hy⟩`. Use `Fin.lastCases ?_ (fun i => ?_) b` and prove the remaining obligations. Establish `e : frame F (Fin.last r) = F.fl.z` using `by simp [frame, FlagG.fvec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hsub _ _ hl.1`. Establish `e : frame F i.castSucc = F.fl.e i` using `by simp [frame, FlagG.fvec]`. Rewrite using `[e]`. Take `⟨c, -, hc1, hloc⟩` from `hconv.1 P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : F.fl.e i ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Submodule.span (𝓞 E) (Set.range fun a => c a • F.fl.e a))`. Use `hsub _ _ (Submodule.subset_span ⟨i, ?_⟩)` and prove the remaining obligations. Simplify using `[hc1 hP i]`. Rewrite `he` using `[← hloc]`. Take `⟨t, ht, hte⟩` from `he`.
-
-Conclude with `⟨t, ht, (Submodule.mem_inf.1 hte).1⟩`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frame_locP (Λ : Submodule (𝓞 E) S.V) (g : ℕ) {T : E} (F : LFlag S r T) (hconv : IsFixedConv Λ g F)
     (hl : IsLift Λ F) : ∀ P : HeightOneSpectrum (𝓞 E), (g : 𝓞 E) ∈ P.asIdeal → ∀ b,
@@ -157,9 +155,9 @@ def triM (w : Fin (r + 1) → Fin r → E) : Matrix (Fin (r + 1)) (Fin (r + 1)) 
   fun c b => (if c = b then 1 else 0) + (if h : c.val < r then w b ⟨c.val, h⟩ else 0)
 
 /- English proof (translation)
-Introduce `c b hbc`. Unfold `triM`. Rewrite using `[if_neg hbc.ne']`. Use `split_ifs with h`. Rewrite using `[hw b _ (le_of_lt (Fin.lt_def.1 hbc))]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem triM_lower (w : Fin (r + 1) → Fin r → E) (hw : ∀ b (c : Fin r), b.val ≤ c.val → w b c = 0) :
     ∀ c b, b < c → triM w c b = 0 := by
@@ -171,9 +169,9 @@ theorem triM_lower (w : Fin (r + 1) → Fin r → E) (hw : ∀ b (c : Fin r), b.
   · simp
 
 /- English proof (translation)
-Introduce `b`. Unfold `triM`. Rewrite using `[if_pos rfl]`. Use `split_ifs with h`. Rewrite using `[hw b _ le_rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem triM_diag (w : Fin (r + 1) → Fin r → E) (hw : ∀ b (c : Fin r), b.val ≤ c.val → w b c = 0) :
     ∀ b, triM w b b = 1 := by
@@ -185,9 +183,7 @@ theorem triM_diag (w : Fin (r + 1) → Fin r → E) (hw : ∀ b (c : Fin r), b.v
   · simp
 
 /- English proof (translation)
-Introduce `c b`. Unfold `triM`. Use `IA_add ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `IA_one P`.
-
-Conclude with `IA_zero P`. Use `split_ifs`. Conclude with `hw _ _`. Conclude with `IA_zero P`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem triM_IA (P : HeightOneSpectrum (𝓞 E)) (w : Fin (r + 1) → Fin r → E) (hw : ∀ b c, IA P (w b c)) :
     ∀ c b, IA P (triM w c b) := by
@@ -202,7 +198,7 @@ theorem triM_IA (P : HeightOneSpectrum (𝓞 E)) (w : Fin (r + 1) → Fin r → 
     · exact IA_zero P
 
 /- English proof (translation)
-Simplify using `only [triM, add_smul, Finset.sum_add_distrib, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `congr 1`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `[frame, FlagG.fvec]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem triM_sum {T : E} (F : LFlag S r T) (w : Fin (r + 1) → Fin r → E) (b : Fin (r + 1)) :
     ∑ c, triM w c b • frame F c = frame F b + ∑ i, w b i • F.fl.e i := by
@@ -213,9 +209,9 @@ theorem triM_sum {T : E} (F : LFlag S r T) (w : Fin (r + 1) → Fin r → E) (b 
   simp [frame, FlagG.fvec]
 
 /- English proof (translation)
-Introduce `a b hba`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Break down `lt_or_ge d a with h | h` into its components or cases. Rewrite using `[hA a d h, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB d b (lt_of_lt_of_le hba h), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_lower {n : ℕ} (A B : Matrix (Fin n) (Fin n) E) (hA : ∀ a b, b < a → A a b = 0)
     (hB : ∀ a b, b < a → B a b = 0) : ∀ a b, b < a → (A * B) a b = 0 := by
@@ -227,9 +223,9 @@ theorem mul_lower {n : ℕ} (A B : Matrix (Fin n) (Fin n) E) (hA : ∀ a b, b < 
   · rw [hB d b (lt_of_lt_of_le hba h), mul_zero]
 
 /- English proof (translation)
-Introduce `a`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite using `[hA1, hB1, one_mul]`. Introduce `d _ hd`. Break down `lt_or_gt_of_ne hd with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hA a d h, zero_mul]`. Rewrite using `[hB d a h, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_diag {n : ℕ} (A B : Matrix (Fin n) (Fin n) E) (hA : ∀ a b, b < a → A a b = 0)
     (hB : ∀ a b, b < a → B a b = 0) (hA1 : ∀ a, A a a = 1) (hB1 : ∀ a, B a a = 1) : ∀ a, (A * B) a a = 1 := by
@@ -243,7 +239,7 @@ theorem mul_diag {n : ℕ} (A B : Matrix (Fin n) (Fin n) E) (hA : ∀ a b, b < a
   · intro h; exact absurd (Finset.mem_univ a) h
 
 /- English proof (translation)
-Introduce `a b`. Rewrite using `[Matrix.mul_apply]`. Conclude with `IA_sum _ _ fun d => IA_mul (hA a d) (hB d b)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_IA {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (A B : Matrix (Fin n) (Fin n) E) (hA : ∀ a b, IA P (A a b))
     (hB : ∀ a b, IA P (B a b)) : ∀ a b, IA P ((A * B) a b) := by
@@ -252,9 +248,9 @@ theorem mul_IA {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (A B : Matrix (Fin n) 
   exact IA_sum _ _ fun d => IA_mul (hA a d) (hB d b)
 
 /- English proof (translation)
-Establish `hloc` using `frame_locP Λ g F hconv hl`. Establish `h` using `fun b : Fin (r + 1) => GlobalTheory.T.flag_coef_integral_of_local_integral Λ g F hconv b.val (a (frame F b) - frame F b) (haf b) (fun P hP => sub_mem (mem_localization_aut P haΛ (hloc P hP b)) (hloc P hP b))`. Use `choose w hw0 hw1 hw2 using h`. Use `⟨triM w, triM_lower w hw1, triM_diag w hw1, fun P hP => triM_IA P w (fun b c => hw2 b P hP c), fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[triM_sum, ← hw0 b]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem adapt_mat (Λ : Submodule (𝓞 E) S.V) (g : ℕ) {T : E} (F : LFlag S r T) (hconv : IsFixedConv Λ g F)
     (hl : IsLift Λ F) (a : S.V ≃ₗ[E] S.V) (haΛ : Formalism.HermitianLatticesTheory.gmap a Λ = Λ)
@@ -271,25 +267,23 @@ theorem adapt_mat (Λ : Submodule (𝓞 E) S.V) (g : ℕ) {T : E} (F : LFlag S r
   abel
 
 /- English proof (translation)
-Introduce `a b hba`. Simplify using `[h a b hba]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem map_lower {n : ℕ} (ξ : Matrix (Fin n) (Fin n) (𝓞 E)) (h : ∀ a b, b < a → ξ a b = 0) :
     ∀ a b, b < a → (ξ.map (fun x : 𝓞 E => (x : E))) a b = 0 := by
   intro a b hba; simp [h a b hba]
 
 /- English proof (translation)
-Introduce `a`. Simplify using `[h a]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem map_diag {n : ℕ} (ξ : Matrix (Fin n) (Fin n) (𝓞 E)) (h : ∀ a, ξ a a = 1) :
     ∀ a, (ξ.map (fun x : 𝓞 E => (x : E))) a a = 1 := by
   intro a; simp [h a]
 
 /- English proof (translation)
-Establish `hA2` using `(Formalism.L2.SG.Pf.IsAdmissible_mapL a haI g Λ F G).2 hA`. Rewrite `hA2` using `[haΛ]`. Take `⟨ξ, hξ0, hξ1, hξc⟩` from `hA2`. Take `⟨W, hW0, hW1, hWi, hWe⟩` from `adapt_mat Λ g F hconv hl a haΛ haf`. Use `GlobalTheory.T.frame_admissible_of_congr_unitriangular Λ g hg F _ (W * ξ.map (fun x : 𝓞 E => (x : E))) (mul_lower _ _ hW0 (map_lower ξ hξ0)) (mul_diag _ _ hW0 (map_lower ξ hξ0) hW1 (map_diag ξ hξ1)) (fun P hP => mul_IA P _ _ (hWi P hP) (fun a b => by simpa using IA_coe P (ξ a b)) …` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∑ c, (W * ξ.map (fun x : 𝓞 E => (x : E))) c b • frame F c = frameAct (frame (Formalism.L2.SG.Saturated.mapL a haI F)) ξ b`. Simplify using `only [frameAct, Formalism.L2.SG.Saturated.frame_mapL, hWe, Matrix.mul_apply, Matrix.map_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`. Rewrite using `[key]`.
-
-Conclude with `hξc b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdmissible_flagPair_of_unitriangular_left_automorphism (Λ : Submodule (𝓞 E) S.V) (g : ℕ) (hg : g ≠ 0) {T T' : E} (F : LFlag S r T) (G : LFlag S r T')
     (a : S.V ≃ₗ[E] S.V) (haI : a ∈ Formalism.HermitianLatticesTheory.isom S.hT) (haΛ : Formalism.HermitianLatticesTheory.gmap a Λ = Λ)
@@ -314,11 +308,9 @@ theorem isAdmissible_flagPair_of_unitriangular_left_automorphism (Λ : Submodule
   exact hξc b
 
 /- English proof (translation)
-Take `⟨ξ, hξ0, hξ1, hξc⟩` from `hA`. Take `⟨K, hK0, hK1, hKi, hKe⟩` from `adapt_mat Λ' g F' hconv' hl' a'⁻¹ (Formalism.L2.SG.Pf.gmap_inv ha'Λ) (GlobalTheory.T.inv_unitriangular_move_frame_mem_flagSubspace F' a' ha'f)`. Use `GlobalTheory.T.frame_admissible_of_congr_unitriangular Λ g hg F _ (ξ.map (fun x : 𝓞 E => (x : E)) * K) (mul_lower _ _ (map_lower ξ hξ0) hK0) (mul_diag _ _ (map_lower ξ hξ0) hK0 (map_diag ξ hξ1) hK1) (fun P hP => mul_IA P _ _ (fun a b => by simpa using IA_coe P (ξ a b)) (hKi P hP) …` and prove the remaining obligations. Establish `key : frame (Formalism.L2.SG.Saturated.mapL (γ * a'⁻¹) (Subgroup.mul_mem _ hγ (Subgroup.inv_mem _ ha'I)) F') b - ∑ c, (ξ.map (fun x : 𝓞 E => (x : E)) * K) c b • frame F c = ∑ d, K d b • (frame (Formalism.L2.SG.Saturated.mapL γ hγ F') d - frameAct (frame F) ξ d)`. Rewrite using `[Formalism.L2.SG.Saturated.frame_mapL, LinearEquiv.mul_apply, hKe b]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Formalism.L2.SG.Saturated.frame_mapL, map_sum, map_smul, frameAct, smul_sub, Finset.sum_sub_distrib, Matrix.mul_apply, Matrix.map_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`. Rewrite using `[key]`.
-
-Conclude with `modG_sum _ _ fun d => modG_smul (fun P hP => hKi P hP d b) (hξc d)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdmissible_flagPair_of_unitriangular_right_automorphism (Λ Λ' : Submodule (𝓞 E) S.V) (g : ℕ) (hg : g ≠ 0) {T T' : E} (F : LFlag S r T)
     (F' : LFlag S r T') (γ a' : S.V ≃ₗ[E] S.V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (ha'I : a' ∈ Formalism.HermitianLatticesTheory.isom S.hT)
@@ -350,27 +342,25 @@ theorem isAdmissible_flagPair_of_unitriangular_right_automorphism (Λ Λ' : Subm
 end Gen
 
 /- English proof (translation)
-Introduce `D X Y u u' t a ha a' ha'`. Establish `hγ : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Establish `hγΛ : Formalism.HermitianLatticesTheory.gmap t.lin t.lam' = t.lam` using `t.rep.2.2.2.1`. Establish `hPD` using `t.rep.2.2.2.2`. Establish `haI : a ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `ha.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha'I : a' ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `ha'.1.1`. Establish `hβ : a * t.lin * a'⁻¹ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `Subgroup.mul_mem _ (Subgroup.mul_mem _ haI hγ) (Subgroup.inv_mem _ ha'I)`. Establish `hβΛ : Formalism.HermitianLatticesTheory.gmap (a * t.lin * a'⁻¹) t.lam' = t.lam`. Rewrite using `[Formalism.L2.SG.Pf.gmap_mul, Formalism.L2.SG.Pf.gmap_inv ha'.2, Formalism.L2.SG.Pf.gmap_mul, hγΛ, ha.2]`. Take `⟨x, hx⟩` from `Formalism.L2.SG.Pf.ratPt_holds D X _ hβ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hPDβ : Formalism.L2.SG.TermDef.PD D t.lam (lf D (X.Fu u)) u' (mapLF (a * t.lin * a'⁻¹) (lf D (X.Fu u')))`. Establish `hRow` using `(Y.rowsOK u).1 _ t.mem`. Establish `hRow'` using `(Y.rowsOK u').1 _ t.mem'`. Establish `hFO' : FrameOK D t.lam' (lf D (X.Fu u'))` using `⟨hRow'.2.1.2.2.2, hRow'.2.2⟩`. Establish `hg : Formalism.MainNotions.S.Lat.gS D ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.MainNotions.S.Lat.gS`. Conclude with `Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`. Establish `emap : ∀ (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hβ : β ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) {T : D.host.E} (F : LFlag (VS D) D.R.rS T), mapLF β F = Formalism.L2.SG.Saturated.mapL β hβ F`. Introduce `β hβ T F`. Unfold `mapLF`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hβ]`. Both sides reduce to the same expression. Use `⟨?_, ?_, GlobalTheory.FrameIsom.frameOK_mapLF D _ hβ t.lam' t.lam hβΛ _ _ hFO'⟩` and prove the remaining obligations. Rewrite using `[emap _ hβ, ← hβΛ]`. Conclude with `(Formalism.L2.SG.Pf.IsLift_mapL _ hβ _ _).2 hRow'.2.1.2.2.1`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : IsAdmissible t.lam (Formalism.MainNotions.S.Lat.gS D) (lf D (X.Fu u)) (Formalism.L2.SG.Saturated.mapL t.lin hγ (lf D (X.Fu u')))`. Rewrite using `[← emap]`. Conclude with `hPD.2.1`. Establish `hβ2 : t.lin * a'⁻¹ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `Subgroup.mul_mem _ hγ (Subgroup.inv_mem _ ha'I)`. Establish `e : Formalism.L2.SG.Saturated.mapL (a * t.lin * a'⁻¹) hβ (lf D (X.Fu u')) = Formalism.L2.SG.Saturated.mapL a haI (Formalism.L2.SG.Saturated.mapL (t.lin * a'⁻¹) hβ2 (lf D (X.Fu u')))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Formalism.L2.SG.Saturated.mapL_mul]`. Use `congr 1`. Rewrite using `[emap _ hβ]`. Use `(congrArg (fun G => IsAdmissible t.lam (Formalism.MainNotions.S.Lat.gS D) (lf D (X.Fu u)) G) e).mpr ?_` and prove the remaining obligations. Conclude with `isAdmissible_flagPair_of_unitriangular_left_automorphism t.lam (Formalism.MainNotions.S.Lat.gS D) hg (lf D (X.Fu u)) (Formalism.L2.SG.Saturated.mapL (t.lin * a'⁻¹) hβ2 (lf D (X.Fu u'))) a haI ha.2 ha.1.2 hRow.2.1.2.2.2 hRow.2.1.2.2.1 (isAdmissible_flagPair_of_unitriangular_right_ …`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `p : GCar X u u' (X.Fu u) (X.Fu u') t.lam t.lam'` to `⟨(x, a * t.lin * a'⁻¹), hx, hβ, hβΛ, hPDβ⟩`. Set `s : TauC Y u u'` to `⟨t.lam, t.mem, t.lam', t.mem', Quot.mk _ p⟩`. Use `⟨s, rfl, rfl, ?_⟩` and prove the remaining obligations. Establish `heq : Equivalence (GRel X u u' (X.Fu u) (X.Fu u') t.lam t.lam')`. Use `⟨fun p => ⟨1, (Formalism.L2.SG.Pf.NLamSub _ _).one_mem, 1, (Formalism.L2.SG.Pf.NLamSub _ _).one_mem, by simp⟩, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `p q ⟨n, hn, n', hn', e⟩`. Use `⟨n⁻¹, (Formalism.L2.SG.Pf.NLamSub t.lam _).inv_mem hn, n'⁻¹, (Formalism.L2.SG.Pf.NLamSub t.lam' _).inv_mem hn', ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `group`. Introduce and unpack `p q w ⟨n, hn, n', hn', e⟩ ⟨m, hm, m', hm', e'⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨m * n, (Formalism.L2.SG.Pf.NLamSub t.lam _).mul_mem hm hn, n' * m', (Formalism.L2.SG.Pf.NLamSub t.lam' _).mul_mem hn' hm', ?_⟩` and prove the remaining obligations. Rewrite using `[e', e]`. Use `group`. Establish `hq : GRel X u u' (X.Fu u) (X.Fu u') t.lam t.lam' p s.rep`. Establish `h1 : Quot.mk (GRel X u u' (X.Fu u) (X.Fu u') t.lam t.lam') s.rep = Quot.mk _ p` using `Quot.out_eq _`.
-
-Conclude with `heq.symm ((heq.eqvGen_iff).1 (Quot.eqvGen_exact h1))`. Take `⟨n, hn, n', hn', e⟩` from `hq`. Conclude with `⟨n, hn, n', hn', e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem trans_main : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (t : TauC Y u u'), ∀ a ∈ Aut0 (lf D (X.Fu u)) t.lam, ∀ a' ∈ Aut0 (lf D (X.Fu u')) t.lam', ∃ s : TauC Y u u', s.lam = t.lam ∧ s.lam' = t.lam' ∧ ∃ n ∈ NLam t.lam (lf D (X.Fu u)), ∃ n' ∈ NLam t.lam' (lf D (X.Fu u')), s.lin = n * (a * t.lin * a'⁻¹) * n' := by
   intro D X Y u u' t a ha a' ha'

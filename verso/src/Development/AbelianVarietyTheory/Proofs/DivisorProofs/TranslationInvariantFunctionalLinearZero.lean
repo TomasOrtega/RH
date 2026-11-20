@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdentityAsSumExpMin
 namespace GlobalTheory.CharInvForm
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => funext y`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Rewrite using `[iteratedDeriv_succ, ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `y`. Establish `h1 : HasDerivAt (fun y : ℝ => (y : ℂ)) 1 y`. Simplify using `using (hasDerivAt_id y).ofReal_comp`. Establish `h : HasDerivAt (fun y : ℝ => Complex.I ^ n * Complex.exp (Complex.I * y)) (Complex.I ^ n * (Complex.exp (Complex.I * y) * (Complex.I * 1))) y` using `((h1.const_mul Complex.I).cexp).const_mul (Complex.I ^ n)`. Rewrite using `[h.deriv]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -26,7 +26,7 @@ theorem iteratedDeriv_exp_I (n : ℕ) :
     rw [h.deriv]; ring
 
 /- English proof (translation)
-Establish `hc : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => Complex.exp (Complex.I * y))` using `(contDiff_const.mul Complex.ofRealCLM.contDiff).cexp`. Use `⟨hc, fun n => ⟨0, 1, fun x => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv, iteratedDeriv_exp_I, pow_zero, mul_one, norm_mul, norm_pow, mul_comm Complex.I, Complex.norm_exp_ofReal_mul_I]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem temperate_exp_I : Function.HasTemperateGrowth (fun y : ℝ => Complex.exp (Complex.I * y)) := by
   have hc : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => Complex.exp (Complex.I * y)) :=
@@ -37,15 +37,15 @@ theorem temperate_exp_I : Function.HasTemperateGrowth (fun y : ℝ => Complex.ex
   simp
 
 /- English proof (translation)
-Introduce `V _ _ _ T hT L h g hg`. Take `⟨n, a, A, hA, hdiv⟩` from `GlobalTheory.T.identity_as_sum_exp_minus_one`. Establish `hAL : ∀ j, Function.HasTemperateGrowth (fun x : V => A j (L x))` using `fun j => (hA j).comp L.hasTemperateGrowth`. Establish `hE : ∀ j, Function.HasTemperateGrowth (fun x : V => Complex.exp (Complex.I * (((a j • L) x : ℝ) : ℂ)))` using `fun j => temperate_exp_I.comp (a j • L).hasTemperateGrowth`. Set `k : Fin n → SchwartzMap V ℂ` to `fun j => SchwartzMap.smulLeftCLM ℂ (fun x : V => A j (L x)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f' : Fin n → SchwartzMap V ℂ` to `fun j => SchwartzMap.smulLeftCLM ℂ (fun x : V => Complex.exp (Complex.I * (((a j • L) x : ℝ) : ℂ))) (k j)`. Establish `hk : ∀ j x, k j x = A j (L x) * h x` using `fun j x => by`. Simplify using `only [k]`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (hAL j), smul_eq_mul]`. Establish `hf : ∀ j x, f' j x = Complex.exp (Complex.I * (((a j • L) x : ℝ) : ℂ)) * k j x` using `fun j x => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [f']`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (hE j), smul_eq_mul]`. Establish `hsum : g = ∑ j, (f' j - k j)`. Use extensionality with `x`. Rewrite using `[SchwartzMap.sum_apply, hg x]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [hdiv (L x)]`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[SchwartzMap.sub_apply, hf, hk, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum, map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, hT (a j • L) (k j) (f' j) (hf j), sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kills_linear_mul : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (T : SchwartzMap V ℂ →ₗ[ℂ] ℂ),

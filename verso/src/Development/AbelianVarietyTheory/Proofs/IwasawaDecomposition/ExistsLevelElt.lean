@@ -20,9 +20,9 @@ section Local
 variable {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.EntriesExpBound.exists_entries_le_exp`. Consider the case `exact _root_.GlobalTheory.EntriesExpBound.exists_entries_le_exp`. Consider the case `(apply _root_.GlobalTheory.EntriesExpBound.exists_entries_le_exp <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.EntriesExpBound.exists_entries_le_exp <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.EntriesExpBound.exists_entries_le_exp <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.EntriesExpBound.exists_entries_le_exp ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_bound {m : ℕ} (A : Matrix (Fin m) (Fin m) K) :
     ∃ k : ℕ, ∀ r s, Valued.v (A r s) ≤ WithZero.exp (k : ℤ) := by
@@ -35,7 +35,7 @@ theorem exists_bound {m : ℕ} (A : Matrix (Fin m) (Fin m) K) :
   | (intros; exact _root_.GlobalTheory.EntriesExpBound.exists_entries_le_exp ..)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_mul' (hA r j) (hC j s)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_bound {m : ℕ} {A C : Matrix (Fin m) (Fin m) K} {a c : WithZero (Multiplicative ℤ)}
     (hA : ∀ r s, Valued.v (A r s) ≤ a) (hC : ∀ r s, Valued.v (C r s) ≤ c) (r s : Fin m) :
@@ -48,27 +48,23 @@ theorem mul_bound {m : ℕ} {A C : Matrix (Fin m) (Fin m) K} {a c : WithZero (Mu
 end Local
 
 /- English proof (translation)
-Use `haveI : CharZero (P.adicCompletion E) := algebraRat.charZero _`. Establish `hc : Valued.v (q ^ (N + 1)) = WithZero.exp (-((N : ℤ) + 1))`. Rewrite using `[map_pow, hq, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hn1 : Valued.v (n : P.adicCompletion E) ≤ 1` using `by clear hn`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Nat.cast_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Valuation.map_add_le _ ih (by simp)`. Establish `hcN : Valued.v (q ^ (N + 1)) ≤ WithZero.exp (-(N : ℤ))`. Rewrite using `[hc]`. Conclude with `WithZero.exp_le_exp.2 (by omega)`. Establish `hε : Valued.v ((n : P.adicCompletion E) ^ 2 * q ^ (N + 1)) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hc]`. Use `mul_ne_zero ?_ WithZero.exp_ne_zero` and prove the remaining obligations. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.2 hn.ne')`. Take `⟨k₁, hk₁⟩` from `exists_bound G₂.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨k₂, hk₂⟩` from `exists_bound (G₂⁻¹).1`. Use `set e := WithZero.log (Valued.v ((n : P.adicCompletion E) ^ 2 * q ^ (N + 1))) with he`. Take `⟨γ, hγ⟩` from `GlobalTheory.DenseGL.dense_two_sided E P m (k₁ + k₂ + (-e).toNat) (G₁ * G₂)`. Set `γ' : GL (Fin m) (P.adicCompletion E)` to `Matrix.GeneralLinearGroup.map (algebraMap E (P.adicCompletion E)) γ`. Establish `hγ' : γ'.1 = γ.1.map (algebraMap E (P.adicCompletion E))` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Set `B₀ : GL (Fin m) (P.adicCompletion E)` to `G₁⁻¹ * γ' * G₂⁻¹`. Establish `hB : B₀.1 - 1 = G₂.1 * (((G₁ * G₂)⁻¹).1 * γ.1.map (algebraMap E (P.adicCompletion E)) - 1) * (G₂⁻¹).1`. Rewrite using `[← hγ', mul_sub, _root_.sub_mul, mul_one, Units.mul_inv, ← Units.val_mul, ← Units.val_mul, ← Units.val_mul]`. Use `congr 2`. Simplify using `only [B₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `group`. Establish `hB2 : ∀ r s, Valued.v ((B₀.1 - 1) r s) ≤ Valued.v ((n : P.adicCompletion E) ^ 2 * q ^ (N + 1))` using `fun r s => by`. Rewrite using `[hB]`. Use `(mul_bound (mul_bound hk₁ fun r s => (hγ r s).1) hk₂ r s).trans ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_log hε, ← he, ← WithZero.exp_add, ← WithZero.exp_add]`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `WithZero.exp_le_exp.2 ?_` and prove the remaining obligations. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Take `⟨M, hM1, hM2⟩` from `GlobalTheory.MatNthRoot.exists_nthRoot E P m n (q ^ (N + 1)) B₀.1 hn (by rw [hc, ← WithZero.exp_zero]; exact WithZero.exp_lt_exp.2 (by omega)) hB2`. Establish `hu : IsUnit M` using `(isUnit_pow_iff hn.ne').1 (hM2 ▸ B₀.isUnit)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨M, rfl⟩` from `hu`. Establish `hM3 : M ^ n = B₀` using `Units.ext (by rw [Units.val_pow_eq_pow_val, hM2])`. Use `⟨M, γ, fun r s => (hM1 r s).trans ?_, fun r s => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' hn1).trans hcN`.
-
-Rewrite using `[hM3]`. Use `(hB2 r s).trans ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow]`. Conclude with `(mul_le_of_le_one_left' (pow_le_one' hn1 2)).trans hcN`. Rewrite using `[hM3] show _ = γ'`.
-
-Simplify using `only [B₀]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_root_rat (E : Type) [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (m n N : ℕ) (hn : 0 < n)
     (q : P.adicCompletion E) (hq : Valued.v q = WithZero.exp (-1 : ℤ)) (G₁ G₂ : GL (Fin m) (P.adicCompletion E)) :
@@ -135,21 +131,17 @@ theorem exists_root_rat (E : Type) [Field E] [NumberField E] (P : HeightOneSpect
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hPin l Z a T i hi bad S hS P hP v hv N g₁ g₂`. Take `⟨n, hn, hchi⟩` from `hS`. Take `⟨N₀, hN₀⟩` from `GlobalTheory.Mem.Col2.AdT.Opn.level_contains_deep I hI hPin l Z a T i hi bad S P v hv`. Establish `hd` using `fun N z => GlobalTheory.Mem.Col2.AdT.AdelicValuationDictionary.main I hI l Z a ((I.rec7 l Z).R.N i) N P z`. Take `⟨hs, hq, -⟩` from `hd 0 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `φ : AfE B.host.F B.host.E →+* P.1.adicCompletion B.fields.E` to `adAt B.host.F P.1`. Take `⟨M, γ, hM1, hM2, hM3⟩` from `exists_root_rat B.fields.E P.1 (B.R.N i) n (N + N₀) hn _ hq (Matrix.GeneralLinearGroup.map φ g₁) (Matrix.GeneralLinearGroup.map φ g₂)`. Take `⟨w, hwU, hwv, hwP⟩` from `GlobalTheory.Mem.Col2.AdLift.exists_lift I hI hPin l Z a i hi P v hv M`. Establish `hw : w ∈ S.U` using `hN₀ w hwU hwv (((hd N₀ w).2.2).2 fun r s => by`. Rewrite using `[hwP]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hM1 r s).trans (WithZero.exp_le_exp.2 (by omega)))`. Set `w' : GA B (B.R.N i)` to `w`. Establish `hw' : Matrix.GeneralLinearGroup.map φ w' = M` using `Units.ext (Matrix.ext hwP)`. Establish `hz : Matrix.GeneralLinearGroup.map φ (w' ^ n) = M ^ n` using `by rw [map_pow, hw']`. Establish `hz' : ∀ r s, φ ((w' ^ n).1 r s) = (M ^ n).1 r s` using `fun r s => congrArg (fun g : GL (Fin (B.R.N i)) (P.1.adicCompletion B.fields.E) => g.1 r s) hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbad : v ∉ badG (I.rec7 l Z)`. Establish `key : ∀ j : Fin 2, (((B.primes X).g j : ℕ) : 𝓞 B.fields.E) ∉ P.1.asIdeal` using `fun j => GlobalTheory.Proof.NarrowJetMoments.notMem_of_mem_QE hI.sel_ok hP ((base_fields_primes_ok B X).2.1.g_prime j) (hI.g_mem j)`. Rewrite `hv` using `[hs]`. Establish `key2 : ∀ j : Fin 2, (((B.primes X).g j : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal` using `fun j h => by`. Rewrite `h` using `[hv, Ideal.mem_comap, map_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `key j h`. Introduce and unpack `(h | h)`. Conclude with `key2 0 h`. Conclude with `key2 1 h`. Use `⟨⟨w, hw⟩ ^ n, ?_, fun v' hv' => ?_, ((hd N _).2.2).2 fun r s => ?_, γ, fun r s => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_pow]`. Conclude with `hchi ⟨w, hw⟩ fun v' hv' => hwv v' fun e => hbad (e ▸ hv')`. Use `show bc (prV (E := (I.rec7 l Z).host.E) v') (w ^ n) = 1`. Rewrite using `[map_pow, hwv v' hv', one_pow]`. Establish `e` using `hz' r s`.
-
-Establish `h2` using `hM2 r s`. Rewrite `h2` using `[← e]`. Conclude with `h2.trans (WithZero.exp_le_exp.2 (by omega))`. Establish `e : Matrix.GeneralLinearGroup.map φ (g₁ * w' ^ n * g₂) = Matrix.GeneralLinearGroup.map φ g₁ * M ^ n * Matrix.GeneralLinearGroup.map φ g₂`. Rewrite using `[map_mul, map_mul, hz]`.
-
-Conclude with `congrArg (fun g : GL (Fin (B.R.N i)) (P.1.adicCompletion B.fields.E) => g.1 r s) (e.trans hM3)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_level_elt : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι) (T i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (S : StepLevel (I.rec7 l Z).host.F (I.rec7 l Z).host.E (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) T (I.rec7 l Z).R.f bad), ChiFin I l Z S → ∀ (P : SBof I a), P.1 ∈ I.Q a → ∀ (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), Formalism.L2.Col.IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1) → ∀ (N : ℕ) (g₁ g₂ : GA B (B.R.N i)), ∃ z : S.U, S.chi z = 1 ∧ (∀ v', v' ≠ v → bc (prV (E := (I.rec7 l Z).host.E) v') z.1 = 1) ∧ GlobalTheory.TwU.CongAt (GlobalTheory.TwU.seamP (sm I l Z) P.1) N z.1 ∧ ∃ γ : GL (Fin (B.R.N i)) B.fields.E, ∀ r s, adAt B.host.F P.1 (((g₁ * (show GA B (B.R.N i) from z.1) * g₂ : GA B (B.R.N i)) : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (AfE B.host.F B.host.E)) r s) = algebraMap B.fields.E (P.1.adicCompletion B.fields.E) ((γ : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) B.fields.E) r s) := by
   intro B X I hI hPin l Z a T i hi bad S hS P hP v hv N g₁ g₂

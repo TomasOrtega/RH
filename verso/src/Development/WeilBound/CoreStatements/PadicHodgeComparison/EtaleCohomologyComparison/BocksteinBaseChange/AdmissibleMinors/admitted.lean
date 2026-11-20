@@ -9,9 +9,9 @@ noncomputable section
 namespace CrystallineSemistableComparison
 
 /- English proof (translation)
-Introduce `l _ K R G P S hR M hG n hInj hSpan a b`. Take `⟨r, w, hw, hsp⟩` from `hSpan`. Establish `hcσ : ∀ (g : K.fixingSubgroup) (j : Fin a) (φ : Module.Dual K (HdR M.q n)), R.σ g (P.c M n (b j) φ) = ∑ k, (M.mat n b g).map R.q k j * P.c M n (b k) φ`. Introduce `g j φ`. Rewrite using `[← P.equi M n hG g (b j) φ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hact : M.act n g (b j) = ∑ k, M.mat n b g k j • b k` using `by conv_lhs => rw [← Matrix.toLin_toMatrix b b (M.act n g)]`. Conclude with `Matrix.toLin_self b b _ j`. Rewrite using `[hact, map_sum, AddMonoidHom.finsetSum_apply]`. Simplify using `only [P.lin, Matrix.map_apply]`. Conclude with `AdmAbs.admissible_of_absolute (fun g => R.σ g) S hR.stab hR.frac (fun g => (M.mat n b g).map R.q) (fun g i j => hR.q_mem _) (fun x hx hx0 h => hR.eig x hx hx0 fun g => ⟨(M.mat n b g).det, by rw [h g, RingHom.map_det, RingHom.mapMatrix_apply]⟩) (fun j φ => P.c M n (b j) φ) hcσ (fu …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adm : ComparisonAdmissible := by
   intro l _ K R G P S hR M hG n hInj hSpan a b

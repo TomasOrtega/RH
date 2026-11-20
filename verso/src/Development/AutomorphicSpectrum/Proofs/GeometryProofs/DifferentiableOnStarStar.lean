@@ -14,7 +14,7 @@ section Polydisc
 variable {n a : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Pi.norm_def, Pi.star_apply]`. Use `congr 1`. Use `Finset.sup_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[nnnorm_star]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem norm_star_vec (z : Fin n → ℂ) : ‖star z‖ = ‖z‖ := by
   simp only [Pi.norm_def, Pi.star_apply]
@@ -23,27 +23,27 @@ theorem norm_star_vec (z : Fin n → ℂ) : ‖star z‖ = ‖z‖ := by
   simp [nnnorm_star]
 
 /- English proof (translation)
-Simplify using `only [mem_ball_zero_iff, norm_star_vec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_mem_ball {ρ : ℝ} {z : Fin n → ℂ} :
     star z ∈ Metric.ball (0 : Fin n → ℂ) ρ ↔ z ∈ Metric.ball (0 : Fin n → ℂ) ρ := by
   simp only [mem_ball_zero_iff, norm_star_vec]
 
 /- English proof (translation)
-Simplify using `only [punct, Set.mem_setOf_eq, star_mem_ball, Pi.star_apply, ne_eq, star_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_mem_punct {ρ : ℝ} {z : Fin n → ℂ} : star z ∈ punct n a ρ ↔ z ∈ punct n a ρ := by
   simp only [punct, Set.mem_setOf_eq, star_mem_ball, Pi.star_apply, ne_eq, star_eq_zero]
 
 /- English proof (translation)
-Simplify using `only [logCover, Set.mem_setOf_eq, Pi.star_apply, Complex.star_def, Complex.conj_re, RCLike.norm_conj, Complex.norm_conj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_mem_logCover (h : a ≤ n) {w : Fin n → ℂ} : star w ∈ logCover h ↔ w ∈ logCover h := by
   simp only [logCover, Set.mem_setOf_eq, Pi.star_apply, Complex.star_def, Complex.conj_re,
     RCLike.norm_conj, Complex.norm_conj]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [expCover, Pi.star_apply]`. Use `split_ifs`. Simplify using `[Complex.exp_conj]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem star_expCover (w : Fin n → ℂ) : star (expCover a w) = expCover a (star w) := by
   funext k
@@ -53,14 +53,14 @@ theorem star_expCover (w : Fin n → ℂ) : star (expCover a w) = expCover a (st
   · rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem star_real_smul (ρ : ℝ) (z : Fin n → ℂ) : star ((ρ : ℂ) • z) = (ρ : ℂ) • star z := by
   funext k
   simp
 
 /- English proof (translation)
-Introduce `z hz`. Establish `h1 : DifferentiableAt ℂ f (star z)` using `hf.differentiableAt (hB.mem_nhds ((hs z).2 hz))`. Establish `h2` using `h1.star_star`. Rewrite `h2` using `[star_star]`. Conclude with `h2.differentiableWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentiableOn_star_star {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F] [StarAddMonoid F]
     [StarModule ℂ F] [ContinuousStar F] {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [StarAddMonoid V]
@@ -80,7 +80,7 @@ def conjPts {R : Type} [CommRing R] {n : ℕ} (ψ : (Fin n → ℂ) → (R →+*
   (starRingEnd ℂ).comp (ψ (star z))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Metric.isOpen_ball, fun r => differentiableOn_star_star (f := fun b => ψ b r) Metric.isOpen_ball (fun _ => star_mem_ball) (h.2 r)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHolPts_conjPts {R : Type} [CommRing R] {n : ℕ} {ψ : (Fin n → ℂ) → (R →+* ℂ)} {ρ : ℝ}
     (h : IsHolPts (Metric.ball 0 ρ) ψ) : IsHolPts (Metric.ball 0 ρ) (conjPts ψ) :=

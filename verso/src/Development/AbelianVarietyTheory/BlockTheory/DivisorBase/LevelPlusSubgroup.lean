@@ -35,7 +35,7 @@ section Columns
 variable {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (θ : InfFam D)
 
 /- English proof (translation)
-Conclude with `((posDef_Xp G (tauE D τ)).inv).transpose`.
+A detailed English derivation is pending.
 -/
 theorem posDef_dual (τ : D.what₂.Tau) : (((Xp G).gram.map (tauE D τ))⁻¹).transpose.PosDef := by
   exact ((posDef_Xp G (tauE D τ)).inv).transpose
@@ -49,7 +49,7 @@ def Cols : Submodule ℂ (Bridge.Gf (G.V (.top 0)) → (coefPlus G θ).W) :=
   Bridge.AdForms (Bridge.ratF (G.V (.top 0))) (coefPlus G θ).coef.ρ (levPlus G) 1
 
 /- English proof (translation)
-Unfold `Cols Bridge.AdForms`. Simplify using `only [Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_ofPred_eq, MonoidHom.one_apply, Units.val_one, one_smul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_cols (Ψ : Bridge.Gf (G.V (.top 0)) → (coefPlus G θ).W) : Ψ ∈ Cols G θ ↔
     ∀ (γ : GQ (G.V (.top 0))) g (k : levPlus G), Ψ (Bridge.ratF (G.V (.top 0)) γ * g * k) = (coefPlus G θ).ρ γ (Ψ g) := by
@@ -77,9 +77,9 @@ def SeparatesSpan (w : SmT (R.MY 0)) (ρ : G.RealVec) (ξ : Module.Dual ℂ (coe
     (∀ Φ ∈ c.support, FConv W M ρ ξ Ψ Φ (rowForm R w t)) ∧ (c.sum fun Φ a => a * fPsiPhi W M ρ ξ Ψ Φ (rowForm R w t)) ≠ 0
 
 /- English proof (translation)
-Use `(Submodule.eq_bot_iff _).2 fun t ht => by_contra fun h0 => ?_` and prove the remaining obligations. Take `⟨Ψ, -, Φ, -, h2⟩` from `h t ht h0`. Use `h2 ?_` and prove the remaining obligations. Establish `e : pairVec (coefPlus G W.θ) 0 Ψ = (0 : ℂ) • pairVec (coefPlus G W.θ) 0 Ψ`. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[pairVec_apply]`. Rewrite using `[fPsiPhi, e, ← one_smul ℂ (thetaChi W M ρ Φ _), Bplus_smul, zero_mul, zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 example (w : SmT (R.MY 0)) (ρ : G.RealVec) (h : Separates R W M w ρ 0) : R.EEat R.triv = ⊥ := by
   refine (Submodule.eq_bot_iff _).2 fun t ht => by_contra fun h0 => ?_

@@ -14,13 +14,13 @@ variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [N
   [Unram F E]
 
 /- English proof (translation)
-The claim follows from `Module.finite_of_finrank_pos (by rw [Unram.finrank_eq (F := F) (E := E)]; norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem finite : Module.Finite F E :=
   Module.finite_of_finrank_pos (by rw [Unram.finrank_eq (F := F) (E := E)]; norm_num)
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace F := Unram.lcF E`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Use `haveI : Module.Finite F E := finite`. Conclude with `IsModuleTopology.iso (R := F) (A := Fin 2 → F) (ContinuousLinearEquiv.ofFinrankEq (by simp [Unram.finrank_eq (F := F) (E := E)]))`.
+A detailed English derivation is pending.
 -/
 theorem isModuleTopology : IsModuleTopology F E := by
   haveI : LocallyCompactSpace F := Unram.lcF E
@@ -30,7 +30,7 @@ theorem isModuleTopology : IsModuleTopology F E := by
     (ContinuousLinearEquiv.ofFinrankEq (by simp [Unram.finrank_eq (F := F) (E := E)]))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show star (a • c i) = a • star (c i)`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, star_mul, Unram.star_fix (E := E) a, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_smul_F {r : ℕ} (a : F) (c : Fin r → E) : star (a • c) = a • star c := by
   funext i
@@ -38,7 +38,7 @@ theorem star_smul_F {r : ℕ} (a : F) (c : Fin r → E) : star (a • c) = a •
   rw [Algebra.smul_def, Algebra.smul_def, star_mul, Unram.star_fix (E := E) a, mul_comm]
 
 /- English proof (translation)
-Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[(GlobalTheory.T.unramifiedQuadratic_integral_traceForm_perfect F E).1, (GlobalTheory.T.unramifiedQuadratic_integral_traceForm_perfect F E).1, star_star, add_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_star (z : E) : Algebra.trace F E (star z) = Algebra.trace F E z := by
   apply (algebraMap F E).injective
@@ -58,18 +58,18 @@ theorem trForm_apply (r : ℕ) (c b : Fin r → E) :
     trForm (F := F) r c b = Algebra.trace F E (star c ⬝ᵥ b) := rfl
 
 /- English proof (translation)
-Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[trForm_apply, trForm_apply, star_dotProduct, trace_star]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trForm_isSymm (r : ℕ) : (trForm (F := F) (E := E) r).IsSymm := by
   refine ⟨fun x y => ?_⟩
   rw [trForm_apply, trForm_apply, star_dotProduct, trace_star]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Take `⟨e, -, he⟩` from `(GlobalTheory.T.unramifiedQuadratic_integral_traceForm_perfect F E).2.1`. Establish `h0` using `hc (Pi.single i (c i * e))`. Rewrite `h0` using `[trForm_apply, dotProduct_single, Pi.star_apply]`. Establish `h1 : algebraMap F E (Algebra.trace F E (star (c i) * (c i * e))) = star (c i) * c i * (e + star e)`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(GlobalTheory.T.unramifiedQuadratic_integral_traceForm_perfect F E).1]`. Simplify using `only [star_mul, star_star]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h0, map_zero, he, mul_one]`. Break down `mul_eq_zero.1 h1.symm with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `using h`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem trForm_separatingLeft (r : ℕ) (c : Fin r → E) (hc : ∀ b, trForm (F := F) r c b = 0) : c = 0 := by
   classical
@@ -87,7 +87,7 @@ theorem trForm_separatingLeft (r : ℕ) (c : Fin r → E) (hc : ∀ b, trForm (F
   · simpa using h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun c hc => trForm_separatingLeft r c hc, fun b hb => trForm_separatingLeft r b (fun c => by rw [(trForm_isSymm (F := F) r).eq]; exact hb c)⟩`.
+Supply the required witnesses or components.
 -/
 theorem trForm_nondegenerate (r : ℕ) : (trForm (F := F) (E := E) r).Nondegenerate :=
   ⟨fun c hc => trForm_separatingLeft r c hc, fun b hb => trForm_separatingLeft r b (fun c => by
@@ -103,7 +103,7 @@ def intLat (r : ℕ) : AddSubgroup (Fin r → E) :=
     neg_mem' := fun {a} ha i => by simpa using ha i }
 
 /- English proof (translation)
-Use extensionality with `b`. Simplify using `[intLat, Metric.mem_closedBall, dist_zero_right]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem intLat_eq (r : ℕ) :
     ((intLat (F := F) (E := E) r : AddSubgroup (Fin r → E)) : Set (Fin r → E)) =
@@ -112,15 +112,15 @@ theorem intLat_eq (r : ℕ) :
   simp [intLat, Metric.mem_closedBall, dist_zero_right]
 
 /- English proof (translation)
-Use `haveI : IsUltrametricDist E := Unram.ultraE F`. Establish `key` using `((GlobalTheory.T.unramifiedStandardAddChar_conductor_properties F E).2 ψ hψ).2.2.2`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(key (y i)).1 (fun e he => ?_)` and prove the remaining obligations. Establish `hx : Pi.single i (star e) ∈ intLat (F` using `F) (E := E) r := by`. Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Unram.norm_star (F := F), he]`. Simplify using `[Pi.single_apply, hj]`. Use `hy _ hx` as an intermediate fact. Rewrite `this` using `[trForm_apply, Pi.star_single, star_star, single_dotProduct]`. Then use the resulting hypothesis. Introduce `hy x hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn : ‖star x ⬝ᵥ y‖ ≤ 1`. Unfold `dotProduct`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Pi.star_apply, Unram.norm_star (F := F)]`. Conclude with `mul_le_one₀ (hx i) (norm_nonneg _) (hy i)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(key 1).2 (by simp) (star x ⬝ᵥ y) hn` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem dual_intLat (r : ℕ) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) :
     {y : Fin r → E | ∀ x ∈ intLat (F := F) (E := E) r, ψ (trForm (F := F) r x y) = 1} =
@@ -153,15 +153,11 @@ end GlobalTheory.JR.PiSelfDual
 open GlobalTheory.JR.PiSelfDual in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ r M ψ hψ`. Use `letI := M.mE`. Use `haveI := M.bE`. Use `haveI := M.haarE`. Use `haveI : LocallyCompactSpace E := Unram.lcE F`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI : IsUltrametricDist E := Unram.ultraE F`. Use `haveI : ProperSpace E := ProperSpace.of_locallyCompactSpace E`. Use `haveI : Module.Finite F E := finite`. Use `haveI : IsModuleTopology F E := isModuleTopology`. Use `haveI : BorelSpace (Fin r → E) := Pi.borelSpace`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : (Measure.pi fun _ : Fin r => M.μE).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Establish `hvol : (Measure.pi fun _ : Fin r => M.μE) ((intLat (F` using `F) (E := E) r : AddSubgroup (Fin r → E)) : Set (Fin r → E)) = 1 := by`. Rewrite using `[intLat_eq, Measure.pi_pi]`. Simplify using `[M.volE]`. Establish `hopen : IsOpen ((intLat (F` using `F) (E := E) r : AddSubgroup (Fin r → E)) : Set (Fin r → E)) := by`.
-
-Rewrite using `[intLat_eq]`. Conclude with `isOpen_set_pi Set.finite_univ (fun _ _ => IsUltrametricDist.isOpen_closedBall _ one_ne_zero)`. Establish `hcpt : IsCompact ((intLat (F` using `F) (E := E) r : AddSubgroup (Fin r → E)) : Set (Fin r → E)) := by`. Rewrite using `[intLat_eq]`. Conclude with `isCompact_univ_pi (fun _ => isCompact_closedBall _ _)`.
-
-Establish `h` using `(GlobalTheory.T.selfDual_iff_lattice_volume_and_plancherel_alt F E ψ hψ (Fin r → E) (trForm r) (trForm_isSymm r) (trForm_nondegenerate r) (Measure.pi fun _ => M.μE) inferInstance).1 (intLat r) hopen hcpt |>.1`. Use `h.2 ?_` and prove the remaining obligations. Rewrite using `[dual_intLat r ψ hψ, hvol, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.JR.selfDual_pi_trace : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (M : Meas r F E) (ψ : AddChar F ℂ), IsStdChar ψ → @SelfDual (Fin r → E) _ _ (@MeasurableSpace.pi (Fin r) (fun _ => E) (fun _ => M.mE)) (@Measure.pi (Fin r) (fun _ => E) _ (fun _ => M.mE) (fun _ => M.μE)) (fun c b => ψ (Algebra.trace F E (star c ⬝ᵥ b))) := by
   intro F E _ _ _ _ _ r M ψ hψ

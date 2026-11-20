@@ -17,7 +17,7 @@ namespace GlobalTheory.AdForm.TransAct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u a Ch A hA θ hθ k _ _ _ _ ι p β Q L hS j hj c hc φ hφ hinv e`. Conclude with `⟨GlobalTheory.T.heckeCombination_scalarForm_values_mem_weylModule I hI hP l Z u a Ch A hA θ hθ k ι p β Q L hS j hj c hc φ hφ hinv e, fun s => GlobalTheory.T.heckeCombination_scalarForm_values_stabiliser_invariant I hI hP l Z u a Ch A hA θ hθ k ι p β Q L hS j hj c hc φ hφ hinv e s …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_Fi : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ θ, IsInfFam θ → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))
@@ -31,11 +31,11 @@ theorem mem_Fi : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pin
     fun s => GlobalTheory.T.heckeCombination_scalarForm_values_stabiliser_invariant I hI hP l Z u a Ch A hA θ hθ k ι p β Q L hS j hj c hc φ hφ hinv e s⟩
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u a Ch A hA θ hθ k _ _ _ _ ι p β Q L hS j hj c hc φ hφ hinv`. Use `⟨_, mem_Fi I hI hP l Z u a Ch A hA θ hθ k ι p β Q L hS j hj c hc φ hφ hinv, fun b y => funext fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, e, g', hg', κ, hκ, rfl⟩` from `(GlobalTheory.T.chartLevels_reps_represent_unitaryDoubleCosets I hI hP l Z u a Ch A hA j hj b).1.dec g`. Take `⟨e, rfl⟩` from `e`. Set `M : (I.rec7 l Z).what₂.Tau → Matrix (Fin (B.R.N j)) (Fin (B.R.N j)) ℂ` to `infM θ _ (rankN (I.rec7 l Z) j hj) g'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hu : ∀ τ, IsUnit (M τ * y.1 τ).det` using `fun τ => by`. Rewrite using `[Matrix.det_mul]`. Conclude with `(RdVal.infM_unit θ _ (rankN (I.rec7 l Z) j hj) g' τ).mul (y.2 τ)`. Set `y' : (I.chain l u a).Y j` to `⟨fun τ => M τ * y.1 τ, hu⟩`. Establish `htr : IsTr (G` using `fun _ => 1) (infM θ _ (rankN (I.rec7 l Z) j hj) g') ⟨y.1, y.2⟩ ⟨y'.1, y'.2⟩ := fun τ => rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(GlobalTheory.T.scalarForms_on_charts_of_trueColumnTuple I hI hP l Z u a Ch A hA θ hθ j hj _ (mem_Fi I hI hP l Z u a Ch A hA θ hθ k ι p β Q L hS j hj c hc φ hφ hinv)).2 (A.chOf j e) y γ hγ ⟨e, rfl⟩ g' hg' ⟨κ, hκ⟩ y' htr`. Rewrite using `[h1, GlobalTheory.T.heckeCombination_scalarForm_keeps_adelicLaws I hI hP l Z u a Ch A hA θ hθ k ι p β Q L hS j hj c hc φ hφ hinv _ y γ hγ ⟨e, rfl⟩ g' hg' ⟨κ, hκ⟩ y' htr]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twTransAct : TwTrans' := by
   intro B X I hI hP l Z u a Ch A hA θ hθ k _ _ _ _ ι p β Q L hS j hj c hc φ hφ hinv

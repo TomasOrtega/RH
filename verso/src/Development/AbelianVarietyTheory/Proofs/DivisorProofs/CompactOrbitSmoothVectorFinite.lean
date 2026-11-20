@@ -5,17 +5,15 @@ open scoped Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨U, hU, hUx⟩` from `hx`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Set `S : Subgroup K` to `{ carrier := {k | ρ (k : H) x = x} mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq, Subgroup.coe_mul, map_mul, Module.End.mul_apply] at ha hb ⊢`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, ha]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ρ ((a : H)⁻¹) (ρ (a : H) x) = x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite `h1` using `[ha]`. Simplify using `using h1 }`. Establish `hSn : (S : Set K) ∈ 𝓝 (1 : K)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (Subtype.val : K → H) ⁻¹' U ∈ 𝓝 (1 : K)` using `continuous_subtype_val.continuousAt.preimage_mem_nhds (by simpa using hU)`. Use `Filter.mem_of_superset this ?_` and prove the remaining obligations. Introduce `k hk`. Conclude with `hUx k hk k.2`. Establish `hSo : IsOpen (S : Set K)` using `Subgroup.isOpen_of_mem_nhds S hSn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : Finite (K ⧸ S) := Subgroup.quotient_finite_of_isOpen S hSo`. Use `(Set.finite_range (fun q : K ⧸ S => ρ ((Quotient.out q : K) : H) x)).subset ?_` and prove the remaining obligations. Introduce and unpack `y ⟨k, hk, rfl⟩`. Use `⟨(QuotientGroup.mk (⟨k, hk⟩ : K) : K ⧸ S), ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `QuotientGroup.mk_out_eq_mul S (⟨k, hk⟩ : K)`.
-
-Simplify using `only`. Rewrite using `[hs, Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Establish `: ρ ((s : K) : H) x = x` using `s.2`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_orbit_of_fixed_near_one {H V : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [AddCommGroup V] [Module ℂ V] (ρ : H →* Module.End ℂ V) (K : Subgroup H) (hK : IsCompact (K : Set H)) (x : V)

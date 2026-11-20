@@ -19,11 +19,11 @@ namespace GlobalTheory.FockReal
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Take `⟨h1, -, h3⟩` from `h`. Establish `hs : ∀ v : Fin k → ℂ, (s - 1) *ᵥ v = 0`. Introduce `v`. Assume the negation of the conclusion as `hw`. Establish `hsw : s *ᵥ ((s - 1) *ᵥ v) = -((s - 1) *ᵥ v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_sub, h1, Matrix.mul_one, ← Matrix.neg_mulVec, neg_sub]`. Establish `p1` using `h3.dotProduct_mulVec_pos hw`. Establish `p2` using `hA.dotProduct_mulVec_pos hw`. Rewrite `p1` using `[← Matrix.mulVec_mulVec, hsw, Matrix.mulVec_neg, dotProduct_neg]`. Use `add_pos p1 p2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[neg_add_cancel]`. Conclude with `lt_irrefl _ this`. Use extensionality with `i j`. Use `congrFun (hs (Pi.single j 1)) i` as an intermediate fact. Simplify `this` using `[Matrix.sub_mulVec, sub_eq_zero, Matrix.one_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cartan_eq_one {k : ℕ} {A s : Matrix (Fin k) (Fin k) ℂ} (hA : A.PosDef) (h : IsCartanInv A s) : s = 1 := by
   obtain ⟨h1, -, h3⟩ := h
@@ -43,7 +43,7 @@ theorem cartan_eq_one {k : ℕ} {A s : Matrix (Fin k) (Fin k) ℂ} (hA : A.PosDe
   simpa [Matrix.sub_mulVec, sub_eq_zero, Matrix.one_apply] using this
 
 /- English proof (translation)
-Establish `e : matHom (negSp V) (negGA V g) = matHom V g` using `Units.ext (mt_negGA V g)`. Simplify using `only [GinfC, MonoidHom.mem_ker, finHom, MonoidHom.comp_apply] at hg ⊢`. Rewrite using `[e]`. Conclude with `hg`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem negGA_mem_GinfC (V : HSp D) {g : GA D V} (hg : g ∈ GinfC V) : negGA V g ∈ GinfC (negSp V) := by
   have e : matHom (negSp V) (negGA V g) = matHom V g := Units.ext (mt_negGA V g)
@@ -67,7 +67,7 @@ def realSubst (W : G.Weil) (B : VertexFrames G) (p : Pair T) (k : GA D (G.V p.sm
     (fun τ => ((((G.onS B p τ)⁻¹ * compAt W.θ τ (Formalism.L2.Theta.mt (G.pS p) (G.toPair p k k').1) * G.onS B p τ)⁻¹)ᵀ).map (opp p))
 
 /- English proof (translation)
-Establish `e : G.toPair p (g * k) (h * k') = G.toPair p g h * G.toPair p k k'`. Apply the tactic sequence `cases p <;> simp [GridData.toPair, map_mul, Prod.ext_iff]`. Unfold `GridData.Weil.ker`. Rewrite using `[e]`. Simplify using `only [thetaKO, Prod.mk.eta, map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ker_mul (W : G.Weil) (p : Pair T) (F : WO (G.pS p) (G.pT p) → ℂ) (g k : GA D (G.V p.small))
     (h k' : GA D (G.V p.big)) : W.ker p F (g * k) (h * k') = W.ker p (W.om p (G.toPair p k k') F) g h := by
@@ -78,7 +78,7 @@ theorem ker_mul (W : G.Weil) (p : Pair T) (F : WO (G.pS p) (G.pT p) → ℂ) (g 
   simp only [thetaKO, Prod.mk.eta, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Break down `X with ⟨i, j⟩ | i | j` into its components or cases. Take `⟨hi, rfl⟩` from `hX`. Conclude with `cartan_eq_one (posDef_grid hL hi (tauE D τ)) (W.cart_is (.grid i D.R.m) (show i ≤ D.R.m ∧ D.R.m ≤ D.R.m from ⟨hi, le_rfl⟩) τ)`. Conclude with `hX.elim`. Conclude with `cartan_eq_one (posDef_top G hX (tauE D τ)) (W.cart_is (.top j) (show j ≤ D.R.m from hX) τ)`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cart_def {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) {X : Node} (hX : DefNode D.R.m X) (τ : D.what₂.Tau) :
     W.cart X τ = 1 := by
@@ -89,15 +89,15 @@ theorem cart_def {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) {X : Node} (hX : Def
   · exact cartan_eq_one (posDef_top G hX (tauE D τ)) (W.cart_is (.top j) (show j ≤ D.R.m from hX) τ)
 
 /- English proof (translation)
-Establish `hn` using `DefPair.nodes hp`. Apply the tactic sequence `have hom := W.om_is p (by cases p <;> simp only [DefPair, DefNode] at hp hn <;> simp only [Pair.InRange, Node.InRange] <;> omega)`. Consider the cases of `p with`. Consider the case `top t j`. Establish `c1 : W.cart (.top j) = fun _ => 1` using `funext (cart_def hL W hn.1)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Establish `c2 : W.cart (.top (j + 1)) = fun _ => 1` using `funext (cart_def hL W hn.2)`. Simplify using `only [fockIn, GridData.cartS, GridData.onT, GridData.onS, c1, c2] at hv ⊢`. Use `GlobalTheory.T.weil_realPoint_fockVector_positiveDefinite_det D W.ψ W.θ _ _ _ _ (W.om (.top t j)) hom W.θ_is (B (.top j)) (B (.top (j + 1))) (hB _ hn.1) (hB _ hn.2) a b ha hb e₁ e₂ (fun τ => by rw [he₁]; simp [sgnP]) (fun τ => by rw [he₂]; simp [sgnP]) f hf hv k hk k' hk' Q` as an intermediate fact. Simplify using `only [GridData.toPair]`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `chi i j`. Establish `c1 : W.cart (.grid (i + 1) j) = fun _ => 1` using `funext (cart_def hL W hn.2)`. Establish `c2 : W.cart (.grid i j) = fun _ => 1` using `funext (cart_def hL W hn.1)`. Simplify using `only [fockIn, GridData.cartS, GridData.onT, GridData.onS, c1, c2] at hv ⊢`.
+Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.T.weilAction_negPair_pureTensor_fock D W.ψ W.θ _ _ _ _ (W.om (.chi i j)) hom W.θ_is (B (.grid (i + 1) j)) (B (.grid i j)) (hB _ hn.2) (hB _ hn.1) a b ha hb e₁ e₂ (fun τ => by rw [he₁]; simp [sgnP]; ring) (fun τ => by rw [he₂]; simp [sgnP]; ring) f hf hv _ (negGA_mem_ …` as an intermediate fact. Simplify using `only [GridData.toPair]`. Rewrite using `[this]`. Both sides reduce to the same expression. Consider the case `mu t i j => exact hp.elim`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `core i => exact hp.elim`.
+Treat this case separately.
 -/
 theorem om_fockIn {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : VertexFrames G) {p : Pair T} (hp : DefPair D.R.m p)
     (hB : ∀ X, DefNode D.R.m X → ∀ τ, (B X τ)ᴴ * gramAt D (G.V X) τ * B X τ = 1)
@@ -135,7 +135,7 @@ theorem om_fockIn {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : VertexFrames G
   | core i => exact hp.elim
 
 /- English proof (translation)
-Establish `e : matHom (negSp V) (negGA V g) = matHom V g` using `Units.ext (mt_negGA V g)`. Simplify using `only [GfC, MonoidHom.mem_ker, infHom, MonoidHom.comp_apply] at hg ⊢`. Rewrite using `[e]`. Conclude with `hg`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem negGA_mem_GfC (V : HSp D) {g : GA D V} (hg : g ∈ GfC V) : negGA V g ∈ GfC (negSp V) := by
   have e : matHom (negSp V) (negGA V g) = matHom V g := Units.ext (mt_negGA V g)
@@ -144,11 +144,11 @@ theorem negGA_mem_GfC (V : HSp D) {g : GA D V} (hg : g ∈ GfC V) : negGA V g �
   exact hg
 
 /- English proof (translation)
-Establish `hR : X.InRange D.R.m`. Break down `X with ⟨i, j⟩ | i | j` into its components or cases. Conclude with `show i ≤ D.R.m ∧ j ≤ D.R.m from ⟨hX.1, hX.2.le⟩`. Conclude with `hX.elim`. Conclude with `hX`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨ε, h1, h2⟩` from `W.onb_is X hR τ`. Rewrite `h2` using `[cart_def hL W hX, Matrix.one_mul]`. Establish `hJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1`. Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem onb_def {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) {X : Node} (hX : DefNode D.R.m X) (τ : D.what₂.Tau) :
     (W.onb X τ)ᴴ * gramAt D (G.V X) τ * W.onb X τ = 1 := by
@@ -171,7 +171,7 @@ theorem onb_def {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) {X : Node} (hX : DefN
     _ = 1 := hJ
 
 /- English proof (translation)
-Rewrite using `[ker_mul, om_fockIn hL W B hp hB a b ha hb e₁ e₂ he₁ he₂ f hf hv k hk k' hk' Q]`. Simplify using `only [GridData.Weil.ker, thetaKO, map_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ker_fockIn_real {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : VertexFrames G) {p : Pair T} (hp : DefPair D.R.m p)
     (hB : ∀ X, DefNode D.R.m X → ∀ τ, (B X τ)ᴴ * gramAt D (G.V X) τ * B X τ = 1)
@@ -188,11 +188,11 @@ theorem ker_fockIn_real {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : VertexFr
   simp only [GridData.Weil.ker, thetaKO, map_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hn` using `DefPair.nodes hp`. Apply the tactic sequence `have hom := W.om_is p (by cases p <;> simp only [DefPair, DefNode] at hp hn <;> simp only [Pair.InRange, Node.InRange] <;> omega)`. Take `⟨h1, h2⟩` from `GlobalTheory.T.gridFiniteDatumVector_theta_fockVacuum W S.Z hp d hd`. Establish `mem : (G.toPair p (S.N.u p.small).1 (S.N.u p.big).1).1 ∈ GfC (G.pS p) ∧ (G.toPair p (S.N.u p.small).1 (S.N.u p.big).1).2 ∈ GfC (G.pT p)`. Consider the cases of `p with`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the case `chi i j => exact ⟨negGA_mem_GfC _ (S.N.u _).2, (S.N.u _).2⟩`. Consider the case `mu t i j => exact ⟨(S.N.u _).2, (S.N.u _).2⟩`. Consider the case `core i => exact ⟨negGA_mem_GfC _ (S.N.u _).2, (S.N.u _).2⟩`. Consider the case `top t j => exact ⟨(S.N.u _).2, (S.N.u _).2⟩`. Take `⟨h3, h4⟩` from `GlobalTheory.T.weil_finitePoint_preserves_fockVacuum D W.ψ W.θ _ _ _ _ (W.om p) hom W.θ_is _ _ _ h1 h2 _ mem.1 _ mem.2`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `ker_fockIn_real hL W W.onb hp (fun X hX τ => onb_def hL W hX τ) a b ha hb e₁ e₂ he₁ he₂ _ h3 h4 k hk k' hk' Q g h`.
+A detailed English derivation is pending.
 -/
 theorem ker_fock_moved_real {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) {U : Set T} (S : GridChoice W U) (t : T) {p : Pair T}
     (hp : DefPair D.R.m p) (d : FinDatum G t p) (hd : S.Z.HasVec d)

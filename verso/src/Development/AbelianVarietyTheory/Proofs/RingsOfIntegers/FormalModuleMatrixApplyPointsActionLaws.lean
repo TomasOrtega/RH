@@ -20,7 +20,7 @@ def Sm {m : ℕ} (x : Pt V m d) : Prop := ∀ i, MvPowerSeries.constantCoeff (x 
 
 omit [IsAdicComplete (maximalIdeal V) V] [CharZero V] in
 /- English proof (translation)
-Introduce `i`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma sm_zero {m : ℕ} : Sm (0 : Pt V m d) := by
   intro i
@@ -53,12 +53,12 @@ Both sides reduce to the same expression.
 lemma val_smul (a : O) (x : SP B m) : (a • x).val = compV (B.A.act a) x.val := rfl
 
 /- English proof (translation)
-The claim follows from `SP.ext (GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val y.val x.val x.sm y.sm x.sm).2.1`.
+A detailed English derivation is pending.
 -/
 lemma add_comm' (x y : SP B m) : x + y = y + x :=
   SP.ext (GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val y.val x.val x.sm y.sm x.sm).2.1
 /- English proof (translation)
-The claim follows from `SP.ext (GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.1`.
+A detailed English derivation is pending.
 -/
 lemma add_zero' (x : SP B m) : x + 0 = x :=
   SP.ext (GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.1
@@ -71,12 +71,12 @@ instance : AddCommMonoid (SP B m) where
   nsmul := nsmulRec
 
 /- English proof (translation)
-The claim follows from `SP.ext (GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 lemma zero_smul' (x : SP B m) : (0 : O) • x = 0 :=
   SP.ext (GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.2.2.2.1
 /- English proof (translation)
-The claim follows from `SP.ext ((GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.2.2.2.2 a b).2.2.2`.
+A detailed English derivation is pending.
 -/
 lemma mul_smul' (a b : O) (x : SP B m) : (a * b) • x = a • b • x :=
   SP.ext ((GlobalTheory.T.maximal_ideal_formal_points_form_module V d O B m x.val x.val x.val x.sm x.sm x.sm).2.2.2.2.2.2.2 a b).2.2.2
@@ -93,7 +93,7 @@ instance : Module O (SP B m) where
   zero_smul := zero_smul' B
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => rw [List.map_cons, List.foldr_cons, ih, List.sum_cons]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 lemma foldr_val (l : List (SP B m)) : (l.map SP.val).foldr (addV B.G.F) 0 = l.sum.val := by
   induction l with
@@ -101,7 +101,7 @@ lemma foldr_val (l : List (SP B m)) : (l.map SP.val).foldr (addV B.G.F) 0 = l.su
   | cons a l ih => rw [List.map_cons, List.foldr_cons, ih, List.sum_cons]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h` using `foldr_val B (List.ofFn fun j => p i j • x j)`. Rewrite `h` using `[List.map_ofFn, List.sum_ofFn]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma matV_val {n : ℕ} (p : Matrix (Fin n) (Fin n) O) (x : Fin n → SP B m) :
     matV B p (fun j => (x j).val) = fun i => (∑ j, p i j • x j).val := by
@@ -113,7 +113,7 @@ lemma matV_val {n : ℕ} (p : Matrix (Fin n) (Fin n) O) (x : Fin n → SP B m) :
 variable {B}
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.mvPowerSeriesSubstConstTerms_local_algHom_spec V (Fin k × Fin d) (Fin n × Fin d) (Fin m × Fin d) (fun p => a p.1 p.2) (fun p => ha p.1 p.2)).2.2.2 (fun q => x q.1 q.2) (fun q => hx q.1 q.2) f`.
+A detailed English derivation is pending.
 -/
 lemma evV_comp {k n : ℕ} (a : Fin k → Pt V n d) (x : Fin n → Pt V m d) (ha : ∀ b, Sm (a b)) (hx : ∀ b, Sm (x b))
     (f : PS V k d) : evV x (evV a f) = evV (fun b i => evV x (a b i)) f :=
@@ -121,7 +121,7 @@ lemma evV_comp {k n : ℕ} (a : Fin k → Pt V n d) (x : Fin n → Pt V m d) (ha
     (fun p => ha p.1 p.2)).2.2.2 (fun q => x q.1 q.2) (fun q => hx q.1 q.2) f
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.mvPowerSeriesSubstConstTerms_local_algHom_spec V (Fin n × Fin d) (Fin m × Fin d) (Fin m × Fin d) (fun q => x q.1 q.2) (fun q => hx q.1 q.2)).1`.
+A detailed English derivation is pending.
 -/
 lemma evV_alg {n : ℕ} (x : Fin n → Pt V m d) (hx : ∀ b, Sm (x b)) :
     ∃ ψ : PS V n d →ₐ[V] PS V m d, (∀ j, ψ (MvPowerSeries.X j) = x j.1 j.2) ∧ ∀ f, evV x f = ψ f :=
@@ -129,7 +129,7 @@ lemma evV_alg {n : ℕ} (x : Fin n → Pt V m d) (hx : ∀ b, Sm (x b)) :
     (fun q => hx q.1 q.2)).1
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.mvPowerSeriesSubstConstTerms_local_algHom_spec V (Fin n × Fin d) (Fin m × Fin d) (Fin m × Fin d) (fun q => x q.1 q.2) (fun q => hx q.1 q.2)).2.1 f hf`.
+A detailed English derivation is pending.
 -/
 lemma evV_sm {n : ℕ} (x : Fin n → Pt V m d) (hx : ∀ b, Sm (x b)) (f : PS V n d)
     (hf : MvPowerSeries.constantCoeff f ∈ maximalIdeal V) :
@@ -138,9 +138,9 @@ lemma evV_sm {n : ℕ} (x : Fin n → Pt V m d) (hx : ∀ b, Sm (x b)) (f : PS V
     (fun q => hx q.1 q.2)).2.1 f hf
 
 /- English proof (translation)
-Establish `ha : ∀ q : Fin n × Fin d, MvPowerSeries.constantCoeff (x q.1 q.2) = 0` using `fun q => hx q.1 q.2`. Establish `hm : ∀ q : Fin n × Fin d, MvPowerSeries.constantCoeff (x q.1 q.2) ∈ maximalIdeal V` using `fun q => by`. Rewrite using `[ha q]`. Conclude with `Ideal.zero_mem _`. Establish `h` using `(GlobalTheory.T.mvPowerSeriesSubstConstTerms_local_algHom_spec V (Fin n × Fin d) (Fin m × Fin d) (Fin m × Fin d) (fun q => x q.1 q.2) hm).2.2.1 ha f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show MvPowerSeries.constantCoeff (evC (fun q : Fin n × Fin d => x q.1 q.2) f) = 0`. Rewrite using `[h]`. Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero ha) ha hf`.
+A detailed English derivation is pending.
 -/
 lemma evV_const {n : ℕ} (x : Fin n → Pt V m d) (hx : ∀ b i, MvPowerSeries.constantCoeff (x b i) = 0) (f : PS V n d)
     (hf : MvPowerSeries.constantCoeff f = 0) : MvPowerSeries.constantCoeff (evV x f) = 0 := by
@@ -180,14 +180,14 @@ def evL {n : ℕ} (x : Fin n → Pt V m d) (hx : ∀ b, Sm (x b)) : SP B n →�
 
 omit [IsAdicComplete (maximalIdeal V) V] [CharZero V] in
 /- English proof (translation)
-Introduce `i`. Simplify using `[pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma sm_pt {n : ℕ} (j : Fin n) : Sm (pt V (n := n) d j) := by
   intro i
   simp [pt]
 
 /- English proof (translation)
-Establish `h : matV B p x b = (∑ j, p b j • (⟨x j, hx j⟩ : SP B m)).val` using `congrFun (matV_val B p fun j => (⟨x j, hx j⟩ : SP B m)) b`. Rewrite using `[h]`. Conclude with `(∑ j, p b j • (⟨x j, hx j⟩ : SP B m)).sm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma matV_sm {n : ℕ} (p : Matrix (Fin n) (Fin n) O) (x : Fin n → Pt V m d) (hx : ∀ b, Sm (x b)) (b : Fin n) :
     Sm (matV B p x b) := by
@@ -197,9 +197,9 @@ lemma matV_sm {n : ℕ} (p : Matrix (Fin n) (Fin n) O) (x : Fin n → Pt V m d) 
   exact (∑ j, p b j • (⟨x j, hx j⟩ : SP B m)).sm
 
 /- English proof (translation)
-Establish `h1 : matV B q x = fun i => (∑ j, q i j • (⟨x j, hx j⟩ : SP B m)).val` using `matV_val B q fun j => (⟨x j, hx j⟩ : SP B m)`. Establish `h2 : matV B p (fun i => (∑ j, q i j • (⟨x j, hx j⟩ : SP B m)).val) = fun k => (∑ i, p k i • ∑ j, q i j • (⟨x j, hx j⟩ : SP B m)).val` using `matV_val B p fun i => ∑ j, q i j • (⟨x j, hx j⟩ : SP B m)`. Establish `h3 : matV B (p * q) x = fun k => (∑ j, (p * q) k j • (⟨x j, hx j⟩ : SP B m)).val` using `matV_val B (p * q) fun j => (⟨x j, hx j⟩ : SP B m)`. Rewrite using `[h1, h2, h3]`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Simplify using `only [Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Conclude with `Finset.sum_comm`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma matV_mul {n : ℕ} (p q : Matrix (Fin n) (Fin n) O) (x : Fin n → Pt V m d) (hx : ∀ b, Sm (x b)) :
     matV B (p * q) x = matV B p (matV B q x) := by
@@ -217,11 +217,11 @@ lemma matV_mul {n : ℕ} (p q : Matrix (Fin n) (Fin n) O) (x : Fin n → Pt V m 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Take `⟨ψ, hX, hψ⟩` from `evV_alg x hx`. Establish `he : ∀ j, evL B x hx ⟨pt V (n` using `n) d j, sm_pt j⟩ = ⟨x j, hx j⟩ := by`. Introduce `j`. Apply `SP.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show evV x (pt V (n := n) d j i') = x j i'`. Rewrite using `[hψ]`. Conclude with `hX (j, i')`. Establish `h1 : matV B p (fun j => pt V (n` using `n) d j) = fun k => (∑ j, p k j • (⟨pt V (n := n) d j, sm_pt j⟩ : SP B n)).val := matV_val B p fun j => (⟨pt V (n := n) d j, sm_pt j⟩ : SP B n)`. Establish `h2 : matV B p x = fun k => (∑ j, p k j • (⟨x j, hx j⟩ : SP B m)).val` using `matV_val B p fun j => (⟨x j, hx j⟩ : SP B m)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2]`. Use `show (evL B x hx (∑ j, p b j • (⟨pt V (n := n) d j, sm_pt j⟩ : SP B n))).val i = _`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, he]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma evV_matV {n : ℕ} (p : Matrix (Fin n) (Fin n) O) (x : Fin n → Pt V m d) (hx : ∀ b, Sm (x b)) (b : Fin n)
     (i : Fin d) : evV x (matV B p (fun j => pt V (n := n) d j) b i) = matV B p x b i := by
@@ -244,11 +244,11 @@ lemma evV_matV {n : ℕ} (p : Matrix (Fin n) (Fin n) O) (x : Fin n → Pt V m d)
   simp only [map_smul, he]
 
 /- English proof (translation)
-Establish `key : ∀ l' : List (Pt V m d), (∀ a ∈ l', ∀ i, MvPowerSeries.constantCoeff (a i) = 0) → ∀ i, MvPowerSeries.constantCoeff (l'.foldr (addV B.G.F) 0 i) = 0`. Introduce `l' hl'`. Proceed by induction on `l' with`. Consider the case `nil => intro i'`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `cons a l' ih`. Introduce `i'`. Rewrite using `[List.foldr_cons]`. Use `show MvPowerSeries.constantCoeff (evV ![a, l'.foldr (addV B.G.F) 0] (B.G.F i')) = 0`. Apply `evV_const _ _ _ (B.G.const i')` to reduce the goal to its premises.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b j`. Use `fin_cases b`. Conclude with `hl' a (by simp) j`. Conclude with `ih (fun c hc => hl' c (by simp [hc])) j`. Conclude with `key l hl i`.
+A detailed English derivation is pending.
 -/
 lemma foldr_const (l : List (Pt V m d)) (hl : ∀ a ∈ l, ∀ i, MvPowerSeries.constantCoeff (a i) = 0) (i : Fin d) :
     MvPowerSeries.constantCoeff (l.foldr (addV B.G.F) 0 i) = 0 := by
@@ -269,21 +269,19 @@ lemma foldr_const (l : List (Pt V m d)) (hl : ∀ a ∈ l, ∀ i, MvPowerSeries.
   exact key l hl i
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ d O _ _ B n m p q x y hx hy`. Establish `hx' : ∀ b, Sm (x b)` using `hx`. Establish `hy' : ∀ b, Sm (y b)` using `hy`. Establish `hpt : ∀ j : Fin n, Sm (pt V (n` using `n) d j) := fun j => sm_pt j`. Use `⟨fun b => matV_sm p x hx' b, matV_mul p q x hx', ?_, ?_, fun b i => evV_matV p x hx' b i, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : matV B p (fun b => addV B.G.F (x b) (y b)) = fun k => (∑ j, p k j • ((⟨x j, hx' j⟩ : SP B m) + ⟨y j, hy' j⟩)).val` using `matV_val B p fun j => (⟨x j, hx' j⟩ : SP B m) + ⟨y j, hy' j⟩`. Establish `h2 : matV B p x = fun k => (∑ j, p k j • (⟨x j, hx' j⟩ : SP B m)).val` using `matV_val B p fun j => (⟨x j, hx' j⟩ : SP B m)`. Establish `h3 : matV B p y = fun k => (∑ j, p k j • (⟨y j, hy' j⟩ : SP B m)).val` using `matV_val B p fun j => (⟨y j, hy' j⟩ : SP B m)`. Rewrite using `[h1, h2, h3]`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show _ = ((∑ j, p k j • (⟨x j, hx' j⟩ : SP B m)) + ∑ j, p k j • (⟨y j, hy' j⟩ : SP B m)).val`. Rewrite using `[← Finset.sum_add_distrib]`. Simplify using `only [smul_add]`. Introduce `a`. Establish `h2 : matV B (a • (1 : Matrix (Fin n) (Fin n) O)) x = fun k => (∑ j, (a • (1 : Matrix (Fin n) (Fin n) O)) k j • (⟨x j, hx' j⟩ : SP B m)).val` using `matV_val B _ fun j => (⟨x j, hx' j⟩ : SP B m)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Use function extensionality and compare the values at `k`. Use `show _ = (a • (⟨x k, hx' k⟩ : SP B m)).val`. Use `congr 1`. Simplify using `[Matrix.one_apply, ite_smul, Finset.sum_ite_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `b i show MvPowerSeries.constantCoeff ((List.ofFn fun j => compV (B.A.act (p b j)) (pt V (n := n) d j)).foldr (addV B.G.F) 0 i) = 0`. Apply `foldr_const` to reduce the goal to its premises. Introduce `a ha k`. Take `⟨j, rfl⟩` from `List.mem_ofFn.1 ha`. Use `show MvPowerSeries.constantCoeff (evV ![pt V (n := n) d j] (B.A.act (p b j) k)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `evV_const _ _ _ (B.A.const (p b j) k)` to reduce the goal to its premises. Introduce `c k'`. Use `fin_cases c`. Simplify using `[pt]`. Introduce `f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hq : ∀ b, Sm (matV B q (fun j => pt V (n` using `n) d j) b) := matV_sm q _ hpt`. Establish `hp : ∀ b, Sm (matV B p (fun j => pt V (n` using `n) d j) b) := matV_sm p _ hpt`. Use `show evV (matV B (p * q) fun j => pt V (n := n) d j) f = evV (matV B q fun j => pt V (n := n) d j) (evV (matV B p fun j => pt V (n := n) d j) f)`. Rewrite using `[evV_comp _ _ hp hq, matV_mul p q _ hpt]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `b i`. Conclude with `(evV_matV p _ hq b i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem matV_laws : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [CharZero V] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB V d O) (n m : ℕ) (p q : Matrix (Fin n) (Fin n) O) (x y : Fin n → Pt V m d), (∀ b i, MvPowerSeries.constantCoeff (x b i) ∈ maximalIdeal V) → (∀ b i, MvPowerSeries.constantCoeff (y b i) ∈ maximalIdeal V) → (∀ b i, MvPowerSeries.constantCoeff (matV B p x b i) ∈ maximalIdeal V) ∧ matV B (p * q) x = matV B p (matV B q x) ∧ (matV B p (fun b => addV B.G.F (x b) (y b)) = fun b => addV B.G.F (matV B p x b) (matV B p y b)) ∧ (∀ a : O, matV B (a • (1 : Matrix (Fin n) (Fin n) O)) x = fun b => compV (B.A.act a) (x b)) ∧ (∀ b i, evV x (matV B p (fun j => pt V (n := n) d j) b i) = matV B p x b i) ∧ (∀ b i, MvPowerSeries.constantCoeff (matV B p (fun j => pt V (n := n) d j) b i) = 0) ∧ ∀ f : PS V n d, pullM B (p * q) f = pullM B q (pullM B p f) := by
   intro V _ _ _ _ _ d O _ _ B n m p q x y hx hy

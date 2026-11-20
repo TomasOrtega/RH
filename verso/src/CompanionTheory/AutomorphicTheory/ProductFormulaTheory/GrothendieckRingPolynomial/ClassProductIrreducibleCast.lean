@@ -36,7 +36,7 @@ def equivComp {σ : Representation ℂ G V} {τ : Representation ℂ G W} (φ : 
   .mk φ.toLinearEquiv fun g => φ.isIntertwining' (s g)
 
 /- English proof (translation)
-Take `⟨S, T, h1, h2, h3⟩` from `h`. Conclude with `⟨fun i => subComp s (S i), fun i => subComp s (T i), fun i => h1 i, fun i j hij => h2 i j hij, fun i => (h3 i).map fun φ => (subQuotComp s (S i) (T i)).trans (equivComp φ s)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem occursTimes_comp {σ : Representation ℂ G W} {π : Representation ℂ G V} (s : H →* G) {r : ℕ}
     (h : OccursTimes σ π r) : OccursTimes (σ.comp s) (π.comp s) r := by
@@ -45,7 +45,7 @@ theorem occursTimes_comp {σ : Representation ℂ G W} {π : Representation ℂ 
     fun i => (h3 i).map fun φ => (subQuotComp s (S i) (T i)).trans (equivComp φ s)⟩
 
 /- English proof (translation)
-The claim follows from `iSup₂_le fun r h => le_iSup₂_of_le (f := fun r (_ : OccursTimes (σ.comp s) (π.comp s) r) => (r : ℕ∞)) r (occursTimes_comp s h) le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem jhMult_le_comp (σ : Representation ℂ G W) (π : Representation ℂ G V) (s : H →* G) :
     jhMult σ π ≤ jhMult (σ.comp s) (π.comp s) :=
@@ -72,7 +72,7 @@ def ann (T : Subrepresentation π) : Subrepresentation (contra π) where
     exact hl _ (T.apply_mem_toSubmodule g⁻¹ hv)
 
 /- English proof (translation)
-Introduce `_ hl v hv` and use `hl v (h hv)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ann_anti {S T : Subrepresentation π} (h : T ≤ S) : ann S ≤ ann T :=
   fun _ hl v hv => hl v (h hv)
@@ -84,7 +84,7 @@ def formOf (l : (ann T).toSubmodule) : Module.Dual ℂ (S.toSubmodule ⧸ T.toSu
     fun w hw => LinearMap.mem_ker.2 (l.2 _ hw)
 
 /- English proof (translation)
-The claim follows from `mem_smoothPart_of_nhds (Filter.mem_of_superset (IsOpen.mem_nhds l.1.2 (by show π.dual 1 (l.1 : Module.Dual ℂ V) = l.1 rw [map_one] rfl)) fun g hg => by have hg' : π.dual g (l.1 : Module.Dual ℂ V) = l.1 := hg refine LinearMap.ext fun x => ?_ obtain ⟨w, rfl⟩ := Submodule.Quotient.m …`.
+A detailed English derivation is pending.
 -/
 theorem formOf_mem (l : (ann T).toSubmodule) : formOf S T l ∈ smoothPart (subQuot S T).dual :=
   mem_smoothPart_of_nhds (Filter.mem_of_superset (IsOpen.mem_nhds l.1.2 (by
@@ -110,9 +110,9 @@ def annMap : (ann T).toRepresentation.IntertwiningMap (contra (subQuot S T)) whe
     rfl)
 
 /- English proof (translation)
-Use extensionality with `l`. Prove the components needed by the constructor for the conclusion. Introduce `hl v hv`. Establish `h0 : annMap S T l = 0` using `hl`. Conclude with `LinearMap.congr_fun (congrArg Subtype.val h0) (Submodule.Quotient.mk ⟨v, hv⟩)`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hl show annMap S T l = 0`. Use `Subtype.ext (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `hl w.1 w.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ker_annMap :
     LinearMap.ker (annMap S T).toLinearMap = (ann S).toSubmodule.comap (ann T).toSubmodule.subtype := by
@@ -130,23 +130,21 @@ theorem ker_annMap :
 variable {S T}
 
 /- English proof (translation)
-Introduce `f`. Set `m₀ : Module.Dual ℂ S.toSubmodule` to `(f : Module.Dual ℂ _) ∘ₗ (T.toSubmodule.comap S.toSubmodule.subtype).mkQ`. Establish `hSs : IsSmooth S.toRepresentation` using `fun w => by`. Establish `: {g : G | S.toRepresentation g w = w} = {g : G | π g w.1 = w.1}`. Use extensionality with `g`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `Subtype.ext_iff`. Rewrite using `[this]`. Conclude with `hπ w.1`. Take `⟨K, ho, hc, hKs⟩` from `hG _ ((isSmooth_contra (subQuot S T) f).mem_nhds (by simp))`. Establish `hm : ∀ h ∈ K, ∀ w, m₀ (S.toRepresentation h w) = m₀ w`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h hh w`. Establish `h1 : contra (subQuot S T) h⁻¹ f = f` using `hKs (inv_mem hh)`. Establish `h2` using `LinearMap.congr_fun (congrArg Subtype.val h1) (Submodule.Quotient.mk w)`. Rewrite `h2` using `[contra_apply, inv_inv]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `j : fixed S.toRepresentation K →ₗ[ℂ] fixed π K` to `{ toFun := fun w => ⟨w.1.1, GlobalTheory.ContraRefl.mem_fix.2 fun h hh => congrArg Subtype.val (GlobalTheory.ContraRefl.mem_fix.1 w.2 h hh)⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hj : LinearMap.ker j = ⊥` using `LinearMap.ker_eq_bot'.2 fun w hw => by`. Establish `h0` using `congrArg Subtype.val hw`. Conclude with `Subtype.ext (Subtype.ext h0)`. Take `⟨j', hj'⟩` from `LinearMap.exists_leftInverse_of_injective j hj`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `m : Module.Dual ℂ (fixed π K)` to `(m₀ ∘ₗ (fixed S.toRepresentation K).subtype) ∘ₗ j'`. Take `⟨l, hlK, hl⟩` from `GlobalTheory.ContraRefl.exists_fixed_contra hπ ho hc m`. Establish `hlS : (l : Module.Dual ℂ V) ∘ₗ S.toSubmodule.subtype = m₀`. Use `GlobalTheory.ContraRefl.form_ext hSs hc (fun h hh w => ?_) hm (fun w hw => ?_)` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun (congrArg Subtype.val (hlK h⁻¹ (inv_mem hh))) (w : V)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[contra_apply, inv_inv]`. Conclude with `h1`. Establish `e1` using `hl (j ⟨w, hw⟩)`. Establish `e2` using `LinearMap.congr_fun hj' ⟨w, hw⟩`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at e2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (l : Module.Dual ℂ V) (w : V) = m₀ w`. Rewrite using `[show (w : V) = ((j ⟨w, hw⟩ : fixed π K) : V) from rfl, e1]`. Use `show m₀ ((fixed S.toRepresentation K).subtype (j' (j ⟨w, hw⟩))) = m₀ w`. Rewrite using `[e2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hlT : l ∈ (ann T).toSubmodule` using `fun v hv => by`. Establish `h1` using `LinearMap.congr_fun hlS ⟨v, hTS hv⟩`. Establish `h2 : (Submodule.Quotient.mk ⟨v, hTS hv⟩ : S.toSubmodule ⧸ T.toSubmodule.comap S.toSubmodule.subtype) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 hv`. Use `h1.trans ?_` and prove the remaining obligations. Use `show f.1 ((Submodule.Quotient.mk ⟨v, hTS hv⟩ : S.toSubmodule ⧸ T.toSubmodule.comap S.toSubmodule.subtype)) = 0`.
-
-Rewrite using `[h2, map_zero]`. Use `⟨⟨l, hlT⟩, Subtype.ext (LinearMap.ext fun x => ?_)⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `LinearMap.congr_fun hlS w`.
+A detailed English derivation is pending.
 -/
 theorem annMap_surjective
     (hG : ∀ U ∈ nhds (1 : G), ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ U)
@@ -215,7 +213,7 @@ def annEquiv
     exact LinearMap.congr_fun ((annMap S T).isIntertwining' g) l
 
 /- English proof (translation)
-Take `⟨S, T, h1, h2, h3⟩` from `h`. Conclude with `⟨fun i => ann (T (Fin.rev i)), fun i => ann (S (Fin.rev i)), fun i => ann_anti (h1 _), fun i j hij => ann_anti (h2 _ _ (Fin.rev_lt_rev.2 hij)), fun i => (h3 (Fin.rev i)).map fun φ => (annEquiv hG hπ (h1 (Fin.rev i))).trans (GlobalTheory.ContraRefl.contraEquiv φ.symm)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem occursTimes_contra
     (hG : ∀ U ∈ nhds (1 : G), ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ U)
@@ -228,7 +226,7 @@ theorem occursTimes_contra
       (annEquiv hG hπ (h1 (Fin.rev i))).trans (GlobalTheory.ContraRefl.contraEquiv φ.symm)⟩
 
 /- English proof (translation)
-The claim follows from `iSup₂_le fun r h => le_iSup₂_of_le (f := fun r (_ : OccursTimes (contra σ) (contra π) r) => (r : ℕ∞)) r (occursTimes_contra hG hπ h) le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem jhMult_le_contra
     (hG : ∀ U ∈ nhds (1 : G), ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ U)
@@ -243,7 +241,7 @@ section Pairs
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨.refl _⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem prodIrr_congr {h N : ℕ} {z z' : Fin h → IrrGL k} (e : z = z') (hd : ∑ a, (z a).1 = N)
     (hd' : ∑ a, (z' a).1 = N) : Nonempty ((prodIrr z hd).Equiv (prodIrr z' hd')) := by
@@ -251,7 +249,7 @@ theorem prodIrr_congr {h N : ℕ} {z z' : Fin h → IrrGL k} (e : z = z') (hd : 
   exact ⟨.refl _⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem class_product_irreducible_cast {h N M : ℕ} (e : N = M) (z : Fin h → IrrGL k) (hd : ∑ a, (z a).1 = N)
     (hd' : ∑ a, (z a).1 = M) : cl0 (prodIrr z hd) = cl0 (prodIrr z hd') := by
@@ -259,7 +257,7 @@ theorem class_product_irreducible_cast {h N M : ℕ} (e : N = M) (z : Fin h → 
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `hf`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_prodIrr_cast {h N M : ℕ} (e : N = M) (z : Fin h → IrrGL k) (hd : ∑ a, (z a).1 = N)
     (hd' : ∑ a, (z a).1 = M) (hf : HasFiniteLength (prodIrr z hd)) : HasFiniteLength (prodIrr z hd') := by
@@ -267,9 +265,9 @@ theorem hasFiniteLength_prodIrr_cast {h N M : ℕ} (e : N = M) (z : Fin h → Ir
   exact hf
 
 /- English proof (translation)
-Distinguish the cases in `hπ : HasFiniteLength π`. Establish `hτ` using `hπ.of_equiv φ`. Simplify using `only [cl0, dif_pos hπ, dif_pos hτ]`. Conclude with `clsGL_congr φ hπ hτ`. Establish `hτ : ¬ HasFiniteLength τ` using `fun h => hπ (h.of_equiv φ.symm)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [cl0, dif_neg hπ, dif_neg hτ]`.
+A detailed English derivation is pending.
 -/
 theorem class_congr_equiv {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {π : Representation ℂ (GL (Fin N) k) V} {τ : Representation ℂ (GL (Fin N) k) W} (φ : π.Equiv τ) :
@@ -282,7 +280,7 @@ theorem class_congr_equiv {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V]
     simp only [cl0, dif_neg hπ, dif_neg hτ]
 
 /- English proof (translation)
-Simplify using `only [cl0, dif_pos hπ, dif_pos hτ, clsGL]`. Use `congr 1`. Use extensionality with `c`. Rewrite using `[cls_apply, cls_apply, h c.rep]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem class_eq_of_jordan_holder_mult {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {π : Representation ℂ (GL (Fin N) k) V} {τ : Representation ℂ (GL (Fin N) k) W} (hπ : HasFiniteLength π)
@@ -295,13 +293,11 @@ theorem class_eq_of_jordan_holder_mult {N : ℕ} {V W : Type} [AddCommGroup V] [
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hA` using `CompanionTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`. Establish `hGK : GKLocal k` using `GlobalTheory.T.local_langlands_of_irreducible_admissible hA`. Take `⟨hd', ⟨E1⟩⟩` from `GlobalTheory.T.product_transpose_inverse_dual_reverse hA hGK ![x, y] h1`. Take `⟨hd'', ⟨E2⟩⟩` from `GlobalTheory.T.contragredient_product_irreducible hA (fun a => dualCl (![x, y] (Fin.rev a))) hd'`. Establish `hz : (fun a => dualCl (dualCl (![x, y] (Fin.rev a)))) = ![y, x]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Use `fin_cases a`. Conclude with `GlobalTheory.T.dual_class_involutive hA y`. Conclude with `GlobalTheory.T.dual_class_involutive hA x`. Take `⟨E3⟩` from `prodIrr_congr hz hd'' h2`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨G1⟩` from `GlobalTheory.T.gelfand_kazhdan_contragredient hGK N σ.ρ σ.smooth σ.irr`. Establish `hG` using `GlobalTheory.SqIntUnit.compactOpen_basis k N`. Establish `hσa : IsAdmissible σ.ρ` using `hA k N _ σ.ρ σ.smooth σ.irr`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[jhMult_congr_left G1, jhMult_congr_right _ E1]`.
-
-Use `_ ≤ jhMult (contra (contra σ.ρ)) (contra (prodIrr (fun a => dualCl (![x, y] (Fin.rev a))) hd')) := jhMult_le_contra hG (isSmooth_prodIrr _ _) _`. Use `_ = jhMult σ.ρ (prodIrr ![y, x] h2) := by`. Rewrite using `[← jhMult_congr_left (GlobalTheory.ContraRefl.evEquiv hG hσa), jhMult_congr_right _ E2, jhMult_congr_right _ E3]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jhMult_pair_le (x y : IrrGL k) {N : ℕ} (h1 : ∑ a, (![x, y] a).1 = N) (h2 : ∑ a, (![y, x] a).1 = N)
     (σ : IrrRep (GL (Fin N) k)) : jhMult σ.ρ (prodIrr ![x, y] h1) ≤ jhMult σ.ρ (prodIrr ![y, x] h2) := by
@@ -339,11 +335,11 @@ open CompanionTheory.Groth.GrothendieckCommutativity
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `x y`. Establish `hxy : ∑ a, (![x, y] a).1 = x.1 + y.1` using `by simp [Fin.sum_univ_two]`. Establish `hyx' : ∑ a, (![y, x] a).1 = x.1 + y.1` using `by simp [Fin.sum_univ_two, add_comm]`. Establish `hyx : ∑ a, (![y, x] a).1 = y.1 + x.1` using `by simp [Fin.sum_univ_two]`. Take `⟨E1⟩` from `nonempty_prod₂_equiv_prodIrr_pair x y hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨E2⟩` from `nonempty_prod₂_equiv_prodIrr_pair y x hyx`. Establish `hBZ` using `GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness`. Establish `f1 : HasFiniteLength (prod₂ x.rep y.rep)` using `GlobalTheory.T.parabolicProduct_hasFiniteLength_GL hBZ k _ _ _ _ _ _ x.2.rep.hasFiniteLength y.2.rep.hasFiniteLength x.2.rep.smooth y.2.rep.smooth`. Establish `f2 : HasFiniteLength (prod₂ y.rep x.rep)` using `GlobalTheory.T.parabolicProduct_hasFiniteLength_GL hBZ k _ _ _ _ _ _ y.2.rep.hasFiniteLength x.2.rep.hasFiniteLength y.2.rep.smooth x.2.rep.smooth`. Rewrite using `[class_congr_equiv E1, class_congr_equiv E2, ← class_product_irreducible_cast (add_comm x.1 y.1) ![y, x] hyx' hyx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `class_eq_of_jordan_holder_mult (f1.of_equiv E1) (hasFiniteLength_prodIrr_cast (add_comm y.1 x.1) ![y, x] hyx hyx' (f2.of_equiv E2)) fun σ => le_antisymm (jhMult_pair_le x y hxy hyx' σ) (jhMult_pair_le y x hyx' hxy σ)`.
+A detailed English derivation is pending.
 -/
 theorem comm (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] : Comm k := by
   intro x y

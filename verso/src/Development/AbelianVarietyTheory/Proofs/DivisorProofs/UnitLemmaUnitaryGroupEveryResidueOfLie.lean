@@ -18,7 +18,7 @@ open GlobalTheory.UnitLemma Polynomial
 variable {K : UQ}
 
 /- English proof (translation)
-Unfold `InvAlg.stSum`. Rewrite using `[h.finsum_eq C.N fun x u => (GlobalTheory.T.latticeCount_and_gramDetSign_norm_class K C x u).1]`. Conclude with `finsum_congr fun k => h.N_eq _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_stSum_eq {B C : InvAlg K} {φ : B.A ≃ₐ[K.E] C.A} (h : IsIso φ) : C.stSum = B.stSum := by
   unfold InvAlg.stSum
@@ -26,9 +26,7 @@ theorem isIso_stSum_eq {B C : InvAlg K} {φ : B.A ≃ₐ[K.E] C.A} (h : IsIso φ
   exact finsum_congr fun k => h.N_eq _
 
 /- English proof (translation)
-Unfold `InvAlg.kapSum`. Use `((h₁.prod h₂).finsum_eq (fun x => K.eta (C₁.gramDet x.1) * (C₁.prod C₂).N x) fun x u => ?_).trans ?_` and prove the remaining obligations. Establish `e1` using `(GlobalTheory.T.latticeCount_and_gramDetSign_norm_class K (C₁.prod C₂) x u).1`. Establish `e2` using `(GlobalTheory.T.latticeCount_and_gramDetSign_norm_class K C₁ x.1 (Units.map (MonoidHom.fst C₁.A C₂.A) u)).2`. Conclude with `congrArg₂ (· * ·) e2 e1`.
-
-Conclude with `finsum_congr fun k => congrArg₂ (· * ·) (h₁.eta_eq _) ((h₁.prod h₂).N_eq _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_kapSum_eq {B₁ B₂ C₁ C₂ : InvAlg K} {φ₁ : B₁.A ≃ₐ[K.E] C₁.A} {φ₂ : B₂.A ≃ₐ[K.E] C₂.A}
     (h₁ : IsIso φ₁) (h₂ : IsIso φ₂) : InvAlg.kapSum C₁ C₂ = InvAlg.kapSum B₁ B₂ := by
@@ -40,7 +38,7 @@ theorem isIso_kapSum_eq {B₁ B₂ C₁ C₂ : InvAlg K} {φ₁ : B₁.A ≃ₐ[
   · exact finsum_congr fun k => congrArg₂ (· * ·) (h₁.eta_eq _) ((h₁.prod h₂).N_eq _)
 
 /- English proof (translation)
-Unfold `InvAlg.Identity at h ⊢`. Rewrite `h` using `[isIso_kapSum_eq h₁ h₂, isIso_stSum_eq h₁, isIso_stSum_eq h₂, h₁.charpoly_eq_of_isIso, h₂.charpoly_eq_of_isIso]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isIso_identity {B₁ B₂ C₁ C₂ : InvAlg K} {φ₁ : B₁.A ≃ₐ[K.E] C₁.A} {φ₂ : B₂.A ≃ₐ[K.E] C₂.A}
     (h₁ : IsIso φ₁) (h₂ : IsIso φ₂) (h : InvAlg.Identity C₁ C₂) : InvAlg.Identity B₁ B₂ := by
@@ -48,7 +46,7 @@ theorem isIso_identity {B₁ B₂ C₁ C₂ : InvAlg K} {φ₁ : B₁.A ≃ₐ[K
   rwa [isIso_kapSum_eq h₁ h₂, isIso_stSum_eq h₁, isIso_stSum_eq h₂, h₁.charpoly_eq_of_isIso, h₂.charpoly_eq_of_isIso] at h
 
 /- English proof (translation)
-The claim follows from `Prod.ext (aeval_algHom_apply (AlgHom.fst K.O B₁.A B₂.A) (B₁.g, B₂.g) f).symm (aeval_algHom_apply (AlgHom.snd K.O B₁.A B₂.A) (B₁.g, B₂.g) f).symm`.
+A detailed English derivation is pending.
 -/
 theorem prod_aeval (B₁ B₂ : InvAlg K) (f : K.O[X]) :
     aeval (B₁.prod B₂).g f = ((aeval B₁.g f, aeval B₂.g f) : B₁.A × B₂.A) :=
@@ -56,14 +54,14 @@ theorem prod_aeval (B₁ B₂ : InvAlg K) (f : K.O[X]) :
     (aeval_algHom_apply (AlgHom.snd K.O B₁.A B₂.A) (B₁.g, B₂.g) f).symm
 
 /- English proof (translation)
-The claim follows from `IsIntegral.pair (x := (B₁.g, B₂.g)) h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem prod_integral (B₁ B₂ : InvAlg K) (h₁ : IsIntegral K.O B₁.g) (h₂ : IsIntegral K.O B₂.g) :
     IsIntegral K.O (B₁.prod B₂).g :=
   IsIntegral.pair (x := (B₁.g, B₂.g)) h₁ h₂
 
 /- English proof (translation)
-Establish `: Subsingleton (B.A ⧸ Ideal.span {e})` using `(Module.finrank_zero_iff (R := K.E) (M := (cut B e he).A)).1 h`. Establish `h1 : (1 : B.A) ∈ Ideal.span {e}` using `Ideal.Quotient.eq_zero_iff_mem.1 (Subsingleton.elim _ _)`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 h1`. Take the linear combination `(e - 1) * -ha + a * hi.eq`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eq_one_of_finrank_cut (B : InvAlg K) {e : B.A} (hi : IsIdempotentElem e) (he : B.σ e = e)
     (h : Module.finrank K.E (cut B e he).A = 0) : e = 1 := by
@@ -73,7 +71,7 @@ theorem eq_one_of_finrank_cut (B : InvAlg K) {e : B.A} (hi : IsIdempotentElem e)
   linear_combination (e - 1) * -ha + a * hi.eq
 
 /- English proof (translation)
-Rewrite using `[(AlgEquiv.prodQuotientOfIsIdempotentElem K.E hi hi.one_sub (by simp) (by simp [hi])).toLinearEquiv.finrank_eq, Module.finrank_prod]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finrank_cut (B : InvAlg K) {e : B.A} (hi : IsIdempotentElem e) (he : B.σ e = e) :
     Module.finrank K.E B.A = Module.finrank K.E (cut B e he).A +
@@ -83,22 +81,22 @@ theorem finrank_cut (B : InvAlg K) {e : B.A} (hi : IsIdempotentElem e) (he : B.�
   rfl
 
 /- English proof (translation)
-Rewrite using `[← prod_P, (isIso_cut B hi he).charpoly_eq_of_isIso]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_eq_mul_charpoly_cut (B : InvAlg K) {e : B.A} (hi : IsIdempotentElem e) (he : B.σ e = e) :
     B.P = (cut B e he).P * (cut B (1 - e) (one_sub_fixed B he)).P := by
   rw [← prod_P, (isIso_cut B hi he).charpoly_eq_of_isIso]
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial B.A with hs | hs` into its components or cases. Conclude with `Or.inl ⟨0, zero_mem _, Subsingleton.elim _ _, Subsingleton.elim _ _⟩`. Distinguish the cases in `hid : ∀ e : Algebra.adjoin K.O ({B.g} : Set B.A), e * e = e → e = 0 ∨ e = 1`. Establish `: Module.Finite K.O (Algebra.adjoin K.O ({B.g} : Set B.A))` using `Module.Finite.iff_fg.2 hi.fg_adjoin_singleton`. Conclude with `Or.inr (isLocalRing_of_idem (R := K.O) _ hid)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Prove the second alternative.
 
-Use `push Not at hid`. Take `⟨⟨e, he⟩, hee, h0, h1⟩` from `hid`. Establish `hee : e * e = e` using `congrArg Subtype.val hee`. Establish `h0 : e ≠ 0` using `fun h => h0 (Subtype.ext h)`. Establish `h1 : e ≠ 1` using `fun h => h1 (Subtype.ext h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he'` using `adjoin_stable B hu hi he`. Establish `hee' : B.σ e * B.σ e = B.σ e` using `by rw [← map_mul, hee]`. Establish `hm : e * B.σ e = 0`. Use `(h _ (mul_mem he he') ?_ ?_).resolve_right fun h2 => h1 ?_` and prove the remaining obligations. Take the linear combination `B.σ e * B.σ e * hee + e * hee'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, B.σ_σ, mul_comm]`. Take the linear combination `(1 - e) * h2 + B.σ e * hee`. Use `Or.inl ⟨e, he, hee, (h _ (add_mem he he') ?_ ?_).resolve_left fun h2 => h0 ?_⟩` and prove the remaining obligations. Take the linear combination `hee + hee' + 2 * hm`. Rewrite using `[map_add, B.σ_σ, add_comm]`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `e * h2 - hee - hm`.
+A detailed English derivation is pending.
 -/
 theorem one_orbit (B : InvAlg K) (hu : B.g * B.σ B.g = 1) (hi : IsIntegral K.O B.g)
     (h : ∀ e ∈ Algebra.adjoin K.O ({B.g} : Set B.A), e * e = e → B.σ e = e → e = 0 ∨ e = 1) :
@@ -128,19 +126,17 @@ theorem one_orbit (B : InvAlg K) (hu : B.g * B.σ B.g = 1) (hi : IsIntegral K.O 
   · linear_combination e * h2 - hee - hm
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `B₁ B₂ hn u₁ u₂ hs i₁ i₂`. Distinguish the cases in `h : ∀ e ∈ Algebra.adjoin K.O ({(B₁.prod B₂).g} : Set (B₁.prod B₂).A), e * e = e → (B₁.prod B₂).σ e = e → e = 0 ∨ e = 1`. Break down `one_orbit (B₁.prod B₂) (Prod.ext u₁ u₂) (prod_integral _ _ i₁ i₂) h with h | h` into its components or cases.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `GlobalTheory.T.involutive_algebra_product_identity K B₁ B₂ u₁ u₂ hs i₁ i₂ h`. Conclude with `GlobalTheory.T.unitLemma_local_anyResidueChar_of_lieAlgebra hL K B₁ B₂ u₁ u₂ hs i₁ i₂ h`. Use `push Not at h`. Take `⟨e, he, hee, hσ, h0, h1⟩` from `h`. Rewrite `he` using `[Algebra.adjoin_singleton_eq_range_aeval]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `he`. Establish `hf : ((aeval B₁.g f, aeval B₂.g f) : B₁.A × B₂.A) = e` using `(prod_aeval B₁ B₂ f).symm.trans hf`. Take `⟨e₁, e₂⟩` from `e`. Take `⟨f₁, f₂⟩` from `Prod.ext_iff.1 hf`. Establish `j₁ : IsIdempotentElem e₁` using `congrArg Prod.fst hee`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `j₂ : IsIdempotentElem e₂` using `congrArg Prod.snd hee`. Establish `s₁ : B₁.σ e₁ = e₁` using `congrArg Prod.fst hσ`. Establish `s₂ : B₂.σ e₂ = e₂` using `congrArg Prod.snd hσ`. Simplify using `only at f₁ f₂`. Establish `r₁` using `finrank_cut B₁ j₁ s₁`.
+Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r₂` using `finrank_cut B₂ j₂ s₂`. Establish `p₁ : Module.finrank K.E (cut B₁ e₁ s₁).A + Module.finrank K.E (cut B₂ e₂ s₂).A ≠ 0` using `fun hz => h1 (Prod.ext (eq_one_of_finrank_cut B₁ j₁ s₁ (Nat.add_eq_zero_iff.1 hz).1) (eq_one_of_finrank_cut B₂ j₂ s₂ (Nat.add_eq_zero_iff.1 hz).2))`. Establish `p₂ : Module.finrank K.E (cut B₁ (1 - e₁) (one_sub_fixed B₁ s₁)).A + Module.finrank K.E (cut B₂ (1 - e₂) (one_sub_fixed B₂ s₂)).A ≠ 0` using `fun hz => h0 (Prod.ext (sub_eq_self.1 (eq_one_of_finrank_cut B₁ j₁.one_sub (one_sub_fixed B₁ s₁) (Nat.add_eq_zero_iff.1 hz).1)) (sub_eq_self.1 (eq_one_of_finrank_cut B₂ j₂.one_sub (one_sub_fixed B₂ s₂) (Nat.add_eq_zero_iff.1 hz).2)))`. Rewrite `hs` using `[charpoly_eq_mul_charpoly_cut B₁ j₁ s₁, charpoly_eq_mul_charpoly_cut B₂ j₂ s₂, mul_mul_mul_comm]`. Use `isIso_identity (isIso_cut B₁ j₁ s₁) (isIso_cut B₂ j₂ s₂) ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.involutiveAlg_identity_prod_of_unit_resultant K _ _ _ _ hs (cut_integral _ _ _ i₁) (cut_integral _ _ _ i₂) (cut_integral _ _ _ i₁) (cut_integral _ _ _ i₂) ?_ ?_ ?_` and prove the remaining obligations. Rewrite `hs`, the goal using `[← prod_P, ← prod_P]`. Use `val_resultant _ _ hs.of_mul_left hs.of_mul_right (prod_integral _ _ (cut_integral _ _ _ i₁) (cut_integral _ _ _ i₂)) (prod_integral _ _ (cut_integral _ _ _ i₁) (cut_integral _ _ _ i₂)) f ?_ ?_` and prove the remaining obligations. Rewrite using `[prod_aeval, cut_aeval, cut_aeval, f₁, f₂]`. Conclude with `Prod.ext (Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)) (Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _))`.
-
-Rewrite using `[prod_aeval, cut_aeval, cut_aeval, f₁, f₂]`. Conclude with `Prod.ext (Ideal.Quotient.eq.2 (Ideal.mem_span_singleton_self (1 - e₁))).symm (Ideal.Quotient.eq.2 (Ideal.mem_span_singleton_self (1 - e₂))).symm`. Conclude with `ih _ (by omega) _ _ rfl (cut_unitary _ _ _ u₁) (cut_unitary _ _ _ u₂) hs.of_mul_left (cut_integral _ _ _ i₁) (cut_integral _ _ _ i₂)`. Conclude with `ih _ (by omega) _ _ rfl (cut_unitary _ _ _ u₁) (cut_unitary _ _ _ u₂) hs.of_mul_right (cut_integral _ _ _ i₁) (cut_integral _ _ _ i₂)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem identity_integral (hL : UnitLemmaLie) (n : ℕ) : ∀ B₁ B₂ : InvAlg K,
     Module.finrank K.E B₁.A + Module.finrank K.E B₂.A = n → B₁.g * B₁.σ B₁.g = 1 → B₂.g * B₂.σ B₂.g = 1 →
@@ -195,9 +191,9 @@ theorem identity_integral (hL : UnitLemmaLie) (n : ℕ) : ∀ B₁ B₂ : InvAlg
       (cut_integral _ _ _ i₁) (cut_integral _ _ _ i₂)
 
 /- English proof (translation)
-Introduce `hL K B₁ B₂ u₁ u₂ hs`. Distinguish the cases in `hi : IsIntegral K.O B₁.g ∧ IsIntegral K.O B₂.g`. Conclude with `identity_integral hL _ B₁ B₂ rfl u₁ u₂ hs hi.1 hi.2`. Take `⟨h1, h2⟩` from `GlobalTheory.T.kappaSum_zero_and_stableSum_mul_zero_of_not_integral K B₁ B₂ hi`. Unfold `InvAlg.Identity`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem identity_of_lie : UnitLemmaLie → ∀ (K : UQ) (B₁ B₂ : InvAlg K), B₁.g * B₁.σ B₁.g = 1 →
     B₂.g * B₂.σ B₂.g = 1 → (B₁.P * B₂.P).Separable → InvAlg.Identity B₁ B₂ := by

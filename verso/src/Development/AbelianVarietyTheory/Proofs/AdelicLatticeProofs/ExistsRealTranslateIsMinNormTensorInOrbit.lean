@@ -11,11 +11,11 @@ namespace GlobalTheory.ClassFin
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct MatrixOrder in
 /- English proof (translation)
-Use `⟨(hP.1.eigenvectorUnitary : Matrix ι ι ℂ), fun i => Real.log (hP.1.eigenvalues i) / 2, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Unitary.mul_star_self_of_mem hP.1.eigenvectorUnitary.2`. Establish `h` using `hP.1.det_eq_prod_eigenvalues`. Rewrite `h` using `[hdet]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hprod' : ((∏ i, hP.1.eigenvalues i : ℝ) : ℂ) = 1` using `by push_cast; exact h.symm`. Establish `hprod : ∏ i, hP.1.eigenvalues i = 1` using `by exact_mod_cast hprod'`. Rewrite using `[← Finset.sum_div, ← Real.log_prod (fun i _ => (hP.eigenvalues_pos i).ne'), hprod, Real.log_one, zero_div]`. Use `conv_lhs => rw [hP.1.spectral_theorem]`. Rewrite using `[Unitary.conjStarAlgAut_apply, Matrix.star_eq_conjTranspose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 3`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, RCLike.ofReal_real_eq_id, id]`. Rewrite using `[mul_div_cancel₀ _ two_ne_zero, Real.exp_log (hP.eigenvalues_pos i)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma posDef_det_one_eq_unitary_conj_exp_diagonal {ι : Type} [Fintype ι] [DecidableEq ι]
     (P : Matrix ι ι ℂ) (hP : P.PosDef) (hdet : P.det = 1) :
@@ -42,7 +42,7 @@ private lemma posDef_det_one_eq_unitary_conj_exp_diagonal {ι : Type} [Fintype �
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct MatrixOrder in
 /- English proof (translation)
-Simplify using `[conjTranspose_mul, Matrix.mul_assoc, diagonal_conjTranspose, -Complex.ofReal_exp, Pi.star_def]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma unitary_conj_exp_diagonal_conjTranspose {ι : Type} [Fintype ι] [DecidableEq ι]
     (U : Matrix ι ι ℂ) (δ : ι → ℝ) (s : ℝ) :
@@ -53,7 +53,7 @@ private lemma unitary_conj_exp_diagonal_conjTranspose {ι : Type} [Fintype ι] [
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct MatrixOrder in
 /- English proof (translation)
-Establish `hU' : Uᴴ * U = 1` using `mul_eq_one_comm.mp hU`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Uᴴ U, hU', Matrix.one_mul, ← Matrix.mul_assoc (diagonal _) (diagonal _), diagonal_mul_diagonal]`. Simplify using `only [← Complex.ofReal_mul, ← Real.exp_add, ← add_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma unitary_conj_exp_diagonal_mul {ι : Type} [Fintype ι] [DecidableEq ι]
     {U : Matrix ι ι ℂ} (hU : U * Uᴴ = 1) (δ : ι → ℝ) (s t : ℝ) :
@@ -69,13 +69,13 @@ private lemma unitary_conj_exp_diagonal_mul {ι : Type} [Fintype ι] [DecidableE
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct MatrixOrder in
 /- English proof (translation)
-Establish `hdetP : (g * gᴴ).det = 1` using `by simp [hg]`. Establish `hP : (g * gᴴ).PosDef` using `(posSemidef_self_mul_conjTranspose g).posDef_iff_isUnit.mpr ((isUnit_iff_isUnit_det _).mpr (by rw [hdetP]; exact isUnit_one))`. Take `⟨U, δ, hU, hδ, hgP⟩` from `posDef_det_one_eq_unitary_conj_exp_diagonal _ hP hdetP`. Use `⟨U, δ, hU, hδ, hgP, ?_⟩` and prove the remaining obligations. Take `⟨-, hactmul, -⟩` from `(_root_.GlobalTheory.ClassFin.tpow_act_algebra ι ℂ).2 m d v`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hgu : IsUnit g.det` using `by rw [hg]; exact isUnit_one`. Establish `hhh : ((U * diagonal fun i => ((Real.exp (1 * δ i) : ℝ) : ℂ)) * Uᴴ) * ((U * diagonal fun i => ((Real.exp (1 * δ i) : ℝ) : ℂ)) * Uᴴ)ᴴ = g * gᴴ`. Rewrite using `[unitary_conj_exp_diagonal_conjTranspose, unitary_conj_exp_diagonal_mul hU, hgP]`. Evaluate the numerical expressions. Use `set h : Matrix ι ι ℂ := (U * diagonal fun i => ((Real.exp (1 * δ i) : ℝ) : ℂ)) * Uᴴ with hh`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hk : (g⁻¹ * h) * (g⁻¹ * h)ᴴ = 1`. Rewrite using `[conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc h, hhh, ← Matrix.mul_assoc, ← Matrix.mul_assoc, nonsing_inv_mul _ hgu, Matrix.one_mul, conjTranspose_nonsing_inv, mul_nonsing_inv _ (by simp [hg])]`. Establish `hgk : h = g * (g⁻¹ * h)` using `by rw [← Matrix.mul_assoc, mul_nonsing_inv _ hgu, Matrix.one_mul]`. Establish `hnh : _root_.GlobalTheory.ClassFin.nsq (_root_.GlobalTheory.ClassFin.act d v h) = _root_.GlobalTheory.ClassFin.nsq v`. Rewrite using `[hgk, hactmul, (_root_.GlobalTheory.ClassFin.ActNorm.act_norm_continuity ι m d).1 _ _ hk, hn]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hnh` using `[hh]`. Conclude with `_root_.GlobalTheory.ClassFin.act_exp_eq_of_isMinVec ι m d v U δ hv hU hδ (by simpa only [one_mul] using hnh)`.
+A detailed English derivation is pending.
 -/
 private lemma exists_unitary_exp_diagonal_fixing_of_nsq_eq {ι : Type} [Fintype ι] [DecidableEq ι] {m : ℕ}
     (d : Fin m → ℕ) (v : _root_.GlobalTheory.ClassFin.TIdx ι d → ℂ) (hv : _root_.GlobalTheory.ClassFin.IsMinVec d v)
@@ -111,9 +111,9 @@ private lemma exists_unitary_exp_diagonal_fixing_of_nsq_eq {ι : Type} [Fintype 
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct MatrixOrder in
 /- English proof (translation)
-Use `congrArg (fun M : Matrix ι ι ℂ => M.map (starRingEnd ℂ)) hU` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Use `this using 2` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [one_apply, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma map_conj_mul_conjTranspose_eq_one {ι : Type} [Fintype ι] [DecidableEq ι]
     {U : Matrix ι ι ℂ} (hU : U * Uᴴ = 1) : U.map (starRingEnd ℂ) * (U.map (starRingEnd ℂ))ᴴ = 1 := by
@@ -126,7 +126,7 @@ private lemma map_conj_mul_conjTranspose_eq_one {ι : Type} [Fintype ι] [Decida
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct MatrixOrder in
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Use `congr 2`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [diagonal, h, -Complex.ofReal_exp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma unitary_conj_exp_diagonal_map_conj {ι : Type} [Fintype ι] [DecidableEq ι]
     (U : Matrix ι ι ℂ) (δ : ι → ℝ) (s : ℝ) :
@@ -141,7 +141,7 @@ private lemma unitary_conj_exp_diagonal_map_conj {ι : Type} [Fintype ι] [Decid
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct MatrixOrder in
 /- English proof (translation)
-Simplify using `[hU]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma unitary_conj_exp_zero_diagonal_eq_one {ι : Type} [Fintype ι] [DecidableEq ι]
     {U : Matrix ι ι ℂ} (hU : U * Uᴴ = 1) (δ : ι → ℝ) :
@@ -151,9 +151,9 @@ private lemma unitary_conj_exp_zero_diagonal_eq_one {ι : Type} [Fintype ι] [De
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct MatrixOrder in
 /- English proof (translation)
-Establish `hX2 : (0 : Matrix ι ι ℂ) ≤ X * X`. Rewrite using `[Matrix.nonneg_iff_posSemidef]`. Use `Matrix.posSemidef_conjTranspose_mul_self X` as an intermediate fact. Rewrite `this` using `[hX.1.eq]`. Then use the resulting hypothesis. Establish `hY2 : (0 : Matrix ι ι ℂ) ≤ Y * Y` using `h ▸ hX2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1` using `(CFC.sqrt_eq_iff (X * X) X hX2 hX.nonneg).mpr rfl`. Establish `h2` using `(CFC.sqrt_eq_iff (Y * Y) Y hY2 hY.nonneg).mpr rfl`. Rewrite using `[← h1, ← h2, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma posSemidef_eq_of_mul_self_eq {ι : Type} [Fintype ι] [DecidableEq ι]
     (X Y : Matrix ι ι ℂ) (hX : X.PosSemidef) (hY : Y.PosSemidef) (h : X * X = Y * Y) : X = Y := by
@@ -169,7 +169,7 @@ private lemma posSemidef_eq_of_mul_self_eq {ι : Type} [Fintype ι] [DecidableEq
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct MatrixOrder in
 /- English proof (translation)
-Take `⟨-, hactmul, -⟩` from `(_root_.GlobalTheory.ClassFin.tpow_act_algebra ι ℂ).2 m d v`. Establish `hk : (a⁻¹ * b) * (a⁻¹ * b)ᴴ = 1`. Rewrite using `[conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc b, hab, ← Matrix.mul_assoc, ← Matrix.mul_assoc, nonsing_inv_mul _ ha, Matrix.one_mul, conjTranspose_nonsing_inv, mul_nonsing_inv _ (by simpa [det_conjTranspose] using ha.star)]`. Establish `hb : b = a * (a⁻¹ * b)` using `by rw [← Matrix.mul_assoc, mul_nonsing_inv _ ha, Matrix.one_mul]`. Rewrite using `[hb, hactmul, (_root_.GlobalTheory.ClassFin.ActNorm.act_norm_continuity ι m d).1 _ _ hk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma nsq_act_eq_of_gram_eq {ι : Type} [Fintype ι] [DecidableEq ι] {m : ℕ}
     (d : Fin m → ℕ) (v : _root_.GlobalTheory.ClassFin.TIdx ι d → ℂ) (a b : Matrix ι ι ℂ) (ha : IsUnit a.det)
@@ -188,71 +188,63 @@ open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct MatrixOrder in
 
 /- English proof (translation)
-Introduce `ι _ _ m d t ⟨w, hwo, hw⟩`. Take `⟨g₀, hg₀, rfl⟩` from `hwo`. Use `set tc : _root_.GlobalTheory.ClassFin.TIdx ι d → ℂ := fun k => (t k : ℂ) with htc`. Take `⟨-, hactmul, -, -, -, hactmap⟩` from `(_root_.GlobalTheory.ClassFin.tpow_act_algebra ι ℂ).2 m d tc`. Use `set w := _root_.GlobalTheory.ClassFin.act d tc g₀ with hwdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg₀u : IsUnit g₀.det` using `by rw [hg₀]; exact isUnit_one`. Establish `hmapH : ∀ M : Matrix ι ι ℂ, Mᴴ.map (starRingEnd ℂ) = (M.map (starRingEnd ℂ))ᴴ` using `fun M => by ext i j; simp`. Establish `hmapmap : ∀ M : Matrix ι ι ℂ, (M.map (starRingEnd ℂ)).map (starRingEnd ℂ) = M` using `fun M => by ext i j; simp`. Take `⟨gb, hgb⟩ : ∃ x : Matrix ι ι ℂ, x = g₀.map (starRingEnd ℂ)` from `⟨_, rfl⟩`. Establish `hgbdet : gb.det = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `RingHom.map_det (starRingEnd ℂ) g₀` as an intermediate fact. Rewrite `this` using `[hg₀, map_one]`. Rewrite using `[hgb]`. Conclude with `this.symm`. Establish `hact_gb : _root_.GlobalTheory.ClassFin.act d tc gb = fun k => starRingEnd ℂ (w k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hactmap ℂ (starRingEnd ℂ) g₀` as an intermediate fact. Establish `htc' : (fun k => starRingEnd ℂ (tc k)) = tc` using `by funext k; simp [htc]`. Rewrite `this` using `[htc']`. Rewrite using `[hgb]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩ : ∃ x : Matrix ι ι ℂ, x = g₀⁻¹ * gb` from `⟨_, rfl⟩`. Establish `hcdet : c.det = 1` using `by simp [hc, hgbdet, hg₀]`. Establish `hg₀c : g₀ * c = gb` using `by rw [hc, ← Matrix.mul_assoc, mul_nonsing_inv _ hg₀u, Matrix.one_mul]`. Establish `hn : _root_.GlobalTheory.ClassFin.nsq (_root_.GlobalTheory.ClassFin.act d w c) = _root_.GlobalTheory.ClassFin.nsq w`. Rewrite using `[hwdef, ← hactmul, hg₀c, hact_gb]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Unfold `_root_.GlobalTheory.ClassFin.nsq`. Simplify using `[hwdef]`. Take `⟨U, δ, hU, hδ, hcQ, hfix⟩` from `exists_unitary_exp_diagonal_fixing_of_nsq_eq d w hw c hcdet hn`. Take `⟨Q, hQ⟩ : ∃ Q : ℝ → Matrix ι ι ℂ, ∀ s, Q s = (U * diagonal fun i => ((Real.exp (s * δ i) : ℝ) : ℂ)) * Uᴴ` from `⟨_, fun _ => rfl⟩`. Establish `hQmul : ∀ s s', Q s * Q s' = Q (s + s')` using `fun s s' => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hQ, hQ, hQ]`. Conclude with `unitary_conj_exp_diagonal_mul hU δ s s'`. Establish `hQH : ∀ s, (Q s)ᴴ = Q s` using `fun s => by`. Rewrite using `[hQ]`. Conclude with `unitary_conj_exp_diagonal_conjTranspose U δ s`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcQ' : c * cᴴ = Q 2` using `by rw [hQ]; exact hcQ`. Establish `hfix' : ∀ s, _root_.GlobalTheory.ClassFin.act d w (Q s) = w` using `fun s => by rw [hQ]; exact hfix s`. Establish `hUb1 : U.map (starRingEnd ℂ) * (U.map (starRingEnd ℂ))ᴴ = 1` using `map_conj_mul_conjTranspose_eq_one hU`. Take `⟨Qb, hQb⟩ : ∃ Qb : ℝ → Matrix ι ι ℂ, ∀ s, Qb s = (U.map (starRingEnd ℂ) * diagonal fun i => ((Real.exp (s * δ i) : ℝ) : ℂ)) * (U.map (starRingEnd ℂ))ᴴ` from `⟨_, fun _ => rfl⟩`. Establish `hQbmap : ∀ s, (Q s).map (starRingEnd ℂ) = Qb s` using `fun s => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ, hQb]`. Conclude with `unitary_conj_exp_diagonal_map_conj U δ s`. Establish `hQbmul : ∀ s s', Qb s * Qb s' = Qb (s + s')` using `fun s s' => by`. Rewrite using `[hQb, hQb, hQb]`. Conclude with `unitary_conj_exp_diagonal_mul hUb1 δ s s'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQb0 : Qb 0 = 1` using `by rw [hQb]; exact unitary_conj_exp_zero_diagonal_eq_one hUb1 δ`. Establish `hQbH : ∀ s, (Qb s)ᴴ = Qb s` using `fun s => by`. Rewrite using `[hQb]`. Conclude with `unitary_conj_exp_diagonal_conjTranspose _ δ s`. Establish `hgcb : gb * c.map (starRingEnd ℂ) = g₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun M : Matrix ι ι ℂ => M.map (starRingEnd ℂ)) hg₀c` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Rewrite using `[hgb, this, hgb, hmapmap]`. Establish `hccb : c * c.map (starRingEnd ℂ) = 1`. Establish `h1 : g₀ * (c * c.map (starRingEnd ℂ)) = g₀` using `by rw [← Matrix.mul_assoc, hg₀c, hgcb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : c * c.map (starRingEnd ℂ) = g₀⁻¹ * (g₀ * (c * c.map (starRingEnd ℂ)))`. Rewrite using `[← Matrix.mul_assoc, nonsing_inv_mul _ hg₀u, Matrix.one_mul]`. Rewrite using `[h2, h1, nonsing_inv_mul _ hg₀u]`. Establish `hcbc : c.map (starRingEnd ℂ) * c = 1` using `mul_eq_one_comm.mp hccb`. Establish `hQb2 : c.map (starRingEnd ℂ) * (c.map (starRingEnd ℂ))ᴴ = Qb 2`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hQbmap, ← hcQ', Matrix.map_mul, hmapH]`. Establish `e : cᴴ * c * Qb 2 = 1`. Rewrite using `[← hQb2, Matrix.mul_assoc, ← Matrix.mul_assoc c, hccb, Matrix.one_mul, ← conjTranspose_mul, hcbc, conjTranspose_one]`. Establish `hcHc : cᴴ * c = Qb (-2)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQbmul, show (2 : ℝ) + -2 = 0 by norm_num, hQb0, Matrix.mul_one]`. Use `_ = Qb (-2) := by rw [← Matrix.mul_assoc, e, Matrix.one_mul]`. Establish `hZZ : (c * Qb 1 * cᴴ) * (c * Qb 1 * cᴴ) = Q 1 * Q 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = Q 1 * Q 1 := by`. Rewrite using `[hcHc, hQbmul, hQbmul, show (1 : ℝ) + -2 + 1 = 0 by norm_num, hQb0, Matrix.mul_one, hQmul, hcQ']`. Evaluate the numerical expressions. Establish `hZpsd : (c * Qb 1 * cᴴ).PosSemidef`. Establish `: c * Qb 1 * cᴴ = (c * Qb (1 / 2)) * (c * Qb (1 / 2))ᴴ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[conjTranspose_mul, hQbH]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Qb (1 / 2)) (Qb (1 / 2)), hQbmul]`. Evaluate the numerical expressions. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `posSemidef_self_mul_conjTranspose _`. Establish `hQ1psd : (Q 1).PosSemidef`. Establish `: Q 1 = Q (1 / 2) * (Q (1 / 2))ᴴ` using `by rw [hQH, hQmul]; norm_num`. Rewrite using `[this]`. Conclude with `posSemidef_self_mul_conjTranspose _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hZQ : c * Qb 1 * cᴴ = Q 1` using `posSemidef_eq_of_mul_self_eq _ _ hZpsd hQ1psd hZZ`. Establish `hPreal : (g₀ * Q 1 * g₀ᴴ).map (starRingEnd ℂ) = g₀ * Q 1 * g₀ᴴ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hQbmap, hmapH, hgb]`. Use `_ = g₀ * (c * Qb 1 * cᴴ) * g₀ᴴ := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg₀c, conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = g₀ * Q 1 * g₀ᴴ := by rw [hZQ]`. Establish `hdetQ : ∀ s, (Q s).det = 1` using `fun s => by`. Rewrite using `[hQ, det_mul, det_mul, det_diagonal]`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hUd : U.det * Uᴴ.det = 1` using `by rw [← det_mul, hU, det_one]`. Establish `hD : ∏ i, ((Real.exp (s * δ i) : ℝ) : ℂ) = 1`. Rewrite using `[← Complex.ofReal_prod, ← Real.exp_sum, ← Finset.mul_sum, hδ, mul_zero, Real.exp_zero, Complex.ofReal_one]`. Rewrite using `[hD]`. Take the linear combination `hUd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Take `⟨h, hh⟩ : ∃ x : Matrix ι ι ℂ, x = g₀ * Q (1 / 2)` from `⟨_, rfl⟩`. Establish `hP_h : h * hᴴ = g₀ * Q 1 * g₀ᴴ`. Rewrite using `[hh, conjTranspose_mul, hQH]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Q (1 / 2)) (Q (1 / 2)), hQmul]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Evaluate the numerical expressions. Establish `hhdet : h.det = 1` using `by rw [hh, det_mul, hg₀, hdetQ, one_mul]`. Establish `hPdet : (g₀ * Q 1 * g₀ᴴ).det = 1`. Rewrite using `[← hP_h, det_mul, det_conjTranspose, hhdet]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hacth : _root_.GlobalTheory.ClassFin.act d tc h = w` using `by rw [hh, hactmul, hfix']`. Take `⟨R, hR⟩ : ∃ x : Matrix ι ι ℝ, x = (g₀ * Q 1 * g₀ᴴ).map Complex.re` from `⟨_, rfl⟩`. Establish `hRc : R.map (fun x : ℝ => (x : ℂ)) = g₀ * Q 1 * g₀ᴴ`. Use extensionality with `i j`. Use `congrFun (congrFun hPreal i) j` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_apply] at this`. Simplify `Complex.conj_eq_iff_re.mp this` using `[hR]`. Establish `hRAB : R = h.map Complex.re * (h.map Complex.re)ᴴ + h.map Complex.im * (h.map Complex.im)ᴴ`. Rewrite using `[hR, ← hP_h]`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.mul_apply, conjTranspose_apply, star_trivial, Complex.re_sum]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `simp [Complex.mul_re] <;> ring`. Establish `hRpsd : R.PosSemidef`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[hRAB]`. Conclude with `(posSemidef_self_mul_conjTranspose _).add (posSemidef_self_mul_conjTranspose _)`. Establish `hr0 : (0 : Matrix ι ι ℝ) ≤ CFC.sqrt R` using `CFC.sqrt_nonneg R`. Establish `hrr : CFC.sqrt R * CFC.sqrt R = R` using `CFC.sqrt_mul_sqrt_self R hRpsd.nonneg`. Establish `hrpsd : (CFC.sqrt R).PosSemidef` using `Matrix.nonneg_iff_posSemidef.mp hr0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hRdet : R.det = 1`. Establish `e : (R.map (fun x : ℝ => (x : ℂ))).det = ((R.det : ℝ) : ℂ)` using `(RingHom.map_det Complex.ofRealHom R).symm`. Rewrite `e` using `[hRc, hPdet]`. Conclude with `e.symm` after adjusting the coercions. Establish `hrdet : (CFC.sqrt R).det = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (CFC.sqrt R).det * (CFC.sqrt R).det = 1` using `by rw [← det_mul, hrr, hRdet]`. Establish `h3 : 0 ≤ (CFC.sqrt R).det` using `hrpsd.det_nonneg`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨CFC.sqrt R, hrdet, ?_⟩` and prove the remaining obligations. Use `set r := CFC.sqrt R with hrdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrcH : (r.map (fun x : ℝ => (x : ℂ)))ᴴ = r.map (fun x : ℝ => (x : ℂ))`. Use extensionality with `i j`. Use `hrpsd.1.apply i j` as an intermediate fact. Simplify using `only [star_trivial] at this`. Simplify using `[this]`.
-
-Establish `hrcsq : (r * r).map (fun x : ℝ => (x : ℂ)) = r.map (fun x : ℝ => (x : ℂ)) * r.map (fun x : ℝ => (x : ℂ))`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Establish `hrcrc : r.map (fun x : ℝ => (x : ℂ)) * (r.map (fun x : ℝ => (x : ℂ)))ᴴ = h * hᴴ`. Rewrite using `[hrcH, ← hrcsq, hrr, hRc, hP_h]`.
-
-Establish `hrcdet : (r.map (fun x : ℝ => (x : ℂ))).det = 1`. Establish `e : (r.map (fun x : ℝ => (x : ℂ))).det = ((r.det : ℝ) : ℂ)` using `(RingHom.map_det Complex.ofRealHom r).symm`. Rewrite using `[e, hrdet, Complex.ofReal_one]`. Establish `hnorm : _root_.GlobalTheory.ClassFin.nsq (_root_.GlobalTheory.ClassFin.act d tc (r.map (fun x : ℝ => (x : ℂ)))) = _root_.GlobalTheory.ClassFin.nsq w`. Rewrite using `[nsq_act_eq_of_gram_eq d tc h _ (by rw [hhdet]; exact isUnit_one) hrcrc, hacth]`.
-
-Unfold `_root_.GlobalTheory.ClassFin.IsMinVec at hw ⊢`. Unfold `_root_.GlobalTheory.ClassFin.orb at hw`. Introduce `u hu`. Take `⟨y, hy, rfl⟩` from `hu`. Rewrite using `[hnorm, ← hactmul]`.
-
-Use `hw _ ⟨g₀⁻¹ * (r.map (fun x : ℝ => (x : ℂ)) * y), by simp [hg₀, hrcdet, hy], ?_⟩` and prove the remaining obligations. Rewrite using `[hwdef, ← hactmul, ← Matrix.mul_assoc, mul_nonsing_inv _ hg₀u, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ClassFin.exists_real_translate_isMinVec : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (m : ℕ) (d : Fin m → ℕ) (t : _root_.GlobalTheory.ClassFin.TIdx ι d → ℝ), (∃ w ∈ _root_.GlobalTheory.ClassFin.orb d (fun k => (t k : ℂ)), _root_.GlobalTheory.ClassFin.IsMinVec d w) → ∃ g : Matrix ι ι ℝ, g.det = 1 ∧ _root_.GlobalTheory.ClassFin.IsMinVec d (_root_.GlobalTheory.ClassFin.act d (fun k => (t k : ℂ)) (g.map (fun r : ℝ => (r : ℂ)))) := by
   intro ι _ _ m d t ⟨w, hwo, hw⟩

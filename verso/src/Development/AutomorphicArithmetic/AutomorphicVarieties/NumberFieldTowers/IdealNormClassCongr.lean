@@ -22,9 +22,9 @@ def idNorm : (Ideal (𝓞 K'))⁰ →* (Ideal (𝓞 K))⁰ where
   map_mul' I J := Subtype.ext (map_mul (Ideal.relNorm (𝓞 K)) I.1 J.1)
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[ClassGroup.mk0_eq_mk0_iff]`. Take `⟨x, y, hx, hy, h⟩` from `h`. Use `⟨Algebra.intNorm (𝓞 K) (𝓞 K') x, Algebra.intNorm (𝓞 K) (𝓞 K') y, fun h => hx (Algebra.intNorm_eq_zero.1 h), fun h => hy (Algebra.intNorm_eq_zero.1 h), ?_⟩` and prove the remaining obligations. Use `congrArg (Ideal.relNorm (𝓞 K)) h` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, Ideal.relNorm_singleton, Ideal.relNorm_singleton]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem ideal_norm_class_congr {I J : (Ideal (𝓞 K'))⁰} (h : ClassGroup.mk0 I = ClassGroup.mk0 J) :
     ClassGroup.mk0 (idNorm K I) = ClassGroup.mk0 (idNorm K J) := by
@@ -40,7 +40,7 @@ private def nFun (c : ClassGroup (𝓞 K')) : ClassGroup (𝓞 K) :=
   ClassGroup.mk0 (idNorm K (ClassGroup.mk0_surjective c).choose)
 
 /- English proof (translation)
-The claim follows from `ideal_norm_class_congr K (ClassGroup.mk0_surjective _).choose_spec`.
+A detailed English derivation is pending.
 -/
 private theorem norm_function_mk (I : (Ideal (𝓞 K'))⁰) : nFun K (ClassGroup.mk0 I) = ClassGroup.mk0 (idNorm K I) :=
   ideal_norm_class_congr K (ClassGroup.mk0_surjective _).choose_spec
@@ -52,7 +52,7 @@ def clNorm : ClassGroup (𝓞 K') →* ClassGroup (𝓞 K) :=
     rw [← map_mul, norm_function_mk, norm_function_mk, norm_function_mk, map_mul, map_mul]
 
 /- English proof (translation)
-The claim follows from `norm_function_mk K I`.
+A detailed English derivation is pending.
 -/
 theorem class_norm_mk (I : (Ideal (𝓞 K'))⁰) : clNorm K (ClassGroup.mk0 I) = ClassGroup.mk0 (idNorm K I) := norm_function_mk K I
 
@@ -64,7 +64,7 @@ variable (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [Field
 
 omit [IsAlgClosure L Ω] in
 /- English proof (translation)
-Use `IntermediateField.adjoin.mono _ _ _ fun x hx => ?_` and prove the remaining obligations. Establish `h0 : ∀ m : ℕ, (Polynomial.X ^ l ^ m - 1 : Polynomial L) ≠ 0` using `fun m => Polynomial.X_pow_sub_C_ne_zero (pow_pos (Fact.out : l.Prime).pos m) 1`. Rewrite `hx`, the goal using `[Polynomial.mem_rootSet_of_ne (h0 _)]`. Simplify using `only [map_sub, map_pow, Polynomial.aeval_X, map_one, sub_eq_zero] at hx ⊢`. Rewrite using `[pow_succ, pow_mul, hx, one_pow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Fn_le_succ (n : ℕ) : Fn L Ω l n ≤ Fn L Ω l (n + 1) := by
   refine IntermediateField.adjoin.mono _ _ _ fun x hx => ?_
@@ -90,14 +90,14 @@ def ALim : Subgroup (∀ n, ClassGroup (𝓞 (Fn L Ω l n))) :=
 variable (k : Type) [Field k] [NumberField k] [Algebra k Ω] [IsAlgClosure k Ω]
 
 /- English proof (translation)
-The claim follows from `haveI := (fnCyc L Ω l n).1 galOfCyc k Ω l n L (Fn L Ω l n)`.
+A detailed English derivation is pending.
 -/
 theorem galOf_Fn (n : ℕ) : galOf k (Fn L Ω l n) Ω = levU l (galOf k L Ω) n :=
   haveI := (fnCyc L Ω l n).1
   galOfCyc k Ω l n L (Fn L Ω l n)
 
 /- English proof (translation)
-The claim follows from `(galOf_Fn l L Ω k n).symm ▸ cycU_le_levU l _ n`.
+A detailed English derivation is pending.
 -/
 theorem cycU_le_Fn (n : ℕ) : cycU l (galOf k L Ω) ≤ galOf k (Fn L Ω l n) Ω :=
   (galOf_Fn l L Ω k n).symm ▸ cycU_le_levU l _ n
@@ -142,9 +142,9 @@ def descHom {M : Type} [Monoid M] (π : G k Ω →* M) (h : ∀ g ∈ galOf k L 
     rw [← map_mul, ← mul_one (π (a * b)), ← h _ this, ← map_mul, mul_inv_cancel_left]
 
 /- English proof (translation)
-Establish `h1` using `((galQuot k L Ω).1 (resG L g)).choose_spec`. Use `show π ((galQuot k L Ω).1 (resG L g)).choose = π g`. Generalize the expression as in `((galQuot k L Ω).1 (resG L g)).choose = a at h1 ⊢`. Establish `: a⁻¹ * g ∈ galOf k L Ω`. Rewrite using `[← (galQuot k L Ω).2.1, MonoidHom.mem_ker, map_mul, map_inv, h1, inv_mul_cancel]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_one (π a), ← h _ this, ← map_mul, mul_inv_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem descHom_res {M : Type} [Monoid M] (π : G k Ω →* M) (h : ∀ g ∈ galOf k L Ω, π g = 1) (g : G k Ω) :
     descHom L π h (resG L g) = π g := by
@@ -165,7 +165,7 @@ def yGal (e : ℤ) : Representation ℤ_[l] (L ≃ₐ[k] L) (YL k Ω L l N e) :=
     exact Representation.Coinvariants.mk_self_apply _ (⟨g, hg⟩ : galOf k L Ω) x
 
 /- English proof (translation)
-The claim follows from `descHom_res L _ _ g`.
+A detailed English derivation is pending.
 -/
 theorem yGal_res (e : ℤ) (g : G k Ω) : yGal k Ω L l N e (resG L g) = yRep l N (galOf k L Ω) (galOf k L Ω) e g :=
   descHom_res L _ _ g
@@ -180,7 +180,7 @@ def TwLimit (e : ℤ) (z : MonoidAlgebra ℤ_[l] (L ≃ₐ[k] L)) : Prop :=
       z + (l : ℤ_[l]) ^ r • w
 
 /- English proof (translation)
-Introduce `_ n₀` and use `⟨n₀, le_rfl, Empty, inferInstance, Empty.elim, Empty.elim, 0, ⟨Empty.elim, fun i => i.elim, fun _ => by simp⟩, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem twLimit_zero (e : ℤ) : TwLimit k Ω L l e 0 := fun _ n₀ =>
   ⟨n₀, le_rfl, Empty, inferInstance, Empty.elim, Empty.elim, 0, ⟨Empty.elim, fun i => i.elim, fun _ => by simp⟩, by simp⟩

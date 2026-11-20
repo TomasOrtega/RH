@@ -20,11 +20,11 @@ namespace GlobalTheory.MomOne.GenusOne
 variable {q : ℕ} [Fact q.Prime]
 
 /- English proof (translation)
-Take `⟨hc, -, -, -, -, -, hΔ, h4, h6⟩` from `h`. Establish `hιc : M.ι M.c ≠ 0` using `(map_ne_zero M.ι).mpr hc`. Use `⟨?_, norm_ne_zero_iff.mpr hιc⟩` and prove the remaining obligations. Rewrite `h4` using `[map_div₀, map_pow, eq_div_iff (pow_ne_zero 4 hιc)]`. Rewrite `h6` using `[map_div₀, map_pow, eq_div_iff (pow_ne_zero 6 hιc)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : M.ι δ ^ 12 = M.ι M.c ^ 12 * M.W.Δ`. Establish `e : M.ι δ ^ 12 = M.ι M.L.g₂ ^ 3 - 27 * M.ι M.L.g₃ ^ 2`. Rewrite using `[← map_pow, hδ]`. Simplify using `only [map_sub, map_mul, map_pow, map_ofNat]`. Rewrite using `[e, ← h4, ← h6]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-(M.ι M.c ^ 12) / 1728) * M.W.c_relation`. Establish `hn` using `congrArg norm key`. Rewrite `hn` using `[norm_mul, norm_pow, norm_pow, hΔ, mul_one]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) (by norm_num)).mp hn`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_root_eq (M : Mdl q) (h : M.Ok) (δ : ℂ) (hδ : δ ^ 12 = M.L.g₂ ^ 3 - 27 * M.L.g₃ ^ 2) :
     ‖M.ι δ‖ = ‖M.ι M.c‖ ∧ ‖M.ι M.c‖ ≠ 0 := by
@@ -44,11 +44,11 @@ theorem norm_root_eq (M : Mdl q) (h : M.Ok) (δ : ℂ) (hδ : δ ^ 12 = M.L.g₂
   exact (pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) (by norm_num)).mp hn
 
 /- English proof (translation)
-Take `⟨hok, h0, -, h1⟩` from `h`. Take `⟨-, -, -, -, -, -, hdu, -, hsmall⟩` from `uw_elliptic_flow q M hok`. Take `⟨han, -⟩` from `hsmall 0 (Or.inl (zero_mem _))`. Take `⟨-, -, -, hcc, hder, -, -⟩` from `TaylorRead.hat_laws q M.ι (C ω * logS) h0`. Establish `hd0 : ∀ f : ℂ_[q]⟦X⟧, constantCoeff (derivative ℂ_[q] f) = coeff 1 f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `f`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_derivative]`. Simplify using the standard rewrite rules. Establish `hℓ : coeff 1 (C ω * logS : ℂ_[q]⟦X⟧) = ω`. Simplify using `[logS, coeff_C_mul, coeff_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : coeff 1 (hat M.ι (C ω * logS) M.u) = ω * M.ι M.c`. Rewrite using `[← hd0, hder M.u han, map_mul, hd0, hℓ, hcc, hdu]`. Rewrite `h1` using `[e, norm_mul]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_period (M : Mdl q) (ω : ℂ_[q]) (h : M.MChart ω) : ‖ω‖ * ‖M.ι M.c‖ = 1 := by
   obtain ⟨hok, h0, -, h1⟩ := h
@@ -68,15 +68,15 @@ theorem norm_period (M : Mdl q) (ω : ℂ_[q]) (h : M.MChart ω) : ‖ω‖ * �
   exact h1
 
 /- English proof (translation)
-Introduce `d q _ δ hd h16 hsp hδ`. Take `⟨⟨L, hL, hLd⟩, θ, hθ⟩` from `GlobalTheory.T.exists_imagQuadOrder_pair_and_evenTheta d hd h16`. Establish `hδ0 : δ ≠ 0`. Introduce and unpack `rfl`. Conclude with `(Basic.discr_eq hL).2 (by rw [← hδ]; norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨θ, hθ, hδ0, fun ι => ?_⟩` and prove the remaining obligations. Take `⟨M, hMι, hML, hok, a1, a2, a3, a4, a6⟩` from `GlobalTheory.T.exists_goodReduction_algebraic_weierstrass_model d q ι L hd h16 hL`. Substitute `hMι` using the available equality. Establish `hL' : IsOK d M.L` using `by rw [hML]; exact hL`. Take `⟨ω₀, hω₀⟩` from `GlobalTheory.T.exists_multiplicativeChart_at_splitPrime d q M hd h16 hsp hL' hok a1 a2 a3 a4 a6`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, -, hω, hgood⟩` from `GlobalTheory.T.exists_normalised_multiplicativeChart d q M ω₀ hd h16 hsp hL' hω₀`. Establish `hδM : δ ^ 12 = M.L.g₂ ^ 3 - 27 * M.L.g₃ ^ 2` using `by rw [hML, hLd]; exact hδ`. Take `⟨hn, -⟩` from `norm_root_eq M hok δ hδM`. Establish `hp` using `norm_period M (ω₀ * zc a) hω`. Establish `hιδ : M.ι δ ≠ 0` using `(map_ne_zero M.ι).mpr hδ0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ω₀ * zc a * M.ι δ, by rw [norm_mul, hn]; exact hp, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_div_cancel_right₀ _ hιδ]`. Establish `hU0 : U1 d 0 θ = θ` using `(GlobalTheory.T.cmLattice_heisenberg_relations_one_variable d hd.pos).2.1 θ`. Establish `h0 : PrimeTo d q 0` using `⟨1, one_pos, Nat.coprime_one_left q, 0, 0, by simp⟩`. Establish `hB` using `GlobalTheory.T.cm_even_theta_series_chart_coeff_integral d q M (ω₀ * zc a) θ hd h16 hsp hL' hω hθ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun t ht => ?_, GlobalTheory.T.weilOperator_theta_translate_shift_prime_to_q d q M (ω₀ * zc a) θ hd h16 hsp hL' hω hθ hgood, GlobalTheory.T.norm_translate_powerComb_le_coprimeTranslation d q M (ω₀ * zc a) θ hd h16 hsp hL' hω hθ⟩` and prove the remaining obligations. Use `GlobalTheory.T.norm_translate_powerComb_le_coprimeTranslation d q M (ω₀ * zc a) θ hd h16 hsp hL' hω hθ 1 1 (fun _ => 1) (fun _ => 0) t 1 (fun _ => h0) ht (by simpa [hU0] using hB)` as an intermediate fact. Simplify `this` using `[hU0]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem thetaLaws_unit_period : ∀ (d q : ℕ) [Fact q.Prime] (δ : ℂ), d.Prime → d % 16 = 7 → Split d q →
     δ ^ 12 = discr d → ∃ θ : ℂ → ℂ, IsTh d θ ∧ δ ≠ 0 ∧

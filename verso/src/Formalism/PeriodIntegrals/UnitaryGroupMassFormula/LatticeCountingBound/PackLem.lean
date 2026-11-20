@@ -11,51 +11,49 @@ def matVec {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) : EuclideanSpace ℂ (Fin 
   WithLp.toLp 2 (fun ij => A ij.1 ij.2)
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq, hsN, Formalism.REAL.hs, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_matVec {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) : ‖matVec A‖ = hsN A := by
   rw [EuclideanSpace.norm_eq, hsN, Formalism.REAL.hs, Fintype.sum_prod_type]
   rfl
 
 /- English proof (translation)
-Use extensionality with `ij`. Simplify using `[matVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem matVec_sub {N : ℕ} (A B : Matrix (Fin N) (Fin N) ℂ) : matVec (A - B) = matVec A - matVec B := by
   ext ij
   simp [matVec]
 
 /- English proof (translation)
-Rewrite using `[finrank_real_of_complex, finrank_euclideanSpace, Fintype.card_prod, Fintype.card_fin, sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_matSpace (N : ℕ) : finrank ℝ (EuclideanSpace ℂ (Fin N × Fin N)) = 2 * N ^ 2 := by
   rw [finrank_real_of_complex, finrank_euclideanSpace, Fintype.card_prod, Fintype.card_fin, sq]
 
 /- English proof (translation)
-Introduce `ι _ N R ρ hρ hR T hT hsep`. Set `W` to `EuclideanSpace ℂ (Fin N × Fin N)`. Set `μ : Measure W` to `Measure.addHaar`. Set `ν : Measure (ι → W)` to `Measure.pi fun _ => μ`. Set `B : (ι → Matrix (Fin N) (Fin N) ℂ) → Set (ι → W)` to `fun p => Set.univ.pi fun v => ball (matVec (p v)) (ρ v / 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Big : Set (ι → W)` to `Set.univ.pi fun v => ball (0 : W) (R v + ρ v / 2)`. Establish `hdisj : (T : Set (ι → Matrix (Fin N) (Fin N) ℂ)).PairwiseDisjoint B`. Introduce `p hp q hq hpq`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `z hzp hzq`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv⟩` from `hsep p hp q hq hpq`. Establish `h1` using `(Set.mem_univ_pi.1 hzp) v`. Establish `h2` using `(Set.mem_univ_pi.1 hzq) v`. Rewrite `h1`, `h2` using `[mem_ball]`. Establish `h3 : dist (matVec (p v)) (matVec (q v)) < ρ v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite `h3` using `[dist_eq_norm, ← matVec_sub, norm_matVec]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmeas : ∀ p ∈ T, MeasurableSet (B p)` using `fun p _ => MeasurableSet.univ_pi fun v => measurableSet_ball`. Establish `hsub : (⋃ p ∈ T, B p) ⊆ Big`.
+Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz`. Simplify using `only [Set.mem_iUnion] at hz`. Take `⟨p, hp, hz⟩` from `hz`. Use `Set.mem_univ_pi.2 fun v => ?_` and prove the remaining obligations. Establish `h1` using `(Set.mem_univ_pi.1 hz) v`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[mem_ball, dist_eq_norm]`. Rewrite using `[mem_ball_zero_iff]`. Establish `h2 : ‖matVec (p v)‖ ≤ R v` using `by rw [norm_matVec]; exact hT p hp v`. Combine the equalities or inequalities in the displayed calculation. Establish `key : ∑ p ∈ T, ν (B p) ≤ ν Big`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[← measure_biUnion_finset hdisj hmeas]`. Conclude with `measure_mono hsub`. Use `set d := finrank ℝ W with hd`. Use `set c := μ (ball (0 : W) 1) with hc`. Establish `hc0 : c ≠ 0` using `(measure_ball_pos μ (0 : W) one_pos).ne'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hctop : c ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `hB : ∀ p, ν (B p) = ∏ v, ENNReal.ofReal ((ρ v / 2) ^ d) * c`. Introduce `p`. Simplify using `only [ν, B, Measure.pi_pi]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Measure.addHaar_ball_of_pos μ _ (by linarith [hρ v])`. Establish `hBig : ν Big = ∏ v, ENNReal.ofReal ((R v + ρ v / 2) ^ d) * c`. Simplify using `only [ν, Big, Measure.pi_pi]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Conclude with `Measure.addHaar_ball_of_pos μ _ (by linarith [hρ v, hR v])`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hB, Finset.sum_const, nsmul_eq_mul] at key`. Rewrite `key` using `[hBig]`. Establish `hfin : ∏ v, ENNReal.ofReal ((R v + ρ v / 2) ^ d) * c ≠ ⊤` using `ENNReal.prod_ne_top fun v _ => ENNReal.mul_ne_top ENNReal.ofReal_ne_top hctop`. Establish `key'` using `ENNReal.toReal_mono hfin key`. Rewrite `key'` using `[ENNReal.toReal_mul, ENNReal.toReal_natCast, ENNReal.toReal_prod, ENNReal.toReal_prod]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [ENNReal.toReal_mul] at key'`. Establish `hc' : 0 < c.toReal` using `ENNReal.toReal_pos hc0 hctop`. Establish `hpos : ∀ v, 0 < ρ v / 2` using `fun v => by linarith [hρ v]`. Simplify using `only [fun v => ENNReal.toReal_ofReal (pow_nonneg (hpos v).le d), fun v => ENNReal.toReal_ofReal (pow_nonneg (add_pos_of_nonneg_of_pos (hR v) (hpos v)).le d)] at key'`. Establish `hprodpos : 0 < ∏ v, (ρ v / 2) ^ d * c.toReal` using `Finset.prod_pos fun v _ => mul_pos (pow_pos (hpos v) d) hc'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key'` using `[← le_div_iff₀ hprodpos, ← Finset.prod_div_distrib]`. Establish `hdN : d = 2 * N ^ 2` using `finrank_matSpace N`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[mul_div_mul_right _ _ hc'.ne', ← div_pow, hdN]`.
-
-Use `congr 1`. Use `hρ v` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem lattice_packLem : PackLem := by
   intro ι _ N R ρ hρ hR T hT hsep

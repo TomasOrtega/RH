@@ -11,7 +11,7 @@ open MvPolynomial Finset
 noncomputable section
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [Flag.flagIntegral_zero]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Flag.flagIntegral_add, ih, smul_eq_C_mul, Flag.flagIntegral_C_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem flagIntegral_sum_smul_blockPermute (f N : ℕ) (H : RootRing f N)
     (s : Finset (Fin f → Equiv.Perm (Fin N))) :
@@ -25,9 +25,9 @@ theorem flagIntegral_sum_smul_blockPermute (f N : ℕ) (H : RootRing f N)
       Flag.flagIntegral_C_mul]
 
 /- English proof (translation)
-Introduce `f N H`. Rewrite using `[antisymmetrize, flagIntegral_sum_smul_blockPermute]`. Rewrite using `[Finset.sum_congr rfl fun w _ => by`. Rewrite using `[h1 f N w H, ← mul_assoc, Flag.blockSign_mul_self, one_mul]]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Flag.card_blockPerm, nsmul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem FlagIntegralAntisymmetrize.proof (h1 : FlagIntegralPermute.Statement) :
     FlagIntegralAntisymmetrize.Statement := by

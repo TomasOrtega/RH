@@ -9,13 +9,13 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem rregRep_umat_inj (ε : Fin n → Bool) {x y : Formalism.REAL.UJ ε}
     (h : Formalism.MainNotions.S.umat x = Formalism.MainNotions.S.umat y) : x = y := Subtype.ext (Units.ext h)
 
 /- English proof (translation)
-Establish `h : ∃ y' : Formalism.REAL.UJ ε, Formalism.MainNotions.S.umat y' = Formalism.MainNotions.S.umat y` using `⟨y, rfl⟩`. Rewrite using `[rreg, dif_pos h]`. Conclude with `congrArg (rregG ε) (rregRep_umat_inj ε h.choose_spec)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rregRep_rreg_umat (ε : Fin n → Bool) (y : Formalism.REAL.UJ ε) :
     rreg ε (Formalism.MainNotions.S.umat y) = rregG ε y := by
@@ -24,7 +24,7 @@ theorem rregRep_rreg_umat (ε : Fin n → Bool) (y : Formalism.REAL.UJ ε) :
   exact congrArg (rregG ε) (rregRep_umat_inj ε h.choose_spec)
 
 /- English proof (translation)
-Rewrite using `[rregG, dif_pos (measurePreserving_mul_right ε y)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rregRep_rregG_apply (ε : Fin n → Bool) (y : Formalism.REAL.UJ ε) (f : L2 ε) :
     rregG ε y f = Lp.compMeasurePreserving (fun x : Formalism.REAL.UJ ε => x * y)
@@ -33,9 +33,9 @@ theorem rregRep_rregG_apply (ε : Fin n → Bool) (y : Formalism.REAL.UJ ε) (f 
   rfl
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Apply the tactic sequence `by_cases h : ε i <;> simp [h]`. Simplify using `[Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem Jm_mul_selfDiscreteSeriesExistence (ε : Fin n → Bool) :
     Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
@@ -48,7 +48,7 @@ private theorem Jm_mul_selfDiscreteSeriesExistence (ε : Fin n → Bool) :
   · simp [Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij]
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε` using `hg`. Rewrite `hg'` using `[Matrix.mul_assoc]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hg', Jm_mul_selfDiscreteSeriesExistence]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem Jm_conjTranspose_Jm_mul_eq_one_of_mem_UJset (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ UJset ε) : (Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) * g = 1 := by
@@ -58,7 +58,7 @@ private theorem Jm_conjTranspose_Jm_mul_eq_one_of_mem_UJset (ε : Fin n → Bool
   rw [hg', Jm_mul_selfDiscreteSeriesExistence]
 
 /- English proof (translation)
-Establish `hl` using `Jm_conjTranspose_Jm_mul_eq_one_of_mem_UJset ε hg`. Use `first`. Consider the case `exact mul_eq_one_comm.mp hl`. Consider the case `(rw [← Matrix.inv_eq_left_inv hl]`. Conclude with `Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse hl))`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem mul_Jm_conjTranspose_Jm_eq_one_of_mem_UJset (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ UJset ε) : g * (Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) = 1 := by
@@ -69,9 +69,9 @@ private theorem mul_Jm_conjTranspose_Jm_eq_one_of_mem_UJset (ε : Fin n → Bool
      exact Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse hl))
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`. Introduce `hg`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨⟨g, Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε, mul_Jm_conjTranspose_Jm_eq_one_of_mem_UJset ε hg, Jm_conjTranspose_Jm_mul_eq_one_of_mem_UJset ε hg⟩, hg⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem rregRep_range (ε : Fin n → Bool) :
     Set.range (fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat g) = UJset ε := by
@@ -84,7 +84,7 @@ theorem rregRep_range (ε : Fin n → Bool) :
       Jm_conjTranspose_Jm_mul_eq_one_of_mem_UJset ε hg⟩, hg⟩, rfl⟩
 
 /- English proof (translation)
-Establish `h2 : g ∈ Set.range (fun y : Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat y)`. Rewrite using `[rregRep_range ε]`. Conclude with `hg`. Take `⟨y, hy⟩` from `h2`. Conclude with `⟨y, hy⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rregRep_mem (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
     ∃ y : Formalism.REAL.UJ ε, Formalism.MainNotions.S.umat y = g := by
@@ -95,9 +95,9 @@ theorem rregRep_mem (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg :
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Establish `h1 : (1 : Matrix (Fin n) (Fin n) ℂ) = Formalism.MainNotions.S.umat (1 : Formalism.REAL.UJ ε)` using `rfl`. Rewrite using `[h1, rregRep_rreg_umat]`. Use `ext1 f`. Rewrite using `[rregRep_rregG_apply, ContinuousLinearMap.one_apply]`. Apply `Lp.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [Lp.coeFn_compMeasurePreserving f (measurePreserving_mul_right ε 1)] with x hx`. Rewrite using `[hx]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rregRep_one (ε : Fin n → Bool) : rreg ε 1 = 1 := by
   have h1 : (1 : Matrix (Fin n) (Fin n) ℂ) = Formalism.MainNotions.S.umat (1 : Formalism.REAL.UJ ε) := rfl
@@ -110,9 +110,7 @@ theorem rregRep_one (ε : Fin n → Bool) : rreg ε 1 = 1 := by
   simp
 
 /- English proof (translation)
-Use `ext1 f`. Rewrite using `[ContinuousLinearMap.comp_apply, rregRep_rregG_apply, rregRep_rregG_apply, rregRep_rregG_apply]`. Apply `Lp.ext` to reduce the goal to its premises. Use `filter_upwards [Lp.coeFn_compMeasurePreserving f (measurePreserving_mul_right ε (a * b)), Lp.coeFn_compMeasurePreserving (Lp.compMeasurePreserving (fun x : Formalism.REAL.UJ ε => x * b) (measurePreserving_mul_right ε b) f) (measurePreserving_mul_right ε a), (measurePreserving_mul …`. Simplify using `only [Function.comp_apply] at h1 h2 h3 ⊢`.
-
-Rewrite using `[h1, h2, h3, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rregRep_mul (ε : Fin n → Bool) (a b : Formalism.REAL.UJ ε) :
     rregG ε (a * b) = (rregG ε a).comp (rregG ε b) := by
@@ -130,13 +128,11 @@ theorem rregRep_mul (ε : Fin n → Bool) (a b : Formalism.REAL.UJ ε) :
   rw [h1, h2, h3, mul_assoc]
 
 /- English proof (translation)
-Use `haveI : SMulInvariantMeasure (Formalism.REAL.UJ ε)ᵐᵒᵖ (Formalism.REAL.UJ ε) (Formalism.REAL.muG ε) := by`. Use `⟨fun c s hs => ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `exact (measurePreserving_mul_right ε c.unop).measure_preimage hs.nullMeasurableSet`. Consider the case `exact (measurePreserving_mul_right ε c.unop).measure_preimage hs`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `haveI : Fact ((2 : ENNReal) ≠ ⊤) := ⟨by first | simp | exact ENNReal.ofNat_ne_top⟩`. Establish `he : (fun y : Formalism.REAL.UJ ε => rregG ε y v) = fun y => (DomMulAct.mk (MulOpposite.op y)) • v`. Use function extensionality and compare the values at `y`. Rewrite using `[rregRep_rregG_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Rewrite using `[he]`. Establish `hm : Continuous (fun y : Formalism.REAL.UJ ε => DomMulAct.mk (MulOpposite.op y))` using `by first`. Consider the case `exact DomMulAct.continuous_mk.comp MulOpposite.continuous_op`. Consider the case `exact DomMulAct.mkHomeomorph.continuous.comp MulOpposite.continuous_op`. Consider the case `fun_prop`.
-
-Use `haveI : OpensMeasurableSpace (Formalism.REAL.UJ ε)ᵐᵒᵖ := ⟨MeasurableSpace.generateFrom_le fun s hs => (IsOpen.preimage MulOpposite.continuous_op hs).measurableSet⟩`. Conclude with `hm.smul continuous_const`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rregRep_cont (ε : Fin n → Bool) (v : L2 ε) :
     Continuous (fun y : Formalism.REAL.UJ ε => rregG ε y v) := by
@@ -163,17 +159,15 @@ theorem rregRep_cont (ε : Fin n → Bool) (v : L2 ε) :
   exact hm.smul continuous_const
 
 /- English proof (translation)
-Unfold `IsURepOn`. Use `⟨⟨rregRep_one ε, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha b hb`. Take `⟨ya, rfl⟩` from `rregRep_mem ε ha`. Take `⟨yb, rfl⟩` from `rregRep_mem ε hb`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hab : Formalism.MainNotions.S.umat ya * Formalism.MainNotions.S.umat yb = Formalism.MainNotions.S.umat (ya * yb)` using `rfl`. Rewrite using `[hab, rregRep_rreg_umat, rregRep_rreg_umat, rregRep_rreg_umat, rregRep_mul]`. Introduce `g hg v`. Take `⟨y, rfl⟩` from `rregRep_mem ε hg`. Rewrite using `[rregRep_rreg_umat, rregRep_rregG_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Lp.norm_compMeasurePreserving v _`. Introduce `v`. Take `⟨φ, hφc, hφ⟩ : ∃ φ : UJset ε → Formalism.REAL.UJ ε, Continuous φ ∧ ∀ g : UJset ε, Formalism.MainNotions.S.umat (φ g) = g` from `⟨fun g => ⟨⟨(g : Matrix (Fin n) (Fin n) ℂ), Formalism.REAL.Jm ε * (g : Matrix (Fin n) (Fin n) ℂ)ᴴ * Formalism.REAL.Jm ε, mul_Jm_conjTranspose_Jm_eq_one_of_mem_UJset ε g.2, Jm_conjTranspose_Jm_mul_eq_one_of_mem_UJset ε g.2⟩, g.2⟩, by`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Rewrite using `[Units.continuous_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Conclude with `continuous_subtype_val`. Conclude with `(continuous_const.mul continuous_subtype_val.matrix_conjTranspose).mul continuous_const,`. Use `fun g => rfl⟩`. Establish `he : ∀ g : UJset ε, rreg ε (g : Matrix (Fin n) (Fin n) ℂ) v = rregG ε (φ g) v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Introduce `g`. Rewrite using `[← hφ g, rregRep_rreg_umat]`. Rewrite using `[continuousOn_iff_continuous_restrict]`. Use `(rregRep_cont ε v).comp hφc using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
-
-Conclude with `he g`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rreg_isURepOn (ε : Fin n → Bool) : IsURepOn (UJset ε) (rreg ε) := by
   unfold IsURepOn

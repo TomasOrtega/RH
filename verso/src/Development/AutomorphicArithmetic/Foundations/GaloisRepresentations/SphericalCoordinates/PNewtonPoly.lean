@@ -6,11 +6,11 @@ open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
 /- English proof (translation)
-Proceed by induction on `n generalizing s with`. Consider the case `zero`. Use `⟨Fin.elim0, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[Multiset.card_eq_zero]`. Simplify using `[h]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Take `⟨a, ha⟩` from `Multiset.card_pos_iff_exists_mem.1 (by omega : 0 < Multiset.card s)`. Take `⟨t, rfl⟩` from `Multiset.exists_cons_of_mem ha`. Take `⟨r, hr⟩` from `ih t (by simpa using h)`. Use `⟨Fin.cons a r, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.univ_val_map, List.ofFn_succ, ← Multiset.cons_coe]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[← Fin.univ_val_map, hr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma exists_fin_map (n : ℕ) (s : Multiset ℂ) (h : Multiset.card s = n) :
     ∃ r : Fin n → ℂ, (Finset.univ : Finset (Fin n)).val.map r = s := by
@@ -29,9 +29,9 @@ private lemma exists_fin_map (n : ℕ) (s : Multiset ℂ) (h : Multiset.card s =
     rw [← Fin.univ_val_map, hr]
 
 /- English proof (translation)
-Establish `h` using `congrArg (MvPolynomial.aeval (R := ℂ) r) (MvPolynomial.mul_esymm_eq_sum (Fin n) ℂ k)`. Simplify using `only [map_mul, map_sum, map_pow, map_neg, map_one, map_natCast, MvPolynomial.aeval_esymm_eq_multiset_esymm] at h`. Rewrite using `[h]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Simplify using `only [MvPolynomial.psum, map_sum, map_pow, MvPolynomial.aeval_X, Multiset.map_map, Function.comp_def]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private lemma newton_step (n k : ℕ) (r : Fin n → ℂ) :
     (k : ℂ) * ((Finset.univ : Finset (Fin n)).val.map r).esymm k =
@@ -50,13 +50,11 @@ private lemma newton_step (n k : ℕ) (r : Fin n → ℂ) :
   rfl
 
 /- English proof (translation)
-Use `choose p hp using hpow`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Conclude with `⟨1, fun τ => by simp [Multiset.esymm]⟩`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose! e he using ih`. Use `⟨(k : F)⁻¹ * ((-1) ^ (k + 1) * ∑ a ∈ (Finset.HasAntidiagonal.antidiagonal k).filter (fun a => a.1 < k), (-1) ^ a.1 * e a.1 * p a.2), fun τ => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `exists_fin_map n (m τ) (hc τ)`. Establish `hs` using `newton_step n k r`. Rewrite `hs` using `[hr]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hk' : (k : ℂ) ≠ 0` using `by exact_mod_cast hk.ne'`. Simplify using `only [map_mul, map_inv₀, map_natCast, map_pow, map_neg, map_one, map_sum]`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ hk', hs]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations.
-
-Rewrite using `[he a.1 (Finset.mem_filter.1 ha).2 τ, hp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma esymm_descends (F : Type) [Field F] [NumberField F] (n : ℕ)
     (m : (F →+* ℂ) → Multiset ℂ) (hc : ∀ τ, Multiset.card (m τ) = n)
@@ -82,11 +80,11 @@ private lemma esymm_descends (F : Type) [Field F] [NumberField F] (n : ℕ)
     rw [he a.1 (Finset.mem_filter.1 ha).2 τ, hp]
 
 /- English proof (translation)
-Introduce `F _ _ n m hc hpow`. Use `choose b hb using esymm_descends F n m hc hpow`. Use `⟨∑ j ∈ Finset.range (n + 1), (-1) ^ j * (C (b j) * X ^ (n - j)), ?_⟩` and prove the remaining obligations. Establish `hmap : ∀ τ : F →+* ℂ, Polynomial.map τ (∑ j ∈ Finset.range (n + 1), (-1) ^ j * (C (b j) * X ^ (n - j))) = ((m τ).map fun r => X - C r).prod`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Multiset.prod_X_sub_X_eq_sum_esymm, hc τ, Polynomial.map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[hb j τ]`. Take `⟨τ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Establish `hmon : ((m τ).map fun r => X - C r).prod.Monic` using `Polynomial.monic_multiset_prod_of_monic _ _ fun r _ => Polynomial.monic_X_sub_C r`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, hmap⟩` and prove the remaining obligations. Establish `h1` using `Polynomial.leadingCoeff_map_of_injective τ.injective (∑ j ∈ Finset.range (n + 1), (-1) ^ j * (C (b j) * X ^ (n - j)))`. Rewrite `h1` using `[hmap τ, hmon.leadingCoeff]`. Conclude with `τ.injective (by rw [← h1, map_one])`. Rewrite using `[← Polynomial.natDegree_map_eq_of_injective τ.injective, hmap τ, Polynomial.natDegree_multiset_prod_X_sub_C_eq_card, hc τ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.newtonPoly_of :
     UpperTheory.Gal.W2.NewtonPoly := by

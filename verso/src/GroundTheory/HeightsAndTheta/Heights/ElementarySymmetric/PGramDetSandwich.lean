@@ -9,17 +9,15 @@ open Matrix
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
 
 /- English proof (translation)
-Establish `hcM : c ≤ M`. Establish `h3` using `(h1.add h2).diag_nonneg (i := ⟨0, hN⟩)`. Simplify using `only [sub_add_sub_cancel', Matrix.sub_apply, Matrix.smul_apply, one_apply_eq, smul_eq_mul, mul_one] at h3`. Establish `h4 : (0 : ℂ) ≤ ((M - c : ℝ) : ℂ)` using `by push_cast; linear_combination h3`. Combine the linear relations using `[Complex.zero_le_real.mp h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hM : 0 < M` using `hc.trans_le hcM`. Establish `hHu : IsUnit H.det` using `(isUnit_iff_isUnit_det H).mp hH.isUnit`. Use `⟨hcM, ?_, ?_⟩` and prove the remaining obligations. Establish `hpos : IsStrictlyPositive H⁻¹` using `hH.inv.isStrictlyPositive`. Establish `hle : H⁻¹ ≤ (M : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ)` using `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `CStarAlgebra.ringInverse_le_ringInverse hle hpos` as an intermediate fact. Rewrite `this` using `[← nonsing_inv_eq_ringInverse, ← nonsing_inv_eq_ringInverse, nonsing_inv_nonsing_inv _ hHu]`. Establish `hinv : ((M : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ))⁻¹ = ((M⁻¹ : ℝ) : ℂ) • 1`. Apply `inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[smul_mul_smul_comm, Matrix.one_mul, ← Complex.ofReal_mul, inv_mul_cancel₀ hM.ne', Complex.ofReal_one, one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hinv]`. Conclude with `this`. Establish `hpos : IsStrictlyPositive ((c : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ))` using `(PosDef.one.smul (by exact_mod_cast hc)).isStrictlyPositive`. Establish `hle : (c : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ) ≤ H⁻¹` using `h1`. Use `CStarAlgebra.ringInverse_le_ringInverse hle hpos` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← nonsing_inv_eq_ringInverse, ← nonsing_inv_eq_ringInverse, nonsing_inv_nonsing_inv _ hHu]`. Establish `hinv : ((c : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ))⁻¹ = ((c⁻¹ : ℝ) : ℂ) • 1`. Apply `inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[smul_mul_smul_comm, Matrix.one_mul, ← Complex.ofReal_mul, inv_mul_cancel₀ hc.ne', Complex.ofReal_one, one_smul]`. Rewrite `this` using `[hinv]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GramDetSandwich.loewner_inv {N : ℕ} (hN : 0 < N) (H : Matrix (Fin N) (Fin N) ℂ) (c M : ℝ)
     (hc : 0 < c) (hH : H.PosDef)
@@ -59,22 +57,22 @@ theorem GramDetSandwich.loewner_inv {N : ℕ} (hN : 0 < N) (H : Matrix (Fin N) (
     exact this
 
 /- English proof (translation)
-Rewrite using `[det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem GramDetSandwich.re_det_ofReal_smul {k : ℕ} (t : ℝ) (X : Matrix (Fin k) (Fin k) ℂ) :
     ((t : ℂ) • X).det.re = t ^ k * X.det.re := by
   rw [det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Introduce `N k H A c M hc hH h1 h2`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Establish `e1 : Aᴴ * A = 0` using `by ext i j; simp [Matrix.mul_apply]`. Establish `e2 : Aᴴ * H * A = 0` using `by ext i j; simp [Matrix.mul_apply]`. Rewrite using `[e1, e2]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `k with _ | k` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[det_zero]`. Take `⟨hcM, hlo, hhi⟩` from `GramDetSandwich.loewner_inv hN H c M hc hH h1 h2`. Establish `hM : 0 < M` using `hc.trans_le hcM`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hG : (Aᴴ * A).PosSemidef` using `posSemidef_conjTranspose_mul_self A`. Establish `hlo' : (Aᴴ * H * A - ((M⁻¹ : ℝ) : ℂ) • (Aᴴ * A)).PosSemidef`. Use `hlo.conjTranspose_mul_mul_same A` as an intermediate fact. Rewrite `this` using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one]`. Then use the resulting hypothesis. Establish `hhi' : (((c⁻¹ : ℝ) : ℂ) • (Aᴴ * A) - Aᴴ * H * A).PosSemidef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `hhi.conjTranspose_mul_mul_same A` as an intermediate fact. Rewrite `this` using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one]`. Then use the resulting hypothesis. Establish `k1` using `MCDet.re_det_mono (hG.smul (Complex.zero_le_real.mpr (inv_nonneg.mpr hM.le))) hlo'`. Establish `k2` using `MCDet.re_det_mono (hH.posSemidef.conjTranspose_mul_mul_same A) hhi'`. Simplify using `only [RCLike.re_to_complex] at k1 k2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `k1`, `k2` using `[GramDetSandwich.re_det_ofReal_smul]`. Conclude with `⟨k1, k2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem GramDetSandwich.proof : GramDetSandwich.Statement := by
   intro N k H A c M hc hH h1 h2

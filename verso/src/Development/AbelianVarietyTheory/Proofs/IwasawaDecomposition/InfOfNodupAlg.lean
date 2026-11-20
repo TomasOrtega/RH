@@ -44,12 +44,12 @@ def AUq.rep (X : AUq L n) : NG.AutRep L n := X.2.choose
 def WtQ.rep (X : WtQ L n) : NG.AlgWt L n := X.2.choose
 
 /- English proof (translation)
-The claim follows from `Subtype.ext X.2.choose_spec.symm`.
+A detailed English derivation is pending.
 -/
 theorem AUq.cls_rep (X : AUq L n) : clsA X.rep = X := Subtype.ext X.2.choose_spec.symm
 
 /- English proof (translation)
-The claim follows from `Subtype.ext X.2.choose_spec.symm`.
+A detailed English derivation is pending.
 -/
 theorem WtQ.cls_rep (X : WtQ L n) : clsW X.rep = X := Subtype.ext X.2.choose_spec.symm
 
@@ -68,7 +68,7 @@ def hwOf (a : NG.AlgWt L n) (τ : L →+* ℂ) : Fin n → ℤ :=
   if h : ∃ lam, a.HWAt τ lam ∧ Antitone lam then h.choose else 0
 
 /- English proof (translation)
-Unfold `hwOf`. Use `split_ifs with h`. Conclude with `h.choose_spec.2`. Conclude with `fun _ _ _ => le_rfl`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem hwOf_antitone (a : NG.AlgWt L n) (τ : L →+* ℂ) : Antitone (hwOf a τ) := by
   unfold hwOf
@@ -84,26 +84,26 @@ def satOf (π : NG.AutRep L n) (w : HeightOneSpectrum (𝓞 L)) : Multiset ℂ :
   then Finset.univ.val.map h.choose_spec.choose_spec.choose else Multiset.replicate (n / 2) 1
 
 /- English proof (translation)
-Unfold `satOf`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem satOf_card (π : NG.AutRep L n) (w : HeightOneSpectrum (𝓞 L)) : Multiset.card (satOf π w) = n / 2 := by
   unfold satOf
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `[NG.infOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem infOf_card (lam : Fin n → ℤ) : Multiset.card (NG.infOf lam) = n := by
   simp [NG.infOf]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `NG.infOf`. Use `Multiset.Nodup.map_on (fun i _ j _ hij => ?_) Finset.univ.nodup` and prove the remaining obligations. Establish `h1 : ((lam i - (i : ℕ) : ℤ) : ℂ) = ((lam j - (j : ℕ) : ℤ) : ℂ)` using `by push_cast; linear_combination hij`. Establish `h2 : lam i - (i : ℕ) = lam j - (j : ℕ)` using `by exact_mod_cast h1`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Use `hl (le_of_lt h)` as an intermediate fact. Establish `: (i : ℕ) < (j : ℕ)` using `h`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `hl (le_of_lt h)` as an intermediate fact. Establish `: (j : ℕ) < (i : ℕ)` using `h`. Use linear arithmetic over natural numbers and integers. Introduce `x hx`. Unfold `NG.infOf at hx`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hx`. Conclude with `⟨lam i - (i : ℕ), by push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem infOf_nodup_alg {lam : Fin n → ℤ} (hl : Antitone lam) : (NG.infOf lam).Nodup ∧
     ∀ x ∈ NG.infOf lam, ∃ k : ℤ, x = (k : ℂ) + ((n : ℂ) - 1) / 2 := by

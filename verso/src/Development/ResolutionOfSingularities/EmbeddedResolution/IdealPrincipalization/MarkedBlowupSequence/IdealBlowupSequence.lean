@@ -93,14 +93,14 @@ theorem structureMorphism_def (s : IdealBlowupSequence p I E) (i : ℕ) :
     s.structureMorphism i = s.toSequenceOfBlowups.projectionToBase i ≫ p := rfl
 
 /- English proof (translation)
-The claim follows from `s.center_smooth i h`.
+A detailed English derivation is pending.
 -/
 theorem smooth_center_subschemeι (s : IdealBlowupSequence p I E) (i : ℕ) (h : i < s.toSequenceOfBlowups.length) :
     AlgebraicGeometry.Smooth ((s.toSequenceOfBlowups.center i).subschemeι ≫ s.structureMorphism i) :=
   s.center_smooth i h
 
 /- English proof (translation)
-The claim follows from `s.center_snc i h`.
+A detailed English derivation is pending.
 -/
 theorem hasStrictNormalCrossingsWith_center (s : IdealBlowupSequence p I E) (i : ℕ) (h : i < s.toSequenceOfBlowups.length) :
     HasStrictNormalCrossingsWith (s.structureMorphism i) (s.toSequenceOfBlowups.center i) (s.boundary i) :=
@@ -116,7 +116,7 @@ theorem exceptionalIdeal_eq (s : IdealBlowupSequence p I E) (i : ℕ) :
     s.exceptionalIdeal i = (s.toSequenceOfBlowups.center i).comap (s.toSequenceOfBlowups.transitionMapSucc i) := rfl
 
 /- English proof (translation)
-The claim follows from `s.boundary_succ i h`.
+A detailed English derivation is pending.
 -/
 theorem boundary_succ_eq_map_strictTransform_append (s : IdealBlowupSequence p I E) (i : ℕ) (h : i < s.toSequenceOfBlowups.length) :
     s.boundary (i + 1) =

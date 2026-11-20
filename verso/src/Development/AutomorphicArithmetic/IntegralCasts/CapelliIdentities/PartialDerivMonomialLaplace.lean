@@ -9,7 +9,7 @@ import Mathlib
     fun (n : ℕ) ↦ AddMonoidAlgebra ℂ (UpperTheory.Reformulated.B.Gs1.Wt n)
 
 /- English proof (translation)
-Introduce `n a f x h`. Conclude with `Finsupp.mem_support_iff.mpr (right_ne_zero_of_mul h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Gs1.aux3 :
     ∀ {n : ℕ} (a : Fin n) (f : UpperTheory.Reformulated.B.Gs1.FR n) (x : UpperTheory.Reformulated.B.Gs1.Wt n),
@@ -26,7 +26,7 @@ noncomputable def UpperTheory.Reformulated.B.Gs1.partialDerivMonomialLaplace :
           (UpperTheory.Reformulated.B.Gs1.aux3 a f))
 
 /- English proof (translation)
-Introduce `n a f g`. Use extensionality with `x`. Simplify using `[UpperTheory.Reformulated.B.Gs1.partialDerivMonomialLaplace, mul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.Gs1.aux5 :
     ∀ {n : ℕ} (a : Fin n) (f g : UpperTheory.Reformulated.B.Gs1.FR n),
@@ -36,7 +36,7 @@ theorem UpperTheory.Reformulated.B.Gs1.aux5 :
   simp [UpperTheory.Reformulated.B.Gs1.partialDerivMonomialLaplace, mul_add]
 
 /- English proof (translation)
-Introduce `n a c f`. Use extensionality with `x`. Simplify using `[UpperTheory.Reformulated.B.Gs1.partialDerivMonomialLaplace, mul_left_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.Gs1.aux6 :
     ∀ {n : ℕ} (a : Fin n) (c : ℂ) (f : UpperTheory.Reformulated.B.Gs1.FR n),
@@ -52,9 +52,9 @@ noncomputable def UpperTheory.Reformulated.B.Gs1.lapD :
         UpperTheory.Reformulated.B.Gs1.FR n →ₗ[ℂ] UpperTheory.Reformulated.B.Gs1.FR n }
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `UpperTheory.Reformulated.B.Gs1.partialDerivMonomialLaplace a _ = _`. Use extensionality with `y`. Distinguish the cases in `h : x = y`. Substitute `h` using the available equality. Simplify using `[UpperTheory.Reformulated.B.Gs1.partialDerivMonomialLaplace]`.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[UpperTheory.Reformulated.B.Gs1.partialDerivMonomialLaplace, Finsupp.single_apply, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.Reformulated.B.Gs1.lapD_single {n : ℕ} (a : Fin n) (x : UpperTheory.Reformulated.B.Gs1.Wt n) (c : ℂ) :
     UpperTheory.Reformulated.B.Gs1.lapD a (AddMonoidAlgebra.single x c) =
@@ -68,13 +68,13 @@ private theorem UpperTheory.Reformulated.B.Gs1.lapD_single {n : ℕ} (a : Fin n)
   · simp [UpperTheory.Reformulated.B.Gs1.partialDerivMonomialLaplace, Finsupp.single_apply, h]
 
 /- English proof (translation)
-Introduce `n a f g`. Proceed by induction on `f using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f₁ f₂ h₁ h₂`. Rewrite using `[add_mul, map_add, map_add, h₁, h₂, add_mul, add_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Consider the case `single x c`. Proceed by induction on `g using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add g₁ g₂ h₁ h₂`.
+Normalize the expressions using the abelian group laws. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[mul_add, map_add, map_add, h₁, h₂, mul_add, mul_add]`. Normalize the expressions using the abelian group laws. Consider the case `single y d`. Simplify using `only [AddMonoidAlgebra.single_mul_single, UpperTheory.Reformulated.B.Gs1.lapD_single]`. Rewrite using `[← AddMonoidAlgebra.single_add]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [Pi.add_apply, Complex.ofReal_add]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.Reformulated.B.Gs1.lapD_mul :
     ∀ {n : ℕ} (a : Fin n) (f g : UpperTheory.Reformulated.B.Gs1.FR n),

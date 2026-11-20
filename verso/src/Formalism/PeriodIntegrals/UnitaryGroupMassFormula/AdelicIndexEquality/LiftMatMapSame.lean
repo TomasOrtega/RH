@@ -14,11 +14,9 @@ def liftMat (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
   fun i j => PI.FinKW.liftOne I v (g i j) + if i = j then 1 - PI.FinKW.liftOne I v 1 else 0
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV, AlgHom.coe_mk] done)`. Consider the case `(unfold Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV`. Simplify using `only [AlgHom.coe_mk, RestrictedProduct.evalRingHom_apply, RestrictedProduct.single_eq_same]`. Use the proof step `done)`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `(change (RestrictedProduct.evalRingHom (fun w => HeightOneSpectrum.adicCompletion F w) v) (RestrictedProduct.single (fun w => HeightOneSpectrum.adicCompletionIntegers F w) v c) = c`. Simplify using the standard rewrite rules. Use the proof step `done)`. Consider the case `(change (RestrictedProduct.single (fun w => HeightOneSpectrum.adicCompletionIntegers F w) v c) v = c`. Simplify using the standard rewrite rules.
-
-Use the proof step `done)`. Consider the case `(change (RestrictedProduct.single (fun w => HeightOneSpectrum.adicCompletionIntegers F w) v c) v = c`. Conclude with `RestrictedProduct.single_eq_same _ v c)`. Consider the case `(change (RestrictedProduct.single (fun w => HeightOneSpectrum.adicCompletionIntegers F w) v c) v = c rfl)`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem evalV_singleV_self' {F : Type} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) :
@@ -43,11 +41,9 @@ private theorem evalV_singleV_self' {F : Type} [Field F] [NumberField F]
      rfl)
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV, AlgHom.coe_mk, hw] done)`. Consider the case `(unfold Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV`. Simplify using `only [AlgHom.coe_mk, RestrictedProduct.evalRingHom_apply, RestrictedProduct.single_eq_of_ne _ _ hw]`. Use the proof step `done)`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `(change (RestrictedProduct.evalRingHom (fun u => HeightOneSpectrum.adicCompletion F u) w) (RestrictedProduct.single (fun u => HeightOneSpectrum.adicCompletionIntegers F u) v c) = 0`. Simplify using `[hw]`. Use the proof step `done)`. Consider the case `(change (RestrictedProduct.single (fun u => HeightOneSpectrum.adicCompletionIntegers F u) v c) w = 0`. Simplify using `[hw]`.
-
-Use the proof step `done)`. Consider the case `(change (RestrictedProduct.single (fun u => HeightOneSpectrum.adicCompletionIntegers F u) v c) w = 0`. Conclude with `RestrictedProduct.single_eq_of_ne _ c hw)`. Consider the case `(change (RestrictedProduct.single (fun u => HeightOneSpectrum.adicCompletionIntegers F u) v c) w = 0`. Conclude with `Pi.single_eq_of_ne hw c)`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem evalV_singleV_of_ne {F : Type} [Field F] [NumberField F]
     {v w : HeightOneSpectrum (𝓞 F)} (hw : w ≠ v) (c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) :
@@ -72,9 +68,9 @@ private theorem evalV_singleV_of_ne {F : Type} [Field F] [NumberField F]
      exact Pi.single_eq_of_ne hw c)
 
 /- English proof (translation)
-Establish `hy` using `LinearEquiv.symm_apply_apply (TensorProduct.equivFinsuppOfBasisRight (M := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) (Module.Basis.ofVectorSpace I.F I.E)) y`. Rewrite `hy` using `[TensorProduct.equivFinsuppOfBasisRight_symm_apply]`. Use `conv_rhs => rw [← hy]`. Unfold `PI.FinKW.liftOne`. Simplify using `only [Finsupp.sum, map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [PI.FinKW.psiV, AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, AlgEquiv.coe_algHom, Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.map_tmul, evalV_singleV_self', AlgHom.coe_id, id_eq, TensorProduct.zero_tmul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem psiV_liftOne_self (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) :
@@ -92,7 +88,7 @@ private theorem psiV_liftOne_self (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F
     TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Unfold `PI.FinKW.liftOne`. Simplify using `only [Finsupp.sum, map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Simplify using `only [PI.FinKW.psiV, AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, AlgEquiv.coe_algHom, Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.map_tmul, evalV_singleV_of_ne hw, AlgHom.coe_id, id_eq, TensorProduct.zero_tmul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem psiV_liftOne_of_ne (I : AutInst) {v w : HeightOneSpectrum (𝓞 I.F)} (hw : w ≠ v)
     (y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) :
@@ -106,7 +102,7 @@ private theorem psiV_liftOne_of_ne (I : AutInst) {v w : HeightOneSpectrum (𝓞 
     TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h1` using `fun a => psiV_liftOne_self I v a`. Establish `h2` using `psiV_liftOne_self I v 1`. Simplify using `only [Matrix.map_apply, liftMat, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_add]`. Apply the tactic sequence `split_ifs with h <;> simp [h1, h2]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem liftMat_map_same (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (g : Matrix (Fin I.n) (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E)) :
@@ -118,7 +114,7 @@ theorem liftMat_map_same (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
   split_ifs with h <;> simp [h1, h2]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h1` using `fun a => psiV_liftOne_of_ne I hw a`. Establish `h2` using `psiV_liftOne_of_ne I hw 1`. Simplify using `only [Matrix.map_apply, liftMat, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_add]`. Apply the tactic sequence `split_ifs with h <;> simp [h1, h2, h, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem liftMat_map_ne (I : AutInst) {v w : HeightOneSpectrum (𝓞 I.F)} (hw : w ≠ v)
     (g : Matrix (Fin I.n) (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E)) :
@@ -130,9 +126,9 @@ theorem liftMat_map_ne (I : AutInst) {v w : HeightOneSpectrum (𝓞 I.F)} (hw : 
   split_ifs with h <;> simp [h1, h2, h, Matrix.one_apply]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e a`. Simplify using `only [PI.FinKW.psiV, AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, AlgEquiv.coe_algHom, Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq, TensorProduct.equivFinsuppOfBasisRight_apply_tmul, TensorProduct.equivFinsuppOfBasisLeft_a …`. Use `first`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `exact (map_smul (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV I.F w) _ a).symm`. Consider the case `exact (AlgHom.map_smul_of_tower (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV I.F w) _ a).symm`. Consider the case `simp`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem equivFinsuppOfBasisRight_psiV_eq_evalV (I : AutInst) (w : HeightOneSpectrum (𝓞 I.F))
     [DecidableEq (Module.Basis.ofVectorSpaceIndex I.F I.E)]
@@ -156,9 +152,9 @@ private theorem equivFinsuppOfBasisRight_psiV_eq_evalV (I : AutInst) (w : Height
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
 /- English proof (translation)
-Apply `(TensorProduct.equivFinsuppOfBasisLeft (Module.Basis.ofVectorSpace I.F I.E)).injective` to reduce the goal to its premises. Use `Finsupp.ext fun i => ?_` and prove the remaining obligations. Establish `key : ∀ w, TensorProduct.equivFinsuppOfBasisLeft (Module.Basis.ofVectorSpace I.F I.E) x i w = TensorProduct.equivFinsuppOfBasisLeft (Module.Basis.ofVectorSpace I.F I.E) y i w`. Introduce `w`. Establish `hw` using `equivFinsuppOfBasisRight_psiV_eq_evalV I w x i`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hw` using `[h w, equivFinsuppOfBasisRight_psiV_eq_evalV]`. Conclude with `hw.symm`. Use `first`. Consider the case `exact RestrictedProduct.ext key`. Consider the case `exact Subtype.ext (funext key)`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem eq_of_forall_psiV_eq (I : AutInst) {x y : I.E ⊗[I.F] Af I.F}
     (h : ∀ w, PI.FinKW.psiV I w x = PI.FinKW.psiV I w y) : x = y := by
@@ -176,9 +172,9 @@ private theorem eq_of_forall_psiV_eq (I : AutInst) {x y : I.E ⊗[I.F] Af I.F}
   | exact Subtype.ext (funext key)
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply `eq_of_forall_psiV_eq I` to reduce the goal to its premises. Introduce `w`. Establish `e1 : ((liftMat I v g * liftMat I v h).map (PI.FinKW.psiV I w).toRingHom) i j = ((liftMat I v (g * h)).map (PI.FinKW.psiV I w).toRingHom) i j`. Rewrite using `[Matrix.map_mul]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[liftMat_map_same, liftMat_map_same, liftMat_map_same]`. Rewrite using `[liftMat_map_ne I hw, liftMat_map_ne I hw, liftMat_map_ne I hw, one_mul]`. Simplify using `using e1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem liftMat_mul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (g h : Matrix (Fin I.n) (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E)) :
@@ -196,9 +192,9 @@ theorem liftMat_mul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
   simpa using e1
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply `eq_of_forall_psiV_eq I` to reduce the goal to its premises. Introduce `w`. Establish `e1 : ((liftMat I v 1).map (PI.FinKW.psiV I w).toRingHom) i j = ((1 : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)).map (PI.FinKW.psiV I w).toRingHom) i j`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[liftMat_map_same]`. Rewrite using `[liftMat_map_ne I hw]`. Simplify using `using e1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem liftMat_one (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) :
     liftMat I v 1 = 1 := by
@@ -221,7 +217,7 @@ def liftGL (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     by rw [liftMat_mul, Units.inv_mul, liftMat_one]⟩
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e a`. Simplify using `[Formalism.UG.sigR, sigV, PI.FinKW.psiV, AlgEquiv.coe_algHom, Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.map_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 private theorem psiV_sigR_eq_sigV_psiV (I : AutInst) (w : HeightOneSpectrum (𝓞 I.F))
     (x : I.E ⊗[I.F] Af I.F) :
@@ -234,7 +230,7 @@ private theorem psiV_sigR_eq_sigV_psiV (I : AutInst) (w : HeightOneSpectrum (�
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.inclE, inclV, PI.FinKW.psiV, AlgEquiv.coe_algHom, Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.map_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem psiV_inclE' (I : AutInst) (w : HeightOneSpectrum (𝓞 I.F)) (e : I.E) :
     PI.FinKW.psiV I w (Formalism.UG.inclE (F := I.F) (Af I.F) e) = inclV I w e := by
@@ -242,15 +238,15 @@ private theorem psiV_inclE' (I : AutInst) (w : HeightOneSpectrum (𝓞 I.F)) (e 
     Algebra.TensorProduct.map_tmul]
 
 /- English proof (translation)
-Establish `hJ : ∀ w, (I.J.map (Formalism.UG.inclE (F` using `I.F) (Af I.F))).map (PI.FinKW.psiV I w).toRingHom = I.J.map (inclV I w) := by`. Introduce `w`. Use extensionality with `a b`. Simplify using `[psiV_inclE']`. Establish `hC : ∀ w, ∀ M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F), (Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) M).map (PI.FinKW.psiV I w).toRingHom = Formalism.UG.cT (sigV I w) (M.map (PI.FinKW.psiV I w).toRingHom)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `w M`. Use extensionality with `a b`. Simplify using `[Formalism.UG.cT, psiV_sigR_eq_sigV_psiV]`. Establish `hmap : ∀ w, (Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) (liftMat I v g.val) * I.J.map (Formalism.UG.inclE (F` using `I.F) (Af I.F)) * liftMat I v g.val).map (PI.FinKW.psiV I w).toRingHom = (I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F))).map (PI.FinKW.psiV I w).toRingHom := by`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, hC, hJ]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[liftMat_map_same]`. Use `first`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact hg`. Consider the case `simpa [Uv, Formalism.UG.UJ] using hg`. Rewrite using `[liftMat_map_ne I hw, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`. Use extensionality with `i j`. Apply `eq_of_forall_psiV_eq I` to reduce the goal to its premises.
+Treat this case separately. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Establish `h1` using `congrFun (congrFun (hmap w) i) j`. Simplify using `using h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem liftMat_unitary (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (g : GL (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E)) (hg : g ∈ Uv I v) :
@@ -288,9 +284,9 @@ theorem liftMat_unitary (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
   simpa using h1
 
 /- English proof (translation)
-Introduce `I v g hg`. Use `⟨⟨liftGL I v g, liftMat_unitary I v g hg⟩, ?_, ?_⟩` and prove the remaining obligations. Apply `Units.ext first` to reduce the goal to its premises. Consider the case `exact liftMat_map_same I v g.val`. Consider the case `simpa [matV, Formalism.UG.bc, liftGL] using liftMat_map_same I v g.val`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately.
 
-Introduce `w hw`. Apply `Units.ext` to reduce the goal to its premises. Use `first`. Consider the case `exact liftMat_map_ne I hw g.val`. Consider the case `simpa [matV, Formalism.UG.bc, liftGL] using liftMat_map_ne I hw g.val`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lift_unitary' : LiftU := by
   intro I v g hg

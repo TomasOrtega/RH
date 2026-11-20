@@ -17,20 +17,20 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 2000000
 
 /- English proof (translation)
-Conclude with `if_neg h`.
+A detailed English derivation is pending.
 -/
 theorem dirAt_ne {m : ℕ} {τ τ' : D.what₂.Tau} (h : τ' ≠ τ) (Z : Matrix (Fin m) (Fin n) ℂ) :
     GlobalTheory.FockAnnKill.dirAt τ Z τ' = 0 := by
   exact if_neg h
 
 /- English proof (translation)
-Conclude with `if_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem dirAt_self {m : ℕ} (τ : D.what₂.Tau) (Z : Matrix (Fin m) (Fin n) ℂ) : GlobalTheory.FockAnnKill.dirAt τ Z τ = Z := by
   exact if_pos rfl
 
 /- English proof (translation)
-Use `show Complex.exp (-(2 * (Real.pi : ℂ)) * ∑ τ' with τ' ≠ τ, ((|l τ'| : ℝ) : ℂ) * ((GlobalTheory.FockAnnKill.dirAt τ Z τ').conjTranspose * (Formalism.BasicNotions.TH.gramAt D V τ' * s τ') * GlobalTheory.FockAnnKill.dirAt τ Z τ').trace) = 1`. Rewrite using `[Finset.sum_eq_zero fun τ' hτ' => by rw [dirAt_ne (Finset.mem_filter.mp hτ').2 Z]; simp, mul_zero, Complex.exp_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gAway_dirAt (V : HSp D) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin n) ℂ) : gAway V l s τ (GlobalTheory.FockAnnKill.dirAt τ Z) = 1 := by
@@ -42,7 +42,7 @@ theorem gAway_dirAt (V : HSp D) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau �
     mul_zero, Complex.exp_zero]
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem trace_conjTranspose_mul_self {m : ℕ} (u : Matrix (Fin m) (Fin n) ℂ) :
     Matrix.trace (uᴴ * u) = ((∑ a, ∑ i, ‖u a i‖ ^ 2 : ℝ) : ℂ) := by
@@ -52,9 +52,9 @@ theorem trace_conjTranspose_mul_self {m : ℕ} (u : Matrix (Fin m) (Fin n) ℂ) 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use `show Complex.exp (-(2 * (Real.pi : ℂ)) * ∑ τ', ((|l τ'| : ℝ) : ℂ) * ((GlobalTheory.FockAnnKill.dirAt τ (fr * u) τ').conjTranspose * (Formalism.BasicNotions.TH.gramAt D V τ' * s τ') * GlobalTheory.FockAnnKill.dirAt τ (fr * u) τ').trace) = Complex.exp (-(((2 * Real.pi * |l τ|) * ∑ …`. Establish `key : (fr * u)ᴴ * (Formalism.BasicNotions.TH.gramAt D V τ * s τ) * (fr * u) = uᴴ * u`. Rewrite using `[Matrix.conjTranspose_mul, show uᴴ * frᴴ * (Formalism.BasicNotions.TH.gramAt D V τ * s τ) * (fr * u) = uᴴ * (frᴴ * (Formalism.BasicNotions.TH.gramAt D V τ * s τ) * fr) * u by simp only [Matrix.mul_assoc], hfr.2.2, Matrix.mul_one]`. Rewrite using `[Finset.sum_eq_single τ (fun τ' _ h => by rw [dirAt_ne h]; simp) (fun h => absurd (Finset.mem_univ τ) h), dirAt_self, key, trace_conjTranspose_mul_self]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gauss_dirAt {V : HSp D} {τ : D.what₂.Tau} {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     {ε : Fin V.rank → Bool} {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hfr : IsTauFrame V τ s ε fr)

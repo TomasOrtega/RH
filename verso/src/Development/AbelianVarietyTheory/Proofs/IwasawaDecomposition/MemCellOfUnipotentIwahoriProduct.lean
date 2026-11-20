@@ -13,13 +13,13 @@ open GlobalTheory.IwaCell
 namespace GlobalTheory.IwaCell
 
 /- English proof (translation)
-Take `⟨u, hu, i, hi, e⟩` from `hg`. Take `⟨n, hn, c, hc, l, hl, rfl⟩` from `GlobalTheory.IwahoriTraceProof.iwahori_factorisation hi`. Establish `hl'` using `GlobalTheory.IwaStep.conj_mem_unipLowerOne hϖ hd hl`. Establish `hnB : tD ϖ d * n * (tD ϖ d)⁻¹ ∈ unipB k (Fin m)` using `GlobalTheory.IwahoriTraceProof.conj_mem_unipB _ hn.1`. Establish `hnB' : tD ϖ b * (tD ϖ d * n * (tD ϖ d)⁻¹) * (tD ϖ b)⁻¹ ∈ unipB k (Fin m)` using `GlobalTheory.IwahoriTraceProof.conj_mem_unipB _ hnB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : diagT k (Fin m) c * (tD ϖ d * l * (tD ϖ d)⁻¹) ∈ KO k (Fin m)` using `iwahori_le_KO k (Fin m) (mul_mem (diagT_mem_iwahori hc) (KOne_le_iwahori k (Fin m) hl'.2))`. Establish `hcomm : tD ϖ d * diagT k (Fin m) c = diagT k (Fin m) c * tD ϖ d`. Rewrite using `[tD, ← map_mul, ← map_mul, mul_comm]`. Establish `hg : g = (u * (tD ϖ b * (tD ϖ d * n * (tD ϖ d)⁻¹) * (tD ϖ b)⁻¹)) * tD ϖ b * (diagT k (Fin m) c * (tD ϖ d * l * (tD ϖ d)⁻¹))`. Establish `e2 : g = u * tD ϖ (b + d) * (n * diagT k (Fin m) c * l) * (tD ϖ d)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Use `group`. Rewrite using `[e2, tD_add]`. Establish `h3 : (tD ϖ d)⁻¹ * diagT k (Fin m) c * tD ϖ d = diagT k (Fin m) c`. Rewrite using `[mul_assoc, ← hcomm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `group`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg]`. Conclude with `mul_mem_cell (mul_mem hu hnB') hK`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem right_translate_mem_cell (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (m : ℕ) (ϖ : kˣ) (hϖ : ord k ϖ = 1) (b d : Fin m → ℤ) (hd : Monotone d) (g : GL (Fin m) k)
@@ -49,7 +49,7 @@ theorem right_translate_mem_cell (k : Type) [Field k] [ValuativeRel k] [Topologi
   exact mul_mem_cell (mul_mem hu hnB') hK
 
 /- English proof (translation)
-The claim follows from `right_translate_mem_cell`.
+A detailed English derivation is pending.
 -/
 example : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (m : ℕ) (ϖ : kˣ), ord k ϖ = 1 → ∀ (b d : Fin m → ℤ), Monotone d → ∀ g : GL (Fin m) k, (∃ u ∈ unipB k (Fin m), ∃ i ∈ iwahori k (Fin m), g * tD ϖ d = u * tD ϖ (b + d) * i) → g ∈ cell ϖ b := right_translate_mem_cell
 

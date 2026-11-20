@@ -3,13 +3,11 @@ import Mathlib
 namespace Bl.general_b_fact_bis
 
 /- English proof (translation)
-Introduce `x m h`. Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot`. Rewrite `h` using `[WithBot.bot_add, ← WithBot.coe_natCast]`. Conclude with `absurd h.symm WithBot.coe_ne_bot`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `coe e`. Rewrite `h` using `[← WithBot.coe_one, ← WithBot.coe_add, ← WithBot.coe_natCast, WithBot.coe_inj]`. Rewrite using `[← WithBot.coe_natCast, WithBot.coe_inj]`. Proceed by induction on `e using ENat.recTopCoe with`. Consider the case `top`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[top_add]`. Conclude with `absurd h.symm (ENat.natCast_ne_top _)`. Consider the case `coe n`. Rewrite `h` using `[← ENat.natCast_one, ← ENat.natCast_add, ENat.natCast_inj]`. Rewrite using `[ENat.natCast_inj]`.
-
-Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {x : WithBot.{0} ENat} {m : Nat},

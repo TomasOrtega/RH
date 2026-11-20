@@ -47,7 +47,7 @@ variable {K : Ctx} {B : GlobalTheory.Mem.Base} {f : Fr B.toPre} {T : TwDat B} {w
 end Args
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Substitute `hS` using the available equality. Establish `hSch : SchurAll D` using `fun V _ S θ M J χ μ 𝓕 => (GlobalTheory.MultFinite.hcFinite_and_schurMult h5.2.2.2.1 h5.2.2.2.2 D θ V S M J χ μ 𝓕).2`. Establish `hL` using `(GlobalTheory.T.rowLattices_metrics_agree_of_realGroupTheorems h5 D _ _ _ _ x.A3 _ x.R x.F x.cG ex.p0 x.Y x.Z x.pins hH).1`. Conclude with `⟨(_root_.GlobalTheory.Mem.JPin.seeEx_joinPin_alt _ _ _ _ _ _ _ _ _ x Rc P S y c hH h.1 h.2.1 h.2.2).1, (_root_.GlobalTheory.T.join_subspace_real_data_exists_alt _ _ _ _ _ _ _ _ _ x Rc P S y c 1 hSch hP hH hH.ok hH.sep hL (rowConditions_at_companion_from_readings _ _ _ _ _ _ _ _ _ …`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem see_join_alt (h5 : GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧
       GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay)
@@ -68,27 +68,27 @@ end General
 section Wit
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} {q : Bl.WPt p.s K} {c : ℝ} {b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c}
 /- English proof (translation)
-The claim follows from `congrArg _root_.GlobalTheory.Mem.Top.Bl.RealPackage.P w.y.eq`.
+A detailed English derivation is pending.
 -/
 theorem bundle_P_eq_divisionPair_of_bWit (w : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b) : b.P = R3.divisionPairOfAdelicFormsFaceColumnsData w.x := congrArg _root_.GlobalTheory.Mem.Top.Bl.RealPackage.P w.y.eq
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.Fam.PtRowsAt.bundle_P_eq_divisionPair_of_bWit w]`. Conclude with `(GlobalTheory.Mem.R3.rowConditions_at_companion_from_readings _ _ _ _ _ _ _ _ _ w.x).2.2.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dcPtG_of_bWit (w : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b) : DcPtG b.P := by
   rw [_root_.GlobalTheory.Fam.PtRowsAt.bundle_P_eq_divisionPair_of_bWit w]
   exact (GlobalTheory.Mem.R3.rowConditions_at_companion_from_readings _ _ _ _ _ _ _ _ _ w.x).2.2.1
 /- English proof (translation)
-The claim follows from `(_root_.GlobalTheory.T.characters_match_bundle_alt q b w).2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem realPins_of_bWit' (w : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b) : _root_.Formalism.IndefR.IndefiniteRealisationNormalisation b.B.Q := (_root_.GlobalTheory.T.characters_match_bundle_alt q b w).2.2.2.2.2.1
 /- English proof (translation)
-Use `letI := b.B.alg`. Conclude with `_root_.GlobalTheory.FramesAtReal.framesEx_of_realisation_alt _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ b.B.Q (_root_.GlobalTheory.Fam.PtRowsAt.realPins_of_bWit' w)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem framesEx_of_bWit (w : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b) : _root_.Formalism.IndefR.IndefiniteRealisation.FramesEx b.B.Q := by
   letI := b.B.alg
   exact _root_.GlobalTheory.FramesAtReal.framesEx_of_realisation_alt _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ b.B.Q (_root_.GlobalTheory.Fam.PtRowsAt.realPins_of_bWit' w)
 /- English proof (translation)
-Establish `h : (fun r : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S => Formalism.IndefR.Links.PrimRows3 r.B.Q.Rl r.B.Q.F ∧ r.P.A3.fam3.TypesSep3) (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfRealInput w.y.y)` using `⟨w.y.intersectionNumber_baseChange.prim, w.y.intersectionNumber_baseChange.sep⟩`. Rewrite `h` using `[← w.y.eq]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_links_and_typesSep3_of_bWit (w : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b) : Formalism.IndefR.Links.PrimRows3 b.B.Q.Rl b.B.Q.F ∧ b.P.A3.fam3.TypesSep3 := by
   have h : (fun r : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S => Formalism.IndefR.Links.PrimRows3 r.B.Q.Rl r.B.Q.F ∧ r.P.A3.fam3.TypesSep3) (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfRealInput w.y.y) :=
@@ -96,7 +96,7 @@ theorem prim_links_and_typesSep3_of_bWit (w : _root_.GlobalTheory.Mem.Top.Bl.Bun
   rw [← w.y.eq] at h
   exact h
 /- English proof (translation)
-Establish `h : (fun r : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S => r.B.Q.Rl.toRealDat.ExAt) (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfRealInput w.y.y)` using `exAt_of_args w.a w.x w.ax`. Rewrite `h` using `[← w.y.eq]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exAt_of_bWit (w : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b) : b.B.Q.Rl.toRealDat.ExAt := by
   have h : (fun r : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S => r.B.Q.Rl.toRealDat.ExAt) (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfRealInput w.y.y) := exAt_of_args w.a w.x w.ax
@@ -104,11 +104,11 @@ theorem exAt_of_bWit (w : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b) : b.
   exact h
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨sP, sS, hP, hS, e⟩` from `w.s`. Establish `hpin : (fun r : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S => _root_.Formalism.IndefR.IndefiniteRealisationNormalisation r.B.Q) (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfBundle b)` using `_root_.GlobalTheory.Fam.PtRowsAt.realPins_of_bWit' w`. Rewrite `hpin` using `[w.y.eq]`. Establish `h0` using `placed_of_args w.a w.x w.ax q.saturationAtWeightedPoint.P q.saturationAtWeightedPoint.S q.saturationAtWeightedPoint.t q.saturationAtWeightedPoint.c ⟨q.saturationAtWeightedPoint.see, q.saturationAtWeightedPoint.ev, q.saturationAtWeightedPoint.rowJ⟩`. Establish `ht : w.y.y.tS = q.saturationAtWeightedPoint.t` using `eq_of_heq w.pt.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : (fun u => (b.R.T.cols.forms u).to0) = fun u => (q.x.col.C.forms u).to0` using `congrArg (fun C : type_of% q.x.col.C => fun u => (C.forms u).to0) w.recPin.s.cols`. Establish `h1` using `Placed.of_heq hF hP hS h0`. Rewrite `h1` using `[← ht]`. Establish `h : (fun r : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S => _root_.Formalism.IndefR.IndefiniteRealisationExtends r.B.Q ∧ Nonempty (_root_.Formalism.L2.SG.JoinSI.IndefiniteRealisationJoin b.R b.S r.B.Q)) (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfRealInput w.y.y)` using `_root_.GlobalTheory.Fam.PtRowsAt.see_join_alt h5 w.x b.R sP sS b.S e w.y.y q.saturationAtWeightedPoint.c w.y.intersectionNumber_baseChange hpin h1`. Rewrite `h` using `[← w.y.eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem seeEx_and_joinSI_nonempty_of_bWit (h5 : GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧
       GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay) (w : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b) :
@@ -128,9 +128,9 @@ theorem seeEx_and_joinSI_nonempty_of_bWit (h5 : GlobalTheory.Published.DiscreteS
   exact h
 end Wit
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 hL p`. Take `⟨Cl₀, hnc⟩` from `GlobalTheory.Core.Rk.HdNc.hd_nc`. Use `(_root_.GlobalTheory.T.exists_constants_for_parameters_scale_bundle hL p (fun _ _ => 0) (fun _ _ => max 1801 Cl₀) (fun _ _ => 0)).imp ?_` and prove the remaining obligations. Introduce and unpack `κ K β c b - - ⟨q, b', ⟨w⟩, he⟩ ⟨C', Cl, Cg, CT, -, hCl, -, hHD, -, -, hB, hrS⟩`. Establish `key : ∀ s t : (Σ (D : D7) (O : Obj D), _root_.GlobalTheory.Fc.BundleCondition D O c), s = t → (Nonempty (_root_.Formalism.L2.SG.JoinSI.IndefiniteRealisationJoin t.2.2.R t.2.2.S t.2.2.B.Q) ∧ DcPtG t.2.2.P ∧ _root_.Formalism.IndefR.IndefiniteRealisation.FramesEx t.2.2.B.Q ∧ _root_. …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ _ rfl h`. Conclude with `h`. Establish `hsj` using `_root_.GlobalTheory.Fam.PtRowsAt.seeEx_and_joinSI_nonempty_of_bWit ⟨h1, h2, h3, h4, h5⟩ w`. Take `⟨a1, a2, a3, a4, a5, a6⟩` from `key ⟨β.D, β.O, b⟩ ⟨q.w.D q.Z, q.O, b'⟩ he ⟨hsj.2, _root_.GlobalTheory.Fam.PtRowsAt.dcPtG_of_bWit w, _root_.GlobalTheory.Fam.PtRowsAt.framesEx_of_bWit w, hsj.1, _root_.GlobalTheory.Fam.PtRowsAt.exAt_of_bWit w, _root_.GlobalTheory.Fam.PtRowsAt.prim_links_and_typesSep3_of_bWit w⟩`. Conclude with `⟨a1, a2, a3, a4, a5, a6, GlobalTheory.Core.Rk.finX_of_gap _ b.S.toSTies (gapHyp_of_hd ((le_max_left _ _).trans hCl) hHD), hnc _ _ _ _ _ _ _ _ _ ((le_max_right _ _).trans hCl) hHD b.S.X, GlobalTheory.Core.Rk.GapOfNodes.harishChandraNodesFarApart_of_cubic_node_gap _ hB, hrS⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem good_linked_ptR_of_cuspRapidDecay : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL), GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) (fun _ _ _ _ b => _root_.GlobalTheory.Fam.BundlePointConditions b) := by
   intro h1 h2 h3 h4 h5 hL p

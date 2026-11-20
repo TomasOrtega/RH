@@ -16,11 +16,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinPtMul
 
 /- English proof (translation)
-Introduce `D V n g g' x x' hx hx'`. Take `⟨hg, e, h⟩` from `hx`. Take `⟨hg', e', h'⟩` from `hx'`. Substitute `e` using the available equality. Use `⟨mul_mem hg hg', rfl, fun i j => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_mul, Units.val_mul, Subgroup.coe_mul, Matrix.mul_apply, map_sum, Fin.cast_eq_self]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `a` using `h i k`. Establish `b` using `h' k j`. Simplify using `only [Fin.cast_eq_self] at a b`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[a, b]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isFinPt_mul : ∀ {D : D7} (V : HSp D) {n : ℕ} (g g' : GA D V) (x x' : Formalism.MainNotions.StandardLatticesGL3.GA D n),
   IsFinPt V g x → IsFinPt V g' x' → IsFinPt V (g * g') (x * x') := by

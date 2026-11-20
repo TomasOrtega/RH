@@ -23,7 +23,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.SphSeg
 
 /- English proof (translation)
-Take `rfl : x = fun a => IrrGL.ofChar (μ a) (hμ a)` from `funext hx`. Set `φ` to `multiProdEquiv (stdBlocks (fun a => (IrrGL.ofChar (μ a) (hμ a)).1) hd) fun a => (LocGL.equivRep (IrrRep.det (Fin 1) (μ a) (hμ a))).symm`. Conclude with `(IsSubquotient.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective).trans (PermPrin.isSubquotient_multiProd_prinSeries _ μ)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isSubquotient_prodIrr_prinSeries {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {h : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = h)
@@ -40,23 +40,23 @@ end GlobalTheory.SphSeg
 namespace GlobalTheory.SphSeg
 
 /- English proof (translation)
-Introduce `hLM hSC hZP hGL hBZ k _ _ _ _ _ Δ y hL hS`. Take `⟨N, c⟩` from `y`. Take `⟨hd, hc⟩` from `id hL`. Establish `hsub : IsSubquotient c.rep.ρ (prodIrr Δ.term hd)` using `hc.isSubquotient`. Establish `hsph` using `GlobalTheory.T.isSpherical_factor_of_spherical_subquotient k Δ.len N Δ.term hd _ c.rep.ρ hsub hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Δ.term ⟨0, Δ.len_pos⟩ = Δ.first` using `by simp [Segment.term]`. Establish `key : ∀ x z : IrrGL k, x = z → IsSpherical x.rep → IsSpherical z.rep`. Introduce and unpack `_ _ rfl h`. Conclude with `h`. Establish `hU : Δ.first.IsUnramChar` using `GlobalTheory.T.isUnramifiedChar_of_cuspidal_spherical hGL hBZ hZP k Δ.first Δ.isCusp_first (key _ _ h0 (hsph _))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hU⟩` and prove the remaining obligations. Take `⟨μ, hμ, hfirst⟩` from `hU`. Establish `hμs` using `isSmoothChar_of_isUnram hμ`. Establish `hterm : ∀ a, Δ.term a = IrrGL.ofChar (μ * absPow k ((a : ℕ) : ℂ)) (hμs.mul (isSmoothChar_absPow _))` using `fun a => by simp only [Segment.term, IrrGL.nu, hfirst, IrrGL.tw_ofChar]`. Establish `hd1 : Δ.d = 1` using `congrArg Sigma.fst hfirst`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : N = Δ.len`. Establish `h2 : ∑ a, (Δ.term a).1 = N` using `hd`. Rewrite `h2` using `[Segment.sum_term_fst, Segment.deg, hd1, mul_one]`. Conclude with `h2.symm`. Substitute `hN` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Γ` to `Segment.ofChar μ hμs Δ.len Δ.len_pos`. Establish `hterm' : ∀ a, Γ.term a = IrrGL.ofChar (μ * absPow k ((a : ℕ) : ℂ)) (hμs.mul (isSmoothChar_absPow _))` using `fun a => by show (IrrGL.ofChar μ hμs).nu _ = _`. Simplify using `only [IrrGL.nu, IrrGL.tw_ofChar]`. Establish `hd' : ∑ a, (Γ.term a).1 = Δ.len` using `(Segment.sum_term_fst _).trans (mul_one _)`. Establish `hP` using `isSubquotient_prodIrr_prinSeries Δ.term hd _ _ hterm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hP'` using `isSubquotient_prodIrr_prinSeries Γ.term hd' _ _ hterm'`. Set `χ'` to `μ * absPow k (((Δ.len : ℂ) - 1) / 2)`. Establish `hu' : IsUnram χ'` using `fun x hx => by`. Rewrite using `[MonoidHom.mul_apply, hμ x hx, isUnram_absPow k _ x hx, one_mul]`. Establish `hχs : IsSmoothChar χ'` using `isSmoothChar_of_isUnram hu'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `embeds_detRep_segment hμs Δ.len_pos hd'`. Take `⟨ϖ, hϖ⟩` from `LocGL.exists_uniformizer k`. Establish `hu : ∀ i : Fin Δ.len, IsUnram (μ * absPow k ((i : ℕ) : ℂ))` using `fun i x hx => by`. Rewrite using `[MonoidHom.mul_apply, hμ x hx, isUnram_absPow k _ x hx, one_mul]`. Set `α : Fin Δ.len → ℂˣ` to `fun i => (μ * absPow k ((i : ℕ) : ℂ)) ϖ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `heq : (fun i => unrChar k (α i)) = fun i : Fin Δ.len => μ * absPow k ((i : ℕ) : ℂ)`. Use function extensionality and compare the values at `fun i => (eq_unrChar (hu i) hϖ).symm`. Establish `hA : HasSatake c.rep.ρ α` using `⟨c.rep.irr, hS, by rw [heq]; exact hsub.trans hP⟩`. Establish `hB : HasSatake (IrrRep.det (Fin Δ.len) χ' hχs).ρ α` using `⟨(IrrRep.det (Fin Δ.len) χ' hχs).irr, isSpherical_detRep hu', by rw [heq]; exact (IsSubquotient.of_injective f hf).trans hP'⟩`. Take `⟨E⟩` from `GlobalTheory.T.nonempty_equiv_of_same_satakeParameters hBZ k Δ.len α c.rep (IrrRep.det (Fin Δ.len) χ' hχs) hA hB`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL2` using `(GlobalTheory.T.isLanglandsClassification_detCharacter hSC k Δ.len χ' hχs).of_equiv E.symm`. Establish `hL1` using `hL.isL`. Establish `hm` using `(hLM k).1 _ _ ⟨Δ.len, c⟩ hL1 hL2`. Use `congrArg Multiset.card hm` as an intermediate fact. Simplify using `using this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem len_eq_one_and_isUnramChar : LanglandsMultisegments → StandardCosocleGL → ZelevinskyPolynomialRing →
     GeometricLemma → BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]

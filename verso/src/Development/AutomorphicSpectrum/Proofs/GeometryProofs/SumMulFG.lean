@@ -71,20 +71,20 @@ theorem pow_succ' (a : FG M Y) (n : ℕ) : a.pow (n + 1) = (a.pow n).mul a := rf
 variable (U : Type) [CommGroup U]
 
 /- English proof (translation)
-Use `show ∏ k : PEmpty, _ = _`. Conclude with `Fintype.prod_empty _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem sum_one (h : (Y ⟶ X) → U) : (one : FG M Y).sum U h = 1 := by
   show ∏ k : PEmpty, _ = _
   exact Fintype.prod_empty _
 
 /- English proof (translation)
-The claim follows from `Fintype.prod_sum_type _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem sum_mul (a b : FG M Y) (h : (Y ⟶ X) → U) : (a.mul b).sum U h = a.sum U h * b.sum U h :=
   Fintype.prod_sum_type _
 
 /- English proof (translation)
-The claim follows from `(Finset.prod_congr rfl fun k _ => zpow_neg _ _).trans (Finset.prod_inv_distrib _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem sum_inv (a : FG M Y) (h : (Y ⟶ X) → U) : a.inv.sum U h = (a.sum U h)⁻¹ :=
   (Finset.prod_congr rfl fun k _ => zpow_neg _ _).trans (Finset.prod_inv_distrib _)
@@ -96,7 +96,7 @@ Both sides reduce to the same expression.
     (a.pull g).sum U h = a.sum U (fun q => h (g ≫ q)) := rfl
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [pow_zero']`. Consider the case `succ n ih => simp [pow_succ', ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 @[simp] theorem sum_pow (a : FG M Y) (n : ℕ) (h : (Y ⟶ X) → U) : (a.pow n).sum U h = a.sum U h ^ n := by
   induction n with
@@ -106,29 +106,29 @@ Proceed by induction on `n with`. Consider the case `zero => simp [pow_zero']`. 
 variable {z : Z} {J : (Z ⟶ X) → M.ι}
 
 /- English proof (translation)
-The claim follows from `val_one r`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem v_one (r : Z ⟶ Y) : (one : FG M Y).v r z J = 1 := val_one r
 
 /- English proof (translation)
-The claim follows from `val_mul hJ _ _ r`.
+A detailed English derivation is pending.
 -/
 theorem v_mul (hJ : Good M z J) (a b : FG M Y) (r : Z ⟶ Y) : (a.mul b).v r z J = a.v r z J * b.v r z J :=
   val_mul hJ _ _ r
 
 /- English proof (translation)
-The claim follows from `val_inv _ r`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem v_inv (a : FG M Y) (r : Z ⟶ Y) : a.inv.v r z J = (a.v r z J)⁻¹ := val_inv _ r
 
 /- English proof (translation)
-The claim follows from `val_pull hJ _ h r`.
+A detailed English derivation is pending.
 -/
 theorem v_pull (hJ : Good M z J) (a : FG M Y) (h : Y' ⟶ Y) (r : Z ⟶ Y') : (a.pull h).v r z J = a.v (r ≫ h) z J :=
   val_pull hJ _ h r
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [pow_zero']`. Consider the case `succ n ih => rw [pow_succ', v_mul hJ, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem v_pow (hJ : Good M z J) (a : FG M Y) (n : ℕ) (r : Z ⟶ Y) : (a.pow n).v r z J = a.v r z J ^ n := by
   induction n with
@@ -136,7 +136,7 @@ theorem v_pow (hJ : Good M z J) (a : FG M Y) (n : ℕ) (r : Z ⟶ Y) : (a.pow n)
   | succ n ih => rw [pow_succ', v_mul hJ, ih, pow_succ]
 
 /- English proof (translation)
-Take `⟨t, -, hv⟩` from `exists_gen hM (K' := PEmpty) (φ := a.φ) (ε := a.ε) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ k => (h U k).trans (Fintype.prod_empty _).symm) a.t a.ht`. Establish `le : (⊤ : Y.Opens) ≤ LB.wchart M (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`. Use `⟨res le (t.s (PEmpty.elim : PEmpty → M.ι)), fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Conclude with `((hv Z r z J hJ).symm.trans (val_of t r z J PEmpty.elim (fun k => k.elim))).trans (gm_res r z le trivial _).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_unit (hM : M.IsLB) (a : FG M Y) (h : ∀ (U : Type) [CommGroup U] (h : (Y ⟶ X) → U), a.sum U h = 1) :
     ∃ e : Γ(Y, ⊤)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J), Good M z J → a.v r z J = gm r z ⊤ e := by
@@ -148,9 +148,7 @@ theorem exists_unit (hM : M.IsLB) (a : FG M Y) (h : ∀ (U : Type) [CommGroup U]
   exact ((hv Z r z J hJ).symm.trans (val_of t r z J PEmpty.elim (fun k => k.elim))).trans (gm_res r z le trivial _).symm
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_unit hM a h`. Take `⟨b, hb⟩` from `hp c.val`. Establish `key : ∀ r : Z ⟶ Y, (a.v r z J).val = gs (r ≫ p) z ⊤ b` using `fun r => by`. Rewrite using `[hc Z r z J hJ, ← gs_unit r z ⊤ trivial, ← hb]`. Conclude with `gs_pull r p z ⊤ trivial b`.
-
-Conclude with `Units.ext ((key r).trans (by rw [e]; exact (key r').symm))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_const (hM : M.IsLB) (a : FG M Y) (h : ∀ (U : Type) [CommGroup U] (h : (Y ⟶ X) → U), a.sum U h = 1)
     {S₀ : Scheme.{0}} (p : Y ⟶ S₀) (hp : Function.Surjective p.appTop.hom) {r r' : Z ⟶ Y} (e : r ≫ p = r' ≫ p)
@@ -173,13 +171,13 @@ section Pts
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem left_pow {T : Over S} (a : T ⟶ G) (N : ℕ) : a.left ≫ ((𝟙 G : G ⟶ G) ^ N).left = (a ^ N).left := by
   rw [← Over.comp_left, MonObj.comp_pow, Category.comp_id]
 
 /- English proof (translation)
-Establish `e : (1 : T ⟶ G) = toUnit T ≫ η[G]` using `Hom.one_def`. Rewrite using `[e, Over.comp_left, eSec]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem one_left (T : Over S) : (1 : T ⟶ G).left = T.hom ≫ eSec G := by
   have e : (1 : T ⟶ G) = toUnit T ≫ η[G] := Hom.one_def
@@ -192,7 +190,7 @@ def rigFG {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (P : RigLB G
   ⟨PUnit, fun _ => eSec G, fun _ => 1, P.rig, P.rigGen⟩
 
 /- English proof (translation)
-Use `show ∏ _k : PUnit, h (eSec G) ^ (1 : ℤ) = _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 @[simp] theorem sum_rigFG {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (P : RigLB G) (U : Type) [CommGroup U]
     (h : ((𝟙_ (Over S)).left ⟶ G.left) → U) : (rigFG P).sum U h = h (eSec G) := by
@@ -204,7 +202,7 @@ def mulFG {S : Scheme.{0}} {G : Over S} [GrpObj G] {M : LB G.left} {N : ℕ}
     FG M G.left := ⟨Fin 2, _, _, w, hw⟩
 
 /- English proof (translation)
-Use `show ∏ k : Fin 2, h ((![((𝟙 G : G ⟶ G) ^ N).left, 𝟙 G.left] : Fin 2 → _) k) ^ (![1, -((N : ℤ) ^ 2)] : Fin 2 → ℤ) k = _`. Rewrite using `[Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, zpow_one, zpow_neg]`. Use `norm_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 theorem sum_mulFG {S : Scheme.{0}} {G : Over S} [GrpObj G] {M : LB G.left} {N : ℕ}
     (w : LB.Gen (LB.LinComb M (K := Fin 2) ![((𝟙 G : G ⟶ G) ^ N).left, 𝟙 G.left] ![1, -((N : ℤ) ^ 2)])) (hw : w.IsGen)
@@ -220,7 +218,7 @@ end GlobalTheory.CompanionTheory.Ar.Sl.Transl
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Sl.Transl
 /- English proof (translation)
-Use `show Spec.map (CommRingCat.ofHom (f.comp g)) = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem spMap_comp' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R' →+* R'') (g : R →+* R') :
     spMap (f.comp g) = spMap f ≫ spMap g := by
@@ -229,7 +227,7 @@ theorem spMap_comp' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] 
   rfl
 
 /- English proof (translation)
-Use `show gs (spMap g) z ⊤ _ = _`. Rewrite using `[gs_eq _ z ⊤ trivial]`. Use `show _ = ((Sp F).presheaf.germ ⊤ z trivial).hom ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (g t))`. Conclude with `congrArg _ (congrArg (fun φ => φ.hom t) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom g))).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gc_spMap {R : Type} [CommRing R] {F : Type} [Field F] (g : R →+* F) (z : Sp F) (t : R) :
     GlobalTheory.TwistLoc.gc (spMap g) z t = toStk z (g t) := by

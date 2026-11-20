@@ -31,25 +31,23 @@ namespace GlobalTheory.WittLevi
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨ev, hev⟩` from `GlobalTheory.BesselCompare.eMat_surj S e`. Take `⟨ev', hev'⟩` from `GlobalTheory.BesselCompare.eMat_surj S e'`. Establish `hG : (HSpace.gram S)ᴴ = HSpace.gram S` using `GlobalTheory.MixModel.gram_conjTranspose S`. Establish `hpair : ∀ i j, S.hT (ev' i) (ev j) = if i = j then 1 else 0` using `fun i j => by`. Rewrite using `[← GlobalTheory.BesselCompare.cT_mul, hev, hev']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (congrFun he'e i) j`. Establish `hli : LinearIndependent D.host.E ev`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`. Establish `h` using `congrArg (S.hT (ev' i)) hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[map_sum, map_zero]`. Simplify using `only [map_smul, hpair, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h`. Conclude with `h`. Establish `hiso : ∀ a b, S.hT (ev a) (ev b) = 0` using `fun a b => by`. Rewrite using `[← GlobalTheory.BesselCompare.cT_mul, hev]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `congrFun (congrFun hee a) b`. Take `⟨V', ι, hrk, hι, horth⟩` from `GlobalTheory.WittLow.exists_lower Formalism.BasicNotions.Examples₂.star_isIntegral S ev hli hiso`. Use `set B := frameMat S V' ι with hB`. Establish `hBB : Bᴴ * S.gram * B = V'.gram` using `GlobalTheory.AutFunCounterexample.gram_pull S V' ι hι`. Establish `hBe : Bᴴ * S.gram * e = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Matrix.ext fun i a => ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.BesselCompare.cT_mul S (fun i => ι (V'.frame i)) ev i a`. Rewrite `h` using `[← GlobalTheory.BesselCompare.frameMat_eq, hev]`. Rewrite using `[hB]`. Conclude with `h.trans (horth _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K := e'ᴴ * S.gram * B with hK`. Establish `hKh : Kᴴ = Bᴴ * (S.gram * e')`. Rewrite using `[hK, conjTranspose_mul, conjTranspose_mul, hG, conjTranspose_conjTranspose]`. Establish `f1 : Bᴴ * (S.gram * e) = 0` using `by rw [← Matrix.mul_assoc]; exact hBe`. Establish `f2 : eᴴ * (S.gram * B) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg conjTranspose hBe` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, hG, conjTranspose_conjTranspose, conjTranspose_zero]`. Conclude with `this`. Establish `f3 : eᴴ * (S.gram * e) = 0` using `by rw [← Matrix.mul_assoc]; exact hee`. Establish `f4 : eᴴ * (S.gram * e') = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg conjTranspose he'e` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, hG, conjTranspose_conjTranspose, conjTranspose_one]`. Conclude with `this`. Establish `g1 : ∀ {k : ℕ} (X : Matrix (Fin r) (Fin k) D.host.E), Bᴴ * (S.gram * (e * X)) = 0` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hBe, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `g3 : ∀ {k : ℕ} (X : Matrix (Fin r) (Fin k) D.host.E), eᴴ * (S.gram * (e * X)) = 0` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hee, Matrix.zero_mul]`. Use `⟨V', GlobalTheory.MixModel.HypDec.mk e e' (B - e * K) hee he'e' he'e ?_ ?_ ?_ hrk, rfl, rfl⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_sub, conjTranspose_mul, hKh]`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, f1, f2, f3, g1, g3, Matrix.mul_zero, sub_zero]`.
-
-Rewrite using `[← Matrix.mul_assoc, hBB]`. Rewrite using `[conjTranspose_sub, conjTranspose_mul, hKh]`. Simplify using `only [Matrix.sub_mul, Matrix.mul_assoc, f1, f3, Matrix.mul_zero, sub_zero]`. Rewrite using `[conjTranspose_sub, conjTranspose_mul, hKh]`. Simplify using `only [Matrix.sub_mul, Matrix.mul_assoc, f4, Matrix.mul_one, sub_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_hypDec (S : HSp D) {r : ℕ} (e e' : Matrix (Fin S.rank) (Fin r) D.host.E)
     (hee : eᴴ * S.gram * e = 0) (he'e' : e'ᴴ * S.gram * e' = 0) (he'e : e'ᴴ * S.gram * e = 1) :
@@ -133,14 +131,14 @@ Both sides reduce to the same expression.
 theorem finPart_realE (x : ℝ) : finPart D (realE D x) = 1 := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(realAd D x) ⊗ₜ[D.host.F] (D.sp.cm.sig (1 : D.host.E)) = (realAd D x) ⊗ₜ[D.host.F] (1 : D.host.E)`. Rewrite using `[map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_realE (x : ℝ) : cA D (realE D x) = realE D x := by
   change (realAd D x) ⊗ₜ[D.host.F] (D.sp.cm.sig (1 : D.host.E)) = (realAd D x) ⊗ₜ[D.host.F] (1 : D.host.E)
   rw [map_one]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `infEmb τ ((InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm x ⊗ₜ[D.host.F] 1) = _`. Rewrite using `[infEmb_tmul, map_one, mul_one, ← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w)]`. Conclude with `congrArg _ ((InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).apply_symm_apply x)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infEmb_realE {w : InfinitePlace D.host.F} (τ : EmbOver D.host.E w) (x : ℝ) :
     infEmb τ (compInf D.host.F D.host.E w (realE D x)) = x := by
@@ -150,7 +148,7 @@ theorem infEmb_realE {w : InfinitePlace D.host.F} (τ : EmbOver D.host.E w) (x :
   exact congrArg _ ((InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).apply_symm_apply x)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `infEmb τ (evInf D.host.F w 1 ⊗ₜ[D.host.F] x) = _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem infEmb_incA {w : InfinitePlace D.host.F} (τ : EmbOver D.host.E w) (x : D.host.E) :
     infEmb τ (compInf D.host.F D.host.E w (incA D x)) = τ.1 x := by
@@ -158,7 +156,7 @@ theorem infEmb_incA {w : InfinitePlace D.host.F} (τ : EmbOver D.host.E w) (x : 
   simp
 
 /- English proof (translation)
-Rewrite using `[eq_infProj hθ (embOverOf D ρ) rfl]`. Conclude with `infEmb_realE (embOverOf D ρ) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_realE {θ : InfFam D} (hθ : IsInfFam θ) (ρ : D.what₂.Tau) (x : ℝ) :
     θ ρ (infPart D (realE D x)) = x := by
@@ -166,7 +164,7 @@ theorem theta_realE {θ : InfFam D} (hθ : IsInfFam θ) (ρ : D.what₂.Tau) (x 
   exact infEmb_realE (embOverOf D ρ) x
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => GlobalTheory.SplitScalar.adele_ext ?_ (congrFun (congrFun hf i) j)` and prove the remaining obligations. Use `GlobalTheory.AutFunCompare.infTens_ext fun w => ?_` and prove the remaining obligations. Take `⟨ρ, rfl⟩` from `(placeOf_bijective D).2 w`. Apply `(infEmb_bijective (isCMExt_host D) (embOverOf D ρ)).1` to reduce the goal to its premises. Conclude with `(GlobalTheory.Doubling.infProj_fst (embOverOf D ρ) (P i j)).trans ((congrFun (congrFun (hi _ (embOverOf D ρ)) i) j).trans (GlobalTheory.Doubling.infProj_fst (embOverOf D ρ) (Q i j)).symm)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem mat_ext {m k : ℕ} {P Q : Matrix (Fin m) (Fin k) (AE D)} (hf : P.map (finPart D) = Q.map (finPart D))
     (hi : ∀ (w : InfinitePlace D.host.F) (τ : EmbOver D.host.E w),
@@ -205,7 +203,7 @@ theorem torusMat_val {r : ℕ} (t : Fin r → ℝ) (ht : ∀ i, t i ≠ 0) :
     (torusMat (D := D) t ht).1 = diagonal fun i => realE D (t i) := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Matrix.map (diagonal fun i => realE D (t i)⁻¹) (cA D))ᵀ = _`. Rewrite using `[diagonal_map (RingHom.map_zero _), diagonal_transpose]`. Conclude with `congrArg diagonal (funext fun i => cA_realE _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_torusMat_inv {r : ℕ} (t : Fin r → ℝ) (ht : ∀ i, t i ≠ 0) :
     GlobalTheory.MixModel.adj ((torusMat (D := D) t ht)⁻¹).1 = diagonal fun i => realE D (t i)⁻¹ := by
@@ -214,7 +212,7 @@ theorem adj_torusMat_inv {r : ℕ} (t : Fin r → ℝ) (ht : ∀ i, t i ≠ 0) :
   exact congrArg diagonal (funext fun i => cA_realE _)
 
 /- English proof (translation)
-Rewrite using `[diagonal_map (RingHom.map_zero _), ← diagonal_one]`. Conclude with `congrArg diagonal (funext fun i => finPart_realE _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_diag_fin {r : ℕ} (x : Fin r → ℝ) :
     (diagonal fun i => realE D (x i)).map (finPart D) = 1 := by
@@ -222,7 +220,7 @@ theorem map_diag_fin {r : ℕ} (x : Fin r → ℝ) :
   exact congrArg diagonal (funext fun i => finPart_realE _)
 
 /- English proof (translation)
-Rewrite using `[diagonal_map (RingHom.map_zero _)]`. Conclude with `congrArg diagonal (funext fun i => infEmb_realE τ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_diag_inf {r : ℕ} {w : InfinitePlace D.host.F} (τ : EmbOver D.host.E w) (x : Fin r → ℝ) :
     (diagonal fun i => realE D (x i)).map ((infEmb τ).comp (compInf D.host.F D.host.E w)) =
@@ -231,7 +229,7 @@ theorem map_diag_inf {r : ℕ} {w : InfinitePlace D.host.F} (τ : EmbOver D.host
   exact congrArg diagonal (funext fun i => infEmb_realE τ _)
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun _ _ => infEmb_incA τ _`.
+A detailed English derivation is pending.
 -/
 theorem map_rat_inf {m k : ℕ} {w : InfinitePlace D.host.F} (τ : EmbOver D.host.E w)
     (Z : Matrix (Fin m) (Fin k) D.host.E) :
@@ -239,7 +237,7 @@ theorem map_rat_inf {m k : ℕ} {w : InfinitePlace D.host.F} (τ : EmbOver D.hos
   Matrix.ext fun _ _ => infEmb_incA τ _
 
 /- English proof (translation)
-Establish `hfin : (Formalism.L2.Theta.mt M a).map (finPart D) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 ha)`. Use `mat_ext ?_ fun w τ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hfin, hP, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, map_rat_inf]`. Conclude with `h w τ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mt_mul_rat (M : HSp D) (a : GA D M) (ha : a ∈ infPts D.sp.cm.sig M.gram) {k : ℕ}
     (Z : Matrix (Fin M.rank) (Fin k) D.host.E) (P : Matrix (Fin k) (Fin k) (AE D)) (hP : P.map (finPart D) = 1)
@@ -254,29 +252,25 @@ theorem mt_mul_rat (M : HSp D) (a : GA D M) (ha : a ∈ infPts D.sp.cm.sig M.gra
     exact h w τ
 
 /- English proof (translation)
-Introduce `D θ hθ ε M r Xf Yf hW`. Use `set s : D.host.E := bif ε then -1 else 1 with hs`. Establish `hgram : HSpace.gram (sgn ε M) = s • HSpace.gram M`. Apply the tactic sequence `cases ε <;> refine Matrix.ext fun i j => ?_ <;> simp [HSpace.gram, sgn, hs]`. Apply the tactic sequence `have hss : star s * s = 1 := by cases ε <;> simp [hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have hs0 : s ≠ 0 := by cases ε <;> simp [hs]`. Establish `hG : (HSpace.gram M)ᴴ = HSpace.gram M` using `GlobalTheory.MixModel.gram_conjTranspose M`. Establish `hxx : Xfᴴ * M.gram * Xf = 0` using `hW.xx`. Establish `hyy : Yfᴴ * M.gram * Yf = 0` using `hW.yy`. Establish `hxy : Xfᴴ * M.gram * Yf = 1` using `hW.xy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyx : Yfᴴ * M.gram * Xf = 1`. Use `congrArg conjTranspose hxy` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, hG, conjTranspose_conjTranspose, conjTranspose_one, ← Matrix.mul_assoc]`. Conclude with `this`. Take `⟨S₀, d, hde, hde'⟩` from `exists_hypDec (sgn ε M) Xf (s • Yf) (by rw [hgram, Matrix.mul_smul, Matrix.smul_mul, hxx, smul_zero]) (by rw [hgram, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul, hyy, smul_zero, smul_zero, smul_zero]) (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hss' : s * star s = 1` using `by rw [mul_comm]; exact hss`. Simplify using `only [hgram, conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hyx, hss, hss', one_smul])`. Use `⟨S₀, d, fun t ht a ha => ?_⟩` and prove the remaining obligations. Establish `ht0 : ∀ i, t i ≠ 0` using `fun i => (ht i).ne'`. Establish `hG' : (HSpace.gram (sgn ε M))ᴴ = HSpace.gram (sgn ε M)` using `GlobalTheory.MixModel.gram_conjTranspose _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0X : Xfᴴ * M.gram * d.i₀ = 0`. Use `congrArg conjTranspose d.i₀e` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, hG', conjTranspose_conjTranspose, conjTranspose_zero, hde, hgram, Matrix.smul_mul, Matrix.mul_smul, ← Matrix.mul_assoc]`. Conclude with `(smul_eq_zero.1 this).resolve_left hs0`. Establish `h0Y : Yfᴴ * M.gram * d.i₀ = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg conjTranspose d.i₀e'` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, hG', conjTranspose_conjTranspose, conjTranspose_zero, hde', hgram, conjTranspose_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hss, one_smul, ← Matrix.mul_assoc]`. Conclude with `this`. Establish `hmt : Formalism.L2.Theta.mt (sgn ε M) ((ofSgn ε M).symm a) = Formalism.L2.Theta.mt M a`. Rewrite using `[← mt_ofSgn, MulEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨torusMat t ht0, map_diag_fin t, fun τ => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(diagonal fun i => realE D (t i)).map (fun x => θ τ (infPart D x)) = _`. Rewrite using `[diagonal_map (by simp)]`. Conclude with `congrArg diagonal (funext fun i => theta_realE hθ τ _)`. Apply `d.ga_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hmt, d.levi_jX]`. Simplify using `only [GlobalTheory.MixModel.HypDec.jX, GlobalTheory.MixModel.rat, hde, torusMat_val]`. Conclude with `mt_mul_rat M a ha.1 Xf _ (map_diag_fin t) fun w τ => by`. Rewrite using `[map_diag_inf]`. Conclude with `(ha.2 w τ).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hmt, d.wittDecomp_levi_inclAnisotropic]`. Take `⟨I, hI⟩ : ∃ I : Matrix (Fin M.rank) (Fin S₀.rank) D.host.E, I = d.i₀` from `⟨d.i₀, rfl⟩`. Rewrite `h0X`, `h0Y` using `[← hI]`. Establish `key` using `mt_mul_rat M a ha.1 I (1 : Matrix (Fin S₀.rank) (Fin S₀.rank) (AE D)) (Matrix.map_one _ (RingHom.map_zero _) (RingHom.map_one _)) fun w τ => by`. Rewrite using `[Matrix.map_one _ (RingHom.map_zero _) (RingHom.map_one _), Matrix.mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Matrix.ext fun l j => ?_` and prove the remaining obligations. Establish `hz` using `(ha.2 w τ).2.2 (fun k => I k j) (funext fun l => congrFun (congrFun h0X l) j) (funext fun l => congrFun (congrFun h0Y l) j)`. Conclude with `congrFun hz l`. Rewrite `key` using `[Matrix.mul_one]`. Simplify using `only [GlobalTheory.MixModel.HypDec.j0, GlobalTheory.MixModel.rat, ← hI]`.
-
-Conclude with `key`. Rewrite using `[hmt, d.levi_jY, adj_torusMat_inv]`. Simplify using `only [GlobalTheory.MixModel.HypDec.jY, GlobalTheory.MixModel.rat, hde']`. Conclude with `mt_mul_rat M a ha.1 (s • Yf) _ (map_diag_fin _) fun w τ => by`. Rewrite using `[map_diag_inf]`.
-
-Establish `hsY : (s • Yf).map τ.1 = τ.1 s • Yf.map τ.1` using `Matrix.ext fun _ _ => by simp`. Rewrite using `[hsY, Matrix.mul_smul, Matrix.smul_mul, (ha.2 w τ).2.1]`. Use `congr 2`. Conclude with `congrArg diagonal (funext fun i => (Complex.ofReal_inv _).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem witt_levi : ∀ {D : D7} (θ : InfFam D), IsInfFam θ → ∀ (ε : Bool) (M : HSp D) (r : ℕ)
     (Xf Yf : Matrix (Fin M.rank) (Fin r) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig M.gram Xf Yf →

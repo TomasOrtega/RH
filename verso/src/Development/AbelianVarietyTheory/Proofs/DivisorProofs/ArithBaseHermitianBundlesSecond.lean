@@ -21,7 +21,7 @@ set_option autoImplicit false
 namespace GlobalTheory.FlagCovDiv
 
 /- English proof (translation)
-Introduce `_ _ _ _ D O hO B hB R hR c Bs _ q arq nBs E h H Bg jB πB u Gm hL Y₀ _ π₀ fl₀ hfb ar₀ n₀ G _ j πG pb _ _ φ φs jG r hc a i`. Take `⟨hr, -⟩` from `hL.2.2.2.2.2.2 a`. Use `⟨GlobalTheory.T.generic_root_transition_factors j (fl₀ a) i (r a i) (GlobalTheory.T.arithmetic_bundle_generic_setup D O hO B hB R hR c Bs q arq nBs E h H Bg jB πB u Gm hL Y₀ π₀ fl₀ hfb ar₀ n₀ G j πG pb φ φs jG r hc a i), ?_⟩` and prove the remaining obligations. Introduce `ch x hx`. Conclude with `GlobalTheory.T.generic_fibre_rational_function_rank D O B R c G πG φ φs a i hr x (r a i ch) (GlobalTheory.T.arithmetic_bundle_generic_fibre_data D O hO B hB R hR c Bs q arq nBs E h H Bg jB πB u Gm hL Y₀ π₀ fl₀ hfb ar₀ n₀ G j πG pb φ φs jG r hc a i hr ch x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isRatSec_and_unitAt : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB →
   ∀ (D : D7) (O : Setup D) (hO : O.Core) (B : ℝ) (hB : 2 ≤ B) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)

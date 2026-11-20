@@ -28,23 +28,19 @@ noncomputable section
 namespace GlobalTheory.LieRead
 
 /- English proof (translation)
-Introduce `_ _ D O _ _ A T H h y hy`. Establish `hb` using `(h.ht.int y).1 hy`. Take `⟨K, _, _, ι, jF, yK, uK, h1, h2, h3, h4⟩` from `GlobalTheory.T.flag_point_number_field_model O.s.T.Z y`. Establish `hK : yK (IsLocalRing.closedPoint K) ∉ genBd O.s.T.Z`. Introduce `hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hb` to reduce the goal to its premises. Establish `e : (spMap ι) (IsLocalRing.closedPoint Qb) = IsLocalRing.closedPoint K` using `Subsingleton.elim _ _`. Use `show y.y (IsLocalRing.closedPoint Qb) ∈ _`. Rewrite using `[← h2]`. Use `show yK ((spMap ι) (IsLocalRing.closedPoint Qb)) ∈ _`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `hm`. Take `⟨yO, hO⟩` from `GlobalTheory.T.toroidal_point_number_field O.s.T.Z K jF yK h3`. Take `⟨P₀, θ, hθ, hL⟩` from `GlobalTheory.T.toroidal_point_closed_point_image O.s.T.Z K yK hK`. Take `⟨v₀, hv₀, -⟩` from `GlobalTheory.T.flag_point_over_number_field O.s.T.Z y K ι jF yK uK h1 h2 h3 h4 P₀ θ hθ _ rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Establish `hg : P₀.g = (letters O.S.Dw).length` using `GlobalTheory.T.lie_basis_card_eq_dim K P₀ _ v₀ hv₀`. Take `⟨v, hv, hvu⟩` from `GlobalTheory.T.flag_point_over_number_field O.s.T.Z y K ι jF yK uK h1 h2 h3 h4 P₀ θ hθ P₀.g hg`. Use `letI : GrpObj ((Over.pullback yO).obj O.s.T.Z.t.G) := Functor.grpObjObj`. Establish `hψ` using `isGrpPullback_pullback O.s.T.Z.t.G yO`. Establish `w : θ ≫ O.s.T.Z.t.G.hom = (P₀.A.hom ≫ spMap (algebraMap (𝓞 K) K)) ≫ yO`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hO]`. Conclude with `hθ.1.w`. Set `φ : P₀.A.left ⟶ ((Over.pullback yO).obj O.s.T.Z.t.G).left` to `pullback.lift θ (P₀.A.hom ≫ spMap (algebraMap (𝓞 K) K)) w`. Establish `hφψ : φ ≫ pullback.fst O.s.T.Z.t.G.hom yO = θ` using `pullback.lift_fst _ _ _`. Establish `hfib : IsGrpPullback P₀.A ((Over.pullback yO).obj O.s.T.Z.t.G) (spMap (algebraMap (𝓞 K) K)) φ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsGrpPullback.cancel hψ ?_ (pullback.lift_snd _ _ _)` and prove the remaining obligations. Rewrite using `[hφψ, hO]`. Conclude with `hθ`. Use `⟨K, inferInstance, inferInstance, ⟨P₀, (Over.pullback yO).obj O.s.T.Z.t.G, IsSemiAbelian.pullback yO O.s.T.Z.t.G O.s.T.Z.t.semi, φ, hfib, v, hv⟩, ι, ?_, ?_⟩` and prove the remaining obligations. Use `show P₀.g = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg]`. Conclude with `length_letters O.S`. Use `⟨jF, yO, pullback.fst _ _, h1, ?_, hψ, ?_, hg, ?_⟩` and prove the remaining obligations. Rewrite using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Express the relevant statement in the definitionally equal form `spMap ι ≫ spMap (algebraMap (𝓞 K) K) ≫ yO = _`.
-
-Rewrite using `[hO, ← Category.assoc, h2]`. Use `show LBIso (O.s.T.Z.t.PP.L.pull (φ ≫ _)) P₀.L`. Rewrite using `[hφψ]`. Conclude with `hL`. Introduce `k x hx show _ = _ ≫ (v k).left ≫ φ ≫ _`.
-
-Rewrite using `[hφψ, hvu k x hx, h4]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibAt_interior : Hypotheses2 → HypothesesH → OnObj fun D O _ _ H _ => ∀ y : Pt O.s, y ∈ H.int → ∃ (K : Type) (_ : Field K) (_ : NumberField K) (F : SemiFib K) (ι : K →+* Qb), F.P₀.g = D.R.f * O.N ∧ FibTie O y F ι := by
   intro _ _ D O _ _ A T H h y hy

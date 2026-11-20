@@ -15,32 +15,32 @@ open UpperTheory.ConvolutionTheory.R2.C
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `map_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem rt_mul (x y : F) : UpperTheory.ConvolutionTheory.R2.rt (x * y) = UpperTheory.ConvolutionTheory.R2.rt x * UpperTheory.ConvolutionTheory.R2.rt y :=
   map_mul _ _ _
 
 /- English proof (translation)
-The claim follows from `map_neg _ _`.
+A detailed English derivation is pending.
 -/
 private theorem rt_neg (x : F) : UpperTheory.ConvolutionTheory.R2.rt (-x) = -UpperTheory.ConvolutionTheory.R2.rt x :=
   map_neg _ _
 
 /- English proof (translation)
-Simplify using `[ψ, UpperTheory.ConvolutionTheory.R2.rt, adelicChar_algebraMap]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem psi_rt (x : F) : ψ (UpperTheory.ConvolutionTheory.R2.rt x) = 1 := by
   simp [ψ, UpperTheory.ConvolutionTheory.R2.rt, adelicChar_algebraMap]
 
 /- English proof (translation)
-Simplify using `only [q4, UpperTheory.ConvolutionTheory.R2.rt, map_sub, map_mul, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem quadraticForm_rational_embed (δ : F) (ξ : Fin 4 → F) :
     q4 δ (fun i => UpperTheory.ConvolutionTheory.R2.rt (ξ i)) = UpperTheory.ConvolutionTheory.R2.rt (ξ 2 ^ 2 - δ * ξ 3 ^ 2 - ξ 1 * ξ 0) := by
   simp only [q4, UpperTheory.ConvolutionTheory.R2.rt, map_sub, map_mul, map_pow]
 
 /- English proof (translation)
-Set `e : (Fin 4 → F) ≃ (Fin 4 → F)` to `{ toFun := fun ξ i => t * ξ i invFun := fun ξ i => t⁻¹ * ξ i left_inv := fun ξ => by funext i; simp [ht] right_inv := fun ξ => by funext i; simp [ht] }`. Conclude with `e.tsum_eq (fun ξ => f fun i => UpperTheory.ConvolutionTheory.R2.rt (ξ i))`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 private theorem th_scale (t : F) (ht : t ≠ 0) (f : V4 F → ℂ) :
     (∑' ξ : Fin 4 → F, f fun i => UpperTheory.ConvolutionTheory.R2.rt (t * ξ i)) = Th f := by
@@ -52,14 +52,14 @@ private theorem th_scale (t : F) (ht : t ≠ 0) (f : V4 F → ℂ) :
   exact e.tsum_eq (fun ξ => f fun i => UpperTheory.ConvolutionTheory.R2.rt (ξ i))
 
 /- English proof (translation)
-The claim follows from `(Equiv.neg (Fin 4 → F)).tsum_eq (fun ξ => f fun i => UpperTheory.ConvolutionTheory.R2.rt (ξ i))`.
+A detailed English derivation is pending.
 -/
 private theorem th_neg (f : V4 F → ℂ) :
     (∑' ξ : Fin 4 → F, f fun i => UpperTheory.ConvolutionTheory.R2.rt (-ξ i)) = Th f :=
   (Equiv.neg (Fin 4 → F)).tsum_eq (fun ξ => f fun i => UpperTheory.ConvolutionTheory.R2.rt (ξ i))
 
 /- English proof (translation)
-Simplify using `only [Th]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[quadraticForm_rational_embed, ← rt_mul, psi_rt, one_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem th_chirp (δ t : F) (f : V4 F → ℂ) :
     Th (fun x => ψ (UpperTheory.ConvolutionTheory.R2.rt t * q4 δ x) * f x) = Th f := by
@@ -68,19 +68,19 @@ private theorem th_chirp (δ t : F) (f : V4 F → ℂ) :
   rw [quadraticForm_rational_embed, ← rt_mul, psi_rt, one_mul]
 
 /- English proof (translation)
-Introduce `F _ _ _ δ hδ t ht`. Set `b : (A F)ˣ` to `Units.map (algebraMap F (A F)).toMonoidHom (Units.mk0 t ht)`. Establish `hb : (b : A F) = UpperTheory.ConvolutionTheory.R2.rt t` using `rfl`. Establish `hbi : ((b⁻¹ : (A F)ˣ) : A F) = UpperTheory.ConvolutionTheory.R2.rt t⁻¹` using `rfl`. Take `⟨c, hc, -⟩` from `idxEx F δ hδ b`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hm, -, hne⟩` from `testEx F`. Generalize the expression as in `four (g1 g) = φ at hm hne`. Establish `hP : Pc δ (b : A F) φ ∈ schwartzBruhatPi F (Fin 4)` using `(pcMem F δ).2 hδ b φ hm`. Establish `hch : (fun x => ψ (UpperTheory.ConvolutionTheory.R2.rt t * q4 δ x) * φ x) ∈ schwartzBruhatPi F (Fin 4)`. Simplify `chirpQ F δ (UpperTheory.ConvolutionTheory.R2.rt t) 0 φ hm` using `[B4]`.
+Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : Th (Pc δ (b : A F) φ) = Th φ`. Establish `e : ∀ ξ : Fin 4 → F, Pc δ (b : A F) φ (fun i => UpperTheory.ConvolutionTheory.R2.rt (ξ i)) = ft4 δ (fun x => ψ (UpperTheory.ConvolutionTheory.R2.rt t * q4 δ x) * φ x) fun i => UpperTheory.ConvolutionTheory.R2.rt (t * ξ i)`. Introduce `ξ`. Rewrite using `[(pcMem F δ).1, hb, quadraticForm_rational_embed, ← rt_mul, psi_rt, one_mul]`. Simplify using `only [rt_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Th (ft4 δ (Pc δ (b : A F) φ)) = c * Th φ`. Establish `e : ∀ ξ : Fin 4 → F, ft4 δ (Pc δ (b : A F) φ) (fun i => UpperTheory.ConvolutionTheory.R2.rt (ξ i)) = c * ft4 δ φ fun i => UpperTheory.ConvolutionTheory.R2.rt (-ξ i)`. Introduce `ξ`. Establish `h` using `idxFt F δ b c hc (⟨φ, hm⟩ : S4 F) (fun i => UpperTheory.ConvolutionTheory.R2.rt (ξ i))`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn : (-fun i => UpperTheory.ConvolutionTheory.R2.rt (ξ i) : V4 F) = fun i => UpperTheory.ConvolutionTheory.R2.rt (-ξ i)`. Use function extensionality and compare the values at `i`. Simplify using `[rt_neg]`. Simplify using `only at h`. Rewrite using `[h, hbi, quadraticForm_rational_embed, ← rt_mul, ← rt_neg, psi_rt, mul_one, hn]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `(ftBasic F δ hδ _ hP).2.2`. Establish `hc1 : c = 1`. Establish `: c * Th φ = 1 * Th φ` using `by rw [← h2, h3, h1, one_mul]`. Conclude with `mul_right_cancel₀ hne this`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[hc1]`. Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.C.idxRat :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (δ : F), δ ≠ 0 → ∀ t : F, t ≠ 0 → IsIdx δ (rt t) 1 := by

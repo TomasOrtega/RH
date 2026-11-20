@@ -3,11 +3,9 @@ import Mathlib
 namespace Bl.general_b_fact_upper_version
 
 /- English proof (translation)
-Introduce `R _ _ ζ M P h1 hM hP`. Establish `hs : (∑ i ∈ Finset.range M, ζ ^ i) = 0`. Establish `h` using `geom_sum_mul ζ M`. Rewrite `h` using `[hM, sub_self]`. Conclude with `(mul_eq_zero.mp h).resolve_right (sub_ne_zero.mpr h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hP`, the goal using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `h2 : Ideal.Quotient.mk P ζ = 1`. Rewrite `hP` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `hP`. Establish `h3` using `congrArg (Ideal.Quotient.mk P) hs`.
-
-Simplify `h3` using `[map_sum, map_pow, h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {R : Type} [inst : CommRing.{0} R] [IsDomain.{0} R] (ζ : R) (M : Nat) (P : Ideal.{0} R),

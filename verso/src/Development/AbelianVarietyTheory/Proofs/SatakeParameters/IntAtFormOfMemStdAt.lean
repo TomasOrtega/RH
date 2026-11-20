@@ -15,7 +15,7 @@ section SlopeTestRemainingChoices
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {P : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.TopInv.form_apply η v, Finset.mul_sum]`. Use `GlobalTheory.TopStep.intAt_sum _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Conclude with `(mem_stdAt.1 hv j).mul (h j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_form_of_mem_stdAt (a : E) (η : Sp E n →ₗ[E] E) (h : ∀ i, IntAt P (a * η (Pi.single i 1))) {v : Sp E n}
     (hv : v ∈ stdAt E n P) : IntAt P (a * η v) := by
@@ -25,7 +25,7 @@ theorem intAt_form_of_mem_stdAt (a : E) (η : Sp E n →ₗ[E] E) (h : ∀ i, In
   exact (mem_stdAt.1 hv j).mul (h j)
 
 /- English proof (translation)
-Use `⟨fun h i => ?_, fun h i => intAt_form_of_mem_stdAt a η h (glint_mem κ (single_mem_stdAt i))⟩` and prove the remaining obligations. Establish `h1` using `intAt_form_of_mem_stdAt a _ h (glint_mem κ⁻¹ (single_mem_stdAt i))`. Establish `e : κ.1 ((κ⁻¹).1 (Pi.single i 1)) = Pi.single i 1` using `LinearEquiv.apply_symm_apply κ.1 _`. Establish `e' : (η ∘ₗ κ.1.toLinearMap) ((κ⁻¹).1 (Pi.single i 1)) = η (Pi.single i 1)` using `congrArg η e`. Rewrite `h1` using `[e']`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem intAt_form_comp_iff (a : E) (κ : GLint E n P) (η : Sp E n →ₗ[E] E) :
     (∀ i, IntAt P (a * (η ∘ₗ κ.1.toLinearMap) (Pi.single i 1))) ↔ ∀ i, IntAt P (a * η (Pi.single i 1)) := by
@@ -38,11 +38,11 @@ theorem intAt_form_comp_iff (a : E) (κ : GLint E n P) (η : Sp E n →ₗ[E] E)
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Establish `he : IntAt P.1 ((epsSg : ℤ) : X.E)` using `intCast_mem (intRing P.1) _`. Establish `hq` using `fun m => intAt_pow (GlobalTheory.TopStep.intAt_nat (P := P.1) (qOf P.1)) m`. Establish `hd` using `he.mul hz`. Establish `h1 : IntAt P.1 ((qOf P.1 : X.E) ^ c.D P * ((epsSg : X.E) * x))`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `(hq d).mul (he.mul hx)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hd, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `hc.psi_add P _ _ h1 ((hq _).mul hd)` as an intermediate fact.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `this` using `[hc.psi_int P _ hd, mul_one]`. Rewrite using `[← this]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psi_add_int {X : Fields} {SB : Finset (HeightOneSpectrum (𝓞 X.E))} {c : LocCst X SB} (hc : c.Ok) (P : SB) {k : ℕ}
     (hk : k ≤ c.D P) {x z : X.E} (hx : IntAt P.1 ((qOf P.1 : X.E) ^ k * x)) (hz : IntAt P.1 (z - x)) :
@@ -63,17 +63,17 @@ theorem psi_add_int {X : Fields} {SB : Finset (HeightOneSpectrum (𝓞 X.E))} {c
   ring
 
 /- English proof (translation)
-Introduce `X Pr sel S mu cst hc P hD n κ η y' y'' hy1 hy2 hk1 hk2`. Establish `hq` using `qOf_ne_zero (P := P.1)`. Unfold `ftY`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Rewrite using `[if_pos hP, if_pos hP]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hi` using `intAt_form_comp_iff 1 κ η`. Simplify using `only [one_mul] at hi`. Distinguish the cases in `h : ∀ i, IntAt P.1 (η (Pi.single i 1))`. Rewrite using `[if_pos h, if_pos (hi.2 h)]`. Establish `h' : ∀ i, IntAt P.1 (1 * η (Pi.single i 1))` using `fun i => by rw [one_mul]; exact h i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `psi_add_int hc P (hc.D_pos P) ?_ ?_` and prove the remaining obligations. Use `intAt_form_of_mem_stdAt 1 η h' (v := (qOf P.1 : X.E) • y') (mem_stdAt.2 (hy1 hP))` as an intermediate fact. Rewrite `this` using `[one_mul, map_smul, smul_eq_mul, ← pow_one (qOf P.1 : X.E)]`. Then use the resulting hypothesis. Use `intAt_form_of_mem_stdAt 1 η h' (hk1 hP)` as an intermediate fact. Rewrite `this` using `[one_mul, map_sub]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[if_neg h, if_neg fun h' => h (hi.1 h')]`. Rewrite using `[if_neg hP, if_neg hP]`. Establish `hi` using `intAt_form_comp_iff ((qOf P.1 : X.E) ^ cst.M) κ η`. Distinguish the cases in `h : ∀ i, IntAt P.1 ((qOf P.1 : X.E) ^ cst.M * η (Pi.single i 1))`. Rewrite using `[if_pos h, if_pos (hi.2 h)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg _ (psi_add_int hc P (hD hP) ?_ ?_)` and prove the remaining obligations. Use `intAt_form_of_mem_stdAt _ η h (v := (qOf P.1 : X.E) ^ cst.M • y') (mem_stdAt.2 (hy2 hP))` as an intermediate fact. Rewrite `this` using `[map_smul, smul_eq_mul, ← mul_assoc, ← pow_add, ← two_mul]`. Then use the resulting hypothesis. Use `intAt_form_of_mem_stdAt _ η h (hk2 hP)` as an intermediate fact. Rewrite `this` using `[map_smul, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hq), one_mul, map_sub]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[if_neg h, if_neg fun h' => h (hi.1 h')]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ftY_comp_glint : ∀ {X : Fields} {Pr : Primes X} (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)), cst.Ok → ∀ (P : rowSG Pr sel mu), (P.1 ∉ Pr.vGs → 2 * cst.M ≤ cst.D P) → ∀ {n : ℕ} (κ : GLint X.E n P.1) (η : Sp X.E n →ₗ[X.E] X.E) (y' y'' : Sp X.E n), (P.1 ∈ Pr.vGs → ∀ i, IntAt P.1 ((qOf P.1 : X.E) * y' i)) → (P.1 ∉ Pr.vGs → ∀ i, IntAt P.1 ((qOf P.1 : X.E) ^ cst.M * y' i)) → (P.1 ∈ Pr.vGs → κ.1 y'' - y' ∈ stdAt X.E n P.1) → (P.1 ∉ Pr.vGs → ((qOf P.1 : X.E) ^ cst.M)⁻¹ • (κ.1 y'' - y') ∈ stdAt X.E n P.1) → ftY sel mu cst P (η ∘ₗ κ.1.toLinearMap) y'' = ftY sel mu cst P η y' := by
   intro X Pr sel S mu cst hc P hD n κ η y' y'' hy1 hy2 hk1 hk2

@@ -7,19 +7,17 @@ namespace GroundTheory.Heights₂.Heights
 open ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Introduce `hZ1 hZ2 hEx K _ _ i hi F ε hε`. Take `⟨II, hII⟩` from `hEx`. Take `⟨T, _, _, ⟨b⟩⟩` from `hBasis K i F`. Establish `hb` using `hBij K i F T b`. Use `set A := dualLine F b hb with hA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `set e : ℝ := -F.slope + 1 / 2 * Real.log i + ε with he`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hW : ∀ W : Ideal (MRing (dualBlocks T)), IsArithVar W 1 → dualIdeal b ≤ W → e * degC W ≤ II Unit (dualBlocks T) W 1 ![A]`. Introduce `W hW1 hPW`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hdeg, K', iF, iN, iA, v, hv, hline⟩` from `hPt K i F T b hb II hII W hW1 hPW`. Establish `hlt` using `hne K' iF iN iA v hv`. Rewrite `hlt` using `[hline]`. Establish `hd : (0 : ℝ) < degC W` using `by exact_mod_cast hdeg`. Establish `h1 : e < II Unit (dualBlocks T) W 1 ![A] / degC W`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `hlt` using `[neg_div]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `((lt_div_iff₀ hd).mp h1).le`. Establish `hV : IsArithVar (dualIdeal b) (i - 1 + 1)`. Rewrite using `[Nat.sub_add_cancel hi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hArith K i F T b hi`. Establish `hZ` using `hZ1 Unit (dualBlocks T) (dualIdeal b) ⊥ (i - 1) A e II hII hV bot_le (hSemi K i F T b hb) (hNef _ _ _ _ fun _ => zero_le_one) (hConj K i F T b hb) hW`. Rewrite `hZ` using `[Nat.sub_add_cancel hi]`. Establish `hT` using `hTop hZ2 K i F T b hb II hi hII`. Establish `hG` using `hPos K i F T b hb hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hi' : (0 : ℝ) < i` using `by exact_mod_cast hi`. Establish `key : (i : ℝ) * e * geomDeg (dualIdeal b) A (i - 1) ≤ (i : ℝ) * (-F.slope + 1 / 2 * Real.log i) * geomDeg (dualIdeal b) A (i - 1)` using `hZ.trans hT`. Establish `: (i : ℝ) * ε * geomDeg (dualIdeal b) A (i - 1) ≤ 0`. Rewrite `key` using `[he]`. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish `: 0 < (i : ℝ) * ε * geomDeg (dualIdeal b) A (i - 1)` using `mul_pos (mul_pos hi' hε) hG`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem LineOfLargeDegreeFromZ.proofDual (hBasis : DualLatticeBasisExists.Statement)
     (hBij : DualEmbBijective.Statement) (hArith : DualArithVar.Statement)

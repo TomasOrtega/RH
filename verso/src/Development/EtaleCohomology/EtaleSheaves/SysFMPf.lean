@@ -38,9 +38,9 @@ def FMrange : Prop := ∀ {P : Scheme.{0}} [CompactSpace P] [QuasiSeparatedSpace
       Set.range m = RR w q
 
 /- English proof (translation)
-Introduce `P _ _ W _ w hW y`. Take `⟨q, J, _, _, D, ι, h1, h2, h3⟩` from `hS W w hW y`. Take `⟨m, e1, e2, hm, hf, hq⟩` from `hE W w hW q`. Use `⟨q, J, inferInstance, inferInstance, D, ι, h1, h2, m, hm, hf, hq, ?_⟩` and prove the remaining obligations. Rewrite using `[h3]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hR W w hW q m e1 e2`.
+A detailed English derivation is pending.
 -/
 theorem SysFM_of (hS : Sys) (hE : FMex) (hR : FMrange) : LateralTheory.E.NbIsoPf.SysFM := by
   intro P _ _ W _ w hW y

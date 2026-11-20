@@ -7,11 +7,11 @@ namespace PositivityTheory.Xgn.FixedFieldAutomorphism
 open scoped Cardinal
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_isTranscendenceBasis R K`. Take `⟨t, ht⟩` from `exists_isTranscendenceBasis R L`. Establish `h1` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' _ hs hR hK`. Establish `h2` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' _ ht hR (hKL ▸ hK)`. Establish `h3 : #s = #t` using `by rw [← h1, ← h2, hKL]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e⟩` from `Cardinal.eq.1 h3`. Use `haveI := IsAlgClosed.isAlgClosure_of_transcendence_basis _ hs`. Use `haveI := IsAlgClosed.isAlgClosure_of_transcendence_basis _ ht`. Set `e' : Algebra.adjoin R (Set.range ((↑) : s → K)) ≃ₐ[R] Algebra.adjoin R (Set.range ((↑) : t → L))` to `hs.1.aevalEquiv.symm.trans ((MvPolynomial.renameEquiv R e).trans ht.1.aevalEquiv)`. Use `⟨IsAlgClosure.equivOfEquiv K L e'.toRingEquiv, fun r => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[IsScalarTower.algebraMap_apply R (Algebra.adjoin R (Set.range ((↑) : s → K))) K, IsAlgClosure.equivOfEquiv_algebraMap, IsScalarTower.algebraMap_apply R (Algebra.adjoin R (Set.range ((↑) : t → L))) L]`. Use `congr 1`. Conclude with `e'.commutes r`.
+A detailed English derivation is pending.
 -/
 theorem exists_equiv {R K L : Type} [CommRing R] [IsDomain R] [Field K] [Field L]
     [IsAlgClosed K] [IsAlgClosed L] [Algebra R K] [Algebra R L] [FaithfulSMul R K]
@@ -37,7 +37,7 @@ theorem exists_equiv {R K L : Type} [CommRing R] [IsDomain R] [Field K] [Field L
   exact e'.commutes r
 
 /- English proof (translation)
-Establish `hC : ℵ₀ < #ℂ`. Rewrite using `[Cardinal.mk_complex]`. Conclude with `Cardinal.aleph0_lt_continuum`. Conclude with `@exists_equiv R ℂ ℂ _ _ _ _ _ _ i.toAlgebra j.toAlgebra ((@faithfulSMul_iff_algebraMap_injective R ℂ _ _ i.toAlgebra).2 hi) ((@faithfulSMul_iff_algebraMap_injective R ℂ _ _ j.toAlgebra).2 hj) hR hC rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_aut {R : Type} [CommRing R] [IsDomain R] (hR : #R ≤ ℵ₀) (i j : R →+* ℂ)
     (hi : Function.Injective i) (hj : Function.Injective j) :
@@ -51,21 +51,19 @@ theorem exists_aut {R : Type} [CommRing R] [IsDomain R] (hR : #R ≤ ℵ₀) (i 
 end PositivityTheory.Xgn.FixedFieldAutomorphism
 
 /- English proof (translation)
-Introduce `F c hF h`. Establish `hFc : Cardinal.mk F ≤ Cardinal.aleph0`. Use `Algebra.IsAlgebraic.cardinalMk_le_max ℚ F` as an intermediate fact. Simplify using `using this`. Distinguish the cases in `hc : IsAlgebraic F c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Establish `hint : IsIntegral F c` using `hc.isIntegral haveI : FiniteDimensional F (IntermediateField.adjoin F {c}) := IntermediateField.adjoin.finiteDimensional hint`. Establish `hE : Cardinal.mk (IntermediateField.adjoin F {c}) ≤ Cardinal.aleph0`. Use `(Algebra.IsAlgebraic.cardinalMk_le_max F _).trans (max_le hFc le_rfl)` and prove the remaining obligations. Establish `key : ∀ φ : IntermediateField.adjoin F {c} →ₐ[F] ℂ, φ = (IntermediateField.adjoin F {c}).val`. Introduce `φ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, hg⟩` from `PositivityTheory.Xgn.FixedFieldAutomorphism.exists_aut hE (IntermediateField.adjoin F {c}).val.toRingHom φ.toRingHom (RingHom.injective _) (RingHom.injective _)`. Establish `h1 : g c = c` using `h g fun a ha => by`. Use `hg (algebraMap F _ ⟨a, ha⟩)` as an intermediate fact. Simplify using `using this`. Establish `h2` using `hg (IntermediateField.AdjoinSimple.gen F c)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(IntermediateField.adjoin.powerBasis hint).algHom_ext ?_` and prove the remaining obligations. Rewrite using `[IntermediateField.adjoin.powerBasis_gen]`. Conclude with `h2.symm.trans h1`. Establish `hcard` using `AlgHom.card F (IntermediateField.adjoin F {c}) ℂ`. Establish `h1 : Module.finrank F (IntermediateField.adjoin F {c}) = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcard, Fintype.card_eq_one_iff]`. Conclude with `⟨_, key⟩`. Establish `h2 : c ∈ (⊥ : IntermediateField F ℂ)` using `IntermediateField.finrank_adjoin_simple_eq_one_iff.1 h1`. Take `⟨a, rfl⟩` from `IntermediateField.mem_bot.1 h2`. Conclude with `a.2`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. It suffices to derive a contradiction. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `hc' : ¬ IsAlgebraic F (c + 1)` using `fun h' => hc (by`. Use `h'.isIntegral.sub (isIntegral_one (R := F))` as an intermediate fact. Simplify using `using this.isAlgebraic)`. Establish `hP : Cardinal.mk (Polynomial F) ≤ Cardinal.aleph0` using `Polynomial.cardinalMk_le_max.trans (max_le hFc le_rfl)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `PositivityTheory.Xgn.FixedFieldAutomorphism.exists_aut hP (Polynomial.aeval (R := F) c).toRingHom (Polynomial.aeval (R := F) (c + 1)).toRingHom (transcendental_iff_injective.1 hc) (transcendental_iff_injective.1 hc')`. Establish `h1 : g c = c` using `h g fun a ha => by`. Use `hg (Polynomial.C ⟨a, ha⟩)` as an intermediate fact. Simplify using `using this`. Establish `h2` using `hg Polynomial.X`.
-
-Simplify using `[h1] at h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.mem_of_fixed_by_automorphisms : ∀ (F : IntermediateField ℚ ℂ) (c : ℂ), FiniteDimensional ℚ F → (∀ g : ℂ ≃+* ℂ, (∀ a ∈ F, g a = a) → g c = c) → c ∈ F := by
   intro F c hF h

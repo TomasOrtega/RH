@@ -11,7 +11,7 @@ open MvPolynomial Finset
 noncomputable section
 
 /- English proof (translation)
-Unfold `vandermondeOf`. Use `Finset.prod_ne_zero_iff.mpr fun i _ => Finset.prod_ne_zero_iff.mpr fun j hj => ?_` and prove the remaining obligations. Establish `hij : i ≠ j` using `ne_of_lt (Finset.mem_Ioi.mp hj)`. Use `sub_ne_zero.mpr fun h => hij ?_` and prove the remaining obligations. Conclude with `X_injective (R := ℚ) h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vandermondeOf_X_fin_ne_zero (r : ℕ) :
     vandermondeOf (fun i : Fin r => (X i : MvPolynomial (Fin r) ℚ)) ≠ 0 := by
@@ -22,9 +22,9 @@ theorem vandermondeOf_X_fin_ne_zero (r : ℕ) :
   exact X_injective (R := ℚ) h
 
 /- English proof (translation)
-Establish `h` using `IsHomogeneous.prod (σ := Fin r) (R := ℚ) Finset.univ (fun i : Fin r => ∏ j ∈ Finset.Ioi i, ((X i : MvPolynomial (Fin r) ℚ) - X j)) (fun i => ∑ _j ∈ Finset.Ioi i, 1) (fun i _ => IsHomogeneous.prod _ _ _ fun j _ => (isHomogeneous_X ℚ i).sub (isHomogeneous_X ℚ j))`. Establish `hdeg : ∑ i : Fin r, ∑ _j ∈ Finset.Ioi i, (1 : ℕ) = r * (r - 1) / 2`. Simplify using `only [Finset.sum_const, smul_eq_mul, mul_one, Fin.card_Ioi]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => r - 1 - i) r, ← Finset.sum_range_id]`. Conclude with `Finset.sum_range_reflect (fun i => i) r`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hdeg]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem vandermondeOf_X_isHomogeneous (r : ℕ) :
     (vandermondeOf (fun i : Fin r => (X i : MvPolynomial (Fin r) ℚ))).IsHomogeneous
@@ -42,7 +42,7 @@ theorem vandermondeOf_X_isHomogeneous (r : ℕ) :
   exact h
 
 /- English proof (translation)
-Unfold `psum`. Conclude with `IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_X_pow i q`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem psum_isHomogeneous (σ : Type*) [Fintype σ] (q : ℕ) :
     (psum σ ℚ q).IsHomogeneous q := by
@@ -50,13 +50,13 @@ theorem psum_isHomogeneous (σ : Type*) [Fintype σ] (q : ℕ) :
   exact IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_X_pow i q
 
 /- English proof (translation)
-Introduce `r q m _hq`. Use `set V := vandermondeOf (fun i : Fin r => (X i : MvPolynomial (Fin r) ℚ)) with hVdef`. Use `set S := psum (Fin r) ℚ q * psum (Fin r) ℚ 1 ^ m with hSdef`. Establish `hprod : ((q :: List.replicate m 1).map fun k => psum (Fin r) ℚ k).prod = S`. Simplify using `[S, List.map_replicate, List.prod_replicate]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `halt : Comb.IsAlt (V * S)`. Use `Comb.isAlt_vandermonde_mul_prod (m := r) (q :: List.replicate m 1)` as an intermediate fact. Rewrite `this` using `[hprod]`. Then use the resulting hypothesis. Establish `hhom : (V * S).IsHomogeneous (r * (r - 1) / 2 + (q + m))`. Establish `h` using `(vandermondeOf_X_isHomogeneous r).mul ((psum_isHomogeneous (Fin r) q).mul ((psum_isHomogeneous (Fin r) 1).pow m))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis. Establish `hexp` using `h1 r (q + m) (V * S) halt hhom`. Apply `mul_left_cancel₀ (vandermondeOf_X_fin_ne_zero r)` to reduce the goal to its premises. Rewrite using `[Finset.mul_sum]`. Use `hexp.trans (Finset.sum_congr rfl fun lam _ => ?_)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [symmetricGroupCharacter, hprod]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem FrobeniusCharacterFormula.proof (h1 : SchAltPartitionExpansion.Statement) :
     FrobeniusCharacterFormula.Statement := by

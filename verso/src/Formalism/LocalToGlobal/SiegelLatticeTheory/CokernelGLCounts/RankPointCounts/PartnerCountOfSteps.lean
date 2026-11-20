@@ -19,9 +19,9 @@ def leadM {m : ℕ} (X : Matrix (Fin m) (Fin m) K) (l : ℕ) : K :=
   if hl : l ≤ m then (X.submatrix (Fin.castLE hl) (Fin.castLE hl)).det else 0
 
 /- English proof (translation)
-Establish `e : ∑ a : Fin l, g (Fin.castLE hl a) = ∑ a ∈ Finset.univ.map (Fin.castLEEmb hl), g a`. Rewrite using `[Finset.sum_map]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `(Finset.sum_subset (Finset.subset_univ _) ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a _ ha`. Apply `hg` to reduce the goal to its premises. Assume the negation of the conclusion as `h`. Conclude with `ha (Finset.mem_map.2 ⟨⟨a.val, Nat.lt_of_not_le h⟩, Finset.mem_univ _, Fin.ext rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem sum_castLE {A : Type*} [AddCommMonoid A] {l m : ℕ} (hl : l ≤ m) (g : Fin m → A)
     (hg : ∀ a : Fin m, l ≤ a.val → g a = 0) : ∑ a, g a = ∑ a : Fin l, g (Fin.castLE hl a) := by
@@ -35,13 +35,13 @@ theorem sum_castLE {A : Type*} [AddCommMonoid A] {l m : ℕ} (hl : l ≤ m) (g :
   exact ha (Finset.mem_map.2 ⟨⟨a.val, Nat.lt_of_not_le h⟩, Finset.mem_univ _, Fin.ext rfl⟩)
 
 /- English proof (translation)
-Unfold `leadM`. Use `split_ifs with hl`. Establish `e : (L * X * U).submatrix (Fin.castLE hl) (Fin.castLE hl) = L.submatrix (Fin.castLE hl) (Fin.castLE hl) * X.submatrix (Fin.castLE hl) (Fin.castLE hl) * U.submatrix (Fin.castLE hl) (Fin.castLE hl)`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(sum_castLE hl _ ?_).trans (Finset.sum_congr rfl fun b _ => ?_)` and prove the remaining obligations. Introduce `b hb`. Establish `hj` using `j.isLt`. Rewrite using `[hU.2 _ _ (by simp only [Fin.lt_def, Fin.val_castLE]; omega), mul_zero]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_castLE hl _ fun a ha => ?_` and prove the remaining obligations. Establish `hi` using `i.isLt`. Rewrite using `[hL.2 _ _ (by simp only [Fin.lt_def, Fin.val_castLE]; omega), zero_mul]`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul]`. Establish `h1 : (L.submatrix (Fin.castLE hl) (Fin.castLE hl)).det = 1` using `det_lo' ⟨fun a => hL.1 _, fun a b hab => hL.2 _ _ hab⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (U.submatrix (Fin.castLE hl) (Fin.castLE hl)).det = 1` using `det_up' ⟨fun a => hU.1 _, fun a b hab => hU.2 _ _ hab⟩`. Rewrite using `[h1, h2, one_mul, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem leadM_mul {m : ℕ} {L X U : Matrix (Fin m) (Fin m) K} (hL : IsLo L) (hU : IsUp U) (l : ℕ) :
     leadM (L * X * U) l = leadM X l := by
@@ -81,7 +81,7 @@ def mkMat {m : ℕ} (P : Matrix (Fin m) (Fin m) E) (hP : ∀ a b, P a b ∈ M.R)
     rw [this]; exact hu⟩
 
 /- English proof (translation)
-Unfold `clsOf`. Rewrite using `[dif_pos ⟨hP, hu⟩]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem clsOf_mk {m : ℕ} (P : Matrix (Fin (m + 1)) (Fin (m + 1)) E) (hP : ∀ a b, P a b ∈ M.R)
     (hu : IsUnit P.det) : clsOf M P = some (Quotient.mk (M.isoSetoid m) (mkMat M P hP hu)) := by
@@ -90,14 +90,14 @@ theorem clsOf_mk {m : ℕ} (P : Matrix (Fin (m + 1)) (Fin (m + 1)) E) (hP : ∀ 
   rfl
 
 /- English proof (translation)
-Conclude with `clsOf_mk M (Z.Z.map M.R.subtype) (fun a b => (Z.Z a b).2) Z.unit`.
+A detailed English derivation is pending.
 -/
 theorem clsOf_map {m : ℕ} (Z : M.Mat (m + 1)) :
     clsOf M (Z.Z.map M.R.subtype) = some (Quotient.mk (M.isoSetoid m) Z) := by
   exact clsOf_mk M (Z.Z.map M.R.subtype) (fun a b => (Z.Z a b).2) Z.unit
 
 /- English proof (translation)
-Establish `h1 : Nonempty (M.Iso (Quotient.out (Quotient.mk (M.isoSetoid m) Z₁)) Z₁)` using `Quotient.mk_out (s := M.isoSetoid m) Z₁`. Establish `h2 : Nonempty (M.Iso (Quotient.out (Quotient.mk (M.isoSetoid m) Z₂)) Z₂)` using `Quotient.mk_out (s := M.isoSetoid m) Z₂`. Conclude with `nIso_congr M h1.some h2.some`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nIso_mk_out {m : ℕ} (Z₁ Z₂ : M.Mat (m + 1)) :
     M.nIso (Quotient.out (Quotient.mk (M.isoSetoid m) Z₁)) (Quotient.out (Quotient.mk (M.isoSetoid m) Z₂)) =
@@ -159,13 +159,13 @@ def ModKind : Prop :=
         ((nSh (blkMod Zd.δ T T' p (D.R.rS + 1) 1 (zetaOf w)) : ℕ) : (D.s.atP p).Ep)))
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[cornE]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem add_cornE_zero (p : PlF D) (X : MatP D p) : X + cornE p 0 = X := by
   ext a b; simp [cornE]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun a => (h1 a).1, fun a b hab => (h2 a b hab).1⟩, ⟨fun a => (h1 a).2, fun a b hab => (h2 a b hab).2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem loUp_of_hyp {p : PlF D} {uL uU : MatP D p} (h1 : ∀ a, uL a a = 1 ∧ uU a a = 1)
     (h2 : ∀ a b, a < b → uL a b = 0 ∧ uU b a = 0) : IsLo uL ∧ IsUp uU :=
@@ -174,39 +174,35 @@ theorem loUp_of_hyp {p : PlF D} {uL uU : MatP D p} (h1 : ∀ a, uL a a = 1 ∧ u
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `p T T' w w' t₁ f₂' φ φ' hk hT hT' hyp h1 h2 hint2`. Establish `hkd : (Dmin w D.R.rS = 0 ↔ Dmin w' D.R.rS = 0)`. Establish `hk'` using `hk`. Unfold `kind at hk'`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h; by_contra h'; rw [if_pos h, if_neg h'] at hk'; exact absurd hk' (by simp)`. Introduce `h; by_contra h'; rw [if_neg h', if_pos h] at hk'; exact absurd hk' (by simp)`. Take `⟨uL, uU, hd, ho, hP1⟩` from `h1`. Take `⟨uL', uU', hd', ho', hP2⟩` from `h2`. Take `⟨hLo, hUp⟩` from `loUp_of_hyp hd ho`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hLo', hUp'⟩` from `loUp_of_hyp hd' ho'`. Establish `hT2p` using `hT2 _ _ (Zd.M p) (Zd.agree p).1 (Vp D p) (locH Zd p) (finrank_Vp p) t₁ hyp.1 t₁.f f₂' φ φ' hyp.2.1 hyp.2.2.1 hyp.2.2.2.1 hyp.2.2.2.2.1 hyp.2.2.2.2.2`. Simplify using `only at hT2p`. Establish `hint1 : ∀ a b, (locH Zd p).ZZplus t₁ a b ∈ (Zd.M p).R` using `hI p t₁ hyp.1`. Establish `hLZ1` using `hL p ((locH Zd p).Zhat t₁.f t₁.f') t₁.T t₁.T'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLZ2` using `hL p ((locH Zd p).Zhat t₁.f f₂') t₁.T t₁.T'`. Establish `hlead1 : leadM ((locH Zd p).ZZplus t₁) D.R.rS = leadM (modMat Zd.δ T T' p w) D.R.rS`. Rewrite using `[hP1]`. Conclude with `leadM_mul hLo hUp _`. Establish `hlead2 : leadM (Loc.HermSp.ZZplusOf (Zd.M p) ((locH Zd p).Zhat t₁.f f₂') t₁.T t₁.T') D.R.rS = leadM (modMat Zd.δ T T' p w') D.R.rS`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP2]`. Conclude with `leadM_mul hLo' hUp' _`. Distinguish the cases in `hD : Dmin w D.R.rS = 0`. Establish `hD'` using `hkd.1 hD`. Establish `hsh : cornerSh Zd.δ T T' p w = 0` using `by unfold cornerSh; rw [if_pos hD]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsh' : cornerSh Zd.δ T T' p w' = 0` using `by unfold cornerSh; rw [if_pos hD']`. Establish `e1 : (locH Zd p).ZZplus t₁ + cornE p (cornerSh Zd.δ T T' p w) = (locH Zd p).ZZplus t₁`. Rewrite using `[hsh]`. Conclude with `add_cornE_zero _ _`. Establish `e2 : Loc.HermSp.ZZplusOf (Zd.M p) ((locH Zd p).Zhat t₁.f f₂') t₁.T t₁.T' + cornE p (cornerSh Zd.δ T T' p w') = Loc.HermSp.ZZplusOf (Zd.M p) ((locH Zd p).Zhat t₁.f f₂') t₁.T t₁.T'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsh']`. Conclude with `add_cornE_zero _ _`. Rewrite using `[e1, e2]`. Establish `hl1 : leadM ((locH Zd p).ZZplus t₁) D.R.rS = 0` using `hlead1.trans ((hK p T T' w).1 hD)`. Establish `hl2 : leadM (Loc.HermSp.ZZplusOf (Zd.M p) ((locH Zd p).Zhat t₁.f f₂') t₁.T t₁.T') D.R.rS = 0` using `hlead2.trans ((hK p T T' w').1 hD')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hDl : (locH Zd p).Dl t₁.f t₁.f' D.R.rS = 0` using `hLZ1.1.2 hl1`. Establish `hu1 : IsUnit ((locH Zd p).ZZplus t₁).det` using `hLZ1.2.2 (hLZ1.1.2 hl1) hyp.1.1.2.2.2.1`. Distinguish the cases in `hu2 : IsUnit (Loc.HermSp.ZZplusOf (Zd.M p) ((locH Zd p).Zhat t₁.f f₂') t₁.T t₁.T').det`. Rewrite using `[clsOf_mk (Zd.M p) _ hint1 hu1, clsOf_mk (Zd.M p) _ hint2 hu2] show _ = (Zd.M p).nIso _ _`. Rewrite using `[nIso_mk_out]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hT2p.1 hDl _ _ rfl rfl`. Establish `hc2 : clsOf (Zd.M p) (Loc.HermSp.ZZplusOf (Zd.M p) ((locH Zd p).Zhat t₁.f f₂') t₁.T t₁.T') = none`. Unfold `clsOf`. Rewrite using `[dif_neg (fun h => hu2 h.2)]`. Rewrite using `[hc2]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Apply the tactic sequence `have h0 : ∀ o : Option ((Zd.M p).Cls D.R.rS), nIsoO Zd.M p o none = 0 := fun o => by cases o <;> rfl`. Rewrite using `[h0, Nat.card_eq_zero]`. Use `left`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Λ₂, hg, -⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hu2 (hLZ2.2.2 (hLZ2.1.2 hl2) hg.1.2.2.2.1)`. Establish `hD' : Dmin w' D.R.rS ≠ 0` using `fun h => hD (hkd.2 h)`. Establish `hz : zetaOf w = zetaOf w'`. Unfold `kind at hk`. Rewrite `hk` using `[if_neg hD, if_neg hD']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Option.some_inj.1 hk`. Take `⟨hu1, hcol1, hc1, hs1⟩` from `(hK p T T' w).2 hD`. Take `⟨hu2, hcol2, hc2, -⟩` from `(hK p T T' w').2 hD'`. Rewrite `hc2` using `[← hz]`. Establish `hsh : cornerSh Zd.δ T T' p w = ((nSh (blkMod Zd.δ T T' p (D.R.rS + 1) 1 (zetaOf w)) : ℕ) : (D.s.atP p).Ep)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `cornerSh`. Rewrite using `[if_neg hD]`. Establish `hsh' : cornerSh Zd.δ T T' p w' = ((nSh (blkMod Zd.δ T T' p (D.R.rS + 1) 1 (zetaOf w)) : ℕ) : (D.s.atP p).Ep)`. Unfold `cornerSh`. Rewrite using `[if_neg hD', ← hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hsh, hsh', cornE_eq]`. Establish `hl1 : IsUnit (leadM ((locH Zd p).ZZplus t₁) D.R.rS)` using `hlead1 ▸ hu1`. Establish `hl2 : IsUnit (leadM (Loc.HermSp.ZZplusOf (Zd.M p) ((locH Zd p).Zhat t₁.f f₂') t₁.T t₁.T') D.R.rS)` using `hlead2 ▸ hu2`. Establish `hDl : IsUnit ((locH Zd p).Dl t₁.f t₁.f' D.R.rS)` using `hLZ1.2.1.2 hl1`. Establish `hcard` using `hT2p.2 hDl (headMat (Zd.M p) _ hint1 hl1) (headMat (Zd.M p) _ hint2 hl2) (fun a => ⟨(locH Zd p).ZZplus t₁ a.castSucc (Fin.last _), hint1 _ _⟩) (fun a => ⟨Loc.HermSp.ZZplusOf (Zd.M p) ((locH Zd p).Zhat t₁.f f₂') t₁.T t₁.T' a.castSucc (Fin.last _), hint2 _ _⟩) (fun a => ⟨(locH Zd p …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨Z₁, Z₂, e₁, e₂, hb⟩` from `hB (Zd.M p) D.R.rS _ _ _ _ _ _ _ _ _ _ hLo hUp hLo' hUp' hP1 hP2 (fun a => ⟨(hcol1 a).1, (hcol1 a).2, (hcol2 a).1, (hcol2 a).2⟩) hc1 hc2 hs1 (natCast_mem _ _) (headMat (Zd.M p) _ hint1 hl1) (headMat (Zd.M p) _ hint2 hl2) (fun a => ⟨(locH Zd p).ZZplus t₁ a.castSucc (Fin.last _), h …`. Use `(show Nat.card (locSet Zd p t₁ f₂' φ φ') = _ from hcard).trans ?_` and prove the remaining obligations. Establish `c1 : clsOf (Zd.M p) ((locH Zd p).ZZplus t₁ + ((nSh (blkMod Zd.δ T T' p (D.R.rS + 1) 1 (zetaOf w)) : ℕ) : (D.s.atP p).Ep) • Ecorner D.R.rS) = some (Quotient.mk ((Zd.M p).isoSetoid D.R.rS) Z₁)`. Establish `h` using `clsOf_map (Zd.M p) Z₁`. Rewrite `h` using `[e₁]`.
-
-Conclude with `h`. Establish `c2 : clsOf (Zd.M p) (Loc.HermSp.ZZplusOf (Zd.M p) ((locH Zd p).Zhat t₁.f f₂') t₁.T t₁.T' + ((nSh (blkMod Zd.δ T T' p (D.R.rS + 1) 1 (zetaOf w)) : ℕ) : (D.s.atP p).Ep) • Ecorner D.R.rS) = some (Quotient.mk ((Zd.M p).isoSetoid D.R.rS) Z₂)`. Establish `h` using `clsOf_map (Zd.M p) Z₂`. Rewrite `h` using `[e₂]`. Conclude with `h`.
-
-Conclude with `hb.trans ((nIso_mk_out _ Z₁ Z₂).symm.trans (congrArg₂ (nIsoO Zd.M p) c1 c2).symm)`.
+A detailed English derivation is pending.
 -/
 theorem partnerIsomorphismCount_of_bounds (hT2 : Formalism.MainNotions.ThinScalesBound.T2 D) (hI : IntGenP Zd) (hL : LeadZZ Zd) (hK : ModKind Zd) (hB : BridgeBA) :
     PartnerIsomorphismCount Zd := by

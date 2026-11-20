@@ -10,17 +10,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ThetaNZ
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo Ω _ _ x₁ s hs`. Establish `hnz` using `GlobalTheory.Frames.secNZ_of_secGen GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo Ω x₁ s hs`. Take `⟨q, i, -, hqi⟩` from `hnz (IsLocalRing.closedPoint Ω)`. Use `Xo.univ.t.semi.smooth` as an intermediate fact. Establish `: Smooth (fst (Over.mk x₁) Xo.univ.t.G).left` using `by show Smooth (pullback.fst x₁ Xo.univ.t.G.hom) infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: JacobsonSpace ↥(Over.mk x₁).left` using `inferInstanceAs (JacobsonSpace (PrimeSpectrum Ω))`. Establish `: JacobsonSpace ↥(Gx x₁)` using `LocallyOfFiniteType.jacobsonSpace (fst (Over.mk x₁) Xo.univ.t.G).left`. Take `⟨y, hy, hyc⟩` from `nonempty_inter_closedPoints ⟨q, hqi⟩ ((Gx x₁).basicOpen (s.f i)).isOpen.isLocallyClosed`. Establish `hyc' : IsClosed ({y} : Set (Gx x₁))` using `hyc`. Use `⟨pointOfClosedPoint (fst (Over.mk x₁) Xo.univ.t.G).left y hyc', pointOfClosedPoint_comp _ y hyc', fun z J hJ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set w := pointOfClosedPoint (fst (Over.mk x₁) Xo.univ.t.G).left y hyc'`. Establish `hwz : w z = y` using `pointOfClosedPoint_apply _ y hyc' z`. Set `φ : Fin 1 → (Gx x₁ ⟶ Xo.univ.t.G.left)` to `fun _ => (snd (Over.mk x₁) Xo.univ.t.G).left`. Establish `hi : w z ∈ LB.wchart Xo.univ.t.PP.L φ i`. Rewrite using `[hwz]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Scheme.basicOpen_le _ _ hy`. Establish `hj` using `hJ.mem φ w`. Use `show sval s w z J ≠ 0`. Rewrite using `[sval_of s w z J (fun k => J (w ≫ φ k)) (fun k => rfl), sec_trans s w z hj hi]`. Establish `hU : IsUnit (gs w z (LB.wchart Xo.univ.t.PP.L φ i) (s.f i))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : z ∈ (Sp Ω).basicOpen ((w.app _).hom (s.f i))`. Rewrite using `[← Scheme.preimage_basicOpen]`. Use `show w z ∈ (Gx x₁).basicOpen (s.f i)`. Rewrite using `[hwz]`. Conclude with `hy`.
-
-Use `((Sp Ω).mem_basicOpen _ z hi).1 hb using 1` and compare the differences between its conclusion and the goal. Conclude with `gs_eq w z _ hi _`. Conclude with `((Units.isUnit _).mul hU).ne_zero`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_ratPt_sv_ne_zero : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {Ω : Type} [Field Ω] [IsAlgClosed Ω] {x₁ : Sp Ω ⟶ Xo.X} {s : LB.Sec (PPx x₁)}, IsThGen x₁ s → ∃ w : Sp Ω ⟶ Gx x₁, w ≫ (fst (Over.mk x₁) Xo.univ.t.G).left = 𝟙 _ ∧ ∀ (z : Sp Ω) (J : (Sp Ω ⟶ Xo.univ.t.G.left) → Xo.univ.t.PP.L.ι), Good Xo.univ.t.PP.L z J → sv Xo.univ.t.G Xo.univ.t.PP s w z J ≠ 0 := by
   intro E _ _ _ H Dw l Xo Ω _ _ x₁ s hs

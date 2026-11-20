@@ -11,7 +11,7 @@ open NumberField Formalism.HermitianLatticesTheory Formalism.ThetaLiftIndependen
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-The claim follows from `FractionalIdeal.isFractional_of_fg hM.fg`.
+A detailed English derivation is pending.
 -/
 theorem isFrac {M : Submodule (𝓞 K) K} (hM : Submodule.IsLattice K M) : IsFractional (𝓞 K)⁰ M :=
   FractionalIdeal.isFractional_of_fg hM.fg
@@ -20,13 +20,13 @@ def fracI {M : Submodule (𝓞 K) K} (hM : Submodule.IsLattice K M) : Fractional
   ⟨M, isFrac hM⟩
 
 /- English proof (translation)
-The claim follows from `FractionalIdeal.coe_mk _ _`.
+A detailed English derivation is pending.
 -/
 theorem coe_fracI {M : Submodule (𝓞 K) K} (hM : Submodule.IsLattice K M) :
     ((fracI hM : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K) = M := FractionalIdeal.coe_mk _ _
 
 /- English proof (translation)
-Take `⟨a, ha, h0⟩` from `exists_ne_zero_of_isLattice hM`. Introduce `e`. Establish `h1 : a ∈ fracI hM` using `by rw [← FractionalIdeal.mem_coe, coe_fracI]; exact ha`. Rewrite `h1` using `[e]`. Conclude with `h0 ((FractionalIdeal.mem_zero_iff _).1 h1)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frac_ne_zero {M : Submodule (𝓞 K) K} (hM : Submodule.IsLattice K M) : fracI hM ≠ 0 := by
   obtain ⟨a, ha, h0⟩ := exists_ne_zero_of_isLattice hM
@@ -39,18 +39,18 @@ def fracU {M : Submodule (𝓞 K) K} (hM : Submodule.IsLattice K M) : (Fractiona
   Units.mk0 _ (frac_ne_zero hM)
 
 /- English proof (translation)
-The claim follows from `coe_fracI hM`.
+A detailed English derivation is pending.
 -/
 theorem coe_fracU {M : Submodule (𝓞 K) K} (hM : Submodule.IsLattice K M) :
     (((fracU hM : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K) = M :=
   coe_fracI hM
 
 /- English proof (translation)
-Establish `h1 : ClassGroup.mk K (fracU hM * (fracU hM')⁻¹) = 1`. Rewrite using `[map_mul, map_inv, he, mul_inv_cancel]`. Rewrite `h1` using `[ClassGroup.mk_eq_one_iff]`. Take `⟨⟨a, ha⟩⟩` from `h1`. Establish `hMa : M = Submodule.span (𝓞 K) {a} * M'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.val_mul, FractionalIdeal.coe_mul, ha, coe_fracU]`. Use `⟨a, fun h0 => ?_, hMa⟩` and prove the remaining obligations. Take `⟨x, hx, hx0⟩` from `exists_ne_zero_of_isLattice hM`. Rewrite `hx` using `[hMa, h0, Submodule.mem_span_singleton_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, -, hy⟩` from `hx`. Rewrite `hy` using `[zero_mul]`. Conclude with `hx0 hy.symm`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_span_mul {M M' : Submodule (𝓞 K) K} (hM : Submodule.IsLattice K M)
     (hM' : Submodule.IsLattice K M') (he : ClassGroup.mk K (fracU hM) = ClassGroup.mk K (fracU hM')) :
@@ -72,13 +72,11 @@ theorem exists_eq_span_mul {M M' : Submodule (𝓞 K) K} (hM : Submodule.IsLatti
   exact hx0 hy.symm
 
 /- English proof (translation)
-Establish `intF : ∀ x : cmF K, (x : K) ∈ (1 : Submodule (𝓞 K) K) → IsIntegral ℤ x`. Introduce `x hx`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 hx`. Establish `hK : IsIntegral ℤ (x : K)` using `by rw [← hr]; exact RingOfIntegers.isIntegral_coe r`. Conclude with `(isIntegral_algHom_iff ((cmF K).val.toRingHom.toIntAlgHom) Subtype.val_injective).1 hK`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : star u⁻¹ = u⁻¹` using `by rw [star_inv₀, hs]`. Set `x : cmF K` to `⟨u, (mem_cmF_iff K u).2 hs⟩`. Set `y : cmF K` to `⟨u⁻¹, (mem_cmF_iff K _).2 hs'⟩`. Set `t0 : 𝓞 (cmF K)` to `⟨x, intF x hu⟩`. Set `t1 : 𝓞 (cmF K)` to `⟨y, intF y hu'⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hxy : t0 * t1 = 1`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `show u * u⁻¹ = 1`. Conclude with `mul_inv_cancel₀ hu0`.
-
-Conclude with `⟨⟨t0, t1, hxy, by rw [mul_comm]; exact hxy⟩, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unitF {u : K} (hu0 : u ≠ 0) (hu : u ∈ (1 : Submodule (𝓞 K) K))
     (hu' : u⁻¹ ∈ (1 : Submodule (𝓞 K) K)) (hs : star u = u) :
@@ -109,15 +107,15 @@ Both sides reduce to the same expression.
 theorem iota_apply (t : (𝓞 (cmF K))ˣ) : iota K t = (((t : 𝓞 (cmF K)) : cmF K) : K) := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Units.map (RingOfIntegers.mapRingHom ((cmF K).val.toRingHom)).toMonoidHom v, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_unitK (v : (𝓞 (cmF K))ˣ) : ∃ w : (𝓞 K)ˣ, algebraMap (𝓞 K) K (w : 𝓞 K) = iota K v :=
   ⟨Units.map (RingOfIntegers.mapRingHom ((cmF K).val.toRingHom)).toMonoidHom v, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[mem_gmap, Submodule.mem_span_singleton_mul]`. Establish `hs : ∀ z, (LinearEquiv.smulOfNeZero K K b hb).symm z = b⁻¹ * z` using `fun z => rfl`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨b⁻¹ * y, by rw [← hs]; exact hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hb, one_mul]`. Introduce and unpack `⟨n, hn, rfl⟩`. Rewrite using `[hs, ← mul_assoc, inv_mul_cancel₀ hb, one_mul]`. Conclude with `hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmap_smul {b : K} (hb : b ≠ 0) (N : Submodule (𝓞 K) K) :
     gmap (LinearEquiv.smulOfNeZero K K b hb) N = Submodule.span (𝓞 K) {b} * N := by
@@ -133,7 +131,7 @@ theorem gmap_smul {b : K} (hb : b ≠ 0) (N : Submodule (𝓞 K) K) :
     exact hn
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[mem_gmap]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gmap_one (N : Submodule (𝓞 K) K) : gmap (1 : K ≃ₗ[K] K) N = N := by
   ext y
@@ -141,9 +139,9 @@ theorem gmap_one (N : Submodule (𝓞 K) K) : gmap (1 : K ≃ₗ[K] K) N = N := 
   rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[Submodule.mem_span_singleton_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, rfl⟩`. Rewrite using `[← Algebra.smul_def]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `N.smul_mem _ hn`. Introduce `hy`. Use `⟨((w⁻¹ : (𝓞 K)ˣ) : 𝓞 K) • y, N.smul_mem _ hy, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, ← mul_assoc, ← map_mul, Units.mul_inv, map_one, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_unit_mul (w : (𝓞 K)ˣ) (N : Submodule (𝓞 K) K) :
     Submodule.span (𝓞 K) {algebraMap (𝓞 K) K (w : 𝓞 K)} * N = N := by

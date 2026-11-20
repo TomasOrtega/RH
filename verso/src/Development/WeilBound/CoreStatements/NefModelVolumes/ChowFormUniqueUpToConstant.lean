@@ -6,9 +6,9 @@ open MvPolynomial
 namespace ChowFormCompatibility
 
 /- English proof (translation)
-Introduce `k _ N B I f g hf hg`. Establish `hfg : f ∣ g` using `(hf.2 g).1 ((hg.2 g).2 dvd_rfl)`. Establish `hgf : g ∣ f` using `(hg.2 f).1 ((hf.2 f).2 dvd_rfl)`. Take `⟨u, hu⟩` from `associated_of_dvd_dvd hfg hgf`. Take `⟨c, hc, hcu⟩` from `(MvPolynomial.isUnit_iff_eq_C_of_isReduced).1 u.isUnit`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c, hc.ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu, hcu, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem chow_form_unique_up_to_constant : ∀ (k : Type) [Field k] (N B : ℕ) (I : Ideal (MvPolynomial (Fin N) k)) (f g : MvPolynomial (Fin B × Fin N) k), GroundTheory.Heights₂.Heights.IsChowForm I B f → GroundTheory.Heights₂.Heights.IsChowForm I B g → ∃ c : k, c ≠ 0 ∧ g = C c * f := by
   intro k _ N B I f g hf hg

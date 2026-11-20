@@ -15,11 +15,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WeilSiegel.HypStep.Pure
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p i`. Proceed by induction on `p using Fin.cases with`. Consider the case `zero`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp [consA, h1]`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `succ i => simp [consA, h0]`. Consider the case `succ p`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp [consA]`. Consider the case `succ i`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp [consA, h0]`. Consider the case `succ i => simp [consA]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_consA {K L : Type} [Zero K] [One K] [Zero L] [One L] (f : K → L) (h0 : f 0 = 0)
     (h1 : f 1 = 1) {M n : ℕ} (a : Fin 1 → Fin n → K) (Y : Fin n → Fin M → K) :
@@ -39,7 +39,7 @@ theorem map_consA {K L : Type} [Zero K] [One K] [Zero L] [One L] (f : K → L) (
       | succ i => simp [consA]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp [e0, h1]`. Consider the case `succ i => simp [e0, h0]`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_e0 {K L : Type} [Zero K] [One K] [Zero L] [One L] (f : K → L) (h0 : f 0 = 0)
     (h1 : f 1 = 1) (M : ℕ) : (fun p i => f (e0 K M p i)) = e0 L M := by
@@ -49,11 +49,11 @@ theorem map_e0 {K L : Type} [Zero K] [One K] [Zero L] [One L] (f : K → L) (h0 
   | succ i => simp [e0, h0]
 
 /- English proof (translation)
-Use `measurable_pi_iff.2 fun p => measurable_pi_iff.2 fun i => ?_` and prove the remaining obligations. Proceed by induction on `p using Fin.cases with`. Consider the case `zero`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simpa [consA] using measurable_const`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `succ i => simpa [consA] using measurable_const`. Consider the case `succ p`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Simplify `(measurable_pi_apply p).comp ((measurable_pi_apply 0).comp measurable_snd)` using `[consA, Function.comp_def]`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simpa [consA] using measurable_const`. Consider the case `succ i`. Simplify `(measurable_pi_apply i).comp ((measurable_pi_apply p).comp measurable_fst)` using `[consA, Function.comp_def]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem measurable_consA {K : Type} [Zero K] [One K] [MeasurableSpace K] (M n : ℕ) :
     Measurable (fun q : (Fin n → Fin M → K) × (Fin 1 → Fin n → K) => consA q.2 q.1) := by
@@ -80,9 +80,9 @@ section Loc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, -⟩` from `hR`. Establish `hk` using `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM R`. Use `haveI : IsTopologicalRing (R ⊗[F] E) := hk.1`. Use `haveI : BorelSpace (Fin n → Fin M → R ⊗[F] E) := hk.2.2.2.2.2.2.2.1 n M`. Establish `hc : Continuous (actW R σ J g : (Fin n → Fin M → R ⊗[F] E) → _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `continuous_pi fun a => continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [actW, actTup, Matrix.mulVec, dotProduct]`. Conclude with `continuous_finsetSum _ fun j _ => continuous_const.mul ((continuous_apply j).comp (continuous_apply a))`. Conclude with `hc.measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_actW (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] (hR : IsLocR R) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) (g : HA R σ J) :
@@ -99,9 +99,7 @@ theorem measurable_actW (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (R : Type) [
   exact hc.measurable
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, -⟩` from `hR`. Establish `hk` using `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM R`. Establish `hKf : IsHomeomorph (GlobalTheory.CompanionTheory.SW.WBox.cK (F` using `F) (E := E) R b) := hk.2.2.2.2.2.2.1 d b`. Use `haveI : SigmaFinite lam := inferInstance`. Use `haveI := GlobalTheory.CompanionTheory.SW.WBox.sigmaFinite_coordK R hKf lam`.
-
-Use `haveI : SFinite (coordW R b lam 1 n) := by unfold coordW; infer_instance`. Conclude with `Measurable.lintegral_prod_right (f := fun Y a => f (consA a Y)) (hf.comp (measurable_consA M n))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_stage (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R] (hR : IsLocR R) {d : ℕ}
@@ -124,34 +122,34 @@ section Glob
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `map_consA (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) (map_zero _) (map_one _) a Y`.
+A detailed English derivation is pending.
 -/
 theorem projInf_consA {M n : ℕ} (a : Fin 1 → Fin n → AF F ⊗[F] E) (Y : Fin n → Fin M → AF F ⊗[F] E) :
     projInf (consA a Y) = consA (projInf a) (projInf Y) :=
   map_consA (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) (map_zero _) (map_one _) a Y
 
 /- English proof (translation)
-The claim follows from `map_consA (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)) (map_zero _) (map_one _) a Y`.
+A detailed English derivation is pending.
 -/
 theorem projFin_consA {M n : ℕ} (a : Fin 1 → Fin n → AF F ⊗[F] E) (Y : Fin n → Fin M → AF F ⊗[F] E) :
     projFin (consA a Y) = consA (projFin a) (projFin Y) :=
   map_consA (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)) (map_zero _) (map_one _) a Y
 
 /- English proof (translation)
-The claim follows from `map_consA (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E)) (map_zero _) (map_one _) a Y`.
+A detailed English derivation is pending.
 -/
 theorem projV_consA (v : HeightOneSpectrum (𝓞 F)) {M n : ℕ} (a : Fin 1 → Fin n → Af F ⊗[F] E)
     (Y : Fin n → Fin M → Af F ⊗[F] E) : projV v (consA a Y) = consA (projV v a) (projV v Y) :=
   map_consA (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E)) (map_zero _) (map_one _) a Y
 
 /- English proof (translation)
-The claim follows from `map_e0 (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) (map_zero _) (map_one _) M`.
+A detailed English derivation is pending.
 -/
 theorem projInf_e0 (M : ℕ) : projInf (e0 (AF F ⊗[F] E) M) = e0 _ M :=
   map_e0 (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) (map_zero _) (map_one _) M
 
 /- English proof (translation)
-Establish `h1 : projFin (e0 (AF F ⊗[F] E) M) = e0 _ M` using `map_e0 (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)) (map_zero _) (map_one _) M`. Rewrite using `[h1]`. Conclude with `map_e0 (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E)) (map_zero _) (map_one _) M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projV_projFin_e0 (v : HeightOneSpectrum (𝓞 F)) (M : ℕ) :
     projV v (projFin (e0 (AF F ⊗[F] E) M)) = e0 _ M := by
@@ -161,13 +159,13 @@ theorem projV_projFin_e0 (v : HeightOneSpectrum (𝓞 F)) (M : ℕ) :
   exact map_e0 (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E)) (map_zero _) (map_one _) M
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun x j k => ?_, fun j i k => ?_⟩` and prove the remaining obligations. Take `rfl : x = 0` from `Subsingleton.elim _ _`. Simplify `h j.succ 0 k` using `[consA]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h j.succ i.succ.succ k` using `[consA]`. Introduce and unpack `⟨ha, hY⟩ p i k`. Proceed by induction on `p using Fin.cases with`. Consider the case `zero`. Proceed by induction on `i using Fin.cases with`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simpa [consA] using h1 k`. Consider the case `succ i => simp [consA, zero_mem]`. Consider the case `succ p`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simpa [consA] using ha 0 p k`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `succ i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp [consA, zero_mem]`. Consider the case `succ i => simpa [consA] using hY p i k`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem consA_mem_latV {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) {M n : ℕ}
     (h1 : ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr (1 : Fv F v ⊗[F] E) k ∈
@@ -196,15 +194,13 @@ theorem consA_mem_latV {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSp
         | succ i => simpa [consA] using hY p i k
 
 /- English proof (translation)
-Establish `hV : ∀ v, projV v (projFin (consA a Y)) = consA (projV v (projFin a)) (projV v (projFin Y))` using `fun v => by rw [projFin_consA, projV_consA]`. Establish `hmem : consA a Y ∈ intOff b S ↔ a ∈ intOff b S ∧ Y ∈ intOff b S`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun v hv => by`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Use `h v hv` as an intermediate fact. Rewrite `this` using `[hV]`. Conclude with `((consA_mem_latV b v (hS v hv) _ _).1 this).1, fun v hv => by`. Use `h v hv` as an intermediate fact. Rewrite `this` using `[hV]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `((consA_mem_latV b v (hS v hv) _ _).1 this).2⟩`. Introduce and unpack `⟨h1, h2⟩ v hv`. Rewrite using `[hV]`. Conclude with `(consA_mem_latV b v (hS v hv) _ _).2 ⟨h1 v hv, h2 v hv⟩`. Unfold `pureL`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hY : Y ∈ intOff b S`. Distinguish the cases in `ha : a ∈ intOff b S`. Rewrite using `[Set.indicator_of_mem (hmem.2 ⟨ha, hY⟩), Set.indicator_of_mem hY, Set.indicator_of_mem ha, projInf_consA]`. Simplify using `only [hV, Pi.one_apply, one_mul]`. Rewrite using `[Set.indicator_of_notMem (fun h => ha (hmem.1 h).1), Set.indicator_of_notMem ha, mul_zero]`.
-
-Rewrite using `[Set.indicator_of_notMem (fun h => hY (hmem.1 h).2), Set.indicator_of_notMem hY, zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pureL_consA {d M n : ℕ} (b : Module.Basis (Fin d) F E) (S : Finset (HeightOneSpectrum (𝓞 F)))
     (hS : ∀ v, v ∉ S → ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr (1 : Fv F v ⊗[F] E) k ∈
@@ -242,21 +238,19 @@ theorem pureL_consA {d M n : ℕ} (b : Module.Basis (Fin d) F E) (S : Finset (He
 variable [DecidableEq (HeightOneSpectrum (𝓞 F))]
 
 /- English proof (translation)
-Unfold `pureL`. Distinguish the cases in `hX : X ∈ intOff b S'`. Rewrite using `[Set.indicator_of_mem hX]`. Distinguish the cases in `hA : ∀ v ∈ S' \ S, actW (Fv F v) σ Jp (g v) (projV v (projFin X)) ∈ latV b v`. Establish `hY : actW (AF F) σ Jp h X ∈ intOff b S`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `v hv`. Rewrite using `[hfin]`. Distinguish the cases in `hvh : v ∈ S'`. Conclude with `hA v (Finset.mem_sdiff.2 ⟨hvh, hv⟩)`. Conclude with `(hSh v hvh _).2 (hX v hvh)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Set.indicator_of_mem hY, hinf]`. Use `congr 1`. Rewrite using `[← Finset.prod_subset hSS fun v hv hvS => ?_]`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[hfin]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_pos hv]`. Simplify using `only [if_neg hvS]`. Rewrite using `[Set.indicator_of_mem (hA v (Finset.mem_sdiff.2 ⟨hv, hvS⟩))]`. Both sides reduce to the same expression. Use `push Not at hA`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv, hvl⟩` from `hA`. Establish `hY : actW (AF F) σ Jp h X ∉ intOff b S`. Introduce `hm`. Use `hm v (Finset.mem_sdiff.1 hv).2` as an intermediate fact. Rewrite `this` using `[hfin]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hvl this`. Rewrite using `[Set.indicator_of_notMem hY, Finset.prod_eq_zero (Finset.mem_sdiff.1 hv).1 (by simp only [if_neg (Finset.mem_sdiff.1 hv).2]; rw [Set.indicator_of_notMem hvl])]`. Simplify using the standard rewrite rules. Establish `hY : actW (AF F) σ Jp h X ∉ intOff b S`. Introduce `hm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hX` to reduce the goal to its premises. Introduce `v hv`. Use `hm v (fun hs => hv (hSS hs))` as an intermediate fact. Rewrite `this` using `[hfin]`. Conclude with `(hSh v hv _).1 this`.
-
-Rewrite using `[Set.indicator_of_notMem hX, Set.indicator_of_notMem hY]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pureL_act {d M n : ℕ} (b : Module.Basis (Fin d) F E) (σ : E →ₐ[F] E)
     (Jp : Matrix (Fin M) (Fin M) E) (h : HA (AF F) σ Jp) (ginf : HA (Ainf F) σ Jp)
@@ -318,13 +312,13 @@ end Glob
 section Main
 
 /- English proof (translation)
-Distinguish the cases in `hY : Y ∈ intOff b S`. Establish `h1 : ∀ a, pureL b S f fv (consA a Y) = pureL b S (fun a' => f (consA a' (projInf Y))) (fun v a' => fv v (consA a' (projV v (projFin Y)))) a` using `fun a => by`. Rewrite using `[pureL_consA b S hS f fv a Y, Set.indicator_of_mem hY]`. Simplify using the standard rewrite rules. Repeatedly rewrite using `[h1]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `m1 : Measurable fun a' : Fin 1 → Fin n → Ainf F ⊗[F] E => f (consA a' (projInf Y))` using `hf.comp ((measurable_consA M n).comp measurable_prodMk_left)`. Establish `m2 : ∀ v, Measurable fun a' : Fin 1 → Fin n → Fv F v ⊗[F] E => fv v (consA a' (projV v (projFin Y)))` using `fun v => (hfv v).comp ((measurable_consA M n).comp measurable_prodMk_left)`. Rewrite using `[hE _ _ m1 m2]`. Unfold `pureL`. Rewrite using `[Set.indicator_of_mem hY]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hmass]`. Establish `h1 : ∀ a, pureL b S f fv (consA a Y) = 0` using `fun a => by`. Rewrite using `[pureL_consA b S hS f fv a Y, Set.indicator_of_notMem hY, zero_mul]`. Repeatedly rewrite using `[h1]`. Unfold `pureL`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Set.indicator_of_notMem hY]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inner_int {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d M n : ℕ}
     (b : Module.Basis (Fin d) F E) (laminf : Measure (Ainf F))
@@ -369,33 +363,31 @@ theorem inner_int {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hCM M J hJ n d b laminf lam hinf hlam dA hdA I minf m hI`. Establish `hLi : IsLocR (Ainf F)` using `GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1`. Establish `hLv : ∀ v, IsLocR (Fv F v)` using `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F`. Use `haveI hBi : BorelSpace (Ainf F) := ⟨rfl⟩`. Use `haveI hBv : ∀ v, BorelSpace (Fv F v) := fun v => ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hJ'` using `(hypOne_isHermND_and_e0_mem F E σ hCM M J hJ).1`. Take `⟨pinf, p, hcomp, hlat, -⟩` from `GlobalTheory.CompanionTheory.SW.HProj.components F E σ hCM (M + 2) _ hJ'`. Establish `hcons` using `(GlobalTheory.CompanionTheory.SW.LatRat.latV_rational F E σ hCM d b 0 0).2.2`. Take `⟨-, -, S₀, hS₀⟩` from `hdA`. Take `⟨-, -, S₁, hS₁⟩` from `hI`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨S₀ ∪ S₁ ∪ (Filter.eventually_cofinite.1 hcons).toFinset, fun S hS φinf φ Ψinf Ψ G hφinf hφ hΨinf hΨ hG h => ?_⟩` and prove the remaining obligations. Use `⟨S ∪ (Filter.eventually_cofinite.1 (hlat d b h)).toFinset, Finset.subset_union_left, fun S' hS' => ?_⟩` and prove the remaining obligations. Establish `hSS : S ⊆ S'` using `Finset.subset_union_left.trans hS'`. Establish `hsub0 : S₀ ⊆ S'` using `fun x hx => hSS (hS (by simp [hx]))`. Establish `hsub1 : S₁ ⊆ S'` using `fun x hx => hSS (hS (by simp [hx]))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSl : ∀ v, v ∉ S' → ∀ (k : ℕ) (X : Fin k → Fin (M + 2) → Fv F v ⊗[F] E), actW (Fv F v) σ (hypOne J) (p v h) X ∈ latV b v ↔ X ∈ latV b v` using `fun v hv => by`. Establish `hv' : v ∉ (Filter.eventually_cofinite.1 (hlat d b h)).toFinset` using `fun hm => hv (hS' (Finset.mem_union_right _ hm))`. Simplify using `using hv'`. Establish `hone : ∀ v, v ∉ S' → ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr (1 : Fv F v ⊗[F] E) k ∈ v.adicCompletionIntegers F` using `fun v hv k => by`. Establish `hv' : v ∉ (Filter.eventually_cofinite.1 hcons).toFinset` using `fun hm => hv (hSS (hS (Finset.mem_union_right _ hm)))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hv2 : ∀ X : Fin 0 → Fin 0 → Fv F v ⊗[F] E, consTup X ∈ latV b v ↔ X ∈ latV b v`. Simplify using `using hv'`. Use `(hv2 (fun a => a.elim0)).2 (fun a => a.elim0) 0 0 k` as an intermediate fact. Simplify `this` using `[consTup]`. Take `⟨fI, hfI⟩ : ∃ f : (Fin (n + 1) → Fin (M + 2) → Ainf F ⊗[F] E) → ℝ≥0∞, f = fun X => φinf (actW (Ainf F) σ (hypOne J) (pinf h) X)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨fv, hfv⟩ : ∃ f : ∀ v : HeightOneSpectrum (𝓞 F), (Fin (n + 1) → Fin (M + 2) → Fv F v ⊗[F] E) → ℝ≥0∞, f = fun v X => if v ∈ S then φ v (actW (Fv F v) σ (hypOne J) (p v h) X) else (latV b v).indicator 1 (actW (Fv F v) σ (hypOne J) (p v h) X)` from `⟨_, rfl⟩`. Establish `hact : ∀ (a : Fin 1 → Fin n → AF F ⊗[F] E) (Y : Fin n → Fin M → AF F ⊗[F] E), pureL b S φinf φ (actW (AF F) σ (hypOne J) h (consA a Y)) = pureL b S' fI fv (consA a Y)`. Introduce `a Y`. Rewrite using `[hfI, hfv]`. Conclude with `pureL_act b σ _ h (pinf h) (fun v => p v h) S S' hSS (fun X => (hcomp _ h X).1) (fun X v => (hcomp _ h X).2 v) (fun v hv => hSl v hv _) φinf φ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `mI : Measurable fI`. Rewrite using `[hfI]`. Conclude with `hφinf.comp (measurable_actW σ hCM _ hLi _ _)`. Establish `mv : ∀ v, Measurable (fv v)` using `fun v => by`. Rewrite using `[hfv]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hv : v ∈ S`. Simplify using `only [hv, if_true]`. Conclude with `(hφ v).comp (measurable_actW σ hCM _ (hLv v) _ _)`. Simplify using `only [hv, if_false]`. Conclude with `(measurable_one.indicator (GlobalTheory.CompanionTheory.Hypotheses₂.OneV.DxEuler.measurableSet_latV σ hCM b _ _ v)).comp (measurable_actW σ hCM _ (hLv v) _ _)`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∀ Y : Fin n → Fin M → AF F ⊗[F] E, ∫⁻ a, pureL b S φinf φ (actW (AF F) σ (hypOne J) h (consA a Y)) ∂dA = pureL b S' (fun Y' => ∫⁻ a, fI (consA a Y') ∂(coordW (Ainf F) b laminf 1 n)) (fun v Y' => ∫⁻ a, fv v (consA a Y') ∂(coordW (Fv F v) b (lam v) 1 n)) Y` using `fun Y => by`. Repeatedly rewrite using `[hact]`. Conclude with `inner_int b laminf lam dA S' (hS₀ S' hsub0) (fun v => GlobalTheory.CompanionTheory.Hypotheses₂.OneV.DxEuler.coordW_latV σ hCM b lam hlam 1 n v) hone fI fv mI mv Y`. Establish `mFinf` using `measurable_stage σ hCM (Ainf F) hLi b laminf hinf.1 M n fI mI`. Establish `mFv` using `fun v => measurable_stage σ hCM (Fv F v) (hLv v) b (lam v) (hlam v).1 M n (fv v) (mv v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Repeatedly rewrite using `[e1]`. Rewrite using `[hS₁ S' hsub1 _ _ mFinf mFv]`. Establish `i1 : ∫⁻ Y, ∫⁻ a, fI (consA a Y) ∂(coordW (Ainf F) b laminf 1 n) ∂minf = Ψinf (actW (Ainf F) σ (hypOne J) (pinf h) (e0 _ M))`. Rewrite using `[hΨinf (pinf h), hfI]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `i2 : ∀ v, ∫⁻ Y, ∫⁻ a, fv v (consA a Y) ∂(coordW (Fv F v) b (lam v) 1 n) ∂(m v) = (if v ∈ S then Ψ v else G v) (actW (Fv F v) σ (hypOne J) (p v h) (e0 _ M))` using `fun v => by`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[if_pos hv, hΨ v (p v h), hfv]`. Simplify using `only [hv, if_true]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hv, hG v (p v h), hfv]`. Simplify using `only [hv, if_false]`. Both sides reduce to the same expression. Rewrite using `[i1, Finset.prod_congr rfl (fun v _ => i2 v)]`. Establish `hmemP : actW (AF F) σ (hypOne J) h (e0 _ M) ∈ {y : Fin 1 → Fin (M + 2) → AF F ⊗[F] E | ∀ v, v ∉ S' → projV v (projFin y) ∈ primV σ J b v}`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Rewrite using `[(hcomp 1 h _).2 v, projV_projFin_e0]`. Conclude with `⟨p v h, fun x => hSl v hv 1 x, rfl⟩`. Unfold `purePr`. Rewrite using `[Set.indicator_of_mem hmemP, (hcomp 1 h _).1, projInf_e0]`.
-
-Simplify using `only [fun v => (hcomp 1 h (e0 _ M)).2 v, projV_projFin_e0, ENNReal.coe_one, one_mul]`. Rewrite using `[mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem inner_pure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [DecidableEq (HeightOneSpectrum (𝓞 F))] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (n d : ℕ) (b : Module.Basis (Fin d) F E) (laminf : Measure (Ainf F)) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), IsStdInf laminf → (∀ v, IsStdV v (lam v)) → ∀ dA : Measure (Fin 1 → Fin n → AF F ⊗[F] E), IsEulerProd b dA 1 (coordW (Ainf F) b laminf 1 n) (fun v => coordW (Fv F v) b (lam v) 1 n) → ∀ (I : Measure (Fin n → Fin M → AF F ⊗[F] E)) (minf : Measure (Fin n → Fin M → Ainf F ⊗[F] E)) (m : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n → Fin M → Fv F v ⊗[F] E)), IsEulerProd b I 1 minf m → ∃ S₂ : Finset (HeightOneSpectrum (𝓞 F)), ∀ S, S₂ ⊆ S → ∀ (φinf : (Fin (n + 1) → Fin (M + 2) → Ainf F ⊗[F] E) → ℝ≥0∞) (φ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin (n + 1) → Fin (M + 2) → Fv F v ⊗[F] E) → ℝ≥0∞) (Ψinf : (Fin 1 → Fin (M + 2) → Ainf F ⊗[F] E) → ℝ≥0∞) (Ψ G : ∀ v : HeightOneSpectrum (𝓞 F), (Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E) → ℝ≥0∞), Measurable φinf → (∀ v, Measurable (φ v)) → (∀ g : HA (Ainf F) σ (hypOne J), Ψinf (actW (Ainf F) σ (hypOne J) g (e0 _ M)) = stageInt (Ainf F) σ J b laminf minf φinf g) → (∀ v, ∀ g : HA (Fv F v) σ (hypOne J), Ψ v (actW (Fv F v) σ (hypOne J) g (e0 _ M)) = stageInt (Fv F v) σ J b (lam v) (m v) (φ v) g) → (∀ v, ∀ g : HA (Fv F v) σ (hypOne J), G v (actW (Fv F v) σ (hypOne J) g (e0 _ M)) = stageInt (Fv F v) σ J b (lam v) (m v) ((latV b v).indicator 1) g) → ∀ h : HA (AF F) σ (hypOne J), ∃ Sh : Finset (HeightOneSpectrum (𝓞 F)), S ⊆ Sh ∧ ∀ S', Sh ⊆ S' → ∫⁻ Y, ∫⁻ a, pureL b S φinf φ (actW (AF F) σ (hypOne J) h (consA a Y)) ∂dA ∂I = ENNReal.ofReal (∏' v : {v // v ∉ S'}, (m v.1 (latV b v.1)).toReal) * purePr σ J b S' Ψinf (fun v => if v ∈ S then Ψ v else G v) (actW (AF F) σ (hypOne J) h (e0 _ M)) := by
   intro F E _ _ _ _ _ _ σ hCM M J hJ n d b laminf lam hinf hlam dA hdA I minf m hI

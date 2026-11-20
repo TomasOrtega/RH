@@ -11,7 +11,7 @@ def partner (k r : ℕ) (i : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
   if r ≤ i.val ∧ i.val ≤ r + k then i else ⟨2 * r + k - i.val, by omega⟩
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Unfold `Hpk partner`. Apply the tactic sequence `split_ifs <;> simp only [Fin.ext_iff] at * <;> first | rfl | omega`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma gram_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j = partner k r i then (if i.val = r + k then -1 else 1) else 0 := by
@@ -21,9 +21,9 @@ lemma gram_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
   split_ifs <;> simp only [Fin.ext_iff] at * <;> first | rfl | omega
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (partner k r i)]`. Rewrite using `[gram_apply, gram_apply, Matrix.one_apply, if_pos rfl]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `partner`. Apply the tactic sequence `split_ifs <;> simp only [Fin.ext_iff] at * <;> first | omega | (simp; done) | (split_ifs <;> first | omega | simp)`. Introduce `b _ hb`. Rewrite using `[gram_apply k r i b, if_neg hb, zero_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma gram_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   ext i j
@@ -38,7 +38,7 @@ lemma gram_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   · simp
 
 /- English proof (translation)
-Establish `h : (Hpk k r * (gᴴ * Hpk k r)) * g = 1`. Rewrite using `[mul_assoc, show gᴴ * Hpk k r * g = Hpk k r from hg, gram_sq]`. Conclude with `Matrix.isUnit_det_of_left_inverse h`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isUnit_det_of_mem {k r : ℕ} {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := by
@@ -47,7 +47,7 @@ lemma isUnit_det_of_mem {k r : ℕ} {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * 
   exact Matrix.isUnit_det_of_left_inverse h
 
 /- English proof (translation)
-Use `conv_lhs => rw [← hv]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hg, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma inv_mulVec_fixed {m : ℕ} {g : Matrix (Fin m) (Fin m) ℂ} (hg : IsUnit g.det) {v : Fin m → ℂ}
     (hv : g *ᵥ v = v) : g⁻¹ *ᵥ v = v := by
@@ -55,9 +55,9 @@ lemma inv_mulVec_fixed {m : ℕ} {g : Matrix (Fin m) (Fin m) ℂ} (hg : IsUnit g
   rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hg, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `hu` using `isUnit_det_of_mem hg.1`. Use `⟨?_, fun a => ⟨inv_mulVec_fixed hu (hg.2.1 a).1, inv_mulVec_fixed hu (hg.2.1 a).2⟩, inv_mulVec_fixed hu hg.2.2⟩` and prove the remaining obligations. Establish `h1 : gᴴ * Hpk k r * g = Hpk k r` using `hg.1`. Use `show (g⁻¹)ᴴ * Hpk k r * g⁻¹ = Hpk k r`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [mul_assoc]`. Use `_ = Hpk k r := by rw [Matrix.mul_nonsing_inv _ hu]; simp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma inv_mem {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
     {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}

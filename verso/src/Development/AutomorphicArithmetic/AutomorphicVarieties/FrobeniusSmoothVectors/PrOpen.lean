@@ -3,19 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `l _ k _ _ F C₀ n hF O _ _ R _ _ _ B hB`. Establish `hent : ∀ i j, IsLocallyConstant fun s => ((B.bar O).r s).mat i j` using `fun i j => by`. Establish `hk : ∀ a ∈ maximalIdeal R ^ 1, (res O R : R →+* ResidueField O) a = 0` using `fun a ha => by`. Rewrite `ha` using `[pow_one]`. Conclude with `(res_eq_zero_iff O R a).2 ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hB i j 1).comp (Ideal.Quotient.lift _ (res O R : R →+* ResidueField O) hk)`. Establish `hmat : IsLocallyConstant fun s => ((B.bar O).r s).mat`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `h : ∀ᶠ y in nhds x, ∀ i j, ((B.bar O).r y).mat i j = ((B.bar O).r x).mat i j` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => (hent i j).eventually_eq x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h.mono fun y hy => Matrix.ext hy`. Establish `hr : IsOpen ((B.bar O).r.ker : Set F.Γ)`. Establish `e : ((B.bar O).r.ker : Set F.Γ) = {s | ((B.bar O).r s).mat = 1} ∩ (F.del.ker : Set F.Γ)`. Use extensionality with `s`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hs`. Establish `hs' : (B.bar O).r s = 1` using `hs`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ((B.bar O).r s).mat = 1`. Rewrite using `[hs']`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Use `show F.del s = 1`. Rewrite using `[← (B.bar O).nu s, hs']`. Both sides reduce to the same expression. Introduce and unpack `⟨h1, h2⟩ show (B.bar O).r s = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `SemidirectProduct.ext (Units.ext h1) ?_` and prove the remaining obligations. Rewrite using `[(B.bar O).nu s]`. Conclude with `h2`. Rewrite using `[e]`. Conclude with `(hmat.isOpen_fiber 1).inter hF.del_open`.
-
-Use `⟨hr, Subgroup.isOpen_mono (fun s hs => ?_) hr, hmat⟩` and prove the remaining obligations. Establish `hs' : (B.bar O).r s = 1` using `hs`. Use `show GG.ad n _ ((B.bar O).r s) = 1`. Rewrite using `[hs', map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.pr_open :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ n : ℕ}, F.Ok C₀ → ∀ (O : Type) [CommRing O] [IsLocalRing O], ∀ (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (B : Box F n R), B.Cont (maximalIdeal R) → IsOpen ((B.bar O).r.ker : Set F.Γ) ∧ IsOpen ((B.bar O).ad.ker : Set F.Γ) ∧ IsLocallyConstant fun s => ((B.bar O).r s).mat := by

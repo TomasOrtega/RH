@@ -18,9 +18,9 @@ open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier Gl
 namespace GlobalTheory.CompanionTheory.Ar.BaseZ
 
 /- English proof (translation)
-Introduce `H k _ X _ p D hX ι _ L`. Set `t : X ⟶ Sp ℤ` to `specZIsTerminal.from X`. Use `haveI : Module.Finite ℤ k := hX.finite`. Establish `hL : ∀ i τ, (wZ (L i) t τ).IsCInf` using `fun i τ => GlobalTheory.T.wZ_isCInf' k X p t (L i) τ`. Take `⟨Φ, hΦ⟩` from `H X t D (GlobalTheory.CompanionTheory.Ar.BaseZ.isArithVar_int k X p t D hX) ι (fun i => GlobalTheory.CompanionTheory.Ar.BaseZ.toZ (L i) t (hL i))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Φ, (GlobalTheory.T.toZ_isArFun_iff k X p t D hX ι L hL Φ).1 hΦ⟩`.
+A detailed English derivation is pending.
 -/
 theorem arFormExists_of_int :
     (∀ (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp ℤ) (D : ℕ), IsArithVar p D →

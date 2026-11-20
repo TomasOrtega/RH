@@ -6,17 +6,17 @@ open Polynomial GlobalTheory.EtC
 namespace LateralTheory.E.AICSHPf
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `f hd hm hv`. Establish `: f = 1` using `Polynomial.eq_one_of_monic_natDegree_zero hm hd`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Simplify using `only [eval_one] at hv`. Conclude with `absurd ((Ideal.eq_top_iff_one P).2 hv) (Ideal.IsPrime.ne_top inferInstance)`. Consider the case `succ n ih`. Introduce `f hd hm hv`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `hA f hm (by omega)`. Establish `hroot : f.IsRoot r` using `hr`. Use `set q := f /ₘ (X - C r) with hq`. Establish `hfac : (X - C r) * q = f` using `(Polynomial.mul_divByMonic_eq_iff_isRoot).2 hroot`. Establish `hqm : q.Monic` using `Polynomial.Monic.of_mul_monic_left (monic_X_sub_C r) (by rw [hfac]; exact hm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : q.natDegree = n`. Use `(monic_X_sub_C r).natDegree_mul hqm` as an intermediate fact. Rewrite `this` using `[hfac, natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers. Establish `hv' : (a₀ - r) * q.eval a₀ ∈ P`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hv` using `[← hfac]`. Simplify `hv` using `[eval_mul]`. Break down `(inferInstance : P.IsPrime).mem_or_mem hv' with h | h` into its components or cases. Use `⟨r, hroot, ?_⟩` and prove the remaining obligations. Use `P.neg_mem_iff.2 h` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `using this`. Take `⟨a, ha, ha'⟩` from `ih q hdeg hqm h`. Use `⟨a, ?_, ha'⟩` and prove the remaining obligations. Rewrite using `[← hfac]`. Simplify using `[IsRoot, eval_mul, ha.eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem root_near {T : Type} [CommRing T] [IsDomain T] (hA : ∀ p : Polynomial T, p.Monic → 0 < p.natDegree → ∃ a, p.eval a = 0)
     (P : Ideal T) [P.IsPrime] (a₀ : T) :
@@ -49,15 +49,15 @@ theorem root_near {T : Type} [CommRing T] [IsDomain T] (hA : ∀ p : Polynomial 
       rw [← hfac]; simp [IsRoot, eval_mul, ha.eq_zero]
 
 /- English proof (translation)
-The claim follows from `root_near hA (IsLocalRing.maximalIdeal T) a₀ _ f rfl hf h₀`.
+A detailed English derivation is pending.
 -/
 theorem henselian {T : Type} [CommRing T] [IsDomain T] [IsLocalRing T] (hA : AIC T) : HenselianLocalRing T where
   is_henselian f hf a₀ h₀ _ := root_near hA (IsLocalRing.maximalIdeal T) a₀ _ f rfl hf h₀
 
 /- English proof (translation)
-Use `IsAlgClosed.of_exists_root _ ?_` and prove the remaining obligations. Introduce `p hpm hirr`. Take `⟨P, hPl, hPd, hPm⟩` from `Polynomial.lifts_and_degree_eq_and_monic (Polynomial.lifts_iff_coeff_lifts p |>.2 fun n => IsLocalRing.residue_surjective _) hpm`. Establish `hpos : 0 < P.natDegree`. Rewrite using `[Polynomial.natDegree_eq_of_degree_eq hPd]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Irreducible.natDegree_pos hirr`. Take `⟨a, ha⟩` from `hA P hPm hpos`. Use `⟨IsLocalRing.residue T a, ?_⟩` and prove the remaining obligations. Rewrite using `[← hPl, Polynomial.eval_map, Polynomial.eval₂_at_apply, ha, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algClosed {T : Type} [CommRing T] [IsDomain T] [IsLocalRing T] (hA : AIC T) :
     IsAlgClosed (IsLocalRing.ResidueField T) := by
@@ -76,7 +76,7 @@ end LateralTheory.E.AICSHPf
 namespace LateralTheory.E.t_E3Cut
 
 /- English proof (translation)
-Introduce `T _ _ _ hA`. Set `_` to `LateralTheory.E.AICSHPf.henselian hA`. Use `LateralTheory.E.AICSHPf.algClosed hA` as an intermediate fact. Conclude with `⟨inferInstance, inferInstance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem AICSH_of : AICSH := by
   intro T _ _ _ hA

@@ -7,7 +7,7 @@ open MeasureTheory Matrix Complex GlobalTheory.RealWeil
 open scoped Real SchwartzMap ComplexConjugate
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.holPart_eq_and_gaussian_of_orthogonal_symplectic` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOrthogonalSymplecticFixesSiegelPointI.lean&line=9#L9)
 -/

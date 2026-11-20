@@ -10,7 +10,7 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap.CayleyIndepA
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.Kset, Set.mem_setOf_eq] at ha hb ⊢`. Use `⟨Submonoid.mul_mem _ ha.1 hb.1, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, hb.2, ← mul_assoc, ha.2, mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma kset_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ Formalism.REAL.Kset ε) (hb : b ∈ Formalism.REAL.Kset ε) :
     a * b ∈ Formalism.REAL.Kset ε := by
@@ -19,7 +19,7 @@ lemma kset_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ Formalism.REAL.Kse
   rw [mul_assoc, hb.2, ← mul_assoc, ha.2, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.S.UJset, Formalism.REAL.inUJ, Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [ha, hb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma uj_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ Formalism.MainNotions.S.UJset ε) (hb : b ∈ Formalism.MainNotions.S.UJset ε) :
     a * b ∈ Formalism.MainNotions.S.UJset ε := by
@@ -30,9 +30,9 @@ lemma uj_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ Formalism.MainNotion
     _ = Formalism.REAL.Jm ε := by rw [ha, hb]
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.Kset, Formalism.MainNotions.S.UJset, Formalism.REAL.inUJ, Set.mem_setOf_eq] at hg ⊢`. Take `⟨hu, hc⟩` from `hg`. Establish `h1 : gᴴ * g = 1`. Establish `h2` using `Matrix.mem_unitaryGroup_iff'.mp hu`. Simplify `h2` using `[Matrix.star_eq_conjTranspose]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[mul_assoc, ← hc, ← mul_assoc, h1, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma kset_uj {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) : g ∈ Formalism.MainNotions.S.UJset ε := by
   simp only [Formalism.REAL.Kset, Formalism.MainNotions.S.UJset, Formalism.REAL.inUJ, Set.mem_setOf_eq] at hg ⊢
@@ -43,7 +43,7 @@ lemma kset_uj {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset �
   rw [mul_assoc, ← hc, ← mul_assoc, h1, one_mul]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma conj_back {a b g : Matrix (Fin n) (Fin n) ℂ} (hba : b * a = 1) : b * (a * g * b) * a = g := by
   calc b * (a * g * b) * a = (b * a) * g * (b * a) := by simp only [mul_assoc]
@@ -59,7 +59,7 @@ variable (σ₁ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) {a b : Matrix 
 
 include hrep hab ha hb in
 /- English proof (translation)
-Establish `h` using `hrep.1.2 a (kset_uj ha) b (kset_uj hb)`. Rewrite `h` using `[hab, hrep.1.1]`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← h, ContinuousLinearMap.one_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma ab_cancel (x : H) : σ₁ a (σ₁ b x) = x := by
   have h := hrep.1.2 a (kset_uj ha) b (kset_uj hb)
@@ -68,7 +68,7 @@ lemma ab_cancel (x : H) : σ₁ a (σ₁ b x) = x := by
 
 include hrep hba ha hb in
 /- English proof (translation)
-Establish `h` using `hrep.1.2 b (kset_uj hb) a (kset_uj ha)`. Rewrite `h` using `[hba, hrep.1.1]`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← h, ContinuousLinearMap.one_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma ba_cancel (x : H) : σ₁ b (σ₁ a x) = x := by
   have h := hrep.1.2 b (kset_uj hb) a (kset_uj ha)
@@ -77,7 +77,7 @@ lemma ba_cancel (x : H) : σ₁ b (σ₁ a x) = x := by
 
 include hrep ha hb in
 /- English proof (translation)
-Establish `hb'` using `kset_uj hb`. Establish `ha'` using `kset_uj ha`. Rewrite using `[hrep.1.2 _ (uj_mul hb' hg) _ ha', hrep.1.2 _ hb' _ hg]`. Simplify using `only [ContinuousLinearMap.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma conj_apply {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.MainNotions.S.UJset ε) (x : H) :
     σ₁ (b * g * a) x = σ₁ b (σ₁ g (σ₁ a x)) := by
@@ -88,7 +88,7 @@ lemma conj_apply {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.MainNoti
 
 include hrep hab ha hb in
 /- English proof (translation)
-Set `f : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ₁ a : H →ₗ[ℂ] H), norm_map' := hrep.2.1 a (kset_uj ha) }`. Establish `key : ⟪σ₁ a w, σ₁ a (σ₁ b y)⟫_ℂ = ⟪w, σ₁ b y⟫_ℂ` using `f.inner_map_map w (σ₁ b y)`. Rewrite `key` using `[ab_cancel σ₁ hrep hab ha hb y]`. Conclude with `key.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma inner_b (w y : H) : ⟪w, σ₁ b y⟫_ℂ = ⟪σ₁ a w, y⟫_ℂ := by
   let f : H →ₗᵢ[ℂ] H := { toLinearMap := (σ₁ a : H →ₗ[ℂ] H), norm_map' := hrep.2.1 a (kset_uj ha) }
@@ -110,11 +110,11 @@ variable (σ₁ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) {a b : Matrix 
 
 include hrep hab hba ha hb in
 /- English proof (translation)
-Establish `ha'` using `kset_uj ha`. Establish `hb'` using `kset_uj hb`. Establish `hmem : ∀ g ∈ Formalism.MainNotions.S.UJset ε, b * g * a ∈ Formalism.MainNotions.S.UJset ε` using `fun g hg => uj_mul (uj_mul hb' hg) ha'`. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show σ₁ (b * 1 * a) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one, hba, hrep.1.1]`. Introduce `g hg h hh`. Use extensionality with `x`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[conj_apply σ₁ hrep ha hb (uj_mul hg hh), conj_apply σ₁ hrep ha hb hg, conj_apply σ₁ hrep ha hb hh, ab_cancel σ₁ hrep hab ha hb, hrep.1.2 _ hg _ hh, ContinuousLinearMap.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg v`. Conclude with `hrep.2.1 _ (hmem g hg) v`. Introduce `v`. Establish `hc : Continuous (fun g : Matrix (Fin n) (Fin n) ℂ => b * g * a)` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Conclude with `(hrep.2.2 v).comp hc.continuousOn hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma urep_conj : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) (fun g => σ₁ (b * g * a)) := by
   have ha' := kset_uj ha
@@ -139,9 +139,9 @@ lemma urep_conj : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJse
 
 include hab hba ha hb in
 /- English proof (translation)
-Introduce `S hS hinv`. Apply `hirr S hS` to reduce the goal to its premises. Introduce `g hg v hv`. Establish `hm : a * g * b ∈ Formalism.MainNotions.S.UJset ε` using `uj_mul (uj_mul (kset_uj ha) hg) (kset_uj hb)`. Establish `h1 : σ₁ (b * (a * g * b) * a) v ∈ S` using `hinv (a * g * b) hm v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[conj_back hba]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma irred_conj (hirr : Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotions.S.UJset ε) σ₁) :
     Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotions.S.UJset ε) (fun g => σ₁ (b * g * a)) := by
@@ -154,7 +154,7 @@ lemma irred_conj (hirr : Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotion
 
 include hrep hab ha hb in
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `hg : Formalism.MainNotions.S.umat g ∈ Formalism.MainNotions.S.UJset ε` using `g.2`. Simplify using `only [Formalism.MainNotions.S.coefOn]`. Rewrite using `[conj_apply σ₁ hrep ha hb hg, inner_b σ₁ hrep hab ha hb]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma coef_conj (v w : H) :
     Formalism.MainNotions.S.coefOn (ε := ε) (fun g => σ₁ (b * g * a)) v w = Formalism.MainNotions.S.coefOn (ε := ε) σ₁ (σ₁ a v) (σ₁ a w) := by
@@ -165,7 +165,7 @@ lemma coef_conj (v w : H) :
 
 include hrep hab ha hb in
 /- English proof (translation)
-Introduce `v w`. Rewrite using `[coef_conj σ₁ hrep hab ha hb v w]`. Conclude with `hsq (σ₁ a v) (σ₁ a w)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sqint_conj (hsq : Formalism.MainNotions.S.IsSqIntOn ε σ₁) : Formalism.MainNotions.S.IsSqIntOn ε (fun g => σ₁ (b * g * a)) := by
   intro v w
@@ -174,7 +174,7 @@ lemma sqint_conj (hsq : Formalism.MainNotions.S.IsSqIntOn ε σ₁) : Formalism.
 
 include ha hb in
 /- English proof (translation)
-Introduce `g hg v hv`. Conclude with `h _ (kset_mul (kset_mul hb hg) ha) v hv`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma isKStable_biTranslate_of_isKStable {S : Submodule ℂ H} (h : Formalism.MainNotions.S.IsKStableOn ε σ₁ S) :
     Formalism.MainNotions.S.IsKStableOn ε (fun g => σ₁ (b * g * a)) S := by
@@ -183,7 +183,7 @@ lemma isKStable_biTranslate_of_isKStable {S : Submodule ℂ H} (h : Formalism.Ma
 
 include hba ha hb in
 /- English proof (translation)
-Introduce `g hg v hv`. Establish `h1 : σ₁ (b * (a * g * b) * a) v ∈ S` using `h (a * g * b) (kset_mul (kset_mul ha hg) hb) v hv`. Rewrite `h1` using `[conj_back hba]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma isKStable_of_isKStable_biTranslate {S : Submodule ℂ H} (h : Formalism.MainNotions.S.IsKStableOn ε (fun g => σ₁ (b * g * a)) S) :
     Formalism.MainNotions.S.IsKStableOn ε σ₁ S := by
@@ -193,7 +193,7 @@ lemma isKStable_of_isKStable_biTranslate {S : Submodule ℂ H} (h : Formalism.Ma
 
 include hrep hab ha hb in
 /- English proof (translation)
-Introduce `θ hθ`. Establish `e` using `conj_apply σ₁ hrep ha hb (kset_uj hθ) (σ₁ b v)`. Rewrite `e` using `[ab_cancel σ₁ hrep hab ha hb, h θ hθ, map_smul]`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma wt12 {μ : Fin n → ℝ} {v : H} (h : Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ₁ μ v) :
     Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) (fun g => σ₁ (b * g * a)) μ (σ₁ b v) := by
@@ -204,7 +204,7 @@ lemma wt12 {μ : Fin n → ℝ} {v : H} (h : Formalism.MainNotions.S.IsWtOn (For
 
 include hrep hab ha hb in
 /- English proof (translation)
-Introduce `θ hθ`. Establish `e` using `congrArg (fun y => σ₁ a y) ((conj_apply σ₁ hrep ha hb (kset_uj hθ) v).symm.trans (h θ hθ))`. Rewrite `e` using `[ab_cancel σ₁ hrep hab ha hb, map_smul]`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma wt21 {μ : Fin n → ℝ} {v : H} (h : Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) (fun g => σ₁ (b * g * a)) μ v) :
     Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ₁ μ (σ₁ a v) := by
@@ -215,7 +215,7 @@ lemma wt21 {μ : Fin n → ℝ} {v : H} (h : Formalism.MainNotions.S.IsWtOn (For
 
 include hrep ha in
 /- English proof (translation)
-Introduce `h0`. Apply `hv` to reduce the goal to its premises. Establish `h1` using `hrep.2.1 a (kset_uj ha) v`. Rewrite `h1` using `[h0, norm_zero]`. Conclude with `norm_eq_zero.mp h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ne_a {v : H} (hv : v ≠ 0) : σ₁ a v ≠ 0 := by
   intro h0
@@ -226,11 +226,9 @@ lemma ne_a {v : H} (hv : v ≠ 0) : σ₁ a v ≠ 0 := by
 
 include hrep hab hba ha hb in
 /- English proof (translation)
-Establish `hst : ∀ T : Submodule ℂ H, Formalism.MainNotions.S.IsKStableOn ε (fun g => σ₁ (b * g * a)) T ↔ Formalism.MainNotions.S.IsKStableOn ε σ₁ T` using `fun T => ⟨isKStable_of_isKStable_biTranslate σ₁ hba ha hb, isKStable_biTranslate_of_isKStable σ₁ ha hb⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hfd, hs, hmin, ⟨v, hvS, hv0, hwt⟩, hdom⟩`. Establish `hs'` using `(hst S).1 hs`. Use `⟨hfd, hs', fun S' hS' hst' => hmin S' hS' ((hst S').2 hst'), ⟨σ₁ a v, hs' a ha v hvS, ne_a σ₁ hrep ha hv0, wt21 σ₁ hrep hab ha hb hwt⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `μ' u huS hu0 hwu`. Conclude with `hdom μ' (σ₁ b u) (hs' b hb u huS) (ne_a σ₁ hrep hb hu0) (wt12 σ₁ hrep hab ha hb hwu)`. Introduce and unpack `⟨hfd, hs, hmin, ⟨v, hvS, hv0, hwt⟩, hdom⟩`. Use `⟨hfd, (hst S).2 hs, fun S' hS' hst' => hmin S' hS' ((hst S').1 hst'), ⟨σ₁ b v, hs b hb v hvS, ne_a σ₁ hrep hb hv0, wt12 σ₁ hrep hab ha hb hwt⟩, ?_⟩` and prove the remaining obligations. Introduce `μ' u huS hu0 hwu`.
-
-Conclude with `hdom μ' (σ₁ a u) (hs a ha u huS) (ne_a σ₁ hrep ha hu0) (wt21 σ₁ hrep hab ha hb hwu)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma ktype_iff (μ : Fin n → ℝ) (S : Submodule ℂ H) :
     Formalism.MainNotions.S.IsKTypeOf ε (fun g => σ₁ (b * g * a)) μ S ↔ Formalism.MainNotions.S.IsKTypeOf ε σ₁ μ S := by
@@ -252,7 +250,7 @@ lemma ktype_iff (μ : Fin n → ℝ) (S : Submodule ℂ H) :
 
 include hab hba ha hb in
 /- English proof (translation)
-Take `⟨hc, hnt, hrep, hirr, hsq, ⟨S0, hS0⟩, hmin⟩` from `hds`. Establish `hk : ∀ μ S, Formalism.MainNotions.S.IsKTypeOf ε (fun g => σ₁ (b * g * a)) μ S ↔ Formalism.MainNotions.S.IsKTypeOf ε σ₁ μ S` using `fun μ S => ktype_iff σ₁ hrep hab hba ha hb μ S`. Use `⟨⟨hc, hnt, urep_conj σ₁ hrep hab hba ha hb, irred_conj σ₁ hab hba ha hb hirr, sqint_conj σ₁ hrep hab ha hb hsq, ⟨S0, (hk _ S0).2 hS0⟩, fun μ S h => hmin μ S ((hk μ S).1 h)⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.MainNotions.S.lowKSub, hk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma ds_conj (lam : Fin n → ℝ) (hds : Formalism.MainNotions.S.IsDS ε lam σ₁) :
     Formalism.MainNotions.S.IsDS ε lam (fun g => σ₁ (b * g * a)) ∧

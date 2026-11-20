@@ -7,9 +7,9 @@ open Polynomial
 namespace GlobalTheory.CurveCompletion
 
 /- English proof (translation)
-Use `letI := Ideal.Quotient.field Q`. Use `haveI : Module.Finite k (A ⧸ Q) := finite_of_finite_type_of_isJacobsonRing k (A ⧸ Q)`. Take `⟨a, ha⟩` from `(IsAlgClosed.algebraMap_bijective_of_isIntegral (k := k) (K := A ⧸ Q)).2 (Ideal.Quotient.mk Q c)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, ← ha]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Ideal.Quotient.algebraMap_eq]`.
+A detailed English derivation is pending.
 -/
 theorem residue_exists (k A : Type) [Field k] [IsAlgClosed k] [CommRing A] [Algebra k A]
     [Algebra.FiniteType k A] (Q : Ideal A) (hQ : Q.IsMaximal) (c : A) :
@@ -26,9 +26,9 @@ section Dedekind
 variable {A : Type} [CommRing A] [IsDedekindDomain A]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SpanPowerSupremum.pow_le_span_pow_sup`. Consider the case `exact _root_.GlobalTheory.SpanPowerSupremum.pow_le_span_pow_sup`. Consider the case `(apply _root_.GlobalTheory.SpanPowerSupremum.pow_le_span_pow_sup <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SpanPowerSupremum.pow_le_span_pow_sup <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SpanPowerSupremum.pow_le_span_pow_sup <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SpanPowerSupremum.pow_le_span_pow_sup ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pow_le_span_sup {Q : Ideal A} [Q.IsPrime] (hQ : Q ≠ ⊥) {π : A} (hπ : π ∈ Q)
     (hπ2 : π ∉ Q ^ 2) : ∀ m : ℕ, Q ^ m ≤ Ideal.span {π ^ m} ⊔ Q ^ (m + 1) := by
@@ -41,9 +41,9 @@ theorem pow_le_span_sup {Q : Ideal A} [Q.IsPrime] (hQ : Q ≠ ⊥) {π : A} (hπ
   | (intros; exact _root_.GlobalTheory.SpanPowerSupremum.pow_le_span_pow_sup ..)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.AlgebraicIntegerNormBound.main`. Consider the case `exact _root_.GlobalTheory.AlgebraicIntegerNormBound.main`. Consider the case `(apply _root_.GlobalTheory.AlgebraicIntegerNormBound.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AlgebraicIntegerNormBound.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.AlgebraicIntegerNormBound.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AlgebraicIntegerNormBound.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pow_not_mem {Q : Ideal A} [Q.IsPrime] (hQ : Q ≠ ⊥) {π : A} (hπ : π ∈ Q)
     (hπ2 : π ∉ Q ^ 2) (m : ℕ) : π ^ m ∉ Q ^ (m + 1) := by
@@ -61,7 +61,7 @@ section Series
 variable {k A : Type} [Field k] [CommRing A] [Algebra k A] (Q : Ideal A) (π : A)
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `h`. Rewrite using `[map_mul, map_pow, aeval_X]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hπ m)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mem_of_dvd (hπ : π ∈ Q) (m : ℕ) (r : k[X]) (h : X ^ m ∣ r) :
     aeval π r ∈ Q ^ m := by
@@ -70,17 +70,17 @@ theorem aeval_mem_of_dvd (hπ : π ∈ Q) (m : ℕ) (r : k[X]) (h : X ^ m ∣ r)
   exact Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hπ m)
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro r _`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `r hr`. Take `⟨s, rfl⟩` from `ih r (Ideal.pow_le_pow_right (Nat.le_succ m) hr)`. Take `⟨s', hs'⟩` from `Polynomial.X_dvd_sub_C (p := s)`. Establish `hs : s = C (s.coeff 0) + X * s'` using `by rw [← hs']; ring`. Distinguish the cases in `h0 : s.coeff 0 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hs, h0, map_zero, zero_add, ← mul_assoc, ← pow_succ]`. Conclude with `dvd_mul_right _ _`. It suffices to derive a contradiction. Apply `hnot m` to reduce the goal to its premises. Establish `e0 : aeval π s = algebraMap k A (s.coeff 0) + π * aeval π s'` using `by conv_lhs => rw [hs]`.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[aeval_C]`. Establish `e : aeval π (X ^ m * s) = π ^ m * algebraMap k A (s.coeff 0) + π ^ (m + 1) * aeval π s'`. Rewrite using `[map_mul, map_pow, aeval_X, e0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hr` using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : π ^ m * algebraMap k A (s.coeff 0) ∈ Q ^ (m + 1)`. Establish `h3 : π ^ (m + 1) * aeval π s' ∈ Q ^ (m + 1)` using `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hπ _)`. Use `Ideal.sub_mem _ hr h3` as an intermediate fact. Simplify using `using this`. Establish `h4` using `Ideal.mul_mem_right (algebraMap k A (s.coeff 0)⁻¹) _ h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h4` using `[mul_assoc, ← map_mul, mul_inv_cancel₀ h0, map_one, mul_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem dvd_of_aeval_mem (hπ : π ∈ Q) (hnot : ∀ m : ℕ, π ^ m ∉ Q ^ (m + 1)) :
     ∀ (m : ℕ) (r : k[X]), aeval π r ∈ Q ^ m → X ^ m ∣ r := by
@@ -113,14 +113,14 @@ theorem dvd_of_aeval_mem (hπ : π ∈ Q) (hnot : ∀ m : ℕ, π ^ m ∉ Q ^ (m
       rwa [mul_assoc, ← map_mul, mul_inv_cancel₀ h0, map_one, mul_one] at h4
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dvd_of_aeval_mem Q π hπ hnot m r, aeval_mem_of_dvd Q π hπ m r⟩`.
+Supply the required witnesses or components.
 -/
 theorem aeval_mem_iff (hπ : π ∈ Q) (hnot : ∀ m : ℕ, π ^ m ∉ Q ^ (m + 1)) (m : ℕ) (r : k[X]) :
     aeval π r ∈ Q ^ m ↔ X ^ m ∣ r :=
   ⟨dvd_of_aeval_mem Q π hπ hnot m r, aeval_mem_of_dvd Q π hπ m r⟩
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.X_pow_dvd_iff, Polynomial.X_pow_dvd_iff]`. Simplify using `[Polynomial.coeff_coe]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coe_dvd_iff (m : ℕ) (r : k[X]) :
     (PowerSeries.X : PowerSeries k) ^ m ∣ (r : PowerSeries k) ↔ X ^ m ∣ r := by
@@ -128,7 +128,7 @@ theorem coe_dvd_iff (m : ℕ) (r : k[X]) :
   simp [Polynomial.coeff_coe]
 
 /- English proof (translation)
-Use extensionality with `n`. Use `PowerSeries.X_pow_dvd_iff.mp (h (n + 1)) n (Nat.lt_succ_self n)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_forall_dvd (f g : PowerSeries k)
     (h : ∀ m : ℕ, (PowerSeries.X : PowerSeries k) ^ m ∣ f - g) : f = g := by
@@ -146,7 +146,7 @@ variable {k A : Type} [Field k] [CommRing A] [Algebra k A] (Q : Ideal A) (π : A
 noncomputable def approx (m : ℕ) (u : A) : k[X] := Classical.choose (hex m u)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (hex m u)`.
+A detailed English derivation is pending.
 -/
 theorem approx_spec (m : ℕ) (u : A) : u - aeval π (approx Q π hex m u) ∈ Q ^ m :=
   Classical.choose_spec (hex m u)
@@ -158,11 +158,11 @@ variable {Q π} (hπ : π ∈ Q) (hnot : ∀ m : ℕ, π ^ m ∉ Q ^ (m + 1))
 include hπ hnot
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `n hn`. Rewrite using `[map_sub, Polynomial.coeff_coe, ser, PowerSeries.coeff_mk, sub_eq_zero]`. Establish `hmem : aeval π (approx Q π hex m u - approx Q π hex (n + 1) u) ∈ Q ^ (n + 1)`. Establish `e : aeval π (approx Q π hex m u - approx Q π hex (n + 1) u) = (u - aeval π (approx Q π hex (n + 1) u)) - (u - aeval π (approx Q π hex m u))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ (approx_spec Q π hex _ u) (Ideal.pow_le_pow_right hn (approx_spec Q π hex m u))`. Establish `hd` using `(Polynomial.X_pow_dvd_iff).mp (dvd_of_aeval_mem Q π hπ hnot _ _ hmem) n (Nat.lt_succ_self n)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[Polynomial.coeff_sub, sub_eq_zero]`. Conclude with `hd.symm`.
+A detailed English derivation is pending.
 -/
 theorem ser_sub_approx (m : ℕ) (u : A) :
     (PowerSeries.X : PowerSeries k) ^ m ∣ ser Q π hex u - (approx Q π hex m u : PowerSeries k) := by
@@ -182,9 +182,9 @@ theorem ser_sub_approx (m : ℕ) (u : A) :
   exact hd.symm
 
 /- English proof (translation)
-Use `set q := approx Q π hex m u`. Establish `e1 : u - aeval π p = (u - aeval π q) + aeval π (q - p)` using `by rw [map_sub]; ring`. Establish `e2 : ser Q π hex u - (p : PowerSeries k) = (ser Q π hex u - (q : PowerSeries k)) + ((q - p : k[X]) : PowerSeries k)`. Rewrite using `[Polynomial.coe_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, Ideal.add_mem_iff_right _ (approx_spec Q π hex m u), e2, (dvd_add_right (ser_sub_approx hex hπ hnot m u)), coe_dvd_iff, aeval_mem_iff Q π hπ hnot]`.
+A detailed English derivation is pending.
 -/
 theorem mem_iff_dvd (m : ℕ) (u : A) (p : k[X]) :
     u - aeval π p ∈ Q ^ m ↔
@@ -199,7 +199,7 @@ theorem mem_iff_dvd (m : ℕ) (u : A) (p : k[X]) :
     aeval_mem_iff Q π hπ hnot]
 
 /- English proof (translation)
-Apply `eq_of_forall_dvd` to reduce the goal to its premises. Introduce `m`. Take `⟨p, hp, hd⟩` from `h m`. Use `dvd_sub ((mem_iff_dvd hex hπ hnot m u p).mp hp) hd` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ser_eq (u : A) (f : PowerSeries k)
     (h : ∀ m : ℕ, ∃ p : k[X], u - aeval π p ∈ Q ^ m ∧
@@ -262,9 +262,9 @@ section Existence
 variable {k A : Type} [Field k] [CommRing A] [Algebra k A] {Q : Ideal A} {π : A}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegralNormBound.target`. Consider the case `exact _root_.GlobalTheory.IntegralNormBound.target`. Consider the case `(apply _root_.GlobalTheory.IntegralNormBound.target <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegralNormBound.target <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntegralNormBound.target <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegralNormBound.target ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_approx (hπ : π ∈ Q) (hres : ∀ c : A, ∃ a : k, c - algebraMap k A a ∈ Q)
     (hsup : ∀ m : ℕ, Q ^ m ≤ Ideal.span {π ^ m} ⊔ Q ^ (m + 1)) :
@@ -280,17 +280,17 @@ theorem exists_approx (hπ : π ∈ Q) (hres : ∀ c : A, ∃ a : k, c - algebra
 end Existence
 
 /- English proof (translation)
-Introduce `k A _ _ _ _ _ _ _ Q hQ hQ0`. Use `haveI : Q.IsPrime := hQ.isPrime`. Take `⟨π, hπ1, hπ2⟩` from `SetLike.exists_of_lt (Ideal.pow_succ_lt_pow hQ0 1)`. Establish `hπ : π ∈ Q` using `by simpa using hπ1`. Establish `hnot` using `pow_not_mem hQ0 hπ hπ2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex` using `exists_approx (k := k) hπ (residue_exists k A Q hQ) (pow_le_span_sup hQ0 hπ hπ2)`. Establish `hmem : ∀ (m : ℕ) (u : A), u ∈ Q ^ m ↔ (PowerSeries.X : PowerSeries k) ^ m ∣ serHom hex hπ hnot u`. Introduce `m u`. Use `mem_iff_dvd hex hπ hnot m u 0` as an intermediate fact. Express the relevant statement in the definitionally equal form `u ∈ Q ^ m ↔ (PowerSeries.X : PowerSeries k) ^ m ∣ ser Q π hex u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Use `⟨serHom hex hπ hnot, π, ?_, ?_, hmem, ?_⟩` and prove the remaining obligations. Conclude with `ser_eq hex hπ hnot π PowerSeries.X fun m => ⟨X, by simp, by simp⟩`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `u hu`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall : ∀ m : ℕ, u ∈ Q ^ m` using `fun m => (hmem m u).mpr (by rw [hu]; exact dvd_zero _)`. Establish `hbot` using `Ideal.iInf_pow_eq_bot_of_isDomain Q hQ.ne_top`. Establish `: u ∈ ⨅ i, Q ^ i` using `Submodule.mem_iInf _ |>.mpr hall`. Rewrite `this` using `[hbot]`. Conclude with `(Submodule.mem_bot A).mp this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `m φ`. Use `⟨aeval π (PowerSeries.trunc m φ), ?_⟩` and prove the remaining obligations. Establish `h1` using `(mem_iff_dvd hex hπ hnot m (aeval π (PowerSeries.trunc m φ)) (PowerSeries.trunc m φ)).mp (by simp)`. Establish `h2 : (PowerSeries.X : PowerSeries k) ^ m ∣ φ - (PowerSeries.trunc m φ : PowerSeries k)`. Rewrite using `[PowerSeries.X_pow_dvd_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `n hn`. Rewrite using `[map_sub, Polynomial.coeff_coe, PowerSeries.coeff_trunc, if_pos hn, sub_self]`. Use `dvd_sub h2 h1` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_completion_embedding : ∀ (k A : Type) [Field k] [IsAlgClosed k] [CharZero k]
     [CommRing A] [IsDedekindDomain A] [Algebra k A] [Algebra.FiniteType k A] (Q : Ideal A),

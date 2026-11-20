@@ -22,27 +22,23 @@ open scoped TensorProduct
 open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdelicU GlobalTheory.TamOne
 
 /- English proof (translation)
-Introduce `E _ _ _ r G Λ _ hU hSD v`. Take `⟨h, hh, hΛ⟩` from `GlobalTheory.T.exists_local_unitary_conjugate_transpose E r G Λ hU hSD v`. Establish `hPΛ` using `GlobalTheory.T.local_lattice_ideal_smul_mem_iff Λ (extIdeal v) v h hΛ`. Take `⟨ρ, hρs, hρι, hρk⟩` from `GlobalTheory.T.local_integers_quotient_surjection E hU v`. Establish `hcpl` using `GlobalTheory.T.isAdicComplete_local_extension_ideal E hU v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `GlobalTheory.T.exists_local_trace_one_element E hU v`. Establish `hIc : ∀ x ∈ (extIdeal v).map (intLocIncl (E` using `E) v), intLocConj v x ∈ (extIdeal v).map (intLocIncl (E := E) v) := by`. Introduce `x hx`. Establish `h1 : Ideal.map (intLocConj v) ((extIdeal v).map (intLocIncl (E` using `E) v)) ≤ (extIdeal v).map (intLocIncl (E := E) v) := by`. Rewrite using `[Ideal.map_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (intLocConj v).comp (intLocIncl v) = (intLocIncl v).comp (IsCMField.ringOfIntegersComplexConj E : 𝓞 E →+* 𝓞 E)` using `RingHom.ext (intLocConj_intLocIncl v)`. Rewrite using `[e, ← Ideal.map_map]`. Conclude with `Ideal.map_mono (Ideal.map_le_iff_le_comap.2 (extIdeal_le_comap v))`. Conclude with `h1 (Ideal.mem_map_of_mem _ hx)`. Establish `hρc : ∀ z, ρ (intLocConj v z) = resConj v (ρ z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `z`. Take `⟨x, hx⟩` from `Ideal.Quotient.mk_surjective (ρ z)`. Establish `hz : z - intLocIncl v x ∈ (extIdeal v).map (intLocIncl (E` using `E) v) := (hρk _).1 (by rw [map_sub, hρι, hx, sub_self])`. Establish `hz'` using `(hρk _).2 (hIc _ hz)`. Rewrite `hz'` using `[map_sub, map_sub, intLocConj_intLocIncl, hρι, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hz', ← hx, resConj_mk]`. Establish `hlift : ∀ g ∈ suMat (𝓞 E ⧸ extIdeal v) (resConj v) r, ∃ g' ∈ suMat (intLoc (maximalRealSubfield E) E v) (intLocConj v) r, g'.map ρ = g`. Introduce `g hg`. Use `choose g0 hg0 using fun a b => hρs (g a b)`. Set `g0m : Matrix (Fin r) (Fin r) (intLoc (maximalRealSubfield E) E v)` to `Matrix.of g0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : g0m.map ρ = g` using `Matrix.ext fun a b => hg0 a b`. Establish `h1 : ∀ a b, ((g0m.map (intLocConj v))ᵀ * g0m - 1) a b ∈ (extIdeal v).map (intLocIncl (E` using `E) v) := by`. Introduce `a b`. Use `(hρk _).1 ?_` and prove the remaining obligations. Establish `key : ((g0m.map (intLocConj v))ᵀ * g0m - 1).map ρ = (g.map (resConj v))ᵀ * g - 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmc : (g0m.map (intLocConj v)).map ρ = g.map (resConj v)`. Rewrite using `[← hm, Matrix.map_map, Matrix.map_map]`. Conclude with `congrArg g0m.map (funext hρc)`. Rewrite using `[← RingHom.mapMatrix_apply, map_sub, map_mul, map_one, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, Matrix.transpose_map, hmc, hm]`. Rewrite `key` using `[hg.1, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg (fun M => M a b) key`. Establish `h2 : g0m.det - 1 ∈ (extIdeal v).map (intLocIncl (E` using `E) v) := by`. Use `(hρk _).1 ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_one, RingHom.map_det, RingHom.mapMatrix_apply, hm, hg.2, sub_self]`. Take `⟨g', hu, hd, hc⟩` from `GlobalTheory.T.hensel_lift_special_unitary_matrix (intLocConj v) (intLocConj_intLocConj v) _ hIc hcpl w hw r g0m h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨g', ⟨hu, hd⟩, Matrix.ext fun a b => ?_⟩` and prove the remaining obligations. Use `(hρk _).2 (hc a b)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Rewrite using `[Matrix.map_apply, this]`. Conclude with `hg0 a b`.
-
-Establish `hg` using `GlobalTheory.T.locCount_eq_card_congruence_quotient (cj E) Gᵀ Λ hSD.2.2.1 v 1`. Simplify using `only [pow_one] at hg`. Use `hg.trans ((GlobalTheory.T.local_unitary_conjugate_transpose_J E r G Λ v h hh hΛ hPΛ ρ hρk hρc hlift).trans ?_)` and prove the remaining obligations. Unfold `resOrder`. Use `split_ifs with hP`.
-
-Conclude with `(GlobalTheory.T.card_reduction_unitary_eq_suMat E r v).symm`. Conclude with `GlobalTheory.T.card_special_unitary_split_eq_SL E r hU v hP`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem locCount_one_eq_resOrder : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)), 2 ≤ r → Unr E → SelfDualLat G Λ → ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), locCount (IsCMField.complexConj E).toAlgHom Gᵀ Λ v 1 = resOrder E r v := by
   intro E _ _ _ r G Λ _ hU hSD v

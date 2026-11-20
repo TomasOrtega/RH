@@ -39,7 +39,7 @@ def HasString (l : ℕ) (π : Submodule ℂ (UA E n → ℂ)) (t : ℕ) : Prop :
           T.map fun z : ℂˣ => (z : ℂ)
 
 /- English proof (translation)
-Use `⟨by norm_num, fun k h1 h2 => ?_, fun h => absurd h (by norm_num), fun _ => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `interval_cases k <;> simp [wAt]`. Simplify using `[wAt]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 example : IsRunAt (n := 3) ⟨![1, 1, 0], by
     intro a b h; fin_cases a <;> fin_cases b <;> simp_all [Fin.le_def]⟩ 0 2 := by

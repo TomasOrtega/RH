@@ -8,13 +8,11 @@ noncomputable section
 namespace GlobalTheory.MirAvg.Kill
 
 /- English proof (translation)
-Use `haveI : Module.Finite ℂ (MonoidAlgebra ℂ G) := Module.Finite.of_basis (MonoidAlgebra.basis G ℂ)`. Use `haveI : Module.Free ℂ (MonoidAlgebra ℂ G) := Module.Free.of_basis (MonoidAlgebra.basis G ℂ)`. Establish `hi : IsIdempotentElem (LinearMap.mulLeft ℂ E)`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `[← mul_assoc, h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : LinearMap.trace ℂ _ (LinearMap.mulLeft ℂ E) = 0`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (MonoidAlgebra.basis G ℂ), Matrix.trace]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, LinearMap.toMatrix_apply]`. Establish `: (MonoidAlgebra.basis G ℂ) x = MonoidAlgebra.single x 1` using `by simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `show (E * MonoidAlgebra.single x 1).coeff x = 0`. Rewrite using `[MonoidAlgebra.coeff_mul_single_apply]`. Simplify using `[h1]`. Establish `h0` using `LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero hi ht`.
-
-Simplify using `using LinearMap.congr_fun h0 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem idem_eq_zero {G : Type} [Group G] [Fintype G] (E : MonoidAlgebra ℂ G) (h : E * E = E)
     (h1 : E.coeff 1 = 0) : E = 0 := by
@@ -39,7 +37,7 @@ theorem idem_eq_zero {G : Type} [Group G] [Fintype G] (E : MonoidAlgebra ℂ G) 
 variable {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Simplify using `[MonoidAlgebra.coeff_sum, Finset.sum_apply', Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_sum_single (F : G → ℂ) (x : G) :
     (∑ h : G, MonoidAlgebra.single h (F h)).coeff x = F x := by
@@ -47,7 +45,7 @@ theorem coeff_sum_single (F : G → ℂ) (x : G) :
   simp [MonoidAlgebra.coeff_sum, Finset.sum_apply', Finsupp.single_apply]
 
 /- English proof (translation)
-Rewrite using `[MonoidAlgebra.coeff_mul_apply_left, Finsupp.sum_fintype]`. Introduce `q`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem coeff_mul' (a b : MonoidAlgebra ℂ G) (x : G) :
     (a * b).coeff x = ∑ q, a.coeff q * b.coeff (q⁻¹ * x) := by
@@ -58,18 +56,18 @@ def avg (P : G → Prop) [DecidablePred P] (χ : G →* ℂ) : MonoidAlgebra ℂ
   ∑ h : G, MonoidAlgebra.single h (if P h then χ h else 0)
 
 /- English proof (translation)
-The claim follows from `coeff_sum_single _ x`.
+A detailed English derivation is pending.
 -/
 theorem avg_coeff (P : G → Prop) [DecidablePred P] (χ : G →* ℂ) (x : G) :
     (avg P χ).coeff x = if P x then χ x else 0 :=
   coeff_sum_single _ x
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[coeff_mul', MonoidAlgebra.coeff_smul_apply, avg_coeff, smul_eq_mul]`. Establish `key : ∀ q, (avg P χ).coeff q * (avg P χ).coeff (q⁻¹ * x) = if P q then (if P x then χ x else 0) else 0`. Introduce `q`. Simplify using `only [avg_coeff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hq : P q`. Establish `hiff : P (q⁻¹ * x) ↔ P x` using `⟨fun h => by simpa using hm _ _ hq h, fun h => hm _ _ (hi _ hq) h⟩`. Distinguish the cases in `hx : P x`. Rewrite using `[if_pos hq, if_pos (hiff.2 hx), if_pos hq, if_pos hx, ← map_mul, mul_inv_cancel_left]`. Rewrite using `[if_pos hq, if_neg (fun h => hx (hiff.1 h)), if_pos hq, if_neg hx, mul_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hq, if_neg hq, zero_mul]`. Simplify using `only [key]`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem avg_mul_self (P : G → Prop) [DecidablePred P] (χ : G →* ℂ)
     (hm : ∀ x y, P x → P y → P (x * y)) (hi : ∀ x, P x → P x⁻¹) :
@@ -89,7 +87,7 @@ theorem avg_mul_self (P : G → Prop) [DecidablePred P] (χ : G →* ℂ)
   rw [← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[coeff_mul', tr, Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.inv G) _ _ fun q => ?_` and prove the remaining obligations. Rewrite using `[zOf, coeff_sum_single]`. Simplify using `only [Equiv.inv_apply, inv_inv, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coeff_one_zOf_mul (ψ : G → ℂ) (a : MonoidAlgebra ℂ G) :
     (zOf ψ * a).coeff 1 = ψ 1 / (Fintype.card G : ℂ) * tr a ψ := by
@@ -100,13 +98,13 @@ theorem coeff_one_zOf_mul (ψ : G → ℂ) (a : MonoidAlgebra ℂ G) :
   ring
 
 /- English proof (translation)
-Take `⟨hid, hcen, -⟩` from `GlobalTheory.GLq.ZOrth.zorth G ψ ψ hψ hψ`. Rewrite `hid` using `[if_pos rfl]`. Use `set m := avg P χ with hmdef`. Use `set n : ℂ := ((Finset.univ.filter P).card : ℂ) with hn`. Establish `hn0 : n ≠ 0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hn, Nat.cast_ne_zero]`. Conclude with `Finset.card_ne_zero.2 ⟨1, by simp [h1]⟩`. Establish `hmm : m * m = n • m` using `avg_mul_self P χ hm hi`. Establish `hE : (n⁻¹ • (zOf ψ * m)) * (n⁻¹ • (zOf ψ * m)) = n⁻¹ • (zOf ψ * m)`. Rewrite using `[smul_mul_smul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `: zOf ψ * m * (zOf ψ * m) = n • (zOf ψ * m)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, smul_smul, mul_assoc, inv_mul_cancel₀ hn0, mul_one]`. Establish `h1' : (n⁻¹ • (zOf ψ * m)).coeff 1 = 0`. Rewrite using `[MonoidAlgebra.coeff_smul_apply, coeff_one_zOf_mul, htr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using the standard rewrite rules. Establish `h0` using `idem_eq_zero _ hE h1'`. Rewrite `h0` using `[smul_eq_zero, or_iff_right (inv_ne_zero hn0)]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem zOf_mul_avg_eq_zero (ψ : G → ℂ) (hψ : IsIrr ψ) (P : G → Prop) [DecidablePred P] (χ : G →* ℂ) (h1 : P 1)
     (hm : ∀ x y, P x → P y → P (x * y)) (hi : ∀ x, P x → P x⁻¹) (htr : tr (avg P χ) ψ = 0) :
@@ -138,7 +136,7 @@ end GlobalTheory.MirAvg.Kill
 namespace GlobalTheory.MirAvg
 
 /- English proof (translation)
-Consider the cases of `b`. Introduce `x _`. Simplify using the standard rewrite rules. Introduce `x; exact ⟨0, by simp⟩`.
+Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem mirSet_one {g : ℕ} [Fact g.Prime] {r : ℕ} (a : Fin r → ZMod g) (b : Bool) : mirSet a b (1 : Gn g r) := by
   cases b
@@ -146,9 +144,9 @@ theorem mirSet_one {g : ℕ} [Fact g.Prime] {r : ℕ} (a : Fin r → ZMod g) (b 
   · intro x; exact ⟨0, by simp⟩
 
 /- English proof (translation)
-Consider the cases of `b`. Introduce `x hx`. Simplify using `only [mirSet, Bool.false_eq_true, if_false] at hh hh'`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, hh' x hx, hh x hx]`. Introduce `x`.
+Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [mirSet, if_true] at hh hh'`. Take `⟨c₂, hc₂⟩` from `hh' x`. Take `⟨c₁, hc₁⟩` from `hh ((h' : Mt g r).mulVec x)`. Use `⟨c₁ + c₂, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, add_smul, ← hc₁, ← hc₂]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -167,13 +165,13 @@ theorem mirSet_mul {g : ℕ} [Fact g.Prime] {r : ℕ} (a : Fin r → ZMod g) (b 
     abel
 
 /- English proof (translation)
-Establish `hhi : ∀ x, (h : Mt g r).mulVec (((h⁻¹ : Gn g r) : Mt g r).mulVec x) = x`. Introduce `x`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hih : ∀ x, ((h⁻¹ : Gn g r) : Mt g r).mulVec ((h : Mt g r).mulVec x) = x`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Consider the cases of `b`. Introduce `x hx`. Simplify using `only [mirSet, Bool.false_eq_true, if_false] at hh`. Use `conv_lhs => rw [← hh x hx]`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hih x`. Introduce `x`. Simplify using `only [mirSet, if_true] at hh`. Take `⟨c, hc⟩` from `hh (((h⁻¹ : Gn g r) : Mt g r).mulVec x)`. Use `⟨-c, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hc` using `[hhi x]`. Rewrite using `[neg_smul, ← hc]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem mirSet_inv {g : ℕ} [Fact g.Prime] {r : ℕ} (a : Fin r → ZMod g) (b : Bool) (h : Gn g r)
     (hh : mirSet a b h) : mirSet a b h⁻¹ := by
@@ -199,7 +197,7 @@ theorem mirSet_inv {g : ℕ} [Fact g.Prime] {r : ℕ} (a : Fin r → ZMod g) (b 
 open Classical in
 
 /- English proof (translation)
-Introduce `g _ r ψ hψ θ a b htr`. Set `χ : Gn g r →* ℂ` to `(Units.coeHom ℂ).comp (θ.comp Matrix.GeneralLinearGroup.det)`. Establish `hm : mirEl θ a b = Kill.avg (mirSet a b) χ` using `rfl`. Rewrite `htr`, the goal using `[hm]`. Conclude with `Kill.zOf_mul_avg_eq_zero ψ hψ (mirSet a b) χ (mirSet_one a b) (mirSet_mul a b) (mirSet_inv a b) htr`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zOf_mul_mirEl_eq_zero : ∀ (g : ℕ) [Fact g.Prime] (r : ℕ) (ψ : Gn g r → ℂ), IsIrr ψ →
     ∀ (θ : (ZMod g)ˣ →* ℂˣ) (a : Fin r → ZMod g)

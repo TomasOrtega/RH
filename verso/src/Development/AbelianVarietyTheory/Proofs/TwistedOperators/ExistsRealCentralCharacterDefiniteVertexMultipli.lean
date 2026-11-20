@@ -24,11 +24,11 @@ open Formalism.IndefR.Mult Matrix GlobalTheory.Grid
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `hJ : uᴴ * Formalism.REAL.Jm (M.ε τ) * u = Formalism.REAL.Jm (M.ε τ)` using `hu`. Establish `e1 : M.fr τ * ((M.fr τ)⁻¹ * u * M.fr τ) = u * M.fr τ`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul]`. Express the relevant statement in the definitionally equal form `((M.fr τ)⁻¹ * u * M.fr τ)ᴴ * gramAt D V τ * ((M.fr τ)⁻¹ * u * M.fr τ) = gramAt D V τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← M.fr_gram τ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul (M.fr τ)]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (M.fr τ)ᴴ * Formalism.REAL.Jm (M.ε τ) * M.fr τ := by`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hJ]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unframe_mem_UH {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau)
     {u : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hu : u ∈ Formalism.MainNotions.S.UJset (M.ε τ)) :
@@ -49,15 +49,13 @@ theorem unframe_mem_UH {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S
           _ = _ := by rw [hJ]
 
 /- English proof (translation)
-Use `haveI : Nontrivial (M.H τ) := (M.ds τ).2.1`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Set `A : Module.End ℂ (M.H τ)` to `(M.rep τ a : M.H τ →ₗ[ℂ] M.H τ)`. Take `⟨c, hcA⟩` from `Module.End.exists_eigenvalue A`. Use `⟨c, fun w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hirr` using `(M.ds τ).2.2.2.1`. Establish `hinv : ∀ u ∈ Formalism.MainNotions.S.UJset (M.ε τ), ∀ v ∈ A.eigenspace c, M.σ τ u v ∈ A.eigenspace c`. Introduce `u hu v hv`. Establish `hg` using `unframe_mem_UH M τ hu`. Establish `e : M.σ τ u = M.rep τ ((M.fr τ)⁻¹ * u * M.fr τ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `DSModel.rep`. Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`. Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[e]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show M.rep τ a (M.rep τ _ v) = c • M.rep τ _ v`. Rewrite using `[← GlobalTheory.ConjMult.rep_mul M τ _ ha _ hg, ← hc _ hg, GlobalTheory.ConjMult.rep_mul M τ _ hg _ ha]`. Establish `hv' : M.rep τ a v = c • v` using `hv`. Rewrite using `[hv', map_smul]`. Break down `hirr (A.eigenspace c) (Submodule.closed_of_finiteDimensional _) hinv with h | h` into its components or cases.
-
-Conclude with `absurd h hcA`. Establish `hw : w ∈ A.eigenspace c` using `h ▸ Submodule.mem_top`. Conclude with `(Module.End.mem_eigenspace_iff).1 hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rep_scalar {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) [FiniteDimensional ℂ (M.H τ)]
     {a : Matrix (Fin V.rank) (Fin V.rank) ℂ} (ha : a ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ))
@@ -88,7 +86,7 @@ theorem rep_scalar {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (�
     exact (Module.End.mem_eigenspace_iff).1 hw
 
 /- English proof (translation)
-Establish `e` using `congrArg (infMat D.sp.cm.sig V.gram (θ τ)) (Subgroup.mem_center_iff.1 hzc (atTau θ V τ g))`. Rewrite `e` using `[GlobalTheory.PointAtPlaceHom.infMat_mul, GlobalTheory.PointAtPlaceHom.infMat_mul, (GlobalTheory.PointAtPlaceHom.atTau_spec hθ V τ hg).2.1]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infMat_comm {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {z : GA D V} (hzc : z ∈ Subgroup.center (GA D V))
     (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) :
@@ -99,7 +97,7 @@ theorem infMat_comm {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {z : GA D V}
   exact e
 
 /- English proof (translation)
-Establish `e` using `hT.equiv τ g hg v (c • v τ) (by rw [hc]; rfl)`. Rewrite using `[← e, T.map_update_smul, Function.update_eq_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rTr_atTau_of_scalar {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {J : Set (GA D V)}
     {χ : GA D V → ℂ} {T : MMap M} (hT : IsMultMap θ M J χ T) (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
@@ -110,19 +108,19 @@ theorem rTr_atTau_of_scalar {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → S
   rw [← e, T.map_update_smul, Function.update_eq_self]
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset D.what₂.Tau, rTr V (GlobalTheory.RowReal.realAll θ V (fun ρ => if ρ ∈ s then Mz ρ else 1)) (T v) = (∏ ρ ∈ s, c ρ) • T v`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `e : (fun ρ : D.what₂.Tau => if ρ ∈ (∅ : Finset D.what₂.Tau) then Mz ρ else 1) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `ρ`. Simplify using the standard rewrite rules. Rewrite using `[e, GlobalTheory.RowReal.realAll_one hθ, Finset.prod_empty, one_smul]`. Use function extensionality and compare the values at `x`. Simplify using `[rTr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `insert τ s hτ ih`. Establish `hMs : ∀ ρ, (fun ρ => if ρ ∈ insert τ s then Mz ρ else 1) ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ)` using `fun ρ => by dsimp only split_ifs`. Conclude with `hM ρ`. Conclude with `GlobalTheory.PointAtPlaceHom.one_mem_UH _`. Rewrite using `[GlobalTheory.RowReal.realAll_eq_atTau_mul hθ hMs τ]`.
+Treat this case separately. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : Function.update (fun ρ => if ρ ∈ insert τ s then Mz ρ else 1) τ 1 = fun ρ => if ρ ∈ s then Mz ρ else 1`. Use function extensionality and compare the values at `ρ`. Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality. Simplify using `[hτ]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne h]`. Simplify using `[Finset.mem_insert, h]`. Rewrite using `[e, Finset.prod_insert hτ]`. Simplify using `only [Finset.mem_insert_self, if_true]`. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `i1` using `congrFun ih (x * atTau θ V τ (Mz τ))`. Establish `i2` using `congrFun (rTr_atTau_of_scalar hT τ (hM τ) (hc τ) v) x`. Simplify using `only [rTr, Pi.smul_apply, smul_eq_mul] at i1 i2 ⊢`. Rewrite using `[← mul_assoc, i1, i2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e : (fun ρ : D.what₂.Tau => if ρ ∈ (Finset.univ : Finset D.what₂.Tau) then Mz ρ else 1) = Mz`. Use function extensionality and compare the values at `ρ`. Simplify using the standard rewrite rules. Use `key Finset.univ` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem rTr_realAll {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S}
     {J : Set (GA D V)} {χ : GA D V → ℂ} {T : MMap M} (hT : IsMultMap θ M J χ T)
@@ -166,27 +164,25 @@ theorem rTr_realAll {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {S : D.what�
   rwa [e] at this
 
 /- English proof (translation)
-Introduce `D θ hθ N ν P hN`. Establish `hs : N.V.SigOK` using `hN.sigOK`. Establish `hd : N.V.IsDefinite` using `fun τ => Or.inl (by rw [hN.sig, hN.rank]; simp)`. Establish `hfd : ∀ τ, FiniteDimensional ℂ (N.M.H τ)` using `fun τ => GlobalTheory.DefiniteEnd.finiteDimensional_model hs hd N.M τ`. Establish `key : ∀ (z : GA D N.V) (ρ : D.what₂.Tau), ∃ c : ℂ, z ∈ Subgroup.center (GA D N.V) → ∀ w, N.M.rep ρ (infMat D.sp.cm.sig N.V.gram (θ ρ) z) w = c • w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z ρ`. Distinguish the cases in `hz : z ∈ Subgroup.center (GA D N.V)`. Use `haveI := hfd ρ`. Take `⟨c, hc⟩` from `rep_scalar N.M ρ (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ N.V z ρ) (fun g hg => infMat_comm hθ hz ρ hg)`. Conclude with `⟨c, fun _ => hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun h => absurd h hz⟩`. Use `choose c hc using key`. Use `⟨fun z => ∏ ρ, c z ρ, fun F v z hz hzc h => ?_⟩` and prove the remaining obligations. Establish `hreal : ∀ T : MMap N.M, IsMultMap θ N.M ∅ 1 T → ∀ (u : N.M.Vec) (g : GA D N.V), T u (g * z) = (∏ ρ, c z ρ) * T u g`. Introduce `T hT u g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : GlobalTheory.RowReal.realAll θ N.V (fun ρ => infMat D.sp.cm.sig N.V.gram (θ ρ) z) = z` using `GlobalTheory.RowReal.realAll_eq hθ (fun ρ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ N.V z ρ) ⟨hz, fun ρ => rfl⟩`. Use `rTr_realAll hθ hT _ (fun ρ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ N.V z ρ) (c z) (fun ρ => hc z ρ hzc) u` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `congrFun this g`. Establish `key2 : ∀ T ∈ Mult θ N.M ∅ 1, ∀ (x : SmT N.M) (g : GA D N.V), PiTensorProduct.lift T x (g * z) = (∏ ρ, c z ρ) * PiTensorProduct.lift T x g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `T hT`. Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT`. Introduce `x`. Proceed by induction on `x using PiTensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `smul_tprod r f`. Introduce `g`. Simplify using `only [map_smul, PiTensorProduct.lift.tprod, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hreal T hT f g]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `add a b ha hb`. Introduce `g`. Simplify using `only [map_add, Pi.add_apply]`. Rewrite using `[ha g, hb g]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `zero => intro x g`. Simplify using the standard rewrite rules. Consider the case `add T T' _ _ h1 h2`. Introduce `x g`. Simplify using `only [map_add, LinearMap.add_apply, Pi.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Rewrite using `[h1 x g, h2 x g]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul a T _ h`. Introduce `x g`. Simplify using `only [map_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[h x g]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm : PiTensorProduct.lift.symm F.1 ∈ Mult θ N.M ∅ 1` using `(mem_multT θ N.M ∅ 1 F.1).1 F.2`. Use `key2 _ hm v h` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cusp_hasCen : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (N : GlobalTheory.Grid.Node D) (ν : ℕ) (P : D.what₂.Tau → SPar), N.Is ν 0 P → ∃ χ : GA D N.V → ℂ, ∀ (F : N.Cusp θ) (v : SmT N.M), GlobalTheory.SeeSaw.HasCen N.V χ (F.1 v) := by
   intro D θ hθ N ν P hN

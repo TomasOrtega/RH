@@ -9,17 +9,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TypeAsm.PairsLab
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0 CH C' Cl hCH D large₂ X Y u hHost hNF hLab hTerm hH t ht`. Establish `hS : Std D large₂` using `⟨C', Cl, Cg, cb, Cw, cT, CT, C0, hH⟩`. Take `⟨hK, -, -, -, -, -, -, -, -, -, -, hg, -⟩` from `hHost D large₂ hS`. Take `⟨N, hN, hNj, hNT⟩` from `hNF D large₂ X Y u hS t ht`. Establish `hT : N.IsTerm (gS D) t.lam` using `hTerm D large₂ X Y u hS t N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, -, hDel, hDb, -⟩` from `hLab D large₂ X Y u hS t N hN`. Take `⟨𝔠, -, hDb1, hDel1, -⟩` from `GlobalTheory.DegCnt.Absorb.exists_absorbing_ideal D.host.E (VS D).V (HV D) hK D.R.rS N (gS D) t.lam (by omega) hT`. Establish `hPF : PFHost D` using `PFHost_of_data D hH.1.2.1`. Establish `hC : 2 * (CH + 1) ≤ 2 * (CH + 1)` using `le_rfl`. Establish `hup` using `(delta_pos_le_height_sq hPF large₂ hCH hC t ht).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `two_le_scale_b D large₂`. Establish `hHb : (1 : ℝ) ≤ Hb large₂.sc.b (2 * (CH + 1)) D.R.m D.R.f`. Unfold `Hb`. Conclude with `Real.one_le_rpow (by linarith) (by positivity)`. Establish `hS1` using `one_le_sigma_product (D := D) (H1C large₂ CH) (jT t) (labT t)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : (1 : ℝ) ≤ Hb large₂.sc.b (2 * (CH + 1)) D.R.m D.R.f * k2S D (H1C large₂ CH) (jT t) (labT t) ^ 2` using `one_le_mul_of_one_le_of_one_le hHb (one_le_pow₀ hS1)`. Use `⟨hDel ▸ hDel1, hDb ▸ hDb1, hup, ?_⟩` and prove the remaining obligations. Establish `hcard : (k2ends D (jT t) (labT t)).card ≤ D.R.rS`. Unfold `k2ends`. Use `(Finset.card_filter_le _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_Icc]`. Unfold `jT`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Unfold `DbL`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_le_prod (fun l _ => ?_) (fun l hl => localNorm_le_height_sq hPF large₂ hCH hC t l hl)` and prove the remaining obligations. Unfold `Nloc`. Conclude with `FractionalIdeal.absNorm_nonneg _` after adjusting the coercions. Use `_ = _ ^ (k2ends D (jT t) (labT t)).card := Finset.prod_const _`. Use `_ ≤ _ := pow_le_pow_right₀ hA hcard`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem norms_of_relevant : ∀ (Cg cb Cw cT CT C0 CH C' Cl : ℝ), 0 ≤ CH → ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X)
     (u : D.what₂.Word), HostC → NFExC → LabC → TermC → Formalism.MainNotions.NonGenericAndKTwoTheorems.KTwoHypotheses D large₂ C' Cl Cg cb Cw cT CT C0 →

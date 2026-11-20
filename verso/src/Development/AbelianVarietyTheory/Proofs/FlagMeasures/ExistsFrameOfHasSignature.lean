@@ -19,7 +19,7 @@ section Cong
 variable {A : Type} [CommRing A] {S : Subring A} {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hy m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_smul_mem (Λ : Submodule S (n → A)) (m : ℕ) {y : n → A} (hy : y ∈ Λ) : (m : A) • y ∈ Λ := by
   rw [Nat.cast_smul_eq_nsmul]; exact nsmul_mem hy m
@@ -46,7 +46,7 @@ def congSub (Λ : Submodule S (n → A)) (g : ℕ) : Subgroup (GL n A) where
     rw [Matrix.sub_mul, Matrix.one_mul, Units.mul_inv]; abel
 
 /- English proof (translation)
-Introduce and unpack `x ⟨hx, hx'⟩`. Use `⟨hx, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `hx' y hy`. Conclude with `⟨(h : A) • z, natCast_smul_mem Λ h hz, by rw [e, smul_smul, Nat.cast_mul]⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem congSub_mul_le (Λ : Submodule S (n → A)) (g h : ℕ) : congSub Λ (g * h) ≤ congSub Λ g := by
   rintro x ⟨hx, hx'⟩
@@ -55,13 +55,13 @@ theorem congSub_mul_le (Λ : Submodule S (n → A)) (g h : ℕ) : congSub Λ (g 
   exact ⟨(h : A) • z, natCast_smul_mem Λ h hz, by rw [e, smul_smul, Nat.cast_mul]⟩
 
 /- English proof (translation)
-Establish `key : ∀ k ∈ congSub Λ (N * (g * M)), ∀ y ∈ Λ, ∃ z ∈ Λ, (((x * k * x⁻¹ : GL n A) : Matrix n n A) - 1) *ᵥ y = (g : A) • z`. Introduce and unpack `k ⟨-, hk⟩ y hy`. Take `⟨z, hz, e⟩` from `hk _ (hx' y hy)`. Use `⟨_, hx z hz, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[Matrix.mulVec_smul, Nat.cast_mul, mul_smul, hN.smul_left_cancel]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : ((x * k * x⁻¹ : GL n A) : Matrix n n A) - 1 = (x : Matrix n n A) * (((k : Matrix n n A) - 1) * ((x⁻¹ : GL n A) : Matrix n n A))`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_sub, Units.mul_inv, Units.val_mul, Units.val_mul, Matrix.mul_assoc]`. Rewrite using `[e1, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e, Matrix.mulVec_smul, Nat.cast_mul, mul_smul]`. Establish `into : ∀ k ∈ congSub Λ (N * (g * M)), ∀ y ∈ Λ, ((x * k * x⁻¹ : GL n A) : Matrix n n A) *ᵥ y ∈ Λ`. Introduce `k hk y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, hz, e⟩` from `key k hk y hy`. Rewrite `e` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_iff_eq_add]`. Rewrite using `[e]`. Conclude with `add_mem (natCast_smul_mem Λ g hz) hy`. Use `⟨fun y => ⟨into k hk y, fun h => ?_⟩, key k hk⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `into k⁻¹ (inv_mem hk) _ h` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, show x * k⁻¹ * x⁻¹ * (x * k * x⁻¹) = 1 by group, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem conj_mem_congSub (Λ : Submodule S (n → A)) (x : GL n A) {M N : ℕ} (hN : IsUnit (N : A))
     (hx : ∀ y ∈ Λ, (M : A) • (x : Matrix n n A) *ᵥ y ∈ Λ)
@@ -89,9 +89,9 @@ theorem conj_mem_congSub (Λ : Submodule S (n → A)) (x : GL n A) {M N : ℕ} (
     Units.val_one, Matrix.one_mulVec] at this
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SublatticeFacts.main`. Consider the case `exact _root_.GlobalTheory.SublatticeFacts.main`. Consider the case `(apply _root_.GlobalTheory.SublatticeFacts.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SublatticeFacts.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SublatticeFacts.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SublatticeFacts.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_denom (Λ : Submodule S (n → A)) (hfg : Λ.FG)
     (habs : ∀ v : n → A, ∃ N : ℕ, 1 ≤ N ∧ (N : A) • v ∈ Λ) (X : Matrix n n A) :
@@ -139,16 +139,16 @@ section Adelic
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Establish `: IsUnit (N : E)` using `IsUnit.mk0 _ (Nat.cast_ne_zero.2 (by omega))`. Simplify using `using this.map (inclE (F := F) (Af F))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_natCast (N : ℕ) (hN : 1 ≤ N) : IsUnit (N : E ⊗[F] Af F) := by
   have : IsUnit (N : E) := IsUnit.mk0 _ (Nat.cast_ne_zero.2 (by omega))
   simpa using this.map (inclE (F := F) (Af F))
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.VectorInclusion.main`. Consider the case `exact _root_.GlobalTheory.VectorInclusion.main`. Consider the case `(apply _root_.GlobalTheory.VectorInclusion.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.VectorInclusion.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.VectorInclusion.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.VectorInclusion.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lamAf_fg (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) : (lamAf (F := F) L).FG := by
   first
@@ -160,7 +160,7 @@ theorem lamAf_fg (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) : (lamAf (F 
   | (intros; exact _root_.GlobalTheory.VectorInclusion.main ..)
 
 /- English proof (translation)
-Establish `h` using `Ideal.absNorm_mem (Ideal.span {d})`. Take `⟨d', hd'⟩` from `Ideal.mem_span_singleton'.1 h`. Use `⟨_, Nat.pos_of_ne_zero ?_, d', hd'⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_multiple (d : 𝓞 F) (hd : d ≠ 0) : ∃ N : ℕ, 1 ≤ N ∧ ∃ d' : 𝓞 F, d' * d = N := by
   have h := Ideal.absNorm_mem (Ideal.span {d})
@@ -170,19 +170,19 @@ theorem exists_nat_multiple (d : 𝓞 F) (hd : d ≠ 0) : ∃ N : ℕ, 1 ≤ N �
   exact hd
 
 /- English proof (translation)
-Rewrite using `[← Formalism.UG.P.adelstab_incl_C, map_natCast, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levelafC_natCast (N : ℕ) : Formalism.UG.P.levelafC (F := F) E (N : 𝓞 F) = (N : E ⊗[F] Af F) := by
   rw [← Formalism.UG.P.adelstab_incl_C, map_natCast, map_natCast]
 
 /- English proof (translation)
-Take `⟨c, hc, h⟩` from `Formalism.UG.P.adelstabL_lower (F := F) L hL`. Use `choose d hd0 hd using fun i => Formalism.UG.P.levelaf_denom (v i)`. Establish `hD : ∀ i, Formalism.UG.P.levelafC E (∏ j, d j) * v i ∈ IntAf F E`. Introduce `i`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ i), Formalism.UG.P.levelafC_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_mem (Formalism.UG.P.levelafC_mem _) (hd i)`. Take `⟨N, hN, d', e⟩` from `exists_nat_multiple (c * ∏ j, d j) (mul_ne_zero hc (Finset.prod_ne_zero_iff.2 fun i _ => hd0 i))`. Use `⟨N, hN, ?_⟩` and prove the remaining obligations. Establish `h1` using `h (fun i => Formalism.UG.P.levelafC E d' * (Formalism.UG.P.levelafC E (∏ j, d j) * v i)) fun i => mul_mem (Formalism.UG.P.levelafC_mem _) (hD i)`. Establish `h2 : (N : E ⊗[F] Af F) • v = fun i => Formalism.UG.P.levelafC E c * (Formalism.UG.P.levelafC E d' * (Formalism.UG.P.levelafC E (∏ j, d j) * v i))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, ← levelafC_natCast, ← e, Formalism.UG.P.levelafC_mul, Formalism.UG.P.levelafC_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Use `Submodule.span_mono ?_ h1` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem lamAf_absorbs (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤)
     (v : Fin n → E ⊗[F] Af F) : ∃ N : ℕ, 1 ≤ N ∧ (N : E ⊗[F] Af F) • v ∈ lamAf (F := F) L := by
@@ -227,9 +227,9 @@ def signEquiv (ε : Fin n → Bool) :
     (Equiv.sumCompl fun a => ε a = true)
 
 /- English proof (translation)
-Establish `h1 : ∀ a, ε (signEquiv ε (Sum.inl a)) = true` using `fun a => ((Fintype.equivFinOfCardEq (Fintype.card_subtype fun a => ε a = true)).symm a).2`. Establish `h2 : ∀ a, ¬ ε (signEquiv ε (Sum.inr a)) = true` using `fun a => ((Fintype.equivFinOfCardEq (α := {a // ¬ ε a = true}) (by rw [Fintype.card_subtype]; simp)).symm a).2`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[Formalism.REAL.Jm, Jpq, Matrix.diagonal_apply, Matrix.one_apply, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_submatrix (ε : Fin n → Bool) :
     (Formalism.REAL.Jm ε).submatrix (signEquiv ε) (signEquiv ε) = Jpq _ _ := by
@@ -243,9 +243,7 @@ theorem Jm_submatrix (ε : Fin n → Bool) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `set e := signEquiv ε`. Establish `hQ : IsUnit (P.submatrix e e)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_submatrix_equiv_self]`. Conclude with `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Use `⟨e.symm, hQ.unit, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Formalism.UG.P.cT_conj_eq, IsUnit.unit_spec, ← Jm_submatrix, ← h, Matrix.reindex_apply, Equiv.symm_symm, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSignature_of_frame {ε : Fin n → Bool} {P G : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P)
     (h : Pᴴ * G * P = Formalism.REAL.Jm ε) :
@@ -260,11 +258,11 @@ theorem hasSignature_of_frame {ε : Fin n → Bool} {P G : Matrix (Fin n) (Fin n
     Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]
 
 /- English proof (translation)
-Take `⟨-, Q, hQ⟩` from `Formalism.UG.P.sig_data G _ _ h`. Use `set e := signEquiv ε`. Establish `hP : (Q.submatrix id e.symm)ᴴ * G * Q.submatrix id e.symm = Formalism.REAL.Jm ε`. Establish `: (Q.submatrix id e.symm)ᴴ * G * Q.submatrix id e.symm = (Qᴴ * G * Q).submatrix e.symm e.symm`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mul_apply]`. Rewrite using `[this, hQ, ← Jm_submatrix, Matrix.submatrix_submatrix]`. Simplify using `[e]`. Use `⟨_, ?_, hP⟩` and prove the remaining obligations. Use `IsUnit.of_mul_eq_one_right (Formalism.REAL.Jm ε * ((Q.submatrix id e.symm)ᴴ * G)) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, hP, Formalism.REAL.Jm_mul_self]`.
+A detailed English derivation is pending.
 -/
 theorem exists_frame_of_hasSignature {G : Matrix (Fin n) (Fin n) ℂ} (ε : Fin n → Bool)
     (h : HasSignature G (Finset.univ.filter fun a => ε a = true).card
@@ -284,7 +282,7 @@ theorem exists_frame_of_hasSignature {G : Matrix (Fin n) (Fin n) ℂ} (ε : Fin 
 def firstSigns (n p : ℕ) : Fin n → Bool := fun a => decide ((a : ℕ) < p)
 
 /- English proof (translation)
-Establish `: (Finset.univ.filter fun a => firstSigns n p a = true) = Finset.univ.filter fun a : Fin n => (a : ℕ) < p`. Use extensionality with `a`. Simplify using `[firstSigns]`. Rewrite using `[this, Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_firstSigns_true {p q : ℕ} (h : n = p + q) :
     (Finset.univ.filter fun a => firstSigns n p a = true).card = p := by
@@ -294,7 +292,7 @@ theorem card_firstSigns_true {p q : ℕ} (h : n = p + q) :
   omega
 
 /- English proof (translation)
-Establish `h1` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin n))) (fun a => firstSigns n p a = true)`. Rewrite `h1` using `[card_firstSigns_true h, Finset.card_univ, Fintype.card_fin]`. Simplify using `only [Bool.not_eq_true] at h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_firstSigns_false {p q : ℕ} (h : n = p + q) :
     (Finset.univ.filter fun a => firstSigns n p a = false).card = q := by
@@ -305,7 +303,7 @@ theorem card_firstSigns_false {p q : ℕ} (h : n = p + q) :
   omega
 
 /- English proof (translation)
-Take `⟨p, q, h⟩` from `Formalism.UG.P.signature_exists _ G hG hd`. Establish `hn : n = p + q` using `by simpa using (Formalism.UG.P.sig_data G p q h).1`. Use `⟨firstSigns n p, exists_frame_of_hasSignature _ ?_⟩` and prove the remaining obligations. Rewrite using `[card_firstSigns_true hn, card_firstSigns_false hn]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_frame {G : Matrix (Fin n) (Fin n) ℂ} (hG : IsHerm (starRingEnd ℂ) G) (hd : IsUnit G.det) :
     ∃ (ε : Fin n → Bool) (P : Matrix (Fin n) (Fin n) ℂ), IsUnit P ∧ Pᴴ * G * P = Formalism.REAL.Jm ε := by
@@ -317,7 +315,7 @@ theorem exists_frame {G : Matrix (Fin n) (Fin n) ℂ} (hG : IsHerm (starRingEnd 
 end Real
 
 /- English proof (translation)
-The claim follows from `hasSignature_of_frame (I.P_unit v) (I.P_spec v)`.
+A detailed English derivation is pending.
 -/
 theorem hasSignature_inst (I : AutInst) (v : InfinitePlace I.F) :
     HasSignature (I.J.map (I.φ v)) (I.pAt v) (I.qAt v) :=
@@ -332,7 +330,7 @@ def embOver (E : Type) [Field E] [NumberField E] [Algebra F E] (v : InfinitePlac
   (IsAlgClosed.lift (R := F) (S := E) (M := ℂ)).toRingHom
 
 /- English proof (translation)
-The claim follows from `letI : Algebra F ℂ := v.embedding.toAlgebra (IsAlgClosed.lift (R := F) (S := E) (M := ℂ)).commutes a`.
+A detailed English derivation is pending.
 -/
 theorem embOver_algebraMap (E : Type) [Field E] [NumberField E] [Algebra F E] (v : InfinitePlace F) (a : F) :
     embOver E v (algebraMap F E a) = v.embedding a :=
@@ -340,7 +338,7 @@ theorem embOver_algebraMap (E : Type) [Field E] [NumberField E] [Algebra F E] (v
   (IsAlgClosed.lift (R := F) (S := E) (M := ℂ)).commutes a
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h : star (J j i) = J i j` using `congrFun (congrFun hJ i) j`. Use `show starRingEnd ℂ (φ (J j i)) = φ (J i j)`. Rewrite using `[← h, cm.cmUnram.2.1]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHerm_map (cm : Formalism.BasicNotions.CMData F E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : IsHerm (starRingEnd E) J) (φ : E →+* ℂ) : IsHerm (starRingEnd ℂ) (J.map φ) := by
@@ -350,7 +348,7 @@ theorem isHerm_map (cm : Formalism.BasicNotions.CMData F E) {n : ℕ} {J : Matri
   rw [← h, cm.cmUnram.2.1]
 
 /- English proof (translation)
-Use `(IsUnit.mk0 _ hd).map φ` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_det_map {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hd : J.det ≠ 0) (φ : E →+* ℂ) :
     IsUnit (J.map φ).det := by
@@ -400,26 +398,26 @@ def intLat (E : Type) [Field E] [NumberField E] (n : ℕ) : Submodule (𝓞 E) (
   Submodule.span (𝓞 E) (Set.range (Pi.basisFun E (Fin n)))
 
 /- English proof (translation)
-Rewrite using `[intLat, Module.Basis.mem_span_iff_repr_mem]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_intLat {n : ℕ} (x : Fin n → E) : x ∈ intLat E n ↔ ∀ i, x i ∈ (algebraMap (𝓞 E) E).range := by
   rw [intLat, Module.Basis.mem_span_iff_repr_mem]
   simp
 
 /- English proof (translation)
-Rewrite using `[intLat, Submodule.span_span_of_tower]`. Conclude with `(Pi.basisFun E (Fin n)).span_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intLat_span (n : ℕ) : Submodule.span E (intLat E n : Set (Fin n → E)) = ⊤ := by
   rw [intLat, Submodule.span_span_of_tower]
   exact (Pi.basisFun E (Fin n)).span_eq
 
 /- English proof (translation)
-The claim follows from `Submodule.fg_span (Set.finite_range _)`.
+A detailed English derivation is pending.
 -/
 theorem intLat_fg (n : ℕ) : (intLat E n).FG := Submodule.fg_span (Set.finite_range _)
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Apply the tactic sequence `subst h; by_cases h : ε i <;> simp [cT, signMat, h]`. Simplify using `[cT, signMat, h, Ne.symm h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem signMat_isHerm {n : ℕ} (ε : Fin n → Bool) : IsHerm (starRingEnd E) (signMat E ε) := by
   ext i j
@@ -428,14 +426,14 @@ theorem signMat_isHerm {n : ℕ} (ε : Fin n → Bool) : IsHerm (starRingEnd E) 
   · simp [cT, signMat, h, Ne.symm h]
 
 /- English proof (translation)
-Rewrite using `[signMat, Matrix.det_diagonal]`. Apply the tactic sequence `exact Finset.prod_ne_zero_iff.2 fun i _ => by split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem signMat_det {n : ℕ} (ε : Fin n → Bool) : (signMat E ε).det ≠ 0 := by
   rw [signMat, Matrix.det_diagonal]
   exact Finset.prod_ne_zero_iff.2 fun i _ => by split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[signMat, Matrix.diagonal_map (map_zero φ), Formalism.REAL.Jm]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem signMat_map {n : ℕ} (ε : Fin n → Bool) (φ : E →+* ℂ) : (signMat E ε).map φ = Formalism.REAL.Jm ε := by
   rw [signMat, Matrix.diagonal_map (map_zero φ), Formalism.REAL.Jm]
@@ -444,7 +442,7 @@ theorem signMat_map {n : ℕ} (ε : Fin n → Bool) (φ : E →+* ℂ) : (signMa
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [signMat, Ne.symm hj]) (by simp)]`. Simplify using `[signMat, starRingEnd_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hform_signMat {n : ℕ} (ε : Fin n → Bool) (y x : Fin n → E) :
     hform (starRingEnd E) (signMat E ε) y x = ∑ i, star (y i) * (if ε i then 1 else -1) * x i := by
@@ -453,11 +451,11 @@ theorem hform_signMat {n : ℕ} (ε : Fin n → Bool) (y x : Fin n → E) :
   simp [signMat, starRingEnd_apply]
 
 /- English proof (translation)
-Establish `hsg : ∀ i, (if ε i then 1 else -1 : E) ∈ (algebraMap (𝓞 E) E).range` using `fun i => by split_ifs`. Conclude with `one_mem _`. Conclude with `neg_mem (one_mem _)`. Rewrite using `[mem_intLat]`. Use `⟨fun hx y hy => ?_, fun h i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hform_signMat]`. Use `sum_mem fun i _ => mul_mem (mul_mem ?_ (hsg i)) (hx i)` and prove the remaining obligations. Take `⟨s, hs⟩` from `(mem_intLat y).1 hy i`. Conclude with `⟨⟨star (s : E), s.2.map (starRingEnd E).toIntAlgHom⟩, by rw [← hs]; rfl⟩`. Establish `h1` using `h (Pi.single i 1) (Submodule.subset_span ⟨i, by simp⟩)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hform_signMat, Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp)]`. Establish `h2` using `mul_mem (hsg i) h1`. Apply the tactic sequence `have h3 : (if ε i then 1 else -1 : E) * (star ((Pi.single i 1 : Fin n → E) i) * (if ε i then 1 else -1) * x i) = x i := by split_ifs <;> simp`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem intLat_dual {n : ℕ} (ε : Fin n → Bool) (x : Fin n → E) : x ∈ intLat E n ↔
     ∀ y ∈ intLat E n, hform (starRingEnd E) (signMat E ε) y x ∈ (algebraMap (𝓞 E) E).range := by
@@ -487,7 +485,7 @@ def ofSigns (cm : Formalism.BasicNotions.CMData F E) {n : ℕ} (ε : Fin n → B
 def ofSignature (cm : Formalism.BasicNotions.CMData F E) (p q : ℕ) : AutInst := ofSigns cm (firstSigns (p + q) p)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun _ => ⟨card_firstSigns_true (n := p + q) rfl, card_firstSigns_false (n := p + q) rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ofSignature_spec (cm : Formalism.BasicNotions.CMData F E) (p q : ℕ) :
     (ofSignature cm p q).n = p + q ∧ ∀ v, (ofSignature cm p q).pAt v = p ∧ (ofSignature cm p q).qAt v = q :=
@@ -496,7 +494,7 @@ theorem ofSignature_spec (cm : Formalism.BasicNotions.CMData F E) (p q : ℕ) :
 end Inst
 
 /- English proof (translation)
-The claim follows from `letI := H.cmStar ⟨ofSignature (GlobalTheory.Mem.host_cmData R H) p q, ⟨rfl, rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩, ofSignature_spec _ p q⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_host_signature (R : Formalism.BasicNotions.Ranks) (H : Formalism.BasicNotions.Host R) (p q : ℕ) :
     ∃ I : AutInst, @LiesOver I H.F H.E _ _ H.cmStar _ ∧ I.n = p + q ∧ ∀ v, I.pAt v = p ∧ I.qAt v = q :=
@@ -505,7 +503,7 @@ theorem exists_host_signature (R : Formalism.BasicNotions.Ranks) (H : Formalism.
     ofSignature_spec _ p q⟩
 
 /- English proof (translation)
-Take `⟨A⟩` from `Formalism.MainNotions.Inhab.arith_nonempty 0 (4 * (2 * 0 + 15) * 9 + 1)`. Take `⟨I, -, h⟩` from `exists_host_signature _ (Formalism.MainNotions.Inhab.hostOf (s := 0) A 0 0 0) p q`. Conclude with `⟨I, h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_signature (p q : ℕ) : ∃ I : AutInst, I.n = p + q ∧ ∀ v, I.pAt v = p ∧ I.qAt v = q := by
   obtain ⟨A⟩ := Formalism.MainNotions.Inhab.arith_nonempty 0 (4 * (2 * 0 + 15) * 9 + 1)

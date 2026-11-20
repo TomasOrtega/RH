@@ -15,7 +15,7 @@ def RW (ι : Qbar l ≃+* ℂ) (r : G F Ω →* GL (Fin n) (Qbar l)) : Prop :=
       (r s : Matrix (Fin n) (Fin n) (Qbar l)).charpoly.IsRoot β → ‖ι α‖ < ((normV w : ℕ) : ℝ) * ‖ι β‖
 
 /- English proof (translation)
-Introduce `w hw A hA s hs α β hα hβ` and use `h w hw A hA s hs α β (e s ▸ hα) (e s ▸ hβ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem RW.iso {ι : Qbar l ≃+* ℂ} {r r' : G F Ω →* GL (Fin n) (Qbar l)} (h : RW ι r)
     (e : ∀ s, (r' s : Matrix (Fin n) (Fin n) (Qbar l)).charpoly = (r s : Matrix (Fin n) (Fin n) (Qbar l)).charpoly) : RW ι r' :=

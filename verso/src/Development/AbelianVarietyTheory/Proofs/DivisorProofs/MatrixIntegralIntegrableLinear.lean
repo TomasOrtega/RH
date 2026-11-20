@@ -18,7 +18,7 @@ theorem box_eq_standard_box (p q : ℕ) (c : kˣ) :
     box p q c = (GlobalTheory.LocMod.Inhab.box (Fin p) (Fin q) c : Set (Matrix (Fin p) (Fin q) k)) := rfl
 
 /- English proof (translation)
-Introduce `_ hx i j` and use `(hx i j).trans h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem box_mono (p q : ℕ) {c d : kˣ} (h : valuation k (c : k) ≤ valuation k (d : k)) :
     box p q c ⊆ box p q d := fun _ hx i j => (hx i j).trans h

@@ -15,13 +15,13 @@ section InterNumPointLemmas
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ}
 
 /- English proof (translation)
-Establish `hid : ∀ I : Chart y, idealMod (x` using `y) (primeOf (S := k) y) I = ⊥ := by`. Introduce `I`. Use `Submodule.span_eq_bot.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, e, hf, _, hfe, _, rfl⟩`. Rewrite using `[(mem_primeOf_of_isHomogeneous y hfe).mp hf, zero_div]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hbot : ∀ I : Chart y, (F.twist (idealSys y (primeOf (S` using `k) y))).sub I = ⊥ := by`. Introduce `I`. Use `Submodule.span_eq_bot.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, z, _, rfl⟩`. Establish `hq' : q ∈ idealMod (x` using `y) (primeOf (S := k) y) I := hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `hq'` using `[hid I, Submodule.mem_bot]`. Rewrite using `[hq', zero_smul]`. Establish `hsecs : (F.twist (idealSys y (primeOf (S` using `k) y))).secs = ⊥ := by`. Use `eq_bot_iff.mpr fun z hz => ?_` and prove the remaining obligations. Establish `h1` using `(Submodule.mem_iInf _).mp hz (singleChart hyj)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[Submodule.restrictScalars_mem, hbot]`. Conclude with `h1`. Unfold `restrLen`. Rewrite using `[hsecs, Submodule.comap_bot, Submodule.ker_subtype, (Submodule.quotEquivOfEqBot (⊥ : Submodule k F.secs) rfl).length_eq, Module.length_eq_rank]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem interNumPoint_restrLen_eq_finrank (y : Fin (N + 1) → Ω) {j : Fin (N + 1)} (hyj : y j ≠ 0)
     (F : SubSystem k y Ω) : restrLen (primeOf (S := k) y) F = Module.finrank k F.secs := by
@@ -48,7 +48,7 @@ theorem interNumPoint_restrLen_eq_finrank (y : Fin (N + 1) → Ω) {j : Fin (N +
   rfl
 
 /- English proof (translation)
-Establish `huniv : (Finset.univ : Finset (Finset (Fin 0))) = {∅}` using `by decide`. Establish `h0 : tensorSub L ∅ = twistSys k y 0` using `rfl`. Rewrite using `[interSum, huniv, Finset.sum_singleton, h0, twistSys_zero_twist, interNumPoint_restrLen_eq_finrank y hyj]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem interNumPoint_interSum_eq (y : Fin (N + 1) → Ω) {j : Fin (N + 1)} (hyj : y j ≠ 0)
     (L : Fin 0 → SubSystem k y Ω) (c : ℕ) :
@@ -62,11 +62,9 @@ theorem interNumPoint_interSum_eq (y : Fin (N + 1) → Ω) {j : Fin (N + 1)} (hy
 end InterNumPointLemmas
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N y hsub L`. Take `⟨_, hdim, hsecs⟩` from `hHP k Ω N y hsub`. Take `⟨j, hj⟩` from `hsub.relevant`. Establish `hyj : y j ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hj` to reduce the goal to its premises. Rewrite using `[mem_primeOf_of_isHomogeneous y (isHomogeneous_X k j), aeval_X]`. Conclude with `h`. Establish `hev : (fun _ : ℕ => (Module.finrank k (funField (k` using `k) y) : ℤ)) =ᶠ[atTop] interSum (primeOf (S := k) y) L := by filter_upwards [hdim, hsecs] with n hn hs`. Rewrite using `[interNumPoint_interSum_eq y hyj, hs, hn]`.
-
-Conclude with `(tendsto_const_nhds.congr' hev).limUnder_eq`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InterNumPoint.proof (hHP : HilbertPoint.Statement.{u, w}) : InterNumPoint.Statement.{u, w} := by
   intro k _ Ω _ _ N y hsub L

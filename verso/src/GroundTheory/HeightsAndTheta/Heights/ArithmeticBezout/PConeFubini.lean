@@ -9,17 +9,15 @@ open MeasureTheory
 noncomputable section
 
 /- English proof (translation)
-Introduce `n h μ _ F c M hF hy`. Take `⟨hpos, hfin⟩` from `h1 n h`. Establish `: IsFiniteMeasure (volume.restrict (ballH h))` using `isFiniteMeasure_restrict.2 hfin.ne`. Establish `hsm : StronglyMeasurable (Function.uncurry F)` using `hF.stronglyMeasurable`. Establish `hint : Integrable (Function.uncurry F) ((volume.restrict (ballH h)).prod μ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[integrable_prod_iff' hsm.aestronglyMeasurable]`. Use `⟨hy.mono fun y hy => hy.1, ?_⟩` and prove the remaining obligations. Use `Integrable.of_bound ?_ M ?_` and prove the remaining obligations. Conclude with `(hsm.norm.integral_prod_left' (μ := volume.restrict (ballH h))).aestronglyMeasurable`. Use `filter_upwards [hy] with y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : ∀ x, ‖Function.uncurry F (x, y)‖ = |F x y|` using `fun x => Real.norm_eq_abs _`. Simplify using `only [e]`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (integral_nonneg fun _ => abs_nonneg _)]`. Conclude with `hy.2.1`. Use `⟨hint.integral_prod_left, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvol : (volume (ballH h)).toReal ≠ 0` using `(ENNReal.toReal_pos hpos.ne' hfin.ne).ne'`. Establish `hreal : volume.real (ballH h) = (volume (ballH h)).toReal` using `rfl`. Establish `hin : ∀ᵐ y ∂μ, ∫ v in ballH h, F v y = c * (volume (ballH h)).toReal` using `by filter_upwards [hy] with y hy`. Establish `e` using `hy.2.2`. Rewrite `e` using `[setAverage_eq, hreal, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Clear denominators, using `at e ⊢` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hswap` using `integral_integral_swap hint`. Rewrite using `[setAverage_eq, hreal, smul_eq_mul, hswap, integral_congr_ae hin, integral_const, smul_eq_mul]`. Simplify using `only [measureReal_def]`.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem ConeFubini.proof (h1 : BallVolume.Statement) : ConeFubini.Statement := by
   intro n h μ _ F c M hF hy

@@ -16,7 +16,7 @@ open GlobalTheory.CuspRep GlobalTheory.CompanionTheory.CTFin UpperTheory.V.Cm
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {S : Set (Pl E)} {n r s : ℕ}
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hA`. Conclude with `((umgOps E n).2 φ hφ).2.2.2.1 u`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem umg_range {A : Module.End ℂ (Sm E n)} (hA : A ∈ (uC E n).range) {φ : Sm E n} (hφ : Umg φ) :
     Umg (A φ) := by
@@ -42,7 +42,7 @@ private def relAlg (b : Blo S r) (s : ℕ) (t : ℝ) :
     exact this.symm
 
 /- English proof (translation)
-Introduce `φ ψ hφ h` and use `by refine ⟨umg_range ⟨_, uC_genC _ _ _⟩ hφ, ?_⟩ obtain ⟨ψ', h1, -, h2, -⟩ := sliceUmg E S r s b t φ hφ obtain rfl : ψ = ψ' := Subtype.ext (h.trans h1.symm) exact h2 τ i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem eop_rel (b : Blo S r) (t : ℝ) (τ : E →+* ℂ) (i j : Fin s) :
     (Eop τ i j, Eop τ (Fin.natAdd r i) (Fin.natAdd r j)) ∈ relAlg b s t := fun φ ψ hφ h => by
@@ -52,9 +52,9 @@ private theorem eop_rel (b : Blo S r) (t : ℝ) (τ : E →+* ℂ) (i j : Fin s)
   exact h2 τ i j
 
 /- English proof (translation)
-Establish `h1 : Formalism.REAL.qdet (fun i j => (X i j, Y i j)) u ∈ R`. Use `R.sum_mem fun σ _ => R.mul_mem (intCast_mem _ _) (R.list_prod_mem fun x hx => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Use `R.add_mem ?_ (h _ _)` and prove the remaining obligations. Use `split_ifs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `R.algebraMap_mem _`. Conclude with `R.zero_mem`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Conclude with `Prod.ext (UpperTheory.V.Fb.map_qdet (AlgHom.fst ℂ A B) (fun i j => (X i j, Y i j)) u).symm (UpperTheory.V.Fb.map_qdet (AlgHom.snd ℂ A B) (fun i j => (X i j, Y i j)) u).symm`.
+A detailed English derivation is pending.
 -/
 private theorem pair_qdet {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (R : Subalgebra ℂ (A × B)) {m : ℕ}
     (X : Fin m → Fin m → A) (Y : Fin m → Fin m → B) (h : ∀ i j, (X i j, Y i j) ∈ R) (u : ℂ) :
@@ -71,11 +71,11 @@ private theorem pair_qdet {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebr
     (UpperTheory.V.Fb.map_qdet (AlgHom.snd ℂ A B) (fun i j => (X i j, Y i j)) u).symm
 
 /- English proof (translation)
-Establish `h1 : (List.ofFn fun i => algebraMap ℂ (A × B) (c i) + (X i, Y i)).prod ∈ R` using `R.list_prod_mem fun x hx => by`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `R.add_mem (R.algebraMap_mem _) (h i)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (map_list_prod (RingHom.fst A B) _).symm` and prove the remaining obligations. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Use `Eq.trans ?_ (map_list_prod (RingHom.snd A B) _).symm` and prove the remaining obligations. Rewrite using `[List.map_ofFn]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem pair_prod {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (R : Subalgebra ℂ (A × B)) {m : ℕ}
     (c : Fin m → ℂ) (X : Fin m → A) (Y : Fin m → B) (h : ∀ i, (X i, Y i) ∈ R) :
@@ -93,7 +93,7 @@ private theorem pair_prod {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebr
     rfl
 
 /- English proof (translation)
-Establish `h1 : c • ∑ i, ∑ j ∈ T, (X i j, Y i j) ∈ R` using `R.smul_mem (R.sum_mem fun i _ => R.sum_mem fun j _ => h i j) c`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Prod.ext_iff, Prod.smul_fst, Prod.smul_snd, Prod.fst_sum, Prod.snd_sum, and_self]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 private theorem pair_sum {A B I J : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (R : Subalgebra ℂ (A × B)) [Fintype I]
     (T : Finset J) (c : ℂ) (X : I → J → A) (Y : I → J → B) (h : ∀ i j, (X i j, Y i j) ∈ R) :
@@ -103,7 +103,7 @@ private theorem pair_sum {A B I J : Type} [Ring A] [Algebra ℂ A] [Ring B] [Alg
   simp only [Prod.ext_iff, Prod.smul_fst, Prod.smul_snd, Prod.fst_sum, Prod.snd_sum, and_self]
 
 /- English proof (translation)
-The claim follows from `R.list_prod_mem fun x hx => by obtain ⟨i, rfl⟩ := List.mem_ofFn.1 hx exact h i`.
+A detailed English derivation is pending.
 -/
 private theorem prod_mem_ofFn {A : Type} [Ring A] [Algebra ℂ A] (R : Subalgebra ℂ A) {m : ℕ} (X : Fin m → A) (h : ∀ i, X i ∈ R) :
     (List.ofFn X).prod ∈ R := R.list_prod_mem fun x hx => by
@@ -111,7 +111,7 @@ private theorem prod_mem_ofFn {A : Type} [Ring A] [Algebra ℂ A] (R : Subalgebr
   exact h i
 
 /- English proof (translation)
-The claim follows from `pair_qdet (relAlg b s t) (Eop τ) (fun i j => Eop τ (Fin.natAdd r i) (Fin.natAdd r j)) (eop_rel b t τ) (u + ((s : ℂ) - 1) / 2)`.
+A detailed English derivation is pending.
 -/
 private theorem cap_rel (b : Blo S r) (t : ℝ) (τ : E →+* ℂ) (u : ℂ) :
     (cap τ u, capS r s τ u) ∈ relAlg b s t :=
@@ -122,7 +122,7 @@ private def z0 (b : Blo S r) (d : Dat S s) : Fin (Dat.cons b d).len := (0 : Fin 
 private def sc (b : Blo S r) (d : Dat S s) (j : Fin d.len) : Fin (Dat.cons b d).len := (j.succ : Fin (d.len + 1))
 
 /- English proof (translation)
-Rewrite using `[Dat.idx]`. Conclude with `Fin.addCases_left (motive := fun _ => Fin (d.len + 1)) i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem idx_cast (b : Blo S r) (d : Dat S s) (i : Fin r) :
     (Dat.cons b d).idx (Fin.castAdd s i) = (z0 b d) := by
@@ -130,7 +130,7 @@ private theorem idx_cast (b : Blo S r) (d : Dat S s) (i : Fin r) :
   exact Fin.addCases_left (motive := fun _ => Fin (d.len + 1)) i
 
 /- English proof (translation)
-Rewrite using `[Dat.idx]`. Conclude with `Fin.addCases_right (motive := fun _ => Fin (d.len + 1)) (right := fun i => (d.idx i).succ) i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem idx_nat (b : Blo S r) (d : Dat S s) (i : Fin s) :
     (Dat.cons b d).idx (Fin.natAdd r i) = sc b d (d.idx i) := by
@@ -138,7 +138,7 @@ private theorem idx_nat (b : Blo S r) (d : Dat S s) (i : Fin s) :
   exact Fin.addCases_right (motive := fun _ => Fin (d.len + 1)) (right := fun i => (d.idx i).succ) i
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_filter, Fin.sum_univ_add, Finset.sum_eq_zero (s := (Finset.univ : Finset (Fin s))), add_zero]`. Conclude with `Finset.sum_congr rfl fun i _ => if_pos (idx_cast b d i)`. Conclude with `fun i _ => if_neg (by rw [idx_nat]; exact Fin.succ_ne_zero _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem sum_zero {M : Type} [AddCommMonoid M] (b : Blo S r) (d : Dat S s) (f : Fin (r + s) → M) :
     ∑ i ∈ Finset.univ.filter fun i => (Dat.cons b d).idx i = (z0 b d), f i = ∑ i, f (Fin.castAdd s i) := by
@@ -147,7 +147,7 @@ private theorem sum_zero {M : Type} [AddCommMonoid M] (b : Blo S r) (d : Dat S s
   · exact fun i _ => if_neg (by rw [idx_nat]; exact Fin.succ_ne_zero _)
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_filter, Finset.sum_filter, Fin.sum_univ_add, Finset.sum_eq_zero (s := (Finset.univ : Finset (Fin r))), zero_add]`. Conclude with `Finset.sum_congr rfl fun i _ => if_congr (by rw [idx_nat]; exact Fin.succ_inj) rfl rfl`. Conclude with `fun i _ => if_neg (by rw [idx_cast]; exact (Fin.succ_ne_zero _).symm)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem sum_succ {M : Type} [AddCommMonoid M] (b : Blo S r) (d : Dat S s) (j : Fin d.len) (f : Fin (r + s) → M) :
     ∑ i ∈ Finset.univ.filter fun i => (Dat.cons b d).idx i = (sc b d j), f i =
@@ -158,29 +158,29 @@ private theorem sum_succ {M : Type} [AddCommMonoid M] (b : Blo S r) (d : Dat S s
   · exact fun i _ => if_neg (by rw [idx_cast]; exact (Fin.succ_ne_zero _).symm)
 
 /- English proof (translation)
-Rewrite using `[Dat.size, Finset.card_eq_sum_ones, sum_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem size_zero (b : Blo S r) (d : Dat S s) : (Dat.cons b d).size (z0 b d) = r := by
   rw [Dat.size, Finset.card_eq_sum_ones, sum_zero]; simp
 
 /- English proof (translation)
-Rewrite using `[Dat.size, Finset.card_eq_sum_ones, sum_succ, Dat.size, Finset.card_eq_sum_ones]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem size_succ (b : Blo S r) (d : Dat S s) (j : Fin d.len) :
     (Dat.cons b d).size (sc b d j) = d.size j := by
   rw [Dat.size, Finset.card_eq_sum_ones, sum_succ, Dat.size, Finset.card_eq_sum_ones]
 
 /- English proof (translation)
-Use `Finset.card_eq_sum_card_fiberwise (f := d.idx) (s := Finset.univ) (t := Finset.univ) fun _ _ => Finset.mem_univ _` as an intermediate fact. Simplify `this.symm` using `[Dat.size]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem sum_size (d : Dat S s) : ∑ j, d.size j = s := by
   have := Finset.card_eq_sum_card_fiberwise (f := d.idx) (s := Finset.univ) (t := Finset.univ) fun _ _ => Finset.mem_univ _
   simpa [Dat.size] using this.symm
 
 /- English proof (translation)
-Establish `: ∀ f : Fin (d.len + 1) → ℝ, ∑ l ∈ Finset.Iio 0, f l - ∑ l ∈ Finset.Ioi 0, f l = -∑ l : Fin d.len, f l.succ` using `fun f => by`. Rewrite using `[Fin.sum_Ioi_zero, show Finset.Iio (0 : Fin (d.len + 1)) = ∅ from Finset.Iio_bot]`. Simplify using the standard rewrite rules. Use `(congrArg (· / 2) (this fun l => ((Dat.cons b d).size l : ℝ))).trans ?_` and prove the remaining obligations. Establish `e : ∀ l : Fin d.len, (Dat.cons b d).size (l.succ : Fin (d.len + 1)) = d.size l` using `size_succ b d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [e]`. Rewrite using `[← Nat.cast_sum, sum_size]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rho_zero (b : Blo S r) (d : Dat S s) : (Dat.cons b d).rho (z0 b d) = -(s : ℝ) / 2 := by
   have : ∀ f : Fin (d.len + 1) → ℝ, ∑ l ∈ Finset.Iio 0, f l - ∑ l ∈ Finset.Ioi 0, f l = -∑ l : Fin d.len, f l.succ := fun f => by
@@ -191,9 +191,9 @@ private theorem rho_zero (b : Blo S r) (d : Dat S s) : (Dat.cons b d).rho (z0 b 
   rw [← Nat.cast_sum, sum_size]
 
 /- English proof (translation)
-Establish `: ∀ f : Fin (d.len + 1) → ℝ, ∑ l ∈ Finset.Iio j.succ, f l - ∑ l ∈ Finset.Ioi j.succ, f l = f 0 + (∑ l ∈ Finset.Iio j, f l.succ - ∑ l ∈ Finset.Ioi j, f l.succ)` using `fun f => by`. Rewrite using `[Fin.sum_Ioi_succ, ← Finset.filter_gt_eq_Iio, ← Finset.filter_gt_eq_Iio, Finset.sum_filter, Finset.sum_filter, Fin.sum_univ_succ]`. Simplify using `[add_sub_assoc]`. Use `(congrArg (· / 2) (this fun l => ((Dat.cons b d).size l : ℝ))).trans ?_` and prove the remaining obligations. Establish `e : ∀ l : Fin d.len, (Dat.cons b d).size (l.succ : Fin (d.len + 1)) = d.size l` using `size_succ b d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e0 : (Dat.cons b d).size (0 : Fin (d.len + 1)) = r` using `size_zero b d`. Simplify using `only [e, e0, Dat.rho, add_div]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem rho_succ (b : Blo S r) (d : Dat S s) (j : Fin d.len) :
     (Dat.cons b d).rho (sc b d j) = (r : ℝ) / 2 + d.rho j := by
@@ -208,13 +208,13 @@ private theorem rho_succ (b : Blo S r) (d : Dat S s) (j : Fin d.len) :
   simp only [e, e0, Dat.rho, add_div]
 
 /- English proof (translation)
-Simplify using `only [Dat.J, j1, size_zero, sum_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem J_zero (b : Blo S r) (d : Dat S s) : (Dat.cons b d).J (z0 b d) = j1 E r s := by
   simp only [Dat.J, j1, size_zero, sum_zero]
 
 /- English proof (translation)
-Simplify using `only [Dat.J, size_succ, sum_succ]`. Conclude with `pair_sum (relAlg b s t) _ _ _ _ fun τ i => eop_rel b t τ i i`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem J_rel (b : Blo S r) (d : Dat S s) (t : ℝ) (j : Fin d.len) :
     (d.J j, (Dat.cons b d).J (sc b d j)) ∈ relAlg b s t := by
@@ -225,23 +225,21 @@ end UpperTheory.ConvolutionTheory.BW
 
 open UpperTheory.ConvolutionTheory.BW GlobalTheory.CuspRep GlobalTheory.CompanionTheory.CTFin UpperTheory.V.Cm in
 /- English proof (translation)
-Introduce `E _ _ _ S n d`. Proceed by induction on `d with`. Consider the case `nil`. Introduce `φ τ u _`. Establish `: cap (a` using `0) τ u = 1 := by simp [cap, Formalism.REAL.qdet, Formalism.REAL.qminor]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this, List.ofFn_zero, List.prod_nil]`. Consider the case `@cons r s b d ih`. Introduce `φ τ u hφ`. Use function extensionality and compare the values at `t`. Use `set F : Fin (r + s) → Module.End ℂ (Sm E (r + s)) := fun i => algebraMap ℂ _ (u + (Dat.cons b d).lam τ i + ((Dat.cons b d).rho ((Dat.cons b d).idx i) : ℂ)) + (Dat.cons b d).J ((Dat.cons b d).idx i) with hF`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hc : ∀ i j, Commute (F i) (F j)` using `fun i j => ((Algebra.commute_algebraMap_left _ _).add_left (Commute.add_right (Algebra.commute_algebraMap_right _ _) (((datBasics E).2 S _ (Dat.cons b d)).2.2.2.2.2.2.2.1 _ _)))`. Establish `hr : ∀ i, F i ∈ (uC E (r + s)).range` using `fun i => by`. Take `⟨v, hv⟩` from `((datBasics E).2 S _ (Dat.cons b d)).2.2.2.2.2.2.2.2.2 ((Dat.cons b d).idx i)`. Conclude with `(uC E (r + s)).range.add_mem ((uC E (r + s)).range.algebraMap_mem _) ⟨v, hv.symm⟩`. Establish `hP : Polynomial.aeval (j1 E r s) (∏ i, (Polynomial.X + Polynomial.C (u - (s : ℂ) / 2 + b.Λ τ i))) = (List.ofFn fun i => F (Fin.castAdd s i)).prod`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← List.prod_ofFn, map_list_prod, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `only [hF, idx_cast, rho_zero, J_zero, Dat.lam, Fin.addCases_left, Function.comp]`. Rewrite using `[map_add, Polynomial.aeval_X, Polynomial.aeval_C]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Use `(add_comm _ _).trans (congrArg (fun c : ℂ => algebraMap ℂ _ c + j1 E r s) ?_)` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsplit : (List.ofFn F).prod = (List.ofFn fun i => F (Fin.natAdd r i)).prod * (List.ofFn fun i => F (Fin.castAdd s i)).prod`. Rewrite using `[List.ofFn_add, List.prod_append]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Commute.list_prod_left _ _ fun x hx => Commute.list_prod_right _ _ fun y hy => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hx`. Take `⟨j, rfl⟩` from `List.mem_ofFn.1 hy`. Conclude with `hc _ _`. Use `set χ := (List.ofFn fun i => F (Fin.castAdd s i)).prod φ with hχ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `uχ : Umg χ` using `umg_range (prod_mem_ofFn (uC E (r + s)).range _ fun i => hr _) hφ`. Take `⟨ψ, hψ, uψ, -⟩` from `sliceUmg E S r s b (t (0 : Fin (d.len + 1))) χ uχ`. Establish `hQ : ((List.ofFn fun i : Fin s => algebraMap ℂ (Module.End ℂ (Sm E s)) (u + (r : ℂ) / 2 + d.lam τ i + (d.rho (d.idx i) : ℂ)) + d.J (d.idx i)).prod, (List.ofFn fun i => F (Fin.natAdd r i)).prod) ∈ relAlg b s (t (0 : Fin (d.len + 1)))`. Establish `e : (fun i => F (Fin.natAdd r i)) = fun i => algebraMap ℂ _ (u + (r : ℂ) / 2 + d.lam τ i + (d.rho (d.idx i) : ℂ)) + (Dat.cons b d).J (sc b d (d.idx i))`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hF, idx_nat, rho_succ, Dat.lam, Fin.addCases_right]`. Use `congrArg (fun c : ℂ => algebraMap ℂ _ c + _) ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `pair_prod _ _ _ _ fun i => J_rel b d _ _`. Express the relevant statement in the definitionally equal form `d.comp (slice b.f.1 (t (0 : Fin (d.len + 1))) (cap τ u φ).1) _ = d.comp (slice b.f.1 (t (0 : Fin (d.len + 1))) ((List.ofFn F).prod φ).1) _`. Rewrite using `[sliceCap E S r s b _ φ τ u hφ, hP, hsplit, Module.End.mul_apply, ← hχ, ← (cap_rel b _ τ _ χ ψ uχ hψ).2, ← (hQ χ ψ uχ hψ).2, ih ψ τ _ uψ]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.BW.compCap :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.CompCap E := by

@@ -10,25 +10,21 @@ open scoped ENNReal NNReal
 namespace GlobalTheory.DegVal
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ σ A B hA hB hBA H a haA`. Assume the negation of the conclusion as `hne`. Use `haveI : CharZero K := ⟨fun m n h => Nat.cast_injective (R := ℂ) (by simpa using congrArg σ h)⟩`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap K Ω).injective`. Set `L` to `IntermediateField.adjoin K (B : Set Ω)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `haveI : CharZero L := charZero_of_injective_algebraMap (algebraMap K L).injective`. Establish `haL : a ∉ Set.range (algebraMap L Ω)`. Introduce and unpack `⟨l, hl⟩`. Establish `hmem : a ∈ L` using `hl ▸ l.2`. Take `⟨r, hr, s, hs, rfl⟩` from `IntermediateField.mem_adjoin_iff_div.1 hmem`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails.
 
-Rewrite `hr`, `hs` using `[Algebra.adjoin_eq]`. Apply `hne` to reduce the goal to its premises. Distinguish the cases in `hs0 : s = 0`. Conclude with `⟨0, B.zero_mem, 1, B.one_mem, one_ne_zero, by simp [hs0]⟩`. Conclude with `⟨r, hr, s, hs, hs0, div_mul_cancel₀ r hs0⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Take `⟨F, _, i₁, i₂, hi, hne2⟩` from `GlobalTheory.T.exists_ringHom_pair_eq_on_subfield_ne_of_not_mem_range L Ω a haL`. Use `letI : Algebra B A := (Subalgebra.inclusion hBA).toRingHom.toAlgebra`. Use `haveI : IsScalarTower K B A := IsScalarTower.of_algebraMap_eq fun k => rfl`. Use `haveI : Algebra.FiniteType K A := (Subalgebra.fg_iff_finiteType A).1 hA`. Use `haveI : Algebra.FiniteType K B := (Subalgebra.fg_iff_finiteType B).1 hB`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : IsNoetherianRing B := Algebra.FiniteType.isNoetherianRing K B`. Use `haveI : Algebra.FiniteType B A := Algebra.FiniteType.of_restrictScalars_finiteType K B A`. Set `j₁ : A →+* F` to `i₁.comp A.val.toRingHom`. Set `j₂ : A →+* F` to `i₂.comp A.val.toRingHom`. Establish `hBL : ∀ b : B, (b : Ω) = algebraMap L Ω ⟨b, IntermediateField.subset_adjoin K _ b.2⟩` using `fun b => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hj : j₁.comp (algebraMap B A) = j₂.comp (algebraMap B A)`. Use extensionality with `b`. Express the relevant statement in the definitionally equal form `i₁ (b : Ω) = i₂ (b : Ω)`. Rewrite using `[hBL b]`. Conclude with `congrArg (fun f : L →+* F => f _) hi`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective (j₁.comp (algebraMap B A))`. Introduce `b c h`. Conclude with `Subtype.ext (i₁.injective h)`. Take `⟨q, hq, Hq⟩` from `GlobalTheory.T.exists_ne_zero_forall_complexPoint_separate' B A F j₁ j₂ hj hinj ⟨a, haA⟩ hne2`. Take `⟨x, hxσ, hxq, hxu⟩` from `H q q.2 (fun h => hq (Subtype.ext h))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `φ : B →+* ℂ` to `x.comp (algebraMap B A)`. Establish `hφq : φ q ≠ 0` using `hxq (hBA q.2)`. Take `⟨y₁, y₂, h₁, h₂, hy⟩` from `Hq φ hφq`. Establish `key : ∀ y : A →+* ℂ, y.comp (algebraMap B A) = φ → y = x`. Introduce `y hy`.
-
-Use `hxu y (fun k => ?_) (fun a' ha' => ?_)` and prove the remaining obligations. Establish `e1 : algebraMap K A k = algebraMap B A (algebraMap K B k)` using `rfl`. Rewrite using `[e1, ← hxσ k, e1]`. Conclude with `congrArg (fun f : B →+* ℂ => f (algebraMap K B k)) hy`. Establish `e1 : a' = algebraMap B A ⟨a', ha'⟩` using `rfl`.
-
-Rewrite using `[e1]`. Conclude with `congrArg (fun f : B →+* ℂ => f ⟨a', ha'⟩) hy`. Conclude with `hy (by rw [key y₁ h₁, key y₂ h₂])`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_of_generic_unique_complexPoint : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] (σ : K →+* ℂ) (A B : Subalgebra K Ω), A.FG → B.FG → B ≤ A → (∀ b ∈ B, b ≠ 0 → ∃ x : A →+* ℂ, (∀ k : K, x (algebraMap K A k) = σ k) ∧ (∀ hb : b ∈ A, x ⟨b, hb⟩ ≠ 0) ∧ ∀ y : A →+* ℂ, (∀ k : K, y (algebraMap K A k) = σ k) → (∀ a : A, (a : Ω) ∈ B → y a = x a) → y = x) → ∀ a ∈ A, ∃ p ∈ B, ∃ q ∈ B, q ≠ 0 ∧ a * q = p := by
   intro K Ω _ _ _ σ A B hA hB hBA H a haA

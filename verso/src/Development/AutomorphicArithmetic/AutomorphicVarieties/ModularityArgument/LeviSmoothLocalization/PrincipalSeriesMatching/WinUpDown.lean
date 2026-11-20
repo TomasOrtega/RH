@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain Polynomial UpperTheory.V UpperTheory.V.Z.Gam U
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `hN : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`. Establish `key : ∀ c : ℝ, (M : ℝ) ^ c = ((N : ℝ) ^ c) ^ f`. Introduce `c`. Rewrite using `[hM, Nat.cast_pow, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul hN, ← Real.rpow_mul hN, mul_comm]`. Rewrite using `[key, key, hy, pow_lt_pow_iff_left₀ (Real.rpow_nonneg hN _) hx hf.ne', pow_lt_pow_iff_left₀ hx (Real.rpow_nonneg hN _) hf.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem win_pow_iff (N M f : ℕ) (hf : 0 < f) (hM : M = N ^ f) (a b x y : ℝ) (hx : 0 ≤ x) (hy : y = x ^ f) :
     ((M : ℝ) ^ a < y ∧ y < (M : ℝ) ^ b) ↔ ((N : ℝ) ^ a < x ∧ x < (N : ℝ) ^ b) := by
@@ -20,13 +20,13 @@ private theorem win_pow_iff (N M f : ℕ) (hf : 0 < f) (hM : M = N ^ f) (a b x y
     pow_lt_pow_iff_left₀ hx (Real.rpow_nonneg hN _) hf.ne']
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ _ _ hp n hn π P hbc t v`. Establish `hn1 : 1 ≤ n` using `le_trans one_le_two hn`. Establish `hUD` using `upDown K L hp n hn π P hbc v`. Take `⟨s, hs⟩` from `(suppFacts K n hn1 π v).1`. Establish `hex : ∀ w : GroundTheory.Global.SemiLocal.PlacesOver L v, ∃ s', SuppAt P w.1 s'` using `fun w => (suppFacts L n hn1 P w.1).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose s' hs' using hex`. Establish `hX` using `upDownX K L hp n hn π P hbc v s s' hs hs'`. Use `⟨fun hW w => ?_, fun hW => ?_⟩` and prove the remaining obligations. Use `⟨⟨(hUD.1 hW.1 w).1, fun s₁ hs₁ ζ hζ => ?_⟩, (hUD.1 hW.1 w).2⟩` and prove the remaining obligations. Establish `e : s₁ = s' w` using `(suppFacts L n hn1 P w.1).2.1 _ _ hs₁ (hs' w)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hζ` using `[e]`. Take `⟨ξ, hξ, rfl⟩` from `hX.1 hW.1 w ζ hζ`. Establish `hv` using `normVal K L v w ξ`. Conclude with `(win_pow_iff _ _ _ hv.2.2.1 hv.2.2.2 _ _ _ _ (norm_nonneg _) (hv.2.1 hξ.choose)).2 (hW.2 s hs ξ hξ)`. Use `⟨hUD.2 fun w => ⟨(hW w).1.1, (hW w).2⟩, fun s₁ hs₁ ξ hξ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : s₁ = s` using `(suppFacts K n hn1 π v).2.1 _ _ hs₁ hs`. Rewrite `hξ` using `[e]`. Take `⟨w, hw⟩` from `hX.2 ξ hξ`. Establish `hv` using `normVal K L v w ξ`. Conclude with `(win_pow_iff _ _ _ hv.2.2.1 hv.2.2.2 _ _ _ _ (norm_nonneg _) (hv.2.1 hξ.choose)).1 ((hW w).1.2 _ (hs' w) _ hw)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.winUpDown :
     UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.WinUpDown := by

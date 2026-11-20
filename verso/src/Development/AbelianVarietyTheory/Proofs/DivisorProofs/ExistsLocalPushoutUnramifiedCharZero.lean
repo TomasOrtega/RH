@@ -7,19 +7,15 @@ namespace GlobalTheory.UnramPushout
 open TensorProduct
 
 /- English proof (translation)
-Establish `hu : ∀ {L : Type} [Field L] [Algebra A L], RingHom.ker (algebraMap A L) = P → P.primeCompl ≤ (IsUnit.submonoid L).comap (algebraMap A L)`. Introduce `L _ _ h s hs`. Simplify using `only [Submonoid.mem_comap, IsUnit.mem_submonoid_iff, isUnit_iff_ne_zero]`. Introduce `h0`. Conclude with `hs (h ▸ (RingHom.mem_ker.mpr h0))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `ι` to `Ideal.ResidueField.lift P (algebraMap A k) hk.ge (hu hk)`. Set `ι'` to `Ideal.ResidueField.lift P (algebraMap A k') hk'.ge (hu hk')`. Use `letI : Algebra P.ResidueField k := ι.toAlgebra`. Use `letI : Algebra P.ResidueField k' := ι'.toAlgebra`. Use `haveI : IsScalarTower A P.ResidueField k := .of_algebraMap_eq fun r => (Ideal.ResidueField.lift_algebraMap P _ _ _ r).symm`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsScalarTower A P.ResidueField k' := .of_algebraMap_eq fun r => (Ideal.ResidueField.lift_algebraMap P _ _ _ r).symm`. Use `haveI : CharZero P.ResidueField := ⟨fun m n h => Nat.cast_injective (R := k) (by rw [← map_natCast ι, ← map_natCast ι, h])⟩`. Use `haveI : CompatibleSMul A P.ResidueField k k' := by`. Use `⟨fun x m n => ?_⟩` and prove the remaining obligations. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := A ⧸ P) x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hβ` using `map_ne_zero_of_mem_nonZeroDivisors _ P.injective_algebraMap_quotient_residueField hb`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Simplify using `only [Ideal.algebraMap_quotient_residueField_mk] at hβ ⊢`. Use `set β := algebraMap A P.ResidueField b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set α := algebraMap A P.ResidueField a`. Establish `e1 : n = b • (β⁻¹ • n)`. Rewrite using `[← algebraMap_smul P.ResidueField b, smul_smul, mul_inv_cancel₀ hβ, one_smul]`. Establish `e2 : b • ((α / β) • m) = a • m`. Rewrite using `[← algebraMap_smul P.ResidueField b, ← algebraMap_smul P.ResidueField a, smul_smul, mul_div_cancel₀ _ hβ]`.
-
-Establish `e3 : a • (β⁻¹ • n) = (α / β) • n`. Rewrite using `[← algebraMap_smul P.ResidueField a, smul_smul, div_eq_mul_inv]`. Use `conv_lhs => rw [e1]`. Rewrite using `[← smul_tmul b ((α / β) • m) (β⁻¹ • n), e2, smul_tmul a m (β⁻¹ • n), e3]`. Set `e` to `Algebra.TensorProduct.equivOfCompatibleSMul P.ResidueField A A k k'`.
-
-Establish `: IsReduced (k ⊗[P.ResidueField] k')` using `GlobalTheory.ReducedAlg.isReduced_tensor k k'`. Conclude with `⟨isReduced_of_injective e.toRingHom e.injective, e.toEquiv.nontrivial⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isReduced_nontrivial_tensor {A k k' : Type} [CommRing A] [Field k] [Field k']
     [Algebra A k] [Algebra A k'] [CharZero k] (P : Ideal A) [P.IsPrime]
@@ -63,31 +59,27 @@ theorem isReduced_nontrivial_tensor {A k k' : Type} [CommRing A] [Field k] [Fiel
   exact ⟨isReduced_of_injective e.toRingHom e.injective, e.toEquiv.nontrivial⟩
 
 /- English proof (translation)
-Use `letI : Algebra A V := f.toAlgebra`. Use `letI : Algebra A V' := f'.toAlgebra`. Use `haveI : Module.Flat A V' := hf'`. Use `set P := (maximalIdeal V).comap f with hPdef`. Set `C` to `V ⊗[A] V'`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : C →ₐ[A] ResidueField V ⊗[A] ResidueField V'` to `Algebra.TensorProduct.map (IsScalarTower.toAlgHom A V (ResidueField V)) (IsScalarTower.toAlgHom A V' (ResidueField V'))`. Use `set Q := P.map (algebraMap A C) with hQ`. Establish `hL : (maximalIdeal V).map (Algebra.TensorProduct.includeLeft : V →ₐ[A] C) = Q`. Rewrite using `[← hV, hQ, AlgHom.coe_ideal_map, Ideal.map_map]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hR : (maximalIdeal V').map (Algebra.TensorProduct.includeRight : V' →ₐ[A] C) = Q`. Rewrite using `[← hV', ← hP, hQ, AlgHom.coe_ideal_map, Ideal.map_map]`. Use `congr 1`. Use extensionality with `a`. Conclude with `(Algebra.TensorProduct.includeRight (R := A) (A := V) (B := V')).commutes a`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : RingHom.ker φ = Q`. Establish `e1 : RingHom.ker (IsScalarTower.toAlgHom A V (ResidueField V)) = maximalIdeal V` using `ker_residue`. Establish `e2 : RingHom.ker (IsScalarTower.toAlgHom A V' (ResidueField V')) = maximalIdeal V'` using `ker_residue`. Rewrite using `[Algebra.TensorProduct.map_ker _ _ residue_surjective residue_surjective, e1, e2, hL, hR, sup_idem]`. Establish `hk : RingHom.ker (algebraMap A (ResidueField V)) = P`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, IsScalarTower.algebraMap_apply A V (ResidueField V), ResidueField.algebraMap_eq, residue_eq_zero_iff]`. Both sides reduce to the same expression. Establish `hk' : RingHom.ker (algebraMap A (ResidueField V')) = P`. Rewrite using `[hP]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, IsScalarTower.algebraMap_apply A V' (ResidueField V'), ResidueField.algebraMap_eq, residue_eq_zero_iff]`. Both sides reduce to the same expression. Take `⟨hred, hnt⟩` from `isReduced_nontrivial_tensor (k := ResidueField V) (k' := ResidueField V') P hk hk'`. Establish `hrad : Q.IsRadical`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `x ⟨n, hn⟩`. Rewrite `hn`, the goal using `[← hker, RingHom.mem_ker]`. Rewrite `hn` using `[map_pow]`. Conclude with `IsNilpotent.eq_zero ⟨n, hn⟩`. Establish `hne : Q ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Establish `h1 : (1 : C) ∈ RingHom.ker φ` using `by rw [hker, h]; exact Submodule.mem_top`. Rewrite `h1` using `[RingHom.mem_ker, map_one]`. Conclude with `one_ne_zero h1`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use `haveI := hm.isPrime`. Take `⟨q, hq, -⟩` from `Ideal.exists_minimalPrimes_le hle`. Use `haveI : q.IsPrime := hq.1.1`. Set `B` to `Localization.AtPrime q`. Establish `hmax : Q.map (algebraMap C B) = maximalIdeal B`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h1` using `IsLocalization.AtPrime.radical_map_of_mem_minimalPrimes B q Q hq`. Rewrite `h1` using `[← IsLocalization.map_radical q.primeCompl B, hrad.radical, Localization.AtPrime.map_eq_maximalIdeal]`. Conclude with `h1`. Set `g : V →+* B` to `(algebraMap C B).comp ((Algebra.TensorProduct.includeLeft : V →ₐ[A] C) : V →+* C)`. Set `g' : V' →+* B` to `(algebraMap C B).comp ((Algebra.TensorProduct.includeRight : V' →ₐ[A] C) : V' →+* C)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgf : g.comp f = (algebraMap C B).comp (algebraMap A C)`. Use extensionality with `a`. Conclude with `congrArg (algebraMap C B) ((Algebra.TensorProduct.includeLeft (R := A) (S := A) (A := V) (B := V')).commutes a)`. Establish `hgf' : g'.comp f' = (algebraMap C B).comp (algebraMap A C)`. Use extensionality with `a`.
-
-Conclude with `congrArg (algebraMap C B) ((Algebra.TensorProduct.includeRight (R := A) (A := V) (B := V')).commutes a)`. Rewrite `hL`, `hR` using `[AlgHom.coe_ideal_map]`. Use `⟨B, inferInstance, inferInstance, g, g', hgf.trans hgf'.symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (algebraMap C B).Flat` using `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat B q.primeCompl)`. Establish `h2 : (algebraMap V C).Flat` using `RingHom.flat_algebraMap_iff.2 (Module.Flat.baseChange A V V')`.
-
-Conclude with `RingHom.Flat.comp h2 h1`. Rewrite using `[← Ideal.map_map, hL, hmax]`. Rewrite using `[← Ideal.map_map, hR, hmax]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_pushout (A V V' : Type) [CommRing A] [CommRing V] [IsLocalRing V]
     [CommRing V'] [IsLocalRing V'] (f : A →+* V) (f' : A →+* V') (hf' : f'.Flat)

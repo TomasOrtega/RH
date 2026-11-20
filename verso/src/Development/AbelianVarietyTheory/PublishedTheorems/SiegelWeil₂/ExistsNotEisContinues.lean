@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Eis.ContModel
 
 /- English proof (translation)
-Take `⟨D⟩` from `GlobalTheory.Mem.nonempty_record`. Take `⟨V, a, -, -, -, -, h1, h2, -⟩` from `DblModel.hypotheses_inhabited D n 0`. Establish `hI` using `GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D V a h2`. Use `⟨D, V, a, 1, sph V a s₁, h1, h2, hI, ⟨continuous_const, fun _ => rfl⟩, DblModel.resEta_one D b, sph_mem hI s₁, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[sph, npow_eq_exp (hgtH_pos _)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Complex.exp_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem hypotheses_inhabited (n b : ℕ) (s₁ : ℂ) :
     ∃ (D : D7) (V : HSp D) (a : GL (Fin V.rank) (AE D)) (μ : (AE D)ˣ →* Circle) (φ : GA D (dblSp V) → ℂ),
@@ -34,7 +34,7 @@ theorem hypotheses_inhabited (n b : ℕ) (s₁ : ℂ) :
 variable {D : D7} {V : HSp D} {a : GL (Fin V.rank) (AE D)} {μ : (AE D)ˣ →* Circle} {s₁ : ℂ} {φ : GA D (dblSp V) → ℂ}
 
 /- English proof (translation)
-The claim follows from `have hI := GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D V a ha (sphConv D V a hI).isEisFamily_flat hI hφ hμ`.
+A detailed English derivation is pending.
 -/
 theorem isEisFamily_flat (ha : IsMaj V a) (hμ : IsHeckeChar D μ) (hφ : φ ∈ degPS V a μ s₁) :
     IsEisFamily V (flat V a φ s₁) :=
@@ -42,7 +42,7 @@ theorem isEisFamily_flat (ha : IsMaj V a) (hμ : IsHeckeChar D μ) (hφ : φ ∈
   (sphConv D V a hI).isEisFamily_flat hI hφ hμ
 
 /- English proof (translation)
-Establish `hI` using `GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D V a ha`. Establish `h` using `isEisFamily_flat ha hμ hφ`. Establish `e : ∀ s ∈ rightOf (V.rank / 2), eisCont V (flat V a φ s₁) s = eis V (flat V a φ s₁ s)` using `fun s hs => (h.eisValueAt h.analyticOnNhd_flat hs).eisCont_eq`. Use `⟨e, fun g => (h.analyticOnNhd_flat g).differentiableOn.congr fun s hs => congrFun (e s hs) g, ?_⟩` and prove the remaining obligations. Conclude with `((sphConv D V a hI).continuousOn_eis hI (continuous_flat hI hφ).continuousOn fun s _ => flat_mem hI hφ s).congr fun x hx => congrFun (e _ hx.1) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eisCont_right (ha : IsMaj V a) (hμ : IsHeckeChar D μ) (hφ : φ ∈ degPS V a μ s₁) :
     (∀ s ∈ rightOf (V.rank / 2), eisCont V (flat V a φ s₁) s = eis V (flat V a φ s₁ s)) ∧
@@ -57,7 +57,7 @@ theorem eisCont_right (ha : IsMaj V a) (hμ : IsHeckeChar D μ) (hφ : φ ∈ de
     fun s _ => flat_mem hI hφ s).congr fun x hx => congrFun (e _ hx.1) _
 
 /- English proof (translation)
-Establish `hI` using `GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D V a ha`. Rewrite using `[(eisCont_right (μ := 1) ha ⟨continuous_const, fun _ => rfl⟩ (sph_mem hI σ)).1 σ (by simpa using hσ)]`. Simplify `((sphConv_iff hI).1 (sphConv D V a hI)).2 σ hσ` using `only [flatH_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_le_eisCont_sph (ha : IsMaj V a) {σ : ℝ} (hσ : (V.rank : ℝ) / 2 < σ) :
     1 ≤ (eisCont V (flat V a (sph V a σ) σ) σ 1).re := by
@@ -66,7 +66,7 @@ theorem one_le_eisCont_sph (ha : IsMaj V a) {σ : ℝ} (hσ : (V.rank : ℝ) / 2
   simpa only [flatH_self] using ((sphConv_iff hI).1 (sphConv D V a hI)).2 σ hσ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h D V h0 a ha μ b hμ hb s₁ φ hφ => let h' := h D V h0 a ha (GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D V a ha) μ b hμ hb s₁ φ hφ ⟨h'.1.2, h'.2⟩, fun h D V h0 a ha _ μ b hμ hb s₁ φ hφ => let h' := h D V h0 a ha μ b hμ hb s₁ φ hφ ⟨⟨isEisFamily_flat ha hμ hφ, h'.1⟩, h'.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem iff_reduced : Published.SiegelEisensteinContinuation ↔
     ∀ (D : D7) (V : HSp D), 0 < V.rank → ∀ a : GL (Fin V.rank) (AE D), IsMaj V a →
@@ -81,7 +81,7 @@ theorem iff_reduced : Published.SiegelEisensteinContinuation ↔
     ⟨⟨isEisFamily_flat ha hμ hφ, h'.1⟩, h'.2⟩⟩
 
 /- English proof (translation)
-Establish `hI` using `GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D V a ha`. Take `⟨k, hk⟩` from `(hP D V h0 a ha hI μ b hμ hb s₁ φ hφ).2 s₁`. Establish `hv` using `(sphConv D V a hI).eisValueAt_flat hI hφ hμ hs`. Take `⟨r, hr, -, -, C, N, h⟩` from `hk.of_eisValueAt hv`. Conclude with `⟨C, N, fun g => hv.eisCont_eq ▸ h s₁ (mem_ball_self hr) g⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem modGrowth_eis (hP : Published.SiegelEisensteinContinuation) (h0 : 0 < V.rank) (ha : IsMaj V a) {b : ℕ}
     (hμ : IsHeckeChar D μ) (hb : ResEta D μ b) (hφ : φ ∈ degPS V a μ s₁) (hs : (V.rank : ℝ) / 2 < s₁.re) :
@@ -93,13 +93,13 @@ theorem modGrowth_eis (hP : Published.SiegelEisensteinContinuation) (h0 : 0 < V.
   exact ⟨C, N, fun g => hv.eisCont_eq ▸ h s₁ (mem_ball_self hr) g⟩
 
 /- English proof (translation)
-Take `⟨Φ, h1, h2, -⟩` from `Model.exists_family V Measure.haar fun s => Complex.exp s⁻¹`. Establish `e : ∀ g, eisSer V Φ g = fun s => Complex.exp s⁻¹` using `fun g => funext fun s => h1 s g`. Establish `hA : AnalyticOnNhd ℂ (fun s : ℂ => Complex.exp s⁻¹) (rightOf 0)` using `fun s hs => (analyticAt_id.inv (by rintro (rfl : s = 0); simp at hs)).cexp`. Use `⟨Φ, h2.1, fun g => e g ▸ hA, fun h => ?_⟩` and prove the remaining obligations. Establish `h3 : (0 : ℂ) ∈ contDom fun s : ℂ => Complex.exp s⁻¹`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[(continues_iff hA).1 (e 1 ▸ h.2 1)]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨k, hk⟩` from `meromorphicOn_cont _ 0 h3`. Establish `hl : Tendsto (fun t : ℝ => ((t⁻¹ : ℝ) : ℂ)) atTop (𝓝 0)`. Conclude with `(Complex.continuous_ofReal.tendsto' 0 0 rfl).comp tendsto_inv_atTop_zero`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `(hk.continuousAt.tendsto.comp hl).norm`. Establish `h5 : Tendsto (fun t : ℝ => Real.exp t / t ^ k) atTop atTop` using `Real.tendsto_exp_div_pow_atTop k`. Use `not_tendsto_atTop_of_tendsto_nhds h4 (h5.congr' ?_)` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with t ht`. Establish `h6` using `eqOn_cont hA (x := ((t⁻¹ : ℝ) : ℂ)) (by simpa using ht)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp, h6, sub_zero, smul_eq_mul, norm_mul, norm_pow, Complex.norm_real, Complex.norm_exp]`. Simplify using `[abs_of_pos ht, div_eq_inv_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_not_eisContinues (V : HSp D) : ∃ Φ, IsEisFamily V Φ ∧
     (∀ g, AnalyticOnNhd ℂ (eisSer V Φ g) (rightOf 0)) ∧ ¬ EisContinues V Φ := by

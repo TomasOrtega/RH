@@ -52,9 +52,9 @@ theorem realTensorEvalAlgHom_tmul (n : M) (f : C1 F) {T T' : C} (φ : T ⟶ T') 
     ev1 F j (n ⊗ₜ f) T T' φ = j n ⊗ₜ f T T' φ := rfl
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul n g`. Use function extensionality and compare the values at `T T' φ`. Use `show ev1 F j (n ⊗ₜ d0 F g) T T' φ = ev0 F j (n ⊗ₜ g) T' - mp (bcF F R') φ (ev0 F j (n ⊗ₜ g) T)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[realTensorEvalAlgHom_tmul, evaluation_zero_tmul, evaluation_zero_tmul, amitsur_d0_apply]`. Use `show j n ⊗ₜ (g T' - mp F φ (g T)) = j n ⊗ₜ g T' - (Algebra.TensorProduct.map (AlgHom.id R' R') (mp F φ)) (j n ⊗ₜ g T)`. Rewrite using `[Algebra.TensorProduct.map_tmul, TensorProduct.tmul_sub]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem evaluation_coboundary_zero_tensor (y : M ⊗[R] C0 F) :
     ev1 F j ((d0 F).lTensor M y) = d0 (bcF F R') (ev0 F j y) := by
@@ -71,11 +71,11 @@ theorem evaluation_coboundary_zero_tensor (y : M ⊗[R] C0 F) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `tmul n c`. Use `⟨j n • (bcM F R').coef.pullbackOneCocycle c, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ show j n • ((1 : R') ⊗ₜ[R] (c.1 T T' φ)) = ev1 F j (n ⊗ₜ c.1) T T' φ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[realTensorEvalAlgHom_tmul, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[map_smul, ← CoefMap.pullCohomologyOne_class] show j n • (bcM F R').coef.pull1 (H1.mk F c) = e (j n ⊗ₜ H1.mk F c)`. Rewrite using `[← he, ← map_smul, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Consider the case `add x y hx hy`. Take `⟨z1, h1, h1'⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨z2, h2, h2'⟩` from `hy`. Use `⟨z1 + z2, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.coe_add, h1, h2, map_add]`. Simplify using `only [map_add, h1', h2']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_cocycle (e : R' ⊗[R] H1 F ≃ₗ[R'] H1 (bcF F R'))
     (he : ∀ c, e (1 ⊗ₜ c) = (bcM F R').coef.pull1 c) (t : M ⊗[R] Z1 F) :
@@ -99,13 +99,13 @@ theorem exists_cocycle (e : R' ⊗[R] H1 F ≃ₗ[R'] H1 (bcF F R'))
     · simp only [map_add, h1', h2']
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h R' (bcF F R') (bcM F R')`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨t, rfl⟩` from `LinearMap.lTensor_surjective M (H1.mk_surjective F) x`. Establish `hcomp : iotaQ F ∘ₗ H1.mk F = (LinearMap.range (d0 F)).mkQ ∘ₗ (Z1 F).subtype` using `LinearMap.ext fun f => iotaQ_mk F f`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx' : ((LinearMap.range (d0 F)).mkQ).lTensor M ((Z1 F).subtype.lTensor M t) = 0`. Rewrite using `[← LinearMap.lTensor_comp_apply, ← hcomp, LinearMap.lTensor_comp_apply]`. Conclude with `hx`. Take `⟨y, hy⟩` from `(lTensor_exact M (LinearMap.exact_map_mkQ_range (d0 F)) (Submodule.mkQ_surjective _) ((Z1 F).subtype.lTensor M t)).1 hx'`. Take `⟨z, hz1, hz2⟩` from `exists_cocycle F j e he t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz0 : H1.mk (bcF F R') z = 0`. Apply `iotaQ_injective (bcF F R')` to reduce the goal to its premises. Rewrite using `[iotaQ_mk, map_zero, Submodule.Quotient.mk_eq_zero, hz1, ← hy, evaluation_coboundary_zero_tensor]`. Conclude with `LinearMap.mem_range_self _ _`. Establish `hx0 : j.rTensor (H1 F) ((H1.mk F).lTensor M t) = 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← e.map_eq_zero_iff, ← hz2, hz0]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hp, LinearMap.rTensor_id_apply]`. Use `_ = p.rTensor (H1 F) (j.rTensor (H1 F) ((H1.mk F).lTensor M t)) := LinearMap.rTensor_comp_apply _ _ _ _`. Use `_ = 0 := by rw [hx0, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lTensor_iotaQ_injective_of_retract (h : H1CommutesBaseChange F) (p : R' →ₗ[R] M) (hp : p ∘ₗ j = LinearMap.id) :
     Function.Injective ((iotaQ F).lTensor M) := by
@@ -135,7 +135,7 @@ theorem lTensor_iotaQ_injective_of_retract (h : H1CommutesBaseChange F) (p : R' 
 end BaseChange
 
 /- English proof (translation)
-Use `letI : Module Rᵐᵒᵖ M := Module.compHom M ((RingHom.id R).fromOpposite fun _ _ => Commute.all _ _)`. Use `haveI : IsCentralScalar R M := ⟨fun _ _ => rfl⟩`. Conclude with `lTensor_iotaQ_injective_of_retract F (TrivSqZeroExt.inrHom R M) h (TrivSqZeroExt.sndHom R M) (LinearMap.ext fun m => by simp)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem iotaQ_lTensor_injective (R : Type) [CommRing R] (C : Type) [Category.{0} C]
     (F : C ⥤ CommAlgCat.{0} R) (h : H1CommutesBaseChange F) (M : Type) [AddCommGroup M] [Module R M] :

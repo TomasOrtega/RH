@@ -16,7 +16,7 @@ namespace RootFieldNumerics.RF
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h : τ (a : E) = τ (b : E)`. Use `congrArg (fun x : c.F => (x : ℂ)) hab` as an intermediate fact. Simplify `this` using `[tauIn]`. Conclude with `RingOfIntegers.ext (τ.injective h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tauIn_injective {l : Level H} (c : Coeff l) (τ : E →+* ℂ) : Function.Injective (tauIn c τ) := by
   intro a b hab
@@ -27,41 +27,35 @@ theorem tauIn_injective {l : Level H} (c : Coeff l) (τ : E →+* ℂ) : Functio
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Take `⟨F', _, _, ι, ψ, hψ, hcl⟩` from `CptInputs.exists_constants hbir 𝔐.cst`. Use `haveI : Nonempty K := hvar.1`. Establish `hN : NormalCpt 𝔐.ξ` using `XR.normalCpt_of_isCptGen 𝔐.tie.gen 𝔐.normal`. Take `⟨hφ, a, b, hgen, hrep⟩` from `id hflat`. Take `⟨i, j, hT⟩` from `GlobalTheory.T.hodge_component_matches_model_component E H D l Xo c Y U Z S Ω K J y 𝔐 hgp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a', b', d₁, d₂, h₁, h₂, ha0, hb0, ha', hb', ea, eb⟩` from `GlobalTheory.T.flag_cm_type_lattice_comparison E H D l Xo c Y U Z S Ω K J y 𝔐 Fl τ i j a b hT hgen`. Establish `hdeg` using `GlobalTheory.T.hodge_cpt_flag_degree E H D l Xo c _ _ Y S Ω K J y 𝔐 Fl xdeg e τ hroot`. Establish `he : ∏ i, e (τ, i) ≠ 0` using `hdeg.1`. Establish `hchar : CharZero Ω` using `charZero_of_injective_ringHom ψ.injective`. Establish `hfr : ∀ p ∈ genFibre ℤ 𝔐.ξ, IsCoeffAt (𝔐.V (.inl τ)) (𝔐.V (.inr τ)) D.p D.q a' b' p 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Take `⟨⟨x₀, hx₀, ex⟩, hs₁, hs₂⟩` from `GlobalTheory.T.cm_type_lattice_comparison E H D l Xo c Y U Z S Ω K J y 𝔐 τ i j hT p hp`. Take `⟨hv₁, hv₂, -, -⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.isVBOn_eig_genFib E H D l Xo c _ _ Y U Z τ.1 (int_frac c.F) τ.2`. Take `⟨W₁, hW₁, u₁, -, hu₁⟩` from `hv₁ x₀ hx₀`. Take `⟨W₂, hW₂, u₂, -, hu₂⟩` from `hv₂ x₀ hx₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `GlobalTheory.T.exterior_coeff_base_change_compat _ _ _ _ _ _ 𝔐.f i _ _ j _ _ _ _ D.p D.q a b a' b' p x₀ u₁ u₂ Z.gen 𝔐.tie.gen hT.1 hT.2.2.1 ex (hu₁ x₀ hx₀ hW₁) (hu₂ x₀ hx₀ hW₂) hs₁ hs₂ (hgen.2.2 x₀ hx₀) ha' hb'`. Set `x₀ : Cpt 𝔐.ξ` to `⟨genPt 𝔐.ξ, specializes_rfl⟩`. Establish `hx₀ : x₀ ∈ genFibre ℤ 𝔐.ξ` using `fun o ho => ⟨by simpa using ho, CoordBase.mem_regAt_gen 𝔐.tie.gen _, CoordBase.mem_regAt_gen 𝔐.tie.gen _⟩`. Establish `haF : exteriorPower.ιMulti Ω _ (Fl.b (.inl τ)) ≠ 0` using `fun h => ha0 (by`. Establish `e2 : d₁ • (exteriorPower.ιMulti Ω (labelRk D (.inl τ)) (Fl.b (.inl τ))) = 0` using `by rw [h, smul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ea.trans e2)`. Establish `hbF : exteriorPower.ιMulti Ω _ (Fl.b (.inr τ)) ≠ 0` using `fun h => hb0 (by`. Establish `e2 : d₂ • (exteriorPower.ιMulti Ω (labelRk D (.inr τ)) (Fl.b (.inr τ))) = 0` using `by rw [h, smul_zero]`. Conclude with `eb.trans e2)`. Establish `hVA : (𝔐.V (.inl τ)).IsVB (labelRk D (.inl τ)) _` using `𝔐.vb (.inl τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hVB : (𝔐.V (.inr τ)).IsVB (labelRk D (.inr τ)) _` using `𝔐.vb (.inr τ)`. Establish `hco : ∀ p ∈ genFibre ℤ 𝔐.ξ, IsCoeffAt (𝔐.V (.inl τ)) (𝔐.V (.inr τ)) (labelRk D (.inl τ)) (labelRk D (.inr τ)) (exteriorPower.ιMulti Ω _ (Fl.b (.inl τ))) (exteriorPower.ιMulti Ω _ (Fl.b (.inr τ))) p (d₁ / d₂)⁻¹` using `fun p hp => CptIn.isCoeffAt_of_smul h₁ h₂ ea eb (hfr p hp)`. Take `⟨hL1, hL2, -⟩` from `GlobalTheory.T.wedge_line_lattice_vector_bundle 𝔐.X Ω 𝔐.ξ 𝔐.Li (𝔐.V (.inl τ)) (𝔐.V (.inr τ)) _ _ _ _ Set.univ (exteriorPower.ιMulti Ω _ (Fl.b (.inl τ))) (exteriorPower.ιMulti Ω _ (Fl.b (.inr τ))) hVA hVB haF hbF ⟨x₀, trivial, _, hco x₀ hx₀⟩`. Establish `hd0 : d₁ / d₂ ≠ 0` using `div_ne_zero h₁ h₂`. Establish `hc₁ : (d₁ / d₂ / ∏ i, e (τ, i)) * ∏ i, e (τ, i) = d₁ / d₂` using `div_mul_cancel₀ _ he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hgn : ∀ p ∈ genFibre ℤ 𝔐.ξ, (lineLat (𝔐.V (.inl τ)) (𝔐.V (.inr τ)) (labelRk D (.inl τ)) (labelRk D (.inr τ)) (exteriorPower.ιMulti Ω _ (Fl.b (.inl τ))) (exteriorPower.ιMulti Ω _ (Fl.b (.inr τ)))).IsGenAt p (d₁ / d₂)` using `fun p hp => (hL2 p trivial _).2 ⟨hd0, hco p hp⟩`. Establish `htriv : ∀ ℓ : ℕ, ℓ.Prime → TrivMod (lineLat (𝔐.V (.inl τ)) (𝔐.V (.inr τ)) (labelRk D (.inl τ)) (labelRk D (.inr τ)) (exteriorPower.ιMulti Ω _ (Fl.b (.inl τ))) (exteriorPower.ιMulti Ω _ (Fl.b (.inr τ)))) (ℓ : Ω) ∨ NumTrivMod (lineLat (𝔐.V (.inl τ)) (𝔐.V (.inr τ)) (labelRk D (.inl …`. Introduce `ℓ hℓ`. Distinguish the cases in `hS : ℓ ∈ S`. Use `haveI : Fact ℓ.Prime := ⟨hℓ⟩`.
+Reduce the conclusion to the remaining proof obligations. Prove the second alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Or.inl (GlobalTheory.T.wedge_line_lattice_trivial_mod 𝔐.X Ω 𝔐.ξ 𝔐.Li _ _ _ _ _ _ _ _ (ℓ : Ω) 𝔐.tie.gen (Nat.cast_ne_zero.2 hℓ.ne_zero) (fun q => ?_) hVA hVB haF hbF ⟨x₀, _, hco x₀ hx₀⟩ (GlobalTheory.T.hodge_tate_free_cm_type_weight hF E H D l Xo c _ _ Y S Ω K J y 𝔐 ℓ hS hpq (hfre …` and prove the remaining obligations. Conclude with `natCast_mem _ _`. Conclude with `Or.inr (hnum ℓ hℓ hS _ _ haF hbF ⟨x₀, _, hco x₀ hx₀⟩)`. Take `⟨r, hr⟩` from `CptIn.exists_orders GlobalTheory.T.PropZ_proved ψ hcl 𝔐.all 𝔐.tie hN _ (d₁ / d₂) hL1 hgn htriv`. Establish `hO : OverInt y ψ` using `overInt_of_normalCpt 𝔐.tie hN ψ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨A, hAa, hAs, hAc, hAn, hAf⟩` from `hSm 𝔐.X Ω 𝔐.ξ K J y F' ψ _ _ _ (d₁ / d₂ / ∏ i, e (τ, i)) (fun σ => Real.exp (N.inf (σ.comp ι))) n 𝔐.all 𝔐.tie hN hO hbir hvar hdeg (by rw [hc₁]; exact hgn) (fun _ => Real.exp_pos _) (fun σ => congrArg Real.exp (hconj (σ.comp ι)))`. Take `⟨-, Sf, hSf⟩` from `exists_flatHerm_hodgeCpt_const E H D l Xo c _ _ Y S Ω K J y 𝔐 Fl xdeg e τ F' ψ A (d₁ / d₂ / ∏ i, e (τ, i)) r (fun σ => Real.exp (N.inf (σ.comp ι))) hroot hAa hbir hAc (div_ne_zero hd0 he) (by rw [hc₁]; exact hgn) (by rw [hc₁]; exact hr) (fun _ => Real.exp_pos _) hAn`. Use `⟨F', inferInstance, inferInstance, ψ, A, Sf, hO, hAs, hAa, fun z w hw hz hint => ?_, ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ, -⟩` from `GlobalTheory.T.complex_point_existsUnique_embedding K J Ω F' y ψ hO w hw`. Take `⟨g, h, dg, dh, hg, hh, hdg, hgh, hne⟩` from `hAf w hw`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `A₀ : HermLine J` to `Top.combLine (fun i => hx (τ, i)) fun _ => 1`. Establish `hA₀a : A₀.a = ∑ i, xdeg (τ, i)` using `by show ∑ i, (1 : ℤ) • (hx (τ, i)).a = _`. Simplify using `only [one_smul, hxa]`. Establish `hA₀h : ∀ w', A₀.h w' = ∏ i, (hx (τ, i)).h w'` using `fun w' => by show ∏ i, (hx (τ, i)).h w' ^ (1 : ℤ) = _`. Simplify using `only [zpow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlies` using `GlobalTheory.T.point_over_number_field_value 𝔐.X Ω 𝔐.ξ K J y F' ψ σ z w hN 𝔐.tie hz hσ (𝔐.all _)`. Establish `k1` using `hAn σ w g h dg dh hσ hg hh (by rw [hAa]; exact hdg) hgh`. Establish `k2 : ‖evC w g‖ = Real.exp (N.inf (σ.comp ι)) * A₀.h w * ‖evC w h‖`. Use `GlobalTheory.T.hermitian_norm_section_value 𝔐.X Ω 𝔐.ξ K J y z w A₀ (d₁ / d₂ / ∏ i, e (τ, i)) _ g h dg dh 𝔐.tie.gen hz ?_ hg hh (by rw [hA₀a]; exact hdg) hgh hne` and prove the remaining obligations. Introduce `cc u hcc hu`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.T.flag_weighted_degree_section E H D l Xo c Y S Ω K J y 𝔐 Fl xdeg e hx A₀ τ (N.inf (σ.comp ι)) (d₁ / d₂) z w hroot hhod hA₀a (fun w'' _ => hA₀h w'') hz hint hd0 ?_ cc u hcc (by rw [mul_comm, ← div_div]; exact hu)` and prove the remaining obligations. Introduce `hc bp bq Γ Δ α κ u' h1 h2 h3 h4 h5 h6 h7 h8 h9`. Use `GlobalTheory.T.cm_type_exterior_lattice_comparison E H D l Xo c Y U Z S Ω K J y 𝔐 τ i j a b a' b' φ (σ.comp ι) _ z hc bp bq Γ Δ (d₁ * α) (d₂ * κ) u' hT hφ hgen hrep (hinf _) ha' hb' hint (fun a => ?_) h1 h2 h3 h4 h5 h6 ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← hψ]`. Conclude with `hlies (ι a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_smul]`. Conclude with `ea.trans (congrArg (d₁ • ·) h7)`. Rewrite using `[mul_smul]`. Conclude with `eb.trans (congrArg (d₂ • ·) h8)`. Rewrite using `[← div_mul_div_comm, ← mul_div_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `h9`. Rewrite using `[← hA₀h]`. Conclude with `mul_left_cancel₀ (Real.exp_pos _).ne' (mul_right_cancel₀ (norm_ne_zero_iff.2 hne) (k1.symm.trans k2))`. Rewrite using `[hSf]`. Simplify using `only [Real.log_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `hNu E H D.p D.q c.F F' ι (tauIn c τ.1) N r S (tauIn_injective c τ.1) h2S 𝔐.S_prime had hNdeg ?_` and prove the remaining obligations. Introduce `ℓ κ' v π hv hπ`. Take `⟨m, k, hm, hk, hord⟩` from `hr v π hπ`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`.
-
-Simplify using `at hπ`. Conclude with `WithZero.exp_ne_zero hπ.symm`. Establish `hrv : (r v : ℝ) = (k : ℝ) / m`. Establish `hm' : (m : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Establish `: (k : ℝ) = m * (r v : ℝ)` using `by exact_mod_cast hk`.
-
-Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Take `⟨c1, c2⟩` from `hLc E H D l Xo c Y U Z S Ω K J y 𝔐 Fl τ i j a b a' b' d₁ d₂ φ F' ι ψ ℓ κ' π m k _ hgp hT hφ hgen hrep ha' hb' h₁ h₂ ea eb ha0 hb0 hψ hπ0 hm (fun x hx => hord x fun u hu => hx u ((hv u).1 hu)) (hfin ℓ _)`. Rewrite using `[hrv]`. Use `⟨fun hS => c1 hS fun hd => hS (hdS ℓ ℓ.2 hd), fun hS => ?_⟩` and prove the remaining obligations.
-
-Take `⟨κ, hκ1, hκ2⟩` from `GlobalTheory.T.exists_sandwich_of_hodge_tate_free hF E H D l Xo c _ _ Y S Ω K J y 𝔐 ℓ hS hpq (hfree ℓ hS)`. Conclude with `c2 hS (hfree ℓ hS) κ hκ1 hκ2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem core (hSm : SmoothLine) (hLc : LocalCmp) (hNu : Numerics) (hF : HT.FarguesHodgeTate) {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} [NumberField c.F] {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {U : Set (Xo.XF c)}

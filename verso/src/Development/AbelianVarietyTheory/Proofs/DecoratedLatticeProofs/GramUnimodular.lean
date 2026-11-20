@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.StdUnn.Unimod
 
 /- English proof (translation)
-Establish `h1 : ∀ (u w : Fin n → R), Formalism.UG.hform σ J u w = (fun i => σ (u i)) ⬝ᵥ (J *ᵥ w)` using `fun u w => by`. Simplify using `only [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Establish `h2 : (fun i => σ ((B *ᵥ x) i)) = (B.map σ) *ᵥ (fun i => σ (x i))` using `funext fun i => RingHom.map_mulVec σ B x i`. Rewrite using `[h1, h2, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Formalism.UG.cT, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hform_frame {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (J B : Matrix (Fin n) (Fin n) R) (x y : Fin n → R) :
     Formalism.UG.hform σ J (B *ᵥ x) (B *ᵥ y) = ∑ i, σ (x i) * ((Formalism.UG.cT σ B * J * B) *ᵥ y) i := by
@@ -25,13 +25,13 @@ theorem hform_frame {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (J B : Ma
   rfl
 
 /- English proof (translation)
-Establish `hs : ∀ i k : Fin n, (Pi.single i 1 : Fin n → R) k ∈ O` using `fun i k => by`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `i j`. Establish `h` using `(hd _).1 ((hf _).1 (hs j)) _ ((hf _).1 (hs i))`. Rewrite `h` using `[hform_frame, Finset.sum_eq_single i (fun k _ hk => by simp [hk]) (by simp)]`. Simplify using `using h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i j`. Establish `h : L (B *ᵥ (H' *ᵥ Pi.single j 1))`. Use `(hd _).2 fun x hx => ?_` and prove the remaining obligations. Establish `e : x = B *ᵥ (C *ᵥ x)` using `by rw [Matrix.mulVec_mulVec, hBC, Matrix.one_mulVec]`. Establish `hz : ∀ k, (C *ᵥ x) k ∈ O` using `(hf _).2 (e ▸ hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, hform_frame]`. Use `sum_mem fun k _ => mul_mem (hσ _ (hz k)) ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, hH, Matrix.one_mulVec]`. Conclude with `hs j k`. Simplify using `using (hf _).2 h i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gram_int {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (O : Subring R) (hσ : ∀ z ∈ O, σ z ∈ O)
     (J B C H' : Matrix (Fin n) (Fin n) R) (L : (Fin n → R) → Prop) (hBC : B * C = 1)
@@ -59,7 +59,7 @@ theorem gram_int {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (O : Subring
     simpa using (hf _).2 h i
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compFin_cA {D : D7} (v : HeightOneSpectrum (𝓞 D.host.F)) (z : AE D) :
     compFin D.host.F D.host.E v (cA D z) = sigR _ D.sp.cm.sig (compFin D.host.F D.host.E v z) := by
@@ -69,7 +69,7 @@ theorem compFin_cA {D : D7} (v : HeightOneSpectrum (𝓞 D.host.F)) (z : AE D) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Use `congr 2`. Use function extensionality and compare the values at `i j`. Conclude with `compFin_cA v _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem map_gram {D : D7} (A : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (b : Mx D A.rank A.rank) :
     (adj b * gA A * b).map (compFin D.host.F D.host.E v) =
@@ -80,11 +80,11 @@ theorem map_gram {D : D7} (A : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (b
   funext i j; exact compFin_cA v _
 
 /- English proof (translation)
-Introduce `D A b hb`. Establish `h1 : adj b.1 * adj (b⁻¹).1 = 1`. Rewrite using `[← adj_mul, Units.inv_mul, adj_one]`. Establish `h2 : adj (b⁻¹).1 * adj b.1 = 1`. Rewrite using `[← adj_mul, Units.mul_inv, adj_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `Hm : GL (Fin A.rank) (AE D)` to `(⟨adj b.1, adj (b⁻¹).1, h1, h2⟩ * ⟨gA A, giA A, gA_mul_giA A, giA_mul_gA A⟩ * b : (Mx D A.rank A.rank)ˣ)`. Establish `hH : Hm.1 = adj b.1 * gA A * b.1` using `rfl`. Establish `key` using `fun v : HeightOneSpectrum (𝓞 D.host.F) => gram_int (sigR _ D.sp.cm.sig) (intLoc D.host.F D.host.E v) (fun z hz => sigR_mem_intLoc _ hz) (JR (Fv D.host.F v) A.gram) (b.1.map (compFin D.host.F D.host.E v)) ((b⁻¹).1.map (compFin D.host.F D.host.E v)) ((Hm⁻¹).1.map (compFin D.host.F …`. Use `SelfDual.isSelfDualAt_frameLat D A v` as an intermediate fact. Conclude with `(SetLike.ext_iff.1 this) y)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Hm, hH, fun i j v => ?_, fun i j v => (key v).2 i j⟩` and prove the remaining obligations. Use `(key v).1 i j` as an intermediate fact. Rewrite `this` using `[← map_gram, ← hH]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_unimodular : ∀ (D : D7) (A : HSp D) (b : GL (Fin A.rank) (AE D)), IsLatticeFrame (frameLat A) b → ∃ Hm : GL (Fin A.rank) (AE D), Hm.1 = adj b.1 * gA A * b.1 ∧ IntGL Hm := by
   intro D A b hb

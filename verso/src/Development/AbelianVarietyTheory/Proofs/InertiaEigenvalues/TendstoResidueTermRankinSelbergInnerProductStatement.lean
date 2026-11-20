@@ -7,7 +7,7 @@ open NumberField Matrix MeasureTheory Filter Topology GlobalTheory.CuspRep Globa
 open scoped nonZeroDivisors
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RSThetaRes.residue_geometric` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FTendstoResidueTermRankinSelbergInnerProduct.lean&line=252#L252)
 -/

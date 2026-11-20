@@ -20,9 +20,9 @@ noncomputable section
 namespace GlobalTheory.MBLow.Cl.JetGen
 
 /- English proof (translation)
-Use `conv_rhs => rw [← bX.sum_repr χ]`. Rewrite using `[map_sum, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul]`. Simplify using `only [co]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem mul_dot_basis {X : Type} [AddCommGroup X] {r : ℕ} (bX : Module.Basis (Fin r) ℤ X) (f : X →+ ℂ) {c : ℂ}
     (hc : c ≠ 0) (χ : X) : c * (co bX χ ⬝ᵥ fun l => f (bX l) / c) = f χ := by
@@ -34,7 +34,7 @@ theorem mul_dot_basis {X : Type} [AddCommGroup X] {r : ℕ} (bX : Module.Basis (
   field_simp
 
 /- English proof (translation)
-Use `ext`. Simplify using `[hA]`. Simplify using `[hA, hl]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dual_alg (A : DualNumber ℂ) {c d c0 d0 l : ℂ} (hc : c ≠ 0) (hc0 : c0 ≠ 0) (hA : A.fst = 1)
     (hl : l = A.snd + d / c - d0 / c0) :
@@ -47,28 +47,26 @@ theorem dual_alg (A : DualNumber ℂ) {c d c0 d0 l : ℂ} (hc : c ≠ 0) (hc0 : 
     ring
 
 /- English proof (translation)
-Use extensionality with `l`. Simplify using `[co]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem co_add {X : Type} [AddCommGroup X] {r : ℕ} (bX : Module.Basis (Fin r) ℤ X) (χ χ' : X) :
     co bX (χ + χ') = co bX χ + co bX χ' := by
   ext l; simp [co]
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D _ _ _ N ν g r bX d G gm W h0 hD`. Use `set cf : (Fin g → ℂ) → ℂ := fun w => G.frG (ν.J (ν.eA (d.ex w)).left) w with hcf`. Use `set df : (Fin g → ℂ) → ℂ := fun w => fderiv ℂ (G.frG (ν.J (ν.eA (d.ex w)).left)) w W with hdf`. Establish `hc : ∀ w, cf w ≠ 0` using `fun w => by`. Simplify using `only [hcf, ← G.fr_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero (Units.ne_zero _) (GlobalTheory.Ex.Arch.AbVal.rg_ne_zero ν)`. Use `set Dl : (Fin g → ℂ) → ℂ := fun w => df w / cf w with hDl`. Use `set A : N.X → DualNumber ℂ := fun χ => vE (gm.s (ν.eX χ)) (𝟙 _) ν.J with hA`. Establish `hA1 : ∀ χ, (A χ).fst = 1` using `fun χ => GlobalTheory.T.torusExtension_characterValue_constantTerm_one ν gm h0 (ν.eX χ)`. Use `set ct : N.X → (Fin g → ℂ) := fun χ => d.t12 *ᵥ co bX χ with hct`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hct_add : ∀ χ χ', ct (χ + χ') = ct χ + ct χ'` using `fun χ χ' => by`. Simplify using `only [hct, co_add, Matrix.mulVec_add]`. Establish `hx : ∀ χ, ν.eA (d.ex (ct χ)) = DegPre.cF D ℂ (ν.eX χ)` using `fun χ => by`. Rewrite using `[← d.c_eq]`. Conclude with `ν.c_eq χ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hprod` using `fun x y z j hj => GlobalTheory.T.cubeValue_complexPoints_eq_frameAlternatingProduct ν d.toAB d.cub G x y z j hj`. Establish `hsnd : ∀ χ χ', (A (χ + χ')).snd + (Dl (ct χ + ct χ') + Dl 0 - Dl (ct χ) - Dl (ct χ')) = (A χ).snd + (A χ').snd` using `fun χ χ' => by`. Establish `hm` using `GlobalTheory.T.torusExtension_dualCharValues_mul_cube ν gm (ν.eX χ) (ν.eX χ')`. Rewrite `hm` using `[GlobalTheory.T.cube_value_eq_first_jet_alternating_product ν d.toAB G hprod W gm h0 hD _ _ (ct χ) (ct χ') (hx χ) (hx χ'), ← map_add]`. Establish `e` using `congrArg TrivSqZeroExt.snd hm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [TrivSqZeroExt.snd_mul, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_one, TrivSqZeroExt.snd_one, TrivSqZeroExt.fst_inr, TrivSqZeroExt.snd_inr, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op] at e`. Establish `e1` using `hA1 (χ + χ')`. Establish `e2` using `hA1 χ`. Establish `e3` using `hA1 χ'`. Simplify using `only [hA] at e1 e2 e3 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression.
 
-Rewrite `e` using `[e1, e2, e3]`. Take the linear combination `e`. Use `clear hprod`. Use `set ℓ : N.X → ℂ := fun χ => (A χ).snd + Dl (ct χ) - Dl 0 with hℓ`. Establish `hℓ_add : ∀ χ χ', ℓ (χ + χ') = ℓ χ + ℓ χ'` using `fun χ χ' => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hsnd χ χ'` as an intermediate fact. Simplify using `only [hℓ, hct_add]`. Take the linear combination `this`. Set `ℓh : N.X →+ ℂ` to `AddMonoidHom.mk' ℓ hℓ_add`. Establish `h2pi : (2 * Real.pi * Complex.I : ℂ) ≠ 0`.
-
-Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Use `⟨fun l => ℓ (bX l) / (2 * Real.pi * Complex.I), fun χ ct' hct' => ?_⟩` and prove the remaining obligations. Establish `hT : (2 * Real.pi * Complex.I : ℂ) * (co bX χ ⬝ᵥ fun l => ℓ (bX l) / (2 * Real.pi * Complex.I)) = ℓ χ` using `mul_dot_basis bX ℓh h2pi χ`. Rewrite using `[hT, hct']`. Conclude with `dual_alg (A χ) (hc _) (hc 0) (hA1 χ) rfl`.
+A detailed English derivation is pending.
 -/
 theorem tangent_generators : AllC fun {R} _ _ {D} _ {N} ν => ∀ (g r : ℕ) (bX : Module.Basis (Fin r) ℤ N.X)
     (d : CD N g r bX) (G : Geo ν d.toAB) (gm : GtPt D (TE R ℂ)) (W : Fin g → ℂ),

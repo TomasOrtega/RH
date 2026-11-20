@@ -5,11 +5,9 @@ open CategoryTheory TensorProduct GlobalTheory.CatCoh MainStatements.Hodge Globa
 namespace GlobalTheory.CompanionTheory.HopfLe
 
 /- English proof (translation)
-Establish `hle : LinearMap.ker g ≤ LinearMap.ker μ`. Introduce `b hb`. Take `⟨a, rfl⟩` from `(hfg b).1 hb`. Conclude with `hμ a`. Take `⟨ρ, hρ⟩` from `LinearMap.exists_extend ((LinearMap.ker g).liftQ μ hle ∘ₗ (g.quotKerEquivRange.symm : LinearMap.range g →ₗ[K] B ⧸ LinearMap.ker g))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ρ, LinearMap.ext fun b => ?_⟩` and prove the remaining obligations. Establish `hb` using `LinearMap.congr_fun hρ ⟨g b, LinearMap.mem_range_self g b⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Submodule.mkQ_apply, Submodule.liftQ_apply]`. Use `_ = (LinearMap.ker g).liftQ μ hle (g.quotKerEquivRange.symm ⟨g b, LinearMap.mem_range_self g b⟩) := by`.
-
-Rewrite using `[LinearMap.quotKerEquivRange_symm_apply_image]`. Use `_ = ρ (g b) := hb.symm`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor_of_exact_field {K A B D : Type} [Field K] [AddCommGroup A] [Module K A]
     [AddCommGroup B] [Module K B] [AddCommGroup D] [Module K D]
@@ -31,7 +29,7 @@ theorem exists_factor_of_exact_field {K A B D : Type} [Field K] [AddCommGroup A]
     _ = ρ (g b) := hb.symm
 
 /- English proof (translation)
-Use `letI := hK.toField`. Conclude with `exists_factor_of_exact_field f g hfg μ hμ`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem exists_factor_of_exact_isField {K A B D : Type} [CommRing K] (hK : IsField K)
     [AddCommGroup A] [Module K A] [AddCommGroup B] [Module K B] [AddCommGroup D] [Module K D]
@@ -41,9 +39,9 @@ theorem exists_factor_of_exact_isField {K A B D : Type} [CommRing K] (hK : IsFie
   exact exists_factor_of_exact_field f g hfg μ hμ
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `GlobalTheory.CompanionTheory.HopfLe.exists_factor_of_exact_isField hR _ _ hex (ν - ν 1 • ν₀) (by`. Introduce `r`. Simplify using `only [Algebra.linearMap_apply, Algebra.algebraMap_eq_smul_one, LinearMap.sub_apply, LinearMap.smul_apply, map_smul, h1, smul_eq_mul, mul_one]`. Use the proof step `ring)`. Use `⟨ρ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hρ]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_rho_of_exact {R : Type} [CommRing R] {C : Type} [Category.{0} C]
     (F : C ⥤ CommAlgCat.{0} R) (hR : IsField R)

@@ -22,7 +22,7 @@ structure ChartPull (A' : LB Y') (A : LB Y) (h : Y' ⟶ Y) where
     gm (𝟙 Y') y (A'.U i ⊓ A'.U j) (A'.g i j) = gm h y (A.U (idx i) ⊓ A.U (idx j)) (A.g (idx i) (idx j))
 
 /- English proof (translation)
-The claim follows from `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z _ hm _) ((map_inv _ _).trans (congrArg (·⁻¹) (gm_res r z _ hm _))))`.
+A detailed English derivation is pending.
 -/
 theorem gm_div {Z : Scheme.{0}} (A B : LB Y) (r : Z ⟶ Y) (z : Z) (p q : B.ι × A.ι)
     (hm : r z ∈ B.U p.1 ⊓ A.U p.2 ⊓ (B.U q.1 ⊓ A.U q.2)) :
@@ -32,9 +32,9 @@ theorem gm_div {Z : Scheme.{0}} (A B : LB Y) (r : Z ⟶ Y) (z : Z) (p q : B.ι �
     ((map_inv _ _).trans (congrArg (·⁻¹) (gm_res r z _ hm _))))
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `H`. Establish `le : ∀ p : B'.ι × A'.ι, B'.U p.1 ⊓ A'.U p.2 ≤ h ⁻¹ᵁ (B.U (b.idx p.1) ⊓ A.U (a.idx p.2))` using `fun p y hy => ⟨b.le _ hy.1, a.le _ hy.2⟩`. Use `⟨⟨fun p => res (le p) (pullU h _ (w.s (b.idx p.1, a.idx p.2)))⟩, fun p q => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `val : ∀ p : B'.ι × A'.ι, y ∈ B'.U p.1 ⊓ A'.U p.2 → gm (𝟙 Y') y _ (res (le p) (pullU h _ (w.s (b.idx p.1, a.idx p.2)))) = gm h y (B.U (b.idx p.1) ⊓ A.U (a.idx p.2)) (w.s (b.idx p.1, a.idx p.2))` using `fun p hp => (gm_res (𝟙 Y') y (le p) hp _).trans ((gm_pull (𝟙 Y') h y _ (le p hp) _).trans (by rw [Category.id_comp]))`. Establish `hm : h y ∈ B.U (b.idx p.1) ⊓ A.U (a.idx p.2) ⊓ (B.U (b.idx q.1) ⊓ A.U (a.idx q.2))` using `⟨le p hy.1, le q hy.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg (gm h y (B.U (b.idx p.1) ⊓ A.U (a.idx p.2) ⊓ (B.U (b.idx q.1) ⊓ A.U (a.idx q.2)))) (hw (b.idx p.1, a.idx p.2) (b.idx q.1, a.idx q.2))`. Establish `e'` using `(gm_res h y _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div A B h y (b.idx p.1, a.idx p.2) (b.idx q.1, a.idx q.2) hm) (gm_res h y _ hm _))))`. Use `((gm_res (𝟙 Y') y _ hy _).trans (val p hy.1)).trans (e'.trans (Eq.symm ?_))` and prove the remaining obligations. Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_div A' B' (𝟙 Y') y p q hy).trans ?_) ((gm_res (𝟙 Y') y _ hy _).trans (val q hy.2)))` and prove the remaining obligations. Rewrite using `[a.g y _ _ hy.1.2 hy.2.2, b.g y _ _ hy.1.1 hy.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem LBIso.chartPull {A' B' : LB Y'} {A B : LB Y} {h : Y' ⟶ Y} (a : ChartPull A' A h) (b : ChartPull B' B h)
     (H : LBIso A B) : LBIso A' B' := by
@@ -57,7 +57,7 @@ theorem LBIso.chartPull {A' B' : LB Y'} {A B : LB Y} {h : Y' ⟶ Y} (a : ChartPu
   rw [a.g y _ _ hy.1.2 hy.2.2, b.g y _ _ hy.1.1 hy.2.1]
 
 /- English proof (translation)
-Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ ε k) ?_))` and prove the remaining obligations. Conclude with `(gm_res r z _ (show r z ∈ LB.wchart L φ j ⊓ LB.wchart L φ j' from ⟨hj, hj'⟩) _).trans (gm_pull r (φ k) z (L.U (j k) ⊓ L.U (j' k)) ⟨Set.mem_iInter.1 hj k, Set.mem_iInter.1 hj' k⟩ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gm_linComb {Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) (r : Z ⟶ Y) (z : Z)
     (j j' : K → L.ι) (hj : r z ∈ LB.wchart L φ j) (hj' : r z ∈ LB.wchart L φ j') :
@@ -68,7 +68,7 @@ theorem gm_linComb {Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K �
     (gm_pull r (φ k) z (L.U (j k) ⊓ L.U (j' k)) ⟨Set.mem_iInter.1 hj k, Set.mem_iInter.1 hj' k⟩ _)
 
 /- English proof (translation)
-The claim follows from `(gm_linComb L (fun _ : PUnit => F) (fun _ => 1) r z J J' hj hj').trans (by rw [Fintype.prod_unique, zpow_one])`.
+A detailed English derivation is pending.
 -/
 theorem gm_pull_g {Z : Scheme.{0}} (L : LB X) (F : X' ⟶ X) (r : Z ⟶ X') (z : Z) (J J' : PUnit → L.ι)
     (hj : r z ∈ (L.pull F).U J) (hj' : r z ∈ (L.pull F).U J') :
@@ -105,7 +105,7 @@ variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonOb
   {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
 
 /- English proof (translation)
-Unfold `psum`. Proceed by induction on `(List.finRange n).filter (· ∈ I) with`. Consider the case `nil => exact map_one ρ`. Consider the case `cons k l ih => exact (map_mul ρ _ _).trans (congrArg (ρ (x k) * ·) ih)`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem psum_hom {T : Over S} {T' : Over S'} (ρ : (T' ⟶ G') →* (T ⟶ G)) {n : ℕ} (x : Fin n → (T' ⟶ G'))
     (I : Finset (Fin n)) : ρ (psum G' x I) = psum G (fun i => ρ (x i)) I := by
@@ -125,7 +125,7 @@ def preHom {T T' : Over S} (U : T' ⟶ T) : (T ⟶ G) →* (T' ⟶ G) :=
   MonoidHom.mk' (U ≫ ·) fun x y => MonObj.comp_mul U x y
 
 /- English proof (translation)
-Establish `e : pushPt h.1.w (psum G' x' I) = U ≫ psum G x I` using `(psum_hom (pushHom h T') x' I).trans ((congrArg (fun z => psum G z I) (funext hx)).trans (psum_hom (preHom U) x I).symm)`. Conclude with `congrArg (fun z => z.left) e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psum_push (h : IsGrpPullback G' G f φ) {T' : Over S'} {T : Over S} {n : ℕ} (x' : Fin n → (T' ⟶ G'))
     (x : Fin n → (T ⟶ G)) (U : Over.mk (T'.hom ≫ f) ⟶ T) (hx : ∀ i, pushPt h.1.w (x' i) = U ≫ x i)
@@ -150,11 +150,11 @@ def cubeMapOf (h : IsGrpPullback G' G f φ) : CubeMap G' G where
 
 omit [IsCommMonObj G] in
 /- English proof (translation)
-Establish `A : ∀ {X Y : Over S} (a : X ⟶ Y), ((Over.pullback f).map a).left ≫ pullback.fst Y.hom f = pullback.fst X.hom f ≫ a.left` using `fun a => pullback.lift_fst _ _ _`. Use `⟨IsPullback.of_hasPullback _ _, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Set `z : T ⟶ (Over.pullback f).obj (G ⊗ G)` to `lift x y ≫ Functor.LaxMonoidal.μ (Over.pullback f) G G`. Establish `z₁ : z ≫ (Over.pullback f).map (fst G G) = x` using `by simp [z]`. Establish `z₂ : z ≫ (Over.pullback f).map (snd G G) = y` using `by simp [z]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : (lift x₀ y₀).left = z.left ≫ pullback.fst (G ⊗ G).hom f`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (lift x₀ y₀ ≫ fst G G).left = _ ≫ (fst G G).left`. Rewrite using `[lift_fst, hx, Category.assoc, ← A, ← Category.assoc, ← Over.comp_left, z₁]`. Use `show (lift x₀ y₀ ≫ snd G G).left = _ ≫ (snd G G).left`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lift_snd, hy, Category.assoc, ← A, ← Category.assoc, ← Over.comp_left, z₂]`. Establish `hxy : x * y = z ≫ (Over.pullback f).map μ[G]`. Rewrite using `[Hom.mul_def, Functor.obj.μ_def, ← Category.assoc]`. Rewrite using `[hxy, Over.comp_left, Category.assoc, A, ← Category.assoc, ← hz]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isGrpPullback_pullback (G : Over S) [GrpObj G] (f : S' ⟶ S) :
     IsGrpPullback ((Over.pullback f).obj G) G f (pullback.fst G.hom f) := by
@@ -180,13 +180,11 @@ end Grp
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `h` using `isGrpPullback_pullback t.G f`. Take `⟨hL, hr, ⟨c', hc'⟩, hs⟩` from `hC S S' t.G _ (cubeMapOf h) t.PP t.cub`. Establish `hact : ∀ a, ((OAct.pullback f t.G t.act).act a).left ≫ pullback.fst t.G.hom f = pullback.fst t.G.hom f ≫ (t.act.act a).left` using `fun a => pullback.lift_fst _ _ _`. Establish `pa : ∀ {T : Over S'} (x : T ⟶ (Over.pullback f).obj t.G) a, pushPt h.1.w (x ≫ (OAct.pullback f t.G t.act).act a) = pushPt h.1.w x ≫ t.act.act a` using `fun x a => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, hact, Category.assoc])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(cubeMapOf h).rigLB t.PP hL hr, c', hs t.sym, fun a => ?_, ?_, ⟨cubeMapOf h, h, rfl, hact, hc'⟩, rfl⟩` and prove the remaining obligations. Set `U` to `lift (pushPt h.1.w (fst ((Over.pullback f).obj t.G) ((Over.pullback f).obj t.G))) (pushPt h.1.w (snd ((Over.pullback f).obj t.G) ((Over.pullback f).obj t.G)))`. Use `LBIso.chartPull (chartPullLinComb t.PP.L _ _ _ _ U.left fun I => psum_push h _ _ U (fun i => ?_) I.down) (chartPullLinComb t.PP.L _ _ _ _ U.left fun I => psum_push h _ _ U (fun i => ?_) I.down) (t.adj a)` and prove the remaining obligations. Use `fin_cases i`. Conclude with `(pa _ a).trans (by simp [U])`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[U]`. Use `fin_cases i`. Simplify using `[U]`. Conclude with `(pa _ _).trans (by simp [U])`. Set `U` to `pushPt h.1.w (𝟙 ((Over.pullback f).obj t.G))`.
-
-Use `LBIso.chartPull (chartPullPull t.PP.L _ U.left (Category.id_comp _)) (chartPullLinComb t.PP.L _ _ _ _ U.left fun I => psum_push h _ _ U (fun i => ?_) I.down) t.prim` and prove the remaining obligations. Use `fin_cases i`. Simplify using `[U]`. Conclude with `(congrArg (pushPt h.1.w) (Category.id_comp _).symm).trans (pa _ _)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sabPull (hC : Out.CubePullSt) {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) :
     ∃ (PP' : RigLB ((Over.pullback f).obj t.G)) (cub : CubicalStr _ PP') (sym : PP'.IsSymmetric) (adj : _) (prim : _)

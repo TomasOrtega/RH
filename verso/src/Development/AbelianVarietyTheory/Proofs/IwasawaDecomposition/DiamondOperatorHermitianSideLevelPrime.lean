@@ -22,9 +22,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
 
 /- English proof (translation)
-Take `⟨g, hg, k, hk, e⟩` from `(DoubleCoset.eq _ _ y' (y * δ)).1 h`. Take `⟨γ, hγ, eγ⟩` from `Subgroup.mem_subgroupOf.1 hg`. Use `⟨⟨γ, hγ⟩, ⟨k.1, Subgroup.mem_subgroupOf.1 hk⟩⁻¹, ?_⟩` and prove the remaining obligations. Establish `e' : y.1 * δ.1 = g.1 * y'.1 * k.1` using `congrArg Subtype.val e`. Use `show bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ * y'.1 = y.1 * δ.1 * (k.1)⁻¹`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e', eγ, mul_inv_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem exists_of_cls_eq (S : StepLevel F E σ J T f bad) (y y' δ : UPts σ J (FiniteAdeleRing (𝓞 F) F))
     (h : (Quotient.mk'' y' : Cls S) = Quotient.mk'' (y * δ)) :
@@ -38,9 +38,9 @@ theorem exists_of_cls_eq (S : StepLevel F E σ J T f bad) (y y' δ : UPts σ J (
   rw [e', eγ, mul_inv_cancel_right]
 
 /- English proof (translation)
-Use `haveI := S.Lb_fin`. Use `(GlobalTheory.LatticeStabLocal.mem_stabGL_adele_iff S.Lb _).2 fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `mul_mem ?_ (Subgroup.mem_inf.1 (S.Uloc_lev w (((S.U_eq _).1 κ.2).2 w))).2` and prove the remaining obligations. Distinguish the cases in `hw : w = v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hw` using the available equality. Conclude with `(Subgroup.mem_inf.1 hδ.2.1).2`. Rewrite using `[hδ.1 w hw]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dia_mul_stab (S : StepLevel F E σ J T f bad) (δ : UPts σ J (FiniteAdeleRing (𝓞 F) F))
     (v : HeightOneSpectrum (𝓞 F)) (hv : (T : 𝓞 F) ∈ v.asIdeal) (k : ℤ) (hδ : IsDia S v hv k δ) (κ : S.U) :
@@ -57,7 +57,7 @@ theorem dia_mul_stab (S : StepLevel F E σ J T f bad) (δ : UPts σ J (FiniteAde
     exact one_mem _
 
 /- English proof (translation)
-Establish `e1 : L = Formalism.UG.CS.globLat y.1 S.Lb` using `Formalism.L2.GlobalTheoryTheory.Comp.eq_glob_of_hat ⟨Module.Finite.iff_fg.2 hL.fg, hL.span_eq_top⟩ _ hy`. Establish `e2 : L' = Formalism.UG.CS.globLat y'.1 S.Lb` using `Formalism.L2.GlobalTheoryTheory.Comp.eq_glob_of_hat ⟨Module.Finite.iff_fg.2 hL'.fg, hL'.span_eq_top⟩ _ hy'`. Establish `e3` using `Formalism.UG.P.global_lattice_equiv_holds F E (Fin n) S.Lb γ y'.1 (δ.1 * κ.1)⁻¹ (inv_mem (dia_mul_stab S δ v hv k hδ κ))`. Rewrite `e3` using `[he, mul_assoc y.1, mul_inv_cancel_right, ← e1, ← e2]`. Rewrite using `[e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -89,7 +89,7 @@ theorem lat_eq_of_move (S : StepLevel F E σ J T f bad) (L L' : Submodule (𝓞 
   rfl
 
 /- English proof (translation)
-Use `(GlobalTheory.DualCompletion.dual_move F E σ n J v L S.Lb (bc (prV (E := E) v) y.1) hJ hL ⟨Module.Finite.iff_fg.1 S.Lb_fin, S.Lb_span⟩ (Formalism.UG.P.afsplit_bc_mem _ _ _ _ y.2) (fun x => ?_) _).1 (Submodule.subset_span ⟨z, hz, rfl⟩)` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.rlv_yloc v y.1 hy x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_mem_loc (hJ : IsUnit J.det) (S : StepLevel F E σ J T f bad) (L : Submodule (𝓞 E) (Fin n → E))
     (hL : Submodule.IsLattice E L) (y : UPts σ J (FiniteAdeleRing (𝓞 F) F))
@@ -109,9 +109,9 @@ theorem dual_mem_loc (hJ : IsUnit J.det) (S : StepLevel F E σ J T f bad) (L : S
   exact Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.rlv_yloc v y.1 hy x
 
 /- English proof (translation)
-Take `⟨hg, hf⟩` from `hδ.2.2`. Establish `hk` using `((S.U_eq _).1 κ.2).2 v`. Rewrite `hk` using `[S.UlocAlt v hv]`. Take `⟨hg', hf'⟩` from `(Subgroup.mem_inf.1 hk).2`. Rewrite using `[map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨mul_mem hg hg', fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf' x, ← hf ⟨_, (hg' x.1).1 x.2⟩]`. Use `congr 2`. Conclude with `Subtype.ext (by simp only [Units.val_mul, Matrix.mulVec_mulVec])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem mulsF_dia_mul (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F)) (hv : (T : 𝓞 F) ∈ v.asIdeal)
     (k : ℤ) (δ : UPts σ J (FiniteAdeleRing (𝓞 F) F)) (hδ : IsDia S v hv k δ) (κ : S.U) :
@@ -127,7 +127,7 @@ theorem mulsF_dia_mul (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (�
   exact Subtype.ext (by simp only [Units.val_mul, Matrix.mulVec_mulVec])
 
 /- English proof (translation)
-Establish `e : y.1⁻¹ * bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ * y'.1 = δ.1 * κ.1 := by`. Rewrite using `[mul_assoc, he, mul_assoc, inv_mul_cancel_left]`. Establish `hm` using `GlobalTheory.LevelHecke.MovePair.mov_mulVec v y.1 y'.1 γ z`. Rewrite `hm` using `[e]`. Conclude with `(GlobalTheory.LevelHecke.MovePair.mulsF_apply S v hv k _ (mulsF_dia_mul S v hv k δ hδ κ) φ _ _ hm).2 hz' hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fT_move (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F)) (hv : (T : 𝓞 F) ∈ v.asIdeal)
     (k : ℤ) (y y' δ : UPts σ J (FiniteAdeleRing (𝓞 F) F)) (hδ : IsDia S v hv k δ)
@@ -155,11 +155,11 @@ set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨γ, κ, he⟩` from `exists_of_cls_eq (T.cls i hi h).lev _ _ δ ((T.val i hi h).dil v a k hk c δ hδ)`. Use `⟨γ, ⟨fun _ => ⟨κ.1, κ.2, δ.1, δ.2, hδ.1, he⟩, fun h1 h2 => by omega⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `lat_eq_of_move (T.cls i hi h).lev _ _ (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_clsCrd_lat D u i hi c) (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_clsCrd_lat D u i hi _) _ _ δ ((T.cls i hi h).y_lat c) ((T.cls i hi h).y_lat _) _ _ k hδ γ.1 κ he`. Introduce and unpack `z ⟨w, hw⟩ e`. Take `rfl : w = γ.1.1 *ᵥ z.1` from `e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `m1` using `dual_mem_loc (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_gramN_det D i hi) (T.cls i hi h).lev _ (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_clsCrd_lat D u i hi _) _ ((T.cls i hi h).y_lat ((D.fm u).dil i v a c)) (T.atT.eV v).1 z.1 z.2`. Establish `m2` using `dual_mem_loc (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_gramN_det D i hi) (T.cls i hi h).lev _ (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_clsCrd_lat D u i hi _) _ ((T.cls i hi h).y_lat c) (T.atT.eV v).1 _ hw`. Establish `e1` using `T.fv i hi h v _ z m1`. Establish `e2` using `T.fv i hi h v c ⟨_, hw⟩ m2`. Establish `e3` using `fT_move (T.cls i hi h).lev _ _ k _ _ δ hδ γ.1 κ he z.1 (T.fMe i hi h v) m1 m2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hk]`. Conclude with `e1.trans (e3.trans (congrArg (fun t => (k : (D.mem u).A.Fv v) * t) e2.symm))`.
+A detailed English derivation is pending.
 -/
 theorem move_end (T : FormsTiedSym D u Ch chOf) (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0 ∨ i = D.R.m)
     (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) (c : (D.mem u).C.cls i) (k : ℤ)
@@ -193,11 +193,11 @@ set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hβ : chOf i ((D.fm u).dil i v a c) = chOf i c` using `(T.dilC i h1 h2).ch v a c`. Take `⟨γ, κ, he⟩` from `exists_of_cls_eq (T.ch i h1 h2 (chOf i c)).lev ((T.ch i h1 h2 (chOf i c)).y ⟨c, rfl⟩) ((T.ch i h1 h2 (chOf i c)).y ⟨_, hβ⟩) δ ((T.dilC i h1 h2).dil v a k hk (chOf i c) ⟨c, rfl⟩ δ hδ)`. Use `⟨γ, ⟨fun h => by omega, fun _ _ => ⟨hβ, κ.1, κ.2, δ.1, δ.2, hδ.1, he⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `lat_eq_of_move (T.ch i h1 h2 (chOf i c)).lev _ _ (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_clsCrd_lat D u i _ c) (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_clsCrd_lat D u i _ _) _ _ δ ((T.ch i h1 h2 (chOf i c)).y_lat ⟨c, rfl⟩) ((T.ch i h1 h2 (chOf i c)).y …`. Introduce and unpack `z ⟨w, hw⟩ e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `rfl : w = γ.1.1 *ᵥ z.1` from `e`. Establish `m1` using `dual_mem_loc (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_gramN_det D i _) (T.ch i h1 h2 (chOf i c)).lev _ (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_clsCrd_lat D u i _ _) _ ((T.ch i h1 h2 (chOf i c)).y_lat ⟨_, hβ⟩) (T.atT.eV v).1 z.1 z.2`. Establish `m2` using `dual_mem_loc (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_gramN_det D i _) (T.ch i h1 h2 (chOf i c)).lev _ (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_clsCrd_lat D u i _ _) _ ((T.ch i h1 h2 (chOf i c)).y_lat ⟨c, rfl⟩) (T.atT.eV v).1 _ hw`. Establish `e1` using `T.fvC i h1 h2 v (chOf i c) ⟨_, hβ⟩ z m1`. Establish `e2` using `T.fvC i h1 h2 v (chOf i c) ⟨c, rfl⟩ ⟨_, hw⟩ m2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `fT_move (T.ch i h1 h2 (chOf i c)).lev _ _ k _ _ δ hδ γ.1 κ he z.1 (T.fMeC i h1 h2 (chOf i c) v) m1 m2`. Rewrite using `[← hk]`. Conclude with `e1.trans (e3.trans (congrArg (fun t => (k : (D.mem u).A.Fv v) * t) e2.symm))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem move_mid (T : FormsTiedSym D u Ch chOf) (i : ℕ) (h1 : 1 ≤ i) (h2 : i + 1 ≤ D.R.m)
     (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) (c : (D.mem u).C.cls i) (k : ℤ)
@@ -234,9 +234,7 @@ theorem move_mid (T : FormsTiedSym D u Ch chOf) (i : ℕ) (h1 : 1 ≤ i) (h2 : i
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use `⟨?_, fun z hz => ?_, fun v' hv' z hz => ?_⟩` and prove the remaining obligations. Use `Submodule.map_injective_of_injective (f := ((crdN D i hi : (D.sp.X i).V →ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)).restrictScalars (𝓞 D.host.E))) (crdN D i hi).injective ?_` and prove the remaining obligations. Conclude with `(lc_gmap i hi γ _).trans hl`. Rewrite using `[prH_eq A P hi, prH_eq A P hi]`. Conclude with `hv _ _ (crdN_gx i hi γ z.1)`.
-
-Rewrite using `[prH_eq A P hi, prH_eq A P hi]`. Conclude with `ho v' hv' _ _ (crdN_gx i hi γ z.1)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dilCl_of_crd (A : AtTTied u) (P : ∀ i hi, LvTied u A i hi) (i : ℕ) (hi : i ≤ D.R.m)
     (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) (c : (D.mem u).C.cls i)
@@ -262,15 +260,13 @@ end Steps
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B X I hOk hP l Z H F hF hC u i v a c`. Distinguish the cases in `hi : i ≤ (I.rec7 l Z).R.m`. Use `swap`. Conclude with `⟨1, fun h => absurd h hi⟩`. Take `⟨k, hk, hE, hM⟩` from `GlobalTheory.T.exists_diamond_elements_step_levels I hOk hP l Z H F hF hC u i hi v a`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `core : ∃ γ : UJ (sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) (gramN (I.rec7 l Z) i hi), AdC (F u) i hi c (((I.rec7 l Z).fm u).dil i v a c) γ.1 ((F u).atT.eV v).1 ∧ Formalism.L2.Forms.mulLat γ.1.1 (clsCrd (I.rec7 l Z) u i hi (((I.rec7 l Z).fm u).dil i v a c)) …`. Distinguish the cases in `h : i = 0 ∨ i = (I.rec7 l Z).R.m`. Take `⟨δ, hδ⟩` from `hE h`. Conclude with `move_end (F u) i hi h v a c k hk δ hδ`. Establish `h1 : 1 ≤ i` using `by omega`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : i + 1 ≤ (I.rec7 l Z).R.m` using `by omega`. Take `⟨δ, hδ⟩` from `hM h1 h2 (H.chOf u i c)`. Take `⟨γ, g1, g2, g3⟩` from `move_mid (F u) i h1 h2 v a c k hk δ hδ`. Use `⟨γ, g1, g2, fun z z' e => ?_⟩` and prove the remaining obligations. Establish `e1` using `(GlobalTheory.T.middleStep_oneLevel_projection_eq_chart_projection I hOk hP l Z H F hF hC u i h1 h2 v _).1 z z rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `(GlobalTheory.T.middleStep_oneLevel_projection_eq_chart_projection I hOk hP l Z H F hF hC u i h1 h2 v c).1 z' z' rfl`. Establish `e3` using `g3 z z' e`. Rewrite `e3` using `[e1, e2]`. Conclude with `e3`. Take `⟨γ, g1, g2, g3⟩` from `core`.
-
-Conclude with `⟨gx i hi γ, fun _ => ⟨dilCl_of_crd (F u).atT (F u).lv i hi v a c γ g2 g3 (fun v' hv' z z' e => GlobalTheory.T.levelFunctional_eq_of_classes_related_at_place I hOk hP l Z H F hF hC u i hi v v' c _ γ.1 g1 hv' z z' e), GlobalTheory.T.adelic_relation_classes_coordinates I hOk hP l Z …`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem diamond_on_hermitian_side : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)), (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → CarH H F → ∀ u i v (a : (((I.rec7 l Z).mem u).A.Fv v)ˣ) (c : ((I.rec7 l Z).mem u).C.cls i), ∃ γ, i ≤ (I.rec7 l Z).R.m → DilCl (F u).atT (F u).lv i v a c γ ∧ AdOf H u i c (((I.rec7 l Z).fm u).dil i v a c) γ v := by
   intro B X I hOk hP l Z H F hF hC u i v a c

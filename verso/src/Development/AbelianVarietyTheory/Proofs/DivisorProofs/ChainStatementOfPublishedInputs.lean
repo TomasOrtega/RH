@@ -25,7 +25,7 @@ open GlobalTheory.ChainPts
 namespace GlobalTheory.BundleChernComparison
 
 /- English proof (translation)
-The claim follows from `have hI' : Initial fun i : Fin (D.R.f * N) => xAll S i.rev.rev := by simp only [Fin.rev_rev] exact xAll_initial S have hS' : StepNorms S.Dw p (fun i : Fin (D.R.f * N) => .inr (i.rev.rev : ℕ)) fun i => xAll S i.rev.rev := by simp only [Fin.rev_rev] exact xAll_stepNorms S p fun c = …`.
+A detailed English derivation is pending.
 -/
 theorem hasChainW_of_pts {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ} [Fact p.Prime]
     {hp : p.Prime} {W : ValuationSubring ℂ} {hW : (p : ℂ) ∈ W.nonunits} (z : AdmAt S κ hp hW) (jc : KW p →+* ℂ)
@@ -43,7 +43,7 @@ theorem hasChainW_of_pts {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : 
       (fun k => letterOf_whole S k.rev) hI' hS' c B f k.1 k.2.1 _ k.2.2.2⟩
 
 /- English proof (translation)
-Introduce `hx h2 hH _ _ hP D O hO p _ W hW jc hpin z` and use `hasChainW_of_pts z jc (GlobalTheory.ChainPts.Forget.chainPtsWSt_of_eqChainSt (GlobalTheory.T.equivariant_chain_points_hyp h2 hH hP (GlobalTheory.GroupBplus.GroupSt.all (GlobalTheory.T.group_structure_of_published_inputs hx.ray hx.orth hx.dual hx.cube) GlobalTheory.GroupBplus.gene …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chainWSt : GlobalTheory.CovTop.HypothesesXH → GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.RegularAlteration →
     GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.PrismaticDieudonnePerfd → ChainWSt :=

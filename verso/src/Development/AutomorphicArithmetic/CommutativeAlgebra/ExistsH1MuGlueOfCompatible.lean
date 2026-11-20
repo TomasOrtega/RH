@@ -11,7 +11,7 @@ open scoped TensorProduct
 namespace UpperTheory.Cb.MuCohomologyGluing
 
 /- English proof (translation)
-Establish `e : Y ≅ ⊥_ Scheme.{0}` using `(isInitialOfIsEmpty (X := Y)).uniqueUpToIso initialIsInitial`. Conclude with `LateralTheory.EtaleTrace.H_sub (ZMod q) Y (LateralTheory.EWeil.EmptyVan₂.isZero_free.of_iso ((free (ZMod q)).mapIso (yoneda.mapIso e))) (tw q i) n`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem sub_empty (q : ℕ) (Y : Scheme.{0}) [IsEmpty Y] (n i : ℤ) :
     Subsingleton (Ht q (sch.obj Y) n i) := by
@@ -20,7 +20,7 @@ private theorem sub_empty (q : ℕ) (Y : Scheme.{0}) [IsEmpty Y] (n i : ℤ) :
     (LateralTheory.EWeil.EmptyVan₂.isZero_free.of_iso ((free (ZMod q)).mapIso (yoneda.mapIso e))) (tw q i) n
 
 /- English proof (translation)
-Rewrite using `[← pl_comp, Scheme.homOfLE_homOfLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pl_le (q : ℕ) {X : Scheme.{0}} {A B C : X.Opens} (h1 : A ≤ B) (h2 : B ≤ C) (h3 : A ≤ C)
     (z : Ht q (sch.obj C) 1 1) :
@@ -28,15 +28,15 @@ private theorem pl_le (q : ℕ) {X : Scheme.{0}} {A B C : X.Opens} (h1 : A ≤ B
   rw [← pl_comp, Scheme.homOfLE_homOfLE]
 
 /- English proof (translation)
-Establish `hmem : ∀ x : P.toScheme, P.ι x ∈ P` using `fun x => by`. Rewrite using `[← SetLike.mem_coe, ← P.range_ι]`. Conclude with `⟨x, rfl⟩`. Distinguish the cases in `hne : Nonempty P.toScheme`. Use `haveI : IsIntegral P.toScheme := isIntegral_of_isOpenImmersion P.ι`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hζ' : Nonempty (Prim q Γ(P.toScheme, ⊤))` using `hζ.map (Prim.map P.ι.appTop.hom)`. Establish `hq' : IsUnit (q : Γ(P.toScheme, ⊤))` using `by simpa using hq.map P.ι.appTop.hom`. Establish `key` using `UpperTheory.h1_pl_eq_zero_of_le_iSup_of_local_zero q P.toScheme hζ' hq' n (fun i => P.ι ⁻¹ᵁ A i) ⊤ (by`. Introduce `x _`. Establish `hx : P.ι x ∈ ⨆ i, A i` using `hP (hmem x)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, hi⟩) d (fun i => by`. Establish `e : P.ι ⁻¹ᵁ A i ≤ P.ι ⁻¹ᵁ (A i ⊓ P)`. Introduce `x hx`. Conclude with `⟨hx, hmem x⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `w : P.ι.resLE (A i ⊓ P) (P.ι ⁻¹ᵁ A i) e ≫ X.homOfLE (inf_le_right : A i ⊓ P ≤ P) = (P.ι ⁻¹ᵁ A i).ι`. Rewrite using `[← cancel_mono P.ι]`. Simplify using the standard rewrite rules. Rewrite using `[← w, pl_comp, hd i, map_zero])`. Establish `w : P.toScheme.topIso.inv ≫ (⊤ : P.toScheme.Opens).ι = 𝟙 _` using `P.toScheme.topIso.inv_hom_id`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg (pl q 1 P.toScheme.topIso.inv 1) key` as an intermediate fact. Rewrite `this` using `[← pl_comp, w, map_zero]`. Simplify `this` using `[pl, pull_id]`. Use `haveI : IsEmpty P.toScheme := not_nonempty_iff.1 hne haveI := sub_empty q P.toScheme 1 1`. Conclude with `Subsingleton.elim _ _`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem van (q : ℕ) [NeZero q] (X : Scheme.{0}) [IsIntegral X] (hζ : Nonempty (Prim q Γ(X, ⊤)))
     (hq : IsUnit (q : Γ(X, ⊤))) (n : ℕ) (A : Fin n → X.Opens) (P : X.Opens) (hP : P ≤ ⨆ i, A i)
@@ -74,19 +74,17 @@ end UpperTheory.Cb.MuCohomologyGluing
 
 open UpperTheory.Cb.MuCohomologyGluing in
 /- English proof (translation)
-Introduce `q _ X _ hζ hq n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `U x _`. Conclude with `⟨0, fun i => i.elim0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ n ih`. Introduce `U x hx`. Use `set W : X.Opens := ⨆ i : Fin n, U i.castSucc with hW`. Establish `hAW : ∀ i : Fin n, U i.castSucc ≤ W` using `fun i => le_iSup (fun i : Fin n => U i.castSucc) i`. Take `⟨y, hy⟩ : ∃ y : Ht q (sch.obj W) 1 1, ∀ i : Fin n, pl q 1 (X.homOfLE (hAW i)) 1 y = x i.castSucc` from `ih (fun i => U i.castSucc) (fun i => x i.castSucc) (fun i j => hx _ _)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set B : X.Opens := U (Fin.last n) with hB`. Establish `c : UpperTheory.Cb.OffDiagonalContinuation.Sq W B (W ⊔ B) (W ⊓ B)` using `⟨rfl, rfl⟩`. Take `⟨dd, hdd, -⟩` from `UpperTheory.Cb.OffDiagonalContinuation.mv q 1`. Establish `hex` using `(hdd c 1).2.2`. Establish `d0 : pl q 1 (X.homOfLE (inf_le_left : W ⊓ B ≤ W)) 1 y - pl q 1 (X.homOfLE (inf_le_right : W ⊓ B ≤ B)) 1 (x (Fin.last n)) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `van q X hζ hq n (fun i => U i.castSucc) (W ⊓ B) inf_le_left _ (fun i => ?_)` and prove the remaining obligations. Establish `h1 : U i.castSucc ⊓ (W ⊓ B) ≤ U i.castSucc ⊓ B` using `inf_le_inf_left _ inf_le_right`. Rewrite using `[map_sub, pl_le q _ _ (inf_le_right.trans inf_le_left), pl_le q _ _ (inf_le_right.trans inf_le_right), ← pl_le q (inf_le_left : U i.castSucc ⊓ (W ⊓ B) ≤ U i.castSucc) (hAW i), ← pl_le q h1 (inf_le_right : U i.castSucc ⊓ B ≤ B), hy i, ← hx i.castSucc (Fin.last n), pl_le q h1 inf_l …`. Take `⟨z, hz⟩` from `(hex (y, x (Fin.last n))).1 d0`. Establish `hz1 : pl q 1 (X.homOfLE (le_sup_left : W ≤ W ⊔ B)) 1 z = y` using `congrArg Prod.fst hz`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz2 : pl q 1 (X.homOfLE (le_sup_right : B ≤ W ⊔ B)) 1 z = x (Fin.last n)` using `congrArg Prod.snd hz`. Establish `hle : (⨆ i, U i : X.Opens) ≤ W ⊔ B`. Use `iSup_le fun i => ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `le_sup_right`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hAW j).trans le_sup_left`. Use `⟨pl q 1 (X.homOfLE hle) 1 z, fun i => ?_⟩` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Rewrite using `[pl_le q _ _ le_sup_right, hz2]`. Rewrite using `[pl_le q _ _ ((hAW j).trans le_sup_left), ← pl_le q (hAW j) (le_sup_left : W ≤ W ⊔ B), hz1]`.
-
-Conclude with `hy j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_h1Mu_glue_of_compatible :
     ∀ (q : ℕ) [NeZero q] (X : Scheme.{0}) [IsIntegral X], Nonempty (Prim q Γ(X, ⊤)) → IsUnit (q : Γ(X, ⊤)) → ∀ (n : ℕ) (U : Fin n → X.Opens) (x : ∀ i, Ht q (sch.obj (U i)) 1 1), (∀ i j, pl q 1 (X.homOfLE (inf_le_left : U i ⊓ U j ≤ U i)) 1 (x i) = pl q 1 (X.homOfLE (inf_le_right : U i ⊓ U j ≤ U j)) 1 (x j)) → ∃ y : Ht q (sch.obj (⨆ i, U i : X.Opens)) 1 1, ∀ i, pl q 1 (X.homOfLE (le_iSup U i)) 1 y = x i := by

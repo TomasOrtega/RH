@@ -22,26 +22,26 @@ def emb (g d : ℕ) [Fact g.Prime] : KK g d →ₐ[ZMod g] Fbar g := IsAlgClosed
 instance (g d : ℕ) [Fact g.Prime] : Fintype (KK g d) := Fintype.ofFinite _
 
 /- English proof (translation)
-The claim follows from `(emb g d).toRingHom.injective`.
+A detailed English derivation is pending.
 -/
 theorem emb_injective (d : ℕ) : Function.Injective (emb g d) := (emb g d).toRingHom.injective
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_eq_fintype_card, GaloisField.card g d hd.ne']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_KK {d : ℕ} (hd : 0 < d) : Fintype.card (KK g d) = g ^ d := by
   rw [← Nat.card_eq_fintype_card, GaloisField.card g d hd.ne']
 
 /- English proof (translation)
-The claim follows from `Nat.sub_pos_of_lt (Nat.one_lt_pow hd.ne' hg.out.one_lt)`.
+A detailed English derivation is pending.
 -/
 theorem N_pos' {d : ℕ} (hd : 0 < d) : 0 < g ^ d - 1 :=
   Nat.sub_pos_of_lt (Nat.one_lt_pow hd.ne' hg.out.one_lt)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.FixedMemRange.main`. Consider the case `exact _root_.GlobalTheory.FixedMemRange.main`. Consider the case `(apply _root_.GlobalTheory.FixedMemRange.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FixedMemRange.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.FixedMemRange.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FixedMemRange.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_emb_eq {d : ℕ} (hd : 0 < d) {w : Fbar g} (hw : w ^ g ^ d = w) : ∃ k, emb g d k = w := by
   first
@@ -53,20 +53,20 @@ theorem exists_emb_eq {d : ℕ} (hd : 0 < d) {w : Fbar g} (hw : w ^ g ^ d = w) :
   | (intros; exact _root_.GlobalTheory.FixedMemRange.main ..)
 
 /- English proof (translation)
-The claim follows from `L.gen_order d hd ▸ IsPrimitiveRoot.orderOf _`.
+A detailed English derivation is pending.
 -/
 theorem gen_prim (L : LabelDatum g) {d : ℕ} (hd : 0 < d) : IsPrimitiveRoot (L.gen d) (g ^ d - 1) :=
   L.gen_order d hd ▸ IsPrimitiveRoot.orderOf _
 
 /- English proof (translation)
-Establish `e : g ^ d = g ^ d - 1 + 1` using `(Nat.sub_add_cancel (Nat.one_le_pow _ _ hg.out.pos)).symm`. Rewrite using `[e, pow_succ, hw, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_self_of {d : ℕ} {w : Fbar g} (hw : w ^ (g ^ d - 1) = 1) : w ^ g ^ d = w := by
   have e : g ^ d = g ^ d - 1 + 1 := (Nat.sub_add_cancel (Nat.one_le_pow _ _ hg.out.pos)).symm
   rw [e, pow_succ, hw, one_mul]
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Rewrite `hw` using `[zero_pow (N_pos' hd).ne']`. Conclude with `zero_ne_one hw`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_of {d : ℕ} (hd : 0 < d) {w : Fbar g} (hw : w ^ (g ^ d - 1) = 1) : w ≠ 0 := by
   rintro rfl
@@ -74,11 +74,11 @@ theorem ne_zero_of {d : ℕ} (hd : 0 < d) {w : Fbar g} (hw : w ^ (g ^ d - 1) = 1
   exact zero_ne_one hw
 
 /- English proof (translation)
-Establish `hp` using `gen_prim L hd`. Take `⟨k0, hk0⟩` from `exists_emb_eq hd (pow_self_of (hp.pow_eq_one))`. Establish `hk0' : k0 ≠ 0`. Introduce and unpack `rfl`. Rewrite `hk0` using `[map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ne_zero_of hd hp.pow_eq_one hk0.symm`. Use `⟨Units.mk0 k0 hk0', hk0, fun k => ?_⟩` and prove the remaining obligations. Use `haveI : NeZero (g ^ d - 1) := ⟨(N_pos' hd).ne'⟩`. Establish `h1 : (emb g d k) ^ (g ^ d - 1) = 1`. Rewrite using `[← map_pow, ← card_KK hd, FiniteField.pow_card_sub_one_eq_one _ k.ne_zero, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, -, hn⟩` from `hp.eq_pow_of_pow_eq_one h1`. Use `⟨n, Units.ext ((emb_injective d) ?_)⟩` and prove the remaining obligations. Establish `e : ((Units.mk0 k0 hk0' ^ n : (KK g d)ˣ) : KK g d) = k0 ^ n` using `by simp`. Rewrite using `[e, map_pow, hk0, hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_gen (L : LabelDatum g) {d : ℕ} (hd : 0 < d) :
     ∃ u : (KK g d)ˣ, emb g d u = L.gen d ∧ ∀ k : (KK g d)ˣ, ∃ n : ℕ, k = u ^ n := by
@@ -100,19 +100,19 @@ theorem exists_unit_gen (L : LabelDatum g) {d : ℕ} (hd : 0 < d) :
 def uu (L : LabelDatum g) {d : ℕ} (hd : 0 < d) : (KK g d)ˣ := (exists_unit_gen L hd).choose
 
 /- English proof (translation)
-The claim follows from `(exists_unit_gen L hd).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem emb_uu (L : LabelDatum g) {d : ℕ} (hd : 0 < d) : emb g d (uu L hd) = L.gen d :=
   (exists_unit_gen L hd).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_unit_gen L hd).choose_spec.2 k`.
+A detailed English derivation is pending.
 -/
 theorem uu_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) (k : (KK g d)ˣ) : ∃ n : ℕ, k = uu L hd ^ n :=
   (exists_unit_gen L hd).choose_spec.2 k
 
 /- English proof (translation)
-Take `⟨n, rfl⟩` from `uu_pow L hd k`. Conclude with `Subgroup.npow_mem_zpowers _ n`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_zpowers_uu (L : LabelDatum g) {d : ℕ} (hd : 0 < d) (k : (KK g d)ˣ) :
     k ∈ Subgroup.zpowers (uu L hd) := by
@@ -120,7 +120,7 @@ theorem mem_zpowers_uu (L : LabelDatum g) {d : ℕ} (hd : 0 < d) (k : (KK g d)ˣ
   exact Subgroup.npow_mem_zpowers _ n
 
 /- English proof (translation)
-Set `f : (KK g d)ˣ →* Fbar g` to `(emb g d).toMonoidHom.comp (Units.coeHom _)`. Establish `hf : Function.Injective f` using `fun a b h => Units.ext ((emb_injective d) h)`. Rewrite using `[← orderOf_injective f hf, ← L.gen_order d hd]`. Conclude with `congrArg orderOf (emb_uu L hd)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderOf_uu (L : LabelDatum g) {d : ℕ} (hd : 0 < d) : orderOf (uu L hd) = g ^ d - 1 := by
   let f : (KK g d)ˣ →* Fbar g := (emb g d).toMonoidHom.comp (Units.coeHom _)
@@ -129,7 +129,7 @@ theorem orderOf_uu (L : LabelDatum g) {d : ℕ} (hd : 0 < d) : orderOf (uu L hd)
   exact congrArg orderOf (emb_uu L hd)
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : L.teich (x ^ (g ^ d - 1)) = 0` using `by rw [map_pow, h, zero_pow (N_pos' hd).ne']`. Rewrite `h2` using `[hx, map_one]`. Conclude with `one_ne_zero h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem teich_ne (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Fbar g} (hx : x ^ (g ^ d - 1) = 1) :
     L.teich x ≠ 0 := by
@@ -142,7 +142,7 @@ def tu (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Fbar g} (hx : x ^ (g ^ d -
   Units.mk0 (L.teich x) (teich_ne L hd hx)
 
 /- English proof (translation)
-Rewrite using `[orderOf_uu]`. Use `orderOf_dvd_of_pow_eq_one (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, tu, Units.val_mk0, ← map_pow, hx, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem orderOf_tu_dvd (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Fbar g} (hx : x ^ (g ^ d - 1) = 1) :
     orderOf (tu L hd hx) ∣ orderOf (uu L hd) := by
@@ -155,14 +155,14 @@ def theta (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Fbar g} (hx : x ^ (g ^ 
   monoidHomOfForallMemZpowers (mem_zpowers_uu L hd) (orderOf_tu_dvd L hd hx)
 
 /- English proof (translation)
-The claim follows from `monoidHomOfForallMemZpowers_apply_gen _ _`.
+A detailed English derivation is pending.
 -/
 theorem theta_uu (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Fbar g} (hx : x ^ (g ^ d - 1) = 1) :
     theta L hd hx (uu L hd) = tu L hd hx :=
   monoidHomOfForallMemZpowers_apply_gen _ _
 
 /- English proof (translation)
-Take `⟨n, rfl⟩` from `uu_pow L hd k`. Rewrite using `[map_pow, theta_uu, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, map_pow, emb_uu, Model.thetaOf_gen_pow L hd hx n, tu, Units.val_mk0]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_apply (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Fbar g} (hx : x ^ (g ^ d - 1) = 1)
     (k : (KK g d)ˣ) : ((theta L hd hx k : ℂˣ) : ℂ) = thetaOf L d x (emb g d k) := by
@@ -174,34 +174,34 @@ def th (L : LabelDatum g) {d : ℕ} (hd : 0 < d) (x : Fbar g) : (KK g d)ˣ →* 
   if hx : x ^ (g ^ d - 1) = 1 then theta L hd hx else 1
 
 /- English proof (translation)
-Rewrite using `[th, dif_pos hx, theta_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem th_apply (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Fbar g} (hx : x ^ (g ^ d - 1) = 1)
     (k : (KK g d)ˣ) : ((th L hd x k : ℂˣ) : ℂ) = thetaOf L d x (emb g d k) := by
   rw [th, dif_pos hx, theta_apply]
 
 /- English proof (translation)
-Rewrite using `[th, dif_pos hx, theta_uu, tu, Units.val_mk0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem th_uu (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Fbar g} (hx : x ^ (g ^ d - 1) = 1) :
     ((th L hd x (uu L hd) : ℂˣ) : ℂ) = L.teich x := by
   rw [th, dif_pos hx, theta_uu, tu, Units.val_mk0]
 
 /- English proof (translation)
-The claim follows from `(MonoidHom.eq_iff_eq_on_generator (mem_zpowers_uu L hd) θ θ').2 (Units.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem th_ext (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {θ θ' : (KK g d)ˣ →* ℂˣ}
     (h : ((θ (uu L hd) : ℂˣ) : ℂ) = θ' (uu L hd)) : θ = θ' :=
   (MonoidHom.eq_iff_eq_on_generator (mem_zpowers_uu L hd) θ θ').2 (Units.ext h)
 
 /- English proof (translation)
-Rewrite using `[← pow_mul, mul_comm, pow_mul, hx, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_pow {d : ℕ} {x : Fbar g} (hx : x ^ (g ^ d - 1) = 1) (m : ℕ) : (x ^ m) ^ (g ^ d - 1) = 1 := by
   rw [← pow_mul, mul_comm, pow_mul, hx, one_pow]
 
 /- English proof (translation)
-Use `th_ext L hd ?_` and prove the remaining obligations. Rewrite using `[th_uu L hd (unit_pow hx m), MonoidHom.pow_apply, Units.val_pow_eq_pow_val, th_uu L hd hx, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem th_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Fbar g} (hx : x ^ (g ^ d - 1) = 1) (m : ℕ) :
     th L hd (x ^ m) = th L hd x ^ m := by
@@ -209,7 +209,7 @@ theorem th_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Fbar g} (hx : x ^ 
   rw [th_uu L hd (unit_pow hx m), MonoidHom.pow_apply, Units.val_pow_eq_pow_val, th_uu L hd hx, map_pow]
 
 /- English proof (translation)
-Establish `h2` using `congrArg (fun θ : (KK g d)ˣ →* ℂˣ => ((θ (uu L hd) : ℂˣ) : ℂ)) h`. Simplify using `only [th_uu L hd hx, th_uu L hd hy] at h2`. Conclude with `L.teich_inj x y (ne_zero_of hd hx) (ne_zero_of hd hy) h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem th_inj (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x y : Fbar g} (hx : x ^ (g ^ d - 1) = 1)
     (hy : y ^ (g ^ d - 1) = 1) (h : th L hd x = th L hd y) : x = y := by
@@ -218,11 +218,9 @@ theorem th_inj (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x y : Fbar g} (hx : x 
   exact L.teich_inj x y (ne_zero_of hd hx) (ne_zero_of hd hy) h2
 
 /- English proof (translation)
-Establish `hp` using `gen_prim L hd`. Use `haveI : NeZero (g ^ d - 1) := ⟨(N_pos' hd).ne'⟩`. Establish `hq : IsPrimitiveRoot (L.teich (L.gen d)) (g ^ d - 1)`. Use `⟨by rw [← map_pow, hp.pow_eq_one, map_one], fun l hl => hp.dvd_of_pow_eq_one l ?_⟩` and prove the remaining obligations. Rewrite `hl` using `[← map_pow, ← map_one L.teich]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `L.teich_inj _ _ (pow_ne_zero _ (ne_zero_of hd hp.pow_eq_one)) one_ne_zero hl`. Establish `h1 : ((θ (uu L hd) : ℂˣ) : ℂ) ^ (g ^ d - 1) = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, ← orderOf_uu L hd, pow_orderOf_eq_one, map_one, Units.val_one]`. Take `⟨m, -, hm⟩` from `hq.eq_pow_of_pow_eq_one h1`. Use `⟨L.gen d ^ m, unit_pow hp.pow_eq_one m, th_ext L hd ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[th_uu L hd (unit_pow hp.pow_eq_one m), map_pow, hm]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem th_surj (L : LabelDatum g) {d : ℕ} (hd : 0 < d) (θ : (KK g d)ˣ →* ℂˣ) :
     ∃ x : Fbar g, x ^ (g ^ d - 1) = 1 ∧ θ = th L hd x := by
@@ -239,13 +237,13 @@ theorem th_surj (L : LabelDatum g) {d : ℕ} (hd : 0 < d) (θ : (KK g d)ˣ →* 
   rw [th_uu L hd (unit_pow hp.pow_eq_one m), map_pow, hm]
 
 /- English proof (translation)
-Rewrite using `[rootsBar, mem_roots (Polynomial.map_ne_zero hP), IsRoot, eval_map, aeval_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_rootsBar_iff {P : (ZMod g)[X]} (hP : P ≠ 0) {x : Fbar g} : x ∈ rootsBar P ↔ aeval x P = 0 := by
   rw [rootsBar, mem_roots (Polynomial.map_ne_zero hP), IsRoot, eval_map, aeval_def]
 
 /- English proof (translation)
-Use `aeval_algHom_apply ((FiniteField.frobeniusAlgHom (ZMod g) (Fbar g)) ^ i) x P` as an intermediate fact. Rewrite `this` using `[hx, map_zero]`. Rewrite using `[← this]`. Use `congr 1`. Rewrite using `[AlgHom.coe_pow, FiniteField.coe_frobeniusAlgHom, pow_iterate, ZMod.card]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem root_pow {P : (ZMod g)[X]} {x : Fbar g} (hx : aeval x P = 0) (i : ℕ) : aeval (x ^ g ^ i) P = 0 := by
   have := aeval_algHom_apply ((FiniteField.frobeniusAlgHom (ZMod g) (Fbar g)) ^ i) x P
@@ -255,7 +253,7 @@ theorem root_pow {P : (ZMod g)[X]} {x : Fbar g} (hx : aeval x P = 0) (i : ℕ) :
   rw [AlgHom.coe_pow, FiniteField.coe_frobeniusAlgHom, pow_iterate, ZMod.card]
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_lt hij have h2 : (x ^ g ^ i) ^ g ^ (m + 1) = x ^ g ^ i := by rw [← pow_mul, ← pow_add, ← add_assoc, ← h] have := Nat.le_of_dvd (Nat.succ_pos m) ((GlobalTheory.GreenExists.pow_eq_self_iff hP (root_pow hx i) _).1 h2) omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pow_inj_lt {P : (ZMod g)[X]} (hP : Irreducible P) {x : Fbar g} (hx : aeval x P = 0) {i j : ℕ}
     (hij : i < j) (hj : j < P.natDegree) : x ^ g ^ i ≠ x ^ g ^ j := fun h => by
@@ -266,7 +264,7 @@ theorem pow_inj_lt {P : (ZMod g)[X]} (hP : Irreducible P) {x : Fbar g} (hx : aev
   omega
 
 /- English proof (translation)
-Break down `lt_trichotomy i j with h1 | h1 | h1` into its components or cases. Conclude with `absurd h (pow_inj_lt hP hx h1 hj)`. Conclude with `h1`. Conclude with `absurd h.symm (pow_inj_lt hP hx h1 hi)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem pow_inj {P : (ZMod g)[X]} (hP : Irreducible P) {x : Fbar g} (hx : aeval x P = 0) {i j : ℕ}
     (hi : i < P.natDegree) (hj : j < P.natDegree) (h : x ^ g ^ i = x ^ g ^ j) : i = j := by
@@ -278,9 +276,9 @@ theorem pow_inj {P : (ZMod g)[X]} (hP : Irreducible P) {x : Fbar g} (hx : aeval 
 def rootOf (P : (ZMod g)[X]) : Fbar g := if h : ∃ x, x ∈ rootsBar P then h.choose else 1
 
 /- English proof (translation)
-Establish `hP0` using `hP.2.1.ne_zero`. Establish `hex : ∃ x, x ∈ rootsBar P`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_aeval_eq_zero (Fbar g) P (degree_pos_of_irreducible hP.2.1).ne'`. Conclude with `⟨z, (mem_rootsBar_iff hP0).2 hz⟩`. Rewrite using `[rootOf, dif_pos hex]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_rootsBar_iff hP0).1 hex.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem rootOf_spec {d : ℕ} {P : (ZMod g)[X]} (hP : IsPrimeLab d P) : aeval (rootOf P) P = 0 := by
   have hP0 := hP.2.1.ne_zero
@@ -291,9 +289,9 @@ theorem rootOf_spec {d : ℕ} {P : (ZMod g)[X]} (hP : IsPrimeLab d P) : aeval (r
   exact (mem_rootsBar_iff hP0).1 hex.choose_spec
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.GreenExists.pow_eq_self_iff hP.2.1 hx d).2 (by rw [hP.2.2.2])`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hP.2.2.1 (by rwa [← coeff_zero_eq_aeval_zero', map_eq_zero] at hx)`. Establish `e : g ^ d = g ^ d - 1 + 1` using `(Nat.sub_add_cancel (Nat.one_le_pow _ _ hg.out.pos)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e, pow_succ]`. Conclude with `mul_right_cancel₀ hx0 (h1.trans (one_mul _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem root_unit {d : ℕ} {P : (ZMod g)[X]} (hP : IsPrimeLab d P) {x : Fbar g} (hx : aeval x P = 0) :
     x ^ (g ^ d - 1) = 1 := by
@@ -306,7 +304,7 @@ theorem root_unit {d : ℕ} {P : (ZMod g)[X]} (hP : IsPrimeLab d P) {x : Fbar g}
   exact mul_right_cancel₀ hx0 (h1.trans (one_mul _).symm)
 
 /- English proof (translation)
-Use `forall₄_congr fun i j _ _ => ?_` and prove the remaining obligations. Rewrite using `[← th_pow L hd hx, ← th_pow L hd hx]`. Conclude with `⟨fun h e => h (congrArg (th L hd) e), fun h e => h (th_inj L hd (unit_pow hx _) (unit_pow hx _) e)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem regular_iff (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Fbar g} (hx : x ^ (g ^ d - 1) = 1) :
     GlobalTheory.Published.IsRegularChar g d (th L hd x) ↔ ∀ i j, i < d → j < d → x ^ g ^ i = x ^ g ^ j → i = j := by
@@ -315,7 +313,7 @@ theorem regular_iff (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Fbar g} (hx :
   exact ⟨fun h e => h (congrArg (th L hd) e), fun h e => h (th_inj L hd (unit_pow hx _) (unit_pow hx _) e)⟩
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.GreenExists.rootsBar_eq hf hz, Multiset.map_map, Finset.sum_eq_multiset_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_range_eq_roots {f : (ZMod g)[X]} (hf : Irreducible f) {z : Fbar g} (hz : aeval z f = 0)
     (F : Fbar g → ℂ) : ∑ i ∈ Finset.range f.natDegree, F (z ^ g ^ i) = ((rootsBar f).map F).sum := by
@@ -323,7 +321,7 @@ theorem sum_range_eq_roots {f : (ZMod g)[X]} (hf : Irreducible f) {z : Fbar g} (
   rfl
 
 /- English proof (translation)
-Use `haveI : NeZero (g ^ d - 1) := ⟨(N_pos' hd).ne'⟩`. Take `⟨n, -, rfl⟩` from `(gen_prim L hd).eq_pow_of_pow_eq_one hw`. Rewrite using `[Model.thetaOf_gen_pow L hd (unit_pow hx m) n, ← pow_mul, Model.thetaOf_gen_pow L hd hx (n * m), map_pow, ← pow_mul, mul_comm m n]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaOf_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x w : Fbar g} (hx : x ^ (g ^ d - 1) = 1)
     (hw : w ^ (g ^ d - 1) = 1) (m : ℕ) : thetaOf L d (x ^ m) w = thetaOf L d x (w ^ m) := by
@@ -333,37 +331,31 @@ theorem thetaOf_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x w : Fbar g} (hx
     ← pow_mul, mul_comm m n]
 
 /- English proof (translation)
-Introduce `g hg L d hd`. Take `⟨τG, h1, h2, h3⟩` from `hG g d hd (KK g d) (GaloisField.finrank g hd.ne')`. Establish `hreg : ∀ P, IsPrimeLab d P → GlobalTheory.Published.IsRegularChar g d (th L hd (rootOf P))` using `fun P hP => by`. Establish `hx` using `rootOf_spec hP`. Use `(regular_iff L hd (root_unit hP hx)).2 fun i j hi hj e => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pow_inj hP.2.1 hx (hP.2.2.2 ▸ hi) (hP.2.2.2 ▸ hj) e`. Use `⟨fun P => τG (th L hd (rootOf P)), fun P hP => ?_, fun P P' hP hP' e => ?_, fun χ hχ => ?_⟩` and prove the remaining obligations. Take `⟨hc, hdeg, hval⟩` from `h1 _ (hreg P hP)`. Use `⟨⟨hP, hc, fun x hxP y hy z hz => ?_⟩, hdeg⟩` and prove the remaining obligations. Use `set x0 := rootOf P with hx0def`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0` using `rootOf_spec hP`. Establish `hx0u` using `root_unit hP hx0`. Use `set f := (y : Mt g d).charpoly with hfdef`. Establish `hnd : f.natDegree = d` using `by simp [hfdef]`. Establish `hz' : aeval z f = 0` using `(mem_rootsBar_iff hy.ne_zero).1 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc0 : f.coeff 0 ≠ 0`. Introduce `h0`. Establish `h1'` using `Matrix.det_eq_sign_charpoly_coeff (y : Mt g d)`. Rewrite `h1'` using `[← hfdef, h0, mul_zero]`. Conclude with `y.det_ne_zero h1'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hPf : IsPrimeLab d f` using `⟨Matrix.charpoly_monic _, hy, hc0, hnd⟩`. Establish `hzu` using `root_unit hPf hz'`. Take `⟨k, hk⟩` from `exists_emb_eq hd (pow_self_of hzu)`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hk` using `[map_zero]`. Conclude with `ne_zero_of hd hzu hk.symm`. Establish `hka : aeval ((Units.mk0 k hk0 : (KK g d)ˣ) : KK g d) f = 0`. Use `emb_injective d ?_` and prove the remaining obligations. Rewrite using `[map_zero, Units.val_mk0, ← aeval_algHom_apply, hk, hz']`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show τG (th L hd x0) y = _`. Rewrite using `[hval y hy _ hka]`. Use `congr 1`. Establish `hxP' : x ∈ (Finset.range P.natDegree).val.map fun i => x0 ^ g ^ i`. Rewrite using `[← GlobalTheory.GreenExists.rootsBar_eq hP.2.1 hx0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hxP`. Take `⟨j, -, rfl⟩` from `Multiset.mem_map.1 hxP'`. Establish `s1` using `sum_range_eq_roots hy hz' (thetaOf L d x0)`. Establish `s2` using `sum_range_eq_roots hy (root_pow hz' j) (thetaOf L d x0)`. Rewrite `s1`, `s2` using `[hnd]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[th_apply L hd hx0u, Units.val_pow_eq_pow_val, map_pow, Units.val_mk0, hk]`. Use `_ = ∑ i ∈ Finset.range d, thetaOf L d x0 ((z ^ g ^ j) ^ g ^ i) := s1.trans s2.symm`. Use `_ = ∑ i ∈ Finset.range d, thetaOf L d (x0 ^ g ^ j) (z ^ g ^ i) := by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[thetaOf_pow L hd hx0u (unit_pow hzu _), ← pow_mul, ← pow_mul, mul_comm]`. Establish `hx` using `rootOf_spec hP`. Establish `hx'` using `rootOf_spec hP'`. Take `⟨i, -, hi⟩` from `(h2 _ _ (hreg P hP) (hreg P' hP')).1 e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hi` using `[← th_pow L hd (root_unit hP hx)]`. Establish `hxe` using `th_inj L hd (root_unit hP' hx') (unit_pow (root_unit hP hx) _) hi`. Establish `hr : aeval (rootOf P') P = 0` using `by rw [hxe]; exact root_pow hx i`. Conclude with `(minpoly.eq_of_irreducible_of_monic hP.2.1 hr hP.1).trans (minpoly.eq_of_irreducible_of_monic hP'.2.1 hx' hP'.1).symm`. Take `⟨θ, hθ, rfl⟩` from `h3 χ hχ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx, rfl⟩` from `th_surj L hd θ`. Establish `hreg'` using `(regular_iff L hd hx).1 hθ`. Establish `hint : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Use `set P := minpoly (ZMod g) x with hPdef`. Establish `hPirr : Irreducible P` using `minpoly.irreducible hint`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hPx : aeval x P = 0` using `minpoly.aeval _ _`. Establish `hkd : P.natDegree ∣ d` using `(GlobalTheory.GreenExists.pow_eq_self_iff hPirr hPx d).1 (pow_self_of hx)`. Establish `hkpos : 0 < P.natDegree` using `minpoly.natDegree_pos hint`. Establish `hself : x ^ g ^ P.natDegree = x` using `(GlobalTheory.GreenExists.pow_eq_self_iff hPirr hPx _).2 dvd_rfl`. Establish `hk : P.natDegree = d`.
-
-Use `le_antisymm (Nat.le_of_dvd hd hkd) (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Use `hreg' _ 0 hlt hd (by rw [pow_zero, pow_one]; exact hself)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hPL : IsPrimeLab d P` using `⟨minpoly.monic hint, hPirr, minpoly.coeff_zero_ne_zero hint (ne_zero_of hd hx), hk⟩`. Use `⟨P, hPL, ?_⟩` and prove the remaining obligations.
-
-Establish `hm : rootOf P ∈ (Finset.range P.natDegree).val.map fun i => x ^ g ^ i`. Rewrite using `[← GlobalTheory.GreenExists.rootsBar_eq hPirr hPx]`. Conclude with `(mem_rootsBar_iff hPirr.ne_zero).2 (rootOf_spec hPL)`. Take `⟨j, hj, hjx⟩` from `Multiset.mem_map.1 hm`. Establish `hj' : j < d` using `hk ▸ Finset.mem_range.1 (Finset.mem_def.2 hj)`.
-
-Use `show τG (th L hd x) = τG (th L hd (rootOf P))`. Conclude with `(h2 _ _ hθ (hreg P hPL)).2 ⟨j, hj', by rw [← hjx, th_pow L hd hx]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem green_of_regular (hG : GlobalTheory.Published.GreenRegularCharacters) : GlobalTheory.GLq.Green := by
   intro g hg L d hd

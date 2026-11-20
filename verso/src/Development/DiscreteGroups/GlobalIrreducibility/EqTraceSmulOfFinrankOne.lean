@@ -20,9 +20,9 @@ namespace DiscreteGroups.sglob.DzType
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Use `⟨?_, fun x hx => t.2.2 x hx⟩` and prove the remaining obligations. Use `show AlgEquiv.restrictScalars E (t : G E' Ω) • A = A`. Establish `hd : (t : G E' Ω) • A = A` using `t.2.1`. Use extensionality with `y`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← hd]`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem ine_restrict {E E' Ω : Type} [Field E] [NumberField E] [Field E'] [NumberField E'] [Field Ω] [Algebra E E']
     [Algebra E Ω] [Algebra E' Ω] [IsScalarTower E E' Ω] {A : ValuationSubring Ω} (t : Ine (F := E') A) :
@@ -37,9 +37,9 @@ theorem ine_restrict {E E' Ω : Type} [Field E] [NumberField E] [Field E'] [Numb
   exact Iff.rfl
 
 /- English proof (translation)
-Take `⟨b, -, hspan⟩` from `finrank_eq_one_iff'.1 hV`. Take `⟨c₀, hc₀⟩` from `hspan (f b)`. Establish `hf : f = c₀ • LinearMap.id`. Use extensionality with `w`. Take `⟨c, rfl⟩` from `hspan w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_smul, ← hc₀, LinearMap.smul_apply, LinearMap.id_apply, smul_comm]`. Rewrite using `[hf, map_smul, LinearMap.trace_id, hV, Nat.cast_one, smul_eq_mul, mul_one, LinearMap.smul_apply, LinearMap.id_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_trace_smul_of_finrank_one {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (hV : Module.finrank ℂ V = 1) (f : V →ₗ[ℂ] V) (v : V) : f v = (LinearMap.trace ℂ V f) • v := by
@@ -53,17 +53,17 @@ theorem eq_trace_smul_of_finrank_one {V : Type} [AddCommGroup V] [Module ℂ V] 
     LinearMap.id_apply]
 
 /- English proof (translation)
-Simplify using `[Matrix.charpoly, Matrix.det_unique]`.
+Simplify using the standard rewrite rules.
 -/
 theorem charpoly_fin_one {R : Type} [CommRing R] (M : Matrix (Fin 1) (Fin 1) R) : M.charpoly = X - C (M 0 0) := by
   simp [Matrix.charpoly, Matrix.det_unique]
 
 /- English proof (translation)
-Establish `key : ∀ (y : Gn g 1) (z : Kˣ), (z : K) = algebraMap (ZMod g) K ((y : Mt g 1) 0 0) → τ.character y = ((θ z : ℂˣ) : ℂ)` using `fun y z hz => by`. Use `hf y (by rw [charpoly_fin_one]; exact irreducible_X_sub_C _) z (by` as an intermediate fact. Rewrite using `[charpoly_fin_one]`. Simplify using `[hz])`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hdim : Module.finrank ℂ τ = 1`. Establish `h1` using `key 1 1 (by simp)`. Rewrite `h1` using `[FDRep.char_one, map_one, Units.val_one]`. Conclude with `h1` after adjusting the coercions. Rewrite using `[eq_trace_smul_of_finrank_one hdim (τ.ρ y) v]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `key y z hz`.
+A detailed English derivation is pending.
 -/
 theorem tau_scalar (g : ℕ) [Fact g.Prime] (K : Type) [Field K] [Algebra (ZMod g) K] (θ : Kˣ →* ℂˣ)
     (τ : FDRep ℂ (Gn g 1))
@@ -85,53 +85,47 @@ theorem tau_scalar (g : ℕ) [Fact g.Prime] (K : Type) [Field K] [Algebra (ZMod 
   exact key y z hz
 
 /- English proof (translation)
-Introduce `HT E E' Ω _ _ _ _ _ _ _ _ _ _ _ _ g _ A w h w' h' rc hrc i hi n hn hn1 hg hN a' ha' K _ _ red hr hk θ hθ τ hτ hf σ hs ξ hξ hξf`. Substitute `hn1` using the available equality. Take `⟨a, ha, ε, hε, hL⟩` from `hrc`. Establish `: IsTotallyComplex E'` using `isTotallyComplex_of_algebra (E := E)`. Establish `hgp : g.Prime` using `Fact.out`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ω, -, hω⟩` from `exists_smooth_hasCentralChar σ.smooth σ.irr`. Establish `hωx : HasCentralChar (cls σ).rep ω` using `hasCentralChar_of_equiv (equivRep σ) hω`. Establish `hωu : ∀ u : ℤ_[g]ˣ, ∀ U : (w.adicCompletion E)ˣ, (U : w.adicCompletion E) = i ((u : ℤ_[g]) : ℚ_[g]) → ∀ zc : Kˣ, (zc : K) = algebraMap (ZMod g) K (PadicInt.toZMod (u : ℤ_[g])) → (ω U : ℂ) = θ zc`. Introduce `u U hU zc hzc`. Take `⟨φ, hφ0, hφ⟩` from `hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨v0, hv0⟩ : ∃ v0, φ v0 ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Conclude with `hφ0 (LinearMap.ext fun v => not_not.1 fun hne => hc ⟨v, hne⟩)`. Set `k : GL (Fin 1) ℤ_[g]` to `GeneralLinearGroup.scalar (Fin 1) u`. Establish `h1` using `hφ k v0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hred : ((GlobalTheory.GLp.red g 1 k : Gn g 1) : Mt g 1) 0 0 = PadicInt.toZMod (u : ℤ_[g])`. Simplify using `[k, GlobalTheory.GLp.red]`. Rewrite `h1` using `[tau_scalar g K θ τ hf _ zc (by rw [hred, hzc]), map_smul]`. Establish `e : Matrix.GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g 1 k) = GeneralLinearGroup.scalar (Fin 1) U`. Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `fin_cases a`. Use `fin_cases b`. Simplify using `[k, GlobalTheory.GLp.inc, hU]`. Establish `h2 : (σ.ρ.comp (Matrix.GeneralLinearGroup.map i.toRingHom)) (GlobalTheory.GLp.inc g 1 k) (φ v0) = (ω U : ℂ) • φ v0` using `by show σ.ρ (Matrix.GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g 1 k)) (φ v0) = _`. Rewrite using `[e, hω U]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2]`. Conclude with `(smul_left_injective ℂ hv0 h1).symm`. Establish `hNw : normV w = g` using `by rw [← resCard_eq_normV w, DiscreteGroups.sglob.DzIso.resCard_eq i hi]`. Establish `hN' : normV w' = g` using `by rw [hN, pow_one]`. Establish `hgw'` using `natCast_mem_of_normV w' g 1 Nat.one_pos hN`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgw : ((g : ℕ) : 𝓞 E) ∈ w.asIdeal`. Use `(h _).1 ?_` and prove the remaining obligations. Establish `e1 : algebraMap E Ω (((g : ℕ) : 𝓞 E) : E) = algebraMap E' Ω (((g : ℕ) : 𝓞 E') : E')` using `by simp`. Rewrite using `[e1]`. Conclude with `(h' _).2 hgw'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmap : ∀ y : 𝓞 E, y ∈ w.asIdeal → algebraMap (𝓞 E) (𝓞 E') y ∈ w'.asIdeal` using `fun y hy => by`. Use `(h' _).1 ?_` and prove the remaining obligations. Establish `e1 : algebraMap E' Ω ((algebraMap (𝓞 E) (𝓞 E') y : 𝓞 E') : E') = algebraMap E Ω (y : E)` using `(IsScalarTower.algebraMap_apply E E' Ω (y : E)).symm`. Rewrite using `[e1]`. Conclude with `(h y).2 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hgw2 : ((g : ℕ) : 𝓞 E) ∉ w.asIdeal ^ 2` using `fun hm => hg (by`. Establish `hle : Ideal.map (algebraMap (𝓞 E) (𝓞 E')) w.asIdeal ≤ w'.asIdeal` using `Ideal.map_le_iff_le_comap.2 hmap`. Establish `h2` using `Ideal.mem_map_of_mem (algebraMap (𝓞 E) (𝓞 E')) hm`. Rewrite `h2` using `[Ideal.map_pow]`. Use `Ideal.pow_right_mono hle 2 h2` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_natCast] at this)` and apply the resulting hypothesis. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Take `⟨π, hπ⟩` from `IsAlgClosed.exists_pow_nat_eq ((g : ℕ) : Ω) (show 0 < g - 1 by have := hgp.two_le; omega)`. Use `⟨0, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, pow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨t, x, hxz, hv⟩` from `exists_ine_of_res g A w' h' 1 Nat.one_pos hN a' ha' K red hr hk z`. Establish `hpol` using `hξf t x z hxz hv`. Establish `htE` using `ine_restrict (E := E) t`. Set `s : Weil h` to `ineIncl h ⟨_, htE⟩`. Rewrite `hpol` using `[WD.inePol_of_mem_Ine _ htE]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcard` using `WD.card_eig (rc (cls σ)) s`. Rewrite `hcard` using `[hL.dim]`. Take `⟨α, hα⟩` from `Multiset.card_eq_one.1 hcard`. Establish `hprod` using `hL.central (cls σ) ω hωx s`. Rewrite `hprod` using `[hα, Multiset.prod_singleton]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hpol` using `[WD.charPol_eq_prod, hα]`. Simplify using `only [Multiset.map_singleton, Multiset.prod_singleton, Finset.range_one, Finset.prod_singleton, pow_zero, pow_one] at hpol`. Establish `hαξ : α = ((ξ z : ℂˣ) : ℂ)` using `by simpa using congrArg (Polynomial.eval 0) hpol`. Establish `hξα : ((ξ z : ℂˣ) : ℂ) = α` using `hαξ.symm`. Establish `hunit` using `GlobalTheory.ArtinInertia.isUnitAt_artin_ine h a ha ⟨_, htE⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu1 : ‖i.symm (a s : w.adicCompletion E)‖ = 1`. Establish `hv1 : Valued.v (a s : w.adicCompletion E) = 1` using `hunit`. Establish `hle` using `(DiscreteGroups.sglob.DzIso.v_le_iff i hi (i.symm (a s : w.adicCompletion E))).1 (by`. Rewrite using `[RingEquiv.apply_symm_apply, hv1])`. Use `le_antisymm hle (not_lt.1 fun hlt => ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(DiscreteGroups.sglob.DzIso.v_lt_iff i hi (i.symm (a s : w.adicCompletion E))).2 hlt` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply, hv1]`. Conclude with `lt_irrefl _ this`. Set `u : ℤ_[g]ˣ` to `PadicInt.mkUnits hu1`. Establish `hu : (a s : w.adicCompletion E) = i ((u : ℤ_[g]) : ℚ_[g])` using `by show _ = i (i.symm (a s : w.adicCompletion E))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingEquiv.apply_symm_apply]`. Take `⟨y, hy⟩` from `GlobalTheory.unit_completion_approx_integer w (a s) hunit`. Establish `hT'` using `HT E' Ω g A w' h' hgw' hg a' ha' π (by rw [hN']; exact hπ) t x hv`. Establish `hT` using `HT E Ω g A w h hgw hgw2 a ha π (by rw [hNw]; exact hπ) ⟨_, htE⟩ y hy`. Establish `hxy : A.valuation (algebraMap E' Ω (x : E') - algebraMap E Ω (y : E)) < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `e : algebraMap E' Ω (x : E') - algebraMap E Ω (y : E) = ((t : G E' Ω) π / π - algebraMap E Ω (y : E)) - ((t : G E' Ω) π / π - algebraMap E' Ω (x : E'))` using `by ring`. Rewrite using `[e]`. Conclude with `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt hT hT')`. Use `set c : ZMod g := PadicInt.toZMod (u : ℤ_[g]) with hc`. Establish `hym : y - (c.val : 𝓞 E) ∈ w.asIdeal`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Valued.v (algebraMap E (w.adicCompletion E) ((y - (c.val : 𝓞 E) : 𝓞 E) : E)) < 1`. Establish `e : algebraMap E (w.adicCompletion E) ((y - (c.val : 𝓞 E) : 𝓞 E) : E) = -((a s : w.adicCompletion E) - algebraMap E (w.adicCompletion E) (y : E)) + i (((u : ℤ_[g]) : ℚ_[g]) - (c.val : ℚ_[g]))`. Rewrite using `[map_sub, hu, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `Valuation.map_add_lt _ (by rw [Valuation.map_neg]; exact hy) ?_` and prove the remaining obligations. Use `(DiscreteGroups.sglob.DzIso.v_lt_iff i hi _).2 ?_` and prove the remaining obligations. Establish `hk : (u : ℤ_[g]) - (c.val : ℤ_[g]) ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`. Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, hc, sub_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hk` using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits, PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_natCast]`. Conclude with `hk`. Establish `h2 : w.valuation E ((y - (c.val : 𝓞 E) : 𝓞 E) : E) < 1`. Rewrite using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (R := 𝓞 E) w]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(w.valuation_lt_one_iff_mem (K := E) _).1 h2`. Establish `hA1 : A.valuation (algebraMap E Ω (y : E) - (c.val : Ω)) < 1`. Use `(h _).2 hym` as an intermediate fact. Rewrite `this` using `[show ((y - (c.val : 𝓞 E) : 𝓞 E) : E) = (y : E) - (c.val : E) by push_cast; ring, map_sub, map_natCast]`. Conclude with `this`.
-
-Establish `hxm : x - (c.val : 𝓞 E') ∈ w'.asIdeal`. Use `(h' _).1 ?_` and prove the remaining obligations. Establish `e : algebraMap E' Ω ((x - (c.val : 𝓞 E') : 𝓞 E') : E') = (algebraMap E' Ω (x : E') - algebraMap E Ω (y : E)) + (algebraMap E Ω (y : E) - (c.val : Ω))` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `Valuation.map_add_lt _ hxy hA1`.
-
-Establish `hzc : (z : K) = algebraMap (ZMod g) K c`. Rewrite using `[← hxz]`. Use `(RingHom.mem_ker.1 (hk ▸ hxm : x - (c.val : 𝓞 E') ∈ RingHom.ker red))` as an intermediate fact. Rewrite `this` using `[map_sub, map_natCast, sub_eq_zero]`. Rewrite using `[this, ← map_natCast (algebraMap (ZMod g) K), ZMod.natCast_zmod_val]`.
-
-Establish `hfin` using `hωu u (a s) hu z hzc`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hξα, hprod]`. Conclude with `hfin`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lOneOf : LOneOf := by
   intro HT E E' Ω _ _ _ _ _ _ _ _ _ _ _ _ g _ A w h w' h' rc hrc i hi n hn hn1 hg hN a' ha' K _ _ red hr hk θ hθ τ

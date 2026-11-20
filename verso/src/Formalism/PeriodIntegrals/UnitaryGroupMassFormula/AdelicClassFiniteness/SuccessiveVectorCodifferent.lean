@@ -7,15 +7,15 @@ namespace PIW.AdelClassFin
 open NumberField
 
 /- English proof (translation)
-Introduce `E _ _`. Use `⟨(NumberField.discr E).natAbs, Int.natAbs_pos.2 (NumberField.discr_ne_zero E), fun y hy => ?_⟩` and prove the remaining obligations. Establish `hmem : y ∈ Submodule.traceDual ℤ ℚ (1 : Submodule (𝓞 E) E)`. Rewrite using `[Submodule.mem_traceDual]`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a', rfl⟩` from `Submodule.mem_one.1 ha`. Rewrite using `[Algebra.traceForm_apply, mul_comm]`. Conclude with `hy a'`. Establish `hint` using `isIntegral_discr_mul_of_mem_traceDual (A := ℤ) (K := ℚ) (1 : Submodule (𝓞 E) E) (b := integralBasis E) (fun i => by rw [integralBasis_apply]; exact RingOfIntegers.isIntegral_coe _) (Submodule.mem_one.2 ⟨1, map_one _⟩) hmem`. Rewrite `hint` using `[← NumberField.coe_discr]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : IsIntegral ℤ (((NumberField.discr E : ℤ) : E) * y)`. Use `hint using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Algebra.smul_def, mul_one, map_intCast]`. Take `⟨z, hz⟩` from `(IsIntegralClosure.isIntegral_iff (A := 𝓞 E)).1 hx`. Take `⟨n, hn⟩ : ∃ n : ℕ, n = (NumberField.discr E).natAbs` from `⟨_, rfl⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hn]`. Break down `Int.natAbs_eq (NumberField.discr E) with h | h` into its components or cases. Rewrite `h` using `[← hn]`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, h, Int.cast_natCast]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← hn]`. Use `⟨-z, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, hz, h, Int.cast_neg, Int.cast_natCast, neg_mul, neg_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem successive_vector_codifferent : SvCodiff := by
   intro E _ _

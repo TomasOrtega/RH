@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 open Matrix UpperTheory.V.Weyl
 
 /- English proof (translation)
-Establish `hc` using `UpperTheory.V.Weyl.curve n Ξ (fun t => 1 + t • single a b (1 : ℂ)) (single a b 1) (by simp) (by`. Introduce `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).mul_const (single a b (1 : ℂ) i j)).const_add ((1 : Matrix (Fin n) (Fin n) ℂ) i j))`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : HasDerivAt (fun t : ℂ => (Ξ.mat (1 + t • single a b (1 : ℂ)) *ᵥ v) i) ((Ξ.E a b *ᵥ v) i) 0`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `HasDerivAt.fun_sum fun j _ => (hc i j).mul_const (v j)`. Establish `h2 : (fun t : ℂ => (Ξ.mat (1 + t • single a b (1 : ℂ)) *ᵥ v) i) = fun t => f t * v i`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h _ ?_, hfe]`. Both sides reduce to the same expression. Introduce `p q hpq`. Establish `: ¬ (a = p ∧ b = q)`. Introduce and unpack `⟨rfl, rfl⟩`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `absurd hab (not_le.mpr hpq)`. Simplify using `[Matrix.one_apply_ne hpq.ne', Matrix.single_apply, this]`. Rewrite `h1` using `[h2]`. Conclude with `h1.unique (hf.mul_const (v i))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Weyl.top_weight_lie_action (n : ℕ) (Ξ : Pre n) (ν : Fin n → ℕ) (v : Fin Ξ.d → ℂ)
     (h : Ξ.IsTop ν v) (a b : Fin n) (hab : a ≤ b) (f : ℂ → ℂ) (f' : ℂ) (hf : HasDerivAt f f' 0)
@@ -37,13 +37,13 @@ private theorem UpperTheory.V.Weyl.top_weight_lie_action (n : ℕ) (Ξ : Pre n) 
   exact h1.unique (hf.mul_const (v i))
 
 /- English proof (translation)
-Introduce `n Ξ ν v h`. Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Use `UpperTheory.V.Weyl.top_weight_lie_action n Ξ ν v h a a le_rfl (fun t => (1 + t) ^ ν a) _ ?_ ?_` and prove the remaining obligations. Simplify using `using ((hasDerivAt_id (0 : ℂ)).const_add 1).fun_pow (ν a)`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.prod_eq_single a]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[Matrix.single_apply, hk.symm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `UpperTheory.V.Weyl.top_weight_lie_action n Ξ ν v h a b hab.le (fun _ => 1) 0 (hasDerivAt_const _ _) (by` as an intermediate fact. Introduce `t`. Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Establish `: ¬ (a = k ∧ b = k)`. Introduce and unpack `⟨rfl, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `lt_irrefl _ hab`. Simplify using `[Matrix.single_apply, this])`. Simplify using `using this`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Weyl.topLie :
     ∀ (n : ℕ) (Ξ : Pre n) (ν : Fin n → ℕ) (v : Fin Ξ.d → ℂ), Ξ.IsTop ν v →

@@ -17,9 +17,7 @@ def intLat (E : Type) [Field E] [NumberField E] (w : Pl E) (a b : ℕ) :
   neg_mem' {X} hX i j := by simpa using hX i j
 
 /- English proof (translation)
-Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce `h i _ j _`. Conclude with `h i j`. Introduce `h i j`.
-
-Conclude with `h i trivial j trivial`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coe_intLat (E : Type) [Field E] [NumberField E] (w : Pl E) (a b : ℕ) :
     (intLat E w a b : Set (Matrix (Fin a) (Fin b) (w.adicCompletion E))) =
@@ -33,11 +31,9 @@ theorem coe_intLat (E : Type) [Field E] [NumberField E] (w : Pl E) (a b : ℕ) :
     exact h i trivial j trivial
 
 /- English proof (translation)
-Introduce `E _ _ w a b`. Use `⟨intLat E w a b, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coe_intLat]`. Conclude with `isOpen_set_pi Set.finite_univ fun i _ => isOpen_set_pi Set.finite_univ fun j _ => Valued.isOpen_valuationSubring _`. Rewrite using `[coe_intLat]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isCompact_univ_pi fun i => isCompact_univ_pi fun j => PI.AdicCompletionValuation.isCompact_adicCompletionIntegers E w`. Establish `hS : {X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) | ∀ i j, Valued.v (Multiplicative.toAdd X i j) ≤ 1} = ((AddSubgroup.toSubgroup (intLat E w a b) : Subgroup _) : Set _)`. Use extensionality with `X`. Both sides reduce to the same expression. Unfold `intMat`.
-
-Rewrite using `[hS, Subgroup.closure_eq]`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intMat_open_compact : ∀ (E : Type) [Field E] [NumberField E] (w : Pl E) (a b : ℕ), ∃ Λ : AddSubgroup (Matrix (Fin a) (Fin b) (w.adicCompletion E)), IsOpen (Λ : Set (Matrix (Fin a) (Fin b) (w.adicCompletion E))) ∧ IsCompact (Λ : Set (Matrix (Fin a) (Fin b) (w.adicCompletion E))) ∧ intMat a b w = AddSubgroup.toSubgroup Λ := by
   intro E _ _ w a b

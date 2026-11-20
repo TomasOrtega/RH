@@ -11,15 +11,15 @@ def HenselN (K : Type) [NormedField K] : Prop :=
 variable {K : Type} [NormedField K]
 
 /- English proof (translation)
-Distinguish the cases in `H : ∃ Q : ℤ[X], ‖aeval α Q‖ < ε * ‖aeval α (derivative Q)‖ ^ 2`. Conclude with `⟨1, one_pos, fun _ _ _ => H⟩`. Use `push_neg at H`. Establish `key : ∀ m : ℕ, ∀ c : ℝ, 0 < c → ∃ δ > 0, ∀ P : ℤ[X], ‖aeval α P‖ < δ → ‖aeval α (derivative^[m] P)‖ < c`. Introduce `m`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `c hc`. Conclude with `⟨c, hc, fun P hP => by simpa using hP⟩`. Consider the case `succ m ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Take `⟨δ₁, hδ₁, h₁⟩` from `ih c hc`. Use `⟨ε * δ₁ ^ 2, by positivity, fun P hP => ?_⟩` and prove the remaining obligations. Rewrite using `[Function.iterate_succ_apply]`. Apply `h₁` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Establish `h2 : δ₁ ^ 2 ≤ ‖aeval α (derivative P)‖ ^ 2` using `pow_le_pow_left₀ hδ₁.le hle 2`. Establish `h3` using `H P`. Establish `h4` using `mul_le_mul_of_nonneg_left h2 hε.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨δ, hδ, hP⟩` from `key m c hc`. Conclude with `⟨δ, hδ, fun P h1 h2 => absurd h1 (not_le.mpr (hP P h2))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_deriv (α : K) (ε : ℝ) (hε : 0 < ε) (m : ℕ) (c : ℝ) (hc : 0 < c) : ∃ δ > 0, ∀ P : ℤ[X],
     c ≤ ‖aeval α (derivative^[m] P)‖ → ‖aeval α P‖ < δ →
@@ -50,11 +50,11 @@ theorem exists_deriv (α : K) (ε : ℝ) (hε : 0 < ε) (m : ℕ) (c : ℝ) (hc 
     exact ⟨δ, hδ, fun P h1 h2 => absurd h1 (not_le.mpr (hP P h2))⟩
 
 /- English proof (translation)
-Establish `h : ∀ k ∈ S, ∀ᶠ n in atTop, ‖π ^ n * z k‖ < 1`. Introduce `k _`. Establish `ht : Tendsto (fun n : ℕ => π ^ n * z k) atTop (𝓝 0)`. Use `(tendsto_pow_atTop_nhds_zero_of_norm_lt_one h1).mul_const (z k)` as an intermediate fact. Rewrite `this` using `[zero_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hn` using `ht.norm`. Rewrite `hn` using `[norm_zero]`. Conclude with `hn.eventually (gt_mem_nhds one_pos)`. Establish `hall : ∀ᶠ n in atTop, ∀ k ∈ S, ‖π ^ n * z k‖ < 1` using `(Filter.eventually_all_finset S).2 h`. Take `⟨N, hN⟩` from `hall.exists`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨N, pow_ne_zero N h0, hN⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_small {π : K} (h0 : π ≠ 0) (h1 : ‖π‖ < 1) {ι : Type} (S : Finset ι) (z : ι → K) :
     ∃ N : ℕ, π ^ N ≠ 0 ∧ ∀ k ∈ S, ‖π ^ N * z k‖ < 1 := by
@@ -71,27 +71,25 @@ theorem exists_small {π : K} (h0 : π ≠ 0) (h1 : ‖π‖ < 1) {ι : Type} (S
   exact ⟨N, pow_ne_zero N h0, hN⟩
 
 /- English proof (translation)
-Establish `hloc : ∀ α : K, ‖α‖ ≤ 1 → ∀ ε : ℝ, 0 < ε → ∃ β : K, IsAlgebraic ℤ β ∧ ‖β - α‖ < ε`. Introduce `α hα ε hε`. Take `⟨m, hm⟩` from `hC α hα`. Establish `hε' : 0 < min ε 1` using `lt_min hε one_pos`. Establish `hfac : 0 < ‖(m.factorial : K)‖` using `norm_pos_iff.2 (Nat.cast_ne_zero.2 (Nat.factorial_ne_zero m))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨δ, hδ, hQ⟩` from `ModelDimension.Alg.exists_deriv α (min ε 1) hε' m _ hfac`. Take `⟨P, hPm, hPd, hPδ⟩` from `hm δ hδ`. Establish `hcoeff : P.coeff m = 1`. Rewrite using `[← hPd]`. Conclude with `hPm.coeff_natDegree`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hDP : derivative^[m] P = C ((m.factorial : ℕ) : ℤ)`. Establish `hdeg : (derivative^[m] P).natDegree ≤ 0`. Use `natDegree_iterate_derivative P m` as an intermediate fact. Rewrite `this` using `[hPd, Nat.sub_self]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[eq_C_of_natDegree_le_zero hdeg, coeff_iterate_derivative, zero_add, Nat.descFactorial_self, hcoeff]`. Simplify using the standard rewrite rules. Establish `hval : aeval α (derivative^[m] P) = (m.factorial : K)`. Rewrite using `[hDP]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Q, hQ'⟩` from `hQ P (le_of_eq (by rw [hval])) hPδ`. Establish `hpos : 0 < ‖aeval α (derivative Q)‖ ^ 2` using `(mul_pos_iff_of_pos_left hε').1 (lt_of_le_of_lt (norm_nonneg _) hQ')`. Establish `hev : ∀ y : K, (Q.map (algebraMap ℤ K)).eval y = aeval y Q` using `fun y => eval_map_algebraMap Q y`. Establish `hev' : (Q.map (algebraMap ℤ K)).derivative.eval α = aeval α (derivative Q)`. Rewrite using `[derivative_map, eval_map_algebraMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcoef : ∀ k, ‖(Q.map (algebraMap ℤ K)).coeff k‖ ≤ 1` using `fun k => by`. Rewrite using `[coeff_map]`. Simplify using `using hZ (Q.coeff k)`. Establish `hlt : ‖(Q.map (algebraMap ℤ K)).eval α‖ < ‖(Q.map (algebraMap ℤ K)).derivative.eval α‖ ^ 2`. Rewrite using `[hev, hev']`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `lt_of_lt_of_le hQ' (mul_le_of_le_one_left (sq_nonneg _) (min_le_right _ _))`. Take `⟨β, hβ, hβα⟩` from `hH _ α hcoef hα hlt`. Use `⟨β, ⟨Q, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Simplify using `at hQ'`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hev]`. Conclude with `hβ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Metric.dense_iff]`. Introduce `x r hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν : ((N : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 hN0`. Take `⟨M, hM0, hM⟩` from `ModelDimension.Alg.exists_small hν hN ({()} : Finset Unit) (fun _ => x)`. Establish `hMx : ‖(N : K) ^ M * x‖ < 1` using `hM () (Finset.mem_singleton_self _)`. Establish `htpos : 0 < ‖(N : K) ^ M‖` using `norm_pos_iff.2 hM0`. Take `⟨β, hβ, hβx⟩` from `hloc _ hMx.le (r * ‖(N : K) ^ M‖) (mul_pos hr htpos)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hNa : IsAlgebraic ℤ ((N : K) ^ M)` using `(isAlgebraic_natCast N).pow M`. Use `⟨β / (N : K) ^ M, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ball_iff_norm]`. Establish `h : β / (N : K) ^ M - x = (β - (N : K) ^ M * x) / (N : K) ^ M`. Rewrite using `[sub_div, mul_div_cancel_left₀ x hM0]`.
-
-Rewrite using `[h, norm_div, div_lt_iff₀ htpos]`. Conclude with `hβx`. Use `show IsAlgebraic ℤ (β / (N : K) ^ M)`. Rewrite using `[div_eq_mul_inv]`. Conclude with `hβ.mul hNa.inv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense_algebraic [CharZero K] (hH : HenselN K) (hZ : ∀ z : ℤ, ‖(z : K)‖ ≤ 1) (N : ℕ) (hN0 : N ≠ 0)
     (hN : ‖(N : K)‖ < 1)
@@ -165,45 +163,39 @@ theorem dense_algebraic [CharZero K] (hH : HenselN K) (hZ : ∀ z : ℤ, ‖(z :
     exact hβ.mul hNa.inv
 
 /- English proof (translation)
-Establish `hcont : ∀ (p : A[X]) (y : K), Continuous fun t => p.eval₂ (ev t) y`. Introduce `p y`. Establish `h : ∀ t, p.eval₂ (ev t) y = ∑ n ∈ p.support, ev t (p.coeff n) * y ^ n` using `fun t => by`. Rewrite using `[eval₂_eq_sum, Polynomial.sum]`. Conclude with `(continuous_finsetSum _ fun n _ => (hev _).mul continuous_const).congr fun t => (h t).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcoef : ∀ (q : K[X]) (k : ℕ), Continuous fun t => ((f.map (ev t)).comp q).coeff k`. Introduce `q k`. Establish `h : ∀ t, ((f.map (ev t)).comp q).coeff k = ∑ n ∈ f.support, ev t (f.coeff n) * (q ^ n).coeff k` using `fun t => by`. Rewrite using `[Polynomial.comp, eval₂_map, eval₂_eq_sum, Polynomial.sum, finset_sum_coeff]`. Simplify using `only [RingHom.coe_comp, RingHom.comp_apply, Function.comp_apply, coeff_C_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `(continuous_finsetSum _ fun n _ => (hev _).mul continuous_const).congr fun t => (h t).symm`. Take `⟨p, hp⟩ : ∃ p : T → K[X], ∀ t, p t = (f.map (ev t)).comp (C x₀ + X)` from `⟨_, fun _ => rfl⟩`. Establish `hpc : ∀ k, Continuous fun t => (p t).coeff k` using `fun k => (hcoef (C x₀ + X) k).congr fun t => by rw [hp]`. Establish `hpdeg : ∀ t, (p t).natDegree ≤ f.natDegree`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hp]`. Use `natDegree_comp_le.trans ?_` and prove the remaining obligations. Establish `hq : (C x₀ + X : K[X]).natDegree ≤ 1` using `(natDegree_add_le _ _).trans (max_le (by simp) natDegree_X_le)`. Combine the equalities or inequalities in the displayed calculation. Establish `hpeval : ∀ t y, (p t).eval y = f.eval₂ (ev t) (x₀ + y)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `t y`. Rewrite using `[hp, eval_comp, eval_map]`. Simplify using the standard rewrite rules. Establish `hpderiv : ∀ t, (derivative (p t)).eval 0 = f.derivative.eval₂ (ev t) x₀`. Introduce `t`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hp, derivative_comp, eval_mul, eval_comp, derivative_map, eval_map]`. Simplify using the standard rewrite rules. Establish `hb0 : (p t₀).coeff 0 = 0`. Rewrite using `[coeff_zero_eq_eval_zero, hpeval, add_zero, hf]`. Take `⟨N, hN0, hN⟩` from `ModelDimension.Alg.exists_small h0 h1 (Finset.range (f.natDegree + 1)) (fun k => (p t₀).coeff k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl1 : ‖π ^ N‖ ≤ 1`. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) h1.le`. Generalize the expression as in `π ^ N = l at hN0 hN hl1`. Establish `hat : ∀ k ∈ Finset.range (f.natDegree + 1), ‖l ^ k * (p t₀).coeff k‖ < 1`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Introduce `k hk`. Consider the cases of `k with`. Consider the case `zero => simp [hb0]`. Consider the case `succ j`. Rewrite using `[pow_succ, mul_assoc, norm_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `E1 : ∀ᶠ t in 𝓝 t₀, ∀ k ∈ Finset.range (f.natDegree + 1), ‖l ^ k * (p t).coeff k‖ < 1`. Use `(Filter.eventually_all_finset _).2 fun k hk => ?_` and prove the remaining obligations. Establish `hck : Continuous fun t => ‖l ^ k * (p t).coeff k‖` using `(continuous_const.mul (hpc k)).norm`. Conclude with `hck.continuousAt.eventually_lt continuousAt_const (hat k hk)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : Continuous fun t => ‖f.eval₂ (ev t) x₀‖` using `(hcont f x₀).norm`. Establish `hw : Continuous fun t => ‖l * f.derivative.eval₂ (ev t) x₀‖ ^ 2` using `((continuous_const.mul (hcont _ x₀)).norm).pow 2`. Establish `hw0 : 0 < ‖l * f.derivative.eval₂ (ev t₀) x₀‖ ^ 2` using `pow_pos (norm_pos_iff.2 (mul_ne_zero hN0 hf')) 2`. Establish `E2 : ∀ᶠ t in 𝓝 t₀, ‖f.eval₂ (ev t) x₀‖ < ‖l * f.derivative.eval₂ (ev t) x₀‖ ^ 2`. Use `hu.continuousAt.eventually_lt hw.continuousAt ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ‖f.eval₂ (ev t₀) x₀‖ < ‖l * f.derivative.eval₂ (ev t₀) x₀‖ ^ 2`. Rewrite using `[hf, norm_zero]`. Conclude with `hw0`. Establish `hu' : Continuous fun t => ‖f.eval₂ (ev t) x₀‖ * ‖l‖` using `hu.mul continuous_const`. Establish `hw' : Continuous fun t => r * ‖l * f.derivative.eval₂ (ev t) x₀‖ ^ 2` using `continuous_const.mul hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `E3 : ∀ᶠ t in 𝓝 t₀, ‖f.eval₂ (ev t) x₀‖ * ‖l‖ < r * ‖l * f.derivative.eval₂ (ev t) x₀‖ ^ 2`. Use `hu'.continuousAt.eventually_lt hw'.continuousAt ?_` and prove the remaining obligations. Use `show ‖f.eval₂ (ev t₀) x₀‖ * ‖l‖ < r * ‖l * f.derivative.eval₂ (ev t₀) x₀‖ ^ 2`. Rewrite using `[hf, norm_zero, zero_mul]`. Conclude with `mul_pos hr hw0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [E1, E2, E3] with t hE1 hE2 hE3`. Take `⟨G, hG⟩ : ∃ G : K[X], G = (p t).comp (C l * X)` from `⟨_, rfl⟩`. Establish `hGc : ∀ k, ‖G.coeff k‖ ≤ 1`. Introduce `k`. Rewrite using `[hG, comp_C_mul_X_coeff, mul_comm]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hk : k ∈ Finset.range (f.natDegree + 1)`. Conclude with `(hE1 k hk).le`. Rewrite using `[coeff_eq_zero_of_natDegree_lt, mul_zero, norm_zero]`. Conclude with `zero_le_one`. Use `hpdeg t` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Finset.mem_range, not_lt] at hk`. Use linear arithmetic over natural numbers and integers. Establish `hG0 : G.eval 0 = f.eval₂ (ev t) x₀`. Rewrite using `[hG, eval_comp, hpeval]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hG1 : (derivative G).eval 0 = l * f.derivative.eval₂ (ev t) x₀`. Rewrite using `[hG, derivative_comp, eval_mul, eval_comp, derivative_C_mul_X, eval_C]`. Simplify using `[hpderiv]`. Establish `hlt : ‖G.eval 0‖ < ‖(derivative G).eval 0‖ ^ 2`. Rewrite using `[hG0, hG1]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Conclude with `hE2`. Take `⟨y, hy, hyb⟩` from `hH G 0 hGc (by simp) hlt`. Use `⟨x₀ + l * y, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hyb` using `[hG0, hG1, sub_zero]`. Establish `hwpos : 0 < ‖l * f.derivative.eval₂ (ev t) x₀‖ ^ 2` using `lt_of_le_of_lt (norm_nonneg _) hE2`.
-
-Rewrite `hyb` using `[le_div_iff₀ hwpos]`. Rewrite using `[add_sub_cancel_left, norm_mul]`. Assume the negation of the conclusion as `hge`. Use `push_neg at hge`. Establish `h1'` using `mul_le_mul_of_nonneg_right hge hwpos.le`.
-
-Establish `h2'` using `mul_le_mul_of_nonneg_left hyb (norm_nonneg l)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hGy : G.eval y = (p t).eval (l * y)`. Rewrite using `[hG, eval_comp]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[← hpeval t (l * y), ← hGy]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_root (hH : HenselN K) {π : K} (h0 : π ≠ 0) (h1 : ‖π‖ < 1) {T A : Type} [TopologicalSpace T]
     [CommRing A] (ev : T → (A →+* K)) (hev : ∀ r, Continuous fun t => ev t r) (f : A[X]) (t₀ : T) (x₀ : K)
@@ -326,9 +318,9 @@ theorem eventually_root (hH : HenselN K) {π : K} (h0 : π ≠ 0) (h1 : ‖π‖
     exact hy
 
 /- English proof (translation)
-Use `letI : NontriviallyNormedField K := NontriviallyNormedField.ofNormNeOne ⟨π, h0, h1.ne⟩`. Introduce `hfin`. Establish `hU : IsOpen (Metric.ball x r \ (D ∩ Metric.ball x r))` using `Metric.isOpen_ball.sdiff hfin.isClosed`. Establish `hne : (Metric.ball x r \ (D ∩ Metric.ball x r)).Nonempty` using `((infinite_of_mem_nhds x (Metric.ball_mem_nhds x hr)).diff hfin).nonempty`. Take `⟨y, hyU, hyD⟩` from `hD.inter_open_nonempty _ hU hne`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hyU.2 ⟨hyD, hyU.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem infinite_inter {π : K} (h0 : π ≠ 0) (h1 : ‖π‖ < 1) {D : Set K} (hD : Dense D) (x : K) (r : ℝ)
     (hr : 0 < r) : (D ∩ Metric.ball x r).Infinite := by

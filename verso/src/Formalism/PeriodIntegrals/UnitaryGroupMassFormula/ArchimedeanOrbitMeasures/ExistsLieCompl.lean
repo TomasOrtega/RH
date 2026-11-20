@@ -48,16 +48,16 @@ def entL (V : Type) [Fintype V] (n : ℕ) :
     ((EuclideanSpace.equiv (V × Fin n × Fin n) ℂ).toLinearEquiv.restrictScalars ℝ).symm
 
 /- English proof (translation)
-Apply the tactic sequence `simp [entL] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem entL_apply (M : V → Matrix (Fin n) (Fin n) ℂ) (p : V × Fin n × Fin n) :
     (EuclideanSpace.equiv (V × Fin n × Fin n) ℂ) (entL V n M) p = M p.1 p.2.1 p.2.2 := by
   simp [entL] <;> rfl
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `entL_apply M (v, i, j)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [EuclideanSpace.equiv] at this`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_entL_sq (M : V → Matrix (Fin n) (Fin n) ℂ) :
     ‖entL V n M‖ ^ 2 = ∑ v, ∑ i, ∑ j, ‖M v i j‖ ^ 2 := by
@@ -71,15 +71,13 @@ theorem norm_entL_sq (M : V → Matrix (Fin n) (Fin n) ℂ) :
   rfl
 
 /- English proof (translation)
-Use `set K' : Submodule ℝ (EuclideanSpace ℂ (V × Fin n × Fin n)) := (lieK ε S).map (entL V n).toLinearMap with hK'`. Set `b` to `stdOrthonormalBasis ℝ K'`. Set `L : EuclideanSpace ℝ (Fin (Module.finrank ℝ K')) →ₗ[ℝ] (V → Matrix (Fin n) (Fin n) ℂ)` to `(entL V n).symm.toLinearMap ∘ₗ K'.subtype ∘ₗ b.repr.symm.toLinearEquiv.toLinearMap`. Establish `hLe : ∀ x, entL V n (L x) = (b.repr.symm x : EuclideanSpace ℂ (V × Fin n × Fin n))`. Introduce `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[L]`. Establish `hLK : ∀ x, L x ∈ lieK ε S`. Introduce `x`. Take `⟨M, hM, hMe⟩` from `(b.repr.symm x).2`. Establish `: L x = M`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(entL V n).injective` to reduce the goal to its premises. Rewrite using `[hLe]`. Conclude with `hMe.symm`. Rewrite using `[this]`. Conclude with `hM`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨Fin (Module.finrank ℝ K'), inferInstance, L, fun x v => hLK x v, fun x => ?_, fun M hM => ?_⟩` and prove the remaining obligations. Rewrite using `[← norm_entL_sq, hLe]`. Conclude with `congrArg (· ^ 2) (b.repr.symm.norm_map x)`. Establish `hM' : entL V n M ∈ K'` using `⟨M, hM, rfl⟩`. Use `⟨b.repr ⟨entL V n M, hM'⟩, ?_⟩` and prove the remaining obligations.
-
-Apply `(entL V n).injective` to reduce the goal to its premises. Rewrite using `[hLe, LinearIsometryEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lieCompl (ε : V → Fin n → Bool) (S : V → Finset (Fin n)) :
     ∃ (ι : Type) (_ : Fintype ι) (L : EuclideanSpace ℝ ι →ₗ[ℝ] (V → Matrix (Fin n) (Fin n) ℂ)),
@@ -117,7 +115,7 @@ def StdConjEx : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (
     ∃ (c : X.B.I.Ginf) (S : NumberField.InfinitePlace X.B.I.F → Finset (Fin X.B.I.n)), StdConj X hb u' c S
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP hb`. Take `⟨c, S, hc⟩` from `h X u' ψ hT μinf νinf fibInf hP hb`. Take `⟨ι, hι, L, h1, h2, h3⟩` from `exists_lieCompl X.B.I.ε S`. Conclude with `⟨c, S, ι, hι, L, hc, ⟨h1, h2, h3⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stdDataEx_of (h : StdConjEx) : StdDataEx := by
   intro D X u' ψ hT μinf νinf fibInf hP hb

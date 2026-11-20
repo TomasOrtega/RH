@@ -18,7 +18,7 @@ Evaluate the numerical expressions.
 example : (1 : ℕ) ≤ 2 := by norm_num
 
 /- English proof (translation)
-Establish `h` using `Jint_line 1`. Unfold `Jint fib at h`. Rewrite `h` using `[map_one, one_mul]`. Rewrite using `[h, ← fdeg, fdeg_line, dimN_line]`. Simplify using `[grassProdDeg, grassDeg]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : flagInt Unit 2 (muPoly Unit 2 1 ^ dimN Unit 2 1 * vandBlocks Unit 2 1) =
     (-1) ^ dimN Unit 2 1 * grassProdDeg (Fintype.card Unit) 1 (2 - 1) * blockInt Unit 2 1 (vandBlocks Unit 2 1) := by

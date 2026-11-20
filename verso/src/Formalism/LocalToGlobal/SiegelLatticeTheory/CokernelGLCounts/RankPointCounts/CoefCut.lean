@@ -50,7 +50,7 @@ variable {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP 
   {δ : ∀ p : PlF D, (D.s.atP p).Fp}
 
 /- English proof (translation)
-Unfold `repL`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repL_spec' {T T' : ℕ} {p : PlF D} {w : Point D.host.E (D.R.rS + 1)} {O : Set (MatP D p)}
     (h : IsLCls M δ T T' p w O) :
@@ -58,16 +58,16 @@ theorem repL_spec' {T T' : ℕ} {p : PlF D} {w : Point D.host.E (D.R.rS + 1)} {O
   unfold repL; rw [dif_pos h]; exact h.choose_spec
 
 /- English proof (translation)
-Unfold `wtL`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wtL_congr {T T' : ℕ} {p : PlF D} {w : Point D.host.E (D.R.rS + 1)} {Y Y' : MatP D p}
     (h : kkOrb M p Y = kkOrb M p Y') : wtL M δ T T' p w Y = wtL M δ T T' p w Y' := by
   unfold wtL; rw [h]
 
 /- English proof (translation)
-Establish `hcls : IsLCls M δ T T' p w (kkOrb M p Y)` using `⟨Y, hY, hO, rfl⟩`. Take `⟨-, hrO, hrE⟩` from `repL_spec' hcls`. Unfold `hL`. Rewrite using `[if_pos hcls]`. Generalize the expression as in `repL M δ T T' p w (kkOrb M p Y) = R at hrO hrE ⊢`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `hmem : R ∈ kkOrb M p Y`. Rewrite using `[hrE]`. Conclude with `PCount.mem_kkOrb_self p R`. Rewrite using `[hPC T T' p w Y R hOK hY hO hrO hmem, wtL_congr hrE.symm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hL_at {T T' : ℕ} {p : PlF D} {w : Point D.host.E (D.R.rS + 1)} {Y : MatP D p}
     (hPC : PhCls M δ) (hOK : (M p).OK) (hY : IntP M p Y) (hO : InOrbP δ T T' p w Y) :
@@ -85,11 +85,9 @@ variable {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Introduce `γ w hγ`. Take `⟨hPf, hPe⟩` from `hP γ w hγ`. Take `⟨hVf, hVe⟩` from `hV γ w hγ`. Establish `hfac : ∀ p, hL M δ (D.mem u).A.T (D.mem u').A.T p w (locT M δ γ p) = phL M δ (D.mem u).A.T (D.mem u').A.T p w (yT M δ u u' F0 what₂ γ p) * (wtL M δ (D.mem u).A.T (D.mem u').A.T p w (yT M δ u u' F0 what₂ γ p) : ℂ)`. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hyI, hyObP⟩` from `hC γ w hγ p`. Use `show hL M δ (D.mem u).A.T (D.mem u').A.T p w (kkOrb M p (yT M δ u u' F0 what₂ γ p)) = _`. Conclude with `hL_at hPC (hA p).1 hyI hyObP`. Unfold `PairVal.cAt`. Rewrite using `[hPe, hVe, finprod_congr hfac, finprod_mul_distrib hPf hVf]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coefProd_of (hA : ∀ p, Agree δ M p) (hC : LocClsE M δ u u' F0 what₂) (hPC : PhCls M δ) (hP : PhaseProd M δ u u' F0 what₂)
     (hV : VolProd M δ u u' F0 what₂) : CoefProd M δ u u' F0 what₂ := by

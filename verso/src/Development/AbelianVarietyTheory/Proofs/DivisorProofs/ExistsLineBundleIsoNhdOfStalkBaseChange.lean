@@ -15,7 +15,7 @@ namespace GlobalTheory.StalkLBIso
 set_option backward.isDefEq.respectTransparency false
 
 /- English proof (translation)
-Rewrite using `[← CechPic.cls_pull hA f (pull_isLB hA f), ← CechPic.cls_pull hB f (pull_isLB hB f)]`. Conclude with `(CechPic.cls_eq_iff _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_pull_iff {X Y : Scheme.{0}} {A B : LB X} (hA : A.IsLB) (hB : B.IsLB) (f : Y ⟶ X) :
     LBIso (A.pull f) (B.pull f) ↔
@@ -24,13 +24,11 @@ theorem lbIso_pull_iff {X Y : Scheme.{0}} {A B : LB X} (hA : A.IsLB) (hB : B.IsL
   exact (CechPic.cls_eq_iff _ _).symm
 
 /- English proof (translation)
-Introduce `S X _ h _ _ x A B hA hB hAB`. Establish `hpb : IsPullback (pullback.fst h (S.fromSpecStalk x)) (pullback.snd h (S.fromSpecStalk x)) h (S.fromSpecStalk x)` using `IsPullback.of_hasPullback _ _`. Establish `hc` using `(GlobalTheory.StalkLimit.nonempty_isLimit hpb).some`. Take `⟨V₀⟩ : Nonempty (GlobalTheory.StalkLimit.AffNhd x)` from `IsCofiltered.nonempty`. Establish `: IsAffine V₀.1.toScheme` using `V₀.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: CompactSpace ((GlobalTheory.StalkLimit.diagram x h).obj V₀)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd h V₀.1.ι)`. Establish `: QuasiSeparatedSpace ((GlobalTheory.StalkLimit.diagram x h).obj V₀)` using `quasiSeparatedSpace_of_quasiSeparated (pullback.snd h V₀.1.ι)`. Establish `h0 : LBIso ((A.pull (pullback.fst h V₀.1.ι)).pull ((GlobalTheory.StalkLimit.cone hpb).π.app V₀)) ((B.pull (pullback.fst h V₀.1.ι)).pull ((GlobalTheory.StalkLimit.cone hpb).π.app V₀))`. Rewrite using `[lbIso_pull_iff (pull_isLB hA _) (pull_isLB hB _), CechPic.cls_pull hA, CechPic.cls_pull hB, ← CechPic.pull_comp, ← CechPic.pull_comp, GlobalTheory.StalkLimit.cone_π_fst, ← lbIso_pull_iff hA hB]`. Conclude with `hAB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j, f, hj⟩` from `GlobalTheory.exists_lbIso_of_isLimit (GlobalTheory.StalkLimit.diagram x h) (fun V => (GlobalTheory.StalkLimit.cone hpb).π.app V) (fun f => (GlobalTheory.StalkLimit.cone hpb).w f) hc (A.pull (pullback.fst h V₀.1.ι)) (B.pull (pullback.fst h V₀.1.ι)) (pull_isLB hA _) (pull_isLB hB _ …`. Establish `hj' : CechPic.pull (pullback.fst h j.1.ι) (CechPic.cls A hA) = CechPic.pull (pullback.fst h j.1.ι) (CechPic.cls B hB)`. Rewrite `hj` using `[lbIso_pull_iff (pull_isLB hA _) (pull_isLB hB _), CechPic.cls_pull hA, CechPic.cls_pull hB, ← CechPic.pull_comp, ← CechPic.pull_comp, GlobalTheory.StalkLimit.diagram_map_fst]`. Conclude with `hj`. Use `⟨j.1, j.2.1, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[lbIso_pull_iff hA hB, ← pullbackRestrictIsoRestrict_inv_fst, CechPic.pull_comp, CechPic.pull_comp, hj']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lbIso_nhd : ∀ {S X : Scheme.{0}} [IsLocallyNoetherian S] (h : X ⟶ S) [QuasiCompact h]
     [QuasiSeparated h] (x : S) (A B : LB X), A.IsLB → B.IsLB →

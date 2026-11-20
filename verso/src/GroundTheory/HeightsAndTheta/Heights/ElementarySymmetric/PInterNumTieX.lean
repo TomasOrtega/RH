@@ -16,31 +16,31 @@ noncomputable section
 universe u w
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x e pp b hsub`. Take `⟨j, hjp⟩` from `hsub.relevant`. Establish `hj : x j ≠ 0` using `fun h0 => hjp (hsub.le ((mem_primeOf_of_isHomogeneous x (isHomogeneous_X k j)).mpr (by rw [aeval_X]; exact h0)))`. Take `⟨hcp, hpt⟩` from `PrimeFiltration.Point.full k Ω N x pp hsub.isPrime hsub.homog hsub.le j hj hjp`. Use `hcp` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `A` to `chartRing k x (singleChart hj)`. Set `Ip : Ideal A` to `chartPrime pp hj`. Set `ψ : A →ₐ[k] Ip.ResidueField` to `IsScalarTower.toAlgHom k A Ip.ResidueField`. Establish `hker : RingHom.ker ψ = Ip` using `Ideal.ker_algebraMap_residueField Ip`. Set `y : Fin (N + 1) → Ip.ResidueField` to `fun i => ψ (ratio hj i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hxy : ∀ i, y i ≠ 0 → x i ≠ 0`. Introduce `i h hx`. Apply `h` to reduce the goal to its premises. Establish `h0 : ratio (S` using `k) hj i = 0 := Subtype.ext (by change x i / x j = 0; rw [hx, zero_div])`. Express the relevant statement in the definitionally equal form `ψ (ratio hj i) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h0, map_zero]`. Establish `hpy : primeOf (S` using `k) y = pp := hpt _ ψ hker`. Establish `hxy' : primeOf (S` using `k) x ≤ primeOf (S := k) y := hpy ▸ hsub.le`. Establish `hsubW : IsSubvar y pp e` using `⟨hsub.isPrime, hsub.homog, le_of_eq hpy, hsub.relevant, hsub.dim⟩`. Establish `hyj : y j ≠ 0` using `fun h0 => hjp (hpy ▸ (mem_primeOf_of_isHomogeneous y (isHomogeneous_X k j)).mpr (by rw [aeval_X]; exact h0))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0 : y ≠ 0` using `fun h => hyj (congrFun h j)`. Use `set I := pp.comap (oneBlock (S := k) (N := N)) with hI_def`. Establish `hI : I = primeOfOne (S` using `k) y := by rw [primeOfOne, hpy]`. Establish `hIp : NumbersDVR.IsMultiProjPrime I` using `hI ▸ isMultiProjPrime_primeOfOne y hy0`. Establish `hIdim : FieldNumbers.relDim I = ((e : ℕ) : WithBot (WithTop ℤ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FieldNumbers.CutRegular.relDim_eq_natCast_iff, hI, HilbertPositive.ringKrullDim_primeOfOne, hpy, hsub.dim]`. Simplify using the standard rewrite rules. Set `H : ℤ → ℤ` to `fun m => NumbersDVR.hilbFn I (fun _ : Unit => m)`. Set `R : ℤ → ℤ` to `fun m => restrLen pp (twistSys k x m)`. Establish `hY : ∀ᶠ n : ℕ in atTop, restrLen pp (twistSys k y (n : ℤ)) = H n` using `by filter_upwards [TwistSections.full k _ N y hy0] with n hn`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hpy, SectionsOverLocalization.restrLen_primeOf_eq_finrank y hyj, hn, HilbertPositive.finrank_piece_eq_hilbFn, ← hI]`. Take `⟨r₀, hr₀⟩` from `RestrictTwist.full.1 k Ω N x _ y hxy hxy' 0`. Establish `hXY` using `hRL k Ω N x _ y hxy hxy' pp e hsubW (twistBundle k x 0) (twistBundle k y 0) r₀ hr₀`. Establish `hRH : ∀ᶠ n : ℕ in atTop, R n = H n` using `by filter_upwards [hY, hXY] with n h1 h2`. Establish `e1 : (twistBundle k y 0).toSubSystem = twistSys k y 0` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (twistBundle k x 0).toSubSystem = twistSys k x 0` using `rfl`. Rewrite `h2` using `[e1, e2, twistSys_zero_twist, twistSys_zero_twist]`. Rewrite using `[← h1, h2]`. Take `⟨n₀, hn₀⟩` from `eventually_atTop.mp hRH`. Establish `hRH' : ∀ m : ℤ, (n₀ : ℤ) ≤ m → R m = H m`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Establish `h` using `hn₀ m.toNat (by omega)`. Rewrite `h` using `[Int.toNat_of_nonneg (by omega)]`. Then use the resulting hypothesis. Set `bs : Fin e → Unit → ℤ` to `fun i _ => b i`. Establish `hMD` using `(FieldNumbers.MixedDiffConst.full k Unit (fun _ => Fin (N + 1)) I hIp.multiHomog hIp.relevant e hIdim).1 bs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m₀, hm₀⟩` from `eventually_atTop.mp hMD`. Use `set B : ℤ := ∑ i, b i with hB`. Establish `hev : ∀ᶠ c : ℕ in atTop, interSum pp (fun i => twistSys k x (b i)) c = NumbersDVR.intNum k I bs` using `by filter_upwards [eventually_ge_atTop (m₀ () - B).toNat, eventually_all.mpr fun T : Finset (Fin e) => eventually_ge_atTop ((n₀ : ℤ) - ∑ i ∈ T, b i).toNat] with c hc1 hc2`. Rewrite using `[SectionsOverLocalization.interSum_twistSys, ← hm₀ (fun _ => (c : ℤ) + B) (fun u => by cases u; change m₀ () ≤ (c : ℤ) + B; omega), SectionsOverLocalization.mixedDiff_eq_sum]`. Use `Fintype.sum_bijective compl compl_involutive.bijective _ _ fun T => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsum : (∑ i ∈ Tᶜ, bs i) = fun _ : Unit => ∑ i ∈ Tᶜ, b i`. Use function extensionality and compare the values at `u`. Rewrite using `[Finset.sum_apply]`. Establish `hc : (n₀ : ℤ) ≤ ∑ i ∈ T, b i + c` using `by have := hc2 T; omega`. Establish `hsplit` using `Finset.sum_add_sum_compl T b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Tᶜ.card = e - T.card` using `by rw [Finset.card_compl, Fintype.card_fin]`. Rewrite using `[show restrLen pp (twistSys k x (∑ i ∈ T, b i + c)) = H (∑ i ∈ T, b i + c) from hRH' _ hc, hsum, hcard]`. Express the relevant statement in the definitionally equal form `(-1) ^ (e - T.card) * H (∑ i ∈ T, b i + c) = (-1) ^ (e - T.card) * NumbersDVR.hilbFn I ((fun _ : Unit => (c : ℤ) + B) - fun _ => ∑ i ∈ Tᶜ, b i)`. Establish `hfun : ((fun _ : Unit => (c : ℤ) + B) - fun _ => ∑ i ∈ Tᶜ, b i) = fun _ : Unit => ∑ i ∈ T, b i + c`. Use function extensionality and compare the values at `u`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Pi.sub_apply]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hfun]`. Unfold `interNum`. Conclude with `(tendsto_const_nhds.congr' (hev.mono fun c h => h.symm)).limUnder_eq`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem InterNumTie.proof (hRL : RestrLenRestrict.Statement.{u, w}) : InterNumTie.Statement.{u, w} := by
   intro k _ Ω _ _ N x e pp b hsub
@@ -123,7 +123,7 @@ theorem InterNumTie.proof (hRL : RestrLenRestrict.Statement.{u, w}) : InterNumTi
   exact (tendsto_const_nhds.congr' (hev.mono fun c h => h.symm)).limUnder_eq
 
 /- English proof (translation)
-The claim follows from `InterNumTie.proof (RestrLenRestrict.proof (SurjectiveClosed.proof Extension.full.{u, w, w} IdealTwistFamily.proof (TildeVanish.proof SerreVanish.full.{u, w})) hRQ)`.
+A detailed English derivation is pending.
 -/
 theorem InterNumTie.of_restrictQuot (hRQ : PrimeFiltration.RestrictQuot.Statement.{u, w}) :
     InterNumTie.Statement.{u, w} :=

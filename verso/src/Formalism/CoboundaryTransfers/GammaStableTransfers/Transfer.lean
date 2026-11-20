@@ -39,11 +39,9 @@ def sesToLIFT {D₀ D₁ D₂ : Type}
 end Maps
 
 /- English proof (translation)
-Introduce `ℓ _ A _ _ B M u hp hφ hγX hγQ D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ S e s J hs h2 hv hJ h1 h2' h3 h4 hCK hRS`. Establish `hCK' : LIFT.CokerKilled (sesToLIFT S u hφ hγX hγQ) e`. Introduce `n hn`. Use `hCK n hn` as an intermediate fact. Rewrite `this` using `[hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hRS' : LIFT.RatSurj (sesToLIFT S u hφ hγX hγQ)`. Introduce `y z hyz`. Use `hRS y z hyz` as an intermediate fact. Rewrite `this` using `[hp]`.
-
-Conclude with `this`. Conclude with `LIFT.lift_LemmaU ℓ A (toLIFT B u hφ hγX hγQ) M D₀ D₁ D₂ (W₀.toLIFT u hφ hγX hγQ) (W₁.toLIFT u hφ hγX hγQ) (W₂.toLIFT u hφ hγX hγQ) (sesToLIFT S u hφ hγX hγQ) e s J hs h2 hv hJ h1 h2' h3 h4 hCK' hRS'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wachLatticeUnramified_statement : LemmaUU := by
   intro ℓ _ A _ _ B M u hp hφ hγX hγQ D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ S e s J hs h2 hv

@@ -13,7 +13,7 @@ variable {I J : Type} [Fintype I] [DecidableEq I] [Fintype J] [DecidableEq J]
 
 omit [Fintype I] [DecidableEq I] [Fintype J] in
 /- English proof (translation)
-Introduce and unpack `⟨w, i⟩`. Simplify using `[Function.update_idem, Function.update_self, Function.update_eq_self]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem updInv (s : J) : Function.Involutive
     (fun x : (J → I) × I => (Function.update x.1 s x.2, x.1 s)) := by
@@ -21,7 +21,7 @@ theorem updInv (s : J) : Function.Involutive
   simp [Function.update_idem, Function.update_self, Function.update_eq_self]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_upd {β : Type} [AddCommMonoid β] (s : J) (g : (J → I) → I → β) :
     ∑ w, ∑ j, g w j = ∑ w, ∑ j, g (Function.update w s j) (w s) := by
@@ -40,9 +40,9 @@ def positionA (m : Matrix I I ℂ) (Θ : (J → I) → V) : (J → I) → V :=
 def formT (Θ Θ' : (J → I) → V) : ℂ := ∑ w, ⟪Θ w, Θ' w⟫_ℂ
 
 /- English proof (translation)
-Unfold `PositivityTheory.KReal.formT PositivityTheory.KReal.positionA`. Simplify using `only [sum_inner, inner_sum, inner_smul_left, inner_smul_right, Matrix.conjTranspose_apply, starRingEnd_apply, star_star]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `conv_rhs => rw [PositivityTheory.KReal.sum_upd s]`. Simplify using `only [Function.update_self, Function.update_idem, Function.update_eq_self]`.
+A detailed English derivation is pending.
 -/
 theorem formT_positionA (m : Matrix I I ℂ) (Θ Θ' : (J → I) → V) :
     formT (positionA mᴴ Θ) Θ' = formT Θ (positionA m Θ') := by
@@ -56,7 +56,7 @@ theorem formT_positionA (m : Matrix I I ℂ) (Θ Θ' : (J → I) → V) :
   simp only [Function.update_self, Function.update_idem, Function.update_eq_self]
 
 /- English proof (translation)
-Unfold `PositivityTheory.KReal.formT`. Rewrite using `[Complex.re_sum]`. Conclude with `Finset.sum_nonneg fun w _ => by`. Establish `h` using `inner_self_nonneg (𝕜 := ℂ) (x := a w)`. Rewrite `h` using `[RCLike.re_to_complex]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem formT_self_nonneg (a : (J → I) → V) : 0 ≤ (formT a a).re := by
   unfold PositivityTheory.KReal.formT
@@ -68,41 +68,39 @@ theorem formT_self_nonneg (a : (J → I) → V) : 0 ≤ (formT a a).re := by
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Establish `hc : ∀ k u x, e k (W u x) = W u (e k x) + ∑ i, ∑ j, c k j (u i) • W (Function.update u i j) x`. Introduce `k u x`. Establish `h` using `LinearMap.congr_fun (hW k u) x`. Simplify `h` using `only [Module.End.mul_apply, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply]`. Establish `hk : ∀ k u x, e k (e (σ k) (W u x)) = W u (e k (e (σ k) x)) + (∑ i, ∑ j, c k j (u i) • W (Function.update u i j) (e (σ k) x) + ∑ i, ∑ j, c (σ k) j (u i) • (W (Function.update u i j) (e k x) + ∑ i', ∑ j', c k j' (Function.update u i j i') • W (Function.update (Function.update u i …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `k u x`. Simplify using `only [hc, map_add, map_sum, map_smul, add_assoc]`. Establish `hΨ' : ∀ u v, φ (W u (ι v)) = ⟪Ψ u, v⟫_ℂ` using `fun u v => (hΨ u v).symm`. Establish `hΨe : ∀ k u v, φ (W u (e k (ι v))) = ⟪Ψ u, ρ k v⟫_ℂ`. Introduce `k u v`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hι, hΨ]`. Establish `hcas : ∀ v, ∑ k, e k (e (σ k) (ι v)) = (c0 : ℂ) • ι v`. Introduce `v`. Establish `h` using `congrArg ι (LinearMap.congr_fun hc0 v)`. Simplify `h` using `only [LinearMap.sum_apply, Module.End.mul_apply, map_sum, hι, LinearMap.smul_apply, Module.End.one_apply, map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hA : ∀ u v, ∑ k, φ (W u (e k (e (σ k) (ι v)))) = (c0 : ℂ) * ⟪Ψ u, v⟫_ℂ`. Introduce `u v`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sum]`. Use `_ = (c0 : ℂ) * ⟪Ψ u, v⟫_ℂ := by rw [hcas, map_smul, map_smul, hΨ', smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hF : ∀ w, ∑ k, (⟪PositivityTheory.KReal.positionA (c (σ k)) Ψ w, ρ (σ k) (Ψ w)⟫_ℂ + ⟪PositivityTheory.KReal.positionA (c k) Ψ w, ρ k (Ψ w)⟫_ℂ + ⟪PositivityTheory.KReal.positionA (c k) (PositivityTheory.KReal.positionA (c (σ k)) Ψ) w, Ψ w⟫_ℂ) = 0`. Introduce `w`. Establish `h` using `hφ w (Ψ w)`. Establish `h'` using `hA w (Ψ w)`. Simplify using `only [map_sub, LinearMap.sum_apply, map_sum, Module.End.mul_apply, hk, map_add, map_smul, smul_eq_mul, hΨ', hΨe, h3, Matrix.conjTranspose_apply, starRingEnd_apply, star_star, Finset.mul_sum, mul_add, Finset.sum_add_distrib] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [PositivityTheory.KReal.positionA, sum_inner, inner_smul_left, h3, Matrix.conjTranspose_apply, starRingEnd_apply, star_star, Finset.mul_sum, mul_add, Finset.sum_add_distrib]`. Take the linear combination `h - h'`. Establish `hsum : ∑ k, PositivityTheory.KReal.formT (PositivityTheory.KReal.positionA (c (σ k)) Ψ) (fun w => ρ (σ k) (Ψ w)) + ∑ k, PositivityTheory.KReal.formT (PositivityTheory.KReal.positionA (c k) Ψ) (fun w => ρ k (Ψ w)) + ∑ k, PositivityTheory.KReal.formT (PositivityTheory.KReal.positio …`. Establish `h` using `Finset.sum_eq_zero (s := Finset.univ) (fun w _ => hF w)`. Rewrite `h` using `[Finset.sum_comm]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `only [PositivityTheory.KReal.formT, Finset.sum_add_distrib]`. Establish `hT1 : ∑ k, PositivityTheory.KReal.formT (PositivityTheory.KReal.positionA (c (σ k)) Ψ) (fun w => ρ (σ k) (Ψ w)) = ∑ k, PositivityTheory.KReal.formT (PositivityTheory.KReal.positionA (c k) Ψ) (fun w => ρ k (Ψ w))` using `Fintype.sum_equiv (Function.Involutive.toPerm σ hσ) _ _ (fun _ => rfl)`. Establish `hck : ∀ k, c k = (c (σ k))ᴴ` using `fun k => by rw [← h3 (σ k), hσ k]`. Establish `hT3 : 0 ≤ (∑ k, PositivityTheory.KReal.formT (PositivityTheory.KReal.positionA (c k) (PositivityTheory.KReal.positionA (c (σ k)) Ψ)) Ψ).re`. Rewrite using `[Complex.re_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_nonneg fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hck k, PositivityTheory.KReal.formT_positionA]`. Conclude with `PositivityTheory.KReal.formT_self_nonneg _`. Establish `hre2 : (∑ k, PositivityTheory.KReal.formT (PositivityTheory.KReal.positionA (c k) Ψ) (fun w => ρ k (Ψ w))).re ≤ 0`. Establish `h` using `congrArg Complex.re hsum`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h` using `[hT1, Complex.add_re, Complex.add_re, Complex.zero_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨q, hq⟩ : ∃ q : J → (J → I) → ℂ, ∀ s w, q s w = ∑ k, ∑ i, ∑ j, ⟪Ψ (Function.update w s i), c k i j • ρ (σ k) (Ψ (Function.update w s j))⟫_ℂ` from `⟨_, fun _ _ => rfl⟩`. Take `⟨H, hH⟩ : ∃ H : J → (J → I) → ℂ, ∀ s w, H s w = ∑ k, ∑ j, ⟪Ψ w, c k (w s) j • ρ (σ k) (Ψ (Function.update w s j))⟫_ℂ` from `⟨_, fun _ _ => rfl⟩`. Establish `hpos' : ∀ s w, 0 ≤ (q s w).re ∧ ((q s w).re = 0 → (fun i => Ψ (Function.update w s i)) = 0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `s w`. Rewrite using `[hq]`. Conclude with `hpos s w`. Establish `hqH : ∀ s w, q s w = ∑ i, H s (Function.update w s i)`. Introduce `s w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hq, hH, Function.update_self, Function.update_idem]`. Conclude with `Finset.sum_comm`. Establish `hsumH : ∀ s, ∑ w, q s w = (Fintype.card I : ℂ) * ∑ w, H s w`. Introduce `s`. Establish `h` using `PositivityTheory.KReal.sum_upd s (fun w i => H s (Function.update w s i))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.update_idem, Function.update_eq_self] at h`. Simplify using `only [hqH, h, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Finset.mul_sum]`. Establish `hHc : ∀ s w, H s w = starRingEnd ℂ (∑ k, ∑ j, starRingEnd ℂ (c k (w s) j) * ⟪Ψ (Function.update w s j), ρ k (Ψ w)⟫_ℂ)`. Introduce `s w`. Rewrite using `[hH]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_mul, Complex.conj_conj, inner_conj_symm, inner_smul_right, ← hadj]`. Establish `hT2 : ∑ k, PositivityTheory.KReal.formT (PositivityTheory.KReal.positionA (c k) Ψ) (fun w => ρ k (Ψ w)) = ∑ w, ∑ s, ∑ k, ∑ j, starRingEnd ℂ (c k (w s) j) * ⟪Ψ (Function.update w s j), ρ k (Ψ w)⟫_ℂ`. Simplify using `only [PositivityTheory.KReal.formT, PositivityTheory.KReal.positionA, sum_inner, inner_smul_left]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun w _ => Finset.sum_comm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hHT : (∑ s, ∑ w, H s w).re = (∑ k, PositivityTheory.KReal.formT (PositivityTheory.KReal.positionA (c k) Ψ) (fun w => ρ k (Ψ w))).re`. Rewrite using `[hT2, Finset.sum_comm]`. Establish `e1 : ∑ w, ∑ s, H s w = starRingEnd ℂ (∑ w, ∑ s, ∑ k, ∑ j, starRingEnd ℂ (c k (w s) j) * ⟪Ψ (Function.update w s j), ρ k (Ψ w)⟫_ℂ)`. Simplify using `only [hHc, map_sum]`. Rewrite using `[e1, Complex.conj_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hQle : ∑ s, ∑ w, (q s w).re ≤ 0`. Establish `e2 : ∑ s, ∑ w, (q s w).re = (Fintype.card I : ℝ) * (∑ s, ∑ w, H s w).re`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.re_sum, hsumH]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = ((Fintype.card I : ℂ) * ∑ s, ∑ w, H s w).re := by`. Rewrite using `[Finset.mul_sum, Complex.re_sum]`. Use `_ = (Fintype.card I : ℝ) * (∑ s, ∑ w, H s w).re := by`. Rewrite using `[← Complex.ofReal_natCast, Complex.re_ofReal_mul]`. Rewrite using `[e2, hHT]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg _) hre2`. Establish `hQ0 : ∀ s w, (q s w).re = 0`. Introduce `s w`. Establish `h1 : (q s w).re ≤ ∑ w', (q s w').re` using `Finset.single_le_sum (f := fun w' => (q s w').re) (fun w' _ => (hpos' s w').1) (Finset.mem_univ w)`. Establish `h2 : ∑ w', (q s w').re ≤ ∑ s', ∑ w', (q s' w').re` using `Finset.single_le_sum (f := fun s' => ∑ w', (q s' w').re) (fun s' _ => Finset.sum_nonneg fun w' _ => (hpos' s' w').1) (Finset.mem_univ s)`.
-
-Combine the linear relations using `[(hpos' s w).1]`. Use function extensionality and compare the values at `w`. Establish `h` using `congrFun ((hpos' (Classical.arbitrary J) w).2 (hQ0 _ w)) (w (Classical.arbitrary J))`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cas_tensor {K I J : Type} [Fintype K] [Fintype I] [DecidableEq I] [Fintype J] [DecidableEq J] [Nonempty J]
     (σ : K → K) (hσ : Function.Involutive σ)

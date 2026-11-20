@@ -10,20 +10,20 @@ open MeasureTheory PI.UpqRep
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Simplify using `[Jm, allPos]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Jm_allPos (N : ℕ) : Jm (allPos N) = 1 := by
   simp [Jm, allPos]
 
 /- English proof (translation)
-Simplify using `[Kset, Jm_allPos]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_Kset_iff {N : ℕ} (g : Matrix (Fin N) (Fin N) ℂ) :
     g ∈ Kset (allPos N) ↔ g ∈ Matrix.unitaryGroup (Fin N) ℂ := by
   simp [Kset, Jm_allPos]
 
 /- English proof (translation)
-The claim follows from `(mem_Kset_iff _).mpr g.2`.
+A detailed English derivation is pending.
 -/
 lemma memK {N : ℕ} (g : UG N) : (g : Matrix (Fin N) (Fin N) ℂ) ∈ Kset (allPos N) :=
   (mem_Kset_iff _).mpr g.2
@@ -39,7 +39,7 @@ def orb (hst : IsKStableOn (allPos N) σ S) (u : S) : UG N → S :=
   fun x => ⟨σ x u, hst _ (memK x) _ u.2⟩
 
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `(hrep.2.2 (u : H)).comp_continuous continuous_subtype_val fun x => memK x`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma orb_cont (hrep : IsURepOn (Kset (allPos N)) σ) (hst : IsKStableOn (allPos N) σ S) (u : S) :
     Continuous (orb hst u) := by
@@ -47,7 +47,7 @@ lemma orb_cont (hrep : IsURepOn (Kset (allPos N)) σ) (hst : IsKStableOn (allPos
   exact (hrep.2.2 (u : H)).comp_continuous continuous_subtype_val fun x => memK x
 
 /- English proof (translation)
-The claim follows from `hF.integrable_of_hasCompactSupport (IsCompact.of_isClosed_subset isCompact_univ (isClosed_tsupport _) (Set.subset_univ _))`.
+A detailed English derivation is pending.
 -/
 lemma integrable_cont {E : Type*} [NormedAddCommGroup E] {F : UG N → E} (hF : Continuous F) :
     Integrable F (muU N) :=
@@ -58,9 +58,9 @@ def T (hst : IsKStableOn (allPos N) σ S) (f : C(UG N, ℂ)) (u : S) : S :=
   ∫ x, f x • orb hst u x ∂(muU N)
 
 /- English proof (translation)
-Establish `hint : Integrable (fun x => f x • orb hst u x) (muU N)` using `integrable_cont (f.continuous.smul (orb_cont hrep hst u))`. Unfold `T`. Establish `hL` using `((innerSL ℂ w).comp ((σ (h : Matrix (Fin N) (Fin N) ℂ)).comp S.subtypeL)).integral_comp_comm hint`. Use `hL.symm.trans ?_` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmul : σ ((h * x : UG N) : Matrix (Fin N) (Fin N) ℂ) = (σ h).comp (σ x)` using `hrep.1.2 _ (memK h) _ (memK x)`. Simplify using `only [ContinuousLinearMap.comp_apply, innerSL_apply_apply, Submodule.subtypeL_apply, orb, Submodule.coe_smul, map_smul, inner_smul_right, hmul, smul_eq_mul]`. Apply the tactic sequence `try rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma inner_sigma_T_eq_integral_mul_inner [FiniteDimensional ℂ S] (hrep : IsURepOn (Kset (allPos N)) σ) (hst : IsKStableOn (allPos N) σ S)
     (f : C(UG N, ℂ)) (u : S) (w : H) (h : UG N) :
@@ -79,13 +79,13 @@ lemma inner_sigma_T_eq_integral_mul_inner [FiniteDimensional ℂ S] (hrep : IsUR
   try rfl
 
 /- English proof (translation)
-Take `⟨ι, _, a, b, ha, hb, hab⟩` from `sep_of_mem hf`. Establish `hcont : Continuous (fun y : UG N => ⟪w, σ (y : Matrix (Fin N) (Fin N) ℂ) (u : H)⟫_ℂ)` using `continuous_const.inner (continuous_subtype_val.comp (orb_cont hrep hst u))`. Establish `hfun : ∀ h : UG N, ⟪w, σ h ((T hst f u : S) : H)⟫_ℂ = ∑ i, a i h * ∫ y, b i y * ⟪w, σ (y : Matrix (Fin N) (Fin N) ℂ) (u : H)⟫_ℂ ∂(muU N)`. Introduce `h`. Rewrite using `[inner_sigma_T_eq_integral_mul_inner hrep hst f u w h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsh` using `integral_mul_left_eq_self (μ := muU N) (fun y => f (h⁻¹ * y) * ⟪w, σ (y : Matrix (Fin N) (Fin N) ℂ) (u : H)⟫_ℂ) h`. Simplify using `only [inv_mul_cancel_left] at hsh`. Rewrite using `[hsh]`. Repeatedly rewrite using `[hab h, Finset.sum_mul]`. Rewrite using `[integral_finset_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[mul_assoc]`. Rewrite using `[integral_const_mul]`. Introduce `i _`. Conclude with `integrable_cont ((continuous_const.mul (hb i)).mul hcont)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (fun h : UG N => ⟪w, σ h ((T hst f u : S) : H)⟫_ℂ) = fun h => ∑ i, a i h * ∫ y, b i y * ⟪w, σ (y : Matrix (Fin N) (Fin N) ℂ) (u : H)⟫_ℂ ∂(muU N)` using `funext hfun`. Rewrite using `[e]`. Conclude with `IsPD.sum _ fun i _ => (ha i).mul (IsPD.const _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isPositiveDefinite_matrix_coefficient_of_mem_algA [FiniteDimensional ℂ S] (hrep : IsURepOn (Kset (allPos N)) σ) (hst : IsKStableOn (allPos N) σ S)
     {f : C(UG N, ℂ)} (hf : f ∈ algA N) (u : S) (w : H) :
@@ -128,33 +128,29 @@ def Ugood : Submodule ℂ S where
     simpa [map_smul, inner_smul_right] using (IsPD.const c).mul (hu w)
 
 /- English proof (translation)
-Use `haveI := hfin`. Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ0, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr hne)`. Set `φC : S →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap φ`. Apply `hφ0` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `u`. Set `g : UG N → ℂ` to `fun x => φC (orb hst u x)`. Establish `hg : Continuous g` using `φC.continuous.comp (orb_cont hrep hst u)`. Establish `hA : ∀ f ∈ algA N, ∫ x, f x * g x ∂(muU N) = 0`. Introduce `f hf`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : T hst f u ∈ Ugood σ S` using `fun w => isPositiveDefinite_matrix_coefficient_of_mem_algA hrep hst hf u w`. Establish `h0 : φ (T hst f u) = 0` using `LinearMap.mem_ker.mp (hle hmem)`. Establish `hint : Integrable (fun x => f x • orb hst u x) (muU N)` using `integrable_cont (f.continuous.smul (orb_cont hrep hst u))`. Establish `hc` using `φC.integral_comp_comm hint`. Rewrite using `[← h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ hc` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `[g, φC, map_smul, smul_eq_mul]`. Establish `hall : ∀ F : C(UG N, ℂ), ∫ x, F x * g x ∂(muU N) = 0`. Introduce `F`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hM0 : 0 ≤ ∫ x, ‖g x‖ ∂(muU N)` using `integral_nonneg fun x => norm_nonneg _`. Establish `hbound : ∀ ε > 0, ‖∫ x, F x * g x ∂(muU N)‖ ≤ ε * ∫ x, ‖g x‖ ∂(muU N)`. Introduce `ε hε`. Take `⟨f, hf, hfF⟩` from `algA_dense N F hε`. Establish `hsplit : ∫ x, F x * g x ∂(muU N) = ∫ x, (F - f) x * g x ∂(muU N)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∫ x, (F - f) x * g x ∂(muU N) = ∫ x, F x * g x ∂(muU N) - ∫ x, f x * g x ∂(muU N)`. Establish `hi1 : Integrable (fun x => F x * g x) (muU N)` using `integrable_cont (F.continuous.mul hg)`. Establish `hi2 : Integrable (fun x => f x * g x) (muU N)` using `integrable_cont (f.continuous.mul hg)`. Rewrite using `[← integral_sub hi1 hi2]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `[sub_mul]`. Rewrite using `[h1, hA f hf, sub_zero]`. Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_mono (integrable_cont (((F - f).continuous.mul hg).norm)) (integrable_cont (continuous_const.mul hg.norm)) fun x => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right ((ContinuousMap.norm_coe_le_norm (F - f) x).trans hfF.le) (norm_nonneg _)`. Use `_ = ε * ∫ x, ‖g x‖ ∂(muU N) := integral_const_mul _ _`. Assume the negation of the conclusion as `hne0`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < ‖∫ x, F x * g x ∂(muU N)‖` using `norm_pos_iff.mpr hne0`. Use `set I := ‖∫ x, F x * g x ∂(muU N)‖`. Use `set M := ∫ x, ‖g x‖ ∂(muU N)`. Establish `h3` using `hbound (I / (M + 1)) (div_pos hpos (by linarith))`. Establish `hlt : I / (M + 1) * M < I`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_mul_eq_mul_div, div_lt_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hF` using `hall ⟨fun x => star (g x), continuous_star.comp hg⟩`. Establish `hcn : Continuous fun x => Complex.normSq (g x)` using `Complex.continuous_normSq.comp hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hF' : ∫ x, Complex.normSq (g x) ∂(muU N) = 0`. Establish `h4 : ∫ x, ((Complex.normSq (g x) : ℝ) : ℂ) ∂(muU N) = 0`. Rewrite using `[← hF]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Conclude with `Complex.normSq_eq_conj_mul_self`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h4` using `[integral_complex_ofReal]`. Conclude with `h4` after adjusting the coercions. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun x => Complex.normSq_nonneg (g x)) (integrable_cont hcn)).mp hF'`. Establish `heq : (fun x => Complex.normSq (g x)) = fun _ => (0 : ℝ)` using `(Continuous.ae_eq_iff_eq (muU N) hcn continuous_const).mp hae`. Establish `h1 : Complex.normSq (g 1) = 0` using `congrFun heq 1`.
-
-Rewrite `h1` using `[Complex.normSq_eq_zero]`. Establish `horb : orb hst u 1 = u`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[orb, hrep.1.1]`. Simplify using `only [g, horb] at h1`.
-
-Simplify `h1` using `[φC]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Ugood_eq_top (hrep : IsURepOn (Kset (allPos N)) σ) (hfin : FiniteDimensional ℂ S)
     (hst : IsKStableOn (allPos N) σ S) : Ugood σ S = ⊤ := by
@@ -236,9 +232,9 @@ theorem Ugood_eq_top (hrep : IsURepOn (Kset (allPos N)) σ) (hfin : FiniteDimens
 end
 
 /- English proof (translation)
-Introduce `N H _ _ σ S hrep hfin hst v hv w`. Establish `hgood : (⟨v, hv⟩ : S) ∈ Ugood σ S`. Rewrite using `[Ugood_eq_top hrep hfin hst]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨k, P, hP⟩` from `hgood w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Use `⟨k, P, fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `hP ⟨g, (mem_Kset_iff g).mp hg⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem polyCoef : PI.PolyCoef := by
   intro N H _ _ σ S hrep hfin hst v hv w

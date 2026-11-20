@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.HeisSchwartz
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.RdEc.heisSch`.
+A detailed English derivation is pending.
 -/
 theorem heisSch_holds : PositivityTheory.GramSchwartzFunctions.EC.HeisSch := PositivityTheory.RdEc.heisSch
 

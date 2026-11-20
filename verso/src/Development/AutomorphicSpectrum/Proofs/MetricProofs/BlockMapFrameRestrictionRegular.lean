@@ -20,11 +20,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
 
 /- English proof (translation)
-Establish `hzb` using `comp_mem_mcPts hb φ hy hz`. Take `⟨d, g, h, hg, hh, hn, heq⟩` from `hs`. Establish `hg'` using `isMultiHomog_rename_block hb hg`. Establish `hh'` using `isMultiHomog_rename_block hb hh`. Establish `hn' : rename v h ∉ mCoordIdeal z` using `rename_notMem hb hn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq' : aeval y (rename v g) = φ s * aeval y (rename v h)`. Rewrite using `[aeval_rename, aeval_rename, hy, aeval_comp_ringHom, aeval_comp_ringHom, heq, map_mul]`. Establish `v1 : IsValueAt x s (z ∘ v) _` using `⟨d, g, h, hg, hh, aeval_ne_zero_of_notMem hzb hh hn, heq, eval_ne_zero_of_notMem hh hn, rfl⟩`. Establish `v2 : IsValueAt y (φ s) z _` using `⟨_, _, _, hg', hh', aeval_ne_zero_of_notMem hz hh' hn', heq', eval_ne_zero_of_notMem hh' hn', rfl⟩`. Rewrite using `[valAt_eq hzb v1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `v2` using `[eval_rename_block, eval_rename_block]`. Conclude with `v2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_lift_of {Ω Φ : Type} [Field Ω] [Field Φ] (φ : Ω →+* Φ) {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k}
     (hb : IsBlockMap κ v) {x : (Σ k, ι k) → Ω} {y : (Σ k, ι' k) → Φ} (hy : y ∘ v = φ ∘ x)
@@ -54,13 +54,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {Kk : Type} [Fintype Kk] {ιk : Kk → Type} [∀ k, Fintype (ιk k)]
 
 /- English proof (translation)
-Use `choose κ' hκ' using fun k : NonPluckerBlocks M.blk => hr k.1 k.2`. Establish `hq : ∀ q : Σ k, baseIdx ι M.blk k, ∃ p, v p = ⟨q.1.1, q.2⟩` using `fun q => hb.2.2.2 ⟨q.1.1, q.2⟩ ⟨κ' q.1, hκ' q.1⟩`. Use `choose v' hv' using hq`. Use `⟨κ', v', ⟨fun a b h => Subtype.ext (by rw [← hκ' a, ← hκ' b, h]), fun a b h => ?_, fun q => ?_, ?_⟩, hv'⟩` and prove the remaining obligations. Establish `h'` using `congrArg v h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h'` using `[hv', hv']`. Conclude with `(blockMap_base M).2.1 h'`. Use `hb.1 ?_` and prove the remaining obligations. Rewrite using `[hκ', ← hb.2.2.1, hv']`. Introduce and unpack `⟨k, i⟩ ⟨⟨kb, hkb⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hvq : v ⟨κ' ⟨kb, hkb⟩, i⟩ with ⟨k₂, i₂⟩` into its components or cases. Establish `hk₂ : k₂ = kb`. Establish `h1` using `hb.2.2.1 ⟨κ' ⟨kb, hkb⟩, i⟩`. Rewrite `h1` using `[hvq]`. Conclude with `h1.trans (hκ' ⟨kb, hkb⟩)`.
-
-Substitute `hk₂` using the available equality. Use `⟨⟨⟨k₂, hkb⟩, i₂⟩, hb.2.1 ?_⟩` and prove the remaining obligations. Rewrite using `[hv', hvq]`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section (M : FlagModel y Ψ N j) {κ : Kk → K} {v : (Σ k, ιk k) → Σ k, ι k} (hb : IsBlockMap κ v)
     (hr : ∀ k, (∀ p, M.blk p ≠ some k) → k ∈ Set.range κ) :
@@ -87,7 +85,7 @@ theorem exists_section (M : FlagModel y Ψ N j) {κ : Kk → K} {v : (Σ k, ιk 
     rw [hv', hvq]
 
 /- English proof (translation)
-Take `⟨⟨k₂, i⟩, hp⟩` from `hb.2.2.2 ⟨κ k₁, m⟩ ⟨k₁, rfl⟩`. Establish `hk : k₂ = k₁` using `hb.1 (by simpa [hp] using (hb.2.2.1 ⟨k₂, i⟩).symm)`. Substitute `hk` using the available equality. Conclude with `⟨i, hp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_pre {κ : Kk → K} {v : (Σ k, ιk k) → Σ k, ι k} (hb : IsBlockMap κ v) (k₁ : Kk) (m : ι (κ k₁)) :
     ∃ i : ιk k₁, v ⟨k₁, i⟩ = ⟨κ k₁, m⟩ := by
@@ -97,9 +95,9 @@ theorem exists_pre {κ : Kk → K} {v : (Σ k, ιk k) → Σ k, ι k} (hb : IsBl
   exact ⟨i, hp⟩
 
 /- English proof (translation)
-Take `⟨im, hm⟩` from `exists_pre hb k₁ m`. Take `⟨ic, hc⟩` from `exists_pre hb k₁ c`. Rewrite `hy`, `hz`, the goal using `[← hc]`. Rewrite using `[← hm]`. Rewrite `hz`, the goal using `[upV_apply hb.2.1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[upV_apply hb.2.1]`. Conclude with `isValueAt_ratio (y := y ∘ v) hy hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_up {κ : Kk → K} {v : (Σ k, ιk k) → Σ k, ι k} (hb : IsBlockMap κ v) {z : (Σ k, ιk k) → ℂ} {k₁ : Kk}
     {m c : ι (κ k₁)} (hy : y ⟨κ k₁, c⟩ ≠ 0) (hz : upV v z ⟨κ k₁, c⟩ ≠ 0) :
@@ -113,13 +111,11 @@ theorem ratio_up {κ : Kk → K} {v : (Σ k, ιk k) → Σ k, ι k} (hb : IsBloc
   exact isValueAt_ratio (y := y ∘ v) hy hz
 
 /- English proof (translation)
-Take `⟨c₁, hc₁⟩` from `hz.1 k₁`. Establish `hy : (y ∘ v) ⟨k₁, c₁⟩ ≠ 0` using `coord_ne hz hc₁`. Establish `hex : ∃ c : ι (κ k₁), v ⟨k₁, c₁⟩ = ⟨κ k₁, c⟩`. Break down `hq : v ⟨k₁, c₁⟩ with ⟨kq, c⟩` into its components or cases. Establish `h1 : kq = κ k₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h2` using `hb.2.2.1 ⟨k₁, c₁⟩`. Rewrite `h2` using `[hq]`. Conclude with `h2`. Substitute `h1` using the available equality. Conclude with `⟨c, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hex`. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, upV_apply hb.2.1]`. Conclude with `hc₁`. Rewrite using `[← hc]`.
-
-Conclude with `hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coord {κ : Kk → K} {v : (Σ k, ιk k) → Σ k, ι k} (hb : IsBlockMap κ v) {z : (Σ k, ιk k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal (y ∘ v))) (k₁ : Kk) :
@@ -142,55 +138,49 @@ theorem exists_coord {κ : Kk → K} {v : (Σ k, ιk k) → Σ k, ι k} (hb : Is
     exact hy
 
 /- English proof (translation)
-Take `⟨κ', v', hb', hv'⟩` from `exists_section M hb fun k h => (hrange k).2 (Or.inl h)`. Set `am` to `algebraMap M.Ω Φ`. Establish `hx : (y ∘ v) ∘ v' = am ∘ M.x` using `funext fun q => by show y (v (v' q)) = am (M.x q)`. Rewrite using `[hv']`. Conclude with `M.y_base q`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpb : pBase M v z = z ∘ v'` using `funext fun q => by show upV v z ⟨q.1.1, q.2⟩ = z (v' q)`. Rewrite using `[← hv' q, upV_apply hb.2.1]`. Rewrite `hG`, the goal using `[hpb]`. Establish `hzb : z ∘ v' ∈ mcPts (mCoordIdeal M.x)` using `comp_mem_mcPts hb' am hx hz`. Set `O` to `regRing (y ∘ v) z`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `val : O →+* ℂ` to `regVal hz`. Take `⟨V, hOV, hpl⟩` from `GlobalTheory.T.valuation_ring_extension_specialization Φ O val (regVal_local hz)`. Establish `hO : ∀ {s}, RegAt M.x (mCoordIdeal (z ∘ v')) s → am s ∈ O` using `fun hs => ⟨_, val_lift_of am hb' hx hz hs⟩`. Set `Ag : Ψ → Matrix (Fin N) (Fin N) Φ` to `fun τ => (F.T τ)⁻¹.map am * M.g τ`. Establish `hinvD : ∀ τ, ((F.T τ)⁻¹.map am).det ≠ 0` using `fun τ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((F.T τ)⁻¹.map am).det = am ((F.T τ)⁻¹.det)` using `(RingHom.map_det am _).symm`. Rewrite using `[this]`. Use `(map_ne_zero am).2 fun h0 => ?_` and prove the remaining obligations. Establish `h1` using `Matrix.det_nonsing_inv_mul_det (F.T τ) (hF.1 τ).2.isUnit`. Rewrite `h1` using `[h0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one h1`. Establish `hAgB : ∀ τ, IsBlockDiag j (Ag τ)` using `fun τ => (((hF.1 τ).1.inv (hF.1 τ).2.isUnit).map am).mul (M.g_block τ)`. Establish `hAgD : ∀ τ, (Ag τ).det ≠ 0` using `fun τ => by`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero (hinvD τ) (M.isUnit_det_g τ).ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose b hbB hbT hbd hbV hbdet hbinv using fun τ => GlobalTheory.T.block_diag_valuation_normalization Φ V N j (Ag τ) (hAgB τ) (hAgD τ)`. Set `H : Ψ → Matrix (Fin N) (Fin N) Φ` to `fun τ => Ag τ * b τ`. Establish `hHB : ∀ τ, IsBlockDiag j (H τ)` using `fun τ => (hAgB τ).mul (hbB τ)`. Set `wf : ∀ (p : Ψ × Fin N) (k : K), ι k → Φ` to `fun p k m => ∑ I, am (F.u ⟨k, m⟩ I) * minorIJ (H p.1) I (stepCols N j p.2)`. Establish `data : ∀ p, ∃ wc : Φ, wc ∈ V ∧ wc ≠ 0 ∧ wc⁻¹ ∈ V ∧ ∀ k, keep p → M.blk p = some k → ∃ c : ι k, upV v z ⟨k, c⟩ ≠ 0 ∧ ∀ m, ∃ r, IsValueAt (y ∘ v) r z (upV v z ⟨k, m⟩ / upV v z ⟨k, c⟩) ∧ wf p k m = r * wc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Split into cases according to the possible forms of the given data.
 
-Introduce `p`. Distinguish the cases in `hkp : keep p`. Use `swap`. Conclude with `⟨1, V.one_mem, one_ne_zero, by simpa using V.one_mem, fun k h => absurd h hkp⟩`. Consider the cases of `hp : M.blk p with`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `none => exact ⟨1, V.one_mem, one_ne_zero, by simpa using V.one_mem, fun k _ hk => by cases hk⟩`. Consider the case `some k`. Take `⟨k₁, rfl⟩` from `(hrange k).2 (Or.inr ⟨p, hkp, hp⟩)`. Take `⟨c, hzc, hyc⟩` from `exists_coord hb hz k₁`. Establish `hdet : am (detFac j p.2 (F.T p.1)) ≠ 0` using `(map_ne_zero am).2 (detFac_ne_zero M.j_le p.2 (hF.1 p.1).1 (hF.1 p.1).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hE : am (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b p k') ≠ 0` using `(map_ne_zero am).2 (Finset.prod_ne_zero_iff.2 fun k' _ => zpow_ne_zero _ (M.x_chart_ne (mCoordIdeal_le hzb) hG k'))`. Establish `hB : (∏ c ∈ stepCols N j p.2, b p.1 c c) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun c _ => hbd p.1 c`. Establish `rel : ∀ m, am (detFac j p.2 (F.T p.1)) * (∏ c ∈ stepCols N j p.2, b p.1 c c) * y ⟨κ k₁, m⟩ = am (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b p k') * wf p (κ k₁) m` using `fun m => frame_gen M hF (RingHom.id Φ) hp m (hHB p.1) (hbB p.1) (hbT p.1) (by show (F.T p.1).map am * ((F.T p.1)⁻¹.map am * M.g p.1 * b p.1) = (M.g p.1).map (RingHom.id Φ) * b p.1`. Rewrite using `[Matrix.mul_assoc ((F.T p.1)⁻¹.map am), map_mul_inv_map am (hF.1 p.1).2]`. Use the proof step `rfl)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨e, he, hw⟩ : ∃ e : Φ, e ≠ 0 ∧ ∀ m, wf p (κ k₁) m = e * y ⟨κ k₁, m⟩` from `⟨am (detFac j p.2 (F.T p.1)) * (∏ c ∈ stepCols N j p.2, b p.1 c c) / am (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b p k'), div_ne_zero (mul_ne_zero hdet hB) hE, fun m => by`. Rewrite using `[div_mul_eq_mul_div, rel m, mul_div_cancel_left₀ _ hE]⟩`. Apply the tactic sequence `obtain ⟨m₀, hm₀, hm₀i⟩ := GlobalTheory.T.step_rows_inverse_nonzero_entry Φ V N j p.2 (H p.1) (ι (κ k₁)) (fun m I => am (F.u ⟨κ k₁, m⟩ I)) (fun I m => am (F.u' I ⟨κ k₁, m⟩)) M.j_le (hHB p.1) (hbV p.1) (hbdet p.1) (hbinv p.1) (fun I m => hOV _ (hO (hG.2.1 _ I).2)) (fun m I => hOV _ …`. Use `congrArg am (hF.2.2.1 p (κ k₁) hp I I' hI hI')` as an intermediate fact. Rewrite `this` using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul] at this`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp)`. Establish `hwc : wf p (κ k₁) c ≠ 0` using `by rw [hw]; exact mul_ne_zero he hyc`. Establish `hr : ∀ m, wf p (κ k₁) m = y ⟨κ k₁, m⟩ / y ⟨κ k₁, c⟩ * wf p (κ k₁) c` using `fun m => by`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hw, hw]`. Clear the denominators using the available nonvanishing facts. Use `⟨wf p (κ k₁) c, ?_, hwc, ?_, fun k' _ hk' => ?_⟩` and prove the remaining obligations. Conclude with `sum_mem fun I _ => V.mul_mem _ _ (hOV _ (hO (hG.2.1 _ I).1)) (minorIJ_mem V.toSubring (hbV p.1) I _)`. Establish `h1 : y ⟨κ k₁, m₀⟩ / y ⟨κ k₁, c⟩ ∈ O` using `⟨_, ratio_up hb hyc hzc⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2 : (wf p (κ k₁) c)⁻¹ = y ⟨κ k₁, m₀⟩ / y ⟨κ k₁, c⟩ * (wf p (κ k₁) m₀)⁻¹`. Establish `hm₀' : wf p (κ k₁) m₀ ≠ 0` using `hm₀`. Rewrite `hm₀'`, the goal using `[hr m₀]`. Establish `h3` using `left_ne_zero_of_mul hm₀'`. Rewrite using `[mul_inv, ← mul_assoc, mul_inv_cancel₀ h3, one_mul]`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `V.mul_mem _ _ (hOV _ h1) hm₀i`. Take `rfl` from `Option.some.inj hk'`. Conclude with `⟨c, hzc, fun m => ⟨_, ratio_up hb hyc hzc, hr m⟩⟩`. Use `choose wc hwV hw0 hwinv hdat using data`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `T : Finset Φ` to `(Finset.univ.image fun t : Ψ × Fin N × Fin N => H t.1 t.2.1 t.2.2) ∪ (Finset.univ.image fun τ => (H τ).det) ∪ (Finset.univ.image wc)`. Establish `hT1 : ∀ τ a c, H τ a c ∈ T` using `fun τ a c => Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_image.2 ⟨(τ, a, c), Finset.mem_univ _, rfl⟩))`. Establish `hT2 : ∀ τ, (H τ).det ∈ T` using `fun τ => Finset.mem_union_left _ (Finset.mem_union_right _ (Finset.mem_image.2 ⟨τ, Finset.mem_univ _, rfl⟩))`. Establish `hT3 : ∀ p, wc p ∈ T` using `fun p => Finset.mem_union_right _ (Finset.mem_image.2 ⟨p, Finset.mem_univ _, rfl⟩)`. Establish `hTV : ∀ t ∈ T, t ∈ V` using `fun t ht => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Finset.mem_union.1 ht with ht | ht` into its components or cases. Break down `Finset.mem_union.1 ht with ht | ht` into its components or cases. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 ht`. Conclude with `hbV _ _ _`. Take `⟨τ, -, rfl⟩` from `Finset.mem_image.1 ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `det_mem V.toSubring (hbV τ)`. Take `⟨p, -, rfl⟩` from `Finset.mem_image.1 ht`. Conclude with `hwV p`. Take `⟨R, hOR, ψ, hTR, hψ, hinv⟩` from `hpl T hTV`. Set `HR : Ψ → Matrix (Fin N) (Fin N) R` to `fun τ => Matrix.of fun a c => ⟨H τ a c, hTR _ (hT1 τ a c)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hHR : ∀ τ, (HR τ).map R.subtype = H τ` using `fun τ => by ext a c; rfl`. Use `⟨fun τ => (HR τ).map ψ, fun τ => ⟨?_, ?_⟩, fun p k hkp hp => ?_⟩` and prove the remaining obligations. Introduce `a c hac`. Establish `h0 : HR τ a c = 0` using `Subtype.ext (hHB τ a c hac)`. Use `show ψ (HR τ a c) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h0, map_zero]`. Establish `e1 : R.subtype (HR τ).det = (H τ).det` using `by rw [RingHom.map_det]; exact congrArg _ (hHR τ)`. Establish `e2 : (HR τ).det * ⟨(H τ).det⁻¹, hinv _ (hT2 τ) (hbdet τ) (hbinv τ)⟩ = 1` using `Subtype.ext (by show R.subtype (HR τ).det * (H τ).det⁻¹ = 1`. Rewrite using `[e1, mul_inv_cancel₀ (hbdet τ)])`. Establish `e3` using `congrArg ψ e2`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e3` using `[map_mul, map_one, RingHom.map_det]`. Conclude with `left_ne_zero_of_mul_eq_one e3`. Take `⟨c, hzc, hm⟩` from `hdat p k hkp hp`. Set `wR : R` to `⟨wc p, hTR _ (hT3 p)⟩`. Establish `hβ : ψ wR ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : wR * ⟨(wc p)⁻¹, hinv _ (hT3 p) (hw0 p) (hwinv p)⟩ = 1` using `Subtype.ext (mul_inv_cancel₀ (hw0 p))`. Establish `e3` using `congrArg ψ e2`. Rewrite `e3` using `[map_mul, map_one]`. Conclude with `left_ne_zero_of_mul_eq_one e3`. Use `⟨upV v z ⟨k, c⟩ / ψ wR, div_ne_zero hzc hβ, fun m => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Take `⟨r, hr, hw⟩` from `hm m`. Set `uR : Finset (Fin N) → R` to `fun I => Subring.inclusion hOR ⟨am (F.u ⟨k, m⟩ I), hO (hG.2.1 _ I).1⟩`. Set `rR : R` to `Subring.inclusion hOR ⟨r, _, hr⟩`. Establish `e1 : ∑ I, uR I * minorIJ (HR p.1) I (stepCols N j p.2) = rR * wR` using `Subtype.ext (by show R.subtype _ = r * wc p`. Rewrite using `[map_sum]`.
-
-Simplify using `only [map_mul, ← minorIJ_map, hHR]`. Conclude with `hw)`. Establish `e2` using `congrArg ψ e1`. Rewrite `e2` using `[map_sum]`. Simplify using `only [map_mul, ← minorIJ_map] at e2`.
-
-Establish `e3 : ∀ I, ψ (uR I) = valAt M.x (F.u ⟨k, m⟩ I) (z ∘ v')` using `fun I => (hψ _).trans (regVal_eq hz _ (val_lift_of am hb' hx hz (hG.2.1 _ I).1))`. Establish `e4 : ψ rR = upV v z ⟨k, m⟩ / upV v z ⟨k, c⟩` using `(hψ _).trans (regVal_eq hz _ hr)`. Simplify using `only [e3] at e2`. Rewrite `e2` using `[e4]`. Use `show upV v z ⟨k, m⟩ = _ * ∑ I, valAt M.x (F.u ⟨k, m⟩ I) (z ∘ v') * minorIJ ((HR p.1).map ψ) I (stepCols N j p.2)`.
-
-Rewrite using `[e2]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem flag_fwd_kept (M : FlagModel y Ψ N j) (keep : Ψ × Fin N → Prop) {κ : Kk → K} {v : (Σ k, ιk k) → Σ k, ι k}
     (hb : IsBlockMap κ v)
@@ -347,7 +337,7 @@ theorem flag_fwd_kept (M : FlagModel y Ψ N j) (keep : Ψ × Fin N → Prop) {κ
 end Flag
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M keep Kk _ ιk _ κ v hb hrange F z hF hz hG _`. Conclude with `flag_fwd_kept M keep hb hrange hF hz hG`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (keep : Ψ × Fin N → Prop) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)), IsBlockMap κ v → (∀ k, k ∈ Set.range κ ↔ ((∀ p, M.blk p ≠ some k) ∨ ∃ p, keep p ∧ M.blk p = some k)) → ∀ (F : FrameData ι Ψ N M.Ω M.blk) (z : (Σ k, ιk k) → ℂ), M.IsFrame F → z ∈ mcPts (mCoordIdeal (y ∘ v)) → M.GoodAt F (mCoordIdeal (pBase M v z)) → (∀ k, pBase M v z ⟨k, F.c k⟩ = 1) → ∃ H : Ψ → Matrix (Fin N) (Fin N) ℂ, (∀ τ, IsBlockDiag j (H τ) ∧ (H τ).det ≠ 0) ∧ ∀ p k, keep p → M.blk p = some k → ∃ α : ℂ, α ≠ 0 ∧ ∀ m : ι k, upV v z ⟨k, m⟩ = α * ∑ I, valAt M.x (F.u ⟨k, m⟩ I) (pBase M v z) * minorIJ (H p.1) I (stepCols N j p.2) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M keep Kk _ ιk _ κ v hb hrange F z hF hz hG _

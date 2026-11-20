@@ -6,17 +6,15 @@ attribute [local instance] FractionRing.liftAlgebra
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : Module.IsTorsionFree k[X] A := inferInstance`. Use `haveI : FaithfulSMul k[X] A := inferInstance`. Use `haveI : Algebra.IsSeparable (FractionRing k[X]) (FractionRing A) := inferInstance`. Establish `hD` using `differentIdeal_ne_bot (A := k[X]) (B := A)`. Take `⟨d, hd, hd0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hD`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc` using `Ideal.comap_ne_bot_of_integral_mem hd0 hd (Algebra.IsIntegral.isIntegral (R := k[X]) d)`. Take `⟨δ, hδ, hδ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hc`. Use `⟨δ, hδ0, fun α hα Q hQ hmem => hα ?_⟩` and prove the remaining obligations. Use `set p : Ideal k[X] := Ideal.span {X - C α} with hpdef`. Use `haveI hpmax : p.IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible (irreducible_X_sub_C α)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hp0 : p ≠ ⊥`. Rewrite using `[hpdef, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `X_sub_C_ne_zero α`. Establish `hP : Q ^ 2 ∣ p.map (algebraMap k[X] A)`. Rewrite using `[Ideal.dvd_iff_le, hpdef, Ideal.map_span, Ideal.span_le]`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality. Conclude with `hmem`. Establish `hdiv` using `pow_sub_one_dvd_differentIdeal (A := k[X]) (B := A) Q 2 hp0 hP`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdiv` using `[show 2 - 1 = 1 from rfl, pow_one, Ideal.dvd_iff_le]`. Establish `hδQ : δ ∈ Q.comap (algebraMap k[X] A)` using `hdiv hδ`. Establish `hXQ : X - C α ∈ Q.comap (algebraMap k[X] A)` using `Ideal.mem_comap.mpr (Ideal.pow_le_self two_ne_zero hmem)`. Establish `hle : p ≤ Q.comap (algebraMap k[X] A)`. Rewrite using `[hpdef, Ideal.span_le, Set.singleton_subset_iff]`.
-
-Conclude with `hXQ`. Establish `heq : p = Q.comap (algebraMap k[X] A)` using `hpmax.eq_of_le (hQ.isPrime.comap _).ne_top hle`. Rewrite `hδQ` using `[← heq, hpdef, Ideal.mem_span_singleton, dvd_iff_isRoot]`. Conclude with `hδQ`.
+A detailed English derivation is pending.
 -/
 theorem reduced_fibres_almost_all (k A : Type) [Field k] [IsAlgClosed k] [CharZero k] [CommRing A]
     [IsDedekindDomain A] [Algebra k A] [Algebra k[X] A] [IsScalarTower k k[X] A]

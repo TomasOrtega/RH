@@ -8,7 +8,7 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.Dieu.ColenDet
 
 /- English proof (translation)
-Use `conv_lhs => rw [PadicInt.unitCoeff_spec hx]`. Rewrite using `[map_mul, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_unit_mul_pow {p : ℕ} [Fact p.Prime] {k : Type} [Field k] [CharP k p]
     (ψ : ℤ_[p] →+* WittVector p k) {x : ℤ_[p]} (hx : x ≠ 0) :
@@ -17,7 +17,7 @@ theorem map_eq_unit_mul_pow {p : ℕ} [Fact p.Prime] {k : Type} [Field k] [CharP
   rw [map_mul, map_pow, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[map_eq_unit_mul_pow ψ hx, AddValuation.map_mul, AddValuation.map_pow, IsDiscreteValuationRing.addVal_uniformizer (WittVector.irreducible p), (IsDiscreteValuationRing.addVal_eq_zero_iff).mpr ((PadicInt.unitCoeff hx).isUnit.map ψ)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem addVal_map {p : ℕ} [Fact p.Prime] {k : Type} [Field k] [CharP k p] [PerfectRing k p]
     (ψ : ℤ_[p] →+* WittVector p k) {x : ℤ_[p]} (hx : x ≠ 0) :
@@ -28,15 +28,15 @@ theorem addVal_map {p : ℕ} [Fact p.Prime] {k : Type} [Field k] [CharP k p] [Pe
   simp
 
 /- English proof (translation)
-Introduce `p _ k _ _ _ N _ _ _ _ ψ u d hdet`. Establish `hψ : Function.Injective ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1` using `addVal_map ψ h0`. Rewrite `h1` using `[hx, AddValuation.map_zero]`. Conclude with `ENat.top_ne_coe _ h1`. Establish `hlen` using `GlobalTheory.length_quot_range_eq_addVal_det u`. Use `⟨fun e he => ?_, fun hu => ?_, hψ⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he` using `[hlen, hdet]`. Establish `hd : d ≠ 0`. Introduce and unpack `rfl`. Rewrite `he` using `[map_zero, AddValuation.map_zero]`. Conclude with `ENat.top_ne_coe _ he`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `he` using `[addVal_map ψ hd]`. Establish `he' : d.valuation = e` using `by exact_mod_cast he`. Rewrite using `[PadicInt.norm_eq_zpow_neg_valuation hd, he']`. Establish `h0 : LinearMap.det u = 0`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Apply `hu` to reduce the goal to its premises. Rewrite `h` using `[LinearMap.det_eq_zero_iff_ker_ne_bot, not_not, LinearMap.ker_eq_bot]`. Then use the resulting hypothesis. Conclude with `hψ (by rw [← hdet, h0, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem colength_det : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (N : Type) [AddCommGroup N] [Module (WittVector p k) N] [Module.Free (WittVector p k) N] [Module.Finite (WittVector p k) N] (ψ : ℤ_[p] →+* (WittVector p k)) (u : N →ₗ[(WittVector p k)] N) (d : ℤ_[p]), LinearMap.det u = ψ d → (∀ e : ℕ, Module.length (WittVector p k) (N ⧸ LinearMap.range u) = e → ‖d‖ = (p : ℝ) ^ (-(e : ℤ))) ∧ (¬ Function.Injective u → d = 0) ∧ Function.Injective ψ := by
   intro p _ k _ _ _ N _ _ _ _ ψ u d hdet

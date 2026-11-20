@@ -7,15 +7,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.C
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `hC l _ Lc G q d a F Ω _ _ _ _ _ _ P hl hU`. Establish `hmatch : ∀ (w : ArData.W Lc q) (g : a.D w), G.ε (a.ι w g) = cycZ F Ω l ((Dec (P.A w)).subtype (P.α w g))`. Introduce `w g`. Conclude with `(congrArg G.ε (P.ι_eq w g)).trans (P.e_ε _)`. Use `Cnts.mk ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key` using `gwCntBare hC.gw hC.lt hC.gf hC.lf l F Ω P.S G.Γ P.e G.ε (ArData.W Lc q) P.pl P.A a.D a.ι P.α d P.ip P.c hl P.above P.e_ε P.isOver P.ι_eq P.cc`. Establish `hcw : a.cw = fun i => P.e ((toGS Ω P.S) (P.c i))` using `funext P.cw_eq`. Rewrite using `[hcw]`. Conclude with `key`. Introduce `v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : (l : 𝓞 F) ∈ (P.pl (Sum.inl v) : HeightOneSpectrum (𝓞 F)).asIdeal` using `(P.pl_l _).2 ⟨v, rfl⟩`. Establish `h1` using `(locCntBare hC.lf hC.lt hC.le l F Ω (P.A (Sum.inl v)) _ (P.isOver (Sum.inl v))).1 hv`. Rewrite using `[P.dv_eq v]`. Conclude with `locCntCongr l (a.D (Sum.inl v)) _ (P.α (Sum.inl v)) _ _ _ (hmatch (Sum.inl v)) h1`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hn : (l : 𝓞 F) ∉ (P.pl (Sum.inr (Sum.inr j)) : HeightOneSpectrum (𝓞 F)).asIdeal`. Introduce `hm`. Take `⟨v, hv⟩` from `(P.pl_l _).1 hm`. Consider the cases of `hv`. Establish `h0` using `(locCntBare hC.lf hC.lt hC.le l F Ω (P.A (Sum.inr (Sum.inr j))) _ (P.isOver (Sum.inr (Sum.inr j)))).2 hn`.
-
-Conclude with `locCntCongr l (a.D (Sum.inr (Sum.inr j))) _ (P.α (Sum.inr (Sum.inr j))) _ _ _ (hmatch (Sum.inr (Sum.inr j))) h0`. Introduce `u`. Conclude with `unrDev l _ _ (hU u)`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.presCnts :
     CohP → ∀ (l : ℕ) [Fact l.Prime] (Lc : Loc) (G : Glob l Lc) (q d : ℕ) (a : ArData G q d) (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (_ : ArPres a F Ω), l ≠ 2 → (∀ u, UnrCount l (Lc.Gu u) (Lc.Ju u)) → Cnts a := by

@@ -18,19 +18,19 @@ open PowerSeries
 variable {R : Type u} {S : Type v} [CommRing R] [CommRing S] (W : WeierstrassCurve R)
 
 /- English proof (translation)
-The claim follows from `(wSerSpec R W).1.2`.
+A detailed English derivation is pending.
 -/
 theorem w_eq : wSer W = X ^ 3 + C W.a₁ * X * wSer W + C W.a₂ * X ^ 2 * wSer W + C W.a₃ * wSer W ^ 2
     + C W.a₄ * X * wSer W ^ 2 + C W.a₆ * wSer W ^ 3 := (wSerSpec R W).1.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(wSerFactor R W).1, (wSerFactor R W).2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem w_eq_X_pow_mul : wSer W = X ^ 3 * wU W ∧ constantCoeff (wU W) = 1 :=
   ⟨(wSerFactor R W).1, (wSerFactor R W).2.1⟩
 
 /- English proof (translation)
-Establish `h` using `w_eq W`. Rewrite `h` using `[(w_eq_X_pow_mul W).1]`. Use `X_pow_mul_cancel (k := 3) ?_` and prove the remaining obligations. Take the linear combination `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem wU_eq : wU W = 1 + C W.a₁ * X * wU W + C W.a₂ * X ^ 2 * wU W + C W.a₃ * X ^ 3 * wU W ^ 2
     + C W.a₄ * X ^ 4 * wU W ^ 2 + C W.a₆ * X ^ 6 * wU W ^ 3 := by
@@ -40,7 +40,7 @@ theorem wU_eq : wU W = 1 + C W.a₁ * X * wU W + C W.a₂ * X ^ 2 * wU W + C W.a
   linear_combination h
 
 /- English proof (translation)
-Establish `h : wU W = 1 + X * (C W.a₁ * wU W + X * (C W.a₂ * wU W + C W.a₃ * X * wU W ^ 2 + C W.a₄ * X ^ 2 * wU W ^ 2 + C W.a₆ * X ^ 4 * wU W ^ 3))`. Take the linear combination `wU_eq W`. Rewrite using `[h, map_add, coeff_succ_X_mul]`. Simplify using `[(w_eq_X_pow_mul W).2, coeff_one]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_one_wU : coeff 1 (wU W) = W.a₁ := by
   have h : wU W = 1 + X * (C W.a₁ * wU W + X * (C W.a₂ * wU W + C W.a₃ * X * wU W ^ 2
@@ -50,18 +50,18 @@ theorem coeff_one_wU : coeff 1 (wU W) = W.a₁ := by
   simp [(w_eq_X_pow_mul W).2, coeff_one]
 
 /- English proof (translation)
-The claim follows from `(unitSpec R W).2.1`.
+A detailed English derivation is pending.
 -/
 theorem fw_mul_om : fw W * om W = 1 := (unitSpec R W).2.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(iSerSpec R W).1, (iSerSpec R W).2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem coeff_inv : constantCoeff (iSer W) = 0 ∧ coeff 1 (iSer W) = -1 :=
   ⟨(iSerSpec R W).1, (iSerSpec R W).2.1⟩
 
 /- English proof (translation)
-Establish `h : iDen W * invOfUnit (iDen W) (-1) = 1` using `(unitSpec R W).2.2.2.2.2.2`. Express the relevant statement in the definitionally equal form `iSer W * iDen W = X`. Rewrite using `[iSer]`. Take the linear combination `X * h`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem inv_mul_den : iSer W * (-1 + C W.a₁ * X + C W.a₃ * wSer W) = X := by
   have h : iDen W * invOfUnit (iDen W) (-1) = 1 := (unitSpec R W).2.2.2.2.2.2
@@ -70,7 +70,7 @@ theorem inv_mul_den : iSer W * (-1 + C W.a₁ * X + C W.a₃ * wSer W) = X := by
   linear_combination X * h
 
 /- English proof (translation)
-Establish `h : iDen W * invOfUnit (iDen W) (-1) = 1` using `(unitSpec R W).2.2.2.2.2.2`. Express the relevant statement in the definitionally equal form `_ * iDen W = _`. Rewrite using `[(iSerSpec R W).2.2.2.1]`. Take the linear combination `wSer W * h`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem w_inv_mul_den :
     (wSer W).subst (iSer W) * (-1 + C W.a₁ * X + C W.a₃ * wSer W) = wSer W := by
@@ -82,7 +82,7 @@ theorem w_inv_mul_den :
 variable (φ : R →+* S)
 
 /- English proof (translation)
-The claim follows from `(seriesMap R S φ W).2.2.2.2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem map_inv : PowerSeries.map φ (iSer W) = iSer (W.map φ) := (seriesMap R S φ W).2.2.2.2.2.2.2
 
@@ -112,7 +112,7 @@ Both sides reduce to the same expression.
 instance isComm_formalGroup : (formalGroup W).IsComm := ⟨Fgl2.fgl_symm W⟩
 
 /- English proof (translation)
-Use `Fgl2.nu_eq W i` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ = (wSer W).subst (X i : MvPowerSeries (Fin 2) R) - _ at this`. Take the linear combination `-this`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem chord (i : Fin 2) : (wSer W).subst (X i : MvPowerSeries (Fin 2) R) = lam W * X i + nu W := by
   have := Fgl2.nu_eq W i
@@ -120,7 +120,7 @@ theorem chord (i : Fin 2) : (wSer W).subst (X i : MvPowerSeries (Fin 2) R) = lam
   linear_combination -this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(fglChord R W).2.1, (fglChord R W).2.2.1.symm, Fgl2.third_rel W 0 1 (by decide), (fglChord R W).2.2.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem third_point : constantCoeff (uThird W) = 0 ∧
     (wSer W).subst (uThird W) = lam W * uThird W + nu W ∧
@@ -130,7 +130,7 @@ theorem third_point : constantCoeff (uThird W) = 0 ∧
     (fglChord R W).2.2.2.1⟩
 
 /- English proof (translation)
-The claim follows from `fglInv R W`.
+A detailed English derivation is pending.
 -/
 theorem subst_X_inv :
     (formalGroup W).toPowerSeries.subst (![PowerSeries.X, iSer W] : Fin 2 → PowerSeries R) = 0 :=
@@ -139,9 +139,9 @@ theorem subst_X_inv :
 variable {σ : Type*}
 
 /- English proof (translation)
-Establish `h` using `congrArg (PowerSeries.subst s) (subst_X_inv W)`. Rewrite `h` using `[PowerSeries.subst, subst_comp_subst_apply (Fgl2.hasSubst_X_iSer W) hs.const, ← PowerSeries.coe_substAlgHom hs, map_zero]`. Rewrite using `[← h]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases i`. Conclude with `(PowerSeries.subst_X hs).symm`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem subst_inv {s : MvPowerSeries σ R} (hs : PowerSeries.HasSubst s) :
     (formalGroup W).toPowerSeries.subst ![s, (iSer W).subst s] = 0 := by
@@ -175,7 +175,7 @@ instance addCommGroupPoint : AddCommGroup ((formalGroup W).Point σ) where
     exact Subtype.ext (subst_inv W s.prop)
 
 /- English proof (translation)
-The claim follows from `zSerMap R S φ W n`.
+A detailed English derivation is pending.
 -/
 theorem map_zsmul (φ : R →+* S) (n : ℤ) : PowerSeries.map φ (zSer W n) = zSer (W.map φ) n :=
   zSerMap R S φ W n
@@ -192,15 +192,15 @@ def toTwoPoints (F : MvPowerSeries (Fin 2) R) : PS R 2 1 :=
   F.subst (fun j : Fin 2 => (X (j, 0) : PS R 2 1))
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_twoPoints : HasSubst (fun j : Fin 2 => (X (j, 0) : PS R 2 1)) :=
   hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _
 
 /- English proof (translation)
-Establish `h : HasSubst (fun p : Fin 2 × Fin 1 => ![a, b] p.1 p.2)` using `hasSubst_of_constantCoeff_zero fun ⟨j, i⟩ => by`. Take `rfl` from `Subsingleton.elim i 0`. Use `fin_cases j`. Use `exacts [ha, hb]`. Rewrite using `[ev, toTwoPoints, subst_comp_subst_apply hasSubst_twoPoints h]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[subst_X h]`. Apply the tactic sequence `fin_cases j <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ev_toTwoPoints (F : MvPowerSeries (Fin 2) R) {n : ℕ} {a b : Pt R n 1}
     (ha : constantCoeff (a 0) = 0) (hb : constantCoeff (b 0) = 0) :
@@ -260,7 +260,7 @@ abbrev seriesCurve (σ : Type*) : WeierstrassCurve.Projective (MvPowerSeries σ 
 def point (s : MvPowerSeries σ R) : Fin 3 → MvPowerSeries σ R := ![s, -1, (wSer W).subst s]
 
 /- English proof (translation)
-Use `(WeierstrassCurve.map_map W _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Use `ext1 r`. Simplify using `[coe_substAlgHom, subst_C]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_substAlgHom {τ : Type*} {a : τ → MvPowerSeries σ R} (ha : HasSubst a) :
     (seriesCurve W τ).map (substAlgHom (R := R) ha : MvPowerSeries τ R →+* MvPowerSeries σ R) =
@@ -271,7 +271,7 @@ theorem map_substAlgHom {τ : Type*} {a : τ → MvPowerSeries σ R} (ha : HasSu
   simp [coe_substAlgHom, subst_C]
 
 /- English proof (translation)
-Rewrite using `[point, comp_fin3, point, map_neg, map_one]`. Simplify using `only [RingHom.coe_coe, coe_substAlgHom, Fgl2.mvsubst_psubst hs ha]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem substAlgHom_comp_point {τ : Type*} {a : τ → MvPowerSeries σ R} (ha : HasSubst a)
     {s : MvPowerSeries τ R} (hs : PowerSeries.HasSubst s) :
@@ -281,9 +281,9 @@ theorem substAlgHom_comp_point {τ : Type*} {a : τ → MvPowerSeries σ R} (ha 
   simp only [RingHom.coe_coe, coe_substAlgHom, Fgl2.mvsubst_psubst hs ha]
 
 /- English proof (translation)
-Establish `h` using `congrArg (PowerSeries.substAlgHom (R := R) hs) (w_eq W)`. Simplify using `only [map_add, map_mul, map_pow, PowerSeries.substAlgHom_X] at h`. Simplify using `only [PowerSeries.coe_substAlgHom, PowerSeries.subst_C] at h`. Rewrite using `[equation_iff]`. Simplify using `only [point, fin3_def_ext, WeierstrassCurve.map]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem equation_point {s : MvPowerSeries σ R} (hs : PowerSeries.HasSubst s) :
     (seriesCurve W σ).Equation (point W s) := by
@@ -295,11 +295,11 @@ theorem equation_point {s : MvPowerSeries σ R} (hs : PowerSeries.HasSubst s) :
   linear_combination h
 
 /- English proof (translation)
-Establish `h₁` using `congrArg (PowerSeries.substAlgHom (R := R) hs) (inv_mul_den W)`. Establish `h₂` using `congrArg (PowerSeries.substAlgHom (R := R) hs) (w_inv_mul_den W)`. Simplify using `only [map_add, map_mul, map_neg, map_one, PowerSeries.substAlgHom_X] at h₁ h₂`. Simplify using `only [PowerSeries.coe_substAlgHom, PowerSeries.subst_C, PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' (coeff_inv W).1) hs] at h₁ h₂`. Use `ext1 i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `fin_cases i`. Simplify using `[point, neg]`. Take the linear combination `-h₁`. Simplify using `[point, neg, negY]`. Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `[point, neg]`. Take the linear combination `-h₂`.
+A detailed English derivation is pending.
 -/
 theorem neg_point {s : MvPowerSeries σ R} (hs : PowerSeries.HasSubst s) :
     (seriesCurve W σ).neg (point W s) =
@@ -319,11 +319,11 @@ theorem neg_point {s : MvPowerSeries σ R} (hs : PowerSeries.HasSubst s) :
     linear_combination -h₂
 
 /- English proof (translation)
-Take `⟨h0, hw, h3, hF⟩` from `third_point W`. Establish `hu : IsUnit (cThree W)`. Rewrite using `[isUnit_iff_constantCoeff, Fgl1.cThree_cc W]`. Conclude with `isUnit_one`. Establish `hA' : A = -N * uThird W` using `hu.mul_left_cancel (by linear_combination hA + N * h3)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ![A, N, Z] = -N • point W (uThird W)` using `by ext1 i fin_cases i`. Simplify using `[point, hA']`. Simplify using `[point]`. Simplify using `[point, hw, hZ, hA']`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(seriesCurve W (Fin 2)).neg ![A, N, Z] = _`. Rewrite using `[e, Projective.neg_smul, neg_point W (.of_constantCoeff_zero h0), smul_smul, hw, ← hF]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem neg_eq_smul_point {A N Z : MvPowerSeries (Fin 2) R}
     (hZ : Z = lam W * A - nu W * N)
@@ -348,9 +348,9 @@ theorem neg_eq_smul_point {A N Z : MvPowerSeries (Fin 2) R}
   rfl
 
 /- English proof (translation)
-Establish `e : (wSer W).subst (X 0 : MvPowerSeries (Fin 2) R) + lam W * (X 1 - X 0) = (wSer W).subst (X 1 : MvPowerSeries (Fin 2) R)`. Rewrite using `[chord W 0, chord W 1]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `sub_mul_originD (equation_point W (s := (X 0 : MvPowerSeries (Fin 2) R)) (.of_constantCoeff_zero (by simp))) (equation_point W (s := (X 1 : MvPowerSeries (Fin 2) R)) (.of_constantCoeff_zero (by simp)))`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `sub_eq_zero.mp (Fgl1.sub_cancel ?_)` and prove the remaining obligations. Take the linear combination `h + originD (seriesCurve W (Fin 2)) ((wSer W).subst (X 0 : MvPowerSeries (Fin 2) R)) (X 1) ((wSer W).subst (X 1 : MvPowerSeries (Fin 2) R)) * e`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem originN_eq : originN (seriesCurve W (Fin 2)) (X 0)
       ((wSer W).subst (X 0 : MvPowerSeries (Fin 2) R)) (X 1) =
@@ -369,15 +369,15 @@ theorem originN_eq : originN (seriesCurve W (Fin 2)) (X 0)
     ((wSer W).subst (X 1 : MvPowerSeries (Fin 2) R)) * e
 
 /- English proof (translation)
-Establish `e : (wSer W).subst (X 1 : MvPowerSeries (Fin 2) R) = (wSer W).subst (X 0 : MvPowerSeries (Fin 2) R) + lam W * (X 1 - X 0)`. Rewrite using `[chord W 0, chord W 1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : (wSer W).subst (X 0 : MvPowerSeries (Fin 2) R) - lam W * X 0 = nu W` using `rfl`. Establish `h₀` using `equation_point W (s := (X 0 : MvPowerSeries (Fin 2) R)) (.of_constantCoeff_zero (by simp))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : lineCubicCoeff (seriesCurve W (Fin 2)) (lam W) 1 = cThree W`. Simplify using `[lineCubicCoeff, cThree]`. Establish `h2 : lineQuadCoeff (seriesCurve W (Fin 2)) (lam W) (nu W) 1 = cTwo W`. Simplify using `[lineQuadCoeff, cTwo]`. Establish `a₁` using `addZ_line (W := seriesCurve W (Fin 2)) (X 0) ((wSer W).subst (X 0 : MvPowerSeries (Fin 2) R)) (X 1) (lam W)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `a₂` using `negAddY_line h₀ (originN_eq W)`. Establish `d₁` using `diagZ_line h₀ (originN_eq W)`. Establish `d₂` using `negDiagY_line h₀ (originN_eq W)`. Rewrite `a₁`, `a₂`, `d₁`, `d₂` using `[hn, ← e]`. Rewrite `a₂`, `d₂` using `[h2, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨⟨_, neg_eq_smul_point W a₁ a₂⟩, _, ?_, neg_eq_smul_point W d₁ d₂⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_constantCoeff, map_mul, map_neg, Fgl1.dd_cc W]`. Establish `hN : constantCoeff (negDiagY (seriesCurve W (Fin 2)) ![X 0, -1, (wSer W).subst (X 0 : MvPowerSeries (Fin 2) R)] ![X 1, -1, (wSer W).subst (X 1 : MvPowerSeries (Fin 2) R)]) = -1`. Rewrite using `[← map_negDiagY, comp_fin3, comp_fin3, Fgl1.Wi_cc W 0, Fgl1.Wi_cc W 1]`. Simplify using `[negDiagY]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [point, hN]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem addXYZ_diagXYZ_point_X :
     (∃ c : MvPowerSeries (Fin 2) R, (seriesCurve W (Fin 2)).addXYZ (point W (X 0)) (point W (X 1)) = c • point W (fgl W)) ∧
@@ -411,11 +411,11 @@ theorem addXYZ_diagXYZ_point_X :
   simp
 
 /- English proof (translation)
-Apply the tactic sequence `have h : HasSubst ![s, t] := hasSubst_of_constantCoeff_nilpotent fun i => by fin_cases i <;> simpa`. Take `⟨⟨c, hc⟩, d, hd, hd'⟩` from `addXYZ_diagXYZ_point_X W`. Use `set φ := (substAlgHom (R := R) h : MvPowerSeries (Fin 2) R →+* MvPowerSeries σ R) with hφ`. Establish `hX : ∀ i, φ ∘ point W (X i) = point W (![s, t] i)` using `fun i => by`. Rewrite using `[hφ, substAlgHom_comp_point W h (.of_constantCoeff_zero (by simp)), subst_X h]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF : ∀ c : MvPowerSeries (Fin 2) R, φ ∘ (c • point W (fgl W)) = φ c • point W ((fgl W).subst ![s, t])` using `fun c => by`. Rewrite using `[← substAlgHom_comp_point W h (.of_constantCoeff_zero (Fgl1.fgl_cc W))]`. Conclude with `funext fun i => map_mul φ _ _`. Establish `e₁` using `map_addXYZ (W' := seriesCurve W (Fin 2)) φ (point W (X 0)) (point W (X 1))`. Establish `e₂` using `map_diagXYZ (W := seriesCurve W (Fin 2)) φ (point W (X 0)) (point W (X 1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e₁` using `[hc, hF, hX, hX]`. Rewrite `e₂` using `[hd', hF, hX, hX]`. Rewrite using `[← map_substAlgHom W h]`. Conclude with `⟨⟨_, e₁⟩, _, hd.map φ, e₂⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem addXYZ_diagXYZ_point {s t : MvPowerSeries σ R} (hs : PowerSeries.HasSubst s)
     (ht : PowerSeries.HasSubst t) :
@@ -442,9 +442,9 @@ theorem addXYZ_diagXYZ_point {s t : MvPowerSeries σ R} (hs : PowerSeries.HasSub
 variable {K : Type v} [Field K] (φ : MvPowerSeries σ R →+* K)
 
 /- English proof (translation)
-Establish `h` using `congrArg (φ ∘ PowerSeries.substAlgHom (R := R) hs) (fw_mul_om W)`. Simplify using `only [Function.comp_apply, fw, map_sub, map_mul, map_pow, map_one, map_ofNat, PowerSeries.substAlgHom_X] at h`. Simplify using `only [PowerSeries.coe_substAlgHom, PowerSeries.subst_C] at h`. Use `(nonsingular_iff _).mpr ⟨(equation_point W hs).map φ, Or.inr (Or.inr fun h' => ?_)⟩` and prove the remaining obligations. Simplify using `only [point, comp_fin3, fin3_def_ext, WeierstrassCurve.map, map_neg, map_one] at h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `one_ne_zero (α := K) (by linear_combination -h + φ ((om W).subst s) * h')`.
+A detailed English derivation is pending.
 -/
 theorem nonsingular_point {s : MvPowerSeries σ R} (hs : PowerSeries.HasSubst s) :
     ((seriesCurve W σ).map φ).Nonsingular (φ ∘ point W s) := by
@@ -457,11 +457,11 @@ theorem nonsingular_point {s : MvPowerSeries σ R} (hs : PowerSeries.HasSubst s)
   exact one_ne_zero (α := K) (by linear_combination -h + φ ((om W).subst s) * h')
 
 /- English proof (translation)
-Take `⟨-, c, hc, e⟩` from `addXYZ_diagXYZ_point W hs ht`. Establish `e' : diagXYZ ((seriesCurve W σ).map φ) (φ ∘ point W s) (φ ∘ point W t) = φ c • φ ∘ point W ((formalGroup W).toPowerSeries.subst ![s, t])`. Rewrite using `[map_diagXYZ, e]`. Use `ext1 i`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `diagXYZ_equiv_add (nonsingular_point W φ hs) (nonsingular_point W φ ht) (by`. Rewrite using `[e']`. Introduce `h0`. Use `congrFun h0 1` as an intermediate fact. Simplify using `[point, (hc.map φ).ne_zero] at this)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[e']`. Conclude with `Setoid.trans (Setoid.symm (smul_equiv _ (hc.map φ))) h`.
+A detailed English derivation is pending.
 -/
 theorem point_subst_equiv_add {s t : MvPowerSeries σ R} (hs : PowerSeries.HasSubst s)
     (ht : PowerSeries.HasSubst t) :
@@ -494,13 +494,13 @@ open MvPowerSeries
 variable {R : Type u} [CommRing R]
 
 /- English proof (translation)
-Use `set W : WeierstrassCurve R := ⟨a, 0, 0, 0, 0⟩ with hW`. Establish `hw : ∀ i : Fin 2, (lam W * X i + nu W) * (1 - C a * X i) = X i ^ 3` using `fun i => by`. Establish `h` using `(WeierstrassCurve.Projective.equation_iff _).mp (equation_point W (s := (X i : MvPowerSeries (Fin 2) R)) (.of_constantCoeff_zero (by simp)))`. Simplify using `only [point, WeierstrassCurve.Projective.fin3_def_ext, WeierstrassCurve.map, chord W i] at h`. Simplify using `only [hW, map_zero] at h ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h`. Establish `hl : lam W * ((1 - C a * X 0) * (1 - C a * X 1)) = X 0 ^ 2 + X 0 * X 1 + X 1 ^ 2 - C a * X 0 * X 1 * (X 0 + X 1)` using `sub_eq_zero.mp (Fgl1.sub_cancel (by`. Take the linear combination `(1 - C a * X 1) * hw 0 - (1 - C a * X 0) * hw 1))`. Establish `h3 : X 0 + X 1 + uThird W + C a * lam W = 0`. Simplify `(third_point W).2.2.1` using `[cThree, cTwo, hW]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hd : Fgl1.dd W * invOfUnit (Fgl1.dd W) (-1) = 1` using `mul_invOfUnit _ _ (by rw [Fgl1.dd_cc]; simp)`. Establish `hd' : Fgl1.dd W = -1 + C a * uThird W` using `by simp [Fgl1.dd, hW]`. Establish `key : uThird W = (X 0 + X 1 - C a * X 0 * X 1) * Fgl1.dd W`. Rewrite using `[hd']`. Take the linear combination `(1 - C a * X 0) * (1 - C a * X 1) * h3 - C a * hl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `uThird W * invOfUnit (Fgl1.dd W) (-1) = _`. Take the linear combination `invOfUnit (Fgl1.dd W) (-1) * key + (X 0 + X 1 - C a * X 0 * X 1) * hd`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem formalGroup_singular (a : R) :
     (formalGroup (⟨a, 0, 0, 0, 0⟩ : WeierstrassCurve R)).toPowerSeries =
@@ -528,25 +528,25 @@ theorem formalGroup_singular (a : R) :
   linear_combination invOfUnit (Fgl1.dd W) (-1) * key + (X 0 + X 1 - C a * X 0 * X 1) * hd
 
 /- English proof (translation)
-The claim follows from `FormalGroup.ext (by simp [formalGroup_singular, -formalGroup_toPowerSeries])`.
+A detailed English derivation is pending.
 -/
 example : formalGroup (⟨0, 0, 0, 0, 0⟩ : WeierstrassCurve R) = FormalGroup.𝔾ₐ :=
   FormalGroup.ext (by simp [formalGroup_singular, -formalGroup_toPowerSeries])
 
 /- English proof (translation)
-The claim follows from `FormalGroup.ext (by simp [formalGroup_singular, -formalGroup_toPowerSeries])`.
+A detailed English derivation is pending.
 -/
 example : formalGroup (⟨-1, 0, 0, 0, 0⟩ : WeierstrassCurve R) = FormalGroup.𝔾ₘ :=
   FormalGroup.ext (by simp [formalGroup_singular, -formalGroup_toPowerSeries])
 
 /- English proof (translation)
-Rewrite using `[(w_eq_X_pow_mul _).1, PowerSeries.coeff_X_pow_mul' _ 3 4, if_pos (by norm_num), coeff_one_wU]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example : PowerSeries.coeff 4 (wSer (⟨1, 0, 1, -1, 0⟩ : WeierstrassCurve ℤ)) = 1 := by
   rw [(w_eq_X_pow_mul _).1, PowerSeries.coeff_X_pow_mul' _ 3 4, if_pos (by norm_num), coeff_one_wU]
 
 /- English proof (translation)
-Simplify using `[xL, yL, uPow, HahnSeries.coeff_single_mul, PowerSeries.coeff_coe, (wSerFactor R W).2.2.2.1, (wSerFactor R W).2.2.2.2]`.
+Simplify using the standard rewrite rules.
 -/
 example (W : WeierstrassCurve R) : (xL W).coeff (-2) = 1 ∧ (yL W).coeff (-3) = -1 := by
   simp [xL, yL, uPow, HahnSeries.coeff_single_mul, PowerSeries.coeff_coe,

@@ -5,7 +5,7 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-The claim follows from `sigOK_of wittLBlt wittLBeq`.
+A detailed English derivation is pending.
 -/
 theorem sigOK : SigOK := sigOK_of wittLBlt wittLBeq
 

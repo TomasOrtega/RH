@@ -7,11 +7,11 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlice
 open NumberField
 
 /- English proof (translation)
-Introduce `E _ _ _ S n ρ C hC`. Take `⟨B, hB⟩` from `far E n C hC`. Take `⟨D₀, hfin, hD₀⟩` from `nearDat E S n ρ B`. Use `⟨{d ∈ D₀ | 2 ≤ d.len}, hfin.subset (Set.sep_subset _ _), fun d hd => hd.2, ?_⟩` and prove the remaining obligations. Introduce `φ w F G hφ hSφ hw hK hSw hF hD hG hsum`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(langlands E S n ρ w hw hK hSw).2 ?_` and prove the remaining obligations. Introduce `k d hd hlen`. Use `killComp E S n C φ w F G hC hφ hSφ hw hF hG hsum k d ?_` and prove the remaining obligations. Distinguish the cases in `hfar : ∃ τ i, B < ‖d.lam τ i‖`. Conclude with `Or.inr fun ψ hψ hSψ => hB S d ψ hψ hSψ hfar`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the second alternative.
 
-Use `push_neg at hfar`. Take `⟨d', hd', hl, hk⟩` from `hD₀ d hd hfar`. Conclude with `Or.inl (hk F hF (hD d' ⟨hd', hl ▸ hlen⟩))`.
+Extract witnesses or component facts from the available result. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.BW.funKill :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.FunKill E := by

@@ -13,15 +13,15 @@ noncomputable section
 namespace GlobalTheory.Mem.Col2.TC
 
 /- English proof (translation)
-Introduce `B X I hok l Z L hT Gi Gl K Y cX ex t hS`. Take `⟨hX, hseam, hPr, hCh, hsel, hSS, hword, htup, hcst, hidx, hm2, hglob, hamb, hδ, hO⟩` from `hS`. Consider the cases of `t`. Simplify using `only at *`. Substitute `hX` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality.
 
-Consider the cases of `hseam`. Substitute `hSS` using the available equality. Consider the cases of `htup`. Use `⟨(QuotientGroup.mk' (KDq B.host I.SQ)).comp (finIdele (afIso B.host.F B.host.E)), ⟨fun y => ?_, fun k z hz => ?_⟩, fun μ _ _ => ⟨tildeQ B.host I.SQ (I.xi μ), fun x => ?_, fun u => ?_⟩⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective (show DtQ B.host I.SQ from y)`.
+Split into cases according to the possible forms of the given data. Substitute using the available equality. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨finAf B.host.F B.host.E a, ?_⟩` and prove the remaining obligations. Conclude with `mk_eq_of_snd_eq B.host I.SQ (afIso_finAf B.host.F B.host.E a)`. Establish `hz' : (show B.host.E from z.1) * B.host.conj (k : B.host.E) = k` using `hz show (QuotientGroup.mk (finIdele (afIso B.host.F B.host.E) (ratId B.host.F B.host.E k)) : DtQ B.host I.SQ) = e1Q B.host I.SQ z`. Rewrite using `[← isUnitaryPointsMap_unitaryRationalPointsFiner B.host I.SQ k z hz']`. Use `mk_eq_of_snd_eq B.host I.SQ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show afIso B.host.F B.host.E ((k : B.host.E) ⊗ₜ[B.host.F] 1) = _`. Rewrite using `[afIso_tmul_one]`. Both sides reduce to the same expression. Establish `hk : KDq B.host I.SQ ≤ ((I.xi μ).1.comp (finPartI B.host.E)).ker` using `(KDq_anti B.host (I.Q_subset_SQ μ)).trans ((GlobalTheory.Mem.LevTwist.levOk_twists B X I hok).2.2 μ).1 show tildeQ B.host I.SQ (I.xi μ) (QuotientGroup.mk (finIdele (afIso B.host.F B.host.E) x)) = _`. Rewrite using `[tildeQ_mk B.host I.SQ hk, finPartI_eq_self fun _ => rfl]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Units.ext ((hok.xi_reads μ).apply _ x rfl)`. Rewrite using `[hO.mt u μ]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mtTwTie_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (t : KerEntTied ex), I.StdKer l Z t → t.MtTwTie := by
   intro B X I hok l Z L hT Gi Gl K Y cX ex t hS

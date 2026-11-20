@@ -20,23 +20,21 @@ open scoped ComplexOrder
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Establish `hθ` using `hB.frame.vac.2.inf`. Establish `hS` using `fun τ => GlobalTheory.FockBasis.isCartanInv_one (onb_posDef (hB.frame.onbS τ))`. Establish `hT` using `hB.frame.cartT`. Establish `one : ∀ τ, compAt B.F.θ τ (Formalism.L2.Theta.mt T 1) = 1` using `fun τ => GlobalTheory.PointAtPlaceHom.infMat_one T _`. Establish `hpq : ∀ τ, B.w.p τ + B.w.q τ = T.rank` using `fun τ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, -⟩` from `hB.sigOK (tauE D τ)`. Rewrite `e` using `[← hB.sig τ]`. Simplify using `using (Fintype.card_congr e).symm`. Take `⟨x, hx, hxv⟩` from `exists_root hθ S (fun τ => by`. Use `(hS τ).2.2.det_pos.ne'` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_one] at this) u hu` and apply the resulting hypothesis. Establish `hy : IsDetRoot T 1 1` using `by show _ = _`. Rewrite using `[Units.val_one, RingHom.map_one, mul_one]`. Conclude with `(Matrix.det_one).symm`. Use `choose p hp hd using fun τ => detPlus_one (n := S.rank) (B.F.sT τ) (hT τ).1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ep : ∀ τ, p τ = B.w.p τ` using `fun τ => by`. Establish `h1` using `hB.frame.onbT τ`. Rewrite `h1` using `[← hB.sig τ]`. Establish `h2` using `(onb_laws h1 (hpq τ ▸ Nat.le_add_right _ _)).2`. Rewrite `h2` using `[hp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (p τ : ℂ) = B.w.p τ` using `by linear_combination h2 / 2`. Conclude with `h3` after adjusting the coercions. Rewrite using `[GlobalTheory.T.weilDatum_realPlaces_fockVacuum_character D B.F.ψ hω.std S T B.F.θ hθ _ _ ω B.eta hB.eta hω (fun _ => 1) B.F.sT hS hT u hu 1 (one_mem _) (fun τ => by rw [one_mul, mul_one]) (fun τ => by rw [one, one_mul, mul_one]) x 1 hx hy f hf hv]`. Use `congr 1`. Establish `hexp : ∀ τ, HasInfExp D (χ * B.eta⁻¹ * (B.eta ^ T.rank)⁻¹) τ ((B.w.c τ - p τ : ℤ) : ℚ)` using `fun τ => by`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h1` using `hasInfExp_twist (hasInfExp_twist (hχ τ) (hB.eta.2.2.2 τ) 1) (hB.eta.2.2.2 τ) T.rank`. Rewrite `h1` using `[pow_one]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← hpq τ, ep]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[MonoidHom.map_one, mul_one, Circle.coe_inv, hxv _ _ hexp, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, Units.val_inv_eq_inv_val]`. Simplify using `only [detFam, MonoidHom.coe_mk, OneHom.coe_mk, Units.coe_prod, Units.val_zpow_eq_zpow_val, GeneralLinearGroup.val_det_apply]`. Rewrite using `[← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `inv` using `congrArg Matrix.det (GlobalTheory.OrientedHeis.compAt_mt_mul_inv (θ := B.F.θ) τ u)`. Rewrite `inv` using `[Matrix.det_mul, Matrix.det_one]`. Establish `g0` using `left_ne_zero_of_mul_eq_one inv`. Rewrite using `[one, (hd τ _ 1 (by rw [one_mul, mul_one])).1, eq_inv_of_mul_eq_one_right inv, mul_one, ← smul_add, add_add_sub_cancel, ← two_smul ℂ, smul_smul, show (1 / 2 * 2 : ℂ) = 1 by norm_num, one_smul, Matrix.det_one, one_pow, one_mul, show (realGL B.F.θ S u τ).val = compAt B.F.θ τ (Forma …`. Use `pow_ne_zero (p τ) g0` as an intermediate fact.
-
-Use `zpow_ne_zero (B.w.c τ) g0` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem om_vac_of {B : Base S T} {χ : (AE D)ˣ →* Circle} {ω : PairRep S T} (hB : B.Good)
     (hω : IsWeilDatumO B.F.ψ S T χ (χ * B.eta⁻¹) ω)
@@ -95,11 +93,11 @@ theorem om_vac_of {B : Base S T} {χ : (AE D)ˣ →* Circle} {ω : PairRep S T} 
   field_simp
 
 /- English proof (translation)
-Establish `hθ` using `hB.frame.vac.2.inf`. Establish `hBS` using `fun τ => onb_posDef (hB.frame.onbS τ)`. Establish `one : ∀ τ, compAt B.F.θ τ (Formalism.L2.Theta.mt T 1) = 1` using `fun τ => GlobalTheory.PointAtPlaceHom.infMat_one T _`. Establish `eu : ∀ τ, (inBasis B.F.BS (realGL B.F.θ S u) τ).val = (B.F.BS τ).val⁻¹ * compAt B.F.θ τ (Formalism.L2.Theta.mt S u) * (B.F.BS τ).val` using `fun τ => by`. Rewrite using `[← Matrix.coe_units_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hle : ∀ τ, B.w.p τ ≤ T.rank` using `fun τ => by`. Take `⟨e, -⟩` from `hB.sigOK (tauE D τ)`. Rewrite `e` using `[← hB.sig τ]`. Use `Fintype.card_congr e` as an intermediate fact.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Fintype.card_fin, Fintype.card_sum] at this`. Use linear arithmetic over natural numbers and integers. Unfold `Frame.fock`. Rewrite using `[(GlobalTheory.OrientedHeis.om_pureTensorO D _ _ S T _ _ ω hω hθ (fun _ => 1) (fun _ => 1) (fun τ => (B.F.BS τ).val) (fun τ => (B.F.BS τ).val * (inBasis B.F.BS (realGL B.F.θ S u) τ).val) B.F.sT B.F.sT B.F.BT B.F.BT u 1 (fun τ => by rw [Matrix.one_mul, Matrix.mul_one]) (fun τ => b …`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem om_fock_of {B : Base S T} {χ : (AE D)ˣ →* Circle} {ω : PairRep S T} (hB : B.Good)
     (hω : IsWeilDatumO B.F.ψ S T χ (χ * B.eta⁻¹) ω)
@@ -134,13 +132,13 @@ theorem om_fock_of {B : Base S T} {χ : (AE D)ˣ →* Circle} {ω : PairRep S T}
 end Vac
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R j t B hP hB hψ hθ hsT hBS hBT heta hχ u hu P`. Establish `hfock : ∀ Q, R.ptP j t Q = B.F.fock (R.vP j t) Q` using `fun Q => by`. Unfold `RealDat.ptP`. Rewrite using `[Frame.fock, hψ, hθ, hsT, hBT, funext hBS]`. Establish `hf : IsThetaFunO B.F.ψ (Vc D j) (Wc D j) (R.vP j t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hP.pt_theta j t 1` as an intermediate fact. Unfold `RealDat.ptP pureTensorO at this`. Rewrite `this` using `[GlobalTheory.AdTh.VecFock.pureTensorL_one]`. Rewrite using `[hψ]` and apply the resulting hypothesis. Establish `hv : ∀ τ, IsFockVacAt (heisO B.F.ψ (Vc D j) (Wc D j)) B.F.θ τ (cplxO 1 (B.F.sT τ)) (R.vP j t)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[hψ, hθ, hsT]`. Rewrite `hf` using `[hψ]`. Conclude with `GlobalTheory.DatumFock.isFockVacAt_thPVec _ _ _ _ (fun _ => 1) _ _ _ _ _ _ _ _ _ _ (hP.vP j t) hf`. Establish `hω : IsWeilDatumO B.F.ψ (Vc D j) (Wc D j) (R.toLevCh.mu t ((j : ℕ) + 1)) (R.toLevCh.mu t ((j : ℕ) + 1) * B.eta⁻¹) (R.ωP j t)`. Rewrite using `[hψ, heta]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP.ωP j t`. Rewrite using `[hfock, hfock]`. Conclude with `GlobalTheory.RealFockActionP.om_fock_of hB hω hχ hf hv hu P`.
+A detailed English derivation is pending.
 -/
 theorem om_fock_vP : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (j : Fin D.R.m) (t : T0) (B : Base (Vc D j) (Wc D j)), R.IsThP → B.Good → B.F.ψ = R.ψ → B.F.θ = R.θ → B.F.sT = cart (R.MW j (sg0 D A)) → (∀ τ, (B.F.BS τ).val = R.BV j τ) → B.F.BT = onb (R.MW j (sg0 D A)) → B.eta = R.eta → (∀ τ, HasInfExp D (R.toLevCh.mu t ((j : ℕ) + 1)) τ ((B.w.c τ : ℚ) - ((B.w.p τ : ℚ) - B.w.q τ) / 2 + 1 / 2)) → ∀ u ∈ GinfC (Vc D j), ∀ P, R.ωP j t (u, 1) (R.ptP j t P) = R.ptP j t (B.act u P) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R j t B hP hB hψ hθ hsT hBS hBT heta hχ u hu P

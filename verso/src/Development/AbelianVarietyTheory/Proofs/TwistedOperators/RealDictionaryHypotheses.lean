@@ -41,7 +41,7 @@ def Good (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (T : ℝ → Module.End �
     ∀ w, HasDerivAt (fun t => thetaSum F (M.co.rho ψ w (T t Φ))) (thetaSum F (M.co.rho ψ w Φ')) 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_add (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (w : Matrix (Fin n) (Fin d) (AE F E))
     (a b : (Fin n × Fin d → AF F) → ℂ) : M.co.rho ψ w (a + b) = M.co.rho ψ w a + M.co.rho ψ w b := by
@@ -49,7 +49,7 @@ theorem rho_add (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (w : Matrix (Fin n
   simp [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_smul (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (w : Matrix (Fin n) (Fin d) (AE F E)) (c : ℂ)
     (a : (Fin n × Fin d → AF F) → ℂ) : M.co.rho ψ w (c • a) = c • M.co.rho ψ w a := by
@@ -58,7 +58,7 @@ theorem rho_smul (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (w : Matrix (Fin 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_zero (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (w : Matrix (Fin n) (Fin d) (AE F E)) :
     M.co.rho ψ w (0 : (Fin n × Fin d → AF F) → ℂ) = 0 := by
@@ -66,7 +66,7 @@ theorem rho_zero (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (w : Matrix (Fin 
   simp [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]
 
 /- English proof (translation)
-Rewrite using `[rho_add]`. Unfold `GlobalTheory.WeilM.thetaSum`. Conclude with `(GlobalTheory.WeilM.summable_of_mem_schA F (GlobalTheory.HeisSchA.rho_mem_schA M ψ hψ w _ ha)).tsum_add (GlobalTheory.WeilM.summable_of_mem_schA F (GlobalTheory.HeisSchA.rho_mem_schA M ψ hψ w _ hb))`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem theta_add (M : Model σ Y Wd) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (w : Matrix (Fin n) (Fin d) (AE F E))
     {a b : (Fin n × Fin d → AF F) → ℂ} (ha : a ∈ schA F (Fin n × Fin d)) (hb : b ∈ schA F (Fin n × Fin d)) :
@@ -77,7 +77,7 @@ theorem theta_add (M : Model σ Y Wd) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ)
     (GlobalTheory.WeilM.summable_of_mem_schA F (GlobalTheory.HeisSchA.rho_mem_schA M ψ hψ w _ hb))
 
 /- English proof (translation)
-Rewrite using `[rho_smul]`. Unfold `GlobalTheory.WeilM.thetaSum`. Simplify using `only [Pi.smul_apply, smul_eq_mul, tsum_mul_left]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem theta_smul (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (w : Matrix (Fin n) (Fin d) (AE F E)) (c : ℂ)
     (a : (Fin n × Fin d → AF F) → ℂ) : thetaSum F (M.co.rho ψ w (c • a)) = c * thetaSum F (M.co.rho ψ w a) := by
@@ -86,7 +86,7 @@ theorem theta_smul (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (w : Matrix (Fi
   simp only [Pi.smul_apply, smul_eq_mul, tsum_mul_left]
 
 /- English proof (translation)
-Use `⟨Submodule.zero_mem _, 0, Submodule.zero_mem _, fun x => ?_, fun w => ?_⟩` and prove the remaining obligations. Simplify using `only [map_zero, Pi.zero_apply]`. Conclude with `hasDerivAt_const _ _`. Simplify using `only [map_zero, rho_zero, GlobalTheory.WeilM.thetaSum, Pi.zero_apply, tsum_zero]`. Conclude with `hasDerivAt_const (0 : ℝ) (0 : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_zero (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (T : ℝ → Module.End ℂ ((Fin n × Fin d → AF F) → ℂ)) :
     Good M ψ T 0 := by
@@ -97,9 +97,9 @@ theorem good_zero (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (T : ℝ → Mod
     exact hasDerivAt_const (0 : ℝ) (0 : ℂ)
 
 /- English proof (translation)
-Take `⟨ha, a', ha', hpa, hta⟩` from `ha`. Take `⟨hb, b', hb', hpb, htb⟩` from `hb`. Use `⟨Submodule.add_mem _ ha hb, a' + b', Submodule.add_mem _ ha' hb', fun x => ?_, fun w => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Pi.add_apply]`. Conclude with `(hpa x).add (hpb x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : (fun t => thetaSum F (M.co.rho ψ w (T t (a + b)))) = fun t => thetaSum F (M.co.rho ψ w (T t a)) + thetaSum F (M.co.rho ψ w (T t b))`. Use function extensionality and compare the values at `t`. Rewrite using `[map_add, theta_add M hψ w (hT t a ha) (hT t b hb)]`. Rewrite using `[e, theta_add M hψ w ha' hb']`. Conclude with `(hta w).add (htb w)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_add (M : Model σ Y Wd) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ)
     {T : ℝ → Module.End ℂ ((Fin n × Fin d → AF F) → ℂ)} (hT : ∀ t, ∀ Φ ∈ schA F (Fin n × Fin d), T t Φ ∈ schA F _)
@@ -117,9 +117,7 @@ theorem good_add (M : Model σ Y Wd) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ)
     exact (hta w).add (htb w)
 
 /- English proof (translation)
-Take `⟨ha, a', ha', hpa, hta⟩` from `ha`. Use `⟨Submodule.smul_mem _ c ha, c • a', Submodule.smul_mem _ c ha', fun x => ?_, fun w => ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `(hpa x).const_mul c`. Simplify using `only [map_smul, theta_smul]`.
-
-Conclude with `(hta w).const_mul c`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_smul (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ)
     (T : ℝ → Module.End ℂ ((Fin n × Fin d → AF F) → ℂ)) (c : ℂ)
@@ -132,11 +130,11 @@ theorem good_smul (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ)
     exact (hta w).const_mul c
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Use `replace hg := GlobalTheory.SBSpan.mem_span_restrictedProd F _ g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `zero => rw [show pureA F f 0 = 0 from funext fun _ => mul_zero _]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `N.zero_mem`. Consider the case `add a b _ _ ha hb`. Rewrite using `[show pureA F f (a + b) = pureA F f a + pureA F f b from funext fun _ => mul_add _ _ _]`. Conclude with `N.add_mem ha hb`. Consider the case `smul c a _ ha`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show pureA F f (c • a) = c • pureA F f a from funext fun _ => mul_left_comm _ _ _]`. Conclude with `N.smul_mem c ha`. Consider the case `mem p hp`. Take `⟨φ, hφ, hs, rfl⟩` from `hp`. Conclude with `h f φ hφ hs`.
+A detailed English derivation is pending.
 -/
 theorem schA_le_of_pure {κ : Type} [Fintype κ] {N : Submodule ℂ ((κ → AF F) → ℂ)}
     (h : ∀ (f : SInf F κ) (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ), (∀ v, φ v ∈ SB (κ → Fv F v)) →
@@ -156,13 +154,13 @@ theorem schA_le_of_pure {κ : Type} [Fintype κ] {N : Submodule ℂ ((κ → AF 
     exact h f φ hφ hs
 
 /- English proof (translation)
-Establish `hv : ∀ᶠ v in cofinite, φ v = M.vac v` using `(hs.and hG.std).mono fun v h => h.1.trans h.2.symm`. Take `⟨c, g, hc, hlim⟩` from `GlobalTheory.T.weil_model_good_line_action hPr M ψ χX χW om hcm hψ hG hW γ hγ f φ hφ hv`. Use `⟨GlobalTheory.TensUniq.pure_mem_schA f φ hφ hs, pure g φ, GlobalTheory.TensUniq.pure_mem_schA g φ hφ hs, fun x => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `ev : Continuous fun s : SInf F (Fin n × Fin d) => s (fun j => evI F (x j))`. Establish `h1` using `(SchwartzMap.toBoundedContinuousFunctionCLM ℂ (Fin n × Fin d → mixedEmbedding.mixedSpace F) ℂ).continuous`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(continuous_eval_const (F := BoundedContinuousFunction (Fin n × Fin d → mixedEmbedding.mixedSpace F) ℂ) (fun j => evI F (x j))).comp h1`. Simplify using `only [hc]`. Rewrite using `[hasDerivAt_iff_tendsto_slope]`. Use `(((ev.tendsto g).comp hlim).mul_const (∏ᶠ v, φ v fun j => evFin F v (x j))).congr' (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Rewrite using `[slope_def_module]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.smul_apply, SchwartzMap.sub_apply, sub_zero, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨Λ, hΛ⟩` from `GlobalTheory.ThetaHeisCLM.exists_clm_thetaSum_rho_pure M ψ hψ hG w φ hφ hv`. Simplify using `only [hc, hΛ]`. Rewrite using `[hasDerivAt_iff_tendsto_slope]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `((Λ.continuous.tendsto g).comp hlim).congr' (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `[slope_def_module, map_sub, map_smul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_pure (hPr : GlobalTheory.FunPr.Hypotheses₂) (M : Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ Y Wd)
     (hcm : IsCMExt F E σ) (hψ : IsStd ψ)
@@ -195,11 +193,11 @@ end GlobalTheory.ThetaInterchange
 open GlobalTheory.ThetaInterchange in
 
 /- English proof (translation)
-Introduce `hPr D n k Xs Ws Mo ψ' χX χW om τ hP hG γ hγ f f₁ r hr hr₁ hD d G e x`. Take `⟨hcm, hψ, -, -, -, -, -, -, -, -, hW, -, -⟩` from `hP`. Establish `hT : ∀ t : ℝ, ∀ Φ ∈ schA D.host.F (Fin n × Fin k), om (1, γ (Multiplicative.ofAdd t)) Φ ∈ schA D.host.F _` using `fun t Φ hΦ => (GlobalTheory.WeilM.IsUWeilPair.isUSplitting hW).pres _ Φ hΦ`. Set `N : Submodule ℂ ((Fin n × Fin k → AF D.host.F) → ℂ)` to `{ carrier := {Φ | Good Mo ψ' (fun t => om (1, γ (Multiplicative.ofAdd t))) Φ} zero_mem' := good_zero Mo ψ' _ add_mem' := fun ha hb => good_add Mo hψ hT ha hb smul_mem' := fun c _ ha => good_smul Mo ψ' _ c ha }`. Establish `hle : schA D.host.F (Fin n × Fin k) ≤ N` using `schA_le_of_pure fun f φ hφ hs => good_pure hPr Mo ψ' χX χW om hcm hψ hG hW γ hγ f φ hφ hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨-, Φ', -, hpt, hth⟩` from `hle hr.2`. Establish `hΦ' : Φ' = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) f₁ r`. Use function extensionality and compare the values at `fun y => (hpt y).unique (hD r hr y)`. Use `hth (GlobalTheory.TripleRead.ptO G e x)` as an intermediate fact. Rewrite `this` using `[hΦ']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThetaInterchange.hasDerivAt_thO : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) {n k : ℕ} (Xs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E n) (Ws : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E k)
     (Mo : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model D.sp.cm.sig Xs Ws) (ψ' : AddChar (AF D.host.F) ℂ)

@@ -5,11 +5,11 @@ open scoped ContDiff
 namespace GlobalTheory.Proof.boundary_norm_zero_iff_open_compl
 
 /- English proof (translation)
-Take `⟨ψ, -, hy, -, σ, -, hD, u, -, hu, hs⟩` from `h y`. Establish `hmem : y ∈ D i ↔ ∃ j, σ i = some j ∧ ψ y j = 0`. Use `Set.ext_iff.mp (hD i) y` as an intermediate fact. Simplify `this` using `[hy]`. Rewrite using `[hs y hy, Finset.prod_eq_single i, hmem, mul_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hu y hy, false_or]`. Apply the tactic sequence `cases σ i <;> simp`. Introduce `k _ hk`. Apply the tactic sequence `cases σ k <;> simp [Pi.single_apply, hk]`. Introduce `hi`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ i) hi`.
+A detailed English derivation is pending.
 -/
 theorem sec_self_eq_zero_iff {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     {m : ℕ} (L : LocPot X) (s : X → X → ℂ) (D : Fin m → Set X) (i : Fin m)
@@ -26,19 +26,17 @@ theorem sec_self_eq_zero_iff {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinH
   · intro hi; exact absurd (Finset.mem_univ i) hi
 
 /- English proof (translation)
-Introduce `hB`. Use `⟨fun i y => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[normSec, mul_eq_zero, or_iff_left (Real.exp_pos _).ne', norm_eq_zero]`. Conclude with `sec_self_eq_zero_iff A (L i) (s i) D i (hB i).2.2.1 y`. Rewrite using `[isOpen_compl_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `isClosed_iUnion_of_finite fun i => ?_` and prove the remaining obligations. Rewrite using `[← isOpen_compl_iff, isOpen_iff_forall_mem_open]`. Introduce `y hy`. Take `⟨ψ, -, hyψ, -, σ, -, hD, -⟩` from `(hB i).2.2.1 y`. Establish `hDi` using `hD i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hσ : σ i with`. Consider the case `none`. Use `⟨ψ.source, fun y' hy' hy'D => ?_, ψ.open_source, hyψ⟩` and prove the remaining obligations. Establish `: y' ∈ D i ∩ ψ.source` using `⟨hy'D, hy'⟩`. Rewrite `this` using `[hDi]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj, -⟩` from `this.2`. Rewrite `hj` using `[hσ]`. Consider the cases of `hj`. Consider the case `some j`. Use `⟨ψ.source ∩ ψ ⁻¹' {z | z j ≠ 0}, fun y' hy' hy'D => ?_, ψ.continuousOn.isOpen_inter_preimage ψ.open_source (isOpen_ne_fun (continuous_apply j) continuous_const), ⟨hyψ, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: y' ∈ D i ∩ ψ.source` using `⟨hy'D, hy'.1⟩`. Rewrite `this` using `[hDi]`. Take `⟨j', hj', h0⟩` from `this.2`. Rewrite `hj'` using `[hσ]`. Consider the cases of `hj'`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hy'.2 h0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises. Establish `: y ∈ {y ∈ ψ.source | ∃ k, σ i = some k ∧ ψ y k = 0}` using `⟨hyψ, j, hσ, h0⟩`. Rewrite `this` using `[← hDi]`.
-
-Conclude with `this.1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) {m : ℕ}
     (L : Fin m → LocPot X) (s : Fin m → X → X → ℂ) (D : Fin m → Set X) :

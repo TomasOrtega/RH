@@ -14,13 +14,11 @@ open scoped Matrix CategoryTheory.Obj Topology
 namespace GlobalTheory.ShFam.Hor
 
 /- English proof (translation)
-Introduce `F _ Y σ R D hR hH`. Use `hR ?_` and prove the remaining obligations. Establish `P` using `GlobalTheory.Cartier.presents_toLB D`. Establish `hs : ∀ s : (Y.lb D).Sec, s = 0` using `fun s => by`. Establish `hm : P.rat s ∈ Y.H0 D` using `P.rat_mem s`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hm` using `[hH, Submodule.mem_bot]`. Conclude with `P.rat_injective (hm.trans (map_zero P.rat).symm)`. Establish `hx : ∀ x : SecC Y.str σ (Y.lb D), x = 0` using `fun x => by`. Establish `hle : Submodule.span ℂ (Set.range (SecC.of Y.str σ : (Y.lb D).Sec → _)) ≤ ⊥` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨s, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs s, map_zero]`. Conclude with `zero_mem _)`. Conclude with `(Submodule.mem_bot ℂ).1 (hle (SecC.span_range_of.ge Submodule.mem_top))`. Establish `hb` using `GlobalTheory.AnRead.bijective_valC Y.isProjOver R (GlobalTheory.Cartier.isLB_toLB D)`. Use `(Submodule.eq_bot_iff _).2 fun f hf => ?_` and prove the remaining obligations.
-
-Take `⟨x, hxf⟩` from `hb.2 ⟨f, hf⟩`. Rewrite `hxf` using `[hx x, map_zero]`. Conclude with `(congrArg Subtype.val hxf).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem riemannRoch_ne_bot_of_holomorphicSection_ne_bot : ∀ (F : Type) [Field F] (Y : GlobalTheory.ProjVar.Var F) (σ : F →+* ℂ)
     (R : AnRead Y.str σ Y.dim) (D : Y.Dv), R.holSec (Y.lb D) ≠ ⊥ → Y.H0 D ≠ ⊥ := by

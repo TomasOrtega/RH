@@ -21,7 +21,7 @@ def Good (Γ : Set (Matrix ι ι ℂ)) (φ : Matrix ι ι ℂ → ℂ) : Prop :=
   ∃ S : Set (Σ n : ℕ, ((Fin n → ι) → ℚ)), S.Finite ∧ AllFixed Γ S ∧ φ ∈ coordAlg S
 
 /- English proof (translation)
-Apply `Algebra.adjoin_mono` to reduce the goal to its premises. Introduce and unpack `φ ⟨p, hp, b, rfl⟩`. Conclude with `⟨p, h hp, b, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem coordAlg_mono {S T : Set (Σ n : ℕ, ((Fin n → ι) → ℚ))} (h : S ⊆ T) : coordAlg S ≤ coordAlg T := by
   apply Algebra.adjoin_mono
@@ -29,15 +29,13 @@ theorem coordAlg_mono {S T : Set (Σ n : ℕ, ((Fin n → ι) → ℚ))} (h : S 
   exact ⟨p, h hp, b, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨∅, Set.finite_empty, fun _ h => h.elim, Subalgebra.zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_zero (Γ : Set (Matrix ι ι ℂ)) : Good Γ 0 :=
   ⟨∅, Set.finite_empty, fun _ h => h.elim, Subalgebra.zero_mem _⟩
 
 /- English proof (translation)
-Take `⟨S, hS, fS, mS⟩` from `h1`. Take `⟨T, hT, fT, mT⟩` from `h2`. Use `⟨S ∪ T, hS.union hT, ?_, Subalgebra.add_mem _ (coordAlg_mono Set.subset_union_left mS) (coordAlg_mono Set.subset_union_right mT)⟩` and prove the remaining obligations. Introduce and unpack `p (hp | hp)`. Conclude with `fS p hp`.
-
-Conclude with `fT p hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Good.add {Γ : Set (Matrix ι ι ℂ)} {φ ψ : Matrix ι ι ℂ → ℂ} (h1 : Good Γ φ) (h2 : Good Γ ψ) :
     Good Γ (φ + ψ) := by
@@ -50,7 +48,7 @@ theorem Good.add {Γ : Set (Matrix ι ι ℂ)} {φ ψ : Matrix ι ι ℂ → ℂ
   · exact fT p hp
 
 /- English proof (translation)
-Take `⟨S, hS, fS, mS⟩` from `h1`. Conclude with `⟨S, hS, fS, Subalgebra.smul_mem _ mS c⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Good.smul {Γ : Set (Matrix ι ι ℂ)} {φ : Matrix ι ι ℂ → ℂ} (c : ℂ) (h1 : Good Γ φ) :
     Good Γ (c • φ) := by
@@ -58,24 +56,22 @@ theorem Good.smul {Γ : Set (Matrix ι ι ℂ)} {φ : Matrix ι ι ℂ → ℂ} 
   exact ⟨S, hS, fS, Subalgebra.smul_mem _ mS c⟩
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction φ (Good Γ) (fun _ _ => Good.add) (good_zero Γ) (fun b _ => h b)`.
+A detailed English derivation is pending.
 -/
 theorem good_sum {Γ : Set (Matrix ι ι ℂ)} {β : Type} (s : Finset β) (φ : β → Matrix ι ι ℂ → ℂ)
     (h : ∀ b, Good Γ (φ b)) : Good Γ (∑ b ∈ s, φ b) :=
   Finset.sum_induction φ (Good Γ) (fun _ _ => Good.add) (good_zero Γ) (fun b _ => h b)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.mem_span_rational_kroneckerInvariants ι Γ hΓ.aut_mem n l hl`. Use `clear hl`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem μ hμ`. Take `⟨h1, h2⟩` from `hμ`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose q hq using h2`. Establish `hμ : μ = fun a => ((q a : ℚ) : ℂ)` using `funext hq`. Substitute `hμ` using the available equality. Use `⟨{⟨n, q⟩}, Set.finite_singleton _, ?_, Algebra.subset_adjoin ⟨⟨n, q⟩, rfl, b, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `p rfl`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `h1`. Consider the case `zero`. Establish `: (fun y : Matrix ι ι ℂ => ((0 : (Fin n → ι) → ℂ) ᵥ* tpow n y) b) = 0`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `good_zero Γ`. Consider the case `add u v _ _ hu hv`. Establish `: (fun y : Matrix ι ι ℂ => ((u + v) ᵥ* tpow n y) b) = (fun y => (u ᵥ* tpow n y) b) + fun y => (v ᵥ* tpow n y) b`. Use function extensionality and compare the values at `y`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `[Matrix.add_vecMul]`. Rewrite using `[this]`. Conclude with `hu.add hv`. Consider the case `smul c u _ hu`. Establish `: (fun y : Matrix ι ι ℂ => ((c • u) ᵥ* tpow n y) b) = c • (fun y => (u ᵥ* tpow n y) b)`.
-
-Use function extensionality and compare the values at `y`. Simplify using `[Matrix.smul_vecMul]`. Rewrite using `[this]`. Conclude with `hu.smul c`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_coord {Γ : Set (Matrix ι ι ℂ)} (hΓ : IsPre Γ) (n : ℕ) (l : (Fin n → ι) → ℂ)
     (hl : ∀ g ∈ Γ, l ᵥ* tpow n g = l) (b : Fin n → ι) : Good Γ (fun y => (l ᵥ* tpow n y) b) := by
@@ -106,9 +102,9 @@ theorem good_coord {Γ : Set (Matrix ι ι ℂ)} (hΓ : IsPre Γ) (n : ℕ) (l :
     rw [this]; exact hu.smul c
 
 /- English proof (translation)
-Take `⟨l, hl, hev⟩` from `GlobalTheory.T.invariant_form_eq_sum_invariant_tensors' ι Γ hΓ hS n F hF hn`. Establish `: evC F = ∑ b, fun y => (l b ᵥ* tpow n y) b`. Use function extensionality and compare the values at `y`. Rewrite using `[hev, Finset.sum_apply]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `good_sum _ _ fun b => good_coord hΓ n (l b) (hl b) b`.
+A detailed English derivation is pending.
 -/
 theorem good_homog {Γ : Set (Matrix ι ι ℂ)} (hΓ : IsPre Γ) (hS : SS Γ) (n : ℕ)
     (F : MvPolynomial (ι × ι) ℂ) (hF : IsInv Γ F) (hn : F.IsHomogeneous n) : Good Γ (evC F) := by
@@ -119,17 +115,15 @@ theorem good_homog {Γ : Set (Matrix ι ι ℂ)} (hΓ : IsPre Γ) (hS : SS Γ) (
   exact good_sum _ _ fun b => good_coord hΓ n (l b) (hl b) b
 
 /- English proof (translation)
-Take `⟨Rey, hR⟩` from `GlobalTheory.T.exists_leftTranslation_reynoldsOperator ι Γ hΓ hS`. Take `⟨s, hs, hgen⟩` from `GlobalTheory.T.hilbert_finiteness_leftInvariantMatrixPoly ι Γ Rey hR`. Establish `hg : ∀ F : s, Good Γ (evC F.1)` using `fun F => by`. Take `⟨h1, n, h2⟩` from `hs F.1 F.2`. Conclude with `good_homog hΓ hS n F.1 h1 h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose S hfin hfix hmem using hg`. Use `⟨⋃ F, S F, Set.finite_iUnion hfin, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Take `⟨F, hF⟩` from `Set.mem_iUnion.1 hp`. Conclude with `hfix F p hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Introduce `f hf`. Establish `h` using `hgen f hf`. Use `clear hf`. Proceed by induction on `h using Algebra.adjoin_induction with`. Consider the case `mem F hF => exact coordAlg_mono (Set.subset_iUnion S ⟨F, hF⟩) (hmem ⟨F, hF⟩)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `algebraMap c`. Establish `: evC (algebraMap ℂ (MvPolynomial (ι × ι) ℂ) c) = algebraMap ℂ (Matrix ι ι ℂ → ℂ) c`. Use function extensionality and compare the values at `y`. Simplify using `[evC]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Subalgebra.algebraMap_mem _ c`. Consider the case `add u v _ _ hu hv`. Establish `: evC (u + v) = evC u + evC v` using `by funext y; simp [evC]`. Rewrite using `[this]`. Conclude with `Subalgebra.add_mem _ hu hv`.
-
-Consider the case `mul u v _ _ hu hv`. Establish `: evC (u * v) = evC u * evC v` using `by funext y; simp [evC]`. Rewrite using `[this]`. Conclude with `Subalgebra.mul_mem _ hu hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_family {Γ : Set (Matrix ι ι ℂ)} (hΓ : IsPre Γ) (hS : SS Γ) :
     ∃ S : Set (Σ n : ℕ, ((Fin n → ι) → ℚ)), S.Finite ∧ AllFixed Γ S ∧
@@ -161,15 +155,15 @@ theorem exists_finite_family {Γ : Set (Matrix ι ι ℂ)} (hΓ : IsPre Γ) (hS 
       rw [this]; exact Subalgebra.mul_mem _ hu hv
 
 /- English proof (translation)
-Introduce `ι _ _ Γ hΓ hS`. Take `⟨S, hfin, hfix, hmem⟩` from `exists_finite_family hΓ hS`. Take `⟨m, e, -, he⟩` from `hfin.fin_param`. Use `⟨m, fun i => (e i).1, fun k => (e k.1).2 k.2, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `k`. Conclude with `congrFun (hfix (e k.1) (he ▸ Set.mem_range_self _) g hg) k.2`. Introduce `f hf`. Establish `h` using `hmem f hf`. Generalize the expression as in `evC f = φ at h`.
+Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Proceed by induction on `h using Algebra.adjoin_induction with`. Consider the case `mem φ hφ`. Take `⟨p, hp, b, rfl⟩` from `hφ`. Rewrite `hp` using `[← he]`. Take `⟨i, rfl⟩` from `hp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨MvPolynomial.X ⟨i, b⟩, fun y => by rw [MvPolynomial.eval_X]; rfl⟩`. Consider the case `algebraMap c => exact ⟨MvPolynomial.C c, fun y => by simp⟩`. Consider the case `add u v _ _ hu hv`. Take `⟨P, hP⟩` from `hu`. Take `⟨Q, hQ⟩` from `hv`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨P + Q, fun y => by rw [map_add, ← hP, ← hQ]; rfl⟩`. Consider the case `mul u v _ _ hu hv`. Take `⟨P, hP⟩` from `hu`. Take `⟨Q, hQ⟩` from `hv`. Conclude with `⟨P * Q, fun y => by rw [map_mul, ← hP, ← hQ]; rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rational_invariant_tensor : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), IsPre Γ → SS Γ → ∃ (m : ℕ) (d : Fin m → ℕ) (t : TIdx ι d → ℚ), (∀ g ∈ Γ, act d (fun k => ((t k : ℚ) : ℂ)) g = (fun k => ((t k : ℚ) : ℂ))) ∧ ∀ f, IsInv Γ f → ∃ P : MvPolynomial (TIdx ι d) ℂ, ∀ y : Matrix ι ι ℂ, evC f y = MvPolynomial.eval (act d (fun k => ((t k : ℚ) : ℂ)) y) P := by
   intro ι _ _ Γ hΓ hS

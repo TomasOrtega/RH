@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-The claim follows from `Summable.of_enorm hh.ne`.
+A detailed English derivation is pending.
 -/
 theorem summable_of_absTheta {D : D7} {V : HSp D} {n : ℕ} (φ : Mx D V.rank n → ℂ) (h : GA D V)
     (hh : GlobalTheory.SiegelFormula.absTheta V φ h < ⊤) :
@@ -22,15 +22,13 @@ theorem summable_of_absTheta {D : D7} {V : HSp D} {n : ℕ} (φ : Mx D V.rank n 
   Summable.of_enorm hh.ne
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν Φ Φ' hS hS' hR g`. Take `⟨h1, h2, hr⟩` from `hR`. Establish `hn : 1 ≤ n` using `by omega`. Establish `hI` using `GlobalTheory.StdThetaInt.integrable_theta hP D n V hn hr θ hS.hθ ω ν hS.hν Φ g`. Establish `hI'` using `GlobalTheory.StdThetaInt.integrable_theta hP D n V hn hr θ hS.hθ ω ν hS.hν Φ' g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ φ : schwartzA θ V.rank n, ∀ᵐ q ∂autMeasure V ν, GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (GlobalTheory.SiegelFormula.absTheta V φ.1) q < ⊤`. Introduce `φ`. Establish `hfin : GlobalTheory.SiegelFormula.absThetaInt V ν φ.1 < ⊤` using `hP D n V hn (Or.inr hr) θ hS.hθ ν hS.hν φ`. Establish `hcont : Continuous φ.1` using `(GlobalTheory.T.schwartzBruhatAdelicMatrix_continuous_le_majorant D θ hS.hθ _ _ φ.1 (GlobalTheory.SchwartzPure.isSchwartzBruhat_of_mem_schwartzA D θ hS.hθ _ _ φ.1 φ.2)).1`. Conclude with `ae_lt_top (GlobalTheory.AbsThetaSemi.measurable_descend_absTheta V hcont) hfin.ne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : (fun q => GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (theta ω (Φ + Φ') g) q) =ᵐ[autMeasure V ν] fun q => GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (theta ω Φ g) q + GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (theta ω Φ' g) q` using `by filter_upwards [hae (ω g Φ), hae (ω g Φ')] with q hq hq'`. Simplify using `only [GlobalTheory.AutomorphicL2Unitary.descend] at hq hq' ⊢`. Establish `s1` using `summable_of_absTheta (ω g Φ).1 _ hq`. Establish `s2` using `summable_of_absTheta (ω g Φ').1 _ hq'`. Use `show (∑' ξ, (ω g (Φ + Φ')).1 (GlobalTheory.SiegelFormula.invPt V _ ξ)) = (∑' ξ, (ω g Φ).1 (GlobalTheory.SiegelFormula.invPt V _ ξ)) + ∑' ξ, (ω g Φ').1 (GlobalTheory.SiegelFormula.invPt V _ ξ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← s1.tsum_add s2]`. Use `congr 1`. Use function extensionality and compare the values at `ξ`. Simplify using `[map_add]`. Unfold `thetaInt`.
-
-Rewrite using `[MeasureTheory.average_eq, MeasureTheory.average_eq, MeasureTheory.average_eq, integral_congr_ae heq, integral_add hI hI', smul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thLin_of (hP : GlobalTheory.Published.WeilThetaConvergence) : ThLin := by
   intro D n V ψ χ θ μ ω H l s ν Φ Φ' hS hS' hR g

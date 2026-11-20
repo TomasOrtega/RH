@@ -15,7 +15,7 @@ Both sides reduce to the same expression.
 theorem posS_zero : posS X j 0 = ((segStart X.TT j).val : ℤ) := rfl
 
 /- English proof (translation)
-Simplify using `only [posS, Fin.cons_succ, dif_pos h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem posS_succ_lt (a : Fin (2 * segS X.TT j + 1)) (h : (a : ℕ) < 2 * segS X.TT j) :
     posS X j a.succ = ((segStart X.TT j).val : ℤ) +
@@ -23,7 +23,7 @@ theorem posS_succ_lt (a : Fin (2 * segS X.TT j + 1)) (h : (a : ℕ) < 2 * segS X
   simp only [posS, Fin.cons_succ, dif_pos h]
 
 /- English proof (translation)
-Simplify using `only [posS, Fin.cons_succ, dif_neg h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem posS_succ_ge (a : Fin (2 * segS X.TT j + 1)) (h : ¬ (a : ℕ) < 2 * segS X.TT j) :
     posS X j a.succ = ((segStart X.TT j).val : ℤ) + (segG X.TT j : ℕ) := by
@@ -35,21 +35,21 @@ Both sides reduce to the same expression.
 theorem lamS_zero : lamS X j 0 = (topStart X j, true) := rfl
 
 /- English proof (translation)
-Simplify using `only [lamS, Fin.cons_succ, dif_pos h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lamS_succ_lt (a : Fin (2 * segS X.TT j + 1)) (h : (a : ℕ) < 2 * segS X.TT j) :
     lamS X j a.succ = (topOdd X j ⟨(a : ℕ) / 2, by omega⟩, decide ((a : ℕ) % 2 = 0)) := by
   simp only [lamS, Fin.cons_succ, dif_pos h]
 
 /- English proof (translation)
-Simplify using `only [lamS, Fin.cons_succ, dif_neg h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lamS_succ_ge (a : Fin (2 * segS X.TT j + 1)) (h : ¬ (a : ℕ) < 2 * segS X.TT j) :
     lamS X j a.succ = (topEnd X j, true) := by
   simp only [lamS, Fin.cons_succ, dif_neg h]
 
 /- English proof (translation)
-Unfold `segG`. Use `split_ifs with h`. Conclude with `lt_of_le_of_lt (Nat.zero_le _) (segStart X.TT j).isLt`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem segG_pos' : 0 < segG X.TT j := by
   unfold segG
@@ -58,11 +58,11 @@ theorem segG_pos' : 0 < segG X.TT j := by
   · omega
 
 /- English proof (translation)
-Use `Fin.cases ?_ (fun a => ?_) i` and prove the remaining obligations. Rewrite using `[posS_zero]`. Unfold `zS`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h : (a : ℕ) < 2 * segS X.TT j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[posS_succ_lt X j a h]`. Unfold `zS`. Use `(dist_pos_lt X.TT j ⟨(a : ℕ) / 2, by omega⟩).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[posS_succ_ge X j a h]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Unfold `zS`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem position_le_segment_end (i : Fin (2 * segS X.TT j + 1 + 1)) : posS X j i ≤ zS X j := by
   refine Fin.cases ?_ (fun a => ?_) i
@@ -74,15 +74,15 @@ theorem position_le_segment_end (i : Fin (2 * segS X.TT j + 1 + 1)) : posS X j i
     · rw [posS_succ_ge X j a h]; unfold zS; exact le_rfl
 
 /- English proof (translation)
-Introduce `i i'`. Use `Fin.cases ?_ (fun a => ?_) i` and prove the remaining obligations. Introduce `_`. Use `Fin.cases le_rfl (fun a' => ?_) i'` and prove the remaining obligations. Distinguish the cases in `h : (a' : ℕ) < 2 * segS X.TT j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[posS_zero, posS_succ_lt X j a' h]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[posS_zero, posS_succ_ge X j a' h]`. Use linear arithmetic over natural numbers and integers. Use `Fin.cases ?_ (fun a' => ?_) i'` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h; exact absurd h (by simp)`. Introduce `hle`. Establish `hle' : (a : ℕ) ≤ (a' : ℕ)` using `Fin.succ_le_succ_iff.mp hle`. Distinguish the cases in `h' : (a' : ℕ) < 2 * segS X.TT j`. Establish `h : (a : ℕ) < 2 * segS X.TT j` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[posS_succ_lt X j a h, posS_succ_lt X j a' h']`. Use `(dist_strictMono X.TT j).monotone (show (⟨(a : ℕ) / 2, by omega⟩ : Fin (segS X.TT j)) ≤ ⟨(a' : ℕ) / 2, by omega⟩ from by` as an intermediate fact. Simplify using `only [Fin.le_def]`. Use the proof step `omega)`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[posS_succ_ge X j a' h']`. Conclude with `position_le_segment_end X j a.succ`.
+A detailed English derivation is pending.
 -/
 theorem posS_mono : Monotone (posS X j) := by
   intro i i'
@@ -107,19 +107,19 @@ theorem posS_mono : Monotone (posS X j) := by
         exact position_le_segment_end X j a.succ
 
 /- English proof (translation)
-Use `revert hlt hv`. Use `Fin.cases ?_ (fun a' => ?_) i'` and prove the remaining obligations. Introduce `h; exact absurd h (by simp)`. Introduce `hlt hv`. Distinguish the cases in `h' : (a' : ℕ) < 2 * segS X.TT j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[lamS_succ_lt X j a' h']`. Establish `hev : (a' : ℕ) % 2 = 0` using `by simpa using hv`. Rewrite using `[posS_succ_lt X j a' h']`. Use `revert hlt`. Use `Fin.cases ?_ (fun a => ?_) i` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `_`. Rewrite using `[posS_zero]`. Use `(dist_pos_lt X.TT j ⟨(a' : ℕ) / 2, by omega⟩).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `hlt`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt' : (a : ℕ) < (a' : ℕ)` using `Fin.succ_lt_succ_iff.mp hlt`. Rewrite using `[posS_succ_lt X j a (by omega)]`. Use `(dist_strictMono X.TT j) (show (⟨(a : ℕ) / 2, by omega⟩ : Fin (segS X.TT j)) < ⟨(a' : ℕ) / 2, by omega⟩ from by` as an intermediate fact. Simplify using `only [Fin.lt_def]`. Use the proof step `omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[posS_succ_ge X j a' h'] revert hlt`. Use `Fin.cases ?_ (fun a => ?_) i` and prove the remaining obligations. Introduce `_`. Rewrite using `[posS_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `segG_pos' X j` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `hlt`. Establish `hlt' : (a : ℕ) < (a' : ℕ)` using `Fin.succ_lt_succ_iff.mp hlt`. Establish `ha'` using `a'.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[posS_succ_lt X j a (by omega)]`. Use `(dist_pos_lt X.TT j ⟨(a : ℕ) / 2, by omega⟩).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem posS_lt (i i' : Fin (2 * segS X.TT j + 1 + 1)) (hlt : i < i') (hv : (lamS X j i').2 = true) :
     posS X j i < posS X j i' := by
@@ -159,9 +159,9 @@ theorem posS_lt (i i' : Fin (2 * segS X.TT j + 1 + 1)) (hlt : i < i') (hv : (lam
         omega
 
 /- English proof (translation)
-Establish `e` using `congrArg Fin.val (posAdd_cdist (segStart X.TT j) (segNext X.TT j))`. Establish `e' : ((segStart X.TT j).val + cdist (segStart X.TT j) (segNext X.TT j)) % X.n' = (segNext X.TT j).val` using `e`. Unfold `segG`. Use `split_ifs with h`. Rewrite `e'` using `[h, Nat.add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.add_mod_right]`. Conclude with `e'`. Conclude with `e'`.
+A detailed English derivation is pending.
 -/
 theorem next_val : ((segStart X.TT j).val + segG X.TT j) % X.n' = (segNext X.TT j).val := by
   have e := congrArg Fin.val (posAdd_cdist (segStart X.TT j) (segNext X.TT j))
@@ -173,9 +173,9 @@ theorem next_val : ((segStart X.TT j).val + segG X.TT j) % X.n' = (segNext X.TT 
   · exact e'
 
 /- English proof (translation)
-Use `Fin.cases ?_ (fun a => ?_) i` and prove the remaining obligations. Both sides reduce to the same expression. Distinguish the cases in `h : (a : ℕ) < 2 * segS X.TT j`. Rewrite using `[lamS_succ_lt X j a h, posS_succ_lt X j a h] show (((segPos X.TT j ⟨(a : ℕ) / 2, by omega⟩).val : ℕ) : ℤ) % (X.n' : ℤ) = _`. Establish `e : (segPos X.TT j ⟨(a : ℕ) / 2, by omega⟩).val = ((segStart X.TT j).val + (segDists X.TT j).get (⟨(a : ℕ) / 2, by omega⟩ : Fin (segS X.TT j))) % X.n'` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [e, Int.natCast_mod, Int.emod_emod_of_dvd _ (dvd_refl _), Nat.cast_add]`. Rewrite using `[lamS_succ_ge X j a h, posS_succ_ge X j a h] show (((segNext X.TT j).val : ℕ) : ℤ) % (X.n' : ℤ) = _`. Simplify using `only [← next_val X j, Int.natCast_mod, Int.emod_emod_of_dvd _ (dvd_refl _), Nat.cast_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pos_congr (i : Fin (2 * segS X.TT j + 1 + 1)) :
     (hhLetters X.TT).pos (lamS X j i) % (X.n' : ℤ) = posS X j i % (X.n' : ℤ) := by
@@ -192,7 +192,7 @@ theorem pos_congr (i : Fin (2 * segS X.TT j + 1 + 1)) :
       simp only [← next_val X j, Int.natCast_mod, Int.emod_emod_of_dvd _ (dvd_refl _), Nat.cast_add]
 
 /- English proof (translation)
-Establish `h1 : segPos X.TT j i = segPos X.TT j i'` using `congrArg Subtype.val h`. Establish `a1` using `(pos_spec X.TT j i).2`. Establish `a2` using `(pos_spec X.TT j i').2`. Rewrite `a1` using `[h1, a2]`. Conclude with `(dist_strictMono X.TT j).injective a1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topOdd_inj (i i' : Fin (segS X.TT j)) (h : topOdd X j i = topOdd X j i') : i = i' := by
   have h1 : segPos X.TT j i = segPos X.TT j i' := congrArg Subtype.val h
@@ -202,7 +202,7 @@ theorem topOdd_inj (i i' : Fin (segS X.TT j)) (h : topOdd X j i = topOdd X j i')
   exact (dist_strictMono X.TT j).injective a1.symm
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : segPos X.TT j i = segNext X.TT j'` using `congrArg Subtype.val h`. Establish `a1` using `(pos_mem X.TT j i).2`. Rewrite `a1` using `[h1]`. Conclude with `a1 (next_mem X.TT j').2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topOdd_ne_end (i : Fin (segS X.TT j)) (j' : Fin (numSeg X.TT)) : topOdd X j i ≠ topEnd X j' := by
   intro h
@@ -212,16 +212,16 @@ theorem topOdd_ne_end (i : Fin (segS X.TT j)) (j' : Fin (numSeg X.TT)) : topOdd 
   exact a1 (next_mem X.TT j').2
 
 /- English proof (translation)
-Introduce `h`. Conclude with `pos_ne_start X.TT j i (congrArg Subtype.val h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem topOdd_ne_start (i : Fin (segS X.TT j)) : topOdd X j i ≠ topStart X j := by
   intro h
   exact pos_ne_start X.TT j i (congrArg Subtype.val h)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : segStart X.TT j = segNext X.TT j` using `congrArg Subtype.val h`. Establish `a` using `(segG_eq X.TT h2 j).2`. Rewrite `a` using `[← h1]`. Establish `hx` using `(segStart X.TT j).isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: cdist (segStart X.TT j) (segStart X.TT j) = 0`. Unfold `cdist`. Establish `e : (segStart X.TT j).val + X.n' - (segStart X.TT j).val = X.n'` using `by omega`. Rewrite using `[e, Nat.mod_self]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem topStart_ne_end (h2 : 2 ≤ numSeg X.TT) : topStart X j ≠ topEnd X j := by
   intro h
@@ -236,19 +236,17 @@ theorem topStart_ne_end (h2 : 2 ≤ numSeg X.TT) : topStart X j ≠ topEnd X j :
   omega
 
 /- English proof (translation)
-Introduce `i i'`. Apply the tactic sequence `refine Fin.cases ?_ (fun a => ?_) i <;> refine Fin.cases ?_ (fun b => ?_) i' <;> intro hii`. Both sides reduce to the same expression. It suffices to derive a contradiction. Rewrite `hii` using `[lamS_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hb : (b : ℕ) < 2 * segS X.TT j`. Rewrite `hii` using `[lamS_succ_lt X j b hb]`. Conclude with `topOdd_ne_start X j _ (Prod.ext_iff.1 hii).1.symm`. Rewrite `hii` using `[lamS_succ_ge X j b hb]`. Conclude with `topStart_ne_end X j h2 (Prod.ext_iff.1 hii).1`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-It suffices to derive a contradiction. Rewrite `hii` using `[lamS_zero]`. Distinguish the cases in `ha : (a : ℕ) < 2 * segS X.TT j`. Rewrite `hii` using `[lamS_succ_lt X j a ha]`. Conclude with `topOdd_ne_start X j _ (Prod.ext_iff.1 hii).1`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite `hii` using `[lamS_succ_ge X j a ha]`. Conclude with `topStart_ne_end X j h2 (Prod.ext_iff.1 hii).1.symm`. Use `congr 1`. Establish `ha'` using `a.isLt`. Establish `hb'` using `b.isLt`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases ha : (a : ℕ) < 2 * segS X.TT j <;> by_cases hb : (b : ℕ) < 2 * segS X.TT j`. Rewrite `hii` using `[lamS_succ_lt X j a ha, lamS_succ_lt X j b hb]`. Take `⟨h1, h3⟩` from `Prod.ext_iff.1 hii`. Establish `e1` using `congrArg Fin.val (topOdd_inj X j _ _ h1)`. Simplify using `only at e1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : ((a : ℕ) % 2 = 0 ↔ (b : ℕ) % 2 = 0)` using `by simpa using h3`. Use `ext`. Use linear arithmetic over natural numbers and integers. Rewrite `hii` using `[lamS_succ_lt X j a ha, lamS_succ_ge X j b hb]`. Conclude with `absurd (Prod.ext_iff.1 hii).1 (topOdd_ne_end X j _ j)`.
-
-Rewrite `hii` using `[lamS_succ_ge X j a ha, lamS_succ_lt X j b hb]`. Conclude with `absurd (Prod.ext_iff.1 hii).1.symm (topOdd_ne_end X j _ j)`. Use `ext`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lamS_injective (h2 : 2 ≤ numSeg X.TT) : Function.Injective (lamS X j) := by
   intro i i'
@@ -287,9 +285,9 @@ theorem lamS_injective (h2 : 2 ≤ numSeg X.TT) : Function.Injective (lamS X j) 
       omega
 
 /- English proof (translation)
-Use `Fin.cases ?_ (fun a => ?_) i` and prove the remaining obligations. Rewrite using `[lamS_zero]`. Simplify using the standard rewrite rules. Distinguish the cases in `h : (a : ℕ) < 2 * segS X.TT j`. Rewrite using `[lamS_succ_lt X j a h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `he`. Conclude with `topOdd_ne_end X j _ j' (Prod.ext_iff.1 he).1`. Rewrite using `[lamS_succ_ge X j a h]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lamS_ne_endFalse (i : Fin (2 * segS X.TT j + 1 + 1)) (j' : Fin (numSeg X.TT)) :
     lamS X j i ≠ (topEnd X j', false) := by
@@ -304,13 +302,13 @@ theorem lamS_ne_endFalse (i : Fin (2 * segS X.TT j + 1 + 1)) (j' : Fin (numSeg X
       simp
 
 /- English proof (translation)
-Distinguish the cases in `h : (a : ℕ) < 2 * segS X.TT j`. Rewrite using `[posS_succ_lt X j a h]`. Establish `e : symLev X.p C0 CE1 CE2 X j (Sum.inl (a.castSucc, b)) = (X.seg C0 CE1 CE2 j).P X.p ⟨(a : ℕ) / 2, by omega⟩`. Unfold `symLev`. Simplify using `only [Fin.val_castSucc]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_pos h]`. Rewrite using `[e]`. Use `show _ = X.p ^ (segG X.TT j - (segDists X.TT j).get (⟨(a : ℕ) / 2, by omega⟩ : Fin (segS X.TT j)))`. Use `congr 1`. Unfold `zS`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[posS_succ_ge X j a h]`. Establish `e : symLev X.p C0 CE1 CE2 X j (Sum.inl (a.castSucc, b)) = 1`. Unfold `symLev`. Simplify using `only [Fin.val_castSucc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h]`. Rewrite using `[e]`. Unfold `zS`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lev_succ (C0 CE1 CE2 : ℝ) (a : Fin (2 * segS X.TT j + 1)) (b : Fin X.m) :
     X.p ^ (zS X j - posS X j a.succ).toNat = symLev X.p C0 CE1 CE2 X j (Sum.inl (a.castSucc, b)) := by
@@ -336,7 +334,7 @@ theorem lev_succ (C0 CE1 CE2 : ℝ) (a : Fin (2 * segS X.TT j + 1)) (b : Fin X.m
     simp
 
 /- English proof (translation)
-Rewrite using `[posS_zero]`. Use `show _ = X.p ^ segG X.TT j`. Use `congr 1`. Unfold `zS`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lev_zero (C0 CE1 CE2 : ℝ) : X.p ^ (zS X j - posS X j 0).toNat = (X.seg C0 CE1 CE2 j).Qj X.p := by
   rw [posS_zero]
@@ -346,7 +344,7 @@ theorem lev_zero (C0 CE1 CE2 : ℝ) : X.p ^ (zS X j - posS X j 0).toNat = (X.seg
   omega
 
 /- English proof (translation)
-Use `Nat.pow_le_pow_right hp ?_` and prove the remaining obligations. Establish `h0 : posS X j 0 ≤ posS X j i` using `posS_mono X j (Fin.zero_le _)`. Rewrite `h0` using `[posS_zero]`. Unfold `zS`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lev_le (hp : 0 < X.p) (hG : segG X.TT j ≤ X.G') (i : Fin (2 * segS X.TT j + 1 + 1)) :
     X.p ^ (zS X j - posS X j i).toNat ≤ X.p ^ X.G' := by
@@ -357,13 +355,13 @@ theorem lev_le (hp : 0 < X.p) (hG : segG X.TT j ≤ X.G') (i : Fin (2 * segS X.T
   omega
 
 /- English proof (translation)
-Establish `ec : Fin.cast (Nat.add_comm 1 X.m) (Fin.natAdd 1 b) = b.succ`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Unfold `phiS`. Simplify using `only [ec]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : (a : ℕ) < 2 * segS X.TT j`. Rewrite using `[lamS_succ_lt X j a h]`. Unfold `symVar`. Simplify using `only [Fin.val_castSucc]`. Rewrite using `[dif_pos h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lamS_succ_ge X j a h]`. Unfold `symVar`. Simplify using `only [Fin.val_castSucc]`. Rewrite using `[dif_neg h]`. Establish `: (a : ℕ) = 2 * segS X.TT j` using `by have := a.2; omega`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phiS_succ (C0 CE1 CE2 : ℝ) (a : Fin (2 * segS X.TT j + 1)) (b : Fin X.m) :
     phiS X j (a.succ, Fin.natAdd 1 b) = symVar C0 CE1 CE2 X j (Sum.inl (a.castSucc, b)) := by
@@ -384,7 +382,7 @@ theorem phiS_succ (C0 CE1 CE2 : ℝ) (a : Fin (2 * segS X.TT j + 1)) (b : Fin X.
     simp [this]
 
 /- English proof (translation)
-Unfold `phiS`. Rewrite using `[lamS_zero]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phiS_zero [NeZero X.m] : phiS X j (0, Fin.castAdd X.m 0) = ((topStart X j, true), 0) := by
   unfold phiS
@@ -392,9 +390,9 @@ theorem phiS_zero [NeZero X.m] : phiS X j (0, Fin.castAdd X.m 0) = ((topStart X 
   rfl
 
 /- English proof (translation)
-Establish `e : (⟨2 * l.val + 1, by have` using `l.2; omega⟩ : Fin (2 * segS X.TT j + 1 + 1)) = (⟨2 * l.val, by have := l.2; omega⟩ : Fin (2 * segS X.TT j + 1)).succ := rfl`. Unfold `phiS`. Simplify using `only [e]`. Rewrite using `[lamS_succ_lt X j _ (by have := l.2; simp only; omega)]`. Establish `e2 : (⟨(2 * l.val) / 2, by have` using `l.2; omega⟩ : Fin (segS X.TT j)) = l := by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using `only [e2]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem phiS_odd (l : Fin (segS X.TT j)) :
     phiS X j (⟨2 * l.val + 1, by have := l.2; omega⟩, Fin.castAdd X.m 0) = ((topOdd X j l, true), 0) := by

@@ -14,7 +14,7 @@ variable {O R C : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] 
   [CommRing C] [Algebra O C] [IsCO O C]
 
 /- English proof (translation)
-Use `Ideal.map_le_iff_le_comap.2 fun a ha => ?_` and prove the remaining obligations. Use `show f a ∈ maximalIdeal C`. Rewrite using `[← res_eq_zero_iff O C, res_map, res_eq_zero_iff]`. Conclude with `ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_max_le (f : R →ₐ[O] C) :
     (maximalIdeal R).map (f : R →+* C) ≤ maximalIdeal C := by
@@ -24,9 +24,7 @@ private theorem map_max_le (f : R →ₐ[O] C) :
   exact ha
 
 /- English proof (translation)
-Introduce `N`. Establish `hle : maximalIdeal R ^ N ≤ (maximalIdeal C ^ N).comap (f : R →+* C)`. Use `Ideal.map_le_iff_le_comap.1 ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (map_max_le f) N`.
-
-Conclude with `(hu N).comp (Ideal.quotientMap (maximalIdeal C ^ N) (f : R →+* C) hle)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem adic_map {Γ : Type} [TopologicalSpace Γ] (f : R →ₐ[O] C) {u : Γ → R}
     (hu : AdicCont (maximalIdeal R) u) : AdicCont (maximalIdeal C) fun g => f (u g) := by
@@ -40,11 +38,9 @@ private theorem adic_map {Γ : Type} [TopologicalSpace Γ] (f : R →ₐ[O] C) {
 variable {l : ℕ} [Fact l.Prime] {F : Frame l (ResidueField O)} {n : ℕ}
 
 /- English proof (translation)
-Take `⟨hc, hb, hd⟩` from `h`. Establish `hres : ((res O C : C →ₐ[O] ResidueField O) : C →+* ResidueField O).comp (f : R →+* C) = ((res O R : R →ₐ[O] ResidueField O) : R →+* ResidueField O)`. Use extensionality with `x`. Conclude with `res_map f x`. Use `⟨⟨fun i j => ?_, fun v i => ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `adic_map f (hc.1 i j)`. Conclude with `adic_map f (hc.2 v i)`. Rewrite using `[NRep.map_map, hres]`. Conclude with `hb`. Rewrite using `[NRep.map_map, hres]`.
-
-Conclude with `hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isLift_map (f : R →ₐ[O] C) {ρ : NRep F n R} (h : UpperTheory.V.Fr.IsLift O ρ) :
     UpperTheory.V.Fr.IsLift O (ρ.map (f : R →+* C)) := by
@@ -64,15 +60,13 @@ private theorem isLift_map (f : R →ₐ[O] C) {ρ : NRep F n R} (h : UpperTheor
 end Lift
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F n S ξ D hD hr hψ`. Use `haveI hc : IsAdicComplete (maximalIdeal O) O := UpperTheory.V.Fr.IsCoef.complete (l := l)`. Use `haveI hn : IsNoetherianRing O := PrincipalIdealRing.isNoetherianRing`. Use `haveI : IsCO O O := IsCO.self O`. Use `haveI : IsCO O (TrivSqZeroExt O O) := co_sqz O O O (fun c => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `(der_hom O S.R O O ξ D).1 ⟨D, hD, rfl⟩`. Set `z : S.R →ₐ[O] TrivSqZeroExt O O` to `(TrivSqZeroExt.inlAlgHom O O O).comp ξ`. Establish `key : ∀ a : S.R, D a = 0 → y a = z a` using `fun a ha => TrivSqZeroExt.ext (hy a).1 (by rw [(hy a).2, ha]; rfl)`. Establish `hmap : NRep.map (y : S.R →+* TrivSqZeroExt O O) S.ρ = NRep.map (z : S.R →+* TrivSqZeroExt O O) S.ρ`. Apply `NRep.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `MonoidHom.ext fun g => Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `key _ (hr g i j)`. Use function extensionality and compare the values at `v i`. Use `MonoidHom.ext fun g => Units.ext ?_` and prove the remaining obligations. Conclude with `key _ (hψ v i g)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, _, huniq⟩` from `S.univ (TrivSqZeroExt O O) _ (isLift_map z S.lift)`. Establish `e : y = z` using `(huniq y hmap).trans (huniq z rfl).symm`. Use extensionality with `a`. Establish `h2` using `(hy a).2`. Rewrite `h2` using `[e]`.
-
-Rewrite using `[← h2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem det : Det := by
   intro l _ O _ _ _ _ F n S ξ D hD hr hψ

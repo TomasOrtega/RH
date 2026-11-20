@@ -5,27 +5,23 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Al
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `ι V _ _ _ n F hF ν v hv`. Take `⟨hgl, hcomm⟩` from `hF`. Establish `hvlow : v ∈ low F v`. Unfold `UpperTheory.V.AlgRepEndIrreducible.low`. Rewrite using `[Submodule.mem_sInf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `p hp`. Conclude with `hp.1`. Establish `hlow : ∀ t (i j : Fin n), j < i → ∀ w ∈ low F v, F t i j w ∈ low F v`. Introduce `t i j hji w hw`. Unfold `UpperTheory.V.AlgRepEndIrreducible.low at hw ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hw`, the goal using `[Submodule.mem_sInf]`. Introduce `p hp`. Conclude with `hp.2 t i j hji w (hw p hp)`. Set `W' : Submodule ℂ V` to `low F v ⊓ ⨅ t, ⨅ i, ⨅ j, (low F v).comap (F t i j)`. Establish `hmem : ∀ w, w ∈ W' ↔ w ∈ low F v ∧ ∀ t i j, F t i j w ∈ low F v`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `w`. Simplify using `[W', Submodule.mem_inf, Submodule.mem_iInf, Submodule.mem_comap]`. Establish `hvW : v ∈ W'`. Rewrite using `[hmem]`. Use `⟨hvlow, fun t i j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_trichotomy i j with h | h | h` into its components or cases. Rewrite using `[(hv t).2 i j h]`. Conclude with `zero_mem _`. Substitute `h` using the available equality. Rewrite using `[(hv t).1 i]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ hvlow`. Conclude with `hlow t i j h v hvlow`. Establish `hWst : ∀ t (k l : Fin n), l < k → ∀ w ∈ W', F t k l w ∈ W'`. Introduce `t k l hlk w hw`. Rewrite `hw`, the goal using `[hmem]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨hlow t k l hlk w hw.1, fun s i j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hst : s = t`. Substitute `hst` using the available equality. Establish `h1` using `congrArg (fun f : Module.End ℂ V => f w) (hgl s i j k l)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[sub_eq_iff_eq_add]`. Rewrite using `[h1]`. Use `add_mem (sub_mem ?_ ?_) (hlow s k l hlk _ (hw.2 s i j))` and prove the remaining obligations. Use `split_ifs`. Conclude with `hw.2 s i l`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[LinearMap.zero_apply]`. Conclude with `zero_mem _`. Use `split_ifs`. Conclude with `hw.2 s k j`. Rewrite using `[LinearMap.zero_apply]`.
-
-Conclude with `zero_mem _`. Establish `h1` using `congrArg (fun f : Module.End ℂ V => f w) (hcomm s t hst i j k l)`. Simplify using `only [Module.End.mul_apply] at h1`. Rewrite using `[h1]`. Conclude with `hlow t k l hlk _ (hw.2 s i j)`.
-
-Establish `hle : low F v ≤ W'`. Unfold `UpperTheory.V.AlgRepEndIrreducible.low`. Conclude with `sInf_le ⟨hvW, hWst⟩`. Conclude with `⟨hvlow, fun t i j w hw => ((hmem w).mp (hle hw)).2 t i j⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgRepEndIrreducible.lowStab :
     ∀ (ι V : Type) [Fintype ι] [AddCommGroup V] [Module ℂ V] (n : ℕ) (F : ι → Fin n → Fin n → Module.End ℂ V), IsMultiGl F → ∀ (ν : ι → Fin n → ℂ) (v : V), (∀ t, Formalism.REAL.IsHW (F t) (ν t) v) →

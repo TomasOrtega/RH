@@ -13,11 +13,11 @@ namespace GlobalTheory.InflBasic
 open GlobalTheory.RowLev.Inhab GlobalTheory.Mem.RowsBundle
 
 /- English proof (translation)
-Take `⟨-, hK⟩` from `GlobalTheory.CongTop.congruence_normal_finite_index I`. Take `⟨-, -, -, s, hs⟩` from `hK g hg`. Use `Finite.of_surjective (fun t : s => ρ.toFun t) ?_` and prove the remaining obligations. Introduce `q`. Take `⟨x, hx, rfl⟩` from `ρ.surj q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, htx⟩` from `hs x hx`. Establish `hk : t⁻¹ * x ∈ I.Kset` using `htx.1`. Establish `htK : t ∈ I.Kset`. Establish `hmem` using `(Ksub I).mul_mem ((mem_Ksub I x).2 hx) ((Ksub I).inv_mem ((mem_Ksub I _).2 hk))`. Rewrite `hmem` using `[_root_.mul_inv_rev, inv_inv, mul_inv_cancel_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mem_Ksub I t).1 hmem`. Use `⟨⟨t, ht⟩, ?_⟩` and prove the remaining obligations. Use `show ρ.toFun t = ρ.toFun x`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem finite_of_red {I : AutInst} {g : ℕ} {Q : Type} [Group Q] (ρ : Red I g Q) (hg : 1 ≤ g) : Finite Q := by
   obtain ⟨-, hK⟩ := GlobalTheory.CongTop.congruence_normal_finite_index I
@@ -38,21 +38,19 @@ theorem finite_of_red {I : AutInst} {g : ℕ} {Q : Type} [Group Q] (ρ : Red I g
     _ = ρ.toFun x := by rw [mul_inv_cancel_left]
 
 /- English proof (translation)
-Introduce `I g Q _ ρ μf _ hg`. Establish `hQ : Finite Q` using `finite_of_red ρ hg`. Take `⟨-, hK⟩` from `GlobalTheory.CongTop.congruence_normal_finite_index I`. Take `⟨-, hopen, -, -⟩` from `hK g hg`. Take `⟨hcpt, -, -, -⟩` from `GlobalTheory.adelicStab_isCompact_isOpen I`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1K : (1 : I.Gf) ∈ I.Kset` using `(mem_Ksub I 1).1 (Ksub I).one_mem`. Establish `h1 : (1 : I.Gf) ∈ I.Kg g` using `(ρ.ker 1 h1K).1 ρ.map_one`. Establish `hsub : I.Kg g ⊆ I.Kset` using `fun x hx => hx.1`. Establish `hpos : 0 < (μf (I.Kg g)).toReal` using `ENNReal.toReal_pos (hopen.measure_pos μf ⟨1, h1⟩).ne' ((measure_mono hsub).trans_lt hcpt.measure_lt_top).ne`. Use `⟨hQ, hpos, ρ.map_one, fun x hx => ρ.map_inv hx, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q`. Take `⟨t, ht⟩` from `fibre_eq ρ q`. Rewrite using `[ht]`. Conclude with `⟨measure_preimage_mul μf t _, hopen.preimage (continuous_mul_left t)⟩`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨integrable_lift ρ μf hg a, ?_, fun x k hk k' hk' => lift_biinv ρ μf a x k hk k' hk'⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hnhds : (fun y => x⁻¹ * y) ⁻¹' I.Kg g ∈ nhds x` using `(hopen.preimage (continuous_mul_left x⁻¹)).mem_nhds (by show x⁻¹ * x ∈ I.Kg g`. Rewrite using `[inv_mul_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1)`. Use `filter_upwards [hnhds] with y hy`. Establish `h` using `lift_biinv ρ μf a x 1 h1 (x⁻¹ * y) hy`. Rewrite `h` using `[one_mul, mul_inv_cancel_left]`. Then use the resulting hypothesis. Introduce `a b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ I.Kset`. Rewrite using `[Pi.add_apply, ρ.lift_of_mem μf _ hx, ρ.lift_of_mem μf _ hx, ρ.lift_of_mem μf _ hx, MonoidAlgebra.coeff_add, Finsupp.add_apply, add_div]`. Rewrite using `[Pi.add_apply, ρ.lift_of_notMem μf _ hx, ρ.lift_of_notMem μf _ hx, ρ.lift_of_notMem μf _ hx, add_zero]`. Introduce `c a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ I.Kset`. Rewrite using `[Pi.smul_apply, ρ.lift_of_mem μf _ hx, ρ.lift_of_mem μf _ hx, MonoidAlgebra.coeff_smul, Finsupp.smul_apply, smul_eq_mul, smul_eq_mul, mul_div_assoc]`. Rewrite using `[Pi.smul_apply, ρ.lift_of_notMem μf _ hx, ρ.lift_of_notMem μf _ hx, smul_zero]`. Introduce `a`.
-
-Rewrite using `[ρ.lift_of_mem μf a h1K, ρ.map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inflation_basic : ∀ (I : AutInst) (g : ℕ) (Q : Type) [Group Q] (ρ : Red I g Q) (μf : Measure I.Gf) [μf.IsHaarMeasure], 1 ≤ g → Finite Q ∧ 0 < (μf (I.Kg g)).toReal ∧ ρ.toFun 1 = 1 ∧ (∀ x ∈ I.Kset, ρ.toFun x⁻¹ = (ρ.toFun x)⁻¹) ∧ (∀ q : Q, μf {x | x ∈ I.Kset ∧ ρ.toFun x = q} = μf (I.Kg g) ∧ IsOpen {x | x ∈ I.Kset ∧ ρ.toFun x = q}) ∧ (∀ a, Integrable (ρ.lift μf a) μf ∧ IsLocallyConstant (ρ.lift μf a) ∧ ∀ x, ∀ k ∈ I.Kg g, ∀ k' ∈ I.Kg g, ρ.lift μf a (k * x * k') = ρ.lift μf a x) ∧ (∀ a b, ρ.lift μf (a + b) = ρ.lift μf a + ρ.lift μf b) ∧ (∀ (c : ℂ) a, ρ.lift μf (c • a) = c • ρ.lift μf a) ∧ ∀ a, ρ.lift μf a 1 = a.coeff 1 / ((μf (I.Kg g)).toReal : ℂ) := by
   intro I g Q _ ρ μf _ hg

@@ -78,7 +78,7 @@ def RelativeDeterminantEquation (D : D7) (T : Tor D) (e : FamE D) : Prop :=
       Iop D T (La D T L.1 L'.1) (La D T L₁.1 L'.1) (e N N' L.1 L'.1) z)
 
 /- English proof (translation)
-Establish `hx : ∃ y, idl y = idl x` using `⟨x, rfl⟩`. Unfold `chiRec`. Rewrite using `[dif_pos hx, h hx.choose_spec]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiRec_idl (D : D7) (idl : D.Dt ⧸ D.UO → IdE D) (h : Function.Injective idl) (x : D.Dt ⧸ D.UO) :
     chiRec D idl (idl x) = ((chiQ D x : ℂˣ) : ℂ) := by
@@ -225,9 +225,9 @@ def adm1 (D : D7) : Prop :=
 def AdmittedStatements (D : D7) : Prop := adm1 D
 
 /- English proof (translation)
-Take `⟨hinj, hN, hmul, hz, -⟩` from `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `𝔞 𝔟 ha hb`. Take `⟨x, rfl⟩` from `(hN 𝔞).1 ha`. Take `⟨y, rfl⟩` from `(hN 𝔟).1 hb`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hmul, chiRec_idl D idl hinj, chiRec_idl D idl hinj, chiRec_idl D idl hinj, map_mul]`. Simplify using the standard rewrite rules. Introduce `z`. Rewrite using `[← hz z, chiRec_idl D idl hinj]`. Conclude with `D.rest_detCharacter_on_unitary_eq z`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isChi_chiRec (D : D7) (idl : D.Dt ⧸ D.UO → IdE D) (h : RelDetPinned D idl) :
     IsChi D (chiRec D idl) := by

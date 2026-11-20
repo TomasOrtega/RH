@@ -9,11 +9,11 @@ namespace PI.OrbJet.OrbW
 open Formalism.BasicNotions Formalism.MainNotions.G MvPowerSeries Finsupp PI.OrbJet PI.OrbShared
 
 /- English proof (translation)
-Introduce `D E`. Unfold `PI.OrbJet.OrbitRestriction`. Introduce `p _ h u i R hR ep sg be hbe Th hB r hr`. Take `⟨U, hU, hEq⟩` from `hB`. Take `⟨-, -, hb⟩` from `hbe`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : NeZero (nP D p) := ⟨by have := h.two; omega⟩`. Establish `hcc : ∀ r ∈ R, MvPowerSeries.constantCoeff (be r) = 0` using `fun r hr => constant_coeff_zero_of_vanishing_alt p (nP D p) (be r) (hb r hr).2.2.1`. Establish `key` using `restricted_jet_equation D p R hR ep sg be hcc Th U hEq hr`. Unfold `PI.OrbJet.OrbitThetaExpansion`. Use `⟨_, ?_, key⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Conclude with `hU _`.
+A detailed English derivation is pending.
 -/
 theorem orbitRestriction : ∀ (D : Formalism.BasicNotions.D7) (E : PI.OrbJet.Ent D), PI.OrbJet.OrbitRestriction E := by
   intro D E

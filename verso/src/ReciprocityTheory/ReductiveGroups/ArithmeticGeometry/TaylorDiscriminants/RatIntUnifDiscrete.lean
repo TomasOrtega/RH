@@ -42,7 +42,7 @@ def IsLatticeOfDiscSt : Prop :=
     UnifDiscrete Nf M → Submodule.span K (M : Set V) = ⊤ → Submodule.IsLattice K M
 
 /- English proof (translation)
-The claim follows from `eq_ratCast σ q`.
+A detailed English derivation is pending.
 -/
 theorem rat_emb_apply (σ : ℚ →+* ℂ) (q : ℚ) : σ q = (q : ℂ) := eq_ratCast σ q
 
@@ -56,9 +56,9 @@ noncomputable def ratNormFam : NormFam ℚ ℚ where
 noncomputable def ratInt : Submodule (𝓞 ℚ) ℚ := Submodule.span (𝓞 ℚ) {1}
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.mp hf`. Establish `hi : IsIntegral ℤ (a : ℚ)` using `RingOfIntegers.isIntegral_coe a`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hi`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hn.symm`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_ratInt {f : ℚ} (hf : f ∈ ratInt) : ∃ n : ℤ, f = n := by
   obtain ⟨a, rfl⟩ := Submodule.mem_span_singleton.mp hf
@@ -69,9 +69,9 @@ theorem mem_ratInt {f : ℚ} (hf : f ∈ ratInt) : ∃ n : ℤ, f = n := by
   simpa using hn.symm
 
 /- English proof (translation)
-Introduce `f hf hf0`. Take `⟨n, rfl⟩` from `mem_ratInt hf`. Establish `hn : n ≠ 0` using `by exact_mod_cast hf0`. Rewrite using `[neg_zero]`. Use `Finset.sum_nonneg fun σ _ => Real.log_nonneg ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show 1 ≤ ‖σ (n : ℚ)‖`. Rewrite using `[rat_emb_apply, Rat.cast_intCast, Complex.norm_intCast]`. Conclude with `Int.one_le_abs hn` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratInt_prodLower : ProdLower ratNormFam ratInt 0 := by
   intro f hf hf0
@@ -84,9 +84,9 @@ theorem ratInt_prodLower : ProdLower ratNormFam ratInt 0 := by
   exact_mod_cast Int.one_le_abs hn
 
 /- English proof (translation)
-Use `⟨1, one_pos, fun f hf hsmall => ?_⟩` and prove the remaining obligations. Take `⟨n, rfl⟩` from `mem_ratInt hf`. Establish `h` using `hsmall (Rat.castHom ℂ)`. Express the relevant statement in the definitionally equal form `‖(Rat.castHom ℂ) (n : ℚ)‖ < 1 at h`. Rewrite `h` using `[rat_emb_apply, Rat.cast_intCast, Complex.norm_intCast]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h' : |n| < 1` using `by exact_mod_cast h`. Establish `: n = 0` using `by rwa [Int.abs_lt_one_iff] at h'`. Simplify using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ratInt_unifDiscrete : UnifDiscrete ratNormFam ratInt := by
   refine ⟨1, one_pos, fun f hf hsmall => ?_⟩
@@ -99,7 +99,7 @@ theorem ratInt_unifDiscrete : UnifDiscrete ratNormFam ratInt := by
   simp [this]
 
 /- English proof (translation)
-Establish `h1 : (1 : ℚ) ∈ ratInt` using `Submodule.subset_span (Set.mem_singleton 1)`. Rewrite using `[Submodule.eq_top_iff']`. Introduce `x`. Use `Submodule.smul_mem (Submodule.span ℚ (ratInt : Set ℚ)) x (Submodule.subset_span h1)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ratInt_span : Submodule.span ℚ (ratInt : Set ℚ) = ⊤ := by
   have h1 : (1 : ℚ) ∈ ratInt := Submodule.subset_span (Set.mem_singleton 1)
@@ -109,7 +109,7 @@ theorem ratInt_span : Submodule.span ℚ (ratInt : Set ℚ) = ⊤ := by
   simpa using this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1 ℚ ℚ ratNormFam ratInt 0 ratInt_prodLower, h2 ℚ ℚ ratNormFam ratInt ratInt_unifDiscrete, h3 ℚ ℚ ratNormFam ratInt ratInt_unifDiscrete ratInt_span⟩`.
+Supply the required witnesses or components.
 -/
 example (h1 : DiscOfProdLowerSt) (h2 : FGOfDiscSt) (h3 : IsLatticeOfDiscSt) :
     UnifDiscrete ratNormFam ratInt ∧ ratInt.FG ∧ Submodule.IsLattice ℚ ratInt :=

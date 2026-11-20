@@ -8,15 +8,15 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 namespace GlobalTheory.TowU.PointVal
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _`. Establish `h3 : ∀ w, ∀ φ ∈ schA F κ, schr ψ w φ ∈ schA F κ` using `fun w φ hφ => GlobalTheory.ConeMeasV.schr_mem_schA hψ w hφ`. Use `⟨?_, ?_, h3, ?_⟩` and prove the remaining obligations. Introduce `x g _`. Use `⟨g (fun i => (x i).2) • ((BoundedContinuousFunction.evalCLM ℂ (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)), fun f => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[pureA, mul_comm]`. Take `⟨φ, hφ, hne⟩` from `GlobalTheory.ThetaSumNe.exists_mem_schA_thetaSum_ne_zero F κ`. Establish `: ∃ ξ : κ → F, φ (fun i => algebraMap F (AF F) (ξ i)) ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hne (by simp [thetaSum, h])`. Take `⟨ξ, hξ⟩` from `this`. Use `⟨(φ (fun i => algebraMap F (AF F) (ξ i)))⁻¹ • schr ψ ((fun i => algebraMap F (AF F) (ξ i)), 0) φ, Submodule.smul_mem _ _ (h3 _ φ hφ), ?_⟩` and prove the remaining obligations. Simplify using `[schr, hξ]`. Introduce `w w' φ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, Prod.fst_add, Prod.snd_add]`. Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul, add_assoc x w.1 w'.1]`. Use `congr 2`. Simplify using `only [add_dotProduct, dotProduct_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h2 : (2 : AF F) * ⅟(2 : AF F) = 1` using `mul_invOf_self 2`. Take the linear combination `(-(w.1 ⬝ᵥ w'.2)) * h2`.
+A detailed English derivation is pending.
 -/
 theorem adelicSchwartz_pointValues_admitted_alt : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ], (∀ x : κ → AF F, (LinearMap.proj x : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ) ∧ (∃ φ ∈ schA F κ, φ 0 = 1) ∧ (∀ w, ∀ φ ∈ schA F κ, schr ψ w φ ∈ schA F κ) ∧ ∀ (w w' : (κ → AF F) × (κ → AF F)) (φ : (κ → AF F) → ℂ), schr ψ w (schr ψ w' φ) = ψ (⅟(2 : AF F) * (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2)) • schr ψ (w + w') φ := by
   intro F _ _ ψ hψ κ _

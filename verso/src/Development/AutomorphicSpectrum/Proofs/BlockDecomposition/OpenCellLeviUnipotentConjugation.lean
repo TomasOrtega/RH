@@ -14,33 +14,33 @@ variable {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N)
 def pos : (Σ a, Fin (d a)) ≃ Fin N := (stdBlocks d hd).trans (wOpen d hd).symm
 
 /- English proof (translation)
-Simplify using `[pos]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wOpen_pos (x : Σ a, Fin (d a)) : wOpen d hd (pos d hd x) = stdBlocks d hd x := by
   simp [pos]
 
 /- English proof (translation)
-Introduce `x y hxy`. Conclude with `congrArg (fun z => (ofLex z).2) hxy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wKey_injective : Function.Injective (wKey d hd) := by
   intro x y hxy
   exact congrArg (fun z => (ofLex z).2) hxy
 
 /- English proof (translation)
-The claim follows from `(Tuple.monotone_sort (wKey d hd)).strictMono_of_injective ((wKey_injective d hd).comp (wOpen d hd).injective)`.
+A detailed English derivation is pending.
 -/
 theorem key_strictMono : StrictMono (wKey d hd ∘ wOpen d hd) :=
   (Tuple.monotone_sort (wKey d hd)).strictMono_of_injective
     ((wKey_injective d hd).comp (wOpen d hd).injective)
 
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_std (x : Σ a, Fin (d a)) : blk (stdBlocks d hd) (stdBlocks d hd x) = x.1 := by
   simp [blk]
 
 /- English proof (translation)
-Rewrite using `[wKey, wKey, Prod.Lex.lt_iff]`. Simplify using `[blk_std]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem key_lt (x y : Σ a, Fin (d a)) :
     wKey d hd (stdBlocks d hd x) < wKey d hd (stdBlocks d hd y) ↔
@@ -49,7 +49,7 @@ theorem key_lt (x y : Σ a, Fin (d a)) :
   simp [blk_std]
 
 /- English proof (translation)
-Rewrite using `[Fin.lt_def, stdBlocks_val, stdBlocks_val, Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem std_lt (a : Fin h) (i j : Fin (d a)) :
     stdBlocks d hd ⟨a, i⟩ < stdBlocks d hd ⟨a, j⟩ ↔ i < j := by
@@ -57,29 +57,29 @@ theorem std_lt (a : Fin h) (i j : Fin (d a)) :
   omega
 
 /- English proof (translation)
-Rewrite using `[← (key_strictMono d hd).lt_iff_lt, Function.comp, Function.comp, wOpen_pos, wOpen_pos, key_lt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pos_lt_iff (x y : Σ a, Fin (d a)) :
     pos d hd x < pos d hd y ↔ y.1 < x.1 ∨ x.1 = y.1 ∧ stdBlocks d hd x < stdBlocks d hd y := by
   rw [← (key_strictMono d hd).lt_iff_lt, Function.comp, Function.comp, wOpen_pos, wOpen_pos, key_lt]
 
 /- English proof (translation)
-Rewrite using `[pos_lt_iff, std_lt]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pos_lt (a : Fin h) (i j : Fin (d a)) : pos d hd ⟨a, i⟩ < pos d hd ⟨a, j⟩ ↔ i < j := by
   rw [pos_lt_iff, std_lt]
   simp
 
 /- English proof (translation)
-Establish `hlt : pos d hd ⟨a, i⟩ < pos d hd ⟨a, j⟩` using `(pos_lt d hd a i j).2 (Fin.lt_def.2 (by omega))`. Assume the negation of the conclusion as `hne`. Establish `hlt'` using `Fin.lt_def.1 hlt`. Establish `hN` using `(pos d hd ⟨a, j⟩).2`. Set `t : Fin N` to `⟨pos d hd ⟨a, i⟩ + 1, by omega⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨⟨b, l⟩, hl⟩` from `(pos d hd).surjective t`. Establish `h1 : pos d hd ⟨a, i⟩ < pos d hd ⟨b, l⟩`. Rewrite using `[hl]; exact Fin.lt_def.2 (by simp [t])`. Establish `h2 : pos d hd ⟨b, l⟩ < pos d hd ⟨a, j⟩`. Rewrite using `[hl]; exact Fin.lt_def.2 (by simp only [t]; omega)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1`, `h2` using `[pos_lt_iff]`. Establish `hab : a = b`. Break down `h1 with h1 | h1` into its components or cases. Break down `h2 with h2 | h2` into its components or cases. Conclude with `absurd h1 (lt_asymm h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Conclude with `absurd h2.1 (ne_of_lt h1)`. Conclude with `h1.1`. Substitute `hab` using the available equality. Establish `h3` using `(std_lt d hd a i l).1 (h1.elim (fun e => absurd e (lt_irrefl _)) (·.2))`. Establish `h4` using `(std_lt d hd a l j).1 (h2.elim (fun e => absurd e (lt_irrefl _)) (·.2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `Fin.lt_def.1 h3` as an intermediate fact. Use `Fin.lt_def.1 h4` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem pos_succ (a : Fin h) (i j : Fin (d a)) (hij : (j : ℕ) = i + 1) :
     (pos d hd ⟨a, j⟩ : ℕ) = pos d hd ⟨a, i⟩ + 1 := by
@@ -108,9 +108,9 @@ theorem pos_succ (a : Fin h) (i j : Fin (d a)) (hij : (j : ℕ) = i + 1) :
   omega
 
 /- English proof (translation)
-Establish `hlt : i < j` using `(pos_lt d hd a i j).1 (Fin.lt_def.2 (by omega))`. Assume the negation of the conclusion as `hne`. Establish `hlt'` using `Fin.lt_def.1 hlt`. Establish `hj` using `j.2`. Set `l : Fin (d a)` to `⟨i + 1, by omega⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h1` using `Fin.lt_def.1 ((pos_lt d hd a i l).2 (Fin.lt_def.2 (by simp [l])))`. Establish `h2` using `Fin.lt_def.1 ((pos_lt d hd a l j).2 (Fin.lt_def.2 (by simp only [l]; omega)))`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pos_succ' (a : Fin h) (i j : Fin (d a)) (hij : (pos d hd ⟨a, j⟩ : ℕ) = pos d hd ⟨a, i⟩ + 1) :
     (j : ℕ) = i + 1 := by
@@ -124,17 +124,17 @@ theorem pos_succ' (a : Fin h) (i j : Fin (d a)) (hij : (pos d hd ⟨a, j⟩ : �
   omega
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_sigma']`. Use `symm`. Use `Finset.sum_bij_ne_zero (fun x _ _ => (pos d hd ⟨x.1, x.2.1⟩, pos d hd ⟨x.1, x.2.2⟩)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨b, i, j⟩ hx -`. Establish `hx' : (j : ℕ) = i + 1` using `by simpa using hx`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `using pos_succ d hd b i j hx'`. Introduce and unpack `⟨b, i, j⟩ - - ⟨c, i', j'⟩ - - hxy`. Establish `h1` using `(pos d hd).injective (Prod.ext_iff.1 hxy).1`. Establish `h2` using `(pos d hd).injective (Prod.ext_iff.1 hxy).2`. Simplify using `only [Sigma.mk.injEq] at h1 h2`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨rfl, h1⟩` from `h1`. Take `⟨-, h2⟩` from `h2`. Take `rfl` from `eq_of_heq h1`. Take `rfl` from `eq_of_heq h2`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨p, q⟩ hpq hne`. Establish `hpq' : (q : ℕ) = p + 1` using `by simpa using hpq`. Take `⟨⟨b, i⟩, rfl⟩` from `(pos d hd).surjective p`. Take `⟨⟨c, j⟩, rfl⟩` from `(pos d hd).surjective q`. Establish `hbc : b = c`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hbc`. Conclude with `hne (hA _ _ hbc)`. Substitute `hbc` using the available equality. Use `⟨⟨b, i, j⟩, ?_, hne, rfl⟩` and prove the remaining obligations. Simplify using `using pos_succ' d hd b i j hpq'`.
+Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _ _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_superdiag {R : Type} [AddCommMonoid R] (A : Fin N → Fin N → R)
     (hA : ∀ x y : Σ a, Fin (d a), x.1 ≠ y.1 → A (pos d hd x) (pos d hd y) = 0) :
@@ -176,7 +176,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N)
 
 /- English proof (translation)
-Rewrite using `[← map_inv, Units.val_mul, GroundTheory.Automorphic.mul_permGL_apply, Units.val_mul, GroundTheory.Automorphic.permGL_mul_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_apply (w : Equiv.Perm (Fin N)) (A : GL (Fin N) k) (p q : Fin N) :
     ((pm k w * A * (pm k w)⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) (w p) (w q) =
@@ -189,7 +189,7 @@ variable {d hd}
 variable {A : GL (Fin N) k} {m : Levi k fun a => Fin (d a)}
 
 /- English proof (translation)
-Rewrite using `[← leviEmb_apply_same k (stdBlocks d hd) m b i j, ← hm, ← wOpen_pos d hd, ← wOpen_pos d hd, conj_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ent_same (hm : pm k (wOpen d hd) * A * (pm k (wOpen d hd))⁻¹ = leviEmb k (stdBlocks d hd) m)
     (b : Fin h) (i j : Fin (d b)) :
@@ -198,7 +198,7 @@ theorem ent_same (hm : pm k (wOpen d hd) * A * (pm k (wOpen d hd))⁻¹ = leviEm
   rw [← leviEmb_apply_same k (stdBlocks d hd) m b i j, ← hm, ← wOpen_pos d hd, ← wOpen_pos d hd, conj_apply]
 
 /- English proof (translation)
-Take `⟨b, i⟩` from `x`. Take `⟨c, j⟩` from `y`. Rewrite using `[← conj_apply (wOpen d hd) A, wOpen_pos, wOpen_pos, hm]`. Conclude with `leviEmb_apply_ne k (stdBlocks d hd) m hxy i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ent_ne (hm : pm k (wOpen d hd) * A * (pm k (wOpen d hd))⁻¹ = leviEmb k (stdBlocks d hd) m)
     (x y : Σ a, Fin (d a)) (hxy : x.1 ≠ y.1) :
@@ -209,9 +209,7 @@ theorem ent_ne (hm : pm k (wOpen d hd) * A * (pm k (wOpen d hd))⁻¹ = leviEmb 
   exact leviEmb_apply_ne k (stdBlocks d hd) m hxy i j
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(mem_unipB k).1 hA`. Use `fun b _ => (mem_unipB k).2 ⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[ent_same hm]`. Conclude with `h1 _ _ ((pos_lt d hd b j i).2 hij)`. Rewrite using `[ent_same hm]`.
-
-Conclude with `h2 _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unipM_of (hA : A ∈ unipB k (Fin N))
     (hm : pm k (wOpen d hd) * A * (pm k (wOpen d hd))⁻¹ = leviEmb k (stdBlocks d hd) m) :
@@ -224,7 +222,7 @@ theorem mem_unipM_of (hA : A ∈ unipB k (Fin N))
     exact h2 _
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem addChar_sum {ι : Type} (ψ : AddChar k Circle) (s : Finset ι) (f : ι → k) :
     ψ (∑ i ∈ s, f i) = ∏ i ∈ s, ψ (f i) := by
@@ -234,7 +232,7 @@ theorem addChar_sum {ι : Type} (ψ : AddChar k Circle) (s : Finset ι) (f : ι 
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]
 
 /- English proof (translation)
-Use `show Circle.toUnits (ψ _) = ∏ a : Fin h, Circle.toUnits (ψ _)`. Rewrite using `[← map_prod, ← addChar_sum]`. Use `congrArg _ (congrArg _ ?_)` and prove the remaining obligations. Use `(sum_superdiag d hd (fun p q => (A : Matrix (Fin N) (Fin N) k) p q) (ent_ne hm)).trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun p _ => (ent_same hm b p.1 p.2).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem whit_eq (ψ : AddChar k Circle) (hA : A ∈ unipB k (Fin N)) (hm' : m ∈ unipM k d)
     (hm : pm k (wOpen d hd) * A * (pm k (wOpen d hd))⁻¹ = leviEmb k (stdBlocks d hd) m) :
@@ -246,11 +244,9 @@ theorem whit_eq (ψ : AddChar k Circle) (hA : A ∈ unipB k (Fin N)) (hm' : m �
   exact Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun p _ => (ent_same hm b p.1 p.2).symm
 
 /- English proof (translation)
-Use `(mem_unipB k).2 ⟨fun p q hpq => ?_, fun p => ?_⟩` and prove the remaining obligations. Take `⟨⟨b, i⟩, rfl⟩` from `(pos d hd).surjective p`. Take `⟨⟨c, j⟩, rfl⟩` from `(pos d hd).surjective q`. Distinguish the cases in `hbc : b = c`. Substitute `hbc` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[← ent_same hm]`. Conclude with `((mem_unipB k).1 (hm' b (Set.mem_univ b))).1 i j ((pos_lt d hd b j i).1 hpq)`. Conclude with `ent_ne hm _ _ hbc`. Take `⟨⟨b, i⟩, rfl⟩` from `(pos d hd).surjective p`. Rewrite using `[← ent_same hm]`.
-
-Conclude with `((mem_unipB k).1 (hm' b (Set.mem_univ b))).2 i`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unipB_of (hm' : m ∈ unipM k d)
     (hm : pm k (wOpen d hd) * A * (pm k (wOpen d hd))⁻¹ = leviEmb k (stdBlocks d hd) m) :
@@ -270,9 +266,9 @@ theorem mem_unipB_of (hm' : m ∈ unipM k d)
 end Entries
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ h N d hd`. Use `⟨fun a ha hb => ?_, fun m => ?_⟩` and prove the remaining obligations. Take `⟨m₀, hm₀⟩` from `(Subgroup.mem_inf.1 ha).2`. Establish `hm : pm k (wOpen d hd) * a * (pm k (wOpen d hd))⁻¹ = leviEmb k (stdBlocks d hd) m₀` using `hm₀.symm`. Establish `hm'` using `mem_unipM_of hb hm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨⟨m₀, hm'⟩, hm, whit_eq ψ hb hm' hm⟩`. Establish `hc : pm k (wOpen d hd) * ((pm k (wOpen d hd))⁻¹ * leviEmb k (stdBlocks d hd) m.1 * pm k (wOpen d hd)) * (pm k (wOpen d hd))⁻¹ = leviEmb k (stdBlocks d hd) m.1` using `by group`. Conclude with `⟨_, Subgroup.mem_inf.2 ⟨mem_unipB_of m.2 hc, ⟨m.1, hc.symm⟩⟩, hc⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem levi_part : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N), (∀ (a : GL (Fin N) k) (ha : a ∈ unipL k d hd) (hb : a ∈ unipB k (Fin N)), ∃ m : unipM k d, pm k (wOpen d hd) * a * (pm k (wOpen d hd))⁻¹ = leviEmb k (stdBlocks d hd) m.1 ∧ whitChar ψ N ⟨a, hb⟩ = whitM d ψ m) ∧ ∀ m : unipM k d, ∃ a ∈ unipL k d hd, pm k (wOpen d hd) * a * (pm k (wOpen d hd))⁻¹ = leviEmb k (stdBlocks d hd) m.1 := by
   intro k _ _ _ _ ψ h N d hd

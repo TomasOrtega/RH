@@ -9,11 +9,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SplitAtSmallPlaces
 
 /- English proof (translation)
-Introduce `D T Lc sc G μ₀ _ _ v ε hε hv hns`. Take `⟨e, he⟩` from `G.pl.w_split v hv`. Establish `hb` using `Formalism.IndefR.Fin.below_of_idemAt he`. Establish `hbv : Formalism.IndefR.Fin.belowPl (G.pl.w v) = v`. Use `HeightOneSpectrum.ext ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a` using `congrArg HeightOneSpectrum.asIdeal (G.pl.under_w hv)`. Rewrite using `[← a]`. Both sides reduce to the same expression. Rewrite `hb` using `[hbv]`. Use `hns.2 ⟨e, he.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hb, Formalism.IndefR.Fin.placeIdem_eq hε]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem not_nonSplitAt : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) (μ₀ : T), Lc.Is μ₀ →
     ∀ (t : T) (v : HeightOneSpectrum (𝓞 D.host.F)) (e : AF D.host.F), IsPlaceIdem D v e → v ∈ G.pl.S0 →

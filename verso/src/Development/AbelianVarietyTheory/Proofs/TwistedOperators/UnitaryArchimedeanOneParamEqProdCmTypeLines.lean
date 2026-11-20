@@ -31,11 +31,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation (conjU continuou
 open GlobalTheory.ConjUTransport (conjUInv conjEquiv continuous_conjUInv)
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `haveI : CompleteSpace (Matrix (Fin n) (Fin n) ℂ) := FiniteDimensional.complete ℝ _`. Take `⟨Y, hY⟩` from `GlobalTheory.banach_oneParamGroup_eq_exp M hc h0 hm`. Use `⟨Y, ?_, hY⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd : HasDerivAt M Y 0`. Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) Y 0`. Rewrite `h` using `[zero_smul, NormedSpace.exp_zero, one_mul, funext hY]`. Conclude with `h`. Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ` to `{ toFun := fun A => Aᴴ map_add' := fun A B => Matrix.conjTranspose_add A B map_smul' := fun c A => by rw [Matrix.conjTranspose_smul]; simp }`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : HasDerivAt (fun t => (M t)ᴴ) Yᴴ 0` using `(LinearMap.toContinuousLinearMap L).hasFDerivAt.comp_hasDerivAt 0 hd`. Establish `hF` using `(hT.mul_const H).fun_mul hd`. Rewrite `hF` using `[funext hU]`. Establish `huniq` using `hF.unique (hasDerivAt_const (0 : ℝ) H)`. Rewrite `huniq` using `[h0, Matrix.conjTranspose_one, mul_one, one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_lie_eq_exp {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (M : ℝ → Matrix (Fin n) (Fin n) ℂ) (hc : Continuous M)
     (h0 : M 0 = 1) (hm : ∀ s t, M (s + t) = M s * M t) (hU : ∀ t, (M t)ᴴ * H * M t = H) :
@@ -63,9 +63,9 @@ theorem exists_lie_eq_exp {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (M : ℝ �
 variable {D : D7}
 
 /- English proof (translation)
-Set `e : AF D.host.F` to `((0, 1) : Ainf D.host.F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F)`. Establish `he : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F e = 0` using `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F)`. Establish `h1` using `congrArg (GlobalTheory.LFun.finTens D.host.F D.host.E) (h e he)`. Rewrite `h1` using `[Algebra.smul_def, map_mul, map_zero]`. Establish `h2 : GlobalTheory.LFun.finTens D.host.F D.host.E (algebraMap (AF D.host.F) (AE D) e) = 1` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2, one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem finTens_eq_zero {z : AE D} (h : ∀ u : AF D.host.F, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F u = 0 → u • z = 0) :
     GlobalTheory.LFun.finTens D.host.F D.host.E z = 0 := by
@@ -77,13 +77,13 @@ theorem finTens_eq_zero {z : AE D} (h : ∀ u : AF D.host.F, GlobalTheory.Indefi
   rwa [h2, one_mul] at h1
 
 /- English proof (translation)
-The claim follows from `map_smul (Algebra.TensorProduct.map (AlgHom.id (AF D.host.F) (AF D.host.F)) D.sp.cm.sig) u z`.
+A detailed English derivation is pending.
 -/
 theorem cA_smul (u : AF D.host.F) (z : AE D) : cA D (u • z) = u • cA D z :=
   map_smul (Algebra.TensorProduct.map (AlgHom.id (AF D.host.F) (AF D.host.F)) D.sp.cm.sig) u z
 
 /- English proof (translation)
-Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.map_apply, cA_smul, map_sub, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smul_cA_sub (u : AF D.host.F) {n : ℕ} (A : Matrix (Fin n) (Fin n) (AE D)) (i j : Fin n) :
     (u • (A.map (cA D) - 1)) i j = cA D ((u • (A - 1)) i j) := by
@@ -91,15 +91,13 @@ theorem smul_cA_sub (u : AF D.host.F) {n : ℕ} (A : Matrix (Fin n) (Fin n) (AE 
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hone : ∀ a b : Fin W.rank, GlobalTheory.LFun.finTens D.host.F D.host.E ((1 : Matrix (Fin W.rank) (Fin W.rank) (AE D)) a b) = (1 : Matrix (Fin W.rank) (Fin W.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) a b`. Introduce `a b`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h show finHom W g = 1`. Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Establish `h1 : GlobalTheory.LFun.finTens D.host.F D.host.E ((Formalism.L2.Theta.mt W g - 1) a b) = 0`. Use `finTens_eq_zero fun u hu => ?_` and prove the remaining obligations. Establish `h2 : (u • ((Formalism.L2.Theta.mt W g).map (cA D) - 1)) a b = 0` using `congrFun (congrFun (h u hu) a) b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[smul_cA_sub]`. Establish `h3` using `congrArg (cA D) h2`. Rewrite `h3` using `[Formalism.L2.Theta.cA_cA, map_zero]`. Conclude with `h3`. Rewrite `h1` using `[Matrix.sub_apply, map_sub, hone, sub_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1`. Introduce `hg u hu`. Establish `hf : finHom W g = 1` using `hg`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `show (u • ((Formalism.L2.Theta.mt W g).map (cA D) - 1)) a b = 0`.
-
-Rewrite using `[smul_cA_sub, Matrix.smul_apply, GlobalTheory.KapXLine.smul_eq_zero_of_finTens hu, map_zero]`. Rewrite using `[Matrix.sub_apply, map_sub, hone, sub_eq_zero]`. Conclude with `congrArg (fun k : GL (Fin W.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) => k.1 a b) hf`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjU_mem_UAt_iff (W : HSp D) (Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E W.rank)
     (hJ : Wd.J = (1 : D.host.E) • W.gram) (g : GA D W) :
@@ -131,9 +129,9 @@ theorem conjU_mem_UAt_iff (W : HSp D) (Wd : GlobalTheory.IndefiniteRowSideFullHe
     exact congrArg (fun k : GL (Fin W.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) => k.1 a b) hf
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `a : (finHom W g).1 = (finHom W h).1`. Rewrite using `[show finHom W g = 1 from hg, show finHom W h = 1 from hh]`. Use `Subtype.ext (Units.ext (Matrix.ext fun i j => sub_eq_zero.1 (hσ.ext _ ?_ fun τ => ?_)))` and prove the remaining obligations. Rewrite using `[RingHom.map_sub, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (congrFun a i) j`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun (e τ) i) j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_of_infMat {θ : InfFam D} (hθ : IsInfFam θ) (W : HSp D) {g h : GA D W} (hg : g ∈ GinfC W) (hh : h ∈ GinfC W)
     (e : ∀ τ, infMat D.sp.cm.sig W.gram (θ τ) g = infMat D.sp.cm.sig W.gram (θ τ) h) : g = h := by
@@ -149,9 +147,9 @@ theorem ext_of_infMat {θ : InfFam D} (hθ : IsInfFam θ) (W : HSp D) {g h : GA 
 open Classical in
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using GlobalTheory.PointAtPlaceHom.infMat_one W (θ τ)`. Consider the case `cons a l ih`. Rewrite `hl` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, GlobalTheory.PointAtPlaceHom.infMat_mul, ih hl.2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `c : τ = a`. Substitute `c` using the available equality. Rewrite using `[(hx τ).2.1, if_neg hl.1, if_pos List.mem_cons_self, Matrix.mul_one]`. Rewrite using `[(hx a).2.2 τ c, Matrix.one_mul]`. Simplify using `only [List.mem_cons, c, false_or]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem infMat_prod {θ : InfFam D} (W : HSp D) (m : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ)
     (x : D.what₂.Tau → GA D W) (hx : ∀ τ, IsAtTau θ W τ (m τ) (x τ)) (τ : D.what₂.Tau) (l : List D.what₂.Tau)
@@ -168,9 +166,9 @@ theorem infMat_prod {θ : InfFam D} (W : HSp D) (m : D.what₂.Tau → Matrix (F
       simp only [List.mem_cons, c, false_or]
 
 /- English proof (translation)
-Establish `h1 : Continuous (matHom W)` using `continuous_subtype_val`. Use `choose Y hY hexp using fun τ => exists_lie_eq_exp (gramAt D W τ) (fun t => infMat D.sp.cm.sig W.gram (θ τ) (g t)) (continuous_matrix fun i j => (GlobalTheory.FockCompare.continuous_comp hθ τ).comp ((Units.continuous_val.comp (h1.comp hc)).matrix_elem i j)) (by rw [h0, GlobalTheor …`. Use `⟨Y, hY, fun t => ext_of_infMat hθ W (hg t) ?_ fun τ => ?_⟩` and prove the remaining obligations. Use `Subgroup.list_prod_mem _ fun x hx => ?_` and prove the remaining obligations. Take `⟨τ, -, rfl⟩` from `List.mem_map.1 hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.PointAtPlaceHom.atTau_mem W τ _`. Rewrite using `[infMat_prod W _ _ (fun τ' => GlobalTheory.Mem.Lift.isAtTau_oneP hθ (hY τ') t) τ _ (Finset.nodup_toList _), if_pos (Finset.mem_toList.2 (Finset.mem_univ τ)), hexp]`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_prod_oneP {θ : InfFam D} (hθ : IsInfFam θ) (W : HSp D) (g : ℝ → GA D W) (hc : Continuous g)
     (h0 : g 0 = 1) (hm : ∀ s t, g (s + t) = g s * g t) (hg : ∀ t, g t ∈ GinfC W) :
@@ -190,11 +188,9 @@ theorem exists_eq_prod_oneP {θ : InfFam D} (hθ : IsInfFam θ) (W : HSp D) (g :
       if_pos (Finset.mem_toList.2 (Finset.mem_univ τ)), hexp]
 
 /- English proof (translation)
-Introduce `D θ hθ W Wd hJ γ hγ`. Set `φ` to `conjEquiv W 1 one_ne_zero hJ`. Take `⟨Y, hY, hprod⟩` from `exists_eq_prod_oneP hθ W (fun t => φ.symm (γ (Multiplicative.ofAdd t))) ((continuous_conjUInv W 1 one_ne_zero hJ).comp (hγ.1.comp continuous_ofAdd)) (by rw [ofAdd_zero, map_one, map_one]) (fun s t => by rw [ofAdd_add, map_mul, map_mul]) (fun t => (conjU_mem_UAt_iff W Wd hJ _).1 ( …`. Establish `e : conjU W 1 hJ (φ.symm (γ (Multiplicative.ofAdd t))) = γ (Multiplicative.ofAdd t)` using `φ.apply_symm_apply _`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hγ.2 _))`. Set `p : D.what₂.Tau → (Multiplicative ℝ →* GA D W)` to `fun τ => { toFun := fun t => oneP θ W τ (Y τ) (Multiplicative.toAdd t) map_one' := GlobalTheory.Mem.Lift.oneP_zero hθ map_mul' := fun s t => GlobalTheory.Mem.Lift.oneP_add hθ (hY τ) _ _ }`. Use `⟨Y, fun τ => φ.toMonoidHom.comp (p τ), hY, fun τ => ⟨?_, fun t => ?_⟩, fun τ t => rfl, fun t => ?_⟩` and prove the remaining obligations. Conclude with `(continuous_conjU W 1 hJ).comp ((GlobalTheory.Mem.Lift.continuous_oneP hθ (hY τ)).comp continuous_toAdd)`. Conclude with `(conjU_mem_UAt_iff W Wd hJ _).2 (GlobalTheory.PointAtPlaceHom.atTau_mem W τ _)`.
-
-Establish `e` using `congrArg φ (hprod (Multiplicative.toAdd t))`. Rewrite `e` using `[φ.apply_symm_apply, map_list_prod, List.map_map]`. Conclude with `e`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_eq_prod : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (W : HSp D) (Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E W.rank)
     (hJ : Wd.J = (1 : D.host.E) • W.gram), ∀ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Lines D.sp.cm.sig Wd,

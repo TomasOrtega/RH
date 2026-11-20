@@ -11,13 +11,13 @@ open Matrix NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheor
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Take `⟨h1, h2', h3⟩` from `hdom τ`. Establish `haj : a < j` using `Fin.lt_def.2 h`. Unfold `coef Dsg sgn`. Distinguish the cases in `hj : (j : ℕ) < X.p0`. Establish `ha : (a : ℕ) < X.p0` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hz` using `h1 a j haj.le hj`. Establish `hr : (la τ j : ℝ) ≤ la τ a` using `by exact_mod_cast hz`. Rewrite using `[if_pos hj, if_pos ha]`. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Distinguish the cases in `ha : (a : ℕ) < X.p0`. Establish `hz` using `h3 a j ha (by omega)`. Establish `hr : (la τ a : ℝ) ≤ la τ j` using `by exact_mod_cast hz`. Rewrite using `[if_neg hj, if_pos ha]`. Evaluate the numerical expressions.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz` using `h2' a j (by omega) haj.le`. Establish `hr : (la τ j : ℝ) ≤ la τ a` using `by exact_mod_cast hz`. Rewrite using `[if_neg hj, if_neg ha]`. Evaluate the numerical expressions.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -46,13 +46,13 @@ theorem coef_nonneg (la : Wt X.Ψ r) (hdom : X.IsDominant la) (τ : X.Ψ) (a j :
       linarith
 
 /- English proof (translation)
-Take `⟨h1, h2', h3⟩` from `hs τ`. Establish `haj : a < j` using `Fin.lt_def.2 h`. Unfold `coef Dsg sgn`. Distinguish the cases in `hj : (j : ℕ) < X.p0`. Establish `ha : (a : ℕ) < X.p0` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hz` using `h1 a j haj hj`. Establish `hr : (la τ j : ℝ) < la τ a` using `by exact_mod_cast hz`. Rewrite using `[if_pos hj, if_pos ha]`. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Distinguish the cases in `ha : (a : ℕ) < X.p0`. Establish `hz` using `h3 a j ha (by omega)`. Establish `hr : (la τ a : ℝ) < la τ j` using `by exact_mod_cast hz`. Rewrite using `[if_neg hj, if_pos ha]`. Evaluate the numerical expressions.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz` using `h2' a j (by omega) haj`. Establish `hr : (la τ j : ℝ) < la τ a` using `by exact_mod_cast hz`. Rewrite using `[if_neg hj, if_neg ha]`. Evaluate the numerical expressions.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -81,11 +81,11 @@ theorem coef_pos (la : Wt X.Ψ r) (hs : IsStrictDom X la) (τ : X.Ψ) (a j : Fin
       linarith
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Apply `hu` to reduce the goal to its premises. Use extensionality with `i`. Break down `he : (Fintype.equivFin (Ent X)).symm i with ⟨τ, ⟨⟨x, c⟩, hxc⟩⟩` into its components or cases.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hi : Fintype.equivFin (Ent X) ⟨τ, ⟨(x, c), hxc⟩⟩ = i`. Rewrite using `[← he]`. Conclude with `Equiv.apply_symm_apply _ _`. Establish `h0` using `congrArg (fun M : Matrix (Fin r) (Fin r) ℂ => M x c) (hall τ)`. Simplify using `only [KapPf.Lin, LinearMap.coe_mk, AddHom.coe_mk, Matrix.of_apply, KapPf.embF, KapPf.vecOf, hxc, dite_true, Matrix.zero_apply] at h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h0` using `[hi]`. Simplify using `using h0`.
+A detailed English derivation is pending.
 -/
 theorem Lin_ne (u : V (nd X)) (hu : u ≠ 0) : ∃ τ, KapPf.Lin X τ u ≠ 0 := by
   by_contra hall
@@ -103,13 +103,13 @@ theorem Lin_ne (u : V (nd X)) (hu : u ≠ 0) : ∃ τ, KapPf.Lin X τ u ≠ 0 :=
   simpa using h0
 
 /- English proof (translation)
-Establish `hL : (mat (nmat X z) τ).BlockTriangular OrderDual.toDual`. Introduce `a b hab`. Establish `hab' : a < b` using `OrderDual.toDual_lt_toDual.1 hab`. Simplify using `[mat, nmat, not_lt.2 hab'.le, hab'.ne]`. Establish `: Invertible (mat (nmat X z) τ)` using `(mat (nmat X z) τ).invertibleOfIsUnitDet (nmat_det_unit X z τ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hLi` using `Matrix.blockTriangular_inv_of_blockTriangular hL`. Unfold `Xd`. Rewrite using `[Matrix.mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hik : i < k`. Rewrite using `[hLi (OrderDual.toDual_lt_toDual.2 hik), zero_mul]`. Establish `hkj : ¬ j < k` using `fun h => hik (lt_of_le_of_lt hij h)`. Establish `hz : KapPf.Lin X τ u k j = 0`. Simplify using `[KapPf.Lin, KapPf.embF, hkj]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hz, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Xd_lower (z u : V (nd X)) (τ : X.Ψ) (i j : Fin r) (hij : i ≤ j) : Xd X z u τ i j = 0 := by
   have hL : (mat (nmat X z) τ).BlockTriangular OrderDual.toDual := by
@@ -131,15 +131,15 @@ theorem Xd_lower (z u : V (nd X)) (τ : X.Ψ) (i j : Fin r) (hij : i ≤ j) : Xd
     rw [hz, mul_zero]
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `Lin_ne X u hu`. Use `⟨τ, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Apply `hτ` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hN : IsUnit (mat (nmat X z) τ).det` using `nmat_det_unit X z τ`. Establish `hB : (mat b τ).BlockTriangular id` using `fun a c hca => (hb τ).2 a c hca`. Establish `hBd : IsUnit (mat b τ).det` using `isUnit_iff_ne_zero.2 (hb τ).1`. Establish `: Invertible (mat b τ)` using `(mat b τ).invertibleOfIsUnitDet hBd`. Establish `hY : (Yd X b z u τ).BlockTriangular id` using `fun a c hca => hall c a hca`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : Xd X z u τ = mat b τ * Yd X b z u τ * (mat b τ)⁻¹`. Unfold `Yd`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hBd, Matrix.mul_one, Matrix.mul_nonsing_inv_cancel_left _ _ hBd]`. Establish `hXu : (Xd X z u τ).BlockTriangular id`. Rewrite using `[hX]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hB.mul hY).mul (Matrix.blockTriangular_inv_of_blockTriangular hB)`. Establish `hXd : Xd X z u τ = 0`. Use extensionality with `i j`. Break down `lt_or_ge j i with h | h` into its components or cases. Conclude with `hXu h`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Xd_lower X z u τ i j h`. Establish `hLin : KapPf.Lin X τ u = mat (nmat X z) τ * Xd X z u τ`. Unfold `Xd`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hN]`. Rewrite using `[hLin, hXd, Matrix.mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Yd_ne (b : Frame X.Ψ r) (hb : b ∈ Bor X.Ψ r) (z u : V (nd X)) (hu : u ≠ 0) :
     ∃ τ, ∃ a j : Fin r, (a : ℕ) < j ∧ Yd X b z u τ j a ≠ 0 := by

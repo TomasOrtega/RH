@@ -21,27 +21,25 @@ attribute [-instance] GlobalTheory.CompHt.fintypePsi
 namespace GlobalTheory.CompanionTheory.Ar.SameFlag
 
 /- English proof (translation)
-Use `set g₀ : A := G 0 with hg₀`. Set `S : Subalgebra K L` to `{ carrier := {x | ∃ (a : A) (n : ℕ), x * ι g₀ ^ n = ι a ∧ φ x * ψ g₀ ^ n = ψ a} mul_mem' := by`. Introduce and unpack `x x' ⟨a, n, h1, h2⟩ ⟨a', n', h1', h2'⟩`. Use `⟨a * a', n + n', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← h1, ← h1', pow_add]`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_mul, ← h2, ← h2', pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `add_mem' := by`. Introduce and unpack `x x' ⟨a, n, h1, h2⟩ ⟨a', n', h1', h2'⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a * g₀ ^ n' + a' * g₀ ^ n, n + n', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, map_pow, map_pow, ← h1, ← h1', pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, map_add, map_mul, map_mul, map_pow, map_pow, ← h2, ← h2', pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `algebraMap_mem' := fun r => ⟨algebraMap K A r, 0, by simp, by simp⟩ }`. Establish `hmem : ∀ x, x ∈ S ↔ ∃ (a : A) (n : ℕ), x * ι g₀ ^ n = ι a ∧ φ x * ψ g₀ ^ n = ψ a` using `fun x => Iff.rfl`. Establish `hφ0 : φ (ι g₀) ≠ 0` using `(map_ne_zero φ).2 h0`. Establish `hρ : ∀ j, ι (G j) / ι g₀ ∈ S`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hmem _).2 ⟨G j, 1, by rw [pow_one, div_mul_cancel₀ _ h0], ?_⟩` and prove the remaining obligations. Establish `e1 : φ (ι (G j) / ι g₀) * φ (ι g₀) = φ (ι (G j))`. Rewrite using `[← map_mul, div_mul_cancel₀ _ h0]`. Use `mul_right_cancel₀ hφ0 ?_` and prove the remaining obligations. Rewrite using `[pow_one, hrat j, ← e1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hpol : ∀ p : MvPolynomial (Fin (N + 1)) K, MvPolynomial.aeval (fun j => ι (G j) / ι g₀) p ∈ S`. Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simpa using S.algebraMap_mem a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add p q hp hq => simpa using S.add_mem hp hq`. Consider the case `mul_X p i hp => simpa using S.mul_mem hp (hρ i)`. Establish `hb : ι b ∈ IntermediateField.adjoin K (Set.range fun j => ι (G j) / ι g₀)`. Rewrite using `[hgen]`. Conclude with `IntermediateField.mem_top`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨p, q, e⟩` from `(IntermediateField.mem_adjoin_range_iff K _ _).1 hb`. Distinguish the cases in `hq : MvPolynomial.aeval (fun j => ι (G j) / ι g₀) q = 0`. Rewrite `e` using `[hq, div_zero]`. Establish `: b = 0` using `hι (by rw [e, map_zero])`. Rewrite using `[this, map_zero, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a₁, n₁, h1, h1'⟩` from `(hmem _).1 (hpol q)`. Take `⟨a₂, n₂, h2, h2'⟩` from `(hmem _).1 (hpol p)`. Use `set B := MvPolynomial.aeval (fun j => ι (G j) / ι g₀) q with hB`. Use `set P := MvPolynomial.aeval (fun j => ι (G j) / ι g₀) p with hP`. Establish `hbB : ι b * B = P` using `by rw [e, div_mul_cancel₀ _ hq]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : b * a₁ * g₀ ^ n₂ = a₂ * g₀ ^ n₁`. Apply `hι` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_mul, map_pow, map_pow, ← h1, ← h2, ← hbB]`. Expand and normalize the polynomial expressions, which then agree. Establish `key'` using `congrArg ψ key`.
-
-Rewrite `key'` using `[map_mul, map_mul, map_mul, map_pow, map_pow, ← h1', ← h2', ← hbB, map_mul]`. Establish `hne : φ B * ψ g₀ ^ n₁ * ψ g₀ ^ n₂ ≠ 0` using `mul_ne_zero (mul_ne_zero ((map_ne_zero φ).2 hq) (pow_ne_zero _ hψ0)) (pow_ne_zero _ hψ0)`. Use `mul_right_cancel₀ hne ?_` and prove the remaining obligations. Take the linear combination `key'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_of_ratios {K A L M : Type} [Field K] [CommRing A] [Algebra K A] [Field L] [Algebra K L] [CommRing M]
     [IsDomain M] [Algebra K M] (ι : A →ₐ[K] L) (hι : Function.Injective ι) (ψ : A →ₐ[K] M) (φ : L →ₐ[K] M) {N : ℕ}
@@ -111,9 +109,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `key : ∀ {S' : Type} [CommRing S'] [Algebra c.F S'] (p : TRing c.F) (χ : p.R →ₐ[c.F] S') (y₀ : FrPt Xo c p.R) (w : FrPt Xo c S'), FrMap χ y₀ w → evR Xo c f w = χ (f p y₀)`. Introduce `S' _ _ p χ y₀ w hw`. Establish `h : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) w := ⟨p, χ, y₀, hw⟩`. Unfold `evR evalAt`. Rewrite using `[dif_pos h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hL.wd f hf S' _ p _ χ _ y₀ w h.choose_spec.choose_spec.choose_spec hw`. Take `⟨q, χ, y₀, hy₀⟩` from `hL.test S y`. Rewrite using `[key q χ y₀ y hy₀, key q (φ.comp χ) y₀ z (PullbackSections.frMap_trans χ φ hy₀ hyz)]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem evR_map (hL : GlobalTheory.Reg.EvLaws Xo c) {f : Rul Xo c}
     (hf : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f)
@@ -133,39 +131,33 @@ theorem evR_map (hL : GlobalTheory.Reg.EvLaws Xo c) {f : Rul Xo c}
 end Main
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U h e hC σ hσ Z k hOver a N g hg hB φ x₀ y y₁ t hφ hb w hw hr`. Take `⟨hL, -, -, hA⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Use `haveI hdom : IsDomain (CAt σ) := inferInstanceAs (IsDomain ℂ)`. Use `haveI hred : IsReduced (CAt σ) := inferInstanceAs (IsReduced ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrd : ∀ f : Rul Xo c, rdU (U σ) f k y.1 = toC (evR Xo c f ((U σ).un k y))`. Introduce `f`. Use `show (if h : y.1 ∈ ((U σ).X k).dom then toC (evR Xo c f ((U σ).un k ⟨y.1, h⟩)) else 0) = _`. Rewrite using `[dif_pos y.2]`. Choose the witnesses or unpack the hypotheses as in `⟨C, ψ, z, t', hz, hbz⟩ : ∃ (C : GlobalTheory.Reg.FChart h) (ψ : C.R →ₐ[c.F] CAt σ) (z : FrPt Xo c (CAt σ)) (t' : Ix Dw → (CAt σ)ˣ), FrMap ψ C.y z ∧ FrBor t' z ((U σ).un k y) := by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Conclude with `hA h (CAt σ) ((U σ).un k y)`. Establish `hCZ : C.Z = Z`. Assume the negation of the conclusion as `hne`. Establish `he` using `hC.e_sec Z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `h0 : evC h C.Z (e Z) = 0` using `(hC.e_val Z).2 _ hne`. Establish `h1 : evR Xo c (e Z) C.yg = 0`. Rewrite using `[hL.wt 0 0 (e Z) he _ C.t _ _ (hL.test _ _) (hL.test _ _) C.bor]`. Unfold `evC at h0`. Rewrite using `[h0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : evR Xo c (e Z) C.y = 0`. Rewrite `h1` using `[evR_map hL he.1 C.R.val C.gen]`. Conclude with `Subtype.ext h1`. Establish `h3 : evR Xo c (e Z) z = 0` using `by rw [evR_map hL he.1 ψ hz, h2, map_zero]`. Establish `h4 : evR Xo c (e Z) ((U σ).un k y) = 0`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Rewrite using `[hL.wt 0 0 (e Z) he _ t' _ _ (hL.test _ _) (hL.test _ _) hbz, h3, mul_zero]`. Establish `h5` using `hOver y.1 y.2`. Rewrite `h5` using `[hrd, h4]`. Conclude with `zero_ne_one (α := ℂ) h5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hCZ` using the available equality. Establish `hgA : ∀ j, g j ∈ GlobalTheory.AllWt.secZ Xo c (exZ Dw a)` using `fun j => by`. Rewrite using `[← secZ_eq_allWt]`. Conclude with `hg j`. Use `set ex := exZ Dw a with hex`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `G : Fin (N + 1) → C.R` to `fun j => evR Xo c (g j) C.y`. Establish `hιG : ∀ j, C.R.val (G j) = ((∏ i, C.t i ^ ex i : (Om C.Z)ˣ) : Om C.Z) * evC h C.Z (g j)`. Introduce `j`. Rewrite using `[← evR_map hL (hg j).1 C.R.val C.gen]`. Conclude with `GlobalTheory.evR_frBor_of_mem_secZ hS Xo c ex (hgA j) (Om C.Z) C.t _ _ C.bor`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨wc, hwc⟩ : ∃ wc : CAt σ, toC wc = w` from `⟨w, rfl⟩`. Establish `hψG : ∀ j, ((∏ i, t' i ^ ex i : (CAt σ)ˣ) : CAt σ) * ψ (G j) = wc * φ (evC h C.Z (g j))`. Introduce `j`. Establish `h1 : evR Xo c (g j) ((U σ).un k y) = ((∏ i, t' i ^ ex i : (CAt σ)ˣ) : CAt σ) * evR Xo c (g j) z` using `GlobalTheory.evR_frBor_of_mem_secZ hS Xo c ex (hgA j) (CAt σ) t' _ _ hbz`. Establish `h2 : evR Xo c (g j) z = ψ (G j)` using `evR_map hL (hg j).1 ψ hz`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h2, ← h1]`. Establish `h3` using `hr j`. Rewrite `h3` using `[hrd, ← hwc]`. Conclude with `h3`. Use `set T : (Om C.Z)ˣ := ∏ i, C.t i ^ ex i with hT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set T' : (CAt σ)ˣ := ∏ i, t' i ^ ex i with hT'`. Establish `hw' : wc ≠ 0` using `fun h0 => hw (by rw [← hwc, h0]; rfl)`. Establish `hE0 : φ (evC h C.Z (g 0)) ≠ 0` using `(map_ne_zero_iff φ φ.toRingHom.injective).2 hB.1`. Establish `hψ0 : ψ (G 0) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h1` using `hψG 0`. Rewrite `h1` using `[h0, mul_zero]`. Conclude with `mul_ne_zero hw' hE0 h1.symm`. Establish `hι0 : C.R.val (G 0) ≠ 0`. Rewrite using `[hιG]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero T.ne_zero hB.1`. Establish `hrat : ∀ j, ψ (G j) * φ (C.R.val (G 0)) = ψ (G 0) * φ (C.R.val (G j))`. Introduce `j`. Establish `h1` using `hψG j`. Establish `h2` using `hψG 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `mul_left_cancel₀ T'.ne_zero ?_` and prove the remaining obligations. Rewrite using `[hιG, hιG, map_mul, map_mul]`. Take the linear combination `(φ (T : Om C.Z) * φ (evC h C.Z (g 0))) * h1 - (φ (T : Om C.Z) * φ (evC h C.Z (g j))) * h2`. Establish `hgen : IntermediateField.adjoin c.F (Set.range fun j => C.R.val (G j) / C.R.val (G 0)) = ⊤`. Establish `e1 : (fun j => C.R.val (G j) / C.R.val (G 0)) = fun j => evC h C.Z (g j) / evC h C.Z (g 0)`.
-
-Use function extensionality and compare the values at `j`. Rewrite using `[hιG, hιG, mul_div_mul_left _ _ T.ne_zero]`. Rewrite using `[e1]`. Conclude with `hB.2`. Establish `hψφ : ψ = φ.comp C.R.val` using `AlgHom.ext fun b => eq_of_ratios C.R.val Subtype.val_injective ψ φ G hι0 hψ0 hrat hgen b`.
-
-Take `⟨w₁, hw₁⟩` from `hL.bc _ _ φ C.yg`. Establish `h1` using `PullbackSections.frMap_trans _ _ C.gen hw₁`. Rewrite `h1` using `[← hψφ]`. Take `rfl : z = w₁` from `(GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c _ _ _ C.y).1 _ _ hz h1`. Establish `hbc` using `GlobalTheory.SupGeneric.frBor_of_frMap φ C.bor hφ hw₁`.
-
-Establish `hgp` using `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c (CAt σ)`. Conclude with `⟨_, hgp.2.1 _ _ _ _ _ (hgp.2.1 _ _ _ _ _ hb hbc) hbz⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frBor_of_proportional_readings : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ (σ : c.F →+* ℂ), GoodEmb c σ → ∀ (Z : Comp Xo c) (k : (U σ).Comp), Over (U σ) (e Z) k → ∀ (a : WZ E) (N : ℕ) (g : Fin (N + 1) → Rul Xo c), (∀ j, g j ∈ GlobalTheory.CompanionTheory.Ar.Rec.secZ Xo c a) → BirOn h Z g → ∀ (φ : Om Z →ₐ[c.F] CAt σ) (x₀ y : ((U σ).X k).dom) (y₁ : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ), FrMap φ (genFr h Z) y₁ → FrBor t ((U σ).un k x₀) y₁ → ∀ w : ℂ, w ≠ 0 → (∀ j, rdU (U σ) (g j) k y.1 = w * toC (φ (evC h Z (g j)))) → ∃ t' : Ix Dw → (CAt σ)ˣ, FrBor t' ((U σ).un k x₀) ((U σ).un k y) := by
   intro E _ _ _ H Dw l Xo c r U h e hC σ hσ Z k hOver a N g hg hB φ x₀ y y₁ t hφ hb w hw hr

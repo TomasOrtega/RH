@@ -46,7 +46,7 @@ def VacuumFock (D : D7) : Prop :=
     ∀ f : WO V W → ℂ, IsVacVec ψ θ M M' f → FockLaws ψ θ M M' f
 
 /- English proof (translation)
-Establish `h : (1 : PolF D W.rank V.rank) = MvPolynomial.basisMonomials _ ℂ 0` using `by simp`. Unfold `ptOf pureTensorO pureTensorL`. Rewrite using `[h, Module.Basis.constr_basis]`. Simplify using `[opPow]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ptOf_one (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (M : DSModel V S) (M' : DSModel W S')
     (f : WO V W → ℂ) : ptOf ψ θ M M' f 1 = f := by
@@ -56,7 +56,7 @@ theorem ptOf_one (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (M : DSModel V
   simp [opPow]
 
 /- English proof (translation)
-Rewrite using `[multiFact, Finsupp.prod_single_index (by simp)]; rfl`.
+Rewrite the conclusion using the stated equalities.
 -/
 example : multiFact (Finsupp.single () 3) = 6 := by
   rw [multiFact, Finsupp.prod_single_index (by simp)]; rfl

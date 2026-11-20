@@ -12,7 +12,7 @@ namespace GlobalTheory.TorsionForm.Gauge
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[show (fun Q => ρ Q • s Q) = ρ • s from rfl, (hρ.hasFDerivAt.smul hs.hasFDerivAt).fderiv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_mul_smul_apply {ρ : Pt E g → ℂ} {s : Pt E g → Ext (n + n + g)} {P : Pt E g}
     (hρ : DifferentiableAt ℝ ρ P) (hs : DifferentiableAt ℝ s P) (v : Pt E g) :
@@ -20,7 +20,7 @@ theorem fderiv_mul_smul_apply {ρ : Pt E g → ℂ} {s : Pt E g → Ext (n + n +
   rw [show (fun Q => ρ Q • s Q) = ρ • s from rfl, (hρ.hasFDerivAt.smul hs.hasFDerivAt).fderiv]; simp
 
 /- English proof (translation)
-Simplify using `only [d10, fderiv_mul_smul_apply hρ hs, smul_eq_mul]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem d10_smul {ρ : Pt E g → ℂ} {s : Pt E g → Ext (n + n + g)} {P : Pt E g}
     (hρ : DifferentiableAt ℝ ρ P) (hs : DifferentiableAt ℝ s P) (v : Pt E g) :
@@ -29,7 +29,7 @@ theorem d10_smul {ρ : Pt E g → ℂ} {s : Pt E g → Ext (n + n + g)} {P : Pt 
   module
 
 /- English proof (translation)
-Simplify using `only [d01, fderiv_mul_smul_apply hρ hs, smul_eq_mul]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem d01_smul {ρ : Pt E g → ℂ} {s : Pt E g → Ext (n + n + g)} {P : Pt E g}
     (hρ : DifferentiableAt ℝ ρ P) (hs : DifferentiableAt ℝ s P) (v : Pt E g) :
@@ -38,7 +38,7 @@ theorem d01_smul {ρ : Pt E g → ℂ} {s : Pt E g → Ext (n + n + g)} {P : Pt 
   module
 
 /- English proof (translation)
-Simplify using `only [pointDifference, d10_smul hρ hs]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem connection_smul (h : Pt E g → ℝ) {ρ : Pt E g → ℂ} {s : Pt E g → Ext (n + n + g)} {P : Pt E g}
     (hρ : DifferentiableAt ℝ ρ P) (hs : DifferentiableAt ℝ s P) (v : Pt E g) :
@@ -53,7 +53,7 @@ namespace GlobalTheory.TorsionForm.Gauge
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [nablaE, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[connection_smul h hρ hs, d01_smul hρ hs, connForm_smul]`. Simplify using `only [wedge_add, wedge_smul]`. Use `module`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nablaE_smul (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fin n → E)
     {ρ : Pt E g → ℂ} {s : Pt E g → Ext (n + n + g)} {P : Pt E g}
@@ -68,7 +68,7 @@ theorem nablaE_smul (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ)
   module
 
 /- English proof (translation)
-Simplify using `only [dbarV, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[d01_smul hρ hs, wedge_add, wedge_smul, wedge_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dbarV_smul {ρ : Pt E g → ℂ} {s : Pt E g → Ext (n + n + g)} {P : Pt E g}
     (hρ : DifferentiableAt ℝ ρ P) (hs : DifferentiableAt ℝ s P) :
@@ -79,9 +79,9 @@ theorem dbarV_smul {ρ : Pt E g → ℂ} {s : Pt E g → Ext (n + n + g)} {P : P
   rw [d01_smul hρ hs, wedge_add, wedge_smul, wedge_smul]
 
 /- English proof (translation)
-Simplify using `only [dbarAdj, smul_neg, sub_eq_add_neg, ← neg_add, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[connection_smul h hρ hs, contr_add, contr_smul, contr_smul]`. Simplify using `only [smul_add, smul_smul]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dbarAdj_smul (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ)
     {ρ : Pt E g → ℂ} {s : Pt E g → Ext (n + n + g)} {P : Pt E g}
@@ -96,7 +96,7 @@ theorem dbarAdj_smul (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ
   congr 2; ring
 
 /- English proof (translation)
-Introduce `hρ hs`. Rewrite using `[superconn, superconn, commOp, nablaE_smul τ h β hρ hs, dbarV_smul hρ hs, dbarAdj_smul τ h hρ hs]`. Use `module`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem superconn_smul (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (g n : ℕ)
     (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fin n → E) (u : ℝ)

@@ -14,11 +14,11 @@ namespace PositivityTheory.Xgp.sq_R
 open GroundTheory.Heights₂.Heights.Inter GroundTheory.Heights₂.Heights.Inter.DiagRAux
 
 /- English proof (translation)
-Establish `hfun : A'.h = fun z => A.h (fun p => z (v p))` using `funext hp.2`. Unfold `IsSmoothHerm`. Rewrite using `[hfun]`. Establish `hlin : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, ι' k) → ℂ => fun p => z (v p))` using `contDiff_pi.2 fun p => contDiff_apply ℝ ℂ (v p)`. Use `hA.comp hlin.contDiffOn ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz k`. Take `⟨i, hi⟩` from `hz (κ k)`. Take `⟨⟨k1, i1⟩, hp1⟩` from `hb.2.2.2 ⟨κ k, i⟩ ⟨k, rfl⟩`. Establish `h1 : κ k1 = κ k`. Use `hb.2.2.1 ⟨k1, i1⟩` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hp1]`. Conclude with `this.symm`. Take `rfl` from `hb.1 h1`. Conclude with `⟨i1, by show z (v ⟨k1, i1⟩) ≠ 0; rw [hp1]; exact hi⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smooth_pull {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type} {ι' : K' → Type} [∀ k, Fintype (ι k)]
     [∀ k, Fintype (ι' k)] {κ : K → K'} {v : (Σ k, ι k) → (Σ k, ι' k)} (hb : IsBlockMap κ v)
@@ -43,7 +43,7 @@ theorem smooth_pull {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type} {ι
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Establish `hrot` using `hI.1 P (n + 1) (Fin.cons A L) (finRotate (n + 1)) hP (smooth_cons hA hL)`. Establish `hsnoc : (Fin.cons A L : Fin (n + 1) → HermLine ι) ∘ finRotate (n + 1) = Fin.snoc L A` using `(Fin.snoc_eq_cons_rotate L A).symm`. Rewrite `hrot` using `[hsnoc]`. Conclude with `hrot.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cons_eq_snoc {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ} (hI : IsIntersectionFamily I)
     {P : Ideal (MRing ι)} {n : ℕ} {L : Fin n → HermLine ι} {A : HermLine ι} (hP : IsArithVar P (n + 1))
@@ -56,21 +56,19 @@ theorem cons_eq_snoc {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine
   exact hrot.symm
 
 /- English proof (translation)
-Use `set Q := X₀.tensor X₁ with hQ`. Use `set LL := halfInvLine X₀ X₁ c hdeg with hLL`. Establish `hsQ : IsSmoothHerm Q` using `DiagRAux.isSmoothHerm_tensor hs0 hs1`. Establish `hsLL : IsSmoothHerm LL` using `isSmoothHerm_halfInvLine hs0 hs1 _ hdeg`. Use `set T2 := Q.tensor (LL.tensor LL) with hT2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsT2 : IsSmoothHerm T2` using `DiagRAux.isSmoothHerm_tensor hsQ (DiagRAux.isSmoothHerm_tensor hsLL hsLL)`. Establish `aT2 : T2.a = 0`. Use function extensionality and compare the values at `k`. Use `hdeg k` as an intermediate fact. Simplify using `only [hT2, hQ, hLL, HermLine.tensor, halfInvLine, Pi.add_apply, Pi.zero_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT2h : ∀ z : (Σ k, ι k) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → T2.h z = 1`. Introduce `z hz`. Establish `hpos : 0 < X₀.h z * X₁.h z` using `mul_pos (X₀.pos z hz) (X₁.pos z hz)`. Simplify using `only [hT2, hQ, hLL, HermLine.tensor]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[halfInvLine_h_of_pos _ _ _ _ z hz, ← Real.rpow_add hpos]`. Evaluate the numerical expressions. Rewrite using `[Real.rpow_neg_one]`. Conclude with `mul_inv_cancel₀ hpos.ne'`. Use `set G : HermLine ι → HermLine ι → ℝ := fun A B => I P (n + 2) (Fin.snoc (Fin.cons A L : Fin (n + 1) → HermLine ι) B) with hG`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `G_add : ∀ {A B C'}, IsSmoothHerm A → IsSmoothHerm B → IsSmoothHerm C' → G A (B.tensor C') = G A B + G A C'` using `fun hA hB hC => hF.2.1 P (n + 1) _ _ _ hW (smooth_cons hA hL) hB hC`. Establish `G_symm : ∀ {A B}, IsSmoothHerm A → IsSmoothHerm B → G A B = G B A`. Introduce `A B hA hB`. Use `hF.1 P (n + 2) (Fin.snoc (Fin.cons B L : Fin (n + 1) → HermLine ι) A) (Equiv.swap 0 (Fin.last (n + 1))) hW (smooth_snoc hA (smooth_cons hB hL))` as an intermediate fact. Rewrite `this` using `[snoc_cons_comp_swap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `e6 : ∀ {M}, IsSmoothHerm M → G M X₀ + G M X₁ + G M LL + G M LL = 0`. Introduce `M hsM`. Rewrite using `[← G_add hsM hs0 hs1, add_assoc, ← G_add hsM hsLL hsLL, ← G_add hsM hsQ (DiagRAux.isSmoothHerm_tensor hsLL hsLL)]`. Conclude with `I_snoc_triv hF hW (smooth_cons hsM hL) hsT2 aT2 fun z hz => hT2h z hz.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e0` using `e6 hs0`. Establish `e1` using `e6 hs1`. Establish `e5 : G X₀ X₁ = G X₁ X₀` using `G_symm hs0 hs1`. Establish `r0 : I P (n + 2) (Fin.cons X₀ (Fin.cons X₀ L)) = G X₀ X₀` using `cons_eq_snoc hF hW (smooth_cons hs0 hL) hs0`. Establish `r1 : I P (n + 2) (Fin.cons X₁ (Fin.cons X₁ L)) = G X₁ X₁` using `cons_eq_snoc hF hW (smooth_cons hs1 hL) hs1`.
-
-Rewrite using `[r0, r1]`. Use `show G X₀ X₀ - G X₁ X₁ = -2 * (G X₀ LL - G X₁ LL)`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem sq_sub {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ} (hF : IsIntersectionFamily I)
     {P : Ideal (MRing ι)} {n : ℕ} {L : Fin n → HermLine ι} {X₀ X₁ : HermLine ι} (hW : IsArithVar P (n + 2))
@@ -128,23 +126,23 @@ theorem sq_sub {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) �
 end PositivityTheory.Xgp.sq_R
 
 /- English proof (translation)
-Introduce `hIn II hII K _ ι _ P d k₀ xi2 Q Xi X₀ X₁ hXa hX hp0 hp1 T hT`. Establish `hF : IsIntersectionFamily (II Q.KW Q.ιW)` using `hII.1 Q.KW Q.ιW`. Establish `hW : IsArithVar Q.PW (d + 3)` using `Q.arithW`. Establish `hWp : Q.PW.IsPrime` using `hW.2.1.1`. Establish `hs0 : IsSmoothHerm X₀` using `PositivityTheory.Xgp.sq_R.smooth_pull (Q.block 0) hX hp0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs1 : IsSmoothHerm X₁` using `PositivityTheory.Xgp.sq_R.smooth_pull (Q.block 1) hX hp1`. Establish `hdeg : ∀ k, 2 * ((Q.dg k : ℤ) - Q.dh k) = -(X₀.a k + X₁.a k)`. Introduce `k`. Rewrite using `[hp0.1, hp1.1, hXa]`. Conclude with `Q.deg_eq k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set LL := GroundTheory.Heights₂.Heights.Inter.DiagRAux.halfInvLine X₀ X₁ (fun k => (Q.dg k : ℤ) - Q.dh k) hdeg with hLL`. Establish `hsLL : IsSmoothHerm LL` using `GroundTheory.Heights₂.Heights.Inter.DiagRAux.isSmoothHerm_halfInvLine hs0 hs1 _ hdeg`. Establish `hrat : IsRatSectionOn Q.PW LL Q.g Q.h` using `⟨_, _, Q.g_deg, Q.h_deg, Q.g_nmem, Q.h_nmem, fun k => rfl⟩`. Establish `hdiv : ReciprocityTheory.ChartRestriction.G.AI.T.toZCycle (divCycle Q.PW Q.g) - ReciprocityTheory.ChartRestriction.G.AI.T.toZCycle (divCycle Q.PW Q.h) = Finsupp.single Q.Δ 1` using `by classical`. Use extensionality with `W`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Q.div_eq, ReciprocityTheory.ChartRestriction.G.AI.T.toZCycle, Finsupp.coe_sub, Pi.sub_apply, Finsupp.mapRange_apply, Finsupp.coe_add, Pi.add_apply, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`. Establish `key : ∀ A : HermLine Q.ιW, IsSmoothHerm A → II Q.KW Q.ιW Q.PW (d + 3) (Fin.snoc (Fin.cons A T : Fin (d + 2) → HermLine Q.ιW) LL) = II Q.KW Q.ιW Q.Δ (d + 2) (Fin.snoc T A) - ptsIntegral Q.PW (pot (Fin.cons A T : Fin (d + 2) → HermLine Q.ιW)) (Q.logNormT Xi)`. Introduce `A hA`. Establish `e7` using `hIn.ratR Q.KW Q.ιW (II Q.KW Q.ιW) hF Q.PW (d + 2) (Fin.cons A T) LL Q.g Q.h hW (GroundTheory.Heights₂.Heights.Inter.DiagRAux.smooth_cons hA hT) hsLL hrat`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e8` using `GroundTheory.Heights₂.Heights.Inter.DiagRAux.cycR_sub_eq (II Q.KW Q.ιW) Q.PW (Fin.cons A T : Fin (d + 2) → HermLine Q.ιW) Q.g Q.h Q.Δ hdiv Q.arithΔ.2.2.1`. Establish `e9` using `PositivityTheory.Xgp.sq_R.cons_eq_snoc hF Q.arithΔ hT hA`. Establish `e10 : ptsIntegral Q.PW (pot (Fin.cons A T : Fin (d + 2) → HermLine Q.ιW)) (logNormRat LL Q.g Q.h) = ptsIntegral Q.PW (pot (Fin.cons A T : Fin (d + 2) → HermLine Q.ιW)) (Q.logNormT Xi)`. Use `GroundTheory.Heights₂.Heights.Inter.ZeroSetNull.proof Q.KW Q.ιW Q.PW (d + 2) (Q.g * Q.h) (Q.dg + Q.dh) _ _ _ hW (by classical exact GroundTheory.Heights₂.Heights.Inter.exHomog_mul Q.g_deg Q.h_deg) (fun hm => (hWp.mem_or_mem hm).elim Q.g_nmem Q.h_nmem) ?_` and prove the remaining obligations. Introduce `z hz hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz'` using `hz.1`. Rewrite `hne` using `[map_mul, eval_mul]`. Establish `hgz : ‖eval z (map (Int.castRingHom ℂ) Q.g)‖ ≠ 0` using `norm_ne_zero_iff.2 (left_ne_zero_of_mul hne)`. Establish `hhz : ‖eval z (map (Int.castRingHom ℂ) Q.h)‖ ≠ 0` using `norm_ne_zero_iff.2 (right_ne_zero_of_mul hne)`. Establish `h0` using `X₀.pos z hz'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h1` using `X₁.pos z hz'`. Unfold `logNormRat AlgSq.logNormT`. Rewrite using `[← hp0.2 z, ← hp1.2 z, hLL, GroundTheory.Heights₂.Heights.Inter.DiagRAux.halfInvLine_h_of_pos _ _ _ _ z hz', Real.log_div (div_ne_zero hgz hhz) (Real.rpow_pos_of_pos (mul_pos h0 h1) _).ne', Real.log_rpow (mul_pos h0 h1), Real.log_mul h0.ne' h1.ne']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e7, recRRat, e8, e9, e10]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hV` using `GlobalTheory.T.intersection_vertical_perturbation_bound hIn II hII Q.KW Q.ιW Q.Δ (d + 1) T X₀ X₁ ∅ (fun _ => 0) Q.arithΔ hT hs0 hs1 (by simp) (PositivityTheory.Xgp.t_sq_diag K ι P d k₀ xi2 Q Xi X₀ X₁ hp0 hp1) (by simp)`. Rewrite `hV` using `[Finset.sum_empty, zero_mul, abs_nonpos_iff]`. Establish `hsq` using `PositivityTheory.Xgp.sq_R.sq_sub hF (n := d + 1) hW hT hs0 hs1 _ hdeg`. Establish `k0` using `key X₀ hs0`. Establish `k1` using `key X₁ hs1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hsq` using `[← hLL]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.t_sq_R : Inputs → ∀ (II : IntersectionSystem), IsFullIntersectionSystem II → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (d : ℕ) (k₀ : K) (xi2 : K → ℤ) (Q : AlgSq P d k₀ xi2) (Xi : HermLine ι) (X₀ X₁ : HermLine Q.ιW), Xi.a = xi2 → IsSmoothHerm Xi → IsPullHerm (Q.κ 0) (Q.v 0) Xi X₀ → IsPullHerm (Q.κ 1) (Q.v 1) Xi X₁ → ∀ T : Fin (d + 1) → HermLine Q.ιW, (∀ j, IsSmoothHerm (T j)) → II Q.KW Q.ιW Q.PW (d + 3) (Fin.cons X₀ (Fin.cons X₀ T)) - II Q.KW Q.ιW Q.PW (d + 3) (Fin.cons X₁ (Fin.cons X₁ T)) = 2 * (ptsIntegral Q.PW (pot (Fin.cons X₀ T : Fin (d + 2) → HermLine Q.ιW)) (Q.logNormT Xi) - ptsIntegral Q.PW (pot (Fin.cons X₁ T : Fin (d + 2) → HermLine Q.ιW)) (Q.logNormT Xi)) := by
   intro hIn II hII K _ ι _ P d k₀ xi2 Q Xi X₀ X₁ hXa hX hp0 hp1 T hT

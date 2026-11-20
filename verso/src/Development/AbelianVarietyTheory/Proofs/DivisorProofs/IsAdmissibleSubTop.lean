@@ -30,9 +30,9 @@ def kfSub (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ
   smul_mem' := fun c _ ⟨S, hS, ha, hSK⟩ => ⟨S, hS, by simpa using S.smul_mem c ha, hSK⟩
 
 /- English proof (translation)
-Introduce `a b hab x hx`. Use `Submodule.iSup_induction S (motive := fun x => E a b x ∈ ⨆ i, S i) hx (fun i y hy => ?_) ?_ ?_` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem i (h i a b hab y hy)`. Simplify using the standard rewrite rules. Introduce `y z hy hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+A detailed English derivation is pending.
 -/
 theorem kStableSub_iSup {ι : Type} {E : Fin n → Fin n → Module.End ℂ (smD ε σ)} (S : ι → Submodule ℂ (smD ε σ))
     (h : ∀ i, IsKStableSub ε E (S i)) : IsKStableSub ε E (⨆ i, S i) := by
@@ -45,21 +45,19 @@ theorem kStableSub_iSup {ι : Type} {E : Fin n → Fin n → Module.End ℂ (smD
 end
 
 /- English proof (translation)
-Introduce `Λ`. Establish `hD` using `isDerivedOn_smE hσ`. Use `set A := {v : smD ε σ | v ∈ KF ε σ ∧ IsKHWVec ε (smE ε σ) Λ v}`. Establish `hAf : FiniteDimensional ℂ (Submodule.span ℂ A)` using `uAdm n ε H σ hσ hirr Λ`. Establish `hAK : Submodule.span ℂ A ≤ kfSub ε σ` using `Submodule.span_le.2 fun v hv => hv.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b` to `Module.finBasis ℂ (Submodule.span ℂ A)`. Set `M : Submodule ℂ (smD ε σ)` to `⨆ i, Formalism.REAL.kSpan ε (smE ε σ) (b i : smD ε σ)`. Establish `hbi : ∀ i, FiniteDimensional ℂ (Formalism.REAL.kSpan ε (smE ε σ) (b i : smD ε σ)) ∧ IsKStableSub ε (smE ε σ) (Formalism.REAL.kSpan ε (smE ε σ) (b i : smD ε σ))` using `fun i => kSpan_fin_B K_finite_smooth_vectors hσ hirr (hAK (b i).2)`. Use `haveI : ∀ i, FiniteDimensional ℂ (Formalism.REAL.kSpan ε (smE ε σ) (b i : smD ε σ)) := fun i => (hbi i).1`. Establish `hMf : FiniteDimensional ℂ M` using `Submodule.finiteDimensional_iSup _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMK : IsKStableSub ε (smE ε σ) M` using `kStableSub_iSup _ fun i => (hbi i).2`. Establish `hAM : Submodule.span ℂ A ≤ M`. Introduce `x hx`. Establish `h1` using `congrArg (fun z : Submodule.span ℂ A => (z : smD ε σ)) (b.sum_repr ⟨x, hx⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← h1]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.mem_iSup_of_mem i (Formalism.REAL.mem_compact_span_self _))`. Set `T : Submodule ℂ H` to `M.map (smD ε σ).subtype`. Establish `hTf : FiniteDimensional ℂ T` using `Module.Finite.map _ _`. Establish `hTK` using `kStable_of_isKStableSub hσ hD M hMf hMK`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Submodule.finiteDimensional_of_le (S₂ := T) (sSup_le fun S hS' => ?_)` and prove the remaining obligations. Establish `hS` using `hS'.2`. Take `⟨hSf, hSK, hirrS, -, -⟩` from `id hS`. Establish `hSD : S ≤ smD ε σ` using `fun v hv => (K_finite_smooth_vectors n ε H σ hσ hirr).1 v ⟨S, hSf, hv, hSK⟩`. Take `⟨w, hwS, hw0, hwΛ⟩` from `exists_isKHWVec_of_isKTypeOf hσ hD hS hSD`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwA : w ∈ A` using `⟨⟨S, hSf, hwS, hSK⟩, hwΛ⟩`. Establish `hwM : w ∈ M` using `hAM (Submodule.subset_span hwA)`. Establish `hST : Formalism.MainNotions.S.IsKStableOn ε σ (S ⊓ T)`. Introduce `g hg v hv`. Use `⟨hSK g hg v hv.1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hv.2`. Take `⟨z, hz, hzeq⟩` from `hTK g hg y hy`. Conclude with `Submodule.mem_map.2 ⟨z, hz, hzeq⟩`. Break down `hirrS _ inf_le_left hST with h0 | hEq` into its components or cases. It suffices to derive a contradiction.
-
-Establish `hmem : (w : H) ∈ S ⊓ T` using `⟨hwS, Submodule.mem_map_of_mem hwM⟩`. Rewrite `hmem` using `[h0, Submodule.mem_bot]`. Conclude with `hw0 (Subtype.ext hmem)`. Rewrite using `[← hEq]`. Conclude with `inf_le_right`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdmissibleSub_top (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ)

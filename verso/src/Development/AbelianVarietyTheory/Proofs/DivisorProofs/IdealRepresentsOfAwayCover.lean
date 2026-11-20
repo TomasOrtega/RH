@@ -7,9 +7,9 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Geo.T
 namespace GlobalTheory.PtClosed
 
 /- English proof (translation)
-Establish `e : (Localization.awayMap f a).comp (algebraMap A (Localization.Away a)) = (algebraMap R' (Localization.Away (f a))).comp f` using `IsLocalization.map_comp _`. Establish `h1 : Q _ ((algebraMap R' (Localization.Away (f a))).comp f)` using `hbc _ _ (algebraMap R' (Localization.Away (f a))) f hf`. Rewrite `h1` using `[← e]`. Establish `h2` using `(hJa _ (Localization.awayMap f a)).1 h1 hx`. Rewrite `h2` using `[RingHom.mem_ker, ← RingHom.comp_apply, e, RingHom.comp_apply, IsLocalization.map_eq_zero_iff (Submonoid.powers (f a))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨_, m, rfl⟩, hm⟩` from `h2`. Conclude with `⟨m, hm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pow_mul_eq_zero_of_represents_away {A : Type} [CommRing A]
     {Q : ∀ (R' : Type) [CommRing R'], (A →+* R') → Prop}
@@ -32,27 +32,25 @@ theorem exists_pow_mul_eq_zero_of_represents_away {A : Type} [CommRing A]
   exact ⟨m, hm⟩
 
 /- English proof (translation)
-Introduce `A _ Q hbc hloc s hs hJ`. Use `choose! J' hJ' using hJ`. Use `⟨⨅ a ∈ s, (J' a).comap (algebraMap A (Localization.Away a)), fun R' _ f ↦ ⟨fun hf ↦ ?_, fun hf ↦ ?_⟩⟩` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Submodule.mem_iInf, Ideal.mem_comap] at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.mem_ker]`. Establish `hspan : Ideal.span ((f : A → R') '' (s : Set A)) = ⊤`. Rewrite using `[← Ideal.map_span, hs, Ideal.map_top]`. Use `Submodule.mem_of_span_eq_top_of_smul_pow_mem (⊥ : Submodule R' R') _ hspan (f x) ?_` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, b, hb, rfl⟩`. Take `⟨m, hm⟩` from `exists_pow_mul_eq_zero_of_represents_away hbc b (hJ' b hb) f hf x (hx b hb)`. Conclude with `⟨m, by simpa [smul_eq_mul] using hm⟩`. Apply `hloc R' f (s.image f)` to reduce the goal to its premises. Rewrite using `[Finset.coe_image, ← Ideal.map_span, hs, Ideal.map_top]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hr`. Establish `e : (Localization.awayMap f a).comp (algebraMap A (Localization.Away a)) = (algebraMap R' (Localization.Away (f a))).comp f` using `IsLocalization.map_comp _`. Rewrite using `[← e]`. Use `((hJ' a ha) _ (Localization.awayMap f a)).2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Take `⟨⟨y, _, n, rfl⟩, hy⟩` from `IsLocalization.surj (Submonoid.powers a) j`. Simplify using `only at hy`. Establish `hyJ : algebraMap A (Localization.Away a) y ∈ J' a` using `hy ▸ Ideal.mul_mem_right _ _ hj`. Establish `hb : ∀ b ∈ s, ∃ m : ℕ, algebraMap A (Localization.Away b) (a ^ m * y) ∈ J' b`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hbs`. Set `p : A →+* (Localization.Away b ⧸ J' b)` to `(Ideal.Quotient.mk (J' b)).comp (algebraMap A (Localization.Away b))`. Establish `hp : Q _ p` using `((hJ' b hbs) _ (Ideal.Quotient.mk (J' b))).2 (by rw [Ideal.mk_ker])`. Take `⟨m, hm⟩` from `exists_pow_mul_eq_zero_of_represents_away hbc a (hJ' a ha) p hp y hyJ`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify `hm` using `[p]`. Use `choose! m hm using hb`. Establish `hM : a ^ (s.sup m) * y ∈ ⨅ b ∈ s, (J' b).comap (algebraMap A (Localization.Away b))`. Simplify using `only [Submodule.mem_iInf, Ideal.mem_comap]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b hbs`. Establish `: a ^ (s.sup m) * y = a ^ (s.sup m - m b) * (a ^ m b * y)`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel (Finset.le_sup hbs)]`. Rewrite using `[this, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ (hm b hbs)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `hf hM`. Rewrite `h0` using `[RingHom.mem_ker, map_mul, map_pow]`. Rewrite using `[RingHom.mem_ker]`. Establish `hu : IsUnit (Localization.awayMap f a (algebraMap A _ (a ^ n)))`. Rewrite using `[← RingHom.comp_apply, e, RingHom.comp_apply, map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit (S := Localization.Away (f a)) (f a)).pow n`. Establish `h3 : Localization.awayMap f a j * Localization.awayMap f a (algebraMap A _ (a ^ n)) = 0`. Rewrite using `[← map_mul, hy, ← RingHom.comp_apply, e, RingHom.comp_apply, IsLocalization.map_eq_zero_iff (Submonoid.powers (f a))]`. Conclude with `⟨⟨_, s.sup m, rfl⟩, h0⟩`.
-
-Conclude with `(hu.mul_left_eq_zero).1 h3`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem represents_of_away_cover : ∀ (A : Type) [CommRing A] (Q : ∀ (R' : Type) [CommRing R'], (A →+* R') → Prop),
   (∀ (R' : Type) [CommRing R'] (R'' : Type) [CommRing R''] (g : R' →+* R'') (f : A →+* R'),

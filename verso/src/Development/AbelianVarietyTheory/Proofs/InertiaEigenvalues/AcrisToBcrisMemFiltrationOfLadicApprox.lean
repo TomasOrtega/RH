@@ -13,9 +13,9 @@ open GlobalTheory.Decompl
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul]`. Use `mul_mem_FilD_of_zero ?_ h` and prove the remaining obligations. Establish `h1 : algebraMap ℤ_[l] (Per.Bcris l) a = acrisToBcris l (algebraMap ℤ_[l] (Per.Acris l) a)` using `((acrisToBcris l).commutes a).symm`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `C.ι (algebraMap (Per.Acris l) (Per.Bcris l) _) ∈ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[C.ι_j]`. Conclude with `(mem_FilD_zero_iff _).2 ⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ι_smul_mem_FilD (C : GlobalTheory.MemLoc.Core l) {n : ℤ} (a : ℤ_[l]) {β : Per.Bcris l}
     (h : C.ι β ∈ Per.FilD l n) : C.ι (a • β) ∈ Per.FilD l n := by
@@ -31,7 +31,7 @@ theorem ι_smul_mem_FilD (C : GlobalTheory.MemLoc.Core l) {n : ℤ} (a : ℤ_[l]
 variable {O : Type} [CommRing O] [Algebra ℤ_[l] O] {I : Type} [Fintype I] (b : Module.Basis I ℤ_[l] O)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← sum_crd b w]`. Simplify using `only [Finset.smul_sum, smul_tmul', smul_eq_mul, map_sum, crd_tmul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem crd_smul_eq {W : Type} [CommRing W] [Algebra ℤ_[l] W] (o : O) (w : O ⊗[ℤ_[l]] W) (i : I) :
     crd b i (o • w) = ∑ k, b.repr (o * b k) i • crd b k w := by
@@ -39,11 +39,9 @@ theorem crd_smul_eq {W : Type} [CommRing W] [Algebra ℤ_[l] W] (o : O) (w : O �
   simp only [Finset.smul_sum, smul_tmul', smul_eq_mul, map_sum, crd_tmul]
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction generalizing i with`. Consider the case `mem w hw`. Take `⟨β, hβ, rfl⟩` from `hw`. Rewrite using `[crd_tmul]`. Conclude with `ι_smul_mem_FilD C _ hβ`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `add w w' _ _ h h' => rw [map_add, map_add]`. Conclude with `add_mem (h i) (h' i)`. Consider the case `smul o w _ h`.
-
-Rewrite using `[crd_smul_eq, map_sum]`. Conclude with `Submodule.sum_mem _ fun k _ => ι_smul_mem_FilD C _ (h k)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_mem_of_mem_filO (C : GlobalTheory.MemLoc.Core l) {n : ℤ} {w : OB l O} (hw : w ∈ filO O C n)
     (i : I) : C.ι (crd b i w) ∈ Per.FilD l n := by
@@ -59,21 +57,21 @@ theorem crd_mem_of_mem_filO (C : GlobalTheory.MemLoc.Core l) {n : ℤ} {w : OB l
     exact Submodule.sum_mem _ fun k _ => ι_smul_mem_FilD C _ (h k)
 
 /- English proof (translation)
-The claim follows from `crd_map b (acrisToBcris l) i x`.
+A detailed English derivation is pending.
 -/
 theorem crd_toOB (x : OCr l O) (i : I) : crd b i (toOB l O x) = acrisToBcris l (crd b i x) :=
   crd_map b (acrisToBcris l) i x
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ_[l] O`. Establish `hc : ∀ i, C.j (crd b i x) ∈ Per.FilP l m`. Introduce `i`. Use `j_mem_FilP_of_approx C m _ fun r => ?_` and prove the remaining obligations. Take `⟨y, z, hxyz, hy⟩` from `h r`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨crd b i y, crd b i z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hxyz, map_add]`. Use `congr 1`. Rewrite using `[show (l : OCr l O) ^ r = ((l ^ r : ℕ) : OCr l O) by push_cast; rfl, crd_natCast_mul]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Establish `h1` using `crd_mem_of_mem_filO b C hy i`. Rewrite `h1` using `[crd_toOB]`. Express the relevant statement in the definitionally equal form `C.ι (algebraMap (Per.Acris l) (Per.Bcris l) _) ∈ _ at h1`. Rewrite `h1` using `[C.ι_j]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(alg_mem_FilD_iff m _).1 h1`. Rewrite using `[← sum_crd b x, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `: (b i ⊗ₜ[ℤ_[l]] crd b i x : OCr l O) = b i • ((1 : O) ⊗ₜ[ℤ_[l]] crd b i x)`. Rewrite using `[smul_tmul', smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_smul]`. Conclude with `Submodule.smul_mem _ _ (toOB_tmul_mem_filO (hc i))`.
+A detailed English derivation is pending.
 -/
 theorem toOB_mem_filO_of_approx (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O]
     [Module.Finite ℤ_[l] O] (C : GlobalTheory.MemLoc.Core l) (m : ℕ) (x : OCr l O)

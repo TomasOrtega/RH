@@ -16,31 +16,31 @@ open Classical in
 def ind (p : Prop) : ℝ := if p then 1 else 0
 
 /- English proof (translation)
-Unfold `ind`. Rewrite using `[if_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ind_pos {p : Prop} (h : p) : ind p = 1 := by
   unfold ind
   rw [if_pos h]
 /- English proof (translation)
-Unfold `ind`. Rewrite using `[if_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ind_neg {p : Prop} (h : ¬ p) : ind p = 0 := by
   unfold ind
   rw [if_neg h]
 /- English proof (translation)
-Unfold `ind`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ind_nonneg (p : Prop) : 0 ≤ ind p := by
   unfold ind
   split_ifs <;> norm_num
 /- English proof (translation)
-Unfold `ind`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ind_le_one (p : Prop) : ind p ≤ 1 := by
   unfold ind
   split_ifs <;> norm_num
 /- English proof (translation)
-Unfold `ind`. Use `split_ifs with hp`. Conclude with `h1 hp`. Conclude with `h0`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ind_le {p : Prop} {x : ℝ} (h0 : 0 ≤ x) (h1 : p → 1 ≤ x) : ind p ≤ x := by
   unfold ind
@@ -48,7 +48,7 @@ theorem ind_le {p : Prop} {x : ℝ} (h0 : 0 ≤ x) (h1 : p → 1 ≤ x) : ind p 
   · exact h1 hp
   · exact h0
 /- English proof (translation)
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ind_congr {p q : Prop} (h : p ↔ q) : ind p = ind q := by
   rw [h]
@@ -56,15 +56,15 @@ theorem ind_congr {p q : Prop} (h : p ↔ q) : ind p = ind q := by
 variable {δ : ℝ}
 
 /- English proof (translation)
-Simplify using `[ex]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ex_empty (f : Finset ℕ → ℝ) : ex δ ∅ f = f ∅ := by
   simp [ex]
 
 /- English proof (translation)
-Unfold `ex`. Rewrite using `[sum_powerset_insert ha, card_insert_of_notMem ha, mul_sum, mul_sum]`. Use `congr 1`. Use `sum_congr rfl fun T hT => ?_` and prove the remaining obligations. Use `card_le_card (mem_powerset.mp hT)` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[show #S + 1 - #T = (#S - #T) + 1 by omega, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Use `sum_congr rfl fun T hT => ?_` and prove the remaining obligations. Establish `hT' : a ∉ T` using `fun h => ha (mem_powerset.mp hT h)`. Rewrite using `[card_insert_of_notMem hT', show #S + 1 - (#T + 1) = #S - #T by omega, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -83,7 +83,7 @@ theorem ex_insert {a : ℕ} {S : Finset ℕ} (ha : a ∉ S) (f : Finset ℕ → 
     ring
 
 /- English proof (translation)
-Unfold `ex`. Conclude with `sum_congr rfl fun T hT => by rw [h T (mem_powerset.mp hT)]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ex_congr {S : Finset ℕ} {f g : Finset ℕ → ℝ} (h : ∀ T ⊆ S, f T = g T) :
     ex δ S f = ex δ S g := by
@@ -91,7 +91,7 @@ theorem ex_congr {S : Finset ℕ} {f g : Finset ℕ → ℝ} (h : ∀ T ⊆ S, f
   exact sum_congr rfl fun T hT => by rw [h T (mem_powerset.mp hT)]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp [ex_empty]`. Consider the case `insert a S ha ih => rw [ex_insert ha, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ex_const (S : Finset ℕ) (c : ℝ) : ex δ S (fun _ => c) = c := by
   induction S using Finset.induction_on with
@@ -99,7 +99,7 @@ theorem ex_const (S : Finset ℕ) (c : ℝ) : ex δ S (fun _ => c) = c := by
   | insert a S ha ih => rw [ex_insert ha, ih]; ring
 
 /- English proof (translation)
-Unfold `ex`. Rewrite using `[← sum_add_distrib]`. Conclude with `sum_congr rfl fun _ _ => by ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_add (S : Finset ℕ) (f g : Finset ℕ → ℝ) :
     ex δ S (fun T => f T + g T) = ex δ S f + ex δ S g := by
@@ -108,7 +108,7 @@ theorem ex_add (S : Finset ℕ) (f g : Finset ℕ → ℝ) :
   exact sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Unfold `ex`. Rewrite using `[mul_sum]`. Conclude with `sum_congr rfl fun _ _ => by ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_mul_left (S : Finset ℕ) (c : ℝ) (f : Finset ℕ → ℝ) :
     ex δ S (fun T => c * f T) = c * ex δ S f := by
@@ -117,7 +117,7 @@ theorem ex_mul_left (S : Finset ℕ) (c : ℝ) (f : Finset ℕ → ℝ) :
   exact sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Rewrite using `[show (1 : ℝ) - ex δ S f = ex δ S (fun _ => 1) - ex δ S f by rw [ex_const]]`. Unfold `ex`. Rewrite using `[← sum_sub_distrib]`. Conclude with `sum_congr rfl fun _ _ => by ring`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_one_sub (S : Finset ℕ) (f : Finset ℕ → ℝ) :
     ex δ S (fun T => 1 - f T) = 1 - ex δ S f := by
@@ -127,7 +127,7 @@ theorem ex_one_sub (S : Finset ℕ) (f : Finset ℕ → ℝ) :
   exact sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Unfold `ex`. Simplify using `only [mul_sum]`. Rewrite using `[sum_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_sum {ι : Type*} (S : Finset ℕ) (I : Finset ι) (f : ι → Finset ℕ → ℝ) :
     ex δ S (fun T => ∑ i ∈ I, f i T) = ∑ i ∈ I, ex δ S (f i) := by
@@ -136,7 +136,7 @@ theorem ex_sum {ι : Type*} (S : Finset ℕ) (I : Finset ι) (f : ι → Finset 
   rw [sum_comm]
 
 /- English proof (translation)
-Unfold `ex`. Use `sum_le_sum fun T hT => mul_le_mul_of_nonneg_left (h T (mem_powerset.mp hT)) ?_` and prove the remaining obligations. Conclude with `mul_nonneg (pow_nonneg h0 _) (pow_nonneg (by linarith) _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ex_mono (h0 : 0 ≤ δ) (h1 : δ ≤ 1) {S : Finset ℕ} {f g : Finset ℕ → ℝ}
     (h : ∀ T ⊆ S, f T ≤ g T) : ex δ S f ≤ ex δ S g := by
@@ -145,9 +145,9 @@ theorem ex_mono (h0 : 0 ≤ δ) (h1 : δ ≤ 1) {S : Finset ℕ} {f g : Finset �
   exact mul_nonneg (pow_nonneg h0 _) (pow_nonneg (by linarith) _)
 
 /- English proof (translation)
-Proceed by induction on `A using Finset.induction_on generalizing f with`. Consider the case `empty => simp [ex_empty]`. Consider the case `insert a A ha ih`. Establish `haB : a ∉ B` using `fun h => disjoint_left.mp hAB (mem_insert_self a A) h`. Establish `hAB' : Disjoint A B` using `disjoint_of_subset_left (subset_insert a A) hAB`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haU : a ∉ A ∪ B` using `by simp [ha, haB]`. Rewrite using `[insert_union, ex_insert haU, ex_insert ha, ih hAB', ih hAB']`. Simplify using `only [insert_union]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ex_union {A B : Finset ℕ} (hAB : Disjoint A B) (f : Finset ℕ → ℝ) :
     ex δ (A ∪ B) f = ex δ A (fun T => ex δ B (fun U => f (T ∪ U))) := by
@@ -161,17 +161,17 @@ theorem ex_union {A B : Finset ℕ} (hAB : Disjoint A B) (f : Finset ℕ → ℝ
     simp only [insert_union]
 
 /- English proof (translation)
-Establish `hd : Disjoint A (S \ A)` using `disjoint_sdiff`. Use `conv_lhs => rw [← union_sdiff_of_subset hA]`. Rewrite using `[ex_union hd]`. Establish `e : ∀ T ⊆ A, ex δ (S \ A) (fun U => f ((T ∪ U) ∩ A) * g ((T ∪ U) \ A)) = f T * ex δ (S \ A) g`. Introduce `T hT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ex_mul_left]`. Use `ex_congr fun U hU => ?_` and prove the remaining obligations. Establish `e1 : (T ∪ U) ∩ A = T`. Use extensionality with `x`. Establish `h1` using `@hT x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `@hU x`. Simplify using `only [mem_inter, mem_union, mem_sdiff] at *`. The claim follows by propositional logic. Establish `e2 : (T ∪ U) \ A = U`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h1` using `@hT x`. Establish `h2` using `@hU x`. Simplify using `only [mem_union, mem_sdiff] at *`. The claim follows by propositional logic. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ex_congr e]`. Use `ex_mul_left (δ := δ) A (ex δ (S \ A) g) f` as an intermediate fact. Rewrite using `[mul_comm, ← this]`. Use `congr 1`. Use function extensionality and compare the values at `T`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem ex_split {A S : Finset ℕ} (hA : A ⊆ S) (f g : Finset ℕ → ℝ) :
     ex δ S (fun T => f (T ∩ A) * g (T \ A)) = ex δ A f * ex δ (S \ A) g := by
@@ -204,7 +204,7 @@ theorem ex_split {A S : Finset ℕ} (hA : A ⊆ S) (f g : Finset ℕ → ℝ) :
   ring
 
 /- English proof (translation)
-Establish `h` using `ex_split (δ := δ) hA f (fun _ => 1)`. Simplify using `only [mul_one, ex_const] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ex_restrict {A S : Finset ℕ} (hA : A ⊆ S) (f : Finset ℕ → ℝ) :
     ex δ S (fun T => f (T ∩ A)) = ex δ A f := by
@@ -213,15 +213,15 @@ theorem ex_restrict {A S : Finset ℕ} (hA : A ⊆ S) (f : Finset ℕ → ℝ) :
   exact h
 
 /- English proof (translation)
-Use `revert hd S`. Proceed by induction on `J using Finset.induction_on with`. Consider the case `empty => intro _ S _`. Simplify using `[ex_const]`. Consider the case `insert j J hj ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hd S hS`. Establish `hdj : ∀ i ∈ J, Disjoint (A i) (A j)` using `fun i hi => hd i (mem_insert_of_mem hi) j (mem_insert_self j J) (fun h => hj (h ▸ hi))`. Establish `hd' : ∀ i ∈ J, ∀ k ∈ J, i ≠ k → Disjoint (A i) (A k)` using `fun i hi k hk => hd i (mem_insert_of_mem hi) k (mem_insert_of_mem hk)`. Establish `hS' : ∀ i ∈ J, A i ⊆ S \ A j`. Introduce `i hi x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `mem_sdiff.mpr ⟨hS i (mem_insert_of_mem hi) hx, fun hxj => disjoint_left.mp (hdj i hi) hx hxj⟩`. Establish `e : ∀ T ⊆ S, ∏ i ∈ insert j J, g i (T ∩ A i) = g j (T ∩ A j) * ∏ i ∈ J, g i ((T \ A j) ∩ A i)`. Introduce `T _`. Rewrite using `[prod_insert hj]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `x`. Simplify using `only [mem_inter, mem_sdiff]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hxT, hxi⟩`. Conclude with `⟨⟨hxT, fun hxj => disjoint_left.mp (hdj i hi) hxi hxj⟩, hxi⟩`. Introduce and unpack `⟨⟨hxT, _⟩, hxi⟩`. Conclude with `⟨hxT, hxi⟩`. Rewrite using `[ex_congr e, ex_split (hS j (mem_insert_self j J)) (g j) (fun U => ∏ i ∈ J, g i (U ∩ A i)), ih hd' (S \ A j) hS', prod_insert hj]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_prod {ι : Type*} (J : Finset ι) (A : ι → Finset ℕ) (g : ι → Finset ℕ → ℝ)
     (hd : ∀ i ∈ J, ∀ j ∈ J, i ≠ j → Disjoint (A i) (A j)) (S : Finset ℕ)
@@ -258,13 +258,11 @@ theorem ex_prod {ι : Type*} (J : Finset ι) (A : ι → Finset ℕ) (g : ι →
       ih hd' (S \ A j) hS', prod_insert hj]
 
 /- English proof (translation)
-Establish `hmem : i₀ ∈ range n` using `mem_range.mpr hi`. Establish `hnot : i₀ ∉ (range n).erase i₀` using `notMem_erase _ _`. Establish `hcard : #((range n).erase i₀) = n - 1` using `by rw [card_erase_of_mem hmem, card_range]`. Unfold `condProbAt ex`. Use `conv_lhs => rw [← insert_erase hmem]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_powerset_insert hnot, sum_eq_zero, zero_add]`. Use `sum_congr rfl fun U hU => ?_` and prove the remaining obligations. Establish `hU' : i₀ ∉ U` using `fun h => hnot (mem_powerset.mp hU h)`. Rewrite using `[card_insert_of_notMem hU', hcard]`. Unfold `ind`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Use `beta_reduce`. Distinguish the cases in `hA : A (insert i₀ U)`. Rewrite using `[if_pos ⟨mem_insert_self _ _, hA⟩, if_pos hA, Nat.add_sub_cancel, mul_one, show n - (#U + 1) = n - 1 - #U by omega]`. Rewrite using `[if_neg (fun h => hA h.2), if_neg hA, mul_zero]`. Introduce `T hT`.
-
-Conclude with `if_neg (fun h => hnot (mem_powerset.mp hT h.1))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem condProbAt_eq {n i₀ : ℕ} (hi : i₀ < n) (A : Finset ℕ → Prop) :
     condProbAt n δ i₀ A = ex δ ((Finset.range n).erase i₀) (fun U => ind (A (insert i₀ U))) := by
@@ -287,11 +285,11 @@ theorem condProbAt_eq {n i₀ : ℕ} (hi : i₀ < n) (A : Finset ℕ → Prop) :
     exact if_neg (fun h => hnot (mem_powerset.mp hT h.1))
 
 /- English proof (translation)
-Establish `e : ex δ B (fun T => ind (Q ⊆ T)) = ex δ B (fun T => ind (Q ⊆ T ∩ Q))` using `ex_congr fun T _ => ind_congr (by simp [subset_inter_iff])`. Rewrite using `[e, ex_restrict hQ (fun T => ind (Q ⊆ T))]`. Unfold `ex`. Rewrite using `[sum_eq_single Q]`. Use `beta_reduce`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ind_pos subset_rfl]`. Simplify using the standard rewrite rules. Introduce `T hT hne beta_reduce`. Rewrite using `[ind_neg, mul_zero]`. Conclude with `fun h => hne (subset_antisymm (mem_powerset.mp hT) h)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (mem_powerset_self Q) h`.
+A detailed English derivation is pending.
 -/
 theorem ex_contains {Q B : Finset ℕ} (hQ : Q ⊆ B) :
     ex δ B (fun T => ind (Q ⊆ T)) = δ ^ Q.card := by
@@ -311,9 +309,9 @@ theorem ex_contains {Q B : Finset ℕ} (hQ : Q ⊆ B) :
     exact absurd (mem_powerset_self Q) h
 
 /- English proof (translation)
-Establish `hpt : ∀ T ⊆ B, ind (K ≤ #T) ≤ ∑ Q ∈ B.powersetCard K, ind (Q ⊆ T)`. Introduce `T hT`. Use `ind_le (sum_nonneg fun _ _ => ind_nonneg _) fun hK => ?_` and prove the remaining obligations. Take `⟨Q, hQT, hQ⟩` from `Finset.exists_subset_card_eq hK`. Establish `hQB : Q ∈ B.powersetCard K` using `mem_powersetCard.mpr ⟨hQT.trans hT, hQ⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ex_contains (mem_powersetCard.mp hQ).1, (mem_powersetCard.mp hQ).2]`. Use `_ = ((#B).choose K : ℝ) * δ ^ K := by rw [sum_const, card_powersetCard, nsmul_eq_mul]`. Use `_ ≤ (L.choose K : ℝ) * δ ^ K := mul_le_mul_of_nonneg_right (by exact_mod_cast Nat.choose_le_choose K hB) (pow_nonneg h0 _)`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tail_le_choose (h0 : 0 ≤ δ) (h1 : δ ≤ 1) {B : Finset ℕ} {L : ℕ} (hB : B.card ≤ L) (K : ℕ) :
     ex δ B (fun T => ind (K ≤ T.card)) ≤ (L.choose K : ℝ) * δ ^ K := by
@@ -335,11 +333,11 @@ theorem tail_le_choose (h0 : 0 ≤ δ) (h1 : δ ≤ 1) {B : Finset ℕ} {L : ℕ
       mul_le_mul_of_nonneg_right (by exact_mod_cast Nat.choose_le_choose K hB) (pow_nonneg h0 _)
 
 /- English proof (translation)
-Unfold `ex binUpper`. Establish `hs` using `sum_powerset_apply_card (fun m => δ ^ m * (1 - δ) ^ (#B - m) * ind (K ≤ m)) (x := B)`. Rewrite using `[hs]`. Establish `hI : Icc K #B = (range (#B + 1)).filter (fun m => K ≤ m)`. Use extensionality with `m`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [mem_Icc, mem_filter, mem_range]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hI, sum_filter]`. Use `sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Unfold `ind`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Rewrite using `[nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tail_eq (B : Finset ℕ) (K : ℕ) :
     ex δ B (fun T => ind (K ≤ T.card)) = binUpper B.card δ K := by
@@ -359,7 +357,7 @@ theorem tail_eq (B : Finset ℕ) (K : ℕ) :
   · simp
 
 /- English proof (translation)
-Take `⟨A', hAA', hA'⟩` from `Infinite.exists_superset_card_eq A G hA`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 -/
 theorem tail_le_binUpper (h0 : 0 ≤ δ) (h1 : δ ≤ 1) {A : Finset ℕ} {G : ℕ} (hA : A.card ≤ G)
     (K : ℕ) : ex δ A (fun T => ind (K ≤ T.card)) ≤ binUpper G δ K := by
@@ -371,15 +369,13 @@ theorem tail_le_binUpper (h0 : 0 ≤ δ) (h1 : δ ≤ 1) {A : Finset ℕ} {G : �
     _ = binUpper G δ K := by rw [tail_eq, hA']
 
 /- English proof (translation)
-Establish `hpt : ∀ U ⊆ (range n).erase i₀, ind (¬ ∀ i < n, #(insert i₀ U ∩ window n i L) ≤ K) ≤ ∑ i ∈ range n, ind (K' ≤ #(U ∩ (window n i L ∩ (range n).erase i₀)))`. Introduce `U hU`. Use `ind_le (sum_nonneg fun _ _ => ind_nonneg _) fun hn => ?_` and prove the remaining obligations. Use `push Not at hn`. Take `⟨i, hi, hgt⟩` from `hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : U ∩ (window n i L ∩ (range n).erase i₀) = U ∩ window n i L`. Use extensionality with `x`. Simplify using `only [mem_inter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, _⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨a, b⟩`. Introduce and unpack `⟨a, b⟩`. Conclude with `⟨a, b, hU a⟩`. Establish `hc : #(insert i₀ U ∩ window n i L) ≤ #(U ∩ window n i L) + 1`. Combine the equalities or inequalities in the displayed calculation.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [mem_inter, mem_insert] at hx ⊢`. The claim follows by propositional logic. Use `_ ≤ _ := card_insert_le _ _`. Establish `hK'' : K' ≤ #(U ∩ (window n i L ∩ (range n).erase i₀))` using `by rw [e]; omega`. Combine the equalities or inequalities in the displayed calculation.
-
-Combine the equalities or inequalities in the displayed calculation.
+The claim follows by propositional logic. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem windows_le (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (n i₀ L K K' : ℕ) (hK : K' ≤ K) (b : ℝ)
     (hb : ∀ A : Finset ℕ, A.card ≤ L → ex δ A (fun T => ind (K' ≤ T.card)) ≤ b) :
@@ -425,7 +421,7 @@ def tile (r u s : ℕ) : Finset ℕ :=
   Finset.Ico (s * ((6 * r + 1) * u)) ((s + 1) * ((6 * r + 1) * u))
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [cell, tile, mem_Ico] at hx ⊢`. Establish `: c * u ≤ (6 * r + 1) * u` using `Nat.mul_le_mul_right u hc`. Apply the tactic sequence `constructor <;> nlinarith [hx.1, hx.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cell_subset {r u s c : ℕ} (hc : c ≤ 6 * r + 1) : cell r u s c ⊆ tile r u s := by
   intro x hx
@@ -434,7 +430,7 @@ theorem cell_subset {r u s c : ℕ} (hc : c ≤ 6 * r + 1) : cell r u s c ⊆ ti
   constructor <;> nlinarith [hx.1, hx.2]
 
 /- English proof (translation)
-Unfold `cell`. Rewrite using `[Nat.card_Ico]`. Take `⟨c, rfl⟩ : ∃ c', c = c' + 1` from `⟨c - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel, show (c + 1) * u = c * u + u by ring, ← add_assoc, Nat.add_sub_cancel_left]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem cell_card {r u s c : ℕ} (hc : 1 ≤ c) : (cell r u s c).card = u := by
   unfold cell
@@ -443,9 +439,9 @@ theorem cell_card {r u s c : ℕ} (hc : 1 ≤ c) : (cell r u s c).card = u := by
   rw [Nat.add_sub_cancel, show (c + 1) * u = c * u + u by ring, ← add_assoc, Nat.add_sub_cancel_left]
 
 /- English proof (translation)
-Rewrite using `[disjoint_left]`. Introduce `x hx hx'`. Simplify using `only [mem_Ico] at hx hx'`. Break down `Nat.lt_or_gt_of_ne hij with h | h` into its components or cases. Establish `: (i + 1) * m ≤ j * m` using `Nat.mul_le_mul_right m h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `: (j + 1) * m ≤ i * m` using `Nat.mul_le_mul_right m h`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ico_disjoint {a m i j : ℕ} (hij : i ≠ j) :
     Disjoint (Finset.Ico (a + i * m) (a + (i + 1) * m)) (Finset.Ico (a + j * m) (a + (j + 1) * m)) := by
@@ -459,16 +455,16 @@ theorem ico_disjoint {a m i j : ℕ} (hij : i ≠ j) :
     omega
 
 /- English proof (translation)
-Use `ico_disjoint (a := 0) (m := (6 * r + 1) * u) h` as an intermediate fact. Simplify `this` using `[tile]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tile_disjoint {r u s s' : ℕ} (h : s ≠ s') : Disjoint (tile r u s) (tile r u s') := by
   have := ico_disjoint (a := 0) (m := (6 * r + 1) * u) h
   simpa [tile] using this
 
 /- English proof (translation)
-Unfold `ex`. Rewrite using `[sum_eq_single ∅]`. Simplify using `[ind]`. Introduce `T _ hne beta_reduce`. Rewrite using `[ind_neg hne, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (empty_mem_powerset C) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ex_isEmpty (C : Finset ℕ) : ex δ C (fun V => ind (V = ∅)) = (1 - δ) ^ C.card := by
   unfold ex
@@ -481,17 +477,15 @@ theorem ex_isEmpty (C : Finset ℕ) : ex δ C (fun V => ind (V = ∅)) = (1 - δ
     exact absurd (empty_mem_powerset C) h
 
 /- English proof (translation)
-Establish `hIc : #(Ico a (a + u)) = u` using `by rw [Nat.card_Ico]; omega`. Establish `hinj : Function.Injective (fun k => ({a + a % 2 + 2 * k} : Finset ℕ))`. Introduce `k₁ k₂ h`. Use `singleton_inj.mp h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hPc : #((range (u / 2)).image (fun k => ({a + a % 2 + 2 * k} : Finset ℕ))) = u / 2`. Rewrite using `[card_image_of_injective _ hinj, card_range]`. Establish `hPsub : (range (u / 2)).image (fun k => ({a + a % 2 + 2 * k} : Finset ℕ)) ⊆ (Ico a (a + u)).powerset`. Introduce `V hV`. Rewrite `hV` using `[mem_image]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, hk, rfl⟩` from `hV`. Rewrite using `[mem_powerset, singleton_subset_iff, mem_Ico]`. Rewrite `hk` using `[mem_range]`. Use linear arithmetic over natural numbers and integers. Establish `hw : ∀ V ∈ (range (u / 2)).image (fun k => ({a + a % 2 + 2 * k} : Finset ℕ)), δ ^ #V * (1 - δ) ^ (#(Ico a (a + u)) - #V) * ind (∃ x, V = {x} ∧ Even x) = δ * (1 - δ) ^ (u - 1)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `V hV`. Rewrite `hV` using `[mem_image]`. Take `⟨k, _, rfl⟩` from `hV`. Rewrite using `[card_singleton, hIc, ind_pos ⟨_, rfl, Nat.even_iff.mpr (by omega)⟩]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `ex`. Use `beta_reduce`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sum_congr rfl hw, sum_const, hPc, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ _ := sum_le_sum_of_subset_of_nonneg hPsub fun V _ _ => mul_nonneg (mul_nonneg (pow_nonneg h0 _) (pow_nonneg (by linarith) _)) (ind_nonneg _)`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ex_single_even (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (a u : ℕ) :
     ((u / 2 : ℕ) : ℝ) * δ * (1 - δ) ^ (u - 1) ≤
@@ -528,9 +522,9 @@ theorem ex_single_even (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (a u : ℕ) :
         mul_nonneg (mul_nonneg (pow_nonneg h0 _) (pow_nonneg (by linarith) _)) (ind_nonneg _)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `h1 : ¬ Even (2 * m + 1)` using `Nat.not_even_iff_odd.mpr (odd_two_mul_add_one m)`. Establish `h2 : Even (2 * m + 1 + 1)` using `⟨m + 1, by ring⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show 2 * (m + 1) + 1 = 2 * m + 1 + 1 + 1 by ring, prod_range_succ, prod_range_succ, ih, if_neg h1, if_pos h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_alternate (a b : ℝ) (m : ℕ) :
     ∏ c ∈ Finset.range (2 * m + 1), (if Even c then a else b) = a ^ (m + 1) * b ^ m := by
@@ -544,33 +538,27 @@ theorem prod_alternate (a b : ℝ) (m : ℕ) :
     ring
 
 /- English proof (translation)
-Establish `hm : 6 * r + 1 = 2 * (3 * r) + 1` using `by ring`. Establish `hcell : ∀ c, cell r u s (c + 1) = Ico (s * ((6 * r + 1) * u) + c * u) (s * ((6 * r + 1) * u) + c * u + u)`. Introduce `c`. Unfold `cell`. Rewrite using `[Nat.add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hX : 0 ≤ ((u / 2 : ℕ) : ℝ) * δ * (1 - δ) ^ (u - 1)` using `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) h0) (pow_nonneg (by linarith) _)`. Establish `hP0 : 0 ≤ (1 - δ) ^ u` using `pow_nonneg (by linarith) _`. Establish `hind : ∀ (c' : ℕ) (V : Finset ℕ), 0 ≤ (if Even c' then ind (V = ∅) else ind (∃ x, V = {x} ∧ Even x)) ∧ (if Even c' then ind (V = ∅) else ind (∃ x, V = {x} ∧ Even x)) ≤ 1`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c' V`. Use `split_ifs`. Conclude with `⟨ind_nonneg _, ind_le_one _⟩`. Conclude with `⟨ind_nonneg _, ind_le_one _⟩`. Establish `hpt : ∀ T ⊆ tile r u s, ∏ c' ∈ range (6 * r + 1), (if Even c' then ind (T ∩ cell r u s (c' + 1) = ∅) else ind (∃ x, T ∩ cell r u s (c' + 1) = {x} ∧ Even x)) ≤ ind (Marked T r u s)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T _`. Distinguish the cases in `hM : Marked T r u s`. Rewrite using `[ind_pos hM]`. Conclude with `prod_le_one (fun c' _ => (hind c' _).1) (fun c' _ => (hind c' _).2)`. Rewrite using `[ind_neg hM]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `le_of_eq (prod_eq_zero_iff.mpr ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Apply `hM` to reduce the goal to its premises. Introduce `c hc1 hc2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hall (c - 1) (by rw [mem_range]; omega)`. Establish `hcc : c - 1 + 1 = c` using `by omega`. Rewrite `h` using `[hcc]`. Prove the components needed by the constructor for the conclusion. Introduce `hodd`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `he : Even (c - 1)`. Take `⟨k, hk⟩` from `hodd`. Conclude with `⟨k, by omega⟩`. Rewrite `h` using `[if_pos he]`. Assume the negation of the conclusion as `hne`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `h (ind_neg hne)`. Introduce `hev`. Establish `he : ¬ Even (c - 1)`. Introduce and unpack `⟨k, hk⟩`. Take `⟨k', hk'⟩` from `hev`.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Chain the equalities or inequalities of the calculation.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[if_neg he]`. Assume the negation of the conclusion as `hne`. Conclude with `h (ind_neg hne)`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Unfold `markedBound`. Rewrite using `[hm, prod_alternate]`. Use `_ ≤ ∏ c' ∈ range (6 * r + 1), ex δ (cell r u s (c' + 1)) (fun V => if Even c' then ind (V = ∅) else ind (∃ x, V = {x} ∧ Even x)) := by`. Use `prod_le_prod (fun c' _ => ?_) (fun c' _ => ?_)` and prove the remaining obligations. Use `split_ifs`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP0`. Conclude with `hX`. Distinguish the cases in `he : Even c'`. Simplify using `only [if_pos he]`. Conclude with `le_of_eq (by rw [ex_isEmpty, cell_card (c := c' + 1) (by omega)])`.
-
-Simplify using `only [if_neg he]`. Rewrite using `[hcell]`. Conclude with `ex_single_even h0 h1 _ u`. Use `_ = ex δ (tile r u s) (fun T => ∏ c' ∈ range (6 * r + 1), (if Even c' then ind (T ∩ cell r u s (c' + 1) = ∅) else ind (∃ x, T ∩ cell r u s (c' + 1) = {x} ∧ Even x))) := by`. Use `(ex_prod (range (6 * r + 1)) (fun c' => cell r u s (c' + 1)) (fun c' V => if Even c' then ind (V = ∅) else ind (∃ x, V = {x} ∧ Even x)) ?_ (tile r u s) ?_).symm` and prove the remaining obligations.
-
-Introduce `i _ j _ hij show Disjoint (cell r u s (i + 1)) (cell r u s (j + 1))`. Rewrite using `[hcell, hcell]`. Use `ico_disjoint (a := s * ((6 * r + 1) * u)) (m := u) hij` as an intermediate fact. Apply the tactic sequence `convert this using 2 <;> ring`. Introduce `c' hc'`.
-
-Rewrite `hc'` using `[mem_range]`. Conclude with `cell_subset (c := c' + 1) (by omega)`. Use `_ ≤ _ := ex_mono h0 h1 hpt`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem marked_ge (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (r u s : ℕ) :
     markedBound δ r u ≤ ex δ (tile r u s) (fun T => ind (Marked T r u s)) := by
@@ -657,9 +645,9 @@ theorem marked_ge (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (r u s : ℕ) :
     _ ≤ _ := ex_mono h0 h1 hpt
 
 /- English proof (translation)
-Introduce `c hc1 hc2`. Establish `hsub` using `cell_subset (r := r) (u := u) (s := s) hc2`. Establish `e : T ∩ cell r u s c = T' ∩ cell r u s c`. Rewrite using `[← inter_eq_right.mpr hsub, ← inter_assoc, ← inter_assoc, h]`. Rewrite using `[← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hM c hc1 hc2`.
+A detailed English derivation is pending.
 -/
 theorem marked_congr {T T' : Finset ℕ} {r u s : ℕ} (h : T ∩ tile r u s = T' ∩ tile r u s)
     (hM : Marked T r u s) : Marked T' r u s := by
@@ -671,39 +659,35 @@ theorem marked_congr {T T' : Finset ℕ} {r u s : ℕ} (h : T ∩ tile r u s = T
   exact hM c hc1 hc2
 
 /- English proof (translation)
-Take `⟨N, hN⟩ : ∃ N, N = n / ((6 * r + 1) * u)` from `⟨_, rfl⟩`. Establish `hm1 : 1 ≤ (6 * r + 1) * u` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))`. Establish `hMN : M₀ + 1 ≤ N` using `by rw [hN, Nat.le_div_iff_mul_le (by omega)]; exact hn`. Establish `hNn : N ≤ n` using `hN ▸ Nat.div_le_self _ _`. Establish `hNm : N * ((6 * r + 1) * u) ≤ n` using `hN ▸ Nat.div_mul_le_self _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htinj : ∀ s₀ j₁ j₂, j₁ < N → j₂ < N → (s₀ + j₁) % N = (s₀ + j₂) % N → j₁ = j₂`. Introduce `s₀ j₁ j₂ h1 h2 h`. Use `Nat.ModEq.add_left_cancel' s₀ h` as an intermediate fact. Rewrite `this` using `[Nat.ModEq, Nat.mod_eq_of_lt h1, Nat.mod_eq_of_lt h2]`. Then use the resulting hypothesis. Establish `htlt : ∀ s₀ j, (s₀ + j) % N < N` using `fun s₀ j => Nat.mod_lt _ (by omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `htile : ∀ t < N, tile r u t ⊆ range n`. Introduce `t ht x hx`. Simplify using `only [tile, mem_Ico] at hx`. Rewrite using `[mem_range]`. Establish `h1 : (t + 1) * ((6 * r + 1) * u) ≤ N * ((6 * r + 1) * u)` using `Nat.mul_le_mul_right _ ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear relations using `[hx.2]`. Establish `hgood : ∀ s₀, M₀ ≤ #((range (M₀ + 1)).filter (fun j => i₀ ∉ tile r u ((s₀ + j) % N)))`. Introduce `s₀`. Establish `hbad : #((range (M₀ + 1)).filter (fun j => ¬ i₀ ∉ tile r u ((s₀ + j) % N))) ≤ 1`. Use `card_le_one.mpr fun j₁ hj₁ j₂ hj₂ => ?_` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hj₁`, `hj₂` using `[mem_filter, mem_range, not_not]`. Assume the negation of the conclusion as `hne`. Establish `hne' : (s₀ + j₁) % N ≠ (s₀ + j₂) % N` using `fun h => hne (htinj s₀ j₁ j₂ (by omega) (by omega) h)`. Conclude with `disjoint_left.mp (tile_disjoint hne') hj₁.2 hj₂.2`. Use `card_filter_add_card_filter_not (s := range (M₀ + 1)) (p := fun j => i₀ ∉ tile r u ((s₀ + j) % N))` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[card_range]`. Use linear arithmetic over natural numbers and integers. Use `choose J hJsub hJcard using fun s₀ => Finset.exists_subset_card_eq (hgood s₀)`. Establish `hJ : ∀ s₀, ∀ j ∈ J s₀, j < M₀ + 1 ∧ i₀ ∉ tile r u ((s₀ + j) % N)`. Introduce `s₀ j hj`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hJsub s₀ hj` as an intermediate fact. Rewrite `this` using `[mem_filter, mem_range]`. Conclude with `this`. Establish `hfac : ∀ p : Prop, 0 ≤ 1 - ind p` using `fun p => by linarith [ind_le_one p]`. Establish `hpt : ∀ U ⊆ (range n).erase i₀, ind (¬ CondTiles n (insert i₀ U) r u M₀) ≤ ∑ s₀ ∈ range N, ∏ j ∈ J s₀, (1 - ind (Marked (U ∩ tile r u ((s₀ + j) % N)) r u ((s₀ + j) % N)))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Introduce `U _`. Use `ind_le (sum_nonneg fun s₀ _ => prod_nonneg fun j _ => hfac _) fun hct => ?_` and prove the remaining obligations. Unfold `CondTiles at hct`. Rewrite `hct` using `[← hN]`. Use `push Not at hct`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s₀, hs₀, hall⟩` from `hct`. Establish `hone : ∏ j ∈ J s₀, (1 - ind (Marked (U ∩ tile r u ((s₀ + j) % N)) r u ((s₀ + j) % N))) = 1`. Use `prod_eq_one fun j hj => ?_` and prove the remaining obligations. Take `⟨hjM, hji⟩` from `hJ s₀ j hj`. Rewrite using `[ind_neg, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Introduce `hM`. Apply `hall j (by omega)` to reduce the goal to its premises. Use `marked_congr ?_ hM` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [mem_inter, mem_insert]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hxU, hxt⟩, _⟩`. Conclude with `⟨Or.inr hxU, hxt⟩`. Introduce and unpack `⟨hx | hxU, hxt⟩`. Conclude with `absurd (hx ▸ hxt) hji`.
+Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `⟨⟨hxU, hxt⟩, hxt⟩`. Combine the equalities or inequalities in the displayed calculation. Establish `hex1 : ∀ t, ex δ (tile r u t) (fun T => ind (Marked T r u t)) ≤ 1` using `fun t => (ex_mono h0 h1 fun T _ => ind_le_one _).trans (le_of_eq (ex_const _ _))`. Establish `hmb1 : 0 ≤ 1 - markedBound δ r u` using `by linarith [marked_ge h0 h1 r u 0, hex1 0]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `sum_congr rfl fun s₀ _ => ?_` and prove the remaining obligations. Use `ex_prod (J s₀) (fun j => tile r u ((s₀ + j) % N)) (fun j V => 1 - ind (Marked V r u ((s₀ + j) % N))) ?_ _ ?_` and prove the remaining obligations. Introduce `i hi k hk hik`. Use `tile_disjoint fun h => hik (htinj s₀ i k ?_ ?_ h)` and prove the remaining obligations. Use `(hJ s₀ i hi).1` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Use `(hJ s₀ k hk).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `j hj x hx`. Rewrite using `[mem_erase]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => (hJ s₀ j hj).2 (h ▸ hx), htile _ (htlt s₀ j) hx⟩`. Use `_ ≤ ∑ s₀ ∈ range N, (1 - markedBound δ r u) ^ M₀ := by`. Use `sum_le_sum fun s₀ _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `prod_le_prod (fun j _ => ?_) (fun j _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[ex_one_sub]`. Combine the linear relations using `[hex1 ((s₀ + j) % N)]`. Rewrite using `[ex_one_sub]`. Combine the linear relations using `[marked_ge h0 h1 r u ((s₀ + j) % N)]`. Use `_ = _ := by rw [prod_const, hJcard]`.
-
-Use `_ = N * (1 - markedBound δ r u) ^ M₀ := by rw [sum_const, card_range, nsmul_eq_mul]`. Use `_ ≤ n * (1 - markedBound δ r u) ^ M₀ := mul_le_mul_of_nonneg_right (by exact_mod_cast hNn) (pow_nonneg hmb1 _)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tiles_le (h0 : 0 ≤ δ) (h1 : δ ≤ 1) {n r u M₀ i₀ : ℕ} (hu : 1 ≤ u)
     (hn : (M₀ + 1) * ((6 * r + 1) * u) ≤ n) :
@@ -811,15 +795,15 @@ theorem tiles_le (h0 : 0 ≤ δ) (h1 : δ ≤ 1) {n r u M₀ i₀ : ℕ} (hu : 1
         mul_le_mul_of_nonneg_right (by exact_mod_cast hNn) (pow_nonneg hmb1 _)
 
 /- English proof (translation)
-Introduce `n δ L₂ K r u M₀ G' N₁ i₀ h0 h1 _ hu hn hi`. Rewrite using `[condProbAt_eq hi]`. Establish `hpt : ∀ U ⊆ (range n).erase i₀, ind (¬ GoodOrbitIntervalTileCondition n (insert i₀ U) L₂ K r u M₀ G' N₁) ≤ ind (¬ ∀ i < n, #(insert i₀ U ∩ window n i L₂) ≤ K) + ind (¬ CondTiles n (insert i₀ U) r u M₀) + ind (¬ ∀ i < n, #(insert i₀ U ∩ window n i G') ≤ N₁)`. Introduce `U _`. Establish `ha` using `ind_nonneg (¬ ∀ i < n, #(insert i₀ U ∩ window n i L₂) ≤ K)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb` using `ind_nonneg (¬ CondTiles n (insert i₀ U) r u M₀)`. Establish `hc` using `ind_nonneg (¬ ∀ i < n, #(insert i₀ U ∩ window n i G') ≤ N₁)`. Use `ind_le (by linarith) fun hng => ?_` and prove the remaining obligations. Distinguish the cases in `hA : ∀ i < n, #(insert i₀ U ∩ window n i L₂) ≤ K`. Distinguish the cases in `hB : CondTiles n (insert i₀ U) r u M₀`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Establish `hC : ¬ ∀ i < n, #(insert i₀ U ∩ window n i G') ≤ N₁` using `fun hC => hng ⟨hA, hB, hC⟩`. Rewrite using `[ind_pos hC]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[ind_pos hB]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[ind_pos hA]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha` using `windows_le h0 h1 n i₀ L₂ K K le_rfl ((L₂.choose K : ℝ) * δ ^ K) (fun A hA => tail_le_choose h0 h1 hA K)`. Establish `hb` using `tiles_le (i₀ := i₀) h0 h1 hu hn`. Establish `hc` using `windows_le h0 h1 n i₀ G' N₁ (N₁ - 1) (Nat.sub_le _ _) (binUpper G' δ (N₁ - 1)) (fun A hA => tail_le_binUpper h0 h1 hA (N₁ - 1))`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ex_add, ex_add]`. Use `_ ≤ _ := by linarith`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prob_not_good_le : Formalism.G0.TileConditionFailureProbBound := by
   intro n δ L₂ K r u M₀ G' N₁ i₀ h0 h1 _ hu hn hi

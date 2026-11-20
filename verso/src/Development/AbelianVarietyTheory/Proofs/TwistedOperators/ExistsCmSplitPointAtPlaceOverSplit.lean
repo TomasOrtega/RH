@@ -26,11 +26,11 @@ namespace GlobalTheory.SplitPtAtPlace
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D w e he hF`. Take `⟨s, hsw⟩` from `GlobalTheory.OffBad.splitPlace_of_isSplitPl D w (GlobalTheory.OffBad.isSplitPl_of_isSplit D w (GlobalTheory.DivPtLocal.isSplit_of_isIdemAt D w e he))`. Substitute `hsw` using the available equality. Take `⟨p, c, hpl, hc, hci, hπ⟩` from `GlobalTheory.T.exists_splitLocalPlaceData_at_splitPlace D s hF`. Take `⟨q, hq⟩` from `GlobalTheory.PlaceSplitPt.exists_splitPt p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hqe : q.e = p.e` using `by rw [← hq]; rfl`. Establish `hqpr : ∀ a, q.pr a = p.π a` using `fun a => by rw [← hq]; rfl`. Establish `hpe : Formalism.L2.NTheta.IsIdemAt p.e s.w` using `⟨p.split, hpl.2.2⟩`. Establish `hee : p.e = e` using `GlobalTheory.LocMod.PinInhab.idem_unique hpe he`. Use `⟨q, hqe.trans hee, GlobalTheory.LocMod.PinInhab.v_eq_under q (hqe ▸ hpe), fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hqpr, hπ]`. Establish `key` using `GlobalTheory.SplitFrameW.cpt_swap D.host.F hF ((GlobalTheory.StdFrames.toAd D).comp (Lev.swapAE D)) (fun a x => GlobalTheory.StdFrames.toAd_spec D x a) s c hc hci (GlobalTheory.NJoin.tensCast hF (finPart D a))`. Rewrite using `[← key]`. Establish `hcast : GlobalTheory.NJoin.tensCast hF = GlobalTheory.Mem.R3.swapCast hF` using `rfl`. Rewrite using `[hcast, RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

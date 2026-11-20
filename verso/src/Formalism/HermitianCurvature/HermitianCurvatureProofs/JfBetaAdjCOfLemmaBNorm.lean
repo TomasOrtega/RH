@@ -22,13 +22,11 @@ section gen
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Use `set F₂ : Mat k r → E := fun g => if g ∈ GV k r then F g else 0 with hF₂`. Establish `he : ∀ g ∈ GV k r, F₂ g = F g` using `fun g hg => by simp [hF₂, hg]`. Establish `hF₂c : CkOn ⊤ (GV k r) F₂`. Introduce `g₀ hg₀`. Take `⟨U, F', hU, hgU, hc, hff⟩` from `hF g₀ hg₀`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨U, F', hU, hgU, hc, fun g hg hgG => (he g hgG).trans (hff g hg hgG)⟩`. Take `⟨c, hc1, hc2⟩` from `Formalism.FourierDecayAlt.P.compact_support_finite_class k r E F₂ C hF₂c hC (fun g hg => by`. Distinguish the cases in `hgG : g ∈ GV k r`. Rewrite using `[he g hgG]`. Conclude with `hz g hgG hg`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hF₂, hgG]) A m`. Use `⟨c, B5.ckOn_mono le_top hF, fun u v hu hv hl g hg => ?_⟩` and prove the remaining obligations. Use `hc2 u v hu hv hl g hg` as an intermediate fact. Rewrite using `[dLR_eq, W_congr (lr u v) (fun y hy => by` and apply the resulting hypothesis. Simplify using `only [lr, List.mem_append, List.mem_map] at hy`.
-
-Break down `hy with ⟨X, hX, rfl⟩ | ⟨X, hX, rfl⟩` into its components or cases. Conclude with `(hu X hX).1`. Conclude with `(hv X hX).1) he g hg, ← dLR_eq] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem cptInCC_G {F : Mat k r → E} {C : Set (Mat k r)} (hF : CkOn ⊤ (GV k r) F) (hC : IsCompact C)
     (hz : ∀ g ∈ GV k r, g ∉ C → F g = 0) (A : ℝ) (m : ℕ) : InCC A m F := by
@@ -52,11 +50,9 @@ theorem cptInCC_G {F : Mat k r → E} {C : Set (Mat k r)} (hF : CkOn ⊤ (GV k r
       · exact (hv X hX).1) he g hg, ← dLR_eq] at this
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro _`. Conclude with `h`. Consider the case `cons X w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hw`. Use `show CkOn ⊤ (GV k r) (RdV X (Rw w f))`. Establish `h1 : CkOn (⊤ + 1) (GV k r) (Rw w f)`. Rewrite using `[top_add]`. Conclude with `ih fun Y hY => hw Y (List.mem_cons_of_mem _ hY)`.
-
-Conclude with `B5.ckOn_RdV (hw X List.mem_cons_self) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ckOn_Rw_top {f : Mat k r → E} (h : CkOn ⊤ (GV k r) f) :
     ∀ (w : List (Mat k r)), (∀ X ∈ w, inLie k r X) → CkOn ⊤ (GV k r) (Rw w f) := by
@@ -73,9 +69,9 @@ theorem ckOn_Rw_top {f : Mat k r → E} (h : CkOn ⊤ (GV k r) f) :
 end gen
 
 /- English proof (translation)
-Use `⟨⟨Q.OmPlus k r D.z D.z', PositiveOrbitOpen.omPlus_open D.z D.z', Set.inter_comm _ _⟩, ?_⟩` and prove the remaining obligations. Introduce `s hs s' hs' g hg`. Use `⟨BetaSesquilinearity.gv_mul (BetaSesquilinearity.gv_mul (BetaSesquilinearity.Sset_sub hs) hg.1) (BetaSesquilinearity.Sset_sub hs'), fun l hl => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[dInv k r D.z D.z' D.z_mem D.z'_mem s hs s' hs' g l]`. Conclude with `hg.2.1 l hl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show 0 < Gf k r D.z D.z' (s * g * s')`. Rewrite using `[gInv k r D.z D.z' D.z_mem D.z'_mem s hs s' hs' g]`. Conclude with `hg.2.2`.
+A detailed English derivation is pending.
 -/
 theorem om_stable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (D : RealPlaceData k r Wp Wq) :
@@ -96,29 +92,25 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `hL k r Wp Wq _ _ _ _ _ _ D Θ F F' hI hS hC hF hF' hFc hF'c`. Take `⟨C, hCc, hCO, hCF⟩` from `hFc`. Take `⟨C', hC'c, hC'O, hC'F⟩` from `hF'c`. Establish `hL3` using `(hL k r Wp Wq D (AB k r) le_rfl hI).2.2.1`. Establish `supp : ∀ {φ : Mat k r → (Wq →L[ℂ] Wp)} {K : Set (Mat k r)}, IsCompact K → K ⊆ Om k r D.z D.z' → (∀ g ∈ GV k r, g ∉ K → φ g = 0) → closure {g | g ∈ GV k r ∧ φ g ≠ 0} ⊆ Om k r D.z D.z'` using `fun hK hKO hz => (closure_minimal (fun g hg => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hgK`. Conclude with `hg.2 (hz g hg.1 hgK)) hK.isClosed).trans hKO`. Establish `rwz : ∀ {φ : Mat k r → (Wq →L[ℂ] Wp)} {K : Set (Mat k r)}, IsCompact K → (∀ g ∈ GV k r, g ∉ K → φ g = 0) → ∀ w : List (Mat k r), (∀ X ∈ w, inLie k r X) → ∀ g ∈ GV k r, g ∉ K → Rw w φ g = 0` using `fun hK hz w hw g hg hgK => BetaSesquilinearity.Rw_vanish hK.isClosed.isOpen_compl hw (fun x hx hxK => hz x hx hxK) g hg hgK`. Establish `hFz : ∀ g ∈ GV k r, g ∉ C → F g = 0` using `fun g _ h => hCF g h`. Establish `hF'z : ∀ g ∈ GV k r, g ∉ C' → F' g = 0` using `fun g _ h => hC'F g h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hap : ∀ T ∈ Θ, CkOn ⊤ (GV k r) (fun x => T.coefAdj x (F' x)) ∧ ∀ g ∈ GV k r, g ∉ C' → T.coefAdj g (F' g) = 0` using `fun T hT => ⟨B5.ckOn_coef (hS T hT).2 hF' (supp hC'c hC'O hF'z), fun g hg hgK => by rw [hF'z g hg hgK, map_zero]⟩`. Establish `hrev : ∀ T ∈ Θ, ∀ X ∈ T.word.reverse, inLie k r X` using `fun T _ X hX => T.word_lie X (List.mem_reverse.1 hX)`. Establish `hΘF : InCC (AB k r) 5 (opApply Θ F)` using `by show InCC _ 5 (fun g => (Θ.map fun T => T.coef g (Rw T.word F g)).sum)`. Use `BetaSesquilinearity.InCC_opsum Θ (fun T g => T.coef g (Rw T.word F g)) fun T hT => ?_` and prove the remaining obligations. Conclude with `cptInCC_G (B5.ckOn_coef (hS T hT).1 (ckOn_Rw_top hF T.word T.word_lie) (supp hCc hCO (rwz hCc hFz T.word T.word_lie))) hCc (fun g hg hgK => by show T.coef g (Rw T.word F g) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[rwz hCc hFz T.word T.word_lie g hg hgK, map_zero]) _ 5`. Establish `hΘF' : InCC (AB k r) 5 (opAdj Θ F')` using `by show InCC _ 5 (fun g => (Θ.map fun T => ((-1 : ℂ) ^ T.word.length) • Rw T.word.reverse (fun x => T.coefAdj x (F' x)) g).sum)`. Use `BetaSesquilinearity.InCC_opsum Θ (fun T g => ((-1 : ℂ) ^ T.word.length) • Rw T.word.reverse (fun x => T.coefAdj x (F' x)) g) fun T hT => ?_` and prove the remaining obligations. Conclude with `cptInCC_G (B4.ckOn_smul ((-1 : ℂ) ^ T.word.length) (ckOn_Rw_top (hap T hT).1 _ (hrev T hT))) hC'c (fun g hg hgK => by show ((-1 : ℂ) ^ T.word.length) • Rw T.word.reverse (fun x => T.coefAdj x (F' x)) g = 0`. Rewrite using `[rwz hC'c (hap T hT).2 _ (hrev T hT) g hg hgK, smul_zero]) _ 5`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hIC : IntClause D Θ F F'`. Introduce `p hp T hT i j hij hj`. Establish `hlie1 : ∀ X ∈ (T.word.take i).reverse, inLie k r X` using `fun X hX => T.word_lie X (List.mem_of_mem_take (List.mem_reverse.mp hX))`. Establish `hlie2 : ∀ X ∈ T.word.drop j, inLie k r X` using `fun X hX => T.word_lie X (List.mem_of_mem_drop hX)`. Use `set f₁ : Mat k r → (Wq →L[ℂ] Wp) := Rw (T.word.take i).reverse (fun x => T.coefAdj x (F' x)) with hf₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set f₂ : Mat k r → (Wq →L[ℂ] Wp) := Rw (T.word.drop j) (rho D p F) with hf₂`. Establish `hf₁c : CkOn ⊤ (GV k r) f₁` using `ckOn_Rw_top (hap T hT).1 _ hlie1`. Establish `hf₁z : ∀ g ∈ GV k r, g ∉ C' → f₁ g = 0` using `rwz hC'c (hap T hT).2 _ hlie1`. Take `⟨K₁, hK₁⟩` from `cptInCC_G hf₁c hC'c hf₁z 0 0`. Establish `hb₁ : ∀ g ∈ GV k r, ‖f₁ g‖ ≤ K₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg`. Use `hK₁.2 [] [] (by simp) (by simp) (by simp) g hg` as an intermediate fact. Simplify `this` using `[Real.rpow_zero, dLR, Rw]`. Establish `hf₂c : ContinuousOn f₂ (GV k r)` using `BetaSesquilinearity.CkOn_cont subset_rfl (B5.ckOn_mono bot_le (ckOn_Rw_top (B5.ckOn_rho D hp hF) _ hlie2))`. Establish `hf₁cont : ContinuousOn f₁ (GV k r)` using `BetaSesquilinearity.CkOn_cont subset_rfl (B5.ckOn_mono bot_le hf₁c)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨K₂, hK₂⟩` from `(hC'c.inter_right B5.GV_closed).exists_bound_of_continuousOn (hf₂c.mono Set.inter_subset_right)`. Use `set G : Mat k r → (Wq →L[ℂ] Wp) := fun g => ((‖f₂ g‖ : ℝ) : ℂ) • f₁ g with hG`. Establish `hGn : ∀ g, ‖G g‖ = ‖f₁ g‖ * ‖f₂ g‖`. Introduce `g`. Simplify using `only [hG, norm_smul, Complex.norm_real, norm_norm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hGc : ContinuousOn G (GV k r)` using `(Complex.continuous_ofReal.comp_continuousOn hf₂c.norm).smul hf₁cont`. Establish `hGm` using `BetaSesquilinearity.aesm_of_continuousOn D hGc`. Establish `hfin : D.μG (C' : Set (Mt k r)) ≠ ⊤` using `(D.haarG.finite_compact C' hC'c).ne`. Establish `hind : Integrable ((C' : Set (Mt k r)).indicator fun _ => K₁ * K₂) D.μG` using `(integrableOn_const hfin).integrable_indicator (IsClosed.measurableSet (α := Mt k r) hC'c.isClosed)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : Integrable (fun g : Mt k r => G (Matrix.of g)) D.μG`. Use `hind.mono' hGm ?_` and prove the remaining obligations. Use `filter_upwards [B5.haar_ae D.haarG] with x hx`. Distinguish the cases in `hxC : x ∈ (C' : Set (Mt k r))`. Rewrite using `[Set.indicator_of_mem hxC, hGn]`.
-
-Establish `h1` using `hb₁ (Matrix.of x) hx`. Establish `h2` using `hK₂ (Matrix.of x) ⟨hxC, hx⟩`. Conclude with `mul_le_mul h1 h2 (norm_nonneg _) ((norm_nonneg _).trans h1)`. Rewrite using `[Set.indicator_of_notMem hxC, hGn, hf₁z (Matrix.of x) hx hxC, norm_zero, zero_mul]`. Conclude with `hint.norm.congr (Filter.Eventually.of_forall fun g => hGn _)`.
-
-Conclude with `hL3 (Om k r D.z D.z') Θ (om_stable D) hS hC F F' (B5.ckOn_mono le_top hF) (B5.ckOn_mono le_top hF') (supp hCc hCO hFz) (supp hC'c hC'O hF'z) (cptInCC_G hF hCc hFz _ 5) (cptInCC_G hF' hC'c hF'z _ 5) hΘF hΘF' hIC`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jf_betaAdjC_of_lemmaBNorm : Formalism.FourierDecayAlt.B2.LemmaBNorm → Formalism.FourierDecayAlt.P.JFxG.BetaAdjC := by
   intro hL k r Wp Wq _ _ _ _ _ _ D Θ F F' hI hS hC hF hF' hFc hF'c
@@ -201,14 +193,14 @@ theorem jf_betaAdjC_of_lemmaBNorm : Formalism.FourierDecayAlt.B2.LemmaBNorm → 
     (supp hCc hCO hFz) (supp hC'c hC'O hF'z) (cptInCC_G hF hCc hFz _ 5) (cptInCC_G hF' hC'c hF'z _ 5) hΘF hΘF' hIC
 
 /- English proof (translation)
-Introduce `hE hD hA hL` and use `jf_radAdj_of_parts hE hD hA (jf_betaAdjC_of_lemmaBNorm hL)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jf_radAdj_of_parts2 : Formalism.FourierDecayAlt.P.JFxG.Exhaust → Formalism.FourierDecayAlt.JF.JDom → Formalism.FourierDecayAlt.P.JFxG.JThetaAdjC →
     Formalism.FourierDecayAlt.B2.LemmaBNorm → Formalism.FourierDecayAlt.JF.RadAdj := fun hE hD hA hL =>
   jf_radAdj_of_parts hE hD hA (jf_betaAdjC_of_lemmaBNorm hL)
 
 /- English proof (translation)
-Introduce `hE hD hA hX` and use `jf_radAdj_of_parts2 hE hD hA (Formalism.FourierDecayAlt.P.lemma_b_from_xi hX).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jf_radAdj_of_parts3 : Formalism.FourierDecayAlt.P.JFxG.Exhaust → Formalism.FourierDecayAlt.JF.JDom → Formalism.FourierDecayAlt.P.JFxG.JThetaAdjC →
     Formalism.FourierDecayAlt.B.XiExists → Formalism.FourierDecayAlt.JF.RadAdj := fun hE hD hA hX =>

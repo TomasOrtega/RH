@@ -13,9 +13,9 @@ open Formalism.L2.SG.RealObj Formalism.L2.SG.HidaSetting Formalism.L2.SG.RealObj
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use extensionality with `y`. Use `first`. Consider the case `(simp only [Good, GoodLoc, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_setOf_eq])`. Consider the case `(simp only [Good, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_setOf_eq]; rfl)`. Consider the case `(simp [Good, GoodLoc])`.
+By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(show _ ↔ _; exact Iff.rfl)`.
+A detailed English derivation is pending.
 -/
 theorem good_eq {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) :
     Good X u u' = Set.univ.pi fun _ => GoodLoc (r := D.R.rS) (Tw u) (Tw u') := by
@@ -27,35 +27,31 @@ theorem good_eq {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' :
   | (show _ ↔ _; exact Iff.rfl)
 
 /- English proof (translation)
-Introduce `hJac hDC hSM hU hNH hR D X u u' sc hsc`. Apply the tactic sequence `have hep : ∀ v a b, hJ (X.B.I.ε v) (eV X v a) (pV X v b) = if a = b then 1 else 0 := fun v a b => (hJ_X X v _ _).trans (by rw [X.ef]; split_ifs <;> simp)`. Establish `hpp : ∀ v a b, hJ (X.B.I.ε v) (pV X v a) (pV X v b) = 0` using `fun v a b => (hJ_X X v _ _).trans (by rw [X.ff]; simp)`. Establish `hzp : ∀ w v b, hJ (X.B.I.ε v) (zV X w v) (pV X v b) = 0` using `fun w v b => by`. Establish `h0 : hJ (X.B.I.ε v) (pV X v b) (zV X w v) = 0` using `(hJ_X X v _ _).trans (by rw [(X.zu_orth w b).2]; simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hJ_cj, h0, map_zero]`. Establish `hSH : ∀ w v, IsHaarS (SLoc (X.B.I.ε v) (eV X v) (zV X w v)) (muSv X w v)` using `fun w v => hNH _ _ _ _ _ _ _ _ _ _ (frameLoc_X X w u v) (hep v) (hpp v) (hzp w v) _ _ (muNv_haar X w v) (muHv_haar X w v)`. Use `haveI : ∀ w v, SigmaFinite (muSv X w v) := fun w v => (hSH w v).1.1`. Take `⟨κ, hκ0, hκT, hκ⟩` from `muS_eq X u (fun v => inferInstance)`. Take `⟨κ', hκ'0, hκ'T, hκ'⟩` from `muS_eq X u' (fun v => inferInstance)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsec` using `fun v => hSM _ _ _ _ _ _ _ _ _ sc (frameLoc_X X u u' v) hsc`. Use `choose hs hsm hss using hsec`. Establish `hjl` using `fun v => hJac _ _ _ _ _ _ _ _ _ sc (frameLoc_X X u u' v) hsc _ _ (hSH u v) (hSH u' v) (hs v) (hss v)`. Use `choose Cv hCv hDis using hjl`. Establish `hloc : ∀ v, Formalism.REAL.muG (X.B.I.ε v) = ((nuLoc (r` using `D.R.rS) D.R.k (Tw u) (Tw u') (Cv v)).prod ((muSv X u v).prod (muSv X u' v))).map (phiLoc (X.B.I.ε v) (hs v)) := fun v => muG_eq_map _ _ _ _ _ _ _ (hsm v) _ (hDis v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Cp : ℝ := ∏ v, Cv v with hCp`. Establish `hCp0 : 0 < Cp` using `Finset.prod_pos fun v _ => hCv v`. Establish `hκr : 0 < κ.toReal` using `ENNReal.toReal_pos hκ0 hκT`. Establish `hκr' : 0 < κ'.toReal` using `ENNReal.toReal_pos hκ'0 hκ'T`. Use `⟨Cp / (κ.toReal * κ'.toReal), div_pos hCp0 (mul_pos hκr hκr'), fun φ hφ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpf` using `prod_formula (fun v => Formalism.REAL.muG (X.B.I.ε v)) (fun v => nuLoc (r := D.R.rS) D.R.k (Tw u) (Tw u') (Cv v)) (muSv X u) (muSv X u') hs hsm hloc φ hφ`. Express the relevant statement in the definitionally equal form `∫⁻ x, φ x ∂(Measure.pi fun v => Formalism.REAL.muG (X.B.I.ε v)) = _`. Rewrite using `[hpf]`. Establish `hwm : ∀ v, Measurable fun c : Fin (D.R.rS + 1) → ℂ => ENNReal.ofReal (Cv v * wtLoc D.R.k (Tw u) (Tw u') c)` using `fun v => ENNReal.measurable_ofReal.comp (measurable_const.mul (wtLoc_cont D.R.k (Tw u) (Tw u')).measurable)`. Establish `hν : Measure.pi (fun v => nuLoc (r` using `D.R.rS) D.R.k (Tw u) (Tw u') (Cv v)) = ((dcInf X).restrict (Good X u u')).withDensity (fun c => ∏ v, ENNReal.ofReal (Cv v * wtLoc D.R.k (Tw u) (Tw u') (c v))) := by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `nuLoc`. Use `haveI : SigmaFinite (dcLoc (r := D.R.rS)) := by unfold dcLoc; infer_instance`. Rewrite using `[PiM.pi_withDensity _ _ hwm (fun v x => ENNReal.ofReal_ne_top), ← Measure.restrict_pi_pi, good_eq]`. Both sides reduce to the same expression. Use `set H : (Cinf X) → X.B.I.Ginf := fun c v => hs v (c v) with hHd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hHm : Measurable H` using `measurable_pi_lambda _ fun v => (hsm v).comp (measurable_pi_apply v)`. Use `set Fc : Cinf X → ℝ≥0∞ := fun c => ∫⁻ s, ∫⁻ s', φ (s * H c * s'⁻¹) ∂Measure.pi (muSv X u') ∂Measure.pi (muSv X u) with hFc`. Establish `hFm : Measurable Fc`. Establish `h1 : Measurable fun q : (Cinf X × X.B.I.Ginf) × X.B.I.Ginf => φ (q.1.2 * H q.1.1 * q.2⁻¹)` using `hφ.comp (((measurable_snd.comp measurable_fst).mul (hHm.comp (measurable_fst.comp measurable_fst))).mul measurable_snd.inv)`. Conclude with `h1.lintegral_prod_right'.lintegral_prod_right'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (∫⁻ c, ∫⁻ s, ∫⁻ s', φ (s * (fun v => hs v (c v)) * s'⁻¹) ∂Measure.pi (muSv X u') ∂Measure.pi (muSv X u) ∂Measure.pi fun v => nuLoc (r := D.R.rS) D.R.k (Tw u) (Tw u') (Cv v)) = ∫⁻ c, Fc c ∂Measure.pi fun v => nuLoc (r := D.R.rS) D.R.k (Tw u) (Tw u') (Cv v) from rfl, hν, lint …`. Establish `hGm : MeasurableSet (Good X u u')`. Rewrite using `[good_eq]`. Conclude with `MeasurableSet.univ_pi fun v => measurableSet_goodLoc _ _`. Use `setLIntegral_congr_fun hGm fun c hc => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Pi.mul_apply]`. Establish `hcv : ∀ v, c v ∈ GoodLoc (r` using `D.R.rS) (Tw u) (Tw u') := fun v => by`. Rewrite `hc` using `[good_eq, Set.mem_univ_pi]`. Conclude with `hc v`. Establish `hW : ∏ v, ENNReal.ofReal (Cv v * wtLoc D.R.k (Tw u) (Tw u') (c v)) = ENNReal.ofReal (Cp * wt X u u' c)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← ENNReal.ofReal_prod_of_nonneg fun v _ => mul_nonneg (hCv v).le (wtLoc_nonneg _ _ _ (hcv v)), Finset.prod_mul_distrib]`. Both sides reduce to the same expression. Establish `hex` using `hR D X u u' sc hsc c hc`. Establish `hh : HasDiag X u u' sc c (hOf X u u' sc c)`. Unfold `hOf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`. Establish `hdc` using `fun v => hDC _ _ _ _ _ _ _ _ _ sc (frameLoc_X X u u' v) (c v) (hcv v) (hs v (c v)) (hOf X u u' sc c v) (hss v (c v) (hcv v)) (hh v)`. Use `choose t ht t' ht' htt using hdc`. Establish `hofe : hOf X u u' sc c = t * H c * t'⁻¹` using `funext fun v => htt v`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hrt : (Measure.pi (muSv X u)).map (fun x => x * t) = Measure.pi (muSv X u)` using `PiM.pi_map_mul_right _ t fun v => hU _ _ _ _ _ _ _ _ _ (frameLoc_X X u u' v) _ (hSH u v) (t v) (ht v)`. Establish `hrt' : (Measure.pi (muSv X u')).map (fun x => x * t') = Measure.pi (muSv X u')` using `PiM.pi_map_mul_right _ t' fun v => hU _ _ _ _ _ _ _ _ _ (frameLoc_X X u' u v) _ (hSH u' v) (t' v) (ht' v)`. Establish `hsw : ∫⁻ s, ∫⁻ s', φ (s * hOf X u u' sc c * s'⁻¹) ∂Measure.pi (muSv X u') ∂Measure.pi (muSv X u) = Fc c`. Rewrite using `[hofe]`. Conclude with `dc_switch _ _ φ hφ (H c) t t' hrt hrt'`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hinner : ∀ s, Measurable fun s' : X.B.I.Ginf => φ (s * hOf X u u' sc c * s'⁻¹)` using `fun s => hφ.comp (measurable_const.mul measurable_inv)`. Establish `hG2 : Measurable fun s : X.B.I.Ginf => ∫⁻ s', φ (s * hOf X u u' sc c * s'⁻¹) ∂Measure.pi (muSv X u')` using `(hφ.comp ((measurable_fst.mul measurable_const).mul measurable_snd.inv)).lintegral_prod_right'`. Establish `hmu : ∫⁻ s, ∫⁻ s', φ (s * hOf X u u' sc c * s'⁻¹) ∂muS X u' ∂muS X u = κ * κ' * Fc c`. Rewrite using `[hκ, hκ', lintegral_smul_measure]`. Simplify using `only [lintegral_smul_measure, smul_eq_mul]`.
-
-Rewrite using `[lintegral_const_mul' _ _ hκ'T, hsw]`. Expand and normalize the polynomial expressions, which then agree. Establish `hwc : 0 ≤ wt X u u' c`. Unfold `wt`. Conclude with `Finset.prod_nonneg fun v _ => wtLoc_nonneg D.R.k _ _ (hcv v)`.
-
-Establish `hk : κ * κ' = ENNReal.ofReal (κ.toReal * κ'.toReal)`. Rewrite using `[ENNReal.ofReal_mul hκr.le, ENNReal.ofReal_toReal hκT, ENNReal.ofReal_toReal hκ'T]`. Rewrite using `[hmu, hW, hk, ← mul_assoc, ← ENNReal.ofReal_mul (mul_nonneg (div_pos hCp0 (mul_pos hκr hκr')).le hwc)]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem product_formula_holds : P5 := by
   intro hJac hDC hSM hU hNH hR D X u u' sc hsc

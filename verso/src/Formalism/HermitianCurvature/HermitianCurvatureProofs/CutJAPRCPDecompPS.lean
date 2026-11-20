@@ -14,7 +14,7 @@ section ps
 variable {TT : ℝ}
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.PR.gg`. Simplify using `only [MvPolynomial.eval_sub, MvPolynomial.eval_mul, MvPolynomial.eval_X, MvPolynomial.eval_C, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Complex.mul_conj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma gg_eval (ζ : ℂ) : gg TT ζ = MvPolynomial.eval ![ζ, conj ζ, sig TT ζ]
     (MvPolynomial.X 0 * MvPolynomial.X 1 - MvPolynomial.C (TT : ℂ)) := by
@@ -25,34 +25,34 @@ lemma gg_eval (ζ : ℂ) : gg TT ζ = MvPolynomial.eval ![ζ, conj ζ, sig TT ζ
   ring
 
 /- English proof (translation)
-Take `⟨m, p, hp⟩` from `hf`. Conclude with `⟨m, p, fun ζ hζ => by rw [← h ζ hζ]; exact hp ζ hζ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma ps_congr {f g : ℂ → ℂ} (hf : PS TT f) (h : ∀ ζ, TT < Complex.normSq ζ → f ζ = g ζ) : PS TT g := by
   obtain ⟨m, p, hp⟩ := hf
   exact ⟨m, p, fun ζ hζ => by rw [← h ζ hζ]; exact hp ζ hζ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, MvPolynomial.C c, fun ζ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 lemma ps_const (c : ℂ) : PS TT (fun _ => c) := ⟨0, MvPolynomial.C c, fun ζ _ => by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, MvPolynomial.X 0, fun ζ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 lemma ps_id : PS TT (fun ζ => ζ) := ⟨0, MvPolynomial.X 0, fun ζ _ => by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, MvPolynomial.X 1, fun ζ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 lemma ps_conj : PS TT (fun ζ => conj ζ) := ⟨0, MvPolynomial.X 1, fun ζ _ => by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, MvPolynomial.X 2, fun ζ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 lemma ps_sig : PS TT (fun ζ => sig TT ζ) := ⟨0, MvPolynomial.X 2, fun ζ _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨m, p, hp⟩` from `hf`. Take `⟨n, q, hq⟩` from `hg`. Use `⟨m + n, (MvPolynomial.X 0 * MvPolynomial.X 1 - MvPolynomial.C (TT : ℂ)) ^ n * p + (MvPolynomial.X 0 * MvPolynomial.X 1 - MvPolynomial.C (TT : ℂ)) ^ m * q, fun ζ hζ => ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval_add, MvPolynomial.eval_mul, MvPolynomial.eval_mul, MvPolynomial.eval_pow, MvPolynomial.eval_pow, ← gg_eval, ← hp ζ hζ, ← hq ζ hζ]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma ps_add {f g : ℂ → ℂ} (hf : PS TT f) (hg : PS TT g) : PS TT (fun ζ => f ζ + g ζ) := by
   obtain ⟨m, p, hp⟩ := hf
@@ -63,7 +63,7 @@ lemma ps_add {f g : ℂ → ℂ} (hf : PS TT f) (hg : PS TT g) : PS TT (fun ζ =
   ring
 
 /- English proof (translation)
-Take `⟨m, p, hp⟩` from `hf`. Take `⟨n, q, hq⟩` from `hg`. Use `⟨m + n, p * q, fun ζ hζ => ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval_mul, ← hp ζ hζ, ← hq ζ hζ]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma ps_mul {f g : ℂ → ℂ} (hf : PS TT f) (hg : PS TT g) : PS TT (fun ζ => f ζ * g ζ) := by
   obtain ⟨m, p, hp⟩ := hf
@@ -73,21 +73,21 @@ lemma ps_mul {f g : ℂ → ℂ} (hf : PS TT f) (hg : PS TT g) : PS TT (fun ζ =
   ring
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.PR.gg Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.PR.sig`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (by linarith)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma sig_sq {ζ : ℂ} (hζ : TT < Complex.normSq ζ) : sig TT ζ * sig TT ζ = gg TT ζ := by
   unfold Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.PR.gg Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.PR.sig
   rw [← Complex.ofReal_mul, Real.mul_self_sqrt (by linarith)]
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.PR.sig`. Conclude with `Complex.ofReal_ne_zero.mpr (Real.sqrt_ne_zero'.mpr (by linarith))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma sig_ne {ζ : ℂ} (hζ : TT < Complex.normSq ζ) : sig TT ζ ≠ 0 := by
   unfold Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.PR.sig
   exact Complex.ofReal_ne_zero.mpr (Real.sqrt_ne_zero'.mpr (by linarith))
 
 /- English proof (translation)
-Use `⟨1, MvPolynomial.X 2, fun ζ hζ => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, ← sig_sq hζ, mul_assoc, mul_inv_cancel₀ (sig_ne hζ), mul_one]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma ps_sigInv : PS TT (fun ζ => (sig TT ζ)⁻¹) := by
   refine ⟨1, MvPolynomial.X 2, fun ζ hζ => ?_⟩

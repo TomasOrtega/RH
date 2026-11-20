@@ -11,13 +11,13 @@ section twEquiv
 variable {G M V W : Type} [Group G] [Group M] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Establish `he : ∀ v, e.toLinearEquiv v = e v` using `fun v => rfl`. Establish `hl : ∀ v, e.toIntertwiningMap.toLinearMap v = e v` using `fun v => rfl`. Establish `hmap : (GlobalTheory.PRep.twKer ρ N θ).map (e.toLinearEquiv : V →ₗ[ℂ] W) = GlobalTheory.PRep.twKer σ N θ`. Unfold `GlobalTheory.PRep.twKer`. Rewrite using `[Submodule.map_span]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨n, v, rfl⟩, rfl⟩`. Use `⟨n, e v, ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearEquiv.coe_coe, map_sub, map_smul, he, hl, eint]`. Introduce and unpack `⟨n, w', rfl⟩`. Use `⟨ρ n (e.toLinearEquiv.symm w') - ((θ n : ℂˣ) : ℂ) • e.toLinearEquiv.symm w', ⟨n, _, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hw : e (e.toLinearEquiv.symm w') = w'` using `e.toLinearEquiv.apply_symm_apply w'`. Simplify using `only [LinearEquiv.coe_coe, map_sub, map_smul, he, hl, eint, hw]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨Representation.Equiv.mk (Submodule.Quotient.equiv _ _ e.toLinearEquiv hmap) fun m => ?_⟩` and prove the remaining obligations. Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Use extensionality with `v`. Conclude with `congrArg (Submodule.Quotient.mk (p := GlobalTheory.PRep.twKer σ N θ)) (eint e (s m) v)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem nonempty_twAct_equiv {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (e : ρ.Equiv σ)
     (N : Subgroup G) (θ : N →* ℂˣ) (s : M →* G)
@@ -44,7 +44,7 @@ theorem nonempty_twAct_equiv {ρ : Representation ℂ G V} {σ : Representation 
   exact congrArg (Submodule.Quotient.mk (p := GlobalTheory.PRep.twKer σ N θ)) (eint e (s m) v)
 
 /- English proof (translation)
-Establish `he : ∀ v, e.toLinearEquiv v = e v` using `fun v => rfl`. Use `⟨Representation.Equiv.mk e.toLinearEquiv fun g => LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Use `show e.toLinearEquiv (((χ g : ℂˣ) : ℂ) • ρ g v) = ((χ g : ℂˣ) : ℂ) • σ g (e.toLinearEquiv v)`. Rewrite using `[map_smul, he, he, eint]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_twist_equiv {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (e : ρ.Equiv σ) (χ : G →* ℂˣ) :
     Nonempty ((twist ρ χ).Equiv (twist σ χ)) := by
@@ -56,9 +56,7 @@ theorem nonempty_twist_equiv {ρ : Representation ℂ G V} {σ : Representation 
 end twEquiv
 
 /- English proof (translation)
-Establish `h1 : MIso (GlobalTheory.BZMir.MRep.phiM k ψ A) (GlobalTheory.BZMir.MRep.phiM k ψ B)`. Take `⟨e⟩` from `h`. Unfold `GlobalTheory.BZMir.MRep.phiM GlobalTheory.BZMir.phiMinus`. Use `generalize_proofs hh`. Conclude with `nonempty_twAct_equiv e _ _ _ hh`.
-
-Take `⟨e'⟩` from `h1`. Conclude with `nonempty_twist_equiv e' _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem miso_phiN (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ψ : AddChar k Circle) (n : ℕ) (A B : MRep k (n + 1)) (h : MIso A B) : MIso (phiN ψ A) (phiN ψ B) := by

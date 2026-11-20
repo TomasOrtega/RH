@@ -4,25 +4,23 @@ open UpperTheory.Gal.LocalSmoothExtension
 
 open GlobalTheory.HodgeCoh UpperTheory.Gal.CertificateRingHomMap in
 /- English proof (translation)
-Introduce `hTr hProj hFin hUnif hInj hCo hEig hWord hGood`. Introduce `p _ D G L hSc lam hlam`. Set `κ : ((D.F →+* ℂ) → Fin G.n → ℕ) → Fin D.a → (Fin G.n → ℕ) → ℕ` to `fun lam' i₀ h => if H : IsHExp (D.tau i₀) (epsOf D) lam' h then (hTr p D G L lam' i₀ h H).choose else 0`. Take `⟨k, hkB⟩` from `hUnif D.F G.n (Fin D.a) D.tau (epsOf D) lam κ`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `gb hgb T N σ i₀ h hH J ψ θ f hψ hf hS i`. Establish `hκ : (hTr p D G L (conjWt σ lam) i₀ h hH).choose ≤ k`. Use `hkB σ i₀ h hH` as an intermediate fact. Simplify `this` using `only [κ, dif_pos hH]`. Take `⟨c, hc⟩` from `(hTr p D G L (conjWt σ lam) i₀ h hH).choose_spec k hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨hproj, d, hd⟩` from `hProj p D G L hSc gb k T N`. Establish `hcT` using `hc hSc gb hgb T N d hd`. Establish `hG : ∀ a b, (UpperTheory.Gal.G3.hodge ℂ a b).Good` using `fun a b => hGood ℂ a b`. Use `haveI hFD : ∀ b : Fin (d + 1), FiniteDimensional ℂ (hodgeH (qAt T N) (h i) b.1) := fun b => hFin _ _ d hd hproj _ _`. Establish `hWd : ∀ (a b : ℕ) (w : List J), T.X.IsFn (T.lev N) (wordFn (L.KN N.1) ψ w f) ∧ hk T N (wordFn (L.KN N.1) ψ w f) a b = (w.map fun j => hk T N (ψ j) a b).prod * hk T N f a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b w`. Use `((hWord _ _ T.X (UpperTheory.Gal.G3.hodge ℂ a b) (hG a b) (T.lev N)).2 J ψ f hψ hf).1 w` as an intermediate fact. Rewrite `this` using `[T.K_eq]`. Conclude with `this`. Establish `hPoly : ∀ (a b : ℕ) (s : List J →₀ ℂ), T.X.IsFn (T.lev N) (polyFn (L.KN N.1) ψ s f) ∧ hk T N (polyFn (L.KN N.1) ψ s f) a b = wop (fun j => hk T N (ψ j) a b) s * hk T N f a b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b s`. Use `((hWord _ _ T.X (UpperTheory.Gal.G3.hodge ℂ a b) (hG a b) (T.lev N)).2 J ψ f hψ hf).2 s` as an intermediate fact. Rewrite `this` using `[T.K_eq]`. Conclude with `this`. Take `⟨hcomm, V, _, _, _, ξ, hξ, hspec⟩` from `hS`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcm : ∀ (b : Fin (d + 1)) (j j' : J) (w : List J), hk T N (ψ j) (h i) b.1 * hk T N (ψ j') (h i) b.1 * (w.map fun j => hk T N (ψ j) (h i) b.1).prod * hk T N f (h i) b.1 = hk T N (ψ j') (h i) b.1 * hk T N (ψ j) (h i) b.1 * (w.map fun j => hk T N (ψ j) (h i) b.1).prod * hk T N f (h …`. Introduce `b j j' w`. Establish `h1` using `(hWd (h i) b.1 (j :: j' :: w)).2`. Establish `h2` using `(hWd (h i) b.1 (j' :: j :: w)).2`. Rewrite `h1` using `[hcomm j j' w, h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify `h1.symm` using `only [List.map_cons, List.prod_cons, mul_assoc]`. Take `⟨s, hs1, hs⟩` from `hEig (Fin (d + 1)) J (fun b => hodgeH (qAt T N) (h i) b.1) (fun b j => hk T N (ψ j) (h i) b.1) (fun b => hk T N f (h i) b.1) θ hcm`. Establish `hne : wop θ s ≠ 0` using `by rw [hs1]; exact one_ne_zero`. Take `⟨a, hgoodF, hdT⟩` from `hspec s hne`. Establish `hFfn` using `(hPoly 0 0 (wmul a s)).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hy` using `fun y => hcT V ξ hξ _ hFfn hgoodF y`. Establish `hocc` using `hCo d G.n (fun a' => ∑ b ∈ Finset.range (d + 1), (-1 : ℂ) ^ b * LinearMap.trace ℂ _ (hk T N (polyFn (L.KN N.1) ψ (wmul a s) f) a' b ∘ₗ cutD T N c a' b)) _ h (hInj D.F G.n (D.tau i₀) (epsOf D) (conjWt σ lam) h (fun τ => hlam _) hH) hdT hy i`. Take `⟨b, hb, hb0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hocc`. Establish `hne0 : hk T N (polyFn (L.KN N.1) ψ (wmul a s) f) (h i) b ≠ 0`. Introduce `e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hb0` to reduce the goal to its premises. Rewrite using `[e, LinearMap.zero_comp, map_zero, mul_zero]`. Rewrite `hne0` using `[(hPoly _ _ _).2, wop_wmul, mul_assoc]`. Establish `hu : wop (fun j => hk T N (ψ j) (h i) b) s * hk T N f (h i) b ≠ 0` using `fun e => hne0 (by rw [e, mul_zero])`. Take `⟨x, hx0, hx⟩` from `hs ⟨b, Finset.mem_range.1 hb⟩ hu`.
-
-Conclude with `⟨b, x, hx0, hx⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.LocalSmoothExtension.hodgeEig_of :
     HodgeTr → KSProj → HodgeFin → UnifBound → HExpInj → CoeffOcc → EigOf → HopWord → UpperTheory.Gal.G3.HodgeGood → HodgeEig := by

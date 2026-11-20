@@ -24,15 +24,15 @@ def Fam (M : Model σ X Y) (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → �
   (∀ v, φ v ∈ SB (Fin n × Fin d → Fv F v)) ∧ ∀ᶠ v in cofinite, φ v = M.vac v
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, T.eventually_cofinite_notMem.mono h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsFinPart.fam {T : Finset (Pl F)} {φ} (h : IsFinPart M T φ) : Fam M φ :=
   ⟨h.1, T.eventually_cofinite_notMem.mono h.2⟩
 
 /- English proof (translation)
-Use `⟨fun u => ?_, (h.2.and (eventually_cofinite_ne v)).mono fun u hu => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne e]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.1 u`. Rewrite using `[Function.update_of_ne hu.2]`. Conclude with `hu.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Fam.update {φ} (h : Fam M φ) (v : Pl F) {φ₁} (h₁ : φ₁ ∈ SB (Fin n × Fin d → Fv F v)) :
     Fam M (Function.update φ v φ₁) := by
@@ -43,7 +43,7 @@ theorem Fam.update {φ} (h : Fam M φ) (v : Pl F) {φ₁} (h₁ : φ₁ ∈ SB (
   · rw [Function.update_of_ne hu.2]; exact hu.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(h.fam.update v h₁).1, fun u hu => by rw [Function.update_of_ne (fun e : u = v => hu (e ▸ hv))]; exact h.2 u hu⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsFinPart.update {T : Finset (Pl F)} {φ} (h : IsFinPart M T φ) {v : Pl F} (hv : v ∈ T) {φ₁}
     (h₁ : φ₁ ∈ SB (Fin n × Fin d → Fv F v)) : IsFinPart M T (Function.update φ v φ₁) :=
@@ -51,7 +51,7 @@ theorem IsFinPart.update {T : Finset (Pl F)} {φ} (h : IsFinPart M T φ) {v : Pl
     rw [Function.update_of_ne (fun e : u = v => hu (e ▸ hv))]; exact h.2 u hu⟩
 
 /- English proof (translation)
-The claim follows from `(h.2.and hM.std).mono fun _ hv => hv.1.trans hv.2`.
+A detailed English derivation is pending.
 -/
 theorem Fam.std (hM : M.IsGood ψ) {φ} (h : Fam M φ) :
     ∀ᶠ v in cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 :=
@@ -67,21 +67,21 @@ theorem pure_eq (f : SInf F (Fin n × Fin d)) (φ : ∀ v : Pl F, (Fin n × Fin 
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ = pureA F f (finPartFn φ) := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.WeilM.isLocallyConstant_finprod_evalV φ h.1 (h.std hM), GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h.1 (h.std hM)⟩`.
+Supply the required witnesses or components.
 -/
 theorem Fam.sb (hM : M.IsGood ψ) {φ} (h : Fam M φ) : finPartFn φ ∈ SB (Fin n × Fin d → Af F) :=
   ⟨GlobalTheory.WeilM.isLocallyConstant_finprod_evalV φ h.1 (h.std hM),
     GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h.1 (h.std hM)⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨f, _, h.sb hM, pure_eq f φ⟩`.
+A detailed English derivation is pending.
 -/
 theorem Fam.mem (hM : M.IsGood ψ) {φ} (h : Fam M φ) (f : SInf F (Fin n × Fin d)) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ schA F (Fin n × Fin d) :=
   Submodule.subset_span ⟨f, _, h.sb hM, pure_eq f φ⟩
 
 /- English proof (translation)
-Take `⟨r, hr, e⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ (h.std hM)`. Rewrite using `[← e, ← e]`. Conclude with `ha r ⟨hr, by rw [e]; exact (h.update v h₂).mem hM f⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Fam.acts (hM : M.IsGood ψ) {φ} (h : Fam M φ) (f : SInf F (Fin n × Fin d)) {v : Pl F} {Op φ₂ φ₃}
     (h₂ : φ₂ ∈ SB (Fin n × Fin d → Fv F v)) (ha : Acts (evFin F v) Op φ₂ φ₃) :
@@ -91,15 +91,15 @@ theorem Fam.acts (hM : M.IsGood ψ) {φ} (h : Fam M φ) (f : SInf F (Fin n × Fi
   exact ha r ⟨hr, by rw [e]; exact (h.update v h₂).mem hM f⟩
 
 /- English proof (translation)
-Simplify using `only [Model.I, theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem I_om (om : Rep σ X Y) (Φ) (k h : UA σ Y.J) : M.I om (om (1, k) Φ) h = M.I om Φ (h * k) := by
   simp only [Model.I, theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `e : mat (g⁻¹ * k * g) - 1 = mat g⁻¹ * (mat k - 1) * mat g`. Establish `: mat g⁻¹ * mat g = 1` using `Units.inv_mul g.1`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, this]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e, ← Matrix.smul_mul, ← Matrix.mul_smul, hk u hu, Matrix.mul_zero, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_UAt {R : Type} [Zero R] {ev : AF F → R} {k : UA σ Y.J} (hk : k ∈ UAt σ Y ev) (g : UA σ Y.J) :
     g⁻¹ * k * g ∈ UAt σ Y ev := by
@@ -116,9 +116,9 @@ variable {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep
   {R : RealMaps F a a'} {Rf : FinMaps F a a'}
 
 /- English proof (translation)
-Establish `hS : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f' φ' ∈ G.M'.So B.ψ B.τ₁` using `Submodule.subset_span ⟨f', φ', h'.1, h'.2, h1, rfl⟩`. Establish `hfin` using `eventually_cofinite.1 (h.2.and h'.2)`. Use `⟨hS, 1, 1, fun _ => finPartFn φ, fun _ => f, fun _ _ => f, fun _ => finPartFn φ', fun _ => f', fun _ _ => f', fun _ => ⟨h.sb hT.geo.hM, tendsto_const_nhds⟩, fun _ => ⟨h'.sb hT.geo.hM', tendsto_const_nhds⟩, by rw [Fin.sum_univ_one]; rfl, by rw [Fin.sum_univ_one]; rfl, fun _ => ⟨by …` and prove the remaining obligations. Establish `hv : ∀ v, v ∉ X.T ∪ hfin.toFinset → φ v = G.M.vac v ∧ φ' v = G.M'.vac v` using `fun v hv => by`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hv (Finset.mem_union_right _ (hfin.mem_toFinset.2 hc))`. Use `⟨X.T ∪ hfin.toFinset, Finset.subset_union_left, 1, 1, fun _ => f, fun _ => φ, fun _ => f', fun _ => φ', fun _ => ⟨hf, h.1, fun v h => (hv v h).1⟩, fun _ => ⟨hf', h'.1, fun v h => (hv v h).2⟩, rfl, rfl, ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.sum_univ_one, e, e']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem match_pure (hT : IsTriple B G X om om') {f f' φ φ'} (hf : f ∈ G.M.Pol B.ψ B.emb) (hf' : f' ∈ G.M'.Pol B.ψ B.emb)
     (h : Fam G.M φ) (h' : Fam G.M' φ') (h1 : φ' B.v₁ ∈ G.M'.SoLoc B.ψ B.τ₁) (e : R.p f = R.p' f')
@@ -137,13 +137,13 @@ theorem match_pure (hT : IsTriple B G X om om') {f f' φ φ'} (hf : f ∈ G.M.Po
   simp only [Fin.sum_univ_one, e, e']
 
 /- English proof (translation)
-Take `⟨c, hc, -⟩` from `hc.2.1`. Take `⟨f', hf', ef⟩ : R.p f ∈ (G.M'.Pol B.ψ B.emb).map R.p'` from `hM.real.quot'.onto ▸ Submodule.mem_top`. Establish `H : ∀ v, ∃ χ ∈ SB (Fin a' × Fin (a + a') → Fv F v), Rf.p' v χ = Rf.p v (φ v) ∧ (v ∉ X.T → φ v = G.M.vac v → χ = G.M'.vac v)` using `fun v => by`. Distinguish the cases in `hv : v ∉ X.T ∧ φ v = G.M.vac v`. Conclude with `⟨_, (hM.triple.geo.hM'.vac v).1, by rw [hv.2, (hM.fin.sph v hv.1).1], fun _ _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨χ, h1, h2⟩ : Rf.p v (φ v) ∈ (SB _).map (Rf.p' v)` from `hM.fin.onto' v ▸ Submodule.mem_top`. Conclude with `⟨χ, h1, h2, fun h3 h4 => absurd ⟨h3, h4⟩ hv⟩`. Use `choose χ h1 h2 h3 using H`. Take `⟨χ₁, h4, h5⟩` from `(hco.1 B.v₁ hM.triple.chars.good).2.2.1 B.τ₁ (Rf.p _ (φ B.v₁))`. Establish `hχ : Fam G.M' (Function.update χ B.v₁ χ₁)` using `Fam.update ⟨h1, (X.T.eventually_cofinite_notMem.and h.2).mono fun v hv => h3 v hv.1 hv.2⟩ _ h4.1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : ∀ v, Rf.p v (φ v) = Rf.p' v (Function.update χ B.v₁ χ₁ v)` using `fun v => by`. Distinguish the cases in `hv : v = B.v₁`. Substitute `hv` using the available equality. Rewrite using `[Function.update_self, h5]`. Rewrite using `[Function.update_of_ne hv, h2]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h7 : Function.update χ B.v₁ χ₁ B.v₁ ∈ G.M'.SoLoc B.ψ B.τ₁` using `by rwa [Function.update_self]`. Use function extensionality and compare the values at `x`. Rewrite using `[hc _ _ (match_pure hM.triple hf hf' h hχ h7 ef.symm h6) x, hc _ _ (match_pure hM.triple hf hf' h' hχ h7 ef.symm fun v => (e v).symm.trans (h6 v)) x]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem I_eq_of_p_eq (hM : IsMatched B G X om om' R Rf) (hc : OneConst B G X om om' R Rf) (hco : Coinv B G X om om' Rf)
     {f φ φ'} (hf : f ∈ G.M.Pol B.ψ B.emb) (h : Fam G.M φ) (h' : Fam G.M φ') (e : ∀ v, Rf.p v (φ v) = Rf.p v (φ' v)) :
@@ -170,7 +170,7 @@ theorem I_eq_of_p_eq (hM : IsMatched B G X om om' R Rf) (hc : OneConst B G X om 
     hc _ _ (match_pure hM.triple hf hf' h' hχ h7 ef.symm fun v => (e v).symm.trans (h6 v)) x]
 
 /- English proof (translation)
-The claim follows from `I_eq_of_p_eq hM hc hco hf (h.update v hχ) (h.update v hχ') fun u => by by_cases hu : u = v · subst hu; rwa [Function.update_self, Function.update_self] · rw [Function.update_of_ne hu, Function.update_of_ne hu]`.
+A detailed English derivation is pending.
 -/
 theorem I_update_eq (hM : IsMatched B G X om om' R Rf) (hc : OneConst B G X om om' R Rf) (hco : Coinv B G X om om' Rf)
     {f φ} (hf : f ∈ G.M.Pol B.ψ B.emb) (h : Fam G.M φ) {v : Pl F} {χ χ'} (hχ : χ ∈ SB _) (hχ' : χ' ∈ SB _)
@@ -182,24 +182,22 @@ theorem I_update_eq (hM : IsMatched B G X om om' R Rf) (hc : OneConst B G X om o
     · rw [Function.update_of_ne hu, Function.update_of_ne hu]
 
 /- English proof (translation)
-Rewrite using `[hl _ (hT.weil.isUSplitting.pres _ _ hΦ), I_om, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem I_eq_l (hT : IsTriple B G X om om') {l : ((Fin a × Fin (a + a') → AF F) → ℂ) →ₗ[ℂ] ℂ}
     (hl : ∀ Φ ∈ schA F _, l Φ = G.M.I om Φ 1) {Φ} (hΦ : Φ ∈ schA F _) (x : UA σ G.W.J) : G.M.I om Φ x = l (om (1, x) Φ) := by
   rw [hl _ (hT.weil.isUSplitting.pres _ _ hΦ), I_om, one_mul]
 
 /- English proof (translation)
-Establish `hG` using `hM.triple.geo.hM`. Take `⟨r, -, er⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ (h.std hG)`. Set `TL : ((Fin a × Fin (a + a') → Fv F v) → ℂ) →ₗ[ℂ] ((Fin a × Fin (a + a') → AF F) → ℂ)` to `{ toFun := fun χ => tens (evFin F v) χ r map_add' := fun _ _ => funext fun _ => add_mul _ _ _ map_smul' := fun _ _ => funext fun _ => mul_assoc _ _ _ }`. Set `K : Submodule ℂ ((Fin a × Fin (a + a') → Fv F v) → ℂ)` to `SB _ ⊓ ⨅ x, LinearMap.ker (l ∘ₗ om (1, x) ∘ₗ TL)`. Establish `hK : ∀ χ ∈ SB (Fin a × Fin (a + a') → Fv F v), χ ∈ K ↔ G.M.I om (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (Function.update φ v χ)) = 0` using `fun χ hχ => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [K, Submodule.mem_inf, hχ, true_and, Submodule.mem_iInf, LinearMap.mem_ker, funext_iff, Pi.zero_apply]`. Use `forall_congr' fun x => ?_` and prove the remaining obligations. Rewrite using `[I_eq_l hM.triple hl ((h.update v hχ).mem hG f), ← er]`. Both sides reduce to the same expression. Establish `hN : ∀ χ ∈ SB (Fin a × Fin (a + a') → Fv F v), Rf.p v χ ∈ K.map (Rf.p v) ↔ χ ∈ K` using `fun χ hχ => by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `⟨fun ⟨χ', h1, h2⟩ => ?_, fun h1 => ⟨χ, h1, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[hK χ hχ, ← I_update_eq hM hc hco hf h h1.1 hχ h2]`. Conclude with `(hK χ' h1.1).1 h1`. Break down `hM.fin.irred v (K.map (Rf.p v)) (fun k _ χ₁ h1 χ₂ h2 ha hm => by` into its components or cases. Rewrite `hm` using `[hN _ h1, hK _ h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN _ h2, hK _ h2, ← h.acts hG f h1 ha]`. Use function extensionality and compare the values at `x`. Rewrite using `[I_om, hm]`. Use the proof step `rfl) with e | e`. Establish `: Rf.p v (φ v) ∈ K.map (Rf.p v)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hN _ (h.1 v), hK _ (h.1 v), Function.update_eq_self]`. Conclude with `h0`. Rewrite `this` using `[e]`. Conclude with `absurd this hv`. Rewrite using `[← hK _ hχ, ← hN _ hχ, e]`.
-
-Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem I_update_zero (hM : IsMatched B G X om om' R Rf) (hc : OneConst B G X om om' R Rf) (hco : Coinv B G X om om' Rf)
     {l : ((Fin a × Fin (a + a') → AF F) → ℂ) →ₗ[ℂ] ℂ} (hl : ∀ Φ ∈ schA F _, l Φ = G.M.I om Φ 1)
@@ -236,13 +234,13 @@ theorem I_update_zero (hM : IsMatched B G X om om' R Rf) (hc : OneConst B G X om
   · rw [← hK _ hχ, ← hN _ hχ, e]; trivial
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using h0`. Consider the case `insert v S _ ih`. Introduce `φ hφ`. Distinguish the cases in `hv : v ∈ X.T`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `ih φ ⟨hφ.1, fun u hu => hφ.2 u fun h => hu ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_union, Finset.mem_insert] at h ⊢`. Break down `h with h | rfl | h` into its components or cases. Use `exacts [Or.inl h, Or.inl hv, Or.inr h]`. Establish `hvac` using `(hM.triple.geo.hM.vac v).1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsFinPart G.M (X.T ∪ S) (Function.update φ v (G.M.vac v))` using `⟨(hφ.fam.update v hvac).1, fun u hu => by`. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Rewrite using `[Function.update_of_ne e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hφ.2 u fun h => hu ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_union, Finset.mem_insert] at h ⊢`. Use the proof step `tauto⟩`. Use `I_update_zero hM hc hco hl hf h1.fam (v := v) (by rw [Function.update_self]; exact (hM.fin.sph v hv).2) (ih _ h1) (hφ.1 v)` as an intermediate fact. Rewrite `this` using `[Function.update_idem, Function.update_eq_self]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem I_zero_of_finPart (hM : IsMatched B G X om om' R Rf) (hc : OneConst B G X om om' R Rf) (hco : Coinv B G X om om' Rf)
     {l : ((Fin a × Fin (a + a') → AF F) → ℂ) →ₗ[ℂ] ℂ} (hl : ∀ Φ ∈ schA F _, l Φ = G.M.I om Φ 1)
@@ -270,13 +268,13 @@ theorem I_zero_of_finPart (hM : IsMatched B G X om om' R Rf) (hc : OneConst B G 
     rwa [Function.update_idem, Function.update_eq_self] at this
 
 /- English proof (translation)
-Use `by_contra! h0`. Use `hc.2.2 0 (fun Φ Φ' hm x => ?_) rfl` and prove the remaining obligations. Take `⟨-, m, m', g, f, s, g', f', s', h1, -, rfl, -, h2⟩` from `hm`. Establish `hx : l ∘ₗ om (1, x) ∈ (adeleClass F).adm _` using `hM.triple.weil.isUSplitting.adm _ _ hla`. Use `choose Tl hTl using fun i => hx (g i) (h1 i).1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ f : Fin m → SInf F _, ∑ i, pureA F (f i) (g i) ∈ schA F (Fin a × Fin (a + a'))` using `fun f => Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f i, g i, (h1 i).1, rfl⟩`. Establish `key : ∀ f : Fin m → SInf F _, G.M.I om (∑ i, pureA F (f i) (g i)) x = ∑ i, Tl i (f i)` using `fun f => by`. Rewrite using `[I_eq_l hM.triple hl (hs f), ← LinearMap.comp_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hTl i (f i)`. Establish `h3 : ∀ k, ∑ i, Tl i (s k i) = 0` using `fun k => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T, hT, p, p', f₁, φ, f₁', φ', h4, -, e, -⟩` from `(h2 k).2`. Rewrite using `[← key, I_eq_l hM.triple hl (hs _), e, map_sum, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `h5 : IsFinPart G.M (X.T ∪ T) (φ i)` using `⟨(h4 i).2.1, fun v hv => (h4 i).2.2 v fun h => hv (Finset.mem_union_right _ h)⟩`. Rewrite using `[← I_eq_l hM.triple hl (h5.fam.mem hM.triple.geo.hM _), I_zero_of_finPart hM hc hco hl (h4 i).1 (h0 _ (h4 i).1) T _ h5]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `h4 : Tendsto (fun k => ∑ i, Tl i (s k i)) atTop (𝓝 (∑ i, Tl i (f i)))` using `tendsto_finset_sum _ fun i _ => ((Tl i).continuous.tendsto _).comp (h1 i).2`. Simplify using `only [h3] at h4`. Rewrite using `[key, zero_mul]`. Conclude with `(tendsto_nhds_unique tendsto_const_nhds h4).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_I_ne_zero (hM : IsMatched B G X om om' R Rf) (hc : OneConst B G X om om' R Rf) (hco : Coinv B G X om om' Rf)
     {l : ((Fin a × Fin (a + a') → AF F) → ℂ) →ₗ[ℂ] ℂ} (hla : l ∈ (adeleClass F).adm _)
@@ -306,15 +304,15 @@ theorem exists_I_ne_zero (hM : IsMatched B G X om om' R Rf) (hc : OneConst B G X
   exact (tendsto_nhds_unique tendsto_const_nhds h4).symm
 
 /- English proof (translation)
-Use `by_contra! h0`. Take `⟨f, hf, φ, hφ, hne⟩` from `exists_I_ne_zero hM hc hco hla hl`. Establish `hG` using `hM.triple.geo.hM`. Establish `hΦ` using `hφ.fam.mem hG f`. Use `hne (funext fun x => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s, g, hg, hs, rfl⟩` from `hH x`. Establish `hcont : Continuous fun y : UA σ G.W.J => G.M.I om (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) (y * g)`. Simplify using `only [I_eq_l hM.triple hl hΦ]`. Conclude with `(hM.triple.weil.isUSplitting.cont l hla _ hΦ).comp (continuous_const.prodMk (continuous_mul_right g))`. Use `closure_minimal (t := {y | G.M.I om (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) (y * g) = 0}) ?_ (isClosed_eq hcont continuous_const) (hsa s hs)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨γ, hγ, k, hk, rfl⟩`. Take `⟨φ₁, h1, ha⟩` from `hloc _ (conj_mem_UAt hk g) (φ v) (hφ.1 v)`. Establish `e1` using `hφ.fam.acts hG f (hφ.1 v) ha`. Rewrite `e1` using `[Function.update_eq_self]`. Establish `e2` using `h0 f hf _ (hφ.update hv h1) g hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e2` using `[← e1, I_om]`. Use `Eq.trans ?_ e2` and prove the remaining obligations. Use `integral_congr_ae (.of_forall fun u => ?_)` and prove the remaining obligations. Establish `e3 : ((u, γ * k * g) : UA σ G.V.J × UA σ G.W.J) = (1, γ) * (u, g * (g⁻¹ * k * g))`. Simplify using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [theta]`. Rewrite using `[e3, map_mul, Module.End.mul_apply, hrat γ hγ _ (hM.triple.weil.isUSplitting.pres _ _ hΦ)]`.
+A detailed English derivation is pending.
 -/
 theorem exists_I_ne_zero_at (hM : IsMatched B G X om om' R Rf) (hc : OneConst B G X om om' R Rf) (hco : Coinv B G X om om' Rf)
     {l : ((Fin a × Fin (a + a') → AF F) → ℂ) →ₗ[ℂ] ℂ} (hla : l ∈ (adeleClass F).adm _)
@@ -349,13 +347,11 @@ theorem exists_I_ne_zero_at (hM : IsMatched B G X om om' R Rf) (hc : OneConst B 
   rw [e3, map_mul, Module.End.mul_apply, hrat γ hγ _ (hM.triple.weil.isUSplitting.pres _ _ hΦ)]
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset (Pl F), S ⊆ X.T → ∃ φ, IsFinPart G.M X.T φ ∧ (∀ v ∈ S, P v (φ v)) ∧ ∃ g ∈ H, G.M.I om (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) g ≠ 0` using `fun S => by`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact fun _ => h0.imp fun φ h => ⟨h.1, by simp, h.2⟩`. Consider the case `insert v S _ ih`. Introduce `hS`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv : v ∈ X.T` using `hS (Finset.mem_insert_self _ _)`. Take `⟨φ, hφ, h1, g, hg, hne⟩` from `ih ((Finset.subset_insert _ _).trans hS)`. Take `⟨φ₂, h2, h3, k, hk, φ₃, h4, ha, e⟩` from `hP v hv (φ v) (hφ.1 v)`. Use `⟨Function.update φ v φ₂, hφ.update hv h2, fun u hu => ?_, g * k, hmul _ hg _ hk, ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : u = v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne e]`. Conclude with `h1 u ((Finset.mem_insert.1 hu).resolve_left e)`. Rewrite using `[← I_om, hφ.fam.acts hM.triple.geo.hM f h2 ha, I_update_eq hM hc hco hf hφ.fam h4 (hφ.1 v) e, Function.update_eq_self]` and apply the resulting hypothesis.
-
-Conclude with `key _ subset_rfl`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_I_ne_zero_kind (hM : IsMatched B G X om om' R Rf) (hc : OneConst B G X om om' R Rf)
     (hco : Coinv B G X om om' Rf) {H : Set (UA σ G.W.J)} (hmul : ∀ x ∈ H, ∀ y ∈ H, x * y ∈ H)

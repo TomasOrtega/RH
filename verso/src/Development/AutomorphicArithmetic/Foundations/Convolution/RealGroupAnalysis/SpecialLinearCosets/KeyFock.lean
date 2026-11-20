@@ -17,21 +17,19 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTh
 open scoped Classical
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `UpperTheory.ConvolutionTheory.R2.I.ptMem F v`. Establish `lin : ∀ h, ∃ B : Fock (F` using `F) D.δ →ₗ[ℂ] ℂ, ∀ φ : Fock (F := F) D.δ, B φ = W1 W M f.1 φ.1 h := by`. Introduce `h`. Take `⟨B, hB⟩` from `UpperTheory.ConvolutionTheory.R2.I.thetaIntegral_exists_bilinear F E D W M π h`. Conclude with `⟨B ⟨f, hf⟩, fun φ => hB ⟨f, hf⟩ φ⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `main` using `Submodule.span_induction (p := fun φ _ => φ ∈ Fock (F := F) D.δ ∧ (fun x => W1 W M f.1 φ (h' * J x)) ∈ MC (π.locRep v)) ?_ ?_ ?_ ?_ (UpperTheory.ConvolutionTheory.R2.I.modSpan F E D W v θ hJ.sq hJ.ne hφ)`. Conclude with `main.2`. Introduce and unpack `φ ⟨u, a, hu, ha, e⟩`. Take `⟨φ₀, h₀, e₀⟩` from `hu.1 _ (T ⟨a, ha⟩).2`. Establish `hφ₀ : φ = φ₀` using `Subtype.ext (by rw [e, e₀, hT])`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨hφ₀ ▸ h₀, UpperTheory.ConvolutionTheory.R2.I.keyPure F E D W M π v θ J hJ h' hc u hu a ha φ e f hf⟩`. Use `⟨zero_mem _, ?_⟩` and prove the remaining obligations. Establish `: (fun x => W1 W M f.1 (0 : S4 F) (h' * J x)) = 0`. Use function extensionality and compare the values at `x`. Take `⟨B, hB⟩` from `lin (h' * J x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (hB 0).symm`. Rewrite using `[this]`. Conclude with `zero_mem _`. Introduce and unpack `a b _ _ ⟨ha, ia⟩ ⟨hb, ib⟩`. Use `⟨add_mem ha hb, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: (fun x => W1 W M f.1 (a + b) (h' * J x)) = (fun x => W1 W M f.1 a (h' * J x)) + fun x => W1 W M f.1 b (h' * J x)`. Use function extensionality and compare the values at `x`. Take `⟨B, hB⟩` from `lin (h' * J x)`. Establish `e` using `map_add B ⟨a, ha⟩ ⟨b, hb⟩`. Rewrite `e` using `[hB, hB, hB]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `e`. Rewrite using `[this]`. Conclude with `add_mem ia ib`. Introduce and unpack `c a _ ⟨ha, ia⟩`. Use `⟨Submodule.smul_mem _ c ha, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (fun x => W1 W M f.1 (c • a) (h' * J x)) = c • fun x => W1 W M f.1 a (h' * J x)`. Use function extensionality and compare the values at `x`. Take `⟨B, hB⟩` from `lin (h' * J x)`. Establish `e` using `map_smul B c (⟨a, ha⟩ : Fock (F := F) D.δ)`. Rewrite `e` using `[hB, hB]`.
-
-Conclude with `e`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c ia`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem keyFock {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2)
@@ -82,21 +80,19 @@ private theorem keyFock {F E : Type} [Field F] [NumberField F] [Field E] [Number
     exact Submodule.smul_mem _ c ia
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π v θ J hJ Φ hΦ`. Establish `lift_mem : ∀ f ∈ π.V, ∀ φ ∈ Fock D.δ, ∀ h, (fun x => WE D (lift W M f.1 φ) (h * J x)) ∈ MC (π.locRep v)`. Introduce `f hf φ hφ h`. Take `⟨h', k, rfl, hc, hk⟩` from `UpperTheory.ConvolutionTheory.R2.I.decomp F E D v θ J hJ h`. Take `⟨f', hf', e'⟩` from `(UpperTheory.ConvolutionTheory.R2.I.locSm F π v).2.2 E D k f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hL : W.L (finGL E 2 k) φ ∈ Fock D.δ` using `(UpperTheory.ConvolutionTheory.R2.fockSt F E D W).fin k φ hφ`. Establish `: (fun x => WE D (lift W M f.1 φ) (h' * finGL E 2 k * J x)) = fun x => W1 W M f'.1 (W.L (finGL E 2 k) φ) (h' * J x)`. Use function extensionality and compare the values at `x`. Rewrite using `[UpperTheory.ConvolutionTheory.R2.exp F E D W M π f hf φ hφ, mul_assoc, (hk x).eq, ← mul_assoc, (UpperTheory.ConvolutionTheory.R2.I.weilLift_equivariance F E D W M f.1 φ (h' * J x)).1, e']`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `keyFock D W M π v θ J hJ h' hc f' hf' _ hL`. Establish `main` using `Submodule.span_induction (p := fun Φ _ => ∀ h, (fun x => WE D Φ.1 (h * J x)) ∈ MC (π.locRep v)) ?_ ?_ ?_ ?_ hΦ`. Conclude with `main`. Introduce and unpack `Φ ⟨f, hf, φ, hφ, e⟩ h`. Rewrite using `[e]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `lift_mem f hf φ hφ h`. Introduce `h`. Establish `: (fun x => WE D (0 : Sm E 2).1 (h * J x)) = 0`. Use function extensionality and compare the values at `x`. Simplify using `[WE]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Introduce and unpack `a b ha hb ia ib h`. Establish `ca` using `(UpperTheory.ConvolutionTheory.R2.H.spanCont F E D W M π a ha).1`. Establish `cb` using `(UpperTheory.ConvolutionTheory.R2.H.spanCont F E D W M π b hb).1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: (fun x => WE D (a + b).1 (h * J x)) = (fun x => WE D a.1 (h * J x)) + fun x => WE D b.1 (h * J x)`. Use function extensionality and compare the values at `x`. Establish `e` using `(UpperTheory.ConvolutionTheory.R2.H.weEig F E D a.1 ca).2.2 b.1 1 cb (h * J x)`. Simplify using `using e`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `add_mem (ia h) (ib h)`. Introduce and unpack `c a ha ia h`. Establish `ca` using `(UpperTheory.ConvolutionTheory.R2.H.spanCont F E D W M π a ha).1`. Establish `: (fun x => WE D (c • a).1 (h * J x)) = c • fun x => WE D a.1 (h * J x)`. Use function extensionality and compare the values at `x`.
-
-Establish `e` using `(UpperTheory.ConvolutionTheory.R2.H.weEig F E D 0 continuous_const).2.2 a.1 c ca (h * J x)`. Simplify `e` using `[WE]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c (ia h)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.I.key :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2) (v : P F) (θ : Kv v) (J : GLv v →* GL (Fin 2) (A E)), Splt D v θ J →

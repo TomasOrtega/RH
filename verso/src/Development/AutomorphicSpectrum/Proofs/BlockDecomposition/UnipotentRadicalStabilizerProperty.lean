@@ -13,9 +13,9 @@ namespace GlobalTheory.CompanionTheory.QKAvg
 variable {D : D7} {B W : HSp D} {t : ℕ} (d : HypDec B W t)
 
 /- English proof (translation)
-Establish `e : mt B (d.nC c * d.nB b * (d.emb0 g * d.levi a)) = mt B (d.nC c) ⬝ (mt B (d.nB b) ⬝ (mt B (d.emb0 g) ⬝ mt B (d.levi a)))`. Simplify using `only [mt_mul, Matrix.mul_assoc]`. Establish `e₁ : mt B (d.emb0 g) ⬝ mt B (d.levi a) ⬝ d.j0 = d.j0 ⬝ mt W g`. Rewrite using `[Matrix.mul_assoc, d.wittDecomp_levi_inclAnisotropic, d.wittDecomp_anisotropicEmbedding_inclAnisotropic]`. Establish `e₂ : mt B (d.nC c) ⬝ (d.j0 + d.jX ⬝ b) = d.j0 + d.jX ⬝ b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_add, d.nC_j0, ← Matrix.mul_assoc, d.nC_jX]`. Rewrite using `[e, Matrix.mul_assoc, Matrix.mul_assoc, e₁, ← Matrix.mul_assoc (mt B (d.nB b)), d.nB_j0, ← Matrix.mul_assoc, e₂]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_decomp_j0 (c : skewA D t) (b : Mx D t W.rank) (g : GA D W) (a : GL (Fin t) (AE D)) :
     mt B (d.nC c * d.nB b * (d.emb0 g * d.levi a)) ⬝ d.j0 = (d.j0 + d.jX ⬝ b) ⬝ mt W g := by
@@ -30,7 +30,7 @@ theorem mt_decomp_j0 (c : skewA D t) (b : Mx D t W.rank) (g : GA D W) (a : GL (F
     ← Matrix.mul_assoc, e₂]
 
 /- English proof (translation)
-Establish `e : mt B (d.nC c * (d.emb0 g * d.levi a)) = mt B (d.nC c) ⬝ (mt B (d.emb0 g) ⬝ mt B (d.levi a))`. Simplify using `only [mt_mul]`. Establish `e₁ : mt B (d.emb0 g) ⬝ mt B (d.levi a) ⬝ d.jY = d.jY ⬝ adj (a⁻¹).1`. Rewrite using `[Matrix.mul_assoc, d.levi_jY, ← Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclY]`. Rewrite using `[e, Matrix.mul_assoc, e₁, ← Matrix.mul_assoc, d.nC_jY]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_decomp_jY (c : skewA D t) (g : GA D W) (a : GL (Fin t) (AE D)) :
     mt B (d.nC c * (d.emb0 g * d.levi a)) ⬝ d.jY = (d.jY + d.jX ⬝ c.1) ⬝ adj (a⁻¹).1 := by
@@ -41,7 +41,7 @@ theorem mt_decomp_jY (c : skewA D t) (g : GA D W) (a : GL (Fin t) (AE D)) :
   rw [e, Matrix.mul_assoc, e₁, ← Matrix.mul_assoc, d.nC_jY]
 
 /- English proof (translation)
-Rewrite `h` using `[Matrix.mul_assoc, mt_decomp_j0, ← Matrix.mul_assoc, Matrix.mul_add, d.pX_j0, ← Matrix.mul_assoc, d.pX_jX, Matrix.one_mul, zero_add]`. Establish `e : mt W g ⬝ mt W g⁻¹ = 1` using `by rw [← mt_mul, mul_inv_cancel, mt_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem coordB_eq_zero (c : skewA D t) (b : Mx D t W.rank) (g : GA D W) (a : GL (Fin t) (AE D))
     (h : d.pX ⬝ mt B (d.nC c * d.nB b * (d.emb0 g * d.levi a)) ⬝ d.j0 = 0) : b = 0 := by
@@ -52,7 +52,7 @@ theorem coordB_eq_zero (c : skewA D t) (b : Mx D t W.rank) (g : GA D W) (a : GL 
     _ = 0 := by rw [h, Matrix.zero_mul]
 
 /- English proof (translation)
-Rewrite `h` using `[Matrix.mul_assoc, mt_decomp_jY, ← Matrix.mul_assoc, Matrix.mul_add, d.pX_jY, ← Matrix.mul_assoc, d.pX_jX, Matrix.one_mul, zero_add]`. Establish `e : adj (a⁻¹).1 ⬝ adj a.1 = 1` using `by rw [← adj_mul, Units.mul_inv, adj_one]`. Apply `Subtype.ext` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem coordC_eq_zero (c : skewA D t) (g : GA D W) (a : GL (Fin t) (AE D))
     (h : d.pX ⬝ mt B (d.nC c * (d.emb0 g * d.levi a)) ⬝ d.jY = 0) : c = 0 := by
@@ -64,7 +64,7 @@ theorem coordC_eq_zero (c : skewA D t) (g : GA D W) (a : GL (Fin t) (AE D))
     _ = 0 := by rw [h, Matrix.zero_mul]
 
 /- English proof (translation)
-Take `⟨g, a, h⟩` from `hq`. Rewrite using `[h, mt_mul]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, d.wittDecomp_levi_inclAnisotropic, ← Matrix.mul_assoc, d.wittDecomp_projX_anisotropicEmbedding, d.pX_j0]`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, d.levi_jY, ← Matrix.mul_assoc (mt B (d.emb0 g)), d.wittDecomp_anisotropicEmbedding_inclY, ← Matrix.mul_assoc, d.pX_jY, Matrix.zero_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pX_levM {q : GlobalTheory.RegSW.stab d} (hq : q ∈ levM d) :
     d.pX ⬝ mt B (q : GA D B) ⬝ d.j0 = 0 ∧ d.pX ⬝ mt B (q : GA D B) ⬝ d.jY = 0 := by
@@ -76,11 +76,11 @@ theorem pX_levM {q : GlobalTheory.RegSW.stab d} (hq : q ∈ levM d) :
       ← Matrix.mul_assoc, d.pX_jY, Matrix.zero_mul]
 
 /- English proof (translation)
-Take `⟨n, ⟨c, b, hn⟩, m, ⟨g, a, hm⟩, e⟩` from `exists_radN_mul_levM d q`. Establish `hq : (q : GA D B) = d.nC c * d.nB b * (d.emb0 g * d.levi a)`. Rewrite using `[e, Subgroup.coe_mul, hn, hm]`. Rewrite `h₀`, `hY` using `[hq]`. Establish `hb` using `coordB_eq_zero d c b g a h₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Substitute `hb` using the available equality. Rewrite `hY` using `[d.nB_zero, mul_one]`. Establish `hc` using `coordC_eq_zero d c g a hY`. Substitute `hc` using the available equality. Use `(mem_levM d).2 ⟨g, a, hq.trans ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[d.nC_zero, d.nB_zero, one_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_levM_of_pX {q : GlobalTheory.RegSW.stab d} (h₀ : d.pX ⬝ mt B (q : GA D B) ⬝ d.j0 = 0)
     (hY : d.pX ⬝ mt B (q : GA D B) ⬝ d.jY = 0) : q ∈ levM d := by
@@ -97,9 +97,9 @@ theorem mem_levM_of_pX {q : GlobalTheory.RegSW.stab d} (h₀ : d.pX ⬝ mt B (q 
   rw [d.nC_zero, d.nB_zero, one_mul, one_mul]
 
 /- English proof (translation)
-Use `haveI := t2Space_adeleRing' (F := D.host.F)`. Use `haveI := t2Space_tensorProduct_finiteExtension (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Establish `hc : Continuous fun q : GlobalTheory.RegSW.stab d => mt B (q : GA D B)` using `(continuous_mt B).comp continuous_subtype_val`. Establish `h₀ : IsClosed {q : GlobalTheory.RegSW.stab d | d.pX ⬝ mt B (q : GA D B) ⬝ d.j0 = 0}` using `isClosed_eq ((continuous_const.matrix_mul hc).matrix_mul continuous_const) continuous_const`. Establish `hY : IsClosed {q : GlobalTheory.RegSW.stab d | d.pX ⬝ mt B (q : GA D B) ⬝ d.jY = 0}` using `isClosed_eq ((continuous_const.matrix_mul hc).matrix_mul continuous_const) continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (levM d : Set (GlobalTheory.RegSW.stab d)) = {q : GlobalTheory.RegSW.stab d | d.pX ⬝ mt B (q : GA D B) ⬝ d.j0 = 0} ∩ {q : GlobalTheory.RegSW.stab d | d.pX ⬝ mt B (q : GA D B) ⬝ d.jY = 0}` using `Set.ext fun q => ⟨fun h => pX_levM d h, fun h => mem_levM_of_pX d h.1 h.2⟩`. Rewrite using `[e]`. Conclude with `h₀.inter hY`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_levM (D : D7) (B W : HSp D) (t : ℕ) (d : HypDec B W t) :
     IsClosed (levM d : Set (GlobalTheory.RegSW.stab d)) := by

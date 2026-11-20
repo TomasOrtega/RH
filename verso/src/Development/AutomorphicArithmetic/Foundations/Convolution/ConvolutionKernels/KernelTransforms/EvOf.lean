@@ -6,19 +6,17 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Introduce `A _ _ ι κ a b S haa hab hbb haS hbS`. Establish `hcomm : ∀ x ∈ Set.range a ∪ Set.range b, ∀ y ∈ Set.range a ∪ Set.range b, x * y = y * x`. Introduce and unpack `x (⟨i, rfl⟩ | ⟨k, rfl⟩) y (⟨j, rfl⟩ | ⟨l, rfl⟩)`. Conclude with `(haa i j).eq`. Conclude with `(hab i l).eq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(hab j k).symm.eq`. Conclude with `(hbb k l).eq`. Establish `hle : Algebra.adjoin ℂ (Set.range a ∪ Set.range b) ≤ S`. Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `x (⟨i, rfl⟩ | ⟨k, rfl⟩)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `haS i`. Conclude with `hbS k`. Establish `hmc : ∀ x y : Algebra.adjoin ℂ (Set.range a ∪ Set.range b), x * y = y * x`. Introduce `x y`. Apply `Subtype.ext` to reduce the goal to its premises.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∀ z ∈ Set.range a ∪ Set.range b, Commute z (y : A)` using `fun z hz => Algebra.commute_of_mem_adjoin_of_forall_mem_commute y.2 (fun w hw => hcomm z hz w hw)`. Conclude with `(Algebra.commute_of_mem_adjoin_of_forall_mem_commute x.2 (fun w hw => (h1 w hw).symm)).symm.eq`. Use `letI : CommRing (Algebra.adjoin ℂ (Set.range a ∪ Set.range b)) := { (inferInstance : Ring (Algebra.adjoin ℂ (Set.range a ∪ Set.range b))) with mul_comm := hmc }`. Set `a' : ι → Algebra.adjoin ℂ (Set.range a ∪ Set.range b)` to `fun i => ⟨a i, Algebra.subset_adjoin (Or.inl ⟨i, rfl⟩)⟩`. Set `b' : κ → Algebra.adjoin ℂ (Set.range a ∪ Set.range b)` to `fun k => ⟨b k, Algebra.subset_adjoin (Or.inr ⟨k, rfl⟩)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `e : MvPolynomial κ (MvPolynomial ι ℂ) →+* Algebra.adjoin ℂ (Set.range a ∪ Set.range b)` to `eval₂Hom (eval₂Hom (algebraMap ℂ _) a') b'`. Use `⟨(Algebra.adjoin ℂ (Set.range a ∪ Set.range b)).val.toRingHom.comp e, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c show ((e (C (C c)) : Algebra.adjoin ℂ (Set.range a ∪ Set.range b)) : A) = _`. Simplify using `only [e, eval₂Hom_C]`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `i show ((e (C (X i)) : Algebra.adjoin ℂ (Set.range a ∪ Set.range b)) : A) = _`. Simplify using `only [e, eval₂Hom_C, eval₂Hom_X']`. Both sides reduce to the same expression. Introduce `k show ((e (X k) : Algebra.adjoin ℂ (Set.range a ∪ Set.range b)) : A) = _`.
-
-Simplify using `only [e, eval₂Hom_X']`. Both sides reduce to the same expression. Introduce `P`. Conclude with `hle (e P).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.evOf :
     ∀ (A : Type) [Ring A] [Algebra ℂ A] (ι κ : Type) (a : ι → A) (b : κ → A) (S : Subalgebra ℂ A),

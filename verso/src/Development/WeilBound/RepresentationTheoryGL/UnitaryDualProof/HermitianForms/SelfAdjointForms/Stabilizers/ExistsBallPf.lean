@@ -12,9 +12,9 @@ namespace PositivityTheory.RgUd.Form.LeviSmoothness.stab
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨r, hr0, hr1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Use `⟨r, ?_, hr1⟩` and prove the remaining obligations. Use `first`. Consider the case `exact hr0`. Consider the case `exact (Valuation.ne_zero_iff _).1 hr0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa using hr0`.
+A detailed English derivation is pending.
 -/
 theorem exists_unif' : ∃ ϖ : k, ϖ ≠ 0 ∧ valuation k ϖ < 1 := by
   obtain ⟨r, hr0, hr1⟩ := Valuation.IsNontrivial.exists_lt_one (v := valuation k)
@@ -25,16 +25,16 @@ theorem exists_unif' : ∃ ϖ : k, ϖ ≠ 0 ∧ valuation k ϖ < 1 := by
     | simpa using hr0
 
 /- English proof (translation)
-The claim follows from `set_pi_mem_nhds Set.finite_univ fun _ _ => (IsValuativeTopology.hasBasis_nhds_zero' k).mem_of_mem hγ`.
+A detailed English derivation is pending.
 -/
 theorem pi_lt_mem_nhds {n : ℕ} {γ : ValueGroupWithZero k} (hγ : γ ≠ 0) :
     Set.univ.pi (fun _ : Fin n => {y : k | valuation k y < γ}) ∈ nhds (0 : Fin n → k) :=
   set_pi_mem_nhds Set.finite_univ fun _ _ => (IsValuativeTopology.hasBasis_nhds_zero' k).mem_of_mem hγ
 
 /- English proof (translation)
-Establish `hs : valuation k (s : k) ≠ 0` using `(Valuation.ne_zero_iff _).2 s.ne_zero`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : (ball n s : Set (Fin n → k)) = Set.univ.pi (fun _ => {y : k | valuation k y ≤ valuation k (s : k)})`. Use extensionality with `x`. Conclude with `Iff.intro (fun h i _ => h i) (fun h i => h i (Set.mem_univ i))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove both required implications or components.
 
-Rewrite using `[e]`. Conclude with `isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k _`. Use `(ball n s).isOpen_of_mem_nhds (g := 0) (Filter.mem_of_superset (pi_lt_mem_nhds hs) ?_)` and prove the remaining obligations. Introduce `x hx i`. Conclude with `(hx i (Set.mem_univ i)).le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ball_isLat {n : ℕ} (s : kˣ) :
     IsCompact (ball n s : Set (Fin n → k)) ∧ IsOpen (ball n s : Set (Fin n → k)) := by
@@ -51,11 +51,11 @@ theorem ball_isLat {n : ℕ} (s : kˣ) :
     exact (hx i (Set.mem_univ i)).le
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ0, hϖ1⟩` from `exists_unif' (k := k)`. Establish `hU : (ball n (1 : kˣ) : Set (Fin n → k)) ∈ nhds (0 : Fin n → k)`. Use `Filter.mem_of_superset (pi_lt_mem_nhds (n := n) (γ := 1) one_ne_zero) ?_` and prove the remaining obligations. Introduce `x hx i`. Establish `h` using `hx i (Set.mem_univ i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_ofPred_eq] at h`. Simplify using `using h.le`. Take `⟨l, hl⟩` from `GlobalTheory.T.compact_scaled_into_nhds k n _ hA _ hU ϖ hϖ1`. Establish `hpl : ϖ ^ l ≠ 0` using `pow_ne_zero _ hϖ0`. Establish `hne : valuation k (ϖ ^ l) ≠ 0` using `(Valuation.ne_zero_iff _).2 hpl`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Units.mk0 ((ϖ ^ l)⁻¹) (inv_ne_zero hpl), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `h1` using `hl x hx i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, Units.val_one, map_one] at h1`. Simplify using `only [Units.val_mk0]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_ball_n {n : ℕ} {A : AddSubgroup (Fin n → k)} (hA : IsCompact (A : Set (Fin n → k))) :
     ∃ s : kˣ, A ≤ ball n s := by
@@ -79,21 +79,19 @@ theorem exists_ball_n {n : ℕ} {A : AddSubgroup (Fin n → k)} (hA : IsCompact 
     _ = valuation k ((ϖ ^ l)⁻¹) := by rw [mul_one, map_inv₀]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_ball_n hA.1`. Take `⟨γ, hγ, hball⟩` from `GlobalTheory.CharDualMat.exists_ball_trivial ψ hψ`. Establish `hvs : valuation k (s : k) ≠ 0` using `(Valuation.ne_zero_iff _).2 s.ne_zero`. Establish `hδ : γ / valuation k (s : k) ≠ 0` using `div_ne_zero hγ hvs`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ϖ, hϖ0, hϖ1⟩` from `exists_unif' (k := k)`. Establish `hAn : (A : Set (Fin n → k)) ∈ nhds 0` using `hA.2.mem_nhds A.zero_mem`. Take `⟨l, hl⟩` from `GlobalTheory.T.compact_scaled_into_nhds k n _ (ball_isLat (n := n) 1).1 _ hAn ϖ hϖ1`. Establish `hb : ϖ ^ l ≠ 0` using `pow_ne_zero _ hϖ0`. Establish `hsub : (ann ψ A : Set (Fin n → k)) ⊆ {x : Fin n → k | ∀ t : Fin n → k, (∀ j, t j ∈ 𝒪[k]) → ψ (ϖ ^ l * (t ⬝ᵥ x)) = 1}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `η hη`. Use `show ∀ t : Fin n → k, (∀ j, t j ∈ 𝒪[k]) → ψ (ϖ ^ l * (t ⬝ᵥ η)) = 1`. Introduce `t ht`. Establish `htb : t ∈ ball n 1` using `fun j => by`. Simplify using `using (Valuation.mem_integer_iff _ _).mp (ht j)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1 : ψ (η ⬝ᵥ (ϖ ^ l • t)) = 1` using `hη _ (hl t htb)`. Rewrite `h1` using `[dotProduct_smul, smul_eq_mul, dotProduct_comm]`. Conclude with `h1`. Establish `hcl : IsClosed (ann ψ A : Set (Fin n → k))`. Establish `e : (ann ψ A : Set (Fin n → k)) = ⋂ a ∈ A, {η : Fin n → k | ψ (η ⬝ᵥ a) = 1}`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `η`. Simplify using `only [Set.mem_iInter]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `isClosed_biInter fun a _ => isClosed_eq (hψ.comp (by unfold dotProduct; fun_prop)) continuous_const`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(GlobalTheory.CompanionTheory.CharLattice.isCompact_isOpen_annihilator k ψ hψ hψ1 n _ hb).1.of_isClosed_subset hcl hsub`. Use `(ann ψ A).isOpen_of_mem_nhds (g := 0) (Filter.mem_of_superset (pi_lt_mem_nhds hδ) ?_)` and prove the remaining obligations. Introduce `η hη a ha`. Apply `hball` to reduce the goal to its premises. Establish `hpos : 0 < valuation k (s : k)` using `zero_lt_iff.mpr hvs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show valuation k (∑ j, η j * a j) < γ`. Use `Valuation.map_sum_lt _ hγ fun j _ => ?_` and prove the remaining obligations. Establish `h1 : valuation k (η j) * valuation k (s : k) < γ` using `(lt_div_iff₀ hpos).1 (hη j (Set.mem_univ j))`. Rewrite using `[map_mul]`. Establish `h2` using `hs ha j`.
-
-Conclude with `lt_of_le_of_lt (by gcongr) h1`.
+A detailed English derivation is pending.
 -/
 theorem ann_isLat_pf {ψ : AddChar k Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) {n : ℕ} {A : AddSubgroup (Fin n → k)}
     (hA : IsCompact (A : Set (Fin n → k)) ∧ IsOpen (A : Set (Fin n → k))) :
@@ -137,7 +135,7 @@ theorem ann_isLat_pf {ψ : AddChar k Circle} (hψ : Continuous ψ) (hψ1 : ψ �
     exact lt_of_le_of_lt (by gcongr) h1
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_ball_n hA.1`. Conclude with `⟨s, hs, ball_isLat s⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ball_pf {m : ℕ} {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) :
     ∃ s : kˣ, A ≤ ball (m + 1) s ∧ IsLat (ball (m + 1) s) := by
@@ -145,15 +143,15 @@ theorem exists_ball_pf {m : ℕ} {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsL
   exact ⟨s, hs, ball_isLat s⟩
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ0, hϖ1⟩` from `exists_unif' (k := k)`. Establish `hC` using `ann_isLat_pf hψ hψ1 (ball_isLat (n := m + 1) (1 : kˣ))`. Take `⟨l, hl⟩` from `GlobalTheory.T.compact_scaled_into_nhds k (m + 1) _ hC.1 D hD ϖ hϖ1`. Establish `hb : ϖ ^ l ≠ 0` using `pow_ne_zero _ hϖ0`. Use `set u : kˣ := Units.mk0 ((ϖ ^ l)⁻¹) (inv_ne_zero hb) with hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s₀, hs₀⟩` from `exists_ball_n (n := m + 1) hA₀.1`. Choose the witnesses or unpack the hypotheses as in `⟨s, h1, h2⟩ : ∃ s : kˣ, valuation k (s₀ : k) ≤ valuation k (s : k) ∧ valuation k (u : k) ≤ valuation k (s : k) := by`. Break down `le_total (valuation k (s₀ : k)) (valuation k (u : k)) with h | h` into its components or cases. Conclude with `⟨u, h, le_rfl⟩`. Conclude with `⟨s₀, le_rfl, h⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ball (m + 1) s, ball_isLat s, fun x hx i => (hs₀ hx i).trans h1, ?_⟩` and prove the remaining obligations. Introduce `η hη`. Establish `hη' : (ϖ ^ l)⁻¹ • η ∈ ann ψ (ball (m + 1) 1)`. Introduce `a ha`. Establish `hmem : (ϖ ^ l)⁻¹ • a ∈ ball (m + 1) s` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul]`. Establish `ha' : valuation k (a i) ≤ 1` using `by simpa using ha i`. Combine the equalities or inequalities in the displayed calculation. Establish `e` using `hη _ hmem`. Rewrite `e` using `[dotProduct_smul, ← smul_dotProduct]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `hl _ hη'` as an intermediate fact. Rewrite `this` using `[smul_smul, mul_inv_cancel₀ hb, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_big_pf {ψ : AddChar k Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) {m : ℕ} (D : Set (Fin (m + 1) → k))
     (hD : D ∈ nhds (0 : Fin (m + 1) → k)) {A₀ : AddSubgroup (Fin (m + 1) → k)} (hA₀ : IsLat A₀) :

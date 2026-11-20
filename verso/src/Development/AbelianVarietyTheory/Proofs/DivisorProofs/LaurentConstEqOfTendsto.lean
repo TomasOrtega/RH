@@ -6,13 +6,11 @@ open scoped InnerProductSpace
 namespace GlobalTheory.ThetaInner
 
 /- English proof (translation)
-Introduce and unpack `h s₀ c c' ⟨p, hp0, hp⟩ hh`. Establish `h1 : Tendsto (fun s : ℂ => p.eval (s - s₀)⁻¹) (𝓝[≠] s₀) (𝓝 (c' - c))`. Use `(hh.sub hp).congr fun s => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : Tendsto (fun s : ℂ => s - s₀) (𝓝[≠] s₀) (𝓝[≠] 0)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `tendsto_nhdsWithin_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `: Tendsto (fun s : ℂ => s - s₀) (𝓝 s₀) (𝓝 (s₀ - s₀))` using `(continuous_id.sub continuous_const).tendsto s₀`. Rewrite `this` using `[sub_self]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with s hs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `sub_ne_zero.2 hs`. Establish `h3 : Tendsto (fun s : ℂ => ‖(s - s₀)⁻¹‖) (𝓝[≠] s₀) atTop` using `tendsto_norm_cobounded_atTop.comp (tendsto_inv₀_nhdsNE_zero.comp h2)`. Distinguish the cases in `hd : 0 < p.degree`. Conclude with `absurd (p.tendsto_norm_atTop hd h3) (not_tendsto_atTop_of_tendsto_nhds h1.norm)`. Establish `hp' : p = 0`.
-
-Rewrite using `[Polynomial.eq_C_of_degree_le_zero (not_lt.1 hd), hp0, map_zero]`. Substitute `hp'` using the available equality. Simplify using `only [Polynomial.eval_zero, sub_zero] at hp`. Conclude with `tendsto_nhds_unique hp hh`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem laurentConst_eq_of_tendsto :
     ∀ (h : ℂ → ℂ) (s₀ c c' : ℂ), LaurentConst h s₀ c → Tendsto h (𝓝[≠] s₀) (𝓝 c') → c = c' := by

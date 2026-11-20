@@ -19,25 +19,25 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE 
   {Sp : D.what₂.Tau → SPar} {M : DSModel T Sp}
 
 /- English proof (translation)
-Establish `hT` using `GlobalTheory.Chain.VacVec.cart_isCartanInv M`. Take `⟨ε, hε, -, ht⟩` from `hBT`. Set `o : Matrix (Fin T.rank) (Fin T.rank) ℂ → Fin T.rank → Fin T.rank → ℝ` to `fun W a b => 2 * (tauE D τ D.host.xi0 * (B'ᴴ * gramAt D T τ * W * B') a b).re`. Establish `hre` using `GlobalTheory.RealSymplForm.realPlace_imaginaryGenerator_re_eq_zero D τ`. Apply the tactic sequence `have osym : ∀ W ∈ lieAt T τ, ∀ a b, o W a b = o W b a := fun W hW a b => congrArg (2 * ·) (skew_entry (GlobalTheory.SmoothAutCheck.gramAt_herm T τ) hW hre a b)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ozero : ∀ W, cart M τ * W = -(W * cart M τ) → ∀ a b : Fin T.rank, ((a : ℕ) < p ↔ (b : ℕ) < p) → o W a b = 0` using `fun W hW a b hab => by`. Simplify using `only [o]`. Apply the tactic sequence `rw [zero_entry (hT τ) ht hW, mul_zero, Complex.zero_re, mul_zero]`. Apply the tactic sequence `rcases hε a with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> rcases hε b with ⟨h3, h4⟩ | ⟨h3, h4⟩`. Simplify using `only [h1, h3, Complex.ofReal_one, star_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions. Conclude with `absurd (hab.1 h2) (by omega)`. Conclude with `absurd (hab.2 h4) (by omega)`. Simplify using `only [h1, h3, Complex.ofReal_neg, Complex.ofReal_one, star_neg, star_one]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hom1 : ∀ W a c b d, omDir S T τ (W * unitMap (BS τ) B' a c) τ (unitMap (BS τ) B' b d) = if c = d then o W b a else 0` using `fun W a c b d => by`. Rewrite using `[omDir, if_pos rfl, trace_unitMap (hB τ)]`. Apply the tactic sequence `split_ifs <;> simp [o]`. Establish `hJ : ∀ (W : Matrix (Fin T.rank) (Fin T.rank) ℂ) (u : Matrix (Fin T.rank) (Fin S.rank) ℂ), cplxO 1 (cart M τ) (W * u) = Complex.I • (cart M τ * W) * u` using `fun W u => by`. Rewrite using `[cplxO, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_assoc]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ' : ∀ u : Matrix (Fin T.rank) (Fin S.rank) ℂ, X * cplxO 1 (cart M τ) u = (-(Complex.I • (cart M τ * X))) * u` using `fun u => by`. Rewrite using `[cplxO, Matrix.mul_one, ha, smul_neg, neg_neg, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]`. Establish `hJ'' : Complex.I • (cart M τ * -(Complex.I • (cart M τ * X))) = X`. Rewrite using `[Matrix.mul_neg, Matrix.mul_smul, ← Matrix.mul_assoc, (hT τ).1, Matrix.one_mul, smul_neg, smul_smul, Complex.I_mul_I, neg_smul, neg_neg, one_smul]`. Establish `oneg : ∀ W a b, o (-W) a b = -o W a b` using `fun W a b => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [o, Matrix.neg_mul, Matrix.mul_neg, Matrix.neg_apply, mul_neg, Complex.neg_re]`. Use `clear_value o`. Use `⟨fun a b => if p ≤ (a : ℕ) ∧ (b : ℕ) < p then 2 * (o X a b + Complex.I * o (Complex.I • (cart M τ * X)) a b) else 0, fun a b h => if_neg h, ?_⟩` and prove the remaining obligations. Introduce and unpack `a c b d _ rfl _ rfl`. Rewrite using `[hJ', hJ, hJ, hJ'', hom1, hom1, hom1, oneg]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Distinguish the cases in `e3 : c = d`. Use `swap`. Simplify using `[e3, Ne.symm e3]`. Substitute `e3` using the available equality. Simplify using `only [if_true]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z1` using `ozero _ ha`. Establish `z2` using `ozero _ (anti_I ha)`. Establish `s1` using `osym _ lX a b`. Establish `s2` using `osym _ lY a b`. Generalize the expression as in `Complex.I • (cart M τ * X) = Y at z2 s2`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[s1, s2]`. Establish `e : (o X b a : ℂ) + Complex.I * o Y b a + -Complex.I * ((-o Y b a : ℝ) + Complex.I * o X b a) = 2 * (o X b a + Complex.I * o Y b a)`. Use `push_cast`. Take the linear combination `(-o X b a : ℂ) * Complex.I_mul_I`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases ha' : (a : ℕ) < p <;> by_cases hb' : (b : ℕ) < p`. Simplify using `[z1 b a (by simp [ha', hb']), z2 b a (by simp [ha', hb'])]`. Rewrite using `[if_neg (by omega), if_pos (by omega), zero_add]`. Rewrite using `[if_pos (by omega), if_neg (by omega), add_zero]`. Simplify using `[z1 b a (by simp [ha', hb']), z2 b a (by simp [ha', hb'])]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coef {BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ}
     (hB : ∀ τ, (BS τ)ᴴ * gramAt D S τ * BS τ = 1) {p : ℕ} {B' : Matrix (Fin T.rank) (Fin T.rank) ℂ}
@@ -120,25 +120,25 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE 
   {Sp : D.what₂.Tau → SPar} {M : DSModel T Sp}
 
 /- English proof (translation)
-Establish `hT` using `GlobalTheory.Chain.VacVec.cart_isCartanInv M`. Establish `hS` using `fun τ => isCartanInv_one (hB τ)`. Take `⟨ν, n0, hν⟩` from `exists_coef hB hBT lX lY ha`. Unfold `pureTensorO aPlusAll`. Use `(quad_pure (P := IsThetaFunO ψ S T) (G := GX + Complex.I • GY) (B := fun k g => ((fockScale D k.1 : ℂ)⁻¹ * (if k.1 = τ then (1 : ℂ) else 0)) • (annih (heisO ψ S T) θ τ (cplxO 1 (cart M τ)) (X * unitMap (BS k.1) (BT k.1) k.2.1 k.2.2) g + (-Complex.I) • annih (heisO ψ S T) θ τ (cpl …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fun _ _ h => aPlus_theta hψ hθ _ _ _ h`. Conclude with `fun i j _ h => aPlus_comm' (sS := fun _ => 1) hψ hθ i.1 _ hS hT j.1 _ h`. Conclude with `fun _ _ _ h h' => aPlus_add hψ hθ _ _ _ h h'`. Conclude with `fun _ a _ h => aPlus_smul hψ hθ _ _ _ a h`. Introduce `i g g' hg hg'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[annih_add hψ hθ _ _ _ hg hg', annih_add hψ hθ _ _ _ hg hg']`. Simplify using `only [smul_add]`. Normalize the expressions using the abelian group laws. Introduce `i a g hg`. Rewrite using `[annih_smul hψ hθ _ _ _ _ hg, annih_smul hψ hθ _ _ _ _ hg, smul_comm _ a, ← smul_add, smul_comm _ a]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨τ₁, a, c⟩ ⟨τ₂, b, d⟩ g hg`. Establish `ta` using `fun z => annih_theta hψ hθ τ (cplxO 1 (cart M τ)) z hg`. Establish `aa` using `fun z => annih_aPlus (sS := fun _ => 1) hψ hθ τ z hS hT τ₂ (unitMap (BS τ₂) (BT τ₂) b d) hg`. Simplify using `only at aa ⊢`. Rewrite using `[aa, aa, aPlus_smul hψ hθ _ _ _ _ (theta_add (ta _) (theta_smul _ (ta _))), aPlus_add hψ hθ _ _ _ (ta _) (theta_smul _ (ta _)), aPlus_smul hψ hθ _ _ _ _ (ta _), smul_add (-Complex.I), add_add_add_comm, smul_add, smul_smul, ← add_smul, smul_smul]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg₂ (· + ·) rfl (congrArg (· • g) ?_)` and prove the remaining obligations. Distinguish the cases in `e1 : τ₁ = τ`. Use `swap`. Simplify using `only [if_neg e1, ite_self, mul_zero, zero_mul, add_zero]`. Distinguish the cases in `e2 : τ₂ = τ`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `swap`. Simplify using `[e2, omDir, Ne.symm e2]`. Substitute `e1` using the available equality. Substitute `e2` using the available equality. Use `hν a c b d _ rfl _ rfl` as an intermediate fact.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [if_true]`. Distinguish the cases in `e3 : c = d`. Simplify using `only [if_pos e3, if_pos e3.symm] at this ⊢`. Take the linear combination `((fockScale D τ₂ : ℂ)⁻¹ * (fockScale D τ₂ : ℂ)⁻¹ * (-(4 * π * Complex.I))) * this`. Simplify using `only [if_neg e3, if_neg (Ne.symm e3)] at this ⊢`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Take the linear combination `((fockScale D τ₂ : ℂ)⁻¹ * (fockScale D τ₂ : ℂ)⁻¹ * (-(4 * π * Complex.I))) * this`. Conclude with `fun i _ h => gen_aPlus hψ hθ hX hY _ _ _ h`. Introduce `i`. Rewrite using `[hv, hv, smul_zero, add_zero, smul_zero]`. Use `(congrArg _ ?_).trans (map_zero _)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fintype.sum_prod_type, ite_smul, zero_smul, Finset.sum_ite_irrel, Finset.sum_const_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hab : p ≤ (a : ℕ) ∧ (b : ℕ) < p`. Rewrite using `[hP a b hab.1 hab.2, smul_zero]`. Rewrite using `[n0 a b hab, mul_zero, zero_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_kill (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ}
     (hB : ∀ τ, (BS τ)ᴴ * gramAt D S τ * BS τ = 1) {p : ℕ} {BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
@@ -222,19 +222,19 @@ namespace GlobalTheory.FockKillAdapted
 open GlobalTheory.FockKill GlobalTheory.FockIndep GlobalTheory.OrientedHeis GlobalTheory.RawLift.FockCoef in
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT om hθ hom Sp M kS kT BS hBS p hp BT hBT f hf hv P hP`. Introduce `τ Z hZ h w`. Establish `hψ` using `hom.std`. Establish `hT` using `GlobalTheory.Chain.VacVec.cart_isCartanInv M`. Establish `hB : ∀ τ, (BS τ)ᴴ * gramAt D S τ * BS τ = 1` using `fun τ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ε, h1, h2, -⟩` from `hBS τ`. Rewrite using `[h2, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Break down `h1 a with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h.1, Complex.ofReal_one]`. Conclude with `absurd a.2 (not_lt.2 h.2)`. Establish `hS` using `fun τ => isCartanInv_one (hB τ)`. Take `⟨h1, h2⟩` from `pMinus_laws hZ`. Take `⟨ha, eY⟩` from `parts (GlobalTheory.SmoothAutCheck.gramAt_unit T τ) (hT τ) h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨lX, lY⟩` from `GlobalTheory.SmoothAutCheck.parts_mem T τ Z`. Unfold `RderC`. Unfold `conjAt at lX lY ⊢`. Rewrite `lY`, the goal using `[eY]`. Generalize the expression as in `(1 / 2 : ℂ) • (Z + -((gramAt D T τ)⁻¹ * Zᴴ * gramAt D T τ)) = X at ha lX lY`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Take `⟨GX, hX⟩ : ∃ G, IsGen ψ om θ τ X G` from `GlobalTheory.T.exists_weilDatum_generator_realOneParamGroup D ψ S T χS χT om hom θ hθ τ _ lX`. Take `⟨GY, hY⟩ : ∃ G, IsGen ψ om θ τ (Complex.I • (cart M τ * X)) G` from `GlobalTheory.T.exists_weilDatum_generator_realOneParamGroup D ψ S T χS χT om hom θ hθ τ _ lY`. Establish `hφ : IsThetaFunO ψ S T (pureTensorO ψ θ S T (fun _ => 1) (cart M) BS BT f P)` using `pure_mem (P := IsThetaFunO ψ S T) (fun _ _ => theta_add) (fun a _ => theta_smul a) (fun _ _ h => aPlus_theta hψ hθ _ _ _ h) hf _`. Establish `key` using `gen_kill hψ hθ hB (hBT τ) hX hY lX lY ha hf (hv τ) (gen_kill_vac hom hθ kS kT hS hT hX hY lX lY ha hf hv) (hP τ)`. Generalize the expression as in `pureTensorO ψ θ S T (fun _ => 1) (cart M) BS BT f P = φ at key hφ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Establish `a1` using `((hX φ hφ).2.2.2 (h, g) w).deriv`. Establish `a2` using `((hY φ hφ).2.2.2 (h, g) w).deriv`. Simplify using `only [Prod.mk_mul_mk, mul_one] at a1 a2`. Establish `a3` using `congrFun (congrArg (om (h, g)) key) w`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a3` using `[LinearMap.add_apply, LinearMap.smul_apply, map_add, map_smul, map_zero]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Rder]`. Rewrite using `[a1, a2]`. Conclude with `a3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killed_of_harmonic_adapted : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsInfFam θ → IsWeilDatumO ψ S T χS χT om → ∀ (Sp : D.what₂.Tau → SPar) (M : DSModel T Sp), S.SigOK → T.SigOK → ∀ (BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ), (∀ τ, IsONBasis (gramAt D S τ) 1 (BS τ) S.rank) → ∀ p : D.what₂.Tau → ℕ, (∀ τ a, M.ε τ a = decide ((a : ℕ) < p τ)) → ∀ (BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ), (∀ τ, IsONBasis (gramAt D T τ) (cart M τ) (BT τ) (p τ)) → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO 1 (cart M τ)) f) → ∀ P : PolF D T.rank S.rank, (∀ τ, ∀ a b : Fin T.rank, p τ ≤ (a : ℕ) → (b : ℕ) < p τ → ∑ c : Fin S.rank, MvPolynomial.pderiv (τ, a, c) (MvPolynomial.pderiv (τ, b, c) P) = 0) → GlobalTheory.RawLift.FockCoef.Killed om θ M (pureTensorO ψ θ S T (fun _ => 1) (cart M) BS BT f P) := by
   intro D ψ θ S T χS χT om hθ hom Sp M kS kT BS hBS p hp BT hBT f hf hv P hP

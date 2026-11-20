@@ -22,27 +22,27 @@ open GlobalTheory.TestFibre
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ hA S p _ y₀ hy T c B hle ⟨t, i, hge⟩`. Establish `hN` using `S.N_ge`. Establish `hr` using `S.r_pos`. Establish `hrN : 2 ≤ S.r * S.N` using `le_trans hN (Nat.le_mul_of_pos_left _ hr)`. Establish `hn : 1 < (S.r * S.N) ^ 2` using `Nat.one_lt_pow (by norm_num) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Fact (1 < (S.r * S.N) ^ 2)` using `⟨hn⟩`. Establish `: IsDomain o` using `hA.inj.isDomain _`. Establish `: NeZero (S.r * S.N)` using `⟨by omega⟩`. Use `Fintype.ofFinite T` as an intermediate fact. Establish `hmem` using `(thetaSys_FF_mem_finite_perp_proj o Ω S).1 T c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set E : T → PadicAlgCl p := fun s => ∑ j, y₀ (algebraMap o S.R (S.proj T c j i)) * y₀ ⟨S.ev s j, S.ev_mem s j⟩ with hE`. Establish `hval : ∀ k : T → ZMod ((S.r * S.N) ^ 2), y₀ ⟨S.FF T c (i, k), hmem _⟩ = ∑ s, y₀ (algebraMap o S.R S.ζ) ^ (k s).val * E s` using `fun k => by`. Establish `: (⟨S.FF T c (i, k), hmem _⟩ : S.R) = ∑ s : T, algebraMap o S.R S.ζ ^ (k s).val * ∑ j, algebraMap o S.R (S.proj T c j i) * ⟨S.ev s j, S.ev_mem s j⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[ThetaSys.FF, finsum_eq_sum_of_fintype]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Simplify using `[hE, map_sum]`. Establish `hB : ‖E t‖ = B` using `le_antisymm (hle t i) hge`. Establish `hB0 : 0 ≤ B` using `hB ▸ norm_nonneg _`. Establish `h0 : ‖∑ s, E s‖ ≤ B` using `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hB0 fun s _ => hle s i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `h0.eq_or_lt with h0 | h0` into its components or cases. Use `⟨(i, 0), hmem _, ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`. Simplify using `using h0`. Establish `hu : IsUnit (1 - S.ζ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩ : ∃ m, (S.r * S.N) ^ 2 = m + 1 + 1` from `⟨(S.r * S.N) ^ 2 - 2, by omega⟩`. Establish `hp` using `S.prim`. Rewrite `hp` using `[hm]`. Establish `h1` using `hp.prod_one_sub_pow_eq_order`. Establish `h2 : IsUnit ((((S.r * S.N) ^ 2 : ℕ)) : o)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_pow]`. Conclude with `S.unit.pow _`. Rewrite `h2` using `[hm, Nat.cast_succ, ← h1, Finset.prod_range_succ']`. Simplify using `using isUnit_of_mul_isUnit_right h2`. Establish `hone : ‖1 - y₀ (algebraMap o S.R S.ζ)‖ = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `h1` using `hy (1 - S.ζ)`. Establish `h2` using `hy v`. Establish `h3 : ‖y₀ (algebraMap o S.R (1 - S.ζ))‖ * ‖y₀ (algebraMap o S.R v)‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, ← map_mul, hv, map_one, map_one, norm_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1`, `h3` using `[map_sub, map_sub, map_one, map_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `⟨(i, Pi.single t 1), hmem _, ?_⟩` and prove the remaining obligations. Establish `hs : ∑ s, y₀ (algebraMap o S.R S.ζ) ^ ((Pi.single t 1 : T → ZMod ((S.r * S.N) ^ 2)) s).val * E s = ∑ s, E s + -((1 - y₀ (algebraMap o S.R S.ζ)) * E t)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ t), ← Finset.add_sum_erase _ E (Finset.mem_univ t), Finset.sum_congr rfl (g := E) fun s hs => by`. Rewrite using `[Pi.single_eq_of_ne (Finset.ne_of_mem_erase hs), ZMod.val_zero, pow_zero, _root_.one_mul]]`. Rewrite using `[Pi.single_eq_same, ZMod.val_one, pow_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hn' : ‖-((1 - y₀ (algebraMap o S.R S.ζ)) * E t)‖ = B`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_neg, norm_mul, hone, _root_.one_mul, hB]`. Rewrite using `[hval, hs, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [hn']; exact h0.ne), hn', max_eq_right h0.le]`.
+A detailed English derivation is pending.
 -/
 theorem thetaSys_exists_norm_FF_eq :
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p), (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) → ∀ (T : AddSubgroup S.Gam) (c : T →+ ZMod S.N) (B : ℝ), (∀ (t : T) i, ‖∑ j, y₀ (algebraMap o S.R (S.proj T c j i)) * y₀ ⟨S.ev t j, S.ev_mem t j⟩‖ ≤ B) → (∃ (t : T) (i : S.J), B ≤ ‖∑ j, y₀ (algebraMap o S.R (S.proj T c j i)) * y₀ ⟨S.ev t j, S.ev_mem t j⟩‖) → ∃ (k : _) (hk : S.FF T c k ∈ S.R), ‖y₀ ⟨S.FF T c k, hk⟩‖ = B := by

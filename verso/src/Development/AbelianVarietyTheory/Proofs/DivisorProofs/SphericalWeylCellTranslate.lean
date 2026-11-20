@@ -10,11 +10,11 @@ namespace GlobalTheory.UnipShiftU
 variable {L : Type} [Field L]
 
 /- English proof (translation)
-Rewrite `hX`, `hY` using `[mem_unipB]`. Establish `hne : a ≠ a'` using `fun e => by have := congrArg Fin.val e; omega`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_add_of_mem a a' (Finset.mem_univ _) (Finset.mem_univ _) hne]`. Rewrite using `[hX.2 a, hY.2 a', one_mul, mul_one, add_comm]`. Introduce `c _ hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `Fin.val_injective.ne hc.1`. Establish `h2` using `Fin.val_injective.ne hc.2`. Distinguish the cases in `hca : c < a`. Rewrite using `[hX.1 a c hca, zero_mul]`. Establish `: a' < c` using `by rw [Fin.lt_iff_val_lt_val] at hca ⊢; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hY.1 c a' this, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unipB_mul_apply_succ {n : ℕ} {X Y : GL (Fin n) L} (hX : X ∈ unipB L (Fin n)) (hY : Y ∈ unipB L (Fin n))
     {a a' : Fin n} (h : a'.val = a.val + 1) :
@@ -33,7 +33,7 @@ theorem unipB_mul_apply_succ {n : ℕ} {X Y : GL (Fin n) L} (hX : X ∈ unipB L 
       rw [hY.1 c a' this, mul_zero]
 
 /- English proof (translation)
-Establish `hne : a ≠ a'` using `fun e => by have := congrArg Fin.val e; omega`. Establish `e` using `unipB_mul_apply_succ hX (inv_mem hX) h`. Rewrite `e` using `[mul_inv_cancel, Units.val_one, Matrix.one_apply_ne hne]`. Take the linear combination `-e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem unipB_inv_apply_succ {n : ℕ} {X : GL (Fin n) L} (hX : X ∈ unipB L (Fin n))
     {a a' : Fin n} (h : a'.val = a.val + 1) :
@@ -44,9 +44,9 @@ theorem unipB_inv_apply_succ {n : ℕ} {X : GL (Fin n) L} (hX : X ∈ unipB L (F
   linear_combination -e
 
 /- English proof (translation)
-Establish `hi` using `hy.inv`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (s j)]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (s i)]`. Introduce `b _ hb`. Rewrite using `[hi i b (by intro e; apply hb; rw [e]; simp), zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[hy b j hb, mul_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_apply {n : ℕ} {s : Equiv.Perm (Fin n)} {y : GL (Fin n) L} (hy : IsWeylRep s y)
     (X : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
@@ -63,9 +63,9 @@ theorem conj_apply {n : ℕ} {s : Equiv.Perm (Fin n)} {y : GL (Fin n) L} (hy : I
   · simp
 
 /- English proof (translation)
-Establish `h : ((y⁻¹ * y : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i = ((1 : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i`. Rewrite using `[inv_mul_cancel]`. Rewrite `h` using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single (s i), Units.val_one, Matrix.one_apply_eq]`. Conclude with `h`. Introduce `b _ hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy.inv i b (by intro e; apply hb; rw [e]; simp), zero_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_mul_diag {n : ℕ} {s : Equiv.Perm (Fin n)} {y : GL (Fin n) L} (hy : IsWeylRep s y) (i : Fin n) :
     ((y⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i (s i) * (y : Matrix (Fin n) (Fin n) L) (s i) i = 1 := by
@@ -78,7 +78,7 @@ theorem inv_mul_diag {n : ℕ} {s : Equiv.Perm (Fin n)} {y : GL (Fin n) L} (hy :
   · simp
 
 /- English proof (translation)
-Rewrite `hs` using `[Equiv.swap_apply_def, Equiv.swap_apply_def]`. Rewrite `hpq` using `[Fin.lt_iff_val_lt_val]`. Apply the tactic sequence `split_ifs at hs with h1 h2 h3 h4 h5 h6 <;> simp only [Fin.lt_iff_val_lt_val, Fin.ext_iff] at * <;> omega`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swap_inversion {n : ℕ} {a a' p q : Fin n} (h : a'.val = a.val + 1) (hpq : p < q)
     (hs : Equiv.swap a a' q < Equiv.swap a a' p) : p = a ∧ q = a' := by
@@ -87,7 +87,7 @@ theorem swap_inversion {n : ℕ} {a a' p q : Fin n} (h : a'.val = a.val + 1) (hp
   split_ifs at hs with h1 h2 h3 h4 h5 h6 <;> simp only [Fin.lt_iff_val_lt_val, Fin.ext_iff] at * <;> omega
 
 /- English proof (translation)
-Simplify using `only [Matrix.transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Use `congr 1`. Apply the tactic sequence `by_cases h1 : a = i <;> by_cases h2 : a' = j <;> simp [h1, h2, eq_comm]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem transvection_apply' {n : ℕ} (a a' : Fin n) (d : L) (i j : Fin n) :
     Matrix.transvection a a' d i j = (if i = j then 1 else 0) + (if i = a ∧ j = a' then d else 0) := by
@@ -96,7 +96,7 @@ theorem transvection_apply' {n : ℕ} (a a' : Fin n) (d : L) (i j : Fin n) :
   by_cases h1 : a = i <;> by_cases h2 : a' = j <;> simp [h1, h2, eq_comm]
 
 /- English proof (translation)
-Unfold `ordL`. Rewrite using `[dif_neg (by simp)]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ordL_one [Valued L (WithZero (Multiplicative ℤ))] : ordL (1 : L) = 0 := by
   unfold ordL

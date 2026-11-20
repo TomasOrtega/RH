@@ -18,7 +18,7 @@ namespace GlobalTheory.KSp
 
 open MeasureTheory Matrix in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.KSp.sc, z.ne_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sc_units_eq_mul_nabs_norm_rpow {E : Type} [Field E] (F : Type) [Field F]
     [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [Algebra F E]
@@ -30,7 +30,7 @@ private theorem sc_units_eq_mul_nabs_norm_rpow {E : Type} [Field E] (F : Type) [
 
 open MeasureTheory Matrix in
 /- English proof (translation)
-Rewrite using `[← Real.rpow_natCast (x ^ ((m : ℝ) / 2)) 2, ← Real.rpow_mul hx.le, ← Real.rpow_natCast x m]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem rpow_natCast_div_two_sq {x : ℝ} (hx : 0 < x) (m : ℕ) :
     (x ^ ((m : ℝ) / 2)) ^ 2 = x ^ m := by
@@ -41,7 +41,7 @@ private theorem rpow_natCast_div_two_sq {x : ℝ} (hx : 0 < x) (m : ℕ) :
 
 open MeasureTheory Matrix in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.KSp.sc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sc_zero' {E : Type} [Field E] (F : Type) [Field F]
     [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [Algebra F E]
@@ -50,29 +50,29 @@ private theorem sc_zero' {E : Type} [Field E] (F : Type) [Field F]
 
 open MeasureTheory Matrix in
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ _ c δ hE m χ hχ`. Use `haveI : Invertible (2 : F) := invertibleOfNonzero two_ne_zero`. Establish `hinj` using `hE.algebraMap_injective`. Establish `hinv` using `hE.invol`. Establish `hpos : ∀ t : Fˣ, 0 < _root_.GlobalTheory.SplitWeil.nabs F t` using `_root_.GlobalTheory.SplitWeil.nabs_pos F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul` using `_root_.GlobalTheory.SplitWeil.nabs_mul F`. Establish `hunit : ∀ z : Eˣ, _root_.GlobalTheory.KSp.sc F χ m (z : E) = (χ z : ℂ) * ((_root_.GlobalTheory.SplitWeil.nabs F (Units.map (Algebra.norm F : E →* F) z) ^ ((m : ℝ) / 2) : ℝ) : ℂ)` using `fun z => sc_units_eq_mul_nabs_norm_rpow F χ m z`. Establish `hnorm : ∀ z : Eˣ, algebraMap F E ((Units.map (Algebra.norm F : E →* F) z : Fˣ) : F) = (z : E) * c z` using `fun z => by`. Simplify using `using hE.algebraMap_norm (z : E)`. Establish `hNc : ∀ z : Eˣ, Units.map (Algebra.norm F : E →* F) (Units.map (c : E →* E) z) = Units.map (Algebra.norm F : E →* F) z`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Apply `Units.ext` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hnorm, hnorm]`. Simplify using `[hinv, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hNa : ∀ t : Fˣ, Units.map (Algebra.norm F : E →* F) (Units.map (algebraMap F E : F →* E) t) = t * t`. Introduce `t`. Apply `Units.ext` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hnorm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hbase : ∀ t : Fˣ, _root_.GlobalTheory.KSp.sc F χ m (algebraMap F E t) = (_root_.GlobalTheory.KSp.sgn E t * (_root_.GlobalTheory.SplitWeil.nabs F t : ℝ)) ^ m`. Introduce `t`. Establish `h1` using `hunit (Units.map (algebraMap F E : F →* E) t)`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe] at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hχ t, hNa, hmul, Real.mul_rpow (hpos t).le (hpos t).le, ← sq, rpow_natCast_div_two_sq (hpos t) m, mul_pow]`. Simplify using `only [_root_.GlobalTheory.KSp.sgn, bot_sup_eq]`. Apply the tactic sequence `split_ifs with h₁ h₂ h₂ <;> first`. Consider the case `(push_cast; ring1)`. Consider the case `exact absurd (Subgroup.mem_sup_right h₂) h₁`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact absurd (by rwa [bot_sup_eq] at h₁) h₂`. Use `⟨?_, ?_, hunit, ?_, ?_, hbase, ?_⟩` and prove the remaining obligations. Simplify `hunit 1` using `[_root_.GlobalTheory.SplitWeil.nabs_one]`. Introduce `z z'`. Break down `eq_or_ne z 0 with rfl | hz` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[sc_zero']`. Break down `eq_or_ne z' 0 with rfl | hz'` into its components or cases. Simplify using `[sc_zero']`. Take `⟨u, rfl⟩ : ∃ u : Eˣ, (u : E) = z` from `⟨Units.mk0 z hz, rfl⟩`. Take `⟨u', rfl⟩ : ∃ u : Eˣ, (u : E) = z'` from `⟨Units.mk0 z' hz', rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_mul, hunit, hunit, hunit, map_mul, map_mul, hmul, Real.mul_rpow (hpos _).le (hpos _).le]`. Move the coercions through the operations in `[Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `z`. Rewrite using `[hunit, norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg (hpos _).le _), rpow_natCast_div_two_sq (hpos _) m]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Establish `h1` using `hunit (Units.map (c : E →* E) z)⁻¹`. Simplify using `only [Units.val_inv_eq_inv_val, Units.coe_map, MonoidHom.coe_coe, map_inv] at h1`. Establish `hs` using `hpos (Units.map (Algebra.norm F : E →* F) z)`. Establish `habs_inv : ∀ t : Fˣ, _root_.GlobalTheory.SplitWeil.nabs F t⁻¹ = (_root_.GlobalTheory.SplitWeil.nabs F t)⁻¹` using `fun t => eq_inv_of_mul_eq_one_left (by rw [← hmul, inv_mul_cancel, _root_.GlobalTheory.SplitWeil.nabs_one])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hNc, hunit, _root_.GlobalTheory.WeilM.ResEtaPow.map_conj hE hχ z, inv_inv, habs_inv, Real.inv_rpow hs.le, ← rpow_natCast_div_two_sq hs m]`. Establish `ha0 : ((_root_.GlobalTheory.SplitWeil.nabs F (Units.map (Algebra.norm F : E →* F) z) ^ ((m : ℝ) / 2) : ℝ) : ℂ) ≠ 0`. Conclude with `(Real.rpow_pos_of_pos hs _).ne'` after adjusting the coercions. Move the coercions through the operations in `at ha0 ⊢`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z`. Establish `hz : Units.map (Algebra.norm F : E →* F) z ∈ (Units.map (Algebra.norm F : E →* F)).range` using `⟨z, rfl⟩`. Rewrite using `[← hnorm, hbase]`. Simplify using `[_root_.GlobalTheory.KSp.sgn, hz]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.KSp.sc_basic : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E] (c : E →ₐ[F] E) (δ : E) (hE : _root_.GlobalTheory.WeilM.IsQuad c δ) (m : ℕ) (χ : Eˣ →* Circle) (_ : _root_.GlobalTheory.WeilM.ResEtaPow (R := F) ⊥ χ m), _root_.GlobalTheory.KSp.sc F χ m 1 = 1 ∧ (∀ z z' : E, _root_.GlobalTheory.KSp.sc F χ m (z * z') = _root_.GlobalTheory.KSp.sc F χ m z * _root_.GlobalTheory.KSp.sc F χ m z') ∧ (∀ z : Eˣ, _root_.GlobalTheory.KSp.sc F χ m (z : E) = (χ z : ℂ) * ((_root_.GlobalTheory.SplitWeil.nabs F ((Units.map (Algebra.norm F : E →* F)) z) ^ ((m : ℝ) / 2) : ℝ) : ℂ)) ∧ (∀ z : Eˣ, ‖_root_.GlobalTheory.KSp.sc F χ m (z : E)‖ ^ 2 = _root_.GlobalTheory.SplitWeil.nabs F ((Units.map (Algebra.norm F : E →* F)) z) ^ m) ∧ (∀ z : Eˣ, _root_.GlobalTheory.KSp.sc F χ m (c (z : E))⁻¹ * ((_root_.GlobalTheory.SplitWeil.nabs F ((Units.map (Algebra.norm F : E →* F)) z) ^ m : ℝ) : ℂ) = _root_.GlobalTheory.KSp.sc F χ m (z : E)) ∧ (∀ t : Fˣ, _root_.GlobalTheory.KSp.sc F χ m (algebraMap F E t) = (_root_.GlobalTheory.KSp.sgn E t * (_root_.GlobalTheory.SplitWeil.nabs F t : ℝ)) ^ m) ∧ ∀ z : Eˣ, _root_.GlobalTheory.KSp.sc F χ m ((z : E) * c (z : E)) = ((_root_.GlobalTheory.SplitWeil.nabs F ((Units.map (Algebra.norm F : E →* F)) z) ^ m : ℝ) : ℂ) := by
   intro F _ _ _ _ _ E _ _ _ _ c δ hE m χ hχ

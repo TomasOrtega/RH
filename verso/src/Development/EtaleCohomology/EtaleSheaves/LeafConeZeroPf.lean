@@ -8,9 +8,9 @@ namespace LateralTheory.E.E8.ExciseCut.ConeZeroPf
 universe u v
 
 /- English proof (translation)
-Establish `hy : T.mor₂ ≫ x = 0`. Apply `(hb n).1` to reduce the goal to its premises. Simplify using `only [comp_zero, ← Category.assoc, comp_distTriang_mor_zero₁₂ T hT, zero_comp]`. Take `⟨g, rfl⟩` from `Triangle.yoneda_exact₃ T hT x hy`. Take `⟨h, hh⟩` from `(CategoryTheory.shiftFunctor D (1 : ℤ)).map_surjective (g ≫ (e n).hom)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `(hb (n - 1)).2 h`. Establish `: g = (CategoryTheory.shiftFunctor D (1 : ℤ)).map (T.mor₁ ≫ k) ≫ (e n).inv`. Rewrite using `[hh, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Rewrite using `[this, Functor.map_comp]`. Simplify using `only [← Category.assoc, comp_distTriang_mor_zero₃₁ T hT, zero_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tri_zero {D : Type u} [Category.{v} D] [Preadditive D] [HasZeroObject D] [HasShift D ℤ]
     [∀ n : ℤ, Functor.Additive (CategoryTheory.shiftFunctor D n)] [Pretriangulated D]
@@ -30,9 +30,9 @@ theorem tri_zero {D : Type u} [Category.{v} D] [Preadditive D] [HasZeroObject D]
 variable (R : Type) [CommRing R]
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `x.mk_surjective`. Establish `: zcomp (Cocycle.ofHom φ) b (zero_add n) = b.precomp φ`. Use extensionality with `p q hpq`. Simplify using `[zcomp, Cocycle.precomp]`. Express the relevant statement in the definitionally equal form `CohomologyClass.toHom (CohomologyClass.mk (zcomp (Cocycle.ofHom φ) b (zero_add n))) = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[this, CohomologyClass.toHom_mk, CohomologyClass.toHom_mk, Cocycle.equivHomShift_symm_precomp, Functor.map_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_toHom {K L : Cx R} (φ : K ⟶ L) (F : Shv R) (n : ℤ) (x : HK R L F n) :
     CohomologyClass.toHom (HK.pull R φ F n x) =
@@ -45,9 +45,9 @@ theorem pull_toHom {K L : Cx R} (φ : K ⟶ L) (F : Shv R) (n : ℤ) (x : HK R L
   rw [this, CohomologyClass.toHom_mk, CohomologyClass.toHom_mk, Cocycle.equivHomShift_symm_precomp, Functor.map_comp]
 
 /- English proof (translation)
-Establish `: (fun g : (HomotopyCategory.quotient (Shv R) (ComplexShape.up ℤ)).obj L ⟶ (HomotopyCategory.quotient (Shv R) (ComplexShape.up ℤ)).obj ((res R F)⟦n⟧) => (HomotopyCategory.quotient (Shv R) (ComplexShape.up ℤ)).map φ ≫ g) = (CohomologyClass.homAddEquiv) ∘ (HK.pull R φ F n) ∘ (Cohom …`. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply, CohomologyClass.homAddEquiv_apply, pull_toHom]`. Use `congr 1`. Conclude with `(CohomologyClass.homAddEquiv.apply_symm_apply g).symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `CohomologyClass.homAddEquiv.bijective.comp ((hb n).comp CohomologyClass.homAddEquiv.symm.bijective)`.
+A detailed English derivation is pending.
 -/
 theorem hb' {K L : Cx R} (φ : K ⟶ L) (F : Shv R) (hb : ∀ n, Function.Bijective (HK.pull R φ F n)) (n : ℤ) :
     Function.Bijective (fun g : (HomotopyCategory.quotient (Shv R) (ComplexShape.up ℤ)).obj L ⟶
@@ -75,7 +75,7 @@ end LateralTheory.E.E8.ExciseCut.ConeZeroPf
 
 open LateralTheory.E.E8.ExciseCut.ConeZeroPf in
 /- English proof (translation)
-Introduce `R _ K L φ F hb n`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Apply `(CohomologyClass.toHom_bijective _ _ _).1` to reduce the goal to its premises. Establish `hz` using `fun x : HK R (mappingCone φ) F n => tri_zero (mappingCone.triangleh φ) (HomotopyCategory.mappingCone_triangleh_distinguished φ) (fun n => (HomotopyCategory.quotient (Shv R) (ComplexShape.up ℤ)).obj ((res R F)⟦n⟧)) (shIso R (res R F)) (hb' R φ F hb) n (CohomologyClass.toHom x)`. Conclude with `(hz x).trans (hz y).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LateralTheory.E.E8.ExciseCut.LeafConeZero_of : LateralTheory.E.E8.ExciseCut.LeafConeZero := by
   intro R _ K L φ F hb n

@@ -7,15 +7,15 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.HeckeFamilyMatrices
 
 /- English proof (translation)
-Introduce `γ hγ`. Rewrite `hγ` using `[Gamma0_mem]`. Establish `hdvd : ((N * l : ℕ) : ℤ) ∣ (mat γ 1 0)` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 hγ`. Take `⟨t, ht⟩` from `hdvd`. Establish `hdet : (mat γ).det = 1` using `by simp [mat]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hdet` using `[Matrix.det_fin_two]`. Set `γ' : SL(2, ℤ)` to `⟨!![mat γ 0 0, (l : ℤ) * mat γ 0 1; (N : ℤ) * t, mat γ 1 1], by`. Rewrite using `[Matrix.det_fin_two_of]`. Move the coercions through the operations in `at ht`. Rewrite `hdet` using `[ht]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `hdet⟩`. Establish `hE : γ' ∈ Gamma0 N`. Rewrite using `[Gamma0_mem]`. Simplify using `[γ']`. Establish `hD : (dg l 1).det ≠ 0` using `by simp [dg, Matrix.det_fin_two_of]; omega`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hDpos : 0 < (dg l 1).det` using `by simp [dg, Matrix.det_fin_two_of]; exact_mod_cast hl`. Establish `hγd : (mat γ).det ≠ 0` using `by simp [mat]`. Establish `hEd : (mat γ').det ≠ 0` using `by simp [mat]`. Establish `hmul : dg l 1 * mat γ = mat γ' * dg l 1`. Move the coercions through the operations in `at ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [dg, γ', mat, Matrix.mul_apply, Fin.sum_univ_two, ht] <;> ring`. Establish `hs : mat γ' 1 1 = mat γ 1 1` using `rfl`. Rewrite using `[slash_SL_eq, ← SlashAction.slash_mul, ← toGL_mul _ _ hD hγd, hmul, toGL_mul _ _ hEd hD, SlashAction.slash_mul, ← slash_SL_eq, hB γ' hE, smul_slash_toGL k _ hDpos, hs]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiInv_slash_dg (N l : ℕ) (k : ℤ) (χ : DirichletCharacter ℂ N) (B : ℍ → ℂ) (hl : 0 < l)
     (hB : ChiInv k N N χ B) : ChiInv k N (N * l) χ (B ∣[k] toGL (dg l 1)) := by

@@ -20,9 +20,9 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u hP hg PP hPP`. Break down `hPP with h | ⟨t, ht⟩` into its components or cases. Introduce `hm`. Apply `hg PP h` to reduce the goal to its premises. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.under_asIdeal]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hm`. Conclude with `(hP.bot.hyp.2.2.2.1.lev.Q_off t PP ht).2 u`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelPrime_not_mem_places_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (u : D.what₂.Word), _root_.GlobalTheory.Fam.PackageHypotheses W → (∀ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg, (((D.mem u).A.T : ℕ) : 𝓞 D.host.F) ∉ (PP.under (𝓞 D.host.F)).asIdeal) → ∀ PP : Pl D.host.E, PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg ∨ _root_.GlobalTheory.Fam.QAllAlt W PP → (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal := by
   intro D L hT Gi Gl Kc Yd cX ex W u hP hg PP hPP

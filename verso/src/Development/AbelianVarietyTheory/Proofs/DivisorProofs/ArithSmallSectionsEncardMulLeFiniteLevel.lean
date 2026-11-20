@@ -19,31 +19,27 @@ set_option autoImplicit false
 namespace GlobalTheory.VolBr
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX P b s t hg N m hfin`. Establish `hnu : ∀ (a c : ℤ) (σ : k →+* ℂ) (y : CxPts p σ) (f : X.functionField), 0 ≤ P.nu a c σ y f`. Introduce `a c σ y f`. Unfold `Pair.nu`. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Establish `hs0 : s ^ m ≠ 0` using `pow_ne_zero _ hg.s_ne`. Take `⟨hsH, hsnu⟩` from `GlobalTheory.T.hermPair_pow_section_mem_and_norm_pow k X p P 0 1 s hg.s_mem.1 m`. Take `⟨htH, htnu⟩` from `GlobalTheory.T.hermPair_pow_section_mem_and_norm_pow k X p P (-1) b t hg.t_mem.1 N`. Establish `hsle : ∀ (σ : k →+* ℂ) (y : CxPts p σ), P.nu (↑m * 0) (↑m * 1) σ y (s ^ m) ≤ 1`. Introduce `σ y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsnu]`. Conclude with `pow_le_one₀ (hnu _ _ _ _ _) (hg.s_mem.2 σ y)`. Establish `htle : ∀ (σ : k →+* ℂ) (y : CxPts p σ), P.nu (↑N * (-1)) (↑N * ↑b) σ y (t ^ N) ≤ 1`. Introduce `σ y`. Rewrite using `[htnu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `pow_le_one₀ (hnu _ _ _ _ _) (hg.t_mem.2 σ y)`. Set `Λ₀ : AddSubgroup X.functionField` to `(P.H N 0).comap (AddMonoidHom.mulRight (s ^ m)⁻¹)`. Set `Λ₀' : AddSubgroup X.functionField` to `(P.H 0 (b * N)).comap (AddMonoidHom.mulRight (s ^ m)⁻¹)`. Establish `key` using `GlobalTheory.VolBr.encard_mul_le_of_quot_embed X.functionField (P.H N m) (P.H 0 (b * N + m)) Λ₀ Λ₀' (P.Bl N m) (P.Bl 0 (b * N + m)) (AddMonoidHom.mulRight (t ^ N)) (GlobalTheory.T.isSeminormBallFamily_sectionBalls k X p P N m) (GlobalTheory.T.isSeminormBallFamily_sectionBalls k X …`. Use `rotate_left`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `u hu`. Take `⟨hH, hn⟩` from `GlobalTheory.T.hermLineBundlePair_sections_mul_mem_norm_mul k X p P N m (↑N * (-1)) (↑N * ↑b) u (t ^ N) hu.1 htH`. Establish `e1 : (N : ℤ) + ↑N * (-1) = 0` using `by ring`. Establish `e2 : (m : ℤ) + ↑N * ↑b = ↑b * ↑N + ↑m` using `by ring`. Rewrite `hH`, `hn` using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hH, fun σ y => ?_⟩` and prove the remaining obligations. Simplify using `only [AddMonoidHom.coe_mulRight]`. Rewrite using `[hn]`. Conclude with `mul_le_one₀ (hu.2 σ y) (hnu _ _ _ _ _) (htle σ y)`. Introduce `u hu hT`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Λ₀, Λ₀', AddSubgroup.mem_comap, AddMonoidHom.coe_mulRight] at hT ⊢`. Rewrite `hT`, the goal using `[← div_eq_mul_inv]`. Conclude with `GlobalTheory.T.div_pow_mem_sections_of_mul_pow_mem k X p D hX P b s t hg N m u hu hT`. Establish `hE : (P.Bl 0 (b * N) 1).encard ≤ (P.Bl 0 (b * N + m) 1 ∩ (Λ₀' : Set X.functionField)).encard`. Rewrite using `[← (mul_left_injective₀ hs0).injOn.encard_image]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Set.encard_le_encard` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, hg', rfl⟩`. Take `⟨hH, hn⟩` from `GlobalTheory.T.hermLineBundlePair_sections_mul_mem_norm_mul k X p P 0 (↑b * ↑N) (↑m * 0) (↑m * 1) g (s ^ m) hg'.1 hsH`. Establish `e1 : (0 : ℤ) + ↑m * 0 = 0` using `by ring`. Establish `e2 : (↑b * ↑N : ℤ) + ↑m * 1 = ↑b * ↑N + ↑m` using `by ring`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hH`, `hn` using `[e1, e2]`. Use `⟨⟨hH, fun σ y => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hn]`. Conclude with `mul_le_one₀ (hg'.2 σ y) (hnu _ _ _ _ _) (hsle σ y)`. Use `show g * s ^ m * (s ^ m)⁻¹ ∈ P.H 0 (↑b * ↑N)`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_cancel_right₀ hs0]`. Conclude with `hg'.1`. Establish `hB : (P.Bl N m 2 ∩ (Λ₀ : Set X.functionField)) = (fun f => f * s ^ m) '' {f | f ∈ P.H N 0 ∧ f * s ^ m ∈ P.Bl N m 2}`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨hu, hu0⟩`. Use `⟨u * (s ^ m)⁻¹, ⟨hu0, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_mul_cancel_right₀ hs0]`. Conclude with `hu`. Conclude with `inv_mul_cancel_right₀ hs0 u`.
-
-Introduce and unpack `⟨f, ⟨hf, hfs⟩, rfl⟩`. Use `⟨hfs, ?_⟩` and prove the remaining obligations. Use `show f * s ^ m * (s ^ m)⁻¹ ∈ P.H N 0`. Rewrite using `[mul_inv_cancel_right₀ hs0]`. Conclude with `hf`.
-
-Rewrite `key` using `[hB, (mul_left_injective₀ hs0).injOn.encard_image]`. Use `le_trans ?_ key` and prove the remaining obligations. Use `gcongr`.
+A detailed English derivation is pending.
 -/
 theorem encard_mul_le_at_level : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (P : Pair p), ∀ (b : ℕ) (s t : X.functionField), P.Good D b s t → ∀ (N m : ℕ),

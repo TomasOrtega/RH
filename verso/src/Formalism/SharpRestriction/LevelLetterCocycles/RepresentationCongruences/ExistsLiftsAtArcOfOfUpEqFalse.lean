@@ -20,7 +20,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 variable [FiniteDimensional Qp LL]
 
 /- English proof (translation)
-Take `⟨d₁, b₁, sol₁, hb₁, c₁, hlt, hpr⟩` from `ArcLengthTwo.lift2a W F hB CR hWR hW₁ hW₂ hArc hO hOv hinj hP9 hSec hHF hFL c hc bb sol hbb k₀ hk₀ hlen hdiff hOK hup h2a`. Conclude with `arc_length_two_reduction W F hB hW₁ hW₂ hArc hO hOv hinj hP2 hP9 hpi0 hSec hGL hFL c hc bb sol hbb k₀ f hf hlen hdiff hOK hσ hup b₁ sol₁ hb₁ c₁ hlt hpr`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_liftsAt_arcOf_of_up_eq_false [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}

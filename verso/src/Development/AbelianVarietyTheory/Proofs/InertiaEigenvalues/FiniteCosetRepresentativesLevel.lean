@@ -18,7 +18,7 @@ def rHomJ {D : D7} {S T : HSp D} (B : Base S T) (ψ : Twist D Circle) :
       (fun κ => κ.2.1))
 
 /- English proof (translation)
-Introduce `κ hκ`. Rewrite using `[Subgroup.mem_subgroupOf]`. Conclude with `⟨κ.2.1, hκ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ker_le {D : D7} {S T : HSp D} (B : Base S T) (ψ : Twist D Circle) :
     (rHomJ B ψ).ker ≤ ((GlobalTheory.FlatVecSum.princ B).levJ ψ).subgroupOf (B.levJ ψ) := by
@@ -31,9 +31,9 @@ instance finiteIndex {D : D7} {S T : HSp D} (B : Base S T) (ψ : Twist D Circle)
   Subgroup.finiteIndex_of_le (ker_le B ψ)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.FirstBlocksReduction.exists_reps_levJ`. Consider the case `exact _root_.GlobalTheory.FirstBlocksReduction.exists_reps_levJ`. Consider the case `(apply _root_.GlobalTheory.FirstBlocksReduction.exists_reps_levJ <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FirstBlocksReduction.exists_reps_levJ <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.FirstBlocksReduction.exists_reps_levJ <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FirstBlocksReduction.exists_reps_levJ ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem reps : ∀ {D : D7} {S T : HSp D} (B : Base S T), B.Good → ∀ (ψ : Twist D Circle), B.admitted ψ.Q →
     ∃ F : Finset (Bridge.Gf S), (∀ u ∈ F, u ∈ B.levJ ψ) ∧

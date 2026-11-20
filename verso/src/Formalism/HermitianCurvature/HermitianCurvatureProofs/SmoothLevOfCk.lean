@@ -32,7 +32,7 @@ def retDom (g₀ : B.Mat k r) : Set (B.Mat k r) :=
 def ret (g₀ : B.Mat k r) (Y : B.Mat k r) : B.Mat k r := g₀ * kap (prj (iot (g₀⁻¹ * Y)))
 
 /- English proof (translation)
-Repeatedly rewrite using `[isUnit_iff_ne_zero]`. Conclude with `isOpen_ne_fun hf.matrix_det continuous_const`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isOpen_unitDet {X : Type*} [TopologicalSpace X] {f : X → B.Mat k r} (hf : Continuous f) :
     IsOpen {x | IsUnit (f x).det} := by
@@ -40,12 +40,12 @@ lemma isOpen_unitDet {X : Type*} [TopologicalSpace X] {f : X → B.Mat k r} (hf 
   exact isOpen_ne_fun hf.matrix_det continuous_const
 
 /- English proof (translation)
-The claim follows from `isOpen_unitDet ((continuous_const.mul continuous_id).add continuous_const)`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_retV (g₀ : B.Mat k r) : IsOpen (retV g₀) := isOpen_unitDet ((continuous_const.mul continuous_id).add continuous_const)
 
 /- English proof (translation)
-Establish `h1 : ContDiffOn ℝ ∞ (fun Y : B.Mat k r => g₀⁻¹ * Y) (retV g₀)` using `cdm_mul contDiffOn_const contDiffOn_id`. Use `show ContDiffOn ℝ ∞ (fun Y => (g₀⁻¹ * Y - 1) * (g₀⁻¹ * Y + 1)⁻¹) (retV g₀)`. Conclude with `cdm_mul (h1.sub contDiffOn_const) (cdm_inv (h1.add contDiffOn_const) fun Y hY => hY)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma cd_iotL (g₀ : B.Mat k r) : ContDiffOn ℝ ∞ (fun Y => iot (g₀⁻¹ * Y)) (retV g₀) := by
   have h1 : ContDiffOn ℝ ∞ (fun Y : B.Mat k r => g₀⁻¹ * Y) (retV g₀) := cdm_mul contDiffOn_const contDiffOn_id
@@ -53,14 +53,14 @@ lemma cd_iotL (g₀ : B.Mat k r) : ContDiffOn ℝ ∞ (fun Y => iot (g₀⁻¹ *
   exact cdm_mul (h1.sub contDiffOn_const) (cdm_inv (h1.add contDiffOn_const) fun Y hY => hY)
 
 /- English proof (translation)
-Conclude with `(cdm_prj (cd_iotL g₀)).continuousOn.isOpen_inter_preimage (isOpen_retV g₀) (isOpen_unitDet (f := fun X : B.Mat k r => 1 - X) (continuous_const.sub continuous_id))`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_retDom (g₀ : B.Mat k r) : IsOpen (retDom g₀) := by
   exact (cdm_prj (cd_iotL g₀)).continuousOn.isOpen_inter_preimage (isOpen_retV g₀)
     (isOpen_unitDet (f := fun X : B.Mat k r => 1 - X) (continuous_const.sub continuous_id))
 
 /- English proof (translation)
-Establish `hA : ContDiffOn ℝ ∞ (fun Y => prj (iot (g₀⁻¹ * Y))) (retDom g₀)` using `cdm_prj ((cd_iotL g₀).mono Set.inter_subset_left)`. Use `show ContDiffOn ℝ ∞ (fun Y => g₀ * ((1 + prj (iot (g₀⁻¹ * Y))) * (1 - prj (iot (g₀⁻¹ * Y)))⁻¹)) (retDom g₀)`. Conclude with `cdm_mul contDiffOn_const (cdm_mul (contDiffOn_const.add hA) (cdm_inv (contDiffOn_const.sub hA) fun Y hY => hY.2))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma cd_ret (g₀ : B.Mat k r) : ContDiffOn ℝ ∞ (ret g₀) (retDom g₀) := by
   have hA : ContDiffOn ℝ ∞ (fun Y => prj (iot (g₀⁻¹ * Y))) (retDom g₀) :=
@@ -70,16 +70,16 @@ lemma cd_ret (g₀ : B.Mat k r) : ContDiffOn ℝ ∞ (ret g₀) (retDom g₀) :=
     (cdm_mul (contDiffOn_const.add hA) (cdm_inv (contDiffOn_const.sub hA) fun Y hY => hY.2))
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.B2x8.al_mul_mem hg₀ (kap_mem (prj_lie (iot (g₀⁻¹ * Y))) hY.2)`.
+A detailed English derivation is pending.
 -/
 lemma ret_mem {g₀ : B.Mat k r} (hg₀ : g₀ ∈ B.GV k r) {Y : B.Mat k r} (hY : Y ∈ retDom g₀) :
     ret g₀ Y ∈ B.GV k r :=
   Formalism.FourierDecayAlt.P.B2x8.al_mul_mem hg₀ (kap_mem (prj_lie (iot (g₀⁻¹ * Y))) hY.2)
 
 /- English proof (translation)
-Establish `hX' : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX`. Establish `h1 : Xᴴ * Hpk k r = -(Hpk k r * X)` using `eq_neg_of_add_eq_zero_left hX'`. Establish `h2 : Hpk k r * Xᴴ * Hpk k r = -X`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_neg, ← Matrix.mul_assoc, Formalism.FourierDecayAlt.P.Ux10.hpk_sq', Matrix.one_mul]`. Unfold `prj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[h2, sub_neg_eq_add, ← two_smul ℂ X, smul_smul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 private lemma prj_eq_self_of_inLie {X : B.Mat k r} (hX : B.inLie k r X) : prj X = X := by
   have hX' : Xᴴ * Hpk k r + Hpk k r * X = 0 := hX
@@ -91,7 +91,7 @@ private lemma prj_eq_self_of_inLie {X : B.Mat k r} (hX : B.inLie k r X) : prj X 
   norm_num
 
 /- English proof (translation)
-Establish `hh : g₀⁻¹ * Y ∈ B.GV k r` using `Formalism.FourierDecayAlt.P.B2x8.al_mul_mem (Formalism.FourierDecayAlt.P.B2x8.al_inv_mem hg₀) hY`. Take `⟨hl, -, hk⟩` from `iot_facts hh hu`. Use `show g₀ * kap (prj (iot (g₀⁻¹ * Y))) = Y`. Rewrite using `[prj_eq_self_of_inLie hl, hk, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (Formalism.FourierDecayAlt.P.B2x5.isUnit_det_GV hg₀), Matrix.one_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ret_self {g₀ : B.Mat k r} (hg₀ : g₀ ∈ B.GV k r) {Y : B.Mat k r} (hY : Y ∈ B.GV k r)
     (hu : IsUnit (g₀⁻¹ * Y + 1).det) : ret g₀ Y = Y := by
@@ -102,9 +102,7 @@ lemma ret_self {g₀ : B.Mat k r} (hg₀ : g₀ ∈ B.GV k r) {Y : B.Mat k r} (h
     Matrix.mul_nonsing_inv _ (Formalism.FourierDecayAlt.P.B2x5.isUnit_det_GV hg₀), Matrix.one_mul]
 
 /- English proof (translation)
-Establish `e : g₀⁻¹ * g₀ = 1` using `Matrix.nonsing_inv_mul _ (Formalism.FourierDecayAlt.P.B2x5.isUnit_det_GV hg₀)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show IsUnit (g₀⁻¹ * g₀ + 1).det`. Rewrite using `[e, ← two_smul ℂ (1 : B.Mat k r), Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `(isUnit_iff_ne_zero.2 two_ne_zero).pow _`.
-
-Use `show IsUnit (1 - prj (iot (g₀⁻¹ * g₀))).det`. Rewrite using `[e, show iot (1 : B.Mat k r) = 0 by simp [iot], prj_zero, sub_zero, Matrix.det_one]`. Conclude with `isUnit_one`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma self_mem_retDom {g₀ : B.Mat k r} (hg₀ : g₀ ∈ B.GV k r) : g₀ ∈ retDom g₀ := by
   have e : g₀⁻¹ * g₀ = 1 := Matrix.nonsing_inv_mul _ (Formalism.FourierDecayAlt.P.B2x5.isUnit_det_GV hg₀)
@@ -117,12 +115,12 @@ lemma self_mem_retDom {g₀ : B.Mat k r} (hg₀ : g₀ ∈ B.GV k r) : g₀ ∈ 
     exact isUnit_one
 
 /- English proof (translation)
-The claim follows from `ret_self hg₀ hg₀ (And.left (self_mem_retDom hg₀))`.
+A detailed English derivation is pending.
 -/
 lemma ret_at {g₀ : B.Mat k r} (hg₀ : g₀ ∈ B.GV k r) : ret g₀ g₀ = g₀ := ret_self hg₀ hg₀ (And.left (self_mem_retDom hg₀))
 
 /- English proof (translation)
-Use `⟨hg, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Simplify using `at ha`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma glev0 {g : Mx k r} (hg : g ∈ B.GV k r) : g ∈ Glev k r 0 := by
   refine ⟨hg, ?_⟩
@@ -130,15 +128,13 @@ lemma glev0 {g : Mx k r} (hg : g ∈ B.GV k r) : g ∈ Glev k r 0 := by
   simp at ha
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Establish `hG₀ : g₀ ∈ B.GV k r` using `hg₀.1.1`. Establish `hU : IsOpen (retDom g₀ ∩ ret g₀ ⁻¹' D)` using `(cd_ret g₀).continuousOn.isOpen_inter_preimage (isOpen_retDom g₀) hD`. Use `⟨retDom g₀ ∩ ret g₀ ⁻¹' D, fun Y => f (ret g₀ Y), hU, ⟨self_mem_retDom hG₀, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show ret g₀ g₀ ∈ D`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ret_at hG₀]`. Conclude with `hg₀.2`. Introduce `Y hY`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Establish `hr : ContDiffAt ℝ ∞ (ret g₀) Y` using `(cd_ret g₀).contDiffAt ((isOpen_retDom g₀).mem_nhds hY.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `contDiffAt_infty.2 fun m => ?_` and prove the remaining obligations. Establish `hZ : ret g₀ Y ∈ Glev k r 0 ∩ D` using `⟨glev0 (ret_mem hG₀ hY.1), hY.2⟩`. Take `⟨U, F, hUo, hZU, hF, hfF⟩` from `hf m (ret g₀ Y) hZ`. Establish `hc : ContDiffAt ℝ m (fun Y' => F (ret g₀ Y')) Y` using `(hF.contDiffAt (hUo.mem_nhds hZU)).comp Y (contDiffAt_infty.1 hr m)`. Use `hc.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ᶠ Y' in 𝓝 Y, Y' ∈ retDom g₀` using `(isOpen_retDom g₀).mem_nhds hY.1`. Establish `h2 : ∀ᶠ Y' in 𝓝 Y, ret g₀ Y' ∈ U` using `hr.continuousAt.preimage_mem_nhds (hUo.mem_nhds hZU)`. Use `filter_upwards [h1, h2] with Y' h1' h2'`. Conclude with `hfF _ h2' (glev0 (ret_mem hG₀ h1'))`. Introduce `g hg hgl show f g = f (ret g₀ g)`.
-
-Rewrite using `[ret_self hG₀ hgl.1 hg.1.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothLev_of_ck {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {D : Set (Mx k r)} (hD : IsOpen D)
     {f : Mx k r → E} (hf : ∀ m : ℕ, CkLev k r 0 m D f) : SmoothLev k r 0 D f := by

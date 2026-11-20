@@ -9,7 +9,7 @@ section
 open Formalism.BasicNotions Formalism.MainNotions
 namespace GlobalTheory
 /- English proof (translation)
-Introduce `hSW` and use `_root_.GlobalTheory.T.ranksF_tFrame_closed_of_mass_ratio (GlobalTheory.T.unitary_hyperplane_volumeRatio_siegelWeil hSW)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bothRowsFromSiegelWeil_alt :
     HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → ∀ (𝒞 : FamClass), _root_.Formalism.L2.TwistSelection 𝒞 →

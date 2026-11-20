@@ -19,27 +19,25 @@ namespace GlobalTheory.LineFix
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D S₀ A L o ζ hζ b hb`. Establish `hv : (fun k => incA D (vecB o ζ k)) = o.jB *ᵥ (fun k => incA D (ζ k))`. Use function extensionality and compare the values at `k`. Conclude with `RingHom.map_mulVec (incA D) o.iB ζ k`. Establish `hr` using `hζ.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k0, hk0⟩ : ∃ k0 : Fin L.rank, ∀ k, k = k0` from `⟨⟨0, by omega⟩, fun k => Fin.ext (by have := k.2; simp only; omega)⟩`. Establish `hz : ζ k0 ≠ 0`. Introduce `h0`. Apply `hζ.2` to reduce the goal to its premises. Establish `: ζ = 0` using `funext fun k => by rw [hk0 k, h0]; rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hu : IsUnit (incA D (ζ k0))` using `(isUnit_iff_ne_zero.2 hz).map (incA D)`. Establish `h1 : mt S₀ b ⬝ o.jB = o.jB`. Establish `e` using `hb`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hv, Matrix.mulVec_mulVec]`. Use function extensionality and compare the values at `i k`. Rewrite using `[hk0 k]`. Establish `ei` using `congrFun e i`. Simplify using `only [Matrix.mulVec, dotProduct] at ei`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ei` using `[Fintype.sum_eq_single k0 (fun k hk => absurd (hk0 k) hk), Fintype.sum_eq_single k0 (fun k hk => absurd (hk0 k) hk)]`. Conclude with `hu.mul_right_cancel ei`. Establish `hu2 : GlobalTheory.MixModel.adj (mt S₀ b) * (gA S₀ * mt S₀ b) = gA S₀` using `GlobalTheory.MixModel.mt_unitary S₀ b`. Establish `h2' : GlobalTheory.MixModel.adj o.jB ⬝ (gA S₀ ⬝ (mt S₀ b ⬝ o.jA)) = 0`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.MixModel.adj_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [GlobalTheory.MixModel.cancel₃ hu2, o.gram_BA]`. Establish `h2 : o.pB ⬝ (mt S₀ b ⬝ o.jA) = 0`. Rewrite using `[o.pB_eq]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h2', Matrix.mul_zero]`. Establish `h3 : mt S₀ b ⬝ o.jA = o.jA ⬝ (o.pA ⬝ (mt S₀ b ⬝ o.jA))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc o.jB, h2, Matrix.mul_zero, add_zero]`. Take `⟨a₀, ha₀⟩ : ∃ a₀ : Mx D A.rank A.rank, mt S₀ b ⬝ o.jA = o.jA ⬝ a₀` from `⟨_, h3⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : GlobalTheory.MixModel.adj a₀ ⬝ (gA A ⬝ a₀) = gA A`. Establish `e : GlobalTheory.MixModel.adj (mt S₀ b ⬝ o.jA) ⬝ (gA S₀ ⬝ (mt S₀ b ⬝ o.jA)) = gA A`. Rewrite using `[GlobalTheory.MixModel.adj_mul, Matrix.mul_assoc, GlobalTheory.MixModel.cancel₃ hu2, o.gram_AA]`. Rewrite `e` using `[ha₀, GlobalTheory.MixModel.adj_mul, Matrix.mul_assoc, GlobalTheory.MixModel.cancel₃ o.gram_AA]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : mt S₀ b ⬝ o.jA ⬝ o.pA + mt S₀ b ⬝ o.jB ⬝ o.pB = mt S₀ b ⬝ (o.jA ⬝ o.pA + o.jB ⬝ o.pB)`. Rewrite using `[Matrix.mul_add, Matrix.mul_assoc, Matrix.mul_assoc]`. Establish `e4 : mt S₀ b ⬝ (o.jA ⬝ o.pA + o.jB ⬝ o.pB) = mt S₀ b`. Rewrite using `[o.sum_eq_one]`. Conclude with `Matrix.mul_one _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨GlobalTheory.MixModel.ofMat A a₀ h4, GlobalTheory.MixModel.mt_injective S₀ ?_⟩` and prove the remaining obligations. Establish `e1 : mt S₀ (o.emb (GlobalTheory.MixModel.ofMat A a₀ h4, 1)) = o.jA ⬝ a₀ ⬝ o.pA + o.jB ⬝ o.pB`. Rewrite using `[OrthDec.mt_emb, GlobalTheory.MixModel.mt_ofMat, GlobalTheory.MixModel.mt_one, Matrix.mul_one]`. Establish `e2 : o.jA ⬝ a₀ ⬝ o.pA + o.jB ⬝ o.pB = mt S₀ b ⬝ o.jA ⬝ o.pA + mt S₀ b ⬝ o.jB ⬝ o.pB`. Rewrite using `[← ha₀, h1]`.
-
-Rewrite using `[e1, e2, e3, e4]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_emb_of_fix_line : ∀ {D : D7} {S₀ A L : HSp D} (o : OrthDec S₀ A L) (ζ : Fin L.rank → D.host.E),
     IsLineVec L ζ → ∀ (b : GA D S₀), (mt S₀ b *ᵥ (fun k => incA D (vecB o ζ k)) = fun k => incA D (vecB o ζ k)) →

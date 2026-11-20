@@ -20,11 +20,11 @@ noncomputable section
 namespace GlobalTheory.LamT
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, by rw [map_zero, hx]⟩`. Rewrite `h` using `[nval_of_ne hx, EReal.coe_nonneg]`. Establish `he' : (0 : ℝ) < e` using `by exact_mod_cast he`. Establish `h1 : (0 : ℝ) ≤ vV V x`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_nonneg h he'.le` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ _ he'.ne']`. Then use the resulting hypothesis. Establish `h2 : 0 ≤ vV V x` using `by exact_mod_cast h1`. Establish `h3 : valV V x ≤ 1`. Use `(WithZero.log_le_log (valV_ne_zero (V := V) hx) one_ne_zero).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [WithZero.log_one]`. Simplify using `only [vV] at h2`. Use linear arithmetic over natural numbers and integers. Conclude with `IsDiscreteValuationRing.exists_lift_of_le_one (A := V) (K := K') h3`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mem_range_of_nval_nonneg {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K']
     [Algebra V K'] [IsFractionRing V K'] {e : ℕ} (he : 0 < e) {x : K'} (h : 0 ≤ Formalism.L2.Pj.nval V e x) :
@@ -45,9 +45,9 @@ theorem mem_range_of_nval_nonneg {V K' : Type} [CommRing V] [IsDomain V] [IsDisc
   exact IsDiscreteValuationRing.exists_lift_of_le_one (A := V) (K := K') h3
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c F hF T io hT y hy`. Set `` to `io.toAlgebra`. Take `⟨la, e, ho⟩` from `GlobalTheory.AlgLawsCompare.exists_overLa T io hT`. Establish `ht` using `GlobalTheory.Frames.allTest_of_secBaseChange GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c T.Fr y`. Establish `h` using `hF la _ ⟨PtV.mk (cls := algCls Xo c) la ho ⟨y, ht, hy⟩ hT () trivial, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mem_range_of_nval_nonneg ho.1 h`.
+A detailed English derivation is pending.
 -/
 theorem evR_mem_range_of_valSet_nonneg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (F : Rul Xo c), (∀ la, ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v F) → ∀ (T : CDVR) (io : c.F →+* T.Fr), T.FinRes → letI := io.toAlgebra; ∀ y : FrPt Xo c T.Fr, Integral T io y → evR Xo c F y ∈ Set.range (algebraMap T.V T.Fr) := by
   intro E _ _ _ H Dw l Xo c F hF T io hT y hy

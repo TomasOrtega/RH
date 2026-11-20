@@ -9,9 +9,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.NewPrime.LocInv
 
 /- English proof (translation)
-Introduce `b`. Take `⟨n, hn⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := A)`. Rewrite `hn` using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Use `⟨n, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[(Submodule.mem_bot _).1 hx, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tors_of_finite (A : Type) [CommRing A] [IsLocalRing A] [Finite A] (Y : Type) [AddCommGroup Y] [Module A Y] :
     Tors A Y := by
@@ -23,9 +23,9 @@ theorem tors_of_finite (A : Type) [CommRing A] [IsLocalRing A] [Finite A] (Y : T
   rw [(Submodule.mem_bot _).1 hx, zero_smul]
 
 /- English proof (translation)
-Establish `hvl : ((X.l i : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal` using `hl`. Establish `h1 : cycZ D.host.E N.Om (X.l i) σ = 1`. Use `Units.ext (PadicInt.ext_of_toZModPow.mp fun n => ?_)` and prove the remaining obligations. Rewrite using `[cycZ_toZModPow_eq hvl (N.plOm.2 v) (q := 1) (fun x hx => by simpa using hσ.2 x hx) n]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : eps0 X i σ = 1`. Rewrite using `[eps0, MonoidHom.comp_apply, h1, map_one]`. Establish `h3` using `GlobalTheory.SelFun.Colim.tgl_eq_one bkP i s h v hl hS _ (N.plOm.2 v) σ hσ`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hρ σ, Tdual, h2, ← Tgl_coe, h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -46,25 +46,23 @@ theorem dual_eq_one {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what
   simp
 
 /- English proof (translation)
-Introduce `_ D N X bkP i s _ M R n d A₀ L z P hM hz hL hSt A _ _ _ _ κ Q ρ t a hQ hSet _ hρ hch ha Y _ _ _ _ v hv m hm`. Take `⟨hG, hloc, -, hκo, hκl, -, hQl, -⟩` from `hSet`. Establish `hκl' : ∀ g, ∃ k : ℕ, κ⁻¹ g ^ (X.l i ^ k) = 1` using `fun g => by`. Take `⟨k, hk⟩` from `hκl g`. Conclude with `⟨k, by rw [MonoidHom.inv_apply, inv_pow, hk, inv_one]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Distinguish the cases in `hS : v ∈ Spl i`. Establish `hker : (κ⁻¹).ker = κ.ker`. Use extensionality with `g`. Simplify using `[MonoidHom.mem_ker]`. Establish `h0` using `(GlobalTheory.PrimeToInertia.local_cohomology_vanishes D N X bkP i s hG v hS A κ⁻¹ (hker ▸ hκo) hκl' Y (tors_of_finite A Y) ρ (Or.inr hρ)).1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: m ∈ H0 ((repOn ρ κ⁻¹ Y).comp (DecV N v).subtype)` using `(mem_riemannRochSpace_iff_regularAt_everywhere _ _).2 fun g => hm g.1 g.2`. Rewrite `this` using `[h0, Submodule.mem_bot]`. Rewrite using `[this, smul_zero]`. Establish `hvQ : v ∈ Q` using `hv.resolve_left hS`. Take `⟨q, hq⟩` from `(hQ v).1 hvQ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Break down `q with b | q` into its components or cases. Establish `hA : ∀ w, Over (P (.inl b)) w → w ∉ X.S0 i ∧ normV w % X.l i = 1` using `fun w hw => by`. Take `⟨-, -, -, h0, -, hn⟩` from `hSt.1.1 _ w hw`. Conclude with `⟨h0, mod_l_eq_one i hM hn⟩`. Establish `hp` using `hA v hq`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hn` using `GlobalTheory.ScalarFrob.natCast_eq_one_of_mod i hp.2`. Take `⟨σ, hσ⟩` from `exists_isFrob (N.plOm.2 v)`. Take `⟨c, c0, c1, hc⟩` from `GlobalTheory.ScalarFrob.frob_scalar_place i s bkP hG hz hL.1 hA (hSt.2.1 b).2 hq hσ`. Establish `hc' : ((ρ σ : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)).map (IsLocalRing.residue _) = c⁻¹ • 1`. Rewrite using `[hρ, GlobalTheory.ScalarFrob.dual_of_scalar i s (GlobalTheory.ScalarFrob.eps_frob i hp.1 hn hσ) c0 hc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.ScalarFrob.eq_zero_of_scalar Fact.out (GlobalTheory.PrimeToInertia.l_mem i) ρ κ⁻¹ (hκl' σ) (inv_ne_one.2 c1) hc' (q := 1) Nat.cast_one m (by rw [one_smul]; exact hm σ hσ.1), smul_zero]`. Take `⟨γ, hγ, hd⟩` from `(hSt.1.2.2 (.inr q)).2.2.2.2 v hq _ (N.plOm.2 v) (Multiplicative.ofAdd 1)`. Establish `hρ1` using `dual_eq_one bkP i s hG.1 hρ v (hQl v hvQ) hS γ hγ`. Establish `hk` using `hch γ`. Use `haveI : Fact (1 < X.l i ^ M) := ⟨Nat.one_lt_pow (by omega) (Fact.out : (X.l i).Prime).one_lt⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[Finset.prod_eq_single (Sum.inr q)]`. Establish `hd' : d (P (.inr q)) γ = Multiplicative.ofAdd 1` using `hd`. Simplify using `only [hd', toAdd_ofAdd, ZMod.val_one, pow_one] at hk`. Establish `hinv : ((κ⁻¹ γ : Aˣ) : A) = 1 + a (.inr q) * t`. Rewrite using `[MonoidHom.inv_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Units.inv_eq_of_mul_eq_one_right hk`. Establish `e` using `hm γ (Ine_le_Dec _ hγ)`. Establish `e2 : repOn ρ κ⁻¹ Y γ m = (1 + a (.inr q) * t) • m`. Simplify using `[repOn, hρ1, matAct_one, ← hinv]`. Rewrite `e` using `[e2, add_smul, one_smul, add_eq_left, mul_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `((ha q).smul_eq_zero).1 e`. Introduce `q' _ hne`. Establish `hn : ¬ Over (P q') v` using `fun h' => hne (hSt.1.2.1 _ _ (over_trans h' (over_symm hq)))`. Establish `: d (P q') γ = 1` using `(hSt.1.2.2 q').2.2.2.1 v hn _ (N.plOm.2 v) γ hγ`. Simplify using `[this]`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem local_invariants_killed : TameLocal → ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), 0 < nu X i → ∀ (M R n : ℕ) (d : PlE D.host → (GE N →* Multiplicative (ZMod (X.l i ^ M)))) (A₀ : Finset (PlE D.host)) (L : Subgroup (GE N)) (z : GE N) (P : Fin R ⊕ Fin n → PlE D.host), 1 ≤ M → IsTameInertiaElementAtTwistPrime X i z → Small2 i s M L z → PiLocalization₂ i M d A₀ L z P → ∀ (A : Type) [CommRing A] [IsLocalRing A] [Finite A] [Algebra (X.O0 i) A] (κ : GE N →* Aˣ) (Q : Finset (PlE D.host)) (ρ : GE N →* GL (Fin D.R.r) (X.O0 i)) (t : A) (a : Fin R ⊕ Fin n → A), IsQ P Q → Setup bkP i s κ Q → Kills i A → IsDual i s ρ → IsChar i κ (fun q => a q * t) (fun q => d (P q)) → (∀ q, IsUnit (a (.inr q))) → ∀ (Y : Type) [AddCommGroup Y] [Module A Y] [TopologicalSpace Y] [DiscreteTopology Y], ∀ v, v ∈ Spl i ∨ v ∈ Q → ∀ m, (∀ g ∈ DecV N v, repOn ρ κ⁻¹ Y g m = m) → t • m = 0 := by
   intro _ D N X bkP i s _ M R n d A₀ L z P hM hz hL hSt A _ _ _ _ κ Q ρ t a hQ hSet _ hρ hch ha Y _ _ _ _ v hv m hm

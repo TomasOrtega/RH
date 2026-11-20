@@ -18,7 +18,7 @@ noncomputable def loc {Y B : Scheme.{0}} {W : Y.Opens} {V : B.Opens} (hV : IsAff
   W.toSpecΓ ≫ Spec.map ψ ≫ hV.fromSpec
 
 /- English proof (translation)
-Unfold `loc`. Rewrite using `[← IsAffineOpen.map_fromSpec hV hV' (homOfLE e).op, ← Spec.map_comp_assoc, H, Spec.map_comp_assoc, Scheme.Opens.toSpecΓ_SpecMap_presheaf_map_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem homOfLE_loc {Y B : Scheme.{0}} {W W' : Y.Opens} {V V' : B.Opens} (hV : IsAffineOpen V)
     (hV' : IsAffineOpen V') (ψ : Γ(B, V) ⟶ Γ(Y, W)) (ψ' : Γ(B, V') ⟶ Γ(Y, W'))
@@ -30,11 +30,11 @@ theorem homOfLE_loc {Y B : Scheme.{0}} {W W' : Y.Opens} {V V' : B.Opens} (hV : I
     Spec.map_comp_assoc, Scheme.Opens.toSpecΓ_SpecMap_presheaf_map_assoc]
 
 /- English proof (translation)
-Establish `h : W ≤ q ⁻¹ᵁ V`. Introduce `y hy`. Establish `h1 : q y = hV.fromSpec ((W.toSpecΓ ≫ Spec.map ψ) ⟨y, hy⟩)`. Use `congr($(hq) ⟨y, hy⟩)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `q y ∈ (V : Set B)`. Rewrite using `[h1, ← hV.range_fromSpec]`. Conclude with `⟨_, rfl⟩`. Use `⟨h, ?_⟩` and prove the remaining obligations. Establish `h2 : W.toSpecΓ ≫ Spec.map (q.appLE V W h) ≫ hV.fromSpec = W.ι ≫ q`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Opens.toSpecΓ_SpecMap_appLE_assoc, IsAffineOpen.toSpecΓ_fromSpec, Scheme.Hom.resLE_comp_ι]`. Rewrite `h2` using `[hq, loc, ← Category.assoc, ← Category.assoc, cancel_mono]`. Establish `h3` using `congr(($h2).appTop)`. Simplify using `only [Scheme.Hom.comp_appTop, Scheme.Opens.toSpecΓ_appTop, Scheme.ΓSpecIso_naturality_assoc] at h3`. Simplify `h3` using `only [cancel_epi, cancel_mono]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem appLE_of_loc {Y B : Scheme.{0}} {W : Y.Opens} {V : B.Opens} (hV : IsAffineOpen V)
     (ψ : Γ(B, V) ⟶ Γ(Y, W)) (q : Y ⟶ B) (hq : W.ι ≫ q = loc hV ψ) :
@@ -60,17 +60,15 @@ theorem appLE_of_loc {Y B : Scheme.{0}} {W : Y.Opens} {V : B.Opens} (hV : IsAffi
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Introduce `Y B κ W V hV ψ hc hbas`. Set `𝒱 : Y.OpenCover` to `Y.openCoverOfIsOpenCover W (by`. Rewrite using `[TopologicalSpace.IsOpenCover, eq_top_iff]`. Introduce `y _`. Take `⟨k, hk⟩` from `hc y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨k, hk⟩)`. Set `q : Y ⟶ B` to `𝒱.glueMorphisms (fun k ↦ loc (hV k) (ψ k)) (by`. Introduce `k l`. Apply `Scheme.hom_ext_of_forall` to reduce the goal to its premises. Introduce `x`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx : (pullback.fst (𝒱.f k) (𝒱.f l) x).1 = (pullback.snd (𝒱.f k) (𝒱.f l) x).1` using `congr($(pullback.condition (f := 𝒱.f k) (g := 𝒱.f l)) x)`. Take `⟨m, h1, h2, e1, e2, hxW, H1, H2⟩` from `hbas k l _ (pullback.fst (𝒱.f k) (𝒱.f l) x).2 (hx ▸ (pullback.snd (𝒱.f k) (𝒱.f l) x).2)`. Set `α : (W m).toScheme ⟶ pullback (𝒱.f k) (𝒱.f l)` to `pullback.lift (Y.homOfLE h1) (Y.homOfLE h2) ((Y.homOfLE_ι h1).trans (Y.homOfLE_ι h2).symm)`. Establish `hα1 : α ≫ pullback.fst _ _ = Y.homOfLE h1` using `pullback.lift_fst _ _ _`. Establish `hα2 : α ≫ pullback.snd _ _ = Y.homOfLE h2` using `pullback.lift_snd _ _ _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsOpenImmersion (α ≫ pullback.fst _ _)` using `by rw [hα1]; infer_instance`. Establish `: IsOpenImmersion α` using `.of_comp _ (pullback.fst _ _)`. Use `⟨α.opensRange, ⟨⟨_, hxW⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `(pullback.fst (𝒱.f k) (𝒱.f l)).isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, hα1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext (Scheme.homOfLE_apply _ _)`. Rewrite using `[← cancel_epi α.isoOpensRange.hom]`. Simplify using `only [Scheme.Hom.isoOpensRange_hom_ι_assoc]`. Rewrite using `[reassoc_of% hα1, reassoc_of% hα2]`. Conclude with `(homOfLE_loc (hV k) (hV m) _ _ h1 e1 H1).trans (homOfLE_loc (hV l) (hV m) _ _ h2 e2 H2).symm)`.
-
-Conclude with `⟨q, fun k ↦ appLE_of_loc (hV k) (ψ k) q (𝒱.ι_glueMorphisms _ _ k)⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_ring_maps : (∀ (Y B : Scheme.{0}) (κ : Type) (W : κ → Y.Opens) (V : κ → B.Opens), (∀ k, IsAffineOpen (V k)) → ∀ (ψ : ∀ k, Γ(B, V k) ⟶ Γ(Y, W k)), (∀ y : Y, ∃ k, y ∈ W k) → (∀ (k l : κ) (y : Y), y ∈ W k → y ∈ W l → ∃ (m : κ) (h : W m ≤ W k) (h' : W m ≤ W l) (e : V m ≤ V k) (e' : V m ≤ V l), y ∈ W m ∧ B.presheaf.map (homOfLE e).op ≫ ψ m = ψ k ≫ Y.presheaf.map (homOfLE h).op ∧ B.presheaf.map (homOfLE e').op ≫ ψ m = ψ l ≫ Y.presheaf.map (homOfLE h').op) → ∃ q : Y ⟶ B, ∀ k, ∃ h : W k ≤ q ⁻¹ᵁ V k, q.appLE (V k) (W k) h = ψ k) := by
   intro Y B κ W V hV ψ hc hbas

@@ -28,7 +28,7 @@ variable {D : D7}
 variable {a r t n : ℕ} {S : Finset (Pl D)} {e : AE D}
 
 /- English proof (translation)
-Establish `h` using `((GlobalTheory.StdUnn.RealComp.real_components D θ hθ).1 (e - 1)).1 (fun w => by`. Rewrite using `[RingHom.map_sub, hid.1 w, map_one, sub_self])`. Establish `h'` using `h τ`. Rewrite `h'` using `[RingHom.map_sub, RingHom.map_sub, map_one, map_one, sub_eq_zero]`. Conclude with `h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_idem {θ : InfFam D} (hθ : IsInfFam θ) (hid : IsIdem S e) (τ : D.what₂.Tau) : θ τ (infPart D e) = 1 := by
   have h := ((GlobalTheory.StdUnn.RealComp.real_components D θ hθ).1 (e - 1)).1 (fun w => by
@@ -38,11 +38,9 @@ theorem theta_idem {θ : InfFam D} (hθ : IsInfFam θ) (hid : IsIdem S e) (τ : 
   exact h'
 
 /- English proof (translation)
-Establish `hne : GlobalTheory.AfTensNbhd.coordEquiv D.host.F D.host.E x ≠ GlobalTheory.AfTensNbhd.coordEquiv D.host.F D.host.E y` using `fun h' => h ((GlobalTheory.AfTensNbhd.coordEquiv D.host.F D.host.E).injective h')`. Take `⟨k, hk⟩` from `Function.ne_iff.1 hne`. Use `haveI : T2Space (Af D.host.F) := GlobalTheory.IntegralFinAdele.t2Space_finiteAdeleRing' D.host.F`. Establish `hd : GlobalTheory.AfTensNbhd.coordEquiv D.host.F D.host.E y k - GlobalTheory.AfTensNbhd.coordEquiv D.host.F D.host.E x k ≠ 0` using `sub_ne_zero.2 hk.symm`. Take `⟨G, hGo, hGs⟩` from `GlobalTheory.SmallLevel.exists_open_subgroup D.host.F {GlobalTheory.AfTensNbhd.coordEquiv D.host.F D.host.E y k - GlobalTheory.AfTensNbhd.coordEquiv D.host.F D.host.E x k}ᶜ (isOpen_compl_singleton.mem_nhds (by simpa using hd.symm))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hGc : IsClosed (G : Set (Af D.host.F))` using `G.isClosed_of_isOpen hGo`. Establish `hcont : Continuous fun w => GlobalTheory.AfTensNbhd.coordEquiv D.host.F D.host.E w k - GlobalTheory.AfTensNbhd.coordEquiv D.host.F D.host.E x k` using `((continuous_apply k).comp (GlobalTheory.AfTensNbhd.continuous_coordEquiv _ _)).sub continuous_const`. Use `⟨(fun w => GlobalTheory.AfTensNbhd.coordEquiv D.host.F D.host.E w k - GlobalTheory.AfTensNbhd.coordEquiv D.host.F D.host.E x k) ⁻¹' G, ⟨hGc.preimage hcont, hGo.preimage hcont⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `hy`.
-
-Conclude with `hGs hy rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem clopen_sep (D : D7) {x y : Af D.host.F ⊗[D.host.F] D.host.E} (h : x ≠ y) :
     ∃ U : Set (Af D.host.F ⊗[D.host.F] D.host.E), IsClopen U ∧ x ∈ U ∧ y ∉ U := by
@@ -66,7 +64,7 @@ theorem clopen_sep (D : D7) {x y : Af D.host.F ⊗[D.host.F] D.host.E} (h : x �
     exact hGs hy rfl
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Af D.host.F ⊗[D.host.F] D.host.E) := IsModuleTopology.isTopologicalRing (Af D.host.F) _`. Conclude with `continuous_const.mul continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mul_left_fin (D : D7) (c : Af D.host.F ⊗[D.host.F] D.host.E) :
     Continuous fun y : Af D.host.F ⊗[D.host.F] D.host.E => c * y := by
@@ -76,19 +74,17 @@ theorem continuous_mul_left_fin (D : D7) (c : Af D.host.F ⊗[D.host.F] D.host.E
   exact continuous_const.mul continuous_id
 
 /- English proof (translation)
-Establish `hsm : ∀ (x : Mx D a n) i j, (e • x) i j = e * x i j` using `fun _ _ _ => rfl`. Distinguish the cases in `hf : p.map (finPart D) = q.map (finPart D)`. Establish `hi : ¬ ∀ τ, compAt θ τ p = compAt θ τ q` using `fun h => hpq (GlobalTheory.StabAtPlace.mx_ext hθ hf h)`. Simplify using `only [not_forall] at hi`. Take `⟨τ, hτ⟩` from `hi`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, compAt θ τ p i j ≠ compAt θ τ q i j := by`. Assume the negation of the conclusion as `hc`. Simplify using `only [not_exists, not_not] at hc`. Conclude with `hτ (Matrix.ext hc)`. Set `L : (D.what₂.Tau → Fin a → Fin n → ℂ) →L[ℝ] ℂ` to `(ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℂ) j).comp ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin a => Fin n → ℂ) i).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : D.what₂.Tau => Fin a → Fin n → ℂ) τ))`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, GlobalTheory.CompanionTheory.WSum.mul_mem_schwartzA D θ a n L L.hasTemperateGrowth _ hB, ?_, hC.mul_left, ?_⟩` and prove the remaining obligations. Use `good_factor (M := fun x => L fun τ i j => compAt θ τ x i j) (fun x => ?_) hG show θ τ (infPart D (e * x i j)) = θ τ (infPart D (x i j))` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, theta_idem hθ hid, one_mul]`. Use `show compAt θ τ p i j * B p ≠ compAt θ τ q i j * B q`. Rewrite using `[Bp, Bq, mul_one, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hij`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, finPart D (p i j) ≠ finPart D (q i j) := by`. Assume the negation of the conclusion as `hc`. Simplify using `only [not_exists, not_not] at hc`. Conclude with `hf (Matrix.ext hc)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨U, hU, hxU, hyU⟩` from `clopen_sep D hij`. Establish `hI : IsLocallyConstant (U.indicator fun _ => (1 : ℂ))` using `(LocallyConstant.indicator (LocallyConstant.const _ (1 : ℂ)) hU).isLocallyConstant`. Set `H : (Fin a → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ` to `fun y => U.indicator (fun _ => (1 : ℂ)) (finPart D e * y i j)`. Establish `hH : IsLocallyConstant H` using `hI.comp_continuous ((continuous_mul_left_fin D _).comp ((continuous_apply j).comp (continuous_apply i)))`. Establish `hval : ∀ {x : Mx D a n}, e • x = x → H (fun i j => finPart D (x i j)) = U.indicator (fun _ => (1 : ℂ)) (finPart D (x i j))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Use `show U.indicator (fun _ => (1 : ℂ)) (finPart D e * finPart D (x i j)) = _`. Rewrite using `[← map_mul, ← hsm, hx]`. Use `⟨_, fin_mul_mem θ hH hB, ?_, hC.mul_left, ?_⟩` and prove the remaining obligations. Use `good_factor (M := fun x => H fun i j => finPart D (x i j)) (fun x => ?_) hG show U.indicator (fun _ => (1 : ℂ)) (finPart D e * finPart D (e * x i j)) = U.indicator (fun _ => (1 : ℂ)) (finPart D e * finPart D (x i j))` and prove the remaining obligations.
-
-Rewrite using `[← map_mul, ← map_mul, ← mul_assoc, he]`. Use `show (H fun i j => finPart D (p i j)) * B p ≠ (H fun i j => finPart D (q i j)) * B q`. Rewrite using `[hval hp, hval hq, Bp, Bq, Set.indicator_of_mem hxU, Set.indicator_of_notMem hyU]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sep_pts {θ : InfFam D} (hθ : IsInfFam θ) (hid : IsIdem S e) (he : e * e = e) {p q : Mx D a n}
     (hp : e • p = p) (hq : e • q = q) (hpq : p ≠ q) {B : Mx D a n → ℂ} (hB : B ∈ schwartzA θ a n) (hG : Good S e B)
@@ -139,9 +135,9 @@ theorem sep_pts {θ : InfFam D} (hθ : IsInfFam θ) (hid : IsIdem S e) (he : e *
       simp
 
 /- English proof (translation)
-Take `⟨η, hη⟩` from `hBump D θ hθ a n S e hid C hC (fun x hx => intOff_of_smul hid (hCi x hx))`. Take `⟨m1, m2, m3⟩` from `row_prod (S := S) (e := e) (θ := θ) a η (fun i => ⟨(hη i).1, (hη i).2.1, (hη i).2.2.1⟩)`. Use `⟨_, m1, m2, m3, fun x => ?_, fun x hx => Finset.prod_eq_one fun i _ => (hη i).2.2.2.2 x hx⟩` and prove the remaining obligations. Establish `e1 : (∏ i, η i (x.submatrix (fun _ => i) id)) = ((∏ i, (η i (x.submatrix (fun _ => i) id)).re : ℝ) : ℂ)`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `Finset.prod_congr rfl fun i _ => Complex.ext (by simp) (by simpa using (hη i).2.2.2.1 _ |>.2.2)`. Use `show 0 ≤ (∏ i, η i (x.submatrix (fun _ => i) id)).re ∧ (∏ i, η i (x.submatrix (fun _ => i) id)).im = 0`. Rewrite using `[e1, Complex.ofReal_re, Complex.ofReal_im]`. Conclude with `⟨Finset.prod_nonneg fun i _ => ((hη i).2.2.2.1 _).1, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bump_of (hBump : BumpEx) {θ : InfFam D} (hθ : IsInfFam θ) (hid : IsIdem S e) {C : Set (Mx D a n)}
     (hC : IsCompact C) (hCi : ∀ x ∈ C, e • x = x) :
@@ -157,7 +153,7 @@ theorem bump_of (hBump : BumpEx) {θ : InfFam D} (hθ : IsInfFam θ) (hid : IsId
   exact ⟨Finset.prod_nonneg fun i _ => ((hη i).2.2.2.1 _).1, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [jn, Matrix.smul_apply, Matrix.submatrix_apply, id]`. Generalize the expression as in `(finSumFinEquiv.trans (finCongr hn)).symm j = k`. Apply the tactic sequence `cases k <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smul_jn (hn : r + t = n) (x : Mx D a r) (v : Mx D a t) : e • jn hn x v = jn hn (e • x) (e • v) := by
   ext i j
@@ -166,17 +162,15 @@ theorem smul_jn (hn : r + t = n) (x : Mx D a r) (v : Mx D a t) : e • jn hn x v
   cases k <;> simp
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Take `⟨-, -, h2, -⟩` from `GlobalTheory.CompanionTheory.OrbUniq.mx_facts D a (r + t)`. Take `⟨-, -, h2r, -⟩` from `GlobalTheory.CompanionTheory.OrbUniq.mx_facts D a r`. Take `⟨-, -, h2t, -⟩` from `GlobalTheory.CompanionTheory.OrbUniq.mx_facts D a t`. Use `haveI : IsTopologicalRing (AE D) := GlobalTheory.Doubling.isTopologicalRing_tens`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcl : IsClosed {z : Mx D a r × Mx D a t | e • z.1 = z.1 ∧ e • z.2 = z.2}` using `(isClosed_eq ((continuous_const_smul e).comp continuous_fst) continuous_fst).inter (isClosed_eq ((continuous_const_smul e).comp continuous_snd) continuous_snd)`. Establish `hs : Topology.IsClosedEmbedding (Subtype.val : XS D a r t e → Mx D a r × Mx D a t)` using `hcl.isClosedEmbedding_subtypeVal`. Establish `hj : Continuous fun z : Mx D a r × Mx D a t => jn (rfl : r + t = r + t) z.1 z.2`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [jn, Matrix.submatrix_apply, id]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(finSumFinEquiv.trans (finCongr (rfl : r + t = r + t))).symm j = k`. Consider the cases of `k with`. Consider the case `inl k`. Simplify using `only [Matrix.fromCols_apply_inl]`. Conclude with `continuous_fst.matrix_elem i k`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `inr k`. Simplify using `only [Matrix.fromCols_apply_inr]`. Conclude with `continuous_snd.matrix_elem i k`. Establish `hu : Continuous fun x : Mx D a (r + t) => ((x.submatrix id (Fin.castAdd t) : Mx D a r), (x.submatrix id (Fin.natAdd r) : Mx D a t))` using `(continuous_id.matrix_submatrix _ _).prodMk (continuous_id.matrix_submatrix _ _)`. Establish `hl : Function.LeftInverse (fun x : Mx D a (r + t) => ((x.submatrix id (Fin.castAdd t) : Mx D a r), (x.submatrix id (Fin.natAdd r) : Mx D a t))) (fun z : Mx D a r × Mx D a t => jn (rfl : r + t = r + t) z.1 z.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Introduce `z`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[jn]`. Use extensionality with `i j`.
-
-Simplify using `[jn]`. Conclude with `(hl.isClosedEmbedding hu hj).comp hs`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_jn (hn : r + t = n) (e : AE D) :
     Topology.IsClosedEmbedding (fun z : XS D a r t e => jn hn z.1.1 z.1.2) := by
@@ -215,9 +209,9 @@ theorem isClosedEmbedding_jn (hn : r + t = n) (e : AE D) :
   exact (hl.isClosedEmbedding hu hj).comp hs
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f h => exact h`. Consider the case `zero => exact ⟨fun _ => 0, (schwartzA θ a n).zero_mem, good_zero, HasCompactSupport.zero, rfl⟩`. Consider the case `add f g _ _ h₁ h₂`. Take `⟨Φ, m1, g1, c1, rfl⟩` from `h₁`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨Ψ, m2, g2, c2, rfl⟩` from `h₂`. Conclude with `⟨fun x => Φ x + Ψ x, (schwartzA θ a n).add_mem m1 m2, good_add g1 g2, c1.add c2, rfl⟩`. Consider the case `smul c f _ h₁`. Take `⟨Φ, m1, g1, c1, rfl⟩` from `h₁`. Conclude with `⟨fun x => c * Φ x, (schwartzA θ a n).smul_mem c m1, good_smul c g1, c1.mul_left, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_mem_algA {θ : InfFam D} (hn : r + t = n) {f : XS D a r t e → ℂ}
     (hf : f ∈ algA (a := a) θ hn S e) :
@@ -234,17 +228,15 @@ theorem exists_of_mem_algA {θ : InfFam D} (hn : r + t = n) {f : XS D a r t e �
     exact ⟨fun x => c * Φ x, (schwartzA θ a n).smul_mem c m1, good_smul c g1, c1.mul_left, rfl⟩
 
 /- English proof (translation)
-Introduce `hI hBump _ D θ hθ a r t n hn S e hid`. Establish `he : e * e = e` using `((hI D S).2 e hid).1`. Establish `hι` using `isClosedEmbedding_jn (D := D) (a := a) hn e`. Establish `gen : ∀ Φ ∈ schwartzA θ a n, Good S e Φ → HasCompactSupport Φ → (fun z : XS D a r t e => Φ (jn hn z.1.1 z.1.2)) ∈ algA (a` using `a) θ hn S e := fun Φ h1 h2 h3 => Submodule.subset_span ⟨Φ, h1, h2, h3, rfl⟩`. Establish `hfix : ∀ z : XS D a r t e, e • jn hn z.1.1 z.1.2 = jn hn z.1.1 z.1.2` using `fun z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_jn, z.2.1, z.2.2]`. Use `⟨⟨fun f hf => ?_, fun f hf g hg => ?_, fun f hf => ?_, fun x y hxy => ?_, fun C hC => ?_⟩, fun f hf => exists_of_mem_algA hn hf⟩` and prove the remaining obligations. Take `⟨Φ, h1, -, h3, rfl⟩` from `exists_of_mem_algA hn hf`. Conclude with `⟨(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ a n Φ h1).1.comp hι.continuous, h3.comp_isClosedEmbedding hι⟩`. Take `⟨Φ, h1, h2, h3, rfl⟩` from `exists_of_mem_algA hn hf`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨Ψ, k1, k2, k3, rfl⟩` from `exists_of_mem_algA hn hg`. Conclude with `gen (fun x => Φ x * Ψ x) (mul_mem θ h1 k1) (good_mul h2 k2) h3.mul_right`. Take `⟨Φ, h1, h2, h3, rfl⟩` from `exists_of_mem_algA hn hf`. Conclude with `gen (fun x => conj (Φ x)) (conj_mem θ h1) (good_conj h2) (h3.comp_left (map_zero _))`. Establish `hne : jn hn x.1.1 x.1.2 ≠ jn hn y.1.1 y.1.2` using `fun h => hxy (hι.injective h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfin : ({jn hn x.1.1 x.1.2, jn hn y.1.1 y.1.2} : Set (Mx D a n)).Finite` using `by simp`. Take `⟨B, b1, b2, b3, -, b5⟩` from `bump_of hBump hθ hid hfin.isCompact (by`. Introduce and unpack `w (rfl | rfl)`. Conclude with `hfix x`. Conclude with `hfix y)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Take `⟨Φ, h1, h2, h3, h4⟩` from `sep_pts hθ hid he (hfix x) (hfix y) hne b1 b2 b3 (b5 _ (by simp)) (b5 _ (by simp))`. Conclude with `⟨_, gen Φ h1 h2 h3, h4⟩`. Take `⟨B, b1, b2, b3, b4, b5⟩` from `bump_of hBump hθ hid (hC.image hι.continuous) (by`. Introduce and unpack `_ ⟨z, -, rfl⟩`. Conclude with `hfix z)`.
-
-Conclude with `⟨_, gen B b1 b2 b3, fun z => b4 _, fun z hz => b5 _ ⟨z, hz, rfl⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem algRich : IdemEx → BumpEx → TopX → AlgRich := by
   intro hI hBump _ D θ hθ a r t n hn S e hid

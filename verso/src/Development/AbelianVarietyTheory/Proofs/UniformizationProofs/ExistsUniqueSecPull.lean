@@ -14,7 +14,7 @@ namespace GlobalTheory.SecPull
 variable {X X' Y Y' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {K : Type} [Fintype K]
 
 /- English proof (translation)
-The claim follows from `Set.mem_iInter.2 fun k => by have := Set.mem_iInter.1 hy k show (h ≫ φ k) y ∈ L.U (p k) rw [← hc]; exact this`.
+A detailed English derivation is pending.
 -/
 theorem mem_wchart_comp {φ' : K → (Y' ⟶ X')} {φ : K → (Y ⟶ X)} {h : Y' ⟶ Y}
     (hc : ∀ κ, φ' κ ≫ F = h ≫ φ κ) {p : K → L.ι} {y : Y'}
@@ -25,7 +25,7 @@ theorem mem_wchart_comp {φ' : K → (Y' ⟶ X')} {φ : K → (Y ⟶ X)} {h : Y'
     rw [← hc]; exact this
 
 /- English proof (translation)
-Simplify using `only [trF, hc, Category.assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trF_comp {Z : Scheme.{0}} {φ' : K → (Y' ⟶ X')} {φ : K → (Y ⟶ X)} {h : Y' ⟶ Y}
     (hc : ∀ κ, φ' κ ≫ F = h ≫ φ κ) (ε : K → ℤ) (r : Z ⟶ Y') (z : Z) (p p' : K → L.ι) :
@@ -33,15 +33,13 @@ theorem trF_comp {Z : Scheme.{0}} {φ' : K → (Y' ⟶ X')} {φ : K → (Y ⟶ X
   simp only [trF, hc, Category.assoc]
 
 /- English proof (translation)
-Use `choose u hu using fun p q => exists_pw w φ' ε p q`. Establish `glue : ∀ q : K → L'.ι, ∃ a : Γ(Y', LB.wchart L' φ' q), ∀ (Z : Scheme.{0}) (r : Z ⟶ Y') (z : Z) p, r z ∈ LB.wchart L (fun k => φ' k ≫ F) p → r z ∈ LB.wchart L' φ' q → gs r z _ a = (pw w φ' ε r z p q)⁻¹.val * gs (r ≫ h) z (LB.wchart L φ p) (s.f p)`. Introduce `q`. Set `W : (K → L.ι) → Y'.Opens` to `fun p => LB.wchart L (fun k => φ' k ≫ F) p ⊓ LB.wchart L' φ' q`. Establish `le : ∀ p, W p ≤ h ⁻¹ᵁ LB.wchart L φ p` using `fun p y hy => mem_wchart_comp hc hy.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩ : ∃ v : ∀ p, Γ(Y', W p), ∀ (Z : Scheme.{0}) (r : Z ⟶ Y') (z : Z) p, r z ∈ W p → gs r z (W p) (v p) = (pw w φ' ε r z p q)⁻¹.val * gs (r ≫ h) z (LB.wchart L φ p) (s.f p)` from `⟨fun p => (u p q)⁻¹.val * (Y'.presheaf.map (homOfLE (le p)).op).hom ((h.app _).hom (s.f p)), fun Z r z p hz => (gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) ((gs_unit r z _ hz _).trans (congrArg Units.val ((map_inv _ _).trans (congrArg (·⁻¹) (hu p q Z r z hz))))) ((gs_res r z (l …`. Take `⟨a, ha, -⟩` from `Y'.sheaf.existsUnique_gluing' W (LB.wchart L' φ' q) (fun p => homOfLE inf_le_right) (fun y hy => by choose p hp using fun k => exists_chart hL (F (φ' k y))`. Conclude with `Opens.mem_iSup.2 ⟨p, Set.mem_iInter.2 hp, hy⟩) v`. Use the proof step `(fun p p' => fn_ext (V := W p ⊓ W p') fun y hy => by`. Use `(gs_res (𝟙 Y') y inf_le_left hy _).trans (Eq.trans ?_ (gs_res (𝟙 Y') y inf_le_right hy _).symm)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hv _ _ y p hy.1, hv _ _ y p' hy.2, sec_trans s (𝟙 Y' ≫ h) y (le p hy.1) (le p' hy.2), trF_comp hc, pw_trans hw φ' ε (𝟙 Y') y hy.1.1 hy.2.1 hy.1.2 hy.1.2, trF_self hL' _ ε (𝟙 Y') y hy.1.2, inv_one, mul_one, ← mul_assoc, ← Units.val_mul, mul_inv_rev, inv_mul_cancel_right])`. Use `⟨a, fun Z r z p h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `hz : r z ∈ W p` using `⟨h₁, h₂⟩`. Conclude with `(gs_res r z inf_le_right hz a).symm.trans ((congrArg (gs r z (W p)) (ha p)).trans (hv Z r z p hz))`. Use `choose a ha using glue`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨a, fun j j' => fn_ext fun y hy => ?_⟩, fun Z r z p q => ha q Z r z p⟩` and prove the remaining obligations. Use `choose p hp using fun k => exists_chart hL (F (φ' k y))`. Establish `m : (𝟙 Y' : Y' ⟶ Y') y ∈ LB.wchart L (fun k => φ' k ≫ F) p` using `Set.mem_iInter.2 hp`. Use `(gs_res (𝟙 Y') y _ hy _).trans (Eq.trans ?_ ((gs_mul (𝟙 Y') y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_unit (𝟙 Y') y _ hy _).trans (congrArg Units.val (gm_linComb L' φ' ε (𝟙 Y') y j j' hy.1 hy.2))) (gs_res (𝟙 Y') y _ hy _))).symm)` and prove the remaining obligations. Use `(ha j _ (𝟙 Y') y p m hy.1).trans (Eq.trans ?_ (congrArg _ (ha j' _ (𝟙 Y') y p m hy.2)).symm)` and prove the remaining obligations.
-
-Rewrite using `[pw_trans hw φ' ε (𝟙 Y') y m m hy.1 hy.2, trF_self hL _ ε (𝟙 Y') y m, one_mul, mul_inv, inv_inv, Units.val_mul, mul_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_down_sec {w : LB.Iso L' (L.pull F)} (hw : PGen w) (hL : L.IsLB) (hL' : L'.IsLB)
     (φ' : K → (Y' ⟶ X')) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (h : Y' ⟶ Y) (hc : ∀ κ, φ' κ ≫ F = h ≫ φ κ)
@@ -88,11 +86,11 @@ theorem exists_down_sec {w : LB.Iso L' (L.pull F)} (hw : PGen w) (hL : L.IsLB) (
   rfl
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_down_sec ((isGen_iff w).1 hw) hL hL' φ' φ ε h hc s`. Use `⟨a, fun Z r z p q hp hq => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[ha Z r z p q (Set.mem_iInter.2 hp) (Set.mem_iInter.2 hq)]`. Conclude with `(Units.mul_inv_cancel_left (pw w φ' ε r z p q) _).symm`. Establish `e : b.f = a.f` using `funext fun q => fn_ext fun y hy => by choose p hp using fun k => exists_chart hL (F (φ' k y))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (ha _ (𝟙 Y') y p q (Set.mem_iInter.2 hp) hy).symm` and prove the remaining obligations. Rewrite using `[hb _ (𝟙 Y') y p q hp (Set.mem_iInter.1 hy)]`. Conclude with `(Units.inv_mul_cancel_left (pw w φ' ε (𝟙 Y') y p q) _).symm`. Consider the cases of `a`. Consider the cases of `b`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 
-Consider the cases of `e`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_secPull (X X' Y Y' : Scheme.{0}) (L : LB X) (L' : LB X') (F : X' ⟶ X) (hL : L.IsLB)
     (hL' : L'.IsLB) (w : LB.Iso L' (L.pull F)) (hw : w.IsGen) (K : Type) [Fintype K] (φ' : K → (Y' ⟶ X'))

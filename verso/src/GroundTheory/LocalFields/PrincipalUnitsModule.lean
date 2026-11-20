@@ -16,7 +16,7 @@ noncomputable def principalFiltration (k : ℕ) : AddSubgroup (Additive (unitFil
   Subgroup.toAddSubgroup ((unitFiltrationUnits K (k + 1)).comap (unitFiltrationUnits K 1).subtype)
 
 /- English proof (translation)
-Use `mem_unitFiltrationUnits_iff_valBall (K := K) (n := k + 1) (by omega) (x := ((Additive.toMul u : unitFiltrationUnits K 1) : Kˣ))` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem mem_principalFiltration {k : ℕ} {u : Additive (unitFiltrationUnits K 1)} :
     u ∈ principalFiltration K k ↔
@@ -27,7 +27,7 @@ theorem mem_principalFiltration {k : ℕ} {u : Additive (unitFiltrationUnits K 1
   exact this
 
 /- English proof (translation)
-Introduce `j k hjk u hu`. Rewrite `hu`, the goal using `[mem_principalFiltration]`. Conclude with `valBall_antitone (by omega) hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem principalFiltration_antitone : Antitone (principalFiltration K) := by
   intro j k hjk u hu
@@ -35,7 +35,7 @@ theorem principalFiltration_antitone : Antitone (principalFiltration K) := by
   exact valBall_antitone (by omega) hu
 
 /- English proof (translation)
-Use extensionality with `u`. Simplify using `only [AddSubgroup.mem_top, iff_true, mem_principalFiltration]`. Simplify using `using sub_one_mem_valBall_one (Additive.toMul u)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem principalFiltration_zero : principalFiltration K 0 = ⊤ := by
   ext u
@@ -43,9 +43,9 @@ theorem principalFiltration_zero : principalFiltration K 0 = ⊤ := by
   simpa using sub_one_mem_valBall_one (Additive.toMul u)
 
 /- English proof (translation)
-Establish `h : normalizedValuation K (y - 1) < 1`. Use `lt_of_le_of_lt hy ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Use `Valuation.map_one_add_of_lt (normalizedValuation K) h` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem normalizedValuation_eq_one_of_sub_one_mem {y : K} (hy : y - 1 ∈ valBall K 1) :
     normalizedValuation K y = 1 := by
@@ -56,15 +56,15 @@ theorem normalizedValuation_eq_one_of_sub_one_mem {y : K} (hy : y - 1 ∈ valBal
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[mem_valBall, normalizedValuation_eq_one_of_sub_one_mem hy]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_valBall_zero_of_sub_one_mem {y : K} (hy : y - 1 ∈ valBall K 1) : y ∈ valBall K 0 := by
   rw [mem_valBall, normalizedValuation_eq_one_of_sub_one_mem hy]; simp
 
 /- English proof (translation)
-Use `set y : K := (((Additive.toMul w : unitFiltrationUnits K 1) : Kˣ) : K) - 1`. Establish `hy : y = 0`. Assume the negation of the conclusion as `hy0`. Establish `hk` using `mem_principalFiltration.mp (h (ord y).toNat)`. Rewrite `hk` using `[mem_valBall, normalizedValuation_eq_exp_ord hy0, WithZero.exp_le_exp]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Int.self_le_toNat (ord y)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Apply `Additive.toMul.injective` to reduce the goal to its premises. Use `ext`. Simplify `hy` using `[y, sub_eq_zero]`.
+Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_mem_principalFiltration {w : Additive (unitFiltrationUnits K 1)}
     (h : ∀ k, w ∈ principalFiltration K k) : w = 0 := by
@@ -83,7 +83,7 @@ variable (p : ℕ) [hp : Fact p.Prime] [CharP 𝓀[K] p]
 
 omit hp in
 /- English proof (translation)
-Establish `h : ((p : 𝒪[K]) : 𝒪[K]) ∈ 𝓂[K] ^ 1`. Rewrite using `[pow_one, ← residue_eq_zero_iff, map_natCast, CharP.cast_eq_zero]`. Use `mem_maximalIdeal_pow_iff_valBall.mp h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem natCast_prime_mem_valBall_one : (p : K) ∈ valBall K 1 := by
   have h : ((p : 𝒪[K]) : 𝒪[K]) ∈ 𝓂[K] ^ 1 := by
@@ -92,13 +92,13 @@ theorem natCast_prime_mem_valBall_one : (p : K) ∈ valBall K 1 := by
   simpa using this
 
 /- English proof (translation)
-Use `set x := y - 1`. Establish `hyx : y = x + 1` using `by ring`. Rewrite using `[hyx, add_pow, Finset.sum_range_succ']`. Simplify using `only [pow_zero, one_pow, mul_one, Nat.choose_zero_right, Nat.cast_one, add_sub_cancel_right]`. Use `AddSubgroup.sum_mem _ fun i hi ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi` using `[Finset.mem_range]`. Break down `Nat.lt_or_ge (i + 1) p with hlt | hge` into its components or cases. Take `⟨c, hc⟩` from `hp.out.dvd_choose_self (Nat.succ_ne_zero i) hlt`. Rewrite using `[hc, Nat.cast_mul]`. Establish `h1 : (p : K) * (c : K) ∈ valBall K (1 + 0)` using `mul_mem_valBall (natCast_prime_mem_valBall_one p) (by simpa using intCast_mem_valBall_zero (K := K) (c : ℤ))`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `mul_mem_valBall (pow_mem_valBall hy (i + 1)) h1`. Use `valBall_antitone ?_ h2` and prove the remaining obligations. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `hi' : i + 1 = p` using `by omega`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hi', Nat.choose_self, Nat.cast_one, mul_one]`. Use `valBall_antitone ?_ (pow_mem_valBall hy p)` and prove the remaining obligations. Establish `: (2 : ℤ) ≤ p` using `by exact_mod_cast hp.out.two_le`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem pow_prime_sub_one_mem {k : ℤ} (hk : 1 ≤ k) {y : K} (hy : y - 1 ∈ valBall K k) :
     y ^ p - 1 ∈ valBall K (k + 1) := by
@@ -124,7 +124,7 @@ theorem pow_prime_sub_one_mem {k : ℤ} (hk : 1 ≤ k) {y : K} (hy : y - 1 ∈ v
     nlinarith
 
 /- English proof (translation)
-Rewrite `hu`, the goal using `[mem_principalFiltration]`. Use `pow_prime_sub_one_mem p (by omega) hu` as an intermediate fact. Simplify using `using this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nsmul_prime_mem_principalFiltration {k : ℕ} {u : Additive (unitFiltrationUnits K 1)}
     (hu : u ∈ principalFiltration K k) : p • u ∈ principalFiltration K (k + 1) := by
@@ -133,7 +133,7 @@ theorem nsmul_prime_mem_principalFiltration {k : ℕ} {u : Additive (unitFiltrat
   simpa using this
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simpa using hu`. Consider the case `succ j ih`. Rewrite using `[show p ^ (j + 1) • u = p • (p ^ j • u) by rw [smul_smul, ← pow_succ'], ← add_assoc]`. Conclude with `nsmul_prime_mem_principalFiltration p ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_prime_pow_mem_principalFiltration {k : ℕ} {u : Additive (unitFiltrationUnits K 1)}
     (hu : u ∈ principalFiltration K k) (j : ℕ) : p ^ j • u ∈ principalFiltration K (k + j) := by
@@ -144,9 +144,9 @@ theorem nsmul_prime_pow_mem_principalFiltration {k : ℕ} {u : Additive (unitFil
     exact nsmul_prime_mem_principalFiltration p ih
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `hc`. Rewrite using `[mul_comm, mul_zsmul]`. Use `zsmul_mem ?_ d` and prove the remaining obligations. Use `nsmul_prime_pow_mem_principalFiltration p (by rw [principalFiltration_zero]; trivial : u ∈ principalFiltration K 0) k` as an intermediate fact. Rewrite `this` using `[zero_add]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem zsmul_mem_principalFiltration_of_dvd {k : ℕ} {c : ℤ} (hc : (p ^ k : ℤ) ∣ c)
     (u : Additive (unitFiltrationUnits K 1)) : c • u ∈ principalFiltration K k := by
@@ -163,25 +163,25 @@ end Filtration
 section Complete
 
 /- English proof (translation)
-Use `set σ : ℕ → K := fun k ↦ (((Additive.toMul (s k) : unitFiltrationUnits K 1) : Kˣ) : K)`. Establish `hσ1 : ∀ k, σ k - 1 ∈ valBall K 1` using `fun k ↦ sub_one_mem_valBall_one (Additive.toMul (s k))`. Establish `hσ0 : ∀ k, σ k ≠ 0` using `fun k ↦ Units.ne_zero _`. Establish `hquot : ∀ k : ℕ, σ (k + 1) / σ k - 1 ∈ valBall K (k + 1)`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `mem_principalFiltration.mp (hs k)` as an intermediate fact. Simplify `this` using `[σ, toMul_sub, div_eq_mul_inv]`. Use `set f : ℕ → K := fun j ↦ σ (j + 1) - σ j`. Establish `hf : ∀ j : ℕ, f j ∈ valBall K (j + 1)`. Introduce `j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h : f j = σ j * (σ (j + 1) / σ j - 1)`. Simplify using `only [f]`. Clear denominators, using `[hσ0 j]` for the nonvanishing conditions. Rewrite using `[h]`. Simplify using `using mul_mem_valBall (mem_valBall_zero_of_sub_one_mem (hσ1 j)) (hquot j)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum : Summable f`. Use `summable_of_tendsto_zero (tendsto_zero_iff_valBall.mpr fun N ↦ ?_)` and prove the remaining obligations. Rewrite using `[eventually_atTop]`. Conclude with `⟨N.toNat, fun j hj ↦ valBall_antitone (by have := Int.self_le_toNat N; omega) (hf j)⟩`. Use `set L := σ 0 + ∑' j, f j`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hL : ∀ k : ℕ, L - σ k = ∑' j, f (j + k)`. Introduce `k`. Establish `h1` using `hsum.sum_add_tsum_nat_add k`. Establish `h2 : ∑ i ∈ Finset.range k, f i = σ k - σ 0` using `Finset.sum_range_sub σ k`. Simplify using `only [L]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hLk : ∀ k : ℕ, L - σ k ∈ valBall K (k + 1)`. Introduce `k`. Rewrite using `[hL k]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `tsum_mem_valBall fun j ↦ valBall_antitone (by omega) (hf (j + k))`. Establish `hL1 : L - 1 ∈ valBall K 1`. Use `add_mem (hLk 0) (hσ1 0)` as an intermediate fact. Simplify using `using this`. Establish `hL0 : L ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Use `normalizedValuation_eq_one_of_sub_one_mem hL1` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `zero_ne_one this`. Use `⟨Additive.ofMul ⟨Units.mk0 L hL0, (mem_unitFiltrationUnits_iff_valBall le_rfl).mpr (by simpa using hL1)⟩, fun k ↦ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[mem_principalFiltration]`. Establish `heq : (((Additive.toMul (Additive.ofMul ⟨Units.mk0 L hL0, (mem_unitFiltrationUnits_iff_valBall le_rfl).mpr (by simpa using hL1)⟩ - s k) : unitFiltrationUnits K 1) : Kˣ) : K) - 1 = (L - σ k) * (σ k)⁻¹`. Simplify using `only [toMul_sub, toMul_ofMul]`. Simplify using `[σ, div_eq_mul_inv]`. Clear denominators, using `[hσ0 k]` for the nonvanishing conditions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[heq]`. Establish `hinv : (σ k)⁻¹ ∈ valBall K 0`. Rewrite using `[mem_valBall, map_inv₀, normalizedValuation_eq_one_of_sub_one_mem (hσ1 k)]`. Simplify using the standard rewrite rules. Simplify using `using mul_mem_valBall (hLk k) hinv`.
+A detailed English derivation is pending.
 -/
 theorem exists_forall_sub_mem_principalFiltration {s : ℕ → Additive (unitFiltrationUnits K 1)}
     (hs : ∀ k, s (k + 1) - s k ∈ principalFiltration K k) :
@@ -245,7 +245,7 @@ section Module
 variable (p : ℕ) [hp : Fact p.Prime]
 
 /- English proof (translation)
-Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.norm_le_pow_iff_mem_span_pow, PadicInt.norm_int_le_pow_iff_dvd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem padicInt_dvd_intCast_iff {k : ℕ} {c : ℤ} :
     (p : ℤ_[p]) ^ k ∣ (c : ℤ_[p]) ↔ ((p : ℤ) ^ k) ∣ c := by
@@ -253,7 +253,7 @@ theorem padicInt_dvd_intCast_iff {k : ℕ} {c : ℤ} :
     PadicInt.norm_int_le_pow_iff_dvd]
 
 /- English proof (translation)
-Rewrite using `[← padicInt_dvd_intCast_iff]`. Use `dvd_sub h h'` as an intermediate fact. Use `push_cast`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem intCast_dvd_sub_of_dvd_sub {k : ℕ} {a : ℤ_[p]} {c c' : ℤ} (h : (p : ℤ_[p]) ^ k ∣ a - c)
     (h' : (p : ℤ_[p]) ^ k ∣ a - c') : ((p : ℤ) ^ k) ∣ c' - c := by
@@ -264,7 +264,7 @@ theorem intCast_dvd_sub_of_dvd_sub {k : ℕ} {a : ℤ_[p]} {c c' : ℤ} (h : (p 
   ring
 
 /- English proof (translation)
-Rewrite using `[← Ideal.mem_span_singleton]`. Simplify using `using PadicInt.appr_spec k a`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dvd_sub_appr (k : ℕ) (a : ℤ_[p]) : (p : ℤ_[p]) ^ k ∣ a - ((a.appr k : ℕ) : ℤ) := by
   rw [← Ideal.mem_span_singleton]
@@ -273,13 +273,13 @@ theorem dvd_sub_appr (k : ℕ) (a : ℤ_[p]) : (p : ℤ_[p]) ^ k ∣ a - ((a.app
 variable [CharP 𝓀[K] p]
 
 /- English proof (translation)
-Use `set s : ℕ → Additive (unitFiltrationUnits K 1) := fun k ↦ ((a.appr k : ℕ) : ℤ) • u`. Establish `hs : ∀ k, s (k + 1) - s k ∈ principalFiltration K k`. Introduce `k`. Simplify using `only [s]`. Rewrite using `[show ((a.appr (k + 1) : ℕ) : ℤ) • u - ((a.appr k : ℕ) : ℤ) • u = (((a.appr (k + 1) : ℕ) : ℤ) - ((a.appr k : ℕ) : ℤ)) • u by rw [sub_zsmul]; abel]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `zsmul_mem_principalFiltration_of_dvd p ?_ u` and prove the remaining obligations. Establish `h1` using `dvd_sub_appr p (k + 1) a`. Establish `h1' : (p : ℤ_[p]) ^ k ∣ a - ((a.appr (k + 1) : ℕ) : ℤ)` using `(pow_dvd_pow _ (Nat.le_succ k)).trans h1`. Use `intCast_dvd_sub_of_dvd_sub p (dvd_sub_appr p k a) h1'` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨l, hl⟩` from `exists_forall_sub_mem_principalFiltration hs`. Use `⟨l, fun k c hc ↦ ?_⟩` and prove the remaining obligations. Establish `h` using `intCast_dvd_sub_of_dvd_sub p hc (dvd_sub_appr p k a)`. Establish `: l - c • u = (l - s k) + (((a.appr k : ℕ) : ℤ) - c) • u`. Simplify using `only [s, sub_zsmul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `add_mem (hl k) (zsmul_mem_principalFiltration_of_dvd p h u)`.
+A detailed English derivation is pending.
 -/
 theorem exists_padicInt_pow (a : ℤ_[p]) (u : Additive (unitFiltrationUnits K 1)) :
     ∃ l : Additive (unitFiltrationUnits K 1), ∀ (k : ℕ) (c : ℤ), (p : ℤ_[p]) ^ k ∣ a - c →
@@ -309,14 +309,14 @@ noncomputable def padicIntSMul (a : ℤ_[p]) (u : Additive (unitFiltrationUnits 
   Classical.choose (exists_padicInt_pow p a u)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (exists_padicInt_pow p a u) k c hc`.
+A detailed English derivation is pending.
 -/
 theorem padicIntSMul_spec (a : ℤ_[p]) (u : Additive (unitFiltrationUnits K 1)) {k : ℕ} {c : ℤ}
     (hc : (p : ℤ_[p]) ^ k ∣ a - c) : padicIntSMul p a u - c • u ∈ principalFiltration K k :=
   Classical.choose_spec (exists_padicInt_pow p a u) k c hc
 
 /- English proof (translation)
-Use `(sub_eq_zero.mp (eq_zero_of_forall_mem_principalFiltration fun k ↦ ?_))` and prove the remaining obligations. Take `⟨c, hc, hl⟩` from `h k`. Use `sub_mem (padicIntSMul_spec p a u hc) hl` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem padicIntSMul_eq_of {a : ℤ_[p]} {u l : Additive (unitFiltrationUnits K 1)}
     (h : ∀ k : ℕ, ∃ c : ℤ, (p : ℤ_[p]) ^ k ∣ a - c ∧ l - c • u ∈ principalFiltration K k) :
@@ -390,21 +390,21 @@ theorem padicInt_smul_def (a : ℤ_[p]) (u : Additive (unitFiltrationUnits K 1))
     a • u = padicIntSMul p a u := rfl
 
 /- English proof (translation)
-The claim follows from `padicIntSMul_spec p a u hc`.
+A detailed English derivation is pending.
 -/
 theorem smul_sub_intCast_smul_mem {a : ℤ_[p]} {k : ℕ} {c : ℤ} (hc : (p : ℤ_[p]) ^ k ∣ a - c)
     (u : Additive (unitFiltrationUnits K 1)) : a • u - c • u ∈ principalFiltration K k :=
   padicIntSMul_spec p a u hc
 
 /- English proof (translation)
-The claim follows from `padicIntSMul_eq_of p fun k ↦ ⟨c, by simp, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem intCast_smul (c : ℤ) (u : Additive (unitFiltrationUnits K 1)) :
     ((c : ℤ_[p])) • u = c • u :=
   padicIntSMul_eq_of p fun k ↦ ⟨c, by simp, by simp⟩
 
 /- English proof (translation)
-Use `intCast_smul p (n : ℤ) u` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem natCast_smul (n : ℕ) (u : Additive (unitFiltrationUnits K 1)) :
     ((n : ℤ_[p])) • u = n • u := by
@@ -412,7 +412,7 @@ theorem natCast_smul (n : ℕ) (u : Additive (unitFiltrationUnits K 1)) :
   simpa using this
 
 /- English proof (translation)
-Use `smul_sub_intCast_smul_mem p (c := 0) (by simpa using ha) u` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smul_mem_of_dvd {a : ℤ_[p]} {k : ℕ} (ha : (p : ℤ_[p]) ^ k ∣ a)
     (u : Additive (unitFiltrationUnits K 1)) : a • u ∈ principalFiltration K k := by
@@ -420,7 +420,7 @@ theorem smul_mem_of_dvd {a : ℤ_[p]} {k : ℕ} (ha : (p : ℤ_[p]) ^ k ∣ a)
   simpa using this
 
 /- English proof (translation)
-Establish `h1` using `smul_sub_intCast_smul_mem p (dvd_sub_appr p k a) u`. Establish `h2 : ((a.appr k : ℕ) : ℤ) • u ∈ principalFiltration K k` using `zsmul_mem hu _`. Simplify using `using add_mem h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smul_mem_principalFiltration (a : ℤ_[p]) {k : ℕ} {u : Additive (unitFiltrationUnits K 1)}
     (hu : u ∈ principalFiltration K k) : a • u ∈ principalFiltration K k := by
@@ -429,7 +429,7 @@ theorem smul_mem_principalFiltration (a : ℤ_[p]) {k : ℕ} {u : Additive (unit
   simpa using add_mem h1 h2
 
 /- English proof (translation)
-Establish `h1 : 𝓝 (0 : Additive (unitFiltrationUnits K 1)) = Filter.comap (fun u : Additive (unitFiltrationUnits K 1) ↦ ((Additive.toMul u : unitFiltrationUnits K 1) : Kˣ)) (𝓝 1)` using `nhds_subtype _ (1 : unitFiltrationUnits K 1)`. Rewrite using `[h1]`. Use `(hasBasis_nhds_one_unitFiltrationUnits.comap _).to_hasBasis (fun n _ ↦ ⟨n, trivial, fun u hu ↦ unitFiltrationUnits_antitone (Nat.le_succ n) hu⟩) (fun k _ ↦ ⟨k + 1, trivial, fun u hu ↦ hu⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hasBasis_nhds_zero_principalFiltration :
     (𝓝 (0 : Additive (unitFiltrationUnits K 1))).HasBasis (fun _ ↦ True)
@@ -444,7 +444,7 @@ theorem hasBasis_nhds_zero_principalFiltration :
     (fun k _ ↦ ⟨k + 1, trivial, fun u hu ↦ hu⟩)
 
 /- English proof (translation)
-The claim follows from `hasBasis_nhds_zero_principalFiltration.mem_of_mem trivial`.
+A detailed English derivation is pending.
 -/
 theorem principalFiltration_mem_nhds (k : ℕ) :
     (principalFiltration K k : Set (Additive (unitFiltrationUnits K 1))) ∈ 𝓝 0 :=

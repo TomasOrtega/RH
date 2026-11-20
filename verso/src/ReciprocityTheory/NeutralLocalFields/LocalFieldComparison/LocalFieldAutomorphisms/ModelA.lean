@@ -12,7 +12,7 @@ def locVal (ι : Ω →+* PadicAlgCl p) : Valuation (Kloc F ι) NNReal :=
   (PadicAlgCl.valued p).v.comap (algebraMap (Kloc F ι) (PadicAlgCl p))
 
 /- English proof (translation)
-The claim follows from `rfl @[instance_reducible]`.
+A detailed English derivation is pending.
 -/
 theorem locVal_apply (ι : Ω →+* PadicAlgCl p) (x : Kloc F ι) : ((locVal ι x : NNReal) : ℝ) = ‖(x : PadicAlgCl p)‖ :=
   rfl
@@ -23,12 +23,12 @@ def locRel (ι : Ω →+* PadicAlgCl p) : ValuativeRel (Kloc F ι) := .ofValuati
 attribute [local instance] locRel
 
 /- English proof (translation)
-The claim follows from `Valuation.Compatible.ofValuation _`.
+A detailed English derivation is pending.
 -/
 theorem locVal_compat (ι : Ω →+* PadicAlgCl p) : (locVal (F := F) ι).Compatible := Valuation.Compatible.ofValuation _
 
 /- English proof (translation)
-Use `locVal_compat (F := F) ι` as an intermediate fact. Rewrite using `[(ValuativeRel.isEquiv (valuation (Kloc F ι)) (locVal ι)).lt_iff_lt, ← NNReal.coe_lt_coe, locVal_apply, locVal_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_lt_iff_Kloc (ι : Ω →+* PadicAlgCl p) (x y : Kloc F ι) :
     valuation (Kloc F ι) x < valuation (Kloc F ι) y ↔ ‖(x : PadicAlgCl p)‖ < ‖(y : PadicAlgCl p)‖ := by
@@ -37,14 +37,14 @@ theorem valuation_lt_iff_Kloc (ι : Ω →+* PadicAlgCl p) (x y : Kloc F ι) :
     locVal_apply, locVal_apply]
 
 /- English proof (translation)
-Rewrite using `[← not_lt, valuation_lt_iff_Kloc, not_lt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_le_iff_Kloc (ι : Ω →+* PadicAlgCl p) (x y : Kloc F ι) :
     valuation (Kloc F ι) x ≤ valuation (Kloc F ι) y ↔ ‖(x : PadicAlgCl p)‖ ≤ ‖(y : PadicAlgCl p)‖ := by
   rw [← not_lt, valuation_lt_iff_Kloc, not_lt]
 
 /- English proof (translation)
-Establish `h : (((p : ℕ) : Kloc F ι) : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (p : ℚ_[p])`. Simplify using the standard rewrite rules. Rewrite using `[h, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_p_Kloc (ι : Ω →+* PadicAlgCl p) : ‖(((p : ℕ) : Kloc F ι) : PadicAlgCl p)‖ < 1 := by
   have h : (((p : ℕ) : Kloc F ι) : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (p : ℚ_[p]) := by
@@ -53,7 +53,7 @@ theorem norm_natCast_p_Kloc (ι : Ω →+* PadicAlgCl p) : ‖(((p : ℕ) : Kloc
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Establish `h` using `valuation_le_iff_Kloc ι x 1`. Rewrite `h` using `[map_one]`. Rewrite using `[Valuation.mem_integer_iff, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_integer_Kloc (ι : Ω →+* PadicAlgCl p) (x : Kloc F ι) :
     x ∈ 𝒪[Kloc F ι] ↔ ‖(x : PadicAlgCl p)‖ ≤ 1 := by
@@ -63,23 +63,21 @@ theorem mem_integer_Kloc (ι : Ω →+* PadicAlgCl p) (x : Kloc F ι) :
   simp
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℚ_[p] (Kloc F ι)` using `finiteDimensional_Kloc ι`. Establish `: ProperSpace (Kloc F ι)` using `FiniteDimensional.proper ℚ_[p] (Kloc F ι)`. Use `set q : Kloc F ι := ((p : ℕ) : Kloc F ι) with hq`. Establish `hq1 : ‖(q : PadicAlgCl p)‖ < 1` using `norm_natCast_p_Kloc ι`. Establish `hq0 : q ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq]`. Conclude with `(Fact.out : p.Prime).ne_zero` after adjusting the coercions. Establish `hqn : 0 < ‖(q : PadicAlgCl p)‖`. Rewrite using `[norm_pos_iff]`. Conclude with `hq0` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hnt : ValuativeRel.IsNontrivial (Kloc F ι)`. Use `⟨⟨valuation (Kloc F ι) q, ?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `using hq0`. Introduce `h`. Use `(valuation_lt_iff_Kloc ι q 1).2 (by simpa using hq1)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite `this` using `[h, map_one]`. Conclude with `lt_irrefl _ this`. Establish `hvt : IsValuativeTopology (Kloc F ι)`. Prove the components needed by the constructor for the conclusion. Introduce `s x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Metric.mem_nhds_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ε, hε, hs⟩`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε hq1`. Establish `hqn0 : q ^ n ≠ 0` using `pow_ne_zero _ hq0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨Units.mk0 (valuation (Kloc F ι) (q ^ n)) (by simpa using hqn0), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Apply `hs` to reduce the goal to its premises. Rewrite `hz` using `[Set.mem_ofPred_eq, Units.val_mk0, valuation_lt_iff_Kloc]`. Rewrite using `[Metric.mem_ball, dist_eq_norm, add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨γ, hγ⟩`. Take `⟨y, hy⟩` from `valuation_surjective (γ : ValueGroupWithZero (Kloc F ι))`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `at hy`. Conclude with `γ.ne_zero hy.symm`. Use `⟨‖(y : PadicAlgCl p)‖, by rw [gt_iff_lt, norm_pos_iff]; exact_mod_cast hy0, fun w hw => hγ ?_⟩` and prove the remaining obligations. Use `⟨w - x, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[Set.mem_ofPred_eq, ← hy, valuation_lt_iff_Kloc]`.
-
-Rewrite `hw` using `[Metric.mem_ball, dist_eq_norm]`. Conclude with `hw`. Conclude with `{ toIsValuativeTopology := hvt, toLocallyCompactSpace := inferInstance, toIsNontrivial := hnt }`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNonarchimedeanLocalField_Kloc (ι : Ω →+* PadicAlgCl p) : IsNonarchimedeanLocalField (Kloc F ι) := by
   have : FiniteDimensional ℚ_[p] (Kloc F ι) := finiteDimensional_Kloc ι

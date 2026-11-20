@@ -24,7 +24,7 @@ def typeIdem [Fintype G] (ρ : Representation ℂ G V) (σ : K →+* ℂ) (P : S
   ((Nat.card P : ℂ))⁻¹ • ∑ g : P, σ (((ψ g)⁻¹ : Kˣ) : K) • ρ (g : G)
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun x _ g => ?_` and prove the remaining obligations. Establish `: (g : G) = 1` using `Subgroup.mem_bot.1 g.2`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example (ρ : Representation ℂ G V) (σ : K →+* ℂ) : typePart ρ σ ⊥ 1 = ⊤ := by
   refine eq_top_iff.2 fun x _ g => ?_

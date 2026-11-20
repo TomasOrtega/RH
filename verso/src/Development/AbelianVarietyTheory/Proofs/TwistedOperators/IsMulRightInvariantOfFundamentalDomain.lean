@@ -19,7 +19,7 @@ def uniSet (D : D7) (ρ : ℕ) : Set (Matrix (Fin ρ) (Fin ρ) (AE D)) :=
   {M | ∀ i j : Fin ρ, (j < i → M i j = 0) ∧ M i i = 1}
 
 /- English proof (translation)
-Use `haveI : T2Space (Fin 1 → Fin 1 → AE D) := (lattice_Mx D 1 1).2.2.2.1`. Conclude with `T2Space.of_injective_continuous (f := fun a : AE D => (fun _ _ => a : Mx D 1 1)) (fun a b h => congrFun (congrFun h 0) 0) (continuous_pi fun _ => continuous_pi fun _ => continuous_id)`.
+A detailed English derivation is pending.
 -/
 private theorem t2_lemma (D : D7) : T2Space (AE D) := by
   haveI : T2Space (Fin 1 → Fin 1 → AE D) := (lattice_Mx D 1 1).2.2.2.1
@@ -27,11 +27,11 @@ private theorem t2_lemma (D : D7) : T2Space (AE D) := by
     (fun a b h => congrFun (congrFun h 0) 0) (continuous_pi fun _ => continuous_pi fun _ => continuous_id)
 
 /- English proof (translation)
-Use `haveI : T2Space (AE D) := t2_lemma D`. Establish `h1 : ∀ i j : Fin ρ, IsClosed {M : Matrix (Fin ρ) (Fin ρ) (AE D) | j < i → M i j = 0}`. Introduce `i j`. Distinguish the cases in `h : j < i`. Establish `hc : Continuous fun M : Matrix (Fin ρ) (Fin ρ) (AE D) => M i j` using `continuous_id.matrix_elem i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `isClosed_eq hc continuous_const` using `only [h, true_implies]`. Simplify using `only [h, false_implies, Set.setOf_true]`. Conclude with `isClosed_univ`. Establish `h2 : ∀ i : Fin ρ, IsClosed {M : Matrix (Fin ρ) (Fin ρ) (AE D) | M i i = 1}` using `fun i => isClosed_eq (show Continuous fun M : Matrix (Fin ρ) (Fin ρ) (AE D) => M i i from continuous_id.matrix_elem i i) continuous_const`. Establish `e : uniSet D ρ = ⋂ i, ⋂ j, ({M : Matrix (Fin ρ) (Fin ρ) (AE D) | j < i → M i j = 0} ∩ {M | M i i = 1})`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `M`. Simplify using `only [uniSet, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_inter_iff]`. Rewrite using `[e]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => (h1 i j).inter (h2 i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_uniSet (D : D7) (ρ : ℕ) : IsClosed (uniSet D ρ) := by
   haveI : T2Space (AE D) := t2_lemma D
@@ -52,7 +52,7 @@ theorem isClosed_uniSet (D : D7) (ρ : ℕ) : IsClosed (uniSet D ρ) := by
   exact isClosed_iInter fun i => isClosed_iInter fun j => (h1 i j).inter (h2 i)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (fun i j h => (hM i j).1 h)]`. Conclude with `Finset.prod_eq_one fun i _ => (hM i i).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_of_mem {M : Matrix (Fin ρ) (Fin ρ) (AE D)} (hM : M ∈ uniSet D ρ) : M.det = 1 := by
   rw [Matrix.det_of_upperTriangular (fun i j h => (hM i j).1 h)]
@@ -63,13 +63,13 @@ def toUnit (M : Matrix (Fin ρ) (Fin ρ) (AE D)) (hM : M ∈ uniSet D ρ) : GL (
     by rw [Matrix.adjugate_mul, det_of_mem hM, one_smul]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h, fun h => h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_UX_iff (u : GL (Fin ρ) (AE D)) : u ∈ UX D ρ ↔ (u : Matrix (Fin ρ) (Fin ρ) (AE D)) ∈ uniSet D ρ :=
   ⟨fun h => h, fun h => h⟩
 
 /- English proof (translation)
-Establish `hu : (u.1.1 : Matrix (Fin ρ) (Fin ρ) (AE D)) ∈ uniSet D ρ` using `(mem_UX_iff u.1).1 u.2`. Establish `h1 : u.1.1 * u.1.1.adjugate = 1` using `by rw [Matrix.mul_adjugate, det_of_mem hu, one_smul]`. Establish `h2 : (u⁻¹).1.1 * u.1.1 = 1` using `by rw [Subgroup.coe_inv, Units.inv_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_eq_adjugate (u : UX D ρ) :
     (u⁻¹).1.1 = u.1.1.adjugate := by
@@ -81,15 +81,13 @@ theorem inv_eq_adjugate (u : UX D ρ) :
     _ = u.1.1.adjugate := by rw [h2, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hc : Continuous (fun u : UX D ρ => u.1.1)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hg : Continuous (fun M : Matrix (Fin ρ) (Fin ρ) (AE D) => (M, MulOpposite.op M.adjugate))` using `continuous_id.prodMk (MulOpposite.continuous_op.comp continuous_id.matrix_adjugate)`. Establish `hind : Topology.IsInducing (fun u : UX D ρ => u.1.1)`. Use `Topology.IsInducing.of_comp hc hg ?_` and prove the remaining obligations. Establish `e : ((fun M : Matrix (Fin ρ) (Fin ρ) (AE D) => (M, MulOpposite.op M.adjugate)) ∘ fun u : UX D ρ => u.1.1) = Units.embedProduct _ ∘ (Subtype.val : UX D ρ → GL (Fin ρ) (AE D))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `u`. Simplify using `only [Function.comp_apply, Units.embedProduct_apply]`. Rewrite using `[← inv_eq_adjugate u]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.isEmbedding_embedProduct.isInducing.comp Topology.IsInducing.subtypeVal`. Use `⟨⟨hind, fun a b h => Subtype.ext (Units.ext h)⟩, ?_⟩` and prove the remaining obligations. Establish `hr : Set.range (fun u : UX D ρ => u.1.1) = uniSet D ρ`. Use extensionality with `M`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨u, rfl⟩`. Conclude with `(mem_UX_iff u.1).1 u.2`. Introduce `hM`. Conclude with `⟨⟨toUnit M hM, (mem_UX_iff _).2 hM⟩, rfl⟩`. Rewrite using `[hr]`.
-
-Conclude with `isClosed_uniSet D ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_val (D : D7) (ρ : ℕ) :
     Topology.IsClosedEmbedding (fun u : UX D ρ => u.1.1) := by
@@ -124,9 +122,7 @@ namespace GlobalTheory.UnitU
 variable {D : D7} {ρ : ℕ}
 
 /- English proof (translation)
-Take `⟨-, hlc, hsc, ht2, -⟩` from `lattice_Mx D ρ ρ`. Use `haveI : LocallyCompactSpace (Matrix (Fin ρ) (Fin ρ) (AE D)) := hlc`. Use `haveI : SecondCountableTopology (Matrix (Fin ρ) (Fin ρ) (AE D)) := hsc`. Use `haveI : T2Space (Matrix (Fin ρ) (Fin ρ) (AE D)) := ht2`. Establish `he` using `isClosedEmbedding_val D ρ`.
-
-Conclude with `⟨he.locallyCompactSpace, he.isInducing.secondCountableTopology, he.isEmbedding.t2Space⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem topology (D : D7) (ρ : ℕ) :
     LocallyCompactSpace (UX D ρ) ∧ SecondCountableTopology (UX D ρ) ∧ T2Space (UX D ρ) := by
@@ -138,9 +134,9 @@ theorem topology (D : D7) (ρ : ℕ) :
   exact ⟨he.locallyCompactSpace, he.isInducing.secondCountableTopology, he.isEmbedding.t2Space⟩
 
 /- English proof (translation)
-Take `⟨-, -, hsc, -, hd, -⟩` from `lattice_Mx D ρ ρ`. Set `f : UXQ D ρ → ratMx D ρ ρ` to `fun u => ⟨u.1.1.1, u.2.1⟩`. Establish `hf : Function.Injective f` using `fun a b h => Subtype.ext (Subtype.ext (Units.ext (congrArg Subtype.val h)))`. Establish `hc : Continuous f` using `(Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)).subtype_mk _`. Use `haveI : SecondCountableTopology (Mx D ρ ρ) := hsc`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `haveI : DiscreteTopology (ratMx D ρ ρ) := hd`. Use `haveI : Countable (ratMx D ρ ρ) := TopologicalSpace.separableSpace_iff_countable.mp inferInstance`. Conclude with `⟨hf.countable, DiscreteTopology.of_continuous_injective hc hf⟩`.
+A detailed English derivation is pending.
 -/
 theorem rational (D : D7) (ρ : ℕ) : Countable (UXQ D ρ) ∧ DiscreteTopology (UXQ D ρ) := by
   obtain ⟨-, -, hsc, -, hd, -⟩ := lattice_Mx D ρ ρ
@@ -161,7 +157,7 @@ termination_by j.val
 decreasing_by exact h
 
 /- English proof (translation)
-Rewrite using `[row]`. Simplify using `only [dite_eq_ite]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem row_eq (u : Matrix (Fin ρ) (Fin ρ) (AE D)) (pick : AE D → D.host.E) (i j : Fin ρ) :
     row u pick i j = if j < i then 0 else if j = i then 1 else
@@ -170,9 +166,9 @@ theorem row_eq (u : Matrix (Fin ρ) (Fin ρ) (AE D)) (pick : AE D → D.host.E) 
   simp only [dite_eq_ite]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Establish `key : ∀ l : Fin ρ, rat δ i l * u l j = (if l = j then incA D (δ i j) else 0) + (if l < j then incA D (δ i l) * u l j else 0)`. Introduce `l`. Break down `lt_trichotomy l j with h | rfl | h` into its components or cases. Simplify using `[h, h.ne, rat]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[(hu l l).2, rat]`. Simplify using `[not_lt.2 h.le, h.ne', (hu l j).1 h, rat]`. Rewrite using `[Finset.sum_congr rfl (fun l _ => key l), Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_apply_of_uni (δ : Matrix (Fin ρ) (Fin ρ) D.host.E) {u : Matrix (Fin ρ) (Fin ρ) (AE D)} (hu : u ∈ uniSet D ρ)
     (i j : Fin ρ) : (rat δ * u) i j = incA D (δ i j) + ∑ l : Fin ρ, if l < j then incA D (δ i l) * u l j else 0 := by
@@ -188,23 +184,23 @@ theorem mul_apply_of_uni (δ : Matrix (Fin ρ) (Fin ρ) D.host.E) {u : Matrix (F
   simp
 
 /- English proof (translation)
-Introduce `D ρ`. Take `⟨-, -, -, -, -, K, hK, hKx⟩` from `lattice_Mx D 1 1`. Establish `hcK : Continuous fun M : Mx D 1 1 => M 0 0` using `continuous_id.matrix_elem 0 0`. Use `⟨(fun M : Mx D 1 1 => M 0 0) '' K, hK.image hcK, ?_⟩` and prove the remaining obligations. Establish `hex : ∀ x : AE D, ∃ e : D.host.E, incA D e + x ∈ (fun M : Mx D 1 1 => M 0 0) '' K`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨γ, hγ, hγK⟩` from `hKx (fun _ _ => x)`. Take `⟨g, rfl⟩` from `mem_ratMx.1 hγ`. Conclude with `⟨g 0 0, _, hγK, rfl⟩`. Use `choose pick hpick using hex`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Establish `hu : u.1.1 ∈ uniSet D ρ` using `(mem_UX_iff u.1).1 u.2`. Set `δ : Matrix (Fin ρ) (Fin ρ) D.host.E` to `Matrix.of (row u.1.1 pick)`. Establish `hδ : ∀ i j, δ i j = row u.1.1 pick i j` using `fun _ _ => rfl`. Establish `hδu : ∀ i j : Fin ρ, (j < i → δ i j = 0) ∧ δ i i = 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hδ, row_eq]`. Simplify using `[h]`. Rewrite using `[hδ, row_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hr : rat δ ∈ uniSet D ρ`. Introduce `i j`. Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[rat, (hδu i j).1 h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[rat, (hδu i i).2]`. Set `w : UX D ρ` to `⟨toUnit (rat δ) hr, (mem_UX_iff _).2 hr⟩`. Establish `hw : w.1.1 = rat δ` using `rfl`. Establish `hadj : (rat δ).adjugate = rat δ.adjugate` using `(RingHom.map_adjugate (incA D) δ).symm`. Use `⟨w⁻¹, show _ ∧ _ from ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_eq_adjugate, hw, hadj]`. Conclude with `rat_mem _`. Rewrite using `[← Subgroup.coe_inv, inv_inv, hw]`. Conclude with `rat_mem δ`. Introduce `i j hij`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[inv_inv]`. Use `show (rat δ * u.1.1) i j ∈ _`. Rewrite using `[mul_apply_of_uni δ hu]`. Establish `hji : ¬ j < i` using `not_lt.2 hij.le`. Establish `hne : j ≠ i` using `hij.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : δ i j = pick (∑ l : Fin ρ, if l < j then incA D (δ i l) * u.1.1 l j else 0)`. Rewrite using `[hδ, row_eq]`. Simplify using `only [hji, hne, if_false, hδ]`. Rewrite using `[hS]`. Conclude with `hpick _`.
+A detailed English derivation is pending.
 -/
 theorem reduce : ∀ (D : D7) (ρ : ℕ), ∃ C : Set (AE D), IsCompact C ∧ ∀ u : UX D ρ, ∃ γ ∈ UXQ D ρ, ∀ i j : Fin ρ, i < j → (γ⁻¹ * u).1.1 i j ∈ C := by
   intro D ρ
@@ -254,11 +250,11 @@ theorem reduce : ∀ (D : D7) (ρ : ℕ), ∃ C : Set (AE D), IsCompact C ∧ �
     exact hpick _
 
 /- English proof (translation)
-Take `⟨C, hC, hred⟩` from `reduce D ρ`. Set `C' : Set (AE D)` to `insert 0 (insert 1 C)`. Establish `hC' : IsCompact C'` using `(hC.insert 1).insert 0`. Set `P : Set (Matrix (Fin ρ) (Fin ρ) (AE D))` to `Set.univ.pi fun _ => Set.univ.pi fun _ => C'`. Establish `hP : IsCompact P` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hC'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨(fun u : UX D ρ => u.1.1) ⁻¹' P, (isClosedEmbedding_val D ρ).isCompact_preimage hP, fun u => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hγu⟩` from `hred u`. Use `⟨γ, hγ, γ⁻¹ * u, ?_, (mul_inv_cancel_left γ u).symm⟩` and prove the remaining obligations. Establish `hk` using `(mem_UX_iff (γ⁻¹ * u).1).1 (γ⁻¹ * u).2`. Introduce `i _ j _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Conclude with `Or.inr (Or.inr (hγu i j h))`. Conclude with `Or.inr (Or.inl (hk i i).2)`. Conclude with `Or.inl ((hk i j).1 h)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the second alternative. Prove the first alternative.
 -/
 theorem cocompact (D : D7) (ρ : ℕ) :
     ∃ K : Set (UX D ρ), IsCompact K ∧ ∀ u : UX D ρ, ∃ γ ∈ UXQ D ρ, ∃ k ∈ K, u = γ * k := by
@@ -278,17 +274,15 @@ theorem cocompact (D : D7) (ρ : ℕ) :
   · exact Or.inl ((hk i j).1 h)
 
 /- English proof (translation)
-Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `hm : Measurable (fun x : G => x * g)` using `measurable_mul_const g`. Establish `hsc` using `Measure.isMulLeftInvariant_eq_smul (ν.map (fun x : G => x * g)) ν`. Use `set c := Measure.haarScalarFactor (ν.map (fun x : G => x * g)) ν with hc`. Establish `hF1 : IsFundamentalDomain Γ 𝓤 (ν.map (fun x : G => x * g))` using `h.mono (by rw [hsc]; exact Measure.smul_absolutelyContinuous)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF2 : IsFundamentalDomain Γ (Equiv.mulRight g '' 𝓤) (ν.map (fun x : G => x * g))`. Use `h.image_of_equiv (Equiv.mulRight g) ?_ (Equiv.refl _) ?_` and prove the remaining obligations. Use `MeasurePreserving.quasiMeasurePreserving ⟨?_, ?_⟩` and prove the remaining obligations. Simplify `measurable_mul_const g⁻¹` using `[Equiv.mulRight_symm]`. Rewrite using `[Equiv.mulRight_symm, Equiv.coe_mulRight, Measure.map_map (measurable_mul_const _) hm]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.comp_def, mul_assoc]`. Introduce `γ x`. Simplify using `[Subgroup.smul_def, mul_assoc]`. Establish `e1 : (ν.map (fun x : G => x * g)) (Equiv.mulRight g '' 𝓤) = ν 𝓤`. Use `(MeasurableEquiv.mulRight g).map_apply (μ := ν) (Equiv.mulRight g '' 𝓤)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[MeasurableEquiv.coe_mulRight]`. Rewrite using `[this]`. Use `congr 1`. Conclude with `(Equiv.mulRight g).preimage_image 𝓤`. Establish `e2` using `hF2.measure_eq hF1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e2` using `[e1, hsc, Measure.smul_apply]`. Establish `e3 : (c : ENNReal) * ν 𝓤 = 1 * ν 𝓤`. Rewrite using `[one_mul]`. Conclude with `(by simpa [ENNReal.smul_def] using e2.symm)`. Establish `hc1 : c = 1`.
-
-Use `(ENNReal.mul_left_inj h0 h1).1 e3` as an intermediate fact. Conclude with `this` after adjusting the coercions. Rewrite using `[hsc, hc1, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_of_fundamentalDomain {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] [LocallyCompactSpace G] [SecondCountableTopology G] (Γ : Subgroup G) [Countable Γ]
@@ -326,13 +320,13 @@ theorem isMulRightInvariant_of_fundamentalDomain {G : Type} [Group G] [Topologic
 
 open GlobalTheory.Per.UnitN in
 /- English proof (translation)
-Introduce `D ρ`. Take `⟨hlc, hsc, ht2⟩` from `topology D ρ`. Take `⟨hcount, hdisc⟩` from `rational D ρ`. Use `haveI : BorelSpace (UX D ρ) := ⟨rfl⟩`. Take `⟨K, hK, hcov⟩` from `cocompact D ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨ν, 𝓝, hH, hF, h1⟩` from `exists_unit_of_cocompact (UXQ D ρ) hK hcov`. Conclude with `⟨ν, hH, 𝓝, hF, h1⟩`. Introduce and unpack `ν ν' ⟨hH, 𝓤, hF, h1⟩ ⟨hH', 𝓤', hF', h1'⟩`. Establish `hsm` using `Measure.isMulLeftInvariant_eq_smul ν' ν`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c := Measure.haarScalarFactor ν' ν with hc`. Establish `hF'' : IsFundamentalDomain (UXQ D ρ) 𝓤 ν'` using `hF.mono (by rw [hsm]; exact Measure.smul_absolutelyContinuous)`. Establish `e` using `hF''.measure_eq hF'`. Rewrite `e` using `[h1', hsm, Measure.smul_apply, h1]`. Establish `hc1 : (c : ENNReal) = 1` using `by simpa [ENNReal.smul_def] using e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hsm, ENNReal.coe_eq_one.1 hc1, one_smul]`. Introduce and unpack `ν ⟨hH, 𝓤, hF, h1⟩`. Conclude with `isMulRightInvariant_of_fundamentalDomain (UXQ D ρ) ν hF (by rw [h1]; exact one_ne_zero) (by rw [h1]; exact ENNReal.one_ne_top)`.
+A detailed English derivation is pending.
 -/
 theorem isUnitU_exists_unique_rightInvariant : ∀ (D : D7) (ρ : ℕ), (∃ ν, IsUnitU D ρ ν) ∧ (∀ ν ν', IsUnitU D ρ ν → IsUnitU D ρ ν' → ν = ν') ∧
     ∀ ν, IsUnitU D ρ ν → ν.IsMulRightInvariant := by

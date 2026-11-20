@@ -4,7 +4,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.Rg.BcB.F.F0
 
 /- English proof (translation)
-The claim follows from `wEx_of PositivityTheory.Rg.BcB.F.Tail.joinType`.
+A detailed English derivation is pending.
 -/
 theorem wEx_holds : WEx := wEx_of PositivityTheory.Rg.BcB.F.Tail.joinType
 

@@ -14,9 +14,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteD
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩`. Use `first`. Consider the case `exact IsModuleTopology.topologicalRing (Af F) (Af F ⊗[F] E)`. Consider the case `exact IsModuleTopology.isTopologicalRing (Af F) (Af F ⊗[F] E)`. Consider the case `exact IsModuleTopology.Module.isTopologicalRing (Af F) (Af F ⊗[F] E)`.
-
-Consider the case `exact ModuleTopology.topologicalRing (Af F) (Af F ⊗[F] E)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isTopRing_tens : IsTopologicalRing (Af F ⊗[F] E) := by
   haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩
@@ -27,14 +25,14 @@ theorem isTopRing_tens : IsTopologicalRing (Af F ⊗[F] E) := by
   | exact ModuleTopology.topologicalRing (Af F) (Af F ⊗[F] E)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 private theorem subgroup_isTopologicalGroup {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (S : Subgroup G) : IsTopologicalGroup S :=
   inferInstance
 
 /- English proof (translation)
-Use `haveI := isTopRing_tens (F := F) (E := E)`. Unfold `HA HR Formalism.UG.UJ`. Conclude with `subgroup_isTopologicalGroup (G := GL (Fin n) (Af F ⊗[F] E)) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isTopGroup_HA : IsTopologicalGroup (HA (Af F) σ J) := by
   haveI := isTopRing_tens (F := F) (E := E)
@@ -42,12 +40,12 @@ theorem isTopGroup_HA : IsTopologicalGroup (HA (Af F) σ J) := by
   exact subgroup_isTopologicalGroup (G := GL (Fin n) (Af F ⊗[F] E)) _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem borel_HA : BorelSpace (HA (Af F) σ J) := ⟨rfl⟩
 
 /- English proof (translation)
-Use `haveI := isTopGroup_HA σ J`. Use `haveI := borel_HA σ J`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sub_top_borel (H : Subgroup (HA (Af F) σ J)) : IsTopologicalGroup H ∧ BorelSpace H := by
   haveI := isTopGroup_HA σ J
@@ -63,7 +61,7 @@ def OpenCompactStep : Prop :=
       IsCompact (KHg X u : Set (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)))
 
 /- English proof (translation)
-Introduce `D X hb hK u hm hl`. Take `⟨h1, h2⟩` from `sub_top_borel X.B.I.cm.sig X.B.I.J (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))`. Conclude with `⟨h1, h2, h X hb hK u hm hl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem idxTopStep_of (h : OpenCompactStep) : IdxTopStep := by
   intro D X hb hK u hm hl

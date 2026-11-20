@@ -10,17 +10,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 namespace GlobalTheory.ThetaMove.Moved
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Establish `hr : ∀ x : D.host.E, x ∈ (algebraMap (𝓞 D.host.E) D.host.E).range ↔ IsIntegral ℤ x` using `fun x => ⟨by rintro ⟨a, rfl⟩; exact a.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`. Establish `hm : ∀ x : Fin N → D.host.E, x ∈ StandardLatticesGL3.stdL D N ↔ ∀ k, IsIntegral ℤ (x k)` using `fun x => by`. Simplify using `only [StandardLatticesGL3.stdL, Submodule.mem_pi, Set.mem_univ, forall_true_left, Submodule.mem_one]`. Conclude with `forall_congr' fun k => hr (x k)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : ∀ k : Fin N, (Pi.single k 1 : Fin N → D.host.E) ∈ StandardLatticesGL3.stdL D N` using `fun k => by`. Rewrite using `[hm]`. Introduce `j`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntegral_one`. Conclude with `isIntegral_zero`. Use `⟨Submodule.fg_pi fun _ => ?_, ?_, fun y => ⟨fun hy x hx => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Submodule.one_eq_span]`. Conclude with `Submodule.fg_span_singleton _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff, ← (Pi.basisFun D.host.E (Fin N)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Simplify using `using hs k`. Rewrite using `[hr]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx`, `hy` using `[hm]`. Conclude with `IsIntegral.sum _ fun i _ => ((hx i).map (starRingEnd D.host.E).toIntAlgHom).mul (hy i)`. Rewrite using `[hm]`. Introduce `k`. Use `h _ (hs k)` as an intermediate fact.
-
-Rewrite `this` using `[hr]`. Simplify `this` using `[Formalism.BasicNotions.stdH, Pi.single_apply, apply_ite]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sd_stdL (D : D7) (N : ℕ) : StandardLatticesGL3.SD D (StandardLatticesGL3.stdL D N) := by
   letI := D.host.cmStar
@@ -52,16 +50,16 @@ theorem sd_stdL (D : D7) (N : ℕ) : StandardLatticesGL3.SD D (StandardLatticesG
     simpa [Formalism.BasicNotions.stdH, Pi.single_apply, apply_ite] using this
 
 /- English proof (translation)
-Introduce `x y`. Simplify using `[formV, map_sum, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isHerm_formV (A : ℝ) (n : Type) [Fintype n] (N N' : ℕ) : IsHerm (formV A n N N') := by
   intro x y
   simp [formV, map_sum, mul_comm]
 
 /- English proof (translation)
-Establish `: Finite (A₂ ⧸ A₁.addSubgroupOf A₂)` using `Nat.finite_of_card_ne_zero hf`. Use `⟨?_, GlobalTheory.ThetaInter.inter_mem_fixedBy hH hs₁ hd₂ hs₂ hF.2⟩` and prove the remaining obligations. Use `Fintype.ofFinite (A₂ ⧸ A₁.addSubgroupOf A₂)` as an intermediate fact. Establish `hU : ∀ x z, AnalyticAt ℂ (opU H x F) z` using `fun x z => by`. Establish `h : AnalyticAt ℂ (fun z => H z x) z` using `(LinearMap.toContinuousLinearMap (H.flip x)).analyticAt z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : AnalyticAt ℂ (fun z => F (z + x)) z` using `AnalyticAt.comp (f := fun z => z + x) (hF.1 _ (Set.mem_univ _)) (analyticAt_id.add analyticAt_const)`. Conclude with `h2.mul ((analyticAt_const.mul h).sub analyticAt_const).cexp`. Rewrite using `[GlobalTheory.ThetaInter.inter_eq]`. Introduce `z _`. Conclude with `analyticAt_const.mul (Finset.analyticAt_fun_sum _ fun c _ => analyticAt_const.mul (hU _ z))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inter_mem_Th {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V] {H : Sesq V} {α : V → ℂ}
     (hH : IsHerm H) {A₁ A₂ : AddSubgroup V} (hf : relIdx A₁ A₂ ≠ 0)
@@ -87,7 +85,7 @@ theorem iop_eq (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {a b : ℕ} (A�
       inter (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau a b) (TaylorLogMetric.al D (TaylorLogMetric.tor0 D cc δ)) A₁ A₂ G := rfl
 
 /- English proof (translation)
-Unfold `TaylorLogMetric.Iop`. Rewrite using `[mul_left_comm, mul_finsum _ c]`. Use `congr 1`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [TaylorLogMetric.U]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -102,7 +100,7 @@ theorem iop_mul (D : D7) (T : TaylorLogMetric.Tor D) {N N' : ℕ} (A B : AddSubg
 variable {D : D7} {χ : TaylorLogMetric.IdE D → ℂ} {n : ℕ} {L L' L'' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.RelDetIdeal.detId_normOne_mul D n L L' L'' h h' h'').2]`. Conclude with `hχ.1 _ _ (GlobalTheory.RelDetIdeal.detId_normOne_mul D n L L' L'' h h' h'').1 (GlobalTheory.RelDetIdeal.detId_normOne_mul D n L' L'' L'' h' h'' h'').1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_detId_mul (hχ : TaylorLogMetric.IsChi D χ) (h : StandardLatticesGL3.SD D L) (h' : StandardLatticesGL3.SD D L') (h'' : StandardLatticesGL3.SD D L'') :
     χ (TaylorLogMetric.detId D L L'') = χ (TaylorLogMetric.detId D L L') * χ (TaylorLogMetric.detId D L' L'') := by
@@ -110,9 +108,9 @@ theorem chi_detId_mul (hχ : TaylorLogMetric.IsChi D χ) (h : StandardLatticesGL
   exact hχ.1 _ _ (GlobalTheory.RelDetIdeal.detId_normOne_mul D n L L' L'' h h' h'').1 (GlobalTheory.RelDetIdeal.detId_normOne_mul D n L' L'' L'' h' h'' h'').1
 
 /- English proof (translation)
-Take `⟨⟨𝔟, -, hb⟩, h2⟩` from `GlobalTheory.RelDetIdeal.detId_normOne_mul D n L L L h h h`. Establish `h1 : TaylorLogMetric.detId D L L = 1`. Rewrite using `[← mul_one (TaylorLogMetric.detId D L L), ← hb, ← mul_assoc, ← h2]`. Establish `h3` using `chi_detId_mul hχ h h' h`. Establish `h4 : χ 1 = 1` using `by simpa [Submodule.one_eq_span] using hχ.2 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[h1, h4]`. Conclude with `left_ne_zero_of_mul_eq_one h3.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_detId_ne_zero (hχ : TaylorLogMetric.IsChi D χ) (h : StandardLatticesGL3.SD D L) (h' : StandardLatticesGL3.SD D L') : χ (TaylorLogMetric.detId D L L') ≠ 0 := by
   obtain ⟨⟨𝔟, -, hb⟩, h2⟩ := GlobalTheory.RelDetIdeal.detId_normOne_mul D n L L L h h h
@@ -124,17 +122,17 @@ theorem chi_detId_ne_zero (hχ : TaylorLogMetric.IsChi D χ) (h : StandardLattic
   exact left_ne_zero_of_mul_eq_one h3.symm
 
 /- English proof (translation)
-Introduce `D cc δ B χ a b hχ hE hL h0 ha hb`. Establish `sa` using `sd_stdL D a`. Establish `sb` using `sd_stdL D b`. Establish `hne : ∀ L L', StandardLatticesGL3.SD D L → StandardLatticesGL3.SD D L' → Base.chiFac χ a b L L' ≠ 0` using `fun L L' h h' => mul_ne_zero (zpow_ne_zero _ (chi_detId_ne_zero hχ sa h)) (zpow_ne_zero _ (chi_detId_ne_zero hχ sb h'))`. Establish `step : ∀ L₁ L₁' L₂ L₂', StandardLatticesGL3.SD D L₁ → StandardLatticesGL3.SD D L₁' → StandardLatticesGL3.SD D L₂ → StandardLatticesGL3.SD D L₂' → ∀ F, F ∈ Th (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau a b) (TaylorLogMetric.al D B.tor) (TaylorLogMetri …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `L₁ L₁' L₂ L₂' h₁ h₁' h₂ h₂' F hF`. Establish `A₁ : TaylorLogMetric.admitted D a b L₁ L₁'` using `⟨ha, hb, h₁, h₁'⟩`. Establish `A₂ : TaylorLogMetric.admitted D a b L₂ L₂'` using `⟨ha, hb, h₂, h₂'⟩`. Rewrite using `[iop_eq]`. Conclude with `inter_mem_Th (isHerm_formV _ _ _ _) (hL.2 a b _ _ _ _ A₁ A₂).1 (hL.1 a b _ _ A₁).2 (hL.1 a b _ _ A₂).1 (hL.1 a b _ _ A₂).2 hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun L L' h h' => ⟨hne L L' h h', step _ _ _ _ h sb h h' _ (step _ _ _ _ sa sb h sb _ h0)⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `L L' L'' h h' h''`. Use function extensionality and compare the values at `z`. Establish `e : Base.chiFac χ a b L L'' * B.thMoved a b L L'' z = χ (TaylorLogMetric.detId D L' L'') ^ (-((a / 2 : ℕ) : ℤ)) * TaylorLogMetric.Iop D B.tor (TaylorLogMetric.La D B.tor L L') (TaylorLogMetric.La D B.tor L L'') (fun w => Base.chiFac χ a b L L' * B.thMoved a b L L' w) z` using `congrFun (hE.2.1 a b ⟨L, h⟩ ⟨L', h'⟩ ⟨L'', h''⟩ ha hb) z`. Establish `f : Base.chiFac χ a b L L'' = χ (TaylorLogMetric.detId D L' L'') ^ (-((a / 2 : ℕ) : ℤ)) * Base.chiFac χ a b L L'`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Base.chiFac`. Rewrite using `[chi_detId_mul hχ sb h' h'', mul_zpow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e` using `[iop_mul, ← mul_assoc, ← f]`. Conclude with `mul_left_cancel₀ (hne _ _ h h'') e`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `L L₁ L' h h₁ h'`. Use function extensionality and compare the values at `z`. Establish `e : Base.chiFac χ a b L₁ L' * B.thMoved a b L₁ L' z = χ (TaylorLogMetric.detId D L L₁) ^ (((b / 2 : ℕ) : ℤ)) * TaylorLogMetric.Iop D B.tor (TaylorLogMetric.La D B.tor L L') (TaylorLogMetric.La D B.tor L₁ L') (fun w => Base.chiFac χ a b L L' * B.thMoved a b L L' w) z` using `congrFun (hE.2.2 a b ⟨L, h⟩ ⟨L₁, h₁⟩ ⟨L', h'⟩ ha hb) z`. Establish `f : Base.chiFac χ a b L₁ L' = χ (TaylorLogMetric.detId D L L₁) ^ (((b / 2 : ℕ) : ℤ)) * Base.chiFac χ a b L L'`. Unfold `Base.chiFac`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[chi_detId_mul hχ sa h h₁, mul_zpow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e` using `[iop_mul, ← mul_assoc, ← f]`. Conclude with `mul_left_cancel₀ (hne _ _ h₁ h') e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thMoved_mem_and_moves : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (a b : ℕ), TaylorLogMetric.IsChi D χ → B.EqP χ → B.LatAll → B.ThZeroMem a b → Even a → Even b → (∀ L L', StandardLatticesGL3.SD D L → StandardLatticesGL3.SD D L' → Base.chiFac χ a b L L' ≠ 0 ∧ B.thMoved a b L L' ∈ Th (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau a b) (TaylorLogMetric.al D B.tor) (TaylorLogMetric.La D B.tor L L')) ∧ (∀ L L' L'', StandardLatticesGL3.SD D L → StandardLatticesGL3.SD D L' → StandardLatticesGL3.SD D L'' → B.thMoved a b L L'' = TaylorLogMetric.Iop D B.tor (TaylorLogMetric.La D B.tor L L') (TaylorLogMetric.La D B.tor L L'') (B.thMoved a b L L')) ∧ ∀ L L₁ L', StandardLatticesGL3.SD D L → StandardLatticesGL3.SD D L₁ → StandardLatticesGL3.SD D L' → B.thMoved a b L₁ L' = TaylorLogMetric.Iop D B.tor (TaylorLogMetric.La D B.tor L L') (TaylorLogMetric.La D B.tor L₁ L') (B.thMoved a b L L') := by
   intro D cc δ B χ a b hχ hE hL h0 ha hb

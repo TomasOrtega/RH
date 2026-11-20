@@ -18,7 +18,7 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 variable {k ρ : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, ← (U.eB k 1 ρ).sum_comp]`. Simplify using `[U.Rn, U.blk3, Fintype.sum_sum_type]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nq_L (y : U.RC k 1 ρ) (Q : B.Mat k (1 + ρ)) (q : Fin (2 * (1 + ρ) + k + 1)) :
     (U.Rn k 1 ρ y * Q) (U.eB k 1 ρ (Sum.inr 0)) q = Q (U.eB k 1 ρ (Sum.inr 0)) q := by
@@ -26,7 +26,7 @@ theorem nq_L (y : U.RC k 1 ρ) (Q : B.Mat k (1 + ρ)) (q : Fin (2 * (1 + ρ) + k
   simp [U.Rn, U.blk3, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, ← (U.eB k 1 ρ).sum_comp]`. Simplify using `[U.Rn, U.blk3, Fintype.sum_sum_type, Matrix.one_apply, cy]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nq_V (y : U.RC k 1 ρ) (Q : B.Mat k (1 + ρ)) (w : Fin (2 * ρ + k + 1)) (q : Fin (2 * (1 + ρ) + k + 1)) :
     (U.Rn k 1 ρ y * Q) (U.eB k 1 ρ (Sum.inl (Sum.inr w))) q =
@@ -35,7 +35,7 @@ theorem nq_V (y : U.RC k 1 ρ) (Q : B.Mat k (1 + ρ)) (w : Fin (2 * ρ + k + 1))
   simp [U.Rn, U.blk3, Fintype.sum_sum_type, Matrix.one_apply, cy]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[G.wMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem wMat_one_eq_one : G.wMat 1 = 1 := by
   ext i j
@@ -44,7 +44,7 @@ private theorem wMat_one_eq_one : G.wMat 1 = 1 := by
   simp [G.wMat]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, ← (U.eB k 1 ρ).sum_comp]`. Simplify using `[U.Rn, U.blk3, Fintype.sum_sum_type, wMat_one_eq_one, cy, dy, nn, U.skewOf, G.strictUpper, Matrix.mul_apply, Matrix.vecMul, dotProduct, Matrix.conjTranspose_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nq_0 (y : U.RC k 1 ρ) (Q : B.Mat k (1 + ρ)) (q : Fin (2 * (1 + ρ) + k + 1)) :
     (U.Rn k 1 ρ y * Q) (U.eB k 1 ρ (Sum.inl (Sum.inl 0))) q =
@@ -56,7 +56,7 @@ theorem nq_0 (y : U.RC k 1 ρ) (Q : B.Mat k (1 + ρ)) (q : Fin (2 * (1 + ρ) + k
     Matrix.mul_apply, Matrix.vecMul, dotProduct, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, ← (U.eB k 1 ρ).sum_comp]`. Simplify using `[U.mMap, U.blk3, Fintype.sum_sum_type, wMat_one_eq_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mn_L (Z : Matrix (Fin 1) (Fin 1) ℂ) (γ : B.Mat k ρ) (N : B.Mat k (1 + ρ)) (q : Fin (2 * (1 + ρ) + k + 1)) :
     (U.mMap k 1 ρ Z γ * N) (U.eB k 1 ρ (Sum.inr 0)) q = Z 0 0 * N (U.eB k 1 ρ (Sum.inl (Sum.inl 0))) q := by
@@ -64,7 +64,7 @@ theorem mn_L (Z : Matrix (Fin 1) (Fin 1) ℂ) (γ : B.Mat k ρ) (N : B.Mat k (1 
   simp [U.mMap, U.blk3, Fintype.sum_sum_type, wMat_one_eq_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, ← (U.eB k 1 ρ).sum_comp]`. Simplify using `[U.mMap, U.blk3, Fintype.sum_sum_type]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mn_V (Z : Matrix (Fin 1) (Fin 1) ℂ) (γ : B.Mat k ρ) (N : B.Mat k (1 + ρ)) (w : Fin (2 * ρ + k + 1))
     (q : Fin (2 * (1 + ρ) + k + 1)) :
@@ -74,7 +74,7 @@ theorem mn_V (Z : Matrix (Fin 1) (Fin 1) ℂ) (γ : B.Mat k ρ) (N : B.Mat k (1 
   simp [U.mMap, U.blk3, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, ← (U.eB k 1 ρ).sum_comp]`. Simplify using `[U.mMap, U.blk3, Fintype.sum_sum_type]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mn_0 (Z : Matrix (Fin 1) (Fin 1) ℂ) (γ : B.Mat k ρ) (N : B.Mat k (1 + ρ)) (q : Fin (2 * (1 + ρ) + k + 1)) :
     (U.mMap k 1 ρ Z γ * N) (U.eB k 1 ρ (Sum.inl (Sum.inl 0))) q =
@@ -83,41 +83,41 @@ theorem mn_0 (Z : Matrix (Fin 1) (Fin 1) ℂ) (γ : B.Mat k ρ) (N : B.Mat k (1 
   simp [U.mMap, U.blk3, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Simplify using `[radical_unipotent_rank_one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem radial_entry_middle_zero (y : U.RC k 1 ρ) (v : Fin (2 * ρ + k + 1)) :
     U.Rn k 1 ρ y (U.eB k 1 ρ (Sum.inl (Sum.inr v))) (U.eB k 1 ρ (Sum.inl (Sum.inl 0))) = 0 := by
   simp [radical_unipotent_rank_one_apply]
 
 /- English proof (translation)
-Simplify using `[radical_unipotent_rank_one_apply, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rn_VV (y : U.RC k 1 ρ) (v u : Fin (2 * ρ + k + 1)) :
     U.Rn k 1 ρ y (U.eB k 1 ρ (Sum.inl (Sum.inr v))) (U.eB k 1 ρ (Sum.inl (Sum.inr u))) = if v = u then 1 else 0 := by
   simp [radical_unipotent_rank_one_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `[radical_unipotent_rank_one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem radial_entry_lower_zero (y : U.RC k 1 ρ) :
     U.Rn k 1 ρ y (U.eB k 1 ρ (Sum.inr 0)) (U.eB k 1 ρ (Sum.inl (Sum.inl 0))) = 0 := by
   simp [radical_unipotent_rank_one_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `unfold Hpk; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_le (a b : Fin (2 * ρ + k + 1)) : ‖Hpk k ρ a b‖ ≤ 1 := by
   unfold Hpk; split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.Qx2.hpk_sq'`.
+A detailed English derivation is pending.
 -/
 theorem hpk_sq : Hpk k ρ * Hpk k ρ = 1 := Formalism.FourierDecayAlt.P.Qx2.hpk_sq'
 
 /- English proof (translation)
-Rewrite using `[Matrix.vecMul]`. Unfold `dotProduct`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = N * A := by simp`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem vm_bd {N : ℕ} (s : Fin N → ℂ) (H : Matrix (Fin N) (Fin N) ℂ) (hH : ∀ i j, ‖H i j‖ ≤ 1) {A : ℝ}
     (hA : 0 ≤ A) (hs : ∀ i, ‖s i‖ ≤ A) (v : Fin N) : ‖Matrix.vecMul s H v‖ ≤ N * A := by
@@ -133,9 +133,9 @@ theorem vm_bd {N : ℕ} (s : Fin N → ℂ) (H : Matrix (Fin N) (Fin N) ℂ) (hH
     _ = N * A := by simp
 
 /- English proof (translation)
-Unfold `dotProduct`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[norm_mul]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul (hu i) (hw i) (norm_nonneg _) hA`. Use `_ = N * (A * B') := by simp`.
+A detailed English derivation is pending.
 -/
 theorem dot_bd {N : ℕ} (u w : Fin N → ℂ) {A B' : ℝ} (hA : 0 ≤ A) (hB : 0 ≤ B') (hu : ∀ i, ‖u i‖ ≤ A)
     (hw : ∀ i, ‖w i‖ ≤ B') : ‖u ⬝ᵥ w‖ ≤ N * (A * B') := by
@@ -149,7 +149,7 @@ theorem dot_bd {N : ℕ} (u w : Fin N → ℂ) {A B' : ℝ} (hA : 0 ≤ A) (hB :
     _ = N * (A * B') := by simp
 
 /- English proof (translation)
-Rewrite `h` using `[norm_mul]`. Rewrite using `[le_div_iff₀ hδ]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem div_bd {a t : ℂ} {B' δ : ℝ} (hδ : 0 < δ) (ht : δ ≤ ‖t‖) (h : ‖a * t‖ ≤ B') : ‖a‖ ≤ B' / δ := by
   rw [norm_mul] at h
@@ -158,19 +158,17 @@ theorem div_bd {a t : ℂ} {B' δ : ℝ} (hδ : 0 < δ) (ht : δ ≤ ‖t‖) (h
     _ ≤ B' := h
 
 /- English proof (translation)
-Rewrite using `[norm_mul, Complex.norm_I, one_mul, Complex.norm_real, Real.norm_eq_abs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_Id (d : ℝ) : ‖Complex.I * (d : ℂ)‖ = |d| := by
   rw [norm_mul, Complex.norm_I, one_mul, Complex.norm_real, Real.norm_eq_abs]
 
 /- English proof (translation)
-Establish `h1 : ‖x.1‖ ≤ M`. Use `(pi_norm_le_iff_of_nonneg hM).2 fun v => (pi_norm_le_iff_of_nonneg hM).2 fun i => ?_` and prove the remaining obligations. Establish `hi : i = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Conclude with `hc v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h2 : ‖x.2.1‖ ≤ M`. Use `(pi_norm_le_iff_of_nonneg hM).2 fun p => ?_` and prove the remaining obligations. Conclude with `absurd p.2 (by have := p.1.1.2; have := p.1.2.2; omega)`. Establish `h3 : ‖x.2.2‖ ≤ M`. Use `(pi_norm_le_iff_of_nonneg hM).2 fun i => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hi : i = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Rewrite using `[Real.norm_eq_abs]`. Conclude with `hd`. Rewrite using `[Prod.norm_def, Prod.norm_def]`.
-
-Conclude with `max_le h1 (max_le h2 h3)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rc_bd (x : U.RC k 1 ρ) {M : ℝ} (hM : 0 ≤ M) (hc : ∀ v, ‖cy x v‖ ≤ M) (hd : |dy x| ≤ M) : ‖x‖ ≤ M := by
   have h1 : ‖x.1‖ ≤ M := by
@@ -191,7 +189,7 @@ theorem rc_bd (x : U.RC k 1 ρ) {M : ℝ} (hM : 0 ≤ M) (hc : ∀ v, ‖cy x v�
   exact max_le h1 (max_le h2 h3)
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, fun v => ?_, ?_⟩ <;>`. Simplify using `[U.Rn, U.blk3, wMat_one_eq_one, cy, dy, nn, U.skewOf, G.strictUpper, Matrix.mul_apply, Matrix.vecMul, dotProduct, Matrix.conjTranspose_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem rn_eB_zero_entries_eq (y : U.RC k 1 ρ) :
     U.Rn k 1 ρ y (U.eB k 1 ρ (Sum.inl (Sum.inl 0))) (U.eB k 1 ρ (Sum.inl (Sum.inl 0))) = 1 ∧
@@ -204,7 +202,7 @@ private theorem rn_eB_zero_entries_eq (y : U.RC k 1 ρ) :
       Matrix.vecMul, dotProduct, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-The claim follows from `|dy x| ≤ R / δ + ((2 * ρ + k + 1 : ℕ) : ℝ) * ((((2 * ρ + k + 1 : ℕ) : ℝ) * (R / δ)) * (R / δ)) / 2 ∧ (∀ v, ‖cy x' v‖ ≤ ((2 * ρ + k + 1 : ℕ) : ℝ) * (R / δ)) ∧ |dy x'| ≤ R / δ + ((2 * ρ + k + 1 : ℕ) : ℝ) * ((R / δ) * (((2 * ρ + k + 1 : ℕ) : ℝ) * (R / δ))) / 2 ∧ ∀ i j, ‖γ i j‖ ≤ R + …`.
+A detailed English derivation is pending.
 -/
 theorem rad_main (t : ℂ) (γ : B.Mat k ρ) (x x' : U.RC k 1 ρ) {R δ : ℝ} (hδ : 0 < δ) (hR0 : 0 ≤ R)
     (ht : δ ≤ ‖t‖)
@@ -321,21 +319,19 @@ namespace Formalism.FourierDecayAlt.P.CutSH.SFG
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P.PBH Formalism.FourierDecayAlt.P.CutSH.SFG.RP
 
 /- English proof (translation)
-Introduce `k ρ m e δ R hδ`. Use `set R0 := max R 0 with hR0def`. Establish `hR0 : 0 ≤ R0` using `le_max_right _ _`. Establish `hb : 0 ≤ R0 / δ` using `div_nonneg hR0 hδ.le`. Establish `hn : (0 : ℝ) ≤ ((2 * ρ + k + 1 : ℕ) : ℝ)` using `Nat.cast_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnb : 0 ≤ ((2 * ρ + k + 1 : ℕ) : ℝ) * (R0 / δ)` using `mul_nonneg hn hb`. Use `set Mx := R0 / δ + ((2 * ρ + k + 1 : ℕ) : ℝ) * ((((2 * ρ + k + 1 : ℕ) : ℝ) * (R0 / δ)) * (R0 / δ)) / 2 with hMx`. Use `set Mx' := ((2 * ρ + k + 1 : ℕ) : ℝ) * (R0 / δ) + (R0 / δ + ((2 * ρ + k + 1 : ℕ) : ℝ) * ((R0 / δ) * (((2 * ρ + k + 1 : ℕ) : ℝ) * (R0 / δ))) / 2) with hMx'`. Establish `h1 : 0 ≤ ((2 * ρ + k + 1 : ℕ) : ℝ) * ((((2 * ρ + k + 1 : ℕ) : ℝ) * (R0 / δ)) * (R0 / δ)) / 2` using `div_nonneg (mul_nonneg hn (mul_nonneg hnb hb)) (by norm_num)`. Establish `h2 : 0 ≤ R0 / δ + ((2 * ρ + k + 1 : ℕ) : ℝ) * ((R0 / δ) * (((2 * ρ + k + 1 : ℕ) : ℝ) * (R0 / δ))) / 2` using `add_nonneg hb (div_nonneg (mul_nonneg hn (mul_nonneg hb hnb)) (by norm_num))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hMx0 : 0 ≤ Mx` using `add_nonneg hb h1`. Establish `hMx'0 : 0 ≤ Mx'` using `add_nonneg hnb h2`. Use `⟨Metric.closedBall (0 : U.RC k 1 ρ) Mx ×ˢ Metric.closedBall (0 : U.RC k 1 ρ) Mx', {γ | ∀ i j, ‖γ i j‖ ≤ R0 + R0 / δ * R0}, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(isCompact_closedBall _ _).prod (isCompact_closedBall _ _)`. Establish `hc` using `isCompact_univ_pi fun _ : Fin (2 * ρ + k + 1) => isCompact_univ_pi fun _ : Fin (2 * ρ + k + 1) => isCompact_closedBall (0 : ℂ) (R0 + R0 / δ * R0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.pi, Set.mem_univ, forall_const, Metric.mem_closedBall, dist_zero_right] at hc`. Conclude with `hc`. Introduce `t γ xx ht hg`. Apply the tactic sequence `have entry : ∀ p q : Fin (2 * (1 + ρ) + k + 1), ((U.Rn k 1 ρ xx.1)⁻¹ * U.mMap k 1 ρ (Matrix.of fun _ _ => t) γ * U.Rn k 1 ρ xx.2) p q = pt e t γ xx (finCongr (by omega) p) (finCongr (by omega) q) := by`. Introduce `p q`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Substitute `e` using the available equality. Simplify using `[pt, rn1, mc, D.castM, Matrix.reindex_apply, Matrix.inv_submatrix_equiv, Matrix.submatrix_mul_equiv]`. Establish `gbd : ∀ i j, ‖pt e t γ xx i j‖ ≤ B.gN (pt e t γ xx)`. Introduce `i j`. Rewrite using `[Complex.norm_def]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `B.gN`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hQ : ∀ p q, ‖((U.Rn k 1 ρ xx.1)⁻¹ * U.mMap k 1 ρ (Matrix.of fun _ _ => t) γ * U.Rn k 1 ρ xx.2) p q‖ ≤ R0`. Introduce `p q`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[entry]`. Conclude with `(gbd _ _).trans (hg.trans (le_max_left _ _))`. Take `⟨hc1, hd1, hc2, hd2, hγ⟩` from `rad_main t γ xx.1 xx.2 hδ hR0 ht hQ`. Use `⟨Set.mem_prod.2 ⟨?_, ?_⟩, hγ⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff]`.
-
-Conclude with `rc_bd _ hMx0 (fun v => (hc1 v).trans (le_add_of_nonneg_right h1)) hd1`. Rewrite using `[mem_closedBall_zero_iff]`. Conclude with `rc_bd _ hMx'0 (fun v => (hc2 v).trans (le_add_of_nonneg_right h2)) (hd2.trans (le_add_of_nonneg_left hnb))`.
+A detailed English derivation is pending.
 -/
 theorem radial_proper : RadProper := by
   intro k ρ m e δ R hδ

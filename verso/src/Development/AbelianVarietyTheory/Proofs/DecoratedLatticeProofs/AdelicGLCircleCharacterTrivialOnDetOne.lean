@@ -16,17 +16,15 @@ open GlobalTheory.Unf
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h2`. Set `f : Fin n → R` to `Function.update 1 i 2`. Set `g : Fin n → R` to `Function.update 1 i (↑w⁻¹ : R)`. Establish `hfg : ∀ k, f k * g k = 1`. Introduce `k`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[f, g, ← hw]`. Simplify using `[f, g, hk]`. Establish `hgf : ∀ k, g k * f k = 1` using `fun k => by rw [mul_comm]; exact hfg k`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `d : GL (Fin n) R` to `⟨Matrix.diagonal f, Matrix.diagonal g, by rw [Matrix.diagonal_mul_diagonal]; simp [hfg], by rw [Matrix.diagonal_mul_diagonal]; simp [hgf]⟩`. Establish `hcomm : d * u = u * u * d`. Apply `Units.ext` to reduce the goal to its premises. Establish `hfi : f i = 2` using `by simp [f]`. Establish `hfj : f j = 1` using `by simp [f, hij.symm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Matrix.diagonal f * u.1 = u.1 * u.1 * Matrix.diagonal f`. Rewrite using `[hu, Matrix.transvection_mul_transvection_same _ _ hij]`. Use extensionality with `a b`. Simplify using `only [Matrix.transvection, Matrix.add_mul, Matrix.mul_add, Matrix.mul_one, Matrix.one_mul, Matrix.add_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.single_apply, Matrix.diagonal_apply, Matrix.one_apply]`. Use `clear_value f g d`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `clear hfg hgf`. Apply the tactic sequence `split_ifs <;> subst_vars <;> simp_all <;> ring`. Establish `h` using `congrArg α hcomm`. Simplify using `only [map_mul] at h`. Establish `h' : α d * α u = α d * (α u * α u)` using `by rw [h]; exact mul_comm _ _ |>.trans (by rfl)`.
-
-Establish `h''` using `mul_left_cancel h'`. Conclude with `(mul_eq_left.mp h''.symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem glChar_transvection {R : Type} [CommRing R] (h2 : IsUnit (2 : R)) {n : ℕ}
     (α : GL (Fin n) R →* Circle) (i j : Fin n) (hij : i ≠ j) (t : R)
@@ -64,9 +62,9 @@ theorem glChar_transvection {R : Type} [CommRing R] (h2 : IsUnit (2 : R)) {n : �
   exact (mul_eq_left.mp h''.symm)
 
 /- English proof (translation)
-Introduce `D n α _ a ha`. Establish `h2 : IsUnit (2 : AE D)`. Establish `h` using `(IsUnit.mk0 (2 : D.host.F) two_ne_zero).map (algebraMap D.host.F (AE D))`. Rewrite `h` using `[map_ofNat]`. Then use the resulting hypothesis. Use `GlobalTheory.T.special_linear_generated_by_transvections (AE D) (GlobalTheory.T.stableRangeOne_adeles_cmField D) n α.ker (fun i j hij t u hu => MonoidHom.mem_ker.mpr (glChar_transvection h2 α i j hij t u hu)) a ha` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `MonoidHom.mem_ker.mp this`.
+A detailed English derivation is pending.
 -/
 theorem glChar_eq_one_of_det_eq_one : ∀ (D : D7) (n : ℕ) (α : GL (Fin n) (AE D) →* Circle),
     Continuous α → ∀ a, Matrix.GeneralLinearGroup.det a = 1 → α a = 1 := by

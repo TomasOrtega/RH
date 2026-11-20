@@ -13,11 +13,9 @@ namespace GlobalTheory.DelGlob.LocalDict
 variable (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Use `set φ := IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt F`. Establish `h0 : φ (uniformizer F) ≠ 0` using `by simp`. Apply `le_antisymm` to reduce the goal to its premises. Establish `: φ (uniformizer F) < φ 1` using `φ.strictMono uniformizer_lt_one`. Rewrite `this` using `[map_one, ← WithZero.exp_log h0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← WithZero.exp_log h0, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `: φ.symm (WithZero.exp (-1)) ≤ uniformizer F`. Rewrite using `[le_uniformizer_iff, ← map_one φ.symm]`. Conclude with `φ.symm.strictMono (by rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; omega)`.
-
-Simplify using `using φ.strictMono.monotone this`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem valueGroupIso_uniformizer :
     IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt F (uniformizer F) = WithZero.exp (-1) := by
@@ -36,13 +34,13 @@ theorem valueGroupIso_uniformizer :
 variable {F}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SmGL.ord, GroundTheory.LocalField.ord, GroundTheory.LocalField.normalizedValuation_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_eq_ord (x : Fˣ) : GlobalTheory.SmGL.ord F x = GroundTheory.LocalField.ord (x : F) := by
   rw [GlobalTheory.SmGL.ord, GroundTheory.LocalField.ord, GroundTheory.LocalField.normalizedValuation_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Conclude with `MonoidHom.mem_ker.mpr (h x (GroundTheory.LocalField.mem_unitFiltrationUnits_zero_iff.mp hx))`. Introduce `h x hx`. Conclude with `MonoidHom.mem_ker.mp (h (GroundTheory.LocalField.mem_unitFiltrationUnits_zero_iff.mpr hx))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnram_iff (χ : Fˣ →* ℂˣ) : GlobalTheory.SplitWeil.IsUnram χ ↔ GroundTheory.LocalField.IsUnramifiedChar χ := by
   constructor
@@ -52,13 +50,13 @@ theorem isUnram_iff (χ : Fˣ →* ℂˣ) : GlobalTheory.SplitWeil.IsUnram χ �
     exact MonoidHom.mem_ker.mp (h (GroundTheory.LocalField.mem_unitFiltrationUnits_zero_iff.mpr hx))
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[GroundTheory.LocalField.mem_unitFiltrationUnits_zero_iff]`. Use `⟨fun h => h.1, fun h => ⟨h, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[pow_zero]`. Conclude with `(Valuation.map_sub _ _ _).trans (by simp [h])`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`. Rewrite using `[GroundTheory.LocalField.mem_unitFiltrationUnits_iff hn hϖ]`. Establish `hv : valuation F (ϖ : F) = uniformizer F`. Establish `e : IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt F (valuation F (ϖ : F)) = IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt F (uniformizer F)`. Rewrite using `[← GroundTheory.LocalField.normalizedValuation_apply, GroundTheory.LocalField.normalizedValuation_uniformizer hϖ, valueGroupIso_uniformizer]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `EquivLike.injective _ e`. Rewrite using `[hv]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, h⟩` and prove the remaining obligations. Establish `hlt : valuation F ((x : F) - 1) < 1` using `h.trans_lt (pow_lt_one₀ zero_le uniformizer_lt_one (by omega))`. Simplify using `using (valuation F).map_one_add_of_lt hlt`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_unitFilt_iff (n : ℕ) (x : Fˣ) :
     x ∈ GlobalTheory.LocLanglands.unitFilt F n ↔ x ∈ GroundTheory.LocalField.unitFiltrationUnits F n := by
@@ -85,11 +83,11 @@ theorem mem_unitFilt_iff (n : ℕ) (x : Fˣ) :
       simpa using (valuation F).map_one_add_of_lt hlt
 
 /- English proof (translation)
-Establish `hmem : ∀ n, GroundTheory.LocalField.unitFiltrationUnits F n ≤ χ.ker ↔ ∀ x ∈ GlobalTheory.LocLanglands.unitFilt F n, χ x = 1`. Introduce `n`. Prove the components needed by the constructor for the conclusion. Introduce `hk x hx`. Conclude with `MonoidHom.mem_ker.mp (hk ((mem_unitFilt_iff n x).1 hx))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hk x hx`. Conclude with `MonoidHom.mem_ker.mpr (hk x ((mem_unitFilt_iff n x).2 hx))`. Unfold `GroundTheory.LocalField.quasiCharConductor`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Nat.sInf_le ((hmem a).2 h.1)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hlt push_neg at hlt`. Establish `hs : GroundTheory.LocalField.unitFiltrationUnits F (sInf {n : ℕ | GroundTheory.LocalField.unitFiltrationUnits F n ≤ χ.ker}) ≤ χ.ker` using `Nat.sInf_mem (s := {n : ℕ | GroundTheory.LocalField.unitFiltrationUnits F n ≤ χ.ker}) ⟨a, (hmem a).2 h.1⟩`. Take `⟨x, hx, hx'⟩` from `h.2 _ hlt`. Conclude with `hx' (((hmem _).1 hs) x hx)`.
+A detailed English derivation is pending.
 -/
 theorem quasiCharConductor_eq_of_hasExponent (χ : Fˣ →* ℂˣ) (a : ℕ) (h : GlobalTheory.LocLanglands.HasExponent χ a) :
     GroundTheory.LocalField.quasiCharConductor χ = a := by
@@ -111,11 +109,11 @@ theorem quasiCharConductor_eq_of_hasExponent (χ : Fˣ →* ℂˣ) (a : ℕ) (h 
     exact hx' (((hmem _).1 hs) x hx)
 
 /- English proof (translation)
-Establish `key : ∀ n : ℤ, GroundTheory.LocalField.IsTrivialOn ψ n ↔ GlobalTheory.SmGL.ord F c ≤ n`. Introduce `n`. Take `⟨y, hy⟩` from `GroundTheory.LocalField.exists_normalizedValuation_eq F (-n)`. Establish `hball : ∀ z : F, z ∈ GroundTheory.LocalField.valBall F n ↔ valuation F z ≤ valuation F y`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[GroundTheory.LocalField.mem_valBall, ← hy, GroundTheory.LocalField.normalizedValuation_le_iff]`. Establish `e1 : GroundTheory.LocalField.IsTrivialOn ψ n ↔ ∀ z : F, valuation F z ≤ valuation F y → ψ z = 1` using `forall_congr' fun z => imp_congr_left (hball z)`. Rewrite using `[e1, h y, ← GroundTheory.LocalField.normalizedValuation_le_iff, hy, GroundTheory.LocalField.normalizedValuation_eq_exp_ord c.ne_zero, WithZero.exp_le_exp, ord_eq_ord]`. Use linear arithmetic over natural numbers and integers. Unfold `GroundTheory.LocalField.addCharConductor`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Establish `hs : {n : ℤ | GroundTheory.LocalField.IsTrivialOn ψ n} = Set.Ici (GlobalTheory.SmGL.ord F c)`. Use extensionality with `n`. Conclude with `key n`. Rewrite using `[hs, csInf_Ici]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addCharConductor_eq_of_hasConductor (ψ : AddChar F Circle) (c : Fˣ)
     (h : GlobalTheory.SplitWeil.HasConductor ψ c) :
@@ -141,7 +139,7 @@ end GlobalTheory.DelGlob.LocalDict
 namespace GlobalTheory.DelGlob
 
 /- English proof (translation)
-Introduce `F _ _ _ _`. Conclude with `⟨rfl, fun x => LocalDict.ord_eq_ord x, fun χ => LocalDict.isUnram_iff χ, fun χ a h => LocalDict.quasiCharConductor_eq_of_hasExponent χ a h, fun ψ c h => LocalDict.addCharConductor_eq_of_hasConductor ψ c h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem localVocabularyDictionary : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F], resCard F = GroundTheory.LocalField.residueCard F ∧ (∀ x : Fˣ, ord F x = GroundTheory.LocalField.ord (x : F)) ∧ (∀ χ : Fˣ →* ℂˣ, IsUnram χ ↔ GroundTheory.LocalField.IsUnramifiedChar χ) ∧ (∀ (χ : Fˣ →* ℂˣ) (a : ℕ), HasExponent χ a → GroundTheory.LocalField.quasiCharConductor χ = a) ∧ ∀ (ψ : AddChar F Circle) (c : Fˣ), HasConductor ψ c → GroundTheory.LocalField.addCharConductor ψ = ord F c := by
   intro F _ _ _ _

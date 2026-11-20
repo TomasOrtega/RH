@@ -19,16 +19,14 @@ variable {k : Type} [CommRing k] {d n l : ℕ}
 def ac (A : Q k d 1) (u : Q k d n) : Q k d n := sq ![u] A
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun i => sb_sb b a (p.1 i))`.
+A detailed English derivation is pending.
 -/
 private theorem sq_sq_lemma {m : ℕ} (b : Fin n → Q k d l) (a : Fin m → Q k d n) (p : Q k d m) :
     sq b (sq a p) = sq (fun j => sq b (a j)) p :=
   Subtype.ext (funext fun i => sb_sb b a (p.1 i))
 
 /- English proof (translation)
-Use `show sq b (sq ![u] A) = sq ![sq b u] A`. Establish `h : (fun j => sq b (![u] j)) = ![sq b u]`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
-
-Rewrite using `[sq_sq_lemma, h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem sq_ac (b : Fin n → Q k d l) (A : Q k d 1) (u : Q k d n) : sq b (ac A u) = ac A (sq b u) := by
   show sq b (sq ![u] A) = sq ![sq b u] A
@@ -37,17 +35,17 @@ Rewrite using `[sq_sq_lemma, h]`.
   rw [sq_sq_lemma, h]
 
 /- English proof (translation)
-Unfold `E2`. Conclude with `map_add _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem eval_two_add (f g : PS k 2 d) (u v : Q k d n) : E2 (f + g) u v = E2 f u v + E2 g u v := by
   unfold E2; exact map_add _ _ _
 /- English proof (translation)
-Unfold `E2`. Conclude with `map_sub _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem eval_two_sub (f g : PS k 2 d) (u v : Q k d n) : E2 (f - g) u v = E2 f u v - E2 g u v := by
   unfold E2; exact map_sub _ _ _
 /- English proof (translation)
-Unfold `E2`. Establish `h : (fun j => sq ![u, v] (![p, q] j)) = ![sq ![u, v] p, sq ![u, v] q]`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`. Rewrite using `[sb_sb, h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_two_eval_two (f : PS k 2 d) (p q : Q k d 2) (u v : Q k d n) : E2 (E2 f p q) u v = E2 f (sq ![u, v] p) (sq ![u, v] q) := by
   unfold E2
@@ -58,7 +56,7 @@ theorem eval_two_eval_two (f : PS k 2 d) (p q : Q k d 2) (u v : Q k d n) : E2 (E
 variable [Algebra ℚ k]
 
 /- English proof (translation)
-Unfold `E2`. Conclude with `map_rat_smul _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem eval_two_smul (c : ℚ) (f : PS k 2 d) (u v : Q k d n) : E2 (c • f) u v = c • E2 f u v := by
   unfold E2; exact map_rat_smul _ _ _
@@ -82,7 +80,7 @@ def biOp (A B : Q k d 1) (hA : ∀ (n) (u v : Q k d n), ac A (u + v) = ac A u + 
   map_smul' _ _ := Subtype.ext (eval_two_smul _ _ _ _)
 
 /- English proof (translation)
-Use `show E2 (E2 f.1 (ac A (gen 0 : Q k d 2)) (ac B (gen 1 : Q k d 2))) x v = _`. Rewrite using `[eval_two_eval_two, sq_ac, sq_ac, sq_gen, sq_gen]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bilinearOp_eval_two (A B : Q k d 1) (hA) (hB) (f : Bi k d) (x v : Q k d n) :
     E2 (biOp A B hA hB f).1 x v = E2 f.1 (ac A x) (ac B v) := by
@@ -91,14 +89,14 @@ theorem bilinearOp_eval_two (A B : Q k d 1) (hA) (hB) (f : Bi k d) (x v : Q k d 
   rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext ((formalSeriesValueAtTwoPoints_genericPoints f.1).symm.trans (h.trans (formalSeriesValueAtTwoPoints_genericPoints g.1)))`.
+A detailed English derivation is pending.
 -/
 theorem bi_ext {f g : Bi k d} (h : E2 f.1 (gen 0 : Q k d 2) (gen 1) = E2 g.1 (gen 0) (gen 1)) : f = g :=
   Subtype.ext ((formalSeriesValueAtTwoPoints_genericPoints f.1).symm.trans (h.trans (formalSeriesValueAtTwoPoints_genericPoints g.1)))
 
 omit [Algebra ℚ k] in
 /- English proof (translation)
-Use `show sq ![u] (gen 0) = u`. Rewrite using `[sq_gen]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ac_gen (u : Q k d n) : ac (gen 0) u = u := by
   show sq ![u] (gen 0) = u
@@ -106,53 +104,49 @@ theorem ac_gen (u : Q k d n) : ac (gen 0) u = u := by
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨H₀, h₀, z₀, -⟩` from `split p p0 ps pc`. Set `H₁ : PS k 2 d` to `H₀ - E2 H₀ (gen 0) 0`. Establish `e₁ : ∀ {n} (x w : Q k d n), E2 H₁ x w = E2 H₀ x w - E2 H₀ x 0` using `fun x w => by simp [H₁, eval_two_sub, eval_two_eval_two]`. Establish `h₁ : ∀ {n} (x y w : Q k d n), E3 p x y w = E2 H₁ x w + E2 H₁ y w - E2 H₁ (x + y) w` using `fun x y w => by`. Use `h₀ x y 0` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[p2]`. Rewrite using `[e₁, e₁, e₁, h₀]`. Take the linear combination `-this`. Establish `z₁ : ∀ {n} (x : Q k d n), E2 H₁ x 0 = 0` using `fun x => by rw [e₁, sub_self]`. Set `b : PS k 3 d` to `E3 q (gen 2) (gen 0) (gen 1) - (E2 H₁ (gen 2) (gen 0) + E2 H₁ (gen 2) (gen 1) - E2 H₁ (gen 2) (gen 0 + gen 1))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `eb : ∀ {n} (v w x : Q k d n), E3 b v w x = E3 q x v w - (E2 H₁ x v + E2 H₁ x w - E2 H₁ x (v + w))` using `fun v w x => by show sb _ _ = _`. Simplify using `only [b, map_sub, map_add, formalPointSubstitutionSeries_valueAtThreePoints, formalPointSubstitutionSeries_valueAtTwoPoints, sq_gen]`. Both sides reduce to the same expression. Take `⟨H₂, h₂, z₂, n₂⟩` from `split b (fun y w => by rw [eb, q1, z₁, zero_add, zero_add]; ring) (fun x y w => by rw [eb, eb, qs, add_comm x y]; ring) (fun x y t w => by rw [eb, eb, eb, eb, add_assoc x]; linear_combination qc w x y t)`. Set `D : PS k 3 d` to `E2 H₂ (gen 2) (gen 0) + E2 H₂ (gen 2) (gen 1) - E2 H₂ (gen 2) (gen 0 + gen 1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `eD : ∀ {n} (x y v : Q k d n), E3 D x y v = E2 H₂ v x + E2 H₂ v y - E2 H₂ v (x + y)` using `fun x y v => by show sb _ _ = _`. Simplify using `only [D, map_sub, map_add, formalPointSubstitutionSeries_valueAtTwoPoints, sq_gen]`. Both sides reduce to the same expression. Establish `D0 : D = 0` using `zero_of_add D (fun x y v w => by`. Establish `c₁` using `h₂ v w x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₂` using `h₂ v w y`. Establish `c₃` using `h₂ v w (x + y)`. Rewrite `c₁`, `c₂`, `c₃` using `[eb]`. Rewrite using `[eD, eD, eD]`. Take the linear combination `c₁ + c₂ - c₃ + int x y v w - h₁ x y v - h₁ x y w + h₁ x y (v + w)) fun c x y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `d₀` using `dir_ne (k := k) (d := d) (show (0 : Fin 3) ≠ 2 by decide)`. Establish `d₁` using `dir_ne (k := k) (d := d) (show (1 : Fin 3) ≠ 2 by decide)`. Rewrite using `[map_sub, map_add, pderiv_eval_two (dir_same 2) d₀, pderiv_eval_two (dir_same 2) d₁, pderiv_eval_two (dir_same 2) (d₀.add d₁)]`. Simplify using `[E3, n₂]`. Establish `ad₂ : ∀ {n} (x y v : Q k d n), E2 H₂ v (x + y) = E2 H₂ v x + E2 H₂ v y` using `fun x y v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `eD x y v` as an intermediate fact. Rewrite `this` using `[D0, E3, map_zero]`. Take the linear combination `this`. Set `H₃ : PS k 2 d` to `H₁ + E2 H₂ (gen 1) (gen 0)`. Establish `e₃ : ∀ {n} (x w : Q k d n), E2 H₃ x w = E2 H₁ x w + E2 H₂ w x` using `fun x w => by simp [H₃, eval_two_add, eval_two_eval_two]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `g₁ : ∀ {n} (x y w : Q k d n), E3 p x y w = E2 H₃ x w + E2 H₃ y w - E2 H₃ (x + y) w` using `fun x y w => by`. Rewrite using `[e₃, e₃, e₃, h₁, ad₂]`. Expand and normalize the polynomial expressions, which then agree. Establish `g₂ : ∀ {n} (x v w : Q k d n), E3 q x v w = E2 H₃ x v + E2 H₃ x w - E2 H₃ x (v + w)` using `fun x v w => by`. Use `h₂ v w x` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[eb]`. Rewrite using `[e₃, e₃, e₃]`. Take the linear combination `this`. Set `s' : PS k 2 d` to `s - (E2 H₃ (gen 1) (gen 0) - H₃)`. Establish `es : ∀ {n} (x v : Q k d n), E2 s' x v = E2 s x v - (E2 H₃ v x - E2 H₃ x v)` using `fun x v => by simp [s', eval_two_sub, eval_two_eval_two]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `s₂ : ∀ {n} (x v w : Q k d n), E2 s' x (v + w) = E2 s' x v + E2 s' x w` using `fun x v w => by`. Rewrite using `[es, es, es]`. Take the linear combination `g₂ x v w - g₁ v w x - sl x v w`. Establish `sa : ∀ {n} (x v : Q k d n), E2 s' x v = -E2 s' v x` using `fun x v => by rw [es, es]; linear_combination si x v`. Establish `s₁ : ∀ {n} (x y v : Q k d n), E2 s' (x + y) v = E2 s' x v + E2 s' y v` using `fun x y v => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sa, s₂, sa x, sa y]`. Expand and normalize the polynomial expressions, which then agree. Set `H₄ : PS k 2 d` to `H₃ - (1 / 2 : ℚ) • s'`. Establish `e₄ : ∀ {n} (x w : Q k d n), E2 H₄ x w = E2 H₃ x w - (1 / 2 : ℚ) • E2 s' x w` using `fun x w => by`. Rewrite using `[eval_two_sub, eval_two_smul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `f₁ : ∀ {n} (x y w : Q k d n), E3 p x y w = E2 H₄ x w + E2 H₄ y w - E2 H₄ (x + y) w` using `fun x y w => by`. Rewrite using `[e₄, e₄, e₄, g₁, s₁]`. Use `module`. Establish `f₂ : ∀ {n} (x v w : Q k d n), E3 q x v w = E2 H₄ x v + E2 H₄ x w - E2 H₄ x (v + w)` using `fun x v w => by`. Rewrite using `[e₄, e₄, e₄, g₂, s₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `module`. Establish `f₃ : ∀ {n} (x v : Q k d n), E2 s x v = E2 H₄ v x - E2 H₄ x v` using `fun x v => by`. Rewrite using `[e₄, e₄, sa v x, eq_add_of_sub_eq (es x v).symm]`. Use `module`. Set `dd : O → PS k 2 d` to `fun a => ad a - (E2 H₄ (ac (A a) (gen 0)) (gen 1) - E2 H₄ (gen 0) (ac (A (star a)) (gen 1)))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ed : ∀ a {n} (x v : Q k d n), E2 (dd a) x v = E2 (ad a) x v - (E2 H₄ (ac (A a) x) v - E2 H₄ x (ac (A (star a)) v))` using `fun a n x v => by simp [dd, eval_two_sub, eval_two_eval_two]`. Establish `hdd : ∀ a, dd a ∈ Bi k d` using `fun a => ⟨fun n x y v => by`. Rewrite using `[ed, ed, ed, hA]`. Take the linear combination `a1 a x y v - f₁ (ac (A a) x) (ac (A a) y) v + f₁ x y (ac (A (star a)) v),`. Use `fun n x v w => by`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ed, ed, ed, hA]`. Take the linear combination `a2 a x v w - f₂ (ac (A a) x) v w + f₂ x (ac (A (star a)) v) (ac (A (star a)) w)⟩`. Establish `h1 : ∀ (n) (u v : Q k d n), ac (gen 0) (u + v) = ac (gen 0) u + ac (gen 0) v` using `fun n u v => by simp only [ac_gen]`. Establish `ext` using `@bi_ext k _ d _`. Set `Lh : O →+* Module.End ℚ (Bi k d)` to `RingHom.mk' ⟨⟨fun a => biOp (gen 0) (A (star a)) h1 (hA _), LinearMap.ext fun f => ext (by rw [bilinearOp_eval_two, ac_gen, star_one, aone]; rfl)⟩, fun a b => LinearMap.ext fun f => ext (by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.End.mul_apply, bilinearOp_eval_two, bilinearOp_eval_two, bilinearOp_eval_two, ac_gen, ac_gen, star_mul, amul])⟩`. Use `fun a b => LinearMap.ext fun f => ext (by show E2 (biOp _ _ h1 (hA _) f).1 _ _ = E2 ((biOp _ _ h1 (hA _) f).1 + (biOp _ _ h1 (hA _) f).1) _ _`. Rewrite using `[eval_two_add, bilinearOp_eval_two, bilinearOp_eval_two, bilinearOp_eval_two, star_add, aadd, f.2.2])`. Set `Rh : O →+* Module.End ℚ (Bi k d)` to `RingHom.mk' ⟨⟨fun a => biOp (A a) (gen 0) (hA _) h1, LinearMap.ext fun f => ext (by rw [bilinearOp_eval_two, ac_gen, aone]; rfl)⟩, fun a b => LinearMap.ext fun f => ext (by`. Rewrite using `[Module.End.mul_apply, bilinearOp_eval_two, bilinearOp_eval_two, bilinearOp_eval_two, ac_gen, ac_gen, mul_comm, amul])⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `fun a b => LinearMap.ext fun f => ext (by show E2 (biOp _ _ (hA _) h1 f).1 _ _ = E2 ((biOp _ _ (hA _) h1 f).1 + (biOp _ _ (hA _) h1 f).1) _ _`. Rewrite using `[eval_two_add, bilinearOp_eval_two, bilinearOp_eval_two, bilinearOp_eval_two, aadd, f.2.1])`. Establish `eL : ∀ a (f : Bi k d) {n} (x v : Q k d n), E2 (Lh a f).1 x v = E2 f.1 x (ac (A (star a)) v)` using `fun a f n x v => (bilinearOp_eval_two _ _ h1 (hA _) f x v).trans (by rw [ac_gen])`. Establish `eR : ∀ a (f : Bi k d) {n} (x v : Q k d n), E2 (Rh a f).1 x v = E2 f.1 (ac (A a) x) v` using `fun a f n x v => (bilinearOp_eval_two _ _ (hA _) h1 f x v).trans (by rw [ac_gen])`. Take `⟨β, hβ⟩` from `inner_of_derivation Lh Rh (fun a b => LinearMap.ext fun f => ext (by`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `only [Module.End.mul_apply, eL, eR])) (AddMonoidHom.mk' (fun a => ⟨dd a, hdd a⟩) fun a b => ext (by`. Use `show E2 (dd (a + b)) _ _ = E2 (dd a + dd b) _ _`. Rewrite using `[eval_two_add, ed, ed, ed, star_add, aadd, aadd]`. Take the linear combination `aa a b (gen 0 : Q k d 2) (gen 1) - f₁ (ac (A a) (gen 0 : Q k d 2)) (ac (A b) (gen 0)) (gen 1) + f₂ (gen 0 : Q k d 2) (ac (A (star a)) (gen 1)) (ac (A (star b)) (gen 1)))) fun a b => ext (by`. Use `show E2 (dd (a * b)) _ _ = E2 ((Rh b ⟨dd a, hdd a⟩).1 + (Lh a ⟨dd b, hdd b⟩).1) _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval_two_add, eR, eL, ed, ed, ed, am, star_mul, amul, amul]`. Use the proof step `ring)`. Establish `hβ' : ∀ a {n} (x v : Q k d n), E2 (dd a) x v = E2 β.1 (ac (A a) x) v - E2 β.1 x (ac (A (star a)) v)` using `fun a n x v => by rw [← eR, ← eL, ← eval_two_sub]; exact congrArg (fun f : Bi k d => E2 f.1 x v) (hβ a)`. Set `H : PS k 2 d` to `H₄ + (1 / 2 : ℚ) • (β.1 + E2 β.1 (gen 1) (gen 0))`. Establish `e : ∀ {n} (x w : Q k d n), E2 H x w = E2 H₄ x w + (1 / 2 : ℚ) • (E2 β.1 x w + E2 β.1 w x)` using `fun x w => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [H, eval_two_add, eval_two_smul, eval_two_eval_two, sq_gen]`. Both sides reduce to the same expression. Establish `r₁ : ∀ {n} (x y w : Q k d n), E3 p x y w = E2 H x w + E2 H y w - E2 H (x + y) w` using `fun x y w => by`. Rewrite using `[e, e, e, f₁, β.2.1, β.2.2]`. Use `module`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `r₂ : ∀ {n} (x v w : Q k d n), E3 q x v w = E2 H x v + E2 H x w - E2 H x (v + w)` using `fun x v w => by`. Rewrite using `[e, e, e, f₂, β.2.1, β.2.2]`. Use `module`. Use `⟨H, fun w => ?_, fun x => ?_, r₁, r₂, fun x v => by rw [e, e, f₃]; module, fun a n x v => ?_⟩` and prove the remaining obligations. Use `r₁ 0 0 w` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[p0, add_zero]`. Take the linear combination `-this`. Use `r₂ x 0 0` as an intermediate fact. Rewrite `this` using `[q1, add_zero]`. Take the linear combination `-this`.
-
-Establish `c₁` using `hβ' a x v`. Establish `c₂` using `hβ' (star a) v x`. Establish `c₃` using `as a x v`. Rewrite `c₁`, `c₂` using `[ed]`. Rewrite `c₂` using `[star_star]`.
-
-Rewrite `c₃` using `[f₃, f₃]`. Rewrite using `[e, e]`. Take the linear combination `(norm := module) (1 / 2 : ℚ) • c₁ - (1 / 2 : ℚ) • c₂ + (1 / 2 : ℚ) • c₃`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gauge_add {O : Type} [CommRing O] [StarRing O] [Module.Free ℤ O] [Module.Finite ℤ O] [IsReduced O]
     (A : O → Q k d 1) (hA : ∀ a (n) (u v : Q k d n), ac (A a) (u + v) = ac (A a) u + ac (A a) v)
@@ -301,7 +295,7 @@ section Transfer
 omit [Algebra ℚ k]
 
 /- English proof (translation)
-Use `show sb ![u, v] f = _`. Rewrite using `[sb_apply]`. Use `congr 1`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem formalSeriesValueAtTwoPoints_eq_ev (f : PS k 2 d) (u v : Q k d n) : E2 f u v = ev ![u.1, v.1] f := by
   show sb ![u, v] f = _
@@ -310,7 +304,7 @@ theorem formalSeriesValueAtTwoPoints_eq_ev (f : PS k 2 d) (u v : Q k d n) : E2 f
   funext j; fin_cases j <;> rfl
 
 /- English proof (translation)
-Use `show sb ![u, v, w] f = _`. Rewrite using `[sb_apply]`. Use `congr 1`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem formalSeriesValueAtThreePoints_eq_ev (f : PS k 3 d) (u v w : Q k d n) : E3 f u v w = ev ![u.1, v.1, w.1] f := by
   show sb ![u, v, w] f = _
@@ -319,9 +313,9 @@ theorem formalSeriesValueAtThreePoints_eq_ev (f : PS k 3 d) (u v w : Q k d n) : 
   funext j; fin_cases j <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show sb ![u] (A.1 i) = ev ![u.1] (A.1 i)`. Rewrite using `[sb_apply]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use `fin_cases j`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ac_val (A : Q k d 1) (u : Q k d n) : (ac A u).1 = comp1 A.1 u.1 := by
   funext i
@@ -333,7 +327,7 @@ theorem ac_val (A : Q k d 1) (u : Q k d n) : (ac A u).1 = comp1 A.1 u.1 := by
 def op (F : Q k d 2) (u v : Q k d n) : Q k d n := sq ![u, v] F
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show sb ![u, v] (F.1 i) = ev ![u.1, v.1] (F.1 i)`. Rewrite using `[sb_apply]`. Use `congr 1`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem op_val (F : Q k d 2) (u v : Q k d n) : (op F u v).1 = addOf F.1 u.1 v.1 := by
   funext i
@@ -343,7 +337,7 @@ theorem op_val (F : Q k d 2) (u v : Q k d n) : (op F u v).1 = addOf F.1 u.1 v.1 
   funext j; fin_cases j <;> rfl
 
 /- English proof (translation)
-Use `show sq b (sq ![u, v] F) = sq ![sq b u, sq b v] F`. Establish `h : (fun j => sq b (![u, v] j)) = ![sq b u, sq b v]`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`. Rewrite using `[sq_sq_lemma, h]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_op (b : Fin n → Q k d l) (F : Q k d 2) (u v : Q k d n) : sq b (op F u v) = op F (sq b u) (sq b v) := by
   show sq b (sq ![u, v] F) = sq ![sq b u, sq b v] F
@@ -363,7 +357,7 @@ def mq (p : Q R d n) : Q k d n := ⟨fun i => MvPowerSeries.map φ (p.1 i), fun 
   rw [constantCoeff_map, p.2 i, map_zero]⟩
 
 /- English proof (translation)
-Rewrite using `[sb_apply, sb_apply]`. Unfold `ev`. Rewrite using `[MvPowerSeries.map_subst (czQ a).hasSubst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_sb {m : ℕ} (a : Fin m → Q R d n) (f : PS R m d) :
     MvPowerSeries.map φ (sb a f) = sb (fun j => mq φ (a j)) (MvPowerSeries.map φ f) := by
@@ -373,7 +367,7 @@ theorem map_sb {m : ℕ} (a : Fin m → Q R d n) (f : PS R m d) :
   rfl
 
 /- English proof (translation)
-Unfold `E2`. Establish `h : (fun j => mq φ (![u, v] j)) = ![mq φ u, mq φ v]`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`. Rewrite using `[map_sb, h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_eval_two (f : PS R 2 d) (u v : Q R d n) :
     MvPowerSeries.map φ (E2 f u v) = E2 (MvPowerSeries.map φ f) (mq φ u) (mq φ v) := by
@@ -383,7 +377,7 @@ theorem map_eval_two (f : PS R 2 d) (u v : Q R d n) :
   rw [map_sb, h]
 
 /- English proof (translation)
-Unfold `E3`. Establish `h : (fun j => mq φ (![u, v, w] j)) = ![mq φ u, mq φ v, mq φ w]`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`. Rewrite using `[map_sb, h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_eval_three (f : PS R 3 d) (u v w : Q R d n) :
     MvPowerSeries.map φ (E3 f u v w) = E3 (MvPowerSeries.map φ f) (mq φ u) (mq φ v) (mq φ w) := by
@@ -393,7 +387,7 @@ theorem map_eval_three (f : PS R 3 d) (u v w : Q R d n) :
   rw [map_sb, h]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `show MvPowerSeries.map φ (pt R d j i) = pt k d j i`. Unfold `pt`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mq_gen (j : Fin n) : mq φ (gen j : Q R d n) = gen j := by
   apply Subtype.ext; funext i
@@ -402,16 +396,16 @@ theorem mq_gen (j : Fin n) : mq φ (gen j : Q R d n) = gen j := by
   simp
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `map_zero (MvPowerSeries.map φ)`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mq_zero : mq φ (0 : Q R d n) = 0 := by
   apply Subtype.ext; funext i
   exact map_zero (MvPowerSeries.map φ)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `show MvPowerSeries.map φ (sb ![u, v] (F.1 i)) = sb ![mq φ u, mq φ v] (MvPowerSeries.map φ (F.1 i))`. Establish `h : (fun j => mq φ (![u, v] j)) = ![mq φ u, mq φ v]`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sb, h]`.
+A detailed English derivation is pending.
 -/
 theorem mq_op (F : Q R d 2) (u v : Q R d n) : mq φ (op F u v) = op (mq φ F) (mq φ u) (mq φ v) := by
   apply Subtype.ext; funext i
@@ -421,9 +415,9 @@ theorem mq_op (F : Q R d 2) (u v : Q R d n) : mq φ (op F u v) = op (mq φ F) (m
   rw [map_sb, h]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `show MvPowerSeries.map φ (sb ![u] (A.1 i)) = sb ![mq φ u] (MvPowerSeries.map φ (A.1 i))`. Establish `h : (fun j => mq φ (![u] j)) = ![mq φ u]`. Use function extensionality and compare the values at `j`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use `fin_cases j`. Both sides reduce to the same expression. Rewrite using `[map_sb, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mq_ac (A : Q R d 1) (u : Q R d n) : mq φ (ac A u) = ac (mq φ A) (mq φ u) := by
   apply Subtype.ext; funext i
@@ -435,9 +429,9 @@ theorem mq_ac (A : Q R d 1) (u : Q R d n) : mq φ (ac A u) = ac (mq φ A) (mq φ
 end Transfer
 
 /- English proof (translation)
-Establish `key : ∀ a : List (PS k n d), (∀ x ∈ a, constantCoeff x = 0) → constantCoeff a.sum = 0 ∧ FB.expS k a.sum = (a.map (FB.expS k)).prod` using `fun a ha => by`. Proceed by induction on `a with`. Consider the case `nil => exact ⟨map_zero _, WickVanishing.exp_zero⟩`. Consider the case `cons x a ih`. Take `⟨c, e⟩` from `ih fun y hy => ha y (List.mem_cons_of_mem _ hy)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hx` using `ha x List.mem_cons_self`. Conclude with `⟨by rw [List.sum_cons, map_add, hx, c, add_zero], by`. Rewrite using `[List.sum_cons, WickVanishing.gt_expS_add _ _ hx c, e]`. Use the proof step `rfl⟩`. Conclude with `WickVanishing.exp_inj (key a ha).1 (key b hb).1 ((key a ha).2.trans (h.trans (key b hb).2.symm))`.
+Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_eq_of_exp (a b : List (PS k n d)) (ha : ∀ x ∈ a, constantCoeff x = 0) (hb : ∀ x ∈ b, constantCoeff x = 0)
     (h : (a.map (FB.expS k)).prod = (b.map (FB.expS k)).prod) : a.sum = b.sum := by
@@ -453,7 +447,7 @@ theorem sum_eq_of_exp (a b : List (PS k n d)) (ha : ∀ x ∈ a, constantCoeff x
   exact WickVanishing.exp_inj (key a ha).1 (key b hb).1 ((key a ha).2.trans (h.trans (key b hb).2.symm))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, WickVanishing.exp_log hf, fun a => ⟨by rw [sb_apply]; exact constantCoeff_ev (czQ a) (WickVanishing.constantCoeff_logS hf), by rw [sb_apply, sb_apply, ← WickVanishing.gt_ev_expS _ (fun j => (a j).2) _ (WickVanishing.constantCoeff_logS hf)] exact congrArg _ (WickVanishing.exp_ …`.
+Supply the required witnesses or components.
 -/
 theorem exists_lg {m : ℕ} (f : PS k m d) (hf : constantCoeff f = 1) : ∃ g : PS k m d, FB.expS k g = f ∧
     ∀ {n} (a : Fin m → Q k d n), constantCoeff (sb a g) = 0 ∧ FB.expS k (sb a g) = sb a f :=
@@ -463,77 +457,65 @@ theorem exists_lg {m : ℕ} (f : PS k m d) (hf : constantCoeff f = 1) : ∃ g : 
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `R _ d O _ _ _ _ _ k _ _ _ B`. Set `φ` to `algebraMap R k`. Set `F₀ : Q R d 2` to `⟨B.G.F, B.G.const⟩`. Set `A₀ : O → Q R d 1` to `fun a => ⟨B.A.act a, B.A.const a⟩`. Set `F` to `mq φ F₀`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `A : O → Q k d 1` to `fun a => mq φ (A₀ a)`. Take `⟨l₀, l0, l1, ladd⟩` from `logSt k d (WickVanishing.Nab.lawK k B)`. Take `⟨e₀, ⟨e0, -, el, le⟩, -⟩` from `WickVanishing.formal_exp_law k d (WickVanishing.Nab.lawK k B) l₀ l0 l1 ladd`. Set `lg : Q k d 1` to `⟨l₀, l0⟩`. Set `ex : Q k d 1` to `⟨e₀, e0⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `acac : ∀ (S T : Q k d 1) {n} (u : Q k d n), ac S (ac T u) = ac (ac S T) u` using `fun S T n u => by`. Rewrite using `[ac.eq_def (ac S T), sq_ac]`. Both sides reduce to the same expression. Establish `hel : ∀ {n} (u : Q k d n), ac ex (ac lg u) = u` using `fun u => by`. Rewrite using `[acac, show ac ex lg = gen 0 from Subtype.ext ((ac_val _ _).trans el), ac_gen]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : ∀ {n} (u : Q k d n), ac lg (ac ex u) = u` using `fun u => by`. Rewrite using `[acac, show ac lg ex = gen 0 from Subtype.ext ((ac_val _ _).trans le), ac_gen]`. Establish `hl : ∀ {n} (u v : Q k d n), ac lg (op F u v) = ac lg u + ac lg v` using `fun u v => Subtype.ext (by`. Rewrite using `[ac_val, op_val]`. Conclude with `(WickVanishing.add_at (WickVanishing.Nab.lawK k B) l₀ ladd u.1 v.1 u.2 v.2).trans (congrArg₂ (· + ·) (ac_val lg u).symm (ac_val lg v).symm))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : ∀ {n} (u v : Q k d n), ac ex (u + v) = op F (ac ex u) (ac ex v)` using `fun u v => by`. Rewrite using `[← hel (op F _ _), hl, hle, hle]`. Establish `l00 : ∀ {n} (S : Q k d 1), ac S (0 : Q k d n) = 0` using `fun {n} S => Subtype.ext (funext fun i => by`. Establish `e` using `ev_zeroFam (n := n) (S.1 i)`. Rewrite `e` using `[S.2 i, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((sb_apply _ _).trans (congrArg (ev · (S.1 i)) (funext fun j => by fin_cases j; rfl))).trans e)`. Establish `tr : ∀ {n l} (b : Fin n → Q k d l) {x y : PS R n d}, x = y → sb b (MvPowerSeries.map φ x) = sb b (MvPowerSeries.map φ y)` using `fun b _ _ h => by rw [h]`. Establish `trq : ∀ {n l} (b : Fin n → Q k d l) {x y : Q R d n}, x = y → sq b (mq φ x) = sq b (mq φ y)` using `fun b _ _ h => by rw [h]`. Establish `cc : ∀ {m} (f : PS R m d) (a : Fin m → Q R d (m - 1)), sb a f = 1 → constantCoeff (MvPowerSeries.map φ f) = 1` using `fun f a h => by rw [constantCoeff_map, ← cc_ev (czQ a), ← sb_apply, h, map_one, map_one]`. Establish `x₁ : E3 B.ph1 (0 : Q R d 2) (gen 0) (gen 1) = 1` using `(formalSeriesValueAtThreePoints_eq_ev _ _ _ _).trans B.cocycleLeft_zero_fst`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `x₂ : E3 B.ph1 (gen 0 : Q R d 2) (gen 1) 0 = 1` using `(formalSeriesValueAtThreePoints_eq_ev _ _ _ _).trans B.cocycleLeft_zero_thd`. Establish `x₃ : E3 B.ph2 (gen 0 : Q R d 2) 0 (gen 1) = 1` using `(formalSeriesValueAtThreePoints_eq_ev _ _ _ _).trans B.cocycleRight_zero_snd`. Take `⟨p, hp, vp⟩` from `exists_lg _ (cc B.ph1 _ x₁)`. Take `⟨q, hq, vq⟩` from `exists_lg _ (cc B.ph2 _ x₃)`. Take `⟨s, hs, vs⟩` from `exists_lg _ (cc B.sy ![0, gen 0] ((formalSeriesValueAtTwoPoints_eq_ev _ _ _).trans B.symmetry_zero_fst))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose ad had vad using fun a => exists_lg _ (cc (B.ad a) ![0, gen 0] ((formalSeriesValueAtTwoPoints_eq_ev _ _ _).trans (B.adjoint_zero_fst a)))`. Establish `cp : ∀ {n} (u v w : Q k d n), constantCoeff (E3 p u v w) = 0` using `fun u v w => (vp _).1`. Establish `cq : ∀ {n} (u v w : Q k d n), constantCoeff (E3 q u v w) = 0` using `fun u v w => (vq _).1`. Establish `cs : ∀ {n} (u v : Q k d n), constantCoeff (E2 s u v) = 0` using `fun u v => (vs _).1`. Establish `ca : ∀ a {n} (u v : Q k d n), constantCoeff (E2 (ad a) u v) = 0` using `fun a n u v => (vad a _).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ep : ∀ {n} (u v w : Q k d n), FB.expS k (E3 p u v w) = E3 (MvPowerSeries.map φ B.ph1) u v w` using `fun u v w => (vp _).2`. Establish `eq : ∀ {n} (u v w : Q k d n), FB.expS k (E3 q u v w) = E3 (MvPowerSeries.map φ B.ph2) u v w` using `fun u v w => (vq _).2`. Establish `es : ∀ {n} (u v : Q k d n), FB.expS k (E2 s u v) = E2 (MvPowerSeries.map φ B.sy) u v` using `fun u v => (vs _).2`. Establish `ea : ∀ a {n} (u v : Q k d n), FB.expS k (E2 (ad a) u v) = E2 (MvPowerSeries.map φ (B.ad a)) u v` using `fun a n u v => (vad a _).2`. Establish `ax : ∀ a {n} (u : Q k d n), ac ex (ac (ac lg (ac (A a) ex)) u) = ac (A a) (ac ex u)` using `fun a n u => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← acac, hel, ← acac]`. Establish `E3x : ∀ (f : PS k 3 d) {n} (u v w : Q k d n), E3 (E3 f (ac ex (gen 0)) (ac ex (gen 1)) (ac ex (gen 2))) u v w = E3 f (ac ex u) (ac ex v) (ac ex w)` using `fun f n u v w => by rw [E3, formalPointSubstitutionSeries_valueAtThreePoints, sq_ac, sq_ac, sq_ac, sq_gen, sq_gen, sq_gen]; rfl`. Establish `E2x : ∀ (f : PS k 2 d) (S : Q k d 1) {n} (u v : Q k d n), E2 (E2 f (ac S (gen 0)) (ac S (gen 1))) u v = E2 f (ac S u) (ac S v)` using `fun f S n u v => by rw [eval_two_eval_two, sq_ac, sq_ac, sq_gen, sq_gen]; rfl`. Take `⟨H, z₀, z₁, r₁, r₂, r₃, r₄⟩` from `gauge_add (fun a => ac lg (ac (A a) ex)) (fun a n u v => by`. Establish `h` using `trq ![ac ex u, ac ex v] (show ac (A₀ a) (op F₀ (gen 0) (gen 1)) = op F₀ (ac (A₀ a) (gen 0)) (ac (A₀ a) (gen 1)) from Subtype.ext (by simpa only [ac_val, op_val, gen_val] using B.A.hom a))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mq_ac, mq_op, mq_gen, sq_ac, sq_op, sq_gen] at h`. Simplify using `only [← acac]`. Rewrite using `[he, ← hl]`. Conclude with `congrArg _ h)`. Use the proof step `(fun a b n u => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `trq ![ac ex u] (show A₀ (a + b) = op F₀ (A₀ a) (A₀ b) from Subtype.ext ((B.A.add_act a b).trans (op_val F₀ (A₀ a) (A₀ b)).symm))`. Simplify using `only [mq_op, sq_op] at h`. Simplify using `only [← acac]`. Rewrite using `[← hl]`. Conclude with `congrArg _ h)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun a b n u => by`. Establish `h` using `trq ![ac ex u] (show A₀ (a * b) = ac (A₀ a) (A₀ b) from Subtype.ext ((B.A.mul_act a b).trans (ac_val (A₀ a) (A₀ b)).symm))`. Simplify using `only [mq_ac, sq_ac] at h`. Simplify using `only [← acac]`. Rewrite using `[hel]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `congrArg _ h)`. Use the proof step `(fun u => by`. Establish `h : A 1 = gen 0` using `(congrArg (mq φ) (show A₀ 1 = gen 0 from Subtype.ext B.A.one_act)).trans (mq_gen φ 0)`. Rewrite using `[h, ac_gen, ← acac, hle])`. Use the proof step `(E3 p (ac ex (gen 0)) (ac ex (gen 1)) (ac ex (gen 2))) (E3 q (ac ex (gen 0)) (ac ex (gen 1)) (ac ex (gen 2)))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use the proof step `(E2 s (ac ex (gen 0)) (ac ex (gen 1))) (fun a => E2 (ad a) (ac ex (gen 0)) (ac ex (gen 1)))`. Use the proof step `(fun y w => by`. Establish `h` using `tr ![ac ex y, ac ex w] (show E3 B.ph1 (0 : Q R d 2) (gen 0) (gen 1) = 1 from by`. Simplify `B.cocycleLeft_zero_fst)` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, ac_val, op_val, gen_val, ZeroMemClass.coe_zero]`. Simplify using `only [map_mul, map_one, map_eval_two, map_eval_three, mq_ac, mq_op, mq_gen, mq_zero, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtThreePoints, sq_ac, sq_op, sq_gen, map_zero, Matrix.cons_val] at h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `sum_eq_of_exp [E3 p 0 (ac ex y) (ac ex w)] [] (by simp [cp, cq, cs, ca]) (by simp [cp, cq, cs, ca]) (by simpa only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one, ep, eq, es, ea, mul_assoc] using h)` as an intermediate fact. Simplify `this)` using `only [E3x, E2x, he, ax, l00, List.sum_cons, List.sum_nil, add_zero, add_assoc]`. Use the proof step `(fun x y => by`. Establish `h` using `tr ![ac ex x, ac ex y] (show E3 B.ph1 (gen 0 : Q R d 2) (gen 1) 0 = 1 from by`. Simplify `B.cocycleLeft_zero_thd)` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, ac_val, op_val, gen_val, ZeroMemClass.coe_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [map_mul, map_one, map_eval_two, map_eval_three, mq_ac, mq_op, mq_gen, mq_zero, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtThreePoints, sq_ac, sq_op, sq_gen, map_zero, Matrix.cons_val] at h`. Use `sum_eq_of_exp [E3 p (ac ex x) (ac ex y) 0] [] (by simp [cp, cq, cs, ca]) (by simp [cp, cq, cs, ca]) (by simpa only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one, ep, eq, es, ea, mul_assoc] using h)` as an intermediate fact. Simplify `this)` using `only [E3x, E2x, he, ax, l00, List.sum_cons, List.sum_nil, add_zero, add_assoc]`. Use the proof step `(fun x w => by`. Establish `h` using `tr ![ac ex x, ac ex w] (show E3 B.ph2 (gen 0 : Q R d 2) 0 (gen 1) = 1 from by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `B.cocycleRight_zero_snd)` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, ac_val, op_val, gen_val, ZeroMemClass.coe_zero]`. Simplify using `only [map_mul, map_one, map_eval_two, map_eval_three, mq_ac, mq_op, mq_gen, mq_zero, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtThreePoints, sq_ac, sq_op, sq_gen, map_zero, Matrix.cons_val] at h`. Use `sum_eq_of_exp [E3 q (ac ex x) 0 (ac ex w)] [] (by simp [cp, cq, cs, ca]) (by simp [cp, cq, cs, ca]) (by simpa only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one, ep, eq, es, ea, mul_assoc] using h)` as an intermediate fact. Simplify `this)` using `only [E3x, E2x, he, ax, l00, List.sum_cons, List.sum_nil, add_zero, add_assoc]`. Use the proof step `(fun x y w => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `tr ![ac ex x, ac ex y, ac ex w] (show E3 B.ph1 (gen 0 : Q R d 3) (gen 1) (gen 2) = E3 B.ph1 (gen 1) (gen 0) (gen 2) from by`. Simplify `((formalSeriesValueAtThreePoints_eq_ev B.ph1 (gen 0) (gen 1) (gen 2)).symm.trans ((formalSeriesValueAtThreePoints_genericPoints _).trans B.cocycleLeft_comm.symm)))` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, ac_val, op_val, gen_val]`. Simplify using `only [map_mul, map_one, map_eval_two, map_eval_three, mq_ac, mq_op, mq_gen, mq_zero, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtThreePoints, sq_ac, sq_op, sq_gen, map_zero, Matrix.cons_val] at h`. Use `sum_eq_of_exp [E3 p (ac ex x) (ac ex y) (ac ex w)] [E3 p (ac ex y) (ac ex x) (ac ex w)] (by simp [cp, cq, cs, ca]) (by simp [cp, cq, cs, ca]) (by simpa only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one, ep, eq, es, ea, mul_assoc] using h)` as an intermediate fact. Simplify `this)` using `only [E3x, E2x, he, ax, l00, List.sum_cons, List.sum_nil, add_zero, add_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use the proof step `(fun x y w => by`. Establish `h` using `tr ![ac ex x, ac ex y, ac ex w] (show E3 B.ph2 (gen 0 : Q R d 3) (gen 1) (gen 2) = E3 B.ph2 (gen 0) (gen 2) (gen 1) from by`. Simplify `((formalSeriesValueAtThreePoints_eq_ev B.ph2 (gen 0) (gen 1) (gen 2)).symm.trans ((formalSeriesValueAtThreePoints_genericPoints _).trans B.cocycleRight_comm.symm)))` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, ac_val, op_val, gen_val]`. Simplify using `only [map_mul, map_one, map_eval_two, map_eval_three, mq_ac, mq_op, mq_gen, mq_zero, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtThreePoints, sq_ac, sq_op, sq_gen, map_zero, Matrix.cons_val] at h`. Use `sum_eq_of_exp [E3 q (ac ex x) (ac ex y) (ac ex w)] [E3 q (ac ex x) (ac ex w) (ac ex y)] (by simp [cp, cq, cs, ca]) (by simp [cp, cq, cs, ca]) (by simpa only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one, ep, eq, es, ea, mul_assoc] using h)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this)` using `only [E3x, E2x, he, ax, l00, List.sum_cons, List.sum_nil, add_zero, add_assoc]`. Use the proof step `(fun x y t w => by`. Establish `h` using `tr ![ac ex x, ac ex y, ac ex t, ac ex w] (show E3 B.ph1 (gen 0 : Q R d 4) (gen 1) (gen 3) * E3 B.ph1 (op F₀ (gen 0) (gen 1)) (gen 2) (gen 3) = E3 B.ph1 (gen 1) (gen 2) (gen 3) * E3 B.ph1 (gen 0) (op F₀ (gen 1) (gen 2)) (gen 3) from by`. Simplify `B.cocycleLeft_assoc)` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, ac_val, op_val, gen_val, ZeroMemClass.coe_zero]`. Simplify using `only [map_mul, map_one, map_eval_two, map_eval_three, mq_ac, mq_op, mq_gen, mq_zero, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtThreePoints, sq_ac, sq_op, sq_gen, map_zero, Matrix.cons_val] at h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `sum_eq_of_exp [E3 p (ac ex x) (ac ex y) (ac ex w), E3 p (op F (ac ex x) (ac ex y)) (ac ex t) (ac ex w)] [E3 p (ac ex y) (ac ex t) (ac ex w), E3 p (ac ex x) (op F (ac ex y) (ac ex t)) (ac ex w)] (by simp [cp, cq, cs, ca]) (by simp [cp, cq, cs, ca]) (by simpa only [List.map_cons, L …` as an intermediate fact. Simplify `this)` using `only [E3x, E2x, he, ax, l00, List.sum_cons, List.sum_nil, add_zero, add_assoc]`. Use the proof step `(fun x y t w => by`. Establish `h` using `tr ![ac ex x, ac ex y, ac ex t, ac ex w] (show E3 B.ph2 (gen 0 : Q R d 4) (gen 1) (gen 2) * E3 B.ph2 (gen 0) (op F₀ (gen 1) (gen 2)) (gen 3) = E3 B.ph2 (gen 0) (gen 2) (gen 3) * E3 B.ph2 (gen 0) (gen 1) (op F₀ (gen 2) (gen 3)) from by`. Simplify `B.cocycleRight_assoc)` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, ac_val, op_val, gen_val, ZeroMemClass.coe_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [map_mul, map_one, map_eval_two, map_eval_three, mq_ac, mq_op, mq_gen, mq_zero, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtThreePoints, sq_ac, sq_op, sq_gen, map_zero, Matrix.cons_val] at h`. Use `sum_eq_of_exp [E3 q (ac ex x) (ac ex y) (ac ex t), E3 q (ac ex x) (op F (ac ex y) (ac ex t)) (ac ex w)] [E3 q (ac ex x) (ac ex t) (ac ex w), E3 q (ac ex x) (ac ex y) (op F (ac ex t) (ac ex w))] (by simp [cp, cq, cs, ca]) (by simp [cp, cq, cs, ca]) (by simpa only [List.map_cons, L …` as an intermediate fact. Simplify `this)` using `only [E3x, E2x, he, ax, l00, List.sum_cons, List.sum_nil, add_zero, add_assoc]`. Use the proof step `(fun x y v w => by`. Establish `h` using `tr ![ac ex x, ac ex y, ac ex v, ac ex w] (show E3 B.ph1 (gen 0 : Q R d 4) (gen 1) (gen 2) * E3 B.ph1 (gen 0) (gen 1) (gen 3) * E3 B.ph2 (op F₀ (gen 0) (gen 1)) (gen 2) (gen 3) = E3 B.ph2 (gen 0) (gen 2) (gen 3) * E3 B.ph2 (gen 1) (gen 2) (gen 3) * E3 B.ph1 (gen 0) (gen 1) (op F₀ …`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `B.interchange)` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, ac_val, op_val, gen_val]`. Simplify using `only [map_mul, map_one, map_eval_two, map_eval_three, mq_ac, mq_op, mq_gen, mq_zero, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtThreePoints, sq_ac, sq_op, sq_gen, map_zero, Matrix.cons_val] at h`. Use `sum_eq_of_exp [E3 p (ac ex x) (ac ex y) (ac ex v), E3 p (ac ex x) (ac ex y) (ac ex w), E3 q (op F (ac ex x) (ac ex y)) (ac ex v) (ac ex w)] [E3 q (ac ex x) (ac ex v) (ac ex w), E3 q (ac ex y) (ac ex v) (ac ex w), E3 p (ac ex x) (ac ex y) (op F (ac ex v) (ac ex w))] (by simp [cp, …` as an intermediate fact. Simplify `this)` using `only [E3x, E2x, he, ax, l00, List.sum_cons, List.sum_nil, add_zero, add_assoc]`. Use the proof step `(fun x v => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `tr ![ac ex x, ac ex v] (show E2 B.sy (gen 0 : Q R d 2) (gen 1) * E2 B.sy (gen 1) (gen 0) = 1 from by`. Simplify `((congrArg₂ (· * ·) (formalSeriesValueAtTwoPoints_genericPoints B.sy) rfl).trans B.sy_inv))` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, ac_val, op_val, gen_val]`. Simplify using `only [map_mul, map_one, map_eval_two, map_eval_three, mq_ac, mq_op, mq_gen, mq_zero, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtThreePoints, sq_ac, sq_op, sq_gen, map_zero, Matrix.cons_val] at h`. Use `sum_eq_of_exp [E2 s (ac ex x) (ac ex v), E2 s (ac ex v) (ac ex x)] [] (by simp [cp, cq, cs, ca]) (by simp [cp, cq, cs, ca]) (by simpa only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one, ep, eq, es, ea, mul_assoc] using h)` as an intermediate fact. Simplify `this)` using `only [E3x, E2x, he, ax, l00, List.sum_cons, List.sum_nil, add_zero, add_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use the proof step `(fun x v w => by`. Establish `h` using `tr ![ac ex x, ac ex v, ac ex w] (show E3 B.ph2 (gen 0 : Q R d 3) (gen 1) (gen 2) * E2 B.sy (gen 0) (gen 1) * E2 B.sy (gen 0) (gen 2) = E2 B.sy (gen 0) (op F₀ (gen 1) (gen 2)) * E3 B.ph1 (gen 1) (gen 2) (gen 0) from by`. Simplify `((congrArg (· * _ * _) (formalSeriesValueAtThreePoints_genericPoints B.ph2)).trans B.sy_law))` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, ac_val, op_val, gen_val]`. Simplify using `only [map_mul, map_one, map_eval_two, map_eval_three, mq_ac, mq_op, mq_gen, mq_zero, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtThreePoints, sq_ac, sq_op, sq_gen, map_zero, Matrix.cons_val] at h`. Use `sum_eq_of_exp [E3 q (ac ex x) (ac ex v) (ac ex w), E2 s (ac ex x) (ac ex v), E2 s (ac ex x) (ac ex w)] [E2 s (ac ex x) (op F (ac ex v) (ac ex w)), E3 p (ac ex v) (ac ex w) (ac ex x)] (by simp [cp, cq, cs, ca]) (by simp [cp, cq, cs, ca]) (by simpa only [List.map_cons, List.map_nil …` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this)` using `only [E3x, E2x, he, ax, l00, List.sum_cons, List.sum_nil, add_zero, add_assoc]`. Use the proof step `(fun a n x y v => by`. Establish `h` using `tr ![ac ex x, ac ex y, ac ex v] (show E3 B.ph1 (ac (A₀ a) (gen 0 : Q R d 3)) (ac (A₀ a) (gen 1)) (gen 2) * E2 (B.ad a) (op F₀ (gen 0) (gen 1)) (gen 2) = E2 (B.ad a) (gen 0) (gen 2) * E2 (B.ad a) (gen 1) (gen 2) * E3 B.ph1 (gen 0) (gen 1) (ac (A₀ (star a)) (gen 2)) from by`. Simplify `B.adjoint_compat_left a)` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, ac_val, op_val, gen_val]`. Simplify using `only [map_mul, map_one, map_eval_two, map_eval_three, mq_ac, mq_op, mq_gen, mq_zero, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtThreePoints, sq_ac, sq_op, sq_gen, map_zero, Matrix.cons_val] at h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `sum_eq_of_exp [E3 p (ac (A a) (ac ex x)) (ac (A a) (ac ex y)) (ac ex v), E2 (ad a) (op F (ac ex x) (ac ex y)) (ac ex v)] [E2 (ad a) (ac ex x) (ac ex v), E2 (ad a) (ac ex y) (ac ex v), E3 p (ac ex x) (ac ex y) (ac (A (star a)) (ac ex v))] (by simp [cp, cq, cs, ca]) (by simp [cp, c …` as an intermediate fact. Simplify `this)` using `only [E3x, E2x, he, ax, l00, List.sum_cons, List.sum_nil, add_zero, add_assoc]`. Use the proof step `(fun a n x v w => by`. Establish `h` using `tr ![ac ex x, ac ex v, ac ex w] (show E3 B.ph2 (ac (A₀ a) (gen 0 : Q R d 3)) (gen 1) (gen 2) * E2 (B.ad a) (gen 0) (op F₀ (gen 1) (gen 2)) = E2 (B.ad a) (gen 0) (gen 1) * E2 (B.ad a) (gen 0) (gen 2) * E3 B.ph2 (gen 0) (ac (A₀ (star a)) (gen 1)) (ac (A₀ (star a)) (gen 2)) from by`. Simplify `B.adjoint_compat_right a)` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, ac_val, op_val, gen_val]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_one, map_eval_two, map_eval_three, mq_ac, mq_op, mq_gen, mq_zero, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtThreePoints, sq_ac, sq_op, sq_gen, map_zero, Matrix.cons_val] at h`. Use `sum_eq_of_exp [E3 q (ac (A a) (ac ex x)) (ac ex v) (ac ex w), E2 (ad a) (ac ex x) (op F (ac ex v) (ac ex w))] [E2 (ad a) (ac ex x) (ac ex v), E2 (ad a) (ac ex x) (ac ex w), E3 q (ac ex x) (ac (A (star a)) (ac ex v)) (ac (A (star a)) (ac ex w))] (by simp [cp, cq, cs, ca]) (by simp …` as an intermediate fact. Simplify `this)` using `only [E3x, E2x, he, ax, l00, List.sum_cons, List.sum_nil, add_zero, add_assoc]`. Use the proof step `(fun a b n x v => by`. Establish `h` using `tr ![ac ex x, ac ex v] (show E2 (B.ad (a * b)) (gen 0 : Q R d 2) (gen 1) = E2 (B.ad a) (ac (A₀ b) (gen 0)) (gen 1) * E2 (B.ad b) (gen 0) (ac (A₀ (star a)) (gen 1)) from by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `((formalSeriesValueAtTwoPoints_genericPoints (B.ad (a * b))).trans (B.ad_mul a b)))` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, ac_val, op_val, gen_val]`. Simplify using `only [map_mul, map_one, map_eval_two, map_eval_three, mq_ac, mq_op, mq_gen, mq_zero, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtThreePoints, sq_ac, sq_op, sq_gen, map_zero, Matrix.cons_val] at h`. Use `sum_eq_of_exp [E2 (ad (a * b)) (ac ex x) (ac ex v)] [E2 (ad a) (ac (A b) (ac ex x)) (ac ex v), E2 (ad b) (ac ex x) (ac (A (star a)) (ac ex v))] (by simp [cp, cq, cs, ca]) (by simp [cp, cq, cs, ca]) (by simpa only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_on …` as an intermediate fact. Simplify `this)` using `only [E3x, E2x, he, ax, l00, List.sum_cons, List.sum_nil, add_zero, add_assoc]`. Use the proof step `(fun a b n x v => by`.
-
-Establish `h` using `tr ![ac ex x, ac ex v] (show E3 B.ph1 (ac (A₀ a) (gen 0 : Q R d 2)) (ac (A₀ b) (gen 0)) (gen 1) * E2 (B.ad (a + b)) (gen 0) (gen 1) = E2 (B.ad a) (gen 0) (gen 1) * E2 (B.ad b) (gen 0) (gen 1) * E3 B.ph2 (gen 0) (ac (A₀ (star a)) (gen 1)) (ac (A₀ (star b)) (gen 1)) from by`. Simplify `((congrArg (_ * ·) (formalSeriesValueAtTwoPoints_genericPoints (B.ad (a + b)))).trans ((B.ad_add a b).trans (congrArg₂ (· * · * _) (formalSeriesValueAtTwoPoints_genericPoints (B.ad a)).symm (formalSeriesValueAtTwoPoints_genericPoints (B.ad b)).symm))))` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, ac_val, op_val, gen_val]`. Simplify using `only [map_mul, map_one, map_eval_two, map_eval_three, mq_ac, mq_op, mq_gen, mq_zero, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtThreePoints, sq_ac, sq_op, sq_gen, map_zero, Matrix.cons_val] at h`. Use `sum_eq_of_exp [E3 p (ac (A a) (ac ex x)) (ac (A b) (ac ex x)) (ac ex v), E2 (ad (a + b)) (ac ex x) (ac ex v)] [E2 (ad a) (ac ex x) (ac ex v), E2 (ad b) (ac ex x) (ac ex v), E3 q (ac ex x) (ac (A (star a)) (ac ex v)) (ac (A (star b)) (ac ex v))] (by simp [cp, cq, cs, ca]) (by simp …` as an intermediate fact. Simplify `this)` using `only [E3x, E2x, he, ax, l00, List.sum_cons, List.sum_nil, add_zero, add_assoc]`.
-
-Use the proof step `(fun a n x v => by`. Establish `h` using `tr ![ac ex x, ac ex v] (show E2 (B.ad a) (gen 0 : Q R d 2) (gen 1) * E2 (B.ad (star a)) (gen 1) (gen 0) * E2 B.sy (ac (A₀ a) (gen 0)) (gen 1) = E2 B.sy (gen 0) (ac (A₀ (star a)) (gen 1)) from by`. Simplify `((congrArg (· * _ * _) (formalSeriesValueAtTwoPoints_genericPoints (B.ad a))).trans (B.ad_sy a)))` using `only [formalSeriesValueAtTwoPoints_eq_ev, formalSeriesValueAtThreePoints_eq_ev, ac_val, op_val, gen_val]`. Simplify using `only [map_mul, map_one, map_eval_two, map_eval_three, mq_ac, mq_op, mq_gen, mq_zero, formalPointSubstitutionSeries_valueAtTwoPoints, formalPointSubstitutionSeries_valueAtThreePoints, sq_ac, sq_op, sq_gen, map_zero, Matrix.cons_val] at h`. Use `sum_eq_of_exp [E2 (ad a) (ac ex x) (ac ex v), E2 (ad (star a)) (ac ex v) (ac ex x), E2 s (ac (A a) (ac ex x)) (ac ex v)] [E2 s (ac ex x) (ac (A (star a)) (ac ex v))] (by simp [cp, cq, cs, ca]) (by simp [cp, cq, cs, ca]) (by simpa only [List.map_cons, List.map_nil, List.prod_cons, …` as an intermediate fact.
-
-Simplify `this)` using `only [E3x, E2x, he, ax, l00, List.sum_cons, List.sum_nil, add_zero, add_assoc]`. Take `⟨h, back⟩ : ∃ h : PS k 2 d, ∀ {n} (u v : Q k d n), E2 H (ac lg u) (ac lg v) = ev ![u.1, v.1] h` from `⟨E2 H (ac lg (gen 0)) (ac lg (gen 1)), fun u v => (E2x H lg u v).symm.trans (formalSeriesValueAtTwoPoints_eq_ev _ u v)⟩`. Use `⟨h, ?_, ?_, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Conclude with `(back 0 (gen 0)).symm.trans (by rw [l00, z₀])`. Conclude with `(back (gen 0) 0).symm.trans (by rw [l00, z₁])`.
-
-Use `r₁ (ac lg (gen 0 : Q k d 3)) (ac lg (gen 1)) (ac lg (gen 2))` as an intermediate fact. Rewrite `this` using `[E3x, hel, hel, hel, formalSeriesValueAtThreePoints_genericPoints, ← hl, back, back, back, op_val]`. Conclude with `hp.symm.trans (congrArg _ this)`. Use `r₂ (ac lg (gen 0 : Q k d 3)) (ac lg (gen 1)) (ac lg (gen 2))` as an intermediate fact. Rewrite `this` using `[E3x, hel, hel, hel, formalSeriesValueAtThreePoints_genericPoints, ← hl, back, back, back, op_val]`.
-
-Conclude with `hq.symm.trans (congrArg _ this)`. Use `r₃ (ac lg (gen 0 : Q k d 2)) (ac lg (gen 1))` as an intermediate fact. Rewrite `this` using `[E2x, hel, hel, formalSeriesValueAtTwoPoints_genericPoints, back, back, ← formalSeriesValueAtTwoPoints_eq_ev h (gen 0) (gen 1), formalSeriesValueAtTwoPoints_genericPoints]`. Conclude with `hs.symm.trans (congrArg _ this)`. Use `r₄ a (ac lg (gen 0 : Q k d 2)) (ac lg (gen 1))` as an intermediate fact.
-
-Establish `w : ∀ b (u : Q k d 2), ac (ac lg (ac (A b) ex)) (ac lg u) = ac lg (ac (A b) u)` using `fun b u => by`. Rewrite using `[← acac, ← acac, hel]`. Rewrite `this` using `[E2x, hel, hel, formalSeriesValueAtTwoPoints_genericPoints, w, w, back, back, ac_val, ac_val]`. Conclude with `(had a).symm.trans (congrArg _ this)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem canonGauge : CanonGaugeSt := by
   intro R _ d O _ _ _ _ _ k _ _ _ B

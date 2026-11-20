@@ -16,19 +16,17 @@ set_option autoImplicit false
 namespace GlobalTheory.HeatConn.CoordWt
 
 /- English proof (translation)
-Introduce `R _ _ Q O _ _ _ oa Y α t W hW`. Introduce `S _ φ x x' c a a' ha ha' hV₁ hV₂ hq hc`. Substitute `ha ha'` using the available equality. Establish `germ : ∀ (b : Sp S ⟶ Y.H.left), ⊤ ≤ b ⁻¹ᵁ W → ∀ z, gs (𝟙 _) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom (valR b W (rsT (xc Y α t).val W))) = gs b z (xU Y α t) (xc Y α t).val`. Introduce `b hb z`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[valR, dif_pos hb, Iso.hom_inv_id_apply, rsT, dif_pos hW]`. Use `(gs_res (𝟙 _) z hb trivial _).trans ((gs_pull (𝟙 _) b z W (hb trivial) _).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `gs_res b z hW (hb trivial) _`. Establish `key : ∀ (xx : Over.mk (spMap φ) ⟶ Y.H), ⊤ ≤ xx.left ⁻¹ᵁ W → ∀ z J, Good Q.P.L z J → gs xx.left z (xU Y α t) (xc Y α t).val = (trF (DegPre.gtφT Q Y.H (Y.Φ Y.H (𝟙 _)).b α) DegPre.gtε xx.left z (fun k => t (![1, 2, 0, 3] k)) (fun k => J (xx.left ≫ DegPre.gtφT Q Y.H (Y.Φ Y.H (𝟙 _)).b …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `xx hb z J hJ`. Establish `hp` using `((GlobalTheory.TorusModel.isPull_iff xx _ _).1 (Y.rep.1 _ _ xx (𝟙 _))).2 α z J hJ`. Rewrite `hp` using `[Category.comp_id]`. Establish `hmem : xx.left z ∈ xU Y α t` using `hW (hb trivial)`. Rewrite using `[gs_unit xx.left z _ hmem, gen_trans ((Y.Φ Y.H (𝟙 _)).isGen α) xx.left z hmem (hJ.mem _ xx.left), Units.val_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `congrArg Units.val hp.symm`. Establish `hqq : x'.left ≫ Y.q.left = x.left ≫ Y.q.left` using `congrArg CommaMorphism.left hq`. Establish `hφ : ∀ k, x'.left ≫ DegPre.gtφT Q Y.H (Y.Φ Y.H (𝟙 _)).b α k = x.left ≫ DegPre.gtφT Q Y.H (Y.Φ Y.H (𝟙 _)).b α k` using `fun k => by rw [gtφT_eq, ← Category.assoc, hqq, Category.assoc]`. Establish `htr : ∀ z (J : (Sp S ⟶ Q.P.A.left) → Q.P.L.ι), trF (DegPre.gtφT Q Y.H (Y.Φ Y.H (𝟙 _)).b α) DegPre.gtε x'.left z (fun k => t (![1, 2, 0, 3] k)) (fun k => J (x'.left ≫ DegPre.gtφT Q Y.H (Y.Φ Y.H (𝟙 _)).b α k)) = trF (DegPre.gtφT Q Y.H (Y.Φ Y.H (𝟙 _)).b α) DegPre.gtε x.left z (fun k …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `z J`. Unfold `trF`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hφ k]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Apply `(Scheme.ΓSpecIso (CommRingCat.of S)).commRingCatIsoToRingEquiv.symm.injective` to reduce the goal to its premises. Use `fn_ext fun z _ => ?_` and prove the remaining obligations. Take `⟨J, hJ, -⟩` from `exists_good Q.P.L Q.P.isLB z (K := PEmpty) PEmpty.elim PEmpty.elim (fun a _ _ => a.elim) (fun k => k.elim)`. Use `show gs (𝟙 _) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom _) = gs (𝟙 _) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom _)`. Rewrite using `[map_mul, gs_mul (𝟙 _) z ⊤ trivial, germ _ hV₂ z, germ _ hV₁ z, key x' hV₂ z J hJ, key x hV₁ z J hJ, htr, hc α z J hJ, show (Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom (c α : S) = (unitOn (c α)).val from rfl, gs_unit (𝟙 _) z ⊤ trivial, Units.val_mul]`.
-
-Conclude with `_root_.mul_left_comm _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWt_xc : ∀ {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X] {oa : Q.OAct O} (Y : Ray oa) (α : Q.X) (t : Fin 4 → Q.P.L.ι) (W : Y.H.left.Opens), W ≤ xU Y α t → IsWt Y α W (rsT (xc Y α t).val W) := by
   intro R _ _ Q O _ _ _ oa Y α t W hW

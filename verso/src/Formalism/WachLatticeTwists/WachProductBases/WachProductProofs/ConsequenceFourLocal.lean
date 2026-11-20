@@ -8,45 +8,41 @@ namespace Formalism.RepresentationBoundsCohomology.N1
 open Finset
 
 /- English proof (translation)
-Introduce `L R _ _ _ P _ _ _ _ t π' r₀ u ϖ γR γ d κ _ n a c y Sx hγt hγs hmod hbij hπu hπ' hd hc hn hS x hx`. Establish `hbijm` using `pow_smul_bij t hbij`. Use `choose wv hwv using fun (k : κ) (m : ℕ) => (hbijm m).2 (n k)`. Simplify using `only at hwv`. Take `⟨πi, hπi⟩` from `hπu.exists_left_inv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hstep : ∀ k m, t • wv k (m + 1) = wv k m`. Introduce `k m`. Apply `(hbijm m).1` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[smul_smul, ← pow_succ, hwv, hwv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heig : ∀ k (m : ℕ), γ (wv k m) = ((u ^ (-(a k + m)) : Lˣ) : L) • wv k m`. Introduce `k m`. Apply `(hbijm m).1` to reduce the goal to its premises. Simplify using `only`. Establish `h1 : γ (t ^ m • wv k m) = ((u : L) ^ m) • (t ^ m • γ (wv k m))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hγs, map_pow, hγt, smul_pow, smul_assoc]`. Rewrite `h1` using `[hwv, hn]`. Rewrite using `[smul_comm (t ^ m), hwv]`. Establish `h2 : t ^ m • γ (wv k m) = ((u ^ (-(m : ℤ)) : Lˣ) : L) • (((u : L) ^ m) • (t ^ m • γ (wv k m)))`. Rewrite using `[smul_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((u ^ (-(m : ℤ)) : Lˣ) : L) * (u : L) ^ m = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_mul, zpow_neg, zpow_natCast, inv_mul_cancel, Units.val_one]`. Rewrite using `[this, one_smul]`. Rewrite using `[h2, ← h1, smul_smul, ← Units.val_mul, ← zpow_add]`. Use `congr 3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdv : ∀ v, d v = πi • (γ v - v)`. Introduce `v`. Rewrite using `[← hd, smul_smul, hπi, one_smul]`. Establish `key1 : ∀ k m (b : ℤ) (r : R), ∃ r' : R, d (r • wv k m) - c b • (r • wv k m) = r' • wv k m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k m b r`. Use `⟨πi * (γR r * algebraMap L R ((u ^ (-(a k + m)) : Lˣ) : L) - r) - algebraMap L R (c b) * r, ?_⟩` and prove the remaining obligations. Rewrite using `[hdv, hγs, heig, ← algebraMap_smul R (((u ^ (-(a k + m)) : Lˣ) : L)) (wv k m), ← algebraMap_smul R (c b) (r • wv k m)]`. Use `module`. Establish `key2 : ∀ k (m : ℕ) (r : R), ∃ r' : R, d (r • wv k (m + 1)) - c (a k + ((m + 1 : ℕ) : ℤ)) • (r • wv k (m + 1)) = r' • wv k m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `k m r`. Take `⟨r', hr'⟩` from `hmod r`. Use `set μ : L := ((u ^ (-(a k + ((m + 1 : ℕ) : ℤ))) : Lˣ) : L) with hμ`. Use `set cc : L := c (a k + ((m + 1 : ℕ) : ℤ)) with hcc`. Establish `hcμ : algebraMap L R (ϖ : L) * algebraMap L R cc = algebraMap L R μ - 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, hc, map_sub, map_one]`. Use `⟨πi * (r' * algebraMap L R μ - r₀ * algebraMap L R cc * r), ?_⟩` and prove the remaining obligations. Rewrite using `[← hstep k m]`. Establish `e1 : c (a k + ((m + 1 : ℕ) : ℤ)) • (r • wv k (m + 1)) = (πi * π') • (algebraMap L R cc • (r • wv k (m + 1)))`. Rewrite using `[hπi, one_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : γR r = r + t * r'` using `by rw [← hr']; ring`. Rewrite using `[e1, hdv, hγs, heig, ← hμ, ← algebraMap_smul R μ (wv k (m + 1)), e2, hπ']`. Establish `e3 : algebraMap L R μ = algebraMap L R (ϖ : L) * algebraMap L R cc + 1`. Rewrite using `[hcμ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ∀ w : P, πi • ((r + t * r') • algebraMap L R μ • w - r • w) - (πi * (algebraMap L R (ϖ : L) + t * r₀)) • algebraMap L R cc • r • w = (πi * (r' * algebraMap L R μ - r₀ * algebraMap L R cc * r)) • t • w + (πi * r * (algebraMap L R μ - (algebraMap L R (ϖ : L) * algebraMap L R cc + …`. Introduce `w`. Use `module`. Rewrite using `[this, ← e3, sub_self, mul_zero, zero_smul, add_zero]`. Establish `pres : ∀ k m (T : Finset ℤ) (r : R), ∃ r' : R, Polynomial.aeval d (∏ b ∈ T, (Polynomial.X - Polynomial.C (c b))) (r • wv k m) = r' • wv k m`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k m T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => intro r; exact ⟨r, by simp⟩`. Consider the case `insert b T hb ih`. Introduce `r`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨r₁, h1⟩` from `ih r`. Take `⟨r₂, h2⟩` from `key1 k m b r₁`. Use `⟨r₂, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_insert hb, map_mul, Module.End.mul_apply, h1, ← h2]`. Simplify using `[Module.algebraMap_end_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `main : ∀ k (m : ℕ) (T : Finset ℤ), (∀ j ∈ Finset.Icc (1 : ℤ) m, a k + j ∈ T) → ∀ r : R, ∃ r' : R, Polynomial.aeval d (∏ b ∈ T, (Polynomial.X - Polynomial.C (c b))) (r • wv k m) = r' • wv k 0`. Introduce `k m`. Proceed by induction on `m with`. Consider the case `zero => intro T _ r`. Conclude with `pres k 0 T r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ m ih`. Introduce `T hT r`. Establish `hb₀ : a k + ((m + 1 : ℕ) : ℤ) ∈ T` using `hT _ (Finset.mem_Icc.2 ⟨by push_cast; omega, le_refl _⟩)`. Take `⟨r₁, h1⟩` from `key2 k m r`. Take `⟨r₂, h2⟩` from `ih (T.erase (a k + ((m + 1 : ℕ) : ℤ))) (by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `j hj`. Take `⟨hj1, hj2⟩` from `Finset.mem_Icc.1 hj`. Use `Finset.mem_erase.2 ⟨by push_cast; omega, hT j (Finset.mem_Icc.2 ⟨hj1, ?_⟩)⟩` and prove the remaining obligations. Use `push_cast`. Use the proof step `omega) r₁`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `⟨r₂, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul T _ hb₀, map_mul, Module.End.mul_apply, ← h2, ← h1]`. Simplify using `[Module.algebraMap_end_apply]`. Take `⟨r, hr⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 hx`. Establish `hxsum : x = ∑ k, r k • wv k y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `(hbijm y).1` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[← hr, smul_sum]`. Use `sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, hwv]`.
-
-Rewrite using `[hxsum, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Take `⟨r', h'⟩` from `main k y Sx (hS k) (r k)`. Rewrite using `[h']`. Establish `h0 : wv k 0 = n k` using `by simpa using hwv k 0`.
-
-Rewrite using `[h0]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem consequence_four_local : LocalValuationConsequence := by
   intro L R _ _ _ P _ _ _ _ t π' r₀ u ϖ γR γ d κ _ n a c y Sx hγt hγs hmod hbij hπu hπ' hd hc hn hS

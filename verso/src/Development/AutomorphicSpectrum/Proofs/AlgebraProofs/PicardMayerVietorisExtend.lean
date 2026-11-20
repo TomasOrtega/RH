@@ -22,13 +22,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.CechMV
 
 /- English proof (translation)
-Take `⟨N, hN, rfl⟩` from `cls_surj p`. Establish `sq : IsPullback (X.homOfLE (inf_le_left : W ⊓ V ≤ W)) (X.homOfLE (inf_le_right : W ⊓ V ≤ V)) (X.homOfLE (le_sup_left : W ≤ W ⊔ V)) (X.homOfLE (le_sup_right : V ≤ W ⊔ V))` using `isPullback_opens_inf_le le_sup_left le_sup_right`. Establish `hcov : Set.range (X.homOfLE (le_sup_left : W ≤ W ⊔ V)) ∪ Set.range (X.homOfLE (le_sup_right : V ≤ W ⊔ V)) = Set.univ`. Use `Set.eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Break down `x.2 with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `Or.inl ⟨⟨x.1, h⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (by simp [Scheme.homOfLE_apply])`. Use `Or.inr ⟨⟨x.1, h⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (by simp [Scheme.homOfLE_apply])`. Establish `hT` using `LB.isLB_triv V.toScheme`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `iso : LBIso (N.pull (X.homOfLE (inf_le_left : W ⊓ V ≤ W))) ((LB.triv V.toScheme).pull (X.homOfLE (inf_le_right : W ⊓ V ≤ V)))`. Use `(cls_eq_iff (pull_isLB hN _) (pull_isLB hT _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hN _ (pull_isLB hN _), cls_pull hT _ (pull_isLB hT _), hp]`. Conclude with `(map_zero (pull (X.homOfLE (inf_le_right : W ⊓ V ≤ V)))).symm`. Take `⟨L, hL, e, -⟩` from `GlobalTheory.GlueTwoLB.glue _ _ _ _ _ _ _ _ N (LB.triv V.toScheme) inferInstance inferInstance sq hcov hN hT iso`.
-
-Conclude with `⟨cls L hL, ((cls_eq_iff hN (pull_isLB hL _)).2 e).symm⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_extend_of_pull_inf_eq_zero (X : Scheme.{0}) (W V : X.Opens) (p : Pic W.toScheme)
     (hp : pull (X.homOfLE (inf_le_left : W ⊓ V ≤ W)) p = 0) :

@@ -72,11 +72,11 @@ variable {Y : Model Xo c β} {A : Type} [CommRing A] [IsDomain A] {b : O →+* A
   {y : Sp R' ⟶ Xo.XF c}
 
 /- English proof (translation)
-Take `⟨t', ⟨m₁⟩⟩` from `exists_sab (spMap ι) W.t`. Take `⟨m', hm'⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ W.m m₁`. Choose the witnesses or unpack the hypotheses as in `⟨m₂, hm₂⟩ : ∃ m₂ : SABMap t' Y.t (y ≫ Y.j), m₂.φ = m₁.φ ≫ W.m.φ := by`. Rewrite using `[hy]`. Conclude with `⟨m', hm'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨s1, s2, s3, s4, s5, s6⟩` from `W.spec`. Use `⟨⟨W.t, t', m₁, m₂, W.P, W.φ, W.he, W.w, W.e, s1, s2, s3, s4, s5, fun F _ _ _ _ uF hF hu => ?_⟩⟩` and prove the remaining obligations. Take `⟨k₁, k₂⟩` from `s6 F (uF 0) hF (hu 0)`. Use `⟨fun x => by simpa only [Fin.prod_univ_one] using k₁ x, fun s hs k p₀ σ hσ q₀ q x x' e₁ e₂ e₃ _ e₅ e₆ => k₂ (spMap s ≫ y) ?_ k p₀ σ hσ q₀ q x e₁ e₂ (fun z => by simpa only [Fin.prod_univ_one] using e₃ z) ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hy, ← Category.assoc, ← spMap_comp, ← Category.assoc, ← spMap_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun q => spMap q ≫ χ) (RingHom.ext hs)`. Rewrite using `[Category.assoc, ← e₆, hm₂, reassoc_of% e₅]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_multiWit_of_arcWit {u : R} {χ : Sp R ⟶ Y.X} (W : ArcWit Y a I f u χ) (hy : y ≫ Y.j = spMap ι ≫ χ) :
     Nonempty (MultiWit Y a (fun _ : Fin 1 => a.be) I f (fun _ => u) ι y) := by
@@ -127,7 +127,7 @@ abbrev SerWit (Y : Model Xo c β) {K : Type} [Field K] {b : O →+* K} (a : ArcI
     MvPowerSeries.X (algebraMap (MvPowerSeries (Fin r) K) (MultiRing K r)) y
 
 /- English proof (translation)
-Take `⟨x, v, _, ϖ, χ, Wt, -, -, -, -, hx, -, hfl⟩` from `exists_isArc t hY h`. Take `⟨g, y, -, hy, -⟩` from `exists_isFrame_of_flagAt hfl`. Conclude with `⟨y, nonempty_multiWit_of_arcWit Wt (hy.trans hx)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_multiWit {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W}
     {i₀ : Idx H p} {Z : Mdl Y i₀} {F : DVF p} (t : CuspOn Z F) (hY : (Y Z.i).N4) {γ : t.Forms} (h : γ ∈ t.Dir) :

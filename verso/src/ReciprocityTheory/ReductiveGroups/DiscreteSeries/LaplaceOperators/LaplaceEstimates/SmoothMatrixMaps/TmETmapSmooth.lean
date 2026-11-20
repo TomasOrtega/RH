@@ -19,21 +19,21 @@ variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {H : Type*} [NormedAddC
   {E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ D}
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases hc : c = a <;> simp [LemK.tensV, LemK.prj, hc]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tmE_tensV_apply (f : Fin (2 * r + k + 1) → D) (a b c : Fin (2 * r + k + 1)) :
     LemK.tensV E a b f c = E a b (f c) + (if c = a then f b else 0) := by
   by_cases hc : c = a <;> simp [LemK.tensV, LemK.prj, hc]
 
 /- English proof (translation)
-Simplify using `[coefX]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tmE_coefX_add (x₀ : Mat k r) (w u v : H) (g : Mat k r) :
     coefX σ x₀ w (u + v) g = coefX σ x₀ w u g + coefX σ x₀ w v g := by
   simp [coefX]
 
 /- English proof (translation)
-Unfold `tMap`. Conclude with `tmA_sm_sum _ _ fun c _ => Formalism.REAL.smooth_on_group_mul (tmD_cJ_smooth x₁ _) (hsm c)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tmE_tmap_smooth (x₁ : Fin (2 * r + k + 1) → ℂ) (x₀ : Mat k r) (w : H) (f : Fin (2 * r + k + 1) → H)
     (hsm : ∀ c, Formalism.REAL.SmoothOnG ε (coefX σ x₀ w (f c))) : Formalism.REAL.SmoothOnG ε (tMap ε σ x₁ x₀ w f) := by
@@ -41,9 +41,9 @@ theorem tmE_tmap_smooth (x₁ : Fin (2 * r + k + 1) → ℂ) (x₀ : Mat k r) (w
   exact tmA_sm_sum _ _ fun c _ => Formalism.REAL.smooth_on_group_mul (tmD_cJ_smooth x₁ _) (hsm c)
 
 /- English proof (translation)
-Establish `hy : x₀⁻¹ * g ∈ UJset ε` using `tmA_inUJ_mul (tmA_inUJ_inv hx₀) hg`. Unfold `tMap`. Rewrite using `[tmA_eab_sum _ _ (fun c _ => Formalism.REAL.smooth_on_group_mul (tmD_cJ_smooth x₁ _) (hsm c)) a b hg]`. Rewrite using `[Finset.sum_congr rfl (fun c _ => Formalism.REAL.lie_derivative_mul a b (tmD_cJ_smooth x₁ _) (hsm c) hg)]`. Establish `hZ : ∀ c, cJ ε x₁ (Matrix.single a b 1 *ᵥ Pi.single c 1) g = if c = b then cJ ε x₁ (Pi.single a 1) g else 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `intro c; rw [tmD_single_mulVec]; split_ifs <;> simp [tmD_cJ_zero]`. Establish `hT : ∀ c, coefX σ x₀ w ((LemK.tensV E a b f c : D) : H) g = coefX σ x₀ w ((E a b (f c) : D) : H) g + if c = a then coefX σ x₀ w ((f b : D) : H) g else 0`. Apply the tactic sequence `intro c; rw [tmE_tensV_apply]; split_ifs <;> simp [tmE_coefX_add]`. Simplify using `only [tmD_eab_cJ x₁ _ a b hg, tmB_eab_coef hσ hD hy, hZ, hT, ite_mul, zero_mul, mul_add, mul_ite, mul_zero, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tmE_eab_tmap (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {x₀ : Mat k r}
     (hx₀ : x₀ ∈ UJset ε) (x₁ : Fin (2 * r + k + 1) → ℂ) (w : H) (f : Fin (2 * r + k + 1) → D)
@@ -71,7 +71,7 @@ def tmTw (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ D) 
   | p :: w, f => LemK.tensV E p.1 p.2 (tmTw E w f)
 
 /- English proof (translation)
-Unfold `genSub at *`. Rewrite `*` using `[Submodule.mem_sInf]`. Introduce `T hT`. Conclude with `hT.2 a b v (hv T hT)`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tmE_genSub_E {V : Submodule ℂ D} (a b : Fin (2 * r + k + 1)) {v : D} (hv : v ∈ genSub E V) :
     E a b v ∈ genSub E V := by
@@ -81,7 +81,7 @@ theorem tmE_genSub_E {V : Submodule ℂ D} (a b : Fin (2 * r + k + 1)) {v : D} (
   exact hT.2 a b v (hv T hT)
 
 /- English proof (translation)
-The claim follows from `| [], c => hf c | p :: wd, c => by simp only [tmTw] rw [tmE_tensV_apply] refine Submodule.add_mem _ (tmE_genSub_E _ _ (tmE_tmTw_mem f hf wd c)) ?_ split_ifs · exact tmE_tmTw_mem f hf wd p.2 · exact Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem tmE_tmTw_mem {V : Submodule ℂ D} (f : Fin (2 * r + k + 1) → D) (hf : ∀ c, f c ∈ genSub E V) :
     ∀ (wd : List (Fin (2 * r + k + 1) × Fin (2 * r + k + 1))) (c : Fin (2 * r + k + 1)),
@@ -96,7 +96,7 @@ theorem tmE_tmTw_mem {V : Submodule ℂ D} (f : Fin (2 * r + k + 1) → D) (hf :
       · exact Submodule.zero_mem _
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => rfl | p :: wd, g, hg => by simp only [Formalism.REAL.Eword, tmTw] rw [Formalism.REAL.lie_derivative_congr (h := tMap ε σ x₁ x₀ w (fun c => ((tmTw E wd f c : D) : H))) p.1 p.2 (fun x hx => tmE_eword_tmap hσ hD hx₀ x₁ w hgood f hf wd x hx) hg] exact tmE_eab_tmap hσ hD …`.
+A detailed English derivation is pending.
 -/
 theorem tmE_eword_tmap (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {x₀ : Mat k r}
     (hx₀ : x₀ ∈ UJset ε) (x₁ : Fin (2 * r + k + 1) → ℂ) (w : H) {V : Submodule ℂ D} {a : ℝ}
@@ -114,11 +114,11 @@ theorem tmE_eword_tmap (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D 
         (fun c => (hgood _ (tmE_tmTw_mem f hf wd c)).1) p.1 p.2 hg
 
 /- English proof (translation)
-Establish `hb` using `fun c => (hgood _ (hf c)).2 []`. Use `choose C hC using hb`. Take `⟨B, hB0, hBb⟩ : ∃ B : ℝ, 0 ≤ B ∧ ∀ c g, ‖cJ ε x₁ (Pi.single c 1) g‖ ≤ B * frob g` from `⟨_, Finset.sum_nonneg fun i _ => norm_nonneg _, fun c g => tmD_cJ_bound x₁ c g⟩`. Use `⟨B * ∑ c, max (C c) 0, mul_nonneg hB0 (Finset.sum_nonneg fun c _ => le_max_right _ _), fun g hg => ?_⟩` and prove the remaining obligations. Establish `hF : 1 ≤ frob g` using `tmA_one_le_frob hg 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : frob g ^ (1 - a) = frob g * frob g ^ (-a)`. Rewrite using `[sub_eq_add_neg, Real.rpow_add (by linarith), Real.rpow_one]`. Establish `hr : 0 ≤ frob g ^ (-a)` using `Real.rpow_nonneg (by linarith) _`. Unfold `tMap`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun c _ => mul_le_mul (hBb c g) ?_ (norm_nonneg _) (by positivity)` and prove the remaining obligations. Conclude with `(hC c g hg).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hr)`. Use `_ = (B * ∑ c, max (C c) 0) * frob g ^ (1 - a) := by`. Rewrite using `[hpow, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun c _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmE_tmap_bound {x₀ : Mat k r} (x₁ : Fin (2 * r + k + 1) → ℂ) (w : H) {V : Submodule ℂ D} {a : ℝ}
     (hgood : ∀ m : D, m ∈ genSub E V → TmGood ε σ x₀ w a (m : H))
@@ -152,19 +152,19 @@ section L2
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Apply `memLp_muG_of_haar ε F 2` to reduce the goal to its premises. Introduce `ν hν`. Establish `hae : AEStronglyMeasurable (fun g : S7.UJ ε => F (S7.toM g)) ν` using `(Formalism.REAL.continuous_smooth_on_group_eval hF).aestronglyMeasurable`. Rewrite using `[memLp_two_iff_integrable_sq_norm hae]`. Establish `ha1 : 0 ≤ a - 1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) ≤ ((2 * (n * Fintype.card (S7.SgIxV ε s)) : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn : (1 : ℝ) ≤ n` using `by exact_mod_cast a₀.pos`. Establish `key : ∀ g : S7.UJ ε, 1 ≤ S7.hs (S7.toM g) ∧ ‖‖F (S7.toM g)‖ ^ 2‖ ≤ C ^ 2 * S7.hs (S7.toM g) ^ (1 - a)`. Introduce `g`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : Formalism.REAL.inUJ ε (S7.toM g)` using `g.2`. Establish `h1` using `hb _ hg`. Establish `hfr : 1 ≤ frob (S7.toM g)` using `tmA_one_le_frob hg a₀`. Establish `hsq : frob (S7.toM g) ^ 2 = S7.hs (S7.toM g)`. Unfold `frob S7.hs; exact Real.sq_sqrt (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨by rw [← hsq]; nlinarith, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, Real.rpow_pow_comm (by linarith), hsq]`. Use `S7.integrable_of_decayVG ε s ν _ (hae.norm.pow 2) (C ^ 2) ?_ (2 * (a - 1)) ha ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g _`. Take `⟨h1, h2⟩` from `key g`. Use `h2.trans ?_` and prove the remaining obligations. Establish `: S7.hs (S7.toM g) ^ (1 - a) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos h1 (by linarith)`. Conclude with `mul_le_of_le_one_right (sq_nonneg C) this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g _`. Take `⟨h1, h2⟩` from `key g`. Establish `hx : 0 < S7.hs (S7.toM g) / n` using `div_pos (by linarith) (by linarith)`. Use `⟨Real.log (S7.hs (S7.toM g) / n) / 2, ?_, h2.trans ?_⟩` and prove the remaining obligations. Rewrite using `[show 2 * (Real.log (S7.hs (S7.toM g) / n) / 2) = Real.log (S7.hs (S7.toM g) / n) by ring, Real.exp_log hx, mul_div_cancel₀ _ (by linarith)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_le_mul_of_nonneg_left _ (sq_nonneg C)` to reduce the goal to its premises. Rewrite using `[show -(2 * (a - 1) * (Real.log (S7.hs (S7.toM g) / n) / 2)) = Real.log (S7.hs (S7.toM g) / n) * (1 - a) by ring, ← Real.rpow_def_of_pos hx]`. Conclude with `Real.rpow_le_rpow_of_nonpos hx (div_le_self (by linarith) hn) (by linarith)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmF_memLp {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : Formalism.REAL.SmoothOnG ε F) {C a : ℝ}
     (s : Bool) (ha : ((2 * (n * Fintype.card (S7.SgIxV ε s)) : ℕ) : ℝ) < 2 * (a - 1)) (a₀ : Fin n)

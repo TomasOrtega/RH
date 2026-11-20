@@ -13,7 +13,7 @@ namespace GlobalTheory.Div.PgTie
 open Classical in
 
 /- English proof (translation)
-Substitute `hX` using the available equality. Consider the cases of `hs`. Consider the cases of `hP`. Both sides reduce to the same expression.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem image_congr {D : D7} {X X' : Formalism.L2.Col.Fields} (hX : X = X') {s : Formalism.L2.Ker.Seam D X} {s' : Formalism.L2.Ker.Seam D X'}
     (hs : HEq s s') {Pr : Formalism.L2.Col.Primes X} {Pr' : Formalism.L2.Col.Primes X'} (hP : HEq Pr Pr') :
@@ -24,7 +24,7 @@ theorem image_congr {D : D7} {X X' : Formalism.L2.Col.Fields} (hX : X = X') {s :
   rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `Formalism.L2.Host.CT.mem_plMap (RingEquiv.refl E) P x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem plMap_refl {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) :
     Formalism.L2.Host.CT.plMap (RingEquiv.refl E) P = P := by
@@ -34,7 +34,7 @@ theorem plMap_refl {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (
 open Classical in
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Rewrite using `[show Formalism.L2.Host.CT.plMap (RingEquiv.refl E) = id from funext plMap_refl, Finset.image_id]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem image_refl {E : Type} [Field E] [NumberField E] (f : E ≃+* E) (hf : f = RingEquiv.refl E)
     (S : Finset (HeightOneSpectrum (𝓞 E))) : S.image (Formalism.L2.Host.CT.plMap f) = S := by
@@ -45,11 +45,11 @@ open Classical in
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hL p`. Use `GlobalTheory.Fc.EvP.of_all ?_` and prove the remaining obligations. Introduce `_ K _ q c b w _`. Establish `hk` using `w.recPin.k.std`. Rewrite using `[image_congr hk.X_eq hk.seam hk.Pr]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl` using `q.x.what₂.r.z.lev.Pg`. Take `⟨x, a, ax, y, _⟩` from `w`. Consider the cases of `ax`. Take `⟨Dc, Sp, Zsc, lam, err, lam_eq, x, pack, _⟩` from `a`. Take `⟨G, grp, fin, Pl0, I0, T0, A3, core, alg, R, F, cG, _⟩` from `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only at pack ⊢`. Consider the cases of `pack`. Conclude with `hl.trans (image_refl _ rfl _).symm`.
+Simplify by unfolding definitions. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem pgEq_of_linked : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Prm hL), GlobalTheory.Fc.EvP fun _ K => ∀ (q : WPt p.s K) (c : ℝ) (b : GlobalTheory.Fc.Bundle (q.w.D q.Z) q.O c) (w : BWit q b), q.O.L.sc = K.s → (open Classical in w.x.R.Pg = b.R.T.ker.Pr.vGs.image (Formalism.L2.Host.CT.plMap b.R.T.ker.seam.iE)) := by
   intro hL p

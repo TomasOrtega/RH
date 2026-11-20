@@ -19,21 +19,21 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X Y g _ E y hy`. Assume the negation of the conclusion as `hyn`. Rewrite `hy` using `[mem_support_iff, ← not_subsingleton_iff_nontrivial]`. Apply `hy` to reduce the goal to its premises. Establish `hemb` using `g.isClosedEmbedding`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `subsingleton_of_forall_eq 0 fun t => ?_` and prove the remaining obligations. Take `⟨U, hyU, s, rfl⟩` from `TopCat.Presheaf.exists_germ_eq _ t`. Set `Z0 : Set Y` to `{z | ∃ hz : z ∈ g ⁻¹ᵁ U, E.presheaf.germ (g ⁻¹ᵁ U) z hz s = 0}`. Establish `hZ0 : IsOpen Z0`. Rewrite using `[isOpen_iff_forall_mem_open]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `z ⟨hz, hzs⟩`. Take `⟨W, hzW, iU, iV, he⟩` from `TopCat.Presheaf.germ_eq E.presheaf z hz hz s 0 (by rw [hzs, map_zero])`. Use `⟨W, fun z' hz' => ⟨(leOfHom iU) hz', ?_⟩, W.2, hzW⟩` and prove the remaining obligations. Use `TopCat.Presheaf.germ_res_apply E.presheaf iU z' hz' s` as an intermediate fact. Rewrite `this` using `[he, map_zero, map_zero]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Take `⟨V', hV', hV'e⟩` from `hemb.isInducing.isOpen_iff.1 hZ0`. Set `V : X.Opens` to `U ⊓ ⟨V' ∪ (Set.range g)ᶜ, hV'.union hemb.isClosed_range.isOpen_compl⟩`. Establish `hyV : y ∈ V`. Use `⟨hyU, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hr : y ∈ Set.range g`. Take `⟨z, rfl⟩` from `hr`. Establish `hzs : z ∉ support E` using `fun h => hyn ⟨z, h, rfl⟩`. Establish `hz : z ∈ g ⁻¹ᵁ U` using `hyU`. Use `Or.inl (show z ∈ g ⁻¹' V' from hV'e ▸ ⟨hz, (notMem_support_iff.1 hzs).elim _ _⟩)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the second alternative.
 
-Conclude with `Or.inr hr`. Establish `hVU : V ≤ U` using `inf_le_left`. Rewrite using `[← TopCat.Presheaf.germ_res_apply _ (homOfLE hVU) y hyV]`. Establish `h0 : ((Scheme.Modules.pushforward g).obj E).presheaf.map (homOfLE hVU).op s = 0`. Use `section_eq_zero_of_germ (F := E) _ fun z hz => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hz' : z ∈ Z0`. Rewrite using `[← hV'e]`. Break down `hz.2 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd ⟨z, rfl⟩ h`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hzU, hzs⟩` from `hz'`. Rewrite using `[Scheme.Modules.pushforward_obj_presheaf_map]`. Conclude with `(TopCat.Presheaf.germ_res_apply E.presheaf ((Opens.map g.base).map (homOfLE hVU)) z hz s).trans hzs`. Rewrite using `[h0, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem support_pushforward_subset_image_of_isClosedImmersion :
     ∀ {X Y : Scheme.{0}} (g : Y ⟶ X) [IsClosedImmersion g] (E : Y.Modules),

@@ -25,13 +25,11 @@ noncomputable section
 namespace GlobalTheory.LatticeTranslateSum
 
 /- English proof (translation)
-Use `set k : ℝ := (Fintype.card ι : ℝ) with hk_def`. Establish `hk1 : (1 : ℝ) ≤ k` using `Nat.one_le_cast.mpr Fintype.card_pos`. Establish `hk : (0 : ℝ) < k` using `by linarith`. Establish `hw : ∑ _i : ι, (1 / k) = 1`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← hk_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `h` using `Real.pow_arith_mean_le_arith_mean_pow Finset.univ (fun _ => 1 / k) f (fun _ _ => by positivity) hw (fun i _ => hf i) N`. Rewrite `h` using `[← Finset.mul_sum, ← Finset.mul_sum, mul_pow]`. Establish `hs : 0 ≤ ∑ i, f i ^ N` using `Finset.sum_nonneg fun i _ => pow_nonneg (hf i) _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← mul_pow, mul_one_div_cancel hk.ne', one_pow, one_mul]`. Use `_ ≤ k ^ N * (1 / k * ∑ i, f i ^ N) := mul_le_mul_of_nonneg_left h (by positivity)`. Use `_ ≤ k ^ N * ∑ i, f i ^ N := by`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Establish `: 1 / k ≤ 1` using `by rw [div_le_one hk]; exact hk1`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sum_pow_le {ι : Type*} [Fintype ι] [Nonempty ι] (f : ι → ℝ) (hf : ∀ i, 0 ≤ f i) (N : ℕ) :
     (∑ i, f i) ^ N ≤ (Fintype.card ι : ℝ) ^ N * ∑ i, f i ^ N := by
@@ -54,25 +52,23 @@ theorem sum_pow_le {ι : Type*} [Fintype ι] [Nonempty ι] (f : ι → ℝ) (hf 
         nlinarith
 
 /- English proof (translation)
-Use `choose n zs κ hκ using fun τ => GlobalTheory.T.exists_bound_matrix_by_symplecticFormHomAtRealPlace D S T τ`. Use `choose Cf hCf using hder`. Take `⟨τ₀⟩` from `(GlobalTheory.DataRowsCounterexample.places_nonempty D).1`. Set `dv : (Σ τ : D.what₂.Tau, Fin (n τ)) → WO S T → ℝ` to `fun p w => ‖deriv (fun t : ℝ => ψ (symplO S T (lineAt θ p.1 (zs p.1 p.2) t) w)) 0‖`. Set `r : (Σ τ : D.what₂.Tau, Fin (n τ)) → ℝ` to `fun p => |κ p.1| / (2 * Real.pi)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Treat this case separately.
 
-Set `f : WO S T → Option (Σ τ : D.what₂.Tau, Fin (n τ)) → ℝ` to `fun w o => match o with`. Consider the case `none => 1`. Consider the case `some p => r p * dv p w`. Establish `hf0 : ∀ w o, 0 ≤ f w o`. Introduce `w o`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `o with`. Consider the case `none => simp [f]`. Consider the case `some p => exact mul_nonneg (div_nonneg (abs_nonneg _) (by positivity)) (norm_nonneg _)`. Establish `hdv : ∀ p w, r p * dv p w = |κ p.1| * |GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt S T p.1 (zs p.1 p.2) (compAt θ p.1 w)|`. Introduce `p w`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [r, dv]`. Rewrite using `[GlobalTheory.T.norm_deriv_character_symplecticPairing_realLine D ψ hψ θ hθ S T p.1 (zs p.1 p.2) w]`. Clear the denominators using the available nonvanishing facts. Establish `hsize : ∀ w, 1 + GlobalTheory.Unf.realSize θ w ≤ ∑ o, f w o`. Introduce `w`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fintype.sum_option]`. Simplify using `only [f]`. Use `add_le_add le_rfl ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_sigma]`. Unfold `GlobalTheory.Unf.realSize`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [hdv]`. Rewrite using `[← Finset.mul_sum]`. Establish `hs : 0 ≤ ∑ l, |GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt S T τ (zs τ l) (compAt θ τ w)|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Conclude with `(hκ τ (compAt θ τ w)).trans (mul_le_mul_of_nonneg_right (le_abs_self _) hs)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨(Fintype.card (Option (Σ τ : D.what₂.Tau, Fin (n τ))) : ℝ) ^ N * (Cf τ₀ 0 0 + ∑ p, r p ^ N * Cf p.1 (zs p.1 p.2) N), fun w => ?_⟩` and prove the remaining obligations. Establish `hrs : 0 ≤ GlobalTheory.Unf.realSize θ w`. Unfold `GlobalTheory.Unf.realSize`. Conclude with `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `h1 : (1 + GlobalTheory.Unf.realSize θ w) ^ N ≤ (∑ o, f w o) ^ N` using `pow_le_pow_left₀ (by positivity) (hsize w) N`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `sum_pow_le (f w) (hf0 w) N`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[Fintype.sum_option, add_mul, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Use `add_le_add ?_ (Finset.sum_le_sum fun p _ => ?_)` and prove the remaining obligations. Simplify using `only [f, one_pow, one_mul]`. Simplify using `using hCf τ₀ 0 0 w`. Simplify using `only [f]`. Rewrite using `[mul_pow, mul_assoc]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (hCf p.1 (zs p.1 p.2) N w) (pow_nonneg (div_nonneg (abs_nonneg _) (by positivity)) _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decay (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (θ : InfFam D) (hθ : IsInfFam θ)
     (S T : HSp D) (c : WO S T → ℂ)
@@ -141,25 +137,21 @@ end GlobalTheory.LatticeTranslateSum
 open GlobalTheory.LatticeTranslateSum in
 
 /- English proof (translation)
-Introduce `D ψ hψ θ hθ S T c ⟨U, hU, hUc⟩ hder`. Take `⟨Q, hQ, hQc⟩` from `GlobalTheory.T.exists_compact_finiteComponents_of_annihilator_openSubgroup D ψ hψ S T U hU`. Establish `hbox : ∀ x, c x ≠ 0 → GlobalTheory.Unf.InBox Q x` using `fun x hx => hQc x (hUc x hx)`. Take `⟨-, -, -, -, -, K, hK, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Take `⟨N, hN⟩` from `GlobalTheory.Unf.MajLoc.summable_bound D θ hθ T.rank S.rank`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hbb⟩` from `hN Q K hQ hK`. Take `⟨C, hC⟩` from `decay D ψ hψ θ hθ S T c hder N`. Establish `hmaj : ∀ x : WO S T, ‖c x‖ ≤ max C 0 * GlobalTheory.Unf.maj θ Q N x`. Introduce `x`. Distinguish the cases in `hx : c x = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hx, norm_zero]`. Use `mul_nonneg (le_max_right _ _) ?_` and prove the remaining obligations. Unfold `GlobalTheory.Unf.maj`. Use `split_ifs`. Establish `hrs : 0 ≤ GlobalTheory.Unf.realSize θ x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `GlobalTheory.Unf.realSize`. Conclude with `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Check the signs of the components of the expression. Conclude with `le_rfl`. Establish `hrs : 0 ≤ GlobalTheory.Unf.realSize θ x`.
+Check the signs of the components of the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `GlobalTheory.Unf.realSize`. Conclude with `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hp : 0 < (1 + GlobalTheory.Unf.realSize θ x) ^ N` using `by positivity`. Unfold `GlobalTheory.Unf.maj`. Rewrite using `[if_pos (hbox x hx), ← div_eq_mul_inv, le_div_iff₀ hp, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hC x).trans (le_max_left _ _)`. Establish `hinj : Function.Injective (incA D)` using `GlobalTheory.MixModel.incA_injective`. Set `e0 : Matrix (Fin T.rank) (Fin S.rank) D.host.E → ratL T S` to `fun ξ => ⟨rat ξ, ⟨ξ, rfl⟩⟩`. Establish `he0 : Function.Bijective e0`. Use `⟨fun ξ ξ' h => ?_, fun γ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h' : rat ξ = rat ξ'` using `congrArg Subtype.val h`. Conclude with `Matrix.map_injective hinj h'`. Take `⟨x, ξ, hξ⟩` from `γ`. Conclude with `⟨ξ, Subtype.ext hξ⟩`. Use `⟨max C 0 * ∑' ξ, b ξ, fun w => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Normalize the expressions using the abelian group laws.
 
-Take `⟨g0, hg0, hg0K⟩` from `hcov w`. Set `e : Matrix (Fin T.rank) (Fin S.rank) D.host.E ≃ ratL T S` to `(Equiv.ofBijective e0 he0).trans (Equiv.addRight ⟨g0, hg0⟩)`. Establish `hterm : ∀ ξ, ‖c (((e ξ : ratL T S) : WO S T) + w)‖ ≤ max C 0 * b ξ`. Introduce `ξ`. Establish `he : ((e ξ : ratL T S) : WO S T) + w = (g0 + w) + rat ξ` using `by show rat ξ + g0 + w = (g0 + w) + rat ξ`.
-
-Normalize the expressions using the abelian group laws. Rewrite using `[he]`. Conclude with `(hmaj _).trans (mul_le_mul_of_nonneg_left (hbb _ hg0K ξ) (le_max_right _ _))`. Establish `hs : Summable (fun ξ => ‖c (((e ξ : ratL T S) : WO S T) + w)‖)` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hterm (hb.mul_left _)`. Use `⟨e.summable_iff.mp hs, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← e.tsum_eq, ← tsum_mul_left]`. Conclude with `hs.tsum_le_tsum hterm (hb.mul_left _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LatticeTranslateSum.sum_translates_bounded : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (S T : HSp D) (c : WO S T → ℂ), (∃ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) ∧ ∀ w : WO S T, c w ≠ 0 → ∀ u ∈ U, u.map (infPart D) = 0 → ψ (symplO S T w u) = 1) → (∀ (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (k : ℕ), ∃ C : ℝ, ∀ w : WO S T, ‖deriv (fun t : ℝ => ψ (symplO S T (lineAt θ τ z t) w)) 0‖ ^ k * ‖c w‖ ≤ C) → ∃ C : ℝ, ∀ w : WO S T, Summable (fun γ : ratL T S => ‖c ((γ : WO S T) + w)‖) ∧ ∑' γ : ratL T S, ‖c ((γ : WO S T) + w)‖ ≤ C := by
   intro D ψ hψ θ hθ S T c ⟨U, hU, hUc⟩ hder

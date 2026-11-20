@@ -5,17 +5,17 @@ open scoped Formalism.Per NNReal
 open UpperTheory.Gal.ClosedPhiFromClosedTrace
 
 /- English proof (translation)
-Use `letI : Module F M := Module.compHom M κ`. Establish `hsm : ∀ (c : F) (y : M), c • y = κ c • y` using `fun _ _ => rfl`. Set `f₂ : F →+ D →+ M` to `AddMonoidHom.mk' (fun c => (DistribMulAction.toAddMonoidHom M (κ c)).comp f) (fun c c' => by`. Use extensionality with `x`. Simplify using `[add_smul])`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hf₂ : ∀ c x, f₂ c x = κ c • f x` using `fun _ _ => rfl`. Set `g : F ⊗[LL] D →+ M` to `TensorProduct.liftAddHom f₂ fun r c x => by`. Rewrite using `[hf₂, hf₂, hL, Algebra.smul_def, map_mul, mul_comm, mul_smul, smul_comm]`. Establish `hg : ∀ c x, g (c ⊗ₜ x) = κ c • f x` using `fun _ _ => rfl`. Establish `hgs : ∀ (c : F) (y : F ⊗[LL] D), g (c • y) = κ c • g y` using `fun c y => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, smul_add, hx, hy]`. Consider the case `tmul c' x => rw [TensorProduct.smul_tmul', hg, hg, smul_eq_mul, map_mul, mul_smul]`. Set `gL : F ⊗[LL] D →ₗ[F] M` to `{ toFun := g, map_add' := g.map_add, map_smul' := hgs }`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Establish `hk : letterKer m F τ ≤ LinearMap.ker gL` using `iSup_le fun u => by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `g _ = 0`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`. Consider the case `tmul c x`. Simplify using `only [LinearMap.sub_apply, LinearMap.baseChange_tmul, LinearMap.smul_apply, LinearMap.id_apply, map_sub, hgs, hg, hU]`. Rewrite using `[smul_comm, sub_self]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `ψL : Letter m F τ →ₗ[F] M` to `(letterKer m F τ).liftQ gL hk`. Use `⟨ψL.toAddMonoidHom, fun c y => ψL.map_smul c y, fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g (1 ⊗ₜ x) = f x`. Rewrite using `[hg, map_one, one_smul]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem letter_lift {LL U D : Type} [Field LL] [Field U] [AddCommGroup D] [Module LL D]
     (m : U →+* Module.End LL D) (F : Type) [Field F] [Algebra LL F] (τ : U →+* F)
@@ -58,9 +58,9 @@ private theorem letter_lift {LL U D : Type} [Field LL] [Field U] [AddCommGroup D
   rw [hg, map_one, one_smul]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, smul_add, hx, hy]`. Consider the case `tmul v b`. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[TensorProduct.smul_tmul', h, Pi.smul_apply, Pi.smul_apply, h, smul_eq_mul, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem coord_smul {l : ℕ} [Fact l.Prime] {P : LocPrime l} {L : FinExt l} {a : ℕ}
     {ψ₀ : (Fin a → ↥L.1) ⊗[ℚ_[l]] Bst P →+ (Fin a → OB P)} (h : IsCoord P L ψ₀) (c : ↥L.1)
@@ -76,9 +76,9 @@ private theorem coord_smul {l : ℕ} [Fact l.Prime] {P : LocPrime l} {L : FinExt
     rfl
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, smul_add, hx, hy]`. Consider the case `tmul v b`. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[GlobalTheory.Pst.mulV_tmul, h, Pi.smul_apply, h, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← Algebra.smul_def, ← TensorProduct.smul_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem coord_mulV {l : ℕ} [Fact l.Prime] {P : LocPrime l} {L : FinExt l} {a : ℕ}
     {ψ₀ : (Fin a → ↥L.1) ⊗[ℚ_[l]] Bst P →+ (Fin a → OB P)} (h : IsCoord P L ψ₀) (c : ↥(MaximalUnramifiedExtension l))
@@ -97,7 +97,7 @@ private noncomputable def kap {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om
   (Algebra.TensorProduct.includeLeftRingHom : Om l →+* OB P).comp ι.symm.toRingHom
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((ι.symm (ι z) ⊗ₜ 1 : OB P)) = _`. Rewrite using `[RingEquiv.symm_apply_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem kap_apply {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ) (z : Om l) :
     kap P ι (ι z) = (z ⊗ₜ 1 : OB P) := by
@@ -116,7 +116,7 @@ private noncomputable def fD : ↥(GlobalTheory.Pst.Dpst P R) →+ (Fin a → OB
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Conclude with `(coord_smul h r x.1).trans (congrArg (fun t : OB P => t • ψ₀ x.1) (kap_apply P ι (r : Om l)).symm)`.
+A detailed English derivation is pending.
 -/
 private theorem fD_smul (h : IsCoord P L ψ₀) (ι : Om l ≃+* ℂ) (r : ↥L.1) (x : ↥(GlobalTheory.Pst.Dpst P R)) :
     fD R ψ₀ (r • x) = kap P ι (ι (r : Om l)) • fD R ψ₀ x := by
@@ -125,7 +125,7 @@ private theorem fD_smul (h : IsCoord P L ψ₀) (ι : Om l ≃+* ℂ) (r : ↥L.
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Conclude with `(coord_mulV h u x.1).trans (congrArg (fun t : OB P => t • ψ₀ x.1) (kap_apply P ι (u : Om l)).symm)`.
+A detailed English derivation is pending.
 -/
 private theorem fD_mul (h : IsCoord P L ψ₀) (ι : Om l ≃+* ℂ) (u : ↥(MaximalUnramifiedExtension l)) (x : ↥(GlobalTheory.Pst.Dpst P R)) :
     fD R ψ₀ (GlobalTheory.Pst.mulD P R u x) = kap P ι (ι (u : Om l)) • fD R ψ₀ x := by
@@ -136,7 +136,7 @@ end
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `l _ P ι K L a R ψ₀ h`. Take `⟨ψ, h1, h2⟩` from `@letter_lift ↥L.1 ↥(MaximalUnramifiedExtension l) ↥(GlobalTheory.Pst.Dpst P R) _ _ _ _ (GlobalTheory.Pst.mulD P R) ℂ _ (GlobalTheory.Pst.algC ι L) (GlobalTheory.Pst.urC ι) (OB P) (Fin a → OB P) _ _ _ (kap P ι) (fD R ψ₀) (fun r x => fD_smul R ψ₀ h ι r x) (fun u x => fD_mul R ψ₀ h …`. Conclude with `⟨ψ, h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.coordWD_holds :
     CoordWD := by

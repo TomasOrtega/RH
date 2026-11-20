@@ -13,9 +13,9 @@ open scoped NumberField.AdeleRing ValuativeRel
 namespace GlobalTheory.CompanionTheory.SplitLift
 
 /- English proof (translation)
-Introduce `K _ _ h2 v w₁ w₂ _ _ hne`. Establish `h1 : Module.finrank (Qv v) (Kv K w₁) = 1` using `(GlobalTheory.CompanionTheory.BaseChangeFunctionalEquation.places_split h2 v w₁ w₂ hne).2.1`. Use `⟨h1, fun ξ => ?_⟩` and prove the remaining obligations. Establish `hs : ∀ y : Kv K w₁, ∃ a : Qv v, algebraMap (Qv v) (Kv K w₁) a = y` using `fun y => by`. Establish `hb` using `Subalgebra.bot_eq_top_of_finrank_eq_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : y ∈ (⊥ : Subalgebra (Qv v) (Kv K w₁))` using `by rw [hb]; trivial`. Conclude with `Algebra.mem_bot.1 hy`. Conclude with `Function.invFun_eq (hs _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem split_place_degreeOne_embedding : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 →
     ∀ (v : Pl) (w₁ w₂ : PlK K) [w₁.asIdeal.LiesOver v.asIdeal] [w₂.asIdeal.LiesOver v.asIdeal],

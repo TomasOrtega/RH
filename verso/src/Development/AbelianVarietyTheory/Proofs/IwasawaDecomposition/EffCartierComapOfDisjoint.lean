@@ -10,14 +10,14 @@ open ReciprocityTheory.AnForm.R
 namespace GlobalTheory.TorRef
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨_, ⟨U, hU, rfl⟩, hx, -⟩ := X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ exact ⟨⟨U, hU⟩, 1, hx, one_mem _, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem effCartier_top' (X : Scheme.{0}) : FinalTheorems.EffCartier (⊤ : X.IdealSheafData) := fun x => by
   obtain ⟨_, ⟨U, hU, rfl⟩, hx, -⟩ := X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ
   exact ⟨⟨U, hU⟩, 1, hx, one_mem _, by simp⟩
 
 /- English proof (translation)
-Establish `: J.comap g = ⊤`. Rewrite using `[← Scheme.IdealSheafData.support_eq_bot_iff, Scheme.IdealSheafData.support_comap, eq_bot_iff]`. Conclude with `fun w hw => h w hw`. Rewrite using `[this]`. Conclude with `effCartier_top' W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem effCartier_comap_of_disjoint' {W X : Scheme.{0}} (g : W ⟶ X) (J : X.IdealSheafData)
     (h : ∀ w, g w ∉ J.support) : FinalTheorems.EffCartier (J.comap g) := by
@@ -27,7 +27,7 @@ theorem effCartier_comap_of_disjoint' {W X : Scheme.{0}} (g : W ⟶ X) (J : X.Id
   rw [this]; exact effCartier_top' W
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `EffCartierData.exists_idealSheaf_eq hI`. Rewrite using `[← hD]`. Conclude with `(D.keepsRegular_iff_effCartier f).1 (D.keepsRegular_of_flat f)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem effCartier_comap_of_flat {X Y : Scheme.{0}} (I : X.IdealSheafData) (f : Y ⟶ X) [Flat f]
     (hI : FinalTheorems.EffCartier I) : FinalTheorems.EffCartier (I.comap f) := by
@@ -36,11 +36,9 @@ theorem effCartier_comap_of_flat {X Y : Scheme.{0}} (I : X.IdealSheafData) (f : 
   exact (D.keepsRegular_iff_effCartier f).1 (D.keepsRegular_of_flat f)
 
 /- English proof (translation)
-Establish `hg' : Flat g'` using `MorphismProperty.of_isPullback pb.flip hg`. Use `⟨?_, fun W h hW => ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← pb.w, Scheme.IdealSheafData.comap_comp]`. Conclude with `effCartier_comap_of_flat _ g' hB.1`. Rewrite `hW` using `[← Scheme.IdealSheafData.comap_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, hku⟩` from `hB.2 W (h ≫ g) hW`. Use `⟨pb.lift k h hk, pb.lift_snd _ _ _, fun m hm => pb.hom_ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[pb.lift_fst]`. Conclude with `hku _ (by simp only at hm ⊢; rw [Category.assoc, pb.w, ← Category.assoc, hm])`. Rewrite using `[pb.lift_snd]`.
-
-Conclude with `hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blowup_of_isPullback_of_flat {X X' Y Y' : Scheme.{0}} {π : X' ⟶ X} {g : Y ⟶ X} {π' : Y' ⟶ Y}
     {g' : Y' ⟶ X'} {J : X.IdealSheafData} (hB : FinalTheorems.Blowup π J) (hg : Flat g) (pb : IsPullback g' π' π g) :
@@ -57,7 +55,7 @@ theorem blowup_of_isPullback_of_flat {X X' Y Y' : Scheme.{0}} {π : X' ⟶ X} {g
     · rw [pb.lift_snd]; exact hm
 
 /- English proof (translation)
-Take `⟨s, hs, -⟩` from `hB.2 X (𝟙 X) (by rwa [Scheme.IdealSheafData.comap_id])`. Take `⟨_, -, hu⟩` from `hB.2 X' π hB.1`. Conclude with `⟨⟨s, (hu _ (by simp [hs])).trans (hu _ (by simp)).symm, hs⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isIso_of_blowup_of_effCartier {X X' : Scheme.{0}} {π : X' ⟶ X} {J : X.IdealSheafData}
     (hB : FinalTheorems.Blowup π J) (hJ : FinalTheorems.EffCartier J) : IsIso π := by
@@ -66,7 +64,7 @@ theorem isIso_of_blowup_of_effCartier {X X' : Scheme.{0}} {π : X' ⟶ X} {J : X
   exact ⟨⟨s, (hu _ (by simp [hs])).trans (hu _ (by simp)).symm, hs⟩⟩
 
 /- English proof (translation)
-Take `⟨σ, hσ, -⟩` from `h.2 U U.ι (effCartier_comap_of_disjoint' _ _ fun w => hU _ w.2)`. Establish `pb` using `isPullback_morphismRestrict π U`. Take `⟨τ, -, hτ⟩` from `h.2 (π ⁻¹ᵁ U) ((π ⁻¹ᵁ U).ι ≫ π) (effCartier_comap_of_disjoint' _ _ fun w => hU _ w.2)`. Establish `e : π ∣_ U ≫ σ = (π ⁻¹ᵁ U).ι` using `(hτ _ (by simp [hσ])).trans (hτ _ rfl).symm`. Use `⟨pb.lift (𝟙 _) σ (by simp [hσ]), pb.hom_ext (by simp) (by simp [e]), by simp⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isIso_restrict_of_blowup' {X X' : Scheme.{0}} {π : X' ⟶ X} {J : X.IdealSheafData} (h : FinalTheorems.Blowup π J)
     (U : X.Opens) (hU : ∀ x ∈ U, x ∉ J.support) : IsIso (π ∣_ U) := by
@@ -79,7 +77,7 @@ theorem isIso_restrict_of_blowup' {X X' : Scheme.{0}} {π : X' ⟶ X} {J : X.Ide
   refine ⟨pb.lift (𝟙 _) σ (by simp [hσ]), pb.hom_ext (by simp) (by simp [e]), by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ _ _ _ hB hg pb => blowup_of_isPullback_of_flat hB hg pb, fun _ _ _ _ hB hJ => isIso_of_blowup_of_effCartier hB hJ, fun _ _ _ _ U hB hU => isIso_restrict_of_blowup' hB U fun _ hx hs => Set.disjoint_left.1 hU hx hs⟩`.
+Supply the required witnesses or components.
 -/
 theorem blowBCSt : BlowBCSt :=
   ⟨fun _ _ _ _ _ _ _ _ _ hB hg pb => blowup_of_isPullback_of_flat hB hg pb,

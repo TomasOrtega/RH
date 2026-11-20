@@ -16,7 +16,7 @@ def sgn (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ :=
   if r ≤ i.val ∧ i.val ≤ r + k ∧ i.val = r + k then -1 else 1
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hl` using `l.isLt`. Simplify using `only [Hpk, sig, sgn, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | (simp_all; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Hpk_apply (k r : ℕ) (i l : Fin (2 * r + k + 1)) :
     Hpk k r i l = if l = sig k r i then sgn k r i else 0 := by
@@ -26,7 +26,7 @@ lemma Hpk_apply (k r : ℕ) (i l : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | omega | (simp_all; omega)
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Unfold `sig`. Apply the tactic sequence `split_ifs <;> first | rfl | (ext; simp only at *; omega)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sig_sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : sig k r (sig k r i) = i := by
   have hi := i.isLt
@@ -34,7 +34,7 @@ lemma sig_sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : sig k r (sig k r i) = i :=
   split_ifs <;> first | rfl | (ext; simp only at *; omega)
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Unfold `sgn sig`. Apply the tactic sequence `split_ifs <;> first | rfl | (simp only at *; omega)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sgn_sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : sgn k r (sig k r i) = sgn k r i := by
   have hi := i.isLt
@@ -42,17 +42,17 @@ lemma sgn_sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : sgn k r (sig k r i) = sgn 
   split_ifs <;> first | rfl | (simp only at *; omega)
 
 /- English proof (translation)
-Apply the tactic sequence `unfold sgn; split_ifs <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sgn_mul_self (k r : ℕ) (i : Fin (2 * r + k + 1)) : sgn k r i * sgn k r i = 1 := by
   unfold sgn; split_ifs <;> norm_num
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[mul_apply, Finset.sum_eq_single (sig k r i)]`. Rewrite using `[Hpk_apply, Hpk_apply, if_pos rfl, sig_sig, sgn_sig, one_apply]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_pos rfl, if_pos rfl, sgn_mul_self]`. Rewrite using `[if_neg h, if_neg (Ne.symm h), mul_zero]`. Introduce `l _ hl`. Rewrite using `[Hpk_apply, if_neg hl, zero_mul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 lemma Hpk_mul_self (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   ext i j
@@ -66,9 +66,9 @@ lemma Hpk_mul_self (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.det (Hpk_mul_self k r)`. Rewrite `h` using `[det_mul, det_one]`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Rewrite `h` using `[h0, zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h`.
+A detailed English derivation is pending.
 -/
 lemma det_Hpk (k r : ℕ) : IsUnit (Hpk k r).det := by
   have h := congrArg Matrix.det (Hpk_mul_self k r)
@@ -83,7 +83,7 @@ section Group
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `ha' : aᴴ * H * a = H` using `ha`. Establish `hb' : bᴴ * H * b = H` using `hb`. Use `show (a * b)ᴴ * H * (a * b) = H`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma UH_mul {H a b : Matrix ι ι ℂ} (ha : a ∈ UH H) (hb : b ∈ UH H) : a * b ∈ UH H := by
   have ha' : aᴴ * H * a = H := ha
@@ -94,9 +94,9 @@ lemma UH_mul {H a b : Matrix ι ι ℂ} (ha : a ∈ UH H) (hb : b ∈ UH H) : a 
     _ = H := by rw [ha', hb']
 
 /- English proof (translation)
-Establish `hg' : gᴴ * H * g = H` using `hg`. Use `congrArg Matrix.det hg'` as an intermediate fact. Rewrite `this` using `[det_mul, det_mul, det_conjTranspose]`. Rewrite `hH`, the goal using `[isUnit_iff_ne_zero]`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[h0, mul_zero]`. Conclude with `hH this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma UH_det {H g : Matrix ι ι ℂ} (hH : IsUnit H.det) (hg : g ∈ UH H) : IsUnit g.det := by
   have hg' : gᴴ * H * g = H := hg
@@ -108,9 +108,9 @@ lemma UH_det {H g : Matrix ι ι ℂ} (hH : IsUnit H.det) (hg : g ∈ UH H) : Is
   exact hH this.symm
 
 /- English proof (translation)
-Establish `hd` using `UH_det hH hg`. Establish `hg' : gᴴ * H * g = H` using `hg`. Establish `hd' : IsUnit gᴴ.det`. Rewrite using `[det_conjTranspose, isUnit_iff_ne_zero, star_ne_zero, ← isUnit_iff_ne_zero]`. Conclude with `hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show g⁻¹ᴴ * H * g⁻¹ = H`. Rewrite using `[conjTranspose_nonsing_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma UH_inv {H g : Matrix ι ι ℂ} (hH : IsUnit H.det) (hg : g ∈ UH H) : g⁻¹ ∈ UH H := by
   have hd := UH_det hH hg
@@ -126,7 +126,7 @@ lemma UH_inv {H g : Matrix ι ι ℂ} (hH : IsUnit H.det) (hg : g ∈ UH H) : g�
 end Group
 
 /- English proof (translation)
-Unfold `Gf Dmin`. Rewrite using `[hZ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma Gf_congr {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {g₁ g₂ : B.Mat k r}
     (hZ : Zhat k r z z' g₁ = Zhat k r z z' g₂) : Gf k r z z' g₂ = Gf k r z z' g₁ := by
@@ -134,19 +134,17 @@ lemma Gf_congr {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {g₁ g₂ : B.M
   rw [hZ]
 
 /- English proof (translation)
-Introduce `k r z z' hstd g₁ hg₁ g₂ hg₂ hpos hZ`. Establish `hpos₂ : 0 < Gf k r z z' g₂` using `by rw [Gf_congr hZ]; exact hpos`. Establish `hli₁` using `(hC k r z z' g₁ hstd ⟨hg₁, hpos⟩).1`. Establish `hli₂` using `(hC k r z z' g₂ hstd ⟨hg₂, hpos₂⟩).1`. Establish `hgram : gramM k r z z' g₁ = gramM k r z z' g₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hG k r z z' hstd.2.1 hstd.2.2 g₁ hg₁, hG k r z z' hstd.2.1 hstd.2.2 g₂ hg₂, hZ]`. Take `⟨h, hh, hhx⟩` from `hW k r (Fin (r + 1) ⊕ Fin (r + 1)) (gramVec k r z z' g₁) (gramVec k r z z' g₂) hli₁ hli₂ (fun i j => by`. Use `congrFun (congrFun hgram j) i` as an intermediate fact. Conclude with `this)`. Establish `hfix : ∀ a, h *ᵥ fvec k r z a = fvec k r z a` using `fun a => hhx (Sum.inl a)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmove : ∀ b, h *ᵥ (g₁ *ᵥ fvec k r z' b) = g₂ *ᵥ fvec k r z' b` using `fun b => hhx (Sum.inr b)`. Establish `hH` using `det_Hpk k r`. Establish `hdh : IsUnit h.det` using `UH_det hH hh`. Establish `hd₁ : IsUnit g₁.det` using `UH_det hH hg₁`. Use `⟨h⁻¹, ?_, g₁⁻¹ * h⁻¹ * g₂, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hF k r z hstd.2.1]`. Use `⟨UH_inv hH hh, fun a => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hF k r z' hstd.2.2]`. Use `⟨UH_mul (UH_mul (UH_inv hH hg₁) (UH_inv hH hh)) hg₂, fun b => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mulVec_mulVec, mulVec_mulVec]`. Use `_ = g₁⁻¹ *ᵥ (h⁻¹ *ᵥ (h *ᵥ (g₁ *ᵥ fvec k r z' b))) := by rw [hmove b]`. Use `_ = fvec k r z' b := by`. Establish `e₁ : h⁻¹ *ᵥ (h *ᵥ (g₁ *ᵥ fvec k r z' b)) = g₁ *ᵥ fvec k r z' b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_mulVec, nonsing_inv_mul _ hdh, one_mulVec]`. Rewrite using `[e₁, mulVec_mulVec, nonsing_inv_mul _ hd₁, one_mulVec]`. Rewrite using `[nonsing_inv_nonsing_inv _ hdh]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_nonsing_inv _ hd₁, Matrix.mul_one, ← Matrix.mul_assoc, mul_nonsing_inv _ hdh, Matrix.one_mul]`.
-
-Use `_ = h * g₁ * (g₁⁻¹ * h⁻¹ * g₂) := by simp only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibreOrbit_of (hW : WittExt) (hF : FixFrame) (hG : GramBlocks) (hC : GramIndependentSignature) : FibreOrbit := by
   intro k r z z' hstd g₁ hg₁ g₂ hg₂ hpos hZ

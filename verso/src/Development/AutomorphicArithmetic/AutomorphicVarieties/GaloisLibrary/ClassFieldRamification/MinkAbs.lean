@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain IntermediateField Formalism.ConjugateSelfDual 
 open scoped Pointwise
 
 /- English proof (translation)
-Take `rfl : inst = DivisionRing.toRatAlgebra` from `Subsingleton.elim _ _`. Conclude with `UpperTheory.V.CF.minkGen K`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem minkGen' (K : Type) [Field K] [NumberField K] [inst : Algebra ℚ K] [IsGalois ℚ K] :
     (⨆ w : HeightOneSpectrum (𝓞 K), w.asIdeal.inertia Gal(K/ℚ)) = ⊤ := by
@@ -14,13 +14,11 @@ private theorem minkGen' (K : Type) [Field K] [NumberField K] [inst : Algebra �
   exact UpperTheory.V.CF.minkGen K
 
 /- English proof (translation)
-Take `⟨L, hfin, hnorm, hL⟩` from `(krullTopology_mem_nhds_one_iff_of_normal K Ω _).1 (hV.mem_nhds V.one_mem)`. Use `haveI : NumberField L := NumberField.of_module_finite K L`. Use `haveI : IsGalois K L := {}`. Establish `hker : (resTo K L Ω).ker ≤ V`. Establish `h : (resTo K L Ω).ker = L.fixingSubgroup` using `IntermediateField.restrictNormalHom_ker L`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h]`. Conclude with `hL`. Establish `hmap : V.map (resTo K L Ω) = ⊤`. Rewrite using `[eq_top_iff, ← hgen L]`. Use `iSup_le fun w => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Rewrite using `[← UpperTheory.V.CF.ineAbs K L Ω A w hA]`. Conclude with `Subgroup.map_mono (hI A)`. Establish `h` using `Subgroup.comap_map_eq_self hker`. Rewrite `h` using `[hmap, Subgroup.comap_top]`.
-
-Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem top_of_gen (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
     (hgen : ∀ (L : Type) [Field L] [NumberField L] [Algebra K L] [IsGalois K L],
@@ -45,7 +43,7 @@ private theorem top_of_gen (K Ω : Type) [Field K] [NumberField K] [Field Ω] [A
   exact h.symm
 
 /- English proof (translation)
-Introduce `Ω _ _ _ V hV hI`. Conclude with `top_of_gen ℚ Ω (fun L _ _ _ _ => minkGen' L) V hV hI`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CF.minkAbs :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (V : Subgroup (G ℚ Ω)), IsOpen (V : Set (G ℚ Ω)) → (∀ A : ValuationSubring Ω, Ine (F := ℚ) A ≤ V) → V = ⊤ := by

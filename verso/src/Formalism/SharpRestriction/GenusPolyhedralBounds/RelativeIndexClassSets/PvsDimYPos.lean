@@ -8,43 +8,41 @@ open Formalism.MainNotions.WeightAlgebra Formalism.BasicNotions NumberField IsDe
 namespace Formalism.MainNotions.Gaps.EtaleWeightGaps
 
 /- English proof (translation)
-Establish `hT0 : 0 < T` using `by linarith`. Establish `hD0 : 0 ≤ D` using `by linarith`. Establish `hPH : 0 ≤ PH` using `by linarith`. Establish `hd : 0 ≤ d` using `le_trans (mul_nonneg hR hδ) hRδ`. Establish `hfr : 0 ≤ f * r ^ 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPd0 : 0 ≤ Pd` using `le_trans hlδ0 hlδ`. Establish `hPO0 : 0 ≤ PO` using `le_trans (by positivity) hPO`. Establish `hPD0 : 0 ≤ PD` using `le_trans (by positivity) hPD`. Establish `hPP87 : 87 ≤ PP` using `by linarith`. Establish `hPP0 : 0 < PP` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : 0 ≤ c` using `by rw [hc]; positivity`. Establish `hmδ : 0 < m * δ₂` using `by positivity`. Establish `hT3' : PP ^ 4 * D ^ 3 * k * f ≤ T * (m * δ₂)` using `by rwa [div_le_iff₀ hmδ] at hT3`. Establish `hD3 : 1 ≤ D ^ 3` using `one_le_pow₀ hD`. Establish `hPPsq : 87 * PP ≤ PP ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_right hPP87 hPP0.le` as an intermediate fact. Rewrite using `[sq]`. Conclude with `this`. Establish `hPP2 : 2 ≤ PP ^ 2` using `by linarith`. Establish `hPP24 : PP ^ 2 ≤ PP ^ 4` using `pow_le_pow_right₀ (by linarith) (by norm_num)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨PQ', hPQ0, hPQle, hP1'⟩ : ∃ PQ' : ℝ, 0 ≤ PQ' ∧ PQ ≤ PQ' ∧ 60 * G + 180 * PH + 44 * PD + 22 * PQ' ≤ PP ^ 2 * D := by`. Break down `le_total 0 PQ with h | h` into its components or cases. Conclude with `⟨PQ, h, le_rfl, hP1⟩`. Use `⟨0, le_rfl, h, ?_⟩` and prove the remaining obligations. Use `le_mul_of_one_le_right (by positivity : (0 : ℝ) ≤ PP ^ 2) hD` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `lev` using `Formalism.MainNotions.Gaps.T0.levels_real A (2 * E) R δ d D T (T * c * g₀) c (Prw * L) G PH Pη L F' (f * r ^ 2) (4 / 3 * δ) (4 / 3 * (D + 4) * δ) ((D + 4) * (D + 1) * δ * (2 * G + 6 * PH) * L) ((D + 1) * δ * (2 * G + 6 * PH) * L) SS (G * F') lδ hR hRδ hδ hlδ0 hD0 hT0.le hc0 (by p …`. Establish `tn` using `Formalism.MainNotions.Gaps.T0.total_named_real d D T c G PH Pη Pd PD 0 0 RR T L κ (f * r ^ 2) lδ ρ 0 hd hD hT hG hPH hPD0 le_rfl hκ hS2 hlδ0 hlδ (by rw [zero_add]; exact hρ) (by rw [zero_mul, zero_div, mul_zero])`. Establish `hQ' : Q ≤ d * (22 * PQ' * D ^ 2 * κ / T)`. Establish `e1 : ρ' * PQ * κ ≤ ρ' * PQ' * κ` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hPQle hρ'0) hκ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ρ' * (PQ' * κ) ≤ 22 * D ^ 2 * d / T * (PQ' * κ)` using `mul_le_mul_of_nonneg_right hρ' (by positivity)`. Establish `e3 : 22 * D ^ 2 * d / T * (PQ' * κ) = d * (22 * PQ' * D ^ 2 * κ / T)` using `by ring`. Establish `e4 : ρ' * PQ' * κ = ρ' * (PQ' * κ)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `r1 : (60 * G + 180 * PH + 40 * PD + 22 * PQ') * D ^ 2 ≤ PP ^ 2 * D ^ 3`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a : 60 * G + 180 * PH + 40 * PD + 22 * PQ' ≤ PP ^ 2 * D` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `r2 : 5 * G * (f * r ^ 2) + Pd ≤ PP ^ 3`. Establish `a1 : 50 * G ≤ PP` using `by linarith`. Establish `a2 : 28 * (f * r ^ 2) ≤ PP` using `by linarith`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3 : Pd ≤ PP` using `by linarith`. Establish `a4 : (50 * G) * (28 * (f * r ^ 2)) ≤ PP * PP` using `mul_le_mul a1 a2 (by positivity) hPP0.le`. Establish `a5 : PP * PP * 87 ≤ PP ^ 3`. Establish `: PP ^ 3 = PP * PP * PP` using `by ring`. Rewrite using `[this]; exact mul_le_mul_of_nonneg_left hPP87 (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a6 : PP * PP = PP ^ 2` using `by ring`. Establish `a7 : (50 * G) * (28 * (f * r ^ 2)) = 280 * (5 * G * (f * r ^ 2))` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `r3 : Pη / 2 ≤ PP ^ 2` using `by linarith`. Establish `tp` using `Formalism.MainNotions.Gaps.T0.total_le_of_bounds d D T c RR T κ (60 * G + 180 * PH + 40 * PD + 22 * PQ') (5 * G * (f * r ^ 2) + Pd) (Pη / 2) 0 PP hd hT0 hc0 hκ hT0 r1 r2 r3 (by positivity)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC0 : 0 ≤ C`. Assume the negation of the conclusion as `h`. Establish `hkfb : 0 < k * f * b` using `by positivity`. Use `mul_neg_of_neg_of_pos (not_le.mp h) hkfb` as an intermediate fact. Establish `e : C * (k * f * b) = C * k * f * b` using `by ring`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbase : PP ^ 2 * k ≤ T * (m * δ₂)`. Establish `e1 : PP ^ 2 * k ≤ PP ^ 4 * D ^ 3 * k * f`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_trans e1 hT3'`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmδk : m * δ₂ ≤ k`. Use `mul_le_mul_of_nonneg_left hδ₂1 (by linarith : (0 : ℝ) ≤ m)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hTPP : PP ^ 2 ≤ T`. Establish `: PP ^ 2 * k ≤ T * k` using `le_trans hbase (mul_le_mul_of_nonneg_left hmδk hT0.le)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_of_mul_le_mul_right this (by linarith)`. Establish `ps0 : PP ^ 3 * T ≤ f * m * b * δ₂ / 4`. Establish `e4 : 4 ≤ T * (m * δ₂)`. Use `le_mul_of_one_le_right (by positivity : (0 : ℝ) ≤ PP ^ 2) hk` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e5 : 4 ≤ T * (f * m * δ₂)`. Establish `: T * (m * δ₂) ≤ T * (f * m * δ₂)`. Establish `: m * δ₂ ≤ f * m * δ₂`. Use `mul_le_mul_of_nonneg_right hf hmδ.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left this hT0.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e6 : PP ^ 3 * T * 4 ≤ PP ^ 3 * T * (T * (f * m * δ₂))` using `mul_le_mul_of_nonneg_left e5 (by positivity)`. Establish `e7 : PP ^ 3 * T * (T * (f * m * δ₂)) = PP ^ 3 * T ^ 2 * (f * m * δ₂)` using `by ring`. Establish `e8 : PP ^ 3 * T ^ 2 * (f * m * δ₂) ≤ b * (f * m * δ₂)` using `mul_le_mul_of_nonneg_right hS5 (by positivity)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `ps1 : 4 * C * PP ^ 2 * D ^ 3 * k / (m * δ₂) ≤ T`. Use `le_trans ?_ hT3` and prove the remaining obligations. Apply `div_le_div_of_nonneg_right _ hmδ.le` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pg` using `Formalism.LatticeBaseChangeAlt.four_term_sum_bound_of_parameters d PP D κ T c RR T C k f b m δ₂ q DF g₀ hd hT0 le_rfl hPP0 hD hRR hq hC0 (by linarith) (by linarith) hb.le (by linarith) hδ₂ hS1 ps0 ps1 hc hg hTc hql hTPP hPP2`. Establish `e0 : R * (A + E) = R * (A + 1 / 2 * (2 * E))` using `by ring`. Establish `e1 : ρ * (PD * κ) = ρ * PD * κ` using `by ring`. Establish `e2 : d * ((60 * G + 180 * PH + 40 * PD + 22 * PQ') * D ^ 2 * κ / T + (5 * G * (f * r ^ 2) + Pd) * T + Pη / 2 * T * c + 0 * (1 / T + RR ^ 2 * c) * κ / T) = d * ((60 * G + 180 * PH + 40 * PD) * D ^ 2 * κ / T + (5 * G * (f * r ^ 2) + Pd) * T + Pη / 2 * T * c + 0 * (PD + 0) * (1 / T …` using `by ring`. Establish `e3 : (0 : ℝ) * 0 * κ = 0` using `by ring`.
-
-Rewrite using `[e0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pvs_core (A E Cd Q R δ lδ d D T c g₀ G PH Prw Pη Pd PO PD PQ RR L κ F' f r SS PP C k b m δ₂ q DF ρ ρ' : ℝ)
     (hR : 0 ≤ R) (hRδ : R * δ ≤ d) (hδ : 0 ≤ δ) (hlδ0 : 0 ≤ lδ) (hlδ : lδ ≤ Pd) (hD : 1 ≤ D) (hT : 1 ≤ T)
@@ -185,11 +183,11 @@ theorem pvs_core (A E Cd Q R δ lδ d D T c g₀ G PH Prw Pη Pd PO PD PQ RR L �
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Establish `hf : 1 ≤ D.R.f`. Establish `h0 : 0 < D.R.n` using `D.R.toFrame.ord_pos`. Establish `h2 : D.R.f = 2 * D.R.n` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hp : 3 ≤ (D.R.sigW j).1` using `by show 3 ≤ D.R.k + j - 1`. Use linear arithmetic over natural numbers and integers. Establish `h2 : 1 ≤ (D.R.sigW j).1 * ((D.R.sigW j).1 - 1) / 2`. Rewrite using `[Nat.le_div_iff_mul_le (by norm_num)]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_le_mul (by omega) (by omega)`. Unfold `WeightFamilies.dimY`. Conclude with `Nat.mul_pos hf (by omega)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pvs_dimY_pos (D : D7) {j : ℕ} (h1 : 1 ≤ j) : 1 ≤ WeightFamilies.dimY D j := by
   have hk := D.R.m_add_three_le_k
@@ -208,39 +206,37 @@ theorem pvs_dimY_pos (D : D7) {j : ℕ} (h1 : 1 ≤ j) : 1 ≤ WeightFamilies.di
   exact Nat.mul_pos hf (by omega)
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, hS1, -, -, -, -, -, -, -, -, -, hT0, -, h40, -⟩` from `hS`. Take `⟨hq1, hq2, hq3, -, -, hq6⟩` from `h3`. Rewrite `hq1`, `hq2`, `hq3` using `[Real.rpow_zero, one_mul]`. Take `⟨hbκ, hS2, hF, hS5, -⟩` from `h4`. Take `⟨-, hCR0, hG0, -, hPP0, -, -, -, -, hCK, h25P, hPetP, hPDP, hP1, hPrw, hPrwH, hPet0, -⟩` from `hP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hh1, hh2⟩` from `hHt`. Establish `hq : (0 : ℝ) < qq D`. Establish `: (0 : ℝ) ≤ ((WeightFamilies.dimY D j + 4) * DF wL : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkN` using `D.R.m_add_three_le_k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hmN` using `D.R.two_le_m`. Establish `hfN : 1 ≤ D.R.f`. Establish `h0 : 0 < D.R.n` using `D.R.toFrame.ord_pos`. Establish `h2 : D.R.f = 2 * D.R.n` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hf1 : (1 : ℝ) ≤ (D.R.f : ℝ)` using `by exact_mod_cast hfN`. Establish `hk1 : (1 : ℝ) ≤ (D.R.k : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ D.R.k)`. Establish `hm1 : (1 : ℝ) ≤ (D.R.m : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ D.R.m)`. Establish `hmk : (D.R.m : ℝ) ≤ (D.R.k : ℝ)` using `by exact_mod_cast (by omega : D.R.m ≤ D.R.k)`. Establish `hg : (1 : ℝ) ≤ (g0 D : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 ≤ g0 D`. Unfold `g0 Ranks.r`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Establish `hD1 : (1 : ℝ) ≤ (WeightFamilies.dimY D j : ℝ)` using `by exact_mod_cast pvs_dimY_pos D h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT1 : (1 : ℝ) ≤ (T : ℝ)` using `by exact_mod_cast hT0`. Establish `hR1 : (1 : ℝ) ≤ (Nat.choose (T - 1) (WeightFamilies.dimY D j) : ℝ)`. Establish `: 0 < Nat.choose (T - 1) (WeightFamilies.dimY D j)` using `Nat.choose_pos (by omega)`. Conclude with `this` after adjusting the coercions. Establish `hL1 : 1 ≤ large₂.sc.L` using `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : 0 < large₂.sc.b` using `Real.exp_pos _`. Establish `hrd : 1 ≤ D.host.rdE`. Establish `e1 : 2 * (D.R.f : ℝ) * D.R.m ≤ D.host.rdE` using `hA.2.2.2.2.2.2.2.2.2`. Establish `e2 : (1 : ℝ) * 1 ≤ (D.R.f : ℝ) * D.R.m` using `mul_le_mul hf1 hm1 zero_le_one (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRR : 1 ≤ WeightFamilies.RRv D CR` using `Real.one_le_rpow hrd hCR0`. Establish `hPP : 0 ≤ WeightFamilies.PPv D large₂ C2 A2` using `by linarith`. Establish `hc0 : 0 ≤ cc D large₂ C2 A2 CR wL`. Unfold `cc`. Establish `: 0 ≤ WeightFamilies.RRv D CR` using `by linarith`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hκ1 : 1 ≤ ka.size` using `WeightFamilies.Wt.one_le_size ka`. Establish `hPPl : 0 ≤ WeightFamilies.PP0v D large₂ K.CL K.AL * (1 + Real.log ka.size)` using `mul_nonneg hPP0 (by linarith [Real.log_nonneg hκ1])`. Establish `hLs : 1 ≤ wL.size` using `WeightFamilies.Wt.one_le_size wL`. Establish `hδ0 : (0 : ℝ) ≤ (G.del : ℝ)` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPd0 : 0 ≤ Pd` using `le_trans (Real.log_natCast_nonneg _) hlogd`. Establish `hlδ : Real.log (G.del : ℝ) ≤ Pd`. Establish `e1 : (G.del : ℝ) ≤ (finrank B.KO (B.Cusp j ka) : ℝ)`. Establish `a1 : (1 : ℝ) * G.del ≤ (Nat.choose (T - 1) (WeightFamilies.dimY D j) : ℝ) * G.del` using `mul_le_mul_of_nonneg_right hR1 hδ0`. Establish `a2 : X.rk ka (B.Mlat j ka) ≤ finrank B.KO (B.Cusp j ka)` using `Submodule.finrank_le _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `a3 : (X.rk ka (B.Mlat j ka) : ℝ) ≤ (finrank B.KO (B.Cusp j ka) : ℝ)` using `by exact_mod_cast a2`. Combine the linear equalities and inequalities to obtain the conclusion. Break down `Nat.eq_zero_or_pos G.del with h | h` into its components or cases. Rewrite using `[h]`. Simplify using `using hPd0`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `le_trans (Real.log_le_log (by exact_mod_cast h) e1) hlogd`. Establish `hSS : ∑ i, WeightFamilies.meanLogSup B (G.th' i) ≤ (G.del : ℝ) * (Gc * wF.size)`. Combine the equalities or inequalities in the displayed calculation. Establish `hPO : 19 * ((D.R.f : ℝ) * (D.R.r : ℝ) ^ 2) ≤ PO D large₂`. Unfold `PO`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a : (0 : ℝ) ≤ 19 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2` using `by positivity`. Establish `b1` using `mul_le_mul_of_nonneg_left hL1 a`. Establish `b2 : (0 : ℝ) ≤ 198 * (D.R.f : ℝ) ^ 2 * large₂.sc.L` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hTc : (T : ℝ) * cc D large₂ C2 A2 CR wL * (g0 D : ℝ) ≤ 1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `cc`. Rewrite using `[show (T : ℝ) * (WeightFamilies.RRv D CR * WeightFamilies.PPv D large₂ C2 A2 * (DF wL : ℝ) ^ 2 / (qq D : ℝ)) * (g0 D : ℝ) = ((T : ℝ) * g0 D * WeightFamilies.RRv D CR * WeightFamilies.PPv D large₂ C2 A2 * (DF wL : ℝ) ^ 2) / (qq D : ℝ) by ring]`. Conclude with `(div_le_one hq).2 hq2`. Establish `hE : 2 * (if j < D.R.m then (T : ℝ) * (max 0 (cc D large₂ C2 A2 CR wL) / (2 * (G.iet : ℝ))) * ∑' la, (Qf la).Net * X.lN la else 0) ≤ (T : ℝ) * cc D large₂ C2 A2 CR wL * ((g0 D : ℝ) * (((WeightFamilies.dimY D j : ℝ) + 1) * G.del * (2 * Gc + 6 * PH) * wL.size + 4 / 3 * (WeightFamil …`. Establish `hTc0 : 0 ≤ (T : ℝ) * cc D large₂ C2 A2 CR wL` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `split_ifs with hj`. Rewrite using `[max_eq_right hc0]`. Use `mul_le_mul_of_nonneg_left (hh2 hj).2 hTc0` as an intermediate fact. Use `le_trans (le_of_eq ?_) this` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Establish `hPH0 : 0 ≤ PH` using `by linarith`. Establish `hPrw0 : 0 ≤ Prw` using `by linarith`. Establish `hL0 : 0 ≤ wL.size` using `by linarith`. Rewrite using `[mul_zero]`. Check the signs of the components of the expression.
-
-Conclude with `pvs_core _ _ _ _ _ (G.del : ℝ) (Real.log (G.del : ℝ)) (X.rk ka (B.Mlat j ka) : ℝ) (WeightFamilies.dimY D j : ℝ) (T : ℝ) (cc D large₂ C2 A2 CR wL) (g0 D : ℝ) Gc PH Prw Pet Pd (PO D large₂) (2 * Gc + Prw + WeightFamilies.PP0v D large₂ K.CL K.AL * (1 + Real.log ka.size) + 3 / 2 * (P …`.
+A detailed English derivation is pending.
 -/
 theorem sumGP (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (K : KAdm) (H : KHyp) (Ch Ah Cq Aq C2 A2 CR : ℝ)
     {ka wL wF : WeightFamilies.Wt D j} (T nP nW : ℕ) (h0 : ℝ)
@@ -359,7 +355,7 @@ theorem sumGP (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (K : KA
     (le_of_eq (by ring)) hSh1 hSh2 h25P hPetP hPDP (by linarith) hPO hP1 hCK hS1 hbκ hS5 hq3 rfl hTc hq1
 
 /- English proof (translation)
-The claim follows from `sumGP large₂ X h1 K H Ch Ah Cq Aq C2 A2 CR T nP nW h0 hH.1 hH.2.1 hH.2.2.2.2.2.1 hH.2.2.2.2.2.2.1 G Gc PH Prw Pet Pd (fun i => (hT.2.2.2.2.2.1 i).2) hI.2.2.1 hSh.1 hSh.2.1 hSh.2.2 hP Qf hHt`.
+A detailed English derivation is pending.
 -/
 theorem sumG (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (K : KAdm) (H : KHyp) (Ch Ah Cq Aq C2 A2 CR CT : ℝ)
     (S : Scal B) {ka wL wF : WeightFamilies.Wt D j} (T nP nW : ℕ) (h0 : ℝ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ)
@@ -380,7 +376,7 @@ theorem sumG (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (K : KAd
     (fun i => (hT.2.2.2.2.2.1 i).2) hI.2.2.1 hSh.1 hSh.2.1 hSh.2.2 hP Qf hHt
 
 /- English proof (translation)
-The claim follows from `sumGP large₂ X h1 K H Ch Ah Cq Aq C2 A2 CR T nP nW h0 hH.1 hH.2.1 hH.2.2.2.2.2.1 hH.2.2.2.2.2.2.1 G Gc PH Prw Pet Pd (fun i => (hth' i).2) hlogd hRδ hSh1 hSh2 hP Qf hHt`.
+A detailed English derivation is pending.
 -/
 theorem sumGC (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (K : KAdm) (H : KHyp) (Ch Ah Cq Aq C2 A2 CR CT : ℝ)
     (S : Scal B) {ka wL wF : WeightFamilies.Wt D j} (T nP nW : ℕ) (h0 : ℝ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ)

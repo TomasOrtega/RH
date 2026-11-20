@@ -8,17 +8,15 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π`. Establish `hs` using `UpperTheory.ConvolutionTheory.R2.smooth F E D W M π`. Establish `hl` using `UpperTheory.ConvolutionTheory.R2.Fo.liftLin F E D W M π`. Set `G : π.V → Fock D.δ → Sm E 2` to `fun f φ => (hs f.1 f.2 φ.1 φ.2).choose`. Establish `hG : ∀ f φ, (G f φ).1 = lift W M f.1.1 φ.1` using `fun f φ => (hs f.1 f.2 φ.1 φ.2).choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `L : π.V →ₗ[ℂ] Fock D.δ →ₗ[ℂ] Sm E 2` to `LinearMap.mk₂ ℂ G (fun f f' φ => Subtype.ext (by`. Establish `h` using `(hl f.1 f.2 φ.1 φ.2).1 f'.1 f'.2`. Rewrite using `[Submodule.coe_add, hG, hG, hG]`. Conclude with `h))`. Use the proof step `(fun c f φ => Subtype.ext (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `((hl f.1 f.2 φ.1 φ.2).2.2 c).1`. Rewrite using `[Submodule.coe_smul, hG, hG]`. Conclude with `h))`. Use the proof step `(fun f φ φ' => Subtype.ext (by`. Establish `h` using `(hl f.1 f.2 φ.1 φ.2).2.1 φ'.1 φ'.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.coe_add, hG, hG, hG]`. Conclude with `h))`. Use the proof step `(fun c f φ => Subtype.ext (by`. Establish `h` using `((hl f.1 f.2 φ.1 φ.2).2.2 c).2`. Rewrite using `[Submodule.coe_smul, hG, hG]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h))`. Take `⟨r, hr⟩` from `LinearMap.exists_leftInverse_of_injective π.V.subtype (Submodule.ker_subtype _)`. Take `⟨s, hs'⟩` from `LinearMap.exists_leftInverse_of_injective (Fock D.δ).subtype (Submodule.ker_subtype _)`. Use `⟨L.compl₁₂ r s, fun f hf φ hφ => ?_⟩` and prove the remaining obligations. Establish `e1 : r f = ⟨f, hf⟩` using `LinearMap.congr_fun hr ⟨f, hf⟩`.
-
-Establish `e2 : s φ = ⟨φ, hφ⟩` using `LinearMap.congr_fun hs' ⟨φ, hφ⟩`. Rewrite using `[LinearMap.compl₁₂_apply, e1, e2]`. Conclude with `hG _ _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.lamEx :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), ∃ Λ : TR.Sm F 2 →ₗ[ℂ] S4 F →ₗ[ℂ] Sm E 2, ∀ f ∈ π.V, ∀ φ ∈ Fock D.δ, (Λ f φ).1 = lift W M f.1 φ := by

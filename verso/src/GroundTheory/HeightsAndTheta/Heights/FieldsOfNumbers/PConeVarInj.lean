@@ -12,21 +12,21 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ P hP W hW hPW v hv`. Use `hP.isPrime` as an intermediate fact. Use `hW.isPrime` as an intermediate fact. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨B, g, h, -, hgW, hh, hc, hφ⟩` from `hNum F K ι P hP W hW hPW v hv p`. Establish `hu : ∀ d : K →₀ ℕ, IsMultiHomog (∏ k, (X ⟨k, v k⟩ : MRing ι F) ^ d k) ⇑d` using `fun d => by`. Unfold `IsMultiHomog`. Use `IsWeightedHomogeneous.prod Finset.univ (fun k => (X ⟨k, v k⟩ : MRing ι F) ^ d k) (fun k => d k • blockWeight ι ⟨k, v k⟩) (fun k _ => (isWeightedHomogeneous_X F (blockWeight ι) ⟨k, v k⟩).pow (d k)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `[blockWeight, Finset.sum_apply, Pi.single_apply]`. Establish `huW : ∀ d : K →₀ ℕ, ∏ k, (X ⟨k, v k⟩ : MRing ι F) ^ d k ∉ W` using `fun d => by`. Rewrite using `[Ideal.IsPrime.prod_mem_iff]`. Introduce and unpack `⟨k, -, hk⟩`. Conclude with `hv k (hW.isPrime.mem_of_pow_mem _ hk)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hN : ∑ d ∈ p.support, h d * ∏ k, (X ⟨k, v k⟩ : MRing ι F) ^ d k ∈ P`. Establish `hg0 : algebraMap (MRing ι F ⧸ P) (FractionRing (MRing ι F ⧸ P)) (Ideal.Quotient.mk P g) ≠ 0`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `fun hg => hgW (hPW hg)`. Rewrite `hφ` using `[hp, ZeroMemClass.coe_zero, eq_comm, div_eq_zero_iff, or_iff_left hg0, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hφ`. Use `MvPolynomial.ext _ _ fun d => ?_` and prove the remaining obligations. Rewrite using `[coeff_zero]`. Assume the negation of the conclusion as `hd`. Establish `hcomp` using `hP.multiHomog _ hN (B + ⇑d)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcomp` using `[map_sum, Finset.sum_eq_single d]`. Rewrite `hcomp` using `[((hh d).mul (hu d)).weightedHomogeneousComponent_same]`. Establish `hhd : h d ∈ P` using `(hP.isPrime.mem_or_mem hcomp).resolve_right fun hm => huW d (hPW hm)`. Apply `hd` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hc d, Ideal.Quotient.eq_zero_iff_mem.mpr hhd, map_zero, zero_div]`. Both sides reduce to the same expression. Introduce `d' _ hne`. Use `((hh d').mul (hu d')).weightedHomogeneousComponent_ne _ fun heq => hne ?_` and prove the remaining obligations. Use extensionality with `k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrFun heq k` as an intermediate fact. Simplify using `only [Pi.add_apply] at this`. Use linear arithmetic over natural numbers and integers. Conclude with `fun hn => absurd (mem_support_iff.mpr hd) hn`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem ConeVarInj.proof (hNum : ConeVarNumerator.Statement.{u}) : ConeVarInj.Statement.{u} := by
   intro F _ K _ _ ι _ P hP W hW hPW v hv

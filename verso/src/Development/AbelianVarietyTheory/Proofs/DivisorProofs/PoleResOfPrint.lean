@@ -16,13 +16,13 @@ noncomputable section
 namespace GlobalTheory.EisRes.PoleRes
 
 /- English proof (translation)
-Establish `hle : 𝓝[S] z₀ ≤ 𝓝[≠] z₀` using `nhdsWithin_mono _ (Set.subset_compl_singleton_iff.2 hS)`. Consider the cases of `ho : meromorphicOrderAt f z₀ with`. Consider the case `top`. It suffices to derive a contradiction. Establish `h0 : Tendsto f (𝓝[≠] z₀) (𝓝 0)` using `tendsto_const_nhds.congr' (by filter_upwards [meromorphicOrderAt_eq_top_iff.1 ho] with y hy using hy.symm)`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hR (tendsto_nhds_unique hlim (h0.mono_left hle))`. Consider the case `coe m`. Break down `lt_trichotomy m 0 with hm | rfl | hm` into its components or cases. It suffices to derive a contradiction. Establish `hc` using `tendsto_cobounded_of_meromorphicOrderAt_neg (f := f) (x := z₀) (by rw [ho]; exact_mod_cast hm)`.
+Treat this case separately. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `not_tendsto_atTop_of_tendsto_nhds hlim.norm (tendsto_norm_cobounded_atTop.comp (hc.mono_left hle))`. Take `⟨g, hg, -, hfg⟩` from `(meromorphicOrderAt_eq_int_iff hf).1 ho`. Establish `hfg' : ∀ᶠ z in 𝓝[≠] z₀, f z = g z` using `by filter_upwards [hfg] with z hz using by simpa using hz`. Use `⟨g, hg, ?_, hfg'⟩` and prove the remaining obligations. Establish `: Tendsto f (𝓝[S] z₀) (𝓝 (g z₀))` using `(hg.continuousAt.tendsto.mono_left nhdsWithin_le_nhds).congr' (EventuallyEq.symm (hfg'.filter_mono hle))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Conclude with `tendsto_nhds_unique this hlim`. It suffices to derive a contradiction. Establish `h0` using `tendsto_zero_of_meromorphicOrderAt_pos (f := f) (x := z₀) (by rw [ho]; exact_mod_cast hm)`. Conclude with `hR (tendsto_nhds_unique hlim (h0.mono_left hle))`.
+A detailed English derivation is pending.
 -/
 theorem exists_analyticAt_of_tendsto {f : ℂ → ℂ} {z₀ R : ℂ} {S : Set ℂ} (hf : MeromorphicAt f z₀) (hS : z₀ ∉ S)
     [(𝓝[S] z₀).NeBot] (hR : R ≠ 0) (hlim : Tendsto f (𝓝[S] z₀) (𝓝 R)) :
@@ -73,9 +73,9 @@ def lineStab (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : 
           rw [← Matrix.mul_smul, ← ha, ← Matrix.mul_assoc, e, Matrix.one_mul]
 
 /- English proof (translation)
-Set `s : Setoid (ratPts σ J)` to `QuotientGroup.rightRel (lineStab σ J x)`. Use `⟨Set.range fun q : Quotient s => q.out, fun γ => ⟨(Quotient.mk s γ).out, ⟨⟨_, rfl⟩, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Conclude with `QuotientGroup.rightRel_apply.1 (Quotient.mk_out (s := s) γ)`. Introduce and unpack `t ⟨⟨q, rfl⟩, ht⟩`. Establish `h : s.r q.out γ` using `QuotientGroup.rightRel_apply.2 ht`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: q = Quotient.mk s γ` using `(Quotient.out_eq q).symm.trans (Quotient.sound h)`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reps (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Matrix (Fin n) (Fin 1) E) :
     ∃ T : Set (ratPts σ J), ∀ γ : ratPts σ J, ∃! t, t ∈ T ∧ ∃ l : (AF F ⊗[F] E)ˣ,
@@ -97,39 +97,35 @@ noncomputable section
 namespace GlobalTheory.EisRes.PoleRes
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ n J r X Y L a h Eis c hS hP mid hmid hCT`. Use `set ρ : ℂ := ((n : ℂ) - 1) / 2 with hρ`. Establish `hρre : ρ.re = ((n : ℝ) - 1) / 2`. Establish `: ρ = ((((n : ℝ) - 1) / 2 : ℝ) : ℂ)` using `by rw [hρ]; push_cast; ring`. Rewrite using `[this, Complex.ofReal_re]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set P : Set ℂ := {s : ℂ | ((n : ℝ) - 1) / 2 < s.re} with hPdef`. Establish `hρP : ρ ∉ P`. Introduce `hm`. Rewrite `hm` using `[hPdef, Set.mem_setOf_eq, hρre]`. Conclude with `lt_irrefl _ hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `haveI hNB : (𝓝[P] ρ).NeBot := mem_closure_iff_nhdsWithin_neBot.1 (by`. Rewrite using `[hPdef, Complex.closure_setOf_lt_re, Set.mem_setOf_eq, hρre])`. Establish `hevP : ∀ᶠ s in 𝓝[P] ρ, s ≠ ρ ∧ ((n : ℝ) - 1) / 2 < s.re` using `by filter_upwards [self_mem_nhdsWithin] with s hs`. Conclude with `⟨fun e => hρP (e ▸ hs), hs⟩`. Establish `hsub : Tendsto (fun s : ℂ => s - ρ) (𝓝[P] ρ) (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: Tendsto (fun s : ℂ => s - ρ) (𝓝 ρ) (𝓝 (ρ - ρ))` using `(continuous_id.sub continuous_const).tendsto ρ`. Simplify using `using this.mono_left (nhdsWithin_le_nhds (s := P))`. Take `⟨T, hT⟩` from `exists_reps σ J (col0 X)`. Take `⟨R, hR0, hRlim⟩` from `hPr F E σ hS.1 hS.2.1 n J hS.2.2.1 r X Y hS.2.2.2.2.1 (col0 X) rfl L a hS.2.2.2.2.2.1 h hS.2.2.2.2.2.2.1 hS.2.2.2.2.2.2.2 T hT`. Establish `hEl : ∀ g, Tendsto (fun s => (s - ρ) * Eis s g) (𝓝[P] ρ) (𝓝 R)` using `fun g => (hRlim g).congr' (eventually_nhdsWithin_of_forall fun s hs => by rw [(hP.1 T hT s hs g).tsum_eq])`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `val : ∀ (k : ℕ) (U : Set ℂ) (H : ℂ → GAd σ J → ℂ), U ∈ 𝓝 ρ → (∀ g, DifferentiableOn ℂ (H · g) U) → (∀ s ∈ U, s ≠ ρ → ∀ g, H s g = (s - ρ) ^ k * Eis s g) → ∀ g, k ≠ 0 ∧ H ρ g = 0 ^ (k - 1) * R`. Introduce `k U H hU hd hH g`. Establish `hc : Tendsto (fun s => H s g) (𝓝[P] ρ) (𝓝 (H ρ g))` using `((hd g).continuousOn.continuousAt hU).tendsto.mono_left nhdsWithin_le_nhds`. Establish `hev : ∀ᶠ s in 𝓝[P] ρ, H s g = (s - ρ) ^ k * Eis s g` using `by filter_upwards [hevP, nhdsWithin_le_nhds hU] with s hs hsU using hH s hsU hs.1 g`. Break down `k with _ | j` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-It suffices to derive a contradiction. Establish `h1 : Tendsto (fun s => (s - ρ) * H s g) (𝓝[P] ρ) (𝓝 (0 * H ρ g))` using `hsub.mul hc`. Establish `h2 : Tendsto (fun s => (s - ρ) * H s g) (𝓝[P] ρ) (𝓝 R)` using `(hEl g).congr' (by filter_upwards [hev] with s hs; rw [hs, pow_zero, one_mul])`. Rewrite `h1` using `[zero_mul]`. Conclude with `hR0 (tendsto_nhds_unique h2 h1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Nat.succ_ne_zero j, ?_⟩` and prove the remaining obligations. Establish `h2 : Tendsto (fun s => H s g) (𝓝[P] ρ) (𝓝 (0 ^ j * R))` using `((hsub.pow j).mul (hEl g)).congr' (by filter_upwards [hev] with s hs; rw [hs, pow_succ, mul_assoc])`. Simplify using `using tendsto_nhds_unique hc h2`. Establish `main : ∀ (k : ℕ) (U : Set ℂ) (H : ℂ → GAd σ J → ℂ), U ∈ 𝓝 ρ → (∀ g, DifferentiableOn ℂ (H · g) U) → (∀ s ∈ U, s ≠ ρ → ∀ g, H s g = (s - ρ) ^ k * Eis s g) → ∃ H₁ : ℂ → GAd σ J → ℂ, (∀ g, DifferentiableOn ℂ (H₁ · g) U) ∧ (∀ s ∈ U, s ≠ ρ → ∀ g, H₁ s g = (s - ρ) ^ 1 * Eis s g) ∧ ∀ g, …`. Introduce `k`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `U H hU hd hH`. Conclude with `((val 0 U H hU hd hH 1).1 rfl).elim`. Consider the case `succ k ih`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U H hU hd hH`. Establish `hval : ∀ g, H ρ g = 0 ^ k * R` using `fun g => by simpa using (val (k + 1) U H hU hd hH g).2`. Break down `k with _ | k` into its components or cases. Conclude with `⟨H, hd, hH, fun g => by simpa using hval g⟩`. Use `ih U (fun s g => dslope (H · g) ρ s) hU (fun g => (Complex.differentiableOn_dslope hU).2 (hd g)) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Introduce `s hs hsρ g`. Rewrite using `[dslope_of_ne _ hsρ, slope_def_field, hval g, hH s hs hsρ g]`. Simplify using `only [zero_pow (Nat.succ_ne_zero k), zero_mul, sub_zero]`. Rewrite using `[pow_succ]`. Clear denominators, using `[sub_ne_zero.2 hsρ]` for the nonvanishing conditions.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, U, H, hU, hH, -, hwh⟩` from `hP.2.2.2.1 ρ`. Establish `hd : ∀ g, DifferentiableOn ℂ (H · g) U` using `fun g => hwh _ (GlobalTheory.EisLine.isModerateForm_proj σ J g)`. Take `⟨H₁, hd₁, hH₁, hv₁⟩` from `main k U H hU hd hH`. Take `⟨V, hV, C, N, hb⟩` from `GlobalTheory.EisRes.laurentMul_locally_uniform_moderate F E σ n J r X Y L a h Eis c hS hP 1 U H₁ hU hd₁ hH₁`. Take `⟨-, -, -, μ, 𝓕, hμ, h𝓕, h1𝓕, -⟩` from `GlobalTheory.EisRes.CReduce.intertwiningConst_eq F E σ n J r X Y L a h Eis c hS hP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : h 1 = 1`. Establish `e` using `hS.2.2.2.2.2.2.2 1 1 (by simp) 1 (one_mem _)`. Rewrite `e` using `[mul_one, map_one]`. Simplify using `using e`. Take `⟨-, hCTl⟩` from `GlobalTheory.EisCT.LimCT.tendsto_constTerm F E σ n J r X Y L a h Eis c hS hP 1 U H₁ hU hd₁ hH₁ μ 𝓕 hμ h𝓕 h1𝓕 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : ∫ x in 𝓕, H₁ ρ (x.1 * 1) ∂μ = R`. Simplify using `only [hv₁, setIntegral_const]`. Simplify using `[Measure.real, h1𝓕]`. Rewrite `hCTl` using `[hI]`. Establish `hle : 𝓝[P] ρ ≤ 𝓝[≠] ρ` using `nhdsWithin_mono _ (Set.subset_compl_singleton_iff.2 hρP)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmidc : ContinuousAt (mid · 1) ρ` using `(hmid 1).continuousOn.continuousAt ((isOpen_lt continuous_const Complex.continuous_re).mem_nhds (by rw [Set.mem_setOf_eq, hρre]; linarith))`. Establish `hA : Tendsto (fun s => (s - ρ) * (1 + mid s 1)) (𝓝[P] ρ) (𝓝 0)`. Simplify using `using hsub.mul ((tendsto_const_nhds.add hmidc.tendsto).mono_left nhdsWithin_le_nhds)`. Establish `hfl : Tendsto (fun s => (s - ρ) * c s) (𝓝[P] ρ) (𝓝 R)`. Use `(hCTl.mono_left hle).sub hA` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_zero]`. Use `this.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hevP, nhdsWithin_le_nhds hU] with s hs hsU`. Rewrite using `[show (fun x : unipRad σ J (col0 X) => H₁ s (x.1 * 1)) = fun x => (s - ρ) ^ 1 * Eis s (x.1 * 1) from funext fun x => hH₁ s hsU hs.1 _, integral_const_mul, hCT μ 𝓕 hμ h𝓕 h1𝓕 s hs.2 1, h1]`. Simplify using `only [Complex.ofReal_one, Complex.one_cpow, pow_one]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hmc : MeromorphicAt (fun s => (s - ρ) * c s) ρ` using `((analyticAt_id.sub analyticAt_const).meromorphicAt).mul (hP.2.2.1 ρ (Set.mem_univ _))`. Take `⟨u, hua, huR, hfu⟩` from `exists_analyticAt_of_tendsto hmc hρP hR0 hfl`. Establish `hU₀ : {s | AnalyticAt ℂ u s} ∩ {s | s ≠ ρ → (s - ρ) * c s = u s} ∈ 𝓝 ρ` using `inter_mem hua.eventually_analyticAt (eventually_nhdsWithin_iff.1 hfu)`. Use `⟨u, _, U ∩ V, H₁, C, N, ⟨hU₀, fun s hs => hs.1.differentiableAt.differentiableWithinAt, by rw [huR]; exact hR0, fun s hs hsρ => ?_⟩, inter_mem hU hV, fun s hs hsρ g => by rw [hH₁ s hs.1 hsρ g, pow_one], fun g => (hd₁ g).mono Set.inter_subset_left, fun s hs g => hb s hs.2 g, fun g …` and prove the remaining obligations.
-
-Rewrite using `[eq_div_iff (sub_ne_zero.2 hsρ), ← hs.2 hsρ, mul_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poleRes_of_eisensteinResidue : GlobalTheory.Published.EisensteinResidueLine → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))

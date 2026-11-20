@@ -14,7 +14,7 @@ def LateralTheory.EtaleFoundations.EtaleSingleSheafHomotopicMapsToNonnegComplexE
     Nonempty (Homotopy a b) → a = b
 
 /- English proof (translation)
-Introduce `R _ F T I _ _ ε _`. Use `⟨fun a => ?_, fun m m' h => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `(hA R (sgl F) T I ε).1 a`. Conclude with `⟨m, hB R F I _ _ hm⟩`. Conclude with `(hA R (sgl F) T I ε).2 m m' ⟨Homotopy.ofEq h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.etale_sheaf_ext_hom_injective_resolution_of_lift_and_rigidity (hA : LateralTheory.EtaleFoundations.EtaleKInjectiveHomLiftAlongQuasiIsoUpToHomotopy)
     (hB : LateralTheory.EtaleFoundations.EtaleSingleSheafHomotopicMapsToNonnegComplexEqual) : LateralTheory.EtaleFoundations.EtaleKInjectiveHomExtendsAlongQuasiIso := by

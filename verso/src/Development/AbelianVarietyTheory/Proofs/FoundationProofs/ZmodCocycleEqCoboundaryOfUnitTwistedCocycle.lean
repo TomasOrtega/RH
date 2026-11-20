@@ -11,11 +11,9 @@ open IntermediateField
 namespace GlobalTheory.Hilbert90CupCoboundary
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g`. Use `haveI : FiniteDimensional K K⟮τ⟯ := IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral τ)`. Establish `hopen : IsOpen ((K⟮τ⟯).fixingSubgroup : Set (Ω ≃ₐ[K] Ω))` using `IntermediateField.fixingSubgroup_isOpen _`. Use `⟨(fun g' => g⁻¹ * g') ⁻¹' ((K⟮τ⟯).fixingSubgroup : Set (Ω ≃ₐ[K] Ω)), hopen.preimage (continuous_const.mul continuous_id), ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_preimage, inv_mul_cancel, SetLike.mem_coe]`. Conclude with `Subgroup.one_mem _`. Introduce `g' hg'`. Establish `hfτ : (g⁻¹ * g') τ = τ` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hg' τ (IntermediateField.mem_adjoin_simple_self K τ)`. Establish `e : g' = g * (g⁻¹ * g')` using `by group`.
-
-Use `show g' τ = g τ`. Rewrite using `[e, AlgEquiv.mul_apply, hfτ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_eval {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] [Algebra.IsAlgebraic K Ω]
     (τ : Ω) : IsLocallyConstant (fun g : Ω ≃ₐ[K] Ω => g τ) := by
@@ -38,27 +36,25 @@ theorem isLocallyConstant_eval {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω]
     rw [e, AlgEquiv.mul_apply, hfτ]
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ _ N ζ hN0 hζ hfix c v hv hcoc`. Use `haveI : NeZero N := ⟨by omega⟩`. Use `haveI : Algebra.IsAlgebraic K Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed K`. Set `u : (Ω ≃ₐ[K] Ω) → Ωˣ` to `fun g => v g ^ N`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu_lc : IsLocallyConstant u` using `hv.comp (fun x : Ωˣ => x ^ N)`. Establish `hu_coc : ∀ g h, ((u (g * h) : Ωˣ) : Ω) = u g * g (u h)`. Introduce `g h`. Simplify using `only [u, Units.val_pow_eq_pow_val, map_pow]`. Rewrite using `[← mul_pow, hcoc g h, mul_pow, ← pow_mul, mul_comm (c g h).val N, pow_mul, hζ.pow_eq_one, one_pow, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `GlobalTheory.T.exists_unit_eq_div_of_locallyConstant_cocycle K Ω u hu_lc hu_coc`. Take `⟨τ, hτ⟩` from `IsAlgClosed.exists_pow_nat_eq (t : Ω) hN0`. Establish `ht0 : (t : Ω) ≠ 0` using `t.ne_zero`. Establish `hτ0 : τ ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `hτ` using `[zero_pow hN0.ne']`. Conclude with `ht0 hτ.symm`. Establish `hgτ0 : ∀ g : Ω ≃ₐ[K] Ω, g τ ≠ 0` using `fun g => (map_ne_zero g).2 hτ0`. Set `w : (Ω ≃ₐ[K] Ω) → Ω` to `fun g => (v g : Ω) * τ / g τ`. Establish `hw_lc : IsLocallyConstant w` using `(hv.comp (fun x : Ωˣ => (x : Ω))).comp₂ (isLocallyConstant_eval (K := K) τ) (fun a b => a * τ / b)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw_pow : ∀ g, w g ^ N = 1`. Introduce `g`. Establish `h1 : (v g : Ω) ^ N = g t / t` using `by rw [← Units.val_pow_eq_pow_val]; exact ht g`. Establish `h2 : (g τ) ^ N = g t` using `by rw [← map_pow, hτ]`. Establish `h3 : g (t : Ω) ≠ 0` using `(map_ne_zero g).2 ht0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Simplify using `only [w]`. Rewrite using `[div_pow, mul_pow, h1, h2, hτ]`. Clear the denominators using the available nonvanishing facts. Establish `hw_coc : ∀ g h, w g * g (w h) = ζ ^ (c g h).val * w (g * h)`. Introduce `g h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hghτ : g (h τ) ≠ 0` using `(map_ne_zero g).2 (hgτ0 h)`. Establish `hg` using `hgτ0 g`. Establish `e1 : w g * g (w h) = ((v g : Ω) * g (v h)) * τ / g (h τ)`. Simplify using `only [w, map_div₀, map_mul]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Rewrite using `[e1, hcoc g h]`. Simplify using `only [w, AlgEquiv.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Set `E : Ω → ZMod N` to `fun x => if hx : ∃ i : ZMod N, ζ ^ i.val = x then hx.choose else 0`. Set `η : (Ω ≃ₐ[K] Ω) → ZMod N` to `fun g => E (w g)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hη : ∀ g, ζ ^ (η g).val = w g`. Introduce `g`. Take `⟨i, hi, hi'⟩` from `hζ.eq_pow_of_pow_eq_one (hw_pow g)`. Establish `hex : ∃ j : ZMod N, ζ ^ j.val = w g` using `⟨(i : ZMod N), by rw [ZMod.val_cast_of_lt hi, hi']⟩`. Simplify using `only [η, E, dif_pos hex]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hex.choose_spec`. Use `⟨η, hw_lc.comp E, ?_⟩` and prove the remaining obligations. Introduce `g h`. Establish `key : ζ ^ (η g + η h).val = ζ ^ (c g h + η (g * h)).val`. Rewrite using `[KumLemma.pow_val_add hζ, KumLemma.pow_val_add hζ, hη g, hη h, hη (g * h)]`.
-
-Establish `: g (w h) = w h` using `by rw [← hη h, map_pow, hfix]`. Rewrite using `[← hw_coc, this]`. Establish `hinj : η g + η h = c g h + η (g * h)` using `ZMod.val_injective N (hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) key)`. Take the linear combination `-hinj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem zmod_cocycle_eq_coboundary_of_unit_twisted_cocycle : ∀ (K Ω : Type) [Field K] [CharZero K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (N : ℕ) (ζ : Ω), 0 < N →
   IsPrimitiveRoot ζ N → (∀ g : Ω ≃ₐ[K] Ω, g ζ = ζ) →

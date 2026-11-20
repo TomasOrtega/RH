@@ -10,31 +10,27 @@ open NumberField
 namespace GlobalTheory.OrthoFrame
 
 /- English proof (translation)
-Introduce `E _ _ _ r X`. Take `⟨u, hu⟩` from `GlobalTheory.T.exists_rational_frame_mem_flagDomain E r X`. Take `⟨v, ho, hv⟩` from `GlobalTheory.T.exists_orthogonal_rational_frame_flagDomain E r X u hu`. Establish `hs` using `GlobalTheory.OrthoFrame.sign_of_mem X v ho hv`. Use `choose d hd0 hdΛ using fun j => ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.exists_smul_mem X.Λ (x := v j) (by rw [X.Λ_span]; exact Submodule.mem_top)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0' : ∀ j, ((d j : 𝓞 E) : E) ≠ 0` using `fun j h => hd0 j (by exact_mod_cast h)`. Use `set lam : Fin r → Fin r → E := fun j => ((d j : 𝓞 E) : E) • v j with hlam`. Establish `hlamΛ : ∀ j, lam j ∈ X.Λ` using `fun j => by`. Establish `e : (d j) • v j = ((d j : 𝓞 E) : E) • v j`. Use extensionality with `a`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Algebra.smul_def]`. Rewrite using `[hlam]`. Simplify using `only`. Rewrite using `[← e]`. Conclude with `hdΛ j`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hlo : ∀ j k, j ≠ k → ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm (lam j) (lam k) = 0`. Introduce `j k h`. Simplify using `only [hlam, ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_left, ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_right, ho j k h, mul_zero]`. Establish `hsl : ∀ τ : X.Ψ, ∀ j : Fin r, 0 < ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 j * (τ.1 (ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm (lam j) (lam j))).re`. Introduce `τ j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hn : 0 < Complex.normSq (τ.1 (d j : E))` using `Complex.normSq_pos.2 ((map_ne_zero τ.1).2 (hd0' j))`. Establish `e : τ.1 (ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm (lam j) (lam j)) = (Complex.normSq (τ.1 (d j : E)) : ℂ) * τ.1 (ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm (v j) (v j))`. Simplify using `only [hlam, ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_left, ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_right, map_mul, GlobalTheory.OrthoFrame.emb_cc, ← Complex.mul_conj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.re_ofReal_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `hs τ j` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hΨ : ∃ τ : E →+* ℂ, τ ∈ X.Ψ`. Set `τ0 : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Distinguish the cases in `h : τ0 ∈ X.Ψ`.
+Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `⟨τ0, h⟩`. Use `⟨ComplexEmbedding.conjugate τ0, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Conclude with `h ((X.cmType τ0).2 h')`. Take `⟨τ0, hτ0⟩` from `hΨ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hdv : (Matrix.of v).det ≠ 0`. Establish `h` using `(hv ⟨τ0, hτ0⟩).1`. Establish `e : ReciprocityTheory.ChartRestriction.G.FD.mat (GlobalTheory.OrthoFrame.frm X.Ψ v) ⟨τ0, hτ0⟩ = τ0.mapMatrix (Matrix.of v).transpose`. Use extensionality with `k a`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e, ← RingHom.map_det, Matrix.det_transpose]`. Introduce `h0; exact h (by rw [h0, map_zero])`. Establish `hdl : (Matrix.of lam).det ≠ 0`. Establish `e : Matrix.of lam = Matrix.diagonal (fun j => ((d j : 𝓞 E) : E)) * Matrix.of v`. Use extensionality with `j k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hlam, Matrix.of_apply, Matrix.diagonal_mul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[e, Matrix.det_mul, Matrix.det_diagonal]`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun j _ => hd0' j) hdv`. Use `⟨GlobalTheory.OrthoFrame.frm X.Ψ lam, GlobalTheory.OrthoFrame.mem_of_sign X lam hlo hdl hsl, lam, hlamΛ, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Matrix.linearIndependent_rows_of_det_ne_zero hdl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j k hj hk`. Conclude with `hlo j k (by intro h; subst h; omega)`. Introduce `j hj τ`. Use `hsl τ j` as an intermediate fact. Simplify `this` using `[ReciprocityTheory.ChartRestriction.G.FD.sgn, hj]`.
-
-Introduce `j hj τ`. Use `hsl τ j` as an intermediate fact. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.sgn, if_neg (not_lt.2 hj)] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `τ`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_orthoFrame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r), ∃ x ∈ X.dom, ∃ lam : Fin r → Fin r → E, (∀ j, lam j ∈ X.Λ) ∧ LinearIndependent E lam ∧ (∀ j k : Fin r, (j : ℕ) < X.p0 → X.p0 ≤ (k : ℕ) → ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm (lam j) (lam k) = 0) ∧ (∀ j : Fin r, (j : ℕ) < X.p0 → ∀ τ : X.Ψ, 0 < (τ.1 (ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm (lam j) (lam j))).re) ∧ (∀ j : Fin r, X.p0 ≤ (j : ℕ) → ∀ τ : X.Ψ, (τ.1 (ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm (lam j) (lam j))).re < 0) ∧ ∀ τ : X.Ψ, Submodule.span ℂ (Set.range fun a : Fin X.p0 => ReciprocityTheory.ChartRestriction.G.FD.col (ReciprocityTheory.ChartRestriction.G.FD.mat x τ) (Fin.castLE X.p0_le a)) = Submodule.span ℂ (Set.range fun a : Fin X.p0 => ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 (lam (Fin.castLE X.p0_le a))) := by
   intro E _ _ _ r X

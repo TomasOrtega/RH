@@ -3,17 +3,15 @@ import Mathlib
 namespace Bl.general_b_fact_bis_other
 
 /- English proof (translation)
-Introduce `K _ _ r n v x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact Submodule.subset_span hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact Submodule.zero_mem _⟩`. Consider the case `add y z _ _ hy hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨d, hd, hd'⟩` from `hy`. Take `⟨e, he, he'⟩` from `hz`. Use `⟨d * e, mul_ne_zero hd he, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `zsmul_mem hd' e`. Rewrite using `[mul_smul]`. Conclude with `zsmul_mem he' d`. Consider the case `smul c y _ hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, hd'⟩` from `hy`. Take `⟨e, he, hint⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ K).mpr (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) c)).exists_integral_multiple`. Use `⟨e * d, mul_ne_zero he hd, ?_⟩` and prove the remaining obligations. Establish `key : ((⟨e • c, hint⟩ : NumberField.RingOfIntegers K)) • (d • y) = (e * d) • (c • y)`. Rewrite using `[← algebraMap_smul K]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, zsmul_eq_mul]`. Express the relevant statement in the definitionally equal form `((e : K) * c) * ((d : K) * y i) = ((e * d : ℤ) : K) * (c * y i)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[← key]`. Conclude with `Submodule.smul_mem _ _ hd'`.
+Express the relevant assertion in an equivalent form by its definition. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {K : Type} [inst : Field.{0} K] [NumberField.{0} K] {r n : Nat} (v : Fin n → Fin r → K) {x : Fin r → K},

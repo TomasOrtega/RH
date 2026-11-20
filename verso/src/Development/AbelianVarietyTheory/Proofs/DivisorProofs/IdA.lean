@@ -16,21 +16,19 @@ open scoped nonZeroDivisors
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `set s : ℂ := (((b + 2 - a') / 2 : ℕ) : ℂ) with hs_def`. Establish `hs : 1 < s.re`. Establish `h1` using `hX.geo.eBig`. Establish `h2 : 1 < (b + 2 - a') / 2` using `by omega`. Rewrite using `[hs_def, Complex.natCast_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2` after adjusting the coercions. Establish `hTP : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) ∈ (X.T : Set (Pl F)) → w.under (𝓞 F) ∈ B.P` using `fun w hw => hX.chars.sub hw`. Take `⟨h𝔟0, h𝔟⟩` from `GlobalTheory.T.adapted_plane_hermitian_ideal_coprime_lt σ B H G.V G₁.V 0 (b + 1) _ _ hX.base hX.geo.hV hC.hH (by omega) (by omega)`. Take `⟨h𝔠0, h𝔠⟩` from `GlobalTheory.T.adapted_plane_skew_ideal_coprime_lt σ B H' G.W G₁.W 0 (b + 1) _ _ hX.base hX.geo.hW hC.hH' (by omega) (by omega)`. Establish `hd` using `GlobalTheory.T.different_coprime_at_good_places σ B hX.base`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0` using `conjI_ne_zero σ h𝔠0`. Establish `hbc : H.𝔟 * (conjI σ H'.𝔟)⁻¹ ≠ 0` using `mul_ne_zero h𝔟0 (inv_ne_zero hc0)`. Establish `h𝔞0 : idA σ H.𝔟 H'.𝔟 ≠ 0` using `mul_ne_zero hbc (inv_ne_zero diffE_ne_zero)`. Establish `hcount : ∀ w, FractionalIdeal.count E w (idA σ H.𝔟 H'.𝔟) = FractionalIdeal.count E w H.𝔟 - FractionalIdeal.count E w (conjI σ H'.𝔟) - FractionalIdeal.count E w (diffE E)`. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[idA, FractionalIdeal.count_mul E w hbc (inv_ne_zero diffE_ne_zero), FractionalIdeal.count_mul E w h𝔟0 (inv_ne_zero hc0), FractionalIdeal.count_inv, FractionalIdeal.count_inv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hT : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) ∈ (X.T : Set (Pl F)) → FractionalIdeal.count E w (idA σ H.𝔟 H'.𝔟) = 0`. Introduce `w hw`. Take `⟨w', hw', hcw⟩` from `GlobalTheory.T.count_conj_ideal_eq_count σ H'.𝔟 h𝔠0 w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcount, hcw, h𝔟 _ (hTP w hw) w rfl, (h𝔠 _ (hTP w hw) w' hw'), hd _ (hTP w hw) w rfl]`. Simplify using the standard rewrite rules. Establish `hunr : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) ∉ (X.T : Set (Pl F)) → UnrAt X.ν w`. Introduce `w hw`. Rewrite using `[Chars.ν, div_eq_mul_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hX.chars.unrα w hw).mul (hX.chars.unrβ w hw).inv`. Establish `htriv` using `nu_triv B X hX.chars hX.geo.even`. Establish `hconj` using `GlobalTheory.T.idealVal_conj_inv σ hX.base.cm X.ν htriv H'.𝔟 h𝔠0 (fun w hw => hunr w fun hwT => hw (h𝔠 _ (hTP w hwT) w rfl))`. Establish `hdiff` using `GlobalTheory.T.idealVal_different_eq_one hX.base.unram X.ν htriv (fun w hw => hunr w fun hwT => hw (hd _ (hTP w hwT) w rfl))`. Establish `hval : idealVal X.ν (idA σ H.𝔟 H'.𝔟) = idealVal X.ν H.𝔟 * idealVal X.ν H'.𝔟`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[idA, idealVal_mul _ hbc (inv_ne_zero diffE_ne_zero), idealVal_mul _ h𝔟0 (inv_ne_zero hc0), idealVal_inv, idealVal_inv, hconj, hdiff, inv_inv, inv_one, mul_one]`. Establish `hA` using `GlobalTheory.T.hecke_l_function_ideal_euler_product X.ν (X.T : Set (Pl F)) (idA σ H.𝔟 H'.𝔟) h𝔞0 hT s`. Establish `hL` using `GlobalTheory.T.hecke_l_function_euler_product_convergent X.ν (X.T : Set (Pl F)) (X.S₀ : Set (Pl F)) (by intro v hv; unfold Chars.T; classical exact Finset.mem_union_left _ hv) (fun w hw _ => hX.chars.ram w hw) s hs`. Use `⟨hL.1, ?_⟩` and prove the remaining obligations. Use `hA.mul hL.2` as an intermediate fact.
-
-Rewrite `this` using `[hval]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glob (σ : E →ₐ[F] E) (B : Base F E) {b a' : ℕ} (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
     (H' : Plane E (b + 2 + a') (b + a')) (hC : CfgA B G G₁ H H') (X : Chars F E) (om : Rep σ G.V G.W)

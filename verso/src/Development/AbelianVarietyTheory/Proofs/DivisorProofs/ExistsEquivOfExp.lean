@@ -17,24 +17,22 @@ open scoped CategoryTheory.Obj MonObj
 namespace GlobalTheory.ExpCompare
 
 /- English proof (translation)
-Introduce `U f` and use `⟨by simpa only [Set.mem_univ, true_and] using isOpen_const, differentiableOn_const _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isHolTo_const {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X : Scheme.{0}} (x : Sp ℂ ⟶ X) :
     IsHolTo (Set.univ : Set V) fun _ => x := fun U f =>
   ⟨by simpa only [Set.mem_univ, true_and] using isOpen_const, differentiableOn_const _⟩
 
 /- English proof (translation)
-Introduce `S P y d g e hadd honto hhol h1 h2`. Take `⟨Φ, hΦ⟩` from `LiePull.exists_pushEquiv d.isPull (𝟙_ (Over (Sp ℂ))) y (Category.id_comp _).symm`. Take `⟨t1, t2⟩` from `UnifTangent.riemannData_tangent S P y d`. Establish `hG : ∀ z, (Φ.symm (e z)).left ≫ d.φ = (e z).left` using `fun z => by`. Rewrite using `[← hΦ, MulEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hGhol : IsHolTo Set.univ fun z => (Φ.symm (e z)).left`. Use `HolTorsion.isHolTo_of_isPullback d.isPull.1 ?_ ?_` and prove the remaining obligations. Conclude with `HolTorsion.isHolTo_congr hhol fun z _ => hG z`. Conclude with `HolTorsion.isHolTo_congr (isHolTo_const (𝟙 _)) fun z _ => Over.w (Φ.symm (e z))`. Take `⟨F, hF, -⟩` from `existsUnique_linear_lift_of_isHolTo d.B (PolPull.isAbelianScheme_of_isGrpPullback P.isAb d.isPull) d.L P.g g d.u t1 t2 (fun z => Φ.symm (e z)) (fun z w => by rw [hadd, map_mul]) hGhol`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFe : ∀ z, (e z).left = (d.u.ex (F z)).left ≫ d.φ` using `fun z => by rw [hF, hG]`. Use `haveI := d.u.discrete`. Establish `hsurj : LinearMap.range F = ⊤` using `AHWeil.eq_top_of_add_discrete d.u.Λ _ fun w => by`. Take `⟨z, hz⟩` from `honto (Φ (d.u.ex w))`. Use `⟨⟨w - F z, (d.u.ker _).1 ?_⟩, z, by simp⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `d.u.ex_add (w - F z) (F z)`. Rewrite `h` using `[sub_add_cancel, hF, hz, MulEquiv.symm_apply_apply]`. Conclude with `mul_eq_right.1 h.symm`. Establish `hu : IsHolTo Set.univ fun z => (d.u.ex z).left ≫ d.φ` using `HolTorsion.isHolTo_comp (c := fun z => (d.u.ex z).left) (fun U f => by simpa only [Set.mem_univ, true_and] using d.u.hol U f) d.φ`. Establish `hd : ∀ w v, IsDerivAt0 (fun z => (e z).left) w v ↔ IsDerivAt0 (fun z => (d.u.ex z).left ≫ d.φ) (F w) v` using `fun w v => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[funext hFe]`. Conclude with `PointUnif.deriv_linear hu F`. Establish `hinj : Function.Injective F` using `fun w w' h => by`. Take `⟨v, hv, -⟩` from `h2 w`. Conclude with `(h1 v hv.1).unique hv ((hd _ _).2 (h ▸ (hd _ _).1 hv))`.
-
-Conclude with `⟨(LinearEquiv.ofBijective F ⟨hinj, LinearMap.range_eq_top.1 hsurj⟩).toContinuousLinearEquiv, hFe⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_equiv_of_exp : ∀ (S : Scheme.{0}) (P : PPAS S) (y : Sp ℂ ⟶ S) (d : P.RiemannData y) (g : ℕ)
     (e : (Fin g → ℂ) → (Over.mk y ⟶ P.A)), (∀ z w, e (z + w) = e z * e w) → Function.Surjective e →

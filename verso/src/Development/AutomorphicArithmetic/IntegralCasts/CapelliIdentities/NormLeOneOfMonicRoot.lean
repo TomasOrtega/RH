@@ -1,13 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R L _ _ _ φ hφ x p hp hx`. Assume the negation of the conclusion as `hlt`. Establish `h1 : 1 < ‖x‖` using `not_le.mp hlt`. Establish `h0 : 0 < ‖x‖` using `lt_trans one_pos h1`. Rewrite `hx` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, hp.coeff_natDegree, map_one, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx' : x ^ p.natDegree = -∑ i ∈ Finset.range p.natDegree, φ (p.coeff i) * x ^ i` using `eq_neg_of_add_eq_zero_right hx`. Establish `hb : ‖∑ i ∈ Finset.range p.natDegree, φ (p.coeff i) * x ^ i‖ ≤ ‖x‖ ^ p.natDegree / ‖x‖`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `i hi`. Establish `hi' : i + 1 ≤ p.natDegree` using `Finset.mem_range.mp hi`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_pow, le_div_iff₀ h0]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hφ _`. Use `_ = ‖x‖ ^ (i + 1) := by ring`. Use `_ ≤ ‖x‖ ^ p.natDegree := pow_le_pow_right₀ h1.le hi'`.
-
-Rewrite `hb` using `[← norm_neg, ← hx', norm_pow]`. Establish `hlt' : ‖x‖ ^ p.natDegree / ‖x‖ < ‖x‖ ^ p.natDegree` using `div_lt_self (by positivity) h1`. Conclude with `absurd hb (not_le.mpr hlt')`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.NormLeOneOfMonicRoot.norm_le_one_of_monic_root.{u_1, u_2} :
     ∀ {R : Type u_1} {L : Type u_2} [inst : CommRing R] [inst_1 : NormedField L] [IsUltrametricDist L]

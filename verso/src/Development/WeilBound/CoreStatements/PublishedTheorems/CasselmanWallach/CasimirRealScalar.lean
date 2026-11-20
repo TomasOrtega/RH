@@ -12,9 +12,9 @@ variable {n : ℕ} {ε : Fin n → Bool} {V : Type} [NormedAddCommGroup V] [Inne
   {E : Fin n → Fin n → Module.End ℂ V}
 
 /- English proof (translation)
-Unfold `casimirK`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, hT b a, ← mul_assoc, hT a b, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma comm_casimirK (T : Module.End ℂ V) (hT : ∀ a b, E a b * T = T * E a b) :
     casimirK ε E * T = T * casimirK ε E := by
@@ -26,9 +26,9 @@ lemma comm_casimirK (T : Module.End ℂ V) (hT : ∀ a b, E a b * T = T * E a b)
   rw [mul_assoc, hT b a, ← mul_assoc, hT a b, mul_assoc]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hb : Submodule.span ℂ {v | ∃ μ : ℝ, Eig ε E μ v} = ⊥`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `v ⟨μ, hv⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hc μ v hne hv`. Rewrite `hb` using `[h.span]`. Conclude with `top_ne_bot hb`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_eig_ne (h : Mod ε E) [Nontrivial V] : ∃ μ : ℝ, ∃ v : V, v ≠ 0 ∧ Eig ε E μ v := by
   by_contra hc
@@ -44,25 +44,23 @@ lemma exists_eig_ne (h : Mod ε E) [Nontrivial V] : ∃ μ : ℝ, ∃ v : V, v �
 end CasimirEigenvector
 
 /- English proof (translation)
-Introduce `n ε V _ _ E h T hT`. Break down `subsingleton_or_nontrivial V with hV | hV` into its components or cases. Conclude with `⟨0, fun v => Subsingleton.elim _ _⟩`. Take `⟨μ, v, hv0, hv⟩` from `CasimirEigenvector.exists_eig_ne h`. Use `set W := Module.End.eigenspace (casimirK ε E) (μ : ℂ) with hWdef`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hWle : W ≤ Submodule.span ℂ {v | ∃ ν : ℝ, ν ≤ μ ∧ Eig ε E ν v}`. Introduce `x hx`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨μ, le_rfl, Module.End.mem_eigenspace_iff.mp hx⟩`. Use `h.fin μ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional ℂ W` using `Submodule.finiteDimensional_of_le hWle`. Establish `hvW : v ∈ W` using `Module.End.mem_eigenspace_iff.mpr hv`. Establish `: Nontrivial W` using `⟨⟨⟨v, hvW⟩, 0, fun he => hv0 (congrArg Subtype.val he)⟩⟩`. Establish `hTW : ∀ x ∈ W, T x ∈ W`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[Module.End.mem_eigenspace_iff]`. Establish `hc` using `congrArg (fun f : Module.End ℂ V => f x) (CasimirEigenvector.comm_casimirK (ε := ε) T hT)`. Simplify using `only [Module.End.mul_apply] at hc`. Rewrite using `[hc, hx, map_smul]`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (T.restrict hTW)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hc.exists_hasEigenvector`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hN : LinearMap.ker (T - c • 1) = ⊥ ∨ LinearMap.ker (T - c • 1) = ⊤`. Apply `h.irr` to reduce the goal to its premises. Introduce `a b x hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Establish `he` using `congrArg (fun f : Module.End ℂ V => f x) (hT a b)`. Simplify using `only [Module.End.mul_apply] at he`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply] at hx ⊢`. Rewrite using `[← he, ← LinearMap.map_smul, ← map_sub, hx, map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw1 : T (w : V) = c • (w : V)`. Use `Module.End.mem_eigenspace_iff.mp hw.1` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Establish `hw0 : (w : V) ≠ 0` using `fun h0 => hw.2 (Subtype.ext h0)`. Break down `hN with hN | hN` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-It suffices to derive a contradiction. Apply `hw0` to reduce the goal to its premises. Establish `: (w : V) ∈ LinearMap.ker (T - c • 1)`. Rewrite using `[LinearMap.mem_ker]`. Simplify using `[hw1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hN]`. Conclude with `(Submodule.mem_bot ℂ).mp this`. Introduce `x`. Establish `: x ∈ LinearMap.ker (T - c • 1)` using `by rw [hN]; trivial`. Rewrite `this` using `[LinearMap.mem_ker]`.
-
-Simplify `this` using `[sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem casimir_eigen_exists : A3 := by
   intro n ε V _ _ E h T hT

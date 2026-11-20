@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsPotential
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsPowSmulMemAlt
 
 /- English proof (translation)
-Introduce `l inst LL T v`. Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Conclude with `UpperTheory.exists_pow_smul_mem_alt T.L.T (fun c hc => ⟨⟨c, hc⟩, rfl⟩) T.L.span v`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.LatticePowerSmul.exists_pow_smul_mem_lattice_alt :
     ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] (LL : Formalism.BasicNotions.Loc.FinExt l) (T : GlobalTheory.BKGal.QLat LL) (v : T.V),

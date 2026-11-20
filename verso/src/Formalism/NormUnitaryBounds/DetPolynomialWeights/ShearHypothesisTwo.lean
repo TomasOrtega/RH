@@ -12,11 +12,11 @@ def extW {N N' : ℕ} (v : Fin N → ℕ) : Fin N' → ℕ :=
   fun j => if h : (j : ℕ) < N then v ⟨j, h⟩ else 0
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_mapDomain_index (by intro; simp) (by intros; simp [add_smul])]`. Use function extensionality and compare the values at `j`. Simplify using `only [extW, Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, blockWt, Pi.smul_apply, smul_eq_mul]`. Use `split_ifs with h`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [Pi.single_apply, Fin.ext_iff, Fin.val_castLE]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations. Establish `: j ≠ Fin.castLE hN p.1`. Introduce `e`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Rewrite using `[e]`. Simplify using the standard rewrite rules. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma weight_mapDomain_castLE {N N' n : ℕ} (hN : N ≤ N') (d : (Fin N × Fin n) →₀ ℕ) :
     Finsupp.weight (blockWt N' n)
@@ -38,9 +38,9 @@ lemma weight_mapDomain_castLE {N N' n : ℕ} (hN : N ≤ N') (d : (Fin N × Fin 
     simp [this]
 
 /- English proof (translation)
-Proceed by induction on `hF using IsWeightedHomogeneous.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `isWeightedHomogeneous_zero R _ _`. Consider the case `add p q hp hq ihp ihq => rw [map_add]`. Conclude with `ihp.add ihq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `monomial d r hr`. Rewrite using `[rename_monomial]`. Apply `isWeightedHomogeneous_monomial` to reduce the goal to its premises. Rewrite using `[weight_mapDomain_castLE, hr]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isWH_rename {N N' n : ℕ} (hN : N ≤ N') (ν : Fin N → ℕ) (F : MvPolynomial (Fin N × Fin n) R)
     (hF : F.IsWeightedHomogeneous (blockWt N n) ν) :
@@ -55,11 +55,11 @@ lemma isWH_rename {N N' n : ℕ} (hN : N ≤ N') (ν : Fin N → ℕ) (F : MvPol
     rw [weight_mapDomain_castLE, hr]
 
 /- English proof (translation)
-Rewrite using `[detPoly, Matrix.det_apply, ← mem_weightedHomogeneousSubmodule]`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `zsmul_mem ?_ _` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : (∑ i, blockWt n n (σ i, i)) = fun _ => 1`. Use function extensionality and compare the values at `j`. Simplify using `only [blockWt, Finset.sum_apply]`. Rewrite using `[Equiv.sum_comp σ (fun i' => (Pi.single i' 1 : Fin n → ℕ) j)]`. Simplify using `[Pi.single_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hsum]`. Conclude with `IsWeightedHomogeneous.prod _ _ _ (fun i _ => isWeightedHomogeneous_X R _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isWH_det (n : ℕ) :
     (detPoly R n).IsWeightedHomogeneous (blockWt n n) (fun _ => 1) := by
@@ -78,7 +78,7 @@ lemma isWH_det (n : ℕ) :
   exact IsWeightedHomogeneous.prod _ _ _ (fun i _ => isWeightedHomogeneous_X R _ _)
 
 /- English proof (translation)
-Simplify using `only [H, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero, mem_weightedHomogeneousSubmodule, IsScalarTower.toAlgHom_apply, Polynomial.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_H_iff {N n : ℕ} (ν : Fin N → ℕ) (P : MvPolynomial (Fin N × Fin n) R) :
     P ∈ H R ν ↔ P.IsWeightedHomogeneous (blockWt N n) ν ∧
@@ -89,9 +89,9 @@ lemma mem_H_iff {N n : ℕ} (ν : Fin N → ℕ) (P : MvPolynomial (Fin N × Fin
     RingHom.id_apply]
 
 /- English proof (translation)
-Use `set A : Matrix (Fin n) (Fin n) (Polynomial (MvPolynomial (Fin n × Fin n) R)) := (Polynomial.C (R := MvPolynomial (Fin n × Fin n) R)).mapMatrix (Matrix.of fun a b : Fin n => (X (a, b) : MvPolynomial (Fin n × Fin n) R)) with hA`. Rewrite using `[detPoly, AlgHom.map_det]`. Establish `: (shear R i j).mapMatrix (Matrix.of fun a b : Fin n => (X (a, b) : MvPolynomial (Fin n × Fin n) R)) = A.updateRow j (A j + (Polynomial.X : Polynomial (MvPolynomial (Fin n × Fin n) R)) • A i)`. Use extensionality with `a b`. Distinguish the cases in `h : a = j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `[shear, hA, Matrix.updateRow_apply]`. Simplify using `[shear, hA, Matrix.updateRow_apply, h]`. Rewrite using `[this, Matrix.det_updateRow_add_smul_self _ hij.symm, hA, ← RingHom.map_det]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma shear_det {n : ℕ} (i j : Fin n) (hij : i ≠ j) :
     shear R i j (detPoly R n) = Polynomial.C (detPoly R n) := by
@@ -110,9 +110,9 @@ lemma shear_det {n : ℕ} (i j : Fin n) (hij : i ≠ j) :
   rw [this, Matrix.det_updateRow_add_smul_self _ hij.symm, hA, ← RingHom.map_det]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Establish `e1 : (Fin.castLE hN p.1 = j) ↔ (p.1 = ⟨j, hj⟩)` using `by simp [Fin.ext_iff]`. Establish `e2 : Fin.castLE hN (⟨i, hi⟩ : Fin N) = i` using `by ext; simp`. Simplify using `[shear, Polynomial.coe_mapAlgHom, e1]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma shear_rename_lt {N N' n : ℕ} (hN : N ≤ N') (i j : Fin N') (hi : (i : ℕ) < N)
     (hj : (j : ℕ) < N) :
@@ -127,9 +127,9 @@ lemma shear_rename_lt {N N' n : ℕ} (hN : N ≤ N') (i j : Fin N') (hi : (i : �
   split_ifs <;> simp
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Establish `e1 : Fin.castLE hN p.1 ≠ j`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[shear, e1]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 lemma shear_rename_ge {N N' n : ℕ} (hN : N ≤ N') (i j : Fin N') (hj : N ≤ (j : ℕ)) :
     (shear R i j).comp (rename (fun p : Fin N × Fin n => (Fin.castLE hN p.1, p.2))) =
@@ -143,9 +143,9 @@ lemma shear_rename_ge {N N' n : ℕ} (hN : N ≤ N') (i j : Fin N') (hj : N ≤ 
   simp [shear, e1]
 
 /- English proof (translation)
-Distinguish the cases in `hj : (j : ℕ) < N`. Establish `hi : (i : ℕ) < N` using `lt_trans hij hj`. Use `AlgHom.congr_fun (shear_rename_lt (R := R) (n := n) hN i j hi hj) F` as an intermediate fact. Simplify using `only [AlgHom.comp_apply] at this`. Rewrite using `[this, hF _ _ (Fin.mk_lt_mk.mpr hij), Polynomial.coe_mapAlgHom, Polynomial.map_C]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `AlgHom.congr_fun (shear_rename_ge (R := R) (n := n) hN i j (not_lt.mp hj)) F` as an intermediate fact. Simplify `this` using `[Polynomial.algebraMap_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma shear_rename_inv {N N' n : ℕ} (hN : N ≤ N') (F : MvPolynomial (Fin N × Fin n) R)
     (hF : ∀ i j : Fin N, i < j → shear R i j F = Polynomial.C F) (i j : Fin N') (hij : i < j) :
@@ -165,9 +165,9 @@ end Formalism.NormUnitaryCountingLemmas.PrincipalInjectiveCommonRange
 
 open Formalism.NormUnitaryCountingLemmas.PrincipalInjectiveCommonRange in
 /- English proof (translation)
-Introduce `R _ N N' hN ν F hF w`. Rewrite `hF`, the goal using `[mem_H_iff]`. Take `⟨hFw, hFs⟩` from `hF`. Prove the components needed by the constructor for the conclusion. Use `(isWH_rename hN ν F hFw).mul ((isWH_det (R := R) N').pow w)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `[extW]`. Introduce `i j hij`. Rewrite using `[map_mul, map_pow, shear_det i j hij.ne, shear_rename_inv hN F hFs i j hij, ← map_pow, ← map_mul]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Formalism.NormUnitaryCountingLemmas.shear_hypothesis_two : Formalism.NormUnitaryCountingLemmas.H2 := by
   intro R _ N N' hN ν F hF w

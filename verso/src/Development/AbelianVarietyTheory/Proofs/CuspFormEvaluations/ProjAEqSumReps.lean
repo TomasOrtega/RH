@@ -19,15 +19,15 @@ namespace GlobalTheory.Dict.VacMean
 open GlobalTheory.SW.TensVac GlobalTheory.SW.TensLat
 
 /- English proof (translation)
-Establish `hfix : ∀ y, epsW X w y • heisG X bas y v = v ↔ y ∈ A'`. Use `fun y => ⟨fun h => ?_, hv.2.2 y⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hy`. Use `hA'.ip_eq_zero idx hs hn hv hy` as an intermediate fact. Rewrite `this` using `[h, hv.2.1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero this`. Establish `hiff : ∀ a ∈ A, ∀ b ∈ A, epsW X w a • heisG X bas a v = epsW X w b • heisG X bas b v ↔ b - a ∈ A'`. Introduce `a ha b hb`. Rewrite using `[← neg_add_eq_sub, ← hfix, ← hA.rho_rho idx hs hn (A.neg_mem ha) hb hv.1]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite using `[← h, hA.rho_rho idx hs hn (A.neg_mem ha) ha hv.1, neg_add_cancel, rho_zero idx hs hn hv.1]`. Introduce `h conv_lhs => rw [← h]`. Rewrite using `[hA.rho_rho idx hs hn ha (A.neg_mem ha) (rho_sb idx hs hn b hv.1), add_neg_cancel, rho_zero idx hs hn (rho_sb idx hs hn b hv.1)]`. Establish `hinj : Set.InjOn (fun y => epsW X w y • heisG X bas y v) R` using `fun a ha b hb h => (hR' b (hR b hb)).unique ⟨ha, (hiff a (hR a ha) b (hR b hb)).1 h⟩ ⟨hb, by rw [sub_self]; exact A'.zero_mem⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `himg : (fun y => epsW X w y • heisG X bas y v) '' A = (fun y => epsW X w y • heisG X bas y v) '' R`. Use `Set.Subset.antisymm ?_ (Set.image_mono fun y hy => hR y hy)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨y', ⟨h1, h2⟩, -⟩` from `hR' y hy`. Conclude with `⟨y', h1, (hiff y' (hR y' h1) y hy).2 h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[projA, himg, finsum_mem_image hinj, finsum_mem_coe_finset, hinj.ncard_image, Set.ncard_coe_finset]`.
+A detailed English derivation is pending.
 -/
 theorem projA_eq_sum_reps {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ}
     {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
@@ -67,13 +67,13 @@ theorem projA_eq_sum_reps {E : Type} [Field E] [NumberField E] [IsCMField E] {r 
     Set.ncard_coe_finset]
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g q0 _ bas idx n hs hn w hw L hL Λ hΛ v hv`. Establish `good (Λ) (hΛ : Λ ∈ Vset E n 1) : Good X (w : E) (tens Λ L)` using `⟨tens_fg hΛ hL.1, tens_selfDual hΛ hL, fun y hy => epsW_semichar hΛ hL w.isIntegral_coe hw hy⟩`. Establish `hS` using `GlobalTheory.SW.Base.stdL_mem_Vset (E := E) n 1`. Establish `hidx` using `(tens_selfDual_semichar_index E r X g bas idx n hs hn w w.isIntegral_coe hw L hL 1 Λ hΛ).2.2.2.2.2 _ hS`. Take `⟨v', hv', -⟩` from `(good Λ hΛ).vac hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hne : (tens (stdL E n) L).relIndex (tens Λ L) ≠ 0`. Introduce `h`. Use `(good Λ hΛ).overlap idx hs hn (good _ hS) hv' hv` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨R, hR, hR'⟩` from `TensorLat.exists_reps_of_relIndex_ne_zero hne`. Establish `hc` using `TensorLat.card_eq_relIndex_of_reps hR hR'`. Use `⟨R, hR, fun y hy => ?_, hc.trans hidx, hc ▸ Nat.pos_of_ne_zero hne, projA_eq_sum_reps idx hs hn (good Λ hΛ) (good _ hS) hv hR hR'⟩` and prove the remaining obligations. Use `hR' y hy` as an intermediate fact. Simplify using `only [mem_tens_stdL] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem vac_proj_mean : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ w : 𝓞 E, (w : E) + cc (w : E) = 1 → ∀ L : Lt E r, SelfD X L → ∀ Λ ∈ Vset E n 1, ∀ v : TF n g, IsVac X bas (w : E) (tens (stdL E n) L) v → ∃ R : Finset (Matrix (Fin n) (Fin r) E), (∀ y ∈ R, y ∈ tens Λ L) ∧ (∀ y ∈ tens Λ L, ∃! y', y' ∈ R ∧ ∀ b, y b - y' b ∈ L) ∧ R.card = ((stdL E n).toAddSubgroup.relIndex Λ.toAddSubgroup) ^ r ∧ 0 < R.card ∧ projA X bas (w : E) (tens Λ L) v = ((R.card : ℂ))⁻¹ • ∑ y ∈ R, epsW X (w : E) y • heisG X bas y v := by
   intro E _ _ _ r X g q0 _ bas idx n hs hn w hw L hL Λ hΛ v hv

@@ -16,9 +16,9 @@ namespace Cmp6
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Apply `Reformulated.AutPerF.Bcris.hom_ext` to reduce the goal to its premises. Introduce `z`. Establish `h2 : f.comp (algebraMap (Reformulated.AutPerF.BcrisPlus l (OC l)) (Reformulated.AutPerF.Bcris l (OC l))) = g.comp (algebraMap (Reformulated.AutPerF.BcrisPlus l (OC l)) (Reformulated.AutPerF.Bcris l (OC l)))`. Apply `Reformulated.AutPerF.BcrisPlus.hom_ext` to reduce the goal to its premises. Introduce `y`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h y`. Conclude with `RingHom.congr_fun h2 z`.
+A detailed English derivation is pending.
 -/
 theorem bcris_hom_ext_acris {B : Type} [CommRing B] {f g : Reformulated.AutPerF.Bcris l (OC l) →+* B}
     (h : ∀ x : Reformulated.AutPerF.Acris l (OC l),
@@ -34,7 +34,7 @@ theorem bcris_hom_ext_acris {B : Type} [CommRing B] {f g : Reformulated.AutPerF.
   exact RingHom.congr_fun h2 z
 
 /- English proof (translation)
-Establish `h : (cBc l).toRingHom.comp (Reformulated.AutPerF.Bcris.frob l (OC l)) = (Formalism.Per6.φB l).comp (cBc l).toRingHom` using `bcris_hom_ext_acris l fun x => by`. Express the relevant statement in the definitionally equal form `cBc l (Reformulated.AutPerF.Bcris.frob l (OC l) _) = Formalism.Per6.φB l (cBc l _)`. Rewrite using `[Reformulated.AutPerF.Bcris.frob_algebraMap_acris, cBc_algebraMap, cBc_algebraMap, hφ, PositivityTheory.LocInh.φB_cB]`. Conclude with `RingHom.congr_fun h b`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cBc_frob_of
     (hφ : ∀ x, cA l (Reformulated.AutPerF.Acris.frob l (OC l) x) = ACris.phi ℂ_[l] l (cA l x))
@@ -49,7 +49,7 @@ theorem cBc_frob_of
   exact RingHom.congr_fun h b
 
 /- English proof (translation)
-Rewrite using `[cBc_algebraMap, cA_algebraMap]`. Conclude with `(PositivityTheory.LocInh.frob_aB_apply a).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cBc_aB (a : Reformulated.AutPerF.Ainf l (OC l)) :
     cBc l (algebraMap (Reformulated.AutPerF.Acris l (OC l)) (Reformulated.AutPerF.Bcris l (OC l))
@@ -65,7 +65,7 @@ theorem algebraMap_ainf_eq_zA (z : ℤ_[l]) :
     algebraMap ℤ_[l] (Reformulated.AutPerF.Ainf l (OC l)) z = Formalism.Per6.zA l z := rfl
 
 /- English proof (translation)
-Establish `h : algebraMap ℤ_[l] (Reformulated.AutPerF.Acris l (OC l)) z = algebraMap (Reformulated.AutPerF.Ainf l (OC l)) (Reformulated.AutPerF.Acris l (OC l)) (algebraMap ℤ_[l] (Reformulated.AutPerF.Ainf l (OC l)) z)` using `rfl`. Rewrite using `[Reformulated.AutPerF.Bcris.algebraMap_padicInt, h, cBc_aB, algebraMap_ainf_eq_zA, Formalism.Per6.zB, RingHom.comp_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cBc_zB (z : ℤ_[l]) :
     cBc l (algebraMap ℚ_[l] (Reformulated.AutPerF.Bcris l (OC l)) (z : ℚ_[l])) = Formalism.Per6.zB l z := by

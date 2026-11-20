@@ -19,11 +19,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Plug.FinTr
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U h e hL Z ex f hf T io y A ev hR hy hb h0`. Use `letI := io.toAlgebra`. Take `⟨-, q, φ, ψ, yq, z, t, h1, h2, h3, h4⟩` from `hR`. Establish `hg : evC h Z f = φ (f q yq)` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.evalAt_eq_of _ _ hL.evalWD f hf.1 q φ yq (genFr h Z) h1`. Establish `hz : evR Xo c f z = ψ (f q yq)` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.evalAt_eq_of _ _ hL.evalWD f hf.1 q ψ yq z h2`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hr, hψ⟩` from `h3 (f q yq)`. Establish `hψ0 : ψ (f q yq) = 0`. Rewrite using `[hψ, ← h0]`. Conclude with `congrArg ev (Subtype.ext hg.symm)`. Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw` using `GlobalTheory.evR_frBor_of_mem_secZ hS Xo c ex hf T.Fr t z y.1 h4`. Apply `hy` to reduce the goal to its premises. Use `show evR Xo c f y.1 = 0`. Rewrite using `[hw, hz, hψ0, mul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_genValue_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ (Z : Comp Xo c) (ex : Ix Dw → ℤ) (f : Rul Xo c), f ∈ GlobalTheory.AllWt.secZ Xo c ex → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (A : Subring (Om Z)) (ev : A →+* T.Fr), FinTr.RegAt h Z io A ev y.1 → evI y f ≠ 0 → ∀ hb : evC h Z f ∈ A, ev ⟨_, hb⟩ ≠ 0 := by
   intro E _ _ _ H Dw l Xo c r U h e hL Z ex f hf T io y A ev hR hy hb h0

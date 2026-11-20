@@ -13,13 +13,11 @@ open scoped Classical
 namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
 /- English proof (translation)
-Introduce `E _ _ _ n a b w`. Establish `hG : ∀ m : ℕ, IsOpen (KGL w m : Set (GLw m w)) ∧ IsCompact (KGL w m : Set (GLw m w))` using `fun m => GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w m`. Establish `hKLo : IsOpen (KL n w : Set (UL n w))` using `(hG n).1.preimage continuous_subtype_val`. Establish `hKLc : IsCompact (KL n w : Set (UL n w))` using `GlobalTheory.LocFinU.isCompact_KL n w`. Use `⟨hKLo, ⟨?_, ?_⟩, (hG n).1, (hG n).2, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcl : IsClosed (KL n w : Set (UL n w))` using `Subgroup.isClosed_of_isOpen _ hKLo`. Use `hKLc.of_isClosed_subset isClosed_closure (closure_minimal ?_ hcl)` and prove the remaining obligations. Conclude with `Set.support_indicator_subset`. Introduce `k hk x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.indicator, Subgroup.mul_mem_cancel_left _ hk]`. Simplify using `[Set.indicator, Subgroup.mul_mem_cancel_right _ hk]`. Conclude with `(hG a).1.prod (hG b).1`. Conclude with `(hG a).2.prod (hG b).2`. Introduce `k hk`.
-
-Unfold `thL`. Use `split_ifs`. Conclude with `hk`. Conclude with `GlobalTheory.CompanionTheory.IwFacts.thetaGL_mem_KGL w n hk`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem unitHecke : UnitHecke := by
   intro E _ _ _ n a b w

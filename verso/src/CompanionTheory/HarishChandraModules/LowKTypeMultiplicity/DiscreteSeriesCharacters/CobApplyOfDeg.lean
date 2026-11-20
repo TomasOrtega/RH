@@ -18,28 +18,28 @@ section
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i ∈ A <;> simp [ann, h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_ann (T : Module.End ℂ V) (i : NC ε) : Commute (lift ε T : Module.End ℂ (Ch ε V)) (ann i) := by
   refine LinearMap.ext fun x => funext fun A => ?_
   by_cases h : i ∈ A <;> simp [ann, h]
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i ∈ A <;> simp [cre, h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_cre (T : Module.End ℂ V) (i : NC ε) : Commute (lift ε T : Module.End ℂ (Ch ε V)) (cre i) := by
   refine LinearMap.ext fun x => funext fun A => ?_
   by_cases h : i ∈ A <;> simp [cre, h]
 
 /- English proof (translation)
-The claim follows from `Commute.sum_right _ _ _ fun i _ => Commute.sum_right _ _ _ fun j _ => ((lift_cre T i).mul_right (lift_ann T j)).smul_right _`.
+A detailed English derivation is pending.
 -/
 theorem lift_Gop (T : Module.End ℂ V) (c d : Fin n) : Commute (lift ε T : Module.End ℂ (Ch ε V)) (Gop ε c d) :=
   Commute.sum_right _ _ _ fun i _ => Commute.sum_right _ _ _ fun j _ =>
     ((lift_cre T i).mul_right (lift_ann T j)).smul_right _
 
 /- English proof (translation)
-Establish `e : ∀ c d, ε c = ε d → F c d (T x) = T (F c d x)` using `fun c d h => congrArg (fun S : Module.End ℂ V => S x) (hT c d h).eq`. Conclude with `⟨fun a => by rw [e a a rfl, h.1 a, map_smul], fun a b hab he => by rw [e a b he, h.2 a b hab he, map_zero]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem kHighest_map {F : Fin n → Fin n → Module.End ℂ V} {γ : Fin n → ℝ} {x : V} (h : KHighest ε F γ x)
     {T : Module.End ℂ V} (hT : ∀ c d, ε c = ε d → Commute (F c d) T) : KHighest ε F γ (T x) := by
@@ -48,7 +48,7 @@ theorem kHighest_map {F : Fin n → Fin n → Module.End ℂ V} {γ : Fin n → 
   exact ⟨fun a => by rw [e a a rfl, h.1 a, map_smul], fun a b hab he => by rw [e a b he, h.2 a b hab he, map_zero]⟩
 
 /- English proof (translation)
-Simplify using `only [bd, bdA, LinearMap.sum_apply, Finset.sum_apply, Module.End.mul_apply, lift_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i ∈ A`. Simplify using `[ann, h]`. Simplify using `[ann, h, hx (insert i A) (by rw [Finset.card_insert_of_notMem h]; omega)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem bd_apply_of_deg (E : Fin n → Fin n → Module.End ℂ V) {j : ℕ} {x : Ch ε V} (hx : Deg j x)
     {A : Finset (NC ε)} (hA : A.card = j) : bd ε E x A = 0 := by
@@ -59,9 +59,9 @@ theorem bd_apply_of_deg (E : Fin n → Fin n → Module.End ℂ V) {j : ℕ} {x 
   · simp [ann, h, hx (insert i A) (by rw [Finset.card_insert_of_notMem h]; omega)]
 
 /- English proof (translation)
-Simplify using `only [cob, LinearMap.sum_apply, Finset.sum_apply, Module.End.mul_apply, lift_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i ∈ A`. Use `Finset.card_erase_add_one h` as an intermediate fact. Simplify using `[cre, h, hx (A.erase i) (by omega)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[cre, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cob_apply_of_deg (E : Fin n → Fin n → Module.End ℂ V) {j : ℕ} {x : Ch ε V} (hx : Deg j x)
     {A : Finset (NC ε)} (hA : A.card = j) : cob ε E x A = 0 := by
@@ -75,23 +75,21 @@ theorem cob_apply_of_deg (E : Fin n → Fin n → Module.End ℂ V) {j : ℕ} {x
 end
 
 /- English proof (translation)
-Introduce `n ε lam V _ _ E v S hlam hgl hu hv hS hSt hvS hmin Y`. Establish `hK : KRel ε E` using `fun a b c d _ _ => hgl a b c d`. Establish `hKU : KUnit ε E` using `fun a b h x y => by rw [hu a b x y]; simp [Formalism.REAL.sgn, h]`. Take `⟨c, hcd, hc, hcv⟩` from `hP n ε lam V E v S hlam hK hKU hv hS hSt hvS`. Establish `van : ∀ y : Ch ε V, KHighest ε (Fop ε E) (gam ε lam) y → y (A1 ε) = 0 → y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y hy h0`. Assume the negation of the conclusion as `hne`. Take `⟨A, hA0, hAh⟩` from `hW n ε V E _ y hne hy`. Establish `hA1 : A ≠ A1 ε` using `fun h => hA0 (h ▸ h0)`. Conclude with `absurd (hmin _ _ hA0 hAh) (not_le.2 (hN n ε lam hlam.1 A hA1))`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hcomm⟩` from `hB n ε V E hgl`. Establish `hbd : bd ε E c = 0` using `van _ (kHighest_map hc fun a b h => (hcomm a b h).1) (bd_apply_of_deg E hcd rfl)`. Use `set u : ℂ := Y + ((n : ℂ) - 1) / 2`. Use `set s : ℂ := Formalism.QuantumDeterminants.capP (fun s => (lam s : ℂ)) Y`. Take `⟨w, -, hw⟩` from `hCO n ε V E hgl u _ c hcd hbd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `hw` using `[hZ n ε lam _ _ c (hF n ε V E hK).1 hc Y]`. Set `T : Module.End ℂ (Ch ε V)` to `lift ε (qdet E u - s • 1)`. Establish `hT : T c = bd ε E w`. Rewrite using `[← hw]`. Use function extensionality and compare the values at `A`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[T, s]`. Establish `hTc : ∀ a b, ε a = ε b → Commute (Fop ε E a b) T`. Introduce `a b _`. Use `Commute.add_left ?_ (lift_Gop _ a b).symm` and prove the remaining obligations. Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun S : Module.End ℂ V => S (x A)) (Formalism.REAL.qDetCentral _ n E hgl u a b)` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Simplify using `[T, this]`. Establish `hx` using `kHighest_map hc hTc`. Establish `hxd : Deg (A1 ε).card (T c)` using `fun A hA => by simp [T, hcd A hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcob : cob ε E (T c) = 0` using `van _ (kHighest_map hx fun a b h => (hcomm a b h).2) (cob_apply_of_deg E hxd rfl)`. Establish `h0 : ip (T c) (T c) = 0` using `by conv_lhs => enter [1]; rw [hT]`. Rewrite using `[hA n ε V E hu, hcob]`. Simplify using `[ip]`. Establish `h1 : (∑ A, ‖T c A‖ ^ 2 : ℝ) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `congrArg (RCLike.re (K := ℂ)) h0`. Simplify using `only [ip, map_sum, inner_self_eq_norm_sq, map_zero] at h`. Conclude with `h`. Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonneg fun A _ => sq_nonneg _).1 h1 (A1 ε) (Finset.mem_univ _)`. Establish `h3 : T c (A1 ε) = 0` using `by simpa using h2`.
-
-Simplify `h3` using `[T, hcv, sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem algCore_of (hF : FRel) (hB : BdFacts) (hCO : CO) (hZ : ZetaHW) (hW : WLem) (hN : NormLt) (hA : Adj)
     (hP : PRV) : AlgCore := by
@@ -138,13 +136,13 @@ theorem algCore_of (hF : FRel) (hB : BdFacts) (hCO : CO) (hZ : ZetaHW) (hW : WLe
   simpa [T, hcv, sub_eq_zero] using h3
 
 /- English proof (translation)
-Introduce `n ε lam H _ _ σ hlam ⟨hc, _, hU, hI, _, ⟨T, hTt⟩, hmin⟩ v hv Y`. Take `⟨S, E, hS⟩` from `hM n ε H σ hU`. Establish `hTS : T ≤ S` using `fun x hx => (hS.mem x).2 (hKS n ε H σ hU hI x ⟨T, hTt.1, hx, hTt.2.1⟩)`. Take `⟨v₀, h0, hv₀T, hv₀⟩` from `hH n ε H σ S E hU hS _ T hTt hTS`. Take `⟨V₀, hV₀, hV₀s⟩` from `hKF n ε H σ S E hU hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hTt.1` as an intermediate fact. Establish `hfd : FiniteDimensional ℂ (T.comap S.subtype)` using `(Submodule.comapSubtypeEquivOfLe hTS).symm.finiteDimensional`. Establish `hmap : (T.comap S.subtype).map S.subtype = T`. Rewrite using `[Submodule.map_comap_subtype, inf_eq_right.2 hTS]`. Establish `hst : KStab ε E (T.comap S.subtype)` using `(hSL n ε H σ S E hU hS _ hfd).2 (by rw [hmap]; exact hTt.2.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcore` using `hC n ε lam S E V₀ v₀ (T.comap S.subtype) hlam hS.gl hS.unit hV₀s (fun x hx => (hV₀ x).2 ⟨T, hTt.1, hx, hTt.2.1⟩) hv₀ hfd hst hv₀T (fun μ x hx hx0 hxh => by`. Take `⟨T', hT'⟩` from `hT n ε H σ S E hU hS μ x hx0 ((hV₀ x).1 hx) hxh`. Conclude with `hmin μ T' hT')`. Establish `h` using `hSp n ε lam H σ S E hU hI hS v₀ h0 hcore ⟨v, (hS.mem v).2 hv⟩ Y`. Establish `hq` using `hQ n ε H σ S E hS (Y + ((n : ℂ) - 1) / 2) ⟨v, (hS.mem v).2 hv⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq` using `[h]`. Conclude with `hq`.
+A detailed English derivation is pending.
 -/
 theorem dsInfCharCap_of (hC : AlgCoreSub) (hM : SmMod) (hQ : ActQ) (hSp : Spread) (hKS : KFinSm) (hKF : KFinStab)
     (hSL : StabLink) (hH : HWofType) (hT : TypeOfHW) : PI.DSInfCharCap.DSInfCharCap := by

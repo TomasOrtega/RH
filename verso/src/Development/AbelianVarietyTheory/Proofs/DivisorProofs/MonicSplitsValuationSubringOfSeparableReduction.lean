@@ -4,27 +4,25 @@ open Polynomial IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap V Ω)` using `IsFractionRing.injective V Ω`. Establish `hQ : (q.map (algebraMap V Ω)).Splits`. Rewrite using `[splits_iff_splits]`. Use `right`. Introduce `g hg hgd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g₀, hg₀⟩` from `IsIntegrallyClosed.eq_map_mul_C_of_dvd Ω hq hgd`. Establish `hg0 : g ≠ 0` using `hg.ne_zero`. Establish `hlc : g.leadingCoeff ≠ 0` using `leadingCoeff_ne_zero.mpr hg0`. Establish `hmap : g₀.map (algebraMap V Ω) = g * C g.leadingCoeff⁻¹` using `by set c := g.leadingCoeff with hc`. Rewrite using `[← hg₀, mul_assoc, ← C_mul, mul_inv_cancel₀ hlc, C_1, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmapm : (g₀.map (algebraMap V Ω)).Monic`. Rewrite using `[hmap]`. Conclude with `monic_mul_leadingCoeff_inv hg0`. Establish `hg₀m : g₀.Monic` using `monic_of_injective hinj hmapm`. Establish `hdvd : g₀ ∣ q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_dvd_map (algebraMap V Ω) hinj hg₀m, hmap]`. Use `dvd_trans (Dvd.intro (C g.leadingCoeff) ?_) hgd` and prove the remaining obligations. Rewrite using `[mul_assoc, ← C_mul, inv_mul_cancel₀ hlc, C_1, mul_one]`. Establish `hsep₀ : (g₀.map (residue V)).Separable` using `hs.of_dvd (Polynomial.map_dvd _ hdvd)`. Establish `hdeg : (g₀.map (residue V)).natDegree = g.natDegree`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg₀m.natDegree_map, ← natDegree_map_eq_of_injective hinj, hmap, natDegree_mul_C (inv_ne_zero hlc)]`. Establish `hgdeg : g.natDegree ≠ 0` using `fun h => hg.not_isUnit (isUnit_iff_degree_eq_zero.mpr ((degree_eq_iff_natDegree_eq hg0).mpr h))`. Establish `hder₀ : derivative (g₀.map (residue V)) ≠ 0`. Introduce `h0`. Establish `hu : IsUnit (g₀.map (residue V))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hsep₀` as an intermediate fact. Rewrite `this` using `[Polynomial.Separable, h0, isCoprime_zero_right]`. Conclude with `this`. Conclude with `hgdeg (hdeg ▸ natDegree_eq_zero_of_isUnit hu)`. Establish `hder : derivative g ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Apply `hder₀` to reduce the goal to its premises. Establish `h1 : derivative (g₀.map (algebraMap V Ω)) = 0`. Rewrite using `[hmap, derivative_mul, derivative_C, h0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1`, the goal using `[derivative_map]`. Establish `h2 : derivative g₀ = 0`. Apply `Polynomial.map_injective _ hinj` to reduce the goal to its premises. Rewrite using `[h1, Polynomial.map_zero]`. Rewrite using `[h2, Polynomial.map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsSepClosed.degree_eq_one_of_irreducible Ω hg ((separable_iff_derivative_ne_zero hg).mpr hder)`. Establish `hroots : ∀ a ∈ (q.map (algebraMap V Ω)).roots, a ∈ (algebraMap V Ω).range`. Introduce `a ha`. Establish `hne : q.map (algebraMap V Ω) ≠ 0` using `(hq.map _).ne_zero`. Establish `hr : aeval a q = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `ha` using `[mem_roots hne, IsRoot, eval_map_algebraMap]`. Conclude with `ha`. Establish `hint : IsIntegral V a` using `⟨q, hq, by rwa [← aeval_def]⟩`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := V) (K := Ω)).mp hint`. Conclude with `⟨y, hy⟩`.
-
-Establish `hqs : q.Splits` using `Splits.of_splits_map_of_injective hinj hQ hroots`. Conclude with `⟨q.roots, hqs.eq_prod_roots_of_monic hq⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem monic_splits_of_separable_residue (Ω : Type) [Field Ω] [IsSepClosed Ω]
     (V : ValuationSubring Ω) (q : Polynomial V) (hq : q.Monic)

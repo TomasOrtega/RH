@@ -13,13 +13,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.V.Z.Sym.Al
 
 /- English proof (translation)
-Introduce `H L _ _ _ unr n hn V _ _ π hπ w hw φ h0 hc hJ ψ hψ he`. Take `⟨s1, s2, -⟩` from `secSpec L n w hw`. Take `⟨τ, hτ⟩` from `compEx H L unr n hn π hπ w hw`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : V →ₗ[ℂ] ℂ, f ∘ φ ≠ 0 := by`. Take `⟨g, hg⟩` from `Function.ne_iff.1 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `Module.Projective.exists_dual_ne_zero ℂ hg`. Conclude with `⟨f, Function.ne_iff.2 ⟨g, hf⟩⟩`. Take `⟨p, hp, hp0⟩` from `(isoCopy _ _ _ τ.ρ _ τ.irred (isoTypic L n π hπ w hw τ hτ)).1 ⟨f ∘ φ, hc f⟩ fun h => hf (congrArg Subtype.val h)`. Use `⟨hψ, τ, hτ, locSub H _ n ψ _ τ.ρ τ.smooth τ.irred _ hp0 (fun u hu => ?_) fun d hd => ?_⟩` and prove the remaining obligations. Rewrite using `[← hp]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Subtype.ext (funext fun g => congrArg f (hJ _ (s1 u) (by rwa [s2]) g))`. Rewrite using `[← dcMap (iw w) _ τ.ρ p hp, ← map_smul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `a` using `dcMap (iw w) ((repOn hπ).comp (secW n w)) ((RU L n).comp (secW n w)) π.subtype (fun _ _ => rfl) (Sig.dg d) ⟨f ∘ φ, hc f⟩`. Establish `b` using `dcMap (iw w) ((rightReg ℂ (UA L n) V).comp (secW n w)) ((RU L n).comp (secW n w)) (f.compLeft (UA L n)) (fun _ _ => rfl) (Sig.dg d) φ`. Rewrite `b` using `[show UpperTheory.V.Hi.dc _ _ _ _ φ = _ • φ from he d hd, map_smul]`. Conclude with `a.trans b.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Al.compOfEig :
     GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (L : Type) [Field L] [NumberField L] [IsCMField L], Unr L → ∀ n : ℕ, 1 ≤ n → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Submodule ℂ (UA L n → ℂ)), IsAutRepU π → ∀ w, IsSplitAt w →

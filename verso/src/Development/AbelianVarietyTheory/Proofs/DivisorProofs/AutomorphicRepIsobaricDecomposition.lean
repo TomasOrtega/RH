@@ -23,9 +23,9 @@ noncomputable section
 namespace GlobalTheory.HostBC
 
 /- English proof (translation)
-Unfold `GlobalTheory.SphGal.spehSat`. Rewrite using `[← Equiv.sum_comp Fin.revPerm]`. Use `Finset.sum_congr rfl fun k _ => Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Establish `hk : ((k.rev : ℕ) : ℂ) = d - (k + 1)`. Rewrite using `[Fin.val_rev, Nat.cast_sub (Nat.succ_le_of_lt k.2)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Simplify using `only [Fin.revPerm_apply, hk]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem spehSat_eq (q d : ℕ) (B : Multiset ℂˣ) : GlobalTheory.SphGal.spehSat q d B =
     ∑ k : Fin d, B.map (fun z : ℂˣ => (z : ℂ) * (q : ℂ) ^ (((d : ℂ) - 1) / 2 - (k : ℕ))) := by
@@ -41,7 +41,7 @@ theorem spehSat_eq (q d : ℕ) (B : Multiset ℂˣ) : GlobalTheory.SphGal.spehSa
   ring
 
 /- English proof (translation)
-Simplify using `[bcPar, GlobalTheory.LGrp.bcParam, Multiset.map_add, Multiset.map_map, Function.comp_def, Multiset.map_replicate]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bcPar_eq (n : ℕ) (α : Fin (n / 2) → ℂˣ) :
     bcPar n (fun i => (α i : ℂ)) = (GlobalTheory.LGrp.bcParam n α).map (fun z : ℂˣ => (z : ℂ)) := by
@@ -54,7 +54,7 @@ namespace GlobalTheory.HostBC
 open GlobalTheory.DiscSpec GlobalTheory.DefiniteBC
 
 /- English proof (translation)
-Use `(map_sum (Multiset.mapAddMonoidHom fun z : ℂˣ => (z : ℂ)) _ _).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[spehSat_eq, h]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_map_val {c : ℕ} (q : ℕ) (d : Fin c → ℕ) (B S : Fin c → Multiset ℂˣ)
     (h : ∀ i, ∑ k : Fin (d i), (B i).map (fun z : ℂˣ => (z : ℂ) * (q : ℂ) ^ (((d i : ℂ) - 1) / 2 - (k : ℕ))) =
@@ -72,7 +72,7 @@ namespace GlobalTheory.HostBC
 open GlobalTheory.DiscSpec GlobalTheory.DefiniteBC
 
 /- English proof (translation)
-The claim follows from `host_isCMField D.host ∀ U : Submodule ℂ (UA D.host.E n → ℂ), IsAutRepU U → ∃ (r : ℕ) (m d : Fin r → ℕ) (π : ∀ i, CuspSub D.host.E (m i)), (∀ i, 1 ≤ m i ∧ 1 ≤ d i ∧ (π i).IsCsd) ∧ ∑ i, m i * d i = n ∧ (∀ (τ : D.host.E →+* ℂ) (lam : DomWeight n), HasWeightAt U τ lam → ∃ A A' : Fin …`.
+A detailed English derivation is pending.
 -/
 theorem baseChange_speh : GlobalTheory.Published.BaseChangeDefiniteUnitary → GlobalTheory.Published.DiscreteSpectrumGL →
     ∀ (D : D7) (n : ℕ),

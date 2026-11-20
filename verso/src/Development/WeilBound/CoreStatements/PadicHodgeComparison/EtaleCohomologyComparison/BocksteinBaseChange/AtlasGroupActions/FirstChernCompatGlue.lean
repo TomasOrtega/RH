@@ -15,7 +15,7 @@ namespace GlueB'
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (Amp : ∀ M : Model l K, E.LineData M.X → Prop)
 
 /- English proof (translation)
-The claim follows from `GlueBL.lim_sq (βS hC (B.schFn M.p) (okToOC l K) false j) (βS hC (B.schFn M.p) (okToOC l K) false j) (M.galH false j (IntermediateField.fixingSubgroupEquiv K σ)) (M.galS j (IntermediateField.fixingSubgroupEquiv K σ)) (fun n y => hC.gal (B.schFn M.p) (okToOC l K) (IntermediateField …`.
+A detailed English derivation is pending.
 -/
 theorem f_act (hC : B.Compat l) {M : Model l K} (a : (dat Amp).Ch M) (j : ℕ) (σ : K.fixingSubgroup) (x : ((dat Amp).H a).N j) :
     bβ Amp hC a j (((dat Amp).H a).act j σ x) = ((dat Amp).A a).act j σ (bβ Amp hC a j x) :=
@@ -24,7 +24,7 @@ theorem f_act (hC : B.Compat l) {M : Model l K} (a : (dat Amp).Ch M) (j : ℕ) (
     (fun n y => hC.gal (B.schFn M.p) (okToOC l K) (IntermediateField.fixingSubgroupEquiv K σ) (galOC_okToOC _) false n j y) x
 
 /- English proof (translation)
-The claim follows from `GlueBL.lim_sq (βS hC (B.schFn M.p) (okToOC l K) true j) (βS hC (B.schFn M.p) (okToOC l K) true j) (M.galH true j (IntermediateField.fixingSubgroupEquiv K σ)) (M.galS j (IntermediateField.fixingSubgroupEquiv K σ)) (fun n y => hC.gal (B.schFn M.p) (okToOC l K) (IntermediateField.fi …`.
+A detailed English derivation is pending.
 -/
 theorem f_act' (hC : B.Compat l) {M : Model l K} (a : (dat Amp).Ch M) (j : ℕ) (σ : K.fixingSubgroup) (x : ((dat Amp).H' a).N j) :
     bβ' Amp hC a j (((dat Amp).H' a).act j σ x) = ((dat Amp).A a).act j σ (bβ' Amp hC a j x) :=
@@ -33,7 +33,7 @@ theorem f_act' (hC : B.Compat l) {M : Model l K} (a : (dat Amp).Ch M) (j : ℕ) 
     (fun n y => hC.gal (B.schFn M.p) (okToOC l K) (IntermediateField.fixingSubgroupEquiv K σ) (galOC_okToOC _) true n j y) x
 
 /- English proof (translation)
-The claim follows from `GlueBL.lim_sq (βS hC (B.schFn M.p) (okToOC l K) true j) (βS hC (B.schFn M.p) (okToOC l K) true j) (M.phiH j) (M.phiS j) (fun n y => hC.phi (B.schFn M.p) (okToOC l K) n j y) x`.
+A detailed English derivation is pending.
 -/
 theorem f_phi' (hC : B.Compat l) {M : Model l K} (a : (dat Amp).Ch M) (j : ℕ) (x : ((dat Amp).H' a).N j) :
     bβ' Amp hC a j ((dat Amp).phi' a j x) = (dat Amp).phiA a j (bβ' Amp hC a j x) :=
@@ -41,7 +41,7 @@ theorem f_phi' (hC : B.Compat l) {M : Model l K} (a : (dat Amp).Ch M) (j : ℕ) 
     (M.phiH j) (M.phiS j) (fun n y => hC.phi (B.schFn M.p) (okToOC l K) n j y) x
 
 /- English proof (translation)
-The claim follows from `GlueBL.lim_sq (βS hC (B.schFn N.p) (okToOC l K) false j) (βS hC (B.schFn M.p) (okToOC l K) false j) (Model.pullH u hu false j) (Model.pullS u hu j) (fun n y => hC.pull (okToOC l K) (B.schMap u hu) false n j y) x`.
+A detailed English derivation is pending.
 -/
 theorem f_nat (hC : B.Compat l) {M N : Model l K} {u : M.X ⟶ N.X} {hu : u ≫ N.p = M.p} {a : (dat Amp).Ch M}
     {b : (dat Amp).Ch N} (m : (dat Amp).Mo u hu a b) (j : ℕ) (x : ((dat Amp).H b).N j) :
@@ -50,7 +50,7 @@ theorem f_nat (hC : B.Compat l) {M N : Model l K} {u : M.X ⟶ N.X} {hu : u ≫ 
     (Model.pullH u hu false j) (Model.pullS u hu j) (fun n y => hC.pull (okToOC l K) (B.schMap u hu) false n j y) x
 
 /- English proof (translation)
-The claim follows from `GlueBL.lim_sq (βS hC (B.schFn N.p) (okToOC l K) true j) (βS hC (B.schFn M.p) (okToOC l K) true j) (Model.pullH u hu true j) (Model.pullS u hu j) (fun n y => hC.pull (okToOC l K) (B.schMap u hu) true n j y) x`.
+A detailed English derivation is pending.
 -/
 theorem f_nat' (hC : B.Compat l) {M N : Model l K} {u : M.X ⟶ N.X} {hu : u ≫ N.p = M.p} {a : (dat Amp).Ch M}
     {b : (dat Amp).Ch N} (m : (dat Amp).Mo u hu a b) (j : ℕ) (x : ((dat Amp).H' b).N j) :
@@ -59,7 +59,7 @@ theorem f_nat' (hC : B.Compat l) {M N : Model l K} {u : M.X ⟶ N.X} {hu : u ≫
     (Model.pullH u hu true j) (Model.pullS u hu j) (fun n y => hC.pull (okToOC l K) (B.schMap u hu) true n j y) x
 
 /- English proof (translation)
-The claim follows from `GlueBL.lim_cup (fun j => βS hC (B.schFn M.p) (okToOC l K) false j) (fun n i j x y => hC.cup (B.schFn M.p) (okToOC l K) false n rfl x y) x y z hz`.
+A detailed English derivation is pending.
 -/
 theorem f_cup (hC : B.Compat l) {M : Model l K} (a : (dat Amp).Ch M) {i j : ℕ} (x : ((dat Amp).H a).N i)
     (y : ((dat Amp).H a).N j) (z : ((dat Amp).H a).N (i + j)) (hz : ((dat Amp).H a).cup x y z) :
@@ -68,7 +68,7 @@ theorem f_cup (hC : B.Compat l) {M : Model l K} (a : (dat Amp).Ch M) {i j : ℕ}
     (fun n i j x y => hC.cup (B.schFn M.p) (okToOC l K) false n rfl x y) x y z hz
 
 /- English proof (translation)
-The claim follows from `GlueBL.lim_one (fun j => βS hC (B.schFn M.p) (okToOC l K) false j) (fun n => hC.one (B.schFn M.p) (okToOC l K) false n) x hx`.
+A detailed English derivation is pending.
 -/
 theorem f_one (hC : B.Compat l) {M : Model l K} (a : (dat Amp).Ch M) (x : ((dat Amp).H a).N 0) (hx : ((dat Amp).H a).one x) :
     ((dat Amp).A a).one (bβ Amp hC a 0 x) :=
@@ -76,7 +76,7 @@ theorem f_one (hC : B.Compat l) {M : Model l K} (a : (dat Amp).Ch M) (x : ((dat 
     (fun n => hC.one (B.schFn M.p) (okToOC l K) false n) x hx
 
 /- English proof (translation)
-The claim follows from `h1 M.p (okToOC l K) false a.1 _ hx`.
+A detailed English derivation is pending.
 -/
 theorem first_chern_compat_glue (hC : B.Compat l) (h1 : B.FirstChernCompatible l) {M : Model l K} (a : (dat Amp).Ch M) (x : ((dat Amp).H a).N 2)
     (hx : (dat Amp).c1H a x) : (dat Amp).c1A a (bβ Amp hC a 2 x) :=
@@ -104,7 +104,7 @@ def bphi (hMain : B.Main l) (hC : B.Compat l) (h1 : B.FirstChernCompatible l) : 
 end GlueB'
 
 /- English proof (translation)
-Introduce `l _ K Amp hMain hC h1` and use `⟨GlueB'.bmap Amp hMain hC h1, GlueB'.bphi Amp hMain hC h1, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem glueB : GlueB := fun l _ K Amp hMain hC h1 =>
   ⟨GlueB'.bmap Amp hMain hC h1, GlueB'.bphi Amp hMain hC h1, rfl⟩

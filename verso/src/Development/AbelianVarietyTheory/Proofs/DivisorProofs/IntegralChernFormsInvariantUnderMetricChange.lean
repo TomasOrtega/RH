@@ -14,7 +14,7 @@ namespace GlobalTheory.MassConst
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Establish `h` using `levi_add_smul 1 (LeviOnly.pot_two hP _ j hy (P.mem_U _)) (LeviOnly.pot_two hQ _ j hy (Q.mem_U _)) w`. Simplify using `only [one_mul] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leviAt_add {A : FinHolAtlas e X} {P Q : LocPot X} (hP : IsPotential A P) (hQ : IsPotential A Q) (j : Fin A.n)
     {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target) (w : Fin e → ℂ) :
@@ -24,9 +24,9 @@ theorem leviAt_add {A : FinHolAtlas e X} {P Q : LocPot X} (hP : IsPotential A P)
   exact h
 
 /- English proof (translation)
-Unfold `mInt`. Use `split_ifs`. Unfold `integralWith`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MeasureTheory.integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mInt_const (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) (a : ℝ) :
     mInt A Φ (fun _ => a) = a * mInt A Φ (fun _ => 1) := by
@@ -42,7 +42,7 @@ theorem mInt_const (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) (a : ℝ) :
   · simp
 
 /- English proof (translation)
-Introduce `j y hy v`. Rewrite using `[K.isOneCochain_add w (K.ar f) σ j y hy v, leviAt_add (K.firstChern_isPotential _ σ) (K.firstChern_isPotential _ σ) j hy, leviAt_add (K.firstChern_isPotential _ σ) (isPotential_ofFun _ _ (hf σ)) j hy, K.c1_ar f hf σ j y hy v]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem chern_form_add_arakelov_function {M : Man e} (K : Calc M) (w : K.V) (f : M.Fun) (hf : M.Smooth f) (σ : Fin (M.n + 1)) :
     LeviEq (M.A σ) (K.c1 (w + K.ar f) σ) (K.c1 w σ + LocPot.ofFun (f σ)) := by
@@ -51,7 +51,7 @@ theorem chern_form_add_arakelov_function {M : Man e} (K : Calc M) (w : K.V) (f :
     leviAt_add (K.firstChern_isPotential _ σ) (isPotential_ofFun _ _ (hf σ)) j hy, K.c1_ar f hf σ j y hy v]
 
 /- English proof (translation)
-Use `congrArg (M.κ * ·) (Finset.sum_congr rfl fun σ _ => ?_)` and prove the remaining obligations. Use `show mInt (M.A σ) (fun i => K.c1 (w i + K.ar (f i)) σ) (fun _ => a) = mInt (M.A σ) (fun i => K.c1 (w i) σ) (fun _ => a)`. Rewrite using `[(LeviOnly.mInt_eq_of_leviEq e (M.X σ) (M.A σ) (fun i => K.c1 (w i + K.ar (f i)) σ) (fun i => K.c1 (w i) σ + LocPot.ofFun (f i σ)) (fun _ => a) (fun _ => K.firstChern_isPotential _ σ) (fun i => isPotentialAdd _ _ _ (K.firstChern_isPotential _ σ) (isPotential_ofFun _ _ (hf i σ))) …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_chern_forms_family_invariant {M : Man e} (K : Calc M) (w : Fin e → K.V) (f : Fin e → M.Fun) (a : ℝ)
     (hf : ∀ i, M.Smooth (f i)) :
@@ -66,7 +66,7 @@ theorem integral_chern_forms_family_invariant {M : Man e} (K : Calc M) (w : Fin 
     massIndep (M.A σ) (fun i => K.c1 (w i) σ) (fun i => f i σ) (fun _ => K.firstChern_isPotential _ σ) (fun i => hf i σ)]
 
 /- English proof (translation)
-Introduce `_ K w f a hf` and use `integral_chern_forms_family_invariant K (fun _ => w) (fun _ => f) a fun _ => hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem integral_chern_forms_invariant_under_metric_change : ∀ {e : ℕ} (M : Man e) (K : Calc M) (w : K.V) (f : M.Fun) (a : ℝ), M.Smooth f →
     M.int (fun _ => K.c1 (w + K.ar f)) (fun _ _ => a) = M.int (fun _ => K.c1 w) (fun _ _ => a) :=

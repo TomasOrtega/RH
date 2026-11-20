@@ -20,7 +20,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.Conj
 open GroundTheory.Heights₂.Heights.Regular GlobalTheory.CompanionTheory.Ar.Flat.Link
 
 /- English proof (translation)
-Use `show Spec.map (CommRingCat.ofHom (g.comp f)) = Spec.map (CommRingCat.ofHom g) ≫ Spec.map (CommRingCat.ofHom f)`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -28,7 +28,7 @@ theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A
   rw [CommRingCat.ofHom_comp, Spec.map_comp]
 
 /- English proof (translation)
-Establish `h : (dualMap (starRingEnd ℂ)).comp (algebraMap ℂ (DualNumber ℂ)) = (algebraMap ℂ (DualNumber ℂ)).comp (starRingEnd ℂ)`. Use extensionality with `c`. Simplify using `[dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[← spMap_comp', ← spMap_comp', h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualMap_conj_over :
     spMap (dualMap (starRingEnd ℂ)) ≫ spMap (algebraMap ℂ (DualNumber ℂ)) =
@@ -41,7 +41,7 @@ theorem dualMap_conj_over :
   rw [← spMap_comp', ← spMap_comp', h]
 
 /- English proof (translation)
-Establish `h : dualMap ((starRingEnd ℂ).comp f) = (dualMap (starRingEnd ℂ)).comp (dualMap f)`. Apply the tactic sequence `ext c <;> simp [dualMap]`. Rewrite using `[h, spMap_comp']`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualMap_comp_ring {R : Type} [CommRing R] (f : R →+* ℂ) :
     spMap (dualMap ((starRingEnd ℂ).comp f)) = spMap (dualMap (starRingEnd ℂ)) ≫ spMap (dualMap f) := by
@@ -50,7 +50,7 @@ theorem dualMap_comp_ring {R : Type} [CommRing R] (f : R →+* ℂ) :
   rw [h, spMap_comp']
 
 /- English proof (translation)
-Establish `h : (dualMap (starRingEnd ℂ)).comp (dualMap (starRingEnd ℂ)) = RingHom.id (DualNumber ℂ)`. Apply the tactic sequence `ext c <;> simp [dualMap]`. Rewrite using `[← spMap_comp', h]`. Conclude with `Spec.map_id _`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_dualMap_conj_conj :
     spMap (dualMap (starRingEnd ℂ)) ≫ spMap (dualMap (starRingEnd ℂ)) = 𝟙 _ := by
@@ -60,7 +60,7 @@ theorem spMap_dualMap_conj_conj :
   exact Spec.map_id _
 
 /- English proof (translation)
-Establish `h : (starRingEnd ℂ).comp (starRingEnd ℂ) = RingHom.id ℂ`. Use extensionality with `c`. Simplify using the standard rewrite rules. Rewrite using `[← spMap_comp', h]`. Conclude with `Spec.map_id _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_conj_conj : spMap (starRingEnd ℂ) ≫ spMap (starRingEnd ℂ) = 𝟙 (Sp ℂ) := by
   have h : (starRingEnd ℂ).comp (starRingEnd ℂ) = RingHom.id ℂ := by
@@ -81,7 +81,7 @@ def conjTan {S : Scheme.{0}} {G : Over S} {x x' : Sp ℂ ⟶ S} (h : x' = spMap 
     rw [this, Category.assoc])
 
 /- English proof (translation)
-Simplify using `[hermForm, dotProduct, Matrix.mulVec, map_sum, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_hermForm' {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) :
     hermForm (Hm.map (starRingEnd ℂ)) a b = (starRingEnd ℂ) (hermForm Hm (star a) (star b)) := by
@@ -90,21 +90,19 @@ theorem conj_hermForm' {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
 /- English proof (translation)
-Introduce `m u v Γ hv`. Establish `hψ : conjPts C.ψ (star z) = (starRingEnd ℂ).comp (C.ψ z)` using `by simp [conjPts]`. Establish `hx : spMap (conjPts C.ψ (star z)) = spMap (starRingEnd ℂ) ≫ spMap (C.ψ z)`. Rewrite using `[hψ, spMap_comp']`. Establish `hx' : spMap (C.ψ z) = spMap (starRingEnd ℂ) ≫ spMap (conjPts C.ψ (star z))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hx, ← Category.assoc, spMap_conj_conj, Category.id_comp]`. Set `v' : Fin m → (epsAt (spMap (conjPts C.ψ (star z))) ⟶ C.t.G)` to `fun i => conjTan hx (v i)`. Establish `hv' : (chart C).IsVal (star z) u v'`. Introduce `i`. Use `show spMap (dualMap (starRingEnd ℂ)) ≫ (v i).left = spMap (dualMap (conjPts C.ψ (star z))) ≫ (C.M.pt (u i)).left`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv i, hψ, dualMap_comp_ring, Category.assoc]`. Establish `hback : ∀ i, (v i).left = spMap (dualMap (starRingEnd ℂ)) ≫ (v' i).left` using `fun i => by show (v i).left = spMap (dualMap (starRingEnd ℂ)) ≫ spMap (dualMap (starRingEnd ℂ)) ≫ (v i).left`. Rewrite using `[← Category.assoc, spMap_dualMap_conj_conj, Category.id_comp]`. Establish `hform : ∀ i j, hermForm Hm (fun b => conjPts C.ψ (star z) (u i b)) (fun b => conjPts C.ψ (star z) (u j b)) = (starRingEnd ℂ) (hermForm (Hm.map (starRingEnd ℂ)) (fun b => C.ψ z (u i b)) (fun b => C.ψ z (u j b)))`. Introduce `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conj_hermForm', Complex.conj_conj, hψ]`. Both sides reduce to the same expression. Establish `hform' : ∀ i j, (Real.pi : ℂ) * hermForm Hm (fun b => conjPts C.ψ (star z) (u i b)) (fun b => conjPts C.ψ (star z) (u j b)) = (starRingEnd ℂ) ((Real.pi : ℂ) * hermForm (Hm.map (starRingEnd ℂ)) (fun b => C.ψ z (u i b)) (fun b => C.ψ z (u j b)))`. Introduce `i j`. Rewrite using `[hform, map_mul, Complex.conj_ofReal]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `h m u v' (Γ.map (starRingEnd ℂ)) hv'`. Prove the components needed by the constructor for the conclusion. Introduce `hG i j`. Establish `h1` using `key.1 (GlobalTheory.T.hodge_gram_complex_conjugate _ _ _ _ _ _ _ _ _ hx (fun _ => rfl) hG) i j`. Establish `h2 : (starRingEnd ℂ) (Γ i j) = _` using `h1.trans (hform' i j)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (starRingEnd ℂ) h2`. Simplify `h3` using `only [Complex.conj_conj]`. Introduce `hE`. Establish `h1 : Fl.IsHodgeGram C.t.G C.t.PP.L (spMap (conjPts C.ψ (star z))) v' (Γ.map (starRingEnd ℂ))`. Use `key.2 fun i j => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(congrArg (starRingEnd ℂ) (hE i j)).trans (hform' i j).symm`. Establish `h2` using `GlobalTheory.T.hodge_gram_complex_conjugate _ _ _ _ _ _ _ _ _ hx' hback h1`. Establish `h3 : (Γ.map (starRingEnd ℂ)).map (starRingEnd ℂ) = Γ`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
-
-Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isRiem_of_chart {Xo : Moduli D l} {σ : KA l →+* ℂ} {n a : ℕ} (C : BdryChart Xo σ n a) (z : Fin n → ℂ)
     (Hm : Matrix (Fin C.g) (Fin C.g) ℂ) (h : (chart C).IsRiem (star z) Hm) :
@@ -151,41 +149,37 @@ theorem isRiem_of_chart {Xo : Moduli D l} {σ : KA l →+* ℂ} {n a : ℕ} (C :
     rwa [h3] at h2
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo σ n a C hpq hσ`. Take `⟨g', ty, hty⟩` from `GlobalTheory.AllClasses.exists_isTypeFn H D.p D.q`. Take `⟨FU⟩` from `GlobalTheory.familyUnif_of_laws GlobalTheory.abelianSchemeLaws_all.1 E H D l Xo σ g' ty hpq hσ hty`. Establish `hsemi : IsSemiAbelian C.t.G` using `C.t.semi`. Take `⟨ε, hε, hεB, ⟨e₀⟩⟩` from `GlobalTheory.T.exists_family_exponential_locally C.R C.t.G C.g n C.M (Metric.ball 0 1) C.ψ hsemi.smooth C.hol 0 (Metric.mem_ball_self one_pos)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0ε : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) ε` using `Metric.mem_ball_self hε`. Take `⟨Γ₀, hΓ₀, -, hfin, hfree⟩` from `GlobalTheory.T.period_lattice_discrete_free C.R C.t.G C.g n C.M _ C.ψ e₀ 0 h0ε`. Set `Q : (Fin n → ℂ) → AddSubgroup (Fin C.g → ℂ)` to `fun b => AddSubgroup.closure (e₀.per b)`. Establish `hQ : ∀ b ∈ Metric.ball (0 : Fin n → ℂ) ε, ∀ p, p ∈ Q b ↔ p ∈ e₀.per b` using `fun b hb p => mem_closure_per e₀ hb p`. Establish `hsp : ∀ x : Γ₀, ∃ (ε' : ℝ) (s : (Fin n → ℂ) → (Fin C.g → ℂ)), 0 < ε' ∧ DifferentiableOn ℂ s (Metric.ball 0 ε') ∧ s 0 = x ∧ ∀ b ∈ Metric.ball (0 : Fin n → ℂ) ε', s b ∈ Q b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨ε', s, h0, hsub, hd, hs0, hs⟩` from `GlobalTheory.T.period_holomorphic_continuation C.R C.t.G C.g n C.M _ C.ψ e₀ Metric.isOpen_ball 0 h0ε x (by rw [← hΓ₀]; exact x.2)`. Conclude with `⟨ε', s, h0, hd, hs0, fun b hb => (hQ b (hsub hb) _).2 (hs b hb)⟩`. Take `⟨ρ, hρ0, hρc, S, hSd, hS0, hSa, hSq⟩` from `exists_additive_sections Γ₀ Q (min 1 ε) (lt_min one_pos hε) hsp`. Establish `hρ1 : ρ ≤ 1` using `hρc.trans (min_le_left _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hball : Metric.ball (0 : Fin n → ℂ) ρ ⊆ Metric.ball 0 ε` using `Metric.ball_subset_ball (hρc.trans (min_le_right _ _))`. Establish `hball1 : Metric.ball (0 : Fin n → ℂ) ρ ⊆ Metric.ball 0 1` using `Metric.ball_subset_ball hρ1`. Establish `h0ρ : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) ρ` using `Metric.mem_ball_self hρ0`. Set `e : FamExp C.t.G C.M (Metric.ball 0 ρ) C.ψ` to `restrict e₀ Metric.isOpen_ball hball`. Establish `hQ' : ∀ b ∈ Metric.ball (0 : Fin n → ℂ) ρ, ∀ p, p ∈ Q b ↔ p ∈ e.per b` using `fun b hb p => hQ b (hball hb) p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΓ₀' : (Γ₀ : Set (Fin C.g → ℂ)) = e.per 0` using `hΓ₀`. Establish `hSp : ∀ x, ∀ b ∈ Metric.ball (0 : Fin n → ℂ) ρ, S x b ∈ e.per b` using `fun x b hb => (hQ' b hb _).1 (hSq x b hb)`. Take `⟨i, Hf, hrank, hopen, hloc⟩` from `GlobalTheory.T.boundary_chart_hodge_matrix E H D l Xo σ n a C g' ty FU ρ e hρ0 hρ1`. Take `⟨hfreeL, hfinL, -⟩` from `GlobalTheory.Coisotropic.lattice_rank E H (FU.Di i)`. Establish `hU : ∀ z ∈ punct n a 1, (ρ : ℂ) • z ∈ punct n a ρ` using `fun z hz => (smul_mem_punct hρ0).2 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsm : Differentiable ℂ (fun z : Fin n → ℂ => (ρ : ℂ) • z)` using `differentiable_id.fun_const_smul _`. Establish `key : ∃ L : Flat.LogPeriods n a C.g (FU.Di i).La, L.H = (fun z => Hf ((ρ : ℂ) • z)) ∧ ∀ w ∈ logCover L.a_le, (L.P w).range = Q ((ρ : ℂ) • expCover a w)`. Use `GlobalTheory.T.period_lattice_on_punctured_disc n a C.g C.a_le (FU.Di i).La (FU.Di i).EF (fun z => Q ((ρ : ℂ) • z)) (fun z => Hf ((ρ : ℂ) • z)) (punct n a 1) Γ₀ (fun x z => S x ((ρ : ℂ) • z)) rfl hrank (FU.Di i).alt (FU.Di i).unimod ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `fun z hz => ⟨(hopen _ (hU z hz)).1, fun x hx => (hopen _ (hU z hz)).2.1 x hx⟩`. Introduce `z₀ hz₀`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨N, hNo, hzN, hNp, P, hPd, hP⟩` from `hloc _ (hU z₀ hz₀)`. Use `⟨(fun z => (ρ : ℂ) • z) ⁻¹' N, hNo.preimage hsm.continuous, hzN, fun z hz => (smul_mem_punct hρ0).1 (hNp hz), fun z => P ((ρ : ℂ) • z), fun x => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `(hPd x).comp hsm.differentiableOn (fun z hz => hz)`. Take `⟨h1, h2, h3⟩` from `hP _ hz`. Use `⟨h1, ?_, h3⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `p`. Establish `h4 : p ∈ (P ((ρ : ℂ) • z)).range ↔ p ∈ e.per ((ρ : ℂ) • z)`. Rewrite using `[← SetLike.mem_coe, h2]`. Rewrite using `[h4]`. Conclude with `(hQ' _ (punct_subset_ball (hNp hz)) p).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Use `⟨(hSd x).comp hsm.differentiableOn (fun z hz => smul_mem_ball hρ0 hz), ?_, fun z hz => hSq x _ (smul_mem_ball hρ0 hz.1)⟩` and prove the remaining obligations. Use `show S x ((ρ : ℂ) • 0) = x`. Rewrite using `[smul_zero]`. Conclude with `hS0 x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `fun x y z => hSa x y _`. Introduce `s hs hsU`. Take `⟨u, hu, huU⟩` from `exists_seq_punct (n := n) (a := a)`. Establish `hρc' : (ρ : ℂ) ≠ 0` using `by exact_mod_cast hρ0.ne'`. Establish `htend : Tendsto (fun k => (ρ : ℂ) • u k) atTop (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hu.const_smul (ρ : ℂ)`. Rewrite `h` using `[smul_zero]`. Then use the resulting hypothesis. Establish `hcl` using `GlobalTheory.T.period_set_closed C.R C.t.G C.g n C.M (Metric.ball 0 ρ) C.ψ e hsemi.separated ⟨Metric.isOpen_ball, fun r => (C.hol.2 r).mono hball1⟩ 0 h0ρ (fun b => s ((ρ : ℂ)⁻¹ • b)) (ContinuousAt.comp_of_eq hs (continuous_const_smul _).continuousAt (smul_zero _)) (htend.frequent …`. Use `⟨punct_subset_ball (hU _ (huU k)), ?_⟩` and prove the remaining obligations. Use `show s ((ρ : ℂ)⁻¹ • (ρ : ℂ) • u k) ∈ e.per ((ρ : ℂ) • u k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_smul, inv_mul_cancel₀ hρc', _root_.one_smul]`. Conclude with `(hQ' _ (punct_subset_ball (hU _ (huU k))) _).1 (hsU _ (huU k)))))`. Establish `h0 : s 0 ∈ e.per 0` using `by simpa using hcl`. Rewrite `h0` using `[← hΓ₀']`. Conclude with `h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hΓ₀']`. Conclude with `GlobalTheory.T.period_lattice_spans C.R C.t.G C.g n C.M _ C.ψ e hsemi 0 h0ρ`. Introduce `N hN`. Take `⟨T, hT, hTw⟩` from `GlobalTheory.T.torsion_periods_finite_quotient E H C.R C.t C.g n C.M (Metric.ball 0 ρ) C.ψ e C.dim 0 h0ρ Γ₀ hΓ₀' N hN`. Use `⟨T, hT, fun x y hx z hz => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb` using `hU z hz`. Establish `hbm` using `punct_subset_ball hb`. Establish `hc` using `cubWeil_carry e hρ0 N hN (S x) (S y) (hSd x) (hSd y) (hSp x) (hSp y) 1 (by`. Rewrite using `[hS0 x, hS0 y]`. Establish `h1 : unitOn (1 : ℂˣ) = 1` using `map_one _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1]`. Conclude with `hTw x y hx) _ hbm`. Establish `hz'` using `(hopen _ hb).2.2.2 N 1 hN _ (hSp x _ hbm) _ (hSp y _ hbm) hc`. Conclude with `exists_int_of_exp_eq_one hN hz'`. Take `⟨L, hLH, hLr⟩` from `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨ρ, (FU.Di i).La, inferInstance, L, e, hρ0, hρ1, fun w hw p => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hzρ` using `hU _ (expCover_mem_punct L.a_le hw)`. Establish `hzb` using `punct_subset_ball hzρ`. Prove the components needed by the constructor for the conclusion. Introduce `hp`.
-
-Establish `h : p ∈ (L.P w).range`. Rewrite using `[hLr w hw]`. Conclude with `(hQ' _ hzb _).2 hp`. Conclude with `h`. Introduce and unpack `⟨x, rfl⟩`.
-
-Establish `h : L.P w x ∈ (L.P w).range` using `⟨x, rfl⟩`. Rewrite `h` using `[hLr w hw]`. Conclude with `(hQ' _ hzb _).1 h`. Rewrite using `[hLH]`. Conclude with `(hopen _ (hU z hz)).2.2.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_log_periods_of_root : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (n a : ℕ) (C : Flat.BdryChart Xo σ n a), 1 ≤ D.p + D.q → σ (baseKA l).ρ = H.rt0 → ∃ (ρ : ℝ) (Λ : Type) (_ : AddCommGroup Λ) (L : Flat.LogPeriods n a C.g Λ) (e : Flat.FamExp C.t.G C.M (Metric.ball 0 ρ) C.ψ), 0 < ρ ∧ ρ ≤ 1 ∧ (∀ w ∈ GroundTheory.Heights₂.Heights.Regular.logCover L.a_le, ∀ p, p ∈ e.per ((ρ : ℂ) • GroundTheory.Heights₂.Heights.Regular.expCover a w) ↔ ∃ x, L.P w x = p) ∧ ∀ z ∈ Flat.punct n a 1, C.IsRiem ((ρ : ℂ) • z) (L.H z) := by
   intro E _ _ _ H D l Xo σ n a C hpq hσ
@@ -294,25 +288,23 @@ theorem exists_log_periods_of_root : ∀ (E : Type) [Field E] [NumberField E] [I
     exact (hopen _ (hU z hz)).2.2.1
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.StarRingEndRootEqNeg.rt0_conj_neg_ne_zero H`.
+A detailed English derivation is pending.
 -/
 theorem rt0_conj_neg_ne_zero (H : Host E) : (starRingEnd ℂ) H.rt0 = -H.rt0 :=
   _root_.UpperTheory.Reformulated.B.StarRingEndRootEqNeg.rt0_conj_neg_ne_zero H
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo σ n a C hpq`. Establish `h1 : (σ (baseKA l).ρ) ^ 2 = -(H.d : ℂ)`. Rewrite using `[← map_pow, (baseKA l).ρ_sq]`. Simplify using the standard rewrite rules. Establish `h2 : (σ (baseKA l).ρ - H.rt0) * (σ (baseKA l).ρ + H.rt0) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `H.sqrt_neg_disc_sq` as an intermediate fact. Take the linear combination `h1 - this`. Break down `mul_eq_zero.1 h2 with h | h` into its components or cases. Conclude with `exists_log_periods_of_root E H D l Xo σ n a C hpq (sub_eq_zero.1 h)`. Establish `hσ' : ((starRingEnd ℂ).comp σ) (baseKA l).ρ = H.rt0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : σ (baseKA l).ρ = -H.rt0` using `eq_neg_of_add_eq_zero_left h`. Use `show (starRingEnd ℂ) (σ (baseKA l).ρ) = H.rt0`. Rewrite using `[h3, map_neg, rt0_conj_neg_ne_zero, neg_neg]`. Take `⟨ρ, Λ, iΛ, L', e', hρ0, hρ1, hper, hriem⟩` from `exists_log_periods_of_root E H D l Xo ((starRingEnd ℂ).comp σ) n a (chart C) hpq hσ'`. Take `⟨L, hLP, hLH⟩` from `GlobalTheory.T.log_periods_conjugate_exists n a C.g Λ L'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e, hper'⟩` from `GlobalTheory.T.family_exponential_conjugate C.R C.t.G C.g n C.M ρ C.ψ e'`. Use `⟨ρ, Λ, iΛ, L, e, hρ0, hρ1, fun w hw p => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hw' : star w ∈ logCover L'.a_le` using `(star_mem_logCover _).2 hw`. Rewrite using `[hper', star_real_smul, star_expCover]`. Establish `h4` using `hper (star w) hw' (star p)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Use `h4.trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨x, (hLP w x).trans ((congrArg star hx).trans (star_star p))⟩`. Introduce and unpack `⟨x, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨x, ((congrArg star (hLP w x)).trans (star_star _)).symm⟩`. Establish `h` using `hriem (star z) (star_mem_punct.2 hz)`. Rewrite using `[hLH]`. Use `isRiem_of_chart C _ _ ?_` and prove the remaining obligations. Rewrite using `[star_real_smul]`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_logPeriods_famExp_isRiem : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (n a : ℕ) (C : Flat.BdryChart Xo σ n a), 1 ≤ D.p + D.q → ∃ (ρ : ℝ) (Λ : Type) (_ : AddCommGroup Λ) (L : Flat.LogPeriods n a C.g Λ) (e : Flat.FamExp C.t.G C.M (Metric.ball 0 ρ) C.ψ), 0 < ρ ∧ ρ ≤ 1 ∧ (∀ w ∈ GroundTheory.Heights₂.Heights.Regular.logCover L.a_le, ∀ p, p ∈ e.per ((ρ : ℂ) • GroundTheory.Heights₂.Heights.Regular.expCover a w) ↔ ∃ x, L.P w x = p) ∧ ∀ z ∈ Flat.punct n a 1, C.IsRiem ((ρ : ℂ) • z) (L.H z) := by
   intro E _ _ _ H D l Xo σ n a C hpq

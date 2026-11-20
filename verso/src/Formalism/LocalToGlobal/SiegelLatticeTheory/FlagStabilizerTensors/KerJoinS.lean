@@ -25,7 +25,7 @@ def colS (u : D.what₂.Word) (φ : D.what₂.Mu u) : ColT (hF.shInj u) :=
   I.eCu u ((D.s_Cu u).symm ⟨(D.eMu u φ).1, (D.eMu u φ).2.1⟩)
 
 /- English proof (translation)
-Use `show inner ℂ (D.sEE F) (D.s.Pu u ((D.s_Cu u).symm ⟨(D.eMu u φ).1, (D.eMu u φ).2.1⟩)) = _`. Rewrite using `[← LinearIsometryEquiv.inner_map_map I.eHH, I.Pu_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem besS_conc (u : D.what₂.Word) (φ : D.what₂.Mu u) (F : D.what₂.EE) :
     D.besS u φ F = ⟪I.eHH (D.sEE F), puC hF u (colS hF I u φ)⟫_ℂ := by
@@ -79,9 +79,9 @@ def KerJoinS (Dt : D.what₂.Word → Set X.B.I.GA) : Prop :=
         a * ⟪((conjHH X G (j (V (D.what₂.iota D.what₂.mu0 F))) : HHX X) : L2X X), PuFun X u hK (Dt u) T⟫_ℂ
 
 /- English proof (translation)
-Take `⟨V, hV⟩` from `hS`. Use `⟨V, fun u => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, U, hU'⟩` from `hV u`. Use `⟨a, ha, U, fun φ F hF T hT => ?_⟩` and prove the remaining obligations. Rewrite using `[hU' φ F hF T hT]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2, h3, h4, h5, h6, h7⟩` from `hH u`. Establish `e` using `(hU u h1 h2 h3 h4 h5 h6 h7 (rowL X G j (V (D.what₂.iota D.what₂.mu0 F))) T).2`. Rewrite using `[← e, conjHH_apply]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kerJoinS_of_parts (Dt Fs : D.what₂.Word → Set X.B.I.GA) (hH : ∀ u, PoincareSeriesHypotheses X u hK (Dt u) (Fs u))
     (hU : ∀ u, BesselUnfold X u hK (Dt u) (Fs u)) (hS : KerSide X G j Tr hK Fs) : KerJoinS X G j Tr hK Dt := by
@@ -98,11 +98,9 @@ theorem kerJoinS_of_parts (Dt Fs : D.what₂.Word → Set X.B.I.GA) (hH : ∀ u,
 end Ker
 
 /- English proof (translation)
-Establish `hx : x ∈ (D.what₂.V0 D.what₂.mu0).map (D.what₂.iota D.what₂.mu0)`. Rewrite using `[hon]`. Conclude with `Submodule.mem_top`. Take `⟨p, hp, rfl⟩` from `hx`. Establish `hU : (D.what₂.Usp D.what₂.mu0).starProjection p ∈ D.what₂.Usp D.what₂.mu0` using `(D.what₂.Usp D.what₂.mu0).starProjection_apply_mem p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU1 : (D.what₂.Usp D.what₂.mu0).starProjection p ∈ D.what₂.V0 D.what₂.mu0` using `(Submodule.mem_inf.mp hU).1`. Establish `hU2 : D.what₂.iota D.what₂.mu0 ((D.what₂.Usp D.what₂.mu0).starProjection p) = 0` using `LinearMap.mem_ker.mp (Submodule.mem_inf.mp hU).2`. Use `⟨p - (D.what₂.Usp D.what₂.mu0).starProjection p, ?_, ?_⟩` and prove the remaining obligations. Use `show _ ∈ D.what₂.V0 D.what₂.mu0 ⊓ (D.what₂.Usp D.what₂.mu0)ᗮ`. Conclude with `Submodule.mem_inf.mpr ⟨Submodule.sub_mem _ hp hU1, (D.what₂.Usp D.what₂.mu0).sub_starProjection_mem_orthogonal p⟩`.
-
-Rewrite using `[map_sub, hU2, sub_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_Q_iota {D : D7} (hon : (D.what₂.V0 D.what₂.mu0).map (D.what₂.iota D.what₂.mu0) = ⊤) (x : D.what₂.EE) :
     ∃ q ∈ D.what₂.Qsp D.what₂.mu0, D.what₂.iota D.what₂.mu0 q = x := by
@@ -131,9 +129,9 @@ def ColJoinS : Prop :=
       ((D.eMu u ψ : (D.mem u).A.Mram) : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ)
 
 /- English proof (translation)
-Introduce `u`. Use `⟨LinearIsometryEquiv.refl ℂ _, fun ψ => ?_⟩` and prove the remaining obligations. Establish `e1` using `(colDict X (Tr u) Y.hK (hIn u) (hBi u)).apply_symm_apply ((D.s_Cu u) ((D.s_Cu u).symm ⟨(D.eMu u ψ).1, (D.eMu u ψ).2.1⟩))`. Rewrite `e1` using `[(D.s_Cu u).apply_symm_apply]`. Establish `e2` using `congrArg Subtype.val e1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `colDictL X (Tr u) Y.hK ((I.eCu u ((D.s_Cu u).symm ⟨(D.eMu u ψ).1, (D.eMu u ψ).2.1⟩) : Cu X u Y.hK)) = _`. Rewrite using `[hpin, (D.s_Cu u).apply_symm_apply]`. Conclude with `e2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colJoinS_of_pin (hIn : ∀ u, ColDictInto X (Tr u) Y.hK) (hBi : ∀ u, ColDictBij X (Tr u) Y.hK)
     (hpin : ∀ u (x : D.s.Cu u),
@@ -151,9 +149,9 @@ theorem colJoinS_of_pin (hIn : ∀ u, ColDictInto X (Tr u) Y.hK) (hBi : ∀ u, C
   exact e2
 
 /- English proof (translation)
-Take `⟨V, hK⟩` from `hK`. Use `⟨V, fun u => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, U, hk⟩` from `hK u`. Take `⟨W, hW⟩` from `hCol u`. Use `⟨a, ha, U.trans W, fun φ x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q, hq, rfl⟩` from `exists_Q_iota hon x`. Rewrite using `[hB u φ, D.what₂.sec_iota _ q hq, hk φ q hq.1 (colS hF I u (W (U φ))) (hW (U φ)), LinearIsometryEquiv.trans_apply, besS_conc hF I, hRow]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem besselId_of_joins (G : GoodOp X) (j : D.what₂.EE ≃ₗᵢ[ℂ] EEC X G)
     (hRow : ∀ F, I.eHH (D.sEE F) = conjHH X G (j F)) (hCol : ColJoinS hF I Tr)

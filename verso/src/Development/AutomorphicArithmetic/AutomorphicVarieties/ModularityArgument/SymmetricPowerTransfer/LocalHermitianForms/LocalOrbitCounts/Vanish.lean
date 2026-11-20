@@ -5,51 +5,47 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc Matrix
 
 /- English proof (translation)
-Establish `finj : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`. Establish `lin : ∀ (z : Fin 3 → K) (T : Set (Fin 3 → K)), (∀ x ∈ T, x ⬝ᵥ B *ᵥ z ∈ (algebraMap O K).range) → ∀ x ∈ Submodule.span O T, x ⬝ᵥ B *ᵥ z ∈ (algebraMap O K).range`. Introduce `z T hT x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hT x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ h1 h2 => rw [add_dotProduct]`. Conclude with `add_mem h1 h2`. Consider the case `smul r x _ h`. Rewrite using `[smul_dotProduct, Algebra.smul_def]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `mul_mem ⟨r, rfl⟩ h`. Use `haveI : Module.Finite O S := Module.Finite.iff_fg.mpr hfg`. Use `haveI : Module.Free O S := Module.free_of_finite_type_torsion_free'`. Set `ι` to `Module.Free.ChooseBasisIndex O S`. Set `b : Module.Basis ι O S` to `Module.Free.chooseBasis O S`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `v : ι → (Fin 3 → K)` to `fun i => (b i : Fin 3 → K)`. Establish `hSv : Submodule.span O (Set.range v) = S`. Establish `h1 : Set.range v = S.subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1, Submodule.span_image, b.span_eq, Submodule.map_subtype_top]`. Establish `hvS : ∀ i, v i ∈ S` using `fun i => (b i).2`. Establish `den : ∀ y : Fin 3 → K, ∃ a : O, a ≠ 0 ∧ a • y ∈ S`. Introduce `y`. Take `⟨c, hc⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors O) (Finset.univ.image fun i => v i ⬝ᵥ B *ᵥ y)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨c, nonZeroDivisors.ne_zero c.2, ?_⟩` and prove the remaining obligations. Rewrite using `[hd]`. Introduce `x hx`. Rewrite `hx` using `[← hSv]`. Use `lin _ _ ?_ x hx` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨r, hr⟩` from `hc _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, Matrix.mulVec_smul, dotProduct_smul]`. Establish `hliO : LinearIndependent O v` using `b.linearIndependent.map' S.subtype (Submodule.ker_subtype S)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hliK : LinearIndependent K v` using `(LinearIndependent.iff_fractionRing O K).1 hliO`. Establish `hspK : ⊤ ≤ Submodule.span K (Set.range v)`. Introduce `y _`. Take `⟨a, ha, hay⟩` from `den y`. Establish `ha' : algebraMap O K a ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h; exact ha (finj (by rw [h, map_zero]))`. Establish `h1 : a • y ∈ Submodule.span K (Set.range v)`. Rewrite `hay` using `[← hSv]`. Conclude with `Submodule.span_le_restrictScalars O K _ hay`. Establish `h2 : y = (algebraMap O K a)⁻¹ • (a • y)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul K a y, smul_smul, inv_mul_cancel₀ ha', one_smul]`. Rewrite using `[h2]`. Conclude with `Submodule.smul_mem _ _ h1`. Set `bK` to `Module.Basis.mk hliK hspK`. Establish `hcard : Fintype.card ι = 3`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Module.finrank_eq_card_basis bK, Module.finrank_fin_fun]`. Set `e : Fin 3 ≃ ι` to `(Fintype.equivFinOfCardEq hcard).symm`. Set `V : Matrix (Fin 3) (Fin 3) K` to `Matrix.of fun r j => v (e j) r`. Establish `hVu : IsUnit V`. Rewrite using `[← linearIndependent_cols_iff_isUnit]`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: V.col = v ∘ e`. Use function extensionality and compare the values at `j r`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hliK.comp e e.injective`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hVd : V.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det V).1 hVu).ne_zero`. Establish `Gent : ∀ i j, (V.transpose * B * V) i j = v (e i) ⬝ᵥ B *ᵥ v (e j)`. Introduce `i j`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum, V, Matrix.of_apply]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `hG : ∀ i j, ∃ g : O, algebraMap O K g = (V.transpose * B * V) i j`. Introduce `i j`. Rewrite using `[Gent]`. Conclude with `(hd (v (e j))).1 (hvS _) _ (hvS _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose g hg using hG`. Set `Gi : Matrix (Fin 3) (Fin 3) O` to `Matrix.of g`. Establish `hGi : (algebraMap O K).mapMatrix Gi = V.transpose * B * V`. Use extensionality with `i j`. Simplify using `[Gi, hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hMd : (V.transpose * B).det ≠ 0`. Rewrite using `[Matrix.det_mul, Matrix.det_transpose]`. Conclude with `mul_ne_zero hVd hB`. Set `Y` to `(V.transpose * B)⁻¹`. Establish `hMY : V.transpose * B * Y = 1` using `Matrix.mul_nonsing_inv _ (Ne.isUnit hMd)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hyS : ∀ j, (fun r => Y r j) ∈ S`. Introduce `j`. Rewrite using `[hd]`. Introduce `x hx`. Rewrite `hx` using `[← hSv]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `lin _ _ ?_ x hx` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨i', rfl⟩` from `e.surjective i`. Establish `: v (e i') ⬝ᵥ B *ᵥ (fun r => Y r j) = (V.transpose * B * Y) i' j`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum, V, Matrix.of_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[this, hMY, Matrix.one_apply]`. Use `split_ifs`. Conclude with `⟨1, map_one _⟩`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨0, map_zero _⟩`. Set `C : Matrix (Fin 3) (Fin 3) O` to `Matrix.of fun k j => b.repr ⟨_, hyS j⟩ (e k)`. Establish `hYC : Y = V * (algebraMap O K).mapMatrix C`. Use extensionality with `r j`. Establish `h` using `congrArg (fun z : S => (z : Fin 3 → K) r) (b.sum_repr ⟨_, hyS j⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply] at h`. Rewrite using `[← h, ← e.sum_comp]`. Simplify using `only [Matrix.mul_apply, RingHom.mapMatrix_apply, Matrix.map_apply, C, V, Matrix.of_apply, Algebra.smul_def]`. Conclude with `Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`. Establish `hGC : (algebraMap O K).mapMatrix Gi * (algebraMap O K).mapMatrix C = 1`.
-
-Rewrite using `[hGi, Matrix.mul_assoc (V.transpose * B), ← hYC, hMY]`. Establish `hdet : algebraMap O K (Gi.det * C.det) = 1`. Rewrite using `[map_mul, RingHom.map_det, RingHom.map_det, ← Matrix.det_mul, hGC, Matrix.det_one]`. Establish `hGu : IsUnit Gi.det` using `isUnit_iff_exists_inv.2 ⟨C.det, finj (by rw [hdet, map_one])⟩`. Use `⟨hGu.unit, V.det⁻¹, inv_ne_zero hVd, ?_⟩` and prove the remaining obligations.
-
-Establish `h1 : algebraMap O K (hGu.unit : O) = V.det * B.det * V.det`. Rewrite using `[IsUnit.unit_spec, RingHom.map_det, hGi, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Rewrite using `[h1]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 private theorem vanish_det {O K : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] [Field K] [Algebra O K]
     [IsFractionRing O K] (B : Matrix (Fin 3) (Fin 3) K) (hB : B.det ≠ 0) (S : Submodule O (Fin 3 → K)) (hfg : S.FG)
@@ -176,43 +172,39 @@ private theorem vanish_det {O K : Type} [CommRing O] [IsDomain O] [IsPrincipalId
   field_simp
 
 /- English proof (translation)
-Use `haveI := hl.frac`. Take `⟨ε, s, hs0, hΔs⟩` from `hl.even`. Establish `hdesc : Δ * s⁻¹ ^ 2 = algebraMap O K ε`. Rewrite using `[hΔs]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `D` using `fun x => (descent O K Δ hl s⁻¹ ε hdesc x).1`. Establish `nosq : ∀ r : O, r ^ 2 = ε → False`. Introduce `r hr`. Apply `hΔ` to reduce the goal to its premises. Use `⟨algebraMap O K r * s, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΔs, ← hr, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `unitN : ∀ A B : O, IsUnit A ∨ IsUnit B → IsUnit (A ^ 2 - (ε : O) * B ^ 2)`. Introduce `A B hAB`. Assume the negation of the conclusion as `hn`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hm : A ^ 2 - (ε : O) * B ^ 2 ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 ((mem_nonunits_iff).2 hn)`. Establish `hAB' : IsUnit A ∧ IsUnit B`. Break down `hAB with hA | hB` into its components or cases. Use `⟨hA, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hB`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hBm : B ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 ((mem_nonunits_iff).2 hB)`. Establish `h1 : (ε : O) * B ^ 2 ∈ IsLocalRing.maximalIdeal O` using `Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ hBm 2 (by norm_num))`. Establish `h2 : A ^ 2 ∈ IsLocalRing.maximalIdeal O`. Use `Ideal.add_mem _ hm h1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `IsLocalRing.notMem_maximalIdeal.2 (hA.pow 2) h2`. Use `⟨?_, hB⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hA`. Establish `hAm : A ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 ((mem_nonunits_iff).2 hA)`. Establish `h1 : A ^ 2 ∈ IsLocalRing.maximalIdeal O` using `Ideal.pow_mem_of_mem _ hAm 2 (by norm_num)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (ε : O) * B ^ 2 ∈ IsLocalRing.maximalIdeal O`. Use `Ideal.sub_mem _ h1 hm` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Conclude with `IsLocalRing.notMem_maximalIdeal.2 ((ε.isUnit).mul (hB.pow 2)) h2`. Take `⟨hA, hB⟩` from `hAB'`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hr, -⟩` from `sqrtO O K Δ hl (ε : O) (A * ↑hB.unit⁻¹) (hA.mul (Units.isUnit _)) (by`. Establish `hBi : B * ↑hB.unit⁻¹ = 1` using `hB.mul_val_inv`. Establish `: (ε : O) - (A * ↑hB.unit⁻¹) ^ 2 = -(↑hB.unit⁻¹ : O) ^ 2 * (A ^ 2 - (ε : O) * B ^ 2)`. Take the linear combination `(-(ε : O) * (B * ↑hB.unit⁻¹ + 1)) * hBi`. Rewrite using `[this]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mul_mem_left _ _ hm)`. Conclude with `nosq r hr`. Establish `mk : ∀ A B : O, IsUnit A ∨ IsUnit B → ∀ k : K, k ≠ 0 → l.re = k * algebraMap O K A → l.im = k * (s⁻¹ * algebraMap O K B) → ∃ (k : K) (u u' : Lsq K Δ), k ≠ 0 ∧ IsInt O u ∧ IsInt O u' ∧ u * u' = 1 ∧ l = algebraMap K _ k * u`. Introduce `A B hAB k hk hre him`. Take `⟨w, hw⟩` from `unitN A B hAB`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k, ⟨algebraMap O K A, s⁻¹ * algebraMap O K B⟩, ⟨algebraMap O K (A * ↑w⁻¹), s⁻¹ * algebraMap O K (-B * ↑w⁻¹)⟩, hk, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(D _).2 ⟨⟨A, rfl⟩, B, rfl⟩`. Conclude with `(D _).2 ⟨⟨_, rfl⟩, _, rfl⟩`. Establish `hwK : algebraMap O K (↑w) * algebraMap O K (↑w⁻¹ : O) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Establish `hwv : algebraMap O K ↑w = (algebraMap O K A) ^ 2 - Δ * (s⁻¹ * algebraMap O K B) ^ 2`. Rewrite using `[hw, map_sub, map_mul, map_pow, map_pow, ← hdesc]`. Expand and normalize the polynomial expressions, which then agree. Apply `QuadraticAlgebra.ext` to reduce the goal to its premises. Simplify using `only [QuadraticAlgebra.re_mul, QuadraticAlgebra.re_one, map_mul, map_neg]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take the linear combination `(-(algebraMap O K (↑w⁻¹ : O))) * hwv + hwK`. Simplify using `only [QuadraticAlgebra.im_mul, QuadraticAlgebra.im_one, map_mul, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Apply `QuadraticAlgebra.ext` to reduce the goal to its premises. Simplify using `[hre]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[him]`. Establish `hne : l.re ≠ 0 ∨ l.im * s ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hl0` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Apply `QuadraticAlgebra.ext` to reduce the goal to its premises. Simplify using `using h.1`. Simplify `h.2` using `[hs0]`. Distinguish the cases in `hc : l.re ≠ 0 ∧ IsLocalization.IsInteger O (l.im * s / l.re)`. Take `⟨ha, B, hB⟩` from `hc`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `mk 1 B (Or.inl isUnit_one) l.re ha (by simp) ?_` and prove the remaining obligations. Rewrite using `[hB]`. Clear the denominators using the available nonvanishing facts. Establish `hβ : l.im * s ≠ 0`. Break down `hne with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `h0`. Apply `hc` to reduce the goal to its premises. Use `⟨h, 0, ?_⟩` and prove the remaining obligations. Simplify using `[h0]`. Conclude with `h`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : IsLocalization.IsInteger O (l.re / (l.im * s))`. Distinguish the cases in `ha : l.re = 0`. Conclude with `⟨0, by simp [ha]⟩`. Break down `ValuationRing.isInteger_or_isInteger O (l.im * s / l.re) with h | h` into its components or cases. Conclude with `absurd ⟨ha, h⟩ hc`.
-
-Simplify `h` using `[inv_div]`. Take `⟨A, hA⟩` from `hint`. Use `mk A 1 (Or.inr isUnit_one) (l.im * s) hβ ?_ ?_` and prove the remaining obligations. Rewrite using `[hA]`. Establish `him0 : l.im ≠ 0` using `left_ne_zero_of_mul hβ`.
-
-Clear the denominators using the available nonvanishing facts. Simplify using `only [map_one, mul_one]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private theorem vanish_unit {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K]
     {Δ : K} (hl : IsLoc O Δ) (hΔ : ¬ IsSquare Δ) (l : Lsq K Δ) (hl0 : l ≠ 0) :
@@ -321,47 +313,39 @@ private theorem vanish_unit {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteVa
       field_simp
 
 /- English proof (translation)
-Use `haveI : IsFractionRing O K := hl.frac`. Use `haveI : Fact (∀ r : K, r ^ 2 ≠ Δ + 0 * r) := ⟨fun r hr => hΔ ⟨r, by rw [← sq]; simpa using hr.symm⟩⟩`. Use `letI : Field (Lsq K Δ) := inferInstanceAs (Field (QuadraticAlgebra K Δ 0))`. Establish `memI : ∀ w : Lsq K Δ, IsInt O w → w ∈ integralClosure O (Lsq K Δ)` using `fun w hw => hw`. Establish `hK : ∀ k : K, IsIntegral O (algebraMap K (Lsq K Δ) k) → ∃ a : O, algebraMap O K a = k`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k hk`. Establish `h1 : IsIntegral O k` using `(isIntegral_algebraMap_iff (algebraMap K (Lsq K Δ)).injective).1 hk`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 h1`. Use `haveI hfr : IsFractionRing (integralClosure O (Lsq K Δ)) (Lsq K Δ) := integralClosure.isFractionRing_of_finite_extension K (Lsq K Δ)`. Use `haveI hpid : IsPrincipalIdealRing (integralClosure O (Lsq K Δ)) := by`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `I`. Take `⟨g, hg⟩` from `(IsPrincipalIdealRing.principal (I.comap (algebraMap O (integralClosure O (Lsq K Δ))))).principal`. Use `⟨⟨algebraMap O (integralClosure O (Lsq K Δ)) g, ?_⟩⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `z hz`. Distinguish the cases in `hz0 : z = 0`. Rewrite using `[hz0]`. Conclude with `Submodule.zero_mem _`. Establish `hz0' : (z : Lsq K Δ) ≠ 0` using `fun h => hz0 (Subtype.ext h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, u, u', hk, hu, hu', huu, hzk⟩` from `vanish_unit hl hΔ (z : Lsq K Δ) hz0'`. Establish `hku : algebraMap K (Lsq K Δ) k = z * u'`. Rewrite using `[hzk, mul_assoc, huu, mul_one]`. Take `⟨a, ha⟩` from `hK k (by rw [hku]; exact z.2.mul hu')`. Establish `haI : a ∈ I.comap (algebraMap O (integralClosure O (Lsq K Δ)))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap]`. Establish `: algebraMap O (integralClosure O (Lsq K Δ)) a = z * ⟨u', memI u' hu'⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show algebraMap O (Lsq K Δ) a = (z : Lsq K Δ) * u'`. Rewrite using `[← hku, ← ha, IsScalarTower.algebraMap_apply O K (Lsq K Δ)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `I.mul_mem_right _ hz`. Rewrite `haI` using `[hg, Submodule.mem_span_singleton]`. Take `⟨r, hr⟩` from `haI`. Rewrite using `[Submodule.mem_span_singleton]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨algebraMap O (integralClosure O (Lsq K Δ)) r * ⟨u, memI u hu⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (algebraMap O (Lsq K Δ) r * u) * algebraMap O (Lsq K Δ) g = (z : Lsq K Δ)`. Rewrite using `[hzk, ← ha, ← hr, smul_eq_mul]`. Simplify using `only [IsScalarTower.algebraMap_apply O K (Lsq K Δ), map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Establish `: g ∈ I.comap (algebraMap O (integralClosure O (Lsq K Δ)))`. Rewrite using `[hg]`. Conclude with `Submodule.mem_span_singleton_self g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `hSL : ∀ (c : Lsq K Δ), IsInt O c → ∀ y ∈ S, c • y ∈ S`. Introduce `c hc y hy`. Rewrite `hy`, the goal using `[hd]`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`. Conclude with `hc.mul (hy w hw)`. Set `S' : Submodule (integralClosure O (Lsq K Δ)) (Fin 3 → Lsq K Δ)` to `{ carrier := S, add_mem' := S.add_mem, zero_mem' := S.zero_mem, smul_mem' := fun c y hy => hSL c c.2 y hy }`. Establish `hfg' : S'.FG`. Take `⟨s, hs⟩` from `hfg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Use `show y ∈ S`. Rewrite using `[← hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span hy`. Introduce `y hy`. Establish `hy' : y ∈ Submodule.span O (s : Set (Fin 3 → Lsq K Δ))` using `by rw [hs]; exact hy`. Conclude with `Submodule.span_le_restrictScalars O (integralClosure O (Lsq K Δ)) _ hy'`. Establish `hd' : ∀ y, y ∈ S' ↔ ∀ w ∈ S', w ⬝ᵥ B *ᵥ y ∈ (algebraMap (integralClosure O (Lsq K Δ)) (Lsq K Δ)).range`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `y`. Use `show y ∈ S ↔ ∀ w ∈ S, _`. Rewrite using `[hd]`. Use `forall₂_congr fun w _ => ⟨fun h => ⟨⟨_, memI _ h⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨z, hz⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hz]`. Conclude with `z.2`. Establish `hB0 : B.det ≠ 0`. Rewrite using `[hB]`. Conclude with `mul_ne_zero ((map_ne_zero _).2 hx) (pow_ne_zero _ ht.ne_zero)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Take `⟨u, s, hs, hdet⟩` from `vanish_det B hB0 S' hfg' hd'`. Establish `ht0 : t ≠ 0` using `ht.ne_zero`. Take `⟨k, v, v', hk, hv, hv', hvv, hqk⟩` from `vanish_unit hl hΔ (s * t⁻¹) (mul_ne_zero hs (inv_ne_zero ht0))`. Establish `hkL : algebraMap K (Lsq K Δ) k ≠ 0` using `(map_ne_zero _).2 hk`. Establish `h1 : algebraMap K (Lsq K Δ) x = algebraMap (integralClosure O (Lsq K Δ)) (Lsq K Δ) u * (s * t⁻¹) ^ 2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `e` using `hB.symm.trans hdet`. Clear the denominators using the available nonvanishing facts. Take the linear combination `e`. Establish `e1 : algebraMap K (Lsq K Δ) (x / k ^ 2) = algebraMap (integralClosure O (Lsq K Δ)) (Lsq K Δ) u * v ^ 2`. Rewrite using `[map_div₀, map_pow, h1, hqk]`.
-
-Clear the denominators using the available nonvanishing facts. Establish `hUU : algebraMap (integralClosure O (Lsq K Δ)) (Lsq K Δ) u * algebraMap (integralClosure O (Lsq K Δ)) (Lsq K Δ) ↑u⁻¹ = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `e2 : algebraMap K (Lsq K Δ) (k ^ 2 / x) = algebraMap (integralClosure O (Lsq K Δ)) (Lsq K Δ) ↑u⁻¹ * v' ^ 2`. Rewrite using `[show k ^ 2 / x = (x / k ^ 2)⁻¹ by rw [inv_div], map_inv₀, e1]`.
-
-Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Take `⟨a, ha⟩` from `hK _ (by rw [e1]; exact (u : integralClosure O (Lsq K Δ)).2.mul (hv.pow 2))`. Take `⟨b, hb⟩` from `hK _ (by rw [e2]; exact ((u⁻¹ : (integralClosure O (Lsq K Δ))ˣ) : integralClosure O (Lsq K Δ)).2.mul (hv'.pow 2))`. Establish `hab : a * b = 1`.
-
-Apply `IsFractionRing.injective O K` to reduce the goal to its premises. Rewrite using `[map_mul, ha, hb, map_one]`. Clear the denominators using the available nonvanishing facts. Use `⟨Units.mkOfMulEqOne a b hab, k, hk, ?_⟩` and prove the remaining obligations. Use `show x = algebraMap O K a * k ^ 2`.
-
-Rewrite using `[ha]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private theorem vanish_inert {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K]
     {Δ : K} (hl : IsLoc O Δ) (hΔ : ¬ IsSquare Δ) (B : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) (x : K) (hx : x ≠ 0) (t : Lsq K Δ)
@@ -479,7 +463,7 @@ private theorem vanish_inert {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteV
   field_simp
 
 /- English proof (translation)
-Use `⟨QuadraticAlgebra.lift ⟨r, by simp [hr]⟩, fun z => ?_⟩` and prove the remaining obligations. Simplify using `[QuadraticAlgebra.lift]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem exists_algHom_lsq_of_sq_eq {K : Type} [Field K] {Δ : K} (r : K) (hr : Δ = r * r) :
     ∃ φ : Lsq K Δ →ₐ[K] K, ∀ z : Lsq K Δ, φ z = z.re + r * z.im := by
@@ -488,45 +472,41 @@ private theorem exists_algHom_lsq_of_sq_eq {K : Type} [Field K] {Δ : K} (r : K)
   ring
 
 /- English proof (translation)
-Use `haveI := hl.frac`. Establish `h2 : (2 : K) ≠ 0`. Use `((hl.two).map (algebraMap O K)).ne_zero` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `hΔ0 : Δ ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, s, hs, hus⟩` from `hl.even`. Rewrite using `[hus]`. Conclude with `mul_ne_zero ((u.isUnit.map (algebraMap O K)).ne_zero) (pow_ne_zero _ hs)`. Take `⟨δ, hδ⟩` from `hΔ`. Establish `hδ0 : δ ≠ 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `rfl`. Conclude with `hΔ0 (by simp [hδ])`. Take `⟨φ₁, hφ₁⟩` from `exists_algHom_lsq_of_sq_eq δ hδ`. Take `⟨φ₂, hφ₂⟩` from `exists_algHom_lsq_of_sq_eq (Δ := Δ) (-δ) (by rw [hδ]; ring)`. Use `set e : Lsq K Δ := ⟨1 / 2, 1 / (2 * δ)⟩ with he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `e1 : φ₁ e = 1`. Rewrite using `[hφ₁, he]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try norm_num`. Establish `e2 : φ₂ e = 0`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hφ₂, he]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hee : e * e = e`. Apply `QuadraticAlgebra.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [he, QuadraticAlgebra.re_mul]`. Rewrite using `[hδ]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [he, QuadraticAlgebra.im_mul]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `eint : IsIntegral O e`. Use `⟨Polynomial.X ^ 2 - Polynomial.X, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Polynomial.monic_X_pow 2).sub_of_left (by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Polynomial.degree_X, Polynomial.degree_X_pow]`. Use the proof step `norm_num)`. Simplify using `[sq, hee]`. Establish `decomp : ∀ z : Lsq K Δ, z = algebraMap K _ (φ₁ z) * e + algebraMap K _ (φ₂ z) * (1 - e)`. Introduce `z`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hφ₁, hφ₂]`. Apply `QuadraticAlgebra.ext` to reduce the goal to its premises. Simplify using `[he, QuadraticAlgebra.algebraMap_eq]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[he, QuadraticAlgebra.algebraMap_eq]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `intcrit : ∀ z : Lsq K Δ, φ₁ z ∈ (algebraMap O K).range → φ₂ z ∈ (algebraMap O K).range → IsIntegral O z`. Introduce and unpack `z ⟨a, ha⟩ ⟨b, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[decomp z, ← ha, ← hb, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Conclude with `(isIntegral_algebraMap.mul eint).add (isIntegral_algebraMap.mul (isIntegral_one.sub eint))`. Establish `fwd : ∀ z : Lsq K Δ, IsIntegral O z → φ₁ z ∈ (algebraMap O K).range`. Introduce `z hz`. Conclude with `RingHom.mem_range.2 (IsIntegrallyClosed.isIntegral_iff.1 (hz.map φ₁))`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `tr : ∀ (φ : Lsq K Δ →ₐ[K] K) (v w : Fin 3 → Lsq K Δ), φ (v ⬝ᵥ B *ᵥ w) = (φ ∘ v) ⬝ᵥ (B.map φ) *ᵥ (φ ∘ w)`. Introduce `φ v w`. Establish `h1` using `RingHom.map_dotProduct (φ : Lsq K Δ →+* K) v (B *ᵥ w)`. Rewrite using `[show ((φ : Lsq K Δ →+* K) ∘ (B *ᵥ w)) = (B.map φ) *ᵥ (φ ∘ w) from`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec (φ : Lsq K Δ →+* K) B w i] at h1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h1`. Establish `hφt : φ₁ t ≠ 0` using `(ht.map φ₁).ne_zero`. Establish `hdet : (B.map φ₁).det = x * (φ₁ t) ^ 2`. Establish `h1` using `RingHom.map_det (φ₁ : Lsq K Δ →+* K) B`. Rewrite `h1` using `[hB]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_mul, map_pow, RingHom.coe_coe, AlgHom.commutes] at h1`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply] at h1`. Conclude with `h1.symm`. Set `F : (Fin 3 → Lsq K Δ) →ₗ[O] (Fin 3 → K)` to `((φ₁.restrictScalars O).toLinearMap).compLeft (Fin 3)`. Establish `hF : ∀ v, F v = φ₁ ∘ v` using `fun v => rfl`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, s, hs, hus⟩` from `vanish_det (O := O) (K := K) (B.map φ₁) (by rw [hdet]; exact mul_ne_zero hx (pow_ne_zero _ hφt)) (S.map F) (hfg.map F) (by`. Introduce `y'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ x' ⟨x₀, hx₀, rfl⟩`. Establish `h1` using `fwd _ ((hd y).1 hy x₀ hx₀)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[tr]`. Simplify `h1` using `only [hF]`. Introduce `h`. Use `⟨fun i => algebraMap K _ (y' i) * e, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, hd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `x₀ hx₀`. Apply `intcrit` to reduce the goal to its premises. Rewrite using `[tr]`. Establish `h3 : (φ₁ ∘ fun i => algebraMap K (Lsq K Δ) (y' i) * e) = y'`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[e1]`. Rewrite using `[h3]`. Conclude with `h _ ⟨x₀, hx₀, rfl⟩`. Rewrite using `[tr]`. Establish `h3 : (φ₂ ∘ fun i => algebraMap K (Lsq K Δ) (y' i) * e) = 0`.
-
-Use function extensionality and compare the values at `i`. Simplify using `[e2]`. Rewrite using `[h3]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `i`.
-
-Simplify using `[hF, e1])`. Use `⟨u, s / φ₁ t, div_ne_zero hs hφt, ?_⟩` and prove the remaining obligations. Rewrite `hus` using `[hdet]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hus`.
+Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem vanish_split {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K]
     {Δ : K} (hl : IsLoc O Δ) (hΔ : IsSquare Δ) (B : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) (x : K) (hx : x ≠ 0) (t : Lsq K Δ)
@@ -639,7 +619,7 @@ private theorem vanish_split {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteV
   linear_combination hus
 
 /- English proof (translation)
-Establish `hτ : star ((algebraMap K (Lsq K Δ)) τ) = (algebraMap K (Lsq K Δ)) τ`. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.algebraMap_eq]`. Apply `QuadraticAlgebra.ext` to reduce the goal to its premises. Simplify using `[sigL, star_mul', star_add, star_neg, star_one]`. Simplify using `[sigL, star_mul', star_add, hτ]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem vanish_sigL_mul {K : Type} [Field K] {Δ τ : K} (x y : EL Δ τ) : sigL (x * y) = sigL x * sigL y := by
   have hτ : star ((algebraMap K (Lsq K Δ)) τ) = (algebraMap K (Lsq K Δ)) τ := by
@@ -649,83 +629,77 @@ private theorem vanish_sigL_mul {K : Type} [Field K] {Δ τ : K} (x y : EL Δ τ
   · simp [sigL, star_mul', star_add, hτ]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [sigL]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem vanish_sigL_sigL {K : Type} [Field K] {Δ τ : K} (x : EL Δ τ) : sigL (sigL x) = x := by
   ext <;> simp [sigL]
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ hL c d m hD hc`. Choose the witnesses or unpack the hypotheses as in `⟨S, hS⟩ : ∃ S, IsFix O c d m S := by`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Apply `hc` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Unfold `lcount wcount`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `o`. Simplify using `[hno]`. Establish `hsem : ∀ y : Sp Δ τ, semi d (semi d y) = (y.1, ofE Δ ω * y.2)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Simplify using `only [semi, star_star, vanish_sigL_mul, vanish_sigL_sigL, ← mul_assoc, hD.d_norm]`. Establish `hτ2 : τ - 2 ≠ 0`. Introduce `h`. Apply `hD.reg` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_zero.1 h]`. Evaluate the numerical expressions. Use `haveI := hL.frac`. Take `⟨s, hs⟩` from `hS.fg`. Establish `memS : ∀ y, y ∈ S ↔ y ∈ Submodule.span O (s : Set (Sp Δ τ))`.
+Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Rewrite using `[hs]`. Both sides reduce to the same expression. Establish `inS : ∀ y ∈ S, semi d y ∈ S`. Introduce `y hy`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `Set.mem_image_of_mem (semi d) hy` as an intermediate fact. Rewrite `this` using `[hS.stab]`. Then use the resulting hypothesis. Establish `preS : ∀ y ∈ S, ∃ z ∈ S, semi d z = y`. Introduce `y hy`. Rewrite `hy` using `[← hS.stab]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hy`. Establish `hω2 : ofE Δ ω * ofE Δ ω = algebraMap K (EL Δ τ) τ * ofE Δ ω - 1`. Establish `h1 : (ofE Δ ω : EL Δ τ) = ⟨0, 1⟩`. Apply the tactic sequence `ext <;> simp [ofE]`. Establish `h2 : (algebraMap K (EL Δ τ) τ) = ⟨algebraMap K (Lsq K Δ) τ, 0⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Both sides reduce to the same expression. Rewrite using `[h1, h2]`. Apply the tactic sequence `ext <;> simp`. Establish `hV : ∀ y ∈ S, ((0 : Lsq K Δ), algebraMap K (EL Δ τ) (τ - 2) * y.2) ∈ S`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z1, hz1, rfl⟩` from `preS y hy`. Take `⟨z, hz, rfl⟩` from `preS z1 hz1`. Establish `h1 : semi d (semi d (semi d (semi d z))) ∈ S` using `inS _ (inS _ hy)`. Establish `key : ((0 : Lsq K Δ), algebraMap K (EL Δ τ) (τ - 2) * (semi d (semi d z)).2) = semi d (semi d (semi d (semi d z))) + z - (semi d (semi d z) + semi d (semi d z))`. Simplify using `only [hsem]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `only [Prod.snd_add, Prod.snd_sub, map_sub, map_ofNat]`. Take the linear combination `(-z.2) * hω2`. Rewrite using `[key, memS]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `h1`, `hz`, `hy` using `[memS]`. Conclude with `Submodule.sub_mem _ (Submodule.add_mem _ h1 hz) (Submodule.add_mem _ hy hy)`. Establish `hex : ∃ y ∈ S, y.2 ≠ 0`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h01 : ((0 : Lsq K Δ), (1 : EL Δ τ)) ∈ S`. Rewrite using `[hS.dual]`. Introduce `x hx`. Establish `hx2` using `hno x hx`. Simplify using `[herm, hx2]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `isIntegral_zero`. Conclude with `one_ne_zero (hno _ h01)`. Establish `hint : IsIntegral O (τ - 2)`. Take `⟨y, hy, hy2⟩` from `hex`. Use `isIntegral_of_smul_mem_submodule (Submodule.span O (s : Set (Sp Δ τ)) ⊓ LinearMap.ker (LinearMap.fst O (Lsq K Δ) (EL Δ τ))) ?_ ?_ (τ - 2) ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hbot`. Establish `hmem : ((0 : Lsq K Δ), algebraMap K (EL Δ τ) (τ - 2) * y.2) ∈ Submodule.span O (s : Set (Sp Δ τ)) ⊓ LinearMap.ker (LinearMap.fst O (Lsq K Δ) (EL Δ τ))` using `⟨(memS _).1 (hV y hy), by simp⟩`. Rewrite `hmem` using `[hbot, Submodule.mem_bot]`. Establish `h2` using `congrArg Prod.snd hmem`. Simplify using `only [Prod.snd_zero] at h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy2 (((isUnit_iff_ne_zero.2 hτ2).map (algebraMap K (EL Δ τ))).mul_right_eq_zero.1 h2)`. Conclude with `Submodule.FG.of_le ⟨s, rfl⟩ inf_le_left`. Introduce `n hn`. Take `⟨hn1, hn2⟩` from `hn`. Establish `hn0 : n.1 = 0` using `by simpa using hn2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨?_, by simp [hn0]⟩` and prove the remaining obligations. Use `(memS _).1 (hV n ((memS _).2 hn1))` as an intermediate fact. Establish `e : (τ - 2) • n = ((0 : Lsq K Δ), algebraMap K (EL Δ τ) (τ - 2) * n.2)` using `Prod.ext (by simp [hn0]) (by simp [Algebra.smul_def])`. Rewrite using `[e]`. Conclude with `this`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hτO : τ ∈ (algebraMap O K).range`. Take `⟨o, ho⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Use `⟨o + 2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ho, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hω1 : (ofE Δ ω : EL Δ τ) = ⟨0, 1⟩`. Apply the tactic sequence `ext <;> simp [ofE]`. Establish `hωs : ofE Δ ω * star (ofE Δ ω) = (1 : EL Δ τ)`. Rewrite using `[hω1]`. Apply the tactic sequence `ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hωu : IsUnit (ofE Δ ω : EL Δ τ)` using `⟨⟨_, _, hωs, by rw [mul_comm]; exact hωs⟩, rfl⟩`. Establish `hsm : sigL m = star m`. Use `congrArg star hD.m_star` as an intermediate fact. Rewrite `this` using `[star_star]`. Then use the resulting hypothesis. Use `set ν : EL Δ τ := m * star (sigL d) with hνdef`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hνs : star ν = ν * ofE Δ ω`. Rewrite using `[hνdef, star_mul', star_star, ← hsm, hD.m_sig, ← hD.d_norm]`. Expand and normalize the polynomial expressions, which then agree. Establish `hp : ν.re = -ν.im - algebraMap K (Lsq K Δ) τ * ν.im`. Use `congrArg QuadraticAlgebra.re hνs` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hω1]`. Simplify using `at this`. Take the linear combination `this`. Establish `hνu : IsUnit ν` using `hD.m_unit.mul (isUnit_of_mul_isUnit_right (hD.d_norm ▸ hωu)).star`. Establish `hN : QuadraticAlgebra.norm ν = ν.im ^ 2 * (2 + algebraMap K (Lsq K Δ) τ)`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[QuadraticAlgebra.norm_def, hp]`. Expand and normalize the polynomial expressions, which then agree. Establish `hNu : IsUnit (ν.im ^ 2 * (2 + algebraMap K (Lsq K Δ) τ))` using `hN ▸ hνu.map QuadraticAlgebra.norm`. Establish `htu : IsUnit ((2 + algebraMap K (Lsq K Δ) τ) * ν.im)` using `(isUnit_of_mul_isUnit_right hNu).mul ((isUnit_pow_iff two_ne_zero).1 (isUnit_of_mul_isUnit_left hNu))`. Set `Φ : Sp Δ τ →ₗ[O] (Fin 3 → Lsq K Δ)` to `{ toFun := fun x => ![x.1, x.2.re, x.2.im] map_add' := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `x y`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`. Use the proof step `map_smul' := by`. Introduce `r x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp }`. Set `Ψ : (Fin 3 → Lsq K Δ) → Sp Δ τ` to `fun v => (v 0, ⟨v 1, v 2⟩)`. Establish `hΦΨ : ∀ v, Φ (Ψ v) = v`. Introduce `v`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Establish `hΨΦ : ∀ x, Ψ (Φ x) = x` using `fun x => rfl`. Set `B : Matrix (Fin 3) (Fin 3) (Lsq K Δ)` to `!![algebraMap K (Lsq K Δ) c, 0, 0; 0, 2 * ν.re + algebraMap K (Lsq K Δ) τ * ν.im, algebraMap K (Lsq K Δ) τ * ν.re + 2 * ν.im; 0, algebraMap K (Lsq K Δ) τ * ν.re + (algebraMap K (Lsq K Δ) τ ^ 2 - 2) * ν.im, 2 * ν.re + algebraMap K (Lsq K Δ) τ * ν.im]`. Establish `hid : ∀ x y : Sp Δ τ, Φ x ⬝ᵥ B *ᵥ Φ y = herm c m x (semi d y)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y`. Establish `e1 : herm c m x (semi d y) = algebraMap K (Lsq K Δ) c * x.1 * y.1 + QuadraticAlgebra.trace (ν * x.2 * star y.2)`. Simplify using `only [herm, semi, star_star, vanish_sigL_mul, vanish_sigL_sigL, star_mul', hνdef]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e1, QuadraticAlgebra.trace_def]`. Simplify using `[Φ, B, Matrix.mulVec, dotProduct, Fin.sum_univ_three]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdet : B.det = algebraMap K (Lsq K Δ) (c * (2 - τ)) * ((2 + algebraMap K (Lsq K Δ) τ) * ν.im) ^ 2`. Rewrite using `[Matrix.det_fin_three]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [B, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons, Matrix.head_fin_const, Matrix.tail_cons, map_mul, map_sub, map_ofNat]`. Rewrite using `[hp]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsemiS : ∀ y, y ∈ S ↔ semi d y ∈ S`. Introduce `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨inS y, fun h => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hzy⟩` from `preS _ h`. Establish `h2` using `congrArg (semi d) hzy`. Rewrite `h2` using `[hsem, hsem]`. Simplify using `only [Prod.mk.injEq] at h2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Take `⟨e1, e2⟩` from `h2`. Establish `e3 : z.2 = y.2` using `hωu.mul_left_cancel e2`. Establish `: z = y` using `Prod.ext e1 e3`. Rewrite using `[← this]` and apply the resulting hypothesis. Establish `memS' : ∀ v, v ∈ Submodule.map Φ (Submodule.span O (s : Set (Sp Δ τ))) ↔ Ψ v ∈ S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Rewrite using `[memS, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite using `[hΨΦ]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `⟨Ψ v, h, hΦΨ v⟩`. Establish `hdual' : ∀ v, v ∈ Submodule.map Φ (Submodule.span O (s : Set (Sp Δ τ))) ↔ ∀ x ∈ Submodule.map Φ (Submodule.span O (s : Set (Sp Δ τ))), IsInt O (x ⬝ᵥ B *ᵥ v)`. Introduce `v`. Rewrite using `[memS', hsemiS, hS.dual]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Rewrite `hx` using `[memS']`. Use `h _ hx` as an intermediate fact. Rewrite `this` using `[← hid, hΦΨ, hΦΨ]`. Then use the resulting hypothesis.
-
-Introduce `h x hx`. Use `h (Φ x) ((memS' _).2 (by rwa [hΨΦ]))` as an intermediate fact. Rewrite `this` using `[← hΦΨ v, hid]`. Conclude with `this`. Establish `hfg : (Submodule.map Φ (Submodule.span O (s : Set (Sp Δ τ)))).FG` using `Submodule.FG.map Φ ⟨s, rfl⟩`.
-
-Establish `hx0 : c * (2 - τ) ≠ 0` using `mul_ne_zero hD.c_ne (by`. Introduce `h`. Apply `hτ2` to reduce the goal to its premises. Take the linear combination `-h)`. Use `⟨hτO, ?_⟩` and prove the remaining obligations.
-
-Distinguish the cases in `hsq : IsSquare Δ`. Conclude with `vanish_split hL hsq B _ hx0 _ htu hdet _ hfg hdual'`. Conclude with `vanish_inert hL hsq B _ hx0 _ htu hdet _ hfg hdual'`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.vanish :
     UpperTheory.V.Z.Sym.Loc.Vanish := by

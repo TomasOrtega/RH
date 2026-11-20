@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.QuadraticCharacters.GaussRoot
 open NumberField Formalism.HC UpperTheory.Top UpperTheory.V
 
 /- English proof (translation)
-Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hx`. Rewrite using `[map_pow, hσ, pow_right_comm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem act_root {K : Type} [Field K] {N : ℕ} [NeZero N] {ζ x : K} (hζ : IsPrimitiveRoot ζ N)
     (σ : K →+* K) {a : ℕ} (hσ : σ ζ = ζ ^ a) (hx : x ^ N = 1) : σ x = x ^ a := by
@@ -13,7 +13,7 @@ private theorem act_root {K : Type} [Field K] {N : ℕ} [NeZero N] {ζ x : K} (h
   rw [map_pow, hσ, pow_right_comm]
 
 /- English proof (translation)
-Establish `h1 : IsPrimitiveRoot (ζ ^ a) N`. Rewrite using `[← hσ]`. Conclude with `hζ.map_of_injective σ.injective`. Conclude with `(hζ.pow_iff_coprime (NeZero.pos N) a).1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coprime_of {K : Type} [Field K] {N : ℕ} [NeZero N] {ζ : K} (hζ : IsPrimitiveRoot ζ N)
     (σ : K →+* K) {a : ℕ} (hσ : σ ζ = ζ ^ a) : a.Coprime N := by
@@ -23,11 +23,11 @@ private theorem coprime_of {K : Type} [Field K] {N : ℕ} [NeZero N] {ζ : K} (h
   exact (hζ.pow_iff_coprime (NeZero.pos N) a).1 h1
 
 /- English proof (translation)
-Use `haveI : Fact q.Prime := ⟨hq⟩`. Take `⟨k, hk⟩` from `hd`. Establish `hω : IsPrimitiveRoot (ζ ^ k) q` using `hζ.pow (NeZero.pos N) (by rw [hk, mul_comm])`. Take `⟨G, hG, hs⟩` from `HostParam.SlopeTestRemainingChoices.GaussRoot.exists_gauss h4 hω`. Establish `hc : a.Coprime q` using `(coprime_of hζ σ hσ).coprime_dvd_right ⟨k, hk⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hs σ a hc (by rw [map_pow, hσ, pow_right_comm])`. Establish `h2 : σ α = ((quadraticChar (ZMod q) (a : ZMod q) : ℤ) : K) * α`. Break down `HostParam.SlopeTestRemainingChoices.GaussRoot.eq_or_neg hα hG with rfl | rfl` into its components or cases. Conclude with `h1`. Rewrite using `[map_neg, h1, mul_neg]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : jacobiSym (a : ℤ) q = quadraticChar (ZMod q) (a : ZMod q)`. Rewrite using `[← jacobiSym.legendreSym.to_jacobiSym, legendreSym, Int.cast_natCast]`. Rewrite using `[h3, h2, mul_left_eq_self₀, or_iff_left (HostParam.SlopeTestRemainingChoices.GaussRoot.ne_zero hq hα), Int.cast_eq_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sqrt_iff {K : Type} [Field K] [CharZero K] {N : ℕ} [NeZero N] {ζ : K} (hζ : IsPrimitiveRoot ζ N)
     (σ : K →+* K) {a : ℕ} (hσ : σ ζ = ζ ^ a) {q : ℕ} (hq : q.Prime) (h4 : q % 4 = 3) (hd : q ∣ N)
@@ -47,11 +47,11 @@ private theorem sqrt_iff {K : Type} [Field K] [CharZero K] {N : ℕ} [NeZero N] 
   rw [h3, h2, mul_left_eq_self₀, or_iff_left (HostParam.SlopeTestRemainingChoices.GaussRoot.ne_zero hq hα), Int.cast_eq_one]
 
 /- English proof (translation)
-Establish `h0 : η ≠ 0` using `hη.ne_zero hn`. Establish `h1 : η ^ a ≠ 0` using `pow_ne_zero _ h0`. Establish `hfin : IsOfFinOrder η` using `hη.isOfFinOrder hn`. Establish `e1 : a ≡ 1 [MOD n] ↔ η ^ a = η`. Rewrite using `[hη.eq_orderOf, ← hfin.pow_eq_pow_iff_modEq, pow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : a + 1 ≡ 0 [MOD n] ↔ η ^ a * η = 1`. Rewrite using `[hη.eq_orderOf, ← hfin.pow_eq_pow_iff_modEq, pow_zero, pow_succ]`. Rewrite using `[e1, e2]`. Generalize the expression as in `η ^ a = y at h1`. Establish `key : y + y⁻¹ - (η + η⁻¹) = (y - η) * (y * η - 1) / (y * η)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← sub_eq_zero, key, div_eq_zero_iff, or_iff_left (mul_ne_zero h1 h0), mul_eq_zero, sub_eq_zero, sub_eq_zero]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 private theorem trace_iff {K : Type} [Field K] {n : ℕ} (hn : n ≠ 0) {η : K} (hη : IsPrimitiveRoot η n) (a : ℕ) :
     η ^ a + (η ^ a)⁻¹ = η + η⁻¹ ↔ (a ≡ 1 [MOD n] ∨ a + 1 ≡ 0 [MOD n]) := by
@@ -71,7 +71,7 @@ private theorem trace_iff {K : Type} [Field K] {n : ℕ} (hn : n ≠ 0) {η : K}
     sub_eq_zero]
 
 /- English proof (translation)
-Take `⟨i, -, h⟩` from `hζ.eq_pow_of_pow_eq_one (ξ := τ ζ) (by rw [← map_pow, hζ.pow_eq_one, map_one])`. Conclude with `⟨i, h.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_pow {N : ℕ} [NeZero N] {ζ : CyclotomicField N ℚ} (hζ : IsPrimitiveRoot ζ N)
     (τ : CyclotomicField N ℚ ≃ₐ[ℚ] CyclotomicField N ℚ) : ∃ a : ℕ, τ ζ = ζ ^ a := by
@@ -79,7 +79,7 @@ private theorem exists_pow {N : ℕ} [NeZero N] {ζ : CyclotomicField N ℚ} (h�
   exact ⟨i, h.symm⟩
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Conclude with `⟨fun h x => h _ ⟨x, rfl⟩, fun h _ ⟨x, hx⟩ => hx ▸ h x⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem mem_fix {E K : Type} [Field E] [Field K] [Algebra ℚ E] [Algebra ℚ K] (j : E →ₐ[ℚ] K)
     (τ : K ≃ₐ[ℚ] K) : τ ∈ j.fieldRange.fixingSubgroup ↔ ∀ x : E, τ (j x) = j x := by
@@ -87,14 +87,14 @@ private theorem mem_fix {E K : Type} [Field E] [Field K] [Algebra ℚ E] [Algebr
   exact ⟨fun h x => h _ ⟨x, rfl⟩, fun h _ ⟨x, hx⟩ => hx ▸ h x⟩
 
 /- English proof (translation)
-Take `⟨u, hu, e⟩` from `hb`. Conclude with `⟨u, hu, e.trans ((ZMod.natCast_eq_natCast_iff _ _ _).2 h).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem ker_congr (A : AbF) {a b : ℕ} (h : a ≡ b [MOD A.m]) (hb : A.ker b) : A.ker a := by
   obtain ⟨u, hu, e⟩ := hb
   exact ⟨u, hu, e.trans ((ZMod.natCast_eq_natCast_iff _ _ _).2 h).symm⟩
 
 /- English proof (translation)
-Use `letI : Algebra M L := g₂.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ M L := IsScalarTower.of_algebraMap_eq fun r => (g₂.commutes r).symm`. Conclude with `⟨g₁.restrictNormal M x, g₁.restrictNormal_commutes M x⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem range_le {M L : Type} [Field M] [Field L] [Algebra ℚ M] [Algebra ℚ L] [Normal ℚ M]
     (g₁ g₂ : M →ₐ[ℚ] L) (x : M) : ∃ y : M, g₂ y = g₁ x := by
@@ -103,7 +103,7 @@ private theorem range_le {M L : Type} [Field M] [Field L] [Algebra ℚ M] [Algeb
   exact ⟨g₁.restrictNormal M x, g₁.restrictNormal_commutes M x⟩
 
 /- English proof (translation)
-Use `letI : Algebra K L := f.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ K L := IsScalarTower.of_algebraMap_eq fun r => (f.commutes r).symm`. Conclude with `⟨τ.liftNormal L, fun x => τ.liftNormal_commutes L x⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_lift {K L : Type} [Field K] [Field L] [Algebra ℚ K] [Algebra ℚ L] [Normal ℚ L]
     (f : K →ₐ[ℚ] L) (τ : K ≃ₐ[ℚ] K) : ∃ σ : L ≃ₐ[ℚ] L, ∀ x : K, σ (f x) = f (τ x) := by
@@ -112,7 +112,7 @@ private theorem exists_lift {K L : Type} [Field K] [Field L] [Algebra ℚ K] [Al
   exact ⟨τ.liftNormal L, fun x => τ.liftNormal_commutes L x⟩
 
 /- English proof (translation)
-Use `letI : Algebra K L := f.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ K L := IsScalarTower.of_algebraMap_eq fun r => (f.commutes r).symm`. Conclude with `⟨σ.restrictNormal K, fun x => (σ.restrictNormal_commutes K x).symm⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_res {K L : Type} [Field K] [Field L] [Algebra ℚ K] [Algebra ℚ L] [Normal ℚ K]
     (f : K →ₐ[ℚ] L) (σ : L ≃ₐ[ℚ] L) : ∃ τ : K ≃ₐ[ℚ] K, ∀ x : K, σ (f x) = f (τ x) := by
@@ -121,23 +121,19 @@ private theorem exists_res {K L : Type} [Field K] [Field L] [Algebra ℚ K] [Alg
   exact ⟨σ.restrictNormal K, fun x => (σ.restrictNormal_commutes K x).symm⟩
 
 /- English proof (translation)
-Take `⟨N', hN', j, ζ', hm', hζ', H⟩` from `hM`. Use `haveI : NeZero A.m := ⟨A.pos.ne'⟩`. Use `haveI : IsCyclotomicExtension {N} ℚ (CyclotomicField N ℚ) := CyclotomicField.isCyclotomicExtension _ ℚ`. Use `haveI : IsCyclotomicExtension {N'} ℚ (CyclotomicField N' ℚ) := CyclotomicField.isCyclotomicExtension _ ℚ`. Use `haveI : IsAbelianGalois ℚ (CyclotomicField N ℚ) := IsCyclotomicExtension.isAbelianGalois {N} ℚ _`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : IsAbelianGalois ℚ (CyclotomicField N' ℚ) := IsCyclotomicExtension.isAbelianGalois {N'} ℚ _`. Use `haveI : IsAbelianGalois ℚ M := IsAbelianGalois.of_algHom j`. Use `haveI : Normal ℚ (AlgebraicClosure ℚ) := by first`. Consider the case `exact @IsAlgClosure.normal ℚ (AlgebraicClosure ℚ) _ _ (AlgebraicClosure.instAlgebra ℚ) _`. Consider the case `convert @IsAlgClosure.normal ℚ (AlgebraicClosure ℚ) _ _ (AlgebraicClosure.instAlgebra ℚ) _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `f : CyclotomicField N ℚ →ₐ[ℚ] AlgebraicClosure ℚ` to `IsAlgClosed.lift`. Set `f' : CyclotomicField N' ℚ →ₐ[ℚ] AlgebraicClosure ℚ` to `IsAlgClosed.lift`. Take `⟨σ, hσ⟩` from `exists_lift f τ`. Take `⟨τ', hσ'⟩` from `exists_res f' σ`. Take `⟨b, hb⟩` from `exists_pow hζ' τ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `id hm`. Take `⟨k', hk'⟩` from `id hm'`. Establish `hω : IsPrimitiveRoot (f (ζ ^ k)) A.m` using `(hζ.pow (NeZero.pos N) (by rw [hk, mul_comm])).map_of_injective f.injective`. Establish `hω' : IsPrimitiveRoot (f' (ζ' ^ k')) A.m` using `(hζ'.pow (NeZero.pos N') (by rw [hk', mul_comm])).map_of_injective f'.injective`. Establish `h1 : σ (f (ζ ^ k)) = f (ζ ^ k) ^ a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hσ, map_pow τ, hτ, pow_right_comm, map_pow f]`. Establish `h2 : σ (f' (ζ' ^ k')) = f' (ζ' ^ k') ^ b`. Rewrite using `[hσ', map_pow τ', hb, pow_right_comm, map_pow f']`. Establish `h3 : σ (f (ζ ^ k)) = f (ζ ^ k) ^ b` using `act_root hω' (σ : AlgebraicClosure ℚ →+* AlgebraicClosure ℚ) h2 hω.pow_eq_one`. Establish `hab : a ≡ b [MOD A.m]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `((hω.isOfFinOrder A.pos.ne').pow_eq_pow_iff_modEq).1 (h1.symm.trans h3)` as an intermediate fact. Rewrite `this` using `[← hω.eq_orderOf]`. Then use the resulting hypothesis. Establish `h4 : A.ker b ↔ A.ker a` using `⟨ker_congr A hab, ker_congr A hab.symm⟩`. Rewrite using `[← h4, ← H τ' b hb]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h x`. Take `⟨y, hy⟩` from `range_le (f'.comp j) (f.comp i) x`. Establish `hy' : f (i y) = f' (j x)` using `hy`. Apply `f'.injective` to reduce the goal to its premises. Use `show f' (τ' (j x)) = f' (j x)`.
-
-Rewrite using `[← hσ', ← hy', hσ, h]`. Introduce `h x`. Take `⟨y, hy⟩` from `range_le (f.comp i) (f'.comp j) x`. Establish `hy' : f' (j y) = f (i x)` using `hy`. Apply `f.injective` to reduce the goal to its premises.
-
-Use `show f (τ (i x)) = f (i x)`. Rewrite using `[← hσ, ← hy', hσ', h]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem indep (A : AbF) {M : Type} [Field M] [NumberField M] (hM : IsAbField A M) {N : ℕ} [NeZero N]
     (hm : A.m ∣ N) (i : M →ₐ[ℚ] CyclotomicField N ℚ) {ζ : CyclotomicField N ℚ} (hζ : IsPrimitiveRoot ζ N)
@@ -191,13 +187,13 @@ private theorem indep (A : AbF) {M : Type} [Field M] [NumberField M] (hM : IsAbF
     rw [← hσ, ← hy', hσ', h]
 
 /- English proof (translation)
-Use `haveI : IsCyclotomicExtension {N} ℚ (CyclotomicField N ℚ) := CyclotomicField.isCyclotomicExtension _ ℚ`. Establish `hτ' : (τ : CyclotomicField N ℚ →+* CyclotomicField N ℚ) ζ = ζ ^ a` using `hτ`. Establish `e1 : τ α = α ↔ jacobiSym (a : ℤ) q = 1` using `sqrt_iff hζ _ hτ' hq hq4 hqN hα`. Establish `e2 : τ β = β ↔ jacobiSym (a : ℤ) d = 1` using `sqrt_iff hζ _ hτ' hd hd4 hdN hβ`. Establish `hηa : τ η = η ^ a` using `act_root hζ _ hτ' ((hη.pow_eq_one_iff_dvd N).2 h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : τ (η + η⁻¹) = η + η⁻¹ ↔ (a ≡ 1 [MOD 2 ^ (e + 2)] ∨ a + 1 ≡ 0 [MOD 2 ^ (e + 2)])`. Rewrite using `[map_add, map_inv₀, hηa]`. Conclude with `trace_iff (pow_ne_zero _ two_ne_zero) hη a`. Establish `e4 : τ ∈ (IntermediateField.adjoin ℚ {α, β, η + η⁻¹}).fixingSubgroup ↔ τ α = α ∧ τ β = β ∧ τ (η + η⁻¹) = η + η⁻¹`. Rewrite using `[← Subgroup.zpowers_le, ← IntermediateField.le_iff_le, IntermediateField.adjoin_le_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : ∀ x : CyclotomicField N ℚ, x ∈ IntermediateField.fixedField (Subgroup.zpowers τ) ↔ τ x = x`. Introduce `x`. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Use `⟨fun h => h τ (Subgroup.mem_zpowers τ), fun h f hf => ?_⟩` and prove the remaining obligations. Establish `: Subgroup.zpowers τ ≤ MulAction.stabilizer _ x` using `Subgroup.zpowers_le.2 h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this hf`. Simplify using `only [Set.insert_subset_iff, Set.singleton_subset_iff, SetLike.mem_coe, hm]`. Rewrite using `[IntermediateField.fixingSubgroup_sup, Subgroup.mem_inf, mem_fix, e4, e1, e2, e3, indep A hM hm i hζ τ a hτ]`. The claim follows by propositional logic.
+The claim follows by propositional logic. A detailed English derivation is pending.
 -/
 private theorem core (A : AbF) {M : Type} [Field M] [NumberField M] (hM : IsAbField A M)
     {e q d : ℕ} (hq : q.Prime) (hd : d.Prime) (hq4 : q % 4 = 3) (hd4 : d % 4 = 3)

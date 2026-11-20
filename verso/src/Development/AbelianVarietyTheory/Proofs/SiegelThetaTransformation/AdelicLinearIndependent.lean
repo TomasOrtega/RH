@@ -44,34 +44,32 @@ def stab (V : HSp D) : Subgroup (GA D V) where
       ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `y` and use `by have ha' : finHom V a = 1 := ha rw [GlobalTheory.SmoothForms.RealPts.finMat_eq V, ha', Units.val_one, Matrix.one_mulVec]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_stab_of_real (V : HSp D) {a : GA D V} (ha : a ∈ GinfC V) : a ∈ stab V := fun y => by
   have ha' : finHom V a = 1 := ha
   rw [GlobalTheory.SmoothForms.RealPts.finMat_eq V, ha', Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Take `⟨θ₀, hθ₀⟩` from `(GlobalTheory.Member.infiniteAdele_bijective D).1`. Set `θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)` to `fun ρ => θ₀ (tauE D ρ)`. Establish `hθ : IsInfFam θ` using `fun ρ => hθ₀ _`. Establish `hsp` using `(GlobalTheory.Member.Arch.archM_spec D V θ₀ hθ₀).1`. Establish `hc : ∀ ρ, Continuous fun h => infMat D.sp.cm.sig V.gram (θ ρ) h` using `fun ρ => (hsp (tauE D ρ)).2.2.2.1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : ∀ ρ g h, infMat D.sp.cm.sig V.gram (θ ρ) (g * h) = infMat D.sp.cm.sig V.gram (θ ρ) g * infMat D.sp.cm.sig V.gram (θ ρ) h` using `fun ρ => (hsp (tauE D ρ)).2.1`. Establish `hu : ∀ ρ h, (infMat D.sp.cm.sig V.gram (θ ρ) h)ᴴ * gramAt D V ρ * infMat D.sp.cm.sig V.gram (θ ρ) h = gramAt D V ρ` using `fun ρ h => (GlobalTheory.Member.Arch.unit_iff _ _ _).1 ((hsp (tauE D ρ)).2.2.2.2 h)`. Use `choose A L hA hl hr using fun ρ => exists_frame (hs (tauE D ρ))`. Use `choose ψ hψ hψm using fun ρ => exists_hom _ (hc ρ) (hmul ρ) (hu ρ) (hA ρ) (hl ρ) (hr ρ)`. Take `⟨i1, i2, i3⟩` from `GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary D.host.F D.host.E D.sp.cm.sig V.rank V.gram`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram` as an intermediate fact. Establish `: ∀ P Q, IsTopologicalGroup (UpqT P Q)` using `fun P Q => inferInstanceAs (IsTopologicalGroup (Formalism.UG.Upq P Q))`. Establish `: ∀ P Q, BorelSpace (UpqT P Q)` using `fun P Q => ⟨rfl⟩`. Establish `: ∀ P Q, LocallyCompactSpace (UpqT P Q)` using `fun P Q => (UpqUnimodular.modelEquiv P Q).toHomeomorph.isClosedEmbedding.locallyCompactSpace`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∀ P Q, SecondCountableTopology (UpqT P Q)` using `fun P Q => (UpqUnimodular.modelEquiv P Q).toHomeomorph.secondCountableTopology`. Use `D.cd.haar` as an intermediate fact. Use `fun P Q => GlobalTheory.UpqUnimodular.isMulRightInvariant_of_isHaarMeasure P Q (D.cd.cd P Q) (D.cd.haar P Q)` as an intermediate fact. Establish `hback : ∀ ρ h, infMat D.sp.cm.sig V.gram (θ ρ) h = L ρ * UpqT.mat (ψ ρ h) * A ρ` using `fun ρ h => by`. Rewrite using `[hψm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Matrix.mul_assoc, hl, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, hl, Matrix.mul_one]`. Take `⟨μ, hμ, hμs⟩` from `exists_haar_image (stab V) (GlobalTheory.T.isOpen_stabilizer_completedLattice_adelicUnitary D V) (Measure.pi fun ρ => D.cd.cd (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2) (Pi.monoidHom ψ) (continuous_pi hψ) (fun t => by`. Take `⟨g, hg, hgu⟩` from `(GlobalTheory.SmoothForms.RealPts.glue θ hθ V).2 (fun ρ => L ρ * UpqT.mat (t ρ) * A ρ) (fun ρ => conj_unitary_back (hA ρ) (hr ρ) (t ρ))`. Use `⟨g, mem_stab_of_real V hg, funext fun ρ => mat_injective ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show UpqT.mat (ψ ρ g) = _`. Rewrite using `[hψm, hgu]`. Simplify using `only [← Matrix.mul_assoc, hr, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, hr, Matrix.mul_one])`. Use the proof step `(fun t => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `f : (∀ ρ, UpqT (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2) → ℝ` to `fun s => ∑ ρ, ∑ i, ∑ j, ‖(L ρ * UpqT.mat (s ρ) * A ρ) i j‖`. Establish `hf : Continuous f` using `continuous_finset_sum _ fun ρ _ => continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => (((continuous_const.matrix_mul (continuous_mat.comp (continuous_apply ρ))).matrix_mul continuous_const).matrix_elem i j).norm`. Take `⟨K, hK, hKm⟩` from `GlobalTheory.T.exists_compact_lattice_stabilizer_bounded_real D V θ hθ (f t + 1)`. Use `⟨{s | f s < f t + 1}, (isOpen_lt hf continuous_const).mem_nhds (lt_add_one (f t)), K, hK, fun h hh => ?_⟩` and prove the remaining obligations. Use `hKm h hh.1 fun ρ i j => le_trans ?_ (le_of_lt hh.2)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hback]`. Use `le_trans ?_ (Finset.single_le_sum (f := fun ρ => ∑ i, ∑ j, ‖(L ρ * UpqT.mat (ψ ρ h) * A ρ) i j‖) (fun _ _ => by positivity) (Finset.mem_univ ρ))` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (f := fun i => ∑ j, ‖(L ρ * UpqT.mat (ψ ρ h) * A ρ) i j‖) (fun _ _ => by positivity) (Finset.mem_univ i))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => ‖(L ρ * UpqT.mat (ψ ρ h) * A ρ) i j‖) (fun _ _ => by positivity) (Finset.mem_univ j))`. Use `⟨μ, hμ, ⟨θ, hθ⟩, fun θ' hθ' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `rfl : θ = θ'` from `(GlobalTheory.SmoothForms.RealPts.realPoints D).1 _ _ hθ hθ'`. Use `⟨⟨A, hA⟩, fun A' hA' B hB => ?_⟩` and prove the remaining obligations. Set `u` to `fun ρ => mkU (A' ρ * L ρ) (change_unitary (hA ρ) (hr ρ) (hA' ρ))`. Establish `hm : ∀ ρ, MeasurableSet ((fun b => b * (u ρ)⁻¹) ⁻¹' ((fun b => u ρ * b) ⁻¹' B ρ))` using `fun ρ => measurable_mul_const _ (measurable_const_mul _ (hB ρ))`. Establish `h1` using `hμs _ (MeasurableSet.univ_pi hm)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite `h1` using `[Measure.pi_pi]`. Simplify using `only [measure_preimage_mul_right, measure_preimage_mul] at h1`. Rewrite using `[← h1]`. Use `congr 1`. Use extensionality with `h`.
-
-Use `and_comm.trans (and_congr ?_ Iff.rfl)` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, Set.mem_univ_pi]`. Conclude with `forall_congr' fun ρ => read_iff (hl ρ) (hr ρ) (u ρ) rfl (ψ ρ h) (hψm ρ h) (B ρ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_volMeas (V : HSp D) (hs : V.SigOK) :
     ∃ μ, IsVolMeasG D V (fun ρ => (V.sig (tauE D ρ)).1) (fun ρ => (V.sig (tauE D ρ)).2) μ := by
@@ -144,9 +142,9 @@ theorem exists_volMeas (V : HSp D) (hs : V.SigOK) :
   exact forall_congr' fun ρ => read_iff (hl ρ) (hr ρ) (u ρ) rfl (ψ ρ h) (hψm ρ h) (B ρ)
 
 /- English proof (translation)
-Take `⟨μ, hμ⟩` from `exists_volMeas V hs`. Take `⟨i1, i2, i3⟩` from `GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary D.host.F D.host.E D.sp.cm.sig V.rank V.gram`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram` as an intermediate fact. Use `GlobalTheory.T.discreteTopology_rationalPoints_hermitianSpace D V` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨F, -, -, hF⟩` from `GlobalTheory.exists_isFundamentalDomain_subgroup (GQ V)`. Conclude with `⟨(μ, F), hμ, hF μ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_volPair (V : HSp D) (hs : V.SigOK) :
     ∃ p : Measure (GA D V) × Set (GA D V), IsVolPair D V p.1 p.2 := by
@@ -165,9 +163,9 @@ section Main
 open NumberField MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty]`. Conclude with `Lp.coeFn_zero ℂ 2 μ`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Lp.coeFn_add _ _).trans (Filter.EventuallyEq.add ?_ ih)` and prove the remaining obligations. Conclude with `(Lp.coeFn_smul _ _).trans (((hφ i).coeFn_toLp).const_smul (g i))`.
+A detailed English derivation is pending.
 -/
 theorem sum_toLp_ae {α : Type} [MeasurableSpace α] (μ : Measure α) {m : ℕ} (φ : Fin m → α → ℂ)
     (hφ : ∀ i, MemLp (φ i) 2 μ) (g : Fin m → ℂ) (s : Finset (Fin m)) :
@@ -182,19 +180,17 @@ theorem sum_toLp_ae {α : Type} [MeasurableSpace α] (μ : Measure α) {m : ℕ}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hU : IsUnf (T.U j σ)` using `h.unf j hj σ hσ`. Establish `hli : LinearIndependent T.Q.c.F (fun i => (b i : T.R j))` using `hb.map' (T.cuspA j a n).subtype (Submodule.ker_subtype _)`. Establish `h1` using `(GlobalTheory.reading_linearIndependent_and_injective GlobalTheory.lawsFieldsSeparately.2.1 _ _ _ _ (T.Q.Xo j) T.Q.c σ _ (Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) ((Formalism.L2.PjFree.isUnf_ofPj _).2 hU) a n).1 m (fun i => (b i : T.R j)) (fun i => cusp_le_sec (T.Q.Xo j) T.Q.c (T. …`. Use `replace h1 : LinearIndependent ℂ fun i => rdU (T.U j σ) (b i : T.R j) := h1`. Rewrite `h1`, the goal using `[Fintype.linearIndependent_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Use `h1 w ?_` and prove the remaining obligations. Take `⟨th, hr, -, hd⟩` from `h.dictU j hj σ hσ`. Establish `hmem : (∑ i, w i • rdU (T.U j σ) (b i : T.R j)) ∈ holSub (T.U j σ).X (laU (T.U j σ) a n)` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (((mem_cusp _ _ _ a n _).1 (b i).2).2 σ hσ)`. Establish `hEq` using `eqv_holSub (T.U j σ).X _ hmem`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ∀ g, (∑ i, w i • rdU (T.U j σ) (b i : T.R j)) (T.dict j σ g).1 (T.dict j σ g).2 = 0`. Introduce `g`. Establish `e` using `congrFun hw g`. Establish `e2 : (∑ i, w i • T.phiJ j σ a (b i : T.R j)) g = ((lieFac (T.Q.Dw j) (xiR D) a : ℂ) * (T.cE j σ (T.dict j σ g).1 * T.mu j σ g)) * (∑ i, w i • rdU (T.U j σ) (b i : T.R j)) (T.dict j σ g).1 (T.dict j σ g).2`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, CoreJ.phiJ, adel_muPin, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite `e` using `[e2]`. Use `(mul_eq_zero.1 e).resolve_left (mul_ne_zero ?_ (mul_ne_zero ?_ ?_))` and prove the remaining obligations. Conclude with `(lieFac_pos _ _ _).ne'` after adjusting the coercions. Conclude with `norm_ne_zero_iff.1 (by rw [h.cUnit j hj σ hσ]; exact one_ne_zero)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `norm_ne_zero_iff.1 (by rw [(h.muUnit j hj σ hσ).2.1]; exact one_ne_zero)`. Use function extensionality and compare the values at `k x`. Distinguish the cases in `hx : x ∈ ((T.U j σ).X k).dom`. Take `⟨g, γ, hγ, c, hc, hg⟩` from `hd.2.2.2.2.1 k x hx`. Establish `hdom` using `hd.2.2.2.1 g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0` using `hz g`. Rewrite `h0`, `hdom` using `[hg]`. Conclude with `eq_zero_of_orbit _ _ _ (hEq.1 k) (hEq.2 k) hx hγ hc hdom h0`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
-
-Establish `: rdU (T.U j σ) (b i : T.R j) k x = 0` using `by classical`. Conclude with `dif_neg hx`. Rewrite using `[this, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiJ_linearIndependent {D : D7} (T : CoreJ D) (h : LawsJ T) (j : ℕ) (hj : InR D j) (σ : T.Q.c.F →+* ℂ)
     (hσ : GoodEmb T.Q.c σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (m : ℕ) (b : Fin m → T.cuspA j a n)
@@ -243,17 +239,17 @@ theorem phiJ_linearIndependent {D : D7} (T : CoreJ D) (h : LawsJ T) (j : ℕ) (h
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D T h j hj σ hσ a n hD`. Use `⟨phiJ_linearIndependent T h j hj σ hσ a n, fun m b hb => ?_⟩` and prove the remaining obligations. Establish `h1` using `phiJ_linearIndependent T h j hj σ hσ a n m b hb`. Rewrite `h1`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h1 w ?_` and prove the remaining obligations. Establish `hs : (T.V j σ).SigOK` using `by rw [h.spaceW j hj σ hσ]; exact D.sp.W_sig j`. Establish `hQ : QuotSupp (T.V j σ)` using `quotSupp_of _ (h.finVol j hj σ hσ) (exists_volPair _ hs)`. Establish `had` using `fun i => GlobalTheory.T.adelic_cuspForm_automorphic_bounded_square_integrable D T h j hj σ hσ a n hD (b i) (b i).2`. Establish `hae` using `sum_toLp_ae (muQ1 (T.V j σ)) (fun i => jFn (T.V j σ) σ (rdC (T.U j) σ a n) (T.dict j σ) (T.mu j σ) (b i)) (fun i => h.cuspidalL2Subspace j hj σ hσ a n hD (b i)) w Finset.univ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae2 : (∑ i, w i • jFn (T.V j σ) σ (rdC (T.U j) σ a n) (T.dict j σ) (T.mu j σ) (b i)) =ᵐ[muQ1 (T.V j σ)] 0`. Use `hae.symm.trans ?_` and prove the remaining obligations. Establish `hw' : (∑ i, w i • (h.cuspidalL2Subspace j hj σ hσ a n hD (b i)).toLp (jFn (T.V j σ) σ (rdC (T.U j) σ a n) (T.dict j σ) (T.mu j σ) (b i)) : Lp ℂ 2 (muQ1 (T.V j σ))) = 0` using `hw`. Rewrite using `[hw']`. Conclude with `Lp.coeFn_zero ℂ 2 _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Use `hQ _ ?_ (fun γ hγ g => ?_) ?_ g` and prove the remaining obligations. Rewrite using `[show (∑ i, w i • T.phiJ j σ a (b i : T.R j)) = fun g => ∑ i, w i * T.phiJ j σ a (b i : T.R j) g from`. Use function extensionality and compare the values at `fun g => by simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]]`. Conclude with `continuous_finset_sum _ fun i _ => continuous_const.mul (had i).2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [(had i).1 γ hγ g]`. Use `filter_upwards [hae2] with q hq`. Establish `e : onQ (T.V j σ) (∑ i, w i • T.phiJ j σ a (b i : T.R j)) q = ((lieFac (T.Q.Dw j) (xiR D) a : ℂ) * T.cE j σ (T.dict j σ q.out).1) * (∑ i, w i • jFn (T.V j σ) σ (rdC (T.U j) σ a n) (T.dict j σ) (T.mu j σ) (b i)) q` using `by show (∑ i, w i • T.phiJ j σ a (b i : T.R j)) q.out = _`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, CoreJ.phiJ, adel_muPin, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show jFn (T.V j σ) σ (rdC (T.U j) σ a n) (T.dict j σ) (T.mu j σ) (b i) q = T.mu j σ q.out * rdU (T.U j σ) (b i : T.R j) (T.dict j σ q.out).1 (T.dict j σ q.out).2 from rfl]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hq]`. Conclude with `mul_zero _`.
+A detailed English derivation is pending.
 -/
 theorem adelic_linearIndependent : ∀ (D : D7) (T : CoreJ D) (h : LawsJ T) (j : ℕ) (hj : InR D j) (σ : T.Q.c.F →+* ℂ) (hσ : GoodEmb T.Q.c σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (hD : Dom a n), (∀ (m : ℕ) (b : Fin m → T.cuspA j a n), LinearIndependent T.Q.c.F b → LinearIndependent ℂ fun i => T.phiJ j σ a (b i : T.R j)) ∧ JInj (T.V j σ) σ (rdC (T.U j) σ a n) (T.dict j σ) (T.mu j σ) (h.cuspidalL2Subspace j hj σ hσ a n hD) := by
   intro D T h j hj σ hσ a n hD

@@ -21,24 +21,24 @@ variable {W A C₀ : Type} [CommRing W] [CommRing A] [CommRing C₀] [Algebra W 
   (c : A →+* C₀) (k : K₀ →+* C₀) (hk : ∀ w : W, k (algebraMap W K₀ w) = c (algebraMap W A w))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.trace_pairing_smul_left c k hk f a z`.
+A detailed English derivation is pending.
 -/
 theorem T_smul (f : Module.Dual K₀ (K₀ ⊗[W] L)) (a : A) (z : A ⊗[W] L) : T c k hk f (a • z) = c a * T c k hk f z := GlobalTheory.T.trace_pairing_smul_left c k hk f a z
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.trace_pairing_smul_dual c k hk x f z`.
+A detailed English derivation is pending.
 -/
 theorem T_ksmul (x : K₀) (f : Module.Dual K₀ (K₀ ⊗[W] L)) (z : A ⊗[W] L) : T c k hk (x • f) z = k x * T c k hk f z := GlobalTheory.T.trace_pairing_smul_dual c k hk x f z
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.trace_pairing_galois_equivariant c k hk σA σC gT hg hσ hσk f z`.
+A detailed English derivation is pending.
 -/
 theorem T_gal (σA : A →+* A) (σC : C₀ →+* C₀) (gT : A ⊗[W] L →+ A ⊗[W] L) (hg : ∀ a y, gT (a ⊗ₜ y) = σA a ⊗ₜ y)
     (hσ : ∀ a, σC (c a) = c (σA a)) (hσk : ∀ x, σC (k x) = k x) (f : Module.Dual K₀ (K₀ ⊗[W] L)) (z : A ⊗[W] L) :
     T c k hk f (gT z) = σC (T c k hk f z) := GlobalTheory.T.trace_pairing_galois_equivariant c k hk σA σC gT hg hσ hσk f z
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.trace_pairing_frobenius_compat c k hk φA φC φL fr φD hD pT hp hφ hφk b f z`.
+A detailed English derivation is pending.
 -/
 theorem T_phi {F : W →+* W} (φA : A →+* A) (φC : C₀ →+* C₀) (φL : L →ₛₗ[F] L) (fr : K₀ →+* K₀)
     (φD : K₀ ⊗[W] L →+ K₀ ⊗[W] L) (hD : ∀ x y, φD (x ⊗ₜ y) = fr x ⊗ₜ φL y)
@@ -49,14 +49,14 @@ theorem T_phi {F : W →+* W} (φA : A →+* A) (φC : C₀ →+* C₀) (φL : L
   GlobalTheory.T.trace_pairing_frobenius_compat c k hk φA φC φL fr φD hD pT hp hφ hφk b f z
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.trace_pairing_lTensor_naturality c k hk g f z`.
+A detailed English derivation is pending.
 -/
 theorem T_lTensor {L' : Type 1} [AddCommGroup L'] [Module W L'] (g : L' →ₗ[W] L) (f : Module.Dual K₀ (K₀ ⊗[W] L))
     (z : A ⊗[W] L') : T c k hk f (LinearMap.lTensor A g z) = T c k hk (f ∘ₗ g.baseChange K₀) z :=
   GlobalTheory.T.trace_pairing_lTensor_naturality c k hk g f z
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.trace_pairing_basis_eval c k hk ι i hι h hh b`.
+A detailed English derivation is pending.
 -/
 theorem T_fac {B : Type} [Field B] (ι : C₀ →+* B) (i : A →+* B) (hι : ∀ a, ι (c a) = i a) (h : L →+ B)
     (hh : ∀ (w : W) y, h (w • y) = i (algebraMap W A w) * h y) {m : ℕ} (b : Module.Basis (Fin m) K₀ (K₀ ⊗[W] L)) :
@@ -65,7 +65,7 @@ theorem T_fac {B : Type} [Field B] (ι : C₀ →+* B) (i : A →+* B) (hι : �
   GlobalTheory.T.trace_pairing_basis_eval c k hk ι i hι h hh b
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.tensor_eval_fixed_of_fixed k ι σB h E hE hσ hy v`.
+A detailed English derivation is pending.
 -/
 theorem E_fix {B : Type} [Field B] [IsFractionRing W K₀] (ι : C₀ →+* B) (σB : B →+* B) (h : L →+ B)
     (E : K₀ ⊗[W] L →+ B) (hE : ∀ x y, E (x ⊗ₜ y) = ι (k x) * h y)

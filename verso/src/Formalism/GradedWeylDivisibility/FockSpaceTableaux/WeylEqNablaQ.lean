@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `r n hn ν hν`. Use `h r n hn ν hν (weyl ℚ r n hn ν) (weylLeDual ℚ r n hn ν hν) (fun a b k f hf => weylRowDivStable ℚ r n hn ν a b k f hf) ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨[], rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem weylEqNablaQ_of (h : ClosedEqNabla) : WeylEqNablaQ := by
   intro r n hn ν hν

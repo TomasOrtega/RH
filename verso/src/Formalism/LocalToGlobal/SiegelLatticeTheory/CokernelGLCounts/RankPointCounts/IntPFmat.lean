@@ -17,13 +17,11 @@ section Cong
 variable (D : D7)
 
 /- English proof (translation)
-Establish `hfLP : ∀ c, frame G c ∈ LP P Λ`. Introduce `c`. Proceed by induction on `c using Fin.lastCases with`. Consider the case `last => rw [frame_last]`. Conclude with `mem_localization_of_mem₃ P hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cast i => rw [frame_castSucc]`. Conclude with `e_mem_LP P hC hP i`. Establish `hmLP : m (frame G b) - frame G b ∈ LP P Λ` using `sub_mem_localization P (LP_map P (m : (VS D).V →ₗ[D.host.E] (VS D).V) (fun v hv => nlam_mem hm hv) (hfLP b)) (hfLP b)`. Establish `h01 : ∀ (t : Prop) [Decidable t], IntP P (if t then (1 : D.host.E) else 0)`. Introduce `t _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `split_ifs`. Simplify using `using intP_O P 1`. Simplify using `using intP_O P 0`. Unfold `fmat`. Apply `intP_add P (h01 _)` to reduce the goal to its premises.
-
-Use `split_ifs with h`. Conclude with `coef_intP P hC hP hmLP (frame_d_mem G hm b) _`. Simplify using `using intP_O P 0`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem intP_fmat (P : HeightOneSpectrum (𝓞 D.host.E)) (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T : D.host.E}
     (G : LFlag (VS D) D.R.rS T) (m : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hm : m ∈ NLam Λ G)
@@ -48,11 +46,11 @@ theorem intP_fmat (P : HeightOneSpectrum (𝓞 D.host.E)) (Λ : Submodule (𝓞 
   · simpa using intP_O P 0
 
 /- English proof (translation)
-Rewrite using `[(stepExp D Λ G₁ m hm).2 b]`. Establish `e1 : ∑ c, fmat D G₁ m c b • frame G₁ c = ∑ c, fmat D G₁ m c b • frame G c + ∑ c, fmat D G₁ m c b • (frame G₁ c - frame G c)`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[← smul_add, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, map_add]`. Use `congr 1`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, (stepExp D Λ G n hn).2, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun d _ => Finset.sum_congr rfl (fun c _ => ?_))` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_nm (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T T' : D.host.E} (G : LFlag (VS D) D.R.rS T)
     (G₁ : LFlag (VS D) D.R.rS T') (n m : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hn : n ∈ NLam Λ G)
@@ -74,25 +72,23 @@ theorem frame_nm (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T T' : D.host.E} (G 
   rw [mul_comm]
 
 /- English proof (translation)
-Establish `hw : ∀ c, frame G₁ c - frame G c ∈ LP P (Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ)`. Introduce `c`. Use `hA1.2.2 c P hP` as an intermediate fact. Rewrite `this` using `[frameAct_one]`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hw2 : ∀ c, frame G₂ c - frame G c ∈ LP P (Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ)`. Introduce `c`. Use `hA2.2.2 c P hP` as an intermediate fact. Rewrite `this` using `[frameAct_one]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNU` using `(stepExp D Λ G n hn).1`. Establish `hMU` using `(stepExp D Λ G₁ m hm).1`. Use `set Y := ∑ d', (fmat D G n * fmat D G₁ m - 1) d' b • frame G d' with hYdef`. Establish `hYeq : Y = (frame G₂ b - frame G b) - n (∑ c, fmat D G₁ m c b • (frame G₁ c - frame G c))`. Rewrite using `[hfr b, frame_nm D Λ G G₁ n m hn hm b, hYdef]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.sub_apply, sub_smul, Finset.sum_sub_distrib]`. Establish `e1 : ∑ d', (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E) d' b • frame G d' = frame G b`. Simplify using `[Matrix.one_apply]`. Rewrite using `[e1]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hYLg : Y ∈ LP P (Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ)`. Rewrite using `[hYeq]`. Use `sub_mem (hw2 b) ?_` and prove the remaining obligations. Conclude with `LP_map P (n : (VS D).V →ₗ[D.host.E] (VS D).V) (nlam_gLam hn _) (LP_sum P _ _ fun c _ => smul_mem_localization P (intP_fmat D P Λ G₁ m hm hC₁ hP hz₁ c b) (hw c))`. Establish `hlast : (fmat D G n * fmat D G₁ m - 1) (Fin.last D.R.rS) b = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_apply, Matrix.mul_apply, Finset.sum_eq_single (Fin.last D.R.rS)]`. Rewrite using `[(hNU _ _).2 rfl, one_mul, Matrix.one_apply]`. Distinguish the cases in `hb : Fin.last D.R.rS = b`. Rewrite using `[(hMU _ _).2 hb, if_pos hb, sub_self]`. Establish `hlt : b < Fin.last D.R.rS` using `lt_of_le_of_ne (Fin.le_last b) (Ne.symm hb)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hMU _ _).1 hlt, if_neg hb, sub_self]`. Introduce `c _ hc`. Establish `hlt : c < Fin.last D.R.rS` using `lt_of_le_of_ne (Fin.le_last c) hc`. Rewrite using `[(hNU _ _).1 hlt, zero_mul]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Establish `hYsum : Y = ∑ d' : Fin D.R.rS, (fmat D G n * fmat D G₁ m - 1) d'.castSucc b • G.fl.e d'`. Rewrite using `[hYdef, Fin.sum_univ_castSucc, hlast, zero_smul, add_zero]`. Use `Finset.sum_congr rfl (fun d' _ => ?_)` and prove the remaining obligations. Rewrite using `[frame_castSucc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hYX : Y ∈ G.fl.X`. Rewrite using `[hYsum]`. Conclude with `Submodule.sum_mem _ fun d' _ => Submodule.smul_mem _ _ (e_mem_X _ d')`. Establish `hcoef` using `coef_intP_g P hC hP hg hYLg hYX d`. Establish `hYd : G.fl.coefX Y d = (fmat D G n * fmat D G₁ m - 1) d.castSucc b`.
-
-Rewrite using `[hYsum, coefX_finset_sum _ _ _ (fun d' => Submodule.smul_mem _ _ (e_mem_X _ d'))]`. Simplify using `only [coefX_smul_e, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite `hcoef` using `[hYd]`. Conclude with `hcoef`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_at (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T T' : D.host.E} (G : LFlag (VS D) D.R.rS T)
     (G₁ G₂ : LFlag (VS D) D.R.rS T') (n m : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hn : n ∈ NLam Λ G)

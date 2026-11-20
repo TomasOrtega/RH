@@ -10,7 +10,7 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 namespace GlobalTheory.St
 
 /- English proof (translation)
-Introduce `D` and use `Formalism.L2.SG.Pf.mExists_of_cuts D weil_measure_compat infinite_measure_transfer`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mExists_holds : ∀ D : D7, MExists D :=
   fun D => Formalism.L2.SG.Pf.mExists_of_cuts D weil_measure_compat infinite_measure_transfer

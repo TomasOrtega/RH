@@ -21,7 +21,7 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 namespace Formalism.L2.SG.Pf.MassDataX
 
 /- English proof (translation)
-The claim follows from `PIW.MassDataColumns.hinfCompact_of Formalism.L2.SG.Closed.AdBridgeIso_holds Formalism.L2.SG.Pf.MeasInfW.measure_isomorphism_at_infinity Formalism.L2.SG.Pf.MeasInfW.hermitian_measure_recursion (fun X u => Formalism.L2.SG.Pf.hinf_compact X u)`.
+A detailed English derivation is pending.
 -/
 theorem hinfCompact_holds : MassDataMassesW.HinfCompact :=
   PIW.MassDataColumns.hinfCompact_of Formalism.L2.SG.Closed.AdBridgeIso_holds Formalism.L2.SG.Pf.MeasInfW.measure_isomorphism_at_infinity
@@ -34,11 +34,11 @@ theorem finHA_eq_eFin {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (x :
     finHA X hb x = Formalism.L2.SG.Pf.Meas.eFin X.B.I hb x := rfl
 
 /- English proof (translation)
-Introduce `D X`. Establish `hb` using `Formalism.L2.SG.Closed.AdBridgeIso_holds X.B.I`. Establish `hs : Function.Surjective (finHA X hb)`. Introduce `y`. Take `⟨x, hx⟩` from `(Formalism.L2.SG.Pf.Meas.eFin X.B.I hb).surjective y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, by rw [finHA_eq_eFin]; exact hx⟩`. Establish `himg : ((MassDataMassesW.KX X : Subgroup _) : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)) = Formalism.L2.SG.Pf.Meas.eFin X.B.I hb '' X.B.I.Kset`. Rewrite using `[MassDataMassesW.KX, PIW.MassDataColumns.kf_eq_image X hb hs]`. Both sides reduce to the same expression. Rewrite using `[himg]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(Formalism.L2.SG.Closed.AutKCompact_holds X.B.I).image (Formalism.L2.SG.Pf.Meas.eFin X.B.I hb).continuous, (Formalism.L2.SG.Pf.Meas.eFin X.B.I hb).isOpenMap _ (Formalism.L2.SG.Pf.kset_open X.B.I)⟩`.
+Supply the required witnesses or components.
 -/
 theorem kCompactOpen_holds : MassDataMassesW.KCompactOpen := by
   intro D X
@@ -56,11 +56,9 @@ theorem kCompactOpen_holds : MassDataMassesW.KCompactOpen := by
     (Formalism.L2.SG.Pf.Meas.eFin X.B.I hb).isOpenMap _ (Formalism.L2.SG.Pf.kset_open X.B.I)⟩
 
 /- English proof (translation)
-Use `haveI : Finite (Quotient (DoubleCoset.setoid (Γ : Set G) (K' : Set G))) := hf`. Establish `hr : ∀ a b : G, (DoubleCoset.setoid (Γ : Set G) (K' : Set G)) a b → (DoubleCoset.setoid (Γ : Set G) (K : Set G)) a b`. Introduce `a b hab`. Rewrite `hab`, the goal using `[DoubleCoset.rel_iff]`. Take `⟨x, hx, y, hy, hxy⟩` from `hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, hx, y, h hy, hxy⟩`. Use `show Finite (Quotient (DoubleCoset.setoid (Γ : Set G) (K : Set G)))`. Use `Finite.of_surjective (Quotient.map' id hr) ?_` and prove the remaining obligations. Introduce `q`. Proceed by induction on `q using Quotient.inductionOn' with`.
-
-Consider the case `h a => exact ⟨Quotient.mk'' a, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dc_finite_mono {G : Type} [Group G] (Γ K' K : Subgroup G) (h : K' ≤ K)
     (hf : Finite (DoubleCoset.Quotient (Γ : Set G) (K' : Set G))) :
@@ -78,9 +76,9 @@ theorem dc_finite_mono {G : Type} [Group G] (Γ K' K : Subgroup G) (h : K' ≤ K
   | h a => exact ⟨Quotient.mk'' a, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[PIW.MassDataColumns.unitaryLevelClosureSubgroup, Subgroup.closure_le]`. Introduce and unpack `⟨h, hh⟩ hk`. Take `⟨y, ⟨k, hk2, rfl⟩, hy⟩` from `hk`. Use `show h ∈ MassDataMassesW.KX X`. Establish `hy' : finHA X hb (X.xu u) * finHA X hb k * (finHA X hb (X.xu u))⁻¹ = h` using `hy`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy']`. Establish `hxu : finHA X hb (X.xu u) ∈ MassDataMassesW.KX X` using `(PIW.MassDataColumns.finHA_mem_Kf_iff X hb _).2 (X.xu_K u)`. Establish `hkK : finHA X hb k ∈ MassDataMassesW.KX X` using `(PIW.MassDataColumns.finHA_mem_Kf_iff X hb _).2 ((Formalism.L2.SG.Closed.level_subgroup_properties X).2.1 k hk2)`. Conclude with `(MassDataMassesW.KX X).mul_mem ((MassDataMassesW.KX X).mul_mem hxu hkK) ((MassDataMassesW.KX X).inv_mem hxu)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hermitian_level_le {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) :
     PIW.MassDataColumns.unitaryLevelClosureSubgroup X hb u ≤ MassDataMassesW.KH X u := by
@@ -97,11 +95,9 @@ theorem hermitian_level_le {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I)
   exact (MassDataMassesW.KX X).mul_mem ((MassDataMassesW.KX X).mul_mem hxu hkK) ((MassDataMassesW.KX X).inv_mem hxu)
 
 /- English proof (translation)
-Introduce `D X u`. Establish `hb` using `Formalism.L2.SG.Closed.AdBridgeIso_holds X.B.I`. Establish `hK` using `Formalism.L2.SG.Closed.level_subgroup_is_group X`. Establish `hF` using `Formalism.L2.SG.Closed.ClassFin_holds X u hK`. Establish `hc` using `PIW.MassDataColumns.class_sets_equal_card X hb hK u (Formalism.L2.SG.Closed.AdBridgeGF_holds X.B.I) (Formalism.L2.SG.Closed.level_subgroup_properties X)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : Nonempty (Formalism.L2.SG.ColsDim.Classes (Formalism.L2.SG.PoincareInHH.PoincareSetting.iotaF X u) (Formalism.L2.SG.PoincareInHH.PoincareSetting.Ku X u hK))` using `inferInstance`. Use `haveI : Finite (Formalism.L2.SG.ColsDim.Classes (Formalism.L2.SG.PoincareInHH.PoincareSetting.iotaF X u) (Formalism.L2.SG.PoincareInHH.PoincareSetting.Ku X u hK)) := hF`. Establish `hfin : Finite (PIW.MassDataColumns.ClsHA X hb u)`. Establish `hpos : 0 < Nat.card (Formalism.L2.SG.ColsDim.Classes (Formalism.L2.SG.PoincareInHH.PoincareSetting.iotaF X u) (Formalism.L2.SG.PoincareInHH.PoincareSetting.Ku X u hK))` using `Nat.card_pos`. Conclude with `Nat.finite_of_card_ne_zero (hc ▸ hpos.ne')`.
-
-Conclude with `dc_finite_mono _ _ _ (hermitian_level_le X hb u) hfin`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem classFinite_holds : MassDataMassesW.ClassFinite := by
   intro D X u

@@ -10,9 +10,9 @@ section
 variable {K : Type} [NormedField K]
 
 /- English proof (translation)
-Unfold `gaussR`. Apply `le_antisymm (Finset.sup_mono hs)` to reduce the goal to its premises. Use `Finset.sup_le fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k ∈ P.support`. Conclude with `Finset.le_sup (f := fun k => ‖P.coeff k‖₊ * ρ ^ k) hk`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.notMem_support_iff.mp hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gaussR_eq_sup_of_subset (ρ : NNReal) (P : K[X]) (s : Finset ℕ) (hs : P.support ⊆ s) :
     gaussR ρ P = s.sup (fun k => ‖P.coeff k‖₊ * ρ ^ k) := by
@@ -25,16 +25,16 @@ theorem gaussR_eq_sup_of_subset (ρ : NNReal) (P : K[X]) (s : Finset ℕ) (hs : 
     simp
 
 /- English proof (translation)
-Rewrite using `[gaussR_eq_sup_of_subset ρ _ {0} (Polynomial.support_C_subset a)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gaussR_C (ρ : NNReal) (a : K) : gaussR ρ (Polynomial.C a) = ‖a‖₊ := by
   rw [gaussR_eq_sup_of_subset ρ _ {0} (Polynomial.support_C_subset a)]
   simp
 
 /- English proof (translation)
-Establish `hs : (Polynomial.C q * X + Polynomial.C a).support ⊆ {0, 1}`. Introduce `k hk`. Rewrite `hk` using `[Polynomial.mem_support_iff]`. Apply the tactic sequence `rcases k with _ | _ | k <;> simp_all [Polynomial.coeff_C, Polynomial.coeff_X]`. Rewrite using `[gaussR_eq_sup_of_subset ρ _ _ hs]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Polynomial.coeff_C, Polynomial.coeff_X, max_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gaussR_lin (ρ : NNReal) (q a : K) :
     gaussR ρ (Polynomial.C q * X + Polynomial.C a) = max ‖a‖₊ (‖q‖₊ * ρ) := by
@@ -46,9 +46,9 @@ theorem gaussR_lin (ρ : NNReal) (q a : K) :
   simp [Polynomial.coeff_C, Polynomial.coeff_X, max_comm]
 
 /- English proof (translation)
-Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty`. Simplify using `only [Multiset.map_zero, Multiset.prod_zero]`. Rewrite using `[← Polynomial.C_1, gaussR_C]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `cons a m ih`. Simplify using `only [Multiset.map_cons, Multiset.prod_cons]`. Rewrite using `[hG K ρ _ _ hρ, ih]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gaussR_multiset_prod (hG : GaussMulRad) [IsUltrametricDist K] (ρ : NNReal) (hρ : 0 < ρ)
     (m : Multiset K) (f : K → K[X]) :
@@ -65,7 +65,7 @@ theorem gaussR_multiset_prod (hG : GaussMulRad) [IsUltrametricDist K] (ρ : NNRe
 end
 
 /- English proof (translation)
-Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a m ih`. Simplify using `only [Multiset.map_cons, Multiset.sum_cons]`. Conclude with `add_le_add (hfg a) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem multiset_sum_le_sum {α : Type} (m : Multiset α) (f g : α → ℝ) (hfg : ∀ x, f x ≤ g x) :
     (m.map f).sum ≤ (m.map g).sum := by
@@ -76,7 +76,7 @@ theorem multiset_sum_le_sum {α : Type} (m : Multiset α) (f g : α → ℝ) (hf
     exact add_le_add (hfg a) ih
 
 /- English proof (translation)
-Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a m ih`. Simplify using `only [Multiset.map_cons, Multiset.sum_cons, ih, neg_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem multiset_sum_neg {α : Type} (m : Multiset α) (f : α → ℝ) :
     (m.map fun x => -f x).sum = -(m.map f).sum := by
@@ -86,7 +86,7 @@ theorem multiset_sum_neg {α : Type} (m : Multiset α) (f : α → ℝ) :
     simp only [Multiset.map_cons, Multiset.sum_cons, ih, neg_add]
 
 /- English proof (translation)
-Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a m ih`. Simplify using `only [Multiset.map_cons, Multiset.sum_cons, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem multiset_sum_add {α : Type} (m : Multiset α) (f g : α → ℝ) :
     (m.map fun x => f x + g x).sum = (m.map f).sum + (m.map g).sum := by
@@ -97,7 +97,7 @@ theorem multiset_sum_add {α : Type} (m : Multiset α) (f g : α → ℝ) :
     ring
 
 /- English proof (translation)
-Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a m ih`. Simplify using `only [Multiset.map_cons, Multiset.sum_cons, ih, mul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem multiset_sum_mul_left {α : Type} (m : Multiset α) (c : ℝ) (f : α → ℝ) :
     (m.map fun x => c * f x).sum = c * (m.map f).sum := by
@@ -107,11 +107,11 @@ theorem multiset_sum_mul_left {α : Type} (m : Multiset α) (c : ℝ) (f : α �
     simp only [Multiset.map_cons, Multiset.sum_cons, ih, mul_add]
 
 /- English proof (translation)
-Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a m ih`. Distinguish the cases in `h : P a`. Rewrite using `[Multiset.filter_cons_of_pos _ h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Multiset.card_cons, Multiset.map_cons, Multiset.sum_cons, h, if_true]`. Use `push_cast`. Rewrite using `[ih]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Multiset.filter_cons_of_neg _ h]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Multiset.map_cons, Multiset.sum_cons, h, if_false]`. Rewrite using `[ih]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem multiset_card_filter_eq_sum {α : Type} (m : Multiset α) (P : α → Prop) [DecidablePred P] :
     ((m.filter P).card : ℝ) = (m.map fun x => if P x then (1 : ℝ) else 0).sum := by
@@ -130,7 +130,7 @@ theorem multiset_card_filter_eq_sum {α : Type} (m : Multiset α) (P : α → Pr
       ring
 
 /- English proof (translation)
-Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a m ih`. Simplify using `only [Multiset.map_cons, Multiset.prod_cons]`. Conclude with `mul_pos (hf a) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem multiset_prod_pos {α : Type} (m : Multiset α) (f : α → ℝ) (hf : ∀ x, 0 < f x) :
     0 < (m.map f).prod := by
@@ -141,7 +141,7 @@ theorem multiset_prod_pos {α : Type} (m : Multiset α) (f : α → ℝ) (hf : �
     exact mul_pos (hf a) ih
 
 /- English proof (translation)
-Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a m ih`. Simplify using `only [Multiset.map_cons, Multiset.prod_cons, Multiset.sum_cons]`. Rewrite using `[Real.logb_mul (hf a).ne' (multiset_prod_pos m f hf).ne', ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem logb_multiset_prod {α : Type} (b : ℝ) (m : Multiset α) (f : α → ℝ) (hf : ∀ x, 0 < f x) :
     Real.logb b (m.map f).prod = (m.map fun x => Real.logb b (f x)).sum := by
@@ -152,13 +152,13 @@ theorem logb_multiset_prod {α : Type} (b : ℝ) (m : Multiset α) (f : α → �
     rw [Real.logb_mul (hf a).ne' (multiset_prod_pos m f hf).ne', ih]
 
 /- English proof (translation)
-Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hB : (0 : ℝ) < (p : ℝ) ^ (-((h : ℝ) + E))` using `Real.rpow_pos_of_pos hp0 _`. Establish `hAeq : (p : ℝ) ^ (-(h : ℤ)) = (p : ℝ) ^ (-(h : ℝ))`. Rewrite using `[← Real.rpow_intCast]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hBA : (p : ℝ) ^ (-((h : ℝ) + E)) ≤ (p : ℝ) ^ (-(h : ℤ))`. Rewrite using `[hAeq]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hp1.le (by linarith)`. Use `split_ifs with hu`. Rewrite using `[max_eq_right hu, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Real.logb p ((p : ℝ) ^ (-((h : ℝ) + E))) ≤ Real.logb p (max u ((p : ℝ) ^ (-((h : ℝ) + E))))` using `Real.logb_le_logb_of_le hp1 hB (le_max_right _ _)`. Establish `h2 : Real.logb p ((p : ℝ) ^ (-((h : ℝ) + E))) = -((h : ℝ) + E)` using `Real.logb_rpow hp0 hp1.ne'`. Establish `h3 : Real.logb p ((p : ℝ) ^ (-(h : ℤ))) = -(h : ℝ)`. Rewrite using `[hAeq]`. Conclude with `Real.logb_rpow hp0 hp1.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `push_neg at hu`. Rewrite using `[max_eq_left (le_trans hBA hu.le), max_eq_left hu.le]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem vmin_step (p : ℕ) (hp1 : (1 : ℝ) < p) (h : ℕ) (E : ℝ) (hE : 0 ≤ E) (u : ℝ) (_hu : 0 ≤ u)
     [Decidable (u ≤ (p : ℝ) ^ (-(h : ℤ)))] :
@@ -191,23 +191,23 @@ end GaussNormRoots
 
 open GaussNormRoots in
 /- English proof (translation)
-Unfold `LieRoots`. Introduce `p _ K _ _ _ h β E D lead roots t₀ hE hlead hD hbound`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : Nat.Prime p).one_lt`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hρ : 0 < ((p : ℝ) ^ (-E)).toNNReal` using `Real.toNNReal_pos.mpr (Real.rpow_pos_of_pos hp0 _)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnp : ‖(p : K)‖ = (p : ℝ)⁻¹`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] K) p, norm_algebraMap', Padic.norm_p]`. Establish `hnph : ‖(p : K) ^ h‖ = (p : ℝ) ^ (-(h : ℤ))`. Rewrite using `[norm_pow, hnp, inv_pow, zpow_neg, zpow_natCast]`. Establish `hcomp : D.comp (C ((p : K) ^ h) * X + C (t₀ : K)) = C lead * (roots.map fun ζ => C ((p : K) ^ h) * X + C ((t₀ : K) - ζ)).prod`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hD, Polynomial.mul_comp, Polynomial.C_comp, Polynomial.multiset_prod_comp, Multiset.map_map]`. Use `congr 2`. Use `Multiset.map_congr rfl fun ζ _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Polynomial.sub_comp, Polynomial.X_comp, Polynomial.C_comp, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hpt : ∀ ζ : K, ((max ‖(t₀ : K) - ζ‖₊ (‖(p : K) ^ h‖₊ * ((p : ℝ) ^ (-E)).toNNReal) : NNReal) : ℝ) = max ‖(t₀ : K) - ζ‖ ((p : ℝ) ^ (-((h : ℝ) + E)))`. Introduce `ζ`. Rewrite using `[NNReal.coe_max, NNReal.coe_mul, coe_nnnorm, coe_nnnorm, hnph, Real.coe_toNNReal _ (Real.rpow_pos_of_pos hp0 _).le]`. Use `congr 1`. Rewrite using `[← Real.rpow_intCast, ← Real.rpow_add hp0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hreal : ((gaussR ((p : ℝ) ^ (-E)).toNNReal (D.comp (C ((p : K) ^ h) * X + C (t₀ : K))) : NNReal) : ℝ) = ‖lead‖ * (roots.map fun ζ => max ‖(t₀ : K) - ζ‖ ((p : ℝ) ^ (-((h : ℝ) + E)))).prod`. Rewrite using `[hcomp, hG K _ _ _ hρ, gaussR_C, gaussR_multiset_prod hG _ hρ]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [gaussR_lin]`. Rewrite using `[NNReal.coe_mul, coe_nnnorm, NNReal.coe_multiset_prod, Multiset.map_map]`. Use `congr 1`. Conclude with `congrArg Multiset.prod (Multiset.map_congr rfl fun ζ _ => hpt ζ)`. Rewrite `hbound` using `[hreal]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hFpos : ∀ ζ : K, 0 < max ‖(t₀ : K) - ζ‖ ((p : ℝ) ^ (-((h : ℝ) + E)))` using `fun ζ => lt_of_lt_of_le (Real.rpow_pos_of_pos hp0 _) (le_max_right _ _)`. Establish `hlpos : 0 < ‖lead‖` using `norm_pos_iff.mpr hlead`. Establish `hPpos` using `multiset_prod_pos roots _ hFpos`. Establish `hlog : Real.logb p (‖lead‖ * (roots.map fun ζ => max ‖(t₀ : K) - ζ‖ ((p : ℝ) ^ (-((h : ℝ) + E)))).prod) ≤ -(E * β)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hlog` using `[Real.logb_mul hlpos.ne' hPpos.ne', logb_multiset_prod _ _ _ hFpos]`. Establish `hstep` using `multiset_sum_le_sum roots (fun ζ => -Real.logb p (max ‖(t₀ : K) - ζ‖ ((p : ℝ) ^ (-((h : ℝ) + E))))) (fun ζ => vmin p h ((t₀ : K) - ζ) + E * (if ‖(t₀ : K) - ζ‖ ≤ (p : ℝ) ^ (-(h : ℤ)) then 1 else 0)) (fun ζ => by`. Use `vmin_step p hp1 h E hE ‖(t₀ : K) - ζ‖ (norm_nonneg _)` as an intermediate fact. Unfold `vmin`. Simplify `this)` using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hstep` using `[multiset_sum_add, multiset_sum_mul_left, multiset_sum_neg]`. Rewrite using `[multiset_card_filter_eq_sum]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lieRoots_of (hG : GaussMulRad) : LieRoots := by
   unfold LieRoots

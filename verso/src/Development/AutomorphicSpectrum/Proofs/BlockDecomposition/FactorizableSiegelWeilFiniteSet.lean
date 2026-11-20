@@ -20,7 +20,7 @@ open GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `PureSB.repr_map b (evalV F v) (X a i) k`.
+A detailed English derivation is pending.
 -/
 theorem coord_projV (v : HeightOneSpectrum (𝓞 F)) {d M n : ℕ} (b : Module.Basis (Fin d) F E)
     (X : Fin n → Fin M → Af F ⊗[F] E) (a : Fin n) (i : Fin M) (k : Fin d) :
@@ -28,9 +28,9 @@ theorem coord_projV (v : HeightOneSpectrum (𝓞 F)) {d M n : ℕ} (b : Module.B
   PureSB.repr_map b (evalV F v) (X a i) k
 
 /- English proof (translation)
-Use `continuous_pi fun a => continuous_pi fun i => ?_` and prove the remaining obligations. Establish `h : (fun X : Fin n → Fin M → Af F ⊗[F] E => projV v X a i) = fun X => (PureSB.coordH (Fv F v) b).symm (fun k => (PureSB.coordH (Af F) b (X a i) k) v)`. Use function extensionality and compare the values at `X`. Apply `(PureSB.coordH (Fv F v) b).injective` to reduce the goal to its premises. Rewrite using `[Homeomorph.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Conclude with `coord_projV v b X a i k`. Rewrite using `[h]`. Use `(PureSB.coordH (Fv F v) b).symm.continuous.comp (continuous_pi fun k => ?_)` and prove the remaining obligations. Conclude with `(RestrictedProduct.continuous_eval v).comp ((continuous_apply k).comp ((PureSB.coordH (Af F) b).continuous.comp ((continuous_apply i).comp (continuous_apply a))))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_projV (v : HeightOneSpectrum (𝓞 F)) {d M n : ℕ} (b : Module.Basis (Fin d) F E) :
     Continuous (projV v : (Fin n → Fin M → Af F ⊗[F] E) → Fin n → Fin M → Fv F v ⊗[F] E) := by
@@ -48,7 +48,7 @@ theorem continuous_projV (v : HeightOneSpectrum (𝓞 F)) {d M n : ℕ} (b : Mod
     ((PureSB.coordH (Af F) b).continuous.comp ((continuous_apply i).comp (continuous_apply a))))
 
 /- English proof (translation)
-Use `forall_congr' fun a => forall_congr' fun i => forall_congr' fun k => ?_` and prove the remaining obligations. Rewrite using `[← coord_projV v b X a i k]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem projV_mem_latV (v : HeightOneSpectrum (𝓞 F)) {d M n : ℕ} (b : Module.Basis (Fin d) F E)
     (X : Fin n → Fin M → Af F ⊗[F] E) :
@@ -63,9 +63,9 @@ variable {d M n : ℕ} (b : Module.Basis (Fin d) F E) (S : Finset (HeightOneSpec
 include b in
 
 /- English proof (translation)
-Establish `h : boxF A = ⋂ v, projV v ⁻¹' A v`. Use extensionality with `X`. Conclude with `⟨fun h => Set.mem_iInter.2 h, fun h => Set.mem_iInter.1 h⟩`. Rewrite using `[h]`. Use `isClosed_iInter fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : T2Space (Fv F v ⊗[F] E) := (PureSB.coordH (Fv F v) b).isEmbedding.t2Space`. Conclude with `(hA v).isClosed.preimage (continuous_projV v b)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_boxF (hA : ∀ v, IsCompact (A v)) : IsClosed (boxF A) := by
   have h : boxF A = ⋂ v, projV v ⁻¹' A v := by
@@ -77,15 +77,13 @@ theorem isClosed_boxF (hA : ∀ v, IsCompact (A v)) : IsClosed (boxF A) := by
   exact (hA v).isClosed.preimage (continuous_projV v b)
 
 /- English proof (translation)
-Establish `hT : IsOpen {y : Af F | ∀ v, v ∉ S → y v ∈ v.adicCompletionIntegers F}` using `RestrictedProduct.isOpen_forall_imp_mem fun v => Valued.isOpen_valuationSubring _`. Establish `hI : IsOpen {X : Fin n → Fin M → Af F ⊗[F] E | ∀ a i k, PureSB.coordH (Af F) b (X a i) k ∈ {y : Af F | ∀ v, v ∉ S → y v ∈ v.adicCompletionIntegers F}}`. Establish `e : {X : Fin n → Fin M → Af F ⊗[F] E | ∀ a i k, PureSB.coordH (Af F) b (X a i) k ∈ {y : Af F | ∀ v, v ∉ S → y v ∈ v.adicCompletionIntegers F}} = ⋂ a, ⋂ i, ⋂ k, (fun X : Fin n → Fin M → Af F ⊗[F] E => PureSB.coordH (Af F) b (X a i) k) ⁻¹' {y : Af F | ∀ v, v ∉ S → y v ∈ v.adicCompl …`. Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Use `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun k => ?_` and prove the remaining obligations. Establish `hc : Continuous fun X : Fin n → Fin M → Af F ⊗[F] E => PureSB.coordH (Af F) b (X a i) k` using `(continuous_apply k).comp ((PureSB.coordH (Af F) b).continuous.comp ((continuous_apply i).comp (continuous_apply a)))`. Conclude with `hT.preimage hc`. Establish `h : boxF A = {X : Fin n → Fin M → Af F ⊗[F] E | ∀ a i k, PureSB.coordH (Af F) b (X a i) k ∈ {y : Af F | ∀ v, v ∉ S → y v ∈ v.adicCompletionIntegers F}} ∩ ⋂ v ∈ S, projV v ⁻¹' A v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce `hX`. Use `⟨fun a i k v hv => ?_, Set.mem_iInter₂.2 fun v _ => hX v⟩` and prove the remaining obligations. Use `hX v` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hS v hv]`. Conclude with `(projV_mem_latV v b X).1 this a i k`. Introduce and unpack `⟨h1, h2⟩ v`. Distinguish the cases in `hv : v ∈ S`. Conclude with `Set.mem_iInter₂.1 h2 v hv`.
-
-Rewrite using `[hS v hv]`. Conclude with `(projV_mem_latV v b X).2 fun a i k => h1 a i k v hv`. Rewrite using `[h]`. Conclude with `hI.inter (isOpen_biInter_finset fun v _ => (hA v).preimage (continuous_projV v b))`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_boxF (hA : ∀ v, IsOpen (A v)) (hS : ∀ v, v ∉ S → A v = latV b v) : IsOpen (boxF A) := by
   have hT : IsOpen {y : Af F | ∀ v, v ∉ S → y v ∈ v.adicCompletionIntegers F} :=
@@ -123,9 +121,9 @@ theorem isOpen_boxF (hA : ∀ v, IsOpen (A v)) (hS : ∀ v, v ∉ S → A v = la
   exact hI.inter (isOpen_biInter_finset fun v _ => (hA v).preimage (continuous_projV v b))
 
 /- English proof (translation)
-Set `B : Fin n → Fin M → Fin d → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)` to `fun a i k v => (fun Y : Fin n → Fin M → Fv F v ⊗[F] E => PureSB.coordH (Fv F v) b (Y a i) k) '' A v`. Establish `hB : ∀ a i k v, IsCompact (B a i k v)` using `fun a i k v => (hA v).image ((continuous_apply k).comp ((PureSB.coordH (Fv F v) b).continuous.comp ((continuous_apply i).comp (continuous_apply a))))`. Establish `hBS : ∀ a i k v, v ∉ S → B a i k v ⊆ (v.adicCompletionIntegers F : Set (v.adicCompletion F))`. Introduce and unpack `a i k v hv _ ⟨Y, hY, rfl⟩`. Rewrite `hY` using `[hS v hv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hY a i k`. Set `eW : (Fin n → Fin M → Af F ⊗[F] E) ≃ₜ (Fin n → Fin M → Fin d → Af F)` to `Homeomorph.piCongrRight fun _ => Homeomorph.piCongrRight fun _ => PureSB.coordH (Af F) b`. Establish `hL : IsCompact (eW ⁻¹' Set.pi Set.univ fun a => Set.pi Set.univ fun i => Set.pi Set.univ fun k => {y : Af F | ∀ v, y v ∈ B a i k v})` using `eW.isCompact_preimage.2 (isCompact_univ_pi fun a => isCompact_univ_pi fun i => isCompact_univ_pi fun k => PureSB.isCompact_box S (B a i k) (hB a i k) (hBS a i k))`. Use `hL.of_isClosed_subset (isClosed_boxF b A hA) fun X hX a _ i _ k _ v => ?_` and prove the remaining obligations. Conclude with `⟨projV v X, hX v, coord_projV v b X a i k⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCompact_boxF (hA : ∀ v, IsCompact (A v)) (hS : ∀ v, v ∉ S → A v = latV b v) :
     IsCompact (boxF A) := by
@@ -151,9 +149,9 @@ theorem isCompact_boxF (hA : ∀ v, IsCompact (A v)) (hS : ∀ v, v ∉ S → A 
 end PureTuple
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ M J _ n _ _ d b S φ A hφ hA hS`. Establish `hc` using `PureTuple.isCompact_boxF b S A (fun v => (hA v).1) hS`. Establish `hcl` using `PureTuple.isClosed_boxF b A fun v => (hA v).1`. Establish `ho` using `PureTuple.isOpen_boxF b S A (fun v => (hA v).2) hS`. Use `GlobalTheory.Published.SiegelOneVector.isSchwartzBruhat_of_prod hφ (Φf := (boxF A).indicator fun _ => (1 : ℂ)) ⟨?_, ?_⟩ fun _ => rfl` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(LocallyConstant.indicator (LocallyConstant.const _ (1 : ℂ)) ⟨hcl, ho⟩).isLocallyConstant`. Conclude with `HasCompactSupport.intro' hc hcl fun Y hY => Set.indicator_of_notMem hY _`.
+A detailed English derivation is pending.
 -/
 theorem pureN_isSchwartzBruhat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ n : ℕ, 0 < n → 2 * n < M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (S : Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F))) (φ : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ) (A : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F), Set (Fin n → Fin M → Fv F v ⊗[F] E)), GlobalTheory.Published.SiegelOneVector.IsSchwartzArch φ → (∀ v, IsCompact (A v) ∧ IsOpen (A v)) → (∀ v, v ∉ S → A v = latV b v) → GlobalTheory.Published.SiegelOneVector.IsSchwartzBruhat (pureN φ A) := by
   intro F E _ _ _ _ _ σ _ M J _ n _ _ d b S φ A hφ hA hS

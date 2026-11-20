@@ -53,7 +53,7 @@ variable (h2S : ∀ v : HeightOneSpectrum (𝓞 K.1), ((2 : ℕ) : 𝓞 K.1) ∈
 include h2S in
 
 /- English proof (translation)
-The claim follows from `sUnitsKummerSequence_shortExact (Ω := ℚ̄) S 2 (fun v hv h => hv (h2S v h))`.
+A detailed English derivation is pending.
 -/
 theorem kummerSeq_shortExact :
     (sUnitsKummerSequence S (maxUnramifiedOutside K.1 ℚ̄ S) 2).ShortExact :=
@@ -80,7 +80,7 @@ def kummerδ (n : ℕ) : unitsTateCohomology S ιr ιs n →+
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `h : tateCompactCohomologyMap₂₃ (gsFinFamily S ιs) (gsRealFamily S ιr) (sUnitsKummerSequence S (maxUnramifiedOutside K.1 ℚ̄ S) 2) (finKummer S ιs) (finKummerMap S ιs) (realKummer S ιr) (realKummerMap S ιr) n = 2 • 𝟙 _` using `tateCompactCohomologyMap_nsmul_id (gsFinFamily S ιs) (gsRealFamily S ιr) (galSUnitsMax K.1 ℚ̄ S) (finUnits S) (finUnitsMor S ιs) realUnits (realUnitsMor S ιr) 2 n _ _`. Conclude with `congrArg (fun f => f.hom y) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kummerG_apply (n : ℕ) (y : unitsTateCohomology S ιr ιs n) : kummerG S ιr ιs n y = 2 • y := by
   have h : tateCompactCohomologyMap₂₃ (gsFinFamily S ιs) (gsRealFamily S ιr)
@@ -93,7 +93,7 @@ theorem kummerG_apply (n : ℕ) (y : unitsTateCohomology S ιr ιs n) : kummerG 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `hom_apply_hom_apply_of_comp_eq (tateCompactCohomologyMap_f_g (gsFinFamily S ιs) (gsRealFamily S ιr) (sUnitsKummerSequence S (maxUnramifiedOutside K.1 ℚ̄ S) 2) (finKummer S ιs) (finKummerMap S ιs) (realKummer S ιr) (realKummerMap S ιr) n) x`.
+A detailed English derivation is pending.
 -/
 theorem kummerG_kummerF (n : ℕ)
     (x : gsTateCompactCohomology S ιr ιs (galRootsOfUnity.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S) 2) n) :
@@ -105,7 +105,7 @@ theorem kummerG_kummerF (n : ℕ)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.moduleCat_exact_iff _).1 (tateCompactCohomology_exact₁ (gsFinFamily S ιs) (gsRealFamily S ιr) (finKummerMap S ιs) (realKummerMap S ιr) (kummerSeq_shortExact S h2S) (fun _ => localKummerSeq_shortExact _ _ _ _) (fun _ => localKummerSeq_shortExact _ _ _ _) n) x hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_kummerδ_eq (n : ℕ)
     (x : gsTateCompactCohomology S ιr ιs (galRootsOfUnity.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S) 2) (n + 1))
@@ -117,7 +117,7 @@ theorem exists_kummerδ_eq (n : ℕ)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `hom_apply_hom_apply_of_comp_eq (tateCompactCohomologyMap₂₃_tateCompactδ (gsFinFamily S ιs) (gsRealFamily S ιr) (finKummerMap S ιs) (realKummerMap S ιr) (kummerSeq_shortExact S h2S) (fun _ => localKummerSeq_shortExact _ _ _ _) (fun _ => localKummerSeq_shortExact _ _ _ _) n) y`.
+A detailed English derivation is pending.
 -/
 theorem kummerδ_kummerG (n : ℕ) (y : unitsTateCohomology S ιr ιs n) :
     kummerδ S ιr ιs h2S n (kummerG S ιr ιs n y) = 0 :=
@@ -134,9 +134,9 @@ variable (h2S : ∀ v : HeightOneSpectrum (𝓞 K.1), ((2 : ℕ) : 𝓞 K.1) ∈
 include h2S in
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, r = n + 1` from `⟨r - 1, by omega⟩`. Establish `hf : kummerF S ιr ιs (n + 1) x = 0`. Use `eq_zero_unitsTateCohomology_of_two_pow_nsmul S ιr ιs h2S hr _ (k := 1) ?_` and prove the remaining obligations. Rewrite using `[pow_one, ← kummerG_apply]`. Conclude with `kummerG_kummerF S ιr ιs (n + 1) x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `exists_kummerδ_eq S ιr ιs h2S n x hf`. Take `⟨y', rfl⟩` from `exists_two_nsmul_unitsTateCohomology S ιr ιs h2S (by omega) y`. Rewrite using `[← kummerG_apply]`. Conclude with `kummerδ_kummerG S ιr ιs h2S n y'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gsTateCompactCohomology_rootsOfUnity_two_eq_zero {r : ℕ} (hr : 4 ≤ r)
     (x : gsTateCompactCohomology S ιr ιs (galRootsOfUnity.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S) 2) r) :
@@ -161,9 +161,9 @@ instance isDiscreteRep_zmodRep_two_gs : IsDiscreteRep (zmodRep.{0} (galUnramifie
   isDiscreteRep_of_isTrivial _
 
 /- English proof (translation)
-Rewrite using `[galRootsOfUnity_ρ_apply]`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `σ (((Additive.toMul x : rootsOfUnity 2 _) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S) = (((Additive.toMul x : rootsOfUnity 2 _) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hx : (((Additive.toMul x : rootsOfUnity 2 _) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S) * (((Additive.toMul x : rootsOfUnity 2 _) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S) = 1`. Rewrite using `[← Units.val_mul, ← pow_two, (mem_rootsOfUnity 2 _).1 (Additive.toMul x).2, Units.val_one]`. Apply the tactic sequence `rcases mul_self_eq_one_iff.1 hx with h | h <;> rw [h]`. Conclude with `map_one σ`. Rewrite using `[map_neg, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galRootsOfUnity_two_ρ_apply (σ : galUnramifiedOutside K.1 ℚ̄ S)
     (x : Additive (rootsOfUnity 2 (maxUnramifiedOutside K.1 ℚ̄ S))) :
@@ -186,7 +186,7 @@ theorem galRootsOfUnity_two_ρ_apply (σ : galUnramifiedOutside K.1 ℚ̄ S)
 include h2S in
 
 /- English proof (translation)
-Take `⟨e⟩` from `nonempty_zmod_addEquiv_rootsOfUnity_gs K S Nat.prime_two h2S`. Conclude with `⟨Rep.mkIso (Representation.Equiv.mk (uliftIntLinearEquiv.{0} (e.symm.trans AddEquiv.ulift.symm)) fun σ => LinearMap.ext fun x => by`. Express the relevant statement in the definitionally equal form `(uliftIntLinearEquiv.{0} (e.symm.trans AddEquiv.ulift.symm)) ((galRootsOfUnity.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S) 2).ρ σ x) = (uliftIntLinearEquiv.{0} (e.symm.trans AddEquiv.ulift.symm)) x`. Rewrite using `[galRootsOfUnity_two_ρ_apply])⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem nonempty_rootsOfUnity_two_iso_zmodRep :
     Nonempty (galRootsOfUnity.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S) 2 ≅
@@ -202,7 +202,7 @@ theorem nonempty_rootsOfUnity_two_iso_zmodRep :
 include h2S in
 
 /- English proof (translation)
-Take `⟨e⟩` from `nonempty_rootsOfUnity_two_iso_zmodRep S h2S`. Conclude with `eq_zero_tateCompactCohomologyRes_of_retract (gsFinFamily S ιs) (gsRealFamily S ιr) e.inv e.hom e.inv_hom_id r (gsTateCompactCohomology_rootsOfUnity_two_eq_zero S ιr ιs h2S hr) x`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gsTateCompactCohomology_zmodRep_two_eq_zero {r : ℕ} (hr : 4 ≤ r)
     (x : gsTateCompactCohomology S ιr ιs (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) 2) r) : x = 0 := by
@@ -215,7 +215,7 @@ instance isDiscreteRep_res_zmodRep_two_fin (v : S) :
   isDiscreteRep_res_toMonoidHom _ _
 
 /- English proof (translation)
-Use `subsingleton_cohomology_of_cdp_le_two two_ne_zero (fun ℓ hℓ _ => ?_) _ (fun m => nsmul_zmodRep_eq_zero _ 2 m) hn` and prove the remaining obligations. Use `cdp_galois_le_two _ _ hℓ ?_` and prove the remaining obligations. Conclude with `hℓ.ne_zero` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem subsingleton_finLocal_zmodRep_two (v : S) {n : ℕ} (hn : 3 ≤ n) :
     Subsingleton (cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom
@@ -232,7 +232,7 @@ set_option maxHeartbeats 1000000 in
 include h2S in
 
 /- English proof (translation)
-The claim follows from `(injective_tateGlobalToLocal_iff (gsFinFamily S (someFinEmbeddings S)) (gsRealFamily S ιr) (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) 2) (fun v => Rep.res (gsFinFamily S (someFinEmbeddings S) v).toMonoidHom (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) 2)) (fun _ => 𝟙 _) (fun w …`.
+A detailed English derivation is pending.
 -/
 theorem injective_gsRealRes_zmodRep_two_succ {n : ℕ} (hn : 3 ≤ n) :
     Function.Injective (gsRealRes S ιr (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) 2) (n + 1)).hom :=
@@ -255,7 +255,7 @@ set_option maxHeartbeats 1000000 in
 include h2S in
 
 /- English proof (translation)
-The claim follows from `(surjective_tateGlobalToLocal_iff (gsFinFamily S (someFinEmbeddings S)) (gsRealFamily S ιr) (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) 2) (fun v => Rep.res (gsFinFamily S (someFinEmbeddings S) v).toMonoidHom (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) 2)) (fun _ => 𝟙 _) (fun w …`.
+A detailed English derivation is pending.
 -/
 theorem surjective_gsRealRes_zmodRep_two_succ {n : ℕ} (hn : 2 ≤ n) :
     Function.Surjective (gsRealRes S ιr (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) 2) (n + 1)).hom :=
@@ -278,7 +278,7 @@ set_option maxHeartbeats 4000000 in
 include h2S in
 
 /- English proof (translation)
-Consider the cases of `r with`. Consider the case `zero => omega`. Consider the case `succ n => exact injective_gsRealRes_zmodRep_two_succ S ιr h2S (by omega)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem injective_gsRealRes_zmodRep_two {r : ℕ} (hr : 4 ≤ r) :
     Function.Injective (gsRealRes S ιr (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) 2) r).hom := by
@@ -290,7 +290,7 @@ set_option maxHeartbeats 4000000 in
 include h2S in
 
 /- English proof (translation)
-Consider the cases of `r with`. Consider the case `zero => omega`. Consider the case `succ n => exact surjective_gsRealRes_zmodRep_two_succ S ιr h2S (by omega)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem surjective_gsRealRes_zmodRep_two {r : ℕ} (hr : 3 ≤ r) :
     Function.Surjective (gsRealRes S ιr (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) 2) r).hom := by

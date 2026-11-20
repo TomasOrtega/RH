@@ -23,15 +23,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LocLanglands.SatakeL
 
 /- English proof (translation)
-Introduce `hEx hLM hSC hZP hGL hBZ k _ _ _ _ _ x α hsat`. Take `⟨𝔪, hL⟩` from `hEx k x`. Take `⟨h, y, hd, ⟨Δ, hord, hseg⟩, hcos⟩` from `id hL`. Establish `hsphy : ∀ a, IsSpherical (y a).rep` using `GlobalTheory.T.isSpherical_factor_of_spherical_subquotient k h x.1 y hd x.2.rep.V x.rep hcos.isSubquotient hsat.2.1`. Establish `hlen : ∀ i, (Δ i).len = 1` using `fun i => (GlobalTheory.T.sphericalSegmentRep_length_one_unramified hLM hSC hZP hGL hBZ k (Δ i) (y i) (hseg i) (hsphy i)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsingle : ∀ i, Δ i = Segment.single (Δ i).first (Δ i).isCusp_first` using `fun i => Segment.ext_first rfl (by rw [hlen i]; rfl)`. Establish `hms : ∀ i, (Δ i).ms = {(Δ i).first}` using `fun i => (congrArg Segment.ms (hsingle i)).trans (Segment.ms_single _ _)`. Establish `h1 : HasSupport x.rep (msupp 𝔪)` using `GlobalTheory.T.langlandsClassification_supercuspidalSupport_multisegment hZP k 𝔪 x hL`. Establish `h2` using `GlobalTheory.T.supercuspidalSupport_of_principalSeries_subquotient k x.1 (fun i => GlobalTheory.SmGL.unrChar k (α i)) (fun i => isSmoothChar_of_isUnram (isUnram_unrChar k (α i))) x.2.rep hsat.2.2`. Establish `heq` using `GlobalTheory.T.supercuspidalSupport_unique_GL hGL hBZ hZP k x _ _ h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsupp : msupp 𝔪 = Finset.univ.val.map fun i => (Δ i).first`. Rewrite using `[msupp, ← hord.1, Multiset.bind_map]`. Simplify using `only [hms]`. Conclude with `Multiset.bind_singleton _ _`. Rewrite `heq` using `[hsupp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective fun D : Segment k => (D.first, D.len)` using `fun a b e => Segment.ext_first (congrArg Prod.fst e) (congrArg Prod.snd e)`. Establish `hm : 𝔪 = Finset.univ.val.map fun i => Segment.single (IrrGL.ofChar (GlobalTheory.SmGL.unrChar k (α i)) (isSmoothChar_of_isUnram (isUnram_unrChar k (α i)))) (IrrGL.isCusp_ofChar _ _)`. Apply `Multiset.map_injective hinj` to reduce the goal to its premises. Establish `e1` using `congrArg (Multiset.map fun ρ : IrrGL k => (ρ, 1)) heq`. Simplify using `only [Multiset.map_map, Function.comp_def] at e1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hord.1, Multiset.map_map, Multiset.map_map]`. Simplify using `only [Function.comp_def, hlen]`. Conclude with `e1`. Rewrite using `[← hm]`. Conclude with `hL`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isL_single_unrChar : LanglandsExhaustionGL → LanglandsMultisegments → StandardCosocleGL →
     ZelevinskyPolynomialRing → GeometricLemma → BernsteinZelevinskyFiniteness →

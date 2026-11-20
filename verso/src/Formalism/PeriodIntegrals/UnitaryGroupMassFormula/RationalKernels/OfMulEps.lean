@@ -11,7 +11,7 @@ variable {K : Type} [Field K] {σ : K →+* ℂ} {G : Type} [Group G] [Fintype G
   {EE : Type} [AddCommGroup EE] [Module ℂ EE] {ρE : Representation ℂ G EE}
 
 /- English proof (translation)
-Rewrite using `[Representation.asAlgebraHom_def, MonoidAlgebra.lift_apply]`. Conclude with `Finsupp.sum_fintype _ _ (fun g => zero_smul _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma rep_apply {W : Type} [AddCommGroup W] [Module K W] (ρ : Representation K G W)
     (z : MonoidAlgebra K G) : ρ.asAlgebraHom z = ∑ g, z.coeff g • ρ g := by
@@ -19,13 +19,13 @@ lemma rep_apply {W : Type} [AddCommGroup W] [Module K W] (ρ : Representation K 
   exact Finsupp.sum_fintype _ _ (fun g => zero_smul _ _)
 
 /- English proof (translation)
-Unfold `eps`. Rewrite using `[mul_smul_comm, smul_comm ((P.chi h : Kˣ) : K)]`. Use `congr 1`. Rewrite using `[Finset.mul_sum, Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft (h : G)) _ _ fun x => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hx : x ∈ P.H`. Establish `hhx : (Equiv.mulLeft (h : G)) x ∈ P.H` using `P.H.mul_mem h.2 hx`. Rewrite using `[dif_pos hx, dif_pos hhx, mul_smul_comm, smul_smul, ← map_mul (MonoidAlgebra.of K G)]`. Use `congr 1`. Establish `e : P.chi ⟨(Equiv.mulLeft (h : G)) x, hhx⟩ = P.chi h * P.chi ⟨x, hx⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← map_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Simplify using `only [mul_inv_rev, Units.val_mul]`. Rewrite using `[mul_left_comm, Units.mul_inv, mul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hhx : (Equiv.mulLeft (h : G)) x ∉ P.H` using `fun hm => hx (by`. Use `P.H.mul_mem (P.H.inv_mem h.2) hm` as an intermediate fact. Simplify using `using this)`. Rewrite using `[dif_neg hx, dif_neg hhx, mul_zero, smul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 lemma of_mul_eps (P : Pair K G) (h : P.H) :
     MonoidAlgebra.of K G (h : G) * eps P = ((P.chi h : Kˣ) : K) • eps P := by
@@ -53,7 +53,7 @@ variable (M : GMap K σ G T EE ρE)
 def L (z : MonoidAlgebra K G) : Module.End ℂ M.V := ∑ g, σ (z.coeff g) • M.rho g
 
 /- English proof (translation)
-Simplify using `only [L, rep_apply, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, LinearMap.map_smulₛₗ, M.j_eq]`.
+Simplify using the standard rewrite rules.
 -/
 lemma L_j (z : MonoidAlgebra K G) (x : M.VK) :
     L M z (M.j x) = M.j (M.rhoK.asAlgebraHom z x) := by
@@ -61,40 +61,40 @@ lemma L_j (z : MonoidAlgebra K G) (x : M.VK) :
     LinearMap.map_smulₛₗ, M.j_eq]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext_on_range M.j_span fun x => by rw [Module.End.mul_apply, L_j, L_j, L_j, map_mul, Module.End.mul_apply]`.
+A detailed English derivation is pending.
 -/
 lemma L_mul (a b : MonoidAlgebra K G) : L M (a * b) = L M a * L M b :=
   LinearMap.ext_on_range M.j_span fun x => by
     rw [Module.End.mul_apply, L_j, L_j, L_j, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext_on_range M.j_span fun x => by rw [L_j, M.good, Module.End.one_apply, Module.End.one_apply]`.
+A detailed English derivation is pending.
 -/
 lemma L_eG : L M (eG T) = 1 :=
   LinearMap.ext_on_range M.j_span fun x => by
     rw [L_j, M.good, Module.End.one_apply, Module.End.one_apply]
 
 /- English proof (translation)
-Simplify using `[L]`.
+Simplify using the standard rewrite rules.
 -/
 lemma L_zero : L M 0 = 0 := by simp [L]
 
 /- English proof (translation)
-Simplify using `[L, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma L_add (a b : MonoidAlgebra K G) : L M (a + b) = L M a + L M b := by
   simp [L, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[L, neg_smul, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma L_neg (a : MonoidAlgebra K G) : L M (-a) = - L M a := by
   simp [L, neg_smul, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Rewrite using `[L, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun g _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[M.io_eq, hv, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma L_ker (z : MonoidAlgebra K G) {v : M.V} (hv : v ∈ LinearMap.ker M.io) :
     L M z v ∈ LinearMap.ker M.io := by
@@ -106,11 +106,11 @@ lemma L_ker (z : MonoidAlgebra K G) {v : M.V} (hv : v ∈ LinearMap.ker M.io) :
   rw [M.io_eq, hv, map_zero]
 
 /- English proof (translation)
-Rewrite using `[eigP, Submodule.mem_iInf]`. Introduce `h`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Establish `hK : M.rhoK (h : G) * M.rhoK.asAlgebraHom (eps P) = ((P.chi h : Kˣ) : K) • M.rhoK.asAlgebraHom (eps P)`. Rewrite using `[← Representation.asAlgebraHom_of, ← map_mul, of_mul_eps, map_smul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : M.rho (h : G) * L M (eps P) = σ ((P.chi h : Kˣ) : K) • L M (eps P)`. Use `LinearMap.ext_on_range M.j_span fun x => ?_` and prove the remaining obligations. Establish `hx` using `LinearMap.congr_fun hK x`. Rewrite `hx` using `[Module.End.mul_apply, LinearMap.smul_apply]`. Rewrite using `[Module.End.mul_apply, L_j, ← M.j_eq, hx, LinearMap.smul_apply, L_j, LinearMap.map_smulₛₗ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.congr_fun hL v`.
+A detailed English derivation is pending.
 -/
 lemma L_eps_mem (P : Pair K G) (v : M.V) : L M (eps P) v ∈ eigP σ P M.rho := by
   rw [eigP, Submodule.mem_iInf]
@@ -127,19 +127,17 @@ lemma L_eps_mem (P : Pair K G) (v : M.V) : L M (eps P) v ∈ eigP σ P M.rho := 
   exact LinearMap.congr_fun hL v
 
 /- English proof (translation)
-Unfold `GMap.IsRat at hR ⊢`. Establish `hRN : Submodule.span ℂ (M.j '' {x | M.j x ∈ LinearMap.ker M.io}) ≤ LinearMap.ker M.io` using `Submodule.span_le.mpr (by rintro _ ⟨x, hx, rfl⟩; exact hx)`. Establish `hLa : ∀ a : MonoidAlgebra K G, ∀ u ∈ LinearMap.ker M.io ⊓ eigP σ P0 M.rho, L M a u ∈ Submodule.span ℂ (M.j '' {x | M.j x ∈ LinearMap.ker M.io})`. Introduce `a u hu`. Rewrite `hu` using `[← hR]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : Submodule.span ℂ (M.j '' {x | M.j x ∈ LinearMap.ker M.io ⊓ eigP σ P0 M.rho}) ≤ (Submodule.span ℂ (M.j '' {x | M.j x ∈ LinearMap.ker M.io})).comap (L M a)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, L_j]`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨_, ?_, rfl⟩` and prove the remaining obligations. Use `show M.j _ ∈ LinearMap.ker M.io`. Rewrite using `[← L_j]`. Conclude with `L_ker M a hx.1`. Conclude with `hle hu`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hZ : ∀ v ∈ LinearMap.ker M.io, L M (eG T) v ∈ Submodule.span ℂ (M.j '' {x | M.j x ∈ LinearMap.ker M.io})`. Use `AddSubgroup.closure_induction (p := fun z _ => ∀ v ∈ LinearMap.ker M.io, L M z v ∈ Submodule.span ℂ (M.j '' {x | M.j x ∈ LinearMap.ker M.io})) ?_ ?_ ?_ ?_ hF` and prove the remaining obligations. Introduce and unpack `z ⟨a, b, rfl⟩ v hv`. Rewrite using `[L_mul, L_mul, Module.End.mul_apply, Module.End.mul_apply]`. Conclude with `hLa a _ ⟨L_ker M _ (L_ker M b hv), L_eps_mem M P0 _⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v _`. Rewrite using `[L_zero, LinearMap.zero_apply]`. Conclude with `Submodule.zero_mem _`. Introduce `x y _ _ hx hy v hv`. Rewrite using `[L_add, LinearMap.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Submodule.add_mem _ (hx v hv) (hy v hv)`. Introduce `x _ hx v hv`. Rewrite using `[L_neg, LinearMap.neg_apply]`. Conclude with `Submodule.neg_mem _ (hx v hv)`. Use `le_antisymm hRN fun v hv => ?_` and prove the remaining obligations.
-
-Use `hZ v hv` as an intermediate fact. Rewrite `this` using `[L_eG, Module.End.one_apply]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem rat_ker (P0 : Pair K G)
     (hF : eG T ∈ AddSubgroup.closure {w | ∃ a b : MonoidAlgebra K G, w = a * eps P0 * b})
@@ -183,23 +181,21 @@ theorem rat_ker (P0 : Pair K G)
   rwa [L_eG, Module.End.one_apply] at this
 
 /- English proof (translation)
-Use `set Y := AddSubgroup.closure {z | ∃ g, ∃ y ∈ M.form (eps P0), z = ρE g y} with hY`. Establish `hgen : ∀ (a : MonoidAlgebra K G) (w : M.VK), M.io (M.j (M.rhoK.asAlgebraHom a (M.rhoK.asAlgebraHom (eps P0) w))) ∈ Y`. Introduce `a`. Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨g, _, ⟨w, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Representation.asAlgebraHom_of, M.j_eq, M.io_eq]`. Consider the case `add a b ha hb`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Rewrite using `[map_add, LinearMap.add_apply, map_add, map_add]`. Conclude with `Y.add_mem (ha w) (hb w)`. Consider the case `smul r a ha`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_smul, LinearMap.smul_apply, ← map_smul (M.rhoK.asAlgebraHom a), ← map_smul (M.rhoK.asAlgebraHom (eps P0))]`. Conclude with `ha (r • w)`. Establish `hall : ∀ x : M.VK, M.io (M.j (M.rhoK.asAlgebraHom (eG T) x)) ∈ Y`. Use `AddSubgroup.closure_induction (p := fun z _ => ∀ x : M.VK, M.io (M.j (M.rhoK.asAlgebraHom z x)) ∈ Y) ?_ ?_ ?_ ?_ hF` and prove the remaining obligations. Introduce and unpack `z ⟨a, b, rfl⟩ x`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]`. Conclude with `hgen a _`. Introduce `x`. Rewrite using `[map_zero, LinearMap.zero_apply, map_zero, map_zero]`. Conclude with `Y.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x y _ _ hx hy w`. Rewrite using `[map_add, LinearMap.add_apply, map_add, map_add]`. Conclude with `Y.add_mem (hx w) (hy w)`. Introduce `x _ hx w`. Rewrite using `[map_neg, LinearMap.neg_apply, map_neg, map_neg]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Y.neg_mem (hx w)`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Use `hall x` as an intermediate fact. Rewrite `this` using `[M.good]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Simplify using `using this`. Introduce `z hz`. Establish `hle : Y ≤ (M.io.toAddMonoidHom.comp M.j.toAddMonoidHom).range`. Rewrite using `[hY, AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨g, _, ⟨w, rfl⟩, rfl⟩`.
-
-Conclude with `⟨M.rhoK g (M.rhoK.asAlgebraHom (eps P0) w), by simp [M.j_eq, M.io_eq]⟩`. Take `⟨x, hx⟩` from `hle hz`. Conclude with `⟨x, by simpa using hx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem form_eq (P0 : Pair K G)
     (hF : eG T ∈ AddSubgroup.closure {w | ∃ a b : MonoidAlgebra K G, w = a * eps P0 * b}) :

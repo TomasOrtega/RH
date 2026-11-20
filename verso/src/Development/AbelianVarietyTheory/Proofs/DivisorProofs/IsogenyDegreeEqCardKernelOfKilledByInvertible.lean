@@ -14,7 +14,7 @@ namespace GlobalTheory.AV.DegSep
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Establish `h` using `Over.w (toUnit T)`. Express the relevant statement in the definitionally equal form `(toUnit T ≫ η[G]).left = _`. Rewrite using `[Over.comp_left]`. Use `congr 1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem one_left' (T : Over S) (G : Over S) [GrpObj G] : (1 : T ⟶ G).left = T.hom ≫ η[G].left := by
   have h := Over.w (toUnit T)
@@ -23,7 +23,7 @@ theorem one_left' (T : Over S) (G : Over S) [GrpObj G] : (1 : T ⟶ G).left = T.
   congr 1
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih, Category.comp_id]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_pow_id (T G : Over S) [GrpObj G] (x : T ⟶ G) (n : ℕ) : x ≫ (𝟙 G) ^ n = x ^ n := by
   induction n with
@@ -33,14 +33,14 @@ theorem comp_pow_id (T G : Over S) [GrpObj G] (x : T ⟶ G) (n : ℕ) : x ≫ (�
 end GlobalTheory.AV.DegSep
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (K : Type) [Field K] (X : Scheme) (f : X ⟶ Sp K) [IsFinite f] : LocallyOfFinitePresentation f := inferInstance
 
 namespace GlobalTheory.AV.DegSep
 
 /- English proof (translation)
-Establish `h : IsUnit (n : K)` using `hn.isUnit`. Use `h.map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_natCast_Γ (K : Type) [Field K] (n : ℕ) (hn : (n : K) ≠ 0) : IsUnit (n : Γ(Sp K, ⊤)) := by
   have h : IsUnit (n : K) := hn.isUnit
@@ -48,37 +48,31 @@ theorem isUnit_natCast_Γ (K : Type) [Field K] (n : ℕ) (hn : (n : K) ≠ 0) : 
   simpa using this
 
 /- English proof (translation)
-Establish `hfl : Flat f.hom.left` using `(GlobalTheory.T.dim_eq_flat_finrank_eq_deg_of_isIsogeny K A B f hiso).2.1`. Establish `hfin : IsFinite f.hom.left` using `hiso.1`. Establish `hprop : IsProper B.X.hom` using `B.ab.proper`. Set `e : Sp K ⟶ B.X.left` to `η[B.X].left`. Establish `he1 : e ≫ B.X.hom = 𝟙 _` using `Over.w η[B.X]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hecl : IsClosedImmersion e`. Establish `: IsClosedImmersion (e ≫ B.X.hom)` using `by rw [he1]; infer_instance`. Conclude with `IsClosedImmersion.of_comp e B.X.hom`. Set `p` to `pullback.snd f.hom.left e`. Set `i` to `pullback.fst f.hom.left e`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpi : i ≫ A.X.hom = p`. Combine the equalities or inequalities in the displayed calculation. Establish `hifu : FormallyUnramified i` using `inferInstance`. Set `T : Over (Sp K)` to `Over.mk (i ≫ A.X.hom)`. Set `x : T ⟶ A.X` to `Over.homMk i`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx1 : x ≫ f.hom = 1` using `by ext1`. Rewrite using `[Over.comp_left, one_left']`. Express the relevant statement in the definitionally equal form `i ≫ f.hom.left = (i ≫ A.X.hom) ≫ e`. Rewrite using `[hpi, pullback.condition]`. Establish `hxn` using `hker T x hx1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hleft : i ≫ (Out.mulA A.X n).left = p ≫ η[A.X].left`. Establish `h : (x ^ n).left = (1 : T ⟶ A.X).left` using `by rw [hxn]`. Rewrite `h` using `[← comp_pow_id, one_left']`. Express the relevant statement in the definitionally equal form `i ≫ (Out.mulA A.X n).left = _ at h`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(i ≫ A.X.hom) ≫ _ = _`. Rewrite using `[hpi]`. Set `j : pullback f.hom.left e ⟶ pullback (Out.mulA A.X n).left η[A.X].left` to `pullback.lift i p hleft`. Establish `hmu : FormallyUnramified (Out.mulA A.X n).left` using `GlobalTheory.formallyUnramified_mulA (Sp K) A.X n (isUnit_natCast_Γ K n hn)`. Establish `hsnd : FormallyUnramified (pullback.snd (Out.mulA A.X n).left η[A.X].left)` using `MorphismProperty.of_isPullback (IsPullback.of_hasPullback _ _) hmu`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjfu : FormallyUnramified j`. Establish `: FormallyUnramified (j ≫ pullback.fst _ _)`. Rewrite using `[pullback.lift_fst]`. Conclude with `hifu`. Conclude with `FormallyUnramified.of_comp j (pullback.fst _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpfu : FormallyUnramified p`. Establish `: j ≫ pullback.snd _ _ = p` using `pullback.lift_snd _ _ _`. Rewrite using `[← this]`. Conclude with `MorphismProperty.comp_mem (@FormallyUnramified) _ _ hjfu hsnd`. Establish `hpet : Etale p` using `Etale.of_formallyUnramified_of_flat p`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `t : Sp (AlgebraicClosure K) ⟶ Sp K` to `(ptOver K (AlgebraicClosure K)).hom`. Take `⟨-, hcard⟩` from `GlobalTheory.FinEt.card_points_eq_finrank p t (IsLocalRing.closedPoint _)`. Rewrite `hcard` using `[Scheme.Hom.finrank_pullback_snd]`. Establish `horig : e (t (IsLocalRing.closedPoint _)) = B.origin`. Rewrite using `[origin, one_left']`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `e _ = (𝟙 (Sp K) ≫ e) _`. Rewrite using `[Category.id_comp]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`. Rewrite `hcard` using `[horig]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[deg, if_pos hiso, ← hcard]`. Use `symm`. Use `Nat.card_congr ?_` and prove the remaining obligations. Conclude with `{ toFun := fun y => ⟨pullback.lift y.1.left t (by`. Establish `h` using `y.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[MonoidHom.mem_ker, ptMap_apply]`. Establish `h2 : (y.1 ≫ f.hom).left = (1 : ptOver K (AlgebraicClosure K) ⟶ B.X).left` using `by rw [h]`. Rewrite `h2` using `[Over.comp_left, one_left']`. Conclude with `h2), pullback.lift_snd _ _ _⟩`. Use `invFun := fun y => ⟨Over.homMk (y.1 ≫ i) (by`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `(y.1 ≫ i) ≫ A.X.hom = t`. Rewrite using `[Category.assoc, hpi, y.2]), by`. Rewrite using `[MonoidHom.mem_ker, ptMap_apply]`. Use `ext1`. Rewrite using `[Over.comp_left, one_left']`.
-
-Express the relevant statement in the definitionally equal form `(y.1 ≫ i) ≫ f.hom.left = t ≫ e`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, y.2]⟩`. Use `left_inv := fun y => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `ext1`.
-
-Conclude with `pullback.lift_fst _ _ _`. Use `right_inv := fun y => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `pullback.lift_fst _ _ _`.
-
-Rewrite using `[pullback.lift_snd]`. Conclude with `y.2.symm }`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_eq_card_ker (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B) (n : ℕ) (hn : (n : K) ≠ 0)
     (hiso : IsIsogeny f) (hker : ∀ (T : Over (Sp K)) (x : T ⟶ A.X), x ≫ f.hom = 1 → x ^ n = 1) :
@@ -173,7 +167,7 @@ end GlobalTheory.AV.DegSep
 namespace GlobalTheory.AV.DegSep
 
 /- English proof (translation)
-Introduce `K _ A B f n hn hiso hker` and use `deg_eq_card_ker K A B f n hn hiso hker`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem deg_eq_card_ker_of_killed : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B) (n : ℕ), (n : K) ≠ 0 →
     IsIsogeny f → (∀ (T : Over (Sp K)) (x : T ⟶ A.X), x ≫ f.hom = 1 → x ^ n = 1) →

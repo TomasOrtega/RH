@@ -11,11 +11,11 @@ open scoped ENNReal NNReal
 set_option autoImplicit false
 namespace GlobalTheory.DegVal
 /- English proof (translation)
-Introduce `hX hG hQ hS hP hN hPr D T hT j hp hq Y e o hY u hu Z`. Take `⟨f₀, hf₀, hne⟩` from `_root_.GlobalTheory.T.exists_centre_cusp_generic_value_ne_zero hX hG hQ hS hP hN hPr D T hT j hp hq Y e o hY u hu Z`. Take `⟨σ, A, B, hA, hB, hBA, hBr, hAtop, hsep⟩` from `_root_.GlobalTheory.T.cusp_values_separate_generic_points hX hG hQ hS hP hN hPr D T hT j hp hq Y e o hY u hu Z`. Establish `key` using `exists_mul_eq_of_generic_unique_complexPoint _ _ σ A B hA hB hBA hsep`. Use `⟨fun h => hne ?_, eq_top_iff.2 ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.congr_fun h ⟨f₀, hf₀⟩` as an intermediate fact. Simplify `this` using `[genPoint]`. Rewrite using `[← hAtop, IntermediateField.adjoin_le_iff]`. Introduce `a ha`. Take `⟨p, hp', q, hq', hq0, hpq⟩` from `key a ha`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_div_of_mul_eq hq0 hpq]`. Conclude with `IntermediateField.div_mem _ (hBr p hp') (hBr q hq')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem birOn_of_weight_gaps_large : GlobalTheory.CovTop.HypothesesX → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.NadelVanishingAndNonKltDivisor → GlobalTheory.Published.Principalisation → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ (u : GlobalTheory.AllWt.Weight (T.Q.Dw j)), (∀ τ (a b : Fin ((T.Q.Dw j).p + (T.Q.Dw j).q)), (b : ℕ) = a + 1 → (((dimFlag (T.Q.Dw j) + 3) ^ 2 + 2 * ((T.Q.Dw j).p + (T.Q.Dw j).q) : ℕ) : ℤ) ≤ u τ a - u τ b) → ∀ Z : Comp Y.d.Xo₂ Y.d.c₂, BirOn Y.U Z (wtOf (T.Q.Dw j) u 0) := by
   intro hX hG hQ hS hP hN hPr D T hT j hp hq Y e o hY u hu Z
@@ -38,7 +38,7 @@ open NumberField GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.DegCmp Glob
 open scoped ENNReal NNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.DegVal.birOn_of_weight_gaps_large | exact _root_.GlobalTheory.DegVal.birOn_of_weight_gaps_large | (intros; apply _root_.GlobalTheory.DegVal.birOn_of_weight_gaps_large <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.birOn_wtOf_of_consecutive_gap_bound : GlobalTheory.CovTop.HypothesesX → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.NadelVanishingAndNonKltDivisor → GlobalTheory.Published.Principalisation → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ (u : GlobalTheory.AllWt.Weight (T.Q.Dw j)), (∀ τ (a b : Fin ((T.Q.Dw j).p + (T.Q.Dw j).q)), (b : ℕ) = a + 1 → (((dimFlag (T.Q.Dw j) + 3) ^ 2 + 2 * ((T.Q.Dw j).p + (T.Q.Dw j).q) : ℕ) : ℤ) ≤ u τ a - u τ b) → ∀ Z : Comp Y.d.Xo₂ Y.d.c₂, BirOn Y.U Z (wtOf (T.Q.Dw j) u 0) := by
   first | exact @_root_.GlobalTheory.DegVal.birOn_of_weight_gaps_large | exact _root_.GlobalTheory.DegVal.birOn_of_weight_gaps_large | (intros; apply _root_.GlobalTheory.DegVal.birOn_of_weight_gaps_large <;> assumption)

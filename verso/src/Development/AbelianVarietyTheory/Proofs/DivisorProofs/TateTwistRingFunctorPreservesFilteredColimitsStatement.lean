@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondi
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.EtC.TwistFiltered.twF_preservesFilteredColimits) | (exact GlobalTheory.EtC.TwistFiltered.twF_preservesFilteredColimits) | (intros; apply GlobalTheory.EtC.TwistFiltered.twF_preservesFilteredColimits <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.tateTwistRingFunctor_preservesFilteredColimits : ∀ (q : ℕ) (i : ℤ), PreservesFilteredColimitsOfSize.{0, 0} (twF q i) := by
   first | (exact @GlobalTheory.EtC.TwistFiltered.twF_preservesFilteredColimits) | (exact GlobalTheory.EtC.TwistFiltered.twF_preservesFilteredColimits) | (intros; apply GlobalTheory.EtC.TwistFiltered.twF_preservesFilteredColimits  <;> assumption)

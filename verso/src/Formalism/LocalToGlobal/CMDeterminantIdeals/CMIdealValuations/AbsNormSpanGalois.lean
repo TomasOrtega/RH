@@ -10,13 +10,13 @@ open NumberField IsDedekindDomain
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Establish `hI : I ≠ 0`. Introduce and unpack `rfl`. Conclude with `hJ (FractionalIdeal.le_zero_iff.mp hJI)`. Establish `h1 : J * I⁻¹ ≤ 1`. Rewrite using `[← mul_inv_cancel₀ hI, FractionalIdeal.mul_le]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx y hy`. Conclude with `FractionalIdeal.mul_mem_mul (hJI hx) hy`. Take `⟨A, hA⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.mp h1`. Establish `hJeq : J = (A : FractionalIdeal (𝓞 K)⁰ K) * I`. Rewrite using `[hA, mul_assoc, inv_mul_cancel₀ hI, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hA0 : A ≠ ⊥`. Introduce and unpack `rfl`. Apply `hJ` to reduce the goal to its premises. Rewrite using `[hJeq, FractionalIdeal.coeIdeal_bot, zero_mul]`. Establish `hAn : (1:ℚ) ≤ FractionalIdeal.absNorm (A : FractionalIdeal (𝓞 K)⁰ K)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[FractionalIdeal.coeIdeal_absNorm]`. Conclude with `Nat.one_le_iff_ne_zero.mpr (Ideal.absNorm_eq_zero_iff.not.mpr hA0)` after adjusting the coercions. Establish `hIn : (0:ℚ) ≤ FractionalIdeal.absNorm I` using `FractionalIdeal.absNorm_nonneg I`. Rewrite using `[hJeq, map_mul]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private lemma absNorm_le_absNorm_of_le {K : Type} [Field K] [NumberField K] (I J : FractionalIdeal (𝓞 K)⁰ K)
     (hJ : J ≠ 0) (hJI : J ≤ I) : FractionalIdeal.absNorm I ≤ FractionalIdeal.absNorm J := by
@@ -42,7 +42,7 @@ private lemma absNorm_le_absNorm_of_le {K : Type} [Field K] [NumberField K] (I J
   nlinarith
 
 /- English proof (translation)
-Establish `h` using `Algebra.norm_eq_prod_embeddings ℚ ℂ x`. Rewrite `h` using `[← Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) (fun σ => σ x) (fun τ => τ x) (fun σ => rfl)]`. Rewrite using `[← norm_prod, ← h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma prod_norm_embedding_eq_abs_norm {K : Type} [Field K] [NumberField K] (x : K) :
     ∏ σ : K →+* ℂ, ‖σ x‖ = |((Algebra.norm ℚ x : ℚ) : ℝ)| := by
@@ -52,17 +52,15 @@ private lemma prod_norm_embedding_eq_abs_norm {K : Type} [Field K] [NumberField 
   simp
 
 /- English proof (translation)
-Unfold `LamEnd`. Introduce `K _ _ NN cf S B hG hcf hmem hS hB hlen`. Establish `hI0 : NN.I ≠ 0` using `hG.1`. Establish `hJ0 : FractionalIdeal.spanSingleton (𝓞 K)⁰ cf ≠ 0` using `FractionalIdeal.spanSingleton_eq_zero_iff.not.mpr hcf`. Establish `hJI : FractionalIdeal.spanSingleton (𝓞 K)⁰ cf ≤ NN.I` using `FractionalIdeal.spanSingleton_le_iff_mem.mpr hmem`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle` using `absNorm_le_absNorm_of_le NN.I _ hJ0 hJI`. Rewrite `hle` using `[FractionalIdeal.absNorm_span_singleton]`. Establish `hNpos : (0:ℝ) < ((FractionalIdeal.absNorm NN.I : ℚ) : ℝ)`. Establish `h0 : (0:ℚ) < FractionalIdeal.absNorm NN.I` using `lt_of_le_of_ne (FractionalIdeal.absNorm_nonneg _) (Ne.symm ((map_ne_zero _).mpr hI0))`. Conclude with `h0` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle' : ((FractionalIdeal.absNorm NN.I : ℚ) : ℝ) ≤ ∏ σ : K →+* ℂ, ‖σ cf‖`. Rewrite using `[prod_norm_embedding_eq_abs_norm]`. Conclude with `hle` after adjusting the coercions. Establish `hσ : ∀ σ : K →+* ℂ, 0 < ‖σ cf‖` using `fun σ => norm_pos_iff.mpr ((map_ne_zero σ).mpr hcf)`. Establish `hlog1 : Real.log ((FractionalIdeal.absNorm NN.I : ℚ) : ℝ) ≤ ∑ σ : K →+* ℂ, Real.log ‖σ cf‖`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.log_prod (fun σ _ => (hσ σ).ne')]`. Conclude with `Real.log_le_log hNpos hle'`. Establish `hlog2 : ∀ σ : K →+* ℂ, Real.log ‖σ cf‖ + Real.log (NN.n σ) ≤ Real.log (S σ) + Real.log B`. Introduce `σ`. Rewrite using `[← Real.log_mul (hσ σ).ne' (hG.2 σ).ne', ← Real.log_mul (hS σ).ne' hB.ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Real.log_le_log (mul_pos (hσ σ) (hG.2 σ)) (hlen σ)`. Establish `hsum` using `Finset.sum_le_sum (fun σ (_ : σ ∈ Finset.univ) => hlog2 σ)`. Rewrite `hsum` using `[Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card K ℂ, nsmul_eq_mul]`. Establish `e : NN.deg = - Real.log ((FractionalIdeal.absNorm NN.I : ℚ) : ℝ) - ∑ σ, Real.log (NN.n σ)` using `rfl`. Rewrite using `[e]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lambda_endomorphism : LamEnd := by
   unfold LamEnd
@@ -95,7 +93,7 @@ theorem lambda_endomorphism : LamEnd := by
   linarith
 
 /- English proof (translation)
-Establish `hpi` using `Real.pi_lt_d2`. Establish `he` using `Real.exp_one_gt_d9`. Rewrite using `[Real.log_le_iff_le_exp (by positivity)]`. Establish `h2 : Real.exp 2 = Real.exp 1 * Real.exp 1` using `by rw [← Real.exp_add]; norm_num`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -108,28 +106,28 @@ lemma log_two_pi_le_two : Real.log (2 * Real.pi) ≤ 2 := by
   nlinarith
 
 /- English proof (translation)
-Conclude with `Nat.cast_pos.mpr Module.finrank_pos`.
+A detailed English derivation is pending.
 -/
 lemma finrank_pos_real (K : Type) [Field K] [NumberField K] : (0 : ℝ) < (Module.finrank ℚ K : ℝ) := by
   exact Nat.cast_pos.mpr Module.finrank_pos
 
 /- English proof (translation)
-Simplify using `only [MLine.deg, MLine.dual, map_inv₀, Rat.cast_inv, Real.log_inv, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma mLine_deg_dual {K : Type} [Field K] [NumberField K] (L : MLine K) : L.dual.deg = - L.deg := by
   simp only [MLine.deg, MLine.dual, map_inv₀, Rat.cast_inv, Real.log_inv, Finset.sum_neg_distrib]
   ring
 
 /- English proof (translation)
-Unfold `DegDe0`. Introduce `K _ _ g abelian₂ ℓ de La logOm h`. Unfold `CMNumbers0 at h`. Take `⟨-, -, -, hLa, hsum, hnd, hdd⟩` from `h`. Establish `hd : (0:ℝ) < (Module.finrank ℚ K : ℝ)` using `finrank_pos_real K`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdeg : ∀ j, (ℓ j).deg = logOm / 2 * (Module.finrank ℚ K : ℝ)` using `fun j => by`. Establish `e : (ℓ j).ndeg = (ℓ j).deg / (Module.finrank ℚ K : ℝ)` using `rfl`. Rewrite using `[← hnd j, e, div_mul_cancel₀ _ hd.ne']`. Establish `hs : ∑ j, (ℓ j).deg = (g : ℝ) * (logOm / 2 * (Module.finrank ℚ K : ℝ))`. Simplify using `[hdeg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hdual : abelian₂.dual.ndeg = - abelian₂.ndeg`. Establish `e1 : abelian₂.dual.ndeg = abelian₂.dual.deg / (Module.finrank ℚ K : ℝ)` using `rfl`. Establish `e2 : abelian₂.ndeg = abelian₂.deg / (Module.finrank ℚ K : ℝ)` using `rfl`. Rewrite using `[e1, e2, mLine_deg_dual, neg_div]`. Establish `hLamn : (g : ℝ) * (logOm / 2) - (g : ℝ) * Real.log La ≤ abelian₂.ndeg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : abelian₂.ndeg = abelian₂.deg / (Module.finrank ℚ K : ℝ)` using `rfl`. Rewrite using `[e2, le_div_iff₀ hd]`. Rewrite `hsum` using `[hs]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hg : (0:ℝ) ≤ g` using `Nat.cast_nonneg g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h1 : (g:ℝ) * Real.log (2 * Real.pi) ≤ (g:ℝ) * 2` using `mul_le_mul_of_nonneg_left log_two_pi_le_two hg`. Establish `h2 : (g:ℝ) * (-logOm) ≤ (g:ℝ) * |logOm|` using `mul_le_mul_of_nonneg_left (neg_le_abs logOm) hg`. Establish `h3 : (0:ℝ) ≤ (g:ℝ) * |logOm|` using `mul_nonneg hg (abs_nonneg logOm)`. Unfold `pDeg`. Rewrite `hdd` using `[hdual]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -162,7 +160,7 @@ theorem degree_delta_base : DegDe0 := by
   linarith
 
 /- English proof (translation)
-Unfold `MLine.Good at *`. Conclude with `⟨pow_ne_zero _ hL.1, fun σ => pow_pos (hL.2 σ) _⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 private lemma mLine_good_pow {K : Type} [Field K] [NumberField K] (L : MLine K) (hL : L.Good) (k : ℕ) :
     (L.pow k).Good := by
@@ -170,14 +168,14 @@ private lemma mLine_good_pow {K : Type} [Field K] [NumberField K] (L : MLine K) 
   exact ⟨pow_ne_zero _ hL.1, fun σ => pow_pos (hL.2 σ) _⟩
 
 /- English proof (translation)
-Unfold `MLine.Good at *`. Conclude with `⟨inv_ne_zero hL.1, fun σ => inv_pos.mpr (hL.2 σ)⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 private lemma mLine_good_dual {K : Type} [Field K] [NumberField K] (L : MLine K) (hL : L.Good) : L.dual.Good := by
   unfold MLine.Good at *
   exact ⟨inv_ne_zero hL.1, fun σ => inv_pos.mpr (hL.2 σ)⟩
 
 /- English proof (translation)
-Unfold `MLine.Good at *`. Conclude with `⟨mul_ne_zero hL.1 hM.1, fun σ => mul_pos (hL.2 σ) (hM.2 σ)⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 private lemma mLine_good_tensor {K : Type} [Field K] [NumberField K] (L M : MLine K) (hL : L.Good) (hM : M.Good) :
     (L.tensor M).Good := by
@@ -185,7 +183,7 @@ private lemma mLine_good_tensor {K : Type} [Field K] [NumberField K] (L M : MLin
   exact ⟨mul_ne_zero hL.1 hM.1, fun σ => mul_pos (hL.2 σ) (hM.2 σ)⟩
 
 /- English proof (translation)
-Unfold `MLine.Good at *`. Conclude with `⟨Finset.prod_ne_zero_iff.mpr fun v _ => pow_ne_zero _ (h v).1, fun σ => Finset.prod_pos fun v _ => pow_pos ((h v).2 σ) _⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 private lemma mLine_good_prodPow {K : Type} [Field K] [NumberField K] {V : Type} [Fintype V] (ℓ : V → MLine K)
     (k : V → ℕ) (h : ∀ v, (ℓ v).Good) : (MLine.prodPow ℓ k).Good := by
@@ -194,7 +192,7 @@ private lemma mLine_good_prodPow {K : Type} [Field K] [NumberField K] {V : Type}
     fun σ => Finset.prod_pos fun v _ => pow_pos ((h v).2 σ) _⟩
 
 /- English proof (translation)
-Establish `hL0 : ((FractionalIdeal.absNorm L.I : ℚ) : ℝ) ≠ 0` using `Rat.cast_ne_zero.mpr ((map_ne_zero _).mpr hL.1)`. Establish `hM0 : ((FractionalIdeal.absNorm M.I : ℚ) : ℝ) ≠ 0` using `Rat.cast_ne_zero.mpr ((map_ne_zero _).mpr hM.1)`. Simplify using `only [MLine.deg, MLine.tensor, map_mul, Rat.cast_mul]`. Rewrite using `[Real.log_mul hL0 hM0, Finset.sum_congr rfl (fun σ _ => Real.log_mul (hL.2 σ).ne' (hM.2 σ).ne'), Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma mLine_deg_tensor {K : Type} [Field K] [NumberField K] (L M : MLine K) (hL : L.Good) (hM : M.Good) :
     (L.tensor M).deg = L.deg + M.deg := by
@@ -206,7 +204,7 @@ private lemma mLine_deg_tensor {K : Type} [Field K] [NumberField K] (L M : MLine
   ring
 
 /- English proof (translation)
-Simplify using `only [MLine.deg, MLine.pow, map_pow, Rat.cast_pow, Real.log_pow]`. Rewrite using `[mul_sub, Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma mLine_deg_pow {K : Type} [Field K] [NumberField K] (L : MLine K) (k : ℕ) :
     (L.pow k).deg = k * L.deg := by
@@ -215,9 +213,9 @@ private lemma mLine_deg_pow {K : Type} [Field K] [NumberField K] (L : MLine K) (
   ring
 
 /- English proof (translation)
-Establish `hN : ∀ v, ((FractionalIdeal.absNorm (ℓ v).I : ℚ) : ℝ) ≠ 0` using `fun v => Rat.cast_ne_zero.mpr ((map_ne_zero _).mpr (h v).1)`. Simplify using `only [MLine.deg, MLine.prodPow, map_prod, map_pow, Rat.cast_prod, Rat.cast_pow]`. Rewrite using `[Real.log_prod (fun v _ => pow_ne_zero _ (hN v))]`. Rewrite using `[Finset.sum_congr rfl (fun σ _ => Real.log_prod (fun v _ => (pow_pos ((h v).2 σ) _).ne'))]`. Simplify using `only [Real.log_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_sub, mul_neg, Finset.mul_sum, Finset.sum_sub_distrib, Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma mLine_deg_prodPow {K : Type} [Field K] [NumberField K] {V : Type} [Fintype V] (ℓ : V → MLine K)
     (k : V → ℕ) (h : ∀ v, (ℓ v).Good) : (MLine.prodPow ℓ k).deg = ∑ v, (k v : ℝ) * (ℓ v).deg := by
@@ -231,21 +229,21 @@ private lemma mLine_deg_prodPow {K : Type} [Field K] [NumberField K] {V : Type} 
   simp only [mul_sub, mul_neg, Finset.mul_sum, Finset.sum_sub_distrib, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Unfold `DegNN0`. Introduce `K _ _ g abelian₂ ℓ de La logOm V _ c μ n h`. Establish `hde0` using `degree_delta_base K g abelian₂ ℓ de La logOm h`. Unfold `CMNumbers0 at h`. Take `⟨-, hℓ, hde, hLa, -, hnd, -⟩` from `h`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hP : (MLine.prodPow (fun v => ℓ (c v)) μ).Good` using `mLine_good_prodPow _ _ (fun v => hℓ (c v))`. Establish `hPd : (MLine.prodPow (fun v => ℓ (c v)) μ).dual.Good` using `mLine_good_dual _ hP`. Establish `hdn : (de.pow n).Good` using `mLine_good_pow _ hde n`. Establish `hG : (lineNN de ℓ c μ n).Good` using `mLine_good_tensor _ _ hdn hPd`. Use `⟨hG, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : (0:ℝ) < (Module.finrank ℚ K : ℝ)` using `finrank_pos_real K`. Establish `hd0 : (Module.finrank ℚ K : ℝ) ≠ 0` using `hd.ne'`. Establish `hdeg : ∀ j, (ℓ j).deg = logOm / 2 * (Module.finrank ℚ K : ℝ)` using `fun j => by`. Establish `e : (ℓ j).ndeg = (ℓ j).deg / (Module.finrank ℚ K : ℝ)` using `rfl`. Rewrite using `[← hnd j, e, div_mul_cancel₀ _ hd0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hD : (lineNN de ℓ c μ n).deg = n * de.deg - (∑ v, (μ v : ℝ)) * (logOm / 2 * (Module.finrank ℚ K : ℝ))`. Establish `e : lineNN de ℓ c μ n = (de.pow n).tensor (MLine.prodPow (fun v => ℓ (c v)) μ).dual` using `rfl`. Rewrite using `[e, mLine_deg_tensor _ _ hdn hPd, mLine_deg_dual, mLine_deg_pow, mLine_deg_prodPow _ _ (fun v => hℓ (c v))]`. Simplify using `only [hdeg, Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hlog : 0 ≤ Real.log La` using `Real.log_nonneg hLa`. Establish `hPl : -(logOm / 2) ≤ pDeg logOm + (1 / 2) * Real.log La`. Unfold `pDeg`. Use `neg_le_abs logOm` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hsμ : (0:ℝ) ≤ ∑ v, (μ v : ℝ)` using `Finset.sum_nonneg (fun v _ => Nat.cast_nonneg _)`. Establish `hn : (0:ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `h1 : (n:ℝ) * de.ndeg ≤ n * (g * (pDeg logOm + (1 / 2) * Real.log La))` using `mul_le_mul_of_nonneg_left hde0 hn`. Establish `h2 : (∑ v, (μ v : ℝ)) * (-(logOm / 2)) ≤ (∑ v, (μ v : ℝ)) * (pDeg logOm + (1 / 2) * Real.log La)` using `mul_le_mul_of_nonneg_left hPl hsμ`. Establish `e2 : (lineNN de ℓ c μ n).ndeg = (lineNN de ℓ c μ n).deg / (Module.finrank ℚ K : ℝ)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : de.ndeg = de.deg / (Module.finrank ℚ K : ℝ)` using `rfl`. Establish `hnd' : (lineNN de ℓ c μ n).ndeg = n * de.ndeg - (∑ v, (μ v : ℝ)) * (logOm / 2)`. Rewrite using `[e2, e3, hD, sub_div, mul_div_assoc]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hnd']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem degree_norm_base : DegNN0 := by
   unfold DegNN0
@@ -289,9 +287,9 @@ theorem degree_norm_base : DegNN0 := by
   linarith
 
 /- English proof (translation)
-Unfold `CMNumbersLink`. Introduce `K _ _ g Lie ℓ u de La logOm h`. Unfold `CMNumbers at h`. Unfold `CMNumbers0`. Take `⟨hL, hℓ, hde, hu, hmem, hLa, hsq, hnd, hdd⟩` from `h`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(hD K g Lie hL).2, hℓ, hde, hLa, hH K g Lie ℓ u La hL hℓ hu hmem (by linarith) hsq, hnd, hdd⟩`.
+Supply the required witnesses or components.
 -/
 theorem CMNumbersLink_of (hH : HadamardIdeals) (hD : DetGood) : CMNumbersLink := by
   unfold CMNumbersLink
@@ -302,7 +300,7 @@ theorem CMNumbersLink_of (hH : HadamardIdeals) (hD : DetGood) : CMNumbersLink :=
   exact ⟨(hD K g Lie hL).2, hℓ, hde, hLa, hH K g Lie ℓ u La hL hℓ hu hmem (by linarith) hsq, hnd, hdd⟩
 
 /- English proof (translation)
-Unfold `DegDe`. Introduce `K _ _ g Lie ℓ u de La logOm h`. Conclude with `degree_delta_base K g _ ℓ de La logOm (CMNumbersLink_of hH hD K g Lie ℓ u de La logOm h)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem DegDe_of (hH : HadamardIdeals) (hD : DetGood) : DegDe := by
   unfold DegDe
@@ -310,7 +308,7 @@ theorem DegDe_of (hH : HadamardIdeals) (hD : DetGood) : DegDe := by
   exact degree_delta_base K g _ ℓ de La logOm (CMNumbersLink_of hH hD K g Lie ℓ u de La logOm h)
 
 /- English proof (translation)
-Unfold `DegNN`. Introduce `K _ _ g Lie ℓ u de La logOm V _ c μ n h`. Conclude with `degree_norm_base K g _ ℓ de La logOm V c μ n (CMNumbersLink_of hH hD K g Lie ℓ u de La logOm h)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem DegNN_of (hH : HadamardIdeals) (hD : DetGood) : DegNN := by
   unfold DegNN
@@ -320,13 +318,11 @@ theorem DegNN_of (hH : HadamardIdeals) (hD : DetGood) : DegNN := by
 section cauchy
 
 /- English proof (translation)
-Establish `hN : 0 < N` using `lt_of_le_of_lt (Nat.zero_le a) ha`. Establish `hζ0 : ζ ≠ 0` using `hζ.ne_zero hN.ne'`. Use `split_ifs with hab`. Substitute `hab` using the available equality. Simplify using `[mul_inv_cancel₀ (pow_ne_zero a hζ0)]`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hne : ζ ^ a * ζ⁻¹ ^ b ≠ 1`. Introduce `h`. Apply `hab` to reduce the goal to its premises. Apply `hζ.pow_inj ha hb` to reduce the goal to its premises. Rewrite `h` using `[inv_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_inv_eq_one₀ (pow_ne_zero _ hζ0)).mp h`. Rewrite using `[geom_sum_eq hne]`. Establish `h1 : (ζ ^ a) ^ N = 1` using `by rw [← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`. Establish `h2 : (ζ⁻¹ ^ b) ^ N = 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul, inv_pow, hζ.pow_eq_one, inv_one, one_pow]`.
-
-Rewrite using `[mul_pow, h1, h2, one_mul, sub_self, zero_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma geom_root_sum {ζ : ℂ} {N : ℕ} (hζ : IsPrimitiveRoot ζ N) {a b : ℕ} (ha : a < N) (hb : b < N) :
     ∑ j ∈ Finset.range N, (ζ ^ a * ζ⁻¹ ^ b) ^ j = if a = b then (N : ℂ) else 0 := by
@@ -348,35 +344,29 @@ lemma geom_root_sum {ζ : ℂ} {N : ℕ} (hζ : IsPrimitiveRoot ζ N) {a b : ℕ
     rw [mul_pow, h1, h2, one_mul, sub_self, zero_div]
 
 /- English proof (translation)
-Unfold `CoeffCauchy`. Introduce `V _ G ρ S μ hρ hS`. Use `set N : ℕ := (∑ ν ∈ G.support, ∑ v, ν v) + (∑ v, μ v) + 1 with hNdef`. Establish `hN : 0 < N` using `Nat.succ_pos _`. Establish `hνN : ∀ ν ∈ G.support, ∀ v, ν v < N`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ν hν v`. Establish `h1 : ν v ≤ ∑ w, ν w` using `Finset.single_le_sum (fun w _ => Nat.zero_le _) (Finset.mem_univ v)`. Establish `h2 : ∑ w, ν w ≤ ∑ ν' ∈ G.support, ∑ w, ν' w` using `Finset.single_le_sum (f := fun ν' => ∑ w, ν' w) (fun _ _ => Nat.zero_le _) hν`. Use linear arithmetic over natural numbers and integers. Establish `hμN : ∀ v, μ v < N`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Establish `h1 : μ v ≤ ∑ w, μ w` using `Finset.single_le_sum (fun w _ => Nat.zero_le _) (Finset.mem_univ v)`. Use linear arithmetic over natural numbers and integers. Use `set ζ : ℂ := Complex.exp (2 * Real.pi * Complex.I / N) with hζdef`. Establish `hζ : IsPrimitiveRoot ζ N` using `Complex.isPrimitiveRoot_exp N hN.ne'`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hζn : ‖ζ‖ = 1` using `hζ.norm'_eq_one hN.ne'`. Set `z : (V → Fin N) → V → ℂ` to `fun k v => (ρ v : ℂ) * ζ ^ (k v : ℕ)`. Establish `hz : ∀ k v, ‖z k v‖ ≤ ρ v`. Introduce `k v`. Simplify using `only [z, norm_mul, norm_pow, hζn, one_pow, mul_one, Complex.norm_real, Real.norm_eq_abs]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_of_eq (abs_of_pos (hρ v))`. Establish `inner : ∀ ν ∈ G.support, ∑ k : V → Fin N, MvPolynomial.coeff ν G * (∏ v, z k v ^ ν v) * ∏ v, ζ⁻¹ ^ ((k v : ℕ) * μ v) = if ν = μ then (N : ℂ) ^ Fintype.card V * (MvPolynomial.coeff μ G * ∏ v, (ρ v : ℂ) ^ μ v) else 0`. Introduce `ν hν`. Establish `hprod : ∀ k : V → Fin N, (∏ v, z k v ^ ν v) * ∏ v, ζ⁻¹ ^ ((k v : ℕ) * μ v) = (∏ v, (ρ v : ℂ) ^ ν v) * ∏ v, (ζ ^ ν v * ζ⁻¹ ^ μ v) ^ (k v : ℕ)`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl (fun v _ => by simp only [z]; ring)`. Establish `hsum1 : ∑ k : V → Fin N, MvPolynomial.coeff ν G * (∏ v, z k v ^ ν v) * ∏ v, ζ⁻¹ ^ ((k v : ℕ) * μ v) = MvPolynomial.coeff ν G * ((∏ v, (ρ v : ℂ) ^ ν v) * ∑ k : V → Fin N, ∏ v, (ζ ^ ν v * ζ⁻¹ ^ μ v) ^ (k v : ℕ))`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun k _ => by rw [mul_assoc, hprod k])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsumk : ∑ k : V → Fin N, ∏ v, (ζ ^ ν v * ζ⁻¹ ^ μ v) ^ (k v : ℕ) = ∏ v, ∑ j : Fin N, (ζ ^ ν v * ζ⁻¹ ^ μ v) ^ (j : ℕ)`. Rewrite using `[Fintype.prod_sum]`. Establish `hgeom : ∀ v, ∑ j : Fin N, (ζ ^ ν v * ζ⁻¹ ^ μ v) ^ (j : ℕ) = if ν v = μ v then (N : ℂ) else 0` using `fun v => (Fin.sum_univ_eq_sum_range (fun j => (ζ ^ ν v * ζ⁻¹ ^ μ v) ^ j) N).trans (geom_root_sum hζ (hνN ν hν v) (hμN v))`. Establish `hprodif : ∏ v, (if ν v = μ v then (N : ℂ) else 0) = if ν = μ then (N : ℂ) ^ Fintype.card V else 0` using `by split_ifs with h`. Simplify using `[h]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, ν v ≠ μ v := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h (Finsupp.ext hc)`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (if_neg hv)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsum1, hsumk, Finset.prod_congr rfl (fun v _ => hgeom v), hprodif]`. Use `split_ifs with h`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Establish `hexp : ∀ k : V → Fin N, MvPolynomial.eval (z k) G * ∏ v, ζ⁻¹ ^ ((k v : ℕ) * μ v) = ∑ ν ∈ G.support, MvPolynomial.coeff ν G * (∏ v, z k v ^ ν v) * ∏ v, ζ⁻¹ ^ ((k v : ℕ) * μ v)`. Introduce `k`. Rewrite using `[MvPolynomial.eval_eq', Finset.sum_mul]`. Establish `key : ∑ k : V → Fin N, MvPolynomial.eval (z k) G * ∏ v, ζ⁻¹ ^ ((k v : ℕ) * μ v) = (N : ℂ) ^ Fintype.card V * (MvPolynomial.coeff μ G * ∏ v, (ρ v : ℂ) ^ μ v)`. Rewrite using `[Finset.sum_congr rfl (fun k _ => hexp k), Finset.sum_comm, Finset.sum_congr rfl inner]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Finset.sum_eq_single μ (fun ν _ hν => if_neg hν) (fun hμ => by`. Establish `h0 : MvPolynomial.coeff μ G = 0`. Assume the negation of the conclusion as `h`. Conclude with `hμ (MvPolynomial.mem_support_iff.mpr h)`. Rewrite using `[if_pos rfl, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `simp)]`. Rewrite using `[if_pos rfl]`. Establish `hbound : ‖(N : ℂ) ^ Fintype.card V * (MvPolynomial.coeff μ G * ∏ v, (ρ v : ℂ) ^ μ v)‖ ≤ (N : ℝ) ^ Fintype.card V * S`. Rewrite using `[← key]`. Combine the equalities or inequalities in the displayed calculation.
-
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[norm_mul, norm_prod]`. Simplify using `only [norm_pow, norm_inv, hζn, inv_one, one_pow, Finset.prod_const_one, mul_one]`. Conclude with `hS (z k) (hz k)`.
-
-Use `_ = (N : ℝ) ^ Fintype.card V * S := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fun, Fintype.card_fin, nsmul_eq_mul, Nat.cast_pow]`. Simplify using `only [norm_mul, norm_pow, norm_prod, Complex.norm_real, Real.norm_eq_abs, Complex.norm_natCast] at hbound`. Establish `hpos : (0:ℝ) < (N : ℝ) ^ Fintype.card V` using `pow_pos (Nat.cast_pos.mpr hN) _`. Establish `habs : ∏ v, |ρ v| ^ μ v = ∏ v, ρ v ^ μ v` using `Finset.prod_congr rfl (fun v _ => by rw [abs_of_pos (hρ v)])`.
-
-Rewrite `hbound` using `[habs]`. Conclude with `le_of_mul_le_mul_left hbound hpos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_cauchy_bound : CoeffCauchy := by
   unfold CoeffCauchy
@@ -472,19 +462,19 @@ theorem coeff_cauchy_bound : CoeffCauchy := by
 end cauchy
 
 /- English proof (translation)
-Introduce `K _ _ g abelian₂ ℓ de La logOm V _ c G μ n S Rr h hcf hmem hS hRr hev`. Take `⟨hNg, hNd⟩` from `degree_norm_base K g abelian₂ ℓ de La logOm V c μ n h`. Establish `hde` using `h.2.2.1`. Establish `hℓ` using `h.2.1`. Establish `hBpos : (0 : ℝ) < Rr ^ (∑ v, μ v)` using `pow_pos hRr _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlen : ∀ σ, (lineNN de ℓ c μ n).len σ (MvPolynomial.coeff μ G) ≤ S σ * Rr ^ (∑ v, μ v)`. Introduce `σ`. Establish `hnv : ∀ v, 0 < (ℓ (c v)).n σ` using `fun v => (hℓ (c v)).2 σ`. Establish `hdn : 0 < de.n σ ^ n` using `pow_pos (hde.2 σ) n`. Establish `hC` using `coeff_cauchy_bound V (MvPolynomial.map σ G) (fun v => 1 / (ℓ (c v)).n σ) (S σ * Rr ^ (∑ v, μ v) / de.n σ ^ n) μ (fun v => one_div_pos.mpr (hnv v)) (fun z hz => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[le_div_iff₀ hdn]`. Conclude with `hev σ z (fun v => (le_div_iff₀ (hnv v)).mp (hz v)))`. Rewrite `hC` using `[MvPolynomial.coeff_map, le_div_iff₀ hdn]`. Establish `hprod : ∏ v, (1 / (ℓ (c v)).n σ) ^ μ v = (∏ v, (ℓ (c v)).n σ ^ μ v)⁻¹`. Rewrite using `[← Finset.prod_inv_distrib]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[one_div, inv_pow]`. Rewrite `hC` using `[hprod]`. Simplify using `only [MLine.len, lineNN, MLine.tensor, MLine.dual, MLine.pow, MLine.prodPow]`. Combine the equalities or inequalities in the displayed calculation. Establish `hE` using `lambda_endomorphism K (lineNN de ℓ c μ n) (MvPolynomial.coeff μ G) S _ hNg hcf hmem hS hBpos hlen`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `finrank_pos_real K`. Establish `hlogB : Real.log (Rr ^ (∑ v, μ v)) = (∑ v, (μ v : ℝ)) * Real.log Rr`. Rewrite using `[Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[le_div_iff₀ hd]`. Establish `hN2 : (lineNN de ℓ c μ n).deg ≤ ((pDeg logOm + (1 / 2) * Real.log La) * ((∑ v, (μ v : ℝ)) + (g : ℝ) * n)) * Module.finrank ℚ K`. Use `hNd` as an intermediate fact. Simplify using `only [MLine.ndeg] at this`. Rewrite `this` using `[div_le_iff₀ hd]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hE` using `[hlogB]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem lambda_number_base : LamNumber0 := by
   intro K _ _ g abelian₂ ℓ de La logOm V _ c G μ n S Rr h hcf hmem hS hRr hev
@@ -524,7 +514,7 @@ theorem lambda_number_base : LamNumber0 := by
   nlinarith
 
 /- English proof (translation)
-Unfold `LamNumber`. Introduce `K _ _ g Lie ℓ u de La logOm V _ c G μ n S Rr h`. Conclude with `lambda_number_base K g _ ℓ de La logOm V c G μ n S Rr (CMNumbersLink_of hH hD K g Lie ℓ u de La logOm h)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LamNumber_of (hH : HadamardIdeals) (hD : DetGood) : LamNumber := by
   unfold LamNumber
@@ -536,9 +526,9 @@ section loc
 variable {K : Type} [Field K] [NumberField K] {p : HeightOneSpectrum (𝓞 K)}
 
 /- English proof (translation)
-Take `⟨ha0, hac⟩` from `ha`. Take `⟨hb0, hbc⟩` from `hb`. Use `⟨mul_ne_zero ha0 hb0, ?_⟩` and prove the remaining obligations. Establish `hsa : FractionalIdeal.spanSingleton (𝓞 K)⁰ a ≠ 0` using `FractionalIdeal.spanSingleton_eq_zero_iff.not.mpr ha0`. Establish `hsb : FractionalIdeal.spanSingleton (𝓞 K)⁰ b ≠ 0` using `FractionalIdeal.spanSingleton_eq_zero_iff.not.mpr hb0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul (K := K) (v := p) hsa hsb, FractionalIdeal.count_mul (K := K) (v := p) hI hJ, hac, hbc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma IsLocGen.mul' {a b : K} {I J : FractionalIdeal (𝓞 K)⁰ K}
     (ha : IsLocGen p a I) (hb : IsLocGen p b J) (hI : I ≠ 0) (hJ : J ≠ 0) : IsLocGen p (a * b) (I * J) := by
@@ -551,7 +541,7 @@ lemma IsLocGen.mul' {a b : K} {I J : FractionalIdeal (𝓞 K)⁰ K}
     FractionalIdeal.count_mul (K := K) (v := p) hI hJ, hac, hbc]
 
 /- English proof (translation)
-Take `⟨ha0, hac⟩` from `ha`. Use `⟨pow_ne_zero _ ha0, ?_⟩` and prove the remaining obligations. Rewrite using `[← FractionalIdeal.spanSingleton_pow, FractionalIdeal.count_pow, FractionalIdeal.count_pow, hac]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma IsLocGen.pow' {a : K} {I : FractionalIdeal (𝓞 K)⁰ K} (ha : IsLocGen p a I) (k : ℕ) :
     IsLocGen p (a ^ k) (I ^ k) := by
@@ -560,7 +550,7 @@ lemma IsLocGen.pow' {a : K} {I : FractionalIdeal (𝓞 K)⁰ K} (ha : IsLocGen p
   rw [← FractionalIdeal.spanSingleton_pow, FractionalIdeal.count_pow, FractionalIdeal.count_pow, hac]
 
 /- English proof (translation)
-Take `⟨ha0, hac⟩` from `ha`. Use `⟨inv_ne_zero ha0, ?_⟩` and prove the remaining obligations. Rewrite using `[← FractionalIdeal.spanSingleton_inv, FractionalIdeal.count_inv, FractionalIdeal.count_inv, hac]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma IsLocGen.inv' {a : K} {I : FractionalIdeal (𝓞 K)⁰ K} (ha : IsLocGen p a I) : IsLocGen p a⁻¹ I⁻¹ := by
   obtain ⟨ha0, hac⟩ := ha
@@ -568,9 +558,9 @@ lemma IsLocGen.inv' {a : K} {I : FractionalIdeal (𝓞 K)⁰ K} (ha : IsLocGen p
   rw [← FractionalIdeal.spanSingleton_inv, FractionalIdeal.count_inv, FractionalIdeal.count_inv, hac]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty]`. Conclude with `⟨one_ne_zero, by rw [FractionalIdeal.spanSingleton_one]⟩`. Consider the case `@insert i s hi ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi]`. Conclude with `(h i).mul' ih (hI i) (Finset.prod_ne_zero_iff.mpr fun j _ => hI j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma IsLocGen.prod' {ι : Type} (s : Finset ι) (a : ι → K) (I : ι → FractionalIdeal (𝓞 K)⁰ K)
     (h : ∀ i, IsLocGen p (a i) (I i)) (hI : ∀ i, I i ≠ 0) : IsLocGen p (∏ i ∈ s, a i) (∏ i ∈ s, I i) := by
@@ -586,13 +576,11 @@ lemma IsLocGen.prod' {ι : Type} (s : Finset ι) (a : ι → K) (I : ι → Frac
 end loc
 
 /- English proof (translation)
-Introduce `K _ _ g ℓ de V _ c μ n cf hde hℓ hloc`. Establish `hP0 : (∏ v, (ℓ (c v)).I ^ μ v) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun v _ => pow_ne_zero _ (hℓ (c v)).1`. Establish `hI0 : (lineNN de ℓ c μ n).I ≠ 0`. Simplify using `only [lineNN, MLine.tensor, MLine.dual, MLine.pow, MLine.prodPow]`. Conclude with `mul_ne_zero (pow_ne_zero _ hde.1) (inv_ne_zero hP0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mem_of_loc' K _ cf hI0` to reduce the goal to its premises. Introduce `p`. Take `⟨t, cl, ht, hcl, hv⟩` from `hloc p`. Establish `hG : IsLocGen p (∏ v, cl (c v) ^ μ v) (∏ v, (ℓ (c v)).I ^ μ v)` using `IsLocGen.prod' _ _ _ (fun v => (hcl (c v)).pow' (μ v)) (fun v => pow_ne_zero _ (hℓ (c v)).1)`. Use `⟨t ^ n * (∏ v, cl (c v) ^ μ v)⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [lineNN, MLine.tensor, MLine.dual, MLine.pow, MLine.prodPow]`. Conclude with `(ht.pow' n).mul' hG.inv' (pow_ne_zero _ hde.1) (inv_ne_zero hP0)`. Establish `hne : p.valuation K (∏ v, cl (c v) ^ μ v) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hG.1`. Rewrite using `[map_mul, map_inv₀]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[map_mul, mul_assoc, mul_inv_cancel₀ hne, mul_one]`. Use `_ ≤ _ := by gcongr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mem_of_local : CoeffMemOfLoc := by
   intro K _ _ g ℓ de V _ c μ n cf hde hℓ hloc

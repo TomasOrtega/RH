@@ -12,13 +12,13 @@ private theorem UpperTheory.preimage_whiskerRight_comp_over {S : Scheme.{0}} {A 
   simp
 
 /- English proof (translation)
-Introduce `S G Y Y' U U' hU hU'`. Take `⟨φ, hφ, -⟩` from `hU'.2 Y U hU.1`. Take `⟨ψ, hψ, -⟩` from `hU.2 Y' U' hU'.1`. Establish `hid : ∀ {Z : Over S} (W : (Z ⊗ G).left.Opens), ((𝟙 Z) ▷ G).left ⁻¹ᵁ W = W`. Introduce `Z W`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `e1 : φ ≫ ψ = 𝟙 Y`. Take `⟨y, -, huniq⟩` from `hU.2 Y U hU.1`. Establish `a` using `huniq (φ ≫ ψ) (by show ((φ ≫ ψ) ▷ G).left ⁻¹ᵁ U = U`. Rewrite using `[UpperTheory.preimage_whiskerRight_comp_over, hψ, hφ])`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `b` using `huniq (𝟙 Y) (hid U)`. Rewrite using `[a, b]`. Establish `e2 : ψ ≫ φ = 𝟙 Y'`. Take `⟨y, -, huniq⟩` from `hU'.2 Y' U' hU'.1`. Establish `a` using `huniq (ψ ≫ φ) (by show ((ψ ≫ φ) ▷ G).left ⁻¹ᵁ U' = U'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[UpperTheory.preimage_whiskerRight_comp_over, hφ, hψ])`. Establish `b` using `huniq (𝟙 Y') (hid U')`. Rewrite using `[a, b]`. Conclude with `⟨⟨φ, ψ, e1, e2⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem UpperTheory.clopRep_unique :
     ∀ {S : Scheme.{0}} (G Y Y' : Over S) (U : (Y ⊗ G).left.Opens) (U' : (Y' ⊗ G).left.Opens), UpperTheory.RepresentationRank.Rep G Y U → UpperTheory.RepresentationRank.Rep G Y' U' → Nonempty (Y ≅ Y') := by

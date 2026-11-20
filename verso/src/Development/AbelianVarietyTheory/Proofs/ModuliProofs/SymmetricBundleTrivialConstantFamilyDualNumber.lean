@@ -25,15 +25,15 @@ namespace GlobalTheory.KS.EpsSym
 open GlobalTheory.KS.EpsBundle
 
 /- English proof (translation)
-Use `choose s hs using hc`. Set `F : I → I → (Fin g → ℂ) → ℂ` to `fun i i' z => a i i' z + h i (-z) - h i' z`. Set `v : (Fin g → ℂ) → ℂ` to `fun z => F (s (-z)) (s z) z`. Establish `hv : ∀ i i' z, -z ∈ U i → z ∈ U i' → v z = F i i' z` using `fun i i' z h1 h2 => by`. Use `hg i i' _ _ z h1 h2 (hs _) (hs _)` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [v, F]`. Take the linear combination `this`. Establish `hO : ∀ i i', IsOpen {z | -z ∈ U i ∧ z ∈ U i'}` using `fun i i' => ((ho i).preimage continuous_neg).inter (ho i')`. Establish `hF : ∀ i i', DifferentiableOn ℂ (F i i') {z | -z ∈ U i ∧ z ∈ U i'}` using `fun i i' => ((ha i i').add ((hh i).1.comp differentiableOn_id.neg fun z hz => hz.1)).sub ((hh i').1.mono fun z hz => hz.2)`. Establish `hdiff : Differentiable ℂ v` using `fun z => by`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : {w | -w ∈ U (s (-z)) ∧ w ∈ U (s z)} ∈ nhds z` using `(hO _ _).mem_nhds ⟨hs _, hs _⟩`. Use `((hF _ _).differentiableAt hz).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hz] with w hw using hv _ _ w hw.1 hw.2`. Establish `key` using `(GlobalTheory.entire_antilinear_periods_const g Λ hd hf v (-(t + t)) hdiff fun l z => by`. Establish `e : -(z + (l : Fin g → ℂ)) = -z + ((-l : Λ) : Fin g → ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[Submodule.coe_neg]`. Normalize the expressions using the abelian group laws. Rewrite using `[hv (s (-z)) (s z) (z + l) (by rw [e]; exact hl _ _ _ (hs _)) (hl _ _ _ (hs _))]`. Simplify using `only [v, F]`. Rewrite using `[e, (hh _).2 (-l) _ (hs _), (hh _).2 l _ (hs _), hp, Submodule.coe_neg, star_neg, dotProduct_neg, neg_dotProduct, add_dotProduct]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use the proof step `ring).1`. Use function extensionality and compare the values at `b`. Use `congrFun key b` as an intermediate fact. Simplify using `only [Pi.neg_apply, Pi.add_apply, Pi.zero_apply] at this ⊢`. Take the linear combination `(-1 / 2 : ℂ) * this`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem period_eq_zero {g : ℕ} (Λ : Submodule ℤ (Fin g → ℂ)) (hd : DiscreteTopology Λ)
     (hf : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) {I : Type} (U : I → Set (Fin g → ℂ))
@@ -77,9 +77,9 @@ theorem period_eq_zero {g : ℕ} (Λ : Submodule ℤ (Fin g → ℂ)) (hd : Disc
 variable {Y Y' : Scheme.{0}} {π : Y' ⟶ Sp (DualNumber ℂ)} {ρ : Y' ⟶ Y}
 
 /- English proof (translation)
-Establish `gen : ∀ {Z : Scheme.{0}} (f f' : Y' ⟶ Z) (_ : f = f') (V : Z.Opens) e e', f.appLE V W₁ e = f'.appLE V W₁ e'`. Introduce `Z f f' hf V e e'`. Substitute `hf` using the available equality. Both sides reduce to the same expression. Rewrite using `[map_add, map_mul, map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `congrArg (fun f => CommRingCat.Hom.hom f ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber ℂ))).inv.hom DualNumber.eps)) ((Scheme.Hom.appLE_comp_appLE ν' π ⊤ W W₁ (fun _ _ => trivial) hW).trans (gen _ _ h₁ _ _ _))`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE, gen _ _ h₂]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_one_add_eps {ν' : Y' ⟶ Y'} {ν : Y ⟶ Y} (h₁ : ν' ≫ π = π) (h₂ : ν' ≫ ρ = ρ ≫ ν)
     {W W₁ : Y'.Opens} {O O₁ : Y.Opens} (hW : W₁ ≤ ν' ⁻¹ᵁ W) (h : W ≤ ρ ⁻¹ᵁ O) (hO : O₁ ≤ ν ⁻¹ᵁ O)
@@ -100,7 +100,7 @@ theorem appLE_one_add_eps {ν' : Y' ⟶ Y'} {ν : Y ⟶ Y} (h₁ : ν' ≫ π = 
       Scheme.Hom.appLE_comp_appLE, gen _ _ h₂]
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_two]`. Express the relevant statement in the definitionally equal form `((u 0 ^ (1 : ℤ) * u 1 ^ (-1 : ℤ) : Bˣ) : B) = _`. Rewrite using `[zpow_one, zpow_neg_one, Units.val_mul, Units.mul_inv_eq_iff_eq_mul, hu, hv]`. Take the linear combination `(-(x - y) * y) * he`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem val_mul_inv {B : Type} [CommRing B] (e x y : B) (he : e * e = 0) (u : Fin 2 → Bˣ)
     (hu : (u 0 : B) = 1 + e * x) (hv : (u 1 : B) = 1 + e * y) :
@@ -113,11 +113,11 @@ theorem val_mul_inv {B : Type} [CommRing B] (e x y : B) (he : e * e = 0) (u : Fi
 variable {q : Y ⟶ Sp ℂ} {j : Y ⟶ Y'}
 
 /- English proof (translation)
-Take `⟨hO, -, hD⟩` from `GlobalTheory.T.const_thickening_complex_functions_structure Y Y' q π ρ j hp hj hq`. Establish `le : ∀ W : Y'.Opens, W ≤ ρ ⁻¹ᵁ (j ⁻¹ᵁ W)` using `fun W => (hO W).ge`. Establish `l₁ : j ⁻¹ᵁ (Q.U i ⊓ Q.U i' ⊓ Q.U i'') ≤ j ⁻¹ᵁ (Q.U i ⊓ Q.U i')` using `fun _ hy => hy.1`. Establish `l₂ : j ⁻¹ᵁ (Q.U i ⊓ Q.U i' ⊓ Q.U i'') ≤ j ⁻¹ᵁ (Q.U i' ⊓ Q.U i'')` using `fun _ hy => ⟨hy.1.2, hy.2⟩`. Establish `l₃ : j ⁻¹ᵁ (Q.U i ⊓ Q.U i' ⊓ Q.U i'') ≤ j ⁻¹ᵁ (Q.U i ⊓ Q.U i'')` using `fun _ hy => ⟨hy.1.1, hy.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E : resG Y' (inf_le_left : Q.U i ⊓ Q.U i' ⊓ Q.U i'' ≤ _) (Q.g i i').val * resG Y' (le_inf (inf_le_left.trans inf_le_right) inf_le_right) (Q.g i' i'').val = resG Y' (le_inf (inf_le_left.trans inf_le_left) inf_le_right) (Q.g i i'').val` using `congrArg Units.val (hQ.cocycle i i' i'')`. Rewrite `E` using `[hg _ _ (le _), hg _ _ (le _), hg _ _ (le _)]`. Simplify using `only [map_add, map_mul, map_one, res_constFn'] at E`. Rewrite `E` using `[res_appLE ρ _ l₁ _ (le _), res_appLE ρ _ l₂ _ (le _), res_appLE ρ _ l₃ _ (le _)]`. Use `(uniq (ρ.appLE _ _ (le (Q.U i ⊓ Q.U i' ⊓ Q.U i''))).hom _ (fun F => decomp π ρ _ (hD _) _ (hO _) (le _) F) (a := 1) (a' := 1) (b := resG Y l₁ (k i i') + resG Y l₂ (k i' i'')) (b' := resG Y l₃ (k i i'')) (by` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_one, map_add]`. Take the linear combination `E - ((ρ.appLE _ _ (le _)).hom (resG Y l₁ (k i i')) * (ρ.appLE _ _ (le _)).hom (resG Y l₂ (k i' i''))) * eps_sq π (Q.U i ⊓ Q.U i' ⊓ Q.U i''))).2`. Rewrite using `[← valAt'_res x l₁ _ hx, ← valAt'_res x l₂ _ hx, ← valAt'_res x l₃ _ hx, ← valAt'_add, this]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem cocycle_val (hp : IsPullback ρ π q (spMap (algebraMap ℂ (DualNumber ℂ)))) (hj : j ≫ ρ = 𝟙 Y)
     (hq : j ≫ π = q ≫ (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom)) (Q : LB Y')
@@ -147,15 +147,15 @@ theorem cocycle_val (hp : IsPullback ρ π q (spMap (algebraMap ℂ (DualNumber 
   rw [← valAt'_res x l₁ _ hx, ← valAt'_res x l₂ _ hx, ← valAt'_res x l₃ _ hx, ← valAt'_add, this]
 
 /- English proof (translation)
-Take `⟨hO, -, -⟩` from `GlobalTheory.T.const_thickening_complex_functions_structure Y Y' q π ρ j hp hj hq`. Establish `le : ∀ W : Y'.Opens, W ≤ ρ ⁻¹ᵁ (j ⁻¹ᵁ W)` using `fun W => (hO W).ge`. Set `Q'` to `LB.LinComb Q (K := Fin 2) ![ν', 𝟙 Y'] ![1, -1]`. Establish `hW : ∀ J : Fin 2 → Q.ι, j ⁻¹ᵁ Q'.U J = ν ⁻¹ᵁ (j ⁻¹ᵁ Q.U (J 0)) ⊓ j ⁻¹ᵁ Q.U (J 1)` using `fun J => by`. Rewrite using `[← Scheme.Hom.comp_preimage, ← h₃]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `y`. Conclude with `Set.mem_iInter.trans Fin.forall_fin_two`. Establish `l₀ : ∀ J J' : Fin 2 → Q.ι, j ⁻¹ᵁ (Q'.U J ⊓ Q'.U J') ≤ ν ⁻¹ᵁ (j ⁻¹ᵁ (Q.U (J 0) ⊓ Q.U (J' 0)))` using `fun J J' y hy => ⟨((hW J).le hy.1).1, ((hW J').le hy.2).1⟩`. Establish `l₁ : ∀ J J' : Fin 2 → Q.ι, j ⁻¹ᵁ (Q'.U J ⊓ Q'.U J') ≤ (𝟙 Y) ⁻¹ᵁ (j ⁻¹ᵁ (Q.U (J 1) ⊓ Q.U (J' 1)))` using `fun J J' y hy => ⟨((hW J).le hy.1).2, ((hW J').le hy.2).2⟩`. Take `⟨a, ha⟩` from `(trivial_iff_coboundary Y Y' q π ρ j hp hj hq Q' (fun J J' => (ν.appLE _ _ (l₀ J J')).hom (k (J 0) (J' 0)) - (Scheme.Hom.appLE (𝟙 Y) _ _ (l₁ J J')).hom (k (J 1) (J' 1))) (LB.isLB_linComb hQ _ _) fun J J' h => by`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub]`. Establish `m : ∀ n, Q'.U J ⊓ Q'.U J' ≤ (![ν', 𝟙 Y'] : Fin 2 → _) n ⁻¹ᵁ (Q.U (J n) ⊓ Q.U (J' n))` using `fun n y hy => ⟨LB.wchart_le Q _ J n hy.1, LB.wchart_le Q _ J' n hy.2⟩`. Use `val_mul_inv _ _ _ (eps_sq π _) _ ?_ ?_` and prove the remaining obligations. Use `Eq.trans ?_ (appLE_one_add_eps h₁ h₂ (m 0) (le _) _ h _)` and prove the remaining obligations. Rewrite using `[← hg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `Eq.trans ?_ (appLE_one_add_eps (ν' := 𝟙 Y') (Category.id_comp _) (by simp) (m 1) (le _) _ h _)` and prove the remaining obligations. Rewrite using `[← hg]`. Use the proof step `rfl).1 ht`. Use `⟨fun i i' => j ⁻¹ᵁ Q'.U ![i, i'], fun i i' => a ![i, i'], fun i i' => hW _, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i i' m m' x hx hx'`. Establish `hxx : ⊤ ≤ x ⁻¹ᵁ (j ⁻¹ᵁ (Q'.U ![i, i'] ⊓ Q'.U ![m, m']))` using `fun p hp => ⟨hx hp, hx' hp⟩`. Establish `E` using `congrArg (valAt' x _) (ha ![i, i'] ![m, m'])`. Rewrite `E` using `[valAt'_sub, valAt'_sub, valAt'_res _ _ _ hxx, valAt'_res _ _ _ hxx, valAt'_appLE _ _ _ _ _ _ hxx, valAt'_appLE _ _ _ _ _ _ hxx, Category.comp_id]`. Conclude with `E`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem odd_part_coboundary (hp : IsPullback ρ π q (spMap (algebraMap ℂ (DualNumber ℂ)))) (hj : j ≫ ρ = 𝟙 Y)
     (hq : j ≫ π = q ≫ (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom)) (Q : LB Y')
@@ -201,11 +201,9 @@ theorem odd_part_coboundary (hp : IsPullback ρ π q (spMap (algebraMap ℂ (Dua
   exact E
 
 /- English proof (translation)
-Take `⟨U, hU, t, ht⟩` from `h (IsLocalRing.closedPoint (DualNumber ℂ))`. Establish `hU' : U = ⊤` using `(IsLocalRing.closedPoint_mem_iff U).1 hU`. Substitute `hU'` using the available equality. Set `s : A'.left ⟶ (A'.hom ⁻¹ᵁ ⊤).toScheme` to `A'.left.topIso.inv`. Establish `hs : s ≫ (A'.hom ⁻¹ᵁ ⊤).ι = 𝟙 _` using `A'.left.topIso.inv_hom_id`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : (fun k => s ≫ (![(A'.hom ⁻¹ᵁ ⊤).ι ≫ (GrpObj.inv : A' ⟶ A').left, (A'.hom ⁻¹ᵁ ⊤).ι] : Fin 2 → _) k) = ![(GrpObj.inv : A' ⟶ A').left, 𝟙 A'.left]`. Use function extensionality and compare the values at `k`. Use `fin_cases k`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) hs).trans (Category.id_comp _))`. Conclude with `hs`.
-
-Rewrite using `[← e]`. Conclude with `⟨_, DVR.pullGen_isGen_of_isGen _ _ t ht s⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gen_of_sym (A' : Over (Sp (DualNumber ℂ))) [GrpObj A'] (Q : LB A'.left) (h : Out.Sym A' Q) :
     ∃ t : (LB.LinComb Q (K := Fin 2) ![(GrpObj.inv : A' ⟶ A').left, 𝟙 A'.left] ![1, -1]).Gen, t.IsGen := by
@@ -224,19 +222,17 @@ theorem gen_of_sym (A' : Over (Sp (DualNumber ℂ))) [GrpObj A'] (Q : LB A'.left
   exact ⟨_, DVR.pullGen_isGen_of_isGen _ _ t ht s⟩
 
 /- English proof (translation)
-Introduce `laws P₀ u Hm χ hu A' _ ρ j hc Q k hQ hg hs`. Take `⟨g₁, g₂, hj⟩` from `hc`. Establish `hq` using `g₂.1.w`. Set `U : Q.ι → Set (Fin P₀.g → ℂ)` to `fun i => {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ (j ⁻¹ᵁ Q.U i)}`. Establish `hper : ∀ z (l : u.Λ), u.ex (z + l) = u.ex z` using `fun z l => CubeValues.ex_add_period u z l l.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcov : ⨆ i, j ⁻¹ᵁ Q.U i = ⊤` using `by rw [← Scheme.Hom.preimage_iSup, hQ.cover]; rfl`. Establish `ho : ∀ i, IsOpen (U i)` using `fun i => (u.hol _ 0).1`. Establish `hl : ∀ i (l : u.Λ) z, z ∈ U i → z + l ∈ U i` using `fun i l z hz => by`. Simplify using `only [U, Set.mem_setOf_eq, hper]`. Conclude with `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcv : ∀ z, ∃ i, z ∈ U i` using `fun z => by`. Establish `h : (u.ex z).left (default : PrimeSpectrum ℂ) ∈ ⨆ i, j ⁻¹ᵁ Q.U i` using `by rw [hcov]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Conclude with `⟨i, (top_le_preimage_iff_mem _ _).2 hi⟩`. Establish `hin : ∀ {i i' z}, z ∈ U i → z ∈ U i' → ⊤ ≤ (u.ex z).left ⁻¹ᵁ (j ⁻¹ᵁ (Q.U i ⊓ Q.U i'))` using `fun h h' p hp => ⟨h hp, h' hp⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, h, hh, hk⟩` from `GlobalTheory.holomorphic_periodic_cocycle_coboundary P₀.g u.Λ u.discrete u.full Q.ι U (fun i i' z => valAt' (u.ex z).left _ (k i i')) ho hl hcv (fun i i' => (u.hol _ (k i i')).2.mono fun z hz => hin hz.1 hz.2) (fun i i' l z _ => by simp only [hper]) (fun i i' i'' z hz => cocycle_ …`. Take `⟨W, a, hW, ha⟩` from `odd_part_coboundary g₁.1 hj hq Q k hQ hg (Over.w (GrpObj.inv : A' ⟶ A')) (PolBaseChange.inv_comm g₁) (PolBaseChange.inv_comm g₂).symm (gen_of_sym A' Q hs)`. Establish `hW' : ∀ {i i' z}, -z ∈ U i → z ∈ U i' → ⊤ ≤ (u.ex z).left ⁻¹ᵁ W i i'` using `fun {i i' z} h h' => by`. Rewrite using `[hW, top_le_preimage_inf, ← top_le_preimage_comp, SymmetricSemicharacter.ex_neg_left]`. Conclude with `⟨h, h'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `ht : t = 0` using `period_eq_zero u.Λ u.discrete u.full U h t (fun i i' z => valAt' (u.ex z).left _ (a i i')) ho hl hcv hh (fun i i' => (u.hol _ (a i i')).2.mono fun z hz => hW' hz.1 hz.2) (fun i i' l z => by simp only [hper]) (fun i i' m m' z h₁ h₂ h₃ h₄ => by`. Establish `E` using `ha i i' m m' _ (hW' h₁ h₂) (hW' h₃ h₄)`. Rewrite `E` using `[SymmetricSemicharacter.ex_neg_left]`. Rewrite using `[← hk i m (-z) ⟨h₁, h₃⟩, ← hk i' m' z ⟨h₂, h₄⟩]`. Conclude with `E)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `ht` using the available equality. Use `choose b hb using algebraic_coboundary_of_holomorphic_coboundary laws P₀ u Hm χ hu Q.ι (fun i => j ⁻¹ᵁ Q.U i) (fun i i' => k i i') h hcov (fun i => ⟨(hh i).1, fun l z hz => by rw [(hh i).2 l z hz, zero_dotProduct, add_zero]⟩) (fun i i' z hz => hk i i' z ⟨fun p hp => (hz hp).1, fu …`. Use `(trivial_iff_coboundary _ _ _ _ ρ j g₁.1 hj hq Q k hQ hg).2 ⟨fun i => - b i, fun i i' => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.existsUnique_section_of_locally_regular P₀ u Hm χ hu (j ⁻¹ᵁ (Q.U i ⊓ Q.U i')) (fun z => valAt' (u.ex z).left _ (k i i')) (fun z hz => ⟨_, k i i', le_rfl, hz, fun _ _ => rfl⟩)).unique (fun _ _ => rfl) fun z hz => ?_` and prove the remaining obligations. Establish `z₁ : z ∈ U i` using `fun p hp => (hz hp).1`.
-
-Establish `z₂ : z ∈ U i'` using `fun p hp => (hz hp).2`. Rewrite using `[valAt'_sub, valAt'_res _ _ _ hz, valAt'_res _ _ _ hz, valAt'_neg, valAt'_neg, hb i z z₁, hb i' z z₂]`. Conclude with `((hk i i' z ⟨z₁, z₂⟩).trans (by ring)).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivial_of_symmetric : Out.Laws → ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ (A' : Over (Sp (DualNumber ℂ))) [GrpObj A'] (ρ : A'.left ⟶ P₀.A.left) (j : P₀.A.left ⟶ A'.left), IsConst A' P₀.A ρ j → ∀ (Q : LB A'.left) (k : ∀ i i', Γ(P₀.A.left, j ⁻¹ᵁ (Q.U i ⊓ Q.U i'))), Q.IsLB → (∀ i i' (h : Q.U i ⊓ Q.U i' ≤ ρ ⁻¹ᵁ (j ⁻¹ᵁ (Q.U i ⊓ Q.U i'))), (Q.g i i').val = 1 + constFn A'.hom _ DualNumber.eps * (ρ.appLE _ _ h).hom (k i i')) → Out.Sym A' Q → ∃ t : Q.Gen, t.IsGen := by
   intro laws P₀ u Hm χ hu A' _ ρ j hc Q k hQ hg hs

@@ -17,7 +17,7 @@ section pt
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Unfold `rowsNv`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowsNv_val (l : Fin (r + 1)) (s : Fin (k + 1)) (j : Fin (r - l.val + k)) :
     (rowsNv k r l s j).val = if j.val < s.val then r + j.val else r + j.val + 1 := by
@@ -25,18 +25,16 @@ theorem rowsNv_val (l : Fin (r + 1)) (s : Fin (k + 1)) (j : Fin (r - l.val + k))
   split_ifs <;> rfl
 
 /- English proof (translation)
-Simplify using `only [pbOp, wirtBar, h.fderiv_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pbOp_ev {F₁ F₂ : (Fin r → ℂ) → E} {c : Fin r → ℂ} (l : Fin r) (h : F₁ =ᶠ[nhds c] F₂) :
     pbOp l F₁ c = pbOp l F₂ c := by
   simp only [pbOp, wirtBar, h.fderiv_eq]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ Glev k r 0 ∩ D`. Rewrite using `[EA_val, ev_E hD _ _ _ hg]`. Establish `hloc` using `(good_eh (E := E) hD (cI (wI k r w)) (cI (esI k r a))).loc (cut k r 0 D f) f (fun x hx => cut_of_mem f hx) g hg`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [posL_cI] at hloc`. Rewrite using `[posL_cI, posL_cI]`. Use `show EH k r (wI k r w) (esI k r a) (cut k r 0 D f) g = 0`. Rewrite using `[hloc, rightRuleBv z' D f hz' hD hf hRf g hg a ha w]`. Use `show ((Eh hD (cI (wI k r w)) (cI (esI k r a)) ⟨cut k r 0 D f, cut_mem hD hf⟩ : VS k r 0 D E) : Mx k r → E) g = 0`.
-
-Rewrite using `[(Eh hD (cI (wI k r w)) (cI (esI k r a)) ⟨cut k r 0 D f, cut_mem hD hf⟩).2.2 g hg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EA_v0Bv {D : Set (Mx k r)} (hD : IsOpen D) (z' : Fin (2 * r + k + 1) → ℂ) (hz' : inWb k r z') {f : Mx k r → E}
     (hf : SmoothLev k r 0 D f) (hRf : RightEq k r z' 0 D f) (a : Fin r) (ha : a.val + 1 < r) (w : Fin (k + 1)) :
@@ -55,53 +53,51 @@ theorem EA_v0Bv {D : Set (Mx k r)} (hD : IsOpen D) (z' : Fin (2 * r + k + 1) →
     rw [(Eh hD (cI (wI k r w)) (cI (esI k r a)) ⟨cut k r 0 D f, cut_mem hD hf⟩).2.2 g hg]
 
 /- English proof (translation)
-Use `set x0 := wCell k r (Fin.last r) c * g with hx0def`. Establish `hx0 : x0 ∈ Glev k r 0 ∩ D` using `⟨cell_mem hc hg, hcD⟩`. Use `set v₀ : VS k r 0 D E := ⟨cut k r 0 D f, cut_mem hD hf⟩ with hv₀`. Establish `hLv : LeftEq k r z 0 D (v₀ : Mx k r → E)` using `leftEq_cut z hN hLf`. Use `set Λ := La hD v₀ x0 with hΛ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set tt := r - l - 2 + k with htt`. Establish `hT : tt + 2 = r - (⟨l, by omega⟩ : Fin (r + 1)).val + k` using `by simp only [Fin.val_mk]; omega`. Establish `hT1 : tt + 1 = r - (⟨l + 1, by omega⟩ : Fin (r + 1)).val + k` using `by simp only [Fin.val_mk]; omega`. Establish `hT2 : tt = r - (⟨l + 2, by omega⟩ : Fin (r + 1)).val + k` using `by simp only [Fin.val_mk]; omega`. Use `set a := rowsNv k r ⟨l, by omega⟩ s ∘ Fin.cast hT with ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set b := rowsNv k r ⟨l, by omega⟩ t ∘ Fin.cast hT with hb`. Establish `hav : ∀ m : Fin (tt + 2), (a m).val = if m.val < s.val then r + m.val else r + m.val + 1`. Introduce `m`. Simplify using `only [ha, Function.comp_apply, rowsNv_val, Fin.val_cast]`. Establish `hbv : ∀ m : Fin (tt + 2), (b m).val = if m.val < t.val then r + m.val else r + m.val + 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Simplify using `only [hb, Function.comp_apply, rowsNv_val, Fin.val_cast]`. Establish `hsk : s.val ≤ k` using `Nat.lt_succ_iff.mp s.isLt`. Establish `htk : t.val ≤ k` using `Nat.lt_succ_iff.mp t.isLt`. Establish `hLmid : ∀ p : Fin (2 * r + k + 1), r ≤ p.val → p.val + l + 2 ≤ 2 * r + k → ∀ X : SA E hD, Λ (EA hD (esI k r ⟨l, by omega⟩) p * X) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `p hp1 hp2 X`. Rewrite using `[hΛ, la_E hD v₀ hx0]`. Establish `hsm` using `(((X : Module.End ℂ (VS k r 0 D E)) v₀ : VS k r 0 D E)).2.1`. Establish `hle` using `leftEq_SA hD z hN X v₀ hLv`. Distinguish the cases in `hpw : p.val ≤ r + k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpe : p = wI k r ⟨p.val - r, by omega⟩` using `Fin.ext (by simp [wI]; omega)`. Rewrite using `[hpe, leftRuleBv z D _ hz hD hN hsm hle c hc g hg hcD ⟨l, by omega⟩ (by simp; omega)]`. Establish `hpe : p = esI k r ⟨2 * r + k - p.val, by omega⟩` using `Fin.ext (by simp [esI]; omega)`. Rewrite using `[hpe, Formalism.FourierDecayAlt.P.CutMP.TVG.mirror_left_rule_cell_holds E k r z D _ hz hD hN hsm hle c hc g hg hcD ⟨2 * r + k - p.val, by omega⟩ ⟨l, by omega⟩ (by simp; omega), if_neg (by simp; omega), zero_smul]`. Establish `hL1 : ∀ X : SA E hD, Λ (EA hD (esI k r ⟨l, by omega⟩) (esI k r ⟨l + 1, by omega⟩) * X) = (star (c ⟨l + 1, by omega⟩) / star (c ⟨l, by omega⟩)) • Λ X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `X`. Rewrite using `[hΛ, la_E hD v₀ hx0]`. Establish `hsm` using `(((X : Module.End ℂ (VS k r 0 D E)) v₀ : VS k r 0 D E)).2.1`. Establish `hle` using `leftEq_SA hD z hN X v₀ hLv`. Rewrite using `[Formalism.FourierDecayAlt.P.CutMP.TVG.mirror_left_rule_cell_holds E k r z D _ hz hD hN hsm hle c hc g hg hcD ⟨l + 1, by omega⟩ ⟨l, by omega⟩ (by simp), if_pos (by simp), La_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hRmid : ∀ p : Fin (2 * r + k + 1), r ≤ p.val → p.val + l + 2 ≤ 2 * r + k → ∀ X : SA E hD, Λ (X * EA hD p (esI k r ⟨l, by omega⟩)) = 0`. Introduce `p hp1 hp2 X`. Rewrite using `[hΛ, La_apply, Subalgebra.coe_mul, Module.End.mul_apply]`. Establish `hzero : ((EA hD p (esI k r ⟨l, by omega⟩) : SA E hD) : Module.End ℂ (VS k r 0 D E)) v₀ = 0`. Distinguish the cases in `hpw : p.val ≤ r + k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hpe : p = wI k r ⟨p.val - r, by omega⟩` using `Fin.ext (by simp [wI]; omega)`. Rewrite using `[hpe, hv₀, EA_v0Bv hD z' hz' hf hRf ⟨l, by omega⟩ (by simp; omega)]`. Establish `hpe : p = esI k r ⟨2 * r + k - p.val, by omega⟩` using `Fin.ext (by simp [esI]; omega)`. Rewrite using `[hpe, hv₀, Formalism.FourierDecayAlt.P.CutMP.TVG.root_action_on_truncated_vector hD z' hz' Formalism.FourierDecayAlt.P.CutMP.TVG.mirror_right_rule_holds hf hRf ⟨2 * r + k - p.val, by omega⟩ ⟨l, by omega⟩ (by simp; omega), if_neg (by simp; omega), zero_smul]`. Rewrite using `[hzero, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hR1 : ∀ X : SA E hD, Λ (X * EA hD (esI k r ⟨l + 1, by omega⟩) (esI k r ⟨l, by omega⟩)) = Λ X`. Introduce `X`. Rewrite using `[hΛ, La_apply, La_apply, Subalgebra.coe_mul, Module.End.mul_apply]`. Rewrite using `[hv₀, Formalism.FourierDecayAlt.P.CutMP.TVG.root_action_on_truncated_vector hD z' hz' Formalism.FourierDecayAlt.P.CutMP.TVG.mirror_right_rule_holds hf hRf ⟨l + 1, by omega⟩ ⟨l, by omega⟩ (by simp), if_pos (by simp), one_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hne : esI k r ⟨l, by omega⟩ ≠ esI k r ⟨l + 1, by omega⟩` using `by simp [esI, Fin.ext_iff]; omega`. Establish `hvalL : ∀ m : Fin tt, r ≤ (a m.castSucc.castSucc).val ∧ (a m.castSucc.castSucc).val + l + 2 ≤ 2 * r + k`. Introduce `m`. Use `m.isLt` as an intermediate fact. Rewrite using `[hav]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.coe_castSucc]`. Apply the tactic sequence `constructor <;> split_ifs <;> omega`. Establish `hvalLb : ∀ m : Fin tt, r ≤ (b m.castSucc.castSucc).val ∧ (b m.castSucc.castSucc).val + l + 2 ≤ 2 * r + k`. Introduce `m`. Use `m.isLt` as an intermediate fact.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hbv]`. Simplify using `only [Fin.coe_castSucc]`. Apply the tactic sequence `constructor <;> split_ifs <;> omega`. Apply the tactic sequence `have hring := stepBv_ring (EA (E := E) hD) (EA_gl hD) Λ (esI k r ⟨l, by omega⟩) (esI k r ⟨l + 1, by omega⟩) hne (star (c ⟨l + 1, by omega⟩) / star (c ⟨l, by omega⟩)) a b (Fin.ext (by rw [hav]; simp [esI]; split_ifs <;> omega)) (Fin.ext (by rw [hav]; simp [esI]; split_ifs <;> omeg …`. Establish `hc1 : a ∘ Fin.castSucc = rowsNv k r ⟨l + 1, by omega⟩ s ∘ Fin.cast hT1`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [Function.comp_apply]`. Rewrite using `[hav, rowsNv_val]`. Simplify using `only [Fin.coe_castSucc, Fin.val_cast]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hd1 : b ∘ Fin.castSucc = rowsNv k r ⟨l + 1, by omega⟩ t ∘ Fin.cast hT1`. Use function extensionality and compare the values at `j`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [Function.comp_apply]`. Rewrite using `[hbv, rowsNv_val]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.coe_castSucc, Fin.val_cast]`. Establish `hc2 : a ∘ Fin.castSucc ∘ Fin.castSucc = rowsNv k r ⟨l + 2, by omega⟩ s ∘ Fin.cast hT2`. Use function extensionality and compare the values at `j`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [Function.comp_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[hav, rowsNv_val]`. Simplify using `only [Fin.coe_castSucc, Fin.val_cast]`. Establish `hd2 : b ∘ Fin.castSucc ∘ Fin.castSucc = rowsNv k r ⟨l + 2, by omega⟩ t ∘ Fin.cast hT2`. Use function extensionality and compare the values at `j`. Apply `Fin.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[hbv, rowsNv_val]`. Simplify using `only [Fin.coe_castSucc, Fin.val_cast]`. Use `set Q1 := qminor (EA (E := E) hD) (a ∘ Fin.castSucc) (b ∘ Fin.castSucc) w with hQ1`. Establish `hcomm : Commute (EA (E` using `E) hD (esI k r ⟨l, by omega⟩) (esI k r ⟨l, by omega⟩)) Q1 := by`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `comm_qminor _ (EA_gl hD) _ (fun i h => ?_) (fun i h => ?_) w` and prove the remaining obligations. Establish `h1` using `congrArg Fin.val h`. Simplify using `only [Function.comp_apply] at h1`. Rewrite `h1` using `[hav]`. Establish `hi` using `i.isLt`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.coe_castSucc, esI, Fin.val_mk] at h1`. Apply the tactic sequence `split_ifs at h1 <;> omega`. Establish `h1` using `congrArg Fin.val h`. Simplify using `only [Function.comp_apply] at h1`. Rewrite `h1` using `[hbv]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hi` using `i.isLt`. Simplify using `only [Fin.coe_castSucc, esI, Fin.val_mk] at h1`. Apply the tactic sequence `split_ifs at h1 <;> omega`. Establish `hT' : Λ (Q1 * Tm (EA hD) (w - ((tt + 1 : ℕ) : ℂ)) (esI k r ⟨l, by omega⟩) (esI k r ⟨l, by omega⟩)) = (w - ((tt + 1 : ℕ) : ℂ)) • Λ Q1 + EH k r (esI k r ⟨l, by omega⟩) (esI k r ⟨l, by omega⟩) (((Q1 : Module.End ℂ (VS k r 0 D E)) v₀ : VS k r 0 D E) : Mx k r → E) x0`. Unfold `Tm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[if_pos rfl, mul_add, map_add, ← hcomm.eq, la_E hD v₀ hx0, Algebra.algebraMap_eq_smul_one, mul_smul_comm, mul_one, map_smul]`. Rewrite `hring` using `[hT', Formalism.FourierDecayAlt.P.CutMP.TVG.mirror_torus_cell_holds E k r D _ hD (((Q1 : Module.End ℂ (VS k r 0 D E)) v₀ : VS k r 0 D E)).2.1 c hc g hg hcD ⟨l, by omega⟩]`. Establish `hread : ∀ {t' : ℕ} (a' b' : Fin t' → Fin (2 * r + k + 1)) (w' : ℂ) (x : Mx k r), x ∈ Glev k r 0 ∩ D → La hD v₀ x (qminor (EA hD) a' b' w') = qminorOp (EH k r) a' b' w' f x` using `fun a' b' w' x hx => la_qminor hD hf a' b' w' hx`. Establish `hpb : pbOp ⟨l, by omega⟩ (fun c' => (((Q1 : Module.End ℂ (VS k r 0 D E)) v₀ : VS k r 0 D E) : Mx k r → E) (wCell k r (Fin.last r) c' * g)) c = pbOp ⟨l, by omega⟩ (fun c' => qminorOp (EH k r) (rowsNv k r ⟨l + 1, by omega⟩ s) (rowsNv k r ⟨l + 1, by omega⟩ t) w f (wCell k r (Fin.las …`. Apply `pbOp_ev` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `filter_upwards [nhds_cell hD hc hg hcD] with c' hc'`. Use `hread (a ∘ Fin.castSucc) (b ∘ Fin.castSucc) w _ hc'.2` as an intermediate fact. Rewrite `this` using `[La_apply]`. Rewrite using `[hQ1, this, hc1, hd1, top_qminor_cast]`. Rewrite `hring` using `[hpb, hΛ, hread _ _ _ _ hx0, hread _ _ _ _ hx0, hread _ _ _ _ hx0, hc1, hd1, hc2, hd2, ha, hb]`.
-
-Simplify using `only [top_qminor_cast] at hring`. Rewrite using `[hring]`. Apply the tactic sequence `have e : ((tt + 1 : ℕ) : ℂ) = ((r - l - 1 + k : ℕ) : ℂ) := by congr 1 <;> omega`. Rewrite using `[e, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepBv_pt (z z' : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hz' : inWb k r z') {D : Set (Mx k r)}
     (hD : IsOpen D) (hN : ∀ g ∈ Glev k r 0 ∩ D, ∀ n ∈ Nlev k r 0, n * g ∈ D)
@@ -264,7 +260,7 @@ section asm
 variable {k r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Q.uC, Q.mdim, Mdim, Fin.val_last, Fin.val_mk, Nat.sub_self]`. Establish `e1 : 2 * (r - l) + k + 1 - 1 = 2 * (r - l) + k` using `by omega`. Establish `e2 : r - l = (r - l - 1) + 1` using `by omega`. Rewrite using `[e1, e2]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -278,7 +274,7 @@ theorem uCv_gauge (l : ℕ) (hl : l < r) (Y : ℂ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [pbOp, if_pos hc, wirtBar, (has_fderiv_double_sum κ F hF).fderiv, ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply]`. Simplify using `only [Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `module`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conj_partial_derivative_double_sum {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {ι ι' : Type} [Fintype ι] [Fintype ι']
     (κ : ι → ι' → ℂ) (F : ι → ι' → (Fin r → ℂ) → E) {c : Fin r → ℂ} (hF : ∀ i j, DifferentiableAt ℝ (F i j) c)
@@ -291,7 +287,7 @@ theorem conj_partial_derivative_double_sum {E : Type} [NormedAddCommGroup E] [No
   module
 
 /- English proof (translation)
-Simplify using `only [Finset.smul_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv]`. Use `module`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_algv {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {ι ι' : Type} [Fintype ι] [Fintype ι']
     (w Y n c1 c0 : ℂ) (κ : ι → ι' → ℂ) (A P B : ι → ι' → E) :
@@ -314,25 +310,23 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ k r z z' π π' D Y hz hz' hD J hJ l hl c hc g hg hcg`. Take `⟨hf, hLf, hRf, -⟩` from `hJ`. Establish `hDo : IsOpen D` using `hD.1`. Establish `h1N : (1 : Mx k r) ∈ Nlev k r 0` using `⟨(Formalism.QuantumDeterminants.unipotent_subgroup_holds k r).1, by simp [Glev, UH]⟩`. Establish `hN : ∀ x ∈ Glev k r 0 ∩ D, ∀ n ∈ Nlev k r 0, n * x ∈ D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx n hn`. Use `hD.2 x hx n ⟨1, Formalism.FourierDecayAlt.P.Qx8.uw_one z, n, hn, (one_mul n).symm⟩ 1 ⟨1, Formalism.FourierDecayAlt.P.Qx8.uw_one z', 1, h1N, (one_mul 1).symm⟩` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Take `⟨κ, hκ⟩ : ∃ κ : Fin (k + 1) → Fin (k + 1) → ℂ, κ = fun (s t : Fin (k + 1)) => ((-1 : ℂ) ^ ((s : ℕ) + (t : ℕ))) * herm (Hpk k r) (g *ᵥ bvec (wI k r s)) z * z' (wI k r t)` from `⟨_, rfl⟩`. Take `⟨wt, hwt⟩ : ∃ wt : (Fin r → ℂ) → ℂ, wt = fun c' => ((∏ a : Fin r, ‖c' a‖ ^ (Mdim k r a - 1) : ℝ) : ℂ)` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfix : ∀ c' : Fin r → ℂ, ∀ s : Fin (k + 1), (wCell k r (Fin.last r) c' * g) *ᵥ bvec (wI k r s) = g *ᵥ bvec (wI k r s)`. Introduce `c' s`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `top_wlist_wb c' _ _ (Formalism.FourierDecayAlt.P.NFRadRedLocSec.inWb_uwb (Formalism.FourierDecayAlt.P5.Rad.glev_last_uwb hg) (bvec_wI_inWb s))`. Establish `hFN : ∀ (m : ℕ) (hm : m ≤ r), ∀ c' ∈ OmX r, FNv k r z z' Y J ⟨m, by omega⟩ c' g = wt c' • ∑ s, ∑ t, κ s t • qminorOp (EH k r) (rowsNv k r ⟨m, by omega⟩ s) (rowsNv k r ⟨m, by omega⟩ t) (Q.uC k r (Fin.last r) Y - 1) J (wCell k r (Fin.last r) c' * g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm c' hc'`. Substitute `hκ hwt` using the available equality. Unfold `FNv NLv`. Rewrite using `[resG_last]`. Simplify using `only [hfix c']`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, Q.crd, cbOp, cbiOp]`. Take `⟨F1, hF1⟩ : ∃ F1 : Fin (k + 1) → Fin (k + 1) → (Fin r → ℂ) → (Wq →L[ℂ] Wp), F1 = fun s t c' => qminorOp (EH k r) (rowsNv k r ⟨l + 1, by omega⟩ s) (rowsNv k r ⟨l + 1, by omega⟩ t) (Q.uC k r (Fin.last r) Y - 1) J (wCell k r (Fin.last r) c' * g)` from `⟨_, rfl⟩`. Establish `hd1 : ∀ s t, DifferentiableAt ℝ (F1 s t) c` using `fun s t => by`. Rewrite using `[hF1]`. Conclude with `diff_qminor hDo hf _ _ _ hc hg hcg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp1 : pbOp ⟨l, by omega⟩ (fun c' => FNv k r z z' Y J ⟨l + 1, by omega⟩ c' g) c = wt c • (∑ s, ∑ t, κ s t • pbOp ⟨l, by omega⟩ (F1 s t) c + (((Mdim k r ⟨l, by omega⟩ - 1 : ℕ) : ℂ) / 2) • ∑ s, ∑ t, κ s t • F1 s t c)`. Rewrite using `[Formalism.FourierDecayAlt.P.CutMP.TVG.pbOp_locO ⟨l, by omega⟩ (fun c' hc' => hFN (l + 1) (by omega) c' hc') hc]`. Establish `eF : ∀ c', (∑ s, ∑ t, κ s t • qminorOp (EH k r) (rowsNv k r ⟨l + 1, by omega⟩ s) (rowsNv k r ⟨l + 1, by omega⟩ t) (Q.uC k r (Fin.last r) Y - 1) J (wCell k r (Fin.last r) c' * g)) = ∑ s, ∑ t, κ s t • F1 s t c'`. Introduce `c'`. Rewrite using `[hF1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `only [eF]`. Substitute `hwt` using the available equality. Use `beta_reduce`. Establish `hdH : DifferentiableAt ℝ (fun c' => ∑ s, ∑ t, κ s t • F1 s t c') c` using `(has_fderiv_double_sum κ F1 hd1).differentiableAt`. Rewrite using `[gaugePb r (fun a => Mdim k r a - 1) (fun c' => ∑ s, ∑ t, κ s t • F1 s t c') c hc hdH ⟨l, by omega⟩, conj_partial_derivative_double_sum κ F1 hd1 ⟨l, by omega⟩ hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hp1, hFN l (by omega) c hc, hFN (l + 1) (by omega) c hc, hFN (l + 2) (by omega) c hc]`. Establish `hpt : ∀ s t, qminorOp (EH k r) (rowsNv k r ⟨l, by omega⟩ s) (rowsNv k r ⟨l, by omega⟩ t) (Q.uC k r (Fin.last r) Y - 1) J (wCell k r (Fin.last r) c * g) = (Y - ((Mdim k r ⟨l, by omega⟩ - 1 : ℕ) : ℂ) / 2) • qminorOp (EH k r) (rowsNv k r ⟨l + 1, by omega⟩ s) (rowsNv k r ⟨l + 1, by o …`. Introduce `s t`. Establish `h` using `stepBv_pt z z' hz hz' hDo hN hf hLf hRf hc hg hcg l hl s t (Q.uC k r (Fin.last r) Y - 1)`. Rewrite using `[hF1, ← uCv_gauge (k := k) l (by omega) Y]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hL : (∑ s, ∑ t, κ s t • qminorOp (EH k r) (rowsNv k r ⟨l, by omega⟩ s) (rowsNv k r ⟨l, by omega⟩ t) (Q.uC k r (Fin.last r) Y - 1) J (wCell k r (Fin.last r) c * g)) = ∑ s, ∑ t, κ s t • ((Y - ((Mdim k r ⟨l, by omega⟩ - 1 : ℕ) : ℂ) / 2) • qminorOp (EH k r) (rowsNv k r ⟨l + 1, by ome …` using `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun t _ => by rw [hpt s t]`. Establish `hA : (∑ s, ∑ t, κ s t • F1 s t c) = ∑ s, ∑ t, κ s t • qminorOp (EH k r) (rowsNv k r ⟨l + 1, by omega⟩ s) (rowsNv k r ⟨l + 1, by omega⟩ t) (Q.uC k r (Fin.last r) Y - 1) J (wCell k r (Fin.last r) c * g)`. Rewrite using `[hF1]`. Rewrite using `[hL, hA]`.
-
-Conclude with `fin_algv _ _ _ _ _ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mirror_residue_second_move : JDRvStepB := by
   intro Wp Wq _ _ _ _ k r z z' π π' D Y hz hz' hD J hJ l hl c hc g hg hcg

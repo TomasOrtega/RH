@@ -31,7 +31,7 @@ def rotHomeo : (Fin 2 → F) ≃ₜ (Fin 2 → F) where
 variable [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Establish `h : ∀ r' : Fin 2 → F, dt r' r = ∑ i, r' i * (rotHomeo r) i`. Introduce `r'`. Simplify using `[dt, rotHomeo, Fin.sum_univ_two, sub_eq_add_neg]`. Simplify using `only [sF, GJMatrix.localFourierPi, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -45,7 +45,7 @@ theorem sF_eq (ψ : AddChar F Circle) (φ : (Fin 2 → F) → ℂ) :
   rfl
 
 /- English proof (translation)
-Establish `h : GJMatrix.localFourierPi ψ φ ∈ GJMatrix.localSchwartzBruhatPi F` using `GJMatrix.localFourierPi_mem hψ.1 hψ.2.1 hφ`. Rewrite using `[sF_eq]`. Conclude with `⟨h.1.comp_continuous rotHomeo.continuous, h.2.comp_homeomorph rotHomeo⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sF_mem {ψ : AddChar F Circle} (hψ : IsStd ψ) {φ : (Fin 2 → F) → ℂ} (hφ : SB φ) :
     SB (sF ψ φ) := by
@@ -55,7 +55,7 @@ theorem sF_mem {ψ : AddChar F Circle} (hψ : IsStd ψ) {φ : (Fin 2 → F) → 
   exact ⟨h.1.comp_continuous rotHomeo.continuous, h.2.comp_homeomorph rotHomeo⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [W2, Pi.smul_apply, smul_eq_mul, mul_assoc z, integral_const_mul]`. Establish `e : ∀ (a b c : ℂ), a * b * (z * c) = z * (a * b * c)` using `fun a b c => by ring`. Simplify using `only [e, integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem whittakerGL2_smul_eq (ψ : AddChar F Circle) (μ₁ μ₂ : Fˣ →* ℂˣ) (φ : (Fin 2 → F) → ℂ) (z : ℂ) :
     W2 ψ μ₁ μ₂ (z • φ) = z • W2 ψ μ₁ μ₂ φ := by
@@ -65,7 +65,7 @@ theorem whittakerGL2_smul_eq (ψ : AddChar F Circle) (μ₁ μ₂ : Fˣ →* ℂ
   simp only [e, integral_const_mul]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ μ₁ μ₂ φ h hφ`. Conclude with `⟨GlobalTheory.CompanionTheory.WhittakerTrans.rt_mem hφ h, sF_mem hψ hφ, whittakerGL2_smul_eq ψ μ₁ μ₂ φ, fun g => GlobalTheory.CompanionTheory.WhittakerTrans.whittaker_right_translation_formula ψ μ₁ μ₂ φ g h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem a1 : Ad3.R.A1 := by
   intro F _ _ _ _ _ _ ψ hψ μ₁ μ₂ φ h hφ

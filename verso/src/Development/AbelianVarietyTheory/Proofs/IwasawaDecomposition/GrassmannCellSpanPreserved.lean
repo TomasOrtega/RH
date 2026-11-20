@@ -19,7 +19,7 @@ def gcellOff (x : GVar m a k b → S) (i l : Fin m) : S :=
   if h : a ≤ (l : ℕ) ∧ (l : ℕ) < k ∧ k ≤ (i : ℕ) ∧ (i : ℕ) < b then x ⟨(i, l), h⟩ else 0
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h'`. Conclude with `h (by simp [gcellOff, h'])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem gcellOff_ne (x : GVar m a k b → S) {i l : Fin m} (h : gcellOff x i l ≠ 0) :
     a ≤ (l : ℕ) ∧ (l : ℕ) < k ∧ k ≤ (i : ℕ) ∧ (i : ℕ) < b := by
@@ -27,7 +27,7 @@ theorem gcellOff_ne (x : GVar m a k b → S) {i l : Fin m} (h : gcellOff x i l �
   exact h (by simp [gcellOff, h'])
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h'`. Use `gcellOff_ne x h'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem gcellOff_of_ge (x : GVar m a k b → S) (i : Fin m) {l : Fin m} (h : k ≤ (l : ℕ)) : gcellOff x i l = 0 := by
   by_contra h'
@@ -35,7 +35,7 @@ theorem gcellOff_of_ge (x : GVar m a k b → S) (i : Fin m) {l : Fin m} (h : k �
   omega
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h'`. Use `gcellOff_ne x h'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem gcellOff_of_lt (x : GVar m a k b → S) {i : Fin m} (l : Fin m) (h : (i : ℕ) < k) : gcellOff x i l = 0 := by
   by_contra h'
@@ -43,7 +43,7 @@ theorem gcellOff_of_lt (x : GVar m a k b → S) {i : Fin m} (l : Fin m) (h : (i 
   omega
 
 /- English proof (translation)
-Distinguish the cases in `h : a ≤ (l : ℕ) ∧ (l : ℕ) < k ∧ k ≤ (i : ℕ) ∧ (i : ℕ) < b`. Establish `hne : i ≠ l` using `fun e => by subst e; omega`. Simplify using `[gcell, gcellOff, h, hne]`. Simplify using `[gcell, gcellOff, h]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gcell_eq_add (x : GVar m a k b → S) (i l : Fin m) :
     gcell x i l = gcellOff x i l + if i = l then 1 else 0 := by
@@ -55,7 +55,7 @@ theorem gcell_eq_add (x : GVar m a k b → S) (i l : Fin m) :
 variable {Q : Type} [AddCommGroup Q] [Module S Q]
 
 /- English proof (translation)
-Simplify using `only [gvec, gcell_eq_add, add_smul, Finset.sum_add_distrib, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[add_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gvec_eq_add (c : Fin m → Q) (w : GPm m a b) (x : GVar m a k b → S) (l : Fin m) :
     gvec c w x l = c (w.1 l) + ∑ i, gcellOff x i l • c (w.1 i) := by
@@ -64,7 +64,7 @@ theorem gvec_eq_add (c : Fin m → Q) (w : GPm m a b) (x : GVar m a k b → S) (
   rw [add_comm]
 
 /- English proof (translation)
-Rewrite using `[gvec_eq_add]`. Simplify using `[gcellOff_of_ge x _ h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gvec_of_ge (c : Fin m → Q) (w : GPm m a b) (x : GVar m a k b → S) {l : Fin m} (h : k ≤ (l : ℕ)) :
     gvec c w x l = c (w.1 l) := by
@@ -72,9 +72,9 @@ theorem gvec_of_ge (c : Fin m → Q) (w : GPm m a b) (x : GVar m a k b → S) {l
   simp [gcellOff_of_ge x _ h]
 
 /- English proof (translation)
-Establish `hs : ∑ i, gcellOff x i l • gvec c w x i = ∑ i, gcellOff x i l • c (w.1 i)`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : gcellOff x i l = 0`. Simplify using `[h]`. Rewrite using `[gvec_of_ge c w x (gcellOff_ne x h).2.2.1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, gvec_eq_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem gvec_inv (c : Fin m → Q) (w : GPm m a b) (x : GVar m a k b → S) (l : Fin m) :
     c (w.1 l) = gvec c w x l - ∑ i, gcellOff x i l • gvec c w x i := by
@@ -87,7 +87,7 @@ theorem gvec_inv (c : Fin m → Q) (w : GPm m a b) (x : GVar m a k b → S) (l :
   abel
 
 /- English proof (translation)
-Simplify using `only [gvec_eq_add, smul_add, Finset.sum_add_distrib, add_smul, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by rw [mul_comm]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gvec_combo (c : Fin m → Q) (w : GPm m a b) (x : GVar m a k b → S) (g : Fin m → S) :
     ∑ l, g l • gvec c w x l = ∑ i, (g i + ∑ l, gcellOff x i l * g l) • c (w.1 i) := by
@@ -97,9 +97,9 @@ theorem gvec_combo (c : Fin m → Q) (w : GPm m a b) (x : GVar m a k b → S) (g
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by rw [mul_comm]
 
 /- English proof (translation)
-Distinguish the cases in `hi : (i : ℕ) < a ∨ b ≤ (i : ℕ)`. Rewrite using `[w.2 i hi]`. Establish `hwi : ¬ ((w.1 i : ℕ) < a ∨ b ≤ (w.1 i : ℕ))` using `fun h => by`. Use `w.1.injective (w.2 _ h)` as an intermediate fact. Rewrite `h` using `[this]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hi h`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem gpm_lt_iff (w : GPm m a b) {e : ℕ} (he : e ≤ a ∨ b ≤ e) (i : Fin m) :
     (w.1 i : ℕ) < e ↔ (i : ℕ) < e := by
@@ -112,13 +112,13 @@ theorem gpm_lt_iff (w : GPm m a b) {e : ℕ} (he : e ≤ a ∨ b ≤ e) (i : Fin
     omega
 
 /- English proof (translation)
-Establish `hd : LinearIndependent S (c ∘ w.1)` using `hc.comp _ w.1.injective`. Rewrite `hd`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Rewrite `hg` using `[gvec_combo]`. Establish `h1` using `hd _ hg`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlow : ∀ l : Fin m, (l : ℕ) < k → g l = 0` using `fun l hl => by`. Establish `hs : ∑ l', gcellOff x l l' * g l' = 0` using `Finset.sum_eq_zero fun l' _ => by rw [gcellOff_of_lt x l' hl, zero_mul]`. Use `h1 l` as an intermediate fact. Rewrite `this` using `[hs, add_zero]`. Then use the resulting hypothesis. Introduce `l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hl : (l : ℕ) < k`. Conclude with `hlow l hl`. Establish `hs : ∑ l', gcellOff x l l' * g l' = 0` using `Finset.sum_eq_zero fun l' _ => by`. Distinguish the cases in `h : gcellOff x l l' = 0`. Rewrite using `[h, zero_mul]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlow l' (gcellOff_ne x h).2.1, mul_zero]`. Use `h1 l` as an intermediate fact. Rewrite `this` using `[hs, add_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem gvec_linearIndependent (c : Fin m → Q) (w : GPm m a b) (x : GVar m a k b → S) (hc : LinearIndependent S c) :
     LinearIndependent S (gvec c w x) := by
@@ -143,9 +143,9 @@ theorem gvec_linearIndependent (c : Fin m → Q) (w : GPm m a b) (x : GVar m a k
     rwa [hs, add_zero] at this
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨l, rfl⟩`. Rewrite using `[SetLike.mem_coe, gvec_eq_add]`. Conclude with `Submodule.add_mem _ (Submodule.subset_span ⟨_, rfl⟩) (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨l, rfl⟩` from `w.1.surjective j`. Rewrite using `[SetLike.mem_coe, gvec_inv c w x l]`. Conclude with `Submodule.sub_mem _ (Submodule.subset_span ⟨_, rfl⟩) (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩))`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gvec_span (c : Fin m → Q) (w : GPm m a b) (x : GVar m a k b → S) :
     Submodule.span S (Set.range (gvec c w x)) = Submodule.span S (Set.range c) := by
@@ -163,15 +163,15 @@ theorem gvec_span (c : Fin m → Q) (w : GPm m a b) (x : GVar m a k b → S) :
       (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩))
 
 /- English proof (translation)
-Unfold `GlobalTheory.FlagMod.initSpan`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Establish `hj : (j : ℕ) < e` using `hj`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[SetLike.mem_coe, gvec_eq_add]`. Use `Submodule.add_mem _ (Submodule.subset_span ⟨w.1 j, (gpm_lt_iff w he j).2 hj, rfl⟩) (Submodule.sum_mem _ fun i _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : gcellOff x i j = 0`. Rewrite using `[h, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `gcellOff_ne x h` as an intermediate fact. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨w.1 i, (gpm_lt_iff w he i).2 (by omega), rfl⟩)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Establish `hj : (j : ℕ) < e` using `hj`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l, rfl⟩` from `w.1.surjective j`. Establish `hl : (l : ℕ) < e` using `(gpm_lt_iff w he l).1 hj`. Rewrite using `[SetLike.mem_coe, gvec_inv c w x l]`. Use `Submodule.sub_mem _ (Submodule.subset_span ⟨l, hl, rfl⟩) (Submodule.sum_mem _ fun i _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : gcellOff x i l = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h, zero_smul]`. Conclude with `Submodule.zero_mem _`. Use `gcellOff_ne x h` as an intermediate fact. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, (show (i : ℕ) < e by omega), rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem gvec_initSpan (c : Fin m → Q) (w : GPm m a b) (x : GVar m a k b → S) {e : ℕ} (he : e ≤ a ∨ b ≤ e) :
     initSpan S (gvec c w x) e = initSpan S c e := by
@@ -202,7 +202,7 @@ theorem gvec_initSpan (c : Fin m → Q) (w : GPm m a b) (x : GVar m a k b → S)
       exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, (show (i : ℕ) < e by omega), rfl⟩)
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ c w x _ _` and use `⟨gvec_linearIndependent c w x, gvec_span c w x, fun _ he => gvec_initSpan c w x he⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem gvec_frame : ∀ (S : Type) [CommRing S] (m a k b : ℕ) (Q : Type) [AddCommGroup Q] [Module S Q] (c : Fin m → Q)
     (w : GPm m a b) (x : GVar m a k b → S), a ≤ k → k ≤ b →

@@ -14,9 +14,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def ofInf (c : ∀ w : InfinitePlace F, w.Completion) : AF F := ((c : Ainf F), (0 : Af F))
 
 /- English proof (translation)
-Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * _ = 0`. Rewrite using `[h1, zero_mul]`. Express the relevant statement in the definitionally equal form `u.2 * 0 = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_ofInf (u : AF F) (hu : evI F u = 0) (c : ∀ w : InfinitePlace F, w.Completion) : u * ofInf c = 0 := by
   have h1 : u.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)
@@ -27,19 +27,19 @@ theorem mul_ofInf (u : AF F) (hu : evI F u = 0) (c : ∀ w : InfinitePlace F, w.
     rw [mul_zero]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h emb z`. Establish `hF` using `h.1`. Establish `hE` using `h.2.1`. Establish `hconj` using `h.2.2.2`. Choose the witnesses or unpack the hypotheses as in `⟨β, hβ⟩ : ∃ β : E, σ β ≠ β := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `IsTotallyComplex.complexEmbedding_not_isReal φ (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => ?_))` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hconj φ x` as an intermediate fact. Rewrite `this` using `[hcon x]`. Conclude with `this.symm`. Establish `him : ∀ w, ((emb w).1 β).im ≠ 0` using `fun w hw => hβ ((emb w).1.injective (by`. Rewrite using `[hconj]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Complex.conj_eq_iff_im.2 hw))`. Set `e : ∀ w : InfinitePlace F, w.Completion ≃+* ℝ` to `fun w => InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)`. Establish `he : ∀ w a, InfinitePlace.Completion.extensionEmbedding w a = ((e w a : ℝ) : ℂ)` using `fun w a => (InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w) a).symm`. Set `s : InfinitePlace F → ℝ` to `fun w => (z w).im / ((emb w).1 β).im`. Set `r : InfinitePlace F → ℝ` to `fun w => (z w).re - s w * ((emb w).1 β).re`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ofInf (fun w => (e w).symm (r w)) ⊗ₜ[F] 1 + ofInf (fun w => (e w).symm (s w)) ⊗ₜ[F] β, ?_, fun w => ?_⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[smul_add, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, mul_ofInf u hu, mul_ofInf u hu, TensorProduct.zero_tmul, TensorProduct.zero_tmul, add_zero]`. Establish `hc : ∀ (c : ∀ w : InfinitePlace F, w.Completion) (y : E), piInf (emb w) (ofInf c ⊗ₜ[F] y) = ((e w (c w) : ℝ) : ℂ) * (emb w).1 y` using `fun c y => by`. Rewrite using `[← he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[map_add, hc, hc]`. Simplify using `only [(e w).apply_symm_apply, map_one, mul_one]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.add_re, Complex.ofReal_re, Complex.re_ofReal_mul, r]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Complex.add_im, Complex.ofReal_im, Complex.im_ofReal_mul, s]`. Use `him w` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_adele_piInf : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (emb : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver E w)

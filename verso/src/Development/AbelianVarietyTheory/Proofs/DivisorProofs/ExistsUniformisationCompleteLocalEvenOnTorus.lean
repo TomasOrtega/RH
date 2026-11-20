@@ -27,7 +27,7 @@ namespace GlobalTheory.Mum.UnifEven
 open GlobalTheory.UU GlobalTheory.LN
 
 /- English proof (translation)
-Use `⟨hB.1, hB.1.2.2.2, hB.2, (maximalIdeal.isMaximal R).isPrime, ?_⟩` and prove the remaining obligations. Use `letI := Ideal.Quotient.field (maximalIdeal R)`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isAdmissible_maximalIdeal_of_completeNormalCharZero {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (hB : Base R) : admitted R (maximalIdeal R) := by
   refine ⟨hB.1, hB.1.2.2.2, hB.2, (maximalIdeal.isMaximal R).isPrime, ?_⟩
@@ -37,15 +37,15 @@ theorem isAdmissible_maximalIdeal_of_completeNormalCharZero {R : Type} [CommRing
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨hL, -, -, -, -⟩` from `GlobalTheory.lawsAndExpansions.1`. Take `⟨X, _, _, _, Q₀, P₀, ⟨wl, hl⟩, hev⟩` from `hE`. Use `hS.smooth` as an intermediate fact. Use `hS.geomConnected` as an intermediate fact. Use `GlobalTheory.PreUnifLocal.isLocalRing_quot (maximalIdeal.isMaximal R).ne_top 0` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : Smooth (thickObj R (maximalIdeal R) 0 G).hom` using `by show Smooth (pullback.snd _ _); infer_instance`. Establish `hgc : GeometricallyConnected (thickObj R (maximalIdeal R) 0 G).hom` using `by show GeometricallyConnected (pullback.snd _ _); infer_instance`. Take `⟨D₀⟩` from `TowerEx.nonempty_desc _ (TowerEx.isNilpotent_max 0) _ P₀ Q₀ hev`. Set `G' : Over (Sp V)` to `(Over.pullback (spMap g)).obj G`. Establish `hS' : IsSemiAbelian G'` using `IsSemiAbelian.pullback _ G hS`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨P', wP, hP', H⟩` from `exists_cp_pull _ _ (spMap g) G G' _ _ (toBase_mul_pullback G (spMap g)) P`. Take `⟨ψ, sq'⟩` from `ClosedPol.exists_generic_square g hg`. Take `⟨A', gen', hgen', hA'⟩` from `ClosedPol.exists_fibre_pull hL sq' P.L.isLB A gen hA`. Rewrite `hA'` using `[← hP']`. Take `⟨wA, hwA⟩` from `hA'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `le : maximalIdeal R ^ (0 + 1) ≤ (maximalIdeal V ^ (0 + 1)).comap g`. Rewrite using `[zero_add, pow_one, pow_one, hc]`. Set `b : R ⧸ maximalIdeal R ^ (0 + 1) →+* V ⧸ maximalIdeal V ^ (0 + 1)` to `Ideal.quotientMap (maximalIdeal V ^ (0 + 1)) g le`. Establish `sq : spMap b ≫ thick R (maximalIdeal R) 0 = thick V (maximalIdeal V) 0 ≫ spMap g`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, Ideal.quotientMap_comp_mk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P₁, w₁, H₁⟩` from `exists_isLevelCP (maximalIdeal V) 0 P'`. Take `⟨F, pF, w₃, k₃⟩` from `ClosedPol.exists_fourth (G := G) (G' := G') (H := thickObj R (maximalIdeal R) 0 G) (H' := thickObj V (maximalIdeal V) 0 G') (P := P) (P' := P') (N := P₀) (N' := P₁) sq (isGrpPullback_pullback G (spMap g)) (isGrpPullback_pullback G (thick R (maximalIdeal R) 0)) (isGrpPullback_pull …`. Take `⟨Q₁, D₁, -, -, -⟩` from `ClosedPol.exists_desc_pull pF Q₀ D₀ k₃`. Establish `ev` using `GlobalTheory.UniformizationSetting.exists_even_of_desc D₁`. Conclude with `⟨A', ⟨hV, hS', gen', hgen', P', wA, hwA, X, Q₁, P₁, ⟨w₁, H₁⟩, ev⟩, wP, H⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_setting {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (P : CP G) (hS : IsSemiAbelian G)
@@ -96,15 +96,15 @@ end GlobalTheory.Mum.UnifEven
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `R _ _ _ hB G _ _ P hS hEv A gen hgen hA`. Take `⟨⟨hL, hL2, hL3, -, -⟩, -⟩` from `GlobalTheory.lawsAndExpansions`. Establish `hE` using `GlobalTheory.LN.ega_holds`. Establish `hU` using `GlobalTheory.uniformisation_dvr_unconditional`. Establish `hR` using `GlobalTheory.Mum.UnifEven.isAdmissible_maximalIdeal_of_completeNormalCharZero hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hR.1.1` as an intermediate fact. Use `hR.2.2.1` as an intermediate fact. Establish `hI` using `hR.2.2.2.1`. Take `⟨V, _, _, _, φ, hV, hφ, hc⟩` from `GlobalTheory.PrimeUnif.exists_cdvr R (maximalIdeal R)`. Use `hV.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB' : AdmBase V (maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hV.2.1⟩`. Establish `hle : (maximalIdeal R).map φ ≤ maximalIdeal V` using `Ideal.map_le_iff_le_comap.2 hc.ge`. Take `⟨D, U, rfl, rfl⟩` from `GlobalTheory.T.exists_preUniformisation_even_torus_completeNormal R hB G P hS hEv A gen hgen hA`. Establish `hθ` using `GlobalTheory.T.preUniformised_fibrewise_nonvanishing_section R hB D A G U hEv`. Use `haveI := hgen`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A', s, w, hw⟩` from `GlobalTheory.Mum.UnifEven.exists_setting U.P hS hEv A U.gen hA hV φ hφ hc`. Take `⟨D', U₀, hLG, -, -⟩` from `hU V A' _ s`. Take `⟨U', hU'⟩` from `(GlobalTheory.LN.PreForm.under_exists_and_expands hL hL2 V _ D' A' _ s.semi).1 U₀.toUnifPre`. Use `s.semi.smooth` as an intermediate fact. Take `⟨w', hw'⟩` from `GlobalTheory.PrimeUnif.isCPMap_of_eq hL.globalFns s.gen s.P U'.P (hU'.2.1.trans hLG) hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, -⟩` from `GlobalTheory.T.exists_compare_uniformisationData_pullback hL hL2 hE R V (maximalIdeal R) _ hR.1 hB' (maximalIdeal.isMaximal V).ne_top φ hle D _ A A' G _ U U' _ (isGrpPullback_pullback G _) w' hw'`. Take `⟨psi, h, Dd, hD, e, h₁, h₂, h₃⟩` from `GlobalTheory.T.exists_degData_psi_of_section_nonzero_fibres hL hL2 hE R (maximalIdeal R) hR V hV φ hφ hc D D' A A' G _ U U' U₀ _ C hU' hθ`. Take `⟨U₂, C₂, hD₂, eP, eg, k₁, k₂, k₃⟩` from `GlobalTheory.PrimeUnif.exists_move psi h C hD Dd.toPre e h₁ h₂ h₃`. Take `⟨U₁, -, hU₁, -⟩` from `GlobalTheory.UnifDescent.exists_unif_of_cmp hL hL2 hE R V (maximalIdeal R) _ hR.1 hB' hI.ne_top φ hφ hle Dd D' A A' G _ U₂ U' U₀ _ C₂ hD₂ hU' k₁ k₂ k₃`. Conclude with `⟨Dd, U₁, hU₁.2.1.symm.trans (congrArg GlobalTheory.UU.CP.L eP), hU₁.1.symm.trans eg⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.exists_unif_even : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (P : GlobalTheory.UU.CP G), IsSemiAbelian G → EvenOn P → ∀ (A : PolAV (Sp (FractionRing R))) (gen : (Over.pullback (jK R)).obj G ≅ A.A), IsMonHom gen.hom → LBIso (A.L.pull gen.hom.left) (P.L.L.pull (pullback.fst G.hom (jK R))) → ∃ (D : DegData R (maximalIdeal R)) (U : Unif (maximalIdeal R) D A G), U.LG = P.L ∧ U.gen = gen := by
   intro R _ _ _ hB G _ _ P hS hEv A gen hgen hA

@@ -7,7 +7,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.NegVan.crys_cocycle_coboundary_of_neg_weight` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FCrystallineCocycleCoboundaryOfNegativeWeight.lean&line=100#L100)
 -/

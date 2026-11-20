@@ -15,7 +15,7 @@ section Infinite
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Take `rfl : m = GroundTheory.Global.measurableSpace_infiniteAdeleRing F` from `hm.measurable_eq.trans (GroundTheory.Global.borelSpace_infiniteAdeleRing (K := F)).measurable_eq.symm`. Establish `h` using `Measure.isAddLeftInvariant_eq_smul μ (GroundTheory.Global.infiniteAdeleMeasure F)`. Rewrite using `[h, Measure.map_smul, GroundTheory.Global.map_mul_left_infiniteAdeleMeasure, smul_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mul_left_infinite {m : MeasurableSpace (InfiniteAdeleRing F)}
     (hm : @BorelSpace _ _ m) (b : (InfiniteAdeleRing F)ˣ) (μ : Measure (InfiniteAdeleRing F))
@@ -28,7 +28,7 @@ theorem map_mul_left_infinite {m : MeasurableSpace (InfiniteAdeleRing F)}
   rw [h, Measure.map_smul, GroundTheory.Global.map_mul_left_infiniteAdeleMeasure, smul_comm]
 
 /- English proof (translation)
-Rewrite using `[InfiniteAdeleRing.norm_def]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `InfinitePlace.Completion.norm_coe w _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem norm_algebraMap_infinite (a : F) :
     ‖algebraMap F (InfiniteAdeleRing F) a‖ = ∏ w : InfinitePlace F, w a ^ w.mult := by
@@ -46,15 +46,15 @@ open HeckeCharacterZeroLocus.SiegelWeilU
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Set `ϖ : Fv F v` to `(π : Fv F v)`. Establish `hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hπ]`. Establish `hϖ0 : ϖ ≠ 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hϖ` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hϖ.symm`. Establish `hva : Valued.v a ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`. Use `set k : ℤ := WithZero.log (Valued.v a) with hk`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu0 : a * ϖ ^ k ≠ 0` using `mul_ne_zero ha (zpow_ne_zero _ hϖ0)`. Establish `hu : Valued.v (a * ϖ ^ k) = 1`. Rewrite using `[map_mul, map_zpow₀, hϖ, ← WithZero.exp_log hva, ← WithZero.exp_zsmul, ← WithZero.exp_add, ← hk, ← WithZero.exp_zero]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : Units.mk0 (a * ϖ ^ k) hu0 = Units.mk0 a ha * (Units.mk0 ϖ hϖ0) ^ k` using `by ext; simp [Units.val_zpow_eq_zpow_val]`. Establish `h1` using `PI.UnitaryGroupMassFormula.LocJacTyp.BM.dhc_unit v _ hu hu0`. Rewrite `h1` using `[hU, map_mul, map_zpow, PI.UnitaryGroupMassFormula.LocJacTyp.BM.dhc_unif v ϖ hϖ hϖ0, inv_zpow]`. Establish `hq : ((Ideal.absNorm v.asIdeal : ℝ≥0)) ^ k ≠ 0` using `zpow_ne_zero _ (by exact_mod_cast PI.UnitaryGroupMassFormula.LocJacTyp.BM.q_ne_zero v)`. Establish `h2 : distribHaarChar (Fv F v) (Units.mk0 a ha) = ((Ideal.absNorm v.asIdeal : ℝ≥0)) ^ k` using `(mul_inv_eq_one₀ hq).1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h2]`. Apply `NNReal.coe_injective` to reduce the goal to its premises. Rewrite using `[coe_nnnorm, ← GroundTheory.Global.normalizedAbv_apply, GroundTheory.Global.normalizedAbv_eq_zpow v ha, ← hk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem distribHaarChar_eq_nnnorm (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) (ha : a ≠ 0) :
     distribHaarChar (Fv F v) (Units.mk0 a ha) = ‖a‖₊ := by
@@ -86,9 +86,9 @@ theorem distribHaarChar_eq_nnnorm (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) 
   simp
 
 /- English proof (translation)
-Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Use `haveI := PI.UnitaryGroupMassFormula.LocJacTyp.BM.secondCountable_Fv v`. Use `haveI : μ.Regular := inferInstance`. Use extensionality with `S hS`. Rewrite using `[Measure.map_apply (continuous_const_mul _).measurable hS, Measure.smul_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `distribHaarChar_mul μ (Units.mk0 a ha)⁻¹ S`. Establish `e : (fun x => a * x) ⁻¹' S = (Units.mk0 a ha)⁻¹ • S` using `Set.preimage_smul (Units.mk0 a ha) S`. Rewrite using `[e, ← h, map_inv, distribHaarChar_eq_nnnorm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem map_mul_left_finite (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) (ha : a ≠ 0)
     (μ : Measure (Fv F v)) (hμ : μ.IsAddHaarMeasure) :
@@ -111,17 +111,17 @@ section Main
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW
 
 /- English proof (translation)
-Introduce `F _ _ a ha`. Establish `hA : 0 < ∏ w : InfinitePlace F, w a ^ w.mult` using `Finset.prod_pos fun w _ => pow_pos (InfinitePlace.pos_iff.2 ha) _`. Establish `hfin : (Function.mulSupport fun v : HeightOneSpectrum (𝓞 F) => ‖algebraMap F (Fv F v) a‖).Finite` using `(FinitePlace.hasFiniteMulSupport ha).preimage (FinitePlace.equivHeightOneSpectrum (K := F)).symm.injective.injOn`. Establish `hprod : (∏ w : InfinitePlace F, w a ^ w.mult) * ∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖algebraMap F (Fv F v) a‖ = 1`. Rewrite using `[← prod_abs_eq_one ha, ← finprod_comp_equiv FinitePlace.equivHeightOneSpectrum.symm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨((∏ w : InfinitePlace F, w a ^ w.mult)⁻¹).toNNReal, fun v => (‖algebraMap F (Fv F v) a‖₊)⁻¹, ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hfin.eventually_cofinite_notMem] with v hv`. Establish `h1 : ‖algebraMap F (Fv F v) a‖ = 1` using `by simpa using hv`. Establish `h2 : ‖algebraMap F (Fv F v) a‖₊ = 1` using `NNReal.coe_injective h1`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, inv_one]`. Apply `NNReal.coe_injective` to reduce the goal to its premises. Establish `e : ((∏ᶠ v : HeightOneSpectrum (𝓞 F), (‖algebraMap F (Fv F v) a‖₊)⁻¹ : ℝ≥0) : ℝ) = (∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖algebraMap F (Fv F v) a‖)⁻¹`. Rewrite using `[finprod_inv_distrib]`. Rewrite using `[NNReal.coe_inv]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `NNReal.toRealHom.map_finprod_of_injective NNReal.coe_injective _`. Rewrite using `[NNReal.coe_mul, e, NNReal.coe_one, Real.coe_toNNReal _ (inv_pos.2 hA).le, ← mul_inv, hprod, inv_one]`. Introduce `μ hμ`. Establish `hb : (((Units.map (algebraMap F (Ainf F)).toMonoidHom (Units.mk0 a ha))⁻¹ : (Ainf F)ˣ) : Ainf F) = algebraMap F (Ainf F) a⁻¹`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h` using `map_mul_left_infinite (F := F) (m := measAinf) ⟨rfl⟩ (Units.map (algebraMap F (Ainf F)).toMonoidHom (Units.mk0 a ha)) μ hμ`. Rewrite `h` using `[hb, norm_algebraMap_infinite]`. Establish `e : ∏ w : InfinitePlace F, w a⁻¹ ^ w.mult = (∏ w : InfinitePlace F, w a ^ w.mult)⁻¹`. Rewrite using `[← Finset.prod_inv_distrib]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.prod_congr rfl fun w _ => by rw [map_inv₀, inv_pow]`. Rewrite `h` using `[e]`. Conclude with `h`. Introduce `v μ hμ`. Conclude with `map_mul_left_finite v _ ((map_ne_zero _).2 ha) μ hμ`.
+A detailed English derivation is pending.
 -/
 theorem unitProd_scalar : ∀ (F : Type) [Field F] [NumberField F] (a : F), a ≠ 0 →
     ∃ (cinf : ℝ≥0) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd cinf c ∧

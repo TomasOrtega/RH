@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 open Formalism.L2.SG.Pf.MainEqSteps
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.stepNormalsG_holds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FNormalCountGenericRow.lean&line=15#L15)
 -/

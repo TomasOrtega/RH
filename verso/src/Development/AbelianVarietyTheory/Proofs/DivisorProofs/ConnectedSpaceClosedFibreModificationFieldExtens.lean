@@ -10,15 +10,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hA M K _ κ`. Take `⟨hN, -, hIC, -⟩` from `hA`. Use `haveI := hN`. Use `haveI := hIC`. Take `⟨hbij, hsurj⟩` from `Modif.appTop_bijective_surjective R M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := M.proper`. Use `haveI := hsurj`. Establish `hcomp : ∀ {A : Type} [CommRing A] (ψ : ResidueField R →+* A), spMap ψ ≫ spMap (residue R) = spMap (ψ.comp (residue R))` using `fun ψ => by`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pc : ∀ {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (h : X ≃ₜ Y) [PreconnectedSpace X], PreconnectedSpace Y` using `fun h _ => ⟨by rw [← h.surjective.range_eq, ← Set.image_univ]; exact isPreconnected_univ.image _ h.continuous.continuousOn⟩`. Set `f` to `pullback.snd M.π (spMap (residue R))`. Establish `e : ∀ {A : Type} [CommRing A] (ψ : ResidueField R →+* A), pullback f (spMap ψ) ≅ pullback M.π (spMap (ψ.comp (residue R)))` using `fun ψ => pullbackLeftPullbackSndIso M.π (spMap (residue R)) (spMap ψ) ≪≫ pullback.congrHom rfl (hcomp ψ)`. Establish `hP : PreconnectedSpace (pullback f (spMap κ) : Scheme.{0})`. Use `GlobalTheory.T.preconnectedSpace_of_finGen_subfield_baseChanges (ResidueField R) _ f inferInstance inferInstance K κ fun L hL n c hc => ?_` and prove the remaining obligations.
-
-Establish `hc'` using `GlobalTheory.T.connectedSpace_closedFibre_finitelyGenerated_ext R M.S M.π inferInstance hsurj hbij K κ L hL n c hc`. Conclude with `@pc _ _ _ _ (Scheme.homeoOfIso (e _)).symm hc'.toPreconnectedSpace`. Use `haveI : PreconnectedSpace (pullback M.π (spMap (κ.comp (residue R))) : Scheme.{0}) := pc (Scheme.homeoOfIso (e κ))`. Take `⟨q⟩ : Nonempty (Sp K)` from `inferInstance`. Take `⟨z, -⟩` from `(pullback.snd M.π (spMap (κ.comp (residue R)))).surjective q`.
-
-Conclude with `ConnectedSpace.mk ⟨z⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.connectedSpace_pullback_closedFibre_field : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (M : Modif R) (K : Type) [Field K] (κ : ResidueField R →+* K), ConnectedSpace (pullback M.π (spMap (κ.comp (residue R))) : Scheme.{0}) := by
   intro R _ _ _ hA M K _ κ

@@ -73,9 +73,9 @@ structure RunCond (D : D7) (p : ℕ) (ξ : (AfE D)ˣ →* ℂˣ) : Prop where
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `zeta`. Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`. Establish `: (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Distinguish the cases in `hn : (n : ℂ) = 0`. Simplify using `[hn]`. Clear the denominators using the available nonvanishing facts.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem zeta_mul_pow (n k : ℕ) (hk : k ≠ 0) : zeta (n * k) ^ k = zeta n := by
   unfold zeta
@@ -88,11 +88,11 @@ theorem zeta_mul_pow (n k : ℕ) (hk : k ≠ 0) : zeta (n * k) ^ k = zeta n := b
   · field_simp
 
 /- English proof (translation)
-Introduce `τ hτ`. Take `⟨C, ι, h1, h2⟩` from `h τ hτ`. Use `⟨C, ι, h1, fun a => ?_⟩` and prove the remaining obligations. Establish `hk' : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk`. Establish `e : GlobalTheory.CompRat.wC H (k * a.1, k * a.2) = k * GlobalTheory.CompRat.wC H a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [GlobalTheory.CompRat.wC]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : ∀ z : ℂ, (k : ℂ) * z / ((n * k : ℕ) : ℂ) = z / n` using `fun z => by`. Rewrite using `[Nat.cast_mul, mul_comm (n : ℂ), mul_div_mul_left _ _ hk']`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `h2 (k * a.1, k * a.2)`. Rewrite `h3` using `[e, mul_left_comm, e1, e1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem curveOver_of_mul {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {F : IntermediateField ℚ ℂ} {n k : ℕ} (hk : k ≠ 0) (h : GlobalTheory.CompRat.CurveOver H F (n * k)) :
@@ -109,9 +109,9 @@ theorem curveOver_of_mul {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   rwa [e, mul_left_comm, e1, e1] at h3
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk, e⟩ : ∃ k, k ≠ 0 ∧ lev D (D.host.pde * D.host.pde') = lev D p * k := by`. Break down `hp with rfl | rfl` into its components or cases. Conclude with `⟨_, D.host.pde'_prime.ne_zero, by simp only [lev]; ring⟩`. Conclude with `⟨_, D.host.pde_prime.ne_zero, by simp only [lev]; ring⟩`. Use `⟨h.full, ?_, curveOver_of_mul hk (e ▸ h.curve), h.typeNorm⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← zeta_mul_pow _ k hk, ← e]`. Conclude with `pow_mem h.root k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FieldCondBoth.run (h : FieldCondBoth D) {p : ℕ} (hp : p = D.host.pde ∨ p = D.host.pde') : FieldCond D p := by
   obtain ⟨k, hk, e⟩ : ∃ k, k ≠ 0 ∧ lev D (D.host.pde * D.host.pde') = lev D p * k := by
@@ -123,9 +123,9 @@ theorem FieldCondBoth.run (h : FieldCondBoth D) {p : ℕ} (hp : p = D.host.pde �
   exact pow_mem h.root k
 
 /- English proof (translation)
-Establish `hc : ∀ e : D.host.E, D.conjF (D.conjF e) = e` using `fun e => by`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[D.conjF_eq, D.conjF_eq]`. Establish `h` using `fun e => D.host.conjE_apply D.host.φ₀ e`. Rewrite using `[h, h]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [bar, sigR, hc]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem bar_bar (x : AfE D) : bar D (bar D x) = x := by
   have hc : ∀ e : D.host.E, D.conjF (D.conjF e) = e := fun e => by

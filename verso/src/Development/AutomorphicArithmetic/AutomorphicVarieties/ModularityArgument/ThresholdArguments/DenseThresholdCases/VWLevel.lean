@@ -16,7 +16,7 @@ section
 open UpperTheory.V UpperTheory.V.Af
 namespace UpperTheory.GalN.V
 /- English proof (translation)
-Introduce `P` and use `_root_.UpperTheory.GalN.V.Win.N.number_sp4_of_admissible_to_admissible_n P (_root_.UpperTheory.V.Keep.levelPA_alt P) (_root_.UpperTheory.V.Z.Win.A4.admissible_restriction_level_n_of_printed_results P) fun _ _ _ _ _ _ _ _ _ _ _ h => ⟨h.irr, _root_.UpperTheory.GalN.V.autQN'_alt P ( …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem numberSp4_n_alt : _root_.UpperTheory.V.Af.Hypotheses' → _root_.UpperTheory.V.Af.NumberSp4Alt := fun P =>
   _root_.UpperTheory.GalN.V.Win.N.number_sp4_of_admissible_to_admissible_n P (_root_.UpperTheory.V.Keep.levelPA_alt P) (_root_.UpperTheory.V.Z.Win.A4.admissible_restriction_level_n_of_printed_results P) fun _ _ _ _ _ _ _ _ _ _ _ h =>

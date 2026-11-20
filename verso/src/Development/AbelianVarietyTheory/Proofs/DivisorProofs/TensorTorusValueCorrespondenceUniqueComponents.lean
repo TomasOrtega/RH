@@ -13,9 +13,9 @@ open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 namespace GlobalTheory.Mum.TensTor
 
 /- English proof (translation)
-Establish `e1 : f k = ∑ j, (1 : Matrix (Fin r) (Fin r) ℤ) k j • f j`. Simplify using `[Matrix.one_apply]`. Rewrite using `[e1, ← Matrix.nonsing_inv_mul M hM]`. Simplify using `only [Matrix.mul_apply, Finset.sum_smul, mul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Finset.smul_sum, h, smul_zero, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eq_zero_of_sum_smul_matrix {G : Type} [AddCommGroup G] {r : ℕ} (M : Matrix (Fin r) (Fin r) ℤ)
     (hM : IsUnit M.det) (f : Fin r → G) (h : ∀ i, ∑ j, M i j • f j = 0) (k : Fin r) : f k = 0 := by
@@ -27,7 +27,7 @@ theorem eq_zero_of_sum_smul_matrix {G : Type} [AddCommGroup G] {r : ℕ} (M : Ma
   simp only [← Finset.smul_sum, h, smul_zero, Finset.sum_const_zero]
 
 /- English proof (translation)
-Use `eq_zero_of_sum_smul_matrix M hM (fun j => Additive.ofMul (f j)) (fun i => by` as an intermediate fact. Simplify `congrArg Additive.ofMul (h i)) k` using `[← ofMul_zpow, ← ofMul_prod]`. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_one_of_prod_zpow_matrix {G : Type} [CommGroup G] {r : ℕ} (M : Matrix (Fin r) (Fin r) ℤ)
     (hM : IsUnit M.det) (f : Fin r → G) (h : ∀ i, ∏ j, f j ^ M i j = 1) (k : Fin r) : f k = 1 := by
@@ -36,9 +36,9 @@ theorem eq_one_of_prod_zpow_matrix {G : Type} [CommGroup G] {r : ℕ} (M : Matri
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [NumD.tor_mul_s_apply, NumD.Gt.mul_b, NumD.tor_b, one_mul, div_eq_mul_inv]`. The two sides agree by associativity and commutativity.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity.
 -/
 theorem gtRelV_prod_tor_mul {F : Type} [Field F] {N : NumD F} {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (x : Fin r → N.X)
     (vs : Fin r → N.Gt) (T : Fin r → (Multiplicative N.X →* Fˣ)) :
@@ -60,13 +60,13 @@ theorem gtRelV_prod_tor_mul {F : Type} [Field F] {N : NumD F} {r : ℕ} (W : Mat
   ac_rfl
 
 /- English proof (translation)
-Simplify using `only [mul_zpow, Finset.prod_mul_distrib]`. Establish `h1 : (∏ a, ∏ b, T b (Multiplicative.ofAdd ((Pi.single i χ : Fin r → A) a)) ^ W a b) = ∏ j, T j (Multiplicative.ofAdd χ) ^ W i j`. Rewrite using `[Finset.prod_eq_single i]`. Simplify using the standard rewrite rules. Introduce `a _ ha`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Pi.single_apply, ha]`. Simplify using the standard rewrite rules. Establish `h2 : (∏ a, ∏ b, T a (Multiplicative.ofAdd ((Pi.single i χ : Fin r → A) b)) ^ W a b) = ∏ j, T j (Multiplicative.ofAdd χ) ^ W j i`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single i]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2, ← Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, Matrix.transpose_apply, zpow_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gtRelV_prod_single {G : Type} [CommGroup G] {A : Type} [AddCommGroup A] {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ)
     (T : Fin r → (Multiplicative A →* G)) (i : Fin r) (χ : A) :
@@ -94,15 +94,15 @@ theorem gtRelV_prod_single {G : Type} [CommGroup G] {A : Type} [AddCommGroup A] 
   rw [Matrix.add_apply, Matrix.transpose_apply, zpow_add]
 
 /- English proof (translation)
-Introduce `F _ N N' r W φ e wv hT hdet v' vs us hv hu`. Establish `hb : ∀ j, (us j).b = (vs j).b` using `fun j => (hu.1 j).symm.trans (hv.1 j)`. Establish `ht : ∀ j, ∃ t, N.tor t = us j / vs j` using `fun j => (N.exists_tor_iff _).2 (by rw [div_eq_mul_inv, NumD.Gt.mul_b, NumD.Gt.inv_b, hb, mul_inv_cancel])`. Use `choose T hT' using ht`. Establish `hus : us = fun j => N.tor (T j) * vs j` using `funext fun j => by rw [hT', div_mul_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hus` using the available equality. Establish `hwv : ∀ x, wv x ≠ 0` using `hT.2.2.2.2.2.1`. Establish `key : ∀ χ', (∏ i, ∏ j, (T j (Multiplicative.ofAdd (e χ' i)) * T i (Multiplicative.ofAdd (e χ' j))) ^ W i j) = 1`. Introduce `χ'`. Establish `a` using `hv.2 χ'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `hu.2 χ'`. Rewrite `b` using `[a, gtRelV_prod_tor_mul W (e χ') vs T]`. Establish `c` using `mul_right_cancel₀ (hwv _) (mul_right_cancel₀ (hwv 1) b)`. Establish `d` using `Units.ext c`. Conclude with `(mul_eq_left.1 d.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hall : ∀ χ j, T j (Multiplicative.ofAdd χ) = 1`. Introduce `χ`. Use `eq_one_of_prod_zpow_matrix (W + W.transpose) hdet (fun j => T j (Multiplicative.ofAdd χ)) fun i => ?_` and prove the remaining obligations. Take `⟨χ', hχ'⟩` from `hT.2.2.2.1.2 (Pi.single i χ)`. Use `key χ'` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `this` using `[hχ', gtRelV_prod_single W T i χ]`. Conclude with `this`. Use function extensionality and compare the values at `j`. Establish `: T j = 1` using `MonoidHom.ext fun m => by simpa using hall m.toAdd j`. Rewrite using `[this, NumD.tor_one, _root_.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gtRelV_components_unique : ∀ (F : Type) [Field F] (N N' : NumD F) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ)
     (φ : N'.A → Fin r → N.A) (e : N'.X → Fin r → N.X) (wv : N'.A → F),

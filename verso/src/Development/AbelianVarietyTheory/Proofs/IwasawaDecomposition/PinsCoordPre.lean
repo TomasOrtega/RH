@@ -10,11 +10,9 @@ def PinsP (B : Pre) (pi : B.Word → 𝓞 B.host.E) : Prop :=
     B.sp.iX' (B.sp.X'.frame a) = (B.sp.X B.R.m).frame b) ∧ ∀ u, B.cOf u * (pi u : B.host.E) = (pi B.u₀ : B.host.E)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.basisFun_apply]`. Use `show (if h : (i:ℕ) < n then (Pi.single a (1:E) : Fin n → E) ⟨i, h⟩ else 0) = _`. Distinguish the cases in `e : i = b`. Substitute `e` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `: (i:ℕ) < n` using `h ▸ a.2`. Rewrite using `[dif_pos this, show (⟨i, this⟩ : Fin n) = a from Fin.ext h.symm]`. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne e] split_ifs with h1`. Conclude with `Pi.single_eq_of_ne (fun e' => e (Fin.ext (by rw [← h, ← e']))) _`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem extTo_basis {E : Type} [Field E] (n N : ℕ) (a : Fin n) (b : Fin N) (h : (a:ℕ) = b) : DiagSp.extTo (E := E) n N (Pi.basisFun E (Fin n) a) = Pi.basisFun E (Fin N) b := by
   funext i

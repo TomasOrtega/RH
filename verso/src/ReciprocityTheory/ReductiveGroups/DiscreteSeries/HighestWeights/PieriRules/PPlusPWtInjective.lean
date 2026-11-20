@@ -13,7 +13,7 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `h`. Take `⟨h1, h2⟩` from `p.2`. Rewrite `h1` using `[h]`. Rewrite `h2` using `[h1]`. Apply the tactic sequence `cases β <;> simp at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pPlus_fst_ne_snd {ε : Fin n → Bool} {β : Bool} (p : pIdx ε β) : p.1.1 ≠ p.1.2 := by
   intro h
@@ -23,13 +23,13 @@ theorem pPlus_fst_ne_snd {ε : Fin n → Bool} {β : Bool} (p : pIdx ε β) : p.
   cases β <;> simp at h2
 
 /- English proof (translation)
-Use extensionality with `p q`. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Simplify using `only [pAdM, pWt, Pi.single_apply, Pi.sub_apply, Matrix.diagonal_apply_eq, and_true, and_self]`. Apply the tactic sequence `by_cases h1 : p.1.1 = a <;> by_cases h2 : p.1.2 = a`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `absurd (h1.trans h2.symm) (pPlus_fst_ne_snd p)`. Rewrite using `[if_pos h1, if_neg h2, if_pos h1.symm, if_neg (Ne.symm h2)]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h1, if_pos h2, if_neg (Ne.symm h1), if_pos h2.symm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1, if_neg h2, if_neg (Ne.symm h1), if_neg (Ne.symm h2)]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.diagonal_apply_ne _ hpq]`. Establish `h1 : ¬ (p.1.1 = a ∧ q.1.1 = a ∧ p.1.2 = q.1.2)` using `fun h => hpq (Subtype.ext (Prod.ext (h.1.trans h.2.1.symm) h.2.2))`. Establish `h2 : ¬ (q.1.2 = a ∧ p.1.2 = a ∧ p.1.1 = q.1.1)` using `fun h => hpq (Subtype.ext (Prod.ext h.2.2 (h.2.1.trans h.1.symm)))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [pAdM, if_neg h1, if_neg h2, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem pPlus_pAdM_diag (ε : Fin n → Bool) (β : Bool) (a : Fin n) :
     pAdM ε β a a = Matrix.diagonal fun p => ((pWt ε β p a : ℝ) : ℂ) := by
@@ -50,13 +50,13 @@ theorem pPlus_pAdM_diag (ε : Fin n → Bool) (β : Bool) (a : Fin n) :
     simp only [pAdM, if_neg h1, if_neg h2, sub_self]
 
 /- English proof (translation)
-Introduce `p q h`. Establish `hp` using `pPlus_fst_ne_snd p`. Establish `e1` using `congrFun h p.1.1`. Establish `e2` using `congrFun h p.1.2`. Simplify using `only [pWt, Pi.sub_apply, Pi.single_apply] at e1 e2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e1` using `[if_pos trivial, if_neg hp]`. Rewrite `e2` using `[if_neg (Ne.symm hp), if_pos trivial]`. Establish `h1 : p.1.1 = q.1.1`. Assume the negation of the conclusion as `hne`. Rewrite `e1` using `[if_neg hne]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `split_ifs at e1 <;> norm_num at e1`. Establish `h2 : p.1.2 = q.1.2`. Assume the negation of the conclusion as `hne`. Rewrite `e2` using `[if_neg hne]`. Apply the tactic sequence `split_ifs at e2 <;> norm_num at e2`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `Subtype.ext (Prod.ext h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem pPlus_pWt_injective (ε : Fin n → Bool) (β : Bool) : Function.Injective (pWt ε β) := by
   intro p q h
@@ -77,7 +77,7 @@ theorem pPlus_pWt_injective (ε : Fin n → Bool) (β : Bool) : Function.Injecti
   exact Subtype.ext (Prod.ext h1 h2)
 
 /- English proof (translation)
-The claim follows from `Nat.card_eq_one_iff_exists.mpr ⟨⟨p, rfl⟩, fun q => Subtype.ext (pPlus_pWt_injective ε β (add_left_cancel q.2).symm)⟩`.
+A detailed English derivation is pending.
 -/
 theorem pPlus_card_eq_one (ε : Fin n → Bool) (β : Bool) (Λ : Fin n → ℝ) (p : pIdx ε β) :
     Nat.card {q : pIdx ε β // Λ + pWt ε β p = Λ + pWt ε β q} = 1 :=
@@ -85,11 +85,11 @@ theorem pPlus_card_eq_one (ε : Fin n → Bool) (β : Bool) (Λ : Fin n → ℝ)
     ⟨⟨p, rfl⟩, fun q => Subtype.ext (pPlus_pWt_injective ε β (add_left_cancel q.2).symm)⟩
 
 /- English proof (translation)
-Introduce `n ε β Λ T`. Take `⟨ρ, dρ, hcont, hder, hsingle⟩` from `hρ n ε β`. Establish `hfun : (fun a b => dρ (Matrix.single a b 1)) = pAdM ε β`. Use function extensionality and compare the values at `a b`. Conclude with `hsingle a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨hint, hdom⟩` from `hkt n ε Λ T`. Take `⟨hsum, hvan⟩` from `hws n ε β Λ hint hdom`. Establish `hc` using `hcount n ε Λ T (pIdx ε β) ρ dρ (pWt ε β) hcont hder (by rw [hfun]; exact hrel n ε β) (fun a => by rw [hsingle]; exact pPlus_pAdM_diag ε β a) (pPlus_pWt_injective ε β) (by rw [hsum, Nat.card_eq_fintype_card]) hvan`. Rewrite `hc` using `[hfun]`. Take `⟨hexist, hall⟩` from `hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht` using `htens T.V n ε (kunits T) Λ T.w (pIdx ε β) (pAdM ε β) (pWt ε β) (KType.kRel T) (KType.kUnit T) (KType.kHighest_w T) (KType.kSpan_eq_top T) (hrel n ε β) (pPlus_pAdM_diag ε β)`. Use `⟨hall, fun p => ?_, hexist⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pPlus_of_parts (hcount : PieriCountStatement) (htens : TensHWStatement)
     (hkt : KTypeIntDomStatement) (hws : WeylSumPStatement)

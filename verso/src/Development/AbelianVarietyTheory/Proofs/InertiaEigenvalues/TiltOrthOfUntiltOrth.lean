@@ -8,25 +8,21 @@ open scoped Formalism.Per
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ h m hrat horth c j hj`. Establish `hl : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Establish `hl0 : (0 : ℤ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Establish `hne : (Finset.univ : Finset (Fin h)).Nonempty` using `⟨j, Finset.mem_univ _⟩`. Use `set M : ℝ := Finset.univ.sup' hne (fun i => ‖sh (m i)‖) with hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMle : ∀ i, ‖sh (m i)‖ ≤ M` using `fun i => Finset.le_sup' (fun i => ‖sh (m i)‖) (Finset.mem_univ i)`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hMle j)`. Take `⟨i0, -, hi0⟩` from `Finset.exists_mem_eq_sup' hne (fun i => ‖sh (m i)‖)`. Establish `hsmall : ‖(l : ℂ_[l])‖ * M < ‖sh (m j)‖`. Rewrite using `[GlobalTheory.PSer.Laws.norm_l, hM, hi0, inv_mul_lt_iff₀ hl]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hrat i0 j`. Use `set n : Fin h → ℕ := fun i => (c i % (l : ℤ)).toNat with hn`. Establish `hnc : ∀ i, ((n i : ℕ) : ℤ) = c i % (l : ℤ)` using `fun i => Int.toNat_of_nonneg (Int.emod_nonneg _ hl0.ne')`. Establish `hcast : ∀ i, (c i : Fl l) = (n i : Fl l)`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((n i : ℤ) : Fl l) = (n i : Fl l)` using `Int.cast_natCast _`. Rewrite using `[← this, CharP.intCast_eq_intCast (Fl l) l, hnc]`. Conclude with `(Int.mod_modEq _ _).symm`. Establish `hnj : ‖((n j : ℕ) : ℚ_[l])‖ = 1`. Rewrite using `[Padic.norm_natCast_eq_one_iff, Nat.Prime.coprime_iff_not_dvd (Fact.out : l.Prime)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hd`. Apply `hj` to reduce the goal to its premises. Establish `h1 : (l : ℤ) ∣ c j % (l : ℤ)` using `by rw [← hnc]; exact_mod_cast hd`. Establish `h2` using `(Int.dvd_iff_emod_eq_zero ..).1 h1`. Rewrite `h2` using `[Int.emod_emod_of_dvd _ (dvd_refl _)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `Int.dvd_of_emod_eq_zero h2`. Establish `hsum : (∑ i, (c i : Fl l) * m i) = ∑ p ∈ (Finset.univ : Finset (Fin h)).sigma (fun i => Finset.range (n i)), m p.1`. Rewrite using `[Finset.sum_sigma]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_const, Finset.card_range, nsmul_eq_mul, hcast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hsum2 : (∑ p ∈ (Finset.univ : Finset (Fin h)).sigma (fun i => Finset.range (n i)), sh (m p.1)) = ∑ i, algebraMap ℚ_[l] ℂ_[l] ((n i : ℕ) : ℚ_[l]) * sh (m i)`. Rewrite using `[Finset.sum_sigma]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_const, Finset.card_range, nsmul_eq_mul, map_natCast]`. Take `⟨hd, -⟩` from `GlobalTheory.T.norm_sh_sum_sub_sum_sh_le l ((_ : Fin h) × ℕ) ((Finset.univ : Finset (Fin h)).sigma (fun i => Finset.range (n i))) M (fun p => m p.1) hM0 (fun p _ => hMle p.1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hd` using `[← hsum, hsum2]`. Establish `ho` using `horth (fun i => ((n i : ℕ) : ℚ_[l])) j`. Simplify using `only [hnj, one_mul] at ho`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
-
-Use `set b := sh (∑ i, (c i : Fl l) * m i)`. Use `set a := ∑ i, algebraMap ℚ_[l] ℂ_[l] ((n i : ℕ) : ℚ_[l]) * sh (m i)`. Establish `: ‖a‖ ≤ max ‖b‖ ‖b - a‖`. Use `IsUltrametricDist.norm_add_le_max b (-(b - a))` as an intermediate fact. Rewrite `this` using `[norm_neg, show b + -(b - a) = a by ring]`. Then use the resulting hypothesis.
-
-Establish `hba : ‖b - a‖ < ‖sh (m j)‖` using `hd.trans_lt hsmall`. Conclude with `absurd (ho.trans this) (not_le.2 (max_lt hlt hba))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tilt_orth_of_untilt_orth : ∀ (l : ℕ) [Fact l.Prime] (h : ℕ) (m : Fin h → Fl l), (∀ i j, ‖sh (m i)‖ < l * ‖sh (m j)‖) →
     (∀ (c : Fin h → ℚ_[l]) (j : Fin h), ‖c j‖ * ‖sh (m j)‖ ≤ ‖∑ i, algebraMap ℚ_[l] ℂ_[l] (c i) * sh (m i)‖) →

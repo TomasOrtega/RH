@@ -12,19 +12,19 @@ namespace GlobalTheory.ThetaBound
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω)
 
 /- English proof (translation)
-Establish `hN` using `S.N_ge`. Establish `hr` using `S.r_pos`. Establish `: NeZero S.N` using `⟨by omega⟩`. Establish `: NeZero (S.r * S.N)` using `⟨Nat.mul_ne_zero (by omega) (by omega)⟩`. Establish `: NeZero ((S.r * S.N) ^ 2)` using `⟨pow_ne_zero _ (NeZero.ne _)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Fintype.ofFinite T` as an intermediate fact. Use `Fintype.ofFinite T'` as an intermediate fact. Take `⟨d, ⟨e⟩⟩` from `hT'.2`. Establish `hζ : IsPrimitiveRoot S.ζN S.N` using `S.prim.pow (NeZero.pos _) (by ring)`. Set `χ : AddChar (ZMod S.N) o` to `AddChar.zmodChar S.N hζ.pow_eq_one`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hu : IsUnit (Nat.card T' : o)`. Rewrite using `[Nat.card_congr e.toEquiv, Nat.card_fun, Nat.card_zmod, Nat.cast_pow]`. Conclude with `S.unit.pow _`. Establish `h1 : S.proj T c = Ring.inverse (Nat.card T : o) • ∑ t : T, χ (-c t) • S.ρ t`. Rewrite using `[← finsum_eq_sum_of_fintype]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h2 : S.proj T' c' = Ring.inverse (Nat.card T' : o) • ∑ t : T', χ (-c' t) • S.ρ t`. Rewrite using `[← finsum_eq_sum_of_fintype]`. Both sides reduce to the same expression. Establish `h3 : ∀ u : T', (χ (-c' u) • S.ρ u) * ∑ t : T, χ (-c t) • S.ρ t = ∑ t : T, χ (-c t) • S.ρ t` using `fun u => by conv_rhs => rw [← Equiv.sum_comp (Equiv.addLeft (AddSubgroup.inclusion h u))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_smul_comm, ← AddChar.map_add_eq_mul, S.ρ_add _ _ (by`. Rewrite using `[hT (h u.2) t t.2, smul_zero]), hc]`. Simplify using `only [Equiv.coe_addLeft, map_add, neg_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h4 : ∀ u : T', (χ (-c' u) • S.ρ u) * S.proj T c = S.proj T c` using `fun u => by`. Rewrite using `[h1, mul_smul_comm, h3]`. Rewrite using `[h2, smul_mul_assoc, Finset.sum_mul]`. Repeatedly rewrite using `[h4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, ← Nat.cast_smul_eq_nsmul o, smul_smul, Ring.inverse_mul_cancel _ hu, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem proj_mul_proj (T T' : AddSubgroup S.Gam) (h : T' ≤ T) (hT : T ≤ S.perp T)
     (hT' : S.IsoFree T') (c : T →+ ZMod S.N) (c' : T' →+ ZMod S.N)
@@ -64,11 +64,11 @@ theorem proj_mul_proj (T T' : AddSubgroup S.Gam) (h : T' ≤ T) (hT : T ≤ S.pe
     smul_smul, Ring.inverse_mul_cancel _ hu, one_smul]
 
 /- English proof (translation)
-Establish `hN` using `S.N_ge`. Establish `hr` using `S.r_pos`. Establish `: NeZero (S.r * S.N)` using `⟨Nat.mul_ne_zero (by omega) (by omega)⟩`. Use `Fintype.ofFinite T` as an intermediate fact. Establish `h1 : (⟨S.FF T c k, hk⟩ : S.R) = ∑ t : T, algebraMap o S.R (S.ζ ^ (k.2 t).val) * ∑ j, algebraMap o S.R (S.proj T c j k.1) * ⟨S.ev t j, S.ev_mem _ j⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [ThetaSys.FF, finsum_eq_sum_of_fintype, AddSubmonoidClass.coe_finset_sum, MulMemClass.coe_mul, SubalgebraClass.coe_algebraMap]`. Rewrite using `[h1, map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hB fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul, map_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (hy _)).trans (h t)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_FF_le {p : ℕ} [Fact p.Prime] (y : S.R →+* PadicAlgCl p)
     (hy : ∀ a : o, ‖y (algebraMap o S.R a)‖ ≤ 1) (T : AddSubgroup S.Gam) (c : T →+ ZMod S.N)
@@ -97,21 +97,19 @@ namespace GlobalTheory
 open ThetaBound
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ hA S H p _ y τ hy T c k hk hT`. Take `⟨-, -, hperp, href⟩` from `thetaSys_FF_mem_finite_perp_proj o Ω S`. Establish `hpos : ∀ α : τ.X, 0 ≤ τ.δ * Real.exp (-(τ.q α / S.N))` using `fun α => mul_nonneg τ.δ_pos.le (Real.exp_pos _).le`. Use `⟨fun h1 h2 α hα hc => ?_, fun h1 => ?_⟩` and prove the remaining obligations. Use `norm_FF_le S y hy T c k hk (hpos α) fun t => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← proj_mul_proj S T _ h1 hT.1 τ.isoFree c (τ.wt α) fun u => (hc u (h1 u.2) u.2).symm]`. Repeatedly rewrite using `[Matrix.mul_apply, map_sum, map_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (hpos α) fun l _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[mul_right_comm _ (y (algebraMap o S.R (S.proj T c l k.1)))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← Finset.sum_mul, norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (hy _)).trans (τ.le α hα t (h2 t.2) l)`. Establish `hN` using `S.N_ge`. Establish `hr` using `S.r_pos`. Establish `: NeZero S.N` using `⟨by omega⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: NeZero (S.r * S.N)` using `⟨Nat.mul_ne_zero (by omega) (by omega)⟩`. Use `choose a ha hwa using (H p y τ).1`. Take `⟨d, ⟨e⟩⟩` from `hT.2`. Take `⟨π, hπ⟩` from `ThetaProj.exists_retraction T e`. Establish `hfin : Finite (S.perp τ.yy.ker →+ ZMod S.N)` using `DFunLike.finite _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `set s := {c' : S.perp τ.yy.ker →+ ZMod S.N | c'.comp (AddSubgroup.inclusion h1) = c} with hs`. Establish `hne : s.Nonempty` using `⟨(c.comp π).comp (AddSubgroup.subtype _), by`. Use extensionality with `t`. Conclude with `congrArg c (hπ t)⟩`. Take `⟨c₀, hc₀, hmax⟩` from `Set.exists_max_image s (fun c' => τ.δ * Real.exp (-(τ.q (a c') / S.N))) (Set.toFinite _) hne`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a c₀, ha c₀, fun t h₁ h₂ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hwa, ← show _ = c from hc₀]`. Both sides reduce to the same expression. Use `norm_FF_le S y hy T c k hk (hpos _) fun t => ?_` and prove the remaining obligations. Rewrite using `[href _ T h1 τ.isoFree hT c, finsum_mem_eq_finite_toFinset_sum _ (Set.toFinite _)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Repeatedly rewrite using `[Matrix.sum_apply, map_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (hpos _) fun c' hc' => ?_` and prove the remaining obligations. Establish `ht : (t : S.Gam) ∈ τ.yy.ker`. Rewrite using `[← hperp τ.yy.ker]`.
-
-Conclude with `τ.isoFree.1 (h1 t.2)`. Use `τ.le (a c') (ha c') t ht k.1` as an intermediate fact. Rewrite `this` using `[hwa]`. Conclude with `this.trans (hmax c' ((Set.Finite.mem_toFinset _).mp hc'))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaSys_norm_FF_le_exp :
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω), (∀ (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (τ : S.Test p y₀), (∀ c : S.perp τ.yy.ker →+ ZMod S.N, ∃ α : τ.X, (∀ v₀, τ.q α ≤ τ.q (α + S.N • v₀)) ∧ τ.wt α = c) ∧ ∀ (T : AddSubgroup S.Gam), S.IsoFree T → T ≤ S.perp τ.yy.ker → ∀ (w : S.Gam → τ.X), (∀ x, τ.yy x = QuotientAddGroup.mk (w x)) → ∀ (I : Set S.Gam), AddSubgroup.closure I = S.perp T → ∀ α : τ.X, (∀ (t : S.Gam) (h₂ : t ∈ S.perp τ.yy.ker), t ∈ T → τ.wt α ⟨t, h₂⟩ = 0) ↔ α ∈ AddSubgroup.closure (w '' I ∪ Set.range fun v₀ : τ.X => S.N • v₀)) → (∀ (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (τ : S.Test p y₀), (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) → ∀ (T : AddSubgroup S.Gam) (c : T →+ ZMod S.N) (k : _) (hk : S.FF T c k ∈ S.R), S.IsoFree T → (S.perp τ.yy.ker ≤ T → T ≤ τ.yy.ker → ∀ α : τ.X, (∀ v₀, τ.q α ≤ τ.q (α + S.N • v₀)) → (∀ (t : S.Gam) (h₁ : t ∈ T) (h₂ : t ∈ S.perp τ.yy.ker), c ⟨t, h₁⟩ = τ.wt α ⟨t, h₂⟩) → ‖y₀ ⟨S.FF T c k, hk⟩‖ ≤ τ.δ * Real.exp (-(τ.q α / S.N))) ∧ (T ≤ S.perp τ.yy.ker → ∃ α : τ.X, (∀ v₀, τ.q α ≤ τ.q (α + S.N • v₀)) ∧ (∀ (t : S.Gam) (h₁ : t ∈ T) (h₂ : t ∈ S.perp τ.yy.ker), c ⟨t, h₁⟩ = τ.wt α ⟨t, h₂⟩) ∧ ‖y₀ ⟨S.FF T c k, hk⟩‖ ≤ τ.δ * Real.exp (-(τ.q α / S.N)))) := by

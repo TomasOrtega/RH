@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.Invariant
 open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CharpolyPow.roots_charpoly_pow` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCharacterTheory%2FRootsCharpolyPowEqMapPow.lean&line=64#L64)
 -/

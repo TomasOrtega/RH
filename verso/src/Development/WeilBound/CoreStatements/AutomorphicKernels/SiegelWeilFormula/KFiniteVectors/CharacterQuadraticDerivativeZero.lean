@@ -26,19 +26,19 @@ def mZ (Z X : Mx F E d.m d.n) : ℝ :=
 variable {d}
 
 /- English proof (translation)
-The claim follows from `d.dd.form x y`.
+A detailed English derivation is pending.
 -/
 theorem sp_eq (x y : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     sp d x y = (d.dd.e x).1 ⬝ᵥ (d.dd.e y).2 - (d.dd.e y).1 ⬝ᵥ (d.dd.e x).2 := d.dd.form x y
 
 /- English proof (translation)
-Rewrite using `[sp_eq, sp_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sp_anti (x y : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) : sp d y x = -sp d x y := by
   rw [sp_eq, sp_eq]; ring
 
 /- English proof (translation)
-Rewrite using `[sp_eq, sp_eq, map_smul, Prod.smul_fst, Prod.smul_snd, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul, mul_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sp_smul_right (c : AF F) (x y : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     sp d x (c • y) = c * sp d x y := by
@@ -46,7 +46,7 @@ theorem sp_smul_right (c : AF F) (x y : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (
     mul_sub]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul, map_add, Prod.fst_add, Prod.snd_add, add_assoc, add_dotProduct, dotProduct_add, sp_eq]`. Use `congr 2`. Take the linear combination `(-((d.dd.e v).1 ⬝ᵥ (d.dd.e w).2)) * invOf_mul_self (2 : AF F)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rho_rho (v w : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) (Φ : d.Fn) :
     d.dd.rho d.B.ψ v (d.dd.rho d.B.ψ w Φ) = d.B.ψ (⅟(2 : AF F) * sp d v w) • d.dd.rho d.B.ψ (v + w) Φ := by
@@ -57,7 +57,7 @@ theorem rho_rho (v w : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) (Φ : d.
   linear_combination (-((d.dd.e v).1 ⬝ᵥ (d.dd.e w).2)) * invOf_mul_self (2 : AF F)
 
 /- English proof (translation)
-Rewrite using `[rho_rho, rho_rho, smul_smul, add_comm w v, sp_anti v w, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Take the linear combination `(sp d v w) * invOf_mul_self (2 : AF F)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rho_comm (v w : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) (Φ : d.Fn) :
     d.dd.rho d.B.ψ v (d.dd.rho d.B.ψ w Φ) = d.B.ψ (sp d v w) • d.dd.rho d.B.ψ w (d.dd.rho d.B.ψ v Φ) := by
@@ -66,7 +66,7 @@ theorem rho_comm (v w : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) (Φ : d
   linear_combination (sp d v w) * invOf_mul_self (2 : AF F)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [incM, Matrix.map_apply, inclR]`. Use `show cA σ (Algebra.TensorProduct.includeRight (N i j)) = Algebra.TensorProduct.includeRight (σ (N i j))`. Simplify using `[cA, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cA_incM {p q : Type} (N : Matrix p q E) : (incM F N).map (cA σ) = incM F (N.map σ) := by
   ext i j
@@ -75,13 +75,13 @@ theorem cA_incM {p q : Type} (N : Matrix p q E) : (incM F N).map (cA σ) = incM 
   simp [cA, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl, incM, Matrix.fromBlocks]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dbl_incM (J : Matrix (Fin d.n) (Fin d.n) E) : dbl (incM F J) = incM F (dbl J) := by
   ext (i | i) (j | j) <;> simp [dbl, incM, Matrix.fromBlocks]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := inclR (F := F) (AF F))`.
+A detailed English derivation is pending.
 -/
 theorem incM_mul' {p q r : Type} [Fintype q] (N : Matrix p q E) (N' : Matrix q r E) :
     incM F (N * N') = incM F N * incM F N' := Matrix.map_mul (f := inclR (F := F) (AF F))
@@ -92,9 +92,9 @@ Both sides reduce to the same expression.
 theorem incM_transpose {p q : Type} (N : Matrix p q E) : (incM F N)ᵀ = incM F Nᵀ := rfl
 
 /- English proof (translation)
-Take `⟨ε, hε⟩` from `d.ok.frame.1`. Establish `h0 : d.b.1.toCols₂ᵀ * dbl d.Y.J * d.b.1.toCols₂.map σ = 0`. Use extensionality with `i j`. Use `congrFun₂ hε (Sum.inr i) (Sum.inr j)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.toCols₂, Matrix.map_apply, Matrix.transpose_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[b2, cA_incM, dbl_incM, incM_transpose, ← incM_mul', ← incM_mul', h0]`. Use extensionality with `i j`. Simplify using `[incM]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem second_frame_half_isotropic : (b2 d)ᵀ * dbl (incM F d.Y.J) * (b2 d).map (cA σ) = 0 := by
   obtain ⟨ε, hε⟩ := d.ok.frame.1
@@ -107,15 +107,15 @@ theorem second_frame_half_isotropic : (b2 d)ᵀ * dbl (incM F d.Y.J) * (b2 d).ma
   simp [incM]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (cA σ).toRingHom)`.
+A detailed English derivation is pending.
 -/
 theorem map_cA_mul {p q r : Type} [Fintype q] (A : Matrix p q (AE F E)) (B : Matrix q r (AE F E)) :
     (A * B).map (cA σ) = A.map (cA σ) * B.map (cA σ) := Matrix.map_mul (f := (cA σ).toRingHom)
 
 /- English proof (translation)
-Establish `h` using `second_frame_half_isotropic (d := d)`. Rewrite using `[sp, symp, Dense.hTens_tr]`. Establish `e : (X * (b2 d)ᵀ)ᵀ * incM F d.A.J * (Z * (b2 d)ᵀ).map (cA σ) * (dbl (incM F d.Y.J))ᵀ = b2 d * (Xᵀ * incM F d.A.J * Z.map (cA σ) * ((b2 d).map (cA σ))ᵀ * (dbl (incM F d.Y.J))ᵀ)`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_transpose, map_cA_mul, ← Matrix.transpose_map]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : (Xᵀ * incM F d.A.J * Z.map (cA σ) * ((b2 d).map (cA σ))ᵀ * (dbl (incM F d.Y.J))ᵀ) * b2 d = Xᵀ * incM F d.A.J * Z.map (cA σ) * ((b2 d)ᵀ * dbl (incM F d.Y.J) * (b2 d).map (cA σ))ᵀ`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Rewrite using `[e, Matrix.trace_mul_comm, e2, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem symplectic_form_second_frame_zero (X Z : Mx F E d.m d.n) : sp d (X * (b2 d)ᵀ) (Z * (b2 d)ᵀ) = 0 := by
   have h := second_frame_half_isotropic (d := d)
@@ -131,7 +131,7 @@ theorem symplectic_form_second_frame_zero (X Z : Mx F E d.m d.n) : sp d (X * (b2
   simp
 
 /- English proof (translation)
-Simplify using `only [SD.T]`. Rewrite using `[rho_rho, sp_smul_right, symplectic_form_second_frame_zero, mul_zero, mul_zero, AddChar.map_zero_eq_one, one_smul, ← Matrix.smul_mul, ← Matrix.add_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_translation_second_frame (Φ : d.Fn) (Z : Mx F E d.m d.n) (t : ℝ) (X : Mx F E d.m d.n) :
     d.T (d.dd.rho d.B.ψ (realAd F t • (Z * (b2 d)ᵀ)) Φ) X = d.T Φ (X + realAd F t • Z) := by
@@ -140,7 +140,7 @@ theorem theta_translation_second_frame (Φ : d.Fn) (Z : Mx F E d.m d.n) (t : ℝ
     ← Matrix.add_mul]
 
 /- English proof (translation)
-Simplify using `only [SD.T]`. Rewrite using `[rho_comm, map_smul, smul_eq_mul, sp_smul_right, ← Matrix.smul_mul]`. Use `congr 1`. Conclude with `d.ok.dbl.kill _ _ (GlobalTheory.HeisSchA.schr_mem_schA _ d.ok.good.std _ Φ hΦ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem T_rho_dg {Φ : d.Fn} (hΦ : Φ ∈ d.sch) (Z : Mx F E d.m d.n) (t : ℝ) (X : Mx F E d.m d.n) :
     d.T (d.dd.rho d.B.ψ (realAd F t • (Z * (dg d)ᵀ)) Φ) X =
@@ -151,7 +151,7 @@ theorem T_rho_dg {Φ : d.Fn} (hΦ : Φ ∈ d.sch) (Z : Mx F E d.m d.n) (t : ℝ)
   exact d.ok.dbl.kill _ _ (GlobalTheory.HeisSchA.schr_mem_schA _ d.ok.good.std _ Φ hΦ)
 
 /- English proof (translation)
-Introduce `c hc` and use `by have h1 : c.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 hc show c * (realAd F t * s) = 0 refine Prod.ext ?_ ?_ · show c.1 * (realAd F t * s).1 = 0 rw [h1, zero_mul] · show c.2 * ((realAd F t).2 * s.2) = 0 have : (realAd F t).2 = 0 := rfl rw [this, zer …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_realAd_mul (t : ℝ) (s : AF F) : At (evI F) (realAd F t * s) := fun c hc => by
   have h1 : c.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 hc
@@ -164,7 +164,7 @@ theorem at_realAd_mul (t : ℝ) (s : AF F) : At (evI F) (realAd F t * s) := fun 
     rw [this, zero_mul, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Dense.evI_mul, Dense.evI_realAd, ← Algebra.smul_def, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_realAd_mul (t : ℝ) (s : AF F) :
     Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (realAd F t * s)) =
@@ -172,16 +172,16 @@ theorem tr_realAd_mul (t : ℝ) (s : AF F) :
   rw [Dense.evI_mul, Dense.evI_realAd, ← Algebra.smul_def, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[d.ok.good.std.2.2 _ (at_realAd_mul t s), tr_realAd_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_line (s : AF F) (t : ℝ) : d.B.ψ (realAd F t * s) =
     Complex.exp (-(2 * Real.pi * Complex.I) * ((t * Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F s) : ℝ) : ℂ)) := by
   rw [d.ok.good.std.2.2 _ (at_realAd_mul t s), tr_realAd_mul]
 
 /- English proof (translation)
-Simplify using `only [psi_line]`. Use `set c := Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F s)`. Establish `h1 : HasDerivAt (fun t : ℝ => ((t * c : ℝ) : ℂ)) (c : ℂ) 0`. Use `((hasDerivAt_id (0 : ℝ)).mul_const c).ofReal_comp` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2` using `(h1.const_mul (-(2 * Real.pi * Complex.I))).cexp`. Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem psi_line_deriv (s : AF F) : HasDerivAt (fun t : ℝ => d.B.ψ (realAd F t * s))
     (-(2 * Real.pi * Complex.I) * (Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F s) : ℂ)) 0 := by
@@ -194,48 +194,46 @@ theorem psi_line_deriv (s : AF F) : HasDerivAt (fun t : ℝ => d.B.ψ (realAd F 
   simpa using h2
 
 /- English proof (translation)
-The claim follows from `funext fun _ => mul_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem rho_add_fn (w : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) (Φ Ψ : d.Fn) :
     d.dd.rho d.B.ψ w (Φ + Ψ) = d.dd.rho d.B.ψ w Φ + d.dd.rho d.B.ψ w Ψ := funext fun _ => mul_add _ _ _
 
 /- English proof (translation)
-The claim follows from `funext fun _ => mul_left_comm _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem rho_smul_fn (w : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) (c : ℂ) (Φ : d.Fn) :
     d.dd.rho d.B.ψ w (c • Φ) = c • d.dd.rho d.B.ψ w Φ := funext fun _ => mul_left_comm _ _ _
 
 /- English proof (translation)
-The claim follows from `funext fun _ => mul_zero _`.
+A detailed English derivation is pending.
 -/
 theorem rho_zero_fn (w : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     d.dd.rho d.B.ψ w (0 : d.Fn) = 0 := funext fun _ => mul_zero _
 
 /- English proof (translation)
-Rewrite using `[Darboux.rho, map_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_line (u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) (t : ℝ) (Φ : d.Fn) :
     d.dd.rho d.B.ψ (realAd F t • u) Φ = schr d.B.ψ (realAd F t • d.dd.e u) Φ := by
   rw [Darboux.rho, map_smul]
 
 /- English proof (translation)
-Introduce `s hs` and use `by rw [← map_smul, hu s hs, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_e' {u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu : At (evI F) u) : At (evI F) (d.dd.e u) :=
   fun s hs => by rw [← map_smul, hu s hs, map_zero]
 
 /- English proof (translation)
-Simplify using `only [rho_line]`. Establish `hw` using `at_e' hu`. Use `set w := d.dd.e u`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem Φ hm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨f, g, hg, rfl⟩` from `hm`. Take `⟨G, hG, hD⟩` from `Dense.hl_line_deriv (Box.nf w.1) (Dense.linForm (Box.nf w.2)) f`. Take `⟨S, hS⟩` from `d.ok.dbl.adm g hg`. Establish `e : ∀ t : ℝ, schr d.B.ψ (realAd F t • w) (pureA F f g) = pureA F (G t) g` using `fun t => by`. Use function extensionality and compare the values at `z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Box.pt_self z, Box.schr_pt d.ok.good.std hw, Dense.pureA_pt, hG]`. Simplify using `only [Dense.hl, Dense.pureA_pt, mul_assoc]`. Simplify using `only [e, hS]`. Rewrite using `[Box.D, Box.DP_pure, hS]`. Conclude with `hD ha S`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero`. Establish `: ∀ t : ℝ, schr d.B.ψ (realAd F t • w) (0 : d.Fn) = 0` using `fun t => funext fun _ => mul_zero _`. Simplify using `only [this, map_zero, Box.D, Box.DP_zero]`. Conclude with `hasDerivAt_const _ _`. Consider the case `add x y hx hy ix iy`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ t : ℝ, schr d.B.ψ (realAd F t • w) (x + y) = schr d.B.ψ (realAd F t • w) x + schr d.B.ψ (realAd F t • w) y` using `fun t => funext fun _ => mul_add _ _ _`. Simplify using `only [this, map_add]`. Rewrite using `[Box.D, Box.DP_add hx hy, map_add]`. Conclude with `ix.add iy`. Consider the case `smul c x hx ix`.
-
-Establish `: ∀ t : ℝ, schr d.B.ψ (realAd F t • w) (c • x) = c • schr d.B.ψ (realAd F t • w) x` using `fun t => funext fun _ => mul_left_comm _ _ _`. Simplify using `only [this, map_smul, smul_eq_mul]`. Rewrite using `[Box.D, Box.DP_smul hx, map_smul, smul_eq_mul]`. Conclude with `ix.const_mul c`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_D {Ψ : d.Fn} (hΨ : Ψ ∈ d.sch) {u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu : At (evI F) u)
     (ha : Box.nf (d.dd.e u).1 ≠ 0) :
@@ -273,12 +271,12 @@ theorem l_D {Ψ : d.Fn} (hΨ : Ψ ∈ d.sch) {u : Matrix (Fin d.m) (Fin d.n ⊕ 
     exact ix.const_mul c
 
 /- English proof (translation)
-Simplify using `only [realAd, map_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem td_realAd_zero : realAd F 0 = 0 := by simp only [realAd, map_zero]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[td_realAd_zero, Darboux.rho, schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem schr_zero_at (Ψ : d.Fn) (u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     d.dd.rho d.B.ψ (realAd F 0 • u) Ψ = Ψ := by
@@ -286,19 +284,19 @@ theorem schr_zero_at (Ψ : d.Fn) (u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE
   simp [td_realAd_zero, Darboux.rho, schr]
 
 /- English proof (translation)
-Rewrite using `[td_realAd_zero, zero_mul, AddChar.map_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_zero_line (s : AF F) : d.B.ψ (realAd F 0 * s) = 1 := by
   rw [td_realAd_zero, zero_mul, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Establish `hw` using `at_e' hu`. Establish `hΨ : d.dd.rho d.B.ψ v Φ ∈ d.sch` using `GlobalTheory.HeisSchA.schr_mem_schA _ d.ok.good.std _ Φ hΦ`. Use function extensionality and compare the values at `z`. Establish `h1 : HasDerivAt (fun t : ℝ => d.dd.rho d.B.ψ v (d.dd.rho d.B.ψ (realAd F t • u) Φ) z) (d.dd.rho d.B.ψ v (Box.D (d.dd.e u) Φ) z) 0`. Simplify using `only [Darboux.rho, schr, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(Box.hasD d.ok.good.std hw hΦ _).const_mul _`. Establish `h2 : HasDerivAt (fun t : ℝ => d.dd.rho d.B.ψ v (d.dd.rho d.B.ψ (realAd F t • u) Φ) z) ((-(2 * Real.pi * Complex.I) * (Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (sp d v u)) : ℂ)) * d.dd.rho d.B.ψ v Φ z + 1 * Box.D (d.dd.e u) (d.dd.rho d.B.ψ v Φ) z) 0`. Establish `e : (fun t : ℝ => d.dd.rho d.B.ψ v (d.dd.rho d.B.ψ (realAd F t • u) Φ) z) = fun t : ℝ => d.B.ψ (realAd F t * sp d v u) * d.dd.rho d.B.ψ (realAd F t • u) (d.dd.rho d.B.ψ v Φ) z`. Use function extensionality and compare the values at `t`. Rewrite using `[rho_comm, sp_smul_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Establish `h3` using `Box.hasD d.ok.good.std hw hΨ z`. Simplify using `only [← rho_line] at h3`. Establish `h4` using `(psi_line_deriv (d := d) (sp d v u)).mul h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h4` using `[schr_zero_at, psi_zero_line]`. Then use the resulting hypothesis. Rewrite using `[h1.unique h2, Pi.add_apply, Pi.smul_apply, smul_eq_mul, one_mul, add_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_D {Φ : d.Fn} (hΦ : Φ ∈ d.sch) {u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu : At (evI F) u)
     (v : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
@@ -328,11 +326,11 @@ theorem rho_D {Φ : d.Fn} (hΦ : Φ ∈ d.sch) {u : Matrix (Fin d.m) (Fin d.n �
   rw [h1.unique h2, Pi.add_apply, Pi.smul_apply, smul_eq_mul, one_mul, add_comm]
 
 /- English proof (translation)
-Use `set v := X * (b2 d)ᵀ`. Establish `hΨ : d.dd.rho d.B.ψ v Φ ∈ d.sch` using `GlobalTheory.HeisSchA.schr_mem_schA _ d.ok.good.std _ Φ hΦ`. Establish `e : (fun t : ℝ => d.T (d.dd.rho d.B.ψ (realAd F t • u) Φ) X) = fun t : ℝ => d.B.ψ (realAd F t * sp d v u) * d.l (d.dd.rho d.B.ψ (realAd F t • u) (d.dd.rho d.B.ψ v Φ))`. Use function extensionality and compare the values at `t`. Simplify using `only [SD.T]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rho_comm, sp_smul_right, map_smul, smul_eq_mul]`. Rewrite using `[e]`. Establish `h4` using `(psi_line_deriv (d := d) (sp d v u)).mul (l_D hΨ hu ha)`. Rewrite `h4` using `[schr_zero_at, psi_zero_line]`. Use `h4.congr_deriv ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show d.T (Box.D (d.dd.e u) Φ) X = d.l (d.dd.rho d.B.ψ v (Box.D (d.dd.e u) Φ)) from rfl, rho_D hΦ hu, map_add, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem T_D {Φ : d.Fn} (hΦ : Φ ∈ d.sch) {u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu : At (evI F) u)
     (ha : Box.nf (d.dd.e u).1 ≠ 0) (X : Mx F E d.m d.n) :
@@ -353,13 +351,13 @@ theorem T_D {Φ : d.Fn} (hΦ : Φ ∈ d.sch) {u : Matrix (Fin d.m) (Fin d.n ⊕ 
   ring
 
 /- English proof (translation)
-The claim follows from `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`.
+A detailed English derivation is pending.
 -/
 theorem evI_add' (a b : AF F) : evI F (a + b) = evI F a + evI F b :=
   map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1
 
 /- English proof (translation)
-Rewrite using `[sp_eq, sp_eq, sp_eq, map_add, Prod.fst_add, Prod.snd_add, dotProduct_add, add_dotProduct]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sp_add_right (x y y' : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     sp d x (y + y') = sp d x y + sp d x y' := by
@@ -367,7 +365,7 @@ theorem sp_add_right (x y y' : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) 
   ring
 
 /- English proof (translation)
-Rewrite using `[sp_anti, sp_smul_right, sp_anti y x]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sp_smul_left (c : AF F) (x y : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     sp d (c • x) y = c * sp d x y := by
@@ -375,31 +373,31 @@ theorem sp_smul_left (c : AF F) (x y : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (A
   ring
 
 /- English proof (translation)
-Simplify using `only [mZ, Matrix.add_mul, sp_add_right, evI_add', map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mZ_add (Z Z' X : Mx F E d.m d.n) : mZ d (Z + Z') X = mZ d Z X + mZ d Z' X := by
   simp only [mZ, Matrix.add_mul, sp_add_right, evI_add', map_add]
 
 /- English proof (translation)
-Simplify using `only [SD.T, rho_add_fn, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem td_T_add (Φ Ψ : d.Fn) (X : Mx F E d.m d.n) : d.T (Φ + Ψ) X = d.T Φ X + d.T Ψ X := by
   simp only [SD.T, rho_add_fn, map_add]
 
 /- English proof (translation)
-Simplify using `only [SD.T, rho_smul_fn, map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem T_smul (c : ℂ) (Φ : d.Fn) (X : Mx F E d.m d.n) : d.T (c • Φ) X = c * d.T Φ X := by
   simp only [SD.T, rho_smul_fn, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [SD.T, rho_zero_fn, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem T_zero (X : Mx F E d.m d.n) : d.T 0 X = 0 := by
   simp only [SD.T, rho_zero_fn, map_zero]
 
 /- English proof (translation)
-Establish `h` using `Box.D_add_left (0 : (d.κ → AF F) × (d.κ → AF F)) 0 Φ`. Rewrite `h` using `[add_zero]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem D_zero (Φ : d.Fn) : Box.D (0 : (d.κ → AF F) × (d.κ → AF F)) Φ = 0 := by
   have h := Box.D_add_left (0 : (d.κ → AF F) × (d.κ → AF F)) 0 Φ
@@ -407,7 +405,7 @@ theorem D_zero (Φ : d.Fn) : Box.D (0 : (d.κ → AF F) × (d.κ → AF F)) Φ =
   simpa using h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Prod.ext ((InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 (congrFun h0 i)) ?_` and prove the remaining obligations. Conclude with `Dense.snd_eq_zero hy i`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vec_eq_zero {y : d.κ → AF F} (hy : At (evI F) y) (h0 : Box.nf y = 0) : y = 0 := by
   funext i
@@ -415,19 +413,19 @@ theorem vec_eq_zero {y : d.κ → AF F} (hy : At (evI F) y) (h0 : Box.nf y = 0) 
   exact Dense.snd_eq_zero hy i
 
 /- English proof (translation)
-Introduce `c hc` and use `congrArg Prod.fst (at_e' hu c hc)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_fst {u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu : At (evI F) u) : At (evI F) (d.dd.e u).1 :=
   fun c hc => congrArg Prod.fst (at_e' hu c hc)
 
 /- English proof (translation)
-Introduce `c hc` and use `congrArg Prod.snd (at_e' hu c hc)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_snd {u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu : At (evI F) u) : At (evI F) (d.dd.e u).2 :=
   fun c hc => congrArg Prod.snd (at_e' hu c hc)
 
 /- English proof (translation)
-Establish `e : d.dd.e u = 0` using `Prod.ext (vec_eq_zero (at_fst hu) h1) (vec_eq_zero (at_snd hu) h2)`. Rewrite using `[← d.dd.e.map_eq_zero_iff]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_nf {u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu : At (evI F) u)
     (h1 : Box.nf (d.dd.e u).1 = 0) (h2 : Box.nf (d.dd.e u).2 = 0) : u = 0 := by
@@ -436,7 +434,7 @@ theorem eq_zero_of_nf {u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu 
   exact e
 
 /- English proof (translation)
-Use `⟨d.dd.e.symm (Dense.pt ξ 0, 0), fun s hs => ?_, LinearEquiv.apply_symm_apply _ _⟩` and prove the remaining obligations. Rewrite using `[← map_smul, LinearEquiv.map_eq_zero_iff]`. Use `Prod.ext ?_ (by simp)` and prove the remaining obligations. Conclude with `Box.at_pt ξ s hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_at' (ξ : d.κ → mixedEmbedding.mixedSpace F) :
     ∃ v : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E), At (evI F) v ∧ d.dd.e v = (Dense.pt ξ 0, 0) := by
@@ -446,32 +444,30 @@ theorem exists_at' (ξ : d.κ → mixedEmbedding.mixedSpace F) :
   exact Box.at_pt ξ s hs
 
 /- English proof (translation)
-The claim follows from `Box.nf_add a b`.
+A detailed English derivation is pending.
 -/
 theorem nf_add' (a b : d.κ → AF F) : Box.nf (a + b) = Box.nf a + Box.nf b := Box.nf_add a b
 
 /- English proof (translation)
-Introduce `c hc` and use `by rw [← Matrix.smul_mul, hZ c hc, Matrix.zero_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem td_at_mul {p : Type} [Fintype p] {Z : Matrix (Fin d.m) p (AE F E)} (hZ : At (evI F) Z) {q : Type}
     (N : Matrix p q (AE F E)) : At (evI F) (Z * N) := fun c hc => by rw [← Matrix.smul_mul, hZ c hc, Matrix.zero_mul]
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) j <;> by_cases h : i = j <;> simp [incM, diagCols, Matrix.one_apply, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem incM_diagCols : incM F (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) E) = dg d := by
   ext (i | i) j <;> by_cases h : i = j <;> simp [incM, diagCols, Matrix.one_apply, h]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `d.ok.frame.2`. Use `set W := u * (incM F (d.b⁻¹).1)ᵀ with hW`. Establish `hWa : At (evI F) W` using `td_at_mul hu _`. Use `⟨W.toCols₁ * (incM F t.1)ᵀ, W.toCols₂, fun c hc => ?_, fun c hc => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.smul_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: c • W.toCols₁ = 0`. Use extensionality with `i j`. Conclude with `congrFun₂ (hWa c hc) i (Sum.inl j)`. Rewrite using `[this, Matrix.zero_mul]`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun₂ (hWa c hc) i (Sum.inr j)`. Establish `e1 : u = W * (incM F d.b.1)ᵀ`. Rewrite using `[hW, Matrix.mul_assoc, ← Matrix.transpose_mul, ← incM_mul', ← Units.val_mul, mul_inv_cancel]`. Use extensionality with `i j`. Simplify using `[incM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : incM F d.b.1 = Matrix.fromCols (dg d * incM F t.1) (b2 d)`. Rewrite using `[← incM_diagCols, ← incM_mul']`. Establish `hb : d.b.1 = Matrix.fromCols (diagCols (Fin d.n) * t.1) d.b.1.toCols₂`. Use `(Matrix.fromCols_toCols d.b.1).symm using 2` and compare the differences between its conclusion and the goal. Conclude with `ht.symm`.
-
-Use `conv_lhs => rw [hb]`. Apply the tactic sequence `ext i (j | j) <;> rfl`. Rewrite using `[e1, e2, Matrix.transpose_fromCols, ← Matrix.fromCols_toCols W, Matrix.fromCols_mul_fromRows, Matrix.transpose_mul, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem split_arch {u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu : At (evI F) u) :
     ∃ Z₁ Z₂ : Mx F E d.m d.n, At (evI F) Z₁ ∧ At (evI F) Z₂ ∧ u = Z₁ * (dg d)ᵀ + Z₂ * (b2 d)ᵀ := by
@@ -502,9 +498,9 @@ theorem split_arch {u : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu : A
     rfl
 
 /- English proof (translation)
-Establish `e : incM F (d.b⁻¹).1.toRows₂ * b2 d = 1`. Rewrite using `[b2, ← incM_mul']`. Establish `: (d.b⁻¹).1.toRows₂ * d.b.1.toCols₂ = 1`. Use extensionality with `i j`. Use `congrFun₂ (show (d.b⁻¹).1 * d.b.1 = 1 by simp) (Sum.inr i) (Sum.inr j)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mul_apply, Matrix.toRows₂, Matrix.toCols₂, Matrix.one_apply]`. Rewrite using `[this]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [incM, Matrix.one_apply, h]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation.
 -/
 theorem second_frame_half_injective {Z : Mx F E d.m d.n} (h : Z * (b2 d)ᵀ = 0) : Z = 0 := by
   have e : incM F (d.b⁻¹).1.toRows₂ * b2 d = 1 := by
@@ -521,9 +517,9 @@ theorem second_frame_half_injective {Z : Mx F E d.m d.n} (h : Z * (b2 d)ᵀ = 0)
     _ = 0 := by rw [h, Matrix.zero_mul]
 
 /- English proof (translation)
-Use `set c := Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F s)`. Establish `e : ∀ t : ℝ, d.B.ψ (realAd F t * (realAd F t * s)) = Complex.exp (-(2 * Real.pi * Complex.I) * ((t * (t * c) : ℝ) : ℂ))` using `fun t => by`. Rewrite using `[psi_line, tr_realAd_mul]`. Simplify using `only [e]`. Establish `h1 : HasDerivAt (fun t : ℝ => ((t * (t * c) : ℝ) : ℂ)) 0 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((hasDerivAt_id (0 : ℝ)).mul ((hasDerivAt_id (0 : ℝ)).mul_const c)).ofReal_comp` as an intermediate fact. Simplify using `using this`. Establish `h2` using `(h1.const_mul (-(2 * Real.pi * Complex.I))).cexp`. Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem character_quadratic_derivative_zero (s : AF F) : HasDerivAt (fun t : ℝ => d.B.ψ (realAd F t * (realAd F t * s))) 0 0 := by
   set c := Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F s)
@@ -538,44 +534,44 @@ theorem character_quadratic_derivative_zero (s : AF F) : HasDerivAt (fun t : ℝ
   simpa using h2
 
 /- English proof (translation)
-Rewrite using `[map_add, Prod.fst_add, Box.nf_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nfe_add (u v : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     Box.nf (d.dd.e (u + v)).1 = Box.nf (d.dd.e u).1 + Box.nf (d.dd.e v).1 := by
   rw [map_add, Prod.fst_add, Box.nf_add]
 
 /- English proof (translation)
-Introduce `c hc` and use `by rw [smul_add, hu c hc, hv c hc, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_add' {u v : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)} (hu : At (evI F) u) (hv : At (evI F) v) :
     At (evI F) (u + v) := fun c hc => by rw [smul_add, hu c hc, hv c hc, add_zero]
 
 /- English proof (translation)
-Introduce `c hc` and use `by rw [smul_add, hZ c hc, hZ' c hc, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem atZ_add {Z Z' : Mx F E d.m d.n} (hZ : At (evI F) Z) (hZ' : At (evI F) Z') : At (evI F) (Z + Z') :=
   fun c hc => by rw [smul_add, hZ c hc, hZ' c hc, add_zero]
 
 /- English proof (translation)
-Rewrite using `[sp_eq, map_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sp_zero_right (x : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) : sp d x 0 = 0 := by
   rw [sp_eq, map_zero]; simp
 
 /- English proof (translation)
-The claim follows from `map_neg (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1`.
+A detailed English derivation is pending.
 -/
 theorem evI_neg' (a : AF F) : evI F (-a) = -evI F a := map_neg (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1
 
 /- English proof (translation)
-Rewrite using `[dotProduct, Dense.evI_sum]`. Simplify using `only [Dense.evI_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evI_dot (a b : d.κ → AF F) : evI F (a ⬝ᵥ b) = ∑ i, evI F (a i) * evI F (b i) := by
   rw [dotProduct, Dense.evI_sum]
   simp only [Dense.evI_mul]
 
 /- English proof (translation)
-Establish `h1` using `T_D hΦ (td_at_mul hZ _) ha X`. Establish `h2 : HasDerivAt (fun t : ℝ => d.T (d.dd.rho d.B.ψ (realAd F t • (Z * (dg d)ᵀ)) Φ) X) ((-(2 * Real.pi * Complex.I) * (mZ d Z X : ℂ)) * d.T Φ X) 0`. Simplify using `only [T_rho_dg hΦ]`. Conclude with `(psi_line_deriv _).mul_const _`. Conclude with `h1.unique h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem T_D_dg_ne {Φ : d.Fn} (hΦ : Φ ∈ d.sch) {Z : Mx F E d.m d.n} (hZ : At (evI F) Z)
     (ha : Box.nf (d.dd.e (Z * (dg d)ᵀ)).1 ≠ 0) (X : Mx F E d.m d.n) :
@@ -588,7 +584,7 @@ theorem T_D_dg_ne {Φ : d.Fn} (hΦ : Φ ∈ d.sch) {Z : Mx F E d.m d.n} (hZ : At
   exact h1.unique h2
 
 /- English proof (translation)
-Establish `h1` using `T_D hΦ (td_at_mul hZ _) ha X`. Simplify `h1` using `only [theta_translation_second_frame]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem theta_derivative_second_frame_ne {Φ : d.Fn} (hΦ : Φ ∈ d.sch) {Z : Mx F E d.m d.n} (hZ : At (evI F) Z)
     (ha : Box.nf (d.dd.e (Z * (b2 d)ᵀ)).1 ≠ 0) (X : Mx F E d.m d.n) :
@@ -597,13 +593,13 @@ theorem theta_derivative_second_frame_ne {Φ : d.Fn} (hΦ : Φ ∈ d.sch) {Z : M
   simpa only [theta_translation_second_frame] using h1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.HeisSchA.schr_mem_schA _ d.ok.good.std _ Φ hΦ`.
+A detailed English derivation is pending.
 -/
 theorem rho_mem {Φ : d.Fn} (hΦ : Φ ∈ d.sch) (v : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     d.dd.rho d.B.ψ v Φ ∈ d.sch := GlobalTheory.HeisSchA.schr_mem_schA _ d.ok.good.std _ Φ hΦ
 
 /- English proof (translation)
-Take `⟨v, hv, ev⟩` from `exists_at' (d := d) ξ`. Take `⟨Z₁, Z₂, h1, h2, rfl⟩` from `split_arch hv`. Establish `: Box.nf (d.dd.e (Z₁ * (dg d)ᵀ + Z₂ * (b2 d)ᵀ)).1 = ξ` using `by rw [ev]; exact Dense.evI_pt ξ 0`. Rewrite using `[← this, nfe_add, hB Z₁ h1, hC Z₂ h2, add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem all_zero (hB : ∀ Z₀ : Mx F E d.m d.n, At (evI F) Z₀ → Box.nf (d.dd.e (Z₀ * (dg d)ᵀ)).1 = 0)
     (hC : ∀ Z₀ : Mx F E d.m d.n, At (evI F) Z₀ → Box.nf (d.dd.e (Z₀ * (b2 d)ᵀ)).1 = 0)
@@ -614,23 +610,21 @@ theorem all_zero (hB : ∀ Z₀ : Mx F E d.m d.n, At (evI F) Z₀ → Box.nf (d.
   rw [← this, nfe_add, hB Z₁ h1, hC Z₂ h2, add_zero]
 
 /- English proof (translation)
-Distinguish the cases in `ha : Box.nf (d.dd.e (Z * (dg d)ᵀ)).1 = 0`. Use `swap`. Conclude with `T_D_dg_ne hΦ hZ ha X`. Distinguish the cases in `hB : ∃ Z₀ : Mx F E d.m d.n, At (evI F) Z₀ ∧ Box.nf (d.dd.e (Z₀ * (dg d)ᵀ)).1 ≠ 0`. Take `⟨Z₀, h0, h0'⟩` from `hB`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Box.nf (d.dd.e ((Z + Z₀) * (dg d)ᵀ)).1 ≠ 0` using `by rwa [Matrix.add_mul, nfe_add, ha, zero_add]`. Establish `e1` using `T_D_dg_ne hΦ (atZ_add hZ h0) hs X`. Establish `e2` using `T_D_dg_ne hΦ h0 h0' X`. Rewrite `e1` using `[Matrix.add_mul, map_add, Box.D_add_left, td_T_add, e2, mZ_add]`. Move the coercions through the operations in `at e1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Consider separately whether the proposition holds or fails.
 
-Take the linear combination `e1`. Distinguish the cases in `hC : ∃ Z₀ : Mx F E d.m d.n, At (evI F) Z₀ ∧ Box.nf (d.dd.e (Z₀ * (b2 d)ᵀ)).1 ≠ 0`. Take `⟨Z₀, h0, h0'⟩` from `hC`. Establish `hu` using `td_at_mul hZ (dg d)ᵀ`. Establish `hu₀` using `td_at_mul h0 (b2 d)ᵀ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Box.nf (d.dd.e (Z * (dg d)ᵀ + Z₀ * (b2 d)ᵀ)).1 ≠ 0` using `by rwa [nfe_add, ha, zero_add]`. Establish `h1` using `T_D hΦ (at_add' hu hu₀) hs X`. Establish `h0d` using `theta_derivative_second_frame_ne hΦ h0 h0' X`. Establish `key : ∀ t : ℝ, d.B.ψ (realAd F t * (realAd F t * (⅟(2 : AF F) * sp d (Z * (dg d)ᵀ) (Z₀ * (b2 d)ᵀ)))) * d.T (d.dd.rho d.B.ψ (realAd F t • (Z * (dg d)ᵀ + Z₀ * (b2 d)ᵀ)) Φ) X = d.B.ψ (realAd F t * sp d (X * (b2 d)ᵀ) (Z * (dg d)ᵀ)) * d.T Φ (X + realAd F t • Z₀)` using `fun t => by`. Rewrite using `[← theta_translation_second_frame Φ Z₀ t X, ← T_rho_dg (rho_mem hΦ _) Z t X, rho_rho, T_smul, sp_smul_left, sp_smul_right, smul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hL` using `(character_quadratic_derivative_zero (d := d) (⅟(2 : AF F) * sp d (Z * (dg d)ᵀ) (Z₀ * (b2 d)ᵀ))).mul h1`. Establish `hR` using `(psi_line_deriv (d := d) (sp d (X * (b2 d)ᵀ) (Z * (dg d)ᵀ))).mul h0d`. Establish `hL' : HasDerivAt (fun t : ℝ => d.B.ψ (realAd F t * sp d (X * (b2 d)ᵀ) (Z * (dg d)ᵀ)) * d.T Φ (X + realAd F t • Z₀)) (0 * d.T (d.dd.rho d.B.ψ (realAd F 0 • (Z * (dg d)ᵀ + Z₀ * (b2 d)ᵀ)) Φ) X + d.B.ψ (realAd F 0 * (realAd F 0 * (⅟(2 : AF F) * sp d (Z * (dg d)ᵀ) (Z₀ * (b2 d)ᵀ)))) * …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← funext key]`. Conclude with `hL`. Establish `E` using `hL'.unique hR`. Rewrite `E` using `[schr_zero_at]`. Simplify using `only [td_realAd_zero, zero_mul, AddChar.map_zero_eq_one, zero_smul, add_zero, one_mul, zero_add] at E`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `E` using `[map_add, Box.D_add_left, td_T_add]`. Simplify using `only [mZ]`. Take the linear combination `E`. Use `push_neg at hB hC`. Establish `hz` using `all_zero (d := d) hB hC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `td_at_mul hZ (dg d)ᵀ`. Establish `hu0 : Z * (dg d)ᵀ = 0` using `eq_zero_of_nf hu ha (hz _)`. Establish `hm : mZ d Z X = 0`. Establish `e0 : evI F (0 : AF F) = 0` using `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Simplify using `only [mZ, hu0, sp_zero_right, e0, map_zero]`.
-
-Rewrite using `[hm, hu0, map_zero, D_zero, T_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem T_D_dg {Φ : d.Fn} (hΦ : Φ ∈ d.sch) {Z : Mx F E d.m d.n} (hZ : At (evI F) Z) (X : Mx F E d.m d.n) :
     d.T (Box.D (d.dd.e (Z * (dg d)ᵀ)) Φ) X = (-(2 * Real.pi * Complex.I) * (mZ d Z X : ℂ)) * d.T Φ X := by
@@ -682,27 +676,25 @@ theorem T_D_dg {Φ : d.Fn} (hΦ : Φ ∈ d.sch) {Z : Mx F E d.m d.n} (hZ : At (e
   simp
 
 /- English proof (translation)
-Distinguish the cases in `ha : Box.nf (d.dd.e (Z * (b2 d)ᵀ)).1 = 0`. Use `swap`. Conclude with `theta_derivative_second_frame_ne hΦ hZ ha X`. Establish `hu` using `td_at_mul hZ (b2 d)ᵀ`. Distinguish the cases in `hB : ∃ Z₀ : Mx F E d.m d.n, At (evI F) Z₀ ∧ Box.nf (d.dd.e (Z₀ * (dg d)ᵀ)).1 ≠ 0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Z₀, h0, h0'⟩` from `hB`. Establish `hu₀` using `td_at_mul h0 (dg d)ᵀ`. Establish `hs : Box.nf (d.dd.e (Z * (b2 d)ᵀ + Z₀ * (dg d)ᵀ)).1 ≠ 0` using `by rwa [nfe_add, ha, zero_add]`. Establish `h1` using `T_D hΦ (at_add' hu hu₀) hs X`. Establish `key : ∀ t : ℝ, d.T Φ (X + realAd F t • Z) = d.B.ψ (realAd F t * -sp d (X * (b2 d)ᵀ) (Z₀ * (dg d)ᵀ)) * (d.B.ψ (realAd F t * (realAd F t * (⅟(2 : AF F) * sp d (Z₀ * (dg d)ᵀ) (Z * (b2 d)ᵀ)))) * d.T (d.dd.rho d.B.ψ (realAd F t • (Z * (b2 d)ᵀ + Z₀ * (dg d)ᵀ)) Φ) X)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t`. Establish `k1 : d.B.ψ (realAd F t * (realAd F t * (⅟(2 : AF F) * sp d (Z₀ * (dg d)ᵀ) (Z * (b2 d)ᵀ)))) * d.T (d.dd.rho d.B.ψ (realAd F t • (Z * (b2 d)ᵀ + Z₀ * (dg d)ᵀ)) Φ) X = d.B.ψ (realAd F t * sp d (X * (b2 d)ᵀ) (Z₀ * (dg d)ᵀ)) * d.T Φ (X + realAd F t • Z)`. Rewrite using `[← theta_translation_second_frame Φ Z t X, ← T_rho_dg (rho_mem hΦ _) Z₀ t X, rho_rho, T_smul, sp_smul_left, sp_smul_right, smul_add, add_comm (realAd F t • (Z * (b2 d)ᵀ))]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[k1, ← mul_assoc, ← AddChar.map_add_eq_mul, mul_neg, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`. Establish `hR` using `(psi_line_deriv (d := d) (-sp d (X * (b2 d)ᵀ) (Z₀ * (dg d)ᵀ))).mul ((character_quadratic_derivative_zero (d := d) (⅟(2 : AF F) * sp d (Z₀ * (dg d)ᵀ) (Z * (b2 d)ᵀ))).mul h1)`. Rewrite using `[funext key]`. Use `hR.congr_deriv ?_` and prove the remaining obligations. Establish `e2` using `T_D_dg_ne hΦ h0 h0' X`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.mul_apply]`. Rewrite using `[schr_zero_at]`. Simplify using `only [td_realAd_zero, zero_mul, AddChar.map_zero_eq_one, one_mul, zero_add]`. Rewrite using `[map_add, Box.D_add_left, td_T_add, e2, evI_neg', map_neg]`. Simplify using `only [mZ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `push_neg at hB`. Establish `hsp : ∀ v, At (evI F) v → sp d (Z * (b2 d)ᵀ) v = 0`. Introduce `v hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨Z₁, Z₂, h1, h2, rfl⟩` from `split_arch hv`. Rewrite using `[sp_add_right, symplectic_form_second_frame_zero, add_zero, sp_eq, vec_eq_zero (at_fst hu) ha, vec_eq_zero (at_fst (td_at_mul h1 _)) (hB Z₁ h1)]`. Simplify using the standard rewrite rules. Establish `h2 : Box.nf (d.dd.e (Z * (b2 d)ᵀ)).2 = 0`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨v, hv, ev⟩` from `exists_at' (d := d) (Pi.single j 1)`. Use `hsp v hv` as an intermediate fact. Rewrite `this` using `[sp_eq, ev, vec_eq_zero (at_fst hu) ha]`. Simplify using `only [zero_dotProduct, dotProduct_zero, zero_sub, neg_eq_zero] at this`. Establish `e3` using `congrArg (evI F) this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e3` using `[evI_dot]`. Establish `e4 : ∀ i, evI F (Dense.pt (Pi.single j (1 : mixedEmbedding.mixedSpace F)) 0 i) = (Pi.single j (1 : mixedEmbedding.mixedSpace F) : d.κ → mixedEmbedding.mixedSpace F) i` using `fun i => congrFun (Dense.evI_pt (Pi.single j (1 : mixedEmbedding.mixedSpace F)) 0) i`. Simplify using `only [e4] at e3`. Rewrite `e3` using `[Finset.sum_eq_single j (fun i _ hi => by simp [Pi.single_apply, hi]) (by simp)]`. Establish `e0 : evI F (0 : AF F) = 0` using `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `e3` using `[Box.nf, e0]`. Establish `hu0 : Z * (b2 d)ᵀ = 0` using `eq_zero_of_nf hu ha h2`. Establish `hZ0 : Z = 0` using `second_frame_half_injective hu0`. Substitute `hZ0` using the available equality. Simplify using `only [smul_zero, add_zero, Matrix.zero_mul, map_zero, D_zero, T_zero]`.
-
-Conclude with `hasDerivAt_const _ _`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_derivative_second_frame {Φ : d.Fn} (hΦ : Φ ∈ d.sch) {Z : Mx F E d.m d.n} (hZ : At (evI F) Z) (X : Mx F E d.m d.n) :
     HasDerivAt (fun t : ℝ => d.T Φ (X + realAd F t • Z)) (d.T (Box.D (d.dd.e (Z * (b2 d)ᵀ)) Φ) X) 0 := by
@@ -767,7 +759,7 @@ theorem theta_derivative_second_frame {Φ : d.Fn} (hΦ : Φ ∈ d.sch) {Z : Mx F
   exact hasDerivAt_const _ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `(GlobalTheory.CompanionTheory.CMAdele.piInf_tmul τ 1 (N i j)).trans (by rw [show (1 : AF F).1 w = 1 from rfl, map_one, one_mul]; rfl)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem td_map_incM {w : InfinitePlace F} (τ : EmbOver E w) {p q : Type} (N : Matrix p q E) :
     (incM F N).map (piInf τ) = N.map τ.1 := by
@@ -775,11 +767,11 @@ theorem td_map_incM {w : InfinitePlace F} (τ : EmbOver E w) {p q : Type} (N : M
   exact (GlobalTheory.CompanionTheory.CMAdele.piInf_tmul τ 1 (N i j)).trans (by rw [show (1 : AF F).1 w = 1 from rfl, map_one, one_mul]; rfl)
 
 /- English proof (translation)
-Establish `h` using `d.ok.good.cm`. Rewrite using `[Dense.trace_evI h.1]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `e : (y.map (cA σ)).map (piInf (d.B.emb w)) = (y.map (piInf (d.B.emb w))).map star`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `Dense.piInf_cA h _ _`. Establish `eJ : (dbl (incM F d.Y.J)).map (piInf (d.B.emb w)) = dbl (d.Y.J.map (d.B.emb w).1)`. Rewrite using `[dbl_incM, td_map_incM]`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl]`. Rewrite using `[sp, symp, Dense.ext_trace h (d.B.emb w), Dense.piInf_cA h, neg_one_mul, map_neg, Dense.hTens_tr, AddMonoidHom.map_trace (piInf (d.B.emb w)), Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, Matrix.transpose_map, td_map_incM, eJ, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem trace_sp (x y : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (sp d x y)) =

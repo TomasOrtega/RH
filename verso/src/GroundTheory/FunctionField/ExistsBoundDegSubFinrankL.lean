@@ -15,7 +15,7 @@ variable {k K : Type*} [Field k] [Field K] [Algebra k K] [IsFunctionField k K]
 namespace Divisor
 
 /- English proof (translation)
-Use `finrank_L_le_of_le h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem deg_sub_finrank_L_mono {D E : Divisor k K} (h : D ≤ E) :
     deg D - (finrank k (L D) : ℤ) ≤ deg E - finrank k (L E) := by
@@ -23,37 +23,33 @@ theorem deg_sub_finrank_L_mono {D E : Divisor k K} (h : D ≤ E) :
   linarith
 
 /- English proof (translation)
-Take `⟨x, hx, hfin⟩` from `IsFunctionField.exists_transcendental_finiteDimensional (k := k) (K := K)`. Use `set F := IntermediateField.adjoin k {x} with hF`. Use `set n := finrank F K with hn`. Set `b` to `Module.finBasis F K`. Use `set B : Divisor k K := poleDivisor x with hBdef`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C : Divisor k K := ∑ j, poleDivisor (b j) with hCdef`. Establish `hB : 0 ≤ B` using `poleDivisor_nonneg x`. Establish `hC : 0 ≤ C` using `Finset.sum_nonneg fun j _ => poleDivisor_nonneg _`. Establish `hCj : ∀ j, (poleDivisor (b j) : Divisor k K) ≤ C` using `fun j => Finset.single_le_sum (f := fun j => (poleDivisor (b j) : Divisor k K)) (fun j _ => poleDivisor_nonneg _) (Finset.mem_univ j)`. Establish `key : ∀ l : ℕ, ((l + 1 : ℤ) * n) ≤ finrank k (L (l • B + C))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce `l`. Use `set D : Divisor k K := l • B + C with hD'`. Establish `hmem : ∀ p : Fin (l + 1) × Fin n, x ^ (p.1 : ℕ) * b p.2 ∈ L D`. Introduce and unpack `⟨i, j⟩ v`. Rewrite using `[map_mul, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hx'` using `valuation_le_exp_poleDivisor x v`. Establish `hb'` using `(valuation_le_exp_poleDivisor (b j) v).trans (WithZero.exp_le_exp.2 (Finsupp.le_def.1 (hCj j) v))`. Establish `hBv : 0 ≤ B v` using `by simpa using Finsupp.le_def.1 hB v`. Establish `hil : ((i : ℕ) : ℤ) ≤ l` using `by exact_mod_cast Nat.lt_succ_iff.1 i.2`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression.
 
-Rewrite using `[← WithZero.exp_nsmul, ← WithZero.exp_add, WithZero.exp_le_exp]`. Simplify using `only [hD', Finsupp.add_apply, Finsupp.smul_apply, nsmul_eq_mul]`. Use `mul_le_mul_of_nonneg_right hil hBv` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Set `G : Fin (l + 1) × Fin n → L D` to `fun p => ⟨x ^ (p.1 : ℕ) * b p.2, hmem p⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent k G`. Apply `LinearIndependent.of_comp (L D).subtype` to reduce the goal to its premises. Establish `hb' : LinearIndependent k fun i : Fin (l + 1) => (IntermediateField.AdjoinSimple.gen k x) ^ (i : ℕ)`. Apply `LinearIndependent.of_comp F.val.toLinearMap` to reduce the goal to its premises. Establish `h` using `linearIndependent_pow_of_transcendental hx (l + 1)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `heq : (F.val.toLinearMap ∘ fun i : Fin (l + 1) => (IntermediateField.AdjoinSimple.gen k x) ^ (i : ℕ)) = fun i : Fin (l + 1) => x ^ (i : ℕ)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[heq]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `linearIndependent_smul hb' b.linearIndependent using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Simplify using `[G, Algebra.smul_def]`. Establish `hcard` using `hli.fintype_card_le_finrank`. Simplify using `only [Fintype.card_prod, Fintype.card_fin] at hcard`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ((l + 1 : ℕ) * n : ℕ) ≤ (finrank k (L D) : ℤ)` using `by exact_mod_cast hcard`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdegB : deg B = n` using `deg_poleDivisor hx`. Establish `hn1 : 0 < n` using `Module.finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨deg C - n, fun D => ?_⟩` and prove the remaining obligations. Use `set A₁ : Divisor k K := D ⊔ 0 with hA₁def`. Establish `hA₁ : 0 ≤ A₁` using `le_sup_right`. Establish `h1` using `deg_sub_finrank_L_mono (le_sup_left : D ≤ A₁)`. Use `set l := (deg A₁).toNat with hldef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hl : (l : ℤ) = deg A₁` using `Int.toNat_of_nonneg (deg_nonneg hA₁)`. Use `set El : Divisor k K := l • B + C with hEl`. Establish `hdegEl : deg El = l * n + deg C`. Rewrite using `[hEl, map_add, map_nsmul, hdegB, nsmul_eq_mul]`. Establish `hkey` using `key l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : El - A₁ ≤ El` using `sub_le_self _ hA₁`. Establish `h2` using `finrank_L_le_of_le hle`. Rewrite `h2` using `[map_sub]`. Establish `hpos : 0 < finrank k (L (El - A₁))`. Establish `hn1' : (1 : ℤ) ≤ n` using `by exact_mod_cast hn1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((l : ℤ) + 1) * 1 ≤ ((l : ℤ) + 1) * n` using `mul_le_mul_of_nonneg_left hn1' (by positivity)`. Establish `: (0 : ℤ) < finrank k (L (El - A₁))` using `by linarith`. Conclude with `this` after adjusting the coercions. Take `⟨z, hz⟩` from `finrank_pos_iff_exists_ne_zero.1 hpos`. Establish `hz0 : (z : K) ≠ 0` using `fun h => hz (Subtype.ext h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hzL` using `(mem_L_iff_le hz0).1 z.2`. Use `set D₁ : Divisor k K := A₁ + divisor (z : K)⁻¹ with hD₁`. Establish `hD₁El : D₁ ≤ El`. Rewrite using `[hD₁, divisor_inv, ← sub_eq_add_neg, ← sub_nonneg]`. Establish `: El - (A₁ - divisor (z : K)) = divisor (z : K) + (El - A₁)` using `by abel`.
-
-Rewrite using `[this]`. Conclude with `hzL`. Establish `hlD₁ : finrank k (L D₁) = finrank k (L A₁)` using `finrank_L_add_divisor A₁ (inv_ne_zero hz0)`. Establish `hdegD₁ : deg D₁ = deg A₁` using `by rw [hD₁, map_add, deg_divisor, add_zero]`. Establish `h3` using `deg_sub_finrank_L_mono hD₁El`.
-
-Rewrite `h3` using `[hlD₁, hdegD₁]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem exists_bound_deg_sub_finrank_L :
     ∃ γ : ℤ, ∀ D : Divisor k K, deg D - (finrank k (L D) : ℤ) ≤ γ := by
@@ -150,7 +146,7 @@ end Divisor
 open Divisor
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `exists_bound_deg_sub_finrank_L (k := k) (K := K)`. Use `⟨γ + 1, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨D, rfl⟩`. Use `hγ D` as an intermediate fact. Simplify using `only`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -169,20 +165,20 @@ noncomputable def genusInt : ℤ :=
   sSup (Set.range fun D : Divisor k K => deg D + 1 - (finrank k (L D) : ℤ))
 
 /- English proof (translation)
-The claim follows from `le_csSup bddAbove_range_deg_add_one_sub ⟨D, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem le_genusInt (D : Divisor k K) : deg D + 1 - (finrank k (L D) : ℤ) ≤ genusInt k K :=
   le_csSup bddAbove_range_deg_add_one_sub ⟨D, rfl⟩
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `Int.csSup_mem (Set.range_nonempty _) (bddAbove_range_deg_add_one_sub (k := k) (K := K))`. Conclude with `⟨D, hD⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_genusInt : ∃ D : Divisor k K, deg D + 1 - (finrank k (L D) : ℤ) = genusInt k K := by
   obtain ⟨D, hD⟩ := Int.csSup_mem (Set.range_nonempty _) (bddAbove_range_deg_add_one_sub (k := k) (K := K))
   exact ⟨D, hD⟩
 
 /- English proof (translation)
-The claim follows from `le_antisymm (le_genusInt E) (by have := deg_sub_finrank_L_mono h; linarith)`.
+A detailed English derivation is pending.
 -/
 theorem eq_genusInt_of_le {D E : Divisor k K}
     (hD : deg D + 1 - (finrank k (L D) : ℤ) = genusInt k K) (h : D ≤ E) :
@@ -190,14 +186,14 @@ theorem eq_genusInt_of_le {D E : Divisor k K}
   le_antisymm (le_genusInt E) (by have := deg_sub_finrank_L_mono h; linarith)
 
 /- English proof (translation)
-Rewrite using `[finrank_L_zero, hk, IntermediateField.finrank_bot]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_L_zero_eq_one (hk : algebraicClosure k K = ⊥) :
     finrank k (L (0 : Divisor k K)) = 1 := by
   rw [finrank_L_zero, hk, IntermediateField.finrank_bot]
 
 /- English proof (translation)
-Establish `h` using `le_genusInt (0 : Divisor k K)`. Rewrite `h` using `[finrank_L_zero_eq_one hk, map_zero]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem genusInt_nonneg (hk : algebraicClosure k K = ⊥) : 0 ≤ genusInt k K := by
   have h := le_genusInt (0 : Divisor k K)
@@ -209,7 +205,7 @@ variable (k K) in
 noncomputable def genus : ℕ := (genusInt k K).toNat
 
 /- English proof (translation)
-The claim follows from `Int.toNat_of_nonneg (genusInt_nonneg hk)`.
+A detailed English derivation is pending.
 -/
 theorem genus_eq_genusInt (hk : algebraicClosure k K = ⊥) : (genus k K : ℤ) = genusInt k K :=
   Int.toNat_of_nonneg (genusInt_nonneg hk)
@@ -217,7 +213,7 @@ theorem genus_eq_genusInt (hk : algebraicClosure k K = ⊥) : (genus k K : ℤ) 
 namespace Divisor
 
 /- English proof (translation)
-Use `le_genusInt D` as an intermediate fact. Rewrite `this` using `[← genus_eq_genusInt hk]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem riemann_inequality (hk : algebraicClosure k K = ⊥) (D : Divisor k K) :
     deg D + 1 - (genus k K : ℤ) ≤ finrank k (L D) := by
@@ -226,13 +222,11 @@ theorem riemann_inequality (hk : algebraicClosure k K = ⊥) (D : Divisor k K) :
   linarith
 
 /- English proof (translation)
-Establish `hsupp : (Function.support fun v : Place k K => max (-v.ord (a v)) 0) ⊆ {v | a v ∉ v.ring}`. Introduce `v hv`. Rewrite `hv` using `[Function.mem_support]`. Use `show a v ∉ v.ring`. Introduce `hmem`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hv` to reduce the goal to its premises. Distinguish the cases in `h0 : a v = 0`. Simplify using `[h0]`. Use `(v.ord_nonneg_iff h0).2 hmem` as an intermediate fact. Conclude with `max_eq_right (by omega)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Finsupp.ofSupportFinite _ (a.finite_not_mem.subset hsupp), fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.ofSupportFinite_coe]`. Distinguish the cases in `h0 : a v = 0`. Rewrite using `[h0, map_zero]`. Conclude with `zero_le`.
-
-Rewrite using `[v.valuation_eq_exp_neg_ord h0, WithZero.exp_le_exp]`. Conclude with `le_max_left _ _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_A (a : Repartition k K) : ∃ D : Divisor k K, a ∈ A D := by
   classical
@@ -255,11 +249,11 @@ theorem exists_mem_A (a : Repartition k K) : ∃ D : Divisor k K, a ∈ A D := b
     exact le_max_left _ _
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `a _`. Take `⟨Da, ha⟩` from `exists_mem_A a`. Establish `hEE₁ : E ≤ E ⊔ Da` using `le_sup_left`. Establish `hE₁` using `eq_genusInt_of_le hE hEE₁`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrank` using `finrank_relSpace hEE₁`. Use `finiteDimensional_relSpace_of_le hEE₁` as an intermediate fact. Establish `h0 : finrank k (relSpace E (E ⊔ Da)) = 0`. Establish `: (finrank k (relSpace E (E ⊔ Da)) : ℤ) = 0` using `by rw [hrank]; linarith`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbot : relSpace E (E ⊔ Da) = ⊥` using `Submodule.finrank_eq_zero.1 h0`. Establish `haE₁ : a ∈ A (E ⊔ Da)` using `A_mono le_sup_right ha`. Establish `hmem : (A E ⊔ principal k K).mkQ a ∈ relSpace E (E ⊔ Da)` using `Submodule.mem_map_of_mem (Submodule.mem_sup_left haE₁)`. Rewrite `hmem` using `[hbot, Submodule.mem_bot, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_principal_eq_top {E : Divisor k K}
     (hE : deg E + 1 - (finrank k (L E) : ℤ) = genusInt k K) : A E ⊔ principal k K = ⊤ := by
@@ -281,7 +275,7 @@ theorem sup_principal_eq_top {E : Divisor k K}
   exact hmem
 
 /- English proof (translation)
-Rewrite using `[relSpace, sup_principal_eq_top (eq_genusInt_of_le hE le_sup_right), Submodule.map_top, Submodule.range_mkQ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relSpace_sup_eq_top (D : Divisor k K) {E : Divisor k K}
     (hE : deg E + 1 - (finrank k (L E) : ℤ) = genusInt k K) : relSpace D (D ⊔ E) = ⊤ := by
@@ -300,9 +294,9 @@ noncomputable def indexOfSpeciality (D : Divisor k K) : ℕ :=
   finrank k (Repartition k K ⧸ (A D ⊔ principal k K))
 
 /- English proof (translation)
-Take `⟨E, hE⟩` from `exists_eq_genusInt (k := k) (K := K)`. Establish `h` using `relSpace_sup_eq_top D hE`. Establish `hr` using `finrank_relSpace (le_sup_left : D ≤ D ⊔ E)`. Rewrite `hr` using `[h, finrank_top]`. Establish `hE'` using `eq_genusInt_of_le hE (le_sup_right : E ≤ D ⊔ E)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `indexOfSpeciality`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem indexOfSpeciality_eq_genusInt (D : Divisor k K) :
     (indexOfSpeciality D : ℤ) = finrank k (L D) - deg D - 1 + genusInt k K := by

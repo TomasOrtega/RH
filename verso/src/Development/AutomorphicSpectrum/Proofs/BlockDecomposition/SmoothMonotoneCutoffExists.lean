@@ -9,9 +9,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace GlobalTheory.CompanionTheory.SmoothCut
 
 /- English proof (translation)
-Establish `hanti : Antitone (fun x : ℝ => Real.smoothTransition (1 - x))` using `fun a b hab => Real.smoothTransition.monotone (by linarith)`. Use `⟨fun x => Real.smoothTransition (1 - x), Real.smoothTransition.contDiff.comp (contDiff_const.sub contDiff_id), ?_, fun x => Real.smoothTransition.nonneg _, fun x hx => Real.smoothTransition.one_of_one_le (by linarith), fun x hx => Real.smoothTransition.zero_of_nonpos (by linarith …` and prove the remaining obligations. Introduce `x`. Establish `hneg : Monotone (fun x : ℝ => -Real.smoothTransition (1 - x))` using `fun a b hab => neg_le_neg (hanti hab)`. Establish `h` using `hneg.deriv_nonneg (x := x)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[deriv.fun_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_smooth_antitone_cut :
     ∃ χ : ℝ → ℝ, ContDiff ℝ ∞ χ ∧ (∀ x, deriv χ x ≤ 0) ∧ (∀ x, 0 ≤ χ x) ∧

@@ -22,7 +22,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 variable {X Y Z : Scheme.{0}}
 
 /- English proof (translation)
-Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun a _ => (map_zpow _ _ _).trans (congrArg (· ^ ε a) ?_))` and prove the remaining obligations. Establish `hm : (φ a) (r z) ∈ M.U (p.1 a) ⊓ L.U (p.2 a)` using `⟨LB.wchart_le M φ p.1 a hz.1, LB.wchart_le L φ p.2 a hz.2⟩`. Conclude with `(gm_res r z _ hz _).trans (gm_pull r (φ a) z ((LB.div M L).U (p.1 a, p.2 a)) hm _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ps_gm_linCombIso {L M : LB X} (w : LB.Iso L M) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (p : (LB.LinComb M φ ε).ι × (LB.LinComb L φ ε).ι) (r : Z ⟶ Y) (z : Z)
@@ -34,7 +34,7 @@ theorem ps_gm_linCombIso {L M : LB X} (w : LB.Iso L M) {K : Type} [Fintype K] (�
   exact (gm_res r z _ hz _).trans (gm_pull r (φ a) z ((LB.div M L).U (p.1 a, p.2 a)) hm _)
 
 /- English proof (translation)
-Simplify using `only [gs, scal, dif_pos (show r z ∈ (⊤ : Y.Opens) from trivial), dif_pos (show (𝟙 Z : Z ⟶ Z) z ∈ (⊤ : Z.Opens) from trivial)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ps_gs_scal {R : Type} [CommRing R] (p : Y ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ Y) (z : Z) (c : R) :
     gs r z ⊤ (scal p c) = gs (𝟙 _) z ⊤ (scal (r ≫ p) c) := by
@@ -43,7 +43,7 @@ theorem ps_gs_scal {R : Type} [CommRing R] (p : Y ⟶ Spec (CommRingCat.of R)) (
   rfl
 
 /- English proof (translation)
-Use `(gs_res r z inf_le_left hz _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (gs r z (A.U a ⊓ B.U b)) (secOfIso_spec t hu hA hB a b)).trans ?_` and prove the remaining obligations. Unfold `isoCand`. Use `(gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) ?_ (gs_res r z inf_le_right hz _))` and prove the remaining obligations. Rewrite using `[gs_unit r z _ hz, map_inv, gm_res r z (divLe a b) hz]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ps_gs_secOfIso {A B : LB Y} (u : LB.Iso A B) (t : LB.Sec B) (hu : u.IsGen) (hA : A.IsLB) (hB : B.IsLB)
     (a : A.ι) (b : B.ι) (r : Z ⟶ Y) (z : Z) (hz : r z ∈ A.U a ⊓ B.U b) :

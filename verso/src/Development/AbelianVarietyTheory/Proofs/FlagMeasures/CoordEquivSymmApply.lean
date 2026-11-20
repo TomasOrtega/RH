@@ -13,7 +13,7 @@ namespace GlobalTheory.CovDomGrp
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Simplify using `only [vecOf, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, LinearEquiv.funCongrLeft_apply, Module.Basis.equivFun_symm_apply]`. Rewrite using `[← (ci X).sum_comp]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vecOf_apply (c : Fin (2 * D.R.rS + D.R.k + 1) → D.host.E) :
     vecOf X c = ∑ i, c i • X.bas (ci X i) := by
@@ -23,7 +23,7 @@ theorem vecOf_apply (c : Fin (2 * D.R.rS + D.R.k + 1) → D.host.E) :
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [crdH, vecOf, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply, LinearEquiv.funCongrLeft_apply]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem crdH_vecOf (c : Fin (2 * D.R.rS + D.R.k + 1) → D.host.E) : crdH X (vecOf X c) = c := by
   funext i
@@ -32,7 +32,7 @@ theorem crdH_vecOf (c : Fin (2 * D.R.rS + D.R.k + 1) → D.host.E) : crdH X (vec
   simp
 
 /- English proof (translation)
-Simplify using `only [vecOf, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply]`. Use `conv_rhs => rw [← X.bas.equivFun.symm_apply_apply y]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem vecOf_crdH (y : (VS D).V) : vecOf X (crdH X y) = y := by
   simp only [vecOf, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply]
@@ -41,7 +41,7 @@ theorem vecOf_crdH (y : (VS D).V) : vecOf X (crdH X y) = y := by
 
 variable {X} in
 /- English proof (translation)
-Use `conv_lhs => rw [← vecOf_crdH X (n (vecOf X c)), hγ, crdH_vecOf]`.
+A detailed English derivation is pending.
 -/
 theorem n_vecOf {n : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     {γ : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) D.host.E}
@@ -50,7 +50,7 @@ theorem n_vecOf {n : (VS D).V ≃ₗ[D.host.E] (VS D).V}
   conv_lhs => rw [← vecOf_crdH X (n (vecOf X c)), hγ, crdH_vecOf]
 
 /- English proof (translation)
-Simplify using `[crdH, HidaSetting.crd, crdOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem crdH_eq_crd (y : (VS D).V) (i : Fin (2 * D.R.rS + D.R.k + 1)) :
     crdH X y i = X.ιE (X.crd y (ci X i)) := by
@@ -62,7 +62,7 @@ Both sides reduce to the same expression.
 theorem sig_apply (a : D.host.E) : (D.sp.cm.sig : D.host.E →+* D.host.E) a = star a := rfl
 
 /- English proof (translation)
-Rewrite using `[vecOf_apply, vecOf_apply]`. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, GlobalTheory.SgAlg.form, dotProduct, Matrix.mulVec, sig_apply, Jc, Finset.mul_sum, RingHom.id_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -77,9 +77,9 @@ theorem hT_vecOf (a b : Fin (2 * D.R.rS + D.R.k + 1) → D.host.E) :
   ring
 
 /- English proof (translation)
-Establish `h : Jc X = (X.B.I.J.map X.ιE).submatrix (ci X) (ci X)`. Use extensionality with `i j`. Simplify using `[Jc, X.J_eq]`. Rewrite using `[h, Matrix.det_submatrix_equiv_self]`. Introduce `h0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `X.B.I.J_det` to reduce the goal to its premises. Apply `X.ιE.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `(RingHom.map_det X.ιE.toRingHom X.B.I.J).trans h0`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Jc_det_ne_zero : (Jc X).det ≠ 0 := by
   have h : Jc X = (X.B.I.J.map X.ιE).submatrix (ci X) (ci X) := by
@@ -101,14 +101,14 @@ Both sides reduce to the same expression.
 theorem coordEquiv_apply (c : Fin (2 * D.R.rS + D.R.k + 1) → D.host.E) : coordEquiv X c = vecOf X c := rfl
 
 /- English proof (translation)
-Apply `(coordEquiv X).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, coordEquiv_apply, vecOf_crdH]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordEquiv_symm_apply (y : (VS D).V) : (coordEquiv X).symm y = crdH X y := by
   apply (coordEquiv X).injective
   rw [LinearEquiv.apply_symm_apply, coordEquiv_apply, vecOf_crdH]
 
 /- English proof (translation)
-Use `⟨LinearMap.toMatrix' (((coordEquiv X).symm.toLinearMap ∘ₗ n.toLinearMap) ∘ₗ (coordEquiv X).toLinearMap), fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Simplify using `[coordEquiv_symm_apply, coordEquiv_apply, vecOf_crdH]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_mat (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) :
     ∃ γ : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) D.host.E, ∀ y, crdH X (n y) = γ *ᵥ crdH X y := by
@@ -117,11 +117,11 @@ theorem exists_mat (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) :
   simp [coordEquiv_symm_apply, coordEquiv_apply, vecOf_crdH]
 
 /- English proof (translation)
-Establish `hdet : IsUnit γ.det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Apply `Jc_det_ne_zero X` to reduce the goal to its premises. Use `congrArg Matrix.det hU` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`. Conclude with `this.symm`. Establish `h1 : γ⁻¹ * γ = 1` using `Matrix.nonsing_inv_mul γ hdet`. Establish `h2 : γ * γ⁻¹ = 1` using `Matrix.mul_nonsing_inv γ hdet`. Use `⟨(coordEquiv X).symm.trans ((Matrix.toLin'OfInv h1 h2).trans (coordEquiv X)), fun y => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.trans_apply, coordEquiv_symm_apply, coordEquiv_apply, Matrix.toLin'OfInv_apply, Matrix.toLin'_apply, crdH_vecOf]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_equiv (γ : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) D.host.E) (hU : GlobalTheory.SgAlg.IsUn (D.sp.cm.sig : D.host.E →+* D.host.E) (Jc X) γ) :
     ∃ n : (VS D).V ≃ₗ[D.host.E] (VS D).V, ∀ y, crdH X (n y) = γ *ᵥ crdH X y := by

@@ -11,31 +11,31 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Establish `hw0sec : X.IsSec Xa.L Fl.w0` using `Fl.weightForm_vanishes.1.1.1`. Establish `hssec : ∀ k, X.IsSec Xa.L (Fl.s k)` using `fun k => (Fl.s_van k).1.1.1`. Establish `hy : lact γ (Fl.xs j') ∈ X.dom` using `OntoS.dom_lact X hγ (Fl.xs_mem j')`. Take `⟨x1, ho1, b1, hb1, hyeq⟩` from `hO r X _ hy`. Establish `hx1dom : x1 ∈ X.dom` using `orth_mem_dom X x1 ho1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs1 : ∀ k, Fl.s k x1 = 0`. Introduce `k`. Establish `h0 : Fl.s k (lact γ (Fl.xs j')) = 0` using `(Fl.S_eq _ hy).2 ⟨j', γ, hγ, idF X, idF_mem X, by rw [rmul_idF]⟩ k`. Rewrite `h0` using `[hyeq, (hssec k).2.1 x1 hx1dom b1 hb1]`. Conclude with `(mul_eq_zero.1 h0).resolve_left (bchar_ne_zero X hb1 _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hw1 : Fl.w0 x1 ≠ 0`. Introduce `h`. Establish `h1 : Fl.w0 (lact γ (Fl.xs j')) = X.χ Xa.L γ * Fl.w0 (Fl.xs j')` using `hw0sec.2.2 γ hγ _ (Fl.xs_mem j')`. Rewrite `h1` using `[hyeq, hw0sec.2.1 x1 hx1dom b1 hb1, h, mul_zero]`. Conclude with `mul_ne_zero (chi_ne X hγ) (Fl.w0_ne j') h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0dom : x0 ∈ X.dom` using `orth_mem_dom X x0 ho`. Establish `hx0d : ∀ τ, (mat x0 τ).det ≠ 0` using `fun τ => (hx0dom τ).1`. Establish `hx1d : ∀ τ, (mat x1 τ).det ≠ 0` using `fun τ => (hx1dom τ).1`. Establish `hx1av` using `avoid_base X Xa Fl j j' hγ hne x0 b0 hb0 hx x1 b1 hb1 hyeq ε hball hiso hs1`. Take `⟨Nb, hNb, hNbav⟩` from `nbhd_avoid X x0 hx0d (isCompact_closedBall (0 : V (nd X)) (2 * ε)) hx1av hx1d`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOm : IsOpen (OmF X x1)` using `(isOpen_dom X).preimage (cpt_diff X x1).continuous`. Establish `hS : OmF X x1 ∩ cpt X x1 ⁻¹' Nb ∈ 𝓝 (0 : V (nd X))`. Use `Filter.inter_mem (hOm.mem_nhds (zero_mem_OmF X x1 ho1)) ?_` and prove the remaining obligations. Apply `(cpt_diff X x1).continuous.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Rewrite using `[cpt_zero X x1]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hNb`. Take `⟨δ, hδ, hδsub⟩` from `Metric.mem_nhds_iff.1 hS`. Establish `hρ : 0 < δ / 2` using `half_pos hδ`. Establish `hcbδ : closedBall (0 : V (nd X)) (δ / 2) ⊆ ball 0 δ` using `Metric.closedBall_subset_ball (half_lt_self hδ)`. Establish `hcb : closedBall (0 : V (nd X)) (δ / 2) ⊆ OmF X x1` using `fun w hw => (hδsub (hcbδ hw)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hbO : ball (0 : V (nd X)) (δ / 2) ⊆ OmF X x1` using `fun w hw => hcb (Metric.ball_subset_closedBall hw)`. Establish `hbN : ∀ w ∈ ball (0 : V (nd X)) (δ / 2), cpt X x1 w ∈ Nb` using `fun w hw => (hδsub (hcbδ (Metric.ball_subset_closedBall hw))).2`. Take `⟨Δ, zOf, bOf, hΔ, -, hzOf, -, hdec, hlast⟩` from `hLU r X x1 ho1`. Establish `hN1 : ∀ w ∈ ball (0 : V (nd X)) (δ / 2), cpt X x1 w ∈ Nset X Δ zOf (δ / 2)`. Introduce `w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨hΔw, hzw, -⟩` from `hlast w (hbO hw) (idF X) (idF_mem X)`. Rewrite `hΔw`, `hzw` using `[rmul_idF]`. Use `show (cpt X x1 w ∈ X.dom ∧ Δ (cpt X x1 w) ≠ 0) ∧ zOf (cpt X x1 w) ∈ ball (0 : V (nd X)) (δ / 2)`. Conclude with `⟨⟨hbO hw, hΔw⟩, by rw [hzw]; exact hw⟩`. Establish `hN2 : ∀ z ∈ OmF X x0, cpt X x0 z ∈ Nset X Δ zOf (δ / 2) → z ∉ closedBall (0 : V (nd X)) (2 * ε)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `z _ hzN hzB`. Generalize the expression as in `hxz : cpt X x0 z = x at hzN`. Establish `hzN' : (x ∈ X.dom ∧ Δ x ≠ 0) ∧ zOf x ∈ ball (0 : V (nd X)) (δ / 2)` using `hzN`. Take `⟨⟨hxd, hxΔ⟩, hxb⟩` from `hzN'`. Take `⟨-, hbB, hxeq⟩` from `hdec x hxd hxΔ`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hNbav _ (hbN _ hxb) z hzB (binv X (bOf x)) (binv_mem X hbB)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hU : IsOpen {x | x ∈ X.dom ∧ Δ x ≠ 0}` using `(isOpen_dom X).inter (isOpen_ne_fun hΔ.continuous continuous_const)`. Establish `hNopen : IsOpen (Nset X Δ zOf (δ / 2))` using `hzOf.continuousOn.isOpen_inter_preimage hU Metric.isOpen_ball`. Establish `hmeas : Measurable ((Nset X Δ zOf (δ / 2)).indicator (gφ X P Xa.Fp Xa.L Fl.s))` using `(gφ_meas X P hBE.1.continuousOn Xa.Fp Xa.L Fl.s fun k => (hssec k).1.continuousOn).indicator hNopen.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hinv : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, (Nset X Δ zOf (δ / 2)).indicator (gφ X P Xa.Fp Xa.L Fl.s) (rmul x b) = (Nset X Δ zOf (δ / 2)).indicator (gφ X P Xa.Fp Xa.L Fl.s) x` using `by classical`. Introduce `x hx b hb`. Establish `hiff` using `Nset_sat X x1 hdec hlast (δ / 2) hx hb`. Distinguish the cases in `hxN : x ∈ Nset X Δ zOf (δ / 2)`. Rewrite using `[Set.indicator_apply, Set.indicator_apply, if_pos (hiff.2 hxN), if_pos hxN, gφ_rmul X hR hBE hssec hx hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_apply, Set.indicator_apply, if_neg (fun h => hxN (hiff.1 h)), if_neg hxN]`. Take `⟨c1, hc1, hc1le⟩` from `rhs_bound X x1 Xa Fl P (Nset X Δ zOf (δ / 2)) (δ / 2) hρ hcb hN1`. Establish `hfin` using `lhs_finite X x0 ho Xa Fl ψ C0 hψb bb hbb ε hε hnull F hI P hPF (Nset X Δ zOf (δ / 2)) hN2`. Establish `heq` using `hM r X x1 x0 ho1 ho _ hmeas hinv`. Establish `hlt` using `hc1le.trans_lt (heq.trans_lt hfin)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfinI` using `ENNReal.lt_top_of_mul_ne_top_right hlt.ne (ENNReal.ofReal_pos.2 hc1).ne'`. Establish `hdet` using `etale_transfer X hLU hw0sec hssec (Fl.xs_mem j') (Fl.coord j') hγ (idF_mem X) ho1 hb1 (by rw [rmul_idF]; exact hyeq) hw1`. Establish `hnd : 0 < nd X` using `by have := Xa.n_ge; omega`. Establish `hP1 : P x1 = 0` using `hV r X x1 hnd ho1 hx1dom P Fl.w0 Fl.s (δ / 2) hρ ((comp_cpt_diffOn X hBE.1 x1).mono hbO) (fun k => (comp_cpt_diffOn X (hssec k).1 x1).mono hbO) ((comp_cpt_diffOn X hw0sec.1 x1).mono hbO) hw1 hs1 hdet hfinI`. Rewrite using `[hyeq, hBE.2 x1 hx1dom b1 hb1, hP1, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanish_other (hV : VanishAtSStatement (E := E)) (hM : MeasInvStatement (E := E))
     (hO : OrthoStatement (E := E)) (hLU : LUStatement (E := E)) (hR : NfacRmulStatement (E := E))

@@ -8,7 +8,7 @@ open Formalism.BasicNotions Formalism.GradedWeylDivisibility MvPolynomial
 open Formalism.REAL (fockF)
 
 /- English proof (translation)
-Introduce `i j hij`. Use `lam.anti hij` as an intermediate fact. Unfold `DomWeight.natW`. Conclude with `Int.toNat_le_toNat (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem natW_antiC {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   intro i j hij
@@ -17,7 +17,7 @@ theorem natW_antiC {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   exact Int.toNat_le_toNat (by omega)
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Rewrite using `[star_zpow₀, star_zpow₀, zpow_add₀ ha, zpow_add₀ (star_ne_zero.mpr hb), zpow_natCast, zpow_natCast, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem twist_id (a b : ℂ) (ha : a ≠ 0) (hb : b ≠ 0) (cF cE : ℤ) (d : ℕ) (hc : cE = cF + d) :
     a ^ cF * star (b ^ cF) * (star b * a) ^ d = a ^ cE * star (b ^ cE) := by
@@ -34,67 +34,59 @@ def vfC (n : ℕ) (lam : DomWeight (n + 1)) (f : MvPolynomial (Fin (n + 1) × Fi
   sqAct ℂ (n + 1) lam (PI.embGL ℂ n (n + 1) rfl g) f
 
 /- English proof (translation)
-Establish `hI : Interlace rfl lam mu` using `(ha n (n + 1) rfl lam mu f f hf hf hfix hfix hne).2`. Establish `heM : extremal ℂ n mu ∈ nablaSq ℂ n mu` using `hwMem ℂ n n le_rfl mu.natW (natW_antiC mu)`. Establish `heN : extremal ℂ n mu ≠ 0` using `hwNe ℂ n n le_rfl mu.natW`. Establish `hge : 0 < n → lam.detShift ≤ mu.detShift`. Introduce `hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `(hI ⟨n - 1, by omega⟩).2`. Establish `e1 : ∀ j : Fin (n + 1), j.val = n → lam.w j = lam.w ⟨n + 1 - 1, by omega⟩` using `fun j hj => congrArg lam.w (Fin.ext (by simp only; omega))`. Rewrite `h1` using `[e1 _ (by simp only; omega)]`. Simplify using `only [DomWeight.detShift, dif_pos hn, dif_pos (Nat.succ_pos n)]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨d, hd⟩ : ∃ d : ℕ, d = (mu.detShift - lam.detShift).toNat` from `⟨_, rfl⟩`. Establish `hκ'e : ∀ i, (mu.natW i : ℤ) + mu.detShift = mu.w i`. Introduce `i`. Establish `hn : 0 < n` using `lt_of_le_of_lt (Nat.zero_le _) i.isLt`. Establish `hle : mu.w ⟨n - 1, by omega⟩ ≤ mu.w i` using `mu.anti (Fin.le_iff_val_le_val.mpr (by simp only; omega))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [DomWeight.natW, DomWeight.detShift, dif_pos hn] at hle ⊢`. Rewrite using `[Int.toNat_of_nonneg (by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `hcE : 0 < n → mu.detShift = lam.detShift + (d : ℤ)`. Introduce `hn`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hge hn` as an intermediate fact. Rewrite using `[hd, Int.toNat_of_nonneg (by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `hκf : ∀ i, ((mu.natW i + d : ℕ) : ℤ) + lam.detShift = mu.w i`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn : 0 < n` using `lt_of_le_of_lt (Nat.zero_le _) i.isLt`. Establish `h1` using `hκ'e i`. Establish `h2` using `hcE hn`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Establish `hκfA : Antitone (fun i => mu.natW i + d)` using `fun i j hij => Nat.add_le_add_right (natW_antiC mu hij) d`. Take `⟨hUf, hTf⟩` from `fixed_data (k := 1) f lam.detShift mu.w (fun i => mu.natW i + d) hκf (fun g h1 h2 => by`. Use `hfix.1 g h1 h2` as an intermediate fact. Rewrite using `[sqAct_eq, embGL_coe, iotaC_det] at this)` and apply the resulting hypothesis. Use the proof step `(fun t => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `hfix.2 t` as an intermediate fact. Rewrite `this` using `[sqAct_eq, embGL_coe, iotaC_det]`. Establish `hdg : ((diagGL ℂ n t : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = Matrix.diagonal fun a => (t a : ℂ)` using `rfl`. Rewrite `this` using `[hdg, Matrix.det_diagonal, Units.coe_prod]`. Simplify `this)` using `only [Units.val_zpow_eq_zpow_val]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨hUe, hTe⟩` from `fixed_data (k := 0) (extremal ℂ n mu) mu.detShift mu.w mu.natW hκ'e (fun g h1 h2 => by`. Rewrite using `[iotaC_zero]`. Use `(he n mu).1 g h1 h2` as an intermediate fact. Rewrite using `[sqAct_eq] at this)` and apply the resulting hypothesis. Use the proof step `(fun t => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[iotaC_zero]`. Use `(he n mu).2.1 t` as an intermediate fact. Rewrite `this` using `[sqAct_eq]`. Establish `hdg : ((diagGL ℂ n t : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = Matrix.diagonal fun a => (t a : ℂ)` using `rfl`. Rewrite `this` using `[hdg, Matrix.det_diagonal, Units.coe_prod]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this)` using `only [Units.val_zpow_eq_zpow_val]`. Establish `gf : ∀ g g' : GL (Fin n) ℂ, fockF (vfC n lam f g) (vfC n lam f g') = ((g : Matrix (Fin n) (Fin n) ℂ).det ^ lam.detShift * star ((g' : Matrix (Fin n) (Fin n) ℂ).det ^ lam.detShift)) * (fockF f f * hwAt (fun i => mu.natW i + d) ((g' : Matrix (Fin n) (Fin n) ℂ).conjTranspose * (g : …`. Introduce `g g'`. Unfold `vfC`. Rewrite using `[sqAct_eq, sqAct_eq, embGL_coe, embGL_coe, iotaC_det, iotaC_det, fockF_smul_left, fockF_smul_right, gram_of _ hκfA hUf hTf]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `ge : ∀ g g' : GL (Fin n) ℂ, fockF (veC n mu g) (veC n mu g') = ((g : Matrix (Fin n) (Fin n) ℂ).det ^ mu.detShift * star ((g' : Matrix (Fin n) (Fin n) ℂ).det ^ mu.detShift)) * (fockF (extremal ℂ n mu) (extremal ℂ n mu) * hwAt mu.natW ((g' : Matrix (Fin n) (Fin n) ℂ).conjTranspose …`. Introduce `g g'`. Unfold `veC`. Use `gram_of (k := 0) (f := extremal ℂ n mu) mu.natW (natW_antiC mu) hUe hTe (g : Matrix (Fin n) (Fin n) ℂ) (g' : Matrix (Fin n) (Fin n) ℂ)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[iotaC_zero, iotaC_zero]`. Rewrite using `[sqAct_eq, sqAct_eq, fockF_smul_left, fockF_smul_right, this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hee : fockF (extremal ℂ n mu) (extremal ℂ n mu) ≠ 0`. Introduce `h0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(fockPos _ (extremal ℂ n mu) heN).1` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Establish `hK : ∀ g g' : GL (Fin n) ℂ, fockF (vfC n lam f g) (vfC n lam f g') = (fockF f f / fockF (extremal ℂ n mu) (extremal ℂ n mu)) * fockF (veC n mu g) (veC n mu g')`. Introduce `g g'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[gf, ge, hwAt_shift, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `ha0 : (g : Matrix (Fin n) (Fin n) ℂ).det ≠ 0`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Units.ne_zero _`. Establish `hb0 : (g' : Matrix (Fin n) (Fin n) ℂ).det ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Units.ne_zero _`. Establish `tw : (g : Matrix (Fin n) (Fin n) ℂ).det ^ lam.detShift * star ((g' : Matrix (Fin n) (Fin n) ℂ).det ^ lam.detShift) * (star (g' : Matrix (Fin n) (Fin n) ℂ).det * (g : Matrix (Fin n) (Fin n) ℂ).det) ^ d = (g : Matrix (Fin n) (Fin n) ℂ).det ^ mu.detShift * star ((g' : Matrix (Fin n) …`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[Matrix.det_isEmpty]`. Conclude with `twist_id _ _ ha0 hb0 _ _ _ (hcE hn)`. Use `set a := (g : Matrix (Fin n) (Fin n) ℂ).det`. Use `set b := (g' : Matrix (Fin n) (Fin n) ℂ).det`. Use `set H := hwAt mu.natW ((g' : Matrix (Fin n) (Fin n) ℂ).conjTranspose * (g : Matrix (Fin n) (Fin n) ℂ))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set ee := fockF (extremal ℂ n mu) (extremal ℂ n mu)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_cancel₀ _ hee]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = fockF f f / ee * (a ^ mu.detShift * star (b ^ mu.detShift) * (ee * H)) := by ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set Le := Finsupp.linearCombination ℂ (veC n mu) with hLe`. Use `set Lf := Finsupp.linearCombination ℂ (vfC n lam f) with hLf`. Establish `hker : LinearMap.ker Le ≤ LinearMap.ker Lf`. Introduce `c hc`. Rewrite `hc` using `[LinearMap.mem_ker, hLe, Finsupp.linearCombination_apply, Finsupp.sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.mem_ker, hLf, Finsupp.linearCombination_apply, Finsupp.sum]`. Conclude with `lc_zero_of_gram c.support c (veC n mu) (vfC n lam f) _ hK hc`. Take `⟨φ, hφ⟩` from `LinearMap.exists_extend (((LinearMap.ker Le).liftQ Lf hker).comp (Le.quotKerEquivRange.symm : LinearMap.range Le →ₗ[ℂ] _))`. Establish `hφv : ∀ c, φ (Le c) = Lf c`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Establish `h1` using `LinearMap.congr_fun hφ ⟨Le c, LinearMap.mem_range_self Le c⟩`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearEquiv.coe_coe, LinearMap.quotKerEquivRange_symm_apply_image, Submodule.mkQ_apply, Submodule.liftQ_apply] at h1`. Conclude with `h1`. Establish `hrange : LinearMap.range Le = nablaSq ℂ n mu`. Rewrite using `[hLe, Finsupp.range_linearCombination]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : Submodule.span ℂ (Set.range (veC n mu)) ≤ nablaSq ℂ n mu` using `Submodule.span_le.mpr (by rintro _ ⟨g, rfl⟩; exact (he n mu).2.2 g _ heM)`. Establish `hst : ∀ g : GL (Fin n) ℂ, ∀ x ∈ Submodule.span ℂ (Set.range (veC n mu)), sqAct ℂ n mu g x ∈ Submodule.span ℂ (Set.range (veC n mu))`. Introduce `g x hx`. Establish `: Submodule.span ℂ (Set.range (veC n mu)) ≤ (Submodule.span ℂ (Set.range (veC n mu))).comap (sqLC n mu g)`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨g', rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, sqLC_apply]`. Conclude with `Submodule.subset_span ⟨g * g', by simp only [veC, sqAct_mulC]⟩`. Conclude with `this hx`. Break down `(h n mu).2.1 _ hle hst with h0 | h1` into its components or cases.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-It suffices to derive a contradiction. Apply `heN` to reduce the goal to its premises. Establish `: extremal ℂ n mu ∈ Submodule.span ℂ (Set.range (veC n mu))` using `Submodule.subset_span ⟨1, by simp only [veC, sqAct_oneC]⟩`. Rewrite `this` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).mp this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1`. Establish `hfL : ∀ c, Lf c ∈ nablaSq ℂ (n + 1) lam`. Introduce `c`. Establish `: Lf c ∈ Submodule.span ℂ (Set.range (vfC n lam f))`. Rewrite using `[← Finsupp.range_linearCombination, ← hLf]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `LinearMap.mem_range_self _ c`. Conclude with `Submodule.span_le.mpr (by rintro _ ⟨g, rfl⟩; exact (he (n + 1) lam).2.2 _ f hf) this`. Establish `hLe_g : ∀ (g : GL (Fin n) ℂ) c, sqAct ℂ n mu g (Le c) = Le (Finsupp.mapDomain (g * ·) c)`. Introduce `g c`. Establish `hfun : (⇑(sqLC n mu g) ∘ veC n mu) = (veC n mu ∘ (g * ·))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g'`. Simplify using `only [Function.comp_apply, sqLC_apply, veC, sqAct_mulC]`. Rewrite using `[hLe, Finsupp.linearCombination_mapDomain, ← sqLC_apply, Finsupp.apply_linearCombination, hfun]`. Establish `hLf_g : ∀ (g : GL (Fin n) ℂ) c, sqAct ℂ (n + 1) lam (PI.embGL ℂ n (n + 1) rfl g) (Lf c) = Lf (Finsupp.mapDomain (g * ·) c)`. Introduce `g c`.
-
-Establish `hfun : (⇑(sqLC (n + 1) lam (PI.embGL ℂ n (n + 1) rfl g)) ∘ vfC n lam f) = (vfC n lam f ∘ (g * ·))`. Use function extensionality and compare the values at `g'`. Simplify using `only [Function.comp_apply, sqLC_apply, vfC, map_mul, sqAct_mulC]`. Rewrite using `[hLf, Finsupp.linearCombination_mapDomain, ← sqLC_apply, Finsupp.apply_linearCombination, hfun]`. Use `⟨φ, ⟨fun s hs => ?_, fun g s hs => ?_⟩, ?_⟩` and prove the remaining obligations.
-
-Rewrite `hs` using `[← hrange]`. Take `⟨c, rfl⟩` from `hs`. Rewrite using `[hφv]`. Conclude with `hfL c`. Rewrite `hs` using `[← hrange]`.
-
-Take `⟨c, rfl⟩` from `hs`. Rewrite using `[hLe_g, hφv, hφv, hLf_g]`. Establish `h1 : extremal ℂ n mu = Le (Finsupp.single 1 1)`. Rewrite using `[hLe, Finsupp.linearCombination_single, one_smul]`. Simplify using `only [veC, sqAct_oneC]`.
-
-Rewrite using `[h1, hφv, hLf, Finsupp.linearCombination_single, one_smul]`. Simplify using `only [vfC, map_one, sqAct_oneC]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem realize_C (h : PI.HwIrred) (he : ExtremalFacts) (ha : FixedLine) (n : ℕ) (lam : DomWeight (n + 1))
     (mu : DomWeight n) (f : MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ) (hf : f ∈ nablaSq ℂ (n + 1) lam)

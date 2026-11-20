@@ -10,7 +10,7 @@ open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym
 
 /- English proof (translation)
-Use `⟨1, by simp, fun h hh => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ h hh]`. Use `show lg X m (h 1) 1 = 0`. Rewrite using `[map_one]`. Conclude with `(lgB Ω ε X m hm).2.2.1 1 1 0 one_ne_zero (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isKum_one_of_vanish_on_inD {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ}
     (X : Tower Ω ε) (m : ℕ) (hm : 0 < m) (φ : RingAut (Kb X) → ZMod m)
@@ -22,7 +22,7 @@ private theorem isKum_one_of_vanish_on_inD {Ω : Type} [Field Ω] [Algebra ℚ �
   exact (lgB Ω ε X m hm).2.2.1 1 1 0 one_ne_zero (by simp)
 
 /- English proof (translation)
-Simplify using `only [Pt.mv, one_pow, one_mul, Pt.mk.injEq]`. Use `⟨rfl, rfl, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`. Simplify using `only [mul_inv_rev, mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem pt_mv_mul_eq_mv_mv_one {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} {X : Tower Ω ε} {m : ℕ}
     (σ ρ : RingAut (Kb X)) (χ : ZMod m) (P : Pt X m) :
@@ -33,27 +33,25 @@ private theorem pt_mv_mul_eq_mv_mv_one {Ω : Type} [Field Ω] [Algebra ℚ Ω] {
   simp only [mul_inv_rev, mul_assoc]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X m hm τ s hadm u v P hP`. Take `⟨-, -, hrefl, -, -, -, hlift, -⟩` from `admB Ω ε X`. Establish `hD` using `difB Ω ε X m hm`. Establish `hK` using `kum Ω ε X m hm`. Establish `hKU` using `kumUn Ω ε X m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMv` using `mvPt Ω ε X m hm`. Establish `hcyc1 : cyc m (1 : Gal(Ω/ℚ)) = 1` using `((lgB Ω ε X m hm).2.2.2.2.2.2 1 1).2.1`. Establish `hInv : ∀ (g : RingAut (Kb X)) (x : Kb X), g⁻¹ (g x) = x`. Introduce `g x`. Use `show (g⁻¹ * g) x = x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Take `⟨σ, hσ⟩` from `hlift τ`. Establish `hP' : IsPt X m (τ u) (τ v) (Pt.mv σ (cyc m s) P)` using `hMv τ s hadm σ hσ u v P hP`. Establish `hInD1 : InD X 1` using `fun f => rfl`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLift1 : Lifts X 1 (RingEquiv.refl X.K)` using `fun f => rfl`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Q hQ`. Take `⟨hadd, hlc, hunr, -⟩` from `hD (τ u) (τ v) _ Q hP' hQ`. Take `⟨f, hf⟩` from `hK.1 _ hadd hlc`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨f, hKU _ f hf hunr, σ, hσ, hf⟩`. Use `⟨_, hP', σ, hσ, isKum_one_of_vanish_on_inD X m hm _ ?_⟩` and prove the remaining obligations. Introduce `h hh`. Conclude with `(hD (τ u) (τ v) _ _ hP' hP').2.2.2.2.1 h hh`. Use `⟨1, hLift1, isKum_one_of_vanish_on_inD X m hm _ ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h hh`. Rewrite using `[hcyc1]`. Conclude with `(hD u v _ _ hP hP).2.2.2.2.2.1 1 hInD1 h hh`. Introduce `Q hQ f f' hf`. Take `⟨σ₀, hσ₀, hf₀⟩` from `hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ₁, hσ₁, hf₁⟩`. Use `(hK.2 _ _ f f' hf₀ ?_).mp hf₁` and prove the remaining obligations. Introduce `h hh`. Establish `hρ : InD X (σ₀⁻¹ * σ₁)` using `fun f => by show σ₀⁻¹ (σ₁ (io X f)) = io X f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hσ₁ f, ← hσ₀ f, hInv]`. Establish `hP1 : IsPt X m u v (Pt.mv (σ₀⁻¹ * σ₁) 1 P)`. Use `hMv (RingEquiv.refl X.K) 1 hrefl (σ₀⁻¹ * σ₁) (fun f => hρ f) u v P hP` as an intermediate fact. Rewrite `this` using `[hcyc1]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconj : InD X (σ₀⁻¹ * h * σ₀)` using `fun f => by show σ₀⁻¹ (h (σ₀ (io X f))) = io X f`. Rewrite using `[hσ₀ f, hh (τ f), ← hσ₀ f, hInv]`. Establish `hA : IsPt X m (τ u) (τ v) (Pt.mv σ₁ (cyc m s) P)` using `hMv τ s hadm σ₁ hσ₁ u v P hP`. Establish `hB : IsPt X m (τ u) (τ v) (Pt.mv σ₀ (cyc m s) P)` using `hMv τ s hadm σ₀ hσ₀ u v P hP`. Establish `hsplit` using `(hD (τ u) (τ v) _ _ hA hB).2.2.2.1 Q hQ h hh`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hzero : dif X (Pt.mv σ₁ (cyc m s) P) (Pt.mv σ₀ (cyc m s) P) h = 0`. Rewrite using `[show σ₁ = σ₀ * (σ₀⁻¹ * σ₁) from (mul_inv_cancel_left σ₀ σ₁).symm, pt_mv_mul_eq_mv_mv_one]`. Rewrite using `[(hD u v _ P hP1 hP).2.2.2.2.2.2 τ s hadm σ₀ hσ₀ h hh, (hD u v P P hP hP).2.2.2.2.2.1 _ hρ _ hconj, mul_zero]`. Rewrite using `[hsplit, hzero, zero_add]`. Introduce `hc`.
-
-Conclude with `⟨σ₀, hσ₀, (hK.2 _ _ f f' hf₀ (fun _ _ => rfl)).mpr hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Sym.mvEx :
     UpperTheory.V.Z.Kato.Sym.MvEx := by

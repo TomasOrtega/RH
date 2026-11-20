@@ -7,7 +7,7 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.UnRep
 
 /- English proof (translation)
-Establish `ha0 : a ∈ nonZeroDivisors (Ideal (𝓞 E))` using `mem_nonZeroDivisors_of_ne_zero ha`. Establish `hone : ClassGroup.mk0 ⟨a, ha0⟩ ^ Fintype.card (ClassGroup (𝓞 E)) = 1` using `pow_card_eq_one`. Rewrite `hone` using `[← map_pow, SubmonoidClass.mk_pow]`. Establish `hprin : (a ^ Fintype.card (ClassGroup (𝓞 E))).IsPrincipal` using `(ClassGroup.mk0_eq_one_iff _).mp hone`. Conclude with `⟨Fintype.card (ClassGroup (𝓞 E)), Submodule.IsPrincipal.generator _, Fintype.card_ne_zero, (Ideal.span_singleton_generator _).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_pow_eq_span_singleton (E : Type) [Field E] [NumberField E] (a : Ideal (𝓞 E))
     (ha : a ≠ ⊥) : ∃ (h : ℕ) (s : 𝓞 E), h ≠ 0 ∧ a ^ h = Ideal.span {s} := by
@@ -20,29 +20,27 @@ theorem exists_pow_eq_span_singleton (E : Type) [Field E] [NumberField E] (a : I
     (Ideal.span_singleton_generator _).symm⟩
 
 /- English proof (translation)
-Introduce `E _ _ Q ι _ x hx`. Establish `: Fintype ι` using `Fintype.ofFinite ι`. Establish `key : ∀ (v : HeightOneSpectrum (𝓞 E)) (y : E), v.valuation E y ≤ 1 → ∃ u : 𝓞 E, u ∉ v.asIdeal ∧ ∃ b : 𝓞 E, (u : E) * y = (b : E)`. Introduce `v y hy`. Take `⟨n, d, hnd | hnd⟩` from `v.exists_primeCompl_mul_eq_or_mul_eq (K := E) y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨d, d.2, n, by rw [mul_comm]; exact hnd⟩`. Establish `hd : v.valuation E (algebraMap (𝓞 E) E d) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `d.2`. Establish `hprod : v.valuation E y * v.valuation E (algebraMap (𝓞 E) E n) = 1`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, hnd, hd]`. Establish `hn1 : 1 ≤ v.valuation E (algebraMap (𝓞 E) E n)`. Combine the equalities or inequalities in the displayed calculation. Establish `hn : n ∉ v.asIdeal`. Rewrite using `[← HeightOneSpectrum.intValuation_eq_one_iff, ← HeightOneSpectrum.valuation_of_algebraMap (K := E)]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `le_antisymm (HeightOneSpectrum.valuation_le_one _ _) hn1`. Conclude with `⟨n, hn, d, by rw [mul_comm]; exact hnd⟩`. Set `A : ι → Ideal (𝓞 E)` to `fun i => { carrier := {r | ∃ b : 𝓞 E, (r : E) * x i = (b : E)} add_mem' := by`. Introduce and unpack `r₁ r₂ ⟨b₁, h₁⟩ ⟨b₂, h₂⟩`. Conclude with `⟨b₁ + b₂, by push_cast; rw [add_mul, h₁, h₂]⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c r ⟨b, h⟩`. Conclude with `⟨c * b, by simp only [smul_eq_mul]; push_cast; rw [mul_assoc, h]⟩ }`. Establish `memA : ∀ i r, r ∈ A i ↔ ∃ b : 𝓞 E, (r : E) * x i = (b : E)` using `fun _ _ => Iff.rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `A0 : Ideal (𝓞 E)` to `⨅ i, A i`. Establish `hA0 : A0 ≠ ⊥`. Take `⟨c, hc⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (𝓞 E)) x`. Establish `hc0 : (c : 𝓞 E) ≠ 0` using `nonZeroDivisors.coe_ne_zero c`. Introduce `hbot`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Apply `hc0` to reduce the goal to its premises. Establish `hcmem : (c : 𝓞 E) ∈ A0`. Use `(Submodule.mem_iInf _).mpr fun i => (memA i _).mpr ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `hc i`. Conclude with `⟨b, by rw [Algebra.smul_def] at hb; exact hb.symm⟩`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hcmem` using `[hbot]`. Conclude with `(Submodule.mem_bot _).mp hcmem`. Take `⟨h, s, hh, hs⟩` from `exists_pow_eq_span_singleton E A0 hA0`. Establish `hsA : s ∈ A0` using `Ideal.pow_le_self hh (hs ▸ Ideal.mem_span_singleton_self s)`. Establish `hs0 : s ≠ 0`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce and unpack `rfl`. Rewrite `hs` using `[Ideal.span_singleton_eq_bot.mpr rfl]`. Conclude with `hA0 (pow_eq_zero_iff hh |>.mp hs)`. Use `⟨s, hs0, ?_, fun i => (memA i s).mp ((Submodule.mem_iInf _).mp hsA i)⟩` and prove the remaining obligations. Introduce `P hP hsP`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hQ`. Establish `hPne : P ≠ ⊥` using `fun hb => hs0 ((Submodule.mem_bot _).mp (hb ▸ hsP))`. Set `v : HeightOneSpectrum (𝓞 E)` to `⟨P, hP, hPne⟩`. Establish `hle : A0 ≤ P`. Use `hP.le_of_pow_le (n := h) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hsP`. Use `choose u hu b hb using fun i => key v (x i) (hx i v hQ)`. Establish `hU : (∏ i, u i) ∉ P`. Introduce `hmem`.
-
-Take `⟨i, -, hi⟩` from `Ideal.IsPrime.prod_mem_iff.mp hmem`. Conclude with `hu i hi`. Apply `hU` to reduce the goal to its premises. Use `hle ((Submodule.mem_iInf _).mpr fun i => ?_)` and prove the remaining obligations. Conclude with `Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem u (Finset.mem_univ i)) ((memA i _).mpr ⟨b i, hb i⟩)`.
+A detailed English derivation is pending.
 -/
 theorem exists_denominator_primes_prescribed :
     ∀ (E : Type) [Field E] [NumberField E] (Q : Ideal (𝓞 E) → Prop) (ι : Type) [Finite ι]

@@ -17,15 +17,15 @@ open IsDedekindDomain GlobalTheory.Idele
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Take `⟨N, hN, hNO⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F O hO`. Take `⟨t, ht⟩` from `exists_idealOf_eq (GlobalTheory.StdDual.codiff_ne_zero (F := F))`. Set `c : Af F` to `algebraMap F (Af F) ((N : F)⁻¹) * (t : Af F)`. Use `⟨(fun a => c * a) '' {a : Af F | ∀ v, a v ∈ v.adicCompletionIntegers F}, (GlobalTheory.AdeleCocompact.isCompact_integral F).image (continuous_const.mul continuous_id), ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (N : Af F) * x ∈ adelicIdeal (GlobalTheory.StdDual.codiff F)`. Rewrite using `[GlobalTheory.SplitUnram.mem_adelicIdeal_codiff_iff hc hfin]`. Introduce `α hα`. Use `hx _ (hNO α hα)` as an intermediate fact. Rewrite `this` using `[nsmul_eq_mul, mul_assoc, mul_left_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : (t : Af F) * (((t⁻¹ : (Af F)ˣ) : Af F) * ((N : Af F) * x)) ∈ adelicIdeal (t • (1 : FractionalIdeal (𝓞 F)⁰ F))`. Rewrite using `[Units.mul_inv_cancel_left, smul_one_eq, ht]`. Conclude with `h1`. Rewrite `h2` using `[mul_mem_adelicIdeal_smul, mem_adelicIdeal]`. Use `⟨_, fun v => (mem_localIdeal_one_iff v _).1 (h2 v), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hN0 : (N : F) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `e : algebraMap F (Af F) ((N : F)⁻¹) * (N : Af F) = 1`. Rewrite using `[← map_natCast (algebraMap F (Af F)) N, ← map_mul, inv_mul_cancel₀ hN0, map_one]`. Simplify using `only [c]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, Units.mul_inv_cancel_left, mul_assoc]`. Use `_ = x := by rw [e, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_compact_annihilator_finiteAdeles_traceChar (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ)
     (hc : Continuous ψ)
@@ -59,7 +59,7 @@ theorem exists_compact_annihilator_finiteAdeles_traceChar (F : Type) [Field F] [
     _ = x := by rw [e, one_mul]
 
 /- English proof (translation)
-Introduce `D ψ hψ O hO` and use `exists_compact_annihilator_finiteAdeles_traceChar D.host.F ψ hψ.1.1 (GlobalTheory.StdRat.stdChar_fin_rat D ψ hψ) O hO`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_compact_of_annih : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ O ∈ nhds (0 : Af D.host.F), ∃ K : Set (Af D.host.F), IsCompact K ∧

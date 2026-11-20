@@ -15,7 +15,7 @@ set_option synthInstance.maxHeartbeats 200000
 section
 namespace UpperTheory.TNZ.Grp
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.TNZ.Grp.step_spTop_alt G UpperTheory.TNZ.step_spLat (step_spUniq G) (_root_.UpperTheory.TNZ.Grp.step_spCount_alt G) (step_spLift G) (step_spTwBasic G) (step_spRes G) (step_spPiEta G) _root_.UpperTheory.TNZ.Grp.step_spOrd_alt (_root_.UpperTheory.TNZ.Grp.step_spP …`.
+A detailed English derivation is pending.
 -/
 theorem step_suppProd_alt {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} (G : Grp k n) : G.Step_suppProd_alt :=

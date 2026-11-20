@@ -6,13 +6,13 @@ open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfD
 namespace GlobalTheory.LamTie.ExpCond
 
 /- English proof (translation)
-Introduce `h2`. Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Establish `hvZ : ((p : ℤ) : 𝓞 E) ∈ w.asIdeal` using `by simpa using hv`. Establish `hun : Algebra.IsUnramifiedAt ℤ w.asIdeal` using `(NumberField.not_dvd_discr_iff_forall_mem E (𝓞 E) hpZ).mp hd w.asIdeal w.isPrime hvZ`. Establish `hunder : w.asIdeal.under ℤ = Ideal.span {(p : ℤ)}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `symm`. Use `(PrincipalIdealRing.isMaximal_of_irreducible hpZ.irreducible).eq_of_le (Ideal.IsPrime.under ℤ w.asIdeal).ne_top ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `Ideal.mem_comap.mpr (by simpa using hv)`. Set `` to `Localization.AtPrime.algebraOfLiesOver (w.asIdeal.under ℤ) w.asIdeal`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hloc` using `((Algebra.isUnramifiedAt_iff_map_eq ℤ (w.asIdeal.under ℤ) w.asIdeal).mp hun).2`. Establish `h1` using `(Ideal.IsDedekindDomain.ramificationIdx'_eq_one_iff w.ne_bot Ideal.map_comap_le).mpr hloc`. Use `(Ideal.ramificationIdx'_ne_one_iff Ideal.map_comap_le).mpr ?_ h1` and prove the remaining obligations. Establish `hunder' : Ideal.comap (algebraMap ℤ (𝓞 E)) w.asIdeal = Ideal.span {(p : ℤ)}` using `hunder`. Rewrite using `[hunder', Ideal.map_span, Set.image_singleton, Ideal.span_singleton_le_iff_mem]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h2`.
+A detailed English derivation is pending.
 -/
 theorem not_mem_sq_of_not_dvd_discr {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) (hd : ¬ (p : ℤ) ∣ discr E)
     (w : HeightOneSpectrum (𝓞 E)) (hv : (p : 𝓞 E) ∈ w.asIdeal) : (p : 𝓞 E) ∉ w.asIdeal ^ 2 := by
@@ -38,14 +38,14 @@ theorem not_mem_sq_of_not_dvd_discr {E : Type} [Field E] [NumberField E] {p : �
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `show (p : OF E) ∈ Ideal.comap (algebraMap (OF E) (𝓞 E)) w.asIdeal ↔ _`. Rewrite using `[Ideal.mem_comap, map_natCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_below (w : HeightOneSpectrum (𝓞 E)) (p : ℕ) : (p : OF E) ∈ (below w).asIdeal ↔ (p : 𝓞 E) ∈ w.asIdeal := by
   show (p : OF E) ∈ Ideal.comap (algebraMap (OF E) (𝓞 E)) w.asIdeal ↔ _
   rw [Ideal.mem_comap, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[emultiplicity_eq_zero, Ideal.dvd_span_singleton, mem_below]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emult_zero (w : HeightOneSpectrum (𝓞 E)) {p : ℕ} (h : (p : 𝓞 E) ∉ w.asIdeal) :
     emultiplicity (below w).asIdeal (Ideal.span {(p : OF E)}) = 0 := by
@@ -53,11 +53,11 @@ theorem emult_zero (w : HeightOneSpectrum (𝓞 E)) {p : ℕ} (h : (p : 𝓞 E) 
   exact h
 
 /- English proof (translation)
-Establish `hle : Ideal.map (algebraMap (OF E) (𝓞 E)) (below w).asIdeal ≤ w.asIdeal` using `Ideal.map_le_iff_le_comap.mpr (fun x hx => hx)`. Establish `hdvd : (below w).asIdeal ^ 1 ∣ Ideal.span {(p : OF E)}`. Rewrite using `[pow_one, Ideal.dvd_span_singleton, mem_below]`. Conclude with `h`. Establish `hndvd : ¬ (below w).asIdeal ^ (1 + 1) ∣ Ideal.span {(p : OF E)}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h2`. Rewrite `h2` using `[Ideal.dvd_span_singleton]`. Establish `hm` using `Ideal.mem_map_of_mem (algebraMap (OF E) (𝓞 E)) h2`. Rewrite `hm` using `[Ideal.map_pow, map_natCast]`. Establish `hsq : (Ideal.map (algebraMap (OF E) (𝓞 E)) (below w).asIdeal) ^ (1 + 1) ≤ w.asIdeal ^ 2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (1 + 1 : ℕ) = 2 from rfl, pow_two, pow_two]`. Conclude with `Ideal.mul_mono hle hle`. Conclude with `not_mem_sq_of_not_dvd_discr hp hd w h (hsq hm)`. Use `(emultiplicity_eq_coe (n := 1)).mpr ⟨hdvd, hndvd⟩` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem emult_one (w : HeightOneSpectrum (𝓞 E)) {p : ℕ} (hp : p.Prime) (hd : ¬ (p : ℤ) ∣ discr E) (h : (p : 𝓞 E) ∈ w.asIdeal) :
     emultiplicity (below w).asIdeal (Ideal.span {(p : OF E)}) = 1 := by
@@ -79,11 +79,9 @@ theorem emult_one (w : HeightOneSpectrum (𝓞 E)) {p : ℕ} (hp : p.Prime) (hd 
   simpa using this
 
 /- English proof (translation)
-Introduce `hq'`. Establish `hc : IsCoprime (p : ℤ) (q : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.coprime_primes hp hq).mpr hne)`. Take `⟨u, v, huv⟩` from `hc`. Establish `e : (u : 𝓞 E) * (p : 𝓞 E) + (v : 𝓞 E) * (q : 𝓞 E) = 1`. Use `congrArg (Int.cast : ℤ → 𝓞 E) huv` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Conclude with `this`. Establish `h1 : (1 : 𝓞 E) ∈ w.asIdeal`. Rewrite using `[← e]`. Conclude with `w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ h) (w.asIdeal.mul_mem_left _ hq')`.
-
-Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_mem_of_ne (w : HeightOneSpectrum (𝓞 E)) {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hne : p ≠ q)
     (h : (p : 𝓞 E) ∈ w.asIdeal) : (q : 𝓞 E) ∉ w.asIdeal := by
@@ -100,7 +98,7 @@ theorem not_mem_of_ne (w : HeightOneSpectrum (𝓞 E)) {p q : ℕ} (hp : p.Prime
   exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)
 
 /- English proof (translation)
-Establish `hv` using `v.prime`. Rewrite using `[Nat.cast_mul, Nat.cast_mul, Nat.cast_mul, ← Ideal.span_singleton_mul_span_singleton, ← Ideal.span_singleton_mul_span_singleton, ← Ideal.span_singleton_mul_span_singleton, emultiplicity_mul hv, emultiplicity_pow hv, emultiplicity_mul hv, emultiplicity_mul hv, emultiplicity_mul hv …`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem emult_cond (v v0 : HeightOneSpectrum (OF E)) (a b c d : ℕ) :
     emultiplicity v.asIdeal (Ideal.span {((a * b * c * d : ℕ) : OF E)} ^ 2 * v0.asIdeal) =
@@ -116,7 +114,7 @@ theorem emult_cond (v v0 : HeightOneSpectrum (OF E)) (a b c d : ℕ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[emultiplicity_eq_zero, Ideal.dvd_iff_le]`. Introduce `hle`. Apply `h` to reduce the goal to its premises. Conclude with `HeightOneSpectrum.ext ((v0.isMaximal.eq_of_le v.isPrime.ne_top hle).symm)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem emult_ne {v v0 : HeightOneSpectrum (OF E)} (h : v ≠ v0) : emultiplicity v.asIdeal v0.asIdeal = 0 := by
   rw [emultiplicity_eq_zero, Ideal.dvd_iff_le]
@@ -125,7 +123,7 @@ theorem emult_ne {v v0 : HeightOneSpectrum (OF E)} (h : v ≠ v0) : emultiplicit
   exact HeightOneSpectrum.ext ((v0.isMaximal.eq_of_le v.isPrime.ne_top hle).symm)
 
 /- English proof (translation)
-Simplify using `using emultiplicity_pow_self_of_prime v.prime 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem emult_self (v : HeightOneSpectrum (OF E)) : emultiplicity v.asIdeal v.asIdeal = 1 := by
   simpa using emultiplicity_pow_self_of_prime v.prime 1
@@ -137,35 +135,31 @@ namespace GlobalTheory.LamTie
 open ExpCond
 
 /- English proof (translation)
-Introduce `R H q0 w0 hP w`. Take `⟨hw0, hdist, hspl⟩` from `hP`. Establish `hq0 : (q0 : 𝓞 H.E) ∈ w0.asIdeal` using `hw0`. Simplify using `only [List.nodup_cons, List.mem_cons, List.not_mem_nil, List.nodup_nil, not_or, or_false] at hdist`. Establish `pr : ∀ p ∈ [H.g 0, H.g 1, H.pde, H.pde', q0], p.Prime` using `fun p hp => (hspl p hp).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `dc : ∀ p ∈ [H.g 0, H.g 1, H.pde, H.pde', q0], ¬ (p : ℤ) ∣ discr H.E` using `fun p hp => (hspl p hp).2.2.1`. Establish `uniq : ∀ x ∈ [H.g 0, H.g 1, H.pde, H.pde', q0], ∀ y ∈ [H.g 0, H.g 1, H.pde, H.pde', q0], (x : 𝓞 H.E) ∈ w.asIdeal → (y : 𝓞 H.E) ∈ w.asIdeal → x = y`. Introduce `x hx y hy mx my`. Assume the negation of the conclusion as `hxy`. Conclude with `not_mem_of_ne w (pr x hx) (pr y hy) hxy mx my`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `key : emultiplicity (below w).asIdeal (cond0 H w0) = 2 * (emultiplicity (below w).asIdeal (Ideal.span {(H.g 0 : OF H.E)}) + emultiplicity (below w).asIdeal (Ideal.span {(H.g 1 : OF H.E)}) + emultiplicity (below w).asIdeal (Ideal.span {(H.pde : OF H.E)}) + emultiplicity (below w). …` using `emult_cond (below w) (below w0) (H.g 0) (H.g 1) H.pde H.pde'`. Establish `qw : below w = below w0 → (q0 : 𝓞 H.E) ∈ w.asIdeal` using `fun heq => (mem_below w q0).mp (heq ▸ (mem_below w0 q0).mpr hq0)`. Establish `toExp : ∀ n : ℕ, emultiplicity (below w).asIdeal (cond0 H w0) = n → expIn (cond0 H w0) (below w) = n` using `fun n h => multiplicity_eq_of_emultiplicity_eq_some h`. Establish `m0 : (H.g 0 : 𝓞 H.E) ∈ w.asIdeal → emultiplicity (below w).asIdeal (Ideal.span {(H.g 0 : OF H.E)}) = 1` using `emult_one w (pr _ (by simp)) (dc _ (by simp))`. Establish `m1 : (H.g 1 : 𝓞 H.E) ∈ w.asIdeal → emultiplicity (below w).asIdeal (Ideal.span {(H.g 1 : OF H.E)}) = 1` using `emult_one w (pr _ (by simp)) (dc _ (by simp))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m2 : (H.pde : 𝓞 H.E) ∈ w.asIdeal → emultiplicity (below w).asIdeal (Ideal.span {(H.pde : OF H.E)}) = 1` using `emult_one w (pr _ (by simp)) (dc _ (by simp))`. Establish `m3 : (H.pde' : 𝓞 H.E) ∈ w.asIdeal → emultiplicity (below w).asIdeal (Ideal.span {(H.pde' : OF H.E)}) = 1` using `emult_one w (pr _ (by simp)) (dc _ (by simp))`. Establish `n0 : (H.g 0 : 𝓞 H.E) ∉ w.asIdeal → emultiplicity (below w).asIdeal (Ideal.span {(H.g 0 : OF H.E)}) = 0` using `emult_zero w`. Establish `n1 : (H.g 1 : 𝓞 H.E) ∉ w.asIdeal → emultiplicity (below w).asIdeal (Ideal.span {(H.g 1 : OF H.E)}) = 0` using `emult_zero w`. Establish `n2 : (H.pde : 𝓞 H.E) ∉ w.asIdeal → emultiplicity (below w).asIdeal (Ideal.span {(H.pde : OF H.E)}) = 0` using `emult_zero w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n3 : (H.pde' : 𝓞 H.E) ∉ w.asIdeal → emultiplicity (below w).asIdeal (Ideal.span {(H.pde' : OF H.E)}) = 0` using `emult_zero w`. Establish `u` using `fun x (hx : x ∈ [H.g 0, H.g 1, H.pde, H.pde', q0]) y (hy : y ∈ [H.g 0, H.g 1, H.pde, H.pde', q0]) (hne : x ≠ y) (mx : (x : 𝓞 H.E) ∈ w.asIdeal) (my : (y : 𝓞 H.E) ∈ w.asIdeal) => hne (uniq x hx y hy mx my)`. Use `⟨fun hO => ?_, fun heq => ?_, fun hO hne => ?_⟩` and prove the remaining obligations. Establish `hne : below w ≠ below w0`. Introduce `heq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hq` using `qw heq`. Break down `hO with ⟨k, hk⟩ | hk | hk` into its components or cases. Use `fin_cases k`. Establish `hk : (H.g 0 : 𝓞 H.E) ∈ w.asIdeal` using `hk`. Conclude with `u _ (by simp) _ (by simp) (by omega) hk hq`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : (H.g 1 : 𝓞 H.E) ∈ w.asIdeal` using `hk`. Conclude with `u _ (by simp) _ (by simp) (by omega) hk hq`. Conclude with `u _ (by simp) _ (by simp) (by omega) hk hq`. Conclude with `u _ (by simp) _ (by simp) (by omega) hk hq`. Apply `toExp` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite using `[key, emult_ne hne]`. Break down `hO with ⟨k, hk⟩ | hk | hk` into its components or cases. Use `fin_cases k`. Establish `hk : (H.g 0 : 𝓞 H.E) ∈ w.asIdeal` using `hk`. Rewrite using `[m0 hk, n1 (fun h => u _ (by simp) _ (by simp) (by omega) hk h), n2 (fun h => u _ (by simp) _ (by simp) (by omega) hk h), n3 (fun h => u _ (by simp) _ (by simp) (by omega) hk h)]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Establish `hk : (H.g 1 : 𝓞 H.E) ∈ w.asIdeal` using `hk`. Rewrite using `[m1 hk, n0 (fun h => u _ (by simp) _ (by simp) (by omega) hk h), n2 (fun h => u _ (by simp) _ (by simp) (by omega) hk h), n3 (fun h => u _ (by simp) _ (by simp) (by omega) hk h)]`. Evaluate the numerical expressions. Establish `hk : (H.pde : 𝓞 H.E) ∈ w.asIdeal` using `hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[m2 hk, n0 (fun h => u _ (by simp) _ (by simp) (by omega) hk h), n1 (fun h => u _ (by simp) _ (by simp) (by omega) hk h), n3 (fun h => u _ (by simp) _ (by simp) (by omega) hk h)]`. Evaluate the numerical expressions. Establish `hk : (H.pde' : 𝓞 H.E) ∈ w.asIdeal` using `hk`. Rewrite using `[m3 hk, n0 (fun h => u _ (by simp) _ (by simp) (by omega) hk h), n1 (fun h => u _ (by simp) _ (by simp) (by omega) hk h), n2 (fun h => u _ (by simp) _ (by simp) (by omega) hk h)]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hq` using `qw heq`. Establish `a0 : (H.g 0 : 𝓞 H.E) ∉ w.asIdeal` using `fun h => u _ (by simp) _ (by simp) (by omega) hq h`. Establish `a1 : (H.g 1 : 𝓞 H.E) ∉ w.asIdeal` using `fun h => u _ (by simp) _ (by simp) (by omega) hq h`. Establish `a2 : (H.pde : 𝓞 H.E) ∉ w.asIdeal` using `fun h => u _ (by simp) _ (by simp) (by omega) hq h`. Establish `a3 : (H.pde' : 𝓞 H.E) ∉ w.asIdeal` using `fun h => u _ (by simp) _ (by simp) (by omega) hq h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(⟨k, hk⟩ | hk | hk)`. Use `fin_cases k`. Conclude with `a0 hk`. Conclude with `a1 hk`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Conclude with `a2 hk`. Conclude with `a3 hk`. Apply `toExp` to reduce the goal to its premises. Rewrite using `[key, n0 a0, n1 a1, n2 a2, n3 a3, heq, emult_self]`. Evaluate the numerical expressions.
-
-Establish `a0 : (H.g 0 : 𝓞 H.E) ∉ w.asIdeal` using `fun h => hO (Or.inl ⟨0, h⟩)`. Establish `a1 : (H.g 1 : 𝓞 H.E) ∉ w.asIdeal` using `fun h => hO (Or.inl ⟨1, h⟩)`. Establish `a2 : (H.pde : 𝓞 H.E) ∉ w.asIdeal` using `fun h => hO (Or.inr (Or.inl h))`. Establish `a3 : (H.pde' : 𝓞 H.E) ∉ w.asIdeal` using `fun h => hO (Or.inr (Or.inr h))`. Apply `toExp` to reduce the goal to its premises.
-
-Rewrite using `[key, n0 a0, n1 a1, n2 a2, n3 a3, emult_ne hne]`. Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 theorem expIn_cond0 : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (q0 : ℕ) (w0 : HeightOneSpectrum (𝓞 H.E)), PlacesOk H q0 w0 →
     ∀ w : HeightOneSpectrum (𝓞 H.E), (Over4 H w → expIn (cond0 H w0) (below w) = 2) ∧

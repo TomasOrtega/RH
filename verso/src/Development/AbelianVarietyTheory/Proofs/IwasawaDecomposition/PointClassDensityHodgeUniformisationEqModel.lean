@@ -20,14 +20,14 @@ namespace GlobalTheory.UnifDensTransport
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Rewrite using `[map_pow (aeval φ), map_mul (aeval φ), aeval_C, aeval_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_term {κ S : Type} [CommRing S] [Algebra ℝ S] (φ : κ → S) (x : κ) (a s : ℕ) :
     aeval φ ((C ((-1 : ℝ) ^ a) * X x) ^ s) = (algebraMap ℝ S ((-1 : ℝ) ^ a) * φ x) ^ s := by
   rw [map_pow (aeval φ), map_mul (aeval φ), aeval_C, aeval_X]
 
 /- English proof (translation)
-Substitute `hab` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem chernPoly_cast {n a b : ℕ} (hab : a = b) (G : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin a) (Fin a) ℂ)
     (v : ReciprocityTheory.L2DbarEstimates.V n) (k : ℕ) :
@@ -35,9 +35,9 @@ theorem chernPoly_cast {n a b : ℕ} (hab : a = b) (G : ReciprocityTheory.L2Dbar
   subst hab; rfl
 
 /- English proof (translation)
-Unfold `chernTop`. Use `congr 3`. Rewrite using `[pointPoly, map_prod, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[aeval_term, aeval_term]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `erw [chernPoly_cast (GlobalTheory.HodgeGenUnf.mult_psi τ) (fun u => G u τ.1) v Dw.p]`. Conclude with `congrArg (fun m => (algebraMap ℝ (MvPolynomial (Fin n × Fin n) ℂ) ((-1 : ℝ) ^ m) * chernPoly (fun u => G u τ.1) v m) ^ (Dw.p + Dw.q - m)) (GlobalTheory.HodgeGenUnf.mult_psi τ)`.
+A detailed English derivation is pending.
 -/
 theorem chernTop_pointPoly_eq (H : Host E) (Dw : Datum H) {n : ℕ} (G : ReciprocityTheory.L2DbarEstimates.V n → Mat Dw.mult ℂ)
     (v : ReciprocityTheory.L2DbarEstimates.V n) :
@@ -56,7 +56,7 @@ theorem chernTop_pointPoly_eq (H : Host E) (Dw : Datum H) {n : ℕ} (G : Recipro
     chernPoly (fun u => G u τ.1) v m) ^ (Dw.p + Dw.q - m)) (GlobalTheory.HodgeGenUnf.mult_psi τ)
 
 /- English proof (translation)
-Unfold `chernTop`. Use `congr 3`. Rewrite using `[map_prod, map_prod]`. Simplify using `only [aeval_term]`. Conclude with `Fintype.prod_bijective _ ha _ _ fun τ => rfl`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chernTop_reindex {ι ι' : Type} [Fintype ι] [Fintype ι'] (a : ι → ι') (ha : Function.Bijective a)
     (p s : ℕ) {n : ℕ} (K : ReciprocityTheory.L2DbarEstimates.V n → Mat (fun _ : ι' => p) ℂ) (v : ReciprocityTheory.L2DbarEstimates.V n) :
@@ -75,7 +75,7 @@ end GlobalTheory.UnifDensTransport
 namespace GlobalTheory.UnifDensTransport
 
 /- English proof (translation)
-Take `⟨hb, hg, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Use `⟨fun a b hab => Subtype.ext (hb.1 (congrArg Subtype.val hab)), fun τ' => ?_⟩` and prove the remaining obligations. Take `⟨τ, hτ⟩` from `hb.2 τ'.1`. Establish `hm : τ H.rt = H.rt0` using `(hg τ).1 (by rw [hτ]; exact ((hU.2.1 k).2 τ'.1).1 τ'.2)`. Conclude with `⟨⟨τ, hm⟩, Subtype.ext hτ⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem letter_bijective {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)}
@@ -88,7 +88,7 @@ theorem letter_bijective {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   exact ⟨⟨τ, hm⟩, Subtype.ext hτ⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ h v hv A hA`. Rewrite using `[chernTop_pointPoly_eq, ← chernTop_reindex _ (letter_bijective hσ hU k)]`. Use `choose cc hcc g hg hgu hG using GlobalTheory.T.hodge_metric_uniformisation_gram_local_holomorphic E H Dw l Xo c O β Y T F e σ U hσ hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ h v hv A hA`. Conclude with `GlobalTheory.PointChern.chernTop_changeFrame _ _ _ (fun w τ => g τ w) cc v hcc hg hgu (fun τ => (GlobalTheory.T.boundedDomainModelMetric_contDiffAt_and_isUnit _ _ _ _ h v hv _).1) (fun τ => (GlobalTheory.T.boundedDomainModelMetric_contDiffAt_and_isUnit _ _ _ _ h v hv _).2) (Filte …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chernTop_pointPoly_transport : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (Φ : FlagTor T.Z e U) (k : U.Comp), ∀ (X : Var F) (j : X.X ⟶ gen T.Z) (f : (Φ.C k).Y.X ⟶ X.X) (f₀ : EigFrame T.Z (constF e X) (genericPt X ≫ j ≫ genι T.Z)) (Eb : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsLieBase e (Φ.C k) X j f f₀ Eb A₀ → ∀ ψ : ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p) → ℂ) → CxPts X.str (σ.comp e.toRingHom), (∀ x : (U.X k).dom, cxOf e σ hj (ψ (flat (domPt (U.X k) (Nat.le_add_right Dw.p Dw.q) (Equiv.refl (U.X k).Ψ) x.1))) = cxPt T.Z (U.un k x)) → ∀ (h : Fintype.card ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p)) = X.dim) (v : ReciprocityTheory.L2DbarEstimates.V X.dim), GlobalTheory.UnifDens.flatL h v ∈ DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p) → ∀ A ∈ Eb.S (under (ψ (GlobalTheory.UnifDens.flatL h v))), chernTop (pointPoly H Dw) (fun u => lieGram e U hj f₀ A₀ A (ψ (GlobalTheory.UnifDens.flatL h u))) v = GlobalTheory.GoodMetric.chernTop (m := fun _ : (U.X k).Ψ => Dw.p) (∏ τ : (U.X k).Ψ, (MvPolynomial.C ((-1 : ℝ) ^ Dw.p) * MvPolynomial.X (τ, Dw.p)) ^ (Dw.p + Dw.q - Dw.p)) (fun u τ => Matrix.transpose (hP (unflat (GlobalTheory.UnifDens.flatL h u) τ))⁻¹) v := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ h v hv A hA

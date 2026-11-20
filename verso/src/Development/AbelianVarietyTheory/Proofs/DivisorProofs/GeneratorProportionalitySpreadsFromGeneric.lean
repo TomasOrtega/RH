@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.GenSpread
 
 /- English proof (translation)
-Take `⟨t, -, hv⟩` from `exists_gen hL (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => by`. Use `(Fintype.prod_sum_type _).trans (Eq.trans ?_ (Fintype.prod_empty _).symm)` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`. Conclude with `mul_inv_eq_one.2 (hF U h))`. Use the proof step `(LB.mulGen L _ _ _ _ t₁ (LB.invGen L _ _ t₂)) (DVR.mulGen_isGen _ _ _ _ _ _ _ h₁ (DVR.invGen_isGen _ _ _ _ h₂))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `le : (⊤ : Y.Opens) ≤ LB.wchart L (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`. Use `⟨(res le (t.s PEmpty.elim)).val, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[← val_inv, ← val_mul hJ, ← hv Z r z J hJ, val_of t r z J PEmpty.elim (fun k => k.elim)]`. Conclude with `(congrArg Units.val (gm_res r z le trivial _)).symm.trans (gs_unit r z ⊤ trivial _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratio {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂]
     {φ₁ : K₁ → (Y ⟶ X)} {ε₁ : K₁ → ℤ} {φ₂ : K₂ → (Y ⟶ X)} {ε₂ : K₂ → ℤ} (hF : FormEq φ₁ ε₁ φ₂ ε₂)
@@ -39,7 +39,7 @@ theorem exists_ratio {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K₁ K₂ : Ty
 def fnOn {R : Type} [CommRing R] : R →+* Γ(Sp R, ⊤) := (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))`. Use `gs_pull (𝟙 (Sp S)) (spMap f) z ⊤ trivial (fnOn a)` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Rewrite using `[← this]`. Conclude with `congrArg (gs (𝟙 (Sp S)) z ⊤) e.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_spMap {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (z : Sp S) (a : R) :
     gs (spMap f) z ⊤ (fnOn a) = gs (𝟙 (Sp S)) z ⊤ (fnOn (f a)) := by
@@ -53,13 +53,13 @@ def gsHom {Z Y : Scheme.{0}} (r : Z ⟶ Y) (z : Z) : Γ(Y, ⊤) →+* Z.presheaf
   (Z.presheaf.germ (r ⁻¹ᵁ ⊤) z trivial).hom.comp (r.app ⊤).hom
 
 /- English proof (translation)
-The claim follows from `(gs_eq r z ⊤ trivial a).symm`.
+A detailed English derivation is pending.
 -/
 theorem gsHom_apply {Z Y : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (a : Γ(Y, ⊤)) : gsHom r z a = gs r z ⊤ a :=
   (gs_eq r z ⊤ trivial a).symm
 
 /- English proof (translation)
-Rewrite using `[gsHom_apply, gsHom_apply, ← gs_spMap, ← hr]`. Conclude with `gs_pull r W.ι z ⊤ trivial _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_res_fn {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (W : (Sp R).Opens) (r : Sp S ⟶ W.toScheme)
     (hr : r ≫ W.ι = spMap f) (z : Sp S) (a : R) :
@@ -68,15 +68,13 @@ theorem gs_res_fn {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (W : (S
   exact gs_pull r W.ι z ⊤ trivial _
 
 /- English proof (translation)
-Use `haveI : AlgebraicGeometry.IsReduced W.toScheme := isReduced_of_isOpenImmersion W.ι`. Use `eq_zero_of_basicOpen_eq_bot d ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, w ∈ W.toScheme.basicOpen d := by`. Assume the negation of the conclusion as `h`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hne (le_bot_iff.1 fun w hw => h ⟨w, hw⟩)`. Establish `hsp : W.ι (lam z) ⤳ W.ι w`. Establish `e : W.ι (lam z) = jK R z` using `by rw [← hl]; rfl`. Rewrite using `[e]`. Use `(PrimeSpectrum.le_iff_specializes _ _).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a ha`. Establish `hz : (z : PrimeSpectrum (FractionRing R)).asIdeal = ⊥` using `(Ideal.eq_bot_or_top _).resolve_right (PrimeSpectrum.isPrime z).ne_top`. Establish `ha' : algebraMap R (FractionRing R) a ∈ (z : PrimeSpectrum (FractionRing R)).asIdeal` using `ha`. Rewrite `ha'` using `[hz, Ideal.mem_bot]`. Take `rfl : a = 0` from `IsFractionRing.injective R (FractionRing R) (ha'.trans (map_zero _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.zero_mem _`. Establish `hsp' : lam z ⤳ w` using `W.ι.isOpenEmbedding.isInducing.specializes_iff.1 hsp`. Establish `hm : z ∈ lam ⁻¹ᵁ W.toScheme.basicOpen d` using `hsp'.mem_open (W.toScheme.basicOpen d).isOpen hw`. Rewrite `hm` using `[Scheme.preimage_basicOpen]`. Establish `hu` using `(Scheme.mem_basicOpen _ (U := lam ⁻¹ᵁ ⊤) _ z trivial).1 hm`.
-
-Conclude with `not_isUnit_zero (hd ▸ hu : IsUnit (0 : (Sp (FractionRing R)).presheaf.stalk z))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_generic {R : Type} [CommRing R] [IsDomain R] (W : (Sp R).Opens)
     (lam : Sp (FractionRing R) ⟶ W.toScheme) (hl : lam ≫ W.ι = jK R) (z : Sp (FractionRing R))
@@ -105,13 +103,13 @@ theorem eq_zero_of_generic {R : Type} [CommRing R] [IsDomain R] (W : (Sp R).Open
   exact not_isUnit_zero (hd ▸ hu : IsUnit (0 : (Sp (FractionRing R)).presheaf.stalk z))
 
 /- English proof (translation)
-Introduce `R V _ _ _ _ θ W X L hL K₁ K₂ _ _ φ₁ ε₁ φ₂ ε₂ hF t₁ t₂ h₁ h₂ lam hl g hg x y k k' hy hk hk' H z J hJ`. Take `⟨c, hc⟩` from `exists_ratio hL hF h₁ h₂`. Establish `hu : ∀ {F : Type} [Field F] (u : Fˣ) (w : Sp F), (gm (𝟙 (Sp F)) w ⊤ (unitOn u)).val = gsHom (𝟙 (Sp F)) w (fnOn (u : F))` using `fun u w => ((gsHom_apply _ _ _).trans (gs_unit _ w ⊤ trivial (unitOn u))).symm`. Set `z₀ : Sp (FractionRing R)` to `(⊥ : PrimeSpectrum (FractionRing R))`. Use `choose I hI using fun χ : (TK R).left ⟶ X => exists_chart hL (χ z₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₀ : gsHom lam z₀ c = gsHom (𝟙 (Sp (FractionRing R))) z₀ (fnOn (k : FractionRing R))`. Use `hc _ lam z₀ I hI` as an intermediate fact. Rewrite `this` using `[H z₀ I hI, mul_inv_cancel_right]`. Conclude with `(gsHom_apply _ _ _).trans (this.symm.trans (hu k z₀))`. Establish `e₁ : c * W.ι.appTop.hom (fnOn y) - W.ι.appTop.hom (fnOn x) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `eq_zero_of_generic W lam hl z₀ _ ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, gs_res_fn (algebraMap R (FractionRing R)) W lam hl, gs_res_fn (algebraMap R (FractionRing R)) W lam hl, ← hk, map_mul, map_mul]`. Conclude with `sub_eq_zero.2 (congrArg (· * _) e₀)`. Establish `hg' : g ≫ W.ι = spMap ((algebraMap V (FractionRing V)).comp θ)` using `hg.trans (Spec.map_comp (CommRingCat.ofHom θ) (CommRingCat.ofHom (algebraMap V (FractionRing V)))).symm`. Establish `e₂` using `congrArg (gsHom (Z := Sp (FractionRing V)) g z) (sub_eq_zero.1 e₁)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e₂` using `[map_mul, gs_res_fn _ W g hg', gs_res_fn _ W g hg', RingHom.comp_apply, RingHom.comp_apply, ← hk', map_mul, map_mul]`. Establish `hy' : IsUnit (algebraMap V (FractionRing V) (θ y))` using `isUnit_iff_ne_zero.2 fun h => hy (IsFractionRing.injective V (FractionRing V) (h.trans (map_zero _).symm))`. Establish `e₃` using `((hy'.map fnOn).map (gsHom (𝟙 (Sp (FractionRing V))) z)).mul_right_cancel e₂`. Use `mul_inv_eq_iff_eq_mul.1 (Units.ext ?_)` and prove the remaining obligations. Conclude with `(hc _ g z J hJ).trans ((gsHom_apply _ _ _).symm.trans (e₃.trans (hu k' z).symm))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem val_spread : ∀ (R V : Type) [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (θ : R →+* V) (W : (Sp R).Opens) (X : Scheme.{0}) (L : LB X), L.IsLB → ∀ (K₁ K₂ : Type) [Fintype K₁] [Fintype K₂] (φ₁ : K₁ → (W.toScheme ⟶ X)) (ε₁ : K₁ → ℤ) (φ₂ : K₂ → (W.toScheme ⟶ X)) (ε₂ : K₂ → ℤ), (∀ (U : Type) [CommGroup U] (h : (W.toScheme ⟶ X) → U), ∏ i, h (φ₁ i) ^ ε₁ i = ∏ i, h (φ₂ i) ^ ε₂ i) → ∀ (t₁ : LB.Gen (LB.LinComb L φ₁ ε₁)) (t₂ : LB.Gen (LB.LinComb L φ₂ ε₂)), t₁.IsGen → t₂.IsGen → ∀ (lam : (TK R).left ⟶ W.toScheme), lam ≫ W.ι = jK R → ∀ (g : (TK V).left ⟶ W.toScheme), g ≫ W.ι = jK V ≫ spMap θ → ∀ (x y : R) (k : (FractionRing R)ˣ) (k' : (FractionRing V)ˣ), θ y ≠ 0 → (k : FractionRing R) * algebraMap R _ y = algebraMap R _ x → (k' : FractionRing V) * algebraMap V _ (θ y) = algebraMap V _ (θ x) → (∀ z J, Good L z J → val t₁ lam z J = gm (𝟙 (TK R).left) z ⊤ (unitOn k) * val t₂ lam z J) → ∀ z J, Good L z J → val t₁ g z J = gm (𝟙 (TK V).left) z ⊤ (unitOn k') * val t₂ g z J := by
   intro R V _ _ _ _ θ W X L hL K₁ K₂ _ _ φ₁ ε₁ φ₂ ε₂ hF t₁ t₂ h₁ h₂ lam hl g hg x y k k' hy hk hk' H z J hJ

@@ -14,11 +14,11 @@ namespace FubiniStudyLeviForm
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨by simpa using contDiffAt_const, by simp [ReciprocityTheory.AnForm.levi]⟩`. Consider the case `insert a s ha ih`. Establish `heq : (fun y => ∑ k ∈ insert a s, f k y) = fun y => (fun y' => ∑ k ∈ s, f k y') y + 1 * f a y`. Use function extensionality and compare the values at `y`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Finset.sum_insert ha]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Use `⟨ih.1.add (contDiffAt_const.mul (hf a)), ?_⟩` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.AnForm.levi_add_smul (f := fun y' => ∑ k ∈ s, f k y') (g := f a) 1 ih.1 (hf a) w]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hl a w`. Establish `h2` using `ih.2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem levi_sum_nonneg {K : Type} {z : ι → ℂ} (f : K → (ι → ℂ) → ℝ)
     (hf : ∀ k, ContDiffAt ℝ 2 (f k) z) (hl : ∀ k w, 0 ≤ ReciprocityTheory.AnForm.levi (f k) z w)
@@ -49,15 +49,13 @@ end FubiniStudyLeviForm
 open FubiniStudyLeviForm in
 
 /- English proof (translation)
-Introduce `K _ ι _ z w hz`. Use `set F : K → ((Σ k, ι k) → ℂ) → ℝ := fun k y => Real.log ((fsMetric (ι k)).ρ (fun i => y ⟨k, i⟩)) with hF`. Establish `hev : (fun y => Real.log ((fsMulti ι).h y)) =ᶠ[𝓝 z] fun y => ∑ k ∈ Finset.univ, F k y`. Establish `hopen : ∀ k, ∀ᶠ y in 𝓝 z, ∃ i, y ⟨k, i⟩ ≠ 0` using `fun k => by`. Take `⟨i, hi⟩` from `hz k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Filter.mem_of_superset (((continuous_apply _).isOpen_preimage _ isOpen_ne).mem_nhds hi) fun y hy => ⟨i, hy⟩`. Use `filter_upwards [Filter.eventually_all.mpr hopen] with y hy`. Establish `hpos : ∀ k, 0 < (fsMetric (ι k)).ρ (fun i => y ⟨k, i⟩)` using `fun k => by`. Take `⟨i, hi⟩` from `hy k`. Conclude with `(fsMetric (ι k)).pos _ fun h0 => hi (congrFun h0 i)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [fsMulti, HermLine.ofMetrics, zpow_one, hF]`. Conclude with `Real.log_prod fun k _ => (hpos k).ne'`. Establish `hblock : ∀ k, ContDiffAt ℝ 2 (F k) z ∧ ∀ v, 0 ≤ ReciprocityTheory.AnForm.levi (F k) z v`. Introduce `k`. Establish `hk0 : (fun i => z ⟨k, i⟩) ≠ 0`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, hi⟩` from `hz k`. Conclude with `fun h0 => hi (congrFun h0 i)`. Establish `hφ` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.adens_contDiffAt_logρ_id (HilbertSamuel.ProjLine.isSmoothMetric_fs (J := ι k)) hk0`. Establish `hFk : F k = (fun u => Real.log ((fsMetric (ι k)).ρ u)) ∘ blockProj ι k` using `rfl`. Use `⟨hFk ▸ hφ.comp z ((blockProj ι k).restrictScalars ℝ).contDiff.contDiffAt, fun v => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hFk, ReciprocityTheory.AnForm.levi_comp v ((blockProj ι k).analyticAt z) hφ]`. Conclude with `HilbertSamuel.ProjLine.leviForm_log_fs_nonneg hk0 _`. Express the relevant statement in the definitionally equal form `0 ≤ ReciprocityTheory.AnForm.levi _ z w`. Rewrite using `[ReciprocityTheory.AnForm.levi_congr hev]`. Conclude with `(levi_sum_nonneg F (fun k => (hblock k).1) (fun k => (hblock k).2) w Finset.univ).2`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FsLineLevi.proof : FsLineLevi.Statement := by
   intro K _ ι _ z w hz

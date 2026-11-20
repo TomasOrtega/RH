@@ -43,7 +43,7 @@ def extFL (hL : LevExtL Λm hSG ΛM) (u : Pr.Word) : (ptGSD W ΛM).G →* (topGS
       exact congrArg Prod.snd (map_mul (extR R hSG) (a.1, a.2.1) (b.1, b.2.1))
 
 /- English proof (translation)
-Use `show tilR hSG u (FormG.incl _ a • d) = FormG.incl _ (extFL hSG hL u a) • tilR hSG u d`. Conclude with `tilR_smul hSG hPr u hpi (a.1, a.2.1) d`.
+A detailed English derivation is pending.
 -/
 theorem tilR_smulFL (hPr : Pr.Ok) (u : Pr.Word) (hpi : ∀ w : SG', Pr.piT u ∉ w.1.asIdeal) (hL : LevExtL Λm hSG ΛM)
     (a : (ptGSD W ΛM).G) (d : DecoSet X.E (R.N R.m - 1) ∅ SG') :
@@ -72,7 +72,7 @@ def stabMapRL (hPr : Pr.Ok) (u : Pr.Word) (hpi : ∀ w : SG', Pr.piT u ∉ w.1.a
       rw [h1, ← tilR_smulFL hSG hPr u hpi hL, s.2, inv_smul_eq_iff, h1])
 
 /- English proof (translation)
-Introduce `s s' h`. Establish `h1` using `congrArg Subtype.val h`. Establish `h2 : extFL hSG hL u s.1 = extFL hSG hL u s'.1` using `(MulAut.conj _).injective h1`. Establish `h3 : s.1.1 = s'.1.1` using `rec_extUH_injective (N_m_succ R) (congrArg Prod.fst h2)`. Conclude with `Subtype.ext (formGSD_stab_inj _ _ _ s.2 s'.2 h3)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stabMapRL_injective (hPr : Pr.Ok) (u : Pr.Word) (hpi : ∀ w : SG', Pr.piT u ∉ w.1.asIdeal) (hL : LevExtL Λm hSG ΛM)
     (c : (ptGSD W ΛM).Cl) : Function.Injective (stabMapRL hSG hPr u hpi hL c) := by
@@ -89,7 +89,7 @@ def lowCL (σ₀ : X.K →+* ℂ) (hσ : ∀ x : X.K, σ₀ (star x) = starRingE
   (topEv W Λm σ₀ hσ u).extend ((ptEv W ΛM σ₀ hσ).ev.comp (brC W u))
 
 /- English proof (translation)
-The claim follows from `(topEv W Λm σ₀ hσ u).extend_ev _ x`.
+A detailed English derivation is pending.
 -/
 theorem lowCL_ev (σ₀ : X.K →+* ℂ) (hσ : ∀ x : X.K, σ₀ (star x) = starRingEnd ℂ (σ₀ x)) (u : Pr.Word)
     (x : VV X.K (W.lamTrue u R.m)) :
@@ -117,7 +117,7 @@ def extFC (hL : LevExtC Λ bm hSG ΛM) (u : Pr.Word) : (ptGSD W ΛM).G →* (ste
   extFL (W := W) hSG hL u
 
 /- English proof (translation)
-The claim follows from `tilR_smulFL hSG hPr u hpi hL a d`.
+A detailed English derivation is pending.
 -/
 theorem tilR_smulFC (hPr : Pr.Ok) (u : Pr.Word) (hpi : ∀ w : SG', Pr.piT u ∉ w.1.asIdeal) (hL : LevExtC Λ bm hSG ΛM)
     (a : (ptGSD W ΛM).G) (d : DecoSet X.E (R.N R.m - 1) ∅ SG') :
@@ -134,7 +134,7 @@ def stabMapRC (hPr : Pr.Ok) (u : Pr.Word) (hpi : ∀ w : SG', Pr.piT u ∉ w.1.a
   stabMapRL hSG hPr u hpi hL c
 
 /- English proof (translation)
-The claim follows from `stabMapRL_injective hSG hPr u hpi hL c`.
+A detailed English derivation is pending.
 -/
 theorem stabMapRC_injective (hPr : Pr.Ok) (u : Pr.Word) (hpi : ∀ w : SG', Pr.piT u ∉ w.1.asIdeal) (hL : LevExtC Λ bm hSG ΛM)
     (c : (ptGSD W ΛM).Cl) : Function.Injective (stabMapRC (W := W) hSG hPr u hpi hL c) :=
@@ -147,7 +147,7 @@ def lowCC (σ₀ : X.K →+* ℂ) (hσ : ∀ x : X.K, σ₀ (star x) = starRingE
   lowCL W (Λ.lev R.m bm) ΛM σ₀ hσ u
 
 /- English proof (translation)
-The claim follows from `lowCL_ev σ₀ hσ u x`.
+A detailed English derivation is pending.
 -/
 theorem lowCC_ev (σ₀ : X.K →+* ℂ) (hσ : ∀ x : X.K, σ₀ (star x) = starRingEnd ℂ (σ₀ x)) (u : Pr.Word)
     (x : VV X.K (W.lamTrue u R.m)) :
@@ -229,7 +229,7 @@ def recXpC (hX : X.Ok) (hPr : Pr.Ok) (σ₀ : X.K →+* ℂ) (hσ : ∀ x : X.K,
   thFree_nonneg := Th.thFree_nonneg
 
 /- English proof (translation)
-Use `show lowCL W (Λ.lev R.m bm) ΛM σ₀ hσ u ((topEv W (Λ.lev R.m bm) σ₀ hσ u).atPt (tilR hSG u ((ptGSD W ΛM).outSec.rep c)) (resTop W Λ bm σ₀ u F)) = _`. Rewrite using `[hF, GSD.Ev.atPt_emb]`. Conclude with `lowCL_ev σ₀ hσ u _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem recPerC_lower_emb (hX : X.Ok) (σ₀ : X.K →+* ℂ) (hσ : ∀ x : X.K, σ₀ (star x) = starRingEnd ℂ (σ₀ x)) (u : Pr.Word)
     (G : ChainGlob W σ₀) (A : ChainArgC W Λ G u) (hM : (rowGSD W ΛM).Ok) (F : StClC W Λ u R.m → FrS X σ₀ (R.N R.m) → ℂ)
@@ -243,7 +243,7 @@ theorem recPerC_lower_emb (hX : X.Ok) (σ₀ : X.K →+* ℂ) (hσ : ∀ x : X.K
   exact lowCL_ev σ₀ hσ u _
 
 /- English proof (translation)
-The claim follows from `recPerC_lower_emb hSG hX σ₀ hσ u G A hM _ (φ bm) rfl c`.
+A detailed English derivation is pending.
 -/
 theorem recPerC_lower_fam (hX : X.Ok) (σ₀ : X.K →+* ℂ) (hσ : ∀ x : X.K, σ₀ (star x) = starRingEnd ℂ (σ₀ x)) (u : Pr.Word)
     (G : ChainGlob W σ₀) (A : ChainArgC W Λ G u) (hM : (rowGSD W ΛM).Ok) (φ : (stepF W Λ u R.m).Forms) (c : (ptGSD W ΛM).Cl) :
@@ -260,7 +260,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Λ₀ :
   {SG' : Finset (HeightOneSpectrum (𝓞 X.E))} (hSG : Pr.vGs ⊆ SG') (ΛM : LevFam X.E X.K (R.N R.m - 1) SG')
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem LevExtC_one : LevExtC (LevCh.one Λ₀) () hSG ΛM ↔ LevExt Λ₀ hSG ΛM := Iff.rfl
 

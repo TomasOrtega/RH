@@ -14,33 +14,33 @@ namespace GaussNormEstimates
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[← norm_algebraMap' ℂ_[l] (a : ℚ_[l]), map_intCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma normZ_eq (a : ℤ) : ‖(a : ℂ_[l])‖ = ‖(a : ℚ_[l])‖ := by
   rw [← norm_algebraMap' ℂ_[l] (a : ℚ_[l]), map_intCast]
 
 /- English proof (translation)
-Rewrite using `[normZ_eq]`. Conclude with `Padic.norm_int_le_one a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma normZ_le (a : ℤ) : ‖(a : ℂ_[l])‖ ≤ 1 := by
   rw [normZ_eq]; exact Padic.norm_int_le_one a
 
 /- English proof (translation)
-Rewrite using `[normZ_eq]`. Conclude with `Padic.norm_intCast_lt_one_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma normZ_lt {a : ℤ} : ‖(a : ℂ_[l])‖ < 1 ↔ (l : ℤ) ∣ a := by
   rw [normZ_eq]; exact Padic.norm_intCast_lt_one_iff
 
 /- English proof (translation)
-The claim follows from `le_antisymm (normZ_le a) (not_lt.1 fun h' => h (normZ_lt.1 h'))`.
+A detailed English derivation is pending.
 -/
 lemma normZ_one {a : ℤ} (h : ¬ (l : ℤ) ∣ a) : ‖(a : ℂ_[l])‖ = 1 :=
   le_antisymm (normZ_le a) (not_lt.1 fun h' => h (normZ_lt.1 h'))
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Establish `h1 : ‖(a - b) + b‖ ≤ max ‖a - b‖ ‖b‖` using `IsUltrametricDist.norm_add_le_max _ _`. Rewrite `h1` using `[sub_add_cancel]`. Conclude with `h1.trans (max_le h.le hb.le)`. Assume the negation of the conclusion as `hlt`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hlt` using `[not_le]`. Establish `h1 : ‖a + -(a - b)‖ ≤ max ‖a‖ ‖-(a - b)‖` using `IsUltrametricDist.norm_add_le_max _ _`. Rewrite `h1` using `[norm_neg, ← sub_eq_add_neg, sub_sub_cancel, hb]`. Conclude with `absurd h1 (not_le.2 (max_lt hlt h))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_one_of_close {K : Type*} [NormedField K] [IsUltrametricDist K] {a b : K}
     (h : ‖a - b‖ < 1) (hb : ‖b‖ = 1) : ‖a‖ = 1 := by
@@ -55,18 +55,18 @@ lemma norm_one_of_close {K : Type*} [NormedField K] [IsUltrametricDist K] {a b :
     exact absurd h1 (not_le.2 (max_lt hlt h))
 
 /- English proof (translation)
-The claim follows from `Subfield.le_topologicalClosure _ (Subfield.subset_closure ⟨n, hn, hln, h⟩)`.
+A detailed English derivation is pending.
 -/
 lemma mu_mem_Kur {z : ℂ_[l]} {n : ℕ} (hn : 0 < n) (hln : ¬ l ∣ n) (h : z ^ n = 1) : z ∈ MaximalUnramifiedExtension l :=
   Subfield.le_topologicalClosure _ (Subfield.subset_closure ⟨n, hn, hln, h⟩)
 
 /- English proof (translation)
-The claim follows from `Subfield.isClosed_topologicalClosure _`.
+A detailed English derivation is pending.
 -/
 lemma isClosed_Kur : IsClosed (MaximalUnramifiedExtension l : Set ℂ_[l]) := Subfield.isClosed_topologicalClosure _
 
 /- English proof (translation)
-Introduce `h`. Use `Int.le_of_dvd (by norm_num) h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma two_not_dvd (h2 : 2 < l) : ¬ (l : ℤ) ∣ 2 := by
   intro h
@@ -74,24 +74,22 @@ lemma two_not_dvd (h2 : 2 < l) : ¬ (l : ℤ) ∣ 2 := by
   omega
 
 /- English proof (translation)
-Use `normZ_one (two_not_dvd h2)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma norm_two (h2 : 2 < l) : ‖(2 : ℂ_[l])‖ = 1 := by
   have := normZ_one (two_not_dvd h2)
   simpa using this
 
 /- English proof (translation)
-Establish `hl2 : 2 ≤ l` using `hl.out.two_le`. Establish `hpos : 0 < l ^ 2 - 1`. Establish `: 2 ^ 2 ≤ l ^ 2` using `Nat.pow_le_pow_left hl2 2`. Use linear arithmetic over natural numbers and integers. Establish `hnd : ¬ l ∣ l ^ 2 - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `hd`. Establish `h1 : l ∣ l ^ 2` using `dvd_pow_self l (by norm_num)`. Establish `h2 : l ∣ 1`. Use `(Nat.dvd_sub h1 hd)` as an intermediate fact. Rewrite `this` using `[Nat.sub_sub_self (by omega)]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hl.out.one_lt.ne' (Nat.dvd_one.1 h2)`. Take `⟨ζ, hζ⟩` from `kurRoots l (l ^ 2 - 1) hpos hnd`. Establish `hζ' : IsPrimitiveRoot ((MaximalUnramifiedExtension l).subtype ζ) (l ^ 2 - 1)` using `hζ.map_of_injective (MaximalUnramifiedExtension l).subtype.injective`. Establish `hprod` using `Polynomial.X_pow_sub_one_eq_prod hpos hζ'`. Establish `hev` using `congrArg (Polynomial.eval r) hprod`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_one, Polynomial.eval_prod, Polynomial.eval_C] at hev`. Assume the negation of the conclusion as `hcon`. Establish `hcon : ∀ η : ℂ_[l], η ^ (l ^ 2 - 1) = 1 → 1 ≤ ‖r - η‖`. Introduce `η h1`. Assume the negation of the conclusion as `h2`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hcon ⟨η, h1, not_le.1 h2⟩`. Establish `h1 : (1 : ℝ) ≤ ‖∏ η ∈ Polynomial.nthRootsFinset (l ^ 2 - 1) (1 : ℂ_[l]), (r - η)‖`. Rewrite using `[norm_prod]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[← hev]`.
-
-Conclude with `absurd h (not_lt.2 h1)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_root_close (r : ℂ_[l]) (h : ‖r ^ (l ^ 2 - 1) - 1‖ < 1) :
     ∃ η : ℂ_[l], η ^ (l ^ 2 - 1) = 1 ∧ ‖r - η‖ < 1 := by
@@ -127,37 +125,33 @@ lemma exists_root_close (r : ℂ_[l]) (h : ‖r ^ (l ^ 2 - 1) - 1‖ < 1) :
   exact absurd h (not_lt.2 h1)
 
 /- English proof (translation)
-Establish `hr1 : ‖r‖ = 1`. Establish `h1 : ‖r‖ ^ 2 = 1` using `by rw [← norm_pow, hr, normZ_one hc]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h1`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, l = 2 * k + 1 := by`. Break down `hl.out.eq_two_or_odd' with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hexp : l ^ 2 - 1 = 2 * ((l - 1) * (k + 1))`. Establish `h1 : l - 1 = 2 * k` using `by omega`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Nat.sub_eq_of_eq_add` to reduce the goal to its premises. Rewrite using `[hk]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc0 : (c : ZMod l) ≠ 0`. Rewrite using `[Ne, ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc`. Establish `hdvd : (l : ℤ) ∣ c ^ ((l - 1) * (k + 1)) - 1`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[pow_mul, ZMod.pow_card_sub_one_eq_one hc0, one_pow, sub_self]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hclose : ‖r ^ (l ^ 2 - 1) - 1‖ < 1`. Rewrite using `[hexp, pow_mul, hr]`. Use `normZ_lt.2 hdvd` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Take `⟨η, hη, hηr⟩` from `exists_root_close r hclose`. Establish `hpos : 0 < l ^ 2 - 1`. Rewrite using `[hexp]; have : 0 < l - 1 := by omega`. Check the signs of the components of the expression. Establish `hnd : ¬ l ∣ l ^ 2 - 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hd`. Establish `h1 : l ∣ l ^ 2` using `dvd_pow_self l (by norm_num)`. Establish `h2 : l ∣ 1`. Use `(Nat.dvd_sub h1 hd)` as an intermediate fact. Rewrite `this` using `[Nat.sub_sub_self (by omega)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hl.out.one_lt.ne' (Nat.dvd_one.1 h2)`. Establish `hηK : η ∈ MaximalUnramifiedExtension l` using `mu_mem_Kur hpos hnd hη`. Use `set δ : ℝ := ‖η - r‖ with hδ`. Establish `hδ1 : δ < 1` using `by rw [hδ, norm_sub_rev]; exact hηr`. Establish `hδ0 : 0 ≤ δ` using `norm_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ n : ℕ, ∃ x ∈ MaximalUnramifiedExtension l, ‖x - r‖ ≤ δ ^ (n + 1)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨η, hηK, by simp [hδ]⟩`. Consider the case `succ n ih`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, hx, hxr⟩` from `ih`. Establish `hlt : ‖x - r‖ < 1` using `lt_of_le_of_lt hxr (pow_lt_one₀ hδ0 hδ1 (by omega))`. Establish `hx1 : ‖x‖ = 1` using `norm_one_of_close hlt hr1`. Establish `hx0 : x ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx1` using `[h, norm_zero]`. Conclude with `zero_ne_one hx1`. Establish `h20 : (2 : ℂ_[l]) ≠ 0` using `two_ne_zero`. Use `⟨(x ^ 2 + (c : ℂ_[l])) / (2 * x), ?_, ?_⟩` and prove the remaining obligations. Use `(MaximalUnramifiedExtension l).div_mem ((MaximalUnramifiedExtension l).add_mem ((MaximalUnramifiedExtension l).pow_mem hx 2) (intCast_mem _ c)) ((MaximalUnramifiedExtension l).mul_mem ?_ hx)` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Conclude with `natCast_mem (MaximalUnramifiedExtension l) 2` after adjusting the coercions. Establish `he : (x ^ 2 + (c : ℂ_[l])) / (2 * x) - r = (x - r) ^ 2 / (2 * x)`. Rewrite using `[← hr]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, norm_div, norm_mul, norm_two h2, hx1, norm_pow]`. Simplify using `only [mul_one, div_one]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul hxr ?_ (norm_nonneg _) (pow_nonneg hδ0 _)` and prove the remaining obligations. Use `hxr.trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ = δ ^ (n + 1 + 1) := (pow_succ _ _).symm`. Establish `hcl : r ∈ closure (MaximalUnramifiedExtension l : Set ℂ_[l])`. Rewrite using `[Metric.mem_closure_iff]`. Introduce `ε hε`.
-
-Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε hδ1`. Take `⟨x, hx, hxr⟩` from `key n`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[dist_comm, dist_eq_norm]`. Use `lt_of_le_of_lt hxr (lt_of_le_of_lt ?_ hn)` and prove the remaining obligations.
-
-Conclude with `pow_le_pow_of_le_one hδ0 hδ1.le (by omega)`. Rewrite `hcl` using `[isClosed_Kur.closure_eq]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma sqrt_mem (h2 : 2 < l) (r : ℂ_[l]) (c : ℤ) (hr : r ^ 2 = (c : ℂ_[l])) (hc : ¬ (l : ℤ) ∣ c) :
     r ∈ MaximalUnramifiedExtension l := by
@@ -239,7 +233,7 @@ lemma sqrt_mem (h2 : 2 < l) (r : ℂ_[l]) (c : ℤ) (hr : r ^ 2 = (c : ℂ_[l]))
 def rt (dK : ℕ) : ℂ := Complex.I * ((Real.sqrt dK : ℝ) : ℂ)
 
 /- English proof (translation)
-Unfold `rt`. Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma rt_sq (dK : ℕ) : rt dK ^ 2 = -(dK : ℂ) := by
   unfold rt
@@ -247,15 +241,15 @@ lemma rt_sq (dK : ℕ) : rt dK ^ 2 = -(dK : ℂ) := by
   simp
 
 /- English proof (translation)
-Unfold `omegaK rt`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma omega_eq (dK : ℕ) : 2 * omegaK dK - 1 = rt dK := by
   unfold omegaK rt; ring
 
 /- English proof (translation)
-Introduce `h`. Apply `hin` to reduce the goal to its premises. Use `⟨0, ?_⟩` and prove the remaining obligations. Use `(ZMod.intCast_zmod_eq_zero_iff_dvd _ l).2 h` as an intermediate fact. Move the coercions through the operations in `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma not_dvd_of_inert {dK : ℕ} (hin : ¬ ∃ a : ZMod l, a ^ 2 = -(dK : ZMod l)) :
     ¬ (l : ℤ) ∣ -(dK : ℤ) := by
@@ -272,35 +266,33 @@ Both sides reduce to the same expression.
 lemma normK (x : MaximalUnramifiedExtension l) : ‖x‖ = ‖(x : ℂ_[l])‖ := rfl
 
 /- English proof (translation)
-Rewrite using `[normK]`. Use `push_cast`. Conclude with `normZ_lt`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 lemma normKZ_lt {a : ℤ} : ‖(a : MaximalUnramifiedExtension l)‖ < 1 ↔ (l : ℤ) ∣ a := by
   rw [normK]; push_cast; exact normZ_lt
 
 /- English proof (translation)
-Rewrite using `[normK]`. Use `push_cast`. Conclude with `normZ_one h`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 lemma normKZ_one {a : ℤ} (h : ¬ (l : ℤ) ∣ a) : ‖(a : MaximalUnramifiedExtension l)‖ = 1 := by
   rw [normK]; push_cast; exact normZ_one h
 
 /- English proof (translation)
-Take `⟨-, h2, hnl, -, hfr⟩` from `hσ`. Establish `hc0 : (c : ZMod l) ≠ 0`. Introduce `h; exact hin ⟨0, by rw [h]; simp⟩`. Establish `hc : ¬ (l : ℤ) ∣ c`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hR1 : ‖R‖ = 1`. Establish `h1 : ‖R‖ ^ 2 = 1` using `by rw [← norm_pow, hR, normKZ_one hc]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h1`. Establish `hs : σ R ^ 2 = R ^ 2` using `by rw [← map_pow, hR, map_intCast]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hs with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Establish `hodd : l = 2 * (l / 2) + 1`. Apply the tactic sequence `rcases hl.out.eq_two_or_odd with h' | h' <;> omega`. Establish `heul : (c : ZMod l) ^ (l / 2) = -1`. Break down `ZMod.pow_div_two_eq_neg_one_or_one l hc0 with h' | h'` into its components or cases.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Take `⟨a, ha⟩` from `(ZMod.euler_criterion l hc0).2 h'`. Conclude with `hin ⟨a, by rw [ha, sq]⟩`. Conclude with `h'`. Establish `hN : (l : ℤ) ∣ c ^ (l / 2) + 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[heul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN2 : ¬ (l : ℤ) ∣ 2 - (c ^ (l / 2) + 1)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hd`. Conclude with `two_not_dvd h2 (by simpa using dvd_add hd hN)`. Establish `hpow : R ^ l = R * ((c ^ (l / 2) : ℤ) : MaximalUnramifiedExtension l)`. Establish `h0 : R ^ l = R ^ (2 * (l / 2) + 1)` using `congrArg (fun n => R ^ n) hodd`. Rewrite using `[h0, pow_succ, pow_mul, hR]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `he : σ R - R ^ l = R * ((2 - (c ^ (l / 2) + 1) : ℤ) : MaximalUnramifiedExtension l)`. Rewrite using `[h, hpow]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `hfr R hR1.le`. Rewrite `h3` using `[he, norm_mul, hR1, normKZ_one hN2, one_mul]`. Establish `h4 : ((l : ℝ))⁻¹ < 1` using `KF.l_inv_lt_one l`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `h`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma sigma_neg (σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l) (hσ : UnrOK (MaximalUnramifiedExtension l) l σ) (c : ℤ)
     (hin : ¬ ∃ a : ZMod l, a ^ 2 = (c : ZMod l)) (R : MaximalUnramifiedExtension l) (hR : R ^ 2 = (c : MaximalUnramifiedExtension l)) :
@@ -345,17 +337,17 @@ end GaussNormEstimates
 open GaussNormEstimates
 
 /- English proof (translation)
-Introduce `dK _ _ l _ h5 hin ι`. Establish `h2 : 2 < l` using `by omega`. Establish `hr : (ι (rt dK)) ^ 2 = ((-(dK : ℤ) : ℤ) : ℂ_[l])`. Rewrite using `[← map_pow, rt_sq]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmem : ι (rt dK) ∈ MaximalUnramifiedExtension l` using `sqrt_mem h2 _ _ hr (not_dvd_of_inert hin)`. Establish `hom : ι (omegaK dK) = (1 + ι (rt dK)) / 2`. Establish `h0 : 2 * ι (omegaK dK) - 1 = ι (rt dK)`. Rewrite using `[← omega_eq, map_sub, map_mul, map_ofNat, map_one]`. Rewrite using `[← h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hom]`. Use `(MaximalUnramifiedExtension l).div_mem ((MaximalUnramifiedExtension l).add_mem (MaximalUnramifiedExtension l).one_mem hmem) ?_` and prove the remaining obligations. Conclude with `natCast_mem (MaximalUnramifiedExtension l) 2` after adjusting the coercions.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ hσ w hw`. Establish `hR : (w + w - 1) ^ 2 = ((-(dK : ℤ) : ℤ) : MaximalUnramifiedExtension l)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[hw, hom]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hr` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hin' : ¬ ∃ a : ZMod l, a ^ 2 = ((-(dK : ℤ) : ℤ) : ZMod l)` using `by push_cast; exact hin`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `sigma_neg σ hσ _ hin' _ hR`. Simplify using `only [map_sub, map_add, map_one] at h`. Establish `h20 : (2 : MaximalUnramifiedExtension l) ≠ 0` using `two_ne_zero`. Apply `mul_left_cancel₀ h20` to reduce the goal to its premises. Take the linear combination `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sqrt_in_unramified_completion : SqrtKur := by
   intro dK _ _ l _ h5 hin ι
@@ -388,45 +380,41 @@ theorem sqrt_in_unramified_completion : SqrtKur := by
     linear_combination h
 
 /- English proof (translation)
-Introduce `dK hsq h4 l _ h5 hin ι σ hσ α hα hfix ε hε`. Establish `h2 : 2 < l` using `by omega`. Take `⟨hwm, hws⟩` from `sqrt_in_unramified_completion dK hsq h4 l h5 hin ι`. Use `set w : MaximalUnramifiedExtension l := ⟨ι (omegaK dK), hwm⟩ with hwdef`. Establish `hw : σ w = 1 - w` using `hws σ hσ w rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso : ∀ a : MaximalUnramifiedExtension l, ‖σ a‖ = ‖a‖` using `sigmaIsom (MaximalUnramifiedExtension l) l σ hσ`. Establish `hR2 : (w + w - 1) ^ 2 = ((-(dK : ℤ) : ℤ) : MaximalUnramifiedExtension l)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Establish `h0 : ι (omegaK dK) + ι (omegaK dK) - 1 = ι (rt dK)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← omega_eq, map_sub, map_mul, map_ofNat, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hwdef]`. Simplify using `only`. Rewrite using `[h0, ← map_pow, rt_sq]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `set R : MaximalUnramifiedExtension l := w + w - 1 with hRdef`. Establish `hσR : σ R = -R`. Rewrite using `[hRdef]`. Simplify using `only [map_sub, map_add, map_one, hw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hR1 : ‖R‖ = 1`. Establish `h1 : ‖R‖ ^ 2 = 1` using `by rw [← norm_pow, hR2, normKZ_one (not_dvd_of_inert hin)]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h1`. Establish `hR0 : R ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hR1` using `[h, norm_zero]`. Conclude with `zero_ne_one hR1`. Establish `hn2 : ‖(2 : MaximalUnramifiedExtension l)‖ = 1`. Use `normKZ_one (l := l) (two_not_dvd h2)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Establish `hw1 : ‖w‖ ≤ 1`. Establish `h0 : w = (1 + R) / 2` using `by rw [hRdef]; ring`. Rewrite using `[h0, norm_div, hn2, div_one]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (by simp) hR1.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Use `set n0 : MaximalUnramifiedExtension l := (α - σ α) / R with hn0`. Use `set m0 : MaximalUnramifiedExtension l := α - n0 * w with hm0`. Establish `hn0R : n0 * R = α - σ α` using `by rw [hn0]; field_simp`. Establish `hσn0 : σ n0 = n0`. Rewrite using `[hn0, map_div₀, map_sub, hfix, hσR]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hσm0 : σ m0 = m0`. Rewrite using `[hm0, map_sub, map_mul, hσn0, hw]`. Establish `: R = w + w - 1` using `hRdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hn0R` using `[this]`. Take the linear combination `hn0R`. Establish `hn01 : ‖n0‖ ≤ 1`. Rewrite using `[hn0, norm_div, hR1, div_one, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hα.le ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[norm_neg, hiso, hα]`. Establish `hm01 : ‖m0‖ ≤ 1`. Rewrite using `[hm0, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hα.le ?_)` and prove the remaining obligations. Rewrite using `[norm_neg, norm_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_one₀ hn01 (norm_nonneg _) hw1`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (lt_min hε zero_lt_one) (KF.l_inv_lt_one l)`. Rewrite `hk` using `[inv_pow]`. Take `⟨m, hm⟩` from `fixedIsLimit (MaximalUnramifiedExtension l) l σ hσ m0 hm01 hσm0 k`. Take `⟨n, hn⟩` from `fixedIsLimit (MaximalUnramifiedExtension l) l σ hσ n0 hn01 hσn0 k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set β : MaximalUnramifiedExtension l := (m : MaximalUnramifiedExtension l) + (n : MaximalUnramifiedExtension l) * w with hβ`. Establish `hβα : ‖β - α‖ ≤ ((l : ℝ) ^ k)⁻¹`. Establish `h0 : β - α = -(m0 - m) + -(n0 - n) * w` using `by rw [hβ, hm0]; ring`. Rewrite using `[h0]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (by rwa [norm_neg]) ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_neg]`. Combine the equalities or inequalities in the displayed calculation. Establish `hβ1 : ‖β‖ = 1` using `norm_one_of_close (lt_of_le_of_lt hβα (lt_of_lt_of_le hk (min_le_right _ _))) hα`. Establish `hσβ : σ β = (m : MaximalUnramifiedExtension l) + (n : MaximalUnramifiedExtension l) * (1 - w)`. Rewrite using `[hβ, map_add, map_mul, map_natCast, map_natCast, hw]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take `⟨q, hq⟩ : ∃ q : ℤ, (dK : ℤ) + 1 = 4 * q` from `⟨((dK : ℤ) + 1) / 4, by omega⟩`. Establish `hq' : ((dK : ℤ) + 1) / 4 = q` using `by omega`. Establish `hwq : w * (1 - w) = (q : MaximalUnramifiedExtension l)`. Establish `h40 : (4 : MaximalUnramifiedExtension l) ≠ 0` using `by norm_num`. Apply `mul_left_cancel₀ h40` to reduce the goal to its premises.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((dK : MaximalUnramifiedExtension l)) + 1 = 4 * (q : MaximalUnramifiedExtension l)` using `by exact_mod_cast congrArg (fun z : ℤ => (z : MaximalUnramifiedExtension l)) hq`. Establish `h3` using `hR2`. Rewrite `h3` using `[hRdef]`. Move the coercions through the operations in `at h3`. Take the linear combination `(-1 : MaximalUnramifiedExtension l) * h3 + h1`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hnorm : β * σ β = ((normInt dK m n : ℤ) : MaximalUnramifiedExtension l)`. Rewrite using `[hσβ, hβ]`. Unfold `normInt`. Rewrite using `[hq']`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `((n : MaximalUnramifiedExtension l)) ^ 2 * hwq`. Use `⟨(m : ℤ), (n : ℤ), ?_, ?_⟩` and prove the remaining obligations. Introduce `hd`. Establish `h1` using `normKZ_lt.2 hd`. Rewrite `h1` using `[← hnorm, norm_mul, hiso, hβ1]`.
-
-Evaluate the numerical expressions using `at h1`. Establish `h0 : ι (((m : ℤ) : ℂ) + ((n : ℤ) : ℂ) * omegaK dK) - (α : ℂ_[l]) = ((β - α : MaximalUnramifiedExtension l) : ℂ_[l])`. Rewrite using `[hβ, hwdef]`. Use `push_cast`. Simplify using the standard rewrite rules.
-
-Rewrite using `[h0, ← normK]`. Conclude with `lt_of_le_of_lt hβα (lt_of_lt_of_le hk (min_le_left _ _))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense_criterion : DenseOK := by
   intro dK hsq h4 l _ h5 hin ι σ hσ α hα hfix ε hε

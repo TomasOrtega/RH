@@ -33,16 +33,16 @@ noncomputable def prodScal (c : ℂ) (a : ℕ → ℂ) : ℕ → ℂ
   | m + 1 => prodScal c a m * (c - a m)
 
 /- English proof (translation)
-Simplify using `[prodOp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prodOp_succ_apply (ρ : Representation ℂ G V) (z : G) (a : ℕ → ℂ) (m : ℕ) (v : V) :
     prodOp ρ z a (m + 1) v = prodOp ρ z a m (ρ z v - a m • v) := by
   simp [prodOp]
 
 /- English proof (translation)
-Proceed by induction on `m generalizing v with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Establish `hzg : ρ z (ρ g v) = ρ g (ρ z v)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← hz, map_mul, Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prodOp_succ_apply, prodOp_succ_apply, hzg, ← LinearMap.map_smul (ρ g), ← LinearMap.map_sub (ρ g), ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prodOp_comm (ρ : Representation ℂ G V) (z : G) (hz : ∀ g, g * z = z * g) (a : ℕ → ℂ)
     (m : ℕ) (g : G) (v : V) : prodOp ρ z a m (ρ g v) = ρ g (prodOp ρ z a m v) := by
@@ -55,9 +55,9 @@ theorem prodOp_comm (ρ : Representation ℂ G V) (z : G) (hz : ∀ g, g * z = z
       ← LinearMap.map_sub (ρ g), ih]
 
 /- English proof (translation)
-Introduce `m hm`. Proceed by induction on `m with`. Consider the case `zero => simp [prodScal]`. Consider the case `succ m ih`. Simplify using `only [prodScal]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `mul_ne_zero (ih (by omega)) (sub_ne_zero.2 (h m (by omega)).symm)`.
+A detailed English derivation is pending.
 -/
 theorem prodScal_ne_zero (c : ℂ) (a : ℕ → ℂ) (M : ℕ) (h : ∀ m < M, a m ≠ c) :
     ∀ m ≤ M, prodScal c a m ≠ 0 := by
@@ -73,39 +73,35 @@ end CentralSplit
 open CentralSplit in
 
 /- English proof (translation)
-Introduce `G V Y _ _ _ _ _ ρ τ N S _ _ htop z hz t₀ c c' hc' hstep hΨ hτ _`. Take `⟨Ψ⟩` from `hΨ`. Use `set B := S t₀.succ with hBdef`. Use `set A := S t₀.castSucc with hAdef`. Set `a : ℕ → ℂ` to `fun i => if h : i < N then c' ⟨i, h⟩ else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `M` to `N - (t₀.val + 1)`. Establish `hZ : ∀ y, subQuot B A z y = c • y`. Introduce `y`. Apply `Ψ.toLinearEquiv.injective` to reduce the goal to its premises. Establish `h1` using `Representation.IntertwiningMap.isIntertwining _ _ Ψ.toIntertwiningMap z y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Representation.Equiv.toLinearEquiv_apply, h1, hτ, map_smul, Representation.Equiv.toLinearEquiv_apply]`. Establish `ha : ∀ m (hm : t₀.val + 1 + m < N), a (t₀.val + 1 + m) = c' ⟨t₀.val + 1 + m, by omega⟩`. Introduce `m hm`. Simplify using `[a, hm]`. Establish `L1 : ∀ m, ∀ (h : t₀.val + 1 + m < N + 1), ∀ v, v ∈ (S ⟨t₀.val + 1 + m, h⟩).toSubmodule → prodOp ρ z (fun i => a (t₀.val + 1 + i)) m v ∈ B.toSubmodule`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `h v hv`. Establish `e : (⟨t₀.val + 1 + 0, h⟩ : Fin (N + 1)) = t₀.succ` using `by ext; simp`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Rewrite `hv` using `[e]`. Conclude with `hv`. Consider the case `succ m ih`. Introduce `h v hv`. Set `t : Fin N` to `⟨t₀.val + 1 + m, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : t ≠ t₀` using `fun e => by have := congrArg Fin.val e; simp only [t] at this; omega`. Establish `hvs : v ∈ (S t.succ).toSubmodule`. Establish `: t.succ = ⟨t₀.val + 1 + (m + 1), h⟩` using `by ext; simp [t]; omega`. Rewrite using `[this]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hq` using `hstep t ht (Submodule.Quotient.mk ⟨v, hvs⟩)`. Establish `hmem : ρ z v - c' t • v ∈ (S t.castSucc).toSubmodule`. Establish `e2 : subQuot (S t.succ) (S t.castSucc) z (Submodule.Quotient.mk ⟨v, hvs⟩) = Submodule.Quotient.mk ⟨ρ z v, (S t.succ).apply_mem_toSubmodule z hvs⟩` using `rfl`. Rewrite `hq` using `[e2, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`. Simplify using `using hq`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[prodOp_succ_apply]`. Establish `e3 : a (t₀.val + 1 + m) = c' t` using `ha m (by omega)`. Simplify using `only [e3]`. Conclude with `ih (by omega) _ hmem`. Establish `L2 : ∀ m, ∀ b (hb : b ∈ B.toSubmodule), ∃ h' : prodOp ρ z (fun i => a (t₀.val + 1 + i)) m b ∈ B.toSubmodule, (Submodule.Quotient.mk ⟨_, h'⟩ : B.toSubmodule ⧸ A.toSubmodule.comap B.toSubmodule.subtype) = prodScal c (fun i => a (t₀.val + 1 + i)) m • Submodule.Quotient.mk ⟨b, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro b hb; exact ⟨hb, by simp [prodOp, prodScal]⟩`. Consider the case `succ m ih`. Introduce `b hb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : ρ z b - a (t₀.val + 1 + m) • b ∈ B.toSubmodule` using `B.toSubmodule.sub_mem (B.apply_mem_toSubmodule z hb) (B.toSubmodule.smul_mem _ hb)`. Take `⟨h', e⟩` from `ih _ hb'`. Use `⟨by rw [prodOp_succ_apply]; exact h', ?_⟩` and prove the remaining obligations. Establish `e4 : (Submodule.Quotient.mk ⟨_, hb'⟩ : B.toSubmodule ⧸ A.toSubmodule.comap B.toSubmodule.subtype) = (c - a (t₀.val + 1 + m)) • Submodule.Quotient.mk ⟨b, hb⟩`. Establish `e5 : subQuot B A z (Submodule.Quotient.mk ⟨b, hb⟩) = Submodule.Quotient.mk ⟨ρ z b, B.apply_mem_toSubmodule z hb⟩` using `rfl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_smul, ← hZ, e5, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_sub]`. Both sides reduce to the same expression. Simplify using `only [prodOp_succ_apply, prodScal]`. Rewrite using `[mul_smul, ← e4, ← e]`. Use `set op := prodOp ρ z (fun i => a (t₀.val + 1 + i)) M with hop`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hNM : t₀.val + 1 + M = N` using `by omega`. Establish `hM : ∀ v, op v ∈ B.toSubmodule`. Introduce `v`. Use `L1 M (by omega) v ?_` and prove the remaining obligations. Establish `e : (⟨t₀.val + 1 + M, by omega⟩ : Fin (N + 1)) = Fin.last N` using `by ext; simp [hNM]`.
+Check the elementary cases of the proposition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[e, htop]`. Discharge the goal by the elementary cases of `trivial`. Establish `hlam : prodScal c (fun i => a (t₀.val + 1 + i)) M ≠ 0`. Use `prodScal_ne_zero c _ M (fun m hm => ?_) M le_rfl` and prove the remaining obligations. Use `show a (t₀.val + 1 + m) ≠ c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha m (by omega)]`. Conclude with `hc' _ (fun e => by have := congrArg Fin.val e; simp only at this; omega)`. Set `φlin : V →ₗ[ℂ] Y` to `Ψ.toLinearMap ∘ₗ (A.toSubmodule.comap B.toSubmodule.subtype).mkQ ∘ₗ LinearMap.codRestrict B.toSubmodule op hM`. Establish `hφ : ∀ g v, φlin (ρ g v) = τ g (φlin v)`. Introduce `g v`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e6 : (LinearMap.codRestrict B.toSubmodule op hM) (ρ g v) = B.toRepresentation g (LinearMap.codRestrict B.toSubmodule op hM v)` using `Subtype.ext (prodOp_comm ρ z hz _ M g v)`. Use `show Ψ.toIntertwiningMap (Submodule.mkQ _ (LinearMap.codRestrict _ op hM (ρ g v))) = τ g (Ψ.toIntertwiningMap (Submodule.mkQ _ (LinearMap.codRestrict _ op hM v)))`. Establish `e8 : Submodule.mkQ (A.toSubmodule.comap B.toSubmodule.subtype) (B.toRepresentation g (LinearMap.codRestrict B.toSubmodule op hM v)) = subQuot B A g (Submodule.mkQ _ (LinearMap.codRestrict B.toSubmodule op hM v))` using `rfl`. Rewrite using `[e6, e8]`. Conclude with `Representation.IntertwiningMap.isIntertwining _ _ Ψ.toIntertwiningMap g _`.
-
-Use `⟨φlin.intertwiningMap_of_isIntertwiningMap ρ τ hφ, ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `exists_ne (0 : Y)`. Take `⟨⟨b, hb⟩, hx⟩` from `Submodule.Quotient.mk_surjective _ (Ψ.toLinearEquiv.symm y)`. Take `⟨h', e⟩` from `L2 M b hb`. Use `⟨b, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[LinearMap.toIntertwiningMap]`. Establish `e7 : φlin b = Ψ.toLinearEquiv (Submodule.Quotient.mk ⟨op b, h'⟩)` using `rfl`. Rewrite using `[e7, e, hx, map_smul, LinearEquiv.apply_symm_apply]`. Conclude with `smul_ne_zero hlam hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intertwining_of_central_step : ∀ {G V Y : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup Y] [Module ℂ Y]
     (ρ : Representation ℂ G V) (τ : Representation ℂ G Y) (N : ℕ) (S : Fin (N + 1) → Subrepresentation ρ),

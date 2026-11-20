@@ -21,7 +21,7 @@ open GlobalTheory.PrincSubring
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PrincSubring.kerAlong_iff_trivAlong` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKernelConditionIffE8BundleKGroupTrivial.lean&line=111#L111)
 -/

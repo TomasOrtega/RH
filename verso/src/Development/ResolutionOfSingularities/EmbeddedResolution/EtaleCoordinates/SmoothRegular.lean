@@ -10,7 +10,7 @@ open CategoryTheory AlgebraicGeometry
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Break down `eq_or_lt_of_le hle with h | h` into its components or cases. Conclude with `⟨Q, le_rfl, ‹Q.IsPrime›, h.symm⟩`. Take `⟨P, hPQ, hP, hlo⟩` from `Algebra.HasGoingDown.exists_ideal_le_liesOver_of_lt (R := R) Q h`. Conclude with `⟨P, hPQ, hP, hlo.over.symm⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_prime_le_under_eq_of_hasGoingDown (R S : Type*) [CommRing R] [CommRing S] [Algebra R S]
     [Algebra.HasGoingDown R S] (p : Ideal R) [p.IsPrime] (Q : Ideal S) [Q.IsPrime]
@@ -23,19 +23,17 @@ private theorem exists_prime_le_under_eq_of_hasGoingDown (R S : Type*) [CommRing
     exact ⟨P, hPQ, hP, hlo.over.symm⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `p hp Q hQ hle`. Use `hQ` as an intermediate fact. Establish `: p.last.asIdeal.IsPrime` using `p.last.isPrime`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨P, hPQ, hP, hunder⟩` from `exists_prime_le_under_eq_of_hasGoingDown R S p.last.asIdeal Q hle`. Conclude with `⟨RelSeries.singleton _ ⟨P, hP⟩, rfl, hPQ, hunder⟩`. Consider the case `succ n ih`. Introduce `p hp Q hQ hle`. Use `hQ` as an intermediate fact.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: p.last.asIdeal.IsPrime` using `p.last.isPrime`. Take `⟨P, hPQ, hP, hunder⟩` from `exists_prime_le_under_eq_of_hasGoingDown R S p.last.asIdeal Q hle`. Establish `hlen : p.length ≠ 0` using `by omega`. Establish `hlt : p.eraseLast.last < p.last` using `p.eraseLast_last_rel_last hlen`. Establish `hltI : p.eraseLast.last.asIdeal < p.last.asIdeal` using `(PrimeSpectrum.asIdeal_lt_asIdeal _ _).mpr hlt`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlen' : p.eraseLast.length = n`. Use `RelSeries.eraseLast_length p` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hle' : p.eraseLast.last.asIdeal ≤ Ideal.under R P`. Rewrite using `[hunder]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_of_lt hltI`. Take `⟨q, hq1, hq2, hq3⟩` from `ih p.eraseLast hlen' P hP hle'`. Establish `hne : q.last.asIdeal ≠ P`. Introduce `h`. Rewrite `hq3` using `[h, hunder]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(ne_of_lt hltI) hq3.symm`. Establish `hrel : q.last < (⟨P, hP⟩ : PrimeSpectrum S)` using `(PrimeSpectrum.asIdeal_lt_asIdeal _ _).mp (lt_of_le_of_ne hq2 hne)`. Use `⟨q.snoc ⟨P, hP⟩ hrel, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RelSeries.snoc_length, hq1]`. Rewrite using `[RelSeries.last_snoc]`.
-
-Conclude with `hPQ`. Rewrite using `[RelSeries.last_snoc]`. Conclude with `hunder`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_ltSeries_le_of_hasGoingDown (R S : Type*) [CommRing R] [CommRing S]
     [Algebra R S] [Algebra.HasGoingDown R S] (n : ℕ) :
@@ -78,9 +76,9 @@ private theorem exists_ltSeries_le_of_hasGoingDown (R S : Type*) [CommRing R] [C
       · rw [RelSeries.last_snoc]; exact hunder
 
 /- English proof (translation)
-Establish `key : ∀ p : LTSeries (PrimeSpectrum R), (p.length : WithBot ℕ∞) ≤ ringKrullDim S`. Introduce `p`. Establish `hmax : p.last.asIdeal ≤ IsLocalRing.maximalIdeal R` using `IsLocalRing.le_maximalIdeal p.last.isPrime.ne_top`. Establish `hp : p.last.asIdeal ≤ Ideal.under R (IsLocalRing.maximalIdeal S)`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `map_nonunit (algebraMap R S) x (hmax hx)`. Take `⟨q, hq1, -, -⟩` from `exists_ltSeries_le_of_hasGoingDown R S p.length p rfl (IsLocalRing.maximalIdeal S) inferInstance hp`. Combine the equalities or inequalities in the displayed calculation. Conclude with `iSup_le key`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem ringKrullDim_le_of_hasGoingDown (R S : Type*) [CommRing R] [CommRing S]
     [IsLocalRing R] [IsLocalRing S] [Algebra R S] [IsLocalHom (algebraMap R S)]
@@ -101,13 +99,13 @@ private theorem ringKrullDim_le_of_hasGoingDown (R S : Type*) [CommRing R] [Comm
   exact iSup_le key
 
 /- English proof (translation)
-Take `⟨s, hcard, hspan⟩` from `Submodule.exists_span_set_card_eq_spanRank I`. Establish `hIfg : Submodule.FG (I : Submodule R R)` using `IsNoetherian.noetherian I`. Establish `hrank : I.spanRank = (I.spanFinrank : Cardinal)` using `Submodule.FG.spanRank_eq_spanFinrank hIfg`. Establish `hslt : Cardinal.mk s < Cardinal.aleph0`. Rewrite using `[hcard, hrank]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Cardinal.natCast_lt_aleph0`. Establish `hspan' : Ideal.span s = I` using `hspan`. Establish `hmapspan : Ideal.map (algebraMap R S) I = Ideal.span ((algebraMap R S) '' s)`. Rewrite using `[← hspan', Ideal.map_span]`. Establish `h1 : (Ideal.map (algebraMap R S) I).spanRank ≤ Cardinal.mk ((algebraMap R S) '' s)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmapspan]`. Conclude with `Submodule.spanRank_span_le_card _`. Establish `h2` using `Cardinal.mk_image_le_lift (f := (algebraMap R S : R → S)) (s := s)`. Establish `hliftlt : Cardinal.lift.{_, _} (Cardinal.mk s) < Cardinal.aleph0` using `Cardinal.lift_lt_aleph0.mpr hslt`. Establish `h4 : Cardinal.mk ((algebraMap R S) '' s) < Cardinal.aleph0` using `Cardinal.lift_lt_aleph0.mp (lt_of_le_of_lt h2 hliftlt)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Cardinal.toNat (Cardinal.mk ((algebraMap R S) '' s)) ≤ Cardinal.toNat (Cardinal.mk s)`. Use `Cardinal.toNat_le_toNat h2 hliftlt` as an intermediate fact. Rewrite `this` using `[Cardinal.toNat_lift, Cardinal.toNat_lift]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem spanFinrank_map_le (R S : Type*) [CommRing R] [CommRing S] [IsNoetherianRing R]
     [Algebra R S] (I : Ideal R) :
@@ -142,9 +140,9 @@ private theorem spanFinrank_map_le (R S : Type*) [CommRing R] [CommRing S] [IsNo
     _ = I.spanFinrank := by rw [hcard, ← Submodule.spanFinrank.eq_def]
 
 /- English proof (translation)
-Establish `: IsNoetherianRing R` using `inferInstance`. Establish `hne : IsLocalRing.maximalIdeal S ≠ ⊤` using `(IsLocalRing.maximalIdeal.isMaximal S).ne_top`. Establish `hh : (IsLocalRing.maximalIdeal S).height ≤ ((IsLocalRing.maximalIdeal S).spanFinrank : ℕ∞)` using `Ideal.height_le_spanFinrank _ hne`. Establish `hfr : (IsLocalRing.maximalIdeal S).spanFinrank ≤ (IsLocalRing.maximalIdeal R).spanFinrank`. Rewrite using `[hmax]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `spanFinrank_map_le R S _`. Establish `hR` using `(_root_.IsRegularLocalRing.spanFinrank_maximalIdeal (R := R))`. Rewrite using `[← hR, ← IsLocalRing.maximalIdeal_height_eq_ringKrullDim (R := S)]`. Establish `h : (IsLocalRing.maximalIdeal S).height ≤ ((IsLocalRing.maximalIdeal R).spanFinrank : ℕ∞)` using `le_trans hh (Nat.cast_le.mpr hfr)`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ringKrullDim_le_of_map_maximalIdeal (R S : Type*) [CommRing R] [CommRing S]
     [IsLocalRing S] [IsNoetherianRing S] [_root_.IsRegularLocalRing R] [Algebra R S]
@@ -165,9 +163,9 @@ private theorem ringKrullDim_le_of_map_maximalIdeal (R S : Type*) [CommRing R] [
   exact_mod_cast h
 
 /- English proof (translation)
-Establish `: IsLocalRing R` using `inferInstance`. Establish `: IsNoetherianRing R` using `inferInstance`. Establish `: Algebra.HasGoingDown R S` using `inferInstance`. Establish `h1 : ringKrullDim R ≤ ringKrullDim S` using `ringKrullDim_le_of_hasGoingDown R S`. Establish `hmax : IsLocalRing.maximalIdeal S = (IsLocalRing.maximalIdeal R).map (algebraMap R S)` using `(Algebra.FormallyUnramified.map_maximalIdeal (R := R) (S := S)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_antisymm (ringKrullDim_le_of_map_maximalIdeal R S hmax) h1`.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_eq_of_flat_formallyUnramified (R S : Type*) [CommRing R] [CommRing S]
     [IsLocalRing S] [IsNoetherianRing S] [_root_.IsRegularLocalRing R] [Algebra R S]
@@ -183,11 +181,11 @@ theorem ringKrullDim_eq_of_flat_formallyUnramified (R S : Type*) [CommRing R] [C
   exact le_antisymm (ringKrullDim_le_of_map_maximalIdeal R S hmax) h1
 
 /- English proof (translation)
-Establish `: IsLocalRing R` using `inferInstance`. Establish `: IsNoetherianRing R` using `inferInstance`. Establish `hdim : ringKrullDim S = ringKrullDim R` using `ringKrullDim_eq_of_flat_formallyUnramified R S`. Establish `hR : ((IsLocalRing.maximalIdeal R).spanFinrank : WithBot ℕ∞) = ringKrullDim R` using `(isRegularLocalRing_iff R).mp inferInstance`. Establish `hmax : IsLocalRing.maximalIdeal S = (IsLocalRing.maximalIdeal R).map (algebraMap R S)` using `(Algebra.FormallyUnramified.map_maximalIdeal (R := R) (S := S)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (IsLocalRing.maximalIdeal S).spanFinrank ≤ (IsLocalRing.maximalIdeal R).spanFinrank`. Rewrite using `[hmax]`. Conclude with `spanFinrank_map_le R S _`. Establish `hh : (IsLocalRing.maximalIdeal S).height ≤ ((IsLocalRing.maximalIdeal S).spanFinrank : ℕ∞)` using `Ideal.height_le_spanFinrank _ (IsLocalRing.maximalIdeal.isMaximal S).ne_top`. Establish `hle1 : ringKrullDim S ≤ ((IsLocalRing.maximalIdeal S).spanFinrank : WithBot ℕ∞)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsLocalRing.maximalIdeal_height_eq_ringKrullDim (R := S)]`. Conclude with `hh` after adjusting the coercions. Use `(isRegularLocalRing_iff S).mpr (le_antisymm ?_ hle1)` and prove the remaining obligations. Rewrite using `[hdim, ← hR]`. Conclude with `h4` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRegularLocalRing_of_flat_formallyUnramified (R S : Type*) [CommRing R] [CommRing S]
     [IsLocalRing S] [IsNoetherianRing S] [_root_.IsRegularLocalRing R] [Algebra R S]
@@ -216,9 +214,9 @@ theorem isRegularLocalRing_of_flat_formallyUnramified (R S : Type*) [CommRing R]
   exact_mod_cast h4
 
 /- English proof (translation)
-Set `y : PrimeSpectrum R` to `e.hom.base x`. Establish `hp : y.asIdeal.IsPrime` using `y.isPrime`. Establish `h1 : _root_.IsRegularLocalRing (@Localization.AtPrime R _ y.asIdeal hp)` using `hreg y.asIdeal hp`. Establish `h2 : IsLocalization.AtPrime ((Spec.structureSheaf R).presheaf.stalk y) y.asIdeal` using `StructureSheaf.IsLocalization.to_stalk R y`. Establish `e2 : Localization.AtPrime y.asIdeal ≃+* ((Spec.structureSheaf R).presheaf.stalk y)` using `(IsLocalization.algEquiv y.asIdeal.primeCompl (Localization.AtPrime y.asIdeal) ((Spec.structureSheaf R).presheaf.stalk y)).toRingEquiv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : _root_.IsRegularLocalRing ((Spec.structureSheaf R).presheaf.stalk y)` using `IsRegularLocalRing.of_ringEquiv e2`. Establish `h4 : IsIso (e.hom.stalkMap x)` using `inferInstance`. Establish `e3 : ((Spec.structureSheaf R).presheaf.stalk y) ≃+* (X.presheaf.stalk x)` using `(asIso (e.hom.stalkMap x)).commRingCatIsoToRingEquiv`. Conclude with `IsRegularLocalRing.of_ringEquiv e3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isRegularLocalRing_stalk_of_iso_spec {X : Scheme.{u}} (R : Type u) [CommRing R]
     (hreg : ∀ (p : Ideal R) (hp : p.IsPrime),
@@ -242,7 +240,7 @@ private theorem isRegularLocalRing_stalk_of_iso_spec {X : Scheme.{u}} (R : Type 
   exact IsRegularLocalRing.of_ringEquiv e3
 
 /- English proof (translation)
-The claim follows from `isRegularLocalRing_stalk_of_iso_spec (MvPolynomial n k) (fun p hp => by have := hp; infer_instance) (AffineSpace.SpecIso n (CommRingCat.of k)) x`.
+A detailed English derivation is pending.
 -/
 theorem isRegularLocalRing_stalk_affineSpace (k : Type u) [Field k] (n : Type u) [Finite n]
     (x : AffineSpace n (Spec (CommRingCat.of k))) :
@@ -252,9 +250,9 @@ theorem isRegularLocalRing_stalk_affineSpace (k : Type u) [Field k] (n : Type u)
     (AffineSpace.SpecIso n (CommRingCat.of k)) x
 
 /- English proof (translation)
-Use `hZ` as an intermediate fact. Set `_ : Algebra (Z.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)` to `(f.stalkMap y).hom.toAlgebra`. Establish `: IsLocalHom (algebraMap (Z.presheaf.stalk (f.base y)) (Y.presheaf.stalk y))` using `inferInstanceAs (IsLocalHom (f.stalkMap y).hom)`. Establish `: Module.Flat (Z.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)` using `hflat`. Establish `: Algebra.EssFiniteType (Z.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)` using `heft`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.FormallyUnramified (Z.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)` using `hfu`. Establish `: IsNoetherianRing (Y.presheaf.stalk y)` using `Algebra.EssFiniteType.isNoetherianRing (Z.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)`. Conclude with `isRegularLocalRing_of_flat_formallyUnramified (Z.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isRegularLocalRing_stalk_of_stalkMap_flat_formallyUnramified {Y Z : Scheme.{u}} (f : Y ⟶ Z) (y : Y)
     (hZ : _root_.IsRegularLocalRing (Z.presheaf.stalk (f.base y)))
@@ -277,7 +275,7 @@ private theorem isRegularLocalRing_stalk_of_stalkMap_flat_formallyUnramified {Y 
     (Z.presheaf.stalk (f.base y)) (Y.presheaf.stalk y)
 
 /- English proof (translation)
-Use `h` as an intermediate fact. Conclude with `IsRegularLocalRing.of_ringEquiv (U.stalkIso y).commRingCatIsoToRingEquiv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isRegularLocalRing_stalk_of_opens {X : Scheme.{u}} (U : X.Opens) (y : U)
     (h : _root_.IsRegularLocalRing (U.toScheme.presheaf.stalk y)) :
@@ -286,7 +284,7 @@ private theorem isRegularLocalRing_stalk_of_opens {X : Scheme.{u}} (U : X.Opens)
   exact IsRegularLocalRing.of_ringEquiv (U.stalkIso y).commRingCatIsoToRingEquiv
 
 /- English proof (translation)
-Take `⟨U, m, hxU, -, ⟨c⟩⟩` from `exists_etaleChart p x`. Use `c.isEtale` as an intermediate fact. Establish `hreg : _root_.IsRegularLocalRing ((affineSpaceFin k m).presheaf.stalk (c.map.base (⟨x, hxU⟩ : U)))` using `isRegularLocalRing_stalk_affineSpace k (ULift.{u} (Fin m)) _`. Establish `h2 : _root_.IsRegularLocalRing (U.toScheme.presheaf.stalk (⟨x, hxU⟩ : U))` using `isRegularLocalRing_stalk_of_stalkMap_flat_formallyUnramified c.map (⟨x, hxU⟩ : U) hreg (AlgebraicGeometry.Flat.stalkMap c.map (⟨x, hxU⟩ : U)) (AlgebraicGeometry.LocallyOfFiniteType.stalkMap c.map (⟨x, hxU⟩ : U)) (AlgebraicGeometry.FormallyUnramified.stalkMap c.map (⟨x, hxU⟩ : U))`. Conclude with `isRegularLocalRing_stalk_of_opens U (⟨x, hxU⟩ : U) h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isRegularLocalRing_stalk_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (x : X) :
@@ -304,7 +302,7 @@ theorem isRegularLocalRing_stalk_of_smooth {X : Scheme.{u}} {k : Type u} [Field 
   exact isRegularLocalRing_stalk_of_opens U (⟨x, hxU⟩ : U) h2
 
 /- English proof (translation)
-Establish `: _root_.IsRegularLocalRing (X.presheaf.stalk x)` using `isRegularLocalRing_stalk_of_smooth p x`. Conclude with `IsRegularLocalRing.isDomain _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDomain_stalk_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (x : X) :
@@ -314,7 +312,7 @@ theorem isDomain_stalk_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
   exact IsRegularLocalRing.isDomain _
 
 /- English proof (translation)
-Use `hp` as an intermediate fact. Conclude with `isRegularLocalRing_stalk_of_smooth p x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_isRegularLocalRing_stalk {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (hp : AlgebraicGeometry.Smooth p) (x : X) :
@@ -323,7 +321,7 @@ theorem smooth_isRegularLocalRing_stalk {X : Scheme.{u}} {k : Type u} [Field k]
   exact isRegularLocalRing_stalk_of_smooth p x
 
 /- English proof (translation)
-Use `hp` as an intermediate fact. Conclude with `isDomain_stalk_of_smooth p x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_isDomain_stalk {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (hp : AlgebraicGeometry.Smooth p) (x : X) :
@@ -332,7 +330,7 @@ theorem smooth_isDomain_stalk {X : Scheme.{u}} {k : Type u} [Field k]
   exact isDomain_stalk_of_smooth p x
 
 /- English proof (translation)
-Establish `: ∀ x : X, _root_.IsReduced (X.presheaf.stalk x)`. Introduce `x`. Use `isDomain_stalk_of_smooth p x` as an intermediate fact. Use `infer_instance`. Conclude with `AlgebraicGeometry.isReduced_of_isReduced_stalk X`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] :
@@ -344,7 +342,7 @@ theorem isReduced_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
   exact AlgebraicGeometry.isReduced_of_isReduced_stalk X
 
 /- English proof (translation)
-Use `hp` as an intermediate fact. Conclude with `isReduced_of_smooth p`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_isReduced {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (hp : AlgebraicGeometry.Smooth p) :
@@ -357,9 +355,9 @@ private noncomputable def pointOfIsoSpec {Y : Scheme.{u}} (R : CommRingCat.{u}) 
   e.hom.base y
 
 /- English proof (translation)
-Establish `hsub : T ⊆ closure V`. Introduce `y hy`. Rewrite using `[mem_closure_iff]`. Introduce `o ho hyo`. Take `⟨z, -, hzo, hzV⟩` from `hT.1.2 o V ho hVopen ⟨y, hy, hyo⟩ ⟨x, hxT, hxV⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z, hzo, hzV⟩`. Conclude with `le_antisymm hsub (hT.2 hVirr.closure hsub)`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem eq_closure_of_mem_irreducibleComponents {α : Type*} [TopologicalSpace α]
     {V : Set α} (hVopen : IsOpen V) (hVirr : IsIrreducible V) {T : Set α}
@@ -373,15 +371,13 @@ private theorem eq_closure_of_mem_irreducibleComponents {α : Type*} [Topologica
   exact le_antisymm hsub (hT.2 hVirr.closure hsub)
 
 /- English proof (translation)
-Establish `hSfin : Set.Finite {T : Set α | T ∈ irreducibleComponents α ∧ z ∉ T}` using `Set.Finite.subset hfin (fun T hT => hT.1)`. Establish `hScl : IsClosed (⋃₀ {T : Set α | T ∈ irreducibleComponents α ∧ z ∉ T})`. Rewrite using `[Set.sUnion_eq_biUnion]`. Conclude with `Set.Finite.isClosed_biUnion hSfin (fun T hT => isClosed_of_mem_irreducibleComponents _ hT.1)`. Establish `hzW : z ∈ (⋃₀ {T : Set α | T ∈ irreducibleComponents α ∧ z ∉ T})ᶜ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hcon`. Take `⟨T, hTS, hzT⟩` from `hcon`. Conclude with `hTS.2 hzT`. Establish `hWT : (⋃₀ {T : Set α | T ∈ irreducibleComponents α ∧ z ∉ T})ᶜ ⊆ T₀`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : irreducibleComponent y ∈ irreducibleComponents α` using `irreducibleComponent_mem_irreducibleComponents y`. Establish `hzc : z ∈ irreducibleComponent y`. Assume the negation of the conclusion as `hcon`. Conclude with `hy ⟨irreducibleComponent y, ⟨hc, hcon⟩, mem_irreducibleComponent⟩`. Rewrite using `[← huniq _ hc hzc]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `mem_irreducibleComponent`. Use `⟨_, hScl.isOpen_compl, ⟨⟨z, hzW⟩, ?_⟩, hzW⟩` and prove the remaining obligations. Introduce `u v hu hv hu' hv'`. Take `⟨a, haW, hau⟩` from `hu'`. Take `⟨b, hbW, hbv⟩` from `hv'`.
-
-Take `⟨c, -, ⟨hcu, hcW⟩, hcv, -⟩` from `hT₀.2 (u ∩ (⋃₀ {T : Set α | T ∈ irreducibleComponents α ∧ z ∉ T})ᶜ) (v ∩ (⋃₀ {T : Set α | T ∈ irreducibleComponents α ∧ z ∉ T})ᶜ) (hu.inter hScl.isOpen_compl) (hv.inter hScl.isOpen_compl) ⟨a, hWT haW, hau, haW⟩ ⟨b, hWT hbW, hbv, hbW⟩`. Conclude with `⟨c, hcW, hcu, hcv⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_isOpen_isIrreducible_of_unique_irreducibleComponent {α : Type*} [TopologicalSpace α]
     (hfin : (irreducibleComponents α).Finite) {T₀ : Set α} (hT₀ : IsIrreducible T₀) {z : α}
@@ -418,13 +414,13 @@ private theorem exists_isOpen_isIrreducible_of_unique_irreducibleComponent {α :
   exact ⟨c, hcW, hcu, hcv⟩
 
 /- English proof (translation)
-Establish `hT₀irr : IsIrreducible (PrimeSpectrum.zeroLocus (K : Set A))`. Rewrite using `[PrimeSpectrum.isIrreducible_iff_vanishingIdeal_isPrime, PrimeSpectrum.vanishingIdeal_zeroLocus_eq_radical, hK.radical]`. Conclude with `hK`. Establish `hPT₀ : P ∈ PrimeSpectrum.zeroLocus (K : Set A)`. Rewrite using `[PrimeSpectrum.mem_zeroLocus]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun a ha => hmin P.asIdeal P.isPrime le_rfl ha`. Establish `hcomp : ∀ T ∈ irreducibleComponents (PrimeSpectrum A), P ∈ T → T = PrimeSpectrum.zeroLocus (K : Set A)`. Introduce `T hT hPmem`. Establish `hTcl : IsClosed T` using `isClosed_of_mem_irreducibleComponents _ hT`. Establish `hq : (PrimeSpectrum.vanishingIdeal T).IsPrime` using `PrimeSpectrum.isIrreducible_iff_vanishingIdeal_isPrime.mp hT.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTeq : PrimeSpectrum.zeroLocus ((PrimeSpectrum.vanishingIdeal T : Ideal A) : Set A) = T`. Rewrite using `[PrimeSpectrum.zeroLocus_vanishingIdeal_eq_closure, hTcl.closure_eq]`. Establish `hqP : PrimeSpectrum.vanishingIdeal T ≤ P.asIdeal` using `fun a ha => (PrimeSpectrum.mem_vanishingIdeal T a).mp ha P hPmem`. Establish `hKq : K ≤ PrimeSpectrum.vanishingIdeal T` using `hmin _ hq hqP`. Establish `hTsub : T ⊆ PrimeSpectrum.zeroLocus (K : Set A)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hTeq]`. Conclude with `PrimeSpectrum.zeroLocus_anti_mono (SetLike.coe_subset_coe.mpr hKq)`. Conclude with `le_antisymm hTsub (hT.2 hT₀irr hTsub)`. Establish `hfin : (irreducibleComponents (PrimeSpectrum A)).Finite` using `TopologicalSpace.NoetherianSpace.finite_irreducibleComponents`. Conclude with `exists_isOpen_isIrreducible_of_unique_irreducibleComponent hfin hT₀irr hPT₀ hcomp`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_isOpen_isIrreducible_of_unique_minimal_prime_le {A : Type u} [CommRing A]
     [IsNoetherianRing A] (P : PrimeSpectrum A) (K : Ideal A) (hK : K.IsPrime)
@@ -458,9 +454,9 @@ private theorem exists_isOpen_isIrreducible_of_unique_minimal_prime_le {A : Type
   exact exists_isOpen_isIrreducible_of_unique_irreducibleComponent hfin hT₀irr hPT₀ hcomp
 
 /- English proof (translation)
-Establish `: IsAffine V.toScheme` using `hV`. Establish `hfac : V.toScheme.isoSpec.hom ≫ Spec.map ((Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ Scheme.Hom.appTop (V.ι ≫ p)) = V.ι ≫ p`. Rewrite using `[Scheme.isoSpec_hom, Spec.map_comp, ← Category.assoc, ← Scheme.toSpecΓ_naturality]`. Simplify using the standard rewrite rules. Establish `h3` using `congrArg (fun f : V.toScheme ⟶ Spec (CommRingCat.of k) => V.toScheme.isoSpec.inv ≫ f) hfac`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [← Category.assoc, Iso.inv_hom_id, Category.id_comp] at h3`. Establish `h2 : AlgebraicGeometry.LocallyOfFiniteType (Spec.map ((Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ Scheme.Hom.appTop (V.ι ≫ p)))`. Rewrite using `[h3]`. Use `infer_instance`. Conclude with `AlgebraicGeometry.HasRingHomProperty.Spec_iff.mp h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finiteType_appTop_of_isAffineOpen_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (V : X.Opens)
@@ -483,7 +479,7 @@ private theorem finiteType_appTop_of_isAffineOpen_of_smooth {X : Scheme.{u}} {k 
   exact AlgebraicGeometry.HasRingHomProperty.Spec_iff.mp h2
 
 /- English proof (translation)
-Establish `hft` using `finiteType_appTop_of_isAffineOpen_of_smooth p V hV`. Set `_ : Algebra ↥(CommRingCat.of k) ↥Γ(V.toScheme, ⊤)` to `(CommRingCat.Hom.hom ((Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ Scheme.Hom.appTop (V.ι ≫ p))).toAlgebra`. Establish `: Algebra.FiniteType ↥(CommRingCat.of k) ↥Γ(V.toScheme, ⊤)` using `hft`. Establish `: IsNoetherianRing ↥(CommRingCat.of k)` using `inferInstanceAs (IsNoetherianRing k)`. Conclude with `Algebra.FiniteType.isNoetherianRing ↥(CommRingCat.of k) ↥Γ(V.toScheme, ⊤)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isNoetherianRing_sections_of_isAffineOpen_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (V : X.Opens)
@@ -497,9 +493,9 @@ private theorem isNoetherianRing_sections_of_isAffineOpen_of_smooth {X : Scheme.
   exact Algebra.FiniteType.isNoetherianRing ↥(CommRingCat.of k) ↥Γ(V.toScheme, ⊤)
 
 /- English proof (translation)
-Use `hdom` as an intermediate fact. Establish `hp : (pointOfIsoSpec R e y).asIdeal.IsPrime` using `(pointOfIsoSpec R e y).isPrime`. Establish `h2 : IsLocalization.AtPrime ((Spec.structureSheaf ↥R).presheaf.stalk (pointOfIsoSpec R e y)) (pointOfIsoSpec R e y).asIdeal` using `StructureSheaf.IsLocalization.to_stalk ↥R (pointOfIsoSpec R e y)`. Establish `e2 : Localization.AtPrime (pointOfIsoSpec R e y).asIdeal ≃+* ((Spec.structureSheaf ↥R).presheaf.stalk (pointOfIsoSpec R e y))` using `(IsLocalization.algEquiv (pointOfIsoSpec R e y).asIdeal.primeCompl (Localization.AtPrime (pointOfIsoSpec R e y).asIdeal) ((Spec.structureSheaf ↥R).presheaf.stalk (pointOfIsoSpec R e y))).toRingEquiv`. Establish `h4 : IsIso (e.hom.stalkMap y)` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : ((Spec.structureSheaf ↥R).presheaf.stalk (pointOfIsoSpec R e y)) ≃+* ↥(Y.presheaf.stalk y)` using `(asIso (e.hom.stalkMap y)).commRingCatIsoToRingEquiv`. Conclude with `(e2.trans e3).toMulEquiv.isDomain _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isDomain_localization_of_iso_spec {Y : Scheme.{u}} (R : CommRingCat.{u})
     (e : Y ≅ Spec R) (y : Y) (hdom : IsDomain ↥(Y.presheaf.stalk y)) :
@@ -522,13 +518,13 @@ private theorem isDomain_localization_of_iso_spec {Y : Scheme.{u}} (R : CommRing
   exact (e2.trans e3).toMulEquiv.isDomain _
 
 /- English proof (translation)
-Establish `hPp : (pointOfIsoSpec R e y).asIdeal.IsPrime` using `(pointOfIsoSpec R e y).isPrime`. Establish `hdomL : IsDomain (Localization.AtPrime (pointOfIsoSpec R e y).asIdeal)` using `isDomain_localization_of_iso_spec R e y hdom`. Establish `hbot : (⊥ : Ideal (Localization.AtPrime (pointOfIsoSpec R e y).asIdeal)).IsPrime` using `Ideal.isPrime_bot`. Establish `hKp : (Ideal.comap (algebraMap ↥R (Localization.AtPrime (pointOfIsoSpec R e y).asIdeal)) (⊥ : Ideal (Localization.AtPrime (pointOfIsoSpec R e y).asIdeal))).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hmin : ∀ q : Ideal ↥R, q.IsPrime → q ≤ (pointOfIsoSpec R e y).asIdeal → Ideal.comap (algebraMap ↥R (Localization.AtPrime (pointOfIsoSpec R e y).asIdeal)) (⊥ : Ideal (Localization.AtPrime (pointOfIsoSpec R e y).asIdeal)) ≤ q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q hq hqP a ha`. Establish `h0 : algebraMap ↥R (Localization.AtPrime (pointOfIsoSpec R e y).asIdeal) a = 0`. Simplify `ha` using `[Ideal.mem_comap, Submodule.mem_bot]`. Establish `h1 : algebraMap ↥R (Localization.AtPrime (pointOfIsoSpec R e y).asIdeal) a = algebraMap ↥R (Localization.AtPrime (pointOfIsoSpec R e y).asIdeal) 0`. Rewrite using `[h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists (pointOfIsoSpec R e y).asIdeal.primeCompl (Localization.AtPrime (pointOfIsoSpec R e y).asIdeal)).mp h1`. Rewrite `hc` using `[mul_zero]`. Establish `hmem : (c : ↥R) * a ∈ q`. Rewrite using `[hc]`. Conclude with `q.zero_mem`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hq.mem_or_mem hmem with h | h` into its components or cases. Conclude with `absurd (hqP h) c.2`. Conclude with `h`. Take `⟨W, hWopen, hWirr, hPW⟩` from `exists_isOpen_isIrreducible_of_unique_minimal_prime_le (pointOfIsoSpec R e y) (Ideal.comap (algebraMap ↥R (Localization.AtPrime (pointOfIsoSpec R e y).asIdeal)) (⊥ : Ideal (Localization.AtPrime (pointOfIsoSpec R e y).asIdeal))) hKp hmin`. Use `⟨(Scheme.homeoOfIso e).symm '' W, (Scheme.homeoOfIso e).symm.isOpenMap W hWopen, hWirr.image _ (Scheme.homeoOfIso e).symm.continuous.continuousOn, ⟨pointOfIsoSpec R e y, hPW, (Scheme.homeoOfIso e).symm_apply_apply y⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_isOpen_isIrreducible_of_iso_spec_of_isDomain_stalk {Y : Scheme.{u}} (R : CommRingCat.{u})
     [IsNoetherianRing ↥R] (e : Y ≅ Spec R) (y : Y)
@@ -572,9 +568,9 @@ private theorem exists_isOpen_isIrreducible_of_iso_spec_of_isDomain_stalk {Y : S
     ⟨pointOfIsoSpec R e y, hPW, (Scheme.homeoOfIso e).symm_apply_apply y⟩⟩
 
 /- English proof (translation)
-Take `⟨U, hxU, hU'⟩` from `Scheme.exists_isAffineOpen_mem x`. Establish `: IsAffine U.toScheme` using `hU'`. Establish `hnoeth : IsNoetherianRing ↥Γ(U.toScheme, ⊤)` using `isNoetherianRing_sections_of_isAffineOpen_of_smooth p U hU'`. Establish `hdomX : IsDomain ↥(X.presheaf.stalk x)` using `isDomain_stalk_of_smooth p x`. Establish `hdomU : IsDomain ↥(U.toScheme.presheaf.stalk (⟨x, hxU⟩ : U))` using `(U.stalkIso (⟨x, hxU⟩ : U)).commRingCatIsoToRingEquiv.toMulEquiv.isDomain _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨V, hVopen, hVirr, hyV⟩` from `exists_isOpen_isIrreducible_of_iso_spec_of_isDomain_stalk Γ(U.toScheme, ⊤) U.toScheme.isoSpec (⟨x, hxU⟩ : U) hdomU`. Establish `hoe` using `U.ι.isOpenEmbedding`. Conclude with `⟨U.ι.base '' V, hoe.isOpenMap V hVopen, hVirr.image _ hoe.continuous.continuousOn, ⟨(⟨x, hxU⟩ : U), hyV, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem exists_isOpen_isIrreducible_mem_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (x : X) :
@@ -593,9 +589,9 @@ private theorem exists_isOpen_isIrreducible_mem_of_smooth {X : Scheme.{u}} {k : 
     hVirr.image _ hoe.continuous.continuousOn, ⟨(⟨x, hxU⟩ : U), hyV, rfl⟩⟩
 
 /- English proof (translation)
-Use `hp` as an intermediate fact. Establish `hclosed : IsClosed T` using `isClosed_of_mem_irreducibleComponents _ hT`. Establish `hopen : IsOpen T`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `z hzT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨W, hWopen, hWirr, hzW⟩` from `exists_isOpen_isIrreducible_mem_of_smooth p z`. Use `⟨W, ?_, hWopen, hzW⟩` and prove the remaining obligations. Rewrite using `[eq_closure_of_mem_irreducibleComponents hWopen hWirr hT hzW hzT]`. Conclude with `subset_closure`. Conclude with `⟨hclosed, hopen⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isClopen_irreducibleComponent_of_smooth {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (hp : AlgebraicGeometry.Smooth p)

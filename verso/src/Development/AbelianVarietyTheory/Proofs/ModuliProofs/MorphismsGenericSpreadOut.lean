@@ -12,21 +12,17 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.GenericSpread
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `hS`. Use `choose p hp using fun x : K => IsLocalization.surj (nonZeroDivisors R) x`. Use `set f : R := ∏ x ∈ t, ((p x).2 : R) with hf_def`. Establish `hf0 : f ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun x _ => nonZeroDivisors.ne_zero (p x).2.2`. Establish `hfK : IsUnit (algebraMap R K f)` using `((map_ne_zero_iff _ (IsFractionRing.injective R K)).mpr hf0).isUnit`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hpow : ∀ y : Submonoid.powers f, IsUnit (algebraMap R K y)`. Introduce and unpack `⟨_, n, rfl⟩`. Simplify using `using hfK.pow n`. Set `l : Localization.Away f →ₐ[R] K` to `⟨IsLocalization.lift (M := Submonoid.powers f) (S := Localization.Away f) hpow, fun r => IsLocalization.lift_eq hpow r⟩`. Establish `hl : Function.Injective l`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers f) z`. Establish `h1` using `congrArg l (IsLocalization.mk'_spec (Localization.Away f) a s)`. Rewrite `h1` using `[map_mul, hz, zero_mul, AlgHom.commutes]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `ha : a = 0` using `(IsFractionRing.injective R K) (by rw [← h1, map_zero])`. Substitute `ha` using the available equality. Conclude with `IsLocalization.mk'_zero s`. Establish `hle : Algebra.adjoin R (↑t : Set K) ≤ l.range`. Rewrite using `[Algebra.adjoin_le_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[SetLike.mem_coe, AlgHom.mem_range]`. Establish `hdvd : ((p x).2 : R) ∣ f` using `Finset.dvd_prod_of_mem _ (Finset.mem_coe.mp hx)`. Establish `hu : IsUnit (algebraMap R (Localization.Away f) ((p x).2 : R))` using `isUnit_of_dvd_unit (map_dvd _ hdvd) (IsLocalization.Away.algebraMap_isUnit f)`. Use `⟨algebraMap R _ (p x).1 * ↑hu.unit⁻¹, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Establish `hne : algebraMap R K ((p x).2 : R) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R K)).mpr (nonZeroDivisors.ne_zero (p x).2.2)`. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul l _ (algebraMap R _ _), AlgHom.commutes]`. Use `_ = l (algebraMap R _ (p x).1) := by rw [_root_.mul_assoc, IsUnit.val_inv_mul, _root_.mul_one]`.
-
-Use `_ = algebraMap R K (p x).1 := AlgHom.commutes l _`. Use `_ = x * algebraMap R K ((p x).2 : R) := (hp x).symm`. Use `⟨f, hf0, (AlgEquiv.ofInjective l hl).symm.toAlgHom.comp (Subalgebra.inclusion hle), l, fun x => ?_⟩` and prove the remaining obligations. Use `show l ((AlgEquiv.ofInjective l hl).symm (Subalgebra.inclusion hle x)) = x`. Rewrite using `[← AlgEquiv.ofInjective_apply l hl, AlgEquiv.apply_symm_apply]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_away_of_fg {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] (S : Subalgebra R K) (hS : S.FG) :
@@ -82,11 +78,11 @@ end GlobalTheory.GenericSpread
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ B Z pB pZ I _ u hqc hqs hlfp hu`. Use `hqc` as an intermediate fact. Use `hqs` as an intermediate fact. Use `hlfp` as an intermediate fact. Take `⟨S, ψ, hSfg, -, hψ⟩` from `GlobalTheory.Spread.exists_fg_forall_comp_eq pB pZ u hu ⊥ Subalgebra.fg_bot`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf0, g, l, hgl⟩` from `GlobalTheory.GenericSpread.exists_away_of_fg S hSfg`. Establish `hmono : Mono (spMap (algebraMap R (Localization.Away f)))` using `inferInstance`. Use `⟨f, hf0, fun i => GlobalTheory.Spread.bcMap pB g ≫ ψ i, fun i => ⟨?_, fun j hj => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, (hψ i).1, ← Category.assoc, GlobalTheory.Spread.bcMap_fst]`. Establish `hj2 : j ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap l.toRingHom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `(cancel_mono (spMap (algebraMap R (Localization.Away f)))).mp` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, GlobalTheory.Spread.spMap_algHom_comp, ← pullback.condition, ← pullback.condition, ← Category.assoc, hj]`. Establish `hjb : j = GlobalTheory.Spread.bcMap pB l` using `GlobalTheory.Spread.eq_bcMap pB l hj hj2`. Rewrite using `[hjb, ← Category.assoc, GlobalTheory.Spread.bcMap_comp_of_eq pB g l S.val hgl]`. Conclude with `(hψ i).2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem morphisms_generic_spread_out :
     ∀ (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K] [IsFractionRing R K] (B Z : Scheme.{0}) (pB : B ⟶ Sp R) (pZ : Z ⟶ Sp R) (I : Type) [Finite I] (u : I → (pullback pB (spMap (algebraMap R K)) ⟶ Z)), QuasiCompact pB → QuasiSeparated pB → LocallyOfFinitePresentation pZ → (∀ i, u i ≫ pZ = pullback.fst _ _ ≫ pB) → ∃ (f : R) (_ : f ≠ 0) (u' : I → (pullback pB (spMap (algebraMap R (Localization.Away f))) ⟶ Z)), ∀ i, u' i ≫ pZ = pullback.fst _ _ ≫ pB ∧ ∀ j : pullback pB (spMap (algebraMap R K)) ⟶ pullback pB (spMap (algebraMap R (Localization.Away f))), j ≫ pullback.fst _ _ = pullback.fst _ _ → j ≫ u' i = u i := by

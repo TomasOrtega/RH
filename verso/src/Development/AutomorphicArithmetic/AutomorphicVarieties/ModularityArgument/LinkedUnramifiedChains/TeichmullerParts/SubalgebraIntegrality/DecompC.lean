@@ -20,11 +20,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.BCT.LocGlue.intst E n _ u (conjLoc (GlobalTheory.SplitPts.conjE E) u) (conjLoc_spec _ u).2.2 _ h`. Establish `e : cLoc u x = GlobalTheory.CuspRep.invT n _ (GeneralLinearGroup.map (conjLoc (GlobalTheory.SplitPts.conjE E) u) (cLoc (conjSrc (GlobalTheory.SplitPts.conjE E) u) x))`. Establish `hce` using `GlobalTheory.SplitPts.comp_eq x u`. Generalize the expression as in `hB : GeneralLinearGroup.map (conjLoc (GlobalTheory.SplitPts.conjE E) u) (cLoc (conjSrc (GlobalTheory.SplitPts.conjE E) u) x) = B`. Establish `hB' : (cLoc (conjSrc (GlobalTheory.SplitPts.conjE E) u) x).val.map (conjLoc (GlobalTheory.SplitPts.conjE E) u) = B.val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[← hB]`. Both sides reduce to the same expression. Rewrite `hce` using `[hB']`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(cLoc u x).val = ((B⁻¹ : GL (Fin n) _).val)ᵀ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h2 : ((B⁻¹ : GL (Fin n) _).val)ᵀ * (B.val)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.D.Dc.int_conj (x : UA E n) (u : Pl E)
     (h : cLoc (conjSrc (GlobalTheory.SplitPts.conjE E) u) x ∈ GlobalTheory.LFun.KGL (conjSrc (GlobalTheory.SplitPts.conjE E) u) n) :
@@ -49,9 +49,9 @@ theorem UpperTheory.V.Z.J.D.Dc.int_conj (x : UA E n) (u : Pl E)
   exact h1
 
 /- English proof (translation)
-Distinguish the cases in `e : u = w`. Substitute `e` using the available equality. Conclude with `h`. Break down `(GlobalTheory.SplitPts.over_split (w := w) ⟨u, e, hu⟩).2.2 u hu with rfl | rfl` into its components or cases. Conclude with `h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `UpperTheory.V.Z.J.D.Dc.int_conj x _ ?_` and prove the remaining obligations. Establish `e2 : ∀ v, v = w → cLoc v x ∈ GlobalTheory.LFun.KGL v n`. Introduce and unpack `v rfl`. Conclude with `h`. Conclude with `e2 _ (GlobalTheory.SplitPts.conjSrc_conjSrc_cm w)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.D.Dc.int_over {w u : Pl E}
     (hu : u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))) (x : UA E n)
@@ -87,7 +87,7 @@ variable {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMF
   [IsAlgClosure L Ω]
 
 /- English proof (translation)
-Introduce `w` and use `by haveI : IsGalois (Lp L) L := inferInstance have h := GlobalTheory.RayFromArtin.unramIn_of_ine (K := Lp L) (Ω := Ω) L (v := w.under (𝓞 (Lp L))) fun A hA σ hσ => by obtain ⟨g, rfl⟩ := s.unr A _ hA hσ ext x apply (algebraMap L Ω).injective exact (AlgEquiv.restrictNormal_commutes …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unrOf (s : HidaSetting l L Ω) : GlobalTheory.BCT.Unr L := fun w => by
   haveI : IsGalois (Lp L) L := inferInstance
@@ -108,14 +108,14 @@ theorem unrOf (s : HidaSetting l L Ω) : GlobalTheory.BCT.Unr L := fun w => by
   exact Ideal.ramificationIdx_eq_one_iff.1 h1.symm
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `(s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem under_w (s : HidaSetting l L Ω) (v : Plc (Lp L)) : (s.w v).under (𝓞 (Lp L)) = v := by
   ext x
   exact (s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)
 
 /- English proof (translation)
-Introduce `w` and use `by refine ⟨s.w (w.under (𝓞 (Lp L))), ⟨⟨_, rfl⟩, under_w s _⟩, ?_⟩ rintro _ ⟨⟨v, rfl⟩, h⟩ have e : v = w.under (𝓞 (Lp L)) := (under_w s v).symm.trans h rw [e]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem secRange (s : HidaSetting l L Ω) : GlobalTheory.BCT.IsSection (Set.range s.w) := fun w => by
   refine ⟨s.w (w.under (𝓞 (Lp L))), ⟨⟨_, rfl⟩, under_w s _⟩, ?_⟩
@@ -134,7 +134,7 @@ def Kf (s : HidaSetting l L Ω) (n c : ℕ) (w : GlobalTheory.BCT.Pl L) : Subgro
 variable (s : HidaSetting l L Ω) (n c : ℕ)
 
 /- English proof (translation)
-Unfold `Pc`. Use `split_ifs`. Rewrite using `[GlobalTheory.CohomologicalConjSelfDualTempered.UnrModel.kgl_eq_ko]`. Conclude with `UpperTheory.V.Hi.GlAx.Kc_le c`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pc_le (w : Plc L) : Pc s n c w ≤ GlobalTheory.LFun.KGL w n := by
   unfold Pc
@@ -144,7 +144,7 @@ theorem Pc_le (w : Plc L) : Pc s n c w ≤ GlobalTheory.LFun.KGL w n := by
   · exact le_rfl
 
 /- English proof (translation)
-Unfold `Pc`. Use `split_ifs`. Conclude with `(UpperTheory.unitaryAdelic_localComponents_continuous_levels_open L n).2.1 w c`. Rewrite using `[GlobalTheory.CohomologicalConjSelfDualTempered.UnrModel.kgl_eq_ko, ← UpperTheory.V.Hi.GlAx.Kc_zero]`. Conclude with `(UpperTheory.unitaryAdelic_localComponents_continuous_levels_open L n).2.1 w 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pc_open (w : Plc L) : IsOpen (Pc s n c w : Set (GLw n w)) := by
   unfold Pc
@@ -156,7 +156,7 @@ theorem Pc_open (w : Plc L) : IsOpen (Pc s n c w : Set (GLw n w)) := by
 variable {s n c}
 
 /- English proof (translation)
-Unfold `Pc`. Use `if_neg ?_` and prove the remaining obligations. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `hw ((under_w s v).symm ▸ hv)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Pc_notS {w : Plc L} (hw : w.under (𝓞 (Lp L)) ∉ s.S) : Pc s n c w = GlobalTheory.LFun.KGL w n := by
   unfold Pc
@@ -165,21 +165,21 @@ theorem Pc_notS {w : Plc L} (hw : w.under (𝓞 (Lp L)) ∉ s.S) : Pc s n c w = 
   exact hw ((under_w s v).symm ▸ hv)
 
 /- English proof (translation)
-Unfold `Pc`. Conclude with `if_pos ⟨v, hv, rfl⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Pc_S {v : Plc (Lp L)} (hv : v ∈ s.S) : Pc s n c (s.w v) = Kc _ n c := by
   unfold Pc
   exact if_pos ⟨v, hv, rfl⟩
 
 /- English proof (translation)
-Unfold `Kf GlobalTheory.BCT.KL`. Rewrite using `[Pc_notS hw]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Kf_notS {w : Plc L} (hw : w.under (𝓞 (Lp L)) ∉ s.S) : Kf s n c w = GlobalTheory.BCT.KL n w := by
   unfold Kf GlobalTheory.BCT.KL
   rw [Pc_notS hw]
 
 /- English proof (translation)
-Use `⟨fun w => ⟨(Pc_open s n c w).preimage continuous_subtype_val, fun k hk => Pc_le s n c w hk, fun k hk => hk⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(hfin.image s.w).compl_mem_cofinite] with w hw`. Unfold `Kf GlobalTheory.BCT.KL Pc`. Rewrite using `[if_neg hw]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levFam (hfin : s.S.Finite) :
     GlobalTheory.BCT.IsLevelFam (fun w : GlobalTheory.BCT.Pl L => MonoidHom.id (GlobalTheory.BCT.UL n w)) (GlobalTheory.BCT.KL n) (Kf s n c) := by
@@ -189,14 +189,14 @@ theorem levFam (hfin : s.S.Finite) :
   rw [if_neg hw]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.BCT.HopLev.mem_globLev hU _ _ k).1 hk (s.w v) ⟨v, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem loc_of_glob (hU : GlobalTheory.BCT.Unr L) {k : finU L n} (hk : k ∈ GlobalTheory.BCT.globLev (Set.range s.w) (Kf s n c))
     (v : Plc (Lp L)) : cLoc (s.w v) (k : UA L n) ∈ Pc s n c (s.w v) :=
   (GlobalTheory.BCT.HopLev.mem_globLev hU _ _ k).1 hk (s.w v) ⟨v, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.BCT.HopLev.mem_globLev hU _ _ k).2 (by rintro _ ⟨v, rfl⟩ exact h v)`.
+A detailed English derivation is pending.
 -/
 theorem glob_of_loc (hU : GlobalTheory.BCT.Unr L) {k : finU L n} (h : ∀ v, cLoc (s.w v) (k : UA L n) ∈ Pc s n c (s.w v)) :
     k ∈ GlobalTheory.BCT.globLev (Set.range s.w) (Kf s n c) :=
@@ -205,9 +205,7 @@ theorem glob_of_loc (hU : GlobalTheory.BCT.Unr L) {k : finU L n} (h : ∀ v, cLo
     exact h v)
 
 /- English proof (translation)
-Unfold `CaseU.cmp`. Distinguish the cases in `h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal`. Rewrite using `[dif_pos h]`. Conclude with `hx`. Rewrite using `[dif_neg h]`.
-
-Conclude with `one_mem _`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmp_mem {w : Plc L} (U : Subgroup (GLw n w)) (x : UA L n) (hx : cLoc w x ∈ U) :
     cmp n w ((away l L n).rangeRestrict x) ∈ U := by
@@ -219,7 +217,7 @@ theorem cmp_mem {w : Plc L} (U : Subgroup (GLw n w)) (x : UA L n) (hx : cLoc w x
     exact one_mem _
 
 /- English proof (translation)
-Use `choose x hx t ht y hy e using fun v => (iwMem _ (I v) b (g v)).2.1.1 (hg v)`. Conclude with `(iwMem _ (piIwa I) b g).2.1.2 ⟨x, fun v _ => hx v, t, fun v _ => ht v, y, fun v _ => hy v, funext e⟩`.
+A detailed English derivation is pending.
 -/
 private theorem pi_mem_first_iwahori_filtration {σ : Type} [Finite σ] {G : σ → Type} [∀ v, Group (G v)] (I : ∀ v, Iwa (G v)) (b : ℕ)
     (g : ∀ v, G v) (hg : ∀ v, g v ∈ (I v).I1 b) : g ∈ (piIwa I).I1 b := by
@@ -227,7 +225,7 @@ private theorem pi_mem_first_iwahori_filtration {σ : Type} [Finite σ] {G : σ 
   exact (iwMem _ (piIwa I) b g).2.1.2 ⟨x, fun v _ => hx v, t, fun v _ => ht v, y, fun v _ => hy v, funext e⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun q => Q.notS q (by have h : (Q.wq q).under (𝓞 (Lp L)) ∈ V.S' := by rw [Q.range] exact Or.inr ⟨q, rfl⟩ rwa [hV] at h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem Q_empty {V : s.Lev} (hV : V.S' = s.S) (Q : QData V) : IsEmpty Q.Q := ⟨fun q => Q.notS q (by
   have h : (Q.wq q).under (𝓞 (Lp L)) ∈ V.S' := by
@@ -236,11 +234,11 @@ theorem Q_empty {V : s.Lev} (hV : V.S' = s.S) (Q : QData V) : IsEmpty Q.Q := ⟨
   rwa [hV] at h)⟩
 
 /- English proof (translation)
-Use `haveI := Q_empty hV Q`. Establish `hS : ∀ v ∈ s.S, cLoc (s.w v) (k : UA L n) ∈ Kc _ n c` using `fun v hv => by`. Use `loc_of_glob hU hk v` as an intermediate fact. Rewrite `this` using `[Pc_S hv]`. Then use the resulting hypothesis. Establish `hu : (away l L n).rangeRestrict (k : UA L n) ∈ Ub n s` using `Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun u => cmp_mem _ _ (UpperTheory.V.Hi.GlAx.Kc_le c (hS u (Or.inr (Or.inl u.2)))), cmp_mem _ _ (UpperTheory.V.Hi.GlAx.Kc_anti h1 (hS s.v0 (Or.inr (Or.inr rfl))))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨⟨_, hu⟩, ?_, rfl, ?_⟩, ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun w => Subgroup.mem_iInf.2 fun hw => ?_, Subgroup.mem_iInf.2 fun q => isEmptyElim q⟩` and prove the remaining obligations. Rewrite `hw` using `[hV]`. Establish `h2` using `loc_of_glob hU hk (w.under (𝓞 (Lp L)))`. Rewrite `h2` using `[Pc_notS (by rwa [under_w])]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `int_over (under_w s (w.under (𝓞 (Lp L)))).symm (k : UA L n) h2`. Rewrite `h3` using `[GlobalTheory.CohomologicalConjSelfDualTempered.UnrModel.kgl_eq_ko]`. Conclude with `cmp_mem _ _ h3`. Conclude with `hc _ fun u => cmp_mem _ _ (hS u (Or.inr (Or.inl u.2)))`. Conclude with `pi_mem_first_iwahori_filtration (fun v : V.frame.Vl => glIwa ((s.w v.1).adicCompletion L) n) b _ fun v => (glBridge ((s.w v.1).adicCompletion L) n ℂ 1).2.2.2.2.1 b (UpperTheory.V.Hi.GlAx.Kc_anti hb (hS v.1 (Or.inl v.2)))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodOf {V : s.Lev} (hV : V.S' = s.S) (Q : QData V) {cf : Coef l} {m : ℕ} (τ₀ : KT n (wt s) →* GL (Fin m) cf.O)
     (b : ℕ) (hc : ∀ g : KT n (wt s), (∀ u, (g : GV n (wt s)) u ∈ Kc _ n c) → τ₀ g = 1) (h1 : 1 ≤ c) (hb : b + 1 ≤ c)
@@ -268,17 +266,15 @@ theorem goodOf {V : s.Lev} (hV : V.S' = s.S) (Q : QData V) {cf : Coef l} {m : �
       (glBridge ((s.w v.1).adicCompletion L) n ℂ 1).2.2.2.2.1 b (UpperTheory.V.Hi.GlAx.Kc_anti hb (hS v.1 (Or.inl v.2)))
 
 /- English proof (translation)
-Take `⟨U, hU, hUe⟩` from `isOpen_induced_iff.1 hτ`. Set `H : Subgroup (GV n (wt s))` to `τ₀.ker.map (KT n (wt s)).subtype`. Establish `hHo : IsOpen (H : Set (GV n (wt s)))`. Use `H.isOpen_of_mem_nhds (g := 1) ?_` and prove the remaining obligations. Establish `h0 : IsOpen (Set.pi Set.univ fun u : s.St => (Kc ((wt s u).adicCompletion L) n 0 : Set (GLw n (wt s u))))` using `isOpen_set_pi Set.finite_univ fun u _ => (UpperTheory.unitaryAdelic_localComponents_continuous_levels_open L n).2.1 _ 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : (1 : GV n (wt s)) ∈ U`. Establish `: (1 : KT n (wt s)) ∈ Subtype.val ⁻¹' U`. Rewrite using `[hUe]`. Conclude with `one_mem τ₀.ker`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Filter.mem_of_superset ((hU.inter h0).mem_nhds ⟨h1, fun u _ => one_mem _⟩) ?_` and prove the remaining obligations. Introduce and unpack `g ⟨hg, hg0⟩`. Establish `hK : g ∈ KT n (wt s)` using `fun u _ => UpperTheory.V.Hi.GlAx.Kc_le 0 (hg0 u trivial)`. Establish `: (⟨g, hK⟩ : KT n (wt s)) ∈ (τ₀.ker : Set (KT n (wt s)))`. Rewrite using `[← hUe]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `hg`. Conclude with `⟨⟨g, hK⟩, this, rfl⟩`. Establish `hloc : ∀ u : s.St, ∃ cu, Kc ((wt s u).adicCompletion L) n cu ≤ H.comap (MonoidHom.mulSingle (fun u => GLw n (wt s u)) u)` using `fun u => (glBridge ((wt s u).adicCompletion L) n ℂ 1).2.2.2.1 _ (hHo.preimage (continuous_mulSingle u))`. Use `choose cu hcu using hloc`. Use `⟨Finset.univ.sup cu, fun c hc g hg => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpi : Subgroup.pi Set.univ (fun u : s.St => Kc ((wt s u).adicCompletion L) n c) ≤ H` using `Subgroup.pi_le_iff.2 fun u => by`. Rewrite using `[Subgroup.map_le_iff_le_comap]`. Conclude with `(UpperTheory.V.Hi.GlAx.Kc_anti ((Finset.le_sup (Finset.mem_univ u)).trans hc)).trans (hcu u)`. Take `⟨g', hg', e⟩` from `hpi (show (g : GV n (wt s)) ∈ _ from fun u _ => hg u)`. Establish `: g' = g` using `Subtype.ext e`.
-
-Rewrite using `[← this]`. Conclude with `hg'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exC {cf : Coef l} {m : ℕ} (τ₀ : KT n (wt s) →* GL (Fin m) cf.O) (hτ : IsOpen (τ₀.ker : Set (KT n (wt s)))) :
     ∃ c0 : ℕ, ∀ c, c0 ≤ c → ∀ g : KT n (wt s), (∀ u, (g : GV n (wt s)) u ∈ Kc _ n c) → τ₀ g = 1 := by
@@ -316,11 +312,11 @@ theorem exC {cf : Coef l} {m : ℕ} (τ₀ : KT n (wt s) →* GL (Fin m) cf.O) (
   exact hg'
 
 /- English proof (translation)
-Take `⟨φ, hφ, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Use `⟨φ, hφ.1, h0, fun x hx hK => ?_⟩` and prove the remaining obligations. Establish `hxf : x ∈ finU L n` using `(Subgroup.mem_inf.1 hx).1`. Establish `hmem : (⟨x, hxf⟩ : finU L n) ∈ GlobalTheory.BCT.globLev (Set.range s.w) (Kf s n c)` using `glob_of_loc hU fun v => by`. Distinguish the cases in `e : v = w.under (𝓞 (Lp L))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Rewrite using `[Pc_notS (by rwa [under_w])]`. Conclude with `int_over (under_w s _) x hK`. Establish `h1 : cLoc (s.w v) x = 1` using `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 (s.w v)) (by rwa [under_w]))`. Express the relevant statement in the definitionally equal form `cLoc (s.w v) x ∈ _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `one_mem _`. Establish `h2` using `hφ.2 ⟨⟨x, hxf⟩, hmem⟩`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unramOf (hU : GlobalTheory.BCT.Unr L) (π : Submodule ℂ (UA L n → ℂ))
     (hne : π ⊓ GlobalTheory.PRep.fixed (GlobalTheory.BCT.RF L n) (GlobalTheory.BCT.globLev (Set.range s.w) (Kf s n c)) ≠ ⊥) (w : Plc L)

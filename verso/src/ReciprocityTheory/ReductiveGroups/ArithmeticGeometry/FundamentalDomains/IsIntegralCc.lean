@@ -8,60 +8,60 @@ open scoped ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma cc_cc (x : E) : cc (cc x) = x := by
   simp [cc]
 
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma cc_sub (x y : E) : cc (x - y) = cc x - cc y := by
   simp [cc]
 
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma cc_mul (x y : E) : cc (x * y) = cc x * cc y := by
   simp [cc]
 
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma cc_one : cc (1 : E) = 1 := by
   simp [cc]
 
 /- English proof (translation)
-Simplify using `[cc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma cc_zero : cc (0 : E) = 0 := by
   simp [cc]
 
 /- English proof (translation)
-Rewrite using `[cc]`. Conclude with `IsCMField.complexEmbedding_complexConj E τ x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma emb_cc (τ : E →+* ℂ) (x : E) : τ (cc x) = conj (τ x) := by
   rw [cc]
   exact IsCMField.complexEmbedding_complexConj E τ x
 
 /- English proof (translation)
-Use `congrArg cc h` as an intermediate fact. Rewrite `this` using `[cc_cc, cc_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma cc_eq_zero {x : E} (h : cc x = 0) : x = 0 := by
   have := congrArg cc h
   rwa [cc_cc, cc_zero] at this
 
 /- English proof (translation)
-Use `hx.map (IsCMField.complexConj E).toAlgHom.toRatAlgHom` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma isIntegral_cc {x : E} (hx : IsIntegral ℤ x) : IsIntegral ℤ (cc x) := by
   have := hx.map (IsCMField.complexConj E).toAlgHom.toRatAlgHom
   exact this
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : E, cc x ≠ x := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Apply `InfinitePlace.isComplex_iff.mp (IsTotallyComplex.isComplex w)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← emb_cc, hne y]`. Use `⟨x - cc x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cc_sub, cc_cc, neg_sub]`. Conclude with `sub_ne_zero.mpr (Ne.symm hx)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_imag : ∃ κ : E, cc κ = -κ ∧ κ ≠ 0 := by
   obtain ⟨x, hx⟩ : ∃ x : E, cc x ≠ x := by
@@ -76,9 +76,9 @@ lemma exists_imag : ∃ κ : E, cc κ = -κ ∧ κ ≠ 0 := by
   · exact sub_ne_zero.mpr (Ne.symm hx)
 
 /- English proof (translation)
-Introduce `him`. Establish `h1 : conj (τ κ) = -(τ κ)` using `by rw [← emb_cc, hκ, map_neg]`. Establish `h2 : conj (τ κ) = τ κ` using `Complex.conj_eq_iff_im.mpr him`. Establish `h3 : τ κ = 0`. Establish `h4 : τ κ = -(τ κ)` using `h2.symm.trans h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `(1 / 2 : ℂ) * h4`. Conclude with `h0 ((map_eq_zero_iff τ τ.injective).mp h3)`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma im_ne_zero {κ : E} (hκ : cc κ = -κ) (h0 : κ ≠ 0) (τ : E →+* ℂ) : (τ κ).im ≠ 0 := by
   intro him
@@ -92,15 +92,15 @@ lemma im_ne_zero {κ : E} (hκ : cc κ = -κ) (h0 : κ ≠ 0) (τ : E →+* ℂ)
 def e1 : Fin 1 → E := fun _ => 1
 
 /- English proof (translation)
-Simplify using `[herm]`.
+Simplify using the standard rewrite rules.
 -/
 lemma herm_one (x y : Fin 1 → E) : herm (1 : Matrix (Fin 1) (Fin 1) E) x y = x 0 * cc (y 0) := by
   simp [herm]
 
 /- English proof (translation)
-Establish `hfin` using `NumberField.Embeddings.finite_of_norm_le E ℂ (1 : ℝ)`. Use `(hfin.preimage (f := fun γ : GL (Fin 1) E => (γ : Matrix (Fin 1) (Fin 1) E) 0 0) ?_).subset ?_` and prove the remaining obligations. Introduce `γ₁ _ γ₂ _ h`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `fin_cases i`. Use `fin_cases j`. Conclude with `h`. Introduce `γ hγ`. Conclude with `hγ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma stab_finite :
     {γ : GL (Fin 1) E | IsIntegral ℤ ((γ : Matrix (Fin 1) (Fin 1) E) 0 0) ∧
@@ -238,7 +238,7 @@ noncomputable def inhab : Data E 1 := by
       simp [transvMat, hξ] }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inhab⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_data : Nonempty (Data E 1) :=
   ⟨inhab⟩

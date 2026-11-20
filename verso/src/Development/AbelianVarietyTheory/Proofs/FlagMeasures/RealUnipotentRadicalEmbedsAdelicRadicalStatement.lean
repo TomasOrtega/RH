@@ -7,7 +7,7 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.R
 open scoped InnerProductSpace ComplexOrder ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RadEmb.radical_embeds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FRealUnipotentRadicalEmbedsAdelicRadical.lean&line=54#L54)
 -/

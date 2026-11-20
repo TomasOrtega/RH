@@ -22,7 +22,7 @@ theorem gLoc_bc_coe (e : A →+* L) (g : GL n A) :
     ((bc (n := n) e g : GL n L) : Matrix n n L) = (g : Matrix n n A).map e := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gLoc_bc_symm (e : A ≃+* L) (g : GL n L) :
     bc (n := n) (e : A →+* L) (bc (n := n) (e.symm : L →+* A) g) = g := by
@@ -30,7 +30,7 @@ theorem gLoc_bc_symm (e : A ≃+* L) (g : GL n L) :
   simp [bc]
 
 /- English proof (translation)
-Introduce `g h hgh`. Use extensionality with `i j`. Use `congrArg (fun u : GL n L => (u : Matrix n n L) i j) hgh` as an intermediate fact. Simplify `this` using `[bc]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gLoc_bc_inj (e : A ≃+* L) : Function.Injective (bc (n := n) (e : A →+* L)) := by
   intro g h hgh
@@ -39,11 +39,11 @@ theorem gLoc_bc_inj (e : A ≃+* L) : Function.Injective (bc (n := n) (e : A →
   simpa [bc] using this
 
 /- English proof (translation)
-Use `set f : A →+* L := (e : A →+* L)`. Establish `hf : Function.Injective f` using `e.injective`. Establish `hc : (RingHom.mapMatrix f) (cT σA (g : Matrix n n A)) = cT σL (RingHom.mapMatrix f (g : Matrix n n A))`. Use extensionality with `i j`. Simplify using `[cT, f, he]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show cT σA (g : Matrix n n A) * 1 * (g : Matrix n n A) = 1 ↔ cT σL (RingHom.mapMatrix f (g : Matrix n n A)) * 1 * RingHom.mapMatrix f (g : Matrix n n A) = 1`. Rewrite using `[← hc, ← map_one (RingHom.mapMatrix f), ← map_mul, ← map_mul, map_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, map_one]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `Matrix.map_injective hf` to reduce the goal to its premises. Simplify `h` using `[RingHom.mapMatrix_apply]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gLoc_mem_one_iff (σA : A →+* A) (σL : L →+* L) (e : A ≃+* L)
     (he : ∀ x, e (σA x) = σL (e x)) (g : GL n A) :
@@ -65,17 +65,15 @@ theorem gLoc_mem_one_iff (σA : A →+* A) (σL : L →+* L) (e : A ≃+* L)
     simpa [RingHom.mapMatrix_apply] using h
 
 /- English proof (translation)
-Use `set p : Matrix n n L := (P : Matrix n n L)`. Use `set q : Matrix n n L := ((P⁻¹ : GL n L) : Matrix n n L)`. Use `set G : Matrix n n L := (g : Matrix n n L)`. Establish `hpq : p * q = 1`. Simplify using `only [p, q]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hqp : q * p = 1`. Simplify using `only [p, q]`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `cq : cT σL q * cT σL p = 1` using `by rw [← cT_mul, hpq, cT_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `cancel : ∀ X, cT σL q * (cT σL p * X * p) * q = X` using `fun X => by`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = X := by rw [cq, hpq, Matrix.one_mul, Matrix.mul_one]`. Establish `inj : ∀ X Y, cT σL p * X * p = cT σL p * Y * p → X = Y` using `fun X Y h => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← cancel X, ← cancel Y, h]`. Establish `E : cT σL (q * G * p) * (cT σL p * p) * (q * G * p) = cT σL p * (cT σL G * G) * p`. Rewrite using `[cT_mul, cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = cT σL p * (cT σL G * G) * p := by rw [cq, hpq, Matrix.one_mul, Matrix.mul_one]`. Use `show cT σL G * 1 * G = 1 ↔ cT σL (((P⁻¹ * g * P : GL n L)) : Matrix n n L) * J * ((P⁻¹ * g * P : GL n L) : Matrix n n L) = J`. Rewrite using `[show (((P⁻¹ * g * P : GL n L)) : Matrix n n L) = q * G * p by simp only [Units.val_mul, p, q, G]]`. Rewrite using `[← hP, E, Matrix.mul_one]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce `h`. Rewrite using `[h, Matrix.mul_one]`. Introduce `h`. Conclude with `inj _ _ (by rw [h, Matrix.mul_one])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gLoc_conj_iff (σL : L →+* L) (J : Matrix n n L) (P : GL n L)
     (hP : cT σL (P : Matrix n n L) * (P : Matrix n n L) = J) (g : GL n L) :
@@ -119,22 +117,22 @@ section Int
 variable {A L : Type} [CommRing A] [CommRing L] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Conclude with `⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem gLoc_range_subtype {R : Type} [CommRing R] (S : Subring R) (x : R) :
     x ∈ Set.range S.subtype ↔ x ∈ S := by
   exact ⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩
 
 /- English proof (translation)
-Establish `key : ∀ {B : Type} [CommRing B] (S : Subring B) (u : GL n B), u ∈ (bc (n` using `n) S.subtype).range ↔ (∀ i j, (u : Matrix n n B) i j ∈ S) ∧ (∀ i j, ((u⁻¹ : GL n B) : Matrix n n B) i j ∈ S) := by`. Introduce `B _ S u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[bc]`. Rewrite using `[← map_inv]`. Simplify using `[bc]`. Introduce and unpack `⟨h1, h2⟩`. Establish `hinj : Function.Injective (RingHom.mapMatrix S.subtype : Matrix n n S → Matrix n n B)` using `Matrix.map_injective Subtype.val_injective`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Set `Am : Matrix n n S` to `Matrix.of fun i j => ⟨(u : Matrix n n B) i j, h1 i j⟩`. Set `Bm : Matrix n n S` to `Matrix.of fun i j => ⟨((u⁻¹ : GL n B) : Matrix n n B) i j, h2 i j⟩`. Establish `hA : RingHom.mapMatrix S.subtype Am = (u : Matrix n n B)` using `by ext i j; rfl`. Establish `hB : RingHom.mapMatrix S.subtype Bm = ((u⁻¹ : GL n B) : Matrix n n B)` using `by ext i j; rfl`. Use `⟨⟨Am, Bm, hinj ?_, hinj ?_⟩, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, hA, hB, map_one, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Rewrite using `[map_mul, hA, hB, map_one, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[key T g, key O (bc (e : A →+* L) g), ← map_inv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [gLoc_bc_coe, Matrix.map_apply, RingEquiv.coe_toRingHom, ← hT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gLoc_int_iff (e : A ≃+* L) (T : Subring A) (O : Subring L) (hT : ∀ x, x ∈ T ↔ e x ∈ O)
     (g : GL n A) :
@@ -165,9 +163,9 @@ theorem gLoc_int_iff (e : A ≃+* L) (T : Subring A) (O : Subring L) (hT : ∀ x
   simp only [gLoc_bc_coe, Matrix.map_apply, RingEquiv.coe_toRingHom, ← hT]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `K.mul_mem (K.mul_mem (K.inv_mem hP) h) hP`. Introduce `h`. Use `K.mul_mem (K.mul_mem hP h) (K.inv_mem hP)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem gLoc_conj_mem {G : Type} [Group G] (K : Subgroup G) (P : G) (hP : P ∈ K) (g : G) :
     g ∈ K ↔ P⁻¹ * g * P ∈ K := by
@@ -214,11 +212,11 @@ theorem gLoc_hom_apply (σA : A →+* A) (σL : L →+* L) (e : A ≃+* L) (he :
       P⁻¹ * bc (e : A →+* L) (x : GL (Fin m) A) * P := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Establish `h1` using `congrArg (fun z : GU σL m => P * (z : GL (Fin m) L) * P⁻¹) hxy`. Simplify using `only [gLoc_hom_apply] at h1`. Establish `h2 : bc (e : A →+* L) (x : GL (Fin m) A) = bc (e : A →+* L) (y : GL (Fin m) A)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `h1` using `[mul_assoc]`. Conclude with `Subtype.ext (gLoc_bc_inj e h2)`. Introduce `y`. Establish `hbg : bc (e : A →+* L) (bc (e.symm : L →+* A) (P * (y : GL (Fin m) L) * P⁻¹)) = P * (y : GL (Fin m) L) * P⁻¹` using `gLoc_bc_symm e _`. Establish `hmem : bc (e.symm : L →+* A) (P * (y : GL (Fin m) L) * P⁻¹) ∈ H`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hH, gLoc_mem_one_iff σA σL e he, hbg, gLoc_conj_iff σL _ P hP]`. Simplify `y.2` using `[mul_assoc]`. Use `⟨⟨_, hmem⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[gLoc_hom_apply, hbg]`. Use `group`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gLoc_hom_bij (σA : A →+* A) (σL : L →+* L) (e : A ≃+* L) (he : ∀ x, e (σA x) = σL (e x))
     (P : GL (Fin m) L)
@@ -243,13 +241,13 @@ theorem gLoc_hom_bij (σA : A →+* A) (σL : L →+* L) (e : A ≃+* L) (he : �
     group
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨-, hxT⟩` from `(hLv _).mp (Subgroup.mem_subgroupOf.mp hx)`. Rewrite using `[KU, Subgroup.mem_subgroupOf, intPts, Subgroup.mem_inf]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(f x).2, ?_⟩` and prove the remaining obligations. Use `show ((f x : GU σL m) : GL (Fin m) L) ∈ _`. Rewrite using `[hf]`. Conclude with `(gLoc_conj_mem _ P hPO _).mp ((gLoc_int_iff e T (intL L) hT _).mp hxT)`. Introduce `hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `f.surjective y`. Use `⟨x, ?_, rfl⟩` and prove the remaining obligations. Use `Subgroup.mem_subgroupOf.mpr ((hLv _).mpr ⟨x.2, ?_⟩)` and prove the remaining obligations. Rewrite `hy` using `[KU, Subgroup.mem_subgroupOf, intPts, Subgroup.mem_inf]`. Establish `h2` using `hy.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((f x : GU σL m) : GL (Fin m) L) ∈ _ at h2`. Rewrite `h2` using `[hf]`. Conclude with `(gLoc_int_iff e T (intL L) hT _).mpr ((gLoc_conj_mem _ P hPO _).mpr h2)`.
+A detailed English derivation is pending.
 -/
 theorem gLoc_level (e : A ≃+* L) (T : Subring A) (hT : ∀ x, x ∈ T ↔ e x ∈ intL L) (P : GL (Fin m) L)
     (hPO : P ∈ (bc (n := Fin m) (intL L).subtype).range) {σL : L →+* L}
@@ -277,7 +275,7 @@ theorem gLoc_level (e : A ≃+* L) (T : Subring A) (hT : ∀ x, x ∈ T ↔ e x 
     exact (gLoc_int_iff e T (intL L) hT _).mpr ((gLoc_conj_mem _ P hPO _).mpr h2)
 
 /- English proof (translation)
-Use `⟨MulEquiv.ofBijective (gLoc_hom σA σL e he P hP H hH) (gLoc_hom_bij σA σL e he P hP H hH), fun x => rfl, ?_⟩` and prove the remaining obligations. Conclude with `gLoc_level e T hT P hPO H Lv hLv _ (fun x => rfl)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gLoc_main (σA : A →+* A) (σL : L →+* L) (e : A ≃+* L) (he : ∀ x, e (σA x) = σL (e x))
     (T : Subring A) (hT : ∀ x, x ∈ T ↔ e x ∈ intL L) (P : GL (Fin m) L)
@@ -295,9 +293,9 @@ theorem gLoc_main (σA : A →+* A) (σL : L →+* L) (e : A ≃+* L) (he : ∀ 
 end Main
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n v L _ _ _ e σw P he hT hPO hP`. Establish `hH : ∀ g, g ∈ UPts σ (1 : Matrix (Fin n) (Fin n) E) (v.adicCompletion F) ↔ g ∈ UJ (sigR σ (v.adicCompletion F)) (1 : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F))`. Introduce `g`. Rewrite using `[UPts, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hLv : ∀ g, g ∈ levelV σ (1 : Matrix (Fin n) (Fin n) E) v ↔ g ∈ UPts σ (1 : Matrix (Fin n) (Fin n) E) (v.adicCompletion F) ∧ g ∈ (bc (n` using `Fin n) (tensInt (F := F) (v.adicCompletion F) (intOE E) (Ov F v)).subtype).range := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g`. Rewrite using `[levelV, level, Subgroup.mem_inf, stabilizer_standard_lattice _ _ (Fin n) (fun a b h => Subtype.ext h)]`. Both sides reduce to the same expression. Take `⟨f, hf1, hf2⟩` from `gLoc_main (sigR σ (v.adicCompletion F)) σw e he _ hT P hPO hP _ _ hH hLv`. Conclude with `⟨f, hf1, hf2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem local_algebra_inert_prime : Formalism.UG.LocInert := by
   intro F E _ _ _ _ _ σ n v L _ _ _ e σw P he hT hPO hP

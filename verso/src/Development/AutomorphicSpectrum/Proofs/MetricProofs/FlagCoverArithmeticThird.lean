@@ -16,7 +16,7 @@ section Orbits
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Conclude with `⟨fun k => c k.1, fun k => hc k.1, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sameOrbit_basePart {σ : Type} (blk : σ → Option K) {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') :
     SameOrbit (basePart blk z) (basePart blk z') := by
@@ -24,7 +24,7 @@ theorem sameOrbit_basePart {σ : Type} (blk : σ → Option K) {z z' : (Σ k, ι
   exact ⟨fun k => c k.1, fun k => hc k.1, rfl⟩
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Use `⟨fun k => c (κ k), fun k => hc _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Simplify using `only [Function.comp]`. Rewrite using `[hb.2.2.1 q]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sameOrbit_comp {K₁ : Type} [Fintype K₁] {ι₁ : K₁ → Type} [∀ k, Fintype (ι₁ k)] {κ : K₁ → K}
     {v : (Σ k, ι₁ k) → (Σ k, ι k)} (hb : IsBlockMap κ v) {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') :
@@ -36,9 +36,9 @@ theorem sameOrbit_comp {K₁ : Type} [Fintype K₁] {ι₁ : K₁ → Type} [∀
   rw [hb.2.2.1 q]
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Introduce `f hf`. Set `ψ : MvPolynomial K ℂ →ₐ[ℤ] MvPolynomial K ℂ` to `(aeval fun k => C (c k) * X k : MvPolynomial K ℂ →ₐ[ℂ] MvPolynomial K ℂ).restrictScalars ℤ`. Establish `e : mConeMap (fun p : Σ k, ι k => c p.1 * z' p) = ψ.comp (mConeMap z')`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p`. Simplify using `[mConeMap, ψ, mul_assoc, mul_left_comm]`. Establish `hf' : mConeMap z' f = 0` using `hf`. Use `show mConeMap _ f = 0`. Rewrite using `[e, AlgHom.comp_apply, hf', map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mCoordIdeal_le {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') : mCoordIdeal z' ≤ mCoordIdeal z := by
   obtain ⟨c, hc, rfl⟩ := h
@@ -54,13 +54,13 @@ theorem mCoordIdeal_le {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') : mCoo
   rw [e, AlgHom.comp_apply, hf', map_zero]
 
 /- English proof (translation)
-The claim follows from `le_antisymm (mCoordIdeal_le (Cj.sameOrbit_symm h)) (mCoordIdeal_le h)`.
+A detailed English derivation is pending.
 -/
 theorem mCoordIdeal_eq {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') : mCoordIdeal z = mCoordIdeal z' :=
   le_antisymm (mCoordIdeal_le (Cj.sameOrbit_symm h)) (mCoordIdeal_le h)
 
 /- English proof (translation)
-Introduce `e` and use `h (by show mConeMap z (X q) = 0 rw [mConeMap, aeval_X, e, map_zero, zero_mul])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coord_ne {z : (Σ k, ι k) → ℂ} {q : Σ k, ι k} (h : (X q : MRing ι) ∉ mCoordIdeal z) : z q ≠ 0 := fun e =>
   h (by
@@ -68,13 +68,13 @@ theorem coord_ne {z : (Σ k, ι k) → ℂ} {q : Σ k, ι k} (h : (X q : MRing �
     rw [mConeMap, aeval_X, e, map_zero, zero_mul])
 
 /- English proof (translation)
-Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 (κ k)`. Take `⟨⟨k', i'⟩, hp⟩` from `hb.2.2.2 ⟨κ k, i⟩ ⟨k, rfl⟩`. Establish `hk : k' = k` using `hb.1 (by simpa [hp] using (hb.2.2.1 ⟨k', i'⟩).symm)`. Substitute `hk` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `⟨i', by simpa [Function.comp, hp] using hi⟩`. Set `ρ : MvPolynomial K₁ Ω₁ →+* MvPolynomial K Ω` to `(MvPolynomial.map φ).comp (rename κ : MvPolynomial K₁ Ω₁ →ₐ[Ω₁] MvPolynomial K Ω₁).toRingHom`. Establish `e : (mConeMap x).comp (rename v) = ρ.toIntAlgHom.comp (mConeMap x₁)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show mConeMap x (rename v (X p)) = ρ (mConeMap x₁ (X p))`. Simplify using `[mConeMap, ρ, hx, hb.2.2.1 p]`. Establish `hf' : mConeMap x₁ f = 0` using `hf`. Establish `hr : rename v f ∈ mCoordIdeal x` using `by show mConeMap x (rename v f) = 0`. Establish `e' : mConeMap x (rename v f) = ρ (mConeMap x₁ f)` using `DFunLike.congr_fun e f`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e', hf', map_zero]`. Use `hz.2 _ hr` as an intermediate fact. Rewrite `this` using `[MvPolynomial.map_rename, MvPolynomial.eval_rename]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem comp_mem_mcPts {K₁ : Type} [Fintype K₁] {ι₁ : K₁ → Type} [∀ k, Fintype (ι₁ k)] {κ : K₁ → K}
     {v : (Σ k, ι₁ k) → (Σ k, ι k)} (hb : IsBlockMap κ v) {Ω₁ Ω : Type} [Field Ω₁] [Field Ω] (φ : Ω₁ →+* Ω)
@@ -104,17 +104,15 @@ theorem comp_mem_mcPts {K₁ : Type} [Fintype K₁] {ι₁ : K₁ → Type} [∀
 end Orbits
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv d _ hA' z hz w hI`. Establish `P'` using `GlobalTheory.T.flag_model_base_projection_points K' ι' Φ' y' Ψ N j M'`. Establish `P` using `GlobalTheory.T.flag_model_base_projection_points K ι Φ y Ψ N j M`. Take `⟨F', hF', hg'⟩` from `P'.2.1 _ (P'.1 z hz)`. Set `c : K' → ℂ` to `fun k => if h : ∀ p, M'.blk p ≠ some k then (z ⟨k, F'.c ⟨k, h⟩⟩)⁻¹ else 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hne : ∀ k : NonPluckerBlocks M'.blk, z ⟨k.1, F'.c k⟩ ≠ 0` using `fun k => coord_ne (q := ⟨k, F'.c k⟩) (hg'.1 k)`. Establish `hc : ∀ k, c k ≠ 0` using `fun k => by`. Distinguish the cases in `h : ∀ p, M'.blk p ≠ some k`. Simplify using `only [c, dif_pos h]`. Conclude with `inv_ne_zero (hne ⟨k, h⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [c, dif_neg h]`. Conclude with `one_ne_zero`. Set `z₁ : (Σ k, ι' k) → ℂ` to `fun p => c p.1 * z p`. Establish `h1 : SameOrbit z₁ z` using `⟨c, hc, rfl⟩`. Establish `hz₁ : z₁ ∈ mcPts (mCoordIdeal y')` using `mcPts_smul hA'.2.1.2.1 c hc hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ k, basePart M'.blk z₁ ⟨k, F'.c k⟩ = 1` using `fun k => by show c k.1 * z ⟨k.1, F'.c k⟩ = 1`. Establish `hk : ∀ p, M'.blk p ≠ some k.1` using `k.2`. Simplify using `only [c, dif_pos hk]`. Conclude with `inv_mul_cancel₀ (hne k)`. Establish `hb₁` using `P'.1 z₁ hz₁`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ho` using `sameOrbit_basePart M'.blk h1`. Establish `hgood : M'.GoodAt F' (mCoordIdeal (basePart M'.blk z₁))`. Rewrite using `[mCoordIdeal_eq ho]`. Conclude with `hg'`. Take `⟨h, hh⟩` from `(P'.2.2 F' hF' z₁ hb₁ hgood hn).1 hz₁`.
-
-Take `⟨F, hF, hg⟩` from `P.2.1 _ (comp_mem_mcPts Cv.block Cv.φ Cv.x_eq hb₁)`. Take `⟨z₀, a, b, -⟩` from `hI z₁ h1 F' F hF' hF hgood hg h hh`. Conclude with `Cj.sameOrbit_trans (Cj.sameOrbit_symm (sameOrbit_basePart M.blk a)) (Cj.sameOrbit_trans b (sameOrbit_comp Cv.block ho))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem img_lies_over : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 2) → IsArithVar (mCoordIdeal y') (d + 2) → ∀ z ∈ mcPts (mCoordIdeal y'), ∀ w, CovMap.IsImg Cv z w → SameOrbit (basePart M.blk w) (basePart M'.blk z ∘ Cv.v) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv d _ hA' z hz w hI

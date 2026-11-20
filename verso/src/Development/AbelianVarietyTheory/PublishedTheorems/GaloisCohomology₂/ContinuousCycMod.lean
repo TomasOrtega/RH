@@ -11,7 +11,7 @@ def proKer (l : ℕ) (H : Type*) [Group H] [TopologicalSpace H] : Subgroup H :=
   sInf {U : Subgroup H | U.Normal ∧ IsOpen (U : Set H) ∧ ∃ n : ℕ, U.index = l ^ n}
 
 /- English proof (translation)
-Simplify using `[proKer, Subgroup.mem_sInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_proKer {l : ℕ} {H : Type*} [Group H] [TopologicalSpace H] {x : H} :
     x ∈ proKer l H ↔
@@ -26,13 +26,13 @@ def ineKer (A : ValuationSubring Ω) (l : ℕ) : Subgroup (G F Ω) :=
   (proKer l (Ine (F := F) A)).map (Ine (F := F) A).subtype
 
 /- English proof (translation)
-The claim follows from `Subgroup.map_subtype_le _`.
+A detailed English derivation is pending.
 -/
 theorem ineKer_le_Ine (A : ValuationSubring Ω) (l : ℕ) : ineKer F A l ≤ Ine (F := F) A :=
   Subgroup.map_subtype_le _
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_map_iff_mem (Ine (F := F) A).subtype_injective`.
+A detailed English derivation is pending.
 -/
 theorem coe_mem_ineKer {A : ValuationSubring Ω} {l : ℕ} {σ : Ine (F := F) A} :
     (σ : G F Ω) ∈ ineKer F A l ↔ σ ∈ proKer l (Ine (F := F) A) :=
@@ -57,9 +57,9 @@ abbrev muDec (A : ValuationSubring Ω) (l : ℕ) [Fact l.Prime] (n : ℕ) :
   charRep ((cycMod F Ω l n).comp (Dec (F := F) A).subtype)
 
 /- English proof (translation)
-Establish `h1 : Continuous (PadicInt.toZModPow n : ℤ_[l] → ZMod (l ^ n))`. Use `continuous_of_continuousAt_zero (PadicInt.toZModPow n : ℤ_[l] →+* ZMod (l ^ n)) ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, nhds_discrete (ZMod (l ^ n)), Filter.tendsto_pure]`. Establish `hl : (0 : ℝ) < (l : ℝ) ^ (-n : ℤ)` using `zpow_pos (Nat.cast_pos.mpr (Fact.out : l.Prime).pos) _`. Use `filter_upwards [Metric.closedBall_mem_nhds (0 : ℤ_[l]) hl] with x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[mem_closedBall_zero_iff, PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow]`. Conclude with `hx`. Conclude with `h1.comp (Units.continuous_val.comp (continuous_cycZ F Ω l))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cycMod (l : ℕ) [Fact l.Prime] (n : ℕ) :
     Continuous fun σ : G F Ω => ((cycMod F Ω l n σ : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) := by
@@ -75,7 +75,7 @@ theorem continuous_cycMod (l : ℕ) [Fact l.Prime] (n : ℕ) :
   exact h1.comp (Units.continuous_val.comp (continuous_cycZ F Ω l))
 
 /- English proof (translation)
-The claim follows from `(((continuous_cycMod l n).comp continuous_subtype_val).comp continuous_fst).mul continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem contAction_muDec (A : ValuationSubring Ω) (l : ℕ) [Fact l.Prime] (n : ℕ) :
     ContAction (muDec F A l n) :=
@@ -93,7 +93,7 @@ def cupMu (A : ValuationSubring Ω) (l : ℕ) [Fact l.Prime] (n : ℕ) :
     (contAction_muDec A l n)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `rfl : f = cupCocycleZ1Z1 (trivDec F A l n) (muDec F A l n) (muDec F A l n) (LinearMap.mul _ _) continuous_of_discreteTopology (fun g x y => by`. Simplify using `only [Representation.trivial_apply, charRep_apply, LinearMap.mul_apply']`. Use the proof step `ring)`. Use the proof step `(contAction_muDec A l n) z y := Subtype.ext (funext fun p => hf p.1 p.2)`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cupMu_mk {A : ValuationSubring Ω} {l : ℕ} [Fact l.Prime] {n : ℕ}
     (z : Z1 (trivDec F A l n)) (y : Z1 (muDec F A l n)) (f : Z2 (muDec F A l n))
@@ -112,7 +112,7 @@ def IsUnifRoot (v : HeightOneSpectrum (𝓞 F)) (N : ℕ) (x : Ω) : Prop :=
   ∃ ϖ : 𝓞 F, ϖ ∈ v.asIdeal ∧ ϖ ∉ v.asIdeal ^ 2 ∧ x ^ N = algebraMap F Ω (ϖ : F)
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed F`. Take `⟨ϖ, h1, h2⟩` from `Ideal.exists_mem_pow_notMem_pow_succ v.asIdeal v.ne_bot v.isPrime.ne_top 1`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap F Ω (ϖ : F)) hN`. Conclude with `⟨x, ϖ, by simpa using h1, h2, hx⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isUnifRoot [IsAlgClosure F Ω] (v : HeightOneSpectrum (𝓞 F)) {N : ℕ} (hN : 0 < N) :
     ∃ x : Ω, IsUnifRoot v N x := by
@@ -178,9 +178,9 @@ def TameSymbol : Prop :=
 def TameLocal : Prop := TameQuotient ∧ TameSymbol
 
 /- English proof (translation)
-Take `⟨⟨inv, hinv⟩, h⟩` from `hT F Ω l n A v hA hl hq ζ hζ`. Establish `key : ∀ (a b : H2 (muDec F A l n) ≃ₗ[ZMod (l ^ n)] ZMod (l ^ n)) w, a w = a (b.symm 1) * b w` using `fun a b w => by`. Rewrite using `[mul_comm, ← smul_eq_mul, ← map_smul, ← map_smul, smul_eq_mul, mul_one, LinearEquiv.symm_apply_apply]`. Establish `hu : e (inv.symm 1) * inv (e.symm 1) = 1`. Rewrite using `[← key, LinearEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨-(Units.mkOfMulEqOne _ _ hu), fun x hx γ c hγ hc φ hφ z y hy => ?_⟩` and prove the remaining obligations. Establish `h1` using `(h x hx γ c hγ hc).2 _ hinv φ hφ z y hy`. Rewrite `h1` using `[LinearEquiv.coe_coe]`. Rewrite using `[key e inv, mul_left_comm, h1]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem TameSymbol.of_equiv (hT : TameSymbol) {F Ω : Type} [Field F] [NumberField F] [Field Ω]
     [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {n : ℕ} {A : ValuationSubring Ω}

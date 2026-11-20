@@ -6,11 +6,9 @@ open Polynomial
 namespace GlobalTheory.KummerCob
 
 /- English proof (translation)
-Introduce `k K Ω _ _ _ _ _ _ _ N ζ hN hζ`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `haveI : NeZero (N : k) := ⟨by exact_mod_cast hN.ne'⟩`. Take `⟨ξ, hξ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot k N`. Set `φ : k →+* Ω` to `(algebraMap K Ω).comp ((algebraMap k[X] K).comp Polynomial.C)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : Function.Injective φ` using `φ.injective`. Establish `hξ' : IsPrimitiveRoot (φ ξ) N` using `hξ.map_of_injective hφ`. Take `⟨i, -, hi⟩` from `hξ'.eq_pow_of_pow_eq_one hζ.pow_eq_one`. Use `⟨(algebraMap k[X] K (Polynomial.C ξ)) ^ i, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, ← hi]`.
-
-Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem zeta_mem_range : ∀ (k K Ω : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field K] [Algebra k[X] K] [Field Ω] [Algebra K Ω]
     (N : ℕ) (ζ : Ω), 0 < N → IsPrimitiveRoot ζ N → ζ ∈ Set.range (algebraMap K Ω) := by

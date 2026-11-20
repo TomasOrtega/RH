@@ -19,16 +19,16 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Rewrite using `[pow_succ', Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_apply_succ (T : LocLat G Qp LL O) (k : ℕ) (x : W.DD T) :
     ((W.φD T) ^ (k + 1)) x = W.φD T (((W.φD T) ^ k) x) := by
   rw [pow_succ', Module.End.mul_apply]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using hx`. Consider the case `succ k ih`. Establish `h1` using `φA_letE W (c + ((k + 1 : ℕ) : ZMod n))`. Rewrite `h1` using `[show c + ((k + 1 : ℕ) : ZMod n) - 1 = c + (k : ZMod n) by push_cast; ring]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pow_apply_succ, ← h1, ← φD_smulA, ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem φD_pow_letter (T : LocLat G Qp LL O) (c : ZMod n) (x : W.DD T)
     (hx : (letE c : LetA O n) • x = x) (k : ℕ) :
@@ -41,15 +41,15 @@ theorem φD_pow_letter (T : LocLat G Qp LL O) (c : ZMod n) (x : W.DD T)
     rw [pow_apply_succ, ← h1, ← φD_smulA, ih]
 
 /- English proof (translation)
-Establish `hQ : W.Q = W.q` using `by simp [LocWach.Q, hs]`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hx`. Consider the case `succ k ih`. Introduce `hk`. Establish `hzk` using `ih (by omega)`. Establish `hlet : (letE (c + (k : ZMod n)) : LetA O n) • ((∏ s ∈ Finset.range k, ((W.φA ^ s) W.q) ^ Gb) • ((W.φD T) ^ k) x) = (∏ s ∈ Finset.range k, ((W.φA ^ s) W.q) ^ Gb) • ((W.φD T) ^ k) x`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_comm, φD_pow_letter W T c x hxc k]`. Establish `hNl : (∏ s ∈ Finset.range k, ((W.φA ^ s) W.q) ^ Gb) • ((W.φD T) ^ k) x ∈ W.Nl T (c + ((k + 1 : ℕ) : ZMod n) - 1)`. Rewrite using `[show c + ((k + 1 : ℕ) : ZMod n) - 1 = c + (k : ZMod n) by push_cast; ring]`. Conclude with `Submodule.mem_map.2 ⟨_, hzk, by rw [LinearMap.smul_apply, LinearMap.id_apply, hlet]⟩`. Establish `h1` using `h5.1 (c + ((k + 1 : ℕ) : ZMod n)) _ hNl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM'` using `hM (k + 1) (by omega) hk`. Establish `hφP : W.φA (∏ s ∈ Finset.range k, ((W.φA ^ s) W.q) ^ Gb) = ∏ s ∈ Finset.range k, ((W.φA ^ (s + 1)) W.q) ^ Gb`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, pow_succ', AlgHom.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : ∏ s ∈ Finset.range (k + 1), ((W.φA ^ s) W.q) ^ Gb = W.q ^ (Gb - M (c + ((k + 1 : ℕ) : ZMod n))) * (W.q ^ M (c + ((k + 1 : ℕ) : ZMod n)) * W.φA (∏ s ∈ Finset.range k, ((W.φA ^ s) W.q) ^ Gb))`. Rewrite using `[Finset.prod_range_succ', hφP, pow_zero, AlgHom.one_apply, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hM', mul_comm]`. Rewrite using `[hP, mul_smul, mul_smul, pow_apply_succ, ← φD_smulA]`. Rewrite `h1` using `[hQ]`. Conclude with `(W.N T).smul_mem _ h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chain (hs : W.s = 1) (T : LocLat G Qp LL O) {M h : ZMod n → ℕ}
     (h5 : Formalism.MainNotions.DeltaInvariantLattices.p5 W T M h) (c : ZMod n) (Gb j : ℕ)
@@ -101,13 +101,13 @@ def Hw (G₀ S η : ℕ) : Formalism.MainNotions.LocalTheoryWindows.LT → ℕ
   | .down _ => η
 
 /- English proof (translation)
-Introduce `x hx`. Consider the cases of `t with`. Consider the case `thin`. Simplify using `only [Formalism.MainNotions.LocalTheoryWindows.LT.win, Set.mem_Icc] at hx`. Simplify using `only [Mw, Hw, Set.mem_Icc]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `up b`. Simplify using `only [Formalism.MainNotions.LocalTheoryWindows.LT.ok] at ht`. Simplify using `only [Formalism.MainNotions.LocalTheoryWindows.LT.win, Set.mem_union, Set.mem_Icc] at hx`. Simplify using `only [Mw, Hw, Set.mem_Icc]`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Use linear arithmetic over natural numbers and integers. Consider the case `down b`. Simplify using `only [Formalism.MainNotions.LocalTheoryWindows.LT.ok] at ht`. Simplify using `only [Formalism.MainNotions.LocalTheoryWindows.LT.win, Set.mem_union, Set.mem_Icc] at hx`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Mw, Hw, Set.mem_Icc]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 -/
 theorem win_sub (G₀ S η : ℕ) (t : Formalism.MainNotions.LocalTheoryWindows.LT) (ht : t.ok η) :
     t.win G₀ S η ⊆ Set.Icc (-(Mw G₀ S η t : ℤ)) (Hw G₀ S η t) := by
@@ -131,7 +131,7 @@ theorem win_sub (G₀ S η : ℕ) (t : Formalism.MainNotions.LocalTheoryWindows.
     omega
 
 /- English proof (translation)
-Introduce `τ i hτ`. Establish `h1` using `hT.2 i τ hτ`. Establish `h2` using `win_sub A.G₀ A.S A.η (A.ty i) (hA.2.2.2.2.1 i)`. Unfold `JumpsInV at h1 ⊢`. Conclude with `fun a ha => h2 (h1 a ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jumpsLet_of_win (A : Formalism.MainNotions.ArcLiftingSetup.ArcP n) (hA : A.OK) (T : LocLat G Qp LL O)
     (hT : Formalism.MainNotions.ArcLiftingSetup.Win W A T) :
@@ -143,13 +143,13 @@ theorem jumpsLet_of_win (A : Formalism.MainNotions.ArcLiftingSetup.ArcP n) (hA :
   exact fun a ha => h2 (h1 a ha)
 
 /- English proof (translation)
-Break down `hA.2.2.2.2.2.2.2.2 with h | ⟨hj, hth, hsz⟩` into its components or cases. Simplify using `[h c hc k hk1 hkj, Mw]`. Establish `hk : k = 1` using `by omega`. Substitute `hk` using the available equality. Rewrite using `[Nat.cast_one]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `hok` using `hA.2.2.2.2.1 (c + 1)`. Establish `hs` using `hsz c hc`. Establish `ht` using `hth (c + 1)`. Generalize the expression as in `A.ty (c + 1) = t at hok hs ht ⊢`. Consider the cases of `t with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data.
 
-Consider the case `thin => simp [Formalism.MainNotions.LocalTheoryWindows.LT.thick] at ht`. Consider the case `up b`. Simplify using `only [Mw, Formalism.MainNotions.LocalTheoryWindows.LT.ok, Formalism.MainNotions.LocalTheoryWindows.LT.size] at hok hs ⊢`. Use linear arithmetic over natural numbers and integers. Consider the case `down b`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Simplify using `only [Mw, Formalism.MainNotions.LocalTheoryWindows.LT.ok, Formalism.MainNotions.LocalTheoryWindows.LT.size] at hok hs ⊢`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mw_le (A : Formalism.MainNotions.ArcLiftingSetup.ArcP n) (hA : A.OK) (c : ZMod n) (hc : c ∈ A.cuts) (k : ℕ)
     (hk1 : 1 ≤ k) (hkj : k ≤ A.j) : Mw A.G₀ A.S A.η (A.ty (c + (k : ZMod n))) ≤ A.G₀ := by
@@ -172,9 +172,9 @@ theorem mw_le (A : Formalism.MainNotions.ArcLiftingSetup.ArcP n) (hA : A.OK) (c 
       omega
 
 /- English proof (translation)
-Establish `ha' : ∀ δ ∈ W.DelF, W.γA δ a = a` using `ha`. Use `show ∀ δ ∈ W.DelF, W.γA δ (W.φA a) = W.φA a`. Introduce `δ hδ`. Establish `h1 : W.γA δ (W.φA a) = W.φA (W.γA δ a)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(W.γ₀_comm δ (a (i - 1))).symm`. Rewrite using `[h1, ha' δ hδ]`.
+A detailed English derivation is pending.
 -/
 theorem φA_mem_AΔ {a : LetA O n} (ha : a ∈ W.AΔ) : W.φA a ∈ W.AΔ := by
   have ha' : ∀ δ ∈ W.DelF, W.γA δ a = a := ha
@@ -186,7 +186,7 @@ theorem φA_mem_AΔ {a : LetA O n} (ha : a ∈ W.AΔ) : W.φA a ∈ W.AΔ := by
   rw [h1, ha' δ hδ]
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => simpa using ha`. Consider the case `succ s ih`. Rewrite using `[pow_succ', AlgHom.mul_apply]`. Conclude with `φA_mem_AΔ W ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem φA_pow_mem_AΔ {a : LetA O n} (ha : a ∈ W.AΔ) (s : ℕ) : (W.φA ^ s) a ∈ W.AΔ := by
   induction s with
@@ -196,13 +196,13 @@ theorem φA_pow_mem_AΔ {a : LetA O n} (ha : a ∈ W.AΔ) (s : ℕ) : (W.φA ^ s
     exact φA_mem_AΔ W ih
 
 /- English proof (translation)
-The claim follows from `φA_pow_mem_AΔ W (show Formalism.MainNotions.ArcLiftingSetup.qA W ∈ W.AΔ from W.AΔ.add_mem hπ (W.AΔ.natCast_mem _)) s`.
+A detailed English derivation is pending.
 -/
 theorem ps_mem_AΔ (hπ : W.π₀ ∈ W.AΔ) (s : ℕ) : Formalism.MainNotions.ArcLiftingSetup.ps W s ∈ W.AΔ :=
   φA_pow_mem_AΔ W (show Formalism.MainNotions.ArcLiftingSetup.qA W ∈ W.AΔ from W.AΔ.add_mem hπ (W.AΔ.natCast_mem _)) s
 
 /- English proof (translation)
-Establish `ha' : ∀ δ ∈ W.DelF, W.γA δ a = a` using `ha`. Establish `hz' : z ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ z = z` using `hz`. Use `show a • z ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ (a • z) = a • z`. Use `⟨(W.N T).smul_mem a hz'.1, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[γD_smulA, ha' δ hδ, hz'.2 δ hδ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_NΔ (T : LocLat G Qp LL O) {a : LetA O n} (ha : a ∈ W.AΔ) {z : W.DD T}
     (hz : z ∈ W.NΔ T) : a • z ∈ W.NΔ T := by
@@ -213,9 +213,9 @@ theorem smul_mem_NΔ (T : LocLat G Qp LL O) {a : LetA O n} (ha : a ∈ W.AΔ) {z
   rw [γD_smulA, ha' δ hδ, hz'.2 δ hδ]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `δ hδ`. Simplify using `using hx δ hδ`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `δ hδ`. Rewrite using `[pow_apply_succ, ← W.φγ_comm, ih δ hδ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem φD_pow_Δ (T : LocLat G Qp LL O) {x : W.DD T} (hx : ∀ δ ∈ W.DelF, W.γD T δ x = x) (k : ℕ) :
     ∀ δ ∈ W.DelF, W.γD T δ (((W.φD T) ^ k) x) = ((W.φD T) ^ k) x := by
@@ -228,7 +228,7 @@ theorem φD_pow_Δ (T : LocLat G Qp LL O) {x : W.DD T} (hx : ∀ δ ∈ W.DelF, 
     rw [pow_apply_succ, ← W.φγ_comm, ih δ hδ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Formalism.MainNotions.DeltaInvariantLattices.Eat, Formalism.MainNotions.ArcLiftingSetup.qA, Formalism.MainNotions.ArcLiftingSetup.lA]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem eat_eq : Formalism.MainNotions.DeltaInvariantLattices.Eat (fun _ : ZMod n => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)) W.π₀ =
     Formalism.MainNotions.ArcLiftingSetup.qA W := by
@@ -236,9 +236,9 @@ theorem eat_eq : Formalism.MainNotions.DeltaInvariantLattices.Eat (fun _ : ZMod 
   simp [Formalism.MainNotions.DeltaInvariantLattices.Eat, Formalism.MainNotions.ArcLiftingSetup.qA, Formalism.MainNotions.ArcLiftingSetup.lA]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hR.2.2.2.2.1`. Rewrite `hw` using `[eat_eq]`. Use `⟨∏ s ∈ Finset.range k, ((W.φA ^ s) (w : LetA O n)) ^ Gb, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one (fun s _ => ((Units.isUnit w).map (W.φA ^ s)).pow Gb)`. Rewrite using `[hw, ← Finset.prod_mul_distrib]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem prod_q_eq (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀
       (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O))) (k Gb : ℕ) :
@@ -255,7 +255,7 @@ theorem prod_q_eq (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRel
     rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [letE, Pi.mul_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem letE_mul_self_level_letter_cocycles (c : ZMod n) : (letE c : LetA O n) * letE c = letE c := by
   funext k
@@ -263,13 +263,13 @@ private theorem letE_mul_self_level_letter_cocycles (c : ZMod n) : (letE c : Let
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hxN : x ∈ W.N T` using `hx.1.1`. Establish `hxΔ : ∀ δ ∈ W.DelF, W.γD T δ x = x` using `hx.1.2`. Establish `hxl : x ∈ W.Nl T c` using `hx.2`. Establish `hxc : (letE c : LetA O n) • x = x`. Take `⟨y, _, hy⟩` from `Submodule.mem_map.1 hxl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hy, LinearMap.smul_apply, LinearMap.id_apply, smul_smul, letE_mul_self_level_letter_cocycles]`. Establish `hch` using `chain W hs T h5 c Gb j hM x hxN hxc j le_rfl`. Take `⟨u, hu, hueq⟩` from `prod_q_eq W hR j Gb`. Rewrite `hch` using `[hueq, mul_smul]`. Take `⟨u', rfl⟩` from `hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hPN : (∏ s ∈ Finset.range j, Formalism.MainNotions.ArcLiftingSetup.ps W s ^ Gb) • ((W.φD T) ^ j) x ∈ W.N T`. Establish `h3` using `(W.N T).smul_mem (↑u'⁻¹ : LetA O n) hch`. Rewrite `h3` using `[smul_smul (↑u'⁻¹ : LetA O n) (↑u' : LetA O n), Units.inv_mul, one_smul]`. Then use the resulting hypothesis. Establish `hπ : W.π₀ ∈ W.AΔ` using `hR.1`. Establish `hPA : (∏ s ∈ Finset.range j, Formalism.MainNotions.ArcLiftingSetup.ps W s ^ Gb) ∈ W.AΔ` using `prod_mem fun s _ => pow_mem (ps_mem_AΔ W hπ s) _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPA' : ∀ δ ∈ W.DelF, W.γA δ (∏ s ∈ Finset.range j, Formalism.MainNotions.ArcLiftingSetup.ps W s ^ Gb) = ∏ s ∈ Finset.range j, Formalism.MainNotions.ArcLiftingSetup.ps W s ^ Gb` using `hPA`. Use `⟨⟨hPN, fun δ hδ => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[γD_smulA, hPA' δ hδ, φD_pow_Δ W T hxΔ j δ hδ]`. Rewrite using `[smul_comm, φD_pow_letter W T c x hxc j]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prodPs_mem (hs : W.s = 1) (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀
       (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O))) (T : LocLat G Qp LL O)
@@ -303,19 +303,19 @@ theorem prodPs_mem (hs : W.s = 1) (hR : Formalism.MainNotions.DeltaInvariantLatt
   · rw [smul_comm, φD_pow_letter W T c x hxc j]
 
 /- English proof (translation)
-Establish `h5'` using `h5 T _ _ hT.1 (jumpsLet_of_win W A hA T hT)`. Establish `hM : ∀ k : ℕ, 1 ≤ k → k ≤ A.j → Mw A.G₀ A.S A.η (A.ty (c + (k : ZMod n))) ≤ A.G₀` using `fun k hk1 hkj => mw_le A hA c hc k hk1 hkj`. Establish `hπ : W.π₀ ∈ W.AΔ` using `hR.1`. Use `set P := ∏ s ∈ Finset.range A.j, Formalism.MainNotions.ArcLiftingSetup.ps W s ^ A.G₀ with hPdef`. Establish `hPA : P ∈ W.AΔ` using `prod_mem fun s _ => pow_mem (ps_mem_AΔ W hπ s) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ y ∈ Formalism.MainNotions.ArcLiftingSetup.Pp W T c A.j, P • y ∈ W.NΔ T ∧ (letE (c + (A.j : ZMod n)) : LetA O n) • (P • y) = P • y`. Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `prodPs_mem W hs hR T h5' c A.G₀ A.j hM x hx`. Rewrite using `[smul_comm P a]`. Use `⟨smul_mem_NΔ W T ha h1, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm (letE (c + (A.j : ZMod n)) : LetA O n) a, h2]`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Supply the required witnesses or components.
 
-Conclude with `⟨by rw [smul_zero]; exact (W.NΔ T).zero_mem, by rw [smul_zero, smul_zero]⟩`. Consider the case `add y₁ y₂ _ _ h₁ h₂`. Rewrite using `[smul_add, smul_add, h₁.2, h₂.2]`. Conclude with `⟨(W.NΔ T).add_mem h₁.1 h₂.1, rfl⟩`. Consider the case `neg y _ h`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_neg, smul_neg, h.2]`. Conclude with `⟨(W.NΔ T).neg_mem h.1, rfl⟩`. Introduce `y hy`. Take `⟨hN, hl⟩` from `key y hy`. Use `⟨⟨P • (P • y), smul_mem_NΔ W T hPA hN, ?_, ?_⟩, ⟨P • y, hN, hl, (one_smul (LetA O n) _).symm⟩⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_comm (letE (c + (A.j : ZMod n)) : LetA O n) P, hl]`. Rewrite using `[show Formalism.MainNotions.LiftingTheory.JJ W A.j (2 * A.G₀) (A.M PD.p) = W.π₀ ^ A.M PD.p * (P * P) from ?_, mul_smul, mul_smul]`. Unfold `Formalism.MainNotions.LiftingTheory.JJ`. Use `congr 1`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_add, ← two_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem relay_first (hs : W.s = 1) (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀
       (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)))

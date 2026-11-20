@@ -47,23 +47,23 @@ variable {G M}
 
 @[simp]
 /- English proof (translation)
-The claim follows from `Iff.rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem mem_mulCocycles₂_iff (f : G × G → M) : f ∈ mulCocycles₂ G M ↔ IsMulCocycle₂ f :=
   Iff.rfl
 
 @[simp]
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_mulCoboundaries₂_iff (f : G × G → M) :
     f ∈ mulCoboundaries₂ G M ↔ IsMulCoboundary₂ f :=
   Iff.rfl
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hf`. Introduce `g h j`. Rewrite using `[← hx, ← hx, ← hx, ← hx]`. Simplify using `only [smul_mul', smul_div', mul_smul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_div, mul_assoc]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem isMulCocycle₂_of_isMulCoboundary₂ {f : G × G → M} (hf : IsMulCoboundary₂ f) :
     IsMulCocycle₂ f := by
@@ -78,20 +78,20 @@ theorem isMulCocycle₂_of_isMulCoboundary₂ {f : G × G → M} (hf : IsMulCobo
 variable (G M) in
 
 /- English proof (translation)
-Introduce `_ hf` and use `isMulCocycle₂_of_isMulCoboundary₂ hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mulCoboundaries₂_le_mulCocycles₂ : mulCoboundaries₂ G M ≤ mulCocycles₂ G M :=
   fun _ hf => isMulCocycle₂_of_isMulCoboundary₂ hf
 
 /- English proof (translation)
-Rewrite using `[map_one_fst_of_isMulCocycle₂ hf, h1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_one_fst_of_isMulCocycle₂_of_eq_one {f : G × G → M} (hf : IsMulCocycle₂ f)
     (h1 : f (1, 1) = 1) (g : G) : f (1, g) = 1 := by
   rw [map_one_fst_of_isMulCocycle₂ hf, h1]
 
 /- English proof (translation)
-Rewrite using `[map_one_snd_of_isMulCocycle₂ hf, h1, smul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_one_snd_of_isMulCocycle₂_of_eq_one {f : G × G → M} (hf : IsMulCocycle₂ f)
     (h1 : f (1, 1) = 1) (g : G) : f (g, 1) = 1 := by
@@ -114,21 +114,21 @@ def mk : mulCocycles₂ G M →* H2mul G M :=
 variable {G M}
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.mk'_surjective _ @[elab_as_elim]`.
+A detailed English derivation is pending.
 -/
 theorem mk_surjective : Function.Surjective (mk G M) :=
   QuotientGroup.mk'_surjective _
 
 @[elab_as_elim]
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `mk_surjective x`. Conclude with `h f`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem induction_on {C : H2mul G M → Prop} (x : H2mul G M) (h : ∀ f, C (mk G M f)) : C x := by
   obtain ⟨f, rfl⟩ := mk_surjective x
   exact h f
 
 /- English proof (translation)
-Rewrite using `[mk, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff, Subgroup.mem_subgroupOf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mk_eq_one_iff (f : mulCocycles₂ G M) :
     mk G M f = 1 ↔ IsMulCoboundary₂ (f : G × G → M) := by
@@ -136,7 +136,7 @@ theorem mk_eq_one_iff (f : mulCocycles₂ G M) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← div_eq_one, ← map_div, mk_eq_one_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mk_eq_mk_iff (f f' : mulCocycles₂ G M) :
     mk G M f = mk G M f' ↔ IsMulCoboundary₂ ((f : G × G → M) / (f' : G × G → M)) := by
@@ -144,11 +144,11 @@ theorem mk_eq_mk_iff (f f' : mulCocycles₂ G M) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `x using induction_on with`. Consider the case `h c`. Establish `hd : IsMulCoboundary₂ (fun p : G × G => p.1 • (c : G × G → M) (1, 1))` using `⟨fun _ => (c : G × G → M) (1, 1), fun g h => by simp⟩`. Set `d : mulCocycles₂ G M` to `⟨_, isMulCocycle₂_of_isMulCoboundary₂ hd⟩`. Establish `h1 : ((c / d : mulCocycles₂ G M) : G × G → M) (1, 1) = 1`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[d]`. Use `⟨c / d, ?_, h1, fun g => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mk_eq_mk_iff]`. Establish `: ((c / d : mulCocycles₂ G M) : G × G → M) / c = (d : G × G → M)⁻¹`. Simplify using `only [Subgroup.coe_div]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[div_right_comm, div_self', one_div]`. Rewrite using `[this]`. Conclude with `(mulCoboundaries₂ G M).inv_mem hd`. Conclude with `map_one_fst_of_isMulCocycle₂_of_eq_one (c / d).2 h1 g`. Conclude with `map_one_snd_of_isMulCocycle₂_of_eq_one (c / d).2 h1 g`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_normalized (x : H2mul G M) :
     ∃ f : mulCocycles₂ G M, mk G M f = x ∧ (f : G × G → M) (1, 1) = 1 ∧
@@ -217,7 +217,7 @@ theorem mapPair_mk (f : G' →* G) (φ : M →* M') (hφ : ∀ (g : G') (m : M),
   rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem mapPair_id : mapPair (MonoidHom.id G) (MonoidHom.id M) (fun _ _ => rfl) =
     MonoidHom.id (H2mul G M) := by
@@ -225,7 +225,7 @@ theorem mapPair_id : mapPair (MonoidHom.id G) (MonoidHom.id M) (fun _ _ => rfl) 
   rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem mapPair_comp {G'' : Type*} {M'' : Type*} [Group G''] [CommGroup M'']
     [MulDistribMulAction G'' M''] (f : G' →* G) (φ : M →* M')
@@ -251,14 +251,14 @@ theorem map_mk (φ : M →*[G] N) (c : mulCocycles₂ G M) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem map_id : map (MulDistribMulActionHom.id G : M →*[G] M) = MonoidHom.id (H2mul G M) := by
   ext x
   rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem map_comp {P : Type*} [CommGroup P] [MulDistribMulAction G P] (φ : M →*[G] N)
     (ψ : N →*[G] P) : map (ψ.comp φ) = (map ψ).comp (map φ) := by
@@ -283,9 +283,9 @@ theorem res_mk (H : Subgroup G) (c : mulCocycles₂ G M) :
 variable (N : Subgroup G) [N.Normal]
 
 /- English proof (translation)
-Introduce `n`. Establish `hn : g⁻¹ * (n : G) * g ∈ N`. Simplify using `using ‹N.Normal›.conj_mem _ n.2 g⁻¹`. Use `hm ⟨_, hn⟩` as an intermediate fact. Express the relevant statement in the definitionally equal form `(g⁻¹ * (n : G) * g) • m = m at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(n : G) • g • m = g • m`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_smul, smul_inv_smul]`. Use `_ = g • m := by rw [this]`.
+Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_mem_fixedPoints_of_normal (g : G) {m : M}
     (hm : m ∈ FixedPoints.subgroup N M) : g • m ∈ FixedPoints.subgroup N M := by
@@ -373,9 +373,9 @@ noncomputable def toH2Cocycles :
     rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Multiplicative.ofAdd _ = Multiplicative.ofAdd 0 ↔ _`. Rewrite using `[Multiplicative.ofAdd.injective.eq_iff, H2π_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `isMulCoboundary₂_of_mem_coboundaries₂ _ h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `(coboundariesOfIsMulCoboundary₂ h).2`.
+A detailed English derivation is pending.
 -/
 theorem toH2Cocycles_eq_one_iff (c : mulCocycles₂ G M) :
     toH2Cocycles c = 1 ↔ IsMulCoboundary₂ (c : G × G → M) := by

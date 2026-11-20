@@ -19,15 +19,15 @@ section Arch
 variable {E : Type*} [NormedField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hsq : ∀ z : Fin n → ℝ, (z ᵥ* M) ⬝ᵥ (z ᵥ* M) = z ⬝ᵥ z`. Introduce `z`. Establish `h1` using `h z`. Establish `key : ∀ y : Fin n → ℝ, euclidNorm y ^ 2 = y ⬝ᵥ y`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[euclidNorm, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => by positivity)]`. Simplify using `[dotProduct, sq]`. Rewrite using `[← key, ← key, h1]`. Establish `hpol : ∀ x y : Fin n → ℝ, (x ᵥ* M) ⬝ᵥ (y ᵥ* M) = x ⬝ᵥ y`. Introduce `x y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hsq (x + y)`. Establish `h2` using `hsq x`. Establish `h3` using `hsq y`. Simplify using `only [Matrix.add_vecMul, add_dotProduct, dotProduct_add] at h1`. Rewrite `h1` using `[dotProduct_comm (y ᵥ* M) (x ᵥ* M), dotProduct_comm y x]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use extensionality with `i j`. Establish `h1` using `hpol (Pi.single i 1) (Pi.single j 1)`. Rewrite `h1` using `[single_one_vecMul, single_one_vecMul]`. Rewrite using `[Matrix.mul_apply', Matrix.one_apply]`.
+Combine the linear equalities and inequalities to obtain the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (Pi.single i (1 : ℝ) : Fin n → ℝ) ⬝ᵥ Pi.single j 1 = if i = j then 1 else 0`. Simplify using `[Pi.single_apply, eq_comm]`. Rewrite using `[← h2, ← h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mul_transpose_eq_one_of_norm {M : Matrix (Fin n) (Fin n) ℝ}
     (h : ∀ z : Fin n → ℝ, euclidNorm (z ᵥ* M) = euclidNorm z) : M * Mᵀ = 1 := by
@@ -57,17 +57,17 @@ theorem mul_transpose_eq_one_of_norm {M : Matrix (Fin n) (Fin n) ℝ}
   rfl
 
 /- English proof (translation)
-Establish `hmap : ∀ y : Fin n → E, (fun i => φ.toRingHom ((y ᵥ* k) i)) = (fun i => φ.toRingHom (y i)) ᵥ* (k.map φ)`. Introduce `y`. Use extensionality with `j`. Simplify using `[vecMul, dotProduct, map_sum, map_mul]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `hM : (k.map φ) * (k.map φ)ᵀ = 1`. Apply `mul_transpose_eq_one_of_norm` to reduce the goal to its premises. Introduce `z`. Establish `h1` using `h (fun i => φ.symm (z i))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[← Reduction.euclidNorm_map φ.toRingHom hφ, ← Reduction.euclidNorm_map φ.toRingHom hφ (fun i => φ.symm (z i)), hmap]`. Simplify using `using h1`. Use extensionality with `i j`. Apply `φ.injective` to reduce the goal to its premises. Establish `h1` using `congrFun (congrFun hM i) j`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply] at h1`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, map_sum, map_mul]`. Rewrite using `[h1, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `h y`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hU : (k.map φ) ∈ unitaryGroup (Fin n) ℝ`. Rewrite using `[mem_unitaryGroup_iff]`. Establish `: (k.map φ) * star (k.map φ) = (k * kᵀ).map φ`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.star_eq_conjTranspose, map_sum, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, h]`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply]`. Rewrite using `[← Reduction.euclidNorm_map φ.toRingHom hφ, hmap, Reduction.euclidNorm_vecMul_unitary hU, Reduction.euclidNorm_map φ.toRingHom hφ]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_preserving_iff (φ : E ≃+* ℝ) (hφ : ∀ x, ‖φ x‖ = ‖x‖) (k : Matrix (Fin n) (Fin n) E) :
     (∀ y : Fin n → E, euclidNorm (y ᵥ* k) = euclidNorm y) ↔ k * kᵀ = 1 := by
@@ -110,7 +110,7 @@ section Adelic
 variable {n : ℕ}
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((k⁻¹ : AdelicGLn.AdelicGL ℚ n) b a).1 w = ((infAt w k)⁻¹ : GL (Fin n) w.Completion) b a`. Rewrite using `[← infAt_inv]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infAt_ti (w : InfinitePlace ℚ) (k : AdelicGLn.AdelicGL ℚ n) :
     infAt w (ti k) = ti (infAt w k) := by
@@ -121,7 +121,7 @@ theorem infAt_ti (w : InfinitePlace ℚ) (k : AdelicGLn.AdelicGL ℚ n) :
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((k⁻¹ : AdelicGLn.AdelicGL ℚ n) b a).2 v = ((finAt v k)⁻¹ : GL (Fin n) (v.adicCompletion ℚ)) b a`. Rewrite using `[← finAt_inv]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finAt_ti (v : HeightOneSpectrum (𝓞 ℚ)) (k : AdelicGLn.AdelicGL ℚ n) :
     finAt v (ti k) = ti (finAt v k) := by
@@ -132,7 +132,7 @@ theorem finAt_ti (v : HeightOneSpectrum (𝓞 ℚ)) (k : AdelicGLn.AdelicGL ℚ 
   rfl
 
 /- English proof (translation)
-Establish `hw : w.IsReal` using `RationalIdeles.isReal_infinitePlace w`. Rewrite using `[Reduction.mem_archCompact]`. Conclude with `norm_preserving_iff (InfinitePlace.Completion.ringEquivRealOfIsReal hw) (fun x => (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) x) k.val`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_archCompact_iff (w : InfinitePlace ℚ) (k : GL (Fin n) w.Completion) :
     k ∈ archCompact w ↔ k.val * k.valᵀ = 1 := by
@@ -143,7 +143,7 @@ theorem mem_archCompact_iff (w : InfinitePlace ℚ) (k : GL (Fin n) w.Completion
       (map_zero _) x) k.val
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `k.inv.transpose = k.val`. Establish `h1 : k.inv = k.valᵀ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Matrix.transpose_transpose]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem ti_eq_self_of_orthogonal {R : Type*} [CommRing R] (k : GL (Fin n) R)
     (h : k.val * k.valᵀ = 1) : ti k = k := by
@@ -155,9 +155,9 @@ theorem ti_eq_self_of_orthogonal {R : Type*} [CommRing R] (k : GL (Fin n) R)
   rw [h1, Matrix.transpose_transpose]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `Reduction.mem_maxCompact.1 hk`. Use `Reduction.mem_maxCompact.2 ⟨fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[infAt_ti, ti_eq_self_of_orthogonal _ ((mem_archCompact_iff w _).1 (h1 w))]`. Conclude with `h1 w`. Rewrite using `[finAt_ti]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ha, hb⟩` from `(GLnLocal.mem_integralGL_iff _ _).1 (h2 v)`. Conclude with `(GLnLocal.mem_integralGL_iff _ _).2 ⟨fun i j => hb j i, fun i j => ha j i⟩`.
+A detailed English derivation is pending.
 -/
 theorem ti_mem_maxCompact {k : AdelicGLn.AdelicGL ℚ n}
     (hk : k ∈ (maxCompact : Subgroup (AdelicGLn.AdelicGL ℚ n))) :
@@ -171,17 +171,15 @@ theorem ti_mem_maxCompact {k : AdelicGLn.AdelicGL ℚ n}
     exact (GLnLocal.mem_integralGL_iff _ _).2 ⟨fun i j => hb j i, fun i j => ha j i⟩
 
 /- English proof (translation)
-Establish `hinv : ∀ i j, (γ⁻¹ : GL (Fin n) ℚ).val i j = γ.val j i` using `fun i j => by`. Express the relevant statement in the definitionally equal form `γ.inv i j = _`. Rewrite using `[h2]`. Both sides reduce to the same expression. Use `Reduction.mem_maxCompact.2 ⟨fun w => ?_, fun v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_archCompact_iff]`. Establish `hT : (infAt w (AdelicGLn.diagonal ℚ n γ)).valᵀ = (infAt w (AdelicGLn.diagonal ℚ n γ)).inv`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ((infAt w (AdelicGLn.diagonal ℚ n γ))⁻¹ : GL (Fin n) w.Completion) a b`. Rewrite using `[← infAt_inv, ← map_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(algebraMap ℚ 𝔸[ℚ] (γ.val b a)).1 w = (algebraMap ℚ 𝔸[ℚ] ((γ⁻¹ : GL (Fin n) ℚ).val a b)).1 w`. Rewrite using `[hinv]`. Rewrite using `[hT]`. Conclude with `Units.val_inv _`. Establish `hent : ∀ q : ℚ, (q = 0 ∨ q = 1 ∨ q = -1) → (algebraMap ℚ 𝔸[ℚ] q).2 v ∈ (ValuativeRel.valuation (v.adicCompletion ℚ)).integer`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `q (rfl | rfl | rfl)`. Rewrite using `[map_zero]`. Conclude with `zero_mem (ValuativeRel.valuation (v.adicCompletion ℚ)).integer`. Simplify using the standard rewrite rules. Rewrite using `[map_neg, map_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_mem (one_mem (ValuativeRel.valuation (v.adicCompletion ℚ)).integer)`. Use `(GLnLocal.mem_integralGL_iff _ _).2 ⟨fun i j => hent _ (h1 i j), fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← finAt_inv, ← map_inv]`. Express the relevant statement in the definitionally equal form `(algebraMap ℚ 𝔸[ℚ] ((γ⁻¹ : GL (Fin n) ℚ).val i j)).2 v ∈ _`. Rewrite using `[hinv]`.
-
-Conclude with `hent _ (h1 j i)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagonal_mem_maxCompact (γ : GL (Fin n) ℚ)
     (h1 : ∀ i j, γ.val i j = 0 ∨ γ.val i j = 1 ∨ γ.val i j = -1) (h2 : γ.inv = γ.valᵀ) :
@@ -217,7 +215,7 @@ theorem diagonal_mem_maxCompact (γ : GL (Fin n) ℚ)
 end Adelic
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [w3]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weyl_eq_rational_GL3 : (w3 : G3) = dia w3 := by
   apply Units.ext
@@ -225,7 +223,7 @@ theorem weyl_eq_rational_GL3 : (w3 : G3) = dia w3 := by
   fin_cases i <;> fin_cases j <;> simp [w3]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [w2]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weyl_eq_rational_GL2 : (w2 : G2) = dia2 w2 := by
   apply Units.ext
@@ -233,7 +231,7 @@ theorem weyl_eq_rational_GL2 : (w2 : G2) = dia2 w2 := by
   fin_cases i <;> fin_cases j <;> simp [w2]
 
 /- English proof (translation)
-Use `diagonal_mem_maxCompact _ (fun i j => ?_) ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [w3]`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [w3]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rational_weyl_mem_maxCompact_GL3 : dia w3 ∈ (maxCompact : Subgroup G3) := by
   refine diagonal_mem_maxCompact _ (fun i j => ?_) ?_
@@ -242,7 +240,7 @@ theorem rational_weyl_mem_maxCompact_GL3 : dia w3 ∈ (maxCompact : Subgroup G3)
     fin_cases i <;> fin_cases j <;> simp [w3]
 
 /- English proof (translation)
-Use `diagonal_mem_maxCompact _ (fun i j => ?_) ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [w2]`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [w2]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rational_weyl_mem_maxCompact_GL2 : dia2 w2 ∈ (maxCompact : Subgroup G2) := by
   refine diagonal_mem_maxCompact _ (fun i j => ?_) ?_
@@ -251,7 +249,7 @@ theorem rational_weyl_mem_maxCompact_GL2 : dia2 w2 ∈ (maxCompact : Subgroup G2
     fin_cases i <;> fin_cases j <;> simp [w2]
 
 /- English proof (translation)
-Use `diagonal_mem_maxCompact _ (fun i j => ?_) ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dl3, dg]`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [dl3, dg]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rational_sign_mem_maxCompact_GL3 : dia dl3 ∈ (maxCompact : Subgroup G3) := by
   refine diagonal_mem_maxCompact _ (fun i j => ?_) ?_
@@ -260,7 +258,7 @@ theorem rational_sign_mem_maxCompact_GL3 : dia dl3 ∈ (maxCompact : Subgroup G3
     fin_cases i <;> fin_cases j <;> simp [dl3, dg]
 
 /- English proof (translation)
-Use `diagonal_mem_maxCompact _ (fun i j => ?_) ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dl2, dg2]`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [dl2, dg2]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rational_sign_mem_maxCompact_GL2 : dia2 dl2 ∈ (maxCompact : Subgroup G2) := by
   refine diagonal_mem_maxCompact _ (fun i j => ?_) ?_
@@ -269,7 +267,7 @@ theorem rational_sign_mem_maxCompact_GL2 : dia2 dl2 ∈ (maxCompact : Subgroup G
     fin_cases i <;> fin_cases j <;> simp [dl2, dg2]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨weyl_eq_rational_GL3 ▸ rational_weyl_mem_maxCompact_GL3, rational_sign_mem_maxCompact_GL3, weyl_eq_rational_GL2 ▸ rational_weyl_mem_maxCompact_GL2, rational_sign_mem_maxCompact_GL2, fun _ hk => ti_mem_maxCompact hk, fun _ hk => ti_mem_maxCompact hk, weyl_eq_rational_GL3, weyl_eq …`.
+Supply the required witnesses or components.
 -/
 theorem weyl_delta_ti_maxCompact : (w3 : G3) ∈ (maxCompact : Subgroup G3) ∧ dia dl3 ∈ (maxCompact : Subgroup G3) ∧
     (w2 : G2) ∈ (maxCompact : Subgroup G2) ∧ dia2 dl2 ∈ (maxCompact : Subgroup G2) ∧

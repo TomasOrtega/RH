@@ -10,17 +10,17 @@ variable {R K A : Type} [CommRing R] [Field K] [CommRing A] [Algebra R K] [Algeb
   [IsScalarTower R K A]
 
 /- English proof (translation)
-Take `⟨p, hpm, hp⟩` from `hy`. Set `L` to `AlgebraicClosure K`. Set `M : Matrix (Fin 2) (Fin 2) K` to `Algebra.leftMulMatrix b y`. Set `M' : Matrix (Fin 2) (Fin 2) L` to `M.map (algebraMap K L)`. Establish `hpy : Polynomial.aeval y p = 0` using `hp`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpM : Polynomial.aeval M p = 0`. Establish `h1` using `Polynomial.aeval_algHom_apply ((Algebra.leftMulMatrix b).restrictScalars R) y p`. Rewrite `h1` using `[hpy, map_zero]`. Conclude with `h1`. Establish `hpM' : Polynomial.aeval M' p = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Polynomial.aeval_algHom_apply (((Algebra.ofId K L).mapMatrix : Matrix (Fin 2) (Fin 2) K →ₐ[K] Matrix (Fin 2) (Fin 2) L).restrictScalars R) M p`. Rewrite `h1` using `[hpM, map_zero]`. Conclude with `h1`. Establish `hroot : ∀ μ ∈ M'.charpoly.roots, IsIntegral R μ`. Introduce `μ hμ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : μ ∈ spectrum L M'`. Rewrite using `[Matrix.mem_spectrum_iff_isRoot_charpoly]`. Conclude with `(Polynomial.mem_roots'.mp hμ).2`. Establish `h2` using `spectrum.subset_polynomial_aeval M' (p.map (algebraMap R L)) ⟨μ, h1, rfl⟩`. Rewrite `h2` using `[Polynomial.aeval_map_algebraMap, hpM', spectrum.zero_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨p, hpm, ?_⟩` and prove the remaining obligations. Establish `h3 : Polynomial.eval μ (p.map (algebraMap R L)) = 0` using `h2`. Rewrite `h3` using `[Polynomial.eval_map]`. Then use the resulting hypothesis. Establish `htr : algebraMap K L (Algebra.trace K A y) = M'.charpoly.roots.sum`. Rewrite using `[Algebra.trace_eq_matrix_trace b y, ← Matrix.trace_eq_sum_roots_charpoly]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[M', M, Matrix.trace, Matrix.map_apply]`. Establish `hint : IsIntegral R (algebraMap K L (Algebra.trace K A y))`. Rewrite using `[htr]`. Conclude with `IsIntegral.multiset_sum hroot`. Conclude with `(isIntegral_algHom_iff (IsScalarTower.toAlgHom R K L) (algebraMap K L).injective).mp hint`.
+A detailed English derivation is pending.
 -/
 theorem trace_isIntegral_rank2 (b : Module.Basis (Fin 2) K A) {y : A} (hy : IsIntegral R y) :
     IsIntegral R (Algebra.trace K A y) := by

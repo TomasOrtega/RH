@@ -4,9 +4,9 @@ open AlgebraicGeometry CategoryTheory MvPolynomial NumberField ReciprocityTheory
 namespace GlobalTheory.Member
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e C la`. Rewrite using `[← Fin.prod_const]`. Establish `h` using `C.Y.interPoly_prod_sum (fun x : Root Dw.mult => C.gr x.1 x.2) (fun _ x => -(GlobalTheory.AllWt.exOf Dw la 0 (some x)))`. Move the coercions through the operations in `at h`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `only [FlagCpt.Lw, FlagCpt.LEx, AddMonoidHom.coe_mk, ZeroHom.coe_mk, neg_smul, Finset.sum_neg_distrib]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem selfInter_Lw_interPoly : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l}
     {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β} {F : Type} [Field F] {e : F ≃+* c.F}

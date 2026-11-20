@@ -15,13 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.ThTot
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y0`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖f y0‖` using `norm_pos_iff.2 hne`. Establish `hN : {y | ‖f y - f y0‖ < ‖f y0‖ / 2} ∈ 𝓝 y0` using `(isOpen_lt (hf.sub continuous_const).norm continuous_const).mem_nhds (by simpa using hpos)`. Take `⟨C, hCa, hCu, hC⟩` from `local_compact_nhds hN`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hyU, hUC⟩` from `(loc_compact_Haus_tot_disc_of_zero_dim (H := Y)).mem_nhds_iff.mp hCa`. Establish `hUc : IsCompact U` using `hC.of_isClosed_subset hU.1 hUC`. Establish `hk : U.indicator (1 : Y → ℂ) ∈ GlobalTheory.WeilM.SB Y` using `⟨(LocallyConstant.indicator (1 : LocallyConstant _ ℂ) hU).isLocallyConstant, HasCompactSupport.intro' hUc hU.isClosed (fun x hx => Set.indicator_of_notMem hx _)⟩`. Establish `h0 : ∫ y in U, f y ∂ν = 0`. Rewrite using `[← h _ hk, ← integral_indicator hU.2.measurableSet]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hy : y ∈ U <;> simp [hy]`. Establish `hfin : ν U < ∞` using `hUc.measure_lt_top`. Establish `hνpos : 0 < ν.real U`. Use `ENNReal.toReal_pos (hU.2.measure_pos ν ⟨y0, hyU⟩).ne' hfin.ne` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint : IntegrableOn f U ν` using `hf.continuousOn.integrableOn_compact hUc`. Establish `hc : ∫ y in U, (f y - f y0) ∂ν = - (ν.real U • f y0)`. Rewrite using `[integral_sub hint (integrableOn_const hfin.ne), h0, setIntegral_const, zero_sub]`. Establish `hb : ‖∫ y in U, (f y - f y0) ∂ν‖ ≤ ‖f y0‖ / 2 * ν.real U` using `norm_setIntegral_le_of_norm_le_const hfin fun y hy => (hCu (hUC hy)).le`. Rewrite `hb` using `[hc, norm_neg, norm_smul, Real.norm_of_nonneg hνpos.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -56,29 +56,25 @@ theorem eq_zero_of_orth_SB {Y : Type} [AddCommGroup Y] [TopologicalSpace Y] [IsT
   nlinarith
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `hB`. Use `haveI : (lam.prod ν).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure lam ν`. Use `haveI : (m.map e).IsAddHaarMeasure := e.isAddHaarMeasure_map m`. Establish `hmap` using `Measure.isAddLeftInvariant_eq_smul (m.map e) (lam.prod ν)`. Establish `hcpos` using `Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure (m.map e) (lam.prod ν)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hemb : MeasurableEmbedding e` using `e.toHomeomorph.measurableEmbedding`. Use `set v : Z × Y → ℂ := fun p => u (e.symm p) with hv`. Establish `hvc : Continuous v` using `hu.comp e.symm.continuous`. Establish `hvB : ∀ p, ‖v p‖ ≤ B` using `fun p => hB _`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hvB (Classical.choice (by infer_instance : Nonempty (Z × Y))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hkey : ∀ k ∈ GlobalTheory.WeilM.SB Y, ∀ z, ∫ y, v (z, y) * conj (k y) ∂ν = 0`. Introduce `k hk`. Establish `hkc : Continuous k` using `hk.1.continuous`. Establish `hki : Integrable k ν` using `hkc.integrable_of_hasCompactSupport hk.2`. Establish `hcc : Continuous fun y => conj (k y)` using `Complex.continuous_conj.comp hkc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : (fun z => ∫ y, v (z, y) * conj (k y) ∂ν) = 0`. Use `hE _ ?_ ⟨∫ y, B * ‖k y‖ ∂ν, fun z => ?_⟩ fun t ht => ?_` and prove the remaining obligations. Use `continuous_of_dominated (bound := fun y => B * ‖k y‖) (fun z => ?_) (fun z => ?_) (hki.norm.const_mul B) ?_` and prove the remaining obligations. Conclude with `((hvc.comp (Continuous.prodMk_right z)).mul hcc).aestronglyMeasurable`. Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, RCLike.norm_conj]`. Conclude with `mul_le_mul_of_nonneg_right (hvB _) (norm_nonneg _)`. Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations. Conclude with `(hvc.comp (Continuous.prodMk_left y)).mul continuous_const`. Use `(norm_integral_le_integral_norm _).trans (integral_mono_of_nonneg (Eventually.of_forall fun _ => norm_nonneg _) (hki.norm.const_mul B) (Eventually.of_forall fun y => ?_)) show ‖v (z, y) * conj (k y)‖ ≤ B * ‖k y‖` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[norm_mul, RCLike.norm_conj]`. Conclude with `mul_le_mul_of_nonneg_right (hvB _) (norm_nonneg _)`. Take `⟨htc, hti⟩` from `hT t ht set F : Z × Y → ℂ := fun p => v p * conj (t p.1 * k p.2) with hF`. Establish `hFc : Continuous F` using `hvc.mul (Complex.continuous_conj.comp ((htc.comp continuous_fst).mul (hkc.comp continuous_snd)))`. Establish `hFi : Integrable F (lam.prod ν)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `((hti.mul_prod hki).norm.const_mul B).mono' hFc.aestronglyMeasurable (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [hF, norm_mul, RCLike.norm_conj]`. Conclude with `mul_le_mul_of_nonneg_right (hvB _) (by positivity)`. Establish `h1 : ∫ x, u x * conj (t (e x).1 * k (e x).2) ∂m = ((Measure.addHaarScalarFactor (m.map e) (lam.prod ν) : ℝ≥0) : ℝ) • ∫ p, F p ∂(lam.prod ν)`. Establish `: ∫ p, F p ∂(m.map e) = ∫ x, F (e x) ∂m` using `hemb.integral_map F`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ x, F (e x) = u x * conj (t (e x).1 * k (e x).2)` using `fun x => by simp [hF, hv]`. Simplify using `only [h2] at this`. Rewrite using `[← this]`. Use `conv_lhs => rw [hmap]`. Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h3 : ∫ p, F p ∂(lam.prod ν) = 0`. Use `h1.symm.trans (h t ht k hk)` as an intermediate fact. Conclude with `(smul_eq_zero.1 this).resolve_left (by exact_mod_cast hcpos.ne')`. Rewrite `h3` using `[integral_prod F hFi]`. Rewrite using `[← h3]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [hF, map_mul]`. Rewrite using `[← integral_mul_const]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`.
-
-Expand and normalize the polynomial expressions, which then agree. Introduce `z`. Conclude with `congrFun hw z`. Use function extensionality and compare the values at `x`. Establish `h0` using `eq_zero_of_orth_SB ν (fun y => v ((e x).1, y)) (hvc.comp (Continuous.prodMk_right _)) (fun k hk => hkey k hk (e x).1)`.
-
-Use `congrFun h0 (e x).2` as an intermediate fact. Simplify `this` using `[hv]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem total_of_split {G Z Y : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [MeasurableSpace G] [BorelSpace G]
@@ -180,7 +176,7 @@ theorem coordL_apply (k : D.what₂.Tau × Fin m × Fin n) (z : D.what₂.Tau �
     coordL k z = z k.1 k.2.1 k.2.2 := rfl
 
 /- English proof (translation)
-Take `⟨τ, i, j, b⟩` from `k`. Consider the cases of `b`. Conclude with `(coordL (D := D) (τ, i, j)).hasTemperateGrowth`. Conclude with `(((Complex.conjCLE : ℂ →L[ℝ] ℂ)).comp (coordL (D := D) (τ, i, j))).hasTemperateGrowth`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem coordV_temperate (k : D.what₂.Tau × Fin m × Fin n × Bool) :
     Function.HasTemperateGrowth (coordV (D := D) k) := by
@@ -190,13 +186,13 @@ theorem coordV_temperate (k : D.what₂.Tau × Fin m × Fin n × Bool) :
   · exact (((Complex.conjCLE : ℂ →L[ℝ] ℂ)).comp (coordL (D := D) (τ, i, j))).hasTemperateGrowth
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `: polyV (D` using `D) (m := m) (n := n) (MvPolynomial.C a) = fun _ => a := by`. Use function extensionality and compare the values at `z`. Simplify using `[polyV_eq]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `Function.HasTemperateGrowth.const a`. Consider the case `add p q hp hq`. Establish `: polyV (p + q) = fun z => polyV p z + polyV q z`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[polyV_eq]`. Rewrite using `[this]`. Conclude with `hp.add hq`. Consider the case `mul_X p k hp`. Establish `: polyV (p * MvPolynomial.X k) = fun z => polyV p z * coordV k z`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `z`. Simplify using `[polyV_eq]`. Rewrite using `[this]`. Conclude with `hp.mul (coordV_temperate k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyV_temperate (q : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ) :
     Function.HasTemperateGrowth (polyV q) := by
@@ -215,13 +211,13 @@ theorem polyV_temperate (q : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bo
     rw [this]; exact hp.mul (coordV_temperate k)
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨MvPolynomial.C (conj a), fun z => by simp [polyV_eq]⟩`. Consider the case `add p q hp hq`. Take `⟨p', hp⟩` from `hp`. Take `⟨q', hq⟩` from `hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨p' + q', fun z => ?_⟩` and prove the remaining obligations. Establish `h1` using `hp z`. Establish `h2` using `hq z`. Simplify using `only [polyV_eq, map_add] at h1 h2 ⊢`. Rewrite using `[h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mul_X p k hp`. Take `⟨p', hp⟩` from `hp`. Use `⟨p' * MvPolynomial.X (k.1, k.2.1, k.2.2.1, !k.2.2.2), fun z => ?_⟩` and prove the remaining obligations. Establish `h1` using `hp z`. Simplify using `only [polyV_eq, map_mul, MvPolynomial.eval_X] at h1 ⊢`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Use `congr 1`. Take `⟨τ, i, j, b⟩` from `k`. Apply the tactic sequence `cases b <;> simp [coordV]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_conj_polyV (q : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ) :
     ∃ q' : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ, ∀ z, conj (polyV q z) = polyV q' z := by
@@ -249,9 +245,9 @@ def polyAlg (D : D7) (m n : ℕ) : Subalgebra ℂ ((D.what₂.Tau → Fin m → 
   (MvPolynomial.aeval (R := ℂ) (S₁ := (D.what₂.Tau → Fin m → Fin n → ℂ) → ℂ) (coordV (D := D) (m := m) (n := n))).range
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => funext z`. Simplify using `[polyV_eq]`. Consider the case `add p q hp hq => funext z`. Simplify using `[polyV_eq, hp, hq]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `mul_X p k hp => funext z`. Simplify using `[polyV_eq, hp]`.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem aeval_coordV (q : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ) :
     MvPolynomial.aeval (R := ℂ) (S₁ := (D.what₂.Tau → Fin m → Fin n → ℂ) → ℂ) (coordV (D := D) (m := m) (n := n)) q = polyV q := by
@@ -267,9 +263,9 @@ section Gauss
 variable {D : D7} {p : ℕ}
 
 /- English proof (translation)
-Establish `h : (V1 D).gram = 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `(Examples₂.stdSpace_gram_apply (E := D.host.E) Examples₂.star_isIntegral 1 (fun _ => false) 1 0 i j).trans ?_` and prove the remaining obligations. Use `show (if i = j then (Examples₂.sgn false : D.host.E) else 0) = if i = j then 1 else 0`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `show (HSpace.gram (V1 D)).map (tauE D τ) = 1`. Rewrite using `[h]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem gram_at_place_rank_one (τ : D.what₂.Tau) : gramAt D (V1 D) τ = 1 := by
   have h : (V1 D).gram = 1 := by
@@ -283,7 +279,7 @@ theorem gram_at_place_rank_one (τ : D.what₂.Tau) : gramAt D (V1 D) τ = 1 := 
 
 open scoped ComplexOrder in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mul_one _, by simp, by simpa using Matrix.PosDef.one⟩`.
+Supply the required witnesses or components.
 -/
 theorem cartan_one (k : ℕ) : IsCartanInv (1 : Matrix (Fin k) (Fin k) ℂ) 1 :=
   ⟨mul_one _, by simp, by simpa using Matrix.PosDef.one⟩
@@ -295,11 +291,11 @@ def gaussR (l : D.what₂.Tau → ℝ) (z : D.what₂.Tau → Fin (V1 D).rank �
   Real.exp (-(2 * Real.pi) * sqSum l z)
 
 /- English proof (translation)
-Rewrite using `[gauss, gaussR, Complex.ofReal_exp, sqSum]`. Use `congr 1`. Use `push_cast`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Rewrite using `[gram_at_place_rank_one, mul_one, Matrix.mul_one, Matrix.trace]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.diag_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Complex.conj_mul' (z τ i j)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gauss_eq (l : D.what₂.Tau → ℝ) (z : D.what₂.Tau → Fin (V1 D).rank → Fin p → ℂ) :
     gauss (V1 D) l (fun _ => 1) (fun τ => Matrix.of (z τ)) = (gaussR l z : ℂ) := by
@@ -317,18 +313,18 @@ theorem gauss_eq (l : D.what₂.Tau → ℝ) (z : D.what₂.Tau → Fin (V1 D).r
   rfl
 
 /- English proof (translation)
-Unfold `gaussR sqSum`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_gaussR (l : D.what₂.Tau → ℝ) : Continuous (gaussR (D := D) (p := p) l) := by
   unfold gaussR sqSum
   fun_prop
 
 /- English proof (translation)
-Rewrite using `[one_mul, gaussR]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `hS : ∀ τ, 0 ≤ ∑ j, ∑ i, ‖z τ i j‖ ^ 2` using `fun τ => by positivity`. Establish `h1 : L * ∑ τ, ∑ j, ∑ i, ‖z τ i j‖ ^ 2 ≤ sqSum l z`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_le_sum fun τ _ => mul_le_mul_of_nonneg_right (hL τ) (hS τ)`. Establish `h2 : ‖z‖ ^ 2 ≤ ∑ τ, ∑ j, ∑ i, ‖z τ i j‖ ^ 2`. Establish `h3 : ‖z‖ ≤ Real.sqrt (∑ τ, ∑ j, ∑ i, ‖z τ i j‖ ^ 2)`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun τ => (pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun i => (pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun j => Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hp` using `Real.pi_pos`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 hL0.le]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem gaussR_le (l : D.what₂.Tau → ℝ) (L : ℝ) (hL0 : 0 < L) (hL : ∀ τ, L ≤ |l τ|)
     (z : D.what₂.Tau → Fin (V1 D).rank → Fin p → ℂ) :
@@ -356,33 +352,25 @@ theorem gaussR_le (l : D.what₂.Tau → ℝ) (L : ℝ) (hL0 : 0 < L) (hL : ∀ 
 end Gauss
 
 /- English proof (translation)
-Introduce `hEuc D p θ hθ l hl μ 𝓕 hμ u hu hB horth`. Use `haveI := hμ.1`. Use `haveI : IsModuleTopology (Af D.host.F) (GlobalTheory.RegSch.IkSchwartz.AEf D) := ⟨rfl⟩`. Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI : IsTopologicalRing (GlobalTheory.RegSch.IkSchwartz.AEf D) := IsModuleTopology.isTopologicalRing (Af D.host.F) _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele D.host.F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele D.host.F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField D.host.F`. Use `haveI : TotallyDisconnectedSpace (Af D.host.F) := GlobalTheory.TamePartR.totallyDisconnected_finiteAdele D.host.F`. Take `⟨e0⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := D.host.F) (E := D.host.E) (Af D.host.F)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Use `haveI : LocallyCompactSpace (GlobalTheory.RegSch.IkSchwartz.AEf D) := e0.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (GlobalTheory.RegSch.IkSchwartz.AEf D) := e0.secondCountableTopology`. Use `haveI : T2Space (GlobalTheory.RegSch.IkSchwartz.AEf D) := e0.isEmbedding.t2Space`. Use `haveI : TotallyDisconnectedSpace (GlobalTheory.RegSch.IkSchwartz.AEf D) := e0.symm.totallyDisconnectedSpace`. Use `letI : MeasurableSpace (Fin (V1 D).rank → Fin p → GlobalTheory.RegSch.IkSchwartz.AEf D) := borel _`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `haveI : BorelSpace (Fin (V1 D).rank → Fin p → GlobalTheory.RegSch.IkSchwartz.AEf D) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D (V1 D).rank p) := ⟨rfl⟩`. Use `haveI := (lattice_Mx D (V1 D).rank p).1`. Take `⟨e, he⟩` from `GlobalTheory.RegSch.IkSchwartz.exists_split hθ (V1 D).rank p`. Set `lam : Measure (D.what₂.Tau → Fin (V1 D).rank → Fin p → ℂ)` to `Measure.addHaar`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Set `ν : Measure (Fin (V1 D).rank → Fin p → GlobalTheory.RegSch.IkSchwartz.AEf D)` to `Measure.addHaar`. Take `⟨f, hf⟩` from `GlobalTheory.GaussSchwartz.exists_schwartz_gauss D p (V1 D) l hl (fun _ => 1) (fun τ => by`. Rewrite using `[gram_at_place_rank_one]`. Conclude with `cartan_one _)`. Choose the witnesses or unpack the hypotheses as in `⟨L, hL0, hL⟩ : ∃ L : ℝ, 0 < L ∧ ∀ τ, L ≤ |l τ| := by`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Break down `isEmpty_or_nonempty D.what₂.Tau with h | h` into its components or cases. Conclude with `⟨1, one_pos, fun τ => (h.false τ).elim⟩`. Take `⟨τ₀, -, h₀⟩` from `Finset.exists_min_image Finset.univ (fun τ => |l τ|) Finset.univ_nonempty`. Conclude with `⟨|l τ₀|, abs_pos.2 (hl τ₀), fun τ => h₀ τ (Finset.mem_univ τ)⟩`. Use `total_of_split e μ lam ν {t | ∃ q : MvPolynomial (D.what₂.Tau × Fin (V1 D).rank × Fin p × Bool) ℂ, ∀ z, t z = polyV q z * (gaussR l z : ℂ)} ?_ ?_ u hu hB ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `t ⟨q, hq⟩`. Establish `ht : t = SchwartzMap.smulLeftCLM ℂ (polyV q) f`. Use function extensionality and compare the values at `z`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (polyV_temperate q), hq, hf, gauss_eq]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Rewrite using `[ht]`. Conclude with `⟨SchwartzMap.continuous _, SchwartzMap.integrable _⟩`. Introduce `w hw hwB hwt`. Use `hEuc _ lam (D.what₂.Tau × Fin (V1 D).rank × Fin p) coordL (fun z hz => ?_) (polyAlg D _ p) (fun k => ?_) (fun k => ?_) (gaussR l) (continuous_gaussR l) (fun z => Real.exp_pos _) 1 (2 * Real.pi * L) (by positivity) (fun z => ?_) w hw hwB ?_` and prove the remaining obligations. Use function extensionality and compare the values at `τ i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hz (τ, i, j)`. Use `⟨MvPolynomial.X (k.1, k.2.1, k.2.2, false), ?_⟩` and prove the remaining obligations. Use `(MvPolynomial.aeval_X _ _).trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Simplify using `[coordV, coordL_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨MvPolynomial.X (k.1, k.2.1, k.2.2, true), ?_⟩` and prove the remaining obligations. Use `(MvPolynomial.aeval_X _ _).trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Simplify using `[coordV, coordL_apply]`. Use `gaussR_le l L hL0 hL z` as an intermediate fact.
-
-Simplify `this` using `[neg_mul]`. Introduce and unpack `P ⟨q, rfl⟩`. Take `⟨q', hq'⟩` from `exists_conj_polyV q`. Use `hwt (fun z => polyV q' z * (gaussR l z : ℂ)) ⟨q', fun z => rfl⟩` as an intermediate fact. Rewrite using `[← this]`.
-
-Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Establish `h1 : (MvPolynomial.aeval (R` using `ℂ) (S₁ := (D.what₂.Tau → Fin (V1 D).rank → Fin p → ℂ) → ℂ) (coordV (D := D) (m := (V1 D).rank) (n := p))) q = polyV q := aeval_coordV q`. Use `show w z * ((MvPolynomial.aeval (R := ℂ) (S₁ := (D.what₂.Tau → Fin (V1 D).rank → Fin p → ℂ) → ℂ) (coordV (D := D) (m := (V1 D).rank) (n := p))) q) z * _ = _`. Rewrite using `[h1]`. Use `show w z * polyV q z * (gaussR l z : ℂ) = w z * conj (polyV q' z * (gaussR l z : ℂ))`.
-
-Rewrite using `[map_mul, ← hq' z, Complex.conj_conj, Complex.conj_ofReal, mul_assoc]`. Introduce and unpack `t ⟨q, hq⟩ k hk`. Use `horth (fun x => evalPoly q (fun τ => compAt θ τ x) * gauss (V1 D) l (fun _ => 1) (fun τ => compAt θ τ x) * k (fun i j => finPart D (x i j))) (Submodule.subset_span ⟨q, k, hk, rfl⟩)` as an intermediate fact. Rewrite using `[← this]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
-
-Use `show u x * conj (t (e x).1 * k (e x).2) = u x * conj (evalPoly q (fun τ => compAt θ τ x) * gauss (V1 D) l (fun _ => 1) (fun τ => compAt θ τ x) * k (fun i j => finPart D (x i j)))`. Rewrite using `[hq, he, ← gauss_eq]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fockTotal_of_eucTotal : EucTotal → FockTotal := by
   intro hEuc D p θ hθ l hl μ 𝓕 hμ u hu hB horth

@@ -20,12 +20,12 @@ namespace Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.ComplexMulti
 open Formalism.BasicNotions (D7)
 
 /- English proof (translation)
-The claim follows from `h.out`.
+A detailed English derivation is pending.
 -/
 theorem cmConjSetF_proved [h : Fact CMConjSetF] : CMConjSetF := h.out
 
 /- English proof (translation)
-The claim follows from `conjSet_of_F h.out D`.
+A detailed English derivation is pending.
 -/
 theorem cmConjSet_holds [h : Fact CMConjSetF] (D : D7) : CMConjSet D := conjSet_of_F h.out D
 

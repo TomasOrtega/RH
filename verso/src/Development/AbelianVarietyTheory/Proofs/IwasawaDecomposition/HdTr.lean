@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.Rw
 
 /- English proof (translation)
-Introduce `B C a b G _ _ Pl0 T Ks _ _ iK A R y`. Use `letI := alg b iK`. Set `y' : HdB b R` to `{ tup := (by with_unfolding_all exact (y.tup :)) tupT := (by with_unfolding_all exact (y.tupT :)) tupT_tup := (by with_unfolding_all exact (y.tupT_tup :)) tup0 := (by with_unfolding_all exact (y.tup0 :)) hm := (by with_unfolding_all exact (y.hm :)) hTop := topMult_tr b y.hTop hin …`. Conclude with `⟨y', ⟨(by with_unfolding_all exact ((HEq.refl y.tup) :)), (by with_unfolding_all exact ((HEq.refl y.tupT) :)), (by with_unfolding_all exact ((HEq.refl y.PY.ψ) :)), (by with_unfolding_all exact ((HEq.refl fun i => (y.PW i).ψ) :))⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem hd_tr : ∀ (B : Base) (C : Cols B) (a b : Late B C) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (Ks : Type) [Field Ks] [NumberField Ks] [iK : Algebra Ks a.D.what₂.LL] (A : FamIn a.D.what₂.LL G Pl0 T a.D.R.m) (R : RealDat a.D A Ks) (y : Hd R), ∃ y' : HdB b R, Same b y y' := by
   intro B C a b G _ _ Pl0 T Ks _ _ iK A R y

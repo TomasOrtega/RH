@@ -10,7 +10,7 @@ namespace GlobalTheory.K5.GeoLevel
 variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
 /- English proof (translation)
-Use `⟨Polynomial.X ^ (p ^ n) - 1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Polynomial.X_pow_sub_C_ne_zero (pow_pos (Fact.out : p.Prime).pos n) 1`. Simplify using `[(T.prim n).pow_eq_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isAlgZp_zeta (T : Tower p Ω) (n : ℕ) : IsAlgZp p (T.ζ n) := by
   refine ⟨Polynomial.X ^ (p ^ n) - 1, ?_, ?_⟩
@@ -21,16 +21,16 @@ def ggens (T : Tower p Ω) (N : ℕ) : Set Ω :=
   Set.range (algebraMap (O0 p) Ω) ∪ {x | IsAlgZp p x} ∪ T.qq '' Set.Iic N
 
 /- English proof (translation)
-Unfold `ggens`. Use `gcongr`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ggens_mono (T : Tower p Ω) {m n : ℕ} (h : m ≤ n) : ggens T m ⊆ ggens T n := by
   unfold ggens
   gcongr
 
 /- English proof (translation)
-Establish `hgeo : ∀ x : Ω, IsAlgZp p x → g x = x` using `(Subgroup.mem_inf.mp hg).1`. Establish `hq : g (T.qq N) = T.qq N` using `(Subgroup.mem_inf.mp hg).2`. Introduce and unpack `a ((⟨r, rfl⟩ | ha) | ⟨i, hi, rfl⟩)`. Conclude with `g.commutes r`. Conclude with `hgeo a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi' : i + (N - i) = N` using `Nat.add_sub_cancel' hi`. Rewrite using `[GlobalTheory.K5.FinLevel.qq_eq_pow T i (N - i), hi', map_pow, hq]`.
+A detailed English derivation is pending.
 -/
 theorem fixes_ggens (T : Tower p Ω) (N : ℕ) (g : Gal p Ω)
     (hg : g ∈ Ggeo p Ω ⊓ MulAction.stabilizer (Gal p Ω) (T.qq N)) :
@@ -44,25 +44,21 @@ theorem fixes_ggens (T : Tower p Ω) (N : ℕ) (g : Gal p Ω)
     rw [GlobalTheory.K5.FinLevel.qq_eq_pow T i (N - i), hi', map_pow, hq]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.K5.FinLevel.charZero_of_tower T`. Set `L : IntermediateField ℚ Ω` to `IntermediateField.adjoin ℚ (⋃ n, ggens T n)`. Establish `hmemL : ∀ a ∈ ⋃ n, ggens T n, a ∈ L` using `fun a ha => IntermediateField.subset_adjoin ℚ _ ha`. Establish `hO : ∀ r : O0 p, algebraMap (O0 p) Ω r ∈ L` using `fun r => hmemL _ (Set.mem_iUnion.mpr ⟨0, Or.inl (Or.inl ⟨r, rfl⟩)⟩)`. Set `φ : O0 p →+* L` to `(algebraMap (O0 p) Ω).codRestrict L hO`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : ∀ r, algebraMap L Ω (φ r) = algebraMap (O0 p) Ω r` using `fun r => rfl`. Establish `hφinj : Function.Injective φ`. Introduce `a b hab`. Apply `hClo.inj` to reduce the goal to its premises. Rewrite using `[← hφ a, ← hφ b, hab]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `haveI halg : Algebra.IsAlgebraic L Ω := by`. Prove the components needed by the constructor for the conclusion. Introduce `z`. Take `⟨P, hP0, hPz⟩` from `hClo.alg.isAlgebraic z`. Use `⟨P.map φ, (Polynomial.map_ne_zero_iff hφinj).mpr hP0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map]`. Rewrite `hPz` using `[Polynomial.aeval_def]`. Use `hPz using 2` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext hφ`. Use `haveI : IsAlgClosure L Ω := ⟨hClo.clo, halg⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsGalois L Ω := IsAlgClosure.isGalois L Ω`. Establish `hyL : y ∈ L`. Establish `: y ∈ Set.range (algebraMap L Ω)`. Rewrite using `[InfiniteGalois.mem_range_algebraMap_iff_fixed]`. Introduce `f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `g : Gal p Ω` to `AlgEquiv.ofRingEquiv (f := f.toRingEquiv) (fun r => f.commutes (φ r))`. Establish `hfix : ∀ a ∈ ⋃ n, ggens T n, g a = a` using `fun a ha => f.commutes ⟨a, hmemL a ha⟩`. Establish `hg : g ∈ Ggeo p Ω ⊓ ⨅ n, Gn T n`. Use `Subgroup.mem_inf.mpr ⟨fun x hx => hfix x (Set.mem_iUnion.mpr ⟨0, Or.inl (Or.inr hx)⟩), Subgroup.mem_iInf.mpr fun n => Subgroup.mem_inf.mpr ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `hfix _ (Set.mem_iUnion.mpr ⟨0, Or.inl (Or.inr (isAlgZp_zeta T n))⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hfix _ (Set.mem_iUnion.mpr ⟨n, Or.inr ⟨n, Set.mem_Iic.mpr le_rfl, rfl⟩⟩)`. Conclude with `hy g hg`. Take `⟨l, rfl⟩` from `this`. Conclude with `l.2`. Take `⟨S, hS, hyS⟩` from `IntermediateField.exists_finset_of_mem_adjoin hyL`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∀ t ∈ S, ∃ m, t ∈ ggens T m` using `fun t ht => Set.mem_iUnion.mp (hS ht)`. Use `choose! m hm using hex`. Use `⟨S.sup m, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hSN : (S : Set Ω) ⊆ ggens T (S.sup m)` using `fun t ht => ggens_mono T (Finset.le_sup (f := m) ht) (hm t ht)`. Establish `hyN : y ∈ IntermediateField.adjoin ℚ (ggens T (S.sup m))` using `IntermediateField.adjoin.mono ℚ _ _ hSN hyS`.
-
-Set `gq : Ω ≃ₐ[ℚ] Ω` to `AlgEquiv.ofRingEquiv (f := g.toRingEquiv) (fun q => by simp)`. Establish `hle : Algebra.adjoin ℚ (ggens T (S.sup m)) ≤ AlgHom.equalizer (gq : Ω →ₐ[ℚ] Ω) (AlgHom.id ℚ Ω)` using `Algebra.adjoin_le fun a ha => fixes_ggens T _ g hg a ha`. Take `⟨r, hr, s, hs, rfl⟩` from `IntermediateField.mem_adjoin_iff_div.mp hyN`. Establish `hr' : g r = r` using `hle hr`. Establish `hs' : g s = s` using `hle hs`.
-
-Rewrite using `[map_div₀, hr', hs']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_level_of_fixed (hClo : IsClo p Ω) (T : Tower p Ω) (y : Ω)
     (hy : ∀ h ∈ Ggeo p Ω ⊓ ⨅ n, Gn T n, h y = y) :
@@ -122,11 +118,11 @@ theorem exists_level_of_fixed (hClo : IsClo p Ω) (T : Tower p Ω) (y : Ω)
 end GlobalTheory.K5.GeoLevel
 
 /- English proof (translation)
-Introduce `p _ hp2 Ω _ _ hClo T k j hj x hx hfix`. Take `⟨y₀, E, hy₀, hEH, huniq, hsum⟩` from `GlobalTheory.T.smallTraces_subgroup_galois_towerTop p Ω hp2 hClo T (Ggeo p Ω ⊓ ⨅ n, Gn T n) inf_le_right {x} j hj`. Establish `hgi : ∀ (g : Gal p Ω) (z : Ω), IsInt p z → IsInt p (g z)` using `fun g z hz => hz.map (g : Ω →ₐ[O0 p] Ω)`. Use `⟨∑ g ∈ E, g (y₀ * x), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsIntegral.sum _ fun g _ => hgi g _ (hy₀.mul hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.K5.GeoLevel.exists_level_of_fixed hClo T _ (GlobalTheory.K5.FinLevel.sum_fixed _ E y₀ x hEH huniq)`. Establish `hz : ∀ g ∈ E, ∃ z : Ω, IsInt p z ∧ g x - x = (p : Ω) ^ k * z` using `fun g hg => hfix g (hEH g hg) choose! z hzi hzx using hz`. Use `⟨-∑ g ∈ E, g y₀ * z g, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(IsIntegral.sum _ fun g hg => (hgi g _ hy₀).mul (hzi g hg)).neg`. Rewrite using `[← hsum, Finset.sum_mul, ← Finset.sum_sub_distrib, mul_neg, Finset.mul_sum, ← Finset.sum_neg_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Take the linear combination `(-(g y₀)) * hzx g hg`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.K5.geo_invariants_from_finite_level :
     ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →

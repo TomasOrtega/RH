@@ -11,11 +11,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Pinch
 
 /- English proof (translation)
-Introduce `q`. Use `haveI : q.asIdeal.IsPrime := q.2`. Use `⟨⟨q.asIdeal.comap (TrivSqZeroExt.inlHom R M), Ideal.IsPrime.comap _⟩, ?_⟩` and prove the remaining obligations. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use extensionality with `a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `show (TrivSqZeroExt.inlHom R M) ((TrivSqZeroExt.fstHom R R M) a) ∈ q.asIdeal ↔ a ∈ q.asIdeal`. Establish `hm : TrivSqZeroExt.inr a.snd ∈ q.asIdeal` using `q.2.mem_of_pow_mem 2 (by rw [pow_two, TrivSqZeroExt.inr_mul_inr]; exact q.asIdeal.zero_mem)`. Establish `e : TrivSqZeroExt.inl a.fst + TrivSqZeroExt.inr a.snd = a` using `TrivSqZeroExt.inl_fst_add_inr_snd_eq a`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← e]`. Conclude with `q.asIdeal.add_mem h hm`. Introduce `h show TrivSqZeroExt.inl a.fst ∈ q.asIdeal`. Rewrite using `[eq_sub_of_add_eq e]`. Conclude with `q.asIdeal.sub_mem h hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_fst_surjective (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] [Module Rᵐᵒᵖ M]
     [IsCentralScalar R M] : Function.Surjective (spMap (TrivSqZeroExt.fstHom R R M).toRingHom) := by
@@ -38,9 +38,9 @@ theorem spMap_fst_surjective (R M : Type) [CommRing R] [AddCommGroup M] [Module 
     exact q.asIdeal.sub_mem h hm
 
 /- English proof (translation)
-Take `⟨q₀, rfl⟩` from `spMap_fst_surjective R M q`. Take `⟨U, hUa, hU, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) (show x q₀ ∈ (⊤ : X.Opens) from trivial)`. Take `⟨_, ⟨r, rfl⟩, hr, hle⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (show q₀ ∈ ((x ⁻¹ᵁ U : (Sp R).Opens) : Set (Sp R)) from hU) (x ⁻¹ᵁ U).2`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of (TrivSqZeroExt R M))).inv (TrivSqZeroExt.inl r), ⟨U, hUa⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgebraicGeometry.basicOpen_eq_of_affine]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hr`. Introduce `w hw`. Rewrite `hw` using `[Scheme.Hom.mem_preimage, AlgebraicGeometry.basicOpen_eq_of_affine]`. Conclude with `hle hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basicOpen_inl {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] [Module Rᵐᵒᵖ M]
     [IsCentralScalar R M] {X : Scheme.{0}} (x : Sp R ⟶ X) (q : Sp (TrivSqZeroExt R M)) :

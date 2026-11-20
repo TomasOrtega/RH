@@ -9,7 +9,7 @@ namespace GlobalTheory.Mem.Top.Bl.WitTr
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D nch xd N h hg`. Take `⟨⟨⟨E, N0, S⟩, hE, hA, hC⟩, hsep⟩` from `hg`. Substitute `hE` using the available equality. Conclude with `⟨⟨⟨{ (twEOf xd) with }, N0, S⟩, rfl, hA, hC⟩, hsep⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem goodO_setDiv : ∀ (D : D7) (nch : NChoice D) (xd : ThData D) (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V) (h : D.what₂.Word → ℝ), GoodO D nch xd → GoodO (setDiv D N h) (nchTr N h nch) (xdTr N h xd) := by
   intro D nch xd N h hg

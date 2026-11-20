@@ -24,7 +24,7 @@ Both sides reduce to the same expression.
 theorem cst_apply {X : Scheme.{0}} (p : X ⟶ Sp R) (U : X.Opens) (a : R) : cst p U a = constFn p U a := rfl
 
 /- English proof (translation)
-Establish `e` using `GlobalTheory.TangentOrigin.evalPt_constFn p y U h a`. Establish `e2` using `GlobalTheory.TangentOrigin.evalPt_spMap θ a`. Rewrite `e` using `[hy]`. Conclude with `e.trans e2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_cst {C : Type} [CommRing C] {X : Scheme.{0}} (p : X ⟶ Sp R) (U : X.Opens) (θ : R →+* C)
     (y : Sp C ⟶ X) (hy : y ≫ p = spMap θ) (h : ⊤ ≤ y ⁻¹ᵁ U) (a : R) : evalHom y U h (cst p U a) = θ a := by
@@ -34,9 +34,9 @@ theorem valR_cst {C : Type} [CommRing C] {X : Scheme.{0}} (p : X ⟶ Sp R) (U : 
   exact e.trans e2
 
 /- English proof (translation)
-Take `⟨y, hy, he⟩` from `GlobalTheory.TangentOrigin.exists_evalPt_eq hV χ`. Establish `hy' : y ≫ G.hom = spMap θ` using `GlobalTheory.TangentOrigin.eq_spMap_of_evalPt _ θ (fun a => by`. Rewrite using `[← GlobalTheory.TangentOrigin.evalPt_constFn G.hom y V hy a, he]`. Conclude with `hχ a)`. Use `⟨Over.homMk y hy', hy, fun a => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show valAt' y V a = χ a`. Rewrite using `[GlobalTheory.TangentOrigin.valAt'_eq_evalPt _ _ hy, he]`.
+A detailed English derivation is pending.
 -/
 theorem exists_pt {G : Over (Sp R)} {V : G.left.Opens} (hV : IsAffineOpen V) (θ : R →+* ℂ)
     (χ : Γ(G.left, V) →+* ℂ) (hχ : ∀ r, χ (cst G.hom V r) = θ r) :
@@ -49,14 +49,14 @@ theorem exists_pt {G : Over (Sp R)} {V : G.left.Opens} (hV : IsAffineOpen V) (θ
   rw [GlobalTheory.TangentOrigin.valAt'_eq_evalPt _ _ hy, he]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.TangentOrigin.valAt'_eq_evalPt _ _ hx _).trans (valR_cst G.hom V θ x.left (Over.w x) hx r)`.
+A detailed English derivation is pending.
 -/
 theorem val_cst {G : Over (Sp R)} (V : G.left.Opens) {θ : R →+* ℂ} (x : Over.mk (spMap θ) ⟶ G)
     (hx : ⊤ ≤ x.left ⁻¹ᵁ V) (r : R) : valAt' x.left V (cst G.hom V r) = θ r :=
   (GlobalTheory.TangentOrigin.valAt'_eq_evalPt _ _ hx _).trans (valR_cst G.hom V θ x.left (Over.w x) hx r)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (point_ext hV hx hy h)`.
+A detailed English derivation is pending.
 -/
 theorem pt_ext {G : Over (Sp R)} {V : G.left.Opens} (hV : IsAffineOpen V) {θ : R →+* ℂ}
     {x y : Over.mk (spMap θ) ⟶ G} (hx : ⊤ ≤ x.left ⁻¹ᵁ V) (hy : ⊤ ≤ y.left ⁻¹ᵁ V)
@@ -64,9 +64,9 @@ theorem pt_ext {G : Over (Sp R)} {V : G.left.Opens} (hV : IsAffineOpen V) {θ : 
   Over.OverMorphism.ext (point_ext hV hx hy h)
 
 /- English proof (translation)
-Establish `hv` using `(le_preimage_dual_iff h V).2 hx`. Use `⟨AddMonoidHom.mk' (fun f => TrivSqZeroExt.snd (valR v V f)) fun a b => ?_, fun _ => rfl, fun f f' => ?_⟩` and prove the remaining obligations. Simplify using `only [valR_eq _ _ hv, map_add, TrivSqZeroExt.snd_add]`. Establish `e1` using `fst_valR h hx f`. Establish `e2` using `fst_valR h hx f'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [AddMonoidHom.mk'_apply]`. Rewrite using `[← e1, ← e2]`. Simplify using `only [valR_eq _ _ hv, map_mul, TrivSqZeroExt.snd_mul, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tan_der {X : Scheme.{0}} {x : Sp ℂ ⟶ X} {v : Sp (DualNumber ℂ) ⟶ X}
     (h : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = x) {V : X.Opens} (hx : ⊤ ≤ x ⁻¹ᵁ V) :
@@ -83,7 +83,7 @@ theorem tan_der {X : Scheme.{0}} {x : Sp ℂ ⟶ X} {v : Sp (DualNumber ℂ) ⟶
     ring
 
 /- English proof (translation)
-Establish `e : (Over.homMk (spMap θ) (by simp) : Over.mk (spMap θ) ⟶ Over.mk (𝟙 (Sp R))) ≫ (1 : Over.mk (𝟙 (Sp R)) ⟶ G) = 1`. Rewrite using `[Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (_ ≫ toUnit _) (toUnit _)]`. Conclude with `(congrArg (fun q => Over.Hom.left q) e).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_left_spMap {G : Over (Sp R)} [GrpObj G] (θ : R →+* ℂ) :
     (1 : Over.mk (spMap θ) ⟶ G).left = spMap θ ≫ (1 : Over.mk (𝟙 (Sp R)) ⟶ G).left := by
@@ -92,9 +92,9 @@ theorem one_left_spMap {G : Over (Sp R)} [GrpObj G] (θ : R →+* ℂ) :
   exact (congrArg (fun q => Over.Hom.left q) e).symm
 
 /- English proof (translation)
-Rewrite using `[one_left_spMap, ← M.tan w, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Use `show TrivSqZeroExt.fst (dualMap θ x) = θ (TrivSqZeroExt.fst x)`. Simplify using `[dualMap]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tan_base {G : Over (Sp R)} [GrpObj G] {E : Type} [AddCommGroup E] [Module R E]
     (M : LieModel G (𝟙 (Sp R)) E) (θ : R →+* ℂ) (w : E) :
@@ -110,9 +110,9 @@ theorem tan_base {G : Over (Sp R)} [GrpObj G] {E : Type} [AddCommGroup E] [Modul
   simp [dualMap]
 
 /- English proof (translation)
-Establish `e : (M.pt w).left ≫ G.hom = spMap (algebraMap R (DualNumber R)) ≫ 𝟙 (Sp R)` using `Over.w (M.pt w)`. Rewrite using `[Category.assoc, e, Category.comp_id]`. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext x <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl']`.
+A detailed English derivation is pending.
 -/
 theorem tan_over {G : Over (Sp R)} [GrpObj G] {E : Type} [AddCommGroup E] [Module R E]
     (M : LieModel G (𝟙 (Sp R)) E) (θ : R →+* ℂ) (w : E) :

@@ -33,7 +33,7 @@ section Model
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Establish `: Epi (CommRingCat.ofHom (algebraMap (𝓞 F) F))` using `IsLocalization.epi (nonZeroDivisors (𝓞 F)) F`. Establish `: Mono (spMap (algebraMap (𝓞 F) F))` using `Scheme.Spec.map_mono (CommRingCat.ofHom _).op`. Conclude with `(MorphismProperty.monomorphisms _).of_isPullback M.pb.flip this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mono_j (M : TrueGeo.Model Y) : Mono M.j := by
   have : Epi (CommRingCat.ofHom (algebraMap (𝓞 F) F)) := IsLocalization.epi (nonZeroDivisors (𝓞 F)) F
@@ -41,15 +41,15 @@ theorem mono_j (M : TrueGeo.Model Y) : Mono M.j := by
   exact (MorphismProperty.monomorphisms _).of_isPullback M.pb.flip this
 
 /- English proof (translation)
-Use `mono_j M` as an intermediate fact. Establish `hτ (σ : 𝓞 F →+* ℂ) : ∃ τ : F →+* ℂ, τ.comp (algebraMap (𝓞 F) F) = σ`. Establish `hi : Function.Injective σ` using `(RingHom.injective_iff_ker_eq_bot _).2 (Ideal.eq_bot_of_comap_eq_bot (R := ℤ) (eq_bot_iff.2 fun n hn => by simpa using hn))`. Conclude with `⟨IsFractionRing.lift (K := F) hi, RingHom.ext fun x => by`. Rewrite using `[RingHom.comp_apply, IsFractionRing.lift_algebraMap]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `choose τ hτ using hτ`. Establish `e (σ : 𝓞 F →+* ℂ) : spMap σ = spMap (τ σ) ≫ spMap (algebraMap (𝓞 F) F)` using `(congrArg spMap (hτ σ).symm).trans (Spec.map_comp (CommRingCat.ofHom _) (CommRingCat.ofHom _))`. Set `s (σ : 𝓞 F →+* ℂ) (z : CxPts M.p σ) : Pts Y (τ σ)` to `⟨M.pb.lift z.1 (spMap (τ σ)) (z.2.trans (e σ)), M.pb.lift_snd _ _ _⟩`. Establish `hs (σ) (z : CxPts M.p σ) : (s σ z).1 ≫ M.j = z.1` using `M.pb.lift_fst _ _ _`. Establish `hext (σ σ') (y : Pts Y σ) (y' : Pts Y σ') (h : y.1 = y'.1) : g σ y = g σ' y'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁ : spMap σ = spMap σ'` using `by rw [← y.2, ← y'.2, h]`. Take `rfl : σ = σ'` from `congrArg CommRingCat.Hom.hom (Spec.map_injective h₁)`. Rewrite using `[Subtype.ext h]`. Establish `key (σ) (y : Pts Y σ) (σ₀) (y' : CxPts M.p σ₀) (h : y'.1 = y.1 ≫ M.j) : g _ (s σ₀ y') = g σ y` using `hext _ _ _ _ ((cancel_mono M.j).1 ((hs _ _).trans h))`. Use `⟨fun σ z => g _ (s σ z), fun σ z => ?_, fun σ σ' _ y y' h _ => ?_, key⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `m : Pts Y (τ σ) → CxPts M.p σ` to `fun w => ⟨w.1 ≫ M.j, by`. Rewrite using `[Category.assoc, M.pb.w, ← Category.assoc, w.2, ← e]⟩`. Establish `hz : m (s σ z) = z` using `Subtype.ext (hs σ z)`. Rewrite using `[← hz]`. Conclude with `OnModelCInf.baseChange_cInfAt F M.X Y.X M.p Y.str M.j M.pb _ σ m (fun _ => rfl) _ _ ((hg _ _).congr (.of_forall fun w => key _ w _ _ rfl))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hc _ _ _ _ ((cancel_mono M.j).1 ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, hs, hs, h]`.
+A detailed English derivation is pending.
 -/
 theorem exists_fun_model (M : TrueGeo.Model Y) (g : ∀ σ : F →+* ℂ, Pts Y σ → ℝ) (hg : ∀ σ y, CInfAt (g σ) y)
     (hc : ∀ σ σ' (y : Pts Y σ) (y' : Pts Y σ'), y'.1 = spMap (starRingEnd ℂ) ≫ y.1 → g σ' y' = g σ y) :
@@ -85,9 +85,9 @@ theorem exists_fun_model (M : TrueGeo.Model Y) (g : ∀ σ : F →+* ℂ, Pts Y 
     rw [Category.assoc, hs, hs, h]
 
 /- English proof (translation)
-Take `⟨q, b, hq, -, h₁, h₂, h₃⟩` from `h`. Take `⟨u, hu, huc, hug⟩` from `exists_fun_model M (fun σ y => 2 * g σ y) (fun σ y => (hg σ y).const_mul 2) fun σ σ' y y' e => by rw [hc σ σ' y y' e]`. Establish `H` using `GlobalTheory.T.combined_adelic_metric_identity F Y (Cover.ofModel M hM) A ι ρ g q b hq h₁ h₂ h₃ m (fun _ => ((m : ℕ) : ℤ)) b (fun i => mul_comm _ _) L (fun i => (norms_of_induces (Cover.induces_ofModel hM (hL i))).congr (fun x => (zpow_natCast _ _).symm) (fun _ _ => by simp) fun …`. Rewrite using `[e₁, e₂]`. Conclude with `congrArg (· ≫ M.j) (Category.comp_id _).symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨_, ⟨m * q, Nat.mul_pos m.pos hq⟩, GlobalTheory.T.induced_of_positive_norms F _ Y A M hM _ _ (fun σ z => (h₂ σ z).1) H⟩`.
+A detailed English derivation is pending.
 -/
 theorem induced_of_isComb {ι : Type} [Fintype ι] {A : Adl (cxSt F) Y} {ρ : ι → Adl (cxSt F) Y} {t : ι → ℝ}
     {g : ∀ σ, Pts Y σ → ℝ} (h : IsComb A ρ t g) (hg : ∀ σ y, CInfAt (g σ) y)
@@ -112,9 +112,9 @@ section Man
 variable {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X} {Z : Set X} {r : X → ℝ} {Om : LocPot X}
 
 /- English proof (translation)
-Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `U hU ⟨x, hx⟩`. Take `⟨j, hj⟩` from `A.cover x`. Assume the negation of the conclusion as `h0`. Establish `hs : (A.chart j).target ∩ (A.chart j).symm ⁻¹' U ⊆ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Z` using `fun y hy => ⟨hy.1, by_contra fun hz => h0 ⟨_, hy.2, hz⟩⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `(((A.chart j).isOpen_inter_preimage_symm hU).measure_pos _ ⟨A.chart j x, (A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hx⟩).ne' (MeasureTheory.measure_mono_null hs (h.2.1 j))`.
+A detailed English derivation is pending.
 -/
 theorem dense_compl (h : IsBd A Z r Om) : Dense Zᶜ := by
   rw [dense_iff_inter_open]
@@ -127,13 +127,11 @@ theorem dense_compl (h : IsBd A Z r Om) : Dense Zᶜ := by
     by simpa [(A.chart j).left_inv hj] using hx⟩).ne' (MeasureTheory.measure_mono_null hs (h.2.1 j))
 
 /- English proof (translation)
-Introduce `j y hy hyZ w`. Establish `hn : (A.chart j).target ∩ (A.chart j).symm ⁻¹' Zᶜ ∈ 𝓝 y` using `((A.chart j).isOpen_inter_preimage_symm hZ.isOpen_compl).mem_nhds ⟨hy, hyZ⟩`. Establish `h2 : ContDiffAt ℝ 2 (p ∘ (A.chart j).symm) y` using `((hp j).contDiffAt hn).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `e₁` using `levi_add_smul 1 (GlobalTheory.LeviOnly.pot_two hΘ ((A.chart j).symm y) j hy (Θ.mem_U _)) h2 w`. Establish `e₂` using `levi_add_smul (-1) (GlobalTheory.LeviOnly.pot_two hΘ' ((A.chart j).symm y) j hy (Θ'.mem_U _)) h2 w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a : Mean4O.leviAt A (Θ + LocPot.ofFun p) j y w = Mean4O.leviAt A Θ j y w + levi (p ∘ (A.chart j).symm) y w`. Simplify using `only [one_mul] at e₁`. Conclude with `e₁`. Establish `b : Mean4O.leviAt A (Θ' + LocPot.ofFun p') j y w = Mean4O.leviAt A Θ' j y w + -1 * levi (p ∘ (A.chart j).symm) y w`. Use `(levi_congr (Filter.eventually_of_mem hn fun v hv => ?_) w).trans e₂` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show Θ'.φ _ _ + p' _ = Θ'.φ _ _ + -1 * p _`. Rewrite using `[hp' _ hv.2, neg_one_mul]`. Establish `c₁` using `h j y hy hyZ w`. Establish `c₂` using `h' j y hy hyZ w`. Establish `c₃` using `hl j y hy w`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem leviAt_eq_zero {Θ Θ' : LocPot X} {p p' : X → ℝ} (hZ : IsClosed Z) (hΘ : ReciprocityTheory.AnForm.M.IsPotential A Θ)
     (hΘ' : ReciprocityTheory.AnForm.M.IsPotential A Θ') (hp : A.SmoothOn Zᶜ p) (hp' : ∀ x, x ∉ Z → p' x = -p x)
@@ -169,9 +167,9 @@ variable {F : Type} [Field F] [NumberField F] {Y : Var F} {e : ℕ} {M : Man e} 
 omit [NumberField F] in
 
 /- English proof (translation)
-Substitute `he` using the available equality. Take `⟨j, hj⟩` from `(M.A a).cover ((I.pt a).symm y)`. Take `⟨c, hc⟩` from `I.alg a j`. Establish `H` using `GlobalTheory.T.log_bounded_locally_integrable _ _ _ _ _ _ (M.bd a) (fun x => ψ (I.pt a x)) (2 * C) (fun k => (contDiffOn_const.mul (hu k)).congr fun v hv => hψ _ hv.2) (fun x hx => by`. Rewrite using `[hψ x hx, abs_mul, abs_two, mul_assoc]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (hb x hx) zero_le_two) j`. Rewrite `H` using `[hc, Homeomorph.transOpenPartialHomeomorph_symm_apply, Homeomorph.transOpenPartialHomeomorph_target]`. Rewrite `hj` using `[hc, Homeomorph.transOpenPartialHomeomorph_source]`. Conclude with `⟨c, by simpa using hj, by simpa [Function.comp_def] using H⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_chart_locallyIntegrableOn (he : e = Y.dim) (a : Fin (M.n + 1)) {ψ : Pts Y (I.ε a) → ℝ} {u : M.X a → ℝ} {C : ℝ}
     (hu : (M.A a).SmoothOn (M.Z a)ᶜ u) (hb : ∀ x, x ∉ M.Z a → |u x| ≤ C * Real.log (M.r a x))
@@ -192,7 +190,7 @@ theorem exists_chart_locallyIntegrableOn (he : e = Y.dim) (a : Fin (M.n + 1)) {�
 end Var
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using cInfAt_const (0 : ℝ) y`. Consider the case `insert a s ha ih => simpa only [Finset.sum_insert ha] using (h a).add ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cInfAt_sum {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {ι : Type} (s : Finset ι)
     {f : ι → CxPts p σ → ℝ} {y : CxPts p σ} (h : ∀ i, CInfAt (f i) y) : CInfAt (fun z => ∑ i ∈ s, f i z) y := by
@@ -205,9 +203,7 @@ section Obj
 variable {D : D7} {O : Setup D} {x : ToroidalCompactificationData O.s} {P : PolOf x O.Φ} {A : SlopeTestRemainingChoices O.Y} {T : Real0 O.Y} {H : Ht O.Y}
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃, C, h₄⟩` from `hS`. Establish `key (a)` using `GlobalTheory.T.bounded_pluriharmonic_extends_smoothly _ (T.M c) hM a ((T.F c).th u a) ((T.F c).ph u a) (C * ‖u‖) (T.th_pot c u a) (h₂ u a) (leviAt_eq_zero ((T.M c).bd a).1 (T.th_pot c u a) (T.th_pot c (-u) a) (h₂ u a) (fun z hz => (h₁ a z hz).map_neg u) (fun j y hy w => by`. Rewrite using `[← T.c1_L 0 c _ a j y hy, ← T.c1_L 0 c _ a j y hy, map_neg, ← neg_one_smul ℝ, (T.K 0 c).firstChern_smul_leviEq _ _ a j y hy, Deg.leviAt_rsmul, neg_one_mul]) (h₃ u hu a) (h₃ _ hu' a))`. Use `fun z hz => (h₄ u a z hz).1`. Use `choose g hg hg' using key`.
-
-Conclude with `⟨g, hg, hg'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smooth_ext (c : O.s.Comp) (hS : (T.F c).Size) (hM : (T.M c).FromSec) {u : Wt O.Y} (hu : Dom u)
     (hu' : Dom (-u)) : ∃ g : (T.M c).Fun, (T.M c).Smooth g ∧ ∀ a z, z ∉ (T.M c).Z a → g a z = (T.F c).ph u a z := by
@@ -222,19 +218,17 @@ theorem exists_smooth_ext (c : O.s.Comp) (hS : (T.F c).Size) (hM : (T.M c).FromS
   exact ⟨g, hg, hg'⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(h.man c).ε.surjective σ`. Establish `hψ (z) (hz : z ∉ (T.M c).Z a) : phW (metsOf x O.Φ) (refMet x O.Φ) c _ (fund τ i) ((h.man c).pt a z) = 2 * (T.F c).ph (fund τ i) a z` using `(hc.two_mul_chg c _ _ _).symm.trans (congrArg (2 * ·) ((h.an c).ph _ a z hz).symm)`. Distinguish the cases in `hi : (i : ℕ) + 1 < O.N`. Take `⟨-, h₂, -, C, h₄⟩` from `hS`. Establish `he : dimY O.Y = (O.var c).dim`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[O.dim_eq c]`. Both sides reduce to the same expression. Take `⟨δ, hδ, H⟩` from `GlobalTheory.T.kaehler_potential_locally_integrable_bound _ _ _ _ _ _ _ _ _ (P.om_kaehler c _) (P.exph_is c _) (exists_chart_locallyIntegrableOn (h.man c) he a (h₂ _ a) (fun z hz => (h₄ _ a z hz).1) hψ)`. Use `filter_upwards [Ioo_mem_nhdsGT hδ] with t ht y`. Use `((H t ht.1 ht.2 y).add (cInfAt_const (P.K * t ^ 2) y)).congr (.of_forall fun z => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `if_pos hi`. Establish `hf (τ' : D.what₂.Tau) (b b' : Fin O.N) : fund τ i τ' b = fund τ i τ' b'`. Establish `e (b : Fin O.N) : b ≤ i`. Use `b.2` as an intermediate fact. Conclude with `Fin.le_def.2 (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[fund, e]`. Take `⟨g, hg, hg'⟩` from `exists_smooth_ext c hS hM (u := fund τ i) (fun τ' b b' _ => (hf τ' b' b).le) fun τ' b b' _ => neg_le_neg (hf τ' b b').le`. Establish `hG` using `fun y => (OnModelCInf.cInfAt_of_manIs (h.man c) hg a y).const_mul 2`. Establish `hoff : offBd O.Φ c ((h.man c).ε a) = ((h.man c).pt a).symm ⁻¹' ((T.M c).Z a)ᶜ`. Use extensionality with `w`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Set.mem_preimage, Set.mem_compl_iff, (h.an c).Z, Homeomorph.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hon (w) (hw : w ∈ offBd O.Φ c ((h.man c).ε a)) : phW (metsOf x O.Φ) (refMet x O.Φ) c _ (fund τ i) w = 2 * g a (((h.man c).pt a).symm w)`. Rewrite `hw` using `[hoff]`. Rewrite using `[hg' a _ hw, ← hψ _ hw, Homeomorph.apply_symm_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `.of_forall fun t y => (hG y).congr (.of_forall fun w => (if_neg hi).trans ?_)` and prove the remaining obligations. Unfold `extBd`. Use `split_ifs with hw`. Conclude with `hon w hw`. Establish `hd : Dense (offBd O.Φ c ((h.man c).ε a))`.
-
-Rewrite using `[hoff]`. Conclude with `(dense_compl ((T.M c).bd a)).preimage ((h.man c).pt a).symm.isOpenMap`. Use `mem_closure_iff_nhdsWithin_neBot.1 (hd w)` as an intermediate fact. Conclude with `(((hG w).continuousAt.tendsto.mono_left nhdsWithin_le_nhds).congr' (eventually_nhdsWithin_of_forall fun v hv => (hon v hv).symm)).limsup_eq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_cInfAt_regFund (hc : O.CoreWith x P) (h : O.Reads A T H) (c : O.s.Comp) (hS : (T.F c).Size)
     (hM : (T.M c).FromSec) (σ : D.what₂.LL →+* ℂ) (τ : D.what₂.Tau) (i : Fin O.N) :
@@ -281,9 +275,9 @@ theorem eventually_cInfAt_regFund (hc : O.CoreWith x P) (h : O.Reads A T H) (c :
         (eventually_nhdsWithin_of_forall fun v hv => (hon v hv).symm)).limsup_eq
 
 /- English proof (translation)
-Take `⟨x, P, hc⟩` from `hC`. Establish `: Finite O.s.Comp` using `inferInstanceAs (Finite O.Y.Comp)`. Establish `H : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ c σ τ i y, CInfAt (P.regFund c σ τ i t) y` using `eventually_all.2 fun c => eventually_all.2 fun σ => eventually_all.2 fun τ => eventually_all.2 fun i => eventually_cInfAt_regFund hc h c (hS c) (hM c) σ τ i`. Take `⟨δ, hδ, H⟩` from `(mem_nhdsGT_iff_exists_Ioo_subset).1 H`. Use `⟨δ, hδ, fun t h₀ h₁ c σ u y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc.reg_eq]`. Conclude with `cInfAt_sum _ fun τ => cInfAt_sum _ fun i => (H ⟨h₀, h₁⟩ c σ τ i y).const_mul _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cInfAt_reg (hC : O.Core) (h : O.Reads A T H) (hS : ∀ c, (T.F c).Size) (hM : ∀ c, (T.M c).FromSec) :
     ∃ δ : ℝ, 0 < δ ∧ ∀ t, 0 < t → t < δ → ∀ c σ u y, CInfAt (O.met.reg c σ u t) y := by
@@ -300,13 +294,13 @@ theorem exists_cInfAt_reg (hC : O.Core) (h : O.Reads A T H) (hS : ∀ c, (T.F c)
 end Obj
 
 /- English proof (translation)
-Introduce `hP hH D O hC hf A T H h`. Take `⟨δ, hδ, hreg⟩` from `exists_cInfAt_reg hC h (fun c => (GlobalTheory.T.fibre_size_and_range_bound hP hH D O hC hf A T H h c).1) (GlobalTheory.T.component_metric_from_section D O hC A T H h)`. Use `⟨min 1 (δ / 2), lt_min one_pos (half_pos hδ), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨B, u, s, hB, hu, hs, hss, hd, rfl⟩ c`. Establish `hs' : (0 : ℝ) < s` using `by exact_mod_cast hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e₁ : A.sh u s = fun τ i => u τ i - (s : ℝ) * O.met.dir τ i`. Use function extensionality and compare the values at `τ i`. Simplify using `[SlopeTestRemainingChoices.sh, h.aux.dir]`. Establish `ht : Real.exp (-((s : ℝ) ^ 2)⁻¹) < δ`. Establish `a` using `hss.trans (min_le_left _ _)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `hss.trans (min_le_right _ _)`. Establish `c₁ : ((s : ℝ) ^ 2)⁻¹ ≤ Real.exp ((s : ℝ) ^ 2)⁻¹` using `by linarith [Real.add_one_le_exp ((s : ℝ) ^ 2)⁻¹]`. Establish `c₂ : Real.exp (-((s : ℝ) ^ 2)⁻¹) ≤ (s : ℝ) ^ 2`. Rewrite using `[Real.exp_neg]`. Conclude with `(inv_anti₀ (by positivity) c₁).trans_eq (inv_inv _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨M, hM, L, m, hL⟩` from `GlobalTheory.T.normal_model_for_root_metrics D O hC B hB c`. Take `⟨L', k, hI⟩` from `induced_of_isComb (hC.mbIs B hB u s hu hs _ e₁ (e₁ ▸ hd) c) (fun σ y => ((hreg _ (Real.exp_pos _) ht c σ _ y).const_mul 2⁻¹).congr (.of_forall fun z => div_eq_inv_mul _ _)) (fun σ σ' y y' e => congrArg (· / 2) (GlobalTheory.T.regular_metric_conjugation_invariant D O hC c σ σ' _ _ …`. Conclude with `⟨M, L', k, 0, hI⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem approx_induced : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → 2 < D.R.f * (O.N - 1) →
     ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y), O.Reads A T H → ∃ s₀ : ℝ, 0 < s₀ ∧ ∀ L ∈ approx A s₀, ∀ c : O.s.Comp,

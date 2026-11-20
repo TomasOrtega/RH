@@ -9,23 +9,23 @@ open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 open scoped Pointwise in
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ Γ _ μ _ _ ψ hψ hψs`. Take `⟨hloc, hcnt⟩` from `locInt G Γ μ`. Take `⟨B, hB, hbd⟩` from `cvCount G Γ μ ψ hψ hψs`. Establish `hint : ∀ (F : GlobalTheory.AutomorphicL2Unitary.L2 Γ μ) (x : G), MeasureTheory.Integrable (fun y ↦ GlobalTheory.AutomorphicL2Unitary.lift Γ (↑↑F) y * ψ (y⁻¹ * x)) μ`. Introduce `F x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : Continuous fun y : G ↦ ψ (y⁻¹ * x)` using `hψ.comp (continuous_inv.mul continuous_const)`. Establish `hs : HasCompactSupport fun y : G ↦ ψ (y⁻¹ * x)` using `hψs.comp_homeomorph ((Homeomorph.inv G).trans (Homeomorph.mulRight x))`. Simplify `(hloc F).integrable_smul_right_of_hasCompactSupport hc hs` using `[smul_eq_mul]`. Use `⟨hint, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `F F' s t`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `x`. Establish `hae : ∀ᵐ y ∂μ, GlobalTheory.AutomorphicL2Unitary.lift Γ (↑↑(s • F + t • F')) y = s * GlobalTheory.AutomorphicL2Unitary.lift Γ (↑↑F) y + t * GlobalTheory.AutomorphicL2Unitary.lift Γ (↑↑F') y`. Establish `h` using `Filter.Eventually.and (MeasureTheory.Lp.coeFn_add (s • F) (t • F')) (Filter.Eventually.and (MeasureTheory.Lp.coeFn_smul s F) (MeasureTheory.Lp.coeFn_smul t F'))`. Establish `h'` using `(GlobalTheory.AutomorphicL2Unitary.ae_quotMeasure_iff (μ := μ)).1 h`. Use `filter_upwards [h'] with y hy`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e1, e2, e3⟩` from `hy`. Simplify using `only [GlobalTheory.AutomorphicL2Unitary.lift]`. Rewrite using `[e1, Pi.add_apply, e2, e3]`. Simplify using `[smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Unfold `UpperTheory.V.Cj.H.cv`. Use `MeasureTheory.integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with y hy`. Rewrite using `[hy]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = (s • cv ψ F + t • cv ψ F') x := by`. Rewrite using `[MeasureTheory.integral_add ((hint F x).const_mul s) ((hint F' x).const_mul t), MeasureTheory.integral_const_mul, MeasureTheory.integral_const_mul]`. Simplify using `[UpperTheory.V.Cj.H.cv, smul_eq_mul]`. Introduce `F γ hγ g`. Unfold `UpperTheory.V.Cj.H.cv`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← MeasureTheory.integral_mul_left_eq_self _ γ]`. Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun y ↦ ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[GlobalTheory.AutomorphicL2Unitary.leftInv_lift _ γ hγ y, _root_.mul_inv_rev, mul_assoc, inv_mul_cancel_left]`. Introduce `C hC`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hK : IsCompact (tsupport ψ)` using `hψs`. Take `⟨N, hN⟩` from `hcnt (C * (tsupport ψ)⁻¹) (hC.mul hK.inv)`. Use `⟨B * (N : ℝ), fun F x hx ↦ ?_⟩` and prove the remaining obligations. Use `hbd x N (fun g ↦ le_trans (Set.encard_le_encard ?_) (hN g)) F` and prove the remaining obligations. Introduce `γ hγ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq] at hγ ⊢`. Establish `hmem : ((γ : G) * g)⁻¹ * x ∈ tsupport ψ` using `subset_tsupport _ (Function.mem_support.2 hγ)`. Establish `heq : (γ : G) * g = x * (((γ : G) * g)⁻¹ * x)⁻¹` using `by group`. Rewrite using `[heq]`. Conclude with `Set.mul_mem_mul hx (Set.inv_mem_inv.2 hmem)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.cvAlg :
     UpperTheory.V.Cj.H.CvAlg := by

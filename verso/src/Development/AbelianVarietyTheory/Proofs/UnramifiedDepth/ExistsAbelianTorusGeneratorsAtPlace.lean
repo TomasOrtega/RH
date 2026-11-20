@@ -26,15 +26,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF.GenAtPlace
 
 /- English proof (translation)
-Establish `key : ∀ z ∈ Submodule.span R (Set.range u), (algebraMap R O) ∘ z ∈ Submodule.span O (Set.range fun q => (algebraMap R O) ∘ u q)`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => obtain ⟨q, rfl⟩ := hz`. Conclude with `Submodule.subset_span ⟨q, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero`. Establish `: (algebraMap R O) ∘ (0 : κ → R) = 0` using `by ext; simp`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (algebraMap R O) ∘ (a + b) = (algebraMap R O) ∘ a + (algebraMap R O) ∘ b` using `by ext; simp`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha`. Establish `: (algebraMap R O) ∘ (c • a) = algebraMap R O c • ((algebraMap R O) ∘ a)` using `by ext; simp`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ ha`. Establish `: M.map (algebraMap R O) *ᵥ x = ∑ i, x i • ((algebraMap R O) ∘ (M *ᵥ Pi.single i 1))`. Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[this]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (key _ ?_)` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem range_map_le {R O κ J : Type} [CommRing R] [CommRing O] [Algebra R O] [Fintype κ] [DecidableEq κ]
     (M : Matrix κ κ R) (u : J → κ → R)
@@ -62,7 +62,7 @@ private theorem range_map_le {R O κ J : Type} [CommRing R] [CommRing O] [Algebr
   rw [h]; exact ⟨_, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_mulVec' {R O κ : Type} [CommRing R] [CommRing O] [Algebra R O] [Fintype κ]
     (M : Matrix κ κ R) (x : κ → R) :
@@ -71,11 +71,9 @@ private theorem map_mulVec' {R O κ : Type} [CommRing R] [CommRing O] [Algebra R
   simp [Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use `⟨Submodule.mapQ _ _ (K.rangeRestrict.comp (β.comp L.subtype)) ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Conclude with `h1 _ hx`. Introduce `q`. Take `⟨⟨_, f, rfl⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl, h⟩` from `h2 f`. Use `⟨Submodule.Quotient.mk ⟨l, hl⟩, ?_⟩` and prove the remaining obligations. Use `(Submodule.mapQ_apply _ _ _ _).trans ((Submodule.Quotient.eq _).2 ?_)` and prove the remaining obligations. Use `S.neg_mem h` as an intermediate fact. Rewrite `this` using `[neg_sub]`.
-
-Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem quot_onto {O M P Q : Type} [CommRing O] [AddCommGroup M] [Module O M] [AddCommGroup P]
     [Module O P] [AddCommGroup Q] [Module O Q] (K : M →ₗ[O] P) (S : Submodule O P) (L U : Submodule O Q)
@@ -95,7 +93,7 @@ private theorem quot_onto {O M P Q : Type} [CommRing O] [AddCommGroup M] [Module
     exact this
 
 /- English proof (translation)
-Use extensionality with `i`. Establish `h1 : ∀ f, Pdiv.ChartF.res W f i = W i ⬝ᵥ f` using `fun f => rfl`. Rewrite using `[Pi.smul_apply, h1, h1, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, h.1 i a, smul_dotProduct]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem res_eig {O OE : Type} [CommRing O] [CommRing OE] {d s : ℕ} (ρ : OE → Matrix (Fin d) (Fin d) O)
     (τ : OE →+* O) (W : Fin s → Fin d → O) (h : EigB ρ τ W) (a : OE) (f : Fin d → O) :
@@ -109,7 +107,7 @@ private noncomputable def extM (p : ℕ) [Fact p.Prime] {O OE κ : Type} [CommRi
   Algebra.TensorProduct.lift (Algebra.ofId ℤ_[p] _) ρ.toIntAlgHom (fun c _ => Algebra.commutes c _)
 
 /- English proof (translation)
-Use `(Algebra.TensorProduct.lift_tmul _ _ _ c a).trans ?_` and prove the remaining obligations. Use `show algebraMap ℤ_[p] (Matrix κ κ O) c * ρ a = _`. Rewrite using `[← Algebra.smul_def, algebraMap_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem extM_tmul (p : ℕ) [Fact p.Prime] {O OE κ : Type} [CommRing O] [Algebra ℤ_[p] O] [CommRing OE]
     [Fintype κ] [DecidableEq κ] (ρ : OE →+* Matrix κ κ O) (c : ℤ_[p]) (a : OE) :
@@ -127,7 +125,7 @@ private def trR {O OE κ : Type} [CommRing O] [CommRing OE]
   map_add' a b := by simp [Matrix.transpose_add]
 
 /- English proof (translation)
-Unfold `eigDim`. Establish `: (⨅ a : OE, Module.End.eigenspace (Matrix.toLin' ((ρ (star a)).map (algebraMap O C))) (τ a)) = ⨅ a : OE, Module.End.eigenspace (Matrix.toLin' ((ρ a).map (algebraMap O C))) ((τ.comp ((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom) a)`. Use `(star_involutive.surjective.iInf_congr star fun a => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eigDim_star (C : Type) [Field C] {O OE κ : Type} [CommRing O] [Algebra O C] [CommRing OE]
     [StarRing OE] [Fintype κ] [DecidableEq κ] (ρ : OE → Matrix κ κ O) (τ : OE →+* C) :
@@ -142,7 +140,7 @@ private theorem eigDim_star (C : Type) [Field C] {O OE κ : Type} [CommRing O] [
   rw [this]
 
 /- English proof (translation)
-Take `⟨h, y, h1, h2⟩` from `GlobalTheory.T.exists_linearIndependent_spanning_range_mulVec p OE ⟨w.e, w.idem, w.ne_zero, w.prim⟩ b κ ρ`. Conclude with `⟨h, y, h2, GlobalTheory.T.padic_place_basis_of_idempotent p C v O hv OE ⟨w.e, w.idem, w.ne_zero, w.prim⟩ b κ ρ h y h1 h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem wfd (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O) [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] (OE : Type) [CommRing OE] [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE] [StarRing OE] (w : Place p OE) (b : Module.Basis (Fin w.n) ℤ_[p] w.Ow) (κ : Type) [Fintype κ] [DecidableEq κ] (ρ : (ℤ_[p] ⊗[ℤ] OE) →ₐ[ℤ_[p]] Matrix κ κ ℤ_[p]) :
     ∃ (h : ℕ) (y : Fin h → κ → ℤ_[p]),
@@ -152,7 +150,7 @@ private theorem wfd (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C
   exact ⟨h, y, h2, GlobalTheory.T.padic_place_basis_of_idempotent p C v O hv OE ⟨w.e, w.idem, w.ne_zero, w.prim⟩ b κ ρ h y h1 h2⟩
 
 /- English proof (translation)
-Use `show Matrix.mulVecLin M _ = _`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => map_smul _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mulVec_comb {O I J K : Type} [CommRing O] [Fintype I] [Fintype J] (M : Matrix K J O)
     (c : I → O) (u : I → J → O) : M *ᵥ (∑ i, c i • u i) = ∑ i, c i • (M *ᵥ u i) := by
@@ -161,7 +159,7 @@ private theorem mulVec_comb {O I J K : Type} [CommRing O] [Fintype I] [Fintype J
   exact Finset.sum_congr rfl fun i _ => map_smul _ _ _
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem sum_single' {O I : Type} [CommRing O] [Fintype I] [DecidableEq I] (c : I → O) :
     ∑ i, c i • (Pi.single i 1 : I → O) = c := by
@@ -169,7 +167,7 @@ private theorem sum_single' {O I : Type} [CommRing O] [Fintype I] [DecidableEq I
   simp [Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem mulVec_cols {O I K : Type} [CommRing O] [Fintype I] (M : Matrix K I O) (c : I → O) :
     M *ᵥ c = ∑ i, c i • (fun l => M l i) := by
@@ -177,21 +175,17 @@ private theorem mulVec_cols {O I K : Type} [CommRing O] [Fintype I] (M : Matrix 
   simp [Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Establish `hBt : ∀ x l, Bᵀ *ᵥ ((L x)ᵀ *ᵥ l) = (G x)ᵀ *ᵥ (Bᵀ *ᵥ l)`. Introduce `x l`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.transpose_mul, ← Matrix.transpose_mul, hB]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `_ ⟨_, ⟨x, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h` using `range_map_le (O := O) _ _ hy x`. Establish `hle : Submodule.span O (Set.range fun q : J × Fin h₁ => algebraMap R O ∘ (ρ (b q.1) *ᵥ y q.2)) ≤ S.comap (K.comp ((Matrix.mulVecLin Bᵀ).comp (Matrix.mulVecLin Ht)))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨q, rfl⟩`. Use `show K (Bᵀ *ᵥ (Ht *ᵥ (algebraMap R O ∘ (ρ (b q.1) *ᵥ y q.2)))) ∈ S`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mulVec', Matrix.mulVec_mulVec _ Ht, hH, ← Matrix.mulVec_mulVec, hBt, hK]`. Conclude with `hS₁ _ _`. Conclude with `hle h`. Introduce `f`. Establish `h` using `range_map_le (O := O) _ _ hz (Aᵀ *ᵥ f)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hle : Submodule.span O (Set.range fun q : J × Fin h₂ => algebraMap R O ∘ (Nt (b q.1) *ᵥ z q.2)) ≤ (S.comap K).map (Matrix.mulVecLin Aᵀ)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨q, rfl⟩`. Use `⟨(G (b q.1))ᵀ *ᵥ φ q.2, ?_, ?_⟩` and prove the remaining obligations. Use `show K _ ∈ S`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hK]`. Conclude with `hS₂ _ _`. Use `show Aᵀ *ᵥ _ = algebraMap R O ∘ (Nt (b q.1) *ᵥ z q.2)`. Rewrite using `[map_mulVec', ← hφ, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hA]`. Take `⟨u, hu, hAu⟩` from `hle h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAu' : Aᵀ *ᵥ ((G e)ᵀ *ᵥ f - u) = 0`. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_mulVec, hA, ← Matrix.mulVec_mulVec, ← hAu]`. Conclude with `sub_self _`. Take `⟨-, A', B', -, -, h3⟩` from `hex`. Establish `h4 : Bᵀ *ᵥ (B'ᵀ *ᵥ ((G e)ᵀ *ᵥ f - u)) = (G e)ᵀ *ᵥ f - u`.
-
-Establish `h5 : A'ᵀ * Aᵀ + Bᵀ * B'ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.transpose_mul, ← Matrix.transpose_add, h3, Matrix.transpose_one]`. Use `conv_rhs => rw [← Matrix.one_mulVec ((G e)ᵀ *ᵥ f - u), ← h5]`. Rewrite using `[Matrix.add_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hAu', Matrix.mulVec_zero, zero_add]`. Use `⟨(L e)ᵀ *ᵥ (B'ᵀ *ᵥ ((G e)ᵀ *ᵥ f - u)), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations.
-
-Use `show K f - K (Bᵀ *ᵥ _) ∈ S`. Rewrite using `[hBt, h4, hK, map_sub, hK, he, _root_.one_mul, _root_.one_mul, sub_sub_cancel]`. Conclude with `hu`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem core {R O Λ I J Y : Type} [CommRing R] [CommRing O] [Algebra R O] [Fintype I] [DecidableEq I]
     {d r g h₁ h₂ : ℕ} (A : Matrix (Fin d) (Fin r) O) (B : Matrix (Fin g) (Fin d) O) (hex : SplitEx A B)
@@ -253,59 +247,51 @@ private theorem core {R O Λ I J Y : Type} [CommRing R] [CommRing O] [Algebra R 
     exact hu
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ hv _ _ _ OE _ _ _ _ _ _ cp hU g H d r m A B ρG N s hL w t α b hb rp rm W hW hrm`. Take `⟨-, -, hstar⟩` from `GlobalTheory.T.embeddings_lift_integers_idempotents_conjugation p C v O hv OE`. Establish `hzp` using `(GlobalTheory.T.padicInt_algebra_of_isAdicComplete_matrix_unique p O).2`. Establish `hbar : ∀ τ : OE →+* O, w.bar = sigE p OE w.e` using `fun τ => (hstar τ w.e).2`. Set `NZ : OE →+* Matrix (Fin r) (Fin r) ℤ_[p]` to `((Int.castRingHom ℤ_[p]).mapMatrix).comp N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `NO : OE →+* Matrix (Fin r) (Fin r) O` to `((Int.castRingHom O).mapMatrix).comp N`. Set `LB : OE →+* Matrix (Fin g) (Fin g) O` to `H.ρL.comp (Algebra.TensorProduct.includeRight : OE →ₐ[ℤ] ℤ_[p] ⊗[ℤ] OE).toRingHom`. Establish `hLB : ∀ a, LB a = H.ρL (1 ⊗ₜ[ℤ] a)` using `fun a => rfl`. Establish `hNO : ∀ a, ((NZ a)ᵀ).map (algebraMap ℤ_[p] O) = (NO a)ᵀ`. Introduce `a`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Simplify using `[NZ, NO]`. Establish `hLt : ∀ (c : ℤ_[p]) (a : OE), H.ρL (c ⊗ₜ[ℤ] a) = algebraMap ℤ_[p] O c • H.ρL (1 ⊗ₜ[ℤ] a)`. Introduce `c a`. Establish `h1 : (c ⊗ₜ[ℤ] a : ℤ_[p] ⊗[ℤ] OE) = algebraMap ℤ_[p] _ c * (1 ⊗ₜ[ℤ] a)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Algebra.TensorProduct.algebraMap_apply]`. Establish `h2` using `hzp g (H.ρL.comp (algebraMap ℤ_[p] _)) c`. Rewrite `h2` using `[RingHom.comp_apply]`. Rewrite using `[h1, map_mul, h2, smul_mul_assoc, _root_.one_mul]`. Establish `hB : ∀ x, B * extM p ρG x = H.ρL x * B`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c a => rw [extM_tmul, hLt, Matrix.mul_smul, Matrix.smul_mul, hL.eqB]`. Consider the case `add x x' h h' => rw [map_add, map_add, Matrix.mul_add, Matrix.add_mul, h, h']`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hA : ∀ x, Aᵀ * (extM p ρG x)ᵀ = (extM p (trR NZ) x).map (algebraMap ℤ_[p] O) * Aᵀ`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1 : (algebraMap ℤ_[p] ℤ_[p] c • trR NZ a).map (algebraMap ℤ_[p] O) = algebraMap ℤ_[p] O c • (NO a)ᵀ`. Rewrite using `[← hNO]`. Use extensionality with `i j`. Simplify using `[trR]`. Rewrite using `[extM_tmul, extM_tmul, h1, Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, ← Matrix.transpose_mul, ← Matrix.transpose_mul, hL.eqA]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `add x x' h h'`. Rewrite using `[map_add, map_add, Matrix.transpose_add, Matrix.mul_add, h, h', Matrix.map_add _ (map_add _), Matrix.add_mul]`. Set `ρ' : (ℤ_[p] ⊗[ℤ] OE) →ₐ[ℤ_[p]] Matrix (Ix g) (Ix g) ℤ_[p]` to `H.ρ.comp (sigE p OE).toAlgHom`. Establish `hρ' : ∀ x, ρ' x = H.ρ (sigE p OE x)` using `fun x => rfl`.
+Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hH : ∀ x, H.Ht * (ρ' x).map (algebraMap ℤ_[p] O) = (H.ρL x)ᵀ * H.Ht`. Introduce `x`. Rewrite using `[hρ', H.Ht_equivariant.1, hU.invol]`. Establish `hres : ∀ j x f, Pdiv.ChartF.res (W j) ((extM p ρG x)ᵀ *ᵥ f) = tauExt ((t j : Emb (O` using `O) w.e) : OE →+* O) x • Pdiv.ChartF.res (W j) f := by`. Introduce `j x f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c a`. Rewrite using `[extM_tmul, Matrix.transpose_smul, Matrix.smul_mulVec, map_smul, res_eig _ _ _ (hW j), smul_smul]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Consider the case `add x x' h h' => rw [map_add, map_add, Matrix.transpose_add, Matrix.add_mulVec, map_add, h, h', add_smul]`. Take `⟨h₁, y, hy, hyd⟩` from `wfd p C v O hv OE w b (Ix g) ρ'`. Take `⟨h₂, z, hz, hzd⟩` from `wfd p C v O hv OE w b (Fin r) (extM p (trR NZ))`. Use `choose kB hkB using hL.fromB`. Use `choose kT hkT using hL.fromT`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : Fin h₂ → Fin d → O` to `fun l => ∑ i, algebraMap ℤ_[p] O (z l i) • s (kT i)`. Establish `hφ : ∀ l, Aᵀ *ᵥ φ l = algebraMap ℤ_[p] O ∘ z l`. Introduce `l`. Use `show Aᵀ *ᵥ (∑ i, algebraMap ℤ_[p] O (z l i) • s (kT i)) = _`. Rewrite using `[mulVec_comb]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [hkT]`. Conclude with `sum_single' _`. Set `χ : Fin h₁ → Fin d → O` to `fun l => Bᵀ *ᵥ (H.Ht *ᵥ (algebraMap ℤ_[p] O ∘ y l))`. Establish `hχ : ∀ l, χ l = ∑ i, algebraMap ℤ_[p] O (y l i) • s (kB i)`. Introduce `l`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `show Bᵀ *ᵥ (H.Ht *ᵥ (algebraMap ℤ_[p] O ∘ y l)) = _`. Rewrite using `[mulVec_cols H.Ht, mulVec_comb]`. Simplify using `only [hkB]`. Both sides reduce to the same expression. Establish `hn : Nonempty (Fin w.n)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nonempty_iff]`. Establish `hs : Subsingleton w.Ow` using `b.repr.toEquiv.subsingleton`. Establish `h1 : (⟨w.e, ⟨1, by simp⟩⟩ : w.Ow) = 0` using `Subsingleton.elim _ _`. Conclude with `w.ne_zero (congrArg Subtype.val h1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j₀⟩` from `hn`. Use `⟨h₁ + h₂, Fin.append χ φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `set τ : OE →+* O := ((t j₀ : Emb (O := O) w.e) : OE →+* O) with hτ`. Establish `hτe : τ ∈ Emb (O` using `O) w.e := (t j₀).2`. Establish `e1` using `hyd τ hτe`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `hzd τ hτe`. Establish `e3` using `(GlobalTheory.T.eigenbasis_restriction_surjective_equivariant C v O hv OE d rp ρG τ (W j₀) (hW j₀)).2.2`. Establish `e4` using `(GlobalTheory.T.eigenspaceDim_add_split_exact_transpose C O OE d r g A B hL.exact ρG NO LB hL.eqB hL.eqA ((algebraMap O C).comp τ)).1`. Establish `e5` using `(GlobalTheory.T.eigenspaceDim_add_split_exact_transpose C O OE r r 0 1 0 (splitEx_one r) NO NO ⟨⟨⟨fun _ => 1, rfl⟩, fun _ _ => Subsingleton.elim _ _⟩, Subsingleton.elim _ _, fun _ _ => Subsingleton.elim _ _⟩ (fun a => Subsingleton.elim _ _) (fun a => by simp) ((algebraMap O C).co …`. Establish `e2' : (fun a : OE => (extM p (trR NZ) (1 ⊗ₜ[ℤ] a)).map (algebraMap ℤ_[p] O)) = fun a => (NO a)ᵀ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[extM_tmul, map_one, one_smul]`. Conclude with `hNO a`. Rewrite `e2` using `[e2', e5]`. Establish `e1' : (fun a : OE => (ρ' (1 ⊗ₜ[ℤ] a)).map (algebraMap ℤ_[p] O)) = fun a => (fun a : OE => (H.ρ (1 ⊗ₜ[ℤ] a)).map (algebraMap ℤ_[p] O)) (star a)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Both sides reduce to the same expression. Rewrite `e1` using `[e1', eigDim_star C (fun a : OE => (H.ρ (1 ⊗ₜ[ℤ] a)).map (algebraMap ℤ_[p] O)), GlobalTheory.T.tateModule_eigenspace_dim_eq_lieAlgebra_sum p C v O hv OE cp hU g H]`. Establish `e6 : (((algebraMap O C).comp τ).comp ((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom).comp ((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom = (algebraMap O C).comp τ`. Use extensionality with `a`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Rewrite `e1` using `[e6]`. Establish `e7` using `hrm (τ.comp ((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom) (by show tauExt _ _ = 1`. Rewrite using `[(hstar τ _).1, hbar τ, hU.invol]`. Conclude with `hτe)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e7` using `[← RingHom.comp_assoc]`. Establish `e8 : eigDim C LB ((algebraMap O C).comp τ) = eigDim C (fun a : OE => H.ρL (1 ⊗ₜ[ℤ] a)) ((algebraMap O C).comp τ)` using `rfl`. Use linear arithmetic over natural numbers and integers. Introduce `l j`. Use `Fin.addCases (fun l => ?_) (fun l => ?_) l` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Fin.append_left, hχ, map_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Rewrite using `[Fin.append_right, map_sum]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Establish `hTb : ∀ j k, tauExt ((t j : Emb (O` using `O) w.e) : OE →+* O) (b k : ℤ_[p] ⊗[ℤ] OE) = tauExt ((t j : Emb (O := O) w.e) : OE →+* O) α ^ (k : ℕ) := by`. Introduce `j k`.
-
-Establish `: tauExt ((t j : Emb (O` using `O) w.e) : OE →+* O) w.e = 1 := (t j).2`. Rewrite using `[hb, map_mul, map_pow, this, _root_.one_mul]`. Take `⟨c1, c2⟩` from `core A B hL.exact (extM p ρG) H.ρL (extM p (trR NZ)) ρ' H.Ht hB hA hH (LinearMap.pi fun y : Fin w.n × Fin rp => (LinearMap.proj y.2).comp (Pdiv.ChartF.res (W y.1))) (fun x y => tauExt ((t y.1 : Emb (O := O) w.e) : OE →+* O) x) (fun x f => by`. Use extensionality with `y`. Use `show Pdiv.ChartF.res (W y.1) _ y.2 = _`.
-
-Rewrite using `[hres]`. Use the proof step `rfl)`. Use the proof step `w.e (by ext y; exact (t y.1).2) (fun k => (b k : ℤ_[p] ⊗[ℤ] OE)) y z hy hz φ hφ`. Use the proof step `(Submodule.span O (Set.range fun q : Fin w.n × Fin (h₁ + h₂) => fun y : Fin w.n × Fin rp => tauExt ((t y.1 : Emb (O := O) w.e) : OE →+* O) α ^ (q.1 : ℕ) * Pdiv.ChartF.res (W y.1) (Fin.append χ φ q.2) y.2))`. Use the proof step `(fun k l => Submodule.subset_span ⟨(k, Fin.castAdd h₂ l), by`.
-
-Use extensionality with `y`. Simplify using `only [Fin.append_left, Pi.mul_apply, hTb]`. Use the proof step `rfl⟩)`. Use the proof step `(fun k l => Submodule.subset_span ⟨(k, Fin.natAdd h₁ l), by`. Use extensionality with `y`.
-
-Simplify using `only [Fin.append_right, Pi.mul_apply, hTb]`. Use the proof step `rfl⟩)`. Use `quot_onto _ _ (lieDPart H w.e) _ (Matrix.mulVecLin Bᵀ) ?_ c2` and prove the remaining obligations. Rewrite using `[hbar (t j₀ : Emb (O := O) w.e)]`. Conclude with `c1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generators : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] (OE : Type) [CommRing OE] [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE] [StarRing OE] (cp : O), HodgeTateSetting p v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp → ∀ (g : ℕ) (H : HodgeTateDatum p g v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp) (d r m : ℕ) (A : Matrix (Fin d) (Fin r) O) (B : Matrix (Fin g) (Fin d) O) (ρG : OE →+* Matrix (Fin d) (Fin d) O) (N : OE →+* Matrix (Fin r) (Fin r) ℤ) (s : Fin m → Fin d → O), LinDat H A B ρG N s → ∀ (w : Place p OE) (t : Fin w.n ≃ Emb (O := O) w.e) (α : ℤ_[p] ⊗[ℤ] OE) (b : Module.Basis (Fin w.n) ℤ_[p] w.Ow), (∀ k, (b k : ℤ_[p] ⊗[ℤ] OE) = w.e * α ^ (k : ℕ)) → ∀ (rp rm : ℕ) (W : Fin w.n → Fin rp → Fin d → O), (∀ j, EigB ρG ((t j : Emb (O := O) w.e) : OE →+* O) (W j)) → (∀ τ ∈ Emb (O := O) w.bar, eigDim C (fun a : OE => H.ρL (1 ⊗ₜ[ℤ] a)) ((algebraMap O C).comp τ) ≤ rm) → ∃ (h : ℕ) (ψ : Fin h → Fin d → O), h ≤ rp + rm ∧ (∀ l j, Pdiv.ChartF.res (W j) (ψ l) ∈ Submodule.span O (Set.range fun k => Pdiv.ChartF.res (W j) (s k))) ∧ ∃ f : htCoker H w.e w.bar →ₗ[O] ((LinearMap.range (LinearMap.pi fun y : Fin w.n × Fin rp => (LinearMap.proj y.2).comp (Pdiv.ChartF.res (W y.1))) : Submodule O (Fin w.n × Fin rp → O)) ⧸ (Submodule.span O (Set.range fun q : Fin w.n × Fin h => fun y : Fin w.n × Fin rp => tauExt ((t y.1 : Emb (O := O) w.e) : OE →+* O) α ^ (q.1 : ℕ) * Pdiv.ChartF.res (W y.1) (ψ q.2) y.2)).comap (Submodule.subtype _)), Function.Surjective f := by
   intro p _ C _ _ _ v O _ _ hv _ _ _ OE _ _ _ _ _ _ cp hU g H d r m A B ρG N s hL w t α b hb rp rm W hW hrm

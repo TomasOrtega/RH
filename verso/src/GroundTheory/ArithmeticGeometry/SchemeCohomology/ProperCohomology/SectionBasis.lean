@@ -13,9 +13,9 @@ noncomputable section
 variable {X : Scheme.{u}}
 
 /- English proof (translation)
-Introduce `V h`. Establish `e : resM P h (a • s) = resR h a • resM P h s` using `resM_smul P h a s`. Establish `hu : IsUnit (resR h a)` using `ha.map _`. Establish `: (fun r : ringOn X V => r • resM P h (a • s)) = (fun r : ringOn X V => r • resM P h s) ∘ (fun r => r * resR h a)`. Use function extensionality and compare the values at `r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, e, mul_smul]`. Rewrite using `[this]`. Use `(hs V h).comp ⟨fun r r' hrr => hu.mul_left_injective hrr, fun r => ⟨r * hu.unit⁻¹, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `r * ↑hu.unit⁻¹ * resR h a = r`. Rewrite using `[mul_assoc, hu.val_inv_mul, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma IsBasisOn.isUnit_smul {P : PMod X} {U : X.Opens} {s : P.obj (op U)} (hs : IsBasisOn P U s)
     {a : ringOn X U} (ha : IsUnit a) : IsBasisOn P U (a • s) := by
@@ -32,21 +32,17 @@ lemma IsBasisOn.isUnit_smul {P : PMod X} {U : X.Opens} {s : P.obj (op U)} (hs : 
   rw [mul_assoc, hu.val_inv_mul, mul_one]
 
 /- English proof (translation)
-Use `set P := (preMod X).obj L`. Take `⟨U, hxU, e, he⟩` from `hL x`. Take `⟨_, ⟨V, hVaff, rfl⟩, hxV, hVU⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hxU U.2`. Use `replace hVU : V ≤ U := hVU`. Establish `hb : IsBasisOn P V (resM P hVU e)` using `he.restrict hVU`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : ringOn X V ≃ₗ[ringOn X V] P.obj (op V)` to `LinearEquiv.ofBijective (LinearMap.toSpanSingleton (ringOn X V) _ (resM P hVU e)) (by`. Establish `h` using `hb V le_rfl`. Rewrite using `[show resM P (le_refl V) (resM P hVU e) = resM P hVU e by` and apply the resulting hypothesis. Rewrite using `[resM_resM]] at h)`. Set `g : σ.I → P.obj (op V)` to `fun k => resM P le_top (show Γ(L, ⊤) from (σ.s k).val (op ⊤))`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `a : σ.I → ringOn X V` to `fun k => φ.symm (g k)`. Establish `hga : ∀ k, g k = a k • resM P hVU e` using `fun k => by`. Express the relevant statement in the definitionally equal form `g k = φ (a k)`. Simplify using `[a]`. Establish `hspan : Submodule.span (ringOn X V) (Set.range g) = ⊤` using `span_eq_top_of_generatingSections L σ hVaff`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIdeal : Ideal.span (Set.range a) = ⊤`. Establish `h2 : Submodule.map φ.symm.toLinearMap (Submodule.span (ringOn X V) (Set.range g)) = ⊤`. Rewrite using `[hspan, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `φ.symm.surjective`. Rewrite `h2` using `[Submodule.map_span, ← Set.range_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h2`. Establish `hxcov : V ≤ ⨆ k, X.basicOpen (a k)`. Use `(hVaff.self_le_iSup_basicOpen_iff (s := Set.range a)).2 hIdeal` as an intermediate fact. Introduce `y hy`. Take `⟨⟨_, k, rfl⟩, hk⟩` from `Opens.mem_iSup.1 (this hy)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Opens.mem_iSup.2 ⟨k, hk⟩`. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 (hxcov hxV)`. Establish `hWV : X.basicOpen (a k) ≤ V` using `X.basicOpen_le _`. Use `⟨k, X.basicOpen (a k), hk, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (resR hWV (a k))` using `X.toRingedSpace.isUnit_res_basicOpen (a k)`.
-
-Establish `key : resM P le_top (show Γ(L, ⊤) from (σ.s k).val (op ⊤)) = resR hWV (a k) • resM P hWV (resM P hVU e)`. Establish `h1 : resM P hWV (g k) = resM P (hWV.trans le_top) _` using `resM_resM P le_top hWV _`. Rewrite `h1` using `[hga k, resM_smul]`. Conclude with `h1.symm`. Rewrite using `[key]`.
-
-Conclude with `(hb.restrict hWV).isUnit_smul hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isBasisOn_generatingSection (L : X.Modules) [L.IsQuasicoherent]
     (hL : IsInvertibleSheaf L) (σ : L.GeneratingSections) [σ.IsFiniteType] (x : X) :

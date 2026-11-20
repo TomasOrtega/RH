@@ -14,7 +14,7 @@ namespace GlobalTheory.RowVal
 open GlobalTheory.Unf
 
 /- English proof (translation)
-The claim follows from `| _, .nil, _, _ => rfl | _, .snoc _ q, d, e => by show ((splitFam q (Path.Fam.append (q := q) d e.1)).1, ((splitFam q (Path.Fam.append (q := q) d e.1)).2, e.2)) = (d, e) rw [colcon_splitFam_append q d e.1] rfl`.
+A detailed English derivation is pending.
 -/
 theorem colcon_splitFam_append {T : Type} {S : Arrow T → Type} {X Y : Node} {p : Path T X Y} :
     ∀ {Z : Node} (q : Path T Y Z) (d : p.Fam S) (e : q.Fam S), splitFam q (Path.Fam.append (q := q) d e) = (d, e)
@@ -25,7 +25,7 @@ theorem colcon_splitFam_append {T : Type} {S : Arrow T → Type} {X Y : Node} {p
       rfl
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, hj => absurd hj (Nat.not_lt_zero _) | n + 1, f, j, hj => by unfold getD have hs := colcon_splitFam_append (p := Path.one (.down t i n)) (downPath t i n) ((), f (Fin.last n)) (downFam t i n fun j => f j.castSucc) rw [downFam] split_ifs with h · erw [hs] exact colcon_get …`.
+A detailed English derivation is pending.
 -/
 theorem colcon_getD_downFam {T : Type} {S : Arrow T → Type} (t : T) (i : ℕ) :
     ∀ (n : ℕ) (f : ∀ j : Fin n, S (.down t i j)) (j : ℕ) (hj : j < n), getD t i n (downFam t i n f) j hj = f ⟨j, hj⟩
@@ -43,7 +43,7 @@ theorem colcon_getD_downFam {T : Type} {S : Arrow T → Type} (t : T) (i : ℕ) 
         rfl
 
 /- English proof (translation)
-The claim follows from `| [], h, z, hz, hq => (show z = q h from hz).trans (hq h fun _ _ => rfl) | i :: l, h, z, ⟨f, hf, hr⟩, hq => ⟨f, hf, fun g => colcon_nIter_congr ρ μ l _ _ (hr g) fun h' hh' => hq h' fun k hk => by rw [hh' k fun hl => hk (List.mem_cons_of_mem _ hl), Function.update_of_ne fun e => h …`.
+A detailed English derivation is pending.
 -/
 theorem colcon_nIter_congr {ι : Type} [DecidableEq ι] {H : ι → Type} [∀ i, Group (H i)] [∀ i, MeasurableSpace (H i)]
     {R : ∀ i, Subgroup (H i)} (ρ : ∀ i, Measure (R i)) (μ : ∀ i, Measure (H i)) {q q' : (∀ i, H i) → ℂ} :
@@ -54,7 +54,7 @@ theorem colcon_nIter_congr {ι : Type} [DecidableEq ι] {H : ι → Type} [∀ i
       rw [hh' k fun hl => hk (List.mem_cons_of_mem _ hl), Function.update_of_ne fun e => hk (by simp [e])]⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl` from `eq_of_heq hh`. Conclude with `h`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem colcon_quot {G : Type} [Group G] [MeasurableSpace G] {R R' : Subgroup G} (e : R = R') {ρ : Measure R} {ρ' : Measure R'}
     (hh : HEq ρ ρ') {μ : Measure G} {f : G → ℂ} {z : ℂ} (h : IsQuotIntL1 ρ' μ f z) : IsQuotIntL1 ρ μ f z := by
@@ -65,7 +65,7 @@ theorem colcon_quot {G : Type} [Group G] [MeasurableSpace G] {R R' : Subgroup G}
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Unfold `rowGrp`. Rewrite using `[dif_pos (by omega)]`. Take `rfl : σ = (D.R.m - 1 - j) / 2` from `by omega`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem colcon_rowGrp_jac {t : T} {M : Vol G} (hM : M.Is t) (j σ : ℕ) (hj : j + 2 * σ + 1 = D.R.m) :
     rowGrp G j = jacGrp (jacAt G hM j σ hj).d := by
@@ -75,7 +75,7 @@ theorem colcon_rowGrp_jac {t : T} {M : Vol G} (hM : M.Is t) (j σ : ℕ) (hj : j
   rfl
 
 /- English proof (translation)
-Unfold `rowGrp`. Rewrite using `[dif_neg (by omega), dif_pos (by omega)]`. Take `rfl : σ = (D.R.m - 2 - j) / 2` from `by omega`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem colcon_rowGrp_bes {t : T} {M : Vol G} (hM : M.Is t) (j σ : ℕ) (hj : j + 2 * σ + 2 = D.R.m)
     (vN : VolN (besDecAt G j σ hj)) :
@@ -86,7 +86,7 @@ theorem colcon_rowGrp_bes {t : T} {M : Vol G} (hM : M.Is t) (j σ : ℕ) (hj : j
   rfl
 
 /- English proof (translation)
-The claim follows from `| 0, j, hj, vN, h, g, φ, z, hg, hz => by subst hg have hc : conAt W hM Φ h j = lastDat W hM j hj vN (h j) (Φ ⟨j, by omega⟩) (castSch G (show j + 1 + 1 = D.R.m by omega) (Φ ⟨j + 1, by omega⟩)) := by unfold conAt rw [dif_pos hj] rfl have hz' : z = colPer W hM 0 j hj vN (dataFrom G …`.
+A detailed English derivation is pending.
 -/
 theorem colcon_gen (G : GridData L sc) (W : G.Weil) (t : T) {M : Vol G} (hM : M.Is t) (Φ : SchDown G t)
     (F : Fn G (.grid D.R.m D.R.m)) (ρ : ∀ j, Measure (rowGrp G j))
@@ -144,9 +144,9 @@ theorem colcon_gen (G : GridData L sc) (W : G.Weil) (t : T) {M : Vol G} (hM : M.
       rfl
 
 /- English proof (translation)
-Introduce `D T L sc G W t M hM Φ F φ z hz ρ hJ hB`. Establish `e : List.range' (0 + 1) (2 * ((D.R.m - 2) / 2)) = idx D`. Unfold `idx`. Use `top_idx (D := D)` as an intermediate fact. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[← e]`. Conclude with `colcon_gen G W t hM Φ F ρ hJ hB _ 0 top_idx (topVN hM) 1 1 φ z rfl hz`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nIter_conAt_of_colPer : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (W : G.Weil) (t : T) {M : Vol G} (hM : M.Is t) (Φ : SchDown G t) (F : Fn G (.grid D.R.m D.R.m)) (φ : Fn G (.top 0)) (z : ℂ), (chain G W t hM).Iter (colPer W hM _ 0 top_idx (topVN hM) (chainData G W t hM (downFam t D.R.m D.R.m Φ)) F φ 1) z → ∀ (ρ : ∀ j, Measure (rowGrp G j)), (∀ j σ (hj : j + 2 * σ + 1 = D.R.m), HEq (ρ j) (jacAt G hM j σ hj).μR) → (∀ j σ (hj : j + 2 * σ + 2 = D.R.m), HEq (ρ j) (besAt G hM j σ hj (GlobalTheory.Unf.Inhab.nonempty_volN _).some).μR) → NIter ρ (fun j => M.ν (.grid D.R.m j)) (fun h => jPer W M t (conAt W hM Φ h) F _ 0 top_idx φ) (idx D) 1 z := by
   intro D T L sc G W t M hM Φ F φ z hz ρ hJ hB

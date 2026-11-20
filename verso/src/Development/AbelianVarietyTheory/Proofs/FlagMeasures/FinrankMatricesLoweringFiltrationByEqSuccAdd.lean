@@ -8,9 +8,9 @@ variable {n m : ℕ} {W : ℕ → Submodule ℂ (Fin n → ℂ)} {r : ℕ → �
   {U : ∀ b, Matrix (Fin n) (Fin (r b)) ℂ}
 
 /- English proof (translation)
-Take `⟨-, h2, h3⟩` from `hB`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.sum_mul]`. Use `Finset.sum_eq_zero fun b hb => ?_` and prove the remaining obligations. Establish `hb' : b ≠ s` using `by have := Finset.mem_range.1 hb; omega`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, h2 b s hb', Matrix.mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem block_eq_zero (hB : Biorth r m U (fun b => (U b)ᴴ)) {s : ℕ} (hs : m ≤ s) : U s = 0 := by
   obtain ⟨-, h2, h3⟩ := hB
@@ -22,15 +22,15 @@ theorem block_eq_zero (hB : Biorth r m U (fun b => (U b)ᴴ)) {s : ℕ} (hs : m 
       rw [Matrix.mul_assoc, h2 b s hb', Matrix.mul_zero]
 
 /- English proof (translation)
-Take `⟨-, h2, h3⟩` from `hB`. Rewrite using `[mem_lowers]`. Prove the components needed by the constructor for the conclusion. Introduce `h s t hst`. Use `Matrix.ext_of_mulVec_single fun j => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy : U t *ᵥ Pi.single j 1 ∈ W (s + c + 1)`. Rewrite using `[hW]`. Introduce `b hb`. Rewrite using `[Matrix.mulVec_mulVec, h2 b t (by omega), Matrix.zero_mulVec]`. Use `(hW _ _).1 (h s _ hy) s le_rfl` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Rewrite using `[this, Matrix.zero_mulVec]`. Introduce `h b y hy`. Rewrite using `[hW]`. Introduce `s hs`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (U s)ᴴ *ᵥ Y *ᵥ y = ((U s)ᴴ * Y * ∑ t ∈ range m, U t * (U t)ᴴ) *ᵥ y`. Rewrite using `[h3, Matrix.mul_one, Matrix.mulVec_mulVec]`. Rewrite using `[e, Matrix.mul_sum, Matrix.sum_mulVec]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hst : t ≤ s + c`. Rewrite using `[h s t hst, Matrix.zero_mulVec]`. Rewrite using `[(hW _ _).1 hy t (by omega), Matrix.mulVec_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_lowers_iff_blocks (hB : Biorth r m U (fun b => (U b)ᴴ))
     (hW : ∀ k y, y ∈ W k ↔ ∀ b, k ≤ b → (U b)ᴴ *ᵥ y = 0) (c : ℕ) (Y : Matrix (Fin n) (Fin n) ℂ) :
@@ -76,25 +76,23 @@ namespace GlobalTheory.RadCov
 open LowDim in
 
 /- English proof (translation)
-Establish `hle : lowers W (c + 1) ≤ lowers W c`. Introduce `Y hY`. Rewrite `hY`, the goal using `[mem_lowers_iff_blocks hB hW]`. Conclude with `fun s t hst => hY s t (by omega)`. Set `φ` to `(layer m U c).domRestrict (lowers W c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression.
 
-Establish `hker : LinearMap.ker φ = (lowers W (c + 1)).comap (lowers W c).subtype`. Use extensionality with `⟨Y, hY⟩`. Rewrite using `[LinearMap.mem_ker, Submodule.mem_comap, Submodule.subtype_apply, mem_lowers_iff_blocks hB hW]`. Rewrite `hY` using `[mem_lowers_iff_blocks hB hW]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h s t hst`. Distinguish the cases in `h' : t ≤ s + c`. Conclude with `hY s t h'`. Take `rfl : t = s + c + 1` from `by omega`. Distinguish the cases in `hs : s < m`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun h ⟨s, hs⟩`. Rewrite using `[block_eq_zero hB (not_lt.1 hs)]`. Simplify using the standard rewrite rules. Introduce `h`. Use function extensionality and compare the values at `b`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h b (b + c + 1) le_rfl`. Establish `hrange : LinearMap.range φ = ⊤`. Rewrite using `[LinearMap.range_eq_top]`. Introduce `Z`. Take `⟨h1, h2, -⟩` from `id hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ s t, (U s)ᴴ * (∑ b : Fin m, U b * Z b * (U (b + c + 1))ᴴ) * U t = ∑ b : Fin m, ((U s)ᴴ * U b) * Z b * ((U (b + c + 1))ᴴ * U t)`. Introduce `s t`. Rewrite using `[Matrix.mul_sum, Matrix.sum_mul]`. Conclude with `Finset.sum_congr rfl fun b _ => by simp only [Matrix.mul_assoc]`. Use `⟨⟨∑ b : Fin m, U b * Z b * (U (b + c + 1))ᴴ, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_lowers_iff_blocks hB hW]`. Introduce `s t hst`. Rewrite using `[key]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : s = b`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h2 (b + c + 1) t (by omega), Matrix.mul_zero]`. Rewrite using `[h2 s b hb, Matrix.zero_mul, Matrix.zero_mul]`. Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `(U s)ᴴ * (∑ b : Fin m, U b * Z b * (U (b + c + 1))ᴴ) * U (s + c + 1) = Z s`. Rewrite using `[key, Finset.sum_eq_single s]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h1, Matrix.one_mul, Matrix.mul_one]`. Introduce `b _ hb`. Rewrite using `[h2 s b (fun h => hb (Fin.ext h.symm)), Matrix.zero_mul, Matrix.zero_mul]`. Simplify using the standard rewrite rules. Establish `h` using `LinearMap.finrank_range_add_finrank_ker φ`.
-
-Rewrite `h` using `[hker, hrange, finrank_top, (Submodule.comapSubtypeEquivOfLe hle).finrank_eq, Module.finrank_pi_fintype]`. Rewrite using `[← h, add_comm, ← Fin.sum_univ_eq_sum_range (fun b => r b * r (b + c + 1)) m]`. Simplify using `[Module.finrank_matrix]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finrank_lowers_eq_succ_add (n m : ℕ) (W : ℕ → Submodule ℂ (Fin n → ℂ)) (r : ℕ → ℕ)
     (U : ∀ b, Matrix (Fin n) (Fin (r b)) ℂ) (hB : Biorth r m U (fun b => (U b)ᴴ))

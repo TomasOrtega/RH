@@ -14,9 +14,9 @@ namespace GlobalTheory.KapOrb.CptInt
 open GlobalTheory.UnitLemma
 
 /- English proof (translation)
-Set `b : Module.Basis (Fin n) K.E B.A` to `Module.Basis.ofEquivFun φ`. Set `f : B.A →ₐ[K.O] Matrix (Fin n) (Fin n) K.E` to `(Algebra.leftMulMatrix b).restrictScalars K.O`. Establish `hinj : Function.Injective f` using `Algebra.leftMulMatrix_injective b`. Establish `hf : f a = M`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `Algebra.leftMulMatrix b a i j = M i j`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, ← Module.Basis.equivFun_apply, Module.Basis.equivFun_ofEquivFun, h]`. Simplify using `[b, Module.Basis.coe_ofEquivFun, Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[← hf]`. Conclude with `(isIntegral_algHom_iff f hinj).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_iff_of_mulVec {K : UQ} (B : InvAlg K) {n : ℕ} (φ : B.A ≃ₗ[K.E] (Fin n → K.E)) (a : B.A)
     (M : Matrix (Fin n) (Fin n) K.E) (h : ∀ y, φ (a * y) = M *ᵥ φ y) : IsIntegral K.O a ↔ IsIntegral K.O M := by
@@ -34,7 +34,7 @@ theorem isIntegral_iff_of_mulVec {K : UQ} (B : InvAlg K) {n : ℕ} (φ : B.A ≃
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Unfold `cj`. Use `split_ifs with hc`. Conclude with `hc.choose_spec.1`. Conclude with `continuous_id`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_cj (w : Pl E) : Continuous (cj w) := by
   unfold cj
@@ -43,9 +43,9 @@ theorem continuous_cj (w : Pl E) : Continuous (cj w) := by
   · exact continuous_id
 
 /- English proof (translation)
-Unfold `UL`. Rewrite using `[if_neg hw]`. Establish `: ((UJ (cj w) (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) : Subgroup _) : Set (GLw n w)) = (fun g : GLw n w => cT (cj w) (g : Matrix (Fin n) (Fin n) (w.adicCompletion E)) * 1 * (g : Matrix (Fin n) (Fin n) (w.adicCompletion E))) ⁻¹' {1}` using `rfl`. Rewrite using `[this]`. Use `IsClosed.preimage ?_ isClosed_singleton` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `cT`. Conclude with `((((Units.continuous_val.matrix_map (continuous_cj w)).matrix_transpose).matrix_mul continuous_const).matrix_mul Units.continuous_val)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isClosed_UL (w : Pl E) (hw : ¬ IsSplitAt w) (n : ℕ) :
     IsClosed ((UL n w : Subgroup (GLw n w)) : Set (GLw n w)) := by
@@ -77,7 +77,7 @@ def linModel (w : Pl E) {K : UQ} (e : K.E ≃+* w.adicCompletion E) (B : InvAlg 
     simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `e.symm (ψ (a * y) i) = _`. Rewrite using `[ha]`. Conclude with `RingHom.map_mulVec e.symm.toRingHom _ _ i`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linModel_mul (w : Pl E) {K : UQ} (e : K.E ≃+* w.adicCompletion E) (B : InvAlg K) {n : ℕ}
     (ψ : B.A ≃+ (Fin n → w.adicCompletion E)) (hψ : ∀ (c : K.E) (y : B.A), ψ (c • y) = e c • ψ y) (a : B.A)
@@ -96,37 +96,33 @@ namespace GlobalTheory.KapOrb.CptInt
 open GlobalTheory.UnitLemma
 
 /- English proof (translation)
-Introduce `E _ _ _ w hw K e hbr B Q u x n γ hγ ψ hfit hmod h hh`. Use `set T := twCent (MonoidHom.id (UL n w)) ⟨γ, hγ⟩ with hTdef`. Establish `hcomm : ∀ t ∈ T, (t : GLw n w) * γ = γ * t`. Introduce `t ht`. Use `congrArg Subtype.val (show t * ⟨γ, hγ⟩ = ⟨γ, hγ⟩ * (MonoidHom.id (UL n w)) t from ht)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `spec : ∀ t ∈ T, ∀ y, ψ ((torusOf w B ψ (t : GLw n w) : B.A) * y) = (t : GLw n w).val *ᵥ ψ y` using `fun t ht => (GlobalTheory.KapTorus.torusOf_mem_of_mem_UL_commute E w hw K e B Q u x n γ ψ hfit hmod t t.2 (hcomm t ht)).2`. Establish `specInv : ∀ t ∈ T, ∀ y, ψ ((((torusOf w B ψ (t : GLw n w))⁻¹ : B.Aˣ) : B.A) * y) = ((t : GLw n w)⁻¹).val *ᵥ ψ y`. Introduce `t ht y`. Establish `h1` using `spec t ht ((((torusOf w B ψ (t : GLw n w))⁻¹ : B.Aˣ) : B.A) * y)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← mul_assoc, Units.mul_inv, one_mul]`. Rewrite using `[h1, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hcl` using `isClosed_UL w hw n`. Establish `hint : ∀ z, z ∈ (algebraMap K.O K.E).range ↔ Valued.v (e z) ≤ 1` using `hbr.2.1`. Establish `hmat : ∀ (g : GLw n w) (k : ℕ) i j, e ((((g : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) ^ k) i j) = ((g ^ k : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g k i j`. Establish `: ((g : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) ^ k = ((g ^ k : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm`. Rewrite using `[Units.val_pow_eq_pow_val]`. Conclude with `(map_pow (e.symm.toRingHom.mapMatrix) _ k).symm`. Rewrite using `[this, Matrix.map_apply, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set φ := linModel w e B ψ hmod.1 with hφ`. Establish `key : ∀ s ∈ T, IsCompact (closure (Subgroup.zpowers s : Set (UL n w))) ↔ torusOf w B ψ (s : GLw n w) ∈ intUnits K.O B.A`. Introduce `s hs`. Establish `hI1 : IsIntegral K.O ((torusOf w B ψ (s : GLw n w) : B.Aˣ) : B.A) ↔ ∃ m : ℤ, ∀ k : ℕ, ∀ i j, Valued.v ((((s : GLw n w) ^ k : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j) ≤ WithZero.exp m`. Rewrite using `[isIntegral_iff_of_mulVec B φ _ _ (linModel_mul w e B ψ hmod.1 _ _ (spec s hs)), GlobalTheory.IntMatBound.isIntegral_iff_bounded K e hint n]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hmat]`. Establish `hI2 : IsIntegral K.O ((((torusOf w B ψ (s : GLw n w))⁻¹ : B.Aˣ) : B.A)) ↔ ∃ m : ℤ, ∀ k : ℕ, ∀ i j, Valued.v ((((s : GLw n w)⁻¹ ^ k : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j) ≤ WithZero.exp m`. Rewrite using `[isIntegral_iff_of_mulVec B φ _ _ (linModel_mul w e B ψ hmod.1 _ _ (specInv s hs)), GlobalTheory.IntMatBound.isIntegral_iff_bounded K e hint n]`. Simplify using `only [hmat]`. Rewrite using `[GlobalTheory.T.isCompact_closure_zpowers_iff_bounded_entries w n (UL n w) hcl s]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use `show _ ↔ IsIntegral K.O _ ∧ IsIntegral K.O _`. Rewrite using `[hI1, hI2]`. Simplify using `only [SubgroupClass.coe_zpow]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `⟨⟨m, fun k i j => ?_⟩, ⟨m, fun k i j => ?_⟩⟩` and prove the remaining obligations. Use `hm (k : ℤ) i j` as an intermediate fact. Rewrite `this` using `[zpow_natCast]`. Then use the resulting hypothesis. Use `hm (-(k : ℤ)) i j` as an intermediate fact. Rewrite `this` using `[_root_.zpow_neg, zpow_natCast, ← inv_pow]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨⟨m1, h1⟩, ⟨m2, h2⟩⟩`. Use `⟨max m1 m2, fun k i j => ?_⟩` and prove the remaining obligations. Break down `Int.eq_nat_or_neg k with ⟨l, rfl | rfl⟩` into its components or cases. Rewrite using `[zpow_natCast]`. Conclude with `(h1 l i j).trans (WithZero.exp_le_exp.2 (le_max_left _ _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[_root_.zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `(h2 l i j).trans (WithZero.exp_le_exp.2 (le_max_right _ _))`. Establish `tmul : ∀ s ∈ T, ∀ t ∈ T, torusOf w B ψ ((s * t : UL n w) : GLw n w) = torusOf w B ψ (s : GLw n w) * torusOf w B ψ (t : GLw n w)`. Introduce `s hs t ht`. Apply `torusOf_spec` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y`. Rewrite using `[Units.val_mul, mul_assoc, spec s hs, spec t ht, Matrix.mulVec_mulVec]`. Simplify using the standard rewrite rules. Establish `tinv : ∀ s ∈ T, torusOf w B ψ ((s⁻¹ : UL n w) : GLw n w) = (torusOf w B ψ (s : GLw n w))⁻¹`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `torusOf_spec` to reduce the goal to its premises. Introduce `y`. Rewrite using `[specInv s hs]`. Simplify using the standard rewrite rules. Establish `tone : torusOf w B ψ ((1 : UL n w) : GLw n w) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Apply `torusOf_spec` to reduce the goal to its premises. Introduce `y`. Simplify using the standard rewrite rules. Set `H' : Subgroup (UL n w)` to `{ carrier := {s | s ∈ T ∧ torusOf w B ψ (s : GLw n w) ∈ intUnits K.O B.A} one_mem' := ⟨T.one_mem, by rw [tone]; exact (intUnits K.O B.A).one_mem⟩ mul_mem' := by`. Introduce and unpack `s t ⟨hs, hs'⟩ ⟨ht, ht'⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨T.mul_mem hs ht, by rw [tmul s hs t ht]; exact (intUnits K.O B.A).mul_mem hs' ht'⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `s ⟨hs, hs'⟩`. Conclude with `⟨T.inv_mem hs, by rw [tinv s hs]; exact (intUnits K.O B.A).inv_mem hs'⟩ }`. Prove the components needed by the constructor for the conclusion.
-
-Introduce `hc`. Establish `hle : cptPart T ≤ H'`. Rewrite using `[cptPart, Subgroup.closure_le]`. Introduce and unpack `s ⟨hs, hsc⟩`. Conclude with `⟨hs, (key s hs).1 hsc⟩`.
-
-Conclude with `(hle hc).2`. Introduce `hi`. Conclude with `Subgroup.subset_closure ⟨hh, (key h hh).2 hi⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_cptPart_iff_torusOf_mem_intUnits : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), Bridge w K e → ∀ (B : GlobalTheory.UnitLemma.InvAlg K) (Q : (w.adicCompletion E)[X]) (u x : B.A) (n : ℕ) (γ : GLw n w) (hγ : γ ∈ UL n w) (ψ : B.A ≃+ (Fin n → w.adicCompletion E)), Fits w e B Q u → IsModelMap w e B u x γ ψ → ∀ h ∈ twCent (MonoidHom.id (UL n w)) ⟨γ, hγ⟩, (h ∈ cptPart (twCent (MonoidHom.id (UL n w)) ⟨γ, hγ⟩) ↔ torusOf w B ψ h.1 ∈ GlobalTheory.UnitLemma.intUnits K.O B.A) := by
   intro E _ _ _ w hw K e hbr B Q u x n γ hγ ψ hfit hmod h hh

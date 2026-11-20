@@ -3,27 +3,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTupl
 open NumberField UpperTheory.V UpperTheory.V.K
 
 /- English proof (translation)
-Introduce `C`. Use `⟨max C 0 + 9, by positivity, ?_⟩` and prove the remaining obligations. Introduce `e n D he hn hD`. Simplify using `only [UpperTheory.V.kBound]`. Establish `he' : (1:ℝ) ≤ e` using `by exact_mod_cast he`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hn' : (1:ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hD' : (1:ℝ) ≤ D` using `by exact_mod_cast hD`. Establish `hL : 0 ≤ Real.log (2 * (D:ℝ))` using `Real.log_nonneg (by linarith)`. Establish `hlog : Real.log ((n:ℝ) + 1) ≤ n`. Use `Real.log_le_sub_one_of_pos (show (0:ℝ) < n + 1 by positivity)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx2 : (2:ℝ) ≤ 2 * e * n` using `by nlinarith`. Establish `hx1 : (1:ℝ) ≤ 2 * e * n` using `by linarith`. Establish `hC : (2 * (e:ℝ) * n) ^ C ≤ (2 * (e:ℝ) * n) ^ (max C 0)` using `Real.rpow_le_rpow_of_exponent_le hx1 (le_max_left _ _)`. Establish `hC1 : 1 ≤ (2 * (e:ℝ) * n) ^ (max C 0)` using `Real.one_le_rpow hx1 (le_max_right _ _)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h9 : (2 * (e:ℝ) * n) ^ (max C 0 + 9) = (2 * (e:ℝ) * n) ^ (max C 0) * (2 * (e:ℝ) * n) ^ (9:ℕ)`. Rewrite using `[Real.rpow_add (by linarith), show (9:ℝ) = ((9:ℕ):ℝ) by norm_num, Real.rpow_natCast]`. Rewrite using `[h9]`. Establish `hQ1 : 4 * (n:ℝ) * ((2 * (e:ℝ)) * (2 * (e:ℝ) + 3)) * Real.log ((n:ℝ) + 1) ≤ 4 * (n:ℝ) * ((2 * (e:ℝ)) * (2 * (e:ℝ) + 3)) * n` using `mul_le_mul_of_nonneg_left hlog (by positivity)`. Establish `hQ2 : 4 * (n:ℝ) * ((2 * (e:ℝ)) * (2 * (e:ℝ) + 3)) * n ≤ 4 * (n:ℝ) * ((2 * (e:ℝ)) * (5 * (e:ℝ))) * n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : 2 * (e:ℝ) + 3 ≤ 5 * e` using `by linarith`. Establish `: (2 * (e:ℝ)) * (2 * (e:ℝ) + 3) ≤ (2 * (e:ℝ)) * (5 * (e:ℝ))` using `mul_le_mul_of_nonneg_left h5 (by positivity)`. Use `mul_le_mul_of_nonneg_left this (show (0:ℝ) ≤ 4 * n by positivity)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `set x := 2 * (e:ℝ) * n with hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `set L := Real.log (2 * (D:ℝ)) with hLdef`. Use `set p := x ^ (max C 0) with hp`. Establish `hQ3 : 4 * (n:ℝ) * ((2 * (e:ℝ)) * (5 * (e:ℝ))) * n = 10 * x ^ 2`. Rewrite using `[hx]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx7 : (2:ℝ) ^ 7 ≤ x ^ 7` using `by gcongr`. Establish `hx9 : 10 * x ^ 2 ≤ x ^ 9 - 1`. Establish `e9 : x ^ 9 = x ^ 2 * x ^ 7` using `by ring`. Establish `hsq : 4 ≤ x ^ 2` using `by nlinarith`. Rewrite using `[e9]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hA : 4 * (n:ℝ) * L * ((2 * (e:ℝ)) * (2 * (e:ℝ) + 3)) * Real.log ((n:ℝ) + 1) ≤ (x ^ 9 - 1) * (p * L)`. Establish `e1 : 4 * (n:ℝ) * L * ((2 * (e:ℝ)) * (2 * (e:ℝ) + 3)) * Real.log ((n:ℝ) + 1) = (4 * (n:ℝ) * ((2 * (e:ℝ)) * (2 * (e:ℝ) + 3)) * Real.log ((n:ℝ) + 1)) * L` using `by ring`. Rewrite using `[e1]`. Establish `hQ : 4 * (n:ℝ) * ((2 * (e:ℝ)) * (2 * (e:ℝ) + 3)) * Real.log ((n:ℝ) + 1) ≤ x ^ 9 - 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpL : L ≤ p * L` using `by nlinarith`. Establish `hx90 : 0 ≤ x ^ 9 - 1` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hexp1 : Real.exp (x ^ C * L) ≤ Real.exp (p * L)` using `Real.exp_le_exp.mpr (mul_le_mul_of_nonneg_right hC hL)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : Real.exp (p * L) + (x ^ 9 - 1) * (p * L) ≤ Real.exp (p * x ^ 9 * L)`. Establish `e2 : p * x ^ 9 * L = p * L + (x ^ 9 - 1) * (p * L)` using `by ring`. Rewrite using `[e2, Real.exp_add]`. Establish `hpL0 : 0 ≤ p * L` using `mul_nonneg (by linarith) hL`. Establish `h1 : 1 ≤ Real.exp (p * L)` using `Real.one_le_exp hpL0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2` using `Real.add_one_le_exp ((x ^ 9 - 1) * (p * L))`. Establish `h3 : 0 ≤ (x ^ 9 - 1) * (p * L)` using `mul_nonneg (by nlinarith) hpL0`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.K.numFin :
     ∀ C : ℝ, ∃ CK : ℝ, 0 < CK ∧ ∀ e n D : ℕ, 1 ≤ e → 1 ≤ n → 1 ≤ D → 4 * (n : ℝ) * Real.log (2 * (D : ℝ)) * ((2 * (e : ℝ)) * (2 * (e : ℝ) + 3)) * Real.log ((n : ℝ) + 1) + kBound C e n D ≤ kBound CK e n D := by

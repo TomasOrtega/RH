@@ -8,22 +8,22 @@ import Formalism.LocalToGlobal.IndefiniteReal.ExistsStrictHenselianAbsolutelyClo
 namespace Formalism.IndefR.LatticeTransfer
 
 /- English proof (translation)
-The claim follows from `dimSq_of schur`.
+A detailed English derivation is pending.
 -/
 theorem dimSq : DimSq := dimSq_of schur
 
 /- English proof (translation)
-The claim follows from `idemP_of charFacts`.
+A detailed English derivation is pending.
 -/
 theorem idemP : IdemP := idemP_of charFacts
 
 /- English proof (translation)
-The claim follows from `core_of charFacts keyZero schur idemP`.
+A detailed English derivation is pending.
 -/
 theorem core : Core := core_of charFacts keyZero schur idemP
 
 /- English proof (translation)
-The claim follows from `all_parts_transfer_of_facts idemE idemP core dimSq metric`.
+A detailed English derivation is pending.
 -/
 theorem all_parts_transfer_holds : AllPartsTransfer := all_parts_transfer_of_facts idemE idemP core dimSq metric
 

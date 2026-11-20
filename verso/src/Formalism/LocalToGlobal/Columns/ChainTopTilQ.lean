@@ -14,11 +14,11 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Use `show (Sc.Fr.tfaD z hz).symm ((extE f).symm v) i = _`. Rewrite using `[Sc.Fr.tfaD_symm_apply]`. Distinguish the cases in `h : i.1 < n`. Rewrite using `[dif_pos h, if_neg (fun h' => by rw [h'] at h; simp at h)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩ : ∃ j : Fin n, i = Fin.castSucc j` from `⟨⟨i.1, h⟩, Fin.ext rfl⟩`. Use `show initL E n ((extE f).symm v) j = _`. Rewrite using `[initL_extE_symm]`. Both sides reduce to the same expression. Rewrite using `[dif_neg h]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : i = Fin.last n` from `Fin.ext (by have := i.2; simp; omega)`. Rewrite using `[if_pos rfl, extE_symm_last]`.
+A detailed English derivation is pending.
 -/
 theorem tq_tfaZ_symm {N n : ℕ} (hN : N = n + 1) (f : Sp E n ≃ₗ[E] Sp E n) (z : E) (hz : z ≠ 0) (v : Sp E N) (i : Fin N) :
     (Sc.Fr.tfaExtZ hN f z hz).symm v i =
@@ -48,41 +48,33 @@ open Classical in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `XiTopG XiCpl2`. Establish `e0 : phiT X.K p.deco.1 p'.deco.1 x = phiT X.K p.deco.1 (tilQ sel mu u d).1 x` using `by rw [hp']; rfl`. Rewrite using `[e0]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Establish `hlast : R.N R.m - 1 < R.N R.m` using `by have := R.N_pos R.m; omega`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Establish `eF : frsG sel mu p' P = (tilQ sel mu u d).1.liftFr P`. Unfold `frsG`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hP, hp']`. Both sides reduce to the same expression. Establish `ef : frsF sel mu p P = p.deco.1.liftFr ⟨P.1, hP⟩`. Unfold `frsF`. Rewrite using `[dif_pos hP]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eF]`. Establish `hT : ∀ Q : Pr.vT u, cO X.E (Pr.piT u) ∉ Q.1.asIdeal` using `fun Q => conj_piT_notMem hPr u Q`. Establish `hG : ∀ w : rowSG Pr sel mu, Pr.piT u ∉ w.1.asIdeal` using `hpi`. Establish `hF' : (DecoSet.tilH (ST` using `Pr.vT u) (N_m_succ R) (Pr.piT u) d).1.IsLift P ((tilQ sel mu u d).1.liftFr P) := Deco.liftFr_spec ((tilQ sel mu u d).2.hasLift P)`. Establish `hf0 : d.1.IsLift P (d.1.liftFr P)` using `Deco.liftFr_spec (d.2.hasLift P)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `xtLocal (K := X.K) (P := P.1) (q := qOf P.1) (ciQ_mem P.1) (ciQ_notMem_sq hX hPr hP) (k₀ := R.k) (c' := cOf R (m2 + 1)) (n' := R.N (m2 + 1)) (n := R.N R.m - 1) (N := R.N R.m) (xt_cOf hm) (PhiTop Ch mu cst.sharp m2 P.1) (fun x x' h => xtPhiTop_congr Ch mu hX hPr hm cst.sharp hP x …`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i => h _, ?_⟩` and prove the remaining obligations. Unfold `atNL`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hlast]`. Conclude with `h _`. Introduce and unpack `⟨h1, h2⟩ i`. Distinguish the cases in `hi : i.1 < R.N R.m - 1`. Conclude with `h1 ⟨i.1, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `atNL at h2`. Rewrite `h2` using `[dif_pos hlast]`. Establish `: i = ⟨R.N R.m - 1, hlast⟩` using `Fin.ext (by show i.1 = R.N R.m - 1; have := i.2; omega)`. Rewrite using `[this]`. Conclude with `h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use the proof step `(((tilQ sel mu u d).1.liftFr P).symm.toLinearMap ∘ₗ x ∘ₗ (frsF sel mu p P).toLinearMap)`. Use the proof step `((d.1.liftFr P).symm.toLinearMap ∘ₗ prXp X.E R ∘ₗ x ∘ₗ (frsF sel mu p P).toLinearMap)`. Use the proof step `((((Pr.piT u : 𝓞 X.E) : X.E)⁻¹ • atNL X.E (R.N R.m) (R.N R.m - 1)) ∘ₗ x ∘ₗ (frsF sel mu p P).toLinearMap)`. Use the proof step `(fun j => by`. Establish `h` using `xtMid (ST := Pr.vT u) (N_m_succ R) d hT hG P _ hF' _ hf0 (x (frsF sel mu p P (Pi.single j 1)))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `el : ∀ a : Sp X.E (R.N R.m), atNL X.E (R.N R.m) (R.N R.m - 1) a = a ⟨R.N R.m - 1, hlast⟩` using `fun a => by`. Unfold `atNL`. Rewrite using `[dif_pos hlast]`. Both sides reduce to the same expression. Use `⟨?_, fun hall => ⟨fun i => ?_, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h.1.trans (and_congr Iff.rfl ?_) show _ ↔ IntAt P.1 (((Pr.piT u : 𝓞 X.E) : X.E)⁻¹ * atNL X.E (R.N R.m) (R.N R.m - 1) (x (frsF sel mu p P (Pi.single j 1))))` and prove the remaining obligations. Rewrite using `[el]`. Conclude with `(h.2 hall).1 ⟨i.1, by have := i.2; omega⟩`. Use `show redP P.1 (atNL X.E (R.N R.m) (R.N R.m - 1) _) = redP P.1 (((Pr.piT u : 𝓞 X.E) : X.E)⁻¹ * atNL X.E (R.N R.m) (R.N R.m - 1) (x (frsF sel mu p P (Pi.single j 1))))`. Rewrite using `[el, el]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `(h.2 hall).2)`. Use the proof step `((frsF sel mu p P).symm (repY Y)) (fun j => by rw [ef]; exact xtRepY_int sel mu cst p.deco Y hY P hP j)`. Unfold `ftY`. Rewrite using `[if_pos hP, if_pos hP]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPQ : P.1 ∈ QE sel (mu : Chr X.F X.E X.K)` using `(Finset.mem_union.mp P.2).resolve_left hP`. Establish `hz : (algebraMap (𝓞 X.E) X.E (Pr.piT u)) ≠ 0` using `fun h0 => hpi P (by`. Rewrite `h0` using `[map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 X.E) X.E)]`. Rewrite using `[h0]`. Conclude with `zero_mem _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hOk : (d.1.til (ST` using `Pr.vT u) (Pr.piT u)).Ok ∧ Pr.piT u ∉ P.1.asIdeal := ⟨d.2.til (fun Q => conj_piT_notMem hPr u Q) hpi, hpi P⟩`. Establish `eF : frsG sel mu p' P = Sc.Fr.tfaExtZ (N_m_succ R) (d.1.liftFr ⟨P.1, Finset.mem_union_right _ hPQ⟩) (algebraMap (𝓞 X.E) X.E (Pr.piT u)) hz`. Unfold `frsG`. Rewrite using `[dif_neg hP, hfr P.1 hPQ]`. Unfold `Sc.Fr.topFrA`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [dif_pos hOk]`. Establish `hA : prXpG X.E (R.N R.m) ∘ₗ inFr (frsF sel mu p P) (frsG sel mu p' P) x = (d.1.liftFr P).symm.toLinearMap ∘ₗ prXp X.E R ∘ₗ x ∘ₗ (frsF sel mu p P).toLinearMap`. Rewrite using `[eF]`. Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Use `show (Sc.Fr.tfaExtZ (N_m_succ R) _ _ hz).symm (x (frsF sel mu p P v)) ⟨i.1, _⟩ = _`.
-
-Rewrite using `[tq_tfaZ_symm, dif_pos (show i.1 < R.N R.m - 1 from i.2)]`. Both sides reduce to the same expression. Establish `hB : atNL X.E (R.N R.m) (R.N R.m - 1) ∘ₗ inFr (frsF sel mu p P) (frsG sel mu p' P) x = (((Pr.piT u : 𝓞 X.E) : X.E)⁻¹ • atNL X.E (R.N R.m) (R.N R.m - 1)) ∘ₗ x ∘ₗ (frsF sel mu p P).toLinearMap`. Rewrite using `[eF]`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
-
-Use `show atNL X.E (R.N R.m) (R.N R.m - 1) ((Sc.Fr.tfaExtZ (N_m_succ R) _ _ hz).symm (x (frsF sel mu p P v))) = ((Pr.piT u : 𝓞 X.E) : X.E)⁻¹ * atNL X.E (R.N R.m) (R.N R.m - 1) (x (frsF sel mu p P v))`. Unfold `atNL`. Simplify using `only [dif_pos hlast]`. Use `show (Sc.Fr.tfaExtZ (N_m_succ R) _ _ hz).symm (x (frsF sel mu p P v)) ⟨R.N R.m - 1, hlast⟩ = _`. Rewrite using `[tq_tfaZ_symm, dif_neg (show ¬ (R.N R.m - 1 < R.N R.m - 1) from lt_irrefl _)]`.
-
-Both sides reduce to the same expression. Rewrite using `[show (prXpG X.E (R.N R.m) ∘ₗ inFr (frsF sel mu p P) (frsG sel mu p' P) x ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1)))) = (d.1.liftFr P).symm.toLinearMap ∘ₗ prXp X.E R ∘ₗ x ∘ₗ (frsF sel mu p P).toLinearMap ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1))) …`. Rewrite using `[← LinearMap.comp_assoc, hA]`. Use the proof step `rfl, hB]`. Unfold `PhiTopG PhiTop`.
-
-Apply the tactic sequence `(try simp only [hP, if_false])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem xiTopTilQ_holds (hX : X.Ok) (hPr : Pr.Ok) (hc : cst.Ok) {m2 : ℕ} (hm : R.m = m2 + 2) (u : Pr.Word)
     (hpi : ∀ w : rowSG Pr sel mu, Pr.piT u ∉ w.1.asIdeal)

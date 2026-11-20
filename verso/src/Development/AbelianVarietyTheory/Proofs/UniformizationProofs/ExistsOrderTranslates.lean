@@ -17,9 +17,9 @@ open GlobalTheory.UU
 namespace GlobalTheory
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `Ideal.mem_map_of_mem (ρ.stalkMap z).hom ha` as an intermediate fact. Rewrite `this` using `[Ideal.map_map]`. Use `this using 2` and compare the differences between its conclusion and the goal. Use extensionality with `r`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Conclude with `(Scheme.Hom.germ_stalkMap_apply ρ ⊤ z trivial _).symm`.
+A detailed English derivation is pending.
 -/
 theorem stalkMap_mem_map_base {R : Type} [CommRing R] (I : Ideal R) {Z Z' : Scheme.{0}}
     (p : Z ⟶ Spec (CommRingCat.of R)) (p' : Z' ⟶ Spec (CommRingCat.of R)) (ρ : Z' ⟶ Z) (h : ρ ≫ p = p') (z : Z')
@@ -36,9 +36,9 @@ theorem stalkMap_mem_map_base {R : Type} [CommRing R] (I : Ideal R) {Z Z' : Sche
   exact (Scheme.Hom.germ_stalkMap_apply ρ ⊤ z trivial _).symm
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_eq_bot_iff_le_ker]`. Introduce `r hr`. Establish `e` using `congrArg (fun q => q.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (Ideal.Quotient.mk I)))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom, Ideal.Quotient.eq_zero_iff_mem.2 hr, map_zero] at e`. Rewrite using `[RingHom.mem_ker, Scheme.Hom.comp_appTop]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply]`. Use `erw [← e]`. Simplify using `only [map_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_base_eq_bot {R : Type} [CommRing R] (I : Ideal R) {Z : Scheme.{0}}
     (ρ : Z ⟶ Spec (CommRingCat.of (R ⧸ I))) (z : Z) :
@@ -57,21 +57,17 @@ theorem map_base_eq_bot {R : Type} [CommRing R] (I : Ideal R) {Z : Scheme.{0}}
   simp only [map_zero]
 
 /- English proof (translation)
-Introduce `V _ _ _ hV D k f₀ ⟨j, hj⟩`. Use `haveI := hV.1`. Use `haveI := D.P.isAb.smooth`. Use `haveI := D.P.isAb.geomConnected`. Use `haveI : IsAffine (𝟙_ (Over (Spec (CommRingCat.of V)))).left := inferInstanceAs (IsAffine (Spec (CommRingCat.of V)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsNoetherianRing Γ((𝟙_ (Over (Spec (CommRingCat.of V)))).left, ⊤) := isNoetherianRing_of_ringEquiv V (Scheme.ΓSpecIso (CommRingCat.of V)).commRingCatIsoToRingEquiv.symm`. Choose the witnesses or unpack the hypotheses as in `⟨m, z₀, J₀, hJ₀, h₀⟩ : ∃ (m : ℕ) (z : (𝟙_ _ ⊗ D.P.A).left) (J : _), Good D.P.L z J ∧ sval f₀ (𝟙 _) z J ∉ (IsLocalRing.maximalIdeal V ^ (m + 1)).map (((𝟙_ _ ⊗ D.P.A).left.presheaf.germ ⊤ z trivial).hom.comp (((𝟙_ _ ⊗ D.P.A).hom.appTop.hom).comp (Scheme.ΓSpecIso (CommRingCat.of V)) …`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `hj (sec_eq_zero_of_sval_finite_level V (IsLocalRing.maximalIdeal V) (𝟙_ _) D.P.A ?_ _ D.P.L D.P.isLB _ _ _ f₀ ?_ j)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `r hr`. Set `e : V ≃+* Γ(Spec (CommRingCat.of V), ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of V)).commRingCatIsoToRingEquiv.symm`. Establish `h1 : r ∈ Ideal.jacobson (⊥ : Ideal V)`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]` and apply the resulting hypothesis. Establish `h2` using `Ideal.mem_map_of_mem e.toRingHom h1`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[Ideal.map_jacobson_of_bijective (f := e.toRingHom) e.bijective, Ideal.map_bot]`. Conclude with `h2`. Introduce and unpack `e Z r ⟨ρ, hρ⟩ z J hJ`. Take `⟨g, hs, -⟩` from `values_natural _ _ _ _ D.P.L _ (famφT D (𝟙_ _) 0) (DegPre.famε k) (𝟙 _) r z J hJ`. Establish `h1` using `stalkMap_mem_map_base _ _ _ r hρ.symm z _ (hc e _ _ g)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hs f₀, Category.comp_id, map_base_eq_bot]`. Conclude with `h1`. Use `⟨m, fun χ => ?_⟩` and prove the remaining obligations. Set `σ : 𝟙_ _ ⊗ D.P.A ⟶ 𝟙_ _ ⊗ D.P.A` to `lift (fst (𝟙_ _) D.P.A) (snd (𝟙_ _) D.P.A * (cT D _ χ)⁻¹)`. Set `τ : 𝟙_ _ ⊗ D.P.A ⟶ 𝟙_ _ ⊗ D.P.A` to `lift (fst (𝟙_ _) D.P.A) (snd (𝟙_ _) D.P.A * cT D _ χ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hστ : σ ≫ τ = 𝟙 _`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Conclude with `toUnit_unique _ _`. Establish `: σ ≫ cT D _ χ = cT D _ χ`. Rewrite using `[cT, ← Category.assoc, toUnit_unique (σ ≫ toUnit _) (toUnit _)]`.
-
-Rewrite using `[Category.assoc, lift_snd, MonObj.comp_mul, this, lift_snd, inv_mul_cancel_right, Category.id_comp]`. Take `⟨g, hs, -⟩` from `values_natural _ _ _ _ D.P.L _ (famφT D (𝟙_ _) 0) (DegPre.famε k) τ.left σ.left z₀ J₀ hJ₀`. Use `⟨_, _, g, fun hm => h₀ ?_⟩` and prove the remaining obligations. Establish `h1` using `stalkMap_mem_map_base _ _ _ σ.left (Over.w σ) z₀ _ hm`. Establish `h2 : σ.left ≫ τ.left = 𝟙 _` using `congrArg CommaMorphism.left hστ`.
-
-Rewrite `h1` using `[← hs f₀, h2]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_order_translates : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDVR V → ∀ (D : DegPre V) (k : ℕ) (f₀ : SecBT D (𝟙_ _) k 0), (∃ j, f₀.f j ≠ 0) → ∃ m : ℕ, ∀ χ : D.X, ∃ (z : (𝟙_ _ ⊗ D.P.A).left) (J : _), Good D.P.L z J ∧ sval f₀ (lift (fst (𝟙_ _) D.P.A) (snd (𝟙_ _) D.P.A * cT D _ χ)).left z J ∉ (IsLocalRing.maximalIdeal V ^ (m + 1)).map (((𝟙_ _ ⊗ D.P.A).left.presheaf.germ ⊤ z trivial).hom.comp (((𝟙_ _ ⊗ D.P.A).hom.appTop.hom).comp (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom)) := by
   intro V _ _ _ hV D k f₀ ⟨j, hj⟩

@@ -5,7 +5,7 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsCompactU
 open GlobalTheory.CompanionTheory.Ar.HT NumberField TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.HT.htChart_of_projective_module` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FHodgeTateLatticeBaseChangePairing.lean&line=9#L9)
 -/

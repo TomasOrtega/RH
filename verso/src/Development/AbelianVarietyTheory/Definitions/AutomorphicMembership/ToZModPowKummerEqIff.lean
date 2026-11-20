@@ -20,13 +20,13 @@ Both sides reduce to the same expression.
 @[simp] theorem rootSeq_zero (a : Ω) : rootSeq l a 0 = a := rfl
 
 /- English proof (translation)
-The claim follows from `(IsAlgClosed.exists_pow_nat_eq (rootSeq l a n) (Fact.out : l.Prime).pos).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem rootSeq_succ_pow (a : Ω) (n : ℕ) : rootSeq l a (n + 1) ^ l = rootSeq l a n :=
   (IsAlgClosed.exists_pow_nat_eq (rootSeq l a n) (Fact.out : l.Prime).pos).choose_spec
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_mul, rootSeq_succ_pow, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem rootSeq_pow (a : Ω) (n : ℕ) : rootSeq l a n ^ l ^ n = a := by
   induction n with
@@ -36,11 +36,11 @@ theorem rootSeq_pow (a : Ω) (n : ℕ) : rootSeq l a n ^ l ^ n = a := by
 variable (Ω) [CharZero Ω]
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `: NeZero ((l : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr hl.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω l`. Use `⟨fun n => Nat.casesOn n 1 (rootSeq l ζ), fun n => ?_, fun n => ?_⟩` and prove the remaining obligations. Consider the cases of `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => simp`. Consider the case `succ n`. Establish `h` using `orderOf_eq_prime_pow (x := rootSeq l ζ n) (p := l) (n := n) (by rw [rootSeq_pow]; exact hζ.ne_one hl.one_lt) (by rw [pow_succ, pow_mul, rootSeq_pow, hζ.pow_eq_one])`. Rewrite using `[← h]`. Conclude with `IsPrimitiveRoot.orderOf _`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `n with`. Consider the case `zero => exact hζ.pow_eq_one`. Consider the case `succ n => exact rootSeq_succ_pow l ζ n`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_unitySeq : ∃ z : ℕ → Ω, (∀ n, IsPrimitiveRoot (z n) (l ^ n)) ∧
     ∀ n, z (n + 1) ^ l = z n := by
@@ -63,19 +63,19 @@ theorem exists_unitySeq : ∃ z : ℕ → Ω, (∀ n, IsPrimitiveRoot (z n) (l ^
 def unitySeq : ℕ → Ω := (exists_unitySeq Ω l).choose
 
 /- English proof (translation)
-The claim follows from `(exists_unitySeq Ω l).choose_spec.1 n`.
+A detailed English derivation is pending.
 -/
 theorem unitySeq_primitive (n : ℕ) : IsPrimitiveRoot (unitySeq Ω l n) (l ^ n) :=
   (exists_unitySeq Ω l).choose_spec.1 n
 
 /- English proof (translation)
-The claim follows from `(exists_unitySeq Ω l).choose_spec.2 n`.
+A detailed English derivation is pending.
 -/
 theorem unitySeq_succ_pow (n : ℕ) : unitySeq Ω l (n + 1) ^ l = unitySeq Ω l n :=
   (exists_unitySeq Ω l).choose_spec.2 n
 
 /- English proof (translation)
-Establish `hN0 : l ^ n ≠ 0` using `pow_ne_zero _ (Fact.out : l.Prime).ne_zero`. Establish `hζ` using `unitySeq_primitive Ω l n`. Establish `hu : IsPrimitiveRoot (hζ.isUnit hN0).unit (l ^ n)` using `IsPrimitiveRoot.coe_units_iff.mp (by simpa using hζ)`. Rewrite using `[ZMod.natCast_eq_natCast_iff, hu.eq_orderOf, ← pow_eq_pow_iff_modEq, Units.ext_iff]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unitySeq_pow_eq_iff (n a b : ℕ) :
     unitySeq Ω l n ^ a = unitySeq Ω l n ^ b ↔ (a : ZMod (l ^ n)) = b := by
@@ -89,14 +89,14 @@ theorem unitySeq_pow_eq_iff (n a b : ℕ) :
 def unityPow (n : ℕ) (c : ℤ_[l]) : Ω := unitySeq Ω l n ^ (PadicInt.toZModPow n c).val
 
 /- English proof (translation)
-Rewrite using `[unityPow, unitySeq_pow_eq_iff, ZMod.natCast_zmod_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unityPow_eq_pow_iff {n k : ℕ} {c : ℤ_[l]} :
     unityPow Ω l n c = unitySeq Ω l n ^ k ↔ PadicInt.toZModPow n c = k := by
   rw [unityPow, unitySeq_pow_eq_iff, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Use `conv_lhs => rw [unityPow.eq_def Ω l n d]`. Rewrite using `[unityPow_eq_pow_iff, ZMod.natCast_zmod_val]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unityPow_eq_iff {n : ℕ} {c d : ℤ_[l]} :
     unityPow Ω l n c = unityPow Ω l n d ↔ PadicInt.toZModPow n c = PadicInt.toZModPow n d := by
@@ -104,7 +104,7 @@ theorem unityPow_eq_iff {n : ℕ} {c d : ℤ_[l]} :
   rw [unityPow_eq_pow_iff, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Use `conv_rhs => rw [unityPow, unityPow, ← pow_add]`. Rewrite using `[unityPow_eq_pow_iff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unityPow_add (n : ℕ) (c d : ℤ_[l]) :
     unityPow Ω l n (c + d) = unityPow Ω l n c * unityPow Ω l n d := by
@@ -112,7 +112,7 @@ theorem unityPow_add (n : ℕ) (c d : ℤ_[l]) :
   rw [unityPow_eq_pow_iff]; simp
 
 /- English proof (translation)
-Use `conv_rhs => rw [unityPow, ← pow_mul]`. Rewrite using `[unityPow_eq_pow_iff]`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unityPow_mul (n : ℕ) (c d : ℤ_[l]) :
     unityPow Ω l n (c * d) = unityPow Ω l n d ^ (PadicInt.toZModPow n c).val := by
@@ -120,7 +120,7 @@ theorem unityPow_mul (n : ℕ) (c d : ℤ_[l]) :
   rw [unityPow_eq_pow_iff]; simp [mul_comm]
 
 /- English proof (translation)
-Rewrite using `[unityPow, ← pow_mul, mul_comm, pow_mul, (unitySeq_primitive Ω l n).pow_eq_one, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unityPow_pow (n : ℕ) (c : ℤ_[l]) : unityPow Ω l n c ^ l ^ n = 1 := by
   rw [unityPow, ← pow_mul, mul_comm, pow_mul, (unitySeq_primitive Ω l n).pow_eq_one, one_pow]
@@ -128,9 +128,9 @@ theorem unityPow_pow (n : ℕ) (c : ℤ_[l]) : unityPow Ω l n c ^ l ^ n = 1 := 
 variable {Ω} in
 
 /- English proof (translation)
-Establish `: ∀ n, NeZero (l ^ n)` using `fun n => ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `choose k _ hk using fun n => (unitySeq_primitive Ω l n).eq_pow_of_pow_eq_one (h0 n)`. Establish `h3 : ∀ n, (l : ℤ) ^ n ∣ (k (n + 1) : ℤ) - k n` using `fun n => by`. Rewrite using `[← Nat.cast_pow, ← ZMod.intCast_zmod_eq_zero_iff_dvd, Int.cast_sub, Int.cast_natCast, Int.cast_natCast, sub_eq_zero, ← unitySeq_pow_eq_iff Ω, hk, ← hy, ← hk, ← pow_mul, mul_comm, pow_mul, unitySeq_succ_pow]`. Use `⟨PadicInt.ofIntSeq _ (PadicInt.isCauSeq_padicNorm_of_pow_dvd_sub (fun n => (k n : ℤ)) l h3), fun n => ?_, fun c hc => PadicInt.ext_of_toZModPow.mp fun n => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hk, eq_comm, unityPow_eq_pow_iff, PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub (fun n => (k n : ℤ)) l h3 n, Int.cast_natCast]`. Rewrite using `[PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub (fun n => (k n : ℤ)) l h3 n, Int.cast_natCast, ← unityPow_eq_pow_iff Ω, ← hc, hk]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_unityPow {y : ℕ → Ω} (h0 : ∀ n, y n ^ l ^ n = 1)
     (hy : ∀ n, y (n + 1) ^ l = y n) : ∃! c : ℤ_[l], ∀ n, y n = unityPow Ω l n c := by
@@ -172,7 +172,7 @@ def rootOf (a : E) (n : ℕ) : Ω :=
 omit [NumberField E] in
 
 /- English proof (translation)
-The claim follows from `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E rootSeq_pow l _ n`.
+A detailed English derivation is pending.
 -/
 theorem rootOf_pow (a : E) (n : ℕ) : rootOf Ω l a n ^ l ^ n = algebraMap E Ω a :=
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E
@@ -181,7 +181,7 @@ theorem rootOf_pow (a : E) (n : ℕ) : rootOf Ω l a n ^ l ^ n = algebraMap E Ω
 omit [NumberField E] in
 
 /- English proof (translation)
-Introduce `h0`. Use `rootOf_pow (Ω := Ω) l a n` as an intermediate fact. Rewrite `this` using `[h0, zero_pow (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)]`. Conclude with `ha ((map_eq_zero _).mp this.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootOf_ne_zero {a : E} (ha : a ≠ 0) (n : ℕ) : rootOf Ω l a n ≠ 0 := by
   intro h0
@@ -190,9 +190,9 @@ theorem rootOf_ne_zero {a : E} (ha : a ≠ 0) (n : ℕ) : rootOf Ω l a n ≠ 0 
   exact ha ((map_eq_zero _).mp this.symm)
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Establish `h` using `existsUnique_unityPow l (y := fun n => σ (rootOf Ω l (a : E) n) / rootOf Ω l (a : E) n) (fun n => by`. Rewrite using `[div_pow, ← map_pow, rootOf_pow, AlgEquiv.commutes, div_self (by simp)])`. Use the proof step `(fun n => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_pow, ← map_pow]`. Conclude with `congrArg (fun x => σ x / x) (rootSeq_succ_pow l _ n))`. Establish `e : ∀ n y z : Ω, z ≠ 0 → (y / z = n ↔ y = n * z)` using `fun _ _ _ hz => div_eq_iff hz`. Simplify using `only [e _ _ _ (rootOf_ne_zero l a.ne_zero _)] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem existsUnique_kummer (a : Eˣ) (σ : G E Ω) :
     ∃! c : ℤ_[l], ∀ n, σ (rootOf Ω l (a : E) n) = zetaPow E Ω l n c * rootOf Ω l (a : E) n := by
@@ -211,14 +211,14 @@ theorem existsUnique_kummer (a : Eˣ) (σ : G E Ω) :
 def kummer (a : Eˣ) (σ : G E Ω) : ℤ_[l] := (existsUnique_kummer l a σ).exists.choose
 
 /- English proof (translation)
-The claim follows from `(existsUnique_kummer l a σ).exists.choose_spec n`.
+A detailed English derivation is pending.
 -/
 theorem kummer_spec (a : Eˣ) (σ : G E Ω) (n : ℕ) :
     σ (rootOf Ω l (a : E) n) = zetaPow E Ω l n (kummer l a σ) * rootOf Ω l (a : E) n :=
   (existsUnique_kummer l a σ).exists.choose_spec n
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Establish `: NeZero ((l : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero⟩`. Conclude with `(cyclotomicCharacter.spec (L := Ω) l (MulSemiringAction.toRingAut (G E Ω) Ω σ) _ (unityPow_pow Ω l n c)).trans (unityPow_mul Ω l n _ c).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem apply_zetaPow (σ : G E Ω) (n : ℕ) (c : ℤ_[l]) :
     σ (zetaPow E Ω l n c) = zetaPow E Ω l n ((cycZ E Ω l σ : ℤ_[l]ˣ) * c) := by
@@ -229,9 +229,9 @@ theorem apply_zetaPow (σ : G E Ω) (n : ℕ) (c : ℤ_[l]) :
     (unityPow_pow Ω l n c)).trans (unityPow_mul Ω l n _ c).symm
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Use `(existsUnique_kummer l a (σ * τ)).unique (kummer_spec l a _) fun n => ?_` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, kummer_spec, map_mul, apply_zetaPow, kummer_spec, ← mul_assoc, add_comm]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(unityPow_add Ω l n _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem kummer_mul (a : Eˣ) (σ τ : G E Ω) :
     kummer l a (σ * τ) = kummer l a σ + (cycZ E Ω l σ : ℤ_[l]ˣ) * kummer l a τ := by
@@ -243,13 +243,13 @@ theorem kummer_mul (a : Eˣ) (σ τ : G E Ω) :
   exact (unityPow_add Ω l n _ _).symm
 
 /- English proof (translation)
-Simplify using `using kummer_mul l a (1 : G E Ω) 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 @[simp] theorem kummer_one (a : Eˣ) : kummer l a (1 : G E Ω) = 0 := by
   simpa using kummer_mul l a (1 : G E Ω) 1
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Rewrite using `[kummer_spec, kummer_spec, mul_left_inj' (rootOf_ne_zero l a.ne_zero n)]`. Conclude with `(unityPow_eq_iff Ω l).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toZModPow_kummer_eq_iff (a : Eˣ) (σ τ : G E Ω) (n : ℕ) :
     PadicInt.toZModPow n (kummer l a σ) = PadicInt.toZModPow n (kummer l a τ) ↔
@@ -260,9 +260,7 @@ theorem toZModPow_kummer_eq_iff (a : Eˣ) (σ τ : G E Ω) (n : ℕ) :
   exact (unityPow_eq_iff Ω l).symm
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.mpr fun τ => Metric.tendsto_nhds.mpr fun ε hε => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `PadicInt.exists_pow_neg_lt l hε`. Use `filter_upwards [(isOpen_setOf_apply (F := E) (rootOf Ω l (a : E) k) (fun y => y = τ (rootOf Ω l (a : E) k))).mem_nhds (show τ ∈ _ from rfl)] with σ hσ`. Use `lt_of_le_of_lt ?_ hk` and prove the remaining obligations. Rewrite using `[dist_eq_norm, PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, sub_eq_zero, toZModPow_kummer_eq_iff]`.
-
-Conclude with `hσ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_kummer (a : Eˣ) : Continuous (kummer l a : G E Ω → ℤ_[l]) := by
   refine continuous_iff_continuousAt.mpr fun τ => Metric.tendsto_nhds.mpr fun ε hε => ?_
@@ -279,7 +277,7 @@ end Kummer
 variable {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `Units.ext (PadicInt.ext_of_toZModPow.mp fun n => ?_)` and prove the remaining obligations. Rewrite using `[cycZ_toZModPow_eq hl h (q := 1) (fun x hx => by simpa using hσ.2 x hx) n]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cycZ_of_mem_Ine (h : IsPlaceOver A w) (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) {σ : G E Ω}
     (hσ : σ ∈ Ine (F := E) A) : cycZ E Ω l σ = 1 := by
@@ -288,11 +286,11 @@ theorem cycZ_of_mem_Ine (h : IsPlaceOver A w) (hl : ((l : ℕ) : 𝓞 E) ∉ w.a
   simp
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `exists_eq_zpow_mul (deg_frob (h := h)) g`. Establish `h1 : cycZ E Ω l g = cycZ E Ω l (frob h) ^ deg g` using `by conv_lhs => rw [hτ]`. Rewrite using `[Subgroup.coe_mul, map_mul, coe_ineIncl, cycZ_of_mem_Ine h hl τ.2, mul_one, Subgroup.coe_zpow, map_zpow]`. Establish `h2` using `map_zpow ((PadicInt.Coe.ringHom (p := l) : ℤ_[l] →* ℚ_[l]).comp (Units.coeHom _)).toHomUnits (cycZ E Ω l (frob h)) (deg g)`. Establish `h3` using `congrArg Units.val h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[Units.val_zpow_eq_zpow_val]`. Rewrite using `[h1]`. Use `h3.trans ?_` and prove the remaining obligations. Use `congr 1`. Use `show (((cycZ E Ω l (frob h) : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) = _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cycZ_of_isFrob hl h isFrob_frob]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cycZ_weil {h : IsPlaceOver A w} (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (g : Weil h) :
     (((cycZ E Ω l g : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) = ((normV w : ℕ) : ℚ_[l]) ^ deg g := by
@@ -334,7 +332,7 @@ Both sides reduce to the same expression.
 omit [IsAlgClosure E Ω] in
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk (by fun_prop) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ineConj {h : IsPlaceOver A w} (g : Weil h) : Continuous (ineConj g) :=
   Continuous.subtype_mk (by fun_prop) _
@@ -351,14 +349,14 @@ Both sides reduce to the same expression.
     (σ : Ine (F := E) A) : (kummerChar h hl a σ).toAdd = kummer l a (σ : G E Ω) := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_ofAdd.comp ((continuous_kummer l a).comp continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_kummerChar (h : IsPlaceOver A w) (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (a : Eˣ) :
     Continuous (kummerChar h hl a) :=
   continuous_ofAdd.comp ((continuous_kummer l a).comp continuous_subtype_val)
 
 /- English proof (translation)
-Establish `h0` using `kummer_mul l a (g : G E Ω) (g : G E Ω)⁻¹`. Rewrite `h0` using `[mul_inv_cancel, kummer_one]`. Rewrite using `[toAdd_kummerChar, toAdd_kummerChar, coe_ineConj, mul_assoc, kummer_mul, kummer_mul, cycZ_of_mem_Ine h hl σ.2, Units.val_one, one_mul, mul_add, add_left_comm, ← h0, add_zero, ← cycZ_weil hl g]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem kummerChar_ineConj {h : IsPlaceOver A w} (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (a : Eˣ)
     (g : Weil h) (σ : Ine (F := E) A) :
@@ -375,7 +373,7 @@ omit [IsAlgClosure E Ω] in
 variable (w) in
 
 /- English proof (translation)
-Simplify using `using Ideal.exists_mem_pow_notMem_pow_succ w.asIdeal w.ne_bot w.isPrime.ne_top 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_uniformiser : ∃ ϖ : 𝓞 E, ϖ ∈ w.asIdeal ∧ ϖ ∉ w.asIdeal ^ 2 := by
   simpa using Ideal.exists_mem_pow_notMem_pow_succ w.asIdeal w.ne_bot w.isPrime.ne_top 1
@@ -385,12 +383,12 @@ variable (w) in
 def unif : 𝓞 E := (exists_uniformiser w).choose
 
 /- English proof (translation)
-The claim follows from `(exists_uniformiser w).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem unif_mem : unif w ∈ w.asIdeal := (exists_uniformiser w).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_uniformiser w).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem unif_notMem : unif w ∉ w.asIdeal ^ 2 := (exists_uniformiser w).choose_spec.2
 
@@ -403,9 +401,9 @@ def tameL (h : IsPlaceOver A w) (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) :
     Ine (F := E) A →* Multiplicative ℤ_[l] := kummerChar h hl (unifUnit w)
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hσ`. Establish `hc : IsClosed (Set.range fun τ => (↑u⁻¹ : ℤ_[l]) * (t τ).toAdd)` using `(isCompact_range (continuous_const.mul (continuous_toAdd.comp ht))).isClosed`. Establish `hall : ∀ x : ℤ_[l], x ∈ Set.range fun τ => (↑u⁻¹ : ℤ_[l]) * (t τ).toAdd` using `fun x => PadicInt.denseRange_natCast.induction_on x hc fun n => ⟨σ ^ n, by simp [← hu, mul_left_comm (↑u⁻¹ : ℤ_[l])]⟩`. Introduce `y`. Take `⟨τ, hτ⟩` from `hall (↑u⁻¹ * y.toAdd)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨τ, Multiplicative.toAdd.injective (by simpa using hτ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem surjective_of_isUnit {H : Type*} [Group H] [TopologicalSpace H] [CompactSpace H]
     {t : H →* Multiplicative ℤ_[l]} (ht : Continuous t) {σ : H} (hσ : IsUnit (t σ).toAdd) :
@@ -421,9 +419,9 @@ theorem surjective_of_isUnit {H : Type*} [Group H] [TopologicalSpace H] [Compact
   exact ⟨τ, Multiplicative.toAdd.injective (by simpa using hτ)⟩
 
 /- English proof (translation)
-Use `compactSpace_Ine (E := E) A` as an intermediate fact. Use `surjective_of_isUnit (continuous_kummerChar h hl a) (σ := ⟨σ, hσ⟩) ?_` and prove the remaining obligations. Rewrite using `[toAdd_kummerChar, ← IsLocalRing.notMem_maximalIdeal, PadicInt.maximalIdeal_eq_span_p, ← pow_one (l : ℤ_[l]), ← PadicInt.ker_toZModPow, RingHom.mem_ker]`. Introduce `h0`. Use `hx ((toZModPow_kummer_eq_iff l a σ 1 1).mp ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h0, kummer_one, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem surjective_kummerChar (h : IsPlaceOver A w) (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (a : Eˣ)
     {σ : G E Ω} (hσ : σ ∈ Ine (F := E) A) (hx : σ (rootOf Ω l (a : E) 1) ≠ rootOf Ω l (a : E) 1) :

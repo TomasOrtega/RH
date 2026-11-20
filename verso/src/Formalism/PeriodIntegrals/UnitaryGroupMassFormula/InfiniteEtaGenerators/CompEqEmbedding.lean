@@ -9,7 +9,7 @@ namespace PI.EtaInfGenW
 variable {L : Type} [Field L] [NumberField L] {F : Type} [Field F] [NumberField F] [Algebra F L]
 
 /- English proof (translation)
-Rewrite `h` using `[InfinitePlace.comap_mk]`. Establish `hr : ComplexEmbedding.IsReal (φ.comp (algebraMap F L))`. Rewrite using `[← InfinitePlace.isReal_mk_iff, h]`. Conclude with `hw`. Rewrite using `[← h, InfinitePlace.embedding_mk_eq_of_isReal hr]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_eq_embedding (φ : L →+* ℂ) (w : InfinitePlace F) (hw : w.IsReal)
     (h : (InfinitePlace.mk φ).comap (algebraMap F L) = w) :
@@ -20,7 +20,7 @@ theorem comp_eq_embedding (φ : L →+* ℂ) (w : InfinitePlace F) (hw : w.IsRea
   rw [← h, InfinitePlace.embedding_mk_eq_of_isReal hr]
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_real, Real.norm_eq_abs, Complex.ofReal_re]`. Use `split_ifs with h`. Rewrite using `[abs_of_neg h, Complex.ofReal_neg, div_neg, div_self (Complex.ofReal_ne_zero.mpr hr)]`. Rewrite using `[abs_of_nonneg (not_lt.mp h), div_self (Complex.ofReal_ne_zero.mpr hr)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_norm_real (r : ℝ) (hr : r ≠ 0) :
     ((r : ℂ) / ((‖(r : ℂ)‖ : ℝ) : ℂ)) = if (r : ℂ).re < 0 then -1 else 1 := by
@@ -30,9 +30,9 @@ theorem div_norm_real (r : ℝ) (hr : r ≠ 0) :
   · rw [abs_of_nonneg (not_lt.mp h), div_self (Complex.ofReal_ne_zero.mpr hr)]
 
 /- English proof (translation)
-Establish `hφ : φ ((upF F k : Lˣ) : L) = ((InfinitePlace.embedding_of_isReal hw (k : F) : ℝ) : ℂ)`. Rewrite using `[InfinitePlace.embedding_of_isReal_apply, ← comp_eq_embedding φ w hw h]`. Both sides reduce to the same expression. Establish `hne : (InfinitePlace.embedding_of_isReal hw (k : F) : ℝ) ≠ 0` using `(map_ne_zero _).mpr k.ne_zero`. Rewrite using `[hφ, div_norm_real _ hne, etaInf, InfinitePlace.embedding_of_isReal_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem single (φ : L →+* ℂ) (w : InfinitePlace F) (hw : w.IsReal)
     (h : (InfinitePlace.mk φ).comap (algebraMap F L) = w) (k : Fˣ) :

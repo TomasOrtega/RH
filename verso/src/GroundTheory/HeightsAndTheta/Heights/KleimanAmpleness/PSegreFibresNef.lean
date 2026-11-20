@@ -15,11 +15,11 @@ open GroundTheory.Heights₂.Heights.FieldNumbers (relDim)
 open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (mIdealOver)
 
 /- English proof (translation)
-Take `⟨hrel, hle, hlift⟩` from `hD O Ω F φ K ι y`. Prove the components needed by the constructor for the conclusion. Introduce `h W hW hPW hdim`. Establish `hpos` using `h (segreLift ι F W) (hB F K ι W hW) (hlift W hPW) (by rw [hC F K ι W hW]; exact hdim)`. Rewrite `hpos` using `[hN F K ι W hW β]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h W' hW' hPW' hdim`. Take `⟨hWp, heq⟩` from `hA F K ι W' hW' fun g hg => hPW' (hrel hg)`. Establish `hPW : (mIdealOver O y).map (MvPolynomial.map φ) ≤ W'.comap (segreIncl ι F)` using `hle.trans (Ideal.comap_mono hPW')`. Establish `hdimW : relDim (W'.comap (segreIncl ι F)) = ((1 : ℕ) : WithBot (WithTop ℤ))`. Rewrite using `[← hC F K ι _ hWp, ← heq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdim`. Establish `hpos` using `h _ hWp hPW hdimW`. Rewrite using `[heq, hN F K ι _ hWp β]`. Conclude with `hpos`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segreFibresNef_of_map (hA : SegreLiftComap.Statement) (hB : SegreLiftPrime.Statement)
     (hC : SegreLiftRelDim.Statement) (hN : SegreLiftIntNum.Statement)
@@ -47,7 +47,7 @@ theorem segreFibresNef_of_map (hA : SegreLiftComap.Statement) (hB : SegreLiftPri
     exact hpos
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ _ _ K _ _ ι _ y _ β`. Conclude with `⟨segreFibresNef_of_map hA hB hC hN hD O Ω _ (IsLocalRing.residue O) K ι y β, segreFibresNef_of_map hA hB hC hN hD O Ω _ (algebraMap O (FractionRing O)) K ι y β⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem SegreFibresNef.proof (hA : SegreLiftComap.Statement) (hB : SegreLiftPrime.Statement)
     (hC : SegreLiftRelDim.Statement) (hN : SegreLiftIntNum.Statement)

@@ -21,7 +21,7 @@ import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.CardZerosOnTors
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hL` using `_root_.GlobalTheory.allSixLaws`. Use `⟨_root_.GlobalTheory.thetaPt_determines hL.1, _root_.GlobalTheory.endDeterminedOnTorsion hL.1 ?_⟩` and prove the remaining obligations. Conclude with `_root_.GlobalTheory.card_zeros_on_torsion_coset_le hL.1.mulN (fun K _ X _ p L hL => _root_.GlobalTheory.SectionRing.exists_sectionRing K X p L hL) (_root_.GlobalTheory.PowSec.exists_basis_sections hL.1.globalSectionsRank) (_root_.GlobalTheory.veryAmple_lbPow hL.1.ample) (_root_.G …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.thetaPtDetermines_and_endDeterminedOnTorsion :
     _root_.GlobalTheory.ThetaPtDeterminesSt ∧ _root_.GlobalTheory.EndDeterminedOnTorsionSt := by

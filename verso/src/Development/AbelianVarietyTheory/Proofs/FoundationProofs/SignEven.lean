@@ -5,9 +5,9 @@ import Formalism.JacquetSubsetSums.SeparationTR
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p q h`. Apply `Even.neg_one_pow` to reduce the goal to its premises. Rewrite using `[Nat.even_mul]`. Break down `Nat.even_or_odd p with hp | hp` into its components or cases. Conclude with `Or.inl hp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use `right`. Break down `Nat.even_or_odd q with hq | hq` into its components or cases. Conclude with `hq`. Conclude with `absurd (hp.add_odd hq) (Nat.not_even_iff_odd.mpr h)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem signEven : Formalism.PacketSums.SignEven := by
   intro p q h

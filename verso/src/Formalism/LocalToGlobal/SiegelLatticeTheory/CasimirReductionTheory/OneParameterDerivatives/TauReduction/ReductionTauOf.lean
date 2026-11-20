@@ -11,11 +11,11 @@ namespace Formalism.L2.SG.Pf.Tau
 open Size Formalism.MainNotions.S
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.LitS.ReductionTau`. Introduce `I hn`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `h7 I.GA (Sub I) (fun x s => size I s) (fun x => h3 I hn x) (fun x s => Real.rpow_nonneg (h10 I x s).le _) (fun x r hr => h6 I x r hr)`. Take `⟨c, hc, hc8⟩` from `h8 I`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl, hl9⟩` from `h9 I x`. Establish `hδ : ∀ s : Sub I x, Real.sqrt (l / c) ≤ size I s`. Introduce `s`. Take `⟨u, huB, hu0, hsum⟩` from `hc8 x s`. Establish `h1` using `hl9 u (s.B_lat huB) hu0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : 0 ≤ size I s` using `Real.rpow_nonneg (h10 I x s).le _`. Conclude with `Real.sqrt_le_iff.2 ⟨hs0, (div_le_iff₀ hc).2 (by linarith)⟩`. Use `haveI := h3 I hn x`. Conclude with `⟨lt_min (by norm_num) (lt_of_lt_of_le (Real.sqrt_pos.2 (div_pos hl hc)) (le_ciInf hδ)), min_le_left _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem reductionTau_of (h3 : SubmoduleExists) (h6 : SizesLocallyComparable) (h7 : InfimumContinuousFamily)
     (h8 : MinkowskiSubmodule) (h9 : LatticeVectorsBoundedBelow) (h10 : HeightsPositive) : ReductionTau := by

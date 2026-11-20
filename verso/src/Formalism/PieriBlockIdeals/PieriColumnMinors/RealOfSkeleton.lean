@@ -11,11 +11,9 @@ namespace Formalism.CohomologicalDescent.LR
 open Formalism.GradedWeylDivisibility Formalism.CohomologicalDescent.Symmetrization Formalism.CohomologicalDescent.BinaryFormsExample
 
 /- English proof (translation)
-Unfold `LevZ at hf ⊢`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨ω, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨(b, b', k) :: ω, rfl⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simpa [rowDiv] using Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [rowDiv_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`. Establish `e : rowDiv ℚ (Fin.natAdd p b) (Fin.natAdd p b') k (c • x) = c • rowDiv ℚ (Fin.natAdd p b) (Fin.natAdd p b') k x` using `map_zsmul (rowDivL ℚ (n := p + q) (Fin.natAdd p b) (Fin.natAdd p b') k) c x`.
-
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ c hx`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levZ_rowDiv (p q w : ℕ) (lam2 : Fin q → ℕ) (b b' : Fin q) (k : ℕ)
     (f : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) (hf : f ∈ LevZ p q w lam2) :
@@ -35,9 +33,9 @@ theorem levZ_rowDiv (p q w : ℕ) (lam2 : Fin q → ℕ) (b b' : Fin q) (k : ℕ
     exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Take `⟨m, hm, hmu⟩` from `(mem_locSpan _ _ _ _).1 hu`. Use `(mem_locSpan _ _ _ _).2 ⟨m, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_zsmul]`. Rewrite `hmu`, the goal using `[mem_MW]`. Establish `e : ((((rationalBlockModuleSetting p q w lam2).EW b b' (m • u) : (rationalBlockModuleSetting p q w lam2).W) : VQ p q w lam2) : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) = rowDiv ℚ (Fin.natAdd p b) (Fin.natAdd p b') 1 (((m • u : (rationalBlockModuleSetting p q w lam2).W) : VQ p …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[rowDiv_one]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `levZ_rowDiv p q w lam2 b b' 1 _ hmu`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delL_stable (l : ℕ) (hl : l.Prime) (p q w : ℕ) (lam2 : Fin q → ℕ) (b b' : Fin q)
     (u : (rationalBlockModuleSetting p q w lam2).W) (hu : u ∈ DelLR l hl p q w lam2) :
@@ -56,13 +54,11 @@ theorem delL_stable (l : ℕ) (hl : l.Prime) (p q w : ℕ) (lam2 : Fin q → ℕ
   exact levZ_rowDiv p q w lam2 b b' 1 _ hmu
 
 /- English proof (translation)
-Introduce `hC _hL hP hCol l p q w lam2 ξ hl ha hb hξ i' eL heL i μ hd hd2 x hx`. Take `⟨hxN, hxμ⟩` from `hx`. Rewrite `hxμ` using `[SetLike.mem_coe, mem_weightedHomogeneousSubmodule]`. Establish `hx' : intQ _ _ x ∈ dualWeyl ℚ (p + q) (p + q) (LD.blockWt p q w lam2)`. Rewrite using `[lrc_intQ_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dualWeylMap ℤ ℚ (Int.castRingHom ℚ) _ _ _ x hxN`. Establish `inputs : LemmaDInputs3 (rationalBlockModuleSetting p q w lam2) (formB p q w lam2) i w lam2 (DelLR l hl p q w lam2) (xiOf ξ) (lamOf p q w lam2) (l : Zl l) eL i'` using `{ scalar := rfl le_w := hb contra := real_contragredient p q w lam2 generated := real_generated p q w lam2 ha hb nondeg := real_nondegenerate p q w lam2 stable := delL_stable l hl p q w lam2 pieri := hP p q w lam2 ha hb i columns := fun tau htau => hCol p q w lam2 ha hb i tau (by …`. Establish `hdep : ∑ α : Fin p, (fun a => ((μ (idx p q a) : ℕ) : ℤ)) (Sum.inl α) + (i : ℤ) = (Fintype.card (Fin p) : ℤ) * (w : ℤ)`. Simplify using `only [Fintype.card_fin]`. Use `hd` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `LD.IsDepth at this`. Conclude with `this` after adjusting the coercions. Establish `hxi : xiOf ξ (lamOf p q w lam2 - fun a => ((μ (idx p q a) : ℕ) : ℤ)) ≤ i'`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `depth_skeleton_third_form_holds (Zl l) ℚ (VQ p q w lam2) (Fin p) q (rationalBlockModuleSetting p q w lam2) (formB p q w lam2) i w lam2 (DelLR l hl p q w lam2) (xiOf ξ) (lamOf p q w lam2) l eL i' hl (zl_unit hl) inputs (fun a => ((μ (idx p q a) : ℕ) : ℤ)) hdep hxi ⟨intQ _ _ x, hx' …`.
-
-Rewrite `h` using `[Fintype.card_fin]`. Conclude with `concl l hl p q w lam2 x hx' _ h.1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_of_skeleton : RealOfSkeleton := by
   intro hC _hL hP hCol l p q w lam2 ξ hl ha hb hξ i' eL heL i μ hd hd2 x hx
@@ -101,7 +97,7 @@ theorem real_of_skeleton : RealOfSkeleton := by
   exact concl l hl p q w lam2 x hx' _ h.1
 
 /- English proof (translation)
-Introduce `hP hCol` and use `real_of_skeleton coefficient_word lower_triangular_integral hP hCol`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem real_of_pieri : RealOfPieri :=
   fun hP hCol => real_of_skeleton coefficient_word lower_triangular_integral hP hCol

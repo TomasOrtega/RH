@@ -7,7 +7,7 @@ import Formalism.SharpRestriction.InertJacobiLevels.HostFam
 open Formalism.BasicNotions NumberField IsDedekindDomain GlobalTheory.Mem
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mem.exists_preCh_of_prescribed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsHarishChandraWeights.lean&line=12#L12)
 -/

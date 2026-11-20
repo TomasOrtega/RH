@@ -10,15 +10,13 @@ open MvPolynomial AlgebraicGeometry CategoryTheory
 noncomputable section
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (aeval y : MvPolynomial (Fin n) ℂ →ₐ[ℂ] A)`. Rewrite using `[← AlgHom.range_eq_top, aeval_range, hy]`. Set `ψ` to `Ideal.quotientKerAlgEquivOfSurjective hs`. Set `iso : V.toScheme ≅ Spec (.of (MvPolynomial (Fin n) ℂ ⧸ RingHom.ker (aeval y : MvPolynomial (Fin n) ℂ →ₐ[ℂ] A)))` to `e ≪≫ asIso (Spec.map (RingEquiv.toCommRingCatIso ψ.toRingEquiv).hom)`. Establish `hiso : iso.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap ℂ (MvPolynomial (Fin n) ℂ ⧸ RingHom.ker (aeval y : MvPolynomial (Fin n) ℂ →ₐ[ℂ] A)))) = V.ι ≫ s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← he]`. Simplify using `only [iso, Iso.trans_hom, Category.assoc]`. Use `congr 1`. Simplify using `only [asIso_hom]`. Rewrite using `[← Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use extensionality with `c`. Simplify using `[ψ]`. Use `⟨_, iso, hiso, fun l => ?_⟩` and prove the remaining obligations. Establish `key : (Spec.map (RingEquiv.toCommRingCatIso ψ.toRingEquiv).hom).appTop ((Scheme.ΓSpecIso _).inv (Ideal.Quotient.mk _ (X l))) = (Scheme.ΓSpecIso (.of A)).inv (y l)`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← CommRingCat.comp_apply, ← Scheme.ΓSpecIso_inv_naturality, CommRingCat.comp_apply]`. Use `congr 1`. Use `show ψ (Ideal.Quotient.mk _ (X l)) = y l`. Simplify using `[ψ, Ideal.quotientKerAlgEquivOfSurjective_mk]`. Simplify using `only [AffPres.secHom, RingHom.comp_apply, iso, Iso.trans_hom, asIso_hom, Scheme.Hom.comp_appTop, CommRingCat.hom_comp]`.
-
-Conclude with `congrArg _ (congrArg _ key)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem affPres_of_iso {W : Scheme.{0}} (s : W ⟶ Spec (.of ℂ)) (V : W.Opens) (A : Type) [CommRing A]
     [Algebra ℂ A] (e : V.toScheme ≅ Spec (.of A))
@@ -55,7 +53,7 @@ theorem affPres_of_iso {W : Scheme.{0}} (s : W ⟶ Spec (.of ℂ)) (V : W.Opens)
   exact congrArg _ (congrArg _ key)
 
 /- English proof (translation)
-The claim follows from `inter_reesCharts' π J hB U g hg V hV e he i j t ht`.
+A detailed English derivation is pending.
 -/
 theorem inter_reesCharts {X W : Scheme.{0}} (π : W ⟶ X) (J : X.IdealSheafData) (hB : FinalTheorems.Blowup π J)
     (U : X.affineOpens) {m : ℕ} (g : Fin m → Γ(X, U.1)) (hg : Ideal.span (Set.range g) = J.ideal U)
@@ -71,9 +69,9 @@ theorem inter_reesCharts {X W : Scheme.{0}} (π : W ⟶ X) (J : X.IdealSheafData
   inter_reesCharts' π J hB U g hg V hV e he i j t ht
 
 /- English proof (translation)
-Set `_ : Algebra ℂ (FinalTheorems.reesChart g i)` to `((algebraMap _ (FinalTheorems.reesChart g i)).comp (constSec (toSpecC hP) (chartOpen hP p).1)).toAlgebra`. Establish `h1 : CommRingCat.ofHom (algebraMap ℂ (FinalTheorems.reesChart g i)) = CommRingCat.ofHom (constSec (toSpecC hP) (chartOpen hP p).1) ≫ CommRingCat.ofHom (algebraMap _ (FinalTheorems.reesChart g i))` using `rfl`. Establish `heC : e.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap ℂ (FinalTheorems.reesChart g i))) = V.ι ≫ (π ≫ toSpecC hP)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Spec.map_comp, specMap_constSec]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (V.ι ≫ π) ≫ toSpecC hP := by rw [← he]; simp only [Category.assoc]`. Use `_ = V.ι ≫ (π ≫ toSpecC hP) := Category.assoc _ _ _`. Conclude with `affPres_of_iso (π ≫ toSpecC hP) V (FinalTheorems.reesChart g i) e heC _ (yC hP p g i) (adjoin_yC hP p g i)`.
+A detailed English derivation is pending.
 -/
 theorem chart_aff {K : Type} [Fintype K] [Nonempty K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P) (p : (k : K) → ι k)
@@ -103,7 +101,7 @@ theorem chart_aff {K : Type} [Fintype K] [Nonempty K] {ι : K → Type} [∀ k, 
   exact affPres_of_iso (π ≫ toSpecC hP) V (FinalTheorems.reesChart g i) e heC _ (yC hP p g i) (adjoin_yC hP p g i)
 
 /- English proof (translation)
-Establish `h5 : rj tjk * (ri tij * ri Gi) = ri tik * ri Gi`. Rewrite using `[← map_mul, ← h1, e1, ← e2, ← map_mul, ← h3, e4, ← e3, h2, map_mul]`. Establish `key : (rj tjk * ri tij - ri tik) * ri Gi = 0`. Rewrite using `[sub_mul, mul_assoc, h5, sub_self]`. Conclude with `sub_eq_zero.mp ((mem_nonZeroDivisors_iff.mp hG).2 _ key)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocycle_of_nonZeroDivisor {Ri Rj O : Type*} [CommRing Ri] [CommRing Rj] [CommRing O]
     (ri : Ri →+* O) (rj : Rj →+* O) {Gi Gj Gk tij tik : Ri} {Gj' Gk' tjk : Rj} {Oj Ok : O}
@@ -119,25 +117,25 @@ theorem cocycle_of_nonZeroDivisor {Ri Rj O : Type*} [CommRing Ri] [CommRing Rj] 
 variable {K : Type} [Fintype K] [Nonempty K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Take `⟨J, W, π, h1, h2, h3, h4, -, ⟨U0, hU0, hiso0⟩, -, h8, h9⟩` from `hL`. Use `choose m g hg V hV e he using fun p => h9 (chartOpen hP p)`. Use `choose I iso hiso hsec using fun p i => chart_aff hP p π (g p) i (V p i) (e p i) (he p i)`. Establish `hle : ∀ p i, V p i ≤ π ⁻¹ᵁ (chartOpen hP p).1` using `fun p i => (le_iSup (V p) i).trans (hV p).le`. Set `secH : ∀ p i, FinalTheorems.reesChart (g p) i →+* Γ(W, V p i)` to `fun p i => ((V p i).topIso.hom.hom).comp (((e p i).hom.appTop).hom.comp (Scheme.ΓSpecIso (.of (FinalTheorems.reesChart (g p) i))).inv.hom)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsa : ∀ p i r, secH p i (algebraMap _ (FinalTheorems.reesChart (g p) i) r) = π.appLE _ (V p i) (hle p i) r` using `fun p i r => sec_algebraMap_of_iso π (chartOpen hP p) (V p i) (hle p i) _ (e p i) (he p i) r`. Establish `hnz : ∀ p i, π.appLE _ (V p i) (hle p i) (g p i) ∈ nonZeroDivisors Γ(W, V p i)` using `fun p i => (hsa p i (g p i)) ▸ sec_mem_nonZeroDivisors _ _ (algebraMap_reesChart_mem_nonZeroDivisors _ _)`. Establish `hgeq : ∀ p i k, π.appLE _ (V p i) (hle p i) (g p k) = (V p i).topIso.hom ((e p i).hom.appTop ((Scheme.ΓSpecIso _).inv (fracR (g p) i k))) * π.appLE _ (V p i) (hle p i) (g p i)`. Introduce `p i k`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinter : ∀ p i j, V p i ⊓ V p j = W.basicOpen ((V p i).topIso.hom ((e p i).hom.appTop ((Scheme.ΓSpecIso _).inv (fracR (g p) i j))))` using `fun p i j => inter_reesCharts π J h2 (chartOpen hP p) (g p) (hg p) (V p) (hle p) (e p) (he p) i j _ rfl`. Establish `eq1 : ∀ p {O Q : W.Opens} (hQ : Q ≤ π ⁻¹ᵁ (chartOpen hP p).1) (h : O ≤ Q) r, W.presheaf.map (homOfLE h).op (π.appLE _ Q hQ r) = π.appLE _ O (h.trans hQ) r`. Introduce `p O Q hQ h r`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_map]`. Use `⟨{ W := W, π := π, lft := ?_, J := J, blowup := h2, support_le := h1, regular := h3, snc := h4, isIso_off := ?_, m := m, g := g, span_g := hg, pres := fun p i => AffPres.mk (V p i) _ (I p i) (iso p i) (hiso p i), le_pres := hle, iSup_pres := hV, t := fun p i k => (V p i).topIso.h …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h8 infer_instance` as an intermediate fact. Use `hiso0` as an intermediate fact. Use `isIso_morphismRestrict_of_le (U := U0) π ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hx' : x ∉ (projB P D hP : Set (projX P hP))` using `hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hreg : IsRegularLocalRing ((projX P hP).presheaf.stalk x)`. Assume the negation of the conclusion as `hn`. Conclude with `hx' (sing_subset_projB hP hD hQ hsing hn)`. Use `show x ∈ (U0 : Set (projX P hP))`. Rewrite using `[hU0]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sncAt_of_not_mem (projB P D hP) x hx' hreg`. Introduce `p i dsimp only`. Simplify using `only [fracR_self, map_one]`. Introduce `p i j k dsimp only`. Establish `hG` using `res_mem_nonZeroDivisors (inf_le_left : V p i ⊓ V p j ≤ V p i) (isAffineOpen_of_iso _ (e p i)) (hnz p i)`.
+Simplify by unfolding definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `cocycle_of_nonZeroDivisor (W.presheaf.map (homOfLE (inf_le_left : V p i ⊓ V p j ≤ V p i)).op).hom (W.presheaf.map (homOfLE (inf_le_right : V p i ⊓ V p j ≤ V p j)).op).hom (hgeq p i j) (hgeq p i k) (hgeq p j k) (eq1 p (hle p i) (inf_le_left : V p i ⊓ V p j ≤ V p i) (g p j)) (eq1 p …`. Introduce `p i q dsimp only`. Conclude with `(hsec p i _).trans ((congrArg (fun a => (V p i).topIso.hom ((e p i).hom.appTop ((Scheme.ΓSpecIso (.of (FinalTheorems.reesChart (g p) i))).inv a))) (yC_yq hP p (g p) i q)).trans (hsa p i _))`. Introduce `p i k dsimp only`. Conclude with `(hsec p i _).trans (congrArg (fun a => (V p i).topIso.hom ((e p i).hom.appTop ((Scheme.ΓSpecIso (.of (FinalTheorems.reesChart (g p) i))).inv a))) (yC_yt hP p (g p) i k))`.
+Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `p i l dsimp only`. Use `⟨X l, ?_, by rw [sub_self]; exact zero_mem _⟩` and prove the remaining obligations. Rewrite using `[vars_X]`. Introduce `a ha`. Rewrite `ha` using `[Finset.mem_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[ha]`. Break down `h : finSumFinEquiv.symm l with q | k` into its components or cases. Apply `Finset.mem_union_left` to reduce the goal to its premises. Rewrite using `[Finset.mem_image]`. Use `⟨(Fintype.equivFin _).symm q, Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Equiv.apply_symm_apply, ← h]`. Apply `Finset.mem_union_right` to reduce the goal to its premises. Rewrite using `[Finset.mem_image]`. Use `⟨k, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Simplify using `only [← h, Equiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_wData_of_logRes (hQ : FinalTheorems.FinTypeQE)
     {P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P) (hD : IsMultiHomogIdeal D)

@@ -15,11 +15,11 @@ noncomputable section
 namespace GlobalTheory.UPel.HT.LieType
 
 /- English proof (translation)
-Establish `hinj : Function.Injective τ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Establish `hI` using `Ideal.comap_ne_bot_of_integral_mem (R := ℤ) (I := RingHom.ker τ) hne (by simpa [RingHom.mem_ker] using hx) (Algebra.IsIntegral.isIntegral x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Apply `hI` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `n hn`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, map_intCast] at hn`. Simplify using `using hn`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨IsFractionRing.lift hinj, fun c => ?_⟩` and prove the remaining obligations. Conclude with `IsFractionRing.lift_algebraMap hinj c`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_ext (F : Type) [Field F] [NumberField F] (τ : 𝓞 F →+* ℂ) :
     ∃ τ' : F →+* ℂ, ∀ c : 𝓞 F, τ' (c : F) = τ c := by
@@ -38,17 +38,17 @@ theorem exists_ext (F : Type) [Field F] [NumberField F] (τ : 𝓞 F →+* ℂ) 
   exact IsFractionRing.lift_algebraMap hinj c
 
 /- English proof (translation)
-Establish `hc : ((starRingEnd ℂ) r) ^ 2 - tr * (starRingEnd ℂ) r + nm = 0`. Use `congrArg (starRingEnd ℂ) hr` as an intermediate fact. Simplify using `using this`. Establish `hfac : ∀ x : ℂ, x ^ 2 - tr * x + nm = 0 → x = r ∨ x = tr - r`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (x - r) * (x - (tr - r)) = 0` using `by linear_combination hx - hr`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `Or.inl (sub_eq_zero.1 h)`. Conclude with `Or.inr (sub_eq_zero.1 h)`. Establish `hne : (starRingEnd ℂ) r ≠ r`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Introduce `h`. Establish `him : r.im = 0` using `Complex.conj_eq_iff_im.1 h`. Establish `hre` using `congrArg Complex.re hr`. Apply the tactic sequence `have himr : r = (r.re : ℂ) := by apply Complex.ext <;> simp [him]`. Rewrite `hre` using `[himr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[sq] at hre`. Establish `: ((2 * r.re - tr) ^ 2 : ℝ) = (tr : ℝ) ^ 2 - 4 * nm` using `by linear_combination 4 * hre`. Establish `h2 : ((tr : ℝ) ^ 2 - 4 * nm) < 0` using `by exact_mod_cast hd`. Use polynomial arithmetic with `[sq_nonneg (2 * r.re - tr)]`. Establish `hcr : (starRingEnd ℂ) r = tr - r` using `(hfac _ hc).resolve_left hne`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: z = tr - r` using `(hfac z hz).resolve_left h`. Rewrite using `[this, ← hcr]`. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h hzr`. Rewrite `h` using `[hzr]`. Conclude with `hne h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_cases {r z : ℂ} {tr nm : ℤ} (hd : tr ^ 2 - 4 * nm < 0) (hr : r ^ 2 - tr * r + nm = 0)
     (hz : z ^ 2 - tr * z + nm = 0) : (z ≠ r ↔ (starRingEnd ℂ) z = r) := by
@@ -81,47 +81,47 @@ theorem root_cases {r z : ℂ} {tr nm : ℤ} (hd : tr ^ 2 - 4 * nm < 0) (hr : r 
     exact hne h
 
 /- English proof (translation)
-Introduce `p _ D R _ b N σ ρ o h hL D' t Q e hU`. Use `choose τ hτ using fun i => exists_ext D.F (σ.comp (b.t i))`. Establish `hτ' : ∀ i (c : 𝓞 D.F), τ i (c : D.F) = σ (b.t i c)` using `fun i c => hτ i c`. Take `⟨hrank, hcov⟩` from `GlobalTheory.T.eigenspace_dimension_of_uniformization p D R b N σ ρ o h hL D' t Q e hU τ hτ'`. Establish `hsum` using `GlobalTheory.T.finrank_jointEigenspace_add_conj_eq_mul p D D' ρ Q hU.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set r := σ b.ρ with hrdef`. Establish `hr : r ^ 2 - D.tr * r + D.nm = 0`. Use `congrArg σ b.ρ_root` as an intermediate fact. Simplify using `using this`. Establish `hω : (D.ω ^ 2 - (D.tr : 𝓞 D.F) * D.ω + D.nm : 𝓞 D.F) = 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← D.tr_eq, ← D.nm_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hτω : ∀ τ' : D.F →+* ℂ, τ' (D.ω : D.F) ^ 2 - D.tr * τ' (D.ω : D.F) + D.nm = 0`. Introduce `τ'`. Use `congrArg (fun x : 𝓞 D.F => τ' (x : D.F)) hω` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `key : ∀ τ' : D.F →+* ℂ, τ' (D.ω : D.F) ≠ r ↔ ((starRingEnd ℂ).comp τ') (D.ω : D.F) = r` using `fun τ' => root_cases D.disc_neg hr (hτω τ')`. Establish `hinj : Function.Injective τ`. Introduce `i j hij`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : Ideal.span (Set.range fun x => b.t i x - b.t j x) ≤ RingHom.ker σ`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `h1` using `hτ' i x`. Establish `h2` using `hτ' j x`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hij]`. Simplify using `[RingHom.mem_ker, ← h1, ← h2]`. Rewrite `hle` using `[b.comax i j hne]`. Establish `: (1 : R) ∈ RingHom.ker σ` using `hle Submodule.mem_top`. Simplify using `[RingHom.mem_ker] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτA : ∀ i, τ i (D.ω : D.F) = r` using `fun i => by rw [hτ', b.t_ω]`. Use `set d : (D.F →+* ℂ) → ℕ := fun τ' => Module.finrank ℂ (eigSp (ρ.comp (algebraMap (𝓞 D.F) D.O)) τ') with hd`. Establish `hzero : ∀ τ' : D.F →+* ℂ, τ' (D.ω : D.F) = r → τ' ∉ Finset.univ.image τ → d τ' = 0`. Introduce `τ' h1 h2`. Establish `hbot : eigSp (ρ.comp (algebraMap (𝓞 D.F) D.O)) τ' = ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[eq_bot_iff]`. Introduce `u hu`. Establish `hu' : ρ (algebraMap (𝓞 D.F) D.O D.ω) *ᵥ u = r • u`. Use `hu D.ω` as an intermediate fact. Rewrite `this` using `[h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Establish `hmem` using `hcov u hu'`. Establish `hle : (⨆ i, eigSp (ρ.comp (algebraMap (𝓞 D.F) D.O)) (τ i)) ≤ ⨆ τ'' ∈ Finset.univ.image τ, eigSp (ρ.comp (algebraMap (𝓞 D.F) D.O)) τ''`. Use `iSup_le fun i => ?_` and prove the remaining obligations. Conclude with `le_biSup (fun τ'' => eigSp (ρ.comp (algebraMap (𝓞 D.F) D.O)) τ'') (Finset.mem_image_of_mem τ (Finset.mem_univ i))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(GlobalTheory.T.ringOfIntegersJointEigenspace_disjoint_biSup D.F D.g (ρ.comp (algebraMap (𝓞 D.F) D.O)) _ τ' h2).le_bot ⟨hu, hle hmem⟩` as an intermediate fact. Simplify using `using this`. Simplify using `[hd, hbot]`. Establish `hA : ∀ c : 𝓞 D.F, ∑ τ' ∈ Finset.univ.filter (fun τ' : D.F →+* ℂ => ¬ τ' (D.ω : D.F) ≠ r), (d τ' : ℂ) * τ' (c : D.F) = ∑ i, (D.m : ℂ) * σ (b.t i c)`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Finset.sum_subset (s₁ := Finset.univ.image τ)]`. Rewrite using `[Finset.sum_image (fun i _ j _ h => hinj h)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [hd, hrank i, hτ']`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hx`. Simplify using `[hτA i]`. Introduce `x hx hx'`. Establish `: x (D.ω : D.F) = r` using `by simpa using hx`. Simplify using `[hzero x this hx']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA' : ∀ c : 𝓞 D.F, ∑ τ' ∈ Finset.univ.filter (fun τ' : D.F →+* ℂ => ¬ τ' (D.ω : D.F) ≠ r), (d τ' : ℂ) * (starRingEnd ℂ) (τ' (c : D.F)) = ∑ i, (D.m : ℂ) * (starRingEnd ℂ) (σ (b.t i c))`. Introduce `c`. Rewrite using `[← Finset.sum_subset (s₁ := Finset.univ.image τ)]`. Rewrite using `[Finset.sum_image (fun i _ j _ h => hinj h)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hd, hrank i, hτ']`. Introduce `x hx`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hx`. Simplify using `[hτA i]`. Introduce `x hx hx'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: x (D.ω : D.F) = r` using `by simpa using hx`. Simplify using `[hzero x this hx']`. Establish `hconj : ∀ c : 𝓞 D.F, ∑ τ' ∈ Finset.univ.filter (fun τ' : D.F →+* ℂ => τ' (D.ω : D.F) ≠ r), (d ((starRingEnd ℂ).comp τ') : ℂ) * τ' (c : D.F) = ∑ τ' ∈ Finset.univ.filter (fun τ' : D.F →+* ℂ => ¬ τ' (D.ω : D.F) ≠ r), (d τ' : ℂ) * (starRingEnd ℂ) (τ' (c : D.F))`. Introduce `c`. Use `Finset.sum_nbij' (fun τ' => (starRingEnd ℂ).comp τ') (fun τ' => (starRingEnd ℂ).comp τ') ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Use `(key x).1 (by simpa using hx)` as an intermediate fact. Simplify using `using this`. Introduce `x hx`. Establish `hx' : x (D.ω : D.F) = r` using `by simpa using hx`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `: ¬ ((starRingEnd ℂ).comp x) (D.ω : D.F) = r`. Conclude with `fun h => (key x).2 h hx'`. Simplify using `using this`. Introduce `x _`. Use `ext`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `x _`. Use `ext`. Simplify using the standard rewrite rules. Introduce `x _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Introduce `c`. Establish `htr : (ρ (algebraMap (𝓞 D.F) D.O c)).trace = ∑ τ' : D.F →+* ℂ, (d τ' : ℂ) * τ' (c : D.F)` using `GlobalTheory.T.trace_ringOfIntegers_action_sum_embeddings_eigenspace D.F D.g (ρ.comp (algebraMap (𝓞 D.F) D.O)) c`. Rewrite using `[htr, ← Finset.sum_filter_add_sum_filter_not Finset.univ (fun τ' : D.F →+* ℂ => τ' (D.ω : D.F) ≠ r)]`. Establish `hB : ∑ τ' ∈ Finset.univ.filter (fun τ' : D.F →+* ℂ => τ' (D.ω : D.F) ≠ r), (d τ' : ℂ) * τ' (c : D.F) = ∑ τ' ∈ Finset.univ.filter (fun τ' : D.F →+* ℂ => τ' (D.ω : D.F) ≠ r), ((D.m : ℂ) * D.n * τ' (c : D.F) - (d ((starRingEnd ℂ).comp τ') : ℂ) * τ' (c : D.F))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun τ' _ => ?_` and prove the remaining obligations. Use `hsum τ'` as an intermediate fact. Establish `h' : (d τ' : ℂ) + d ((starRingEnd ℂ).comp τ') = D.m * D.n` using `by exact_mod_cast this`. Take the linear combination `τ' (c : D.F) * h'`. Rewrite using `[hB, Finset.sum_sub_distrib, hconj c, hA c, hA' c]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : ∑ τ' ∈ Finset.univ.filter (fun τ' : D.F →+* ℂ => τ' (D.ω : D.F) ≠ r), (D.m : ℂ) * D.n * τ' (c : D.F) = D.m * ∑ τ' ∈ Finset.univ.filter (fun τ' : D.F →+* ℂ => τ' (D.ω : D.F) ≠ r), (D.n : ℂ) * τ' (c : D.F)`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[e1]`. Simplify using `only [← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lie_isType : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (σ : R →+* ℂ) (ρ : D.O →+* Matrix (Fin D.g) (Fin D.g) ℂ) (o : Obj b N (spMap σ)) h hL (D' : PLat D.O D.inv) t Q e, UnifAt (o.fam h hL) σ ρ N D' t Q (𝟙 _) e → b.IsType σ ρ := by
   intro p _ D R _ b N σ ρ o h hL D' t Q e hU

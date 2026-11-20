@@ -22,7 +22,7 @@ def lowers (F : ℕ → Submodule R (Fin n → K)) (c : ℕ) : Submodule R (Matr
     exact Submodule.smul_mem _ _ (hT b y hy)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lowers {F : ℕ → Submodule R (Fin n → K)} {c : ℕ} {T : Matrix (Fin n) (Fin n) K} :
     T ∈ lowers F c ↔ ∀ b, ∀ y ∈ F (b + c + 1), T *ᵥ y ∈ F b := Iff.rfl
@@ -36,7 +36,7 @@ def Biorth (r : ℕ → ℕ) (m : ℕ) (T : ∀ b, Matrix (Fin n) (Fin (r b)) K)
   (∀ b, T' b * T b = 1) ∧ (∀ b b', b ≠ b' → T' b * T b' = 0) ∧ ∑ b ∈ Finset.range m, T b * T' b = 1
 
 /- English proof (translation)
-Introduce `T hT`. Rewrite `hT`, the goal using `[mem_lowers]`. Introduce `b y hy`. Conclude with `hT b y (hF (by omega) hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lowers_succ_le {F : ℕ → Submodule R (Fin n → K)} (hF : Monotone F) (c : ℕ) :
     lowers F (c + 1) ≤ lowers F c := by
@@ -46,15 +46,15 @@ theorem lowers_succ_le {F : ℕ → Submodule R (Fin n → K)} (hF : Monotone F)
   exact hT b y (hF (by omega) hy)
 
 /- English proof (translation)
-The claim follows from `antitone_nat_of_succ_le (lowers_succ_le hF)`.
+A detailed English derivation is pending.
 -/
 theorem lowers_anti {F : ℕ → Submodule R (Fin n → K)} (hF : Monotone F) : Antitone (lowers F) :=
   antitone_nat_of_succ_le (lowers_succ_le hF)
 
 /- English proof (translation)
-Rewrite `hX`, `hY`, the goal using `[mem_lowers]`. Introduce `b y hy`. Rewrite using `[← Matrix.mulVec_mulVec]`. Apply `hX b` to reduce the goal to its premises. Apply `hY (b + c + 1)` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e : b + c + 1 + c' + 1 = b + (c + c' + 1) + 1` using `by omega`. Rewrite using `[e]`. Conclude with `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowers_mul {F : ℕ → Submodule R (Fin n → K)} {c c' : ℕ} {X Y : Matrix (Fin n) (Fin n) K}
     (hX : X ∈ lowers F c) (hY : Y ∈ lowers F c') : X * Y ∈ lowers F (c + c' + 1) := by
@@ -68,7 +68,7 @@ theorem lowers_mul {F : ℕ → Submodule R (Fin n → K)} {c c' : ℕ} {X Y : M
   exact hy
 
 /- English proof (translation)
-Establish `h1` using `lowers_mul hX hY`. Establish `h2` using `lowers_mul hY hX`. Rewrite `h1` using `[Nat.add_zero]`. Rewrite `h2` using `[Nat.zero_add]`. Conclude with `⟨h1, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem lowers_mul_zero {F : ℕ → Submodule R (Fin n → K)} {c : ℕ} {X Y : Matrix (Fin n) (Fin n) K}
     (hX : X ∈ lowers F c) (hY : Y ∈ lowers F 0) :
@@ -80,13 +80,13 @@ theorem lowers_mul_zero {F : ℕ → Submodule R (Fin n → K)} {c : ℕ} {X Y :
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `T hT`. Rewrite `hT` using `[mem_lowers]`. Establish `hzero : ∀ y ∈ (F m : Set (Fin n → K)), T *ᵥ y = 0`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy' : y ∈ F (0 + m + 1)`. Rewrite using `[hm (0 + m + 1) (by omega)]`. Conclude with `hy`. Establish `h` using `hT 0 y hy'`. Rewrite `h` using `[h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Submodule.mem_bot R).1 h`. Establish `hlin : Matrix.toLin' T = 0`. Apply `LinearMap.ext_on hsp` to reduce the goal to its premises. Introduce `y hy`. Simplify `hzero y hy` using `[Matrix.toLin'_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hT0 : T = 0`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[hlin, map_zero]`. Conclude with `(Submodule.mem_bot R).2 hT0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowers_eq_bot {F : ℕ → Submodule R (Fin n → K)} {m : ℕ} (h0 : F 0 = ⊥)
     (hm : ∀ b, m ≤ b → F b = F m) (hsp : Submodule.span K (F m : Set (Fin n → K)) = ⊤) :
@@ -112,19 +112,17 @@ theorem lowers_eq_bot {F : ℕ → Submodule R (Fin n → K)} {m : ℕ} (h0 : F 
   exact (Submodule.mem_bot R).2 hT0
 
 /- English proof (translation)
-Take `⟨hmono, h0, hstab, hdual⟩` from `hF`. Establish `hleM : ∀ k, F k ≤ F m`. Introduce `k`. Break down `le_total k m with h | h` into its components or cases. Conclude with `hmono h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(hstab k h).le`. Rewrite `hT`, the goal using `[mem_lowers]`. Introduce `b y hy`. Establish `hyM : y ∈ F m` using `hleM _ hy`. Break down `le_total m b with hb | hb` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hstab b hb]`. Conclude with `htop y hyM`. Establish `key : ∀ x ∈ F (m - b), star x ⬝ᵥ (J *ᵥ (T' *ᵥ y)) = 0`. Introduce `x hx`. Establish `e : star x ⬝ᵥ (J *ᵥ (T' *ᵥ y)) = star (T *ᵥ x) ⬝ᵥ (J *ᵥ y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Matrix.mulVec_mulVec, hadj, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec]`. Rewrite using `[e]`. Break down `le_or_gt (b + c + 1) m with hc | hc` into its components or cases. Establish `hTx : T *ᵥ x ∈ F (m - (b + c + 1))`. Apply `hT` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e' : m - (b + c + 1) + c + 1 = m - b` using `by omega`. Rewrite using `[e']`. Conclude with `hx`. Establish `hy' : y ∈ F (m - (m - (b + c + 1)))`. Rewrite using `[show m - (m - (b + c + 1)) = b + c + 1 by omega]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hy`. Conclude with `((hdual _ (Nat.sub_le _ _) y).1 hy').2 _ hTx`. Establish `hTx : T *ᵥ x ∈ F 0` using `hT 0 x (hmono (by omega) hx)`. Rewrite `hTx` using `[h0]`. Rewrite using `[(Submodule.mem_bot R).1 hTx, star_zero, zero_dotProduct]`.
-
-Establish `hd` using `hdual (m - b) (Nat.sub_le _ _) (T' *ᵥ y)`. Rewrite `hd` using `[show m - (m - b) = b by omega]`. Conclude with `hd.2 ⟨htop y hyM, key⟩`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowers_adj [StarRing K] {J : Matrix (Fin n) (Fin n) K} (hJ : Jᴴ = J)
     {F : ℕ → Submodule R (Fin n → K)} {m : ℕ} (hF : IsDualFlag J F m) {c : ℕ}

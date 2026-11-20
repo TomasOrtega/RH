@@ -10,22 +10,22 @@ open scoped RealInnerProductSpace
 def ee (t : ℝ) : ℂ := Complex.exp (-(2 * Real.pi * Complex.I) * (t : ℂ))
 
 /- English proof (translation)
-Rewrite using `[ee, ee, ee, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ee_add (s t : ℝ) : ee (s + t) = ee s * ee t := by
   rw [ee, ee, ee, ← Complex.exp_add]; congr 1; push_cast; ring
 
 /- English proof (translation)
-Simplify using `[ee]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ee_zero : ee 0 = 1 := by simp [ee]
 
 /- English proof (translation)
-Establish `hc : Real.cos.HasTemperateGrowth` using `⟨Real.contDiff_cos, fun n => ⟨0, 1, fun x => by`. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv]`. Simplify using `using Real.abs_iteratedDeriv_cos_le_one n x⟩⟩`. Establish `hs : Real.sin.HasTemperateGrowth` using `⟨Real.contDiff_sin, fun n => ⟨0, 1, fun x => by`. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using Real.abs_iteratedDeriv_sin_le_one n x⟩⟩`. Establish `hl : (fun t : ℝ => -(2 * Real.pi) * t).HasTemperateGrowth` using `(Function.HasTemperateGrowth.const _).mul Function.HasTemperateGrowth.id'`. Establish `e : ee = fun t => ((Real.cos (-(2 * Real.pi) * t) : ℝ) : ℂ) + ((Real.sin (-(2 * Real.pi) * t) : ℝ) : ℂ) * Complex.I`. Use function extensionality and compare the values at `t`. Rewrite using `[ee, Complex.ofReal_cos, Complex.ofReal_sin, ← Complex.exp_mul_I]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(Complex.ofRealCLM.hasTemperateGrowth.comp (hc.comp hl)).add ((Complex.ofRealCLM.hasTemperateGrowth.comp (hs.comp hl)).mul (Function.HasTemperateGrowth.const _))`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ee_temp : ee.HasTemperateGrowth := by
   have hc : Real.cos.HasTemperateGrowth := ⟨Real.contDiff_cos, fun n => ⟨0, 1, fun x => by
@@ -53,7 +53,7 @@ def cmp (A : X ≃L[ℝ] Y) : 𝓢(X, ℂ) ≃L[ℂ] 𝓢(Y, ℂ) :=
     (fun f => by ext x; simp) (fun f => by ext x; simp)
 
 /- English proof (translation)
-Introduce `y` and use `by obtain ⟨x, rfl⟩ := A.surjective y change g (A.symm (A x)) = _ * f (A.symm (A x + A w.1)) rw [← map_add, A.symm_apply_apply, A.symm_apply_apply, H x, h, h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tr_cmp {β : X → X → ℝ} {β' : Y → Y → ℝ} (A : X ≃L[ℝ] Y) (B : X → Y) (h : ∀ x y, β' (A x) (B y) = β x y) {w : X × X}
     {f g : 𝓢(X, ℂ)} (H : Tr β w f g) : Tr β' (A w.1, B w.2) (cmp A f) (cmp A g) := fun y => by
@@ -70,7 +70,7 @@ def Impl (S : V × V → V × V) : Prop :=
 
 omit [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] in
 /- English proof (translation)
-The claim follows from `let ⟨T, hT⟩ := h let ⟨T', hT'⟩ := h' ⟨T'.trans T, fun w f g H => hT _ _ _ (hT' w f g H)⟩`.
+A detailed English derivation is pending.
 -/
 theorem Impl.comp {S S' : V × V → V × V} (h : Impl S) (h' : Impl S') : Impl fun w => S (S' w) :=
   let ⟨T, hT⟩ := h
@@ -79,16 +79,16 @@ theorem Impl.comp {S S' : V × V → V × V} (h : Impl S) (h' : Impl S') : Impl 
 
 omit [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cmp A, fun _ _ _ H => tr_cmp A B h H⟩`.
+Supply the required witnesses or components.
 -/
 theorem implM (A : V ≃L[ℝ] V) (B : V → V) (h : ∀ x y, ⟪A x, B y⟫ = ⟪x, y⟫) : Impl fun w : V × V => (A w.1, B w.2) :=
   ⟨cmp A, fun _ _ _ H => tr_cmp A B h H⟩
 
 omit [MeasurableSpace V] [BorelSpace V] in
 /- English proof (translation)
-Establish `hq : ∀ c : ℝ, (fun x : V => ee (c * ⟪x, Q x⟫)).HasTemperateGrowth` using `fun c => ee_temp.comp ((Function.HasTemperateGrowth.const c).mul ((innerSL ℝ).bilinear_hasTemperateGrowth Function.HasTemperateGrowth.id' (LinearMap.toContinuousLinearMap Q).hasTemperateGrowth))`. Establish `hi : ∀ c : ℝ, ∀ f : 𝓢(V, ℂ), smulLeftCLM ℂ (fun x : V => ee (-c * ⟪x, Q x⟫)) (smulLeftCLM ℂ (fun x : V => ee (c * ⟪x, Q x⟫)) f) = f` using `fun c f => by`. Use extensionality with `x`. Rewrite using `[smulLeftCLM_apply_apply (hq _), smulLeftCLM_apply_apply (hq _), smul_smul, ← ee_add]`. Simplify using `[ee_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨ContinuousLinearEquiv.equivOfInverse (smulLeftCLM ℂ fun x : V => ee (-(1 / 2) * ⟪x, Q x⟫)) (smulLeftCLM ℂ fun x : V => ee (- -(1 / 2) * ⟪x, Q x⟫)) (hi _) (fun f => by simpa using hi (1 / 2) f), fun w f g H x => ?_⟩` and prove the remaining obligations. Simplify using `only [ContinuousLinearEquiv.equivOfInverse_apply, smulLeftCLM_apply_apply (hq _), smul_eq_mul]`. Rewrite using `[H x, ← mul_assoc, ← mul_assoc, ← ee_add, ← ee_add]`. Use `congr 2`. Simplify using `only [map_add, inner_add_left, inner_add_right, h w.1 x]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -110,11 +110,11 @@ theorem implN (Q : V →ₗ[ℝ] V) (h : ∀ x y, ⟪x, Q y⟫ = ⟪y, Q x⟫) :
   ring
 
 /- English proof (translation)
-Use `⟨fourierCLE ℂ 𝓢(V, ℂ), fun w f g H ξ => ?_⟩` and prove the remaining obligations. Establish `e : ∀ (φ : 𝓢(V, ℂ)) (η : V), fourierCLE ℂ 𝓢(V, ℂ) φ η = ∫ v, ee ⟪v, η⟫ * φ v` using `fun φ η => by`. Rewrite using `[fourierCLE_apply, fourier_coe, Real.fourier_eq']`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[smul_eq_mul, ee]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, e, ← integral_const_mul, ← integral_add_right_eq_self (fun v => _ * (ee ⟪v, ξ + w.2⟫ * f v)) w.1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[H v, ← mul_assoc, ← mul_assoc, ← ee_add, ← ee_add]`. Use `congr 2`. Simplify using `only [inner_add_left, inner_add_right, inner_neg_right, real_inner_comm w.1 ξ, real_inner_comm w.1 w.2]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -132,13 +132,13 @@ theorem implJ : Impl fun w : V × V => (w.2, -w.1) := by
   ring
 
 /- English proof (translation)
-Simplify using `using implJ.comp (implM (ContinuousLinearEquiv.neg ℝ (M := V)) (fun y => -y) fun x y => by simp)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem implJ' : Impl fun w : V × V => (-w.2, w.1) := by
   simpa using implJ.comp (implM (ContinuousLinearEquiv.neg ℝ (M := V)) (fun y => -y) fun x y => by simp)
 
 /- English proof (translation)
-Use `implJ'.comp ((implN (-Q) fun x y => by simp [inner_neg_right, h x y]).comp implJ)` as an intermediate fact. Simplify `this` using `[add_comm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem implU (Q : V →ₗ[ℝ] V) (h : ∀ x y, ⟪x, Q y⟫ = ⟪y, Q x⟫) : Impl fun w : V × V => (w.1 + Q w.2, w.2) := by
   have := implJ'.comp ((implN (-Q) fun x y => by simp [inner_neg_right, h x y]).comp implJ)
@@ -148,15 +148,15 @@ def Sp (S : V × V →ₗ[ℝ] V × V) : Prop := ∀ w w', ⟪(S w).1, (S w').2�
 
 omit [MeasurableSpace V] [BorelSpace V] in
 /- English proof (translation)
-Set `a : V →ₗ[ℝ] V` to `LinearMap.fst ℝ V V ∘ₗ R ∘ₗ LinearMap.inl ℝ V V`. Set `c : V →ₗ[ℝ] V` to `LinearMap.snd ℝ V V ∘ₗ R ∘ₗ LinearMap.inl ℝ V V`. Establish `h1 : ∀ x y, ⟪a x, (R (0, y)).2⟫ = ⟪x, y⟫` using `fun x y => by simpa [h0, a] using hR (x, 0) (0, y)`. Establish `hi : Function.Injective a` using `(injective_iff_map_eq_zero a).2 fun x hx => by`. Use `h1 x x` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hx, inner_zero_left]`. Conclude with `inner_self_eq_zero.1 this.symm`. Set `A` to `(LinearEquiv.ofInjectiveEndo a hi).toContinuousLinearEquiv`. Establish `hA : ∀ x, A x = a x` using `fun _ => rfl`. Use `(implN (c ∘ₗ (A.symm : V →L[ℝ] V).toLinearMap) fun x y => by` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `A.surjective x`. Take `⟨y, rfl⟩` from `A.surjective y`. Use `hR (x, 0) (y, 0)` as an intermediate fact. Simplify using `only [inner_zero_right, sub_self, sub_eq_zero] at this`. Establish `key : ⟪A x, c y⟫ = ⟪A y, c x⟫` using `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using key).comp (implM A (fun y => (R (0, y)).2) h1)`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `w`. Establish `e : R w = R (w.1, 0) + R (0, w.2)` using `by rw [← map_add]; simp`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Prod.fst_add, h0, add_zero]`. Both sides reduce to the same expression. Rewrite using `[e, Prod.snd_add, add_comm]`. Simplify using `[c]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem implP (R : V × V →ₗ[ℝ] V × V) (hR : Sp R) (h0 : ∀ y, (R (0, y)).1 = 0) : Impl R := by
   let a : V →ₗ[ℝ] V := LinearMap.fst ℝ V V ∘ₗ R ∘ₗ LinearMap.inl ℝ V V
@@ -183,27 +183,25 @@ theorem implP (R : V × V →ₗ[ℝ] V × V) (hR : Sp R) (h0 : ∀ y, (R (0, y)
   · rw [e, Prod.snd_add, add_comm]; simp [c]
 
 /- English proof (translation)
-Set `b : V →ₗ[ℝ] V` to `LinearMap.fst ℝ V V ∘ₗ S ∘ₗ LinearMap.inr ℝ V V`. Set `d : V →ₗ[ℝ] V` to `LinearMap.snd ℝ V V ∘ₗ S ∘ₗ LinearMap.inr ℝ V V`. Establish `hbd : ∀ y z, ⟪b y, d z⟫ = ⟪b z, d y⟫` using `fun y z => by`. Use `hS (0, y) (0, z)` as an intermediate fact. Simplify using `only [inner_zero_left, sub_self, sub_eq_zero] at this`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Set `P : V →ₗ[ℝ] V` to `((LinearMap.range b)ᗮ.starProjection : V →L[ℝ] V).toLinearMap`. Establish `hP : ∀ x y, ⟪x, P y⟫ = ⟪y, P x⟫` using `fun x y => by`. Express the relevant statement in the definitionally equal form `⟪x, (LinearMap.range b)ᗮ.starProjection y⟫ = ⟪y, (LinearMap.range b)ᗮ.starProjection x⟫`. Rewrite using `[← Submodule.inner_starProjection_left_eq_right, real_inner_comm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : Function.Injective (b + P ∘ₗ d)` using `(injective_iff_map_eq_zero _).2 fun y hy => by`. Establish `hy' : b y + P (d y) = 0` using `hy`. Establish `hm : P (d y) ∈ (LinearMap.range b)ᗮ` using `Submodule.starProjection_apply_mem _ _`. Establish `hb : b y = 0`. Use `Submodule.inner_right_of_mem_orthogonal (LinearMap.mem_range_self b y) hm` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[eq_neg_of_add_eq_zero_right hy', inner_neg_right, neg_eq_zero]`. Conclude with `inner_self_eq_zero.1 this`. Establish `hd : d y ∈ (LinearMap.range b)ᗮ` using `(Submodule.mem_orthogonal _ _).2 (by`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[hbd, hb, inner_zero_left])`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd0 : d y = 0`. Rewrite `hy'` using `[hb, zero_add]`. Conclude with `(Submodule.starProjection_eq_self_iff.2 hd).symm.trans hy'`. Use `hS (y, 0) (0, y)` as an intermediate fact. Express the relevant statement in the definitionally equal form `⟪_, d y⟫ - ⟪b y, _⟫ = _ at this`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Rewrite `this` using `[hb, hd0, inner_zero_left, inner_zero_right, sub_self]`. Simplify using `using this.symm`. Set `B` to `LinearEquiv.ofInjectiveEndo _ hi`. Establish `hB : ∀ y, B y = b y + P (d y)` using `fun _ => rfl`. Set `Q : V →ₗ[ℝ] V` to `d ∘ₗ B.symm.toLinearMap`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hQ : ∀ x y, ⟪x, Q y⟫ = ⟪y, Q x⟫` using `fun x y => by`. Take `⟨x, rfl⟩` from `B.surjective x`. Take `⟨y, rfl⟩` from `B.surjective y`. Simplify using `only [Q, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Rewrite using `[hB, hB, inner_add_left, inner_add_left, hbd, real_inner_comm (d y), real_inner_comm (d x) (P _), hP]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `u : V × V →ₗ[ℝ] V` to `LinearMap.fst ℝ V V ∘ₗ S + P ∘ₗ LinearMap.snd ℝ V V ∘ₗ S`. Set `R : V × V →ₗ[ℝ] V × V` to `(LinearMap.snd ℝ V V ∘ₗ S - Q ∘ₗ u).prod (-u)`. Establish `hR : ∀ w, R w = ((S w).2 - Q ((S w).1 + P (S w).2), -((S w).1 + P (S w).2))` using `fun _ => rfl`. Establish `hsp : Sp R` using `fun w w' => by`. Rewrite using `[← hS w w', hR, hR]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1` using `hQ ((S w).1 + P (S w).2) ((S w').1 + P (S w').2)`. Establish `e2` using `hP (S w).2 (S w').2`. Simplify using `only [inner_neg_right, inner_sub_left, real_inner_comm _ (Q _)]`. Simplify using `only [inner_add_right (S w).2, inner_add_right (S w').2, real_inner_comm (S w).1, real_inner_comm (S w').1] at *`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Establish `h0 : ∀ y, (R (0, y)).1 = 0` using `fun y => by`. Express the relevant statement in the definitionally equal form `d y - Q (B y) = 0`. Simplify using `[Q]`. Use `(implU (-P) fun x y => by simp [inner_neg_right, hP x y]).comp ((implN Q hQ).comp (implJ'.comp (implP R hsp h0)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `w`. Simplify using `[hR]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem implSp (S : V × V →ₗ[ℝ] V × V) (hS : Sp S) : Impl S := by
   let b : V →ₗ[ℝ] V := LinearMap.fst ℝ V V ∘ₗ S ∘ₗ LinearMap.inr ℝ V V
@@ -267,15 +265,15 @@ open PositivityTheory.Mix.Real
 open scoped RealInnerProductSpace
 
 /- English proof (translation)
-Introduce `X _ _ _ β hs hn S hS`. Set `V` to `EuclideanSpace ℝ (Fin (Module.finrank ℝ X))`. Set `L : X ≃L[ℝ] V` to `ContinuousLinearEquiv.ofFinrankEq (by simp [V])`. Set `l : X →ₗ[ℝ] V` to `(InnerProductSpace.toDual ℝ V).symm.toLinearEquiv.toLinearMap ∘ₗ (LinearMap.toContinuousLinearMap (𝕜 := ℝ) (E := V) (F' := ℝ)).toLinearMap ∘ₗ (β.compl₂ (L.symm : V →L[ℝ] X).toLinearMap)`. Establish `hl : ∀ x y, ⟪L x, l y⟫ = β x y` using `fun x y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[real_inner_comm]`. Simplify using `[l, hs x y]`. Establish `hi : Function.Injective l` using `(injective_iff_map_eq_zero l).2 fun y hy => hn y fun x => by`. Rewrite using `[hs, ← hl, hy, inner_zero_right]`. Set `M : X ≃ₗ[ℝ] V` to `LinearMap.linearEquivOfInjective l hi (by simp [V])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hM : ∀ x y, ⟪L x, M y⟫ = β x y` using `hl`. Establish `hM' : ∀ x y, β (L.symm x) (M.symm y) = ⟪x, y⟫` using `fun x y => by rw [← hM]; simp`. Set `E : (X × X) ≃ₗ[ℝ] (V × V)` to `L.toLinearEquiv.prodCongr M`. Take `⟨T, hT⟩` from `implSp (E.toLinearMap ∘ₗ S.toLinearMap ∘ₗ E.symm.toLinearMap) fun w w' => by`. Express the relevant statement in the definitionally equal form `⟪L _, M _⟫ - ⟪L _, M _⟫ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hM, hM, ← hM', ← hM']`. Conclude with `hS _ _`. Use `⟨((cmp L).trans T).trans (cmp L.symm), fun w f g H => ?_⟩` and prove the remaining obligations. Establish `h1` using `tr_cmp (β' := fun x y => β x y) L.symm M.symm hM' (hT _ _ _ (tr_cmp (β := fun x y => β x y) (β' := inner ℝ) L M hM (w := w) H))`. Establish `e : E.symm (L w.1, M w.2) = w` using `E.symm_apply_apply w`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, e] at h1`. Establish `e1 : L.symm (E (S w)).1 = (S w).1` using `L.symm_apply_apply _`. Establish `e2 : M.symm (E (S w)).2 = (S w).2` using `M.symm_apply_apply _`. Rewrite `h1` using `[e1, e2]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_estimates_holds : RealSt := by
   intro X _ _ _ β hs hn S hS

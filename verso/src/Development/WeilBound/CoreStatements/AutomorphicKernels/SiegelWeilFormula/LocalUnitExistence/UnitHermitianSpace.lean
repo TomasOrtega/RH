@@ -18,7 +18,7 @@ def unitSpc (n : ℕ) : Spc F E n := ⟨1, stdLattice E n, fun _ => 1, fun _ => 
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `only [stdLattice, Formalism.UG.stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, LinearMap.mem_range, Algebra.linearMap_apply]`. Use `forall_congr' fun i => ⟨?_, fun h => ⟨⟨x i, h⟩, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨o, ho⟩`. Rewrite using `[← ho]`. Conclude with `o.2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_std {n : ℕ} (x : Fin n → E) : x ∈ stdLattice E n ↔ ∀ i, IsIntegral ℤ (x i) := by
   simp only [stdLattice, Formalism.UG.stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, LinearMap.mem_range,
@@ -30,17 +30,15 @@ theorem mem_std {n : ℕ} (x : Fin n → E) : x ∈ stdLattice E n ↔ ∀ i, Is
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `[form, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_one {n : ℕ} (x y : Fin n → E) : form σ (1 : Matrix (Fin n) (Fin n) E) y x = ∑ i, y i * σ (x i) := by
   simp [form, dotProduct]
 
 /- English proof (translation)
-Use `⟨by omega, Matrix.fromCols 1 0, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.transpose_fromCols, Matrix.mul_one]`. Establish `hm : (Matrix.fromCols (1 : Matrix (Fin n) (Fin n) ℂ) (0 : Matrix (Fin n) (Fin 0) ℂ)).map star = Matrix.fromCols 1 0`. Use extensionality with `i (j | j)`. Simplify using `[Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `j.elim0`. Rewrite using `[hm, Matrix.fromRows_mul_fromCols]`. Use extensionality with `(i | i) (j | j)`. Simplify using the standard rewrite rules. Conclude with `j.elim0`.
-
-Conclude with `i.elim0`. Conclude with `i.elim0`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasSig_one {n : ℕ} : HasSig (1 : Matrix (Fin n) (Fin n) ℂ) n 0 := by
   refine ⟨by omega, Matrix.fromCols 1 0, ?_⟩
@@ -59,7 +57,7 @@ theorem hasSig_one {n : ℕ} : HasSig (1 : Matrix (Fin n) (Fin n) ℂ) n 0 := by
 
 open scoped ComplexOrder in
 /- English proof (translation)
-Use `⟨Matrix.one_mul 1, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.transpose_one, Matrix.one_mul, Matrix.one_mul, Matrix.map_one _ (star_zero ℂ) (star_one ℂ)]`. Rewrite using `[Matrix.one_mulVec, Matrix.one_mulVec, dotProduct_comm]`. Establish `h` using `(Matrix.dotProduct_star_self_pos_iff (v := x)).2 hx`. Conclude with `(Complex.pos_iff.1 h).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCartan_one {n : ℕ} : IsCartan (1 : Matrix (Fin n) (Fin n) ℂ) 1 := by
   refine ⟨Matrix.one_mul 1, ?_, fun x hx => ?_⟩
@@ -69,17 +67,15 @@ theorem isCartan_one {n : ℕ} : IsCartan (1 : Matrix (Fin n) (Fin n) ℂ) 1 := 
     exact (Complex.pos_iff.1 h).1
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, fun w => ?_, isLattice_stdLattice, fun y => ?_, fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [unitSpc, Matrix.one_apply] split_ifs with h1 h2 h2`. Conclude with `map_one σ`. Conclude with `absurd h1.symm h2`. Conclude with `absurd h2.symm h1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_zero σ`. Simplify using `only [unitSpc, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `hasSig_one`. Simplify using `only [unitSpc]`. Rewrite using `[mem_std]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Rewrite `hx` using `[mem_std]`. Rewrite using `[form_one]`. Conclude with `IsIntegral.sum _ fun i _ => (hy i).mul (map_isIntegral_int σ (hx i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `h i`. Establish `hx : (Pi.single i (1 : E) : Fin n → E) ∈ stdLattice E n`. Rewrite using `[mem_std]`. Introduce `j`. Distinguish the cases in `e : j = i`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `e` using the available equality. Simplify using `using isIntegral_one`. Simplify `isIntegral_zero` using `[Pi.single_apply, e]`. Use `h _ hx` as an intermediate fact. Rewrite `this` using `[form_one]`.
-
-Simplify `this` using `[Pi.single_apply]`. Simplify using `only [unitSpc, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `isCartan_one`. Conclude with `isSplitBasis_stdLattice (B.τ v) hB.cm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHerm_unitSpc {B : Base F E} (hB : B.IsGood σ) (n : ℕ) : (unitSpc F E n).IsHerm σ B n 0 := by
   refine ⟨fun i j => ?_, fun w => ?_, isLattice_stdLattice, fun y => ?_, fun w => ?_, fun v => ?_⟩

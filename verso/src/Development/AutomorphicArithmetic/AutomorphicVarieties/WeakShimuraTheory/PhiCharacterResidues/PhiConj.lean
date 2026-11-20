@@ -3,19 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T s`. Take `⟨j, hj⟩` from `s.hc`. Establish `hfixF : ∀ x : T.F, s.c (x : Ω) = x`. Introduce `x`. Establish `hr` using `IsTotallyReal.complexEmbedding_isReal (j.comp (algebraMap T.F Ω))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `RingHom.congr_fun (NumberField.ComplexEmbedding.isReal_iff.1 hr) x` as an intermediate fact. Simplify using `only [NumberField.ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply] at this`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hstab : ∀ (τ : G (W.Lp T.L) Ω) (x : T.L), ∃ y : T.L, τ (x : Ω) = y`. Introduce `τ x`. Conclude with `⟨τ.restrictNormal T.L x, (AlgEquiv.restrictNormal_commutes τ T.L x).symm⟩`. Set `cF : G T.F Ω` to `AlgEquiv.ofRingEquiv (f := s.c.toRingEquiv) (fun x => hfixF x)`. Use `⟨cF, fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `σ : G (W.Lp T.L) Ω` to `s.c * W.resP T.L Ω g * s.c⁻¹`. Establish `hσ : ∀ x : T.L, σ (x : Ω) = x`. Introduce `x`. Take `⟨y, hy⟩` from `hstab s.c⁻¹ x`. Establish `h1 : g (y : Ω) = y` using `g.commutes y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : s.c (y : Ω) = x`. Rewrite using `[← hy]`. Conclude with `mul_inv_apply (σ := s.c) (x : Ω)`. Use `show s.c (g (s.c⁻¹ (x : Ω))) = x`. Rewrite using `[hy, h1, h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Set `g' : G T.L Ω` to `AlgEquiv.ofRingEquiv (f := σ.toRingEquiv) (fun x => hσ x)`. Use `⟨g', ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Both sides reduce to the same expression. Use extensionality with `x`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.phiConj :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} (T : Tower D) (s : W.HidaSetting l T.L Ω), ∃ cF : G T.F Ω, ∀ g : G T.L Ω, ∃ g' : G T.L Ω, W.resP T.L Ω g' = s.c * W.resP T.L Ω g * s.c⁻¹ ∧ resLe T.F_le g' = cF * resLe T.F_le g * cF⁻¹ := by

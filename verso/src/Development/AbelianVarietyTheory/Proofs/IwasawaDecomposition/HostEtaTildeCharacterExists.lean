@@ -15,9 +15,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.FrobeniusOrbi
 namespace GlobalTheory.Mem.EtaT
 
 /- English proof (translation)
-Rewrite using `[← Set.ncard_coe_finset, ← Set.ncard_image_of_injective _ (f := HeightOneSpectrum.asIdeal) (fun _ _ h => HeightOneSpectrum.ext h)]`. Use `congr 1`. Use extensionality with `Q`. Simplify using `only [aboveF, Set.Finite.coe_toFinset, Set.mem_image, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨P, rfl, rfl⟩`. Conclude with `⟨P.isPrime, ⟨rfl⟩⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨Q, h1, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, HeightOneSpectrum.ext h2.over.symm, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem card_above {F L : Type} [Field F] [NumberField F] [Field L] [NumberField L] [Algebra F L]
     (v : HeightOneSpectrum (𝓞 F)) :
@@ -35,11 +35,11 @@ theorem card_above {F L : Type} [Field F] [NumberField F] [Field L] [NumberField
       HeightOneSpectrum.ext h2.over.symm, rfl⟩
 
 /- English proof (translation)
-Establish `: Fact l.Prime` using `⟨hp⟩`. Establish `hPp` using `P.isPrime`. Establish `hPZ : P.asIdeal.LiesOver (Ideal.span {(l : ℤ)})`. Establish `hm : (Ideal.span {(l : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Use `⟨hm.eq_of_le (Ideal.IsPrime.ne_top inferInstance) ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, map_natCast]`. Conclude with `hP`. Establish `he` using `H.der.eta.2.2 l hl P.asIdeal`. Express the relevant statement in the definitionally equal form `(if (Ideal.primesOver (P.under (𝓞 H.F)).asIdeal (𝓞 H.E)).ncard = 2 then (1 : ℤ) else -1) = 1 at he`. Rewrite using `[card_above]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Rewrite `he` using `[if_neg hc]`. Conclude with `absurd he (by decide)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_above_of_prime {R : Ranks} (H : Formalism.BasicNotions.Host R) (l : ℕ) (hp : l.Prime) (hl : l ∣ H.condN)
     (P : HeightOneSpectrum (𝓞 H.E)) (hP : ((l : ℕ) : 𝓞 H.E) ∈ P.asIdeal) :
@@ -60,9 +60,9 @@ private theorem card_above_of_prime {R : Ranks} (H : Formalism.BasicNotions.Host
   exact absurd he (by decide)
 
 /- English proof (translation)
-Proceed by induction on `N using induction_on_primes with`. Consider the case `zero => exact absurd rfl hN`. Consider the case `one => exact absurd (P.eq_top_iff_one.2 (by simpa using h)) hP.ne_top`. Consider the case `prime_mul p a hp ih`. Rewrite `h` using `[Nat.cast_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `hP.mem_or_mem h with h | h` into its components or cases. Conclude with `⟨p, hp, Dvd.intro _ rfl, h⟩`. Take `⟨l, h1, h2, h3⟩` from `ih (fun h0 => hN (by rw [h0, mul_zero])) h`. Conclude with `⟨l, h1, h2.mul_left _, h3⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_prime_mem {A : Type} [CommRing A] (P : Ideal A) (hP : P.IsPrime) (N : ℕ) (hN : N ≠ 0)
     (h : (N : A) ∈ P) : ∃ l : ℕ, l.Prime ∧ l ∣ N ∧ (l : A) ∈ P := by
@@ -79,11 +79,11 @@ private theorem exists_prime_mem {A : Type} [CommRing A] (P : Ideal A) (hP : P.I
 open Classical in
 
 /- English proof (translation)
-Introduce `R H`. Take `⟨c, hc, hcm, hunr, -, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Take `⟨χ, h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_unramified_resEta_alt H.F H.E c (R.Psi) (embPsi H) hcm hunr (GlobalTheory.T.quadraticChar_product_formula_CM_host R H) (fun _ => 1) (fun _ => odd_one) (fun ζ hζ => by`. Take `⟨δ, hδ, hval, hprod⟩` from `UpperTheory.exists_unit_eq_rootOfUnity_mul_conj_phase_one R H R.Psi (Equiv.refl _) ζ hζ`. Use `⟨δ, by rw [hc]; exact hδ, fun P hP => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn : ((H.condN : ℕ) : 𝓞 H.E) ∉ P.asIdeal` using `fun hm => by`. Take `⟨l, hl, hlN, hlP⟩` from `exists_prime_mem P.asIdeal P.isPrime H.condN H.condN_ne_zero hm`. Rewrite `hP` using `[card_above_of_prime H l hl hlN P hlP]`. Conclude with `absurd hP (by decide)`. Establish `h0 : ordF P δ = 0` using `by simp [ordF, hval P hn]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `Even.zero`. Simplify using `only [zpow_one]`. Conclude with `hprod)`. Conclude with `⟨χ, h1, h2, h3, h4⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem etaT_exists : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R), EtaTExists H := by
   intro R H

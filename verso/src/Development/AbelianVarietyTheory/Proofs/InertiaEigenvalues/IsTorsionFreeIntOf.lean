@@ -16,14 +16,14 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.ConstBound
 
 /- English proof (translation)
-The claim follows from `Module.IsTorsionFree.trans_faithfulSMul ℤ (𝓞 E) X`.
+A detailed English derivation is pending.
 -/
 theorem isTorsionFree_int_of {E : Type} [Field E] [NumberField E] (X : Type) [AddCommGroup X] [Module (𝓞 E) X]
     [Module.IsTorsionFree (𝓞 E) X] : Module.IsTorsionFree ℤ X :=
   Module.IsTorsionFree.trans_faithfulSMul ℤ (𝓞 E) X
 
 /- English proof (translation)
-Use `Dw.fin` as an intermediate fact. Use `Dw.proj` as an intermediate fact. Establish `: Module.IsTorsionFree ℤ Dw.La` using `isTorsionFree_int_of (E := E) Dw.La`. Establish `: Module.Finite ℤ Dw.La` using `Module.Finite.trans (𝓞 E) Dw.La`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem datum_free {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} (Dw : Datum H) :
     Module.Free ℤ Dw.La ∧ Module.Finite ℤ Dw.La := by
@@ -34,11 +34,11 @@ theorem datum_free {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.T
   exact ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Take `⟨hfree, hfin⟩` from `datum_free Dw`. Establish `hM : ((l.M : ℕ) : 𝓞 E) ∈ l.Mb`. Establish `h1 : ((l.M : ℕ) : 𝓞 E) ∈ Ideal.span {((l.M : ℕ) : 𝓞 E)}` using `Ideal.subset_span rfl`. Rewrite `h1` using `[← l.prod]`. Conclude with `(Ideal.mul_le_inf.trans inf_le_left) h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : (nsmulAddMonoidHom (α` using `Dw.La) l.M).range ≤ (l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)).toAddSubgroup := by`. Introduce and unpack `x ⟨y, rfl⟩`. Simplify using `only [nsmulAddMonoidHom_apply, Submodule.mem_toAddSubgroup]`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_smul hM Submodule.mem_top`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `AddSubgroup.index_dvd_of_le hle`. Rewrite `key` using `[AddSubgroup.index_range_nsmul]`. Unfold `LevQ`. Conclude with `key`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem card_levQ_dvd {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} (Dw : Datum H)
     (l : Geo.Tor.Level H) : Nat.card (LevQ Dw l) ∣ l.M ^ Module.finrank ℤ Dw.La := by
@@ -58,15 +58,15 @@ theorem card_levQ_dvd {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ge
   exact key
 
 /- English proof (translation)
-Establish `hmem : ∀ v : Fin n → E, v ∈ Formalism.L2.Pj.stdLat E n ↔ ∀ i, ∃ a : 𝓞 E, (a : E) = v i`. Introduce `v`. Simplify using `only [Formalism.L2.Pj.stdLat, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]`. Use `set L := (Formalism.L2.Pj.stdLat E n).toAddSubgroup with hL`. Establish `hmap : (Ideal.span {(N : 𝓞 E)} • Formalism.L2.Pj.stdLat E n).toAddSubgroup = L.map (nsmulAddMonoidHom N)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [Submodule.mem_toAddSubgroup, AddSubgroup.mem_map, nsmulAddMonoidHom_apply, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists, hL]`. Simplify using `only [Nat.cast_smul_eq_nsmul]`. Set `g : (Fin n → 𝓞 E) →+ L` to `{ toFun := fun a => ⟨fun i => (a i : E), (hmem _).2 fun i => ⟨a i, rfl⟩⟩ map_zero' := by ext; simp map_add' := by intro a b; ext; simp }`. Establish `hg : Function.Bijective g`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Use function extensionality and compare the values at `i`. Use `congrArg (fun v : L => (v : Fin n → E) i) hab` as an intermediate fact. Conclude with `RingOfIntegers.coe_injective this`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨v, hv⟩ choose a ha using (hmem v).1 hv`. Conclude with `⟨a, Subtype.ext (funext ha)⟩`. Set `e : (Fin n → 𝓞 E) ≃ₗ[ℤ] L` to `(AddEquiv.ofBijective g hg).toIntLinearEquiv`. Establish `: Module.Free ℤ L` using `Module.Free.of_equiv e`. Establish `: Module.Finite ℤ L` using `Module.Finite.equiv e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrank : Module.finrank ℤ L = Module.finrank ℚ E * n`. Rewrite using `[← e.finrank_eq, Module.finrank_pi_fintype]`. Simplify using `[NumberField.RingOfIntegers.rank, mul_comm]`. Rewrite using `[hmap, AddSubgroup.relIndex, AddSubgroup.addSubgroupOf_map_nsmulAddMonoidHom_eq_range, AddSubgroup.index_range_nsmul, hrank]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem relIndex_span_smul_stdLat {E : Type} [Field E] [NumberField E] {n : ℕ} (N : ℕ) :
     (Ideal.span {(N : 𝓞 E)} • Formalism.L2.Pj.stdLat E n).toAddSubgroup.relIndex
@@ -104,7 +104,7 @@ private theorem relIndex_span_smul_stdLat {E : Type} [Field E] [NumberField E] {
     AddSubgroup.index_range_nsmul, hrank]
 
 /- English proof (translation)
-Establish `hHK : (Ideal.span {(N : 𝓞 E)} • Formalism.L2.Pj.stdLat E n).toAddSubgroup ≤ Λ.Ln.toAddSubgroup` using `fun x hx => h hx`. Establish `hKL : Λ.Ln.toAddSubgroup ≤ (Formalism.L2.Pj.stdLat E n).toAddSubgroup` using `fun x hx => (inf_le_right : Λ.La ⊓ Formalism.L2.Pj.stdLat E n ≤ _) hx`. Rewrite using `[← relIndex_span_smul_stdLat N]`. Conclude with `Dvd.intro _ (AddSubgroup.relIndex_mul_relIndex _ _ _ hHK hKL)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_dvd {E : Type} [Field E] [NumberField E] {n : ℕ} (Λ : GenLat E n) (N : ℕ) (hN : 0 < N)
     (h : Ideal.span {(N : 𝓞 E)} • Formalism.L2.Pj.stdLat E n ≤ Λ.Ln) :
@@ -117,7 +117,7 @@ theorem relIndex_dvd {E : Type} [Field E] [NumberField E] {n : ℕ} (Λ : GenLat
   exact Dvd.intro _ (AddSubgroup.relIndex_mul_relIndex _ _ _ hHK hKL)
 
 /- English proof (translation)
-Establish `key` using `relIndex_dvd Λ N hN h`. Rewrite `key` using `[AddSubgroup.relIndex]`. Rewrite using `[Formalism.L2.Pj.GenLat.mIdx, pow_mul]`. Conclude with `pow_dvd_pow_of_dvd key r`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mIdx_dvd {E : Type} [Field E] [NumberField E] {n : ℕ} (Λ : GenLat E n) (N r : ℕ) (hN : 0 < N)
     (h : Ideal.span {(N : 𝓞 E)} • Formalism.L2.Pj.stdLat E n ≤ Λ.Ln) : Λ.mIdx N r ∣ N ^ (Module.finrank ℚ E * n * r) := by
@@ -127,21 +127,19 @@ theorem mIdx_dvd {E : Type} [Field E] [NumberField E] {n : ℕ} (Λ : GenLat E n
   exact pow_dvd_pow_of_dvd key r
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw n d M p hp hM`. Establish `hp1 : p ≠ 1` using `hp.one_lt.ne'`. Establish `hdisc : NumberField.discr E ≠ 0` using `NumberField.discr_ne_zero E`. Take `⟨K, hK⟩ : ∃ K : ℤ, K = (M : ℤ) ^ (Module.finrank ℚ E * n * (Dw.p + Dw.q)) * (M : ℤ) ^ (Module.finrank ℤ Dw.La * n) * (2 * NumberField.discr E * M) ^ d` from `⟨_, rfl⟩`. Establish `hK0 : K.natAbs ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Int.natAbs_ne_zero, hK]`. Establish `hM' : (M : ℤ) ≠ 0` using `by exact_mod_cast hM`. Conclude with `mul_ne_zero (mul_ne_zero (pow_ne_zero _ hM') (pow_ne_zero _ hM')) (pow_ne_zero _ (mul_ne_zero (mul_ne_zero two_ne_zero hdisc) hM'))`. Take `⟨c, k, hk, hKk⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hK0 p hp1`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l₂ pd u Λ hl hpd hu hΛ`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`. Conclude with `hp1 (Nat.coprime_zero_left p |>.mp hu)`. Establish `hN : 0 < l₂.M * u` using `Nat.mul_pos (by have := l₂.three_le; omega) (Nat.pos_of_ne_zero hu0)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Λ.mIdx (l₂.M * u) (Dw.p + Dw.q) ∣ (l₂.M * u) ^ (Module.finrank ℚ E * n * (Dw.p + Dw.q))` using `mIdx_dvd Λ _ _ hN hΛ.2.2`. Establish `h2 : Nat.card (Fin n → LevQ Dw l₂) ∣ l₂.M ^ (Module.finrank ℤ Dw.La * n)`. Rewrite using `[Nat.card_fun, Nat.card_fin, pow_mul]`. Conclude with `pow_dvd_pow_of_dvd (card_levQ_dvd Dw l₂) n`. Establish `hcop : ∀ m : ℕ, ¬ p ∣ m → Nat.Coprime m p` using `fun m hm => Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hp).mpr hm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpd'` using `hcop pd hpd`. Use `⟨k * ((pd * u) ^ (Module.finrank ℚ E * n * (Dw.p + Dw.q)) * pd ^ (Module.finrank ℤ Dw.La * n) * (pd * u) ^ d), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Nat.Coprime.mul_left (hcop k hk) (Nat.Coprime.mul_left (Nat.Coprime.mul_left (Nat.Coprime.pow_left _ (Nat.Coprime.mul_left hpd' hu)) (Nat.Coprime.pow_left _ hpd')) (Nat.Coprime.pow_left _ (Nat.Coprime.mul_left hpd' hu)))`. Establish `hKd : K ∣ (K.natAbs : ℤ)` using `Int.dvd_natAbs.mpr dvd_rfl`. Establish `h12` using `Int.natCast_dvd_natCast.mpr (Nat.mul_dvd_mul h1 h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hprod : ((l₂.M * u : ℕ) : ℤ) ^ (Module.finrank ℚ E * n * (Dw.p + Dw.q)) * ((l₂.M : ℕ) : ℤ) ^ (Module.finrank ℤ Dw.La * n) * (2 * NumberField.discr E * ((l₂.M * u : ℕ) : ℤ)) ^ d = K * (((pd * u) ^ (Module.finrank ℚ E * n * (Dw.p + Dw.q)) * pd ^ (Module.finrank ℤ Dw.La * n) * (pd * …`. Rewrite using `[hK, hl]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hfin : ((p ^ c * (k * ((pd * u) ^ (Module.finrank ℚ E * n * (Dw.p + Dw.q)) * pd ^ (Module.finrank ℤ Dw.La * n) * (pd * u) ^ d)) : ℕ) : ℤ) = (K.natAbs : ℤ) * (((pd * u) ^ (Module.finrank ℚ E * n * (Dw.p + Dw.q)) * pd ^ (Module.finrank ℤ Dw.La * n) * (pd * u) ^ d : ℕ) : ℤ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hKk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfin]`. Use `dvd_trans ?_ (mul_dvd_mul_right hKd _)` and prove the remaining obligations.
-
-Rewrite using `[← hprod]`. Move the coercions through the operations in `at h12 ⊢`. Conclude with `mul_dvd_mul h12 dvd_rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem const_dvd : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (n d M p : ℕ), p.Prime → M ≠ 0 → ∃ c : ℕ, ∀ (l₂ : Geo.Tor.Level H) (pd u : ℕ) (Λ : GenLat E n), l₂.M = M * pd → ¬ p ∣ pd → Nat.Coprime u p → Λ.LevOK (l₂.M * u) l₂.M → ∃ u' : ℕ, Nat.Coprime u' p ∧ ((Λ.mIdx (l₂.M * u) (Dw.p + Dw.q) * Nat.card (Fin n → LevQ Dw l₂) : ℕ) : ℤ) * (2 * NumberField.discr E * (l₂.M * u : ℕ)) ^ d ∣ ((p ^ c * u' : ℕ) : ℤ) := by
   intro E _ _ _ H Dw n d M p hp hM

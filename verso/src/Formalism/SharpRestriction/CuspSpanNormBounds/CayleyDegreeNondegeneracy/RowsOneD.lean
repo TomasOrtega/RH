@@ -15,14 +15,14 @@ variable {D : D7} {large₂ : SizeData₂ D} {X : TermTie D} {u u' : D.what₂.W
 variable {C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm : ℝ} {q : ℕ}
 
 /- English proof (translation)
-Take `⟨t, hG, hr, hE, _⟩` from `hZ`. Conclude with `rows_RelZ_inv hE (rows_RelZ_term X t hG hr)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem relevant_of_good_gram {Z : GramM D} (hZ : wordPairGramGood X u u' large₂ c Z) : RelZ D Z := by
   obtain ⟨t, hG, hr, hE, _⟩ := hZ
   exact rows_RelZ_inv hE (rows_RelZ_term X t hG hr)
 
 /- English proof (translation)
-Unfold `wordPairSwapBound`. Establish `h1` using `rows_one_le_HHZ D large₂ h.hc Z`. Establish `h2` using `(rows_nZ_pos Y h hZ).le`. Unfold `wordPairGramNorm at h2`. Conclude with `mul_nonneg (by positivity) h2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem switchBound_nonneg (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q) {Z : GramM D}
     (hZ : wordPairGramGood X u u' large₂ c Z) : 0 ≤ wordPairSwapBound D large₂ u u' c Z := by
@@ -33,7 +33,7 @@ theorem switchBound_nonneg (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C
   exact mul_nonneg (by positivity) h2
 
 /- English proof (translation)
-Unfold `gramPairQuadrupleBound`. Use `rows_one_le_HHZ D large₂ hc x` as an intermediate fact. Use `rows_one_le_HHZ D large₂ hc y` as an intermediate fact. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem fourthMomentBound_nonneg (D : D7) (large₂ : SizeData₂ D) (hc : 0 ≤ c) (x y : GramM D) : 0 ≤ gramPairQuadrupleBound D large₂ c x y := by
   unfold gramPairQuadrupleBound
@@ -42,9 +42,9 @@ theorem fourthMomentBound_nonneg (D : D7) (large₂ : SizeData₂ D) (hc : 0 ≤
   positivity
 
 /- English proof (translation)
-Unfold `twoLabelCount`. Rewrite using `[mul_min_of_nonneg _ _ (rows_massRows_nonneg Y)]`. Use `le_min ?_ ?_` and prove the remaining obligations. Use `rows_countOne Y h.hH hSW hC4 hF x y (relevant_of_good_gram hx) (relevant_of_good_gram hy) (switchBound_nonneg Y h hx) (fourthMomentBound_nonneg D large₂ h.hc x y) S' fun p hp => ?_` and prove the remaining obligations. Take `⟨⟨g1, g2, n1, n2, s, _⟩, r1, r2, e1, e2⟩` from `hS' p hp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g1, g2, n1, n2, s, e1, e2, rows_RelZ_term X _ g1 r1, (rows_HHZ_inv e1 _ _).symm⟩`. Use `rows_countOne' Y h.hH hSW hC4 hF' x y (relevant_of_good_gram hx) (relevant_of_good_gram hy) (switchBound_nonneg Y h hy) (fourthMomentBound_nonneg D large₂ h.hc y x) S' fun p hp => ?_` and prove the remaining obligations. Take `⟨⟨g1, g2, n1, n2, s, _⟩, r1, r2, e1, e2⟩` from `hS' p hp`. Conclude with `⟨g1, g2, n1, n2, s, e1, e2, rows_RelZ_term X _ g2 r2, (rows_HHZ_inv e2 _ _).symm⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem corank_one_pair_count (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q)
     (hSW : UnitaryVolumeMass.stSW D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c) (hC4 : UnitaryVolumeMass.PartnerCountBound D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c)
@@ -66,13 +66,13 @@ theorem corank_one_pair_count (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr C
     exact ⟨g1, g2, n1, n2, s, e1, e2, rows_RelZ_term X _ g2 r2, (rows_HHZ_inv e2 _ _).symm⟩
 
 /- English proof (translation)
-Establish `hrd` using `d_rdE_pos h.hH.1`. Establish `hb2` using `d_two_le_b D large₂`. Establish `hg : 0 ≤ gg D` using `by linarith [two_le_gg_of_count_hypotheses h.hH.1]`. Establish `hC0 : 0 ≤ C0` using `by linarith [h.hH.1.2.2]`. Establish `hΓ : 0 < GamS D large₂` using `by unfold GamS; exact Real.exp_pos _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcr : 0 ≤ c * (D.R.rS : ℝ) ^ 2` using `mul_nonneg h.hc (by positivity)`. Unfold `smallTermAmplitude rows_al labelPairConstant`. Use `mul_sqrt_div_mul_sqrt_div_le (a2 := C2 * (D.R.m : ℝ) ^ 2) (a4 := C2 * (D.R.m : ℝ) ^ 4) (dq := 2 * (q : ℝ) / ((D.R.rS : ℝ) + 1)) (hS₁ := HHZ D large₂.sc.b c x) (hS₂ := HHZ D large₂.sc.b c y) (h4₁ := HHZ D large₂.sc.b c x) (h4₂ := HHZ D large₂.sc.b c y) (hV₁ := HHZ D large₂.sc.b c …` and prove the remaining obligations. Unfold `twoLabelCount`. Conclude with `(min_le_left _ _).trans (le_of_eq (by unfold wordPairSwapBound gramPairQuadrupleBound wordPairGramNorm; rfl))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `twoLabelCount`. Conclude with `(min_le_right _ _).trans (le_of_eq (by unfold wordPairSwapBound gramPairQuadrupleBound wordPairGramNorm; rfl))`. Unfold `smallTermLoss`. Both sides reduce to the same expression. Unfold `rows_l`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e : 2 * (q : ℝ) / ((D.R.rS : ℝ) + 1) / 2 = (q : ℝ) / ((D.R.rS : ℝ) + 1)` using `by ring`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem twoLabelCount_mul_amplitude_le (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q)
     (hq1 : 12 * (c * (D.R.rS : ℝ) ^ 2) + C2 * (D.R.m : ℝ) ^ 2 / 2 + |C2 * (D.R.m : ℝ) ^ 4| +
@@ -109,9 +109,9 @@ theorem twoLabelCount_mul_amplitude_le (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 
     rw [e]; linarith
 
 /- English proof (translation)
-Establish `hP1` using `rows_P_one_le D large₂ c Ch`. Establish `hτ0 : 0 ≤ (1 + δ) * rDD D u'` using `mul_nonneg (by linarith [h.hδ]) (rows_rDD_nonneg D u')`. Establish `hGam0 : 0 < GamS D large₂` using `by unfold GamS; exact Real.exp_pos _`. Establish `hEx : 0 < logHeightExp D large₂ C2` using `by unfold logHeightExp; exact Real.exp_pos _`. Use `h.hc` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `labelPairConstant`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem labelPairConstant_nonneg (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q) :
     0 ≤ labelPairConstant D large₂ u u' c C2 Ch δ C0 := by
@@ -124,20 +124,18 @@ theorem labelPairConstant_nonneg (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cp
   positivity
 
 /- English proof (translation)
-Unfold `twoLabelCount`. Conclude with `min_comm _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem twoLabelCount_comm (D : D7) (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (c : ℝ) (x y : GramM D) :
     twoLabelCount D large₂ u u' c x y = twoLabelCount D large₂ u u' c y x := by
   unfold twoLabelCount; exact min_comm _ _
 
 /- English proof (translation)
-Establish `sp1 : ∀ p ∈ S, ZEquiv (termGramMatrix X (D.s.pfst p)) (termReducedGramMatrix Y h.hH h.hHH (D.s.pfst p)) ∧ wordPairGramGood X u u' large₂ c (termReducedGramMatrix Y h.hH h.hHH (D.s.pfst p))` using `fun p hp => rows_Zr_spec Y h.hH h.hHH _ (hS p hp).1.1.1 (hS p hp).1.2.1`. Establish `sp2 : ∀ p ∈ S, ZEquiv (termGramMatrix X (D.s.psnd p)) (termReducedGramMatrix Y h.hH h.hHH (D.s.psnd p)) ∧ wordPairGramGood X u u' large₂ c (termReducedGramMatrix Y h.hH h.hHH (D.s.psnd p))` using `fun p hp => rows_Zr_spec Y h.hH h.hHH _ (hS p hp).1.1.2.1 (hS p hp).1.2.2`. Establish `key` using `weighted_sum_le_of_fibre_counts S (fun p => X.wRow p) (fun p => aT X (D.s.pfst p) / Real.sqrt (dimPi (hc := D.hcW) u)) (fun p => aT X (D.s.psnd p) / Real.sqrt (dimPi (hc := D.hcW) u)) (fun p => termReducedGramMatrix Y h.hH h.hHH (D.s.pfst p)) (fun p => termReducedGramMatrix Y h.h …`. Introduce and unpack `x y ⟨p1, hp1, rfl⟩ ⟨p2, hp2, rfl⟩ S' hS' hl`. Use `corank_one_pair_count Y h hSW hC4 hF hF' _ _ (sp1 p1 hp1).2 (sp2 p2 hp2).2 S' fun p hp => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(hS p (hS' hp)).1.1, (hS p (hS' hp)).1.2.1, (hS p (hS' hp)).1.2.2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← (hl p hp).1]`. Conclude with `(sp1 p (hS' hp)).1`. Rewrite using `[← (hl p hp).2]`. Conclude with `(sp2 p (hS' hp)).1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Introduce and unpack `x y ⟨p1, hp1, rfl⟩ ⟨p2, hp2, rfl⟩`. Conclude with `twoLabelCount_mul_amplitude_le Y h hq1 _ _ (sp1 p1 hp1).2 (sp2 p2 hp2).2)`. Use the proof step `(fun x => Real.sqrt_nonneg _) (fun x => Real.sqrt_nonneg _)`. Use the proof step `(fun x => Real.rpow_nonneg (le_trans zero_le_one (rows_one_le_sizeZ _ _ _)) _)`.
-
-Use the proof step `(fun 𝒵 h𝒵 => rows_nd_size Y h 𝒵 fun Z hZ => by obtain ⟨p, hp, rfl⟩ := h𝒵 Z hZ; exact (sp1 p hp).2)`. Use the proof step `(fun 𝒵 h𝒵 => rows_nd_size Y h 𝒵 fun Z hZ => by obtain ⟨p, hp, rfl⟩ := h𝒵 Z hZ; exact (sp2 p hp).2)`. Rewrite using `[rows_wP_sum h.hdim S]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem corank_one_first_half (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q)
     (hSW : UnitaryVolumeMass.stSW D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c) (hC4 : UnitaryVolumeMass.PartnerCountBound D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c)
@@ -185,15 +183,11 @@ theorem corank_one_first_half (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr C
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `sp1 : ∀ p ∈ S, ZEquiv (termGramMatrix X (D.s.pfst p)) (termReducedGramMatrix Y h.hH h.hHH (D.s.pfst p)) ∧ wordPairGramGood X u u' large₂ c (termReducedGramMatrix Y h.hH h.hHH (D.s.pfst p))` using `fun p hp => rows_Zr_spec Y h.hH h.hHH _ (hS p hp).1.1.1 (hS p hp).1.2.1`. Establish `sp2 : ∀ p ∈ S, ZEquiv (termGramMatrix X (D.s.psnd p)) (termReducedGramMatrix Y h.hH h.hHH (D.s.psnd p)) ∧ wordPairGramGood X u u' large₂ c (termReducedGramMatrix Y h.hH h.hHH (D.s.psnd p))` using `fun p hp => rows_Zr_spec Y h.hH h.hHH _ (hS p hp).1.1.2.1 (hS p hp).1.2.2`. Establish `key` using `weighted_sum_le_of_fibre_counts S (fun p => X.wRow p) (fun p => aT X (D.s.pfst p) / Real.sqrt (dimPi (hc := D.hcW) u)) (fun p => aT X (D.s.psnd p) / Real.sqrt (dimPi (hc := D.hcW) u)) (fun p => termReducedGramMatrix Y h.hH h.hHH (D.s.pfst p)) (fun p => termReducedGramMatrix Y h.h …`. Introduce and unpack `x y ⟨p1, hp1, rfl⟩ ⟨p2, hp2, rfl⟩ S' hS' hl`. Use `corank_one_pair_count Y h hSW hC4 hF hF' _ _ (sp1 p1 hp1).2 (sp2 p2 hp2).2 S' fun p hp => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(hS p (hS' hp)).1.1, (hS p (hS' hp)).1.2.1, (hS p (hS' hp)).1.2.2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← (hl p hp).1]`. Conclude with `(sp1 p (hS' hp)).1`. Rewrite using `[← (hl p hp).2]`. Conclude with `(sp2 p (hS' hp)).1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use the proof step `(by`. Introduce and unpack `x y ⟨p1, hp1, rfl⟩ ⟨p2, hp2, rfl⟩`. Use `twoLabelCount_mul_amplitude_le Y h hq1 _ _ (sp2 p2 hp2).2 (sp1 p1 hp1).2` as an intermediate fact. Rewrite `this` using `[twoLabelCount_comm]`. Rewrite using `[mul_comm (rows_al D large₂ u u' c C2 Ch δ q _), mul_comm (sizeZ D large₂.sc.b Ch (termReducedGramMatrix Y h.hH h.hHH (D.s.pfst p1)) ^ _)]`.
-
-Conclude with `this)`. Use the proof step `(fun x => Real.sqrt_nonneg _) (fun x => Real.sqrt_nonneg _)`. Use the proof step `(fun x => Real.rpow_nonneg (le_trans zero_le_one (rows_one_le_sizeZ _ _ _)) _)`. Use the proof step `(fun 𝒵 h𝒵 => rows_nd_size Y h 𝒵 fun Z hZ => by obtain ⟨p, hp, rfl⟩ := h𝒵 Z hZ; exact (sp1 p hp).2)`. Use the proof step `(fun 𝒵 h𝒵 => rows_nd_size Y h 𝒵 fun Z hZ => by obtain ⟨p, hp, rfl⟩ := h𝒵 Z hZ; exact (sp2 p hp).2)`.
-
-Rewrite using `[rows_wP_sum h.hdim S]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem corank_one_second_half (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q)
     (hSW : UnitaryVolumeMass.stSW D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c) (hC4 : UnitaryVolumeMass.PartnerCountBound D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c)
@@ -244,11 +238,11 @@ theorem corank_one_second_half (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr 
     _ = _ := by ring
 
 /- English proof (translation)
-Take `⟨hG1, hG2, hg1, hg2, hs, hns⟩` from `hp`. Establish `hSt` using `hH.2.1`. Establish `t1` using `(rows_isTermF Y (D.s.pfst p) hG1).1`. Establish `t2` using `(rows_isTermF Y (D.s.psnd p) hG2).1`. Rewrite `t2` using `[← X.pLam p]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `t1`, `t2` using `[← Y.fl_eq (D.s.pfst p)]`. Establish `gen1` using `(X.gen_iff _).1 hg1`. Establish `gen2` using `(X.gen_iff _).1 hg2`. Rewrite `gen2` using `[← X.pLam p, ← X.pfl p]`. Establish `hB` using `Formalism.MainNotions.LatticeGluingRadicals.theorem_B_section D u (Tu D u') _ _ _ _ _ (X.fixed _) (VanishingOnXAndXPlus.primeHyp_of_stand D u u' hSt) t1 t2 (X.isPair p) (by rw [← X.s0_eq p]; exact hs) gen1 gen2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `hB with hsc | hB` into its components or cases. Conclude with `absurd ((X.scal_iff p hs).2 hsc) hns`. Conclude with `rowsT_small Y hSt (d_rdE_pos hH.1) _ _ hG1 hr1 hG2 hr2 hB`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem small_term_of_corank_one_pair (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A) (p : D.s.Pair u u') (hp : clsOne p)
     (hr1 : D.s.relevant (D.s.pfst p)) (hr2 : D.s.relevant (D.s.psnd p)) :
@@ -271,11 +265,11 @@ theorem small_term_of_corank_one_pair (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb 
 open Classical in
 
 /- English proof (translation)
-Use `rowBound_relevant Y (fun p hp => ⟨hp.1, hp.2.1⟩) ?_` and prove the remaining obligations. Introduce `S hS`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not S (fun p => IsSmallTerm Y (D.s.pfst p))]`. Establish `a1` using `corank_one_first_half Y h hSW hC4 hF hF' h7 hδ2 hδm0 hδm hCa hCak hq1 (S.filter (fun p => IsSmallTerm Y (D.s.pfst p))) fun p hp => ⟨hS p (Finset.mem_filter.1 hp).1, (Finset.mem_filter.1 hp).2⟩`. Establish `a2` using `corank_one_second_half Y h hSW hC4 hF hF' h7 hδ2 hδm0 hδm hCa hCak hq1 (S.filter (fun p => ¬ IsSmallTerm Y (D.s.pfst p))) fun p hp => by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp1` using `hS p (Finset.mem_filter.1 hp).1`. Use `⟨hp1, ?_⟩` and prove the remaining obligations. Break down `small_term_of_corank_one_pair Y h.hH p hp1.1 hp1.2.1 hp1.2.2 with h' | h'` into its components or cases. Conclude with `absurd h' (Finset.mem_filter.1 hp).2`. Conclude with `h'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Unfold `corankOneBound`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem corank_one_bound_of_fibres (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q)
     (hSW : UnitaryVolumeMass.stSW D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c) (hC4 : UnitaryVolumeMass.PartnerCountBound D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c)

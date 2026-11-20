@@ -5,13 +5,13 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Ex
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp UpperTheory.V.Ws.Lk
 
 /- English proof (translation)
-Take `⟨α, hα⟩` from `Field.exists_primitive_element (W.Lp L) L`. Establish `hadj : Algebra.adjoin (W.Lp L) {α} = ⊤` using `(IntermediateField.adjoin_simple_eq_top_iff_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic α)).mp hα`. Establish `hset : ((W.resP L Ω).range : Set (G (W.Lp L) Ω)) = {τ | τ (algebraMap L Ω α) = algebraMap L Ω α}`. Use extensionality with `τ`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨σ, rfl⟩`. Conclude with `σ.commutes α`. Introduce `hτ`. Establish `hext : (τ.toAlgHom.comp (IsScalarTower.toAlgHom (W.Lp L) L Ω)) = IsScalarTower.toAlgHom (W.Lp L) L Ω`. Use `AlgHom.ext_of_adjoin_eq_top hadj ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Conclude with `hτ`. Establish `hfix : ∀ l : L, τ (algebraMap L Ω l) = algebraMap L Ω l` using `fun l => DFunLike.congr_fun hext l`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨{ τ with commutes' := hfix }, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[hset]`. Conclude with `isOpen_setOf_apply (algebraMap L Ω α) (fun y => y = algebraMap L Ω α)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem range_open (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] : IsOpen ((W.resP L Ω).range : Set (G (W.Lp L) Ω)) := by
@@ -42,33 +42,29 @@ private theorem range_open (L Ω : Type) [Field L] [NumberField L] [IsCMField L]
   exact isOpen_setOf_apply (algebraMap L Ω α) (fun y => y = algebraMap L Ω α)
 
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ _ _ U hU g M hM`. Establish `hinj : Function.Injective (W.resP L Ω)` using `fun a b h => AlgEquiv.ext fun x => DFunLike.congr_fun h x`. Establish `hemb` using `(W.continuous_resP (L := L) (Ω := Ω)).isClosedEmbedding hinj`. Establish `himg : IsOpen ((W.resP L Ω) '' (U : Set (G L Ω)))`. Take `⟨t, ht, hpre⟩` from `hemb.isInducing.isOpen_iff.mp hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hpre, Set.image_preimage_eq_inter_range]`. Use `ht.inter ?_` and prove the remaining obligations. Rewrite using `[← MonoidHom.coe_range]`. Conclude with `range_open L Ω`. Take `⟨N, hN⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one himg ⟨1, U.one_mem, map_one _⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, A, p, σ, -, hp, hpM, -, hpv, hnv, -, hAv, hIne, hfrob, hσg⟩` from `Loc.v00 (F := W.Lp L) (Ω := Ω) N.toSubgroup N.isOpen' (W.resP L Ω g) ∅ M hM`. Establish `hback : ∀ x : G L Ω, W.resP L Ω x ∈ N.toSubgroup → x ∈ U`. Introduce `x hx`. Take `⟨u, hu, hux⟩` from `hN hx`. Rewrite `hu` using `[hinj hux]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hu`. Establish `hdec : ∀ d : G L Ω, d ∈ Dec (F` using `L) A ↔ W.resP L Ω d ∈ Dec (F := W.Lp L) A := by`. Introduce `d`. Rewrite using `[mem_Dec, mem_Dec]`. Conclude with `Iff.rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσH : σ ∈ Subgroup.zpowers (W.resP L Ω g) ⊔ N.toSubgroup`. Establish `h1 : W.resP L Ω g ∈ Subgroup.zpowers (W.resP L Ω g) ⊔ N.toSubgroup` using `Subgroup.mem_sup_left (Subgroup.mem_zpowers _)`. Establish `h2 : σ⁻¹ * W.resP L Ω g ∈ Subgroup.zpowers (W.resP L Ω g) ⊔ N.toSubgroup` using `Subgroup.mem_sup_right hσg`. Establish `h3` using `Subgroup.mul_mem _ h1 (Subgroup.inv_mem _ h2)`. Establish `h4 : W.resP L Ω g * (σ⁻¹ * W.resP L Ω g)⁻¹ = σ` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h3` using `[h4]`. Then use the resulting hypothesis. Establish `hHclosed : IsClosed ((Subgroup.zpowers (W.resP L Ω g) ⊔ N.toSubgroup : Subgroup (G (W.Lp L) Ω)) : Set (G (W.Lp L) Ω))` using `Subgroup.isClosed_of_isOpen _ (Subgroup.isOpen_mono le_sup_right N.isOpen')`. Establish `hDecH : Dec (F` using `W.Lp L) A ≤ Subgroup.zpowers (W.resP L Ω g) ⊔ N.toSubgroup := by`. Introduce `d hd`. Establish `hfrob' : IsFrob A (normV v) σ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hnv]`. Conclude with `hfrob`. Establish `hcl` using `GlobalTheory.TameQuot.closure_frob_sup_Ine (W.Lp L) Ω A v hAv ⟨σ, hfrob.1⟩ hfrob'`. Establish `hle : (Subgroup.zpowers (⟨σ, hfrob.1⟩ : Dec (F` using `W.Lp L) A) ⊔ (Ine A).subgroupOf (Dec (F := W.Lp L) A)) ≤ (Subgroup.zpowers (W.resP L Ω g) ⊔ N.toSubgroup).subgroupOf (Dec (F := W.Lp L) A) := by`. Use `sup_le ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.zpowers_le, Subgroup.mem_subgroupOf]`. Conclude with `hσH`. Introduce `x hx`. Rewrite `hx`, the goal using `[Subgroup.mem_subgroupOf]`. Conclude with `Subgroup.mem_sup_right (hIne hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hclosed : IsClosed (((Subgroup.zpowers (W.resP L Ω g) ⊔ N.toSubgroup).subgroupOf (Dec (F` using `W.Lp L) A) : Subgroup (Dec (F := W.Lp L) A)) : Set (Dec (F := W.Lp L) A)) := hHclosed.preimage continuous_subtype_val`. Establish `hmin` using `Subgroup.topologicalClosure_minimal _ hle hclosed`. Rewrite `hmin` using `[hcl]`. Conclude with `Subgroup.mem_subgroupOf.mp (hmin (Subgroup.mem_top (⟨d, hd⟩ : Dec (F := W.Lp L) A)))`. Establish `hHrange : Subgroup.zpowers (W.resP L Ω g) ⊔ N.toSubgroup ≤ (W.resP L Ω).range`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Subgroup.zpowers_le]`. Conclude with `⟨g, rfl⟩`. Introduce `x hx`. Take `⟨u, -, hu⟩` from `hN hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u, hu⟩`. Take `⟨d0, hd0⟩` from `hHrange hσH`. Use `⟨v, A, p, hp, hpM, hpv, hnv, hAv, hDecH.trans hHrange, ?_, d0, ?_, ?_⟩` and prove the remaining obligations. Introduce `d hd`. Take `⟨y, hy, z, hz, hyz⟩` from `Subgroup.mem_sup_of_normal_right.mp (hDecH ((hdec d).mp hd))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, rfl⟩` from `Subgroup.mem_zpowers_iff.mp hy`. Use `⟨n, hback _ ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, map_zpow, ← hyz]`. Establish `h5 : (W.resP L Ω g ^ n * z)⁻¹ * W.resP L Ω g ^ n = z⁻¹` using `by group`. Rewrite using `[h5]`.
-
-Conclude with `N.toSubgroup.inv_mem hz`. Rewrite using `[hdec, hd0]`. Conclude with `hfrob.1`. Apply `hback` to reduce the goal to its premises. Rewrite using `[map_mul, map_inv, hd0]`.
-
-Conclude with `hσg`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Lk.v0Ex :
     ∀ (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [CharZero Ω] [Algebra L Ω] [IsAlgClosure L Ω] (U : Subgroup (G L Ω)), IsOpen (U : Set (G L Ω)) → ∀ (g : G L Ω) (M : ℕ), M ≠ 0 → ∃ (v : W.Plc (W.Lp L)) (A : ValuationSubring Ω) (p : ℕ), p.Prime ∧ ¬ p ∣ M ∧ ((p : ℕ) : 𝓞 (W.Lp L)) ∈ v.asIdeal ∧ normV v = p ∧ IsPlaceOver A v ∧ Dec (F := W.Lp L) A ≤ (W.resP L Ω).range ∧ (∀ d ∈ Dec (F := L) A, ∃ n : ℤ, d⁻¹ * g ^ n ∈ U) ∧ ∃ d ∈ Dec (F := L) A, d⁻¹ * g ∈ U := by

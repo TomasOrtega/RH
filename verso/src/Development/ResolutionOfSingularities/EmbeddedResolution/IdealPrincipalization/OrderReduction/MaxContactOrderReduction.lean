@@ -19,21 +19,17 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace MaxContactFunctoriality
 
 /- English proof (translation)
-Use `{ cert := ?_, base_change := ?_, base_change_strict := ?_, pushforward := ?_, order_le := ?_, center_nonempty := ?_, resolves := ?_, smooth_pullback := ?_, smooth_pullback_strict := ?_, trivial_of_coSupport_empty := ?_ }` and prove the remaining obligations. Introduce `T hv hdim hO i hi`. Conclude with `orderCertificate_of_orderAt_le_mult hinv P A L hstar hdes T hv hdim ((MarkedIdealWithBoundary.isOrderBoundedByMult_iff T).mp hO) i hi`. Introduce `T hv hdim hO K _ _ f E' hBE hV' hP' hO'`. Establish `hord : ∀ x : ↥((T.baseChange K f).withBoundary E').scheme, orderAt ((T.baseChange K f).withBoundary E').ideal x ≤ (T.mult : ℕ∞)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `h` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff ((T.baseChange K f).withBoundary E')).mp hO' x`. Rewrite `h` using `[MarkedIdealWithBoundary.withBoundary_mult, MarkedIdealWithBoundary.baseChange_mult]`. Then use the resulting hypothesis. Conclude with `hdes.base_change T hv hdim ((MarkedIdealWithBoundary.isOrderBoundedByMult_iff T).mp hO) K f E' hBE hV' hP' hord`. Introduce `T hv hdim hO K _ _ f E' hBE hV' hP' hO'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hord : ∀ x : ↥((T.baseChange K f).withBoundary E').scheme, orderAt ((T.baseChange K f).withBoundary E').ideal x ≤ (T.mult : ℕ∞)`. Introduce `x`. Establish `h` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff ((T.baseChange K f).withBoundary E')).mp hO' x`. Rewrite `h` using `[MarkedIdealWithBoundary.withBoundary_mult, MarkedIdealWithBoundary.baseChange_mult]`. Then use the resulting hypothesis. Conclude with `hdes.base_change_strict T hv hdim ((MarkedIdealWithBoundary.isOrderBoundedByMult_iff T).mp hO) K f E' hBE hV' hP' hord`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T hv hdim hO hbdry hmult Y q e _ hq hsm J hJv hJd hJi`. Conclude with `isPushforward_of_isSmoothDivisor hinv P Q A L L' hstar hdes hdiv hlow hdimlink T hv hdim hO hbdry hmult Y q e hq hsm J hJv hJd hJi`. Introduce `T hv hdim hO i hi x`. Conclude with `orderAt_ideal_le_mult hinv P A L hdes T hv hdim ((MarkedIdealWithBoundary.isOrderBoundedByMult_iff T).mp hO) i hi x`. Introduce `T hv hdim hO i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `center_support_nonempty hinv P A L hstar hdes T hv hdim ((MarkedIdealWithBoundary.isOrderBoundedByMult_iff T).mp hO) i hi`. Introduce `T hv hdim hO`. Conclude with `isResolution_of_orderAt_le_mult hinv P A L hstar hdes T hv hdim ((MarkedIdealWithBoundary.isOrderBoundedByMult_iff T).mp hO)`. Introduce `T hv hdim hO Y q g _ hq E' hBE hV' hP' hO'`. Establish `hm : ((T.pullbackAlong Y q g).withBoundary E').mult = T.mult` using `(MarkedIdealWithBoundary.withBoundary_mult (T.pullbackAlong Y q g) E').trans (T.pullbackAlong_mult Y q g)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hord : ∀ x : ↥((T.pullbackAlong Y q g).withBoundary E').scheme, orderAt ((T.pullbackAlong Y q g).withBoundary E').ideal x ≤ (T.mult : ℕ∞)`. Introduce `x`. Establish `h` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff ((T.pullbackAlong Y q g).withBoundary E')).mp hO' x`. Rewrite `h` using `[hm]`. Then use the resulting hypothesis. Conclude with `hdes.smooth_pullback T hv hdim ((MarkedIdealWithBoundary.isOrderBoundedByMult_iff T).mp hO) Y q g hq E' hBE hV' hP' hord`.
-
-Introduce `T hv hdim hO Y q g _ _ hq E' hBE hV' hP' hO'`. Establish `hm : ((T.pullbackAlong Y q g).withBoundary E').mult = T.mult` using `(MarkedIdealWithBoundary.withBoundary_mult (T.pullbackAlong Y q g) E').trans (T.pullbackAlong_mult Y q g)`. Establish `hord : ∀ x : ↥((T.pullbackAlong Y q g).withBoundary E').scheme, orderAt ((T.pullbackAlong Y q g).withBoundary E').ideal x ≤ (T.mult : ℕ∞)`. Introduce `x`. Establish `h` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff ((T.pullbackAlong Y q g).withBoundary E')).mp hO' x`.
-
-Rewrite `h` using `[hm]`. Then use the resulting hypothesis. Conclude with `hdes.smooth_pullback_strict T hv hdim ((MarkedIdealWithBoundary.isOrderBoundedByMult_iff T).mp hO) Y q g hq E' hBE hV' hP' hord`. Introduce `T hv hdim hO hemp`. Conclude with `length_eq_zero_of_orderAtLeastLocus_eq_empty hinv P A T hv hdim ((MarkedIdealWithBoundary.isOrderBoundedByMult_iff T).mp hO) hemp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isOrderReduction_maxContact_of_descentHypotheses
     (hinv : ComapIsoInvariance.{u}) (P Q : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u})
@@ -105,7 +101,7 @@ theorem isOrderReduction_maxContact_of_descentHypotheses
       ((MarkedIdealWithBoundary.isOrderBoundedByMult_iff T).mp hO) hemp
 
 /- English proof (translation)
-The claim follows from `isOrderReduction_maxContact_of_descentHypotheses hinv (fun d => d ≤ n) (fun d => d < n) A L L' (fun _ _ hab hb => lt_of_lt_of_le hab hb) hlow hdiv hstar hdes`.
+A detailed English derivation is pending.
 -/
 theorem isOrderReduction_maxContact_dim_le_of_descentHypotheses
     (hinv : ComapIsoInvariance.{u}) (n : ℕ) (A : ℕ → PrincipalizationAssignment.{u})

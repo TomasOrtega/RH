@@ -7,7 +7,7 @@ open scoped TensorProduct ENNReal
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.OneV.TailProduct
 
 /- English proof (translation)
-The claim follows from `|(∏ v ∈ s, f v) - 1| ≤ (∏ v ∈ s, (1 + |f v - 1|)) - 1 := by classical refine Finset.induction_on s ?_ ?_ · simp · intro a s ha ih rw [Finset.prod_insert ha, Finset.prod_insert ha] have h1 : |f a| ≤ 1 + |f a - 1| := by have := abs_sub_abs_le_abs_sub (f a) 1 rw [abs_one] at this li …`.
+A detailed English derivation is pending.
 -/
 private theorem abs_finset_prod_sub_one_le {κ : Type} (f : κ → ℝ) (s : Finset κ) :
     |(∏ v ∈ s, f v) - 1| ≤ (∏ v ∈ s, (1 + |f v - 1|)) - 1 := by
@@ -31,7 +31,7 @@ private theorem abs_finset_prod_sub_one_le {κ : Type} (f : κ → ℝ) (s : Fin
       _ = (1 + |f a - 1|) * (∏ v ∈ s, (1 + |f v - 1|)) - 1 := by ring
 
 /- English proof (translation)
-The claim follows from `|(∏' v, f v) - 1| ≤ Real.exp (∑' v, |f v - 1|) - 1 := by have hm : Multipliable f := by have h := multipliable_one_add_of_summable (f := fun v => f v - 1) (by simpa only [Real.norm_eq_abs] using hs) simpa only [add_sub_cancel] using h have ht : Filter.Tendsto (fun s : Finset κ => …`.
+A detailed English derivation is pending.
 -/
 theorem abs_tprod_sub_one_le {κ : Type} (f : κ → ℝ)
     (hs : Summable (fun v => |f v - 1|)) :
@@ -59,9 +59,9 @@ theorem abs_tprod_sub_one_le {κ : Type} (f : κ → ℝ)
   exact le_of_tendsto' ((continuous_abs.tendsto _).comp (ht.sub_const 1)) hb
 
 /- English proof (translation)
-Establish `hb : ∀ S : Finset ι, ‖(∏' v : {v // v ∉ S}, f v) - 1‖ ≤ Real.exp (∑' v : {v // v ∉ S}, |f v - 1|) - 1`. Introduce `S`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `GlobalTheory.CompanionTheory.Hypotheses₂.OneV.TailProduct.abs_tprod_sub_one_le (fun v : {v // v ∉ S} => f v) (hs.subtype _)`. Establish `hlim : Filter.Tendsto (fun S : Finset ι => Real.exp (∑' v : {v // v ∉ S}, |f v - 1|) - 1) Filter.atTop (nhds 0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `((Real.continuous_exp.tendsto 0).comp (tendsto_tsum_compl_atTop_zero (fun v => |f v - 1|))).sub_const 1`. Simplify `h` using `[Function.comp_def, Real.exp_zero]`. Establish `h0` using `squeeze_zero_norm hb hlim`. Simplify using `using h0.add_const 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendsto_tprod_compl_one {ι : Type} (f : ι → ℝ)
     (hs : Summable (fun v => |f v - 1|)) :

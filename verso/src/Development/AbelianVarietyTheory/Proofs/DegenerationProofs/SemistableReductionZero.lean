@@ -15,7 +15,7 @@ open GlobalTheory.SS
 namespace GlobalTheory.SS
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.semistable_of_potential_semiAbelian_model GlobalTheory.T.abelianVariety_potential_semiAbelian_model).1`.
+A detailed English derivation is pending.
 -/
 theorem semistableReduction_zero : SemistableReductionZero := (GlobalTheory.T.semistable_of_potential_semiAbelian_model GlobalTheory.T.abelianVariety_potential_semiAbelian_model).1
 

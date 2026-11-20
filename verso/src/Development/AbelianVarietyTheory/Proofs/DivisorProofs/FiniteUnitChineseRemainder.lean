@@ -10,13 +10,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.UnitResidue
 
 /- English proof (translation)
-Take `⟨n, y, h⟩` from `IsArtinian.exists_pow_succ_smul_dvd a (1 : A)`. Simplify using `only [smul_eq_mul, mul_one, Nat.succ_eq_add_one] at h`. Establish `h1 : (a * y) ^ n * (a * y) = (a * y) ^ n`. Rewrite using `[mul_pow]`. Take the linear combination `y ^ n * h`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h2 : ∀ m : ℕ, (a * y) ^ n * (a * y) ^ m = (a * y) ^ n`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ, ← mul_assoc, ih, h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h3` using `h2 n`. Establish `h4 : φ (a * y) = 1`. Use `congrArg φ h` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, map_pow, pow_succ, mul_assoc, ← map_mul]`. Conclude with `(ha.pow n).mul_left_cancel (this.trans (mul_one _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : φ ((a * y) ^ n) = 1` using `by rw [map_pow, h4, one_pow]`. Generalize the expression as in `(a * y) ^ n = e at *`. Use `⟨a * e + (1 - e), y * e + (1 - e), ?_, by simp [h5]⟩` and prove the remaining obligations. Take the linear combination `e * h1 + (2 - a - y) * h3`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_isUnit_map_eq {A B : Type} [CommRing A] [CommRing B] [IsArtinianRing A] (φ : A →+* B) (a : A)
     (ha : IsUnit (φ a)) : ∃ b b' : A, b * b' = 1 ∧ φ b = φ a := by
@@ -40,15 +40,13 @@ theorem exists_isUnit_map_eq {A B : Type} [CommRing A] [CommRing B] [IsArtinianR
   linear_combination e * h1 + (2 - a - y) * h3
 
 /- English proof (translation)
-Take `⟨i, hi, j, hj, hij⟩` from `Submodule.mem_sup.1 ((Ideal.eq_top_iff_one _).1 hIJ)`. Establish `hI' : Ideal.span {N} ≤ I` using `(Ideal.span_singleton_le_iff_mem _).2 hI`. Establish `hJ' : Ideal.span {N} ≤ J` using `(Ideal.span_singleton_le_iff_mem _).2 hJ`. Establish `e1 : Ideal.Quotient.mk I (u * j + i) = Ideal.Quotient.mk I u`. Rewrite using `[Ideal.Quotient.eq, show u * j + i - u = (1 - u) * i by linear_combination u * hij]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `I.mul_mem_left _ hi`. Establish `e2 : Ideal.Quotient.mk J (u * j + i) = Ideal.Quotient.mk J 1`. Rewrite using `[Ideal.Quotient.eq, show u * j + i - 1 = (u - 1) * j by linear_combination hij]`. Conclude with `J.mul_mem_left _ hj`. Take `⟨b, b', h, hb⟩` from `exists_isUnit_map_eq ((Ideal.Quotient.factor hI').prod (Ideal.Quotient.factor hJ')) (Ideal.Quotient.mk _ (u * j + i)) (by`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Prod.isUnit_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsUnit (Ideal.Quotient.mk I (u * j + i))`. Rewrite using `[e1]`. Conclude with `hu`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `IsUnit (Ideal.Quotient.mk J (u * j + i))`. Rewrite using `[e2, map_one]`. Conclude with `isUnit_one)`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Take `⟨b', rfl⟩` from `Ideal.Quotient.mk_surjective b'`.
-
-Rewrite `h` using `[← map_mul, ← map_one (Ideal.Quotient.mk (Ideal.span {N})), Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Take `⟨k, hk⟩` from `h`. Use `⟨b, b', k, by linear_combination hk, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq.1 ((congrArg Prod.fst hb).trans e1)`. Conclude with `Ideal.Quotient.eq.1 ((congrArg Prod.snd hb).trans e2)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_unit_mod {O : Type} [CommRing O] (I J : Ideal O) (hIJ : I ⊔ J = ⊤) (N : O) (hI : N ∈ I) (hJ : N ∈ J)
     [Finite (O ⧸ Ideal.span {N})] (u : O) (hu : IsUnit (Ideal.Quotient.mk I u)) :
@@ -82,7 +80,7 @@ theorem exists_unit_mod {O : Type} [CommRing O] (I J : Ideal O) (hIJ : I ⊔ J =
 open GlobalTheory.AdLat GlobalTheory.AdLat.RootNear
 
 /- English proof (translation)
-Take `⟨y, w, hy⟩` from `GlobalTheory.TwistChar.exists_unit_lift F E N (ratHat F E b) (ratHat F E b') (ratHat F E k) (by rw [← RingHom.map_mul, h, RingHom.map_add, RingHom.map_one, RingHom.map_mul, map_natCast])`. Use `⟨_, (y : intHat F E).2, _, ((y⁻¹ : (intHat F E)ˣ) : intHat F E).2, _, w.2, congrArg Subtype.val y.mul_inv, ?_⟩` and prove the remaining obligations. Rewrite using `[hy]`. Use `push_cast`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem exists_unit_hat (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (N : ℕ)
     (b b' k : 𝓞 E) (h : b * b' = 1 + N * k) :
@@ -97,9 +95,9 @@ theorem exists_unit_hat (F E : Type) [Field F] [NumberField F] [Field E] [Number
   rfl
 
 /- English proof (translation)
-Take `⟨e, he, -, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `hf : ∀ p, finPart D (e.symm p) = p.2` using `fun p => ((he (e.symm p)).2.symm).trans (by rw [e.apply_symm_apply])`. Establish `hi : ∀ p, infPart D (e.symm p) = p.1` using `fun p => ((he (e.symm p)).1.symm).trans (by rw [e.apply_symm_apply])`. Establish `hm : e.symm (1, y) * e.symm (1, y') = 1`. Rewrite using `[← map_mul, Prod.mk_mul_mk, h, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_one _`. Conclude with `⟨⟨_, _, hm, (mul_comm _ _).trans hm⟩, hi _, hf _, hf _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_idele (D : D7) (y y' : Af D.host.F ⊗[D.host.F] D.host.E) (h : y * y' = 1) :
     ∃ x : (AE D)ˣ, infPart D (x : AE D) = 1 ∧ finPart D (x : AE D) = y ∧
@@ -115,9 +113,9 @@ theorem exists_idele (D : D7) (y y' : Af D.host.F ⊗[D.host.F] D.host.E) (h : y
   exact ⟨⟨_, _, hm, (mul_comm _ _).trans hm⟩, hi _, hf _, hf _⟩
 
 /- English proof (translation)
-Establish `e : (1 : Af D.host.F) ⊗ₜ[D.host.F] (b : D.host.E) + (N : Af D.host.F ⊗[D.host.F] D.host.E) * w - (1 : Af D.host.F) ⊗ₜ[D.host.F] (u : D.host.E) = (1 : Af D.host.F) ⊗ₜ[D.host.F] ((b - u : 𝓞 D.host.E) : D.host.E) * 1 + (1 : Af D.host.F) ⊗ₜ[D.host.F] ((N : 𝓞 D.host.E) : D.host.E) * w`. Establish `e1 : ((b - u : 𝓞 D.host.E) : D.host.E) = (b : D.host.E) - u` using `rfl`. Establish `e2 : (1 : Af D.host.F) ⊗ₜ[D.host.F] ((N : 𝓞 D.host.E) : D.host.E) = (N : Af D.host.F ⊗[D.host.F] D.host.E)` using `map_natCast ((Algebra.TensorProduct.includeRight (R := D.host.F) (A := Af D.host.F) (B := D.host.E)).toRingHom.comp (algebraMap (𝓞 D.host.E) D.host.E)) N`. Rewrite using `[e1, e2, TensorProduct.tmul_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `add_mem (AddSubgroup.subset_closure ⟨_, hb, 1, h1, rfl⟩) (AddSubgroup.subset_closure ⟨_, hN, w, hw, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_mem_idealHat (D : D7) (I : Ideal (𝓞 D.host.E)) (N : ℕ) (hN : (N : 𝓞 D.host.E) ∈ I)
     (b u : 𝓞 D.host.E) (hb : b - u ∈ I) (w : Af D.host.F ⊗[D.host.F] D.host.E) (hw : w ∈ intAE D)
@@ -139,17 +137,15 @@ theorem add_mem_idealHat (D : D7) (I : Ideal (𝓞 D.host.E)) (N : ℕ) (hN : (N
   exact add_mem (AddSubgroup.subset_closure ⟨_, hb, 1, h1, rfl⟩) (AddSubgroup.subset_closure ⟨_, hN, w, hw, rfl⟩)
 
 /- English proof (translation)
-Introduce `D I J hI hJ hIJ u hu`. Establish `hS : ∀ w, w ∈ intAE D ↔ w ∈ intHat D.host.F D.host.E` using `fun w => by`. Rewrite using `[GlobalTheory.CharFin.integralFiniteAdeles_eq_adelicCompletion_integers]`. Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨N, hN, hNI, hNJ⟩ : ∃ N : ℕ, N ≠ 0 ∧ (N : 𝓞 D.host.E) ∈ I ∧ (N : 𝓞 D.host.E) ∈ J := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use `⟨Ideal.absNorm I * Ideal.absNorm J, mul_ne_zero ?_ ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]` and apply the resulting hypothesis. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]` and apply the resulting hypothesis. Rewrite using `[Nat.cast_mul]`. Conclude with `I.mul_mem_right _ I.absNorm_mem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_mul]`. Conclude with `J.mul_mem_left _ J.absNorm_mem`. Use `haveI : Finite (𝓞 D.host.E ⧸ Ideal.span {(N : 𝓞 D.host.E)}) := Ideal.finiteQuotientOfFreeOfNeBot _ (by simpa using hN)`. Take `⟨b, b', k, h, hb, hb1⟩` from `exists_unit_mod I J hIJ N hNI hNJ u hu`. Take `⟨y, hy, y', hy', w, hw, hyy, e⟩` from `exists_unit_hat D.host.F D.host.E N b b' k h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx1, hx2, hx3⟩` from `exists_idele D y y' hyy`. Establish `h1` using `(hS 1).2 (one_mem _)`. Use `⟨x, ⟨hx1, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hx2]`. Conclude with `(hS _).2 hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hx3]`. Conclude with `(hS _).2 hy'`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LevelLiftConditions.CongMod`. Rewrite using `[hx2, e]`. Conclude with `add_mem_idealHat D I N hNI b u hb w ((hS w).2 hw) h1`.
-
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LevelLiftConditions.CongMod`. Rewrite using `[hx2, e]`. Conclude with `add_mem_idealHat D J N hNJ b 1 hb1 w ((hS w).2 hw) h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finUnit_congMod : ∀ (D : D7) (I J : Ideal (𝓞 D.host.E)), I ≠ ⊥ → J ≠ ⊥ → I ⊔ J = ⊤ → ∀ u : 𝓞 D.host.E, IsUnit (Ideal.Quotient.mk I u) → ∃ x : (AE D)ˣ, FinUnit x ∧ GlobalTheory.IndefiniteRowSideFullHecke.LevelLiftConditions.CongMod I x u ∧ GlobalTheory.IndefiniteRowSideFullHecke.LevelLiftConditions.CongMod J x 1 := by
   intro D I J hI hJ hIJ u hu

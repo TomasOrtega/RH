@@ -7,7 +7,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV.DelA
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp | n + 1 => by rw [Finset.sum_Icc_succ_top (by omega), sum_Icc_one_eq_sum_fin f n, Fin.sum_univ_castSucc] simp`.
+A detailed English derivation is pending.
 -/
 theorem sum_Icc_one_eq_sum_fin (f : ℕ → ℤ) : ∀ n : ℕ, ∑ i ∈ Finset.Icc 1 n, f i = ∑ r : Fin n, f (r.val + 1)
   | 0 => by simp
@@ -16,17 +16,15 @@ theorem sum_Icc_one_eq_sum_fin (f : ℕ → ℤ) : ∀ n : ℕ, ∑ i ∈ Finset
     simp
 
 /- English proof (translation)
-Introduce `p _ X D pos j hN ν hν`. Establish `hle : D.R.N j ≤ D.R.N (j + 1)` using `rk_le X D hN`. Establish `hz : ∀ τ (i : ℕ), D.R.N j < i → X.nuv (pos.symm τ).1 (j + 1) (pos.symm τ).2 i = 0` using `fun τ i hi => nuv_zero X _ j _ i (hN.1 ▸ hi)`. Establish `hext : NuIs X D pos j (extNu (D.R.N (j + 1)) ν)`. Introduce `τ i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `extNu`. Use `split_ifs with h`. Conclude with `hν τ ⟨i.val, h⟩`. Rewrite using `[hz τ _ (by omega)]; simp`. Establish `hsz : ∀ τ, szT X D pos j τ = ∑ i ∈ Finset.Icc 1 (D.R.N (j + 1)), X.nuv (pos.symm τ).1 (j + 1) (pos.symm τ).2 i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `τ`. Unfold `szT szMu`. Rewrite using `[hN.2]`. Use `⟨hext, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsz τ, ← Finset.sum_subset (Finset.Icc_subset_Icc_right hle) (fun i hi hni => by`. Simplify using `only [Finset.mem_Icc] at hi hni`. Conclude with `hz τ i (by omega)), sum_Icc_one_eq_sum_fin]`. Conclude with `Finset.sum_congr rfl fun r _ => hν τ r`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsz τ, sum_Icc_one_eq_sum_fin]`. Conclude with `Finset.sum_congr rfl fun r _ => hext τ r`. Introduce `τ r`. Rewrite using `[← hext τ r]`. Conclude with `nuv_le_first X _ j _ _`.
-
-Introduce `τ`. Conclude with `nuv_nonneg X _ j _ _`.
+A detailed English derivation is pending.
 -/
 theorem size_first_last_rows : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (j : ℕ) (hN : RankTie X D j) (ν : D.what₂.Tau → Fin (D.R.N j) → ℕ), NuIs X D pos j ν → NuIs X D pos j (extNu (D.R.N (j + 1)) ν) ∧ (∀ τ, szT X D pos j τ = ∑ r, (ν τ r : ℤ)) ∧ (∀ τ, szT X D pos j τ = ∑ r, (extNu (D.R.N (j + 1)) ν τ r : ℤ)) ∧ (∀ τ r, (extNu (D.R.N (j + 1)) ν τ r : ℤ) ≤ cT1 X D pos j τ) ∧ ∀ τ, 0 ≤ X.nuv (pos.symm τ).1 (j + 1) (pos.symm τ).2 (NN X.G.P.m X.t j) := by
   intro p _ X D pos j hN ν hν

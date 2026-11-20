@@ -10,9 +10,9 @@ namespace GlobalTheory.Proof.different_power_unramified_iff
 open GlobalTheory.IndefiniteRowSideFullHecke.SplitUnramifiedPlaces
 
 /- English proof (translation)
-Establish `hp` using `(Fact.out : p.Prime)`. Establish `: Module.Free ℤ R` using `Module.free_of_finite_type_torsion_free'`. Establish `hsmul : (p : ℤ_[p]) • z = 0`. Rewrite using `[Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`. Conclude with `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `smul_eq_zero.mp hsmul with h | h` into its components or cases. Conclude with `absurd h (Nat.cast_ne_zero.mpr hp.ne_zero)`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private lemma eq_zero_of_natCast_mul_eq_zero_op (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R]
     [IsDomain R] [CharZero R] [Module.Finite ℤ R] (z : Op p R) (hz : (p : Op p R) * z = 0) :
@@ -27,11 +27,11 @@ private lemma eq_zero_of_natCast_mul_eq_zero_op (p : ℕ) [Fact p.Prime] (R : Ty
   · exact h
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `hy : (p : Op p R) * y ∈ Ideal.span {1 - w.e}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_mul, map_natCast]`. Conclude with `hx`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.mp hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hey : w.e * y = 0`. Apply `eq_zero_of_natCast_mul_eq_zero_op p R` to reduce the goal to its premises. Establish `hee : w.e * w.e = w.e` using `w.idem`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨y, by rw [mul_sub, mul_one, mul_comm y, hey, sub_zero]⟩`.
+A detailed English derivation is pending.
 -/
 theorem ow_p_torsionFree (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDomain R] [CharZero R]
     [Module.Finite ℤ R] (w : Place p R) (x : w.Ow) (hx : (p : w.Ow) * x = 0) : x = 0 := by
@@ -51,11 +51,11 @@ theorem ow_p_torsionFree (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDom
   exact ⟨y, by rw [mul_sub, mul_one, mul_comm y, hey, sub_zero]⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hQM⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hQ' : Q ≤ M.comap f` using `Ideal.map_le_iff_le_comap.mp hQM`. Establish `hprime : (M.comap f).IsPrime` using `Ideal.comap_isPrime f M`. Establish `hbot : M.comap f ≠ ⊥` using `fun h => hQ (eq_bot_iff.mpr (h ▸ hQ'))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmax : (M.comap f).IsMaximal` using `hprime.isMaximal hbot`. Distinguish the cases in `hPeq : M.comap f = P`. Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[← hPQ]`. Conclude with `(sup_eq_left.mpr (hPeq ▸ hQ')).symm`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hM.ne_top` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← h _ hmax hPeq]`. Conclude with `Ideal.map_comap_le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_top_of_coprime {R S : Type} [CommRing R] [IsDedekindDomain R] [CommRing S]
     (f : R →+* S) (P : Ideal R) (hP : P.IsMaximal)
@@ -76,17 +76,15 @@ theorem map_eq_top_of_coprime {R S : Type} [CommRing R] [IsDedekindDomain R] [Co
     exact Ideal.map_comap_le
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective g`. Establish `hee : w.e * w.e = w.e` using `w.idem`. Establish `hyy : y * y - y ∈ Ideal.span {1 - w.e}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul]`. Conclude with `sub_eq_zero.mpr hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.mp hyy`. Establish `hey : w.e * (y * y) = w.e * y`. Establish `: w.e * (y * y - y) = 0`. Rewrite using `[← ha]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[mul_sub]`. Conclude with `sub_eq_zero.mp this`. Establish `hf : IsIdempotentElem (w.e * y)` using `by show w.e * y * (w.e * y) = w.e * y`. Combine the equalities or inequalities in the displayed calculation. Establish `hfe : w.e * y * w.e = w.e * y`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hmk : (Ideal.Quotient.mk (Ideal.span {1 - w.e}) y) = Ideal.Quotient.mk (Ideal.span {1 - w.e}) (w.e * y)`. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Conclude with `⟨y, by ring⟩`. Rewrite using `[hmk]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `w.primitive _ hf hfe with h | h` into its components or cases. Use `left`. Rewrite using `[h, map_zero]`. Use `right`. Rewrite using `[h, ← map_one (Ideal.Quotient.mk (Ideal.span {1 - w.e})), Ideal.Quotient.eq, Ideal.mem_span_singleton']`.
-
-Conclude with `⟨-1, by ring⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma isIdempotentElem_Ow_eq_zero_or_one {p : ℕ} [Fact p.Prime] {OE : Type} [CommRing OE]
     (w : GlobalTheory.IndefiniteRowSideFullHecke.SplitUnramifiedPlaces.Place p OE) (g : w.Ow) (hg : IsIdempotentElem g) : g = 0 ∨ g = 1 := by
@@ -126,53 +124,43 @@ private lemma isIdempotentElem_Ow_eq_zero_or_one {p : ℕ} [Fact p.Prime] {OE : 
 attribute [local instance] FractionRing.liftAlgebra FractionRing.isScalarTower_liftAlgebra in
 
 /- English proof (translation)
-Establish `hp` using `(Fact.out : p.Prime)`. Establish `hDne : differentIdeal ℤ R ≠ ⊥` using `differentIdeal_ne_bot`. Establish `hPtop : P.map w.toOw ≠ ⊤` using `hm.ne_top`. Establish `hpR : (p : R) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`. Establish `hIne : Ideal.span {(p : R)} ≠ ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hpR`. Establish `hIP : Ideal.span {(p : R)} ≤ P`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hpP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨J, hPJ, hIJ⟩` from `Ideal.eq_prime_pow_mul_coprime hIne P`. Use `set c := Multiset.count P (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {(p : R)})) with hc`. Establish `hJne : J ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `hIJ` using `[Ideal.mul_bot]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hIne hIJ`. Establish `hpOw : Ideal.span {(p : w.Ow)} = P.map w.toOw ^ c`. Establish `hsp : Ideal.span {(p : w.Ow)} = (Ideal.span {(p : R)}).map w.toOw`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Rewrite using `[hsp, hIJ, Ideal.map_mul, Ideal.map_pow, map_eq_top_of_coprime w.toOw P hP hQ J hJne hPJ, Ideal.mul_top]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcpos : 0 < c`. Break down `Nat.eq_zero_or_pos c with h0 | h0` into its components or cases. It suffices to derive a contradiction. Rewrite `hIJ` using `[h0, pow_zero, Ideal.one_eq_top, Ideal.top_mul]`. Rewrite `hIP` using `[hIJ]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[← hPJ]`. Conclude with `(sup_eq_left.mpr hIP).symm`. Conclude with `h0`. Take `⟨J', hPJ', hDJ'⟩` from `Ideal.eq_prime_pow_mul_coprime hDne P`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set k := Multiset.count P (UniqueFactorizationMonoid.normalizedFactors (differentIdeal ℤ R)) with hk`. Establish `hJ'ne : J' ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `hDJ'` using `[Ideal.mul_bot]`. Conclude with `hDne hDJ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hDmap : (differentIdeal ℤ R).map w.toOw = P.map w.toOw ^ k`. Rewrite using `[hDJ', Ideal.map_mul, Ideal.map_pow, map_eq_top_of_coprime w.toOw P hP hQ J' hJ'ne hPJ', Ideal.mul_top]`. Use `⟨⟨k, c, hcpos, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hDmap, ← pow_mul, Nat.mul_comm k c, pow_mul, ← hpOw, Ideal.span_singleton_pow]`. Establish `hUnr : w.IsUnramified ↔ c = 1` using `by show (Ideal.span {(p : w.Ow)}).IsMaximal ↔ c = 1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hpOw]`. Prove the components needed by the constructor for the conclusion. Introduce `hmax`. Assume the negation of the conclusion as `hc1`. Establish `hc2 : 2 ≤ c` using `by omega`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : P.map w.toOw ^ c = P.map w.toOw` using `hmax.eq_of_le hPtop (Ideal.pow_le_self hcpos.ne')`. Establish `hidem : IsIdempotentElem (P.map w.toOw)` using `by show P.map w.toOw * P.map w.toOw = P.map w.toOw`. Apply `le_antisymm Ideal.mul_le_right` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hfg : (P.map w.toOw).FG` using `Ideal.FG.map (IsNoetherian.noetherian P) w.toOw`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨g, hg, hgspan⟩` from `(Ideal.isIdempotentElem_iff_of_fg _ hfg).mp hidem`. Establish `hpmem : (p : w.Ow) ∈ P.map w.toOw`. Rewrite using `[← map_natCast w.toOw p]`. Conclude with `Ideal.mem_map_of_mem _ hpP`. Break down `isIdempotentElem_Ow_eq_zero_or_one w g hg with rfl | rfl` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hpmem` using `[hgspan]`. Establish `hp0 : (p : w.Ow) = 0` using `by simpa using hpmem`. Establish `h10 : (1 : w.Ow) = 0` using `ow_p_torsionFree p R w 1 (by rw [mul_one]; exact hp0)`. Apply `hPtop` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, h10]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Apply `hPtop` to reduce the goal to its premises. Rewrite using `[hgspan]`. Conclude with `Ideal.span_singleton_one`. Introduce `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, pow_one]`. Conclude with `hm`. Establish `hDtop : (differentIdeal ℤ R).map w.toOw = ⊤ ↔ ¬ P ∣ differentIdeal ℤ R`. Prove the components needed by the constructor for the conclusion. Introduce `h hdvd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Apply `hPtop` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← h]`. Conclude with `Ideal.map_mono (Ideal.le_of_dvd hdvd)`. Introduce `h`. Apply `map_eq_top_of_coprime w.toOw P hP hQ _ hDne` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Apply `h` to reduce the goal to its premises. Rewrite using `[Ideal.dvd_iff_le, hP.eq_of_le hne le_sup_left]`. Conclude with `le_sup_right`. Establish `hunder : P.under ℤ = Ideal.span {(p : ℤ)}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpZ : (Ideal.span {(p : ℤ)}).IsMaximal`. Establish `hpr : (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).mpr (Nat.prime_iff_prime_int.mp hp)`. Conclude with `hpr.isMaximal (by`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero)` after adjusting the coercions.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `symm`. Apply `hpZ.eq_of_le (Ideal.comap_ne_top _ hP.ne_top)` to reduce the goal to its premises. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show algebraMap ℤ R (p : ℤ) ∈ P`. Rewrite using `[map_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hpP`. Establish `: P.IsPrime` using `hP.isPrime`. Establish `: P.LiesOver (Ideal.span {(p : ℤ)})` using `⟨hunder.symm⟩`. Establish `hspZ : Ideal.span {(p : ℤ)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`.
-
-Conclude with `hp.ne_zero` after adjusting the coercions. Establish `hmapZ : (Ideal.span {(p : ℤ)}).map (algebraMap ℤ R) = Ideal.span {(p : R)}`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Establish `hram : (Ideal.span {(p : ℤ)}).ramificationIdx' P = c`. Apply `Ideal.ramificationIdx'_spec` to reduce the goal to its premises.
-
-Rewrite using `[hmapZ, hIJ]`. Conclude with `le_trans (Ideal.mul_mono_right le_top) (le_of_eq (Ideal.mul_top _))`. Rewrite using `[hmapZ]`. Introduce `hle`. Establish `hdvd : P ^ c * P ∣ P ^ c * J`.
-
-Rewrite using `[← pow_succ, ← hIJ, Ideal.dvd_iff_le]`. Conclude with `hle`. Establish `hPc : P ^ c ≠ 0` using `pow_ne_zero _ (by`. Introduce `h0`. Conclude with `hP.ne_top (by`.
-
-Rewrite `h0` using `[Ideal.zero_eq_bot]`. Rewrite `hIP` using `[h0]`. Conclude with `absurd (le_bot_iff.mp hIP) hIne))`. Establish `hPJdvd : P ∣ J` using `(mul_dvd_mul_iff_left hPc).mp hdvd`. Apply `hP.ne_top` to reduce the goal to its premises.
-
-Rewrite using `[← hPJ]`. Conclude with `(sup_eq_left.mpr (Ideal.le_of_dvd hPJdvd)).symm`. Rewrite using `[hDtop, hUnr, not_dvd_differentIdeal_iff, Algebra.isUnramifiedAt_iff_of_isDedekindDomain, ← Ideal.ramificationIdx'_eq_ramificationIdx (Ideal.span {(p : ℤ)}) P hspZ, hram]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem different_pow_and_unramified_iff (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R]
     [IsDedekindDomain R] [CharZero R] [Module.Finite ℤ R] (w : GlobalTheory.IndefiniteRowSideFullHecke.SplitUnramifiedPlaces.Place p R)

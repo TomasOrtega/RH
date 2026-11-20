@@ -10,27 +10,25 @@ attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s V c n r B x ρ hok hB hρ y hy g hg`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Conclude with `Subsingleton.elim _ _`. Use `haveI : Fact s.p.Prime := ⟨s.p_prime⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap L Ω).injective`. Take `⟨hI0, hD0, g0, hg0D, hg0e⟩` from `hok`. Establish `hpv : ((s.p : ℕ) : 𝓞 (W.Lp L)) ∈ s.v0.asIdeal`. Establish `h` using `Ideal.absNorm_mem s.v0.asIdeal`. Rewrite `h` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, ← normV, s.norm_v0_eq_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpw : ((s.p : ℕ) : 𝓞 L) ∈ (s.w s.v0).asIdeal`. Rewrite using `[← s.hw s.v0]`. Establish `h` using `(s.hA s.v0 _).mpr hpv`. Simplify using `using h`. Take `⟨j, hj⟩` from `(Loc.decEmb (F := L) (Ω := Ω) (v := s.p)).1 (s.A s.v0) (s.w s.v0) (s.hw s.v0) hpw`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨-, φ, hφo, -, -, hφI, hφc, -⟩` from `(Loc.decEmb (F := L) (Ω := Ω) (v := s.p)).2 j`. Express the relevant statement in the definitionally equal form `g ∈ Subgroup.map V.pr (Ine (s.A s.v0)) at hg`. Express the relevant statement in the definitionally equal form `∀ i, Subgroup.map V.pr (Ine (s.A s.v0)) ≤ (r.chib i).ker at hI0`. Express the relevant statement in the definitionally equal form `∀ g ∈ Subgroup.map V.pr (Dec (s.A s.v0)), ∀ i j, (r.chib i) g = (r.chib j) g at hD0`. Express the relevant statement in the definitionally equal form `g0 ∈ Subgroup.map V.pr (Dec (s.A s.v0)) at hg0D`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite `hg`, `hI0`, `hD0`, `hg0D` using `[← hj]`. Take `⟨ρ₂, hρ₂c, hρ₂p, hρ₂y⟩` from `dblRep ρ hρ y hy`. Set `ψ : ↥(Dec (Loc.placeJ j)) →* V.frame.G₀` to `V.pr.comp (Dec (Loc.placeJ j)).subtype`. Establish `hψc : Continuous ψ` using `(V.pr_cont W.continuous_resP).comp continuous_subtype_val`. Use `haveI : CompactSpace ↥(Dec (Loc.placeJ j)) := isCompact_iff_compactSpace.mp (isClosed_Dec (F := L) (Loc.placeJ j)).isCompact`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Set `κ : ↥(Dec (Loc.placeJ j)) →* (ResidueField c.O)ˣ` to `(r.chib ⟨0, hn⟩).comp ψ`. Establish `main` using `inertia_trivial_of_charpoly_roots_near_character s.p_ne φ hφo c κ ?_ ?_ (ρ₂.comp ψ) (hρ₂c.comp hψc) ?_`. Take `⟨h, hh, rfl⟩` from `hg`. Apply `hρ₂y` to reduce the goal to its premises. Conclude with `main ⟨h, Ine_le_Dec _ hh⟩ ((hφI ⟨h, Ine_le_Dec _ hh⟩).2 hh)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Introduce `h hh`. Establish `hI : (h : G L Ω) ∈ Ine (Loc.placeJ j)` using `(hφI h).1 hh`. Conclude with `MonoidHom.mem_ker.mp (hI0 ⟨0, hn⟩ ⟨(h : G L Ω), hI, rfl⟩)`. Take `⟨h, hh, rfl⟩` from `hg0D`. Use `⟨⟨h, hh⟩, fun heq => hg0e ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `Loc.cycA at heq`. Rewrite `heq` using `[MonoidHom.comp_apply, hφc]`. Establish `e1 : V.frame.ε (V.frame.η.ker.subtype (V.pr h)) = cycZ L Ω l h`. Express the relevant statement in the definitionally equal form `V.ε (toGS Ω V.S' (W.resP L Ω h)) = _`. Rewrite using `[← MonoidHom.comp_apply, V.hε]`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Apply `Units.ext` to reduce the goal to its premises. Unfold `W.GFrame.eps W.pushCh`. Express the relevant statement in the definitionally equal form `(algebraMap c.O (ResidueField c.O)) (algebraMap ℤ_[l] c.O ↑(V.frame.ε (V.frame.η.ker.subtype (V.pr h)))) = 1`. Express the relevant statement in the definitionally equal form `(residue c.O) (algebraMap ℤ_[l] c.O ↑(cycZ L Ω l h)) = 1 at heq`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, IsLocalRing.ResidueField.algebraMap_eq]`. Conclude with `heq`. Introduce `h a ha t ht`. Express the relevant statement in the definitionally equal form `t ∈ (W.mat ρ₂ (ψ h)).charpoly.roots at ht`. Rewrite `ht` using `[hρ₂p, Polynomial.roots_pow, Multiset.mem_nsmul]`.
-
-Use `rootsNear B x ρ hB (ψ h) a (fun i => ?_) t ht.2` and prove the remaining obligations. Rewrite using `[ha]`. Conclude with `congrArg Units.val (hD0 (ψ h) ⟨h.1, h.2, rfl⟩ ⟨0, hn⟩ i)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Eb.cocycle_vanishes_on_inertia_of_point_pseudodeformation :
     ∀ {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {s : W.HidaSetting l L Ω} (V : s.Lev) {c : Coef l} {n : ℕ} {r : W.Resid V.frame c.O n} (B : W.UniversalOrdinaryDeterminantRing r) (x : B.Pt) (ρ : V.frame.G₀ →* GL (Fin n) (PadicAlgCl l)), r.V0ok → B.u.D.map (x : B.B →+* PadicAlgCl l) = W.GDet.ofRep (W.mat ρ) → Continuous ρ → ∀ y ∈ Z1 (Loc.adGL ρ), ∀ g ∈ V.frame.I0, y g = 0 := by

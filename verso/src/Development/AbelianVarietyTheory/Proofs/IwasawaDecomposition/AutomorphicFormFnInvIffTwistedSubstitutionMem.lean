@@ -17,7 +17,7 @@ theorem fnOf_apply_eq {ι : Type} [Fintype ι] {n : ℕ} (G : ι → Matrix (Fin
       eval (fun x : ι × Fin n × Fin n => (A x.1 * y.1 x.1) x.2.1 x.2.2) P := rfl
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mul_map_inv {E ι : Type} [Field E] {n : ℕ} (emb : ι → E →+* ℂ) (M : GL (Fin n) E) (τ : ι) :
     (M : Matrix (Fin n) (Fin n) E).map (emb τ) *
@@ -25,7 +25,7 @@ theorem map_mul_map_inv {E ι : Type} [Field E] {n : ℕ} (emb : ι → E →+* 
   rw [← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_inv_mul_map {E ι : Type} [Field E] {n : ℕ} (emb : ι → E →+* ℂ) (M : GL (Fin n) E) (τ : ι) :
     ((M⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).map (emb τ) *
@@ -33,17 +33,17 @@ theorem map_inv_mul_map {E ι : Type} [Field E] {n : ℕ} (emb : ι → E →+* 
   rw [← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-The claim follows from `RingHom.map_det _ _`.
+A detailed English derivation is pending.
 -/
 theorem det_map_emb {E ι : Type} [Field E] {n : ℕ} (emb : ι → E →+* ℂ) (M : Matrix (Fin n) (Fin n) E) (τ : ι) :
     emb τ M.det = (M.map (emb τ)).det := RingHom.map_det _ _
 
 /- English proof (translation)
-Rewrite using `[fnOf_apply_eq, fnOf_apply_eq]`. Establish `h` using `eval_twSub emb M s P0 (fun τ => atInf emb ((M⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ * y.1 τ)`. Establish `hy : ∀ τ, (M : Matrix (Fin n) (Fin n) E).map (emb τ) * (atInf emb ((M⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ * y.1 τ) = y.1 τ`. Introduce `τ`. Rewrite using `[← Matrix.mul_assoc, atInf, map_mul_map_inv, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hy] at h`. Rewrite using `[h]`. Simplify using `only [Pi.one_apply, Matrix.one_mul]`. Rewrite using `[← mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, ← mul_zpow, det_map_emb, ← Matrix.det_mul, hy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fnOf_inv_twSub {E ι : Type} [Field E] [Fintype ι] {n : ℕ} (emb : ι → E →+* ℂ) (M : GL (Fin n) E)
     (s : ι → ℤ) (G : ι → Matrix (Fin n) (Fin n) ℂ) (P0 : MvPolynomial (ι × Fin n × Fin n) ℂ) (y : Frames G) :
@@ -64,9 +64,9 @@ theorem fnOf_inv_twSub {E ι : Type} [Field E] [Fintype ι] {n : ℕ} (emb : ι 
   rw [mul_comm, ← mul_zpow, det_map_emb, ← Matrix.det_mul, hy]
 
 /- English proof (translation)
-Use `⟨∏ τ, Matrix.det (Matrix.of fun a b => (X (τ, a, b) : MvPolynomial (ι × Fin n × Fin n) ℂ)), ?_⟩` and prove the remaining obligations. Introduce `x`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_det_poly {ι : Type} [Fintype ι] {n : ℕ} :
     ∃ D : MvPolynomial (ι × Fin n × Fin n) ℂ, ∀ x : ι → Matrix (Fin n) (Fin n) ℂ,
@@ -81,13 +81,13 @@ theorem exists_det_poly {ι : Type} [Fintype ι] {n : ℕ} :
   simp
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `exists_det_poly (ι := ι) (n := n)`. Establish `hQD : Q * D = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Set `xm : ι → Matrix (Fin n) (Fin n) ℂ` to `fun τ a b => x (τ, a, b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Rewrite using `[map_zero, map_mul]`. Use `show eval (fun k : ι × Fin n × Fin n => xm k.1 k.2.1 k.2.2) Q * eval (fun k : ι × Fin n × Fin n => xm k.1 k.2.1 k.2.2) D = 0`. Rewrite using `[hD]`. Distinguish the cases in `hu : ∀ τ, IsUnit (xm τ).det`. Rewrite using `[hQ _ hu, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hu`. Take `⟨τ, hτ⟩` from `hu`. Rewrite `hτ` using `[isUnit_iff_ne_zero, not_not]`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ τ) hτ, mul_zero]`. Establish `hD0 : D ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Use `hD (fun _ => 1)` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Simplify using `at this`. Conclude with `(mul_eq_zero.mp hQD).resolve_right hD0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_of_eval_units {ι : Type} [Fintype ι] {n : ℕ} (Q : MvPolynomial (ι × Fin n × Fin n) ℂ)
     (hQ : ∀ x : ι → Matrix (Fin n) (Fin n) ℂ, (∀ τ, IsUnit (x τ).det) →
@@ -115,17 +115,17 @@ theorem eq_of_eval_units {ι : Type} [Fintype ι] {n : ℕ} (Q : MvPolynomial (�
   exact (mul_eq_zero.mp hQD).resolve_right hD0
 
 /- English proof (translation)
-Introduce `E ι _ _ n emb M s G P0 S Yt e f hf`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, hP, hPf⟩`. Establish `hall : ∀ y : Frames G, fnOf G s (atInf emb ((M⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)) P y = fnOf G s (atInf emb ((M⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)) (twSub emb M s P0) y`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, rfl⟩` from `e.surjective y`. Rewrite using `[← hPf, hf, fnOf_inv_twSub]`. It suffices to establish `hPeq : P - twSub emb M s P0 = 0 by`. Rewrite `hPeq` using `[sub_eq_zero]`. Rewrite using `[← hPeq]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP`. Apply `eq_of_eval_units` to reduce the goal to its premises. Introduce `x hx`. Establish `hMu : IsUnit (M : Matrix (Fin n) (Fin n) E).det` using `(Matrix.isUnit_iff_isUnit_det _).mp M.isUnit`. Set `y : Frames G` to `⟨fun τ => (M : Matrix (Fin n) (Fin n) E).map (emb τ) * x τ, fun τ => by`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_mul, ← det_map_emb]`. Conclude with `(hMu.map (emb τ)).mul (hx τ)⟩`. Establish `h1` using `hall y`. Rewrite `h1` using `[fnOf_apply_eq, fnOf_apply_eq]`. Establish `hAx : ∀ τ, atInf emb ((M⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ * y.1 τ = x τ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ`. Use `show atInf emb ((M⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ * ((M : Matrix (Fin n) (Fin n) E).map (emb τ) * x τ) = x τ`. Rewrite using `[← Matrix.mul_assoc, atInf, map_inv_mul_map, Matrix.one_mul]`. Simplify using `only [hAx] at h1`. Establish `hne : (∏ τ, (x τ).det ^ s τ) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun τ _ => zpow_ne_zero _ (hx τ).ne_zero`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `mul_left_cancel₀ hne h1`. Introduce `h`. Conclude with `⟨_, h, fun z => by rw [hf, fnOf_inv_twSub]⟩`.
+A detailed English derivation is pending.
 -/
 theorem fnOf_inv_iff_twSub_mem : ∀ {E ι : Type} [Field E] [Fintype ι] {n : ℕ} (emb : ι → E →+* ℂ) (M : GL (Fin n) E) (s : ι → ℤ)
     (G : ι → Matrix (Fin n) (Fin n) ℂ) (P0 : MvPolynomial (ι × Fin n × Fin n) ℂ)

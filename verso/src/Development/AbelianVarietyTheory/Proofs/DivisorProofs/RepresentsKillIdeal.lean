@@ -23,9 +23,9 @@ def ptQ {S : Scheme.{0}} (P : ∀ (R' : Type) [CommRing R'], (Sp R' ⟶ S) → P
   fun R' _ f ↦ P R' (spMap f ≫ hV.fromSpec)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `a ha`. Use `ha (A ⧸ J) (Ideal.Quotient.mk J) ((h _ _).2 (by simp [Ideal.mk_ker]))` as an intermediate fact. Simplify `this` using `[Ideal.Quotient.eq_zero_iff_mem]`. Introduce `a ha R' _ f hf`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(h R' f).1 hf ha`.
+A detailed English derivation is pending.
 -/
 theorem killIdeal_eq {A : Type} [CommRing A]
     {Q : ∀ (R' : Type) [CommRing R'], (A →+* R') → Prop} {J : Ideal A} (h : Represents Q J) :
@@ -38,7 +38,7 @@ theorem killIdeal_eq {A : Type} [CommRing A]
     exact (h R' f).1 hf ha
 
 /- English proof (translation)
-Rewrite using `[killIdeal_eq h]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem represents_killIdeal {A : Type} [CommRing A]
     {Q : ∀ (R' : Type) [CommRing R'], (A →+* R') → Prop} {J : Ideal A} (h : Represents Q J) :
@@ -46,9 +46,9 @@ theorem represents_killIdeal {A : Type} [CommRing A]
   rw [killIdeal_eq h]; exact h
 
 /- English proof (translation)
-Introduce `S P U W hU hW h J hJ R' _ f`. Establish `e : spMap f ≫ hW.fromSpec = spMap (f.comp (S.presheaf.map (homOfLE h).op).hom) ≫ hU.fromSpec`. Rewrite using `[← hU.map_fromSpec hW (homOfLE h).op]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, CommRingCat.ofHom_hom]`. Use `show P R' (spMap f ≫ hW.fromSpec) ↔ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Ideal.map_le_iff_le_comap, RingHom.comap_ker]`. Conclude with `hJ R' _`.
+A detailed English derivation is pending.
 -/
 theorem represents_restrict : ∀ (S : Scheme.{0}) (P : ∀ (R' : Type) [CommRing R'], (Sp R' ⟶ S) → Prop)
   (U W : S.Opens) (hU : IsAffineOpen U) (hW : IsAffineOpen W) (h : W ≤ U) (J : Ideal Γ(S, U)),

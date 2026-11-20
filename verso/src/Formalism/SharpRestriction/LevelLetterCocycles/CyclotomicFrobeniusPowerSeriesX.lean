@@ -17,13 +17,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n] {W : LocWach PD LL O v n}
 
 /- English proof (translation)
-Rewrite using `[W.φ₀_X, W.q₀_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cyclotomicFrobeniusPowerSeries_X (W : LocWach PD LL O v n) : W.φ₀ X = (1 + X) ^ PD.p - 1 := by
   rw [W.φ₀_X, W.q₀_def]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hR.2.2.1`. Use `⟨Units.map (Pi.evalMonoidHom (fun _ : ZMod n => PowerSeries O) 0) w, ?_⟩` and prove the remaining obligations. Establish `h0` using `congrFun hw 0`. Rewrite using `[(baseIdOf hR).ι_X]`. Simplify `h0` using `[LocWach.π₀, letπ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem glue1 (hR : Ring9 W) :
     ∃ w : (PowerSeries O)ˣ, (baseIdOf hR).ι X = (w : PowerSeries O) * X ^ (PD.p - 1) := by
@@ -34,9 +34,9 @@ theorem glue1 (hR : Ring9 W) :
   simpa [LocWach.π₀, letπ] using h0
 
 /- English proof (translation)
-Rewrite using `[Polynomial.cyclotomic_prime]`. Establish `hc : (∑ i ∈ Finset.range p, (Polynomial.X : Polynomial R) ^ i).comp (Polynomial.X + 1) = ∑ i ∈ Finset.range p, (Polynomial.X + 1) ^ i`. Simplify using `[Polynomial.comp, Polynomial.eval₂_finset_sum]`. Establish `h` using `geom_sum_mul (Polynomial.X + 1 : Polynomial R) p`. Rewrite `h` using `[add_sub_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hc, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cyclo_comp_mul_X {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] :
     (Polynomial.cyclotomic p R).comp (Polynomial.X + 1) * Polynomial.X =
@@ -50,15 +50,15 @@ theorem cyclo_comp_mul_X {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime] :
   rw [hc, h]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hR.2.2.2.2.1`. Establish `h0` using `congrFun hw 0`. Establish `hq : (baseIdOf hR).ι (baseIdOf hR).Bs.q = W.π₀₁ + PowerSeries.C ((PD.p : ℕ) : O)`. Express the relevant statement in the definitionally equal form `(baseIdOf hR).ι (PowerSeries.X + PowerSeries.C ((PD.p : ℕ) : O)) = _`. Rewrite using `[map_add, (baseIdOf hR).ι_X]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `(baseIdOf hR).ι.commutes _`. Establish `hcyc : (W.q₀ : PowerSeries O) = (((Polynomial.cyclotomic PD.p O).comp (Polynomial.X + 1) : Polynomial O) : PowerSeries O)`. Establish `hX : (PowerSeries.X : PowerSeries O) ≠ 0` using `PowerSeries.X_ne_zero`. Apply `mul_left_cancel₀ hX` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[W.q₀_def]`. Use `congrArg (fun f : Polynomial O => (f : PowerSeries O)) (cyclo_comp_mul_X (R := O) PD.p)` as an intermediate fact. Simplify using `only [Polynomial.coe_mul, Polynomial.coe_X, Polynomial.coe_sub, Polynomial.coe_pow, Polynomial.coe_add, Polynomial.coe_one] at this`. Rewrite using `[mul_comm, this, add_comm]`. Establish `h0' : W.q₀ = (w : LetA O n) 0 * (W.π₀₁ + PowerSeries.C ((PD.p : ℕ) : O))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h0` using `[LocWach.q, Formalism.MainNotions.DeltaInvariantLattices.Eat, LocWach.π₀, Polynomial.aeval_add, Polynomial.aeval_X, Polynomial.aeval_C]`. Set `w0 : (PowerSeries O)ˣ` to `Units.map (Pi.evalMonoidHom (fun _ : ZMod n => PowerSeries O) 0) w`. Use `⟨w0⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[hq, ← hcyc, h0']`. Express the relevant statement in the definitionally equal form `_ = ((w0⁻¹ : (PowerSeries O)ˣ) : PowerSeries O) * ((w0 : PowerSeries O) * _)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, Units.inv_mul, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem glue2 [IsDomain O] (hR : Ring9 W) :
     ∃ w : (PowerSeries O)ˣ, (baseIdOf hR).ι (baseIdOf hR).Bs.q = (w : PowerSeries O) *
@@ -89,7 +89,7 @@ theorem glue2 [IsDomain O] (hR : Ring9 W) :
   rw [← mul_assoc, Units.inv_mul, one_mul]
 
 /- English proof (translation)
-Take `⟨E, h0, h1, h2⟩` from `W.lev_π c ζ hζ`. Establish `hE` using `(LevelStatements.Lv.expRescale LL E h0 h1).1`. Rewrite using `[← hE, ← h2]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rhoZ_exp [CharZero LL] (c : ZMod n) (ζ : LL) (hζ : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) :
     1 + rhoZ W c ζ X = PowerSeries.C ζ * exp LL := by

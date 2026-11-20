@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.DefPt
 
 /- English proof (translation)
-Establish `h` using `(Formalism.GradedWeylDivisibility.sSBasis ℤ n n la).choose_spec.1.2.1`. Rewrite using `[nabla, ← h]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intVec_mem_nabla {n : ℕ} (la : Fin n → ℕ) (i : Idx la) : intVec la i ∈ nabla la ℤ := by
   have h := (Formalism.GradedWeylDivisibility.sSBasis ℤ n n la).choose_spec.1.2.1
@@ -19,7 +19,7 @@ def genUpperTri (n : ℕ) : Matrix (Fin n) (Fin n) (MvPolynomial (Fin n × Fin n
   Matrix.of fun i j => if i ≤ j then X (i, j) else 0
 
 /- English proof (translation)
-Introduce `i j hij`. Simplify using `only [genUpperTri, Matrix.of_apply]`. Rewrite using `[if_neg (not_le.mpr (show j < i from hij))]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem genUpperTri_blockTriangular (n : ℕ) : (genUpperTri n).BlockTriangular id := by
   intro i j hij
@@ -27,11 +27,11 @@ theorem genUpperTri_blockTriangular (n : ℕ) : (genUpperTri n).BlockTriangular 
   rw [if_neg (not_le.mpr (show j < i from hij))]
 
 /- English proof (translation)
-Set `ψ : MvPolynomial (Fin n × Fin n) ℤ →+* S` to `(aeval (R := ℤ) fun v : Fin n × Fin n => b v.1 v.2).toRingHom`. Establish `hB : (genUpperTri n).map ψ = b`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, genUpperTri, Matrix.of_apply]`. Use `split_ifs with h`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[ψ]`. Rewrite using `[map_zero, hb (show id j < id i from not_le.mp h)]`. Establish `hgen` using `colAct_map_of_mem (Int.castRingHom (MvPolynomial (Fin n × Fin n) ℤ)) hf (genUpperTri n) (genUpperTri_blockTriangular n)`. Establish `h2` using `congrArg (map ψ) hgen`. Rewrite `h2` using `[map_colAct, hB, map_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ψ.comp (Int.castRingHom (MvPolynomial (Fin n × Fin n) ℤ)) = Int.castRingHom S` using `RingHom.ext_int _ _`. Rewrite `h2` using `[hc]`. Rewrite using `[h2, smul_eq_C_mul, map_mul, map_C, map_map, hc, smul_eq_C_mul]`. Use `congr 2`. Simplify using `only [diagChar, map_prod, map_pow, ← hB, Matrix.map_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colAct_intCast_of_mem {n : ℕ} {la : Fin n → ℕ} {f : Pol n ℤ} (hf : f ∈ nabla la ℤ)
     {S : Type} [CommRing S] (b : Matrix (Fin n) (Fin n) S) (hb : b.BlockTriangular id) :
@@ -55,7 +55,7 @@ theorem colAct_intCast_of_mem {n : ℕ} {la : Fin n → ℕ} {f : Pol n ℤ} (hf
   simp only [diagChar, map_prod, map_pow, ← hB, Matrix.map_apply]
 
 /- English proof (translation)
-Rewrite using `[← evalAt_colAct, colAct_intCast_of_mem (intVec_mem_nabla la i) b hb, smul_eq_C_mul, map_mul]`. Simplify using `[DualWeyl.evalAt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evalAt_mul_triangular_intVec {n : ℕ} (la : Fin n → ℕ) (i : Idx la) {S : Type} [CommRing S]
     (y b : Matrix (Fin n) (Fin n) S) (hb : b.BlockTriangular id) :
@@ -65,7 +65,7 @@ theorem evalAt_mul_triangular_intVec {n : ℕ} (la : Fin n → ℕ) (i : Idx la)
   simp [DualWeyl.evalAt]
 
 /- English proof (translation)
-Introduce `T _ _ N la S _ x y b hb`. Unfold `tval`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Simplify using `only [evalAt_mul_triangular_intVec _ _ _ _ (hb _), Finset.prod_mul_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

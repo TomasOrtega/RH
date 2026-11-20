@@ -11,9 +11,9 @@ namespace GlobalTheory.Obs
 
 open MvPolynomial in
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p j hp`. Simplify using `only [map_mul, Derivation.leibniz, smul_eq_mul, map_add, hp, map_X, pderiv_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, Ne.symm h]`.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mvPolynomial_map_pderiv_lift {κ R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀) (i : κ)
     (f : MvPolynomial κ R) :
@@ -30,9 +30,9 @@ theorem mvPolynomial_map_pderiv_lift {κ R R₀ : Type} [CommRing R] [CommRing R
     · simp [Pi.single_apply, Ne.symm h]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hx.exists_right_inv`. Take `⟨y, rfl⟩` from `hp u`. Establish `hn : x * y - 1 ∈ K` using `hker _ (by simp [hu])`. Establish `hsq : (x * y - 1) * (x * y - 1) = 0`. Establish `: (x * y - 1) * (x * y - 1) ∈ K ^ 2` using `by rw [pow_two]; exact Ideal.mul_mem_mul hn hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hK]`. Simplify using `using this`. Establish `hnil : IsNilpotent (x * y - 1)` using `⟨2, by rw [pow_two, hsq]⟩`. Establish `: IsUnit (x * y)` using `by simpa using hnil.isUnit_one_add`. Conclude with `isUnit_of_mul_isUnit_left this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_of_isUnit_map_of_sqZero_ker {A A₀ : Type} [CommRing A] [CommRing A₀] (p : A →+* A₀)
     (hp : Function.Surjective p) (K : Ideal A) (hK : K ^ 2 = 0) (hker : ∀ a, p a = 0 → a ∈ K)
@@ -50,37 +50,37 @@ theorem isUnit_of_isUnit_map_of_sqZero_ker {A A₀ : Type} [CommRing A] [CommRin
 open MvPolynomial in
 
 /- English proof (translation)
-Introduce `R R₀ _ _ I hI π hπ hk B₀ _ _ hB₀`. Take `⟨κ, τ, _, _, ⟨P⟩⟩` from `hB₀.out`. Establish `: Fintype τ` using `Fintype.ofFinite τ`. Establish `hmap : Function.Surjective (MvPolynomial.map (σ` using `κ) π) := MvPolynomial.map_surjective π hπ`. Set `v : τ → MvPolynomial κ R` to `fun j => Function.surjInv hmap (P.relation j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hv : ∀ j, MvPolynomial.map π (v j) = P.relation j` using `fun j => Function.surjInv_eq hmap _`. Set `J : Ideal (MvPolynomial κ R)` to `Ideal.span (Set.range v)`. Set `φ : MvPolynomial κ R →+* B₀` to `(aeval P.val).toRingHom.comp (MvPolynomial.map π)`. Establish `hφ : ∀ f, φ f = aeval P.val (MvPolynomial.map π f)` using `fun _ => rfl`. Establish `hJ : J ≤ RingHom.ker φ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using `[RingHom.mem_ker, hφ, hv, Algebra.Presentation.aeval_val_relation]`. Set `p : (MvPolynomial κ R ⧸ J) →+* B₀` to `Ideal.Quotient.lift J φ hJ`. Establish `hp : ∀ f, p (Ideal.Quotient.mk J f) = φ f` using `fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `halg : ∀ r : R, p (algebraMap R _ r) = algebraMap R₀ B₀ (π r)`. Introduce `r`. Rewrite using `[IsScalarTower.algebraMap_apply R (MvPolynomial κ R) (MvPolynomial κ R ⧸ J)]`. Simplify using `[Ideal.Quotient.algebraMap_eq, hp, hφ]`. Establish `hsemi : SemiHom π p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `r b`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, halg]`. Establish `hsurj : Function.Surjective p`. Introduce `b`. Take `⟨g, rfl⟩` from `P.aeval_val_surjective b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨f, rfl⟩` from `hmap g`. Conclude with `⟨Ideal.Quotient.mk J f, rfl⟩`. Establish `hker : ∀ b, p b = 0 ↔ b ∈ I.map (algebraMap R (MvPolynomial κ R ⧸ J))`. Introduce `b`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite `h0` using `[hp, hφ]`. Establish `hmem : MvPolynomial.map π f ∈ Ideal.span (Set.range P.relation)`. Rewrite using `[P.span_range_relation_eq_ker]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `exact h0`. Consider the case `exact RingHom.mem_ker.mpr h0`. Consider the case `(rw [Algebra.Generators.ker_eq_ker_aeval_val]; exact h0)`. Take `⟨c, hc⟩` from `(Ideal.mem_span_range_iff_exists_fun).1 hmem`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `c' : τ → MvPolynomial κ R` to `fun j => Function.surjInv hmap (c j)`. Establish `hc' : ∀ j, MvPolynomial.map π (c' j) = c j` using `fun j => Function.surjInv_eq hmap _`. Establish `hg : f - ∑ j, c' j * v j ∈ RingHom.ker (MvPolynomial.map (σ` using `κ) π) := by`. Rewrite using `[RingHom.mem_ker, map_sub, map_sum, ← hc]`. Simplify using `[hc', hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[MvPolynomial.ker_map, hk]`. Establish `hs : ∑ j, c' j * v j ∈ J` using `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j, rfl⟩)`. Establish `: Ideal.Quotient.mk J f = Ideal.Quotient.mk J (f - ∑ j, c' j * v j)`. Rewrite using `[map_sub, Ideal.Quotient.eq_zero_iff_mem.2 hs, sub_zero]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmm` using `Ideal.mem_map_of_mem (Ideal.Quotient.mk J) hg`. Rewrite `hmm` using `[Ideal.map_map]`. Then use the resulting hypothesis. Introduce `hb`. Establish `: I.map (algebraMap R (MvPolynomial κ R ⧸ J)) ≤ RingHom.ker p`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, halg]`. Establish `: π x = 0` using `by rw [← RingHom.mem_ker, hk]; exact hx`. Simplify using `[this]`. Conclude with `this hb`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Q` to `Algebra.PreSubmersivePresentation.naive (v := v) P.map P.map_inj`. Establish `hjac : p Q.jacobian = P.jacobian`. Rewrite using `[Algebra.PreSubmersivePresentation.jacobian_eq_jacobiMatrix_det, Algebra.PreSubmersivePresentation.jacobian_eq_jacobiMatrix_det]`. Establish `h1 : ∀ f : MvPolynomial κ R, algebraMap Q.Ring (MvPolynomial κ R ⧸ Ideal.span (Set.range v)) f = Ideal.Quotient.mk J f` using `fun _ => rfl`. Rewrite using `[h1, hp, hφ, Algebra.Generators.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[RingHom.map_det]`. Use `congrArg Matrix.det (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Algebra.PreSubmersivePresentation.jacobiMatrix_apply]`. Use `show MvPolynomial.map π (pderiv (P.map i) (v j)) = pderiv (P.map i) (P.relation j)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mvPolynomial_map_pderiv_lift, hv]`. Establish `hunit : IsUnit Q.jacobian`. Use `isUnit_of_isUnit_map_of_sqZero_ker p hsurj (I.map (algebraMap R _)) ?_ (fun a ha => (hker a).1 ha) _ (by rw [hjac]; exact P.jacobian_isUnit)` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, hI]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 
-Set `Q' : Algebra.SubmersivePresentation R (MvPolynomial κ R ⧸ J) κ τ` to `{ Q with jacobian_isUnit := hunit }`. Use `Q'.isStandardSmooth` as an intermediate fact. Conclude with `⟨_, inferInstance, inferInstance, p, hsemi, hsurj, hker, inferInstance⟩`.
+A detailed English derivation is pending.
 -/
 theorem standardSmooth_lift_of_sqZero : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (B₀ : Type) [CommRing B₀] [Algebra R₀ B₀], Algebra.IsStandardSmooth R₀ B₀ → ∃ (B : Type) (_ : CommRing B) (_ : Algebra R B) (p : B →+* B₀), SemiHom π p ∧ Function.Surjective p ∧ (∀ b, p b = 0 ↔ b ∈ I.map (algebraMap R B)) ∧ Algebra.Smooth R B := by
   intro R R₀ _ _ I hI π hπ hk B₀ _ _ hB₀

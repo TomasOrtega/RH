@@ -18,11 +18,11 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
   {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
 
 /- English proof (translation)
-Use `set N : Matrix (Fin S.rank) (Fin T.rank) k := (y.map fun a => p.π (cA D a)).transpose with hN`. Establish `hyN : y = N.transpose.map fun a => cA D (p.ι a)`. Use extensionality with `i j`. Simplify using `only [hN, Matrix.transpose_transpose, Matrix.map_apply, p.ι_π, map_mul, Formalism.L2.Theta.cA_cA]`. Conclude with `(hy i j).symm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(FS.γ * ((S.gram⁻¹).map (p.π.comp (incA D)) * N * T.gram.map (p.π.comp (incA D))) * FT.β).transpose, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hyN, GlobalTheory.LocSympl.pi_hO_up]`. Rewrite using `[show (S.gram⁻¹).map (p.π.comp (incA D)) * N * T.gram.map (p.π.comp (incA D)) * (FT.β * t * FS.γ) = ((S.gram⁻¹).map (p.π.comp (incA D)) * N * T.gram.map (p.π.comp (incA D)) * FT.β * t) * FS.γ by`. Simplify using `only [Matrix.mul_assoc], Matrix.trace_mul_comm]`. Rewrite using `[show FS.γ * ((S.gram⁻¹).map (p.π.comp (incA D)) * N * T.gram.map (p.π.comp (incA D)) * FT.β * t) = (FS.γ * ((S.gram⁻¹).map (p.π.comp (incA D)) * N * T.gram.map (p.π.comp (incA D))) * FT.β) * t by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply]`. Conclude with `Finset.sum_comm`.
+A detailed English derivation is pending.
 -/
 theorem exists_form (p : Place D k) {S T : HSp D} (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) {y : WO S T}
     (hy : IsHalf (cA D p.e) y) : ∃ b : Matrix Y Y' k, ∀ t, p.π (hO S T (p.up FS FT t) y) = ∑ r, ∑ q, b r q * t r q := by
@@ -43,19 +43,19 @@ theorem exists_form (p : Place D k) {S T : HSp D} (FS : Frame k S.rank Y') (FT :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Take `⟨⟨ψk, hψk⟩, hcn, -, -, -⟩` from `GlobalTheory.LocChar.weil_char_split D k p ψ hψ`. Take `⟨hcont, hne⟩` from `hcn ψk hψk`. Take `⟨d, hd⟩` from `exists_hasConductor_of_continuous ψk hcont hne`. Establish `h1` using `p.split.1`. Establish `h1' : cA D p.e * cA D p.e = cA D p.e` using `by rw [← map_mul, h1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set x := p.down FS FT u with hx`. Use `set y : WO S T := cA D p.e • u with hyd`. Establish `hy : IsHalf (cA D p.e) y` using `fun i j => by`. Simplify using `only [hyd, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, h1']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hux : p.up FS FT x = p.e • u`. Rewrite using `[hx]`. Unfold `Place.down Place.up`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, FT.βγ, Matrix.one_mul, Matrix.mul_assoc, FS.βγ, Matrix.mul_one]`. Use extensionality with `i j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `p.ι_π _`. Establish `hsum : y + p.up FS FT x = u`. Rewrite using `[hux]`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hyd, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← add_mul, add_comm]`. Conclude with `hu i j`. Take `⟨b, hb⟩` from `exists_form p FS FT hy`. Set `Φx : SB (Matrix Y Y' k)` to `⟨fun t => O.1 (t + x), GlobalTheory.LocComb.trans_mem_SB O.2 x⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Φm : SB (Matrix Y Y' k)` to `⟨fun t => GlobalTheory.LocMod.Inhab.pairing ψk t b * Φx.1 t, GlobalTheory.LocComb.modul_mem_SB hd Φx.2 b⟩`. Use `⟨ψ (-symplOH S T y (p.up FS FT x)) • Φm, fun Tm h => ?_⟩` and prove the remaining obligations. Establish `e1 : Tm Φx = heisO ψ S T (p.up FS FT x) (Tm O)` using `h.trans x O Φx fun _ => rfl`. Establish `e2 : Tm Φm = heisO ψ S T y (Tm Φx)` using `h.modul y hy Φx Φm fun t => by show GlobalTheory.LocMod.Inhab.pairing ψk t b * Φx.1 t = _`. Rewrite using `[GlobalTheory.LocSympl.psi_sympl_up p FS FT ψ ψk hψk t y, hb t]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e3` using `GlobalTheory.PlaceModel.heisL_heisL S T ψ y (p.up FS FT x) (Tm O)`. Express the relevant statement in the definitionally equal form `heisO ψ S T y (heisO ψ S T (p.up FS FT x) (Tm O)) = ψ (symplOH S T y (p.up FS FT x)) • heisO ψ S T (y + p.up FS FT x) (Tm O) at e3`. Rewrite using `[map_smul, e2, e1, e3, smul_smul, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_smul, hsum]`.
+A detailed English derivation is pending.
 -/
 theorem exists_heis (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) {S T : HSp D}
     (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (O : SB (Matrix Y Y' k)) {u : WO S T}
@@ -103,13 +103,13 @@ end GlobalTheory.FlatPlace.CombAll
 namespace GlobalTheory.FlatPlace
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p ψ hψ S T Y Y' _ _ _ _ FS FT c hc T₀ hT₀ O Ξ hO hT₀O hΞ`. Establish `hA : ∀ u : c.support, ∃ Φ : SB (Matrix Y Y' k), ∀ Tm, p.IsModel ψ FS FT Tm → Tm Φ = heisO ψ S T u (Tm O)` using `fun u => CombAll.exists_heis p ψ hψ FS FT O (hc u u.2)`. Use `choose Φ hΦ using hA`. Set `Ξ' : SB (Matrix Y Y' k)` to `∑ u : c.support, c u • Φ u`. Establish `hΞ' : ∀ Tm, p.IsModel ψ FS FT Tm → Tm Ξ' = comb ψ S T c (Tm O)` using `fun Tm h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Ξ', map_sum, map_smul, fun u => hΦ u Tm h]`. Rewrite using `[GlobalTheory.HeisComb.comb_eq_sum, Finsupp.sum]`. Conclude with `Finset.sum_coe_sort c.support (fun u => c u • heisO ψ S T u (Tm O))`. Establish `hinj : Ξ = Ξ'`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Ξ - Ξ' ≠ 0` using `sub_ne_zero.2 hne`. Establish `e1 : T₀ (Ξ - Ξ') = ((0 : ℂ) • T₀) (Ξ - Ξ')`. Rewrite using `[map_sub, hΞ, hΞ' T₀ hT₀, sub_self, LinearMap.smul_apply, zero_smul]`. Establish `e2` using `(GlobalTheory.LocModU.localModel_uniq_transport_exist D k p Y Y' S T FS FT ψ hψ).1 T₀ ((0 : ℂ) • T₀) hT₀ (GlobalTheory.LocMod.Witness.isModel_smul p hT₀ 0) _ h0 e1`. Apply `hT₀O` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e2, zero_smul, LinearMap.zero_apply]`. Use `⟨hc, fun Tm h Φ₀ Φ' h1 h2 => ?_⟩` and prove the remaining obligations. Establish `e2 : Φ' = Ξ'` using `by rw [← hinj]; exact Subtype.ext h2`. Establish `e3 : Φ₀ = O` using `Subtype.ext (h1.trans hO.symm)`. Rewrite using `[e2, e3, hΞ' Tm h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCombAt_of_one : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (c : WO S T →₀ ℂ), (∀ u ∈ c.support, IsHalf (p.e + cA D p.e) u) → ∀ T₀, p.IsModel ψ FS FT T₀ → ∀ O Ξ : SB (Matrix Y Y' k), IsOne O → T₀ O ≠ 0 → T₀ Ξ = comb ψ S T c (T₀ O) → p.IsCombAt ψ FS FT c Ξ.1 := by
   intro D k _ _ _ _ p ψ hψ S T Y Y' _ _ _ _ FS FT c hc T₀ hT₀ O Ξ hO hT₀O hΞ

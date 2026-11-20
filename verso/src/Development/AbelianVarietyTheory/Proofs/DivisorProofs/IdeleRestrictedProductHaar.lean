@@ -18,9 +18,7 @@ noncomputable section
 namespace GlobalTheory.ThK.ConeEuler
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `le_abs_self (a x - 1)`. Establish `h2` using `Real.add_one_le_exp |a x - 1|`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = Real.exp (∑ x ∈ S, |a x - 1|) := (Real.exp_sum _ _).symm`.
-
-Use `_ ≤ Real.exp (∑' x, |a x - 1|) := Real.exp_le_exp.2 (hs.abs.sum_le_tsum S fun _ _ => abs_nonneg _)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem prod_le_exp_tsum_abs_sub_one {ι : Type} (a : ι → ℝ) (ha : ∀ x, 0 ≤ a x) (hs : Summable fun x => a x - 1)
     (S : Finset ι) : ∏ x ∈ S, a x ≤ Real.exp (∑' x, |a x - 1|) := by
@@ -34,43 +32,37 @@ theorem prod_le_exp_tsum_abs_sub_one {ι : Type} (a : ι → ℝ) (ha : ∀ x, 0
         Real.exp_le_exp.2 (hs.abs.sum_le_tsum S fun _ _ => abs_nonneg _)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ μI hμI μv hμv ν hν T h q g hh hq hg hgi hs`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evI F)`. Establish `hfacts` using `fun v : Pl F => idelesAt_facts E (evFin F v)`. Use `haveI : ∀ v : Pl F, SigmaFinite (μv v) := fun v => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, _, _, _, _⟩` from `hfacts v`. Use `haveI := (hμv v).1`. Use `infer_instance`. Use `haveI : ∀ w : Unit, SigmaFinite ((fun _ : Unit => μI) w) := fun _ => inferInstance`. Use `haveI := GlobalTheory.AdelicUnitaryTop.countable_heightOneSpectrum F`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha : ∀ w : Unit, Measurable (fun l : (AE F E)ˣ => (⟨unitArch F E l, unitArch_mem l⟩ : idelesAt E (evI F)))` using `fun _ => ((continuous_unitAt_unitArch F E).2.subtype_mk _).measurable`. Establish `hf : ∀ v : Pl F, Measurable (fun l : (AE F E)ˣ => (⟨unitAt E v l, unitAt_mem v l⟩ : idelesAt E (evFin F v)))` using `fun v => by`. Take `⟨_, _, _, _, _⟩` from `hfacts v`. Conclude with `(((continuous_unitAt_unitArch F E).1 v).subtype_mk _).measurable`. Establish `hK : ∀ v : Pl F, MeasurableSet {l : idelesAt E (evFin F v) | l.1 ∈ unitsAt E v}` using `fun v => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨_, _, _, _, _⟩` from `hfacts v`. Conclude with `(isCompact_isOpen_unitsAt v).2.measurableSet`. Establish `hX : ∀ l : (AE F E)ˣ, ∀ᶠ v in cofinite, (⟨unitAt E v l, unitAt_mem v l⟩ : idelesAt E (evFin F v)) ∈ {l : idelesAt E (evFin F v) | l.1 ∈ unitsAt E v}` using `fun l => eventually_unitAt_mem_unitsAt F E l`. Take `⟨Z, hZ⟩` from `GlobalTheory.RestrMeas.exists_finset_of_eventually hg`. Set `ff : ∀ v : Pl F, idelesAt E (evFin F v) → ℂ` to `fun v y => if v ∈ T then q v y.1 else g v y.1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Set `fa : ∀ _ : Unit, idelesAt E (evI F) → ℂ` to `fun _ y => h y.1`. Establish `hS : ∀ v ∉ T ∪ Z, μv v {l : idelesAt E (evFin F v) | l.1 ∈ unitsAt E v} = 1` using `fun v _ => (hμv v).2`. Establish `h1 : ∀ v ∉ T ∪ Z, ∀ y ∈ {l : idelesAt E (evFin F v) | l.1 ∈ unitsAt E v}, ff v y = 1` using `fun v hv y hy => by`. Establish `hT : v ∉ T` using `fun h' => hv (Finset.mem_union_left _ h')`. Simplify using `only [ff, if_neg hT]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hZ v (fun h' => hv (Finset.mem_union_right _ h')) _ hy`. Establish `hfa : ∀ w, Integrable (fa w) μI` using `fun _ => hh`. Establish `hff : ∀ v, Integrable (ff v) (μv v)` using `fun v => by`. Distinguish the cases in `hv : v ∈ T`. Simplify using `only [ff, if_pos hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hq v hv`. Simplify using `only [ff, if_neg hv]`. Conclude with `hgi v hv`. Use `set A : {v : Pl F // v ∉ T} → ℝ := fun v => ∫ l : idelesAt E (evFin F v.1), ‖g v.1 l.1‖ ∂(μv v.1) with hA`. Establish `hA0 : ∀ v, 0 ≤ A v` using `fun v => integral_nonneg fun _ => norm_nonneg _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C : ℝ := (∏ v ∈ T, ∫ l : idelesAt E (evFin F v), ‖q v l.1‖ ∂(μv v)) * Real.exp (∑' v, |A v - 1|) with hC'`. Establish `hC : ∀ S : Finset (Pl F), T ∪ Z ⊆ S → ∏ v ∈ S, ∫ y, ‖ff v y‖ ∂μv v ≤ C` using `fun S hS' => by`. Establish `hTS : T ⊆ S` using `Finset.subset_union_left.trans hS'`. Rewrite using `[← Finset.union_sdiff_of_subset hTS, Finset.prod_union Finset.disjoint_sdiff]`. Establish `e1 : ∏ v ∈ T, ∫ y, ‖ff v y‖ ∂μv v = ∏ v ∈ T, ∫ l : idelesAt E (evFin F v), ‖q v l.1‖ ∂(μv v)` using `Finset.prod_congr rfl fun v hv => by simp only [ff, if_pos hv]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∏ v ∈ S \ T, ∫ y, ‖ff v y‖ ∂μv v = ∏ v ∈ (S \ T).subtype (· ∉ T), A v`. Rewrite using `[← Finset.prod_subtype_of_mem (fun v => ∫ y, ‖ff v y‖ ∂μv v) fun v hv => (Finset.mem_sdiff.1 hv).2]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `only [ff, if_neg v.2, A]`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `mul_le_mul_of_nonneg_left (prod_le_exp_tsum_abs_sub_one A hA0 hs _) (Finset.prod_nonneg fun v _ => integral_nonneg fun _ => norm_nonneg _)`. Establish `hint` using `hν.integrable_tensor ha hf hK hX hS h1 hfa hff hC`. Establish `heq` using `hν.integral_tensor_eq_tprod ha hf hK hX hS h1 hfa hff hC`. Establish `hpt : (fun l : (AE F E)ˣ => (∏ w : Unit, fa w (⟨unitArch F E l, unitArch_mem l⟩ : idelesAt E (evI F))) * ∏ᶠ v, ff v (⟨unitAt E v l, unitAt_mem v l⟩ : idelesAt E (evFin F v))) = fun l => h (unitArch F E l) * (∏ v ∈ T, q v (unitAt E v l)) * ∏ᶠ (v : Pl F) (_ : v ∉ T), g v (unitAt E …`. Use function extensionality and compare the values at `l`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Y, hY⟩` from `GlobalTheory.RestrMeas.exists_finset_of_eventually (hX l)`. Establish `hsub : ∀ v ∉ (T ∪ Z) ∪ Y, ∀ y ∈ {l : idelesAt E (evFin F v) | l.1 ∈ unitsAt E v}, ff v y = 1` using `fun v hv => h1 v fun h' => hv (Finset.mem_union_left _ h')`. Rewrite using `[GlobalTheory.RestrMeas.finprod_eq_prod_of_mem (K := fun v => {l : idelesAt E (evFin F v) | l.1 ∈ unitsAt E v}) (pf := fun v (l : (AE F E)ˣ) => (⟨unitAt E v l, unitAt_mem v l⟩ : idelesAt E (evFin F v))) (x := l) hsub (fun v hv => hY v fun h' => hv (Finset.mem_union_right _ h'))]`. Rewrite using `[finprod_cond_eq_prod_of_cond_iff (t := ((T ∪ Z) ∪ Y) \ T) _ ?_]`. Rewrite using `[Finset.univ_unique, Finset.prod_singleton, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Simplify using `only [ff]`. Rewrite using `[Finset.prod_ite]`. Use `congr 1`. Use `Finset.prod_congr ?_ fun _ _ => rfl` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use extensionality with `v`. Simplify using `only [Finset.mem_filter, Finset.mem_union]`. The claim follows by propositional logic. Use `Finset.prod_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_sdiff]`. Introduce `v hv`. Prove the components needed by the constructor for the conclusion. Introduce `hvT`. Use `Finset.mem_sdiff.2 ⟨?_, hvT⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Assume the negation of the conclusion as `hvS`. Apply `hv` to reduce the goal to its premises. Use `h1 v (fun h' => hvS (Finset.mem_union_left _ h')) _ (hY v fun h' => hvS (Finset.mem_union_right _ h'))` as an intermediate fact. Simplify `this` using `only [ff, if_neg hvT]`. Conclude with `fun hv' => (Finset.mem_sdiff.1 hv').2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hint`, `heq` using `[hpt]`. Use `⟨hint, heq.trans ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.univ_unique, Finset.prod_singleton, mul_assoc]`. Use `congr 1`. Establish `hmA` using `GlobalTheory.RestrMeas.multipliable_integral (V := {v : Pl F // v ∉ T}) (K := fun v => {l : idelesAt E (evFin F v.1) | l.1 ∈ unitsAt E v.1}) (ff := fun v y => g v.1 y.1) (S₀ := Z.subtype (· ∉ T)) (fun v => hK v.1) (fun v _ => (hμv v.1).2) (fun v hv y hy => hZ v.1 (fun h' => hv (F …`.
-
-Establish `hP : HasProd (fun v => ∫ y, ff v y ∂μv v) ((∏ v ∈ T, ∫ l : idelesAt E (evFin F v), q v l.1 ∂(μv v)) * ∏' v : {v : Pl F // v ∉ T}, ∫ l : idelesAt E (evFin F v.1), g v.1 l.1 ∂(μv v.1))`. Use `HasProd.mul_isCompl (s := (T : Set (Pl F))) (t := (T : Set (Pl F))ᶜ) isCompl_compl ?_ ?_` and prove the remaining obligations. Use `T.hasProd (fun v => ∫ y, ff v y ∂μv v)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Conclude with `Finset.prod_congr rfl fun v hv => by simp only [ff, if_pos hv]`.
-
-Set `e : ((T : Set (Pl F))ᶜ : Set (Pl F)) ≃ {v : Pl F // v ∉ T}` to `Equiv.subtypeEquivRight fun v => by simp`. Establish `hfe : (fun v => ∫ y, ff v y ∂μv v) ∘ ((↑) : ((T : Set (Pl F))ᶜ : Set (Pl F)) → Pl F) = (fun v : {v : Pl F // v ∉ T} => ∫ l : idelesAt E (evFin F v.1), g v.1 l.1 ∂(μv v.1)) ∘ e`. Use function extensionality and compare the values at `v`. Establish `hv : (v : Pl F) ∉ T` using `v.2`. Simplify using `only [Function.comp_apply, ff, if_neg hv]`.
-
-Both sides reduce to the same expression. Rewrite using `[hfe]`. Conclude with `e.hasProd_iff.2 hmA.hasProd`. Conclude with `hP.tprod_eq`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_euler_ideles : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (μI : Measure (idelesAt E (evI F))), μI.IsHaarMeasure →

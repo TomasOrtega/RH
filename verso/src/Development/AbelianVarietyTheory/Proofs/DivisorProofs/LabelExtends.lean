@@ -27,16 +27,14 @@ section Gen
 variable {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Yt7.lift_finite f y w h`.
+A detailed English derivation is pending.
 -/
 theorem lift_finite [IsIntegrallyClosed R] {X S : Scheme.{0}} (f : X ⟶ S) [IsFinite f] (y : Sp R ⟶ S) (w : Sp K ⟶ X)
     (h : w ≫ f = spMap (algebraMap R K) ≫ y) : ∃ v : Sp R ⟶ X, v ≫ f = y ∧ spMap (algebraMap R K) ≫ v = w :=
   _root_.UpperTheory.Reformulated.B.Yt7.lift_finite f y w h
 
 /- English proof (translation)
-Use `haveI : IsDominant (spMap (algebraMap R K)) := by`. Use `⟨?_⟩` and prove the remaining obligations. Conclude with `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (algebraMap R K)).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R K)]`. Conclude with `bot_le)`.
-
-Use `haveI : IsReduced (Over.mk y).left := inferInstanceAs (IsReduced (Spec (CommRingCat.of R)))`. Use `ext1`. Conclude with `ext_of_isDominant_of_isSeparated G.hom (by rw [Over.w u, Over.w v]) (spMap (algebraMap R K)) h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_frac {S : Scheme.{0}} {G : Over S} [IsSeparated G.hom] {y : Sp R ⟶ S} {u v : Over.mk y ⟶ G}
     (h : spMap (algebraMap R K) ≫ u.left = spMap (algebraMap R K) ≫ v.left) : u = v := by
@@ -49,9 +47,9 @@ theorem ext_frac {S : Scheme.{0}} {G : Over S} [IsSeparated G.hom] {y : Sp R ⟶
   exact ext_of_isDominant_of_isSeparated G.hom (by rw [Over.w u, Over.w v]) (spMap (algebraMap R K)) h
 
 /- English proof (translation)
-Use `haveI := (AbTorsionAnyBase.isFinite_and_flat_torsion S G hG q (Nat.one_le_iff_ne_zero.2 hq)).1`. Establish `e : w ≫ mulN G q = CartesianMonoidalCategory.toUnit _ ≫ η[G]`. Rewrite using `[GrpTangent.mulN_eq_pow, MonObj.comp_pow, Category.comp_id, hw]`. Both sides reduce to the same expression. Set `w₁ : Over.mk y' ⟶ torsion G q` to `Limits.pullback.lift w _ e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h₁ : w₁ ≫ torsion.ι G q = w` using `Limits.pullback.lift_fst _ _ _`. Take `⟨v, hv, hv'⟩` from `lift_finite (torsion G q).hom y w₁.left ((Over.w w₁).trans hy.symm)`. Use `⟨(Over.homMk v hv : Over.mk y ⟶ torsion G q) ≫ torsion.ι G q, ?_⟩` and prove the remaining obligations. Rewrite using `[← h₁, Over.comp_left, Over.comp_left, ← hv', Category.assoc]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lift_tors [IsIntegrallyClosed R] {S : Scheme.{0}} (G : Over S) [GrpObj G] (hG : IsAbelianScheme G) {q : ℕ}
     (hq : q ≠ 0) {y : Sp R ⟶ S} {y' : Sp K ⟶ S} (hy : spMap (algebraMap R K) ≫ y = y') (w : Over.mk y' ⟶ G)

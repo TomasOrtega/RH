@@ -8,7 +8,7 @@ open UpperTheory.Gal.LocD UpperTheory.Gal.InertialTypesAlt.G UpperTheory.Gal.Joi
 open scoped Classical
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ π hπ hirr ω l hl0 hl`. Conclude with `GlobalTheory.SatakeExists.isSubquotient_of_eigenform hπ hirr (torusChar ω) l hl0 hl`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Join.quotEmb :
     UpperTheory.Gal.Join.QuotEmb := by

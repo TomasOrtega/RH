@@ -22,15 +22,13 @@ def mulO (N N' : ℕ) (r : D.host.E) : TaylorLogMetric.VC D N N' →ₗ[ℂ] Tay
   map_smul' c x := by funext τ i j; exact mul_left_comm _ _ _
 
 /- English proof (translation)
-Unfold `Ker.lamMM at hv ⊢`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem v hv`. Take `⟨w, hw, a, ha, rfl⟩` from `hv`. Use `AddSubgroup.subset_closure ⟨w, hw, r • a, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.smul_mem (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) r ha`. Use function extensionality and compare the values at `τ`. Rewrite using `[Algebra.smul_def, map_mul]`. Conclude with `mul_left_comm _ _ _`. Consider the case `zero`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (fun τ => TaylorLogMetric.embT D τ (r : D.host.E) * (0 : D.what₂.Tau → ℂ) τ) = 0` using `by funext τ; simp`. Rewrite using `[this]`. Conclude with `AddSubgroup.zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `: (fun τ => TaylorLogMetric.embT D τ (r : D.host.E) * (x + y) τ) = (fun τ => TaylorLogMetric.embT D τ (r : D.host.E) * x τ) + fun τ => TaylorLogMetric.embT D τ (r : D.host.E) * y τ`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use function extensionality and compare the values at `τ`. Conclude with `mul_add _ _ _`. Rewrite using `[this]`. Conclude with `AddSubgroup.add_mem _ hx hy`. Consider the case `neg x _ hx`.
-
-Establish `: (fun τ => TaylorLogMetric.embT D τ (r : D.host.E) * (-x) τ) = -fun τ => TaylorLogMetric.embT D τ (r : D.host.E) * x τ`. Use function extensionality and compare the values at `τ`. Conclude with `mul_neg _ _`. Rewrite using `[this]`. Conclude with `AddSubgroup.neg_mem _ hx`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamMM_stable (Λ : AddSubgroup ℂ) (r : 𝓞 D.host.E) {v : D.what₂.Tau → ℂ} (hv : v ∈ Ker.lamMM D Λ) :
     (fun τ => TaylorLogMetric.embT D τ (r : D.host.E) * v τ) ∈ Ker.lamMM D Λ := by
@@ -59,7 +57,7 @@ theorem lamMM_stable (Λ : AddSubgroup ℂ) (r : 𝓞 D.host.E) {v : D.what₂.T
 variable {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Ker.Base D cc δ)
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_standardThetaLattice_iff_adelicIdeal]`. Conclude with `fun i j => lamMM_stable _ r (hx i j)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_integer_mem_base_lattice {N N' : ℕ} (r : 𝓞 D.host.E) {x : TaylorLogMetric.VC D N N'} (hx : x ∈ La0 B N N') :
     mulO N N' (r : D.host.E) x ∈ La0 B N N' := by
@@ -67,13 +65,13 @@ theorem mul_integer_mem_base_lattice {N N' : ℕ} (r : 𝓞 D.host.E) {x : Taylo
   exact fun i j => lamMM_stable _ r (hx i j)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.conjO D r, by rw [Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.star_conj]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem star_int (r : 𝓞 D.host.E) : ∃ r' : 𝓞 D.host.E, (r' : D.host.E) = star (r : D.host.E) :=
   ⟨Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.conjO D r, by rw [Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.star_conj]; rfl⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show TaylorLogMetric.embT D τ r • (gM (γ' : Matrix (Fin N') (Fin N') D.host.E) τ * Matrix.of (x τ) * (gM (γ : Matrix (Fin N) (Fin N) D.host.E) τ)ᴴ) = gM (γ' : Matrix (Fin N') (Fin N') D.host.E) τ * (TaylorLogMetric.embT D τ r • Matrix.of (x τ)) * (gM (γ : Matrix (Fin N) (Fin N) D …`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulO_phi {N N' : ℕ} (r : D.host.E) (γ : Matrix.unitaryGroup (Fin N) D.host.E)
     (γ' : Matrix.unitaryGroup (Fin N') D.host.E) (x : TaylorLogMetric.VC D N N') :
@@ -86,9 +84,9 @@ theorem mulO_phi {N N' : ℕ} (r : D.host.E) (γ : Matrix.unitaryGroup (Fin N) D
   rw [Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Simplify using `only [Ker.formV, LinearMap.mk₂'ₛₗ_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show TaylorLogMetric.embT D τ r * x τ i j * _ = x τ i j * (starRingEnd ℂ) (TaylorLogMetric.embT D τ (star r) * y τ i j)`. Rewrite using `[embT_star', map_mul]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [starRingEnd_apply, star_star]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mulO_adj (A : ℝ) {N N' : ℕ} (r : D.host.E) (x y : TaylorLogMetric.VC D N N') :
     Ker.formV A D.what₂.Tau N N' (mulO N N' r x) y = Ker.formV A D.what₂.Tau N N' x (mulO N N' (star r) y) := by
@@ -101,17 +99,17 @@ theorem mulO_adj (A : ℝ) {N N' : ℕ} (r : D.host.E) (x y : TaylorLogMetric.VC
   ring
 
 /- English proof (translation)
-Introduce `N γ Ae₁ hN hA₁ S hS₁`. Establish `hfix₁ : ∀ y : TaylorLogMetric.VC D N 1, (phiU γ 1 : TaylorLogMetric.VC D N 1 ≃ₗ[ℂ] TaylorLogMetric.VC D N 1).symm y = y → y = 0`. Introduce `y hy`. Apply `Ae₁.injective` to reduce the goal to its premises. Rewrite using `[hA₁, hy, sub_self, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : ∀ x : TaylorLogMetric.VC D N 2, (phiU γ 1 : TaylorLogMetric.VC D N 2 ≃ₗ[ℂ] TaylorLogMetric.VC D N 2).symm x = x → x = 0`. Introduce `x hx`. Apply `(rowE D N 2).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `hfix₁ _ ?_` and prove the remaining obligations. Rewrite using `[← symm_coord (rowE D N 2) _ _ (map_row γ), hx]`. Take `⟨Ae, hA⟩` from `exists_cay (phiU γ 1 : TaylorLogMetric.VC D N 2 ≃ₗ[ℂ] TaylorLogMetric.VC D N 2) hfix`. Establish `c : Copies (rowE D N 2) (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N 2) (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N 1) (TaylorLogMetric.al D (TaylorLogMetric.tor0 D cc δ)) (TaylorLogMetric.al D ( …` using `{ form := form_row _ N 2 char := al_row B hS N 2 lat := lat_row B N 2 map := map_row γ cay := fun x i => by`. Rewrite using `[hA, hA₁, map_sub, Pi.sub_apply, symm_coord (rowE D N 2) _ _ (map_row γ)] }`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hal0 : TaylorLogMetric.al D (TaylorLogMetric.tor0 D cc δ) (0 : TaylorLogMetric.VC D N 1) = 1`. Unfold `TaylorLogMetric.al TaylorLogMetric.Hf`. Simplify using the standard rewrite rules. Establish `hU₁` using `c.unitaryData₁ 0 (unitaryData hL hN (by decide) γ 1 Ae hA) (formV_herm' _ _ _ _) (formV_pos (area_pos' B) _ _ _) (phiL_isom _ _ _ _ _ _ _) hA₁ hal0 (al_phi _ _ _ _ _ _)`. Establish `hcard : 0 < S.card`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx, -⟩` from `hS₁.2.2 0 (AddSubgroup.zero_mem _)`. Conclude with `Finset.card_pos.mpr ⟨x, hx⟩`. Take `⟨lam, s, hs, hrel⟩` from `hNeg (4 * S.card) (by omega)`. Take `⟨lam', hlam'⟩` from `star_int lam`. Establish `hM : Multipliers (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N 1) (La0 B N 1) (phiU γ 1) (mulO N 1 (lam : D.host.E)) (mulO N 1 (star (lam : D.host.E))) (mulO N 1 (s : D.host.E)) S.card` using `{ lΛ := fun x hx => mul_integer_mem_base_lattice B lam hx l'Λ := fun x hx => by rw [← hlam']; exact mul_integer_mem_base_lattice B lam' hx sΛ := fun x hx => mul_integer_mem_base_lattice B s hx lδ := mulO_phi _ γ 1 l'δ := mulO_phi _ γ 1 sδ := mulO_phi _ γ 1 adj := mulO_adj _ _ sad …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `τ i j`. Use `show TaylorLogMetric.embT D τ (star (lam : D.host.E)) * (TaylorLogMetric.embT D τ (lam : D.host.E) * x τ i j) = -x τ i j + (4 * S.card) • (TaylorLogMetric.embT D τ (s : D.host.E) * x τ i j)`. Rewrite using `[← mul_assoc, ← map_mul, hrel, map_add, map_neg, map_one, map_mul, map_natCast, nsmul_eq_mul]`. Use `ring }`. Conclude with `gauss_sq hU₁ hM (fun x hx => card_smul_mem hS₁ hx) (fun x hx => alpha_mult hM (Real.sqrt D.host.d / 2) _ (fun _ => rfl) (B.qInt0 hS N 1) hx) hS₁`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gaussRow_of (hS : B.StdOK) (hL : B.LatAll) (hNeg : NegOneNorm D) : GaussRow B := by
   intro N γ Ae₁ hN hA₁ S hS₁

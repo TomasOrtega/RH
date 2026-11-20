@@ -9,19 +9,17 @@ namespace Formalism.MainNotions.Gaps.EtaleWeightGaps
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
 /- English proof (translation)
-Substitute `hwt` using the available equality. Use `set d : ℕ := finrank B.KO (B.Cusp j (wtIter wadd wL w0 a0)) with hddef`. Establish `hnK : 1 ≤ finrank ℚ B.KO` using `Module.finrank_pos (R := ℚ) (M := B.KO)`. Establish `hlognK : 0 ≤ Real.log (finrank ℚ B.KO : ℝ)` using `Real.log_natCast_nonneg _`. Establish `hPd0 : 0 ≤ Pd` using `(Real.log_natCast_nonneg _).trans hd`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPO0 : 0 ≤ PO D large₂` using `hlognK.trans hO.1`. Establish `hE : ∀ σ k, ∑ γ ∈ (z k).support, B.l2NormAlt j _ σ (z k γ) ≤ Real.exp ((a0 : ℝ) * (Real.log N + mx σ) + Real.log (B.supN j w0 σ (th k)))`. Introduce `σ k`. Establish `hk` using `hal k`. Establish `h3 : ∑ γ ∈ (z k).support, B.supN j _ σ (z k γ) ≤ (∑ i, B.supN j wL σ (w i)) ^ a0 * B.supN j w0 σ (th k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzk` using `hz k`. Use `revert hzk`. Generalize the expression as in `z k = zk`. Use `revert zk`. Rewrite using `[← hk]`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `zk hzk`. Conclude with `polynomial_coefficient_l1_bound X hSM w (al k) (th k) σ zk hzk`. Use `(Finset.sum_le_sum fun γ _ => B.l2Norm_le_supNorm_alt j _ σ (z k γ)).trans (h3.trans ?_)` and prove the remaining obligations. Establish `h4 : ∑ i, B.supN j wL σ (w i) ≤ Real.exp (Real.log N + mx σ)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Real.exp_add, Real.exp_nat_mul]`. Conclude with `mul_le_mul (pow_le_pow_left₀ (Finset.sum_nonneg fun i _ => B.supN_nonneg j wL σ _) h4 _) (Real.le_exp_log _) (B.supN_nonneg j w0 σ _) (pow_pos (Real.exp_pos _) _).le`. Establish `hC0 : Real.log (max ((d * finrank ℚ B.KO : ℕ) : ℝ) 1) ≤ 1 * (Real.log (d : ℝ) + Real.log (finrank ℚ B.KO : ℝ))`. Rewrite using `[one_mul]`. Break down `Nat.eq_zero_or_pos d with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h]`. Simplify using `using hlognK`. Establish `h5 : (1 : ℝ) ≤ ((d * finrank ℚ B.KO : ℕ) : ℝ)` using `by exact_mod_cast Nat.mul_pos h hnK`. Rewrite using `[max_eq_left h5, Nat.cast_mul, Real.log_mul (by positivity) (by positivity)]`. Use `deepSum (B.Mlat j _) z c hc0 hG hW Hm (max ((d * finrank ℚ B.KO : ℕ) : ℝ) 1) (lt_of_lt_of_le one_pos (le_max_right _ _)) (fun Ctr h => hT Ctr (lt_of_le_of_lt (le_max_left _ _) h)) (fun σ => B.supN j _ σ) (fun σ f hf => lt_of_le_of_ne (B.supN_nonneg j _ σ f) (fun h => hf ((B.supN_ …` as an intermediate fact.
-
-Establish `e : (1 : ℝ) + 1 / 2 = 3 / 2` using `by norm_num`. Rewrite `this` using `[e]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deepPacketP (large₂ : SizeData₂ D) (X : PJ D B P j)
     (ka wL w0 : WeightFamilies.Wt D j) (a0 : ℕ) (hwt : wtIter wadd wL w0 a0 = ka) {N ρ : ℕ}
@@ -97,9 +95,9 @@ theorem deepPacketP (large₂ : SizeData₂ D) (X : PJ D B P j)
   exact this
 
 /- English proof (translation)
-Take `⟨z', hz1, hz2⟩` from `exists_zFam X ka wL w0 a0 hwt w hw th hthM al hal`. Establish `hzM : ∀ k β, z k β ∈ B.Mlat j ka`. Introduce `k β`. Establish `: z k β = z' k β` using `X.inc_inj ka ((hz k β).trans (hz1 k β).symm)`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz2 k β`. Conclude with `deepPacketP large₂ X ka wL w0 a0 hwt w th al hal z hz _ (fun la => gaussC_nonneg _ z la) (gaussC_gaussLe hzM) hW Hm (fun Ctr hC => trans_of_minima transference_successive_minima _ (hlat j h1 h2 ka).span_eq_top Hm hconj Ctr hC) hSM tableDegreeThreeBase hLAM G Prw Pd hS2 hG0 hPrw m …`.
+A detailed English derivation is pending.
 -/
 theorem deepFinalP (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (ka wL w0 : WeightFamilies.Wt D j) (a0 : ℕ) (hwt : wtIter wadd wL w0 a0 = ka) {N ρ : ℕ}
@@ -132,7 +130,7 @@ theorem deepFinalP (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (h
     hSM tableDegreeThreeBase hLAM G Prw Pd hS2 hG0 hPrw mx hmx hmxm hth ha hrw hd hO
 
 /- English proof (translation)
-Establish `hsz : ∀ w' : WeightFamilies.Wt D j, G * w'.size ≤ max G 0 * w'.size` using `fun w' => mul_le_mul_of_nonneg_right (le_max_left _ _) (zero_le_one.trans (WeightFamilies.Wt.one_le_size w'))`. Conclude with `deepFinalP large₂ X h1 h2 ka wL w0 a0 hwt w hw th hthM al hal z hz hW hlat Hm hconj hSM tableDegreeThreeBase hLAM (max G 0) Prw Pd (fun σ F => (hS2 j h1 h2 ka F σ).trans (mul_le_mul_of_nonneg_right (Real.exp_le_exp.mpr hPd) (sq_nonneg _))) (le_max_right _ _) hPrw mx (fun σ k => ( …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem deepFinalP_adm (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (ka wL w0 : WeightFamilies.Wt D j) (a0 : ℕ) (hwt : wtIter wadd wL w0 a0 = ka) {N ρ : ℕ}
@@ -166,11 +164,11 @@ theorem deepFinalP_adm (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j
     (hmxm.trans (hsz wL)) (fun k => (hth k).trans (hsz w0)) ha hrw hd hO
 
 /- English proof (translation)
-Establish `hf : 2 ≤ D.R.f`. Establish `: 0 < D.R.ord` using `D.R.ord_pos`. Unfold `Ranks.f Ranks.n`. Use linear arithmetic over natural numbers and integers. Establish `hr : 6 ≤ D.R.r`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `h1 : 0 ≤ ∑ τ, ((∑ i, (ka.aP τ i : ℝ)) + ∑ i, (ka.aM τ i : ℝ))` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h2 : 1 ≤ D.R.f * max (D.R.sigW j).2 1 * D.R.r` using `Nat.mul_pos (Nat.mul_pos (by omega) (lt_of_lt_of_le Nat.one_pos (le_max_right _ _))) (by omega)`. Establish `h3 : (1 : ℝ) ≤ (D.R.f : ℝ) * ((max (D.R.sigW j).2 1 : ℕ) : ℝ) * (D.R.r : ℝ)` using `by exact_mod_cast h2`. Establish `h4 : (ka.n : ℝ) ≤ (D.R.f : ℝ) * ((max (D.R.sigW j).2 1 : ℕ) : ℝ) * (D.R.r : ℝ) * (ka.n : ℝ)` using `le_mul_of_one_le_left (Nat.cast_nonneg _) h3`. Unfold `WeightFamilies.Wt.size`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem n_le_sizeW (ka : WeightFamilies.Wt D j) : (ka.n : ℝ) ≤ ka.size := by
   have hf : 2 ≤ D.R.f := by
@@ -190,7 +188,7 @@ theorem n_le_sizeW (ka : WeightFamilies.Wt D j) : (ka.n : ℝ) ≤ ka.size := by
   linarith
 
 /- English proof (translation)
-Establish `h1 : a0 D j T ≤ ka.n`. Rewrite using `[hk]`. Conclude with `(Nat.sub_le _ _).trans ((Nat.le_mul_of_pos_right T hW).trans (Nat.le_add_left _ _))`. Conclude with `(Nat.cast_le.mpr h1).trans (n_le_sizeW ka)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanishingOrder_le_weight_size (ka : WeightFamilies.Wt D j) (T nP nW : ℕ) (hk : ka.n = nP + T * nW) (hW : 0 < nW) :
     (a0 D j T : ℝ) ≤ ka.size := by
@@ -200,7 +198,7 @@ theorem vanishingOrder_le_weight_size (ka : WeightFamilies.Wt D j) (T nP nW : �
   exact (Nat.cast_le.mpr h1).trans (n_le_sizeW ka)
 
 /- English proof (translation)
-Take `⟨-, hwM, hrw, hmx, hmxm, -, h0, hz, hWd, -⟩` from `hT`. Take `⟨⟨dH, Hm, hconj⟩, hSM, hd, hPd⟩` from `hI`. Use `deepFinalP_adm large₂ X h1 h2 ka wL (X.wF0 wL wF) (a0 D j T) (SizeBoundsAlt.hwt_of X ka wL wF T nP nW hF hn hk hD) G.w hwM G.th0 (fun k => (h0 k).2.1) G.alz (fun k => (h0 k).2.2.2) G.zc hz hWd hlat Hm hconj hSM p CG AG hLAM hS2 Gc Prw Pd hP0 G.mx hmx hmxm (fun k => (h0 k).2.2.1) …` as an intermediate fact. Rewrite `this` using `[max_eq_left hG0]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem deepGP (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) {ka wL wF : WeightFamilies.Wt D j}
     (G : GlobalFamilyData X ka wL wF) (S : Scal B) (CRm : ℝ) (T nP nW : ℕ) (c Gc Prw Ch Ah Cf Af CG AG p Pd : ℝ)
@@ -220,7 +218,7 @@ theorem deepGP (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (h2 : 
   rwa [max_eq_left hG0] at this
 
 /- English proof (translation)
-The claim follows from `deepGP large₂ X h1 h2 G S CRm T nP nW c Gc Prw Ch Ah Cf Af CG AG (WeightFamilies.PP0v D large₂ CL AL * (1 + Real.log ka.size)) Pd hF hn hk hD hW hT hI hG0 hP0 hlat (fun F hF hF0 => hLAM j h1 h2 ka F hF hF0) hS2 hO`.
+A detailed English derivation is pending.
 -/
 theorem deepGW (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) {ka wL wF : WeightFamilies.Wt D j}
     (G : GlobalFamilyData X ka wL wF) (S : Scal B) (CRm : ℝ) (T nP nW : ℕ) (c Gc Prw Ch Ah Cf Af CG AG CL AL Pd : ℝ)
@@ -234,7 +232,7 @@ theorem deepGW (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (h2 : 
     hF hn hk hD hW hT hI hG0 hP0 hlat (fun F hF hF0 => hLAM j h1 h2 ka F hF hF0) hS2 hO
 
 /- English proof (translation)
-Take `⟨hk, -, -, -, -, -, -, -, -, -, -, -, -, hV, hIL, hIF, -, -, hD, -, -, h40, -, -, hO, -⟩` from `hC`. Conclude with `deepGW large₂ X h1 h2 G S CRm T nP nW c Gc Prw Ch Ah Cf Af CG AG CL AL Pd hIF hIL.1 (hk.trans hV) hD (lt_of_lt_of_le (by norm_num) h40) hT hI hG0 hP0 hlat hLAM hS2 hO`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem deepGW_of_setC (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) {ka wL wF : WeightFamilies.Wt D j}
     (G : GlobalFamilyData X ka wL wF) (S : Scal B) (CRm : ℝ) (T nP nW : ℕ) (h0 CK C1 A1 c Gc Prw Ch Ah Cf Af CG AG CL AL Pd : ℝ)
@@ -249,7 +247,7 @@ theorem deepGW_of_setC (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j
     (lt_of_lt_of_le (by norm_num) h40) hT hI hG0 hP0 hlat hLAM hS2 hO
 
 /- English proof (translation)
-The claim follows from `deepGW_of_setC large₂ (X j h1 h2) h1 h2 G S K.CRm T nP nW h0 H.CK H.C1 H.A1 c Gc Prw Ch Ah K.Cf K.Af K.CG K.AG K.CL K.AL Pd hH.2.1 hT hI hP.2.2.1 hP.2.2.2.1 hA.1 hA.2.2.2.2.1 hA.2.1.2`.
+A detailed English derivation is pending.
 -/
 theorem deepGW_of_hyp (large₂ : SizeData₂ D) (X : Prov D B P) (K : KAdm) (H : KHyp) (Ch Ah Cq Aq C2 A2 CR Bx CT : ℝ)
     (hA : AdmW large₂ X K H Ch Ah Cq Aq) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (S : Scal B) {ka wL wF : WeightFamilies.Wt D j}
@@ -265,7 +263,7 @@ theorem deepGW_of_hyp (large₂ : SizeData₂ D) (X : Prov D B P) (K : KAdm) (H 
     hH.2.1 hT hI hP.2.2.1 hP.2.2.2.1 hA.1 hA.2.2.2.2.1 hA.2.1.2
 
 /- English proof (translation)
-The claim follows from `(deepGW_of_hyp large₂ X K H Ch Ah Cq Aq C2 A2 CR Bx CT hA h1 h2 S T nP nW h0 nus hH G c Gc PH Prw Pet Pd hT hI hP).2.trans (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hP.2.2.2.2.2.2.2.2.2.2.2.2.1 (zero_le_one.trans (WeightFamilies.Wt.one_le_size ka))) (Nat.cast_nonneg …`.
+A detailed English derivation is pending.
 -/
 theorem deepGW_of_hyp_PP (large₂ : SizeData₂ D) (X : Prov D B P) (K : KAdm) (H : KHyp) (Ch Ah Cq Aq C2 A2 CR Bx CT : ℝ)
     (hA : AdmW large₂ X K H Ch Ah Cq Aq) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (S : Scal B) {ka wL wF : WeightFamilies.Wt D j}

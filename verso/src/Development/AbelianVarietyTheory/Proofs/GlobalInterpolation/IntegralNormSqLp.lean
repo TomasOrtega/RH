@@ -5,19 +5,17 @@ open scoped FourierTransform SchwartzMap Real
 namespace GlobalTheory.GallagherLemma
 
 /- English proof (translation)
-The claim follows from `VectorFourier.fourierIntegral_continuous Real.continuous_fourierChar (innerSL ℝ).continuous₂ hf`.
+A detailed English derivation is pending.
 -/
 theorem continuous_fourier {f : ℝ → ℂ} (hf : Integrable f) : Continuous (𝓕 f) :=
   VectorFourier.fourierIntegral_continuous Real.continuous_fourierChar (innerSL ℝ).continuous₂ hf
 
 /- English proof (translation)
-Use `ae_eq_of_integral_contDiff_smul_eq (continuous_fourier hf).locallyIntegrable ((Lp.memLp _).locallyIntegrable (by norm_num)) ?_` and prove the remaining obligations. Introduce `g hg hc`. Establish `hc' : HasCompactSupport (fun x => (g x : ℂ))` using `hc.comp_left (g := fun r : ℝ => (r : ℂ)) rfl`. Establish `hg'` using `Complex.ofRealCLM.contDiff.comp hg`. Use `set φ : 𝓢(ℝ, ℂ) := hc'.toSchwartzMap hg' with hφ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφx : ∀ x, φ x = (g x : ℂ)` using `fun x => rfl`. Establish `h1` using `congrArg (fun D => D φ) (Lp.fourier_toTemperedDistribution_eq (h2.toLp f))`. Simplify using `only [TemperedDistribution.fourier_apply, Lp.toTemperedDistribution_apply] at h1`. Establish `h3 : ∫ x, (𝓕 φ) x • f x = ∫ x, φ x • 𝓕 f x`. Simplify using `using! VectorFourier.integral_fourierIntegral_smul_eq_flip (L := innerₗ ℝ) Real.continuous_fourierChar continuous_inner φ.integrable hf`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h4 : ∫ x, (𝓕 φ) x • (h2.toLp f) x = ∫ x, (𝓕 φ) x • f x`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h2.coeFn_toLp] with x hx`. Rewrite using `[hx]`. Rewrite `h1` using `[h4, h3]`.
-
-Simplify `h1` using `[hφx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fourier_ae_eq {f : ℝ → ℂ} (hf : Integrable f) (h2 : MemLp f 2) :
     𝓕 f =ᵐ[volume] (𝓕 (h2.toLp f) : Lp ℂ 2 (volume : Measure ℝ)) := by
@@ -41,9 +39,9 @@ theorem fourier_ae_eq {f : ℝ → ℂ} (hf : Integrable f) (h2 : MemLp f 2) :
   simpa [hφx] using h1
 
 /- English proof (translation)
-Use `L2.inner_def (𝕜 := ℂ) F F` as an intermediate fact. Rewrite `this` using `[inner_self_eq_norm_sq_to_K]`. Simplify using `only [inner_self_eq_norm_sq_to_K] at this`. Establish `h : ((∫ x, ‖F x‖ ^ 2 : ℝ) : ℂ) = ((‖F‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[← integral_complex_ofReal]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Conclude with `this.symm`. Conclude with `h` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem integral_norm_sq_Lp (F : Lp ℂ 2 (volume : Measure ℝ)) : ∫ x, ‖F x‖ ^ 2 = ‖F‖ ^ 2 := by
   have := L2.inner_def (𝕜 := ℂ) F F
@@ -56,11 +54,9 @@ theorem integral_norm_sq_Lp (F : Lp ℂ 2 (volume : Measure ℝ)) : ∫ x, ‖F 
   exact_mod_cast h
 
 /- English proof (translation)
-Establish `h` using `fourier_ae_eq hf h2`. Prove the components needed by the constructor for the conclusion. Establish `h3 : MemLp (𝓕 f) 2 volume` using `(memLp_congr_ae h).2 (Lp.memLp (𝓕 (h2.toLp f) : Lp ℂ 2 (volume : Measure ℝ)))`. Conclude with `(memLp_two_iff_integrable_sq_norm h3.aestronglyMeasurable).1 h3`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h] with x hx`. Rewrite using `[hx]`. Use `_ = ∫ x, ‖(h2.toLp f) x‖ ^ 2 := by`. Rewrite using `[integral_norm_sq_Lp, integral_norm_sq_Lp, Lp.norm_fourier_eq]`.
-
-Use `_ = _ := by`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h2.coeFn_toLp] with x hx`. Rewrite using `[hx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plancherel {f : ℝ → ℂ} (hf : Integrable f) (h2 : MemLp f 2) :
     Integrable (fun x => ‖𝓕 f x‖ ^ 2) ∧ ∫ x, ‖𝓕 f x‖ ^ 2 = ∫ x, ‖f x‖ ^ 2 := by
@@ -81,11 +77,11 @@ theorem plancherel {f : ℝ → ℂ} (hf : Integrable f) (h2 : MemLp f 2) :
           rw [hx]
 
 /- English proof (translation)
-Rewrite using `[Real.fourier_real_eq_integral_exp_smul]`. Establish `: ∀ v : ℝ, cexp (↑(-2 * π * v * w) * I) • (Set.Ico (l - δ) l).indicator (fun _ => c) v = (Set.Ico (l - δ) l).indicator (fun v : ℝ => cexp (↑(-2 * π * v * w) * I) * c) v`. Introduce `v`. Apply the tactic sequence `by_cases hv : v ∈ Set.Ico (l - δ) l <;> simp [hv]`. Repeatedly rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[integral_indicator measurableSet_Ico, integral_Ico_eq_integral_Ioc, ← intervalIntegral.integral_of_le (by linarith)]`. Establish `h2` using `intervalIntegral.integral_comp_sub_left (a := 0) (b := δ) (fun v : ℝ => cexp (↑(-2 * π * v * w) * I) * c) l`. Rewrite `h2` using `[sub_zero]`. Rewrite using `[← h2, ← intervalIntegral.integral_const_mul]`. Use `intervalIntegral.integral_congr fun u _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm _ c, mul_assoc c, ← Complex.exp_add]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fourier_indicator (l δ : ℝ) (hδ : 0 ≤ δ) (c : ℂ) (w : ℝ) :
     𝓕 ((Set.Ico (l - δ) l).indicator (fun _ => c)) w =
@@ -109,11 +105,11 @@ theorem fourier_indicator (l δ : ℝ) (hδ : 0 ≤ δ) (c : ℂ) (w : ℝ) :
   ring
 
 /- English proof (translation)
-Use `le_trans ?_ (Complex.re_le_norm _)` and prove the remaining obligations. Establish `hc : Continuous fun u : ℝ => cexp ((s * u : ℝ) * I)` using `by fun_prop`. Use `intervalIntegral.intervalIntegral_re (𝕜 := ℂ) (hc.intervalIntegrable (μ := volume) 0 δ)` as an intermediate fact. Simplify using `only [RCLike.re_to_complex] at this`. Rewrite using `[← this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `intervalIntegral.integral_mono_on hδ (by simp) ((Complex.continuous_re.comp hc).intervalIntegrable _ _) fun u hu => ?_` and prove the remaining obligations. Rewrite using `[exp_ofReal_mul_I_re]`. Establish `h1 : |s * u| ≤ 1`. Rewrite using `[abs_mul, abs_of_nonneg hu.1]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_trans (mul_le_mul_of_nonneg_left hu.2 (abs_nonneg _)) hs`. Establish `h2` using `Real.one_sub_sq_div_two_le_cos (x := s * u)`. Establish `h3 : (s * u) ^ 2 ≤ 1` using `by rw [← sq_abs]; nlinarith [abs_nonneg (s * u)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem kernel_lower (δ s : ℝ) (hδ : 0 ≤ δ) (hs : |s| * δ ≤ 1) :
     δ / 2 ≤ ‖∫ u in (0 : ℝ)..δ, cexp ((s * u : ℝ) * I)‖ := by
@@ -135,25 +131,23 @@ theorem kernel_lower (δ s : ℝ) (hδ : 0 ≤ δ) (hs : |s| * δ ≤ 1) :
       linarith
 
 /- English proof (translation)
-Use `set f : ℝ → ℂ := fun v => ∑ n ∈ S, (Set.Ico (l n - 1 / T) (l n)).indicator (fun _ => a n) v with hf`. Establish `hmem : ∀ (p : ENNReal) (n : ℕ), MemLp ((Set.Ico (l n - 1 / T) (l n)).indicator (fun _ => a n)) p volume` using `fun p n => memLp_indicator_const p measurableSet_Ico _ (Or.inr (by simp))`. Establish `hint : ∀ n, Integrable ((Set.Ico (l n - 1 / T) (l n)).indicator (fun _ => a n)) volume` using `fun n => memLp_one_iff_integrable.1 (hmem 1 n)`. Establish `hf1 : Integrable f` using `integrable_finsetSum _ fun n _ => hint n`. Establish `hf2 : MemLp f 2` using `memLp_finsetSum _ fun n _ => hmem 2 n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hI, hP⟩` from `plancherel hf1 hf2`. Establish `hδ : 0 ≤ 1 / T` using `by positivity`. Establish `hF : ∀ w : ℝ, 𝓕 f w = (∑ n ∈ S, a n * cexp (-(2 * π * w * l n : ℝ) * I)) * ∫ u in (0 : ℝ)..(1 / T), cexp ((2 * π * w * u : ℝ) * I)`. Introduce `w`. Rewrite using `[Finset.sum_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[← fourier_indicator _ _ hδ]`. Repeatedly rewrite using `[Real.fourier_real_eq, hf, Finset.smul_sum]`. Use `integral_finsetSum _ fun n _ => ?_` and prove the remaining obligations. Simplify `(Real.fourierIntegral_convergent_iff w).2 (hint n)` using `[mul_comm]`. Establish `hpi : (0 : ℝ) < 2 * π` using `by positivity`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D : ℝ → ℝ := fun t => ‖∑ n ∈ S, a n * cexp (-(t * l n : ℝ) * I)‖ ^ 2 with hD`. Establish `hDc : Continuous D` using `by fun_prop`. Establish `h1 : ∫ t in (-T)..T, D t = (2 * π) * ∫ w in (-T / (2 * π))..(T / (2 * π)), D (2 * π * w)`. Use `intervalIntegral.mul_integral_comp_mul_left (f := D) (a := -T / (2 * π)) (b := T / (2 * π)) (2 * π)` as an intermediate fact. Rewrite using `[this, mul_div_cancel₀ _ hpi.ne', mul_div_cancel₀ _ hpi.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : -T / (2 * π) ≤ T / (2 * π)` using `by gcongr; linarith`. Establish `h2 : ∫ w in (-T / (2 * π))..(T / (2 * π)), D (2 * π * w) ≤ ∫ w in (-T / (2 * π))..(T / (2 * π)), 4 * T ^ 2 * ‖𝓕 f w‖ ^ 2`. Use `intervalIntegral.integral_mono_on hle ((hDc.comp (by fun_prop : Continuous fun w : ℝ => 2 * π * w)).intervalIntegrable _ _) ((hI.const_mul _).intervalIntegrable) fun w hw => ?_` and prove the remaining obligations. Establish `hw' : |2 * π * w| ≤ T`. Rewrite using `[abs_le]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Use `(div_le_iff₀ hpi).1 hw.1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `(le_div_iff₀ hpi).1 hw.2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk` using `kernel_lower (1 / T) (2 * π * w) hδ (by rw [mul_one_div, div_le_one hT]; exact hw')`. Rewrite using `[hF, norm_mul, mul_pow]`. Use `set k := ‖∫ u in (0 : ℝ)..(1 / T), cexp ((2 * π * w * u : ℝ) * I)‖`. Establish `hk1 : 1 ≤ 2 * T * k`. Establish `: 2 * T * (1 / T / 2) = 1` using `by field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Use `gcongr`. Establish `hk2 : 1 ≤ 4 * T ^ 2 * k ^ 2` using `by nlinarith`. Establish `hD0 : 0 ≤ D (2 * π * w)` using `by positivity`. Express the relevant statement in the definitionally equal form `D (2 * π * w) ≤ 4 * T ^ 2 * (D (2 * π * w) * k ^ 2)`.
+Express the relevant assertion in an equivalent form by its definition. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : ∫ w in (-T / (2 * π))..(T / (2 * π)), 4 * T ^ 2 * ‖𝓕 f w‖ ^ 2 ≤ 4 * T ^ 2 * ∫ v, ‖f v‖ ^ 2`. Rewrite using `[intervalIntegral.integral_const_mul, ← hP, intervalIntegral.integral_of_le hle]`. Conclude with `mul_le_mul_of_nonneg_left (setIntegral_le_integral hI (Filter.Eventually.of_forall fun w => by positivity)) (by positivity)`. Rewrite using `[h1]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exp_sum (S : Finset ℕ) (a : ℕ → ℂ) (l : ℕ → ℝ) (T : ℝ) (hT : 0 < T) :
     (∫ t in (-T)..T, ‖∑ n ∈ S, a n * cexp (-(t * l n : ℝ) * I)‖ ^ 2) ≤
@@ -220,17 +214,15 @@ theorem exp_sum (S : Finset ℕ) (a : ℕ → ℂ) (l : ℕ → ℝ) (T : ℝ) (
     _ = _ := by ring
 
 /- English proof (translation)
-Use `⟨8 * π, by positivity, fun N a T hT => ?_⟩` and prove the remaining obligations. Establish `h` using `exp_sum (Finset.Icc 1 N) a (fun n => Real.log n) T (by linarith)`. Use `h using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Establish `hn0 : (n : ℂ) ≠ 0`. Use `(Finset.mem_Icc.1 hn).1` as an intermediate fact. Conclude with `(by omega : n ≠ 0)` after adjusting the coercions. Rewrite using `[cpow_def_of_ne_zero hn0, ← Complex.natCast_log]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Real.range_exp, ← Set.image_univ, integral_image_eq_integral_abs_deriv_smul MeasurableSet.univ (fun x _ => (Real.hasDerivAt_exp x).hasDerivWithinAt) Real.exp_injective.injOn, Measure.restrict_univ]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_eq_mul]`. Rewrite using `[abs_of_pos (Real.exp_pos v), mul_div_cancel₀ _ (Real.exp_pos v).ne', Finset.sum_filter]`. Use `congr 2`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Establish `hn0 : (0 : ℝ) < n`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Finset.mem_Icc.1 hn).1` as an intermediate fact. Conclude with `(by omega : 0 < n)` after adjusting the coercions. Rewrite using `[Set.indicator_apply, ← Real.exp_add]`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Rewrite using `[Set.mem_Ico, ← Real.lt_log_iff_exp_lt hn0, ← Real.log_le_iff_le_exp hn0]`.
-
-Apply the tactic sequence `constructor <;> rintro ⟨h1, h2⟩ <;> constructor <;> linarith`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem gallagher : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) (a : ℕ → ℂ) (T : ℝ), 1 ≤ T →
     (∫ t in (-T)..T, ‖∑ n ∈ Finset.Icc 1 N, a n * (n : ℂ) ^ (-(t * I))‖ ^ 2) ≤

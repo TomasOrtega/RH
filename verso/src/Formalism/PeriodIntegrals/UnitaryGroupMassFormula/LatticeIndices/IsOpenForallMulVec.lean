@@ -12,7 +12,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n : ℕ} (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Use `fdFE (F := F) (E := E)` as an intermediate fact. Use `MassDataIdxSteps.tens_topRing (F := F) (E := E) v` as an intermediate fact. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `A0 hA0`. Conclude with `hΛ.eventually_forall_of_forall_eventually fun y hy => (continuous_fst.matrix_mulVec continuous_snd).continuousAt.preimage_mem_nhds (hU.mem_nhds (hA0 y hy))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isOpen_forall_mulVec {Λ U : Set (Fin n → Fv F v ⊗[F] E)} (hΛ : IsCompact Λ) (hU : IsOpen U) :
     IsOpen {A : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) | ∀ y ∈ Λ, A *ᵥ y ∈ U} := by
@@ -24,17 +24,17 @@ theorem isOpen_forall_mulVec {Λ U : Set (Fin n → Fv F v ⊗[F] E)} (hΛ : IsC
     (continuous_fst.matrix_mulVec continuous_snd).continuousAt.preimage_mem_nhds (hU.mem_nhds (hA0 y hy))
 
 /- English proof (translation)
-Use `fdFE (F := F) (E := E)` as an intermediate fact. Use `MassDataIdxSteps.tens_topRing (F := F) (E := E) v` as an intermediate fact. Use `set Λ : Set (Fin n → Fv F v ⊗[F] E) := (latLoc (E := E) v (L : Set (Fin n → E)) : Set (Fin n → Fv F v ⊗[F] E)) with hΛ`. Take `⟨m, b, hbΛ, hsp, -⟩` from `latImage v L hL hfg`. Take `⟨hΛo, hΛc⟩` from `latOpenCompact v L hL hfg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hΛcl : IsClosed Λ` using `AddSubgroup.isClosed_of_isOpen (latLoc (E := E) v (L : Set (Fin n → E))).toAddSubgroup hΛo`. Establish `hclosed : IsClosed {A : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) | ∀ y ∈ Λ, A *ᵥ y ∈ Λ}`. Establish `: {A : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) | ∀ y ∈ Λ, A *ᵥ y ∈ Λ} = ⋂ y ∈ Λ, (fun A : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) => A *ᵥ y) ⁻¹' Λ`. Use extensionality with `A`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `isClosed_biInter fun y _ => hΛcl.preimage (continuous_id.matrix_mulVec continuous_const)`. Set `Ψ : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) →ₗ[Fv F v] (Fin m → Fin n → Fv F v ⊗[F] E)` to `{ toFun := fun A i => A *ᵥ b i map_add' := fun A B => by funext i; exact Matrix.add_mulVec A B (b i) map_smul' := fun r A => by`. Use function extensionality and compare the values at `i j`. Simplify using `[Matrix.mulVec, dotProduct, Finset.smul_sum, smul_mul_assoc] }`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : LinearMap.ker Ψ = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `A hA`. Set `Al : (Fin n → Fv F v ⊗[F] E) →ₗ[Fv F v] (Fin n → Fv F v ⊗[F] E)` to `{ toFun := fun x => A *ᵥ x map_add' := Matrix.mulVec_add A map_smul' := fun r x => Matrix.mulVec_smul A r x }`. Establish `hAl : Al = 0` using `LinearMap.ext_on_range hsp (fun i => congrFun hA i)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Use `congrFun (LinearMap.congr_fun hAl (Pi.single j 1)) i` as an intermediate fact. Simplify `this` using `[Al, Matrix.mulVec_single_one]`. Take `⟨Ψ', hΨ'⟩` from `LinearMap.exists_leftInverse_of_injective Ψ hinj`. Establish `hc : Continuous Ψ'` using `IsModuleTopology.continuous_of_linearMap Ψ'`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub : {A : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) | ∀ y ∈ Λ, A *ᵥ y ∈ Λ} ⊆ Ψ' '' Set.pi Set.univ (fun _ => Λ)`. Introduce `A hA`. Conclude with `⟨Ψ A, fun i _ => hA _ (hbΛ i), by rw [← LinearMap.comp_apply, hΨ', LinearMap.id_apply]⟩`. Conclude with `((isCompact_univ_pi fun _ => hΛc).image hc).of_isClosed_subset hclosed hsub`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCompact_stab (L : Submodule (𝓞 E) (Fin n → E))
     (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤) (hfg : L.FG) :
@@ -79,15 +79,13 @@ theorem isCompact_stab (L : Submodule (𝓞 E) (Fin n → E))
   exact ((isCompact_univ_pi fun _ => hΛc).image hc).of_isClosed_subset hclosed hsub
 
 /- English proof (translation)
-Use `fdFE (F := F) (E := E)` as an intermediate fact. Use `MassDataIdxSteps.tens_topRing (F := F) (E := E) v` as an intermediate fact. Use `t2Space_scalarTensorExt (F := F) (E := E) v` as an intermediate fact. Use `set Λ : Set (Fin n → Fv F v ⊗[F] E) := (latLoc (E := E) v (L : Set (Fin n → E)) : Set (Fin n → Fv F v ⊗[F] E)) with hΛ`. Use `set S := {A : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) | ∀ y ∈ Λ, A *ᵥ y ∈ Λ} with hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hΛo, hΛc⟩` from `latOpenCompact v L hL hfg`. Establish `hSo : IsOpen S` using `isOpen_forall_mulVec v hΛc hΛo`. Establish `hSc : IsCompact S` using `isCompact_stab v L hL hfg`. Establish `heq : (Kloc (E` using `E) v (L : Set (Fin n → E)) : Set (GL (Fin n) (Fv F v ⊗[F] E))) = Units.embedProduct _ ⁻¹' (S ×ˢ (MulOpposite.unop ⁻¹' S)) := by`. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (∀ x, x ∈ Λ ↔ (g : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) *ᵥ x ∈ Λ) ↔ ((g : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) ∈ S ∧ ((g⁻¹ : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) ∈ S)`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `⟨fun y hy => (hg y).1 hy, fun y hy => ?_⟩` and prove the remaining obligations. Use `(hg (((g⁻¹ : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) _) *ᵥ y)).2` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `this hy`. Introduce and unpack `⟨h1, h2⟩ x`. Use `⟨h1 x, fun hx => ?_⟩` and prove the remaining obligations. Use `h2 _ hx` as an intermediate fact.
-
-Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis. Rewrite using `[heq]`. Use `⟨(hSo.prod (hSo.preimage MulOpposite.continuous_unop)).preimage Units.isEmbedding_embedProduct.continuous, ?_⟩` and prove the remaining obligations. Conclude with `Units.isClosedEmbedding_embedProduct.isCompact_preimage (hSc.prod ((MulOpposite.opHomeomorph.symm.isCompact_preimage).2 hSc))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kloc_open_compact (L : Submodule (𝓞 E) (Fin n → E))
     (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤) (hfg : L.FG) :
@@ -135,9 +133,9 @@ def sigL (σ : E →ₐ[F] E) : (Fv F v ⊗[F] E) →ₗ[Fv F v] (Fv F v ⊗[F] 
     rfl
 
 /- English proof (translation)
-Use `fdFE (F := F) (E := E)` as an intermediate fact. Use `MassDataIdxSteps.tens_topRing (F := F) (E := E) v` as an intermediate fact. Use `t2Space_scalarTensorExt (F := F) (E := E) v` as an intermediate fact. Establish `hσ : Continuous (sigR (F` using `F) (Fv F v) σ) := IsModuleTopology.continuous_of_linearMap (sigL v σ)`. Establish `hval : Continuous (fun g : GL (Fin n) (Fv F v ⊗[F] E) => (g : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)))` using `Units.continuous_val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isClosed_eq (((hval.matrix_map hσ).matrix_transpose.matrix_mul continuous_const).matrix_mul hval) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_HR (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) :
     IsClosed ((HR (Fv F v) σ J : Subgroup (GL (Fin n) (Fv F v ⊗[F] E))) : Set (GL (Fin n) (Fv F v ⊗[F] E))) := by

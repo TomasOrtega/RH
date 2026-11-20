@@ -8,23 +8,19 @@ noncomputable section
 namespace GlobalTheory.OrbFinAf
 
 /- English proof (translation)
-Use `letI tA : TopologicalSpace (Qv v ⊗[ℚ] G.C) := moduleTopology (Qv v) (Qv v ⊗[ℚ] G.C)`. Introduce `K hK`. Use `haveI : IsModuleTopology (Qv v) (Qv v ⊗[ℚ] G.C) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Qv v ⊗[ℚ] G.C) := IsModuleTopology.isTopologicalRing (Qv v) _`. Use `haveI : T2Space (Qv v ⊗[ℚ] G.C) := T2Space.of_injective_continuous (basV G v).equivFun.injective (IsModuleTopology.continuous_of_linearMap (basV G v).equivFun.toLinearMap)`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hst1 : ∀ r : Qv v, (starT G.star (Qv v) (algebraMap (Qv v) (Qv v ⊗[ℚ] G.C) r)).unop = algebraMap (Qv v) (Qv v ⊗[ℚ] G.C) r`. Introduce `r`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, starT_tmul, map_one, MulOpposite.unop_one]`. Set `sL : (Qv v ⊗[ℚ] G.C) →ₗ[Qv v] (Qv v ⊗[ℚ] G.C)` to `{ toFun := fun y => (starT G.star (Qv v) y).unop map_add' := fun x y => by simp map_smul' := fun r y => by`. Simplify using `only [RingHom.id_apply, Algebra.smul_def, map_mul, MulOpposite.unop_mul]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hst1]`. Conclude with `(Algebra.commutes r _).symm }`. Establish `hsc : Continuous sL` using `IsModuleTopology.continuous_of_linearMap sL`. Take `⟨f, hf⟩` from `Module.exists_dual_forall_apply_eq_one (K := Qv v) (s := ({()} : Set Unit)) (v := fun _ : Unit => (1 : Qv v ⊗[ℚ] G.C)) (by`. Rewrite using `[linearIndepOn_singleton_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `one_ne_zero)`. Establish `hf1 : f 1 = 1` using `hf () rfl`. Establish `hfc : Continuous f` using `IsModuleTopology.continuous_of_linearMap f`. Establish `key : ∀ d : Gv G v, f (((d : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 : Qv v ⊗[ℚ] G.C) * sL ((d : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 : Qv v ⊗[ℚ] G.C)) = (((d : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).2 : (Qv v)ˣ) : Qv v)`. Introduce `d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (((d : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) * (starT G.star (Qv v) ((d : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 : Qv v ⊗[ℚ] G.C)).unop = algebraMap (Qv v) (Qv v ⊗[ℚ] G.C) (((d : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).2 : (Qv v)ˣ) : Qv v)` using `d.2`. Use `show f (_ * (starT G.star (Qv v) _).unop) = _`. Rewrite using `[hd, Algebra.algebraMap_eq_smul_one, map_smul, hf1, smul_eq_mul, mul_one]`. Use `set L1 : Set (Qv v) := (fun u : (Qv v ⊗[ℚ] G.C)ˣ => f ((u : Qv v ⊗[ℚ] G.C) * sL u)) '' K with hL1`. Use `set L2 : Set (Qv v) := (fun u : (Qv v ⊗[ℚ] G.C)ˣ => f (((u⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) * sL ((u⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C))) '' K with hL2`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hL1c : IsCompact L1` using `hK.image (hfc.comp (Units.continuous_val.mul (hsc.comp Units.continuous_val)))`. Establish `hL2c : IsCompact L2` using `hK.image (hfc.comp (Units.continuous_coe_inv.mul (hsc.comp Units.continuous_coe_inv)))`. Use `set T : Set (Qv v)ˣ := Units.embedProduct (Qv v) ⁻¹' (L1 ×ˢ (MulOpposite.op '' L2)) with hT`. Establish `hTc : IsCompact T` using `Units.isClosedEmbedding_embedProduct.isCompact_preimage (hL1c.prod (hL2c.image MulOpposite.continuous_op))`. Use `set Z : Set ((Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ) := {x | ((x.1 : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) * sL ((x.1 : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) = algebraMap (Qv v) (Qv v ⊗[ℚ] G.C) ((x.2 : (Qv v)ˣ) : Qv v)} with hZ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hZc : IsClosed Z` using `isClosed_eq ((Units.continuous_val.comp continuous_fst).mul (hsc.comp (Units.continuous_val.comp continuous_fst))) ((continuous_algebraMap (Qv v) (Qv v ⊗[ℚ] G.C)).comp (Units.continuous_val.comp continuous_snd))`. Establish `himg : Subtype.val '' {d : Gv G v | (d : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 ∈ K} = (K ×ˢ T) ∩ Z`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, hdK, rfl⟩`.
-
-Establish `k2` using `key d⁻¹`. Simplify using `only [Subgroup.coe_inv, Prod.fst_inv, Prod.snd_inv] at k2`. Use `⟨⟨hdK, ?_⟩, d.2⟩` and prove the remaining obligations. Use `show Units.embedProduct (Qv v) _ ∈ L1 ×ˢ (MulOpposite.op '' L2)`. Rewrite using `[Units.embedProduct_apply]`.
-
-Conclude with `⟨⟨_, hdK, key d⟩, ⟨_, ⟨_, hdK, k2⟩, rfl⟩⟩`. Introduce and unpack `⟨⟨hK1, -⟩, hZ1⟩`. Conclude with `⟨⟨x, hZ1⟩, hK1, rfl⟩`. Conclude with `Subtype.isCompact_iff.2 (himg ▸ (hK.prod hTc).inter_right hZc)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCompact_setOf_fst_mem (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : AwayP p) :
     letI : TopologicalSpace (Qv v ⊗[ℚ] G.C) := moduleTopology (Qv v) (Qv v ⊗[ℚ] G.C);

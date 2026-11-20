@@ -11,28 +11,28 @@ variable {σ : Type*}
 def wt (α : σ →₀ ℕ) : ℂ := α.prod (fun _ k => (k.factorial : ℂ))
 
 /- English proof (translation)
-Simplify using `[wt, Finsupp.prod]`.
+Simplify using the standard rewrite rules.
 -/
 lemma wt_eq_nat (α : σ →₀ ℕ) : wt α = ((α.prod fun _ k => k.factorial : ℕ) : ℂ) := by
   simp [wt, Finsupp.prod]
 
 /- English proof (translation)
-Unfold `Finsupp.prod`. Conclude with `Finset.prod_pos fun i _ => Nat.factorial_pos _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma wt_pos_nat (α : σ →₀ ℕ) : 0 < (α.prod fun _ k => k.factorial : ℕ) := by
   unfold Finsupp.prod
   exact Finset.prod_pos fun i _ => Nat.factorial_pos _
 
 /- English proof (translation)
-Rewrite using `[wt_eq_nat, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma conj_wt (α : σ →₀ ℕ) : (starRingEnd ℂ) (wt α) = wt α := by
   rw [wt_eq_nat, map_natCast]
 
 /- English proof (translation)
-Unfold `FockH1Action.fockInner`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single α]`. Rewrite using `[if_pos rfl, wt]`. Introduce `β _ hβ`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (Ne.symm hβ), mul_zero]`. Introduce `hα`. Rewrite `hα` using `[MvPolynomial.mem_support_iff, not_not]`. Simplify using `only [hα, mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem fockInner_eq_sum_support_left (P Q : MvPolynomial σ ℂ) :
     FockH1Action.fockInner P Q = ∑ α ∈ P.support, (starRingEnd ℂ) (coeff α P) * coeff α Q * wt α := by
@@ -47,11 +47,11 @@ private theorem fockInner_eq_sum_support_left (P Q : MvPolynomial σ ℂ) :
     simp only [hα, mul_zero, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[fockInner_eq_sum_support_left]`. Establish `h1 : ∑ α ∈ P.support, (starRingEnd ℂ) (coeff α P) * coeff α Q * wt α = ∑ α ∈ P.support ∪ S, (starRingEnd ℂ) (coeff α P) * coeff α Q * wt α`. Apply `Finset.sum_subset (fun x hx => Finset.mem_union_left _ hx)` to reduce the goal to its premises. Introduce `α _ hα`. Rewrite `hα` using `[MvPolynomial.mem_support_iff, not_not]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hα, map_zero, zero_mul, zero_mul]`. Establish `h2 : ∑ α ∈ S, (starRingEnd ℂ) (coeff α P) * coeff α Q * wt α = ∑ α ∈ P.support ∪ S, (starRingEnd ℂ) (coeff α P) * coeff α Q * wt α`. Apply `Finset.sum_subset (fun x hx => Finset.mem_union_right _ hx)` to reduce the goal to its premises. Introduce `α _ hα`. Distinguish the cases in `hP : coeff α P = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hP, map_zero, zero_mul, zero_mul]`. Distinguish the cases in `hQ : coeff α Q = 0`. Rewrite using `[hQ, mul_zero, zero_mul]`. Conclude with `absurd (hS α hP hQ) hα`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fockInner_eq_sum (P Q : MvPolynomial σ ℂ) (S : Finset (σ →₀ ℕ))
     (hS : ∀ α, coeff α P ≠ 0 → coeff α Q ≠ 0 → α ∈ S) :
@@ -76,7 +76,7 @@ lemma fockInner_eq_sum (P Q : MvPolynomial σ ℂ) (S : Finset (σ →₀ ℕ))
   rw [h1, h2]
 
 /- English proof (translation)
-The claim follows from `fockInner_eq_sum P Q S (fun _ hP _ => hS (MvPolynomial.mem_support_iff.mpr hP))`.
+A detailed English derivation is pending.
 -/
 lemma fockInner_eq_sum_left (P Q : MvPolynomial σ ℂ) (S : Finset (σ →₀ ℕ))
     (hS : P.support ⊆ S) :
@@ -84,7 +84,7 @@ lemma fockInner_eq_sum_left (P Q : MvPolynomial σ ℂ) (S : Finset (σ →₀ �
   fockInner_eq_sum P Q S (fun _ hP _ => hS (MvPolynomial.mem_support_iff.mpr hP))
 
 /- English proof (translation)
-The claim follows from `fockInner_eq_sum P Q S (fun _ _ hQ => hS (MvPolynomial.mem_support_iff.mpr hQ))`.
+A detailed English derivation is pending.
 -/
 lemma fockInner_eq_sum_right (P Q : MvPolynomial σ ℂ) (S : Finset (σ →₀ ℕ))
     (hS : Q.support ⊆ S) :
@@ -92,7 +92,7 @@ lemma fockInner_eq_sum_right (P Q : MvPolynomial σ ℂ) (S : Finset (σ →₀ 
   fockInner_eq_sum P Q S (fun _ _ hQ => hS (MvPolynomial.mem_support_iff.mpr hQ))
 
 /- English proof (translation)
-Rewrite using `[fockInner_eq_sum_right (P + P') Q Q.support (Finset.Subset.refl _), fockInner_eq_sum_right P Q Q.support (Finset.Subset.refl _), fockInner_eq_sum_right P' Q Q.support (Finset.Subset.refl _), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Rewrite using `[coeff_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma fockInner_add_left (P P' Q : MvPolynomial σ ℂ) :
     FockH1Action.fockInner (P + P') Q = FockH1Action.fockInner P Q + FockH1Action.fockInner P' Q := by
@@ -105,7 +105,7 @@ lemma fockInner_add_left (P P' Q : MvPolynomial σ ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[fockInner_eq_sum_support_left, fockInner_eq_sum_support_left P Q, fockInner_eq_sum_support_left P Q', ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Rewrite using `[coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma fockInner_add_right (P Q Q' : MvPolynomial σ ℂ) :
     FockH1Action.fockInner P (Q + Q') = FockH1Action.fockInner P Q + FockH1Action.fockInner P Q' := by
@@ -116,7 +116,7 @@ lemma fockInner_add_right (P Q Q' : MvPolynomial σ ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[fockInner_eq_sum_right (c • P) Q Q.support (Finset.Subset.refl _), fockInner_eq_sum_right P Q Q.support (Finset.Subset.refl _), Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Simplify using `only [coeff_smul, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma fockInner_smul_left (c : ℂ) (P Q : MvPolynomial σ ℂ) :
     FockH1Action.fockInner (c • P) Q = (starRingEnd ℂ) c * FockH1Action.fockInner P Q := by
@@ -127,7 +127,7 @@ lemma fockInner_smul_left (c : ℂ) (P Q : MvPolynomial σ ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[fockInner_eq_sum_support_left, fockInner_eq_sum_support_left P Q, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Simplify using `only [coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma fockInner_smul_right (c : ℂ) (P Q : MvPolynomial σ ℂ) :
     FockH1Action.fockInner P (c • Q) = c * FockH1Action.fockInner P Q := by
@@ -137,7 +137,7 @@ lemma fockInner_smul_right (c : ℂ) (P Q : MvPolynomial σ ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[fockInner_eq_sum_support_left, fockInner_eq_sum_support_left P Q, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Rewrite using `[coeff_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma fockInner_neg_right (P Q : MvPolynomial σ ℂ) :
     FockH1Action.fockInner P (-Q) = - FockH1Action.fockInner P Q := by
@@ -147,7 +147,7 @@ lemma fockInner_neg_right (P Q : MvPolynomial σ ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[fockInner_eq_sum_right (-P) Q Q.support (Finset.Subset.refl _), fockInner_eq_sum_right P Q Q.support (Finset.Subset.refl _), ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Rewrite using `[coeff_neg, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma fockInner_neg_left (P Q : MvPolynomial σ ℂ) :
     FockH1Action.fockInner (-P) Q = - FockH1Action.fockInner P Q := by
@@ -159,19 +159,19 @@ lemma fockInner_neg_left (P Q : MvPolynomial σ ℂ) :
   ring
 
 /- English proof (translation)
-Simplify using `[fockInner_eq_sum_support_left]`.
+Simplify using the standard rewrite rules.
 -/
 lemma fockInner_zero_left (Q : MvPolynomial σ ℂ) : FockH1Action.fockInner 0 Q = 0 := by
   simp [fockInner_eq_sum_support_left]
 
 /- English proof (translation)
-Simplify using `[fockInner_eq_sum_support_left]`.
+Simplify using the standard rewrite rules.
 -/
 lemma fockInner_zero_right (P : MvPolynomial σ ℂ) : FockH1Action.fockInner P 0 = 0 := by
   simp [fockInner_eq_sum_support_left]
 
 /- English proof (translation)
-Rewrite using `[fockInner_eq_sum_right Q P P.support (Finset.Subset.refl _), fockInner_eq_sum_support_left P Q, map_sum]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, conj_wt, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma fockInner_conj (P Q : MvPolynomial σ ℂ) :
     (starRingEnd ℂ) (FockH1Action.fockInner Q P) = FockH1Action.fockInner P Q := by
@@ -182,13 +182,13 @@ lemma fockInner_conj (P Q : MvPolynomial σ ℂ) :
   ring
 
 /- English proof (translation)
-Conclude with `Complex.normSq_eq_conj_mul_self.symm`.
+A detailed English derivation is pending.
 -/
 private theorem conj_mul_self_eq_normSq (z : ℂ) : (starRingEnd ℂ) z * z = ((Complex.normSq z : ℝ) : ℂ) := by
   exact Complex.normSq_eq_conj_mul_self.symm
 
 /- English proof (translation)
-Rewrite using `[fockInner_eq_sum_support_left]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Rewrite using `[conj_mul_self_eq_normSq, wt_eq_nat]`. Rewrite using `[Complex.ofReal_mul, Complex.ofReal_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma fockInner_self (P : MvPolynomial σ ℂ) : FockH1Action.fockInner P P =
     ∑ α ∈ P.support, (((Complex.normSq (coeff α P)) *
@@ -199,7 +199,7 @@ lemma fockInner_self (P : MvPolynomial σ ℂ) : FockH1Action.fockInner P P =
   rw [Complex.ofReal_mul, Complex.ofReal_natCast]
 
 /- English proof (translation)
-Rewrite using `[fockInner_self, Complex.re_sum]`. Use `Finset.sum_nonneg (fun α _ => ?_)` and prove the remaining obligations. Rewrite using `[Complex.ofReal_re]`. Conclude with `mul_nonneg (Complex.normSq_nonneg _) (Nat.cast_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fockInner_self_re_nonneg (P : MvPolynomial σ ℂ) : 0 ≤ (FockH1Action.fockInner P P).re := by
   rw [fockInner_self, Complex.re_sum]
@@ -208,11 +208,9 @@ lemma fockInner_self_re_nonneg (P : MvPolynomial σ ℂ) : 0 ≤ (FockH1Action.f
   exact mul_nonneg (Complex.normSq_nonneg _) (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Establish `hre : ∑ α ∈ P.support, Complex.normSq (coeff α P) * ((α.prod fun _ k => k.factorial : ℕ) : ℝ) = 0`. Establish `h'` using `congrArg Complex.re h`. Rewrite `h'` using `[fockInner_self, Complex.re_sum]`. Simplify `h'` using `only [Complex.ofReal_re, Complex.zero_re]`. Establish `hterm` using `(Finset.sum_eq_zero_iff_of_nonneg (fun α _ => mul_nonneg (Complex.normSq_nonneg (coeff α P)) (Nat.cast_nonneg _))).mp hre`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hP`. Take `⟨α, hα⟩` from `Finset.nonempty_iff_ne_empty.mpr (mt MvPolynomial.support_eq_empty.mp hP)`. Break down `mul_eq_zero.mp (hterm α hα) with h1 | h1` into its components or cases. Rewrite `h1` using `[Complex.normSq_eq_zero]`. Conclude with `(MvPolynomial.mem_support_iff.mp hα) h1`.
-
-Conclude with `absurd h1 (Nat.cast_ne_zero.mpr (wt_pos_nat α).ne')`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fockInner_self_eq_zero {P : MvPolynomial σ ℂ} (h : FockH1Action.fockInner P P = 0) : P = 0 := by
   have hre : ∑ α ∈ P.support, Complex.normSq (coeff α P) *
@@ -230,11 +228,11 @@ lemma fockInner_self_eq_zero {P : MvPolynomial σ ℂ} (h : FockH1Action.fockInn
   · exact absurd h1 (Nat.cast_ne_zero.mpr (wt_pos_nat α).ne')
 
 /- English proof (translation)
-Establish `hw : ∀ γ : σ →₀ ℕ, wt γ = ∏ i, ((γ i).factorial : ℂ)` using `fun γ => Finsupp.prod_fintype γ _ (fun _ => by simp)`. Establish `key1 : ∏ i, (((β + Finsupp.single l 1 : σ →₀ ℕ) i).factorial : ℂ) = (((β + Finsupp.single l 1 : σ →₀ ℕ) l).factorial : ℂ) * ∏ i ∈ Finset.univ.erase l, (((β + Finsupp.single l 1 : σ →₀ ℕ) i).factorial : ℂ)`. Conclude with `(Finset.mul_prod_erase Finset.univ (fun i => (((β + Finsupp.single l 1 : σ →₀ ℕ) i).factorial : ℂ)) (Finset.mem_univ l)).symm`. Establish `key2 : ∏ i, ((β i).factorial : ℂ) = ((β l).factorial : ℂ) * ∏ i ∈ Finset.univ.erase l, ((β i).factorial : ℂ)`. Conclude with `(Finset.mul_prod_erase Finset.univ (fun i => ((β i).factorial : ℂ)) (Finset.mem_univ l)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hw, hw, key1, key2]`. Establish `hrest : ∏ i ∈ Finset.univ.erase l, (((β + Finsupp.single l 1 : σ →₀ ℕ) i).factorial : ℂ) = ∏ i ∈ Finset.univ.erase l, ((β i).factorial : ℂ)`. Use `Finset.prod_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, if_neg (Ne.symm (Finset.ne_of_mem_erase hi)), add_zero]`. Rewrite using `[hrest, Finsupp.add_apply, Finsupp.single_eq_same, Nat.factorial_succ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma wt_add_single [Fintype σ] [DecidableEq σ] (β : σ →₀ ℕ) (l : σ) :
     wt (β + Finsupp.single l 1) = ((β l + 1 : ℕ) : ℂ) * wt β := by
@@ -260,7 +258,7 @@ lemma wt_add_single [Fintype σ] [DecidableEq σ] (β : σ →₀ ℕ) (l : σ) 
   ring
 
 /- English proof (translation)
-Rewrite using `[add_comm]`. Rewrite using `[MvPolynomial.monomial_single_add, pow_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem X_mul_monomial_eq_monomial_add_single (l : σ) (a : σ →₀ ℕ) (c : ℂ) :
     X l * monomial a c = monomial (a + Finsupp.single l 1) c := by
@@ -268,7 +266,7 @@ private theorem X_mul_monomial_eq_monomial_add_single (l : σ) (a : σ →₀ �
   rw [MvPolynomial.monomial_single_add, pow_one]
 
 /- English proof (translation)
-Rewrite using `[fockInner_eq_sum_left _ _ {a} support_monomial_subset, Finset.sum_singleton]`. Simplify using `[coeff_monomial]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem fockInner_monomial_monomial_self (a : σ →₀ ℕ) (c d : ℂ) :
     FockH1Action.fockInner (monomial a c) (monomial a d) = (starRingEnd ℂ) c * d * wt a := by
@@ -277,7 +275,7 @@ private theorem fockInner_monomial_monomial_self (a : σ →₀ ℕ) (c d : ℂ)
   simp [coeff_monomial]
 
 /- English proof (translation)
-Rewrite using `[fockInner_eq_sum_left _ _ {a} support_monomial_subset, Finset.sum_singleton]`. Simplify using `[coeff_monomial, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem fockInner_monomial_monomial_of_ne (a b : σ →₀ ℕ) (c d : ℂ) (h : b ≠ a) :
     FockH1Action.fockInner (monomial a c) (monomial b d) = 0 := by
@@ -286,15 +284,15 @@ private theorem fockInner_monomial_monomial_of_ne (a b : σ →₀ ℕ) (c d : �
   simp [coeff_monomial, h]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' P (fun a c => ?_) (fun P P' hP hP' => ?_)` and prove the remaining obligations. Use `MvPolynomial.induction_on' Q (fun b d => ?_) (fun Q Q' hQ hQ' => ?_)` and prove the remaining obligations. Rewrite using `[X_mul_monomial_eq_monomial_add_single, pderiv_monomial]`. Distinguish the cases in `h : b = a + Finsupp.single l 1`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[add_tsub_cancel_right, fockInner_monomial_monomial_self, fockInner_monomial_monomial_self, wt_add_single, Finsupp.add_apply, Finsupp.single_eq_same]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[fockInner_monomial_monomial_of_ne _ _ _ _ h]`. Distinguish the cases in `hbl : b l = 0`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hbl, Nat.cast_zero, mul_zero, map_zero, fockInner_zero_right]`. Establish `hb : b - Finsupp.single l 1 + Finsupp.single l 1 = b`. Use extensionality with `i`. Distinguish the cases in `hi : i = l`. Substitute `hi` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[Ne.symm hi]`. Establish `hne : b - Finsupp.single l 1 ≠ a` using `fun he => h (hb.symm.trans (by rw [he]))`. Rewrite using `[fockInner_monomial_monomial_of_ne _ _ _ _ hne]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fockInner_add_right, map_add, fockInner_add_right, hQ, hQ']`. Rewrite using `[mul_add, fockInner_add_left, fockInner_add_left, hP, hP']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma fockInner_X_mul [Fintype σ] (l : σ) (P Q : MvPolynomial σ ℂ) :
     FockH1Action.fockInner (X l * P) Q = FockH1Action.fockInner P (pderiv l Q) := by
@@ -324,16 +322,16 @@ lemma fockInner_X_mul [Fintype σ] (l : σ) (P Q : MvPolynomial σ ℂ) :
   · rw [mul_add, fockInner_add_left, fockInner_add_left, hP, hP']
 
 /- English proof (translation)
-Rewrite using `[← fockInner_conj (pderiv l P) Q, ← fockInner_X_mul l Q P, fockInner_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma fockInner_pderiv [Fintype σ] (l : σ) (P Q : MvPolynomial σ ℂ) :
     FockH1Action.fockInner (pderiv l P) Q = FockH1Action.fockInner P (X l * Q) := by
   rw [← fockInner_conj (pderiv l P) Q, ← fockInner_X_mul l Q P, fockInner_conj]
 
 /- English proof (translation)
-Establish `hQ' : Q.IsHomogeneous n` using `(mem_homogeneousSubmodule _ _).mp hQ`. Rewrite using `[fockInner_eq_sum_right (homogeneousComponent n P) Q Q.support (Finset.Subset.refl _), fockInner_eq_sum_right P Q Q.support (Finset.Subset.refl _)]`. Use `Finset.sum_congr rfl (fun α hα => ?_)` and prove the remaining obligations. Establish `hdeg` using `hQ' (MvPolynomial.mem_support_iff.mp hα)`. Rewrite using `[coeff_homogeneousComponent]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hc`. Both sides reduce to the same expression. Conclude with `absurd (by first`. Consider the case `exact hdeg`. Consider the case `(rw [Finsupp.degree_eq_weight_one]; exact hdeg)) hc`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma fockInner_hc_left {n : ℕ} (P Q : MvPolynomial σ ℂ) (hQ : Q ∈ FockH1Action.homog σ n) :
     FockH1Action.fockInner (homogeneousComponent n P) Q = FockH1Action.fockInner P Q := by
@@ -352,9 +350,9 @@ lemma fockInner_hc_left {n : ℕ} (P Q : MvPolynomial σ ℂ) (hQ : Q ∈ FockH1
       | (rw [Finsupp.degree_eq_weight_one]; exact hdeg)) hc
 
 /- English proof (translation)
-Establish `hP' : P.IsHomogeneous n` using `(mem_homogeneousSubmodule _ _).mp hP`. Rewrite using `[fockInner_eq_sum_support_left, fockInner_eq_sum_support_left P Q]`. Use `Finset.sum_congr rfl (fun α hα => ?_)` and prove the remaining obligations. Establish `hdeg` using `hP' (MvPolynomial.mem_support_iff.mp hα)`. Rewrite using `[coeff_homogeneousComponent]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hc`. Both sides reduce to the same expression. Conclude with `absurd (by first`. Consider the case `exact hdeg`. Consider the case `(rw [Finsupp.degree_eq_weight_one]; exact hdeg)) hc`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma fockInner_hc_right {n : ℕ} (P Q : MvPolynomial σ ℂ) (hP : P ∈ FockH1Action.homog σ n) :
     FockH1Action.fockInner P (homogeneousComponent n Q) = FockH1Action.fockInner P Q := by

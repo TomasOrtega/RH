@@ -10,21 +10,21 @@ open scoped Real
 namespace LocUnifAnalyticProof
 
 /- English proof (translation)
-Simplify using `[torusMap, abs_of_nonneg hr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_torusMap_sub {D : ℕ} (c : Fin D → ℂ) {r : ℝ} (hr : 0 ≤ r) (θ : Fin D → ℝ)
     (j : Fin D) : ‖torusMap c (fun _ => r) θ j - c j‖ = r := by
   simp [torusMap, abs_of_nonneg hr]
 
 /- English proof (translation)
-Unfold `torusMap`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_torusMap' {D : ℕ} (c : Fin D → ℂ) (R : Fin D → ℝ) :
     Continuous (torusMap c R) := by
   unfold torusMap; fun_prop
 
 /- English proof (translation)
-The claim follows from `| 0, g, c, r, _, _, z, _ => by simp [Subsingleton.elim z c] | D + 1, g, c, r, hc, hd, z, hz => by have hr : 0 < r := lt_of_le_of_lt (norm_nonneg _) (hz 0) have mem : ∀ (t : ℂ) (y : Fin D → ℂ), ‖t - c 0‖ ≤ r → (∀ j, ‖y j - c (Fin.succ j)‖ ≤ r) → (Fin.cons t y : Fin (D + 1) → ℂ) ∈ …`.
+A detailed English derivation is pending.
 -/
 theorem cauchy_polydisc : ∀ (D : ℕ) (g : (Fin D → ℂ) → ℂ) (c : Fin D → ℂ) (r : ℝ),
     ContinuousOn g {w | ∀ j, ‖w j - c j‖ ≤ r} →
@@ -109,14 +109,14 @@ instance {D : ℕ} (c : Fin D → ℂ) (r : ℝ) : CompactSpace (torusSet c r) :
   isCompact_iff_compactSpace.mp (isCompact_univ_pi fun _ => isCompact_sphere _ _)
 
 /- English proof (translation)
-Introduce `j _` and use `by rw [mem_sphere, dist_eq_norm]; exact norm_torusMap_sub c hr θ j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem torusMap_mem {D : ℕ} (c : Fin D → ℂ) {r : ℝ} (hr : 0 ≤ r) (θ : Fin D → ℝ) :
     torusMap c (fun _ => r) θ ∈ torusSet c r := fun j _ => by
   rw [mem_sphere, dist_eq_norm]; exact norm_torusMap_sub c hr θ j
 
 /- English proof (translation)
-The claim follows from `κ.continuous.comp ((continuous_torusMap' c _).subtype_mk _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_torusMap_comp {D : ℕ} (c : Fin D → ℂ) {r : ℝ} (hr : 0 ≤ r)
     (κ : C(torusSet c r, ℂ)) :
@@ -148,27 +148,25 @@ theorem boxIntegral_apply {D : ℕ} (c : Fin D → ℂ) {r : ℝ} (hr : 0 ≤ r)
         κ ⟨torusMap c (fun _ => r) θ, torusMap_mem c hr θ⟩ := rfl
 
 /- English proof (translation)
-Set `ψ : Fin D → C(torusSet c r, ℂ)` to `fun j => ⟨fun w => (w : Fin D → ℂ) j, (continuous_apply j).comp continuous_subtype_val⟩`. Set `u : Fin D → (Fin D → ℂ) → C(torusSet c r, ℂ)` to `fun j z => ψ j - algebraMap ℂ C(torusSet c r, ℂ) (z j)`. Establish `hu_apply : ∀ j z (w : torusSet c r), u j z w = (w : Fin D → ℂ) j - z j`. Introduce `j z w`. Simplify using `[u, ψ]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hunit : ∀ z : Fin D → ℂ, (∀ j, ‖z j - c j‖ < r) → ∀ j, IsUnit (u j z)`. Introduce `z hz j`. Rewrite using `[ContinuousMap.isUnit_iff_forall_ne_zero]`. Introduce `w h`. Rewrite `h` using `[hu_apply, sub_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw` using `w.2 j (mem_univ _)`. Rewrite `hw` using `[mem_sphere, dist_eq_norm, h]`. Combine the linear relations using `[hz j]`. Establish `hinv_apply : ∀ z : Fin D → ℂ, (∀ j, ‖z j - c j‖ < r) → ∀ j (w : torusSet c r), Ring.inverse (u j z) w = ((w : Fin D → ℂ) j - z j)⁻¹`. Introduce `z hz j w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U, hU⟩` from `hunit z hz j`. Rewrite using `[← hu_apply, ← hU, Ring.inverse_unit]`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← ContinuousMap.mul_apply, Units.inv_mul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hcT : ∀ w ∈ torusSet c r, w ∈ {w : Fin D → ℂ | ∀ j, ‖w j - c j‖ ≤ r}`. Introduce `w hw j`. Use `hw j (mem_univ _)` as an intermediate fact. Rewrite `this` using `[mem_sphere, dist_eq_norm]`. Conclude with `this.le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `G : C(torusSet c r, ℂ)` to `⟨fun w => (∏ j, ((w : Fin D → ℂ) j - c j) * I) * g w, by`. Use `Continuous.mul (continuous_finsetProd _ fun j _ => (((continuous_apply j).comp continuous_subtype_val).sub continuous_const).mul continuous_const) ?_` and prove the remaining obligations. Conclude with `hc.comp_continuous continuous_subtype_val fun w => hcT w w.2⟩`. Establish `hc0 : ∀ j, ‖c j - c j‖ < r` using `fun j => by simpa using hr`. Establish `han : AnalyticAt ℂ (fun z => (2 * π * I)⁻¹ ^ D * boxIntegral c hr.le ((∏ j, Ring.inverse (u j z)) * G)) c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `analyticAt_const.mul (((boxIntegral c hr.le).analyticAt _).comp ?_)` and prove the remaining obligations. Use `AnalyticAt.mul ?_ analyticAt_const` and prove the remaining obligations. Use `Finset.analyticAt_fun_prod _ fun j _ => ?_` and prove the remaining obligations. Take `⟨U, hU⟩` from `hunit c hc0 j`. Establish `hlin : AnalyticAt ℂ (u j) c`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : AnalyticAt ℂ (fun z : Fin D → ℂ => algebraMap ℂ C(torusSet c r, ℂ) (z j)) c` using `((algebraMapCLM ℂ C(torusSet c r, ℂ)).comp (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin D => ℂ) j)).analyticAt c`. Conclude with `analyticAt_const.sub h2`. Conclude with `(analyticAt_inverse (𝕜 := ℂ) U).comp_of_eq hlin hU.symm`. Use `han.congr ?_` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds c hr] with z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : ∀ j, ‖z j - c j‖ < r`. Introduce `j`. Rewrite `hz` using `[mem_ball, dist_eq_norm]`. Conclude with `lt_of_le_of_lt (norm_le_pi_norm (z - c) j) hz`. Establish `key` using `cauchy_polydisc D g c r hc hd z hz'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hT : boxIntegral c hr.le ((∏ j, Ring.inverse (u j z)) * G) = ∯ w in T(c, fun _ => r), (∏ j, (w j - z j)⁻¹) * g w`. Rewrite using `[boxIntegral_apply, torusIntegral]`. Use `integral_congr_ae (Eventually.of_forall fun θ => ?_)` and prove the remaining obligations. Simplify using `only [ContinuousMap.mul_apply, ContinuousMap.prod_apply, hinv_apply z hz', smul_eq_mul]`. Simplify using `[G, torusMap]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hT, ← key, inv_pow, inv_mul_cancel_left₀ (pow_ne_zero _ two_pi_I_ne_zero)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analyticAt_of_sep {D : ℕ} (g : (Fin D → ℂ) → ℂ) (c : Fin D → ℂ) {r : ℝ} (hr : 0 < r)
     (hc : ContinuousOn g {w | ∀ j, ‖w j - c j‖ ≤ r})
@@ -237,13 +235,13 @@ theorem analyticAt_of_sep {D : ℕ} (g : (Fin D → ℂ) → ℂ) (c : Fin D →
   rw [hT, ← key, inv_pow, inv_mul_cancel_left₀ (pow_ne_zero _ two_pi_I_ne_zero)]
 
 /- English proof (translation)
-Introduce `D V f g hV hf hlim c hc`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hV c hc`. Establish `hr : 0 < ε / 2` using `half_pos hε`. Establish `hsub : {w : Fin D → ℂ | ∀ j, ‖w j - c j‖ ≤ ε / 2} ⊆ V`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hball` to reduce the goal to its premises. Rewrite using `[mem_ball]`. Combine the equalities or inequalities in the displayed calculation. Establish `hgc : ContinuousOn g V` using `hlim.continuousOn (Frequently.of_forall fun n => (hf n).continuousOn)`. Use `analyticAt_of_sep g c hr (hgc.mono hsub) fun w hw j => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hwV` using `hsub hw`. Set `s : ℂ → (Fin D → ℂ)` to `fun t => Function.update w j t`. Establish `hs : Continuous s` using `continuous_const.update j continuous_id`. Establish `hS : IsOpen (s ⁻¹' V)` using `hV.preimage hs`. Establish `hmem : w j ∈ s ⁻¹' V` using `by simpa [s] using hwV`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : DifferentiableOn ℂ (g ∘ s) (s ⁻¹' V)`. Use `(hlim.comp s (mapsTo_preimage s V) hs.continuousOn).differentiableOn ?_ hS` and prove the remaining obligations. Use `Eventually.of_forall fun n t ht => ?_` and prove the remaining obligations. Conclude with `((hf n (s t) ht).differentiableAt.comp t (hasFDerivAt_update (𝕜 := ℂ) w (i := j) t).differentiableAt).differentiableWithinAt`. Conclude with `hd.differentiableAt (hS.mem_nhds hmem)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GroundTheory.Heights₂.Heights.EffectiveHS.LocUnifAnalytic.proof :
     LocUnifAnalytic.Statement := by

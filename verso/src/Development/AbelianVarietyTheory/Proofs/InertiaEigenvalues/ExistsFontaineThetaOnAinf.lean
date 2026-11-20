@@ -19,7 +19,7 @@ open scoped Formalism.Per
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P)
 
 /- English proof (translation)
-Establish `hc : Continuous (AI.actC g)` using `(AddMonoidHomClass.isometry_of_norm (AI.actC g) (AI.actC_norm g)).continuous`. Proceed by induction on `y using UniformSpace.Completion.induction_on with`. Consider the case `hp => exact isClosed_eq hc (by apply GlobalTheory.RingIface.sigC_cont)`. Consider the case `ih a => exact (AI.actC_ext g a).trans (GlobalTheory.RingBasics.σC_coe g a).symm`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem actC_eq_σC (g : GQ l) (y : PadicComplex l) : AI.actC g y = Formalism.Per.σC g y := by
   have hc : Continuous (AI.actC g) :=
@@ -29,9 +29,9 @@ theorem actC_eq_σC (g : GQ l) (y : PadicComplex l) : AI.actC g y = Formalism.Pe
   | ih a => exact (AI.actC_ext g a).trans (GlobalTheory.RingBasics.σC_coe g a).symm
 
 /- English proof (translation)
-Use `Perfection.ext fun n => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (PreTilt.coeff n x)`. Take `⟨y', h1, h2⟩` from `AI.actT_coeff g x n y hy.symm`. Establish `h3 : y' = Formalism.Per.σO g y` using `Subtype.ext ((h1.trans (actC_eq_σC AI g y)).trans (by symm; apply GlobalTheory.RingIface.sigO_coe))`. Use `h2.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h3]`. Conclude with `(GlobalTheory.AdicMaps.coeff_galois l g x n y hy.symm).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actT_eq_σF (g : GQ l) (x : OCb l) : AI.actT g x = Formalism.Per.σF g x := by
   refine Perfection.ext fun n => ?_
@@ -44,7 +44,7 @@ theorem actT_eq_σF (g : GQ l) (x : OCb l) : AI.actT g x = Formalism.Per.σF g x
   exact (GlobalTheory.AdicMaps.coeff_galois l g x n y hy.symm).symm
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_mul, ← add_assoc, AI.ζ_succ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ζ_add_pow (j n : ℕ) : AI.ζ (j + n) ^ l ^ n = AI.ζ j := by
   induction n with
@@ -52,14 +52,14 @@ theorem ζ_add_pow (j n : ℕ) : AI.ζ (j + n) ^ l ^ n = AI.ζ j := by
   | succ n ih => rw [pow_succ', pow_mul, ← add_assoc, AI.ζ_succ, ih]
 
 /- English proof (translation)
-Rewrite using `[← AI.ε_coeff, LocAinf.εroot, PreTilt.coeff_iterate_frobeniusEquiv_symm, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_εroot (j n : ℕ) : PreTilt.coeff n (AI.εroot j) =
     Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (AI.ζ (j + n)) := by
   rw [← AI.ε_coeff, LocAinf.εroot, PreTilt.coeff_iterate_frobeniusEquiv_symm, add_comm]
 
 /- English proof (translation)
-Use `Perfection.teichmuller_spec (I := Ideal.span {((l : ℕ) : OC l)}) fun n => ?_` and prove the remaining obligations. Use `⟨AI.ζ (j + n), (coeff_εroot AI j n).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[ζ_add_pow]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem untilt_εroot (j : ℕ) : (AI.εroot j).untilt = AI.ζ j := by
   refine Perfection.teichmuller_spec (I := Ideal.span {((l : ℕ) : OC l)}) fun n => ?_
@@ -67,13 +67,11 @@ theorem untilt_εroot (j : ℕ) : (AI.εroot j).untilt = AI.ζ j := by
   rw [ζ_add_pow]
 
 /- English proof (translation)
-Establish `hprim : IsPrimitiveRoot (((frobeniusEquiv (OCb l) l).symm AI.ε).untilt) l`. Establish `h : ((frobeniusEquiv (OCb l) l).symm AI.ε).untilt = AI.ζ 1` using `untilt_εroot AI 1`. Rewrite using `[h]`. Establish `h1 : AI.ζ 1 ^ l = 1` using `(AI.ζ_succ 0).trans AI.ζ_zero`. Establish `h2` using `IsPrimitiveRoot.orderOf (AI.ζ 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[orderOf_eq_prime h1 AI.ζ_one]`. Then use the resulting hypothesis. Use `⟨fun x y h => ?_, ?_, fun g a => ?_, fun a => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq, WittVector.fontaineTheta_teichmuller, ← h]`. Conclude with `PreTilt.mk_untilt_eq_coeff_zero x`. Conclude with `ReciprocityTheory.PGsh.Ainf.theta_surj l (OC l) (PadicComplexInt.integers l)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : AI.actW g a = Formalism.Per.σA g a` using `WittVector.ext fun n => (actT_eq_σF AI g (a.coeff n)).trans (by symm; apply GlobalTheory.RingIface.sigA_coeff)`. Rewrite using `[e, actC_eq_σC]`. Conclude with `(congrArg Subtype.val (GlobalTheory.RingBasics.θ_σA g a)).trans (by apply GlobalTheory.RingIface.sigO_coe)`. Rewrite using `[← RingHom.mem_ker, ReciprocityTheory.PGsh.Ainf.ker_theta l (OC l) (PadicComplexInt.integers l) AI.ε hprim, Ideal.mem_span_singleton]`. Both sides reduce to the same expression.
-
-Rewrite using `[WittVector.fontaineTheta_teichmuller, untilt_εroot]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTheta_fontaineTheta : IsTheta AI (WittVector.fontaineTheta (OC l) l) := by
   have hprim : IsPrimitiveRoot (((frobeniusEquiv (OCb l) l).symm AI.ε).untilt) l := by
@@ -97,7 +95,7 @@ theorem isTheta_fontaineTheta : IsTheta AI (WittVector.fontaineTheta (OC l) l) :
   · rw [WittVector.fontaineTheta_teichmuller, untilt_εroot]
 
 /- English proof (translation)
-Introduce `_ _ _ AI` and use `⟨_, isTheta_fontaineTheta AI⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_isTheta : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     ∃ θ : Ainf l →+* OC l, IsTheta AI θ :=

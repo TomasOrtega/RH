@@ -14,7 +14,7 @@ variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : N
   (bkP : BKPh X)
 
 /- English proof (translation)
-Take `⟨epsT, h0, hs, hb⟩` from `h`. Unfold `partA`. Combine the equalities or inequalities in the displayed calculation. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

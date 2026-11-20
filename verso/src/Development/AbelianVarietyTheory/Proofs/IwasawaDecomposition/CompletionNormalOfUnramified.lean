@@ -9,13 +9,11 @@ open IsLocalRing GlobalTheory.Toroidal TensorProduct
 namespace GlobalTheory.EtaleCompletionCharZero
 
 /- English proof (translation)
-Introduce `D T _ _ _ _ _ _ _ _ h hT hloc hflat hm hfin hfu`. Set `R'` to `AdicCompletion (maximalIdeal T) T`. Set `ι : T →+* R'` to `algebraMap T R'`. Establish `hι : IsLocalHom ι` using `inferInstance`. Establish `hres : Function.Surjective (ResidueField.map ι)` using `(AdicCompletion.residueField_map_bijective T).right`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : (residue R').comp (ι.comp h) = (ResidueField.map ι).comp ((residue T).comp h)`. Use extensionality with `b`. Simplify using the standard rewrite rules. Establish `hD : IsNoetherianRing D` using `Algebra.EssFiniteType.isNoetherianRing ℤ D`. Take `⟨h1, h2⟩` from `GlobalTheory.AnalyticNormality.completion_isDomain_and_isIntegrallyClosed D`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.EtaleCompletionNormal.isDomain_and_isIntegrallyClosed D R' (ι.comp h) hD h1 h2 (GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion T (maximalIdeal T)) inferInstance inferInstance ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations. Conclude with `RingHom.Flat.comp hflat (RingHom.flat_algebraMap_iff.mpr inferInstance)`. Rewrite using `[← Ideal.map_map, hm, AdicCompletion.maximalIdeal_eq_map]`. Rewrite using `[hcomp]`. Conclude with `RingHom.Finite.comp (RingHom.Finite.of_surjective _ hres) hfin`.
-
-Rewrite using `[hcomp]`. Conclude with `hfu.comp (RingHom.FormallyUnramified.of_surjective hres)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem completion_isDomain_and_isIntegrallyClosed :
     ∀ (D T : Type) [CommRing D] [IsDomain D] [IsLocalRing D] [IsIntegrallyClosed D] [CharZero D]

@@ -12,23 +12,23 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
 /- English proof (translation)
-Introduce `Z₁ Zh₂ Y₁ Y₂ be₁ be₂ al₁ al₂ hY hb hdet hφ`. Take `⟨⟨φ, hφb, hφl⟩⟩` from `hφ`. Establish `hsub₁ : (Z₁.Z.map M.R.subtype).submatrix Fin.castSucc Fin.castSucc = Y₁.Z.map M.R.subtype` using `head_map (fun a b => (hY a b).1)`. Establish `hsub₂ : Zh₂.submatrix Fin.castSucc Fin.castSucc = Y₂.Z.map M.R.subtype`. Use extensionality with `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[(hY a b).2]`. Establish `hu₁ : IsUnit (Y₁.Z.map M.R.subtype).det` using `Y₁.unit`. Establish `hu₂ : IsUnit (Y₂.Z.map M.R.subtype).det` using `Y₂.unit`. Establish `h1 : (Z₁.Z.map M.R.subtype).det = (Y₁.Z.map M.R.subtype).det * ((Z₁.Z (Fin.last r) (Fin.last r) : E) - lamE Y₁ al₁ be₁)`. Rewrite using `[det_schur _ (by rw [hsub₁]; exact hu₁), hsub₁, lamE_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Establish `hv : (fun j : Fin r => (Z₁.Z.map M.R.subtype) j.castSucc (Fin.last r)) = fun j => ((be₁ j : M.R) : E)`. Use function extensionality and compare the values at `j`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[(hb j).1]`. Rewrite using `[hv]`. Simplify using `[(hb i).2.2.1]`. Establish `h2 : Zh₂.det = (Y₂.Z.map M.R.subtype).det * (Zh₂ (Fin.last r) (Fin.last r) - lamE Y₂ al₂ be₂)`. Rewrite using `[det_schur _ (by rw [hsub₂]; exact hu₂), hsub₂, lamE_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Establish `hv : (fun j : Fin r => Zh₂ j.castSucc (Fin.last r)) = fun j => ((be₂ j : M.R) : E)`. Use function extensionality and compare the values at `j`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[(hb j).2.1]`. Rewrite using `[hv, (hb i).2.2.2]`. Establish `hh : headDet M Z₁.Z = (Y₁.Z.map M.R.subtype).det`. Unfold `headDet`. Rewrite using `[hsub₁]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hdet` using `[hh, h1, h2, hsub₂]`. Establish `hkey : Zh₂ (Fin.last r) (Fin.last r) - lamE Y₂ al₂ be₂ = (Z₁.Z (Fin.last r) (Fin.last r) : E) - lamE Y₁ al₁ be₁`. Establish `hu` using `hu₁.mul hu₂`. Apply `hu.mul_left_cancel` to reduce the goal to its premises. Take the linear combination `hdet`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hq` using `hφl (Submodule.Quotient.mk be₁)`. Rewrite `hq` using `[hφb, linQ_mk, linQ_mk]`. Establish `hmem : lamE Y₂ al₂ be₂ - lamE Y₁ al₁ be₁ ∈ M.Rsub` using `(Submodule.Quotient.eq _).1 hq`. Take `⟨x, hx⟩` from `hmem`. Establish `hc : Zh₂ (Fin.last r) (Fin.last r) = (Z₁.Z (Fin.last r) (Fin.last r) : E) + (lamE Y₂ al₂ be₂ - lamE Y₁ al₁ be₁)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take the linear combination `hkey`. Rewrite using `[hc, ← hx]`. Conclude with `M.R.add_mem (Z₁.Z (Fin.last r) (Fin.last r)).2 x.2`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cornerU_holds (M : Model F E) (r : ℕ) : CornerU M r := by
   intro Z₁ Zh₂ Y₁ Y₂ be₁ be₂ al₁ al₂ hY hb hdet hφ

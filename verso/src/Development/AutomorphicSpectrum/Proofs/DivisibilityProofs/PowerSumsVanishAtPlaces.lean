@@ -11,9 +11,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo (HermLine IsSmoothHerm IsArithVar 
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
 /- English proof (translation)
-Use `letI := MvPolynomial.algebraMvPolynomial (σ := (Σ k, ι k)) (R := R) (S := R')`. Use `haveI : IsLocalization (Mo.map (C (σ := (Σ k, ι k)) (R := R))) (MRing ι R') := MvPolynomial.isLocalization Mo R'`. Establish `h` using `IsLocalization.minimalPrimes_map (Mo.map (C (σ := (Σ k, ι k)) (R := R))) (MRing ι R') J`. Establish `e : algebraMap (MRing ι R) (MRing ι R') = MvPolynomial.map (algebraMap R R')` using `rfl`. Rewrite `h` using `[e]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_minimalPrimes_map_iff_comap {K : Type} {ι : K → Type} {R R' : Type} [CommRing R] [CommRing R']
     [Algebra R R'] (Mo : Submonoid R) [IsLocalization Mo R'] (J : Ideal (MRing ι R)) (W' : Ideal (MRing ι R')) :
@@ -29,7 +29,7 @@ theorem mem_minimalPrimes_map_iff_comap {K : Type} {ι : K → Type} {R R' : Typ
   rfl
 
 /- English proof (translation)
-Establish `e : Pa.map (MvPolynomial.map (algebraMap A O) : MRing ι A →+* MRing ι O) ⊔ (IsLocalRing.maximalIdeal O).map (C : O →+* MRing ι O) = (Pa ⊔ m.map (C : A →+* MRing ι A)).map (MvPolynomial.map (algebraMap A O) : MRing ι A →+* MRing ι O)`. Rewrite using `[Ideal.map_sup, Ideal.map_map, ← IsLocalization.AtPrime.map_eq_maximalIdeal m O, Ideal.map_map, MvPolynomial.map_comp_C]`. Rewrite using `[e]`. Conclude with `mem_minimalPrimes_map_iff_comap m.primeCompl _ W'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_fibre_minimalPrimes_iff {K : Type} {ι : K → Type} {A O : Type} [CommRing A] [CommRing O]
     [IsLocalRing O] [Algebra A O] (m : Ideal A) [m.IsPrime] [IsLocalization.AtPrime O m]
@@ -48,7 +48,7 @@ theorem mem_fibre_minimalPrimes_iff {K : Type} {ι : K → Type} {A O : Type} [C
   exact mem_minimalPrimes_map_iff_comap m.primeCompl _ W'
 
 /- English proof (translation)
-Use `⟨⟨hWa, hJa⟩, fun Q hQ hQW => ?_⟩` and prove the remaining obligations. Use `haveI := hQ.1`. Establish `h1 : Q.comap ψ ≤ W₀` using `hc ▸ Ideal.comap_mono hQW`. Establish `h2 : W₀ ≤ Q.comap ψ` using `hW₀.2 ⟨Ideal.comap_isPrime _ _, hJ.trans (Ideal.comap_mono hQ.2)⟩ h1`. Conclude with `(hu Q hQ.1 (hP.trans hQ.2) (le_antisymm h1 h2)).ge`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_minimalPrimes_of_unique_contraction {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T)
     {J₀ W₀ : Ideal S} {Pa Ja Wa : Ideal T} (hW₀ : W₀ ∈ J₀.minimalPrimes) (hWa : Wa.IsPrime) (hJa : Ja ≤ Wa)
@@ -62,9 +62,7 @@ theorem mem_minimalPrimes_of_unique_contraction {S T : Type} [CommRing S] [CommR
   exact (hu Q hQ.1 (hP.trans hQ.2) (le_antisymm h1 h2)).ge
 
 /- English proof (translation)
-Introduce `f hf b`. Rewrite `hf`, the goal using `[MvPolynomial.mem_map_C_iff]`. Introduce `d`. Rewrite using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs`.
-
-Conclude with `hf d`. Conclude with `I.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomogIdeal_map_C {K : Type} [DecidableEq K] {ι : K → Type} {R : Type} [CommRing R] (I : Ideal R) :
     IsMultiHomogIdeal (I.map (C : R →+* MRing ι R)) := by
@@ -78,9 +76,9 @@ theorem isMultiHomogIdeal_map_C {K : Type} [DecidableEq K] {ι : K → Type} {R 
   · exact I.zero_mem
 
 /- English proof (translation)
-Take `⟨-, -, hH, -⟩` from `h`. Use `(injective_iff_map_eq_zero _).2 fun n hn => ?_` and prove the remaining obligations. Establish `hmem : n ∈ (mCoordIdeal y).comap (C : ℤ →+* ReciprocityTheory.ChartRestriction.G.Geo.MRing ι)`. Rewrite using `[Ideal.mem_comap, mCoordIdeal, RingHom.mem_ker]`. Establish `: (n : Ω) = 0` using `by simpa using hn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ((n : MvPolynomial K Ω)) = C (n : Ω)` using `(map_intCast (C : Ω →+* MvPolynomial K Ω) n).symm`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.mConeMap, e, this]`. Establish `h0 : (mCoordIdeal y).comap (C : ℤ →+* ReciprocityTheory.ChartRestriction.G.Geo.MRing ι) = ⊥` using `hH`. Rewrite `hmem` using `[h0]`. Conclude with `(Submodule.mem_bot _).1 hmem`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intCast_injective_of_isArithVar {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} {d : ℕ} (h : IsArithVar (mCoordIdeal y) d) :
@@ -97,9 +95,9 @@ theorem intCast_injective_of_isArithVar {K : Type} [Fintype K] {ι : K → Type}
   exact (Submodule.mem_bot _).1 hmem
 
 /- English proof (translation)
-Establish `hu : ∀ s : m.primeCompl, IsUnit (algebraMap A Ω s)`. Introduce `s`. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Introduce `h0`. Establish `h1 : (s : A) = 0` using `hinj (by rw [h0, map_zero])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `s.2 (h1 ▸ m.zero_mem)`. Use `⟨(IsLocalization.lift hu (S := O)).toAlgebra, ?_⟩` and prove the remaining obligations. Use `letI : Algebra O Ω := (IsLocalization.lift hu (S := O)).toAlgebra`. Conclude with `IsScalarTower.of_algebraMap_eq fun a => (IsLocalization.lift_eq hu a).symm`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem exists_algebra_of_injective (A Ω : Type) [CommRing A] [Field Ω] [Algebra A Ω]
     (hinj : Function.Injective (algebraMap A Ω)) (m : Ideal A) [m.IsPrime] (O : Type) [CommRing O] [Algebra A O]
@@ -117,7 +115,7 @@ theorem exists_algebra_of_injective (A Ω : Type) [CommRing A] [Field Ω] [Algeb
 def coneWt (K : Type) [DecidableEq K] : K → K → ℕ := fun k => Pi.single k 1
 
 /- English proof (translation)
-Rewrite using `[pointConeMap, aeval_monomial, MvPolynomial.algebraMap_apply, Finsupp.weight_apply, Finsupp.prod, Finsupp.sum]`. Use `IsWeightedHomogeneous.C_mul ?_ _` and prove the remaining obligations. Use `IsWeightedHomogeneous.prod _ _ _ fun p _ => ?_` and prove the remaining obligations. Conclude with `((isWeightedHomogeneous_X (R := Φ) (coneWt K) p.1).C_mul (z p)).pow (d p)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pointConeMap_monomial_isWeightedHomogeneous {K : Type} [DecidableEq K] {ι : K → Type} {O : Type}
     [CommRing O] {Φ : Type} [Field Φ] [Algebra O Φ] (z : (Σ k, ι k) → Φ) (d : (Σ k, ι k) →₀ ℕ) (a : O) :
@@ -130,9 +128,9 @@ theorem pointConeMap_monomial_isWeightedHomogeneous {K : Type} [DecidableEq K] {
   exact ((isWeightedHomogeneous_X (R := Φ) (coneWt K) p.1).C_mul (z p)).pow (d p)
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial d a`. Establish `h1` using `pointConeMap_monomial_isWeightedHomogeneous (K := K) (O := O) z d a`. Establish `h2 : IsWeightedHomogeneous (blockWeight ι) (monomial d a : MRing ι O) (Finsupp.weight (blockWeight ι) d)` using `isWeightedHomogeneous_monomial _ _ _ rfl`. Distinguish the cases in `h : b = Finsupp.weight (blockWeight ι) d`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[h1.weightedHomogeneousComponent_same, h2.weightedHomogeneousComponent_same]`. Rewrite using `[h1.weightedHomogeneousComponent_ne _ h, h2.weightedHomogeneousComponent_ne _ h, map_zero]`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem pointConeMap_component {K : Type} [DecidableEq K] {ι : K → Type} {O : Type} [CommRing O] {Φ : Type}
     [Field Φ] [Algebra O Φ] (z : (Σ k, ι k) → Φ) (b : K → ℕ) (f : MRing ι O) :
@@ -150,9 +148,9 @@ theorem pointConeMap_component {K : Type} [DecidableEq K] {ι : K → Type} {O :
   | add f g hf hg => simp only [map_add, hf, hg]
 
 /- English proof (translation)
-Introduce `f hf b`. Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.mp hf`. Rewrite using `[map_add]`. Use `Submodule.add_mem_sup ?_ (isMultiHomogIdeal_map_C I v hv b)` and prove the remaining obligations. Rewrite `hu`, the goal using `[pointIdeal, RingHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h` using `pointConeMap_component (O := O) z b u`. Rewrite `h` using `[show (pointConeMap O z) u = 0 from hu, map_zero]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomogIdeal_pointIdeal_sup_map_C {K : Type} [DecidableEq K] {ι : K → Type} {O : Type} [CommRing O]
     {Φ : Type} [Field Φ] [Algebra O Φ] (z : (Σ k, ι k) → Φ) (I : Ideal O) :
@@ -167,9 +165,9 @@ theorem isMultiHomogIdeal_pointIdeal_sup_map_C {K : Type} [DecidableEq K] {ι : 
   exact h.symm
 
 /- English proof (translation)
-Use `letI := MvPolynomial.algebraMvPolynomial (σ := (Σ k, ι k)) (R := A) (S := O)`. Use `haveI : IsLocalization (Mo.map (C (σ := (Σ k, ι k)) (R := A))) (MRing ι O) := MvPolynomial.isLocalization Mo O`. Establish `hdisj : Disjoint ((Mo.map (C (σ` using `(Σ k, ι k)) (R := A)) : Submonoid (MRing ι A)) : Set (MRing ι A)) (Wa : Set (MRing ι A)) := by`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩ hmem`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `hd s hs hmem`. Conclude with `⟨IsLocalization.isPrime_of_isPrime_disjoint (Mo.map (C (σ := (Σ k, ι k)) (R := A))) _ Wa hWa hdisj, IsLocalization.under_map_of_isPrime_disjoint (Mo.map (C (σ := (Σ k, ι k)) (R := A))) (MRing ι O) hWa hdisj⟩`.
+A detailed English derivation is pending.
 -/
 theorem isPrime_map_and_comap_map {K : Type} {ι : K → Type} {A O : Type} [CommRing A] [CommRing O]
     [Algebra A O] (Mo : Submonoid A) [IsLocalization Mo O] {Wa : Ideal (MRing ι A)} (hWa : Wa.IsPrime)
@@ -189,11 +187,9 @@ theorem isPrime_map_and_comap_map {K : Type} {ι : K → Type} {A O : Type} [Com
     IsLocalization.under_map_of_isPrime_disjoint (Mo.map (C (σ := (Σ k, ι k)) (R := A))) (MRing ι O) hWa hdisj⟩
 
 /- English proof (translation)
-Use `letI : Field (A ⧸ m) := Ideal.Quotient.field m`. Establish `hp0 : ((p : ℕ) : A ⧸ m) = 0`. Establish `h` using `Ideal.Quotient.eq_zero_iff_mem.2 hpm`. Simplify using `using h`. Use `haveI hchar : CharP (A ⧸ m) p := by`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `(Nat.dvd_prime (Fact.out : p.Prime)).1 (ringChar.dvd hp0) with h | h` into its components or cases. Conclude with `absurd h CharP.ringChar_ne_one`. Conclude with `h ▸ ringChar.charP _`. Use `letI : Algebra (ZMod p) (A ⧸ m) := ZMod.algebra _ p`. Use `haveI : Module.Finite ℤ (A ⧸ m) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ ℤ m).toLinearMap Ideal.Quotient.mk_surjective`.
-
-Use `haveI : Module.Finite (ZMod p) (A ⧸ m) := Module.Finite.of_restrictScalars_finite ℤ (ZMod p) (A ⧸ m)`. Use `haveI : Finite (A ⧸ m) := Module.finite_of_finite (ZMod p)`. Use `⟨Module.finrank (ZMod p) (A ⧸ m), ?_⟩` and prove the remaining obligations. Rewrite using `[Module.natCard_eq_pow_finrank (K := ZMod p), Nat.card_zmod]`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_card_quotient_eq_pow {A : Type} [CommRing A] [Module.Finite ℤ A] (p : ℕ) [Fact p.Prime]
     (m : Ideal A) [m.IsMaximal] (hpm : (p : A) ∈ m) : ∃ fd : ℕ, Nat.card (A ⧸ m) = p ^ fd := by
@@ -214,7 +210,7 @@ theorem exists_card_quotient_eq_pow {A : Type} [CommRing A] [Module.Finite ℤ A
   rw [Module.natCard_eq_pow_finrank (K := ZMod p), Nat.card_zmod]
 
 /- English proof (translation)
-Establish `hJ : IsMultiHomogIdeal (pointIdeal O y ⊔ (IsLocalRing.maximalIdeal O).map (C : O →+* MRing ι O))` using `isMultiHomogIdeal_pointIdeal_sup_map_C y _`. Establish `hWh : IsMultiHomogIdeal W'` using `MinimalPrimeMultiHomog.proof.{0} O K ι _ W' hJ hW.1`. Conclude with `GlobalTheory.T.residue_model_at_prime K ι Ω y A hconst p m O hpm fd hcard W' hW.1.1.1 hWh (le_sup_left.trans hW.1.1.2) (le_sup_right.trans hW.1.1.2) l`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem intNumL_of_isFibreComp {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) {A : Type} [CommRing A] [Algebra A Ω] [IsDedekindDomain A]
@@ -231,9 +227,9 @@ theorem intNumL_of_isFibreComp {K : Type} [Fintype K] [DecidableEq K] {ι : K �
     (le_sup_right.trans hW.1.1.2) l
 
 /- English proof (translation)
-Establish `e : classNum cls H Q W = c * classNum cls H Q W'`. Unfold `classNum`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, h0, mul_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem classNum_eq_zero_of_vNumL_eq {K : Type} [DecidableEq K] {ι : K → Type} {O O' : Type} [CommRing O]
     [IsDomain O] [IsDiscreteValuationRing O] [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O']
@@ -249,45 +245,41 @@ theorem classNum_eq_zero_of_vNumL_eq {K : Type} [DecidableEq K] {ι : K → Type
   rw [e, h0, mul_zero]
 
 /- English proof (translation)
-Introduce `K _ _ ι _ Ω _ y A _ _ _ _ hinj hconst D harith p N x hpl`. Use `haveI : Fact (p : ℕ).Prime := ⟨p.2⟩`. Establish `hint` using `intCast_injective_of_isArithVar harith`. Establish `hinjZ : Function.Injective (algebraMap ℤ Ω)`. Establish `h : algebraMap ℤ Ω = Int.castRingHom Ω` using `RingHom.ext_int _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[h]` and apply the resulting hypothesis. Establish `hconstZ : HasConstants ℤ ℤ y` using `fun c _ a => Subalgebra.algebraMap_mem _ a`. Take `⟨algZ, towZ⟩` from `exists_algebra_of_injective ℤ Ω hinjZ (Ideal.span {((p : ℕ) : ℤ)}) (ZP p)`. Establish `hcastZ : algebraMap ℤ (ZP p) = Int.castRingHom (ZP p)` using `RingHom.ext_int _ _`. Establish `hP0 : pointIdeal ℤ y = mCoordIdeal y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(GlobalTheory.T.point_ideal_comap_prime_lift K ι Ω y ℤ (fun c _ a => Subalgebra.algebraMap_mem _ a)).1`. Establish `e : (MvPolynomial.map (Int.castRingHom ℤ) : MRing ι ℤ →+* MRing ι ℤ) = RingHom.id _`. Rewrite using `[show Int.castRingHom ℤ = RingHom.id ℤ from RingHom.ext_int _ _]`. Conclude with `RingHom.ext fun f => MvPolynomial.map_id f`. Rewrite `h` using `[e, Ideal.comap_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `hZ'` using `(GlobalTheory.T.localization_model_over_place K ι Ω y ℤ hinjZ hconstZ D harith (Ideal.span {((p : ℕ) : ℤ)}) (ZP p)).1`. Rewrite `hZ'` using `[hP0]`. Establish `hZ : extTo (ZP p) (mCoordIdeal y) = pointIdeal (ZP p) y`. Rewrite using `[hZ', hcastZ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Rewrite using `[hZ]`. Introduce `W hW k hk Q hQ`. Establish `hWmin` using `hW.1`. Rewrite `hWmin` using `[hZ']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hW0min` using `(mem_fibre_minimalPrimes_iff (Ideal.span {((p : ℕ) : ℤ)}) _ W).1 hWmin`. Rewrite `hW0min` using `[hcastZ]`. Take `⟨W₀, hW₀⟩ : ∃ W₀, W₀ = W.comap (MvPolynomial.map (Int.castRingHom (ZP p)) : MRing ι ℤ →+* MRing ι (ZP p))` from `⟨_, rfl⟩`. Rewrite `hW0min` using `[← hW₀]`. Establish `hW0p : W₀.IsPrime` using `hW0min.1.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hW0rel : IsRelevant W₀`. Introduce `k`. Take `⟨i, hi⟩` from `hW.2 k`. Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hW₀, Ideal.mem_comap, map_X]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Establish `hle : mCoordIdeal y ≤ W₀` using `le_sup_left.trans hW0min.1.2`. Take `⟨hcomp, hex, -⟩` from `GlobalTheory.T.point_ideal_comap_prime_lift K ι Ω y A hconst`. Take `⟨Wa, ⟨hWap, hWapt, hWac⟩, hu⟩` from `hex W₀ hW0p hW0rel hle`. Take `⟨m, hm⟩ : ∃ m, m = Wa.comap (C : A →+* MRing ι A)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `haveI hmp : m.IsPrime := hm ▸ Ideal.comap_isPrime _ _`. Establish `hCp : (C ((p : ℕ) : ℤ) : MRing ι ℤ) ∈ W₀` using `(le_sup_right.trans hW0min.1.2) (Ideal.mem_map_of_mem _ (Ideal.mem_span_singleton_self _))`. Establish `hmapC : ∀ n : ℤ, (MvPolynomial.map (Int.castRingHom A) (C n : MRing ι ℤ)) = C (n : A)`. Introduce `n`. Rewrite using `[map_C]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Both sides reduce to the same expression. Establish `hpm : ((p : ℕ) : A) ∈ m`. Rewrite `hCp` using `[← hWac, Ideal.mem_comap, hmapC]`. Rewrite using `[hm, Ideal.mem_comap]`. Simplify using `using hCp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hp0 : ((p : ℕ) : A) ≠ 0`. Introduce `h0`. Establish `h1 : algebraMap A Ω ((p : ℕ) : A) = 0` using `by rw [h0, map_zero]`. Rewrite `h1` using `[map_natCast]`. Establish `h2 : Int.castRingHom Ω ((p : ℕ) : ℤ) = 0` using `by simpa using h1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : ((p : ℕ) : ℤ) = 0` using `hint (by rw [h2, map_zero])`. Conclude with `p.2.ne_zero (by exact_mod_cast h3)`. Establish `hmne : m ≠ ⊥` using `fun h => hp0 ((Submodule.mem_bot _).1 (h ▸ hpm))`. Use `haveI hmax : m.IsMaximal := Ideal.IsPrime.isMaximal hmp hmne`. Take `⟨fd, hfd⟩` from `exists_card_quotient_eq_pow (p : ℕ) m hpm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI hdvr : IsDiscreteValuationRing (Localization.AtPrime m) := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain A hmne (Localization.AtPrime m)`. Take `⟨algO, towO⟩` from `exists_algebra_of_injective A Ω hinj m (Localization.AtPrime m)`. Establish `hO` using `(GlobalTheory.T.localization_model_over_place K ι Ω y A hinj hconst D harith m (Localization.AtPrime m)).1`. Establish `hWaMin : Wa ∈ (pointIdeal A y ⊔ m.map (C : A →+* MRing ι A)).minimalPrimes`. Use `mem_minimalPrimes_of_unique_contraction (MvPolynomial.map (Int.castRingHom A) : MRing ι ℤ →+* MRing ι A) hW0min hWap (sup_le hWapt (Ideal.map_le_iff_le_comap.2 hm.le)) hWac ?_ le_sup_left (fun Q hQ hPQ hc => hu Q ⟨hQ, hPQ, hc⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `sup_le (hcomp.ge.trans (Ideal.comap_mono le_sup_left)) (Ideal.map_le_iff_le_comap.2 ?_)` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, Ideal.mem_comap, hmapC]`. Use `Ideal.mem_sup_right ?_` and prove the remaining obligations. Establish `h` using `Ideal.mem_map_of_mem (C : A →+* MRing ι A) hpm`. Simplify using `using h`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hW'p, hW'c⟩` from `isPrime_map_and_comap_map (O := Localization.AtPrime m) m.primeCompl hWap (fun s hs h => hs (show s ∈ m by rw [hm, Ideal.mem_comap]; exact h))`. Take `⟨W', hW'⟩ : ∃ W', W' = Wa.map (MvPolynomial.map (algebraMap A (Localization.AtPrime m)) : MRing ι A →+* MRing ι (Localization.AtPrime m))` from `⟨_, rfl⟩`. Rewrite `hW'p`, `hW'c` using `[← hW']`. Establish `hcomp' : (MvPolynomial.map (Int.castRingHom (Localization.AtPrime m)) : MRing ι ℤ →+* MRing ι (Localization.AtPrime m)) = (MvPolynomial.map (algebraMap A (Localization.AtPrime m))).comp (MvPolynomial.map (Int.castRingHom A))`. Apply the tactic sequence `refine MvPolynomial.ringHom_ext (fun r => ?_) (fun i => ?_) <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hc0 : W'.comap (MvPolynomial.map (Int.castRingHom (Localization.AtPrime m))) = W₀`. Rewrite using `[hcomp', ← Ideal.comap_comap, hW'c, hWac]`. Establish `hfib : IsFibreComp (pointIdeal (Localization.AtPrime m) y) W'`. Use `⟨?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[hO]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(mem_fibre_minimalPrimes_iff m _ W').2 ?_` and prove the remaining obligations. Rewrite using `[hW'c]`. Conclude with `hWaMin`. Take `⟨i, hi⟩` from `hW0rel k`. Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hc0, Ideal.mem_comap, map_X]`. Conclude with `h`. Establish `hv : PowerSumsVanish (pointIdeal (Localization.AtPrime m) y) D x` using `hpl m hpm (Localization.AtPrime m)`. Establish `hA` using `intNumL_of_isFibreComp y hconst (p : ℕ) m (Localization.AtPrime m) hpm fd hfd hfib`. Establish `hcardZ : Nat.card (ℤ ⧸ Ideal.span {((p : ℕ) : ℤ)}) = (p : ℕ) ^ 1`.
-
-Rewrite using `[Nat.card_congr (Int.quotientSpanNatEquivZMod (p : ℕ)).toEquiv, Nat.card_zmod, pow_one]`. Establish `hB` using `intNumL_of_isFibreComp y hconstZ (p : ℕ) (Ideal.span {((p : ℕ) : ℤ)}) (ZP p) (by simpa using Ideal.mem_span_singleton_self (((p : ℕ) : ℤ))) 1 hcardZ hW`. Use `classNum_eq_zero_of_vNumL_eq (fd : ℤ) (fun l => ?_) x _ Q (hv W' hfib k hk Q hQ)` and prove the remaining obligations. Establish `h1` using `hB l`. Establish `h2` using `hA l`.
-
-Rewrite `h1` using `[← hW₀]`. Rewrite `h2` using `[hc0]`. Rewrite using `[← h2, h1]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem powerSumsVanish_extTo_of_atPlacesOver : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (A : Type) [CommRing A] [Algebra A Ω] [IsDedekindDomain A] [Module.Finite ℤ A], Function.Injective (algebraMap A Ω) → HasConstants ℤ A y → ∀ D : ℕ, IsArithVar (mCoordIdeal y) (D + 1) → ∀ (p : Nat.Primes) (N : ℕ) (x : Fin N → K → ℤ), (AtPlacesOver A Ω p fun O _ _ _ _ => PowerSumsVanish (pointIdeal O y) D x) → PowerSumsVanish (extTo (ZP p) (mCoordIdeal y)) D x := by
   intro K _ _ ι _ Ω _ y A _ _ _ _ hinj hconst D harith p N x hpl

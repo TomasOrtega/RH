@@ -14,11 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UPoinc
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ _ hV t P K _ _ _ m a pk pk' x x' hm hx hx' hxx'`. Take `⟨h1, h2, h3⟩` from `hV`. Establish `hT : P.TorsionIso` using `GlobalTheory.GeneratorsCompare.torsionIso P`. Take `⟨f, hf, -, heq, -, hact, -⟩` from `hT K m hm`. Use `letI := H.starRing`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Take `⟨p'', hp''⟩` from `qkAct_exists GlobalTheory.lawsAndExpansions.1.1.globalFns P.D.tau_bimult P.oD a pk`. Establish `e1 : f p'' = x'`. Rewrite using `[hact a pk p'' hp'', ← (hf pk x).1 hx, hxx']`. Establish `e2 : f p'' = f pk'` using `by rw [e1, ← (hf pk' x').1 hx']`. Take `⟨z₂, hz₂, -⟩` from `(heq p'' pk').1 e2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, -, z₁, hz₁, -⟩` from `hp''`. Conclude with `⟨z₁ + z₂, by rw [hz₂, hz₁, hq, smul_add, add_assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem qk_lattice_oAct : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDvr V → ∀ (t : SAB H (Sp V)) (P : PELUnif (maximalIdeal V) t) (K : Type) [Field K] [IsAlgClosed K] [Algebra (FractionRing V) K] (m : ℕ) (a : 𝓞 E) (pk pk' : QkPt P.D.toPre K m) (x x' : TFK (R := V) K ⟶ P.A.A), 1 ≤ m → QkToAkU P.U.toUnifPre K m pk x → QkToAkU P.U.toUnifPre K m pk' x' → x' = x ≫ P.oA.act a → CongMod m pk'.y (a • pk.y) := by
   intro E _ _ _ H V _ _ _ hV t P K _ _ _ m a pk pk' x x' hm hx hx' hxx'

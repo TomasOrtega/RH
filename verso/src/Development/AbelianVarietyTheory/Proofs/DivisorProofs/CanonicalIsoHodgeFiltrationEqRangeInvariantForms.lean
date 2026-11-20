@@ -16,9 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `GlobalTheory.T.exists_hodgeFiltration_to_pDivOmega_linearMap p R N hN A hA G t`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨c, hcF, rfl⟩`. Use `⟨ψ ⟨c, hcF⟩, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.PtExt.isCan_unique R A p G t c hA _ _ (hψ ⟨c, hcF⟩) (hc c)`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨w, rfl⟩`. Take `⟨c, hcw⟩` from `hL (G.rigOfOmega w)`. Use `⟨c, GlobalTheory.T.mem_primitiveSubmodule_of_isCan_of_rigToExt_eq_zero p R N hN A hA G t c (L c) (hc c) ?_, hcw⟩` and prove the remaining obligations. Rewrite using `[hcw]`. Conclude with `G.exact_rigOfOmega_rigToExt.apply_apply_eq_zero w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_F1prim_eq_range_rigOfOmega (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (N : ℕ)
     (hN : (p : R) ^ N = 0) (A : Over (Sp R)) [GrpObj A] (hA : IsAbelianScheme A)

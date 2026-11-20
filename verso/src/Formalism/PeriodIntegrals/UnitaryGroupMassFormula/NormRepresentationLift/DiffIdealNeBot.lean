@@ -12,9 +12,9 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `h0 : differentIdeal ℤ (𝓞 D.host.F) ≠ ⊥` using `by first`. Consider the case `exact differentIdeal_ne_bot`. Consider the case `exact differentIdeal_ne_bot (A := ℤ)`. Use `first`. Consider the case `exact Ideal.map_ne_bot_of_ne_bot h0`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact fun h => h0 ((Ideal.map_eq_bot_iff_of_injective (NoZeroSMulDivisors.algebraMap_injective (𝓞 D.host.F) (𝓞 D.host.E))).mp h)`. Consider the case `exact fun h => h0 ((Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective (𝓞 D.host.F) (𝓞 D.host.E))).mp h)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem diffIdeal_ne_bot (D : D7) :
     Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F)) ≠ ⊥ := by
@@ -30,11 +30,9 @@ theorem diffIdeal_ne_bot (D : D7) :
         (FaithfulSMul.algebraMap_injective (𝓞 D.host.F) (𝓞 D.host.E))).mp h)
 
 /- English proof (translation)
-Establish `hpow : ddS D ^ m = ((Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F)) ^ m : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`. Rewrite using `[ddS, FractionalIdeal.coeIdeal_pow]`. Establish `hI : ddS D ^ m ≠ 0`. Rewrite using `[hpow, Ne, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `pow_ne_zero _ (diffIdeal_ne_bot D)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : ddS D ^ m ≤ 1`. Rewrite using `[hpow]`. Conclude with `FractionalIdeal.coeIdeal_le_one`. Rewrite using `[zpow_neg, zpow_natCast, ← FractionalIdeal.one_le]`. Establish `h1` using `FractionalIdeal.inv_anti_mono hI one_ne_zero hle`.
-
-Rewrite `h1` using `[inv_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem one_mem_ddS_neg (D : D7) (m : ℕ) :
     (1 : D.host.E) ∈ (ddS D ^ (-(m : ℤ)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) := by
@@ -53,9 +51,9 @@ theorem one_mem_ddS_neg (D : D7) (m : ℕ) :
   rwa [inv_one] at h1
 
 /- English proof (translation)
-Establish `hx : F0.e a ∈ XS D F0`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨a, 1, ?_, (one_smul _ _).symm⟩` and prove the remaining obligations. Establish `h1` using `one_mem_ddS_neg D (D.R.rS - (a : ℕ))`. Rewrite `h1` using `[Nat.cast_sub a.isLt.le]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hx` using `[← hΛ.2.2]`. Conclude with `(Submodule.mem_inf.mp hx).1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e_mem_lam (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hΛ : IsRowLat D F0 Λ) (a : Fin D.R.rS) : F0.e a ∈ Λ := by

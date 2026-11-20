@@ -11,31 +11,29 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Introduce `hSame hFrob hComp hKer hIso hImg hRead`. Introduce `p _ D O _ _ _ _ f b N r w _ hstd M j j₁ hj T T' κ _ _ _ φ hφ x β hx hβ o₁ m₁ y y' hy hy' P P' hrep hrep' hcard hiff`. Substitute `hj` using the available equality. Establish `hpp : p.Prime` using `Fact.out`. Establish `hfinR : Finite (IsLocalRing.ResidueField O)` using `Nat.finite_of_card_ne_zero (by rw [hstd.card]; exact pow_ne_zero _ hpp.ne_zero)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : ∀ a : O, β a ^ (p ^ f) = β a`. Introduce `a`. Use `letI := Fintype.ofFinite (IsLocalRing.ResidueField O)`. Establish `h1 : (IsLocalRing.residue O a) ^ (p ^ f) = IsLocalRing.residue O a`. Rewrite using `[← hstd.card, Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `FiniteField.pow_card _`. Establish `h2 : a ^ (p ^ f) - a ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, map_pow, h1, sub_self]`. Establish `h3` using `hβ _ h2`. Rewrite `h3` using `[map_sub, map_pow, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h3`. Establish `hfix : spMap φ ≫ spMap β = spMap β`. Establish `hc : φ.comp β = β` using `RingHom.ext fun a => by rw [RingHom.comp_apply, hφ, hq]`. Rewrite using `[spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hc]`. Establish `hf : 0 < f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Break down `Nat.eq_zero_or_pos f with h0 | h0` into its components or cases. It suffices to derive a contradiction. Establish `hc` using `hstd.card`. Rewrite `hc` using `[h0, pow_zero]`. Use `Finite.one_lt_card (α := IsLocalRing.ResidueField O)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h0`. Establish `hw : w ≠ ⊤` using `Ideal.IsMaximal.ne_top ‹_›`. Establish `hβw : ∀ (i : Fin D.a), ∀ z ∈ w, β ((b.t i) z) = 0` using `fun i z hz => hβ _ (hstd.tw i z hz)`. Take `⟨o'', mF, F, hFi, hFa, hFk⟩` from `hFrob p D O b N f κ (spMap β) φ hφ hfix P'.o'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp` using `hComp p D O b N (Sp κ) (spMap β) _ _ o₁ P'.o' o'' P'.ψ F P'.isog hFi`. Establish `hexp : p ^ (f * j) * p ^ f = p ^ (f * (j + 1))`. Rewrite using `[← pow_add]`. Put the polynomial expressions in normal form. Rewrite `hcomp` using `[hexp]`.
+Put the polynomial expressions in normal form. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : f * (j + 1) - 1 + 1 = f * (j + 1)` using `Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.mpr (Nat.mul_pos hf (Nat.succ_pos j)).ne')`. Establish `hcard1 : Nat.card { g // UKer r o₁ P.ψ (𝟙_ (Over (Sp κ))) g } = (p ^ f) ^ j`. Rewrite using `[← hcard]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight hiff)`. Establish `hU` using `hSame p D O b N hstd.m1 hstd.a1 r w hw hstd.ule f κ β hβw o₁ P.o' P'.o' o'' P.ψ P'.ψ F (f * (j + 1) - 1) (by rw [he]; exact P.isog) P'.isog.2.1 (by rw [he]; exact hcomp) hFk ((p ^ f) ^ j) (pow_pos (pow_pos hpp.pos _) _) (by rw [← pow_succ']; exact hrep) hcard1 hrep' hcard hiff`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hK1` using `hKer p D O b N r w hw hstd.ule κ (spMap β) _ o₁ P.o' o'' P.ψ (P'.ψ ≫ F) P.isog hcomp hU`. Establish `hK2` using `hKer p D O b N r w hw hstd.ule κ (spMap β) _ o₁ o'' P.o' (P'.ψ ≫ F) P.ψ hcomp P.isog (fun T g => (hU T g).symm)`. Take `⟨m₂, hm₂⟩` from `hIso p D O b N κ (spMap β) _ o₁ P.o' o'' P.ψ (P'.ψ ≫ F) P.isog hcomp (fun T g => ⟨hK1 T g, hK2 T g⟩)`. Take `⟨n₁, hn₁⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ P.m' T.mt`. Take `⟨n₂a, hn₂a⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ P'.m' T'.mt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨n₂, hn₂⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ mF n₂a`. Establish `h₁ : (y ≫ T.t) ≫ M.s = spMap β`. Rewrite using `[Category.assoc, ← T.st, ← Category.assoc, hy, hx]`. Establish `h₂ : (spMap φ ≫ y' ≫ T'.t) ≫ M.s = spMap β`. Simplify using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← T'.st, ← Category.assoc y', hy', hx, hfix]`. Take `⟨ht, hφeq⟩` from `hImg p D O b N hstd.three hstd.cop M (Sp κ) (spMap β) P.o' o'' (y ≫ T.t) (spMap φ ≫ y' ≫ T'.t) h₁ h₂ n₁ n₂ m₂`. Use `⟨ht, ?_⟩` and prove the remaining obligations. Introduce `a h h'`. Choose the witnesses or unpack the hypotheses as in `⟨a₀, ha₀⟩ : ∃ a₀ : 𝟙_ (Over (Sp κ)) ⟶ o₁.A, Over.Hom.left a₀ ≫ m₁.φ = a := by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Use `⟨Over.homMk (m₁.cart.1.lift a (𝟙 _) (by rw [Category.id_comp, h, hy])) ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Substitute `ha₀` using the available equality. Rewrite using `[(hRead p D O b N M r w (j + 1) _ T (Sp κ) x (spMap β) o₁ m₁ y hy P a₀).2 h, (hRead p D O b N M r w j _ T' (Sp κ) x (spMap β) o₁ m₁ y' hy' P' a₀).2 h', ← hn₁, ← hφeq, hn₂, hn₂a]`.
-
-Establish `key` using `hFa (a₀ ≫ P'.ψ)`. Simplify using `only [Over.comp_left, Category.assoc] at key hm₂ ⊢`. Rewrite using `[reassoc_of% hm₂, reassoc_of% key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.caseW_of :
     SameW → FrobIsog → IsogComp → KerFromU → IsoOfKer → ImgEq → PulledRead → CaseW := by

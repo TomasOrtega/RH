@@ -6,11 +6,11 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace GlobalTheory.CompanionTheory.DPFil
 
 /- English proof (translation)
-Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hr, rfl⟩`. Proceed by induction on `l with`. Consider the case `nil => simp at hr`. Consider the case `cons q t ih`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hq : q.2 ∈ J` using `hl q (by simp)`. Rewrite using `[List.map_cons, List.prod_cons]`. Distinguish the cases in `h0 : q.1 = 0`. Use `J.mul_mem_left _ (ih (fun q' h' => hl q' (List.mem_cons_of_mem _ h')) ?_)` and prove the remaining obligations. Simplify `hr` using `[h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `J.mul_mem_right _ (δ.dpow_mem h0 hq)`.
+A detailed English derivation is pending.
 -/
 theorem dividedPowerFiltration_one_le {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) : pdP δ 1 ≤ J := by
   refine Ideal.span_le.2 ?_
@@ -26,11 +26,9 @@ theorem dividedPowerFiltration_one_le {B : Type} [CommRing B] {J : Ideal B} (δ 
     · exact J.mul_mem_right _ (δ.dpow_mem h0 hq)
 
 /- English proof (translation)
-Unfold `pdP`. Rewrite using `[Ideal.span_mul_span']`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨l, hl, hr, rfl⟩, _, ⟨l', hl', hr', rfl⟩, rfl⟩`. Use `Ideal.subset_span ⟨l ++ l', ?_, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q hq`. Break down `List.mem_append.1 hq with h | h` into its components or cases. Conclude with `hl q h`. Conclude with `hl' q h`. Simplify using `using Nat.add_le_add hr hr'`.
-
-Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dividedPowerFiltration_mul_le {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (r r' : ℕ) :
     pdP δ r * pdP δ r' ≤ pdP δ (r + r') := by
@@ -47,24 +45,22 @@ theorem dividedPowerFiltration_mul_le {B : Type} [CommRing B] {J : Ideal B} (δ 
   · simp
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span ⟨[(k, x)], by simpa using hx, by simp, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem dpow_mem_pdP {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (k : ℕ) {x : B} (hx : x ∈ J) :
     δ.dpow k x ∈ pdP δ k :=
   Ideal.subset_span ⟨[(k, x)], by simpa using hx, by simp, by simp⟩
 
 /- English proof (translation)
-Introduce `b L Q`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr T`. Express the relevant statement in the definitionally equal form `T.obj.pdPow r.toNat = ⊤`. Rewrite using `[Int.toNat_of_nonpos hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `T.obj.pdPow_zero`. Introduce `T`. Express the relevant statement in the definitionally equal form `T.obj.pdPow (1 : ℤ).toNat = T.obj.J`. Conclude with `le_antisymm (dividedPowerFiltration_one_le T.obj.δ) T.obj.J_le_pdPow_one`. Introduce `r r' h T`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `T.obj.pdPow_anti (Int.toNat_le_toNat h)`. Introduce `r r' T x y hx hy`. Establish `hx' : (show T.obj.B from x) ∈ pdP T.obj.δ r`. Establish `: (show T.obj.B from x) ∈ T.obj.pdPow ((r : ℤ).toNat)` using `hx`. Rewrite `this` using `[Int.toNat_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hy' : (show T.obj.B from y) ∈ pdP T.obj.δ r'`. Establish `: (show T.obj.B from y) ∈ T.obj.pdPow ((r' : ℤ).toNat)` using `hy`. Rewrite `this` using `[Int.toNat_natCast]`. Conclude with `this`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h` using `dividedPowerFiltration_mul_le T.obj.δ r r' (Ideal.mul_mem_mul hx' hy')`. Express the relevant statement in the definitionally equal form `_ ∈ T.obj.pdPow (((r + r' : ℕ) : ℤ).toNat)`. Rewrite using `[Int.toNat_natCast]`. Conclude with `h`. Introduce `k T x hx`.
-
-Express the relevant statement in the definitionally equal form `_ ∈ T.obj.pdPow ((k : ℤ).toNat)`. Rewrite using `[Int.toNat_natCast]`. Conclude with `dpow_mem_pdP T.obj.δ k hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFil_sFil : ∀ {b : Base} {L : b.Fun} (Q : ObjectProperty (Thick L)), IsFil (sP Q) (sFil Q) := by
   intro b L Q

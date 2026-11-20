@@ -20,22 +20,22 @@ def intModel (g : G1 p) (h : Formalism.L2.Th1.A.IntModel g.W) :
   ⟨⟨g.W.a₁, h.1⟩, ⟨g.W.a₂, h.2.1⟩, ⟨g.W.a₃, h.2.2.1⟩, ⟨g.W.a₄, h.2.2.2.1⟩, ⟨g.W.a₆, h.2.2.2.2⟩⟩
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem intModel_map (g : G1 p) (h : Formalism.L2.Th1.A.IntModel g.W) :
     (intModel g h).map (Formalism.G.unitBall ℂ_[p]).subtype = g.W := by
   ext <;> rfl
 
 /- English proof (translation)
-Establish `hl : g.l = Formalism.L2.Th1.A.logSer g.W` using `Formalism.L2.KerInert.Dict.formal_logarithm_agree p g.W g.wq hOk.2.1`. Establish `he : g.ex = Formalism.L2.Th1.A.expSer g.W` using `Formalism.L2.KerInert.Dict.formal_exponential_agree p g hOk`. Take `⟨hl0, -, -, -⟩` from `Formalism.L2.Th1.A.logSpec ℂ_[p] g.W`. Take `⟨he0, -, hLE, -, -⟩` from `Formalism.L2.Th1.A.expSpec ℂ_[p] g.W`. Proceed by induction on `N with`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `zero`. Simplify using `only [Nat.cast_zero, map_zero, zero_mul]`. Rewrite using `[he]`. Conclude with `PowerSeries.subst_zero_of_constantCoeff_zero he0`. Consider the case `succ N ih`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `hcN : PowerSeries.constantCoeff (Formalism.L2.Th1.A.nSer g.W N) = 0` using `Formalism.L2.Th1.A.ZSer.nSer_cc g.W N`. Establish `hadd` using `Formalism.L2.KerInert.Dict.formal_addition_agree p g hOk Unit (PowerSeries.X : MvPowerSeries Unit ℂ_[p]) (Formalism.L2.Th1.A.nSer g.W N) (MvPowerSeries.constantCoeff_X _) hcN`. Establish `hN : PowerSeries.subst (Formalism.L2.Th1.A.nSer g.W N) g.l = PowerSeries.C (N : ℂ_[p]) * g.l`. Establish `hb : HasSubst (PowerSeries.C (N : ℂ_[p]) * g.l)` using `HasSubst.of_constantCoeff_zero' (by rw [map_mul, hl, hl0, mul_zero])`. Establish `hex : HasSubst g.ex` using `HasSubst.of_constantCoeff_zero' (by rw [he]; exact he0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLE' : PowerSeries.subst g.ex g.l = PowerSeries.X` using `by rw [he, hl]; exact hLE`. Rewrite using `[← ih, ← PowerSeries.subst_comp_subst_apply hex hb g.l, hLE', PowerSeries.subst_X hb]`. Use `show _ = MvPowerSeries.subst (![PowerSeries.X, Formalism.L2.Th1.A.nSer g.W N] : Fin 2 → PowerSeries ℂ_[p]) (Formalism.L2.Th1.A.fgl g.W)`. Rewrite using `[← hadd]`. Use `show _ = PowerSeries.subst (PowerSeries.subst (PowerSeries.X : PowerSeries ℂ_[p]) g.l + PowerSeries.subst (Formalism.L2.Th1.A.nSer g.W N) g.l) g.ex`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hN, PowerSeries.X_subst]`. Use `congr 1`. Use `push_cast`. Rewrite using `[map_add, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem subst_mul_log_eq_nSer (g : G1 p) (hOk : g.Ok) (N : ℕ) :
     (PowerSeries.subst (PowerSeries.C (N : ℂ_[p]) * g.l) g.ex : PowerSeries ℂ_[p]) =
@@ -73,13 +73,13 @@ theorem subst_mul_log_eq_nSer (g : G1 p) (hOk : g.Ok) (N : ℕ) :
     ring
 
 /- English proof (translation)
-Introduce `p _ g hOk`. Establish `hl : g.l = Formalism.L2.Th1.A.logSer g.W` using `Formalism.L2.KerInert.Dict.formal_logarithm_agree p g.W g.wq hOk.2.1`. Establish `he : g.ex = Formalism.L2.Th1.A.expSer g.W` using `Formalism.L2.KerInert.Dict.formal_exponential_agree p g hOk`. Establish `hM` using `Formalism.L2.KerInert.Dict.intModel_of_ok hOk`. Take `⟨-, -, -, hEL, -⟩` from `Formalism.L2.Th1.A.expSpec ℂ_[p] g.W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf n`. Establish `hJ` using `(Formalism.L2.Th1.A.jetMem ℂ_[p] g.W (Formalism.G.unitBall ℂ_[p]) hM.1 hM.2.1 hM.2.2.1 hM.2.2.2.1 hM.2.2.2.2).2.1 f hf n`. Rewrite using `[he]`. Conclude with `hJ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl, he]`. Conclude with `hEL`. Introduce `N n`. Rewrite using `[subst_mul_log_eq_nSer g hOk N, ← intModel_map g hM]`. Establish `hz` using `GlobalTheory.WeierstrassFormal.map_zsmul (intModel g hM) (Formalism.G.unitBall ℂ_[p]).subtype (N : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `PowerSeries.map _ (Formalism.L2.Th1.A.nSer _ N) = Formalism.L2.Th1.A.nSer _ N at hz`. Rewrite using `[← hz, PowerSeries.coeff_map]`. Conclude with `(PowerSeries.coeff n (Formalism.L2.Th1.A.nSer (intModel g hM) N)).2`.
+A detailed English derivation is pending.
 -/
 theorem int_dlog : ∀ (p : ℕ) [Fact p.Prime] (g : GL3Theta.G1 p), g.Ok → (∀ (f : PowerSeries ℂ_[p]), (∀ n, ‖PowerSeries.coeff n f‖ ≤ 1) → ∀ n : ℕ, ‖(n.factorial : ℂ_[p]) * PowerSeries.coeff n (PowerSeries.subst g.ex f : PowerSeries ℂ_[p])‖ ≤ 1) ∧ (PowerSeries.subst g.l g.ex : PowerSeries ℂ_[p]) = PowerSeries.X ∧ ∀ N : ℕ, ∀ n, ‖PowerSeries.coeff n (PowerSeries.subst (PowerSeries.C (N : ℂ_[p]) * g.l) g.ex : PowerSeries ℂ_[p])‖ ≤ 1 := by
   intro p _ g hOk

@@ -43,7 +43,7 @@ abbrev restrictGlobal (X : Scheme.{u}) (U : X.Opens) : Γ(X, ⊤) →+* Γ(X, U)
   (X.presheaf.map (homOfLE le_top : U ⟶ ⊤).op).hom
 
 /- English proof (translation)
-Establish `: (homOfLE le_top : (⊤ : X.Opens) ⟶ ⊤) = 𝟙 _` using `rfl`. Rewrite using `[restrictGlobal, this, op_id, X.presheaf.map_id]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma restrictGlobal_top (r : Γ(X, ⊤)) : restrictGlobal X ⊤ r = r := by
   have : (homOfLE le_top : (⊤ : X.Opens) ⟶ ⊤) = 𝟙 _ := rfl
@@ -51,7 +51,7 @@ lemma restrictGlobal_top (r : Γ(X, ⊤)) : restrictGlobal X ⊤ r = r := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[restrictGlobal, ← ConcreteCategory.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma map_restrictGlobal {U V : X.Opens} (i : V ⟶ U) (r : Γ(X, ⊤)) :
     X.presheaf.map i.op (restrictGlobal X U r) = restrictGlobal X V r := by
@@ -74,33 +74,33 @@ Both sides reduce to the same expression.
     (smulHom F r).app U x = restrictGlobal X U r • x := rfl
 
 /- English proof (translation)
-Use extensionality with `U x`. Rewrite using `[smulHom_app_apply, map_one, one_smul]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 @[simp] lemma smulHom_one (F : X.Modules) : smulHom F 1 = 𝟙 F := by
   ext U x; rw [smulHom_app_apply, map_one, one_smul]; rfl
 
 /- English proof (translation)
-Use extensionality with `U x`. Rewrite using `[smulHom_app_apply, map_zero, zero_smul]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 @[simp] lemma smulHom_zero (F : X.Modules) : smulHom F 0 = 0 := by
   ext U x; rw [smulHom_app_apply, map_zero, zero_smul]; rfl
 
 /- English proof (translation)
-Use extensionality with `U x`. Rewrite using `[smulHom_app_apply, map_add, add_smul]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma smulHom_add (F : X.Modules) (r s : Γ(X, ⊤)) :
     smulHom F (r + s) = smulHom F r + smulHom F s := by
   ext U x; rw [smulHom_app_apply, map_add, add_smul]; rfl
 
 /- English proof (translation)
-Use extensionality with `U x`. Rewrite using `[smulHom_app_apply, map_mul, mul_smul]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma smulHom_mul (F : X.Modules) (r s : Γ(X, ⊤)) :
     smulHom F (r * s) = smulHom F s ≫ smulHom F r := by
   ext U x; rw [smulHom_app_apply, map_mul, mul_smul]; rfl
 
 /- English proof (translation)
-Use extensionality with `U x`. Conclude with `φ.app_smul (restrictGlobal X U r) x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 @[reassoc] lemma smulHom_comp {F G : X.Modules} (φ : F ⟶ G) (r : Γ(X, ⊤)) :
     smulHom F r ≫ φ = φ ≫ smulHom G r := by
@@ -135,7 +135,7 @@ Both sides reduce to the same expression.
 lemma smul_hom_def {F G : X.Modules} (r : Γ(X, ⊤)) (φ : F ⟶ G) : r • φ = φ ≫ smulHom G r := rfl
 
 /- English proof (translation)
-The claim follows from `(Category.id_comp _).symm`.
+A detailed English derivation is pending.
 -/
 lemma smulHom_eq_smul_id (F : X.Modules) (r : Γ(X, ⊤)) : smulHom F r = r • 𝟙 F :=
   (Category.id_comp _).symm
@@ -193,7 +193,7 @@ instance instModule : Module R (WithAction ρ) where
     rw [map_zero, map_zero]; rfl
 
 /- English proof (translation)
-Use `with_reducible_and_instances rfl`.
+A detailed English derivation is pending.
 -/
 example : instModule ρ ℤ = AddCommGroup.toIntModule (WithAction ρ) := by
   with_reducible_and_instances rfl
@@ -262,46 +262,46 @@ variable {C : Type u} [Category.{v} C] {J : GrothendieckTopology C}
   {F G H : Sheaf J AddCommGrpCat.{v}} {n : ℕ} {U V W : C}
 
 /- English proof (translation)
-Simplify using `only [map, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma map_id_apply (x : F.H' n U) : map (𝟙 F) n U x = x := by
   simp only [map, CategoryTheory.Functor.map_id]; rfl
 
 /- English proof (translation)
-Simplify using `only [map, Functor.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma map_comp_apply (f : F ⟶ G) (g : G ⟶ H) (x : F.H' n U) :
     map (f ≫ g) n U x = map g n U (map f n U x) := by
   simp only [map, Functor.map_comp]; rfl
 
 /- English proof (translation)
-Simplify using `only [map, Functor.map_add]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma map_add_apply (f g : F ⟶ G) (x : F.H' n U) :
     map (f + g) n U x = map f n U x + map g n U x := by
   simp only [map, Functor.map_add]; rfl
 
 /- English proof (translation)
-Simplify using `only [map, Functor.map_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma map_zero_apply (x : F.H' n U) : map (0 : F ⟶ G) n U x = 0 := by
   simp only [map, Functor.map_zero]; rfl
 
 /- English proof (translation)
-Simplify using `only [res, op_id, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma res_id_apply (x : F.H' n U) : res F n (𝟙 U) x = x := by
   simp only [res, op_id, CategoryTheory.Functor.map_id]; rfl
 
 /- English proof (translation)
-Simplify using `only [res, op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma res_comp_apply (i : V ⟶ U) (j : W ⟶ V) (x : F.H' n U) :
     res F n (j ≫ i) x = res F n j (res F n i x) := by
   simp only [res, op_comp, Functor.map_comp]; rfl
 
 /- English proof (translation)
-The claim follows from `(ConcreteCategory.congr_hom (((Sheaf.cohomologyPresheafFunctor J n).map f).naturality i.op) x).symm`.
+A detailed English derivation is pending.
 -/
 lemma res_map_apply (f : F ⟶ G) (i : V ⟶ U) (x : F.H' n U) :
     res G n i (map f n U x) = map f n V (res F n i x) :=

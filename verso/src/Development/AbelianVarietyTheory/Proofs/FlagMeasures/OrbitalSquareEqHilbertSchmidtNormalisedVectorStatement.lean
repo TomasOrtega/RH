@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ThresholdPro
 open Formalism.FourierDecayAlt Formalism.MainNotions.S GlobalTheory.ThA Formalism.QuantumDeterminants MeasureTheory Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ThA.OrbSq.orbSq_eq_vecV` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FOrbitalSquareEqHilbertSchmidtNormalisedVector.lean&line=406#L406)
 -/

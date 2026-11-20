@@ -11,9 +11,9 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.GenFan
 
 /- English proof (translation)
-Introduce `W _ _ _ hW ϖ hϖ f be hbe hf`. Establish `hsγ : ∀ i y z, γ i y z = γ i z y` using `fun i y z => by`. Rewrite using `[hγ i, LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.smul_apply, hs i y z]`. Take `⟨c, hc, e⟩` from `StepCheck.inCone_of_isMonomial hsγ hm W hW ϖ hϖ f be hbe hf`. Use `⟨fun i => c i * N, fun i => mul_nonneg (hc i) N.cast_nonneg, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `[toReal, hγ i, smul_eq_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem inCone_of_isMonomial_smul {R : Type} [CommRing R] [IsDomain R] (Dg : DegPre R) {m : ℕ} (t : Fin m → R)
     (γ δ : Fin m → LinearMap.BilinForm ℤ Dg.X) (N : ℕ) (_hN : 0 < N) (hγ : ∀ i, γ i = (N : ℤ) • δ i)

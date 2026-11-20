@@ -16,7 +16,7 @@ variable {K : Type} [Field K] [NumberField K]
 
 omit [NumberField K] in
 /- English proof (translation)
-Unfold `cut`. Simplify using `only [Submodule.mem_inf, Submodule.restrictScalars_mem, LinearMap.mem_range]`. Use `and_congr_right fun _ => ⟨?_, fun h => ⟨a, h⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨z, rfl⟩`. Conclude with `hp z`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_cut {A : Submodule (𝓞 K) V} {p : V →ₗ[K] V} (hp : ∀ a, p (p a) = p a) {a : V} :
     a ∈ cut A p ↔ a ∈ A ∧ p a = a := by
@@ -27,7 +27,7 @@ theorem mem_cut {A : Submodule (𝓞 K) V} {p : V →ₗ[K] V} (hp : ∀ a, p (p
   exact hp z
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 K)) K (A : Set V) x hx`. Use `⟨t, nonZeroDivisors.coe_ne_zero t, ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `ht`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem {A : Submodule (𝓞 K) V} {x : V} (hx : x ∈ Submodule.span K (A : Set V)) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ d • x ∈ A := by
@@ -38,9 +38,9 @@ theorem exists_smul_mem {A : Submodule (𝓞 K) V} {x : V} (hx : x ∈ Submodule
   exact ht
 
 /- English proof (translation)
-Establish `hdK : (d : K) ≠ 0` using `by exact_mod_cast hd`. Establish `h1 : x = (d : K)⁻¹ • (d • x)`. Rewrite using `[← IsScalarTower.algebraMap_smul K d x, smul_smul]`. Simplify using `[hdK]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hx)`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_of_smul_mem {A : Submodule (𝓞 K) V} {x : V} {d : 𝓞 K} (hd : d ≠ 0)
     (hx : d • x ∈ A) : x ∈ Submodule.span K (A : Set V) := by
@@ -52,11 +52,9 @@ theorem mem_span_of_smul_mem {A : Submodule (𝓞 K) V} {x : V} {d : 𝓞 K} (hd
   exact Submodule.smul_mem _ _ (Submodule.subset_span hx)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `a ha`. Conclude with `ha.2`. Introduce `u hu`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, hdu⟩` from `exists_smul_mem (A := A) (x := u) (by rw [hA]; trivial)`. Use `mem_span_of_smul_mem hd ⟨hdu, ?_⟩` and prove the remaining obligations. Establish `: d • u = (d : K) • u` using `(IsScalarTower.algebraMap_smul K d u).symm`. Express the relevant statement in the definitionally equal form `d • u ∈ LinearMap.range p`. Rewrite using `[this]`.
-
-Conclude with `Submodule.smul_mem _ _ hu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_cut {A : Submodule (𝓞 K) V} (hA : Submodule.span K (A : Set V) = ⊤)
     (p : V →ₗ[K] V) : Submodule.span K (cut A p : Set V) = LinearMap.range p := by
@@ -73,7 +71,7 @@ theorem span_cut {A : Submodule (𝓞 K) V} (hA : Submodule.span K (A : Set V) =
     exact Submodule.smul_mem _ _ hu
 
 /- English proof (translation)
-Unfold `rkK`. Rewrite using `[span_cut hA]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rkK_cut {A : Submodule (𝓞 K) V} (hA : Submodule.span K (A : Set V) = ⊤)
     (p : V →ₗ[K] V) : rkK (cut A p) = finrank K (LinearMap.range p) := by
@@ -81,14 +79,14 @@ theorem rkK_cut {A : Submodule (𝓞 K) V} (hA : Submodule.span K (A : Set V) = 
   rw [span_cut hA]
 
 /- English proof (translation)
-The claim follows from `hA.of_le inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem fg_cut {A : Submodule (𝓞 K) V} (hA : A.FG) (p : V →ₗ[K] V) : (cut A p).FG :=
   hA.of_le inf_le_left
 
 omit [NumberField K] in
 /- English proof (translation)
-Rewrite using `[← IsScalarTower.algebraMap_smul K d a, map_smul, IsScalarTower.algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_osmul {W : Type} [AddCommGroup W] [Module K W] [Module (𝓞 K) W]
     [IsScalarTower (𝓞 K) K W] (p : V →ₗ[K] W) (d : 𝓞 K) (a : V) : p (d • a) = d • p a := by
@@ -109,7 +107,7 @@ def Tr (p₀ p : V →ₗ[K] V) (x y : Fin n → V →ₗ[K] V) (c : Matrix (Fin
 variable {p₀ p : V →ₗ[K] V} {x y : Fin n → V →ₗ[K] V} {c : Matrix (Fin n) (Fin n) K}
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => h.2.2.2.2.2.1 i j _ (ha j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tr.yx_sum (h : Tr p₀ p x y c) (a : Fin n → V) (ha : ∀ j, p₀ (a j) = a j) (i : Fin n) :
     y i (∑ j, x j (a j)) = ∑ j, c i j • a j := by
@@ -117,11 +115,11 @@ theorem Tr.yx_sum (h : Tr p₀ p x y c) (a : Fin n → V) (ha : ∀ j, p₀ (a j
   exact Finset.sum_congr rfl fun j _ => h.2.2.2.2.2.1 i j _ (ha j)
 
 /- English proof (translation)
-Establish `h1 : ∀ i, ∑ j, c i j • a j = 0` using `fun i => by`. Rewrite using `[← h.yx_sum a ha i, h0, map_zero]`. Establish `hu : IsUnit c.det` using `isUnit_iff_ne_zero.mpr h.2.2.2.2.1`. Use function extensionality and compare the values at `k`. Establish `h2 : ∑ i, c⁻¹ k i • ∑ j, c i j • a j = a k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, ← Matrix.mul_apply, Matrix.nonsing_inv_mul _ hu, Matrix.one_apply]`. Simplify using the standard rewrite rules. Rewrite using `[← h2]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Tr.first_axis_injective (h : Tr p₀ p x y c) (a : Fin n → V) (ha : ∀ j, p₀ (a j) = a j)
     (h0 : ∑ j, x j (a j) = 0) : a = 0 := by
@@ -138,24 +136,22 @@ theorem Tr.first_axis_injective (h : Tr p₀ p x y c) (a : Fin n → V) (ha : �
   simp [h1]
 
 /- English proof (translation)
-Rewrite using `[← h.2.2.2.2.2.2 a ha]`. Simplify using `[h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Tr.inj_y (h : Tr p₀ p x y c) (a : V) (ha : p a = a) (h0 : ∀ i, y i a = 0) : a = 0 := by
   rw [← h.2.2.2.2.2.2 a ha]
   simp [h0]
 
 /- English proof (translation)
-Establish `hfix0 : ∀ a : LinearMap.range p₀, p₀ a = a`. Introduce and unpack `⟨_, z, rfl⟩`. Conclude with `h.1 z`. Establish `hfix : ∀ a : LinearMap.range p, p a = a`. Introduce and unpack `⟨_, z, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `h.2.1 z`. Establish `hpi : finrank K (Fin n → LinearMap.range p₀) = n * finrank K (LinearMap.range p₀)`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules. Rewrite using `[← hpi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression.
 
-Apply `le_antisymm` to reduce the goal to its premises. Set `Y : LinearMap.range p →ₗ[K] (Fin n → LinearMap.range p₀)` to `LinearMap.pi fun i => LinearMap.codRestrict _ (y i ∘ₗ (LinearMap.range p).subtype) fun a => ⟨_, h.2.2.2.1 i a (hfix a)⟩`. Use `LinearMap.finrank_le_finrank_of_injective (f := Y) ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `h.inj_y a (hfix a) fun i => ?_` and prove the remaining obligations. Conclude with `congrArg Subtype.val (congrFun ha i)`. Set `X : (Fin n → LinearMap.range p₀) →ₗ[K] LinearMap.range p` to `LinearMap.codRestrict _ (∑ j, x j ∘ₗ (LinearMap.range p₀).subtype ∘ₗ LinearMap.proj j) fun a => by`. Rewrite using `[LinearMap.sum_apply]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.sum_mem _ fun j _ => ⟨_, h.2.2.1 j (a j) (hfix0 _)⟩`. Use `LinearMap.finrank_le_finrank_of_injective (f := X) ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `h1` using `congrArg Subtype.val ha`.
-
-Simplify using `only [X, LinearMap.codRestrict_apply, LinearMap.sum_apply, LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.proj_apply, ZeroMemClass.coe_zero] at h1`. Establish `h2` using `h.first_axis_injective (fun j => (a j : V)) (fun j => hfix0 _) h1`. Use function extensionality and compare the values at `j`. Conclude with `Subtype.ext (congrFun h2 j)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem Tr.rank [FiniteDimensional K V] (h : Tr p₀ p x y c) :
     finrank K (LinearMap.range p) = n * finrank K (LinearMap.range p₀) := by
@@ -199,9 +195,9 @@ variable {K : Type} [Field K] [NumberField K] {G : Type} [Group G] [Fintype G]
   {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Establish `h1 : ∀ a, ε (ε a) = ε a` using `fun a => LinearMap.congr_fun hε a`. Establish `h2 : ∀ a, e (e a) = e a` using `fun a => LinearMap.congr_fun he a`. Establish `h3 : ∀ a, e (ε a) = ε (e a)` using `fun a => LinearMap.congr_fun hc a`. Use `⟨fun a => ?_, fun a => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, h3, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply] at h`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← h, h1]`. Rewrite using `[← h, h3, h2]`. Simplify using `only [LinearMap.comp_apply, h.1, h.2]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pe_facts {ε e : V →ₗ[K] V} (hε : ε ∘ₗ ε = ε) (he : e ∘ₗ e = e) (hc : e ∘ₗ ε = ε ∘ₗ e) :
     (∀ a, (ε ∘ₗ e) ((ε ∘ₗ e) a) = (ε ∘ₗ e) a) ∧
@@ -218,11 +214,11 @@ theorem pe_facts {ε e : V →ₗ[K] V} (hε : ε ∘ₗ ε = ε) (he : e ∘ₗ
   · simp only [LinearMap.comp_apply, h.1, h.2]
 
 /- English proof (translation)
-Take `⟨hE, hEp⟩` from `hP K G V ρ`. Take `⟨hc, hcp, -⟩` from `hE T τ`. Establish `f0` using `pe_facts (hEp H₀ χ₀).1 he (hcp H₀ χ₀)`. Establish `f1` using `pe_facts (hEp H χ).1 he (hcp H χ)`. Establish `key : ∀ (H : Subgroup G) (χ : H →* (𝓞 K)ˣ) (g : G) (a : V), eS τ ρ a = a → (epP H χ ρ ∘ₗ eS τ ρ) ((epP H χ ρ ∘ₗ ρ g) a) = (epP H χ ρ ∘ₗ ρ g) a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `H χ g a ha`. Establish `h1 : ∀ a, epP H χ ρ (epP H χ ρ a) = epP H χ ρ a` using `fun a => LinearMap.congr_fun (hEp H χ).1 a`. Establish `h2 : ∀ a, eS τ ρ (epP H χ ρ a) = epP H χ ρ (eS τ ρ a)` using `fun a => LinearMap.congr_fun (hcp H χ) a`. Establish `h3 : eS τ ρ (ρ g a) = ρ g (eS τ ρ a)` using `LinearMap.congr_fun (hc g) a`. Simplify using `only [LinearMap.comp_apply, h2, h1, h3, ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨hd, -, -, hV⟩` from `h`. Use `⟨f0.1, f1.1, fun j a ha => key H χ _ a ((f0.2 a).1 ha).2, fun i a ha => key H₀ χ₀ _ a ((f1.2 a).1 ha).2, hd, fun i j a ha => (hV V ρ).1 i j a ha, fun a ha => (hV V ρ).2 a ha⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem tr_of_core (hP : IdemP) {T : Type} [AddCommGroup T] [Module K T] [FiniteDimensional K T]
     {τ : Representation K G T} {H₀ : Subgroup G} {χ₀ : H₀ →* (𝓞 K)ˣ} {H : Subgroup G}
@@ -250,7 +246,7 @@ theorem tr_of_core (hP : IdemP) {T : Type} [AddCommGroup T] [Module K T] [Finite
     fun a ha => (hV V ρ).2 a ha⟩
 
 /- English proof (translation)
-Rewrite using `[mem_cut hp]`. Use `⟨((hP K G V ρ).2 H χ).2 A hA _ (hA g a ha), ?_⟩` and prove the remaining obligations. Rewrite using `[map_osmul, hx]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mem_cut (hP : IdemP) (ρ : Representation K G V) {A : Submodule (𝓞 K) V}
     (hA : ∀ g : G, ∀ a ∈ A, ρ g a ∈ A) (H : Subgroup G) (χ : H →* (𝓞 K)ˣ) (g : G)
@@ -265,23 +261,21 @@ variable {S : Type} [Fintype S] {T : S → Type} [∀ s, AddCommGroup (T s)] [�
   [∀ s, FiniteDimensional K (T s)] {τ : ∀ s, Representation K G (T s)}
 
 /- English proof (translation)
-Take `⟨he, ho⟩` from `hE K G S T τ hτ V ρ`. Take `⟨hE', hEp⟩` from `hP K G V ρ`. Establish `f` using `fun s => pe_facts (hEp H χ).1 (he s) ((hE' (T s) (τ s)).2.1 H χ)`. Establish `hge : ∀ s a, eGood τ ρ (eS (τ s) ρ a) = eS (τ s) ρ a`. Introduce `s a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `eGood`. Rewrite using `[LinearMap.sum_apply, Finset.sum_eq_single s]`. Conclude with `LinearMap.congr_fun (he s) a`. Introduce `t _ hts`. Conclude with `LinearMap.congr_fun (ho t s hts) a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use `⟨fun s a ha => ⟨ha.1, ?_⟩, fun a ha => ?_, fun s a ha => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `ha.2`. Use `⟨eS (τ s) ρ z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [LinearMap.comp_apply, hge]`. Take `⟨haA, z, hz⟩` from `ha`. Establish `hz' : a = ∑ s, epP H χ ρ (eS (τ s) ρ z)`. Rewrite using `[← hz]`. Simplify using `only [LinearMap.comp_apply, eGood, LinearMap.sum_apply, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : ∀ s, eS (τ s) ρ a = epP H χ ρ (eS (τ s) ρ z)`. Introduce `s`. Establish `h2 : ∀ a, eS (τ s) ρ (epP H χ ρ a) = epP H χ ρ (eS (τ s) ρ a)` using `fun a => LinearMap.congr_fun ((hE' (T s) (τ s)).2.1 H χ) a`. Establish `h3 : eS (τ s) ρ (eGood τ ρ z) = eS (τ s) ρ z` using `by classical`. Unfold `eGood`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.sum_apply, map_sum, Finset.sum_eq_single s]`. Conclude with `LinearMap.congr_fun (he s) z`. Introduce `t _ hts`. Conclude with `LinearMap.congr_fun (ho s t hts.symm) z`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hz, LinearMap.comp_apply, h2, h3]`. Establish `: (Fintype.card G : 𝓞 K) • a = ∑ s, (Fintype.card G : 𝓞 K) • eS (τ s) ρ a`. Rewrite using `[← Finset.smul_sum]`. Simplify using `only [hs]`. Rewrite using `[← hz']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Use `Submodule.sum_mem _ fun s _ => Submodule.mem_iSup_of_mem s ?_` and prove the remaining obligations. Rewrite using `[mem_cut (f s).1]`. Use `⟨(hE' (T s) (τ s)).2.2 A hA a haA, ?_⟩` and prove the remaining obligations. Rewrite using `[map_osmul, hs]`.
-
-Conclude with `congrArg _ ((f s).1 z)`. Conclude with `(((f s).2 a).1 ((mem_cut (f s).1).1 ha).2).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sandwich (hE : IdemE) (hP : IdemP) (hτ : IsGood τ) (ρ : Representation K G V)
     {A : Submodule (𝓞 K) V} (hA : ∀ g : G, ∀ a ∈ A, ρ g a ∈ A) (H : Subgroup G)

@@ -7,11 +7,11 @@ open scoped ContDiff
 namespace UpperTheory.V.Lit.Dr
 
 /- English proof (translation)
-Introduce `X _ _ V F _ _ _ _ _ _ q f x hf`. Set `b` to `Module.finBasis ℝ V`. Set `E : (V [⋀^Fin q]→L[ℝ] F) →ₗ[ℝ] ((Fin q → Fin (Module.finrank ℝ V)) → F)` to `{ toFun := fun a k => a fun i => b (k i) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hE : Function.Injective E`. Introduce `a a' h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ContinuousAlternatingMap.toAlternatingMap_injective` to reduce the goal to its premises. Use `Module.Basis.ext_alternating b fun k _ => ?_` and prove the remaining obligations. Conclude with `congrFun h k`. Take `⟨g, hg⟩` from `E.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hE)`. Establish `h1 : ContDiffAt ℝ ∞ (fun y => E (f y)) x` using `contDiffAt_pi.2 fun k => hf _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(LinearMap.toContinuousLinearMap g).contDiff.contDiffAt.comp x h1`. Establish `h3 : (LinearMap.toContinuousLinearMap g) ∘ (fun y => E (f y)) = f`. Use function extensionality and compare the values at `y`. Conclude with `LinearMap.congr_fun hg (f y)`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem altSmooth : AltSmooth := by
   intro X _ _ V F _ _ _ _ _ _ q f x hf

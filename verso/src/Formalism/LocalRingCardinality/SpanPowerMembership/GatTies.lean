@@ -23,7 +23,7 @@ def secOf (T : Set G) (q : Quo g) : G :=
   if h : ∃ x ∈ T, (QuotientGroup.mk x : Quo g) = q then h.choose else q.out
 
 /- English proof (translation)
-Unfold `secOf`. Use `split_ifs with h`. Conclude with `h.choose_spec.2`. Conclude with `QuotientGroup.out_eq' q`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mk_secOf (T : Set G) (q : Quo g) : (QuotientGroup.mk (secOf g T q) : Quo g) = q := by
   unfold secOf
@@ -32,7 +32,7 @@ theorem mk_secOf (T : Set G) (q : Quo g) : (QuotientGroup.mk (secOf g T q) : Quo
   · exact QuotientGroup.out_eq' q
 
 /- English proof (translation)
-Establish `h : ∃ y ∈ T, (QuotientGroup.mk y : Quo g) = QuotientGroup.mk x` using `⟨x, hx, rfl⟩`. Unfold `secOf`. Rewrite using `[dif_pos h]`. Conclude with `hT h.choose_spec.1 hx h.choose_spec.2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secOf_mk (T : Set G) (hT : Set.InjOn (fun x => (QuotientGroup.mk x : Quo g)) T) {x : G}
     (hx : x ∈ T) : secOf g T (QuotientGroup.mk x) = x := by
@@ -45,13 +45,13 @@ def orbFun (T : Set G) (x : Σ _ : Fin (Nat.card (Quo g)), Fin (orderOf g)) : G 
   secOf g T (eQuo g x.1) * g ^ (x.2 : ℕ)
 
 /- English proof (translation)
-Establish `key : ∀ (q : Quo g) (n : ℕ), (QuotientGroup.mk (secOf g T q * g ^ n) : Quo g) = q`. Introduce `q n`. Establish `h1 : (QuotientGroup.mk (secOf g T q) : Quo g) = QuotientGroup.mk (secOf g T q * g ^ n)`. Rewrite using `[QuotientGroup.eq, inv_mul_cancel_left]`. Conclude with `Subgroup.npow_mem_zpowers g n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, mk_secOf]`. Establish `hinj : Function.Injective (orbFun g T)`. Introduce and unpack `⟨v1, s1⟩ ⟨v2, s2⟩ h`. Simplify using `only [orbFun] at h`. Establish `hv : v1 = v2`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun y => (QuotientGroup.mk y : Quo g)) h`. Simplify using `only [key] at h3`. Conclude with `(eQuo g).injective h3`. Substitute `hv` using the available equality. Establish `hs : g ^ (s1 : ℕ) = g ^ (s2 : ℕ)` using `mul_left_cancel h`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : (s1 : ℕ) = s2` using `pow_injOn_Iio_orderOf s1.2 s2.2 hs`. Rewrite using `[Fin.ext h4]`. Use `hinj.bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[Subgroup.card_eq_card_quotient_mul_card_subgroup (Subgroup.zpowers g), Nat.card_zpowers, Nat.card_eq_fintype_card (α := Σ _ : Fin (Nat.card (Quo g)), Fin (orderOf g)), Fintype.card_sigma]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orbFun_bij (T : Set G) : Function.Bijective (orbFun g T) := by
   have key : ∀ (q : Quo g) (n : ℕ), (QuotientGroup.mk (secOf g T q * g ^ n) : Quo g) = q := by
@@ -80,7 +80,7 @@ def orbEquiv (T : Set G) : (Σ _ : Fin (Nat.card (Quo g)), Fin (orderOf g)) ≃ 
   Equiv.ofBijective (orbFun g T) (orbFun_bij g T)
 
 /- English proof (translation)
-Use `show orbFun g T ⟨v, posAdd s 1⟩ = orbFun g T ⟨v, s⟩ * g`. Simplify using `only [orbFun, posAdd, pow_mod_orderOf, pow_succ, mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orbEquiv_step (T : Set G) (v : Fin (Nat.card (Quo g))) (s : Fin (orderOf g)) :
     orbEquiv g T ⟨v, posAdd s 1⟩ = orbEquiv g T ⟨v, s⟩ * g := by
@@ -90,7 +90,7 @@ theorem orbEquiv_step (T : Set G) (v : Fin (Nat.card (Quo g))) (s : Fin (orderOf
 def orbIdx (x : G) : Fin (Nat.card (Quo g)) := (eQuo g).symm (QuotientGroup.mk x)
 
 /- English proof (translation)
-Use `show secOf g T (eQuo g (orbIdx g x)) * g ^ (s : ℕ) = x * g ^ (s : ℕ)`. Rewrite using `[orbIdx, Equiv.apply_symm_apply, secOf_mk g T hT hx]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbEquiv_idx (T : Set G) (hT : Set.InjOn (fun x => (QuotientGroup.mk x : Quo g)) T) {x : G}
     (hx : x ∈ T) (s : Fin (orderOf g)) : orbEquiv g T ⟨orbIdx g x, s⟩ = x * g ^ (s : ℕ) := by
@@ -98,7 +98,7 @@ theorem orbEquiv_idx (T : Set G) (hT : Set.InjOn (fun x => (QuotientGroup.mk x :
   rw [orbIdx, Equiv.apply_symm_apply, secOf_mk g T hT hx]
 
 /- English proof (translation)
-Introduce `x hx y hy h`. Conclude with `hT hx hy ((eQuo g).symm.injective h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orbIdx_injOn (T : Set G) (hT : Set.InjOn (fun x => (QuotientGroup.mk x : Quo g)) T) :
     Set.InjOn (orbIdx g) T := by
@@ -110,15 +110,15 @@ end Orbit
 variable {R : Ranks} (H : Host R) (p : ℕ)
 
 /- English proof (translation)
-Unfold `Host.cls primeClass at h`. Distinguish the cases in `h1 : p ∈ H.small`. Rewrite `h` using `[if_pos h1]`. Consider the cases of `h`. Rewrite `h` using `[if_neg h1]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `h2 : p = H.q`. Rewrite `h` using `[if_pos h2]`. Consider the cases of `h`. Rewrite `h` using `[if_neg h2]`. Distinguish the cases in `h3 : p = H.d`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `h` using `[if_pos h3]`. Consider the cases of `h`. Rewrite `h` using `[if_neg h3]`. Distinguish the cases in `h4 : jacobiSym (-(H.d : ℤ)) p = 1`. Rewrite `h` using `[if_pos h4]`.
+Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the cases of `h`. Rewrite `h` using `[if_neg h4]`. Distinguish the cases in `h5 : H.psAt p = 1`. Rewrite `h` using `[if_pos h5]`. Consider the cases of `h`.
+Split into cases according to the possible forms of the given data. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Conclude with `⟨h1, h2, h3, h4, h5⟩`.
+Supply the required witnesses or components.
 -/
 theorem of_cls (h : H.cls p = .inertClass) : p ∉ H.small ∧ p ≠ H.q ∧ p ≠ H.d ∧
     jacobiSym (-(H.d : ℤ)) p ≠ 1 ∧ H.psAt p ≠ 1 := by
@@ -145,20 +145,20 @@ theorem of_cls (h : H.cls p = .inertClass) : p ∉ H.small ∧ p ≠ H.q ∧ p �
   exact ⟨h1, h2, h3, h4, h5⟩
 
 /- English proof (translation)
-Rewrite using `[← H.psAt_prime hp (not_dvd_conductor_of_inert hp h)]`. Conclude with `(of_cls H p h).2.2.2.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_cls_q (hp : p.Prime) (h : H.cls p = .inertClass) : jacobiSym (-(H.q : ℤ)) p ≠ 1 := by
   rw [← H.psAt_prime hp (not_dvd_conductor_of_inert hp h)]
   exact (of_cls H p h).2.2.2.2
 
 /- English proof (translation)
-The claim follows from `Nat.Coprime.pow_right _ ((Nat.coprime_primes hp Nat.prime_two).mpr h2)`.
+A detailed English derivation is pending.
 -/
 theorem coprime_two_pow (hp : p.Prime) (h2 : p ≠ 2) : p.Coprime (2 ^ (R.e + 2)) :=
   Nat.Coprime.pow_right _ ((Nat.coprime_primes hp Nat.prime_two).mpr h2)
 
 /- English proof (translation)
-Take `⟨h2, hq, hd, -, -⟩` from `of_cls H p hc`. Establish `h1 : ¬ p ∣ H.QS` using `fun h => h2 (Nat.mem_primeFactors.2 ⟨hp, h, H.QS_pos.ne'⟩)`. Conclude with `Nat.Coprime.mul_right (Nat.Coprime.mul_right (hp.coprime_iff_not_dvd.2 h1) ((Nat.coprime_primes hp H.hyp.1).2 hq)) ((Nat.coprime_primes hp H.hyp.2.1).2 hd)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem coprime_of_cls (hp : p.Prime) (hc : H.cls p = .inertClass) : p.Coprime H.condN := by
   obtain ⟨h2, hq, hd, -, -⟩ := of_cls H p hc
@@ -170,13 +170,13 @@ def hOf : R.MA :=
   if h : p.Coprime H.condN then (H.art (ZMod.unitOfCoprime p h)).2 else 1
 
 /- English proof (translation)
-Rewrite using `[hOf, dif_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hOf_of_coprime (h : p.Coprime H.condN) : hOf H p = (H.art (ZMod.unitOfCoprime p h)).2 := by
   rw [hOf, dif_pos h]
 
 /- English proof (translation)
-Break down `Int.units_eq_one_or x with hx | hx` into its components or cases. Rewrite `h` using `[hx]`. Conclude with `absurd rfl h`. Conclude with `hx`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_eq_neg_one (x : ℤˣ) (h : (x : ℤ) ≠ 1) : x = -1 := by
   rcases Int.units_eq_one_or x with hx | hx
@@ -185,11 +185,9 @@ theorem unit_eq_neg_one (x : ℤˣ) (h : (x : ℤ) ≠ 1) : x = -1 := by
   · exact hx
 
 /- English proof (translation)
-Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hco` using `coprime_of_cls H p hp hc`. Take `⟨h2, hq, hd, hjd, hjq⟩` from `of_cls H p hc`. Take `⟨-, hiff, hval, -⟩` from `H.der.frob p (hp.coprime_iff_not_dvd.1 hco) P`. Take `⟨h1, h3, -⟩` from `hval σ hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h4` using `(hiff σ (ZMod.unitOfCoprime p hco) (ZMod.coe_unitOfCoprime p hco)).1 hσ`. Use `Prod.ext (Prod.ext ?_ ?_) ?_` and prove the remaining obligations. Conclude with `unit_eq_neg_one _ (by rw [h1]; exact hjq)`. Conclude with `unit_eq_neg_one _ (by rw [h3]; exact hjd)`. Use `show (H.gal σ).2 = hOf H p`.
-
-Rewrite using `[hOf_of_coprime H p hco, h4]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_val (hp : p.Prime) (hc : H.cls p = .inertClass) (P : Ideal (𝓞 H.E)) [P.IsPrime]
     [P.LiesOver (Ideal.span {(p : ℤ)})] (σ : H.E ≃ₐ[ℚ] H.E) (hσ : IsArithFrobAt ℤ σ P) :
@@ -207,7 +205,7 @@ theorem frob_val (hp : p.Prime) (hc : H.cls p = .inertClass) (P : Ideal (𝓞 H.
     rw [hOf_of_coprime H p hco, h4]
 
 /- English proof (translation)
-Establish `hco` using `hp.coprime_iff_not_dvd.2 hN`. Rewrite using `[hOf_of_coprime H p hco]`. Use `H.art_h _ _ ?_` and prove the remaining obligations. Rewrite using `[ZMod.coe_unitOfCoprime]`. Conclude with `((ZMod.natCast_eq_natCast_iff _ _ _).2 ((H.val_unitOfCoprime hco).of_dvd H.tower_dvd_condN)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hH_hOf (hp : p.Prime) (hN : ¬ p ∣ H.condN) (h2 : p ≠ 2) :
     R.hH (hOf H p) = hcl R.e (ZMod.unitOfCoprime p (coprime_two_pow (R := R) p hp h2)) := by
@@ -219,9 +217,9 @@ theorem hH_hOf (hp : p.Prime) (hN : ¬ p ∣ H.condN) (h2 : p ≠ 2) :
 
 open Ideal in
 /- English proof (translation)
-Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hco` using `coprime_of_cls H p hp hc`. Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `hpI : (span {(p : ℤ)}).IsPrime` using `(span_singleton_prime hpZ.ne_zero).2 hpZ`. Take `⟨⟨P, hPp, hPl⟩⟩ : Nonempty ((span {(p : ℤ)}).primesOver (𝓞 H.E))` from `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨σ, hσ⟩, -, -⟩` from `H.der.frob p (hp.coprime_iff_not_dvd.1 hco) P`. Conclude with `⟨P, hPp, hPl, σ, hσ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_frob (hp : p.Prime) (hc : H.cls p = .inertClass) :
     ∃ (P : Ideal (𝓞 H.E)) (_ : P.IsPrime) (_ : P.LiesOver (Ideal.span {(p : ℤ)}))
@@ -235,7 +233,7 @@ theorem exists_frob (hp : p.Prime) (hc : H.cls p = .inertClass) :
   exact ⟨P, hPp, hPl, σ, hσ⟩
 
 /- English proof (translation)
-Take `⟨P, hP, hL, σ, hσ⟩` from `exists_frob H p hp hc`. Establish `h1` using `@hn P hP hL σ hσ`. Rewrite `h1` using `[@frob_val R H p hp hc P hP hL σ hσ]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hOf_even (hp : p.Prime) (hc : H.cls p = .inertClass) (hn : HNeZero H p) :
     Even (orderOf (hOf H p)) := by
@@ -244,7 +242,7 @@ theorem hOf_even (hp : p.Prime) (hc : H.cls p = .inertClass) (hn : HNeZero H p) 
   rwa [@frob_val R H p hp hc P hP hL σ hσ] at h1
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `hOf_even H p hp hc hn`. Rewrite `h1` using `[h, orderOf_one]`. Conclude with `Nat.not_even_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hOf_ne_one (hp : p.Prime) (hc : H.cls p = .inertClass) (hn : HNeZero H p) :
     hOf H p ≠ 1 := by
@@ -257,7 +255,7 @@ def inPsi (φ : Formalism.HC.Frame) : φ.MA →* ↥φ.Psi :=
   (MonoidHom.inr G0 φ.MA).codRestrict φ.Psi (fun _ => rfl)
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h'` using `congrArg (fun x : ↥φ.Psi => (Subtype.val x).2) h`. Conclude with `h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inPsi_inj (φ : Formalism.HC.Frame) : Function.Injective (inPsi φ) := by
   intro a b h
@@ -265,7 +263,7 @@ theorem inPsi_inj (φ : Formalism.HC.Frame) : Function.Injective (inPsi φ) := b
   exact h'
 
 /- English proof (translation)
-Rewrite using `[orderOf_injective (inPsi φ) (inPsi_inj φ) h]`. Use `⟨rfl, ?_, h1⟩` and prove the remaining obligations. Establish `hpos : 0 < orderOf h` using `orderOf_pos h`. Take `⟨r, hr⟩` from `h1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 -/
 theorem order_spec (φ : Formalism.HC.Frame) (h : φ.MA) (h1 : Even (orderOf h)) :
     orderOf (inPsi φ h) = orderOf h ∧ 2 ≤ orderOf (inPsi φ h) ∧ Even (orderOf (inPsi φ h)) := by
@@ -293,14 +291,14 @@ def posPsi (S : Served H p) (T : Set ↥(R.Psi)) :
     (Σ _ : Fin (nOrb S), Fin (orderOf (gPsi S))) ≃ ↥(R.Psi) := orbEquiv (gPsi S) T
 
 /- English proof (translation)
-The claim follows from `orbEquiv_step (gPsi S) T v s`.
+A detailed English derivation is pending.
 -/
 theorem posPsi_step (S : Served H p) (T : Set ↥(R.Psi)) (v : Fin (nOrb S))
     (s : Fin (orderOf (gPsi S))) : posPsi S T ⟨v, posAdd s 1⟩ = posPsi S T ⟨v, s⟩ * gPsi S :=
   orbEquiv_step (gPsi S) T v s
 
 /- English proof (translation)
-The claim follows from `order_spec R.toFrame (hOf H p) (hOf_even H p S.prime S.cls S.hne)`.
+A detailed English derivation is pending.
 -/
 theorem ord_spec (S : Served H p) :
     orderOf (gPsi S) = orderOf (hOf H p) ∧
@@ -308,7 +306,7 @@ theorem ord_spec (S : Served H p) :
   order_spec R.toFrame (hOf H p) (hOf_even H p S.prime S.cls S.hne)
 
 /- English proof (translation)
-Use `R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem k_pos (R : Ranks) : R.k - 1 + 1 = R.k := by
   have := R.m_add_three_le_k
@@ -343,7 +341,7 @@ def gatOf (S : Served H p) (T : Set ↥(R.Psi)) (r : ℕ) (lam : ↥(R.Psi) → 
     e := 0 }
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨S.prime⟩`. Use `haveI : IsEmpty (gatOf S T r lam).comp := inferInstanceAs (IsEmpty Empty)`. Use `show Module.finrank _ (gatOf S T r lam).M = 0`. Conclude with `Module.finrank_zero_of_subsingleton`.
+A detailed English derivation is pending.
 -/
 theorem gatOf_d (S : Served H p) (T : Set ↥(R.Psi)) (r : ℕ) (lam : ↥(R.Psi) → DomWeight (R.N 0)) :
     (gatOf S T r lam).d = 0 := by
@@ -353,7 +351,7 @@ theorem gatOf_d (S : Served H p) (T : Set ↥(R.Psi)) (r : ℕ) (lam : ↥(R.Psi
   exact Module.finrank_zero_of_subsingleton
 
 /- English proof (translation)
-Rewrite using `[(ord_spec S).1, @frob_val R H p S.prime S.cls P _ _ σ hσ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem orderOf_frobenius_image_eq (S : Served H p) (P : Ideal (𝓞 H.E)) [P.IsPrime]
     [P.LiesOver (Ideal.span {(p : ℤ)})] (σ : H.E ≃ₐ[ℚ] H.E) (hσ : IsArithFrobAt ℤ σ P) :
@@ -361,7 +359,7 @@ theorem orderOf_frobenius_image_eq (S : Served H p) (P : Ideal (𝓞 H.E)) [P.Is
   rw [(ord_spec S).1, @frob_val R H p S.prime S.cls P _ _ σ hσ]
 
 /- English proof (translation)
-Rewrite using `[Equiv.trans_apply, Equiv.trans_apply, Equiv.apply_symm_apply, Equiv.apply_symm_apply, posPsi_step, Subgroup.coe_mul, mul_assoc, @frob_val R H p S.prime S.cls P _ _ σ hσ]`. Use `congr 1`. Simplify using `[gPsi, inPsi, Formalism.HC.Frame.cc, Prod.ext_iff]`. Conclude with `⟨⟨rfl, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem position_succ_eq_mul_frobenius (S : Served H p) (T : Set ↥(R.Psi)) {Tau : Type} (eTau : Tau ≃ ↥(R.Psi))
     (v : Fin (nOrb S)) (s : Fin (orderOf (gPsi S))) (P : Ideal (𝓞 H.E)) [P.IsPrime]
@@ -376,7 +374,7 @@ theorem position_succ_eq_mul_frobenius (S : Served H p) (T : Set ↥(R.Psi)) {Ta
   exact ⟨⟨rfl, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, _⟩` from `h`. Conclude with `⟨h1, h2, h3, h4⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem served_of {T : ℕ} (h : GIdx H T p) : Served H p := by
   obtain ⟨h1, h2, h3, h4, _⟩ := h
@@ -418,7 +416,7 @@ theorem withGat_n' (u w h v) :
     ((withGat D h0 rOf bs).gat u w h).P.n' v = orderOf (gPsi (H := D.host) (served_of h)) := rfl
 
 /- English proof (translation)
-The claim follows from `D.eTau.apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem gatTies_pos (u w h v s) :
     D.eTau ((gatTies D h0 rOf bs).gat_pos u w h ⟨v, s⟩) =
@@ -426,7 +424,7 @@ theorem gatTies_pos (u w h v s) :
   D.eTau.apply_symm_apply _
 
 /- English proof (translation)
-Conclude with `(gatTies_pos D h0 rOf bs u w h _ s).trans (orbEquiv_idx (gPsi (served_of h)) _ hT hx s)`.
+A detailed English derivation is pending.
 -/
 theorem gatTies_pos_base (u) (w : D.what₂.places.Pl)
     (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))

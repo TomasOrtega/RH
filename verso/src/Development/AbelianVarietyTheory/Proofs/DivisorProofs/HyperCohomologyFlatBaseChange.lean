@@ -15,9 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Div.HypFlatBaseChange
 
 /- English proof (translation)
-Establish `hp : Monotone fun i : J ↦ (⟨(U' i, U i), hle i⟩ : Pair φ)` using `fun i j hij ↦ ⟨hU' hij, hU hij⟩`. Establish `k` using `congrArg (pullHyp1 (CoefMap.restrict (OPair φ s') hp.functor.op)) (isPull1_pullHH1 w c)`. Rewrite `k` using `[← pullHyp1_comp, ← pullHyp1_comp]`. Rewrite using `[← pullHyp1_comp]`. Establish `k1` using `pullHyp1_eq_of_natTrans (F' := hU'.functor.op ⋙ OAff s') ((pairRes φ s').comp (CoefMap.restrict (OPair φ s') hp.functor.op)) (CoefMap.restrict (OAff s') hU'.functor.op) (𝟙 _) (fun T b ↦ mp_id (OAff s') _ b) (pullHH1 w c)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k2` using `pullHyp1_eq_of_natTrans (F' := hU'.functor.op ⋙ OAff s') ((pairPull w).comp (CoefMap.restrict (OPair φ s') hp.functor.op)) ((CoefMap.restrict (OAff s) hU.functor.op).comp g) (Functor.whiskerRight θ hU.functor.op) (fun T b ↦ hg T b) c`. Conclude with `k1.symm.trans (k.symm.trans k2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem square {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {X X' : Scheme.{0}}
     {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {φ : X' ⟶ X} (w : φ ≫ s = s' ≫ spMap σ)
@@ -44,13 +44,13 @@ theorem square {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {X X' 
   exact k1.symm.trans (k.symm.trans k2)
 
 /- English proof (translation)
-Introduce `R R' _ _ _ _ X X' s s' φ h hs hq`. Take `⟨J, _, _, U, hU, hinf, hcov⟩` from `GlobalTheory.exists_finite_affine_cover_infClosed R X s hs hq`. Use `haveI : IsAffineHom φ := MorphismProperty.of_isPullback (P := @IsAffineHom) h.flip inferInstance`. Set `U' : J → X'.affineOpens` to `fun i ↦ ⟨φ ⁻¹ᵁ (U i).1, (U i).2.preimage φ⟩`. Establish `hU' : Monotone U'` using `fun i j hij x hx ↦ hU hij hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinf' : ∀ i j, (U' (i ⊓ j)).1 = (U' i).1 ⊓ (U' j).1` using `fun i j ↦ by`. Express the relevant statement in the definitionally equal form `φ ⁻¹ᵁ (U (i ⊓ j)).1 = _`. Rewrite using `[hinf]`. Both sides reduce to the same expression. Establish `hcov' : ⨆ i, (U' i).1 = ⊤`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `⨆ i, φ ⁻¹ᵁ (U i).1 = ⊤`. Rewrite using `[← Scheme.Hom.preimage_iSup, hcov]`. Both sides reduce to the same expression. Establish `hp : Monotone fun i : J ↦ (⟨(U' i, U i), le_rfl⟩ : Pair φ)` using `fun i j hij ↦ ⟨hU' hij, hU hij⟩`. Use `haveI : Finite Jᵒᵖ := Finite.of_equiv J Opposite.equivToOpposite`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : ∀ T T' : Jᵒᵖ, Finite (T ⟶ T') := fun T T' ↦ Finite.of_injective (β := T'.unop ⟶ T.unop) Quiver.Hom.unop Quiver.Hom.unop_inj`. Establish `hb` using `GlobalTheory.T.deRhamHypercohomologyOne_baseChange_flat_bijective R R' Jᵒᵖ (hU.functor.op ⋙ OAff s) (hU'.functor.op ⋙ OAff s') (fun T ↦ GlobalTheory.CechDR.secPull s s' ⟨(U' T.unop, U T.unop), le_rfl⟩) (fun a b ↦ (pairPull h.w).naturality (hp.functor.op.map a) b) (fun T ↦ semiHom …`. Establish `hsq` using `fun c ↦ square h.w U hU U' hU' (fun _ ↦ le_rfl) ⟨𝟭 _, fun T ↦ GlobalTheory.CechDR.secPull s s' ⟨(U' T.unop, U T.unop), le_rfl⟩, fun a b ↦ (pairPull h.w).naturality (hp.functor.op.map a) b, fun T ↦ semiHom_secPull h.w ⟨(U' T.unop, U T.unop), le_rfl⟩⟩ (𝟙 _) (fun T b ↦ congrArg (Glo …`. Conclude with `(GlobalTheory.Div.BaseChangeIso.main R R' (HH1 s) (Hyp1 (hU.functor.op ⋙ OAff s)) (HH1 s') (Hyp1 (hU'.functor.op ⋙ OAff s')) (pullHyp1 (CoefMap.restrict (OAff s) hU.functor.op)) (pullHyp1 (CoefMap.restrict (OAff s') hU'.functor.op)) (pullHH1 h.w) _ (GlobalTheory.T.cech_hyper_coho …`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] [Module.Flat R R'] (X X' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (φ : X' ⟶ X) (h : IsPullback φ s' s (spMap (algebraMap R R'))), IsSeparated s → QuasiCompact s → Function.Bijective (liftSemi (pullHH1 h.w)) := by
   intro R R' _ _ _ _ X X' s s' φ h hs hq

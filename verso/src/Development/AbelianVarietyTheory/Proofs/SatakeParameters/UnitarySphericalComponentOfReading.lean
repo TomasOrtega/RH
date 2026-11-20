@@ -16,11 +16,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hBZ R H what₂ N A T S hL hU i σ hσ w hw hu`. Establish `hloc` using `(S i w hw).locW σ hσ`. Establish `hsph : IsSpherical ((S i w hw).row σ).π`. Rewrite using `[← (hL i w hw).sph, ← hloc, ← T.unr]`. Conclude with `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα⟩` from `GlobalTheory.T.sphericalRepGL_exists_satakeParameters hBZ _ _ _ hsph`. Establish `hfrob : A.frobEig (A.locW i σ w) = (Finset.univ.val.map fun j => (α j : ℂ)).map (·⁻¹)`. Rewrite using `[T.frobEig w _ hu, hloc, (hL i w hw).sat _ _ α hα, Multiset.map_map]`. Simplify using the standard rewrite rules. Establish `h1 : GlobalTheory.RowSatakeBound.IsUnitarySatakeAt w R.r (Finset.univ.val.map fun j => (α j : ℂ))` using `GlobalTheory.T.isUnitarySphericalSatake_of_unitarisable_hasSatake H.E w R.r _ α hα (hU i w hw σ hσ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfrob]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify `h1` using `[Multiset.map_map, Function.comp_def]`. Use `GlobalTheory.RowSatakeBound.finite_residue w` as an intermediate fact. Conclude with `GlobalTheory.T.isUnitarySphericalSatakeMultiset_map_inv _ _ _ _ h1`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unitarySphericalComponent_of_reading : GlobalTheory.Published.BernsteinZelevinskyFiniteness →
     ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N) (T : WDTie N A)

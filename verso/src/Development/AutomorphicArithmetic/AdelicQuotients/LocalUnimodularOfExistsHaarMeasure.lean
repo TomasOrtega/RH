@@ -4,7 +4,7 @@ open MeasureTheory
 open scoped ENNReal Pointwise
 
 /- English proof (translation)
-Rewrite using `[Measure.map_apply hf hE.inv, Measure.map_apply hf hE, Measure.restrict_apply (hf hE.inv), Measure.restrict_apply (hf hE)]`. Establish `h : f ⁻¹' E⁻¹ ∩ (U : Set G) = (f ⁻¹' E ∩ (U : Set G))⁻¹`. Use extensionality with `x`. Simplify using `[Set.mem_inv, map_inv, Subgroup.inv_mem_iff]`. Rewrite using `[h, Measure.measure_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem inv_map_sub {G P : Type} [Group G] [Group P] [MeasurableSpace G] [MeasurableSpace P]
     [MeasurableInv G] [MeasurableInv P] (μ : Measure G) [μ.IsInvInvariant] (U : Subgroup G)
@@ -18,7 +18,7 @@ private theorem inv_map_sub {G P : Type} [Group G] [Group P] [MeasurableSpace G]
   rw [h, Measure.measure_inv]
 
 /- English proof (translation)
-Establish `hi : ν.inv = ν` using `Measure.ext fun E hE => by rw [Measure.inv_apply]; exact h E hE`. Rewrite using `[← Measure.inv_apply, hi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem inv_all {P : Type} [Group P] [MeasurableSpace P] [MeasurableInv P] (ν : Measure P)
     (h : ∀ E, MeasurableSet E → ν E⁻¹ = ν E) (E : Set P) : ν E⁻¹ = ν E := by
@@ -26,19 +26,17 @@ private theorem inv_all {P : Type} [Group P] [MeasurableSpace P] [MeasurableInv 
   rw [← Measure.inv_apply, hi]
 
 /- English proof (translation)
-Introduce `hH V G _ _ _ _ _ _ _ _ Gi _ _ _ _ _ _ _ _ Gv _ _ _ _ _ _ _ _ q p K hRP μ μi m hμ hμi hm`. Use `haveI := hμ.1`. Use `haveI := hμ.2`. Use `haveI := hμi`. Use `haveI := fun v => hm v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ (S : Finset V) (A : Set Gi) (B : ∀ v : S, Set (Gv v)), μi A⁻¹ * ∏ v : S, m v (B v)⁻¹ = μi A * ∏ v : S, m v (B v)`. Introduce `S A B`. Take `⟨a, ha, hE⟩` from `hH V G Gi Gv q p K hRP μ μi m hμ.1 hμi hm S`. Establish `hE' : (μ.restrict (US p K S : Set G)).map (prS q p S) = a • μi.prod (Measure.pi fun v : S => m v)` using `hE`. Establish `hf : Measurable (prS q p S)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Measurable q` using `hRP.cq.measurable`. Establish `h2 : Measurable fun g : G => fun v : S => p v g` using `measurable_pi_lambda _ fun v => (hRP.cp v).measurable`. Conclude with `h1.prodMk h2`. Establish `hU : MeasurableSet (US p K S : Set G)` using `(hRP.opnU S).measurableSet`. Establish `h1` using `inv_all ((μ.restrict (US p K S : Set G)).map (prS q p S)) (inv_map_sub μ (US p K S) (prS q p S) hf hU) (A ×ˢ Set.pi Set.univ B)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hset : (A ×ˢ Set.pi Set.univ B)⁻¹ = A⁻¹ ×ˢ Set.pi Set.univ (fun v => (B v)⁻¹)`. Use extensionality with `⟨x, y⟩`. Simplify using `[Set.mem_prod, Set.mem_pi, Set.mem_inv]`. Rewrite `h1` using `[hE', hset, Measure.smul_apply, Measure.smul_apply, Measure.prod_prod, Measure.prod_prod, Measure.pi_pi, Measure.pi_pi, ENNReal.smul_def, ENNReal.smul_def, smul_eq_mul, smul_eq_mul]`. Conclude with `(ENNReal.mul_right_inj (by exact_mod_cast ha) ENNReal.coe_ne_top).1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ∀ A : Set Gi, μi A⁻¹ = μi A`. Introduce `A`. Establish `h` using `key ∅ A (fun _ => Set.univ)`. Simplify using `using h`. Use `⟨⟨hμi, ⟨Measure.ext fun A _ => by rw [Measure.inv_apply]; exact hinv A⟩⟩, fun v => ⟨hm v, ⟨Measure.ext fun B _ => ?_⟩⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Measure.inv_apply]`. Take `⟨C, hC, hC1⟩` from `exists_compact_mem_nhds (1 : Gi)`. Establish `hpos : μi C ≠ 0` using `(Measure.measure_pos_of_mem_nhds μi hC1).ne'`. Establish `htop : μi C ≠ ⊤` using `hC.measure_lt_top.ne`. Set `v0 : ({v} : Finset V)` to `⟨v, Finset.mem_singleton_self v⟩`.
-
-Establish `h` using `key {v} C (Function.update (fun _ => Set.univ) v0 B)`. Rewrite `h` using `[hinv C, Fintype.prod_subsingleton _ v0, Fintype.prod_subsingleton _ v0]`. Simplify using `only [Function.update_self] at h`. Conclude with `(ENNReal.mul_right_inj hpos htop).1 h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.local_unimodular_of_exists_haar_measure :
     HaarEx → UniLoc := by

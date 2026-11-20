@@ -11,9 +11,9 @@ namespace PositivityTheory.SiegelWeilFormula.Atop
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `e : Fin L.n ≃ {i : Fin d.n // ¬ i = L.i₀}` using `Equiv.ofBijective (fun a => ⟨L.em a, (L.rng _).2 ⟨a, rfl⟩⟩) ⟨fun a b h => L.inj (congrArg Subtype.val h), fun i => by`. Take `⟨a, ha⟩` from `(L.rng i.1).1 i.2`. Conclude with `⟨a, Subtype.ext ha⟩⟩`. Establish `h` using `Fintype.card_congr e`. Rewrite `h` using `[Fintype.card_fin, Fintype.card_subtype_compl, Fintype.card_fin, Fintype.card_subtype_eq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `L.i₀.pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem LD.n_succ {d : SD σ} (L : LD d) : L.n + 1 = d.n := by
   have e : Fin L.n ≃ {i : Fin d.n // ¬ i = L.i₀} :=
@@ -27,15 +27,13 @@ theorem LD.n_succ {d : SD σ} (L : LD d) : L.n + 1 = d.n := by
   omega
 
 /- English proof (translation)
-Establish `hCV : ∀ (d : SD σ) (R : RD d) (c : ℂ), MainC c d → MainV c R`. Introduce `d R c hC Φ hΦ hv x`. Conclude with `hC Φ (hPK F E σ d R Φ hΦ ((hVK F E σ d R).2.1 hv)) x`. Establish `key : ∀ k' : ℕ, ∀ d : SD σ, d.m ≤ d.n → d.n - d.m = k' → ∀ R : RD d, MainV 2 R`. Introduce `k'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k' with`. Consider the case `zero`. Introduce `d h1 h2 R`. Conclude with `hCV d R 2 (hEq F E σ d (by omega))`. Consider the case `succ k' ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `d h1 h2 R`. Establish `hm` using `d.ok.hm`. Take `⟨L⟩` from `hLD F E σ d (by omega)`. Take `⟨R'⟩` from `hRD F E σ L.sd`. Establish `hn` using `LD.n_succ L`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
-Use `hStep F E σ d R L R' (by omega) (ih L.sd ?_ ?_ R')` and prove the remaining obligations. Use `show d.m ≤ L.n`. Use linear arithmetic over natural numbers and integers. Use `show L.n - d.m = k'`. Use linear arithmetic over natural numbers and integers.
-
-Introduce `d h1 h2`. Take `⟨R⟩` from `hRD F E σ d`. Conclude with `hVA F E σ d R 2 (key k d h1 h2 R)`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rank_difference_induction (hRD : RDEx) (hLD : LDEx) (hVK : VacK) (hPK : PolyKFin) (hEq : MainEq) (hStep : Step)
     (hVA : VacAll) (k : ℕ) : ∀ d : SD σ, d.m ≤ d.n → d.n - d.m = k → MainC 2 d := by
@@ -68,7 +66,7 @@ end PositivityTheory.SiegelWeilFormula.Atop
 namespace PositivityTheory.SiegelWeilFormula
 
 /- English proof (translation)
-Introduce `hRD hLD hVK hPK hEq hStep hVA F E _ _ _ _ _ σ d h`. Conclude with `Atop.rank_difference_induction hRD hLD hVK hPK hEq hStep hVA _ d h rfl`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Atop.mainLeOf : MainLeOf := by
   intro hRD hLD hVK hPK hEq hStep hVA F E _ _ _ _ _ σ d h

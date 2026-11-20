@@ -9,7 +9,7 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Apply the tactic sequence `simp [unipMatrix, blockEntry_apply, Matrix.one_apply, Matrix.toBlocks₁₂, Fin.ext_iff] <;> omega`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem unip_blocks {a b : ℕ} {R : Type} [CommRing R] (X : UPos (a + b) a → R) :
     (unipMatrix X).submatrix finSumFinEquiv finSumFinEquiv =
@@ -19,9 +19,9 @@ private theorem unip_blocks {a b : ℕ} {R : Type} [CommRing R] (X : UPos (a + b
     simp [unipMatrix, blockEntry_apply, Matrix.one_apply, Matrix.toBlocks₁₂, Fin.ext_iff] <;> omega
 
 /- English proof (translation)
-Use `⟨fun p => Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks 0 B 0 0) p.1.1 p.1.2, ?_⟩` and prove the remaining obligations. Rewrite using `[unip_blocks]`. Use `congr 1`. Use extensionality with `i j`. Establish `: (Fin.castAdd b i : Fin (a + b)) ≠ Fin.natAdd a j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `[Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Simplify using `[unipMatrix, blockEntry_apply, Matrix.toBlocks₁₂, this]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 private theorem unip_onto {a b : ℕ} {R : Type} [CommRing R] (B : Matrix (Fin a) (Fin b) R) : ∃ X : UPos (a + b) a → R,
     (unipMatrix X).submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks 1 B 0 (1 : Matrix (Fin b) (Fin b) R) := by
@@ -34,13 +34,13 @@ private theorem unip_onto {a b : ℕ} {R : Type} [CommRing R] (B : Matrix (Fin a
   simp [unipMatrix, blockEntry_apply, Matrix.toBlocks₁₂, this]
 
 /- English proof (translation)
-Establish `e1 : g.val.submatrix finSumFinEquiv finSumFinEquiv * g⁻¹.val.submatrix finSumFinEquiv finSumFinEquiv = (1 : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) R)`. Rewrite using `[Matrix.submatrix_mul_equiv, Units.mul_inv, Matrix.submatrix_one_equiv]`. Establish `hg : ∀ M : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) R, g.val.submatrix finSumFinEquiv finSumFinEquiv = M → g.val = M.submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Introduce and unpack `_ rfl`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `g.val.submatrix finSumFinEquiv finSumFinEquiv = M at *`. Generalize the expression as in `g⁻¹.val.submatrix finSumFinEquiv finSumFinEquiv = N at *`. Establish `hM` using `(Matrix.fromBlocks_toBlocks M).symm`. Rewrite `e1` using `[← Matrix.fromBlocks_toBlocks M, ← Matrix.fromBlocks_toBlocks N, h, h', Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_inj]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add] at e1`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨e1, -, -, e2⟩` from `e1`. Take `⟨X, hX⟩` from `unip_onto (M.toBlocks₁₂ * N.toBlocks₂₂)`. Use `⟨⟨_, _, e1, mul_eq_one_comm.1 e1⟩, ⟨_, _, e2, mul_eq_one_comm.1 e2⟩, ⟨rfl, rfl⟩, ⟨rfl, rfl⟩, X, Units.ext ?_⟩` and prove the remaining obligations. Establish `hX' : unipMatrix X = (Matrix.fromBlocks 1 (M.toBlocks₁₂ * N.toBlocks₂₂) 0 1).submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Rewrite using `[← hX]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Units.val_mul, coe_unipGL, hX', hg M rfl]`. Simplify using `only [blk, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.one_mul, Matrix.mul_assoc, mul_eq_one_comm.1 e2, Matrix.mul_one]`. Rewrite using `[← h, ← hM]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dec {a b : ℕ} {R : Type} [CommRing R] (g : GL (Fin (a + b)) R)
     (h : (g.val.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0)
@@ -75,15 +75,13 @@ private theorem dec {a b : ℕ} {R : Type} [CommRing R] (g : GL (Fin (a + b)) R)
   rw [← h, ← hM]
 
 /- English proof (translation)
-Take `⟨hlv, -, -, -, hdet, -⟩` from `blkLaws (K := K)`. Take `⟨a, d, -, -, X, hX⟩` from `dec (s : AdelicGLn.AdelicGL K (2 + 2)) h h'`. Use `⟨X, retractOne a, retractOne d, Real.log (detModule K 2 a).1, ?_⟩` and prove the remaining obligations. Establish `h1 : detModule K 2 a * detModule K 2 d = 1`. Use `mem_normOneGL_iff_detModule.1 s.2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hX, map_mul, mem_normOneGL_iff_detModule.1 (unipGL_mem_normOneGL _), one_mul, hdet]`. Then use the resulting hypothesis. Establish `z1 : zt K (Real.log (detModule K 2 a).1) = centralSection K 2 (detModule K 2 a)`. Unfold `zt`. Use `congr 1`. Conclude with `Subtype.ext (Real.exp_log (detModule K 2 a).2)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `z2 : zt K (-Real.log (detModule K 2 a).1) = centralSection K 2 (detModule K 2 d)`. Unfold `zt`. Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[eq_inv_of_mul_eq_one_right h1]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Real.exp (-Real.log _) = _`. Rewrite using `[Real.exp_neg, Real.exp_log (detModule K 2 a).2]`. Both sides reduce to the same expression. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, hlv, z1, z2, coe_retractOne, coe_retractOne, inv_mul_cancel_right, inv_mul_cancel_right]`.
-
-Conclude with `hX`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem of_low {K : Type} [Field K] [NumberField K] (s : G1 K (2 + 2))
     (h : ((s : AdelicGLn.AdelicGL K (2 + 2)).val.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0)
@@ -112,7 +110,7 @@ private theorem of_low {K : Type} [Field K] [NumberField K] (s : G1 K (2 + 2))
   exact hX
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `mem_adelicBorel.1 hb ?_` and prove the remaining obligations. Use `show finSumFinEquiv (Sum.inl j) < finSumFinEquiv (Sum.inr i)`. Simplify using `only [finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem low_borel {K : Type} [Field K] [NumberField K] {b : AdelicGLn.AdelicGL K (2 + 2)} (hb : b ∈ adelicBorel) :
     (b.val.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0 := by
@@ -123,9 +121,9 @@ private theorem low_borel {K : Type} [Field K] [NumberField K] {b : AdelicGLn.Ad
   omega
 
 /- English proof (translation)
-Introduce `K _ _ g`. Take `⟨b, hb, k, hk, e⟩` from `exists_adelicBorel_mul_maxCompact (g : AdelicGLn.AdelicGL K (2 + 2))`. Set `k' : G1 K (2 + 2)` to `⟨k, maxCompact_le_normOneGL hk⟩`. Establish `hs : ((g * k'⁻¹ : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) = b`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_inv_cancel_right b k`. Take `⟨X, m₁, m₂, t, h⟩` from `of_low (g * k'⁻¹) (by rw [hs]; exact low_borel hb) (by rw [hs]; exact low_borel (inv_mem hb))`. Conclude with `⟨X, m₁, m₂, t, k', hk, by rw [← h, inv_mul_cancel_right]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.iwa :
     ∀ {K : Type} [Field K] [NumberField K] (g : G1 K (2 + 2)), ∃ (X : UPos (2 + 2) 2 → 𝔸[K]) (m₁ m₂ : G1 K 2) (t : ℝ), ∃ k ∈ KG K (2 + 2), g = nn X * lv m₁ m₂ t * k := by

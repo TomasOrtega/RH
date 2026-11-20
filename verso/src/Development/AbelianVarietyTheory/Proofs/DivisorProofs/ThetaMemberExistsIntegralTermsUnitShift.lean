@@ -30,9 +30,9 @@ open GlobalTheory.Poinc.IntTerm
 namespace GlobalTheory.GSep.IntTerm
 
 /- English proof (translation)
-Take `⟨j, h₁, h₂, e⟩` from `h`. Take `⟨r', hr', e'⟩` from `D.psi_pos χ hχ j ⊤ (isAffineOpen_top _) h₁ h₂`. Establish `e₁ : r' = DegPre.toOpen (R` using `V) ⊤ r := GlobalTheory.PsiCoordLocal.jK_app_inj ⊤ (e'.trans e.symm)`. Rewrite `hr'` using `[e₁]`. Establish `hb` using `GlobalTheory.PsiCoordLocal.toOpen_top_bijective (R := V)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨s, hs, es⟩` from `(Ideal.mem_map_iff_of_surjective _ hb.2).1 hr'`. Rewrite using `[← hb.1 es]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_of_psiCoord {V : Type} [CommRing V] [IsDomain V] {I : Ideal V} (D : DegData V I) {χ : D.toPre.X} (hχ : χ ≠ 0)
     {r : V} (h : Formalism.L2.Pj.PsiCoord D.toPre χ r) : r ∈ I := by
@@ -45,7 +45,7 @@ theorem mem_of_psiCoord {V : Type} [CommRing V] [IsDomain V] {I : Ideal V} (D : 
   rwa [← hb.1 es]
 
 /- English proof (translation)
-Rewrite using `[← not_iff_not, ← mem_nonunits_iff, ← mem_nonunits_iff, ← mem_maximalIdeal, ← mem_maximalIdeal]`. Conclude with `⟨fun ha => by simpa using sub_mem ha h, fun hb => by simpa using add_mem h hb⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isUnit_of_sub_mem {V : Type} [CommRing V] [IsLocalRing V] {a b : V} (h : a - b ∈ maximalIdeal V) :
     IsUnit a ↔ IsUnit b := by
@@ -53,43 +53,37 @@ theorem isUnit_of_sub_mem {V : Type} [CommRing V] [IsLocalRing V] {a b : V} (h :
   exact ⟨fun ha => by simpa using sub_mem ha h, fun hb => by simpa using add_mem h hb⟩
 
 /- English proof (translation)
-Introduce `I X₁ z₁ act x₀ hdiv V _ _ _ ev X _ t δ 𝔪 C lab hlab`. Establish `hV` using `𝔪.cn`. Use `haveI : IsNoetherianRing V := hV.1`. Use `haveI : CharZero V := hV.2.2.2`. Establish `hA` using `admissibleBase_of_completeNormalLocalCharZero hV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `GlobalTheory.firstFiveLaws`. Establish `hN₂ : 2 ≤ X₁.S.r * X₁.S.N` using `le_trans X₁.S.N_ge (Nat.le_mul_of_pos_left _ X₁.S.r_pos)`. Establish `hN : 1 ≤ X₁.S.r * X₁.S.N` using `by omega`. Establish `ht0 : IsUnit (t 0)`. Take `⟨u₀, hu₀⟩` from `𝔪.psi 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r₀, hr₀, -, -, hu⟩` from `(GlobalTheory.PsiCoordLocal.main V 𝔪.D hV.2.1 (𝔪.e₈ 0)).1`. Take `⟨v, hv⟩` from `(GlobalTheory.PsiCoordLocal.main V 𝔪.D hV.2.1 (𝔪.e₈ 0)).2.1 r₀ _ hr₀ hu₀`. Establish `h1 : IsUnit ((u₀ : V) * t 0)` using `hv ▸ v.isUnit.mul (hu (map_zero _))`. Conclude with `isUnit_of_mul_isUnit_right h1`. Take `⟨x, fr, th, ρ, hx, hfr, hth, hρ, htf⟩` from `GlobalTheory.T.exists_points_frames_thetaSection_member I X₁ z₁ act V ev X t δ 𝔪`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hNu, h0, hdv⟩` from `GlobalTheory.T.level_isUnit_dividingThetaConstant_ne_zero_dvd I X₁ z₁ act V ev X t δ 𝔪 x₀ hdiv`. Take `⟨w₀, hw₀⟩` from `𝔪.U.ext`. Take `⟨s, hs, -⟩` from `((expBijF_and_expandsF_lin hL V _ hA 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U).1 (FractionRing V) 1 le_rfl w₀ hw₀).1 th`. Take `⟨l, hl, hlf⟩` from `GlobalTheory.T.exists_torsion_frame_eq_const_mul_integral_generator V hV 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U w₀ hw₀ ρ hρ _ hN`. Establish `hint` using `GlobalTheory.T.mem_dividingLabels_iff_class_zero I X₁ z₁ act x₀ hdiv V ev X t δ 𝔪`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxb : ∀ (a) (xb : TFK (R` using `V) (AlgebraicClosure (FractionRing V)) ⟶ 𝔪.A.A), xb.left ≫ 𝔪.φ = spMap ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp 𝔪.yK) ≫ (X₁.ρ.pt a).left → xb.left = spMap (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))) ≫ (x a).left := by`. Introduce `a xb h`. Use `𝔪.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[h, Category.assoc, hx a, ← Category.assoc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, Over.w, Over.w]`. Express the relevant statement in the definitionally equal form `_ = _ ≫ Spec.map (𝟙 _)`. Rewrite using `[Spec.map_id, Category.comp_id]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hyy : ∀ c, 𝔪.YY (lab c) 0` using `fun c => (hint _).1 (by`. Establish `: lab c ∈ Set.range lab` using `⟨c, rfl⟩`. Rewrite using `[hlab] at this)` and apply the resulting hypothesis. Use `choose p xb hp hq hxp using hyy`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hp0 : ∀ c, (p c).y = 0` using `fun c => (hp c).trans (map_zero _)`. Use `choose h gi hh hgt hfe hext hpull using fun c => GlobalTheory.T.rationalTorsionPoint_lift_section_torusExtension V hV 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U _ hN (x (lab c)) (xb c) (p c) (hxb _ _ (hxp c)) (hp0 c) (hq c)`. Use `choose g' hg' using fun c => GlobalTheory.FieldRestrictionTest.exists_isPullF (toUnit (TF (R := V) (FractionRing V))) (gi c)`. Use `choose w hw hif hlies using fun c => GlobalTheory.T.sectionValue_integralPoint_eq_adicSum_terms V hV 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U w₀ hw₀ (x (lab c)) (fr (lab c)) (h c) (gi c) (g' c) l hl (hfe c) (hext c) (hg' c) (hlf _ _ _ (htf _) (hh c) (hext c))`. Establish `htor : ∀ c, ∃ o, GtPtF.IsNsmul (X₁.S.r * X₁.S.N) (g' c) o ∧ o.IsZero` using `fun c => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨o, ho, hz⟩` from `hgt c`. Take `⟨o', ho'⟩` from `GlobalTheory.FieldRestrictionTest.exists_isPullF (toUnit (TF (R := V) (FractionRing V))) o`. Conclude with `⟨o', GlobalTheory.FieldRestrictionTest.isNsmul_restrict (hg' c) ho' ho, GlobalTheory.FieldRestrictionTest.isZero_restrict ho' hz⟩`. Establish `hb : ∀ c, (g' c).b = toUnit _ ≫ (gi c).b` using `fun c => ((GlobalTheory.FieldRestrictionTest.isPullF_iff _ _ _).1 (hg' c)).1`. Establish `hex : Exhausts 𝔪.D.toPre.P (X₁.S.r * X₁.S.N) fun c => (gi c).b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `GlobalTheory.T.torsionSections_exhaust_of_generic_geometric V _ _ hN C _ (fun c => (Sep.Frames.torsion_of_nsmul (g' c) _ (hb c) (htor c)).2) fun β hβ => ?_` and prove the remaining obligations. Take `⟨y, hy, ⟨q, hq0, hqy⟩, H⟩` from `GlobalTheory.T.geometricTorsionPoint_abelianPart_lies_under_classZero V hV 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U _ hN β hβ`. Take `⟨a, ha⟩` from `GlobalTheory.T.geometricTorsionPoint_member_has_label I X₁ z₁ act V ev X t δ 𝔪 y hy`. Establish `hmem : a ∈ Set.range lab`. Rewrite using `[hlab]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hint a).2 ⟨q, y, hq0.trans (map_zero _).symm, hqy, ha⟩`. Take `⟨c, rfl⟩` from `hmem`. Establish `e : xb c = y` using `Over.OverMorphism.ext ((hxb _ _ (hxp c)).trans (hxb _ _ ha).symm)`. Conclude with `⟨c, (H (p c) (hp0 c) (e ▸ hq c)).symm.trans ((GlobalTheory.FieldRestrictionTest.isPullF_iff _ _ _).1 (hpull c)).1⟩`. Take `⟨θ, hθ⟩` from `exists_isTheta hV 𝔪.D.toPre`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨κ, hκ⟩` from `GlobalTheory.T.degree_one_term_eq_const_mul_psi_mul_theta V 𝔪.D.toPre θ hθ s`. Use `choose υ hυ using 𝔪.psi`. Use `choose a ha hau using fun mu c => hκ (gi c) (g' c) (w c) l (hg' c) (hw c) (hif c) (𝔪.e₈ mu) _ (hυ mu)`. Establish `hunit : ∀ mu, ∃ c, IsUnit (a mu c)` using `fun mu => (GlobalTheory.T.exists_torsionTranslate_thetaSection_unit V 𝔪.D.toPre θ hθ _ hN₂ hNu C _ hex (𝔪.D.toPre.c (𝔪.e₈ mu))).imp fun c hc => hau mu c hc`. Establish `hco : ∀ mu c, coef s (g' c) (w c) (𝔪.e₈ mu) = l⁻¹ * κ * algebraMap V (FractionRing V) (υ mu * t mu * a mu c)` using `fun mu c => by`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[_root_.mul_assoc, ← ha, inv_mul_cancel_left₀ hl]`. Establish `hsum : ∀ c, ∃ S : V, 𝔪.yK ⟨X₁.S.th (lab c), X₁.S.th_mem _⟩ = l⁻¹ * κ * algebraMap V (FractionRing V) S ∧ (IsUnit S ↔ IsUnit (a 0 c))` using `fun c => by`. Take `⟨S, hS, hm⟩` from `GlobalTheory.T.adicSum_fractionField_eq_mul_integral_congr V _ (𝔪.e₈ 0) (coef s (g' c) (w c)) (fun χ => υ (𝔪.e₈.symm χ) * t (𝔪.e₈.symm χ) * a (𝔪.e₈.symm χ) c) (l⁻¹ * κ) _ (fun χ => by rw [← hco, AddEquiv.apply_symm_apply]) (fun χ hχ => Ideal.mul_mem_right _ _ (mem_of_psiCoord 𝔪.D …`. Use `⟨S, hS, (isUnit_of_sub_mem hm).trans ?_⟩` and prove the remaining obligations. Simplify using `only [AddEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[_root_.mul_assoc, Units.isUnit_units_mul]`. Conclude with `⟨fun h' => isUnit_of_mul_isUnit_right h', fun h' => ht0.mul h'⟩`. Use `choose S hS hSu using hsum`. Establish `hx₀ : x₀ ∈ Set.range lab`. Rewrite using `[hlab]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AddSubgroup.subset_closure hdiv`. Take `⟨c₀, rfl⟩` from `hx₀`. Establish `hκ0 : l⁻¹ * κ ≠ 0` using `left_ne_zero_of_mul (hS c₀ ▸ h0)`. Establish `inj` using `IsFractionRing.injective V (FractionRing V)`. Establish `hS₀ : IsUnit (S c₀)`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨c₁, hc₁⟩` from `hunit 0`. Take `⟨r, hr⟩` from `hdv (lab c₁)`. Rewrite `hr` using `[hS, hS, mul_left_comm, ← map_mul]`. Establish `e` using `inj (mul_left_cancel₀ hκ0 hr)`. Conclude with `isUnit_of_mul_isUnit_right (e ▸ (hSu c₁).2 hc₁)`.
-
-Take `⟨σ, hσ⟩` from `hS₀`. Use `⟨fun mu c => υ mu * a mu c * σ⁻¹, ⟨x, fr, th, w₀, s, g', w, hx, hfr, hth, hw₀, hs, fun c => ⟨htor c, hw c, hlies c⟩, fun mu c => ?_⟩, fun mu => (hunit mu).imp fun c hc => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[hco, hS, ← hσ, mul_left_comm, ← map_mul]`. Use `congr 2`. Take the linear combination `(υ mu * a mu c * t mu : V) * σ.inv_mul`.
-
-Conclude with `((υ mu).isUnit.mul hc).mul (σ⁻¹).isUnit`. Establish `e₁` using `hS c`. Establish `e₂` using `hS c₀`. Simplify using `only [hc] at e₁`. Establish `e` using `inj (mul_left_cancel₀ hκ0 (e₁.symm.trans e₂))`.
-
-Conclude with `((υ 0).isUnit.mul ((hSu c).1 (e ▸ hσ ▸ σ.isUnit))).mul (σ⁻¹).isUnit`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_terms : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (x₀ : X₁.S.Gam), X₁.M.Div X₁.S.th x₀ z₁ → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) (C : Type) (lab : C → X₁.S.Gam), Set.range lab = X₁.S.HH X₁.M z₁ → ∃ u : X → C → V, 𝔪.Terms x₀ lab (fun mu c => u mu c * t mu) ∧ (∀ mu, ∃ c, IsUnit (u mu c)) ∧ ∀ c, lab c = x₀ → IsUnit (u 0 c) := by
   intro I X₁ z₁ act x₀ hdiv V _ _ _ ev X _ t δ 𝔪 C lab hlab

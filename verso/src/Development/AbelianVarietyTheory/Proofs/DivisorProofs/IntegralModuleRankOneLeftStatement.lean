@@ -7,7 +7,7 @@ open Matrix GlobalTheory.TorFin
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.rho_vecMulVec_isIntMod_invAlg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralModuleRankOneLeft.lean&line=23#L23)
 -/

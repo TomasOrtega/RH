@@ -37,7 +37,7 @@ theorem phi_apply (X : GL (Fin k) A) (v : Fin k → A) :
 def modM (X : GL (Fin k) A) : ℝ≥0 := addEquivAddHaarChar (phi X)
 
 /- English proof (translation)
-Apply `ContinuousAddEquiv.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [ContinuousAddEquiv.trans_apply, phi_apply, Units.val_mul, Matrix.mulVec_mulVec]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem phi_mul (X Y : GL (Fin k) A) : phi (X * Y) = (phi Y).trans (phi X) := by
   apply ContinuousAddEquiv.ext
@@ -45,13 +45,13 @@ theorem phi_mul (X Y : GL (Fin k) A) : phi (X * Y) = (phi Y).trans (phi X) := by
   simp only [ContinuousAddEquiv.trans_apply, phi_apply, Units.val_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Simplify using `only [modM, phi_mul, addEquivAddHaarChar_trans, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modM_mul (X Y : GL (Fin k) A) : modM (X * Y) = modM X * modM Y := by
   simp only [modM, phi_mul, addEquivAddHaarChar_trans, mul_comm]
 
 /- English proof (translation)
-Establish `h : phi (1 : GL (Fin k) A) = ContinuousAddEquiv.refl _`. Apply `ContinuousAddEquiv.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[phi_apply]`. Simplify using `only [modM, h, addEquivAddHaarChar_refl]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem modM_one : modM (1 : GL (Fin k) A) = 1 := by
   have h : phi (1 : GL (Fin k) A) = ContinuousAddEquiv.refl _ := by
@@ -61,14 +61,14 @@ theorem modM_one : modM (1 : GL (Fin k) A) = 1 := by
   simp only [modM, h, addEquivAddHaarChar_refl]
 
 /- English proof (translation)
-Establish `h : modM X⁻¹ * modM X = 1` using `by rw [← modM_mul, inv_mul_cancel, modM_one]`. Conclude with `eq_inv_of_mul_eq_one_left h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem modM_inv (X : GL (Fin k) A) : modM X⁻¹ = (modM X)⁻¹ := by
   have h : modM X⁻¹ * modM X = 1 := by rw [← modM_mul, inv_mul_cancel, modM_one]
   exact eq_inv_of_mul_eq_one_left h
 
 /- English proof (translation)
-Establish `h` using `addEquivAddHaarChar_smul_map μ (phi X)`. Rewrite `h` using `[show addEquivAddHaarChar (phi X) = modM X from rfl, hX, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem map_phi_of_modM (X : GL (Fin k) A) (hX : modM X = 1) (μ : Measure (Fin k → A))
     [μ.IsAddHaarMeasure] : μ.map (phi X) = μ := by
@@ -76,11 +76,11 @@ theorem map_phi_of_modM (X : GL (Fin k) A) (hX : modM X = 1) (μ : Measure (Fin 
   rwa [show addEquivAddHaarChar (phi X) = modM X from rfl, hX, one_smul] at h
 
 /- English proof (translation)
-Establish `h1` using `addEquivAddHaarChar_smul_map μ (phi X)`. Rewrite `h1` using `[h]`. Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds (0 : Fin k → A)`. Establish `hpos : μ K ≠ 0` using `(measure_pos_of_mem_nhds μ hKn).ne'`. Establish `hfin : μ K ≠ ⊤` using `hK.measure_lt_top.ne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun ν : Measure (Fin k → A) => ν K) h1`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h2`. Establish `h3 : ((modM X : ℝ≥0) : ENNReal) = 1`. Establish `h4 : (modM X : ENNReal) * μ K / μ K = 1 * μ K / μ K` using `by rw [one_mul]; exact congrArg (· / μ K) h2`. Rewrite `h4` using `[ENNReal.mul_div_cancel_right hpos hfin, ENNReal.mul_div_cancel_right hpos hfin]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `h3` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem modM_of_map (X : GL (Fin k) A) (μ : Measure (Fin k → A)) [μ.IsAddHaarMeasure]
     (h : μ.map (phi X) = μ) : modM X = 1 := by

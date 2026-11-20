@@ -32,9 +32,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {LL : Type} [Field LL] [Algebra Qp LL]
 
 /- English proof (translation)
-Use `⟨fun g x y => ?_, fun x hx => ?_, fun y hy => ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(M g).mulVec x ⬝ᵥ ((((cycLL PD LL g : LLˣ) : LL) • (M g⁻¹).transpose).mulVec y) = ((cycLL PD LL g : LLˣ) : LL) * (x ⬝ᵥ y)`. Rewrite using `[Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, Matrix.mulVec_transpose, dotProduct_comm, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mulVec, dotProduct_comm]`. Use function extensionality and compare the values at `i`. Use `hx (Pi.single i 1)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `using this`. Use function extensionality and compare the values at `i`. Use `hy (Pi.single i 1)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isDual1_dot {k : ℕ} (M : G →* Matrix (Fin k) (Fin k) LL) :
     IsDual1 PD (matRep M) (matRep (twistM (dualM M) (cycLL PD LL))) (dotProductBilin LL LL) := by

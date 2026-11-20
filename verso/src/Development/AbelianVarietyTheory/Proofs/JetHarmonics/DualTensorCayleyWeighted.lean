@@ -10,9 +10,9 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.CayleyTens
 
 /- English proof (translation)
-Unfold `PI.UpqRep.Hpk Formalism.QuantumDeterminants.Hpk`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Both sides reduce to the same expression. Establish `hji : ¬ j = i` using `fun h => hij h.symm`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hv : i.val ≠ j.val` using `fun h => hij (Fin.ext h)`. Simplify using `only [hij, hji, and_false, if_false]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gram_symm (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     PI.UpqRep.Hpk k r j i = Formalism.QuantumDeterminants.Hpk k r i j := by
@@ -25,9 +25,9 @@ theorem gram_symm (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Establish `hinv : Q⁻¹ = Qᴴ` using `Matrix.inv_eq_left_inv (by`. Use `(Matrix.mem_unitaryGroup_iff').1 hQ.2` as an intermediate fact. Simplify `this)` using `[Matrix.star_eq_conjTranspose]`. Rewrite using `[← gram_symm, ← hQ.1.2, hinv, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [PI.UpqRep.Jm, Matrix.mul_diagonal, Matrix.conjTranspose_apply]`. Apply the tactic sequence `by_cases h : ε d <;> simp [h, mul_comm]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gram_cayley {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {Q : Mx k r}
     (hQ : PI.UpqRep.IsCayleyU k r ε Q) (i j : Fin (2 * r + k + 1)) :
@@ -41,9 +41,9 @@ theorem gram_cayley {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {Q : Mx k r}
   by_cases h : ε d <;> simp [h, mul_comm]
 
 /- English proof (translation)
-Unfold `hhJ hh`. Simplify using `only [← gram_cayley hQ, Submodule.coe_inner, hx, hy, sum_inner, inner_sum, inner_smul_left, inner_smul_right, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hhJ_eq {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {Q : Mx k r}
     (hQ : PI.UpqRep.IsCayleyU k r ε Q) (R : Rep k r) (x y : Fin (2 * r + k + 1) → R.smSub)
@@ -62,9 +62,9 @@ theorem hhJ_eq {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {Q : Mx k r}
   ring
 
 /- English proof (translation)
-Introduce `hK k r ε mu R hR RI muI io pr ep Q E F hRI hT hQ hE hF`. Take `⟨io', pr', h1, h2, h3, h4, h5, h6, h7⟩` from `GlobalTheory.T.dual_tensor_cayley_compatible hK k r ε mu R hR RI muI io pr Q E F hRI hT.raw hQ.1.1 hE hF`. Use `⟨io', pr', ⟨h1, h2, h3, h4, h5, ?_, ?_⟩, h7⟩` and prove the remaining obligations. Introduce `s t hst y y'`. Rewrite using `[hhJ_eq hQ R _ _ _ _ (h6 s y) (h6 t y')]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hT.orth s t hst _ y.2 _ y'.2`. Introduce `s`. Use `⟨ep s, hT.ep_sq s, fun y y' => ?_⟩` and prove the remaining obligations. Rewrite using `[hhJ_eq hQ R _ _ _ _ (h6 s y) (h6 s y'), Submodule.coe_inner]`. Conclude with `hT.iso s _ y.2 _ y'.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algTens_cayley : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r), R.IsDS ε mu → ∀ (RI : Fin (2 * r + k + 1) → Rep k r) (muI : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℝ) (io : ∀ s, Fin (2 * r + k + 1) → (RI s).H → R.H) (pr : ∀ s, Fin (2 * r + k + 1) → R.H → (RI s).H) (ep : Fin (2 * r + k + 1) → ℝ) (Q : Mx k r) (E : (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ R.smSub)) (F : ∀ s, Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ (RI s).smSub), (∀ s, (RI s).IsDS ε (muI s)) → TensH dualM (Formalism.QuantumDeterminants.Hpk k r) R RI io pr ep → PI.UpqRep.IsCayleyU k r ε Q → R.IsE Q E → (∀ s, (RI s).IsE Q (F s)) → ∃ (io' : ∀ s, (RI s).smSub →ₗ[ℂ] (Fin (2 * r + k + 1) → R.smSub)) (pr' : ∀ s, (Fin (2 * r + k + 1) → R.smSub) →ₗ[ℂ] (RI s).smSub), AlgTens ε E (fun s => (RI s).smSub) F io' pr' ∧ ∀ s x, ((pr' s x : (RI s).smSub) : (RI s).H) = ∑ c, pr s c (∑ d, Q d c • ((x d : R.smSub) : R.H)) := by
   intro hK k r ε mu R hR RI muI io pr ep Q E F hRI hT hQ hE hF

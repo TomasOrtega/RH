@@ -13,19 +13,15 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 namespace GlobalTheory.Mem.R3.MjCoord
 
 /- English proof (translation)
-Use `set C := AddSubgroup.closure {y | ∃ a : 𝓞 K, ∃ x ∈ f '' X, y = σ (a : K) • x}`. Establish `stab : ∀ (b : 𝓞 K), ∀ z ∈ C, σ (b : K) • z ∈ C`. Introduce `b z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, x, hx, rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨b * a, x, hx, by rw [smul_smul, ← map_mul]; norm_cast⟩`. Consider the case `zero => rw [smul_zero]`. Conclude with `C.zero_mem`. Consider the case `add _ _ _ _ h1 h2 => rw [smul_add]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `C.add_mem h1 h2`. Consider the case `neg _ _ h1 => rw [smul_neg]`. Conclude with `C.neg_mem h1`. Establish `key : ∀ x ∈ Submodule.span (𝓞 K) X, f x ∈ C`. Introduce `x hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact AddSubgroup.subset_closure ⟨1, f x, ⟨x, hx, rfl⟩, by simp⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `C.zero_mem`. Consider the case `add _ _ _ _ h1 h2 => rw [map_add]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `C.add_mem h1 h2`. Consider the case `smul b x _ h => rw [hfs]`. Conclude with `stab b _ h`. Apply `le_antisymm` to reduce the goal to its premises. Use `AddSubgroup.closure_mono ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨a, _, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a, _, ⟨x, Submodule.subset_span hx, rfl⟩, rfl⟩`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨a, _, ⟨x, hx, rfl⟩, rfl⟩`. Rewrite using `[← hfs]`.
-
-Conclude with `key _ (Submodule.smul_mem _ a hx)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closure_image_span {K : Type} [Field K] [NumberField K] {σ : K →+* ℂ} {V H : Type} [AddCommGroup V]
     [Module (𝓞 K) V] [AddCommGroup H] [Module ℂ H] (f : V →+ H) (hfs : ∀ (b : 𝓞 K) (x : V), f (b • x) = σ (b : K) • f x)
@@ -59,7 +55,7 @@ theorem closure_image_span {K : Type} [Field K] [NumberField K] {σ : K →+* �
     exact key _ (Submodule.smul_mem _ a hx)
 
 /- English proof (translation)
-Rewrite using `[Formalism.HermitianLatticesTheory.cnorm, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _), Formalism.HermitianLatticesTheory.majAt]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul']`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem majAt_self {K : Type} [Field K] [NumberField K] {n : ℕ} (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ)
     (v : InfinitePlace K) (x : Fin n → K) :
@@ -71,9 +67,9 @@ theorem majAt_self {K : Type} [Field K] [NumberField K] {n : ℕ} (X : InfiniteP
   rw [Complex.star_def, Complex.conj_mul']
 
 /- English proof (translation)
-Establish `h1` using `majAt_gram (X.XW b j) Bs.v0 (X.bW b j Bs.v0) (hk j Bs.v0).1 rfl x x`. Establish `h2` using `he j (lin (X.bW b j Bs.v0) (cpt Bs.v0.embedding x)) (lin (X.bW b j Bs.v0) (cpt Bs.v0.embedding x))`. Rewrite `h2` using `[← h1, majAt_self, inner_self_eq_norm_sq_to_K]`. Establish `h3 : ((‖X.w0C b j (cpt Bs.v0.embedding x)‖ ^ 2 : ℝ) : ℂ) = ((X.nP b * Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K _) (X.XW b j) Bs.v0 x) ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_mul, ← h2, Complex.ofReal_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `Complex.ofReal_injective h3`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem norm_w0C_sq {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A) (b : Bool)
     (hk : X.KForm b) (he : X.EWnorm b) (j : Bs.J) (x : Fin (X.dW b j) → K) :
@@ -95,22 +91,22 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `(Z.jW_read i y).trans (congrArg ((R.FW i).j (sg0 D A3.A)) (Fintype.linearCombination_apply _ _ _))`.
+A detailed English derivation is pending.
 -/
 theorem eW_jW_eq (Z : ReadL R F X0 Y) (i : Fin D.R.m) (y) :
     Y.mj.eW i (Z.jW i y) = GlobalTheory.Mem.LiftTheta.goodForm R.toRealDat F.lv2 false i y :=
   (Z.jW_read i y).trans (congrArg ((R.FW i).j (sg0 D A3.A)) (Fintype.linearCombination_apply _ _ _))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Mem.LiftForms.inj_of_norm_sq _ (RealDat.nP_pos (F := F.lv2) false) (Y.mj.eW_norm i)`.
+A detailed English derivation is pending.
 -/
 theorem eW_inj (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (i : Fin D.R.m) : Function.Injective (Y.mj.eW i) :=
   GlobalTheory.Mem.LiftForms.inj_of_norm_sq _ (RealDat.nP_pos (F := F.lv2) false) (Y.mj.eW_norm i)
 
 /- English proof (translation)
-Establish `he` using `eW_inj Y i`. Establish `hc : (Y.mj.eW i ∘ fun k => Z.jW i (Pi.single k 1)) = fun k => GlobalTheory.Mem.LiftTheta.goodForm R.toRealDat F.lv2 false i (Pi.single k 1)`. Use function extensionality and compare the values at `fun k => eW_jW_eq Z i _`. Use `⟨LinearIndependent.of_comp (Y.mj.eW i) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.Mem.LiftTheta.goodForm_li R.toRealDat F.lv2 hH.prim.unif false i`. Apply `Submodule.map_injective_of_injective he` to reduce the goal to its premises. Rewrite using `[Submodule.map_top, Submodule.map_span, ← Set.range_comp, hc]`. Conclude with `(GlobalTheory.Mem.LiftTheta.goodForm_span R.toRealDat F.lv2 false i).trans ((hH.aux.levelW false i _).trans (Y.mj.eW_range i).symm)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jW_basis (Z : ReadL R F X0 Y) (hH : Holds R F) (i : Fin D.R.m) :
     LinearIndependent ℂ (fun k => Z.jW i (Pi.single k 1)) ∧
@@ -127,11 +123,11 @@ theorem jW_basis (Z : ReadL R F X0 Y) (hH : Holds R F) (i : Fin D.R.m) :
       ((hH.aux.levelW false i _).trans (Y.mj.eW_range i).symm)
 
 /- English proof (translation)
-Introduce `g`. Establish `hL` using `hP.char.base.lev`. Establish `h : ((Formalism.IndefR.FWT.chiC R.toRealDat i g : ℂˣ) : ℂ) ∈ (D.what₂.embLL.comp (algebraMap Ks D.what₂.LL)).fieldRange`. Unfold `Formalism.IndefR.FWT.chiC`. Rewrite using `[Units.coe_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `prod_mem fun PP _ => ?_` and prove the remaining obligations. Use `GlobalTheory.ChiDetValues.res_mem _ _ _ (hL.mu0 i) (fun x hx => ?_) _ _ (hL.chi i _ PP.2) _` and prove the remaining obligations. Take `⟨y, hy⟩` from `hP.keep.valKs i x hx`. Conclude with `⟨y, hy.symm⟩`. Take `⟨y, hy⟩` from `h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, D.what₂.embLL.injective (hy.trans ((Units.coe_prod _ _).trans (hP.char.base.grp.chiW i g).symm))⟩`.
+Supply the required witnesses or components.
 -/
 theorem chiKs (hP : Pins R F cG) (i : Fin D.R.m) : (R.FW i).ChiKs := by
   intro g
@@ -149,17 +145,17 @@ theorem chiKs (hP : Pins R F cG) (i : Fin D.R.m) : (R.FW i).ChiKs := by
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `he` using `eW_inj Y i`. Establish `hli` using `(jW_basis Z hH i).1`. Establish `hej` using `eW_jW_eq Z i`. Establish `hI` using `hH.aux.integral i`. Establish `hspan` using `GlobalTheory.GoodLatDescent.span_MK_good (R.FW i) hI.1 (fun g f => (hI.2.2 g f).1) (chiKs hP i) F.P0 F.ψ0⁻¹ (fun g => (idemOf A3.A.X).coeff g) (fun p => ?_) hP.keep.levKs.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `swap`. Take `⟨y, hy⟩` from `hP.keep.levKs.1 p`. Conclude with `⟨y⁻¹, by rw [map_inv₀, hy, MonoidHom.inv_apply, Units.val_inv_eq_inv_val]; rfl⟩`. Establish `hsg : sg0 D A3.A = D.what₂.embLL` using `RingHom.ext fun a => by rw [sg0, sgAt_mk _ R.hv0]`. Establish `himg : Y.mj.eW i '' (D.what₂.MjLat ((i : ℕ) + 1)).carrier = (R.FW i).j (sg0 D A3.A) '' {y | y ∈ (R.FW i).MK ∧ y ∈ (R.FW i).Wgood F.P0 F.ψ0⁻¹ (fun g => (idemOf A3.A.X).coeff g)}`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨y, hy1, hy2, e⟩` from `(Y.mj.eW_lat i x).1 hx`. Conclude with `⟨y, ⟨hy1, hy2⟩, e.symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, ⟨hy1, hy2⟩, rfl⟩`. Establish `hyM : y ∈ (R.FW i).Mj F.P0 F.ψ0⁻¹ (fun g => (idemOf A3.A.X).coeff g)`. Rewrite using `[← hspan]`. Conclude with `Submodule.subset_span ⟨hy1, hy2⟩`. Take `⟨c, -, hcy⟩` from `(GlobalTheory.Mem.LiftTheta.mem_image_iff R.toRealDat F.lv2 false i _).1 ⟨y, hyM, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨Z.jW i c, (Y.mj.eW_lat i _).2 ⟨y, hy1, hy2, (hej c).trans hcy⟩, (hej c).trans hcy⟩`. Use `GlobalTheory.Mem.LiftTheta.oLatTie_of_closure (fun a => ⟨⟨D.what₂.OtoLL a, D.O_int a⟩, rfl⟩) _ (Y.mj.eW i) he (Z.jW i) (GlobalTheory.Mem.LiftTheta.semi_injective _ hli) _ ((R.FW i).j (sg0 D A3.A) '' ((R.FW i).Mj F.P0 F.ψ0⁻¹ (fun g => (idemOf A3.A.X).coeff g) : Set _)) (fun y => ? …` and prove the remaining obligations. Use `(GlobalTheory.Mem.LiftTheta.mem_image_iff R.toRealDat F.lv2 false i y).trans ?_` and prove the remaining obligations. Conclude with `⟨fun ⟨x, hx, h⟩ => ⟨x, hx, (hej x).trans h⟩, fun ⟨x, hx, h⟩ => ⟨x, hx, (hej x).symm.trans h⟩⟩`. Rewrite using `[himg, ← hspan]`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `closure_image_span (σ := D.what₂.embLL) ((R.FW i).j (sg0 D A3.A)).toAddMonoidHom (fun b x => by`. Rewrite using `[← hsg]`. Use `show (R.FW i).j _ (b • x) = _`. Rewrite using `[← algebraMap_smul D.what₂.LL b x, map_smulₛₗ]`. Use the proof step `rfl) _`.
+A detailed English derivation is pending.
 -/
 theorem jW_lat (Z : ReadL R F X0 Y) (hP : Pins R F cG) (hH : Holds R F) (i : Fin D.R.m) :
     OLatTie D.what₂.embLL (D.what₂.MjLat ((i : ℕ) + 1)) (Z.jW i) ((s0Of R F).M i) := by
@@ -202,9 +198,9 @@ theorem jW_lat (Z : ReadL R F X0 Y) (hP : Pins R F cG) (hH : Holds R F) (i : Fin
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `h1` using `norm_w0C_sq (R.toCx3 F) false (RealDat3.kForm_of hH.prim.unif false) (RealDat3.ewNorm false) i x`. Establish `h2 : (R.toCx3 F).w0C false i (cpt A3.A.v0.embedding x) = Tw.mk (twAt D.what₂.embLL A3.A.v0) (GlobalTheory.Mem.LiftTheta.goodForm R.toRealDat F.lv2 false i x)` using `GlobalTheory.Mem.LiftTheta.liftWeight_complexPoint_eq_twist R.toRealDat F.lv2 false i x`. Establish `h3 : ‖(R.toCx3 F).w0C false i (cpt A3.A.v0.embedding x)‖ = ‖Y.mj.eW i (Z.jW i x)‖` using `(congrArg norm h2).trans (congrArg norm (eW_jW_eq Z i x)).symm`. Establish `h4` using `Y.mj.eW_norm i (Z.jW i x)`. Establish `h5 : RealDat.nP F.lv2 false * Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun D.what₂.LL _) ((s0Of R F).XW i) A3.A.v0 x) ^ 2 = RealDat.nP F.lv2 false * ‖Z.jW i x‖ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h4, ← h3]`. Conclude with `h1.symm`. Rewrite using `[← R.hv0]`. Conclude with `(sq_eq_sq₀ (Real.sqrt_nonneg _) (norm_nonneg _)).1 (mul_left_cancel₀ (RealDat.nP_pos (F := F.lv2) false).ne' h5)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jW_norm (Z : ReadL R F X0 Y) (hH : Holds R F) (i : Fin D.R.m) (x : Fin ((s0Of R F).dW i) → D.what₂.LL) :
     Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun D.what₂.LL _) ((s0Of R F).XW i) (InfinitePlace.mk D.what₂.embLL) x) =

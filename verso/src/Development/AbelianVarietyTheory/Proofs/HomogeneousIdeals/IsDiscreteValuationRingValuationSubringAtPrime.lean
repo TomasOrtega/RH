@@ -32,7 +32,7 @@ variable {M : Type*} [Field M] [CharZero M] {L : Type*} [Field L] [Algebra M L] 
   {W : WeierstrassCurve M} [W.IsElliptic]
 
 /- English proof (translation)
-Establish `: IsIntegrallyClosedIn (𝓞 M) M` using `inferInstance`. Take `⟨C, W₀, e, h₀⟩` from `exists_integral_model (𝓞 M) ⟨⟨W.j, hj⟩, rfl⟩ h`. Use `⟨C.map (algebraMap M M'), W₀.map (algebraMap (𝓞 M) (𝓞 M')), ?_, by rw [map_Δ, h₀, map_one]⟩` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.baseChange, map_variableChange, e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_model_ringOfIntegers (hj : IsIntegral ℤ W.j) (h : HasRationalTorsion W L 12)
     (M' : Type*) [Field M'] [Algebra M M'] :
@@ -49,9 +49,9 @@ end Global
 section Finite
 
 /- English proof (translation)
-Use `Set.Finite.of_finite_fibers (fun x => m • x) (hn.subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Simplify `hx` using `[mul_nsmul]`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Use `(hm.image (· + x)).subset fun y hy => ⟨y - x, ?_, sub_add_cancel _ _⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: m • y = m • x` using `hy.2`. Simplify using `[smul_sub, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem finite_nsmul_eq_zero_mul {G : Type*} [AddCommGroup G] {m n : ℕ}
     (hm : {x : G | m • x = 0}.Finite) (hn : {x : G | n • x = 0}.Finite) :
@@ -67,9 +67,9 @@ theorem finite_nsmul_eq_zero_mul {G : Type*} [AddCommGroup G] {m n : ℕ}
 variable {F : Type*} [Field F] {W : WeierstrassCurve F}
 
 /- English proof (translation)
-Use `Set.Finite.of_finite_fibers Point.xRep ((((p.rootSet_finite F).image fun x => ![x, 1]).insert ![1, 0]).subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_ | ⟨x, y, h⟩, hP, rfl⟩`. Conclude with `Or.inl rfl`. Conclude with `Or.inr ⟨x, by simpa [mem_rootSet, hp] using hs x y h hP, rfl⟩`. Introduce and unpack `_ ⟨P, -, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components.
 
-Conclude with `(Set.toFinite {P, -P}).subset fun Q hQ => Point.eq_or_eq_neg_of_xRep_eq_xRep hQ.2`.
+A detailed English derivation is pending.
 -/
 theorem finite_points_of_root {p : F[X]} (hp : p ≠ 0) {s : Set W.toAffine.Point}
     (hs : ∀ x y h, Point.some x y h ∈ s → p.eval x = 0) : s.Finite := by
@@ -84,9 +84,9 @@ theorem finite_points_of_root {p : F[X]} (hp : p ≠ 0) {s : Set W.toAffine.Poin
 variable [CharZero F] [DecidableEq F]
 
 /- English proof (translation)
-Use `finite_points_of_root (W.Ψ₂Sq_ne_zero (by norm_num)) fun x y h hP => ?_` and prove the remaining obligations. Establish `hy : y = W.toAffine.negY x y`. Assume the negation of the conclusion as `hy`. Rewrite `hP` using `[Set.mem_setOf_eq, two_nsmul, Point.add_self_of_Y_ne hy]`. Conclude with `Point.some_ne_zero _ hP`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hE` using `(equation_iff ..).mp h.1`. Rewrite `hy` using `[negY]`. Simplify using `only [Ψ₂Sq, b₂, b₄, b₆, eval_add, eval_mul, eval_pow, eval_C, eval_X]`. Take the linear combination `-4 * hE + (2 * y + W.a₁ * x + W.a₃) * hy`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem finite_two_torsion : {P : W.toAffine.Point | 2 • P = 0}.Finite := by
   refine finite_points_of_root (W.Ψ₂Sq_ne_zero (by norm_num)) fun x y h hP => ?_
@@ -100,14 +100,14 @@ theorem finite_two_torsion : {P : W.toAffine.Point | 2 • P = 0}.Finite := by
   linear_combination -4 * hE + (2 * y + W.a₁ * x + W.a₃) * hy
 
 /- English proof (translation)
-The claim follows from `finite_points_of_root (W.Ψ₃_ne_zero three_ne_zero) fun _ _ h hP => (three_nsmul_eq_zero_iff h).mp hP`.
+A detailed English derivation is pending.
 -/
 theorem finite_three_torsion : {P : W.toAffine.Point | 3 • P = 0}.Finite :=
   finite_points_of_root (W.Ψ₃_ne_zero three_ne_zero) fun _ _ h hP =>
     (three_nsmul_eq_zero_iff h).mp hP
 
 /- English proof (translation)
-The claim follows from `finite_nsmul_eq_zero_mul (m := 2 * 2) (n := 3) (finite_nsmul_eq_zero_mul finite_two_torsion finite_two_torsion) finite_three_torsion`.
+A detailed English derivation is pending.
 -/
 theorem finite_twelve_torsion : {P : W.toAffine.Point | 12 • P = 0}.Finite :=
   finite_nsmul_eq_zero_mul (m := 2 * 2) (n := 3)
@@ -116,11 +116,11 @@ theorem finite_twelve_torsion : {P : W.toAffine.Point | 12 • P = 0}.Finite :=
 end Finite
 
 /- English proof (translation)
-Establish `: CharZero L` using `charZero_of_injective_algebraMap (algebraMap K L).injective`. Introduce the local definition `c : (W.baseChange L).toAffine.Point → Set L`. Consider the case `.zero => ∅`. Consider the case `.some x y _ => {x, y}`. Establish `hfin : (⋃ P ∈ {P : (W.baseChange L).toAffine.Point | 12 • P = 0}, c P).Finite`.
+Establish an intermediate fact. Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `finite_twelve_torsion.biUnion ?_` and prove the remaining obligations. Apply the tactic sequence `rintro (_ | _) - <;> simp [c]`. Use `hfin.to_subtype` as an intermediate fact. Use `⟨IntermediateField.adjoin K _, IntermediateField.finiteDimensional_adjoin (S := ⋃ P ∈ {P : (W.baseChange L).toAffine.Point | 12 • P = 0}, c P) fun x _ => Algebra.IsIntegral.isIntegral x, ?_⟩` and prove the remaining obligations. Rewrite using `[hasRationalTorsion_iff]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y h h0`. Conclude with `⟨⟨⟨x, IntermediateField.subset_adjoin _ _ (Set.mem_biUnion (x := .some x y h) h0 (by simp [c]))⟩, rfl⟩, ⟨⟨y, IntermediateField.subset_adjoin _ _ (Set.mem_biUnion (x := .some x y h) h0 (by simp [c]))⟩, rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_finite_hasRationalTorsion_twelve {K : Type*} [Field K] [CharZero K]
     (W : WeierstrassCurve K) (L : Type*) [Field L] [Algebra K L] [Algebra.IsAlgebraic K L] :
@@ -146,9 +146,9 @@ theorem exists_finite_hasRationalTorsion_twelve {K : Type*} [Field K] [CharZero 
       (by simp [c]))⟩, rfl⟩⟩
 
 /- English proof (translation)
-Take `⟨M, hM, h⟩` from `exists_finite_hasRationalTorsion_twelve W (AlgebraicClosure K)`. Establish `: NumberField M` using `NumberField.of_module_finite K M`. Establish `: (W.baseChange M).IsElliptic` using `inferInstanceAs (W.map (algebraMap K M)).IsElliptic`. Establish `hj' : IsIntegral ℤ (W.baseChange M).j`. Rewrite using `[show (W.baseChange M).j = algebraMap K M W.j from W.map_j _]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hj.algebraMap`. Conclude with `⟨M, inferInstance, h, exists_model_ringOfIntegers hj' h M⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_model_ringOfIntegers {K : Type*} [Field K] [NumberField K]
     (W : WeierstrassCurve K) [W.IsElliptic] (hj : IsIntegral ℤ W.j) :

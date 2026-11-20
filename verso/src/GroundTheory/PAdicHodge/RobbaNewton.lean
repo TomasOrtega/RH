@@ -21,14 +21,14 @@ variable {a b : ℤ → K} {ρ : ℝ}
 def slopeMult (a : ℤ → K) (ρ : ℝ) : ℤ := highIndex a ρ - lowIndex a ρ
 
 /- English proof (translation)
-Rewrite using `[← Real.rpow_intCast, ← Real.rpow_intCast x n, ← Real.rpow_mul hx.le, ← Real.rpow_mul hx.le, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zpow_rpow_comm {x : ℝ} (hx : 0 < x) (n : ℤ) (s : ℝ) : (x ^ s) ^ n = (x ^ n) ^ s := by
   rw [← Real.rpow_intCast, ← Real.rpow_intCast x n, ← Real.rpow_mul hx.le,
     ← Real.rpow_mul hx.le, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[mul_zpow, zpow_rpow_comm h1, zpow_rpow_comm h2, Real.mul_rpow hx (by positivity), Real.mul_rpow hx (by positivity)]`. Establish `: x = x ^ (1 - t) * x ^ t`. Rewrite using `[← Real.rpow_add' hx (by norm_num), sub_add_cancel, Real.rpow_one]`. Use `conv_lhs => rw [this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem weight_interp {ρ₁ ρ₂ t : ℝ} (h1 : 0 < ρ₁) (h2 : 0 < ρ₂) (n : ℤ) {x : ℝ} (hx : 0 ≤ x) :
     x * (ρ₁ ^ (1 - t) * ρ₂ ^ t) ^ n = (x * ρ₁ ^ n) ^ (1 - t) * (x * ρ₂ ^ n) ^ t := by
@@ -40,7 +40,7 @@ theorem weight_interp {ρ₁ ρ₂ t : ℝ} (h1 : 0 < ρ₁) (h2 : 0 < ρ₂) (n
   ring
 
 /- English proof (translation)
-The claim follows from `gaussNorm_le fun n => by rw [weight_interp h1 h2 n (norm_nonneg _)] exact mul_le_mul (Real.rpow_le_rpow (by positivity) (hc1.le_gaussNorm n) (by linarith)) (Real.rpow_le_rpow (by positivity) (hc2.le_gaussNorm n) ht0) (by positivity) (Real.rpow_nonneg (gaussNorm_nonneg h1) _)`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_interp_le {ρ₁ ρ₂ t : ℝ} (h1 : 0 < ρ₁) (h2 : 0 < ρ₂) (hc1 : ConvergesAt a ρ₁)
     (hc2 : ConvergesAt a ρ₂) (ht0 : 0 ≤ t) (ht1 : t ≤ 1) :
@@ -52,9 +52,9 @@ theorem gaussNorm_interp_le {ρ₁ ρ₂ t : ℝ} (h1 : 0 < ρ₁) (h2 : 0 < ρ�
       (Real.rpow_nonneg (gaussNorm_nonneg h1) _)
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `h1.trans_le hle1`. Use `gaussNorm_le fun n => ?_` and prove the remaining obligations. Break down `le_total 0 n with hn | hn` into its components or cases. Conclude with `((mul_le_mul_of_nonneg_left (zpow_le_zpow_left₀ hn hρ.le hle2) (norm_nonneg _)).trans (hc2.le_gaussNorm n)).trans (le_max_right _ _)`. Establish `h3 : ρ ^ n ≤ ρ₁ ^ n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ρ ^ n = (ρ ^ (-n))⁻¹ by rw [zpow_neg, inv_inv], show ρ₁ ^ n = (ρ₁ ^ (-n))⁻¹ by rw [zpow_neg, inv_inv]]`. Conclude with `inv_anti₀ (by positivity) (zpow_le_zpow_left₀ (neg_nonneg.2 hn) h1.le hle1)`. Conclude with `((mul_le_mul_of_nonneg_left h3 (norm_nonneg _)).trans (hc1.le_gaussNorm n)).trans (le_max_left _ _)`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_le_max {ρ₁ ρ₂ : ℝ} (h1 : 0 < ρ₁) (hle1 : ρ₁ ≤ ρ) (hle2 : ρ ≤ ρ₂)
     (hc1 : ConvergesAt a ρ₁) (hc2 : ConvergesAt a ρ₂) :
@@ -78,7 +78,7 @@ namespace Laurent
 variable {a : ℤ → K} {α β : ℝ}
 
 /- English proof (translation)
-Break down `hle.lt_or_eq with hlt | rfl` into its components or cases. Conclude with `(lowIndex_le_highIndex hρ h ha).trans (highIndex_le_lowIndex hρ hlt h h' ha)`. Conclude with `le_rfl`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem lowIndex_mono {ρ ρ' : ℝ} (hρ : 0 < ρ) (hle : ρ ≤ ρ') (h : ConvergesAt a ρ)
     (h' : ConvergesAt a ρ') (ha : a ≠ 0) : lowIndex a ρ ≤ lowIndex a ρ' := by
@@ -87,7 +87,7 @@ theorem lowIndex_mono {ρ ρ' : ℝ} (hρ : 0 < ρ) (hle : ρ ≤ ρ') (h : Conv
   · exact le_rfl
 
 /- English proof (translation)
-Break down `hle.lt_or_eq with hlt | rfl` into its components or cases. Conclude with `(highIndex_le_lowIndex hρ hlt h h' ha).trans (lowIndex_le_highIndex (hρ.trans hlt) h' ha)`. Conclude with `le_rfl`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem highIndex_mono {ρ ρ' : ℝ} (hρ : 0 < ρ) (hle : ρ ≤ ρ') (h : ConvergesAt a ρ)
     (h' : ConvergesAt a ρ') (ha : a ≠ 0) : highIndex a ρ ≤ highIndex a ρ' := by
@@ -96,37 +96,31 @@ theorem highIndex_mono {ρ ρ' : ℝ} (hρ : 0 < ρ) (hle : ρ ≤ ρ') (h : Con
   · exact le_rfl
 
 /- English proof (translation)
-Establish `hconv : ∀ σ ∈ Set.Icc α β, ConvergesAt a σ` using `fun σ hσ => hA.of_le_of_le hB hα hσ.1 hσ.2`. Establish `hpos : ∀ σ ∈ Set.Icc α β, 0 < σ` using `fun σ hσ => hα.trans_le hσ.1`. Establish `hβ : 0 < β` using `hα.trans_le hαβ`. Distinguish the cases in `h1 : n < highIndex a α`. Conclude with `⟨α, ⟨le_rfl, hαβ⟩, hn1, h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Distinguish the cases in `h2 : lowIndex a β ≤ n`. Conclude with `⟨β, ⟨hαβ, le_rfl⟩, h2, hn2⟩`. Use `push_neg at h1 h2`. Establish `hLα` using `lowIndex_le_highIndex hα hA ha`. Establish `hLβ` using `lowIndex_le_highIndex hβ hB ha`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hαβ' : α < β`. Break down `hαβ.lt_or_eq with h | h` into its components or cases. Conclude with `h`. Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C := Finset.Icc (lowIndex a α) (highIndex a β)`. Use `set C1 := C.filter (· ≤ n)`. Use `set C2 := C.filter (n < ·)`. Establish `hC1 : highIndex a α ∈ C1` using `by simp only [C1, C, Finset.mem_filter, Finset.mem_Icc]; omega`. Establish `hC2 : lowIndex a β ∈ C2` using `by simp only [C2, C, Finset.mem_filter, Finset.mem_Icc]; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ne1 : C1.Nonempty` using `⟨_, hC1⟩`. Establish `ne2 : C2.Nonempty` using `⟨_, hC2⟩`. Use `set A : ℝ → ℝ := fun σ => C1.sup' ne1 fun k => ‖a k‖ * σ ^ k`. Use `set B : ℝ → ℝ := fun σ => C2.sup' ne2 fun k => ‖a k‖ * σ ^ k`. Establish `hw : ∀ k : ℤ, ContinuousOn (fun σ : ℝ => ‖a k‖ * σ ^ k) (Set.Icc α β)` using `fun k => continuousOn_const.mul ((continuousOn_zpow₀ k).mono fun σ hσ => Set.mem_compl_singleton_iff.2 (hpos σ hσ).ne')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcont : ContinuousOn (fun σ => A σ - B σ) (Set.Icc α β)` using `(ContinuousOn.finset_sup'_apply ne1 fun k _ => hw k).sub (ContinuousOn.finset_sup'_apply ne2 fun k _ => hw k)`. Establish `hAle : ∀ σ ∈ Set.Icc α β, A σ ≤ gaussNorm a σ` using `fun σ hσ => Finset.sup'_le _ _ fun k _ => (hconv σ hσ).le_gaussNorm k`. Establish `hBle : ∀ σ ∈ Set.Icc α β, B σ ≤ gaussNorm a σ` using `fun σ hσ => Finset.sup'_le _ _ fun k _ => (hconv σ hσ).le_gaussNorm k`. Establish `hgα : 0 < A α - B α`. Establish `e1 : gaussNorm a α ≤ A α`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← show ‖a (highIndex a α)‖ * α ^ highIndex a α = gaussNorm a α from highIndex_mem hα hA ha]`. Conclude with `Finset.le_sup' (fun k => ‖a k‖ * α ^ k) hC1`. Establish `e2 : B α < gaussNorm a α` using `(Finset.sup'_lt_iff _).2 fun k hk => by`. Simplify using `only [C2, Finset.mem_filter] at hk`. Conclude with `weight_lt_of_highIndex_lt hα hA ha (by omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgβ : A β - B β < 0`. Establish `e1 : gaussNorm a β ≤ B β`. Rewrite using `[← show ‖a (lowIndex a β)‖ * β ^ lowIndex a β = gaussNorm a β from lowIndex_mem hβ hB ha]`. Conclude with `Finset.le_sup' (fun k => ‖a k‖ * β ^ k) hC2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : A β < gaussNorm a β` using `(Finset.sup'_lt_iff _).2 fun k hk => by`. Simplify using `only [C1, Finset.mem_filter] at hk`. Conclude with `weight_lt_of_lt_lowIndex hβ hB ha (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨σ, hσ, hgσ⟩` from `intermediate_value_Icc' hαβ hcont ⟨hgβ.le, hgα.le⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only at hgσ`. Establish `hσα : α < σ` using `lt_of_le_of_ne hσ.1 fun h => by subst h; linarith`. Establish `hσβ : σ < β` using `lt_of_le_of_ne hσ.2 fun h => by subst h; linarith`. Establish `hσ0` using `hpos σ hσ`. Establish `hcσ` using `hconv σ hσ`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `i1` using `highIndex_le_lowIndex hα hσα hA hcσ ha`. Establish `i2` using `highIndex_le_lowIndex hσ0 hσβ hcσ hB ha`. Establish `i3` using `lowIndex_le_highIndex hσ0 hcσ ha`. Establish `hLmem` using `lowIndex_mem hσ0 hcσ ha`. Establish `hgauss : gaussNorm a σ ≤ max (A σ) (B σ)`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← show ‖a (lowIndex a σ)‖ * σ ^ lowIndex a σ = gaussNorm a σ from hLmem]`. Distinguish the cases in `hk : lowIndex a σ ≤ n`. Conclude with `(Finset.le_sup' (fun k => ‖a k‖ * σ ^ k) (s := C1) (by simp only [C1, C, Finset.mem_filter, Finset.mem_Icc]; omega)).trans (le_max_left _ _)`. Conclude with `(Finset.le_sup' (fun k => ‖a k‖ * σ ^ k) (s := C2) (by simp only [C2, C, Finset.mem_filter, Finset.mem_Icc]; omega)).trans (le_max_right _ _)`. Establish `hAσ : A σ = gaussNorm a σ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hAle σ hσ` as an intermediate fact. Use `hBle σ hσ` as an intermediate fact. Break down `le_total (A σ) (B σ) with h | h` into its components or cases. Rewrite `hgauss` using `[max_eq_right h]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite `hgauss` using `[max_eq_left h]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hBσ : B σ = gaussNorm a σ` using `by linarith`. Take `⟨k1, hk1, hk1e⟩` from `Finset.exists_mem_eq_sup' ne1 fun k => ‖a k‖ * σ ^ k`. Take `⟨k2, hk2, hk2e⟩` from `Finset.exists_mem_eq_sup' ne2 fun k => ‖a k‖ * σ ^ k`.
-
-Establish `d1 : k1 ∈ domSet a σ` using `by show ‖a k1‖ * σ ^ k1 = gaussNorm a σ`. Rewrite using `[← hk1e]`. Conclude with `hAσ`. Establish `d2 : k2 ∈ domSet a σ` using `by show ‖a k2‖ * σ ^ k2 = gaussNorm a σ`. Rewrite using `[← hk2e]`.
-
-Conclude with `hBσ`. Simplify using `only [C1, C2, Finset.mem_filter] at hk1 hk2`. Conclude with `⟨σ, hσ, (lowIndex_le hσ0 hcσ ha d1).trans hk1.2, lt_of_lt_of_le hk2.2 (le_highIndex hσ0 hcσ ha d2)⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_break (hα : 0 < α) (hαβ : α ≤ β) (hA : ConvergesAt a α) (hB : ConvergesAt a β)
     (ha : a ≠ 0) {n : ℤ} (hn1 : lowIndex a α ≤ n) (hn2 : n < highIndex a β) :
@@ -227,7 +221,7 @@ variable (hα : 0 < α) (hαβ : α ≤ β) (hA : ConvergesAt a α) (hB : Conver
 include hα hαβ hA hB ha
 
 /- English proof (translation)
-Establish `hc` using `hA.of_le_of_le hB hα hρ.1 hρ.2`. Conclude with `⟨lowIndex_mono hα hρ.1 hA hc ha, highIndex_mono (hα.trans_le hρ.1) hρ.2 hc hB ha⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem mem_Icc_indices {ρ : ℝ} (hρ : ρ ∈ Set.Icc α β) :
     lowIndex a α ≤ lowIndex a ρ ∧ highIndex a ρ ≤ highIndex a β := by
@@ -235,13 +229,13 @@ theorem mem_Icc_indices {ρ : ℝ} (hρ : ρ ∈ Set.Icc α β) :
   exact ⟨lowIndex_mono hα hρ.1 hA hc ha, highIndex_mono (hα.trans_le hρ.1) hρ.2 hc hB ha⟩
 
 /- English proof (translation)
-Use `Set.Finite.of_finite_image (f := fun ρ => lowIndex a ρ) ((Set.finite_Icc (lowIndex a α) (highIndex a β)).subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ρ, hρ, rfl⟩`. Use `mem_Icc_indices hα hαβ hA hB ha hρ.1` as an intermediate fact. Conclude with `⟨this.1, hρ.2.le.trans this.2⟩`. Introduce `ρ hρ ρ' hρ' he`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only at he`. Establish `hc` using `hA.of_le_of_le hB hα hρ.1.1 hρ.1.2`. Establish `hc'` using `hA.of_le_of_le hB hα hρ'.1.1 hρ'.1.2`. Break down `lt_trichotomy ρ ρ' with h | h | h` into its components or cases. Use `highIndex_le_lowIndex (hα.trans_le hρ.1.1) h hc hc' ha` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `hρ.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Use `highIndex_le_lowIndex (hα.trans_le hρ'.1.1) h hc' hc ha` as an intermediate fact. Use `hρ'.2` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem breaks_finite : (breaks a α β).Finite := by
   refine Set.Finite.of_finite_image (f := fun ρ => lowIndex a ρ)
@@ -263,21 +257,19 @@ theorem breaks_finite : (breaks a α β).Finite := by
       omega
 
 /- English proof (translation)
-Use `set s := (breaks_finite hα hαβ hA hB ha).toFinset`. Use `set I : ℝ → Finset ℤ := fun ρ => Finset.Ico (lowIndex a ρ) (highIndex a ρ)`. Establish `hmem : ∀ ρ, ρ ∈ s ↔ ρ ∈ breaks a α β` using `fun ρ => Set.Finite.mem_toFinset _`. Establish `hdisj : (s : Set ℝ).PairwiseDisjoint I`. Introduce `ρ hρ ρ' hρ' hne`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hρ`, `hρ'` using `[Finset.mem_coe, hmem]`. Establish `hc` using `hA.of_le_of_le hB hα hρ.1.1 hρ.1.2`. Establish `hc'` using `hA.of_le_of_le hB hα hρ'.1.1 hρ'.1.2`. Use `show Disjoint (I ρ) (I ρ')`. Rewrite using `[Finset.disjoint_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `k hk hk'`. Simplify using `only [I, Finset.mem_Ico] at hk hk'`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Use `highIndex_le_lowIndex (hα.trans_le hρ.1.1) h hc hc' ha` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `highIndex_le_lowIndex (hα.trans_le hρ'.1.1) h hc' hc ha` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hLH : lowIndex a α ≤ highIndex a β` using `(lowIndex_le_highIndex hα hA ha).trans (highIndex_mono hα hαβ hA hB ha)`. Establish `hunion : s.biUnion I = Finset.Ico (lowIndex a α) (highIndex a β)`. Use extensionality with `k`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Finset.mem_biUnion, Finset.mem_Ico, hmem, I]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ρ, hρ, hk1, hk2⟩`. Use `mem_Icc_indices hα hαβ hA hB ha hρ.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hk1, hk2⟩`. Take `⟨σ, hσ, h1, h2⟩` from `exists_break hα hαβ hA hB ha hk1 hk2`. Conclude with `⟨σ, ⟨hσ, by omega⟩, h1, h2⟩`. Establish `hcard` using `Finset.card_biUnion hdisj`. Rewrite `hcard` using `[hunion, Int.card_Ico]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: ∑ ρ ∈ s, slopeMult a ρ = ∑ ρ ∈ s, ((I ρ).card : ℤ)` using `Finset.sum_congr rfl fun ρ hρ => by`. Rewrite `hρ` using `[hmem]`. Simplify using `only [I, Int.card_Ico, slopeMult]`. Use `hρ.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[this, ← Nat.cast_sum, ← hcard]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sum_slopeMult_breaks :
     ∑ ρ ∈ (breaks_finite hα hαβ hA hB ha).toFinset, slopeMult a ρ =

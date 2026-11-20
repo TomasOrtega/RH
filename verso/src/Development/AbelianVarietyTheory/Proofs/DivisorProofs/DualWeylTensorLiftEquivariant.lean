@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.FrameRead.LiftEquiv
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [rowAct]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul, map_mul, map_mul, hp, map_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[rowAct, map_sum, Matrix.map_apply]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem map_rowAct_eq {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n : ℕ}
     (M : Matrix (Fin r) (Fin r) R) (f : MvPolynomial (Fin r × Fin n) R) :
@@ -31,7 +31,7 @@ theorem map_rowAct_eq {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r
     simp [rowAct, map_sum, Matrix.map_apply]
 
 /- English proof (translation)
-Unfold `detPol`. Rewrite using `[AlgHom.map_det, RingHom.map_det (MvPolynomial.C : R →+* MvPolynomial (Fin n × Fin n) R), ← Matrix.det_mul]`. Use `congr 1`. Use `ext1 a s`. Simplify using `[rowAct, Matrix.mul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowAct_detPol_eq {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R) :
     rowAct R M (detPol R n) = MvPolynomial.C M.det * detPol R n := by
@@ -42,7 +42,7 @@ theorem rowAct_detPol_eq {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (
   simp [rowAct, Matrix.mul_apply]
 
 /- English proof (translation)
-Unfold `liftPol`. Establish `hd : (M.map e0).det = e0 M.det` using `(RingHom.map_det e0 M).symm`. Rewrite using `[map_mul, map_pow, rowAct_detPol_eq, map_rowAct_eq, mul_pow, smul_eq_C_mul, map_pow, mul_assoc, hd]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowAct_liftPol_eq {K C : Type} [CommRing K] [CommRing C] {n : ℕ} (e0 : K →+* C) (k : ℕ)
     (M : Matrix (Fin n) (Fin n) K) (f : MvPolynomial (Fin n × Fin n) K) :
@@ -52,7 +52,7 @@ theorem rowAct_liftPol_eq {K C : Type} [CommRing K] [CommRing C] {n : ℕ} (e0 :
   rw [map_mul, map_pow, rowAct_detPol_eq, map_rowAct_eq, mul_pow, smul_eq_C_mul, map_pow, mul_assoc, hd]
 
 /- English proof (translation)
-The claim follows from `PiTensorProduct.map_tprod _ _`.
+A detailed English derivation is pending.
 -/
 theorem grp_tprod_eq (C : Type) [CommRing C] {ι : Type} (n : ℕ) (lamW : ι → ℕ → ℕ) (g : ι → GL (Fin n) C)
     (y : ∀ τ, dualWeyl C n n (res n (lamW τ))) :
@@ -61,13 +61,13 @@ theorem grp_tprod_eq (C : Type) [CommRing C] {ι : Type} (n : ℕ) (lamW : ι �
   PiTensorProduct.map_tprod _ _
 
 /- English proof (translation)
-Establish `h1 : ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).det = ((g : Matrix (Fin n) (Fin n) K).det)⁻¹`. Rewrite using `[Matrix.coe_units_inv, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Establish `h2 : ((inside₂ K n g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).det = ((g : Matrix (Fin n) (Fin n) K).det)⁻¹`. Rewrite using `[← h1]`. Conclude with `Matrix.det_transpose _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ((Matrix.GeneralLinearGroup.map e0 g : GL (Fin n) C) : Matrix (Fin n) (Fin n) C).det = e0 (g : Matrix (Fin n) (Fin n) K).det` using `(RingHom.map_det e0 _).symm`. Establish `h0 : e0 (g : Matrix (Fin n) (Fin n) K).det ≠ 0`. Rewrite using `[map_ne_zero]`. Conclude with `g.det_ne_zero`. Simplify using `only [detPow, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, h1, h2, h3, map_zpow₀, map_inv₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Establish `he : lam.detShift = k - c`. Rewrite using `[h hn]`. Simplify using `[DomWeight.detShift, hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[he, inv_zpow', inv_pow, ← zpow_natCast, ← zpow_neg, ← zpow_add₀ h0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem scalar_eq {K C : Type} [Field K] [Field C] (e0 : K →+* C) {n : ℕ} (lam : DomWeight n) (k : ℕ) (c : ℤ)
     (h : ∀ hn : 0 < n, (k : ℤ) = lam.w ⟨n - 1, by omega⟩ + c) (g : GL (Fin n) K) :
@@ -92,19 +92,19 @@ theorem scalar_eq {K C : Type} [Field K] [Field C] (e0 : K →+* C) {n : ℕ} (l
     ring
 
 /- English proof (translation)
-Introduce `K C _ _ e0 ι _ _ n lam lamW c Φ hS hΦ g v`. Take `⟨v, hv⟩` from `v`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem P hP`. Take `⟨x, hx, rfl⟩` from `hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Set `M : ι → Matrix (Fin n) (Fin n) K` to `fun τ => ((g τ)⁻¹ : GL (Fin n) K)`. Establish `hx' : ∀ τ, rowAct K (M τ) (x τ) ∈ nablaSq K n (lam τ)` using `fun τ => Formalism.GradedWeylDivisibility.dualWeylRowStable K n n _ _ _ (hx τ)`. Set `w : VV K lam` to `⟨Formalism.L2.DIV.ten fun τ => rowAct K (M τ) (x τ), Submodule.subset_span ⟨_, hx', rfl⟩⟩`. Take `⟨y, hy, hyv⟩` from `hΦ x ⟨_, Submodule.subset_span ⟨x, hx, rfl⟩⟩ hx rfl`. Take `⟨y', hy', hyw⟩` from `hΦ _ w hx' rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hr : rhoK lam (invTrK g) ⟨_, Submodule.subset_span ⟨x, hx, rfl⟩⟩ = detTwK lam (invTrK g) • w`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show detTwK lam (invTrK g) • trAct (invTrK g) (∏ τ, blockEmb K τ (x τ)) = detTwK lam (invTrK g) • ∏ τ, blockEmb K τ (rowAct K (M τ) (x τ))`. Use `congr 1`. Rewrite using `[map_prod]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Conclude with `(Formalism.GradedWeylDivisibility.blockActTensor K K ι n n M).1 τ (x τ)`. Establish `hg : (fun τ => Formalism.UG.dualWeylRep C n n (res n (lamW τ)) (Matrix.GeneralLinearGroup.map e0 (g τ)) (y τ)) = fun τ => (e0 (M τ).det) ^ (lamW τ (n - 1)) • y' τ`. Use function extensionality and compare the values at `τ`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show rowAct C (((Matrix.GeneralLinearGroup.map e0 (g τ))⁻¹ : GL (Fin n) C) : Matrix (Fin n) (Fin n) C) (y τ) = (e0 (M τ).det) ^ (lamW τ (n - 1)) • (y' τ : MvPolynomial (Fin n × Fin n) C)`. Rewrite using `[hy, hy', ← map_inv]`. Conclude with `rowAct_liftPol_eq e0 _ (M τ) (x τ)`. Rewrite using `[hr, LinearMap.map_smulₛₗ, hyw, hyv, lamG_apply, grp_tprod_eq, hg, MultilinearMap.map_smul_univ, smul_smul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[detTwK, map_prod, Units.coe_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Conclude with `scalar_eq e0 (lam τ) _ (c τ) (fun hn => hS τ ⟨n - 1, by omega⟩) (g τ)`. Consider the case `zero => show Φ (rhoK lam (invTrK g) 0) = lamG C n lamW c _ (Φ 0)`. Simplify using `only [map_zero]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b ha hb iha ihb => show Φ (rhoK lam (invTrK g) (⟨a, ha⟩ + ⟨b, hb⟩)) = lamG C n lamW c _ (Φ (⟨a, ha⟩ + ⟨b, hb⟩))`. Simplify using `only [map_add]`. Rewrite using `[iha, ihb]`. Consider the case `smul r a ha iha => show Φ (rhoK lam (invTrK g) (r • ⟨a, ha⟩)) = lamG C n lamW c _ (Φ (r • ⟨a, ha⟩))`. Rewrite using `[map_smul, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, map_smul, iha]`.
+A detailed English derivation is pending.
 -/
 theorem phi_equivariant : ∀ (K C : Type) [Field K] [Field C] (e0 : K →+* C) (ι : Type) [Fintype ι] [DecidableEq ι] (n : ℕ) (lam : ι → DomWeight n) (lamW : ι → ℕ → ℕ) (c : ι → ℤ) (Φ : VV K lam →ₛₗ[e0] NablaT C n lamW), Shift lam lamW c → IsPhi e0 lam lamW Φ → ∀ (g : ι → GL (Fin n) K) (v : VV K lam), Φ (rhoK lam (invTrK g) v) = lamG C n lamW c (fun τ => Matrix.GeneralLinearGroup.map e0 (g τ)) (Φ v) := by
   intro K C _ _ e0 ι _ _ n lam lamW c Φ hS hΦ g v

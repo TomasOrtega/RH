@@ -5,37 +5,33 @@ namespace GlobalTheory.InvariantLift
 variable {G : Type} [Group G] {A : Type} [CommRing A] {r : ℕ}
 
 /- English proof (translation)
-Use `haveI : Fintype (G ⧸ N) := Fintype.ofFinite _`. Establish `dl : ∀ (e : A) (X : Matrix (Fin r) (Fin r) A), (∀ i j, e ∣ X i j) → ∀ (Y : Matrix (Fin r) (Fin r) A) i j, e ∣ (X * Y) i j`. Introduce `e X hX Y i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.dvd_sum fun k _ => (hX i k).mul_right _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `dr : ∀ (e : A) (Y : Matrix (Fin r) (Fin r) A), (∀ i j, e ∣ Y i j) → ∀ (X : Matrix (Fin r) (Fin r) A) i j, e ∣ (X * Y) i j`. Introduce `e Y hY X i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.dvd_sum fun k _ => (hY k j).mul_left _`. Establish `hfix : ∀ a : A, (∀ m ∈ N, σ m a = a) → ∀ g, ∀ n ∈ N, σ n (σ g a) = σ g a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `a ha g n hn`. Establish `hm : g⁻¹ * n * g ∈ N` using `by simpa using hN.conj_mem n hn g⁻¹`. Rewrite using `[← hσ, show n * g = g * (g⁻¹ * n * g) by group, hσ, ha _ hm]`. Take `⟨U, hU⟩ : ∃ U : Matrix (Fin r) (Fin r) A, U = τ • W` from `⟨_, rfl⟩`. Establish `hUfix : ∀ m ∈ N, ∀ k l, σ m (U k l) = U k l`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm k l`. Establish `hWe : σ m (W k l) = W k l` using `congrFun (congrFun (hW m hm) k) l`. Rewrite using `[hU, Matrix.smul_apply, smul_eq_mul, map_mul, hτ m hm, hWe]`. Establish `hUl : ∀ g, ∀ n ∈ N, U.map (σ (n * g)) = U.map (σ g)`. Introduce `g n hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `k l`. Simplify using `only [Matrix.map_apply, hσ]`. Conclude with `hfix _ (fun m hm => hUfix m hm k l) g n hn`. Establish `hUr : ∀ g, ∀ n ∈ N, U.map (σ (g * n)) = U.map (σ g)`. Introduce `g n hn`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `k l`. Simplify using `only [Matrix.map_apply, hσ, hUfix n hn]`. Establish `hMfix : ∀ g h, (M h).map (σ g) = M h`. Introduce `g h`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `hM g h i j`. Establish `hUmap : ∀ g h, (U.map (σ h)).map (σ g) = U.map (σ (g * h))`. Introduce `g h`. Use extensionality with `i j`. Simplify using `[hσ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum : ∀ (f : A →+* A) (X : G ⧸ N → Matrix (Fin r) (Fin r) A), (∑ x, X x).map f = ∑ x, (X x).map f`. Introduce `f X`. Use extensionality with `i j`. Simplify using `[Matrix.sum_apply, map_sum]`. Use `⟨∑ x : G ⧸ N, M x.out * U.map (σ x.out), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Establish `h1 : ∑ x : G ⧸ N, σ x.out τ = 1`. Rewrite using `[← finsum_eq_sum_of_fintype]`. Conclude with `hτ1`. Establish `hent : ∀ x : G ⧸ N, (M x.out * U.map (σ x.out)) i j = σ x.out τ * (M x.out * W.map (σ x.out)) i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Simplify using `only [hU, Matrix.mul_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `hsplit : (W - ∑ x : G ⧸ N, M x.out * U.map (σ x.out)) i j = ∑ x : G ⧸ N, σ x.out τ * (W i j - (M x.out * W.map (σ x.out)) i j)`. Rewrite using `[Matrix.sub_apply, Matrix.sum_apply, Finset.sum_congr rfl (fun x _ => hent x)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mul_sub]`. Rewrite using `[Finset.sum_sub_distrib, ← Finset.sum_mul, h1, one_mul]`. Rewrite using `[hsplit]`. Use `Finset.dvd_sum fun x _ => dvd_mul_of_dvd_right ?_ _` and prove the remaining obligations. Conclude with `dvd_sub_comm.mp (by simpa only [Matrix.sub_apply] using hc x.out i j)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n hn`. Rewrite using `[hsum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, hMfix, hUmap, hUl _ n hn]`. Introduce `g i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hmul : M g * (∑ x : G ⧸ N, M x.out * U.map (σ x.out)).map (σ g) = ∑ x : G ⧸ N, M (g * x.out) * U.map (σ (g * x.out))`. Rewrite using `[hsum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, hMfix, hUmap, map_mul, mul_assoc]`. Establish `hre : ∑ x : G ⧸ N, M x.out * U.map (σ x.out) = ∑ x : G ⧸ N, M (g • x).out * U.map (σ (g • x).out)` using `(Equiv.sum_comp (MulAction.toPerm g) (fun y : G ⧸ N => M y.out * U.map (σ y.out))).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmul, hre, ← Finset.sum_sub_distrib, Matrix.sum_apply]`. Use `Finset.dvd_sum fun x _ => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨n, hn, hgx⟩ : ∃ n ∈ N, g * x.out = (g • x).out * n := by`. Use `⟨((g • x).out)⁻¹ * (g * x.out), ?_, (mul_inv_cancel_left _ _).symm⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.eq]`.
-
-Simplify using `only [QuotientGroup.out_eq']`. Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective x`. Simplify using `only [MulAction.Quotient.smul_mk, smul_eq_mul, QuotientGroup.mk_mul, QuotientGroup.out_eq', Quotient.out_eq]`. Rewrite using `[hgx, map_mul, hUr _ n hn]`. Establish `hfac : M (g • x).out * M n * U.map (σ (g • x).out) - M (g • x).out * U.map (σ (g • x).out) = M (g • x).out * ((M n - 1) * U.map (σ (g • x).out))` using `by noncomm_ring`.
-
-Rewrite using `[hfac]`. Conclude with `dr d _ (dl d _ (fun i' j' => by simpa [Matrix.sub_apply] using hd n hn i' j') _) _ i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem average_step (σ : G → A →+* A) (hσ : ∀ g h a, σ (g * h) a = σ g (σ h a))
     (M : G →* Matrix (Fin r) (Fin r) A) (hM : ∀ g h i j, σ g (M h i j) = M h i j)
@@ -140,33 +136,31 @@ theorem average_step (σ : G → A →+* A) (hσ : ∀ g h a, σ (g * h) a = σ 
     exact dr d _ (dl d _ (fun i' j' => by simpa [Matrix.sub_apply] using hd n hn i' j') _) _ i j
 
 /- English proof (translation)
-Introduce `G _ A _ π hA σ hσ hσπ r M hM S hS hSk W₀ hW₀ hW₀c`. Establish `hstep : ∀ (k : ℕ) (N : Subgroup G) (W : Matrix (Fin r) (Fin r) A), N ∈ S → (∀ g ∈ N, W.map (σ g) = W) → (∀ g i j, π ^ (k + 1) ∣ (M g * W.map (σ g) - W) i j) → ∃ (N' : Subgroup G) (W' : Matrix (Fin r) (Fin r) A), N' ∈ S ∧ (∀ g ∈ N', W'.map (σ g) = W') ∧ (∀ g i j, π ^ (k + 1 + 1) ∣ …`. Introduce `k N W hNS hWN hWc`. Take `⟨N', hN'S, hN'N, hN'd⟩` from `hSk N hNS (k + 1 + 1)`. Take `⟨hN'n, hN'f, τ, hτ, hτ1⟩` from `hS N' hN'S`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hN'n`. Use `haveI := hN'f`. Take `⟨W', h1, h2, h3⟩` from `GlobalTheory.InvariantLift.average_step σ hσ M hM N' τ hτ hτ1 (π ^ (k + 1)) (π ^ (k + 1 + 1)) hN'd W (fun g hg => hWN g (hN'N hg)) hWc`. Conclude with `⟨N', W', hN'S, h2, h3, h1⟩`. Use `choose! Nf Wf hNf hWf hcf hdf using hstep`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N₀, hN₀S, hN₀W⟩` from `hW₀`. Take `⟨seq, hseq0, hseqs⟩ : ∃ seq : ℕ → Subgroup G × Matrix (Fin r) (Fin r) A, seq 0 = (N₀, W₀) ∧ ∀ k, seq (k + 1) = (Nf k (seq k).1 (seq k).2, Wf k (seq k).1 (seq k).2)` from `⟨fun k => Nat.rec (N₀, W₀) (fun k q => (Nf k q.1 q.2, Wf k q.1 q.2)) k, rfl, fun _ => rfl⟩`. Establish `hP : ∀ k, (seq k).1 ∈ S ∧ (∀ g ∈ (seq k).1, (seq k).2.map (σ g) = (seq k).2) ∧ ∀ g i j, π ^ (k + 1) ∣ (M g * (seq k).2.map (σ g) - (seq k).2) i j`. Introduce `k`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => exact ⟨by simp [hseq0, hN₀S], by simpa [hseq0] using hN₀W, by simpa [hseq0] using hW₀c⟩`. Consider the case `succ k ih`. Rewrite using `[hseqs]`. Conclude with `⟨hNf k _ _ ih.1 ih.2.1 ih.2.2, hWf k _ _ ih.1 ih.2.1 ih.2.2, hcf k _ _ ih.1 ih.2.1 ih.2.2⟩`. Establish `hd : ∀ k i j, π ^ (k + 1) ∣ (seq k).2 i j - (seq (k + 1)).2 i j`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k i j`. Use `hdf k _ _ (hP k).1 (hP k).2.1 (hP k).2.2 i j` as an intermediate fact. Rewrite using `[hseqs]`. Simplify `this` using `[Matrix.sub_apply]`. Establish `hcauchy : ∀ m n, m ≤ n → ∀ i j, π ^ m ∣ (seq m).2 i j - (seq n).2 i j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `m n hmn i j`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hmn ih`. Establish `e : (seq m).2 i j - (seq (n + 1)).2 i j = ((seq m).2 i j - (seq n).2 i j) + ((seq n).2 i j - (seq (n + 1)).2 i j)` using `by ring`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `dvd_add ih ((pow_dvd_pow π (by omega)).trans (hd n i j))`. Establish `hmod : ∀ (n : ℕ) (x y : A), x ≡ y [SMOD ((Ideal.span {π}) ^ n • (⊤ : Submodule A A))] ↔ π ^ n ∣ x - y`. Introduce `n x y`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hlim : ∀ i j, ∃ L : A, ∀ n, π ^ n ∣ (seq n).2 i j - L`. Introduce `i j`. Take `⟨L, hL⟩` from `hA.toIsPrecomplete.prec (f := fun n => (seq n).2 i j) (fun {m n} hmn => (hmod m _ _).mpr (hcauchy m n hmn i j))`. Conclude with `⟨L, fun n => (hmod n _ _).mp (hL n)⟩`. Use `choose L hL using hlim`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨Matrix.of L, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Establish `a` using `hd 0 i j`. Establish `b` using `hL i j 1`. Rewrite `a` using `[hseq0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [zero_add, pow_one] at a b`. Establish `c : π ∣ W₀ i j - L i j`. Establish `e : W₀ i j - L i j = (W₀ i j - (seq 1).2 i j) + ((seq 1).2 i j - L i j)` using `by ring`. Rewrite using `[e]`. Conclude with `dvd_add a b`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `dvd_sub_comm.mp c` using `[Matrix.sub_apply]`. Introduce `g`. Use extensionality with `i j`. Apply `sub_eq_zero.mp` to reduce the goal to its premises. Rewrite using `[← Matrix.sub_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Apply `hA.toIsHausdorff.haus` to reduce the goal to its premises. Introduce `n`. Rewrite using `[hmod, sub_zero]`. Establish `key : (M g * (Matrix.of L).map (σ g) - Matrix.of L) i j = (∑ k, M g i k * σ g (L k j - (seq n).2 k j)) + (M g * (seq n).2.map (σ g) - (seq n).2) i j + ((seq n).2 i j - L i j)`. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply, map_sub, mul_sub, Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Use `dvd_add (dvd_add (Finset.dvd_sum fun k _ => ?_) ?_) (hL i j n)` and prove the remaining obligations. Take `⟨e, he⟩` from `dvd_sub_comm.mp (hL k j n)`. Use `dvd_mul_of_dvd_right ⟨σ g e, ?_⟩ _` and prove the remaining obligations.
-
-Rewrite using `[he, map_mul, map_pow, hσπ]`. Conclude with `(pow_dvd_pow π (Nat.le_succ n)).trans ((hP n).2.2 g i j)`.
+A detailed English derivation is pending.
 -/
 theorem exists_invariant_lift : ∀ (G : Type) [Group G] (A : Type) [CommRing A] (π : A), IsAdicComplete (Ideal.span {π}) A → ∀ (σ : G → A →+* A), (∀ g h a, σ (g * h) a = σ g (σ h a)) → (∀ g, σ g π = π) → ∀ (r : ℕ) (M : G →* Matrix (Fin r) (Fin r) A), (∀ g h i j, σ g (M h i j) = M h i j) → ∀ (S : Set (Subgroup G)), (∀ N ∈ S, N.Normal ∧ Finite (G ⧸ N) ∧ ∃ τ : A, (∀ g ∈ N, σ g τ = τ) ∧ ∑ᶠ x : G ⧸ N, σ x.out τ = 1) → (∀ N ∈ S, ∀ k : ℕ, ∃ N' ∈ S, N' ≤ N ∧ ∀ g ∈ N', ∀ i j, π ^ k ∣ (M g - 1) i j) → ∀ (W₀ : Matrix (Fin r) (Fin r) A), (∃ N ∈ S, ∀ g ∈ N, W₀.map (σ g) = W₀) → (∀ g i j, π ∣ (M g * W₀.map (σ g) - W₀) i j) → ∃ W : Matrix (Fin r) (Fin r) A, (∀ i j, π ∣ (W - W₀) i j) ∧ ∀ g, M g * W.map (σ g) = W := by
   intro G _ A _ π hA σ hσ hσπ r M hM S hS hSk W₀ hW₀ hW₀c

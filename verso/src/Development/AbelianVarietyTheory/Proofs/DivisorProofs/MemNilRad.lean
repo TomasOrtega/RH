@@ -27,14 +27,14 @@ def smLoc (J : Matrix (Fin n) (Fin n) ℂ) (s : Matrix (Fin n) (Fin n) ℂ → G
   smul_mem' := fun c _ hf k Z hZ g => (hf k Z hZ g).const_smul c
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_smLoc {J : Matrix (Fin n) (Fin n) ℂ} {s : Matrix (Fin n) (Fin n) ℂ → G} {f : G → ℂ} :
     f ∈ smLoc J s ↔ ∀ (k : ℕ) (Z : Fin k → Matrix (Fin n) (Fin n) ℂ), (∀ i, IsSkew J (Z i)) → ∀ g,
       ContDiff ℝ ∞ fun t : Fin k → ℝ => f (g * (List.ofFn fun i => lineOf s (Z i) (t i)).prod) := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ _ _ _` and use `contDiff_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (J : Matrix (Fin n) (Fin n) ℂ) (s : Matrix (Fin n) (Fin n) ℂ → G) (a : ℂ) : (fun _ => a) ∈ smLoc J s :=
   fun _ _ _ _ => contDiff_const
@@ -43,7 +43,7 @@ def IsLieRep {A : Type} [Ring A] [Algebra ℂ A] (ρ : Matrix (Fin n) (Fin n) �
   ∀ X Y, ρ (X * Y - Y * X) = ρ X * ρ Y - ρ Y * ρ X
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 example : IsLieRep (LinearMap.id : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Matrix (Fin n) (Fin n) ℂ) := fun _ _ => rfl
 
@@ -61,7 +61,7 @@ def invAlg {A : Type} [Ring A] [Algebra ℂ A] (ρ : Matrix (Fin n) (Fin n) ℂ 
     {r | ∃ g g' : Matrix (Fin n) (Fin n) ℂ, g * g' = 1 ∧ ∀ Y, r * ρ Y = ρ (g * Y * g') * r}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1, fun r g g' h1 h2 => h.2 r ⟨g, g', h1, h2⟩⟩, fun h => ⟨h.1, fun r ⟨g, g', h1, h2⟩ => h.2 r g g' h1 h2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_invAlg {A : Type} [Ring A] [Algebra ℂ A] {ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] A} {T : A} :
     T ∈ invAlg ρ ↔ T ∈ Algebra.adjoin ℂ (Set.range ρ) ∧ ∀ r, ∀ g g' : Matrix (Fin n) (Fin n) ℂ, g * g' = 1 →
@@ -76,7 +76,7 @@ def IsIntMod {A : Type} [Ring A] [Algebra ℂ A] (Z : Subalgebra ℂ A) (I : Sub
   ∃ N : ℕ, H ^ N ∈ I ⊔ Submodule.span ℂ {a | ∃ k < N, ∃ z ∈ Z, a = H ^ k * z}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Submodule.mem_sup_right (Submodule.subset_span ⟨0, one_pos, H, h, by simp⟩)⟩`.
+Supply the required witnesses or components.
 -/
 example {A : Type} [Ring A] [Algebra ℂ A] (Z : Subalgebra ℂ A) (I : Submodule ℂ A) {H : A} (h : H ∈ Z) : IsIntMod Z I H :=
   ⟨1, Submodule.mem_sup_right (Submodule.subset_span ⟨0, one_pos, H, h, by simp⟩)⟩
@@ -90,7 +90,7 @@ def nilRad (J : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ) : Submodule ℂ 
     fun v hv => let ⟨a, e⟩ := h.2.2 v hv; ⟨c * a, by rw [smul_mulVec, e, smul_smul]⟩⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_nilRad {J Y : Matrix (Fin n) (Fin n) ℂ} {x : Fin n → ℂ} : Y ∈ nilRad J x ↔
     Y *ᵥ x = 0 ∧ (star x ᵥ* J) ᵥ* Y = 0 ∧ ∀ v, (star x ᵥ* J) ⬝ᵥ v = 0 → ∃ a : ℂ, Y *ᵥ v = a • x := Iff.rfl
@@ -101,7 +101,7 @@ def torMat (J : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) (z : ℂ) : Ma
   1 + (z - 1) • projL J x y + ((star z)⁻¹ - 1) • projL J y x
 
 /- English proof (translation)
-Simplify using `[torMat]`.
+Simplify using the standard rewrite rules.
 -/
 example (J : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) : torMat J x y 1 = 1 := by simp [torMat]
 

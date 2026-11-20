@@ -15,13 +15,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Use `Z.m0.toSABMap.cart.1.hom_ext h0 ?_` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, ← Z.m0.toSABMap.cart.1.w]`. Rewrite using `[reassoc_of% h0]`. Rewrite using `[← Z.jQ_over]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `Spec.map_surjective (w ≫ Z.oF.t.G.hom ≫ Z.jQ ≫ pullback.snd Z.s (spMap (algebraMap (𝓞 c.F) c.F)))`. Take `⟨g', hg'⟩` from `Spec.map_surjective (w' ≫ Z.oF.t.G.hom ≫ Z.jQ ≫ pullback.snd Z.s (spMap (algebraMap (𝓞 c.F) c.F)))`. Establish `e1 : ∀ v : Sp R ⟶ Z.oF.t.G.left, (v ≫ Z.oF.t.G.hom ≫ Z.jQ ≫ pullback.snd _ _) ≫ spMap (algebraMap (𝓞 c.F) c.F) = (v ≫ Z.m.φ ≫ Z.t.G.hom) ≫ Z.s` using `fun v => by`. Simplify using `only [Category.assoc, ← pullback.condition]`. Rewrite using `[← reassoc_of% Z.m.cart.1.w]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hh : Spec.map g ≫ spMap (algebraMap (𝓞 c.F) c.F) = Spec.map g' ≫ spMap (algebraMap (𝓞 c.F) c.F)`. Rewrite using `[hg, hg', e1, e1, h]`. Rewrite `hh` using `[← Spec.map_comp, ← Spec.map_comp]`. Establish `h2` using `congrArg CommRingCat.Hom.hom (Spec.map_injective hh)`. Establish `h3 : g.hom = g'.hom` using `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 c.F)) (by simpa using h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[← hg, ← hg', CommRingCat.hom_ext h3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem oF_pt_ext {Z : Model Xo c (algebraMap (𝓞 c.F) c.F)} {R : Type} [CommRing R] {w w' : Sp R ⟶ Z.oF.t.G.left}
     (h0 : w ≫ Z.m0.toSABMap.φ = w' ≫ Z.m0.toSABMap.φ) (h : w ≫ Z.m.φ ≫ Z.t.G.hom = w' ≫ Z.m.φ ≫ Z.t.G.hom) : w = w' := by
@@ -50,13 +50,13 @@ end GlobalTheory.ShFam
 namespace GlobalTheory.ShFam.ToroidalCompactificationData
 
 /- English proof (translation)
-Introduce `D A N j S κ s x σ hσ W i P hP Hm hH q z hq y hy f hf τ a b`. Substitute `hy` using the available equality. Establish `hv : ∀ τ k, f.v τ k = (cxFrame s.T.Z q).v τ k`. Introduce `τ k`. Take `⟨w, hw0, hw⟩` from `hf τ k`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w', -, hw0', hw'⟩` from `EigFrame.ofFrPt_v (S := CAt σ) s.T.Z q (Category.assoc _ _ _).symm τ k`. Establish `hb : w ≫ s.T.Z.m.φ ≫ s.T.Z.t.G.hom = w' ≫ s.T.Z.m.φ ≫ s.T.Z.t.G.hom`. Rewrite using `[reassoc_of% hw, reassoc_of% hw', (f.tan τ k).1]`. Conclude with `((cxFrame s.T.Z q).tan τ k).1.symm`. Establish `e : w = w'` using `oF_pt_ext (hw0.trans hw0'.symm) hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hw, e]`. Conclude with `hw'`. Establish `hco : (cxFrame s.T.Z q).co f τ = 1`. Use `EigFrame.co_eq fun k => ?_` and prove the remaining obligations. Rewrite using `[hv τ k]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `isCombAtG_single _ _ ((cxFrame s.T.Z q).tan τ) k using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Simplify using `[Matrix.one_apply, Pi.single_apply]`. Rewrite using `[(x.hodge σ).change _ (cxFrame s.T.Z q) f τ, hco, x.hodge_gram_riemann hσ W hP hH hq τ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hodge_gram_of_sameVec : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (σ : κ.c.F →+* ℂ), Formalism.L2.PjFree.GoodEmb κ.c σ → ∀ (W : UnfWit (s.U σ)) (i : Fin W.F.n) (P : (W.F.Di i).La →+ (Fin W.g → ℂ)), IsPeriod (W.F.Di i) (fun j => Formalism.L2.PjFree.relab κ.c σ (W.e j).1) P → ∀ (Hm : Matrix (Fin W.g) (Fin W.g) ℂ), IsRiem W.F i P Hm → ∀ (q : FrPt (S.Xo κ.l) κ.c (CAt σ)) (z : ∀ τ : D.host.E →+* ℂ, Fin (S.Dw.mult τ) → (Fin W.g → ℂ)), AnLie W.F i P q z → ∀ (y : CxPts (genStr s.T.Z) σ), cxPt s.T.Z q = y → ∀ f : EigFrame s.T.Z σ (y.1 ≫ genι s.T.Z), (∀ τ k, ∃ w : Sp (DualNumber ℂ) ⟶ s.T.Z.oF.t.G.left, w ≫ s.T.Z.m0.toSABMap.φ = q.u τ k ∧ w ≫ s.T.Z.m.φ = f.v τ k) → ∀ τ a b, (x.hodge σ).gram y f τ a b = (Real.pi : ℂ) * hermForm Hm (z τ b) (z τ a) := by
   intro D A N j S κ s x σ hσ W i P hP Hm hH q z hq y hy f hf τ a b

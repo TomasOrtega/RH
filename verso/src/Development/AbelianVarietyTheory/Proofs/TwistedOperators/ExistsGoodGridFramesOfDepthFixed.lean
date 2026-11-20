@@ -15,7 +15,7 @@ open GlobalTheory.AscFin
 namespace GlobalTheory.AscFin
 
 /- English proof (translation)
-Introduce `hd D hq T L μ0 hL sc G W M hM v`. Take `⟨F, hF⟩` from `GlobalTheory.T.exists_standardAuxiliaryFrames_allRowGrids D hq T L μ0 hL sc G W M hM`. Conclude with `⟨F, GlobalTheory.T.standardAuxiliaryFrames_fit_grid_ends D hq T L μ0 hL sc G W M hM v F hF, lineLat F, GlobalTheory.T.standardAuxiliaryFrames_good_row_grids hd D hq T L μ0 hL sc G W M hM v F hF⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem towerEx_of_depFixed : GlobalTheory.SepRows.DepFixed → GlobalTheory.Asc.TowerEx := by
   intro hd D hq T L μ0 hL sc G W M hM v

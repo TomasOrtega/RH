@@ -15,17 +15,17 @@ variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {
 
 include hi in
 /- English proof (translation)
-Establish `hS` using `DzLc.sum_unip_eq_zero τ hτ (Nat.succ_pos a.val) (by have := b.isLt; omega)`. Take `⟨k, hk⟩ : ∃ k : ℕ, d a = d b + ((k + 1 : ℕ) : ℤ)` from `⟨(d a - d b - 1).toNat, by omega⟩`. Establish `hterm : ∀ u ∈ GlobalTheory.FiniteGL.unipRadical (ZMod g) (GlobalTheory.FiniteGL.twoBlocks n (a.val + 1)), L (π (Iwasawa.torusPow (w.adicCompletion E) n d) (φ (τ.ρ u x))) = L (π (Iwasawa.torusPow (w.adicCompletion E) n d) (φ x))`. Introduce `u hu`. Take `⟨κ, hκ, hmem⟩` from `DzLc.exists_lift i u hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hκ, hφ]`. Establish `hU` using `unipRadical_le_unipB hmem`. Rewrite using `[← rep_conj π _ _ (φ x), hL _ (by rw [Iwasawa.torusPow]; exact conj_mem_unipB _ hU)]`. Rewrite using `[psi_eq_one i hi hψ, Circle.coe_one, one_mul]`. Rewrite using `[Iwasawa.torusPow, superDiag_conj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_sum_lt _ one_ne_zero fun p _ => Valuation.map_sum_lt _ one_ne_zero fun q hq => ?_` and prove the remaining obligations. Establish `hq' : q.val = p.val + 1` using `(Finset.mem_filter.1 hq).2`. Establish `hent : ∀ r s : Fin n, valuation (w.adicCompletion E) ((Matrix.GeneralLinearGroup.map i.toRingHom (inc g n κ) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) r s) ≤ 1` using `fun r s => (DzIso.valuation_le_iff i hi _).2 (κ r s).2`. Distinguish the cases in `hp : p = a`. Establish `hqb : q = b` using `Fin.ext (by rw [hq', hb, hp])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hp, hqb, torus_entry' d a b k hk]`. Conclude with `val_uniformizer_pow_lt k (hent a b)`. Establish `hpa : p.val ≠ a.val` using `fun h => hp (Fin.ext h)`. Establish `h0 : (Matrix.GeneralLinearGroup.map i.toRingHom (inc g n κ) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) p q = 0`. Use `(GlobalTheory.FiniteGL.mem_unipRadical.1 hmem) p q (by` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [GlobalTheory.FiniteGL.twoBlocks]; split_ifs <;> omega)`. Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply_ne (fun h => by rw [h] at hq'; omega), sub_zero]`. Then use the resulting hypothesis. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `h3` using `congrArg (fun F : Module.End ℂ τ => L (π (Iwasawa.torusPow (w.adicCompletion E) n d) (φ (F x)))) hS`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.sum_apply, map_sum, LinearMap.zero_apply, map_zero] at h3`. Rewrite `h3` using `[Finset.sum_congr rfl (fun (u : GlobalTheory.FiniteGL.unipRadical (ZMod g) (GlobalTheory.FiniteGL.twoBlocks n (a.val + 1))) _ => hterm u.1 u.2), Finset.sum_const, Finset.card_univ, smul_eq_zero]`. Conclude with `h3.resolve_left Fintype.card_ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_down (hψ : ∀ x : ℤ_[g], ψ (i (x : ℚ_[g])) = ψ₀ (PadicInt.toZMod x)) {n : ℕ}
     (τ : FDRep ℂ (Gn g n)) (hτ : IsCusp τ.character) {V : Type} [AddCommGroup V] [Module ℂ V]

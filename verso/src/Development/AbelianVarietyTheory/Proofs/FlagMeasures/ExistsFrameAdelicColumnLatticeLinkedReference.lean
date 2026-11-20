@@ -17,15 +17,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.St.G.FrameLink
 
 /- English proof (translation)
-Introduce `D X u wt ιA hW hI`. Take `⟨c, p, hc, hrng, hid, hLf, hkill, hkz, hcl⟩` from `GlobalTheory.T.exists_coprime_projection_adelic_lattice_into_columns D X u wt ιA hW hI`. Establish `hmhat` using `GlobalTheory.T.adelicColumnLattice_eq_spanPart_transportedFrame D X u wt ιA hW hI`. Establish `hY : ∀ i, X.B.I.fmat (X.xu u) *ᵥ X.bw i ∈ X.B.I.Lf ∧ X.B.I.fmat (X.xu u) *ᵥ X.bwd i ∈ X.B.I.Lf` using `fun i => ⟨(X.xu_K u (X.bw i)).1 (X.vectorsInLattice.2.2 i).1, (X.xu_K u (X.bwd i)).1 (X.vectorsInLattice.2.2 i).2⟩`. Establish `hb0 : ∀ i, ∃ x, embA X wt ιA x = (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • p (X.B.I.fmat (X.xu u) *ᵥ X.bw i)` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `hrng ((c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fmat (X.xu u) *ᵥ X.bw i))`. Conclude with `⟨x, by rw [← hx, map_smul]⟩`. Establish `hbd0 : ∀ i, ∃ x, embA X wt ιA x = (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • p (X.B.I.fmat (X.xu u) *ᵥ X.bwd i)` using `fun i => by`. Take `⟨x, hx⟩` from `hrng ((c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fmat (X.xu u) *ᵥ X.bwd i))`. Conclude with `⟨x, by rw [← hx, map_smul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose b hb using hb0`. Use `choose bd hbd using hbd0`. Establish `hclose` using `GlobalTheory.T.projection_moves_typeVectors_modLevel D X u wt ιA hW hI c p hcl`. Establish `hbe` using `GlobalTheory.T.transported_type_vectors_fixed_by_chosen_places_idempotent D X u wt ιA hW hI c p b bd hb hbd`. Use `⟨{ eps := ιA X.ew eps_idem := by rw [← map_mul, X.ew_idem] eps_orth := by rw [← GlobalTheory.St.G.IotaSigmaCompatibility.iotaA_sigA D X ιA hI, ← map_mul, X.ew_orth, map_zero] eps_int := (hI.2 _).1 X.ew_int eps_full := GlobalTheory.T.adelic_columns_lattice_divisible_by_level_away_ …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingEquiv.map_add, X.psiEf_add]`. Use `psi_int := fun x hx => X.psiEf_int _ ((hI.2 _).2 (by simpa using hx))`. Use `psi_rat := GlobalTheory.T.transportedFiniteCharacter_inverse_exp_trace D X ιA hI }, rfl, fun i => ?_, fun i => ?_, fun a => rfl⟩`. Use `show embA X wt ιA (b i) - _ ∈ _`. Rewrite using `[hb i]`.
-
-Conclude with `(hclose i).1`. Use `show embA X wt ιA (bd i) - _ ∈ _`. Rewrite using `[hbd i]`. Conclude with `(hclose i).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_exists : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V) (ιA : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F ≃+* D.host.E ⊗[D.host.F] Ad D.host.F), WittX X u wt → IsAdeleIso X ιA → ∃ Fr : FrQ D wt, FrLink X u wt ιA Fr := by
   intro D X u wt ιA hW hI

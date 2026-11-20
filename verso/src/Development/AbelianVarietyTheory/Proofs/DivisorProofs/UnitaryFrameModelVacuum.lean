@@ -15,27 +15,25 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.ThKTorus
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP q x y hxy M₁ blk e hG hco hev Cc hCc c hc φ hφ`. Take `⟨ex, hex⟩` from `GlobalTheory.T.pair_frame_block_eigen_relation hKP F E σ B n d X W M χX χW om r s r' s' hP q x y hxy M₁ blk e hG hco hev φ hφ`. Choose the witnesses or unpack the hypotheses as in `⟨A, hAex⟩ : ∃ A : ℕ, ∀ i, ex i ≤ A := by`. Take `⟨A, hA⟩` from `exists_nat_ge (∑ i, |ex i|)`. Conclude with `⟨A, fun i => (le_abs_self _).trans ((Finset.single_le_sum (fun j _ => abs_nonneg (ex j)) (Finset.mem_univ i)).trans hA)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨A, fun N => ?_⟩` and prove the remaining obligations. Take `⟨Cb, k, hb⟩` from `GlobalTheory.T.evaluation_compact_set_bound hKP F E σ B n d X W M χX χW om r s r' s' hP M₁ e hG hev Cc hCc φ hφ ((q + 1) * N)`. Take `⟨Cm, hCm0, hCm⟩` from `GlobalTheory.T.block_scaled_norm_decay F blk hco.1 c hc N`. Use `set Ct : ℝ := ∏ i, c ^ (ex i - A) with hCt`. Establish `hCt0 : 0 ≤ Ct` using `Finset.prod_nonneg fun i _ => Real.rpow_nonneg hc.le _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Cb * max 1 (Ct * Cm), k, ?_⟩` and prove the remaining obligations. Introduce `f t a κ h htc ha hκ`. Establish `ht0 : ∀ i, 0 < t i` using `fun i => hc.trans_le (htc i)`. Take `⟨m, hm1, hmC, hz⟩` from `hb f κ h hκ`. Establish `hhk : 0 ≤ (ht h : ℝ) ^ k` using `pow_nonneg (NNReal.coe_nonneg _) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCb : 0 < Cb`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `h2 : Cb * (ht h : ℝ) ^ k ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hneg hhk`. Establish `h3 : (1 : ℝ) ≤ m` using `by exact_mod_cast hm1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmax : 1 ≤ max 1 (Ct * Cm)` using `le_max_left _ _`. Use `⟨m, hm1, hmC.trans (mul_le_mul_of_nonneg_right (le_mul_of_one_le_right hCb.le hmax) hhk), fun ξ => ?_⟩` and prove the remaining obligations. Use `set z : Fin n × Fin d → AF F := fun j => algebraMap F (AF F) (ξ j) with hzdef`. Establish `h1` using `hex t a ht0 ha f κ h z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : 0 ≤ semK (Fin n × Fin d) k f` using `apply_nonneg _ _`. Distinguish the cases in `hI : ∀ j, IsIntegral ℤ ((m : F) * ξ j)`. Rewrite using `[majI, if_pos hI]`. Take `⟨hbd, -⟩` from `hz (blkScale blk t z)`. Establish `hc'` using `hCm t htc ξ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hprod : (∏ i, t i ^ ex i) ≤ Ct * (∏ i, t i) ^ A`. Rewrite using `[hCt, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun i _ => Real.rpow_nonneg (ht0 i).le _) (fun i _ => ?_)` and prove the remaining obligations. Establish `e1 : t i ^ ex i = t i ^ (ex i - A) * t i ^ (A : ℝ)`. Rewrite using `[← Real.rpow_add (ht0 i)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Put the polynomial expressions in normal form. Rewrite using `[e1, Real.rpow_natCast]`. Conclude with `mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_nonpos hc (htc i) (by linarith [hAex i])) (pow_nonneg (ht0 i).le _)`. Establish `hW` using `majW_nonneg blk A N t ξ (fun i => (ht0 i).le)`. Establish `hT : 0 ≤ (∏ i, t i) ^ A` using `pow_nonneg (Finset.prod_nonneg fun i _ => (ht0 i).le) _`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hc' ?_) (mul_nonneg hCt0 hT)` and prove the remaining obligations. Conclude with `mul_nonneg (mul_nonneg hCb.le hp) hhk`. Use `_ = Cb * (Ct * Cm) * semK (Fin n × Fin d) k f * (ht h : ℝ) ^ k * majW blk A N t ξ := by`. Unfold `majW`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ Cb * max 1 (Ct * Cm) * semK (Fin n × Fin d) k f * (ht h : ℝ) ^ k * majW blk A N t ξ := by`. Use `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (le_max_right _ _) hCb.le) hp) hhk) hW` and prove the remaining obligations. Establish `h0 : e (om (κ, h) (pureA F f φ)) (blkScale blk t z) = 0`. Assume the negation of the conclusion as `hne`.
-
-Conclude with `hI fun j => GlobalTheory.T.block_scaled_integral_of_local F blk t m ξ j fun v => (hz _).2 hne j v`. Rewrite using `[majI, if_neg hI, mul_zero]`. Rewrite `h1` using `[h0, norm_zero, mul_zero]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem frameMajorant : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),

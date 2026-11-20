@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.HeckeFamilyMatrices.HeckeEqv
 
 /- English proof (translation)
-Establish `hAB : (A * B).det ≠ 0` using `by rw [Matrix.det_mul]; exact mul_ne_zero hA hB`. Use extensionality with `i j`. Simplify using `[toGL, hA, hB, hAB, Matrix.GeneralLinearGroup.mkOfDetNeZero, Matrix.mul_apply, Fin.sum_univ_two]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toGL_mul (A B : Matrix (Fin 2) (Fin 2) ℤ) (hA : A.det ≠ 0) (hB : B.det ≠ 0) :
     toGL (A * B) = toGL A * toGL B := by
@@ -26,7 +26,7 @@ theorem toGL_mul (A B : Matrix (Fin 2) (Fin 2) ℤ) (hA : A.det ≠ 0) (hB : B.d
   simp [toGL, hA, hB, hAB, Matrix.GeneralLinearGroup.mkOfDetNeZero, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `h : (mat γ).det ≠ 0` using `by simp [mat]`. Use extensionality with `i j`. Simplify using `[toGL, h, Matrix.GeneralLinearGroup.mkOfDetNeZero, Matrix.SpecialLinearGroup.mapGL]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toGL_mat (γ : SL(2, ℤ)) : toGL (mat γ) = Matrix.SpecialLinearGroup.mapGL ℝ γ := by
   have h : (mat γ).det ≠ 0 := by simp [mat]
@@ -34,29 +34,29 @@ theorem toGL_mat (γ : SL(2, ℤ)) : toGL (mat γ) = Matrix.SpecialLinearGroup.m
   simp [toGL, h, Matrix.GeneralLinearGroup.mkOfDetNeZero, Matrix.SpecialLinearGroup.mapGL]
 
 /- English proof (translation)
-Rewrite using `[toGL_mat]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toGL_smul_mat (γ : SL(2, ℤ)) (τ : ℍ) : toGL (mat γ) • τ = γ • τ := by
   rw [toGL_mat]; rfl
 
 /- English proof (translation)
-Rewrite using `[mem_degreeLT]`. Conclude with `lt_of_le_of_lt degree_le_natDegree (by exact_mod_cast Nat.lt_succ_of_le h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_natDegree_le {w : ℕ} {p : ℂ[X]} (h : p.natDegree ≤ w) : p ∈ degreeLT ℂ (w + 1) := by
   rw [mem_degreeLT]
   exact lt_of_le_of_lt degree_le_natDegree (by exact_mod_cast Nat.lt_succ_of_le h)
 
 /- English proof (translation)
-Use `Submodule.sum_mem _ fun j hj => mem_of_natDegree_le ?_` and prove the remaining obligations. Conclude with `(natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eichler_mem (w : ℕ) (f : ℍ → ℂ) (τ : ℍ) : eichler w f τ ∈ degreeLT ℂ (w + 1) := by
   refine Submodule.sum_mem _ fun j hj => mem_of_natDegree_le ?_
   exact (natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj))
 
 /- English proof (translation)
-Simplify using `only [slP, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.toSpanSingleton_apply]`. Use `Submodule.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Use `Submodule.smul_mem _ _ (mem_of_natDegree_le ?_)` and prove the remaining obligations. Establish `hi' : i ≤ w` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Use `natDegree_mul_le.trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(natDegree_pow_le (p := C ((g 0 0 : ℤ) : ℂ) * X + C ((g 0 1 : ℤ) : ℂ)) (n := i)).trans (Nat.mul_le_mul_left i (natDegree_linear_le))`. Establish `h2` using `(natDegree_pow_le (p := C ((g 1 0 : ℤ) : ℂ) * X + C ((g 1 1 : ℤ) : ℂ)) (n := w - i)).trans (Nat.mul_le_mul_left (w - i) (natDegree_linear_le))`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem polySlash_mem (w : ℕ) (g : Matrix (Fin 2) (Fin 2) ℤ) (p : ℂ[X]) : slP w g p ∈ degreeLT ℂ (w + 1) := by
   simp only [slP, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.toSpanSingleton_apply]
@@ -71,19 +71,17 @@ theorem polySlash_mem (w : ℕ) (g : Matrix (Fin 2) (Fin 2) ℤ) (p : ℂ[X]) : 
   omega
 
 /- English proof (translation)
-Establish `hfd : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) ⇑f` using `f.holo'`. Establish `hdet : ∀ i, (δ i).det ≠ 0` using `fun i => (hδ i).ne'`. Establish `hpc` using `(GlobalTheory.T.eichlerPeriodCocycle_mem_cocycles_and_eq Γ k hk2 f).2`. Use `set w := k - 2 with hw`. Use `set F := eichler w ⇑f with hF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set c : ι → ℂ[X] := fun i => slP w (δ i) (F (toGL (δ i) • UpperHalfPlane.I)) with hc`. Use `set C := ∑ i, c i with hCdef`. Establish `hC : -C ∈ degreeLT ℂ (w + 1)` using `Submodule.neg_mem _ (Submodule.sum_mem _ fun i _ => polySlash_mem _ _ _)`. Use `⟨⟨-C, hC⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `γ`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hγdet : (mat (γ : SL(2, ℤ))).det ≠ 0` using `by simp [mat]`. Take `⟨hex⟩ : Nonempty (∃ π : Equiv.Perm ι, ∀ i, ∃ γ' : Γ, δ i * mat γ = mat γ' * δ (π i))` from `⟨hπ γ⟩`. Establish `e2 : hk Γ w δ (per Γ w ⇑f) γ = ∑ i, slP w (δ (hex.choose i)) (per Γ w ⇑f (hex.choose_spec i).choose)`. Simplify using `only [hk, LinearMap.pi_apply, dif_pos hex, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Establish `e1 : per Γ w (hkF (k : ℤ) δ ⇑f) γ = ∑ i, (slP w (δ i * mat γ) (F (toGL (δ i * mat γ) • UpperHalfPlane.I)) - slP w (mat γ) (c i))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [per, hkF]`. Rewrite using `[GlobalTheory.T.eichlerIntegralFromI_finset_sum w _ (fun i => hfd.slash _ _), map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.eichlerIntegral_changeOfVariables_intMatrix_slash k hk2 ⇑f hfd (δ i) (hδ i) ((γ : SL(2, ℤ)) • UpperHalfPlane.I)`. Rewrite using `[eq_sub_of_add_eq h.symm, map_sub, GlobalTheory.T.polyDegreeSlashAction_matrix_mul w (δ i) (mat γ) _ (eichler_mem _ _ _), toGL_mul _ _ (hdet i) hγdet, mul_smul, toGL_smul_mat]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : ∀ i, slP w (δ i * mat γ) (F (toGL (δ i * mat γ) • UpperHalfPlane.I)) = slP w (δ (hex.choose i)) (per Γ w ⇑f (hex.choose_spec i).choose) + c (hex.choose i)`. Introduce `i`. Use `set γ' := (hex.choose_spec i).choose`. Establish `hγ' : δ i * mat γ = mat γ' * δ (hex.choose i)` using `(hex.choose_spec i).choose_spec`. Establish `hγ'det : (mat (γ' : SL(2, ℤ))).det ≠ 0` using `by simp [mat]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hγ', toGL_mul _ _ hγ'det (hdet _), mul_smul, toGL_smul_mat, GlobalTheory.T.polyDegreeSlashAction_matrix_mul w (mat γ') (δ (hex.choose i)) _ (eichler_mem _ _ _), hpc γ' (toGL (δ (hex.choose i)) • UpperHalfPlane.I), map_sub]`. Simplify using `only [hc]`. Normalize the expressions using the abelian group laws. Establish `hsum : ∑ i, c (hex.choose i) = C` using `Equiv.sum_comp hex.choose c`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply, Pi.sub_apply]`.
-
-Rewrite using `[e1, e2]`. Simplify using `only [e3, Finset.sum_sub_distrib, Finset.sum_add_distrib, hsum, ← map_sum, map_neg]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem hecke_eqv (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (hk2 : 2 ≤ k) (f : ModularForm Γ (k : ℤ))
     {ι : Type} [Fintype ι] (δ : ι → Matrix (Fin 2) (Fin 2) ℤ) (hδ : ∀ i, 0 < (δ i).det)
@@ -133,7 +131,7 @@ theorem hecke_eqv (Γ : Subgroup SL(2, ℤ)) (k : ℕ) (hk2 : 2 ≤ k) (f : Modu
   abel
 
 /- English proof (translation)
-Establish `hq0 : (0 : ℤ) < q` using `by exact_mod_cast hq.pos`. Unfold `tqFam`. Use `split_ifs`. Simplify `hq0` using `[Matrix.det_fin_two_of]`. Simplify `hq0` using `[Matrix.det_mul, mat, dg, Matrix.det_fin_two_of]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tqFam_det (q : ℕ) (hq : q.Prime) (σ : SL(2, ℤ)) (i : Fin (q + 1)) : 0 < (tqFam q σ i).det := by
   have hq0 : (0 : ℤ) < q := by exact_mod_cast hq.pos
@@ -143,14 +141,14 @@ theorem tqFam_det (q : ℕ) (hq : q.Prime) (σ : SL(2, ℤ)) (i : Fin (q + 1)) :
   · simpa [Matrix.det_mul, mat, dg, Matrix.det_fin_two_of] using hq0
 
 /- English proof (translation)
-Establish `hl0 : (0 : ℤ) < l` using `by exact_mod_cast hl.pos`. Simplify `hl0` using `[ulFam, Matrix.det_fin_two_of]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ulFam_det (l : ℕ) (hl : l.Prime) (i : Fin l) : 0 < (ulFam l i).det := by
   have hl0 : (0 : ℤ) < l := by exact_mod_cast hl.pos
   simpa [ulFam, Matrix.det_fin_two_of] using hl0
 
 /- English proof (translation)
-Introduce `N l k hN hl hlN hk f`. Use `⟨fun q σ hq hqN hσ => ?_, ?_, fun d σ hσ => ?_⟩` and prove the remaining obligations. Conclude with `hecke_eqv _ k (by omega) f (tqFam q σ) (tqFam_det q hq σ) (GlobalTheory.T.heckeTqRepresentatives_right_mul_permutes_cosets N l q hN hl hlN hq hqN σ hσ)`. Conclude with `hecke_eqv _ k (by omega) f (ulFam l) (ulFam_det l hl) (GlobalTheory.T.heckeUlRepresentatives_right_mul_perm N l hN hl hlN)`. Conclude with `hecke_eqv _ k (by omega) f (fun _ : Unit => mat σ) (fun _ => by simp [mat]) (fun γ => ⟨Equiv.refl _, fun _ => GlobalTheory.T.diamondMatrix_normalizes_gammaOneGammaZeroLevel N l d σ hσ γ⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem period_map_equivariant : ∀ (N l k : ℕ), 5 ≤ N → l.Prime → ¬ l ∣ N → 3 ≤ k → ∀ f : ModularForm (Lev N l) (k : ℤ),
   (∀ (q : ℕ) (σ : SL(2, ℤ)), q.Prime → ¬ q ∣ N * l → IsDiam N l (q : ZMod N) σ →

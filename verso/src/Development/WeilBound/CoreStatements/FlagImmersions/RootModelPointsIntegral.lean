@@ -13,9 +13,9 @@ noncomputable section
 namespace RootFieldNumerics.GeoComb
 
 /- English proof (translation)
-Establish `hc : ∀ j, Fintype.card {a // f a = j} = Fintype.card {a // g a = j}`. Introduce `j`. Use `congrArg (Multiset.count j) h` as an intermediate fact. Simplify using `only [Multiset.count_map] at this`. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `convert this using 1 <;> simp [Finset.card_def, Finset.filter_val, eq_comm]`. Set `e : ∀ j, {a // f a = j} ≃ {a // g a = j}` to `fun j => Fintype.equivOfCardEq (hc j)`. Set `σ : Equiv.Perm (Fin d)` to `((Equiv.sigmaFiberEquiv f).symm.trans (Equiv.sigmaCongrRight e)).trans (Equiv.sigmaFiberEquiv g)`. Use `⟨σ, fun a => ?_⟩` and prove the remaining obligations. Conclude with `((e (f a) ⟨a, rfl⟩).2).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_perm_of_map_eq {J : Type} {d : ℕ} (f g : Fin d → J)
     (h : Finset.univ.val.map f = Finset.univ.val.map g) : ∃ σ : Equiv.Perm (Fin d), ∀ k, f k = g (σ k) := by
@@ -33,7 +33,7 @@ theorem exists_perm_of_map_eq {J : Type} {d : ℕ} (f g : Fin d → J)
   exact ((e (f a) ⟨a, rfl⟩).2).symm
 
 /- English proof (translation)
-Rewrite using `[Finsupp.toMultiset_sum]`. Simplify using `only [Finsupp.toMultiset_single, one_smul]`. Rewrite using `[← Multiset.sum_map_singleton (Finset.univ.val.map w), Multiset.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toMultiset_word {J : Type} {d : ℕ} (w : Fin d → J) :
     Finsupp.toMultiset (∑ k, Finsupp.single (w k) 1 : J →₀ ℕ) = Finset.univ.val.map w := by
@@ -43,7 +43,7 @@ theorem toMultiset_word {J : Type} {d : ℕ} (w : Fin d → J) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem degree_word {J : Type} {d : ℕ} (w : Fin d → J) :
     (∑ k, Finsupp.single (w k) 1 : J →₀ ℕ).degree = d := by
@@ -51,13 +51,13 @@ theorem degree_word {J : Type} {d : ℕ} (w : Fin d → J) :
   simp
 
 /- English proof (translation)
-Use `set m : J →₀ ℕ := ∑ k, Finsupp.single (w k) 1 with hm`. Use `set L : List J := (Finsupp.toMultiset m).toList with hL`. Establish `hML : (L : Multiset J) = Finset.univ.val.map w`. Rewrite using `[hL, Multiset.coe_toList, hm, toMultiset_word]`. Establish `hlen : L.length = d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg Multiset.card hML` as an intermediate fact. Simplify using `using this`. Set `f : Fin d → J` to `fun k => L.get (Fin.cast hlen.symm k)`. Establish `hf : List.ofFn f = L` using `List.ext_get (by simp [hlen]) (fun i h1 h2 => by simp [f])`. Establish `hmap : Finset.univ.val.map f = Finset.univ.val.map w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Fin.univ_val_map, hf, hML]`. Take `⟨σ, hσ⟩` from `exists_perm_of_map_eq f w hmap`. Use `⟨σ, fun k => ?_⟩` and prove the remaining obligations. Establish `hk : (k : ℕ) < L.length`. Rewrite using `[hlen]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `k.2`. Rewrite using `[← hσ k]`. Simplify using `only [monoLines]`. Rewrite using `[dif_pos hk]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem monoLines_word {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {J : Type} (ℓ : J → HermLine ι)
     {d : ℕ} (w : Fin d → J) :
@@ -85,7 +85,7 @@ theorem monoLines_word {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype 
   rfl
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_univ_sum, map_sum]`. Use `Finset.sum_congr rfl (fun w _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, ← map_prod, MvPolynomial.C_mul', map_smul, smul_eq_mul, MvPolynomial.monomial_sum_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_prod_lin {J : Type} [Fintype J] [DecidableEq J] {d : ℕ} (Φ : MvPolynomial J ℝ →ₗ[ℝ] ℝ)
     (c : Fin d → J → ℝ) :
@@ -104,7 +104,7 @@ def cf (lam : Wt Ψ N) (s : ℝ) : Option (Ψ × Fin N) → ℝ
   | none => s
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_option]`. Simplify using `only [linA, toA, linRoot, cf, map_neg, map_sum, map_mul, rename_C, rename_X, neg_mul, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem linA_eq (lam : Wt Ψ N) (s : ℝ) : linA lam s = ∑ j, C (cf lam s j) * X j := by
   rw [Fintype.sum_option]
@@ -113,9 +113,9 @@ theorem linA_eq (lam : Wt Ψ N) (s : ℝ) : linA lam s = ∑ j, C (cf lam s j) *
   ring
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `none`. Establish `hk : (M.kA : ℝ) ≠ 0` using `by exact_mod_cast M.kA_pos.ne'`. Simplify using `[RootModel.coef, cf]`. Clear the denominators using the available nonvanishing facts.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Consider the case `some r`. Simplify using `[RootModel.coef, cf]`.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem coef_mul (M : RootModel Ψ N) (lam : Wt Ψ N) (s : ℝ) (j : Option (Ψ × Fin N)) :
     M.coef lam s j * (M.kA : ℝ) ^ ((Finsupp.single j 1 : Option (Ψ × Fin N) →₀ ℕ) none) = cf lam s j := by
@@ -128,7 +128,7 @@ theorem coef_mul (M : RootModel Ψ N) (lam : Wt Ψ N) (s : ℝ) (j : Option (Ψ 
     simp [RootModel.coef, cf]
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `none => exact M.A_smooth`. Consider the case `some r => exact M.x_smooth t r`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem line_smooth (M : RootModel Ψ N) (t : ℝ) (j : Option (Ψ × Fin N)) : IsSmoothHerm (M.line t j) := by
   cases j with
@@ -136,7 +136,7 @@ theorem line_smooth (M : RootModel Ψ N) (t : ℝ) (j : Option (Ψ × Fin N)) : 
   | some r => exact M.x_smooth t r
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `none => rfl`. Consider the case `some r => simp [RootModel.line, M.x_deg]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem line_deg (M : RootModel Ψ N) (t t' : ℝ) (j : Option (Ψ × Fin N)) : (M.line t j).a = (M.line t' j).a := by
   cases j with
@@ -144,7 +144,7 @@ theorem line_deg (M : RootModel Ψ N) (t t' : ℝ) (j : Option (Ψ × Fin N)) : 
   | some r => simp [RootModel.line, M.x_deg]
 
 /- English proof (translation)
-Establish `hb : (monomial m 1 : RPA Ψ N) = basisMonomials (Option (Ψ × Fin N)) ℝ m`. Simplify using `[MvPolynomial.coe_basisMonomials]`. Rewrite using `[hb]`. Conclude with `Module.Basis.constr_basis _ _ _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geoFun_monomial (M : RootModel Ψ N) (m : Option (Ψ × Fin N) →₀ ℕ) :
     M.geoFun (monomial m 1) = M.geoMono m := by
@@ -160,17 +160,17 @@ namespace RootFieldNumerics
 open GeoComb
 
 /- English proof (translation)
-Introduce `II hII Ψ _ N M t lam s q n hn`. Establish `hP : IsArithVar M.P (dimFl Ψ N + 1)` using `M.arith`. Establish `hsm : ∀ j, IsSmoothHerm (M.line t j)` using `line_smooth M t`. Take `⟨hexp, hperm⟩` from `GlobalTheory.T.log_integral_multilinear II hII M.K M.ι M.P (dimFl Ψ N) (Option (Ψ × Fin N)) (M.line t) n hP hsm`. Establish `hterm : ∀ w : Fin (dimFl Ψ N) → Option (Ψ × Fin N), ptsIntegral M.P (fun k z => Real.log ((M.line t (w k)).h z)) (fun _ => 1) = M.δ * (M.kA : ℝ) ^ ((∑ k, Finsupp.single (w k) 1 : Option (Ψ × Fin N) →₀ ℕ) none) * M.geoMono (∑ k, Finsupp.single (w k) 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w`. Take `⟨σ, hσ⟩` from `monoLines_word (M.line 1) w`. Establish `hmono_sm : ∀ k, IsSmoothHerm (monoLines (M.line 1) (∑ k, Finsupp.single (w k) 1) (dimFl Ψ N) k)`. Introduce `k`. Rewrite using `[hσ k]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `line_smooth M 1 _`. Rewrite using `[hperm (monoLines (M.line 1) (∑ k, Finsupp.single (w k) 1) (dimFl Ψ N)) (fun k => M.line t (w k)) σ⁻¹ hmono_sm (fun k => hsm _) (fun k => by`. Rewrite using `[hσ, show σ (σ⁻¹ k) = k by simp]`. Conclude with `line_deg M t 1 _)]`. Establish `hδ : (M.δ : ℝ) ≠ 0` using `by exact_mod_cast M.δ_pos.ne'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : (M.kA : ℝ) ≠ 0` using `by exact_mod_cast M.kA_pos.ne'`. Rewrite using `[RootModel.geoMono, if_pos (degree_word w)]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hexp]`. Repeatedly rewrite using `[linA_eq]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_prod_lin, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun w _ => ?_)` and prove the remaining obligations. Rewrite using `[hterm w, geoFun_monomial]`. Establish `hc : (∏ k, (n k (w k) : ℝ)) * (M.kA : ℝ) ^ ((∑ k, Finsupp.single (w k) 1 : Option (Ψ × Fin N) →₀ ℕ) none) = (q : ℝ) ^ dimFl Ψ N * ∏ k, cf (lam k) (s k) (w k)`. Rewrite using `[Finsupp.finset_sum_apply, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hn, mul_assoc, coef_mul]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Take the linear combination `((M.δ : ℝ) * M.geoMono (∑ k, Finsupp.single (w k) 1)) * hc`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem root_model_points_integral : ∀ II : IntersectionSystem, IsFullIntersectionSystem II → ∀ (Ψ : Type) [Fintype Ψ] (N : ℕ) (M : RootModel Ψ N) (t : ℝ) (lam : Fin (dimFl Ψ N) → Wt Ψ N) (s : Fin (dimFl Ψ N) → ℝ) (q : ℕ) (n : Fin (dimFl Ψ N) → Option (Ψ × Fin N) → ℤ), (∀ k j, (n k j : ℝ) = q * M.coef (lam k) (s k) j) → ptsIntegral M.P (fun k z => Real.log ((combLine (M.line t) (n k)).h z)) (fun _ => 1) = M.δ * (q : ℝ) ^ dimFl Ψ N * M.geoFun (∏ k, linA (lam k) (s k)) := by
   intro II hII Ψ _ N M t lam s q n hn

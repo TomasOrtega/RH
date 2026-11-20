@@ -6,7 +6,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CommutingMultiplicity.I
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CommutingMultiplicity.IntegrableEntry
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.CommMult.commMult_of PI.UnitaryGroupMassFormula.CommMult.schurStep PI.UnitaryGroupMassFormula.CommMult.injStep PI.UnitaryGroupMassFormula.CommMult.avStep`.
+A detailed English derivation is pending.
 -/
 theorem commutant_multiplicity_one : PI.UMultOne.CommutantMult :=
   PI.UnitaryGroupMassFormula.CommMult.commMult_of PI.UnitaryGroupMassFormula.CommMult.schurStep PI.UnitaryGroupMassFormula.CommMult.injStep PI.UnitaryGroupMassFormula.CommMult.avStep

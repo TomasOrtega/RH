@@ -11,7 +11,7 @@ open scoped TensorProduct
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.basis_repr_tmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem repr_one_tmul {d : ℕ} (bs : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (e : E) (k : Fin d) :
     (Algebra.TensorProduct.basis (Fv F v) bs).repr ((1 : Fv F v) ⊗ₜ[F] e) k =
@@ -20,7 +20,7 @@ theorem repr_one_tmul {d : ℕ} (bs : Module.Basis (Fin d) F E) (v : HeightOneSp
   simp
 
 /- English proof (translation)
-Use `h _ ?_` and prove the remaining obligations. Unfold `basisSet`. Use `Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_union_left _ ?_))` and prove the remaining obligations. Conclude with `Finset.mem_image.2 ⟨(i, j, k), Finset.mem_univ _, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem struct_int {σ : E →ₐ[F] E} {d : ℕ} {bs : Module.Basis (Fin d) F E} {v : HeightOneSpectrum (𝓞 F)}
     (h : IntAt v (basisSet σ bs)) (i j k : Fin d) :
@@ -32,7 +32,7 @@ theorem struct_int {σ : E →ₐ[F] E} {d : ℕ} {bs : Module.Basis (Fin d) F E
   exact Finset.mem_image.2 ⟨(i, j, k), Finset.mem_univ _, rfl⟩
 
 /- English proof (translation)
-Use `h _ ?_` and prove the remaining obligations. Unfold `basisSet`. Use `Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_union_right _ ?_))` and prove the remaining obligations. Conclude with `Finset.mem_image.2 ⟨k, Finset.mem_univ _, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem one_int {σ : E →ₐ[F] E} {d : ℕ} {bs : Module.Basis (Fin d) F E} {v : HeightOneSpectrum (𝓞 F)}
     (h : IntAt v (basisSet σ bs)) (k : Fin d) :
@@ -44,7 +44,7 @@ theorem one_int {σ : E →ₐ[F] E} {d : ℕ} {bs : Module.Basis (Fin d) F E} {
   exact Finset.mem_image.2 ⟨k, Finset.mem_univ _, rfl⟩
 
 /- English proof (translation)
-Use `h _ ?_` and prove the remaining obligations. Unfold `basisSet`. Use `Finset.mem_union_left _ (Finset.mem_union_right _ ?_)` and prove the remaining obligations. Conclude with `Finset.mem_image.2 ⟨(i, k), Finset.mem_univ _, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sig_int {σ : E →ₐ[F] E} {d : ℕ} {bs : Module.Basis (Fin d) F E} {v : HeightOneSpectrum (𝓞 F)}
     (h : IntAt v (basisSet σ bs)) (i k : Fin d) :
@@ -56,9 +56,9 @@ theorem sig_int {σ : E →ₐ[F] E} {d : ℕ} {bs : Module.Basis (Fin d) F E} {
   exact Finset.mem_image.2 ⟨(i, k), Finset.mem_univ _, rfl⟩
 
 /- English proof (translation)
-Use `set bK := Algebra.TensorProduct.basis (Fv F v) bs with hbK`. Establish `e : x * y = ∑ i, ∑ j, (bK.repr x i * bK.repr y j) • ((1 : Fv F v) ⊗ₜ[F] (bs i * bs j))` using `by conv_lhs => rw [← bK.sum_repr x, ← bK.sum_repr y]`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_smul_comm, hbK, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← bK.coord_apply, e, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, bK.coord_apply, hbK, repr_one_tmul, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_mul {d : ℕ} (bs : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F))
     (x y : Fv F v ⊗[F] E) (k : Fin d) :
@@ -80,9 +80,9 @@ theorem repr_mul {d : ℕ} (bs : Module.Basis (Fin d) F E) (v : HeightOneSpectru
   rw [map_smul, bK.coord_apply, hbK, repr_one_tmul, smul_eq_mul]
 
 /- English proof (translation)
-Use `set bK := Algebra.TensorProduct.basis (Fv F v) bs with hbK`. Establish `e : sigR (Fv F v) σ x = ∑ i, bK.repr x i • ((1 : Fv F v) ⊗ₜ[F] σ (bs i))` using `by conv_lhs => rw [← bK.sum_repr x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hbK, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[sigR]`. Rewrite using `[← bK.coord_apply, e, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, bK.coord_apply, hbK, repr_one_tmul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_sig (σ : E →ₐ[F] E) {d : ℕ} (bs : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F))
     (x : Fv F v ⊗[F] E) (k : Fin d) :
@@ -126,7 +126,7 @@ def ringOf {σ : E →ₐ[F] E} {d : ℕ} {bs : Module.Basis (Fin d) F E} {v : H
     exact neg_mem (hx k)
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[repr_sig]`. Conclude with `sum_mem fun i _ => mul_mem (hx i) (sig_int h i k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigR_mem {σ : E →ₐ[F] E} {d : ℕ} {bs : Module.Basis (Fin d) F E} {v : HeightOneSpectrum (𝓞 F)}
     (h : IntAt v (basisSet σ bs)) (x : Fv F v ⊗[F] E) (hx : x ∈ ringOf h) :
@@ -136,7 +136,7 @@ theorem sigR_mem {σ : E →ₐ[F] E} {d : ℕ} {bs : Module.Basis (Fin d) F E} 
   exact sum_mem fun i _ => mul_mem (hx i) (sig_int h i k)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d bs v h`. Conclude with `⟨ringOf h, (sigR (Fv F v) σ).restrict (ringOf h) (ringOf h) (sigR_mem h), rfl, fun x => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem rvRing : PositivityTheory.SiegelWeilFormula.Gunr.RvRing := by
   intro F E _ _ _ _ _ σ d bs v h

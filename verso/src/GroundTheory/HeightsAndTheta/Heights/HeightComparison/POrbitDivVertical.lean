@@ -8,9 +8,9 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial ReciprocityTheory.ChartRestriction.G
 
 /- English proof (translation)
-Use `IsLocalization.isAlgebraic ℚ (nonZeroDivisors ℤ)` as an intermediate fact. Take `⟨Q, hQ, hQτ⟩` from `((AlgebraicClosure.isAlgebraic ℚ).isAlgebraic τ⁻¹).restrictScalars (R := ℤ)`. Establish `: Invertible τ⁻¹` using `invertibleOfNonzero (inv_ne_zero hτ)`. Use `⟨Q.reverse, by rw [Polynomial.coeff_zero_reverse]; exact Polynomial.leadingCoeff_ne_zero.mpr hQ, ?_⟩` and prove the remaining obligations. Establish `h` using `(Polynomial.eval₂_reverse_eq_zero_iff (algebraMap ℤ (AlgebraicClosure ℚ)) τ⁻¹ Q).mpr hQτ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[invOf_eq_inv, inv_inv]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_int_poly_coeff_zero_ne_zero {τ : AlgebraicClosure ℚ} (hτ : τ ≠ 0) :
     ∃ P : Polynomial ℤ, P.coeff 0 ≠ 0 ∧ Polynomial.aeval τ P = 0 := by
@@ -23,29 +23,25 @@ theorem exists_int_poly_coeff_zero_ne_zero {τ : AlgebraicClosure ℚ} (hτ : τ
   rwa [invOf_eq_inv, inv_inv] at h
 
 /- English proof (translation)
-Introduce `ι _ _ _ n A x s _ hs V hV hH`. Take `⟨a, -, hsa, hsW⟩` from `hs`. Take `⟨hVmin, hVrel⟩` from `hV`. Establish `hVp : V.IsPrime` using `hVmin.1.1`. Establish `hWV : orbitIdeal x ≤ V` using `le_sup_left.trans hVmin.1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsV : s ∈ V` using `hVmin.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))`. Use `choose c hc using hVrel`. Use `set M : MvPolynomial (Coord n) ℤ := chartMonomial c a with hMdef`. Establish `hMV : M ∉ V`. Rewrite using `[hMdef, chartMonomial]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Take `⟨k, -, hk⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hVp)).mp h`. Conclude with `hc k (hVp.mem_of_pow_mem _ hk)`. Establish `hMa : Geo.IsMultiHomog (ι` using `blockIdx n) M a := (geoMultiHomog_iff _ a).mpr (isWeightedHomogeneous_chartMonomial c a)`. Use `set y := flatCone x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set T : MvPolynomial ι (AlgebraicClosure ℚ) := ∏ k, X k ^ a k`. Use `set σ := eval₂ (Int.castRingHom (AlgebraicClosure ℚ)) y s`. Use `set μ := eval₂ (Int.castRingHom (AlgebraicClosure ℚ)) y M`. Establish `hφs : Geo.mConeMap (ι` using `blockIdx n) y s = C σ * T := mConeMap_of_isMultiHomog y s a hsa`. Establish `hφM : Geo.mConeMap (ι` using `blockIdx n) y M = C μ * T := mConeMap_of_isMultiHomog y M a hMa`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hσ : σ ≠ 0` using `fun h ↦ hsW (by`. Rewrite using `[orbitIdeal, Geo.mCoordIdeal, RingHom.mem_ker, hφs, h, map_zero, zero_mul])`. Establish `hμ : μ ≠ 0` using `fun h ↦ hMV (hWV (by`. Rewrite using `[orbitIdeal, Geo.mCoordIdeal, RingHom.mem_ker, hφM, h, map_zero, zero_mul]))`. Take `⟨P, hP0, hP⟩` from `exists_int_poly_coeff_zero_ne_zero (div_ne_zero hσ hμ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m := P.natDegree`. Set `f : ℕ → MvPolynomial (Coord n) ℤ` to `fun j ↦ C (P.coeff j) * s ^ j * M ^ (m - j)`. Establish `hfW : ∑ j ∈ Finset.range (m + 1), f j ∈ orbitIdeal x`. Rewrite using `[orbitIdeal, Geo.mCoordIdeal, RingHom.mem_ker, map_sum]`. Establish `hterm : ∀ j ∈ Finset.range (m + 1), Geo.mConeMap (ι` using `blockIdx n) y (f j) = C (algebraMap ℤ (AlgebraicClosure ℚ) (P.coeff j) * (σ / μ) ^ j * μ ^ m) * T ^ m := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `j hj`. Establish `hjm : j ≤ m` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)`. Establish `e1 : (σ / μ) ^ j * μ ^ m = σ ^ j * μ ^ (m - j)`. Rewrite using `[← Nat.add_sub_cancel' hjm, pow_add, Nat.add_sub_cancel_left, div_pow, ← mul_assoc, div_mul_cancel₀ _ (pow_ne_zero _ hμ)]`. Establish `e2 : T ^ m = T ^ j * T ^ (m - j)` using `by rw [← pow_add, Nat.add_sub_cancel' hjm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [f, map_mul, map_pow, hφs, hφM, MvPolynomial.algHom_C, mul_assoc, e1, e2]`. Simplify using `only [eq_intCast, map_intCast, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hterm, ← Finset.sum_mul, ← map_sum, ← Finset.sum_mul]`. Establish `hPτ : ∑ j ∈ Finset.range (m + 1), algebraMap ℤ (AlgebraicClosure ℚ) (P.coeff j) * (σ / μ) ^ j = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hP, Polynomial.aeval_eq_sum_range]`. Simplify using `[Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[hPτ, zero_mul, map_zero, zero_mul]`. Establish `hrest : ∑ j ∈ Finset.range m, f (j + 1) ∈ V` using `Ideal.sum_mem _ fun j _ ↦ by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [f]`. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ hsV))`. Establish `h0 : f 0 ∈ V`. Establish `h` using `Ideal.sub_mem V (hWV hfW) hrest`.
-
-Rewrite `h` using `[Finset.sum_range_succ', add_sub_cancel_left]`. Then use the resulting hypothesis. Simplify using `only [f, pow_zero, mul_one, Nat.sub_zero] at h0`. Break down `hVp.mem_or_mem h0 with hC | hM` into its components or cases. Apply `hP0` to reduce the goal to its premises. Establish `: P.coeff 0 ∈ V.comap (C : ℤ →+* MvPolynomial (Coord n) ℤ)` using `hC`.
-
-Rewrite `this` using `[show V.comap (C : ℤ →+* MvPolynomial (Coord n) ℤ) = ⊥ from hH]`. Conclude with `(Ideal.mem_bot).mp this`. Conclude with `hMV (hVp.mem_of_pow_mem _ hM)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OrbitDivVertical.proof : OrbitDivVertical.Statement := by
   intro ι _ _ _ n A x s _ hs V hV hH

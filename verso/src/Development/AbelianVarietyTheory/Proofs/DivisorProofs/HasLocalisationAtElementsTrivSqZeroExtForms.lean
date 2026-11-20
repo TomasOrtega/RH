@@ -14,11 +14,11 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential GlobalTheory.CatCoh Gl
 namespace GlobalTheory.CechDR
 
 /- English proof (translation)
-Set `L : Om R A j →ₗ[A] Om R B j` to `{ toFun := h.mOm j map_add' := map_add _ map_smul' := fun a y ↦ by`. Rewrite using `[h.mOm_smul, RingHom.id_apply, e]`. Conclude with `algebraMap_smul B a _ }`. Establish `hL : L = GlobalTheory.exteriorPowerMapOver B j (KaehlerDifferential.map R R A B)`. Apply `exteriorPower.linearMap_ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `ext1 v`. Rewrite using `[LinearMap.compAlternatingMap_apply, LinearMap.compAlternatingMap_apply, GlobalTheory.exteriorPowerMapOver_ιMulti]`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `h.mDR _ = _`. Rewrite using `[exteriorPower.ιMulti_apply_coe, exteriorPower.ιMulti_apply_coe, ExteriorAlgebra.ιMulti_apply, ExteriorAlgebra.ιMulti_apply, map_list_prod, List.map_ofFn]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `congrArg List.ofFn (funext fun i ↦ ?_)` and prove the remaining obligations. Conclude with `(h.mDR_ι (v i)).trans (congrArg _ (h.oneFormMap_eq_kaehlerDifferential_map e (v i)))`. Conclude with `LinearMap.congr_fun hL x`.
+A detailed English derivation is pending.
 -/
 theorem mOm_eq_exteriorPowerMapOver {R A B : Type} [CommRing R] [CommRing A] [CommRing B]
     [Algebra R A] [Algebra R B] [Algebra A B] [IsScalarTower R A B] {α : A →+* B}
@@ -52,9 +52,9 @@ attribute [local instance] opModJ isCentralScalarJ isScalarTowerJ
 variable {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R) (j : ℕ)
 
 /- English proof (translation)
-Apply `TrivSqZeroExt.ext` to reduce the goal to its premises. Rewrite using `[TrivSqZeroExt.fst_mul, TrivSqZeroExt.fst_pow, fst_extMapJ, fst_extMapJ]`. Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero, map_mul, map_pow] at ha ⊢`. Take the linear combination `(mp F l c.fst) ^ (k₂ + 1) * ha`. Rewrite using `[TrivSqZeroExt.snd_mul, TrivSqZeroExt.snd_pow_of_smul_comm _ _ (op_smul_eq_smul _ _), TrivSqZeroExt.fst_pow, snd_extMapJ, fst_extMapJ, snd_extMapJ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add, map_add, map_nsmul, pOm_smul, map_mul, map_pow, op_smul_eq_smul, Nat.pred_succ] at ha hη ⊢`. Rewrite using `[← hη, ← ha]`. Use `module`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surj_keyJ {T T' : C} (l : T ⟶ T') (c : TrivSqZeroExt (F.obj T) (Om R (F.obj T) j))
     (y : TrivSqZeroExt (F.obj T') (Om R (F.obj T') j)) (a₀ : F.obj T) (η₀ : Om R (F.obj T) j)
@@ -76,7 +76,7 @@ theorem surj_keyJ {T T' : C} (l : T ⟶ T') (c : TrivSqZeroExt (F.obj T) (Om R (
     module
 
 /- English proof (translation)
-Apply `TrivSqZeroExt.ext` to reduce the goal to its premises. Rewrite using `[TrivSqZeroExt.fst_mul, TrivSqZeroExt.fst_pow, TrivSqZeroExt.fst_zero]`. Take the linear combination `c.fst ^ (m₂ + 1) * h₁`. Rewrite using `[TrivSqZeroExt.snd_mul, TrivSqZeroExt.snd_pow_of_smul_comm _ _ (op_smul_eq_smul _ _), TrivSqZeroExt.fst_pow, TrivSqZeroExt.snd_zero, op_smul_eq_smul, Nat.pred_succ]`. Take the linear combination `(norm := module) c.fst ^ (m₁ + 1) • h₂ + h₁ • ((m₁ + m₂ + 1) • c.fst ^ m₂ • c.snd)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ker_keyJ {T : C} (c x : TrivSqZeroExt (F.obj T) (Om R (F.obj T) j)) (m₁ m₂ : ℕ)
     (h₁ : c.fst ^ m₁ * x.fst = 0) (h₂ : c.fst ^ m₂ • x.snd = 0) : c ^ (m₁ + m₂ + 1) * x = 0 := by
@@ -88,15 +88,13 @@ theorem ker_keyJ {T : C} (c x : TrivSqZeroExt (F.obj T) (Om R (F.obj T) j)) (m�
     linear_combination (norm := module) c.fst ^ (m₁ + 1) • h₂ + h₁ • ((m₁ + m₂ + 1) • c.fst ^ m₂ • c.snd)
 
 /- English proof (translation)
-Introduce `T c`. Take `⟨T', l, h1, h2, h3, h4⟩` from `H T c.fst`. Use `letI : Algebra (F.obj T) (F.obj T') := (mp F l : F.obj T →+* F.obj T').toAlgebra`. Use `haveI : IsScalarTower R (F.obj T) (F.obj T') := IsScalarTower.of_algebraMap_eq fun r ↦ ((mp F l).commutes r).symm`. Use `haveI := FormExt.isLocalization_of_data F l c.fst h1 h2 h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Algebra.FormallyEtale (F.obj T) (F.obj T') := Algebra.FormallyEtale.of_isLocalization (Submonoid.powers c.fst)`. Establish `hb` using `GlobalTheory.TopForm.isBaseChange_exteriorPower (KaehlerDifferential.isBaseChange_of_formallyEtale R (F.obj T) (F.obj T')) j`. Use `haveI := (isLocalizedModule_iff_isBaseChange (Submonoid.powers c.fst) (F.obj T') _).2 hb`. Establish `hp : ∀ ω, pOm F j l ω = GlobalTheory.exteriorPowerMapOver (F.obj T') j (KaehlerDifferential.map R R (F.obj T) (F.obj T')) ω` using `mOm_eq_exteriorPowerMapOver _ (fun _ ↦ rfl) j`. Establish `hs : ∀ (a : F.obj T) (η : Om R (F.obj T') j), a • η = mp F l a • η` using `fun a η ↦ (algebraMap_smul (F.obj T') a η).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨T', l, (isUnit_mp_omjExt_iff F j l c).2 h1, fun y ↦ ?_, fun x hx ↦ ?_, fun S u hu ↦ h4 S u ((isUnit_mp_omjExt_iff F j u c).1 hu)⟩` and prove the remaining obligations. Take `⟨⟨a₀, _, k₁, rfl⟩, ha⟩` from `IsLocalization.surj (Submonoid.powers c.fst) y.fst`. Take `⟨⟨η₀, _, k₂, rfl⟩, hη⟩` from `IsLocalizedModule.surj (Submonoid.powers c.fst) (GlobalTheory.exteriorPowerMapOver (F.obj T') j (KaehlerDifferential.map R R (F.obj T) (F.obj T'))) y.snd`. Express the relevant statement in the definitionally equal form `y.fst * mp F l (c.fst ^ k₁) = mp F l a₀ at ha`. Express the relevant statement in the definitionally equal form `(c.fst ^ k₂) • y.snd = _ at hη`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hη` using `[hs, ← hp]`. Use `⟨k₁ + k₂ + 1, TrivSqZeroExt.inl (a₀ * c.fst ^ (k₂ + 1)) + TrivSqZeroExt.inr ((k₁ + k₂ + 1) • (a₀ * c.fst ^ k₂) • c.snd + c.fst ^ (k₁ + 1) • η₀), ?_⟩` and prove the remaining obligations. Conclude with `surj_keyJ F j l c y a₀ η₀ k₁ k₂ ha hη`. Establish `e1 : mp F l x.fst = 0` using `(fst_extMapJ F j l x).symm.trans (congrArg TrivSqZeroExt.fst hx)`. Establish `e2 : GlobalTheory.exteriorPowerMapOver (F.obj T') j (KaehlerDifferential.map R R (F.obj T) (F.obj T')) x.snd = 0` using `(hp _).symm.trans ((snd_extMapJ F j l x).symm.trans (congrArg TrivSqZeroExt.snd hx))`.
-
-Take `⟨m₁, h₁⟩` from `h3 _ e1`. Take `⟨⟨_, m₂, rfl⟩, h₂⟩` from `IsLocalizedModule.exists_of_eq (S := Submonoid.powers c.fst) (f := GlobalTheory.exteriorPowerMapOver (F.obj T') j (KaehlerDifferential.map R R (F.obj T) (F.obj T'))) (x₁ := x.snd) (x₂ := 0) (by rw [e2, map_zero])`. Rewrite `h₂` using `[smul_zero, Submonoid.smul_def]`. Conclude with `⟨m₁ + m₂ + 1, ker_keyJ F j c x m₁ m₂ h₁ h₂⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hasLoc_omjExt (H : Desc.HasLoc F) : Desc.HasLoc (omjExt F j) := by
   intro T c

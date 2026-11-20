@@ -49,7 +49,7 @@ def DiscriminantNeZero : Prop :=
     [IsDiscreteValuationRing O], X.Hyp p K → X.Dl p K O ≠ 0
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ X O _ _ _ hX h0`. Conclude with `h p n' r K X O hX (by rw [h0, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem discriminant_ne_zero_of_residue_ne_zero (h : DiscriminantNonzeroModUniformiser) : DiscriminantNeZero := by
   intro p n' r K _ _ _ X O _ _ _ hX h0
@@ -94,9 +94,9 @@ theorem segDeg_eq_Pol (O : Type) [CommRing O] (r K : ℕ) (b : ℤ → ℕ) :
     restrictSupport O (Dat.segDegSet (r := r) K b) = Pol O (r + K) b := rfl
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [phSeg]`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Consider the case `mul_X q v h`. Simplify using `only [map_mul, h, map_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[phSeg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_phSeg {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (K p : ℕ) {n' r : ℕ} [NeZero n']
     (F : Frames n' r) (j : ℤ) (P : SegRing R r K) :
@@ -109,9 +109,9 @@ theorem map_phSeg {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (K p : 
     simp [phSeg]
 
 /- English proof (translation)
-Establish `: X.phc p K O j = (phSeg O K p X.F j).comp (expand (p ^ X.Rj p K j))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [Dat.phc, phSeg, AlgHom.comp_apply, expand_X, aeval_X, map_pow]`. Rewrite using `[← pow_mul, ← pow_add]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phc_eq {n' r : ℕ} [NeZero n'] (X : Dat n' r) (p K : ℕ) (O : Type) [CommRing O] (j : ℤ) (y : SegRing O r K) :
     X.phc p K O j y = phSeg O K p X.F j (expand (p ^ X.Rj p K j) y) := by
@@ -123,25 +123,23 @@ theorem phc_eq {n' r : ℕ} [NeZero n'] (X : Dat n' r) (p K : ℕ) (O : Type) [C
   rw [this]; rfl
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ X O _ _ _ S hX hLa hk u hu`. Take `⟨b, y, l, hy, hl, hueq, hdeg⟩` from `hu`. Establish `hJ : 1 ≤ X.F.J` using `hX.valid.1`. Establish `hp0 : 0 < p` using `hX.prime.pos`. Distinguish the cases in `hu0 : u = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `⟨0, ⟨fun _ => 0, fun _ => Submodule.zero_mem _, 0, ?_, ?_, Submodule.zero_mem _⟩, by simp [hu0]⟩` and prove the remaining obligations. Introduce `j x _ _ c`. Simplify using `using Nat.pow_pos hp0`. Establish `h0 : (∏ j ∈ Finset.range X.F.J, phSeg O K p X.F (j : ℤ) ((fun _ : ℤ => (0 : SegRing O r K)) (j : ℤ))) = 0` using `Finset.prod_eq_zero (i := 0) (Finset.mem_range.mpr hJ) (map_zero _)`. Rewrite using `[h0, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨l0, e, hl0, he, hmon⟩` from `hLab p n' r K X O hX l hl`. Use `set z : ℤ → SegRing O r K := fun j => X.zSeg p K O j (y j) (e j) with hz`. Establish `hDu : X.Dl p K O * u = (∏ j ∈ Finset.range X.F.J, phSeg O K p X.F (j : ℤ) (z j)) * monomial l0 1`. Rewrite using `[hueq, hmon]`. Simplify using `only [hz, Dat.zSeg, Dat.Dl, map_mul, Finset.prod_mul_distrib, phc_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hβ : ∀ j, ∃ β : ℤ → ℕ, z j ∈ Pol O (r + K) β` using `fun j => hZ p n' r K X O j (b j) (y j) (e j) (by rw [← segDeg_eq_Pol]; exact (hy j).1.2)`. Use `choose β hβ using hβ`. Establish `h2` using `hDeg2 p n' r K X O hX b y l hy hl (hueq ▸ hdeg) (hueq ▸ hu0)`. Establish `hx : ∀ j : ℤ, ∃ x, x ∈ X.XXs p K O j ∧ x ∈ Pol O (r + K) (β j) ∧ ((∃ i ∈ Finset.range X.F.J, (i : ℤ) = j) → MvPolynomial.map (IsLocalRing.residue O) x = MvPolynomial.map (IsLocalRing.residue O) (z j))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `j`. Distinguish the cases in `hj : ∃ i ∈ Finset.range X.F.J, (i : ℤ) = j`. Take `⟨i, hi, rfl⟩` from `hj`. Take `⟨x, h1, h2', h3⟩` from `hSeg p n' r K X O S hX hLa hk (i : ℤ) (b i) (y i) (e i) (hy i) (he i) (h2 i hi) (β i) (hβ i)`. Conclude with `⟨x, h1, h2', fun _ => h3⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨0, Submodule.zero_mem _, Submodule.zero_mem _, fun h => absurd h hj⟩`. Use `choose x hx1 hx2 hx3 using hx`. Establish `hsum : X.Et p K + X.a' p K = X.d`. Use function extensionality and compare the values at `t`. Use `(h41b p n' r K X hX hLa hk).2 t` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, Dat.a']`. Use linear arithmetic over natural numbers and integers. Establish `hDdeg : X.Dl p K O * u ∈ RRdeg O n' (r + K) X.d`. Establish `h1 : X.Dl p K O ∈ Pol O (r + K) (X.Et p K)`. Rewrite using `[← RRdeg_eq_Pol]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hDlHom p n' r K X O`. Establish `h2 : u ∈ Pol O (r + K) (X.a' p K)`. Rewrite using `[← RRdeg_eq_Pol]`. Conclude with `hdeg`. Use `hom_Pol_mul O h1 h2` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hsum]`. Rewrite using `[RRdeg_eq_Pol]`. Conclude with `this`. Establish `hDne : X.Dl p K O * u ≠ 0` using `mul_ne_zero (hDlNe p n' r K X O hX) hu0`. Use `⟨(∏ j ∈ Finset.range X.F.J, phSeg O K p X.F (j : ℤ) (x j)) * monomial l0 1, ⟨x, hx1, l0, hl0, rfl, ?_⟩, ?_⟩` and prove the remaining obligations.
-
-Conclude with `hHom p n' r K X.F O x z β l0 X.d hx2 hβ (hDu ▸ hDdeg) (hDu ▸ hDne)`. Rewrite using `[hDu]`. Simplify using `only [map_mul, map_prod, map_phSeg]`. Rewrite using `[Finset.prod_congr rfl fun i hi => by rw [← hx3 (i : ℤ) ⟨i, hi, rfl⟩]]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generator_of_segment_reductions (C₀ : ℝ) (hLab : CoarseLabelFactorisation) (hDeg2 : TopDegreeComparison) (hDlHom : DiscriminantMultihomogeneous) (hDlNe : DiscriminantNeZero)
     (h41b : TopCountLowerBounds C₀) (hSeg : SegmentReductionLiftsMultihomogeneous C₀) (hZ : SegmentImageMultihomogeneous) (hHom : SegmentProductDegreeDetermined) : GeneratorModuloUniformiser C₀ := by

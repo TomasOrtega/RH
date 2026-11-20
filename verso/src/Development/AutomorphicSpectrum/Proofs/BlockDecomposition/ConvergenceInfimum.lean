@@ -11,7 +11,7 @@ open GlobalTheory.CompanionTheory.EGlue
 namespace GlobalTheory.CompanionTheory.EGlue.ConvInfProof
 
 /- English proof (translation)
-Proceed by induction on `m₀ using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Simplify using `only [Multiset.map_cons, Multiset.prod_cons]`. Conclude with `(tendsto_const_nhds.add (h.const_add a)).mul ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_prod_shift (m₀ : Multiset ℂ) {z : ℕ → ℂ} {z₀ : ℂ} (h : Tendsto z atTop (𝓝 z₀)) (u : ℂ) :
     Tendsto (fun k => ((m₀.map (· + z k)).map (u + ·)).prod) atTop
@@ -23,11 +23,11 @@ theorem tendsto_prod_shift (m₀ : Multiset ℂ) {z : ℕ → ℂ} {z₀ : ℂ} 
     exact (tendsto_const_nhds.add (h.const_add a)).mul ih
 
 /- English proof (translation)
-Introduce `hD hT E _ _ _ N t s τ hc hs`. Proceed by induction on `hc with`. Consider the case `leaf V z z₀ h`. Establish `hex : ∃ m₀, HasInfCharGL V τ m₀`. Break down `hs with ⟨rfl, rfl, -⟩ | ⟨-, hV, -⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨0, hT E τ⟩`. Conclude with `hD E _ V hV τ`. Take `⟨m₀, h₀⟩` from `hex`. Conclude with `⟨m₀.map (· + z₀), fun k => m₀.map (· + z k), ⟨m₀, h₀, rfl⟩, fun k => ⟨m₀, h₀, rfl⟩, fun u => tendsto_prod_shift m₀ h u⟩`. Consider the case `node h₁ h₂ ih₁ ih₂`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a₀, a, ha₀, ha, hat⟩` from `ih₁ hs.1`. Take `⟨b₀, b, hb₀, hb, hbt⟩` from `ih₂ hs.2`. Use `⟨a₀ + b₀, fun k => a k + b k, ⟨a₀, b₀, ha₀, hb₀, rfl⟩, fun k => ⟨a k, b k, ha k, hb k, rfl⟩, fun u => ?_⟩` and prove the remaining obligations. Simplify using `only [Multiset.map_add, Multiset.prod_add]`. Conclude with `(hat u).mul (hbt u)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem convInf_of_discInf_topInf : DiscInf → TopInf → ConvInf := by
   intro hD hT E _ _ _ N t s τ hc hs

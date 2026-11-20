@@ -10,7 +10,7 @@ namespace PositivityTheory.RgUd.CellB
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h` using `Measure.measure_isAddInvariant_eq_smul_of_isCompact_closure (DomMulAct.mk z • μ) μ hs`. Rewrite `h` using `[addHaarScalarFactor_smul_eq_distribHaarChar]`. Establish `h2 : (DomMulAct.mk z • μ) s = μ (z • s)` using `by simp [Measure.domSMul_apply]`. Rewrite using `[← h2, h, ENNReal.smul_def, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem addHaar_smul_set_eq_distribHaarChar_mul {A : Type*} [AddCommGroup A] [TopologicalSpace A]
     [IsTopologicalAddGroup A] [LocallyCompactSpace A] [MeasurableSpace A] [BorelSpace A]
@@ -23,11 +23,11 @@ private theorem addHaar_smul_set_eq_distribHaarChar_mul {A : Type*} [AddCommGrou
   rw [← h2, h, ENNReal.smul_def, smul_eq_mul]
 
 /- English proof (translation)
-Use `borelize k`. Take `⟨K, hK, hK0⟩` from `exists_compact_mem_nhds (0 : k)`. Establish `hK1 : (Measure.addHaar : Measure k) K ≠ 0` using `(Measure.measure_pos_of_mem_nhds _ hK0).ne'`. Establish `hK2 : (Measure.addHaar : Measure k) K ≠ ∞` using `hK.measure_lt_top.ne`. Establish `e1 : (Measure.addHaar : Measure k) (z • K) = distribHaarChar k z * (Measure.addHaar : Measure k) K` using `addHaar_smul_set_eq_distribHaarChar_mul _ z hK.closure`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : IsCompact (Set.univ.pi (fun _ : ι => K))` using `isCompact_univ_pi (fun _ => hK)`. Establish `e2` using `addHaar_smul_set_eq_distribHaarChar_mul (Measure.pi (fun _ : ι => (Measure.addHaar : Measure k))) z hs.closure`. Rewrite `e2` using `[Set.smul_set_univ_pi, Measure.pi_pi, Measure.pi_pi]`. Simplify using `only [Pi.smul_apply, e1, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ] at e2`. Establish `e3 : ((distribHaarChar k z : ℝ≥0∞)) ^ Fintype.card ι = (distribHaarChar (ι → k) z : ℝ≥0∞)` using `(ENNReal.mul_left_inj (pow_ne_zero _ hK1) (ENNReal.pow_ne_top hK2)).1 e2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e3` using `[← ENNReal.coe_pow, ENNReal.coe_inj]`. Simplify using `only [nabs, ← e3, NNReal.coe_pow]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem distribHaarChar_pi (ι : Type) [Fintype ι] (z : kˣ) :
     ((distribHaarChar (ι → k) z : ℝ≥0) : ℝ) = nabs k z ^ Fintype.card ι := by
@@ -48,17 +48,15 @@ theorem distribHaarChar_pi (ι : Type) [Fintype ι] (z : kˣ) :
   simp only [nabs, ← e3, NNReal.coe_pow]
 
 /- English proof (translation)
-Use `set T := S.map (DistribSMul.toAddMonoidHom A z) with hT`. Establish `hTset : (T : Set A) = z • (S : Set A)`. Rewrite using `[hT, AddSubgroup.coe_map]`. Both sides reduce to the same expression. Establish `hTS : T ≤ S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite `hx` using `[← SetLike.mem_coe, hTset]`. Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `hz y hy`. Establish `hTo : IsOpen (T : Set A)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hTset]`. Conclude with `ho.smul z`. Establish `hne : T.relIndex S ≠ 0` using `addRelIndex_ne_zero hTS le_rfl hc hTo (Set.inter_eq_left.2 hTS)`. Establish `hSm : MeasurableSet (S : Set A)` using `ho.measurableSet`. Establish `hemb : MeasurableEmbedding (S.subtype)` using `MeasurableEmbedding.subtype_coe hSm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : (μ.comap S.subtype).IsAddLeftInvariant := Measure.IsAddLeftInvariant.comap μ hemb`. Use `haveI : (T.addSubgroupOf S).FiniteIndex := ⟨hne⟩`. Establish `hHm : MeasurableSet ((T.addSubgroupOf S : AddSubgroup S) : Set S)` using `measurable_subtype_coe hTo.measurableSet`. Establish `key` using `AddSubgroup.index_mul_measure (T.addSubgroupOf S) hHm (μ.comap S.subtype)`. Rewrite `key` using `[hemb.comap_apply, hemb.comap_apply, Set.image_univ, AddSubgroup.coe_addSubgroupOf, Set.image_preimage_eq_inter_range]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [AddSubgroup.coe_subtype, Subtype.range_coe_subtype, SetLike.setOf_mem_eq] at key`. Rewrite `key` using `[Set.inter_eq_left.2 hTS, hTset, addHaar_smul_set_eq_distribHaarChar_mul μ z hc.closure, ← mul_assoc]`. Establish `hS0 : μ S ≠ 0` using `(ho.measure_pos μ ⟨0, S.zero_mem⟩).ne'`. Establish `hSt : μ S ≠ ∞` using `hc.measure_lt_top.ne`. Establish `h1 : ((T.relIndex S : ℝ≥0∞)) * (distribHaarChar A z : ℝ≥0∞) = 1` using `(ENNReal.mul_left_inj hS0 hSt).1 (key.trans (one_mul _).symm)`.
-
-Establish `h2 : (T.relIndex S : ℝ) * ((distribHaarChar A z : ℝ≥0) : ℝ) = 1`. Use `congrArg ENNReal.toReal h1` as an intermediate fact. Simplify using `using this`. Conclude with `eq_inv_of_mul_eq_one_left h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem relIndex_map_smul_eq_inv_distribHaarChar {A : Type*} [AddCommGroup A] [TopologicalSpace A]
     [IsTopologicalAddGroup A] [LocallyCompactSpace A] [MeasurableSpace A] [BorelSpace A]
@@ -101,7 +99,7 @@ private theorem relIndex_map_smul_eq_inv_distribHaarChar {A : Type*} [AddCommGro
   exact eq_inv_of_mul_eq_one_left h2
 
 /- English proof (translation)
-Use `borelize k`. Rewrite using `[relIndex_map_smul_eq_inv_distribHaarChar (Measure.pi (fun _ : ι => (Measure.addHaar : Measure k))) S hc ho z hz, distribHaarChar_pi, inv_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_smul (ι : Type) [Fintype ι] (S : AddSubgroup (ι → k)) (hc : IsCompact (S : Set (ι → k)))
     (ho : IsOpen (S : Set (ι → k))) (z : kˣ) (hz : ∀ x ∈ S, z • x ∈ S) :
@@ -111,23 +109,19 @@ theorem relIndex_smul (ι : Type) [Fintype ι] (S : AddSubgroup (ι → k)) (hc 
     distribHaarChar_pi, inv_pow]
 
 /- English proof (translation)
-Use `set f : Multiplicative (ι → k) →* G := U.subtype.comp φ.symm.toMonoidHom with hfdef`. Establish `hf : Function.Injective f` using `Subtype.val_injective.comp φ.symm.injective`. Use `set m : Multiplicative (ι → k) →* Multiplicative (ι → k) := AddMonoidHom.toMultiplicative (DistribSMul.toAddMonoidHom (ι → k) z) with hmdef`. Use `set T := S.map (DistribSMul.toAddMonoidHom (ι → k) z) with hT`. Establish `hTS : T ≤ S`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce and unpack `x ⟨y, hy, rfl⟩`. Conclude with `hz y hy`. Establish `hL : L₀ = (AddSubgroup.toSubgroup S).map f`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `hg`. Establish `hu` using `hL₀ hg`. Use `⟨φ ⟨g, hu⟩, (hS g hu).1 hg, ?_⟩` and prove the remaining obligations. Simplify using `[hfdef]`. Introduce and unpack `⟨x, hx, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hu : ((φ.symm x : U) : G) ∈ U` using `(φ.symm x).2`. Use `(hS _ hu).2 ?_` and prove the remaining obligations. Simplify using `using hx`. Establish `hcf : (MulAut.conj a).toMonoidHom.comp f = f.comp m`. Use `MonoidHom.ext fun y => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : φ ⟨a * (φ.symm y : G) * a⁻¹, haU _ (φ.symm y).2⟩ = Multiplicative.ofAdd (z • Multiplicative.toAdd y)`. Rewrite using `[← ofAdd_toAdd (φ _), hφ _ (φ.symm y).2]`. Simplify using the standard rewrite rules. Establish `h3` using `(MulEquiv.symm_apply_eq φ).2 h2.symm`. Establish `h4 : m y = Multiplicative.ofAdd (z • Multiplicative.toAdd y)` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use `show a * (φ.symm y : G) * a⁻¹ = ((φ.symm (m y) : U) : G)`. Rewrite using `[h4, h3]`. Establish `hTm : AddSubgroup.toSubgroup T = (AddSubgroup.toSubgroup S).map m`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `⟨y, hy, hxy⟩`. Conclude with `⟨Multiplicative.ofAdd y, hy, by simp [hmdef, hxy]⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨Multiplicative.toAdd y, hy, by simp [hmdef]⟩`. Establish `hmap : L₀.map (MulAut.conj a).toMonoidHom = (AddSubgroup.toSubgroup T).map f`.
-
-Rewrite using `[hL, Subgroup.map_map, hcf, ← Subgroup.map_map, ← hTm]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmap, hL]`. Conclude with `Subgroup.map_mono (fun x hx => hTS hx)`. Rewrite using `[hmap, hL, Subgroup.relIndex_map_map_of_injective _ _ hf, AddSubgroup.relIndex_toSubgroup]`.
-
-Conclude with `relIndex_smul ι S hc ho z hz`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_conj {G : Type*} [Group G] (ι : Type) [Fintype ι] (U : Subgroup G)
     (φ : U ≃* Multiplicative (ι → k)) (a : G) (z : kˣ) (haU : ∀ u ∈ U, a * u * a⁻¹ ∈ U)

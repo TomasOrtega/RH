@@ -11,7 +11,7 @@ noncomputable def rs {Y : Scheme.{u}} {U V : Y.Opens} (h : V ≤ U) : Γ(Y, U) �
   (Y.presheaf.map (homOfLE h).op).hom
 
 /- English proof (translation)
-Simplify using `only [rs, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem rs_rs {Y : Scheme.{u}} {U V W : Y.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(Y, U)) :
     rs h' (rs h a) = rs (h'.trans h) a := by
@@ -19,14 +19,14 @@ theorem rs_rs {Y : Scheme.{u}} {U V W : Y.Opens} (h : V ≤ U) (h' : W ≤ V) (a
   rfl
 
 /- English proof (translation)
-The claim follows from `Y.basicOpen_res a (homOfLE h).op`.
+A detailed English derivation is pending.
 -/
 theorem basicOpen_rs {Y : Scheme.{u}} {U V : Y.Opens} (h : V ≤ U) (a : Γ(Y, U)) :
     Y.basicOpen (rs h a) = V ⊓ Y.basicOpen a :=
   Y.basicOpen_res a (homOfLE h).op
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isAffineOpen Y hU a g ha`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_eq_zero {Y : Scheme.{u}} {U V : Y.Opens} (hU : IsAffineOpen U)
     (h : V ≤ U) (g a : Γ(Y, U)) (e : V = Y.basicOpen g) (ha : rs h a = 0) :
@@ -35,7 +35,7 @@ theorem exists_pow_mul_eq_zero {Y : Scheme.{u}} {U V : Y.Opens} (hU : IsAffineOp
   exact exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isAffineOpen Y hU a g ha
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `exists_eq_pow_mul_of_isAffineOpen Y U hU g x`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_eq_pow_mul {Y : Scheme.{u}} {U V : Y.Opens} (hU : IsAffineOpen U)
     (h : V ≤ U) (g : Γ(Y, U)) (x : Γ(Y, V)) (e : V = Y.basicOpen g) :
@@ -46,7 +46,7 @@ theorem exists_eq_pow_mul {Y : Scheme.{u}} {U V : Y.Opens} (hU : IsAffineOpen U)
 variable {Z Y : Scheme.{u}} (i : Z ⟶ Y)
 
 /- English proof (translation)
-Use `congr(($(i.naturality (homOfLE h).op)).hom a)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem app_rs {U V : Y.Opens} (h : V ≤ U) (a : Γ(Y, U)) :
     (i.app V).hom (rs h a) = rs (i.preimage_mono h) ((i.app U).hom a) := by
@@ -63,76 +63,76 @@ namespace Lifts
 variable {U V : Y.Opens} {a b : Γ(Y, U)} {r s : Γ(Z, ⊤)}
 
 /- English proof (translation)
-Unfold `Lifts at *`. Rewrite using `[app_rs, ha, rs_rs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem res (ha : Lifts i U a r) (h : V ≤ U) : Lifts i V (rs h a) r := by
   unfold Lifts at *
   rw [app_rs, ha, rs_rs]
 
 /- English proof (translation)
-Unfold `Lifts at *`. Rewrite using `[map_add, map_add, ha, hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem add (ha : Lifts i U a r) (hb : Lifts i U b s) : Lifts i U (a + b) (r + s) := by
   unfold Lifts at *
   rw [map_add, map_add, ha, hb]
 
 /- English proof (translation)
-Unfold `Lifts at *`. Rewrite using `[map_sub, map_sub, ha, hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sub (ha : Lifts i U a r) (hb : Lifts i U b s) : Lifts i U (a - b) (r - s) := by
   unfold Lifts at *
   rw [map_sub, map_sub, ha, hb]
 
 /- English proof (translation)
-Unfold `Lifts at *`. Rewrite using `[map_mul, map_mul, ha, hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul (ha : Lifts i U a r) (hb : Lifts i U b s) : Lifts i U (a * b) (r * s) := by
   unfold Lifts at *
   rw [map_mul, map_mul, ha, hb]
 
 /- English proof (translation)
-Unfold `Lifts at *`. Rewrite using `[map_pow, map_pow, ha]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow (ha : Lifts i U a r) (n : ℕ) : Lifts i U (a ^ n) (r ^ n) := by
   unfold Lifts at *
   rw [map_pow, map_pow, ha]
 
 /- English proof (translation)
-Unfold `Lifts`. Rewrite using `[map_zero, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem zero : Lifts i U 0 0 := by
   unfold Lifts
   rw [map_zero, map_zero]
 
 /- English proof (translation)
-Unfold `Lifts`. Rewrite using `[map_one, map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem one : Lifts i U 1 1 := by
   unfold Lifts
   rw [map_one, map_one]
 
 /- English proof (translation)
-Simplify using `using ha.sub hb`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sub_zero (ha : Lifts i U a r) (hb : Lifts i U b r) : Lifts i U (a - b) 0 := by
   simpa using ha.sub hb
 
 /- English proof (translation)
-Unfold `Lifts at *`. Rewrite using `[map_mul, hb, map_zero, MulZeroClass.mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_zero (a : Γ(Y, U)) (hb : Lifts i U b 0) : Lifts i U (a * b) 0 := by
   unfold Lifts at *
   rw [map_mul, hb, map_zero, MulZeroClass.mul_zero]
 
 /- English proof (translation)
-Unfold `Lifts`. Rewrite using `[map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem zero_iff : Lifts i U a 0 ↔ (i.app U).hom a = 0 := by
   unfold Lifts
   rw [map_zero]
 
 /- English proof (translation)
-Rewrite using `[Scheme.preimage_basicOpen, ← basicOpen_rs le_top, ← ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem preimage_basicOpen (ha : Lifts i U a r) :
     i ⁻¹ᵁ Y.basicOpen a = i ⁻¹ᵁ U ⊓ Z.basicOpen r := by
@@ -141,7 +141,7 @@ theorem preimage_basicOpen (ha : Lifts i U a r) :
 end Lifts
 
 /- English proof (translation)
-Use extensionality with `y`. Take `⟨z, rfl⟩` from `i.surjective y`. Conclude with `SetLike.ext_iff.1 h z`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_of_preimage_eq [Surjective i] {U V : Y.Opens} (h : i ⁻¹ᵁ U = i ⁻¹ᵁ V) : U = V := by
   ext y
@@ -149,14 +149,14 @@ theorem eq_of_preimage_eq [Surjective i] {U V : Y.Opens} (h : i ⁻¹ᵁ U = i �
   exact SetLike.ext_iff.1 h z
 
 /- English proof (translation)
-The claim follows from `i.app_surjective U hU _`.
+A detailed English derivation is pending.
 -/
 theorem exists_lifts [IsClosedImmersion i] {U : Y.Opens} (hU : IsAffineOpen U) (r : Γ(Z, ⊤)) :
     ∃ a, Lifts i U a r :=
   i.app_surjective U hU _
 
 /- English proof (translation)
-Apply `eq_of_preimage_eq (i := i)` to reduce the goal to its premises. Rewrite using `[ha.preimage_basicOpen, Scheme.Hom.preimage_inf, hD]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Lifts.basicOpen_eq [Surjective i] {U D : Y.Opens} {a : Γ(Y, U)} {r : Γ(Z, ⊤)}
     (ha : Lifts i U a r) (hD : i ⁻¹ᵁ D = Z.basicOpen r) : U ⊓ D = Y.basicOpen a := by
@@ -164,7 +164,7 @@ theorem Lifts.basicOpen_eq [Surjective i] {U D : Y.Opens} {a : Γ(Y, U)} {r : Γ
   rw [ha.preimage_basicOpen, Scheme.Hom.preimage_inf, hD]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_lifts (i := i) hU r`. Rewrite using `[ha.basicOpen_eq hD]`. Conclude with `hU.basicOpen a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAffineOpen_inf [IsClosedImmersion i] [Surjective i] {U D : Y.Opens}
     (hU : IsAffineOpen U) {r : Γ(Z, ⊤)} (hD : i ⁻¹ᵁ D = Z.basicOpen r) :
@@ -174,7 +174,7 @@ theorem isAffineOpen_inf [IsClosedImmersion i] [Surjective i] {U D : Y.Opens}
   exact hU.basicOpen a
 
 /- English proof (translation)
-Use `choose n hn using h`. Take `⟨N, hN⟩` from `(Set.finite_range n).bddAbove`. Conclude with `⟨N, fun a ↦ Nat.le_induction (hn a) (fun m _ ↦ hP a m) N (hN ⟨a, rfl⟩)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_forall_of_mono {α : Type*} [Finite α] (P : α → ℕ → Prop)
     (hP : ∀ a n, P a n → P a (n + 1)) (h : ∀ a, ∃ n, P a n) : ∃ n, ∀ a, P a n := by
@@ -199,9 +199,9 @@ def IsCoboundary (r : Γ(Z, ⊤)) : Prop :=
 
 include hK hU hD in
 /- English proof (translation)
-Take `⟨ρ, t, hρ, ht, e⟩` from `h`. Use `choose ρ' hρ' using fun j ↦ exists_lifts (i := i) (hU j) r'`. Use `⟨fun j ↦ ρ' j * ρ j, fun j ↦ ρ' j * t j, fun j ↦ (hρ' j).mul (hρ j), fun j ↦ Lifts.mul_zero _ (ht j), fun j k ↦ ?_⟩` and prove the remaining obligations. Establish `h0` using `hK _ (isAffineOpen_inf (hU j) (hD k)) _ _ (((hρ' j).res inf_le_left).sub_zero ((hρ' k).res inf_le_right)) ((ht k).res inf_le_right)`. Simplify using `only [map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `rs inf_le_left (ρ' j) * e j k + h0`.
+A detailed English derivation is pending.
 -/
 theorem IsCoboundary.mul {r : Γ(Z, ⊤)} (r' : Γ(Z, ⊤)) (h : IsCoboundary i σ r) :
     IsCoboundary i σ (r' * r) := by
@@ -216,7 +216,7 @@ theorem IsCoboundary.mul {r : Γ(Z, ⊤)} (r' : Γ(Z, ⊤)) (h : IsCoboundary i 
 
 omit [IsClosedImmersion i] [Surjective i] in
 /- English proof (translation)
-Take `⟨ρ, t, hρ, ht, e⟩` from `h`. Take `⟨ρ', t', hρ', ht', e'⟩` from `h'`. Use `⟨fun j ↦ ρ j + ρ' j, fun j ↦ t j + t' j, fun j ↦ (hρ j).add (hρ' j), fun j ↦ by simpa using (ht j).add (ht' j), fun j k ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [map_add]`. Take the linear combination `e j k + e' j k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem IsCoboundary.add {r r' : Γ(Z, ⊤)} (h : IsCoboundary i σ r) (h' : IsCoboundary i σ r') :
     IsCoboundary i σ (r + r') := by
@@ -229,26 +229,24 @@ theorem IsCoboundary.add {r r' : Γ(Z, ⊤)} (h : IsCoboundary i σ r) (h' : IsC
 
 omit [IsClosedImmersion i] [Surjective i] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 0, fun _ ↦ Lifts.zero, fun _ ↦ Lifts.zero, fun j k ↦ by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCoboundary_zero : IsCoboundary i σ 0 :=
   ⟨0, 0, fun _ ↦ Lifts.zero, fun _ ↦ Lifts.zero, fun j k ↦ by simp⟩
 
 include hK hU hD hσ in
 /- English proof (translation)
-Use `choose g hg using fun j ↦ exists_lifts (i := i) (hU j) (f m)`. Establish `hc : ∀ j k, Lifts i (U j ⊓ U k) (rs inf_le_left (σ j) - rs inf_le_right (σ k)) 0` using `fun j k ↦ ((hσ j).res _).sub_zero ((hσ k).res _)`. Take `⟨N, hN⟩` from `exists_forall_of_mono (fun j n ↦ ∃ y : Γ(Y, U j), Lifts i (U j) y 0 ∧ rs (inf_le_left : U j ⊓ U m ≤ U j) y = rs inf_le_left (g j) ^ n * (rs inf_le_left (σ j) - rs inf_le_right (σ m))) (by`. Introduce and unpack `j n ⟨y, hy, e⟩`. Conclude with `⟨g j * y, hy.mul_zero _, by rw [map_mul, e]; ring⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(by`. Introduce `j`. Take `⟨n, y, e⟩` from `exists_eq_pow_mul (hU j) (inf_le_left : U j ⊓ U m ≤ U j) (g j) (rs inf_le_left (σ j) - rs inf_le_right (σ m)) ((hg j).basicOpen_eq (hD m))`. Establish `h0` using `(hc j m).mul_zero (rs inf_le_left (g j) ^ n)`. Rewrite `h0` using `[← e, Lifts.zero_iff, app_rs]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n', e'⟩` from `exists_pow_mul_eq_zero ((hU j).preimage i) _ ((i.app (U j)).hom (g j)) _ (by rw [(hg j).basicOpen_eq (hD m), Scheme.preimage_basicOpen]) h0`. Use `⟨n' + n, g j ^ n' * y, ?_, by rw [map_mul, map_pow, e]; ring⟩` and prove the remaining obligations. Rewrite using `[Lifts.zero_iff, map_mul, map_pow, e'])`. Use `choose t ht e using hN`. Take `⟨M, hM⟩` from `exists_forall_of_mono (fun (p : ι × ι) n ↦ rs (inf_le_left : U p.1 ⊓ U p.2 ≤ U p.1) (g p.1) ^ n * (rs inf_le_left (t p.1) - rs inf_le_right (t p.2) - rs inf_le_left (g p.1) ^ N * (rs inf_le_left (σ p.1) - rs inf_le_right (σ p.2))) = 0) (by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `p n h`. Rewrite using `[pow_succ', mul_assoc, h, mul_zero])`. Use the proof step `(by`. Introduce and unpack `⟨j, k⟩`. Establish `hjk` using `isAffineOpen_inf (hU j) (hD k)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `exists_pow_mul_eq_zero hjk (inf_le_left : U j ⊓ U k ⊓ U m ≤ _) _ _ (((hg j).res inf_le_left).basicOpen_eq (hD m)) ?_` and prove the remaining obligations. Establish `hj : U j ⊓ U k ⊓ U m ≤ U j ⊓ U m` using `inf_le_inf_right _ inf_le_left`. Establish `hk : U j ⊓ U k ⊓ U m ≤ U k ⊓ U m` using `inf_le_inf_right _ inf_le_right`. Establish `ej` using `congrArg (rs hj) (e j)`. Establish `ek` using `congrArg (rs hk) (e k)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `hK _ (isAffineOpen_inf hjk (hD m)) _ _ ((((hg j).res (hj.trans inf_le_left)).pow N).sub_zero (((hg k).res (hk.trans inf_le_left)).pow N)) ((hc k m).res hk)`. Simplify using `only [map_mul, map_sub, map_pow, rs_rs] at ej ek h0 ⊢`. Take the linear combination `ej - ek + h0)`. Use `⟨M + N, fun j ↦ g j ^ (M + N), fun j ↦ g j ^ M * t j, fun j ↦ (hg j).pow _, fun j ↦ (ht j).mul_zero _, fun j k ↦ ?_⟩` and prove the remaining obligations. Establish `h0` using `hK _ (isAffineOpen_inf (hU j) (hD k)) _ _ ((((hg j).res inf_le_left).pow M).sub_zero (((hg k).res inf_le_right).pow M)) ((ht k).res inf_le_right)`.
-
-Establish `h1` using `hM (j, k)`. Simplify using `only [map_mul, map_pow] at h1 ⊢`. Take the linear combination `h1 + h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_isCoboundary_pow [Finite ι] (m : ι) : ∃ n : ℕ, IsCoboundary i σ (f m ^ n) := by
   choose g hg using fun j ↦ exists_lifts (i := i) (hU j) (f m)
@@ -303,9 +301,9 @@ theorem exists_isCoboundary_pow [Finite ι] (m : ι) : ∃ n : ℕ, IsCoboundary
 
 include hK hU hD hσ in
 /- English proof (translation)
-Set `P : Ideal Γ(Z, ⊤)` to `{ carrier := {r | IsCoboundary i σ r} add_mem' := IsCoboundary.add zero_mem' := isCoboundary_zero smul_mem' := fun c _ h ↦ IsCoboundary.mul hK hU hD c h }`. Establish `: P.radical = ⊤`. Rewrite using `[eq_top_iff, ← hf, Ideal.span_le]`. Introduce and unpack `_ ⟨m, rfl⟩`. Conclude with `exists_isCoboundary_pow hK hU hD hσ m`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Ideal.radical_eq_top, Ideal.eq_top_iff_one]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem isCoboundary_one [Finite ι] (hf : Ideal.span (Set.range f) = ⊤) :
     IsCoboundary i σ 1 := by
@@ -323,15 +321,13 @@ theorem isCoboundary_one [Finite ι] (hf : Ideal.span (Set.range f) = ⊤) :
 
 include hK hU hD in
 /- English proof (translation)
-Use `choose σ hσ using fun j ↦ exists_lifts (i := i) (hU j) s`. Take `⟨ρ, t, hρ, ht, e⟩` from `isCoboundary_one hK hU hD hσ hf`. Establish `hZ : ⊤ ≤ ⨆ j, i ⁻¹ᵁ U j`. Use `((isAffineOpen_top Z).iSup_basicOpen_eq_self_iff).2 hf` as an intermediate fact. Rewrite using `[← this, iSup_le_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, j, rfl⟩`. Conclude with `le_iSup_of_le j (hD j).ge`. Establish `hY : ⊤ ≤ ⨆ j, U j`. Use `(eq_of_preimage_eq (i := i) ?_).le` and prove the remaining obligations. Rewrite using `[Scheme.Hom.preimage_iSup, Scheme.Hom.preimage_top]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hZ.antisymm le_top`. Take `⟨a, ha, -⟩` from `Y.sheaf.existsUnique_gluing' U ⊤ (fun _ ↦ homOfLE le_top) hY (fun j ↦ σ j - t j) (fun j k ↦ by`. Establish `h0` using `hK _ (isAffineOpen_inf (hU j) (hD k)) _ _ (Lifts.one.sub_zero ((hρ j).res inf_le_left)) (((hσ j).res inf_le_left).sub_zero ((hσ k).res inf_le_right))`. Express the relevant statement in the definitionally equal form `rs inf_le_left (σ j - t j) = rs inf_le_right (σ k - t k)`. Simplify using `only [map_sub]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take the linear combination `h0 - e j k)`. Use `⟨a, Z.sheaf.eq_of_locally_eq' (fun j ↦ i ⁻¹ᵁ U j) (i ⁻¹ᵁ ⊤) (fun j ↦ homOfLE (i.preimage_mono le_top)) (le_top.trans hZ) _ _ fun j ↦ ?_⟩` and prove the remaining obligations. Establish `h1 : rs le_top a = σ j - t j` using `ha j`. Establish `h2 : (i.app (U j)).hom (σ j - t j) = rs le_top (s - 0)` using `(hσ j).sub (ht j)`. Rewrite `h2` using `[← h1, sub_zero]`.
-
-Conclude with `((app_rs i le_top a).symm.trans h2).trans (rs_rs le_top _ s).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lifts_top_of_cover [IsAffine Z] [Finite ι] (hf : Ideal.span (Set.range f) = ⊤)
     (s : Γ(Z, ⊤)) : ∃ a, Lifts i ⊤ a s := by
@@ -364,21 +360,19 @@ theorem exists_lifts_top_of_cover [IsAffine Z] [Finite ι] (hf : Ideal.span (Set
 end Cover
 
 /- English proof (translation)
-Establish `hK' : ∀ U : Y.Opens, IsAffineOpen U → ∀ a b : Γ(Y, U), Lifts i U a 0 → Lifts i U b 0 → a * b = 0` using `fun U hU a b ha hb ↦ hK U hU a b (Lifts.zero_iff.1 ha) (Lifts.zero_iff.1 hb)`. Establish `hD : ∀ r : Γ(Z, ⊤), ∃ D : Y.Opens, i ⁻¹ᵁ D = Z.basicOpen r` using `fun r ↦ by`. Take `⟨O, hO, hO'⟩` from `i.isClosedEmbedding.isInducing.isOpen_iff.mp (Z.basicOpen r).isOpen`. Conclude with `⟨⟨O, hO⟩, Opens.ext hO'⟩`. Use `choose D hD using hD`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hS : Ideal.span {r | IsAffineOpen (D r)} = ⊤`. Rewrite using `[← (isAffineOpen_top Z).iSup_basicOpen_eq_self_iff, eq_top_iff]`. Introduce `z _`. Take `⟨_, ⟨W, hW, rfl⟩, hzW, -⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (i z)) isOpen_univ`. Take `⟨r, hr, hz⟩` from `(isAffineOpen_top Z).exists_basicOpen_le (V := i ⁻¹ᵁ W) ⟨z, hzW⟩ trivial`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : W ⊓ D r = D r` using `eq_of_preimage_eq (i := i) (by`. Rewrite using `[Scheme.Hom.preimage_inf, hD, inf_eq_right.2 hr])`. Conclude with `Opens.mem_iSup.2 ⟨⟨r, show IsAffineOpen (D r) from e ▸ isAffineOpen_inf hW (hD r)⟩, hz⟩`. Take `⟨T, hT, hT'⟩` from `(Ideal.span_eq_top_iff_finite _).1 hS`. Establish `hsurj : ∀ s, ∃ a, Lifts i ⊤ a s` using `exists_lifts_top_of_cover (ι := T) (f := fun r ↦ r.1) (U := fun r ↦ D r.1) hK' (fun r ↦ hT r.2) (fun r ↦ hD _) (by simpa using hT')`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose g hg using hsurj`. Use `isAffine_of_isAffineOpen_basicOpen (g '' T) ?_ ?_` and prove the remaining obligations. Establish `key : ∀ r ∈ Ideal.span (T : Set Γ(Z, ⊤)), ∃ a ∈ Ideal.span (g '' T), Lifts i ⊤ a r`. Introduce `r hr`. Proceed by induction on `hr using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x h => exact ⟨g x, Ideal.subset_span ⟨x, h, rfl⟩, hg x⟩`. Consider the case `zero => exact ⟨0, zero_mem _, Lifts.zero⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, ha'⟩` from `hx`. Take `⟨b, hb, hb'⟩` from `hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a + b, add_mem ha hb, ha'.add hb'⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha, ha'⟩` from `hx`. Conclude with `⟨g c * a, Ideal.mul_mem_left _ _ ha, (hg c).mul ha'⟩`. Take `⟨a, ha, ha'⟩` from `key 1 (hT' ▸ Submodule.mem_top)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.eq_top_of_isUnit_mem _ ha ?_` and prove the remaining obligations. Establish `e : Y.basicOpen a = ⊤`. Rewrite using `[← ha'.basicOpen_eq (D := ⊤) (by simp), top_inf_eq]`. Use `Y.toRingedSpace.isUnit_of_isUnit_germ ⊤ a fun x hx ↦ ?_` and prove the remaining obligations. Conclude with `(Y.mem_basicOpen a x hx).1 (e.ge hx)`.
-
-Introduce and unpack `_ ⟨r, hr, rfl⟩`. Rewrite using `[← (hg r).basicOpen_eq (hD r), top_inf_eq]`. Conclude with `hT hr`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAffine_of_mul_eq_zero (i : Z ⟶ Y) [IsClosedImmersion i] [Surjective i] [IsAffine Z]
     (hK : ∀ U : Y.Opens, IsAffineOpen U → ∀ a b : Γ(Y, U),
@@ -428,9 +422,9 @@ theorem isAffine_of_mul_eq_zero (i : Z ⟶ Y) [IsClosedImmersion i] [Surjective 
     exact hT hr
 
 /- English proof (translation)
-Establish `hpo` using `(isIso_pushoutSection_iff h (US := ⊤) (UT := ⊤) (UX := U) (UY := i ⁻¹ᵁ U) le_top le_top (by simp)).1 (isIso_pushoutSection_of_isAffineOpen h _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) hU)`. Establish `hpo' : IsPushout ((Scheme.ΓSpecIso A).inv ≫ f.appLE ⊤ U le_top) β (i.app U) ((Scheme.ΓSpecIso C).inv ≫ f'.appLE ⊤ (i ⁻¹ᵁ U) le_top)`. Use `hpo.of_iso (Scheme.ΓSpecIso A) (Iso.refl _) (Scheme.ΓSpecIso C) (Iso.refl _) (by simp) ?_ (by simp [Scheme.Hom.appLE_eq_app]) (by simp)` and prove the remaining obligations. Rewrite using `[← Scheme.ΓSpecIso_naturality]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `⟨_, PrimeSection.ker_eq_map_of_isPushout hpo' hβ⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_ker_app_eq_map {A C : CommRingCat.{u}} {β : A ⟶ C}
     (hβ : Function.Surjective β) {f : Y ⟶ Spec A} {i : Z ⟶ Y} {f' : Z ⟶ Spec C}
@@ -448,13 +442,11 @@ theorem exists_ker_app_eq_map {A C : CommRingCat.{u}} {β : A ⟶ C}
   exact ⟨_, PrimeSection.ker_eq_map_of_isPushout hpo' hβ⟩
 
 /- English proof (translation)
-Establish `h1` using `IsClosedImmersion.spec_of_surjective β hβ`. Establish `h2 : Surjective (Spec.map β)` using `⟨fun x ↦ by`. Establish `hx : x ∈ PrimeSpectrum.zeroLocus (RingHom.ker β.hom : Set A)` using `fun a ha ↦ x.isPrime.mem_of_pow_mem 2 (by`. Use `Ideal.pow_mem_pow ha 2` as an intermediate fact. Rewrite `this` using `[hsq, Ideal.mem_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `zero_mem _)`. Rewrite `hx` using `[← range_comap_of_surjective _ β.hom hβ]`. Conclude with `hx⟩`. Establish `: IsClosedImmersion i` using `MorphismProperty.of_isPullback h.flip h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Surjective i` using `MorphismProperty.of_isPullback h.flip h2`. Use `isAffine_of_mul_eq_zero i fun U hU a b ha hb ↦ ?_` and prove the remaining obligations. Take `⟨α, hα⟩` from `exists_ker_app_eq_map hβ h hU`. Establish `h0 : RingHom.ker (i.app U).hom ^ 2 = ⊥`. Rewrite using `[hα, ← Ideal.map_pow, hsq, Ideal.map_bot]`.
-
-Rewrite using `[← Ideal.mem_bot, ← h0, pow_two]`. Conclude with `Ideal.mul_mem_mul ha hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAffine_of_isPullback_of_sq_eq_bot {A C : CommRingCat.{u}} {β : A ⟶ C}
     (hβ : Function.Surjective β) (hsq : RingHom.ker β.hom ^ 2 = ⊥) {f : Y ⟶ Spec A} {i : Z ⟶ Y}
@@ -479,11 +471,11 @@ theorem isAffine_of_isPullback_of_sq_eq_bot {A C : CommRingCat.{u}} {β : A ⟶ 
   exact Ideal.mul_mem_mul ha hb
 
 /- English proof (translation)
-Apply `Ideal.IsNilpotent.induction_on (S := A) J hJ` to reduce the goal to its premises. Introduce `S _ I hI C β hβ e Y Z f i f' h hZ`. Conclude with `isAffine_of_isPullback_of_sq_eq_bot hβ (e ▸ hI) h`. Introduce `S _ I I' hle h₁ h₂ C β hβ e Y Z f i f' h hZ`. Set `π : CommRingCat.of S ⟶ CommRingCat.of (S ⧸ I)` to `CommRingCat.ofHom (Ideal.Quotient.mk I)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hI : ∀ a ∈ I, β.hom a = 0` using `fun a ha ↦ by`. Rewrite using `[← RingHom.mem_ker, e]`. Conclude with `hle ha`. Set `γ : CommRingCat.of (S ⧸ I) ⟶ C` to `CommRingCat.ofHom (Ideal.Quotient.lift I β.hom hI)`. Establish `hγ : π ≫ γ = β` using `by ext; rfl`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : Spec.map β = Spec.map γ ≫ Spec.map π` using `by rw [← Spec.map_comp, hγ]`. Use `h₁ π Ideal.Quotient.mk_surjective Ideal.mk_ker (IsPullback.of_hasPullback f _) ?_` and prove the remaining obligations. Use `h₂ γ (Ideal.Quotient.lift_surjective_of_surjective I hI hβ) (by rw [← e]; exact Ideal.ker_quotient_lift β.hom _) (f := pullback.snd f (Spec.map π)) (f' := f') (i := pullback.lift i (f' ≫ Spec.map γ) (by rw [h.w, hs, Category.assoc])) ?_ hZ` and prove the remaining obligations. Conclude with `IsPullback.of_right (by rwa [pullback.lift_fst, ← hs]) (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback f (Spec.map π))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isAffine_of_isPullback_of_isNilpotent {A : Type u} [CommRing A] (J : Ideal A)
     (hJ : IsNilpotent J) : ∀ {C : CommRingCat.{u}} (β : CommRingCat.of A ⟶ C),
@@ -513,7 +505,7 @@ end GlobalTheory.AffineThickening
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `AffineThickening.isAffine_of_isPullback_of_isNilpotent J hJ _ Ideal.Quotient.mk_surjective Ideal.mk_ker (IsPullback.of_hasPullback _ _) h`.
+A detailed English derivation is pending.
 -/
 theorem isAffine_of_isAffine_pullback_quotient_of_isNilpotent (A : Type) [CommRing A]
     (J : Ideal A) (hJ : IsNilpotent J) (Y : Over (Spec (CommRingCat.of A)))

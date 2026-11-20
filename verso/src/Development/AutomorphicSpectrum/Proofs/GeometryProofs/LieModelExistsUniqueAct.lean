@@ -9,13 +9,11 @@ namespace GlobalTheory.CompanionTheory.Ar
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 
 /- English proof (translation)
-Introduce `S G _ R _ x E _ _ M O _ act hmon h1 hmul hadd`. Establish `hex : ∀ a, ∃ A : E →ₗ[R] E, (∀ e, M.pt (A e) = M.pt e ≫ act a) ∧ ∀ B : E →ₗ[R] E, (∀ e, M.pt (B e) = M.pt e ≫ act a) → B = A`. Introduce `a`. Use `hmon a` as an intermediate fact. Conclude with `lieModel_exists_unique_diff S G G R x E E M M (act a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose A hA hAu using hex`. Establish `hone : LinearMap.id = A 1` using `hAu 1 LinearMap.id fun e => by`. Rewrite using `[h1, Category.comp_id]`. Both sides reduce to the same expression. Establish `hmul' : ∀ a b, A (a * b) = A a * A b` using `fun a b => (hAu (a * b) (A a * A b) fun e => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Module.End.mul_apply, hA a, hA b, Category.assoc, ← hmul b a, mul_comm]).symm`. Establish `hadd' : ∀ a b, A (a + b) = A a + A b` using `fun a b => (hAu (a + b) (A a + A b) fun e => by`. Rewrite using `[LinearMap.add_apply, M.add, hA a, hA b, ← MonObj.comp_mul, hadd]).symm`. Use `⟨RingHom.mk' { toFun := A, map_one' := hone.symm, map_mul' := hmul' } hadd', fun a e => hA a e, fun ρ hρ => ?_⟩` and prove the remaining obligations. Use extensionality with `a : 1`.
-
-Conclude with `hAu a (ρ a) (hρ a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem lieModel_exists_unique_act : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (R : Type) [CommRing R]
     (x : Spec (CommRingCat.of R) ⟶ S) (E : Type) [AddCommGroup E] [Module R E] (M : LieModel G x E)

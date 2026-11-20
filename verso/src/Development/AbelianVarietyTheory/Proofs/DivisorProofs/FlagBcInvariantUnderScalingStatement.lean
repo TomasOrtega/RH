@@ -16,7 +16,7 @@ open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BcScale.flagBc_scale | exact GlobalTheory.BcScale.flagBc_scale | (intros; apply GlobalTheory.BcScale.flagBc_scale <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.flag_bc_invariant_under_scaling : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {E : X.Modules} {r : ℕ} {h : VMetric p E r} (H : h.IsCInf) (fl : Vert.Flag E r) (s : ℝ), ((h.scale s).FlagBcFinite fl ↔ h.FlagBcFinite fl) ∧ (h.scale s).flagBc fl = h.flagBc fl := by
   first | exact @GlobalTheory.BcScale.flagBc_scale | exact GlobalTheory.BcScale.flagBc_scale | (intros; apply GlobalTheory.BcScale.flagBc_scale <;> assumption)

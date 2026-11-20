@@ -9,7 +9,7 @@ open Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_image (f := f) (s := Finset.univ) (g := v) (fun a _ b _ h => hv h)]`. Conclude with `(Finset.sum_subset (Finset.subset_univ _) (fun i _ hi => hf i (fun a hia => hi (Finset.mem_image.mpr ⟨a, Finset.mem_univ a, hia.symm⟩)))).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_eq_sum_comp_of_eq_zero_of_forall_ne {ι κ M : Type*} [Fintype ι] [Fintype κ]
     [DecidableEq ι] [AddCommMonoid M] (v : κ → ι) (hv : Function.Injective v) (f : ι → M)
@@ -20,16 +20,16 @@ private theorem sum_eq_sum_comp_of_eq_zero_of_forall_ne {ι κ M : Type*} [Finty
     hi (Finset.mem_image.mpr ⟨a, Finset.mem_univ a, hia.symm⟩)))).symm
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.CompanionTheory.Ar.PB.gramOf, Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gramOf_mul {N : ℕ} (hd : Fin N → ℝ) (u g : Matrix (Fin N) (Fin N) ℂ) :
     gramOf hd (u * g) = gᴴ * gramOf hd u * g := by
   simp only [GlobalTheory.CompanionTheory.Ar.PB.gramOf, Matrix.conjTranspose_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[sum_eq_sum_comp_of_eq_zero_of_forall_ne v hv]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Use `congr 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[sum_eq_sum_comp_of_eq_zero_of_forall_ne v hv]`. Introduce `i hi`. Rewrite using `[hb (hdown i p hi), star_zero, zero_mul]`. Introduce `j hj`. Rewrite using `[hb (hdown j q hj), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem head_conj_mul {N : ℕ} {P : Type*} [Fintype P] (v : P → Fin N)
     (hv : Function.Injective v) (hdown : ∀ (i : Fin N) (c : P), (∀ a, i ≠ v a) → v c < i)
@@ -47,19 +47,17 @@ theorem head_conj_mul {N : ℕ} {P : Type*} [Fintype P] (v : P → Fin N)
     rw [hb (hdown j q hj), mul_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.PB.gramLog, GlobalTheory.CompanionTheory.Ar.PB.gramHead]`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.PB.gramOf_mul, h, GlobalTheory.CompanionTheory.Ar.PB.gramOf]`. Introduce `hb hdet hM`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdown : ∀ (i : Fin N) (c : {a : Fin N // (a : ℕ) < k}), (∀ a : {a : Fin N // (a : ℕ) < k}, i ≠ a.val) → c.val < i`. Introduce `i c hi`. Establish `hik : ¬ (i : ℕ) < k` using `fun h => hi ⟨i, h⟩ rfl`. Rewrite using `[Fin.lt_def]`. Conclude with `lt_of_lt_of_le c.2 (not_lt.mp hik)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbk : (b.submatrix (Subtype.val : {a : Fin N // (a : ℕ) < k} → Fin N) Subtype.val).IsUpperTriangular` using `fun i j hij => hb (Subtype.coe_lt_coe.mpr hij)`. Establish `hdiag : ∀ i, b i i ≠ 0`. Introduce `i hi`. Establish `h0 : b.det = 0`. Rewrite using `[Matrix.det_of_upperTriangular hb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) hi`. Rewrite `hdet` using `[h0]`. Conclude with `not_isUnit_zero hdet`. Establish `hdetk : (b.submatrix (Subtype.val : {a : Fin N // (a : ℕ) < k} → Fin N) Subtype.val).det = ∏ a : {a : Fin N // (a : ℕ) < k}, b a a` using `Matrix.det_of_upperTriangular hbk`. Establish `hminor : GlobalTheory.CompanionTheory.Ar.PB.gramHead hd k (g * b) = (b.submatrix (Subtype.val : {a : Fin N // (a : ℕ) < k} → Fin N) Subtype.val)ᴴ * GlobalTheory.CompanionTheory.Ar.PB.gramHead hd k g * b.submatrix (Subtype.val : {a : Fin N // (a : ℕ) < k} → Fin N) Subtype.val`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [GlobalTheory.CompanionTheory.Ar.PB.gramHead]`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.PB.gramOf_mul]`. Conclude with `GlobalTheory.CompanionTheory.Ar.PB.head_conj_mul Subtype.val Subtype.val_injective hdown _ b hb`. Establish `hB0 : ∏ a : {a : Fin N // (a : ℕ) < k}, b a a ≠ 0` using `Finset.prod_ne_zero_iff.mpr (fun a _ => hdiag a)`. Establish `hnorm : ‖(GlobalTheory.CompanionTheory.Ar.PB.gramHead hd k (g * b)).det‖ = ‖∏ a : {a : Fin N // (a : ℕ) < k}, b a a‖ ^ 2 * ‖(GlobalTheory.CompanionTheory.Ar.PB.gramHead hd k g).det‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hminor, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, hdetk, norm_mul, norm_mul, norm_star]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : (∑ a : Fin N, if (a : ℕ) < k then Real.log ‖b a a‖ else 0) = ∑ a : {a : Fin N // (a : ℕ) < k}, Real.log ‖b a a‖`. Rewrite using `[← Finset.sum_filter]`. Conclude with `Finset.sum_subtype _ (fun a => by simp) _`.
-
-Simplify using `only [GlobalTheory.CompanionTheory.Ar.PB.gramLog]`. Rewrite using `[hnorm, Real.log_mul (pow_ne_zero _ (norm_ne_zero_iff.mpr hB0)) (norm_ne_zero_iff.mpr hM), Real.log_pow, norm_prod, Real.log_prod (s := Finset.univ) (f := fun a : {a : Fin N // (a : ℕ) < k} => ‖b a a‖) (fun a _ => norm_ne_zero_iff.mpr (hdiag a)), hsum]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gramLog_inv (N : ℕ) (hd : Fin N → ℝ) (k : ℕ) (g u b : Matrix (Fin N) (Fin N) ℂ) :
     (gramOf hd u = diagonal (fun i => ((hd i : ℝ) : ℂ)) → gramLog hd k (u * g) = gramLog hd k g) ∧

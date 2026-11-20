@@ -14,16 +14,16 @@ def IsRed (b : Fin d → E) : Prop :=
     (∀ i j : Fin d, i.val = j.val + 1 → ‖gs b j‖ ^ 2 ≤ 2 * ‖gs b i‖ ^ 2)
 
 /- English proof (translation)
-Simplify using `only [nu, sub_mul, Finset.sum_sub_distrib, mul_assoc, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 lemma nu_sub (b : Fin d → E) (c w : Fin d → ℝ) (N : ℝ) (j : Fin d) :
     nu b (fun l => c l - N * w l) j = nu b c j - N * nu b w j := by
   simp only [nu, sub_mul, Finset.sum_sub_distrib, mul_assoc, Finset.mul_sum]
 
 /- English proof (translation)
-Unfold `nu`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Break down `lt_or_ge l j with hlj | hjl` into its components or cases. Establish `h0 : ⟪gs b j, b l⟫_ℝ = 0` using `by first`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Consider the case `exact gramSchmidt_inv_triangular ℝ b hlj`. Consider the case `exact gramSchmidt_inv_triangular b hlj`. Simplify using `[mu, h0]`. Simplify using `[h l hjl]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma nu_eq_zero_of (b : Fin d → E) (c : Fin d → ℝ) (j : Fin d) (h : ∀ l, j ≤ l → c l = 0) :
     nu b c j = 0 := by
@@ -39,9 +39,9 @@ lemma nu_eq_zero_of (b : Fin d → E) (c : Fin d → ℝ) (j : Fin d) (h : ∀ l
   · simp [h l hjl]
 
 /- English proof (translation)
-Establish `e : ⟪gs b j, b j⟫_ℝ = ‖gs b j‖ ^ 2` using `by conv_lhs => rw [gramSchmidt_def'' ℝ b j]`. Rewrite using `[inner_add_right, inner_sum, real_inner_self_eq_norm_sq, Finset.sum_eq_zero, add_zero]`. Introduce `i hi`. Rewrite using `[inner_smul_right, gramSchmidt_orthogonal ℝ b (ne_of_gt (Finset.mem_Iio.mp hi)), mul_zero]`. Establish `hne : gs b j ≠ 0` using `by first`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `exact gramSchmidt_ne_zero j hb`. Consider the case `exact gramSchmidt_ne_zero (𝕜 := ℝ) j hb`. Rewrite using `[mu, e]`. Conclude with `div_self (pow_ne_zero 2 (norm_ne_zero_iff.mpr hne))`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mu_self_of_linearIndependent (b : Fin d → E) (hb : LinearIndependent ℝ b) (j : Fin d) :
     mu b j j = 1 := by
@@ -58,13 +58,13 @@ private lemma mu_self_of_linearIndependent (b : Fin d → E) (hb : LinearIndepen
   exact div_self (pow_ne_zero 2 (norm_ne_zero_iff.mpr hne))
 
 /- English proof (translation)
-Unfold `nu`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not univ (fun l : Fin d => j.val + 1 ≤ l.val), add_comm]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[mu_self_of_linearIndependent b hb j, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `l hl hlj`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, not_le] at hl`. Establish `h1 : l.val ≠ j.val` using `fun h => hlj (Fin.ext h)`. Establish `hlt : l < j` using `Fin.lt_iff_val_lt_val.mpr (by omega)`. Establish `h0 : ⟪gs b j, b l⟫_ℝ = 0` using `by first`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact gramSchmidt_inv_triangular ℝ b hlt`. Consider the case `exact gramSchmidt_inv_triangular b hlt`. Simplify using `[mu, h0]`. Introduce `hj`. It suffices to derive a contradiction.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction.
 
-Apply `hj` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 private lemma nu_eq_add_sum_mu (b : Fin d → E) (hb : LinearIndependent ℝ b) (c : Fin d → ℝ) (j : Fin d) :
     nu b c j = c j + ∑ l ∈ univ.filter (fun l : Fin d => j.val + 1 ≤ l.val), c l * mu b l j := by
@@ -88,7 +88,7 @@ private lemma nu_eq_add_sum_mu (b : Fin d → E) (hb : LinearIndependent ℝ b) 
     simp
 
 /- English proof (translation)
-Rewrite using `[nu_eq_add_sum_mu b hb c j, Finset.sum_eq_zero, add_zero]`. Introduce `l hl`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hl`. Rewrite using `[h l (Fin.lt_iff_val_lt_val.mpr (by omega)), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma nu_top (b : Fin d → E) (hb : LinearIndependent ℝ b) (c : Fin d → ℝ) (j : Fin d)
     (h : ∀ l, j < l → c l = 0) : nu b c j = c j := by
@@ -98,26 +98,26 @@ lemma nu_top (b : Fin d → E) (hb : LinearIndependent ℝ b) (c : Fin d → ℝ
   rw [h l (Fin.lt_iff_val_lt_val.mpr (by omega)), zero_mul]
 
 /- English proof (translation)
-Conclude with `nu_eq_add_sum_mu b hb c j`.
+A detailed English derivation is pending.
 -/
 lemma nu_split (b : Fin d → E) (hb : LinearIndependent ℝ b) (c : Fin d → ℝ) (j : Fin d) :
     nu b c j = c j + ∑ l ∈ univ.filter (fun l : Fin d => j.val + 1 ≤ l.val), c l * mu b l j := by
   exact nu_eq_add_sum_mu b hb c j
 
 /- English proof (translation)
-Proceed by induction on `t generalizing c with`. Consider the case `zero`. Conclude with `⟨0, fun l _ => rfl, fun j hj => absurd hj (Nat.not_lt_zero _)⟩`. Consider the case `succ t ih`. Establish `htd : t < d` using `by omega`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact.
 
-Take `⟨k, hk⟩ : ∃ k : ℤ, k = round (nu b c ⟨t, htd⟩ / N)` from `⟨_, rfl⟩`. Take `⟨w, hw0, hw⟩` from `ih (fun l => c l - N * (if l = ⟨t, htd⟩ then (k : ℝ) else 0)) (by omega)`. Use `⟨fun l => w l + if l = ⟨t, htd⟩ then k else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl`. Establish `hne : l ≠ ⟨t, htd⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hl` using `[h]`. Simplify using `at hl`. Simplify using `[hw0 l (by omega), hne]`. Introduce `j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnu : nu b (fun l => c l - N * ((w l + if l = ⟨t, htd⟩ then k else 0 : ℤ) : ℝ)) j = nu b (fun l => (c l - N * (if l = ⟨t, htd⟩ then (k : ℝ) else 0)) - N * (w l : ℝ)) j`. Use `congr 1`. Use function extensionality and compare the values at `l`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`. Distinguish the cases in `hjt : j.val < t`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails.
 
-Conclude with `(le_of_eq (congrArg abs hnu)).trans (hw j hjt)`. Take `rfl : j = ⟨t, htd⟩` from `Fin.ext (by simp; omega)`. Establish `hval : nu b (fun l => c l - N * ((w l + if l = ⟨t, htd⟩ then k else 0 : ℤ) : ℝ)) ⟨t, htd⟩ = nu b c ⟨t, htd⟩ - N * (k : ℝ)`. Rewrite using `[hnu, nu_sub, nu_eq_zero_of b (fun l => ((w l : ℤ) : ℝ)) ⟨t, htd⟩ (fun l hl => by simp [hw0 l hl]), mul_zero, sub_zero, nu_sub, nu_top b hb (fun l => if l = ⟨t, htd⟩ then (k : ℝ) else 0) ⟨t, htd⟩ (fun l hl => if_neg (ne_of_gt hl))]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hN0 : N ≠ 0` using `hN.ne'`. Establish `hr` using `abs_sub_round (nu b c ⟨t, htd⟩ / N)`. Establish `e3 : N * (nu b c ⟨t, htd⟩ / N) = nu b c ⟨t, htd⟩` using `by field_simp`. Establish `e2 : nu b c ⟨t, htd⟩ - N * (k : ℝ) = N * (nu b c ⟨t, htd⟩ / N - (round (nu b c ⟨t, htd⟩ / N) : ℝ))`. Rewrite using `[hk, mul_sub, e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval, e2, abs_mul, abs_of_pos hN]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma babai (b : Fin d → E) (hb : LinearIndependent ℝ b) (c : Fin d → ℝ) {N : ℝ} (hN : 0 < N)
     (t : ℕ) (ht : t ≤ d) : ∃ w : Fin d → ℤ, (∀ l : Fin d, t ≤ l.val → w l = 0) ∧
@@ -164,7 +164,7 @@ lemma babai (b : Fin d → E) (hb : LinearIndependent ℝ b) (c : Fin d → ℝ)
           _ = N / 2 := by ring
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff, Fin.val_mk]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma filter_le_succ (n : ℕ) (h : n + 1 < d) :
     univ.filter (fun j : Fin d => j.val ≤ n + 1) =
@@ -174,7 +174,7 @@ lemma filter_le_succ (n : ℕ) (h : n + 1 < d) :
   omega
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff, Fin.val_mk]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma filter_ge (n : ℕ) (h : n < d) :
     univ.filter (fun j : Fin d => n ≤ j.val) =
@@ -184,13 +184,13 @@ lemma filter_ge (n : ℕ) (h : n < d) :
   omega
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `h`. Establish `hs : univ.filter (fun j : Fin d => j.val ≤ 0) = {⟨0, h⟩}`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `j`. Simplify using `[Fin.ext_iff]`. Rewrite using `[hs, Finset.sum_singleton]`. Evaluate the numerical expressions. Consider the case `succ n ih`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Treat this case separately.
 
-Introduce `h`. Rewrite using `[filter_le_succ n h, Finset.sum_insert (by simp)]`. Establish `h1` using `ih (by omega)`. Establish `h2` using `hl ⟨n + 1, h⟩ ⟨n, by omega⟩ rfl`. Establish `hp : (0 : ℝ) ≤ 2 ^ (n + 1) - 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (1 : ℝ) ≤ 2 ^ (n + 1)` using `one_le_pow₀ (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `mul_le_mul_of_nonneg_left h2 hp`. Establish `e : ((2 : ℝ) ^ (n + 1 + 1) - 1) * ‖gs b ⟨n + 1, h⟩‖ ^ 2 = ‖gs b ⟨n + 1, h⟩‖ ^ 2 + (2 ^ (n + 1) - 1) * (2 * ‖gs b ⟨n + 1, h⟩‖ ^ 2)` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -222,23 +222,23 @@ lemma sum_gs_le (b : Fin d → E)
     linarith
 
 /- English proof (translation)
-Establish `key : ∀ j : Fin d, |c j| ≤ M + 1 / 2 * ∑ l ∈ univ.filter (fun l : Fin d => j.val + 1 ≤ l.val), |c l|`. Introduce `j`. Establish `e` using `nu_split b hb c j`. Establish `h1 : |∑ l ∈ univ.filter (fun l : Fin d => j.val + 1 ≤ l.val), c l * mu b l j| ≤ 1 / 2 * ∑ l ∈ univ.filter (fun l : Fin d => j.val + 1 ≤ l.val), |c l|`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun l hl => ?_)` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hl`. Rewrite using `[abs_mul, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hs l j (Fin.lt_iff_val_lt_val.mpr (by omega))) (abs_nonneg _)`. Establish `h2` using `abs_le.mp (hM j)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1'` using `abs_le.mp h1`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Establish `T : ∀ m : ℕ, ∀ k : ℕ, d = k + m → M + 1 / 2 * ∑ l ∈ univ.filter (fun l : Fin d => k ≤ l.val), |c l| ≤ (3 / 2) ^ m * M`. Introduce `m`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `k hk`. Establish `he : univ.filter (fun l : Fin d => k ≤ l.val) = ∅`. Rewrite using `[Finset.filter_eq_empty_iff]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l _`. Use `l.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[he, Finset.sum_empty]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ m ih`. Introduce `k hk`. Establish `hkd : k < d` using `by omega`. Rewrite using `[filter_ge k hkd, Finset.sum_insert (by simp)]`. Establish `h1` using `ih (k + 1) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : |c ⟨k, hkd⟩| ≤ M + 1 / 2 * ∑ l ∈ univ.filter (fun l : Fin d => k + 1 ≤ l.val), |c l|` using `key ⟨k, hkd⟩`. Rewrite using `[pow_succ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hj` using `key j`. Establish `hjd` using `j.isLt`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `T (d - (j.val + 1)) (j.val + 1) (by omega)`. Establish `hp : ((3 : ℝ) / 2) ^ (d - (j.val + 1)) ≤ (3 / 2) ^ d` using `by first`. Consider the case `exact pow_le_pow_right₀ (by norm_num) (by omega)`. Consider the case `exact pow_le_pow_right (by norm_num) (by omega)`. Establish `hM'` using `mul_le_mul_of_nonneg_right hp hM0`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 lemma coeff_bound (b : Fin d → E) (hb : LinearIndependent ℝ b)
     (hs : ∀ i j : Fin d, j < i → |mu b i j| ≤ 1 / 2) (c : Fin d → ℝ) {M : ℝ} (hM0 : 0 ≤ M)

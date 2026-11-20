@@ -9,11 +9,11 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 namespace GlobalTheory.UnitMinorStable
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n d E Y hE hY`. Take `⟨hYi, f, hf⟩` from `hY`. Establish `hEi` using `((GlobalTheory.SplitFlip.mem_KO_iff E).1 hE).1`. Use `⟨fun i j => ?_, f, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hEi i l) (hYi l j)`. Establish `hsub : (E.val * Y).submatrix id f = E.val * Y.submatrix id f`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hdet` using `GlobalTheory.SplitFlip.valuation_gdet_of_mem_KO hE`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ((GlobalTheory.SplitFlip.gdet E : kˣ) : k) = E.val.det` using `rfl`. Rewrite using `[hsub, Matrix.det_mul, map_mul, hf, mul_one, ← hg, hdet]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_unitMinorSet : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ)
     (E : GL (Fin n) k) (Y : Matrix (Fin n) (Fin d) k), E ∈ GlobalTheory.SplitWeil.KO k (Fin n) →

@@ -14,7 +14,7 @@ def DualLatticeIndex.Statement : Prop :=
       F'.lattice.toAddSubgroup.relIndex F.lattice.toAddSubgroup
 
 /- English proof (translation)
-The claim follows from `twiceStandardExample_le`.
+A detailed English derivation is pending.
 -/
 example : HermLattice.twiceStandardExample.lattice ≤ (HermLattice.standard ℚ 1).lattice :=
   twiceStandardExample_le

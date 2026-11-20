@@ -21,29 +21,25 @@ open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 namespace GlobalTheory.CompanionTheory.Ar.BT
 
 /- English proof (translation)
-Establish `hA` using `GlobalTheory.T.btOrder_isHopfOrder_noetherian R T Γ`. Establish `hinj : Function.Injective (algebraMap R R')`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Assume the negation of the conclusion as `hr0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hreg : IsSMulRegular R' r` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := R') (mem_nonZeroDivisors_of_ne_zero hr0)`. Establish `: r • (1 : R') = r • (0 : R')`. Simplify using `[Algebra.smul_def, hr]`. Conclude with `one_ne_zero (hreg this)`. Take `⟨Γ', F, hbc⟩` from `GlobalTheory.T.exists_base_change_group R T Γ R' (algebraMap R R') hinj`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := Γ'.quasiFinite`. Use `haveI := Γ'.separated`. Use `haveI := Γ'.quasiCompact`. Use `haveI := Γ'.finPres`. Take `⟨U, hUfin, hUcl⟩` from `GlobalTheory.T.henselian_quasi_finite_finite_part R' Γ'.G.left Γ'.G.hom`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hU : Γ'.IsFinOpenSub U` using `GlobalTheory.T.isFinOpenSub_of_finite R' T Γ' U hUfin hUcl`. Take `⟨j', hj'⟩` from `(GlobalTheory.T.existsUnique_btOrder_embedding R' T Γ').exists`. Establish `hbt` using `GlobalTheory.T.btOrder_flat_base_change R T Γ R' Γ' F hbc hflat`. Establish `hfull : ∃ d : R, algebraMap R R' d ≠ 0 ∧ ∀ f : T → R, d • f ∈ Γ.btOrder ⊤`. Take `⟨d, hd, hf⟩` from `hA.full`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨d, fun h => hd (hinj (by simpa using h)), hf⟩`. Establish `hext` using `(GlobalTheory.T.hopf_order_scalar_extension R T R' (Γ.btOrder ⊤) hA hfull).2`. Establish `hext' : ∃ e : R' ⊗[R] (Γ.btOrder ⊤) ≃ₐ[R'] Γ'.btOrder ⊤, ∀ (a : Γ.btOrder ⊤) (t : T), (e (1 ⊗ₜ a)).1 t = algebraMap R R' (a.1 t)`. Rewrite using `[hbt]`. Conclude with `hext`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `hext'`. Set `iL : R' →+* R' ⊗[R] (Γ.btOrder ⊤)` to `Algebra.TensorProduct.includeLeftRingHom`. Set `iR : (Γ.btOrder ⊤) →+* R' ⊗[R] (Γ.btOrder ⊤)` to `(Algebra.TensorProduct.includeRight (R := R) (A := R') (B := Γ.btOrder ⊤)).toRingHom`. Set `ψ : Γ.btOrder ⊤ →+* Γ'.btOrder ⊤` to `(e : R' ⊗[R] (Γ.btOrder ⊤) →+* Γ'.btOrder ⊤).comp iR`. Establish `hψ : ∀ (a : Γ.btOrder ⊤) (t : T), (ψ a).1 t = algebraMap R R' (a.1 t)` using `fun a t => he a t`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `sq : IsPullback (Spec.map (CommRingCat.ofHom iL)) (Spec.map (CommRingCat.ofHom iR)) (Spec.map (CommRingCat.ofHom (algebraMap R R'))) (Spec.map (CommRingCat.ofHom (algebraMap R (Γ.btOrder ⊤))))` using `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct R R' (Γ.btOrder ⊤))`. Set `eH : CommRingCat.of (R' ⊗[R] (Γ.btOrder ⊤)) ⟶ CommRingCat.of (Γ'.btOrder ⊤)` to `CommRingCat.ofHom (e : R' ⊗[R] (Γ.btOrder ⊤) →+* Γ'.btOrder ⊤)`. Use `haveI : IsIso eH := (e.toRingEquiv.toCommRingCatIso).isIso_hom`. Establish `hb : Spec.map (CommRingCat.ofHom ψ) = Spec.map eH ≫ Spec.map (CommRingCat.ofHom iR)`. Rewrite using `[← Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `hq : Spec.map (CommRingCat.ofHom (algebraMap R' (Γ'.btOrder ⊤))) = Spec.map eH ≫ Spec.map (CommRingCat.ofHom iL)`. Rewrite using `[← Spec.map_comp]`. Use `congr 2`. Use extensionality with `r t`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `congrArg (fun y : Γ'.btOrder ⊤ => y.1 t) (e.commutes r).symm`. Establish `hsq : IsPullback (Spec.map (CommRingCat.ofHom ψ)) (Spec.map (CommRingCat.ofHom (algebraMap R' (Γ'.btOrder ⊤)))) (Spec.map (CommRingCat.ofHom (algebraMap R (Γ.btOrder ⊤)))) (Spec.map (CommRingCat.ofHom (algebraMap R R')))`. Use `IsPullback.of_iso sq.flip (asIso (Spec.map eH)).symm (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[hb]`. Simplify using `[hq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `hw : F ≫ j = j' ≫ Spec.map (CommRingCat.ofHom ψ)` using `GlobalTheory.T.embedding_base_change_compat R T Γ R' Γ' F hbc _ _ ψ hψ j j' hj hj'`. Establish `hsq2 : IsPullback F j' j (Spec.map (CommRingCat.ofHom ψ))`. Use `IsPullback.of_bot ?_ hw hsq` and prove the remaining obligations.
-
-Rewrite using `[hj'.isOver, hj.isOver]`. Conclude with `hbc.cart`. Take `⟨ho, hTC⟩` from `GlobalTheory.T.btOrder_embedding_open_cover R' T Γ' U hU j' hj'`. Use `⟨Γ', F, j', ψ, U, hψ, hsq, hsq2, ho, hTC, fun x hx => hUcl x ?_⟩` and prove the remaining obligations. Rewrite using `[← hj'.isOver]`.
-
-Simplify using `using hx`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem btEmb_localData (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R]
     (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (j : Γ.G.left ⟶ Spec (CommRingCat.of (Γ.btOrder ⊤)))
@@ -132,19 +128,17 @@ theorem btEmb_specMap_asIdeal {A B : Type} [CommRing A] [CommRing B] (φ : A →
     (Spec.map (CommRingCat.ofHom φ) x).asIdeal = Ideal.comap φ x.asIdeal := rfl
 
 /- English proof (translation)
-Introduce `R _ _ _ _ T _ _ Γ j hj`. Establish `hA` using `GlobalTheory.T.btOrder_isHopfOrder_noetherian R T Γ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `haveI := hA.finite haveI : LocallyOfFiniteType (Spec.map (CommRingCat.ofHom (algebraMap R (Γ.btOrder ⊤)))) := by`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.finiteType_algebraMap.mpr inferInstance`. Use `haveI : LocallyOfFinitePresentation (j ≫ Spec.map (CommRingCat.ofHom (algebraMap R (Γ.btOrder ⊤)))) := by`. Rewrite using `[hj.isOver]`. Conclude with `Γ.finPres`. Use `haveI := GlobalTheory.TangentCrit.locallyOfFinitePresentation_of_comp j (Spec.map (CommRingCat.ofHom (algebraMap R (Γ.btOrder ⊤))))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `GlobalTheory.T.flat_local_extension_exists R Γ.G.left _ j (Spec.map (CommRingCat.ofHom (algebraMap R (Γ.btOrder ⊤)))) ?_` and prove the remaining obligations. Introduce `P _`. Take `⟨R', _, _, _, _, hic, hflat, hcomap⟩` from `GlobalTheory.T.exists_henselian_flat_over_prime R P`. Take `⟨Γ', F, j', ψ, U, -, hsq, hsq2, ho, -, hcl⟩` from `btEmb_localData R T Γ j hj R' hflat`. Conclude with `⟨R', inferInstance, inferInstance, inferInstance, Γ'.G.left, _, j', _, F, _, U, hflat, hcomap, hsq, hsq2, ho, hcl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `P`. Set `p : Ideal R` to `P.asIdeal.comap (algebraMap R (Γ.btOrder ⊤))`. Use `haveI : p.IsPrime := Ideal.comap_isPrime _ _`. Take `⟨R', _, _, _, _, hic, hflat, hcomap⟩` from `GlobalTheory.T.exists_henselian_flat_over_prime R p`. Take `⟨Γ', F, j', ψ, U, hψ, hsq, hsq2, -, hTC, -⟩` from `btEmb_localData R T Γ j hj R' hflat`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz1, hz2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := Spec.map (CommRingCat.ofHom (algebraMap R (Γ.btOrder ⊤)))) (g := Spec.map (CommRingCat.ofHom (algebraMap R R'))) P (IsLocalRing.closedPoint R') (PrimeSpectrum.ext hcomap.symm)`. Set `Q` to `hsq.isoPullback.inv z`. Establish `hQ : Spec.map (CommRingCat.ofHom ψ) Q = P`. Rewrite using `[← hz1]`. Express the relevant statement in the definitionally equal form `(hsq.isoPullback.inv ≫ Spec.map (CommRingCat.ofHom ψ)) z = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsq.isoPullback_inv_fst]`. Take `⟨t, g', -, H⟩` from `hTC Q`. Use `⟨t, F g', trivial, fun f f' hff => ?_⟩` and prove the remaining obligations. Establish `h1` using `H (ψ f) (ψ f') (fun h => by rw [hψ, hψ, hff])`. Establish `hg : (j (F g')).asIdeal = Ideal.comap ψ (j' g').asIdeal`.
-
-Rewrite using `[← btEmb_specMap_asIdeal]`. Express the relevant statement in the definitionally equal form `((F ≫ j) g').asIdeal = ((j' ≫ Spec.map (CommRingCat.ofHom ψ)) g').asIdeal`. Rewrite using `[hsq2.w]`. Rewrite using `[hg, ← hQ, btEmb_specMap_asIdeal]`. Conclude with `h1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_emb_and_translatesCover : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (j : Γ.G.left ⟶ Spec (CommRingCat.of (Γ.btOrder ⊤))), Γ.IsEmb (Γ.btOrder ⊤) j → IsOpenImmersion j ∧ Γ.TranslatesCover (Γ.btOrder ⊤) j ⊤ := by
   intro R _ _ _ _ T _ _ Γ j hj

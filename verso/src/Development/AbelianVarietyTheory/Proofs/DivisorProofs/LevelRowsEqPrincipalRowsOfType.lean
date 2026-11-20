@@ -24,11 +24,9 @@ noncomputable section
 namespace GlobalTheory.LevelRowsPrincipal
 
 /- English proof (translation)
-Introduce `hCusp hHowe D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hLI hOk hC hEx hJunk hGE hPos hScal hB hRT`. Establish `hBlock : (R.toCx3 F).zs.InBlock` using `GlobalTheory.T.adjointLift_range_le_goodBlock_eigenspaces hCusp R F hLI hOk hC hEx hGE`. Establish `hCarry : ∀ c, R.EEc c ≠ ⊥ → ∃ p, R.Carries p c` using `GlobalTheory.T.thetaLift_carrying_of_base_tuple_rows hCusp hHowe R F hLI hOk hC hEx hJunk hGE hPos`. Establish `hSpan : (⨆ p, R.EEp3 p) = ⊤` using `GlobalTheory.T.iSup_eEp3_eq_whole_space_of_weakCharacterisation R F hC hEx (GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCusp R.toRealDat) hCarry`. Establish `hTop` using `GlobalTheory.T.EEg3_eq_univ_of_weakCharacterisation R F hOk hC hSpan hScal hB hRT hBlock`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h0, h1⟩` from `GlobalTheory.LevelRows3.eel_eq_typeSp3 R F hC`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (R.toCx3 F).EEl false = _ ⊓ _`. Rewrite using `[hTop, top_inf_eq, h0]`. Use `show (R.toCx3 F).EEl true = _ ⊓ _`.
-
-Rewrite using `[hTop, top_inf_eq, h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pLevE_of : GlobalTheory.Published.CuspRapidDecay → HoweUnram → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, GlobalTheory.Chain.LiftInteg D → A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → ((∀ t (k : A3.okI t × List ℕ), A3.heckeRI t k = 0 ∨ ∃ y, Formalism.L2.Col.InertTypeOk (A3.A.fam.R t).n y ∧ A3.heckeRI t k = A3.heckeRI t (k.1, y)) ∧ ∀ j t (k : A3.okI t × List ℕ), A3.heckeLI j t k = 0 ∨ ∃ y, Formalism.L2.Col.InertTypeOk (A3.A.fam.L j t).n y ∧ A3.heckeLI j t k = A3.heckeLI j t (k.1, y)) → R.PGEquiv F → (∀ b, (lv (F.fc (R.toCx3 F).zs) b).Pos) → (0 < R.kap ∧ ∀ i t p, 0 < R.lam3 i t p A3.A.v0) → R.PThmB → Formalism.IndefR.Rat.RowTest (R.toCx3 F) → R.PLevE F := by
   intro hCusp hHowe D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hLI hOk hC hEx hJunk hGE hPos hScal hB hRT

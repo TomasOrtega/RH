@@ -11,7 +11,7 @@ variable {G : Type} [Group G]
 def InDC (J : Subgroup G) (x g : G) : Prop := ∃ k₁ k₂ : J, g = (k₁ : G) * x * k₂
 
 /- English proof (translation)
-Take `⟨u, v, rfl⟩` from `h`. Conclude with `⟨⟨a, ha⟩ * u, v * ⟨b, hb⟩, by simp [mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem InDC.mul {J : Subgroup G} {x g a b : G} (h : InDC J x g) (ha : a ∈ J) (hb : b ∈ J) :
     InDC J x (a * g * b) := by
@@ -19,7 +19,7 @@ theorem InDC.mul {J : Subgroup G} {x g a b : G} (h : InDC J x g) (ha : a ∈ J) 
   exact ⟨⟨a, ha⟩ * u, v * ⟨b, hb⟩, by simp [mul_assoc]⟩
 
 /- English proof (translation)
-Take `⟨u, v, rfl⟩` from `h`. Conclude with `⟨v⁻¹, u⁻¹, by simp [mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem InDC.inv {J : Subgroup G} {x g : G} (h : InDC J x g) : InDC J x⁻¹ g⁻¹ := by
   obtain ⟨u, v, rfl⟩ := h
@@ -28,15 +28,13 @@ theorem InDC.inv {J : Subgroup G} {x g : G} (h : InDC J x g) : InDC J x⁻¹ g�
 open Classical in
 
 /- English proof (translation)
-Establish `hex : ∀ a : G, ∃ b : G, a ∈ A → P a → b ∈ B ∧ b⁻¹ * ψ a ∈ J`. Introduce `a`. Distinguish the cases in `h : a ∈ A ∧ P a`. Take `⟨b, hb, -⟩` from `hB.2 _ (h1 a h.1 h.2)`. Conclude with `⟨b, fun _ _ => hb⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨1, fun h₁ h₂ => absurd ⟨h₁, h₂⟩ h⟩`. Use `choose r hr using hex`. Use `Finset.card_le_card_of_injOn r ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Simplify using `only [Finset.coe_filter, Set.mem_ofPred_eq] at ha ⊢`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨hb, hj⟩` from `hr a ha.1 ha.2`. Use `⟨hb, ?_⟩` and prove the remaining obligations. Use `h2 a ha.1 ha.2 _ (J.inv_mem hj)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce `a ha a' ha' e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.coe_filter, Set.mem_ofPred_eq] at ha ha'`. Establish `hj` using `(hr a ha.1 ha.2).2`. Establish `hj'` using `(hr a' ha'.1 ha'.2).2`. Rewrite `hj'` using `[← e]`. Establish `h4 : (ψ a)⁻¹ * ψ a' ∈ J` using `by simpa [mul_assoc] using J.mul_mem (J.inv_mem hj) hj'`.
-
-Conclude with `(hA.2 a' (hA.1 a' ha'.1)).unique ⟨ha.1, h3 a ha.1 a' ha'.1 h4⟩ ⟨ha'.1, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_filter_le {J : Subgroup G} {x y : G} {A B : Finset G} (hA : IsDC J x A) (hB : IsDC J y B)
     (P Q : G → Prop) (ψ : G → G) (h1 : ∀ a ∈ A, P a → InDC J y (ψ a))
@@ -74,9 +72,9 @@ variable {J L : Subgroup G} {θ : G → G}
 
 include hm in
 /- English proof (translation)
-Establish `h1 : θ 1 = 1`. Establish `h` using `hm 1 L.one_mem 1 L.one_mem`. Rewrite `h` using `[mul_one]`. Establish `h' : θ 1 * θ 1 = θ 1 * 1` using `by rw [mul_one, ← h]`. Conclude with `mul_left_cancel h'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← hm _ hg _ (L.inv_mem hg), mul_inv_cancel, h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_inv {g : G} (hg : g ∈ L) : θ g⁻¹ = (θ g)⁻¹ := by
   have h1 : θ 1 = 1 := by
@@ -89,9 +87,9 @@ theorem theta_inv {g : G} (hg : g ∈ L) : θ g⁻¹ = (θ g)⁻¹ := by
 
 include hm hi hK hL in
 /- English proof (translation)
-Establish `hl : a'⁻¹ * a ∈ L` using `L.mul_mem (L.inv_mem ha') ha`. Establish `e : θ (a'⁻¹ * a) = θ a * (θ a')⁻¹`. Rewrite using `[hm _ (L.inv_mem ha') _ ha, theta_inv hm ha']`. Use `hK (θ (a'⁻¹ * a)) ⟨e ▸ h, hL _ hl⟩` as an intermediate fact. Rewrite `this` using `[hi _ hl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using J.inv_mem this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem theta_coset {a a' : G} (ha : a ∈ L) (ha' : a' ∈ L) (h : θ a * (θ a')⁻¹ ∈ J) : a⁻¹ * a' ∈ J := by
   have hl : a'⁻¹ * a ∈ L := L.mul_mem (L.inv_mem ha') ha
@@ -103,7 +101,7 @@ theorem theta_coset {a a' : G} (ha : a ∈ L) (ha' : a' ∈ L) (h : θ a * (θ a
 
 include hdc in
 /- English proof (translation)
-Take `⟨a, ha, b, hb, e⟩` from `hdc g hg`. Rewrite using `[e]`. Conclude with `h.mul ha.1 hb.1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InDC.theta {x g : G} (h : InDC J x g) (hg : g ∈ L) : InDC J x (θ g) := by
   obtain ⟨a, ha, b, hb, e⟩ := hdc g hg
@@ -112,7 +110,7 @@ theorem InDC.theta {x g : G} (h : InDC J x g) (hg : g ∈ L) : InDC J x (θ g) :
 
 include hm hi hK hL hdc in
 /- English proof (translation)
-Use `card_filter_le hA hA' (fun _ => True) (fun _ => True) (fun a => (θ a)⁻¹) (fun a ha _ => (InDC.theta hdc (hA.1 a ha) (hAL a ha)).inv) (fun _ _ _ _ _ => trivial) (fun a ha a' ha' h => theta_coset hm hi hK hL (hAL a ha) (hAL a' ha') (by simpa using h))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem card_le_inv {x : G} {A A' : Finset G} (hA : IsDC J x A) (hA' : IsDC J x⁻¹ A') (hAL : ∀ a ∈ A, a ∈ L) :
     A.card ≤ A'.card := by
@@ -125,11 +123,11 @@ theorem card_le_inv {x : G} {A A' : Finset G} (hA : IsDC J x A) (hA' : IsDC J x�
 open Classical in
 include hm hi hK hL hdc in
 /- English proof (translation)
-Take `⟨k, hk, k', hk', e⟩` from `hdc z hz`. Use `card_filter_le hA hB _ _ (fun a => z * k' * (θ a)⁻¹) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha hP`. Establish `hl` using `L.inv_mem (hAL a ha)`. Establish `h1` using `InDC.theta hdc hP (L.mul_mem hl hz)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hm _ hl _ hz, theta_inv hm (hAL a ha), e]`. Simplify `h1.mul (J.inv_mem hk.1) J.one_mem` using `[mul_assoc]`. Introduce `a ha _ c hc`. Establish `h1` using `InDC.theta hdc (hA.1 a ha) (hAL a ha)`. Simplify `h1.mul (J.inv_mem hc) (J.inv_mem hk'.1)` using `[mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `a ha a' ha' h`. Conclude with `theta_coset hm hi hK hL (hAL a ha) (hAL a' ha') (by simpa [mul_assoc] using h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem card_conv_le {x y : G} {A B : Finset G} (hA : IsDC J x A) (hB : IsDC J y B) (hAL : ∀ a ∈ A, a ∈ L)
     {z : G} (hz : z ∈ L) :
@@ -152,13 +150,13 @@ end Theta
 open Classical in
 
 /- English proof (translation)
-Use `Finset.card_bij (fun p _ => p.1) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ hp`. Simplify using `only [Finset.mem_filter, Finset.mem_product, QuotientGroup.eq] at hp ⊢`. Use `⟨hp.1.1, ?_⟩` and prove the remaining obligations. Establish `h1 : InDC J y b` using `hB.1 b hp.1.2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `h1.mul J.one_mem (J.inv_mem hp.2.1)` using `[mul_assoc]`. Introduce and unpack `⟨a, b⟩ hp ⟨a', b'⟩ hp' e`. Simplify using `only [Finset.mem_filter, Finset.mem_product, QuotientGroup.eq] at hp hp' e`. Substitute `e` using the available equality. Establish `h4 : b⁻¹ * b' ∈ J` using `by simpa [mul_assoc] using J.mul_mem (J.inv_mem hp.2.1) hp'.2.1`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact.
 
-Use `(hB.2 b' (hB.1 b' hp'.1.2)).unique ⟨hp.1.2, h4⟩ ⟨hp'.1.2, by simp⟩` as an intermediate fact. Rewrite using `[this]`. Introduce `a ha`. Simplify using `only [Finset.mem_filter] at ha`. Take `⟨b, ⟨hb, hj⟩, -⟩` from `hB.2 _ ha.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨(a, b), ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_product, QuotientGroup.eq]`. Use `⟨⟨ha.1, hb⟩, ?_, L.mul_mem (L.inv_mem hz) (L.mul_mem (hAL a ha.1) (hBL b hb))⟩` and prove the remaining obligations. Simplify `J.inv_mem hj` using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem card_pairs {J L : Subgroup G} {y : G} {A B : Finset G} (hB : IsDC J y B) (hAL : ∀ a ∈ A, a ∈ L)
     (hBL : ∀ b ∈ B, b ∈ L) {z : G} (hz : z ∈ L) :
@@ -185,21 +183,21 @@ theorem card_pairs {J L : Subgroup G} {y : G} {A B : Finset G} (hB : IsDC J y B)
     simpa [mul_assoc] using J.inv_mem hj
 
 /- English proof (translation)
-Introduce `G W _ _ _ J L χ x y A B A' F _ hχ ⟨θ, hL, hm, hi, hK, hdc⟩ hAL hBL hAL' hA hB hA' hF`. Use `⟨?_, le_antisymm (card_le_inv hm hi hK hL hdc hA hA' hAL) (card_le_inv hm hi hK hL hdc hA' (by rwa [inv_inv]) hAL')⟩` and prove the remaining obligations. Establish `hFK : ∀ g g' : G, (g : G ⧸ (J ⊓ L)) = g' → ∀ h, F (h * g) = F (h * g')`. Introduce `g g' e h`. Rewrite `e` using `[QuotientGroup.eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hF ⟨_, e.1⟩ (h * g)` as an intermediate fact. Rewrite `this` using `[hχ ⟨_, e.1⟩ e.2]`. Simplify `this.symm` using `[mul_assoc]`. Establish `hms : (A ×ˢ B).val.map (fun p => ((p.1 * p.2 : G) : G ⧸ (J ⊓ L))) = (B ×ˢ A).val.map (fun p => ((p.1 * p.2 : G) : G ⧸ (J ⊓ L)))`. Use extensionality with `q`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H z`. Rewrite using `[Multiset.count_map, Multiset.count_map]`. Distinguish the cases in `hz : z ∈ L`. Establish `e1` using `card_pairs (A := A) hB hAL hBL hz`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e2` using `card_pairs (A := B) hA hBL hAL hz`. Establish `e3` using `le_antisymm (card_conv_le hm hi hK hL hdc hA hB hAL hz) (card_conv_le hm hi hK hL hdc hB hA hBL hz)`. Use `e1.trans (e3.trans e2.symm)` as an intermediate fact. Rewrite `this` using `[Finset.card_def, Finset.card_def, Finset.filter_val, Finset.filter_val]`. Use `this` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hz' : ∀ C D : Finset G, (∀ a ∈ C, a ∈ L) → (∀ a ∈ D, a ∈ L) → Multiset.filter (fun p : G × G => (z : G ⧸ (J ⊓ L)) = ((p.1 * p.2 : G) : G ⧸ (J ⊓ L))) (C ×ˢ D).val = 0`. Introduce `C D hC hD`. Rewrite using `[Multiset.filter_eq_nil]`. Introduce `p hp e`. Rewrite `hp` using `[Finset.mem_val, Finset.mem_product]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[QuotientGroup.eq]`. Apply `hz` to reduce the goal to its premises. Simplify `L.mul_mem (L.mul_mem (hC _ hp.1) (hD _ hp.2)) (L.inv_mem e.2)` using `[mul_assoc]`. Rewrite using `[hz' A B hAL hBL, hz' B A hBL hAL]`. Use function extensionality and compare the values at `h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `key : ∀ C D : Finset G, dcOp C (dcOp D F) h = (((C ×ˢ D).val.map (fun p => ((p.1 * p.2 : G) : G ⧸ (J ⊓ L)))).map fun q => F (h * q.out)).sum`. Introduce `C D`. Rewrite using `[Multiset.map_map]`. Express the relevant statement in the definitionally equal form `_ = ∑ p ∈ C ×ˢ D, _`. Rewrite using `[Finset.sum_product]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dcOp, Function.comp]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `hFK _ _ (QuotientGroup.out_eq' _).symm h`. Rewrite using `[key, key, hms]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dcOp_comm_and_card : ∀ {G W : Type} [Group G] [NormedAddCommGroup W] [InnerProductSpace ℂ W] (J L : Subgroup G) (χ : J →* ℂˣ) (x y : G) (A B A' : Finset G) (F : G → W), (∀ k ∈ J, ∃ k₁ ∈ J, ∃ k₂ ∈ J, k₁ ∈ L ∧ k = k₁ * k₂ ∧ ∀ l ∈ L, Commute k₂ l) → (∀ k : J, (k : G) ∈ L → χ k = 1) → (∃ θ : G → G, (∀ g ∈ L, θ g ∈ L) ∧ (∀ x ∈ L, ∀ y ∈ L, θ (x * y) = θ y * θ x) ∧ (∀ x ∈ L, θ (θ x) = x) ∧ (∀ k ∈ J ⊓ L, θ k ∈ J) ∧ ∀ g ∈ L, ∃ a ∈ J ⊓ L, ∃ b ∈ J ⊓ L, θ g = a * g * b) → (∀ a ∈ A, a ∈ L) → (∀ a ∈ B, a ∈ L) → (∀ a ∈ A', a ∈ L) → IsDC J x A → IsDC J y B → IsDC J x⁻¹ A' → (∀ (k : J) (h : G), F (h * k) = (χ k : ℂ) • F h) → dcOp A (dcOp B F) = dcOp B (dcOp A F) ∧ A.card = A'.card := by
   classical

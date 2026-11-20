@@ -20,7 +20,7 @@ def grid4 : GridData where
   b_mono := by intro i j _ _ _; omega
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem unitary_six_two_grid_counts : grid4.NearMid ∧
     (∀ i ∈ range 5, ∀ j ∈ range 5, IsRegular (grid4.parD i j) ∧ (grid4.parD i j).card = grid4.rankD i j ∧
@@ -30,7 +30,7 @@ theorem unitary_six_two_grid_counts : grid4.NearMid ∧
     (∀ j ∈ range 5, (grid4.weightX j).card = grid4.rankX j) := by decide +kernel
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem unitary_six_two_lift_arrows :
     (∀ i ∈ range 4, ∀ j ∈ range 5, grid4.parD (i + 1) j = liftMinus (grid4.cen (4 - i)) 3 (grid4.parD i j) ∧
@@ -42,7 +42,7 @@ theorem unitary_six_two_lift_arrows :
     (∀ j ∈ range 4, grid4.parX (j + 1) = liftPlus (-grid4.e (j + 1)) 4 (grid4.parX j)) := by decide +kernel
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem unitary_six_two_interlacing : ncGap grid4.lam = ((9 : ℚ) : WithTop ℚ) ∧ signature grid4.lam = (6, 2) ∧
     signature grid4.parD0 = (5, 2) ∧ HeInterlace grid4.lam grid4.parD0 ∧ ¬ HeInterlace grid4.lam (flip grid4.parD0) ∧
@@ -51,38 +51,38 @@ theorem unitary_six_two_interlacing : ncGap grid4.lam = ((9 : ℚ) : WithTop ℚ
     ¬ StrictInterlace (entries (grid4.parD 4 4)) (grid4.weightX 4) := by decide +kernel
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem he_one_one : ∀ z ∈ Icc (-6 : ℤ) 6,
     (HeInterlace {(5 / 2, true), (-3 / 2, false)} {((z : ℚ), false)} ↔ z ≤ -2) ∧
     (HeInterlace {(5 / 2, false), (-3 / 2, true)} {((z : ℚ), false)} ↔ 3 ≤ z) := by decide +kernel
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem he_two : ∀ z ∈ Icc (-6 : ℤ) 6,
     (HeInterlace {(5 / 2, true), (-3 / 2, true)} {((z : ℚ), true)} ↔ -1 ≤ z ∧ z ≤ 2) ∧
     (StrictInterlace {5 / 2, -3 / 2} {(z : ℚ)} ↔ -1 ≤ z ∧ z ≤ 2) := by decide +kernel
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem degenerate : ¬ StrictInterlace ∅ ∅ ∧ StrictInterlace {0} ∅ ∧ ncGap ∅ = ⊤ ∧
     ncGap {(0, true), (0, false)} = ((0 : ℚ) : WithTop ℚ) ∧ ¬ HeInterlace {(0, true), (0, false)} ∅ ∧
     ¬ HeInterlace {(1, true), (0, true)} {(0, true)} ∧ ¬ HeInterlace {(1, true), (0, true)} ∅ := by decide +kernel
 
 /- English proof (translation)
-Establish `: (G.parD i j).filter (fun x => x.2 = false) = (range ((G.m - j) / 2)).image fun a => (-(G.b (j + 2 + 2 * a) : ℚ), false)`. Use extensionality with `⟨x, s⟩`. Simplify using `only [mem_filter, GridData.mem_parD, mem_image, mem_range, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h | ⟨l, h1, h2, h3, h4⟩ | ⟨l, -, -, -, h⟩ | ⟨l, -, -, -, h⟩, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `at h`. Establish `h5 : ¬ (l ≤ j + 1 ∨ Even (l - j - 1))` using `by simpa using h4.symm`. Rewrite `h5` using `[Nat.even_iff]`. Use `⟨(l - j - 2) / 2, by omega, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[show j + 2 + 2 * ((l - j - 2) / 2) = l by omega, h3]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `at h`. Simplify using `at h`. Introduce and unpack `⟨a, ha, rfl, rfl⟩`. Use `⟨Or.inr (Or.inl ⟨j + 2 + 2 * a, by omega, by omega, rfl, ?_⟩), rfl⟩` and prove the remaining obligations. Use `symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation.
 
-Rewrite using `[decide_eq_false_iff_not, Nat.even_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[nMinus, this, card_image_of_injOn, card_range]`. Introduce `a ha a' ha' h`. Simplify using `only [coe_range, Set.mem_Iio] at ha ha'`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h1 : G.b (j + 2 + 2 * a) = G.b (j + 2 + 2 * a')`. Use `congrArg Prod.fst h` as an intermediate fact. Simplify using `using this`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h2 | h2` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis.
 
-Use `G.b_mono (j + 2 + 2 * a) (j + 2 + 2 * a') (by omega) (by omega) (by omega); omega` as an intermediate fact. Use `G.b_mono (j + 2 + 2 * a') (j + 2 + 2 * a) (by omega) (by omega) (by omega); omega` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact.
 -/
 theorem nMinus_parD (G : GridData) (i j : ℕ) : nMinus (G.parD i j) = (G.m - j) / 2 := by
   have : (G.parD i j).filter (fun x => x.2 = false) =
@@ -113,7 +113,7 @@ theorem nMinus_parD (G : GridData) (i j : ℕ) : nMinus (G.parD i j) = (G.m - j)
   · have := G.b_mono (j + 2 + 2 * a') (j + 2 + 2 * a) (by omega) (by omega) (by omega); omega
 
 /- English proof (translation)
-Use `goodPar_iff.2 ⟨⟨by decide +kernel, by decide +kernel, fun x hx => ⟨⌊x - 7 / 2⌋, ?_⟩⟩, by decide +kernel⟩` and prove the remaining obligations. Use `revert x`. Use `decide +kernel`.
+Reduce the conclusion to the remaining proof obligations. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem unitary_six_two_harish_chandra_parameter : GoodPar 8 6 2 grid4.lam := by
   refine goodPar_iff.2 ⟨⟨by decide +kernel, by decide +kernel, fun x hx => ⟨⌊x - 7 / 2⌋, ?_⟩⟩, by decide +kernel⟩

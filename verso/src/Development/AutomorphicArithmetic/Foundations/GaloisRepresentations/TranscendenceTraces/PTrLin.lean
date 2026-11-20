@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `((hRp (ZMod q) (res (ZMod q) (tw q i)) Z n).1) x`. Establish `h1` using `hOp (ZMod q) (ZMod q) τ n x a ha`. Establish `h2` using `hOp (ZMod q) (ZMod q) τ' n x a ha`. Establish `h3` using `hOp (ZMod q) (ZMod q) σ n x a ha`. Establish `hS` using `(hRp (ZMod q) (res (ZMod q) (tw q i)) S n).2.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `(hS _ _ _ _ h1 h2).2.2.1`. Conclude with `(hS _ _ _ _ h3 h4).2.1 (h a)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem op_add_of (hRp : RpBasic) (hOp : RpOp) {q : ℕ} {i n : ℤ} {Z S : Scheme.{0}} {p : Z ⟶ S}
     (τ τ' σ : Fam p (res (ZMod q) (tw q i)) (res (ZMod q) (tw q i)))
@@ -21,9 +21,9 @@ private theorem op_add_of (hRp : RpBasic) (hOp : RpOp) {q : ℕ} {i n : ℤ} {Z 
   exact (hS _ _ _ _ h3 h4).2.1 (h a)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `((hRp (ZMod q) (res (ZMod q) (tw q i)) Z n).1) x`. Establish `h1` using `hOp (ZMod q) (ZMod q) τ n x a ha`. Establish `h3` using `hOp (ZMod q) (ZMod q) σ n x a ha`. Establish `hS` using `(hRp (ZMod q) (res (ZMod q) (tw q i)) S n).2.2.1`. Establish `h4` using `(hS _ _ _ _ h1 h1).2.2.2 d`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hS _ _ _ _ h3 h4).2.1 (h a)`.
+A detailed English derivation is pending.
 -/
 private theorem op_smul_of (hRp : RpBasic) (hOp : RpOp) {q : ℕ} {i n : ℤ} {Z S : Scheme.{0}} {p : Z ⟶ S} (d : ℤ)
     (τ σ : Fam p (res (ZMod q) (tw q i)) (res (ZMod q) (tw q i)))
@@ -38,7 +38,7 @@ private theorem op_smul_of (hRp : RpBasic) (hOp : RpOp) {q : ℕ} {i n : ℤ} {Z
   exact (hS _ _ _ _ h3 h4).2.1 (h a)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `((hRp (ZMod q) (res (ZMod q) (tw q i)) S n).1) x`. Establish `h3` using `hOp (ZMod q) (ZMod q) σ n x a ha`. Establish `hS` using `(hRp (ZMod q) (res (ZMod q) (tw q i)) S n).2.2.1`. Establish `h4` using `(hS _ _ _ _ ha ha).2.2.2 d`. Conclude with `(hS _ _ _ _ h3 h4).2.1 (h a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem op_id_of (hRp : RpBasic) (hOp : RpOp) {q : ℕ} {i n : ℤ} {S : Scheme.{0}} (d : ℤ)
     (σ : Fam (𝟙 S) (res (ZMod q) (tw q i)) (res (ZMod q) (tw q i)))
@@ -52,11 +52,11 @@ private theorem op_id_of (hRp : RpBasic) (hOp : RpOp) {q : ℕ} {i n : ℤ} {S :
   exact (hS _ _ _ _ h3 h4).2.1 (h a)
 
 /- English proof (translation)
-Introduce `hChar hFam hWt hRp hOp q _ n i`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Z S p _ w w' hw hw' hq x`. Take `⟨σ, hσ, hσd⟩` from `(hFam q i).1 p w w' (trFam p w q i) (trFam p w' q i) (hChar q i p w hw hq).2.1 (hChar q i p w' hw' hq).2.1`. Rewrite using `[(hChar q i p (w.add w') (hWt.1 p w w' hw hw') hq).2.2 σ hσ n]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `op_add_of hRp hOp _ _ σ (fun a => hσd n _ a) x`. Introduce `Z S p _ d w hw hq x`. Take `⟨σ, hσ, hσd⟩` from `(hFam q i).2.1 p d w (trFam p w q i) (hChar q i p w hw hq).2.1`. Rewrite using `[(hChar q i p (w.smul d) (hWt.2.1 p d w hw) hq).2.2 σ hσ n]`. Conclude with `op_smul_of hRp hOp d _ σ (fun a => hσd n _ a) x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `S d hq x`. Take `⟨σ, hσ, hσd⟩` from `(hFam q i).2.2 S d`. Rewrite using `[(hChar q i (𝟙 S) (Wt.const S d) (hWt.2.2 (𝟙 S) d) hq).2.2 σ hσ n]`. Conclude with `op_id_of hRp hOp d σ (fun a => hσd n a) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.trLin_of :
     TrChar → FamLin → WtLin → RpBasic → RpOp → TrLin := by

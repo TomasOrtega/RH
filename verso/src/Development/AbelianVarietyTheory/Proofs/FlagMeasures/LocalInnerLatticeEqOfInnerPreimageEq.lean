@@ -25,15 +25,15 @@ theorem phiG_apply {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (x : (VS D).V) (a 
     phiG G x a = (VS D).hT (G.fl.e a) x := rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨μ, hμ0, hμ⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Use `set m : Fin D.R.rS → D.host.E := fun a => μ (fun j => if a = j then 1 else 0) with hm`. Establish `key : ∀ x, (VS D).hT (∑ a, star (m a) • G.fl.e a) x = 0`. Introduce `x`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hμ (LinearMap.mem_range_self (phiG G) x)`. Rewrite `h1` using `[LinearMap.mem_ker, LinearMap.pi_apply_eq_sum_univ μ]`. Rewrite using `[map_sum, LinearMap.sum_apply, ← h1]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, star_star, smul_eq_mul, smul_eq_mul, phiG_apply, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `(VS D).nondeg.1 _ key`. Establish `hc` using `Fintype.linearIndependent_iff.1 G.fl.e_indep _ h0`. Apply `hμ0` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.pi_apply_eq_sum_univ μ v, LinearMap.zero_apply]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Establish `: m a = 0` using `star_eq_zero.1 (hc a)`. Rewrite `this` using `[hm]`. Simplify using `only at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem phiG_surj {T : D.host.E} (G : LFlag (VS D) D.R.rS T) : LinearMap.range (phiG G) = ⊤ := by
   by_contra hne
@@ -60,9 +60,9 @@ theorem phiG_surj {T : D.host.E} (G : LFlag (VS D) D.R.rS T) : LinearMap.range (
   rw [this, smul_zero]
 
 /- English proof (translation)
-Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `u hu`. Establish `hle : Xsp G ≤ LinearMap.ker ((VS D).hT.flip x)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `congrFun h a` as an intermediate fact. Simplify `this` using `[phiG_apply]`. Use `hle hu` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_orth_of_phiG {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (x : (VS D).V) (h : phiG G x = 0) :
     x ∈ orth (VS D) (Xsp G) := by
@@ -77,15 +77,13 @@ theorem mem_orth_of_phiG {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (x : (VS D).
   simpa using this
 
 /- English proof (translation)
-Use `set Q : Submodule (𝓞 D.host.E) (Fin D.R.rS → D.host.E) := Λ.map ((phiG G).restrictScalars (𝓞 D.host.E)) with hQ`. Establish `hQl : Submodule.IsLattice D.host.E Q`. Use `⟨hΛ.fg.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[hQ, Submodule.map_coe]`. Establish `e1 : (⇑((phiG G).restrictScalars (𝓞 D.host.E)) : (VS D).V → _) = ⇑(phiG G)` using `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, Submodule.span_image, hΛ.span_eq_top, Submodule.map_top, phiG_surj]`. Take `⟨m, g, ψ, hψ⟩` from `GlobalTheory.HL.PlacesRec.exists_dual_basis Q hQl`. Use `choose c hc using fun i => GlobalTheory.HL.PlacesRec.exists_coeffs Q hQl.span_eq_top (ψ i)`. Establish `hlift : ∀ i, ∃ l ∈ Λ, phiG G l = (g i : Fin D.R.rS → D.host.E)`. Introduce `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨l, hl, he⟩` from `Submodule.mem_map.1 (g i).2`. Conclude with `⟨l, hl, he⟩`. Use `choose l hl hle using hlift`. Use `⟨m, l, c, hl, fun y hy i => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hyQ : phiG G y ∈ Q` using `Submodule.mem_map_of_mem hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨ψ i ⟨_, hyQ⟩, (hc i ⟨_, hyQ⟩).symm⟩`. Establish `hyQ : phiG G y ∈ Q` using `Submodule.mem_map_of_mem hy`. Establish `h1` using `congrArg Subtype.val (hψ ⟨_, hyQ⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h1`. Rewrite using `[map_sum]`.
-
-Use `conv_rhs => rw [h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hle i, hc i ⟨_, hyQ⟩, algebraMap_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_split {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (Λ : LV D)
     (hΛ : Submodule.IsLattice D.host.E Λ) :
@@ -123,14 +121,14 @@ section Loc
 variable (Z : LocDat D) (p : PlF D)
 
 /- English proof (translation)
-Rewrite using `[(locH Z p).h_herm (u • w) v, (locH Z p).h_smul_left, map_mul, ← (locH Z p).h_herm w v]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hP_smul_right (u : (D.s.atP p).Ep) (v w : Vp D p) :
     (locH Z p).h v (u • w) = (Z.M p).L.cj u * (locH Z p).h v w := by
   rw [(locH Z p).h_herm (u • w) v, (locH Z p).h_smul_left, map_mul, ← (locH Z p).h_herm w v]
 
 /- English proof (translation)
-Rewrite using `[(locH Z p).h_herm (w + w') v, (locH Z p).h_add_left, map_add, ← (locH Z p).h_herm w v, ← (locH Z p).h_herm w' v]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hP_add_right (v w w' : Vp D p) :
     (locH Z p).h v (w + w') = (locH Z p).h v w + (locH Z p).h v w' := by
@@ -138,13 +136,13 @@ theorem hP_add_right (v w w' : Vp D p) :
     ← (locH Z p).h_herm w' v]
 
 /- English proof (translation)
-Rewrite using `[(locH Z p).h_herm 0 v, (locH Z p).h_zero_left, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hP_zero_right (v : Vp D p) : (locH Z p).h v 0 = 0 := by
   rw [(locH Z p).h_herm 0 v, (locH Z p).h_zero_left, map_zero]
 
 /- English proof (translation)
-Simplify using `[frame, FlagG.fvec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_castSucc {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (k : Fin D.R.rS) :
     frame G k.castSucc = G.fl.e k := by
@@ -155,7 +153,7 @@ def sigP {T : D.host.E} (G : LFlag (VS D) D.R.rS T) {m : ℕ} (l : Fin m → (VS
   ∑ i, (∑ k, (D.s.atP p).ιE (c i k) • GlobalTheory.FrameProj.hR Z p (baseChange₂ D p (G.fl.e k))).smulRight (baseChange₂ D p (l i))
 
 /- English proof (translation)
-Simplify using `[sigP, GlobalTheory.FrameProj.hR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigP_apply {T : D.host.E} (G : LFlag (VS D) D.R.rS T) {m : ℕ} (l : Fin m → (VS D).V)
     (c : Fin m → Fin D.R.rS → D.host.E) (z : Vp D p) :
@@ -163,9 +161,9 @@ theorem sigP_apply {T : D.host.E} (G : LFlag (VS D) D.R.rS T) {m : ℕ} (l : Fin
   simp [sigP, GlobalTheory.FrameProj.hR]
 
 /- English proof (translation)
-Rewrite using `[sigP_apply, Formalism.L2.SG.Pf.ScalarFramePf.baseChangeAt_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Use `congr 1`. Conclude with `baseChangeAt_form Z.M p (Z.hcj p) x (G.fl.e k)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sigP_bcP {T : D.host.E} (G : LFlag (VS D) D.R.rS T) {m : ℕ} (l : Fin m → (VS D).V)
     (c : Fin m → Fin D.R.rS → D.host.E) (x : (VS D).V) :
@@ -180,11 +178,11 @@ theorem sigP_bcP {T : D.host.E} (G : LFlag (VS D) D.R.rS T) {m : ℕ} (l : Fin m
   exact baseChangeAt_form Z.M p (Z.hcj p) x (G.fl.e k)
 
 /- English proof (translation)
-Introduce `z hz`. Establish `hle : lattice₂ D Z.M p Λ ≤ (lattice₂ D Z.M p (Lrep Λ G)).comap ((LinearMap.id - sigP Z p G l c).restrictScalars (Z.M p).L.O)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `show baseChange₂ D p y - sigP Z p G l c (baseChange₂ D p y) ∈ lattice₂ D Z.M p (Lrep Λ G)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sigP_bcP, ← map_sub]`. Use `Submodule.subset_span ⟨_, Submodule.mem_inf.2 ⟨?_, ?_⟩, rfl⟩` and prove the remaining obligations. Use `Λ.sub_mem hy (Λ.sum_mem fun i _ => ?_)` and prove the remaining obligations. Take `⟨o, ho⟩` from `hint y hy i`. Rewrite using `[← ho, algebraMap_smul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Λ.smul_mem o (hl i)`. Use `show _ ∈ orth (VS D) (Xsp G)`. Apply `mem_orth_of_phiG` to reduce the goal to its premises. Rewrite using `[map_sub, hphi y hy, sub_self]`. Conclude with `hle hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_sigP_mem {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (Λ : LV D) {m : ℕ} (l : Fin m → (VS D).V)
     (c : Fin m → Fin D.R.rS → D.host.E) (hl : ∀ i, l i ∈ Λ)
@@ -209,9 +207,9 @@ theorem sub_sigP_mem {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (Λ : LV D) {m :
   exact hle hz
 
 /- English proof (translation)
-Establish `hz' : ∀ x ∈ (locH Z p).X Fr.f, (locH Z p).h z x = 0` using `hz`. Establish `h0 : ∀ k, (locH Z p).h z (baseChange₂ D p (G.fl.e k)) = 0`. Introduce `k`. Establish `h1` using `hz' _ (Submodule.subset_span ⟨k, rfl⟩ : Fr.f k.castSucc ∈ (locH Z p).X Fr.f)`. Rewrite `h1` using `[hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only at h1`. Rewrite `h1` using `[frame_castSucc, hP_smul_right]`. Conclude with `((Formalism.L2.SG.Pf.ScalarFramePf.isUnit_frFac Z p k.castSucc).map (Z.M p).L.cj).mul_right_eq_zero.1 h1`. Rewrite using `[sigP_apply]`. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sigP_perp {T : D.host.E} (G : LFlag (VS D) D.R.rS T) {m : ℕ} (l : Fin m → (VS D).V)
     (c : Fin m → Fin D.R.rS → D.host.E) (Fr : LocNG.FrameD (locH Z p) D.R.rS)
@@ -229,7 +227,7 @@ theorem sigP_perp {T : D.host.E} (G : LFlag (VS D) D.R.rS T) {m : ℕ} (l : Fin 
   simp [h0]
 
 /- English proof (translation)
-Take `⟨m, l, c, hl, hint, hphi⟩` from `exists_split G Λ hΛ`. Establish `h` using `sub_sigP_mem Z p G Λ l c hl hint hphi z hzΛ`. Rewrite `h` using `[sigP_perp Z p G l c Fr hf z hz, sub_zero]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_localLattice_lrep {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (Λ : LV D)
     (hΛ : Submodule.IsLattice D.host.E Λ) (Fr : LocNG.FrameD (locH Z p) D.R.rS)
@@ -240,13 +238,11 @@ theorem mem_localLattice_lrep {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (Λ : L
   rwa [sigP_perp Z p G l c Fr hf z hz, sub_zero] at h
 
 /- English proof (translation)
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Take `⟨w, hw⟩` from `Formalism.L2.SG.Pf.ScalarFramePf.isUnit_frFac Z p a.castSucc`. Establish `e : baseChange₂ D p (G.fl.e a) = w⁻¹ • Fr.f a.castSucc`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hf]`. Simplify using `only`. Rewrite using `[frame_castSucc, ← hw, ← Units.smul_def, inv_smul_smul]`. Rewrite using `[e, Units.smul_def]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [baseChange_smul₂]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bcP_mem_X {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (Fr : LocNG.FrameD (locH Z p) D.R.rS)
     (hf : Fr.f = fun a => frFac Z.δ p a • baseChange₂ D p (frame G a)) (u : (VS D).V) (hu : u ∈ Xsp G) :
@@ -266,11 +262,11 @@ theorem bcP_mem_X {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (Fr : LocNG.FrameD 
   | smul c x _ hx => rw [baseChange_smul₂]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Express the relevant statement in the definitionally equal form `∀ x ∈ (locH Z p).X Fr.f, (locH Z p).h (Fr.f a.castSucc) x = 0`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem y hy`. Take `⟨b, rfl⟩` from `hy`. Conclude with `Fr.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne)`. Consider the case `zero => exact hP_zero_right Z p _`. Consider the case `add y y' _ _ h1 h2 => rw [hP_add_right, h1, h2, add_zero]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c y _ h1 => rw [hP_smul_right, h1, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem X_le_perp (Fr : LocNG.FrameD (locH Z p) D.R.rS) :
     (locH Z p).X Fr.f ≤ (locH Z p).perp ((locH Z p).X Fr.f) := by
@@ -287,24 +283,22 @@ theorem X_le_perp (Fr : LocNG.FrameD (locH Z p) D.R.rS) :
   | smul c y _ h1 => rw [hP_smul_right, h1, mul_zero]
 
 /- English proof (translation)
-Unfold `Lsub Lrep`. Conclude with `le_inf le_sup_left inf_le_right`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lrep_le_lsub {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (Λ : LV D) : Lrep Λ G ≤ Lsub Λ G := by
   unfold Lsub Lrep
   exact le_inf le_sup_left inf_le_right
 
 /- English proof (translation)
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x, GlobalTheory.FrameProj.localLattice_mono Z p (lrep_le_lsub G Λ) (mem_localLattice_lrep Z p G Λ hΛ Fr hf x hx x.2), rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `h1 : (x : Vp D p) ∈ lattice₂ D Z.M p (Lrep Λ G) ⊔ lattice₂ D Z.M p (toO (VS D) (Xsp G))`. Rewrite using `[← GlobalTheory.FrameProj.localLattice_sup]`. Conclude with `GlobalTheory.FrameProj.localLattice_mono Z p (by unfold Lsub; exact inf_le_left) hx`. Take `⟨y, hy, t, ht, hyt⟩` from `Submodule.mem_sup.1 h1`. Establish `htX : t ∈ (locH Z p).X Fr.f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : lattice₂ D Z.M p (toO (VS D) (Xsp G)) ≤ ((locH Z p).X Fr.f).restrictScalars (Z.M p).L.O`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `bcP_mem_X Z p G Fr hf u hu`. Conclude with `hle ht`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyx : y = (x : Vp D p) - t` using `by rw [← hyt]; abel`. Establish `hyperp : y ∈ (locH Z p).perp ((locH Z p).X Fr.f)`. Rewrite using `[hyx]`. Conclude with `Submodule.sub_mem _ x.2 (X_le_perp Z p Fr htX)`. Use `⟨⟨y, hyperp⟩, GlobalTheory.FrameProj.localLattice_mono Z p (by unfold Lrep; exact inf_le_left) hy, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Loc.HermSp.mkW`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, Submodule.mem_comap]`. Establish `e : (((⟨y, hyperp⟩ : ↥((locH Z p).perp ((locH Z p).X Fr.f))) - x : ↥((locH Z p).perp ((locH Z p).X Fr.f))) : Vp D p) = -t`. Rewrite using `[Submodule.coe_sub]`. Use `show y - (x : Vp D p) = -t`.
-
-Rewrite using `[hyx]`. Normalize the expressions using the abelian group laws. Rewrite using `[Submodule.subtype_apply, e]`. Conclude with `Submodule.neg_mem _ htX`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lset_eq_lsub {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (Fr : LocNG.FrameD (locH Z p) D.R.rS)
     (hf : Fr.f = fun a => frFac Z.δ p a • baseChange₂ D p (frame G a)) (Λ : LV D)
@@ -343,7 +337,7 @@ theorem lset_eq_lsub {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (Fr : LocNG.Fram
 end Loc
 
 /- English proof (translation)
-Introduce `D Z p T G Fr hf Λ₁ Λ₂ h₁ h₂ he`. Rewrite using `[lset_eq_lsub Z p G Fr hf Λ₁ h₁, lset_eq_lsub Z p G Fr hf Λ₂ h₂, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem lset_eq_of_lsub_eq : ∀ (D : D7) (Z : LocDat D) (p : PlF D) {T : D.host.E} (G : LFlag (VS D) D.R.rS T)
     (Fr : LocNG.FrameD (locH Z p) D.R.rS), Fr.f = (fun a => frFac Z.δ p a • baseChange₂ D p (frame G a)) →

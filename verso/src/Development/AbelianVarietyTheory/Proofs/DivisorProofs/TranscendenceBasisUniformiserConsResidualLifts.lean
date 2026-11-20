@@ -18,15 +18,15 @@ namespace GlobalTheory.FieldPair
 open IsLocalRing Polynomial
 
 /- English proof (translation)
-It suffices to establish `h : ∀ d (p : R[X]), p.natDegree = d → (∀ i, p.coeff i ≠ 0 → IsUnit (p.coeff i)) → p.eval f = 0 → p = 0 from h _ p rfl hu he`. Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `p hd hu he`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsplit` using `X_mul_divX_add p`. Establish `h2 : p.eval f = f * (divX p).eval f + p.coeff 0`. Establish `h3` using `congrArg (Polynomial.eval f) hsplit`. Simplify using `only [eval_add, eval_mul, eval_X, eval_C] at h3`. Conclude with `h3.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `he' : f * (divX p).eval f + p.coeff 0 = 0` using `by rw [← h2]; exact he`. Establish `hc0 : p.coeff 0 = 0`. Assume the negation of the conclusion as `hc`. Establish `hmem : p.coeff 0 ∈ maximalIdeal R`. Establish `e : p.coeff 0 = -(f * (divX p).eval f)` using `by linear_combination he'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(maximalIdeal R).neg_mem ((maximalIdeal R).mul_mem_right _ hfm)`. Conclude with `(mem_maximalIdeal _).1 hmem (hu 0 hc)`. Establish `hdv : (divX p).eval f = 0`. Rewrite `he'` using `[hc0, add_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.1 he').resolve_left hf0`. Break down `Nat.eq_zero_or_pos d with hd0 | hdpos` into its components or cases. Rewrite using `[eq_C_of_natDegree_eq_zero (hd.trans hd0), hc0, C_0]`. Establish `h0 : divX p = 0` using `ih (d - 1) (by omega) (divX p) (by rw [natDegree_divX_eq_natDegree_tsub_one, hd]) (fun i hi => by rw [coeff_divX] at hi ⊢; exact hu _ hi) hdv`. Rewrite using `[← hsplit, h0, hc0, mul_zero, C_0, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_eval_mem_maximalIdeal {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     {f : R} (hf0 : f ≠ 0) (hfm : f ∈ maximalIdeal R) (p : R[X])
@@ -61,41 +61,35 @@ theorem eq_zero_of_eval_mem_maximalIdeal {R : Type} [CommRing R] [IsDomain R] [I
     rw [← hsplit, h0, hc0, mul_zero, C_0, add_zero]
 
 /- English proof (translation)
-Introduce `L K _ _ cL cK n S ψ f w hψ hc hf hwK`. Use `letI : Algebra ℂ S.ring := S.const.toAlgebra`. Use `letI : Algebra ℂ L := cL.toAlgebra`. Use `letI : Algebra ℂ K := cK.toAlgebra`. Use `haveI : IsScalarTower ℂ S.ring L := IsScalarTower.of_algebraMap_eq' rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hcomp : ψ.comp (algebraMap ℂ S.ring) = algebraMap ℂ K` using `RingHom.ext hc`. Use `haveI : Algebra.EssFiniteType ℂ S.ring := S.essFiniteType`. Use `haveI := formallySmooth_of_isRegularLocalRing_of_perfectField ℂ S.ring`. Establish `hker : RingHom.ker ψ = maximalIdeal S.ring` using `by haveI := RingHom.ker_isMaximal_of_surjective ψ hψ`. Conclude with `IsLocalRing.eq_maximalIdeal this`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hunit : ∀ g : S.ring, ψ g ≠ 0 → IsUnit g`. Introduce `g hg`. Assume the negation of the conclusion as `hu`. Conclude with `hg (by rw [← RingHom.mem_ker, hker]; exact hu)`. Establish `hwu : ∀ P : MvPolynomial (Fin n) ℂ, P ≠ 0 → IsUnit (MvPolynomial.eval₂ (algebraMap ℂ S.ring) w P)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `P hP`. Apply `hunit` to reduce the goal to its premises. Rewrite using `[MvPolynomial.hom_eval₂, hcomp]`. Introduce `h0`. Establish `hind : AlgebraicIndependent ℂ (fun i => ψ (w i))` using `hwK.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hP ((algebraicIndependent_iff.1 hind) P h0)`. Take `⟨m, z, b, -, -⟩` from `exists_basis_kaehler_uniformiser ℂ hf`. Establish `hL : Algebra.trdeg ℂ L = (m + 1 : ℕ)` using `trdeg_eq_of_basis_kaehler ℂ L b`. Establish `hR` using `trdeg_residueField_of_trdeg ℂ S.ring L hL`. Simplify using `only [add_tsub_cancel_right] at hR`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hK : Algebra.trdeg ℂ K = n`. Use `IsTranscendenceBasis.cardinalMk_eq_trdeg (R := ℂ) hwK` as an intermediate fact. Rewrite `this` using `[Cardinal.mk_fin]`. Conclude with `this.symm`. Establish `hmn : m ≤ n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨s, hs⟩` from `exists_isTranscendenceBasis ℂ (ResidueField S.ring)`. Set `res` to `IsLocalRing.residue S.ring`. Set `lift : s → S.ring` to `fun i => Function.surjInv IsLocalRing.residue_surjective (i : _)`. Establish `hlift : res ∘ lift = Subtype.val` using `funext fun i => Function.surjInv_eq IsLocalRing.residue_surjective _`. Establish `hg : AlgebraicIndependent ℂ (fun i => ψ (lift i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `algebraicIndependent_iff.2 fun P hP => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hu : IsUnit (MvPolynomial.eval₂ (algebraMap ℂ S.ring) lift P)`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, MvPolynomial.eval₂_comp_left]`. Express the relevant statement in the definitionally equal form `MvPolynomial.aeval (res ∘ lift) P ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hlift]`. Conclude with `fun h0 => hne (algebraicIndependent_iff.1 hs.1 P h0)`. Apply `(hu.map ψ).ne_zero` to reduce the goal to its premises. Rewrite using `[MvPolynomial.hom_eval₂, hcomp]`. Conclude with `hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hg.cardinalMk_le_trdeg`. Rewrite `h1` using `[hs.cardinalMk_eq_trdeg, hR, hK]`. Conclude with `h1` after adjusting the coercions. Establish `hsplit : ∀ P : MvPolynomial (Fin (n + 1)) ℂ, MvPolynomial.eval₂ (algebraMap ℂ S.ring) (Fin.cons f w : Fin (n + 1) → S.ring) P = Polynomial.eval f (Polynomial.map (MvPolynomial.eval₂Hom (algebraMap ℂ S.ring) w) (MvPolynomial.finSuccEquiv ℂ n P))`. Introduce `P`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrh : MvPolynomial.eval₂Hom (algebraMap ℂ S.ring) (Fin.cons f w : Fin (n + 1) → S.ring) = (Polynomial.evalRingHom f).comp ((Polynomial.mapRingHom (MvPolynomial.eval₂Hom (algebraMap ℂ S.ring) w)).comp (MvPolynomial.finSuccEquiv ℂ n : MvPolynomial (Fin (n + 1)) ℂ →+* _))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[MvPolynomial.finSuccEquiv_apply]`. Introduce `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;>`. Simplify using `[MvPolynomial.finSuccEquiv_X_zero, MvPolynomial.finSuccEquiv_X_succ]`. Conclude with `RingHom.congr_fun hrh P`. Establish `hcoe : ∀ P : MvPolynomial (Fin (n + 1)) ℂ, MvPolynomial.aeval (Fin.cons (f : L) (fun i => (w i : L)) : Fin (n + 1) → L) P = ((MvPolynomial.eval₂ (algebraMap ℂ S.ring) (Fin.cons f w : Fin (n + 1) → S.ring) P : S.ring) : L)`. Introduce `P`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `MvPolynomial.hom_eval₂ P (algebraMap ℂ S.ring) S.ring.subtype (Fin.cons f w : Fin (n + 1) → S.ring)`. Rewrite `h` using `[ValuationSubring.subtype_apply]`. Rewrite using `[h, MvPolynomial.aeval_def]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp`. Establish `hind : AlgebraicIndependent ℂ (Fin.cons (f : L) (fun i => (w i : L)) : Fin (n + 1) → L)`. Use `algebraicIndependent_iff.2 fun P hP => ?_` and prove the remaining obligations. Rewrite `hP` using `[hcoe, ZeroMemClass.coe_eq_zero, hsplit]`. Use `set Q := MvPolynomial.finSuccEquiv ℂ n P with hQ`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hq` using `eq_zero_of_eval_mem_maximalIdeal hf.ne_zero hf.not_isUnit _ (fun i hi => by`. Rewrite `hi`, the goal using `[Polynomial.coeff_map]`. Use `hwu _ fun h0 => hi ?_` and prove the remaining obligations. Rewrite using `[h0, map_zero]) hP`. Establish `hQ0 : Q = 0` using `by ext1 i`.
-
-Rewrite using `[Polynomial.coeff_zero]`. Assume the negation of the conclusion as `h0`. Apply `(hwu _ h0).ne_zero` to reduce the goal to its premises. Use `congrArg (fun p => Polynomial.coeff p i) hq` as an intermediate fact. Simplify `this` using `[Polynomial.coeff_map]`.
-
-Conclude with `(MvPolynomial.finSuccEquiv ℂ n).injective (by rw [← hQ, hQ0, map_zero])`. Establish `htr : TrBasis cL (Fin.cons (f : L) (fun i => (w i : L)) : Fin (n + 1) → L)`. Unfold `TrBasis`. Use `hind.isTranscendenceBasis_of_trdeg_le_of_finite ?_` and prove the remaining obligations. Rewrite using `[hL, Cardinal.mk_fin]`.
-
-Conclude with `(by omega : m + 1 ≤ n + 1)` after adjusting the coercions. Use `⟨htr, ?_, S.ord_irreducible hf, fun g hg => S.ord_eq_zero (hunit g hg)⟩` and prove the remaining obligations. Conclude with `GlobalTheory.formOrd_dForm_uniformiser_cons cL n S f w hf hwu ⟨_, htr⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem trBasis_uniformiser_cons : ∀ {L K : Type} [Field L] [Field K] (cL : ℂ →+* L) (cK : ℂ →+* K)
     (n : ℕ) (S : Place cL) (ψ : S.ring →+* K) (f : S.ring) (w : Fin n → S.ring),

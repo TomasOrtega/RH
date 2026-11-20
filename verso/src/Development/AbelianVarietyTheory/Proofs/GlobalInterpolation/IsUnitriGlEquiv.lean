@@ -9,7 +9,7 @@ open scoped TensorProduct
 namespace GlobalTheory.UniIndexPrime
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun j _ hj => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hx i j h, zero_mul]`. Rewrite using `[hy j i h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem diag_mul {k : ℕ} {A : Type} [CommRing A] {x y : Matrix (Fin k) (Fin k) A}
     (hx : ∀ i j, j < i → x i j = 0) (hy : ∀ i j, j < i → y i j = 0) (i : Fin k) :
@@ -43,13 +43,13 @@ def uniSub (k : ℕ) (A : Type) [CommRing A] : Subgroup (GL (Fin k) A) where
     simpa using h.symm
 
 /- English proof (translation)
-The claim follows from `Subgroup.closure_eq (uniSub k A)`.
+A detailed English derivation is pending.
 -/
 theorem closure_eq (k : ℕ) (A : Type) [CommRing A] :
     Subgroup.closure (upperUni k A) = uniSub k A := Subgroup.closure_eq (uniSub k A)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨fun i j hij => (h i j).1 hij, fun i => (h i i).2⟩, fun h i j => ⟨h.1 i j, h.2 i⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_uniSub {k : ℕ} {A : Type} [CommRing A] (x : GL (Fin k) A) :
     x ∈ uniSub k A ↔ IsUnitri (x : Matrix (Fin k) (Fin k) A) :=
@@ -68,7 +68,7 @@ theorem glEquiv_apply (k : ℕ) {A B : Type} [CommRing A] [CommRing B] (e : A �
     (glEquiv k e x : Matrix (Fin k) (Fin k) B) i j = e ((x : Matrix (Fin k) (Fin k) A) i j) := rfl
 
 /- English proof (translation)
-Simplify using `only [IsUnitri, glEquiv_apply, EmbeddingLike.map_eq_zero_iff, EmbeddingLike.map_eq_one_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isUnitri_glEquiv (k : ℕ) {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B)
     (x : GL (Fin k) A) :
@@ -77,9 +77,9 @@ theorem isUnitri_glEquiv (k : ℕ) {A B : Type} [CommRing A] [CommRing B] (e : A
   simp only [IsUnitri, glEquiv_apply, EmbeddingLike.map_eq_zero_iff, EmbeddingLike.map_eq_one_iff]
 
 /- English proof (translation)
-Introduce `κ _ g k hg hc`. Use `haveI : Finite κ := Nat.finite_of_card_ne_zero (hc ▸ hg.ne_zero)`. Use `letI : Fintype κ := Fintype.ofFinite κ`. Establish `e : ZMod g ≃+* κ` using `ZMod.ringEquivOfPrime κ hg (by rw [← Nat.card_eq_fintype_card, hc])`. Establish `h1 : Nat.card (GL (Fin k) (ZMod g)) = Nat.card (GL (Fin k) κ)` using `Nat.card_congr (glEquiv k e).toEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Nat.card {A : GL (Fin k) (ZMod g) // IsUnitri (A : Matrix (Fin k) (Fin k) (ZMod g))} = Nat.card (uniSub k κ)` using `Nat.card_congr ((glEquiv k e).toEquiv.subtypeEquiv fun x => (isUnitri_glEquiv k e x).trans (mem_uniSub _).symm)`. Establish `h3 : (Nat.card (uniSub k κ) : ℝ) ≠ 0`. Conclude with `(Nat.card_pos (α := uniSub k κ)).ne'` after adjusting the coercions. Rewrite using `[closure_eq, idxColLoc, idxLoc, h1, h2, eq_div_iff h3]`. Conclude with `(uniSub k κ).index_mul_card` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_upperUni : ∀ (κ : Type) [CommRing κ] (g k : ℕ), g.Prime → Nat.card κ = g →
     (((Subgroup.closure (upperUni k κ)).index : ℕ) : ℝ) = idxColLoc g k := by

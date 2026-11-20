@@ -14,9 +14,9 @@ namespace GlobalTheory.FrameMove
 open Formalism.UG (bc cT)
 
 /- English proof (translation)
-Establish `key : ∀ M N : Matrix (Fin n) (Fin n) R, M * N = 1 → ((1 - ε) • (1 : Matrix (Fin n) (Fin n) R) + ε • M) * ((1 - ε) • (1 : Matrix (Fin n) (Fin n) R) + ε • N) = 1`. Introduce `M N h`. Establish `h1 : (1 - ε) * (1 - ε) = 1 - ε` using `by linear_combination hε`. Establish `h2 : (1 - ε) * ε = 0` using `by linear_combination -hε`. Establish `h3 : ε * (1 - ε) = 0` using `by linear_combination -hε`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, smul_add, h1, h2, h3, hε, Matrix.one_mul, Matrix.mul_one, zero_smul, add_zero, zero_add, h]`. Rewrite using `[← add_smul, sub_add_cancel, one_smul]`. Conclude with `⟨⟨_, _, key _ _ A.mul_inv, key _ _ A.inv_mul⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_glue {R : Type} [CommRing R] {n : ℕ} (ε : R) (hε : ε * ε = ε) (A : GL (Fin n) R) :
     ∃ y : GL (Fin n) R, y.val = (1 - ε) • (1 : Matrix (Fin n) (Fin n) R) + ε • A.val := by
@@ -32,7 +32,7 @@ theorem exists_glue {R : Type} [CommRing R] {n : ℕ} (ε : R) (hε : ε * ε = 
   exact ⟨⟨_, _, key _ _ A.mul_inv, key _ _ A.inv_mul⟩, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show φ (y.val i j) = (1 : Matrix (Fin n) (Fin n) k) i j`. Rewrite using `[hy]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [h, Matrix.one_apply, hij]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem bc_glue_zero {R k : Type} [CommRing R] [CommRing k] {n : ℕ} {ε : R} {A y : GL (Fin n) R}
     (hy : y.val = (1 - ε) • (1 : Matrix (Fin n) (Fin n) R) + ε • A.val) (φ : R →+* k) (h : φ ε = 0) :
@@ -43,7 +43,7 @@ theorem bc_glue_zero {R k : Type} [CommRing R] [CommRing k] {n : ℕ} {ε : R} {
   by_cases hij : i = j <;> simp [h, Matrix.one_apply, hij]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show φ (y.val i j) = φ (A.val i j)`. Rewrite using `[hy]`. Simplify using `[h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bc_glue_one {R k : Type} [CommRing R] [CommRing k] {n : ℕ} {ε : R} {A y : GL (Fin n) R}
     (hy : y.val = (1 - ε) • (1 : Matrix (Fin n) (Fin n) R) + ε • A.val) (φ : R →+* k) (h : φ ε = 1) :
@@ -54,9 +54,9 @@ theorem bc_glue_one {R k : Type} [CommRing R] [CommRing k] {n : ℕ} {ε : R} {A
   simp [h]
 
 /- English proof (translation)
-Establish `h : ∀ M : Matrix (Fin n) (Fin n) R, (Fin.revPerm (n` using `n)).toPEquiv.toMatrix * M * (Fin.revPerm (n := n)).toPEquiv.toMatrix = M.submatrix Fin.rev Fin.rev := by`. Introduce `M`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`. Both sides reduce to the same expression. Establish `h1 : ((Fin.revPerm (n` using `n)).toPEquiv.toMatrix : Matrix (Fin n) (Fin n) R) * (Fin.revPerm (n := n)).toPEquiv.toMatrix = 1 := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `h 1` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Rewrite using `[this]`. Conclude with `Matrix.submatrix_one_equiv (Fin.revPerm (n := n))`. Conclude with `⟨⟨_, _, h1, h1⟩, fun M i j => congrFun (congrFun (h M) i) j⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rev (R : Type) [CommRing R] (n : ℕ) :
     ∃ W : GL (Fin n) R, ∀ (M : Matrix (Fin n) (Fin n) R) (i j : Fin n),
@@ -76,13 +76,11 @@ theorem exists_rev (R : Type) [CommRing R] (n : ℕ) :
   exact ⟨⟨_, _, h1, h1⟩, fun M i j => congrFun (congrFun (h M) i) j⟩
 
 /- English proof (translation)
-Establish `hx' : cT σ (β * h * β⁻¹).val * J * (β * h * β⁻¹).val = J` using `hx`. Establish `e1 : cT σ h.val * G.val * h.val = G.val`. Establish `e : (β * h * β⁻¹).val * β.val = β.val * h.val`. Rewrite using `[← Units.val_mul, inv_mul_cancel_right, Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hG, Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT σ β.val * (cT σ (β * h * β⁻¹).val * J * (β * h * β⁻¹).val) * β.val := by`. Rewrite using `[← e, Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `_ = G.val := by rw [hx', hG]`. Establish `e2 : cT σ (h⁻¹).val * cT σ h.val = 1`. Rewrite using `[← Formalism.UG.cT_mul, Units.mul_inv, Formalism.UG.cT_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e2, Matrix.one_mul]`.
-
-Both sides reduce to the same expression. Use `_ = cT σ (h⁻¹).val * ((cT σ h.val * G.val * h.val) * (G⁻¹).val) := by simp only [Matrix.mul_assoc]`. Use `_ = cT σ (h⁻¹).val := by rw [e1, Units.mul_inv, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conj_gram {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A)
     (β G h : GL (Fin n) A) (hG : G.val = cT σ β.val * J * β.val)
@@ -105,7 +103,7 @@ theorem conj_gram {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Matrix
     _ = cT σ (h⁻¹).val := by rw [e1, Units.mul_inv, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `c` using `conj_gram σ J β (bc O.subtype G) (bc O.subtype h) hG hx`. Rewrite `c` using `[← map_inv, ← map_inv, ← map_mul, ← map_mul]`. Conclude with `congrFun (congrFun c i) j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_gram_sub {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (O : Subring A) (J : Matrix (Fin n) (Fin n) A)
     (β : GL (Fin n) A) (G h : GL (Fin n) O) (hG : (bc O.subtype G).val = cT σ β.val * J * β.val)
@@ -116,7 +114,7 @@ theorem conj_gram_sub {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (O : Su
   exact congrFun (congrFun c i) j
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, map_inv, bc_glue_zero hy φ h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bc_conj_zero {R k : Type} [CommRing R] [CommRing k] {n : ℕ} {ε : R} {A y : GL (Fin n) R}
     (hy : y.val = (1 - ε) • (1 : Matrix (Fin n) (Fin n) R) + ε • A.val) (φ : R →+* k) (h : φ ε = 0)
@@ -125,7 +123,7 @@ theorem bc_conj_zero {R k : Type} [CommRing R] [CommRing k] {n : ℕ} {ε : R} {
   simp
 
 /- English proof (translation)
-Establish `e2 : bc φ (y⁻¹ * g * y) = bc φ (W⁻¹ * (G * g * G⁻¹) * W)`. Establish `: W⁻¹ * (G * g * G⁻¹) * W = (G⁻¹ * W)⁻¹ * g * (G⁻¹ * W)` using `by group`. Rewrite using `[this, map_mul, map_mul, map_inv, bc_glue_one hy φ h, map_mul _ (_ * g), map_mul _ _ g, map_inv]`. Rewrite using `[e2, ← hW (G * g * G⁻¹).val i j]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bc_conj_one {R k : Type} [CommRing R] [CommRing k] {n : ℕ} {ε : R} {G W y : GL (Fin n) R}
     (hW : ∀ (M : Matrix (Fin n) (Fin n) R) (i j : Fin n), ((W⁻¹).val * M * W.val) i j = M i.rev j.rev)
@@ -139,14 +137,14 @@ theorem bc_conj_one {R k : Type} [CommRing R] [CommRing k] {n : ℕ} {ε : R} {G
   rfl
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bc_inv_apply {R k : Type} [CommRing R] [CommRing k] {n : ℕ} (φ : R →+* k) (g : GL (Fin n) R)
     (i j : Fin n) : ((bc φ g)⁻¹).val i j = φ ((g⁻¹).val i j) := by
   rw [← map_inv]; rfl
 
 /- English proof (translation)
-Establish `e : frGL β h = frGL (β * intGL F E n y) (y⁻¹ * h * y)` using `by show β * intGL F E n h * β⁻¹ = (β * intGL F E n y) * intGL F E n (y⁻¹ * h * y) * (β * intGL F E n y)⁻¹`. Rewrite using `[map_mul, map_mul, map_inv]`. Use `group`. Rewrite using `[e, redFn_frGL]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redFn_move {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y h : GL (Fin n) (Formalism.L2.Herm.intAf F E)) (w : Pl E) :
@@ -157,11 +155,11 @@ theorem redFn_move {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   rw [e, redFn_frGL]
 
 /- English proof (translation)
-Take `⟨ε, hε, hres⟩` from `GlobalTheory.AdeleIdem.exists_idem F E S`. Take `⟨W, hW⟩` from `exists_rev (Formalism.L2.Herm.intAf F E) n`. Take `⟨y, hy⟩` from `exists_glue ε hε (G⁻¹ * W)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Introduce `x hxU hx w' v hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h, hh⟩` from `hx`. Substitute `hh` using the available equality. Use `⟨fun hS => ?_, fun hS i j => ⟨_, _, conj_gram_sub σ _ J β G h hG hxU i.rev j.rev, ?_, fun w => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[redFn_move, redFn_frGL, bc_conj_zero hy _ ((hres w' v hv).2 hS)]`. Rewrite using `[redFn_move, bc_conj_one hW hy _ ((hres w' v hv).1 hS)]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[redFn_frGL, bc_inv_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_move_core {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (σ : E ⊗[F] Formalism.L2.Herm.Af F →+* E ⊗[F] Formalism.L2.Herm.Af F) (J : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
@@ -186,7 +184,7 @@ theorem exists_move_core {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   · rw [redFn_frGL, bc_inv_apply]
 
 /- English proof (translation)
-Introduce `D n J β G hG S`. Use `(exists_move_core _ _ β G hG S).imp fun y hy x hxU hx w' v hv => ?_` and prove the remaining obligations. Use `⟨(hy x hxU hx w' v hv).1, fun hS w hw p ep ep' i j => ?_⟩` and prove the remaining obligations. Take `⟨s, t, hst, h1, h2⟩` from `(hy x hxU hx w' v hv).2 hS i j`. Conclude with `h1.trans ((GlobalTheory.ResConjPlace.resS_conj D w w' hw s t hst p ep ep').trans (congrArg (fun z => ep' (ep z)) (h2 w).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_frame_move : ∀ (D : D7) (n : ℕ) (J : Matrix (Fin n) (Fin n) D.host.E) (β : GL (Fin n) (EAf D)) (G : GL (Fin n) (Formalism.L2.Herm.intAf D.host.F D.host.E)), (intGL D.host.F D.host.E n G).val = Formalism.UG.cT (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) β.val * J.map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F)) * β.val → ∀ S : Finset (HeightOneSpectrum (𝓞 D.host.F)), ∃ y : GL (Fin n) (Formalism.L2.Herm.intAf D.host.F D.host.E), ∀ x ∈ UA D.sp.cm J, x ∈ St β → ∀ (w' : Pl D.host.E) (v : HeightOneSpectrum (𝓞 D.host.F)), w'.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = v.asIdeal → (v ∉ S → redFn (β * intGL D.host.F D.host.E n y) w' x = redFn β w' x) ∧ (v ∈ S → ∀ w : Pl D.host.E, IsConjPl w w' → ∀ (p : ℕ) (e : kP w ≃+* ZMod p) (e' : ZMod p ≃+* kP w') (i j : Fin n), (redFn (β * intGL D.host.F D.host.E n y) w' x).val i j = e' (e (((redFn β w x)⁻¹).val j.rev i.rev))) := by
   intro D n J β G hG S

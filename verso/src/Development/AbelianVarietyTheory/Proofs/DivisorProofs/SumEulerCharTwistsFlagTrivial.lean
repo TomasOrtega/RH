@@ -20,7 +20,7 @@ namespace GlobalTheory.FlagChi
 open Matrix
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use extensionality with `v`. Conclude with `⟨fun _ k hk => absurd hk (not_le.2 k.2), fun _ k hk => absurd hk (not_le.2 k.2)⟩`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem stepC_top {Z : Scheme.{0}} [IsIntegral Z] {N : ℕ} (M M' : Matrix (Fin N) (Fin N) Z.functionField) :
     stepC M N = stepC M' N := by
@@ -29,7 +29,7 @@ theorem stepC_top {Z : Scheme.{0}} [IsIntegral Z] {N : ℕ} (M M' : Matrix (Fin 
   exact ⟨fun _ k hk => absurd hk (not_le.2 k.2), fun _ k hk => absurd hk (not_le.2 k.2)⟩
 
 /- English proof (translation)
-Use extensionality with `v`. Use `⟨fun hv hg x hx => ⟨hv hg x hx, fun c hc => h x _ (hv hg x hx) (fun a => regAt_fnOf hx hg (v a)) c hc⟩, fun hv hg x hx => (hv hg x hx).1⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem vsec_step_le_quot {Z : Scheme.{0}} [IsIntegral Z] {N : ℕ} {M : Matrix (Fin N) (Fin N) Z.functionField}
     {l : Fin N} {L : LB Z} {r : L.ι → Z.functionFieldˣ}
@@ -41,7 +41,7 @@ theorem vsec_step_le_quot {Z : Scheme.{0}} [IsIntegral Z] {N : ℕ} {M : Matrix 
     fun hv hg x hx => (hv hg x hx).1⟩
 
 /- English proof (translation)
-Take `⟨M, hM, rfl⟩` from `CechPic.cls_surj c`. Rewrite using `[chiPic_cls]`. Conclude with `chi_eq_zero_of_isZero k ((Twist.isZero_twist_iff hM).2 hF)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiPic_isZero {Z : Scheme.{0}} (k : Type) [Field k] [Algebra k Γ(Z, ⊤)] {F : Z.Modules}
     (hF : Limits.IsZero F) (c : CechPic.Pic Z) : chiPic k F c = 0 := by
@@ -50,25 +50,23 @@ theorem chiPic_isZero {Z : Scheme.{0}} (k : Type) [Field k] [Algebra k Γ(Z, ⊤
   exact chi_eq_zero_of_isZero k ((Twist.isZero_twist_iff hM).2 hF)
 
 /- English proof (translation)
-Establish `key : ∀ l : ℕ, l ≤ N → FiniteCohTwists k (stepMod A⁻¹ l) ∧ ∀ c, chiPic k (stepMod A⁻¹ l) c = ∑ i : Fin N, if (i : ℕ) < l then chiPic k (structureModule Z) (cls (G i) (hG i) + c) else 0`. Introduce `l`. Proceed by induction on `l with`. Consider the case `zero`. Introduce `_`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz` using `GlobalTheory.T.step_module_zero_of_unit_det Z N A⁻¹ (by rw [Matrix.det_nonsing_inv]; exact hA.ringInverse)`. Conclude with `⟨FiniteCohTwists.of_isZero hz, fun c => by`. Rewrite using `[chiPic_isZero k hz c]`. Use the proof step `simp⟩`. Consider the case `succ l ih`.
+Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hl`. Take `⟨h₁, e₁⟩` from `ih (by omega)`. Set `i : Fin N` to `⟨l, by omega⟩`. Establish `hBi : ∀ z : Z, ∃ B : Matrix (Fin N) (Fin N) Z.functionField, B.BlockTriangular id ∧ (∀ a b, RegAt z ((A * B) a b)) ∧ UnitAt z (A * B).det ∧ ∀ c, z ∈ (G i).U c → UnitAt z (B i i * r i c)` using `fun z =>`. Establish `⟨B, h1, h2, h3, h4⟩` using `hB z`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `⟨B, h1, h2, h3, h4 i⟩`. Establish `hS` using `GlobalTheory.T.step_sequence_short_exact Z N A⁻¹ i (G i) (r i) (hr i) (hG i) (GlobalTheory.T.step_projection_epi_local_triangular Z N A i (G i) (r i) (hr i) (hG i) hA hBi)`. Establish `h₃ : FiniteCohTwists k (LB.toMod (G i))` using `(hO.twist (hG i)).of_iso (Twist.unitTwistIso (G i))`. Establish `h₂ : FiniteCohTwists k (quotMod A⁻¹ i (G i) (r i))` using `FiniteCohTwists.of_shortExact₂ hS h₁ h₃`. Establish `hadd` using `chiPic_shortExact hS h₁ h₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `viso (vsec_step_le_quot (GlobalTheory.T.step_submodule_regular_sections Z N A i (G i) (r i) hA hBi))`. Use `⟨h₂.of_iso e.symm, fun c => ?_⟩` and prove the remaining obligations. Establish `e₂ : chiPic k (stepMod A⁻¹ (l + 1)) c = chiPic k (quotMod A⁻¹ i (G i) (r i)) c` using `congrFun (chiPic_congr k e) c`. Establish `e₃ : chiPic k (LB.toMod (G i)) c = chiPic k (structureModule Z) (cls (G i) (hG i) + c)` using `(congrFun (chiPic_congr k (Twist.unitTwistIso (G i))) c).symm.trans (chiPic_twist k _ (hG i) c)`. Rewrite using `[e₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `congrFun hadd c`. Rewrite `h4` using `[Pi.add_apply]`. Use `h4.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `chiPic k (stepMod A⁻¹ l) c + chiPic k (LB.toMod (G i)) c = _`. Rewrite using `[e₁ c, e₃]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : (i : ℕ) = l` using `rfl`. Establish `hsplit : ∀ j : Fin N, (if (j : ℕ) < l + 1 then chiPic k (structureModule Z) (cls (G j) (hG j) + c) else 0) = (if (j : ℕ) < l then chiPic k (structureModule Z) (cls (G j) (hG j) + c) else 0) + (if j = i then chiPic k (structureModule Z) (cls (G j) (hG j) + c) else 0)`. Introduce `j`. Break down `lt_trichotomy (j : ℕ) l with h | h | h` into its components or cases. Rewrite using `[if_pos (by omega), if_pos h, if_neg (fun e => by`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg Fin.val e` as an intermediate fact. Rewrite `this` using `[hi]`. Use the proof step `omega), add_zero]`. Rewrite using `[if_pos (by omega), if_neg (by omega), if_pos (Fin.ext (h.trans hi.symm)), zero_add]`. Rewrite using `[if_neg (by omega), if_neg (by omega), if_neg (fun e => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Fin.val e` as an intermediate fact. Rewrite `this` using `[hi]`. Use the proof step `omega), add_zero]`. Rewrite using `[Finset.sum_congr rfl (fun j _ => hsplit j), Finset.sum_add_distrib, Finset.sum_ite_eq', if_pos (Finset.mem_univ _)]`. Take `⟨h, e⟩` from `key N le_rfl`.
-
-Conclude with `⟨h, fun c => (e c).trans (Finset.sum_congr rfl fun i _ => if_pos i.2)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chiPic_top (k : Type) [Field k] {Z : Scheme.{0}} [IsIntegral Z] [Algebra k Γ(Z, ⊤)]
     (hO : FiniteCohTwists k (structureModule Z)) {N : ℕ} (G : Fin N → LB Z) (hG : ∀ i, (G i).IsLB)
@@ -137,13 +135,13 @@ end GlobalTheory.FlagChi
 open GlobalTheory.FlagChi in
 
 /- English proof (translation)
-Introduce `k _ Z _ _ hO N g hg c`. Take `⟨G, hG, r, A, hcls, hr, hB⟩` from `hg`. Establish `hA : IsUnit A.det`. Take `⟨B, -, -, h3, -⟩` from `hB (genericPoint Z)`. Rewrite `h3` using `[Matrix.det_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_iff_ne_zero.2 (left_ne_zero_of_mul h3.ne_zero)`. Take `⟨-, e⟩` from `chiPic_top k hO G hG r A hr hA hB`. Establish `hB1 : ∀ z : Z, ∃ B : Matrix (Fin N) (Fin N) Z.functionField, B.BlockTriangular id ∧ (∀ a b, RegAt z (((1 : Matrix (Fin N) (Fin N) Z.functionField) * B) a b)) ∧ UnitAt z ((1 : Matrix (Fin N) (Fin N) Z.functionField) * B).det ∧ ∀ (i : Fin N) c, z ∈ (LB.triv Z).U c → UnitAt z (B i i …` using `fun z => ⟨1, Matrix.blockTriangular_one, fun a b => by`. Rewrite using `[one_mul, Matrix.one_apply]`. Use `split_ifs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(unitAt_one z).regAt`. Conclude with `regAt_zero z, by simpa using unitAt_one z, fun i c _ => by simpa using unitAt_one z⟩`. Take `⟨-, e1⟩` from `chiPic_top k hO (fun _ => LB.triv Z) (fun _ => LB.isLB_triv Z) (fun _ _ => 1) 1 (fun _ _ _ _ => ((congrArg (· * _) (map_one _)).trans (one_mul _)).symm) (by simp) hB1`. Establish `htop : stepMod (A⁻¹) N = stepMod ((1 : Matrix (Fin N) (Fin N) Z.functionField)⁻¹) N`. Unfold `stepMod`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[stepC_top A⁻¹ 1⁻¹]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1 c]`. Simplify using `[cls_triv]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlagChi.sum_chiPic_flag : ∀ (k : Type) [Field k] (Z : Scheme.{0}) [IsIntegral Z] [Algebra k Γ(Z, ⊤)], FiniteCohTwists k (structureModule Z) → ∀ (N : ℕ) (g : Fin N → Pic Z), FlagOfTriv g → ∀ c : Pic Z, ∑ i, chiPic k (structureModule Z) (g i + c) = (N : ℤ) * chiPic k (structureModule Z) c := by
   intro k _ Z _ _ hO N g hg c

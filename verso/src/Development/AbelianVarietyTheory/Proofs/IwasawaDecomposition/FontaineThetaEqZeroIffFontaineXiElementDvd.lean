@@ -9,7 +9,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Establish `hp : ((frobeniusEquiv (Per.Fl l) l).symm e).untilt ^ l = 1`. Rewrite using `[← map_pow, frobeniusEquiv_symm_pow_p, h.1]`. Establish `ho` using `orderOf_eq_prime hp h.2`. Use `IsPrimitiveRoot.orderOf ((frobeniusEquiv (Per.Fl l) l).symm e).untilt` as an intermediate fact. Rewrite `this` using `[ho]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsEps.isPrimitiveRoot_untilt {l : ℕ} [hl : Fact l.Prime] {e : Per.Fl l} (h : IsEps e) :
     IsPrimitiveRoot ((frobeniusEquiv (Per.Fl l) l).symm e).untilt l := by
@@ -20,7 +20,7 @@ theorem IsEps.isPrimitiveRoot_untilt {l : ℕ} [hl : Fact l.Prime] {e : Per.Fl l
   rwa [ho] at this
 
 /- English proof (translation)
-Take `⟨⟨pf, hpf⟩, -, -, hX, -⟩` from `ReciprocityTheory.PGsh.a0 l ℂ_[l] Valued.v (Per.OC l) (PadicComplexInt.integers l)`. Conclude with `((hX e (PadicComplexInt.integers l) h.isPrimitiveRoot_untilt).2.2.2 pf hpf).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ker_theta_eq_span_xi {l : ℕ} [Fact l.Prime] {e : Per.Fl l} (h : IsEps e) :
     RingHom.ker (Per.θ l) = Ideal.span {xi e} := by
@@ -29,7 +29,7 @@ theorem ker_theta_eq_span_xi {l : ℕ} [Fact l.Prime] {e : Per.Fl l} (h : IsEps 
   exact ((hX e (PadicComplexInt.integers l) h.isPrimitiveRoot_untilt).2.2.2 pf hpf).1
 
 /- English proof (translation)
-Introduce `e h a`. Rewrite using `[← RingHom.mem_ker, ker_theta_eq_span_xi h, Ideal.mem_span_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_eq_zero_iff_xi_dvd (l : ℕ) [Fact l.Prime] :
     ∀ e : Per.Fl l, IsEps e → ∀ a : Per.Ainf l, Per.θ l a = 0 ↔ xi e ∣ a := by

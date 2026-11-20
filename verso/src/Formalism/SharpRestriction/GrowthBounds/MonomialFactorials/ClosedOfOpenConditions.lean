@@ -8,9 +8,9 @@ namespace Formalism.MainNotions.G.SymmetricFormBlocks
 open MvPolynomial Finset Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.MainNotions.G.CountingStatementReduction
 
 /- English proof (translation)
-Introduce `Cc hCc`. Take `⟨T0, hT0, h0⟩` from `hP Cc hCc`. Use `⟨T0, hT0, fun C0 hC0 => ?_⟩` and prove the remaining obligations. Take `⟨T1, hT1, h1⟩` from `h0 C0 hC0`. Use `⟨T1, hT1, fun CE1 CE2 a1 a2 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T2, hT2, h2⟩` from `h1 CE1 CE2 a1 a2`. Use `⟨max T2 2, lt_max_of_lt_left hT2, fun CYb Cde Ck CD Cb b1 b2 b3 b4 b5 => ?_⟩` and prove the remaining obligations. Establish `m1` using `le_max_left T2 2`. Establish `m2` using `le_max_right T2 2`. Conclude with `h _ _ _ _ _ _ _ _ _ (m2.trans b1) (by linarith) (by linarith) (by linarith) (by linarith) (h2 CYb Cde Ck CD Cb (m1.trans b1) (m1.trans b2) (m1.trans b3) (m1.trans b4) (m1.trans b5))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thr_mono_seg {P Q : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Prop}
     (h : ∀ C0 CYb Cde Ck CD Cb CE1 CE2 Cc, 2 ≤ CYb → 0 ≤ CD → 1 ≤ Cb → 0 ≤ CE1 → 0 ≤ CE2 →
@@ -37,7 +37,7 @@ def RestOpenE (D : Formalism.BasicNotions.D7) : Prop :=
     ∀ X : flipOneThree.Inst, AdmNoK D C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs X → RestOpen C0 CYb Cde Ck CD Cb CE1 CE2 Cc CM X
 
 /- English proof (translation)
-The claim follows from `thr_mono_seg (fun C0 CYb Cde Ck CD Cb CE1 CE2 Cc hY hD hb h1 h2 hP Ckap Cs => by obtain ⟨CM, hCM, hX⟩ := hP Ckap Cs have he : (0 : ℝ) < Real.exp 3 := Real.exp_pos 3 refine ⟨CM, max (2 * ((30 + CM) * Real.exp 3 + 5) * Real.exp 3) (18 * (1 + CM) + 20), hCM, le_max_of_le_right (by l …`.
+A detailed English derivation is pending.
 -/
 theorem restAllE_of_open (D : Formalism.BasicNotions.D7) (h : RestOpenE D) : RestAllE D :=
   thr_mono_seg (fun C0 CYb Cde Ck CD Cb CE1 CE2 Cc hY hD hb h1 h2 hP Ckap Cs => by
@@ -51,7 +51,7 @@ theorem restAllE_of_open (D : Formalism.BasicNotions.D7) (h : RestOpenE D) : Res
       restDepth_proved CM _ (by linarith) hCM (le_max_right _ _) hH⟩) h
 
 /- English proof (translation)
-The claim follows from `theorem_A_closed_of_all_remaining_bounds D (restAllE_of_open D h)`.
+A detailed English derivation is pending.
 -/
 theorem closed_of_open_conditions (D : Formalism.BasicNotions.D7) (h : RestOpenE D) : IntegralityFromMetricForLargeConstants D :=
   theorem_A_closed_of_all_remaining_bounds D (restAllE_of_open D h)

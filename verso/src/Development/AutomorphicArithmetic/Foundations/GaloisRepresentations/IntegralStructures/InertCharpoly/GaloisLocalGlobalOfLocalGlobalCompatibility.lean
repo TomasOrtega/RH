@@ -40,13 +40,13 @@ def LocalGlobalCompatibilityAtPlaceClass (Q : PlaceClass) : Prop :=
             (wdAt P ι Bw h hj (r.comp (Dec (F := E) A).subtype)).charPol (ineIncl h t) = (rc (algNorm σ)).charPol (ineIncl h t))
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι n hn π χ hI r hW w σ hσ hf g` and use `H E Ω l ι n hn π χ hI r hW w σ hσ hf (g.imp id And.left)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rank_two_general_of_rank_two (H : R2) : LocalGlobalCompatAtIwahoriFixedPlaces := fun E Ω _ _ _ _ _ _ l _ ι n hn π χ hI r hW w σ hσ hf g =>
   H E Ω l ι n hn π χ hI r hW w σ hσ hf (g.imp id And.left)
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι n hn π χ hI r hW w σ hσ hf _ q g` and use `H E Ω l ι n hn π χ hI r hW w σ hσ hf (Or.inr ⟨q, g⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem localGlobalAtPlaceClass_of_localGlobal (H : LocalGlobalCompatAtIwahoriFixedPlaces) (Q : PlaceClass) : LocalGlobalCompatibilityAtPlaceClass Q := fun E Ω _ _ _ _ _ _ l _ ι n hn π χ hI r hW w σ hσ hf _ q g =>
   H E Ω l ι n hn π χ hI r hW w σ hσ hf (Or.inr ⟨q, g⟩)
@@ -57,7 +57,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Take `⟨t, e⟩` from `exists_eq_zpow_mul deg_frob g`. Rewrite `e` using `[hg, zpow_zero, one_mul]`. Rewrite using `[e, k]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem charPol_of_ine {x y : WD h} (k : ∀ t : Ine (F := E) A, x.charPol (ineIncl h t) = y.charPol (ineIncl h t))
     (g : Weil h) (hg : deg g = 0) : x.charPol g = y.charPol g := by
@@ -66,7 +66,7 @@ theorem charPol_of_ine {x y : WD h} (k : ∀ t : Ine (F := E) A, x.charPol (ineI
   rw [e, k]
 
 /- English proof (translation)
-Rewrite using `[← WD.charPol_natDegree x (ineIncl h 1), k, WD.charPol_natDegree]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dim_of_ine {x y : WD h} (k : ∀ t : Ine (F := E) A, x.charPol (ineIncl h t) = y.charPol (ineIncl h t)) :
     x.lpDim = y.lpDim := by
@@ -76,14 +76,14 @@ variable [IsCMField E] {a : ℕ} {π : CuspSub E a} {σ : SmIrr (GL (Fin a) (w.a
   {rc : IrrGL (w.adicCompletion E) → WD h}
 
 /- English proof (translation)
-The claim follows from `(isGeneric_congr (IrrGL.twEquiv _ _ (isSmoothChar_absPow _))).1 ((isGeneric_twist_iff _).2 ((isGeneric_congr (IrrGL.equivOf σ.ρ σ.smooth σ.irred)).1 (GlobalTheory.CuspRep.Generic.isGeneric_of_isLocComp E a π w σ hσ)))`.
+A detailed English derivation is pending.
 -/
 theorem generic_algNorm (hσ : π.IsLocComp w σ) : IsGeneric (algNorm σ).rep :=
   (isGeneric_congr (IrrGL.twEquiv _ _ (isSmoothChar_absPow _))).1 ((isGeneric_twist_iff _).2
     ((isGeneric_congr (IrrGL.equivOf σ.ρ σ.smooth σ.irred)).1 (GlobalTheory.CuspRep.Generic.isGeneric_of_isLocComp E a π w σ hσ)))
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `mixed_of_tame hq hrc (generic_algNorm hσ) ht hs hm`. Conclude with `⟨GlobalTheory.WeakTheRep.fixed_ne_bot_of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred).symm (dz_of_nu (x := IrrGL.of σ.ρ σ.smooth σ.irred) ha _ h1), fun s k => (h2 s k).2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem guard_tame (ha : 1 ≤ a) (hσ : π.IsLocComp w σ) (hrc : IsRecT h rc) (hq : IsQp w) (ht : TmW (rc (algNorm σ)))
     (hs : Sqf (rc (algNorm σ))) (hm : (rc (algNorm σ)).mono0) :
@@ -93,7 +93,7 @@ theorem guard_tame (ha : 1 ≤ a) (hσ : π.IsLocComp w σ) (hrc : IsRecT h rc) 
     (dz_of_nu (x := IrrGL.of σ.ρ σ.smooth σ.irred) ha _ h1), fun s k => (h2 s k).2⟩
 
 /- English proof (translation)
-Take `⟨k1, k2⟩` from `GlobalTheory.T.cuspRep_satake_iff_localComponent_satake E a π w σ hσ`. Take `⟨B, hB⟩` from `GlobalTheory.SatInd.exists_hasSatGL_of_isIrreducible σ.smooth σ.irred (k2.1 hs)`. Conclude with `⟨B, (k1 B).2 hB⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hasSat (hσ : π.IsLocComp w σ) (hs : SmGL.IsSpherical σ.ρ) : ∃ B, (CG.mk π).HasSat w B := by
   obtain ⟨k1, k2⟩ := GlobalTheory.T.cuspRep_satake_iff_localComponent_satake E a π w σ hσ
@@ -115,9 +115,9 @@ variable {Q : PlaceClass} {E Ω : Type} [Field E] [NumberField E] [IsCMField E] 
   {σ : SmIrr (GL (Fin a) (w.adicCompletion E))} {rc : IrrGL (w.adicCompletion E) → WD h}
 
 /- English proof (translation)
-Use `⟨?_, fun ht hm => ?_, fun q hq ht hs hm => ?_⟩` and prove the remaining obligations. Take `⟨_, _, L⟩` from `hrc`. Rewrite using `[lpDim_wdOf, Fintype.card_fin, L.dim]`. Both sides reduce to the same expression. Conclude with `((H1 E Ω l ι a ha π χ hI r hW w σ hσ (plainTor_of_tor hrc (generic_algNorm hσ) ht hm)).1 hl A h).2 rc hrc`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨g1, g2⟩` from `guard_tame ha hσ hrc hq ht hs hm`. Establish `k` using `(H2 E Ω l ι a ha π χ hI r hW w σ hσ g1 q hq g2 A h rc hrc hm).1 hl`. Conclude with `⟨k.1, charPol_of_ine k.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem away (H1 : R1) (H2 : LocalGlobalCompatibilityAtPlaceClass Q) (ha : 1 ≤ a) (hI : InScope .all l π χ) (hW : Weak π ι r)
     (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (hrc : IsRecT h rc) (hσ : π.IsLocComp w σ) :
@@ -132,11 +132,11 @@ theorem away (H1 : R1) (H2 : LocalGlobalCompatibilityAtPlaceClass Q) (ha : 1 ≤
     exact ⟨k.1, charPol_of_ine k.2⟩
 
 /- English proof (translation)
-Establish `hl` using `mem_of_induces h Bw hj`. Distinguish the cases in `ht : Tor (rc (algNorm σ))`. Take `⟨k1, k2⟩` from `(H1 E Ω l ι a ha π χ hI r hW w σ hσ (plainTor_of_tor hrc (generic_algNorm hσ) ht hm)).2 hl`. Take `⟨k3, k4, k5⟩` from `k2 P AI T A h O Bw hj`. Establish `e` using `GlobalTheory.WeakTheRep.eq_of_mono0_charPol _ _ k4 hm (k5 rc hrc)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨k1, k3, by rw [e], fun _ _ => e, fun _ _ _ _ => ⟨k4, fun g _ => k5 rc hrc g⟩⟩`. Take `⟨q, hq, h1, h2⟩` from `g.resolve_right ht`. Take `⟨g1, g2⟩` from `guard_tame ha hσ hrc hq h1 h2 hm`. Take `⟨k1, k2⟩` from `(H2 E Ω l ι a ha π χ hI r hW w σ hσ g1 q hq g2 A h rc hrc hm).2 hl`. Take `⟨k3, k4, k5⟩` from `k2 P AI T O Bw hj`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k1, k3, dim_of_ine k5, fun t => absurd t ht, fun _ _ _ _ => ⟨k4, charPol_of_ine k5⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem above (H1 : R1) (H2 : LocalGlobalCompatibilityAtPlaceClass Q) (ha : 1 ≤ a) (hI : InScope .all l π χ) (hW : Weak π ι r)
     {P : LocPrime l} {AI : LocAinf l P} (T : Nonempty (LocTied l P AI))
@@ -158,11 +158,11 @@ theorem above (H1 : R1) (H2 : LocalGlobalCompatibilityAtPlaceClass Q) (ha : 1 �
     exact ⟨k1, k3, dim_of_ine k5, fun t => absurd t ht, fun _ _ _ _ => ⟨k4, charPol_of_ine k5⟩⟩
 
 /- English proof (translation)
-Take `⟨wt, hwt⟩` from `GlobalTheory.PolarizedWeight.exists_isWeight E l a ha π χ hI`. Establish `ex : ∀ τ : E →+* Qbar l, ∃ J : Multiset ℤ, J.map (fun n : ℤ => (n : ℂ)) = ((CG.mk π).infChar (ι.toRingHom.comp τ)).map fun z => ((a : ℂ) - 1) / 2 - z` using `fun τ => by haveI : CanLift ℂ ℤ (fun n : ℤ => (n : ℂ)) (fun z => ∃ n : ℤ, (n : ℂ) = z) := ⟨fun _ k => k⟩`. Use `(Multiset.canLift (fun n : ℤ => (n : ℂ)) (fun z => ∃ n : ℤ, (n : ℂ) = z)).prf _ fun y hy => ?_` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.1 hy`. Take `⟨n, hn⟩` from `(hI.1 (ι.toRingHom.comp τ)).2 z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨-n, by rw [hn]; push_cast; ring⟩`. Use `choose HT hHT using ex`. Use `⟨wt, HT, hHT, fun τ => Multiset.map_injective (Int.cast_injective (α := ℂ)) ?_⟩` and prove the remaining obligations. Establish `k` using `hwt (ι.toRingHom.comp τ)`. Establish `e` using `congrArg (Multiset.map fun y : ℂ => (wt : ℂ) - y) (hHT τ)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hHT, ← RingHom.comp_assoc, k]`. Simplify using `only [Multiset.map_map, Function.comp_def] at e ⊢`. Use `push_cast`. Rewrite using `[e]`. Conclude with `Multiset.map_congr rfl fun z _ => by ring`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_weights (ha : 1 ≤ a) (hI : InScope .all l π χ) (ι : Qbar l ≃+* ℂ) :
     ∃ (wt : ℤ) (HT : (E →+* Qbar l) → Multiset ℤ),
@@ -188,7 +188,7 @@ theorem exists_weights (ha : 1 ≤ a) (hI : InScope .all l π χ) (ι : Qbar l �
   exact Multiset.map_congr rfl fun z _ => by ring
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_hasSat hσ hs`. Conclude with `⟨C.2 .crys E Ω l ι a ha π χ hI r hW w trivial B hB, C.2 .dR E Ω l ι a ha π χ hI r hW w trivial B hB⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem crys (C : CoreAll) (ha : 1 ≤ a) (hI : InScope .all l π χ) (hW : Weak π ι r) (hσ : π.IsLocComp w σ)
     (hs : SmGL.IsSpherical σ.ρ) : ClauseAt .crys π ι r w ∧ ClauseAt .dR π ι r w := by
@@ -198,7 +198,7 @@ theorem crys (C : CoreAll) (ha : 1 ≤ a) (hI : InScope .all l π χ) (hW : Weak
 end Global
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp` and use `by have hI : InScope .all l π χ := ⟨hr, hp, trivial⟩ obtain ⟨r, hW⟩ := C.1 E Ω l ι a ha π χ hI obtain ⟨wt, HT, w1, w2⟩ := exists_weights ha hI ι refine ⟨r, wt, HT, hW.1, hW.2.1, fun w hl A h rc hrc σ hσ => ?_, w1, w2, fun P AI T w A h O _ _ _ Bw hj => ⟨fun σ hσ hs => ?_, fun σ hσ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem galoisLocalGlobal_of_placeClassCompatibility (C : CoreAll) (H1 : R1) (H2 : LocalGlobalCompatibilityAtPlaceClass fun _ _ _ _ _ => True) :
     Row0 (fun h rc => IsRecT h rc) := fun E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp => by
@@ -217,7 +217,7 @@ theorem galoisLocalGlobal_of_placeClassCompatibility (C : CoreAll) (H1 : R1) (H2
     exact ⟨k3.1, k2, fun τ LL' τ' hτ => k3.2 τ LL' τ' hτ _ (w1 τ), k4⟩
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp` and use `by have hI : InScope .all l π χ := ⟨hr, hp, trivial⟩ obtain ⟨r, hW⟩ := C.1 E Ω l ι a ha π χ hI obtain ⟨wt, HT, w1, w2⟩ := exists_weights ha hI ι refine ⟨r, wt, HT, hW.1, hW.2.1, fun w hl A h rc hrc σ hσ => ?_, w1, w2, fun P AI T w A h O _ _ _ Bw hj => ⟨fun σ hσ hs => ?_, fun σ hσ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem galois_realisation_of_rank_two (C : CoreAll) (H1 : R1) (H2 : LocalGlobalCompatibilityAtPlaceClass fun _ _ _ w n => IsQpBig w n) :
     Row0b (fun h rc => IsRecT h rc) := fun E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp => by
@@ -239,13 +239,13 @@ theorem galois_realisation_of_rank_two (C : CoreAll) (H1 : R1) (H2 : LocalGlobal
     exact ⟨k3.1, k2, fun τ LL' τ' hτ => k3.2 τ LL' τ' hτ _ (w1 τ), k4.big⟩
 
 /- English proof (translation)
-The claim follows from `galoisLocalGlobal_of_placeClassCompatibility C H1 (localGlobalAtPlaceClass_of_localGlobal H2 _)`.
+A detailed English derivation is pending.
 -/
 theorem galoisLocalGlobal_of_localGlobalCompatibility (C : CoreAll) (H1 : R1) (H2 : LocalGlobalCompatAtIwahoriFixedPlaces) : Row0 (fun h rc => IsRecT h rc) :=
   galoisLocalGlobal_of_placeClassCompatibility C H1 (localGlobalAtPlaceClass_of_localGlobal H2 _)
 
 /- English proof (translation)
-The claim follows from `galoisLocalGlobal_of_localGlobalCompatibility C H.1 (rank_two_general_of_rank_two H.2)`.
+A detailed English derivation is pending.
 -/
 theorem galois_realisation_of_top (C : CoreAll) (H : GlobalTheory.DeRhamOfPlainTorus.Top) : Row0 (fun h rc => IsRecT h rc) :=
   galoisLocalGlobal_of_localGlobalCompatibility C H.1 (rank_two_general_of_rank_two H.2)

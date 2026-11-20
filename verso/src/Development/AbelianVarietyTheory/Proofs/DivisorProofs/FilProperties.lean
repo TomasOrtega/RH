@@ -8,11 +8,11 @@ open DividedPowers GlobalTheory.Cris GlobalTheory.PDA
 namespace GlobalTheory.PDA
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_le_iff_le_comap, fil, Ideal.span_le]`. Introduce and unpack `_ ⟨l, h1, h2, rfl⟩`. Establish `hJ : ∀ p ∈ l, f p.2 ∈ J'` using `fun p hp ↦ hf.ideal_comp (Ideal.mem_map_of_mem f (h1 p hp))`. Use `Ideal.subset_span ⟨l.map fun p ↦ (p.1, f p.2), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hq`. Conclude with `hJ p hp`. Simplify `h2` using `[List.map_map, Function.comp_def]`. Rewrite using `[map_list_prod, List.map_map, List.map_map]`. Use `congrArg List.prod (List.map_congr_left fun p hp ↦ ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply]`. Conclude with `(hf.dpow_comp (n := p.1) p.2 (h1 p hp)).symm`.
+A detailed English derivation is pending.
 -/
 theorem map_fil_le {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {C : Type} [CommRing C]
     {J' : Ideal C} (δ' : DividedPowers J') (f : B →+* C) (hf : IsDPMorphism δ δ' f) (N : ℕ) :
@@ -31,7 +31,7 @@ theorem map_fil_le {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) 
     exact (hf.dpow_comp (n := p.1) p.2 (h1 p hp)).symm
 
 /- English proof (translation)
-Introduce `B _ J δ`. Use `⟨fil_zero_eq_top δ, fil_one_eq δ, fun m n h ↦ GlobalTheory.Cris.ExpBij.dpFil_anti δ h, fun m n ↦ ?_, fun n x hx ↦ GlobalTheory.Cris.ExpBij.dpow_mem_dpFil δ hx n, isDPNilpotent_iff_exists_isLevel δ, fun C _ J' δ' f hf N ↦ map_fil_le δ δ' f hf N⟩` and prove the remaining obligations. Rewrite using `[Ideal.mul_le]`. Conclude with `fun a ha b hb ↦ GlobalTheory.Cris.ExpBij.mul_mem_dpFil δ ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fil_properties : ∀ (B : Type) [CommRing B] (J : Ideal B) (δ : DividedPowers J), fil δ 0 = ⊤ ∧ fil δ 1 = J ∧ (∀ m n, m ≤ n → fil δ n ≤ fil δ m) ∧ (∀ m n, fil δ m * fil δ n ≤ fil δ (m + n)) ∧ (∀ n, ∀ x ∈ J, δ.dpow n x ∈ fil δ n) ∧ (IsNilDP δ ↔ ∃ N, IsLev δ N) ∧ ∀ (C : Type) [CommRing C] (J' : Ideal C) (δ' : DividedPowers J') (f : B →+* C), IsDPMorphism δ δ' f → ∀ N, (fil δ N).map f ≤ fil δ' N := by
   intro B _ J δ

@@ -18,13 +18,11 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Use `((PI.UnitaryGroupMassFormula.CntFormula.resChar_finite D (D.host.g 0)).union (PI.UnitaryGroupMassFormula.CntFormula.resChar_finite D (D.host.g 1))).subset ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [Set.mem_ofPred_eq] at hp`. Establish `hs : (D.s.atP p).split.isSome`. Take `⟨g, hg⟩` from `Option.isSome_iff_exists.1 hp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hA` using `(Zd.agree p).2.2.2.2.2`. Rewrite `hA` using `[hg]`. Consider the cases of `h2 : (D.s.atP p).split with`. Consider the case `none`. Rewrite `hA` using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hA : False).elim`. Consider the case `some sg => rfl`. Establish `hin : Loc.resChar p ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ)` using `(D.s_split p).1 hs`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hin`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq]`.
-
-Conclude with `hin`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem split_finite : {p : PlF D | (Zd.M p).split.isSome}.Finite := by
   refine ((PI.UnitaryGroupMassFormula.CntFormula.resChar_finite D (D.host.g 0)).union
@@ -46,9 +44,9 @@ theorem split_finite : {p : PlF D | (Zd.M p).split.isSome}.Finite := by
   exact hin
 
 /- English proof (translation)
-Introduce `_ γ Z F'₂ φ' _`. Use `(split_finite Zd).subset ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [Set.mem_ofPred_eq]`. Assume the negation of the conclusion as `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hp` to reduce the goal to its premises. Introduce `g hg`. Rewrite `hn` using `[hg]`. Conclude with `(hn rfl).elim`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohIota_holds : CohIota Zd u u' F0 what₂ := by
   intro _ γ Z F'₂ φ' _
@@ -62,7 +60,7 @@ theorem cohIota_holds : CohIota Zd u u' F0 what₂ := by
   exact (hn rfl).elim
 
 /- English proof (translation)
-The claim follows from `starCoh_of_P' Zd hGen hLp (cohIota_holds Zd) hGood`.
+A detailed English derivation is pending.
 -/
 theorem starCoh_of_P'' (hGen : CohGen Zd u u' F0 what₂) (hLp : CohLp Zd u u' F0 what₂)
     (hGood : CohGood Zd u u' F0 what₂) : CtxP u u' F0 what₂ → StarCoh Zd u u' F0 what₂ :=

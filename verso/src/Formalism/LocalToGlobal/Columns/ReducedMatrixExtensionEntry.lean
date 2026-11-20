@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV
 section Nat
 
 /- English proof (translation)
-Unfold `LocE.fPos`. Distinguish the cases in `h : p < k₀`. Rewrite using `[if_pos h, if_pos h]`. Rewrite using `[if_neg h, if_neg h, if_pos hp]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem framePos_of_lt_dim {k₀ c n p : ℕ} (hp : p < n) : LocE.fPos k₀ c n p = if p < k₀ then p else p + c := by
   unfold LocE.fPos
@@ -20,11 +20,11 @@ theorem framePos_of_lt_dim {k₀ c n p : ℕ} (hp : p < n) : LocE.fPos k₀ c n 
   · rw [if_neg h, if_neg h, if_pos hp]
 
 /- English proof (translation)
-Rewrite using `[framePos_of_lt_dim hp]`. Unfold `betaExponentOfRanks`. Distinguish the cases in `h1 : p < k₀`. Rewrite using `[if_pos h1, if_pos h1, if_pos (show p < k₀ + 2 * rS + 1 by omega)]`. Unfold `symIdx`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos h1]`. Rewrite using `[if_neg h1, if_neg h1]`. Distinguish the cases in `h2 : p < k₀ + j`. Rewrite using `[if_pos h2, if_pos (show p + c < k₀ + 2 * rS + 1 by omega)]`. Unfold `symIdx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg (show ¬ p + c < k₀ by omega)]`. Rewrite using `[if_neg h2, if_neg (show ¬ p + c < k₀ + 2 * rS + 1 by omega), show p + c - (k₀ + 2 * rS + 1) = p - (k₀ + j) by omega]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem beta_framePos_formula {k₀ rS t j c n p : ℕ} (hcj : c + j = 2 * rS + 1) (hp : p < n) :
     betaExponentOfRanks k₀ rS (k₀ + 2 * rS + 1) t (LocE.fPos k₀ c n p) =
@@ -44,7 +44,7 @@ theorem beta_framePos_formula {k₀ rS t j c n p : ℕ} (hcj : c + j = 2 * rS + 
     · rw [if_neg h2, if_neg (show ¬ p + c < k₀ + 2 * rS + 1 by omega), show p + c - (k₀ + 2 * rS + 1) = p - (k₀ + j) by omega]
 
 /- English proof (translation)
-Establish `a1` using `Nat.zero_le ((p - (k₀ + j)) / t)`. Establish `a2` using `Nat.zero_le ((p' - (k₀ + j)) / t)`. Rewrite `h` using `[beta_framePos_formula hcj hp, beta_framePos_formula hcj hp', framePos_of_lt_dim hp, framePos_of_lt_dim hp']`. Unfold `ocbXAllow`. Apply the tactic sequence `split_ifs at h ⊢ <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem not_allowed_of_beta_lt {k₀ rS t j c n p p' : ℕ} (hcj : c + j = 2 * rS + 1) (hp : p < n) (hp' : p' < n)
     (h : betaExponentOfRanks k₀ rS (k₀ + 2 * rS + 1) t (LocE.fPos k₀ c n p') < betaExponentOfRanks k₀ rS (k₀ + 2 * rS + 1) t (LocE.fPos k₀ c n p) ∨
@@ -56,7 +56,7 @@ theorem not_allowed_of_beta_lt {k₀ rS t j c n p p' : ℕ} (hcj : c + j = 2 * r
   split_ifs at h ⊢ <;> omega
 
 /- English proof (translation)
-Establish `a1` using `Nat.zero_le ((p - (k₀ + j)) / t)`. Establish `a2` using `Nat.zero_le ((p' - (k₀ + j)) / t)`. Rewrite using `[beta_framePos_formula hcj hp, beta_framePos_formula hcj hp', framePos_of_lt_dim hp, framePos_of_lt_dim hp']`. Unfold `ocbXAllow at h`. Apply the tactic sequence `split_ifs at h ⊢ <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem beta_lt_of_not_allowed {k₀ rS t j c n p p' : ℕ} (hcj : c + j = 2 * rS + 1) (hp : p < n) (hp' : p' < n) (hne : p ≠ p')
     (h : ¬ ocbXAllow k₀ rS j t p p') :
@@ -75,11 +75,11 @@ section Ext
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Rewrite using `[ciExtM_castAdd]`. Distinguish the cases in `h : y.1 < n`. Rewrite using `[dif_pos h, Finset.sum_eq_single (⟨y.1, h⟩ : Fin n)]`. Rewrite using `[Pi.single_apply, if_pos (show Fin.castAdd c (⟨y.1, h⟩ : Fin n) = y from Fin.ext rfl), mul_one]`. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_apply, if_neg (fun h' => hb (Fin.ext (by have := congrArg Fin.val h'; simpa using this))), mul_zero]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Rewrite using `[dif_neg h]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_apply, if_neg (fun h' => h (by rw [← h']; simp)), mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem extendedMatrix_mulVec_single {n c : ℕ} (A : Matrix (Fin n) (Fin n) E) (y : Fin (n + c)) (l : Fin n) :
     (ciExtM c A).mulVec (Pi.single y 1) (Fin.castAdd c l) = if h : y.1 < n then A l ⟨y.1, h⟩ else 0 := by
@@ -96,11 +96,11 @@ theorem extendedMatrix_mulVec_single {n c : ℕ} (A : Matrix (Fin n) (Fin n) E) 
     rw [Pi.single_apply, if_neg (fun h' => h (by rw [← h']; simp)), mul_zero]
 
 /- English proof (translation)
-Unfold `ob2M`. Rewrite using `[hap]`. Proceed by induction on `y using Fin.addCases with`. Consider the case `left l`. Rewrite using `[extendedMatrix_mulVec_single]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.val_castAdd]`. Distinguish the cases in `h' : y'.1 < n`. Rewrite using `[dif_pos h', dif_pos ⟨l.2, h'⟩, ciScE_lt _ h', ciScE_lt _ l.2, sub_self, zpow_zero, mul_one]`. Rewrite using `[dif_neg h', zero_mul, redP_zero, dif_neg (fun h => h' h.2), if_neg (fun h => h' (by rw [← h]; simp))]`. Consider the case `right jj`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[ciExtM_natAdd, dif_neg (fun h => by simp at h), Pi.single_apply]`. Distinguish the cases in `he : Fin.natAdd n jj = y'`. Substitute `he` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, one_mul, sub_self, zpow_zero, redP_one]`. Rewrite using `[if_neg he, if_neg he, zero_mul, redP_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem reducedMatrix_blockExtension {n c : ℕ} (G : Matrix (Fin n) (Fin n) E) (ρ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) (hap : ∀ v, ρ v = (ciExtM c G).mulVec v)
     (y y' : Fin (n + c)) :
@@ -122,14 +122,14 @@ theorem reducedMatrix_blockExtension {n c : ℕ} (G : Matrix (Fin n) (Fin n) E) 
     · rw [if_neg he, if_neg he, zero_mul, redP_zero]
 
 /- English proof (translation)
-Rewrite using `[← ciEN l.2, basisVec_eq_single (show l.1 < n + c by omega)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inclusion_single_eq_single {n c : ℕ} (l : Fin n) : Loc.inX E n c (Pi.single l 1) = Pi.single (Fin.castAdd c l) 1 := by
   rw [← ciEN l.2, basisVec_eq_single (show l.1 < n + c by omega)]
   rfl
 
 /- English proof (translation)
-Unfold `ob2M`. Simplify using `only [Fin.val_castAdd]`. Rewrite using `[ciScE_lt _ l.2, ciScE_lt _ l'.2, sub_self, zpow_zero, mul_one, ← inclusion_single_eq_single, hrg, ciInX_castAdd]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem reducedMatrix_extension_entry {n c : ℕ} {r : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} {g : Sp E n ≃ₗ[E] Sp E n}
     (hrg : ∀ x, r (Loc.inX E n c x) = Loc.inX E n c (g x)) (l l' : Fin n) :
@@ -147,53 +147,49 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
 /- English proof (translation)
-Introduce `hB j hj w hbar`. Take `⟨hk, hr, hrN, -⟩` from `ranks_frame_inequalities R hB.hm hj`. Establish `hq` using `ciQ_mem w.1`. Establish `hu` using `ciQ_notMem_sq hB.hX hB.hPr w.2`. Establish `hq0` using `ciQ_ne_zero hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmS : R.m = 2 * R.rS + 2`. Unfold `Ranks.rS`. Take `⟨a, ha⟩` from `R.m_even`. Use `R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hrr : R.r = R.k + 2 * R.rS + 1`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hcj : cOf R j + j = 2 * R.rS + 1`. Use `hB.hm` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `cOf`. Use linear arithmetic over natural numbers and integers. Establish `hnj : R.k + j ≤ R.N j`. Unfold `Ranks.N`. Establish `e : j * (R.t + 1) = j * R.t + j` using `by ring`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use linear arithmetic over natural numbers and integers. Establish `hJat : Jat (Pr` using `Pr) cst.sharp j w.1 = LocE.JGsym w.1 (qOf w.1) R.k R.rS R.r R.t (R.N j) (cOf R j) := by`. Unfold `Jat`. Rewrite using `[if_pos w.2, hB.sharp, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, ⟨r, hr', hrg⟩, hred⟩`. Establish `hJ : r ∈ LocE.JGsym w.1 (qOf w.1) R.k R.rS R.r R.t (R.N j) (cOf R j)`. Rewrite using `[← hJat]`. Use `hr'.2` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[MulAut.conj_apply]`. Apply the tactic sequence `have hent : ∀ l l' : Fin (R.N j), hbar.1 l l' = ob2M w.1 (qOf w.1) r (Fin.castAdd _ l) (Fin.castAdd _ l') := fun l l' => by rw [ciEntry hred, reducedMatrix_extension_entry hrg]`. Use `⟨fun p hp => ?_, fun p p' hp hp' hne hnz => ?_⟩` and prove the remaining obligations. Unfold `ocbM`. Rewrite using `[dif_pos ⟨by omega, by omega⟩, hent]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `reducedMatrix_parahoric_diag_one hq hu hk hr hJ _ ?_` and prove the remaining obligations. Use `show LocE.fPos R.k (cOf R j) (R.N j) p < R.r`. Rewrite using `[framePos_of_lt_dim (by omega), hrr]`. Apply the tactic sequence `split_ifs <;> omega`. Assume the negation of the conclusion as `hna`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hnz` to reduce the goal to its premises. Unfold `ocbM`. Rewrite using `[dif_pos ⟨hp, hp'⟩, hent]`. Break down `beta_lt_of_not_allowed (t := R.t) hcj hp hp' hne hna with h | ⟨h1, h2⟩` into its components or cases. Establish `h' : betaExponentOfRanks R.k R.rS R.r R.t (LocE.fPos R.k (cOf R j) (R.N j) (Fin.castAdd (cOf R j) (⟨p', hp'⟩ : Fin (R.N j))).1) < betaExponentOfRanks R.k R.rS R.r R.t (LocE.fPos R.k (cOf R j) (R.N j) (Fin.castAdd (cOf R j) (⟨p, hp⟩ : Fin (R.N j))).1)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrr]`. Conclude with `h`. Conclude with `reducedMatrix_parahoric_blockTriangular hq hu hk hr hJ h'`. Conclude with `reducedMatrix_parahoric_corner_zero hq hu hk hr hJ _ _ h1 h2`. Introduce `hpat`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨G, hG⟩ : ∃ G, G = ciLiftM w.1 hbar.1` from `⟨_, rfl⟩`. Establish `hdet : IsUnit G.det` using `isUnit_iff_ne_zero.2 (by rw [hG]; exact ciLiftM_det_ne hbar)`. Establish `hG1 : G * G⁻¹ = 1` using `Matrix.mul_nonsing_inv G hdet`. Establish `hG2 : G⁻¹ * G = 1` using `Matrix.nonsing_inv_mul G hdet`. Establish `hE1 : ciExtM (cOf R j) G * ciExtM (cOf R j) G⁻¹ = 1` using `by rw [← ciExtM_mul, hG1, ciExtM_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE2 : ciExtM (cOf R j) G⁻¹ * ciExtM (cOf R j) G = 1` using `by rw [← ciExtM_mul, hG2, ciExtM_one]`. Establish `hGi : ∀ i i', IntAt w.1 (G i i')` using `by rw [hG]; exact ciLiftM_int _`. Establish `hGii : ∀ i i', IntAt w.1 (G⁻¹ i i')` using `by rw [hG]; exact ciLiftM_inv_int hbar`. Establish `hGred : ∀ i i', redP w.1 (G i i') = hbar.1 i i'` using `by rw [hG]; exact ciLiftM_red _`. Establish `hap : ∀ v, ciEquiv (ciExtM (cOf R j) G) (ciExtM (cOf R j) G⁻¹) hE1 hE2 v = (ciExtM (cOf R j) G).mulVec v` using `fun v => ciEquiv_apply _ _ hE1 hE2 v`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : ∀ (A : Matrix (Fin (R.N j)) (Fin (R.N j)) X.E), (∀ i i', IntAt w.1 (A i i')) → ∀ l l' : Fin (R.N j), IntAt w.1 (A l l' * ((qOf w.1 : ℕ) : X.E) ^ (LocE.scE (R.N j) (fun i => i + 1) l'.1 - LocE.scE (R.N j) (fun i => i + 1) l.1))`. Introduce `A hA l l'`. Rewrite using `[ciScE_lt _ l.2, ciScE_lt _ l'.2, sub_self, zpow_zero, mul_one]`. Conclude with `hA _ _`. Establish `hS : ciEquiv (ciExtM (cOf R j) G) (ciExtM (cOf R j) G⁻¹) hE1 hE2 ∈ stabL X.E _ (LocE.lamY w.1 (qOf w.1) (R.N j) (cOf R j) fun i => i + 1)` using `ciEquiv_stab (fun v hv => ciExtM_maps hq0 G _ (he G hGi) v hv) (fun v hv => ciExtM_maps hq0 G⁻¹ _ (he G⁻¹ hGii) v hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hM` using `reducedMatrix_blockExtension (P := w.1) (q := qOf w.1) G _ hap`. Establish `hJ : ciEquiv (ciExtM (cOf R j) G) (ciExtM (cOf R j) G⁻¹) hE1 hE2 ∈ LocE.JGsym w.1 (qOf w.1) R.k R.rS R.r R.t (R.N j) (cOf R j)`. Use `mem_parahoric_of_blockTriangular hq hu hk hr (by omega) hS ?_ ?_ ?_` and prove the remaining obligations. Introduce `y y' hlt`. Rewrite using `[hM]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs with h1 h2`. Rewrite using `[hGred]`. Assume the negation of the conclusion as `hnz`. Establish `hne : y.1 ≠ y'.1` using `fun he' => by`. Establish `hlt' : betaExponentOfRanks R.k R.rS R.r R.t (LocE.fPos R.k (cOf R j) (R.N j) y'.1) < betaExponentOfRanks R.k R.rS R.r R.t (LocE.fPos R.k (cOf R j) (R.N j) y.1)` using `hlt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression.
 
-Rewrite `hlt'` using `[he']`. Conclude with `lt_irrefl _ hlt'`. Establish `hall` using `hpat.2 y.1 y'.1 h1.1 h1.2 hne (by unfold ocbM; rw [dif_pos h1]; exact hnz)`. Use `not_allowed_of_beta_lt (t := R.t) hcj h1.1 h1.2 (Or.inl ?_) hall` and prove the remaining obligations. Rewrite using `[← hrr]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hlt`. Substitute `h2` using the available equality. Conclude with `absurd hlt (lt_irrefl _)`. Both sides reduce to the same expression. Introduce `y hy`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hM]`. Use `split_ifs with h1 h2`. Rewrite using `[hGred]`. Establish `hyk : y.1 < R.k + j`. Rewrite `hy` using `[framePos_of_lt_dim h1.1, hrr]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs at hy <;> omega`. Establish `h3` using `hpat.1 y.1 hyk`. Unfold `ocbM at h3`. Rewrite `h3` using `[dif_pos ⟨h1.1, h1.1⟩]`. Conclude with `h3`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Substitute using the available equality.
 
-Both sides reduce to the same expression. Conclude with `absurd rfl h2`. Introduce `y y' hy hy'`. Rewrite using `[hM]`. Use `split_ifs with h1 h2`.
+Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hGred]`. Assume the negation of the conclusion as `hnz`. Establish `hne : y.1 ≠ y'.1`. Introduce `he'`. Rewrite `hy` using `[he']`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Establish `hall` using `hpat.2 y.1 y'.1 h1.1 h1.2 hne (by unfold ocbM; rw [dif_pos h1]; exact hnz)`. Conclude with `not_allowed_of_beta_lt (t := R.t) hcj h1.1 h1.2 (Or.inr ⟨hy, hy'⟩) hall`. Substitute `h2` using the available equality. Use linear arithmetic over natural numbers and integers.
-
-Both sides reduce to the same expression. Use `⟨ciEquiv G G⁻¹ hG1 hG2, ⟨ciEquiv (ciExtM (cOf R j) G) (ciExtM (cOf R j) G⁻¹) hE1 hE2, Subgroup.mem_inf.2 ⟨extended_matrix_in_reduction G G⁻¹ hE1 hE2, Subgroup.mem_comap.2 ?_⟩, fun x => ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Simplify `hJ` using `[MulAut.conj_apply, hJat]`. Rewrite using `[hap, ciEquiv_apply, ciExtM_inX]`. Use function extensionality and compare the values at `l`.
-
-Establish `hx'` using `(ciMem_stdAt w.1 x).1 hx`. Simplify using `only [redV, ciEquiv_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[redP_sum _ _ (fun l' _ => (hGi _ _).mul (hx' _))]`. Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[reduction_mul (hGi _ _) (hx' _), hGred]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ocbGrpGLoc_holds (m2 : ℕ) : OcbGrpGLoc Ch sel mu cst m2 := by
   intro hB j hj w hbar

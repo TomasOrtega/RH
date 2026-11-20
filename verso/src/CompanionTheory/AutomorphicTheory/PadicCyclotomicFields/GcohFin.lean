@@ -6,17 +6,15 @@ open CategoryTheory GroundTheory.ProfCoh ReciprocityTheory.Gal ValuativeRel Form
 namespace CompanionTheory.LocalTateOrthogonality.Gcoh
 
 /- English proof (translation)
-Introduce `l _ K hK r M _ _ _ _ _ rho hr hc`. Take `⟨hsep, v, t, hloc, -⟩` from `hF l K hK`. Set `: ValuativeRel ↥K` to `v`. Set `: TopologicalSpace ↥K` to `t`. Establish `: IsNonarchimedeanLocalField ↥K` using `hloc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsSepClosure ↥K (PadicAlgCl l)` using `hsep`. Take `⟨A, hA, e, he⟩` from `gcRep (Formalism.GaloisCohomology.GK l K) (ZMod (l ^ r)) M rho hc`. Establish `: IsDiscreteRep A` using `hA`. Establish `: Finite A` using `Finite.of_equiv M e.toEquiv`. Establish `hcard : Nat.card A = Nat.card M` using `(Nat.card_congr e.toEquiv).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : (Nat.card A : ↥K) ≠ 0`. Rewrite using `[hcard]`. Conclude with `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Take `⟨e0, -⟩` from `gc0 (Formalism.GaloisCohomology.GK l K) (ZMod (l ^ r)) M rho A e he`. Take `⟨e1, -⟩` from `gc1 (Formalism.GaloisCohomology.GK l K) (ZMod (l ^ r)) M rho A e he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e2, -⟩` from `gc2 (Formalism.GaloisCohomology.GK l K) (ZMod (l ^ r)) M rho A e he`. Use `⟨?_, ?_, ?_, fun n hn => ?_⟩` and prove the remaining obligations. Use `finite_cohomology_localField A hM 0` as an intermediate fact. Conclude with `Finite.of_equiv _ e0.symm.toEquiv`. Use `finite_cohomology_localField A hM 1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Finite.of_equiv _ e1.symm.toEquiv`. Use `finite_cohomology_localField A hM 2` as an intermediate fact. Conclude with `Finite.of_equiv _ e2.symm.toEquiv`. Take `⟨en⟩` from `gcn (Formalism.GaloisCohomology.GK l K) (ZMod (l ^ r)) M rho A e he n`. Use `subsingleton_cohomology_localField A hM n hn` as an intermediate fact.
-
-Conclude with `en.toEquiv.subsingleton`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locfin_of (hF : SgcField) : Formalism.GaloisCohomology.LocalFinitenessK := by
   intro l _ K hK r M _ _ _ _ _ rho hr hc

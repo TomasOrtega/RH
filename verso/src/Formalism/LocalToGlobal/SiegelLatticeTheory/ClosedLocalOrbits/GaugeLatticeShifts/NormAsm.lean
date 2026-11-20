@@ -14,9 +14,9 @@ variable {I : Type*} [Group I] [Fintype I]
 def gamOf (U : Set I) (p : I → ℂ) (x : I) : ℂ := ((Nat.card U : ℂ))⁻¹ * ∑ y : I, p (y * x * y⁻¹)
 
 /- English proof (translation)
-Unfold `gamOf`. Use `congr 1`. Rewrite using `[← Equiv.sum_comp (Equiv.mulRight y)]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `group`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem gamOf_comm (U : Set I) (p : I → ℂ) (x y : I) : gamOf U p (x * y) = gamOf U p (y * x) := by
   unfold gamOf
@@ -28,17 +28,17 @@ theorem gamOf_comm (U : Set I) (p : I → ℂ) (x y : I) : gamOf U p (x * y) = g
   group
 
 /- English proof (translation)
-Establish `hU' : ∀ x : I, ∑ t : I, conj (p (x * t)) * p t = (Nat.card U : ℂ) * conj (p x)`. Introduce `x`. Establish `e : ∀ t, conj (p (x * t)) * p t = if t ∈ U then conj (p x) else 0`. Introduce `t`. Use `split_ifs with ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr x t ht, map_mul, mul_assoc, hn t ht, mul_one]`. Rewrite using `[h0 t ht, mul_zero]`. Repeatedly rewrite using `[e]`. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Establish `step : ∀ s : I, ∑ s' : I, conj (p (s⁻¹ * i * s')) * p (s⁻¹ * j * s') = (Nat.card U : ℂ) * conj (p (s⁻¹ * (i * j⁻¹) * s))`. Introduce `s`. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft (j⁻¹ * s)), ← hU' (s⁻¹ * (i * j⁻¹) * s)]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.coe_mulLeft]`. Rewrite using `[show s⁻¹ * i * (j⁻¹ * s * t) = s⁻¹ * (i * j⁻¹) * s * t by group, show s⁻¹ * j * (j⁻¹ * s * t) = t by group]`. Repeatedly rewrite using `[step]`. Rewrite using `[← Finset.mul_sum]`. Establish `hsw : ∑ s : I, conj (p (s⁻¹ * (i * j⁻¹) * s)) = ∑ y : I, conj (p (y * (i * j⁻¹) * y⁻¹))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Equiv.sum_comp (Equiv.inv I)]`. Simplify using the standard rewrite rules. Rewrite using `[hsw]`. Unfold `gamOf`. Rewrite using `[map_mul, map_inv₀, map_natCast, map_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem pairSum_gam (U : Set I) (p : I → ℂ) (h0 : ∀ x, x ∉ U → p x = 0)
     (hr : ∀ x, ∀ w ∈ U, p (x * w) = p x * p w) (hn : ∀ w ∈ U, conj (p w) * p w = 1)
@@ -75,7 +75,7 @@ theorem pairSum_gam (U : Set I) (p : I → ℂ) (h0 : ∀ x, x ∉ U → p x = 0
   field_simp
 
 /- English proof (translation)
-Rewrite using `[← hb.sum_comp]`. Simplify using `only [Fintype.sum_prod_type]`. Establish `e : ∀ (a : A) (c : C) (u : U), g ((a : I) * s c * (u : I)) = g (s c)` using `fun a c u => hg (s c) a a.2 u u.2`. Simplify using `only [e]`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Finset.mul_sum, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -92,7 +92,7 @@ private lemma orbit_lemma_2 {C : Type*} [Fintype C] (A U : Set I) (s : C → I)
   ring
 
 /- English proof (translation)
-Rewrite using `[orbit_lemma_2 A U s hb (fun x => ∑ y, f x y) (fun x a ha w hw => Finset.sum_congr rfl fun y _ => hL x y a ha w hw)]`. Establish `e : ∀ c, ∑ y, f (s c) y = ((Nat.card A' : ℂ) * (Nat.card U : ℂ)) * ∑ c', f (s c) (s' c')` using `fun c => orbit_lemma_2 A' U s' hb' (f (s c)) (fun y a ha w hw => hR (s c) y a ha w hw)`. Repeatedly rewrite using `[e, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem orbitSum2 {C C' : Type*} [Fintype C] [Fintype C'] (A A' U : Set I) (s : C → I) (s' : C' → I)
     (hb : Function.Bijective (fun x : A × C × U => (x.1 : I) * s x.2.1 * (x.2.2 : I)))
@@ -110,7 +110,7 @@ theorem orbitSum2 {C C' : Type*} [Fintype C] [Fintype C'] (A A' U : Set I) (s : 
   ring
 
 /- English proof (translation)
-Rewrite using `[sum_inner]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, inner_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -137,11 +137,11 @@ def fForm (p : I → ℂ) (Gm : I → I → ℂ) (x y : I) : ℂ :=
   ∑ i, ∑ j, conj (p (x⁻¹ * i * y)) * p (x⁻¹ * j * y) * Gm i j
 
 /- English proof (translation)
-Establish `hq : ∀ m, p (w⁻¹ * m) = conj (p w) * p m`. Introduce `m`. Establish `e` using `hl (w⁻¹ * m) w hw`. Rewrite `e` using `[mul_inv_cancel_left]`. Rewrite using `[e, ← mul_assoc, hn w hw, one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `fForm`. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft b)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft b)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Equiv.coe_mulLeft, hG]`. Rewrite using `[show (b * x * w)⁻¹ * (b * i) * y = w⁻¹ * (x⁻¹ * i * y) by group, show (b * x * w)⁻¹ * (b * j) * y = w⁻¹ * (x⁻¹ * j * y) by group, hq, hq, map_mul, Complex.conj_conj]`. Take the linear combination `(conj (p (x⁻¹ * i * y)) * p (x⁻¹ * j * y) * Gm i j) * hn w hw`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem fForm_left (U : Set I) (p : I → ℂ) (hl : ∀ x, ∀ u ∈ U, p (u * x) = p u * p x)
     (hn : ∀ u ∈ U, conj (p u) * p u = 1) (Gm : I → I → ℂ) (b : I)
@@ -163,9 +163,9 @@ theorem fForm_left (U : Set I) (p : I → ℂ) (hl : ∀ x, ∀ u ∈ U, p (u * 
   linear_combination (conj (p (x⁻¹ * i * y)) * p (x⁻¹ * j * y) * Gm i j) * hn w hw
 
 /- English proof (translation)
-Unfold `fForm`. Rewrite using `[← Equiv.sum_comp (Equiv.mulRight b⁻¹)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp (Equiv.mulRight b⁻¹)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Equiv.coe_mulRight, hG]`. Rewrite using `[show x⁻¹ * (i * b⁻¹) * (b * y * w) = x⁻¹ * i * y * w by group, show x⁻¹ * (j * b⁻¹) * (b * y * w) = x⁻¹ * j * y * w by group, hr _ w hw, hr _ w hw, map_mul]`. Take the linear combination `(conj (p (x⁻¹ * i * y)) * p (x⁻¹ * j * y) * Gm i j) * hn w hw`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem fForm_right (U : Set I) (p : I → ℂ) (hr : ∀ x, ∀ u ∈ U, p (x * u) = p x * p u)
     (hn : ∀ u ∈ U, conj (p u) * p u = 1) (Gm : I → I → ℂ) (b : I)
@@ -182,13 +182,13 @@ theorem fForm_right (U : Set I) (p : I → ℂ) (hr : ∀ x, ∀ u ∈ U, p (x *
   linear_combination (conj (p (x⁻¹ * i * y)) * p (x⁻¹ * j * y) * Gm i j) * hn w hw
 
 /- English proof (translation)
-Establish `hswap : ∀ (F : I → I → I → I → ℂ), ∑ x, ∑ y, ∑ i, ∑ j, F x y i j = ∑ i, ∑ j, ∑ x, ∑ y, F x y i j`. Introduce `F`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `_ = ∑ i, ∑ j, ∑ x, ∑ y, F x y i j := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Unfold `fForm`. Use `(hswap (fun x y i j => conj (p (x⁻¹ * i * y)) * p (x⁻¹ * j * y) * Gm i j)).trans ?_` and prove the remaining obligations. Repeatedly rewrite using `[← Finset.sum_mul]`. Repeatedly rewrite using `[pairSum_gam U p h0 hr hn hU]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fForm_sum (U : Set I) (p : I → ℂ) (h0 : ∀ x, x ∉ U → p x = 0)
     (hr : ∀ x, ∀ w ∈ U, p (x * w) = p x * p w) (hn : ∀ w ∈ U, conj (p w) * p w = 1)
@@ -224,7 +224,7 @@ section Main
 variable {I : Type} [Group I] [Fintype I]
 
 /- English proof (translation)
-Take `⟨⟨a, c, u⟩, -⟩` from `hb.2 1`. Use `haveI : Nonempty A := ⟨a⟩`. Use `haveI : Nonempty U := ⟨u⟩`. Conclude with `⟨by exact_mod_cast (Nat.card_pos (α := A)).ne', by exact_mod_cast (Nat.card_pos (α := U)).ne'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_ne_zero_of_bij {C : Type*} (A U : Set I) (s : C → I)
     (hb : Function.Bijective (fun x : A × C × U => (x.1 : I) * s x.2.1 * (x.2.2 : I))) :
@@ -237,53 +237,47 @@ theorem card_ne_zero_of_bij {C : Type*} (A U : Set I) (s : C → I)
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `set G : Q1 × Q2 → I → I → ℂ := fun q i j => inner ℂ (Zs S intersection_update_fsHerm_neg_one ιt a q i) (Zs S intersection_update_fsHerm_neg_one ιt a q j) with hGdef`. Establish `ha_le : ∀ t, w (intersection_update_fsHerm_neg_one t) * ‖a t‖ ≤ ‖X.vec t‖`. Introduce `t`. Establish `e : (X.vec t).ofLp (intersection_update_fsHerm_neg_one t) = ((w (intersection_update_fsHerm_neg_one t) : ℝ) : ℂ) • a t`. Rewrite using `[hvec t, PiLp.toLp_apply, if_pos rfl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `PiLp.norm_apply_le (X.vec t) (intersection_update_fsHerm_neg_one t)`. Rewrite `h1` using `[e, norm_smul, Complex.norm_real, Real.norm_of_nonneg (hw0 _).le]`. Conclude with `h1`. Establish `hsm : ∀ (q : Q1 × Q2) (c : τ → Prop) {dc : DecidablePred c} (z : ℂ), (∀ t, c t → intersection_update_fsHerm_neg_one t = q) → Summable (fun t => if c t then z • a t else 0)`. Introduce `q c dc z hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Summable.of_norm_bounded (g := fun t => ‖z‖ * ((w q)⁻¹ * ‖X.vec t‖)) ((hsumv.mul_left _).mul_left _) ?_` and prove the remaining obligations. Introduce `t`. Distinguish the cases in `h : c t`. Rewrite using `[if_pos h, norm_smul] gcongr`. Use `ha_le t` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hc t h]`. Rewrite using `[inv_mul_eq_div, le_div_iff₀ (hw0 q)]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg h, norm_zero]`. Use `hw0 q` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hF : Summable (S.indicator X.op)` using `(hsum.of_norm).indicator S`. Establish `hBl_part : ∀ ρ ρ', Bl ρ ρ' (X.part S) = ∑ i, p ((sR ρ)⁻¹ * i * sR' ρ') • Zs S intersection_update_fsHerm_neg_one ιt a (lamR ρ, lamR' ρ') i`. Introduce `ρ ρ'`. Unfold `Formalism.FourierDecayAlt.PB.Terms.part Zs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[(Bl ρ ρ').map_tsum hF]`. Repeatedly rewrite using `[← tsum_const_smul'', smul_ite, smul_zero]`. Rewrite using `[← Summable.tsum_finsetSum]`. Use `swap`. Introduce `i _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `hsm (lamR ρ, lamR' ρ') _ _ (fun t h => h.2.1)`. Use `tsum_congr fun t => ?_` and prove the remaining obligations. Rewrite using `[Set.indicator_apply]`. Distinguish the cases in `ht : t ∈ S`. Rewrite using `[if_pos ht, hop t ρ ρ']`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hs : intersection_update_fsHerm_neg_one t = (lamR ρ, lamR' ρ')`. Rewrite using `[if_pos hs, Finset.sum_eq_single (ιt t)]`. Rewrite using `[if_pos ⟨ht, hs, rfl⟩]`. Introduce `i _ hi`. Conclude with `if_neg (fun h => hi h.2.2.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[if_neg hs]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i _`. Conclude with `if_neg (fun h => hs h.2.1)`. Rewrite using `[if_neg ht, map_zero]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Conclude with `if_neg (fun h => ht h.1)`. Establish `hnorm : ‖X.part S‖ ^ 2 = (∑ ρ, ∑ ρ', fForm p (G (lamR ρ, lamR' ρ')) (sR ρ) (sR' ρ')).re`. Rewrite using `[@norm_sq_eq_re_inner ℂ, hBl]`. Simplify using `only [hBl_part, inner_sum_smul, fForm, hGdef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hfib : ∀ q1 q2, ∑ ρ : {ρ // lamR ρ = q1}, ∑ ρ' : {ρ' // lamR' ρ' = q2}, fForm p (G (lamR ρ.1, lamR' ρ'.1)) (sR ρ.1) (sR' ρ'.1) = (((w (q1, q2)) ^ 2 : ℝ) : ℂ) * ∑ i, ∑ j, conj (gamOf U p (i * j⁻¹)) * G (q1, q2) i j`. Introduce `q1 q2`. Establish `hrw : ∀ (ρ : {ρ // lamR ρ = q1}) (ρ' : {ρ' // lamR' ρ' = q2}), fForm p (G (lamR ρ.1, lamR' ρ'.1)) (sR ρ.1) (sR' ρ'.1) = fForm p (G (q1, q2)) (sR ρ.1) (sR' ρ'.1)`. Introduce `ρ ρ'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ρ.2, ρ'.2]`. Repeatedly rewrite using `[hrw]`. Establish `hc` using `card_ne_zero_of_bij (A q1) U (fun c : {ρ // lamR ρ = q1} => sR c.1) (hA q1)`. Establish `hc'` using `card_ne_zero_of_bij (A' q2) U (fun c : {ρ' // lamR' ρ' = q2} => sR' c.1) (hA' q2)`. Establish `ho` using `orbitSum2 (A q1) (A' q2) U (fun c : {ρ // lamR ρ = q1} => sR c.1) (fun c : {ρ' // lamR' ρ' = q2} => sR' c.1) (hA q1) (hA' q2) (fForm p (G (q1, q2))) (fun x y b hb v hv => fForm_left U p hl hn _ b (fun i j => hsatL (q1, q2) b hb i j) x y v hv) (fun x y b hb v hv => fForm_right U p …`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `ho` using `[fForm_sum U p h0 hr hn hc.2]`. Apply the tactic sequence `try beta_reduce at ho`. Establish `hne : ((Nat.card (A q1) : ℂ) * Nat.card U) * ((Nat.card (A' q2) : ℂ) * Nat.card U) ≠ 0` using `mul_ne_zero (mul_ne_zero hc.1 hc.2) (mul_ne_zero hc'.1 hc'.2)`. Establish `hw2 : (((w (q1, q2)) ^ 2 : ℝ) : ℂ) = ((Nat.card (A q1) : ℂ) * (Nat.card (A' q2) : ℂ))⁻¹`. Rewrite using `[hwA]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨hA1, hU1⟩` from `hc`. Take `⟨hA2, -⟩` from `hc'`. Rewrite using `[hw2]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[← ho]`. Clear the denominators using the available nonvanishing facts. Establish `hvp : ∀ i q, (X.vecPart S i).ofLp q = ((w q : ℝ) : ℂ) • Zs S intersection_update_fsHerm_neg_one ιt a q i`. Introduce `i q`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `Formalism.FourierDecayAlt.PB.Terms.vecPart Zs`. Establish `hs : Summable ((S ∩ {t | X.io (X.rowOf t) = i}).indicator X.vec)` using `(hsumv.of_norm).indicator _`. Establish `hm` using `(PiLp.proj (𝕜 := ℂ) 2 (fun _ : Q1 × Q2 => K) q).map_tsum hs`. Simplify using `only [PiLp.proj_apply] at hm`. Rewrite using `[hm, ← tsum_const_smul'']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `tsum_congr fun t => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h1 : t ∈ S <;> by_cases h2 : ιt t = i <;> by_cases h3 : intersection_update_fsHerm_neg_one t = q <;>`. Simplify using `[Set.indicator_apply, hvec t, hio t, h1, h2, h3, @eq_comm _ q (intersection_update_fsHerm_neg_one t)]`. Establish `hinner : ∀ i j, inner ℂ (X.vecPart S i) (X.vecPart S j) = ∑ q, (((w q) ^ 2 : ℝ) : ℂ) * G q i j`. Introduce `i j`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hvp, hvp, inner_smul_left, inner_smul_right, Complex.conj_ofReal, hGdef]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Formalism.FourierDecayAlt.PB.Terms.NormExpansionOn`. Rewrite using `[hnorm]`. Use `congr 1`. Repeatedly rewrite using `[hinner, hGG]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Fintype.sum_fiberwise lamR]`. Use `Finset.sum_congr rfl fun q1 _ => Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Conclude with `(Fintype.sum_fiberwise lamR' _).symm`. Use `_ = ∑ q1, ∑ q2, ∑ ρ : {ρ // lamR ρ = q1}, ∑ ρ' : {ρ' // lamR' ρ' = q2}, fForm p (G (lamR ρ.1, lamR' ρ'.1)) (sR ρ.1) (sR' ρ'.1) := by`. Use `Finset.sum_congr rfl fun q1 _ => ?_` and prove the remaining obligations.
-
-Conclude with `Finset.sum_comm`. Use `_ = ∑ q1, ∑ q2, (((w (q1, q2)) ^ 2 : ℝ) : ℂ) * ∑ i, ∑ j, conj (gamOf U p (i * j⁻¹)) * G (q1, q2) i j := by`. Use `Finset.sum_congr rfl fun q1 _ => Finset.sum_congr rfl fun q2 _ => hfib q1 q2` and prove the remaining obligations. Use `_ = ∑ q : Q1 × Q2, (((w q) ^ 2 : ℝ) : ℂ) * ∑ i, ∑ j, conj (gamOf U p (i * j⁻¹)) * G q i j := by rw [Fintype.sum_prod_type]`. Use `_ = ∑ i, ∑ j, conj (gamOf U p (j⁻¹ * i)) * ∑ q, (((w q) ^ 2 : ℝ) : ℂ) * G q i j := by`.
-
-Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[gamOf_comm U p i j⁻¹]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem normExp_abs {τ Rw H K Q1 Q2 R R' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K] [Fintype Q1] [Fintype Q2] [Fintype R]

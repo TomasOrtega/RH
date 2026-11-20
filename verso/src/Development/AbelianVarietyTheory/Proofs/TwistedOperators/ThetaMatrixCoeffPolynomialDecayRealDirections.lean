@@ -28,7 +28,7 @@ example (S T : HSp D) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)) (f g : WO S 
     thPair μ 𝓕 f g = GlobalTheory.Ker.ipO μ 𝓕 f g := rfl
 
 /- English proof (translation)
-Take `⟨l1, l2, l3, -⟩` from `GlobalTheory.OrientedFormLaws.symplOH_laws D S T`. Establish `h` using `l3 (u + v)`. Rewrite `h` using `[l1, l2, l2, l3, l3, zero_add, add_zero]`. Take the linear combination `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem symplOH_swap (S T : HSp D) (u v : WO S T) : symplOH S T v u = -symplOH S T u v := by
   obtain ⟨l1, l2, l3, -⟩ := GlobalTheory.OrientedFormLaws.symplOH_laws D S T
@@ -37,13 +37,13 @@ theorem symplOH_swap (S T : HSp D) (u v : WO S T) : symplOH S T v u = -symplOH S
   linear_combination h
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.ThetaSquare.symplO_eq, GlobalTheory.ThetaSquare.symplOH_zero_left, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_zero_left (S T : HSp D) (w : WO S T) : symplO S T 0 w = 0 := by
   rw [GlobalTheory.ThetaSquare.symplO_eq, GlobalTheory.ThetaSquare.symplOH_zero_left, add_zero]
 
 /- English proof (translation)
-Establish `hc` using `(GlobalTheory.ThetaSquare.heisUnitary (V := S) (W := T) hψ).1`. Take `⟨-, -, -, l4, -⟩` from `GlobalTheory.OrientedFormLaws.symplOH_laws D S T`. Rewrite using `[hc, hc, smul_smul, ← AddChar.map_add_eq_mul, add_comm w u, symplOH_swap S T u w, ← l4]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisO_comm (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (u w : WO S T) (f : WO S T → ℂ) :
     heisO ψ S T u (heisO ψ S T w f) = ψ (symplO S T u w) • heisO ψ S T w (heisO ψ S T u f) := by
@@ -54,11 +54,11 @@ theorem heisO_comm (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (u w : WO S T) (f :
   ring
 
 /- English proof (translation)
-Establish `DS` using `GlobalTheory.ThetaSquare.derSkew (V := S) (W := T) hψ hθ τ z`. Establish `hw : IsThetaFunO ψ S T (heisO ψ S T w f₀)` using `(GlobalTheory.ThetaSquare.heisUnitary (V := S) (W := T) hψ).2.2.1 w f₀ h₀`. Use function extensionality and compare the values at `x`. Establish `h1 : HasDerivAt (fun t : ℝ => heisO ψ S T w (heisO ψ S T (lineAt θ τ z t) f₀) x) (heisO ψ S T w (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z f₀) x) 0` using `(DS.1 f₀ h₀ (x + w)).const_mul (ψ (symplOH S T x w))`. Establish `h2` using `hd.hasDerivAt.mul h1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((fun t : ℝ => ψ (symplO S T (lineAt θ τ z t) w)) * fun t : ℝ => heisO ψ S T w (heisO ψ S T (lineAt θ τ z t) f₀) x) = fun t : ℝ => heisO ψ S T (lineAt θ τ z t) (heisO ψ S T w f₀) x`. Use function extensionality and compare the values at `t`. Rewrite using `[Pi.mul_apply, heisO_comm hψ S T (lineAt θ τ z t) w]`. Both sides reduce to the same expression. Rewrite `h2` using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[(DS.1 _ hw x).unique h2]`. Simplify using `only [map_zero, symplO_zero_left, AddChar.map_zero_eq_one, one_mul, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[GlobalTheory.OrientedHeis.heisO_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dRho_heisO (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D) (τ : D.what₂.Tau)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f₀ : WO S T → ℂ} (h₀ : IsThetaFunO ψ S T f₀) (w : WO S T)
@@ -85,19 +85,19 @@ theorem dRho_heisO (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam �
   rw [GlobalTheory.OrientedHeis.heisO_zero]
 
 /- English proof (translation)
-Use `set ℓ := deriv (fun t : ℝ => ψ (symplO S T (lineAt θ τ z t) w)) 0 with hℓ`. Distinguish the cases in `hl : ℓ = 0`. Rewrite using `[hl, norm_zero, zero_mul]`. Check the signs of the components of the expression. Establish `hd : DifferentiableAt ℝ (fun t : ℝ => ψ (symplO S T (lineAt θ τ z t) w)) 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Conclude with `hl (deriv_zero_of_not_differentiableAt hn)`. Establish `DS` using `GlobalTheory.ThetaSquare.derSkew (V := S) (W := T) hψ hθ τ z`. Establish `HU` using `GlobalTheory.ThetaSquare.heisUnitary (V := S) (W := T) hψ`. Establish `hw : IsThetaFunO ψ S T (heisO ψ S T w f₀)` using `HU.2.2.1 w f₀ h₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw' : IsThetaFunO ψ S T (heisO ψ S T w (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z f₀))` using `HU.2.2.1 w _ (DS.2.1 f₀ h₀)`. Establish `key` using `DS.2.2 μ 𝓕 hμ h𝓕 f _ h hw`. Rewrite `key` using `[dRho_heisO hψ hθ S T τ z h₀ w hd]`. Establish `i1` using `GlobalTheory.Size.integrableOn_mul_conj hψ hμ h𝓕 h hw`. Establish `i2` using `GlobalTheory.Size.integrableOn_mul_conj hψ hμ h𝓕 h hw'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : GlobalTheory.Ker.ipO μ 𝓕 f (ℓ • heisO ψ S T w f₀ + heisO ψ S T w (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z f₀)) = conj ℓ * thPair μ 𝓕 f (heisO ψ S T w f₀) + thPair μ 𝓕 f (heisO ψ S T w (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z f₀))`. Simplify using `only [GlobalTheory.Ker.ipO, thPair, Complex.star_def, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, mul_add]`. Rewrite using `[integral_add _ i2, ← integral_const_mul]`. Use `congr 1`. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(i1.const_mul (conj ℓ)).congr (.of_forall fun x => by dsimp only; ring)`. Express the relevant statement in the definitionally equal form `thPair μ 𝓕 _ _ = _ at key`. Rewrite `key` using `[e]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : conj ℓ * thPair μ 𝓕 f (heisO ψ S T w f₀) = -thPair μ 𝓕 (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z f) (heisO ψ S T w f₀) - thPair μ 𝓕 f (heisO ψ S T w (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z f₀))`. Rewrite using `[key]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, Complex.norm_conj]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ _ := by`. Rewrite using `[e2]`. Use `(norm_sub_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`.
+A detailed English derivation is pending.
 -/
 theorem step_bound (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D) {μ : Measure (WO S T)}
     {𝓕 : Set (WO S T)} (hμ : μ.IsAddHaarMeasure) (h𝓕 : IsAddFundamentalDomain (ratL T S) 𝓕 μ) (τ : D.what₂.Tau)
@@ -146,7 +146,7 @@ theorem step_bound (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam �
         rw [norm_neg]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(GlobalTheory.ThetaSquare.squareIntegrable (V := S) (W := T) hψ f h).2.1`. Take `⟨b, hb⟩` from `(GlobalTheory.ThetaSquare.squareIntegrable (V := S) (W := T) hψ f₀ h₀).2.1`. Use `⟨a * b * μ.real 𝓕, fun w => norm_setIntegral_le_of_norm_le_const h1 fun x _ => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_star, GlobalTheory.ThetaSquare.norm_heisO hψ]`. Conclude with `mul_le_mul (ha x) (hb _) (norm_nonneg _) ((norm_nonneg _).trans (ha x))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_bounded (hψ : IsStdChar D ψ (-1)) (S T : HSp D) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (h1 : μ 𝓕 < ⊤) {f f₀ : WO S T → ℂ} (h : IsThetaFunO ψ S T f) (h₀ : IsThetaFunO ψ S T f₀) :
@@ -158,13 +158,11 @@ theorem coeff_bounded (hψ : IsStdChar D ψ (-1)) (S T : HSp D) {μ : Measure (W
   exact mul_le_mul (ha x) (hb _) (norm_nonneg _) ((norm_nonneg _).trans (ha x))
 
 /- English proof (translation)
-Introduce `D ψ hψ θ hθ S T μ 𝓕 hc f f₀ h h₀ τ z k`. Take `⟨hμ, h𝓕, h1⟩` from `hc`. Establish `DS` using `GlobalTheory.ThetaSquare.derSkew (V := S) (W := T) hψ hθ τ z`. Proceed by induction on `k generalizing f f₀ with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨C, hC⟩` from `coeff_bounded hψ S T (μ := μ) (𝓕 := 𝓕) (by rw [h1]; exact ENNReal.one_lt_top) h h₀`. Conclude with `⟨C, fun w => by rw [pow_zero, one_mul]; exact hC w⟩`. Consider the case `succ k ih`. Take `⟨C₁, hC₁⟩` from `ih _ f₀ (DS.2.1 f h) h₀`. Take `⟨C₂, hC₂⟩` from `ih f _ h (DS.2.1 f₀ h₀)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨C₁ + C₂, fun w => ?_⟩` and prove the remaining obligations. Establish `hs` using `step_bound hψ hθ S T hμ h𝓕 τ z h h₀ w`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := mul_le_mul_of_nonneg_left hs (by positivity)`.
-
-Use `_ = _ := mul_add _ _ _`. Use `_ ≤ C₁ + C₂ := add_le_add (hC₁ w) (hC₂ w)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem realDecay : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ →
     ∀ (S T : HSp D) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 →

@@ -17,14 +17,14 @@ namespace GlobalTheory.Unf.FB.ThLaws
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[heisO, GlobalTheory.MixModel.symplOH_zero_left, AddChar.map_zero_eq_one, one_mul, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_zero_apply (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (p : WO S T) (f : WO S T → ℂ) :
     heisO ψ S T p f 0 = f p := by
   rw [heisO, GlobalTheory.MixModel.symplOH_zero_left, AddChar.map_zero_eq_one, one_mul, zero_add]
 
 /- English proof (translation)
-Rewrite using `[jacS, Pi.smul_apply, smul_eq_mul, heisO_zero_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jacS_zero_apply (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
     (x : Mx D T.rank ρ) (n : GA D S) (f : WO S₀ T → ℂ) :
@@ -32,7 +32,7 @@ theorem jacS_zero_apply (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ : 
   rw [jacS, Pi.smul_apply, smul_eq_mul, heisO_zero_apply]
 
 /- English proof (translation)
-Establish `h` using `ptS_nB_mul_nC d T x 0 c`. Rewrite `h` using `[d.nB_zero, one_mul, Matrix.mul_zero]`. Rewrite using `[jacS, h, cenS_nC, heisO_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem jacS_nC (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
     (x : Mx D T.rank ρ) (c : skewA D ρ) (f : WO S₀ T → ℂ) : jacS ψ d T x (d.nC c) f = ψ (d.qS T c x) • f := by
@@ -41,16 +41,16 @@ theorem jacS_nC (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ : ℕ} (d 
   rw [jacS, h, cenS_nC, heisO_zero]
 
 /- English proof (translation)
-Establish `ht : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Conclude with `hψ.comp ht`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_psiE {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) : Continuous (psiE ψ) := by
   have ht : Continuous (Algebra.trace (AF D.host.F) (AE D)) := IsModuleTopology.continuous_of_linearMap _
   exact hψ.comp ht
 
 /- English proof (translation)
-Unfold `upSum`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : j.1 = i.1 + 1`. Simplify using `only [h, if_true]`. Conclude with `(continuous_apply j).comp ((continuous_apply i).comp hT)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, if_false]`. Conclude with `continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_upSum {X : Type} [TopologicalSpace X] {ρ : ℕ} {T : X → Mx D ρ ρ} (hT : Continuous T) :
     Continuous fun t => upSum (T t) := by
@@ -61,7 +61,7 @@ theorem continuous_upSum {X : Type} [TopologicalSpace X] {ρ : ℕ} {T : X → M
   · simp only [h, if_false]; exact continuous_const
 
 /- English proof (translation)
-Unfold `psiFlag blockX`. Conclude with `(continuous_psiE hψ).comp (continuous_upSum (continuous_const.matrix_mul ((GlobalTheory.MixModel.continuous_mt S).matrix_mul continuous_const)))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_psiFlag {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) {S S₀ : HSp D} {ρ : ℕ}
     (d : HypDec S S₀ ρ) : Continuous (psiFlag ψ d) := by
@@ -70,7 +70,7 @@ theorem continuous_psiFlag {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ
     (continuous_upSum (continuous_const.matrix_mul ((GlobalTheory.MixModel.continuous_mt S).matrix_mul continuous_const)))
 
 /- English proof (translation)
-Unfold `ptS`. Conclude with `(continuous_const.matrix_mul (GlobalTheory.MixModel.continuous_mt S)).matrix_mul continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_ptS {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D) (x : Mx D T.rank ρ) :
     Continuous (ptS d T x) := by
@@ -78,7 +78,7 @@ theorem continuous_ptS {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : H
   exact (continuous_const.matrix_mul (GlobalTheory.MixModel.continuous_mt S)).matrix_mul continuous_const
 
 /- English proof (translation)
-Unfold `cenS`. Conclude with `GlobalTheory.OrientedHeis.continuous_symplOH continuous_const (continuous_const.matrix_mul (GlobalTheory.MixModel.continuous_mt S))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_cenS {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D) (x : Mx D T.rank ρ) :
     Continuous (cenS d T x) := by
@@ -87,9 +87,9 @@ theorem continuous_cenS {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : 
     (continuous_const.matrix_mul (GlobalTheory.MixModel.continuous_mt S))
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, K, hK, hKc⟩` from `GlobalTheory.MixModel.lattice_Mx D L.rank S.rank`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hy.2.continuousOn`. Use `⟨C, fun w => ?_⟩` and prove the remaining obligations. Take `⟨γ, ⟨γ0, rfl⟩, hγ⟩` from `hKc w`. Establish `h2 : ‖y w‖ = ‖y (ratW L S γ0 + w)‖` using `by rw [hy.1 γ0 w, norm_mul, hψ.2.1, one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `hC _ hγ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound_quasi {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {S L : HSp D}
     {y : WO S L → ℂ} (hy : Quasi ψ S L y) : ∃ M : ℝ, ∀ w, ‖y w‖ ≤ M := by
@@ -102,7 +102,7 @@ theorem exists_bound_quasi {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.ho
   exact hC _ hγ
 
 /- English proof (translation)
-Use `⟨Matrix.vecMulVec B.ζ (fun i : Fin (σ + 1) => if i.1 + 1 = σ + 1 then (1 : D.host.E) else 0), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Simplify using `only [zl, zEll, rat, Matrix.map_apply, Matrix.vecMulVec_apply, ell, map_mul, ratV]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zl_rat {σ : ℕ} (B : BesLev D σ) :
     ∃ z0 : Matrix (Fin B.L.rank) (Fin (σ + 1)) D.host.E, zl B = rat z0 := by
@@ -113,7 +113,7 @@ theorem zl_rat {σ : ℕ} (B : BesLev D σ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `(GlobalTheory.MixModel.mem_GQ_iff S γ).1 hγ`. Use `⟨x0 * d.qX * g * d.i₀, ?_⟩` and prove the remaining obligations. Rewrite using `[ratW_eq, ptS, HypDec.extX_apply, ← hg]`. Simplify using `only [rat_mul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ptS_rat {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D) (x0 : Matrix (Fin T.rank) (Fin ρ) D.host.E)
     {γ : GA D S} (hγ : γ ∈ GQ S) : ∃ g0, ptS d T (rat x0) γ = ratW T S₀ g0 := by
@@ -124,9 +124,9 @@ theorem ptS_rat {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D) (
   rfl
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `(GlobalTheory.MixModel.mem_GQ_iff S γ).1 hγ`. Establish `e : cenS d T (rat x0) γ = symplOH S T ((x0 * d.qX).map (incA D)) ((x0 * d.qX * g).map (incA D))`. Rewrite using `[cenS, HypDec.extX_apply, ← hg]`. Express the relevant statement in the definitionally equal form `_ = symplOH S T (rat (x0 * d.qX)) (rat (x0 * d.qX * g))`. Simplify using `only [rat_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `GlobalTheory.AnisoMean.psi_rat hψ S T _ _`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_cenS_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {S S₀ : HSp D} {ρ : ℕ}
     (d : HypDec S S₀ ρ) (T : HSp D) (x0 : Matrix (Fin T.rank) (Fin ρ) D.host.E) {γ : GA D S} (hγ : γ ∈ GQ S) :
@@ -141,7 +141,7 @@ theorem psi_cenS_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F �
   exact GlobalTheory.AnisoMean.psi_rat hψ S T _ _
 
 /- English proof (translation)
-Simplify using `only [upSum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [rat]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem upSum_rat {ρ : ℕ} (M : Matrix (Fin ρ) (Fin ρ) D.host.E) :
     upSum (rat M : Mx D ρ ρ) = incA D (∑ i, ∑ j, if j.1 = i.1 + 1 then M i j else 0) := by
@@ -150,7 +150,7 @@ theorem upSum_rat {ρ : ℕ} (M : Matrix (Fin ρ) (Fin ρ) D.host.E) :
   split_ifs <;> simp [rat]
 
 /- English proof (translation)
-Rewrite using `[psiE, show Algebra.trace (AF D.host.F) (AE D) (incA D t) = algebraMap D.host.F (AF D.host.F) (Algebra.trace D.host.F D.host.E t) from GlobalTheory.AnisoMean.trace_one_tmul (AF D.host.F) t]`. Conclude with `hψ.2.2.1 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiE_incA {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (t : D.host.E) : psiE ψ (incA D t) = 1 := by
   rw [psiE, show Algebra.trace (AF D.host.F) (AE D) (incA D t) =
@@ -158,9 +158,9 @@ theorem psiE_incA {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) 
   exact hψ.2.2.1 _
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `(GlobalTheory.MixModel.mem_GQ_iff S γ).1 hγ`. Establish `e : blockX d γ = rat (d.qX * (g * d.e))`. Rewrite using `[blockX, ← hg]`. Simplify using `only [rat_mul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[psiFlag, e, upSum_rat, psiE_incA hψ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psiFlag_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {S S₀ : HSp D} {ρ : ℕ}
     (d : HypDec S S₀ ρ) {γ : GA D S} (hγ : γ ∈ GQ S) : psiFlag ψ d γ = 1 := by
@@ -172,44 +172,44 @@ theorem psiFlag_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ
   rw [psiFlag, e, upSum_rat, psiE_incA hψ]
 
 /- English proof (translation)
-Rewrite using `[psiFlag, blockX_of_fix d (d.nC_jX c), upSum_one, psiE_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psiFlag_nC (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (c : skewA D ρ) :
     psiFlag ψ d (d.nC c) = 1 := by
   rw [psiFlag, blockX_of_fix d (d.nC_jX c), upSum_one, psiE_zero]
 
 /- English proof (translation)
-Rewrite using `[psiFlag, blockX_of_fix d (d.nB_jX b), upSum_one, psiE_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psiFlag_nB (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (b : Mx D ρ S₀.rank) :
     psiFlag ψ d (d.nB b) = 1 := by
   rw [psiFlag, blockX_of_fix d (d.nB_jX b), upSum_one, psiE_zero]
 
 /- English proof (translation)
-Rewrite using `[psiFlag_eq, psiBes_levi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psiFlag_levi (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (u : GL (Fin ρ) (AE D)) :
     psiFlag ψ d (d.levi u) = psiUni ψ u := by
   rw [psiFlag_eq, psiBes_levi]
 
 /- English proof (translation)
-Introduce `D ψ hψs σ J B y hy`. Establish `hψ : IsCharAF D.host.F ψ` using `hψs.1`. Establish `hx : ∀ u ∈ UX D (σ + 1), zl B ⬝ u.1 = zl B` using `fun u hu => zEll_mul B.L B.ζ hu`. Take `⟨hcen, hmul, hlevi, -⟩` from `GlobalTheory.JacHom.jacS_hom D ψ J.W J.W₀ B.L (σ + 1) J.d (zl B) hx`. Take `⟨M, hM⟩` from `exists_bound_quasi hψ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hval : ∀ n, th J ψ B y n = star (ψ (cenS J.d B.L (zl B) n) * y (ptS J.d B.L (zl B) n)) * star (psiFlag ψ J.d n)` using `fun n => by`. Rewrite using `[th, jacS_zero_apply]`. Establish `hnorm : ∀ a, ‖ψ a‖ = 1` using `hψ.2.1`. Establish `hflag1 : ∀ n, ‖psiFlag ψ J.d n‖ = 1` using `fun n => hnorm _`. Use `⟨?_, ⟨M, hM, fun n => ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : th J ψ B y = fun n => star (ψ (cenS J.d B.L (zl B) n) * y (ptS J.d B.L (zl B) n)) * star (psiFlag ψ J.d n)` using `funext hval`. Rewrite using `[e]`. Conclude with `(((hψ.1.comp (continuous_cenS _ _ _)).mul (hy.2.comp (continuous_ptS _ _ _))).star).mul (continuous_psiFlag hψ.1 _).star`. Rewrite using `[hval, norm_mul, norm_star, norm_star, norm_mul, hnorm, hflag1, one_mul, mul_one]`. Conclude with `hM _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `γ hγN hγQ n hn`. Take `⟨z0, hz0⟩` from `zl_rat B`. Establish `hp` using `hmul γ hγN n hn`. Take `⟨g0, hg0⟩` from `ptS_rat J.d B.L z0 hγQ`. Rewrite `hg0` using `[← hz0]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ψ (cenS J.d B.L (zl B) γ) = 1` using `by rw [hz0]; exact psi_cenS_rat hψ J.d B.L z0 hγQ`. Rewrite using `[hval, hval, hp.1, hp.2.1, psiFlag_mul J.d ψ hγN hn, psiFlag_rat hψ J.d hγQ, one_mul, hg0, hy.1 g0]`. Use `congr 2`. Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul, add_neg_cancel_right, AddChar.map_add_eq_mul, hc, one_mul]`. Introduce `c n hn`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : J.d.nC c ∈ flagN J.d` using `J.d.nC_mem_NFlag c`. Rewrite using `[th, (hmul _ hc n hn).2.2, th, psiFlag_mul J.d ψ hc hn, psiFlag_nC, jacS_nC]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, star_mul', one_mul, star_one]`. Expand and normalize the polynomial expressions, which then agree. Introduce `n hn u hu`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : J.d.levi u ∈ flagN J.d` using `J.d.levi_mem_NFlag hu`. Rewrite using `[th, hlevi n hn u hu, psiFlag_mul J.d ψ hn hl, psiFlag_levi, th, star_mul', mul_assoc]`. Introduce `b u hu`. Establish `hb : J.d.nB b ∈ flagN J.d` using `J.d.nB_mem_NFlag b`. Establish `hl : J.d.levi u ∈ flagN J.d` using `J.d.levi_mem_NFlag hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ptS J.d B.L (zl B) (J.d.nB b) = zl B ⬝ b`. Use `ptS_nB_mul_nC J.d B.L (zl B) b 0` as an intermediate fact. Rewrite `this` using `[J.d.nC_zero, mul_one]`. Then use the resulting hypothesis. Establish `hc : cenS J.d B.L (zl B) (J.d.nB b) = 0`. Use `hcen b 0` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[J.d.nC_zero, mul_one]`. Rewrite using `[this, HypDec.qS]`. Simplify using `[GlobalTheory.MixModel.symplOH_zero_right]`. Rewrite using `[th, hlevi _ hb u hu, psiFlag_mul J.d ψ hb hl, jacS_zero_apply, hp, hc, AddChar.map_zero_eq_one, one_mul, psiFlag_nB, one_mul, psiFlag_levi]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem th_laws : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (σ : ℕ) (J : JacLev D (σ + 1)) (B : BesLev D σ) (y : WO J.W₀ B.L → ℂ), Quasi ψ J.W₀ B.L y → Continuous (th J ψ B y) ∧ (∃ M : ℝ, (∀ w, ‖y w‖ ≤ M) ∧ ∀ n, ‖th J ψ B y n‖ ≤ M) ∧ (∀ γ ∈ flagN J.d, γ ∈ GQ J.W → ∀ n ∈ flagN J.d, th J ψ B y (γ * n) = th J ψ B y n) ∧ (∀ c, ∀ n ∈ flagN J.d, th J ψ B y (J.d.nC c * n) = star (ψ (J.d.qS B.L c (zl B))) * th J ψ B y n) ∧ (∀ n ∈ flagN J.d, ∀ u ∈ UX D (σ + 1), th J ψ B y (n * J.d.levi u) = th J ψ B y n * star (psiUni ψ u)) ∧ ∀ b, ∀ u ∈ UX D (σ + 1), th J ψ B y (J.d.nB b * J.d.levi u) = star (psiUni ψ u) * star (y (zl B ⬝ b)) := by
   intro D ψ hψs σ J B y hy

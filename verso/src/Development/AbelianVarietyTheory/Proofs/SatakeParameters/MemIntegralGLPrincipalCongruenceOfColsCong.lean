@@ -10,25 +10,23 @@ namespace GlobalTheory.CongOne
 open GlobalTheory.TopStep GlobalTheory.BlockDecompositionK1
 
 /- English proof (translation)
-Establish `hq : ((qOf P : ℕ) : E) ≠ 0` using `qOf_ne_zero`. Establish `hqD : ((qOf P : E) ^ D) ≠ 0` using `pow_ne_zero _ hq`. Establish `hsingle : ∀ s l, IntAt P ((Pi.single s (1 : E) : Sp E n) l)` using `fun s l => mem_stdAt.1 (single_mem_stdAt (P := P) s) l`. Establish `hent : ∀ l s, IntAt P (k (Pi.single s (1 : E)) l)` using `fun l s => by`. Establish `e : k (Pi.single s (1 : E)) l = (qOf P : E) ^ D * (((qOf P : E) ^ D)⁻¹ * (k (Pi.single s (1 : E)) l - (Pi.single s (1 : E) : Sp E n) l)) + (Pi.single s (1 : E) : Sp E n) l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `((intAt_pow (intAt_nat (qOf P)) D).mul (h s l)).add (hsingle s l)`. Set `A : Matrix (Fin n) (Fin n) E` to `Matrix.of fun l s => k (Pi.single s (1 : E)) l`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hA : ∀ l s, IntAt P (A l s)` using `hent`. Establish `hAx : ∀ x, A.mulVec x = k x` using `fun x => by`. Use function extensionality and compare the values at `l`. Use `Eq.trans ?_ (apply_eq_sum (k : Sp E n →ₗ[E] Sp E n) x l).symm` and prove the remaining obligations. Use `show ∑ s, A l s * x s = _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Establish `hred : A.map (redP P) = 1`. Use extensionality with `l s`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_apply]`. Establish `h0 : redP P (k (Pi.single s (1 : E)) l - (Pi.single s (1 : E) : Sp E n) l) = 0`. Take `⟨c, rfl⟩ : ∃ c, D = c + 1` from `⟨D - 1, by omega⟩`. Conclude with `reduction_eq_zero_of_integral_absNorm_pow_inv_mul (h s l)`. Rewrite `h0` using `[reduction_sub (hent l s) (hsingle s l), sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show redP P (k (Pi.single s (1 : E)) l) = _`. Rewrite using `[h0, Matrix.one_apply, Pi.single_apply]`. Use `split_ifs`. Conclude with `reduction_one₂`. Conclude with `reduction_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdet : IsUnit (redP P A.det)`. Rewrite using `[(det_int hA).2, hred, Matrix.det_one]`. Conclude with `isUnit_one`. Take `⟨j, hj⟩` from `exists_glint_of_matrix A hA hdet`. Establish `hjk : j.1 = k` using `LinearEquiv.ext fun x => (hj x).trans (hAx x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hk : k ∈ GLint E n P` using `hjk ▸ j.2`. Use `⟨hk, fun x hx => ?_⟩` and prove the remaining obligations. Use `mem_stdAt.2 fun l => ?_` and prove the remaining obligations. Establish `e1` using `apply_eq_sum (k : Sp E n →ₗ[E] Sp E n) x l`. Establish `e2` using `apply_eq_sum (LinearMap.id : Sp E n →ₗ[E] Sp E n) x l`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (((qOf P : E) ^ D)⁻¹ • (k x - x)) l = ∑ s, x s * (((qOf P : E) ^ D)⁻¹ * (k (Pi.single s (1 : E)) l - (Pi.single s (1 : E) : Sp E n) l))`. Rewrite using `[Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `((qOf P : E) ^ D)⁻¹ * ((k : Sp E n →ₗ[E] Sp E n) x l - (LinearMap.id : Sp E n →ₗ[E] Sp E n) x l) = _`. Rewrite using `[e1, e2, ← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
-
-Simplify using `only [LinearMap.id_apply, LinearEquiv.coe_coe]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `intAt_sum _ fun s _ => (mem_stdAt.1 hx s).mul (h s l)`.
+A detailed English derivation is pending.
 -/
 theorem mem_glint_prinCong_of_cols {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E))
     {n : ℕ} (D : ℕ) (k : Sp E n ≃ₗ[E] Sp E n) (hD : 1 ≤ D)

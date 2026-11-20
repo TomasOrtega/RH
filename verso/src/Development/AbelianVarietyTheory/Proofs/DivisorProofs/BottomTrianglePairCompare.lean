@@ -30,13 +30,13 @@ namespace GlobalTheory.BotKerRealInv
 open Matrix
 
 /- English proof (translation)
-Unfold `GlobalTheory.NormSum.minorPol`. Establish `key : ∀ (τ : D.what₂.Tau) (r : Fin a → Fin d), GlobalTheory.CompactHowe.substF (fun _ => (1 : Matrix (Fin d) (Fin d) ℂ)) g (Matrix.of fun i i' : Fin a => (MvPolynomial.X (τ, r i, i') : MvPolynomial (D.what₂.Tau × Fin d × Fin a) ℂ)).det = MvPolynomial.C (g τ).det * (Matrix.of fun …`. Introduce `τ r`. Rewrite using `[AlgHom.map_det, RingHom.map_det (MvPolynomial.C : ℂ →+* MvPolynomial (D.what₂.Tau × Fin d × Fin a) ℂ), mul_comm, ← Matrix.det_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext1 i i'`. Simplify using `only [AlgHom.mapMatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.mul_apply, GlobalTheory.CompactHowe.substF_X, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single (r i)]`. Simplify using `[mul_comm]`. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hb]`. Simplify using the standard rewrite rules. Rewrite using `[map_prod, MvPolynomial.smul_eq_C_mul, map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.prod_congr rfl fun j _ => key τ (T τ j).1).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, map_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem substF_minorPol {D : D7} {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup D a d n)
     (g : D.what₂.Tau → Matrix (Fin a) (Fin a) ℂ) :
@@ -67,9 +67,7 @@ private theorem substF_minorPol {D : D7} {a d : ℕ} {n : D.what₂.Tau → ℕ}
   rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, map_pow]
 
 /- English proof (translation)
-Substitute `ha hd` using the available equality. Establish `e : GlobalTheory.BotFormula.minorF rfl rfl T = GlobalTheory.NormSum.minorPol D T`. Unfold `GlobalTheory.BotFormula.minorF`. Conclude with `MvPolynomial.rename_id_apply _`. Rewrite using `[e]`.
-
-Conclude with `substF_minorPol T g`.
+Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem substF_minorF {D : D7} {a d a₁ d₁ : ℕ} {n : D.what₂.Tau → ℕ} (ha : a = a₁) (hd : d = d₁) (T : Tup D a d n)
     (g : D.what₂.Tau → Matrix (Fin a₁) (Fin a₁) ℂ) :
@@ -83,7 +81,7 @@ private theorem substF_minorF {D : D7} {a d a₁ d₁ : ℕ} {n : D.what₂.Tau 
   exact substF_minorPol T g
 
 /- English proof (translation)
-Rewrite using `[inv_one, Matrix.one_mul, Matrix.mul_one, Matrix.inv_eq_left_inv h]`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem conj_transpose_inv {m : ℕ} {u : Matrix (Fin m) (Fin m) ℂ} (h : uᴴ * u = 1) :
     (((1 : Matrix (Fin m) (Fin m) ℂ)⁻¹ * u * 1)⁻¹)ᵀ.map (starRingEnd ℂ) = u := by
@@ -92,11 +90,11 @@ private theorem conj_transpose_inv {m : ℕ} {u : Matrix (Fin m) (Fin m) ℂ} (h
   simp [Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Introduce `u`. Use `set φ := Formalism.L2.Host.embTau D`. Establish `hA : ((χ.f (Units.map (inc D).toMonoidHom u) : ℂˣ) : ℂ) * ∏ τ, (φ τ u / ((‖φ τ u‖ : ℝ) : ℂ)) ^ (χ.n τ) = 1` using `χ.aut u`. Establish `hB` using `χ'.2.2 u`. Rewrite `hB` using `[← GlobalTheory.Mem.ChiLaws.infDiag_mul_finPart, map_mul, ← GlobalTheory.Mem.Col2.SplitChar.finIdl_incU, ← hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hB' : ((χ'.inf u : ℂˣ) : ℂ) * ((χ.f (Units.map (inc D).toMonoidHom u) : ℂˣ) : ℂ) ^ e = 1`. Use `congrArg Units.val hB` as an intermediate fact. Simplify using `only [Units.val_mul, Units.val_zpow_eq_zpow_val, Units.val_one] at this`. Conclude with `this`. Rewrite `hB'` using `[eq_inv_of_mul_eq_one_left hA, _root_.inv_zpow, ← Finset.prod_zpow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eq_inv_of_mul_eq_one_left hB', inv_inv]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← _root_.zpow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hasInf_of_fin {D : D7} {N : ℕ} (χ : HeckeU D N) (e : ℤ) (χ' : Formalism.L2.Host.HChar D.host.E)
     (hf : ∀ x, χ.f x ^ e = χ'.1 (GlobalTheory.Mem.Col2.SplitChar.finIdl D x)) :
@@ -117,13 +115,13 @@ private theorem hasInf_of_fin {D : D7} {N : ℕ} (χ : HeckeU D N) (e : ℤ) (χ
   rw [← _root_.zpow_mul, mul_comm]
 
 /- English proof (translation)
-Establish `h1` using `hasInf_of_fin P.W.chV' P.W.ep' _ hB.chars.2`. Establish `h2 : (nuH G s i j).HasInfQ (tauE D) fun τ => -((P.n τ : ℚ) + (P.d : ℚ) / 2)`. Use `⟨fun τ => -(P.W.ep' * P.W.chV'.n τ), fun τ => ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `: ((2 * (P.n τ : ℤ) : ℤ) : ℚ) = ((P.W.ep' * P.W.chV'.n τ - (P.d : ℤ) : ℤ) : ℚ)` using `by rw [P.wt τ]`. Move the coercions through the operations in `at this ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `h1 k`. Rewrite `h3` using `[Formalism.L2.Host.HChar.inf_inv, Units.val_inv_eq_inv_val]`. Rewrite using `[← inv_inv (((nuH G s i j).inf k : ℂˣ) : ℂ), h3, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[_root_.zpow_neg]`. Both sides reduce to the same expression. Establish `h4` using `GlobalTheory.Chain.StepVac.hasInfExp_inv (GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ (chrEq_nu G s i j hL) h2 τ)`. Rewrite `h4` using `[neg_neg]`. Establish `e : G.ch.chi (D.R.m - i) * L.eta ^ (rankV D i j % 2) / (L.mu s (j + 1) * L.eta ^ (rankV D i j % 2)) = (G.nu s i (j + 1))⁻¹`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_div_mul_right_eq_div, ← inv_div]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hasInfExp_nu_inv {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc)
     (s : T) (i j : Fin D.R.m) {δ t0 : ℂ} {Q : ℕ} {P P' : Pair D ⊤ δ t0 Q} {𝔪} (hB : IsBottom G s i j 𝔪 P P')
@@ -153,21 +151,21 @@ private theorem hasInfExp_nu_inv {D : D7} {T : Type} {L : LevCh D T} {sc : Const
   exact h4
 
 /- English proof (translation)
-Establish `h` using `hX.is`. Establish `hψ : IsStdChar D W.ψ (-1)` using `h.isVac.1`. Establish `hθ : IsInfFam W.θ` using `h.isVac.2.inf`. Establish `hW` using `h.weil s`. Establish `hf : IsThetaFunO W.ψ (GlobalTheory.Grid.neg A) WW (X.f s)` using `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt hψ hθ (h.fst s) h.isVac.2.theta`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (h.idem s)`. Establish `hv : ∀ ρ, IsFockVacAt (heisO W.ψ (GlobalTheory.Grid.neg A) WW) W.θ ρ (cplxO (-1) 1) (X.f s)` using `fun ρ => by`. Use `GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hψ.1.1 hθ ho.infPart_eq ho.conj.infPart_eq (h.fst s) h.isVac.2.theta hf (h.isVac.2.fock ρ)` as an intermediate fact. Simplify `this` using `[(hX.std.2.2 ρ).1, (hX.stdW.2.2 ρ).1]`. Establish `hgA : ∀ τ, gramAt D A τ = 1` using `fun τ => by rw [gramAt, hX.std.1]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hgW : ∀ τ, gramAt D WW τ = 1` using `fun τ => by rw [gramAt, hX.stdW.1]; simp`. Establish `e1 : (fun τ => -X.rA.s τ) = fun _ => (-1 : Matrix (Fin A.rank) (Fin A.rank) ℂ)`. Use function extensionality and compare the values at `fun τ => by rw [(hX.std.2.2 τ).1]`. Establish `e2 : X.rW.s = fun _ => 1` using `funext fun τ => (hX.stdW.2.2 τ).1`. Establish `e3 : X.rA.B = fun _ => 1` using `funext fun τ => (hX.std.2.2 τ).2`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : X.rW.B = fun _ => 1` using `funext fun τ => (hX.stdW.2.2 τ).2`. Rewrite using `[e1, e2, e3, e4]`. Use `choose a ha using fun τ => GlobalTheory.SplitCharExp.exists_hasInfExp D W.θ _ _ τ hθ hW.hecS hW.resS`. Use `choose e he using fun τ => GlobalTheory.SplitParity.exists_int_add_half D _ _ τ _ hW.hecS hW.resS (ha τ)`. Set `k' : Formalism.L2.Theta.GA D (GlobalTheory.Grid.neg A)` to `(GlobalTheory.Grid.ofSgn true A).symm k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk' : k' ∈ GinfC (GlobalTheory.Grid.neg A)` using `(GlobalTheory.SgnIdent.mem_GinfC_sgn true A _).2 (by rwa [MulEquiv.apply_symm_apply])`. Establish `hu : ∀ τ, (compAt W.θ τ (Formalism.L2.Theta.mt A k))ᴴ * compAt W.θ τ (Formalism.L2.Theta.mt A k) = 1` using `fun τ => by`. Establish `e : (compAt W.θ τ (Formalism.L2.Theta.mt A k)).conjTranspose * (gramAt D A τ) * compAt W.θ τ (Formalism.L2.Theta.mt A k) = gramAt D A τ` using `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ A k τ`. Rewrite `e` using `[hgA, Matrix.mul_one]`. Then use the resulting hypothesis. Establish `key` using `GlobalTheory.FockRealNeg.om_pureTensorO_neg D W.ψ W.θ A WW _ _ ((X.ω s).toSgn true) hW hθ (fun _ => 1) (fun _ => 1) (fun τ => by rw [hgA]; simp) (fun τ => by rw [hgW]; simp) a (fun τ => (P.n τ : ℚ) + (P.d : ℚ) / 2) ha (hasInfExp_nu_inv hL G s i j hB) (fun τ => e τ - A.rank) (fun …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : ∀ τ, compAt W.θ τ (Formalism.L2.Theta.mt WW 1) = 1` using `fun τ => GlobalTheory.JointHarm.compAt_mt_one' W.θ τ WW`. Establish `ck : ∀ τ, compAt W.θ τ (Formalism.L2.Theta.mt (negSp A) k') = compAt W.θ τ (Formalism.L2.Theta.mt A k)` using `fun τ => rfl`. Establish `s1 : (fun τ => (((fun _ => (1 : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) τ)⁻¹ * compAt W.θ τ (Formalism.L2.Theta.mt WW 1) * (fun _ => (1 : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) τ).map (starRingEnd ℂ)) = fun _ => 1`. Use function extensionality and compare the values at `τ`. Use `show ((1 : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)⁻¹ * compAt W.θ τ (Formalism.L2.Theta.mt WW 1) * 1).map (starRingEnd ℂ) = 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[c1, inv_one, Matrix.one_mul, Matrix.one_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `s2 : (fun τ => (((((fun _ => (1 : Matrix (Fin A.rank) (Fin A.rank) ℂ)) τ)⁻¹ * compAt W.θ τ (Formalism.L2.Theta.mt (negSp A) k') * (fun _ => (1 : Matrix (Fin A.rank) (Fin A.rank) ℂ)) τ)⁻¹)ᵀ).map (starRingEnd ℂ)) = fun τ => compAt W.θ τ (Formalism.L2.Theta.mt A k)`. Use function extensionality and compare the values at `fun τ => conj_transpose_inv (hu τ)`. Rewrite `key` using `[s1, s2, substF_minorF, map_smul, smul_smul, ← Finset.prod_mul_distrib]`. Establish `hone : (∏ τ, (compAt W.θ τ (Formalism.L2.Theta.mt (negSp A) k')).det ^ (-(P.n τ : ℤ)) * (compAt W.θ τ (Formalism.L2.Theta.mt WW 1)).det ^ (e τ - A.rank) * (compAt W.θ τ (Formalism.L2.Theta.mt A k)).det ^ P.n τ) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Establish `hne : (compAt W.θ τ (Formalism.L2.Theta.mt A k)).det ≠ 0` using `(Matrix.isUnit_det_of_left_inverse (hu τ)).ne_zero`. Rewrite using `[ck, c1, Matrix.det_one, _root_.one_zpow, mul_one, _root_.zpow_neg, zpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ hne)]`. Rewrite `key` using `[hone, one_smul]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem om_fix {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T} (hL : L.Is μ₀) {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW} (hX : IsBottomTri W i j X) (s : T)
@@ -236,9 +234,9 @@ end GlobalTheory.BotKerRealInv
 end
 
 /- English proof (translation)
-Introduce `_ _ _ _ _`. Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ hL G => ?_⟩⟩` and prove the remaining obligations. Introduce `W _ i j A A' WW X hX s Q δ t0 P P' hB ea ed g Tp k hk y`. Unfold `Tri.ker thetaKO`. Establish `e : X.ω s (y * k, g) = X.ω s (y, g) * X.ω s (k, 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[e, Module.End.mul_apply, GlobalTheory.BotKerRealInv.om_fix hL hX s hB ea ed Tp hk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.T.bottom_triangle_pair_compare : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →

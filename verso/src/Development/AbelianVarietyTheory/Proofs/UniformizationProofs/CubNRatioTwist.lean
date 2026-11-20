@@ -14,13 +14,13 @@ open GlobalTheory.UU
 namespace GlobalTheory.UU
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp only [cubN, Finset.range_zero, Finset.prod_empty, pow_zero, _root_.one_mul, _root_.mul_one]`. Conclude with `mul_comm _ _`. Consider the case `succ k ih`. Establish `e₁ : cubN θ (k + 1) 1 (β x) (β y) = cubN θ k 1 (β x) (β y) * θ (β (x ^ k)) (β x) (β y)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [cubN, Finset.prod_range_succ, _root_.one_mul, map_pow]`. Establish `e₂ : cubN θ' (k + 1) 1 x y = cubN θ' k 1 x y * θ' (x ^ k) x y`. Simplify using `only [cubN, Finset.prod_range_succ, _root_.one_mul]`. Establish `H` using `hθ (x ^ k) x y`. Rewrite `H` using `[← pow_succ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, e₂]`. Apply `mul_right_cancel (b := W (x ^ k) * W (x ^ k * y))` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_succ (W (x * y) * W 1) k]`. The two sides agree by associativity and commutativity.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. The two sides agree by associativity and commutativity. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `_ = (W (x ^ k * y) * W 1 * (W x * W y) ^ k * cubN θ' k 1 x y) * (W (x ^ (k + 1) * y) * W (x ^ k) * W x * W y * θ' (x ^ k) x y) := by rw [ih, H]`. Use `_ = W (x ^ (k + 1) * y) * W 1 * (W x * W y) ^ (k + 1) * (cubN θ' k 1 x y * θ' (x ^ k) x y) * (W (x ^ k) * W (x ^ k * y)) := by`. Rewrite using `[pow_succ (W x * W y) k]`. The two sides agree by associativity and commutativity.
+The two sides agree by associativity and commutativity. A detailed English derivation is pending.
 -/
 theorem cubN_twist {A A' U : Type} [CommGroup A] [CommGroup A'] [CommGroup U] (β : A' →* A) (W : A' → U)
     {θ : A → A → A → U} {θ' : A' → A' → A' → U}
@@ -51,11 +51,11 @@ theorem cubN_twist {A A' U : Type} [CommGroup A] [CommGroup A'] [CommGroup U] (�
           rw [pow_succ (W x * W y) k]; ac_rfl
 
 /- English proof (translation)
-Establish `h₁` using `cubN_twist β W hθ x y N`. Establish `h₂` using `cubN_twist β W hθ y x N`. Simplify using `only [hx, _root_.one_mul] at h₁`. Simplify using `only [hy, _root_.one_mul] at h₂`. Rewrite `h₂` using `[mul_comm y x, mul_comm (W y) (W x)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k₁ : cubN θ N 1 (β x) (β y) * (W (x * y) * W 1) ^ N = (W x * W y) ^ N * cubN θ' N 1 x y`. Apply `mul_right_cancel (b := W 1 * W y)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `k₂ : cubN θ N 1 (β y) (β x) * (W (x * y) * W 1) ^ N = (W x * W y) ^ N * cubN θ' N 1 y x`. Apply `mul_right_cancel (b := W 1 * W x)` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `mul_right_cancel (b := (W (x * y) * W 1) ^ N)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem cubN_ratio_twist {A A' U : Type} [CommGroup A] [CommGroup A'] [CommGroup U] (β : A' →* A) (W : A' → U)
     {θ : A → A → A → U} {θ' : A' → A' → A' → U}
@@ -89,11 +89,11 @@ theorem cubN_ratio_twist {A A' U : Type} [CommGroup A] [CommGroup A'] [CommGroup
     _ = cubN θ N 1 (β y) (β x) * (W (x * y) * W 1) ^ N := by rw [h, k₂]
 
 /- English proof (translation)
-Introduce `S S' f G _ _ G' _ _ P P' F hw w hP N T x y ζ hζ`. Take `⟨hx, hy, hr⟩` from `hζ`. Set `β` to `toBaseHom (hw := hw) hP.mul T`. Establish `hβ : ∀ a : T ⟶ G', β a = toBase hw a` using `fun _ => rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hβ, ← map_pow, hx, map_one]`. Rewrite using `[← hβ, ← map_pow, hy, map_one]`. Introduce `z J hJ`. Take `⟨J', hJ'⟩` from `exists_good_pt P'.L.isLB z`. Establish `hv` using `(hP.vals T z J' J hJ' hJ (fun a => gw w a.left z (J (a.left ≫ F)) (J' a.left)) (fun _ => rfl)).2.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `cubN_ratio_twist β (fun a => gw w a.left z (J (a.left ≫ F)) (J' a.left)) (θ := cubV P.c (T := Over.mk (T.hom ≫ f)) z J) (θ' := cubV P'.c z J') hv hx hy (hr z J' hJ')`.
+A detailed English derivation is pending.
 -/
 theorem cubWeil_map : (∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (G : Over S) [GrpObj G] [IsCommMonObj G] (G' : Over S') [GrpObj G'] [IsCommMonObj G'] (P : CP G) (P' : CP G') (F : G'.left ⟶ G.left) (hw) (w), IsCPMap P' P f F hw w → ∀ (N : ℕ) (T : Over S') (x y : T ⟶ G') (ζ : Γ(T.left, ⊤)ˣ), CubWeil P'.c N x y ζ → CubWeil P.c N (toBase hw x) (toBase hw y) ζ) := by
   intro S S' f G _ _ G' _ _ P P' F hw w hP N T x y ζ hζ

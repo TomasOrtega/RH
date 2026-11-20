@@ -5,15 +5,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `T : IntermediateField F Ω` to `IntermediateField.fixedField H.toSubgroup`. Establish `hT : T.fixingSubgroup = H.toSubgroup` using `InfiniteGalois.fixingSubgroup_fixedField H`. Set `E : IntermediateField F Ω` to `(IntermediateField.adjoin T ({ζ} : Set Ω)).restrictScalars F`. Establish `hu : u ∈ E`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup E, IntermediateField.mem_fixedField_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Rewrite `hs` using `[IntermediateField.mem_fixingSubgroup_iff]`. Use `h s ?_ (hs ζ (IntermediateField.mem_adjoin_simple_self T ζ))` and prove the remaining obligations. Establish `: s ∈ T.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Conclude with `hs x ((IntermediateField.adjoin T ({ζ} : Set Ω)).algebraMap_mem ⟨x, hx⟩)`. Rewrite `this` using `[hT]`. Conclude with `this`. Establish `hint : IsIntegral T ζ` using `(Algebra.IsAlgebraic.isAlgebraic (R := F) ζ).isIntegral.tower_top`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu' : u ∈ (IntermediateField.adjoin T ({ζ} : Set Ω)).toSubalgebra` using `hu`. Rewrite `hu'` using `[IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic, Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨Q, hQ⟩` from `hu'`. Use `⟨Q.map (algebraMap T Ω), ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs d`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.coeff_map]`. Conclude with `(IntermediateField.mem_fixedField_iff H.toSubgroup _).1 (Q.coeff d).2 s hs`. Rewrite using `[Polynomial.eval_map_algebraMap]`. Conclude with `hQ`.
+A detailed English derivation is pending.
 -/
 theorem exists_polynomial_closedSubgroup_fixed_eval_eq {F Ω : Type*} [Field F] [Field Ω]
     [Algebra F Ω] [IsGalois F Ω] (H : ClosedSubgroup (Ω ≃ₐ[F] Ω)) (ζ u : Ω)
@@ -50,7 +50,7 @@ theorem exists_polynomial_closedSubgroup_fixed_eval_eq {F Ω : Type*} [Field F] 
     exact hQ
 
 /- English proof (translation)
-The claim follows from `haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω exists_polynomial_closedSubgroup_fixed_eval_eq ⟨Ine (F := ℚ) A, isClosed_Ine (F := ℚ) A⟩ ζ u h`.
+A detailed English derivation is pending.
 -/
 theorem exists_polynomial_inertia_fixed_eval_eq (Ω : Type) [Field Ω] [Algebra ℚ Ω]
     [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω) (ζ u : Ω)

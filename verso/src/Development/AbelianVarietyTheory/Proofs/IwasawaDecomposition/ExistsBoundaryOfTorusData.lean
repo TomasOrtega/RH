@@ -11,7 +11,7 @@ open Formalism.DegreeFormula Formalism.MJ GlobalTheory.HodgeDomain GlobalTheory.
 open scoped ComplexOrder ContDiff
 
 /- English proof (translation)
-Introduce `D A N j S κ s L x`. Use `choose a h1 h2 h3 h4 using fun k => GlobalTheory.T.exists_positive_hermitian_form_domain D A N j S κ s L k x`. Use `⟨fun k => ⟨x.m, fun i z => x.nrm κ.σ₀ i (s.toCpt L k z), fun i z _ => x.nrm_pos (s.not_liesIn_toCpt L k z) i, fun i z _ => ((x.nrm_div _ i).1 _).2, GlobalTheory.T.hodge_norm_smooth D A N j S κ s L k x, fun i g hg z hz => by rw [s.toCpt_moeb L k hg hz], a k, h1 k, h2 k, h3 k, (Glo …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ToroidalCompactificationData.exists_isBdOf : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (L : CmList A) (x : ToroidalCompactificationData s), ∃ B, IsBdOf x L B := by
   intro D A N j S κ s L x

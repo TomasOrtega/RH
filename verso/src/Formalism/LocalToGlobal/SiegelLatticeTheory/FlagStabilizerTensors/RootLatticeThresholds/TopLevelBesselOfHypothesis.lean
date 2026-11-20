@@ -20,27 +20,25 @@ def TopLevelBesselHypothesis : Prop :=
             (Formalism.FourierDecayAlt.D.vecV Ds ν' m₀ F (γ.1.map Prod.swap))).re)
 
 /- English proof (translation)
-Establish `hDF` using `Formalism.FourierDecayAlt.P.exists_isotropic_frame`. Establish `hVI` using `Formalism.FourierDecayAlt.P.isotropic_vectors_linear_indep`. Establish `hPR` using `Formalism.FourierDecayAlt.P.relevant_points_holds`. Establish `hRM` using `root_measure_of_mu_R`. Establish `hQE` using `quotient_exists`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCut` using `K_finite_decay`. Establish `hRI` using `repIndep_of K_finite_decay orbital_norm_independence`. Introduce `k0 r L Ds ν' m₀ hc hκ0' hκ1 hz hz' hπ hπ' hW hN hW' hBF`. Establish `hκ0 : L.κN ≠ 0` using `hκ0'.ne'`. Introduce `F γ hK hdec hpos _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp : Formalism.FourierDecayAlt.D.IsLocPt (γ.1.map Prod.swap) (r + 1)` using `isLocPt_swap γ`. Establish `hG : 0 < Formalism.FourierDecayAlt.D.ptG (Tz (k0 + 1) r Ds.z * Tz (k0 + 1) r Ds.z') r (γ.1.map Prod.swap)`. Rewrite using `[ptG_eq_GPoint, hz, hz']`. Conclude with `hpos`. Take `⟨g, hgG, hgZ, hgF⟩` from `hDF (k0 + 1) r L.Wp L.Wq Ds ν' m₀ _ hBF hp hG`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvec` using `hVI (k0 + 1) r L.Wp L.Wq Ds ν' m₀ F _ hp g hBF hG hgG hgZ hgF`. Establish `hrep : IsPtRep L γ g` using `⟨hgG, by rw [← hz, ← hz', hgZ, ptMatN_swap]⟩`. Establish `hrelD` using `hPR (k0 + 1) r L.Wp L.Wq Ds _ g hp hgG hgZ`. Establish `hrel : IsRelStab L g` using `fun a ha => by`. Establish `h1` using `hrelD.2 a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hz, hz']`. Rewrite using `[hc]`. Conclude with `h1`. Establish `hroot` using `hRM k0 r L Ds γ g hp hc hz hz' hgG hgZ`. Take `⟨ν, hq⟩` from `hQE k0 r L γ g _ hc hκ0 hκ1 hrep hrel hroot`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard_pos : (0 : ℝ) < Real.pi⁻¹ ^ (rootPat γ).card` using `by positivity`. Establish `hl0 : ENNReal.ofReal (Real.pi⁻¹ ^ (rootPat γ).card) ≠ 0`. Rewrite using `[Ne, ENNReal.ofReal_eq_zero, not_le]`. Conclude with `hcard_pos`. Establish `hq'` using `isOrbQuot_rescale L _ ENNReal.ofReal_ne_top hq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hconc : Formalism.FourierDecayAlt.D.muR Ds g (hp.2 ▸ Formalism.FourierDecayAlt.D.ptPerm (γ.1.map Prod.swap)) {x | Matrix.of x ∉ RStab (k0 + 1) r g} = 0`. Establish `h1` using `hroot.1`. Rewrite `h1` using `[Measure.smul_apply, smul_eq_mul]`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `absurd h hl0`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hne : Formalism.FourierDecayAlt.D.muR Ds g (hp.2 ▸ Formalism.FourierDecayAlt.D.ptPerm (γ.1.map Prod.swap)) ≠ 0`. Introduce `h0`. Apply `muR_ne_zero L hc γ g _ hroot` to reduce the goal to its premises. Rewrite using `[h0, smul_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SFinite (Formalism.FourierDecayAlt.D.muR Ds g (hp.2 ▸ Formalism.FourierDecayAlt.D.ptPerm (γ.1.map Prod.swap)))`. Unfold `Formalism.FourierDecayAlt.D.muR`. Use `infer_instance`. Establish `hcut` using `hCut k0 r L Ds γ g hp F hc hz hz' hπ hπ' hW hN hW' hK hdec hpos hgG hgZ`. Establish `hJ` using `orbJ_eq L Ds hc hκ0 hκ1 hz hz' hπ hπ' hW hN hW' hgG hrel hconc hne hq' F hcut`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm : OrbInt L F g (ENNReal.ofReal (Real.pi⁻¹ ^ (rootPat γ).card) • ν) = (ENNReal.ofReal (Real.pi⁻¹ ^ (rootPat γ).card)).toReal • OrbInt L F g ν`. Unfold `OrbInt`. Rewrite using `[integral_smul_measure]`. Rewrite using `[hvec, hJ, hsm, orbSq_eq_of L F γ (hsNormSq (OrbInt L F g ν)) (fun g' μ' ν' h' => hRI k0 r L Ds F γ hc hκ0 hκ1 hz hz' hπ hπ' hW hN hW' hK hdec hpos g' μ' ν' g _ ν h' ⟨hrep, hrel, hroot, hq⟩) ⟨g, _, ν, hrep, hrel, hroot, hq⟩]`. Use `congr 1`.
-
-Rewrite using `[show (Formalism.FourierDecayAlt.B.hsInner ((ENNReal.ofReal (Real.pi⁻¹ ^ (rootPat γ).card)).toReal • OrbInt L F g ν) ((ENNReal.ofReal (Real.pi⁻¹ ^ (rootPat γ).card)).toReal • OrbInt L F g ν)).re = hsNormSq ((ENNReal.ofReal (Real.pi⁻¹ ^ (rootPat γ).card)).toReal • OrbInt L F g ν) …`. Rewrite using `[← card_rootPat γ]`. Establish `h1 : Real.pi ^ (2 * (rootPat γ).card) * (Real.pi⁻¹ ^ (rootPat γ).card) ^ 2 = 1`. Rewrite using `[← pow_mul, mul_comm (rootPat γ).card 2, ← mul_pow, mul_inv_cancel₀ Real.pi_ne_zero, one_pow]`. Rewrite using `[← mul_assoc, h1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topLevelBesselHypothesis : TopLevelBesselHypothesis := by
   have hDF := Formalism.FourierDecayAlt.P.exists_isotropic_frame

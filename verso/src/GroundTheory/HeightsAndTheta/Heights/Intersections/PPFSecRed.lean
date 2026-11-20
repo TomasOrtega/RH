@@ -11,7 +11,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨∏ k, (X ⟨k, (hP.2.1.2.2 k).choose⟩ : MRing ι) ^ c k, AvoidRing.isMultiHomog_coordProd _ c, AvoidRing.coordProd_not_mem hP.2.1.1 _ (fun k => (hP.2.1.2.2 k).choose_spec) c⟩`.
+Supply the required witnesses or components.
 -/
 theorem PFSecRed.exists_form_not_mem {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P : Ideal (MRing ι)} {n : ℕ} (hP : IsArithVar P n) (c : K → ℕ) :
@@ -20,27 +20,25 @@ theorem PFSecRed.exists_form_not_mem {K : Type} [Fintype K] {ι : K → Type} [�
     AvoidRing.coordProd_not_mem hP.2.1.1 _ (fun k => (hP.2.1.2.2 k).choose_spec) c⟩
 
 /- English proof (translation)
-Introduce `I hI r hsec K _ ι _ K' _ ι' _ κ v P' d G J L L' N hv hP' hP hJ hL hL' hN`. Set `c : K' → ℕ` to `fun k => (-(N (Fin.last r)).a k).toNat`. Set `H : HermLine ι'` to `HermLine.sqMetric c`. Set `A : HermLine ι'` to `(N (Fin.last r)).tensor H`. Establish `hHs : IsSmoothHerm H` using `isSmoothHerm_sqMetric c`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hAs : IsSmoothHerm A` using `isSmoothHerm_tensor (hN _) hHs`. Set `a : K' → ℕ` to `fun k => ((N (Fin.last r)).a k + c k).toNat`. Establish `hAa : ∀ k, A.a k = a k`. Introduce `k`. Use `show (N (Fin.last r)).a k + ((-(N (Fin.last r)).a k).toNat : ℤ) = (((N (Fin.last r)).a k + ((-(N (Fin.last r)).a k).toNat : ℤ)).toNat : ℤ)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hHa : ∀ k, H.a k = c k` using `fun k => rfl`. Take `⟨sA, hsA, hsAP⟩` from `PFSecRed.exists_form_not_mem hP' a`. Take `⟨sH, hsH, hsHP⟩` from `PFSecRed.exists_form_not_mem hP' c`. Establish `hsnoc : ∀ B : HermLine ι', IsSmoothHerm B → ∀ j, IsSmoothHerm ((Fin.snoc (Fin.init N) B : Fin (r + 1) → HermLine ι') j)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `B hB j`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `using hB`. Rewrite using `[Fin.snoc_castSucc]`. Conclude with `hN _`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hsec K ι K' ι' κ v P' d G J L L' (Fin.snoc (Fin.init N) A) sA a hv hP' hP hJ hL hL' (hsnoc A hAs) (by simpa using hAa) hsA hsAP`. Establish `e2` using `hsec K ι K' ι' κ v P' d G J L L' (Fin.snoc (Fin.init N) H) sH c hv hP' hP hJ hL hL' (hsnoc H hHs) (by simpa using hHa) hsH hsHP`. Establish `hM : ∀ j, IsSmoothHerm (Fin.append L' (Fin.init N) j)`. Introduce `j`. Proceed by induction on `j using Fin.addCases with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `left i => rw [Fin.append_left]`. Conclude with `IsPullHerm.isSmoothHerm hv (hL' i) (hL i)`. Consider the case `right i => rw [Fin.append_right]`. Conclude with `hN _`. Establish `hadd` using `(hI K' ι').2.1 P' (d + r) (Fin.append L' (Fin.init N)) (N (Fin.last r)) H hP' hM (hN _) hHs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hadd` using `[← Fin.append_snoc, ← Fin.append_snoc, ← Fin.append_snoc, Fin.snoc_init_self]`. Establish `hV` using `hDim K ι K' ι' κ v P' d (r + 1) G hv hP' hP`. Establish `hJadd` using `hMult G.Φ (FibreBlock κ) (fibreIdx ι' κ) J hJ (fibreIdeal κ G) (r + 1) (Fin.snoc (fun i => fibreDeg κ (N i.castSucc).a) (fibreDeg κ (N (Fin.last r)).a)) (Fin.last r) (fibreDeg κ (N (Fin.last r)).a) (fibreDeg κ H.a) hV`. Simplify using `only [Fin.update_snoc_last] at hJadd`. Establish `f0 : (fun j => fibreDeg κ (N j).a) = Fin.snoc (fun i => fibreDeg κ (N i.castSucc).a) (fibreDeg κ (N (Fin.last r)).a)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) j <;> simp`. Establish `f1 : (fun j => fibreDeg κ ((Fin.snoc (Fin.init N) A : Fin (r + 1) → HermLine ι') j).a) = Fin.snoc (fun i => fibreDeg κ (N i.castSucc).a) (fibreDeg κ (N (Fin.last r)).a + fibreDeg κ H.a)`. Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Fin.snoc_last]`. Both sides reduce to the same expression. Simplify using `[Fin.init]`. Establish `f2 : (fun j => fibreDeg κ ((Fin.snoc (Fin.init N) H : Fin (r + 1) → HermLine ι') j).a) = Fin.snoc (fun i => fibreDeg κ (N i.castSucc).a) (fibreDeg κ H.a)`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) j <;> simp [Fin.init]`. Rewrite `e1` using `[f1]`. Rewrite `e2` using `[f2]`. Establish `key : I K' ι' P' (d + (r + 1)) (Fin.append L' N) = I K' ι' P' (d + (r + 1)) (Fin.append L' (Fin.snoc (Fin.init N) A)) - I K' ι' P' (d + (r + 1)) (Fin.append L' (Fin.snoc (Fin.init N) H))`. Rewrite using `[eq_sub_iff_add_eq]`.
-
-Conclude with `hadd.symm`. Rewrite using `[f0, key, e1, e2, hJadd]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem PFSecRed.proof
     (hMult : ∀ (F : Type) [Field F] (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)],

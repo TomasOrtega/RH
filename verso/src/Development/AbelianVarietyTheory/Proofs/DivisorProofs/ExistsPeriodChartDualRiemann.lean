@@ -24,25 +24,23 @@ namespace GlobalTheory.PeriodChartExists
 open GlobalTheory.TorsionForm
 
 /- English proof (translation)
-Introduce `k _ S p hS P h hh σ y`. Choose the witnesses or unpack the hypotheses as in `⟨c₀, hc₀⟩ : ∃ c₀ : AlgChart p σ 1, y ∈ c₀.e.source := by`. Take `⟨R⟩` from `(GlobalTheory.RegGenSmooth.genSmooth_of_isRegSurf k S p hS).1 σ`. Take `⟨i, hi⟩` from `R.cover y`. Conclude with `⟨R.chart i, hi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨r, hr, hball, τ, ex', hτ, hex', hfib⟩` from `GlobalTheory.T.local_period_map_exists S P c₀.e.target (fun v => (c₀.e.symm v).1) (c₀.e y) c₀.e.open_target (c₀.e.map_source hc₀) (GlobalTheory.TrueCx.TorHolo.isHolTo_symm c₀) (fun v _ => (hh σ _).1)`. Use `set Bl := Metric.ball (c₀.e y) r with hBl`. Establish `hS' : IsOpen (c₀.e.source ∩ c₀.e ⁻¹' Bl)` using `c₀.e.isOpen_inter_preimage Metric.isOpen_ball`. Use `set c := c₀.restr _ hS' with hc`. Establish `htgt : c.e.target = Bl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `v`. Simplify using `only [hc, AlgChart.restr, Set.mem_inter_iff, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, -, hv'⟩`. Establish `hv''` using `Set.mem_preimage.1 hv'`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv''` using `[c₀.e.right_inv hv]`. Then use the resulting hypothesis. Introduce `hv`. Conclude with `⟨hball hv, c₀.e.map_target (hball hv), Set.mem_preimage.2 (by rwa [c₀.e.right_inv (hball hv)])⟩`. Establish `hov : ∀ P' : Pt (V 1) P.g, P'.1 ∈ Bl → ex' P' ≫ (P.A.hom ≫ p) = spMap σ` using `fun P' hP' => by`. Rewrite using `[← Category.assoc, (hfib P'.1 hP').1 P'.2]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(c₀.e.symm P'.1).2`. Set `ex : Pt (V 1) P.g → CxPts (P.A.hom ≫ p) σ` to `fun P' => if hP' : P'.1 ∈ Bl then ⟨ex' P', hov P' hP'⟩ else ⟨ex' (c₀.e y, 0), hov _ (Metric.mem_ball_self hr)⟩`. Establish `hexeq : ∀ v ∈ Bl, ∀ z, (ex (v, z)).1 = ex' (v, z)` using `fun v hv z => by`. Simplify using `only [ex, dif_pos hv]`. Use `⟨c, τ, ex, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hc, AlgChart.restr_source]`. Conclude with `⟨hc₀, hc₀, Metric.mem_ball_self hr⟩`. Rewrite using `[htgt]`. Conclude with `convex_ball _ _`. Unfold `IsPeriodChart`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[htgt]`. Use `⟨hτ, ?_, fun v hv => ?_⟩` and prove the remaining obligations. Introduce `U f`. Establish `e₁ : {b ∈ cov Bl P.g | ⊤ ≤ (ex b).1 ⁻¹ᵁ U} = {b ∈ cov Bl P.g | ⊤ ≤ ex' b ⁻¹ᵁ U}`. Use extensionality with `b`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Simplify using `only [Set.mem_setOf_eq]`. Conclude with `and_congr_right fun hb => by`. Rewrite using `[show (ex b).1 = ex' b from hexeq b.1 hb.1 b.2]`. Rewrite using `[e₁]`. Conclude with `⟨(hex' U f).1, (hex' U f).2.congr fun b hb => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [show (ex b).1 = ex' b from hexeq b.1 hb.1.1 b.2]⟩`. Take `⟨h₁, h₂, h₃, h₄, h₅⟩` from `hfib v hv`. Use `⟨fun z => by rw [hexeq v hv]; exact h₁ z, fun z w x x' hx hx' => ?_, fun x => ?_, fun z => by rw [hexeq v hv]; exact h₄ z, fun U W hU f f' hs => ?_⟩` and prove the remaining obligations. Rewrite `hx`, `hx'`, the goal using `[hexeq v hv]`. Conclude with `h₂ z w x x' hx hx'`.
-
-Take `⟨z, hz⟩` from `h₃ x`. Conclude with `⟨z, hz.trans (hexeq v hv z).symm⟩`. Conclude with `GlobalTheory.T.riemann_data_linear_chart k S p P h hh σ (c.e.symm v) (τ v) (fun z => ex (v, z)) (hτ.2.2 v hv).1 (hτ.2.2 v hv).2 (fun d => by`. Take `⟨F, hF₁, hF₂⟩` from `h₅ d`. Conclude with `⟨F, fun z => (hF₁ z).trans (hexeq v hv z).symm, hF₂⟩) U W hU f f' hs`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_periodChart : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k), IsRegSurf p → ∀ (P : PPAS S)
     (h : VMetric p (omega P.A) P.g), P.IsDualRiemann (1 / 2) h → ∀ (σ : k →+* ℂ) (y : CxPts p σ),

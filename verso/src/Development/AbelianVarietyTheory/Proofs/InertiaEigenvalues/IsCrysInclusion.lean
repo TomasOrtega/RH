@@ -20,11 +20,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (PD : PeriodData G Qp K₀ K B BdR) {L L' : Type} [Field L] [Algebra Qp L] [Field L'] [Algebra Qp L']
 
 /- English proof (translation)
-Set `e` to `Module.finBasis L L'`. Set `E : (Fin k → L') ≃ₗ[L] (Fin (finrank L L') → Fin k → L)` to `{ toFun := fun v j i => e.repr (v i) j invFun := fun w i => e.equivFun.symm fun j => w j i map_add' := fun x y => by funext j i; simp map_smul' := fun c x => by funext j i; simp left_inv := fun v => by`. Use function extensionality and compare the values at `i`. Conclude with `e.equivFun.symm_apply_apply (v i)`. Use `right_inv := fun w => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j i`. Conclude with `congrFun (e.equivFun.apply_symm_apply fun j => w j i) j }`. Establish `: Nonempty (Fin (finrank L L'))` using `⟨⟨0, Module.finrank_pos⟩⟩`. Use `GlobalTheory.CoeffExt.isCrys_ext PD (E := E) (fun g x j => ?_) (Fintype.card_fin _).symm h` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
-
-Express the relevant statement in the definitionally equal form `e.repr (∑ a, algebraMap L L' (M g i a) * x a) j = ∑ a, M g i a * e.repr (x a) j`. Simplify using `only [← Algebra.smul_def, map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCrys_mapM [Algebra L L'] [IsScalarTower Qp L L'] [FiniteDimensional L L']
     {k : ℕ} (M : G →* Matrix (Fin k) (Fin k) L) (h : IsCrys PD (matRep M)) :
@@ -51,7 +49,7 @@ theorem isCrys_mapM [Algebra L L'] [IsScalarTower Qp L L'] [FiniteDimensional L 
 end Generic
 
 /- English proof (translation)
-Use `letI : Algebra ↥L.1 ↥L'.1 := (IntermediateField.inclusion h).toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ_[l] ↥L.1 ↥L'.1 := IsScalarTower.of_algebraMap_eq fun x => ((IntermediateField.inclusion h).commutes x).symm`. Use `haveI := L'.2`. Use `haveI : FiniteDimensional ↥L.1 ↥L'.1 := Module.Finite.of_restrictScalars_finite ℚ_[l] _ _`. Conclude with `isCrys_mapM (P.PD K) M hM`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isCrys_inclusion (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K L L' : FinExt l) (h : L.1 ≤ L'.1) (k : ℕ)
     (M : ↥(GK K) →* Matrix (Fin k) (Fin k) ↥L.1) (hM : IsCrys (P.PD K) (matRep M)) :

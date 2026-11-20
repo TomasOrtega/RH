@@ -19,13 +19,13 @@ def sM {a : ℕ} (π : Fin a → Fin a) (z : Fin a) (g : Fv F v ⊗[F] E) :
     (Fin.snoc (α := fun _ => Fv F v ⊗[F] E) (fun j => if j = z then 1 else 0) (-g))
 
 /- English proof (translation)
-Establish `hπz' : ∀ i, π i = z ↔ i = z` using `fun i => ⟨fun h => by rw [← hπ i, h, hπz], fun h => h ▸ hπz⟩`. Use extensionality with `i j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) i <;> refine Fin.lastCases ?_ (fun j => ?_) j <;>`. Apply the tactic sequence `rw [Matrix.mul_apply, Fin.sum_univ_castSucc, Matrix.one_apply] <;>`. Simplify using `only [bordM, sM, Fin.snoc_castSucc, Fin.snoc_last, hG]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `all_goals simp [hπz', hπ _, (Fin.castSucc_lt_last _).ne, (Fin.castSucc_lt_last _).ne', Fin.castSucc_inj]`. Apply the tactic sequence `refine Finset.sum_eq_zero (fun x _ => ?_) split_ifs <;> first | rfl | (exfalso; tauto)`. Break down `eq_or_ne i z with rfl | hi` into its components or cases. Simplify using `[hπz, hdz]`. Establish `: z ≠ π i` using `fun h => hi ((hπz' i).1 h.symm)`.
+Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this, hi]`. Rewrite using `[Finset.sum_eq_single (π i) (fun x _ hx => by simp [hx]) (by simp)]`. Simplify using `only [hπ i, hπz', if_true]`. Break down `eq_or_ne i z with rfl | hi` into its components or cases. Distinguish the cases in `hj : j = i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hj]`. Simplify using `[hj, Ne.symm hj]`. Break down `eq_or_ne j z with rfl | hj` into its components or cases. Simplify using `[hi]`. Simplify using `[hi, hj, hd i hi, eq_comm]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bord_mul_sM {a : ℕ} (G : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) (π : Fin a → Fin a)
     (hπ : Function.Involutive π) (z : Fin a) (hπz : π z = z) (g : Fv F v ⊗[F] E) (d : Fin a → Fv F v ⊗[F] E)

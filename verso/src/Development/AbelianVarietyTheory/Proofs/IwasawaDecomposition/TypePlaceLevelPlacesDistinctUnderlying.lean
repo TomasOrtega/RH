@@ -8,9 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LevelTypePlace
 
 /- English proof (translation)
-Establish `hc : IsCoprime (p : ℤ) (q : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.coprime_primes hp hq).mpr hne)`. Take `⟨a, b, hab⟩` from `hc.map (Int.castRingHom R)`. Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Simplify using `only [eq_intCast, Int.cast_natCast]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `P.add_mem (P.mul_mem_left _ h1) (P.mul_mem_left _ h2)`.
+A detailed English derivation is pending.
 -/
 theorem not_two_primes {R : Type*} [CommRing R] (P : Ideal R) [hP : P.IsPrime] {p q : ℕ} (hp : p.Prime)
     (hq : q.Prime) (hne : p ≠ q) (h1 : (p : R) ∈ P) (h2 : (q : R) ∈ P) : False := by
@@ -22,7 +22,7 @@ theorem not_two_primes {R : Type*} [CommRing R] (P : Ideal R) [hP : P.IsPrime] {
   exact P.add_mem (P.mul_mem_left _ h1) (P.mul_mem_left _ h2)
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast, ← hc, ← nsmul_one]`. Conclude with `card_nsmul_eq_zero'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_of_card {E : Type} [Field E] [NumberField E] (PP : IsDedekindDomain.HeightOneSpectrum (𝓞 E))
     {q : ℕ} (hc : Nat.card (𝓞 E ⧸ PP.asIdeal) = q) (hq0 : q ≠ 0) : (q : 𝓞 E) ∈ PP.asIdeal := by
@@ -30,21 +30,19 @@ theorem natCast_mem_of_card {E : Type} [Field E] [NumberField E] (PP : IsDedekin
   exact card_nsmul_eq_zero'
 
 /- English proof (translation)
-Introduce `D T L μ0 hL hPg t s hs`. Establish `hA : ∀ PP : Pl D.host.E, NG.OverPl PP s.v → ∀ p : ℕ, (p : 𝓞 D.host.E) ∈ s.w.asIdeal → (p : 𝓞 D.host.E) ∈ PP.asIdeal`. Introduce `PP hov p hp`. Establish `h1 : (p : 𝓞 (maximalRealSubfield D.host.E)) ∈ s.v.asIdeal`. Rewrite using `[← s.w_under, Ideal.mem_comap, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp`. Rewrite `h1` using `[← hov, Ideal.mem_comap, map_natCast]`. Conclude with `h1`. Establish `hgne : ∀ k k' : Fin 2, k ≠ k' → D.host.g k ≠ D.host.g k'`. Introduce `k k' h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `fin_cases k <;> fin_cases k' <;> first | exact absurd rfl h | exact D.host.g_ne | exact D.host.g_ne.symm`. Take `⟨k, v, hkv⟩` from `(hPg s.w).1 hs`. Establish `hgk : (D.host.g k : 𝓞 D.host.E) ∈ s.w.asIdeal` using `by rw [hkv]; exact D.naut.plGw_over k v`. Establish `hQ : ∀ PP ∈ L.Q t, (D.host.g k : 𝓞 D.host.E) ∈ PP.asIdeal → False`. Introduce `PP hP hg`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q, hq, hcard, -, hqg⟩` from `(hL.Q_pl t PP hP).1`. Conclude with `not_two_primes PP.asIdeal (D.host.g_prime k) hq (hqg k).symm hg (natCast_mem_of_card PP hcard hq.ne_zero)`. Establish `h3 : s.w ∉ L.Q t` using `fun h => hQ s.w h hgk`. Use `⟨?_, fun PP hP hov => hQ PP hP (hA PP hov _ hgk), h3, ?_⟩` and prove the remaining obligations. Introduce `PP hP hne hov`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `GlobalTheory.SplitPlaceOver.eq_or_isConjPl D s PP hov with e | hc` into its components or cases. Conclude with `hne e.symm`. Take `⟨k', v', hkv'⟩` from `(hPg PP).1 hP`. Establish `hk : k' = k`. Assume the negation of the conclusion as `hk`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1 : (D.host.g k' : 𝓞 D.host.E) ∈ PP.asIdeal` using `by rw [hkv']; exact D.naut.plGw_over k' v'`. Conclude with `not_two_primes PP.asIdeal (D.host.g_prime k') (D.host.g_prime k) (hgne k' k hk) h1 (hA PP hov _ hgk)`. Substitute `hk` using the available equality. Rewrite `hc` using `[hkv, hkv']`. Conclude with `D.naut.plGw_nconj k' v' v hc`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hn`. Break down `(hL.Q_ram t s.w).1 hn with h | ⟨PP', hP', hc⟩` into its components or cases. Conclude with `h3 h`. Take `⟨q, hq, hcard, -, hqg⟩` from `(hL.Q_pl t PP' hP').1`. Take `⟨c', hc', hcq⟩` from `hc _ (natCast_mem_of_card PP' hcard hq.ne_zero)`.
-
-Establish `hq' : (q : 𝓞 D.host.E) = c'`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hcq]`. Simplify using the standard rewrite rules. Conclude with `not_two_primes s.w.asIdeal (D.host.g_prime k) hq (hqg k).symm hgk (hq' ▸ hc')`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem offPlace : ∀ (D : D7) (T : Type) (L : LevCh D T) (μ0 : T), L.Is μ0 → (∀ PP, PP ∈ L.Pg ↔ ∃ k v, PP = D.naut.plGw k v) → ∀ (t : T) (s : ReciprocityTheory.Aut.SplitPlace D.host.E), s.w ∈ L.Pg → (∀ PP ∈ L.Pg, PP ≠ s.w → ¬ NG.OverPl PP s.v) ∧ (∀ PP ∈ L.Q t, ¬ NG.OverPl PP s.v) ∧ s.w ∉ L.Q t ∧ (L.xiH t).UnrAt s.w := by
   intro D T L μ0 hL hPg t s hs

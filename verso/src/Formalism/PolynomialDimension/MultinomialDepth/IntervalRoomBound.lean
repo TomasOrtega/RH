@@ -10,21 +10,21 @@ open Real
 namespace RoomIProof
 
 /- English proof (translation)
-Establish `hQ0 : 0 < Q` using `by linarith`. Establish `hk0 : 0 < k` using `by linarith`. Establish `hC1 : 1 ≤ C` using `by linarith`. Establish `hN10 : 0 < N1` using `by linarith`. Establish `hR : (2 * Ib / b') * (b' / (2 * Q)) / 4 = Ib / (4 * Q)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hR, le_div_iff₀ (by positivity)]`. Establish `hW : 1 ≤ k * N1 ^ 2 * Q` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hk (one_le_pow₀ hN1)) hQ`. Establish `a1 : 12 * c ≤ 12 * c * (k * N1 ^ 2 * Q)` using `le_mul_of_one_le_right (by linarith) hW`. Establish `a2 : (N1 + 1) * (Cm * k * N1 * Q * c) ≤ (2 * N1) * (Cm * k * N1 * Q * c)` using `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3 : (12 + 2 * Cm) * (k * N1 ^ 2 * Q) * c ≤ (12 + 2 * Cm) * (k * N1 ^ 2 * Q) * (4 * X)` using `mul_le_mul_of_nonneg_left hc (by positivity)`. Establish `hL : 12 * c + (N1 + 1) * (Cm * k * N1 * Q * c) ≤ (48 + 8 * Cm) * (k * N1 ^ 2 * Q * X)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hV : 0 ≤ k * N1 ^ 2 * Q ^ 2 * X` using `by positivity`. Establish `hL2 : (12 * c + (N1 + 1) * (Cm * k * N1 * Q * c)) * (4 * Q) ≤ C * (k * N1 ^ 2 * Q ^ 2 * X)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1` using `mul_le_mul_of_nonneg_right hL (by positivity : 0 ≤ 4 * Q)`. Establish `b2` using `mul_le_mul_of_nonneg_right hC hV`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq4 : Q ^ 2 ≤ Q ^ 4` using `pow_le_pow_right₀ hQ (by norm_num)`. Establish `hq : Q ^ 2 ≤ Nr * Q ^ 4 * Y`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Q ^ 4 ≤ Nr * Q ^ 4` using `le_mul_of_one_le_left (by positivity) hN`. Establish `h3 : Nr * Q ^ 4 ≤ Nr * Q ^ 4 * Y` using `le_mul_of_one_le_right (by positivity) hY`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb2 : C * k ^ 3 * Q ^ 2 * X ≤ b'`. Establish `h4 : C * k ^ 3 * Q ^ 2 * X ≤ C * k ^ 3 * (Nr * Q ^ 4 * Y) * X` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hq (by positivity)) hX`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hIb' : Yb * Nr * La * b' ≤ Ib * k` using `(div_le_iff₀ hk0).mp hIb`. Establish `hYN : 1 ≤ Yb * Nr` using `one_le_mul_of_one_le_of_one_le (by linarith) hN`. Establish `hLa0 : 0 ≤ La` using `le_trans (by positivity) hLa`. Establish `c1 : N1 ^ 2 * b' ≤ Yb * Nr * La * b'`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1 : N1 ^ 2 * b' ≤ La * b'` using `mul_le_mul_of_nonneg_right hLa hb.le`. Establish `d2 : La * b' ≤ (Yb * Nr) * (La * b')` using `le_mul_of_one_le_left (by positivity) hYN`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `c2 : N1 ^ 2 * (C * k ^ 3 * Q ^ 2 * X) ≤ N1 ^ 2 * b'` using `mul_le_mul_of_nonneg_left hb2 (by positivity)`. Establish `c3 : C * (k * N1 ^ 2 * Q ^ 2 * X) * k ≤ C * (k * N1 ^ 2 * Q ^ 2 * X) * k * k` using `le_mul_of_one_le_right (by positivity) hk`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c4 : C * (k * N1 ^ 2 * Q ^ 2 * X) * k ≤ Ib * k` using `by linarith`. Establish `c5 : C * (k * N1 ^ 2 * Q ^ 2 * X) ≤ Ib` using `le_of_mul_le_mul_right c4 hk0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem core (C Cm N1 k Q c La b' Ib X Nr Y Yb : ℝ)
     (hCm : 0 ≤ Cm) (hC : 192 + 32 * Cm ≤ C) (hN1 : 1 ≤ N1) (hk : 1 ≤ k) (hQ : 1 ≤ Q)

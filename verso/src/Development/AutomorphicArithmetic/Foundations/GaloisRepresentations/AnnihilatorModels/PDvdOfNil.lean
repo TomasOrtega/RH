@@ -6,19 +6,19 @@ open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp TensorProd
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `K W _ _ _ _ _ M s u hu hnil`. Take `⟨n, hn⟩` from `hnil`. Establish `hroot : ∀ r ∈ (LinearMap.charpoly M).roots, r ∈ s`. Introduce `r hr`. Establish `hev : M.HasEigenvalue r` using `(Module.End.hasEigenvalue_iff_isRoot_charpoly M r).2 ((Polynomial.mem_roots (LinearMap.charpoly_monic M).ne_zero).1 hr)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `hev.exists_hasEigenvector`. Establish `h1` using `Module.End.aeval_apply_of_hasEigenvector (p := (Polynomial.C u * rootPol s) ^ n) hv`. Rewrite `h1` using `[map_pow, hn, LinearMap.zero_apply]`. Establish `h2 : ((Polynomial.C u * rootPol s) ^ n).eval r = 0` using `(smul_eq_zero.1 h1.symm).resolve_right hv.2`. Rewrite `h2` using `[Polynomial.eval_pow, Polynomial.eval_mul, Polynomial.eval_C]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (rootPol s).eval r = 0` using `(mul_eq_zero.1 (pow_eq_zero_iff'.1 h2).1).resolve_left hu`. Unfold `rootPol at h3`. Rewrite `h3` using `[Polynomial.eval_multiset_prod, Multiset.prod_eq_zero_iff, Multiset.map_map]`. Take `⟨a, ha, hra⟩` from `Multiset.mem_map.1 h3`. Simplify using `only [Function.comp_apply, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C] at hra`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[sub_eq_zero.1 hra]`. Conclude with `ha`. Use `set m := (LinearMap.charpoly M).roots.card with hm`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `hcp : ((LinearMap.charpoly M).roots.map fun a => Polynomial.X - Polynomial.C a).prod = LinearMap.charpoly M` using `Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq (LinearMap.charpoly_monic M) IsAlgClosed.card_roots_eq_natDegree`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hpow : rootPol s ^ m = ((m • s).map fun a => Polynomial.X - Polynomial.C a).prod`. Unfold `rootPol`. Rewrite using `[Multiset.map_nsmul, Multiset.prod_nsmul]`. Rewrite using `[← hcp, hpow]`. Apply `Multiset.prod_dvd_prod_of_le` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Multiset.map_le_map` to reduce the goal to its premises. Rewrite using `[Multiset.le_iff_count]`. Introduce `a`. Rewrite using `[Multiset.count_nsmul]`. Distinguish the cases in `ha : a ∈ (LinearMap.charpoly M).roots`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hs : 1 ≤ s.count a` using `Multiset.one_le_count_iff_mem.2 (hroot a ha)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Multiset.count_eq_zero.2 ha]`. Conclude with `Nat.zero_le _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.dvdOfNil_of :
     DvdOfNil := by

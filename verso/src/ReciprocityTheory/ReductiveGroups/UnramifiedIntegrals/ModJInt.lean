@@ -9,15 +9,15 @@ open Formalism.L2.Th1.CM
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hsum` using `hm.as_sum`. Rewrite `h` using `[hsum]`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finset_sum, Polynomial.eval₂_mul, Polynomial.eval₂_C] at h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hx1 : (1 : ℝ) ≤ ‖x‖` using `hlt.le`. Establish `hn0 : P.natDegree ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0]`. Simplify using `at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hbound : ‖∑ i ∈ Finset.range P.natDegree, (Int.castRingHom ℂ_[l]) (P.coeff i) * x ^ i‖ ≤ ‖x‖ ^ (P.natDegree - 1)`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[norm_mul, norm_pow]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ‖(Int.castRingHom ℂ_[l]) (P.coeff i)‖ ≤ 1`. Rewrite using `[eq_intCast (Int.castRingHom ℂ_[l])]`. Conclude with `IsUltrametricDist.norm_intCast_le_one _ _`. Combine the equalities or inequalities in the displayed calculation. Establish `heq` using `eq_neg_of_add_eq_zero_left h`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ‖x‖ ^ P.natDegree ≤ ‖x‖ ^ (P.natDegree - 1)`. Rewrite using `[← norm_pow, heq, norm_neg]`. Conclude with `hbound`. Establish `h2 : ‖x‖ ^ (P.natDegree - 1) < ‖x‖ ^ P.natDegree` using `pow_lt_pow_right₀ hlt (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_root {l : ℕ} [Fact l.Prime] {x : ℂ_[l]} (P : Polynomial ℤ) (hm : P.Monic)
     (h : P.eval₂ (Int.castRingHom ℂ_[l]) x = 0) : ‖x‖ ≤ 1 := by
@@ -52,9 +52,9 @@ theorem norm_le_one_of_root {l : ℕ} [Fact l.Prime] {x : ℂ_[l]} (P : Polynomi
   linarith
 
 /- English proof (translation)
-Introduce `d L hsf hd hL l _ ι`. Take `⟨P, hm, hP⟩` from `cm1 d L hsf hd hL`. Use `norm_le_one_of_root P hm ?_` and prove the remaining obligations. Establish `h` using `congrArg (ι : ℂ →+* ℂ_[l]) hP`. Rewrite `h` using `[Polynomial.hom_eval₂, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem jInt : JInt := by
   intro d L hsf hd hL l _ ι

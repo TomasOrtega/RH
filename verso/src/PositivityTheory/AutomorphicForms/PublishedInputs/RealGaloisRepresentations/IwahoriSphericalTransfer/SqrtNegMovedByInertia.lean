@@ -16,11 +16,11 @@ namespace GlobalTheory.SqrtNegRam
 open Polynomial
 
 /- English proof (translation)
-Establish `h2` using `GlobalTheory.LamTie.ExpCond.not_mem_sq_of_not_dvd_discr hp hd v hv`. Establish `e : (p : F) = algebraMap (𝓞 F) F (p : 𝓞 F)` using `by simp`. Rewrite using `[e, v.valuation_of_algebraMap]`. Establish `h0 : ((p : ℕ) : 𝓞 F) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `hne` using `v.intValuation_ne_zero _ h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(v.intValuation_le_pow_iff_mem _ 1).2 (by simpa using hv)`. Establish `h2'` using `mt (v.intValuation_le_pow_iff_mem _ 2).1 h2`. Rewrite `h1`, `h2'`, the goal using `[← WithZero.exp_log hne]`. Rewrite `h1`, `h2'` using `[WithZero.exp_le_exp]`. Rewrite using `[WithZero.exp_inj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Move the coercions through the operations in `at h1 h2'`. Use linear arithmetic over natural numbers and integers.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 -/
 theorem valuation_natCast_eq {F : Type} [Field F] [NumberField F] {p : ℕ} (hp : p.Prime)
     (hd : ¬ (p : ℤ) ∣ discr F) (v : HeightOneSpectrum (𝓞 F)) (hv : ((p : ℕ) : 𝓞 F) ∈ v.asIdeal) :
@@ -39,13 +39,13 @@ theorem valuation_natCast_eq {F : Type} [Field F] [NumberField F] {p : ℕ} (hp 
   omega
 
 /- English proof (translation)
-Introduce `h`. Take `⟨ι, hι⟩` from `GlobalTheory.LocDict.exists_isLocEmb F Ω A v hA`. Establish `hmem : ∀ e : F, algebraMap F Ω e ∈ A ↔ v.valuation F e ≤ 1` using `fun e => by`. Rewrite using `[hι, ι.commutes]`. Conclude with `GlobalTheory.LocEmbExist.isIntegral_algebraMap_iff v e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : algebraMap F Ω (y ^ 2 * p) = -(algebraMap F Ω y * δ) ^ 2`. Rewrite using `[mul_pow, hδ, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hw : A.valuation (algebraMap F Ω (y ^ 2 * p)) = 1`. Rewrite using `[he, Valuation.map_neg, map_pow, h, one_pow]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : v.valuation F (y ^ 2 * p) ≤ 1` using `(hmem _).1 ((A.valuation_le_one_iff _).1 hw.le)`. Establish `h2 : v.valuation F (y ^ 2 * p)⁻¹ ≤ 1` using `(hmem _).1 ((A.valuation_le_one_iff _).1 (by rw [map_inv₀, map_inv₀, hw, inv_one]))`. Establish `hy0 : v.valuation F y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy`. Rewrite `h2` using `[map_inv₀]`. Rewrite `h1`, `h2` using `[map_mul, map_pow, valuation_natCast_eq hp hd v hv, ← WithZero.exp_log hy0, ← WithZero.exp_nsmul, ← WithZero.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← WithZero.exp_neg, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Rewrite `h1` using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Rewrite `h1`, `h2` using `[nsmul_eq_mul]`. Move the coercions through the operations in `at h1 h2`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem valuation_mul_ne_one {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {p : ℕ} (hp : p.Prime) (hd : ¬ (p : ℤ) ∣ discr F) {δ : Ω}
@@ -80,51 +80,47 @@ namespace GlobalTheory.SqrtNegRam
 open Polynomial
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ p hp _ hd δ hδ v A hv hA`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Establish `KL` using `valuation_mul_ne_one hp hd hδ hv hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hp0 : (p : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `hδ0 : δ ≠ 0`. Introduce and unpack `rfl`. Apply `hp0` to reduce the goal to its premises. Take the linear combination `hδ`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `set f : F[X] := X ^ 2 + C (p : F) with hfdef`. Establish `hf_root : ∀ x : Ω, aeval x f = 0 ↔ x ^ 2 = -(p : Ω)`. Introduce `x`. Simplify using `only [hfdef, map_add, map_pow, aeval_X, aeval_C, map_natCast]`. Apply the tactic sequence `constructor <;> intro h <;> linear_combination h`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hmon : f.Monic` using `monic_X_pow_add_C _ two_ne_zero`. Establish `hirr : Irreducible f`. Use `Polynomial.irreducible_of_degree_le_three_of_not_isRoot ?_ ?_` and prove the remaining obligations. Rewrite using `[hfdef, natDegree_X_pow_add_C]`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c hc`. Establish `hc' : (algebraMap F Ω c) ^ 2 = -(p : Ω)`. Rewrite using `[← hf_root, Polynomial.aeval_algebraMap_apply_eq_algebraMap_eval, hc, map_zero]`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Apply `hp0` to reduce the goal to its premises. Rewrite `hc'` using `[map_zero]`. Take the linear combination `hc'`. Establish `hc1 : (algebraMap F Ω c)⁻¹ * algebraMap F Ω c = 1` using `inv_mul_cancel₀ ((_root_.map_ne_zero _).2 hc0)`. Establish `hfac : (algebraMap F Ω c - δ) * (algebraMap F Ω c + δ) = 0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hc' - hδ`. Break down `mul_eq_zero.1 hfac with h | h` into its components or cases. Apply `KL c⁻¹ (inv_ne_zero hc0)` to reduce the goal to its premises. Rewrite using `[map_inv₀, ← sub_eq_zero.1 h, hc1, map_one]`. Apply `KL c⁻¹ (inv_ne_zero hc0)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : δ = -(algebraMap F Ω c)` using `by linear_combination h`. Rewrite using `[e, mul_neg, map_inv₀, hc1, Valuation.map_neg, map_one]`. Establish `hmin : f = minpoly F δ` using `minpoly.eq_of_irreducible_of_monic hirr ((hf_root δ).2 hδ) hmon`. Establish `hmin' : f = minpoly F (-δ)` using `minpoly.eq_of_irreducible_of_monic hirr ((hf_root _).2 (by rw [neg_sq]; exact hδ)) hmon`. Take `⟨σ₀, hσ₀⟩` from `(Normal.minpoly_eq_iff_mem_orbit Ω).1 (hmin'.symm.trans hmin)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hσ₀' : σ₀ δ = -δ` using `hσ₀`. Set `M : IntermediateField F Ω` to `IntermediateField.adjoin F (f.rootSet Ω)`. Use `haveI : Polynomial.IsSplittingField F M f := IntermediateField.adjoin_rootSet_isSplittingField (IsAlgClosed.splits _)`. Use `haveI : Normal F M := Normal.of_isSplittingField f`. Use `haveI : FiniteDimensional F M := Polynomial.IsSplittingField.finiteDimensional M f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Use `haveI : IsGalois F M := ⟨⟩`. Set `τ : M ≃ₐ[F] M` to `σ₀.restrictNormal M`. Establish `hδM : δ ∈ M` using `IntermediateField.subset_adjoin _ _ (by rw [Polynomial.mem_rootSet]; exact ⟨hmon.ne_zero, (hf_root δ).2 hδ⟩)`. Establish `hform : ∀ z ∈ M, ∃ a b : F, z = algebraMap F Ω a + algebraMap F Ω b * δ`. Introduce `z hz`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `hz' : z ∈ Algebra.adjoin F (f.rootSet Ω)`. Rewrite using `[← IntermediateField.adjoin_toSubalgebra_of_isAlgebraic (fun x _ => Algebra.IsAlgebraic.isAlgebraic x)]`. Conclude with `hz`. Use `clear hz`. Proceed by induction on `hz' using Algebra.adjoin_induction with`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Rewrite `hx` using `[Polynomial.mem_rootSet, hf_root]`. Establish `hfx : (x - δ) * (x + δ) = 0` using `by linear_combination hx.2 - hδ`. Break down `mul_eq_zero.1 hfx with h | h` into its components or cases. Conclude with `⟨0, 1, by rw [map_zero, map_one]; linear_combination h⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨0, -1, by rw [map_zero, map_neg, map_one]; linear_combination h⟩`. Consider the case `algebraMap r => exact ⟨r, 0, by rw [map_zero]; ring⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, b, rfl⟩` from `hx`. Take `⟨c, d, rfl⟩` from `hy`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨a + c, b + d, by rw [map_add, map_add]; ring⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨a, b, rfl⟩` from `hx`. Take `⟨c, d, rfl⟩` from `hy`. Use `⟨a * c - b * d * p, a * d + b * c, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_add, map_sub, map_mul, map_natCast]`. Take the linear combination `(algebraMap F Ω b * algebraMap F Ω d) * hδ`. Establish `hcond : ∀ x : M, A.valuation (algebraMap M Ω x) ≤ 1 → A.valuation (algebraMap M Ω (τ x) - algebraMap M Ω x) < 1`. Introduce `x hx`. Rewrite using `[AlgEquiv.restrictNormal_commutes]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, b, hab⟩` from `hform (algebraMap M Ω x) x.2`. Rewrite `hx`, the goal using `[hab]`. Establish `e : σ₀ (algebraMap F Ω a + algebraMap F Ω b * δ) - (algebraMap F Ω a + algebraMap F Ω b * δ) = (-2 : Ω) * (algebraMap F Ω b * δ)`. Rewrite using `[map_add, map_mul, AlgEquiv.commutes, AlgEquiv.commutes, hσ₀']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[e]`. Establish `hb1 : A.valuation (algebraMap F Ω b * δ) < 1`. Distinguish the cases in `hb : b = 0`. Rewrite using `[hb, map_zero, zero_mul, Valuation.map_zero]`. Conclude with `zero_lt_one`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne1` using `KL b hb`. Establish `hne : A.valuation (algebraMap F Ω a) ≠ A.valuation (algebraMap F Ω b * δ)`. Introduce `heq`. Establish `hbd : algebraMap F Ω b * δ ≠ 0` using `mul_ne_zero ((_root_.map_ne_zero _).2 hb) hδ0`. Establish `ha : a ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `rfl`. Rewrite `heq` using `[map_zero, Valuation.map_zero]`. Conclude with `hbd ((Valuation.zero_iff _).1 heq.symm)`. Apply `KL (b / a) (div_ne_zero hb ha)` to reduce the goal to its premises. Establish `haw : A.valuation (algebraMap F Ω a) ≠ 0` using `(Valuation.ne_zero_iff _).2 ((_root_.map_ne_zero _).2 ha)`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_div₀, div_mul_eq_mul_div, map_div₀, ← heq, div_self haw]`. Rewrite `hx` using `[Valuation.map_add_of_distinct_val _ hne]`. Conclude with `lt_of_le_of_ne (le_trans (le_max_right _ _) hx) hne1`. Rewrite using `[map_mul]`. Establish `h2 : A.valuation (-2 : Ω) ≤ 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Valuation.map_neg]`. Use `valuation_natCast_le_one A 2` as an intermediate fact. Simplify using `using this`. Combine the equalities or inequalities in the displayed calculation. Take `⟨σ, hσ, hστ⟩` from `GlobalTheory.InertiaLift.exists_mem_Ine_lift A M τ hcond`.
-
-Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations. Establish `h1` using `hστ ⟨δ, hδM⟩`. Rewrite `h1` using `[AlgEquiv.restrictNormal_commutes]`. Express the relevant statement in the definitionally equal form `σ δ = σ₀ δ at h1`. Rewrite using `[h1, hσ₀']`.
-
-Introduce `h`. Establish `h2 : (2 : Ω) * δ = 0` using `by linear_combination -h`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Conclude with `two_ne_zero h3`. Conclude with `hδ0 h3`.
+A detailed English derivation is pending.
 -/
 theorem sqrt_neg_moved_by_inertia : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (p : ℕ), p.Prime → p ≠ 2 → ¬ (p : ℤ) ∣ discr F → ∀ (δ : Ω), δ ^ 2 = -(p : Ω) → ∀ (v : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω), ((p : ℕ) : 𝓞 F) ∈ v.asIdeal → IsPlaceOver A v → ∃ s ∈ Ine (F := F) A, s δ ≠ δ := by
   intro F Ω _ _ _ _ _ p hp _ hd δ hδ v A hv hA

@@ -5,7 +5,7 @@ import CompanionTheory.AutomorphicTheory.ProductFormulaTheory.GrothendieckRingPo
 namespace CompanionTheory.Groth
 
 /- English proof (translation)
-The claim follows from `groth_of_cls fun k _ _ _ _ => cls_of hZ k (hI k) (H k)`.
+A detailed English derivation is pending.
 -/
 theorem groth_of_three (hZ : GlobalTheory.Published.SegmentRepresentation)
     (hI : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], Zc.Cos.LUnlinkedIrr k)

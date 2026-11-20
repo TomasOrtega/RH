@@ -6,19 +6,19 @@ open scoped Pointwise ENNReal
 namespace GlobalTheory.CompanionTheory.Ar.Cmp.DetMod
 
 /- English proof (translation)
-Establish `hy : ∀ i, y i ∈ Λ` using `fun i => by`. Establish `h1 : y i - x i ∈ Λ` using `Submodule.smul_le_right (hxy i)`. Simplify using `using Λ.add_mem h1 (hx i)`. Establish `hupd : ∀ (z : ι → V), (∀ i, z i ∈ Λ) → ∀ i, ∀ w ∈ 𝔞 • Λ, f (Function.update z i w) ∈ 𝔞 • I`. Introduce `z hz i w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.smul_induction_on hw ?_ ?_` and prove the remaining obligations. Introduce `r hr n hn`. Rewrite using `[f.map_update_smul]`. Use `Submodule.smul_mem_smul hr (hI _ fun j => ?_)` and prove the remaining obligations. Distinguish the cases in `h : j = i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `using hn`. Simplify `hz j` using `[Function.update_of_ne h]`. Introduce `a b ha hb`. Rewrite using `[f.map_update_add]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ ha hb`. Establish `key : ∀ s : Finset ι, f (s.piecewise y x) - f x ∈ 𝔞 • I`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `insert i s his ih`. Establish `hz : ∀ j, s.piecewise y x j ∈ Λ` using `fun j => by`. Distinguish the cases in `h : j ∈ s`. Simplify `hy j` using `[h]`. Simplify `hx j` using `[h]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1` using `hupd _ hz i _ (hxy i)`. Rewrite `h1` using `[f.map_update_sub]`. Establish `h2 : Function.update (s.piecewise y x) i (x i) = s.piecewise y x`. Rewrite using `[Function.update_eq_self_iff]`. Simplify using `[his]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Rewrite using `[Finset.piecewise_insert]`. Simplify using `using Submodule.add_mem _ h1 ih`. Simplify using `using key Finset.univ`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem multilinear_sub_mem {O V W ι : Type*} [CommRing O] [AddCommGroup V] [Module O V]
     [AddCommGroup W] [Module O W] [Fintype ι] [DecidableEq ι]
@@ -61,15 +61,13 @@ theorem multilinear_sub_mem {O V W ι : Type*} [CommRing O] [AddCommGroup V] [Mo
   simpa using key Finset.univ
 
 /- English proof (translation)
-Set `J : FractionalIdeal (nonZeroDivisors O) K` to `⟨I, hI⟩`. Establish `hJ : J ≠ 0`. Introduce `h0`. Apply `hI0` to reduce the goal to its premises. Establish `: (J : Submodule O K) = ((0 : FractionalIdeal (nonZeroDivisors O) K) : Submodule O K)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[h0]`. Rewrite `this` using `[FractionalIdeal.coe_zero]`. Conclude with `this`. Establish `hle : FractionalIdeal.spanSingleton (nonZeroDivisors O) δ * J ≤ (𝔞 : FractionalIdeal (nonZeroDivisors O) K) * J`. Rewrite using `[FractionalIdeal.spanSingleton_mul_le_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Use `Submodule.smul_induction_on (p := fun w => w ∈ (𝔞 : FractionalIdeal (nonZeroDivisors O) K) * J) (h t ht) ?_ ?_` and prove the remaining obligations. Introduce `r hr n hn`. Rewrite using `[Algebra.smul_def]`. Conclude with `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_coeIdeal_of_mem _ hr) hn`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b ha hb`. Conclude with `Submodule.add_mem (((𝔞 : FractionalIdeal (nonZeroDivisors O) K) * J : FractionalIdeal _ _) : Submodule O K) ha hb`. Establish `hle2` using `mul_le_mul_left hle J⁻¹`. Rewrite `hle2` using `[mul_assoc, mul_assoc, mul_inv_cancel₀ hJ, mul_one, mul_one, FractionalIdeal.spanSingleton_le_iff_mem, FractionalIdeal.mem_coeIdeal]`. Take `⟨a, ha, rfl⟩` from `hle2`.
-
-Conclude with `⟨a, ha, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_of_smul_le {O K : Type*} [CommRing O] [IsDedekindDomain O] [Field K] [Algebra O K]
     [IsFractionRing O K] (I : Submodule O K) (hI : IsFractional (nonZeroDivisors O) I)
@@ -100,31 +98,29 @@ theorem mem_of_smul_le {O K : Type*} [CommRing O] [IsDedekindDomain O] [Field K]
   exact ⟨a, ha, rfl⟩
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ N Λ 𝔞 γ hfg hsp hγ`. Set `f : MultilinearMap O (fun _ : Fin N => (Fin N → K)) K` to `(Matrix.detRowAlternating (n := Fin N) (R := K)).toMultilinearMap.restrictScalars O`. Establish `hf : ∀ z, f z = (Matrix.of z).det` using `fun z => rfl`. Set `I : Submodule O K` to `Submodule.span O {t | ∃ z : Fin N → Fin N → K, (∀ i, z i ∈ Λ) ∧ f z = t}`. Establish `hI : ∀ z : Fin N → Fin N → K, (∀ i, z i ∈ Λ) → f z ∈ I` using `fun z hz => Submodule.subset_span ⟨z, hz, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨d, hd⟩ : ∃ d : nonZeroDivisors O, ∀ x ∈ Λ, ∀ j, IsLocalization.IsInteger O ((d : O) • x j) := by`. Take `⟨S, rfl⟩` from `hfg`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) (fun p : S × Fin N => (p.1 : Fin N → K) p.2)`. Use `⟨d, fun x hx j => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `mem x hx => exact hd (⟨x, hx⟩, j)`. Consider the case `zero => simpa using IsLocalization.isInteger_zero`. Consider the case `add x y _ _ hx hy`. Rewrite using `[Pi.add_apply, smul_add]`. Conclude with `IsLocalization.isInteger_add hx hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul a x _ hx`. Rewrite using `[Pi.smul_apply, smul_comm]`. Conclude with `IsLocalization.isInteger_smul hx`. Establish `hfrac : IsFractional (nonZeroDivisors O) I`. Rewrite using `[FractionalIdeal.isFractional_span_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨(d : O) ^ N, pow_mem d.2 N, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `choose m hm using fun i j => hd _ (hz i) j`. Use `⟨(Matrix.of m).det, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det, hf, Algebra.smul_def, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `: (algebraMap O K).mapMatrix (Matrix.of m) = algebraMap O K d • Matrix.of z`. Use extensionality with `i j`. Simplify using `[hm, Algebra.smul_def]`. Rewrite using `[this, Matrix.det_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hI0 : I ≠ ⊥`. Introduce `h0`. Take `⟨s, hs, hsp', hli⟩` from `exists_linearIndependent K (Λ : Set (Fin N → K))`. Rewrite `hsp'` using `[hsp]`. Set `b : Module.Basis s K (Fin N → K)` to `Module.Basis.mk hli (by simp [hsp'])`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : s ≃ Fin N` to `b.indexEquiv (Pi.basisFun K (Fin N))`. Set `b'` to `b.reindex e`. Establish `hb' : ∀ i, b' i ∈ Λ` using `fun i => by`. Simplify using `only [b', b, Module.Basis.reindex_apply, Module.Basis.mk_apply]`. Conclude with `hs (e.symm i).2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hI b' hb'`. Rewrite `h1` using `[h0, Submodule.mem_bot, hf]`. Establish `h2 : IsUnit (Matrix.of (b' : Fin N → Fin N → K))` using `Matrix.linearIndependent_rows_iff_isUnit.mp b'.linearIndependent`. Rewrite `h2` using `[Matrix.isUnit_iff_isUnit_det, h1]`. Conclude with `not_isUnit_zero h2`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hδ⟩` from `mem_of_smul_le I hfrac hI0 𝔞 (γ.det - 1) (by`. Introduce `t ht`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨z, hz, rfl⟩` from `hx`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `multilinear_sub_mem f Λ I 𝔞 hI z (fun i => γ *ᵥ z i) hz (fun i => hγ _ (hz i))`. Establish `h2 : Matrix.of (fun i => γ *ᵥ z i) = Matrix.of z * γᵀ`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`. Rewrite `h1` using `[hf, h2, Matrix.det_mul, Matrix.det_transpose, ← hf]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul a x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx)`. Conclude with `⟨a, ha, by rw [← hδ]; ring⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (O K : Type) [CommRing O] [IsDedekindDomain O] [Field K] [Algebra O K] [IsFractionRing O K] (N : ℕ) (Λ : Submodule O (Fin N → K)) (𝔞 : Ideal O) (γ : Matrix (Fin N) (Fin N) K), Λ.FG → Submodule.span K (Λ : Set (Fin N → K)) = ⊤ → (∀ x ∈ Λ, γ *ᵥ x - x ∈ 𝔞 • Λ) → ∃ a ∈ 𝔞, γ.det = 1 + algebraMap O K a := by
   intro O K _ _ _ _ _ N Λ 𝔞 γ hfg hsp hγ

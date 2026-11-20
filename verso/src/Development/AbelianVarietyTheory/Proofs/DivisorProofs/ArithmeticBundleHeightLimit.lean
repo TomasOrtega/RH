@@ -33,7 +33,7 @@ section Ext
 variable {F : Type} [Field F] {G X : Scheme.{0}} [IsIntegral G] (s : G ⟶ Sp F) (t : X ⟶ Sp F)
 
 /- English proof (translation)
-The claim follows from `Scheme.SpecMap_stalkSpecializes_fromSpecStalk ((genericPoint_spec G).specializes trivial)`.
+A detailed English derivation is pending.
 -/
 private theorem spMap_fromSpecStalk (y : G) :
     spMap (algebraMap (G.presheaf.stalk y) G.functionField) ≫ G.fromSpecStalk y =
@@ -41,7 +41,7 @@ private theorem spMap_fromSpecStalk (y : G) :
   Scheme.SpecMap_stalkSpecializes_fromSpecStalk ((genericPoint_spec G).specializes trivial)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by refine Dense.mono ?_ (dense_iff_closure_eq.2 (genericPoint_spec G)) rintro _ rfl exact ⟨IsLocalRing.closedPoint _, Scheme.fromSpecStalk_closedPoint⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem isDominant_generic : IsDominant (G.fromSpecStalk (genericPoint G)) := ⟨by
   refine Dense.mono ?_ (dense_iff_closure_eq.2 (genericPoint_spec G))
@@ -49,25 +49,23 @@ private theorem isDominant_generic : IsDominant (G.fromSpecStalk (genericPoint G
   exact ⟨IsLocalRing.closedPoint _, Scheme.fromSpecStalk_closedPoint⟩⟩
 
 /- English proof (translation)
-Establish `hsep : X.IsSeparated` using `⟨by rw [← terminal.comp_from t]; infer_instance⟩`. Establish `hdom` using `isDominant_generic (G := G)`. Establish `hcan : ∀ (y : G) (a b : Sp (G.presheaf.stalk y) ⟶ Sp F), spMap (algebraMap (G.presheaf.stalk y) G.functionField) ≫ a = spMap (algebraMap (G.presheaf.stalk y) G.functionField) ≫ b → a = b`. Introduce `y a b hab`. Rewrite `hab`, the goal using `[← Spec.map_preimage a, ← Spec.map_preimage b]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [spMap, ← Spec.map_comp] at hab`. Use `congr 1`. Use extensionality with `z`. Use `congrArg (fun g => g.hom z) (Spec.map_injective hab)` as an intermediate fact. Conclude with `FaithfulSMul.algebraMap_injective (G.presheaf.stalk y) G.functionField this`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspec` using `spMap_fromSpecStalk (G := G)`. Set `f : G ⤏ X` to `Scheme.RationalMap.ofFunctionField s t p' hp`. Establish `hfF : f.fromFunctionField = p'` using `Scheme.RationalMap.fromFunctionField_ofFunctionField _ _ _ _`. Establish `htop : f.domain = ⊤`. Use `top_le_iff.1 fun y _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl1⟩` from `hl y`. Establish `h2 : l ≫ t = G.fromSpecStalk y ≫ s`. Apply `hcan y` to reduce the goal to its premises. Rewrite using `[← Category.assoc, hl1, hp, ← Category.assoc, hspec]`. Use `Scheme.RationalMap.mem_domain.2 ⟨Scheme.PartialMap.ofFromSpecStalk (x := y) s t l h2, Scheme.PartialMap.mem_domain_ofFromSpecStalk (x := y) s t l h2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Scheme.RationalMap.eq_of_fromFunctionField_eq` to reduce the goal to its premises. Rewrite using `[Scheme.RationalMap.fromFunctionField_toRationalMap, hfF, ← hl1]`. Establish `hm` using `Scheme.PartialMap.mem_domain_ofFromSpecStalk (x := y) s t l h2`. Establish `e1 : spMap (algebraMap (G.presheaf.stalk y) G.functionField) ≫ (Scheme.PartialMap.ofFromSpecStalk (x` using `y) s t l h2).fromSpecStalkOfMem hm = (Scheme.PartialMap.ofFromSpecStalk (x := y) s t l h2).fromFunctionField := by`. Simplify using `only [Scheme.PartialMap.fromSpecStalkOfMem]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc]`. Use `congr 1`. Rewrite using `[← cancel_mono (Scheme.PartialMap.ofFromSpecStalk (x := y) s t l h2).domain.ι, Category.assoc, Scheme.Opens.fromSpecStalkOfMem_ι, Scheme.Opens.fromSpecStalkOfMem_ι]`. Conclude with `hspec y`. Rewrite using `[← e1, Scheme.PartialMap.fromSpecStalkOfMem_ofFromSpecStalk]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `k : G ⟶ f.domain.toScheme` to `IsOpenImmersion.lift f.domain.ι (𝟙 G) (by rw [Scheme.Opens.range_ι, htop]; simp)`. Establish `hk : k ≫ f.domain.ι = 𝟙 G` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hm : genericPoint G ∈ f.toPartialMap.domain`. Express the relevant statement in the definitionally equal form `_ ∈ f.domain`. Rewrite using `[htop]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact.
 
-Discharge the goal by the elementary cases of `trivial`. Establish `hm' : genericPoint G ∈ f.domain` using `by rw [htop]; trivial`. Establish `e2 : G.fromSpecStalk (genericPoint G) ≫ k = f.domain.fromSpecStalkOfMem _ hm'`. Rewrite using `[← cancel_mono f.domain.ι, Scheme.Opens.fromSpecStalkOfMem_ι, Category.assoc, hk, Category.comp_id]`. Establish `hg : G.fromSpecStalk (genericPoint G) ≫ (k ≫ f.toPartialMap.hom) = p'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ f.toPartialMap.hom) e2)`. Use `_ = f.toPartialMap.fromFunctionField := rfl`. Use `_ = p' := by`. Rewrite using `[← Scheme.RationalMap.fromFunctionField_toRationalMap, Scheme.RationalMap.toRationalMap_toPartialMap, hfF]`.
-
-Use `⟨k ≫ f.toPartialMap.hom, hg, ?_⟩` and prove the remaining obligations. Apply `ext_of_isDominant (G.fromSpecStalk (genericPoint G))` to reduce the goal to its premises. Rewrite using `[← Category.assoc, hg, hp]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_hom_of_extends [IsProper t] (p' : Sp G.functionField ⟶ X)
     (hp : p' ≫ t = G.fromSpecStalk (genericPoint G) ≫ s)
@@ -132,23 +130,21 @@ private theorem exists_hom_of_extends [IsProper t] (p' : Sp G.functionField ⟶ 
   rw [← Category.assoc, hg, hp]
 
 /- English proof (translation)
-Establish `lift : ∀ W : ValuationSubring G.functionField, GlobalTheory.DominatesStalk W y → ∃ q : Sp W ⟶ X, spMap (algebraMap W G.functionField) ≫ q = p'`. Introduce `W hW`. Take `⟨l, hl, -⟩` from `GlobalTheory.dominatesStalk_iff_exists_hom.mp hW`. Establish `hsq : p' ≫ t = spMap (algebraMap W G.functionField) ≫ (l ≫ s)`. Rewrite using `[hp', ← Category.assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `hl.symm`. Take `⟨q, ⟨-, q1⟩, -⟩` from `GlobalTheory.ModelPoints.existsUnique_extension t p' (l ≫ s) hsq`. Conclude with `⟨q, q1⟩`. Take `⟨W₀, hW₀⟩` from `GlobalTheory.exists_dominatesStalk y`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q₀, hq₀⟩` from `lift W₀ hW₀`. Take `⟨y', hy'⟩ : ∃ y', q₀ (IsLocalRing.closedPoint W₀) = y'` from `⟨_, rfl⟩`. Take `⟨φ₀, hφ₀⟩` from `GalCarry.Corr.exists_spec_stalk_of_closedPoint X _ W₀ q₀ hy'`. Set `χ : X.presheaf.stalk y' →+* G.functionField` to `(algebraMap W₀ G.functionField).comp φ₀.hom`. Establish `hχ : Spec.map (CommRingCat.ofHom χ) ≫ X.fromSpecStalk y' = p'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hq₀, ← hφ₀]`. Use `show Spec.map (φ₀ ≫ CommRingCat.ofHom (algebraMap W₀ G.functionField)) ≫ _ = _`. Rewrite using `[Spec.map_comp, Category.assoc]`. Establish `hmem : ∀ a, χ a ∈ (algebraMap (G.presheaf.stalk y) G.functionField).range`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `GalCarry.Corr.mem_range_of_forall_dominatesStalk G y (χ a) (fun W hW => ?_)` and prove the remaining obligations. Take `⟨q, hq⟩` from `lift W hW`. Take `⟨φ, hφ⟩` from `GalCarry.Corr.exists_spec_stalk_of_closedPoint X _ W q ((hcen W W₀ q q₀ hW hW₀ hq hq₀).trans hy')`. Establish `e : Spec.map (φ ≫ CommRingCat.ofHom (algebraMap W G.functionField)) ≫ X.fromSpecStalk y' = Spec.map (CommRingCat.ofHom χ) ≫ X.fromSpecStalk y'`. Rewrite using `[hχ, Spec.map_comp, Category.assoc, hφ, ← hq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e'` using `Spec.map_injective ((cancel_mono _).mp e)`. Establish `: χ a = algebraMap W G.functionField (φ.hom a)` using `(congr($(e') a)).symm`. Rewrite using `[this]`. Conclude with `(φ.hom a).2`. Set `ι` to `algebraMap (G.presheaf.stalk y) G.functionField`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hinj : Function.Injective ι` using `IsFractionRing.injective _ _`. Set `e` to `RingEquiv.ofLeftInverse (Function.leftInverse_invFun hinj)`. Set `ψ : X.presheaf.stalk y' →+* G.presheaf.stalk y` to `e.symm.toRingHom.comp (χ.codRestrict ι.range hmem)`. Establish `hψ : ι.comp ψ = χ`. Use extensionality with `a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show ι (e.symm ⟨χ a, hmem a⟩) = χ a`. Conclude with `congrArg Subtype.val (e.apply_symm_apply ⟨χ a, hmem a⟩)`. Use `⟨Spec.map (CommRingCat.ofHom ψ) ≫ X.fromSpecStalk y', ?_⟩` and prove the remaining obligations. Rewrite using `[← hχ, ← hψ, ← Category.assoc]`. Use `congr 1`.
-
-Conclude with `(Spec.map_comp (CommRingCat.ofHom ψ) (CommRingCat.ofHom ι)).symm`.
+A detailed English derivation is pending.
 -/
 private theorem extends_stalk [IsProper t] (p' : Sp G.functionField ⟶ X)
     (hp' : p' ≫ t = G.fromSpecStalk (genericPoint G) ≫ s) (y : G) [IsIntegrallyClosed (G.presheaf.stalk y)]
@@ -204,13 +200,13 @@ private theorem extends_stalk [IsProper t] (p' : Sp G.functionField ⟶ X)
   exact (Spec.map_comp (CommRingCat.ofHom ψ) (CommRingCat.ofHom ι)).symm
 
 /- English proof (translation)
-Set `κ` to `IsLocalRing.ResidueField R`. Use `letI : Algebra κ (IsLocalRing.ResidueField A) := (IsLocalRing.ResidueField.map α).toAlgebra`. Use `letI : Algebra κ (IsLocalRing.ResidueField B) := (IsLocalRing.ResidueField.map β).toAlgebra`. Set `T` to `TensorProduct κ (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField B)`. Take `⟨m, hm⟩` from `Ideal.exists_maximal T`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `letI : Field (T ⧸ m) := Ideal.Quotient.field m`. Set `k` to `AlgebraicClosure (T ⧸ m)`. Set `j : T →+* k` to `(algebraMap (T ⧸ m) k).comp (Ideal.Quotient.mk m)`. Set `j₁ : IsLocalRing.ResidueField A →+* k` to `j.comp Algebra.TensorProduct.includeLeftRingHom`. Set `j₂ : IsLocalRing.ResidueField B →+* k` to `j.comp Algebra.TensorProduct.includeRight.toRingHom`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `loc : ∀ {C : Type} [CommRing C] [IsLocalRing C] (i : IsLocalRing.ResidueField C →+* k), IsLocalHom (i.comp (IsLocalRing.residue C))` using `fun i => ⟨fun a ha => by`. Assume the negation of the conclusion as `hn`. Rewrite `ha` using `[RingHom.comp_apply, (IsLocalRing.residue_eq_zero_iff a).2 hn, map_zero]`. Conclude with `not_isUnit_zero ha⟩`. Use `⟨k, inferInstance, inferInstance, j₁.comp (IsLocalRing.residue A), j₂.comp (IsLocalRing.residue B), loc _, loc _, RingHom.ext fun r => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : IsLocalRing.residue A (α r) = algebraMap κ _ (IsLocalRing.residue R r)` using `rfl`. Establish `h2 : IsLocalRing.residue B (β r) = algebraMap κ _ (IsLocalRing.residue R r)` using `rfl`. Simplify using `only [RingHom.comp_apply, h1, h2, j₁, j₂]`. Use `congr 1`. Conclude with `(RingHom.congr_fun Algebra.TensorProduct.includeLeftRingHom_comp_algebraMap _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem exists_common_field {R A B : Type} [CommRing R] [CommRing A] [CommRing B] [IsLocalRing R] [IsLocalRing A]
     [IsLocalRing B] (α : R →+* A) (β : R →+* B) [IsLocalHom α] [IsLocalHom β] :
@@ -251,16 +247,16 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Take `⟨u, hu, e⟩` from `h`. Take `⟨u', hu', e'⟩` from `h'`. Establish `: u = u'`. Use function extensionality and compare the values at `k`. Use `ext1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality.
 
-Conclude with `((hu k).trans (hu' k).symm)`. Substitute `this` using the available equality. Conclude with `e.symm.trans e'`.
+A detailed English derivation is pending.
 -/
 private theorem comb_unique {X : Scheme.{0}} {t : SAB H X} {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)}
@@ -282,13 +278,13 @@ variable {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.X}
 private def Same (f g : EigFrame Z φ x) : Prop := ∀ τ, (f.co g τ).BlockTriangular id
 
 /- English proof (translation)
-Introduce `τ` and use `by rw [← f.co_mul g k τ]; exact (h τ).mul (h' τ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Same.trans {f g k : EigFrame Z φ x} (h : Same f g) (h' : Same g k) : Same f k := fun τ => by
   rw [← f.co_mul g k τ]; exact (h τ).mul (h' τ)
 
 /- English proof (translation)
-Use `Matrix.invertibleOfIsUnitDet _ (f.isUnit_det_co g τ)` as an intermediate fact. Rewrite using `[← Matrix.inv_eq_right_inv ((f.co_mul g f τ).trans (f.co_self τ))]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tri_symm {f g : EigFrame Z φ x} {τ : E →+* ℂ} (h : (f.co g τ).BlockTriangular id) :
     (g.co f τ).BlockTriangular id := by
@@ -297,21 +293,21 @@ private theorem tri_symm {f g : EigFrame Z φ x} {τ : E →+* ℂ} (h : (f.co g
   exact Matrix.blockTriangular_inv_of_blockTriangular h
 
 /- English proof (translation)
-Introduce `τ` and use `tri_symm (h τ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Same.symm {f g : EigFrame Z φ x} (h : Same f g) : Same g f := fun τ => tri_symm (h τ)
 
 variable {R' : Type} [CommRing R'] {φ' : c.F →+* R'} {x' : Sp R' ⟶ Z.X}
 
 /- English proof (translation)
-Introduce `τ i j hij` and use `by rw [hf.co τ hg hx, Matrix.map_apply, h τ hij, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Same.map {f g : EigFrame Z φ x} (h : Same f g) {ψ : R →+* R'} {f' g' : EigFrame Z φ' x'}
     (hf : f.IsMap ψ f') (hg : g.IsMap ψ g') (hx : x' = spMap ψ ≫ x) : Same f' g' := fun τ i j hij => by
   rw [hf.co τ hg hx, Matrix.map_apply, h τ hij, map_zero]
 
 /- English proof (translation)
-Introduce `τ i j hij` and use `by have := h τ hij rw [hf.co τ hg hx, Matrix.map_apply] at this exact hψ (this.trans (map_zero _).symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Same.of_map {f g : EigFrame Z φ x} {ψ : R →+* R'} (hψ : Function.Injective ψ) {f' g' : EigFrame Z φ' x'}
     (h : Same f' g') (hf : f.IsMap ψ f') (hg : g.IsMap ψ g') (hx : x' = spMap ψ ≫ x) : Same f g := fun τ i j hij => by
@@ -320,9 +316,9 @@ private theorem Same.of_map {f g : EigFrame Z φ x} {ψ : R →+* R'} (hψ : Fun
   exact hψ (this.trans (map_zero _).symm)
 
 /- English proof (translation)
-Establish `hu (τ i) : IsUnit (f'.co g' τ i i)`. Use `f'.isUnit_det_co g' τ` as an intermediate fact. Rewrite `this` using `[Matrix.det_of_upperTriangular (h τ)]`. Conclude with `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun i => f'.co g' τ i i) (Finset.mem_univ i)) this`. Use `⟨fun τ i => (hu τ i).unit, hx, hφ, fun τ i => ⟨fun a => f'.co g' τ a i, rfl, fun k hk => h τ hk, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← funext (hf τ)]`. Conclude with `f'.co_spec g' τ i`.
+A detailed English derivation is pending.
 -/
 private theorem Same.tri {f : EigFrame Z φ x} {ψ : R →+* R'} {f' g' : EigFrame Z φ' x'} (h : Same f' g') (hf : f.IsMap ψ f')
     (hφ : φ' = ψ.comp φ) (hx : x' = spMap ψ ≫ x) : ∃ t, f.Tri ψ g' t := by
@@ -335,7 +331,7 @@ private theorem Same.tri {f : EigFrame Z φ x} {ψ : R →+* R'} {f' g' : EigFra
   exact f'.co_spec g' τ i
 
 /- English proof (translation)
-Introduce `τ i` and use `by rw [h' τ i, h τ i, GlobalTheory.GradedPieces.dual_comp, e]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem isMap_of_comp {R'' : Type} [CommRing R''] {φ'' : c.F →+* R''} {x'' : Sp R'' ⟶ Z.X} {f : EigFrame Z φ x}
     {f' : EigFrame Z φ' x'} {f'' : EigFrame Z φ'' x''} {ψ : R →+* R'} {ψ' : R' →+* R''} {χ : R →+* R''}
@@ -343,11 +339,11 @@ private theorem isMap_of_comp {R'' : Type} [CommRing R''] {φ'' : c.F →+* R''}
   rw [h' τ i, h τ i, GlobalTheory.GradedPieces.dual_comp, e]
 
 /- English proof (translation)
-Establish `key (τ) (a : Fin (Dw.mult τ) → R) : ∑ i, a i • ∑ b, T τ b i • f.vec τ b = ∑ b, (T τ).mulVec a b • f.vec τ b`. Simplify using `only [Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`. Use `⟨EigFrame.ofVec (fun τ i => ∑ b, T τ b i • f.vec τ b) (fun τ i a => ?_) (fun τ w hw => ?_), fun τ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sum, map_smul, f.act_vec, Finset.smul_sum, smul_smul, mul_comm]`. Take `⟨a, ha, hu⟩` from `f.existsUnique_sum τ w hw`. Use `⟨(T τ)⁻¹.mulVec a, ?_, fun a' ha' => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[key, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hT τ), Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha`. Simplify using `only at ha'`. Rewrite `ha'` using `[key]`. Rewrite using `[← hu _ ha', Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (hT τ), Matrix.one_mulVec]`. Conclude with `EigFrame.co_eq fun i => (LieMet.isComb_iff (f.vec τ) _ _).2 rfl`.
+Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_co_eq (f : EigFrame Z φ x) (T : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) R)
     (hT : ∀ τ, IsUnit (T τ).det) : ∃ g : EigFrame Z φ x, ∀ τ, f.co g τ = T τ := by
@@ -371,19 +367,19 @@ end Same
 variable {F : Type} [Field F] {e : F ≃+* c.F}
 
 /- English proof (translation)
-Take `⟨y, hy⟩ : ∃ y, q (IsLocalRing.closedPoint V) = y` from `⟨_, rfl⟩`. Take `⟨ψ', hψ'⟩` from `GalCarry.Corr.exists_spec_stalk_of_closedPoint C.Y.X y V q hy`. Set `ψ : C.Y.X.presheaf.stalk y →+* V` to `ψ'.hom`. Establish `hψ : spMap ψ ≫ stalkPt C.Y y = q` using `hψ'`. Take `⟨φ₁, fy, t, hT, -⟩` from `C.gr_spec y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg0 : spMap (algebraMap (C.Y.X.presheaf.stalk y) C.Y.X.functionField) ≫ stalkPt C.Y y = genericPt C.Y` using `spMap_fromSpecStalk y`. Establish `hc : ν.comp ψ = φ₀.comp (algebraMap (C.Y.X.presheaf.stalk y) C.Y.X.functionField)`. Use `EigLoc.spMap_inj ((cancel_mono (C.Y.X.fromSpecStalk y)).1 ?_)` and prove the remaining obligations. Rewrite using `[spMap_comp', spMap_comp', Category.assoc, Category.assoc]`. Conclude with `(congrArg (spMap ν ≫ ·) hψ).trans (hq.trans (congrArg (spMap φ₀ ≫ ·) hg0.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hχV : ιV.comp χ = ψ.comp φ₁` using `RingHom.ext fun a => hν (by`. Establish `h1` using `RingHom.congr_fun (hχ.symm.trans hχ') a`. Establish `h2` using `RingHom.congr_fun hc (φ₁ a)`. Establish `h3` using `RingHom.congr_fun hT.2.1 a`. Simplify using `only [RingHom.comp_apply] at h1 h2 h3 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, h3])`. Establish `hxV : spMap ιV ≫ xR = spMap ψ ≫ stalkPt C.Y y ≫ C.π ≫ genι Z`. Rewrite using `[← hqx, ← hψ, Category.assoc]`. Take `⟨fV, hfV⟩` from `f.exists_isMap ιV (φ' := ιV.comp χ) (x' := spMap ιV ≫ xR) rfl rfl`. Take `⟨fyV, hfyV⟩` from `fy.exists_isMap ψ hχV hxV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨fyF, hfyF⟩` from `fy.exists_isMap _ hT.2.1 hT.1`. Establish `hxK' : xK = spMap ν ≫ spMap ιV ≫ xR`. Rewrite using `[hxK, ← hqx, ← Category.assoc, ← hq, Category.assoc]`. Take `⟨fyK, hfyK⟩` from `fy.exists_isMap (ν.comp ψ) (φ' := χK) (x' := xK) (by rw [hχ, RingHom.comp_assoc, hχV, RingHom.comp_assoc]) (by rw [hxK', hxV, spMap_comp', Category.assoc])`. Establish `s1 : Same fyF C.f0` using `fun τ a i h => (hT.co τ hfyF).1 a i h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2 : Same fyK vK` using `s1.map (isMap_of_comp hfyF hfyK hc) hv hxK`. Establish `s3 : Same fyV fV` using `(s2.trans hs.symm).of_map hν (isMap_of_comp hfyV hfyK rfl) (isMap_of_comp hfV hf rfl) hxK'`. Establish `hxk' : xk = spMap ρ ≫ spMap ιV ≫ xR` using `by rw [hxk, spMap_comp', Category.assoc]`. Establish `e1 : χk = (ρ.comp ψ).comp φ₁` using `by rw [hχk, RingHom.comp_assoc, hχV, RingHom.comp_assoc]`. Establish `e2 : xk = spMap (ρ.comp ψ) ≫ stalkPt C.Y y ≫ C.π ≫ genι Z` using `by rw [hxk', hxV, spMap_comp', Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨fyk, hfyk⟩` from `fy.exists_isMap (ρ.comp ψ) e1 e2`. Establish `s4 : Same fyk g` using `s3.map (isMap_of_comp hfyV hfyk rfl) (isMap_of_comp hfV hg rfl) hxk'`. Take `⟨t', ht'⟩` from `s4.tri hfyk e1 e2`. Conclude with `⟨y, ρ.comp ψ, φ₁, fy, t, t', by rw [spMap_comp', Category.assoc, hψ], hT, ht'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem carries_of_same (C : FlagCpt Z e) {R K V k : Type} [CommRing R] [CommRing K] [CommRing V] [IsLocalRing V] [Field k]
     (φ₀ : C.Y.Fn →+* K) (ιV : R →+* V) (ν : V →+* K) (hν : Function.Injective ν) (ρ : V →+* k)
@@ -451,9 +447,9 @@ private def HasFlagBasis (τ : E →+* ℂ) : Prop :=
 variable {ψ φ x v}
 
 /- English proof (translation)
-Use `choose u T hu hT h using h`. Set `g : EigFrame Z φ x` to `⟨u, fun τ i => ((hu τ).1 i).1, fun τ i => ((hu τ).1 i).2, fun τ w h1 h2 => (hu τ).2 w ⟨h1, h2⟩⟩`. Take `⟨f, hf⟩` from `exists_co_eq g T hT`. Take `⟨gK, hgK⟩` from `g.exists_isMap ψ hφ hx`. Take `⟨fK, hfK⟩` from `f.exists_isMap ψ hφ hx`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨f, fK, hfK, fun τ => h τ gK fK (funext (hgK τ)) (by rw [hgK.co τ hfK hx, hf])⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_same (hφ : φ' = ψ.comp φ) (hx : x' = spMap ψ ≫ x) (h : ∀ τ, HasFlagBasis ψ φ x v τ) :
     ∃ (f : EigFrame Z φ x) (fK : EigFrame Z φ' x'), f.IsMap ψ fK ∧ Same fK v := by
@@ -470,9 +466,9 @@ variable {τ : E →+* ℂ} {m : ℕ} (hr : m = Dw.mult τ) {u : Fin m → (Sp (
 include hu hA
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Use `⟨u, A, hu, hA, fun uK fK h1 h2 => tri_symm ?_⟩` and prove the remaining obligations. Use `choose w cf e1 e2 e3 using h`. Establish `e (i) : w i = fK.v τ i`. Use `uK.co_spec fK τ i` as an intermediate fact.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h1, h2]`. Conclude with `comb_unique (e1 i) this`. Rewrite using `[EigFrame.co_eq (T := Matrix.of fun a i => cf i a) fun i => e i ▸ e2 i]`. Conclude with `fun a i hai => e3 i a hai`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem hasFlagBasis_of_comb
     (h : ∀ i, ∃ (w : Sp (DualNumber K) ⟶ Z.t.G.left) (cf : Fin (Dw.mult τ) → K),
@@ -491,11 +487,11 @@ private theorem hasFlagBasis_of_comb
 include hr in
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Set `A' : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) R` to `A.transpose.submatrix Fin.revPerm id`. Establish `hA' : IsUnit A'.det`. Rewrite using `[Matrix.det_permute, Matrix.det_transpose]`. Conclude with `((Equiv.Perm.sign _).isUnit.map (Int.castRingHom R)).mul hA`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, A'⁻¹, hu, Matrix.isUnit_nonsing_inv_det _ hA', fun uK fK h1 h2 => ?_⟩` and prove the remaining obligations. Establish `e : fK.co v τ = A'.map ψ * uK.co v τ`. Rewrite using `[← uK.co_mul fK v τ, h2, ← Matrix.mul_assoc, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hA', Matrix.map_one _ (map_zero ψ) (map_one ψ), Matrix.one_mul]`. Rewrite using `[e]`. Rewrite `h` using `[← h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun a k hk => h a.rev k _ (uK.co_spec v τ k) (by have : (k : ℕ) < a := hk; have := a.2; rw [Fin.val_rev]; omega)`.
+A detailed English derivation is pending.
 -/
 private theorem hasFlagBasis_of_dual
     (h : ∀ (i : Fin m) (k : Fin (Dw.mult τ)) (d : Fin m → K),
@@ -520,21 +516,21 @@ end Adapt
 variable {F : Type} [Field F] {e : F ≃+* c.F}
 
 /- English proof (translation)
-Establish `hZ : IsProper Z.s` using `projProper O Z.X Z.s Z.proj`. Establish `: IsProper (genStr Z)` using `inferInstance`. Establish `hsep : (gen Z).IsSeparated` using `⟨by rw [← terminal.comp_from (genStr Z)]; infer_instance⟩`. Establish `hdom` using `isDominant_generic (G := G)`. Establish `hp : (spMap φ₀ ≫ genericPt (Φ.C i).Y) ≫ (Φ.C i).Y.str = G.fromSpecStalk (genericPoint G) ≫ b ≫ genStr Z ≫ spMap e.toRingHom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc (G.fromSpecStalk _), h₂, ← (Φ.C i).π_str]`. Simplify using `only [Category.assoc]`. Take `⟨p, hp1, -⟩` from `exists_hom_of_extends (b ≫ genStr Z ≫ spMap e.toRingHom) (Φ.C i).Y.str _ hp fun g => by`. Use `hN g` as an intermediate fact. Take `⟨χ, xR, f, fK, rfl, hχ, hχ', hf, hs⟩` from `hfr g`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ (W : ValuationSubring G.functionField) (q : Sp W ⟶ (Φ.C i).Y.X) (j : G.presheaf.stalk g →+* W), (∀ a, (j a : G.functionField) = algebraMap _ G.functionField a) → spMap (algebraMap W G.functionField) ≫ q = spMap φ₀ ≫ genericPt (Φ.C i).Y → ∀ (k : Type) [Field k] (ρ : W →+* …`. Introduce and unpack `W q j hj hq k _ ρ _ rfl gk hgk`. Establish `hj' : (algebraMap W G.functionField).comp j = algebraMap _ G.functionField` using `RingHom.ext hj`. Establish `hinj : Function.Injective (algebraMap W G.functionField)` using `Subtype.val_injective`. Establish `: IsDominant (spMap (algebraMap W G.functionField))` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 hinj).le.trans bot_le)⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqb : q ≫ (Φ.C i).π = spMap j ≫ G.fromSpecStalk g ≫ b`. Apply `ext_of_isDominant (spMap (algebraMap W G.functionField))` to reduce the goal to its premises. Rewrite using `[← Category.assoc, hq, Category.assoc, ← h₂, ← Category.assoc, ← spMap_comp', hj', ← Category.assoc, spMap_fromSpecStalk]`. Use `⟨by rw [Category.assoc, hqb, spMap_comp', Category.assoc], ?_⟩` and prove the remaining obligations. Conclude with `carries_of_same (Φ.C i) φ₀ j (algebraMap W G.functionField) hinj ρ f fK vK (hj' ▸ hχ') rfl (hj' ▸ hf) hv hs hxK q hq (by rw [← Category.assoc, hqb]; simp only [Category.assoc]) gk rfl (by simp only [Category.assoc]) hgk`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `extends_stalk _ _ _ hp g fun W₁ W₂ q₁ q₂ d₁ d₂ e₁ e₂ => ?_` and prove the remaining obligations. Take `⟨j₁, l₁, hj₁⟩` from `dominatesStalk_iff_exists_isLocalHom.1 d₁`. Take `⟨j₂, l₂, hj₂⟩` from `dominatesStalk_iff_exists_isLocalHom.1 d₂`. Take `⟨k, _, _, ρ₁, ρ₂, m₁, m₂, hρ⟩` from `exists_common_field j₁ j₂`. Take `⟨gk, hgk⟩` from `f.exists_isMap (ρ₁.comp j₁) (φ' := (ρ₁.comp j₁).comp χ) (x' := (spMap (ρ₁.comp j₁) ≫ G.fromSpecStalk g ≫ b) ≫ genι Z) rfl (by simp only [Category.assoc])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `k₁` using `key W₁ q₁ j₁ hj₁ e₁ k ρ₁ _ rfl gk hgk`. Establish `k₂` using `key W₂ q₂ j₂ hj₂ e₂ k ρ₂ _ hρ.symm gk hgk`. Establish `hu` using `(Φ.lifts k _ _ (by rw [spMap_comp' χ, ← hχ]; simp only [Category.assoc]) gk).unique (y₁ := ⟨i, spMap ρ₁ ≫ q₁⟩) (y₂ := ⟨i, spMap ρ₂ ≫ q₂⟩) k₁ k₂`. Establish `hq : spMap ρ₁ ≫ q₁ = spMap ρ₂ ≫ q₂` using `eq_of_heq (Sigma.mk.inj hu).2`. Establish `h3 : q₁ (spMap ρ₁ (IsLocalRing.closedPoint k)) = q₂ (spMap ρ₂ (IsLocalRing.closedPoint k))` using `congrArg (fun t : Sp k ⟶ (Φ.C i).Y.X => t (IsLocalRing.closedPoint k)) hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : spMap ρ₁ (IsLocalRing.closedPoint k) = IsLocalRing.closedPoint W₁` using `IsLocalRing.comap_closedPoint ρ₁`. Establish `h5 : spMap ρ₂ (IsLocalRing.closedPoint k) = IsLocalRing.closedPoint W₂` using `IsLocalRing.comap_closedPoint ρ₂`. Rewrite `h3` using `[h4, h5]`. Then use the resulting hypothesis. Use `⟨p, hp1, ?_⟩` and prove the remaining obligations. Apply `ext_of_isDominant (G.fromSpecStalk (genericPoint G))` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hp1, h₂, Category.assoc]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_hom_of_frames {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ N} (Φ : FlagTor Z e U) (i : U.Comp)
     {G : Scheme.{0}} [IsIntegral G] (hN : ∀ g : G, IsIntegrallyClosed (G.presheaf.stalk g)) (b : G ⟶ gen Z)
@@ -602,7 +598,7 @@ private theorem exists_hom_of_frames {σ : c.F →+* ℂ} {N : ℕ} {U : Formali
 end Local
 
 /- English proof (translation)
-Introduce `τ` and use `by obtain ⟨g, hg⟩ := (factEmb D.R D.host).1.2 τ by_cases hgP : g ∈ D.R.Psi · obtain ⟨t, ht⟩ := (Formalism.L2.Geo.exists_tauEmb_iff D g).2 hgP exact ⟨(t, true), ht.symm.trans hg⟩ · have h2 : g * D.R.cc ∈ D.R.Psi := by by_contra h exact hgP ((Formalism.L2.Geo.mem_Psi_iff_mul_cc_not …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem embB_surjective (D : D7) : Function.Surjective (embB D) := fun τ => by
   obtain ⟨g, hg⟩ := (factEmb D.R D.host).1.2 τ
@@ -619,29 +615,27 @@ private theorem embB_surjective (D : D7) : Function.Surjective (embB D) := fun �
     exact (congrArg (starRingEnd ℂ) (Formalism.MainNotions.WeightFamilies.emb_conj D τ z)).trans (star_star _)
 
 /- English proof (translation)
-Use `choose r c3 using c3`. Establish `hqc` using `(hE a).isQuasicoherent`. Take `⟨V, f, hV, hf⟩` from `hE a (π₀ (j x))`. Choose the witnesses or unpack the hypotheses as in `⟨cc, W, hWV, hW, s, hxW, hs, hfr⟩ : ∃ (cc : ∀ k, (((fl₀ a).root k).pull j).ι) (W : Y₀.Opens) (_ : W ≤ π₀ ⁻¹ᵁ V) (hW : ∀ k, W ≤ (cc k PUnit.unit).U) (s : ∀ k : Fin (rkB D.what₂.Tau O.N O.j a), Γ((fl₀ a).F k.succ, W)), j x ∈ W ∧ (∀ k, ((fl₀ a).π k).app W (s k) = Twist.resM _ (hW k) …`. Take `⟨h1, h2⟩` from `UpperTheory.exists_adapted_flag_charts _ _ _ (fl₀ a)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ch, hx, hch⟩` from `h1 (j x)`. Use `choose t ht using id hch`. Use `⟨fun k _ => ⟨ch.U, _, h2 ch hch k (t k) (ht k)⟩, ch.U ⊓ π₀ ⁻¹ᵁ V, inf_le_right, fun _ => inf_le_left, fun k => Twist.resM _ inf_le_left (t k), ⟨hx, hV⟩, fun k => Twist.app_resM _ _ _, ?_⟩` and prove the remaining obligations. Simplify using `only [Twist.app_resM, ht]`. Conclude with `ch.isFrame.res _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ψ` to `algebraMap (G.presheaf.stalk x) G.functionField`. Establish `hg : FlagCov.genPt G = spMap ψ ≫ G.fromSpecStalk x` using `(spMap_fromSpecStalk x).symm`. Establish `hst {U : G.Opens} (hU : x ∈ U) : ⊤ ≤ G.fromSpecStalk x ⁻¹ᵁ U` using `fun w _ => by`. Establish `: G.fromSpecStalk x w ∈ Set.range (G.fromSpecStalk x)` using `⟨w, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Specializes.mem_open (x := G.fromSpecStalk x w) this U.isOpen hU`. Establish `hRW : ⊤ ≤ (G.fromSpecStalk x ≫ j) ⁻¹ᵁ W` using `hst (U := j ⁻¹ᵁ W) hxW`. Establish `hRV : ⊤ ≤ ((G.fromSpecStalk x ≫ jG) ≫ jB) ⁻¹ᵁ V`. Rewrite using `[Category.assoc, c1]`. Conclude with `hst (U := (j ≫ π₀) ⁻¹ᵁ V) hV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hKW : ⊤ ≤ (FlagCov.genPt G ≫ j) ⁻¹ᵁ W`. Rewrite using `[hg, Category.assoc]`. Conclude with `fun w _ => hRW (x := spMap ψ w) trivial`. Establish `hKV' : ⊤ ≤ ((spMap ψ ≫ G.fromSpecStalk x ≫ jG) ≫ jB) ⁻¹ᵁ V`. Rewrite using `[Category.assoc]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `fun w _ => hRV (x := spMap ψ w) trivial`. Establish `hgj : FlagCov.genPt G ≫ jG = spMap ψ ≫ G.fromSpecStalk x ≫ jG` using `by rw [hg, Category.assoc]`. Establish `hKV : ⊤ ≤ ((FlagCov.genPt G ≫ jG) ≫ jB) ⁻¹ᵁ V` using `hgj ▸ hKV'`. Establish `hu` using `(frB a).1 V f hf _ (G.fromSpecStalk x ≫ jG) hRV ψ₀ hψ₀`. Establish `hu' : u a V f hf G.functionField (FlagCov.genPt G ≫ jG) hKV = fun b => spMap (dualMap ψ) ≫ u a V f hf _ (G.fromSpecStalk x ≫ jG) hRV b`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (y : Sp G.functionField ⟶ Bg) (hy : ⊤ ≤ (y ≫ jB) ⁻¹ᵁ V), y = spMap ψ ≫ G.fromSpecStalk x ≫ jG → u a V f hf G.functionField y hy = fun b => spMap (dualMap ψ) ≫ u a V f hf _ (G.fromSpecStalk x ≫ jG) hRV b`. Introduce and unpack `y hy rfl`. Conclude with `funext ((frB a).2.2 V f hf _ _ ψ _ hRV hy)`. Conclude with `key _ _ hgj`. Set `A₀` to `((hf.pullback π₀).basis hWV).toMatrix fun k => ((fl₀ a).ι k.succ).app W (s k)`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hA₀ : IsUnit A₀.det`. Use `((hf.pullback π₀).detUnit hfr hWV le_rfl).isUnit` as an intermediate fact. Simplify `this` using `only [IsFrame.val_detUnit, Twist.resM_self, Module.Basis.det_apply]`. Set `A` to `A₀.map (TangentOrigin.evalPt (G.fromSpecStalk x ≫ j) W hRW)`. Establish `hA : IsUnit A.det`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hA₀.map (TangentOrigin.evalPt (G.fromSpecStalk x ≫ j) W hRW)` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Establish `hev (k) : (fun b => TangentOrigin.evalPt (FlagCov.genPt G ≫ j) W hKW (((hf.pullback π₀).basis hWV).repr (((fl₀ a).ι k.succ).app W (s k)) b)) = fun b => ψ (A b k)`. Establish `key : ∀ (y : Sp G.functionField ⟶ Y₀) (hy : ⊤ ≤ y ⁻¹ᵁ W), y = spMap ψ ≫ G.fromSpecStalk x ≫ j → ∀ z, TangentOrigin.evalPt y W hy z = ψ (TangentOrigin.evalPt (G.fromSpecStalk x ≫ j) W hRW z)`. Introduce and unpack `y hy rfl z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `TangentOrigin.evalPt_spMap_comp ψ _ W hRW hy z`. Conclude with `funext fun b => key _ _ (by rw [hg, Category.assoc]) _`. Establish `hsec (k)` using `c3 k (cc k) V f hf W (hW k) hWV (s k) (hs k) hKW hKV`. Establish `hv : (fun k => spMap (dualMap φ) ≫ (O.Φ.C c).f0.v (embB D a) k) = v.v (embB D a)` using `(funext (e2 _)).symm`. Take `⟨τ, _ | _⟩` from `a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `hasFlagBasis_of_dual hr hu hA fun k k' d hd => ?_` and prove the remaining obligations. Use `(hsec k k' d (by rw [hu', hv]; exact hd)).1` as an intermediate fact. Simplify `this` using `only [fun b => congrFun (hev k) b]`. Use `hasFlagBasis_of_comb hr hu hA fun k => ?_` and prove the remaining obligations. Use `hsec k` as an intermediate fact.
-
-Simplify using `only [cond_true] at this`. Rewrite `this` using `[hu', hv, hev]`. Take `⟨w, cf, h1, h2, -, h4⟩` from `this`. Conclude with `⟨w, cf, h1, h2, h4⟩`.
+A detailed English derivation is pending.
 -/
 private theorem hasFlagBasis_stalk {D : D7} {O : Setup D} {c : O.s.Comp} {Bs : Scheme.{0}}
     {E : D.what₂.Tau × Bool → Bs.Modules} (hE : ∀ a, IsVB (E a) (rkB D.what₂.Tau O.N O.j a))
@@ -729,9 +723,9 @@ private theorem hasFlagBasis_stalk {D : D7} {O : Setup D} {c : O.s.Comp} {Bs : S
     exact ⟨w, cf, h1, h2, h4⟩
 
 /- English proof (translation)
-Establish `: IsPreimmersion (spMap (algebraMap (𝓞 D.what₂.LL) D.what₂.LL))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 D.what₂.LL)) (S := D.what₂.LL)`. Establish `: Flat (spMap (algebraMap (𝓞 D.what₂.LL) D.what₂.LL))`. Use `(HasRingHomProperty.Spec_iff (P := @Flat)).2 ?_` and prove the remaining obligations. Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat _ (nonZeroDivisors (𝓞 D.what₂.LL)))`. Establish `: IsPreimmersion (FlagGenFib.jf q π₀)` using `by unfold FlagGenFib.jf FlagGenFib.Gf; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Flat (FlagGenFib.jf q π₀)` using `by unfold FlagGenFib.jf FlagGenFib.Gf; infer_instance`. Use `isIso_stalkMap_of_flat_of_surjectiveOnStalks (FlagGenFib.jf q π₀)` as an intermediate fact. Establish `: GlobalTheory.IsNormalScheme Y₀` using `⟨fun y => (n₀ y).1, fun y => (n₀ y).2⟩`. Conclude with `(GlobalTheory.IsNormalScheme.of_isIso_stalkMap (FlagGenFib.jf q π₀)).isIntegrallyClosed_stalk g`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isIntegrallyClosed_stalk_Gf {D : D7} {Bs Y₀ : Scheme.{0}} (q : Bs ⟶ Sp (𝓞 D.what₂.LL)) (π₀ : Y₀ ⟶ Bs)
     (n₀ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Y₀) (g : FlagGenFib.Gf q π₀) :
@@ -748,21 +742,21 @@ private theorem isIntegrallyClosed_stalk_Gf {D : D7} {Bs Y₀ : Scheme.{0}} (q :
   exact (GlobalTheory.IsNormalScheme.of_isIso_stalkMap (FlagGenFib.jf q π₀)).isIntegrallyClosed_stalk g
 
 /- English proof (translation)
-Introduce `_ _ _ _ D O _ B _ R _ c Bs _ q _ _ E h _ Bg jB πB u Gm hL Y₀ _ π₀ fl₀ _ _ n₀ _ φ₀ h₁ h₂ h₃`. Establish `hs : FlagGenFib.jGf q π₀ jB _ hL.1 ≫ πB ≫ genStr O.s.T.Z ≫ spMap O.κ.e.toRingHom = FlagGenFib.sf q π₀` using `hL.1.lift_snd _ _ _`. Establish `c1` using `FlagGenFib.jGf_jB q π₀ jB _ hL.1`. Establish `frB` using `hL.2.2.2.1`. Establish `hr` using `fun a => (hL.2.2.2.2.2.2 a).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `FlagGenFib.jGf q π₀ jB _ hL.1 = jG at *`. Establish `hN` using `isIntegrallyClosed_stalk_Gf q π₀ n₀`. Generalize the expression as in `FlagGenFib.jf q π₀ = j at *`. Generalize the expression as in `FlagGenFib.sf q π₀ = s at *`. Generalize the expression as in `FlagGenFib.Gf q π₀ = G at *`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hxK : FlagCov.genPt G ≫ jG ≫ πB ≫ genι O.s.T.Z = spMap φ₀ ≫ genericPt (O.Φ.C c).Y ≫ (O.Φ.C c).π ≫ genι O.s.T.Z`. Use `congrArg (· ≫ genι O.s.T.Z) h₂` as an intermediate fact. Simplify using `only [Category.assoc] at this`. Conclude with `this`. Take `⟨v, hv⟩` from `(O.Φ.C c).f0.exists_isMap φ₀ rfl hxK`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg : genericPt (O.Φ.C c).Y ≫ (O.Φ.C c).Y.str = spMap (algebraMap D.what₂.LL (O.Φ.C c).Y.Fn)` using `(GlobalTheory.FlagBundle.ratOf (O.Φ.C c).Y).pt_s`. Establish `he : spMap O.κ.e.toRingHom ≫ spMap O.κ.e.symm.toRingHom = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext O.κ.e.apply_symm_apply))`. Take `⟨p, hp1, hp2⟩` from `exists_hom_of_frames O.Φ c hN (jG ≫ πB) φ₀ h₂ hxK v hv fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ψ₀, hψ₀⟩ : ∃ ψ₀ : D.what₂.LL →+* G.presheaf.stalk x, G.fromSpecStalk x ≫ s = spMap ψ₀` from `⟨(Spec.preimage (G.fromSpecStalk x ≫ s)).hom, (Spec.map_preimage _).symm⟩`. Establish `e1 : (algebraMap (G.presheaf.stalk x) G.functionField).comp ψ₀ = φ₀.comp (algebraMap D.what₂.LL (O.Φ.C c).Y.Fn)`. Use `EigLoc.spMap_inj ?_` and prove the remaining obligations. Rewrite using `[spMap_comp', spMap_comp', ← hψ₀, ← hg, ← Category.assoc, spMap_fromSpecStalk]`. Conclude with `h₁`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : φ₀.comp (constF O.κ.e (O.Φ.C c).Y) = (algebraMap (G.presheaf.stalk x) G.functionField).comp (ψ₀.comp O.κ.e.symm.toRingHom)`. Rewrite using `[← RingHom.comp_assoc, e1]`. Both sides reduce to the same expression. Establish `e3 : (G.fromSpecStalk x ≫ jG) ≫ πB ≫ genStr O.s.T.Z ≫ spMap O.κ.e.toRingHom = spMap ψ₀`. Rewrite using `[Category.assoc, hs, hψ₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f, fK, hf, hS⟩` from `exists_same (v := v) (x := (G.fromSpecStalk x ≫ jG) ≫ πB ≫ genι O.s.T.Z) e2 (((congrArg (· ≫ jG ≫ πB ≫ genι O.s.T.Z) (spMap_fromSpecStalk x).symm).trans (Category.assoc _ _ _)).trans (congrArg (spMap _ ≫ ·) (Category.assoc _ _ _).symm)) fun τ => by`. Take `⟨a, rfl⟩` from `embB_surjective D τ`. Conclude with `hasFlagBasis_stalk (fun a => (h a).isVB) frB fl₀ c1 a (hr a) (fun i => h₃ a i (hr a)) x ψ₀ e3 v hv`. Use `⟨_, _, f, fK, (Category.assoc _ _ _).trans (congrArg _ (Category.assoc _ _ _).symm), ?_, e2, hf, hS⟩` and prove the remaining obligations. Rewrite using `[spMap_comp', ← e3]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[he, Category.comp_id]`. Use `⟨p, ?_, hp2.symm, hp1⟩` and prove the remaining obligations. Rewrite using `[← hs, ← Category.assoc jG, ← hp2, Category.assoc]`. Conclude with `congrArg (p ≫ ·) (O.Φ.C c).π_str.symm`.
+A detailed English derivation is pending.
 -/
 private theorem exists_extension : ∀ (P2 : Hypotheses2) (PH : HypothesesH) (RA : RegularAlteration) (SW : ScholzeWeinsteinB)
     (D : D7) (O : Setup D) (hO : O.Core) (B : ℝ) (hB : 2 ≤ B) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)
@@ -841,7 +835,7 @@ end GlobalTheory.FlagExt
 end
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FlagExt.exists_extension`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.arithmetic_bundle_height_limit : ∀ (P2 : Hypotheses2) (PH : HypothesesH) (RA : RegularAlteration) (SW : ScholzeWeinsteinB)
     (D : D7) (O : Setup D) (hO : O.Core) (B : ℝ) (hB : 2 ≤ B) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)

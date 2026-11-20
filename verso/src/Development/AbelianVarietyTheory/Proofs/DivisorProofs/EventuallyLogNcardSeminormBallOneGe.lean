@@ -6,7 +6,7 @@ open Filter Topology GlobalTheory.VolBr
 namespace GlobalTheory.VolBr
 
 /- English proof (translation)
-Introduce `x hx`. Use `h.sub_mem r (r' - r) x 0 hx (h.zero_mem _ (by linarith))` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsBallFam.subset_of_le_radius {G : Type} [AddCommGroup G] {Λ : AddSubgroup G} {B : ℝ → Set G}
     (h : IsBallFam Λ B) {r r' : ℝ} (hr : r ≤ r') : B r ⊆ B r' := by
@@ -15,11 +15,11 @@ theorem IsBallFam.subset_of_le_radius {G : Type} [AddCommGroup G] {Λ : AddSubgr
   simpa using this
 
 /- English proof (translation)
-Establish `hn2 : 2 * e ≤ (⌈2 * e⌉₊ : ℝ)` using `Nat.le_ceil _`. Establish `hnpos : 0 < ⌈2 * e⌉₊`. Establish `: (0:ℝ) < (⌈2 * e⌉₊ : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `key` using `GlobalTheory.T.encard_seminormBall_mul_le_convexity G Λ B h _ hnpos (hfin _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[← (hfin _).cast_ncard_eq, ← (hfin _).cast_ncard_eq, ← (hfin _).cast_ncard_eq, ← (hfin _).cast_ncard_eq]`. Establish `key' : (B (⌈2 * e⌉₊ : ℝ)).ncard * (B ((⌈2 * e⌉₊ : ℝ) / 2)).ncard ≤ (B 1).ncard * (B ((⌈2 * e⌉₊ : ℝ) ^ 2 + (⌈2 * e⌉₊ : ℝ) / 2)).ncard`. Use `key` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `h1 : (B e).ncard ≤ (B (⌈2 * e⌉₊ : ℝ)).ncard` using `Set.ncard_le_ncard (h.subset_of_le_radius (by linarith)) (hfin _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (B e).ncard ≤ (B ((⌈2 * e⌉₊ : ℝ) / 2)).ncard` using `Set.ncard_le_ncard (h.subset_of_le_radius (by linarith)) (hfin _)`. Establish `h3 : (B ((⌈2 * e⌉₊ : ℝ) ^ 2 + (⌈2 * e⌉₊ : ℝ) / 2)).ncard ≤ (B E).ncard` using `Set.ncard_le_ncard (h.subset_of_le_radius hE) (hfin _)`. Establish `: (B e).ncard ^ 2 ≤ (B 1).ncard * (B E).ncard`. Combine the equalities or inequalities in the displayed calculation. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem IsBallFam.ncard_sq_le_of_ceil {G : Type} [AddCommGroup G] {Λ : AddSubgroup G} {B : ℝ → Set G}
     (h : IsBallFam Λ B) (hfin : ∀ R, (B R).Finite) {e E : ℝ} (he : 1 ≤ e)
@@ -50,21 +50,21 @@ theorem IsBallFam.ncard_sq_le_of_ceil {G : Type} [AddCommGroup G] {Λ : AddSubgr
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `G _ Λ B d _ hB hfin α β t₀ hlim ε hε`. Take `⟨t, ht0, ht⟩ : ∃ t, t₀ ≤ t ∧ 0 ≤ t` from `⟨max t₀ 0, le_max_left _ _, le_max_right _ _⟩`. Choose the witnesses or unpack the hypotheses as in `⟨η, hη, hβη⟩ : ∃ η : ℝ, 0 < η ∧ β * η < ε := by`. Use `⟨ε / (2 * (|β| + 1)), by positivity, ?_⟩` and prove the remaining obligations. Establish `hpos : 0 < 2 * (|β| + 1)` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hηe : ε / (2 * (|β| + 1)) * (2 * (|β| + 1)) = ε` using `div_mul_cancel₀ _ hpos.ne'`. Establish `hη : 0 < ε / (2 * (|β| + 1))` using `by positivity`. Establish `hb : β * (ε / (2 * (|β| + 1))) ≤ |β| * (ε / (2 * (|β| + 1)))` using `mul_le_mul_of_nonneg_right (le_abs_self β) hη.le`. Use polynomial arithmetic with `[mul_nonneg (abs_nonneg β) hη.le]`. Establish `hw` using `((hlim t ht0).const_mul 2).sub (hlim (2 * t + η) (by linarith))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hlt : α - ε < 2 * (α + β * t) - (α + β * (2 * t + η))`. Establish `: 2 * (α + β * t) - (α + β * (2 * t + η)) = α - β * η` using `by ring`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ev1` using `hw.eventually (lt_mem_nhds hlt)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `ev2 : ∀ᶠ m : ℕ in atTop, Real.log 12 ≤ η * m` using `(tendsto_natCast_atTop_atTop.const_mul_atTop hη).eventually_ge_atTop _`. Use `filter_upwards [ev1, ev2, eventually_ge_atTop 1] with m h1 h2 hm`. Establish `hmpos : (0:ℝ) < m` using `by exact_mod_cast hm`. Establish `hmd : (0:ℝ) < (m:ℝ) ^ d` using `pow_pos hmpos d`. Establish `he : 1 ≤ Real.exp (t * m)` using `Real.one_le_exp (mul_nonneg ht hmpos.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h12 : 12 ≤ Real.exp (η * m)`. Rewrite using `[← Real.exp_log (by norm_num : (0:ℝ) < 12)]; exact Real.exp_le_exp.mpr h2`. Establish `hE : (⌈2 * Real.exp (t * m)⌉₊ : ℝ) ^ 2 + (⌈2 * Real.exp (t * m)⌉₊ : ℝ) / 2 ≤ Real.exp ((2 * t + η) * m)`. Establish `hc : (⌈2 * Real.exp (t * m)⌉₊ : ℝ) ≤ 3 * Real.exp (t * m)`. Use `Nat.ceil_lt_add_one (show 0 ≤ 2 * Real.exp (t * m) by linarith); linarith` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : (0:ℝ) ≤ ⌈2 * Real.exp (t * m)⌉₊` using `Nat.cast_nonneg _`. Rewrite using `[show (2 * t + η) * (m:ℝ) = t * m + t * m + η * m by ring, Real.exp_add, Real.exp_add]`. Use polynomial arithmetic with `[mul_le_mul hc hc hc0 (by linarith), mul_le_mul_of_nonneg_left h12 (mul_nonneg (by linarith : (0:ℝ) ≤ Real.exp (t * m)) (by linarith : (0:ℝ) ≤ Real.exp (t * m)))]`. Establish `hsq` using `(hB m).ncard_sq_le_of_ceil (hfin m) he hE`. Establish `hpos : ∀ R, 0 ≤ R → (0:ℝ) < (B m R).ncard` using `fun R hR => by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Set.ncard_pos (hfin m R)).mpr ⟨0, (hB m).zero_mem R hR⟩` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hlog` using `Real.log_le_log (pow_pos (hpos _ (by linarith)) 2) hsq`. Rewrite `hlog` using `[Real.log_pow, Real.log_mul (hpos 1 zero_le_one).ne' (hpos _ (Real.exp_pos _).le).ne']`. Move the coercions through the operations in `at hlog`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdiv : (2 * Real.log ((B m (Real.exp (t * m))).ncard) - Real.log ((B m (Real.exp ((2 * t + η) * m))).ncard)) / (m:ℝ) ^ d ≤ Real.log ((B m 1).ncard) / (m:ℝ) ^ d` using `div_le_div_of_nonneg_right (by linarith) hmd.le`. Rewrite `hdiv` using `[sub_div, mul_div_assoc]`. Rewrite using `[← le_div_iff₀ hmd]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem log_ncard_ball_one_eventually_ge : ∀ (G : Type) [AddCommGroup G] (Λ : ℕ → AddSubgroup G)
     (B : ℕ → ℝ → Set G) (d : ℕ), 0 < d → (∀ m, IsBallFam (Λ m) (B m)) → (∀ m R, (B m R).Finite) →

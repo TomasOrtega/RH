@@ -16,7 +16,7 @@ namespace GlobalTheory.FlatShiftPf
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1 : ‖psiE ψ a‖ = 1` using `hψ.1.2.1 _`. Rewrite using `[Complex.star_def, Complex.mul_conj', h1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psiE_mul_star {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (a : AE D) :
     psiE ψ a * star (psiE ψ a) = 1 := by
@@ -24,7 +24,7 @@ theorem psiE_mul_star {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1
   rw [Complex.star_def, Complex.mul_conj', h1]; simp
 
 /- English proof (translation)
-Use `haveI : BorelSpace (UX D ρ) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩`. Conclude with `(GlobalTheory.UnitU.isClosedEmbedding_val D ρ).measurableEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem measEmb_val (ρ : ℕ) : MeasurableEmbedding (fun u : UX D ρ => u.1.1) := by
   haveI : BorelSpace (UX D ρ) := ⟨rfl⟩
@@ -32,18 +32,18 @@ theorem measEmb_val (ρ : ℕ) : MeasurableEmbedding (fun u : UX D ρ => u.1.1) 
   exact (GlobalTheory.UnitU.isClosedEmbedding_val D ρ).measurableEmbedding
 
 /- English proof (translation)
-Use `haveI : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩`. Conclude with `(Homeomorph.addRight N).isClosedEmbedding.measurableEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem measEmb_add {ρ : ℕ} (N : Mx D ρ ρ) : MeasurableEmbedding (fun m : Mx D ρ ρ => m + N) := by
   haveI : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩
   exact (Homeomorph.addRight N).isClosedEmbedding.measurableEmbedding
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [flatAt, flatFun, evalAt, Pi.smul_apply, smul_eq_mul, Check.mixS_heis_extX]`. Use `set c := psiE ψ (upSum N) with hcdef`. Establish `hc : c * star c = 1` using `psiE_mul_star hψ _`. Use `set H : Mx D ρ ρ → ℂ := fun m => dW.mixT V₀ ψ μT 𝓕T (dV.mixS W ψ μS 𝓕S f (x ⬝ m)) y w with hH`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set K : Mx D ρ ρ → ℂ := fun m => c * (star (psiE ψ (upSum m)) * H m) with hK`. Establish `hpt : ∀ u : UX D ρ, star (psiUni ψ u.1) * dW.mixT V₀ ψ μT 𝓕T (dV.mixS W ψ μS 𝓕S f (x ⬝ u.1.1 + x ⬝ N)) y w = K (u.1.1 + N)`. Introduce `u`. Simplify using `only [hK, hH, Matrix.mul_add, upSum_add, psiE_add, star_mul', psiUni]`. Take the linear combination `(-(star (psiE ψ (upSum u.1.1)) * dW.mixT V₀ ψ μT 𝓕T (dV.mixS W ψ μS 𝓕S f (x ⬝ u.1.1 + x ⬝ N)) y w)) * hc`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Repeatedly rewrite using `[hpt]`. Establish `hinv` using `(GlobalTheory.T.haar_adelicUpperUnitriangular_entry_translate_invariant D ρ νU hν).2.2 N (fun i j h => hN i j (not_lt.1 h))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hK, psiUni]`. Rewrite using `[integral_const_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flatAt_shift {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {V V₀ W W₀ : HSp D} {ρ σ : ℕ}
     (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (μS : Measure (Mx D W.rank ρ)) (𝓕S : Set (Mx D W.rank ρ))
@@ -74,7 +74,7 @@ theorem flatAt_shift {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)
         simp only [hK, psiUni]; rw [integral_const_mul]
 
 /- English proof (translation)
-Introduce `D ψ P`. Use `⟨fun ρ B J s f _ N _ hN => ?_, fun σ J B s f _ N _ hN => ?_⟩` and prove the remaining obligations. Conclude with `flatAt_shift s.weil.std B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 s.vU.ν s.vU.unit.1 _ _ f N hN`. Conclude with `flatAt_shift s.weil.std J.d B.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 s.vU.ν s.vU.unit.1 _ _ f N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem flatShift : ∀ D : D7, GlobalTheory.FinPl.FlatShift D := by
   intro D ψ P

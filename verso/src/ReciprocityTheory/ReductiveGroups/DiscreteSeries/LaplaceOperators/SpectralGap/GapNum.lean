@@ -15,11 +15,11 @@ def GapNumStatement : Prop :=
     2 * ((n + 2 * q * t : ℕ) : ℝ) ^ 3 + (t : ℝ) + 3 < x → hNum n q < x
 
 /- English proof (translation)
-Establish `hQ0 : 0 ≤ Q` using `by linarith`. Establish `hN0 : 0 ≤ Nn` using `by linarith`. Establish `hT0 : 0 ≤ T` using `by linarith`. Establish `h1 : (2 * Q * T) ^ 3 ≤ (Nn + 2 * Q * T) ^ 3` using `pow_le_pow_left₀ (by positivity) (by linarith) 3`. Establish `h2 : 17 * Nn ^ 2 ≤ T ^ 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (Nn + 5) ^ 3 ≤ T ^ 3` using `pow_le_pow_left₀ (by linarith) hT 3`. Use polynomial arithmetic with `[sq_nonneg Nn]`. Establish `h3 : Q ^ 2 ≤ Q ^ 3` using `by nlinarith [sq_nonneg Q]`. Establish `h4 : 16 * Q ^ 2 * (17 * Nn ^ 2) ≤ 16 * Q ^ 3 * T ^ 3`. Use `mul_le_mul h3 h2 (by positivity) (by positivity)` as an intermediate fact.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Use polynomial arithmetic with `[sq_nonneg Q, sq_nonneg Nn]`.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem gapNum_key (Q Nn T : ℝ) (hQ : 1 ≤ Q) (hN : 2 ≤ Nn) (hT : Nn + 5 ≤ T) :
     160 * Q ^ 2 * Nn ^ 2 ≤ 2 * (Nn + 2 * Q * T) ^ 3 := by
@@ -38,17 +38,17 @@ theorem gapNum_key (Q Nn T : ℝ) (hQ : 1 ≤ Q) (hN : 2 ≤ Nn) (hT : Nn + 5 �
   nlinarith [sq_nonneg Q, sq_nonneg Nn]
 
 /- English proof (translation)
-Establish `key` using `gapNum_key Q Nn T hQ hN hT`. Establish `hQp : 0 ≤ Q` using `by linarith`. Establish `hNp : 0 ≤ Nn` using `by linarith`. Establish `hTp : 0 ≤ T` using `by linarith`. Use `set S := Nn + 2 * Q * T with hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSN : Nn ≤ S` using `by nlinarith`. Establish `hS3 : Nn ≤ 2 * S ^ 3` using `by nlinarith [sq_nonneg S, sq_nonneg Nn]`. Establish `hs0 : 0 ≤ Real.sqrt (2 * Q0)` using `Real.sqrt_nonneg _`. Establish `hs : Real.sqrt (2 * Q0) ≤ 2 * Q` using `Real.sqrt_le_iff.mpr ⟨by linarith, by nlinarith⟩`. Establish `hm0 : 0 ≤ max (2 * Nn * Q0) (2 * (Q - 1) * Nn ^ 2)` using `le_max_of_le_left (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : max (2 * Nn * Q0) (2 * (Q - 1) * Nn ^ 2) ≤ 2 * Q * Nn ^ 2` using `max_le (by nlinarith [mul_le_mul_of_nonneg_left hQ0 hNp, mul_le_mul_of_nonneg_left (show Nn ≤ Nn ^ 2 by nlinarith) (show 0 ≤ Q by linarith)]) (by nlinarith)`. Establish `hN2 : 4 ≤ Nn ^ 2` using `by nlinarith`. Establish `hQN : 4 * Q ≤ Q ^ 2 * Nn ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hd : 8 * Real.sqrt (2 * Q0) * (4 * max (2 * Nn * Q0) (2 * (Q - 1) * Nn ^ 2) + 1) ≤ 8 * (2 * Q) * (4 * (2 * Q * Nn ^ 2) + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_le_mul (by linarith) (by linarith) (by positivity) (by positivity)` to reduce the goal to its premises. Establish `hNQ : Nn * Q0 ≤ Nn * Q` using `mul_le_mul_of_nonneg_left hQ0 hNp`. Establish `hqn : 2 ≤ Q * Nn` using `by nlinarith`. Establish `hQ2N2 : 2 * (Nn * Q) ≤ Q ^ 2 * Nn ^ 2` using `by nlinarith`. Establish `hPQ : P * Q ≤ Nn * Q` using `mul_le_mul_of_nonneg_right hP hQp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNPQ1 : Nn * (P * Q) ≤ Nn * (Nn * Q)` using `mul_le_mul_of_nonneg_left hPQ hNp`. Establish `hQQ : Q ≤ Q ^ 2` using `by nlinarith`. Establish `hNPQ2 : Nn ^ 2 * Q ≤ Nn ^ 2 * Q ^ 2` using `mul_le_mul_of_nonneg_left hQQ (sq_nonneg Nn)`. Establish `hQN0 : 0 ≤ Q ^ 2 * Nn ^ 2` using `by positivity`. Use `max_lt ?_ (max_lt ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: max (3 * Nn / 2) (1 + Nn * P * Q) < x - 2` using `max_lt (by linarith) (by nlinarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem gapNum_real (Q Nn T P Q0 x : ℝ) (hQ : 1 ≤ Q) (hN : 2 ≤ Nn) (hT : Nn + 5 ≤ T)
     (hP : P ≤ Nn) (hQ00 : 0 ≤ Q0) (hQ0 : Q0 ≤ Q)
@@ -92,9 +92,7 @@ theorem gapNum_real (Q Nn T P Q0 x : ℝ) (hQ : 1 ≤ Q) (hN : 2 ≤ Nn) (hT : N
   · nlinarith
 
 /- English proof (translation)
-Introduce `n q t x hn hq hqn ht hx`. Unfold `hNum`. Establish `hx' : 2 * ((n : ℝ) + 2 * (q : ℝ) * (t : ℝ)) ^ 3 + (t : ℝ) + 3 < x`. Move the coercions through the operations in `at hx`. Conclude with `hx`.
-
-Conclude with `gapNum_real (q : ℝ) (n : ℝ) (t : ℝ) ((n - q : ℕ) : ℝ) ((min (n - q) q : ℕ) : ℝ) x (by exact_mod_cast hq) (by exact_mod_cast hn) (by exact_mod_cast ht) (by exact_mod_cast Nat.sub_le n q) (Nat.cast_nonneg _) (by exact_mod_cast min_le_right _ _) hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem gapNum : GapNumStatement := by
   intro n q t x hn hq hqn ht hx

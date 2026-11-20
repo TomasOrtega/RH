@@ -12,7 +12,7 @@ open GlobalTheory.BaseCoef
 namespace GlobalTheory.BaseCoef
 
 /- English proof (translation)
-Unfold `mapSig`. Conclude with `Finset.mem_image`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mem_mapSig {I LL LL' : Type} [Group I] [Field LL] [Field LL'] (f : LL →+* LL')
     (Sig : Finset (I →* LLˣ)) (x : I →* LL'ˣ) :
@@ -22,13 +22,13 @@ theorem mem_mapSig {I LL LL' : Type} [Group I] [Field LL] [Field LL'] (f : LL �
   exact Finset.mem_image
 
 /- English proof (translation)
-Use `set φ : LLˣ →* LL'ˣ := Units.map (f : LL →* LL') with hφ`. Establish `hinj : Function.Injective φ`. Introduce `u v huv`. Apply `Units.ext` to reduce the goal to its premises. Use `congrArg Units.val huv` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `f.injective this` using `[hφ]`. Establish `hcomp : φ.comp a * (φ.comp b)⁻¹ = φ.comp (a * b⁻¹)`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[hcomp]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.MainNotions.ElementDenominator.orbLen`. Use `congr 1`. Use extensionality with `k`. Simplify using `only [Set.mem_setOf_eq, MonoidHom.comp_apply]`. Prove the components needed by the constructor for the conclusion.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hk, h⟩`. Conclude with `⟨hk, fun g g' hg => hinj (h g g' hg)⟩`. Introduce and unpack `⟨hk, h⟩`. Conclude with `⟨hk, fun g g' hg => congrArg φ (h g g' hg)⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem orbLen_map {G LL LL' : Type} [Group G] [Field LL] [Field LL'] (f : LL →+* LL')
     (I : Subgroup G) (Fr : G) (a b : I →* LLˣ) :
@@ -55,17 +55,15 @@ theorem orbLen_map {G LL LL' : Type} [Group G] [Field LL] [Field LL'] (f : LL �
     exact ⟨hk, fun g g' hg => congrArg φ (h g g' hg)⟩
 
 /- English proof (translation)
-Introduce `G LL LL' _ _ _ f I Fr Sig`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hS a' ha'`. Take `⟨a, ha, rfl⟩` from `(mem_mapSig f Sig a').1 ha'`. Take `⟨b, hb, hab⟩` from `hS a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(Units.map (f : LL →* LL')).comp b, (mem_mapSig f Sig _).2 ⟨b, hb, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `g h hgh`. Simplify using `[hab g h hgh]`. Unfold `Formalism.MainNotions.ElementDenominator.rPrime`. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sup_le` to reduce the goal to its premises. Introduce and unpack `⟨p, q⟩ hpq`. Rewrite `hpq` using `[Finset.mem_product]`. Take `⟨a, ha, rfl⟩` from `(mem_mapSig f Sig p).1 hpq.1`. Take `⟨b, hb, rfl⟩` from `(mem_mapSig f Sig q).1 hpq.2`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[orbLen_map f I Fr a b]`. Conclude with `Finset.le_sup (s := Sig ×ˢ Sig) (f := fun p : (↥I →* LLˣ) × (↥I →* LLˣ) => Formalism.MainNotions.ElementDenominator.orbLen I Fr (p.1 * p.2⁻¹)) (b := (a, b)) (Finset.mem_product.2 ⟨ha, hb⟩)`. Apply `Finset.sup_le` to reduce the goal to its premises. Introduce and unpack `⟨a, b⟩ hab`. Rewrite `hab` using `[Finset.mem_product]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.le_sup (s := mapSig f Sig ×ˢ mapSig f Sig) (f := fun p : (↥I →* LL'ˣ) × (↥I →* LL'ˣ) => Formalism.MainNotions.ElementDenominator.orbLen I Fr (p.1 * p.2⁻¹)) (b := ((Units.map (f : LL →* LL')).comp a, (Units.map (f : LL →* LL')).comp b)) (Finset.mem_product.2 ⟨(mem_mapSig f …` as an intermediate fact. Simplify `this` using `only [orbLen_map f I Fr a b]`. Unfold `mapSig`. Conclude with `Finset.card_image_le`. Introduce `h1`.
-
-Conclude with `(mem_mapSig f Sig 1).2 ⟨1, h1, MonoidHom.comp_one _⟩`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mapSig_props : ∀ {G LL LL' : Type} [Group G] [Field LL] [Field LL'] (f : LL →+* LL') (I : Subgroup G) (Fr : G) (Sig : Finset (I →* LLˣ)), (FrobStable I Fr Sig → FrobStable I Fr (mapSig f Sig)) ∧ Formalism.MainNotions.ElementDenominator.rPrime I Fr (mapSig f Sig) = Formalism.MainNotions.ElementDenominator.rPrime I Fr Sig ∧ (mapSig f Sig).card ≤ Sig.card ∧ (1 ∈ Sig → 1 ∈ mapSig f Sig) := by
   intro G LL LL' _ _ _ f I Fr Sig

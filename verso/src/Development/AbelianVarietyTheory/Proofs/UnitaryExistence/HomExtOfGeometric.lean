@@ -12,14 +12,14 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DeltaDatumCombinedCoefficient
 namespace GlobalTheory.FrameFreeRule
 
 /- English proof (translation)
-Simplify using `only [fnAt, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fnAt_comp {X Y : Scheme.{0}} {S : Type} [CommRing S] (y : Sp S ⟶ X) (g : X ⟶ Y) (f : Γ(Y, ⊤)) :
     fnAt (y ≫ g) f = fnAt y (g.appTop.hom f) := by
   simp only [fnAt, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply]
 
 /- English proof (translation)
-Rewrite using `[fnAt_comp]`. Conclude with `congrArg (fun q => q.hom (y.appTop.hom f)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fnAt_spMap_comp {X : Scheme.{0}} {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) (y : Sp S ⟶ X)
     (f : Γ(X, ⊤)) : fnAt (spMap φ ≫ y) f = φ (fnAt y f) := by
@@ -27,20 +27,20 @@ theorem fnAt_spMap_comp {X : Scheme.{0}} {S T : Type} [CommRing S] [CommRing T] 
   exact congrArg (fun q => q.hom (y.appTop.hom f)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ))
 
 /- English proof (translation)
-Simplify using `[fnAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fnAt_id {S : Type} [CommRing S] (a : S) :
     fnAt (𝟙 (Sp S)) ((Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom a) = a := by
   simp [fnAt]
 
 /- English proof (translation)
-Rewrite using `[← basicOpen_eq_bot_iff, eq_bot_iff]`. Introduce `x hx`. Set `K` to `AlgebraicClosure (P.residueField x)`. Set `y : Sp K ⟶ P` to `spMap (algebraMap (P.residueField x) K) ≫ P.fromSpecResidueField x`. Establish `h0 : y.appTop.hom s = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `h K y` as an intermediate fact. Unfold `fnAt at this`. Conclude with `(map_eq_zero_iff _ (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.injective).1 this`. Establish `h1 : y ⁻¹ᵁ P.basicOpen s = ⊥`. Rewrite using `[Scheme.preimage_basicOpen_top]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `erw [h0]`. Conclude with `Scheme.basicOpen_zero _ _`. Establish `h2 : (default : Sp K) ∈ y ⁻¹ᵁ P.basicOpen s`. Express the relevant statement in the definitionally equal form `y default ∈ P.basicOpen s`. Establish `: y default = x`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [y, Scheme.Hom.comp_apply]`. Conclude with `Scheme.fromSpecResidueField_apply _ _`. Rewrite using `[this]` and apply the resulting hypothesis. Rewrite `h2` using `[h1]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_geometric {P : Scheme.{0}} [IsReduced P] (s : Γ(P, ⊤))
     (h : ∀ (K : Type) [Field K] [IsAlgClosed K] (y : Sp K ⟶ P), fnAt y s = 0) : s = 0 := by
@@ -66,9 +66,9 @@ theorem eq_zero_of_geometric {P : Scheme.{0}} [IsReduced P] (s : Γ(P, ⊤))
   exact h2
 
 /- English proof (translation)
-Use `ext_of_isAffine ?_` and prove the remaining obligations. Use extensionality with `r`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_geometric _ fun K _ _ y => ?_` and prove the remaining obligations. Use `congrArg (fun q => fnAt q r) (h K y)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [fnAt_comp] at this`. Unfold `fnAt at this ⊢`. Rewrite using `[map_sub, map_sub, sub_eq_zero]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_ext_of_geometric {P Y : Scheme.{0}} [IsReduced P] [IsAffine Y] (u v : P ⟶ Y)
     (h : ∀ (K : Type) [Field K] [IsAlgClosed K] (y : Sp K ⟶ P), y ≫ u = y ≫ v) : u = v := by
@@ -83,15 +83,15 @@ theorem hom_ext_of_geometric {P Y : Scheme.{0}} [IsReduced P] [IsAffine Y] (u v 
   exact this
 
 /- English proof (translation)
-Set `𝒰 : X.OpenCover` to `Scheme.Cover.mkOfCovers ι (fun i => Sp (A i)) j (fun x => by obtain ⟨i, y, hy⟩ := hcov x; exact ⟨i, y, hy⟩)`. Set `ev : ∀ i, Polynomial ℤ →+* A i` to `fun i => Polynomial.eval₂RingHom (Int.castRingHom _) (a i)`. Set `g : ∀ i, Sp (A i) ⟶ Sp (Polynomial ℤ)` to `fun i => spMap (ev i)`. Establish `hg : ∀ i i', pullback.fst (j i) (j i') ≫ g i = pullback.snd (j i) (j i') ≫ g i'`. Introduce `i i'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: IsReduced (pullback (j i) (j i'))` using `isReduced_of_isOpenImmersion (pullback.fst (j i) (j i') ≫ j i)`. Use `hom_ext_of_geometric _ _ fun K _ _ y => ?_` and prove the remaining obligations. Take `⟨χ, hχ⟩` from `Spec.map_surjective (y ≫ pullback.fst (j i) (j i'))`. Take `⟨χ', hχ'⟩` from `Spec.map_surjective (y ≫ pullback.snd (j i) (j i'))`. Establish `e` using `h K i i' χ.hom χ'.hom (by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Spec.map χ ≫ _ = Spec.map χ' ≫ _`. Rewrite using `[hχ, hχ', Category.assoc, Category.assoc, pullback.condition])`. Rewrite using `[← Category.assoc, ← Category.assoc, ← hχ, ← hχ']`. Express the relevant statement in the definitionally equal form `spMap χ.hom ≫ spMap (ev i) = spMap χ'.hom ≫ spMap (ev i')`. Rewrite using `[GlobalTheory.LocalFrame.spMap_spMap, GlobalTheory.LocalFrame.spMap_spMap]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Polynomial.ringHom_ext (fun n => by simp) ?_` and prove the remaining obligations. Simplify `e` using `[ev]`. Set `G : X ⟶ Sp (Polynomial ℤ)` to `𝒰.glueMorphisms g hg`. Use `⟨G.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (Polynomial ℤ))).inv.hom Polynomial.X), fun i => ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi : j i ≫ G = g i` using `𝒰.ι_glueMorphisms g hg i`. Rewrite using `[← fnAt_comp, hi, ← Category.comp_id (g i), fnAt_spMap_comp, fnAt_id]`. Simplify using `[ev]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_glue {X : Scheme.{0}} [IsReduced X] {ι : Type} (A : ι → Type) [∀ i, CommRing (A i)]
     (j : ∀ i, Sp (A i) ⟶ X) [∀ i, IsOpenImmersion (j i)] (hcov : ∀ x : X, ∃ i, x ∈ Set.range (j i))
@@ -129,9 +129,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `GlobalTheory.TransferCompare.frBC_framed Xo c A K χ u`. Rewrite using `[hfree K z y (hy.trans hz.1.symm)]`. Establish `hT1` using `GlobalTheory.TransferCompare.allTest_framed Xo c A u`. Establish `hT2` using `GlobalTheory.TransferCompare.allTest_framed Xo c K z`. Unfold `evR evalAt`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hT2, dif_pos hT1]`. Conclude with `GlobalTheory.TransferCompare.evalWD_framed Xo c s hs.1 K _ _ _ _ _ _ z hT2.choose_spec.choose_spec.choose_spec (frMap_trans (Xo := Xo) (c := c) _ _ _ _ χ _ u z hT1.choose_spec.choose_spec.choose_spec hz)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_eq_of_chart (s : Rul Xo c) (hs : s ∈ sec Xo c 0 0)
     (hfree : ∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra c.F K] (y y' : FrPt Xo c K),
@@ -149,23 +149,19 @@ theorem evR_eq_of_chart (s : Rul Xo c) (hs : s ∈ sec Xo c 0 0)
     (frMap_trans (Xo := Xo) (c := c) _ _ _ _ χ _ u z hT1.choose_spec.choose_spec.choose_spec hz)
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c s hs hfree`. Use `choose A iA dA aA j u hj hp hsn _ hu using GlobalTheory.LocalFrame.exists_integral_chart_frame GlobalTheory.abelianSchemeLaws_all.2.secTwist E H D l Xo c`. Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim Xo.s`. Establish `: IsReduced (Xo.XF c)` using `GlobalTheory.isReduced_of_smooth_of_isReduced (pullback.snd _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra c.F K] (y : FrPt Xo c K) (p : Xo.XF c) (χ : A p →+* K), spMap χ ≫ j p = basePt y → evR Xo c s y = χ (evR Xo c s (u p))`. Introduce `K _ _ _ y p χ hχ`. Establish `h1 : χ.comp (algebraMap c.F (A p)) = algebraMap c.F K`. Establish `h2 : spMap (χ.comp (algebraMap c.F (A p))) = spMap (algebraMap c.F K)`. Rewrite using `[← GlobalTheory.LocalFrame.spMap_spMap, ← hsn, ← Category.assoc, hχ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pullback.lift_snd _ _ _`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h2)`. Use `evR_eq_of_chart s hs hfree (u p) ⟨χ, fun r => RingHom.congr_fun h1 r⟩ y ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y.x = spMap χ ≫ _`. Rewrite using `[hu, ← Category.assoc, hχ]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Conclude with `(pullback.lift_fst _ _ _).symm`. Take `⟨f, hf⟩` from `exists_glue A j (fun x => ⟨x, hp x⟩) (fun p => evR Xo c s (u p)) (by`. Introduce `K _ _ p p' χ χ' hχ`. Use `letI : Algebra c.F K := (χ.comp (algebraMap c.F (A p))).toAlgebra`. Establish `hsn' : (spMap χ ≫ j p) ≫ pullback.snd _ _ = spMap (algebraMap c.F K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hsn, GlobalTheory.LocalFrame.spMap_spMap]`. Take `⟨y, hy⟩` from `GlobalTheory.NonIntegralFrameExample.exists_framed (c := c) ((spMap χ ≫ j p) ≫ pullback.fst _ _) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hsn', sOf, GlobalTheory.LocalFrame.spMap_spMap])`. Establish `hb : spMap χ ≫ j p = basePt y`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Rewrite using `[← hy]`. Conclude with `(pullback.lift_fst _ _ _).symm`. Rewrite using `[hsn']`. Conclude with `(pullback.lift_snd _ _ _).symm`. Conclude with `(key K y p χ hb).symm.trans (key K y p' χ' (hχ.symm.trans hb)))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨f, fun K _ _ _ y => ?_⟩` and prove the remaining obligations. Set `p : Xo.XF c` to `basePt y default`. Establish `hr : Set.range (basePt y) ⊆ Set.range (j p)`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[Subsingleton.elim q default]`.
-
-Conclude with `hp p`. Take `⟨χ, hχ⟩` from `Spec.map_surjective (IsOpenImmersion.lift (j p) (basePt y) hr)`. Establish `hb : spMap χ.hom ≫ j p = basePt y`. Express the relevant statement in the definitionally equal form `Spec.map χ ≫ _ = _`. Rewrite using `[hχ, IsOpenImmersion.lift_fac]`.
-
-Rewrite using `[key K y p χ.hom hb, ← hb, fnAt_spMap_comp, hf]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (s : Rul Xo c), s ∈ sec Xo c 0 0 → (∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra c.F K] (y y' : FrPt Xo c K), y'.x = y.x → evR Xo c s y' = evR Xo c s y) → ∃ f : Γ(Xo.XF c, ⊤), ∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra c.F K] (y : FrPt Xo c K), evR Xo c s y = GlobalTheory.IndefiniteRowSideFullHecke.DeltaDatumCombinedCoefficient.fnAt (GlobalTheory.IndefiniteRowSideFullHecke.DeltaDatumCombinedCoefficient.basePt y) f := by
   intro E _ _ _ H D l Xo c s hs hfree

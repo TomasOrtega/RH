@@ -25,18 +25,18 @@ def IsLabelOf (A : ValuationSubring Ω) (κ : IsLocalRing.ResidueField A ≃+* F
     ∀ σ ∈ I, ∀ d j, LevelOf f d → TameVal A κ σ d (ζ d ^ j) → P σ = labPol teich f j
 
 /- English proof (translation)
-Simplify using `[labPol]`.
+Simplify using the standard rewrite rules.
 -/
 theorem labPol_one (teich : Formalism.CyclotomicNorms.Fbar p →* ℂ) (f : (ZMod p)[X]) :
     labPol teich f 1 = ((Formalism.CyclotomicNorms.rootsBar f).map fun x => X - C (teich x)).prod := by
   simp [labPol]
 
 /- English proof (translation)
-Establish `hint : IsIntegral (ZMod p) x` using `(Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Set `K` to `IntermediateField.adjoin (ZMod p) {x}`. Establish `: FiniteDimensional (ZMod p) K` using `IntermediateField.adjoin.finiteDimensional hint`. Establish `: Finite K` using `Module.finite_of_finite (ZMod p)`. Establish `: Fintype K` using `Fintype.ofFinite K`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxK : x ∈ K` using `IntermediateField.mem_adjoin_simple_self (ZMod p) x`. Take `⟨d, _, hd⟩` from `FiniteField.card K p`. Use `⟨d, d.pos, ?_⟩` and prove the remaining obligations. Establish `h0 : (⟨x, hxK⟩ : K) ≠ 0` using `fun h => hx (congrArg Subtype.val h)`. Establish `h1` using `FiniteField.pow_card_sub_one_eq_one (⟨x, hxK⟩ : K) h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hd]`. Conclude with `congrArg Subtype.val h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_level_elt (x : Formalism.CyclotomicNorms.Fbar p) (hx : x ≠ 0) : ∃ d, 0 < d ∧ x ^ (p ^ d - 1) = 1 := by
   have hint : IsIntegral (ZMod p) x := (Algebra.IsAlgebraic.isAlgebraic x).isIntegral
@@ -53,7 +53,7 @@ theorem exists_level_elt (x : Formalism.CyclotomicNorms.Fbar p) (hx : x ≠ 0) :
   exact congrArg Subtype.val h1
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : (p ^ d - 1) ∣ (p ^ (d * e) - 1) := by`. Rewrite using `[pow_mul]`. Conclude with `Nat.sub_one_dvd_pow_sub_one _ _`. Rewrite using `[hc, pow_mul, h, one_pow]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_level_mul {x : Formalism.CyclotomicNorms.Fbar p} {d : ℕ} (h : x ^ (p ^ d - 1) = 1) (e : ℕ) : x ^ (p ^ (d * e) - 1) = 1 := by
   obtain ⟨c, hc⟩ : (p ^ d - 1) ∣ (p ^ (d * e) - 1) := by
@@ -61,9 +61,9 @@ theorem pow_level_mul {x : Formalism.CyclotomicNorms.Fbar p} {d : ℕ} (h : x ^ 
   rw [hc, pow_mul, h, one_pow]
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => exact ⟨1, one_pos, by simp⟩`. Consider the case `cons a s ih`. Take `⟨d, hd, h⟩` from `ih (fun h => hs (Multiset.mem_cons_of_mem h))`. Take `⟨e, he, h'⟩` from `exists_level_elt a (fun h => hs (h ▸ Multiset.mem_cons_self a s))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨d * e, Nat.mul_pos hd he, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Multiset.mem_cons.mp hx with rfl | hx` into its components or cases. Rewrite using `[mul_comm]`. Conclude with `pow_level_mul h' d`. Conclude with `pow_level_mul (h x hx) e`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_level_multiset (s : Multiset (Formalism.CyclotomicNorms.Fbar p)) (hs : (0 : Formalism.CyclotomicNorms.Fbar p) ∉ s) :
     ∃ d, 0 < d ∧ ∀ x ∈ s, x ^ (p ^ d - 1) = 1 := by
@@ -78,7 +78,7 @@ theorem exists_level_multiset (s : Multiset (Formalism.CyclotomicNorms.Fbar p)) 
     · exact pow_level_mul (h x hx) e
 
 /- English proof (translation)
-Apply `exists_level_multiset` to reduce the goal to its premises. Introduce `h`. Establish `h1` using `(Polynomial.mem_roots'.mp h).2`. Rewrite `h1` using `[IsRoot.def, ← coeff_zero_eq_eval_zero, coeff_map]`. Conclude with `h0 ((map_eq_zero _).mp h1)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_level (f : (ZMod p)[X]) (h0 : f.coeff 0 ≠ 0) : ∃ d, LevelOf f d := by
   apply exists_level_multiset
@@ -91,7 +91,7 @@ variable {A : ValuationSubring Ω} {κ : IsLocalRing.ResidueField A ≃+* Formal
   {teich : Formalism.CyclotomicNorms.Fbar p →* ℂ} {I : Set (Ω ≃ₐ[E] Ω)} {n : ℕ} {P : (Ω ≃ₐ[E] Ω) → ℂ[X]} {f f' : (ZMod p)[X]}
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `exists_level f h.2.2.1`. Rewrite using `[← labPol_one]`. Conclude with `h.2.2.2 σ hσ d 1 hd (by rw [pow_one]; exact hc d hd.1)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLabelOf.at_gen (h : IsLabelOf A κ ζ teich I n P f) {σ : Ω ≃ₐ[E] Ω} (hσ : σ ∈ I) (hc : NT.TameCoupled A κ σ ζ) :
     P σ = ((Formalism.CyclotomicNorms.rootsBar f).map fun x => X - C (teich x)).prod := by
@@ -100,7 +100,7 @@ theorem IsLabelOf.at_gen (h : IsLabelOf A κ ζ teich I n P f) {σ : Ω ≃ₐ[E
   exact h.2.2.2 σ hσ d 1 hd (by rw [pow_one]; exact hc d hd.1)
 
 /- English proof (translation)
-Establish `e1` using `(IsAlgClosed.splits (f.map (algebraMap (ZMod p) (Formalism.CyclotomicNorms.Fbar p)))).eq_prod_roots_of_monic (hf.map _)`. Establish `e2` using `(IsAlgClosed.splits (f'.map (algebraMap (ZMod p) (Formalism.CyclotomicNorms.Fbar p)))).eq_prod_roots_of_monic (hf'.map _)`. Unfold `Formalism.CyclotomicNorms.rootsBar at h`. Rewrite `e1` using `[h, ← e2]`. Conclude with `Polynomial.map_injective _ (algebraMap (ZMod p) (Formalism.CyclotomicNorms.Fbar p)).injective e1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_rootsBar_eq (hf : f.Monic) (hf' : f'.Monic) (h : Formalism.CyclotomicNorms.rootsBar f = Formalism.CyclotomicNorms.rootsBar f') : f = f' := by
   have e1 := (IsAlgClosed.splits (f.map (algebraMap (ZMod p) (Formalism.CyclotomicNorms.Fbar p)))).eq_prod_roots_of_monic (hf.map _)
@@ -110,9 +110,9 @@ theorem eq_of_rootsBar_eq (hf : f.Monic) (hf' : f'.Monic) (h : Formalism.Cycloto
   exact Polynomial.map_injective _ (algebraMap (ZMod p) (Formalism.CyclotomicNorms.Fbar p)).injective e1
 
 /- English proof (translation)
-Establish `e` using `(h.at_gen hσ hc).symm.trans (h'.at_gen hσ hc)`. Establish `r` using `congrArg Polynomial.roots e`. Establish `key : ∀ s : Multiset (Formalism.CyclotomicNorms.Fbar p), ((s.map fun x => X - C (teich x)).prod).roots = s.map teich`. Introduce `s`. Establish `: (s.map fun x => X - C (teich x)) = (s.map teich).map fun a => X - C a` using `by rw [Multiset.map_map]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this, Polynomial.roots_multiset_prod_X_sub_C]`. Rewrite `r` using `[key, key]`. Conclude with `eq_of_rootsBar_eq h.1 h'.1 (Multiset.map_injective ht r)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLabelOf.unique (h : IsLabelOf A κ ζ teich I n P f) (h' : IsLabelOf A κ ζ teich I n P f')
     (ht : Function.Injective teich) {σ : Ω ≃ₐ[E] Ω} (hσ : σ ∈ I) (hc : NT.TameCoupled A κ σ ζ) : f = f' := by

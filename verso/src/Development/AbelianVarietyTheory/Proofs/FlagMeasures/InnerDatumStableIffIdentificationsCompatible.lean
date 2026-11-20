@@ -15,34 +15,34 @@ open Formalism.L2.SG.Pf GlobalTheory.StabCnt
 variable {D : D7} {T T' : D.host.E}
 
 /- English proof (translation)
-Rewrite using `[← gmap_apply_mem φ M, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_gmap' (φ : GV D) (M : LV D) (x : (VS D).V) : x ∈ Formalism.HermitianLatticesTheory.gmap φ M ↔ φ.symm x ∈ M := by
   rw [← gmap_apply_mem φ M, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[XLam, XLam, gmap_inf', gmap_toO, adapt_xsp h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xlam_adapt {A B : LFlag (VS D) D.R.rS T} {φ : GV D} (h : Adapt φ A B) (M : LV D) :
     XLam (Formalism.HermitianLatticesTheory.gmap φ M) B = Formalism.HermitianLatticesTheory.gmap φ (XLam M A) := by
   rw [XLam, XLam, gmap_inf', gmap_toO, adapt_xsp h]
 
 /- English proof (translation)
-Rewrite using `[Lrep, Lrep, gmap_inf', gmap_toO, adapt_orth h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lrep_adapt {A B : LFlag (VS D) D.R.rS T} {φ : GV D} (h : Adapt φ A B) (M : LV D) :
     Lrep (Formalism.HermitianLatticesTheory.gmap φ M) B = Formalism.HermitianLatticesTheory.gmap φ (Lrep M A) := by
   rw [Lrep, Lrep, gmap_inf', gmap_toO, adapt_orth h]
 
 /- English proof (translation)
-Rewrite using `[Lsub, Lsub, lrep_adapt h, gmap_inf', gmap_sup', gmap_toO, gmap_toO, adapt_xsp h, adapt_orth h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lsub_adapt {A B : LFlag (VS D) D.R.rS T} {φ : GV D} (h : Adapt φ A B) (M : LV D) :
     Lsub (Formalism.HermitianLatticesTheory.gmap φ M) B = Formalism.HermitianLatticesTheory.gmap φ (Lsub M A) := by
   rw [Lsub, Lsub, lrep_adapt h, gmap_inf', gmap_sup', gmap_toO, gmap_toO, adapt_xsp h, adapt_orth h]
 
 /- English proof (translation)
-Rewrite using `[NgX, NgX, gmap_sup', gmap_sup', gmap_ideal_smul, xlam_adapt h, xlam_adapt h']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ngx_adapt {A B : LFlag (VS D) D.R.rS T} {A' B' : LFlag (VS D) D.R.rS T'} {φ : GV D} (h : Adapt φ A B)
     (h' : Adapt φ A' B') (M : LV D) (n : ℕ) :
@@ -50,7 +50,7 @@ theorem ngx_adapt {A B : LFlag (VS D) D.R.rS T} {A' B' : LFlag (VS D) D.R.rS T'}
   rw [NgX, NgX, gmap_sup', gmap_sup', gmap_ideal_smul, xlam_adapt h, xlam_adapt h']
 
 /- English proof (translation)
-Use `lrep_adapt hA.1 M` as an intermediate fact. Rewrite `this` using `[hA.2]`. Rewrite using `[← gmap_apply_mem A (Lrep M F) x, ← this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem aut_lrep {F : LFlag (VS D) D.R.rS T} {M : LV D} {A : GV D} (hA : A ∈ Aut0 F M) (x : (VS D).V) :
     A x ∈ Lrep M F ↔ x ∈ Lrep M F := by
@@ -59,24 +59,24 @@ theorem aut_lrep {F : LFlag (VS D) D.R.rS T} {M : LV D} {A : GV D} (hA : A ∈ A
   rw [← gmap_apply_mem A (Lrep M F) x, ← this]
 
 /- English proof (translation)
-Rewrite using `[← aut_lrep hA (A.symm x), LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aut_lrep_symm {F : LFlag (VS D) D.R.rS T} {M : LV D} {A : GV D} (hA : A ∈ Aut0 F M) (x : (VS D).V) :
     A.symm x ∈ Lrep M F ↔ x ∈ Lrep M F := by
   rw [← aut_lrep hA (A.symm x), LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[lsub_adapt hh]`. Use extensionality with `y`. Rewrite using `[mem_gmap']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hy'⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨l, hl, ξ, hξ, e⟩` from `Submodule.mem_sup.1 hy`. Establish `hy2 : y ∈ orth (VS D) (Xsp F)`. Use `mem_of_map_eq (adapt_orth hh) hy'` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Use `⟨?_, hy2⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : y = A l + ((h l - A l) + h ξ)`. Establish `: y = h (l + ξ)` using `by rw [e, LinearEquiv.apply_symm_apply]`. Rewrite using `[this, map_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem_sup ((aut_lrep hA l).2 hl) (show _ ∈ Xsp F from add_mem (hc l hl.2) (mem_of_map_eq (adapt_xsp hh) hξ))`. Introduce and unpack `⟨hy, hy'⟩`. Take `⟨l, hl, ξ, hξ, e⟩` from `Submodule.mem_sup.1 hy`. Use `⟨?_, symm_mem_of_map_eq (adapt_orth hh) hy'⟩` and prove the remaining obligations. Establish `hm` using `(aut_lrep_symm hA l).2 hl`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hc _ hm.2`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Establish `e2 : h.symm y = A.symm l + h.symm (ξ - (h (A.symm l) - l))`. Rewrite using `[← e]`. Simplify using `only [map_add, map_sub, LinearEquiv.symm_apply_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e2]`. Conclude with `Submodule.add_mem_sup hm (show _ ∈ Xsp F from symm_mem_of_map_eq (adapt_xsp hh) (sub_mem (show ξ ∈ Xsp F from hξ) h1))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lsub_eq {F : LFlag (VS D) D.R.rS T} {M : LV D} {A h : GV D} (hA : A ∈ Aut0 F M) (hh : Adapt h F F)
     (hc : ∀ x ∈ orth (VS D) (Xsp F), h x - A x ∈ Xsp F) : Lsub (Formalism.HermitianLatticesTheory.gmap h M) F = Lsub M F := by
@@ -109,7 +109,7 @@ theorem lsub_eq {F : LFlag (VS D) D.R.rS T} {M : LV D} {A h : GV D} (hA : A ∈ 
       (show _ ∈ Xsp F from symm_mem_of_map_eq (adapt_xsp hh) (sub_mem (show ξ ∈ Xsp F from hξ) h1))
 
 /- English proof (translation)
-Establish `e : l - l' = (m - m') + (l - m) - (l' - m')` using `by abel`. Rewrite using `[e]`. Use `sub_mem (add_mem h ?_) ?_` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right ⟨M.sub_mem hl.1 hm.1, h1⟩)`. Conclude with `Submodule.mem_sup_right ⟨M.sub_mem hl'.1 hm'.1, h2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ngx_shift {F : LFlag (VS D) D.R.rS T} {F' : LFlag (VS D) D.R.rS T'} {M : LV D} {n : ℕ}
     {l m l' m' : (VS D).V} (hl : l ∈ Lrep M F) (hm : m ∈ Lrep M F) (hl' : l' ∈ Lrep M F') (hm' : m' ∈ Lrep M F')
@@ -121,27 +121,25 @@ theorem ngx_shift {F : LFlag (VS D) D.R.rS T} {F' : LFlag (VS D) D.R.rS T'} {M :
   · exact Submodule.mem_sup_right ⟨M.sub_mem hl'.1 hm'.1, h2⟩
 
 /- English proof (translation)
-Establish `hG : ∀ p : (VS D).V × (VS D).V, p ∈ (gdat F F' (Formalism.HermitianLatticesTheory.gmap h M)).2.2 ↔ ∃ l' ∈ Lrep M F', ∃ l ∈ Lrep M F, p.1 - A' l' ∈ Xsp F' ∧ p.2 - A l ∈ Xsp F ∧ l - l' ∈ NgX M (gS D) F F'`. Introduce `p`. Use `show (∃ l' ∈ Lrep (Formalism.HermitianLatticesTheory.gmap h M) F', ∃ l ∈ Lrep (Formalism.HermitianLatticesTheory.gmap h M) F, p.1 - l' ∈ Xsp F' ∧ p.2 - l ∈ Xsp F ∧ l - l' ∈ NgX (Formalism.HermitianLatticesTheory.gmap h M) (gS D) F F') ↔ _`. Rewrite using `[lrep_adapt hh, lrep_adapt hh', ngx_adapt hh hh']`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨l', hl', l, hl, h1, h2, h3⟩`. Take `⟨m', rfl⟩` from `h.surjective l'`. Take `⟨m, rfl⟩` from `h.surjective l`. Rewrite `hl`, `hl'` using `[gmap_apply_mem]`. Rewrite `h3` using `[← map_sub, gmap_apply_mem]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m', hl', m, hl, ?_, ?_, h3⟩` and prove the remaining obligations. Simplify using `using add_mem h1 (hc' m' hl'.2)`. Simplify using `using add_mem h2 (hc m hl.2)`. Introduce and unpack `⟨m', hl', m, hl, h1, h2, h3⟩`. Use `⟨h m', (gmap_apply_mem _ _ _).2 hl', h m, (gmap_apply_mem _ _ _).2 hl, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using sub_mem h1 (hc' m' hl'.2)`. Simplify using `using sub_mem h2 (hc m hl.2)`. Rewrite using `[← map_sub, gmap_apply_mem]`. Conclude with `h3`. Establish `hG0 : ∀ p : (VS D).V × (VS D).V, p ∈ (gdat F F' M).2.2 ↔ ∃ l' ∈ Lrep M F', ∃ l ∈ Lrep M F, p.1 - l' ∈ Xsp F' ∧ p.2 - l ∈ Xsp F ∧ l - l' ∈ NgX M (gS D) F F'` using `fun p => Iff.rfl`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `he x' hx' l hl`. Establish `hx2` using `(aut_lrep hA' x').2 hx'`. Establish `hl2` using `(aut_lrep hA l).2 hl`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hN`. Establish `: (A' x', A l) ∈ (gdat F F' M).2.2`. Rewrite using `[← he, hG]`. Conclude with `⟨x', hx', l, hl, by simp, by simp, hN⟩`. Take `⟨m', hm', m, hm, h1, h2, h3⟩` from `(hG0 _).1 this`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `ngx_shift hl2 hm hx2 hm' h2 h1 h3`. Introduce `hN`. Establish `: (A' x', A l) ∈ (gdat F F' (Formalism.HermitianLatticesTheory.gmap h M)).2.2`. Rewrite using `[he, hG0]`. Conclude with `⟨A' x', hx2, A l, hl2, by simp, by simp, hN⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m', hm', m, hm, h1, h2, h3⟩` from `(hG _).1 this`. Establish `h1'` using `symm_mem_of_map_eq (adapt_xsp hA'.1) h1`. Establish `h2'` using `symm_mem_of_map_eq (adapt_xsp hA.1) h2`. Simplify using `only [map_sub, LinearEquiv.symm_apply_apply] at h1' h2'`. Conclude with `ngx_shift hl hm hx' hm' h2' h1' h3`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce `hR`. Use `Prod.ext (lsub_eq hA hh hc) (Prod.ext (lsub_eq hA' hh' hc') ?_)` and prove the remaining obligations. Use extensionality with `p`. Rewrite using `[hG, hG0]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨l', hl', l, hl, h1, h2, h3⟩`. Conclude with `⟨A' l', (aut_lrep hA' l').2 hl', A l, (aut_lrep hA l).2 hl, h1, h2, (hR l' hl' l hl).1 h3⟩`. Introduce and unpack `⟨l', hl', l, hl, h1, h2, h3⟩`. Take `⟨m', rfl⟩` from `A'.surjective l'`. Take `⟨m, rfl⟩` from `A.surjective l`.
-
-Rewrite `hl'` using `[aut_lrep hA']`. Rewrite `hl` using `[aut_lrep hA]`. Conclude with `⟨m', hl', m, hl, h1, h2, (hR m' hl' m hl).2 h3⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gdat_iff {F : LFlag (VS D) D.R.rS T} {F' : LFlag (VS D) D.R.rS T'} {M : LV D} {A A' h : GV D}
     (hA : A ∈ Aut0 F M) (hA' : A' ∈ Aut0 F' M) (hh : Adapt h F F) (hh' : Adapt h F' F')
@@ -209,7 +207,7 @@ theorem gdat_iff {F : LFlag (VS D) D.R.rS T} {F' : LFlag (VS D) D.R.rS T'} {M : 
       exact ⟨m', hl', m, hl, h1, h2, (hR m' hl' m hl).2 h3⟩
 
 /- English proof (translation)
-Use `⟨?_, (conj_gmap g b M).2 hb.2⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `adapt_mul (adapt_mul (adapt_inv hg) hb.1) hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aut_conj {A B : LFlag (VS D) D.R.rS T} {M : LV D} {g b : GV D} (hg : Adapt g A B) (hb : b ∈ Aut0 A M) :
     g * b * g⁻¹ ∈ Aut0 B (Formalism.HermitianLatticesTheory.gmap g M) := by
@@ -218,23 +216,23 @@ theorem aut_conj {A B : LFlag (VS D) D.R.rS T} {M : LV D} {g b : GV D} (hg : Ada
   exact adapt_mul (adapt_mul (adapt_inv hg) hb.1) hg
 
 /- English proof (translation)
-Introduce `D T T' F0 F F0' F' lam lam' Λ γ g h b₁ b₂ hγ hlam hg hg' hΛ hb₁ hb₂ hh hc hc'`. Establish `hγa : Adapt γ F0' (mapLF γ F0')` using `adapt_mapLF hγ`. Establish `hc₂ : γ * b₂ * γ⁻¹ ∈ Aut0 (mapLF γ F0') lam`. Use `aut_conj hγa hb₂` as an intermediate fact. Rewrite `this` using `[hlam]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hA` using `aut_conj hg hb₁`. Establish `hA'` using `aut_conj hg' hc₂`. Establish `e1 : g * γ * b₂ * γ⁻¹ * g⁻¹ = g * (γ * b₂ * γ⁻¹) * g⁻¹` using `by group`. Rewrite `hc'` using `[e1]`. Substitute `hΛ` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[gdat_iff hA hA' (frameAdaptedIsometry_of_fixing_both_frames hh).1 (frameAdaptedIsometry_of_fixing_both_frames hh).2 hc hc', lrep_adapt hg, lrep_adapt hg', ngx_adapt hg hg']`. Establish `hi : b₁ * γ * b₂⁻¹ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `Subgroup.mul_mem _ (Subgroup.mul_mem _ hb₁.1.1 hγ) (Subgroup.inv_mem _ hb₂.1.1)`. Establish `hβ : Adapt (b₁ * γ * b₂⁻¹ * (b₂ * γ⁻¹)) (mapLF γ F0') (mapLF (b₁ * γ * b₂⁻¹) F0')` using `adapt_mul (adapt_mul (adapt_inv hγa) hb₂.1) (adapt_mapLF hi)`. Establish `e2 : b₁ * γ * b₂⁻¹ * (b₂ * γ⁻¹) = b₁` using `by group`. Rewrite `hβ` using `[e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hN` using `ngx_adapt hb₁.1 hβ lam (gS D)`. Rewrite `hN` using `[hb₁.2]`. Establish `e3 : b₁ * γ * b₂⁻¹ * γ⁻¹ = b₁ * (γ * b₂ * γ⁻¹)⁻¹` using `by group`. Unfold `IotaCompat`. Rewrite using `[hN, e3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `γ * b₂ * γ⁻¹ = c at hc₂ ⊢`. Establish `e4 : ∀ x, (b₁ * c⁻¹) (c x) = b₁ x` using `fun x => by`. Express the relevant statement in the definitionally equal form `b₁ (c.symm (c x)) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Prove the components needed by the constructor for the conclusion.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `H x' hx' l hl`. Take `⟨y, rfl⟩` from `c.surjective x'`. Take `⟨m, rfl⟩` from `b₁.surjective l`. Rewrite `hx'` using `[aut_lrep hc₂]`. Rewrite `hl` using `[aut_lrep hb₁]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `H (g y) ((gmap_apply_mem _ _ _).2 hx') (g m) ((gmap_apply_mem _ _ _).2 hl)` as an intermediate fact. Simplify using `only [conj_apply, LinearEquiv.symm_apply_apply, ← map_sub, gmap_apply_mem] at this`. Rewrite using `[e4, ← map_sub, gmap_apply_mem]`. Conclude with `this.symm`. Introduce `H x' hx' l hl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `g.surjective x'`. Take `⟨m, rfl⟩` from `g.surjective l`. Rewrite `hx'`, `hl` using `[gmap_apply_mem]`. Use `H (c y) ((aut_lrep hc₂ y).2 hx') (b₁ m) ((aut_lrep hb₁ m).2 hl)` as an intermediate fact. Rewrite `this` using `[e4, ← map_sub, gmap_apply_mem]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [conj_apply, LinearEquiv.symm_apply_apply, ← map_sub, gmap_apply_mem]`. Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem gdat_iff_iotaCompat : ∀ (D : D7) (T T' : D.host.E) (F0 F : LFlag (VS D) D.R.rS T) (F0' F' : LFlag (VS D) D.R.rS T') (lam lam' Λ : LV D) (γ g h b₁ b₂ : GV D), γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT → Formalism.HermitianLatticesTheory.gmap γ lam' = lam → Adapt g F0 F → Adapt g (mapLF γ F0') F' → Λ = Formalism.HermitianLatticesTheory.gmap g lam → b₁ ∈ Aut0 F0 lam → b₂ ∈ Aut0 F0' lam' → h ∈ H0 F F' → (∀ x ∈ orth (VS D) (Xsp F), h x - (g * b₁ * g⁻¹) x ∈ Xsp F) → (∀ x ∈ orth (VS D) (Xsp F'), h x - (g * γ * b₂ * γ⁻¹ * g⁻¹) x ∈ Xsp F') → (gdat F F' (Formalism.HermitianLatticesTheory.gmap h Λ) = gdat F F' Λ ↔ IotaCompat lam F0 (mapLF γ F0') (mapLF (b₁ * γ * b₂⁻¹) F0') (b₁ * γ * b₂⁻¹ * γ⁻¹) (gS D)) := by
   intro D T T' F0 F F0' F' lam lam' Λ γ g h b₁ b₂ hγ hlam hg hg' hΛ hb₁ hb₂ hh hc hc'

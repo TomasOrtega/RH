@@ -23,21 +23,21 @@ noncomputable section
 namespace GlobalTheory.StairIdealAt
 
 /- English proof (translation)
-Introduce `D T L P sc ρ v hρ hM`. Establish `hx : D.host.xi0 ≠ 0` using `GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero`. Establish `hAb : (D.host.AAbar : GlobalTheory.SeeSaw.FI D) ≠ 0` using `GlobalTheory.Member.LatSelfDual.AAbar_ne_zero D`. Establish `hMo : ((P.modul sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.modul_ne_bot sc`. Establish `hS : P.stA sc ≠ 0` using `((GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).2 T L P sc).1`. Establish `hT : P.stAbar sc ≠ 0` using `mul_ne_zero hAb (inv_ne_zero hMo)`. Establish `e1 : ρ - 1 + 1 = ρ` using `by omega`. Establish `e2 : 2 * ρ - (ρ - 1) = ρ + 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hneg : ∀ k : ℕ, FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ ((-D.host.xi0) ^ k)⁻¹ = (FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ D.host.xi0 ^ k)⁻¹`. Introduce `k`. Rewrite using `[← FractionalIdeal.spanSingleton_inv, ← FractionalIdeal.spanSingleton_pow]`. Use `congr 1`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `FractionalIdeal.spanSingleton_eq_spanSingleton.2` to reduce the goal to its premises. Use `⟨-1, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2, hneg, hneg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set X := FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ D.host.xi0 with hXdef`. Establish `hX : X ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.2 hx`. Use `⟨mul_ne_zero (inv_ne_zero (pow_ne_zero _ hX)) (mul_ne_zero (pow_ne_zero _ hS) (inv_ne_zero (pow_ne_zero _ hT))), mul_ne_zero (inv_ne_zero (pow_ne_zero _ hX)) (mul_ne_zero (pow_ne_zero _ hS) (inv_ne_zero (pow_ne_zero _ hT))), ?_⟩` and prove the remaining obligations. Establish `key : (D.host.AAbar : GlobalTheory.SeeSaw.FI D) * ((X ^ ρ)⁻¹ * (P.stA sc ^ (ρ + 1) * (P.stAbar sc ^ ρ)⁻¹))⁻¹ * ((P.modul sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D)⁻¹ = FractionalIdeal.spanSingleton _ D.host.xi0⁻¹ * ((X ^ (ρ + 1))⁻¹ * (P.stA sc ^ (ρ + 1) * (P.stAbar sc ^ …`. Rewrite using `[← FractionalIdeal.spanSingleton_inv, ← hXdef]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hTd : P.stAbar sc = D.host.AAbar * ((P.modul sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D)⁻¹` using `rfl`. Rewrite using `[hTd]`. Simplify using `only [mul_inv, inv_inv, pow_succ, mul_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel₀ hX, one_mul, mul_inv]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `_ = _ := by ring`. Establish `hB0 : (D.host.AAbar : GlobalTheory.SeeSaw.FI D) * ((X ^ ρ)⁻¹ * (P.stA sc ^ (ρ + 1) * (P.stAbar sc ^ ρ)⁻¹))⁻¹ ≠ 0` using `mul_ne_zero hAb (inv_ne_zero (mul_ne_zero (inv_ne_zero (pow_ne_zero _ hX)) (mul_ne_zero (pow_ne_zero _ hS) (inv_ne_zero (pow_ne_zero _ hT)))))`. Take `⟨y, hy0, hy⟩` from `GlobalTheory.IdVGen.idV_gen D v _ hB0`. Establish `h1` using `GlobalTheory.Core.Mi.LatMatch.DiUnit.eq_one_iff.1 (GlobalTheory.Core.Mi.LatMatch.DiUnit.inv_eq_one hM)`. Establish `hp` using `GlobalTheory.SeeSaw.IdVMul.idV_mul_gen D v _ _ y 1 hy0 one_ne_zero hy h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hp` using `[mul_one, key]`. Introduce `s`. Rewrite using `[hp, hy]`.
+A detailed English derivation is pending.
 -/
 theorem completion_eq_of_modul_unit : ∀ {D : D7} {T : Type} {L : LevCh D T} (P : Places L) (sc : Consts) (ρ : ℕ) (v : GlobalTheory.FinPl.Pl D), 0 < ρ → GlobalTheory.SeeSaw.idV ((P.modul sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D) v = GlobalTheory.SeeSaw.idV 1 v → (FractionalIdeal.spanSingleton _ ((-D.host.xi0) ^ (ρ - 1 + 1))⁻¹ * (P.stA sc ^ (2 * ρ - (ρ - 1)) * (P.stAbar sc ^ (ρ - 1 + 1))⁻¹) ≠ 0) ∧ (FractionalIdeal.spanSingleton _ ((-D.host.xi0) ^ (ρ + 1))⁻¹ * (P.stA sc ^ (ρ + 1) * (P.stAbar sc ^ (ρ + 1))⁻¹) ≠ 0) ∧ ∀ s, s ∈ GlobalTheory.SeeSaw.idV ((D.host.AAbar : GlobalTheory.SeeSaw.FI D) * (FractionalIdeal.spanSingleton _ ((-D.host.xi0) ^ (ρ - 1 + 1))⁻¹ * (P.stA sc ^ (2 * ρ - (ρ - 1)) * (P.stAbar sc ^ (ρ - 1 + 1))⁻¹))⁻¹) v ↔ s ∈ GlobalTheory.SeeSaw.idV (FractionalIdeal.spanSingleton _ D.host.xi0⁻¹ * (FractionalIdeal.spanSingleton _ ((-D.host.xi0) ^ (ρ + 1))⁻¹ * (P.stA sc ^ (ρ + 1) * (P.stAbar sc ^ (ρ + 1))⁻¹))⁻¹) v := by
   intro D T L P sc ρ v hρ hM

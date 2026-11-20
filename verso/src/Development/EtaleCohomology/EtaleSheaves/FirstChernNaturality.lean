@@ -8,7 +8,7 @@ namespace LateralTheory.E.FirstChernNaturality
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Simplify using `[chains, chainsXIso, chainsN, HomologicalComplex.extendMap_f]`. Use `erw [Iso.inv_hom_id_assoc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chainsXIso_inv_nat {E E' : Spc} (f : E ⟶ E') (p : ℕ) :
     (chainsXIso R E p).inv ≫ ((chains R).map f).f (-(p : ℤ)) =
@@ -18,9 +18,9 @@ theorem chainsXIso_inv_nat {E E' : Spc} (f : E ⟶ E') (p : ℕ) :
   rfl
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun φ => (φ.app (op U)).hom (ModuleCat.freeMk (R := ULift.{1} R) (ULift.up.{1} x))) (toSheafify_naturality Scheme.etaleTopology ((freeP R).map g))`. Unfold `freeGen`. Use `h.symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((toSheafify Scheme.etaleTopology ((freeP R).obj P')).app (op U)).hom ((((freeP R).map g).app (op U)).hom (ModuleCat.freeMk (R := ULift.{1} R) (ULift.up.{1} x))) = _`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [ModuleCat.freeMk, freeP]`. Simplify using `[ModuleCat.free]`. Use `erw [Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem freeGen_nat {P P' : PSh} (g : P ⟶ P') (U : Scheme.{0}) (x : P.obj (op U)) :
     (((free R).map g).hom.app (op U)).hom (freeGen R P U x) = freeGen R P' U (g.app (op U) x) := by
@@ -37,7 +37,7 @@ theorem freeGen_nat {P P' : PSh} (g : P ⟶ P') (U : Scheme.{0}) (x : P.obj (op 
   rfl
 
 /- English proof (translation)
-Establish `hc : (zcomp (Cocycle.ofHom ((chains R).map f)) γ (zero_add n)).1.v (-(p : ℤ)) s h = ((chains R).map f).f (-(p : ℤ)) ≫ γ.1.v (-(p : ℤ)) s h`. Simplify using `[zcomp, Cochain.comp_v _ _ (zero_add n) (-(p : ℤ)) (-(p : ℤ)) s (by simp) h]`. Unfold `ev`. Rewrite using `[hc, ← Category.assoc, chainsXIso_inv_nat, Category.assoc]`. Conclude with `congrArg (((chainsXIso R E' p).inv ≫ γ.1.v (-(p : ℤ)) s h).hom.app (op U)).hom (freeGen_nat (f.app (op (SimplexCategory.mk p))) U x)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_zpull {E E' : Spc} (f : E ⟶ E') {I : Cx R} {n : ℤ} (γ : Cocycle ((chains R).obj E') I n)
     (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
@@ -52,7 +52,7 @@ theorem ev_zpull {E E' : Spc} (f : E ⟶ E') {I : Cx R} {n : ℤ} (γ : Cocycle 
     (freeGen_nat (f.app (op (SimplexCategory.mk p))) U x)
 
 /- English proof (translation)
-Unfold `Sx.sub`. Conclude with `congrFun (congrArg (fun t => t.app (op U)) (f.naturality (SimplexCategory.subinterval j l h).op)) x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sub_nat {E E' : Spc} (f : E ⟶ E') {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (j l : ℕ) (h : j + l ≤ N) :
     (f.app (op (SimplexCategory.mk l))).app (op U) (x.sub j l h) =
@@ -67,13 +67,13 @@ theorem lineUnit_comp {E E' : Spc} (f : E ⟶ E') (L : E' ⟶ ofCat (glCat 1)) {
     lineUnit (f ≫ L) x = lineUnit L ((f.app (op (SimplexCategory.mk 1))).app (op U) x) := rfl
 
 /- English proof (translation)
-Introduce `q _ E E' f L hinv`. Establish `hinvE : Inv q E` using `fun U ⟨x⟩ => hinv U ⟨(f.app _).app _ x⟩`. Take `⟨⟨γ, hγ⟩, h2⟩` from `hC1 q L hinv`. Rewrite using `[h2 γ hγ]`. Take `⟨_, h2'⟩` from `hC1 q (f ≫ L) hinvE`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h2' (zcomp (Cocycle.ofHom ((chains _).map f)) γ (zero_add 2)) ?_]`. Both sides reduce to the same expression. Take `⟨g0, g1, g2⟩` from `hγ`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `U x`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ev_zpull]`. Conclude with `g0 U _`. Introduce `U x v hv`. Rewrite using `[ev_zpull]; exact g1 U _ v (by rw [hv, lineUnit_comp])`. Introduce `U x v w hv hw`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ev_zpull]`. Conclude with `g2 U _ v w (by rw [hv, lineUnit_comp, sub_nat]) (by rw [hw, lineUnit_comp, sub_nat])`.
+A detailed English derivation is pending.
 -/
 theorem etale_first_chern_class_natural_of_spec (hC1 : LateralTheory.E.CupProductRingLaws.EtaleFirstChernClassRepresentedByChernCocycle) : LateralTheory.E.CupProductRingLaws.EtaleFirstChernClassNaturalUnderPullback := by
   intro q _ E E' f L hinv

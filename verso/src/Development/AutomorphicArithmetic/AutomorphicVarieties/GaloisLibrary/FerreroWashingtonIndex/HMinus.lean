@@ -10,7 +10,7 @@ section
 variable {K : Type} [Field K] [NumberField K] [IsCMField K] {ι : Type}
 
 /- English proof (translation)
-Establish `h` using `IsCMField.complexEmbedding_complexConj K φ a`. Establish `h2 : IsCMField.complexConj K a = a` using `ha`. Rewrite `h` using `[h2]`. Conclude with `Complex.conj_eq_iff_im.1 h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hMinus_im (φ : K →+* ℂ) {a : K} (ha : cE K a = a) : (φ a).im = 0 := by
   have h := IsCMField.complexEmbedding_complexConj K φ a
@@ -19,7 +19,7 @@ private theorem hMinus_im (φ : K →+* ℂ) {a : K} (ha : cE K a = a) : (φ a).
   exact Complex.conj_eq_iff_im.1 h.symm
 
 /- English proof (translation)
-Introduce `hre`. Apply `h0` to reduce the goal to its premises. Establish `h : φ a = 0` using `Complex.ext hre (hMinus_im φ ha)`. Conclude with `φ.injective (by rw [h, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem hMinus_re (φ : K →+* ℂ) {a : K} (ha : cE K a = a) (h0 : a ≠ 0) : (φ a).re ≠ 0 := by
   intro hre
@@ -28,11 +28,11 @@ private theorem hMinus_re (φ : K →+* ℂ) {a : K} (ha : cE K a = a) (h0 : a �
   exact φ.injective (by rw [h, map_zero])
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [sgn, Pi.add_apply, map_mul, Complex.mul_re, hMinus_im (e i) ha, hMinus_im (e i) hb, mul_zero, sub_zero]`. Establish `h1` using `hMinus_re (e i) ha ha0`. Establish `h2` using `hMinus_re (e i) hb hb0`. Apply the tactic sequence `rcases h1.lt_or_gt with p | p <;> rcases h2.lt_or_gt with q | q`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[if_neg (not_lt.mpr (mul_pos_of_neg_of_neg p q).le), if_pos p, if_pos q]`. Evaluate the decidable proposition. Rewrite using `[if_pos (mul_neg_of_neg_of_pos p q), if_pos p, if_neg (not_lt.mpr q.le)]`. Evaluate the decidable proposition. Rewrite using `[if_pos (mul_neg_of_pos_of_neg p q), if_neg (not_lt.mpr p.le), if_pos q]`.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Rewrite the conclusion using the stated equalities.
 
-Evaluate the decidable proposition. Rewrite using `[if_neg (not_lt.mpr (mul_pos p q).le), if_neg (not_lt.mpr p.le), if_neg (not_lt.mpr q.le)]`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 -/
 private theorem hMinus_mul (e : ι → K →+* ℂ) {a b : K} (ha : cE K a = a) (ha0 : a ≠ 0) (hb : cE K b = b) (hb0 : b ≠ 0) :
     sgn e (a * b) = sgn e a + sgn e b := by
@@ -52,14 +52,14 @@ private theorem hMinus_mul (e : ι → K →+* ℂ) {a b : K} (ha : cE K a = a) 
     decide
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `ZMod.neg_eq_self_mod_two _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem hMinus_neg (f : ι → ZMod 2) : -f = f := by
   funext i
   exact ZMod.neg_eq_self_mod_two _
 
 /- English proof (translation)
-Introduce `h`. Apply `u.ne_zero` to reduce the goal to its premises. Conclude with `RingOfIntegers.ext (h.trans (by simp))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem hMinus_ne (u : (𝓞 K)ˣ) : ((u : 𝓞 K) : K) ≠ 0 := by
   intro h
@@ -67,13 +67,13 @@ private theorem hMinus_ne (u : (𝓞 K)ˣ) : ((u : 𝓞 K) : K) ≠ 0 := by
   exact RingOfIntegers.ext (h.trans (by simp))
 
 /- English proof (translation)
-Unfold `sgnE at hf`. Proceed by induction on `hf using AddSubgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero`. Use `⟨1, by simp, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Simplify using `[sgn]`. Consider the case `add x y _ _ hx hy`. Take `⟨u, hu, rfl⟩` from `hx`. Take `⟨v, hv, rfl⟩` from `hy`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨u * v, ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[map_mul, hu, hv]`. Use `push_cast`. Rewrite using `[hMinus_mul e hu (hMinus_ne u) hv (hMinus_ne v)]`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `neg x _ hx`. Rewrite using `[hMinus_neg]` and apply the resulting hypothesis.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem hMinus_unit (e : ι → K →+* ℂ) {f : ι → ZMod 2} (hf : f ∈ sgnE e) :
     ∃ u : (𝓞 K)ˣ, cE K ((u : 𝓞 K) : K) = ((u : 𝓞 K) : K) ∧ f = sgn e ((u : 𝓞 K) : K) := by
@@ -96,9 +96,7 @@ private theorem hMinus_unit (e : ι → K →+* ℂ) {f : ι → ZMod 2} (hf : f
     rwa [hMinus_neg]
 
 /- English proof (translation)
-Take `⟨i, rfl⟩` from `he φ`. Establish `hi` using `congr_fun h i`. Simplify using `only [sgn, Pi.zero_apply] at hi`. Use `split_ifs at hi with hlt`. Conclude with `absurd hi (by decide)`.
-
-Conclude with `lt_of_le_of_ne (not_lt.mp hlt) (hMinus_re (e i) ha h0).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hMinus_pos (e : ι → K →+* ℂ) (he : Function.Surjective e) {a : K} (ha : cE K a = a) (h0 : a ≠ 0)
     (h : sgn e a = 0) (φ : K →+* ℂ) : 0 < (φ a).re := by
@@ -112,9 +110,9 @@ private theorem hMinus_pos (e : ι → K →+* ℂ) (he : Function.Surjective e)
 end
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show Ideal.map (RingOfIntegers.mapRingEquiv (cE K)) (Ideal.map (RingOfIntegers.mapRingEquiv (cE K)) (I : Ideal (𝓞 K))) = I`. Establish `hs : (RingOfIntegers.mapRingEquiv (cE K)).symm = RingOfIntegers.mapRingEquiv (cE K)`. Use extensionality with `x`. Simplify using `only [cE, RingOfIntegers.mapRingEquiv_symm_apply, RingOfIntegers.mapRingEquiv_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[AlgEquiv.symm_apply_eq, IsCMField.complexConj_apply_apply]`. Establish `h` using `Ideal.map_of_equiv (I := (I : Ideal (𝓞 K))) (RingOfIntegers.mapRingEquiv (cE K))`. Rewrite `h` using `[hs]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem idMap_complexConj_involutive {K : Type} [Field K] [NumberField K] [IsCMField K] (I : ↥(Ideal (𝓞 K))⁰) :
     idMap (cE K) (idMap (cE K) I) = I := by
@@ -131,17 +129,15 @@ private theorem idMap_complexConj_involutive {K : Type} [Field K] [NumberField K
   exact h
 
 /- English proof (translation)
-Take `⟨u, hu, hsu⟩` from `hMinus_unit e hs`. Establish `ha0' : (a : K) ≠ 0` using `fun h => ha0 (RingOfIntegers.ext (h.trans (by simp)))`. Establish `hb0' : (b : K) ≠ 0` using `fun h => hb0 (RingOfIntegers.ext (h.trans (by simp)))`. Establish `habr : cE K ((a : K) * b) = (a : K) * b` using `by rw [map_mul, har, hbr]`. Establish `hab0 : (a : K) * b ≠ 0` using `mul_ne_zero ha0' hb0'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcr : cE K (((a * b * (u : 𝓞 K) : 𝓞 K)) : K) = ((a * b * (u : 𝓞 K) : 𝓞 K) : K)`. Use `push_cast`. Rewrite using `[map_mul, habr, hu]`. Establish `hc0 : (((a * b * (u : 𝓞 K) : 𝓞 K)) : K) ≠ 0`. Use `push_cast`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `mul_ne_zero hab0 (hMinus_ne u)`. Establish `hcs : sgn e (((a * b * (u : 𝓞 K) : 𝓞 K)) : K) = 0`. Establish `e1 : (((a * b * (u : 𝓞 K) : 𝓞 K)) : K) = (a : K) * b * ((u : 𝓞 K) : K)` using `by push_cast; rfl`. Rewrite using `[e1, hMinus_mul e habr hab0 hu (hMinus_ne u), hMinus_mul e har ha0' hbr hb0', hsu]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hpos : ∀ φ : K →+* ℂ, 0 < (φ (((a * b * (u : 𝓞 K) : 𝓞 K)) : K)).re` using `hMinus_pos e he hcr hc0 hcs`. Establish `hL : ((idMap (cE K) I * J) * idMap (cE K) (idMap (cE K) I * J) : ↥(Ideal (𝓞 K))⁰) = (I * idMap (cE K) I) * (J * idMap (cE K) J)`. Rewrite using `[map_mul, idMap_complexConj_involutive]`. The two sides agree by associativity and commutativity. Establish `hLs : (((idMap (cE K) I * J) * idMap (cE K) (idMap (cE K) I * J) : ↥(Ideal (𝓞 K))⁰) : Ideal (𝓞 K)) = Ideal.span {a * b * (u : 𝓞 K)}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, Submonoid.coe_mul, hIa, hJb, Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_mul_right_unit u.isUnit]`. Establish `hmem` using `hasse K (a * b * (u : 𝓞 K)) (idMap (cE K) I * J) hU hcr hpos hLs`. Establish `hinv : clMap (cE K) (ClassGroup.mk0 I) = (ClassGroup.mk0 I)⁻¹`. Rewrite `hx` using `[MonoidHom.mem_ker, MonoidHom.mul_apply, MonoidHom.id_apply]`. Conclude with `eq_inv_of_mul_eq_one_left hx`.
-
-Rewrite `hmem` using `[map_mul, ← class_map_mk0, hinv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem classGroup_inv_mul_mem_difR_of_sign {K : Type} [Field K] [NumberField K] [IsCMField K] {ι : Type} (e : ι → K →+* ℂ)
     (hU : UnrFin K) (he : Function.Surjective e) (I J : ↥(Ideal (𝓞 K))⁰) (a b : 𝓞 K) (ha0 : a ≠ 0) (hb0 : b ≠ 0)
@@ -184,15 +180,13 @@ private theorem classGroup_inv_mul_mem_difR_of_sign {K : Type} [Field K] [Number
   rwa [map_mul, ← class_map_mk0, hinv] at hmem
 
 /- English proof (translation)
-Introduce `K _ _ _ ι _ e V hU hsurj he hV`. Establish `hx : ∀ x : minK (clMap (cE K)), ∃ (I : ↥(Ideal (𝓞 K))⁰) (a : 𝓞 K), ClassGroup.mk0 I = (x : ClassGroup (𝓞 K)) ∧ a ≠ 0 ∧ cE K (a : K) = a ∧ ((I * idMap (cE K) I : ↥(Ideal (𝓞 K))⁰) : Ideal (𝓞 K)) = Ideal.span {a}` using `fun x => realGen K x hsurj x.2`. Use `choose I a hI ha0 har hIa using hx`. Set `g : minK (clMap (cE K)) → V` to `fun x => ⟨sgn e (a x : K), hV _ (har x)⟩`. Set `F : minK (clMap (cE K)) ⧸ (difR (clMap (cE K))).subgroupOf (minK (clMap (cE K))) → V ⧸ (sgnE e).addSubgroupOf V` to `fun c => ((g c.out : V) : V ⧸ (sgnE e).addSubgroupOf V)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective F`. Introduce `c d hcd`. Rewrite using `[← QuotientGroup.out_eq' c, ← QuotientGroup.out_eq' d, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `h1` using `QuotientAddGroup.eq.mp hcd`. Rewrite `h1` using `[AddSubgroup.mem_addSubgroupOf]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : sgn e (a c.out : K) + sgn e (a d.out : K) ∈ sgnE e`. Establish `e2 : ((-g c.out + g d.out : V) : ι → ZMod 2) = -sgn e (a c.out : K) + sgn e (a d.out : K)` using `rfl`. Rewrite `h1` using `[e2, hMinus_neg]`. Conclude with `h1`. Establish `hm : ClassGroup.mk0 (I c.out) ∈ minK (clMap (cE K))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hI c.out]`. Conclude with `c.out.2`. Establish `key` using `classGroup_inv_mul_mem_difR_of_sign e hU he (I c.out) (I d.out) (a c.out) (a d.out) (ha0 _) (ha0 _) (har _) (har _) (hIa _) (hIa _) hm h2`. Rewrite `key` using `[hI, hI]`. Simplify using `using key`.
-
-Use `show ((difR (clMap (cE K))).subgroupOf (minK (clMap (cE K)))).index ≤ ((sgnE e).addSubgroupOf V).index`. Conclude with `Nat.card_le_card_of_injective F hinj`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.hMinus :
     ∀ (K : Type) [Field K] [NumberField K] [IsCMField K] (ι : Type) [Finite ι] (e : ι → K →+* ℂ) (V : AddSubgroup (ι → ZMod 2)), UnrFin K → Function.Surjective (IsCMField.unitsMulComplexConjInv K) → Function.Surjective e → (∀ a : K, cE K a = a → sgn e a ∈ V) → (difR (clMap (cE K))).relIndex (minK (clMap (cE K))) ≤ (sgnE e).relIndex V := by

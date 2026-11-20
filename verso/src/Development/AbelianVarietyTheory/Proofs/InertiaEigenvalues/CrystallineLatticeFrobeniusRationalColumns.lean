@@ -15,19 +15,19 @@ open Matrix
 namespace GlobalTheory.BSP.FrobRational
 
 /- English proof (translation)
-Use `set x : Matrix (Fin d) (Fin d) D := B.map t * Z.map Ψ with hx`. Use `set P : Matrix (Fin d) (Fin d) A := ev lam • Y.map φ with hP`. Establish `hPx : P.map i = W * x.map j`. Establish `h1 : (Y.map φ).map i = (Y.map i).map Φ` using `by ext a b; simp [hΦ]`. Establish `h2 : (Z.map j).map Φ = (Z.map Ψ).map j` using `by ext a b; simp [hΨ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (B.map t).map j = B.map (i.comp ev)` using `by ext a b; simp [hj]`. Establish `h4 : P.map i = i (ev lam) • (Y.map φ).map i` using `by ext a b; simp [hP]`. Rewrite using `[h4, h1, ← hYZ, Matrix.map_mul, ← Matrix.smul_mul, hW, h2, hx, Matrix.map_mul, h3, Matrix.mul_assoc]`. Establish `hdet : W.det * j Z.det = i Y.det`. Rewrite using `[RingHom.map_det, RingHom.map_det, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, ← hYZ, Matrix.det_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ : Z.det ≠ 0` using `fun h => hY (hi (by rw [← hdet, h, map_zero, mul_zero, map_zero]))`. Establish `hadjY : (Y.adjugate).map i = (Y.map i).adjugate` using `RingHom.map_adjugate i Y`. Establish `hadjZ : (Z.adjugate).map j = (Z.map j).adjugate` using `RingHom.map_adjugate j Z`. Establish `key : (Y.adjugate * P).map i = W.det • (Z.adjugate * x).map j`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hadjY, hadjZ, hPx, ← hYZ, Matrix.adjugate_mul_distrib, Matrix.mul_assoc, ← Matrix.mul_assoc W.adjugate, Matrix.adjugate_mul, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hent : ∀ p : Fin d × Fin d, ∃ δ a : S, δ ≠ 0 ∧ ev δ * (Y.adjugate * P) p.1 p.2 = ev a * Y.det`. Introduce `p`. Use `disj _ _ ((Z.adjugate * x) p.1 p.2) Z.det hZ hY ?_` and prove the remaining obligations. Establish `h` using `congrFun (congrFun key p.1) p.2`. Rewrite `h` using `[Matrix.map_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h, ← hdet]`. Expand and normalize the polynomial expressions, which then agree. Use `choose δ a hδ ha using hent`. Use `⟨(∏ p, δ p) * lam, Matrix.of fun r c => (∏ p ∈ Finset.univ.erase (r, c), δ p) * a (r, c), mul_ne_zero (Finset.prod_ne_zero_iff.2 fun p _ => hδ p) hlam, ?_⟩` and prove the remaining obligations. Establish `h5 : ev (∏ p, δ p) • (Y.adjugate * P) = Y.det • (Matrix.of fun r c => (∏ p ∈ Finset.univ.erase (r, c), δ p) * a (r, c)).map ev`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use extensionality with `r c`. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, Matrix.map_apply, Matrix.of_apply, smul_eq_mul, smul_eq_mul, ← Finset.prod_erase_mul _ _ (Finset.mem_univ (r, c)), map_mul, map_mul, mul_assoc, ha (r, c)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h6` using `congrArg (fun M => Y * M) h5`. Simplify using `only [Matrix.mul_smul] at h6`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `h6` using `[← Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.smul_mul, Matrix.one_mul, smul_comm]`. Use extensionality with `r c`. Establish `h7` using `congrFun (congrFun h6 r) c`. Rewrite `h7` using `[Matrix.smul_apply, Matrix.smul_apply Y.det, smul_eq_mul, smul_eq_mul]`. Rewrite using `[← mul_left_cancel₀ hY h7, hP, smul_smul, map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core {S A D D' : Type} [CommRing S] [IsDomain S] [CommRing A] [IsDomain A] [CommRing D] [CommRing D']
     (ev : S →+* A) (t : S →+* D) (i : A →+* D') (j : D →+* D') (hi : Function.Injective i)
@@ -81,7 +81,7 @@ theorem core {S A D D' : Type} [CommRing S] [IsDomain S] [CommRing A] [IsDomain 
   rw [← mul_left_cancel₀ hY h7, hP, smul_smul, map_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => by rw [RingHom.comp_apply, hF.ext, hG.ext, RingHom.comp_apply], fun x => (hG.norm_le _).trans (hF.norm_le x)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDiscMap_comp {l : ℕ} {A A' A'' : Type} [CommRing A] [CommRing A'] [CommRing A''] {u : A} {u' : A'}
     {u'' : A''} {ρ ρ' ρ'' : ℝ≥0} {f : A →+* A'} {g : A' →+* A''} {F : Disc l u ρ →+* Disc l u' ρ'}
@@ -91,15 +91,13 @@ theorem isDiscMap_comp {l : ℕ} {A A' A'' : Type} [CommRing A] [CommRing A'] [C
     fun x => (hG.norm_le _).trans (hF.norm_le x)⟩
 
 /- English proof (translation)
-Introduce `l hl K bk τ hτ d ρ hρ s Y1 Z1 hY hYZ`. Establish `hl1 : (1 : ℝ≥0) < l` using `by exact_mod_cast hl.out.one_lt`. Establish `h0 : 0 < bk.ρ₀` using `NNReal.rpow_pos (zero_lt_one.trans hl1)`. Establish `h1 : bk.ρ₀ < 1` using `NNReal.rpow_lt_one_of_one_lt_of_neg hl1 (neg_lt_zero.2 (one_div_pos.2 (Nat.cast_pos.2 bk.deg_pos)))`. Establish `hpow : bk.ρ₀ ^ l ≤ bk.ρ₀` using `pow_le_of_le_one h0.le h1.le hl.out.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ι, ⟨TB⟩⟩` from `GlobalTheory.T.ainf_adicTopologicalBasis_over_breuilKisin l K bk`. Use `haveI : IsDomain (bk.DA bk.ρ₀) := (GlobalTheory.T.breuilKisin_ainfDisc_isDomain_norm_bounds l K bk bk.ρ₀ h0 h1).1`. Establish `hi : Function.Injective bk.iA` using `(GlobalTheory.T.closedDisc_toDisc_injective_of_adicBasis l K bk _ bk.ev ι TB bk.ρ₀ h0 h1).1`. Use `haveI : IsDomain (Ainf l) := hi.isDomain _`. Take `⟨j, hj⟩` from `exists_discMap_of_pow_dvd l _ _ bk.ev (X : bk.S) (bk.ev X) bk.ρ₀ bk.ρ₀ 1 h0 (by rw [pow_one]) (by rw [pow_one])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Ψ, hΨ⟩` from `exists_discMap_of_pow_dvd l _ _ (frobS l bk.a) (X : bk.S) (X : bk.S) bk.ρ₀ bk.ρ₀ l h0 (by rw [frobS_X]) hpow`. Take `⟨Φ, hΦ⟩` from `exists_discMap_of_pow_dvd l _ _ (WittVector.frobenius : Ainf l →+* Ainf l) (bk.ev X) (bk.ev X) bk.ρ₀ bk.ρ₀ l h0 (by rw [← bk.ev_frob, frobS_X, map_pow]) hpow`. Establish `hcomm : Φ.comp j = j.comp Ψ`. Establish `e : (WittVector.frobenius : Ainf l →+* Ainf l).comp bk.ev = bk.ev.comp (frobS l bk.a)` using `RingHom.ext fun x => (bk.ev_frob x).symm`. Conclude with `(isDiscMap_comp hj hΦ).unique (e ▸ isDiscMap_comp hΨ hj)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hlam : bk.iA (bk.ev ((l : bk.S) ^ (s.c₁ + s.c₂) * frobS l bk.a bk.E ^ s.N)) = (l : bk.DA bk.ρ₀) ^ (s.c₁ + s.c₂) * bk.iS (frobS l bk.a bk.E) ^ s.N`. Simplify using `only [map_mul, map_pow, map_natCast, RingHom.comp_apply]`. Establish `hu : IsUnit (bk.iS (frobS l bk.a bk.E))`. Establish `h` using `(isUnit_toDisc_frobS_E l K bk).map j`. Rewrite `h` using `[hj.ext]`. Then use the resulting hypothesis.
-
-Establish `hne : (l : bk.S) ^ (s.c₁ + s.c₂) * frobS l bk.a bk.E ^ s.N ≠ 0` using `fun h => by`. Rewrite `hlam` using `[h, map_zero, map_zero]`. Conclude with `(((isUnit_l_disc l _ _).pow _).mul (hu.pow _)).ne_zero hlam.symm`. Conclude with `core bk.ev (toDisc l (X : bk.S) bk.ρ₀) bk.iA j hi hj.ext WittVector.frobenius Φ Ψ hΦ.ext (fun x => RingHom.congr_fun hcomm x) (GlobalTheory.T.ainf_closedDisc_linearDisjoint_over_powerSeries l K bk _ bk.ev ι TB j hj) _ hne s.W _ (by rw [hlam]; exact GlobalTheory.T.discPeriods_map_ …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l) (hτ : bk.IsPer τ) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (hρ : ∀ g, IsUnit (ρ g)) (s : Seed bk d ρ τ) (Y1 : Matrix (Fin d) (Fin d) (Ainf l)) (Z1 : Matrix (Fin d) (Fin d) (bk.DS bk.ρ₀)), Y1.det ≠ 0 → (∀ j : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀, IsDiscMap bk.ev j → s.W * Z1.map j = Y1.map bk.iA) → ∃ (δ : bk.S) (A1 : Matrix (Fin d) (Fin d) (bk.S)), δ ≠ 0 ∧ bk.ev δ • Y1.map WittVector.frobenius = Y1 * A1.map bk.ev := by
   intro l hl K bk τ hτ d ρ hρ s Y1 Z1 hY hYZ

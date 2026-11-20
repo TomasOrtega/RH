@@ -65,11 +65,11 @@ def Chosen7 (CH C0 C5 c6 : ℝ) : Prop :=
 def WeightVectorSmallSharesSeven (C0 CH : ℝ) : Prop := ∃ C5 c6 : ℝ, 0 < C5 ∧ 0 < c6 ∧ Chosen7 Fm CH C0 C5 c6
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `hW`. Use `⟨max x0 (Fm.x1 + 1), fun x hx hxW => ?_⟩` and prove the remaining obligations. Establish `hxa : x0 ≤ x` using `le_trans (le_max_left _ _) hx`. Establish `hx1 : Fm.x1 < x`. Use `le_max_right x0 (Fm.x1 + 1)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨i0, av, bv, hwin, hall⟩` from `hx0 x hxa hxW`. Establish `hu : (Fm.D x i0).host.u0.val < (Fm.D x i0).R.n` using `by first`. Consider the case `exact (Fm.D x i0).host.u0.isLt`. Consider the case `exact ZMod.val_lt _`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Take `⟨i1, -, hi1⟩` from `hc x hx1 i0 _ av bv hu hwin`. Conclude with `⟨i0, av, bv, hwin, ⟨i1, hi1⟩, hall⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem chosenWS_of_cover (hW : ChosenW Fm) (hc : Fm.CoverAll) : ChosenWS Fm := by
   obtain ⟨x0, hx0⟩ := hW

@@ -17,9 +17,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-Introduce `k`. Take `⟨i', hi'⟩` from `hy (κ k)`. Take `⟨⟨k0, i⟩, hp⟩` from `hv.2.2.2 ⟨κ k, i'⟩ ⟨k, rfl⟩`. Establish `hk : k0 = k` using `hv.1 ((hv.2.2.1 ⟨k0, i⟩).symm.trans (congrArg Sigma.fst hp))`. Substitute `hk` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Use `⟨i, fun h => hi' ?_⟩` and prove the remaining obligations. Establish `h' : rename v (X ⟨k0, i⟩ : MRing ι) ∈ y` using `h`. Rewrite `h'` using `[rename_X, hp]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem imageZ_isRelevant {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {y : Ideal (MRing ι')} (hy : IsRelevant y) : IsRelevant (imageZ v y) := by
@@ -33,19 +33,17 @@ theorem imageZ_isRelevant {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')}
   rwa [rename_X, hp] at h'
 
 /- English proof (translation)
-Take `⟨hyM, hP'y, hcen⟩` from `hy`. Use `hyM.1` as an intermediate fact. Use `imageZ_isPrime_of_prime v P'` as an intermediate fact. Introduce `a ha`. Assume the negation of the conclusion as `haW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨D, hDW⟩ : ∃ D : K' → ℕ, weightedHomogeneousComponent (pullWeight v) D a ∉ W := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `haW` to reduce the goal to its premises. Rewrite using `[← sum_weightedHomogeneousComponent (w := pullWeight v) (φ := a), finsum_eq_sum _ (weightedHomogeneousComponent_finsupp a)]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.sum_mem _ fun D _ => h D`. Use `set c := weightedHomogeneousComponent (pullWeight v) D a with hcdef`. Establish `hcy : rename v c ∈ y`. Rewrite using `[hcdef, rename_component]`. Conclude with `LocRingPow.component_mem hyM.2.1 ha D`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : IsMultiHomog c (fun k => D (κ k))` using `isMultiHomog_of_pullWeight hv (weightedHomogeneousComponent_isWeightedHomogeneous _ _)`. Take `⟨u, hu, huy⟩` from `exists_form_notMem (imageZ_isRelevant hv hyM.2.2) (imageZ_isPrime_of_prime v y) (fun k => D (κ k))`. Establish `hcQ : c ∉ imageZ v P'` using `fun h => hDW (hQW h)`. Establish `hcnz : Ideal.Quotient.mk (imageZ v P') c ∈ nonZeroDivisors (MRing ι ⧸ imageZ v P')` using `mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])`. Establish `hmem` using `hR _ (Subring.subset_closure ⟨u, c, _, hcnz, hDW, hu, hc, rfl⟩)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite `hmem` using `[IsFractionRing.mk'_eq_div, map_div₀, fracMapZ_algebraMap, fracMapZ_algebraMap]`. Establish `h2` using `((hcen _ _ _ (rename_isMultiHomog hv hc) (rename_isMultiHomog hv hu) huy).2).mp hcy`. Establish `hne : ∀ g, g ∉ P' → algebraMap (MRing ι' ⧸ P') (FractionRing (MRing ι' ⧸ P')) (Ideal.Quotient.mk P' g) ≠ 0` using `fun g hg => by`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Establish `hc0` using `hne (rename v c) (fun h => hcQ h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu0` using `hne (rename v u) (fun h => huy (hP'y h))`. Rewrite `h2` using `[ValuationSubring.mem_nonunits_iff]`. Establish `h3` using `(R.valuation_le_one_iff _).mpr hmem`. Establish `h4` using `mul_lt_one_of_lt_of_le h2 h3`. Rewrite `h4` using `[← map_mul, div_mul_div_cancel₀ hu0, div_self hc0, map_one]`.
-
-Conclude with `lt_irrefl _ h4`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem imageZ_le {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {P' : Ideal (MRing ι')} [P'.IsPrime] {W : Ideal (MRing ι)} (hQW : imageZ v P' ≤ W)
@@ -91,13 +89,13 @@ theorem imageZ_le {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : I
   exact lt_irrefl _ h4
 
 /- English proof (translation)
-Use `hW.1.1` as an intermediate fact. Establish `hQW : Q ≤ W` using `le_sup_left.trans hW.1.2`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Take `⟨h1, h2⟩` from `h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hH` using `Ideal.map_height_le_one_of_mem_minimalPrimes hW`. Establish `: (Y.map (Ideal.Quotient.mk Q)).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (Ideal.mk_ker.trans_le hQY)`. Establish `: (W.map (Ideal.Quotient.mk Q)).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (Ideal.mk_ker.trans_le hQW)`. Establish `: (⊥ : Ideal (A ⧸ Q)).IsPrime` using `Ideal.isPrime_bot`. Establish `hb : (⊥ : Ideal (A ⧸ Q)) < Y.map (Ideal.Quotient.mk Q)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `bot_lt_iff_ne_bot.mpr fun e => h1 ?_` and prove the remaining obligations. Rewrite using `[← Ideal.comap_map_mk hQY, e, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Establish `hYW' : Y.map (Ideal.Quotient.mk Q) < W.map (Ideal.Quotient.mk Q)`. Use `lt_of_le_of_ne (Ideal.map_mono hYW) fun e => h2 ?_` and prove the remaining obligations. Rewrite using `[← Ideal.comap_map_mk hQY, e, Ideal.comap_map_mk hQW]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `Ideal.height_add_one_le_of_lt_of_isPrime hb`. Establish `e2` using `(Ideal.height_add_one_le_of_lt_of_isPrime hYW').trans hH`. Establish `e3 : (1 : ℕ∞) + 1 ≤ 1` using `(add_le_add (le_add_self.trans e1) le_rfl).trans e2`. Conclude with `absurd e3 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_or_eq_of_mem_minimalPrimes {A : Type*} [CommRing A] [IsNoetherianRing A] {Q Y W : Ideal A}
     [Q.IsPrime] [Y.IsPrime] {s : A} (hW : W ∈ (Q ⊔ Ideal.span {s}).minimalPrimes) (hQY : Q ≤ Y) (hYW : Y ≤ W) :
@@ -125,15 +123,13 @@ theorem eq_or_eq_of_mem_minimalPrimes {A : Type*} [CommRing A] [IsNoetherianRing
   exact absurd e3 (by decide)
 
 /- English proof (translation)
-Use `hy.1` as an intermediate fact. Assume the negation of the conclusion as `hne`. Take `⟨f, hfy, hfP⟩` from `SetLike.exists_of_lt (lt_of_le_of_ne hPy (Ne.symm hne))`. Take `⟨D, hD⟩` from `LocRingPow.exists_component_not_mem hfP`. Use `set g := weightedHomogeneousComponent (LocRingPow.multiDegWeight ι') D f`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgy : g ∈ y` using `LocRingPow.component_mem hy.2.1 hfy D`. Establish `hg : IsMultiHomog g D` using `LocRingPow.isMultiHomog_iff.mpr (weightedHomogeneousComponent_isWeightedHomogeneous _ _)`. Use `choose c hc using hy.2.2`. Take `⟨r, a, ha0, hsum⟩` from `exists_elim hv hP' hQ hg hD c (fun k' h => hc k' (hPy h))`. Establish `hT : (∏ k', (X ⟨k', c k'⟩ : MRing ι') ^ D k') ^ r ∉ y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hm`. Take `⟨k', -, hk⟩` from `hy.1.prod_mem_iff.mp (hy.1.mem_of_pow_mem _ hm)`. Conclude with `hc k' (hy.1.mem_of_pow_mem _ hk)`. Establish `hsum'` using `hPy hsum`. Rewrite `hsum'` using `[Finset.sum_range_succ']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hrest : ∑ i ∈ Finset.range r, rename v (a (i + 1)) * (g ^ (i + 1) * (∏ k', (X ⟨k', c k'⟩ : MRing ι') ^ D k') ^ (r - (i + 1))) ∈ y` using `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ (y.pow_mem_of_mem hgy _ (Nat.succ_pos i)))`. Establish `h0` using `(Ideal.add_mem_iff_right _ hrest).mp hsum'`. Rewrite `h0` using `[pow_zero, one_mul, Nat.sub_zero]`. Establish `ha : a 0 ∈ imageZ v y` using `(hy.1.mem_or_mem h0).resolve_right hT`. Rewrite `ha` using `[h]`.
-
-Conclude with `ha0 ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_imageZ_eq {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {P' : Ideal (MRing ι')} {n : ℕ} (hP' : IsArithVar P' (n + 1)) (hQ : IsArithVar (imageZ v P') (n + 1))
@@ -168,11 +164,11 @@ theorem eq_of_imageZ_eq {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (
 end CentreOverW
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' n s α W hv hP' hQ _ _ hW`. Use `hP'.2.1.1` as an intermediate fact. Introduce `R hR y hy`. Establish `hQW : imageZ v P' ≤ W` using `le_sup_left.trans hW.1.1.2`. Establish `hYW` using `CentreOverW.imageZ_le hv hQW R hR hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hy.1.1` as an intermediate fact. Use `imageZ_isPrime_of_prime v P'` as an intermediate fact. Use `imageZ_isPrime_of_prime v y` as an intermediate fact. Break down `CentreOverW.eq_or_eq_of_mem_minimalPrimes hW.1 (Ideal.comap_mono hy.2.1) hYW with h | h` into its components or cases. Conclude with `Or.inl (CentreOverW.eq_of_imageZ_eq hv hP' hQ hy.1 hy.2.1 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr ⟨hy.1, hy.2.1, h⟩`.
+Prove the second alternative.
 -/
 theorem CentreOverW.proof : CentreOverW.Statement := by
   intro K _ ι _ K' _ ι' _ κ v P' n s α W hv hP' hQ _ _ hW

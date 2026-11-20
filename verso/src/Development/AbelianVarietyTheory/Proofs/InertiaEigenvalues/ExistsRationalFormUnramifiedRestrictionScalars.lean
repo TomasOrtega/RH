@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.PMon
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun M : Matrix ι ι R => M.map f)` using `Matrix.map_injective hf`. Use `⟨?_, fun g h => ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Apply `(Units.mul_right_inj p).1` to reduce the goal to its premises. Use `show (p : Matrix ι ι S) * (T 1).map f = (p : Matrix ι ι S) * (1 : Matrix ι ι R).map f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT, hB1, one_mul, Matrix.map_one f (map_zero f) (map_one f), mul_one]`. Apply `hinj` to reduce the goal to its premises. Apply `(Units.mul_right_inj p).1` to reduce the goal to its premises. Use `show (p : Matrix ι ι S) * (T (g * h)).map f = (p : Matrix ι ι S) * (T g * T h).map f`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem intertwine_mul {G ι R S : Type} [Monoid G] [Fintype ι] [DecidableEq ι] [CommRing R] [CommRing S]
     (f : R →+* S) (hf : Function.Injective f) (B : G → Matrix ι ι S) (hB1 : B 1 = 1)
@@ -34,33 +34,29 @@ theorem intertwine_mul {G ι R S : Type} [Monoid G] [Fintype ι] [DecidableEq ι
       _ = (p : Matrix ι ι S) * (T g * T h).map f := by rw [Matrix.map_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `l _ n _ _ K r σ ω W hσ hW hω hcoef`. Set `P0 : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)` to `Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (1 : Matrix n n ↥(MaximalUnramifiedExtension l)) (W : Matrix (Fin r) (Fin r) ↥(MaximalUnramifiedExtension l))`. Set `Q0 : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)` to `Matrix.kroneckerMap (fun x1 x2 => x1 * x2) (1 : Matrix n n ↥(MaximalUnramifiedExtension l)) ((W⁻¹ : GL (Fin r) ↥(MaximalUnramifiedExtension l)) : Matrix (Fin r) (Fin r) ↥(MaximalUnramifiedExtension l))`. Establish `hPQ : P0 * Q0 = 1`. Simplify using `only [P0, Q0]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_kronecker_mul, Matrix.one_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_kronecker_one]`. Establish `hQP : Q0 * P0 = 1`. Simplify using `only [P0, Q0]`. Rewrite using `[← Matrix.mul_kronecker_mul, Matrix.one_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_kronecker_one]`. Set `p : GL (n × Fin r) ↥(MaximalUnramifiedExtension l)` to `⟨P0, Q0, hPQ, hQP⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hp : ∀ i m j k, (p : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)) (i, m) (j, k) = if i = j then (W : Matrix (Fin r) (Fin r) ↥(MaximalUnramifiedExtension l)) m k else 0`. Introduce `i m j k`. Use `show P0 (i, m) (j, k) = _`. Simplify using `only [P0, Matrix.kronecker_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hA : ∀ (i j : n) (k : Fin r), ∃ a : ↥(GK K) → Fin r → ℚ_[l], Continuous a ∧ ∀ g (m : Fin r), fr l m ((σ g : Matrix n n ↥(MaximalUnramifiedExtension l)) i j * ω k) = ∑ k', (W : Matrix (Fin r) (Fin r) ↥(MaximalUnramifiedExtension l)) m k' * algebraMap ℚ_[l] ↥(MaximalUnramifiedExten …`. Introduce `i j k`. Use `hcoef ↥(GK K) (fun g => (σ g : Matrix n n ↥(MaximalUnramifiedExtension l)) i j * ω k) (fun g => ?_) ?_` and prove the remaining obligations. Rewrite using `[map_mul, hσ.rat, hω]`. Use `show Continuous fun g => (((σ g : Matrix n n ↥(MaximalUnramifiedExtension l)) i j : ↥(MaximalUnramifiedExtension l)) : Om l) * ((ω k : ↥(MaximalUnramifiedExtension l)) : Om l)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `(hσ.cont i j).mul continuous_const`. Use `choose A hAc hA using hA`. Set `T : ↥(GK K) → Matrix (n × Fin r) (n × Fin r) ℚ_[l]` to `fun g x y => A x.1 y.1 y.2 g x.2`. Set `B : ↥(GK K) → Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)` to `fun g => Matrix.blockDiagonal (fun m : Fin r => (σ g : Matrix n n ↥(MaximalUnramifiedExtension l)).map (fr l m))`. Establish `hB1 : B 1 = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [B, map_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Matrix.blockDiagonal_one`. Establish `hBm : ∀ g h, B (g * h) = B g * B h`. Introduce `g h`. Simplify using `only [B, map_mul, Units.val_mul, Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Matrix.blockDiagonal_mul]`. Establish `hT : ∀ g, (p : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)) * (T g).map (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l)) = B g * p`. Introduce `g`. Use `Matrix.ext ?_` and prove the remaining obligations. Introduce and unpack `⟨i, m⟩ ⟨j, k⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, Fintype.sum_prod_type, Fintype.sum_prod_type]`. Simplify using `only [hp, B, T, Matrix.map_apply, Matrix.blockDiagonal_apply, ite_mul, zero_mul, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Fintype.sum_eq_single i (fun x hx => by simp [Ne.symm hx])]`. Simplify using `only [if_true]`. Use `(show _ = ∑ x, (W : Matrix (Fin r) (Fin r) ↥(MaximalUnramifiedExtension l)) m x * algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) (A i j k g x) from rfl).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[← hA i j k g m, map_mul]`. Use `symm`. Simplify using `[hW]`. Take `⟨hT1, hTm⟩` from `intertwine_mul (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l)) (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l)).injective B hB1 hBm p T hT`. Set `T' : ↥(GK K) →* Matrix (n × Fin r) (n × Fin r) ℚ_[l]` to `{ toFun := T, map_one' := hT1, map_mul' := hTm }`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨T'.toHomUnits, p, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨i, k'⟩ ⟨j, k⟩`. Conclude with `(continuous_apply k').comp (hAc i j k)`. Introduce and unpack `⟨i, m⟩ ⟨j, k⟩`. Apply `hσ.le` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hp]`. Use `split_ifs`. Rewrite using `[hW]`. Conclude with `fr_comm (hω k) m`. Conclude with `map_zero _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `g`. Conclude with `hT g`. Introduce `c hc hcc`. Establish `hC : ∀ i : n, ∃ a : ↥(GK K) → Fin r → ℚ_[l], Continuous a ∧ ∀ g (m : Fin r), fr l m (c g i) = ∑ k, (W : Matrix (Fin r) (Fin r) ↥(MaximalUnramifiedExtension l)) m k * algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) (a g k)` using `fun i => hcoef ↥(GK K) (fun g => c g i) (fun g => hc g i) (hcc i)`. Use `choose a hac ha using hC`.
-
-Use `⟨fun g x => a x.1 g x.2, continuous_pi fun x => (continuous_apply x.2).comp (hac x.1), fun g => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨i, m⟩`. Rewrite using `[Matrix.mulVec, dotProduct, Fintype.sum_prod_type]`. Simplify using `only [hp, ite_mul, zero_mul]`. Rewrite using `[Fintype.sum_eq_single i (fun x hx => by simp [Ne.symm hx])]`.
-
-Simplify using `only [if_true]`. Rewrite using `[ha i g m]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratForm : ∀ (l : ℕ) [Fact l.Prime] (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (r : ℕ)
     (σ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l)) (ω : Fin r → ↥(MaximalUnramifiedExtension l)) (W : GL (Fin r) ↥(MaximalUnramifiedExtension l)), IsRat r σ →

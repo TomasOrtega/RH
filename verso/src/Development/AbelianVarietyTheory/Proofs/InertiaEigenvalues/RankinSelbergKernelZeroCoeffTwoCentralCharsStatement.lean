@@ -15,7 +15,7 @@ open scoped nonZeroDivisors ComplexConjugate
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RSResidue.rsHat_zero_props_two` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FRankinSelbergKernelZeroCoeffTwoCentralChars.lean&line=20#L20)
 -/

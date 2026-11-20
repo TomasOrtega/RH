@@ -16,9 +16,9 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Core.Rk.CuspConj
 
 /- English proof (translation)
-Unfold `GlobalTheory.Doubling.IsKFinite GlobalTheory.Doubling.kSpan at *`. Use `GlobalTheory.Mem.AutConj.finiteDimensional_span_star h ?_` and prove the remaining obligations. Introduce and unpack `f ⟨k, hk, rfl⟩`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show star (conj (Φ (g * k))) = Φ (g * k)`. Rewrite using `[starRingEnd_apply, star_star]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isKFinite_conj {G : Type} [Group G] {K : Subgroup G} {Φ : G → ℂ} (h : GlobalTheory.Doubling.IsKFinite K Φ) :
     GlobalTheory.Doubling.IsKFinite K fun g => conj (Φ g) := by
@@ -31,9 +31,9 @@ theorem isKFinite_conj {G : Type} [Group G] {K : Subgroup G} {Φ : G → ℂ} (h
   rw [starRingEnd_apply, star_star]
 
 /- English proof (translation)
-Introduce `D θ A cA hθ u hu`. Establish `hu' : u ∈ autForms θ A (Kinf θ A cA) ⊓ cuspCont A` using `hu`. Use `show (fun g => conj (u g)) ∈ autForms θ A (Kinf θ A cA) ⊓ cuspCont A`. Take `⟨h1, h2⟩` from `Submodule.mem_inf.1 hu'`. Take `⟨hs, hk⟩` from `mem_autForms.1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_inf.2 ⟨mem_autForms.2 ⟨?_, isKFinite_conj hk⟩, conj_mem_cuspCont h2⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Mem.AutConj.isAutFunSm_star D θ hθ A u hs`.
+A detailed English derivation is pending.
 -/
 theorem conj_comp_mem_A0 : ∀ (D : D7) (θ : InfFam D) (A : HSp D) (cA : CptF A), IsInfFam θ → ∀ u ∈ A0 θ A cA, (fun g => conj (u g)) ∈ A0 θ A cA := by
   intro D θ A cA hθ u hu

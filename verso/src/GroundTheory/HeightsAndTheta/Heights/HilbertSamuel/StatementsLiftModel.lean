@@ -22,9 +22,9 @@ section Inhabitant
 abbrev PtIdx : Unit → Type := blockIdx fun _ : Unit ↦ 0
 
 /- English proof (translation)
-Use `⟨fun I => ?_⟩` and prove the remaining obligations. Establish `h` using `I.2.2`. Establish `hc : (I.1 ()).card ≤ 1`. Use `Finset.card_le_univ (α := Fin 1) (I.1 ())` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hn` using `(I.2.1 ()).card_pos`. Establish `hs : ∑ k : Unit, ((I.1 k).card - 1) = (I.1 ()).card - 1` using `Fintype.sum_unique _`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cell_one_isEmpty : IsEmpty (KH.Cell Unit PtIdx 1) := by
   refine ⟨fun I => ?_⟩
@@ -37,32 +37,28 @@ theorem cell_one_isEmpty : IsEmpty (KH.Cell Unit PtIdx 1) := by
   omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => funext fun I => (cell_one_isEmpty.false I).elim⟩`.
+Supply the required witnesses or components.
 -/
 theorem cechC_one_subsingleton (S : Type) [CommRing S] (M : Type) [AddCommGroup M]
     [Module (MRingOver S PtIdx) M] : Subsingleton (KH.CechC S PtIdx M (0 + 1)) :=
   ⟨fun _ _ => funext fun I => (cell_one_isEmpty.false I).elim⟩
 
 /- English proof (translation)
-Establish `hX : IsMultiHomog (ι` using `PtIdx) (X ⟨(), 0⟩ : MRingOver S PtIdx) (fun _ => 1) := by`. Introduce `m hm k`. Rewrite `hm` using `[mem_support_iff, coeff_X]`. Use `split_ifs at hm with h`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.single_apply]`. Conclude with `absurd rfl hm`. Establish `h1 : IsMultiHomog (ι` using `PtIdx) (1 : MRingOver S PtIdx) (fun _ => 0) := by`. Introduce `m hm k`. Rewrite `hm` using `[mem_support_iff, coeff_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `split_ifs at hm with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Conclude with `absurd rfl hm`. Use `⟨1, le_rfl, ?_, fun e => ⟨0, fun c _ => ?_⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Introduce `I`. Take `⟨i, hi⟩` from `I.2.1 ()`. Establish `hi0 : i = 0` using `Subsingleton.elim (α := Fin 1) i 0`. Substitute `hi0` using the available equality. Establish `hmon : (X ⟨(), 0⟩ : MRingOver S PtIdx) ∈ KH.cellMon S I.1` using `Submonoid.subset_closure ⟨(), 0, hi, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, fun _ _ => LocalizedModule.mk (Ideal.Quotient.mk ⊥ (X ⟨(), 0⟩)) 1, fun _ => LocalizedModule.mk 1 ⟨X ⟨(), 0⟩, hmon⟩, fun _ => ⟨?_, ?_⟩, fun _ => ?_, ?_⟩` and prove the remaining obligations. Introduce `J _`. Use `Submodule.subset_span ⟨Ideal.Quotient.mk ⊥ (X ⟨(), 0⟩), 1, 0, ?_, ?_, rfl⟩` and prove the remaining obligations. Conclude with `h1`. Use `Submodule.subset_span ⟨X ⟨(), 0⟩, ⟨fun _ => by simp, ?_⟩, rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m hm k`. Use `hX m hm k` as an intermediate fact. Simplify using `using this`. Use `cechC_one_subsingleton S (MRingOver S PtIdx ⧸ (⊥ : Ideal (MRingOver S PtIdx)))` as an intermediate fact. Conclude with `LinearMap.mem_ker.mpr (Subsingleton.elim _ _)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.subset_span ⟨1, ⟨X ⟨(), 0⟩, hmon⟩, fun _ => 1, hX, ?_, rfl⟩` and prove the remaining obligations. Use `Submodule.subset_span ⟨1, ⟨fun _ => by simp, ?_⟩, map_one _⟩` and prove the remaining obligations. Introduce `m hm k`. Use `h1 m hm k` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fin.sum_univ_one, LocalizedModule.mk_mul_mk, one_mul, mul_one]`. Establish `hq : (Ideal.Quotient.mk ⊥ (X ⟨(), 0⟩) : MRingOver S PtIdx ⧸ (⊥ : Ideal (MRingOver S PtIdx))) = (⟨X ⟨(), 0⟩, hmon⟩ : KH.cellMon S I.1) • (1 : MRingOver S PtIdx ⧸ (⊥ : Ideal (MRingOver S PtIdx)))`. Rewrite using `[Submonoid.smul_def, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Rewrite using `[hq, LocalizedModule.mk_cancel]`.
-
-Conclude with `OreLocalization.one_def.symm`. Use `cechC_one_subsingleton S (MRingOver S PtIdx ⧸ (⊥ : Ideal (MRingOver S PtIdx)))` as an intermediate fact. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`.
-
-Rewrite using `[Subsingleton.elim a b]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ampleV_point (S : Type) [CommRing S] :
     KH.AmpleV S (⊥ : Ideal (MRingOver S PtIdx)) (fun _ => 1) := by
@@ -118,9 +114,9 @@ theorem ampleV_point (S : Type) [CommRing S] :
     rw [Subsingleton.elim a b]
 
 /- English proof (translation)
-Establish `hP : mCoordIdeal (ι` using `PtIdx) unitPoint = ⊥ := mCoordIdeal_unitPoint`. Use `⟨unitPoint_isArithVar, unitPoint_birational, ?_, ⟨2, by norm_num, ?_⟩, fun ℓ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[KH.genIdeal, hP, Ideal.map_bot]`. Conclude with `ampleV_point ℚ`. Establish `h2 : (2 • (fun _ => (1 : ℤ)) - fun _ => 1 : Unit → ℤ) = fun _ => 1` using `by funext; simp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, KH.genIdeal, hP, Ideal.map_bot]`. Conclude with `ampleV_point ℚ`. Rewrite using `[fibreIdeal, hP, Ideal.map_bot]`. Conclude with `ampleV_point (ZMod ℓ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LiftModel.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := PtIdx) unitPoint) (0 + 1) ∧ Birational (ι := PtIdx) unitPoint ∧

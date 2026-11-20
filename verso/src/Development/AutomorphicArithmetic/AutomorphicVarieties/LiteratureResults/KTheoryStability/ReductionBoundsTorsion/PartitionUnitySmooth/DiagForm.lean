@@ -7,15 +7,15 @@ open scoped ComplexOrder
 namespace PositivityTheory.KB.SmoothPartitionUnityBasic.LipschitzAlgebraNorm
 
 /- English proof (translation)
-Establish `hH` using `hh.1`. Establish `key` using `hH.conjStarAlgAut_star_eigenvectorUnitary`. Rewrite `key` using `[Unitary.conjStarAlgAut_apply]`. Simplify using `only [Unitary.coe_star, star_star, Matrix.star_eq_conjTranspose, conjTranspose_conjTranspose] at key`. Establish `hpos` using `hh.eigenvalues_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨(hH.eigenvectorUnitary : Matrix (Fin N) (Fin N) ℂ) * diagonal (fun i => ((Real.sqrt (hH.eigenvalues i))⁻¹ : ℂ)), ?_⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_mul, diagonal_conjTranspose]`. Establish `e : ∀ (D E V : Matrix (Fin N) (Fin N) ℂ), (D * Vᴴ * h * (V * E)) = D * (Vᴴ * h * V) * E`. Introduce `D E V`. Simplify using `only [Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, key, diagonal_mul_diagonal, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `hi` using `hpos i`. Establish `hs : (0:ℝ) < Real.sqrt (hH.eigenvalues i)` using `Real.sqrt_pos.mpr hi`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : Real.sqrt (hH.eigenvalues i) * Real.sqrt (hH.eigenvalues i) = hH.eigenvalues i` using `Real.mul_self_sqrt hi.le`. Simplify using `only [Pi.star_apply, Function.comp_apply, star_inv₀, Complex.star_def, Complex.conj_ofReal]`. Establish `hr : (Real.sqrt (hH.eigenvalues i))⁻¹ * hH.eigenvalues i * (Real.sqrt (hH.eigenvalues i))⁻¹ = 1`. Establish `hs2 : Real.sqrt (hH.eigenvalues i) ^ 2 = hH.eigenvalues i` using `Real.sq_sqrt hi.le`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Combine the linear relations using `[hs2, hsq]`. Establish `hc` using `congrArg (fun x : ℝ => (x : ℂ)) hr`. Simplify using `using hc`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exT {N : ℕ} (h : Matrix (Fin N) (Fin N) ℂ) (hh : h.PosDef) :
     ∃ T : Matrix (Fin N) (Fin N) ℂ, Tᴴ * h * T = 1 := by
@@ -44,7 +44,7 @@ theorem exT {N : ℕ} (h : Matrix (Fin N) (Fin N) ℂ) (hh : h.PosDef) :
   simpa using hc
 
 /- English proof (translation)
-Simplify using `only [mul_apply, dotProduct, mulVec, conjTranspose_apply, Finset.mul_sum, Finset.sum_mul, Pi.star_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diag_form {N : ℕ} (A M : Matrix (Fin N) (Fin N) ℂ) (a : Fin N) :
     (Aᴴ * M * A) a a = star (fun i => A i a) ⬝ᵥ (M *ᵥ fun i => A i a) := by
@@ -54,21 +54,19 @@ theorem diag_form {N : ℕ} (A M : Matrix (Fin N) (Fin N) ℂ) (a : Fin N) :
   ring
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `exT h hh`. Establish `quad : ∀ (B M : Matrix (Fin N) (Fin N) ℂ) (v : Fin N → ℂ), star v ⬝ᵥ (Bᴴ * M * B) *ᵥ v = star (B *ᵥ v) ⬝ᵥ M *ᵥ (B *ᵥ v)`. Introduce `B M v`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]`. Establish `hk' : (Tᴴ * k * T).PosSemidef` using `hk.conjTranspose_mul_mul_same T`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hev : ∀ i, hk'.1.eigenvalues i ≤ c`. Introduce `i`. Rewrite using `[hk'.1.eigenvalues_eq]`. Establish `hv` using `hle (T *ᵥ (hk'.1.eigenvectorBasis i).ofLp)`. Rewrite `hv` using `[← quad T k, ← quad T h, hT, one_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn : star (hk'.1.eigenvectorBasis i).ofLp ⬝ᵥ (hk'.1.eigenvectorBasis i).ofLp = 1`. Use `(hk'.1.eigenvectorBasis).orthonormal.1 i` as an intermediate fact. Rewrite using `[dotProduct_comm, ← EuclideanSpace.inner_eq_star_dotProduct, inner_self_eq_norm_sq_to_K, this]`. Simplify using the standard rewrite rules. Rewrite `hv` using `[hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using hv`. Establish `hprod : (Tᴴ * k * T).det.re ≤ c ^ N`. Rewrite using `[hk'.1.det_eq_prod_eigenvalues]`. Use `erw [← Complex.ofReal_prod, Complex.ofReal_re]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e : ∀ X : ℂ, star T.det * X * T.det = (Complex.normSq T.det : ℂ) * X`. Introduce `X`. Rewrite using `[← Complex.mul_conj, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd1` using `congrArg Matrix.det hT`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd1` using `[det_mul, det_mul, det_conjTranspose, det_one, e]`. Rewrite `hprod` using `[det_mul, det_mul, det_conjTranspose, e, Complex.re_ofReal_mul]`. Establish `hre` using `congrArg Complex.re hd1`. Rewrite `hre` using `[Complex.re_ofReal_mul, Complex.one_re]`. Establish `hnd : 0 < Complex.normSq T.det`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_ne (Complex.normSq_nonneg _) fun h0 => ?_` and prove the remaining obligations. Rewrite `hre` using `[← h0, zero_mul]`. Conclude with `zero_ne_one hre`. Use `le_of_mul_le_mul_left ?_ hnd` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[mul_left_comm, hre, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detMono {N : ℕ} (h k : Matrix (Fin N) (Fin N) ℂ) (hh : h.PosDef) (hk : k.PosSemidef) (c : ℝ)
     (hc : 0 < c) (hle : ∀ x : Fin N → ℂ, (star x ⬝ᵥ (k *ᵥ x)).re ≤ c * (star x ⬝ᵥ (h *ᵥ x)).re) :
@@ -115,7 +113,7 @@ theorem detMono {N : ℕ} (h k : Matrix (Fin N) (Fin N) ℂ) (hh : h.PosDef) (hk
       rw [mul_left_comm, hre, mul_one]
 
 /- English proof (translation)
-The claim follows from `|Ak⁻¹ * K - Ah⁻¹ * H| ≤ 3 * δ * (Ah⁻¹ * H) := by have hAk : 0 < Ak := by nlinarith have e : Ak⁻¹ * K - Ah⁻¹ * H = (Ah * (K - H) + H * (Ah - Ak)) / (Ak * Ah) := by field_simp ring have e2 : 3 * δ * (Ah⁻¹ * H) = 3 * δ * H * Ak / (Ak * Ah) := by field_simp rw [e, e2, abs_div, abs_of …`.
+A detailed English derivation is pending.
 -/
 theorem lipAlg (δ Ah Ak H K : ℝ) (hδ : 0 ≤ δ) (hδ4 : δ ≤ 1 / 4) (hAh : 0 < Ah) (h1 : (1 - δ) * Ah ≤ Ak)
     (h2 : Ak ≤ (1 + δ) * Ah) (hH : 0 ≤ H) (hK : |K - H| ≤ δ * H) :

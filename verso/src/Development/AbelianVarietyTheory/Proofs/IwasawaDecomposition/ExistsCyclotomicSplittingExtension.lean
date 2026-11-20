@@ -5,21 +5,17 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A _ _ _ _ _ f hf q hq`. Set `K` to `FractionRing A`. Set `g : K[X]` to `f * cyclotomic q K`. Set `L` to `SplittingField g`. Use `haveI : Algebra.IsSeparable K L := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `A'` to `integralClosure A L`. Use `haveI : IsFractionRing A' L := integralClosure.isFractionRing_of_finite_extension K L`. Set `e : L ≃ₐ[A'] FractionRing A'` to `IsLocalization.algEquiv (nonZeroDivisors A') L (FractionRing A')`. Establish `hg0 : g ≠ 0` using `mul_ne_zero hf (cyclotomic_ne_zero q K)`. Establish `hgL : (g.map (algebraMap K L)).Splits` using `SplittingField.splits g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgL0 : g.map (algebraMap K L) ≠ 0` using `(Polynomial.map_ne_zero_iff (algebraMap K L).injective).2 hg0`. Use `⟨A', inferInstance, inferInstance, inferInstance, e.toRingHom.comp (algebraMap K L), ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsIntegralClosure.finite A K L A'`. Introduce `x y h`. Establish `h2 : algebraMap A L x = algebraMap A L y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[IsScalarTower.algebraMap_apply A A' L, h, ← IsScalarTower.algebraMap_apply]`. Rewrite `h2` using `[IsScalarTower.algebraMap_apply A K L, IsScalarTower.algebraMap_apply A K L y]`. Conclude with `IsFractionRing.injective A K ((algebraMap K L).injective h2)`. Conclude with `integralClosure.isIntegrallyClosedOfFiniteExtension K`. Use `haveI : NeZero (q : L) := ⟨Nat.cast_ne_zero.2 hq⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : (cyclotomic q L).Splits`. Use `hgL.of_dvd hgL0 ?_` and prove the remaining obligations. Rewrite using `[← map_cyclotomic q (algebraMap K L)]`. Conclude with `Polynomial.map_dvd _ (dvd_mul_left _ _)`. Establish `hdeg : (cyclotomic q L).degree ≠ 0` using `(degree_cyclotomic_pos q L (Nat.pos_of_ne_zero hq)).ne'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ζ, hζ⟩` from `hc.exists_eval_eq_zero hdeg`. Establish `hprim : IsPrimitiveRoot ζ q` using `(isRoot_cyclotomic_iff).1 hζ`. Establish `hint : IsIntegral A ζ` using `IsIntegral.of_pow (Nat.pos_of_ne_zero hq) (by rw [hprim.pow_eq_one]; exact isIntegral_one)`. Use `⟨⟨ζ, hint⟩, ?_⟩` and prove the remaining obligations. Conclude with `IsPrimitiveRoot.of_map_of_injective (f := (integralClosure A L).val.toRingHom.toMonoidHom) (by exact hprim) Subtype.val_injective`.
-
-Establish `hfL : (f.map (algebraMap K L)).Splits`. Use `hgL.of_dvd hgL0 ?_` and prove the remaining obligations. Conclude with `Polynomial.map_dvd _ (dvd_mul_right _ _)`. Rewrite using `[← Polynomial.map_map]`. Conclude with `hfL.map _`.
-
-Use extensionality with `a`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply A K L, IsScalarTower.algebraMap_apply A A' L]`. Conclude with `e.commutes _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitExt_intClosure : ∀ (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] [CharZero A] (f : Polynomial (FractionRing A)), f ≠ 0 → ∀ q : ℕ, q ≠ 0 → ∃ (A' : Type) (_ : CommRing A') (_ : IsDomain A') (_ : Algebra A A') (σ : FractionRing A →+* FractionRing A'), Module.Finite A A' ∧ Function.Injective (algebraMap A A') ∧ IsIntegrallyClosed A' ∧ (∃ ζ : A', IsPrimitiveRoot ζ q) ∧ (f.map σ).Splits ∧ σ.comp (algebraMap A (FractionRing A)) = (algebraMap A' (FractionRing A')).comp (algebraMap A A') := by
   intro A _ _ _ _ _ f hf q hq

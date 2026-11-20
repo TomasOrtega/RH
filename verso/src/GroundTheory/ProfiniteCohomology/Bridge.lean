@@ -15,9 +15,9 @@ section General
 variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Proceed by induction on `i using Fin.induction with`. Consider the case `zero => simpa using continuous_const`. Consider the case `succ i ih`. Simplify using `only [Fin.partialProd_succ]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `ih.mul (continuous_apply i)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_partialProd (n : ℕ) :
     Continuous fun g : Fin n → G => Fin.partialProd g := by
@@ -31,9 +31,9 @@ theorem continuous_partialProd (n : ℕ) :
 variable {k : Type u} [CommRing k]
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `y`. Establish `h1 : ∀ᶠ z in nhds y, ψ z = ψ y` using `hψ.eventually_eq y`. Establish `h2 : ∀ᶠ z in nhds y, A.ρ (p z) (ψ y) = A.ρ (p y) (ψ y)` using `hp.continuousAt.eventually ((isLocallyConstant_apply A (ψ y)).eventually_eq (p y))`. Use `filter_upwards [h1, h2] with z hz1 hz2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz1, hz2]`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_ρ_apply {Y : Type*} [TopologicalSpace Y] (A : Rep.{u} k G)
     [IsDiscreteRep A] {p : Y → G} (hp : Continuous p) {ψ : Y → A} (hψ : IsLocallyConstant ψ) :
@@ -56,7 +56,7 @@ section Invariant
 variable (X : TopRep.{u} k G)
 
 /- English proof (translation)
-Establish `h` using `nestedHomeomorph_ρ_apply X m g a (fun i => g * x i)`. Rewrite `h` using `[(mem_invariants a).1 ha g]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nestedHomeomorph_mul_apply_of_mem_invariants {m : ℕ} {a : resolutionX X m}
     (ha : a ∈ (resolutionX X m).ρ.invariants) (g : G) (x : Fin m → G) :
@@ -89,7 +89,7 @@ def homogeneousFun (n : ℕ) (φ : (Fin n → G) → underlyingRep X) (x : Fin (
 
 omit [LocallyCompactSpace G] [DiscreteTopology X] in
 /- English proof (translation)
-The claim follows from `isLocallyConstant_ρ_apply (underlyingRep X) (continuous_apply 0) (hφ.comp_continuous (continuous_pi fun _ => ((continuous_apply _).inv).mul (continuous_apply _)))`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_homogeneousFun (n : ℕ) {φ : (Fin n → G) → underlyingRep X}
     (hφ : IsLocallyConstant φ) : IsLocallyConstant (homogeneousFun X n φ) :=
@@ -100,7 +100,7 @@ theorem isLocallyConstant_homogeneousFun (n : ℕ) {φ : (Fin n → G) → under
 omit [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [DiscreteTopology X]
   [IsDiscreteRep (underlyingRep X)] in
 /- English proof (translation)
-Simplify using `only [homogeneousFun, mul_inv_rev, mul_assoc, inv_mul_cancel_left, map_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem homogeneousFun_mul (n : ℕ) (φ : (Fin n → G) → underlyingRep X) (g : G)
     (x : Fin (n + 1) → G) :
@@ -125,7 +125,7 @@ def ofInhomogeneous (n : ℕ) (φ : locallyConstantCochains (underlyingRep X) n)
 
 omit [DiscreteTopology X] in
 /- English proof (translation)
-Simplify using `[ofInhomogeneous]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nestedHomeomorph_ofInhomogeneous (n : ℕ) (φ : locallyConstantCochains (underlyingRep X) n)
     (x : Fin (n + 1) → G) :
@@ -166,9 +166,9 @@ def homogeneousEquiv (n : ℕ) :
 omit [IsDiscreteRep (underlyingRep X)] in
 
 /- English proof (translation)
-Rewrite using `[nestedHomeomorph_d_apply, Fin.sum_univ_succ, inhomogeneousCochains.d_hom_apply]`. Use `congr 1`. Simplify using `only [Fin.val_zero, pow_zero, one_smul, Fin.succAbove_zero, Fin.partialProd_succ']`. Conclude with `nestedHomeomorph_mul_apply_of_mem_invariants X σ.2 _ _`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[toInhomogeneous_apply, Fin.partialProd_contractNth, Fin.val_succ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem nestedHomeomorph_d_partialProd (n : ℕ) (σ : (resolutionX X (n + 1)).ρ.invariants)
     (g : Fin (n + 1) → G) :
@@ -184,9 +184,9 @@ theorem nestedHomeomorph_d_partialProd (n : ℕ) (σ : (resolutionX X (n + 1)).�
     rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Rewrite using `[dLocallyConstant_hom_apply]`. Express the relevant statement in the definitionally equal form `nestedHomeomorph X (i + 2) (((homogeneousCochains X).d i (i + 1)).hom σ).1 (Fin.partialProd g) = _`. Rewrite using `[homogeneousCochains.d_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nestedHomeomorph_d_partialProd X i σ g`.
+A detailed English derivation is pending.
 -/
 theorem homogeneousEquiv_symm_d (i : ℕ) (σ : (homogeneousCochains X).X i) :
     (homogeneousEquiv X (i + 1)).symm (((homogeneousCochains X).d i (i + 1)).hom σ) =

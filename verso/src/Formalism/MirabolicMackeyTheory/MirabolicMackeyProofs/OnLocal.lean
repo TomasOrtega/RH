@@ -8,21 +8,21 @@ namespace Formalism.EigenvalueLevelCeiling
 open Formalism.DivisionValues
 
 /- English proof (translation)
-Unfold `OnLocal`. Introduce `K _ _ _ Z _ _ _ _ _ w P _ _ ρ U ψ hMk V₀ e he hrange M Th ThK Th0 X₃ X₄ hM hTh hThK hThM hTh0fg hTh0 hMst hThst σ hσ hThσ hucut a E r ha hE hW hT0 hX3 hX4 hX34 ε hε d φ hφ hφr Mj Tj hMj hTj`. Establish `hr : (lix w M (M ⊓ sc a⁻¹ Th) : ℝ) ≤ r` using `(h3 K Z w M Th hM hTh hThM a E r ha hE).mp hW`. Establish `hNl : IsLatIn ⊤ (M ⊓ sc a⁻¹ Th)` using `hInt K Z M Th hM hTh a⁻¹ (inv_ne_zero ha)`. Establish `hNst : ∀ g : P, (M ⊓ sc a⁻¹ Th).map ((ρ g).restrictScalars (𝓞 K)) ≤ M ⊓ sc a⁻¹ Th`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g x hx`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp hx`. Take `⟨hyM, hyT⟩` from `Submodule.mem_inf.mp hy`. Use `Submodule.mem_inf.mpr ⟨hMst g (Submodule.mem_map_of_mem hyM), ?_⟩` and prove the remaining obligations. Unfold `sc at hyT ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Take `⟨t, ht, rfl⟩` from `Submodule.mem_map.mp hyT`. Use `Submodule.mem_map.mpr ⟨(ρ g) t, hThst g (Submodule.mem_map_of_mem ht), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hcard : Nat.card U ≠ 0` using `Nat.card_pos.ne'`. Establish `hidx : 0 < U.index` using `Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG` using `hGG K Z w P ρ U ψ hMk M (M ⊓ sc a⁻¹ Th) hM hNl inf_le_left hMst hNst`. Take `⟨hTl, hbound⟩` from `hPG K Z w (eig ρ U ψ) V₀ M Th ThK Th0 hM hTh hThK hThM hTh0fg hTh0 σ hσ hThσ (Nat.card U) hcard hucut a E r ha hE hr U.index hidx hG`. Establish `hXl : IsLatIn (eig ρ U ψ ⊓ V₀) (cut (eig ρ U ψ ⊓ V₀) M)` using `(hCut K Z w ⊤ (eig ρ U ψ ⊓ V₀) M M hM hM le_rfl le_top).1`. Establish `hcutle : cut V₀ Th0 ≤ Th0.map (e.restrictScalars (𝓞 K))`. Introduce `x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [cut, Submodule.mem_inf, Submodule.restrictScalars_mem] at hx`. Take `⟨hx0, hxV⟩` from `hx`. Rewrite `hxV` using `[← hrange]`. Take `⟨y, rfl⟩` from `LinearMap.mem_range.mp hxV`. Use `Submodule.mem_map.mpr ⟨e y, hx0, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show e (e y) = e y`. Rewrite using `[← LinearMap.comp_apply, he]`. Establish `h1` using `hMono K Z w (eig ρ U ψ ⊓ V₀) (cut (eig ρ U ψ ⊓ V₀) M) X₃ X₄ hXl hX3 hX4 hX34`. Establish `h2` using `hMono K Z w (eig ρ U ψ ⊓ V₀) (cut (eig ρ U ψ ⊓ V₀) M) (cut V₀ Th0) (Th0.map (e.restrictScalars (𝓞 K))) hXl hTl hT0 hcutle`. Establish `htr` using `hTr K Z w d φ hφ Mj Tj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `htr` using `[hMj, hTj]`. Establish `hdim : finrank K (eig ρ U ψ ⊓ V₀ : Submodule K Z) = d`. Rewrite using `[← hφr, LinearMap.finrank_range_of_inj hφ, Module.finrank_fin_fun]`. Rewrite `hbound` using `[hdim]`. Rewrite using `[← htr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1' : (lix w (cut (eig ρ U ψ ⊓ V₀) M) X₄ : ℝ) ≤ lix w (cut (eig ρ U ψ ⊓ V₀) M) X₃`. Conclude with `h1` after adjusting the coercions. Establish `h2' : (lix w (cut (eig ρ U ψ ⊓ V₀) M) (Th0.map (e.restrictScalars (𝓞 K))) : ℝ) ≤ lix w (cut (eig ρ U ψ ⊓ V₀) M) (cut V₀ Th0)`. Conclude with `h2` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem onLocal_of (hMono : IdxMono) (hCut : IdxCutLe) (hTr : IdxTransport) (hInt : LatInter)
     (h3 : ThreeForms) (hPG : IdxPsiGood) (hGG : LemmaGG) : OnLocal := by
@@ -77,21 +77,19 @@ theorem onLocal_of (hMono : IdxMono) (hCut : IdxCutLe) (hTr : IdxTransport) (hIn
   linarith
 
 /- English proof (translation)
-Unfold `MackeyProd`. Introduce `ι A _ _ _ P _ U ψ hψ`. Unfold `IsMackey`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_eq_one fun v _ => (hψ v).1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu u' hu' dsimp only`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hu1 : ∀ v ∈ (Set.univ : Set ι), u v ∈ U v` using `hu`. Establish `hu2 : ∀ v ∈ (Set.univ : Set ι), u' v ∈ U v` using `hu'`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hψ v).2.1 _ (hu1 v (Set.mem_univ v)) _ (hu2 v (Set.mem_univ v))`. Introduce `h hh`. Establish `hex : ∃ v0, h v0 ∉ U v0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Apply `hh` to reduce the goal to its premises. Use `show ∀ v ∈ (Set.univ : Set ι), h v ∈ U v`. Conclude with `fun v _ => hc v`. Take `⟨v0, hv0⟩` from `hex`. Take `⟨u0, hu0, hc, hne⟩` from `(hψ v0).2.2 (h v0) hv0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `⟨Pi.mulSingle v0 u0, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show ∀ v ∈ (Set.univ : Set ι), Pi.mulSingle v0 u0 v ∈ U v`. Introduce `v _`. Distinguish the cases in `hv : v = v0`. Substitute `hv` using the available equality.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `using hu0`. Simplify using `[Pi.mulSingle_eq_of_ne hv]`. Use `show ∀ v ∈ (Set.univ : Set ι), (h⁻¹ * Pi.mulSingle v0 u0 * h) v ∈ U v`. Introduce `v _`. Distinguish the cases in `hv : v = v0`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `hv` using the available equality. Simplify using `using hc`. Simplify using `[Pi.mulSingle_eq_of_ne hv]`. Use `show ∏ v, ψ v ((h⁻¹ * Pi.mulSingle v0 u0 * h) v) ≠ ∏ v, ψ v (Pi.mulSingle v0 u0 v)`. Rewrite using `[Fintype.prod_eq_single v0 (fun v hv => by simp [Pi.mulSingle_eq_of_ne hv, (hψ v).1]), Fintype.prod_eq_single v0 (fun v hv => by simp [Pi.mulSingle_eq_of_ne hv, (hψ v).1])]`.
-
-Simplify using `using hne`.
+A detailed English derivation is pending.
 -/
 theorem mackey_product : MackeyProd := by
   unfold MackeyProd

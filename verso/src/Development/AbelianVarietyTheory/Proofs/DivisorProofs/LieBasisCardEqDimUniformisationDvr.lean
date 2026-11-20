@@ -22,9 +22,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LieRankUnif
 
 /- English proof (translation)
-Introduce `V _ _ _ D A G _ _ U n y hy`. Use `U.smooth` as an intermediate fact. Use `U.gen_hom` as an intermediate fact. Establish `: IsMonHom U.gen.symm.hom` using `inferInstanceAs (IsMonHom U.gen.inv)`. Take `⟨φ, gp⟩ : ∃ φ : A.A.left ⟶ G.left, IsGrpPullback A.A G (jK V) φ` from `⟨_, ((isGrpPullback_of_iso U.gen.symm).comp (isGrpPullback_pullback G (jK V))).congr (Category.id_comp _) rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, -⟩` from `GlobalTheory.exists_isLieBasis_baseChange V (FractionRing V) (algebraMap V _) G A.A φ gp U.smooth n y hy`. Take `⟨v₀, hv₀⟩` from `GlobalTheory.KeyPow.exists_isLieBasis A.A A.smoothDim`. Conclude with `GlobalTheory.KeyFramePoint.card_eq_of_isLieBasis gp hv hv₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem card_eq_g : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (IsLocalRing.maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G] (U : UnifPre (IsLocalRing.maximalIdeal V) D A G) (n : ℕ) (y : Fin n → (epsR V ⟶ G)), IsLieBasis y → n = A.g := by
   intro V _ _ _ D A G _ _ U n y hy

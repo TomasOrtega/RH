@@ -8,7 +8,7 @@ open scoped ContDiff Matrix
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-The claim follows from `differentiableOn_euclidean.2 fun a => ((he _ (c.x a)).mono fun _ hv => ⟨hv.1, c.source_subset hv.2⟩).congr fun _ hv => c.apply_eq _ hv.2 a`.
+A detailed English derivation is pending.
 -/
 theorem holoChart_trans_algChart {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F}
     {e : OpenPartialHomeomorph (CxPts X.str σ) (V X.dim)} (he : IsHoloChart e)

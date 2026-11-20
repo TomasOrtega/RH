@@ -8,23 +8,21 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N
 namespace GlobalTheory.SemisimplificationCharpoly
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `V _ _ _ G f g _ h0 hn _ _`. Establish `hV : ∀ x : V, x = 0`. Introduce `x`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : x ∈ G 0` using `by rw [hn]; exact Submodule.mem_top`. Rewrite `hx` using `[h0]`. Conclude with `(Submodule.mem_bot k).mp hx`. Establish `hfg : f = g`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hV x, map_zero, map_zero]`. Rewrite using `[hfg]`. Consider the case `succ n ih`. Introduce `V _ _ _ G f g hmono h0 hn hf hd`. Establish `hg : ∀ i, ∀ x ∈ G i, g x ∈ G i`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i x hx`. Consider the cases of `i with`. Consider the case `zero`. Rewrite `hx` using `[h0]`. Rewrite using `[(Submodule.mem_bot k).mp hx, map_zero]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `succ j`. Establish `e : g x = f x + (g x - f x)` using `by abel`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (hf _ x hx) (hmono (Nat.le_succ j) (hd j x hx))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `set A := G n with hA`. Rewrite using `[GlobalTheory.CuspGL.charpoly_eq_restrict_mul_mapQ A f (hf n), GlobalTheory.CuspGL.charpoly_eq_restrict_mul_mapQ A g (hg n)]`. Use `congr 1`. Use `ih (fun i => (G i).comap A.subtype) (f.restrict (hf n)) (g.restrict (hg n)) (fun i j hij => Submodule.comap_mono (hmono hij)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[h0, Submodule.comap_bot, Submodule.ker_subtype]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `Submodule.comap_subtype_self A`. Introduce `i x hx`. Conclude with `hf i x hx`. Introduce `i x hx`. Conclude with `hd i x hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, Submodule.mapQ_apply]`. Rewrite using `[Submodule.Quotient.eq]`. Establish `hx : x ∈ G (n + 1)` using `by rw [hn]; exact Submodule.mem_top`.
-
-Use `hd n x hx` as an intermediate fact. Rewrite `this` using `[← neg_mem_iff, neg_sub]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 private theorem charpoly_eq_of_filtration_graded_eq {k : Type} [Field k] (n : ℕ) :
     ∀ {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensional k V] (G : ℕ → Submodule k V)
@@ -81,13 +79,13 @@ private theorem charpoly_eq_of_filtration_graded_eq {k : Type} [Field k] (n : �
       exact this
 
 /- English proof (translation)
-Introduce `V _ _ _ F f g h0 hn hf hd`. Use `charpoly_eq_of_filtration_graded_eq n (fun i => partialSups F i) f g (partialSups F).monotone ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [partialSups_zero, h0]`. Conclude with `eq_top_iff.mpr (hn ▸ le_partialSups F n)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : partialSups F i ≤ (partialSups F i).comap f`. Use `partialSups_le F i _ (fun j hj x hx => ?_)` and prove the remaining obligations. Conclude with `le_partialSups_of_le F hj (hf j x hx)`. Conclude with `fun x hx => hle hx`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : partialSups F (i + 1) ≤ (partialSups F i).comap (g - f)`. Use `partialSups_le F (i + 1) _ (fun j hj x hx => ?_)` and prove the remaining obligations. Consider the cases of `j with`. Consider the case `zero`. Rewrite `hx` using `[h0]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[(Submodule.mem_bot k).mp hx]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ m`. Conclude with `le_partialSups_of_le F (Nat.succ_le_succ_iff.mp hj) (hd m x hx)`. Conclude with `fun x hx => hle hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem charpoly_eq_of_filtration {k : Type} [Field k] (n : ℕ) :
     ∀ {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensional k V] (F : ℕ → Submodule k V)
@@ -116,19 +114,19 @@ theorem charpoly_eq_of_filtration {k : Type} [Field k] (n : ℕ) :
     exact fun x hx => hle hx
 
 /- English proof (translation)
-Introduce `k Γ _ _ W _ _ _ V _ _ _ s ρ hss g`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SemisimplificationConstituents.IsSemisimplificationOf at hss`. Take `⟨-, m, Ws, e, hst, hint, hρ⟩` from `hss`. Establish `hsj : ∀ j, ∀ x ∈ Ws j, s g x ∈ Ws j`. Introduce `j x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hst j`. Unfold `Stable at h`. Conclude with `h g x hx`. Set `H : ℕ → Submodule k W` to `fun i => ⨆ (j : Fin m) (_ : (j : ℕ) < i), Ws j`. Establish `hH : ∀ i, ∀ x ∈ H i, s g x ∈ H i`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `hle : H i ≤ (H i).comap (s g)` using `iSup₂_le fun j hj x hx => (le_iSup₂ (f := fun (j : Fin m) (_ : (j : ℕ) < i) => Ws j) j hj) (hsj j x hx)`. Conclude with `fun x hx => hle hx`. Rewrite using `[← e.charpoly_conj (s g)]`. Use `charpoly_eq_of_filtration m (fun i => (H i).map (e : W →ₗ[k] V)) (e.conj (s g)) (ρ g) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : H 0 = ⊥` using `by simp [H]`. Simplify using `only [h0, Submodule.map_bot]`. Establish `hm : H m = ⊤`. Rewrite using `[eq_top_iff, ← hint.submodule_iSup_eq_top]`. Conclude with `iSup_le fun j => le_iSup₂ (f := fun (j : Fin m) (_ : (j : ℕ) < m) => Ws j) j j.isLt`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hm, Submodule.map_top, LinearEquiv.range]`. Introduce `i x hx`. Rewrite `hx`, the goal using `[Submodule.mem_map_equiv]`. Simplify `hH i _ hx` using `[LinearEquiv.conj_apply]`. Introduce `i x hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx` using `[Submodule.mem_map_equiv]`. Establish `hle : H (i + 1) ≤ ((H i).map (e : W →ₗ[k] V)).comap ((ρ g - e.conj (s g)) ∘ₗ (e : W →ₗ[k] V))`. Use `iSup₂_le fun j hj v hv => ?_` and prove the remaining obligations. Establish `hsub : (⨆ j' ∈ Set.Iio j, Ws j') ≤ H i` using `iSup₂_le fun j' hj' => le_iSup₂ (f := fun (j : Fin m) (_ : (j : ℕ) < i) => Ws j) j' (lt_of_lt_of_le (Fin.lt_def.mp (Set.mem_Iio.mp hj')) (Nat.lt_succ_iff.mp hj))`. Establish `h1` using `Submodule.map_mono (f := (e : W →ₗ[k] V)) hsub (hρ j g v hv)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h1` using `[LinearEquiv.conj_apply]`. Establish `h2` using `hle hx`. Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem charpoly_eq : ∀ {k Γ : Type} [Field k] [Group Γ] {W : Type} [AddCommGroup W] [Module k W]
     [FiniteDimensional k W] {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensional k V]

@@ -7,15 +7,15 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `F _ n P hP`. Establish `: P.IsPrime` using `hP.isPrime`. Take `⟨j, hj⟩` from `hP.isRelevant`. Use `set D := MvPolynomial (Fin n) F ⧸ P`. Establish `hr : Ideal.Quotient.mk P (X j) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hj`. Establish `hφ : ∃ φ : D →ₐ[F] AlgebraicClosure F, φ (Ideal.Quotient.mk P (X j)) ≠ 0`. Assume the negation of the conclusion as `hne`. Apply `hr` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `h₁ F D _ (fun φ => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hne ⟨φ, h⟩`. Take `⟨φ, hφj⟩` from `hφ`. Establish `hcomp : φ.comp (Ideal.Quotient.mkₐ F P) = aeval (fun i => φ (Ideal.Quotient.mk P (X i)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[AlgHom.comp_apply, aeval_X]`. Both sides reduce to the same expression. Use `⟨fun i => φ (Ideal.Quotient.mk P (X i)), ?_, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Conclude with `hφj (congrFun h0 j)`. Introduce `g hg`. Rewrite using `[← hcomp, AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem.mpr hg, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem ProjNullstellensatz.proof (h₁ : FGNullstellensatz.Statement) :
     ProjNullstellensatz.Statement := by

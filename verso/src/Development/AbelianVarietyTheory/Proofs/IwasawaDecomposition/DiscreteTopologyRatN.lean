@@ -12,11 +12,11 @@ namespace GlobalTheory.ConstNotCusp
 variable (E : Type) [Field E] [NumberField E] (a r : ℕ)
 
 /- English proof (translation)
-Take `⟨U, hU, h0⟩` from `GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero E`. Take `⟨V, hVU, hVo, hV0⟩` from `mem_nhds_iff.1 hU`. Use `discreteTopology_of_isOpen_singleton_zero ?_` and prove the remaining obligations. Establish `hW : IsOpen (Set.pi Set.univ fun _ : BlockIx a r => V)` using `isOpen_set_pi Set.finite_univ fun _ _ => hVo`. Use `hW.preimage (continuous_subtype_val (p := fun x => x ∈ ratN E a r)) using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `⟨_, x, rfl⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h p _`. Establish `h1` using `congrFun (congrArg Subtype.val (Set.mem_singleton_iff.1 h)) p`. Conclude with `h1.symm ▸ hV0`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hx : x = 0` using `funext fun p => h0 (x p) (hVU (h p trivial))`. Substitute `hx` using the available equality. Conclude with `Subtype.ext (map_zero _)`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem discreteTopology_ratN : DiscreteTopology (ratN E a r) := by
   obtain ⟨U, hU, h0⟩ := GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero E
@@ -36,9 +36,9 @@ theorem discreteTopology_ratN : DiscreteTopology (ratN E a r) := by
     exact Subtype.ext (map_zero _)
 
 /- English proof (translation)
-Take `⟨K, hK, h⟩` from `GlobalTheory.AdeleCocompact.exists_compact_adele E`. Use `⟨Set.pi Set.univ fun _ => K, isCompact_univ_pi fun _ => hK, fun x => ?_⟩` and prove the remaining obligations. Use `choose y hy using fun p => h (x p)`. Use `⟨_, ⟨fun p => -y p, rfl⟩, fun p _ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap E (Ad E) (-y p) + x p ∈ K`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_neg, neg_add_eq_sub]`. Conclude with `hy p`.
+A detailed English derivation is pending.
 -/
 theorem exists_compact_ratN : ∃ K : Set (BlockIx a r → Ad E), IsCompact K ∧
     ∀ x, ∃ γ ∈ ratN E a r, γ + x ∈ K := by
@@ -51,11 +51,9 @@ theorem exists_compact_ratN : ∃ K : Set (BlockIx a r → Ad E), IsCompact K �
   exact hy p
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha h`. Use `haveI : LocallyCompactSpace (Ad E) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele E`. Use `haveI : SecondCountableTopology (Ad E) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele E`. Use `haveI : T2Space (Ad E) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField E`. Use `letI : MeasurableSpace (BlockIx a 1 → Ad E) := borel _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (BlockIx a 1 → Ad E) := ⟨rfl⟩`. Use `haveI := discreteTopology_ratN E a 1`. Take `⟨K, hK, hcov⟩` from `exists_compact_ratN E a 1`. Take `⟨⟨μ, F, hμ, hF, h1⟩, -⟩` from `GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact _ (ratN E a 1) K hK hcov`. Establish `h2 : ∫ _ in F, (1 : ℂ) ∂μ = 0` using `h 1 one_pos (by omega) μ F hμ hF 1`.
-
-Simplify using `[Measure.real, h1] at h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_isCuspidal_oneFn : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ),
     2 ≤ a → ¬ IsCuspidal (oneFn E a).1 := by

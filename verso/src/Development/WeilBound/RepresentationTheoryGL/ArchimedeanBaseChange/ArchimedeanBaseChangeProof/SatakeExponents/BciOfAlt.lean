@@ -20,7 +20,7 @@ namespace PositivityTheory.Rg.BcB.Plug2B
 open PositivityTheory.Rg.BcB.One PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.F5
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Rg.BcB.F.Rig.fieldN_of_run (runFin_chain (finFamOf_holds levelFactor GlobalTheory.T.finite_discrete_spectrum) PositivityTheory.Rg.BcB.F.Rig.weightEx PositivityTheory.Rg.BcB.F.Rig.permSat GlobalTheory.T.diagonal_algebra_holds (genEx_of (PositivityTheory.Rg.BcB.F.R …`.
+A detailed English derivation is pending.
 -/
 theorem bci_of (h1 : FrameEx) (h3 : FrameBound)
     (h4 : FrameRead) : PositivityTheory.Rg.BcN.BaseChangeIsobaricN :=

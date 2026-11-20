@@ -9,25 +9,23 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `E _ _ D M d hd c hc`. Establish `hk : ∀ u t : A ℚ, D.mkE u t = AdeleBaseChange.adeleMap ℚ E u + AdeleBaseChange.adeleMap ℚ E t * rt D.θ` using `fun _ _ => rfl`. Establish `h0 : (0 : A E) ∈ Oh E` using `⟨rfl, fun w => by`. Express the relevant statement in the definitionally equal form `Valued.v (0 : H.Kv w) ≤ 1`. Use the proof step `simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hneg : ∀ s : A E, s ∈ Oh E → -s ∈ Oh E` using `fun s hs => ⟨by`. Express the relevant statement in the definitionally equal form `-s.1 = 0`. Rewrite using `[hs.1, neg_zero], fun w => by`. Establish `e : (-s).2 w = -(s.2 w)` using `rfl`. Rewrite using `[e, Valuation.map_neg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hs.2 w⟩`. Establish `hfst : (AdeleBaseChange.adeleMap ℚ E c).1 = 0`. Take `⟨c1, c2⟩` from `c`. Take `rfl : c1 = 0` from `hc.1`. Conclude with `map_zero (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := ℚ) (L := E))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hb : AdeleBaseChange.adeleMap ℚ E c * rt ((d : E) * D.θ) ∈ Oh E`. Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(AdeleBaseChange.adeleMap ℚ E c).1 * _ = 0`. Rewrite using `[hfst, zero_mul]`. Establish `h1 : Valued.v ((AdeleBaseChange.adeleMap ℚ E c).2 w) ≤ 1` using `GroundTheory.Global.AdeleBaseChange.mapsTo_completionMap _ w (hc.2 _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (AdeleBaseChange.adeleMap ℚ E c * rt ((d : E) * D.θ)).2 w = (AdeleBaseChange.adeleMap ℚ E c).2 w * H.cp w (rt ((d : E) * D.θ))` using `rfl`. Rewrite using `[e, map_mul]`. Conclude with `mul_le_one' h1 (hd w)`. Establish `hx : D.mkE 0 ((M : A ℚ) * (d : A ℚ) * c) = (M : A E) * (AdeleBaseChange.adeleMap ℚ E c * rt ((d : E) * D.θ))`. Establish `hr : rt ((d : E) * D.θ) = (d : A E) * rt D.θ`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Express the relevant statement in the definitionally equal form `algebraMap E (A E) ((d : E) * D.θ) = _`. Rewrite using `[map_mul, map_natCast]`. Rewrite using `[hk, map_zero, zero_add, map_mul, map_mul, map_natCast, map_natCast, hr]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ s : A E, s ∈ Oh E → ∀ i j, ∃ c ∈ Oh E, (!![1, (M : A E) * s; 0, 1] : Matrix (Fin 2) (Fin 2) (A E)) i j - (1 : Matrix (Fin 2) (Fin 2) (A E)) i j = (M : A E) * c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce `s hs i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `⟨0, h0, by simp⟩`. Conclude with `⟨s, hs, by simp⟩`. Conclude with `⟨0, h0, by simp⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨0, h0, by simp⟩`. Establish `hinv : ∀ q : A E, (gl (nU q))⁻¹ = gl (nU (-q))`. Introduce `q`. Use `inv_eq_of_mul_eq_one_right (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(!![1, q; 0, 1] : Matrix (Fin 2) (Fin 2) (A E)) * !![1, -q; 0, 1] = 1`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mul_fin_two, Matrix.one_fin_two]`. Establish `hn : nu D ((M : A ℚ) * (d : A ℚ) * c) = gl (nU ((M : A E) * (AdeleBaseChange.adeleMap ℚ E c * rt ((d : E) * D.θ))))`. Express the relevant statement in the definitionally equal form `gl (nU (D.mkE 0 ((M : A ℚ) * (d : A ℚ) * c))) = _`. Rewrite using `[hx]`. Introduce `i j`.
-
-Rewrite using `[hn, hinv, ← mul_neg]`. Conclude with `⟨key _ hb i j, key _ (hneg _ hb) i j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.unipotentTheta_mem_congruence_of_integral :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (M d : ℕ), (∀ w : H.P E, Valued.v (H.cp w (rt ((d : E) * D.θ))) ≤ 1) → ∀ c ∈ Oh ℚ, CongE M (nu D ((M : A ℚ) * (d : A ℚ) * c)) := by

@@ -17,17 +17,15 @@ universe u
 variable {E : Type u} [AddCommGroup E] [Module ℝ E]
 
 /- English proof (translation)
-It suffices to establish `key : ∀ (S : Finset (Fin D)) (N : Fin D → E), (∀ j ∈ S, N j ∈ Submodule.span NNReal G) → (∀ j ∉ S, N j ∈ G) → 0 ≤ F N by`. Introduce `N hN`. Conclude with `key Finset.univ N (fun j _ => hN j) (fun j hj => absurd (Finset.mem_univ j) hj)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `empty => intro N _ hN`. Conclude with `hF N fun j => hN j (Finset.notMem_empty j)`. Consider the case `insert i S hi ih`. Introduce `N hS hG`. Establish `hc : ∀ c ∈ Submodule.span NNReal G, 0 ≤ F (Function.update N i c)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `c hc`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem c hc`. Apply `ih` to reduce the goal to its premises. Introduce `j hj`.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.update_of_ne (by rintro rfl; exact hi hj)]`. Conclude with `hS j (Finset.mem_insert_of_mem hj)`. Introduce `j hj`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using `using hc`. Rewrite using `[Function.update_of_ne hji]`. Conclude with `hG j (by simp [hji, hj])`. Consider the case `zero => rw [F.map_update_zero]`. Consider the case `add a c _ _ ha hc => rw [F.map_update_add]`.
-
-Conclude with `add_nonneg ha hc`. Consider the case `smul t c _ hc`. Rewrite using `[NNReal.smul_def, F.map_update_smul, smul_eq_mul]`. Conclude with `mul_nonneg t.2 hc`. Simplify using `using hc (N i) (hS i (Finset.mem_insert_self i S))`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem nonneg_of_span {D : ℕ} (F : MultilinearMap ℝ (fun _ : Fin D => E) ℝ) (G : Set E)
     (hF : ∀ N : Fin D → E, (∀ j, N j ∈ G) → 0 ≤ F N) :
@@ -63,7 +61,7 @@ theorem nonneg_of_span {D : ℕ} (F : MultilinearMap ℝ (fun _ : Fin D => E) �
     simpa using hc (N i) (hS i (Finset.mem_insert_self i S))
 
 /- English proof (translation)
-Apply `GlobalTheory.VertForm.map_congr_rad` to reduce the goal to its premises. Introduce `j`. Consider the cases of `j using Fin.cases with`. Consider the case `zero => simp`. Consider the case `succ j => simpa using h j`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem cons_congr_rad {D : ℕ} (num : GlobalTheory.VertForm.Form E D) (a : E) {N N' : Fin D → E}
     (h : ∀ j, N j - N' j ∈ GlobalTheory.VertForm.rad num) : num (Fin.cons a N) = num (Fin.cons a N') := by
@@ -74,7 +72,7 @@ theorem cons_congr_rad {D : ℕ} (num : GlobalTheory.VertForm.Form E D) (a : E) 
   | succ j => simpa using h j
 
 /- English proof (translation)
-Introduce `N hN`. Use `choose z hz hzr using hN`. Rewrite using `[hrad N z hzr]`. Conclude with `nonneg_of_span F G hF z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonneg_of_cone {D : ℕ} (num : GlobalTheory.VertForm.Form E D) (G : Set E)
     (F : MultilinearMap ℝ (fun _ : Fin D => E) ℝ)
@@ -87,7 +85,7 @@ theorem nonneg_of_cone {D : ℕ} (num : GlobalTheory.VertForm.Form E D) (G : Set
   exact nonneg_of_span F G hF z hz
 
 /- English proof (translation)
-The claim follows from `|num (Fin.cons a N)| ≤ b * num (Fin.cons c N) := by intro N hN let fa : MultilinearMap ℝ (fun _ : Fin D => E) ℝ := num.curryLeft a let fc : MultilinearMap ℝ (fun _ : Fin D => E) ℝ := num.curryLeft c have hfa : ∀ M, fa M = num (Fin.cons a M) := fun M => MultilinearMap.curryLeft_ap …`.
+A detailed English derivation is pending.
 -/
 theorem abs_le_on_cone {D : ℕ} (num : GlobalTheory.VertForm.Form E D) (G : Set E) (a c : E) (b : ℝ)
     (hG : ∀ N : Fin D → E, (∀ j, N j ∈ G) → |num (Fin.cons a N)| ≤ b * num (Fin.cons c N)) :
@@ -117,17 +115,17 @@ theorem abs_le_on_cone {D : ℕ} (num : GlobalTheory.VertForm.Form E D) (G : Set
   rw [abs_le]; constructor <;> linarith
 
 /- English proof (translation)
-It suffices to establish `key : ∀ (S : Finset (Fin D)) (A B : Fin D → E), (∀ j ∈ S, A j = P j - Q j ∧ B j = P j + Q j) → (∀ j ∉ S, A j = B j ∧ A j ∈ K) → |f A| ≤ g B by`. Conclude with `key Finset.univ _ _ (fun j _ => ⟨rfl, rfl⟩) (fun j hj => absurd (Finset.mem_univ j) hj)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A B _ h`. Establish `hAB : A = B` using `funext fun j => (h j (Finset.notMem_empty j)).1`. Substitute `hAB` using the available equality. Conclude with `hK A fun j => (h j (Finset.notMem_empty j)).2`. Consider the case `insert i S hi ih`.
+Establish an intermediate fact. Substitute using the available equality. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `A B hS hK'`. Take `⟨hA, hB⟩` from `hS i (Finset.mem_insert_self i S)`. Establish `eA : A = Function.update A i (P i - Q i)` using `by rw [← hA, Function.update_eq_self]`. Establish `eB : B = Function.update B i (P i + Q i)` using `by rw [← hB, Function.update_eq_self]`. Establish `side : ∀ c ∈ K, |f (Function.update A i c)| ≤ g (Function.update B i c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c hc`. Apply `ih` to reduce the goal to its premises. Introduce `j hj`. Establish `hji : j ≠ i` using `by rintro rfl; exact hi hj`. Rewrite using `[Function.update_of_ne hji, Function.update_of_ne hji]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `hS j (Finset.mem_insert_of_mem hj)`. Introduce `j hj`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Simplify using `[hc]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Function.update_of_ne hji, Function.update_of_ne hji]`. Conclude with `hK' j (by simp [hji, hj])`. Rewrite using `[eA, eB, f.map_update_sub, g.map_update_add]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem abs_sub_le_add {D : ℕ} (f g : MultilinearMap ℝ (fun _ : Fin D => E) ℝ) (K : Set E)
     (hK : ∀ N : Fin D → E, (∀ j, N j ∈ K) → |f N| ≤ g N) (P Q : Fin D → E)
@@ -166,9 +164,9 @@ theorem abs_sub_le_add {D : ℕ} (f g : MultilinearMap ℝ (fun _ : Fin D => E) 
       _ ≤ _ := add_le_add (side _ (hP i)) (side _ (hQ i))
 
 /- English proof (translation)
-Establish `key (S : Finset (Fin D)) : g (S.piecewise v w) = g w`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.piecewise_empty]`. Consider the case `insert j S hj ih`. Rewrite using `[Finset.piecewise_insert]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Break down `h j with e | e` into its components or cases. Rewrite using `[e, ← Finset.piecewise_eq_of_notMem S v w hj, Function.update_eq_self, ih]`. Establish `e' : v j = d + w j` using `by rw [← e]; abel`. Rewrite using `[e', g.map_update_add, hd, zero_add, ← Finset.piecewise_eq_of_notMem S v w hj, Function.update_eq_self, ih]`. Rewrite using `[← key Finset.univ, Finset.piecewise_univ]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem congr_of_update_zero {D : ℕ} (g : MultilinearMap ℝ (fun _ : Fin D => E) ℝ) (d : E)
     (hd : ∀ (v : Fin D → E) (j : Fin D), g (Function.update v j d) = 0) {v w : Fin D → E}
@@ -187,19 +185,19 @@ theorem congr_of_update_zero {D : ℕ} (g : MultilinearMap ℝ (fun _ : Fin D =>
   rw [← key Finset.univ, Finset.piecewise_univ]
 
 /- English proof (translation)
-Set `vec : ℕ → Fin (D + 1) → E` to `fun k j => if (j : ℕ) < k then x else y`. Establish `step : ∀ i : Fin (D + 1), num (vec ((i : ℕ) + 1)) - num (vec i) = num (Fin.cons (x - y) fun j : Fin D => if (j : ℕ) < i then x else y)`. Introduce `i`. Establish `e1 : vec ((i : ℕ) + 1) = Function.update (vec i) i x`. Use function extensionality and compare the values at `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[vec]`. Rewrite using `[Function.update_of_ne hj]`. Establish `: (j : ℕ) ≠ i` using `fun h => hj (Fin.ext h)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [vec]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Establish `hvi : vec i i = y` using `by simp [vec]`. Establish `e2 : vec i = Function.update (vec i) i y` using `by rw [← hvi, Function.update_eq_self]`. Establish `hr : i.removeNth (Function.update (vec i) i (x - y)) = fun j : Fin D => if (j : ℕ) < i then x else y`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[Fin.removeNth_apply, Function.update_of_ne (Fin.succAbove_ne i j)]`. Distinguish the cases in `hj : (j : ℕ) < i`. Rewrite using `[Fin.succAbove_of_castSucc_lt _ _ (by rw [Fin.lt_def]; simpa using hj)]`. Simplify using `[vec, hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fin.succAbove_of_le_castSucc _ _ (by rw [Fin.le_def]; simp; omega)]`. Simplify using `only [vec, Fin.val_succ]`. Rewrite using `[if_neg (by omega), if_neg hj]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e1, ← e2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = num (Function.update (vec i) i (x - y)) := (num.map_update_sub _ _ _ _).symm`. Use `_ = num (Function.update (vec i) i (x - y) ∘ i.cycleRange.symm) := (hs _ _).symm`. Use `_ = _ := by`. Rewrite using `[← Fin.cons_removeNth_eq_comp_cycleRange_symm, hr, Function.update_self]`. Establish `hsum : ∑ i : Fin (D + 1), (num (vec ((i : ℕ) + 1)) - num (vec i)) = num (vec (D + 1)) - num (vec 0)` using `(Fin.sum_univ_eq_sum_range (fun k => num (vec (k + 1)) - num (vec k)) (D + 1)).trans (Finset.sum_range_sub (fun k => num (vec k)) (D + 1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hD : vec (D + 1) = fun _ => x` using `by funext j; simp [vec, j.isLt]`. Establish `h0 : vec 0 = fun _ => y` using `by funext j; simp [vec]`. Rewrite using `[← hD, ← h0, ← hsum]`. Conclude with `Finset.sum_congr rfl fun i _ => step i`.
+A detailed English derivation is pending.
 -/
 theorem telescope {D : ℕ} (num : GlobalTheory.VertForm.Form E D) (hs : GlobalTheory.VertForm.IsSymm num) (x y : E) :
     num (fun _ => x) - num (fun _ => y) =
@@ -250,7 +248,7 @@ end GlobalTheory.TopPowDiff
 open GlobalTheory.TopPowDiff in
 
 /- English proof (translation)
-The claim follows from `|num (fun _ => x) - num (fun _ => y)| ≤ b * ∑ i : Fin (D + 1), num (Fin.cons o fun j : Fin D => if (j : ℕ) < i then y else y + (2 : ℝ) • h) := by rw [telescope num hs x y, Finset.mul_sum] refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun i _ => ?_) have hcone := …`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TopPowDiff.abs_top_sub_le (E : Type 1) [AddCommGroup E] [Module ℝ E] (D : ℕ) (num : Form E D)
     (hs : IsSymm num) (G : Set E) (o x y h : E) (b : ℝ) (hx : x ∈ cone num G) (hyh : y + h ∈ cone num G)

@@ -27,7 +27,7 @@ noncomputable def prodSeq : ShortComplex (CochainComplex (ModuleCat.{u} k) ℕ) 
     (HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl))
 
 /- English proof (translation)
-The claim follows from `HomologicalComplex.shortExact_of_degreewise_shortExact _ fun n => { exact := by rw [ShortComplex.moduleCat_exact_iff] intro (p : M.X n × N.X n) hp exact ⟨p.2, Prod.ext hp.symm rfl⟩ mono_f := (ModuleCat.mono_iff_injective _).2 fun _ _ h => congrArg Prod.snd h epi_g := (ModuleCat.e …`.
+A detailed English derivation is pending.
 -/
 theorem prodSeq_shortExact : (prodSeq M N).ShortExact :=
   HomologicalComplex.shortExact_of_degreewise_shortExact _ fun n => {
@@ -47,13 +47,13 @@ variable {k F' : Type u} [CommRing k] [Group F'] [TopologicalSpace F'] [IsTopolo
   [Fintype F'] (B : Rep.{u} k F') [IsDiscreteRep B]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `homologyπ_hom_surjective (cochainsComplex B) 0 c`. Choose the witnesses or unpack the hypotheses as in `⟨v, hx⟩ : ∃ v, ((cochainsComplex B).iCycles 0).hom z = zeroCochain B v := by`. Use `⟨cochainOf B (((cochainsComplex B).iCycles 0).hom z) Fin.elim0, ?_⟩` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[cochainOf_zeroCochain, Subsingleton.elim σ Fin.elim0]`. Establish `hd : ((cochainsComplex B).d 0 1).hom (zeroCochain B v) = 0`. Rewrite using `[← hx]`. Conclude with `(hom_apply_hom_apply_of_comp_eq ((cochainsComplex B).iCycles_d 0 1) z).trans rfl`. Establish `hinv : v ∈ B.ρ.invariants` using `fun g => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrFun (congrArg (cochainOf B) hd) (fun _ => g)`. Rewrite `h` using `[cochainOf_d_zeroCochain, cochainOf_zero]`. Conclude with `sub_eq_zero.1 h`. Take `⟨m, hm⟩` from `hB v hinv`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `normClass`. Use `congr 1`. Apply `iCycles_hom_injective` to reduce the goal to its premises. Conclude with `(((cochainsComplex B).i_cyclesMk _ _ _ _).trans (congrArg (zeroCochain B) hm)).trans hx.symm`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_normClass_eq (hB : ∀ x ∈ B.ρ.invariants, ∃ m, B.ρ.norm m = x) (c : cohomology B 0) :
     ∃ m, normClass B m = c := by
@@ -92,9 +92,9 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   (ar : ∀ w, Rep.res (ψ w).toMonoidHom A ⟶ Aᵣ w)
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun m => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((prodInr _ _).f n).hom (((normCochains Aᵣ).f n).hom m) = ((tateCompactRes φ ψ A Aᵥ a Aᵣ ar).f n).hom (((prodInr _ _).f n).hom m)`. Rewrite using `[prodInr_f_hom_apply, prodInr_f_hom_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(0 : (piComplex fun v => cochainsComplex (Aᵥ v)).X n) = ((localRes φ A Aᵥ a).f n).hom 0`. Conclude with `(map_zero _).symm`. Express the relevant statement in the definitionally equal form `((normCochains Aᵣ).f n).hom m = ((localRes ψ A Aᵣ ar).f n).hom 0 + ((normCochains Aᵣ).f n).hom m`. Rewrite using `[map_zero, zero_add]`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normCochains_prodInr :
     normCochains Aᵣ ≫ prodInr _ _ = prodInr _ _ ≫ tateCompactRes φ ψ A Aᵥ a Aᵣ ar := by
@@ -120,20 +120,20 @@ noncomputable def tateResSeqHom :
   comm₂₃ := tateCompactRes_prodFst φ ψ A Aᵥ a Aᵣ ar
 
 /- English proof (translation)
-The claim follows from `mappingCoconeNat.shortExact_mapShortComplex _ (prodSeq_shortExact _ _) (prodSeq_shortExact _ _)`.
+A detailed English derivation is pending.
 -/
 theorem tateForgetShortComplex_shortExact :
     (mappingCoconeNat.mapShortComplex (tateResSeqHom φ ψ A Aᵥ a Aᵣ ar)).ShortExact :=
   mappingCoconeNat.shortExact_mapShortComplex _ (prodSeq_shortExact _ _) (prodSeq_shortExact _ _)
 
 /- English proof (translation)
-Establish `hK : IsZero ((degZeroComplex (ModuleCat.of k (∀ w, Aᵣ w))).homology (n + 1))` using `isZero_degZeroComplex_homology_succ _ n`. Establish `hepi : Epi (HomologicalComplex.homologyMap (normCochains Aᵣ) n)`. Consider the cases of `n with`. Consider the case `zero`. Rewrite using `[ModuleCat.epi_iff_surjective]`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Use `choose m hm using fun w => exists_normClass_eq (Aᵣ w) (hnorm w) ((localCohomologyIso Aᵣ 0).hom.hom z w)`. Use `⟨(degZeroHomologyIso (ModuleCat.of k (∀ w, Aᵣ w))).inv.hom (show ModuleCat.of k (∀ w, Aᵣ w) from m), ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (localCohomologyIso Aᵣ 0).hom.hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Apply `hinj` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[localCohomologyIso_homologyMap_normCochains, hom_apply_hom_apply_of_comp_eq (Iso.inv_hom_id (degZeroHomologyIso (ModuleCat.of k (∀ w, Aᵣ w))))]`. Conclude with `funext hm`. Consider the case `succ n`. Establish `hsub : ∀ w, Subsingleton (cohomology (Aᵣ w) (n + 1))` using `fun w => ModuleCat.isZero_iff_subsingleton.1 (hcoh w n)`. Establish `hL : IsZero ((piComplex fun w => cochainsComplex (Aᵣ w)).homology (n + 1))` using `IsZero.of_iso (ModuleCat.isZero_of_subsingleton _) (localCohomologyIso Aᵣ (n + 1))`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨fun _ _ _ => hL.eq_of_src _ _⟩`. Establish `hex` using `mappingCoconeNat.homology_exact₂ (normCochains Aᵣ) n`. Establish `hδ : mappingCoconeNat.homologyδ (normCochains Aᵣ) n = 0` using `(cancel_epi (HomologicalComplex.homologyMap (normCochains Aᵣ) n)).1 ((mappingCoconeNat.homologyMap_homologyδ _ n).trans comp_zero.symm)`. Conclude with `hex.isZero_X₂ hδ (hK.eq_of_tgt _ _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isZero_homology_normCocone (hcoh : ∀ w n, IsZero (cohomology (Aᵣ w) (n + 1)))
     (hnorm : ∀ w, ∀ x ∈ (Aᵣ w).ρ.invariants, ∃ m, (Aᵣ w).ρ.norm m = x) (n : ℕ) :
@@ -168,9 +168,9 @@ theorem isZero_homology_normCocone (hcoh : ∀ w n, IsZero (cohomology (Aᵣ w) 
   exact hex.isZero_X₂ hδ (hK.eq_of_tgt _ _)
 
 /- English proof (translation)
-Establish `hS` using `tateForgetShortComplex_shortExact φ ψ A Aᵥ a Aᵣ ar`. Establish `h0` using `isZero_homology_normCocone Aᵣ hcoh hnorm n`. Establish `h1` using `isZero_homology_normCocone Aᵣ hcoh hnorm (n + 1)`. Establish `hmono` using `(hS.homology_exact₂ (n + 1)).mono_g (h0.eq_of_src _ _)`. Establish `hepi` using `(hS.homology_exact₃ (n + 1) (n + 1 + 1) rfl).epi_f (h1.eq_of_tgt _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `@isIso_of_mono_of_epi _ _ _ _ _ (tateForget φ ψ A Aᵥ a Aᵣ ar (n + 1)) hmono hepi`.
+A detailed English derivation is pending.
 -/
 theorem isIso_tateForget (hcoh : ∀ w n, IsZero (cohomology (Aᵣ w) (n + 1)))
     (hnorm : ∀ w, ∀ x ∈ (Aᵣ w).ρ.invariants, ∃ m, (Aᵣ w).ρ.norm m = x) (n : ℕ) :

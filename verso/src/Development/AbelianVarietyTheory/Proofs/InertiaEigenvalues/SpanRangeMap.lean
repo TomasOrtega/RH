@@ -13,7 +13,7 @@ section Generic
 variable {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] {r : ℕ}
 
 /- English proof (translation)
-Establish `h : A x = ∑ k, τ (e.repr x k) • e k` using `by conv_lhs => rw [← e.sum_repr x]`. Simplify using `only [map_sum, hA, he]`. Rewrite using `[h, e.repr_sum_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_of_fixed (e : Module.Basis (Fin r) R M) (τ : R →+* R) (A : M →+ M)
     (hA : ∀ c x, A (c • x) = τ c • A x) (he : ∀ i, A (e i) = e i) (x : M) (i : Fin r) :
@@ -24,11 +24,11 @@ theorem repr_of_fixed (e : Module.Basis (Fin r) R M) (τ : R →+* R) (A : M →
   rw [h, e.repr_sum_self]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_surjective_iff_isUnit]`. Establish `hle : Submodule.span R (Set.range Φ) ≤ Submodule.span R (Set.range fun j => Φ (e j))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← e.sum_repr x, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hΦ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Introduce `y`. Establish `hy : e.equivFun.symm y ∈ Submodule.span R (Set.range fun j => Φ (e j))` using `hle (hs ▸ Submodule.mem_top)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun R).mp hy`. Use `⟨c, funext fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : e.equivFun (e.equivFun.symm y) i = y i` using `by rw [LinearEquiv.apply_symm_apply]`. Rewrite using `[← h1, ← hc]`. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_matrix (e : Module.Basis (Fin r) R M) (σ : R →+* R) (Φ : M →+ M)
     (hΦ : ∀ c x, Φ (c • x) = σ c • Φ x) (hs : Submodule.span R (Set.range Φ) = ⊤) :
@@ -51,11 +51,11 @@ theorem isUnit_matrix (e : Module.Basis (Fin r) R M) (σ : R →+* R) (Φ : M �
   simp [Matrix.mulVec, dotProduct, mul_comm]
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hV`. Set `L : M ≃ₗ[R] M` to `Matrix.toLinOfInv e e u.mul_inv u.inv_mul`. Establish `hL : ∀ j, (e.map L) j = ∑ i, (u : Matrix (Fin r) (Fin r) R) i j • e i`. Introduce `j`. Simplify using `[L, Matrix.toLinOfInv, Matrix.toLin_self]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨e.map L, hL, fun i j => ?_⟩` and prove the remaining obligations. Establish `key : Φ ((e.map L) j) = ∑ k, F₁ k j • (e.map L) k`. Apply `e.repr.injective` to reduce the goal to its premises. Use extensionality with `m`. Establish `hm` using `congrFun (congrFun h m) j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.map_apply] at hm`. Simplify using `only [hL, map_sum, hΦ, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, Module.Basis.repr_self, Finsupp.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Simplify `hm` using `only [mul_comm]`. Rewrite using `[key, Module.Basis.repr_sum_self]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem change_basis (e : Module.Basis (Fin r) R M) (σ : R →+* R) (Φ : M →+ M)
     (hΦ : ∀ c x, Φ (c • x) = σ c • Φ x) (V F₁ : Matrix (Fin r) (Fin r) R) (hV : IsUnit V)
@@ -86,7 +86,7 @@ section Tensor
 variable {O R N : Type} [CommRing O] [CommRing R] [Algebra O R] [AddCommGroup N] [Module O N]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`. Consider the case `tmul b t => simp [TensorProduct.smul_tmul']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_smul_semi (f : R →ₐ[O] R) (a : N →ₗ[O] N) (c : R) (x : R ⊗[O] N) :
     TensorProduct.map f.toLinearMap a (c • x) = f c • TensorProduct.map f.toLinearMap a x := by
@@ -96,9 +96,9 @@ theorem map_smul_semi (f : R →ₐ[O] R) (a : N →ₗ[O] N) (c : R) (x : R ⊗
   | tmul b t => simp [TensorProduct.smul_tmul']
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y hx hy => exact Submodule.add_mem _ hx hy`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul b t`. Establish `: b ⊗ₜ[O] t = b • TensorProduct.map f.toLinearMap (LinearMap.id : N →ₗ[O] N) ((1 : R) ⊗ₜ[O] t)`. Simplify using `[TensorProduct.smul_tmul']`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_range_map (f : R →ₐ[O] R) :
     Submodule.span R (Set.range (TensorProduct.map f.toLinearMap (LinearMap.id : N →ₗ[O] N))) = ⊤ := by
@@ -114,7 +114,7 @@ theorem span_range_map (f : R →ₐ[O] R) :
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b t => simp [h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_comm (f g : R →ₐ[O] R) (h : ∀ c, f (g c) = g (f c)) (a : N →ₗ[O] N) (x : R ⊗[O] N) :
     TensorProduct.map g.toLinearMap a (TensorProduct.map f.toLinearMap (LinearMap.id : N →ₗ[O] N) x) =
@@ -125,13 +125,11 @@ theorem map_comm (f g : R →ₐ[O] R) (h : ∀ c, f (g c) = g (f c)) (a : N →
   | tmul b t => simp [h]
 
 /- English proof (translation)
-Set `Φ : R ⊗[O] N →+ R ⊗[O] N` to `(TensorProduct.map φ.toLinearMap (LinearMap.id : N →ₗ[O] N)).toAddMonoidHom`. Establish `hΦ : ∀ (c : R) x, Φ (c • x) = (φ : R →+* R) c • Φ x` using `map_smul_semi φ _`. Take `⟨V, F₁, hV, hVg, hS, hE⟩` from `dec _ (isUnit_matrix e φ Φ hΦ (span_range_map φ)) (by`. Introduce `i j s`. Establish `h1` using `repr_of_fixed e (g s : R →+* R) (TensorProduct.map (g s).toLinearMap (a s)).toAddMonoidHom (map_smul_semi (g s) _) (he s) (Φ (e j)) i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : (TensorProduct.map (g s).toLinearMap (a s)).toAddMonoidHom (Φ (e j)) = Φ (e j)`. Use `map_comm φ (g s) (hc s) (a s) (e j)` as an intermediate fact. Rewrite `this` using `[he]`. Conclude with `this`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h1.symm)`. Take `⟨e', h1, h2⟩` from `change_basis e φ Φ hΦ V F₁ hV hE`. Use `⟨e', fun s j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[h1, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul_semi, hVg, he]`.
-
-Use `hS i j` as an intermediate fact. Rewrite `this` using `[← h2]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descend {r : ℕ} {ι : Type} (φ : R →ₐ[O] R) (g : ι → (R →ₐ[O] R)) (a : ι → (N →ₗ[O] N))
     (hc : ∀ s c, φ (g s c) = g s (φ c)) (S : Set R)
@@ -167,7 +165,7 @@ theorem descend {r : ℕ} {ι : Type} (φ : R →ₐ[O] R) (g : ι → (R →ₐ
 end Tensor
 
 /- English proof (translation)
-Take `⟨e', h1, h2⟩` from `descend (ι := {s : G // H s}) φ (fun s => g s.1) (fun s => T.actT s.1) (fun s c => hc s.1 c) S (fun F hU hfix => by`. Take `⟨V, F₁, hV, hVf, hS, hE⟩` from `dec F hU (fun i j s hs => hfix i j ⟨s, hs⟩)`. Conclude with `⟨V, F₁, hV, fun i j s => hVf i j s.1 s.2, hS, hE⟩)`. Use `e (fun s i => he s.1 s.2 i)`. Conclude with `⟨e', fun s hs i => h1 ⟨s, hs⟩ i, h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem descend_lat {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [Field LL]
     [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] {R : Type} [CommRing R] [Algebra O R]
@@ -188,7 +186,7 @@ theorem descend_lat {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [
   exact ⟨e', fun s hs i => h1 ⟨s, hs⟩ i, h2⟩
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a w => simp [h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_id_comm {Z O W : Type} [CommRing Z] [CommRing O] [CommRing W] [Algebra Z O]
     [Algebra Z W] (f g : W →ₐ[Z] W) (h : ∀ w, f (g w) = g (f w)) (x : O ⊗[Z] W) :
@@ -200,7 +198,7 @@ theorem map_id_comm {Z O W : Type} [CommRing Z] [CommRing O] [CommRing W] [Algeb
   | tmul a w => simp [h]
 
 /- English proof (translation)
-Use `map_id_comm _ _ (fun w => ?_) x` and prove the remaining obligations. Use extensionality with `n`. Express the relevant statement in the definitionally equal form `(WittVector.map (frobenius (Cb l) l) (WittVector.map (autCb l (AI.actT g)).toRingHom w)).coeff n = (WittVector.map (autCb l (AI.actT g)).toRingHom (WittVector.map (frobenius (Cb l) l) w)).coeff n`. Simplify using `[WittVector.map_coeff, frobenius_def]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem frob_comm_gal {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (g : GQ l)
     (x : RW LL) : φRW LL (AI.gRW LL g x) = AI.gRW LL g (φRW LL x) := by
@@ -212,9 +210,9 @@ theorem frob_comm_gal {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l 
   simp [WittVector.map_coeff, frobenius_def]
 
 /- English proof (translation)
-Unfold `FixH`. Prove the components needed by the constructor for the conclusion. Introduce `h g hχ`. Conclude with `h g.1 g.2 hχ`. Introduce `h g hg hχ`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `h ⟨g, hg⟩`. Simplify using `only at h1`. Conclude with `h1 hχ`.
+Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 theorem fixH_iff {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (K : FinExt l) {LL : FinExt l}
     (x : RW LL) : FixH AI K x ↔ ∀ g : ↥(GK K), P.χQ (g : GQ l) = 1 → AI.gRW LL (g : GQ l) x = x := by
@@ -228,9 +226,9 @@ theorem fixH_iff {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (K
     exact h1 hχ
 
 /- English proof (translation)
-Establish `h0 : ∀ i j, FixH AI K (F i j)` using `fun i j => (fixH_iff AI K _).mpr (hfix i j)`. Establish `h1` using `GlobalTheory.T.etalePhiMatrix_decompletion_to_wach l P AI K s LL hG Γ R I hI r F hU h0`. Take `⟨V, F', hV, hVf, hE⟩` from `h1`. Use `⟨V, F'.map I.ioE, hV, fun i j => (fixH_iff AI K _).mp (hVf i j), ?_, hE⟩` and prove the remaining obligations. Introduce `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.map_apply]`. Conclude with `Set.mem_range_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decomplete {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (K : FinExt l) (s : ℕ)
     (LL : FinExt l) (hG : Good K s LL) (Γ : GamS P K s LL) (R : WSer Γ) (I : IoS AI R) (hI : IoW I) (r : ℕ)
@@ -248,7 +246,7 @@ theorem decomplete {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) 
   exact Set.mem_range_self _
 
 /- English proof (translation)
-Introduce `l _ P AI hF K s LL hG Γ R I hI T`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_cyclotomicKernelFixedBasis_wittTensorLattice l P AI hF K LL T`. Unfold `EtBasis FixBasis`. Unfold `FixBasis at he`. Conclude with `descend_lat T (φRW LL) (fun g : ↥(GK K) => AI.gRW LL (g : GQ l)) (fun g => P.χQ (g : GQ l) = 1) (fun g c => frob_comm_gal AI LL (g : GQ l) c) (Set.range I.ioE) (decomplete AI K s LL hG Γ R I hI _) e he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem exists_etBasis : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), FaithH AI → ∀ (K : FinExt l) (s : ℕ) (LL : FinExt l), Good K s LL → ∀ (Γ : GamS P K s LL) (R : WSer Γ) (I : IoS AI R), IoW I → ∀ (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)), ∃ e : Module.Basis (Fin (Module.finrank ↥(OL LL) ↥T.L.T)) (RW LL) (TW (RW LL) T), EtBasis I T e := by
   intro l _ P AI hF K s LL hG Γ R I hI T

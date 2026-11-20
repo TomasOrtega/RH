@@ -14,7 +14,7 @@ variable {F F' : Type} [Field F] [Field F'] (r : F ≃+* F')
 
 include he in
 /- English proof (translation)
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem symm_smul (c : F') (y : V') : e.symm (c • y) = r.symm c • e.symm y := by
   apply e.injective
@@ -43,9 +43,9 @@ private def scomap (W : Submodule F' V') : Submodule F V where
     exact W.smul_mem _ ha
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `y ∈ e '' (W : Set V) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Simplify using `using ha`. Introduce `h`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨e.symm y, h, by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem mem_smap {W : Submodule F V} {y : V'} : y ∈ smap r e he W ↔ e.symm y ∈ W := by
   change y ∈ e '' (W : Set V) ↔ _
@@ -78,19 +78,17 @@ private def eRes (W : Submodule F V) : W ≃+ smap r e he W where
 
 include he in
 /- English proof (translation)
-Set `b` to `Module.finBasis F V`. Establish `hf : ∀ f : Fin (Module.finrank F V) →₀ F, Finsupp.mapRange r.symm (map_zero r.symm) (Finsupp.mapRange r (map_zero r) f) = f`. Introduce `f`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Set `repr' : V' ≃ₗ[F'] (Fin (Module.finrank F V) →₀ F')` to `{ toFun := fun y => Finsupp.mapRange r (map_zero r) (b.repr (e.symm y)) invFun := fun c => e (b.repr.symm (Finsupp.mapRange r.symm (map_zero r.symm) c)) map_add' := by`. Introduce `x y`. Use extensionality with `i`. Simplify using the standard rewrite rules. Use the proof step `map_smul' := by`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c y`. Use extensionality with `i`. Simplify using `[symm_smul r e he]`. Use `left_inv := by`. Introduce `y`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show e (b.repr.symm (Finsupp.mapRange r.symm _ (Finsupp.mapRange r _ (b.repr (e.symm y))))) = y`. Rewrite using `[hf]`. Simplify using the standard rewrite rules. Use `right_inv := by`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `}`. Set `b' : Module.Basis (Fin (Module.finrank F V)) F' V'` to `Module.Basis.ofRepr repr'`. Establish `hb' : ∀ j, b' j = e (b j)`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[b', repr']`. Rewrite using `[← LinearMap.charpoly_toMatrix g b, ← LinearMap.charpoly_toMatrix g' b', ← Matrix.charpoly_map]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, LinearMap.toMatrix_apply, LinearMap.toMatrix_apply, hb', ← hg]`.
-
-Use `show (Finsupp.mapRange r (map_zero r) (b.repr (e.symm (e (g (b j)))))) i = _`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem charpoly_semi [FiniteDimensional F V] [FiniteDimensional F' V']
     (g : Module.End F V) (g' : Module.End F' V') (hg : ∀ x, e (g x) = g' (e x)) :
@@ -136,29 +134,27 @@ private theorem charpoly_semi [FiniteDimensional F V] [FiniteDimensional F' V']
 end Semi
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `V V' _ _ _ _ _ _ e he g g' hg`. Both sides reduce to the same expression. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `V V' _ _ _ _ _ _ e he g g' hg`. Rewrite using `[GlobalTheory.CuspGL.invariantSubspaceMobiusInverseRec_succ, GlobalTheory.CuspGL.invariantSubspaceMobiusInverseRec_succ, charpoly_semi r e he g g' hg, hs]`. Use `congr 1`. Establish `htop : smapE r e he ⊤ = ⊤`. Use extensionality with `y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `y ∈ smap r e he ⊤ ↔ _`. Rewrite using `[mem_smap]`. Simplify using the standard rewrite rules. Establish `hsymm : ∀ y, e.symm (g' y) = g (e.symm y)`. Introduce `y`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hg]`. Simplify using the standard rewrite rules. Establish `hiff : ∀ W : Submodule F V, (W ≠ ⊤ ∧ ∀ x ∈ W, g x ∈ W) ↔ (smapE r e he W ≠ ⊤ ∧ ∀ y ∈ smapE r e he W, g' y ∈ smapE r e he W)`. Introduce `W`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hW, hinv⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hW` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(smapE r e he).injective` to reduce the goal to its premises. Rewrite using `[h, htop]`. Introduce `y hy`. Express the relevant statement in the definitionally equal form `g' y ∈ smap r e he W`. Express the relevant statement in the definitionally equal form `y ∈ smap r e he W at hy`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hy`, the goal using `[mem_smap]`. Rewrite using `[hsymm]`. Conclude with `hinv _ hy`. Introduce and unpack `⟨hW, hinv⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hW htop`. Introduce `x hx`. Establish `h1 : e x ∈ smap r e he W`. Rewrite using `[mem_smap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hx`. Establish `h2` using `hinv (e x) h1`. Express the relevant statement in the definitionally equal form `g' (e x) ∈ smap r e he W at h2`. Rewrite `h2` using `[mem_smap, hsymm]`. Simplify using `using h2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Use `symm`. Apply `finsum_eq_of_bijective ((smapE r e he).subtypeEquiv hiff) (Equiv.bijective _)` to reduce the goal to its premises. Introduce `W`. Use `symm`. Conclude with `ih _ _ (eRes r e he W.1) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Introduce `c x`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[eRes, he])`. Use `_ _`. Use the proof step `(by`.
-
-Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[eRes, hg]`. Use the proof step `rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem semilinear_equiv_conjugate_endomorphism {F F' : Type} [Field F] [Field F'] (r : F ≃+* F') (s : F[X] → ℂ) (s' : F'[X] → ℂ)
     (hs : ∀ P, s' (P.map r.toRingHom) = s P) (n : ℕ) :
@@ -229,9 +225,9 @@ private theorem semilinear_equiv_conjugate_endomorphism {F F' : Type} [Field F] 
         rfl)
 
 /- English proof (translation)
-Unfold `GlobalTheory.CuspGL.rootSum`. Establish `hpoly : (P.map r.toRingHom).map (algebraMap F' (AlgebraicClosure F')) = (P.map (algebraMap F (AlgebraicClosure F))).map j.toRingHom`. Rewrite using `[Polynomial.map_map, Polynomial.map_map]`. Use `congr 1`. Use extensionality with `x`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `(hj x).symm`. Rewrite using `[hpoly, ← roots_map_of_injective_of_card_eq_natDegree j.injective IsAlgClosed.card_roots_eq_natDegree, Multiset.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem rootSum_iso {F F' : Type} [Field F] [Field F'] (r : F ≃+* F')
     (j : AlgebraicClosure F ≃+* AlgebraicClosure F')
@@ -249,11 +245,11 @@ private theorem rootSum_iso {F F' : Type} [Field F] [Field F'] (r : F ≃+* F')
   rfl
 
 /- English proof (translation)
-Introduce `F F' _ _ _ r j hj θ m c g`. Unfold `cusp psiG GlobalTheory.CuspGL.psi`. Use `congr 1`. Rewrite using `[Module.finrank_fin_fun, Module.finrank_fin_fun]`. Apply `semilinear_equiv_conjugate_endomorphism r (GlobalTheory.CuspGL.rootSum (θ.comp j.toMonoidHom) c) (GlobalTheory.CuspGL.rootSum θ c) (rootSum_iso r j hj θ c) (m + 1) (Fin m → F) (Fin m → F') (AddEquiv.piCongrRight fun _ => r.toAddEquiv)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a x`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Introduce `x`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.toLin'_apply, Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.cuspIso :
     CuspIso := by

@@ -7,9 +7,7 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs _ _ Dc Φ hF Y a b`. Take `⟨hO, hD, hM, hS, hFF⟩` from `hF`. Use `⟨hO, hD, hM, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Formalism.FourierDecayAlt.P.transfer_joint_smooth _ _ _ _ _ _ _ Φ (Y : ℂ) a b hO hS`. Introduce `c hc`.
-
-Conclude with `Formalism.FourierDecayAlt.P.operator_preserves_fusion_forms _ _ _ _ _ _ _ _ _ _ (Y : ℂ) a b Bs.z_mem Bs.z'_mem (hD c hc) _ (hFF c hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem quadratic_local_family_holds : GQLFam := by
   intro Wp Wq _ _ _ _ _ _ P Bs _ _ Dc Φ hF Y a b

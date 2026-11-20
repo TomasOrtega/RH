@@ -5,31 +5,29 @@ open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct G
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R₀ R _ _ _ N₀ N _ _ _ _ _ _ 𝒩₀ _ 𝒩 _ ψ n θ h hdeg hθ`. Set `p₀ : N₀ →ₗ[R₀] 𝒩₀ n` to `DirectSum.component R₀ ℤ (fun i => 𝒩₀ i) n ∘ₗ (decomposeLinearEquiv 𝒩₀).toLinearMap`. Set `p : N →ₗ[R] 𝒩 n` to `DirectSum.component R ℤ (fun i => 𝒩 i) n ∘ₗ (decomposeLinearEquiv 𝒩).toLinearMap`. Establish `hp₀ : ∀ y, p₀ y = decompose 𝒩₀ y n` using `fun _ => rfl`. Establish `hp : ∀ y, p y = decompose 𝒩 y n` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp₀i : ∀ y : 𝒩₀ n, p₀ (y : N₀) = y` using `fun y => by`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hp₀]`. Conclude with `decompose_of_mem_same 𝒩₀ y.2`. Establish `hpi : ∀ y : 𝒩 n, p (y : N) = y` using `fun y => by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hp]`. Conclude with `decompose_of_mem_same 𝒩 y.2`. Establish `hcomm : ∀ y, θ (p₀ y) = p (ψ y)`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `y using Decomposition.inductionOn 𝒩₀ with`. Consider the case `zero => simp`. Consider the case `@homogeneous j y`. Distinguish the cases in `hj : j = n`. Substitute `hj` using the available equality.
+Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hp₀i, ← hθ, hpi]`. Establish `h1 : p₀ (y : N₀) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hp₀]`. Conclude with `decompose_of_mem_ne 𝒩₀ y.2 hj`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : p (ψ y) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hp]`. Conclude with `decompose_of_mem_ne 𝒩 (hdeg j y y.2) hj`. Rewrite using `[h1, h2, map_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Set `L : R ⊗[R₀] 𝒩₀ n →ₗ[R] 𝒩 n` to `LinearMap.liftBaseChange R θ`. Establish `hL1 : ∀ x, L (p₀.baseChange R x) = p (h.equiv x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `tmul r y => simp [L, hcomm]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Establish `hL2 : ∀ x, (L x : N) = h.equiv ((𝒩₀ n).subtype.baseChange R x)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r y => simp [L, hθ]`. Consider the case `add a b ha hb => simp only [map_add, Submodule.coe_add, ha, hb]`. Establish `hret : ∀ x, p₀.baseChange R ((𝒩₀ n).subtype.baseChange R x) = x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r y => simp [hp₀i]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Treat this case separately. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hbij : Function.Bijective L`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `h1 : h.equiv ((𝒩₀ n).subtype.baseChange R a) = h.equiv ((𝒩₀ n).subtype.baseChange R b)`. Rewrite using `[← hL2, ← hL2, hab]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hret a, h.equiv.injective h1, hret]`. Introduce `z`. Use `⟨p₀.baseChange R (h.equiv.symm z), ?_⟩` and prove the remaining obligations. Rewrite using `[hL1, LinearEquiv.apply_symm_apply, hpi]`. Use `IsBaseChange.of_equiv (LinearEquiv.ofBijective L hbij) fun x => ?_` and prove the remaining obligations.
-
-Simplify using `[L]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isBaseChange_gradedPiece : ∀ (R₀ R : Type) [CommRing R₀] [CommRing R] [Algebra R₀ R] (N₀ N : Type) [AddCommGroup N₀] [Module R₀ N₀] [AddCommGroup N] [Module R₀ N] [Module R N] [IsScalarTower R₀ R N] (𝒩₀ : ℤ → Submodule R₀ N₀) [Decomposition 𝒩₀] (𝒩 : ℤ → Submodule R N) [Decomposition 𝒩] (ψ : N₀ →ₗ[R₀] N) (n : ℤ) (θ : 𝒩₀ n →ₗ[R₀] 𝒩 n), IsBaseChange R ψ → (∀ j, ∀ y ∈ 𝒩₀ j, ψ y ∈ 𝒩 j) → (∀ y, (θ y : N) = ψ y) → IsBaseChange R θ := by
   intro R₀ R _ _ _ N₀ N _ _ _ _ _ _ 𝒩₀ _ 𝒩 _ ψ n θ h hdeg hθ

@@ -36,7 +36,7 @@ structure JointsSAlt {ex : Extra D L hT Gi Gl K Y cX} (T : _root_.Formalism.L2.T
 namespace JointsS
 variable {ex : Extra D L hT Gi Gl K Y cX} {T : _root_.Formalism.L2.TiedDataSAlt ex}
 /- English proof (translation)
-The claim follows from `T.sameChr.idem P`.
+A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.L2.JointsSAlt.idem (_ : _root_.Formalism.L2.JointsSAlt T) (P : HeightOneSpectrum (𝓞 D.host.E)) : ∃ e, Formalism.L2.JoinChr.IsPlIdem D e P :=
   T.sameChr.idem P

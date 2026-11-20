@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.HTBasis
 open Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.Cyc
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Cyc.finrank_Ks_and_chi_surjective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFinrankCyclotomicExtAndCyclotomicCharSurjective.lean&line=209#L209)
 -/

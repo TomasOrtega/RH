@@ -8,11 +8,11 @@ open scoped Classical
 namespace GlobalTheory.GramCount
 
 /- English proof (translation)
-Rewrite using `[Set.ncard_eq_toFinset_card' S, Finset.card_eq_sum_card_fiberwise (f := fun X => Fin.tail X) (t := T.toFinset) (by intro X hX; simpa using h X (by simpa using hX))]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Set.ncard_eq_toFinset_card']`. Use `symm`. Use `Finset.card_bij (fun y _ => (Fin.cons y x : Fin (m + 1) → α)) ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Simplify using `using hy`. Introduce `y _ y' _ hyy`. Simplify using `using congrFun hyy 0`. Introduce `X hX`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_filter, Set.mem_toFinset] at hX`. Take `⟨h1, rfl⟩` from `hX`. Conclude with `⟨X 0, by simpa using h1, by simp⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ncard_eq_sum_tail {α : Type} [Fintype α] {m : ℕ} (S : Set (Fin (m + 1) → α))
     (T : Set (Fin m → α)) (h : ∀ X ∈ S, Fin.tail X ∈ T) :
@@ -36,7 +36,7 @@ theorem ncard_eq_sum_tail {α : Type} [Fintype α] {m : ℕ} (S : Set (Fin (m + 
 variable {B : Type} [CommRing B]
 
 /- English proof (translation)
-Take `⟨⟨y, hy⟩, h2⟩` from `hX`. Use `⟨⟨Fin.tail y, fun a b => ?_⟩, fun a b => h2 _ _⟩` and prove the remaining obligations. Simplify `hy a.succ b.succ` using `[Fin.tail]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tail_mem_sols (c : B →+* B) {m n : ℕ} (G : Matrix (Fin (m + 1)) (Fin (m + 1)) B)
     (X : Fin (m + 1) → Fin n → B) (hX : X ∈ sols c n G) :
@@ -46,11 +46,11 @@ theorem tail_mem_sols (c : B →+* B) {m n : ℕ} (G : Matrix (Fin (m + 1)) (Fin
   simpa [Fin.tail] using hy a.succ b.succ
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun i => by simpa using h2 i.succ 0, by simpa using h2 0 0⟩`. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨h1, fun a b => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `refine Fin.cases ?_ (fun a => ?_) a <;> refine Fin.cases ?_ (fun b => ?_) b`. Simplify using `using h3`. Simplify using `only [Fin.cons_succ, Fin.cons_zero]`. Rewrite using `[← cj_ip c hc, h2, hG]`. Simplify using `using h2 a`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hx.2 a b`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cons_mem_sols (c : B →+* B) (hc : ∀ u, c (c u) = u) {m n : ℕ}
     (G : Matrix (Fin (m + 1)) (Fin (m + 1)) B) (hG : ∀ a b, c (G b a) = G a b)
@@ -72,9 +72,9 @@ theorem cons_mem_sols (c : B →+* B) (hc : ∀ u, c (c u) = u) {m n : ℕ}
     · simpa using hx.2 a b
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`. Establish `h1 : 2 * (2 * m + 1 + d) - (2 * m + 1) = (2 * m + 1 + d) + d` using `by omega`. Establish `h2 : (2 : ℝ) ^ d ≤ (q : ℝ) ^ d` using `pow_le_pow_left₀ (by norm_num) (by exact_mod_cast hq) d`. Establish `h3 : (2 : ℝ) ^ (2 * m + 1) / 2 ^ (2 * m + 1 + d) = 1 / 2 ^ d`. Rewrite using `[pow_add (2 : ℝ) (2 * m + 1) d]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[h1, h3, pow_add (q : ℝ) (2 * m + 1 + d) d, one_div_mul_eq_div, le_div_iff₀ (by positivity)]`. Use `gcongr`.
+Clear the denominators using the available nonvanishing facts. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_le_eta_mul {q m n : ℕ} (hq : 2 ≤ q) (h : 2 * m + 1 ≤ n) :
     (q : ℝ) ^ n ≤ (2 ^ (2 * m + 1) / 2 ^ n) * (q : ℝ) ^ (2 * n - (2 * m + 1)) := by
@@ -88,7 +88,7 @@ theorem pow_le_eta_mul {q m n : ℕ} (hq : 2 ≤ q) (h : 2 * m + 1 ≤ n) :
   gcongr
 
 /- English proof (translation)
-Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `: (2 : ℝ) ^ (2 * m + 3) ≤ 2 ^ n` using `pow_le_pow_right₀ (by norm_num) h`. Establish `h2 : (2 : ℝ) ^ (2 * m + 3) = 4 * 2 ^ (2 * m + 1)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem eta_le {m n : ℕ} (h : 2 * m + 3 ≤ n) : (2 : ℝ) ^ (2 * m + 1) / 2 ^ n ≤ 1 / 4 := by
   rw [div_le_iff₀ (by positivity)]
@@ -97,25 +97,23 @@ theorem eta_le {m n : ℕ} (h : 2 * m + 3 ≤ n) : (2 : ℝ) ^ (2 * m + 1) / 2 ^
   linarith
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `_ G _`. Establish `h1 : sols c n G = Set.univ`. Use extensionality with `x`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_univ, iff_true]`. Conclude with `⟨⟨x, fun a => a.elim0⟩, fun a => a.elim0⟩`. Establish `h2 : (0 : ℝ) ≤ 2 ^ (2 * 0 + 1) / 2 ^ n` using `by positivity`. Rewrite using `[h1, Set.ncard_univ, Nat.card_unique]`. Simplify using `only [mul_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, tsub_self, pow_zero, mul_one, Nat.cast_one] at h2 ⊢`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `constructor <;> linarith`. Consider the case `succ m ih`. Introduce `hn G hG`. Take `⟨i1, i2⟩` from `ih (by omega) (G.submatrix Fin.succ Fin.succ) (fun a b => hG _ _)`. Establish `hη` using `eta_le (m := m) (n := n) (by omega)`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp` using `pow_le_eta_mul (m := m) (n := n) hq (by omega)`. Establish `he : (2 : ℝ) ^ (2 * (m + 1) + 1) / 2 ^ n = 4 * (2 ^ (2 * m + 1) / 2 ^ n)` using `by ring`. Establish `hx : 2 * n * (m + 1) - (m + 1) ^ 2 = (2 * n * m - m ^ 2) + (2 * n - (2 * m + 1))`. Establish `h1 : m ^ 2 ≤ 2 * n * m` using `by nlinarith`. Establish `h2 : 2 * n * (m + 1) = 2 * n * m + 2 * n` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (m + 1) ^ 2 = m ^ 2 + (2 * m + 1)` using `by ring`. Use linear arithmetic over natural numbers and integers. Establish `hη0 : (0 : ℝ) ≤ 2 ^ (2 * m + 1) / 2 ^ n` using `by positivity`. Rewrite using `[he, hx, pow_add (q : ℝ)]`. Use `set η : ℝ := 2 ^ (2 * m + 1) / 2 ^ n`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Q : ℝ := (q : ℝ) ^ (2 * n * m - m ^ 2) with hQ`. Use `set R : ℝ := (q : ℝ) ^ (2 * n - (2 * m + 1)) with hR`. Establish `hQ0 : 0 ≤ Q` using `by positivity`. Establish `hR0 : 0 ≤ R` using `by positivity`. Establish `key : ∀ x ∈ (sols c n (G.submatrix Fin.succ Fin.succ)).toFinset, (1 - 3 * η) * R ≤ (Set.ncard {y : Fin n → B | (Fin.cons y x : Fin (m + 1) → Fin n → B) ∈ sols c n G} : ℝ) ∧ (Set.ncard {y : Fin n → B | (Fin.cons y x : Fin (m + 1) → Fin n → B) ∈ sols c n G} : ℝ) ≤ (1 + 3 * η) * R`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite `hx` using `[Set.mem_toFinset]`. Use `GlobalTheory.T.card_primitiveTuple_extensions_le c hc ω hω hf q hq hB m n (by omega) x hx.1 (fun i => G i.succ 0) (G 0 0) (hG 0 0)` as an intermediate fact. Simplify using `only [cons_mem_sols c hc G hG x hx]`. Rewrite `this` using `[abs_le]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`. Rewrite using `[ncard_eq_sum_tail _ _ (tail_mem_sols c G), Nat.cast_sum]`. Rewrite `i1`, `i2` using `[Set.ncard_eq_toFinset_card']`. Establish `k1` using `Finset.card_nsmul_le_sum _ _ _ (fun x hx => (key x hx).1)`. Establish `k2` using `Finset.sum_le_card_nsmul _ _ _ (fun x hx => (key x hx).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite `k1`, `k2` using `[nsmul_eq_mul]`. Establish `hQR : 0 ≤ Q * R` using `mul_nonneg hQ0 hR0`. Prove the components needed by the constructor for the conclusion. Use `le_trans ?_ (le_trans (mul_le_mul_of_nonneg_right i1 (mul_nonneg (by linarith) hR0)) k1)` and prove the remaining obligations. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hη0 hη0) hQR]`.
-
-Use `le_trans k2 (le_trans (mul_le_mul_of_nonneg_right i2 (mul_nonneg (by linarith) hR0)) ?_)` and prove the remaining obligations. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hη0 (show 0 ≤ 1 / 4 - η by linarith)) hQR, mul_nonneg hη0 hQR]`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem ncard_sols_eta [Fintype B] (c : B →+* B) (hc : ∀ u, c (c u) = u) (ω : B)
     (hω : IsUnit (ω - c ω)) (hf : ∀ t, c t = t → t ≠ 0 → IsUnit t) (q : ℕ) (hq : 2 ≤ q)
@@ -183,9 +181,9 @@ theorem ncard_sols_eta [Fintype B] (c : B →+* B) (hc : ∀ u, c (c u) = u) (ω
         mul_nonneg hη0 hQR]
 
 /- English proof (translation)
-Introduce `B _ _ c hc ω hω hf q hq hB m n hn G hG`. Take `⟨h1, h2⟩` from `ncard_sols_eta c hc ω hω hf q hq hB n m hn G hG`. Establish `hη` using `eta_le hn`. Establish `hQ : (0 : ℝ) ≤ (q : ℝ) ^ (2 * n * m - m ^ 2)` using `by positivity`. Use `mul_le_mul_of_nonneg_right hη hQ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> nlinarith`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ncard_sols_residue : ∀ {B : Type} [CommRing B] [Fintype B] (c : B →+* B), (∀ u, c (c u) = u) → ∀ (ω : B), IsUnit (ω - c ω) → (∀ t, c t = t → t ≠ 0 → IsUnit t) → ∀ (q : ℕ), 2 ≤ q → Fintype.card B = q ^ 2 → ∀ (m n : ℕ), 2 * m + 3 ≤ n → ∀ (G : Matrix (Fin m) (Fin m) B), (∀ a b, c (G b a) = G a b) → (q : ℝ) ^ (2 * n * m - m ^ 2) ≤ 2 * (Set.ncard (sols c n G) : ℝ) ∧ (Set.ncard (sols c n G) : ℝ) ≤ 2 * (q : ℝ) ^ (2 * n * m - m ^ 2) := by
   intro B _ _ c hc ω hω hf q hq hB m n hn G hG

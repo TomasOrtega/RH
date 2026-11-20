@@ -20,7 +20,7 @@ noncomputable def Z {N : ℕ} (Y : Mat C N) : Matrix (Fin N) (Fin N) (PowerSerie
   fun i j => PowerSeries.mk fun k => (((k + 1).factorial : C)⁻¹ • Y ^ (k + 1)) i j
 
 /- English proof (translation)
-Use extensionality with `i j k`. Break down `k with _ | k` into its components or cases. Apply the tactic sequence `simp only [U, Z, PowerSeries.coeff_mk, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, PowerSeries.coeff_zero_X_mul, add_zero, Matrix.one_apply, pow_zero, Nat.factorial_zero, Nat.cast_one, inv_one] split_ifs <;> simp`. Apply the tactic sequence `simp only [U, Z, PowerSeries.coeff_mk, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, PowerSeries.coeff_succ_X_mul, Matrix.one_apply] split_ifs <;> simp`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma U_eq {N : ℕ} (Y : Mat C N) : U Y = 1 + (PowerSeries.X : PowerSeries C) • Z Y := by
   ext i j k
@@ -33,14 +33,14 @@ lemma U_eq {N : ℕ} (Y : Mat C N) : U Y = 1 + (PowerSeries.X : PowerSeries C) �
     split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Simplify using `[Z, PowerSeries.coeff_mk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma constantCoeff_Z {N : ℕ} (Y : Mat C N) (i j : Fin N) : PowerSeries.constantCoeff (Z Y i j) = Y i j := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]
   simp [Z, PowerSeries.coeff_mk]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.aeval_def, MvPolynomial.eval₂_comp_left, hk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma map_aeval_ring {R S σ : Type} [CommRing R] [CommRing S] [Algebra C R] [Algebra C S] (k : R →+* S)
     (hk : k.comp (algebraMap C R) = algebraMap C S) (x : σ → R) (f : MvPolynomial σ C) :
@@ -48,7 +48,7 @@ lemma map_aeval_ring {R S σ : Type} [CommRing R] [CommRing S] [Algebra C R] [Al
   rw [MvPolynomial.aeval_def, MvPolynomial.aeval_def, MvPolynomial.eval₂_comp_left, hk]
 
 /- English proof (translation)
-Take `⟨𝓕, h𝓕⟩` from `hD C N n`. Use `⟨𝓕, h𝓕, fun f hf x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← aeval_self_eq_ev]`. Conclude with `(h𝓕 C x).1 (hS x hx) f hf`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma van_of (hD : DegPoly) {N n : ℕ} (S : Submonoid (Mat C N)) (hS : ∀ x ∈ S, Deg n x) :
     ∃ 𝓕 : Set (MP C N), (∀ (F : Type) [Field F] [Algebra C F] (x : Mat F N),
@@ -60,27 +60,25 @@ lemma van_of (hD : DegPoly) {N n : ℕ} (S : Submonoid (Mat C N)) (hS : ∀ x �
   exact (h𝓕 C x).1 (hS x hx) f hf
 
 /- English proof (translation)
-Take `⟨𝓕, h𝓕, hvan⟩` from `van_of hD S hS`. Set `F` to `FractionRing (PowerSeries C)`. Set `ι : PowerSeries C →+* F` to `algebraMap (PowerSeries C) F`. Set `alg : Algebra C F` to `(ι.comp (algebraMap C (PowerSeries C))).toAlgebra`. Establish `hιinj : Function.Injective ι` using `IsFractionRing.injective (PowerSeries C) F`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmap : ∀ (M : Matrix (Fin N) (Fin N) (PowerSeries C)) (f : MP C N), @MvPolynomial.aeval C F _ _ _ alg (fun p : Fin N × Fin N => (M.map ι) p.1 p.2) f = ι (MvPolynomial.aeval (fun p : Fin N × Fin N => M p.1 p.2) f)`. Introduce `M f`. Rewrite using `[map_aeval_ring (S := F) ι rfl]`. Both sides reduce to the same expression. Establish `hUF : Deg n ((U Y).map ι)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `(@h𝓕 F _ alg ((U Y).map ι)).2 fun f hf => ?_` and prove the remaining obligations. Rewrite using `[hmap]`. Use `hE C N S Y hY f (hvan f hf)` as an intermediate fact. Simplify using `only [U] at this ⊢`. Rewrite using `[this, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set s : F := ι PowerSeries.X with hsdef`. Establish `hs : s ≠ 0` using `(map_ne_zero_iff ι hιinj).2 PowerSeries.X_ne_zero`. Establish `hUZ : (U Y).map ι = 1 + s • (Z Y).map ι`. Rewrite using `[U_eq]`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, Matrix.one_apply, hsdef]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hZF : Deg n ((Z Y).map ι)`. Take `⟨q, hq0, hqd, hqx⟩` from `hUF`. Use `⟨q.comp (Polynomial.C s * Polynomial.X + Polynomial.C 1), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Break down `Polynomial.comp_eq_zero_iff.1 h with h | ⟨_, h⟩` into its components or cases. Conclude with `hq0 h`. Use `congrArg Polynomial.natDegree h` as an intermediate fact. Rewrite `this` using `[Polynomial.natDegree_linear hs, Polynomial.natDegree_C]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_ne_zero this`. Rewrite using `[Polynomial.natDegree_comp, Polynomial.natDegree_linear hs, mul_one]`. Conclude with `hqd`. Rewrite using `[Polynomial.aeval_comp]`. Use `hqx using 2` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hUZ]`. Simplify using `[Algebra.algebraMap_eq_smul_one, add_comm]`. Establish `hZ0 : ∀ f ∈ 𝓕, MvPolynomial.aeval (fun p : Fin N × Fin N => Z Y p.1 p.2) f = 0`. Introduce `f hf`. Use `(@h𝓕 F _ alg ((Z Y).map ι)).1 hZF f hf` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite `this` using `[hmap]`. Conclude with `(map_eq_zero_iff ι hιinj).1 this`. Use `(h𝓕 C Y).2 fun f hf => ?_` and prove the remaining obligations. Establish `hk : (PowerSeries.constantCoeff (R` using `C)).comp (algebraMap C (PowerSeries C)) = algebraMap C C := by`. Use extensionality with `c`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Use `congrArg PowerSeries.constantCoeff (hZ0 f hf)` as an intermediate fact. Rewrite `this` using `[map_aeval_ring _ hk, map_zero]`. Use `this using 2` and compare the differences between its conclusion and the goal. Use `congr 1`.
-
-Use function extensionality and compare the values at `p`. Simplify using `[constantCoeff_Z]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma tan_deg (hE : ExpVan) (hD : DegPoly) [CharZero C] {N n : ℕ} (S : Submonoid (Mat C N))
     (hS : ∀ x ∈ S, Deg n x) (Y : Mat C N) (hY : Y ∈ Tan (S : Set (Mat C N))) : Deg n Y := by
@@ -138,9 +136,9 @@ lemma tan_deg (hE : ExpVan) (hD : DegPoly) [CharZero C] {N n : ℕ} (S : Submono
   simp [constantCoeff_Z]
 
 /- English proof (translation)
-Introduce `C _ _ N n S hS`. Use `⟨fun x hx => ?_, fun Y hY => tan_deg hE hD S hS Y hY⟩` and prove the remaining obligations. Take `⟨𝓕, h𝓕, hvan⟩` from `van_of hD S hS`. Use `(h𝓕 C x).2 fun f hf => ?_` and prove the remaining obligations. Rewrite using `[aeval_self_eq_ev]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx f (hvan f hf)`.
+A detailed English derivation is pending.
 -/
 theorem TanDeg_of (hE : ExpVan) (hD : DegPoly) : TanDeg := by
   intro C _ _ N n S hS

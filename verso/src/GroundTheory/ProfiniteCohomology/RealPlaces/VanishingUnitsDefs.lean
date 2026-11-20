@@ -37,19 +37,19 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   (ar : ∀ w, Rep.res (ψ w).toMonoidHom A ⟶ Aᵣ w)
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun p => ?_)` and prove the remaining obligations. Take `⟨⟨x, e⟩, y⟩` from `p`. Establish `h1 : ((cochainsMap (m • 𝟙 A)).f n).hom x = m • x`. Rewrite using `[cochainsMap_nsmul, cochainsMap_id]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h2 : ((degZeroMap (piRepHom fun w => m • 𝟙 (Aᵣ w))).f n).hom e = m • e`. Consider the cases of `n with`. Consider the case `zero`. Use function extensionality and compare the values at `w`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `nsmul_id_hom_apply (Aᵣ w) m _`. Consider the case `succ n => exact Subsingleton.elim _ _`. Establish `h3 : (shiftNegOneMapF (tateLocalMap (fun v => m • 𝟙 (Aᵥ v)) (fun w => m • 𝟙 (Aᵣ w))) n).hom y = m • y`. Consider the cases of `n with`. Consider the case `zero => rfl`.
+Treat this case separately. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n`. Take `⟨y1, y2⟩` from `y`. Use `Prod.ext (funext fun v => ?_) (funext fun w => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((cochainsMap (m • 𝟙 (Aᵥ v))).f n).hom (y1 v) = m • y1 v`. Rewrite using `[cochainsMap_nsmul, cochainsMap_id]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `((cochainsMap (m • 𝟙 (Aᵣ w))).f n).hom (y2 w) = m • y2 w`. Rewrite using `[cochainsMap_nsmul, cochainsMap_id]`. Simplify using the standard rewrite rules. Establish `hr : ((m • 𝟙 (tateCompactCochains φ ψ A Aᵥ a Aᵣ ar)).f n).hom ((x, e), y) = m • ((x, e), y)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HomologicalComplex.nsmul_f_apply, ModuleCat.hom_nsmul]`. Both sides reduce to the same expression. Rewrite using `[hr]`. Express the relevant statement in the definitionally equal form `((((cochainsMap (m • 𝟙 A)).f n).hom x, ((degZeroMap (piRepHom fun w => m • 𝟙 (Aᵣ w))).f n).hom e), (shiftNegOneMapF (tateLocalMap (fun v => m • 𝟙 (Aᵥ v)) (fun w => m • 𝟙 (Aᵣ w))) n).hom y) = _`. Rewrite using `[h1, h2, h3]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem tateCompactCochainsMap_nsmul_id (m : ℕ)
     (hg : ∀ v, a v ≫ (m • 𝟙 (Aᵥ v)) = (Rep.resFunctor (φ v).toMonoidHom).map (m • 𝟙 A) ≫ a v)
@@ -92,7 +92,7 @@ theorem tateCompactCochainsMap_nsmul_id (m : ℕ)
   rfl
 
 /- English proof (translation)
-Unfold `tateCompactCohomologyMap`. Rewrite using `[tateCompactCochainsMap_nsmul_id]`. Use `(HomologicalComplex.homologyFunctor (ModuleCat k) (ComplexShape.up ℕ) n).map_nsmul (f := 𝟙 (tateCompactCochains φ ψ A Aᵥ a Aᵣ ar)) (n := m)` as an intermediate fact. Simplify using `only [HomologicalComplex.homologyFunctor_map, HomologicalComplex.homologyMap_id] at this`. Conclude with `this`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tateCompactCohomologyMap_nsmul_id (m n : ℕ)
     (hg : ∀ v, a v ≫ (m • 𝟙 (Aᵥ v)) = (Rep.resFunctor (φ v).toMonoidHom).map (m • 𝟙 A) ≫ a v)
@@ -174,21 +174,19 @@ Both sides reduce to the same expression.
 theorem localKummerSeq_g : (localKummerSeq S θ j hj).g = 2 • 𝟙 (galUnits.{0} Kv Ωv) := rfl
 
 /- English proof (translation)
-Establish `h2' : (2 : maxUnramifiedOutside K.1 ℚ̄ S) ≠ 0` using `two_ne_zero`. Establish `h2 : (2 : Ωv) ≠ 0`. Establish `: (2 : Ωv) = j 2` using `by rw [map_ofNat]`. Rewrite using `[this]`. Conclude with `(map_ne_zero j).2 h2'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmono : Mono (localKummerSeq S θ j hj).f`. Use `(Rep.mono_iff_injective _).2 fun x y hxy => ?_` and prove the remaining obligations. Establish `h` using `congrArg (fun t : Additive Ωvˣ => ((Additive.toMul t : Ωvˣ) : Ωv)) hxy`. Express the relevant statement in the definitionally equal form `j (((Additive.toMul (α := rootsOfUnity 2 (maxUnramifiedOutside K.1 ℚ̄ S)) x : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)) : maxUnramifiedOutside K.1 ℚ̄ S) = j (((Additive.toMul (α := rootsOfUnity 2 (maxUnramifiedOutside K.1 ℚ̄ S)) y : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)) : maxUnramifiedOuts …`. Conclude with `Additive.toMul.injective (Subtype.ext (Units.ext (j.injective h)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hepi : Epi (localKummerSeq S θ j hj).g` using `(Rep.epi_iff_surjective _).2 (nsmul_id_galUnits_surjective 2 h2)`. Use `{ exact := ?_ }` and prove the remaining obligations. Use `shortComplex_exact_of_forall_exists _ fun x hx => ?_` and prove the remaining obligations. Set `x' : Additive Ωvˣ` to `x`. Establish `hx' : 2 • x' = 0` using `(nsmul_id_hom_apply (galUnits.{0} Kv Ωv) 2 x).symm.trans hx`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : ((Additive.toMul (α` using `Ωvˣ) x : Ωvˣ) : Ωv) * ((Additive.toMul (α := Ωvˣ) x : Ωvˣ) : Ωv) = 1 := by`. Establish `e : (2 • x' : Additive Ωvˣ) = x' + x'` using `two_nsmul x'`. Rewrite `hx'` using `[e]`. Use `congrArg (fun t : Additive Ωvˣ => ((Additive.toMul t : Ωvˣ) : Ωv)) hx'` as an intermediate fact. Simplify using `only [toMul_add, toMul_zero, Units.val_mul, Units.val_one] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `hneg : (-1 : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) ∈ rootsOfUnity 2 (maxUnramifiedOutside K.1 ℚ̄ S)`. Rewrite using `[mem_rootsOfUnity]`. Conclude with `neg_one_sq`. Break down `mul_self_eq_one_iff.1 hsq with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((Additive.toMul ((rootsLocalMor S θ j hj).hom 0) : Ωvˣ) : Ωv) = _`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `h.symm`. Use `⟨(Additive.ofMul (⟨-1, hneg⟩ : rootsOfUnity 2 (maxUnramifiedOutside K.1 ℚ̄ S)) : Additive (rootsOfUnity 2 (maxUnramifiedOutside K.1 ℚ̄ S))), ?_⟩` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `j ((-1 : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S) = _`.
-
-Rewrite using `[Units.val_neg, Units.val_one, map_neg, map_one]`. Conclude with `h.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localKummerSeq_shortExact [IsAlgClosed Ωv] : (localKummerSeq S θ j hj).ShortExact := by
   have h2' : (2 : maxUnramifiedOutside K.1 ℚ̄ S) ≠ 0 := two_ne_zero
@@ -266,7 +264,7 @@ variable {Kv Ωv : Type} [Field Kv] [Field Ωv] [Algebra K.1 Kv] [Algebra Kv Ωv
   [IsScalarTower K.1 Kv Ωv] (ι : ℚ̄ →ₐ[K.1] Ωv)
 
 /- English proof (translation)
-Use extensionality with `y`. Apply `ι.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ι ((gsRestrict K S (globalDecomp Kv ι σ) y : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) = ι ((decompHomS Kv S ι σ y : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄)`. Rewrite using `[gsRestrict_apply, globalDecomp_apply]`. Conclude with `(decompHom_apply (ι.comp (maxUnramifiedOutside K.1 ℚ̄ S).val) σ y).symm`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gsRestrict_globalDecomp (σ : Gal(Ωv/Kv)) :
     gsRestrict K S (globalDecomp Kv ι σ) = decompHomS Kv S ι σ := by
@@ -278,7 +276,7 @@ theorem gsRestrict_globalDecomp (σ : Gal(Ωv/Kv)) :
   exact (decompHom_apply (ι.comp (maxUnramifiedOutside K.1 ℚ̄ S).val) σ y).symm
 
 /- English proof (translation)
-The claim follows from `decompHom_apply _ σ y`.
+A detailed English derivation is pending.
 -/
 theorem decompHomS_apply (σ : Gal(Ωv/Kv)) (y : maxUnramifiedOutside K.1 ℚ̄ S) :
     (ι.comp (maxUnramifiedOutside K.1 ℚ̄ S).val).toRingHom (decompHomS Kv S ι σ y) =
@@ -306,9 +304,9 @@ instance isDiscreteRep_uliftIntToIntRep_galSUnitsMax :
 variable [Algebra.IsIntegral Kv Ωv]
 
 /- English proof (translation)
-Unfold `unitsLocalRes gsBrauerInfl`. Rewrite using `[← cohomologyMapAlong_id_eq_cohomologyMap, ← ModuleCat.comp_apply, ← ModuleCat.comp_apply, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]`. Use `congrArg (fun g => g.hom x) (?_ : _ = cohomologyMapAlong (decompHomS Kv S ι) (continuous_decompHomS (Kv := Kv) S ι) (sUnitsLocalMorZ S ι) r)` and prove the remaining obligations. Apply `cohomologyMapAlong_congr` to reduce the goal to its premises. Use extensionality with `σ : 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Conclude with `gsRestrict_globalDecomp S ι σ`. Introduce `a`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unitsLocalRes_gsBrauerInfl_sUnitsToUnitsZ (r : ℕ)
     (x : cohomology (uliftIntToIntRep (galSUnitsMax K.1 ℚ̄ S)) r) :
@@ -330,9 +328,9 @@ theorem unitsLocalRes_gsBrauerInfl_sUnitsToUnitsZ (r : ℕ)
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `h1` using `cohomologyULiftIntAddEquiv_cohomologyMapAlong (galSUnitsMax K.1 ℚ̄ S) (decompHomS Kv S ι) (continuous_decompHomS (Kv := Kv) S ι) (sUnitsLocalMor S (decompHomS Kv S ι) (ι.comp (maxUnramifiedOutside K.1 ℚ̄ S).val).toRingHom (decompHomS_apply S ι)) (sUnitsLocalMorZ S ι) (fun _ => rf …`. Establish `h2` using `cohomologyULiftIntAddEquiv_cohomologyMapAlong (galSUnitsMax K.1 ℚ̄ S) (MonoidHom.id _) continuous_id (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)) (sUnitsToUnitsZ S) (fun _ => rfl) r y`. Rewrite `h2` using `[cohomologyMapAlong_id_eq_cohomologyMap, cohomologyMapAlong_id_eq_cohomologyMap]`. Rewrite using `[sUnitsInfl_apply, gsUnitsInfl_apply]`. Use `Eq.trans ?_ h1.symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2]`. Conclude with `unitsLocalRes_gsBrauerInfl_sUnitsToUnitsZ S ι r _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitsLocalRes_sUnitsInfl (r : ℕ) (y : cohomology (galSUnitsMax K.1 ℚ̄ S) r) :
     (unitsLocalRes Kv ι r).hom (sUnitsInfl K S r y) =
@@ -363,7 +361,7 @@ def realLocalEmbeddings (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ�
     exact if h : v.IsReal then ιr ⟨v, h⟩ else Classical.choice nonempty_algHom_of_isSepClosed
 
 /- English proof (translation)
-Unfold `realLocalEmbeddings`. Conclude with `dif_pos w.2`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem realLocalEmbeddings_inf (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
     (w : {v : InfinitePlace K.1 // v.IsReal}) : (realLocalEmbeddings ιr).inf w.1 = ιr w := by

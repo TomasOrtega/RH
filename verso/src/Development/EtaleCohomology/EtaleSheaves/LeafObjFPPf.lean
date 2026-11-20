@@ -23,7 +23,7 @@ def LeafQCQSInduct : Prop := ∀ (S : Scheme.{0}) [IsAffine S] (P : ∀ {X : Sch
     ∀ {X : Scheme.{0}} (f : X ⟶ S), FP f → P f
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ X f hf`. Conclude with `hI (Sp Ω) (fun g => Desc k g) (fun g hX hg => hA k Ω g hX hg) (fun g hg U V hUV h1 h2 h3 => hG k Ω g hg U V hUV h1 h2 h3) f hf`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem objectDescent_of_affineDescent (hA : LeafObjAff) (hG : LeafObjGlue) (hI : LeafQCQSInduct) : LeafObjFP := by
   intro k _ Ω _ _ X f hf

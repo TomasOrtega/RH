@@ -7,11 +7,11 @@ open scoped ENNReal
 namespace GlobalTheory.CompanionTheory.UnitFL
 
 /- English proof (translation)
-Introduce `hL2 hN4`. Unfold `PositivityTheory.Rg.Tf.Loc.Z2`. Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ hun σ hgen n _ _ _ _ μE μk _ _ _ _ γ μγ _ hnot _`. Establish `hno : ∀ g : GL (Fin n) k, g⁻¹ * γ * g ∉ unitGL (n` using `Fin n) k := by`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, -, -, hc⟩` from `hN4 k E hun σ hgen n γ (hL2.1 k n γ ⟨g, hg⟩)`. Conclude with `hnot ⟨c, 1, by simpa using hc⟩`. Establish `hzero : (fun g : GL (Fin n) k => unitFn (n` using `Fin n) k (g⁻¹ * γ * g)) = fun _ => 0 := by`. Use function extensionality and compare the values at `g`. Conclude with `Set.indicator_of_notMem (hno g) _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `orbIntegral quotLIntegral`. Rewrite using `[hzero]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem unit_fundamental_lemma_second : PositivityTheory.Rg.Tf.Loc.L2 → PositivityTheory.Rg.Tf.Loc.N4 → PositivityTheory.Rg.Tf.Loc.Z2 := by
   intro hL2 hN4

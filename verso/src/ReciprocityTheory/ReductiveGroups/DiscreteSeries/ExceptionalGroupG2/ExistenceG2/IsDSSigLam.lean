@@ -32,9 +32,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε 
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.IsDS`. Use `⟨?_, Hlam_nontrivial hgap hP hv₀, sigLam_isURepOn hgap hP hv₀, sigLam_irred hgap hP hv₀, sqInt_sigLam hgap hP hv₀, ⟨_, (sigLam_lowK hgap hP hv₀).1⟩, fun μ S hS => (sigLam_kType_bounds hgap hP hv₀ S hS).1⟩` and prove the remaining obligations. Use `first`. Consider the case `infer_instance`. Consider the case `(unfold Hlam closGen`.
-
-Conclude with `(Submodule.isClosed_topologicalClosure _).completeSpace_coe)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isDS_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) : Formalism.MainNotions.S.IsDS ε lam (sigLam ε Ψ v₀) := by
   unfold Formalism.MainNotions.S.IsDS

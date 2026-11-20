@@ -15,7 +15,7 @@ section ExpL
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-The claim follows from `NormedSpace.exp_continuous.comp (Complex.continuous_ofReal.smul continuous_const)`.
+A detailed English derivation is pending.
 -/
 lemma mder_exp_cont (X : Matrix (Fin n) (Fin n) ℂ) :
     Continuous (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) :=
@@ -31,7 +31,7 @@ def kcurve (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) : ℝ → KG �
   if h : inK ε X then Classical.choose (exists_curve ε h) else fun _ => 1
 
 /- English proof (translation)
-Unfold `kcurve`. Rewrite using `[dif_pos hX]`. Use function extensionality and compare the values at `t`. Apply `onep_KG_ext` to reduce the goal to its premises. Rewrite using `[Classical.choose_spec (exists_curve ε hX) t, toMK_onepCurve]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 lemma kcurve_eq (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) :
     kcurve ε X = onepCurve ε hX := by
@@ -42,9 +42,9 @@ lemma kcurve_eq (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK
   rw [Classical.choose_spec (exists_curve ε hX) t, toMK_onepCurve]
 
 /- English proof (translation)
-Apply `continuous_induced_rng.2` to reduce the goal to its premises. Apply `(isClosedEmbedding_toM ε).isInducing.continuous_iff.2` to reduce the goal to its premises. Establish `: ((fun g : UJ ε => toM g) ∘ Subtype.val ∘ onepCurve ε hX) = fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)`. Use function extensionality and compare the values at `t`. Conclude with `toMK_onepCurve ε hX t`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `mder_exp_cont X`.
+A detailed English derivation is pending.
 -/
 lemma continuous_onepCurve (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) :
     Continuous (onepCurve ε hX) := by
@@ -58,9 +58,9 @@ lemma continuous_onepCurve (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ
   exact mder_exp_cont X
 
 /- English proof (translation)
-Rewrite using `[kcurve_eq ε hX]`. Use `⟨continuous_onepCurve ε hX, toMK_onepCurve ε hX, ?_⟩` and prove the remaining obligations. Introduce `s u`. Apply `onep_KG_ext` to reduce the goal to its premises. Use `show toMK (onepCurve ε hX (s + u)) = toMK (onepCurve ε hX s) * toMK (onepCurve ε hX u)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[toMK_onepCurve, toMK_onepCurve, toMK_onepCurve, show (((s + u : ℝ) : ℂ) • X) = (s : ℂ) • X + (u : ℂ) • X by push_cast; exact add_smul _ _ _]`. Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left _).smul_right _)`.
+A detailed English derivation is pending.
 -/
 theorem kcurve_spec (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) :
     Continuous (kcurve ε X) ∧ (∀ t, toMK (kcurve ε X t) = NormedSpace.exp ((t : ℂ) • X)) ∧
@@ -75,7 +75,7 @@ theorem kcurve_spec (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX :
   exact Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left _).smul_right _)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Apply `onep_KG_ext` to reduce the goal to its premises. Rewrite using `[hγ, (kcurve_spec ε hX).2.1]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem curve_eq_kcurve (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (γ : ℝ → KG ε)
     (hγ : ∀ t : ℝ, toMK (γ t) = NormedSpace.exp ((t : ℂ) • X)) : γ = kcurve ε X := by
@@ -84,15 +84,15 @@ theorem curve_eq_kcurve (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (
   rw [hγ, (kcurve_spec ε hX).2.1]
 
 /- English proof (translation)
-Establish `: CompleteSpace V` using `FiniteDimensional.complete ℂ V`. Use `set Φ : ℝ → (V →L[ℂ] V) := fun x => ∫ s in (0:ℝ)..x, φ s with hΦ`. Establish `hΦd : ∀ x, HasDerivAt Φ (φ x) x` using `fun x => (hc.integral_hasStrictDerivAt 0 x).hasDerivAt`. Establish `hslope : Tendsto (slope Φ 0) (𝓝[≠] 0) (𝓝 (φ 0))` using `hasDerivAt_iff_tendsto_slope.1 (hΦd 0)`. Rewrite `hslope` using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ h in 𝓝[≠] (0:ℝ), IsUnit (slope Φ 0 h)` using `hslope (Units.isOpen.mem_nhds isUnit_one)`. Take `⟨h, hh, hne⟩` from `(hev.and self_mem_nhdsWithin).exists`. Establish `hΦ0 : Φ 0 = 0` using `by simp [hΦ]`. Rewrite `hh` using `[slope_def_module, hΦ0, sub_zero, sub_zero]`. Take `⟨u, hu⟩` from `hh`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ t, φ t * Φ h = Φ (t + h) - Φ t`. Introduce `t`. Establish `h1` using `(ContinuousLinearMap.mul ℝ (V →L[ℂ] V) (φ t)).intervalIntegral_comp_comm (hc.intervalIntegrable (μ := MeasureTheory.volume) 0 h)`. Simplify using `only [ContinuousLinearMap.mul_apply'] at h1`. Rewrite using `[hΦ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Simplify using `only`. Rewrite using `[← h1]`. Repeatedly rewrite using `[← hadd]`. Rewrite using `[intervalIntegral.integral_comp_add_left (fun x => φ x) t, add_zero, intervalIntegral.integral_interval_sub_left (hc.intervalIntegrable _ _) (hc.intervalIntegrable _ _)]`. Establish `hrep : φ = fun t => h⁻¹ • (Φ (t + h) - Φ t) * ((u⁻¹ : (V →L[ℂ] V)ˣ) : V →L[ℂ] V)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[← key, ← mul_smul_comm, ← hu, Units.mul_inv_cancel_right]`. Establish `hD : Differentiable ℝ Φ` using `fun x => (hΦd x).differentiableAt`. Rewrite using `[hrep]`. Conclude with `((((hD.comp (differentiable_id.add_const h)) 0).sub (hD 0)).const_smul h⁻¹).mul_const _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentiableAt_oneParam {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]
     (φ : ℝ → (V →L[ℂ] V)) (hc : Continuous φ) (h0 : φ 0 = 1) (hadd : ∀ s t, φ (s + t) = φ s * φ t) :
@@ -133,13 +133,13 @@ def derOp (ε : Fin n → Bool) (τ : KG ε →* unitary (V →L[ℂ] V)) (X : M
   deriv (fun t : ℝ => ((τ (kcurve ε X t) : unitary (V →L[ℂ] V)) : V →L[ℂ] V)) 0
 
 /- English proof (translation)
-Establish `hγk` using `curve_eq_kcurve ε hX γ hγ`. Substitute `hγk` using the available equality. Take `⟨hc, -, hmul⟩` from `kcurve_spec ε hX`. Use `set φ : ℝ → V →L[ℂ] V := fun t => ((τ (kcurve ε X t) : unitary (V →L[ℂ] V)) : V →L[ℂ] V) with hφ`. Establish `h0k : kcurve ε X 0 = 1`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `onep_KG_ext` to reduce the goal to its premises. Rewrite using `[(kcurve_spec ε hX).2.1]`. Use `show NormedSpace.exp (((0 : ℝ) : ℂ) • X) = (1 : Matrix (Fin n) (Fin n) ℂ)`. Simplify using the standard rewrite rules. Establish `hφc : Continuous φ` using `continuous_subtype_val.comp (hcont.comp hc)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hφ0 : φ 0 = 1`. Simplify using `only [hφ, h0k, map_one]`. Both sides reduce to the same expression. Establish `hφadd : ∀ s t, φ (s + t) = φ s * φ t`. Introduce `s t`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [hφ, hmul, map_mul]`. Both sides reduce to the same expression. Conclude with `(differentiableAt_oneParam φ hφc hφ0 hφadd).hasDerivAt`.
+A detailed English derivation is pending.
 -/
 theorem derOp_hasDeriv [FiniteDimensional ℂ V] (ε : Fin n → Bool) (τ : KG ε →* unitary (V →L[ℂ] V))
     (hcont : Continuous τ) (X : Matrix (Fin n) (Fin n) ℂ) (hX : inK ε X) (γ : ℝ → KG ε)

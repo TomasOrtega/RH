@@ -20,9 +20,9 @@ local notation "ρ" => residue 𝒪
 omit [DecidableEq (ResidueField 𝒪)] in
 
 /- English proof (translation)
-Introduce `hS`. Establish `hn : (curveK K W).Nonsingular X₂ ((curveK K W).negY X₂ Y₂)` using `(WeierstrassCurve.Affine.nonsingular_neg _ _).2 h₂`. Take `⟨x₃, y₃, h₃, e, -, -⟩` from `add_of_notMem_range' K W hn hX₂ h`. Establish `hneg : -(WeierstrassCurve.Affine.Point.some _ _ h₂) = WeierstrassCurve.Affine.Point.some _ _ hn` using `WeierstrassCurve.Affine.Point.neg_some h₂`. Establish `e' : WeierstrassCurve.Affine.Point.some _ _ h₁ = WeierstrassCurve.Affine.Point.some _ _ h₃`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e, ← hS, ← hneg]`. Normalize the expressions using the abelian group laws. Rewrite `e'` using `[WeierstrassCurve.Affine.Point.some.injEq]`. Conclude with `hX₁ ⟨x₃, e'.1.symm⟩`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_notMem_of_notMem_range {X₁ Y₁ X₂ Y₂ : K} (h₁ : (curveK K W).Nonsingular X₁ Y₁)
     (hX₁ : X₁ ∉ Set.range ι) (h₂ : (curveK K W).Nonsingular X₂ Y₂) (hX₂ : X₂ ∉ Set.range ι)
@@ -42,27 +42,27 @@ theorem add_notMem_of_notMem_range {X₁ Y₁ X₂ Y₂ : K} (h₁ : (curveK K W
   exact hX₁ ⟨x₃, e'.1.symm⟩
 
 /- English proof (translation)
-Break down `point_cases K W P with rfl | ⟨X₁, Y₁, h₁, rfl, hX₁⟩ | ⟨x₁, y₁, h₁, rfl⟩` into its components or cases. Rewrite using `[zero_add, reducePoint_zero, zero_add]`. Conclude with `⟨hQ, rfl⟩`. Break down `point_cases K W Q with rfl | ⟨X₂, Y₂, h₂, rfl, hX₂⟩ | ⟨x₂, y₂, h₂, rfl⟩` into its components or cases. Rewrite using `[add_zero, reducePoint_zero, add_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hP, rfl⟩`. Rewrite using `[reducePoint_some_notMem K W h₁ hX₁, reducePoint_some_notMem K W h₂ hX₂, add_zero]`. Break down `point_cases K W (WeierstrassCurve.Affine.Point.some _ _ h₁ + WeierstrassCurve.Affine.Point.some _ _ h₂) with h0 | ⟨X, Y, h, hS, hX⟩ | ⟨x, y, h, hS⟩` into its components or cases. Rewrite using `[h0]`. Conclude with `⟨zero_mem_E0Set K W, rfl⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hS]`. Conclude with `⟨mem_E0Set_some_notMem K W h hX, reducePoint_some_notMem K W h hX⟩`. Conclude with `absurd hS (add_notMem_of_notMem_range K W h₁ hX₁ h₂ hX₂ h)`. Establish `n₂` using `hQ x₂ y₂ h₂ rfl`. Take `⟨x₃, y₃, h₃, e, hx, hy⟩` from `add_of_notMem_range' K W h₁ hX₁ h₂`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem_and_reduce_of_exists K W ⟨x₃, y₃, h₃, hx ▸ hy ▸ n₂, e, ?_⟩` and prove the remaining obligations. Rewrite using `[reducePoint_some_notMem K W h₁ hX₁, zero_add, reducePoint_some_integral K W h₂ n₂, WeierstrassCurve.Affine.Point.some.injEq]`. Conclude with `⟨hx.symm, hy.symm⟩`. Establish `n₁` using `hP x₁ y₁ h₁ rfl`. Break down `point_cases K W Q with rfl | ⟨X₂, Y₂, h₂, rfl, hX₂⟩ | ⟨x₂, y₂, h₂, rfl⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_zero, reducePoint_zero, add_zero]`. Conclude with `⟨hP, rfl⟩`. Take `⟨x₃, y₃, h₃, e, hx, hy⟩` from `add_of_notMem_range' K W h₂ hX₂ h₁`. Rewrite `e` using `[add_comm]`. Use `add_mem_and_reduce_of_exists K W ⟨x₃, y₃, h₃, hx ▸ hy ▸ n₁, e, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[reducePoint_some_notMem K W h₂ hX₂, add_zero, reducePoint_some_integral K W h₁ n₁, WeierstrassCurve.Affine.Point.some.injEq]`. Conclude with `⟨hx.symm, hy.symm⟩`. Establish `n₂` using `hQ x₂ y₂ h₂ rfl`. Rewrite using `[reducePoint_some_integral K W h₁ n₁, reducePoint_some_integral K W h₂ n₂]`. Distinguish the cases in `hx : ρ x₁ = ρ x₂`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy : ρ y₁ = (curveRed W).negY (ρ x₂) (ρ y₂)`. Rewrite using `[WeierstrassCurve.Affine.Point.add_of_Y_eq hx hy]`. Break down `add_of_residue_neg K W h₁ h₂ n₁ n₂ hx hy with h0 | ⟨X, Y, h, hS, hX⟩` into its components or cases. Rewrite using `[h0]`. Conclude with `⟨zero_mem_E0Set K W, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS]`. Conclude with `⟨mem_E0Set_some_notMem K W h hX, reducePoint_some_notMem K W h hX⟩`. Establish `hy' : ρ y₁ = ρ y₂`. Break down `WeierstrassCurve.Affine.Y_eq_of_X_eq n₁.1 n₂.1 hx with h | h` into its components or cases. Conclude with `h`.
+Supply the required witnesses or components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd h hy`. Establish `hD : ρ (y₁ + y₂ + W.a₁ * x₁ + W.a₃) ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises. Rewrite `h0` using `[map_add, map_add, map_add, map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Simplify using `only [WeierstrassCurve.Affine.negY, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₃, ← hx]`. Take the linear combination `h0`. Take `⟨x₃, y₃, h₃, n₃, e, e'⟩` from `add_of_residue_eq K W h₁ h₂ n₁ n₂ hx hy' hD`. Rewrite using `[e, e', reducePoint_some_integral K W h₃ n₃]`. Conclude with `⟨mem_E0Set_some_integral K W h₃ n₃, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨x₃, y₃, h₃, n₃, e, e'⟩` from `add_of_residue_X_ne K W h₁ h₂ n₁ n₂ hx`. Rewrite using `[e, e', reducePoint_some_integral K W h₃ n₃]`. Conclude with `⟨mem_E0Set_some_integral K W h₃ n₃, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem add_mem_E0Set_and_reducePoint_add {P Q : (curveK K W).Point} (hP : P ∈ E0Set K W)
     (hQ : Q ∈ E0Set K W) :
@@ -124,7 +124,7 @@ def E0Subgroup : AddSubgroup (curveK K W).Point where
   neg_mem' hP := (neg_mem_and_reduce K W hP).1
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_E0Subgroup_iff (P : (curveK K W).Point) : P ∈ E0Subgroup K W ↔ P ∈ E0Set K W :=
   Iff.rfl

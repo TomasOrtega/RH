@@ -24,7 +24,7 @@ structure BrT : Prop where
 variable {Fm}
 
 /- English proof (translation)
-The claim follows from `((DIV.Ev.of_ge (settingF Fm hT hDl)).and (DIV.Ev.of_ge hS)).imp fun x _ i ⟨hs, hp⟩ u hd => absurd (hp u _ ((Fm.D x i).mem u).A.T_prime hd) (not_le.mpr (hs u).1)`.
+A detailed English derivation is pending.
 -/
 theorem admissible_dgamma_tuples (hT : TuSize Fm) (hDl : J.DlSize Fm) (hS : DGamSmooth Fm) :
     DIV.Ev Fm fun x _ i => WeightDegreeSizes.LevelPrimeCoprimeStabiliser (Fm.D x i) :=
@@ -32,9 +32,9 @@ theorem admissible_dgamma_tuples (hT : TuSize Fm) (hDl : J.DlSize Fm) (hS : DGam
     absurd (hp u _ ((Fm.D x i).mem u).A.T_prime hd) (not_le.mpr (hs u).1)
 
 /- English proof (translation)
-Introduce `u w hw hVV`. Establish `hc : G.Cand D L K (D.what₂.places.resChar w)`. Assume the negation of the conclusion as `hn`. Apply `hVV` to reduce the goal to its premises. Unfold `G.VV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg (fun h => hn h.1)]`. Conclude with `gIdx_of_cand P K h3 u _ hc hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem servedModel_of_params {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) (X : G.Inst D L) (K : G.Consts)
     (h3 : 3 ≤ L.sc.x ^ (L.sc.ez / 5)) : WeightDegreeSizes.ServedHasModel X K := by
@@ -47,7 +47,7 @@ theorem servedModel_of_params {D : D7} {L : SizeData₂ D} (P : ParameterChoice'
   exact gIdx_of_cand P K h3 u _ hc hw
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(3 : ℝ) ^ (5 / Fm.ez), fun x h3 h1 i => servedModel_of_params (Fm.params x h1 i) _ _ (by have hez : 0 < Fm.ez := by rw [← Fm.L_ez x i]; exact (Fm.L x i).sc.ez_pos rw [Fm.L_x x i h1, Fm.L_ez x i] calc (3 : ℝ) = ((3 : ℝ) ^ (5 / Fm.ez)) ^ (Fm.ez / 5) := by rw [← Real.rpow_mul (by n …`.
+Supply the required witnesses or components.
 -/
 theorem servedF (he : 0 < eps) : DIV.Ev Fm fun x _ i => WeightDegreeSizes.ServedHasModel (Fm.Gx x i) Fm.GK :=
   ⟨(3 : ℝ) ^ (5 / Fm.ez), fun x h3 h1 i => servedModel_of_params (Fm.params x h1 i) _ _ (by
@@ -58,7 +58,7 @@ theorem servedF (he : 0 < eps) : DIV.Ev Fm fun x _ i => WeightDegreeSizes.Served
       _ ≤ x ^ (Fm.ez / 5) := Real.rpow_le_rpow (by positivity) h3 (by positivity))⟩
 
 /- English proof (translation)
-Establish `p` using `DIV.Ev.of_ge (level_prime_items_large_scale Fm hT hDl h10)`. Conclude with `(p.and (B.t5Tw.and (B.tg.and ((admissible_dgamma_tuples hT hDl hS).and (servedF he))))).imp fun x hx i ⟨p, t5, tg, dg, sv⟩ => ⟨J.levelColumn_of_sharpBound (fun u => (p u).2.2.2) t5, J.sizeData_at_level_primes_of_defs (Fm.params x hx i) (Fm.ex x hx i).fdef (Fm.ex x hx i).err.edef …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem familyLevelPrimeInputs_of_sizes {crystallineComparison : ℝ} (he : 0 < eps) (hT : TuSize Fm) (hDl : J.DlSize Fm) (hS : DGamSmooth Fm) (h10 : LevelPrimeItems Fm crystallineComparison) (B : BrT Fm) :
     WeightDegreeSizes.FamilyLevelPrimeInputs Fm := by
@@ -68,14 +68,14 @@ theorem familyLevelPrimeInputs_of_sizes {crystallineComparison : ℝ} (he : 0 < 
       J.sizeData_at_level_primes_of_defs (Fm.params x hx i) (Fm.ex x hx i).fdef (Fm.ex x hx i).err.edef tg, dg, sv⟩
 
 /- English proof (translation)
-The claim follows from `(DIV.Ev.of_ge (level_prime_items_large_scale Fm hT hDl h10)).imp fun _ _ _ p u => (p u).2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem integrality_last_map {crystallineComparison : ℝ} (hT : TuSize Fm) (hDl : J.DlSize Fm) (h10 : LevelPrimeItems Fm crystallineComparison) :
     DIV.Ev Fm fun x _ i => WeightDegreeSizes.MemberChainIntegral (Fm.D x i) :=
   (DIV.Ev.of_ge (level_prime_items_large_scale Fm hT hDl h10)).imp fun _ _ _ p u => (p u).2.2.1
 
 /- English proof (translation)
-Take `⟨x0, hk⟩` from `kRatE_of hLL`. Establish `k : DIV.Ev Fm fun x _ i => StandardLatticesGL3.kRat (Fm.D x i)` using `⟨x0, fun x hx h1 i => hk x hx h1 i⟩`. Conclude with `((DIV.Ev.of_ge (level_prime_items_large_scale Fm hT hDl h10)).and k).imp fun _ _ _ ⟨p, k⟩ => J.kernels_rational_over_coefficients _ k (fun u => (p u).2.2.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kernels_rational_over_field {crystallineComparison : ℝ} (hT : TuSize Fm) (hDl : J.DlSize Fm) (h10 : LevelPrimeItems Fm crystallineComparison) (hLL : LLKerE Fm) :
     DIV.Ev Fm fun x _ i => LocalQuadraticParts.KernelRationality (Fm.D x i) := by
@@ -84,20 +84,20 @@ theorem kernels_rational_over_field {crystallineComparison : ℝ} (hT : TuSize F
   exact ((DIV.Ev.of_ge (level_prime_items_large_scale Fm hT hDl h10)).and k).imp fun _ _ _ ⟨p, k⟩ => J.kernels_rational_over_coefficients _ k (fun u => (p u).2.2.1)
 
 /- English proof (translation)
-Introduce `x hx i` and use `J.pairing_integrality_both_sides _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stmtPairF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), WeightDegreeSizes.PairingFromIntegrality (Fm.D x i) (Fm.X x i) (Fm.ex x hx i).tw :=
   fun x hx i => J.pairing_integrality_both_sides _ _
 
 /- English proof (translation)
-Unfold `DIV.Ev`. Use `⟨0, fun x _ hx i => J.gains_losses_eq_defined (Fm.Gx x i) Fm.GK _ _ (Fm.fills x hx i) (Fm.ex x hx i).err.edef⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem vanishing_above_threshold : DIV.Ev Fm fun x _ i => LocalQuadraticParts.ZeroGainAbove (Fm.L x i) := by
   unfold DIV.Ev
   refine ⟨0, fun x _ hx i => J.gains_losses_eq_defined (Fm.Gx x i) Fm.GK _ _ (Fm.fills x hx i) (Fm.ex x hx i).err.edef⟩
 
 /- English proof (translation)
-Take `⟨C, x0, h⟩` from `WeightDegreeSizes.secondComplement_family_of_large Fm hc h`. Conclude with `⟨C, x0, fun x hx h1 i => h x hx h1 i⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem admissible_complement_two (hc : Fm.cX.err.Large) (h : WeightDegreeSizes.FamilySecondComplementInputs Fm) :
     ∃ C, DIV.Ev Fm fun x _ i => LocalQuadraticParts.adm11 (Fm.D x i) (Fm.L x i) C := by

@@ -17,11 +17,11 @@ open scoped Classical
 namespace GlobalTheory.CovTest
 
 /- English proof (translation)
-Introduce `k _ B Y _ _ q p D hB hY π w ι _ E r h H fl hfl m c hc Φ hΦ`. Take `⟨Ψ, hΨ⟩` from `((HP.p4.arExists k Y p D hY).2 ((Σ a, Fin (r a)) ⊕ (Σ a, Fin (r a))) (Sum.elim (fun z : Σ a, Fin (r a) => VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w)) (fun z : Σ a, Fin (r a) => (VMetric.grLB (m z.1) z.2 (H z.1)).pull π w))).1`. Use `choose s hs using fun a => (hc a).2`. Rewrite using `[GlobalTheory.T.flag_bundle_section_lifts_metric HP k B Y q p D hB hY π w ι E r h H fl hfl m (fun a => (hc a).1) Φ hΦ Ψ hΨ, GlobalTheory.T.flag_bundle_pullback_metric_flags_compat HP k B Y q p D hB hY π w ι E r h H fl hfl m (fun z => s z.1 z.2) (fun z => (hs z.1).1 z.2) Ψ hΨ]`. Establish `e : 2 * ∑ a, c a = ∑ a, ∑ i, s a i - ∑ a, (h a).flagBc (m a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[(hs a).2, ← Finset.sum_div]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Fintype.sum_sigma]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem powerSum_vandermonde_of_regular (HP : Hypotheses2) : (∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (D : ℕ), IsRegSurf q → IsArithVar p D → ∀ (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (h : ∀ a, VMetric q (E a) (r a)) (H : ∀ a, (h a).IsCInf) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl → ∀ (m : ∀ a, Vert.Flag (E a) (r a)) (c : ι → ℝ), (∀ a, VMetric.IsFlagCh2 (H a) (m a) (c a)) → ∀ Φ : MvPolynomial (Σ a, Fin (r a)) ℝ →ₗ[ℝ] ℝ, IsArFun (fun z : Σ a, Fin (r a) => VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w)) D Φ → Φ ((∑ z : Σ a, Fin (r a), MvPolynomial.X z ^ 2) * (∏ a, ∏ i : Fin (r a), ∏ i' ∈ Finset.Ioi i, (MvPolynomial.X (⟨a, i'⟩ : Σ a, Fin (r a)) - MvPolynomial.X ⟨a, i⟩))) = (∏ a, ((r a).factorial : ℝ)) * (2 * ∑ a, c a)) := by
   intro k _ B Y _ _ q p D hB hY π w ι _ E r h H fl hfl m c hc Φ hΦ
@@ -40,7 +40,7 @@ theorem powerSum_vandermonde_of_regular (HP : Hypotheses2) : (∀ (k : Type) [Co
   ring
 
 /- English proof (translation)
-Introduce `HP HA HR` and use `GlobalTheory.T.flag_bundle_exists_arithmetic_variety HP HA HR (powerSum_vandermonde_of_regular HP)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem powerSum_vandermonde : Hypotheses2 → ArCalc → RegularAlteration → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (D : ℕ), IsArithVar q 1 → IsArithVar p D → ∀ (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (h : ∀ a, VMetric q (E a) (r a)) (H : ∀ a, (h a).IsCInf) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl → ∀ c : ι → ℝ, (∀ a, (h a).IsCh2Deg (c a)) → ∀ Φ : MvPolynomial (Σ a, Fin (r a)) ℝ →ₗ[ℝ] ℝ, IsArFun (fun z : Σ a, Fin (r a) => VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w)) D Φ → Φ ((∑ z : Σ a, Fin (r a), MvPolynomial.X z ^ 2) * (∏ a, ∏ i : Fin (r a), ∏ i' ∈ Finset.Ioi i, (MvPolynomial.X (⟨a, i'⟩ : Σ a, Fin (r a)) - MvPolynomial.X ⟨a, i⟩))) = (∏ a, ((r a).factorial : ℝ)) * (2 * ∑ a, c a) :=
   fun HP HA HR => GlobalTheory.T.flag_bundle_exists_arithmetic_variety HP HA HR (powerSum_vandermonde_of_regular HP)

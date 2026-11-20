@@ -2,17 +2,15 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnaly
 
 open MeasureTheory in
 /- English proof (translation)
-Introduce `_ hE G _ _ _ _ _ _ _ _ T _ _ _ _ _ _ _ _ μ j ν hP X _ m _ F hF hinv ρ hρ hfin`. Use `haveI : μ.IsHaarMeasure := hP.1.1`. Establish `hρm : Measurable (fun x => ((ρ x).toReal : ℂ))` using `Complex.measurable_ofReal.comp hρ.1.ennreal_toReal`. Establish `hH : Measurable (Function.uncurry fun (a : X) (x : G) => F a x * ((ρ x).toReal : ℂ))` using `hF.mul (hρm.comp measurable_snd)`. Establish `hint : Integrable (Function.uncurry fun (a : X) (x : G) => F a x * ((ρ x).toReal : ℂ)) (m.prod μ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hH.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Unfold `HasFiniteIntegral`. Rewrite using `[lintegral_prod _ hH.enorm.aemeasurable]`. Use `lt_of_le_of_lt ?_ (lt_top_iff_ne_top.2 hfin)` and prove the remaining obligations. Use `lintegral_mono fun a => lintegral_mono fun x => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.uncurry, enorm_mul]`. Use `gcongr`. Rewrite using `[← ofReal_norm_eq_enorm, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg ENNReal.toReal_nonneg]`. Conclude with `ENNReal.ofReal_toReal_le`. Establish `hGm : Measurable (fun g => ∫ a, F a g ∂m)` using `(hF.stronglyMeasurable.integral_prod_left).measurable`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hGi : ∀ t g, (fun g => ∫ a, F a g ∂m) (j t * g) = (fun g => ∫ a, F a g ∂m) g`. Introduce `t g`. Simplify using `only [hinv]`. Take `⟨h1, -, h3⟩` from `hE G T μ j ν hP _ hGm hGi ρ hρ`. Establish `hmul : ∀ x, (∫ a, F a x ∂m) * ((ρ x).toReal : ℂ) = ∫ a, F a x * ((ρ x).toReal : ℂ) ∂m` using `fun x => (integral_mul_const _ _).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h1.2 ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hmul]`. Conclude with `hint.integral_prod_right`. Rewrite using `[h3]`. Simplify using `only [hmul]`.
-
-Rewrite using `[← integral_integral_swap hint]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Conclude with `((hE G T μ j ν hP (F a) (hF.of_uncurry_left) (hinv a) ρ hρ).2.2).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G.quotFub_of :
     UpperTheory.ConvolutionTheory.G.NormEx → UpperTheory.ConvolutionTheory.G.QuotEq → UpperTheory.ConvolutionTheory.G.QuotFub := by

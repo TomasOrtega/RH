@@ -9,7 +9,7 @@ open GlobalTheory.SqZeroPt GlobalTheory.PDivGroup GlobalTheory.DeRham
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SqZeroPt.eq_of_Phi_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSqZeroPointEqOfCotangentFormEq.lean&line=175#L175)
 -/

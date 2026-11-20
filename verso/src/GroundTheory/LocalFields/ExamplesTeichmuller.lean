@@ -17,7 +17,7 @@ instance charP_residueField : CharP 𝓀[K] p :=
     rw [← map_natCast (residue 𝒪[K]), CharP.cast_eq_zero, map_zero])
 
 /- English proof (translation)
-Set `` to `Fintype.ofFinite 𝓀[K]`. Take `⟨n, -, h⟩` from `FiniteField.card 𝓀[K] p`. Conclude with `⟨n, n.pos, by rw [Nat.card_eq_fintype_card, h]⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_card_residueField_eq : ∃ n : ℕ, 0 < n ∧ Nat.card 𝓀[K] = p ^ n := by
   let := Fintype.ofFinite 𝓀[K]
@@ -27,25 +27,25 @@ theorem exists_card_residueField_eq : ∃ n : ℕ, 0 < n ∧ Nat.card 𝓀[K] = 
 noncomputable def residueExponent : ℕ := (exists_card_residueField_eq K p).choose
 
 /- English proof (translation)
-The claim follows from `(exists_card_residueField_eq K p).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem residueExponent_pos : 0 < residueExponent K p :=
   (exists_card_residueField_eq K p).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_card_residueField_eq K p).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem card_residueField : Nat.card 𝓀[K] = p ^ residueExponent K p :=
   (exists_card_residueField_eq K p).choose_spec.2
 
 /- English proof (translation)
-The claim follows from `Nat.one_lt_pow (residueExponent_pos K p).ne' hp.out.one_lt`.
+A detailed English derivation is pending.
 -/
 theorem one_lt_card_residueField : 1 < p ^ residueExponent K p :=
   Nat.one_lt_pow (residueExponent_pos K p).ne' hp.out.one_lt
 
 /- English proof (translation)
-Set `` to `Fintype.ofFinite 𝓀[K]`. Rewrite using `[← card_residueField, Nat.card_eq_fintype_card]`. Conclude with `FiniteField.pow_card a`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_card_residueField (a : 𝓀[K]) : a ^ p ^ residueExponent K p = a := by
   let := Fintype.ofFinite 𝓀[K]
@@ -56,15 +56,15 @@ noncomputable def teichmullerSubring : Subring 𝒪[K] :=
   (iterateFrobenius 𝒪[K] p (residueExponent K p)).eqLocus (RingHom.id _)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_teichmullerSubring {x : 𝒪[K]} :
     x ∈ teichmullerSubring K p ↔ x ^ p ^ residueExponent K p = x := Iff.rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hv0 : 0 < valuation K (x : K)`. Rewrite using `[zero_lt_iff, ne_eq, map_eq_zero]`. Conclude with `fun h => hne (Subtype.ext h)`. Establish `hv1 : valuation K (x : K) < 1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Rewrite `h0` using `[residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `(Valuation.Integer.not_isUnit_iff_valuation_lt_one).mp h0`. Establish `h` using `pow_lt_self_of_lt_one₀ hv0 hv1 (one_lt_card_residueField K p)`. Rewrite `h` using `[← map_pow, ← Subring.coe_pow, (mem_teichmullerSubring K p).mp hx]`. Conclude with `lt_irrefl _ h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem_teichmullerSubring {x : 𝒪[K]} (hx : x ∈ teichmullerSubring K p)
     (h0 : residue 𝒪[K] x = 0) : x = 0 := by
@@ -80,15 +80,13 @@ theorem eq_zero_of_mem_teichmullerSubring {x : 𝒪[K]} (hx : x ∈ teichmullerS
   exact lt_irrefl _ h
 
 /- English proof (translation)
-Set `` to `IsTopologicalAddGroup.rightUniformSpace K`. Use `isUniformAddGroup_of_addCommGroup (G := K)` as an intermediate fact. Use `set q := p ^ residueExponent K p with hqdef`. Establish `hq : 1 < q` using `one_lt_card_residueField K p`. Establish `hq0 : ((q : ℕ) : 𝒪[K]) = 0` using `(CharP.cast_eq_zero_iff 𝒪[K] p q).mpr (dvd_pow_self p (residueExponent_pos K p).ne')`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a₀, rfl⟩` from `residue_surjective a`. Use `set f : 𝒪[K][X] := X ^ q - X with hf`. Establish `hmonic : f.Monic` using `monic_X_pow_sub (by rw [degree_X]; exact_mod_cast hq)`. Establish `hroot : f.eval a₀ ∈ maximalIdeal 𝒪[K]`. Rewrite using `[← residue_eq_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[f, hqdef, pow_card_residueField]`. Establish `hder : IsUnit (Ideal.Quotient.mk (maximalIdeal 𝒪[K]) (f.derivative.eval a₀))`. Establish `: f.derivative.eval a₀ = -1`. Simplify using `[f, derivative_X_pow, hq0]`. Rewrite using `[this, map_neg, map_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isUnit_one.neg`. Take `⟨x, hx, hxa⟩` from `HenselianRing.is_henselian f hmonic a₀ hroot hder`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_teichmullerSubring]`. Simplify `hx` using `[f, IsRoot, sub_eq_zero]`.
-
-Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Conclude with `hxa`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_teichmullerSubring_residue_eq (a : 𝓀[K]) :
     ∃ x ∈ teichmullerSubring K p, residue 𝒪[K] x = a := by
@@ -128,7 +126,7 @@ noncomputable def teichmullerHom : 𝓀[K] →+* 𝒪[K] :=
   (teichmullerSubring K p).subtype.comp (teichmullerEquiv K p).symm.toRingHom
 
 /- English proof (translation)
-The claim follows from `(teichmullerEquiv K p).apply_symm_apply a`.
+A detailed English derivation is pending.
 -/
 theorem residue_teichmullerHom (a : 𝓀[K]) : residue 𝒪[K] (teichmullerHom K p a) = a :=
   (teichmullerEquiv K p).apply_symm_apply a

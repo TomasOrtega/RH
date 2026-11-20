@@ -13,7 +13,7 @@ open GlobalTheory.CuspRep.ParLaws
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {N : ℕ}
 
 /- English proof (translation)
-Unfold `diagU`. Use `erw [map_mul]`. Rewrite using `[Pi.mul_apply, map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagU_mul (p q : borel k (Fin N)) (i : Fin N) : diagU (p * q) i = diagU p i * diagU q i := by
   unfold diagU
@@ -21,11 +21,11 @@ theorem diagU_mul (p q : borel k (Fin N)) (i : Fin N) : diagU (p * q) i = diagU 
   rw [Pi.mul_apply, map_mul]
 
 /- English proof (translation)
-Take `⟨b', hb', w, hw, rfl⟩` from `iwasawa_blockTriangular k (Fin N) Fin.val x`. Establish `hb'' : b' ∈ borel k (Fin N)` using `(mem_borel _).2 hb'`. Establish `hbb : b * b' ∈ borel k (Fin N)` using `mul_mem hb hb''`. Establish `e1 : b * (b' * w) = (b * b') * w` using `(mul_assoc _ _ _).symm`. Rewrite using `[e1, h.1 _ _ hw, h.1 _ _ hw]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `t1` using `fun i => (val_diagU ⟨b, hb⟩ i).symm`. Establish `t2` using `fun i => (val_diagU ⟨b', hb''⟩ i).symm`. Establish `t3` using `fun i => (val_diagU ⟨b * b', hbb⟩ i).symm`. Rewrite using `[h.2 _ hb _ t1, h.2 _ hb'' _ t2, h.2 _ hbb _ t3, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : (⟨b * b', hbb⟩ : borel k (Fin N)) = ⟨b, hb⟩ * ⟨b', hb''⟩` using `rfl`. Rewrite using `[e2, diagU_mul, ord_mul, zpow_add₀ (hγ i)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem borelSph_mul_left {γ : Fin N → ℂ} {ψ : GL (Fin N) k → ℂ} (h : IsBorelSph k γ ψ) (hγ : ∀ i, γ i ≠ 0)
     {b : GL (Fin N) k} (hb : b ∈ borel k (Fin N)) (x : GL (Fin N) k) : ψ (b * x) = ψ b * ψ x := by
@@ -43,11 +43,9 @@ theorem borelSph_mul_left {γ : Fin N → ℂ} {ψ : GL (Fin N) k → ℂ} (h : 
   rw [e2, diagU_mul, ord_mul, zpow_add₀ (hγ i)]
 
 /- English proof (translation)
-Take `⟨κ, hκ, κ', hκ', e⟩` from `hR.1 g₂ h₂`. Take `⟨g, -, hu⟩` from `hR.2 κ hκ`. Establish `a2 : g₂⁻¹ * (κ * g₀) ∈ KO k (Fin N)`. Establish `: g₂⁻¹ * (κ * g₀) = κ'⁻¹` using `by rw [e]; group`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_mem hκ'`. Establish `a1 : g₁⁻¹ * (κ * g₀) ∈ KO k (Fin N)`. Establish `: g₁⁻¹ * (κ * g₀) = (g₁⁻¹ * g₂) * (g₂⁻¹ * (κ * g₀))` using `by group`. Rewrite using `[this]`. Conclude with `mul_mem h a2`.
-
-Rewrite using `[hu g₁ ⟨h₁, a1⟩, hu g₂ ⟨h₂, a2⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_isRepsK {g₀ : GL (Fin N) k} {R : Finset (GL (Fin N) k)} (hR : IsRepsK g₀ R)
     {g₁ g₂ : GL (Fin N) k} (h₁ : g₁ ∈ R) (h₂ : g₂ ∈ R) (h : g₁⁻¹ * g₂ ∈ KO k (Fin N)) : g₁ = g₂ := by
@@ -62,9 +60,9 @@ theorem eq_of_isRepsK {g₀ : GL (Fin N) k} {R : Finset (GL (Fin N) k)} (hR : Is
   rw [hu g₁ ⟨h₁, a1⟩, hu g₂ ⟨h₂, a2⟩]
 
 /- English proof (translation)
-Take `⟨κ₁, hκ₁, κ₁', hκ₁', e⟩` from `hR.1 g hg`. Take `⟨g', ⟨hg', hm⟩, -⟩` from `hR.2 (κ * κ₁) (mul_mem hκ hκ₁)`. Use `⟨g', hg', ?_⟩` and prove the remaining obligations. Establish `: g'⁻¹ * (κ * g) = (g'⁻¹ * (κ * κ₁ * g₀)) * κ₁'` using `by rw [e]; group`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem hm hκ₁'`.
+A detailed English derivation is pending.
 -/
 theorem exists_isRepsK {g₀ : GL (Fin N) k} {R : Finset (GL (Fin N) k)} (hR : IsRepsK g₀ R)
     {κ : GL (Fin N) k} (hκ : κ ∈ KO k (Fin N)) {g : GL (Fin N) k} (hg : g ∈ R) :
@@ -76,13 +74,11 @@ theorem exists_isRepsK {g₀ : GL (Fin N) k} {R : Finset (GL (Fin N) k)} (hR : I
   rw [this]; exact mul_mem hm hκ₁'
 
 /- English proof (translation)
-Use `choose f hf hfK using fun g (hg : g ∈ R) => exists_isRepsK hR hκ hg`. Use `Finset.sum_bij f hf (fun a ha b hb e => ?_) (fun c hc => ?_) (fun a ha => ?_)` and prove the remaining obligations. Establish `h1` using `hfK a ha`. Establish `h2` using `hfK b hb`. Rewrite `h1` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `eq_of_isRepsK hR ha hb` to reduce the goal to its premises. Establish `: a⁻¹ * b = ((f b hb)⁻¹ * (κ * a))⁻¹ * ((f b hb)⁻¹ * (κ * b))` using `by group`. Rewrite using `[this]`. Conclude with `mul_mem (inv_mem h1) h2`. Take `⟨a, ha, hm⟩` from `exists_isRepsK hR (inv_mem hκ) hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨a, ha, eq_of_isRepsK hR (hf a ha) hc ?_⟩` and prove the remaining obligations. Establish `: (f a ha)⁻¹ * c = ((f a ha)⁻¹ * (κ * a)) * (a⁻¹ * (κ⁻¹ * c))` using `by group`. Rewrite using `[this]`. Conclude with `mul_mem (hfK a ha) hm`. Establish `: κ * a = f a ha * ((f a ha)⁻¹ * (κ * a))` using `by group`.
-
-Rewrite using `[this, h.1 _ _ (hfK a ha)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_kappa_mul {γ : Fin N → ℂ} {ψ : GL (Fin N) k → ℂ} (h : IsBorelSph k γ ψ)
     {g₀ : GL (Fin N) k} {R : Finset (GL (Fin N) k)} (hR : IsRepsK g₀ R)
@@ -108,9 +104,9 @@ end GlobalTheory.ZonalSum
 open GlobalTheory.ZonalSum in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N γ ψ h hγ g₀ R hR m`. Take `⟨b, hb, κ, hκ, rfl⟩` from `iwasawa_blockTriangular k (Fin N) Fin.val m`. Establish `hb' : b ∈ borel k (Fin N)` using `(mem_borel _).2 hb`. Establish `e : ∀ g, ψ (b * κ * g) = ψ b * ψ (κ * g)` using `fun g => by`. Rewrite using `[mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `borelSph_mul_left h hγ hb' _`. Simplify using `only [e]`. Rewrite using `[← Finset.mul_sum, sum_kappa_mul h hR hκ, h.1 _ _ hκ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ZonalSum.sum_mul_eq : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (γ : Fin N → ℂ) (ψ : GL (Fin N) k → ℂ), IsBorelSph k γ ψ → (∀ i, γ i ≠ 0) → ∀ (g₀ : GL (Fin N) k) (R : Finset (GL (Fin N) k)), IsRepsK g₀ R → ∀ m : GL (Fin N) k, ∑ g ∈ R, ψ (m * g) = ψ m * ∑ g ∈ R, ψ g := by
   intro k _ _ _ _ N γ ψ h hγ g₀ R hR m

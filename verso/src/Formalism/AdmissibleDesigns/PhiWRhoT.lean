@@ -28,7 +28,7 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (hM : ∀ a b, Continuous fun g => KLat.M0 Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk g a b)
 
 /- English proof (translation)
-Use `show eK (D.nbr i _ hn) ((((epsU D.nd i ((Br.iota D.nbr i _ hn g : _) : GE D.nd) : (D.nd.O i)ˣ) : D.nd.O i) • ((KLat.matK (Dd.ρk 0 (uElt Dd.r Dd.χ ((Br.iota D.nbr i _ hn g : _) : GE D.nd)⁻¹)))ᵀ *ᵥ (v : {a // RepresentationBoundsCohomology.blk D.R a = 0} → FractionRing (D.nd.O i))) …`. Simplify using `only [Pi.smul_apply, Matrix.mulVec, dotProduct, Finset.smul_sum, map_sum]`. Use `(Equiv.sum_comp (H0.e0 (D := D)) _).symm.trans (Finset.sum_congr rfl fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.transpose_apply, KLat.matK, Matrix.map_apply, Algebra.smul_def, ← mul_assoc, ← map_mul, map_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem phiW_rhoT' (n : ℕ) (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i))
     (g : Br.G D.nbr i _ hn) (v : TrV (eK (D.nbr i _ hn)) (KLat.VT (O := D.nd.O i) (RepresentationBoundsCohomology.blk D.R) n)) (a : Fin D.R.r) :
@@ -49,15 +49,13 @@ theorem phiW_rhoT' (n : ℕ) (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l
 variable {i dc Dd hK hε hM} in
 
 /- English proof (translation)
-Use `⟨Font.phiW i dc n hn, fun g v => funext fun a => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[phiW_rhoT'] show _ = ∑ b, Br.loc D.nbr i _ hn (T2O D.nd i ρ π) g a b * Font.phiW i dc n hn v b`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Font.loc_apply]`. Use `show eK (D.nbr i _ hn) (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) (((epsU D.nd i ((Br.iota D.nbr i _ hn g : _) : GE D.nd) : (D.nd.O i)ˣ) : D.nd.O i) * Dd.ρk 0 (uElt Dd.r Dd.χ ((Br.iota D.nbr i _ hn g : _) : GE D.nd)⁻¹) (H0.e0 b) (H0.e0 a))) * _ = eK (D.nbr i _ hn) (algebraM …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rw [H0.unipotent_block_zero_entry hD hN]`. Rewrite using `[KRow.mem_latT]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, rfl⟩ j`. Take `⟨y, hy⟩` from `Submodule.mem_one.1 (m.2 _ (KLat.unit_mem_latT (H0.e0 (D := D) j)))`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(D.nbr i _ hn).eO y, ?_⟩` and prove the remaining obligations. Rewrite using `[heO_br i dc hn, hy]`. Use `show _ = eK (D.nbr i _ hn) ((m : {a // RepresentationBoundsCohomology.blk D.R a = 0} → FractionRing (D.nd.O i)) (H0.e0 j))`. Use `congr 1`. Use `show (fun k => if H0.e0 (D := D) j = k then (1 : FractionRing (D.nd.O i)) else 0) ⬝ᵥ (m : {a // RepresentationBoundsCohomology.blk D.R a = 0} → FractionRing (D.nd.O i)) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[dotProduct]`. Introduce `h choose z hz using h`. Use `⟨KLat.vD Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) (K.Aw i dc) hK hε hM n (fun b => (D.nbr i _ hn).eO.symm (z ((H0.e0 (D := D)).symm b))), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Apply `(eK (D.nbr i _ hn)).injective` to reduce the goal to its premises.
-
-Use `show eK (D.nbr i _ hn) (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) ((D.nbr i _ hn).eO.symm (z ((H0.e0 (D := D)).symm b)))) = eK (D.nbr i _ hn) (v b)`. Rewrite using `[← heO_br i dc hn, RingEquiv.apply_symm_apply, hz]`. Use `show eK (D.nbr i _ hn) (v (H0.e0 ((H0.e0 (D := D)).symm b))) = _`. Rewrite using `[Equiv.apply_symm_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowMat_at
     (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0
@@ -106,11 +104,9 @@ theorem rowMat_at
 variable {i dc Dd hK hε hM} in
 
 /- English proof (translation)
-Introduce `hn v`. Establish `hι : Continuous fun g : Br.G D.nbr i _ hn => ((Br.iota D.nbr i _ hn g : _) : GE D.nd)` using `continuous_subtype_val.comp (Br.iota_cont D.nbr i _ hn)`. Establish `hf : (fun g => repL (eK (D.nbr i _ hn)) (KLat.Dat Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) (K.Aw i dc) hK hε hM n).ρT' (Br.iota D.nbr i _ hn) g v) = fun g => (Font.phiW i dc n hn).symm (fun a => ∑ b, eK (D.nbr i _ hn) (algebraMap (D.nd.O i) (Fraction …`. Use function extensionality and compare the values at `g`. Apply `(Font.phiW i dc n hn).injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `a`. Conclude with `phiW_rhoT' i dc Dd hK hε hM n hn g v a`. Rewrite using `[hf]`. Use `(LinearMap.continuous_on_pi (Font.phiW i dc n hn).symm.toLinearMap).comp (continuous_pi fun a => continuous_finsetSum _ fun b _ => ((KOrb.eK_alg_cont i hn).comp ?_).mul continuous_const)` and prove the remaining obligations.
-
-Conclude with `(hε.comp hι).mul ((hM (H0.e0 b) (H0.e0 a)).comp (continuous_inv.comp hι))`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem orbC_dat (n : ℕ) :
     KHf.OrbC i dc (n := n)
@@ -149,7 +145,7 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
   (hc : TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r)
 
 /- English proof (translation)
-Introduce `n _ hn`. Conclude with `rowMat_at (hD := hD) (hN := hN) (n := n) (hn := hn) ..`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rowMat_S (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) :
     KRow.RowMat i dc (KLat.VT (O := D.nd.O i) (RepresentationBoundsCohomology.blk D.R)) (KLat.VT (O := D.nd.O i) (RepresentationBoundsCohomology.blk D.R))
@@ -158,7 +154,7 @@ theorem rowMat_S (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) :
   exact rowMat_at (hD := hD) (hN := hN) (n := n) (hn := hn) ..
 
 /- English proof (translation)
-Introduce `n _`. Conclude with `orbC_dat n`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orbC_S : ∀ n ∈ K.rowsN i dc, KHf.OrbC i dc (n := n) (St.DatS i r π dc g0 eB e₁ s Dd hD hc n).ρT' := by
   intro n _
@@ -185,7 +181,7 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
   (hrk : ((Dd.ρk 0 Dd.e₁).map (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)))).rank = 1)
 
 /- English proof (translation)
-Conclude with `rowMat_S i (Norm.rN i r ρ π) ρ π dc g0 eB e₁ s Dd hD hc (Norm.normAt_rN i r ρ π)`.
+A detailed English derivation is pending.
 -/
 theorem rowMat_SN :
     KRow.RowMat i dc (KLat.VT (O := D.nd.O i) (RepresentationBoundsCohomology.blk D.R)) (KLat.VT (O := D.nd.O i) (RepresentationBoundsCohomology.blk D.R))

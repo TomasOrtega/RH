@@ -22,7 +22,7 @@ section Gen
 variable {N : Type} [AddCommGroup N] [Module ℂ N] {C : Submodule ℂ N} {ip : N → N → ℂ}
 
 /- English proof (translation)
-The claim follows from `h.fd add x x' y := by simp only [h.add x x' y, mul_add] smul a x y := by simp only [h.smul a x y]; ring herm x y := by simp only [map_mul, Complex.conj_ofReal, h.herm x y] pos x hx := by simp only [Complex.re_ofReal_mul] exact mul_pos hs (h.pos x hx)`.
+A detailed English derivation is pending.
 -/
 theorem isHermPos_scale (h : IsHermPos C ip) {s : ℝ} (hs : 0 < s) :
     IsHermPos C (fun x y => (s : ℂ) * ip x y) where
@@ -35,15 +35,13 @@ theorem isHermPos_scale (h : IsHermPos C ip) {s : ℝ} (hs : 0 < s) :
     exact mul_pos hs (h.pos x hx)
 
 /- English proof (translation)
-Establish `hm : ∀ z : C.map (e : N →ₗ[ℂ] N'), e.symm (z : N') ∈ C`. Introduce `z`. Take `⟨y, hy, hyz⟩` from `Submodule.mem_map.mp z.2`. Rewrite using `[← hyz]`. Simplify using `using hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI := h.fd infer_instance`. Introduce `x x' y show ip (e.symm ((x : N') + x')) (e.symm y) = ip (e.symm x) (e.symm y) + ip (e.symm x') (e.symm y)`. Rewrite using `[map_add]`. Conclude with `h.add ⟨_, hm x⟩ ⟨_, hm x'⟩ ⟨_, hm y⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `s x y show ip (e.symm (s • (x : N'))) (e.symm y) = starRingEnd ℂ s * ip (e.symm x) (e.symm y)`. Rewrite using `[map_smul]`. Conclude with `h.smul s ⟨_, hm x⟩ ⟨_, hm y⟩`. Introduce `x y`. Conclude with `h.herm ⟨_, hm x⟩ ⟨_, hm y⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx`. Use `h.pos ⟨_, hm x⟩ ?_` and prove the remaining obligations. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Establish `h1 : e.symm (x : N') = 0` using `congrArg Subtype.val h0`. Simplify using `using h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsHermPos.map_equiv {N' : Type} [AddCommGroup N'] [Module ℂ N'] (h : IsHermPos C ip) (e : N ≃ₗ[ℂ] N') :
     IsHermPos (C.map (e : N →ₗ[ℂ] N')) (fun x y => ip (e.symm x) (e.symm y)) := by
@@ -88,7 +86,7 @@ def SmNonzero (M : DSModel V S) : Prop := ∀ τ, ∃ w : M.sm τ, w ≠ 0
 variable (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V))
 
 /- English proof (translation)
-Introduce `v v'`. Take `⟨i1, e1⟩` from `h v v'`. Take `⟨i2, e2⟩` from `h' v v'`. Simplify using `only [MultilinearMap.add_apply, Pi.add_apply, star_add, add_mul]`. Conclude with `⟨Integrable.add i1 i2, by rw [integral_add i1 i2, e1, e2]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem isMultiplicityInner_add_left {T T' T'' : MMap M} {a b : ℂ} (h : IsMultIP M μ 𝓕 T T'' a)
     (h' : IsMultIP M μ 𝓕 T' T'' b) : IsMultIP M μ 𝓕 (T + T') T'' (a + b) := by
@@ -99,9 +97,9 @@ theorem isMultiplicityInner_add_left {T T' T'' : MMap M} {a b : ℂ} (h : IsMult
   exact ⟨Integrable.add i1 i2, by rw [integral_add i1 i2, e1, e2]⟩
 
 /- English proof (translation)
-Introduce `v v'`. Take `⟨i1, e1⟩` from `h v v'`. Establish `hf : ∀ g, star ((s • T) v g) * T' v' g = starRingEnd ℂ s * (star (T v g) * T' v' g)`. Introduce `g`. Rewrite using `[MultilinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, star_mul', mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [hf]`. Conclude with `⟨Integrable.const_mul i1 _, by rw [integral_const_mul, e1, mul_assoc]⟩`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem isMultiplicityInner_smul_left {T T' : MMap M} {a : ℂ} (s : ℂ) (h : IsMultIP M μ 𝓕 T T' a) :
     IsMultIP M μ 𝓕 (s • T) T' (starRingEnd ℂ s * a) := by
@@ -115,11 +113,11 @@ theorem isMultiplicityInner_smul_left {T T' : MMap M} {a : ℂ} (s : ℂ) (h : I
   exact ⟨Integrable.const_mul i1 _, by rw [integral_const_mul, e1, mul_assoc]⟩
 
 /- English proof (translation)
-Introduce `v v'`. Take `⟨i1, e1⟩` from `h v' v`. Establish `hf : ∀ g, star (T' v g) * T v' g = starRingEnd ℂ (star (T v' g) * T' v g)`. Introduce `g`. Use `show _ = star (star (T v' g) * T' v g)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[star_mul', star_star, mul_comm]`. Simplify using `only [hf]`. Use `⟨((Complex.conjCLE : ℂ →L[ℝ] ℂ).integrable_comp i1).congr (ae_of_all _ fun g => ?_), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[integral_conj, e1, map_mul, map_prod]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Finset.prod_congr rfl fun τ _ => inner_conj_symm _ _`.
+A detailed English derivation is pending.
 -/
 theorem isMultiplicityInner_swap {T T' : MMap M} {a : ℂ} (h : IsMultIP M μ 𝓕 T T' a) :
     IsMultIP M μ 𝓕 T' T (starRingEnd ℂ a) := by
@@ -139,13 +137,13 @@ theorem isMultiplicityInner_swap {T T' : MMap M} {a : ℂ} (h : IsMultIP M μ �
 variable (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (J : Set (GA D V)) (χ : GA D V → ℂ)
 
 /- English proof (translation)
-Unfold `Mult at hT`. Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT`. Establish `hA` using `(show IsMultMap θ M J χ T from hT).aut v`. Conclude with `⟨hA.cont, hA.left⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components.
 
-Consider the case `zero`. Use `⟨?_, fun _ _ _ => rfl⟩` and prove the remaining obligations. Simplify using `only [MultilinearMap.zero_apply]`. Conclude with `continuous_const`. Consider the case `add T T' _ _ h1 h2`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun γ hγ g => ?_⟩` and prove the remaining obligations. Rewrite using `[MultilinearMap.add_apply]`. Conclude with `h1.1.add h2.1`. Simplify using `only [MultilinearMap.add_apply, Pi.add_apply, h1.2 γ hγ g, h2.2 γ hγ g]`. Consider the case `smul a T _ h1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, fun γ hγ g => ?_⟩` and prove the remaining obligations. Rewrite using `[MultilinearMap.smul_apply]`. Conclude with `h1.1.const_smul a`. Simplify using `only [MultilinearMap.smul_apply, Pi.smul_apply, h1.2 γ hγ g]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mult_cont_left {T : MMap M} (hT : T ∈ Mult θ M J χ) (v : M.Vec) :
     Continuous (T v) ∧ ∀ γ ∈ GQ V, ∀ g, T v (γ * g) = T v g := by
@@ -170,33 +168,29 @@ theorem mult_cont_left {T : MMap M} (hT : T ∈ Mult θ M J χ) (v : M.Vec) :
     · simp only [MultilinearMap.smul_apply, Pi.smul_apply, h1.2 γ hγ g]
 
 /- English proof (translation)
-Establish `hfd : FiniteDimensional ℂ (Mult θ M J χ)` using `hfin hθ hU`. Establish `huniq : ∀ (T T' : MMap M) (c c' : ℂ), IsMultIP M μ 𝓕 T T' c → IsMultIP M μ 𝓕 T T' c' → c = c'`. Introduce `T T' c c' h h'`. Establish `hne' : ∀ τ, ∃ w : M.sm τ, w ≠ 0` using `hne`. Use `choose w hw using hne'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : (∏ τ, ⟪((w τ : M.sm τ) : M.H τ), ((w τ : M.sm τ) : M.H τ)⟫_ℂ) ≠ 0`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `τ _`. Rewrite using `[inner_self_ne_zero]`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hw τ (Subtype.ext h0)`. Establish `e` using `(h w w).2`. Establish `e'` using `(h' w w).2`. Conclude with `mul_right_cancel₀ hp (e.symm.trans e')`. Establish `hval : ∀ (T T' : MMap M) (c : ℂ), IsMultIP M μ 𝓕 T T' c → ipM M μ 𝓕 T T' = c`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `T T' c h`. Establish `hex : ∃ c, IsMultIP M μ 𝓕 T T' c` using `⟨c, h⟩`. Unfold `ipM`. Rewrite using `[dif_pos hex]`. Conclude with `huniq _ _ _ _ hex.choose_spec h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hE : ∀ x y : Mult θ M J χ, ∃ c, IsMultIP M μ 𝓕 x y c` using `fun x y => hS hθ hH hF _ x.2 _ y.2`. Use `⟨hfd, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x x' y`. Take `⟨a, ha⟩` from `hE x y`. Take `⟨b, hb⟩` from `hE x' y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval _ _ _ ha, hval _ _ _ hb]`. Conclude with `hval _ _ _ (isMultiplicityInner_add_left M μ 𝓕 ha hb)`. Introduce `s x y`. Take `⟨a, ha⟩` from `hE x y`. Rewrite using `[hval _ _ _ ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hval _ _ _ (isMultiplicityInner_smul_left M μ 𝓕 s ha)`. Introduce `x y`. Take `⟨a, ha⟩` from `hE x y`. Rewrite using `[hval _ _ _ ha, hval _ _ _ (isMultiplicityInner_swap M μ 𝓕 ha)]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hE x x`. Rewrite using `[hval _ _ _ hc]`. Establish `hx' : (x : MMap M) ≠ 0` using `fun h0 => hx (Subtype.ext h0)`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, (x : MMap M) v ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `push_neg at hcon`. Conclude with `hx' (MultilinearMap.ext hcon)`. Take `⟨hi, he⟩` from `hc v v`. Establish `hcl` using `mult_cont_left M θ J χ x.2 v`. Establish `hI : IntegrableOn (fun g => ‖(x : MMap M) v g‖ ^ 2) 𝓕 μ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Integrable.norm hi).congr (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Simplify using `only [norm_mul, norm_star, sq]`. Establish `hpos` using `hP ((x : MMap M) v) hcl.1 hcl.2 hv hI`. Establish `hvne : ∀ τ, ((v τ : M.sm τ) : M.H τ) ≠ 0`. Introduce `τ h0`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Apply `hv` to reduce the goal to its premises. Conclude with `(x : MMap M).map_coord_zero τ (Subtype.ext h0)`. Establish `hL : ∫ g in 𝓕, star ((x : MMap M) v g) * (x : MMap M) v g ∂μ = ((∫ g in 𝓕, ‖(x : MMap M) v g‖ ^ 2 ∂μ : ℝ) : ℂ)`. Use `Eq.trans ?_ (integral_ofReal (𝕜 := ℂ) (μ := μ.restrict 𝓕) (f := fun g => ‖(x : MMap M) v g‖ ^ 2))` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[RCLike.ofReal_pow]`. Conclude with `RCLike.conj_mul _`. Establish `hR : (∏ τ, ⟪((v τ : M.sm τ) : M.H τ), ((v τ : M.sm τ) : M.H τ)⟫_ℂ) = ((∏ τ, ‖((v τ : M.sm τ) : M.H τ)‖ ^ 2 : ℝ) : ℂ)`. Use `push_cast`.
-
-Conclude with `Finset.prod_congr rfl fun τ _ => inner_self_eq_norm_sq_to_K _`. Establish `hRpos : 0 < ∏ τ, ‖((v τ : M.sm τ) : M.H τ)‖ ^ 2` using `Finset.prod_pos fun τ _ => pow_pos (norm_pos_iff.mpr (hvne τ)) 2`. Rewrite `he` using `[hL, hR]`. Establish `hc' : c = (((∫ g in 𝓕, ‖(x : MMap M) v g‖ ^ 2 ∂μ) / ∏ τ, ‖((v τ : M.sm τ) : M.H τ)‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_div, he, mul_div_assoc, div_self (by exact_mod_cast hRpos.ne'), mul_one]`.
-
-Rewrite using `[hc', Complex.ofReal_re]`. Conclude with `div_pos hpos hRpos`.
+A detailed English derivation is pending.
 -/
 theorem isHermPos_mult (hθ : IsInfFam θ) (hfin : HCFinite θ M J χ)
     (hU : ∃ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) ∧ ∀ k ∈ U, k ∈ GfC V → k ∈ J ∧ χ k = 1)
@@ -280,7 +274,7 @@ def ipMT' (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V))
   ipM M μ 𝓕 (PiTensorProduct.lift.symm x) (PiTensorProduct.lift.symm y)
 
 /- English proof (translation)
-The claim follows from `(isHermPos_mult M μ 𝓕 θ J χ hθ hfin hU hS hH hF hP hne).map_equiv PiTensorProduct.lift`.
+A detailed English derivation is pending.
 -/
 theorem isHermPos_multT (hθ : IsInfFam θ) (hfin : HCFinite θ M J χ)
     (hU : ∃ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) ∧ ∀ k ∈ U, k ∈ GfC V → k ∈ J ∧ χ k = 1)
@@ -289,9 +283,9 @@ theorem isHermPos_multT (hθ : IsInfFam θ) (hfin : HCFinite θ M J χ)
   (isHermPos_mult M μ 𝓕 θ J χ hθ hfin hU hS hH hF hP hne).map_equiv PiTensorProduct.lift
 
 /- English proof (translation)
-Establish `hs : (0 : ℝ) < ∏ τ, ((dimK _ _ (κ τ) : ℚ) : ℝ)` using `Finset.prod_pos fun τ _ => by exact_mod_cast hdim τ`. Establish `he : ipW M μ 𝓕 = fun x y => ((∏ τ, ((dimK _ _ (κ τ) : ℚ) : ℝ) : ℝ) : ℂ) * ipM M μ 𝓕 x y`. Use function extensionality and compare the values at `x y`. Simplify using `[ipW]`. Rewrite using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isHermPos_scale h hs`.
+A detailed English derivation is pending.
 -/
 theorem isHermPos_ipW {W : HSp D}
     {κ : ∀ τ : D.what₂.Tau, Fin (W.sig (tauE D τ)).1 ⊕ Fin (W.sig (tauE D τ)).2 → ℤ}

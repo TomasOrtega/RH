@@ -10,9 +10,9 @@ open IsLocalRing Polynomial
 namespace GlobalTheory.KeyOriginCut
 
 /- English proof (translation)
-Establish `h₁` using `GlobalTheory.T.strict_henselisation_prime_eq`. Establish `h₂` using `GlobalTheory.T.exists_noetherian_model_torsor_origin`. Establish `h₃` using `GlobalTheory.T.torsor_point_over_strictHenselisation_noetherianNormal`. Unfold `GlobalTheory.LocAcyc.KeyOrigin GlobalTheory.LocAcyc.KeyLocalWith GlobalTheory.LocAcyc.TorsorsTrivial`. Introduce `T O _ _ _ _ _ _ _ _ hT P _ φ hφ hsh hPm hS q hq hqu D _ _ hfin hproj hff act hbij`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨E, _, _, _, _, _, Q, _, hQ, j, hj, ψ, hψ, D₁, _, _, act₁, htors₁, hpull₁⟩` from `h₁ T O hT P φ hφ hsh hS q hq hqu D act ⟨hfin, hproj, hff, hbij⟩`. Take `⟨A, _, _, _, _, _, _, i, hi, hil, hqA, EA, _, _, _, _, _, QA, _, hQA, jA, hjA, ψA, hψA, DA, _, _, actA, htorsA, hpullA⟩` from `h₂ T O hT q hq hqu E Q hQ j hj ψ hψ D₁ act₁ htors₁`. Take `⟨σ, hσ⟩` from `h₃ T O hT P φ hφ hsh hS q hq hqu A i hi hil hqA EA QA hQA jA hjA ψA hψA DA actA htorsA`. Take `⟨σ₁, hσ₁⟩` from `hpullA σ hσ`. Conclude with `hpull₁ σ₁ hσ₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem keyOrigin : GlobalTheory.LocAcyc.KeyOrigin := by
   have h₁ := GlobalTheory.T.strict_henselisation_prime_eq

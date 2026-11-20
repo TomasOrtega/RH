@@ -16,30 +16,30 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {Φ : AE F E →+* FiniteAdeleRing (𝓞 E) E}
 
 /- English proof (translation)
-Rewrite using `[map_sub]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_sub (a b : AE F E) (Q : HeightOneSpectrum (𝓞 E)) : Φ (a - b) Q = Φ a Q - Φ b Q := by
   rw [map_sub]; rfl
 
 /- English proof (translation)
-Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_one (Q : HeightOneSpectrum (𝓞 E)) : Φ 1 Q = 1 := by rw [map_one]; rfl
 
 /- English proof (translation)
-Rewrite using `[hΦ.2.2.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_inc (hΦ : Comp Φ) (y : E) (Q : HeightOneSpectrum (𝓞 E)) :
     Φ (incA F E y) Q = algebraMap E (Q.adicCompletion E) y := by rw [hΦ.2.2.1]; rfl
 
 /- English proof (translation)
-Take `⟨ε, hε⟩` from `exists_placeIdem (F := F) (P.under (𝓞 F))`. Take `⟨h0, h1, h2⟩` from `place_comp (E := E) hΦ hε`. Establish `he'` using `delta_conj hΦ hσ he`. Use `⟨delta_idem hΦ he, ?_, _, ε, hε, ?_⟩` and prove the remaining obligations. Use `hΦ.ext' (by rw [RingHom.map_mul, he.1, zero_mul, RingHom.map_zero]) fun Q => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ev_mul, ev_zero]`. Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality. Rewrite using `[he'.2.2 Q (Ne.symm hc), mul_zero]`. Rewrite using `[he.2.2 Q hQ, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hΦ.ext' (by rw [RingHom.map_add, he.1, he'.1, add_zero, h0]) fun Q => ?_` and prove the remaining obligations. Rewrite using `[ev_add]`. Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality. Rewrite using `[he.2.1, he'.2.2 Q (Ne.symm hc), add_zero, h1 Q rfl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hQ' : Q = cP hσ P`. Substitute `hQ'` using the available equality. Rewrite using `[he.2.2 _ hQ, he'.2.1, zero_add, h1 _ (under_cP hσ P)]`. Rewrite using `[he.2.2 Q hQ, he'.2.2 Q hQ', add_zero, h2 Q fun h => (eq_or_eq_cP hσ h).elim hQ hQ']`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSplitIdem_of_delta (hσ : IsCMExt F E σ) (hΦ : Comp Φ) {P : HeightOneSpectrum (𝓞 E)}
     (hc : cP hσ P ≠ P) {e : AE F E} (he : IsDelta Φ P e) : IsSplitIdem σ e := by
@@ -64,11 +64,11 @@ theorem isSplitIdem_of_delta (hσ : IsCMExt F E σ) (hΦ : Comp Φ) {P : HeightO
       · rw [he.2.2 Q hQ, he'.2.2 Q hQ', add_zero, h2 Q fun h => (eq_or_eq_cP hσ h).elim hQ hQ']
 
 /- English proof (translation)
-Establish `hN' : (N : E) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Use `⟨h0, ⟨finPart F E (((x : AE F E) - 1) * incA F E (N : E)⁻¹), (hΦ.2.2.2.1 _).2 fun Q => ?_, ?_⟩, (hΦ.2.2.2.1 _).2 fun Q => ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, ev_mul, ev_sub, ev_one, ev_inc hΦ, map_inv₀, map_natCast, Valuation.map_mul, map_inv₀]`. Conclude with `mul_inv_le_one_of_le₀ (h Q).2 zero_le`. Establish `e : (N : AE F E) * incA F E (N : E)⁻¹ = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (incA F E), ← map_mul, mul_inv_cancel₀ hN', map_one]`. Establish `e2 : (x : AE F E) - 1 = N * (((x : AE F E) - 1) * incA F E (N : E)⁻¹)`. Take the linear combination `(1 - (x : AE F E)) * e`. Establish `e3` using `congrArg (finPart F E) e2`. Rewrite `e3` using `[RingHom.map_sub, RingHom.map_one, RingHom.map_mul, map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e : Φ x Q * Φ (x⁻¹ : (AE F E)ˣ) Q = 1` using `by rw [← ev_mul, Units.mul_inv, ev_one]`. Establish `e2` using `congrArg Valued.v e`. Rewrite `e2` using `[Valuation.map_mul, (h Q).1, one_mul, Valuation.map_one]`. Conclude with `e2.le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_modSet (hΦ : Comp Φ) {N : ℕ} (hN : 0 < N) (x : (AE F E)ˣ) (h0 : infPart F E (x : AE F E) = 1)
     (h : ∀ Q, Valued.v (Φ x Q) = 1 ∧ Valued.v (Φ x Q - 1) ≤ Valued.v (N : Q.adicCompletion E)) :
@@ -91,15 +91,15 @@ theorem mem_modSet (hΦ : Comp Φ) {N : ℕ} (hN : 0 < N) (x : (AE F E)ˣ) (h0 :
     exact e2.le
 
 /- English proof (translation)
-Proceed by induction on `B, hB using Set.Finite.induction_on with`. Consider the case `empty`. Conclude with `fun _ x h0 h => Subgroup.subset_closure (Or.inr (mem_modSet hΦ hN x h0 fun Q => h Q (Set.notMem_empty Q)))`. Consider the case `@insert P B _ _ ih`. Introduce `hB x h0 h`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨e, he⟩` from `exists_delta hΦ P`. Establish `hs` using `isSplitIdem_of_delta hσ hΦ (hB P (Set.mem_insert _ _)) he`. Establish `h1 : GlobalTheory.HeckeSplitAll.Fin.part hs.1 x ∈ grpHF σ N`. Use `Subgroup.subset_closure (Or.inl (Or.inr ⟨e, hs, ?_⟩))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(e + cA σ e) * (e * x + (1 - e) - 1) = e * x + (1 - e) - 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take the linear combination `((x : AE F E) - 1) * hs.1 + ((x : AE F E) - 1) * hs.2.1`. Establish `h2 : x * (GlobalTheory.HeckeSplitAll.Fin.part hs.1 x)⁻¹ ∈ grpHF σ N`. Use `ih (fun Q hQ => hB Q (Set.mem_insert_of_mem _ hQ)) _ ?_ fun Q hQ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.HeckeSplitAll.Fin.mul_part_inv, RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one, he.1, h0]`. Simplify using the standard rewrite rules.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.HeckeSplitAll.Fin.mul_part_inv, ev_add, ev_mul, ev_sub, ev_one]`. Distinguish the cases in `hQP : Q = P`. Substitute `hQP` using the available equality. Rewrite using `[he.2.1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[he.2.2 Q hQP, zero_add, sub_zero, one_mul]`. Conclude with `h Q fun h' => h'.elim hQP hQ`. Simplify using `using mul_mem h2 h1`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_grpH_of_good (hσ : IsCMExt F E σ) (hΦ : Comp Φ) {N : ℕ} (hN : 0 < N)
     {B : Set (HeightOneSpectrum (𝓞 E))} (hB : B.Finite) : (∀ P ∈ B, cP hσ P ≠ P) → ∀ x : (AE F E)ˣ,
@@ -132,11 +132,11 @@ theorem mem_grpH_of_good (hσ : IsCMExt F E σ) (hΦ : Comp Φ) {N : ℕ} (hN : 
     simpa using mul_mem h2 h1
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Establish `he1 : ∀ z, (e z).1 = infPart F E z` using `fun z => (he z).1`. Establish `he2 : ∀ z, (e z).2 = finPart F E z` using `fun z => (he z).2`. Take `⟨f, hf⟩` from `e.surjective (0, 1)`. Establish `hf0 : infPart F E f = 0` using `by rw [← he1, hf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf1 : finPart F E f = 1` using `by rw [← he2, hf]`. Establish `key : ∀ g, infPart F E g = 0 → g * f = g` using `fun g hg => e.injective (Prod.ext (by rw [he1, he1, RingHom.map_mul, hg, zero_mul]) (by rw [he2, he2, RingHom.map_mul, hf1, mul_one]))`. Use `⟨f, key f hf0, hf0, hf1, ?_⟩` and prove the remaining obligations. Take `⟨g, hg0, hg1⟩` from `hΦ.2.1 1`. Establish `h4` using `congrArg Φ (key g hg0)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h4` using `[map_mul, hg1, one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_fin_idem (hΦ : Comp Φ) :
     ∃ f : AE F E, f * f = f ∧ infPart F E f = 0 ∧ finPart F E f = 1 ∧ Φ f = 1 := by
@@ -154,9 +154,9 @@ theorem exists_fin_idem (hΦ : Comp Φ) :
   rwa [map_mul, hg1, one_mul] at h4
 
 /- English proof (translation)
-Take `⟨f, hf, hf0, hf1, hf2⟩` from `exists_fin_idem hΦ`. Establish `h3 : GlobalTheory.HeckeSplitAll.Fin.part hf x ∈ grpHF σ N`. Use `mem_grpH_of_good hσ hΦ hN hB hB1 _ (GlobalTheory.HeckeSplitAll.Fin.map_mix_zero _ hf0 _) fun Q hQ => ?_` and prove the remaining obligations. Establish `: Φ (GlobalTheory.HeckeSplitAll.Fin.part hf x : (AE F E)ˣ) = Φ x` using `(GlobalTheory.HeckeSplitAll.Fin.map_mix_one Φ hf2 _).1`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h Q hQ`. Use `⟨x * (GlobalTheory.HeckeSplitAll.Fin.part hf x)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.HeckeSplitAll.Fin.mul_part_inv]`. Conclude with `(GlobalTheory.HeckeSplitAll.Fin.map_mix_one _ hf1 _).2`. Rewrite using `[mul_inv, inv_inv, mul_inv_cancel_left]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_of_good (hσ : IsCMExt F E σ) (hΦ : Comp Φ) {N : ℕ} (hN : 0 < N)
     {B : Set (HeightOneSpectrum (𝓞 E))} (hB : B.Finite) (hB1 : ∀ P ∈ B, cP hσ P ≠ P) (x : (AE F E)ˣ)
@@ -175,9 +175,9 @@ theorem exists_of_good (hσ : IsCMExt F E σ) (hΦ : Comp Φ) {N : ℕ} (hN : 0 
   · rwa [mul_inv, inv_inv, mul_inv_cancel_left]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hs : Function.Surjective (algebraMap F E)` using `fun x => by`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (𝓞 E) x`. Establish `ha : σ (a : E) = a` using `congrArg (fun t : 𝓞 E => (t : E)) (h a)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : σ (b : E) = b` using `congrArg (fun t : 𝓞 E => (t : E)) (h b)`. Conclude with `exists_of_conj_eq hσ (by rw [map_div₀, ha, hb])`. Establish `h1 : Module.finrank F E = 1` using `Algebra.finrank_eq_one_iff_bijective_algebraMap.2 ⟨(algebraMap F E).injective, hs⟩`. Establish `h2` using `hσ.2.2.1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_not_fixed (hσ : IsCMExt F E σ) : ∃ δ : 𝓞 E, cO σ δ ≠ δ := by
   by_contra h
@@ -193,11 +193,11 @@ theorem exists_not_fixed (hσ : IsCMExt F E σ) : ∃ δ : 𝓞 E, cO σ δ ≠ 
   omega
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `exists_comp F E`. Take `⟨δ, hδ⟩` from `exists_not_fixed hσ`. Take `⟨m, hm, hm'⟩` from `GlobalTheory.HeckeSplitAll.Fin.exists_den (Φ x)`. Establish `hm0 : (m : E) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Establish `hj : ∀ y : E, y ≠ 0 → ∃ u ∈ grpHF σ N, (u : AE F E) = incA F E y` using `fun y hy => ⟨_, Subgroup.subset_closure (Or.inl (Or.inl ⟨Units.mk0 y hy, rfl⟩)), rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha, ha'⟩` from `hj _ hm0`. Establish `hx₁ : ∀ Q, Valued.v (Φ (a * x : (AE F E)ˣ) Q) ≤ 1` using `fun Q => by`. Rewrite using `[Units.val_mul, ha', ev_mul, ev_inc hΦ, map_natCast]`. Conclude with `hm' Q`. Take `⟨y, hy, B, hB, hB1, hB2⟩` from `GlobalTheory.HeckeSplitAll.Fin.approx_int ({ cO σ with invFun := cO σ, left_inv := fun t => cO_cO hσ t, right_inv := fun t => cO_cO hσ t } : 𝓞 E ≃+* 𝓞 E) (fun t => cO_cO hσ t) δ hδ N hN (Φ (a * x : (AE F E)ˣ)) (Φ ((a * x)⁻¹ : (AE F E)ˣ)) (by rw [← map_mul, Units.mul_inv, map_one] …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hb'⟩` from `hj _ (inv_ne_zero hy)`. Take `⟨z, hz, hz'⟩` from `exists_of_good hσ hΦ hN hB (fun P hP h => hB1 P hP fun t ht => (mem_cP hσ P t).1 (h.symm ▸ ht)) (a * x * b) fun Q hQ => by`. Rewrite using `[Units.val_mul, hb', ev_mul, ev_inc hΦ, map_inv₀]`. Conclude with `hB2 Q hQ`. Conclude with `⟨z, hz, GlobalTheory.HeckeSplitAll.Fin.mem_of_mul_mem ha hb hz'⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_part_one_idele_split_congruence_quotient (hσ : IsCMExt F E σ) {N : ℕ} (hN : 0 < N) (x : (AE F E)ˣ) :
     ∃ z : (AE F E)ˣ, finPart F E (z : AE F E) = 1 ∧ x * z⁻¹ ∈ grpHF σ N := by
@@ -228,7 +228,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ N hN x`. Conclude with `exists_finite_part_one_idele_split_congruence_quotient hσ hN x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_finPart_eq_one_mul_inv_mem : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (N : ℕ), 0 < N → ∀ x : (AF F ⊗[F] E)ˣ, ∃ z : (AF F ⊗[F] E)ˣ, finPartF F E (z : AF F ⊗[F] E) = 1 ∧ x * z⁻¹ ∈ GlobalTheory.HeckeSplitGen.grpHF σ N := by
   intro F E _ _ _ _ _ σ hσ N hN x

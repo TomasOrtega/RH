@@ -26,7 +26,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 include Ct in
 
 /- English proof (translation)
-Take `⟨⟨Bs⟩, hπ0, hΔπ, hR2, γ0, hu, hγN, hK, Fs, hFs, hF0, hne, aσ, haσ⟩` from `hyp`. Conclude with `framepf_data Ct T hι hT hs Pt c hprim h4 hR hs' h' M σ hM1 hM hK Bs hπ0 hΔπ hR2 γ0 hu hγN Fs hFs hF0 hne aσ (by rw [hl]; exact haσ) (hB Bs hπ0 hΔπ hR2 γ0 hu)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem framepf_data' [IsDomain O] (hι : Function.Injective (algebraMap O LL)) (hT : IsCrys PD T.ρ)
     (hs : W.s = 1) (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (c : ZMod n)
@@ -60,17 +60,17 @@ end Local
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hp2 : ((D.loc l).PD K).p ≠ 2` using `by rw [hpl]; exact hl`. Establish `hs : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Establish `hK : ((HW l).W K 1 LL hG).gamK = ((HW l).W K 1 LL hG).gam` using `((HW l).W K 1 LL hG).gamK_eq_one hs hp2`. Establish `hs'` using `ramification_quotient_pos l hl K LL hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : 4 * h' ≤ sK l K * MK l K h'`. Establish `hsR : (0 : ℝ) < (sK l K : ℝ)` using `by exact_mod_cast hs'`. Establish `hc : (4 * h' : ℝ) / (sK l K : ℝ) ≤ (MK l K h' : ℝ)` using `Nat.le_ceil _`. Rewrite `hc` using `[div_le_iff₀ hsR]`. Establish `h4 : ((4 * h' : ℕ) : ℝ) ≤ ((sK l K * MK l K h' : ℕ) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h4` after adjusting the coercions. Establish `hM1 : 1 ≤ MK l K h'`. Break down `Nat.eq_zero_or_pos (MK l K h') with h0 | h0` into its components or cases.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hM` using `[h0, mul_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `h0`. Establish `hprim : ∀ τ ζ, Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc HW hG c ζ τ → IsPrimitiveRoot ζ ((D.loc l).PD K).p`. Introduce `τ ζ hpt`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hpl]`. Conclude with `framepf_pt_prim D HW hG c ζ τ hpt`. Establish `hι : Function.Injective (algebraMap ↥(OL LL) ↥LL.1)` using `Subtype.val_injective`. Take `⟨u, huΔ, hφ⟩` from `framepf_φπ hR hs h' _ hM`. Take `⟨f, hfΔ, hf⟩` from `framepf_γπ hR`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, htΔ, ht⟩` from `framepf_γE hR hs ((HW l).W K 1 LL hG).gamK`. Take `⟨t', ht'Δ, ht'⟩` from `framepf_γE' hR hs ((HW l).W K 1 LL hG).gamK`. Establish `huE` using `framepf_E_unit hR hs`. Use `framepf_frameA _ _ π' _ h' _ _ c hK (framepf_π_unit hR) huE hR.1 u huΔ hφ hfΔ (by rw [hK]; exact hf) htΔ ht ht'Δ ht' fun T hT => ?_` and prove the remaining obligations. Conclude with `framepf_data' ((Cm l).C K 1 LL hG).tie T hι hT hs _ c hprim ((h1 l K 1 LL hG).2.2.2.1 T hT) hR hs' h' _ _ hM1 hM l hpl (framepf_hyps D HW F Cm h1 l hl K LL hG π' E hR T hT c h') fun Bs hπ0 hΔπ hR2 γ0 hu => hB T hT Bs hπ0 hΔπ hR2 γ0 hu huE (framepf_E_Δ hR) u huΔ hφ`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem framepf_rec (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h1 : adm1 D HW F Cm) (l : ℕ) [Fact l.Prime] (hl : l ≠ 2)

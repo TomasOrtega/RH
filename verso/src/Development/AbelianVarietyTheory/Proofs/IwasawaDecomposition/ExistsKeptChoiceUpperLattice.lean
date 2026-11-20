@@ -14,7 +14,7 @@ namespace GlobalTheory.LayerMove
 set_option maxHeartbeats 4000000
 
 /- English proof (translation)
-Consider the cases of `p`. Consider the cases of `q`. Consider the cases of `h1`. Consider the cases of `h2`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem tupTied_ext {D : D7} {cf : CharFrame D} {C : NChoice D} {p q : TupTied D cf C} (h1 : p.xi = q.xi) (h2 : p.psi = q.psi) :
     p = q := by
@@ -26,19 +26,19 @@ variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z
   {xd : ThData (w.D Z)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ tp := by kcopy n.tp, xi := kc% n.xi, psi := kc% n.psi, tie := by kcopy n.tie, Q := n.Q, chrPsi := by kcopy n.chrPsi }⟩`.
+Supply the required witnesses or components.
 -/
 theorem nchT_up (n : NchT w Z Wt nch) : Nonempty (NchT w (upL Z S' N h) Wt (nchUp S' N h nch)) :=
   ⟨{ tp := by kcopy n.tp, xi := kc% n.xi, psi := kc% n.psi, tie := by kcopy n.tie, Q := n.Q, chrPsi := by kcopy n.chrPsi }⟩
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_, ?_, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩ <;> constructor <;> first | rfl | exact HEq.rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kept_up (nch : NChoice (w.D Z)) : Kept nch (nchUp S' N h nch) := by
   refine ⟨?_, ?_, ?_, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩ <;> constructor <;> first | rfl | exact HEq.rfl
 
 /- English proof (translation)
-Take `⟨⟨E, N0, S⟩, h1, h2, h3⟩` from `g.tw`. Consider the cases of `h1`. Conclude with `⟨⟨⟨twEOf (xdUp S' N h xd), N0, S⟩, rfl, kc% h2, kc% h3⟩, g.sep⟩`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem goodO_up (g : GoodO (w.D Z) nch xd) : GoodO (w.D (upL Z S' N h)) (nchUp S' N h nch) (xdUp S' N h xd) := by
   obtain ⟨⟨E, N0, S⟩, h1, h2, h3⟩ := g.tw
@@ -47,11 +47,11 @@ theorem goodO_up (g : GoodO (w.D Z) nch xd) : GoodO (w.D (upL Z S' N h)) (nchUp 
 end
 
 /- English proof (translation)
-Introduce `hL K B f T w Z Wt S' N h nch xd`. Use `⟨nchUp S' N h nch, xdUp S' N h xd, kept_up S' N h nch, ?_, nchT_up S' N h, goodO_up S' N h, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `⟨HEq.rfl, HEq.rfl⟩`. Introduce and unpack `p0 t n p0' t' ⟨tp', xi', psi', tie', Q', chr'⟩ hs hg ⟨c, e, ⟨bk⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `e1 : tp' = (by with_unfolding_all exact (((mvOf w Z S' N h).tp n.tp) :))` using `tupTied_ext (xi'.trans ((by with_unfolding_all exact (n.xi.symm :)))) (psi'.trans ((by with_unfolding_all exact (n.psi.symm :))))`. Substitute `e1` using the available equality. Take `⟨a', hA⟩` from `(mvOf w Z S' N h).exists_at c.a`. Use `Exists.elim (exists_row hL K B f T w Z Wt S' N h nch xd p0 t p0' t' hs hg (GlobalTheory.T.rowReadings_sameRows_identify_definiteForms K B f T w Z Wt S' N h p0 t p0' t' hs) (GlobalTheory.T.rows_same_geometric_half K B f T w Z Wt S' N h nch p0 t p0' t' hs hg) (tp' := (by with_unfol …` and prove the remaining obligations. Establish `hq : a'.Pq = (by with_unfolding_all exact (c.a.Pq :))` using `eq_of_heq ((by with_unfolding_all exact (hA.2.1 :)))`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsel : Set.range a'.Pq = (by with_unfolding_all exact ((Set.range w.I.sel) :))` using `(congrArg Set.range hq).trans ((by with_unfolding_all exact (c.sel :)))`. Conclude with `⟨⟨⟨(by with_unfolding_all exact (a' :)), (by with_unfolding_all exact (r' :)), (by with_unfolding_all exact (hsel :))⟩, (by with_unfolding_all exact (e' :)), ⟨(by with_unfolding_all exact (((mvOf w Z S' N h).bkLaw bk) :))⟩⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem layer_up : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL), ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl) (S' : SStage B w.C Z.W) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ) (nch : NChoice (w.D Z)) (xd : ThData (w.D Z)), ∃ (nch' : NChoice (w.D (upL Z S' N h))) (xd' : ThData (w.D (upL Z S' N h))), Kept nch nch' ∧ (S' = Z.S → HEq nch' (nchTr (D := w.D Z) N h nch) ∧ HEq xd' (xdTr (D := w.D Z) N h xd)) ∧ (NchT w Z Wt nch → Nonempty (NchT w (upL Z S' N h) Wt nch')) ∧ (GoodO (w.D Z) nch xd → GoodO (w.D (upL Z S' N h)) nch' xd') ∧ ∀ (p0 : BaseLevelRowSide (w.D Z)) (t : RowsT K w Z Wt p0) (n : NchT w Z Wt nch) (p0' : BaseLevelRowSide (w.D (upL Z S' N h))) (t' : RowsT K w (upL Z S' N h) Wt p0') (n' : NchT w (upL Z S' N h) Wt nch'), RowsSame t t' → HEq t'.r.z.geo (R3.Tr.geoHalf (a := ⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) (upL Z S' N h) (iK := t.r.z.alg) t.r.z.geo) → NX hL (NEb hL) K B f T w Z Wt p0 t nch n xd → Nonempty (NX hL (NEb hL) K B f T w (upL Z S' N h) Wt p0' t' nch' n' xd') := by
   intro hL K B f T w Z Wt S' N h nch xd

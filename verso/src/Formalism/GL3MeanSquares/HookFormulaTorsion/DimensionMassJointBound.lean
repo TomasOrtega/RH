@@ -9,16 +9,16 @@ open Finset
 open Formalism.LogVandermondeBounds.StandardLattice
 
 /- English proof (translation)
-Introduce `q _`. Evaluate the numerical expressions.
+Fix the arbitrary inputs or assume the hypotheses. Evaluate the numerical expressions.
 -/
 theorem sharp_hecke_spectral_gap : SW_hecke_gap_sharp := by
   intro q _
   norm_num
 
 /- English proof (translation)
-Introduce `f Dstar volY massr Isig dsig dimV hm hI hv h2 h3 hD`. Rewrite using `[hD, h2]`. Establish `hp : ∏ ρ ∈ range f, ((1 - 1 / 3 : ℝ) * dimV ρ) ≤ ∏ ρ ∈ range f, dsig ρ` using `Finset.prod_le_prod (fun ρ hρ => mul_nonneg (by norm_num) (hv ρ (Finset.mem_range.1 hρ))) (fun ρ hρ => h3 ρ (Finset.mem_range.1 hρ))`. Rewrite `hp` using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range]`. Establish `e : (1 - 1 / 3 : ℝ) = 2 / 3` using `by norm_num`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hp` using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem dimension_mass_joint_bound : DimensionMassJointBound := by
   intro f Dstar volY massr Isig dsig dimV hm hI hv h2 h3 hD
@@ -34,9 +34,9 @@ theorem dimension_mass_joint_bound : DimensionMassJointBound := by
     _ ≤ massr * Isig * ∏ ρ ∈ range f, dsig ρ := mul_le_mul_of_nonneg_left hp (mul_pos hm hI).le
 
 /- English proof (translation)
-Establish `hY : k * (k + 1) / 2 = k * (k - 1) / 2 + k`. Establish `e : k * (k + 1) = k * (k - 1) + k * 2`. Consider the cases of `k with`. Consider the case `zero => simp`. Consider the case `succ n => rw [Nat.add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Nat.add_mul_div_right _ _ (by norm_num : 0 < 2)]`. Use `⟨k * (k - 1) / 2, rfl, hY, ?_⟩` and prove the remaining obligations. Use `half_add_half k` as an intermediate fact. Rewrite `this` using `[hY]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -60,7 +60,7 @@ private lemma odd_square_expansion (k s : ℕ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[odd_square_expansion, show (k + 1) ^ 2 = k * k + 2 * k + 1 by ring, hA]`. Generalize the expression as in `s * k = X`. Generalize the expression as in `s * s = Y`. Apply the tactic sequence `constructor <;> omega`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma exponent_square_identities (k s A : ℕ) (hA : k * k = 2 * A + k) :
     ((k + 2 * s + 1) ^ 2 - (k + 1) ^ 2 - 2 * s) / 2 = 2 * (s * k) + s + 2 * (s * s) ∧
@@ -71,7 +71,7 @@ private lemma exponent_square_identities (k s A : ℕ) (hA : k * k = 2 * A + k) 
   constructor <;> omega
 
 /- English proof (translation)
-Rewrite using `[cardGeneralLinear F n, ← pow_add, half_add_half]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma card_general_linear_group (F : Type) [Field F] [Fintype F] [DecidableEq F] (n : ℕ) :
     (Fintype.card (GL (Fin n) F) : ℝ) =
@@ -79,15 +79,15 @@ private lemma card_general_linear_group (F : Type) [Field F] [Fintype F] [Decida
   rw [cardGeneralLinear F n, ← pow_add, half_add_half]
 
 /- English proof (translation)
-Introduce `F _ _ _ k m hm hme hF`. Simplify using `only`. Establish `hg3 : (3 : ℝ) ≤ (Fintype.card F : ℝ)` using `by exact_mod_cast hF`. Establish `hg0 : (Fintype.card F : ℝ) ≠ 0` using `ne_of_gt (by linarith)`. Take `⟨A, hA1, hA2, hA3⟩` from `triangular_numbers_half k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨s, rfl⟩ : ∃ s, m = 2 * s + 2 := by`. Take `⟨u, hu⟩` from `hme`. Conclude with `⟨u - 1, by omega⟩`. Establish `e1 : k + (2 * s + 2) - 1 = k + 2 * s + 1` using `by omega`. Establish `e2 : (2 * s + 2) / 2 - 1 = s` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Take `⟨hb1, hb2⟩` from `eulerProductBounds (Fintype.card F : ℝ) hg3 k`. Take `⟨hc1, hc2⟩` from `eulerProductBounds (Fintype.card F : ℝ) hg3 (k + 2 * s + 1)`. Use `⟨⟨_, hb1, hb2, ?_⟩, ⟨_, hc1, hc2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[cardGeneralLinear F k, div_eq_iff (pow_ne_zero _ hg0)]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[card_general_linear_group F, (exponent_square_identities k s A hA3).1, (exponent_square_identities k s A hA3).2, hA1]`. Establish `hexp : (k + 2 * s + 1) * (k + 2 * s + 1) = (2 * (s * k) + s + 2 * (s * s)) + A + (A + 3 * k + 1 + 2 * (s * k) + 3 * s + 2 * (s * s))`. Rewrite using `[← sq, odd_square_expansion, hA3]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hexp, pow_add, pow_add, div_eq_iff (mul_ne_zero (pow_ne_zero _ hg0) (pow_ne_zero _ hg0))]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem local_index_formula : LocalColumnIndex := by
   intro F _ _ _ k m hm hme hF
@@ -116,7 +116,7 @@ theorem local_index_formula : LocalColumnIndex := by
     ring
 
 /- English proof (translation)
-Simplify using `only [Fin.prod_univ_two, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range]`. Rewrite using `[mul_pow, pow_mul, pow_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma prod_two_factor_split (f E : ℕ) (G : Fin 2 → ℝ) (t : Fin 2 → ℕ → ℝ) :
     ∏ i, ∏ ρ ∈ range f, G i ^ E * t i ρ =
@@ -125,9 +125,9 @@ private lemma prod_two_factor_split (f E : ℕ) (G : Fin 2 → ℝ) (t : Fin 2 �
   rw [mul_pow, pow_mul, pow_mul]
 
 /- English proof (translation)
-Establish `h0 : ∀ i ρ, 0 ≤ t i ρ` using `fun i ρ => le_trans (by norm_num) (h i ρ).1`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.prod_const, Finset.card_range, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← pow_mul, one_div, inv_pow, mul_comm]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ ∏ i, ∏ ρ ∈ range f, t i ρ := Finset.prod_le_prod (fun i _ => Finset.prod_nonneg fun ρ _ => by norm_num) (fun i _ => Finset.prod_le_prod (fun ρ _ => by norm_num) (fun ρ _ => (h i ρ).1))`. Conclude with `Finset.prod_le_one (fun i _ => Finset.prod_nonneg fun ρ _ => h0 i ρ) (fun i _ => Finset.prod_le_one (fun ρ _ => h0 i ρ) (fun ρ _ => (h i ρ).2))`.
+A detailed English derivation is pending.
 -/
 private lemma prod_half_to_one_bounds (f : ℕ) (t : Fin 2 → ℕ → ℝ) (h : ∀ i ρ, 1 / 2 ≤ t i ρ ∧ t i ρ ≤ 1) :
     ((2 : ℝ) ^ (2 * f))⁻¹ ≤ ∏ i, ∏ ρ ∈ range f, t i ρ ∧ ∏ i, ∏ ρ ∈ range f, t i ρ ≤ 1 := by
@@ -143,21 +143,21 @@ private lemma prod_half_to_one_bounds (f : ℕ) (t : Fin 2 → ℕ → ℝ) (h :
       (fun i _ => Finset.prod_le_one (fun ρ _ => h0 i ρ) (fun ρ _ => (h i ρ).2))
 
 /- English proof (translation)
-Introduce `f k m g₁ g₂ Ipi Isig θ θ' hm hme hg1 hg2 hθ`. Simplify using `only`. Introduce `hIpi hIsig`. Choose the witnesses or unpack the hypotheses as in `⟨s, rfl⟩ : ∃ s, m = 2 * s + 2 := by`. Take `⟨u, hu⟩` from `hme`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u - 1, by omega⟩`. Establish `e1 : k + (2 * s + 2) - 1 = k + 2 * s + 1` using `by omega`. Establish `e2 : (2 * s + 2) / 2 - 1 = s` using `by omega`. Rewrite `hIsig` using `[e1, e2]`. Take `⟨A, hA1, hA2, hA3⟩` from `triangular_numbers_half k`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hIsig` using `[(exponent_square_identities k s A hA3).2, prod_two_factor_split]`. Rewrite `hIpi` using `[hA2, prod_two_factor_split]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one] at hIpi hIsig`. Take `⟨hPl, hPu⟩` from `prod_half_to_one_bounds f θ (fun i ρ => ⟨(hθ i ρ).1, (hθ i ρ).2.1⟩)`. Take `⟨hQl, hQu⟩` from `prod_half_to_one_bounds f θ' (fun i ρ => ⟨(hθ i ρ).2.2.1, (hθ i ρ).2.2.2⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hX0 : 0 < g₁ * g₂` using `by nlinarith`. Establish `hc : (0 : ℝ) < ((2 : ℝ) ^ (2 * f))⁻¹` using `by positivity`. Establish `hPpos : 0 < ∏ i, ∏ ρ ∈ range f, θ i ρ` using `lt_of_lt_of_le hc hPl`. Establish `hN : (g₁ * g₂) ^ ((f : ℝ) * ((2 * s + 2 : ℕ) : ℝ) * (2 * (k : ℝ) + ((2 * s + 2 : ℕ) : ℝ) - 1) / 2) = (g₁ * g₂) ^ ((2 * (s * k) + 2 * (s * s) + 3 * s + 2 * k + 1) * f)`. Rewrite using `[← Real.rpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hratio : Isig / Ipi = (g₁ * g₂) ^ ((2 * (s * k) + 2 * (s * s) + 3 * s + 2 * k + 1) * f) * ((∏ i, ∏ ρ ∈ range f, θ' i ρ) / ∏ i, ∏ ρ ∈ range f, θ i ρ)`. Rewrite using `[hIsig, hIpi]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (A + 3 * k + 1 + 2 * (s * k) + 3 * s + 2 * (s * s)) * f = (A + k) * f + (2 * (s * k) + 2 * (s * s) + 3 * s + 2 * k + 1) * f` using `by ring`. Rewrite using `[e, pow_add, mul_assoc, mul_div_mul_left _ _ (pow_pos hX0 _).ne', mul_div_assoc]`. Rewrite using `[hN, hratio]`. Establish `hXN : 0 ≤ (g₁ * g₂) ^ ((2 * (s * k) + 2 * (s * s) + 3 * s + 2 * k + 1) * f)` using `(pow_pos hX0 _).le`. Establish `h22 : (2 : ℝ) ^ (2 * f) * ((2 : ℝ) ^ (2 * f))⁻¹ = 1` using `mul_inv_cancel₀ (by positivity)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[mul_comm ((2 : ℝ) ^ (2 * f))⁻¹]`. Use `mul_le_mul_of_nonneg_left ?_ hXN` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hPpos]`. Use the polynomial consequences of the given equalities and inequalities.
+Prove the components needed by the constructor for the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[mul_comm ((2 : ℝ) ^ (2 * f))]`. Use `mul_le_mul_of_nonneg_left ?_ hXN` and prove the remaining obligations. Rewrite using `[div_le_iff₀ hPpos]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hPl (by positivity : (0 : ℝ) ≤ 2 ^ (2 * f))]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem index_ratio_bound : IndexRatioComparison := by
   intro f k m g₁ g₂ Ipi Isig θ θ' hm hme hg1 hg2 hθ
@@ -205,9 +205,9 @@ theorem index_ratio_bound : IndexRatioComparison := by
     nlinarith [mul_le_mul_of_nonneg_left hPl (by positivity : (0 : ℝ) ≤ 2 ^ (2 * f))]
 
 /- English proof (translation)
-Establish `hc : ∀ ω : MulAction.orbitRel.Quotient G Y, Fintype.card (MulAction.stabilizer G ω.out) = 1`. Introduce `ω`. Rewrite using `[Fintype.card_eq_nat_card, h]`. Conclude with `Subgroup.card_bot`. Rewrite using `[MulAction.card_eq_sum_card_group_div_card_stabilizer G Y, Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hc, Nat.div_one, Finset.sum_const, Finset.card_univ, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 private lemma card_orbits_mul_card_eq_card_of_free (G Y : Type) [Group G] [Fintype G] [Fintype Y] [MulAction G Y]
     (h : ∀ y : Y, MulAction.stabilizer G y = ⊥) :
@@ -222,9 +222,9 @@ private lemma card_orbits_mul_card_eq_card_of_free (G Y : Type) [Group G] [Finty
   simp only [hc, Nat.div_one, Finset.sum_const, Finset.card_univ, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `ι _ Γ _ _ Y _ _ hfree`. Establish `hi : ∀ i, (Nat.card (MulAction.orbitRel.Quotient (Γ i) Y) : ℝ) = ((Fintype.card (Γ i) : ℝ))⁻¹ * Fintype.card Y`. Introduce `i`. Establish `h` using `card_orbits_mul_card_eq_card_of_free (Γ i) Y (hfree i)`. Establish `hpos : (0 : ℝ) < Fintype.card (Γ i)` using `by exact_mod_cast Fintype.card_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eq_inv_mul_iff_mul_eq₀ hpos.ne', ← h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun i _ => hi i), Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem rank_count_bis : RankCountExact := by
   intro ι _ Γ _ _ Y _ _ hfree
@@ -239,9 +239,9 @@ theorem rank_count_bis : RankCountExact := by
   rw [Finset.sum_congr rfl (fun i _ => hi i), Finset.sum_mul]
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hd`. Establish `h1` using `ih (by omega)`. Establish `h2` using `hb (a + d) (by omega)`. Rewrite using `[← add_assoc]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -259,15 +259,13 @@ private lemma increments_sum_lower_bound (m : ℕ) (b : ℕ → ℝ) (h₀ : ℝ
     linarith
 
 /- English proof (translation)
-Introduce `k m v b h₀ hk hh hv hb0 hb i j hij hj hsg`. Simplify using `only [plusSign, ne_eq, decide_eq_decide] at hsg`. Distinguish the cases in `hi : i < k - 1`. Distinguish the cases in `hj' : j < k - 1`. Conclude with `absurd ⟨fun _ => Or.inl hj', fun _ => Or.inl hi⟩ hsg`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hodd : (j - (k - 1)) % 2 = 1`. Assume the negation of the conclusion as `hc`. Conclude with `hsg ⟨fun _ => Or.inr (by omega), fun _ => Or.inl hi⟩`. Simplify using `only [rowPar, hi, hj', if_true, if_false]`. Establish `hst` using `increments_sum_lower_bound m b h₀ hb 0 (j - (k - 1)) (by omega)`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [zero_add] at hst`. Establish `h1 : (1 : ℝ) ≤ ((j - (k - 1) : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ j - (k - 1))`. Use `hv i hi` as an intermediate fact. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h1 hh]`. Establish `hj' : ¬ j < k - 1` using `by omega`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [rowPar, hi, hj', if_false]`. Establish `hst` using `increments_sum_lower_bound m b h₀ hb (i - (k - 1)) (j - (k - 1) - (i - (k - 1))) (by omega)`. Establish `e : i - (k - 1) + (j - (k - 1) - (i - (k - 1))) = j - (k - 1)` using `by omega`. Rewrite `hst` using `[e]`. Establish `h1 : (1 : ℝ) ≤ ((j - (k - 1) - (i - (k - 1)) : ℕ) : ℝ)`.
-
-Conclude with `(by omega : 1 ≤ j - (k - 1) - (i - (k - 1)))` after adjusting the coercions. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h1 hh]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem least_noncompact_gap : LeastNoncompactGap := by
   intro k m v b h₀ hk hh hv hb0 hb i j hij hj hsg
@@ -294,17 +292,15 @@ theorem least_noncompact_gap : LeastNoncompactGap := by
     nlinarith [mul_le_mul_of_nonneg_right h1 hh]
 
 /- English proof (translation)
-Introduce `f m k L hm hmf hk hL`. Establish `hr3 : (3 : ℝ) ≤ ((k + m - 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 3 ≤ k + m - 1)`. Establish `hq1 : (1 : ℝ) ≤ ((m / 2 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ m / 2)`. Establish `hqf : 2 * ((m / 2 : ℕ) : ℝ) ≤ (f : ℝ)` using `by exact_mod_cast (by omega : 2 * (m / 2) ≤ f)`. Establish `hf2 : (2 : ℝ) ≤ (f : ℝ)` using `by exact_mod_cast (by omega : 2 ≤ f)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set r : ℝ := ((k + m - 1 : ℕ) : ℝ)`. Use `set q : ℝ := ((m / 2 : ℕ) : ℝ)`. Establish `hpow : q ^ ((3 : ℝ) / 2) ≤ q ^ 2`. Rewrite using `[← Real.rpow_natCast q 2]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hq1 (by norm_num)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hq2 : q ^ 2 ≤ (f : ℝ) ^ 2 / 4`. Use polynomial arithmetic with `[mul_le_mul hqf hqf (by linarith) (by linarith)]`. Establish `hr3' : (27 : ℝ) ≤ r ^ 3`. Use `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 3) hr3 3` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf2' : (4 : ℝ) ≤ (f : ℝ) ^ 2`. Use `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 2) hf2 2` as an intermediate fact. Evaluate the numerical expressions using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h30 : (30 : ℝ) ≤ r ^ 3 * (f : ℝ) ^ 2`. Use `mul_le_mul hr3' hf2' (by norm_num) (by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL4 : (1 : ℝ) ≤ L ^ 4` using `one_le_pow₀ hL`. Establish `hr0 : 0 ≤ r` using `by linarith`.
-
-Establish `hrf : 0 ≤ r * (f : ℝ) ^ 2` using `mul_nonneg hr0 (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rank_mul_pow_three_halves_le_fourth_power : RankMulPowThreeHalvesLeFourthPower := by
   intro f m k L hm hmf hk hL
@@ -342,31 +338,29 @@ theorem rank_mul_pow_three_halves_le_fourth_power : RankMulPowThreeHalvesLeFourt
     _ = (r * f * L) ^ 4 := by ring
 
 /- English proof (translation)
-Introduce `ε C C₀ hε hC hC₀`. Use `set a0 := 9 * C / 16 * Real.log 2 with ha0`. Use `set a1 := 9 * C * C₀ / (16 * ε) with ha1`. Establish `hlog2 : 0 ≤ Real.log 2` using `Real.log_nonneg (by norm_num)`. Establish `ha0n : 0 ≤ a0` using `mul_nonneg (by positivity) hlog2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha1n : 0 ≤ a1` using `by positivity`. Use `⟨max 1 ((a0 + a1 + 1) ^ ε⁻¹), ?_⟩` and prove the remaining obligations. Introduce `x hx f m k hm hme hmf hmk hkx`. Simplify using `only`. Establish `hx1 : 1 ≤ x` using `le_trans (le_max_left _ _) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : 0 < x` using `by linarith`. Establish `hy : a0 + a1 + 1 ≤ x ^ ε`. Establish `h1 : (a0 + a1 + 1) ^ ε⁻¹ ≤ x` using `le_trans (le_max_right _ _) hx`. Combine the equalities or inequalities in the displayed calculation. Choose the witnesses or unpack the hypotheses as in `⟨t, rfl⟩ : ∃ t, m = 2 * t + 2 := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨u, hu⟩` from `hme`. Conclude with `⟨u - 1, by omega⟩`. Establish `eq1 : (2 * t + 2) / 2 = t + 1` using `by omega`. Establish `eq2 : k + (t + 1) - 1 = k + t` using `by omega`. Establish `eq3 : k + (2 * t + 2) - 1 = k + 2 * t + 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[eq1, eq2, eq3]`. Establish `hR3 : (3 : ℝ) ≤ ((k + 2 * t + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 3 ≤ k + 2 * t + 1)`. Use `⟨?_, by omega, by omega, ?_⟩` and prove the remaining obligations. Use `Real.add_one_le_exp ((k + 2 * t + 1 : ℕ) : ℝ)` as an intermediate fact. Rewrite using `[Real.exp_neg, inv_le_comm₀ (Real.exp_pos _) (by norm_num), show ((1 : ℝ) / 3)⁻¹ = 3 by norm_num]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Nat.cast_mul]`. Establish `hRk : ((k + 2 * t + 1 : ℕ) : ℝ) ≤ 2 * x ^ C₀`. Establish `: ((k + 2 * t + 1 : ℕ) : ℝ) ≤ 2 * (k : ℝ)`. Conclude with `(by omega : k + 2 * t + 1 ≤ 2 * k)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : Real.log x ≤ x ^ ε / ε` using `Real.log_le_rpow_div hx0.le hε`. Use `set R : ℝ := ((k + 2 * t + 1 : ℕ) : ℝ) with hR`. Use `set Q : ℝ := ((t + 1 : ℕ) : ℝ) with hQ`. Use `set P : ℝ := ((k + t : ℕ) : ℝ) with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y := x ^ ε with hydef`. Establish `hQ1 : 1 ≤ Q` using `by rw [hQ]; exact_mod_cast (by omega : 1 ≤ t + 1)`. Establish `hP0 : 0 ≤ P` using `by rw [hP]; positivity`. Establish `hPR : P ≤ R` using `by rw [hP, hR]; exact_mod_cast (by omega : k + t ≤ k + 2 * t + 1)`. Establish `hQf : 2 * Q ≤ f` using `by rw [hQ]; exact_mod_cast (by omega : 2 * (t + 1) ≤ f)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hy1 : 1 ≤ y` using `by linarith`. Establish `hy0 : 0 ≤ y` using `by linarith`. Establish `hlogR : Real.log R ≤ Real.log 2 + C₀ * (y / ε)`. Establish `h1 : Real.log R ≤ Real.log (2 * x ^ C₀)` using `Real.log_le_log (by linarith) hRk`. Rewrite `h1` using `[Real.log_mul (by norm_num) (by positivity), Real.log_rpow hx0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 hC₀]`. Establish `hlog0 : 0 ≤ Real.log R` using `Real.log_nonneg (by linarith)`. Establish `hkey : 9 * C / 16 * (Real.log 2 + C₀ * (y / ε)) ≤ y ^ 4`. Establish `e : 9 * C / 16 * (Real.log 2 + C₀ * (y / ε)) = a0 + a1 * y`. Rewrite using `[ha0, ha1]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hy hy0, pow_le_pow_right₀ hy1 (by norm_num : 2 ≤ 4)]`. Establish `hQ4 : Q ^ 4 ≤ (f : ℝ) ^ 4 / 16`. Use `pow_le_pow_left₀ (by linarith) hQf 4` as an intermediate fact.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hPR3 : P ^ 3 * R ≤ R ^ 4`. Use `pow_le_pow_left₀ hP0 hPR 3` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hA` using `mul_le_mul hQ4 hPR3 (mul_nonneg (pow_nonneg hP0 3) (by linarith)) (by positivity)`.
-
-Establish `hB` using `mul_le_mul_of_nonneg_left hA (mul_nonneg (by linarith : (0 : ℝ) ≤ 9 * C) hlog0)`. Establish `hF : 0 ≤ (f : ℝ) ^ 4 * R ^ 4` using `mul_nonneg (by positivity) (pow_nonneg (by linarith) 4)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem hypotheses_of_third_theorem : RankThresholdInequalityEventually := by
   intro ε C C₀ hε hC hC₀

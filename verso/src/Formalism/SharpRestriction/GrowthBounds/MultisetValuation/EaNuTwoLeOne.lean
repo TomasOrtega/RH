@@ -15,7 +15,7 @@ def ea_colH (t : ℕ) (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (w : ℕ → Fin 
   ((Icc 1 (NN k1 t J)).filter fun i => (c : ℤ) < nu t lam0 w J s i).card
 
 /- English proof (translation)
-Unfold `lamI`. Rewrite using `[dif_pos (show 1 ≤ i' ∧ i' ≤ k1 + 1 by omega), dif_pos (show 1 ≤ i ∧ i ≤ k1 + 1 by omega)]`. Conclude with `h.dom s (Fin.mk_le_mk.2 (by omega))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ea_lamI_anti (h : Std p n' k1 t m c r TT a b lam0 w) (s : Fin n') {i i' : ℕ} (h1 : 1 ≤ i) (h2 : i ≤ i')
     (h3 : i' ≤ k1 + 1) : lamI lam0 s i' ≤ lamI lam0 s i := by
@@ -24,7 +24,7 @@ theorem ea_lamI_anti (h : Std p n' k1 t m c r TT a b lam0 w) (s : Fin n') {i i' 
   exact h.dom s (Fin.mk_le_mk.2 (by omega))
 
 /- English proof (translation)
-Unfold `NN at h2`. Establish `h3 : i - (k1 + 2) < J * (t + 1)` using `by omega`. Establish `h4` using `(Nat.div_lt_iff_lt_mul (by omega : 0 < t + 1)).2 h3`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ea_block_le {J i : ℕ} (h1 : k1 + 1 < i) (h2 : i ≤ NN k1 t J) : (i - (k1 + 2)) / (t + 1) + 1 ≤ J := by
   unfold NN at h2
@@ -33,7 +33,7 @@ theorem ea_block_le {J i : ℕ} (h1 : k1 + 1 < i) (h2 : i ≤ NN k1 t J) : (i - 
   omega
 
 /- English proof (translation)
-Unfold `nu`. Rewrite using `[if_pos ⟨h1, h2⟩]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ea_nu_head (J : ℕ) (s : Fin n') {i : ℕ} (h1 : 1 ≤ i) (h2 : i ≤ k1 + 1) :
     nu t lam0 w J s i = lamI lam0 s i + w J s := by
@@ -41,7 +41,7 @@ theorem ea_nu_head (J : ℕ) (s : Fin n') {i : ℕ} (h1 : 1 ≤ i) (h2 : i ≤ k
   rw [if_pos ⟨h1, h2⟩]
 
 /- English proof (translation)
-Unfold `nu`. Rewrite using `[if_neg (by omega), if_pos ⟨h1, h2⟩]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ea_nu_tail (J : ℕ) (s : Fin n') {i : ℕ} (h1 : k1 + 1 < i) (h2 : i ≤ NN k1 t J) :
     nu t lam0 w J s i = -w ((i - (k1 + 2)) / (t + 1) + 1) s + w J s := by
@@ -49,7 +49,7 @@ theorem ea_nu_tail (J : ℕ) (s : Fin n') {i : ℕ} (h1 : k1 + 1 < i) (h2 : i �
   rw [if_neg (by omega), if_pos ⟨h1, h2⟩]
 
 /- English proof (translation)
-Proceed by induction on `l', hll using Nat.le_induction with`. Consider the case `base => exact le_refl _`. Consider the case `succ k hk ih => exact (ih (by omega)).trans (h.w_mono s k (by omega) (by omega))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem std_w_le_w_of_le (h : Std p n' k1 t m c r TT a b lam0 w) (s : Fin n') {l l' : ℕ} (hl : 1 ≤ l)
     (hll : l ≤ l') (hl' : l' ≤ m) : w l s ≤ w l' s := by
@@ -58,11 +58,11 @@ private theorem std_w_le_w_of_le (h : Std p n' k1 t m c r TT a b lam0 w) (s : Fi
   | succ k hk ih => exact (ih (by omega)).trans (h.w_mono s k (by omega) (by omega))
 
 /- English proof (translation)
-Establish `hk : 1 ≤ k1` using `by have := h.r_pos; have := h.two_r; omega`. Unfold `nu`. Use `split_ifs with h1 h2`. Establish `hw` using `std_w_le_w_of_le h s (le_refl 1) hJ1 hJ`. Establish `hlow` using `(h.w_low s).2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hla : lam0 s (Fin.last k1) ≤ lamI lam0 s i`. Unfold `lamI`. Rewrite using `[dif_pos h1]`. Conclude with `h.dom s (Fin.le_last _)`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `ea_block_le (k1 := k1) (t := t) h2.1 h2.2`. Establish `hw` using `std_w_le_w_of_le h s (l := (i - (k1 + 2)) / (t + 1) + 1) (Nat.le_add_left 1 _) hb hJ`. Use linear arithmetic over natural numbers and integers. Conclude with `le_refl 0`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ea_nu_nonneg (h : Std p n' k1 t m c r TT a b lam0 w) {J : ℕ} (hJ1 : 1 ≤ J) (hJ : J ≤ m) (s : Fin n') (i : ℕ) :
     0 ≤ nu t lam0 w J s i := by
@@ -82,13 +82,13 @@ theorem ea_nu_nonneg (h : Std p n' k1 t m c r TT a b lam0 w) {J : ℕ} (hJ1 : 1 
   · exact le_refl 0
 
 /- English proof (translation)
-Establish `hk : 1 ≤ k1` using `by have := h.r_pos; have := h.two_r; omega`. Establish `e2` using `ea_nu_head (t := t) (lam0 := lam0) (w := w) J s (i := 2) (by norm_num) (by omega)`. Rewrite using `[e2]`. Distinguish the cases in `hi : i ≤ k1 + 1`. Rewrite using `[ea_nu_head J s (by omega) hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `ea_lamI_anti h s (i := 2) (i' := i) (by norm_num) h2 hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[ea_nu_tail J s (by omega) h3]`. Establish `hb` using `ea_block_le (k1 := k1) (t := t) (J := J) (i := i) (by omega) h3`. Establish `hw` using `std_w_le_w_of_le h s (l := 1) (l' := (i - (k1 + 2)) / (t + 1) + 1) (le_refl 1) (Nat.le_add_left 1 _) (by omega)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlow` using `(h.w_low s).2`. Establish `hla : lam0 s (Fin.last k1) ≤ lamI lam0 s 2`. Unfold `lamI`. Rewrite using `[dif_pos (show 1 ≤ 2 ∧ 2 ≤ k1 + 1 by omega)]`. Conclude with `h.dom s (Fin.le_last _)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem ea_nu_le_two (h : Std p n' k1 t m c r TT a b lam0 w) {J : ℕ} (hJ : J ≤ m) (s : Fin n') {i : ℕ}
     (h2 : 2 ≤ i) (h3 : i ≤ NN k1 t J) : nu t lam0 w J s i ≤ nu t lam0 w J s 2 := by
@@ -110,7 +110,7 @@ theorem ea_nu_le_two (h : Std p n' k1 t m c r TT a b lam0 w) {J : ℕ} (hJ : J �
     omega
 
 /- English proof (translation)
-Establish `hk : 1 ≤ k1` using `by have := h.r_pos; have := h.two_r; omega`. Rewrite using `[ea_nu_head J s (i := 2) (by norm_num) (by omega), ea_nu_head J s (i := 1) (le_refl 1) (by omega)]`. Use `ea_lamI_anti h s (i := 1) (i' := 2) (le_refl 1) (by norm_num) (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ea_nu_two_le_one (h : Std p n' k1 t m c r TT a b lam0 w) (J : ℕ) (s : Fin n') :
     nu t lam0 w J s 2 ≤ nu t lam0 w J s 1 := by
@@ -120,7 +120,7 @@ theorem ea_nu_two_le_one (h : Std p n' k1 t m c r TT a b lam0 w) (J : ℕ) (s : 
   omega
 
 /- English proof (translation)
-Break down `Nat.lt_or_ge i 2 with hi | hi` into its components or cases. Establish `e : i = 1` using `by omega`. Substitute `e` using the available equality. Conclude with `le_refl _`. Conclude with `(ea_nu_le_two h hJ s hi h3).trans (ea_nu_two_le_one h J s)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ea_nu_le_one (h : Std p n' k1 t m c r TT a b lam0 w) {J : ℕ} (hJ : J ≤ m) (s : Fin n') {i : ℕ}
     (h1 : 1 ≤ i) (h3 : i ≤ NN k1 t J) : nu t lam0 w J s i ≤ nu t lam0 w J s 1 := by
@@ -131,9 +131,9 @@ theorem ea_nu_le_one (h : Std p n' k1 t m c r TT a b lam0 w) {J : ℕ} (hJ : J �
   · exact (ea_nu_le_two h hJ s hi h3).trans (ea_nu_two_le_one h J s)
 
 /- English proof (translation)
-Unfold `NN at h1 h2`. Unfold `nu`. Establish `e : (J + 1) * (t + 1) = J * (t + 1) + (t + 1)` using `by ring`. Rewrite using `[if_neg (by omega), if_pos ⟨by omega, by unfold NN; omega⟩]`. Establish `hq : (i - (k1 + 2)) / (t + 1) = J` using `Nat.div_eq_of_lt_le (by omega) (by omega)`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ea_nu_last (J : ℕ) (s : Fin n') {i : ℕ} (h1 : NN k1 t J < i) (h2 : i ≤ NN k1 t (J + 1)) :
     nu t lam0 w (J + 1) s i = 0 := by
@@ -146,11 +146,11 @@ theorem ea_nu_last (J : ℕ) (s : Fin n') {i : ℕ} (h1 : NN k1 t J < i) (h2 : i
   ring
 
 /- English proof (translation)
-Unfold `ea_colH`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `i hi`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc] at hi ⊢`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨hi.1.1, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `e` using `ea_nu_last (t := t) (lam0 := lam0) (w := w) J s hc hi.1.2`. Rewrite `hi` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use `_ = NN k1 t J := by simp`.
+A detailed English derivation is pending.
 -/
 theorem ea_colH_le (J : ℕ) (s : Fin n') (x : ℕ) : ea_colH t lam0 w (J + 1) s x ≤ NN k1 t J := by
   unfold ea_colH
@@ -167,7 +167,7 @@ theorem ea_colH_le (J : ℕ) (s : Fin n') (x : ℕ) : ea_colH t lam0 w (J + 1) s
     _ = NN k1 t J := by simp
 
 /- English proof (translation)
-Use `h.r_pos` as an intermediate fact. Use `h.two_r` as an intermediate fact. Unfold `NN`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ea_NN_two (h : Std p n' k1 t m c r TT a b lam0 w) (J : ℕ) : 2 ≤ NN k1 t J := by
   have := h.r_pos
@@ -176,17 +176,15 @@ theorem ea_NN_two (h : Std p n' k1 t m c r TT a b lam0 w) (J : ℕ) : 2 ≤ NN k
   omega
 
 /- English proof (translation)
-Unfold `ea_colH`. Establish `hN` using `ea_NN_two h J`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Assume the negation of the conclusion as `h2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h2`. Establish `hsub : ({1, 2} : Finset ℕ) ⊆ (Icc 1 (NN k1 t J)).filter fun i => (x : ℤ) < nu t lam0 w J s i`. Introduce `i hi`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hi`. Break down `hi with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `Finset.mem_filter.2 ⟨Finset.mem_Icc.2 ⟨le_refl 1, by omega⟩, hx⟩`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_Icc.2 ⟨by norm_num, hN⟩, h2⟩`. Establish `hc` using `Finset.card_le_card hsub`. Rewrite `hc` using `[Finset.card_pair (by norm_num)]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h2`. Rewrite using `[Finset.card_eq_one]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc, Finset.mem_singleton]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hi1, hi2⟩, hlt⟩`. Assume the negation of the conclusion as `hne`. Use `ea_nu_le_two h hJ s (i := i) (by omega) hi2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Introduce and unpack `rfl`. Conclude with `⟨⟨le_refl _, by omega⟩, hx⟩`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ea_colH_eq_one (h : Std p n' k1 t m c r TT a b lam0 w) {J : ℕ} (hJ : J ≤ m) (s : Fin n') (x : ℕ)
     (hx : (x : ℤ) < nu t lam0 w J s 1) : ea_colH t lam0 w J s x = 1 ↔ nu t lam0 w J s 2 ≤ x := by
@@ -219,13 +217,13 @@ theorem ea_colH_eq_one (h : Std p n' k1 t m c r TT a b lam0 w) {J : ℕ} (hJ : J
       exact ⟨⟨le_refl _, by omega⟩, hx⟩
 
 /- English proof (translation)
-Establish `hk : 1 ≤ k1` using `by have := h.r_pos; have := h.two_r; omega`. Establish `h0` using `ea_nu_nonneg h hJ1 hJ s 2`. Establish `h21` using `ea_nu_two_le_one h J s`. Establish `hfil : ((range (nu t lam0 w J s 1).toNat).filter fun x => ea_colH t lam0 w J s x = 1) = Ico (nu t lam0 w J s 2).toNat (nu t lam0 w J s 1).toNat`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, h1⟩`. Establish `hx' : (x : ℤ) < nu t lam0 w J s 1` using `by omega`. Use `(ea_colH_eq_one h hJ s x hx').1 h1` as an intermediate fact.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨by omega, hx⟩`. Introduce and unpack `⟨h2, hx⟩`. Establish `hx' : (x : ℤ) < nu t lam0 w J s 1` using `by omega`. Conclude with `⟨hx, (ea_colH_eq_one h hJ s x hx').2 (by omega)⟩`. Rewrite using `[hfil, Nat.card_Ico]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `ea_nu_head (t := t) (lam0 := lam0) (w := w) J s (i := 1) (le_refl 1) (by omega)`. Establish `e2` using `ea_nu_head (t := t) (lam0 := lam0) (w := w) J s (i := 2) (by norm_num) (by omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ea_card_one (h : Std p n' k1 t m c r TT a b lam0 w) {J : ℕ} (hJ1 : 1 ≤ J) (hJ : J ≤ m) (s : Fin n') :
     (((range (nu t lam0 w J s 1).toNat).filter fun x => ea_colH t lam0 w J s x = 1).card : ℤ) =
@@ -251,13 +249,13 @@ theorem ea_card_one (h : Std p n' k1 t m c r TT a b lam0 w) {J : ℕ} (hJ1 : 1 �
   omega
 
 /- English proof (translation)
-Establish `key : ∑ x ∈ range (nu t lam0 w J s 1).toNat, ea_colH t lam0 w J s x = ∑ i ∈ Icc 1 (NN k1 t J), (nu t lam0 w J s i).toNat`. Unfold `ea_colH`. Simplify using `only [Finset.card_filter]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hi` using `[Finset.mem_Icc]`. Establish `hn` using `ea_nu_nonneg h hJ1 hJ s i`. Establish `hl` using `ea_nu_le_one h hJ s hi.1 hi.2`. Rewrite using `[← Finset.card_filter]`. Establish `hf : (range (nu t lam0 w J s 1).toNat).filter (fun x : ℕ => (x : ℤ) < nu t lam0 w J s i) = range (nu t lam0 w J s i).toNat`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hf, Finset.card_range]`. Rewrite using `[key, Nat.cast_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Int.toNat_of_nonneg (ea_nu_nonneg h hJ1 hJ s i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ea_sum_colH (h : Std p n' k1 t m c r TT a b lam0 w) {J : ℕ} (hJ1 : 1 ≤ J) (hJ : J ≤ m) (s : Fin n') :
     ((∑ x ∈ range (nu t lam0 w J s 1).toNat, ea_colH t lam0 w J s x : ℕ) : ℤ) =

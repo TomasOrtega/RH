@@ -21,7 +21,7 @@ variable {K : Type*} [Field K] [NumberField K]
 open scoped Classical in
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.Global.homeomorphMixedSpace_apply, InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`. Distinguish the cases in `hw : w.IsReal`. Combine the equalities or inequalities in the displayed calculation. Establish `hc : w.IsComplex` using `InfinitePlace.not_isReal_iff_isComplex.1 hw`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_apply_le_norm_homeomorphMixedSpace (x : InfiniteAdeleRing K) (w : InfinitePlace K) :
     ‖x w‖ ≤ ‖GroundTheory.Global.homeomorphMixedSpace K x‖ := by
@@ -46,7 +46,7 @@ theorem norm_apply_le_norm_homeomorphMixedSpace (x : InfiniteAdeleRing K) (w : I
       _ ≤ _ := by rw [Prod.norm_def]; exact le_max_right _ _
 
 /- English proof (translation)
-The claim follows from `|x - y| < 1 := by have h1 := Nat.floor_le hx have h2 := Nat.lt_floor_add_one x have h3 := Nat.floor_le hy have h4 := Nat.lt_floor_add_one y rw [h] at h1 h2 rw [abs_lt] constructor <;> linarith`.
+A detailed English derivation is pending.
 -/
 theorem abs_sub_lt_one_of_floor_eq {x y : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y) (h : ⌊x⌋₊ = ⌊y⌋₊) :
     |x - y| < 1 := by
@@ -59,7 +59,7 @@ theorem abs_sub_lt_one_of_floor_eq {x y : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y) (h 
   constructor <;> linarith
 
 /- English proof (translation)
-The claim follows from `norm_le_one_of_mem v (ha v)`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_mem_integralFiniteAdeles {a : FiniteAdeleRing (𝓞 K) K}
     (ha : a ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 K) K) (v : HeightOneSpectrum (𝓞 K)) :
@@ -69,47 +69,39 @@ theorem norm_le_one_of_mem_integralFiniteAdeles {a : FiniteAdeleRing (𝓞 K) K}
 open scoped Classical in
 
 /- English proof (translation)
-Use `set bZ := RingOfIntegers.basis K`. Use `set b := mixedEmbedding.latticeBasis K`. Use `set B₁ : ℝ := ∑ i, ‖b i‖ with hB₁`. Use `set B₂ : ℝ := ∑ w : InfinitePlace K, ∑ i, ‖(algebraMap K 𝔸[K] ((bZ i : 𝓞 K) : K)).1 w‖ with hB₂`. Establish `hB₁0 : 0 ≤ B₁` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB₂0 : 0 ≤ B₂` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Use `⟨B₁ + B₂ + 1, by positivity, fun a N hN => ?_⟩` and prove the remaining obligations. Set `lam : (Module.Free.ChooseBasisIndex ℤ (𝓞 K) → Fin (N + 1)) → 𝓞 K` to `fun m => bZ.equivFun.symm fun i => ((m i : ℕ) : ℤ)`. Establish `hlam_inj : Function.Injective lam`. Introduce `m m' h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h'` using `bZ.equivFun.symm.injective h`. Use function extensionality and compare the values at `i`. Conclude with `Fin.ext (by exact_mod_cast congrFun h' i)`. Establish `hk : ∀ l : 𝓞 K, ∃ k : K, (algebraMap K 𝔸[K] (l : K) * a).2 - algebraMap K (FiniteAdeleRing (𝓞 K) K) k ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 K) K` using `fun l => GroundTheory.Global.exists_sub_mem_integralFiniteAdeles _`. Use `choose k hk using hk`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : 𝓞 K → 𝔸[K]` to `fun l => algebraMap K 𝔸[K] (l : K) * a - algebraMap K 𝔸[K] (k l)`. Set `s : 𝓞 K → Module.Free.ChooseBasisIndex ℤ (𝓞 K) → ℝ` to `fun l i => b.repr (GroundTheory.Global.homeomorphMixedSpace K (e l).1) i`. Establish `hbox : ∀ (l : 𝓞 K) i, ⌊(N : ℝ) * Int.fract (s l i)⌋₊ < N` using `fun l i => by`. Use `(Nat.floor_lt (mul_nonneg (Nat.cast_nonneg _) (Int.fract_nonneg _))).2 ?_` and prove the remaining obligations. Conclude with `mul_lt_of_lt_one_right (by exact_mod_cast hN) (Int.fract_lt_one _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `box : 𝓞 K → Module.Free.ChooseBasisIndex ℤ (𝓞 K) → Fin N` to `fun l i => ⟨⌊(N : ℝ) * Int.fract (s l i)⌋₊, hbox l i⟩`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 K) → Fin N) < Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 K) → Fin (N + 1))`. Establish `: Nonempty (Module.Free.ChooseBasisIndex ℤ (𝓞 K))` using `bZ.index_nonempty`. Simplify using `only [Fintype.card_fun, Fintype.card_fin]`. Conclude with `Nat.pow_lt_pow_left (Nat.lt_succ_self N) Fintype.card_ne_zero`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, m', hne, hmm⟩` from `Fintype.exists_ne_map_eq_of_card_lt (box ∘ lam) hcard`. Establish `hlamK : ∀ p, ((lam p : 𝓞 K) : K) = ∑ i, (((p i : ℕ) : ℤ) • ((bZ i : 𝓞 K) : K))`. Introduce `p`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 K) K (bZ.equivFun.symm _) = _`. Rewrite using `[Module.Basis.equivFun_symm_apply, map_sum]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `⟨lam m - lam m', sub_ne_zero.2 (hlam_inj.ne hne), ?_, ?_⟩` and prove the remaining obligations. Introduce `w`. Set `φ : K →+* w.Completion` to `(infEval w).comp (algebraMap K 𝔸[K])`. Establish `hφ : ∀ x : K, (algebraMap K 𝔸[K] x).1 w = φ x` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hcast : ((lam m - lam m' : 𝓞 K) : K) = ∑ i, ((((m i : ℕ) : ℤ) - ((m' i : ℕ) : ℤ)) • ((bZ i : 𝓞 K) : K))`. Rewrite using `[show ((lam m - lam m' : 𝓞 K) : K) = (lam m : K) - (lam m' : K) from map_sub (algebraMap (𝓞 K) K) _ _, hlamK, hlamK, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => (sub_smul _ _ _).symm`. Establish `hz : ∀ i, ‖((((m i : ℕ) : ℤ) - ((m' i : ℕ) : ℤ)) : ℤ)‖ ≤ N` using `fun i => by`. Establish `h1` using `(m i).2`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2` using `(m' i).2`. Rewrite using `[Int.norm_eq_abs]`. Establish `: |(((m i : ℕ) : ℤ) - ((m' i : ℕ) : ℤ))| ≤ (N : ℤ)`. Apply the tactic sequence `rw [abs_le]; constructor <;> omega`. Conclude with `this` after adjusting the coercions.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hφ, hcast, map_sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_zsmul]`. Conclude with `(norm_zsmul_le _ _).trans (mul_le_mul_of_nonneg_right (hz i) (norm_nonneg _))`. Use `_ = N * ∑ i, ‖(algebraMap K 𝔸[K] ((bZ i : 𝓞 K) : K)).1 w‖ := by rw [Finset.mul_sum]; rfl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ ≤ N * B₂ := mul_le_mul_of_nonneg_left (Finset.single_le_sum (f := fun w : InfinitePlace K => ∑ i, ‖(algebraMap K 𝔸[K] ((bZ i : 𝓞 K) : K)).1 w‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ w)) (Nat.cast_nonneg _)`. Use `_ ≤ (N + 1) * (B₁ + B₂ + 1) := by`. Establish `: (0 : ℝ) ≤ N` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities. Use `set sm := s (lam m) with hsm set sm' := s (lam m') with hsm'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `F : 𝓞 K` to `∑ i, (⌊sm i⌋ - ⌊sm' i⌋) • bZ i`. Establish `hE : algebraMap K 𝔸[K] ((lam m - lam m' : 𝓞 K) : K) * a + algebraMap K 𝔸[K] (-(k (lam m) - k (lam m')) - (F : K)) = e (lam m) - e (lam m') - algebraMap K 𝔸[K] (F : K)`. Rewrite using `[show ((lam m - lam m' : 𝓞 K) : K) = (lam m : K) - (lam m' : K) from map_sub (algebraMap (𝓞 K) K) _ _]`. Simplify using `only [e, map_sub, map_neg, sub_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨-(k (lam m) - k (lam m')) - (F : K), ?_, ?_⟩` and prove the remaining obligations. Introduce `v`. Rewrite using `[hE]`. Establish `hmem : (e (lam m) - e (lam m') - algebraMap K 𝔸[K] (F : K)).2 ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 K) K` using `Subring.sub_mem _ (Subring.sub_mem _ (hk (lam m)) (hk (lam m'))) (GroundTheory.Global.algebraMap_integers_mem_integralFiniteAdeles K F)`. Conclude with `norm_le_one_of_mem_integralFiniteAdeles hmem v`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `w`. Rewrite using `[hE]`. Use `(norm_apply_le_norm_homeomorphMixedSpace _ w).trans ?_` and prove the remaining obligations. Establish `hb : ∀ i, mixedEmbedding K ((bZ i : 𝓞 K) : K) = b i` using `fun i => by`. Rewrite using `[mixedEmbedding.latticeBasis_apply, integralBasis_apply]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF : GroundTheory.Global.homeomorphMixedSpace K (algebraMap K 𝔸[K] (F : K)).1 = ∑ i, ((⌊sm i⌋ - ⌊sm' i⌋ : ℤ) : ℝ) • b i`. Express the relevant statement in the definitionally equal form `GroundTheory.Global.homeomorphMixedSpace K (algebraMap K (InfiniteAdeleRing K) (F : K)) = _`. Rewrite using `[GroundTheory.Global.homeomorphMixedSpace_algebraMap]`. Express the relevant statement in the definitionally equal form `mixedEmbedding K (algebraMap (𝓞 K) K F) = _`. Simplify using `only [F, map_sum, map_zsmul, hb, Int.cast_smul_eq_zsmul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hhom : GroundTheory.Global.homeomorphMixedSpace K (e (lam m) - e (lam m') - algebraMap K 𝔸[K] (F : K)).1 = ∑ i, (Int.fract (sm i) - Int.fract (sm' i)) • b i`. Express the relevant statement in the definitionally equal form `GroundTheory.Global.homeomorphMixedSpace K ((e (lam m)).1 - (e (lam m')).1 - (algebraMap K 𝔸[K] (F : K)).1) = _`. Rewrite using `[GroundTheory.Global.homeomorphMixedSpace_sub, GroundTheory.Global.homeomorphMixedSpace_sub, hF, ← b.sum_repr (GroundTheory.Global.homeomorphMixedSpace K (e (lam m)).1), ← b.sum_repr (GroundTheory.Global.homeomorphMixedSpace K (e (lam m')).1), ← Finset.sum_sub_distrib, ← Finset.s …`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_smul, ← sub_smul]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Simplify using `only [hsm, hsm', s, Int.fract]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hhom]`.
-
-Establish `hclose : ∀ i, |Int.fract (sm i) - Int.fract (sm' i)| ≤ 1 / N` using `fun i => by`. Establish `h` using `congrArg (fun f => ((f i : Fin N) : ℕ)) hmm`. Simplify using `only [Function.comp_apply, box] at h`. Establish `h1` using `abs_sub_lt_one_of_floor_eq (mul_nonneg (Nat.cast_nonneg N) (Int.fract_nonneg (sm i))) (mul_nonneg (Nat.cast_nonneg N) (Int.fract_nonneg (sm' i))) h`. Rewrite `h1` using `[← mul_sub, abs_mul, Nat.abs_cast]`.
-
-Establish `hN' : (0 : ℝ) < N` using `by exact_mod_cast hN`. Rewrite using `[le_div_iff₀ hN']`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_smul, Real.norm_eq_abs]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (hclose i) (norm_nonneg _)`. Use `_ = B₁ / N := by rw [← Finset.mul_sum]; ring`. Use `_ ≤ (B₁ + B₂ + 1) / N := by`. Establish `hN' : (0 : ℝ) < N` using `by exact_mod_cast hN`. Use `gcongr`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_dirichlet_box : ∃ B : ℝ, 0 < B ∧ ∀ (a : 𝔸[K]) (N : ℕ), 0 < N →
     ∃ l : 𝓞 K, l ≠ 0 ∧
@@ -256,14 +248,14 @@ theorem exists_dirichlet_box : ∃ B : ℝ, 0 < B ∧ ∀ (a : 𝔸[K]) (N : ℕ
             linarith
 
 /- English proof (translation)
-The claim follows from `(continuous_apply w).comp (continuous_fst.comp Units.continuous_val)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infiniteComponent (w : InfinitePlace K) :
     Continuous fun s : IdeleGroup K => (s : 𝔸[K]).1 w :=
   (continuous_apply w).comp (continuous_fst.comp Units.continuous_val)
 
 /- English proof (translation)
-Establish `hc : Continuous fun s : IdeleGroup K => ∑ w : InfinitePlace K, ‖(s : 𝔸[K]).1 w‖` using `continuous_finsetSum _ fun w _ => (continuous_infiniteComponent w).norm`. Take `⟨M, hM⟩` from `hS.exists_bound_of_continuousOn hc.continuousOn`. Use `⟨max M 0, le_max_right _ _, fun s hs w => ?_⟩` and prove the remaining obligations. Establish `h` using `(Real.le_norm_self _).trans (hM s hs)`. Conclude with `((Finset.single_le_sum (f := fun w : InfinitePlace K => ‖(s : 𝔸[K]).1 w‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ w)).trans h).trans (le_max_left _ _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_bound_infinite_of_isCompact {S : Set (IdeleGroup K)} (hS : IsCompact S) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ s ∈ S, ∀ w : InfinitePlace K, ‖(s : 𝔸[K]).1 w‖ ≤ M := by
@@ -276,7 +268,7 @@ theorem exists_bound_infinite_of_isCompact {S : Set (IdeleGroup K)} (hS : IsComp
     (fun _ _ => norm_nonneg _) (Finset.mem_univ w)).trans h).trans (le_max_left _ _)
 
 /- English proof (translation)
-Use `(finite_mulSupport_norm s).subset fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Function.mem_mulSupport] at hv ⊢`. Introduce `h`. Conclude with `hv (by rw [h, max_self])`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_mulSupport_max_one_norm (s : IdeleGroup K) :
     (Function.mulSupport fun v : HeightOneSpectrum (𝓞 K) => max 1 ‖(s : 𝔸[K]).2 v‖).Finite := by
@@ -286,7 +278,7 @@ theorem finite_mulSupport_max_one_norm (s : IdeleGroup K) :
   exact hv (by rw [h, max_self])
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, adele_snd_mul_apply, norm_mul, norm_eq_one_of_mul_eq_one (finite_mul_inv u v) ((mem_standardOpenSubgroup K).1 hu v).1 ((mem_standardOpenSubgroup K).1 hu v).2, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_mul_standardOpenSubgroup (s : IdeleGroup K) {u : IdeleGroup K}
     (hu : u ∈ standardOpenSubgroup K) (v : HeightOneSpectrum (𝓞 K)) :
@@ -296,11 +288,11 @@ theorem norm_mul_standardOpenSubgroup (s : IdeleGroup K) {u : IdeleGroup K}
       ((mem_standardOpenSubgroup K).1 hu v).2, mul_one]
 
 /- English proof (translation)
-Use `set f : IdeleGroup K → ℝ := fun s => ∏ᶠ v : HeightOneSpectrum (𝓞 K), max 1 ‖(s : 𝔸[K]).2 v‖`. Establish `hinv : ∀ s, ∀ u ∈ standardOpenSubgroup K, f (s * u) = f s` using `fun s u hu => by`. Simplify using `only [f, norm_mul_standardOpenSubgroup s hu]`. Establish `hcont : Continuous f`. Use `continuous_iff_continuousAt.2 fun s => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuousAt_const.congr (f := fun _ => f s) ?_` and prove the remaining obligations. Establish `hopen : IsOpen {y : IdeleGroup K | s⁻¹ * y ∈ standardOpenSubgroup K}` using `(isOpen_standardOpenSubgroup K).preimage (continuous_const.mul continuous_id)`. Use `filter_upwards [hopen.mem_nhds (by simp [one_mem])] with y hy`. Use `hinv s _ hy` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this.symm`. Take `⟨P, hP⟩` from `hS.exists_bound_of_continuousOn hcont.continuousOn`. Use `⟨max P 1, le_max_right _ _, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h` using `hP s hs`. Conclude with `((Real.le_norm_self _).trans h).trans (le_max_left _ _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_bound_finite_of_isCompact {S : Set (IdeleGroup K)} (hS : IsCompact S) :
     ∃ P : ℝ, 1 ≤ P ∧ ∀ s ∈ S,
@@ -326,7 +318,7 @@ def posIdele (ρ : ℝ) (hρ : 0 < ρ) : IdeleGroup K :=
   ∏ w : InfinitePlace K, moduleSection w ⟨ρ ^ w.mult, pow_pos hρ _⟩
 
 /- English proof (translation)
-Rewrite using `[posIdele, map_prod, Finset.prod_eq_single w]`. Conclude with `infiniteProj_infiniteEmbedding w _`. Introduce `w' _ hw'`. Conclude with `infiniteProj_infiniteEmbedding_of_ne (Ne.symm hw') _`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem infiniteProj_posIdele (ρ : ℝ) (hρ : 0 < ρ) (w : InfinitePlace K) :
     infiniteProj w (posIdele ρ hρ) = posRealToUnits w ⟨ρ ^ w.mult, pow_pos hρ _⟩ := by
@@ -338,7 +330,7 @@ theorem infiniteProj_posIdele (ρ : ℝ) (hρ : 0 < ρ) (w : InfinitePlace K) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[← coe_infiniteProj, infiniteProj_posIdele]`. Establish `h` using `norm_posRealElem_pow w (pow_pos hρ w.mult).le`. Apply the tactic sequence `have hm : w.mult ≠ 0 := by unfold InfinitePlace.mult; split_ifs <;> norm_num`. Conclude with `(pow_left_inj₀ (norm_nonneg _) hρ.le hm).1 h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem norm_posIdele_infinite (ρ : ℝ) (hρ : 0 < ρ) (w : InfinitePlace K) :
     ‖((posIdele ρ hρ : IdeleGroup K) : 𝔸[K]).1 w‖ = ρ := by
@@ -348,7 +340,7 @@ theorem norm_posIdele_infinite (ρ : ℝ) (hρ : 0 < ρ) (w : InfinitePlace K) :
   exact (pow_left_inj₀ (norm_nonneg _) hρ.le hm).1 h
 
 /- English proof (translation)
-Rewrite using `[← coe_finiteProj, posIdele, map_prod]`. Simplify using `[moduleSection, finiteProj_infiniteEmbedding]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem posIdele_finite (ρ : ℝ) (hρ : 0 < ρ) (v : HeightOneSpectrum (𝓞 K)) :
     ((posIdele ρ hρ : IdeleGroup K) : 𝔸[K]).2 v = 1 := by
@@ -356,7 +348,7 @@ theorem posIdele_finite (ρ : ℝ) (hρ : 0 < ρ) (v : HeightOneSpectrum (𝓞 K
   simp [moduleSection, finiteProj_infiniteEmbedding]
 
 /- English proof (translation)
-Rewrite using `[ideleModule_eq]`. Simplify using `only [norm_posIdele_infinite, posIdele_finite, norm_one, finprod_one, mul_one]`. Rewrite using `[Finset.prod_pow_eq_pow_sum, InfinitePlace.sum_mult_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ideleModule_posIdele (ρ : ℝ) (hρ : 0 < ρ) :
     (ideleModule K (posIdele ρ hρ) : ℝ) = ρ ^ Module.finrank ℚ K := by
@@ -365,7 +357,7 @@ theorem ideleModule_posIdele (ρ : ℝ) (hρ : 0 < ρ) :
   rw [Finset.prod_pow_eq_pow_sum, InfinitePlace.sum_mult_eq]
 
 /- English proof (translation)
-Rewrite using `[finprod_eq_prod_of_mulSupport_subset f (s := hf.toFinset ∪ hg.toFinset) (fun i hi => Finset.mem_coe.2 (Finset.mem_union_left _ (hf.mem_toFinset.2 hi))), finprod_eq_prod_of_mulSupport_subset g (s := hf.toFinset ∪ hg.toFinset) (fun i hi => Finset.mem_coe.2 (Finset.mem_union_right …`. Conclude with `Finset.prod_le_prod (fun i _ => h0 i) fun i _ => hfg i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finprod_le_finprod_of_nonneg' {ι : Type*} {f g : ι → ℝ} (hf : (Function.mulSupport f).Finite)
     (hg : (Function.mulSupport g).Finite) (h0 : ∀ i, 0 ≤ f i) (hfg : ∀ i, f i ≤ g i) :
@@ -378,7 +370,7 @@ private theorem finprod_le_finprod_of_nonneg' {ι : Type*} {f g : ι → ℝ} (h
   exact Finset.prod_le_prod (fun i _ => h0 i) fun i _ => hfg i
 
 /- English proof (translation)
-Rewrite using `[euclidNorm, Fin.sum_univ_two]`. Use `Real.sqrt_le_iff.2 ⟨by positivity, ?_⟩` and prove the remaining obligations. Use polynomial arithmetic with `[norm_nonneg (y 0), norm_nonneg (y 1)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem euclidNorm_two_le {E : Type*} [NormedField E] (y : Fin 2 → E) :
     euclidNorm y ≤ ‖y 0‖ + ‖y 1‖ := by
@@ -387,9 +379,9 @@ theorem euclidNorm_two_le {E : Type*} [NormedField E] (y : Fin 2 → E) :
   nlinarith [norm_nonneg (y 0), norm_nonneg (y 1)]
 
 /- English proof (translation)
-Use `le_antisymm ((pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `using norm_le_pi_norm (Pi.single j (1 : E) : Fin n → E) j`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_pi_single_one {E : Type*} [NormedField E] {n : ℕ} (j : Fin n) :
     ‖(Pi.single j (1 : E) : Fin n → E)‖ = 1 := by
@@ -401,7 +393,7 @@ theorem norm_pi_single_one {E : Type*} [NormedField E] {n : ℕ} (j : Fin n) :
   · simpa using norm_le_pi_norm (Pi.single j (1 : E) : Fin n → E) j
 
 /- English proof (translation)
-Rewrite using `[euclidNorm, Finset.sum_eq_single j (fun i _ h => by simp [h]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem euclidNorm_pi_single_one {E : Type*} [NormedField E] {n : ℕ} (j : Fin n) :
     euclidNorm (Pi.single j (1 : E) : Fin n → E) = 1 := by
@@ -410,11 +402,11 @@ theorem euclidNorm_pi_single_one {E : Type*} [NormedField E] {n : ℕ} (j : Fin 
   simp
 
 /- English proof (translation)
-Establish `hinf : ∀ w : InfinitePlace K, infComp w (ratVec (Pi.single j (1 : K))) = Pi.single j 1` using `fun w => by`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `((infEval w).comp (algebraMap K 𝔸[K])) ((Pi.single j (1 : K) : Fin n → K) i) = _`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne h, map_zero, Pi.single_eq_of_ne h]`. Establish `hfin : ∀ v : HeightOneSpectrum (𝓞 K), finComp v (ratVec (Pi.single j (1 : K))) = Pi.single j 1` using `fun v => by`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `((finEval v).comp (algebraMap K 𝔸[K])) ((Pi.single j (1 : K) : Fin n → K) i) = _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne h, map_zero, Pi.single_eq_of_ne h]`. Simplify using `only [adelicNorm, hinf, hfin, euclidNorm_pi_single_one, norm_pi_single_one, one_pow, Finset.prod_const_one, finprod_one, mul_one]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adelicNorm_ratVec_single {n : ℕ} (j : Fin n) :
     adelicNorm (ratVec (Pi.single j (1 : K))) = 1 := by
@@ -437,55 +429,47 @@ theorem adelicNorm_ratVec_single {n : ℕ} (j : Fin n) :
     Finset.prod_const_one, finprod_one, mul_one]
 
 /- English proof (translation)
-Take `⟨D, hD, -, hxD⟩` from `exists_isCompact_normOneSubgroup K`. Take `⟨M, hM0, hM⟩` from `exists_bound_infinite_of_isCompact hD`. Take `⟨P, hP1, hP⟩` from `exists_bound_finite_of_isCompact hD`. Take `⟨B, hB, hbox⟩` from `exists_dirichlet_box (K := K)`. Use `set d := Module.finrank ℚ K with hd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set A : ℝ := 3 * B * M + B with hA`. Establish `hA0 : 0 ≤ A` using `by positivity`. Use `⟨max 1 (A ^ d * P), lt_of_lt_of_le one_pos (le_max_left _ _), fun α δ u => ?_⟩` and prove the remaining obligations. Use `set r : IdeleGroup K := α * δ⁻¹ with hr`. Establish `hr0 : 0 < (ideleModule K r : ℝ)` using `(ideleModule K r).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ0 : 0 < (ideleModule K δ : ℝ)` using `(ideleModule K δ).2`. Establish `hmod : (ideleModule K (α * δ) : ℝ) = (ideleModule K r : ℝ) * (ideleModule K δ : ℝ) ^ 2`. Establish `: α * δ = r * δ * δ` using `by rw [hr]; group`. Rewrite using `[this, map_mul, map_mul]`. Simplify using `only [Positive.val_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hr1 : 1 ≤ (ideleModule K r : ℝ)`. Use `⟨Pi.single 1 1, by simp, ?_⟩` and prove the remaining obligations. Establish `hy : ratVec (Pi.single 1 1 : Fin 2 → K) ᵥ* !![(α : 𝔸[K]), u; 0, (δ : 𝔸[K])] = (δ : 𝔸[K]) • ratVec (Pi.single 1 1)`. Use extensionality with `i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `fin_cases i <;> simp [ratVec, vecMul, dotProduct, Fin.sum_univ_two]`. Rewrite using `[hy, adelicNorm_smul (hasFiniteContent_ratVec (by simp)) δ, adelicNorm_ratVec_single, mul_one, hmod, Real.sqrt_mul hr0.le, Real.sqrt_sq hδ0.le]`. Establish `h1 : 1 ≤ Real.sqrt (ideleModule K r : ℝ)` using `Real.one_le_sqrt.2 hr1`. Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities.
+Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ ≤ _ := mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)`. Rewrite `hr1` using `[not_le]`. Establish `hd0 : 0 < d` using `Module.finrank_pos`. Use `set s : ℝ := (ideleModule K r : ℝ) ^ ((1 : ℝ) / (2 * d)) with hs`. Establish `hs0 : 0 < s` using `Real.rpow_pos_of_pos hr0 _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hs1 : s < 1` using `Real.rpow_lt_one hr0.le hr1 (by positivity)`. Establish `hspow : s ^ (2 * d) = (ideleModule K r : ℝ)`. Rewrite using `[hs, ← Real.rpow_natCast, ← Real.rpow_mul hr0.le]`. Establish `: (1 : ℝ) / (2 * d) * ((2 * d : ℕ) : ℝ) = 1`. Use `push_cast`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[this, Real.rpow_one]`. Use `set t : IdeleGroup K := posIdele (s ^ 2) (by positivity) with ht`. Establish `htmod : (ideleModule K t : ℝ) = (ideleModule K r : ℝ)`. Rewrite using `[ht, ideleModule_posIdele, ← pow_mul, hspow]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hnorm1 : r * t⁻¹ ∈ normOneSubgroup K`. Express the relevant statement in the definitionally equal form `r * t⁻¹ ∈ (ideleModule K).ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, mul_inv_eq_one]`. Conclude with `Subtype.ext htmod.symm`. Take `⟨μ, hμ⟩` from `hxD _ hnorm1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set σ : IdeleGroup K := diagonal K μ * (r * t⁻¹) with hσ`. Use `set w' : 𝔸[K] := algebraMap K 𝔸[K] (μ : K) * u * ((δ⁻¹ : IdeleGroup K) : 𝔸[K]) with hw'`. Use `set N : ℕ := ⌈1 / s⌉₊ with hN`. Establish `hN0 : 0 < N` using `Nat.ceil_pos.2 (by positivity)`. Take `⟨l, hl0, hlw, c, hcv, hcw⟩` from `hbox w' N hN0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hlK : (l : K) ≠ 0` using `(RingOfIntegers.coe_ne_zero_iff).2 hl0`. Use `set L : 𝔸[K] := algebraMap K 𝔸[K] (l : K) with hL`. Use `set z : Fin 2 → 𝔸[K] := ![L * (σ : 𝔸[K]) * (t : 𝔸[K]), L * w' + algebraMap K 𝔸[K] c] with hz`. Use `⟨![(μ : K) * l, c], ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h0` using `congrFun h 0`. Simplify using `only [Matrix.cons_val_zero, Pi.zero_apply] at h0`. Conclude with `mul_ne_zero μ.ne_zero hlK h0`. Establish `h1 : (δ : 𝔸[K]) * ((δ⁻¹ : IdeleGroup K) : 𝔸[K]) = 1` using `Units.mul_inv δ`. Establish `h2 : ((t⁻¹ : IdeleGroup K) : 𝔸[K]) * (t : 𝔸[K]) = 1` using `Units.inv_mul t`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ' : (σ : 𝔸[K]) = algebraMap K 𝔸[K] (μ : K) * (α : 𝔸[K]) * ((δ⁻¹ : IdeleGroup K) : 𝔸[K]) * ((t⁻¹ : IdeleGroup K) : 𝔸[K])`. Rewrite using `[hσ, hr, Units.val_mul, Units.val_mul, Units.val_mul, coe_diagonal]`. Expand and normalize the polynomial expressions, which then agree. Establish `hy : ratVec ![(μ : K) * l, c] ᵥ* !![(α : 𝔸[K]), u; 0, (δ : 𝔸[K])] = (δ : 𝔸[K]) • z`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fin_cases i`. Simplify using `only [ratVec, vecMul, dotProduct, Fin.sum_univ_two, hz, hσ', hL, Pi.smul_apply, smul_eq_mul]`. Simplify using the standard rewrite rules. Take the linear combination `(-(algebraMap K 𝔸[K] (μ : K) * algebraMap K 𝔸[K] (l : K) * (α : 𝔸[K]) * (((t⁻¹ : IdeleGroup K) : 𝔸[K]) * (t : 𝔸[K])))) * h1 - (algebraMap K 𝔸[K] (μ : K) * algebraMap K 𝔸[K] (l : K) * (α : 𝔸[K])) * h2`. Simplify using `only [ratVec, vecMul, dotProduct, Fin.sum_univ_two, hz, hw', hL, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Take the linear combination `(-(algebraMap K 𝔸[K] (μ : K) * algebraMap K 𝔸[K] (l : K) * u)) * h1`. Establish `hLv : ∀ v : HeightOneSpectrum (𝓞 K), ‖L.2 v‖ ≤ 1` using `fun v => norm_le_one_of_mem v (GroundTheory.Global.algebraMap_integers_mem_integralFiniteAdeles K l v)`. Establish `hz0v : ∀ v : HeightOneSpectrum (𝓞 K), ‖finComp v z 0‖ = ‖L.2 v‖ * ‖(σ : 𝔸[K]).2 v‖` using `fun v => by`. Simplify using `only [finComp, hz, Matrix.cons_val_zero, adele_snd_mul_apply, norm_mul, ht, posIdele_finite, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz1v : ∀ v : HeightOneSpectrum (𝓞 K), ‖finComp v z 1‖ ≤ 1` using `fun v => by`. Simplify `hcv v` using `only [finComp, hz, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_zero]`. Establish `hzc : HasFiniteContent z` using `by filter_upwards [GroundTheory.Global.IdeleGroup.eventually_norm_eq_one σ, Reduction.eventually_norm_eq_one hlK] with v hv1 hv2`. Establish `h0 : ‖finComp v z 0‖ = 1`. Rewrite using `[hz0v, hv1, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hv2`. Use `le_antisymm ((pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => ?_) (h0 ▸ norm_le_pi_norm _ 0)` and prove the remaining obligations. Use `fin_cases i`. Conclude with `h0.le`. Conclude with `hz1v v`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfinv : ∀ v : HeightOneSpectrum (𝓞 K), ‖finComp v z‖ ≤ max 1 ‖(σ : 𝔸[K]).2 v‖`. Introduce `v`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Express the relevant statement in the definitionally equal form `‖finComp v z 0‖ ≤ _`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hz0v]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (hLv v)).trans (le_max_right _ _)`. Conclude with `(hz1v v).trans (le_max_left _ _)`. Establish `hNl : 1 / s ≤ N` using `Nat.le_ceil _`. Establish `hNu : (N : ℝ) < 1 / s + 1` using `Nat.ceil_lt_add_one (by positivity)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinf : ∀ w : InfinitePlace K, euclidNorm (infComp w z) ≤ A * s`. Introduce `w`. Use `(euclidNorm_two_le _).trans ?_` and prove the remaining obligations. Establish `e0 : ‖infComp w z 0‖ = ‖L.1 w‖ * ‖(σ : 𝔸[K]).1 w‖ * s ^ 2`. Simplify using `only [infComp, hz, Matrix.cons_val_zero, adele_fst_mul_apply, norm_mul, ht, norm_posIdele_infinite]`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ‖infComp w z 1‖ ≤ B / N`. Simplify `hcw w` using `only [infComp, hz, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_zero]`. Establish `hLw : ‖L.1 w‖ ≤ (N + 1) * B` using `hlw w`. Establish `hσw : ‖(σ : 𝔸[K]).1 w‖ ≤ M` using `hM σ hμ w`. Establish `hN1 : ((N : ℝ) + 1) * s ^ 2 ≤ 3 * s`.
-
-Establish `: ((N : ℝ) + 1) * s ^ 2 ≤ (1 / s + 2) * s ^ 2` using `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Establish `hBN : B / N ≤ B * s`. Combine the equalities or inequalities in the displayed calculation. Establish `hprod : ‖L.1 w‖ * ‖(σ : 𝔸[K]).1 w‖ * s ^ 2 ≤ 3 * B * M * s`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e0]`. Combine the equalities or inequalities in the displayed calculation. Establish `hzbound : adelicNorm z ≤ (A * s) ^ d * P`. Rewrite using `[adelicNorm]`.
-
-Use `mul_le_mul ?_ ?_ (finprod_nonneg fun _ => norm_nonneg _) (by positivity)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hsq : Real.sqrt (ideleModule K r : ℝ) = s ^ d`. Rewrite using `[← hspow, show s ^ (2 * d) = (s ^ d) ^ 2 by ring, Real.sqrt_sq (by positivity)]`.
-
-Rewrite using `[hy, adelicNorm_smul hzc δ, hmod, Real.sqrt_mul hr0.le, Real.sqrt_sq hδ0.le, hsq]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_adelicNorm_vecMul_le : ∃ C : ℝ, 0 < C ∧ ∀ (α δ : IdeleGroup K) (u : 𝔸[K]),
     ∃ x : Fin 2 → K, x ≠ 0 ∧ adelicNorm (ratVec x ᵥ* !![(α : 𝔸[K]), u; 0, (δ : 𝔸[K])]) ≤

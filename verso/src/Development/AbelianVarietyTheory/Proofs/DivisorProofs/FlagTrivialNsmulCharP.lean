@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.TrivFlag
 
 /- English proof (translation)
-Introduce `c c' h` and use `by have l : (lbPow L τ).U c ⊓ (lbPow L τ).U c' ≤ L.U (c PUnit.unit) ⊓ L.U (c' PUnit.unit) := fun _ hx => ⟨Set.mem_iInter.1 hx.1 PUnit.unit, Set.mem_iInter.1 hx.2 PUnit.unit⟩ have e : (lbPow L τ).g c c' = res l (L.g (c PUnit.unit) (c' PUnit.unit)) ^ τ := by change ∏ _k : PUnit, _ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isRatSec_lbPow_frob {Z : Scheme.{0}} [IsIntegral Z] {L : LB Z} {r : L.ι → Z.functionFieldˣ}
     (hr : IsRatSec L r) (τ : ℕ) : IsRatSec (lbPow L τ) fun c => r (c PUnit.unit) ^ τ :=
@@ -30,27 +30,25 @@ theorem isRatSec_lbPow_frob {Z : Scheme.{0}} [IsIntegral Z] {L : LB Z} {r : L.ι
   exact congrArg (fun a => (a * _) ^ τ) (fnOf_resG l h _).symm
 
 /- English proof (translation)
-The claim follows from `have ⟨a, ha⟩ := h; ⟨a ^ n, by rw [map_pow, ha]⟩`.
+A detailed English derivation is pending.
 -/
 theorem regAt_pow_frob {Z : Scheme.{0}} [IsIntegral Z] {z : Z} {f : Z.functionField} (h : RegAt z f)
     (n : ℕ) : RegAt z (f ^ n) :=
   have ⟨a, ha⟩ := h; ⟨a ^ n, by rw [map_pow, ha]⟩
 
 /- English proof (translation)
-The claim follows from `have ⟨a, ha, e⟩ := h; ⟨a ^ n, ha.pow n, by rw [map_pow, e]⟩`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_pow_frob {Z : Scheme.{0}} [IsIntegral Z] {z : Z} {f : Z.functionField} (h : UnitAt z f)
     (n : ℕ) : UnitAt z (f ^ n) :=
   have ⟨a, ha, e⟩ := h; ⟨a ^ n, ha.pow n, by rw [map_pow, e]⟩
 
 /- English proof (translation)
-Introduce `p hp Z _ hpZ N g hg`. Take `⟨G, hG, r, A, hcls, hr, hB⟩` from `hg`. Use `haveI := Fact.mk hp`. Establish `hpK : (p : Z.functionField) = 0`. Rewrite using `[← map_natCast (algebraMap Γ(Z, ⊤) Z.functionField), hpZ, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `haveI : CharP Z.functionField p := (CharP.charP_iff_prime_eq_zero hp).2 hpK`. Set `φ` to `frobenius Z.functionField p`. Establish `hφ : ∀ x, φ x = x ^ p` using `fun x => frobenius_def _ _`. Use `⟨fun i => lbPow (G i) p, fun i => LB.isLB_linComb (hG i) _ _, fun i c => r i (c PUnit.unit) ^ p, A.map φ, fun i => ?_, fun i => isRatSec_lbPow_frob (hr i) p, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[cls_lbPow (hG i), hcls i]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨B, hBt, hreg, hdet, hu⟩` from `hB z`. Use `⟨B.map φ, hBt.map φ, fun a b => ?_, ?_, fun i c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, Matrix.map_apply, hφ]`. Conclude with `regAt_pow_frob (hreg a b) p`. Rewrite using `[← Matrix.map_mul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, hφ]`.
-
-Conclude with `unitAt_pow_frob hdet p`. Establish `hc' : z ∈ (G i).U (c PUnit.unit)` using `Set.mem_iInter.1 hc PUnit.unit`. Rewrite using `[Matrix.map_apply, hφ, Units.val_pow_eq_pow_val, ← mul_pow]`. Conclude with `unitAt_pow_frob (hu i (c PUnit.unit) hc') p`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagOfTriv_frob : ∀ (p : ℕ), p.Prime → ∀ (Z : Scheme.{0}) [IsIntegral Z], (p : Γ(Z, ⊤)) = 0 →
     ∀ (N : ℕ) (g : Fin N → Pic Z), FlagOfTriv g → FlagOfTriv fun i => p • g i := by

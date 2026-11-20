@@ -26,7 +26,7 @@ def ev (κ : B →+* C) (c : Multiplicative M →* Cˣ) : AddMonoidAlgebra B M �
   AddMonoidAlgebra.liftNCRingHom κ ((Units.coeHom C).comp c) fun _ _ => Commute.all _ _
 
 /- English proof (translation)
-Simplify using `[ev, AddMonoidAlgebra.liftNCRingHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_single (κ : B →+* C) (c : Multiplicative M →* Cˣ) (m : M) (b : B) :
     ev κ c (AddMonoidAlgebra.single m b) = κ b * (c (Multiplicative.ofAdd m)).val := by
@@ -38,7 +38,7 @@ def pair (c : Multiplicative M →* Cˣ) (c' : Multiplicative N →* Cˣ) : Mult
     exact _root_.mul_mul_mul_comm _ _ _ _
 
 /- English proof (translation)
-Proceed by induction on `a using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [AddMonoidAlgebra.mapDomain_add, map_add, map_add, ha, hb]`. Consider the case `single m b => rw [AddMonoidAlgebra.mapDomain_single, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_mapDomain (s : M → N) (F : AddMonoidAlgebra B N →+* C) (G : AddMonoidAlgebra B M →+* C)
     (h : ∀ m b, F (AddMonoidAlgebra.single (s m) b) = G (AddMonoidAlgebra.single m b)) (a : AddMonoidAlgebra B M) :
@@ -49,7 +49,7 @@ theorem map_mapDomain (s : M → N) (F : AddMonoidAlgebra B N →+* C) (G : AddM
   | single m b => rw [AddMonoidAlgebra.mapDomain_single, h]
 
 /- English proof (translation)
-Proceed by induction on `a using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Consider the case `single m b => exact h m b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem hom_eq (F G : AddMonoidAlgebra B M →+* C)
     (h : ∀ m b, F (AddMonoidAlgebra.single m b) = G (AddMonoidAlgebra.single m b)) (a : AddMonoidAlgebra B M) :
@@ -60,7 +60,7 @@ theorem hom_eq (F G : AddMonoidAlgebra B M →+* C)
   | single m b => exact h m b
 
 /- English proof (translation)
-Rewrite using `[← AddMonoidAlgebra.sum_coeff_single a, Finsupp.sum, map_sum]`. Conclude with `Finset.sum_eq_zero fun m _ => by rw [ev_single, h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_eq_zero (κ : B →+* C) (c : Multiplicative M →* Cˣ) (a : AddMonoidAlgebra B M)
     (h : ∀ m, κ (a.coeff m) = 0) : ev κ c a = 0 := by
@@ -68,7 +68,7 @@ theorem ev_eq_zero (κ : B →+* C) (c : Multiplicative M →* Cˣ) (a : AddMono
   exact Finset.sum_eq_zero fun m _ => by rw [ev_single, h, zero_mul]
 
 /- English proof (translation)
-Establish `k : AddMonoidAlgebra.mapRingHom M (Ideal.Quotient.mk I) a = G a` using `hom_eq _ G (fun m b => by rw [hG]; simp) a`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← AddMonoidAlgebra.coeff_mapRingHom, map_sub, k, h, map_one, sub_self]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coeff_mem (I : Ideal B) (G : AddMonoidAlgebra B M →+* AddMonoidAlgebra (B ⧸ I) M)
     (hG : ∀ m b, G (AddMonoidAlgebra.single m b) = AddMonoidAlgebra.single m (Ideal.Quotient.mk I b))
@@ -100,33 +100,33 @@ def ev₂ {Z : Over S} (t t' : Z ⟶ splitTorus S X) (y : Z ⟶ Y) :
   ev y.left.appTop.hom (pair (splitTorusPointsEquiv S X Z t) (splitTorusPointsEquiv S X Z t'))
 
 /- English proof (translation)
-The claim follows from `ev_single _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ev₁_single {Z : Over S} (t : Z ⟶ splitTorus S X) (y : Z ⟶ Y) (m : X) (b) :
     ev₁ t y (AddMonoidAlgebra.single m b) = y.left.appTop.hom b * (chV t m).val := ev_single _ _ _ _
 
 /- English proof (translation)
-The claim follows from `ev_single _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ev₂_single {Z : Over S} (t t' : Z ⟶ splitTorus S X) (y : Z ⟶ Y) (m : X × X) (b) :
     ev₂ t t' y (AddMonoidAlgebra.single m b) = y.left.appTop.hom b * ((chV t m.1).val * (chV t' m.2).val) :=
   ev_single _ _ _ _
 
 /- English proof (translation)
-Rewrite using `[chV_val, chV_val, Rosenlicht.over_appTop_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chV_comp {Z Z' : Over S} (σ : Z' ⟶ Z) (t : Z ⟶ splitTorus S X) (χ : X) :
     (chV (σ ≫ t) χ).val = σ.left.appTop.hom (chV t χ).val := by
   rw [chV_val, chV_val, Rosenlicht.over_appTop_comp]
 
 /- English proof (translation)
-The claim follows from `(splitTorusPointsEquiv S X Z).injective (MonoidHom.ext fun a => Units.ext (h a.toAdd))`.
+A detailed English derivation is pending.
 -/
 theorem chV_ext {Z : Over S} {t t' : Z ⟶ splitTorus S X} (h : ∀ χ, (chV t χ).val = (chV t' χ).val) : t = t' :=
   (splitTorusPointsEquiv S X Z).injective (MonoidHom.ext fun a => Units.ext (h a.toAdd))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(splitTorusPointsEquiv S X U).symm ((Units.map e.symm.toMonoidHom).comp c), fun χ => by rw [chV, MulEquiv.apply_symm_apply]; exact e.apply_symm_apply _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_point {U : Over S} {D : Type} [CommRing D] (e : Γ(U.left, ⊤) ≃+* D) (c : Multiplicative X →* Dˣ) :
     ∃ t : U ⟶ splitTorus S X, ∀ χ, e (chV t χ).val = (c (Multiplicative.ofAdd χ)).val :=
@@ -134,11 +134,11 @@ theorem exists_point {U : Over S} {D : Type} [CommRing D] (e : Γ(U.left, ⊤) �
     rw [chV, MulEquiv.apply_symm_apply]; exact e.apply_symm_apply _⟩
 
 /- English proof (translation)
-Take `⟨U, y₀, e, -, he, hU⟩` from `exists_ringPoint Y (AddMonoidAlgebra Γ(Y.left, ⊤) (X × X)) AddMonoidAlgebra.singleZeroRingHom`. Take `⟨t₀, h₀⟩` from `exists_point (S := S) e (mon _ (AddMonoidHom.inl X X))`. Take `⟨t₁, h₁⟩` from `exists_point (S := S) e (mon _ (AddMonoidHom.inr X X))`. Use `⟨e ((lift t₀ (lift t₁ y₀)).left.appTop.hom f), fun Z t t' y => ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ, Hσ⟩` from `hU Z y (ev₂ t t' y) fun b => (ev₂_single t t' y 0 b).trans (by simp [chV_zero])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `a₀ : σ ≫ t₀ = t` using `chV_ext fun χ => by`. Rewrite using `[chV_comp, Hσ, h₀, mon_val, ev₂_single]`. Simplify using `[chV_zero]`. Establish `a₁ : σ ≫ t₁ = t'` using `chV_ext fun χ => by`. Rewrite using `[chV_comp, Hσ, h₁, mon_val, ev₂_single]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[chV_zero]`. Rewrite using `[← Hσ, Rosenlicht.over_appTop_comp, comp_lift, comp_lift, a₀, a₁, hσ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_coeffs [IsAffine Y.left] (f : Γ((splitTorus S X ⊗ splitTorus S X ⊗ Y).left, ⊤)) :
     ∃ φ : AddMonoidAlgebra Γ(Y.left, ⊤) (X × X), ∀ (Z : Over S) (t t' : Z ⟶ splitTorus S X) (y : Z ⟶ Y),
@@ -156,7 +156,7 @@ theorem exists_coeffs [IsAffine Y.left] (f : Γ((splitTorus S X ⊗ splitTorus S
   rw [← Hσ, Rosenlicht.over_appTop_comp, comp_lift, comp_lift, a₀, a₁, hσ]
 
 /- English proof (translation)
-The claim follows from `hom_eq ((lift t y).left.appTop.hom.comp (ev₁ (fst (splitTorus S X) Y) (snd _ _))) _ (fun m b => by rw [RingHom.comp_apply, ev₁_single, ev₁_single, map_mul, ← chV_comp, Rosenlicht.over_appTop_comp, lift_fst, lift_snd]) a`.
+A detailed English derivation is pending.
 -/
 theorem appTop_ev₁ {Z : Over S} (t : Z ⟶ splitTorus S X) (y : Z ⟶ Y) (a : AddMonoidAlgebra Γ(Y.left, ⊤) X) :
     (lift t y).left.appTop.hom (ev₁ (fst (splitTorus S X) Y) (snd _ _) a) = ev₁ t y a :=
@@ -167,7 +167,7 @@ theorem appTop_ev₁ {Z : Over S} (t : Z ⟶ splitTorus S X) (y : Z ⟶ Y) (a : 
 abbrev pl {Z W : Scheme.{0}} (r : Z ⟶ W) (u : Γ(W, ⊤)ˣ) : Γ(Z, ⊤)ˣ := Units.map r.appTop.hom.toMonoidHom u
 
 /- English proof (translation)
-Establish `e : ∀ z, (gm r₁ z ⊤ u * gm r₂ z ⊤ v = gm r₃ z ⊤ w * gm r₄ z ⊤ w) = (gm (𝟙 Z) z ⊤ (pl r₁ u * pl r₂ v) = gm (𝟙 Z) z ⊤ (pl r₃ w * pl r₄ w))` using `fun z => by`. Rewrite using `[map_mul, map_mul, gm_top r₁, gm_top r₂, gm_top r₃, gm_top r₄]`. Simplify using `only [e]`. Conclude with `⟨fun h => congrArg Units.val (unit_ext fun z _ => h z), fun h z => congrArg _ (Units.ext h)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem gm_mul_iff {Z W W' W'' : Scheme.{0}} (r₁ : Z ⟶ W) (r₂ : Z ⟶ W') (r₃ : Z ⟶ W'') (r₄ : Z ⟶ W'')
     (u : Γ(W, ⊤)ˣ) (v : Γ(W', ⊤)ˣ) (w : Γ(W'', ⊤)ˣ) :
@@ -180,7 +180,7 @@ theorem gm_mul_iff {Z W W' W'' : Scheme.{0}} (r₁ : Z ⟶ W) (r₂ : Z ⟶ W') 
   exact ⟨fun h => congrArg Units.val (unit_ext fun z _ => h z), fun h z => congrArg _ (Units.ext h)⟩
 
 /- English proof (translation)
-Establish `e : ∀ z, (gm r z ⊤ u = 1) = (gm (𝟙 Z) z ⊤ (pl r u) = gm (𝟙 Z) z ⊤ 1)` using `fun z => by`. Rewrite using `[map_one, gm_top r]`. Simplify using `only [e]`. Conclude with `⟨fun h => congrArg Units.val (unit_ext fun z _ => h z), fun h z => congrArg _ (Units.ext h)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem gm_one_iff {Z W : Scheme.{0}} (r : Z ⟶ W) (u : Γ(W, ⊤)ˣ) :
     (∀ z, gm r z ⊤ u = 1) ↔ r.appTop.hom u.val = 1 := by
@@ -190,11 +190,11 @@ theorem gm_one_iff {Z W : Scheme.{0}} (r : Z ⟶ W) (u : Γ(W, ⊤)ˣ) :
   exact ⟨fun h => congrArg Units.val (unit_ext fun z _ => h z), fun h z => congrArg _ (Units.ext h)⟩
 
 /- English proof (translation)
-Take `⟨U, y₀, e, -, he, -⟩` from `exists_ringPoint Y (AddMonoidAlgebra Γ(Y.left, ⊤) (X × X × X)) AddMonoidAlgebra.singleZeroRingHom`. Take `⟨t₀, h₀⟩` from `exists_point (S := S) e (mon _ (AddMonoidHom.inl X (X × X)))`. Take `⟨t₁, h₁⟩` from `exists_point (S := S) e (mon _ ((AddMonoidHom.inr X (X × X)).comp (AddMonoidHom.inl X X)))`. Take `⟨t₂, h₂⟩` from `exists_point (S := S) e (mon _ ((AddMonoidHom.inr X (X × X)).comp (AddMonoidHom.inr X X)))`. Establish `key : ∀ (s : X × X → X × X × X) (t t' : U ⟶ splitTorus S X), (∀ m : X × X, e (chV t m.1).val * e (chV t' m.2).val = AddMonoidAlgebra.single (s m) 1) → AddMonoidAlgebra.mapDomain s φ = e (ev₂ t t' y₀ φ)` using `fun s t t' H => map_mapDomain s (RingHom.id _) (e.toRingHom.comp (ev₂ t t' y₀)) (fun m b => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = e (ev₂ t t' y₀ _)`. Rewrite using `[ev₂_single, map_mul, map_mul, H, he]`. Simplify using `[AddMonoidAlgebra.single_mul_single]) φ`. Rewrite using `[key _ (t₀ * t₁) t₂, key _ t₀ t₁, key _ t₀ (t₁ * t₂), key _ t₁ t₂, ← map_mul, ← map_mul, h]`. Use `all_goals`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Simplify using `[chV_mul, h₀, h₁, h₂, mon_val, AddMonoidAlgebra.single_mul_single]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cocycle_of_points [IsAffine Y.left] (φ : AddMonoidAlgebra Γ(Y.left, ⊤) (X × X))
     (h : ∀ (Z : Over S) (t t' t'' : Z ⟶ splitTorus S X) (y : Z ⟶ Y),
@@ -226,11 +226,11 @@ section Red
 variable {A : Type} [CommRing A] (J : Ideal A) {X : Type} [AddCommGroup X] {Y : Over (Spec (CommRingCat.of A))}
 
 /- English proof (translation)
-Take `⟨I, hI⟩ : ∃ I, I = J.map (strMap Y)` from `⟨_, rfl⟩`. Rewrite using `[← hI]`. Take `⟨U, y₀, e, -, he, -⟩` from `exists_ringPoint Y (AddMonoidAlgebra (Γ(Y.left, ⊤) ⧸ I) (X × X)) (AddMonoidAlgebra.singleZeroRingHom.comp (Ideal.Quotient.mk I))`. Take `⟨t₀, h₀⟩` from `exists_point e (mon _ (AddMonoidHom.inl X X))`. Take `⟨t₁, h₁⟩` from `exists_point e (mon _ (AddMonoidHom.inr X X))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hU : ∃ s, s ≫ red J = U.hom` using `(exists_comp_red_iff J U).2 fun a ha => e.injective (by`. Establish `: Ideal.Quotient.mk I (strMap Y a) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (hI ▸ Ideal.mem_map_of_mem _ ha)`. Rewrite using `[← appTop_strMap y₀, he, RingHom.comp_apply, this, map_zero, map_zero])`. Use `coeff_mem I (e.toRingHom.comp (ev₂ t₀ t₁ y₀)) (fun m b => ?_) φ ((congrArg e (h U hU t₀ t₁ y₀)).trans (map_one e)) p` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e (ev₂ t₀ t₁ y₀ _) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ev₂_single, map_mul, map_mul, he, h₀, h₁, mon_val, mon_val]`. Simplify using `[AddMonoidAlgebra.single_mul_single]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_mem_of_points [IsAffine Y.left] (φ : AddMonoidAlgebra Γ(Y.left, ⊤) (X × X))
     (h : ∀ (Z : Over (Spec (CommRingCat.of A))), (∃ s, s ≫ red J = Z.hom) →
@@ -254,13 +254,13 @@ theorem coeff_mem_of_points [IsAffine Y.left] (φ : AddMonoidAlgebra Γ(Y.left, 
 end Red
 
 /- English proof (translation)
-Introduce `A _ J hJ X _ Y _ f hc h1`. Take `⟨φ, hφ⟩` from `exists_coeffs f.val`. Establish `hI : IsNilpotent (J.map (strMap Y))`. Take `⟨n, hn⟩` from `hJ`. Conclude with `⟨n, by rw [← Ideal.map_pow, hn]; exact Ideal.map_bot⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨u, hu, Hu⟩` from `GlobalTheory.T.exists_unit_coboundary_of_cocycle_addMonoidAlgebra _ _ hI X φ (coeff_mem_of_points J φ fun Z hZ t t' y => (hφ Z t t' y).symm.trans ((gm_one_iff _ _).1 (h1 Z hZ t t' y))) (cocycle_of_points φ fun Z t t' t'' y => by`. Rewrite using `[← hφ, ← hφ, ← hφ, ← hφ]`. Conclude with `(gm_mul_iff _ _ _ _ _ _ _).1 (hc Z t t' t'' y))`. Use `⟨Units.map (ev₁ (fst _ Y) (snd _ _)).toMonoidHom u, fun Z t t' y => (gm_mul_iff _ _ _ _ _ _ _).2 ?_, fun Z hZ t y => (gm_one_iff _ _).2 ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (ev₂ t t' y) Hu`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[map_mul, map_mul, map_mapDomain _ _ (ev₁ (t * t') y), map_mapDomain _ _ (ev₁ t y), map_mapDomain _ _ (ev₁ t' y), ← hφ, ← appTop_ev₁ (t * t'), ← appTop_ev₁ t, ← appTop_ev₁ t']`. Conclude with `e`. Use `all_goals`. Introduce `m b`. Simplify using `[ev₁_single, ev₂_single, chV_mul, chV_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(appTop_ev₁ t y u.val).trans ?_` and prove the remaining obligations. Establish `hle : J.map (strMap Y) ≤ RingHom.ker y.left.appTop.hom` using `Ideal.map_le_iff_le_comap.2 fun a ha => (appTop_strMap y a).trans ((exists_comp_red_iff J Z).1 hZ a ha)`. Establish `e : ev₁ t y (u.val - 1) = 0` using `ev_eq_zero _ _ _ fun m => hle (hu m)`. Rewrite `e` using `[map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_coboundary : ∀ (A : Type) [CommRing A] (J : Ideal A), IsNilpotent J → ∀ (X : Type) [AddCommGroup X] (Y : Over (Spec (CommRingCat.of A))) [IsAffine Y.left] (f : Γ((splitTorus (Spec (CommRingCat.of A)) X ⊗ splitTorus (Spec (CommRingCat.of A)) X ⊗ Y).left, ⊤)ˣ), (∀ (Z : Over (Spec (CommRingCat.of A))) (t t' t'' : Z ⟶ splitTorus _ X) (y : Z ⟶ Y) (z : Z.left), gm (lift (t * t') (lift t'' y)).left z ⊤ f * gm (lift t (lift t' y)).left z ⊤ f = gm (lift t (lift (t' * t'') y)).left z ⊤ f * gm (lift t' (lift t'' y)).left z ⊤ f) → (∀ (Z : Over (Spec (CommRingCat.of A))), (∃ s, s ≫ red J = Z.hom) → ∀ (t t' : Z ⟶ splitTorus _ X) (y : Z ⟶ Y) (z : Z.left), gm (lift t (lift t' y)).left z ⊤ f = 1) → ∃ g : Γ((splitTorus (Spec (CommRingCat.of A)) X ⊗ Y).left, ⊤)ˣ, (∀ (Z : Over (Spec (CommRingCat.of A))) (t t' : Z ⟶ splitTorus _ X) (y : Z ⟶ Y) (z : Z.left), gm (lift t (lift t' y)).left z ⊤ f * gm (lift (t * t') y).left z ⊤ g = gm (lift t y).left z ⊤ g * gm (lift t' y).left z ⊤ g) ∧ (∀ (Z : Over (Spec (CommRingCat.of A))), (∃ s, s ≫ red J = Z.hom) → ∀ (t : Z ⟶ splitTorus _ X) (y : Z ⟶ Y) (z : Z.left), gm (lift t y).left z ⊤ g = 1) := by
   intro A _ J hJ X _ Y _ f hc h1

@@ -13,11 +13,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 namespace COneB
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (k : ℕ) : BorelSpace (Fin k → AE F E) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (k : ℕ) : OpensMeasurableSpace (Fin k → AE F E) := inferInstance
 
@@ -26,12 +26,12 @@ variable {d : SD σ} (L : LD d)
 def Nu (u : Fin L.n → AE F E) : Matrix (Fin d.n) (Fin d.n) (AE F E) := ∑ j, Matrix.single L.i₀ (L.em j) (u j)
 
 /- English proof (translation)
-The claim follows from `(L.rng (L.em j)).2 ⟨j, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem em_ne (j : Fin L.n) : L.em j ≠ L.i₀ := (L.rng (L.em j)).2 ⟨j, rfl⟩
 
 /- English proof (translation)
-Simplify using `only [Nu, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Apply `Matrix.single_mul_single_of_ne` to reduce the goal to its premises. Conclude with `em_ne L _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem Nu_mul (u v : Fin L.n → AE F E) : Nu L u * Nu L v = 0 := by
   simp only [Nu, Finset.sum_mul, Finset.mul_sum]
@@ -40,13 +40,13 @@ theorem Nu_mul (u v : Fin L.n → AE F E) : Nu L u * Nu L v = 0 := by
   exact em_ne L _
 
 /- English proof (translation)
-Simplify using `only [Nu, Pi.add_apply, Matrix.single_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Nu_add (u v : Fin L.n → AE F E) : Nu L (u + v) = Nu L u + Nu L v := by
   simp only [Nu, Pi.add_apply, Matrix.single_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `e : Nu L = fun u => ∑ j, u j • Matrix.single L.i₀ (L.em j) (1 : AE F E)`. Use function extensionality and compare the values at `u`. Simplify using `only [Nu, Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[e]`. Conclude with `continuous_finsetSum _ fun j _ => (continuous_apply j).smul continuous_const`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Nu_cont : Continuous (Nu L) := by
   have e : Nu L = fun u => ∑ j, u j • Matrix.single L.i₀ (L.em j) (1 : AE F E) := by
@@ -57,11 +57,11 @@ theorem Nu_cont : Continuous (Nu L) := by
 omit L in
 
 /- English proof (translation)
-Take `⟨⟨ε, hε⟩, -⟩` from `d.ok.frame`. Use `⟨((ε : ℤ) : AE F E), ?_⟩` and prove the remaining obligations. Establish `hF` using `kfour.frameEq_adelic (F := F) (Y := d.Y) hε`. Establish `hU : (mat2 x)ᵀ * dbl (incM F d.Y.J) * (mat2 x).map (cA σ) = dbl (incM F d.Y.J)` using `x.2`. Rewrite `hU` using `[SiegelEisensteinSeries.Grp.matrix_eq_frame_conjugate d.b x]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (incM F d.b.1)ᵀ * (incM F (d.b⁻¹).1)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, SiegelEisensteinSeries.Grp.incM_inv_mul, Matrix.transpose_one]`. Establish `h2 : (incM F (d.b⁻¹).1).map (cA σ) * (incM F d.b.1).map (cA σ) = 1`. Rewrite using `[← SiegelEisensteinSeries.Grp.map_cA_mul, SiegelEisensteinSeries.Grp.incM_inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[← hF]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← hU]`. Rewrite using `[SiegelEisensteinSeries.Grp.map_cA_mul, SiegelEisensteinSeries.Grp.map_cA_mul, Matrix.transpose_mul, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h2, Matrix.mul_one, ← Matrix.mul_assoc (incM F d.b.1)ᵀ (incM F (d.b⁻¹).1)ᵀ, h1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_frame (d : SD σ) (x : d.G) : ∃ e : AE F E,
     (inFrame d.b x)ᵀ * Matrix.fromBlocks 0 1 (e • 1) 0 * (inFrame d.b x).map (cA σ) = Matrix.fromBlocks 0 1 (e • 1) 0 := by
@@ -82,7 +82,7 @@ theorem unit_frame (d : SD σ) (x : d.G) : ∃ e : AE F E,
 
 omit L in
 /- English proof (translation)
-Take `⟨e, he⟩` from `unit_frame d x`. Rewrite `he` using `[hx]`. Simplify using `only [Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.transpose_zero, Matrix.map_zero _ (map_zero _), Matrix.zero_mul, Matrix.mul_zero, zero_add, add_zero, Matrix.mul_one] at he`. Use `(Matrix.fromBlocks_inj.1 he).2.1` as an intermediate fact. Conclude with `this`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem blk_unit (d : SD σ) (x : d.G) (a a' : Matrix (Fin d.n) (Fin d.n) (AE F E))
     (hx : inFrame d.b x = Matrix.fromBlocks a 0 0 a') : aᵀ * a'.map (cA σ) = 1 := by
@@ -95,16 +95,16 @@ theorem blk_unit (d : SD σ) (x : d.G) (a a' : Matrix (Fin d.n) (Fin d.n) (AE F 
 
 omit L in
 /- English proof (translation)
-Establish `hσ : ∀ a, σ (σ a) = a` using `kfour.sigma_sigma_of_good d.ok.good`. Use extensionality with `i j`. Simplify using `[kfour.cA_cA' σ hσ]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cA_cA_mat (d : SD σ) {p q : Type} (M : Matrix p q (AE F E)) : (M.map (cA σ)).map (cA σ) = M := by
   have hσ : ∀ a, σ (σ a) = a := kfour.sigma_sigma_of_good d.ok.good
   ext i j; simp [kfour.cA_cA' σ hσ]
 
 /- English proof (translation)
-Take `⟨a', ha'⟩` from `hu.1 u`. Establish `ha : inFrame d.b (uM u) = Matrix.fromBlocks (1 + Nu L u) 0 0 a'` using `ha'`. Rewrite using `[ha]`. Establish `h1` using `blk_unit d _ _ _ ha`. Establish `h2 : (1 - Nu L u)ᵀ * (1 + Nu L u)ᵀ = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.transpose_mul, Matrix.add_mul, Matrix.one_mul, Matrix.mul_sub, Matrix.mul_one, Nu_mul, sub_zero, sub_add_cancel, Matrix.transpose_one]`. Establish `h3 : a'.map (cA σ) = (1 - Nu L u)ᵀ`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : a' = ((1 - Nu L u)ᵀ).map (cA σ)` using `by rw [← h3, cA_cA_mat d]`. Rewrite using `[h4]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem uM_frame {uM ν 𝓤} (hu : L.UData uM ν 𝓤) (u : Fin L.n → AE F E) :
     inFrame d.b (uM u) = Matrix.fromBlocks (1 + Nu L u) 0 0 (((1 - Nu L u)ᵀ).map (cA σ)) := by
@@ -123,11 +123,11 @@ theorem uM_frame {uM ν 𝓤} (hu : L.UData uM ν 𝓤) (u : Fin L.n → AE F E)
   rw [h4]
 
 /- English proof (translation)
-Apply `kfour.inFrame_injective d.b` to reduce the goal to its premises. Rewrite using `[SiegelEisensteinSeries.Grp.inFrame_mul, uM_frame L hu, uM_frame L hu, uM_frame L hu, Matrix.fromBlocks_multiply]`. Establish `e1 : (1 + Nu L u) * (1 + Nu L v) = 1 + Nu L (u + v)`. Rewrite using `[Nu_add, Matrix.add_mul, Matrix.one_mul, Matrix.mul_add, Matrix.mul_one, Nu_mul, add_zero]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `e2 : ((1 - Nu L u)ᵀ).map (cA σ) * ((1 - Nu L v)ᵀ).map (cA σ) = ((1 - Nu L (u + v))ᵀ).map (cA σ)`. Establish `hm` using `Matrix.map_mul (L := (1 - Nu L u)ᵀ) (M := (1 - Nu L v)ᵀ) (f := (cA σ).toRingHom)`. Use `erw [← hm]`. Rewrite using `[← Matrix.transpose_mul, Nu_add, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_sub, Matrix.mul_one, Nu_mul, sub_zero]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, e1, e2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uM_add {uM ν 𝓤} (hu : L.UData uM ν 𝓤) (u v : Fin L.n → AE F E) : uM (u + v) = uM u * uM v := by
   apply kfour.inFrame_injective d.b
@@ -145,7 +145,7 @@ theorem uM_add {uM ν 𝓤} (hu : L.UData uM ν 𝓤) (u v : Fin L.n → AE F E)
   simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, e1, e2]
 
 /- English proof (translation)
-Establish `h` using `uM_add L hu 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left.1 h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uM_zero {uM ν 𝓤} (hu : L.UData uM ν 𝓤) : uM 0 = 1 := by
   have h := uM_add L hu 0 0
@@ -153,7 +153,7 @@ theorem uM_zero {uM ν 𝓤} (hu : L.UData uM ν 𝓤) : uM 0 = 1 := by
   exact (mul_eq_left.1 h.symm)
 
 /- English proof (translation)
-Establish `h` using `uM_add L hu (-u) u`. Rewrite `h` using `[neg_add_cancel, uM_zero L hu]`. Conclude with `(eq_inv_of_mul_eq_one_left h.symm).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uM_neg {uM ν 𝓤} (hu : L.UData uM ν 𝓤) (u : Fin L.n → AE F E) : (uM u)⁻¹ = uM (-u) := by
   have h := uM_add L hu (-u) u
@@ -161,11 +161,11 @@ theorem uM_neg {uM ν 𝓤} (hu : L.UData uM ν 𝓤) (u : Fin L.n → AE F E) :
   exact (eq_inv_of_mul_eq_one_left h.symm).symm
 
 /- English proof (translation)
-Establish `hcA : Continuous (cA σ : AE F E → AE F E)` using `IsModuleTopology.continuous_of_linearMap (R := AF F) (cA σ).toLinearMap`. Establish `hmat : Continuous fun u => mat2 (uM u)`. Establish `e : (fun u => mat2 (uM u)) = fun u => incM F d.b.1 * Matrix.fromBlocks (1 + Nu L u) 0 0 (((1 - Nu L u)ᵀ).map (cA σ)) * incM F (d.b⁻¹).1`. Use function extensionality and compare the values at `u`. Rewrite using `[SiegelEisensteinSeries.Grp.matrix_eq_frame_conjugate d.b, uM_frame L hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `(continuous_const.matrix_mul (Continuous.matrix_fromBlocks (continuous_const.add (Nu_cont L)) continuous_const continuous_const ?_)).matrix_mul continuous_const` and prove the remaining obligations. Conclude with `((continuous_const.sub (Nu_cont L)).matrix_transpose).matrix_map hcA`. Establish `hinv : Continuous fun u => mat2 (uM u)⁻¹`. Simplify using `only [uM_neg L hu]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hmat.comp continuous_neg`. Use `Topology.IsInducing.subtypeVal.continuous_iff.2 ?_` and prove the remaining obligations. Conclude with `Units.continuous_iff.2 ⟨hmat, hinv⟩`.
+A detailed English derivation is pending.
 -/
 theorem uM_cont {uM ν 𝓤} (hu : L.UData uM ν 𝓤) : Continuous uM := by
   have hcA : Continuous (cA σ : AE F E → AE F E) :=
@@ -185,7 +185,7 @@ theorem uM_cont {uM ν 𝓤} (hu : L.UData uM ν 𝓤) : Continuous uM := by
   exact Units.continuous_iff.2 ⟨hmat, hinv⟩
 
 /- English proof (translation)
-Take `⟨C, hC, hCx⟩` from `kfour.exists_compact_AE (F := F) (E := E)`. Use `⟨Set.univ.pi (fun _ => C), isCompact_univ_pi (fun _ => hC), fun u => ?_⟩` and prove the remaining obligations. Use `choose x hx using fun j => hCx (u j)`. Use `⟨GlobalTheory.ThK.incV F x, AddSubgroup.subset_closure ⟨x, rfl⟩, fun j _ => ?_⟩` and prove the remaining obligations. Simplify `hx j` using `[GlobalTheory.ThK.incV]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ratV_cocompact : ∃ K : Set (Fin L.n → AE F E), IsCompact K ∧ ∀ u, ∃ r ∈ L.ratV, r + u ∈ K := by
   obtain ⟨C, hC, hCx⟩ := kfour.exists_compact_AE (F := F) (E := E)

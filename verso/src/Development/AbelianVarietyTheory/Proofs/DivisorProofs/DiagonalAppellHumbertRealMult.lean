@@ -18,11 +18,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TorusRiem
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔠 X c hc u e hu h χ hAH`. Establish `hΛa : ∀ (a : 𝓞 F) (l : Fin (Module.finrank ℚ F) → ℂ), l ∈ u.Λ → (fun j ↦ (e j (a : F) : ℂ) * l j) ∈ u.Λ`. Introduce `a l hl`. Rewrite using `[← u.ker, hu, (u.ker l).2 hl]`. Use `haveI := X.rm.hom a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hpos : ∀ j, 0 < h j`. Introduce `j`. Use `hAH.2.1 (Pi.single j 1) (by simp)` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_diagonal, dotProduct, Pi.single_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨P, h1, h2, h3, h4, h5⟩` from `GlobalTheory.T.lattice_real_multiplication_integral F 𝔠 c hc u.Λ e h hΛa (GlobalTheory.T.appell_humbert_diagonal_real F 𝔠 X c hc u e hu h χ hAH)`. Conclude with `⟨P, h1, h2, h3, h4, h5, GlobalTheory.T.lattice_real_multiplication_span F 𝔠 c hc u.Λ e h hΛa u.discrete u.full hpos P h1 h2 h3 h4 h5 (fun x hx a ha => GlobalTheory.T.appell_humbert_diagonal_real_dual F 𝔠 X c hc u e hu h χ hAH x hx a ha)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem riemannForm_eq_two_trace : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F)
     (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt), IsTotPos (c : F) →

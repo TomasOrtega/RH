@@ -12,19 +12,17 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.C
 namespace GlobalTheory.CongL.SatConj
 
 /- English proof (translation)
-Introduce `E _ _ _ a U hU w u hw hu ⟨B, σ, ⟨hirr, f, hf0, hfm, hf⟩, hS⟩`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hS.1`. Establish `hf' : ∀ g x, f (σ.ρ g x) = RU E a (GlobalTheory.SplitPts.locPt hw g).1 (f x)` using `fun g x => by`. Use `hf (GlobalTheory.SplitPts.locPt hw g) x` as an intermediate fact. Simplify `this` using `[GlobalTheory.SplitPts.cLoc_locPt hw g]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hinj : Function.Injective f`. Establish `hk` using `((GlobalTheory.CuspRep.isIrreducible_iff _).1 hirr).2 (LinearMap.ker f) (fun g x hx => by`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hf', hx, map_zero])`. Break down `hk with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `LinearMap.ker_eq_bot.1 h`. Conclude with `absurd (LinearMap.ker_eq_top.1 h) hf0`. Establish `hloc : locU a u = locU a w`. Unfold `locU`. Rewrite using `[hu]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hsu : IsSplitAt u`. Distinguish the cases in `h : u = w`. Conclude with `h ▸ hw`. Conclude with `⟨w, Ne.symm h, hu.symm⟩`. Establish `hKw : ∀ x : UA E a, cLoc u x ∈ GlobalTheory.LFun.KGL u a → cLoc w x ∈ GlobalTheory.LFun.KGL w a`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Introduce `x hx`. Break down `GlobalTheory.BCT.GlobLev.eq_or_eq_conjSrc hu with rfl | rfl` into its components or cases. Conclude with `hx`. Use `GlobalTheory.BCT.GlobLev.integral_conjSrc x _ hx` as an intermediate fact. Rewrite `this` using `[GlobalTheory.SplitPts.conjSrc_conjSrc_cm]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ x ∈ locU a u, cLoc u x ∈ GlobalTheory.LFun.KGL u a → RU E a x (f v) = f v`. Introduce `x hx hk`. Establish `hx' : x ∈ locU a w` using `hloc ▸ hx`. Establish `h1 : σ.ρ (cLoc w x) v = v` using `by simpa using hv ⟨_, hKw x hk⟩`. Establish `h2` using `hf ⟨x, hx'⟩ v`.
-
-Rewrite using `[← h2]`. Conclude with `congrArg f h1`. Take `⟨σ', S, hloc', hS', -⟩` from `GlobalTheory.FrameAut.exists_locComp_hasSatGL_heckeVec E a U hU u hsu (f v) (hfm v) (fun h => hv0 (hinj (h.trans (map_zero f).symm))) hfix`. Conclude with `⟨S, σ', hloc', hS'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_satU_of_under_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (U : Submodule ℂ (UA E a → ℂ)), IsAutRepU U → ∀ w u : HeightOneSpectrum (𝓞 E), IsSplitAt w → u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E)) → (∃ B, SatU U w B) → ∃ B, SatU U u B := by
   intro E _ _ _ a U hU w u hw hu ⟨B, σ, ⟨hirr, f, hf0, hfm, hf⟩, hS⟩

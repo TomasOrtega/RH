@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.MuBlockLoc
 
 /- English proof (translation)
-Establish `hne : Ideal.span {((D.host.g k : ℕ) : 𝓞 D.host.E)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `(D.host.g_prime k).ne_zero` after adjusting the coercions. Use `(Ideal.finite_factors hne).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.mpr hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem placesOver_finite (D : D7) (k : Fin 2) : (placesOver D.host.E (D.host.g k)).Finite := by
   have hne : Ideal.span {((D.host.g k : ℕ) : 𝓞 D.host.E)} ≠ ⊥ := by
@@ -28,7 +28,7 @@ theorem placesOver_finite (D : D7) (k : Fin 2) : (placesOver D.host.E (D.host.g 
   exact Ideal.dvd_span_singleton.mpr hv
 
 /- English proof (translation)
-Unfold `isoInf`. Use `le_trans ?_ (List.single_le_sum (by intro x _; exact Multiset.zero_le x) _ (List.mem_map.2 ⟨p, hp, rfl⟩))` and prove the remaining obligations. Use `List.single_le_sum (by intro x _; exact Multiset.zero_le x) _ (List.mem_map.2 ⟨(0 : ℂ), ?_, rfl⟩)` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `⟨0, hd, by simp⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_isoInf (D : D7) (Pa : List (Part D.naut.CG)) (p : Part D.naut.CG) (hp : p ∈ Pa) (hd : 1 ≤ p.d)
     (τ : D.host.E →+* ℂ) :
@@ -40,25 +40,23 @@ theorem mem_isoInf (D : D7) (Pa : List (Part D.naut.CG)) (p : Part D.naut.CG) (h
   exact ⟨0, hd, by simp⟩
 
 /- English proof (translation)
-Introduce `α hα`. Establish `hAut` using `ht.2.1`. Take `⟨ha1, hd1, hcsd⟩` from `hB.1 p hp`. Establish `hle : ∀ τ, (D.naut.infG p.π τ).map (· + (((p.d : ℂ) - 1) / 2 - (0 : ℂ))) ≤ D.nbc.infW j (D.nbc.wtAU j π) τ` using `fun τ => by`. Rewrite using `[← hB.2.2.2.2.2 τ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_isoInf D Pa p hp hd1 τ`. Establish `hW` using `fun τ => D.nbc.infW_alg j (D.nbc.wtAU j π) τ`. Establish `hnd : ∀ τ, (D.naut.infG p.π τ).Nodup` using `fun τ => Multiset.Nodup.of_map _ (Multiset.nodup_of_le (hle τ) (hW τ).1)`. Establish `hint : ∀ τ, ∀ z ∈ D.naut.infG p.π τ, ∃ k : ℤ, z + ((p.d : ℂ) - 1) / 2 = (k : ℂ) + ((D.R.nV : ℂ) - 1) / 2`. Introduce `τ z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `(hW τ).2 _ (Multiset.mem_of_le (hle τ) (Multiset.mem_map_of_mem _ hz))`. Conclude with `⟨k, by rw [← hk]; push_cast; ring⟩`. Break down `Int.even_or_odd ((D.R.nV : ℤ) - p.d - p.a + 1) with ⟨m, hm⟩ | ⟨m, hm⟩` into its components or cases. Establish `hr : D.naut.ralg p.π` using `(D.naut.ralg_def _).2 fun τ => ⟨hnd τ, fun z hz => by`. Take `⟨k, hk⟩` from `hint τ z hz`.
+Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k + m, ?_⟩` and prove the remaining obligations. Establish `hm' : ((D.R.nV : ℤ) : ℂ) - ((p.d : ℤ) : ℂ) - ((p.a : ℤ) : ℂ) + 1 = (m : ℂ) + m`. Conclude with `hm` after adjusting the coercions. Move the coercions through the operations in `at hm' ⊢`. Take the linear combination `hk + (1 / 2 : ℂ) * hm'⟩`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(D.naut.tempered_unr _ hu).1 (hT p.a p.π ha1 hcsd hr w) α hα`. Establish `hr : D.naut.ralg (D.naut.tw p.π D.naut.etaT)` using `(D.naut.ralg_def _).2 fun τ => by`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, k0, hk0⟩ : ∃ s : ℂ, D.naut.infG D.naut.etaT τ = {s} ∧ ∃ k0 : ℤ, s = (k0 : ℂ) + 1 / 2 := by`. Break down `(hAut.2.1 τ).1 with h | h` into its components or cases. Conclude with `⟨1 / 2, h, 0, by simp⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨-(1 / 2), h, -1, by push_cast; ring⟩`. Rewrite using `[D.naut.infG_tw _ _ τ s hs]`. Use `⟨(hnd τ).map (add_left_injective s), fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.mp hz`. Take `⟨k, hk⟩` from `hint τ y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `⟨k + k0 + m + 1, ?_⟩` and prove the remaining obligations. Establish `hm' : ((D.R.nV : ℤ) : ℂ) - ((p.d : ℤ) : ℂ) - ((p.a : ℤ) : ℂ) + 1 = 2 * (m : ℂ) + 1`. Conclude with `hm` after adjusting the coercions. Move the coercions through the operations in `at hm' ⊢`. Rewrite using `[hk0]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `hk + (1 / 2 : ℂ) * hm'`. Establish `htw` using `hT p.a _ ha1 (D.naut.csd_tw _ _ hAut.1.1 hcsd) hr w`. Rewrite `htw` using `[D.naut.locG_tw]`. Establish `hd1'` using `D.naut.locG_dim D.naut.etaT w`. Establish `heu` using `D.naut.etaT_unr w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `Multiset.card_eq_one.mp ((D.naut.frobEig_card _ heu).trans hd1')`. Establish `hen : ‖e‖ = 1` using `(D.naut.tempered_unr _ heu).1 (hAut.2.2.1 w) e (by rw [he]; simp)`. Establish `hcu` using `D.naut.unr_char _ _ hd1' hu heu`. Establish `hmem : α * e ∈ D.naut.frobEig (D.naut.lpChar (D.naut.locG p.π w) (D.naut.locG D.naut.etaT w))`. Rewrite using `[D.naut.frobEig_char _ _ e hu heu hd1' he]`.
-
-Conclude with `Multiset.mem_map_of_mem _ hα`. Use `(D.naut.tempered_unr _ hcu).1 htw _ hmem` as an intermediate fact. Rewrite `this` using `[norm_mul, hen, mul_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem part_norm (D : D7) (ht : SumRepresentations.tie0 D) (hT : SumRepresentations.adm7 D) {j : ℕ} {π : D.nbc.AU j}
     {Pa : List (Part D.naut.CG)} (hB : SphericalInertData.IsBC D.nd D.naut D.nbc j π Pa) (p : Part D.naut.CG) (hp : p ∈ Pa)
@@ -116,19 +114,19 @@ theorem part_norm (D : D7) (ht : SumRepresentations.tie0 D) (hT : SumRepresentat
     rwa [norm_mul, hen, mul_one] at this
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `GlobalTheory.LocalInv.r_odd D.R`. Establish `hnV : (D.R.nV : ℂ) = 2 * (a : ℂ) + 1 + D.R.t` using `by show ((D.R.r + D.R.t : ℕ) : ℂ) = _`. Rewrite using `[ha]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `ht1 : 1 ≤ D.R.t` using `D.R.t_odd.pos`. Establish `hq : ∀ (τ : D.host.E →+* ℂ) (s : ℂ), D.naut.infG D.naut.etaTinv τ = {s} → (∀ x ∈ isoInf D.nd D.naut [⟨1, D.naut.tw μ D.naut.etaTinv, D.R.t⟩] τ, ∃ k : ℤ, x = (k : ℂ) + ((D.R.nV : ℂ) - 1) / 2) → ∀ z ∈ D.naut.infG μ τ, ∃ k : ℤ, z + s + ((D.R.t : ℂ) - 1) / 2 = (k : ℂ) + ((D.R.nV : ℂ) …`. Introduce `τ s hs hx z hz`. Establish `hle` using `mem_isoInf D [⟨1, D.naut.tw μ D.naut.etaTinv, D.R.t⟩] ⟨1, D.naut.tw μ D.naut.etaTinv, D.R.t⟩ (List.mem_singleton_self _) ht1 τ`. Simplify using `only at hle`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Rewrite `hle` using `[D.naut.infG_tw _ _ τ s hs, Multiset.map_map]`. Take `⟨k, hk⟩` from `hx _ (Multiset.mem_of_le hle (Multiset.mem_map_of_mem _ hz))`. Conclude with `⟨k, by rw [← hk]; simp⟩`. Use `(D.naut.ralg_def _).2 fun φ => ?_` and prove the remaining obligations. Take `⟨z0, hz0⟩` from `Multiset.card_eq_one.mp (D.naut.infG_card μ φ)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨by rw [hz0]; exact Multiset.nodup_singleton z0, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨τ, hτ | hτ⟩` from `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.FL.emb_cases D φ`. Establish `e : φ = GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ` using `hτ`. Substitute `e` using the available equality. Establish `hx : ∀ x ∈ isoInf D.nd D.naut [⟨1, D.naut.tw μ D.naut.etaTinv, D.R.t⟩] (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ), ∃ k : ℤ, x = (k : ℂ) + ((D.R.nV : ℂ) - 1) / 2` using `fun x hx => (D.nbc.infW_alg j (D.nbc.wtAU j π) _).2 x (by rw [(hA.inf τ).1]; exact Multiset.mem_add.2 (Or.inr hx))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `hq _ _ (hA.eta τ).1 hx z hz`. Use `⟨k + a + 1, ?_⟩` and prove the remaining obligations. Rewrite `hk` using `[hnV]`. Use `push_cast`. Take the linear combination `hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e : φ = GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTauBar D τ` using `hτ`. Substitute `e` using the available equality. Establish `hx : ∀ x ∈ isoInf D.nd D.naut [⟨1, D.naut.tw μ D.naut.etaTinv, D.R.t⟩] (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTauBar D τ), ∃ k : ℤ, x = (k : ℂ) + ((D.R.nV : ℂ) - 1) / 2` using `fun x hx => (D.nbc.infW_alg j (D.nbc.wtAU j π) _).2 x (by rw [(hA.inf τ).2]; exact Multiset.mem_add.2 (Or.inr hx))`. Take `⟨k, hk⟩` from `hq _ _ (hA.eta τ).2 hx z hz`. Use `⟨k + a, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hk` using `[hnV]`. Use `push_cast`. Take the linear combination `hk`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mu_ralg (D : D7) (Rw : RowSide D) (j : ℕ) (σ : D.what₂.FT) (π : D.nbc.AU j) (μ : D.naut.CG 1)
     (hA : LiftAt D Rw j σ π μ) : D.naut.ralg μ := by
@@ -177,35 +175,33 @@ end GlobalTheory.MuBlockLoc
 namespace GlobalTheory.MuBlockLoc
 
 /- English proof (translation)
-Establish `hT` using `hL.tie0`. Establish `hLP` using `hT.1`. Establish `hAut` using `hT.2.1`. Establish `heu` using `D.naut.etaT_unr w`. Establish `hed : D.naut.lpDim (D.naut.locG D.naut.etaT w) = 1` using `D.naut.locG_dim _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `GlobalTheory.MuBlock.frobEig_eq_single D.nd D.naut _ heu hed`. Establish `hen : ‖e‖ = 1` using `(D.naut.tempered_unr _ heu).1 (hAut.2.2.1 w) e (by rw [he]; exact Multiset.mem_singleton_self e)`. Establish `he0 : e ≠ 0` using `by intro h; rw [h] at hen; simp at hen`. Take `⟨hbu, hbe⟩` from `D.naut.etaTinv_def w`. Establish `hbd : D.naut.lpDim (D.naut.locG D.naut.etaTinv w) = 1` using `D.naut.locG_dim _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : D.naut.frobEig (D.naut.locG D.naut.etaTinv w) = {e⁻¹}` using `by rw [hbe, he]; simp`. Establish `hbn : ‖e⁻¹‖ = 1` using `by rw [norm_inv, hen, inv_one]`. Take `⟨m, hm⟩` from `GlobalTheory.MuBlock.frobEig_eq_single D.nd D.naut _ hμ (D.naut.locG_dim _ _)`. Establish `hmt` using `hL.temp 1 μ le_rfl hA.csd (mu_ralg D Rw j σ π μ hA) w`. Establish `hmn : ‖m‖ = 1` using `(D.naut.tempered_unr _ hμ).1 hmt m (by rw [hm]; exact Multiset.mem_singleton_self m)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htw : D.naut.frobEig (D.naut.locG (D.naut.tw μ D.naut.etaTinv) w) = {m * e⁻¹}`. Rewrite using `[D.naut.locG_tw, D.naut.frobEig_char _ _ (e⁻¹) hμ hbu hbd hb, hm]`. Simplify using the standard rewrite rules. Establish `hV` using `hA.loc w hs`. Establish `hiso` using `GlobalTheory.MuBlock.frobEig_isoLoc D.nd D.naut Pa w hPa`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVu : D.naut.unr (D.nbc.locAU j π w)` using `by rw [← hB.2.2.2.1 w hs]; exact hiso.1`. Establish `hinv : D.naut.lpChar (D.naut.locG D.naut.etaTinv w) (D.naut.locG D.naut.etaT w) = D.naut.lpUnr w {1}`. Establish `hu` using `D.naut.unr_char _ _ hed hbu heu`. Rewrite using `[D.naut.unr_eq_lpUnr _ hu, D.naut.frobEig_char _ _ e hbu heu hed he, hb]`. Simplify using `[he0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hX : D.naut.lpChar (D.nbc.locAU j π w) (D.naut.locG D.naut.etaT w) = D.naut.lpSum (Rw.locR σ w) (spehLoc D.nd D.naut ⟨1, μ, D.R.t⟩ w)`. Rewrite using `[hV, (hLP w (D.naut.lpSum (Rw.locR σ w) (spehLoc D.nd D.naut ⟨1, μ, D.R.t⟩ w)) (Rw.locR σ w) (D.naut.locG D.naut.etaTinv w) (D.naut.locG D.naut.etaT w) 0 hbd hed).2.2.2.1, hinv]`. Conclude with `(hLP w _ (Rw.locR σ w) (D.naut.locG D.naut.etaT w) (D.naut.locG D.naut.etaT w) 0 hed hed).2.2.2.2.1`. Establish `hXu : D.naut.unr (D.naut.lpSum (Rw.locR σ w) (spehLoc D.nd D.naut ⟨1, μ, D.R.t⟩ w))`. Rewrite using `[← hX]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `D.naut.unr_char _ _ hed hVu heu`. Take `⟨hWu, hSu⟩` from `(D.naut.unr_sum _ _).1 hXu`. Establish `hmu` using `GlobalTheory.MuBlock.frobEig_spehLoc D.nd D.naut ⟨1, μ, D.R.t⟩ w hμ`. Simplify using `only at hmu`. Establish `hVe : D.naut.frobEig (D.nbc.locAU j π w) = (D.naut.frobEig (Rw.locR σ w)).map (· * e⁻¹) + ((List.range D.R.t).map fun k => ({(m * e⁻¹) * ((Formalism.ConjugateSelfDual.normV w : ℕ) : ℂ) ^ (((((D.R.t : ℝ) - 1) / 2 - (k : ℝ) : ℝ)) : ℂ)} : Multiset ℂ)).sum`.
+Establish an intermediate fact. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hV, D.naut.frobEig_char _ _ _ hXu hbu hbd hb, D.naut.frobEig_sum _ _ hWu hSu, Multiset.map_add]`. Rewrite using `[hmu.2, hm]`. Use `congr 1`. Rewrite using `[← Multiset.coe_mapAddMonoidHom, map_list_sum, List.map_map]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `k _`. Simplify using `only [Function.comp_apply, Multiset.coe_mapAddMonoidHom, Multiset.map_singleton]`. Put the polynomial expressions in normal form. Establish `key` using `GlobalTheory.longest_segment_unique_of_bounded_remainder (Formalism.ConjugateSelfDual.normV w) D.R.t (Pa.map fun p => (p.d, D.naut.frobEig (D.naut.locG p.π w))) ((D.naut.frobEig (Rw.locR σ w)).map (· * e⁻¹)) (m * e⁻¹) (by exact_mod_cast GlobalTheory.LocalInv.one_lt_normV w) D.R.t …`.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨α, hα, rfl⟩` from `Multiset.mem_map.1 hx`. Rewrite using `[norm_mul, hbn, mul_one]`. Use `(hR w hs hg).2 α hα` as an intermediate fact. Rewrite using `[GlobalTheory.MuBlock.absNorm_eq_normV] at this)` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use the proof step `(by`. Introduce `x hx`. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hx`. Use `⟨(hB.1 p hp).2.1, ?_, part_norm D hT hL.temp hB p hp w (hPa p hp)⟩` and prove the remaining obligations. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `D.naut.frobEig (D.naut.locG p.π w) = 0 at h0`. Establish `h1` using `D.naut.frobEig_card _ (hPa p hp)`. Rewrite `h1` using `[h0, D.naut.locG_dim]`. Use `(hB.1 p hp).1` as an intermediate fact. Simplify using `at h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `omega)`. Use the proof step `(by`. Establish `hiso2` using `hiso.2`. Simplify using `only [GlobalTheory.LocalInv.list_coe, List.map_map] at hiso2`. Rewrite using `[List.map_map]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `hiso2.symm.trans ((congrArg D.naut.frobEig (hB.2.2.2.1 w hs)).trans hVe))`. Use `⟨?_, fun p hp hpt => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hxt⟩` from `key.1`. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hx`. Conclude with `⟨p, hp, hxt⟩`.
-
-Take `⟨h1, h2⟩` from `key.2 _ (List.mem_map_of_mem (f := fun p : Part D.naut.CG => (p.d, D.naut.frobEig (D.naut.locG p.π w))) hp) hpt`. Conclude with `⟨h1, h2.trans htw.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem split_step (D : D7) (Rw : RowSide D) (hL : ParLaws D) (j : ℕ) (σ : D.what₂.FT) (π : D.nbc.AU j)
     (μ : D.naut.CG 1) (Pa : List (Part D.naut.CG)) (hA : LiftAt D Rw j σ π μ) (hR : RowLoc D Rw σ)
@@ -298,17 +294,15 @@ theorem split_step (D : D7) (Rw : RowSide D) (hL : ParLaws D) (j : ℕ) (σ : D.
     exact ⟨h1, h2.trans htw.symm⟩
 
 /- English proof (translation)
-Introduce `D Rw hL j σ π μ Pa hA hR hB`. Establish `hgood : ∀ᶠ w in Filter.cofinite, ((∀ p ∈ Pa, D.naut.unr (D.naut.locG p.π w)) ∧ D.naut.unr (D.naut.locG μ w)) ∧ ∀ k : Fin 2, w ∉ placesOver D.host.E (D.host.g k)`. Use `Filter.Eventually.and (Filter.Eventually.and ?_ (D.naut.locG_unr_ae _)) ?_` and prove the remaining obligations. Conclude with `(Filter.eventually_all_finite (List.finite_toSet Pa)).2 fun p _ => D.naut.locG_unr_ae p.π`. Conclude with `Filter.eventually_all.2 fun k => (placesOver_finite D k).compl_mem_cofinite`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w0, hw0, hs0⟩` from `GlobalTheory.MuBlock.exists_split_not_mem D.nd hL.an.2.2.1 _ (Filter.eventually_cofinite.1 hgood)`. Establish `hg0 : ((∀ p ∈ Pa, D.naut.unr (D.naut.locG p.π w0)) ∧ D.naut.unr (D.naut.locG μ w0)) ∧ ∀ k : Fin 2, w0 ∉ placesOver D.host.E (D.host.g k)`. Establish `h` using `hw0`. Simplify using `only [Set.mem_setOf_eq, not_not] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨p0, hp0, hpt⟩, -⟩` from `split_step D Rw hL j σ π μ Pa hA hR hB w0 hs0 hg0.2 hg0.1.1 hg0.1.2`. Establish `hall : ∀ w, (((∀ p ∈ Pa, D.naut.unr (D.naut.locG p.π w)) ∧ D.naut.unr (D.naut.locG μ w)) ∧ ∀ k : Fin 2, w ∉ placesOver D.host.E (D.host.g k)) → IsSplitPl D.host w → p0.d = D.R.t ∧ D.naut.frobEig (D.naut.locG p0.π w) = D.naut.frobEig (D.naut.locG (D.naut.tw μ D.naut.etaTinv) w)` using `fun w hw hs => (split_step D Rw hL j σ π μ Pa hA hR hB w hs hw.2 hw.1.1 hw.1.2).2 p0 hp0 hpt`. Establish `htu : ∀ w, D.naut.unr (D.naut.locG μ w) → D.naut.unr (D.naut.locG (D.naut.tw μ D.naut.etaTinv) w)` using `fun w h => by`. Rewrite using `[D.naut.locG_tw]`. Conclude with `D.naut.unr_char _ _ (D.naut.locG_dim _ _) h (D.naut.etaTinv_def w).1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hd0, hf0⟩` from `hall w0 hg0 hs0`. Establish `ha0 : p0.a = 1`. Establish `h1` using `D.naut.frobEig_card _ (hg0.1.1 p0 hp0)`. Rewrite `h1` using `[hf0, D.naut.frobEig_card _ (htu w0 hg0.1.2), D.naut.locG_dim, D.naut.locG_dim]`. Conclude with `h1.symm`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, π', d⟩` from `p0`. Simplify using `only at ha0 hd0 hall hp0`. Substitute `ha0 hd0` using the available equality. Establish `hν : π' = D.naut.tw μ D.naut.etaTinv`. Use `hL.one π' _ ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hgood] with w hw hs`. Rewrite using `[D.naut.unr_eq_lpUnr _ (hw.1.1 _ hp0), (hall w hw hs).2, ← D.naut.unr_eq_lpUnr _ (htu w hw.1.2)]`. Substitute `hν` using the available equality. Conclude with `hp0`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mu_block_mem : ∀ (D : D7) (Rw : RowSide D), ParLaws D → ∀ j σ π μ Pa, LiftAt D Rw j σ π μ → RowLoc D Rw σ →
     SphericalInertData.IsBC D.nd D.naut D.nbc j π Pa →

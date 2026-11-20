@@ -18,7 +18,7 @@ open GlobalTheory.PlaceInt GlobalTheory.PlaceInt.ShortTriv
 namespace GlobalTheory.IntCuspLat
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ShortBound.nval_nonneg e (isIntegral_natCast _)`.
+A detailed English derivation is pending.
 -/
 theorem nval_natCast_nonneg {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K']
     [Algebra V K'] [IsFractionRing V K'] (e m : ℕ) : 0 ≤ nval V e (m : K') :=
@@ -28,27 +28,25 @@ section Point
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Establish `hN : Odd N` using `hL.1`. Take `⟨hfz, hm0, hT⟩` from `GlobalTheory.TrivLattice.trivAt_units E H Dw l c n Λ N M ℓ hU hL hℓ htr`. Take `⟨-, hFF⟩` from `hT T io hlu`. Take `⟨J, J', _, _, a, a', σ, -, haZ, ⟨m, hm, ha'⟩, hzs, hcard⟩` from `GlobalTheory.T.isotropic_group_primary_decomposition E H Dw l Xo T.Fr (xOf y) n Λ N M ℓ hU hL hℓ z hz hg`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hlev : N ^ 2 = n' ^ 2 * ℓ ^ j`. Establish `h2 : (N : 𝓞 E) = H.bar β₀ * H.bar α * n'`. Use `congrArg H.bar hfac` as an intermediate fact. Simplify `this` using `only [map_mul, map_natCast]`. Establish `h3 : ((N ^ 2 : ℕ) : 𝓞 E) = ((n' ^ 2 * (A * Bn) : ℕ) : 𝓞 E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[← hA, ← hB, sq]`. Use `nth_rewrite 1 [hfac]`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hAB]`. Conclude with `h3` after adjusting the coercions. Establish `hUU : ∀ i i' b, IsUUOver Xo.univ.t.G Xo.univ.t.PP N (sOf1 y) (a' i' b) (tp b) (F (σ (i, i')) b)`. Introduce `i i' b`. Take `⟨hi, hi2⟩` from `(haZ (a i)).1 ⟨i, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `hi2 b`. Establish `h1` using `hF (σ (i, i')) b`. Rewrite `h1` using `[hzs]`. Conclude with `isUUOver_of_mul Xo hN _ (a i b) (a' i' b) (tp b) (pow_eq_one_of_trivAt Xo htr hi b hk) (ha' i' b).2 (ht b) (hm.pow_right k) hk (ha' i' b).1 _ h1`. Take `⟨i₀⟩ : Nonempty J` from `Fintype.card_pos_iff.1 (by rw [hcard]; exact pow_pos hℓ.pos _)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum : ∑ i, hv Xo c nab y.1 (N ^ 2) (fun b => sqN Xo N (F i b)) P = (Fintype.card J : T.Fr) * ∑ i', hv Xo c nab y.1 (N ^ 2) (fun b => sqN Xo N (F (σ (i₀, i')) b)) P`. Rewrite using `[← σ.sum_comp, Fintype.sum_prod_type, ← nsmul_eq_mul, ← Finset.card_univ, ← Finset.sum_const]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `b`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `sqN_eq_of_isUUOver Xo hN _ _ _ (ha' i' b).2 (ht b) _ _ (hUU i i' b) (hUU i₀ i' b)`. Establish `hterm : ∀ i', ((-ρ : ℝ) : EReal) ≤ nval T.V e (io (nrm Dw c w α * ((N : c.F) ^ P.totalDegree)⁻¹) * hv Xo c nab y.1 (N ^ 2) (fun b => sqN Xo N (F (σ (i₀, i')) b)) P)` using `fun i' => by`. Use `GlobalTheory.T.harmonicValue_translated_product_valuation_bound E H Dw l Xo c hst T io y C hC nab hnab e ρ w n he hb N n' A Bn α β₀ hN hfac hA hB (isUnit_of_coprime T hn' hlu) (a' i') tp _ (fun b => ⟨(ha' i' b).2, ht b, ?_, htp b, hUU i₀ i' b⟩) P hP.1 (hFF w P hP)` and prove the remaining obligations. Establish `h1 : (a' i' b ^ (n' ^ 2)) ^ m = 1` using `by rw [← pow_mul, _root_.mul_comm, pow_mul, (ha' i' b).1, one_pow]`. Establish `h2 : (a' i' b ^ (n' ^ 2)) ^ (ℓ ^ j) = 1` using `by rw [← pow_mul, ← hlev, (ha' i' b).2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `pow_gcd_eq_one.2 ⟨h1, h2⟩`. Rewrite `h3` using `[(hm.pow_right j).gcd_eq_one, pow_one]`. Use `Xo.univ.t.act.hom (α * β₀)` as an intermediate fact. Rewrite using `[← MonObj.pow_comp, h3, MonObj.one_comp]`. Take `⟨m', hm'c, hm'⟩ : ∃ m' : ℕ, Nat.Coprime m' ℓ ∧ Λ.mIdx N (Dw.p + Dw.q) = Fintype.card J * m'` from `⟨_, (Nat.coprime_ordCompl hℓ hm0).symm, by rw [hcard, hfz, Nat.ordProj_mul_ordCompl_eq_self]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm'u` using `isUnit_of_coprime T hm'c hlu`. Use `haveI : CharZero T.Fr := algebraRat.charZero _`. Establish `hm'0 : (m' : T.Fr) ≠ 0`. Establish `: m' ≠ 0` using `by rintro rfl; simp at hm'u`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Establish `hJ0 : (Fintype.card J : T.Fr) ≠ 0`. Establish `: Fintype.card J ≠ 0` using `by rw [hcard]; exact (pow_pos hℓ.pos _).ne'`. Conclude with `this` after adjusting the coercions. Establish `hre : ∀ s : T.Fr, io (nrm Dw c w α * (((Λ.mIdx N (Dw.p + Dw.q) : c.F))⁻¹ * ((N : c.F) ^ P.totalDegree)⁻¹)) * ((Fintype.card J : T.Fr) * s) = (m' : T.Fr)⁻¹ * (io (nrm Dw c w α * ((N : c.F) ^ P.totalDegree)⁻¹) * s)` using `fun s => by`. Rewrite using `[hm']`.
-
-Simplify using `only [map_mul, map_inv₀, map_natCast, Nat.cast_mul]`. Generalize the expression as in `(io ((N : c.F) ^ P.totalDegree))⁻¹ = q`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hsum, hre, nval_mul_unit e (inv_ne_zero hm'0) (vV_inv_eq_zero T (vV_natCast T hm'u)), Finset.mul_sum]`. Conclude with `le_nval_sum T _ e _ _ fun i' _ => hterm i'`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_bound_of_trivAt (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (hst : ∀ a : 𝓞 E, star a = H.bar a)
     (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y) (hC : Good3 C)
@@ -132,13 +130,13 @@ theorem sum_bound_of_trivAt (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)]
   exact le_nval_sum T _ e _ _ fun i' _ => hterm i'
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Establish `hk : ∀ b, KilledBy Xo l.Mb (tp b ^ N)` using `fun b => by rw [(htp b).1]; exact GlobalTheory.ShortBound.levPt_killed Xo _ _`. Take `⟨t1, t2⟩` from `GlobalTheory.TorsFac.factorisation E H Dw l Xo N ℓ hL.1 hL.2.1 hℓ`. Establish `key : ∃ u : ℕ, u ∣ l.M ∧ ((-ρ : ℝ) : EReal) ≤ nval T.V e (io (nrm Dw c w (u : 𝓞 E) * (((Λ.mIdx N (Dw.p + Dw.q) : c.F))⁻¹ * ((N : c.F) ^ P.totalDegree)⁻¹)) * ∑ i, hv Xo c nab y.1 (N ^ 2) (fun b => sqN Xo N (F i b)) P)`. Distinguish the cases in `hd : ℓ ∣ l.M`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hA : (ℓ : 𝓞 E) * H.bar (ℓ : 𝓞 E) = ((ℓ ^ 2 : ℕ) : 𝓞 E)` using `by rw [map_natCast]; push_cast; ring`. Take `⟨n', Bn, j, β₀, h1, h2, h3, h4, h5⟩` from `t2 (ℓ : 𝓞 E) (ℓ ^ 2) hA hsq (Or.inr ⟨rfl, hd⟩)`. Conclude with `⟨ℓ, hd, sum_bound_of_trivAt Xo c hst T io y C hC nab hnab e ρ w n he hb ℓ hℓ hlu Λ N l.M hU hL P hP z tp F hz hg (fun b => (h5 _ _ (hk b) (htp b).2).1) hF htr n' (ℓ ^ 2) Bn j _ β₀ h1 h2 hA h3 h4 (fun b => (h5 _ _ (hk b) (htp b).2).2)⟩`. Take `⟨n', j, h1, h2, h5⟩` from `t1 hd`. Use `⟨1, one_dvd _, sum_bound_of_trivAt Xo c hst T io y C hC nab hnab e ρ w n he hb ℓ hℓ hlu Λ N l.M hU hL P hP z tp F hz hg (fun b => (h5 _ _ (hk b) (htp b).2).1) hF htr n' 1 (ℓ ^ (2 * j)) (2 * j) _ ((ℓ : 𝓞 E) ^ j) h1 ?_ (by simp) ?_ (_root_.one_mul _) (fun b => (h5 _ _ (hk b) (htp b …` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_pow, map_natCast]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨u, ⟨m, hm⟩, h⟩` from `key`. Rewrite `h` using `[GlobalTheory.ShortBound.nrm_nat, map_mul, map_pow, map_natCast, _root_.mul_assoc]`. Rewrite using `[hm, mul_pow, Nat.cast_mul, _root_.mul_comm ((u ^ _ : ℕ) : T.Fr), _root_.mul_assoc, nval_mul, Nat.cast_pow u]`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem class_bound_of_trivAt (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (hst : ∀ a : 𝓞 E, star a = H.bar a)
     (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y) (hC : Good3 C)
@@ -184,9 +182,9 @@ theorem class_bound_of_trivAt (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E
 end Point
 
 /- English proof (translation)
-Use `haveI : CharZero T.Fr := algebraRat.charZero _`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp [GlobalTheory.ShortBound.vV_one]`. Consider the case `insert p S hp ih`. Establish `h1 : (p : T.Fr) ≠ 0` using `by exact_mod_cast hS p (Finset.mem_insert_self _ _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((∏ p ∈ S, p ^ X : ℕ) : T.Fr) ≠ 0`. Conclude with `Finset.prod_ne_zero_iff.2 fun q hq => pow_ne_zero _ (hS q (Finset.mem_insert_of_mem hq))` after adjusting the coercions. Rewrite using `[Finset.prod_insert hp, Finset.sum_insert hp, Nat.cast_mul, Nat.cast_pow, vV_mul (pow_ne_zero _ h1) h2, GlobalTheory.ShortBound.vV_pow h1, ih fun q hq => hS q (Finset.mem_insert_of_mem hq)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vV_prod_pow (T : CDVR) (X : ℕ) (S : Finset ℕ) (hS : ∀ p ∈ S, p ≠ 0) :
     vV T.V ((∏ p ∈ S, p ^ X : ℕ) : T.Fr) = ∑ p ∈ S, (X : ℤ) * vV T.V (p : T.Fr) := by
@@ -202,9 +200,9 @@ theorem vV_prod_pow (T : CDVR) (X : ℕ) (S : Finset ℕ) (hS : ∀ p ∈ S, p �
       GlobalTheory.ShortBound.vV_pow h1, ih fun q hq => hS q (Finset.mem_insert_of_mem hq)]
 
 /- English proof (translation)
-Establish `h1 : la.valuation K (algebraMap (𝓞 K) K (ℓ : 𝓞 K)) < 1` using `(la.valuation_lt_one_iff_mem _).2 h`. Rewrite `h1` using `[map_natCast]`. Establish `h2 : la.valuation K (ℓ : K) ≠ 0` using `(Valuation.ne_zero_iff _).2 (by exact_mod_cast h0)`. Use `(WithZero.log_lt_log h2 one_ne_zero).2 h1` as an intermediate fact. Rewrite `this` using `[WithZero.log_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `vLa`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem vLa_pos_of_mem {K : Type} [Field K] [NumberField K] (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) {ℓ : ℕ}
     (h0 : ℓ ≠ 0) (h : (ℓ : 𝓞 K) ∈ la.asIdeal) : 0 < vLa la (ℓ : K) := by
@@ -219,31 +217,29 @@ theorem vLa_pos_of_mem {K : Type} [Field K] [NumberField K] (la : IsDedekindDoma
 open IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions in
 
 /- English proof (translation)
-Establish `hβ : betaH (Dw` using `Dw) c Λ ≠ 0 := by`. Unfold `betaH`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM0 : d.l₂.M ≠ 0` using `hsf.ne_zero`. Establish `hc0 : Nat.card (Fin n → LevQ Dw d.l₂) ≠ 0`. Rewrite using `[GlobalTheory.PlaceInt.card_fun_levQ]`. Conclude with `pow_ne_zero _ hM0`. Use `haveI := Nat.finite_of_card_ne_zero hc0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hS : ∀ p ∈ D.host.condN.primeFactors, p ≠ 0` using `fun p hp => (Nat.prime_of_mem_primeFactors hp).ne_zero`. Take `⟨X, hX⟩ : ∃ X : ℕ, X = (NumberField.discr D.host.E).natAbs * Formalism.L2.Pj.DF Dw w` from `⟨_, rfl⟩`. Take `⟨Q, hQ⟩ : ∃ Q : ℕ, Q = ∏ p ∈ D.host.condN.primeFactors, p ^ X` from `⟨_, rfl⟩`. Establish `hQ0 : Q ≠ 0` using `hQ ▸ Finset.prod_ne_zero_iff.2 fun q hq => pow_ne_zero _ (hS q hq)`. Use `⟨betaH (Dw := Dw) c Λ * ((Nat.card (Fin n → LevQ Dw d.l₂) * (Q * d.l₂.M ^ Formalism.L2.Pj.DF Dw w) : ℕ) : c.F), mul_ne_zero hβ (by exact_mod_cast mul_ne_zero hc0 (mul_ne_zero hQ0 (pow_ne_zero _ hM0))), ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `la ℓ hℓ hmem htr _ ⟨⟨_, Tc, io, e, ho, yI, hy, eta, heta, rfl⟩, rfl⟩`. Use `show 0 ≤ nval Tc.V e (evI yI _)`. Take `⟨-, ef2, -⟩` from `GlobalTheory.PlaceInt.eF_transfer _ _ _ _ Xo c n d Λ`. Take `⟨T', iT, r, io₂, y₂, C, ζ, z, tp, F, hr, hiT, hfr, hio, hC, hrat, hζ, hz, hgi, htp, hF, hval⟩` from `GlobalTheory.PlaceInt.short_value_on_cover _ _ _ _ Xo c n d hlev hnab 1 hroot Λ N hU hTM hN w P hP x0 g hsec hR Tc io yI hy`. Use `haveI : CharZero T'.Fr := algebraRat.charZero _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ho'` using `ho.bc iT hr hiT`. Establish `he' : 0 < r * e` using `ho'.1`. Establish `hu : ¬ IsUnit (ℓ : T'.V)` using `fun hu => by`. Establish `h1` using `vV_natCast T' hu`. Establish `h2` using `ho'.2 (ℓ : c.F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_natCast, h1]`. Establish `h3` using `vLa_pos_of_mem la hℓ.ne_zero hmem`. Establish `h4 : (0 : ℤ) < ((r * e : ℕ) : ℤ)` using `by exact_mod_cast he'`. Conclude with `(mul_pos h4 h3).ne h2`. Establish `hch` using `GlobalTheory.PlaceInt.HostChart.chBound_host D _ Dw _ d.Xo₂ d.c₂ hnab.1 T' io₂ y₂ C (r * e) he' w n _ le_rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsq : ¬ ℓ ^ 2 ∣ d.l₂.M` using `fun hd => hℓ.prime.not_unit (hsf ℓ (by rwa [← pow_two]))`. Establish `key` using `fun q => class_bound_of_trivAt d.Xo₂ d.c₂ hnab.1 T' io₂ y₂ C hC _ hnab (r * e) _ w n he' hch ℓ hℓ hu Λ N hU hN _ (ef2 _ P hP).1 z (tp q) (F q) hz hgi (fun b => levRep (q b)) (htp q) (hF q) htr hsq`. Rewrite `hζ` using `[pow_one]`. Rewrite using `[← nval_bc iT hr hiT e, evI_smul, map_mul, hval, ← hio, hζ, _root_.one_mul]`. Use `Fintype.ofFinite (Fin n → LevQ Dw d.l₂)` as an intermediate fact.
+Equip the data with the indicated structure. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[finsum_eq_sum_of_fintype, Finset.mul_sum, Finset.mul_sum]`. Use `le_nval_sum T' _ _ _ _ fun q _ => ?_` and prove the remaining obligations. Establish `hq` using `key q`. Use `letI := io₂.toAlgebra`. Generalize the expression as in `(∑ i, hv d.Xo₂ d.c₂ d.nab₂ y₂.1 (N ^ 2) (fun b => sqN d.Xo₂ N (F q i b)) (MvPolynomial.map (d.eF : c.F →+* d.c₂.F) P)) = Sm at hq ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb0 : io₂ (d.eF (betaH (Dw` using `Dw) c Λ)) ≠ 0 := (map_ne_zero io₂).2 ((map_ne_zero d.eF).2 hβ)`. Establish `hc1 : ((Nat.card (Fin n → LevQ Dw d.l₂) : ℕ) : T'.Fr) ≠ 0` using `by exact_mod_cast hc0`. Establish `hQ1 : (Q : T'.Fr) ≠ 0` using `by exact_mod_cast hQ0`. Establish `hQv : 0 ≤ nval T'.V (r * e) ((Q : T'.Fr) * (((d.l₂.M ^ Formalism.L2.Pj.DF Dw w : ℕ) : T'.Fr) * (io₂ (((Λ.mIdx N (Dw.p + Dw.q) : d.c₂.F))⁻¹ * ((N : d.c₂.F) ^ (MvPolynomial.map (d.eF : c.F →+* d.c₂.F) P).totalDegree)⁻¹) * Sm)))`. Rewrite using `[nval_mul, nval_of_ne hQ1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans ?_ (add_le_add le_rfl hq)` and prove the remaining obligations. Rewrite using `[← EReal.coe_add, EReal.coe_nonneg, ← sub_eq_add_neg, sub_nonneg, hQ, vV_prod_pow T' X _ hS, Int.cast_sum, Finset.sum_div]`. Use `Finset.sum_le_sum fun p _ => ?_` and prove the remaining obligations. Establish `h1 : (0 : ℝ) ≤ (vV T'.V (p : T'.Fr) : ℝ) / ((r * e : ℕ) : ℝ)` using `div_nonneg (by exact_mod_cast GlobalTheory.PlaceInt.HostChart.vV_nat_nonneg T' p) (Nat.cast_nonneg _)`. Establish `h2` using `D.host.vdH_le_natAbs p`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `D.host.vdH_nonneg p`. Establish `h4 : (0 : ℝ) ≤ (Formalism.L2.Pj.DF Dw w : ℝ)` using `Nat.cast_nonneg _`. Rewrite using `[Int.cast_mul, Int.cast_natCast, mul_div_assoc (X : ℝ), hX, Nat.cast_mul (NumberField.discr D.host.E).natAbs]`. Establish `h5` using `mul_nonneg (mul_nonneg h1 h3) h4`. Establish `h6` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left h2 h1) h4`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `le_trans (add_nonneg (GlobalTheory.ShortBound.nval_nonneg (V := T'.V) (r * e) (map_isIntegral_int io₂ (hwi x0 q))) hQv) (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← nval_mul]`. Use `congr 1`. Simplify using `only [map_mul, map_inv₀, map_natCast, Nat.cast_mul]`.
-
-Generalize the expression as in `(io₂ ((N : d.c₂.F) ^ (MvPolynomial.map (d.eF : c.F →+* d.c₂.F) P).totalDegree))⁻¹ = a1`. Generalize the expression as in `((Λ.mIdx N (Dw.p + Dw.q) : ℕ) : T'.Fr)⁻¹ = a2`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_nonneg_of_shortRule (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n) [StarRing (𝓞 D.host.E)] (hlev : d.IsLev)

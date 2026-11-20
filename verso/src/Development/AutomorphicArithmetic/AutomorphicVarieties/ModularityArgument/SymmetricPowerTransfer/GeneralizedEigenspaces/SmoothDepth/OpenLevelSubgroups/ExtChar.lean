@@ -14,7 +14,7 @@ namespace UpperTheory.V.Z.Sym.Al.ExtChar
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `UpperTheory.V.Hi.GlAx.val_div_ord x`. Rewrite `h` using `[Units.val_div_eq_div_val, map_div₀, UpperTheory.V.Hi.GlAx.val_zpow]`. Conclude with `(div_eq_one_iff_eq (zpow_pos UpperTheory.V.Hi.GlAx.unif_pos _).ne').1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_eq (x : kˣ) : valuation k (x : k) = uniformizer k ^ ord k x := by
   have h := UpperTheory.V.Hi.GlAx.val_div_ord x
@@ -22,7 +22,7 @@ private theorem val_eq (x : kˣ) : valuation k (x : k) = uniformizer k ^ ord k x
   exact (div_eq_one_iff_eq (zpow_pos UpperTheory.V.Hi.GlAx.unif_pos _).ne').1 h
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[hv, hv]`. Conclude with `zpow_lt_zpow_right_of_lt_one₀ UpperTheory.V.Hi.GlAx.unif_pos uniformizer_lt_one (he i j hij)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sdom_of_exp (u : Fin n → kˣ) (e : Fin n → ℤ)
     (hv : ∀ i, valuation k (u i : k) = uniformizer k ^ e i) (he : ∀ i j, i < j → e j < e i) : Sig.SDom u := by
@@ -34,7 +34,7 @@ private noncomputable def rho (n : ℕ) (k : Type) [Field k] [ValuativeRel k] [T
     (m : ℤ) : Fin n → kˣ := fun i => UpperTheory.V.Hi.unif k ^ (-(m * (i : ℕ)))
 
 /- English proof (translation)
-Use `sdom_of_exp _ (fun i => -(m * ((i : ℕ) : ℤ))) (fun i => UpperTheory.V.Hi.GlAx.val_zpow _) fun i j hij => ?_` and prove the remaining obligations. Establish `: ((i : ℕ) : ℤ) < ((j : ℕ) : ℤ)` using `by exact_mod_cast hij`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem rho_sdom {m : ℤ} (hm : 0 < m) : Sig.SDom (rho n k m) := by
   refine sdom_of_exp _ (fun i => -(m * ((i : ℕ) : ℤ))) (fun i => UpperTheory.V.Hi.GlAx.val_zpow _) fun i j hij => ?_
@@ -42,7 +42,7 @@ private theorem rho_sdom {m : ℤ} (hm : 0 < m) : Sig.SDom (rho n k m) := by
   nlinarith
 
 /- English proof (translation)
-Introduce `i j hij`. Simplify using `only [Pi.mul_apply, Units.val_mul, map_mul]`. Conclude with `mul_lt_mul'' (h i j hij) (h' i j hij) zero_le' zero_le'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sdom_mul {d d' : Fin n → kˣ} (h : Sig.SDom d) (h' : Sig.SDom d') : Sig.SDom (d * d') := by
   intro i j hij
@@ -50,7 +50,7 @@ private theorem sdom_mul {d d' : Fin n → kˣ} (h : Sig.SDom d) (h' : Sig.SDom 
   exact mul_lt_mul'' (h i j hij) (h' i j hij) zero_le' zero_le'
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `h1 : ∀ i, valuation k (u i : k) = 1` using `hu`. Simplify using `only [Pi.mul_apply, Units.val_mul, map_mul, h1, mul_one]`. Conclude with `h i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sdom_mul_unit {d u : Fin n → kˣ} (h : Sig.SDom d) (hu : ∀ i, u i ∈ UpperTheory.V.Hi.Uo k) : Sig.SDom (d * u) := by
   intro i j hij
@@ -59,9 +59,9 @@ private theorem sdom_mul_unit {d u : Fin n → kˣ} (h : Sig.SDom d) (hu : ∀ i
   exact h i j hij
 
 /- English proof (translation)
-Set `B : ℤ` to `∑ i, |ord k (t i)|`. Establish `hB : ∀ i, |ord k (t i)| ≤ B` using `fun i => Finset.single_le_sum (f := fun i => |ord k (t i)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i)`. Establish `hB0 : 0 ≤ B` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hm : 0 < 2 * B + 1` using `by omega`. Use `⟨t * rho n k (2 * B + 1), rho n k (2 * B + 1), ?_, rho_sdom hm, by simp⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `sdom_of_exp _ (fun i => ord k (t i) + -((2 * B + 1) * ((i : ℕ) : ℤ))) (fun i => ?_) fun i j hij => ?_` and prove the remaining obligations. Rewrite using `[Pi.mul_apply, Units.val_mul, map_mul, val_eq, rho, UpperTheory.V.Hi.GlAx.val_zpow, zpow_add₀ UpperTheory.V.Hi.GlAx.unif_pos.ne']`. Establish `h0 : ((i : ℕ) : ℤ) + 1 ≤ ((j : ℕ) : ℤ)` using `by exact_mod_cast hij`. Establish `h1` using `abs_le.1 (hB i)`. Establish `h2` using `abs_le.1 (hB j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -92,7 +92,7 @@ private def P (n : ℕ) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace 
     · simp
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.comp_apply, deltaHalf_apply]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Establish `h : Matrix.GeneralLinearGroup.det (leviTorus k (Fin n) v a) = v a` using `congrFun ((leviTorus k (Fin n)).left_inv v) a`. Use `erw [h]`. Conclude with `isUnram_absPow k _ _ (hv a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem delta_unit (v : Fin n → kˣ) (hv : ∀ i, v i ∈ UpperTheory.V.Hi.Uo k) :
     (deltaHalf k fun _ : Fin n => Unit).comp (leviTorus k (Fin n)).toMonoidHom v = 1 := by
@@ -106,29 +106,27 @@ end UpperTheory.V.Z.Sym.Al.ExtChar
 
 open UpperTheory.V.Z.Sym.Al.ExtChar in
 /- English proof (translation)
-Introduce `k _ _ _ _ n χ hne hmul hunit`. Set `f : (Fin n → kˣ) → ℂ` to `fun d => if d = 1 then 1 else χ d`. Establish `hf : ∀ d, Sig.SDom d → f d = χ d`. Introduce `d hd`. Distinguish the cases in `h1 : d = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `h1` using the available equality. Establish `h2` using `hmul 1 1 hd hd`. Rewrite `h2` using `[mul_one]`. Establish `h3 : χ 1 = 1`. Establish `h4` using `hne 1 hd`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel₀ h4 (by rw [one_mul]; exact h2.symm)`. Simplify using `[f, h3]`. Simplify using `[f, h1]`. Establish `hf1 : f 1 = 1` using `by simp [f]`. Take `⟨θ, hθ, -⟩` from `UpperTheory.V.AlgebraTools.monoidExt (Fin n → kˣ) ℂ (P n k) f (fun t => by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, ha, hb, h⟩` from `exists_div t`. Conclude with `⟨a, Or.inl ha, b, Or.inl hb, h⟩)`. Use `hf1`. Use the proof step `(by`. Introduce and unpack `a (ha | rfl) b (hb | rfl)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf _ ha, hf _ hb, hf _ (sdom_mul ha hb), hmul _ _ ha hb]`. Rewrite using `[mul_one, hf1, mul_one]`. Rewrite using `[one_mul, hf1, one_mul]`. Rewrite using `[mul_one, hf1, mul_one])`. Use the proof step `(by`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `a (ha | rfl)`. Rewrite using `[hf _ ha]`. Conclude with `(hne a ha).isUnit`. Rewrite using `[hf1]`. Conclude with `isUnit_one)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hθχ : ∀ d, Sig.SDom d → (θ d : ℂ) = χ d` using `fun d hd => (hθ d (Or.inl hd)).trans (hf d hd)`. Establish `hθu : ∀ u : Fin n → kˣ, (∀ i, u i ∈ Hi.Uo k) → θ u = 1`. Introduce `u hu`. Take `⟨a, -, ha, -, -⟩` from `exists_div (1 : Fin n → kˣ)`. Establish `h1 : θ (a * u) = θ a` using `Units.ext (by`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hθχ _ (sdom_mul_unit ha hu), hθχ _ ha, hunit _ _ ha hu])`. Rewrite `h1` using `[map_mul]`. Conclude with `mul_left_cancel (h1.trans (mul_one _).symm)`. Set `D : (Fin n → kˣ) →* ℂˣ` to `(deltaHalf k fun _ : Fin n => Unit).comp (leviTorus k (Fin n)).toMonoidHom`. Establish `hsingle : ∀ (i : Fin n) (u : kˣ), u ∈ Hi.Uo k → ∀ j, (Pi.mulSingle i u : Fin n → kˣ) j ∈ Hi.Uo k`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i u hu j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using hu`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Use `⟨fun i => (θ * D).comp (MonoidHom.mulSingle (fun _ : Fin n => kˣ) i), ?_, ?_⟩` and prove the remaining obligations. Introduce `i u hu`. Simplify using `only [MonoidHom.comp_apply, MonoidHom.mul_apply, MonoidHom.mulSingle_apply]`. Rewrite using `[hθu _ (hsingle i u hu), delta_unit _ (hsingle i u hu), one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `d hd`. Establish `h1 : torusChar (fun i => (θ * D).comp (MonoidHom.mulSingle (fun _ : Fin n => kˣ) i)) d = θ d * D d`. Rewrite using `[torusChar_apply]`. Simplify using `only [MonoidHom.comp_apply, MonoidHom.mulSingle_apply]`. Rewrite using `[← map_prod, Finset.univ_prod_mulSingle, MonoidHom.mul_apply]`.
-
-Rewrite using `[Dict.expo, h1, ← hθχ d hd]`. Express the relevant statement in the definitionally equal form `(θ d : ℂ) = ((θ d * D d * (D d)⁻¹ : ℂˣ) : ℂ)`. Rewrite using `[mul_inv_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Al.extChar :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (χ : (Fin n → kˣ) → ℂ), (∀ d, Sig.SDom d → χ d ≠ 0) → (∀ d d', Sig.SDom d → Sig.SDom d' → χ (d * d') = χ d * χ d') →

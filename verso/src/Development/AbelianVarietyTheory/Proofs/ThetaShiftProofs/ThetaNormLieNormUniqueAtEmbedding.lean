@@ -14,7 +14,7 @@ namespace GlobalTheory.ArchNormUnique
 open MeasureTheory GlobalTheory.ArchMetricCompare GlobalTheory.IndefiniteRowSideFullHecke.L2SquaredNorms
 
 /- English proof (translation)
-Rewrite using `[latticeMean_eq Λ volume hF hf, ZLattice.covolume_eq_measure_fundamentalDomain _ _ hF, smul_eq_mul, div_eq_inv_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mean_eq {g : ℕ} (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ] [IsZLattice ℝ Λ]
     {Fd : Set (Fin g → ℂ)} (hF : IsAddFundamentalDomain Λ Fd volume) {f : (Fin g → ℂ) → ℝ}
@@ -25,43 +25,33 @@ theorem mean_eq {g : ℕ} (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology
   rfl
 
 /- English proof (translation)
-Take `⟨-, A, _, φ, u, Hm, χ, θ, Fd, hp, hu, o, hθ, hF, -, -, -, rfl⟩` from `h`. Take `⟨-, A', _, φ', u', Hm', χ', θ', Fd', hp', hu', o', hθ', hF', -, -, -, rfl⟩` from `h'`. Take `⟨e, he, heψ⟩` from `grpPullback_iso hp hp'`. Take `⟨-, -, -, -, t1, t2, -⟩` from `AHWeil.tangent_and_weil_of_isAH hU (pullPol P hp') P.g u' Hm' χ' hu'`. Take `⟨F, hFe, hFΛ, -, -⟩` from `HomLinear.exists_linear_of_isMonHom A A' (pullPol P hp).isAb (pullPol P hp').isAb _ _ P.g P.g u u' t1 t2 e.hom he`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hL` using `pull_isLB P.isLB φ`. Establish `hL'` using `pull_isLB P.isLB φ'`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : LBIso ((P.L.pull φ').pull e.hom.left) (P.L.pull φ) := by`. Establish `h0 : LBIso (P.L.pull φ') (P.L.pull φ')` using `⟨idIso _, idIso_isGen hL'⟩`. Establish `h1` using `(PolFibre.lbIso_pull_comp h0 e.hom.left).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[heψ]`. Then use the resulting hypothesis. Establish `hHH : ∀ z w, hermForm Hm' (F z) (F w) = hermForm Hm z w` using `fun z w => by`. Simplify using `using hermForm_pull_eq_of_lbIso_pow A A' _ _ hL hL' _ _ u u' Hm χ Hm' χ' hu hu' e.hom F hFe 1 1 ⟨LB.linCombIso t _ _, DVR.linCombIso_isGen t ht _ _⟩ z w`. Establish `hinj : Function.Injective F` using `(injective_iff_map_eq_zero F).2 fun z hz => by`. Assume the negation of the conclusion as `hne`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1` using `hu.2.1 z hne`. Establish `h2` using `hHH z z`. Rewrite `h2` using `[hz]`. Express the relevant statement in the definitionally equal form `0 < (hermForm Hm z z).re at h1`. Rewrite `h1` using `[← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hermForm] at h1`. Set `T` to `LinearEquiv.ofInjectiveEndo F hinj`. Establish `hT : ∀ z, T z = F z` using `fun _ => rfl`. Establish `hx : ∀ z, (u'.ex (F z)).left ≫ φ' = (u.ex z).left ≫ φ` using `fun z => by`. Rewrite using `[hFe, Over.comp_left, Category.assoc, heψ]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΛ : ∀ z, F z ∈ u'.Λ ↔ z ∈ u.Λ` using `fun z => ⟨fun hz => by`. Rewrite `hz` using `[← u'.ker, hFe, ← (u'.ker 0).2 u'.Λ.zero_mem, ← map_zero F, hFe, cancel_mono]`. Rewrite using `[← u.ker, hz, u.ker]`. Conclude with `u.Λ.zero_mem, hFΛ z⟩`. Set `U : P.L.ι → (Fin P.g → ℂ) → Prop` to `fun j z => ⊤ ≤ (u.ex z).left ⁻¹ᵁ (P.L.pull φ).U fun _ => j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `U' : ∀ j z, U j z → ⊤ ≤ (u'.ex (F z)).left ⁻¹ᵁ (P.L.pull φ').U fun _ => j` using `fun j z hz => (le_pull_iff _ _ _ _).2 ((hx z).symm ▸ (le_pull_iff _ _ _ _).1 hz)`. Establish `Uc : ∀ z, ∃ j, U j z` using `fun z => by`. Take `⟨j, hj⟩` from `exists_chart_at hL (u.ex z).left`. Conclude with `⟨j PUnit.unit, hj⟩`. Set `Pm : u.Λ →+ (Fin P.g → ℂ)` to `u.Λ.subtype.toAddMonoidHom`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hr : Set.range Pm = u.Λ` using `Subtype.range_coe`. Establish `hr' : Pm.range = u.Λ.toAddSubgroup` using `SetLike.coe_injective hr`. Establish `hfr : ∀ j z, U j z → u'.fr (fun _ => j) (F z) = u.fr (fun _ => j) z` using `GeneratorNorm.frames_eq Pm (by rw [hr']; exact u.discrete) (by rw [hr]; exact u.full) U (fun j => (u.hol _ 0).1) Uc (fun j z a hz => by`. Use `ex_add_period u z a` as an intermediate fact. Simplify using `only [U] at hz ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `this ▸ hz)`. Use the proof step `(fun j j' z => valAt' ((u.ex z).left ≫ φ) (P.L.U j ⊓ P.L.U j') (P.L.g j j').val)`. Use the proof step `(fun j => u.fr fun _ => j) (fun j z => u'.fr (fun _ => j) (F z))`. Use the proof step `(fun a z => Real.exp (Real.pi * (hermForm Hm z a).re + Real.pi / 2 * (hermForm Hm a a).re))`. Use the proof step `(fun j => u.fr_hol _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun j => (u'.fr_hol _).comp (LinearMap.toContinuousLinearMap F).differentiable.differentiableOn (U' j))`. Use the proof step `(fun j z => u.fr_ne _ z)`. Use the proof step `(fun j j' z h1 h2 => by`. Establish `h3` using `(top_le_preimage_inf _ _ _).2 ⟨h1, h2⟩`. Rewrite using `[u.fr_compat _ _ z h3, val_pull_g _ _ _ _ _ h3])`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun j j' z h1 h2 => by`. Establish `h3` using `(top_le_preimage_inf _ _ _).2 ⟨U' j z h1, U' j' z h2⟩`. Use `show u'.fr _ (F z) = _ * u'.fr _ (F z)`. Rewrite using `[u'.fr_compat _ _ _ h3, val_pull_g _ _ _ _ _ h3, hx])`. Use the proof step `(fun j hj => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : ⊤ ≤ (P.L.pull (eSec P.A)).U fun _ => j`. Establish `h1` using `(le_pull_iff _ _ _ _).1 hj`. Rewrite `h1` using `[TangentOrigin.ex_zero_left]`. Use `(le_spMap_iff σ _).1 ((le_pull_iff _ _ _ _).2 ?_)` and prove the remaining obligations. Conclude with `PolBaseChange.eSec_comm hp ▸ h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show u'.fr _ (F 0) = _`. Rewrite using `[map_zero, o' j h0, o j h0])`. Use the proof step `(fun a j z hz => by show ‖u.fr _ z‖ = _ * ‖u.fr _ (z + a)‖`. Rewrite using `[hu.2.2.2 a _ z hz, norm_mul, norm_mul, hu.2.2.1, _root_.one_mul]`. Conclude with `congrArg (· * _) (GeneratorNorm.norm_factor Hm z a))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun a j z hz => by show ‖u'.fr _ (F z)‖ = _ * ‖u'.fr _ (F (z + a))‖`. Rewrite using `[hu'.2.2.2 ⟨F a, hFΛ a a.2⟩ _ _ (U' j z hz), norm_mul, norm_mul, hu'.2.2.1, _root_.one_mul, map_add, ← hHH, ← hHH]`. Conclude with `congrArg (· * _) (GeneratorNorm.norm_factor Hm' (F z) (F a)))`. Establish `hθθ : ∀ z, θ' (F z) = θ z` using `fun z => by`. Take `⟨j, hj⟩` from `Uc z`.
-
-Establish `h1` using `hθ' j (F z) ((le_pull_iff _ _ _ _).1 (U' j z hj))`. Rewrite `h1` using `[hx, hθ j z ((le_pull_iff _ _ _ _).1 hj), hfr j z hj]`. Conclude with `(mul_right_cancel₀ (u.fr_ne _ z hj) h1).symm`. Establish `hff : ∀ z, ‖θ' (F z)‖ ^ 2 * Real.exp (-Real.pi * hermSq Hm' (F z)) = ‖θ z‖ ^ 2 * Real.exp (-Real.pi * hermSq Hm z)` using `fun z => by`. Rewrite using `[hθθ, show hermSq Hm' (F z) = hermSq Hm z from congrArg Complex.re (hHH z z)]`.
-
-Establish `hper : ∀ a ∈ u.Λ, ∀ z, ‖θ (z + a)‖ ^ 2 * Real.exp (-Real.pi * hermSq Hm (z + a)) = ‖θ z‖ ^ 2 * Real.exp (-Real.pi * hermSq Hm z)` using `fun a ha z => by`. Take `⟨th, hth⟩` from `sec_pull_down ((isGen_iff _).1 (idIso_isGen hL)) P.isLB hL s`. Establish `hth` using `KeyPow.appLE_eq_of_stalk _ s th (hth _ (𝟙 _))`. Use `weight_periodic hL hu (s := th) (fun j z hz => ?_) ⟨a, ha⟩ z` and prove the remaining obligations. Establish `e` using `val_via _ s th hth (u.ex z).left (j PUnit.unit) j ((top_le_preimage_inf _ _ _).2 ⟨hz, hz⟩)`.
-
-Use `Eq.trans ?_ (hθ (j PUnit.unit) z ((le_pull_iff _ _ _ _).1 hz))` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `((congrArg (· * _) (val_g_self hL _ j hz)).trans (_root_.one_mul _)).symm`. Establish `hper' : ∀ a ∈ u'.Λ, ∀ z, ‖θ' (z + a)‖ ^ 2 * Real.exp (-Real.pi * hermSq Hm' (z + a)) = ‖θ' z‖ ^ 2 * Real.exp (-Real.pi * hermSq Hm' z)` using `fun a ha z => by`. Take `⟨a, rfl⟩` from `T.surjective a`.
-
-Take `⟨z, rfl⟩` from `T.surjective z`. Rewrite using `[← map_add, hT, hT, hff, hff, hper a ((hΛ a).1 ha)]`. Use `haveI := u.discrete`. Use `haveI := u'.discrete`. Use `haveI : IsZLattice ℝ u.Λ := ⟨u.full⟩`.
-
-Use `haveI : IsZLattice ℝ u'.Λ := ⟨u'.full⟩`. Rewrite using `[mean_eq u.Λ hF hper, mean_eq u'.Λ hF' hper', ← latticeMean_comp_equiv u.Λ u'.Λ (T.restrictScalars ℝ).toContinuousLinearEquiv hΛ hper']`. Conclude with `congrArg _ (funext fun z => (hff z).symm)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archimedean_l2_norm_unique (hU : ThetaUnifAV) {K : Type} [Field K] {P : Out.PolAV (Sp K)} {σ : K →+* ℂ}
     {rig : LB.Gen (P.L.pull (eSec P.A))} {s : P.L.Sec} {v v' : ℝ} (h : IsL2SquareIntegralProblem P rig σ s v)
@@ -173,7 +163,7 @@ theorem archimedean_l2_norm_unique (hU : ThetaUnifAV) {K : Type} [Field K] {P : 
   exact congrArg _ (funext fun z => (hff z).symm)
 
 /- English proof (translation)
-Introduce `hK K _ P σ v v'`. Use `⟨fun rig th _ h h' => archimedean_l2_norm_unique hK.theta ((isL2Sq_iff_isThNormAt P rig σ th v).2 h) ((isL2Sq_iff_isThNormAt P rig σ th v').2 h'), ?_⟩` and prove the remaining obligations. Introduce and unpack `t ht ⟨Q, φ, w, x, hp, hw, hx, u, Hm, χ, z, hu, hz, rfl⟩ ⟨Q', φ', w', x', hp', hw', hx', u', Hm', χ', z', hu', hz', rfl⟩`. Establish `e` using `CM.LieMetric.hermForm_eq hK.theta (P := P) (s := σ) ⟨g_eq hp, hp, LBIso.symm ⟨w, hw⟩⟩ ⟨g_eq hp', hp', LBIso.symm ⟨w', hw'⟩⟩ hu hu' (I := PUnit) (v := fun _ => t) (fun _ => ht) (w := fun _ => x) (w' := fun _ => x') (W := fun _ => z) (W' := fun _ => z') (fun _ => ⟨hx, hz⟩) (fun _ = …`. Conclude with `congrArg (fun c : ℂ => Real.log (Real.pi * c.re) / 2) e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norms_unique : Known → ∀ (K : Type) [Field K] (P : Out.PolAV (Sp K)) (σ : K →+* ℂ) (v v' : ℝ), (∀ (rig : LB.Gen (P.L.pull (eSec P.A))) (th : P.L.Sec), rig.IsGen → Arch.IsThNormAt P rig th σ v → Arch.IsThNormAt P rig th σ v' → v = v') ∧ ∀ η' : epsR K ⟶ P.A, IsTangent η' → Arch.IsLieNormAt P η' σ v → Arch.IsLieNormAt P η' σ v' → v = v' := by
   intro hK K _ P σ v v'

@@ -5,19 +5,17 @@ open scoped Matrix Nat
 namespace GlobalTheory.GaussComplexForm
 
 /- English proof (translation)
-Introduce `V _ _ _ Q c hc hQ`. Use `set B : V →L[ℝ] V →L[ℝ] ℂ := -Q with hBdef`. Establish `hBapp : ∀ x y, B x y = -(Q x y)` using `fun x y => rfl`. Establish `hB : ∀ x, (B x x).re ≤ -(c * ‖x‖ ^ 2)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBapp, Complex.neg_re]`. Combine the linear relations using `[hQ x]`. Establish `hq : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y : V => B y y)` using `B.contDiff.clm_apply contDiff_id`. Establish `hg : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y : V => Complex.exp (B y y))` using `Complex.contDiff_exp.comp hq`. Use `⟨⟨fun y => Complex.exp (B y y), hg, ?_⟩, fun x => ?_, fun x p => ?_⟩` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k n`. Take `⟨C, hC⟩` from `GlobalTheory.GaussExpSeries.exists_bound_poly_mul_exp c hc (k + 2 * n)`. Use `⟨n ! * (2 * (‖B‖ + 1)) ^ n * C, fun x => ?_⟩` and prove the remaining obligations. Establish `hx0` using `norm_nonneg x`. Establish `hB0` using `norm_nonneg B`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfb` using `GlobalTheory.GaussExpSeries.norm_iteratedFDeriv_gauss_le B c hB n x`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = n ! * (2 * (‖B‖ + 1)) ^ n * ((1 + ‖x‖) ^ (k + 2 * n) * Real.exp (-(c * ‖x‖ ^ 2))) := by`. Rewrite using `[show (2 * (‖B‖ + 1) * (1 + ‖x‖) ^ 2) ^ n = (2 * (‖B‖ + 1)) ^ n * (1 + ‖x‖) ^ (2 * n) by`.
+Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mul_pow, pow_mul], pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ n ! * (2 * (‖B‖ + 1)) ^ n * C := by gcongr; exact hC ‖x‖ hx0`. Use `show Complex.exp (B x x) = _`. Rewrite using `[hBapp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `(B.hasFDerivAt (x := x)).clm_apply (hasFDerivAt_id x)`. Establish `h2 : HasFDerivAt (fun y : V => Complex.exp (B y y)) _ x` using `h1.cexp`. Use `show fderiv ℝ (fun y : V => Complex.exp (B y y)) x p = -(Q x p + Q p x) * Complex.exp (B x x)`. Rewrite using `[h2.fderiv]`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.flip_apply, ContinuousLinearMap.id_apply, id, smul_eq_mul, hBapp]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_schwartz_cexp_neg_form : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (Q : V →L[ℝ] V →L[ℝ] ℂ) (c : ℝ),

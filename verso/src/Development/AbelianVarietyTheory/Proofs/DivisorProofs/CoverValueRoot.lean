@@ -26,7 +26,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Datum Level Moduli Coeff)
 namespace GlobalTheory.OnCmp.CoverRoot
 
 /- English proof (translation)
-Substitute `hσ hV` using the available equality. Take `⟨_, U, d, h⟩` from `hT.xiVal j hj n`. Conclude with `⟨U, d, h⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem xiVal_cast {D : D7} (T : Full D) (hT : LawsFull T) (j n : ℕ) (hj : InR D j) (σ : T.Q.c.F →+* ℂ)
     (hσ : σ = T.toTop.toCore.σ₀) (W : HSp D) (hV : T.V j σ = W) (hr : W.rank = D.R.r) :
@@ -37,7 +37,7 @@ theorem xiVal_cast {D : D7} (T : Full D) (hT : LawsFull T) (j n : ℕ) (hj : InR
   exact ⟨U, d, h⟩
 
 /- English proof (translation)
-Substitute `hτ` using the available equality. Take `⟨Cls, _, _, δ, gdet, -, h⟩` from `hT.sh.dRoot j hj n`. Conclude with `⟨_, h y⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem value_mem {D : D7} (T : Full D) (hT : LawsFull T) (j n : ℕ) (hj : InR D j) (τ : (T.dδ j n).c₂.F →+* ℂ)
     (hτ : τ = (T.dδ j n).c₂.F.val.toRingHom) (y : FrPt (T.dδ j n).Xo₂ (T.dδ j n).c₂ (CAt τ)) :
@@ -50,23 +50,23 @@ open GlobalTheory GlobalTheory.ThFr GlobalTheory.Dict GlobalTheory.AdTh GlobalTh
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ fw O hT hR i hO v _ hval0 hrun χ hχ`. Establish `hI : TieIn T.J R κ v₀` using `⟨fw.laws, fw.alg_eq, fw.kap, fw.hv₀, fw.chiR, fw.x0⟩`. Establish `hs : (O i).s0 = T.toTop.toCore.σ₀` using `sOv_eq _ _ _`. Take `⟨U₂, dict₂, c0, hroot, hc⟩` from `xiVal_cast T hT _ (Vc D i).rank (inR i) (O i).s0 hs (Wc D i) (O i).hV (rank_Wc i)`. Take `⟨hU, hW, g', e', F', ik, φ, th, hth, hD, hval⟩` from `hc ()`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hlev` using `hT.sh.dLev _ (inR i) (Vc D i).rank`. Establish `hA` using `hT.lvA _ (inR i) (Vc D i).rank`. Take `⟨-, -, -, χ₁, hχ₁, hxi⟩` from `hrun`. Take `rfl : χ₁ = χ` from `GlobalTheory.ChrEqUnique.idc_unique D _ _ _ hχ₁ hχ`. Take `⟨hX₀, hon₀, -, hp₀, -, -, h1, -, hΨ₀, -⟩` from `GlobalTheory.AdTh.models_at_record_core D G Pl0 T0 A T.J R F κ v₀ hR hI i (O i).s0 hs (T.dict _ (O i).s0 1).1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hτ : (O i).s0.comp ((T.dδ ((i : ℕ) + 1) (Vc D i).rank).eF.symm : (T.dδ ((i : ℕ) + 1) (Vc D i).rank).c₂.F →+* T.Q.c.F) = (T.dδ ((i : ℕ) + 1) (Vc D i).rank).c₂.F.val.toRingHom` using `RingHom.ext fun _ => rfl`. Establish `hσ : GoodEmb (T.dδ ((i : ℕ) + 1) (Vc D i).rank).c₂ ((O i).s0.comp ((T.dδ ((i : ℕ) + 1) (Vc D i).rank).eF.symm : (T.dδ ((i : ℕ) + 1) (Vc D i).rank).c₂.F →+* T.Q.c.F))` using `rfl`. Establish `hmod : ∀ j, IsMod (Wc D i) (rank_Wc i) ((U₂ ()).X j)` using `fun j => isMod_of _ _ _ (hW j) fun ρ => ((hU.2.1 j).2 _).2 ((hΨ₀ _).1 ((hX₀.psi _).2 ⟨ρ, rfl⟩))`. Establish `hor : ∀ j, IsOrthogonalFrame ((U₂ ()).X j) (T.x₀ ((i : ℕ) + 1) (O i).s0)` using `fun j τ hτ => by`. Establish `hsp` using `sameSp_of (hmod j) hX₀ ((hU.2.1 j).1.trans hp₀.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsp.gm, hsp.p0]`. Conclude with `hon₀ ⟨τ, hsp.psi ▸ hτ⟩`. Take `⟨Wt⟩` from `nonempty_uw ((Formalism.L2.PjFree.isUnf_ofPj _).2 hU)`. Take `⟨hex, -, hrat, hmul⟩` from `GlobalTheory.Member.isDetRoot_laws D (Wc D i)`. Establish `hv : ∀ (k : GA D (Wc D i)) (xk : (AE D)ˣ), IsDetRoot (Wc D i) k xk → rdU (U₂ ()) (T.dδ ((i : ℕ) + 1) (Vc D i).rank).cδ (dict₂ () k).1 (dict₂ () k).2 = c0 * ((χ₁ xk : Circle) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k xk hxk`. Take `⟨γ', hγ', h2, h3, -⟩` from `hD.2 k`. Take `⟨a, ha⟩` from `hrat γ' hγ'`. Establish `hv` using `hval k γ' ⟨hγ', h2, h3⟩`. Rewrite `hv` using `[hxi _ _ (hmul _ _ _ _ ha hxk), map_mul, hχ.1.2 a, _root_.one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hv`. Establish `hat` using `GlobalTheory.AdTh.dict_atComp_markAd D _ _ _ _ _ _ _ (U₂ ()) hσ hU h1 hA R.θ (Wc D i) (rank_Wc i) (dict₂ ()) (iotaW T.J i) g' e' F' ik φ th _ hR.models.inf hmod hor hth hD Wt`. Use `⟨c0, ?_, hroot, ?_⟩` and prove the remaining obligations. Take `⟨x1, hx1⟩` from `hex 1`. Take `⟨hon, -⟩` from `hat 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, hu2, -⟩` from `GlobalTheory.UnitFrames.unit_frame_eq_orthonormal_mul_triangular D.host.E D.R.r ((U₂ ()).X (dict₂ () 1).1).p0 ((U₂ ()).X (dict₂ () 1).1).Ψ ((U₂ ()).X (dict₂ () 1).1).Gm ((U₂ ()).X (dict₂ () 1).1).Gm_herm`. Establish `hd : (dict₂ () 1).2 ∈ ((U₂ ()).X (dict₂ () 1).1).dom` using `(hu2 _ hon).1`. Take `⟨z, hz⟩` from `value_mem T hT _ _ (inR i) _ hτ ((U₂ ()).un _ ⟨_, hd⟩)`. Establish `h2 : c0 * ((χ₁ x1 : Circle) : ℂ) = _` using `((hv 1 x1 hx1).symm.trans (dif_pos hd)).trans hz`. Take `⟨y, hy⟩` from `GlobalTheory.BigOn.CoreWit.exists_val_of_chrEq hχ x1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `hval0 y`. Establish `hres` using `res_embLL T.J hI.alg hI.laws.pins.2.2.1`. Use `⟨algebraMap T.Q.c.F D.what₂.LL ((T.dδ ((i : ℕ) + 1) (Vc D i).rank).eF.symm z) / b, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, hb, ← hy, div_eq_iff (Circle.coe_ne_zero _), h2]`. Conclude with `(DFunLike.congr_fun hres _).trans (DFunLike.congr_fun hs.symm _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `X g bas idx e k xk mk hX hp hsy hi hL hxk hmk hk y₂ A₂ hA₂`. Take `⟨hon, γ, ⟨hγ, hl, hf⟩, hma, -⟩` from `hat k`. Take `⟨hd, hpt⟩` from `point_eq (Formalism.L2.PjFree.Unf.ofPj (U₂ ())) hσ hU h1 hA hR.models.inf (Wc D i) (rank_Wc i) (iotaW T.J i) _ Wt (dict₂ () k).1 (dict₂ () k).2 γ k hγ (hmod _) hl hf hon hma X g bas idx e mk hX hp hsy hi hL hmk hk y₂ A₂ hA₂`. Conclude with `(evR_eq_of_point _ hlev.2.2.2.2.2.2.2.1 _ y₂ hpt).trans ((dif_pos hd).symm.trans (hv k xk hxk))`.
+A detailed English derivation is pending.
 -/
 theorem cover_value_root : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : Full D) [Algebra T.J.Q.c.F D.what₂.LL] (R : RealDat D A T.J.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (fw : FWTie T.J R κ v₀) (O : ∀ i, OMDat T.J.toCore R i Unit (fun _ => A.μ0)) (hT : LawsFull T), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m), OMPins T.J R κ v₀ O i → ∀ (v : HeightOneSpectrum (𝓞 D.what₂.LL)), GlobalTheory.FinalJoin2.FieldOK0 D (ownAt D v) → (∀ x, (((R.C.delAt (Formalism.EigenvalueLevelCeiling.plc v)).1 x : ℂˣ) : ℂ) ∈ D.what₂.embLL.range) → RunPin (T := T) R i (κ i).n v (ownAt D v) → ∀ χ : (AE D)ˣ →* Circle, ChrEq χ (R.C.delAt (Formalism.EigenvalueLevelCeiling.plc v)) → ∃ c0' : ℂ, c0' ∈ D.what₂.embLL.range ∧ (∃ m : ℕ, 0 < m ∧ c0' ^ m = 1) ∧ (∀ (X : ReciprocityTheory.ChartRestriction.G.FD.Data D.host.E D.R.r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin D.R.r) (e : Fin g ≃ Lt1 (T.Q.Dw ((i : ℕ) + 1))) (k : GA D (Wc D i)) (xk : (AE D)ˣ) (mk : (T.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (Fin D.R.r → D.host.E)), GlobalTheory.AdTh.IsMod (Wc D i) (rank_Wc i) X → X.p0 = (T.Q.Dw ((i : ℕ) + 1)).q → GlobalTheory.ThFr.IsSympl X bas → GlobalTheory.AdTh.IdxIs T.Q.c (O i).s0 X idx e → GlobalTheory.AdTh.latR (rank_Wc i) (latG (Wc D i) k) = X.Λ → IsDetRoot (Wc D i) k xk → GlobalTheory.Dict.IsMark (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂ X.Λ mk → GlobalTheory.AdTh.MarkAd (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂ (Wc D i) (rank_Wc i) (iotaW T.J i) k mk → letI : Algebra (T.dδ ((i : ℕ) + 1) (Vc D i).rank).c₂.F ℂ := ((O i).s0.comp ((T.dδ ((i : ℕ) + 1) (Vc D i).rank).eF.symm : (T.dδ ((i : ℕ) + 1) (Vc D i).rank).c₂.F →+* T.Q.c.F)).toAlgebra; ∀ (y₂ : FrPt (T.dδ ((i : ℕ) + 1) (Vc D i).rank).Xo₂ (T.dδ ((i : ℕ) + 1) (Vc D i).rank).c₂ ℂ) (A₂ : GlobalTheory.Dict.AnFib X bas idx e (GlobalTheory.AdTh.frMove R.θ (Wc D i) (rank_Wc i) X k (fun τ => T.J.x₀ ((i : ℕ) + 1) (O i).s0 τ.1)) X.Λ y₂), A₂.Marked mk → evR (T.dδ ((i : ℕ) + 1) (Vc D i).rank).Xo₂ (T.dδ ((i : ℕ) + 1) (Vc D i).rank).c₂ (T.dδ ((i : ℕ) + 1) (Vc D i).rank).cδ y₂ = c0' * ((χ xk : Circle) : ℂ)) := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ fw O hT hR i hO v _ hval0 hrun χ hχ

@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (chartPullSame M (fun _ : PUnit => π₂) (fun _ => π₁) (fun _ => 1) φ fun _ => hφ) (Geo.Tor.chartPullPull L₁ φ φ rfl) e.symm`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_comp_of_eq {X X₁ X₂ : Scheme.{0}} {M : LB X} {π₁ : X₁ ⟶ X} {π₂ : X₂ ⟶ X} {φ : X₂ ⟶ X₁}
     (hφ : π₂ = φ ≫ π₁) {L₁ : LB X₁} (e : LBIso L₁ (M.pull π₁)) : LBIso (M.pull π₂) (L₁.pull φ) :=
@@ -19,13 +19,13 @@ theorem lbIso_pull_comp_of_eq {X X₁ X₂ : Scheme.{0}} {M : LB X} {π₁ : X�
     (Geo.Tor.chartPullPull L₁ φ φ rfl) e.symm
 
 /- English proof (translation)
-Introduce `F _ _ _ D p N T X Y t sX sY o o₁ u x π m₁ m`. Establish `w : m.φ ≫ u.A.hom = (o.A.hom ≫ x) ≫ π` using `by rw [m.cart.1.w, Category.assoc]`. Set `φ` to `m₁.cart.1.lift m.φ (o.A.hom ≫ x) w`. Establish `hφ : φ ≫ m₁.φ = m.φ` using `m₁.cart.1.lift_fst _ _ _`. Establish `hφ2 : φ ≫ o₁.A.hom = o.A.hom ≫ x` using `m₁.cart.1.lift_snd _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨{ φ := φ, cart := ?_, act := ?_, pol := ?_, eta := ?_ }⟩` and prove the remaining obligations. Conclude with `IsGrpPullback.cancel m₁.cart (m.cart.congr rfl hφ.symm) hφ2`. Introduce `a`. Apply `m₁.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hφ, m.act, Category.assoc, m₁.act, ← Category.assoc, hφ]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, Over.w (o₁.act.act a), hφ2, ← Category.assoc, Over.w (o.act.act a)]`. Conclude with `LBIso.trans o.PP.isLB (pull_isLB u.PP.isLB _) (pull_isLB o₁.PP.isLB φ) m.pol (lbIso_pull_comp_of_eq hφ.symm m₁.pol)`. Introduce `a`. Apply `m₁.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hφ, m.eta, Category.assoc, Category.assoc, m₁.eta]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Category.assoc, hφ2, ← Category.assoc, Over.w (o.eta a), Category.assoc, Over.w (o₁.eta a)]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem objMap_cancel : ∀ (F : Type) [Field F] [NumberField F] [IsCMField F] (D : GlobalTheory.UPel.Datum F) (p N : ℕ)
     (T X Y : Scheme.{0}) (t : T ⟶ Sp (D.OEp p)) (sX : X ⟶ Sp (D.OEp p)) (sY : Y ⟶ Sp (D.OEp p))

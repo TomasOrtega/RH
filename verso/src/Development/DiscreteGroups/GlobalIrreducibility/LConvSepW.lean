@@ -13,11 +13,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 include hψ in
 /- English proof (translation)
-Take `⟨K, hK, hKy⟩` from `exists_good_fix hψ y y`. Establish `hK'` using `good_conj hK hu`. Establish `hfix' : ∀ κ ∈ K.map (MulAut.conj u).toMonoidHom, rhoW ψ κ (rhoW ψ u y) = rhoW ψ u y`. Introduce `κ hκ`. Establish `e : κ * u = u * (u⁻¹ * κ * u)` using `by group`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, (hKy _ (mem_conj.1 hκ)).1]`. Rewrite using `[lam_eq hψ hI hB hK' hfix', lam_eq hψ hI hB hK (fun κ hκ => (hKy κ hκ).1)]`. Establish `hB' : B (rhoW ψ u y) (delta ψ (K.map (MulAut.conj u).toMonoidHom)) = ((ψ⁻¹ (superDiag u) : Circle) : ℂ) * B y (delta ψ K)`. Rewrite using `[← hB.2.2 u⁻¹ (rhoW ψ u y), ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, rhoW_inv_delta_conj hK hu, map_smul, smul_eq_mul]`. Establish `hc' : cK ψ I (K.map (MulAut.conj u).toMonoidHom) = cK ψ I K`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[cK, cK, ← (isInvForm_formI hI).2.2 u⁻¹ (delta ψ (K.map (MulAut.conj u).toMonoidHom)), rhoW_inv_delta_conj hK hu]`. Simplify using `only [map_smulₛₗ, map_smul, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply]`. Take the linear combination `(formI ψ I (delta ψ K) (delta ψ K)) * circle_conj_mul (ψ⁻¹ (superDiag u))`. Rewrite using `[lamK, lamK, hB', hc', mul_div_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_unip (hI : PosInt I) (hB : IsInvForm (rhoW ψ) B) (y : WT (m := m) ψ) {u : GL (Fin m) k}
     (hu : u ∈ unipB k (Fin m)) :
@@ -42,7 +42,7 @@ theorem lam_unip (hI : PosInt I) (hB : IsInvForm (rhoW ψ) B) (y : WT (m := m) �
 
 include hψ in
 /- English proof (translation)
-Take `⟨K, hK, hKy⟩` from `exists_good_fix hψ (rhoW ψ g z) (rhoW ψ g z)`. Rewrite using `[lam_eq hψ hI hB hK (fun κ hκ => (hKy κ hκ).1), lamK, form_eq_zero_of_self hB.1 hB.2.1 (by rw [hB.2.2]; exact hz), zero_div]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_eq_zero (hI : PosInt I) (hB : IsInvForm (rhoW ψ) B) {z : WT (m := m) ψ} (hz : B z z = 0)
     (g : GL (Fin m) k) : lam ψ hψ I B (rhoW ψ g z) = 0 := by
@@ -62,13 +62,13 @@ Both sides reduce to the same expression.
 theorem Wf_apply (y : WT (m := m) ψ) (g : GL (Fin m) k) : Wf ψ hψ I B y g = lam ψ hψ I B (rhoW ψ g y) := rfl
 
 /- English proof (translation)
-Simplify using `only [Wf, map_mul, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Wf_right (y : WT (m := m) ψ) (g x : GL (Fin m) k) : Wf ψ hψ I B y (g * x) = Wf ψ hψ I B (rhoW ψ x y) g := by
   simp only [Wf, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Simplify using `only [Wf]`. Rewrite using `[map_mul, Module.End.mul_apply, lam_unip hψ hI hB _ hu]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Wf_left (hI : PosInt I) (hB : IsInvForm (rhoW ψ) B) (y : WT (m := m) ψ) {u : GL (Fin m) k}
     (hu : u ∈ unipB k (Fin m)) (g : GL (Fin m) k) :
@@ -77,7 +77,7 @@ theorem Wf_left (hI : PosInt I) (hB : IsInvForm (rhoW ψ) B) (y : WT (m := m) ψ
   rw [map_mul, Module.End.mul_apply, lam_unip hψ hI hB _ hu]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [Wf, map_add, Pi.add_apply]`. Conclude with `lam_add hψ hI hB _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Wf_add (hI : PosInt I) (hB : IsInvForm (rhoW ψ) B) (y z : WT (m := m) ψ) :
     Wf ψ hψ I B (y + z) = Wf ψ hψ I B y + Wf ψ hψ I B z := by
@@ -86,7 +86,7 @@ theorem Wf_add (hI : PosInt I) (hB : IsInvForm (rhoW ψ) B) (y z : WT (m := m) �
   exact lam_add hψ hI hB _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [Wf, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `lam_smul hψ hI hB _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Wf_smul (hI : PosInt I) (hB : IsInvForm (rhoW ψ) B) (a : ℂ) (y : WT (m := m) ψ) :
     Wf ψ hψ I B (a • y) = (starRingEnd ℂ) a • Wf ψ hψ I B y := by
@@ -95,14 +95,14 @@ theorem Wf_smul (hI : PosInt I) (hB : IsInvForm (rhoW ψ) B) (a : ℂ) (y : WT (
   exact lam_smul hψ hI hB _ _
 
 /- English proof (translation)
-The claim follows from `funext fun g => lam_eq_zero hψ hI hB hz g`.
+A detailed English derivation is pending.
 -/
 theorem Wf_eq_zero (hI : PosInt I) (hB : IsInvForm (rhoW ψ) B) {z : WT (m := m) ψ} (hz : B z z = 0) :
     Wf ψ hψ I B z = 0 :=
   funext fun g => lam_eq_zero hψ hI hB hz g
 
 /- English proof (translation)
-Take `⟨K, hKo, -, hK⟩` from `exists_fix y`. Use `(IsLocallyConstant.iff_exists_open _).2 fun g => ⟨(fun x => g⁻¹ * x) ⁻¹' K, hKo.preimage (by fun_prop), by simp [K.one_mem], fun x hx => ?_⟩` and prove the remaining obligations. Establish `e : x = g * (g⁻¹ * x)` using `by group`. Rewrite using `[e, Wf_right, hK _ hx]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLocallyConstant_Wf (y : WT (m := m) ψ) : IsLocallyConstant (Wf ψ hψ I B y) := by
   obtain ⟨K, hKo, -, hK⟩ := exists_fix y

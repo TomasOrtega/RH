@@ -12,7 +12,7 @@ noncomputable section
 namespace PI.WGL
 
 /- English proof (translation)
-Establish `hN : Numbers` using `numbers_dominant_large`. Establish `hX : XiFacts` using `xi_coefficient_facts`. Establish `hZ : CapelliZ` using `capelli_scalar_identity`. Establish `hV : ZScalarVanish` using `scalar_vanishing_criterion`. Conclude with `gTLower_of_steps hN hX (ioExists_of h3 h4 hX) (ioIntegral_of hZ (liftMod_of h3 h4 hZ hV hN hX) hV) (adjointBr_of h3 h5 hN hX) (brIntegral_of h2 h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gTLower_of (h2 : Formalism.BasicNotions.FactDelDualNabla) (h3 : PI.HwIrred) (h4 : PI.GTBranch)
     (h5 : PI.SchurFock) : PI.GTLower := by

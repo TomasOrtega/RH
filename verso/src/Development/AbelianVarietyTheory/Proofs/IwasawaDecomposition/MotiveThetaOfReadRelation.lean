@@ -13,7 +13,7 @@ set_option maxHeartbeats 4000000
 namespace GlobalTheory.HeightCounting.Fin3
 
 /- English proof (translation)
-Introduce `v i hv y hy n a f h`. Establish `h2` using `HEq.trans (heq_of_eq h) (hY.eW i _)`. Conclude with `(by with_unfolding_all exact ((l.c.th ((by with_unfolding_all exact (v :))) ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (hv :))) ((by with_unfolding_all exact (y :))) ((by with_unfolding_all exact (hy :))) n ((by with_unfolding_all exact (a :))) ((by with_ …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem emtTheta_L {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
     {P : Pre2 K w} {x : St P} (L : LocAll (lay0 (Dof x))) (l : LC hL x) {p0 : BaseLevelRowSide (w.D (oL x L).Z)} (Y : YT x L p0)

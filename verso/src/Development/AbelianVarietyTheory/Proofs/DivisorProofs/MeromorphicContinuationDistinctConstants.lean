@@ -2,25 +2,21 @@ import Mathlib
 open Filter Topology
 
 /- English proof (translation)
-Introduce `Y τ c₁ c₂ c₃ c₄ hc₁ hc₂ hc₃ hc₄ Ω Ω₁ s₀ hΩ hΩc hΩ₁ hne hsub hs₀ h12 h13 h14 Bf Fm hBm hBa hFd hFe hdec A Bb hAB hA hB`. Set `L : ℂ → (Y → ℂ) → (Y → ℂ)` to `fun c f y => f (τ y) - c * f y`. Set `P : ℂ → (Y → ℂ) → (Y → ℂ)` to `fun s f => L (c₂ s) (L (c₃ s) (L (c₄ s) f))`. Set `D : ℂ → ℂ` to `fun s => (c₁ s - c₂ s) * (c₁ s - c₃ s) * (c₁ s - c₄ s)`. Establish `key : ∀ s ∈ Ω₁, ∀ y, P s (Bf s) y = D s * Fm s y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `s hs y`. Take `⟨T₂, T₃, T₄, hd, h2, h3, h4⟩` from `hdec s hs`. Simplify using `only [P, L, D, hd, h2, h3, h4, hFe s hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `key₀ : ∀ y, P s₀ (Bf s₀) y = D s₀ * Bb y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `y`. Simplify using `only [P, L, D, hAB, hA, hB]`. Expand and normalize the polynomial expressions, which then agree. Establish `mL : ∀ (c : ℂ → ℂ), Differentiable ℂ c → ∀ (F : ℂ → Y → ℂ) (s : ℂ), (∀ y, MeromorphicAt (F · y) s) → ∀ y, MeromorphicAt (fun t => L (c t) (F t) y) s`. Introduce `c hc F s hF y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hF (τ y)).sub ((hc.analyticAt s).meromorphicAt.mul (hF y))`. Establish `aL : ∀ (c : ℂ → ℂ), Differentiable ℂ c → ∀ (F : ℂ → Y → ℂ) (s : ℂ), (∀ y, AnalyticAt ℂ (F · y) s) → ∀ y, AnalyticAt ℂ (fun t => L (c t) (F t) y) s`. Introduce `c hc F s hF y`. Conclude with `(hF (τ y)).sub ((hc.analyticAt s).mul (hF y))`. Establish `aD : ∀ s, AnalyticAt ℂ D s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s`. Conclude with `(((hc₁.analyticAt s).sub (hc₂.analyticAt s)).mul ((hc₁.analyticAt s).sub (hc₃.analyticAt s))).mul ((hc₁.analyticAt s).sub (hc₄.analyticAt s))`. Establish `aF : ∀ y, ∀ s ∈ Ω, AnalyticAt ℂ (Fm · y) s` using `fun y s hs => (hFd y).analyticAt (hΩ.mem_nhds hs)`. Use function extensionality and compare the values at `y`. Set `H : ℂ → ℂ` to `fun s => P s (Bf s) y - D s * Fm s y`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hHm : MeromorphicOn H Ω`. Introduce `s hs`. Establish `hB' : ∀ y, MeromorphicAt (Bf · y) s` using `fun y => hBm y s hs`. Conclude with `(mL c₂ hc₂ _ s (mL c₃ hc₃ _ s (mL c₄ hc₄ Bf s hB')) y).sub ((aD s).mul (aF y s hs)).meromorphicAt`. Establish `hHa : AnalyticAt ℂ H s₀` using `(aL c₂ hc₂ _ s₀ (aL c₃ hc₃ _ s₀ (aL c₄ hc₄ Bf s₀ hBa)) y).sub ((aD s₀).mul (aF y s₀ hs₀))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨x, hx⟩` from `hne`. Establish `htopx : meromorphicOrderAt H x = ⊤`. Rewrite using `[meromorphicOrderAt_eq_top_iff]`. Use `filter_upwards [nhdsWithin_le_nhds (hΩ₁.mem_nhds hx)] with s hs`. Simplify using `only [H, key s hs, sub_self]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htop : meromorphicOrderAt H s₀ = ⊤`. Assume the negation of the conclusion as `h`. Conclude with `hHm.meromorphicOrderAt_ne_top_of_isPreconnected hΩc hs₀ (hsub hx) h htopx`. Rewrite `htop` using `[meromorphicOrderAt_eq_top_iff]`. Establish `hev : ∀ᶠ s in 𝓝 s₀, H s = 0` using `hHa.frequently_zero_iff_eventually_zero.1 htop.frequently`.
-
-Establish `h0 : H s₀ = 0` using `hev.self_of_nhds`. Establish `hD : D s₀ ≠ 0` using `mul_ne_zero (mul_ne_zero (sub_ne_zero.2 h12) (sub_ne_zero.2 h13)) (sub_ne_zero.2 h14)`. Establish `: D s₀ * Bb y = D s₀ * Fm s₀ y`. Rewrite using `[← key₀ y]`. Conclude with `sub_eq_zero.1 h0`.
-
-Conclude with `mul_left_cancel₀ hD this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.analytic_continuation_constant_term_projector : ∀ (Y : Type) (τ : Y → Y) (c₁ c₂ c₃ c₄ : ℂ → ℂ), Differentiable ℂ c₁ → Differentiable ℂ c₂ → Differentiable ℂ c₃ →
     Differentiable ℂ c₄ → ∀ (Ω Ω₁ : Set ℂ) (s₀ : ℂ), IsOpen Ω → IsPreconnected Ω → IsOpen Ω₁ → Ω₁.Nonempty → Ω₁ ⊆ Ω →

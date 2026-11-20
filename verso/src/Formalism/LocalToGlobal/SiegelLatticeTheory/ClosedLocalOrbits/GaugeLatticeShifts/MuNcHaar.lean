@@ -12,13 +12,13 @@ namespace Formalism.L2.SG.RealObj.EnergyIntLoc
 variable {D : D7} {X : HidaSetting D} {θ : ℝ}
 
 /- English proof (translation)
-Simplify using `[Formalism.QuantumDeterminants.cStd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cStd_ne : Formalism.QuantumDeterminants.cStd ≠ 0 := by
   simp [Formalism.QuantumDeterminants.cStd]
 
 /- English proof (translation)
-The claim follows from `haarN_tor (Formalism.L2.SG.Pf.muT_ne D) (Formalism.MainNotions.BridgeCSB.haarLieN _ _ _ (Formalism.L2.SG.Pf.Choice.kapN_ne_zero D hθ) ENNReal.ofReal_ne_top)`.
+A detailed English derivation is pending.
 -/
 theorem muNc_haar (hθ : 0 < θ) :
     Formalism.MainNotions.S.IsHaarOn (Formalism.QuantumDeterminants.Nset D.R.k D.R.rS) ((muNB D θ).map (conjE (Formalism.L2.SG.Pf.muT_ne D))) :=
@@ -26,9 +26,9 @@ theorem muNc_haar (hθ : 0 < θ) :
     (Formalism.MainNotions.BridgeCSB.haarLieN _ _ _ (Formalism.L2.SG.Pf.Choice.kapN_ne_zero D hθ) ENNReal.ofReal_ne_top)
 
 /- English proof (translation)
-Establish `h` using `Formalism.L2.SG.Pf.Choice.colsTypeTr_of X (Formalism.L2.SG.Pf.cfS_ne D) (transpC' C τ) u`. Rewrite `h` using `[zc_eq]`. Establish `hp : X.pl (vOf X τ) = τ` using `by first`. Consider the case `simp [vOf]`. Consider the case `(unfold vOf; simp)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `rfl`. Rewrite `h` using `[hp]`. Conclude with `h`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hty_c (C : Choice X θ) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     IsHCTypeW D.R.k D.R.rS (zB X (C.Qi τ) u τ) (fun i => ((D.hcW u τ).u i : ℝ)) (piB X (Qcs C τ) (Qics C τ) u τ) := by
@@ -43,7 +43,7 @@ theorem hty_c (C : Choice X θ) (u : D.what₂.Word) (τ : D.what₂.Tau) :
   exact h
 
 /- English proof (translation)
-Use `⟨(Formalism.L2.SG.Pf.zTr C u τ).1, ?_⟩` and prove the remaining obligations. Rewrite using `[(Formalism.L2.SG.Pf.zTr C u τ).2]`. Conclude with `Formalism.L2.SG.Pf.Choice.Tr_pos D u`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zT (C : Choice X θ) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     Formalism.QuantumDeterminants.inWb D.R.k D.R.rS (zB X (C.Qi τ) u τ) ∧ 0 < Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (zB X (C.Qi τ) u τ) := by
@@ -86,11 +86,11 @@ def Dc (C : Choice X θ) (hθ : 0 < θ) (u u' : D.what₂.Word) (τ : D.what₂.
   χ_int := Formalism.FourierDecayAlt.P.character_exists_alt.choose_spec.2.2
 
 /- English proof (translation)
-Take `⟨hz, hT⟩` from `zT C u τ`. Establish `h2` using `(transpC' C τ).2.1`. Establish `hg` using `(transpC' C τ).2.2.1`. Establish `hDS : IsDSHpk D.R.k D.R.rS (epsSH D.R) (lamD D τ) (sigB X (Qcs C τ) (Qics C τ) τ)`. Take `⟨P, hP⟩` from `Formalism.MainNotions.S.Inh.obj_cayleyU_rows D`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Conclude with `dsHpk_tr (n_eq' X) (X.B.I.ε (vOf X τ)) (epsSH D.R) (fun i => by rw [X.eps_eq]; exact congrArg (epsS D.R) (Fin.ext rfl)) (X.B.lam (vOf X τ)) (lamD D τ) (fun i => by`. Rewrite using `[X.lam_eq, show X.pl (vOf X τ) = τ from X.pl.apply_symm_apply τ]`. Conclude with `congrArg (lamS D.R (D.hc τ)) (Fin.ext rfl))`. Use the proof step `(X.B.σ (vOf X τ)) (X.ds (vOf X τ)) (Qcs C τ) (Qics C τ) h2 hg P hP`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hμG` using `haar_tr (n_eq' X) (X.B.I.ε (vOf X τ)) (Qcs C τ) (Qics C τ) h2 hg`. Establish `hμN` using `muNc_haar (D := D) hθ`. Take `⟨νq, hq⟩` from `Formalism.L2.SG.Pf.QuotMeasExists.quotMeasExists _ _ _ hz hT _ _ hμG (isHaarOn_muS_gen hz hT (C.muW_haar u τ) (C.muW_one u τ) (Formalism.MainNotions.BridgeLemma₃.lbHaarUp_proved.2 _ _ _ hμN))`. Conclude with `⟨νq, Formalism.MainNotions.S.Inh.amp_isHCParam_lamD D τ, hDS, hgap, hok, hlow, hz, hT, cStd_ne, hty_c C u τ, C.muW_haar u τ, hμN, hμG, hq⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sideC (C : Choice X θ) (hθ : 0 < θ) (u : D.what₂.Word) (τ : D.what₂.Tau) {h : ℝ}
     (hgap : Formalism.QuantumDeterminants.GapAtLeast (epsSH D.R) (lamD D τ) h) (hok : Formalism.FourierDecayAlt.ThreeDimData.GapOK D.R.k D.R.rS h)

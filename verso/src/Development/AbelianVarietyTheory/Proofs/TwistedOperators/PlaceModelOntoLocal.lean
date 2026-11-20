@@ -18,13 +18,13 @@ namespace GlobalTheory.SymmetricBilinearHalf
 variable {D : D7}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ h => absurd rfl h, 1, one_pos, fun _ _ _ _ => rfl, fun _ h => absurd rfl h⟩`.
+Supply the required witnesses or components.
 -/
 theorem sb_zero {m n : ℕ} (e : AE D) (Λ : AddSubgroup (Mx D m n)) : IsSBHalf e Λ 0 :=
   ⟨fun _ h => absurd rfl h, 1, one_pos, fun _ _ _ _ => rfl, fun _ h => absurd rfl h⟩
 
 /- English proof (translation)
-Take `⟨h1, k, hk, h2, h3⟩` from `h`. Establish `ne : ∀ t, (c • Φ) t ≠ 0 → Φ t ≠ 0` using `fun t ht h0 => ht (by rw [Pi.smul_apply, h0, smul_zero])`. Conclude with `⟨fun t ht => h1 t (ne t ht), k, hk, fun u hu hh t => by rw [Pi.smul_apply, Pi.smul_apply, h2 u hu hh t], fun t ht => h3 t (ne t ht)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem sb_smul {m n : ℕ} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {Φ : Mx D m n → ℂ} (c : ℂ)
     (h : IsSBHalf e Λ Φ) : IsSBHalf e Λ (c • Φ) := by
@@ -34,20 +34,18 @@ theorem sb_smul {m n : ℕ} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {Φ : Mx D 
     fun t ht => h3 t (ne t ht)⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[GlobalTheory.SplitScalar.isHalf_iff]`. Rewrite using `[smul_comm, h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem half_nsmul {m n : ℕ} {e : AE D} {u : Mx D m n} (k : ℕ) (h : IsHalf e u) : IsHalf e (k • u) := by
   rw [GlobalTheory.SplitScalar.isHalf_iff] at h ⊢
   rw [smul_comm, h]
 
 /- English proof (translation)
-Take `⟨h1, k, hk, h2, h3⟩` from `h`. Take `⟨h1', k', hk', h2', h3'⟩` from `h'`. Establish `ne : ∀ t, (Φ + Ψ) t ≠ 0 → Φ t ≠ 0 ∨ Ψ t ≠ 0` using `fun t ht => by`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_or, not_not, not_not]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ht (by rw [Pi.add_apply, hc.1, hc.2, add_zero])`. Use `⟨fun t ht => (ne t ht).elim (h1 t) (h1' t), k * k', Nat.mul_pos hk hk', fun u hu hh t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Establish `e1 : Φ (t + (k * k') • u) = Φ t`. Rewrite using `[mul_smul]`. Conclude with `h2 _ (Λ.nsmul_mem hu k') (half_nsmul k' hh) t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : Ψ (t + (k * k') • u) = Ψ t`. Rewrite using `[mul_comm, mul_smul]`. Conclude with `h2' _ (Λ.nsmul_mem hu k) (half_nsmul k hh) t`. Rewrite using `[Pi.add_apply, Pi.add_apply, e1, e2]`. Break down `ne t ht with h | h` into its components or cases.
-
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `Λ.nsmul_mem (h3 t h) k'`. Rewrite using `[mul_smul]`. Conclude with `Λ.nsmul_mem (h3' t h) k`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sb_add {m n : ℕ} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {Φ Ψ : Mx D m n → ℂ}
     (h : IsSBHalf e Λ Φ) (h' : IsSBHalf e Λ Ψ) : IsSBHalf e Λ (Φ + Ψ) := by
@@ -69,7 +67,7 @@ theorem sb_add {m n : ℕ} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {Φ Ψ : Mx 
     · rw [mul_smul]; exact Λ.nsmul_mem (h3' t h) k
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Use `show idem D p * x i j = x i j`. Use `hx i j` as an intermediate fact. Rewrite using `[← hs]`. Take the linear combination `(1 - c) * this + (x i j) * hac`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem wAt_of_half {m n : ℕ} {p : Place D} {a c : AE D} (hac : a * c = 0) (hs : a + c = idem D p)
     {x : Mx D m n} (hx : IsHalf a x) : wAt p x = x := by
@@ -80,25 +78,25 @@ theorem wAt_of_half {m n : ℕ} {p : Place D} {a c : AE D} (hac : a * c = 0) (hs
   linear_combination (1 - c) * this + (x i j) * hac
 
 /- English proof (translation)
-Introduce `D ψ θ S T sS sT ΛS ΛT f₀ hb v a ha hs`. Establish `h1 : a * a = a` using `ha.1`. Establish `h2 : a * cA D a = 0` using `ha.2.1`. Establish `c1 : cA D a * cA D a = cA D a` using `by rw [← map_mul, h1]`. Establish `hψ` using `base_std hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ` using `base_inf hb`. Establish `hS` using `hb.2.2.1`. Establish `hT` using `hb.2.2.2.1`. Take `⟨hgen, hspan⟩` from `GlobalTheory.T.schwartzBruhatHalf_span_modulated_translates D ψ S T ΛS ΛT hψ hS hT a h1 h2 (GlobalTheory.PlaceModelSum.infPart_split ha)`. Establish `st` using `fun f (hf : IsLocal ψ θ S T sS sT ΛS ΛT (.inl v) f) => (GlobalTheory.T.fockVacua_localFactors_stable_heisenberg_away D ψ θ S T sS sT ΛS ΛT hψ hθ f hf.1).2 (.inl v) hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `l0` using `base_isLocal hb (.inl v)`. Establish `lz : IsLocal ψ θ S T sS sT ΛS ΛT (.inl v) 0`. Use `(st f₀ l0).2.1 (-1) f₀ l0` as an intermediate fact. Rewrite `this` using `[neg_one_smul, neg_add_cancel]`. Then use the resulting hypothesis. Use `⟨?_, fun Tm hTm => ⟨fun Φ hΦ => ?_, fun x hx => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ho : GlobalTheory.PlaceModelSum.IsOrthSum a` using `⟨Unit, {()}, fun _ => a, fun _ _ => ha, fun _ _ _ _ h => absurd rfl h, by rw [Finset.sum_singleton]⟩`. Conclude with `ho.exists_model hψ hS hT h2 hb.2.2.2.2.2.lat`. Use `Submodule.span_induction (p := fun Φ _ => IsLocal ψ θ S T sS sT ΛS ΛT (.inl v) (Tm Φ)) ?_ ?_ ?_ ?_ (hspan Φ hΦ)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, y, hx, hy, rfl⟩`. Rewrite using `[(hgen x y hx hy).2 f₀ Tm hTm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `(st f₀ l0).1 x`. Rewrite `e1` using `[wAt_of_half h2 hs hx]`. Establish `e2` using `(st _ e1).1 y`. Rewrite `e2` using `[wAt_of_half ((mul_comm _ _).trans h2) ((add_comm _ _).trans hs) hy]`. Then use the resulting hypothesis. Rewrite using `[map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `lz`. Introduce `x y _ _ hx hy`. Use `(st _ hx).2.1 1 _ hy` as an intermediate fact. Rewrite `this` using `[one_smul]`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this`. Introduce `c x _ hx`. Use `(st _ hx).2.1 c _ lz` as an intermediate fact. Rewrite `this` using `[add_zero]`. Rewrite using `[map_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `this`. Use `Submodule.span_induction (p := fun x _ => ∃ Φ, IsSBHalf a (latO S T ΛS ΛT fun _ => True) Φ ∧ Tm Φ = x) ?_ ?_ ?_ ?_ (GlobalTheory.T.localFactor_mem_span_localHeisenbergTranslates D ψ θ S T sS sT ΛS ΛT f₀ hb v x hx)` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `hx : IsHalf a (a • w)` using `by rw [GlobalTheory.SplitScalar.isHalf_iff, smul_smul, h1]`. Establish `hy : IsHalf (cA D a) (cA D a • w)` using `by rw [GlobalTheory.SplitScalar.isHalf_iff, smul_smul, c1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨g1, g2⟩` from `hgen _ _ hx hy`. Use `⟨_, sb_smul (ψ (-symplOH S T (cA D a • w) (a • w))) g1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, g2 f₀ Tm hTm, GlobalTheory.SplitScalar.heisO_heisO, smul_smul, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_smul, ← add_smul, add_comm, hs]`. Both sides reduce to the same expression. Conclude with `⟨0, sb_zero _ _, map_zero _⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ _ _ _ ⟨Φ, hΦ, rfl⟩ ⟨Ψ, hΨ, rfl⟩`. Conclude with `⟨Φ + Ψ, sb_add hΦ hΨ, map_add _ _ _⟩`. Introduce and unpack `c _ _ ⟨Φ, hΦ, rfl⟩`. Conclude with `⟨c • Φ, sb_smul c hΦ, map_smul _ _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem placeModel_onto_local : ∀ (D : Formalism.BasicNotions.D7) (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF ↥(Formalism.BasicNotions.D7.host D).F) ℂ) (θ : Formalism.IndefR.Datum.InfFam D) (S T : Formalism.BasicNotions.TH.HSp D) (sS : Formalism.BasicNotions.Rows.Data.Tau (Formalism.BasicNotions.D7.what₂ D) → Matrix (Fin (Formalism.BasicNotions.HSpace.rank S)) (Fin (Formalism.BasicNotions.HSpace.rank S)) ℂ) (sT : Formalism.BasicNotions.Rows.Data.Tau (Formalism.BasicNotions.D7.what₂ D) → Matrix (Fin (Formalism.BasicNotions.HSpace.rank T)) (Fin (Formalism.BasicNotions.HSpace.rank T)) ℂ) (ΛS : Submodule (NumberField.RingOfIntegers (Formalism.BasicNotions.D7.host D).E) (Fin (Formalism.BasicNotions.HSpace.rank S) → (Formalism.BasicNotions.D7.host D).E)) (ΛT : Submodule (NumberField.RingOfIntegers (Formalism.BasicNotions.D7.host D).E) (Fin (Formalism.BasicNotions.HSpace.rank T) → (Formalism.BasicNotions.D7.host D).E)) (f₀ : Formalism.IndefR.Datum.WO S T → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.IsBase ψ θ S T sS sT ΛS ΛT f₀ → ∀ (v : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.FinPl D) (a : Formalism.L2.Theta.AE D), Formalism.L2.Theta.IsSplitIdem D a → a + (Formalism.L2.Theta.cA D) a = GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.idem D (Sum.inl v) → (∃ (Tm : (Formalism.IndefR.Datum.Mx D (Formalism.BasicNotions.HSpace.rank T) (Formalism.BasicNotions.HSpace.rank S) → ℂ) →ₗ[ℂ] Formalism.IndefR.Datum.Mx D (Formalism.BasicNotions.HSpace.rank T) (Formalism.BasicNotions.HSpace.rank S) → ℂ), Formalism.IndefR.Datum.IsPlaceModel ψ (Formalism.IndefR.Datum.symplO S T) (Formalism.IndefR.Datum.heisO ψ S T) a (Formalism.IndefR.Datum.latO S T ↑ΛS ↑ΛT fun (x : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers ↥(Formalism.BasicNotions.D7.host D).F)) ↦ True) (1 : ℂ) f₀ Tm) ∧ ∀ (Tm : (Formalism.IndefR.Datum.Mx D (Formalism.BasicNotions.HSpace.rank T) (Formalism.BasicNotions.HSpace.rank S) → ℂ) →ₗ[ℂ] Formalism.IndefR.Datum.Mx D (Formalism.BasicNotions.HSpace.rank T) (Formalism.BasicNotions.HSpace.rank S) → ℂ), Formalism.IndefR.Datum.IsPlaceModel ψ (Formalism.IndefR.Datum.symplO S T) (Formalism.IndefR.Datum.heisO ψ S T) a (Formalism.IndefR.Datum.latO S T ↑ΛS ↑ΛT fun (x : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers ↥(Formalism.BasicNotions.D7.host D).F)) ↦ True) (1 : ℂ) f₀ Tm → (∀ (Φ : Formalism.IndefR.Datum.Mx D (Formalism.BasicNotions.HSpace.rank T) (Formalism.BasicNotions.HSpace.rank S) → ℂ), Formalism.IndefR.Datum.IsSBHalf a (Formalism.IndefR.Datum.latO S T ↑ΛS ↑ΛT fun (x : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers ↥(Formalism.BasicNotions.D7.host D).F)) ↦ True) Φ → GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.IsLocal ψ θ S T sS sT ΛS ΛT (Sum.inl v) (Tm Φ)) ∧ ∀ (x : Formalism.IndefR.Datum.WO S T → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.IsLocal ψ θ S T sS sT ΛS ΛT (Sum.inl v) x → ∃ (Φ : Formalism.IndefR.Datum.Mx D (Formalism.BasicNotions.HSpace.rank T) (Formalism.BasicNotions.HSpace.rank S) → ℂ), Formalism.IndefR.Datum.IsSBHalf a (Formalism.IndefR.Datum.latO S T ↑ΛS ↑ΛT fun (x : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers ↥(Formalism.BasicNotions.D7.host D).F)) ↦ True) Φ ∧ Tm Φ = x := by
   intro D ψ θ S T sS sT ΛS ΛT f₀ hb v a ha hs

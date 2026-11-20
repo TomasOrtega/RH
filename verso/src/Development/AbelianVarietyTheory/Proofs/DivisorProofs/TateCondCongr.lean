@@ -26,9 +26,9 @@ def IsLevel (D : Datum F) (p N : ℕ) {S : Scheme.{0}} (A : Over S) [GrpObj A] (
       TateCond D p N A act PP (x ≫ T.hom) fun a => (Over.homMk x rfl : Over.mk (x ≫ T.hom) ⟶ T) ≫ lv a
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `h' : ∀ a, lv a = lv' a` using `fun a => by`. Rewrite using `[← h a]`. Establish `: (Over.homMk (𝟙 _) (by simp) : Over.mk x ⟶ Over.mk x) = 𝟙 _` using `by ext; simp`. Rewrite using `[this, Category.id_comp]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨I, hI⟩`. Conclude with `⟨I, fun a => (h' a).symm.trans (hI a)⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem tateCond_congr (D : Datum F) (p N : ℕ) {S : Scheme.{0}} (A : Over S) [GrpObj A] (act : OAct (𝓞 F) A)
     (PP : RigLB A) {k : Type} [Field k] {x x' : Sp k ⟶ S} (e : x = x') (lv : D.La → (Over.mk x ⟶ A))

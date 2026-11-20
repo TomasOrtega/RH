@@ -17,7 +17,7 @@ namespace ReciprocityTheory.ChartRestriction.G.Out.TLinPf
 open Semi
 
 /- English proof (translation)
-The claim follows from `congrArg (fun φ => φ.hom x) (Scheme.Hom.map_appLE f e (homOfLE hVU).op)`.
+A detailed English derivation is pending.
 -/
 lemma appLE_res {A B : Scheme.{0}} (f : A ⟶ B) {U V : B.Opens} (hVU : V ≤ U) {W : A.Opens}
     (e : W ≤ f ⁻¹ᵁ V) (x : Γ(B, U)) :
@@ -26,7 +26,7 @@ lemma appLE_res {A B : Scheme.{0}} (f : A ⟶ B) {U V : B.Opens} (hVU : V ≤ U)
   congrArg (fun φ => φ.hom x) (Scheme.Hom.map_appLE f e (homOfLE hVU).op)
 
 /- English proof (translation)
-Establish `: f.app ⊤ ≫ A.presheaf.map (homOfLE hW).op = f.appLE ⊤ W hW`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map]`. Conclude with `congrArg (fun φ => φ.hom x) this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma res_appTop {A B : Scheme.{0}} (f : A ⟶ B) {W : A.Opens} (hW : W ≤ f ⁻¹ᵁ ⊤) (x : Γ(B, ⊤)) :
     (A.presheaf.map (homOfLE hW).op).hom (f.appTop.hom x) = (f.appLE ⊤ W hW).hom x := by
@@ -35,7 +35,7 @@ lemma res_appTop {A B : Scheme.{0}} (f : A ⟶ B) {W : A.Opens} (hW : W ≤ f �
   exact congrArg (fun φ => φ.hom x) this
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.comp_apply, h, Scheme.Hom.comp_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_base_eq' {A B C : Scheme.{0}} {a b : A ⟶ B} {ψ : B ⟶ C} (h : a ≫ ψ = b ≫ ψ) (z : A) :
     ψ (a z) = ψ (b z) := by
@@ -51,9 +51,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {O : Type} [Ring O] 
     (rosatiφ D.toPre.P.A (ιD.onB.act (star a)) (ιD.onB.act a)) rosatiε))
 
 /- English proof (translation)
-Introduce `z hz`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Establish `h1` using `Set.mem_iInter.1 (hs hz) k`. Simplify using `only [Set.mem_preimage] at h1 ⊢`. Rewrite using `[comp_base_eq' (hφ k) z]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 lemma act_mem_of {K : Type} [Fintype K] (φ : K → ((thickObj R I e G).left ⟶ D.toPre.P.A.left))
     (hφ : ∀ k, (WeightPf.act (U.gt e)).left ≫ φ k =
@@ -72,17 +72,17 @@ lemma act_mem_of {K : Type} [Fintype K] (φ : K → ((thickObj R I e G).left ⟶
 include hO in
 
 /- English proof (translation)
-Establish `hsA : W' ≤ (snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left ⁻¹ᵁ (LB.wchart D.toPre.P.L (φA U ιD e a χ) jA)` using `hsV.trans ((snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left.preimage_mono inf_le_right)`. Establish `hsB : W' ≤ (snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left ⁻¹ᵁ (LB.wchart D.toPre.P.L (φB U ιG e a χ) jB)` using `hsV.trans ((snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left.preimage_mono inf_le_left)`. Establish `haA : W' ≤ (WeightPf.act (U.gt e)).left ⁻¹ᵁ (LB.wchart D.toPre.P.L (φA U ιD e a χ) jA)` using `act_mem_of U e _ (hA_act U ιD e a χ) jA W' hsA`. Establish `haB : W' ≤ (WeightPf.act (U.gt e)).left ⁻¹ᵁ (LB.wchart D.toPre.P.L (φB U ιG e a χ) jB)` using `act_mem_of U e _ (hB_act U ιD ιG e a χ hO) jB W' hsB`. Establish `haV : W' ≤ (WeightPf.act (U.gt e)).left ⁻¹ᵁ ((LB.wchart D.toPre.P.L (φB U ιG e a χ) jB) ⊓ (LB.wchart D.toPre.P.L (φA U ιD e a χ) jA))` using `fun z hz => ⟨haB hz, haA hz⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : (res (inf_le_right : (LB.wchart D.toPre.P.L (φB U ιG e a χ) jB) ⊓ (LB.wchart D.toPre.P.L (φA U ιD e a χ) jA) ≤ (LB.wchart D.toPre.P.L (φA U ιD e a χ) jA)) ((lhs U ιD e a χ u).s jA)).val = (res (le_top : (LB.wchart D.toPre.P.L (φB U ιG e a χ) jB) ⊓ (LB.wchart D.toPre.P.L (φA …`. Rewrite using `[← Units.val_mul]`. Conclude with `congrArg Units.val (hρ jA jB cA cB cAB)`. Establish `hA1` using `congrArg ((WeightPf.act (U.gt e)).left.appLE _ W' haV).hom hP`. Rewrite `hA1` using `[map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ((WeightPf.act (U.gt e)).left.appLE _ W' haV).hom (res (inf_le_right : (LB.wchart D.toPre.P.L (φB U ιG e a χ) jB) ⊓ (LB.wchart D.toPre.P.L (φA U ιD e a χ) jA) ≤ (LB.wchart D.toPre.P.L (φA U ιD e a χ) jA)) ((lhs U ιD e a χ u).s jA)).val = ((WeightPf.act (U.gt e)).left.appLE ( …` using `appLE_res (WeightPf.act (U.gt e)).left inf_le_right haV _`. Establish `e2 : ((WeightPf.act (U.gt e)).left.appLE _ W' haV).hom (res (le_top : (LB.wchart D.toPre.P.L (φB U ιG e a χ) jB) ⊓ (LB.wchart D.toPre.P.L (φA U ιD e a χ) jA) ≤ ⊤) ρ).val = ((WeightPf.act (U.gt e)).left.appLE ⊤ W' ht1).hom ρ.val` using `appLE_res (WeightPf.act (U.gt e)).left le_top haV _`. Establish `e3 : ((WeightPf.act (U.gt e)).left.appLE _ W' haV).hom (res (inf_le_left : (LB.wchart D.toPre.P.L (φB U ιG e a χ) jB) ⊓ (LB.wchart D.toPre.P.L (φA U ιD e a χ) jA) ≤ (LB.wchart D.toPre.P.L (φB U ιG e a χ) jB)) ((rhs U ιG e a χ).s jB)).val = ((WeightPf.act (U.gt e)).left.appLE (LB. …` using `appLE_res (WeightPf.act (U.gt e)).left inf_le_left haV _`. Rewrite `hA1` using `[e1, e2, e3, lhs_act U ιD e a χ u jA cA W' hsA haA, rhs_act U ιD ιG e a χ hO hi jB cB W' hsB haB]`. Establish `hS1` using `congrArg ((snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left.appLE _ W' hsV).hom hP`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hS1` using `[map_mul]`. Establish `f1 : ((snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left.appLE _ W' hsV).hom (res (inf_le_right : (LB.wchart D.toPre.P.L (φB U ιG e a χ) jB) ⊓ (LB.wchart D.toPre.P.L (φA U ιD e a χ) jA) ≤ (LB.wchart D.toPre.P.L (φA U ιD e a χ) jA)) ((lhs U ιD e a χ u).s jA)).val = ((snd (Wei …` using `appLE_res (snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left inf_le_right hsV _`. Establish `f2 : ((snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left.appLE _ W' hsV).hom (res (le_top : (LB.wchart D.toPre.P.L (φB U ιG e a χ) jB) ⊓ (LB.wchart D.toPre.P.L (φA U ιD e a χ) jA) ≤ ⊤) ρ).val = ((snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left.appLE ⊤ W' ht2).hom ρ.va …` using `appLE_res (snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left le_top hsV _`. Establish `f3 : ((snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left.appLE _ W' hsV).hom (res (inf_le_left : (LB.wchart D.toPre.P.L (φB U ιG e a χ) jB) ⊓ (LB.wchart D.toPre.P.L (φA U ιD e a χ) jA) ≤ (LB.wchart D.toPre.P.L (φB U ιG e a χ) jB)) ((rhs U ιG e a χ).s jB)).val = ((snd (Weight …` using `appLE_res (snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left inf_le_left hsV _`. Rewrite `hS1` using `[f1, f2, f3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hchi : IsUnit (((WeightPf.Te D.toPre I e ⊗ thickObj R I e G).left.presheaf.map (homOfLE (le_top : W' ≤ ⊤)).op).hom (Semi.TorusInj.chiP D.toPre.X (thickObj R I e G) (star a • χ)))`. Unfold `Semi.TorusInj.chiP`. Conclude with `((charUnit _ _ _).isUnit.map _).map _`. Establish `hR : IsUnit (((snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left.appLE (LB.wchart D.toPre.P.L (φB U ιG e a χ) jB) W' hsB).hom ((rhs U ιG e a χ).s jB).val)` using `((rhs U ιG e a χ).s jB).isUnit.map _`. Rewrite `hA1` using `[hS1]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ((snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left.appLE ⊤ W' ht2).hom ρ.val * (((WeightPf.Te D.toPre I e ⊗ thickObj R I e G).left.presheaf.map (homOfLE (le_top : W' ≤ ⊤)).op).hom (Semi.TorusInj.chiP D.toPre.X (thickObj R I e G) (star a • χ)) * ((snd (WeightPf.Te D.to …`. Rewrite using `[← hA1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `((hchi.mul hR).mul_right_cancel key).symm`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rho_inv_loc
     (hi : ∃ t : splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.toPre.X ⟶
@@ -154,9 +154,9 @@ theorem rho_inv_loc
 include hO in
 
 /- English proof (translation)
-Use `choose idx hidx using fun w : (WeightPf.Te D.toPre I e ⊗ thickObj R I e G).left => idx_exists D.toPre.P.L D.toPre.P.isLB ((snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left w)`. Set `W : (WeightPf.Te D.toPre I e ⊗ thickObj R I e G).left → (WeightPf.Te D.toPre I e ⊗ thickObj R I e G).left.Opens` to `fun w => (snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left ⁻¹ᵁ (LB.wchart D.toPre.P.L (φB U ιG e a χ) (fun k => idx w (φB U ιG e a χ k)) ⊓ LB.wchart D.toPre.P.L (φA U ιD e a χ) (fun k => idx w (φA U ιD e a χ k)))`. Establish `hc : ⨆ w, W w = ⊤`. Use `eq_top_iff.2 fun z _ => TopologicalSpace.Opens.mem_iSup.2 ⟨z, ?_⟩` and prove the remaining obligations. Conclude with `⟨Set.mem_iInter.2 fun k => hidx z _, Set.mem_iInter.2 fun k => hidx z _⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_local W hc _ _ (fun w => ?_)` and prove the remaining obligations. Establish `r1` using `res_appTop (WeightPf.act (U.gt e)).left (W := W w) (fun _ _ => trivial) ρ.val`. Establish `r2` using `res_appTop (snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left (W := W w) (fun _ _ => trivial) ρ.val`. Conclude with `r1.trans ((rho_inv_loc U ιD ιG e a χ hO u hi ρ hρ _ _ (fun k1 k2 h => congrArg (idx w) h) (fun k1 k2 h => congrArg (idx w) h) (fun k k' h => congrArg (idx w) h) (W w) le_rfl (fun _ _ => trivial) (fun _ _ => trivial)).trans r2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rho_inv
     (hi : ∃ t : splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.toPre.X ⟶

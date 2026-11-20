@@ -7,45 +7,41 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.MainNotions.G.LatticeSystems
 
 /- English proof (translation)
-Establish `hcnt` using `restEdgeCountSrc`. Establish `hdnn` using `dL_nonneg R lam0`. Distinguish the cases in `hn0 : n = 0`. Substitute `hn0` using the available equality. Simplify using `using hdnn`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hL : IsLattice R.W (colSpan R.W (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) R.Qq))` using `⟨1, by simp, rfl⟩`. Take `⟨Ne, es, hinj, hes, hNe⟩` from `hcnt p n' R (m + 1) (by omega) _ hL`. Establish `hc1 : 1 ≤ c`. Establish `: (0 : ℝ) < c` using `by linarith`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdata : ∀ i : Fin Ne, ∃ (x : Fin n → Vsp R.Kf lam0) (y : Fin n → Module.Dual R.Kf (Vsp R.Kf lam0)) (z z' : R.O), z ≠ 0 ∧ (∀ a, x a ∈ CCL R lam0 t c (es i)) ∧ (∀ a, y a ∈ Re' p R.ι R.σ R.w 1 lam0 (es i)) ∧ z' * z = R.w ^ (c - 1) ∧ ∀ a b, be p 1 lam0 (x a) (y b) = if a = b then alg …`. Introduce `i`. Break down `hfac (es i) (hes i).1 with h0 | ⟨x, y, hx, hy, z, Mx, hz, hv, hM⟩` into its components or cases. Conclude with `absurd h0 hn0`. Take `⟨z', hz'⟩` from `dvd_w_pow_of_vLEO R.std.2.1 R.std.1.w_sq hz hDc hv`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x, fun b => ∑ l, Mx l b • y l, z, z', hz, hx, fun b => Submodule.sum_mem _ (fun l _ => Submodule.smul_mem _ _ (hy l)), by rw [hz']; ring, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[be_sum]`. Conclude with `hM a b`. Use `choose x y z z' hz0 hx hy hzz hxy using hdata`. Establish `hβ : ∀ i l : Fin Ne × Fin n, ∃ β : R.O, β ∈ IsLocalRing.maximalIdeal R.O ∧ be p 1 lam0 (x i.1 i.2) (y l.1 l.2) = algebraMap R.O R.Kf (((1 : Matrix (Fin Ne × Fin n) (Fin Ne × Fin n) R.O) i l + β) * z l.1)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨i, a⟩ ⟨l, b⟩`. Distinguish the cases in `hil : i = l`. Substitute `hil` using the available equality. Use `⟨0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[hxy, Matrix.one_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Establish `: ((i, a) : Fin Ne × Fin n) ≠ (i, b)` using `fun h => hab (Prod.mk.inj h).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_neg hab, if_neg this]`. Simplify using the standard rewrite rules. Establish `hne : es l ≠ es i` using `fun h => hil (hinj h).symm`. Establish `hXs` using `CCL_other R lam0 t c (es i) (es l) (hes _).1 ((hes _).2.trans (hes _).2.symm) hne (hx i a)`. Take `⟨b', hb⟩` from `be_scale_Re R lam0 (es l) c hXs (hy l b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((i, a) : Fin Ne × Fin n) ≠ (l, b)` using `fun h => hil (Prod.mk.inj h).1`. Use `⟨R.w * b' * z' l, Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ R.w_mem), ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hb, Matrix.one_apply_ne h2, zero_add]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Establish `h3 : R.w ^ c = R.w * R.w ^ (c - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h3, ← hzz l]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Expand and normalize the polynomial expressions, which then agree. Use `choose β hβm hβe using hβ`. Set `P : Matrix (Fin Ne × Fin n) (Fin Ne × Fin n) R.O` to `Matrix.of fun i l => (1 : Matrix _ _ R.O) i l + β i l`. Establish `hP : IsUnit P.det`. Apply `isUnit_det_of_one_add'` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i l`. Simplify `hβm i l` using `[P]`. Establish `hinjK : Function.Injective (algebraMap R.O R.Kf)`. Establish `hfr : IsFractionRing R.O R.Kf` using `R.std.1.frac_O`. Conclude with `IsFractionRing.injective R.O R.Kf`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hPK : ((algebraMap R.O R.Kf).mapMatrix P).det ≠ 0`. Rewrite using `[← RingHom.map_det]`. Introduce `h0`. Establish `: P.det = 0` using `hinjK (by rw [h0, map_zero])`. Rewrite `hP` using `[this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `not_isUnit_zero hP`. Establish `hli : LinearIndependent R.Kf (fun i : Fin Ne × Fin n => x i.1 i.2)`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `h1 : ∀ l : Fin Ne × Fin n, ∑ i, g i * algebraMap R.O R.Kf (P i l) = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `l`. Establish `h2 : be p 1 lam0 (∑ i, g i • x i.1 i.2) (y l.1 l.2) = 0`. Rewrite using `[hg]`. Simplify using `[be]`. Rewrite `h2` using `[be_sum_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (∑ i, g i * algebraMap R.O R.Kf (P i l)) * algebraMap R.O R.Kf (z l.1) = 0`. Rewrite using `[← h2, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hβe i l, map_mul, mul_assoc]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : algebraMap R.O R.Kf (z l.1) ≠ 0` using `fun h => hz0 l.1 (hinjK (by rw [h, map_zero]))`. Conclude with `(mul_eq_zero.1 h3).resolve_right hz`. Establish `h4 : Matrix.vecMul g ((algebraMap R.O R.Kf).mapMatrix P) = 0`. Use function extensionality and compare the values at `l`. Simplify `h1 l` using `[Matrix.vecMul, dotProduct]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `Matrix.eq_zero_of_vecMul_eq_zero hPK h4`. Introduce `i`. Rewrite using `[h5]`. Both sides reduce to the same expression. Establish `hpos : 0 < dimV R.Kf lam0` using `Formalism.MainNotions.G.LatticeSystems.kp_dimV_pos R.Kf lam0 hDom`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : Module.Finite R.Kf (Vsp R.Kf lam0)` using `Module.finite_of_finrank_pos hpos`. Establish `hcard : Ne * n ≤ dimV R.Kf lam0`. Use `hli.fintype_card_le_finrank` as an intermediate fact. Simplify `this` using `[dimV]`. Establish `hNpos` using `gaussianNumber_prime_pow_pos R (m + 1) (by omega)`.
-
-Unfold `dL`. Rewrite using `[le_div_iff₀ hNpos]`. Establish `h6 : ((Ne * n : ℕ) : ℝ) ≤ (dimV R.Kf lam0 : ℝ)` using `by exact_mod_cast hcard`. Establish `h7 : (n : ℝ) * gaussianNumber (p ^ n') (m + 1) ≤ (n : ℝ) * Ne` using `mul_le_mul_of_nonneg_left hNe (Nat.cast_nonneg _)`. Move the coercions through the operations in `at h6`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem nLeD_all {p n' : ℕ} (R : RS p n') {m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hDom : IsDominant lam0)
     (t c n : ℕ) (D : ℝ) (hD0 : 0 ≤ D) (hDc : 2 * D < c)
@@ -153,25 +149,25 @@ theorem nLeD_all {p n' : ℕ} (R : RS p n') {m : ℕ} (lam0 : Fin n' → Fin (m 
   linarith
 
 /- English proof (translation)
-Establish `hFun` using `restFunct`. Establish `hfrW : IsFractionRing R.W R.Qq` using `R.std.1.frac_alt`. Take `⟨g, hg, hsrc, htgt⟩` from `lc_main p n' 1 (m + 1) R.std.1.p_unif R.std.1.res_card R.std.1.prime.two_le (by have := R.std.1.two_le; omega) e he`. Take `⟨g', hg', hsrc', htgt'⟩` from `lc_main p n' 1 (m + 1) R.std.1.p_unif R.std.1.res_card R.std.1.prime.two_le (by have := R.std.1.two_le; omega) e' he'`. Establish `hug : IsUnit g` using `(Matrix.isUnit_iff_isUnit_det _).2 hg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hug' : IsUnit g'` using `(Matrix.isUnit_iff_isUnit_det _).2 hg'`. Set `γ : GL (Fin (m + 1)) R.Qq` to `hug'.unit * hug.unit⁻¹`. Establish `hγg : (γ : Matrix (Fin (m + 1)) (Fin (m + 1)) R.Qq) * g = g'`. Establish `: γ * hug.unit = hug'.unit` using `by simp [γ]`. Establish `h2` using `congrArg Units.val this`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h2`. Establish `hee : e' = mapE γ e`. Consider the cases of `e with`. Consider the case `mk s tg`. Consider the cases of `e' with`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the case `mk s' tg'`. Simplify using `only at hsrc htgt hsrc' htgt'`. Simplify using `only [mapE]`. Rewrite using `[hsrc, htgt, hsrc', htgt', map_colSpan, map_colSpan, ← Matrix.mul_assoc, hγg]`. Take `⟨T, hT1, hT2⟩` from `hFun p n' R m lam0 hDom γ`.
+Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hedge : ∀ e'' : Edge R.W R.Qq (m + 1), IsEdge p n' 1 e'' → IsEdge p n' 1 (mapE γ⁻¹ e'')` using `fun e'' h => nt_edge_map p n' 1 γ⁻¹ _ _ h`. Establish `hsrcC : ∀ x, x ∈ CCL R lam0 t c e → T x ∈ CCL R lam0 t c (mapE γ e)`. Introduce `x hx`. Use `Submodule.mem_inf.2 ⟨Submodule.mem_inf.2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `scale_alt T _ (hT1 e.src he.1) hx.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `scale_alt T _ (hT2 e he) hx.1.2`. Rewrite using `[Submodule.mem_iInf]`. Introduce `e''`. Rewrite using `[Submodule.mem_iInf]`. Introduce and unpack `⟨h1, h2, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : (mapE γ⁻¹ e'').src = e.src` using `by show e''.src.map (nt_phi R.W γ⁻¹) = e.src`. Rewrite using `[h2]`. Conclude with `nt_map_inv γ e.src`. Establish `h5 : mapE γ⁻¹ e'' ≠ e`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `h3` to reduce the goal to its premises. Rewrite using `[← h, mapE_inv]`. Establish `h6` using `CCL_other R lam0 t c e (mapE γ⁻¹ e'') (hedge e'' h1) h4 h5 hx`. Establish `h7` using `apply_mem_scale_scale_of_mem_iff T _ _ (hT2 (mapE γ⁻¹ e'') (hedge e'' h1)) h6`. Rewrite `h7` using `[mapE_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Rewrite using `[hee]`. Break down `hfac with h0 | ⟨x, y, hx, hy, z, M, hz, hv, hM⟩` into its components or cases. Conclude with `Or.inl h0`. Use `Or.inr ⟨fun i => T (x i), fun l => (y l).comp T.symm.toLinearMap, fun i => hsrcC _ (hx i), fun l => comp_symm_mem_scale_dualLat_of_mem_iff T _ (hT2 e he) (hy l), z, M, hz, hv, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← hM i j]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `congr 1`. Unfold `be`. Rewrite using `[LinearMap.comp_apply, ← map_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nEdge {p n' : ℕ} (R : RS p n') {m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hDom : IsDominant lam0)
     (t c n : ℕ) (D : ℝ) (e e' : Edge R.W R.Qq (m + 1)) (he : IsEdge p n' 1 e) (he' : IsEdge p n' 1 e')
@@ -235,7 +231,7 @@ theorem nEdge {p n' : ℕ} (R : RS p n') {m : ℕ} (lam0 : Fin n' → Fin (m + 1
     simp
 
 /- English proof (translation)
-The claim follows from `nLeD_all R lam0 hDom t c n D hD0 hDc fun e' he' => nEdge R lam0 hDom t c n D e e' he he' hfac`.
+A detailed English derivation is pending.
 -/
 theorem nLeD {p n' : ℕ} (R : RS p n') {m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hDom : IsDominant lam0)
     (t c n : ℕ) (D : ℝ) (hD0 : 0 ≤ D) (hDc : 2 * D < c) (e : Edge R.W R.Qq (m + 1)) (he : IsEdge p n' 1 e)

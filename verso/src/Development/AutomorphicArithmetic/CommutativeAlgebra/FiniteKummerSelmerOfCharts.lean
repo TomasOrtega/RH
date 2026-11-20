@@ -8,19 +8,17 @@ open GroundTheory.FunctionField UpperTheory.Et.Sel
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `k K _ _ _ _ _ q _ hC`. Take `⟨n, v, hv⟩` from `UpperTheory.exists_finite_span_kummerSelmer_representatives k K q`. Set `P : Set (Fin n → k) → Prop` to `fun s => FinCls q {f | f ∈ SelAll k K q ∧ ∃ c, (f : K) = ∑ i, c i • v i ∧ c ∈ s}`. Establish `hall : P Set.univ`. Apply `UpperTheory.Et.noethSp k n P` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨∅, ?_⟩` and prove the remaining obligations. Introduce and unpack `f ⟨_, c, _, hc⟩`. Conclude with `absurd hc (by simp)`. Introduce `s t hst ⟨T, hT⟩`. Use `⟨T, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `f ⟨hf, c, hfc, hc⟩`. Conclude with `hT f ⟨hf, c, hfc, hst hc⟩`. Introduce `s t ⟨T₁, h₁⟩ ⟨T₂, h₂⟩ classical`. Use `⟨T₁ ∪ T₂, ?_⟩` and prove the remaining obligations. Introduce and unpack `f ⟨hf, c, hfc, hc | hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, hx, u, hu⟩` from `h₁ f ⟨hf, c, hfc, hc⟩`. Conclude with `⟨x, Finset.mem_union_left _ hx, u, hu⟩`. Take `⟨x, hx, u, hu⟩` from `h₂ f ⟨hf, c, hfc, hc⟩`. Conclude with `⟨x, Finset.mem_union_right _ hx, u, hu⟩`. Introduce `I hI`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg, T, hT⟩` from `UpperTheory.finite_kummerSelmer_on_prime_stratum k K q hC n v I hI`. Use `⟨g, hg, T, ?_⟩` and prove the remaining obligations. Introduce and unpack `f ⟨hf, c, hfc, hc₁, hc₂⟩`. Conclude with `hT f ⟨hf, c, hfc, hc₁, hc₂⟩`. Take `⟨T, hT⟩` from `hall`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨T, ?_⟩` and prove the remaining obligations. Introduce `f hf`. Take `⟨g, hg, ⟨c, hgc⟩, u, hfu⟩` from `hv f hf`. Take `⟨t, ht, w, hw⟩` from `hT g ⟨hg, c, hgc, Set.mem_univ c⟩`. Use `⟨t, ht, w * u, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hfu, hw, mul_pow, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.finite_kummerSelmer_of_charts :
     ∀ (k K : Type) [Field k] [IsAlgClosed k] [Field K] [Algebra k K] [IsFunctionField k K] (q : ℕ) [NeZero q], Charts k K q → FinCls q (SelAll k K q) := by

@@ -15,9 +15,9 @@ namespace GlobalTheory.CompanionTheory.LatSigDP
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {M : ℕ}
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `GlobalTheory.CompanionTheory.TwFil.exists_gal_xi (toBot g.1)`. Use `⟨u, ?_⟩` and prove the remaining obligations. Establish `e : galBdRHom (toBot g.1) (wittToBDeRhamPlus (normInteger ℂ_[l]) l (xi0 l)) = wittToBDeRhamPlus (normInteger ℂ_[l]) l (u * xi0 l)`. Rewrite using `[← hu, ← gal_smul_wittToBDeRhamPlus]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show Ideal.Quotient.mk _ (galBdRHom (toBot g.1) (wittToBDeRhamPlus (normInteger ℂ_[l]) l (xi0 l))) = _`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_gB_xi (h : LevHyp l K M) (k : ℕ) (g : K.fixingSubgroup) :
     ∃ u : Ainf l, gB h k g (fk l k (xi0 l)) = fk l k (u * xi0 l) := by
@@ -32,7 +32,7 @@ theorem exists_gB_xi (h : LevHyp l K M) (k : ℕ) (g : K.fixingSubgroup) :
   rfl
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_gB_xi h k g`. Conclude with `GlobalTheory.CompanionTheory.LatDP.isDPMorphism_map (fk l k) (xi0 l) (fk l k) (xi0 l) l M (gB h k g) (h.gal k g) u hu (h.hc k) (h.hc k)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sigA_isDPMorphism (h : LevHyp l K M) (k : ℕ) (g : K.fixingSubgroup) :
     IsDPMorphism (lev h k).γ (lev h k).γ ((lev h k).σA g) := by

@@ -8,9 +8,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 namespace GlobalTheory.PolIso
 
 /- English proof (translation)
-Unfold `Model.I theta thetaSum`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `tsum_mul_left`.
+A detailed English derivation is pending.
 -/
 theorem modelI_smul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om : Rep σ X W) (Λ : ℂ)

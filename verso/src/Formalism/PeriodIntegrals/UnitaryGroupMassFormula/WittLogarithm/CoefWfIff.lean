@@ -8,9 +8,9 @@ namespace PI.WfLogWork
 open PI.ExpIntWProof
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h n`. Conclude with `h (Finsupp.single () n)`. Introduce `h n`. Establish `hn : n = Finsupp.single () (n ())` using `by first`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact Finsupp.unique_single n`. Consider the case `(ext; simp)`. Rewrite using `[hn]`. Conclude with `h (n ())`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefWf_iff {p : ℕ} [Fact p.Prime] (f : PowerSeries ℂ_[p]) :
     CoefWf (f : MvPowerSeries Unit ℂ_[p]) ↔ ∀ n, PowerSeries.coeff n f ∈ Wf p := by
@@ -26,7 +26,7 @@ theorem coefWf_iff {p : ℕ} [Fact p.Prime] (f : PowerSeries ℂ_[p]) :
     exact h (n ())
 
 /- English proof (translation)
-Use `show PI.InWf x`. Unfold `PI.InWf`. Conclude with `⟨0, by rw [pow_zero, one_mul]; exact h⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Wp_le_Wf {p : ℕ} [Fact p.Prime] {x : ℂ_[p]} (h : x ∈ Wp p) : x ∈ Wf p := by
   show PI.InWf x

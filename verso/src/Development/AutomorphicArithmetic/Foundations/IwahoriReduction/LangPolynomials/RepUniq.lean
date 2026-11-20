@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace UpperTheory.Kd.C7
 
 /- English proof (translation)
-Unfold `LC at *`. Conclude with `Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ h) H`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem lc_mono {R : Type} [CommRing R] {l m n n' : ℕ} {f g : PowerSeries R} (h : n' ≤ n)
     (H : LC l m n f g) : LC l m n' f g := by
@@ -17,7 +17,7 @@ private theorem lc_mono {R : Type} [CommRing R] {l m n n' : ℕ} {f g : PowerSer
   exact Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ h) H
 
 /- English proof (translation)
-Unfold `LC at *`. Use `Ideal.sub_mem _ (Ideal.add_mem _ H E) H'` as an intermediate fact. Rewrite using `[map_sub, map_zero, sub_zero]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem lc_comb {R : Type} [CommRing R] {l m n : ℕ} {f f' g g' : PowerSeries R}
     (H : LC l m n f g) (H' : LC l m n f' g') (E : LC l m n g g') : LC l m n (f - f') 0 := by
@@ -28,7 +28,7 @@ private theorem lc_comb {R : Type} [CommRing R] {l m n : ℕ} {f f' g g' : Power
   ring
 
 /- English proof (translation)
-Unfold `Cg`. Rewrite using `[h, sub_self, norm_zero]`. Conclude with `norm_nonneg _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cg_of_eq {l : ℕ} [Fact l.Prime] (n : ℕ) {x y : Qbar l} (h : x = y) : Cg n x y := by
   unfold Cg
@@ -36,11 +36,11 @@ private theorem cg_of_eq {l : ℕ} [Fact l.Prime] (n : ℕ) {x y : Qbar l} (h : 
   exact norm_nonneg _
 
 /- English proof (translation)
-Introduce `l _ hl2 Ω _ _ _ A hA j Φ c β ζ hζ Z Z' D D' hD hD' hZ`. Take `⟨c₁, m₁, h₁⟩` from `hD`. Take `⟨c₂, m₂, h₂⟩` from `hD'`. Use function extensionality and compare the values at `i`. Rewrite using `[← sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `pUniq Φ.R l Φ.σ Φ.fl (D i - D' i) (max c₁ c₂ + 1) (max m₁ m₂ + 1) (fun m hm => ?_)` and prove the remaining obligations. Take `⟨P, hP, hPD⟩` from `h₁ m (by omega)`. Take `⟨P', hP', hPD'⟩` from `h₂ m (by omega)`. Establish `hPn : BPres β A ζ Z m (m - max c₁ c₂) P` using `pPresMono l hl2 Ω A hA c β ζ hζ Z Z m (m - c₁) (m - max c₁ c₂) P (by omega) (fun s _ => cg_of_eq _ rfl) hP`. Establish `hPn' : BPres β A ζ Z m (m - max c₁ c₂) P'` using `pPresMono l hl2 Ω A hA c β ζ hζ Z' Z m (m - c₂) (m - max c₁ c₂) P' (by omega) (fun s hs => cg_of_eq _ (hZ m s hs).symm) hP'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE` using `(pPresDl l hl2 Ω A hA j Φ c β ζ hζ Z m (m - max c₁ c₂) (by omega) P P' hPn hPn' i).2`. Establish `hcomb` using `lc_comb (lc_mono (by omega) (hPD i)) (lc_mono (by omega) (hPD' i)) hE`. Establish `hfin` using `lc_mono (n' := m - (max c₁ c₂ + 1)) (by omega) hcomb`. Rewrite `hfin` using `[Fr.tw, Fr.tw, ← map_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pRepUniq : SRepUniq := by
   intro l _ hl2 Ω _ _ _ A hA j Φ c β ζ hζ Z Z' D D' hD hD' hZ

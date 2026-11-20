@@ -22,7 +22,7 @@ abbrev liftJ₂ : 𝒪 →+* gaussRing (gaussCurve W W') :=
   (algebraMap (gaussRing W) (gaussRing (gaussCurve W W'))).comp (algebraMap 𝒪 (gaussRing W))
 
 /- English proof (translation)
-Rewrite using `[RingHom.comp_apply, ← IsScalarTower.algebraMap_apply (gaussRing W) (gaussRing (gaussCurve W W')) (liftField₂ K W W'), IsScalarTower.algebraMap_apply (gaussRing W) (W.baseChange K).toAffine.FunctionField (liftField₂ K W W'), ← IsScalarTower.algebraMap_apply 𝒪 (gaussRing W) (W.bas …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem liftJ₂_algebraMap (c : 𝒪) :
     algebraMap K (liftField₂ K W W') (algebraMap 𝒪 K c) =
@@ -36,7 +36,7 @@ theorem liftJ₂_algebraMap (c : 𝒪) :
     ← IsScalarTower.algebraMap_apply K _ (liftField₂ K W W')]
 
 /- English proof (translation)
-Rewrite using `[baseChange_baseChange]`. Use `show W'.map (((algebraMap (W.baseChange K).toAffine.FunctionField (liftField₂ K W W')).comp (algebraMap (gaussRing W) _)).comp (algebraMap 𝒪 (gaussRing W))) = W'.map ((algebraMap K (liftField₂ K W W')).comp (algebraMap 𝒪 K))`. Use `congrArg W'.map (RingHom.ext fun c => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply 𝒪 (gaussRing W) (W.baseChange K).toAffine.FunctionField, IsScalarTower.algebraMap_apply 𝒪 K (W.baseChange K).toAffine.FunctionField, ← IsScalarTower.algebraMap_apply K _ (liftField₂ K W W')]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseChange_liftField₂_eq :
     ((gaussCurve W W').baseChange (W.baseChange K).toAffine.FunctionField).baseChange
@@ -59,7 +59,7 @@ def genPt₂ : ((W'.baseChange K).baseChange (liftField₂ K W W')).toAffine.Poi
       ((gaussCurve W W').baseChange (W.baseChange K).toAffine.FunctionField))
 
 /- English proof (translation)
-Rewrite using `[genPt₂, GroundTheory.Arith.Abelian.genericPoint, pointCongr_some]`. Conclude with `exists_some_eq _ (algebraMap_gaussX (gaussCurve W W') (W.baseChange K).toAffine.FunctionField).symm (algebraMap_gaussY (gaussCurve W W') (W.baseChange K).toAffine.FunctionField).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genPt₂_eq : ∃ h, genPt₂ K W W' = Point.some
     (algebraMap (gaussRing (gaussCurve W W')) (liftField₂ K W W') (gaussX (gaussCurve W W')))
@@ -70,7 +70,7 @@ theorem genPt₂_eq : ∃ h, genPt₂ K W W' = Point.some
     (algebraMap_gaussY (gaussCurve W W') (W.baseChange K).toAffine.FunctionField).symm
 
 /- English proof (translation)
-Rewrite using `[genPt₂, GroundTheory.Arith.Abelian.genericPoint, pointCongr_some]`. Conclude with `transcendental_genX _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transOver_genPt₂ :
     TransOver (W'.baseChange K) (W.baseChange K).toAffine.FunctionField (genPt₂ K W W') := by
@@ -91,7 +91,7 @@ def red₂ (V : WeierstrassCurve 𝒪)
       (liftJ₂_algebraMap K W W')) P)
 
 /- English proof (translation)
-Rewrite using `[red₂, red₂, red₂, map_add, reducePoint_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem red₂_add (V : WeierstrassCurve 𝒪) [V.IsElliptic]
     (P Q : ((V.baseChange K).baseChange (liftField₂ K W W')).toAffine.Point) :
@@ -99,7 +99,7 @@ theorem red₂_add (V : WeierstrassCurve 𝒪) [V.IsElliptic]
   rw [red₂, red₂, red₂, map_add, reducePoint_add]
 
 /- English proof (translation)
-Rewrite using `[red₂, map_zero, reducePoint_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem red₂_zero (V : WeierstrassCurve 𝒪) : red₂ K W W' V 0 = 0 := by
   rw [red₂, map_zero, reducePoint_zero]
@@ -107,15 +107,15 @@ theorem red₂_zero (V : WeierstrassCurve 𝒪) : red₂ K W W' V 0 = 0 := by
 variable [W.IsElliptic] [W'.IsElliptic]
 
 /- English proof (translation)
-Use `letI : DecidableEq (ResidueField (gaussRing W)) := Classical.decEq _`. Establish `e` using `gaussCurve_map_functionField K W W'`. Establish `h0 : reducePoint (W.baseChange K).toAffine.FunctionField (gaussCurve W W') (pointCongr e.symm R) = 0`. Use `hR` as an intermediate fact. Simplify using `only [reduceFF, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, reductionHom_apply] at this`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[pointCongr_eq_zero_iff, pointMapRing_eq_zero_iff]`. Then use the resulting hypothesis. Break down `point_cases (W.baseChange K).toAffine.FunctionField (gaussCurve W W') (pointCongr e.symm R) with hz | ⟨X₀, Y₀, h, hP, hX⟩ | ⟨x, y, h, hP⟩` into its components or cases. Rewrite `hz` using `[pointCongr_eq_zero_iff]`. Rewrite using `[hz, map_zero, red₂_zero]`. Establish `hRe : R = pointCongr e (Point.some _ _ h)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hP, pointCongr_pointCongr]`. Both sides reduce to the same expression. Rewrite `hRe` using `[pointCongr_some]`. Substitute `hRe` using the available equality. Establish `hσ : (algebraMap (W.baseChange K).toAffine.FunctionField (liftField₂ K W W')).comp (algebraMap (gaussRing W) _) = (algebraMap (gaussRing (gaussCurve W W')) (liftField₂ K W W')).comp (algebraMap (gaussRing W) _)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[← IsScalarTower.algebraMap_eq, ← IsScalarTower.algebraMap_eq]`. Establish `hX'` using `map_notMem_range (W.baseChange K).toAffine.FunctionField (liftField₂ K W W') hσ hX`. Rewrite using `[red₂, Point.map_some, pointCongr_some]`. Conclude with `reducePoint_some_notMem _ _ _ hX'`. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `n` using `nonsingular_residue_of_isElliptic _ _ h.1`. Rewrite `h0` using `[hP, reducePoint_some_integral _ _ h n]`. Conclude with `Point.some_ne_zero n h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red₂_map_of_reduceFF_eq_zero
     {R : ((W'.baseChange K).baseChange (W.baseChange K).toAffine.FunctionField).toAffine.Point}

@@ -10,27 +10,25 @@ namespace UpperTheory.Esk.UpperHalfPlaneCoordinates
 def Ψ (x y : ℝ) : ℂ := (y : ℂ) * (x + Complex.I)
 
 /- English proof (translation)
-Unfold `Ψ`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_Ψ : Continuous (fun p : ℝ × ℝ => Ψ p.1 p.2) := by
   unfold Ψ; fun_prop
 
 /- English proof (translation)
-Establish `hm : Measurable (fun p : ℝ × ℝ => ENNReal.ofReal (1 / |p.2|) * G (Ψ p.1 p.2))`. Use `Measurable.mul ?_ (hG.comp cont_Ψ.measurable)` and prove the remaining obligations. Conclude with `ENNReal.measurable_ofReal.comp (by fun_prop)`. Rewrite using `[lintegral_lintegral_swap hm.aemeasurable]`. Establish `hF : Measurable (fun z : ℂ => ENNReal.ofReal (1 / z.im ^ 2) * G z)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Measurable.mul ?_ hG` and prove the remaining obligations. Conclude with `ENNReal.measurable_ofReal.comp (by fun_prop)`. Establish `hR : ∫⁻ z, ENNReal.ofReal (1 / z.im ^ 2) * G z = ∫⁻ y : ℝ, ∫⁻ u : ℝ, ENNReal.ofReal (1 / y ^ 2) * G ((u : ℂ) + y * Complex.I)`. Rewrite using `[← (Complex.volume_preserving_equiv_real_prod.symm).lintegral_comp_emb (MeasurableEquiv.measurableEmbedding _)]`. Rewrite using `[Measure.volume_eq_prod, lintegral_prod_symm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Use `congr 1`. Use function extensionality and compare the values at `u`. Simplify using `only [Complex.measurableEquivRealProd]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `Complex.mk_eq_add_mul_I u y`. Conclude with `(hF.comp (MeasurableEquiv.measurable _)).aemeasurable`. Rewrite using `[hR]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Establish `hmx : Measurable (fun x : ℝ => G (Ψ x y))` using `hG.comp (cont_Ψ.comp (Continuous.prodMk continuous_id continuous_const)).measurable`. Rewrite using `[lintegral_const_mul _ hmx]`. Establish `hmu : Measurable (fun u : ℝ => G ((u : ℂ) + y * Complex.I))` using `hG.comp (by fun_prop : Continuous (fun u : ℝ => (u : ℂ) + y * Complex.I)).measurable`. Rewrite using `[lintegral_const_mul _ hmu]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules. Establish `hsc : ∫⁻ x, G (Ψ x y) = ENNReal.ofReal |y⁻¹| * ∫⁻ u : ℝ, G ((u : ℂ) + y * Complex.I)`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use function extensionality and compare the values at `x`. Use `congr 1`. Simplify using `only [Ψ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = ∫⁻ u : ℝ, G ((u : ℂ) + y * Complex.I) ∂(Measure.map (fun x => y * x) volume) := (lintegral_map hmu (measurable_const_mul y)).symm`. Use `_ = _ := by rw [Real.map_volume_mul_left hy, lintegral_smul_measure, smul_eq_mul]`. Rewrite using `[hsc, ← mul_assoc, ← ENNReal.ofReal_mul (by positivity)]`. Rewrite using `[show 1 / |y| * |y⁻¹| = 1 / y ^ 2 by`. Rewrite using `[abs_inv, one_div, one_div, ← mul_inv, ← pow_two, sq_abs]]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key (G : ℂ → ℝ≥0∞) (hG : Measurable G) :
     ∫⁻ x, ∫⁻ y, ENNReal.ofReal (1 / |y|) * G (Ψ x y)
@@ -80,38 +78,36 @@ Both sides reduce to the same expression.
 theorem vol_eq : (volume : Measure P) = ν0.withDensity (fun z => ENNReal.ofReal (1 / z.1.im ^ 2)) := rfl
 
 /- English proof (translation)
-The claim follows from `(isOpen_ne_fun Complex.continuous_im continuous_const).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem hS : MeasurableSet {z : ℂ | z.im ≠ 0} :=
   (isOpen_ne_fun Complex.continuous_im continuous_const).measurableSet
 
 /- English proof (translation)
-Unfold `pt`. Conclude with `Continuous.subtype_mk (by fun_prop) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_pt : Continuous (fun p : ℝ × {y : ℝ // y ≠ 0} => pt p.1 p.2.1 p.2.2) := by
   unfold pt
   exact Continuous.subtype_mk (by fun_prop) _
 
 /- English proof (translation)
-Establish `hemb : MeasurableEmbedding (Subtype.val : P → ℂ)` using `MeasurableEmbedding.subtype_coe hS`. Establish `hY : MeasurableSet {y : ℝ | y ≠ 0}` using `(measurableSet_singleton 0).compl`. Establish `hembY : MeasurableEmbedding (Subtype.val : {y : ℝ // y ≠ 0} → ℝ)` using `MeasurableEmbedding.subtype_coe hY`. Establish `: SigmaFinite (Measure.comap (Subtype.val : {y : ℝ // y ≠ 0} → ℝ) volume)` using `SigmaFinite.of_map _ measurable_subtype_coe.aemeasurable (by rw [hembY.map_comap]; infer_instance)`. Use `⟨cont_pt.measurable, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `s hs`. Use `set G : ℂ → ℝ≥0∞ := (Subtype.val '' s).indicator 1 with hGdef`. Establish `hGm : Measurable G` using `measurable_one.indicator (hemb.measurableSet_image.2 hs)`. Establish `hGv : ∀ z : P, G z.1 = s.indicator 1 z`. Introduce `z`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz : z.1 ∈ Subtype.val '' s ↔ z ∈ s` using `⟨fun ⟨w, hw, e⟩ => (Subtype.ext e : w = z) ▸ hw, fun h => ⟨z, h, rfl⟩⟩`. Rewrite using `[hGdef]`. Distinguish the cases in `h : z ∈ s`. Rewrite using `[Set.indicator_of_mem (hz.2 h), Set.indicator_of_mem h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem (mt hz.1 h), Set.indicator_of_notMem h]`. Rewrite using `[Measure.map_apply cont_pt.measurable hs, ← lintegral_indicator_one (cont_pt.measurable hs)]`. Establish `e1 : ∀ p : ℝ × {y : ℝ // y ≠ 0}, ((fun p : ℝ × {y : ℝ // y ≠ 0} => pt p.1 p.2.1 p.2.2) ⁻¹' s).indicator 1 p = G (Ψ p.1 p.2.1)`. Introduce `p`. Rewrite using `[show Ψ p.1 p.2.1 = (pt p.1 p.2.1 p.2.2).1 from rfl, hGv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Repeatedly rewrite using `[e1]`. Establish `hGΨ : Measurable (fun p : ℝ × {y : ℝ // y ≠ 0} => G (Ψ p.1 p.2.1))` using `hGm.comp (cont_Ψ.comp (Continuous.prodMk continuous_fst (continuous_subtype_val.comp continuous_snd))).measurable`. Rewrite using `[lintegral_prod _ hGΨ.aemeasurable]`. Establish `e2 : ∀ x : ℝ, ∫⁻ y, G (Ψ x y.1) ∂((Measure.comap Subtype.val volume).withDensity fun y : {y : ℝ // y ≠ 0} => ENNReal.ofReal (1 / |y.1|)) = ∫⁻ y, ENNReal.ofReal (1 / |y|) * G (Ψ x y)`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `hd : Measurable (fun y : {y : ℝ // y ≠ 0} => ENNReal.ofReal (1 / |y.1|))` using `(by fun_prop : Measurable (fun y : ℝ => ENNReal.ofReal (1 / |y|))).comp measurable_subtype_coe`. Establish `hg : Measurable (fun y : {y : ℝ // y ≠ 0} => G (Ψ x y.1))` using `hGm.comp (cont_Ψ.comp (Continuous.prodMk continuous_const continuous_subtype_val)).measurable`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ hd hg]`. Use `lintegral_subtype_comap (μ := (volume : Measure ℝ)) hY (fun y => ENNReal.ofReal (1 / |y|) * G (Ψ x y))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[show ({y : ℝ | y ≠ 0} : Set ℝ) = {0}ᶜ from rfl, restrict_compl_singleton]`. Conclude with `this`. Repeatedly rewrite using `[e2]`. Rewrite using `[key G hGm]`. Establish `hv : (volume : Measure P) s = ∫⁻ z : P, ENNReal.ofReal (1 / z.1.im ^ 2) * G z.1 ∂ν0`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[vol_eq, withDensity_apply _ hs, ← lintegral_indicator hs]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Apply the tactic sequence `rw [hGv]; by_cases h : z ∈ s <;> simp [Set.indicator, h]`. Establish `hv2 : ∫⁻ z : P, ENNReal.ofReal (1 / z.1.im ^ 2) * G z.1 ∂ν0 = ∫⁻ z in {z : ℂ | z.im ≠ 0}, ENNReal.ofReal (1 / z.im ^ 2) * G z` using `lintegral_subtype_comap hS (fun z => ENNReal.ofReal (1 / z.im ^ 2) * G z)`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hv, hv2, ← lintegral_indicator hS]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Distinguish the cases in `h : z.im ≠ 0`. Simplify using `[Set.indicator, h]`.
-
-Simplify using `[Set.indicator, not_not.1 h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem meas_pres : MeasurePreserving (fun p : ℝ × {y : ℝ // y ≠ 0} => pt p.1 p.2.1 p.2.2)
     ((volume : Measure ℝ).prod ((Measure.comap Subtype.val volume).withDensity
@@ -173,11 +169,11 @@ theorem meas_pres : MeasurePreserving (fun p : ℝ × {y : ℝ // y ≠ 0} => pt
   · simp [Set.indicator, not_not.1 h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, y, hy⟩ ⟨x', y', hy'⟩ h`. Establish `h' : (y : ℂ) * (x + Complex.I) = (y' : ℂ) * (x' + Complex.I)` using `congrArg Subtype.val h`. Establish `him` using `congrArg Complex.im h'`. Establish `hre` using `congrArg Complex.re h'`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at him hre`. Substitute `him` using the available equality. Establish `: x = x'` using `mul_left_cancel₀ hy hre`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨z, hz⟩`. Use `⟨(z.re / z.im, ⟨z.im, hz⟩), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (z.im : ℂ) * ((z.re / z.im : ℝ) + Complex.I) = z`. Apply the tactic sequence `apply Complex.ext <;> simp; field_simp`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem bij : Function.Bijective (fun p : ℝ × {y : ℝ // y ≠ 0} => pt p.1 p.2.1 p.2.2) := by
   constructor
@@ -198,7 +194,7 @@ theorem bij : Function.Bijective (fun p : ℝ × {y : ℝ // y ≠ 0} => pt p.1 
 end UpperTheory.Esk.UpperHalfPlaneCoordinates
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨UpperTheory.Esk.UpperHalfPlaneCoordinates.meas_pres, UpperTheory.Esk.UpperHalfPlaneCoordinates.bij, UpperTheory.Esk.UpperHalfPlaneCoordinates.cont_pt⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.Esk.upper_half_plane_measure_coordinates : UpperTheory.Esk.UpperHalfPlaneMeasureCoordinates :=
   ⟨UpperTheory.Esk.UpperHalfPlaneCoordinates.meas_pres, UpperTheory.Esk.UpperHalfPlaneCoordinates.bij, UpperTheory.Esk.UpperHalfPlaneCoordinates.cont_pt⟩

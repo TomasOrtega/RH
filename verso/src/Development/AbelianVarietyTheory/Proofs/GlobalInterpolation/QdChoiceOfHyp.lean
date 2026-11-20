@@ -24,7 +24,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 h7 h8 eps he he'`. Take `⟨x0, C, hC, h⟩` from `GlobalTheory.T.exists_prime_pair_box_bounds h1 h2 h3 h4 h5 h6 h7 h8 eps he he'`. Use `⟨C, x0, hC, fun x hx n hn hn' => ?_⟩` and prove the remaining obligations. Take `⟨q, d, hb, hq, hr⟩` from `h x hx`. Conclude with `⟨q, d, hr n hn hn', hq, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem qdChoice_of_explicitFormula : GlobalTheory.Mem.An.ExplZeta → GlobalTheory.Mem.An.ExplChi → GlobalTheory.Mem.An.LogDerOne → GlobalTheory.Mem.An.ZeroCount → Formalism.ZeroFreeDirichlet.ZFRDirichlet → GlobalTheory.Mem.An.TZRat → GlobalTheory.Mem.An.PageThm → GlobalTheory.Mem.An.Jutila → QDChoice := by
   intro h1 h2 h3 h4 h5 h6 h7 h8 eps he he'

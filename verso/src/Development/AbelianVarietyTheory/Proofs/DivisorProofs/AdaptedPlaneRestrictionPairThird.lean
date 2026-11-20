@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.DblEvalW
 
 /- English proof (translation)
-Rewrite using `[Matrix.fromBlocks_transpose, Matrix.transpose_zero]`. Use extensionality with `i j`. Apply the tactic sequence `cases j <;> simp [Matrix.mul_apply, Matrix.fromCols, Matrix.fromBlocks, Fintype.sum_sum_type]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fromCols_mul_blockDiag_transpose {R : Type} [CommRing R] {m a b : Type} [Fintype a] [Fintype b]
     (z₁ z₂ : Matrix m b R) (A : Matrix a b R) :
@@ -27,27 +27,25 @@ theorem fromCols_mul_blockDiag_transpose {R : Type} [CommRing R] {m a b : Type} 
   cases j <;> simp [Matrix.mul_apply, Matrix.fromCols, Matrix.fromBlocks, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hpair d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ _ hpair₁ e he dd dd₁ hdd hdd₁`. Establish `hψ : ∀ t, ‖B.ψ t‖ = 1` using `GlobalTheory.StdCharWeilDatum.norm_psi hpair.base.std`. Establish `hL : IsLocOp e` using `isLocOp_of_isEv hpair.good hpair₁.good he`. Establish `hL₂ : IsLocOp (conjLin e)` using `GlobalTheory.T.conj_local_operator e hL`. Establish `hone : incM F (1 : Matrix (Fin n) (Fin n) E) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[incM, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `set A := incM F H'.ι with hA`. Establish `Heisenberg₂ : ∀ (z : Matrix (Fin n) (Fin d₁) (AE F E)), ∀ φ ∈ schA F (Fin n × Fin d), e (M.co.rho B.ψ (z * Aᵀ) φ) = M₁.co.rho B.ψ z (e φ)` using `fun z φ hφ => by`. Use `he.Heisenberg₂ z φ hφ` as an intermediate fact. Rewrite `this` using `[hone, Matrix.one_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `heis₂ : ∀ (z : Matrix (Fin n) (Fin d₁) (AE F E)), ∀ φ ∈ schA F (Fin n × Fin d), conjLin e (M.co.rho B.ψ⁻¹ (z * Aᵀ) φ) = M₁.co.rho B.ψ⁻¹ z (conjLin e φ)` using `fun z φ hφ => by`. Use function extensionality and compare the values at `y`. Rewrite using `[conjLin_apply]`. Establish `h1 : (fun x => starRingEnd ℂ (M.co.rho B.ψ⁻¹ (z * Aᵀ) φ x)) = M.co.rho B.ψ (z * Aᵀ) (fun x => starRingEnd ℂ (φ x))`. Use function extensionality and compare the values at `fun x => conj_schr_inv B.ψ hψ _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Heisenberg₂ z _ (GlobalTheory.T.adelic_schwartz_conj_mem φ hφ)]`. Conclude with `conj_schr B.ψ hψ _ _ _`. Establish `inv₁ : ∀ (y : Fin n → AE F E), ∀ φ ∈ schA F (Fin n × Fin d), e (M.co.rho B.ψ (Matrix.vecMulVec y (incV F H'.x)) φ) = e φ` using `fun y φ hφ => he.inv _ ⟨y, rfl⟩ φ hφ`. Establish `inv₂ : ∀ (y : Fin n → AE F E), ∀ φ ∈ schA F (Fin n × Fin d), conjLin e (M.co.rho B.ψ⁻¹ (Matrix.vecMulVec y (incV F H'.x)) φ) = conjLin e φ` using `fun y φ hφ => by`. Use function extensionality and compare the values at `x'`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[conjLin_apply, conjLin_apply]`. Establish `h1 : (fun x => starRingEnd ℂ (M.co.rho B.ψ⁻¹ (Matrix.vecMulVec y (incV F H'.x)) φ x)) = M.co.rho B.ψ (Matrix.vecMulVec y (incV F H'.x)) (fun x => starRingEnd ℂ (φ x))`. Use function extensionality and compare the values at `fun x => conj_schr_inv B.ψ hψ _ _ _`. Rewrite using `[h1, inv₁ y _ (GlobalTheory.T.adelic_schwartz_conj_mem φ hφ)]`. Establish `invB : ∀ (y₁ y₂ : Fin n → AE F E), ∀ Φ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d), (partRₗ (conjLin e) ∘ₗ partLₗ e) (dd.rho B.ψ (Matrix.fromCols (Matrix.vecMulVec y₁ (incV F H'.x)) (Matrix.vecMulVec y₂ (incV F H'.x))) Φ) = (partRₗ (conjLin e) ∘ₗ partLₗ e) Φ` using `fun y₁ y₂ Φ hΦ => by`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[rho_dbl _ _ _ _ _ _ hdd]`. Simplify using `only [LinearMap.comp_apply, partLₗ_apply, partRₗ_apply]`. Rewrite using `[partL_intertwine e (M.co.rho B.ψ (Matrix.vecMulVec y₁ (incV F H'.x))) (fun φ => φ) e _ (fun φ hφ => inv₁ _ φ hφ) (fun b => by rw [sliceL_partR_rho]; exact Submodule.smul_mem _ _ (sliceL_mem hΦ _)), partL_id, partL_partR_rho, partR_intertwine (conjLin e) (M.co.rho B.ψ⁻¹ (Matrix.v …`. Use `⟨partRₗ (conjLin e) ∘ₗ partLₗ e, conjLin e, fun Φ hΦ => ?_, fun z Φ hΦ => ?_, fun y Φ hΦ => ?_, fun l hl => ?_, fun φ₁ _ φ₂ _ => ?_, fun φ hφ => ?_, ?_⟩` and prove the remaining obligations. Conclude with `partR_mem (conjLin e) hL₂ _ (partL_mem e hL Φ hΦ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.fromCols_toCols z, fromCols_mul_blockDiag_transpose, rho_dbl _ _ _ _ _ _ hdd, rho_dbl _ _ _ _ _ _ hdd₁]`. Simplify using `only [LinearMap.comp_apply, partLₗ_apply, partRₗ_apply]`. Rewrite using `[partL_intertwine e (M.co.rho B.ψ (z.toCols₁ * Aᵀ)) (M₁.co.rho B.ψ z.toCols₁) e _ (fun φ hφ => Heisenberg₂ _ φ hφ) (fun b => by rw [sliceL_partR_rho]; exact Submodule.smul_mem _ _ (sliceL_mem hΦ _)), partL_partR_rho, partR_partL_rho, partR_intertwine (conjLin e) (M.co.rho B.ψ⁻¹ ( …`. Establish `h0 : (0 : Matrix (Fin n) (Fin d) (AE F E)) = Matrix.vecMulVec 0 (incV F H'.x)`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.vecMulVec_apply]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h0]`. Conclude with `invB y 0 Φ hΦ`. Rewrite using `[h0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `invB 0 y Φ hΦ`. Rewrite using `[← LinearMap.comp_assoc]`. Conclude with `partL_adm e hL _ (partR_adm (conjLin e) hL₂ l hl)`. Use function extensionality and compare the values at `y`. Simplify using `only [LinearMap.comp_apply, partLₗ_apply, partRₗ_apply, partR, partL, boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (fun x => e (fun x' => φ₁ x' * φ₂ x) (y ∘ Sum.inl)) = e φ₁ (y ∘ Sum.inl) • φ₂` using `funext fun x => by`. Rewrite using `[show (fun x' => φ₁ x' * φ₂ x) = φ₂ x • φ₁ from funext fun x' => by simp [mul_comm], map_smul]`. Simplify using `[mul_comm]`. Rewrite using `[h1, map_smul]`. Both sides reduce to the same expression.
-
-Conclude with `GlobalTheory.T.adelic_schwartz_conj_mem _ (he.maps _ (GlobalTheory.T.adelic_schwartz_conj_mem φ hφ))`. Take `⟨Φ₀, h₀, hne⟩` from `GlobalTheory.T.eigen_intertwiner_restriction F E σ B n d n d₁ X W X W₁ M M₁ 1 H'.ι (iso0 n H') e hpair.good hpair₁.good he`. Use `⟨fun x => starRingEnd ℂ (Φ₀ x), GlobalTheory.T.adelic_schwartz_conj_mem _ h₀, fun h => hne (funext fun y => ?_)⟩` and prove the remaining obligations. Use `congrFun h y` as an intermediate fact. Simplify `this` using `[conjLin_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_dblEv : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

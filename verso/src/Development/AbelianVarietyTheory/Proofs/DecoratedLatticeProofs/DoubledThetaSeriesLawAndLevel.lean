@@ -28,25 +28,25 @@ variable {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
 def bt (x y : Mx D T.rank ρ) : AF D.host.F := symplOH S T (d.extX T x) (d.extY T y)
 
 /- English proof (translation)
-Rewrite using `[bt, map_add, GlobalTheory.OrientedHeis.symplOH_add_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bt_add_left (x x' y : Mx D T.rank ρ) : bt d T (x + x') y = bt d T x y + bt d T x' y := by
   rw [bt, map_add, GlobalTheory.OrientedHeis.symplOH_add_left]; rfl
 
 /- English proof (translation)
-Rewrite using `[bt, map_add, GlobalTheory.OrientedHeis.symplOH_add_right]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bt_add_right (x y y' : Mx D T.rank ρ) : bt d T x (y + y') = bt d T x y + bt d T x y' := by
   rw [bt, map_add, GlobalTheory.OrientedHeis.symplOH_add_right]; rfl
 
 /- English proof (translation)
-Rewrite using `[bt, map_zero, GlobalTheory.FinTranslate.symplOH_zero_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bt_zero_right (x : Mx D T.rank ρ) : bt d T x 0 = 0 := by
   rw [bt, map_zero, GlobalTheory.FinTranslate.symplOH_zero_right]
 
 /- English proof (translation)
-Establish `h2 : algebraMap D.host.F (AF D.host.F) (1 / 2) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul]`. Evaluate the numerical expressions. Unfold `bt symplOH`. Take the linear combination `(-symplO S T (d.extX T x) (d.extY T y)) * h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem symplO_bt (x y : Mx D T.rank ρ) : symplO S T (d.extX T x) (d.extY T y) = bt d T x y + bt d T x y := by
   have h2 : algebraMap D.host.F (AF D.host.F) (1 / 2) * 2 = 1 := by
@@ -56,9 +56,9 @@ theorem symplO_bt (x y : Mx D T.rank ρ) : symplO S T (d.extX T x) (d.extY T y) 
   linear_combination (-symplO S T (d.extX T x) (d.extY T y)) * h2
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `GlobalTheory.SymplecticOrthogonalSesquilinear.symplO_rat D S T (ξ * d.qX) (η * d.qY)`. Rewrite `ha` using `[ratW_eq, ratW_eq, rat_mul, rat_mul]`. Establish `: bt d T (rat ξ) (rat η) = algebraMap D.host.F (AF D.host.F) (1 / 2 * a)`. Rewrite using `[map_mul, ← ha]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Conclude with `hψ.2.2.1 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_bt_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
     (ξ η : Matrix (Fin T.rank) (Fin ρ) D.host.E) : ψ (bt d T (rat ξ) (rat η)) = 1 := by
@@ -69,9 +69,9 @@ theorem psi_bt_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
   rw [this]; exact hψ.2.2.1 _
 
 /- English proof (translation)
-Establish `h : ∀ w : WO S T, w = d.extX T (w ⬝ d.jX) + d.extY T (w ⬝ d.jY)` using `fun w => by`. Use `(d.coordS T).left_inv w` as an intermediate fact. Express the relevant statement in the definitionally equal form `d.extX T (w ⬝ d.jX) + d.ext0 T (w ⬝ d.j0) + d.extY T (w ⬝ d.jY) = w at this`. Rewrite `this` using `[h0, Matrix.mul_zero, map_zero, add_zero]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [h w, h w']`. Rewrite using `[GlobalTheory.OrientedHeis.symplOH_add_left, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right, d.symplOH_extX_extX, d.symplOH_extY_extY, symplOH_skew S T (d.extX T (w' ⬝ d.jX)), zero_add, add_zero, sub_eq_add_neg]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem symplOH_coord (h0 : d.j0 = 0) (w w' : WO S T) :
     symplOH S T w w' = bt d T (w ⬝ d.jX) (w' ⬝ d.jY) - bt d T (w' ⬝ d.jX) (w ⬝ d.jY) := by
@@ -87,14 +87,14 @@ theorem symplOH_coord (h0 : d.j0 = 0) (w w' : WO S T) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, hx, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mul_zero {R : Type} [CommRing R] (q : AE D →+* R) {l m n : ℕ} {x : Mx D l m} (hx : x.map q = 0)
     (y : Mx D m n) : (x ⬝ y : Mx D l n).map q = 0 := by
   rw [Matrix.map_mul, hx, Matrix.zero_mul]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.OrientedHeis.snd_symplO (S := S) (T := T) (x := d.extX T x) (y := d.extY T y) (Or.inl (map_mul_zero _ hx _))`. Express the relevant statement in the definitionally equal form `_ * sndA D.host.F (symplO S T (d.extX T x) (d.extY T y)) = 0`. Rewrite using `[h, mul_zero]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem snd_bt {x : Mx D T.rank ρ} (hx : x.map (finPart D) = 0) (y : Mx D T.rank ρ) : (bt d T x y).2 = 0 := by
   have h := GlobalTheory.OrientedHeis.snd_symplO (S := S) (T := T) (x := d.extX T x) (y := d.extY T y)
@@ -103,7 +103,7 @@ theorem snd_bt {x : Mx D T.rank ρ} (hx : x.map (finPart D) = 0) (y : Mx D T.ran
   rw [h, mul_zero]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.OrientedHeis.fst_symplO (S := S) (T := T) (x := d.extX T x) (y := d.extY T y) (Or.inr (map_mul_zero _ hy _))`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * fstA D.host.F (symplO S T (d.extX T x) (d.extY T y)) = 0`. Rewrite using `[h, mul_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem bt_eq_pair (x : Mx D T.rank ρ) {y : Mx D T.rank ρ} (hy : y.map (infPart D) = 0) :
     bt d T x y = pairA D.host.F 0 (bt d T x y).2 := by
@@ -114,7 +114,7 @@ theorem bt_eq_pair (x : Mx D T.rank ρ) {y : Mx D T.rank ρ} (hy : y.map (infPar
   rw [h, mul_zero]
 
 /- English proof (translation)
-Take `⟨e, he, -, hc⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Use `⟨fun z => e.symm (0, z), hc.comp (continuous_const.prodMk continuous_id), fun z => ?_⟩` and prove the remaining obligations. Use `(he (e.symm (0, z))).2` as an intermediate fact. Rewrite `this` using `[e.apply_symm_apply]`. Conclude with `this.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section (D : D7) : ∃ s : Af D.host.F ⊗[D.host.F] D.host.E → AE D, Continuous s ∧
     ∀ z, finPart D (s z) = z := by
@@ -125,19 +125,15 @@ theorem exists_section (D : D7) : ∃ s : Af D.host.F ⊗[D.host.F] D.host.E →
   exact this.symm
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`. Take `⟨s, hs, hsf⟩` from `exists_section D`. Establish `hadd : ∀ z a b, ψ (pairA D.host.F 0 (bt d T z (a + b)).2) = ψ (pairA D.host.F 0 (bt d T z a).2) * ψ (pairA D.host.F 0 (bt d T z b).2)` using `fun z a b => by`. Rewrite using `[← AddChar.map_add_eq_mul, bt_add_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `Prod.ext (add_zero _).symm rfl`. Establish `hzero : ∀ z, ψ (pairA D.host.F 0 (bt d T z 0).2) = 1` using `fun z => by`. Rewrite using `[bt_zero_right]`. Conclude with `ψ.map_zero_eq_one`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `V : AddSubgroup (Mx D T.rank ρ)` to `{ carrier := {b | ∀ z ∈ Z, ψ (pairA D.host.F 0 (bt d T z b).2) = 1} zero_mem' := fun z _ => hzero z add_mem' := fun {a b} ha hb z hz => by rw [hadd, ha z hz, hb z hz, one_mul] neg_mem' := fun {a} ha z hz => by`. Use `hadd z a (-a)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, hzero, ha z hz, one_mul]`. Conclude with `this.symm }`. Use `⟨V, V.isOpen_of_mem_nhds (g := 0) ?_, fun b hb h0 z hz => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hK' : IsCompact ((fun k => k.map s) '' K)` using `hK.image (continuous_id.matrix_map hs)`. Establish `hc : Continuous fun p : Mx D T.rank ρ × Mx D T.rank ρ => (bt d T p.2 p.1).2` using `continuous_snd.comp (GlobalTheory.OrientedHeis.continuous_symplOH (continuous_snd.matrix_mul continuous_const) (continuous_fst.matrix_mul continuous_const))`. Establish `hev : ∀ᶠ b in 𝓝 (0 : Mx D T.rank ρ), ∀ z ∈ (fun k => k.map s) '' K, ψ (pairA D.host.F 0 (bt d T z b).2) = 1`. Use `hK'.eventually_forall_of_forall_eventually fun z _ => ?_` and prove the remaining obligations. Conclude with `hc.continuousAt.preimage_mem_nhds (x := (0, z)) (t := {a | ψ (pairA D.host.F 0 a) = 1}) (by rw [bt_zero_right]; exact GlobalTheory.FinTranslate.ker_mem_nhds hψ.1 hψ.2.1)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Filter.mem_of_superset hev fun b hb z hz => ?_` and prove the remaining obligations. Establish `h1` using `hb _ ⟨_, hZ z hz, rfl⟩`. Establish `h2 : (z - (z.map (finPart D)).map s).map (finPart D) = 0`. Use extensionality with `i j`. Conclude with `(RingHom.map_sub _ _ _).trans (sub_eq_zero.2 (hsf _).symm)`.
-
-Establish `h3 : (bt d T z b).2 = (bt d T ((z.map (finPart D)).map s) b).2`. Establish `h4` using `bt_add_left d T (z - (z.map (finPart D)).map s) ((z.map (finPart D)).map s) b`. Rewrite `h4` using `[sub_add_cancel]`. Rewrite using `[h4]`. Conclude with `(congrArg (· + _) (snd_bt d T h2 b)).trans (zero_add _)`.
-
-Rewrite using `[h3]`. Conclude with `h1`. Rewrite using `[bt_eq_pair d T z h0]`. Conclude with `hb z hz`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_open_ann {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (Z : Set (Mx D T.rank ρ))
     {K : Set (Matrix (Fin T.rank) (Fin ρ) (Af D.host.F ⊗[D.host.F] D.host.E))} (hK : IsCompact K)
@@ -188,7 +184,7 @@ theorem exists_open_ann {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.
 variable {d T} {ψ : AddChar (AF D.host.F) ℂ} {φ : Mx D T.rank ρ → ℂ} {f : WO S T → ℂ}
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, ← mul_assoc]`. Use `congr 1`. Rewrite using `[← one_mul (χ _ * χ _ * χ _), ← hg, ← one_mul (χ _ * (χ _ * χ _ * χ _)), ← hg, ← one_mul (χ (-_) * χ _), ← ha]`. Simplify using `only [← AddChar.map_add_eq_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -203,13 +199,13 @@ theorem addChar_theta_law_rearrangement_identity {R : Type} [AddCommGroup R] (χ
   abel
 
 /- English proof (translation)
-Establish `hX : (rat γ ⬝ d.jX : Mx D T.rank ρ) = rat (γ * d.e)` using `(rat_mul _ _).symm`. Establish `hY : (rat γ ⬝ d.jY : Mx D T.rank ρ) = rat (γ * d.e')` using `(rat_mul _ _).symm`. Rewrite using `[hf, hf, symplOH_coord d T h0, Matrix.add_mul, Matrix.add_mul, hX, hY]`. Generalize the expression as in `γ * d.e = ξ₀`. Generalize the expression as in `γ * d.e' = η₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(w ⬝ d.jX : Mx D T.rank ρ) = x`. Generalize the expression as in `(w ⬝ d.jY : Mx D T.rank ρ) = y`. Rewrite using `[← mul_assoc, ← tsum_mul_left, ← tsum_mul_left]`. Use `Eq.trans (tsum_congr fun ξ => ?_) ((Equiv.addLeft ξ₀).tsum_eq _)` and prove the remaining obligations. Establish `e : rat ξ₀ + x + rat ξ = x + rat (Equiv.addLeft ξ₀ ξ)`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Equiv.coe_addLeft, rat_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Generalize the expression as in `Equiv.addLeft ξ₀ ξ = ζ`. Establish `h1` using `psi_bt_rat d T hψ ξ₀ η₀`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `h2` using `psi_bt_rat d T hψ ζ η₀`. Simplify using `only [symplO_bt, bt_add_left]`. Simplify using `only [bt_add_right]`. Conclude with `addChar_theta_law_rearrangement_identity ψ _ _ _ _ _ _ _ h1 h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem law (hψ : IsCharAF D.host.F ψ) (h0 : d.j0 = 0)
     (hf : ∀ w : WO S T, f w = ψ (-(bt d T (w ⬝ d.jX) (w ⬝ d.jY))) * ∑' ξ : Matrix (Fin T.rank) (Fin ρ) D.host.E,
@@ -236,19 +232,19 @@ theorem law (hψ : IsCharAF D.host.F ψ) (h0 : d.j0 = 0)
   exact addChar_theta_law_rearrangement_identity ψ _ _ _ _ _ _ _ h1 h2
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`. Take `⟨U, hU, hUφ⟩` from `hφ.level`. Take `⟨K, hK, hKφ⟩` from `hφ.supp`. Take `⟨V, hV, hVψ⟩` from `exists_open_ann d T hψ {z | φ z ≠ 0} hK hKφ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `rX : WO S T →+ Mx D T.rank ρ` to `AddMonoidHom.mk' (fun w => w ⬝ d.jX) fun _ _ => Matrix.add_mul _ _ _`. Set `rY : WO S T →+ Mx D T.rank ρ` to `AddMonoidHom.mk' (fun w => w ⬝ d.jY) fun _ _ => Matrix.add_mul _ _ _`. Establish `cX : Continuous rX` using `continuous_id.matrix_mul continuous_const`. Establish `cY : Continuous rY` using `continuous_id.matrix_mul continuous_const`. Use `⟨U.comap rX ⊓ V.comap rY, (hU.preimage cX).inter (hV.preimage cY), fun u hu hi => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `hUφ (u ⬝ d.jX) hu.1 (map_mul_zero _ hi _)`. Establish `hb` using `hVψ (u ⬝ d.jY) hu.2 (map_mul_zero _ hi _)`. Use function extensionality and compare the values at `w`. Rewrite using `[heisO, hf, hf, symplOH_coord d T h0, Matrix.add_mul, Matrix.add_mul]`. Generalize the expression as in `(u ⬝ d.jX : Mx D T.rank ρ) = a at ha ⊢`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(u ⬝ d.jY : Mx D T.rank ρ) = b at hb ⊢`. Generalize the expression as in `(w ⬝ d.jX : Mx D T.rank ρ) = x`. Generalize the expression as in `(w ⬝ d.jY : Mx D T.rank ρ) = y`. Rewrite using `[← mul_assoc, ← tsum_mul_left, ← tsum_mul_left]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[add_right_comm x a, ha]`. Generalize the expression as in `x + rat ξ = z`. Distinguish the cases in `hz : φ z = 0`. Simplify using `only [hz, mul_zero]`. Establish `h1` using `hb z hz`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hb (z + a) (by rwa [Set.mem_setOf_eq, ha])`. Rewrite using `[← mul_assoc, ← mul_assoc]`. Use `congr 1`. Rewrite using `[← one_mul (ψ (-bt d T x y) * ψ _), ← h1, ← one_mul (ψ (bt d T z b) * _), ← h2]`. Simplify using `only [← AddChar.map_add_eq_mul, symplO_bt, bt_add_left, bt_add_right]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Use `congr 1`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem level (hψ : IsCharAF D.host.F ψ) (h0 : d.j0 = 0) (hφ : GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat φ)
     (hf : ∀ w : WO S T, f w = ψ (-(bt d T (w ⬝ d.jX) (w ⬝ d.jY))) * ∑' ξ : Matrix (Fin T.rank) (Fin ρ) D.host.E,
@@ -289,7 +285,7 @@ theorem level (hψ : IsCharAF D.host.F ψ) (h0 : d.j0 = 0) (hφ : GlobalTheory.I
   abel
 
 /- English proof (translation)
-Introduce `D ψ hψ A B φ hφ f hf`. Establish `h0 : (dblDec A).j0 = 0` using `rat_zero`. Conclude with `⟨law hψ.1 h0 hf, level hψ.1 h0 hφ hf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem law_and_level : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A B : HSp D) (φ : Mx D B.rank A.rank → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat φ → ∀ f : WO (dblSp A) B → ℂ, (∀ w : WO (dblSp A) B, f w = ψ (-(symplOH (dblSp A) B ((dblDec A).extX B (HMul.hMul w (dblDec A).jX)) ((dblDec A).extY B (HMul.hMul w (dblDec A).jY)))) * ∑' ξ : Matrix (Fin B.rank) (Fin A.rank) D.host.E, ψ (symplO (dblSp A) B ((dblDec A).extX B (HMul.hMul w (dblDec A).jX + rat ξ)) ((dblDec A).extY B (HMul.hMul w (dblDec A).jY))) * φ (HMul.hMul w (dblDec A).jX + rat ξ)) → (∀ γ w, f (ratW B (dblSp A) γ + w) = ψ (-(symplOH (dblSp A) B (ratW B (dblSp A) γ) w)) * f w) ∧ ∃ U : AddSubgroup (WO (dblSp A) B), IsOpen (U : Set (WO (dblSp A) B)) ∧ ∀ u ∈ U, u.map (infPart D) = 0 → heisO ψ (dblSp A) B u f = f := by
   intro D ψ hψ A B φ hφ f hf

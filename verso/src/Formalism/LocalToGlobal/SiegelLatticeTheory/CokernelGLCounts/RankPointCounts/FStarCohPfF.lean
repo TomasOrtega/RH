@@ -14,9 +14,9 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M V}
 
 /- English proof (translation)
-Introduce `h0`. Apply `h1G` to reduce the goal to its premises. Establish `hr'` using `congrArg M.L.cj hrat`. Simplify using `only [map_mul] at hr'`. Establish `key : H.normE (H.Dl f f₁ (r + 1)) * H.Gdet f f₂ T T' = H.normE (H.Dl f f₂ (r + 1)) * H.Gdet f f₁ T T'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `HermSp.Gdet HermSp.normE`. Take the linear combination `(algebraMap F E (T * T') * (M.L.cj (H.Dl f f₁ r) * M.L.cj (H.Dl f f₂ (r + 1)))) * hrat + (algebraMap F E (T * T') * H.Dl f f₂ r * H.Dl f f₁ (r + 1)) * hr'`. Rewrite `key` using `[h0, mul_zero]`. Establish `hu : IsUnit (H.normE (H.Dl f f₂ (r + 1)))` using `h2u.mul (h2u.map M.L.cj)`. Conclude with `(hu.mul_right_eq_zero).1 key.symm`.
+Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gdet_ne_of_ratio {r : ℕ} {f f₁ f₂ : Fin (r + 1) → V} {T T' : F} (h1G : H.Gdet f f₁ T T' ≠ 0)
     (h2u : IsUnit (H.Dl f f₂ (r + 1)))
@@ -50,7 +50,7 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.Pf.ScalarFramePf.GDl`. Rewrite using `[dif_pos le_rfl]`. Establish `hc : (Fin.castLE (le_refl (D.R.rS + 1)) : Fin (D.R.rS + 1) → Fin (D.R.rS + 1)) = id`. Use function extensionality and compare the values at `fun i => Fin.ext rfl`. Rewrite using `[hc, Matrix.submatrix_id_id]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem gdl_full (x y : Fin (D.R.rS + 1) → (VS D).V) :
     Formalism.L2.SG.Pf.ScalarFramePf.GDl x y (D.R.rS + 1) = (Formalism.L2.SG.Pf.ScalarFramePf.GZ x y).det := by
@@ -61,11 +61,9 @@ theorem gdl_full (x y : Fin (D.R.rS + 1) → (VS D).V) :
   rw [hc, Matrix.submatrix_id_id]
 
 /- English proof (translation)
-Establish `e : (locH Zd p).Dl (tLoc Zd p γ).f (locF' Zd p F'₂) (D.R.rS + 1) = (∏ i : Fin (D.R.rS + 1), (Zd.M p).L.cj (sgnP D p (Fin.castLE le_rfl i) * frFac Zd.δ p (Fin.castLE le_rfl i))) * (∏ i : Fin (D.R.rS + 1), (sgnP' D p (Fin.castLE le_rfl i) * frFac Zd.δ p (Fin.castLE le_rfl i))) * (D …` using `Formalism.L2.SG.Pf.ScalarFramePf.dl_loc (Z := Zd) (p := p) (frame (lf D F0)) (frame F'₂) (fun a => sgnP D p a * frFac Zd.δ p a) (fun b => sgnP' D p b * frFac Zd.δ p b) (D.R.rS + 1) le_rfl`. Rewrite using `[e]`. Establish `hGZ : Formalism.L2.SG.Pf.ScalarFramePf.GZ (frame (lf D F0)) (frame F'₂) = Z`. Rewrite using `[← hZ]`. Use extensionality with `a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `hne : Formalism.L2.SG.Pf.ScalarFramePf.GDl (frame (lf D F0)) (frame F'₂) (D.R.rS + 1) ≠ 0`. Rewrite using `[gdl_full, hGZ]`. Conclude with `hdet`. Use `IsUnit.mul (IsUnit.mul ?_ ?_) (Formalism.L2.SG.Pf.BBTie.bt_iota_unit p hne)` and prove the remaining obligations.
-
-Conclude with `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one (fun i _ => (Formalism.L2.SG.Pf.ScalarFramePf.isUnit_sF Zd p _).map (Zd.M p).L.cj)`. Conclude with `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one (fun i _ => Formalism.L2.SG.Pf.ScalarFramePf.isUnit_sF' Zd p _)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem local_discriminant_unit_of_det (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) (Z : PairVal.MatR D)
     (F'₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (hZ : ZhatL (lf D F0) F'₂ = Z) (hdet : Z.det ≠ 0) :
@@ -88,9 +86,9 @@ theorem local_discriminant_unit_of_det (p : PlF D) (γ : TermDef.Term D u u' F0 
       (fun i _ => Formalism.L2.SG.Pf.ScalarFramePf.isUnit_sF' Zd p _)
 
 /- English proof (translation)
-Introduce `_ γ Z F'₂ φ' hH`. Use `Set.finite_empty.subset fun p hp => ?_` and prove the remaining obligations. Establish `hdet : Z.det ≠ 0` using `(starMinors_holds u u' F0 what₂ γ Z hH.1).1`. Establish `hu` using `local_discriminant_unit_of_det Zd p γ Z F'₂ hH.2.1 hdet`. Establish `T1` using `hH.2.2.2 p`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd ⟨hu, Formalism.MainNotions.S.Loc.HermSp.CohU.gdet_ne_of_ratio T1.1.1.2.2.2.2.1 hu T1.2.2.2.1.2.2.2.2.2⟩ hp`.
+A detailed English derivation is pending.
 -/
 theorem cohDG_holds : CohDG Zd u u' F0 what₂ := by
   intro _ γ Z F'₂ φ' hH
@@ -101,7 +99,7 @@ theorem cohDG_holds : CohDG Zd u u' F0 what₂ := by
   exact absurd ⟨hu, Formalism.MainNotions.S.Loc.HermSp.CohU.gdet_ne_of_ratio T1.1.1.2.2.2.2.1 hu T1.2.2.2.1.2.2.2.2.2⟩ hp
 
 /- English proof (translation)
-The claim follows from `star_coherence_of_three Zd (cohDG_holds Zd) hLp hGood`.
+A detailed English derivation is pending.
 -/
 theorem star_coherence_of_good (hLp : CohLp Zd u u' F0 what₂) (hGood : CohGood Zd u u' F0 what₂) :
     CtxP u u' F0 what₂ → StarCoh Zd u u' F0 what₂ :=

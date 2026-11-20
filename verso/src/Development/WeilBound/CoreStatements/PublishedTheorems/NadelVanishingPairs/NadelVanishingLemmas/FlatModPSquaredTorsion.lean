@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsFlatLift
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatModPSquaredTorsion
 open GlobalTheory GlobalTheory.DI
 /- English proof (citation)
-Apply `GlobalTheory.flat_zmod_sq_mul_p_eq_zero_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlatModPSquaredTorsion.lean&line=19#L19)
 -/

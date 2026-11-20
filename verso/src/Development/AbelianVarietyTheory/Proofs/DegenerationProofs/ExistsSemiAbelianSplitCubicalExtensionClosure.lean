@@ -21,9 +21,9 @@ open GlobalTheory.ZJ
 namespace GlobalTheory.ZJ.Assembly
 
 /- English proof (translation)
-Take `⟨W, hW⟩` from `H`. Take `⟨s', hs'⟩` from `sec_pull_down ((isGen_iff W).1 hW) hL hL' s`. Use `⟨s', fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨j, hj, u⟩` from `(mem_nonzeroLocus _ _).1 hy`. Take `⟨k, hk⟩` from `exists_chart hL' y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e` using `hs' _ (𝟙 _) y j k hj hk`. Rewrite `e` using `[Category.id_comp, gs_stalkMap F y _ hj]`. Use `(mem_nonzeroLocus _ _).2 ⟨k, hk, ?_⟩` and prove the remaining obligations. Conclude with `isUnit_of_mul_isUnit_right ((congrArg IsUnit e).mp (u.map (F.stalkMap y).hom))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_sec_of_lbIso_pull {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} (hL : L.IsLB)
     (hL' : L'.IsLB) (H : LBIso L' (L.pull F)) (s : LB.Sec L) :
@@ -39,7 +39,7 @@ theorem exists_sec_of_lbIso_pull {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F 
   exact isUnit_of_mul_isUnit_right ((congrArg IsUnit e).mp (u.map (F.stalkMap y).hom))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [pow_succ, ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem mulN_eq_pow' {S : Scheme.{0}} (G : Over S) [GrpObj G] (n : ℕ) : mulN G n = (𝟙 G) ^ n := by
   induction n with
@@ -47,9 +47,9 @@ theorem mulN_eq_pow' {S : Scheme.{0}} (G : Over S) [GrpObj G] (n : ℕ) : mulN G
   | succ n ih => rw [pow_succ, ← ih]; rfl
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun q => q.left) (map_pow (pushHom h G') (𝟙 G') n)`. Establish `e₂ : pushHom h G' (𝟙 G') ≫ mulN G n = pushHom h G' (𝟙 G') ^ n`. Rewrite using `[mulN_eq_pow', MonObj.comp_pow, Category.comp_id]`. Rewrite `e` using `[← e₂, ← mulN_eq_pow']`. Use `Eq.trans e ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(𝟙 _ ≫ φ) ≫ _ = _`. Rewrite using `[Category.id_comp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulN_comm_of_isGrpPullback {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G]
     [GrpObj G'] [IsCommMonObj G'] {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (n : ℕ) :
@@ -63,11 +63,11 @@ theorem mulN_comm_of_isGrpPullback {S S' : Scheme.{0}} {G : Over S} {G' : Over S
   rw [Category.id_comp]
 
 /- English proof (translation)
-Take `⟨N₁, hz₁, H₁⟩` from `h₁`. Take `⟨N₂, σ, hz₂, H₂⟩` from `h₂`. Establish `l₁ : p ⁻¹ᵁ (N₁ ⊓ N₂) ≤ p ⁻¹ᵁ N₁` using `fun _ hx => hx.1`. Establish `l₂ : p ⁻¹ᵁ (N₁ ⊓ N₂) ≤ p ⁻¹ᵁ N₂` using `fun _ hx => hx.2`. Establish `I : LBIso (L.pull (p ⁻¹ᵁ (N₁ ⊓ N₂)).ι) ((M.pull (p ⁻¹ᵁ N₂).ι).pull (H.homOfLE l₂))` using `H₁.chartPull (h := H.homOfLE l₁) (chartPullSame L _ _ _ _ fun _ => (H.homOfLE_ι l₁).symm) (chartPullLinComb M _ _ _ _ _ fun _ => (H.homOfLE_ι l₂).trans (H.homOfLE_ι l₁).symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨σ', hσ'⟩` from `exists_sec_of_lbIso_pull (pull_isLB hM _) (pull_isLB hL _) I σ`. Use `⟨N₁ ⊓ N₂, σ', ⟨hz₁, hz₂⟩, fun z' hz' => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, e⟩` from `H₂ z' hz'.2`. Establish `hm : x.1 ∈ p ⁻¹ᵁ (N₁ ⊓ N₂)`. Express the relevant statement in the definitionally equal form `p x.1 ∈ N₁ ⊓ N₂`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(show p x.1 = z' from e) ▸ hz'`. Use `⟨⟨x.1, hm⟩, hσ' _ ?_, e⟩` and prove the remaining obligations. Establish `: H.homOfLE l₂ ⟨x.1, hm⟩ = x` using `Subtype.ext (Scheme.homOfLE_apply l₂ _)`. Rewrite using `[this]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_sec_fibres {H S : Scheme.{0}} (p : H ⟶ S) {L M : LB H} (hL : L.IsLB) (hM : M.IsLB) (z : S)
     (h₁ : ∃ N : S.Opens, z ∈ N ∧ LBIso (L.pull (p ⁻¹ᵁ N).ι) (M.pull (p ⁻¹ᵁ N).ι))
@@ -94,15 +94,15 @@ theorem exists_sec_fibres {H S : Scheme.{0}} (p : H ⟶ S) {L M : LB H} (hL : L.
   rwa [this]
 
 /- English proof (translation)
-Introduce `hL C T n hT hI hC hS hF`. Take `⟨L⟩` from `Core.nonempty_law_of_hasTests_of_indep C hT hI`. Use `⟨L, ?_⟩` and prove the remaining obligations. Use `letI := L.grp`. Use `letI := L.comm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Take `⟨h₁, h₂⟩` from `GlobalTheory.ZJ.FibreSplit.splitAll_and_isSemiAbelian C L hT hC`. Take `⟨M, hM, hMa, hσ⟩` from `GlobalTheory.T.exists_lineBundle_extension_thetaSection_semiAbelian hL.extend hL.mulN GlobalTheory.abelian_torsion_finite_and_mulN_surjective.2 C L T n h₂ hT hS hF`. Take `⟨-, -, -, -, -, -, -, hcart, -, hN, -⟩` from `GlobalTheory.ZJ.core_basic C`. Establish `: Nonempty C.U.toScheme` using `C.ne.to_subtype`. Use `h₂.smooth` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h₂.geomConnected` as an intermediate fact. Establish `hgi : GeometricallyIntegral C.GG.hom` using `GlobalTheory.grpObj_geometricallyIntegral_of_smooth _ C.GG`. Take `⟨PP, cub, m, hF, he, hp, hsym⟩` from `GlobalTheory.NormalCubeExt.exists_cubical_extension C.Z C.normal C.U.toScheme C.U.ι C.GG C.A C.a L.pull T.L T.cub M hM hMa`. Establish `iso` using `GlobalTheory.T.lineBundleIso_extend_of_normal_base C.Z C.normal C.U.toScheme C.G.toScheme C.A.left C.U.ι C.GG.hom C.e C.a C.A.hom h₂.smooth hgi C.e_sec hcart`. Establish `hw : LBIso T.L.L (PP.L.pull C.a)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw, -⟩` from `hp`. Conclude with `hF ▸ ⟨w, hw⟩`. Use `⟨h₁, h₂, PP, cub, m, hF, he, hp, hsym, fun z => ?_, fun z => ?_⟩` and prove the remaining obligations. Use `exists_sec_fibres C.GG.hom PP.isLB hM z ((iso PP.L M PP.isLB hM ?_).2 z) (hσ z)` and prove the remaining obligations. Conclude with `(LBIso.trans (pull_isLB hM _) T.L.isLB (pull_isLB PP.isLB _) hMa hw).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(iso T.O₁ (PP.L.pull (mulN C.GG T.m).left) T.isLB (pull_isLB PP.isLB _) ?_).2 z` and prove the remaining obligations. Establish `i₁ : LBIso (T.L.L.pull (mulN C.A T.m).left) ((PP.L.pull (mulN C.GG T.m).left).pull C.a)` using `hw.chartPull (h := (mulN C.A T.m).left) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull _ _ _ rfl) (chartPullLinComb PP.L _ _ _ _ _ fun _ => (mulN_comm_of_isGrpPullback L.pull T.m).symm)`. Conclude with `LBIso.trans (pull_isLB T.isLB _) (pull_isLB T.L.isLB _) (pull_isLB (pull_isLB PP.isLB _) _) (LBIso.symm ⟨T.w, T.w_gen⟩) i₁`.
+A detailed English derivation is pending.
 -/
 theorem exists_law_splitAll_cubical : Out.Laws → ∀ (C : Core) (T : C.Theta) (n : ℕ), C.HasTests → C.Indep → C.HasCharts → C.TorsSec n → T.Few n → ∃ L : C.Law, letI := L.grp; letI := L.comm; SplitAll C.GG ∧ IsSemiAbelian C.GG ∧ ∃ (PP : RigLB C.GG) (cub : CubicalStr C.GG PP) (m : CubeMap C.A C.GG), m.F = C.a ∧ m.e = C.U.ι ∧ m.IsPullCubical T.cub cub ∧ (T.L.IsSymmetric → PP.IsSymmetric) ∧ (∀ z : C.Z, ∃ (N : C.Z.Opens) (σ : LB.Sec (PP.L.pull (C.GG.hom ⁻¹ᵁ N).ι)), z ∈ N ∧ ∀ z' ∈ N, ∃ x ∈ Out.nonzeroLocus σ, C.GG.hom ((C.GG.hom ⁻¹ᵁ N).ι x) = z') ∧ ∀ z : C.Z, ∃ N : C.Z.Opens, z ∈ N ∧ LBIso (T.O₁.pull (C.GG.hom ⁻¹ᵁ N).ι) ((PP.L.pull (mulN C.GG T.m).left).pull (C.GG.hom ⁻¹ᵁ N).ι) := by
   intro hL C T n hT hI hC hS hF

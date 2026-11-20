@@ -15,7 +15,7 @@ open Classical
 variable {H : Type} {f : ℕ}
 
 /- English proof (translation)
-Simplify using `only [psiG]`. Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_psiG (g : ℝ) (l c : ℂ) : ‖psiG g l c‖ = 1 := by
   simp only [psiG]
@@ -23,16 +23,16 @@ theorem norm_psiG (g : ℝ) (l c : ℂ) : ‖psiG g l c‖ = 1 := by
   simp
 
 /- English proof (translation)
-Unfold `psiG`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_psiG (g : ℝ) (l : ℂ) : Continuous (psiG g l) := by
   unfold psiG
   fun_prop
 
 /- English proof (translation)
-Establish `key : ∀ v, (2 * (((g • σ) v) * z v).re / g : ℝ) = 2 * (σ v * z v).re`. Introduce `v`. Rewrite using `[Pi.smul_apply, Complex.real_smul, mul_assoc, Complex.re_ofReal_mul]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [psiG, key]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Complex.exp_sum, Formalism.FourierDecayAlt.P.PairingConjugationLemmas.psi_mul, Formalism.FourierDecayAlt.P.PairingConjugationLemmas.pair, Complex.ofReal_sum, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_prod (g : ℝ) (hg : g ≠ 0) (σ z : crystallineComparison.V f) :
     crystallineComparison.psi (σ * z) = ∏ v, psiG g ((g • σ) v) (z v) := by
@@ -45,7 +45,7 @@ theorem psi_prod (g : ℝ) (hg : g ≠ 0) (σ z : crystallineComparison.V f) :
     Finset.mul_sum]
 
 /- English proof (translation)
-Use `hφ.norm.mono' (hφ.aestronglyMeasurable.mul (continuous_psiG g l).aestronglyMeasurable) ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun c => by rw [norm_mul, norm_psiG, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_mul_psiG {φ : ℂ → ℂ} (hφ : Integrable φ) (g : ℝ) (l : ℂ) :
     Integrable fun c => φ c * psiG g l c := by
@@ -53,17 +53,17 @@ theorem integrable_mul_psiG {φ : ℂ → ℂ} (hφ : Integrable φ) (g : ℝ) (
   exact Filter.Eventually.of_forall fun c => by rw [norm_mul, norm_psiG, mul_one]
 
 /- English proof (translation)
-Establish `hae : (fun z => ((Nz Y κ D z : ℝ) : ℂ) * crystallineComparison.psi (σ * z)) =ᵐ[volume] fun z => Fz Y κ D z * crystallineComparison.psi (σ * z)` using `by filter_upwards [ae_good] with z hz`. Establish `h0` using `Complex.nonneg_iff.mp (Fz_nonneg Y κ hκ D hD z hz)`. Rewrite using `[Nz, if_pos hz]`. Use `congr 1`. Conclude with `Complex.ext (by simp) (by simp [← h0.2])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hpt : ∀ z : crystallineComparison.V f, Fz Y κ D z * crystallineComparison.psi (σ * z) = ∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * ∏ v, (D v h h' (z v) * psiG g ((g • σ) v) (z v))`. Introduce `z`. Rewrite using `[Fz, psi_prod g hg σ z, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun h' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, mul_assoc]`. Establish `hone : ∀ v h h', ∫ c, D v h h' c * psiG g ((g • σ) v) c = ((dl v : ℝ) : ℂ) * hat v ((g • σ) v) h h'`. Introduce `v h h'`. Rewrite using `[hhat, ← mul_assoc, mul_inv_cancel₀ (by exact_mod_cast hdl v), one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : ∀ h ∈ Y, ∀ h' ∈ Y, Integrable (fun z : crystallineComparison.V f => κ h h' * ∏ v, (D v h h' (z v) * psiG g ((g • σ) v) (z v)))`. Introduce `h hh h' hh'`. Conclude with `(Integrable.fintype_prod (fun v => integrable_mul_psiG (hDi v h hh h' hh') g _)).const_mul _`. Unfold `crystallineComparison.fourier`. Rewrite using `[integral_congr_ae hae]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_finsetSum _ (fun h hh => integrable_finsetSum _ (fun h' hh' => hint h hh h' hh')), Hh, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun h hh => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ (fun h' hh' => hint h hh h' hh'), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun h' hh' => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp` using `integral_fintype_prod_volume_eq_prod (fun v (c : ℂ) => D v h h' c * psiG g ((g • σ) v) c)`. Rewrite using `[integral_const_mul, hp]`. Repeatedly rewrite using `[hone]`. Rewrite using `[Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fourier_Nz (Y : Finset H) (κ : H → H → ℂ) (hκ : TB.PSDOn Y κ) (D : Fin f → H → H → ℂ → ℂ)
     (hD : ∀ v (z : ℂ), z ≠ 0 → TB.PSDOn Y (fun h h' => D v h h' z))
@@ -109,11 +109,9 @@ theorem fourier_Nz (Y : Finset H) (κ : H → H → ℂ) (hκ : TB.PSDOn Y κ) (
   ring
 
 /- English proof (translation)
-Use `⟨fun v => ((‖τ v‖ + 1 : ℝ) : ℂ), fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Use `show ((‖τ v‖ + 1 : ℝ) : ℂ) ≠ 0`. Establish `hpos : (0 : ℝ) < ‖τ v‖ + 1` using `by positivity`. Conclude with `hpos.ne'` after adjusting the coercions. Use `show ((‖τ v‖ + 1 : ℝ) : ℂ) + τ v ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `h2 : τ v = -(((‖τ v‖ + 1 : ℝ) : ℂ))` using `by linear_combination h`. Establish `h3` using `congrArg (fun w : ℂ => ‖w‖) h2`. Simplify using `only [norm_neg] at h3`. Rewrite `h3` using `[Complex.norm_of_nonneg (by positivity)]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_good (τ : crystallineComparison.V f) : ∃ x : crystallineComparison.V f, Good x ∧ Good (x + τ) := by
   refine ⟨fun v => ((‖τ v‖ + 1 : ℝ) : ℂ), fun v => ?_, fun v => ?_⟩
@@ -129,23 +127,21 @@ theorem exists_good (τ : crystallineComparison.V f) : ∃ x : crystallineCompar
     linarith
 
 /- English proof (translation)
-Establish `hgne : g ≠ 0` using `hg.ne'`. Establish `hdlne : ∀ v, dl v ≠ 0` using `fun v => (hdl v).ne'`. Establish `hc0 : 0 ≤ ∏ v, dl v` using `Finset.prod_nonneg fun v _ => (hdl v).le`. Establish `hfour : ∀ σ : crystallineComparison.V f, crystallineComparison.fourier (Nz Y κ D) σ = ((∏ v, dl v : ℝ) : ℂ) * Hh Y κ hat (g • σ)`. Introduce `σ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[fourier_Nz Y κ hκ D hD hDi g hgne dl hdlne hat hhat σ, Complex.ofReal_prod]`. Take `⟨LIM, hL⟩` from `Formalism.FourierDecayAlt.P.invariantMeanExists f Lm`. Establish `hbd : ∀ σ ∈ crystallineComparison.dualSet La, ‖Hh Y κ hat (g • σ) + A0 Lm.toAddSubgroup LIM Y κ U P Q (g • σ)‖ ≤ F σ`. Introduce `σ hσ`. Rewrite using `[← mean_split Lm.toAddSubgroup LIM hG κ hκ hL (g • σ)]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Formalism.FourierDecayAlt.P.mean_bound_estimate _ LIM _ (F σ) hL.1 ?_` and prove the remaining obligations. Introduce `x`. Unfold `phiG`. Use `split_ifs with hx`. Conclude with `hF σ hσ x hx.1 hx.2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨x0, h1, h2⟩` from `exists_good (g • σ)`. Simplify using `using (norm_nonneg _).trans (hF σ hσ x0 h1 h2)`. Set `A : crystallineComparison.V f → ℂ` to `fun σ => ((∏ v, dl v : ℝ) : ℂ) * A0 Lm.toAddSubgroup LIM Y κ U P Q (g • σ)`. Establish `hPD : crystallineComparison.PDOn (crystallineComparison.dualSet La) A`. Introduce `T w hT`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Set.InjOn (fun σ : crystallineComparison.V f => g • σ) T` using `fun a _ b _ hab => smul_right_injective (crystallineComparison.V f) hgne hab`. Establish `hT' : ∀ τ ∈ T.image (fun σ : crystallineComparison.V f => g • σ), τ ∈ Lm.toAddSubgroup`. Introduce `τ hτ`. Take `⟨σ, hσ, rfl⟩` from `Finset.mem_image.mp hτ`. Conclude with `hLm σ (hT σ hσ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0` using `limit_average_positive_definite Lm.toAddSubgroup LIM hG κ hκ hL.1 (T.image (fun σ : crystallineComparison.V f => g • σ)) hT' (fun τ => w (g⁻¹ • τ))`. Rewrite `h0` using `[Finset.sum_image hinj]`. Simplify using `only [inv_smul_smul₀ hgne, ← smul_sub] at h0`. Establish `hsplit : (∑ σ ∈ T, ∑ σ' ∈ T, A (σ - σ') * w σ * starRingEnd ℂ (w σ')) = ((∏ v, dl v : ℝ) : ℂ) * ∑ σ ∈ T, ∑ σ' ∈ T, A0 Lm.toAddSubgroup LIM Y κ U P Q (g • (σ - σ')) * w σ * starRingEnd ℂ (w σ')`. Simplify using `only [A, Finset.mul_sum, mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsplit, Complex.re_ofReal_mul]`. Conclude with `mul_nonneg hc0 h0`. Establish `hb : ∀ σ : crystallineComparison.dualSet La, ‖crystallineComparison.fourier (Nz Y κ D) σ + A σ‖ ≤ (∏ v, dl v) * F σ`. Introduce `σ`. Rewrite using `[hfour]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [A]`. Rewrite using `[← mul_add, norm_mul, Complex.norm_of_nonneg hc0]`. Conclude with `mul_le_mul_of_nonneg_left (hbd σ σ.2) hc0`. Establish `hsum : Summable fun σ : crystallineComparison.dualSet La => (∏ v, dl v) * F σ` using `hFs.mul_left _`. Establish `hS2 : Summable fun σ : crystallineComparison.dualSet La => ‖crystallineComparison.fourier (Nz Y κ D) σ + A σ‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hb hsum`.
-
-Establish `key` using `Formalism.FourierDecayAlt.P.latticeHerglotzBound_statement f La (Nz Y κ D) A (Nz_nonneg Y κ hκ D hD) (Nz_lsc Y κ hκ D hD hDc) (Nz_integrable Y κ D hDi) hPD hS2 z₀ S hS`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem herglotz_germ (Y : Finset H) (κ : H → H → ℂ) (hκ : TB.PSDOn Y κ) (D : Fin f → H → H → ℂ → ℂ)
     (hD : ∀ v (z : ℂ), z ≠ 0 → TB.PSDOn Y (fun h h' => D v h h' z))
@@ -214,13 +210,13 @@ theorem herglotz_germ (Y : Finset H) (κ : H → H → ℂ) (hκ : TB.PSDOn Y κ
     _ = (∏ v, dl v) * ∑' σ : crystallineComparison.dualSet La, F σ := tsum_mul_left
 
 /- English proof (translation)
-Establish `hgne : g ≠ 0` using `hg.ne'`. Establish `hdlne : ∀ v, dl v ≠ 0` using `fun v => (hdl v).ne'`. Establish `hc0 : 0 ≤ ∏ v, dl v` using `Finset.prod_nonneg fun v _ => (hdl v).le`. Establish `hfour : ∀ σ : crystallineComparison.V f, crystallineComparison.fourier (Nz Y κ D) σ = ((∏ v, dl v : ℝ) : ℂ) * Hh Y κ hat (g • σ)`. Introduce `σ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[fourier_Nz Y κ hκ D hD hDi g hgne dl hdlne hat hhat σ, Complex.ofReal_prod]`. Establish `hPD : crystallineComparison.PDOn (crystallineComparison.dualSet La) (0 : crystallineComparison.V f → ℂ)`. Introduce `T w _`. Simplify using the standard rewrite rules. Establish `hb : ∀ σ : crystallineComparison.dualSet La, ‖crystallineComparison.fourier (Nz Y κ D) σ + (0 : crystallineComparison.V f → ℂ) σ‖ ≤ (∏ v, dl v) * F σ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `σ`. Rewrite using `[Pi.zero_apply, add_zero, hfour, norm_mul, Complex.norm_of_nonneg hc0]`. Conclude with `mul_le_mul_of_nonneg_left (hF σ σ.2) hc0`. Establish `hsum : Summable fun σ : crystallineComparison.dualSet La => (∏ v, dl v) * F σ` using `hFs.mul_left _`. Establish `hS2 : Summable fun σ : crystallineComparison.dualSet La => ‖crystallineComparison.fourier (Nz Y κ D) σ + (0 : crystallineComparison.V f → ℂ) σ‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hb hsum`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `Formalism.FourierDecayAlt.P.latticeHerglotzBound_statement f La (Nz Y κ D) 0 (Nz_nonneg Y κ hκ D hD) (Nz_lsc Y κ hκ D hD hDc) (Nz_integrable Y κ D hDi) hPD hS2 z₀ S hS`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem herglotz_plain (Y : Finset H) (κ : H → H → ℂ) (hκ : TB.PSDOn Y κ) (D : Fin f → H → H → ℂ → ℂ)
     (hD : ∀ v (z : ℂ), z ≠ 0 → TB.PSDOn Y (fun h h' => D v h h' z))

@@ -12,7 +12,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightKInvarian
 namespace PositivityTheory.PfSWUS.SwMatch
 
 /- English proof (translation)
-The claim follows from `matchMono_of' psiPlaces PositivityTheory.PfSWUS.SwSpanR.realMatch PositivityTheory.PfSWUS.SwSpan.realConj PositivityTheory.PfSWUS.SwFockk.heightWN PositivityTheory.PfSWUS.KFinMatch.finite_places_match GlobalTheory.CompanionTheory.IwaRedHand.mod_of_cg valueSide GlobalTheory.T.unfo …`.
+A detailed English derivation is pending.
 -/
 theorem matchMono : PositivityTheory.PfSWUS.MatchMono :=
   matchMono_of' psiPlaces PositivityTheory.PfSWUS.SwSpanR.realMatch PositivityTheory.PfSWUS.SwSpan.realConj PositivityTheory.PfSWUS.SwFockk.heightWN

@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.TwoCocycle
 
 /- English proof (translation)
-Establish `h1` using `hc a b (x * y)`. Establish `h2` using `hc b y x`. Establish `h3` using `hc a x (b * y)`. Rewrite `h2` using `[mul_comm y x, hs y x, hs (b * y) x]`. Rewrite `h3` using `[mul_left_comm x b y]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `(norm := abel) h2 + h3 - h1`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem interchange {Γ D : Type} [CommGroup Γ] [AddCommGroup D] (c : Γ → Γ → D)
     (hs : ∀ x y, c x y = c y x)
@@ -19,9 +19,9 @@ theorem interchange {Γ D : Type} [CommGroup Γ] [AddCommGroup D] (c : Γ → Γ
   linear_combination (norm := abel) h2 + h3 - h1
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h` using `interchange c hs hc (x ^ n) (y ^ n) x y`. Rewrite `h` using `[← mul_pow]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.sum_range_succ, Finset.sum_range_succ, Finset.sum_range_succ, succ_nsmul, pow_succ x, pow_succ y]`. Take the linear combination `(norm := abel) ih + h`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sum_pow_mul (Γ D : Type) [CommGroup Γ] [AddCommGroup D] (c : Γ → Γ → D)
     (hs : ∀ x y, c x y = c y x)

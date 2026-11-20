@@ -3,33 +3,31 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `B A _ _ _ I K N hsurj hN`. Use `set f := algebraMap B A with hf`. Use `set J := I.map f with hJ`. Establish `key : ∀ n : ℕ, ∀ a : A, ∃ b : B, a - f b ∈ J ^ n ⊔ K`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `a`. Conclude with `⟨0, by simp⟩`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hspan : ∀ x ∈ J ^ n, ∀ c : A, ∃ b : B, c * x - f b ∈ J ^ (n + 1) ⊔ K`. Introduce `x hx`. Rewrite `hx` using `[hJ, ← Ideal.map_pow]`. Unfold `Ideal.map at hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`. Introduce `c`. Take `⟨b', hb'⟩` from `hsurj c`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp hb'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨b' * i, ?_⟩` and prove the remaining obligations. Establish `hfi : f i ∈ J ^ n`. Rewrite using `[hJ, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ hi`. Establish `hc : c = f b' + y + z` using `by rw [add_assoc, hyz]; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : c * f i - f (b' * i) = f i * y + z * f i`. Rewrite using `[hc, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Submodule.add_mem_sup ?_ (K.mul_mem_right _ hz)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_mul hfi hy`. Consider the case `zero`. Introduce `c; exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c`. Take `⟨b1, h1⟩` from `hx c`. Take `⟨b2, h2⟩` from `hy c`. Use `⟨b1 + b2, ?_⟩` and prove the remaining obligations. Establish `e : c * (x + y) - f (b1 + b2) = (c * x - f b1) + (c * y - f b2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem h1 h2`. Consider the case `smul d x _ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Take `⟨b, h⟩` from `hx (c * d)`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `a`. Take `⟨b, hb⟩` from `ih a`. Take `⟨x, hx, k, hk, hxk⟩` from `Submodule.mem_sup.mp hb`. Take `⟨b2, hb2⟩` from `hspan x hx 1`. Use `⟨b + b2, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : a - f (b + b2) = (1 * x - f b2) + k`. Rewrite using `[map_add, one_mul]`. Take the linear combination `-hxk`. Rewrite using `[e]`. Use `add_mem hb2 (Submodule.mem_sup_right hk)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Take `⟨b, hb⟩` from `key N a`. Use `⟨b, ?_⟩` and prove the remaining obligations. Establish `hle : J ^ N ⊔ K ≤ K`. Use `sup_le ?_ le_rfl` and prove the remaining obligations.
-
-Rewrite using `[hJ, ← Ideal.map_pow]`. Conclude with `hN`. Conclude with `hle hb`.
+A detailed English derivation is pending.
 -/
 theorem surj_mod_of_surj_mod_map_sup_of_pow_map_le :
     ∀ (B A : Type) [CommRing B] [CommRing A] [Algebra B A] (I : Ideal B) (K : Ideal A) (N : ℕ),

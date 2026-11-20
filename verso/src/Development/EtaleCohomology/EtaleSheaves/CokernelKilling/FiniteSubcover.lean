@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_
 namespace LateralTheory.E.KillCokPf.Lem
 
 /- English proof (translation)
-Use `letI := e.hom.toAlgebra`. Use `haveI : Algebra.Etale D D₁ := he`. Conclude with `PrimeSpectrum.isOpenMap_comap_of_hasGoingDown_of_finitePresentation (R := D) (S := D₁)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem et_isOpenMap {D D₁ : CommRingCat.{0}} (e : D ⟶ D₁) (he : Et e) : IsOpenMap (PrimeSpectrum.comap e.hom) := by
   letI := e.hom.toAlgebra
@@ -14,9 +14,9 @@ theorem et_isOpenMap {D D₁ : CommRingCat.{0}} (e : D ⟶ D₁) (he : Et e) : I
   exact PrimeSpectrum.isOpenMap_comap_of_hasGoingDown_of_finitePresentation (R := D) (S := D₁)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `isCompact_univ.elim_finite_subcover (fun r => Set.range (PrimeSpectrum.comap (e r).hom)) (fun r => (et_isOpenMap (e r) (he r)).isOpen_range) (fun x _ => Set.mem_iUnion.2 ⟨x, hr x⟩)`. Use `⟨s, fun x => ?_⟩` and prove the remaining obligations. Use `hs (Set.mem_univ x)` as an intermediate fact. Simplify using `only [Set.mem_iUnion] at this`. Take `⟨r, hrs, hx⟩` from `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨r, hrs, hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem finite_subcover {D : CommRingCat.{0}} (D₁ : PrimeSpectrum D → CommRingCat.{0}) (e : ∀ r, D ⟶ D₁ r)
     (he : ∀ r, Et (e r)) (hr : ∀ r, r ∈ Set.range (PrimeSpectrum.comap (e r).hom)) :

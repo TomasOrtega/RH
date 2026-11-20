@@ -95,7 +95,7 @@ structure MaxContactCoverProperties : Prop where
   tuning : TunedSheafProperties.{u}
 
 /- English proof (translation)
-The claim follows from `hf.schemeDim_level_le S hv s.toMarkedSequenceOfBlowups i (by simpa using hi)`.
+A detailed English derivation is pending.
 -/
 theorem MaxContactCoverProperties.krullDimSucc_schemeAt_le_dim (hf : MaxContactCoverProperties.{u}) {S : MarkedIdealWithBoundary.{u}} (hv : S.IsAdmissible)
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) (i : ℕ) (hi : i ≤ s.length) :
@@ -103,7 +103,7 @@ theorem MaxContactCoverProperties.krullDimSucc_schemeAt_le_dim (hf : MaxContactC
   hf.schemeDim_level_le S hv s.toMarkedSequenceOfBlowups i (by simpa using hi)
 
 /- English proof (translation)
-The claim follows from `le_trans (hf.krullDimSucc_schemeAt_le_dim hv s s.length le_rfl) hdim`.
+A detailed English derivation is pending.
 -/
 theorem MaxContactCoverProperties.derivedTriple_dim_le (hf : MaxContactCoverProperties.{u}) {T S : MarkedIdealWithBoundary.{u}} (hv : S.IsAdmissible)
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
@@ -113,7 +113,7 @@ theorem MaxContactCoverProperties.derivedTriple_dim_le (hf : MaxContactCoverProp
   le_trans (hf.krullDimSucc_schemeAt_le_dim hv s s.length le_rfl) hdim
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hH`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isMaxContactHypersurface_of_eq {k : Type u} [Field k] {X : Scheme.{u}}
     {p q : X ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.LocallyOfFiniteType p]
@@ -124,11 +124,11 @@ private theorem isMaxContactHypersurface_of_eq {k : Type u} [Field k] {X : Schem
   exact hH
 
 /- English proof (translation)
-Establish `hi' : i ≤ s.toSequenceOfBlowups.length` using `le_of_lt hi`. Establish `hvi` using `hf.valid_level T hv s i hi'`. Establish `hvi1` using `hf.valid_level T hv s (i + 1) hi`. Establish `: CharZero T.base` using `hv.charZero`. Establish `: AlgebraicGeometry.Smooth (s.projectionToSpec i)` using `hvi.smooth`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hno : AlgebraicGeometry.IsNoetherian (s.toSequenceOfBlowups.schemeAt (i + 1))` using `hvi1.isNoetherian`. Establish `: AlgebraicGeometry.IsLocallyNoetherian (s.toSequenceOfBlowups.schemeAt (i + 1))` using `inferInstance`. Establish `: AlgebraicGeometry.LocallyOfFiniteType (s.toSequenceOfBlowups.transitionMapSucc i ≫ s.projectionToSpec i)`. Rewrite using `[← MarkedSequenceOfBlowups.projectionToSpec_succ]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsnc : HasStrictNormalCrossingsWith (s.projectionToSpec i) (s.toSequenceOfBlowups.center i) (s.boundary i)`. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq]`. Conclude with `s.center_snc i hi`. Establish `key` using `hf.strictTransform_admissible T.base (s.projectionToSpec i) (s.toSequenceOfBlowups.transitionMapSucc i) (s.toSequenceOfBlowups.center i) (s.boundary i) hsnc (s.toSequenceOfBlowups.isBlowupAlongIdealSheaf_blowupMorphism i hi) (s.ideal i) (s.ideal (i + 1)) T.mult hv.one_le_mult (hf …`. Conclude with `isMaxContactHypersurface_of_eq (MarkedSequenceOfBlowups.projectionToSpec_succ s i).symm key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem MaxContactCoverProperties.isMaxContactHypersurface_strictTransform_succ (hf : MaxContactCoverProperties.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hv : T.IsAdmissible) (hord : ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞))
@@ -161,7 +161,7 @@ theorem MaxContactCoverProperties.isMaxContactHypersurface_strictTransform_succ 
   exact isMaxContactHypersurface_of_eq (MarkedSequenceOfBlowups.projectionToSpec_succ s i).symm key
 
 /- English proof (translation)
-Establish `hsm : AlgebraicGeometry.Smooth ((s.toSequenceOfBlowups.center i).subschemeι ≫ s.projectionToSpec i)`. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq]`. Conclude with `s.center_smooth i hi`. Conclude with `hf.hasSNCWith_cons T.base (s.projectionToSpec i) (s.toSequenceOfBlowups.center i) H N hsm hsnc hZN hHZ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MaxContactCoverProperties.hasStrictNormalCrossingsWith_cons_of_le_center (hf : MaxContactCoverProperties.{u}) {T : MarkedIdealWithBoundary.{u}}
     (s : T.SequenceOfBlowups) (i : ℕ) (hi : i < s.toSequenceOfBlowups.length)

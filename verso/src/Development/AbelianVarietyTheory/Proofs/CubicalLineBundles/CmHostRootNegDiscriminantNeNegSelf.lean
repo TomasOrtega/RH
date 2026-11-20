@@ -13,7 +13,7 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `H.sqrt_neg_disc_sq`. Rewrite `h2` using `[h]`. Establish `: (H.d : ℂ) = 0` using `by simpa using h2.symm`. Conclude with `H.d_prime.ne_zero (by exact_mod_cast this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cmHost_rootNegDiscriminant_ne_zero (H : Host E) : H.rt0 ≠ 0 := by
   intro h
@@ -23,7 +23,7 @@ theorem cmHost_rootNegDiscriminant_ne_zero (H : Host E) : H.rt0 ≠ 0 := by
   exact H.d_prime.ne_zero (by exact_mod_cast this)
 
 /- English proof (translation)
-Introduce `h`. Apply `cmHost_rootNegDiscriminant_ne_zero H` to reduce the goal to its premises. Take the linear combination `h / 2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cmHost_rootNegDiscriminant_ne_neg_self (H : Host E) : H.rt0 ≠ -H.rt0 := by
   intro h
@@ -31,11 +31,11 @@ theorem cmHost_rootNegDiscriminant_ne_neg_self (H : Host E) : H.rt0 ≠ -H.rt0 :
   linear_combination h / 2
 
 /- English proof (translation)
-Establish `h2` using `H.sqrt_neg_disc_sq`. Establish `him` using `congrArg Complex.im h2`. Establish `hre` using `congrArg Complex.re h2`. Simplify using `[pow_two] at him hre`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : H.rt0.re = 0`. Assume the negation of the conclusion as `hne`. Establish `: H.rt0.im = 0`. Establish `: H.rt0.re * H.rt0.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_left hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hre` using `[this]`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Apply the tactic sequence `apply Complex.ext <;> simp [h0]`.
+Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cmHost_conj_sqrtNegDisc (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 := by
   have h2 := H.sqrt_neg_disc_sq
@@ -53,7 +53,7 @@ theorem cmHost_conj_sqrtNegDisc (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 :=
   apply Complex.ext <;> simp [h0]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun a : 𝓞 E => τ (a : E)) H.rt_sq`. Rewrite using `[H.sqrt_neg_disc_sq]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem host_emb_rt_sq (H : Host E) (τ : E →+* ℂ) : τ (H.rt : E) ^ 2 = H.rt0 ^ 2 := by
   have h := congrArg (fun a : 𝓞 E => τ (a : E)) H.rt_sq
@@ -61,9 +61,7 @@ theorem host_emb_rt_sq (H : Host E) (τ : E →+* ℂ) : τ (H.rt : E) ^ 2 = H.r
   simpa using h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `¬ (τ (H.rt : E) = H.rt0) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(sq_eq_sq_iff_eq_or_eq_neg.1 (host_emb_rt_sq H τ)).resolve_left h`. Introduce `h h'`.
-
-Conclude with `cmHost_rootNegDiscriminant_ne_neg_self H (h'.symm.trans h)`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem host_mem_compl_psiSet (H : Host E) (τ : E →+* ℂ) :
     τ ∈ (psiSet H)ᶜ ↔ τ (H.rt : E) = -H.rt0 := by
@@ -75,9 +73,9 @@ theorem host_mem_compl_psiSet (H : Host E) (τ : E →+* ℂ) :
     exact cmHost_rootNegDiscriminant_ne_neg_self H (h'.symm.trans h)
 
 /- English proof (translation)
-Use `Nat.card_congr { toFun := fun τ => ⟨ComplexEmbedding.conjugate τ.1, ?_⟩ invFun := fun τ => ⟨ComplexEmbedding.conjugate τ.1, ?_⟩ left_inv := fun τ => Subtype.ext (star_star τ.1) right_inv := fun τ => Subtype.ext (star_star τ.1) }` and prove the remaining obligations. Rewrite using `[host_mem_compl_psiSet, ComplexEmbedding.conjugate_coe_eq, ← cmHost_conj_sqrtNegDisc]`. Conclude with `congrArg _ τ.2`. Establish `h` using `(host_mem_compl_psiSet H τ.1).1 τ.2`. Express the relevant statement in the definitionally equal form `_ = H.rt0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ComplexEmbedding.conjugate_coe_eq, h, map_neg, cmHost_conj_sqrtNegDisc, neg_neg]`.
+A detailed English derivation is pending.
 -/
 theorem card_psiSet_eq_card_compl (H : Host E) :
     Nat.card (psiSet H) = Nat.card ((psiSet H)ᶜ : Set (E →+* ℂ)) := by
@@ -93,7 +91,7 @@ theorem card_psiSet_eq_card_compl (H : Host E) :
     rw [ComplexEmbedding.conjugate_coe_eq, h, map_neg, cmHost_conj_sqrtNegDisc, neg_neg]
 
 /- English proof (translation)
-Establish `h1` using `Set.ncard_add_ncard_compl (psiSet H)`. Establish `h2` using `card_psiSet_eq_card_compl H`. Rewrite `h2` using `[Nat.card_coe_set_eq, Nat.card_coe_set_eq]`. Rewrite `h1` using `[Nat.card_eq_fintype_card, Embeddings.card E ℂ]`. Rewrite using `[Nat.card_coe_set_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -108,7 +106,7 @@ theorem card_psiSet (H : Host E) : Nat.card (psiSet H) = Module.finrank ℚ E / 
 variable {H : Host E} {l : Level H}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `algebraMap c.F K (Formalism.L2.Pj.embF c τ a) = _ ↔ _`. Rewrite using `[(algebraMap c.F K).injective.eq_iff, Subtype.ext_iff]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem labK_eq_iff (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (τ : E →+* ℂ) (a : E) (x : c.F) :
     labK c K τ a = algebraMap c.F K x ↔ τ a = (x : ℂ) := by
@@ -117,7 +115,7 @@ theorem labK_eq_iff (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (τ : E �
   rfl
 
 /- English proof (translation)
-Introduce `τ τ' h`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Conclude with `(labK_eq_iff c K τ a (Formalism.L2.Pj.embF c τ' a)).1 (DFunLike.congr_fun h a)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem labK_injective (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] : Function.Injective (labK c K) := by
   intro τ τ' h
@@ -125,7 +123,7 @@ theorem labK_injective (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] : Func
   exact (labK_eq_iff c K τ a (Formalism.L2.Pj.embF c τ' a)).1 (DFunLike.congr_fun h a)
 
 /- English proof (translation)
-Establish `: Finite (E →+* K)` using `Finite.of_equiv _ (RingHom.equivRatAlgHom E K).symm`. Use `(labK_injective c K).bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[Nat.card_eq_fintype_card (α := E →+* ℂ), Embeddings.card E ℂ]`. Conclude with `card_ringHom_le_finrank`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem labK_bijective (c : Coeff l) (K : Type) [Field K] [NumberField K] [Algebra c.F K] :
     Function.Bijective (labK c K) := by
@@ -137,17 +135,15 @@ theorem labK_bijective (c : Coeff l) (K : Type) [Field K] [NumberField K] [Algeb
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c K _ _ _`. Establish `hb` using `labK_bijective c K`. Use `⟨hb, ?_, fun τ => ⟨RingOfIntegers.mapRingHom (labK c K τ), fun a => rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[splits_iff_card, ← Nat.card_eq_of_bijective _ hb, Nat.card_eq_fintype_card, Embeddings.card E ℂ]`. Set `r : c.F` to `⟨H.rt0, c.le (baseKA l).ρ.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hr : r ^ 2 = -(H.d : c.F)` using `Subtype.ext (by simpa [r] using H.sqrt_neg_disc_sq)`. Establish `hK : (algebraMap c.F K r) ^ 2 = -(H.d : K)`. Rewrite using `[← map_pow, hr]`. Simplify using the standard rewrite rules. Establish `hint : IsIntegral ℤ (algebraMap c.F K r)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations. Rewrite using `[hK]`. Conclude with `(isIntegral_natCast H.d).neg`. Take `⟨ρ, hρ⟩ : ∃ ρ : 𝓞 K, algebraMap (𝓞 K) K ρ = algebraMap c.F K r` from `⟨⟨_, hint⟩, rfl⟩`. Use `⟨ρ, RingOfIntegers.ext ?_, fun τ => ?_, fun τ => ?_, card_psiSet H, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `algebraMap (𝓞 K) K (_ ^ 2) = algebraMap (𝓞 K) K (-_)`. Rewrite using `[map_pow, map_neg, map_natCast, hρ]`. Conclude with `hK`. Express the relevant statement in the definitionally equal form `_ ↔ _ = algebraMap (𝓞 K) K ρ`. Rewrite using `[hρ]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(labK_eq_iff c K τ _ r).symm`. Rewrite using `[host_mem_compl_psiSet]`. Use `(labK_eq_iff c K τ (H.rt : E) (-r)).symm` as an intermediate fact. Rewrite `this` using `[map_neg, ← hρ, ← map_neg]`. Conclude with `this`.
-
-Rewrite using `[← card_psiSet_eq_card_compl, card_psiSet]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem labK_spec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l) (K : Type) [Field K] [NumberField K] [Algebra c.F K], Function.Bijective (labK c K) ∧ Splits E K ∧ (∀ τ, ∃ t : 𝓞 E →+* 𝓞 K, ∀ a : 𝓞 E, (t a : K) = labK c K τ (a : E)) ∧ ∃ ρ : 𝓞 K, ρ ^ 2 = -(H.d : 𝓞 K) ∧ (∀ τ, τ ∈ psiSet H ↔ labK c K τ (H.rt : E) = (ρ : K)) ∧ (∀ τ, τ ∈ (psiSet H)ᶜ ↔ labK c K τ (H.rt : E) = ((-ρ : 𝓞 K) : K)) ∧ Nat.card (psiSet H) = Module.finrank ℚ E / 2 ∧ Nat.card ((psiSet H)ᶜ : Set (E →+* ℂ)) = Module.finrank ℚ E / 2 := by
   intro E _ _ _ H l c K _ _ _

@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.QuadraticTwists.AttTwist
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ _ l _ n hn ι r κ hκ haut hW`. Take `⟨_, art, χ, a, hart, -, hL⟩` from `hκ`. Take `⟨π, hreg, hatt⟩` from `haut`. Take `⟨t, ht⟩` from `hW π hreg hatt`. Take `⟨b, hb⟩` from `UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.winTw F χ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `UpperTheory.V.Z.Win.Birth.awOne F Ω l n hn ι _ (π.twist χ) (UpperTheory.V.Af.Cq.attTwist F Ω l ι n r π hatt art χ a κ hart hL) ⟨t + b, fun v => hb n (by omega) π t v (ht v)⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Win.Birth.awTw :
     UpperTheory.V.Z.Win.Birth.AwTw := by

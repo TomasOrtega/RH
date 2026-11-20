@@ -10,7 +10,7 @@ set_option synthInstance.maxHeartbeats 400000
 namespace PositivityTheory.Groth
 
 /- English proof (translation)
-Unfold `cl0`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem GrothendieckClassGeneralLinear.class_gl_eq_class {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {N : ℕ}
     {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (h : HasFiniteLength π) :
@@ -18,13 +18,13 @@ theorem GrothendieckClassGeneralLinear.class_gl_eq_class {k : Type} [Field k] [V
   unfold cl0; rw [dif_pos h]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ Z hZ`. Take `⟨hCls, hMul, hAs, hCo, hOne, hPL, hTri, hMO, hJC, hJS, hAlt⟩` from `H k`. Use `haveI : Fact (Assoc k) := ⟨hAs⟩`. Use `haveI : Fact (Comm k) := ⟨hCo⟩`. Use `haveI : Fact (One k) := ⟨hOne⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hst : Steps k` using `⟨hCls, hMul, hAs, hCo, hOne, hPL, hTri, hMO, hJC, hJS, hAlt⟩`. Establish `hbij` using `phiZ_bijective hst h1 h2 Z hZ`. Set `e` to `RingEquiv.ofBijective (phiOf fun Δ : Segment k => (⟨Δ.len * Δ.d, Z Δ⟩ : IrrGL k)) hbij`. Use `⟨toR.trans e.symm.toAddEquiv, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e.symm (toR (GrothGL.unit k)) = 1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[toR_unit, map_one]`. Introduce `r t V W _ _ _ _ π₁ π₂ h₁ h₂ s₁ s₂ h`. Take `⟨_, hc⟩` from `hMul r t V W π₁ π₂ h₁ h₂ s₁ s₂`. Express the relevant statement in the definitionally equal form `e.symm (toR (clsGL (prod₂ π₁ π₂) h)) = e.symm (toR (clsGL π₁ h₁)) * e.symm (toR (clsGL π₂ h₂))`. Rewrite using `[GrothendieckClassGeneralLinear.class_gl_eq_class, GrothendieckClassGeneralLinear.class_gl_eq_class, GrothendieckClassGeneralLinear.class_gl_eq_class, hc, toR_mulR, map_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `Δ`. Express the relevant statement in the definitionally equal form `e.symm (toR (sg (⟨Δ.len * Δ.d, Z Δ⟩ : IrrGL k))) = MvPolynomial.X Δ`. Rewrite using `[RingEquiv.symm_apply_eq]`. Conclude with `(phiOf_X (fun Δ : Segment k => (⟨Δ.len * Δ.d, Z Δ⟩ : IrrGL k)) Δ).symm`.
+A detailed English derivation is pending.
 -/
 theorem groth_of_steps (H : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
       Cls k ∧ MulCls k ∧ Assoc k ∧ Comm k ∧ One k ∧ ProdList k ∧ Tri k ∧ MultOne k ∧ JCls k ∧ JSeg k ∧ AltSum k)

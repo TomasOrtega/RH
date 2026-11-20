@@ -15,7 +15,7 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi IsLocalRing QForm
 
 /- English proof (translation)
-Introduce `k₁ k₂ _`. Apply the tactic sequence `rcases k₁ with a | a <;> rcases k₂ with b | b <;> exact congrArg j (Subsingleton.elim a b)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma coh_lemma {X Y : Scheme} (L : LB X) (φ : Fin 1 ⊕ Fin 1 → (Y ⟶ X))
     (j : Fin 1 → L.ι) : LB.Coh L φ (Sum.elim j j) := by
@@ -23,9 +23,9 @@ private lemma coh_lemma {X Y : Scheme} (L : LB X) (φ : Fin 1 ⊕ Fin 1 → (Y �
   rcases k₁ with a | a <;> rcases k₂ with b | b <;> exact congrArg j (Subsingleton.elim a b)
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Rewrite `hab` using `[_root_.one_mul, _root_.one_mul]`. Establish `hWV : W = V` using `le_antisymm h h'`. Substitute `hWV` using the available equality. Establish `e : homOfLE h = 𝟙 W` using `Subsingleton.elim _ _`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite `hab` using `[e]`. Simplify using `using hab`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma res_inj_lemma_2 {X : Scheme} {W V : X.Opens} (h : W ≤ V) {a b : Γ(X, V)}
     {c : Γ(X, W)} (hc : c = 1)
@@ -40,19 +40,19 @@ private lemma res_inj_lemma_2 {X : Scheme} {W V : X.Opens} (h : W ≤ V) {a b : 
   simpa using hab
 
 /- English proof (translation)
-Unfold `RegularSectionNonneg`. Introduce `V _ _ _ ϖ hϖ D Q hQ vK hvK A G _ _ _ _ _ U k hk σ s hs E hE`. Substitute `hk` using the available equality. Take `⟨F, g', hF, -, hFg⟩` from `TG.integral_exp (U := U) rfl σ`. Establish `hsK : s = TG.secK U.toUnifPre σ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `SecOps.sec_ext` to reduce the goal to its premises. Introduce `j`. Establish `h1` using `hs j j (coh_lemma _ _ j)`. Establish `h2` using `TG.secK_rel U.toUnifPre σ j j (coh_lemma _ _ j)`. Establish `h3` using `h1.symm.trans h2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `res_inj_lemma_2 _ (by exact _root_.map_one _) h3 ?_` and prove the remaining obligations. Use `le_inf le_rfl ?_` and prove the remaining obligations. Use `first`. Consider the case `exact le_rfl`. Consider the case `(simp only [Category.comp_id]; exact le_rfl)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact fun x hx => hx`. Consider the case `(intro x hx; simpa [LB.wchart] using hx)`. Substitute `hsK` using the available equality. Establish `hEF : E = F` using `((U.expand 1 le_rfl).1 _).unique hE hF`. Rewrite using `[hEF]`.
+Treat this case separately. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(n1a V ϖ hϖ D Q hQ (FractionRing V) vK hvK 1 le_rfl {0} (fun χ => ⟨0, Finset.mem_singleton_self 0, χ, by simp⟩) F 0).2 ?_` and prove the remaining obligations. Introduce `α hα`. Rewrite `hα` using `[Finset.mem_singleton]`. Substitute `hα` using the available equality. Rewrite using `[Q_zero hϖ (hQ := hQ)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `VGe`. Use `⟨1, fun _ => 1, fun _ => g' 0, fun _ => F.s 0, fun _ => hFg 0, fun _ => ?_, fun j => ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `simp`. Consider the case `(rw [AddValuation.map_one]; simp)`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `simp [DegPre.constBF]`. Consider the case `(simp only [DegPre.constBF, Fin.sum_univ_one, _root_.map_one, _root_.one_mul])`.
+A detailed English derivation is pending.
 -/
 theorem expansion_nonneg_regular : RegularSectionNonneg := by
   unfold RegularSectionNonneg

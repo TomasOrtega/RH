@@ -12,21 +12,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Heat
 
 /- English proof (translation)
-Simplify using `[constFn, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scheme_constantSection_add {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) (U : X.Opens) (a b : R) :
     constFn p U (a + b) = constFn p U a + constFn p U b := by
   simp [constFn, map_add]
 
 /- English proof (translation)
-Simplify using `[constFn, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constFn_mul_on_open {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) (U : X.Opens) (a b : R) :
     constFn p U (a * b) = constFn p U a * constFn p U b := by
   simp [constFn, map_mul]
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Simplify using `only [Scheme.Hom.appLE]`. Use `erw [show (homOfLE e) = 𝟙 _ from Subsingleton.elim _ _]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gammaSpecIso_appLE_of_eq_id_apply {R : Type} [CommRing R] (f : Sp R ⟶ Sp R) (hf : f = 𝟙 _) (e : (⊤ : (Sp R).Opens) ≤ f ⁻¹ᵁ ⊤) (r : R) :
     (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom ((f.appLE ⊤ ⊤ e).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) = r := by
@@ -36,7 +36,7 @@ theorem gammaSpecIso_appLE_of_eq_id_apply {R : Type} [CommRing R] (f : Sp R ⟶ 
   simp
 
 /- English proof (translation)
-Establish `hc` using `Scheme.Hom.appLE_comp_appLE e p ⊤ U ⊤ (fun _ _ => trivial) h`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem gammaSpecIso_appLE_section_constantSection_eq {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) (e : Sp R ⟶ X) (he : e ≫ p = 𝟙 _)
     (U : X.Opens) (h : ⊤ ≤ e ⁻¹ᵁ U) (r : R) :
@@ -53,13 +53,13 @@ end GlobalTheory.Heat
 namespace GlobalTheory.Heat
 
 /- English proof (translation)
-Introduce `R _ G _ D W d hL hW`. Establish `he : (η[G]).left ≫ G.hom = 𝟙 _` using `by simpa using Over.w (η[G])`. Set `ev : Γ(G.left, W) →+* R` to `(Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom.comp (((η[G]).left.appLE W ⊤ hW).hom)`. Establish `hev : ∀ r, ev (constFn G.hom W r) = r` using `fun r => gammaSpecIso_appLE_section_constantSection_eq G.hom _ he W hW r`. Establish `hc : ∀ r, d W (constFn G.hom W r) = constFn G.hom W (D r)` using `hL.2 W le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd : ∀ a b, D (a + b) = D a + D b`. Introduce `a b`. Use `congrArg ev (hc (a + b))` as an intermediate fact. Rewrite `this` using `[scheme_constantSection_add, hL.1.1 W le_rfl, hc, hc, map_add, hev, hev, hev]`. Conclude with `this.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmul : ∀ a b, D (a * b) = a * D b + b * D a`. Introduce `a b`. Use `congrArg ev (hc (a * b))` as an intermediate fact. Rewrite `this` using `[constFn_mul_on_open, hL.1.2.1 W le_rfl, hc, hc, map_add, map_mul, map_mul, hev, hev, hev, hev, hev]`. Conclude with `this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Set `L : R →ₗ[ℤ] R` to `(AddMonoidHom.mk' D hadd).toIntLinearMap`. Conclude with `⟨Derivation.mk' L (fun a b => by simpa [L, smul_eq_mul] using hmul a b), fun r => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem liftDer_isDerivation : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] (D : R → R) (W : G.left.Opens)
     (d : Fld G.left), IsLift G D W d → ⊤ ≤ (η[G]).left ⁻¹ᵁ W → ∃ D' : Derivation ℤ R R, ∀ r, D' r = D r := by

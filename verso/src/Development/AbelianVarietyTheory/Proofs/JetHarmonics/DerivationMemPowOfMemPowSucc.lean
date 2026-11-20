@@ -3,13 +3,11 @@ import Mathlib
 namespace GlobalTheory.DerivationMemPow
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro x _`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `x hx`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[pow_succ]`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Use `Ideal.add_mem _ ?_ ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ideal.mul_mem_right _ _ ha`. Establish `h` using `Ideal.mul_mem_mul hb (ih a ha)`. Rewrite `h` using `[← pow_succ']`. Then use the resulting hypothesis. Introduce `y z hy hz`. Rewrite using `[map_add]`.
-
-Conclude with `Ideal.add_mem _ hy hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivation_mem_pow_of_mem_pow_succ {k A : Type} [CommRing k] [CommRing A] [Algebra k A]
     (D : Derivation k A A) (I : Ideal A) (n : ℕ) :
@@ -31,7 +29,7 @@ theorem derivation_mem_pow_of_mem_pow_succ {k A : Type} [CommRing k] [CommRing A
       exact Ideal.add_mem _ hy hz
 
 /- English proof (translation)
-Introduce `D I n` and use `derivation_mem_pow_of_mem_pow_succ D I n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ {k A : Type} [inst : CommRing k] [inst_1 : CommRing A] [inst_2 : Algebra k A] (D : Derivation k A A) (I : Ideal A) (n : ℕ), ∀ x ∈ I ^ (n + (1 : ℕ)), (D : A → A) x ∈ I ^ n :=
   fun D I n => derivation_mem_pow_of_mem_pow_succ D I n

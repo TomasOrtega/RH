@@ -10,15 +10,15 @@ section ring
 variable {p : ℕ} [Fact p.Prime] {D : Datum p}
 
 /- English proof (translation)
-Establish `htr` using `D.tr_eq`. Establish `hnm` using `D.nm_eq`. Establish `hp : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 Fact.out`. Establish `e1 : ((r ^ 2 - D.tr * r + D.nm : ℤ) : 𝓞 D.F) = (D.ω - r) * (D.bar D.ω - r)`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `r * htr - hnm`. Establish `hcw : ((r ^ 2 - D.tr * r + D.nm : ℤ) : 𝓞 D.F) ∈ w`. Rewrite using `[e1]`. Conclude with `w.mul_mem_right (D.bar D.ω - r) (hu (sub_mem_uIdeal D r))`. Establish `hpc : (p : ℤ) ∣ r ^ 2 - D.tr * r + D.nm`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hnd`. Take `⟨x, y, hxy⟩` from `hp.coprime_iff_not_dvd.2 hnd`. Use `hw ((Ideal.eq_top_iff_one w).2 ?_)` and prove the remaining obligations. Establish `h` using `congrArg (Int.cast : ℤ → 𝓞 D.F) hxy`. Rewrite `h` using `[Int.cast_add, Int.cast_mul, Int.cast_mul, Int.cast_one, Int.cast_natCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Conclude with `w.add_mem (w.mul_mem_left _ (hu (p_mem_uIdeal D r))) (w.mul_mem_left _ hcw)`. Take `⟨z, hz⟩` from `hpc`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← e1, hz]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use `push_cast`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem mul_bar_eq (r : ℤ) (w : Ideal (𝓞 D.F)) (hw : w ≠ ⊤) (hu : uIdeal D r ≤ w) :
     ∃ z : 𝓞 D.F, (D.ω - (r : 𝓞 D.F)) * (D.bar D.ω - (r : 𝓞 D.F)) = (p : 𝓞 D.F) * z := by
@@ -46,19 +46,17 @@ private theorem mul_bar_eq (r : ℤ) (w : Ideal (𝓞 D.F)) (hw : w ≠ ⊤) (hu
   rfl
 
 /- English proof (translation)
-Use `set I := Ideal.span {(p : 𝓞 D.F) ^ e, ε} with hI`. Set `π` to `Ideal.Quotient.mk I`. Establish `hpe : π ((p : 𝓞 D.F) ^ e) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span (Set.mem_insert _ _))`. Establish `hε0 : π ε = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span (Set.mem_insert_of_mem _ rfl))`. Establish `hbar1 : π (D.bar ε) = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `h1`. Establish `e0 : D.bar ε = 1 + (p : 𝓞 D.F) ^ e * d - ε` using `by linear_combination hd`. Rewrite using `[e0, map_sub, map_add, map_mul, hpe, hε0, map_one]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨x, y, hxy⟩` from `Ideal.mem_span_pair.1 hε`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `mul_bar_eq r w hw hu`. Establish `hb : D.bar ε = D.bar x * (p : 𝓞 D.F) + D.bar y * (D.bar D.ω - (r : 𝓞 D.F))`. Rewrite using `[← hxy]`. Simplify using `only [map_add, map_mul, map_sub, map_natCast, map_intCast]`. Establish `hkey : π (D.ω - (r : 𝓞 D.F)) ∈ Ideal.span {π (p : 𝓞 D.F)}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.mem_span_singleton'.2 ⟨π (D.bar x * (D.ω - (r : 𝓞 D.F)) + D.bar y * z), ?_⟩` and prove the remaining obligations. Establish `e2 : (D.bar x * (D.ω - (r : 𝓞 D.F)) + D.bar y * z) * (p : 𝓞 D.F) = (D.ω - (r : 𝓞 D.F)) * D.bar ε`. Rewrite using `[hb]`. Take the linear combination `(-D.bar y) * hz`. Rewrite using `[← map_mul, e2, map_mul, hbar1, _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : Ideal.map π (uIdeal D r) ≤ Ideal.span {π (p : 𝓞 D.F)}`. Rewrite using `[uIdeal, Ideal.map_span, Ideal.span_le]`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Break down `ha with rfl | rfl` into its components or cases. Conclude with `Ideal.subset_span rfl`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hkey`. Introduce `u hu'`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `h2 : π u ∈ Ideal.span {π (p : 𝓞 D.F)} ^ e` using `Ideal.pow_right_mono hle e (by rw [← Ideal.map_pow]; exact Ideal.mem_map_of_mem _ hu')`. Rewrite `h2` using `[Ideal.span_singleton_pow, ← map_pow, hpe]`.
-
-Simplify using `using h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem uIdeal_pow_le (r : ℤ) (w : Ideal (𝓞 D.F)) (hw : w ≠ ⊤) (hu : uIdeal D r ≤ w) (e : ℕ)
     (ε : 𝓞 D.F) (hε : ε ∈ uIdeal D r) (h1 : (p : 𝓞 D.F) ^ e ∣ ε + D.bar ε - 1) :
@@ -100,11 +98,11 @@ private theorem uIdeal_pow_le (r : ℤ) (w : Ideal (𝓞 D.F)) (hw : w ≠ ⊤) 
   simpa using h2
 
 /- English proof (translation)
-Establish `hq : ε ^ 2 - ε ∈ I`. Take `⟨d, hd⟩` from `h1`. Take `⟨f, hf⟩` from `h2`. Establish `e0 : ε ^ 2 - ε = (p : 𝓞 D.F) ^ e * (ε * d - f)` using `by linear_combination ε * hd - hf`. Rewrite using `[e0]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `I.mul_mem_right _ hc`. Proceed by induction on `k with`. Consider the case `zero => simpa using hk`. Consider the case `succ k ih`. Use `ih ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : ε ^ (k + 1) = ε ^ (k + 1 + 1) - ε ^ k * (ε ^ 2 - ε)` using `by ring`. Rewrite using `[e1]`. Conclude with `I.sub_mem hk (I.mul_mem_left _ hq)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_of_pow_mem (I : Ideal (𝓞 D.F)) (e : ℕ) (ε : 𝓞 D.F) (hc : (p : 𝓞 D.F) ^ e ∈ I)
     (h1 : (p : 𝓞 D.F) ^ e ∣ ε + D.bar ε - 1) (h2 : (p : 𝓞 D.F) ^ e ∣ ε * D.bar ε) (k : ℕ)
@@ -147,21 +145,21 @@ private def ann (o : Obj b N s) {T : Over S} (g : T ⟶ o.A) : Ideal (𝓞 D.F) 
     rw [smul_eq_mul, map_mul, o.act.mul, ← Category.assoc, hx, MonObj.one_comp]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_ann {o : Obj b N s} {T : Over S} (g : T ⟶ o.A) (x : 𝓞 D.F) :
     x ∈ ann o g ↔ g ≫ o.act.act (algebraMap (𝓞 D.F) D.O x) = 1 := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem killedBy_iff {o : Obj b N s} {T : Over S} (g : T ⟶ o.A) (v : Ideal (𝓞 D.F)) :
     KilledBy o v g ↔ v ≤ ann o g := Iff.rfl
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `o.act.add 0 0`. Rewrite `h` using `[add_zero]`. Establish `h0 : o.act.act 0 = 1` using `left_eq_mul.1 h`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_zero, map_zero, h0, pow_zero]`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ, map_add, o.act.add, ih, map_one, o.act.one, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem act_natCast (o : Obj b N s) (n : ℕ) :
     o.act.act (algebraMap (𝓞 D.F) D.O (n : 𝓞 D.F)) = (𝟙 o.A) ^ n := by
@@ -175,18 +173,18 @@ private theorem act_natCast (o : Obj b N s) (n : ℕ) :
     rw [Nat.cast_succ, map_add, o.act.add, ih, map_one, o.act.one, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[mem_ann, act_natCast, MonObj.comp_pow, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem natCast_mem_ann {o : Obj b N s} {T : Over S} (g : T ⟶ o.A) (n : ℕ) :
     (n : 𝓞 D.F) ∈ ann o g ↔ g ^ n = 1 := by
   rw [mem_ann, act_natCast, MonObj.comp_pow, Category.comp_id]
 
 /- English proof (translation)
-Use `h.fin` as an intermediate fact. Use `h.flat` as an intermediate fact. Establish `hiso : IsIso (toUnit K).left`. Rewrite using `[Scheme.Hom.isIso_iff_finrank_eq]`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `h.rank z`. Establish `: IsIso ((Over.forget S).map (toUnit K))` using `hiso`. Establish `: IsIso (toUnit K)` using `isIso_of_reflects_iso _ (Over.forget S)`. Establish `hy : y = 1`. Rewrite using `[← cancel_mono (toUnit K)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `toUnit_unique _ _`. Rewrite using `[hy, MonObj.one_comp]`.
+A detailed English derivation is pending.
 -/
 private theorem eq_one_of_rank_one {K A T : Over S} [GrpObj K] [GrpObj A] (i : K ⟶ A) [IsMonHom i]
     (h : IsIsogDeg (toUnit K) 1) (y : T ⟶ K) : y ≫ i = 1 := by
@@ -204,7 +202,7 @@ private theorem eq_one_of_rank_one {K A T : Over S} [GrpObj K] [GrpObj A] (i : K
   rw [hy, MonObj.one_comp]
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `GlobalTheory.IwLevel.comp_eq_one_iff_push Rd.m₀.cart Rd.m₀.cart (Rd.m₀.act _) a₀`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem ann_push {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} {o : Obj b N s} (Rd : RepData b N r w j c s o)
     {T₀ : Over Rd.Y.left} (a₀ : T₀ ⟶ Rd.o₀.A) :
@@ -213,7 +211,7 @@ private theorem ann_push {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} {o : Obj b
   exact GlobalTheory.IwLevel.comp_eq_one_iff_push Rd.m₀.cart Rd.m₀.cart (Rd.m₀.act _) a₀
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, ψ', hψ', h1, -⟩` from `Rd.isog`. Establish `h2 : a₀ ≫ (𝟙 Rd.o₀.A) ^ c = 1`. Rewrite using `[← h1, ← Category.assoc, h, MonObj.one_comp]`. Rewrite `h2` using `[MonObj.comp_pow, Category.comp_id]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem tors_of_ker {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} {o : Obj b N s} (Rd : RepData b N r w j c s o)
     {T₀ : Over Rd.Y.left} (a₀ : T₀ ⟶ Rd.o₀.A) (h : a₀ ≫ Rd.ψ = 1) : a₀ ^ c = 1 := by
@@ -223,11 +221,11 @@ private theorem tors_of_ker {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} {o : Ob
   rwa [MonObj.comp_pow, Category.comp_id] at h2
 
 /- English proof (translation)
-Take `⟨e, rfl, he⟩` from `hc`. Break down `Nat.eq_zero_or_pos e with rfl | he0` into its components or cases. Establish `hj : j = 0`. Assume the negation of the conclusion as `hj`. Conclude with `absurd (he (Nat.pos_of_ne_zero hj)) (lt_irrefl 0)`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality.
 
-Substitute `hj` using the available equality. Establish `hdeg` using `Sd.deg`. Rewrite `hdeg` using `[pow_zero]`. Take `⟨y, rfl⟩` from `hx`. Use `Sd.hom` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[natCast_mem_ann, eq_one_of_rank_one Sd.i hdeg y, one_pow]`. Establish `hp : (p : 𝓞 D.F) ∈ ann o x` using `Sd.killed T x hx _ (hu (p_mem_uIdeal D r))`. Rewrite using `[Nat.cast_pow]`. Conclude with `Ideal.pow_mem_of_mem _ hp e he0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tors_of_sub {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} {o : Obj b N s}
     (hu : uIdeal D r ≤ w) (hc : ∃ e : ℕ, c = p ^ e ∧ (0 < j → 0 < e)) (Sd : SubData w j o)
@@ -248,13 +246,13 @@ private theorem tors_of_sub {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} {o : Ob
     exact Ideal.pow_mem_of_mem _ hp e he0
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hψ, e', hk⟩`. Establish `hcT` using `tors_of_ker Rd a₀ hψ`. Establish `hcm : (p : 𝓞 D.F) ^ e ∈ ann Rd.o₀ a₀`. Establish `h3` using `(natCast_mem_ann a₀ c).2 hcT`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ec : (c : 𝓞 D.F) = (p : 𝓞 D.F) ^ e` using `by rw [hce, Nat.cast_pow]`. Rewrite `h3` using `[ec]`. Then use the resulting hypothesis. Use `H₁ hcT hψ (mem_of_pow_mem (ann Rd.o₀ a₀) e ε hcm h1 h2 e' (hk _ ?_))` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hε e')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hs`. Establish `hcm` using `tors_of_sub hu hc Sd _ hs`. Rewrite `hcm` using `[← ann_push]`. Establish `hcT` using `(natCast_mem_ann a₀ c).1 hcm`. Use `⟨H₂ hcT hs, 1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[killedBy_iff, ann_push, pow_one]`. Conclude with `fun x hx => Sd.killed _ _ hs _ (hu hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem core_fwd {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} {o : Obj b N s} (Rd : RepData b N r w j c s o)
     (Sd : SubData w j o) (hu : uIdeal D r ≤ w) (hc : ∃ e : ℕ, c = p ^ e ∧ (0 < j → 0 < e)) (e : ℕ)
@@ -284,11 +282,9 @@ private theorem core_fwd {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} {o : Obj b
     exact fun x hx => Sd.killed _ _ hs _ (hu hx)
 
 /- English proof (translation)
-Use `⟨fun hcT hψ hεa => H.1 ⟨hψ, e, ?_⟩, fun hs => (H.2 hs).1⟩` and prove the remaining obligations. Establish `hcm : (p : 𝓞 D.F) ^ e ∈ ann Rd.o₀ a₀`. Establish `h3` using `(natCast_mem_ann a₀ c).2 hcT`. Establish `ec : (c : 𝓞 D.F) = (p : 𝓞 D.F) ^ e` using `by rw [hce, Nat.cast_pow]`. Rewrite `h3` using `[ec]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[killedBy_iff]`. Use `(uIdeal_pow_le r w hw hu e ε hε h1).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `x (rfl | rfl)`. Conclude with `hcm`.
-
-Conclude with `hεa`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem core_bwd {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} {o : Obj b N s} (Rd : RepData b N r w j c s o)
     (Sd : SubData w j o) (hw : w ≠ ⊤) (hu : uIdeal D r ≤ w) (e : ℕ)
@@ -312,13 +308,13 @@ private theorem core_bwd {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} {o : Obj b
   · exact hεa
 
 /- English proof (translation)
-Set `Bf : Bool → Over Y` to `fun i => match i with`. Consider the case `false => B₁`. Consider the case `true => B₂`. Use `letI gB : ∀ i, GrpObj (Bf i) := fun i => match i with`. Consider the case `false => inferInstanceAs (GrpObj B₁)`.
+Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Equip the data with the indicated structure. Treat this case separately.
 
-Consider the case `true => inferInstanceAs (GrpObj B₂)`. Set `ff : ∀ i, A ⟶ Bf i` to `fun i => match i with`. Consider the case `false => f₁`. Consider the case `true => f₂`. Take `⟨W, o, c, H, G⟩` from `GlobalTheory.T.isClopen_torsion_kernel_locus Y A n Bool Bf ff B' f' hA (fun i => match i with`.
+Treat this case separately. Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `false => h₁`. Consider the case `true => h₂) h'`. Use the proof step `(fun i => match i with`. Consider the case `false => inferInstanceAs (IsMonHom f₁)`. Consider the case `true => inferInstanceAs (IsMonHom f₂)) inferInstance hn`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `key : ∀ {T : Over Y} (a : T ⟶ A), (∀ i, a ≫ ff i = 1) ↔ (a ≫ f₁ = 1 ∧ a ≫ f₂ = 1)` using `fun a => ⟨fun h => ⟨h false, h true⟩, fun h i => match i with`. Consider the case `false => h.1`. Consider the case `true => h.2⟩`. Use `⟨W, o, c, fun Tb t hW T σ hσ a ha g₁ g₂ => (H Tb t).1 hW T σ hσ a ha ((key a).2 ⟨g₁, g₂⟩), fun k _ _ x => (G k x).trans ?_⟩` and prove the remaining obligations. Conclude with `⟨fun h a ha g₁ g₂ => h a ha ((key a).2 ⟨g₁, g₂⟩), fun h a ha g => h a ha ((key a).1 g).1 ((key a).1 g).2⟩`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem two_locus (Y : Scheme.{0}) (A B₁ B₂ B' : Over Y) [GrpObj A] [IsCommMonObj A] [GrpObj B₁] [GrpObj B₂]
     [GrpObj B'] (n : ℕ) (f₁ : A ⟶ B₁) (f₂ : A ⟶ B₂) (f' : A ⟶ B') (hA : IsAbelianScheme A)
@@ -354,9 +350,9 @@ private theorem two_locus (Y : Scheme.{0}) (A B₁ B₂ B' : Over Y) [GrpObj A] 
   exact ⟨fun h a ha g₁ g₂ => h a ha ((key a).2 ⟨g₁, g₂⟩), fun h a ha g => h a ha ((key a).1 g).1 ((key a).1 g).2⟩
 
 /- English proof (translation)
-Establish `hT : Th = u ≫ Rd.Y.hom`. Establish `h₁ : a.left ≫ o.A.hom = Th` using `Over.w a`. Establish `h₂ : a₀.left ≫ Rd.o₀.A.hom = u` using `Over.w a₀`. Rewrite using `[← h₁, ← ha, Category.assoc, Rd.m₀.cart.1.w, ← Category.assoc, h₂]`. Substitute `hT` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Establish `ea : a = pushHom Rd.m₀.cart (Over.mk u) a₀` using `Over.OverMorphism.ext ha.symm`. Rewrite using `[ea]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem insub_push {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} {o : Obj b N s} (Rd : RepData b N r w j c s o)
     (Sd : SubData w j o) (Tl : Scheme.{0}) (Th : Tl ⟶ S) (u : Tl ⟶ Rd.Y.left) (a₀ : Over.mk u ⟶ Rd.o₀.A)
@@ -376,15 +372,15 @@ open scoped CategoryTheory.Obj
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
 
 /- English proof (translation)
-Establish `hfin` using `Sd.fin`. Establish `het` using `Sd.et`. Establish `hflat : Flat Sd.K.hom` using `inferInstance`. Establish `hSm` using `Sd.mono`. Establish `hSh` using `Sd.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨B, _, q, hab, hqm, -, -, -, hq⟩` from `GlobalTheory.IwLevel.quotGlobal_holds S o.A Sd.K Sd.i o.ab Sd.hom Sd.mono Sd.fin hflat`. Establish `hker` using `GlobalTheory.UPel.HT.ES.IsogDVR.isPullback_kernel_of_kernelPair Sd.i q hq`. Establish `hsub : ∀ {T : Over S} (x : T ⟶ o.A), x ≫ q = 1 ↔ InSub Sd.i x`. Introduce `T x`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Conclude with `⟨hker.lift x (toUnit T) (by rw [h, Hom.one_def]), hker.lift_fst _ _ _⟩`. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[Category.assoc, hker.w, ← Category.assoc, toUnit_unique (y ≫ toUnit _) (toUnit T), Hom.one_def]`. Use `hab.comm` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP` using `isGrpPullback_pullback B Rd.Y.hom`. Take `⟨e₀, he₀m, he₀⟩` from `grpPullback_iso Rd.m₀.cart (isGrpPullback_pullback o.A Rd.Y.hom)`. Set `q₀ : Rd.o₀.A ⟶ (Over.pullback Rd.Y.hom).obj B` to `e₀.hom ≫ (Over.pullback Rd.Y.hom).map q`. Establish `hq₀m : IsMonHom q₀`. Use `he₀m` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `hsq : q₀.left ≫ pullback.fst B.hom Rd.Y.hom = Rd.m₀.φ ≫ q.left`. Establish `h3 : ((Over.pullback Rd.Y.hom).map q).left ≫ pullback.fst B.hom Rd.Y.hom = pullback.fst o.A.hom Rd.Y.hom ≫ q.left` using `pullback.lift_fst _ _ _`. Rewrite using `[Over.comp_left, Category.assoc, h3, ← Category.assoc, he₀]`. Conclude with `⟨_, inferInstance, q₀, GlobalTheory.isAbelianScheme_pullback_obj _ _ hab, hq₀m, fun a₀ => (GlobalTheory.IwLevel.comp_eq_one_iff_push Rd.m₀.cart hP hsq a₀).trans (hsub _)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_quot {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} {S : Scheme.{0}} [IsLocallyNoetherian S]
     {s : S ⟶ Sp R} {o : Obj b N s} (Rd : RepData b N r w j c s o) (Sd : SubData w j o) :
@@ -421,17 +417,17 @@ private theorem exists_quot {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} {S : Sc
 end quot
 
 /- English proof (translation)
-Introduce `p _ D R _ b N r w j c hp hw hu hc S _ s o Rd Sd`. Take `⟨e, hce, -⟩` from `id hc`. Establish `hwt : w ≠ ⊤` using `hw.ne_top`. Take `⟨ε, hε, h1, h2⟩` from `UpperTheory.Cb.exists_mem_uIdeal_idempotent_mod_prime_pow p D r w e hwt hu`. Take `⟨B₀, _, q₀, hB₀, hq₀m, hqp⟩` from `exists_quot Rd Sd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcu : IsUnit ((c : ℕ) : Γ(Rd.Y.left, ⊤))`. Establish `h3` using `hp.map (gam (Rd.Y.hom ≫ s))`. Rewrite `h3` using `[map_natCast]`. Establish `ec : ((c : ℕ) : Γ(Rd.Y.left, ⊤)) = ((p : ℕ) : Γ(Rd.Y.left, ⊤)) ^ e` using `(congrArg Nat.cast hce).trans (Nat.cast_pow p e)`. Rewrite using `[ec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3.pow _`. Establish `hψm : IsMonHom Rd.ψ` using `Rd.isog.2.1`. Establish `hεm` using `Rd.o₀.act.hom (algebraMap (𝓞 D.F) D.O ε)`. Take `⟨W₁, o₁, c₁, H₁, G₁⟩` from `two_locus Rd.Y.left Rd.o₀.A Rd.o'.A Rd.o₀.A B₀ c Rd.ψ (Rd.o₀.act.act (algebraMap (𝓞 D.F) D.O ε)) q₀ Rd.o₀.ab Rd.o'.ab Rd.o₀.ab hB₀ hcu`. Take `⟨W₂, o₂, c₂, H₂, G₂⟩` from `GlobalTheory.T.isClopen_torsion_kernel_locus Rd.Y.left Rd.o₀.A c Unit (fun _ => B₀) (fun _ => q₀) Rd.o'.A Rd.ψ Rd.o₀.ab (fun _ => hB₀) Rd.o'.ab (fun _ => hq₀m) hψm hcu`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨W₁ ∩ W₂, o₁.inter o₂, c₁.inter c₂, fun Tb t hW => ?_, fun k _ _ y => ?_⟩` and prove the remaining obligations. Establish `hW₁` using `H₁ Tb t (hW.trans Set.inter_subset_left)`. Establish `hW₂` using `(H₂ Tb t).1 (hW.trans Set.inter_subset_right)`. Introduce `T τ a₀ a ha`. Conclude with `(core_fwd Rd Sd hu hc e hce ε hε h1 h2 a₀ (fun hcT hψ hεa => (hqp a₀).1 (hW₁ _ τ rfl a₀ hcT hψ hεa)) (fun hcT hs => hW₂ _ τ rfl a₀ hcT (fun _ => (hqp a₀).2 hs))).trans (insub_push Rd Sd T.left T.hom (τ ≫ t) a₀ a ha).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Set.subset_inter_iff, G₁, G₂]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g₁, g₂⟩ a₀ a ha`. Establish `ea : a = pushHom Rd.m₀.cart (Over.mk y) a₀` using `Over.OverMorphism.ext ha.symm`. Substitute `ea` using the available equality.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `core_fwd Rd Sd hu hc e hce ε hε h1 h2 a₀ (fun hcT hψ hεa => (hqp a₀).1 (g₁ a₀ hcT hψ hεa)) (fun hcT hs => g₂ a₀ hcT (fun _ => (hqp a₀).2 hs))`. Introduce `H`. Use `⟨fun a₀ hcT hψ hεa => ?_, fun a₀ hcT g => ?_⟩` and prove the remaining obligations. Conclude with `(hqp a₀).2 ((core_bwd Rd Sd hwt hu e hce ε hε h1 a₀ (H a₀ _ rfl)).1 hcT hψ hεa)`. Conclude with `(core_bwd Rd Sd hwt hu e hce ε hε h1 a₀ (H a₀ _ rfl)).2 ((hqp a₀).1 (g ()))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_clopen_subgroup_locus :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (r : ℤ) (w : Ideal (𝓞 D.F)) (j c : ℕ), IsUnit ((p : ℕ) : R) → w.IsMaximal → uIdeal D r ≤ w → (∃ e : ℕ, c = p ^ e ∧ (0 < j → 0 < e)) → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (s : S ⟶ Sp R) (o : Obj b N s) (Rd : RepData b N r w j c s o) (Sd : SubData w j o), ∃ W : Set Rd.Y.left, IsOpen W ∧ IsClosed W ∧ (∀ (Tb : Scheme.{0}) (t : Tb ⟶ Rd.Y.left), Set.range t.base ⊆ W → KerAt Rd Sd t) ∧ ∀ (k : Type) [Field k] [IsAlgClosed k] (y : Sp k ⟶ Rd.Y.left), Set.range y.base ⊆ W ↔ KerGeo Rd Sd y := by

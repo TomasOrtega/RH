@@ -18,19 +18,19 @@ def kdCoS (ε : Fin n → Bool) (w : KCo ε) (s : Bool) : UCo (kdC ε s) :=
   (fun i => w.1 (kdE ε s i), fun ij => w.2 (kdPr ε s ij))
 
 /- English proof (translation)
-Use extensionality with `a b`. Take `⟨⟨s, i⟩, rfl⟩` from `(kdSig ε).surjective a`. Take `⟨⟨t, j⟩, rfl⟩` from `(kdSig ε).surjective b`. Rewrite using `[kdD_apply]`. Distinguish the cases in `hst : s = t`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hst` using the available equality. Rewrite using `[Matrix.blockDiagonal'_apply_eq, kdSig_apply, kdSig_apply]`. Establish `hE : ε (kdE ε s i) = ε (kdE ε s j)` using `by rw [ε_kdE ε s i, ε_kdE ε s j]`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Establish `h1 : kdE ε s i ≠ kdE ε s j` using `(kdE ε s).injective.ne hij.ne`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h2 : ¬ (kdE ε s j < kdE ε s i ∧ ε (kdE ε s i) = ε (kdE ε s j))` using `fun h => absurd ((kdE ε s).lt_iff_lt.1 h.1) (not_lt.2 hij.le)`. Establish `h3 : kdE ε s i < kdE ε s j ∧ ε (kdE ε s j) = ε (kdE ε s i)` using `⟨(kdE ε s).lt_iff_lt.2 hij, hE.symm⟩`. Simplify using `only [kMat, skMat, kdCoS, if_neg h1, dif_neg h2, dif_pos h3, if_neg hij.ne, dif_neg (not_lt.2 hij.le), dif_pos hij]`. Both sides reduce to the same expression. Simplify using `[kMat, skMat, kdCoS]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Establish `h1 : kdE ε s i ≠ kdE ε s j` using `(kdE ε s).injective.ne hij.ne'`. Establish `h2 : kdE ε s j < kdE ε s i ∧ ε (kdE ε s i) = ε (kdE ε s j)` using `⟨(kdE ε s).lt_iff_lt.2 hij, hE⟩`. Simplify using `only [kMat, skMat, kdCoS, if_neg h1, dif_pos h2, if_neg hij.ne', dif_pos hij]`. Both sides reduce to the same expression. Rewrite using `[Matrix.blockDiagonal'_apply_ne _ _ _ hst, kdSig_apply, kdSig_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `ε_kdE ε s i`. Establish `h2` using `ε_kdE ε t j`. Establish `hne : kdE ε s i ≠ kdE ε t j` using `fun h => hst (by rw [← h1, ← h2, h])`. Establish `hc2 : ¬ (kdE ε t j < kdE ε s i ∧ ε (kdE ε s i) = ε (kdE ε t j))` using `fun h => hst (by`. Use `h.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h1, h2]`. Conclude with `this)`. Establish `hc3 : ¬ (kdE ε s i < kdE ε t j ∧ ε (kdE ε t j) = ε (kdE ε s i))` using `fun h => hst (by`. Use `h.2` as an intermediate fact. Rewrite `this` using `[h1, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `this.symm)`. Simplify using `only [kMat, if_neg hne, dif_neg hc2, dif_neg hc3]`.
+A detailed English derivation is pending.
 -/
 lemma kMat_eq_kdD {ε : Fin n → Bool} (w : KCo ε) : kMat w = kdD ε (fun s => skMat (kdCoS ε w s)) := by
   ext a b
@@ -71,9 +71,7 @@ lemma kMat_eq_kdD {ε : Fin n → Bool} (w : KCo ε) : kMat w = kdD ε (fun s =>
     simp only [kMat, if_neg hne, dif_neg hc2, dif_neg hc3]
 
 /- English proof (translation)
-Rewrite using `[Prod.norm_def, Prod.norm_def]`. Use `max_le_max ?_ ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Conclude with `norm_le_pi_norm w.1 (kdE ε s i)`. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun ij => ?_` and prove the remaining obligations.
-
-Conclude with `norm_le_pi_norm w.2 (kdPr ε s ij)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma norm_kdCoS_le {ε : Fin n → Bool} (w : KCo ε) (s : Bool) : ‖kdCoS ε w s‖ ≤ ‖w‖ := by
   rw [Prod.norm_def, Prod.norm_def]
@@ -84,7 +82,7 @@ lemma norm_kdCoS_le {ε : Fin n → Bool} (w : KCo ε) (s : Bool) : ‖kdCoS ε 
     exact norm_le_pi_norm w.2 (kdPr ε s ij)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `kdE_surj ε a`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma kdE_surj' (ε : Fin n → Bool) (s : Bool) (a : Fin n) (h : ε a = s) : ∃ i, kdE ε s i = a := by
   subst h
@@ -112,7 +110,7 @@ def kdIx (ε : Fin n → Bool) : Fin (pOf ε) ⊕ Fin (qOf ε) ≃ Fin n :=
         exact ⟨Sum.inl i, hi⟩)
 
 /- English proof (translation)
-Introduce `x y h`. Establish `h1 : kdE ε s x.1.1 = kdE ε s y.1.1` using `congrArg (fun z : KPair ε => z.1.1) h`. Establish `h2 : kdE ε s x.1.2 = kdE ε s y.1.2` using `congrArg (fun z : KPair ε => z.1.2) h`. Conclude with `Subtype.ext (Prod.ext ((kdE ε s).injective h1) ((kdE ε s).injective h2))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma kdPr_inj (ε : Fin n → Bool) (s : Bool) : Function.Injective (kdPr ε s) := by
   intro x y h
@@ -121,9 +119,9 @@ lemma kdPr_inj (ε : Fin n → Bool) (s : Bool) : Function.Injective (kdPr ε s)
   exact Subtype.ext (Prod.ext ((kdE ε s).injective h1) ((kdE ε s).injective h2))
 
 /- English proof (translation)
-Take `⟨⟨a, b⟩, hba, hab⟩` from `x`. Take `⟨i, hi⟩` from `kdE_surj ε a`. Take `⟨j, hj⟩` from `kdE_surj' ε (ε a) b hab.symm`. Establish `hba' : b < a` using `hba`. Use `⟨⟨(i, j), (kdE ε (ε a)).lt_iff_lt.1 (by rw [hi, hj]; exact hba')⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (kdE ε (ε a) i, kdE ε (ε a) j) = (a, b)`. Rewrite using `[hi, hj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma kdPr_surj (ε : Fin n → Bool) (x : KPair ε) : ∃ ij, kdPr ε (ε x.1.1) ij = x := by
   obtain ⟨⟨a, b⟩, hba, hab⟩ := x
@@ -166,7 +164,7 @@ def kdRe (α β γ δ : Type*) [MeasurableSpace α] [MeasurableSpace β] [Measur
         MeasurableEquiv.prodAssoc))).trans MeasurableEquiv.prodAssoc.symm
 
 /- English proof (translation)
-The claim follows from `measurePreserving_prodAssoc volume volume volume`.
+A detailed English derivation is pending.
 -/
 private lemma measurePreserving_prodAssoc_volume {X Y Z : Type*} [MeasureSpace X] [MeasureSpace Y] [MeasureSpace Z]
     [SigmaFinite (volume : Measure X)] [SigmaFinite (volume : Measure Y)]
@@ -175,7 +173,7 @@ private lemma measurePreserving_prodAssoc_volume {X Y Z : Type*} [MeasureSpace X
   measurePreserving_prodAssoc volume volume volume
 
 /- English proof (translation)
-The claim follows from `Measure.measurePreserving_swap`.
+A detailed English derivation is pending.
 -/
 private lemma measurePreserving_prodComm_volume {X Y : Type*} [MeasureSpace X] [MeasureSpace Y]
     [SigmaFinite (volume : Measure X)] [SigmaFinite (volume : Measure Y)] :
@@ -183,7 +181,7 @@ private lemma measurePreserving_prodComm_volume {X Y : Type*} [MeasureSpace X] [
   Measure.measurePreserving_swap
 
 /- English proof (translation)
-Unfold `kdRe`. Conclude with `(MeasurePreserving.symm _ measurePreserving_prodAssoc_volume).comp (((MeasurePreserving.id volume).prod (measurePreserving_prodAssoc_volume.comp ((measurePreserving_prodComm_volume.prod (MeasurePreserving.id volume)).comp (MeasurePreserving.symm _ measurePreserving_prodAssoc_volu …`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma kdRe_mp {α β γ δ : Type*} [MeasureSpace α] [MeasureSpace β] [MeasureSpace γ] [MeasureSpace δ]
     [SigmaFinite (volume : Measure α)] [SigmaFinite (volume : Measure β)] [SigmaFinite (volume : Measure γ)]
@@ -217,7 +215,7 @@ Both sides reduce to the same expression.
 lemma kdT_snd (ε : Fin n → Bool) (w : KCo ε) : (kdT ε w).2 = kdCoS ε w false := rfl
 
 /- English proof (translation)
-Unfold `realCoordinatesSplitBySign`. Conclude with `(measurePreserving_sumPiEquivProdPi (fun _ => (volume : Measure ℝ))).comp (MeasurePreserving.symm _ (measurePreserving_piCongrLeft (fun _ : Fin n => (volume : Measure ℝ)) (kdIx ε)))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma measurePreserving_realCoordinatesSplitBySign (ε : Fin n → Bool) : MeasurePreserving (realCoordinatesSplitBySign ε) volume volume := by
   unfold realCoordinatesSplitBySign
@@ -225,7 +223,7 @@ private lemma measurePreserving_realCoordinatesSplitBySign (ε : Fin n → Bool)
     (MeasurePreserving.symm _ (measurePreserving_piCongrLeft (fun _ : Fin n => (volume : Measure ℝ)) (kdIx ε)))
 
 /- English proof (translation)
-Unfold `complexCoordinatesSplitBySign`. Conclude with `(measurePreserving_sumPiEquivProdPi (fun _ => (volume : Measure ℂ))).comp (MeasurePreserving.symm _ (measurePreserving_piCongrLeft (fun _ : KPair ε => (volume : Measure ℂ)) (kdPx ε)))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma measurePreserving_complexCoordinatesSplitBySign (ε : Fin n → Bool) : MeasurePreserving (complexCoordinatesSplitBySign ε) volume volume := by
   unfold complexCoordinatesSplitBySign
@@ -233,7 +231,7 @@ private lemma measurePreserving_complexCoordinatesSplitBySign (ε : Fin n → Bo
     (MeasurePreserving.symm _ (measurePreserving_piCongrLeft (fun _ : KPair ε => (volume : Measure ℂ)) (kdPx ε)))
 
 /- English proof (translation)
-Unfold `kdT`. Conclude with `kdRe_mp.comp ((measurePreserving_realCoordinatesSplitBySign ε).prod (measurePreserving_complexCoordinatesSplitBySign ε))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma kdT_mp (ε : Fin n → Bool) : MeasurePreserving (kdT ε) volume volume := by
   unfold kdT
@@ -248,11 +246,9 @@ variable {N : ℕ}
 def kdF (N : ℕ) (x : UCo N) : Fin N → Fin N → ℂ := Matrix.of.symm (NormedSpace.exp (skMat x))
 
 /- English proof (translation)
-Introduce `x y h`. Establish `hd : ∀ a b, skMat x a b = skMat y a b` using `fun a b => by rw [h]`. Use `Prod.ext (funext fun a => ?_) (funext fun ab => ?_)` and prove the remaining obligations. Use `hd a a` as an intermediate fact. Simplify using `only [skMat, if_pos rfl] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_left_cancel₀ Complex.I_ne_zero this` after adjusting the coercions. Take `⟨⟨a, b⟩, hab⟩` from `ab`. Establish `hab' : b < a` using `hab`. Use `hd a b` as an intermediate fact. Simplify using `only [skMat, if_neg (ne_of_gt hab'), dif_pos hab'] at this`.
-
-Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma kd_skMat_injective : Function.Injective (skMat (N := N)) := by
   intro x y h
@@ -268,9 +264,7 @@ lemma kd_skMat_injective : Function.Injective (skMat (N := N)) := by
     exact this
 
 /- English proof (translation)
-Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Simplify using `only [skMat]`. Use `split_ifs`. Conclude with `continuous_const.mul (Complex.continuous_ofReal.comp ((continuous_apply a).comp continuous_fst))`. Conclude with `(continuous_apply _).comp continuous_snd`.
-
-Conclude with `((continuous_apply _).comp continuous_snd).star.neg`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma kd_continuous_skMat : Continuous (skMat (N := N)) := by
   refine continuous_matrix fun a b => ?_
@@ -282,7 +276,7 @@ lemma kd_continuous_skMat : Continuous (skMat (N := N)) := by
   · exact continuous_const
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [skMat]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma kd_skMat_zero : skMat (0 : UCo N) = 0 := by
   ext a b
@@ -290,7 +284,7 @@ lemma kd_skMat_zero : skMat (0 : UCo N) = 0 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h : HasStrictFDerivAt (NormedSpace.exp : 𝔸 → 𝔸) ((ContinuousLinearEquiv.refl ℂ 𝔸 : 𝔸 ≃L[ℂ] 𝔸) : 𝔸 →L[ℂ] 𝔸) 0` using `hasStrictFDerivAt_exp_zero (𝕂 := ℂ)`. Use `⟨_, (h.toOpenPartialHomeomorph _).open_source, h.mem_toOpenPartialHomeomorph_source, ?_⟩` and prove the remaining obligations. Establish `hi` using `(h.toOpenPartialHomeomorph _).injOn`. Rewrite `hi` using `[HasStrictFDerivAt.toOpenPartialHomeomorph_coe]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma kd_exp_injOn {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℂ 𝔸] [CompleteSpace 𝔸] :
     ∃ V : Set 𝔸, IsOpen V ∧ (0 : 𝔸) ∈ V ∧ InjOn (NormedSpace.exp : 𝔸 → 𝔸) V := by
@@ -302,7 +296,7 @@ lemma kd_exp_injOn {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℂ 𝔸] [Co
   rwa [HasStrictFDerivAt.toOpenPartialHomeomorph_coe] at hi
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix (Fin N) (Fin N) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin N) (Fin N) ℂ) := Matrix.linftyOpNormedAlgebra`. Conclude with `kd_exp_injOn`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 lemma kd_exp_injOn_nhds : ∃ V : Set (Matrix (Fin N) (Fin N) ℂ), IsOpen V ∧ (0 : Matrix (Fin N) (Fin N) ℂ) ∈ V ∧
     InjOn (NormedSpace.exp : Matrix (Fin N) (Fin N) ℂ → Matrix (Fin N) (Fin N) ℂ) V := by
@@ -315,7 +309,7 @@ section KDCont
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Conclude with `NormedSpace.exp_continuous`.
+A detailed English derivation is pending.
 -/
 lemma kd_exp_continuous :
     Continuous (NormedSpace.exp : Matrix (Fin N) (Fin N) ℂ → Matrix (Fin N) (Fin N) ℂ) := by
@@ -324,15 +318,15 @@ lemma kd_exp_continuous :
 end KDCont
 
 /- English proof (translation)
-Conclude with `kd_exp_continuous.comp kd_continuous_skMat`.
+A detailed English derivation is pending.
 -/
 lemma continuous_kdF : Continuous (kdF N) := by
   exact kd_exp_continuous.comp kd_continuous_skMat
 
 /- English proof (translation)
-Take `⟨V, hVo, hV0, hVi⟩` from `kd_exp_injOn_nhds (N := N)`. Establish `hU : IsOpen (skMat ⁻¹' V)` using `hVo.preimage kd_continuous_skMat`. Establish `h0 : (0 : UCo N) ∈ skMat ⁻¹' V`. Rewrite using `[Set.mem_preimage, kd_skMat_zero]`. Conclude with `hV0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.1 hU 0 h0`. Use `⟨r, hr, fun x hx y hy hxy => kd_skMat_injective (hVi (hball hx) (hball hy) ?_)⟩` and prove the remaining obligations. Conclude with `hxy`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma kdF_injOn : ∃ r > 0, InjOn (kdF N) (Metric.ball 0 r) := by
   obtain ⟨V, hVo, hV0, hVi⟩ := kd_exp_injOn_nhds (N := N)

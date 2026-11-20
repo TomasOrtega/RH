@@ -8,9 +8,9 @@ open scoped TensorProduct
 namespace GlobalTheory.St.G.Torus
 
 /- English proof (translation)
-Use `haveI : Fintype k := Fintype.ofFinite k`. Establish `hinj : Function.Injective ψ.mulShift` using `AddChar.to_mulShift_inj_of_isPrimitive (AddChar.IsPrimitive.of_ne_one h)`. Establish `hbij : Function.Bijective ψ.mulShift` using `(Fintype.bijective_iff_injective_and_card _).mpr ⟨hinj, by simp⟩`. Take `⟨a, ha⟩` from `hbij.2 ψ'`. Use `⟨a, ?_, ha.symm⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `h' (by rw [← ha, AddChar.mulShift_zero])`.
+A detailed English derivation is pending.
 -/
 theorem exists_mulShift {k : Type} [Field k] [Finite k] (ψ ψ' : AddChar k ℂ) (h : ψ ≠ 1) (h' : ψ' ≠ 1) :
     ∃ a : k, a ≠ 0 ∧ ψ' = ψ.mulShift a := by
@@ -26,7 +26,7 @@ theorem exists_mulShift {k : Type} [Field k] [Finite k] (ψ ψ' : AddChar k ℂ)
   exact h' (by rw [← ha, AddChar.mulShift_zero])
 
 /- English proof (translation)
-Rewrite using `[mul_diagonal, diagonal_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_apply {k : Type} [Field k] {n : ℕ} (d : Fin n → kˣ) (M : Matrix (Fin n) (Fin n) k) (x y : Fin n) :
     (diagonal (fun i => ((d i)⁻¹ : kˣ).1) * M * diagonal (fun i => (d i).1) : Matrix (Fin n) (Fin n) k) x y
@@ -35,11 +35,11 @@ theorem conj_apply {k : Type} [Field k] {n : ℕ} (d : Fin n → kˣ) (M : Matri
   ring
 
 /- English proof (translation)
-Establish `hc : ∀ x y : Fin n, (((d x)⁻¹ * d y : kˣ) : k) ≠ 0` using `fun x y => Units.ne_zero _`. Establish `h1 : ∀ x : Fin n, (((d x)⁻¹ * d x : kˣ) : k) = 1` using `fun x => by`. Rewrite using `[inv_mul_cancel, Units.val_one]`. Simplify using `only [InJ, conj_apply, mul_eq_zero, hc, false_or, Bool.false_eq_true, false_implies, and_true]`. Use `and_congr Iff.rfl (and_congr ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `forall_congr' fun x => imp_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[h1, one_mul]`. Use `forall_congr' fun x => forall_congr' fun y => imp_congr_right fun _ => ?_ split_ifs with hxy` and prove the remaining obligations. Substitute `hxy` using the available equality. Rewrite using `[h1, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hc]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma inJ_diagonal_conj_iff {k : Type} [Field k] {n t : ℕ} (d : Fin n → kˣ) (M : Matrix (Fin n) (Fin n) k) :
     InJ n t n false M ↔ InJ n t n false (diagonal (fun i => ((d i)⁻¹ : kˣ).1) * M * diagonal (fun i => (d i).1)) := by
@@ -57,7 +57,7 @@ private lemma inJ_diagonal_conj_iff {k : Type} [Field k] {n t : ℕ} (d : Fin n 
     · simp [hc]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[pow_succ, ← mul_assoc, inv_mul_cancel, one_mul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private lemma inv_pow_mul_pow_succ_eq {k : Type} [Field k] (u : kˣ) (x y : ℕ) (h : x + 1 = y) :
     (((u ^ x)⁻¹ * u ^ y : kˣ) : k) = u := by
@@ -65,11 +65,11 @@ private lemma inv_pow_mul_pow_succ_eq {k : Type} [Field k] (u : kˣ) (x y : ℕ)
   rw [pow_succ, ← mul_assoc, inv_mul_cancel, one_mul]
 
 /- English proof (translation)
-Introduce `k _ _ n t ψ ψ' χ χ' hψ hψ'`. Take `⟨a, ha, rfl⟩` from `exists_mulShift ψ ψ' hψ hψ'`. Use `set u : kˣ := Units.mk0 (-a) (neg_ne_zero.mpr ha) with hu`. Use `⟨fun i => u ^ (i : ℕ), fun M => ⟨inJ_diagonal_conj_iff _ M, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [lamJ, conj_apply, Finset.prod_range_zero, mul_one, AddChar.mulShift_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← AddChar.map_neg_eq_inv]`. Use `congr 1`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Use `split_ifs with hxy`. Rewrite using `[inv_pow_mul_pow_succ_eq u _ _ hxy.1, hu, Units.val_mk0]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem torus_transitive : ∀ (k : Type) [Field k] [Finite k] (n t : ℕ) (ψ ψ' : AddChar k ℂ) (χ χ' : ℕ → MulChar k ℂ), ψ ≠ 1 → ψ' ≠ 1 → ∃ d : Fin n → kˣ, ∀ M : Matrix (Fin n) (Fin n) k, (InJ n t n false M ↔ InJ n t n false (diagonal (fun i => ((d i)⁻¹ : kˣ).1) * M * diagonal (fun i => (d i).1))) ∧ lamJ ψ' χ' n t 0 n M = (lamJ ψ χ n t 0 n (diagonal (fun i => ((d i)⁻¹ : kˣ).1) * M * diagonal (fun i => (d i).1)))⁻¹ := by
   intro k _ _ n t ψ ψ' χ χ' hψ hψ'

@@ -9,11 +9,11 @@ namespace PI.UnitaryGroupMassFormula.GelfCpt
 open MeasureTheory Matrix
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ H τ hH hτc hτa hτi hτH N ρ hc hirr A B hA hB`. Use `borelize G`. Set `μ : Measure G` to `Measure.haar`. Take `⟨a, ha, hAa⟩` from `hSpan G μ N ρ hc hirr A`. Take `⟨b, hb, hBb⟩` from `hSpan G μ N ρ hc hirr B`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `eA : A = intMat μ ρ a` using `by ext i j; exact hAa i j`. Establish `eB : B = intMat μ ρ b` using `by ext i j; exact hBb i j`. Substitute `eA eB` using the available equality. Take `⟨a', ha'c, ha'i, ea'⟩` from `hAvg G μ H hH N ρ hc a ha hA`. Take `⟨b', hb'c, hb'i, eb'⟩` from `hAvg G μ H hH N ρ hc b hb hB`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ea', ← eb', hMul G μ N ρ hc a' b' ha'c hb'c, hMul G μ N ρ hc b' a' hb'c ha'c]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Conclude with `hConv G μ H τ hτc hτa hτi hτH a' b' ha'c hb'c ha'i hb'i z`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem gelfCpt_of_steps (hAvg : AvgStep) (hMul : MulStep) (hSpan : PI.UMultOne.IntSpan)
     (hConv : PI.UMultOne.ConvComm) : PI.UMultOne.GelfandCompact := by

@@ -9,20 +9,20 @@ namespace Formalism.InvariantFactorPaths.ColumnFamilies
 variable {n : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => le_rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 lemma qb_domLE_refl (mu : Fin n → ℤ) : DomLE mu mu := ⟨fun _ => le_rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => (h1.1 i).trans (h2.1 i), h1.2.trans h2.2⟩`.
+Supply the required witnesses or components.
 -/
 lemma qb_domLE_trans {a b c : Fin n → ℤ} (h1 : DomLE a b) (h2 : DomLE b c) : DomLE a c :=
   ⟨fun i => (h1.1 i).trans (h2.1 i), h1.2.trans h2.2⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Proceed by induction on `a using WellFoundedLT.induction with`. Consider the case `_ a ih`. Establish `h1` using `h a`. Establish `e : (univ.filter (· ≤ a) : Finset (Fin n)) = insert a (univ.filter (· < a))`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `b`. Simplify using `[le_iff_eq_or_lt]`. Rewrite `h1` using `[e, sum_insert (by simp), sum_insert (by simp)]`. Establish `h2 : ∑ b ∈ univ.filter (· < a), f b = ∑ b ∈ univ.filter (· < a), g b` using `sum_congr rfl fun b hb => ih b (by simpa using hb)`. Combine the linear equalities and inequalities to obtain the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma qb_eq_of_psum_eq {f g : Fin n → ℤ}
     (h : ∀ a : Fin n, ∑ b ∈ univ.filter (· ≤ a), f b = ∑ b ∈ univ.filter (· ≤ a), g b) : f = g := by
@@ -40,15 +40,15 @@ lemma qb_eq_of_psum_eq {f g : Fin n → ℤ}
 def qb_psi (mu : Fin n → ℤ) : ℤ := ∑ a, ∑ b ∈ univ.filter (· ≤ a), mu b
 
 /- English proof (translation)
-The claim follows from `sum_le_sum fun a _ => h.1 a`.
+A detailed English derivation is pending.
 -/
 lemma qb_psi_le {nu mu : Fin n → ℤ} (h : DomLE nu mu) : qb_psi nu ≤ qb_psi mu :=
   sum_le_sum fun a _ => h.1 a
 
 /- English proof (translation)
-Apply `qb_eq_of_psum_eq` to reduce the goal to its premises. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨a, ha⟩` from `hne`. Establish `: qb_psi nu < qb_psi mu` using `sum_lt_sum (fun i _ => h.1 i) ⟨a, mem_univ _, lt_of_le_of_ne (h.1 a) ha⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 lemma qb_eq_of_psi {nu mu : Fin n → ℤ} (h : DomLE nu mu) (h2 : qb_psi mu ≤ qb_psi nu) : nu = mu := by
   apply qb_eq_of_psum_eq
@@ -60,13 +60,13 @@ lemma qb_eq_of_psi {nu mu : Fin n → ℤ} (h : DomLE nu mu) (h2 : qb_psi mu ≤
   linarith
 
 /- English proof (translation)
-The claim follows from `qb_eq_of_psi h1 (qb_psi_le h2)`.
+A detailed English derivation is pending.
 -/
 lemma qb_domLE_antisymm {nu mu : Fin n → ℤ} (h1 : DomLE nu mu) (h2 : DomLE mu nu) : nu = mu :=
   qb_eq_of_psi h1 (qb_psi_le h2)
 
 /- English proof (translation)
-Take `⟨nu, hnu, hmax⟩` from `s.exists_max_image qb_psi hs`. Conclude with `⟨nu, hnu, fun mu hmu hle => (qb_eq_of_psi hle (hmax mu hmu)).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma qb_exists_max (s : Finset (Fin n → ℤ)) (hs : s.Nonempty) :
     ∃ nu ∈ s, ∀ mu ∈ s, DomLE nu mu → mu = nu := by
@@ -74,7 +74,7 @@ lemma qb_exists_max (s : Finset (Fin n → ℤ)) (hs : s.Nonempty) :
   exact ⟨nu, hnu, fun mu hmu hle => (qb_eq_of_psi hle (hmax mu hmu)).symm⟩
 
 /- English proof (translation)
-Take `⟨nu, hnu, hmax⟩` from `qb_exists_max (s.filter fun mu => DomLE mu0 mu) ⟨mu0, by simp [h0, qb_domLE_refl]⟩`. Rewrite `hnu` using `[mem_filter]`. Conclude with `⟨nu, hnu.1, hnu.2, fun mu hmu hle => hmax mu (by rw [mem_filter]; exact ⟨hmu, qb_domLE_trans hnu.2 hle⟩) hle⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 lemma qb_exists_max_above (s : Finset (Fin n → ℤ)) {mu0 : Fin n → ℤ} (h0 : mu0 ∈ s) :
     ∃ nu ∈ s, DomLE mu0 nu ∧ ∀ mu ∈ s, DomLE nu mu → mu = nu := by
@@ -91,7 +91,7 @@ def qb_wtT (mu : Fin n → ℤ) (I : TIdx mu) : Fin n → ℤ :=
   fun a => mu (lastIdx n) + ((univ.filter fun c : ↥(TCols mu) => a ∈ (I c).1).card : ℤ)
 
 /- English proof (translation)
-Unfold `qb_wtT`. Rewrite using `[sum_add_distrib, sum_const, nsmul_eq_mul]`. Use `congr 1`. Simplify using `only [card_filter, Nat.cast_sum]`. Rewrite using `[sum_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma qb_sum_wtT (mu : Fin n → ℤ) (I : TIdx mu) (s : Finset (Fin n)) :
     ∑ b ∈ s, qb_wtT mu I b =
@@ -103,7 +103,7 @@ lemma qb_sum_wtT (mu : Fin n → ℤ) (I : TIdx mu) (s : Finset (Fin n)) :
   rw [sum_comm]
 
 /- English proof (translation)
-Simplify using `only [canT, mem_map, mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `x.2`. Introduce `h; exact ⟨⟨b.val, h⟩, by ext; rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma qb_mem_canT (mu : Fin n → ℤ) (c : ↥(TCols mu)) (b : Fin n) :
     b ∈ (canT mu c).1 ↔ b.val < colH mu c := by
@@ -113,9 +113,9 @@ lemma qb_mem_canT (mu : Fin n → ℤ) (c : ↥(TCols mu)) (b : Fin n) :
   · intro h; exact ⟨⟨b.val, h⟩, by ext; rfl⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : a.val < colH mu c`. Apply `card_le_card` to reduce the goal to its premises. Introduce `b hb`. Simplify using `only [mem_filter, mem_univ, true_and] at hb ⊢`. Conclude with `⟨hb.1, (qb_mem_canT mu c b).2 (lt_of_le_of_lt hb.1 h)⟩`.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mem_filter, mem_univ, true_and]`. Use `⟨?_, hb⟩` and prove the remaining obligations. Use `(qb_mem_canT mu c b).1 hb` as an intermediate fact. Conclude with `Fin.le_def.2 (by omega)`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma qb_col_le (mu : Fin n → ℤ) (c : ↥(TCols mu)) (J : Finset (Fin n)) (hJ : J.card = colH mu c) (a : Fin n) :
     ((univ.filter (· ≤ a)).filter (· ∈ J)).card ≤ ((univ.filter (· ≤ a)).filter (· ∈ (canT mu c).1)).card := by
@@ -134,15 +134,13 @@ lemma qb_col_le (mu : Fin n → ℤ) (c : ↥(TCols mu)) (J : Finset (Fin n)) (h
           exact Fin.le_def.2 (by omega)
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos (colH mu c) with h0 | hpos` into its components or cases. Establish `h1 : J = ∅` using `card_eq_zero.1 (hJ.trans h0)`. Establish `h2 : (canT mu c).1 = ∅` using `card_eq_zero.1 ((canT mu c).2.trans h0)`. Rewrite using `[h1, h2]`. Establish `hn` using `colH_le mu c`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `a : Fin n` to `⟨colH mu c - 1, by omega⟩`. Establish `hc : (canT mu c).1 ⊆ (univ.filter (· ≤ a)).filter (· ∈ (canT mu c).1)` using `fun b hb => by`. Simplify using `only [mem_filter, mem_univ, true_and]`. Use `⟨?_, hb⟩` and prove the remaining obligations. Use `(qb_mem_canT mu c b).1 hb` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Fin.le_def.2 (by simp only [a]; omega)`. Establish `h3 : J.card ≤ ((univ.filter (· ≤ a)).filter (· ∈ J)).card`. Rewrite using `[h a, hJ]`. Conclude with `(canT mu c).2.symm.le.trans (card_le_card hc)`. Establish `h4 : (univ.filter (· ≤ a)).filter (· ∈ J) = J` using `eq_of_subset_of_card_le (fun b hb => (mem_filter.1 hb).2) h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `b hb`. Rewrite `hb` using `[← h4]`. Simplify using `only [mem_filter, mem_univ, true_and] at hb`. Use `Fin.le_def.1 hb.1` as an intermediate fact.
-
-Conclude with `(qb_mem_canT mu c b).2 (by simp only [a] at this; omega)`. Rewrite using `[hJ, (canT mu c).2]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qb_col_eq (mu : Fin n → ℤ) (c : ↥(TCols mu)) (J : Finset (Fin n)) (hJ : J.card = colH mu c)
     (h : ∀ a : Fin n, ((univ.filter (· ≤ a)).filter (· ∈ J)).card =
@@ -171,13 +169,13 @@ lemma qb_col_eq (mu : Fin n → ℤ) (c : ↥(TCols mu)) (J : Finset (Fin n)) (h
     · rw [hJ, (canT mu c).2]
 
 /- English proof (translation)
-Unfold `colH`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hc`. Establish `: (univ.filter fun m => c ≤ mu m) ⊆ Finset.Iio b` using `fun m hm => by`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Simplify using `only [mem_filter, mem_univ, true_and] at hm`. Rewrite using `[mem_Iio]`. Assume the negation of the conclusion as `hmb`. Conclude with `hc (hm.trans (hmu (not_lt.1 hmb)))`. Use `card_le_card this` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Fin.card_Iio]`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Establish `: Finset.Iic b ⊆ (univ.filter fun m => c ≤ mu m)` using `fun m hm => by`. Simplify using `only [mem_filter, mem_univ, true_and]`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h.trans (hmu (mem_Iic.1 hm))`. Use `card_le_card this` as an intermediate fact. Rewrite `this` using `[Fin.card_Iic]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma qb_lt_colH_iff {mu : Fin n → ℤ} (hmu : Dominant mu) (c : ℤ) (b : Fin n) :
     b.val < colH mu c ↔ c ≤ mu b := by
@@ -202,18 +200,18 @@ lemma qb_lt_colH_iff {mu : Fin n → ℤ} (hmu : Dominant mu) (c : ℤ) (b : Fin
     omega
 
 /- English proof (translation)
-The claim follows from `Fin.le_def.2 (by have := b.2; simp only [lastIdx]; omega)`.
+A detailed English derivation is pending.
 -/
 lemma qb_le_lastIdx (b : Fin n) : b ≤ lastIdx n := Fin.le_def.2 (by have := b.2; simp only [lastIdx]; omega)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Unfold `qb_wtT`. Establish `e : ((univ.filter fun c : ↥(TCols mu) => b ∈ (canT mu c).1).map (Function.Embedding.subtype _)) = Finset.Ioc (mu (lastIdx n)) (mu b)`. Use extensionality with `c`. Rewrite using `[mem_map, mem_Ioc]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨c', hc'⟩, h1, rfl⟩`. Rewrite `h1` using `[mem_filter, qb_mem_canT, qb_lt_colH_iff hmu]`. Conclude with `⟨(mem_Ioc.1 hc').1, h1.2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨c, mem_Ioc.2 ⟨h1, h2.trans (hmu (Fin.zero_le b))⟩⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[mem_filter, qb_mem_canT, qb_lt_colH_iff hmu]`. Conclude with `⟨mem_univ _, h2⟩`. Rewrite using `[← card_map (Function.Embedding.subtype _), e, Int.card_Ioc]`. Use `hmu (qb_le_lastIdx b)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Int.toNat_of_nonneg (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma qb_wtT_can {mu : Fin n → ℤ} (hmu : Dominant mu) : qb_wtT mu (canT mu) = mu := by
   funext b
@@ -236,11 +234,11 @@ lemma qb_wtT_can {mu : Fin n → ℤ} (hmu : Dominant mu) : qb_wtT mu (canT mu) 
   ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a conv_rhs => rw [← qb_wtT_can hmu]`. Rewrite using `[qb_sum_wtT, qb_sum_wtT]`. Establish `: ∑ c : ↥(TCols mu), (((univ.filter (· ≤ a)).filter (· ∈ (I c).1)).card : ℤ) ≤ ∑ c : ↥(TCols mu), (((univ.filter (· ≤ a)).filter (· ∈ (canT mu c).1)).card : ℤ)` using `sum_le_sum fun c _ => by exact_mod_cast qb_col_le mu c (I c).1 (I c).2 a`. Combine the linear equalities and inequalities to obtain the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `conv_rhs => rw [← qb_wtT_can hmu]`. Rewrite using `[qb_sum_wtT, qb_sum_wtT]`. Use `congr 1`. Use `sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [filter_univ_mem]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(I c).2, (canT mu c).2]`.
+A detailed English derivation is pending.
 -/
 lemma qb_wtT_le {mu : Fin n → ℤ} (hmu : Dominant mu) (I : TIdx mu) : DomLE (qb_wtT mu I) mu := by
   constructor
@@ -259,13 +257,13 @@ lemma qb_wtT_le {mu : Fin n → ℤ} (hmu : Dominant mu) (I : TIdx mu) : DomLE (
     rw [(I c).2, (canT mu c).2]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `c`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `qb_col_eq mu c (I c).1 (I c).2` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a`. Establish `h1 : ∑ b ∈ univ.filter (· ≤ a), qb_wtT mu I b = ∑ b ∈ univ.filter (· ≤ a), qb_wtT mu (canT mu) b`. Rewrite using `[h, qb_wtT_can hmu]`. Rewrite `h1` using `[qb_sum_wtT, qb_sum_wtT]`. Establish `h2 : ∑ c : ↥(TCols mu), ((((univ.filter (· ≤ a)).filter (· ∈ (canT mu c).1)).card : ℤ) - (((univ.filter (· ≤ a)).filter (· ∈ (I c).1)).card : ℤ)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sum_sub_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `(sum_eq_zero_iff_of_nonneg (fun c _ => by`. Use `qb_col_le mu c (I c).1 (I c).2 a` as an intermediate fact. Establish `: (((univ.filter (· ≤ a)).filter (· ∈ (I c).1)).card : ℤ) ≤ (((univ.filter (· ≤ a)).filter (· ∈ (canT mu c).1)).card : ℤ)` using `by exact_mod_cast this`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `linarith)).1 h2 c (mem_univ c)`. Establish `: (((univ.filter (· ≤ a)).filter (· ∈ (I c).1)).card : ℤ) = (((univ.filter (· ≤ a)).filter (· ∈ (canT mu c).1)).card : ℤ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Introduce and unpack `rfl`. Conclude with `qb_wtT_can hmu`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma qb_wtT_eq_iff {mu : Fin n → ℤ} (hmu : Dominant mu) (I : TIdx mu) : qb_wtT mu I = mu ↔ I = canT mu := by
   constructor

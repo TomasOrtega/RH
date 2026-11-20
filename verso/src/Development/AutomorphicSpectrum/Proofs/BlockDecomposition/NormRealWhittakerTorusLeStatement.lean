@@ -16,7 +16,7 @@ open scoped NumberField.AdeleRing ValuativeRel
 open GlobalTheory.CompanionTheory.GL2Factorization
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GL2Factorization.NormWth.norm_WthR_iwasawa_le | exact GlobalTheory.CompanionTheory.GL2Factorization.NormWth.norm_WthR_iwasawa_le | (intros; apply GlobalTheory.CompanionTheory.GL2Factorization.NormWth.norm_WthR_iwasawa_le <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.norm_real_whittaker_torus_le : ∀ (n : ℤ) (a b : ℝˣ) (k : GL (Fin 2) ℝ), k.val * k.valᵀ = 1 → ‖GL2LocalData.WthR n (dg2 (a * b) b * k)‖ ≤ |(a : ℝ)| ^ (((n.natAbs + 1 : ℕ) : ℝ) / 2) * Real.exp (-(2 * Real.pi * |(a : ℝ)|)) := by
   first | exact @GlobalTheory.CompanionTheory.GL2Factorization.NormWth.norm_WthR_iwasawa_le | exact GlobalTheory.CompanionTheory.GL2Factorization.NormWth.norm_WthR_iwasawa_le | (intros; apply GlobalTheory.CompanionTheory.GL2Factorization.NormWth.norm_WthR_iwasawa_le <;> assumption)

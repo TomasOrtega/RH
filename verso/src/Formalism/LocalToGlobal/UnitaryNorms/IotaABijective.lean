@@ -5,7 +5,7 @@ noncomputable section
 namespace Formalism.L2.Host
 
 /- English proof (translation)
-Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `((AlgebraicClosure.isAlgebraic ℚ).isAlgebraic x).algHom ι.toRatAlgHom`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_mem (ι : Qb →+* ℂ) (x : Qb) : ι x ∈ algebraicClosure ℚ ℂ := by
   rw [mem_algebraicClosure_iff]
@@ -14,9 +14,9 @@ theorem iota_mem (ι : Qb →+* ℂ) (x : Qb) : ι x ∈ algebraicClosure ℚ �
 def iotaA (ι : Qb →+* ℂ) : Qb →+* algebraicClosure ℚ ℂ := ι.codRestrict (algebraicClosure ℚ ℂ) (iota_mem ι)
 
 /- English proof (translation)
-Use `⟨(iotaA ι).injective, fun y => ?_⟩` and prove the remaining obligations. Establish `hy : IsIntegral ℚ (y : ℂ)` using `(mem_algebraicClosure_iff.1 y.2).isIntegral`. Establish `hy' : IsIntegral ℚ y` using `IntermediateField.isIntegral_iff.2 hy`. Establish `hr : y ∈ (iotaA ι).range`. Use `Polynomial.Splits.mem_range_of_isRoot (IsAlgClosed.splits ((minpoly ℚ y).map (algebraMap ℚ Qb))) (Polynomial.map_ne_zero (f := algebraMap ℚ Qb) (minpoly.ne_zero hy')) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.map_map]`. Establish `e : (iotaA ι).comp (algebraMap ℚ Qb) = algebraMap ℚ (algebraicClosure ℚ ℂ)` using `Subsingleton.elim _ _`. Rewrite using `[e, Polynomial.IsRoot, ← Polynomial.eval₂_eq_eval_map, ← Polynomial.aeval_def]`. Conclude with `minpoly.aeval ℚ y`. Conclude with `RingHom.mem_range.1 hr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaA_bijective (ι : Qb →+* ℂ) : Function.Bijective (iotaA ι) := by
   refine ⟨(iotaA ι).injective, fun y => ?_⟩

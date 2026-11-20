@@ -10,13 +10,13 @@ namespace Formalism.L2.SG.NormCut
 section Abs
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft (j⁻¹ * s))]`. Simplify using `only [Equiv.coe_mulLeft]`. Establish `h1 : ∀ w : G, conj (p (s⁻¹ * i * (j⁻¹ * s * w))) * p (s⁻¹ * j * (j⁻¹ * s * w)) = if w ∈ U then conj (p (s⁻¹ * (i * j⁻¹) * s)) else 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `w`. Establish `hw : s⁻¹ * j * (j⁻¹ * s * w) = w` using `by group`. Establish `hw2 : s⁻¹ * i * (j⁻¹ * s * w) = s⁻¹ * (i * j⁻¹) * s * w` using `by group`. Rewrite using `[hw, hw2]`. Use `split_ifs with h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr _ w h, map_mul, mul_assoc, hn w h, mul_one]`. Rewrite using `[h0 w h, mul_zero]`. Simplify using `only [h1]`. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul]`. Establish `hc : ((Finset.univ.filter fun w => w ∈ U).card : ℂ) = (Nat.card U : ℂ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_eq_fintype_card, ← Set.toFinset_card]`. Use `congr 2`. Use extensionality with `w`. Simplify using the standard rewrite rules. Rewrite using `[hc]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colSum {G : Type*} [Group G] [Fintype G] (U : Set G) (p : G → ℂ) (h0 : ∀ x, x ∉ U → p x = 0)
     (hr : ∀ x, ∀ w ∈ U, p (x * w) = p x * p w) (hn : ∀ w ∈ U, conj (p w) * p w = 1) (i j : G) :
@@ -45,9 +45,9 @@ theorem colSum {G : Type*} [Group G] [Fintype G] (U : Set G) (p : G → ℂ) (h0
   rw [hc]
 
 /- English proof (translation)
-Rewrite using `[← Function.Bijective.sum_comp hb f]`. Simplify using `only [Fintype.sum_prod_type]`. Establish `h1 : ∀ (a : A) (c : C) (w : U), f ((a : G) * s c * (w : G)) = f (s c)` using `fun a c w => hf (s c) a a.2 w w.2`. Simplify using `only [h1, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem orbitSum {G C : Type*} [Group G] [Fintype G] [Fintype C] (A U : Set G) (s : C → G)
     (hb : Function.Bijective (fun x : A × C × U => (x.1 : G) * s x.2.1 * (x.2.2 : G))) (f : G → ℂ)

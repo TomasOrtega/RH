@@ -13,11 +13,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace PositivityTheory.Rg.BcB.F.FG
 
 /- English proof (translation)
-Introduce `E _ _ _ n a b h w ν ϖ k hw hϖ hν`. Establish `h0 : ϖ ≠ 0` using `b_unif_ne_zero hϖ`. Establish `hord : ordL ((Units.mk0 ϖ h0 : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 1`. Rewrite using `[Units.val_mk0]`. Conclude with `ordL_unif hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hH` using `PositivityTheory.Rg.BcB.F.Fok.ctT_hecke E n a b h w ν (Units.mk0 ϖ h0) hw hord hν k`. Rewrite `hH` using `[Units.val_mk0]`. Use `⟨hH.1, fun y hy g => (hH.2 y hy g).2, ?_⟩` and prove the remaining obligations. Establish `hm : ν (-1) = 1`. Apply `hν` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `ord_neg_one' (w := w)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.BCT.InertChar.ord_eq_ordL]`. Then use the resulting hypothesis. Rewrite using `[map_pow, hm, one_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ctHecke_holds : CtHecke := by
   intro E _ _ _ n a b h w ν ϖ k hw hϖ hν

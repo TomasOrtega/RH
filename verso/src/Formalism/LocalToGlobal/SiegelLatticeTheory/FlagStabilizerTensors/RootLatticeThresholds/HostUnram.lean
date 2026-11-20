@@ -15,7 +15,7 @@ def HostUnramG : Prop :=
     ((D.host.g i : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal → ((D.host.g i : ℕ) : 𝓞 D.host.F) ∉ p.asIdeal ^ 2
 
 /- English proof (translation)
-Conclude with `Formalism.L2.SG.Pf.TypedLoc.tower_val D.host.F D.host.E (D.host.g_prime i) (D.nd.g_split i) p hi`.
+A detailed English derivation is pending.
 -/
 theorem gi_val (D : D7) (p : HeightOneSpectrum (𝓞 D.host.F)) (i : Fin 2)
     (hi : ((D.host.g i : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal) :
@@ -23,7 +23,7 @@ theorem gi_val (D : D7) (p : HeightOneSpectrum (𝓞 D.host.F)) (i : Fin 2)
   exact Formalism.L2.SG.Pf.TypedLoc.tower_val D.host.F D.host.E (D.host.g_prime i) (D.nd.g_split i) p hi
 
 /- English proof (translation)
-Introduce `D _ p i hi hsq`. Establish `h2` using `(p.intValuation_le_pow_iff_mem _ 2).mpr hsq`. Rewrite `h2` using `[gi_val D p i hi]`. Establish `h3` using `WithZero.exp_le_exp.mp h2`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem hostUnramG : HostUnramG := by
   intro D _ p i hi hsq

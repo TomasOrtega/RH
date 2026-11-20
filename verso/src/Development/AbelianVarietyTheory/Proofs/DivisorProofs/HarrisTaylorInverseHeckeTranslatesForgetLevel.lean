@@ -17,7 +17,7 @@ namespace GlobalTheory.UPel.HT.Hecke.Comp
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {S : Scheme.{0}}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero, eta_zero]`. Consider the case `succ n ih => rw [succ_nsmul, o.eta_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem eta_nsmul {M : ℕ} {s : S ⟶ Sp R} (o : Obj b M s) (n : ℕ) (x : D.La) :
     o.eta (n • x) = o.eta x ^ n := by
@@ -26,34 +26,34 @@ theorem eta_nsmul {M : ℕ} {s : S ⟶ Sp R} (o : Obj b M s) (n : ℕ) (x : D.La
   | succ n ih => rw [succ_nsmul, o.eta_add, ih, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[transl, comp_one, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_one' {A : Over S} [GrpObj A] : transl (1 : 𝟙_ (Over S) ⟶ A) = 𝟙 A := by
   rw [transl, comp_one, _root_.mul_one]
 
 /- English proof (translation)
-Rewrite using `[transl, comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_transl {T A : Over S} [GrpObj A] (y : T ⟶ A) (a : 𝟙_ (Over S) ⟶ A) :
     y ≫ transl a = y * (toUnit T ≫ a) := by
   rw [transl, comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]
 
 /- English proof (translation)
-Rewrite using `[comp_transl, transl, transl, comp_mul, _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_mul' {A : Over S} [GrpObj A] (a c : 𝟙_ (Over S) ⟶ A) :
     transl (a * c) = transl a ≫ transl c := by
   rw [comp_transl, transl, transl, comp_mul, _root_.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[comp_pow, Category.comp_id, transl, mul_pow, ← comp_pow, ha, comp_one, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_pow {A : Over S} [GrpObj A] [IsCommMonObj A] (a : 𝟙_ (Over S) ⟶ A) (k : ℕ) (ha : a ^ k = 1) :
     transl a ≫ ((𝟙 A) ^ k) = (𝟙 A) ^ k := by
   rw [comp_pow, Category.comp_id, transl, mul_pow, ← comp_pow, ha, comp_one, _root_.mul_one]
 
 /- English proof (translation)
-Establish `h1` using `(b.unit k hk).map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ s.appTop).hom`. Simplify using `using h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_natCast (b : Base D R) (s : S ⟶ Sp R) (k : ℕ) (hk : k.Coprime p) : IsUnit ((k : ℕ) : Γ(S, ⊤)) := by
   have h1 := (b.unit k hk).map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ s.appTop).hom
@@ -66,7 +66,7 @@ namespace GlobalTheory.UPel.HT.Hecke.Comp
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {S : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `hh`. Rewrite using `[← eta_nsmul, smul_smul, mul_comm k, o.eta_ker]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_eq_one_of_mem {k N : ℕ} {s : S ⟶ Sp R} (o : Obj b (N * k * k) s) (h : 𝟙_ (Over S) ⟶ o.A)
     (hh : h ∈ heckeSub o LinearMap.id (N * k)) : h ^ k = 1 := by
@@ -74,9 +74,9 @@ theorem pow_eq_one_of_mem {k N : ℕ} {s : S ⟶ Sp R} (o : Obj b (N * k * k) s)
   rw [← eta_nsmul, smul_smul, mul_comm k, o.eta_ker]
 
 /- English proof (translation)
-Take `⟨-, hfin, het, hsurj⟩` from `GlobalTheory.abelianScheme_id_pow_finite_etale_surjective S o.A k o.ab (isUnit_natCast b s k hkp)`. Use `⟨(heckeSub_finite_free p D R b LinearMap.id k (N * k) hk (Nat.mul_pos hN hk) hkp (Nat.Coprime.mul hNp hkp) S s o).1, ?_, ?_, ?_, hfin, het, hsurj, hfib⟩` and prove the remaining obligations. Use `show (transl (1 : 𝟙_ (Over S) ⟶ o.A)).left = 𝟙 _`. Rewrite using `[transl_one']`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a c show (transl (a.1 * c.1)).left = _`. Rewrite using `[transl_mul']`. Both sides reduce to the same expression. Introduce `a show (transl a.1 ≫ ((𝟙 o.A) ^ k)).left = _`. Rewrite using `[transl_pow _ k (pow_eq_one_of_mem o a.1 a.2)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGaloisCover_pow (k N : ℕ) (hk : 0 < k) (hN : 0 < N) (hkp : k.Coprime p) (hNp : N.Coprime p)
     (s : S ⟶ Sp R) (o : Obj b (N * k * k) s)
@@ -104,7 +104,7 @@ namespace GlobalTheory.UPel.HT.Hecke.Comp
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Use `(GlobalTheory.CechPic.cls_linComb hL _ _ h).trans ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.CechPic.pull_id]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem cls_lbPow' {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (m : ℕ) (h : (GlobalTheory.UPel.HT.Hecke.lbPow L m).IsLB) :
     GlobalTheory.CechPic.cls (GlobalTheory.UPel.HT.Hecke.lbPow L m) h = m • GlobalTheory.CechPic.cls L hL := by
@@ -112,7 +112,7 @@ theorem cls_lbPow' {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (m : ℕ) (h : (Glo
   simp [GlobalTheory.CechPic.pull_id]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.UPel.HT.Hecke.sq2, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem grpSchemeSquareProductMap_comp {A B C : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] [GrpObj C]
     [IsCommMonObj C] (f : A ⟶ B) (g : B ⟶ C) :
@@ -122,21 +122,21 @@ theorem grpSchemeSquareProductMap_comp {A B C : Over S} [GrpObj A] [IsCommMonObj
   ext <;> simp
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.UPel.HT.Hecke.sq2, ← Over.comp_left, lift_fst]`.
+Simplify using the standard rewrite rules.
 -/
 theorem grpSchemeSquareProductMap_fst {A B : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (f : A ⟶ B) :
     GlobalTheory.UPel.HT.Hecke.sq2 f ≫ (fst B B).left = (fst A A).left ≫ f.left := by
   simp only [GlobalTheory.UPel.HT.Hecke.sq2, ← Over.comp_left, lift_fst]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.UPel.HT.Hecke.sq2, ← Over.comp_left, lift_snd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem grpSchemeSquareProductMap_snd {A B : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (f : A ⟶ B) :
     GlobalTheory.UPel.HT.Hecke.sq2 f ≫ (snd B B).left = (snd A A).left ≫ f.left := by
   simp only [GlobalTheory.UPel.HT.Hecke.sq2, ← Over.comp_left, lift_snd]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.UPel.HT.Hecke.sq2, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_one_id_grpSchemeSquareProductMap {A B : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (f : A ⟶ B)
     [IsMonHom f] : (lift (1 : A ⟶ A) (𝟙 A)).left ≫ GlobalTheory.UPel.HT.Hecke.sq2 f = f.left ≫ (lift (1 : B ⟶ B) (𝟙 B)).left := by
@@ -145,7 +145,7 @@ theorem lift_one_id_grpSchemeSquareProductMap {A B : Over S} [GrpObj A] [IsCommM
   ext <;> simp
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.UPel.HT.Hecke.sq2, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_id_one_grpSchemeSquareProductMap {A B : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (f : A ⟶ B)
     [IsMonHom f] : (lift (𝟙 A) (1 : A ⟶ A)).left ≫ GlobalTheory.UPel.HT.Hecke.sq2 f = f.left ≫ (lift (𝟙 B) (1 : B ⟶ B)).left := by
@@ -158,39 +158,35 @@ end GlobalTheory.UPel.HT.Hecke.Comp
 namespace GlobalTheory.UPel.HT.Hecke.Comp
 
 /- English proof (translation)
-Introduce `p _ D R _ b g g' c c' k N hkp hN3 hNp hgg' hg'g hcc' hc S s o o₁ o₂ ψ₁ ψ₂ h₁ h₂`. Take `⟨hm₁, ha₁, he₁, hG₁, ⟨hP₁⟩, -⟩` from `h₁`. Take `⟨hm₂, ha₂, he₂, hG₂, ⟨hP₂⟩, -⟩` from `h₂`. Establish `hk : 0 < k` using `Nat.pos_of_ne_zero (by`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(Fact.out : p.Prime).one_lt.ne' ((Nat.coprime_zero_left p).1 hkp))`. Establish `hN : 0 < N` using `by omega`. Establish `hfibAll : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (k N : ℕ), 0 < k → 0 < N → k.Coprime p → N.Coprime p → ∀ (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b (N * k * k) s) (K : Type) [Field K] [IsAlgClosed K] (y y' : Sp K ⟶ o.A.left), y ≫ ((𝟙 o.A) ^ …` using `GlobalTheory.T.geometric_fibre_mulK_torsor_harrisTaylor`. Establish `hbil : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ P : LB (G2 A).left, P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → Out.RelAmple A (P.pull (lift (𝟙 A) (𝟙 …` using `GlobalTheory.T.lbIso_lbPow_sq_pull_sq2_of_isGen_of_relAmple`. Establish `hGal` using `isGaloisCover_pow k N hk hN hkp hNp s o (hfibAll p D R b k N hk hN hkp hNp S s o)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hKm, -, -, -⟩` from `GlobalTheory.abelianScheme_id_pow_finite_etale_surjective S o.A k o.ab (isUnit_natCast b s k hkp)`. Establish `hχ : ∀ h ∈ heckeSub o LinearMap.id (N * k), h ≫ (ψ₁ ≫ ψ₂) = 1`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `show o.eta ((N * k) • x) ≫ (ψ₁ ≫ ψ₂) = 1`. Establish `e : o.eta ((N * k) • x) ≫ ψ₁ = o₁.eta (N • g x)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he₁, map_nsmul, hg'g, smul_smul]`. Rewrite using `[← Category.assoc, e]`. Conclude with `comp_eq_one_of_transl ψ₂ _ (hG₂.inv ⟨_, mem_heckeSub o₁ g N x⟩)`. Take `⟨φ, hφm, hφ⟩` from `GlobalTheory.HomDescent.exists_desc S o.A o.A o₂.A _ ((𝟙 o.A) ^ k) hKm hGal (ψ₁ ≫ ψ₂) inferInstance hχ`. Take `⟨f₁, hf₁m, hf₁⟩` from `GlobalTheory.HomDescent.exists_desc S o.A o₁.A o.A _ ψ₁ hm₁ hG₁ ((𝟙 o.A) ^ k) hKm (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[comp_pow, Category.comp_id, ← eta_nsmul, smul_smul, mul_comm k, o.eta_ker])`. Take `⟨θ, hθm, hθ⟩` from `GlobalTheory.HomDescent.exists_desc S o₁.A o₂.A o.A _ ψ₂ hm₂ hG₂ f₁ hf₁m (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[he₁, Category.assoc, hf₁, comp_pow, Category.comp_id, ← eta_nsmul, map_nsmul, hg'g, smul_smul, smul_smul, mul_comm k N, o.eta_ker])`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKe : Epi ((𝟙 o.A) ^ k).left` using `GlobalTheory.GaloisCartDesc.epi_of_isGaloisCover hGal`. Establish `hKeO : Epi ((𝟙 o.A) ^ k)` using `(Over.forget S).epi_of_epi_map hKe`. Establish `hχe : Epi (ψ₁ ≫ ψ₂).left`. Use `GlobalTheory.GaloisCartDesc.epi_of_isGaloisCover hG₁` as an intermediate fact. Use `GlobalTheory.GaloisCartDesc.epi_of_isGaloisCover hG₂` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Over.comp_left]`. Use `infer_instance`. Establish `hχeO : Epi (ψ₁ ≫ ψ₂)` using `(Over.forget S).epi_of_epi_map hχe`. Establish `e1 : φ ≫ θ = 𝟙 o.A`. Rewrite using `[← cancel_epi ((𝟙 o.A) ^ k), ← Category.assoc, hφ, Category.assoc, hθ, hf₁, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e2 : θ ≫ φ = 𝟙 o₂.A`. Rewrite using `[← cancel_epi (ψ₁ ≫ ψ₂), Category.comp_id, Category.assoc, reassoc_of% hθ, ← Category.assoc, hf₁, hφ]`. Set `e : o.A ≅ o₂.A` to `⟨φ, θ, e1, e2⟩`. Use `haveI : IsMonHom e.hom := hφm`. Establish `hχa : ∀ c0, o.act.act c0 ≫ ψ₁ ≫ ψ₂ = (ψ₁ ≫ ψ₂) ≫ o₂.act.act c0` using `fun c0 => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[reassoc_of% (ha₁ c0), ha₂ c0, Category.assoc]`. Establish `hpol : LBIso o.P (o₂.P.pull (sq2 φ))`. Establish `hQ₂ : (o₂.P.pull (sq2 φ)).IsLB` using `pull_isLB o₂.isLB _`. Establish `hc0 : 0 < c` using `Nat.pos_of_ne_zero (by rintro rfl; rw [zero_mul] at hcc'; have := pow_pos hk 2; omega)`. Establish `hc'0 : 0 < c'` using `Nat.pos_of_ne_zero (by rintro rfl; rw [mul_zero] at hcc'; have := pow_pos hk 2; omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : k ^ 2 / c * (k ^ 2 / c') = k ^ 2`. Rewrite using `[Nat.div_eq_of_eq_mul_left hc0 (by rw [← hcc', mul_comm]), Nat.div_eq_of_eq_mul_left hc'0 hcc'.symm, mul_comm]`. Conclude with `hcc'`. Establish `hL : ∀ m, (GlobalTheory.UPel.HT.Hecke.lbPow o.P m).IsLB` using `fun m => LB.isLB_linComb o.isLB _ _`. Establish `hL₁ : ∀ m, (GlobalTheory.UPel.HT.Hecke.lbPow o₁.P m).IsLB` using `fun m => LB.isLB_linComb o₁.isLB _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `E₁` using `(GlobalTheory.CechPic.cls_eq_iff (hL _) (pull_isLB o₁.isLB _)).2 hP₁`. Establish `E₂` using `(GlobalTheory.CechPic.cls_eq_iff (hL₁ _) (pull_isLB o₂.isLB _)).2 hP₂`. Establish `E₀` using `(GlobalTheory.CechPic.cls_eq_iff (hL _) (pull_isLB o.isLB _)).2 (hbil S o.A o.ab o.P o.isLB o.rig₁ o.rig₂ o.ample k)`. Rewrite `E₁` using `[cls_lbPow' o.isLB, GlobalTheory.CechPic.cls_pull o₁.isLB]`. Rewrite `E₂` using `[cls_lbPow' o₁.isLB, GlobalTheory.CechPic.cls_pull o₂.isLB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `E₀` using `[cls_lbPow' o.isLB, GlobalTheory.CechPic.cls_pull o.isLB]`. Establish `c2₁ : GlobalTheory.CechPic.pull (lift (1 : o₂.A ⟶ o₂.A) (𝟙 _)).left (GlobalTheory.CechPic.cls o₂.P o₂.isLB) = 0`. Rewrite using `[← GlobalTheory.CechPic.cls_pull o₂.isLB _ (pull_isLB o₂.isLB _)]`. Conclude with `(GlobalTheory.CechPic.cls_eq_zero_iff _).2 o₂.rig₁`. Establish `c2₂ : GlobalTheory.CechPic.pull (lift (𝟙 _) (1 : o₂.A ⟶ o₂.A)).left (GlobalTheory.CechPic.cls o₂.P o₂.isLB) = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← GlobalTheory.CechPic.cls_pull o₂.isLB _ (pull_isLB o₂.isLB _)]`. Conclude with `(GlobalTheory.CechPic.cls_eq_zero_iff _).2 o₂.rig₂`. Use `GlobalTheory.T.pullback_prod_injective_birigidified_galois_isogeny S o.A o.A _ ((𝟙 o.A) ^ k) o.ab o.ab hKm hGal o.P _ o.isLB hQ₂ o.rig₁ o.rig₂ ?_ ?_ ?_` and prove the remaining obligations. Use `(GlobalTheory.CechPic.cls_eq_zero_iff (pull_isLB hQ₂ _)).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CechPic.cls_pull hQ₂, GlobalTheory.CechPic.cls_pull o₂.isLB, ← GlobalTheory.CechPic.pull_comp, lift_one_id_grpSchemeSquareProductMap, GlobalTheory.CechPic.pull_comp, c2₁, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `(GlobalTheory.CechPic.cls_eq_zero_iff (pull_isLB hQ₂ _)).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CechPic.cls_pull hQ₂, GlobalTheory.CechPic.cls_pull o₂.isLB, ← GlobalTheory.CechPic.pull_comp, lift_id_one_grpSchemeSquareProductMap, GlobalTheory.CechPic.pull_comp, c2₂, map_zero]`. Use `(GlobalTheory.CechPic.cls_eq_iff (pull_isLB o.isLB _) (pull_isLB hQ₂ _)).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CechPic.cls_pull o.isLB, GlobalTheory.CechPic.cls_pull hQ₂, GlobalTheory.CechPic.cls_pull o₂.isLB, ← GlobalTheory.CechPic.pull_comp, ← grpSchemeSquareProductMap_comp, hφ, grpSchemeSquareProductMap_comp, GlobalTheory.CechPic.pull_comp, ← E₂, map_nsmul, ← E₁, smul_smu …`. Use `⟨⟨φ.left, sq2 φ, isGrpPullback_of_iso e, ⟨grpSchemeSquareProductMap_fst φ, grpSchemeSquareProductMap_snd φ⟩, ?_, hpol, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c0 show (o.act.act c0).left ≫ φ.left = φ.left ≫ (o₂.act.act c0).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Use `haveI := o.act.hom c0`. Establish `hKcomm : ((𝟙 o.A) ^ k) ≫ o.act.act c0 = o.act.act c0 ≫ ((𝟙 o.A) ^ k)`.
-
-Rewrite using `[pow_comp, comp_pow, Category.id_comp, Category.comp_id]`. Rewrite using `[← cancel_epi ((𝟙 o.A) ^ k), ← Category.assoc, hKcomm, Category.assoc, hφ, hχa, ← hφ, Category.assoc]`. Introduce `y show (o.eta (((N * k * k) / N) • y)).left ≫ φ.left = 𝟙 S ≫ (o₂.eta y).left`. Establish `hd : N * k * k / N = k * k` using `by rw [_root_.mul_assoc, Nat.mul_div_cancel_left _ hN]`. Rewrite using `[hd, Category.id_comp, ← Over.comp_left]`.
-
-Use `congr 1`. Rewrite using `[he₂, he₁, hg'g, Category.assoc, ← hφ, ← Category.assoc, comp_pow, Category.comp_id, ← eta_nsmul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_objMap_forget : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (g g' : D.La →ₗ[D.O] D.La) (c c' k N : ℕ), k.Coprime p → 3 ≤ N → N.Coprime p → (∀ x, g (g' x) = k • x) → (∀ x, g' (g x) = k • x) → c * c' = k ^ 2 → ∀ (hc : (N * k * k).Coprime p) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b (N * k * k) s) (o₁ : Obj b (N * k) s) (o₂ : Obj b N s) (ψ₁ : o.A ⟶ o₁.A) (ψ₂ : o₁.A ⟶ o₂.A), IsHecke g' c' k (N * k) o o₁ ψ₁ → IsHecke g c k N o₁ o₂ ψ₂ → Nonempty (ObjMap (o.forget N ⟨k * k, by ring⟩ hc) o₂ (𝟙 S)) := by
   intro p _ D R _ b g g' c c' k N hkp hN3 hNp hgg' hg'g hcc' hc S s o o₁ o₂ ψ₁ ψ₂ h₁ h₂

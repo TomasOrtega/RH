@@ -9,9 +9,9 @@ namespace GlobalTheory.Col
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Unfold `cyc`. Rewrite using `[Polynomial.taylor_apply, Polynomial.comp, ← Polynomial.coeToPowerSeries.ringHom_apply, Polynomial.hom_eval₂]`. Establish `h1 : (Polynomial.coeToPowerSeries.ringHom : Polynomial R →+* PowerSeries R).comp Polynomial.C = PowerSeries.C`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h2 : (Polynomial.coeToPowerSeries.ringHom : Polynomial R →+* PowerSeries R) (Polynomial.X + Polynomial.C 1) = 1 + PowerSeries.X`. Simplify using `[add_comm]`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cyc_eq_coe_taylor (p m : ℕ) :
     cyc R p m = ((Polynomial.taylor 1 (Polynomial.cyclotomic (p ^ m) R) : Polynomial R) : PowerSeries R) := by
@@ -24,13 +24,13 @@ theorem cyc_eq_coe_taylor (p m : ℕ) :
   rw [h1, h2]
 
 /- English proof (translation)
-Establish `hmap : Polynomial.taylor 1 (Polynomial.cyclotomic (p ^ m) R) = (Polynomial.taylor 1 (Polynomial.cyclotomic (p ^ m) ℤ)).map (Int.castRingHom R)`. Rewrite using `[Polynomial.taylor_apply, Polynomial.taylor_apply, Polynomial.map_comp, Polynomial.map_cyclotomic]`. Simplify using the standard rewrite rules. Establish `hW : (Polynomial.taylor 1 (Polynomial.cyclotomic (p ^ m) ℤ)).IsWeaklyEisensteinAt (Ideal.span {(p : ℤ)})`. Break down `m with _ | n` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨fun {k} hk => ?_⟩` and prove the remaining obligations. Simplify using `only [pow_zero, Polynomial.cyclotomic_one, Polynomial.taylor_apply, Polynomial.sub_comp, Polynomial.X_comp, Polynomial.one_comp] at hk ⊢`. Establish `: (Polynomial.X + Polynomial.C (1 : ℤ) - 1) = Polynomial.X` using `by simp`. Rewrite `hk`, the goal using `[this]`. Simplify using `at hk`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Conclude with `(cyclotomic_prime_pow_comp_X_add_one_isEisensteinAt p n).isWeaklyEisensteinAt`. Establish `hW'` using `hW.map (Int.castRingHom R)`. Rewrite `hW'` using `[Ideal.map_span, Set.image_singleton, map_natCast, ← hmap]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `{ toIsWeaklyEisensteinAt := hW', monic := ?_ }` and prove the remaining obligations. Rewrite using `[Polynomial.taylor_apply]`. Conclude with `(Polynomial.cyclotomic.monic _ R).comp_X_add_C 1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem taylor_cyclotomic_dist (p m : ℕ) [hp : Fact p.Prime] :
     (Polynomial.taylor 1 (Polynomial.cyclotomic (p ^ m) R)).IsDistinguishedAt (Ideal.span {(p : R)}) := by
@@ -64,9 +64,9 @@ def levEquiv (p m : ℕ) [hp : Fact p.Prime] [IsAdicComplete (Ideal.span {(p : R
       (Ideal.quotientEquivAlgOfEq R (by rw [cyc_eq_coe_taylor])))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `levEquiv p m (Ideal.Quotient.mk _ Polynomial.X) = _`. Establish `h1 : Ideal.quotientEquivAlg (Ideal.span {Polynomial.cyclotomic (p ^ m) R}) (Ideal.span {Polynomial.taylor 1 (Polynomial.cyclotomic (p ^ m) R)}) (Polynomial.taylorEquiv (1 : R)) (by rw [Ideal.map_span, Set.image_singleton]; rfl) (Ideal.Quotient.mk _ Polynomial.X) = Ideal.Quotient. …`. Rewrite using `[Ideal.quotientEquivAlg_mk]`. Use `congr 1`. Conclude with `Polynomial.taylor_X 1`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h : levEquiv p m (Ideal.Quotient.mk (Ideal.span {Polynomial.cyclotomic (p ^ m) R}) Polynomial.X) = (Ideal.quotientEquivAlgOfEq R (by rw [cyc_eq_coe_taylor])) ((taylor_cyclotomic_dist (R` using `R) p m).algEquivQuotient (Ideal.quotientEquivAlg (Ideal.span {Polynomial.cyclotomic (p ^ m) R}) (Ideal.span {Polynomial.taylor 1 (Polynomial.cyclotomic (p ^ m) R)}) (Polynomial.taylorEquiv (1 : R)) (by rw [Ideal.map_span, Set.image_singleton]; rfl) (Ideal.Quotient.mk _ Polynomial …`. Rewrite using `[h, h1, Polynomial.IsDistinguishedAt.algEquivQuotient_apply]`. Simplify using `only [Ideal.quotient_map_mkₐ, Ideal.Quotient.mkₐ_eq_mk, Ideal.quotientEquivAlgOfEq_mk]`. Simplify using `[add_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levEquiv_root (p m : ℕ) [hp : Fact p.Prime] [IsAdicComplete (Ideal.span {(p : R)}) R] :
     levEquiv p m (AdjoinRoot.root (Polynomial.cyclotomic (p ^ m) R)) = ev R p m (1 + X) := by
@@ -89,9 +89,9 @@ theorem levEquiv_root (p m : ℕ) [hp : Fact p.Prime] [IsAdicComplete (Ideal.spa
   simp [add_comm]
 
 /- English proof (translation)
-Introduce `R _ p m hp hc`. Break down `subsingleton_or_nontrivial R with hs | hs` into its components or cases. Use `haveI : Subsingleton (lev R p m) := Module.subsingleton R _`. Conclude with `⟨Module.Basis.ofRepr (LinearEquiv.ofSubsingleton _ _), fun i => Subsingleton.elim _ _⟩`. Set `pb` to `AdjoinRoot.powerBasis' (Polynomial.cyclotomic.monic (p ^ m) R)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hd : pb.dim = Nat.totient (p ^ m)`. Simplify using `[pb, Polynomial.natDegree_cyclotomic]`. Use `⟨(pb.basis.map (levEquiv p m).toLinearEquiv).reindex (finCongr hd), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.reindex_apply, Module.Basis.map_apply, PowerBasis.coe_basis]`. Simplify using `[pb, levEquiv_root]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lev_basis : ∀ (R : Type) [CommRing R] (p m : ℕ) [hp : Fact p.Prime], IsAdicComplete (Ideal.span {(p : R)}) R →
     ∃ b : Module.Basis (Fin (Nat.totient (p ^ m))) R (lev R p m), ∀ i, b i = ev R p m ((1 + X) ^ (i : ℕ)) := by

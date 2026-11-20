@@ -18,9 +18,9 @@ noncomputable def compHom {Y Z : Scheme.{u}} (a : Y ⟶ Z) (b : Z ⟶ X) (c : Y 
   (Scheme.Modules.pullbackComp a b).hom.app F ≫ (Scheme.Modules.pullbackCongr h).hom.app F
 
 /- English proof (translation)
-Substitute `h₂ h₁` using the available equality. Establish `H` using `congrArg (fun φ => φ.app F) (Scheme.Modules.pseudofunctor_associativity a b c₃)`. Simplify using `only [NatTrans.comp_app, Functor.whiskerRight_app, Functor.associator_hom_app, Functor.whiskerLeft_app, Category.id_comp, eqToHom_app] at H`. Simplify using `only [compHom, Scheme.Modules.pullbackCongr, eqToIso_refl, Iso.refl_hom, NatTrans.id_app, Category.comp_id, eqToIso.hom, eqToHom_app]`. Establish `H' : (Scheme.Modules.pullbackComp a b).hom.app ((Scheme.Modules.pullback c₃).obj F) ≫ (Scheme.Modules.pullbackComp (a ≫ b) c₃).hom.app F = (Scheme.Modules.pullback a).map ((Scheme.Modules.pullbackComp b c₃).hom.app F) ≫ (Scheme.Modules.pullbackComp a (b ≫ c₃)).hom.app F ≫ eqToHom …`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← H]`. Simplify using `only [Iso.hom_inv_id_app_assoc, ← Functor.map_comp_assoc, Iso.hom_inv_id_app, CategoryTheory.Functor.map_id, Category.id_comp]`. Rewrite using `[reassoc_of% H']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma compHom_assoc {Y₁ Y₂ Y₃ : Scheme.{u}} (a : Y₁ ⟶ Y₂) (b : Y₂ ⟶ Y₃) (c₃ : Y₃ ⟶ X)
     (c₂ : Y₂ ⟶ X) (c₁ : Y₁ ⟶ X) (h₂ : b ≫ c₃ = c₂) (h₁ : a ≫ c₂ = c₁) :
@@ -44,7 +44,7 @@ lemma compHom_assoc {Y₁ Y₂ Y₃ : Scheme.{u}} (a : Y₁ ⟶ Y₂) (b : Y₂ 
   simp
 
 /- English proof (translation)
-Establish `h` using `unit_conjugateEquiv Adjunction.id (Scheme.Modules.pullbackPushforwardAdjunction (𝟙 Y)) (Scheme.Modules.pullbackId Y).hom N`. Rewrite `h` using `[Scheme.Modules.conjugateEquiv_pullbackId_hom]`. Establish `h'` using `congrArg (fun ψ => (Scheme.Modules.Hom.app ψ ⊤).hom s) h`. Simplify using `only [Adjunction.id_unit, NatTrans.id_app, Category.id_comp, Scheme.Modules.pushforwardId_inv_app_app, Scheme.Modules.Hom.comp_app, AddCommGrpCat.hom_comp, AddMonoidHom.coe_comp, Function.comp_apply] at h'`. Conclude with `h'.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma pullbackSection_id {Y : Scheme.{u}} (N : Y.Modules) (s : Γ(N, ⊤)) :
     ((Scheme.Modules.pullbackId Y).hom.app N).app ⊤ (pullbackSection (𝟙 Y) N s) = s := by
@@ -58,9 +58,9 @@ lemma pullbackSection_id {Y : Scheme.{u}} (N : Y.Modules) (s : Γ(N, ⊤)) :
   exact h'.symm
 
 /- English proof (translation)
-Establish `H` using `congrArg (fun φ => φ.app F) (Scheme.Modules.pseudofunctor_right_unitality c)`. Simplify using `only [NatTrans.comp_app, Functor.whiskerLeft_app, Functor.rightUnitor_hom_app, eqToHom_app] at H`. Use `erw [Category.comp_id] at H`. Establish `H2 : (Scheme.Modules.pullbackId Y).hom.app ((Scheme.Modules.pullback c).obj F) = (Scheme.Modules.pullbackComp (𝟙 Y) c).hom.app F ≫ eqToHom (by simp)`. Rewrite using `[← H, Iso.hom_inv_id_app_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H2]`. Simplify using `only [compHom, Scheme.Modules.pullbackCongr, eqToIso.hom, eqToHom_app]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma compHom_id {Y : Scheme.{u}} (c : Y ⟶ X) (h : 𝟙 Y ≫ c = c) :
     compHom F (𝟙 Y) c c h = (Scheme.Modules.pullbackId Y).hom.app _ := by
@@ -75,7 +75,7 @@ lemma compHom_id {Y : Scheme.{u}} (c : Y ⟶ X) (h : 𝟙 Y ≫ c = c) :
   simp only [compHom, Scheme.Modules.pullbackCongr, eqToIso.hom, eqToHom_app]
 
 /- English proof (translation)
-Rewrite using `[compHom_id]`. Conclude with `pullbackSection_id _ s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma compHom_id_section {Y : Scheme.{u}} (c : Y ⟶ X) (h : 𝟙 Y ≫ c = c)
     (s : Γ((Scheme.Modules.pullback c).obj F, ⊤)) :
@@ -84,7 +84,7 @@ lemma compHom_id_section {Y : Scheme.{u}} (c : Y ⟶ X) (h : 𝟙 Y ≫ c = c)
   exact pullbackSection_id _ s
 
 /- English proof (translation)
-Rewrite using `[← pullbackComp_inv_pullbackSection, ← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, Iso.inv_hom_id_app]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma pullbackComp_hom_pullbackSection {W T U : Scheme.{u}} (f : W ⟶ T) (g : T ⟶ U)
     (N : U.Modules) (n : Γ(N, ⊤)) :
@@ -114,14 +114,14 @@ lemma qcohMap_apply {U U' : X.Etale} (g : U ⟶ U') (s : Γ((Scheme.Modules.pull
         (pullbackSection g.left _ s) := rfl
 
 /- English proof (translation)
-The claim follows from `compHom_id_section F U.hom (MorphismProperty.Over.w (𝟙 U)) s`.
+A detailed English derivation is pending.
 -/
 lemma qcohMap_id (U : X.Etale) (s : Γ((Scheme.Modules.pullback U.hom).obj F, ⊤)) :
     qcohMap F (𝟙 U) s = s :=
   compHom_id_section F U.hom (MorphismProperty.Over.w (𝟙 U)) s
 
 /- English proof (translation)
-Establish `e1` using `pullbackSection_naturality g.left (compHom F k.left U''.hom U'.hom (MorphismProperty.Over.w k)) (pullbackSection k.left _ s)`. Establish `e2` using `congrArg (fun φ => (Scheme.Modules.Hom.app φ ⊤).hom (pullbackSection g.left _ (pullbackSection k.left _ s))) (compHom_assoc F g.left k.left U''.hom U'.hom U.hom (MorphismProperty.Over.w k) (MorphismProperty.Over.w g))`. Establish `e3` using `pullbackComp_hom_pullbackSection g.left k.left ((Scheme.Modules.pullback U''.hom).obj F) s`. Simplify using `only [Scheme.Modules.Hom.comp_app, AddCommGrpCat.hom_comp, AddMonoidHom.coe_comp, Function.comp_apply] at e2`. Rewrite using `[qcohMap_apply, qcohMap_apply, qcohMap_apply, ← e1, e2, e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

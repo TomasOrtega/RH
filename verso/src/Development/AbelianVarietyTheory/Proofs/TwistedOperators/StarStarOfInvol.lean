@@ -9,9 +9,9 @@ open scoped TensorProduct ComplexConjugate Matrix
 namespace GlobalTheory.TrEll
 
 /- English proof (translation)
-Establish `h : ((star' P : Fld P →+* Fld P).comp (star' P : Fld P →+* Fld P)) = RingHom.id (Fld P)`. Use `AdjoinRoot.ringHom_ext (p := P.1) ?_ ?_` and prove the remaining obligations. Use extensionality with `e`. Express the relevant statement in the definitionally equal form `star' P (star' P (algebraMap E (Fld P) e)) = algebraMap E (Fld P) e`. Rewrite using `[star'_algebraMap, star'_algebraMap, hσ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `star' P (star' P (alpha P)) = alpha P`. Rewrite using `[star'_alpha, map_inv₀, star'_alpha, inv_inv]`. Conclude with `RingHom.congr_fun h l`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star'_star'_of_invol {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e)
     {n : ℕ} (P : PPol σ n) (l : Fld P) : star' P (star' P l) = l := by
@@ -25,9 +25,9 @@ theorem star'_star'_of_invol {F E : Type} [Field F] [Field E] [Algebra F E] {σ 
   exact RingHom.congr_fun h l
 
 /- English proof (translation)
-Introduce `F E _ _ _ σ hσ n P l`. Set `e₁ : E ≃+* E` to `RingEquiv.ofRingHom (σ : E →+* E) (σ : E →+* E) (RingHom.ext hσ) (RingHom.ext hσ)`. Set `e₂ : Fld P ≃+* Fld P` to `RingEquiv.ofRingHom (star' P : Fld P →+* Fld P) (star' P : Fld P →+* Fld P) (RingHom.ext (star'_star'_of_invol hσ P)) (RingHom.ext (star'_star'_of_invol hσ P))`. Establish `he : RingHom.comp (algebraMap E (Fld P)) (e₁ : E →+* E) = RingHom.comp (e₂ : Fld P →+* Fld P) (algebraMap E (Fld P))`. Use extensionality with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `(star'_algebraMap P e).symm`. Establish `h` using `Algebra.trace_eq_of_equiv_equiv e₁ e₂ he l`. Express the relevant statement in the definitionally equal form `_ = σ (Algebra.trace E (Fld P) (star' P l)) at h`. Rewrite using `[h, hσ]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_star'_eq : ∀ (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E), (∀ e, σ (σ e) = e) → ∀ (n : ℕ) (P : PPol σ n) (l : Fld P), Algebra.trace E (Fld P) (star' P l) = σ (Algebra.trace E (Fld P) l) := by
   intro F E _ _ _ σ hσ n P l

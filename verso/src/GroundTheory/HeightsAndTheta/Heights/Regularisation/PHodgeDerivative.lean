@@ -15,14 +15,14 @@ noncomputable section
 namespace HodgeDerivative
 
 /- English proof (translation)
-The claim follows from `(norm_le_pi_norm z k).trans_lt (mem_ball_zero_iff.mp hz)`.
+A detailed English derivation is pending.
 -/
 theorem norm_coord_lt {n : ℕ} {z : Fin n → ℂ} (hz : z ∈ ball (0 : Fin n → ℂ) 1) (k : Fin n) :
     ‖z k‖ < 1 :=
   (norm_le_pi_norm z k).trans_lt (mem_ball_zero_iff.mp hz)
 
 /- English proof (translation)
-Establish `e : puncturedChart h (ball (0 : Fin n → ℂ) 1) = ball 0 1 ∩ ⋂ j : Fin a, {z : Fin n → ℂ | z (Fin.castLE h j) ≠ 0}`. Use extensionality with `z`. Simplify using `[puncturedChart, cuspCoord]`. Rewrite using `[e]`. Conclude with `isOpen_ball.inter (isOpen_iInter_of_finite fun j => isOpen_ne_fun (continuous_apply _) continuous_const)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_punctured {n a : ℕ} (h : a ≤ n) :
     IsOpen (puncturedChart h (ball (0 : Fin n → ℂ) 1)) := by
@@ -35,9 +35,9 @@ theorem isOpen_punctured {n a : ℕ} (h : a ≤ n) :
     (isOpen_iInter_of_finite fun j => isOpen_ne_fun (continuous_apply _) continuous_const)
 
 /- English proof (translation)
-Use `⟨fun i => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hi : (Fin.castLE h i).val < a` using `i.isLt`. Establish `h0 : z (Fin.castLE h i) ≠ 0` using `hz.2 i`. Simplify using `only [logLift, if_pos hi, Complex.log_re]`. Conclude with `Real.log_neg (norm_pos_iff.mpr h0) (norm_coord_lt hz.1 _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [logLift, if_neg (not_lt.mpr hk)]`. Conclude with `norm_coord_lt hz.1 k`.
+A detailed English derivation is pending.
 -/
 theorem logLift_mem {n a : ℕ} (h : a ≤ n) {z : Fin n → ℂ}
     (hz : z ∈ puncturedChart h (ball (0 : Fin n → ℂ) 1)) : logLift a z ∈ logCover h := by
@@ -50,9 +50,9 @@ theorem logLift_mem {n a : ℕ} (h : a ≤ n) {z : Fin n → ℂ}
     exact norm_coord_lt hz.1 k
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k.val < a`. Establish `e : Fin.castLE h ⟨k.val, hk⟩ = k` using `Fin.ext rfl`. Establish `h0 : z k ≠ 0`. Use `hz ⟨k.val, hk⟩` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[cuspCoord, e]`. Then use the resulting hypothesis. Simplify using `only [expCover, logLift, if_pos hk, Complex.exp_log h0]`. Simplify using `only [expCover, logLift, if_neg hk]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem expCover_logLift {n a : ℕ} (h : a ≤ n) {z : Fin n → ℂ} (hz : ∀ j, cuspCoord h z j ≠ 0) :
     expCover a (logLift a z) = z := by
@@ -66,11 +66,11 @@ theorem expCover_logLift {n a : ℕ} (h : a ≤ n) {z : Fin n → ℂ} (hz : ∀
   · simp only [expCover, logLift, if_neg hk]
 
 /- English proof (translation)
-Establish `hw` using `logLift_mem P.a_le hz`. Establish `h0 : P.tau0 (logLift a z) = T0 z`. Rewrite using `[hT.2 _ hw, expCover_logLift P.a_le hz.2]`. Establish `hτ : P.τ (logLift a z) = T0 z + ∑ i : Fin a, (logLift a z (Fin.castLE P.a_le i) / (2 * Real.pi * Complex.I)) • (P.B i).map (Int.cast : ℤ → ℂ)`. Rewrite using `[← h0, PeriodPolydisc.tau0, sub_add_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `p q`. Simplify using `only [PeriodPolydisc.imTau, hτ, chartImag, map_apply, Matrix.add_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Complex.add_im, Complex.im_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi : (Fin.castLE P.a_le i).val < a` using `i.isLt`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [logLift, if_pos hi, Complex.mul_im, Complex.intCast_re, Complex.intCast_im, mul_zero, zero_add, im_div_two_pi_I, Complex.log_re, cuspTime, cuspCoord, Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem imTau_eq {n a g : ℕ} (P : PeriodPolydisc n a g) {T0 : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ}
     (hT : P.IsTau0Ext T0) {z : Fin n → ℂ} (hz : z ∈ puncturedChart P.a_le (ball (0 : Fin n → ℂ) 1)) :
@@ -93,11 +93,11 @@ theorem imTau_eq {n a g : ℕ} (P : PeriodPolydisc n a g) {T0 : (Fin n → ℂ) 
   ring
 
 /- English proof (translation)
-Establish `hx2 : ‖x‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.mpr hx)`. Establish `h1` using `((hasStrictFDerivAt_norm_sq x).hasFDerivAt.log hx2).const_mul (2⁻¹ : ℝ)`. Establish `e : (fun y : ℂ => 2⁻¹ * Real.log (‖y‖ ^ 2)) = fun y : ℂ => Real.log ‖y‖`. Use function extensionality and compare the values at `y`. Rewrite using `[Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e]`. Use `⟨_, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[two_nsmul, ← two_smul ℝ]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_smul, norm_smul, norm_smul, innerSL_apply_norm, Real.norm_eq_abs, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos (by norm_num : (0 : ℝ) < 2⁻¹), abs_of_pos (by norm_num : (0:ℝ) < 2), abs_of_pos (inv_pos.mpr (by positivity))]`. Establish `hn : 0 < ‖x‖` using `norm_pos_iff.mpr hx`. Apply `le_of_eq` to reduce the goal to its premises. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts.
 -/
 theorem logNorm_hasFDerivAt {x : ℂ} (hx : x ≠ 0) :
     ∃ L : ℂ →L[ℝ] ℝ, HasFDerivAt (fun y : ℂ => Real.log ‖y‖) L x ∧ ‖L‖ ≤ ‖x‖⁻¹ := by
@@ -119,15 +119,13 @@ theorem logNorm_hasFDerivAt {x : ℂ} (hx : x ≠ 0) :
   field_simp
 
 /- English proof (translation)
-Take `⟨L, hL, hLn⟩` from `logNorm_hasFDerivAt hz`. Establish `hp : HasFDerivAt (fun y : Fin n → ℂ => y (Fin.castLE h i)) (ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin n => ℂ) (Fin.castLE h i)) z := hasFDerivAt_apply _ _`. Establish `h2` using `(hL.comp z hp).const_mul (-(2 * Real.pi)⁻¹)`. Establish `e : (fun y : Fin n → ℂ => -(2 * Real.pi)⁻¹ * (Real.log ‖y (Fin.castLE h i)‖)) = fun y => cuspTime h y i`. Use function extensionality and compare the values at `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [cuspTime, cuspCoord, Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[Function.comp_def, e]`. Use `⟨_, h2, ?_⟩` and prove the remaining obligations. Establish `hproj : ‖ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin n => ℂ) (Fin.castLE h i)‖ ≤ 1 := ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun v => by`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using norm_le_pi_norm v (Fin.castLE h i)`. Establish `hpi : (1 : ℝ) ≤ 2 * Real.pi` using `by linarith [Real.pi_gt_three]`. Establish `hc : ‖(-(2 * Real.pi)⁻¹ : ℝ)‖ ≤ 1`. Rewrite using `[norm_neg, Real.norm_eq_abs, abs_of_pos (by positivity)]`. Conclude with `inv_le_one_of_one_le₀ hpi`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_smul]`. Use `gcongr`. Conclude with `(L.opNorm_comp_le _).trans (by gcongr)`. Use `_ ≤ 1 * (‖cuspCoord h z i‖⁻¹ * 1) := by gcongr`.
-
-Use `_ = ‖cuspCoord h z i‖⁻¹ := by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspTime_hasFDerivAt {n a : ℕ} (h : a ≤ n) (i : Fin a) {z : Fin n → ℂ}
     (hz : cuspCoord h z i ≠ 0) :
@@ -161,7 +159,7 @@ theorem cuspTime_hasFDerivAt {n a : ℕ} (h : a ≤ n) (i : Fin a) {z : Fin n �
     _ = ‖cuspCoord h z i‖⁻¹ := by ring
 
 /- English proof (translation)
-Use `⟨Complex.imCLM.hasFDerivAt.comp x hf.hasFDerivAt, ?_⟩` and prove the remaining obligations. Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun v => ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.comp_apply, Complex.imCLM_apply, Real.norm_eq_abs]`. Conclude with `(Complex.abs_im_le_norm _).trans ((fderiv ℝ f x).le_opNorm v)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem im_hasFDerivAt {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {f : E → ℂ} {x : E}
     (hf : DifferentiableAt ℝ f x) :
@@ -173,13 +171,13 @@ theorem im_hasFDerivAt {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {f
   exact (Complex.abs_im_le_norm _).trans ((fderiv ℝ f x).le_opNorm v)
 
 /- English proof (translation)
-Establish `hlt : ∀ j, ‖cuspCoord h z j‖ < 1` using `fun j => norm_coord_lt hz.1 _`. Establish `hnn : ∀ j, 0 ≤ Real.log (‖cuspCoord h z j‖ ^ 2)⁻¹` using `fun j => log_inv_sq_nonneg (hlt j)`. Establish `hr0 : 0 ≤ chartRadius h z` using `add_nonneg (Real.exp_pos 1).le (Finset.sum_nonneg fun j _ => hnn j)`. Establish `h1 : 1 ≤ Real.exp (chartRadius h z / 2)` using `Real.one_le_exp (by linarith)`. Establish `hi : ∀ i, ‖cuspCoord h z i‖⁻¹ ≤ Real.exp (chartRadius h z / 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Establish `hpos : 0 < ‖cuspCoord h z i‖` using `norm_pos_iff.mpr (hz.2 i)`. Establish `e1 : Real.log (‖cuspCoord h z i‖ ^ 2)⁻¹ = 2 * Real.log ‖cuspCoord h z i‖⁻¹`. Rewrite using `[Real.log_inv, Real.log_inv, Real.log_pow]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hs` using `Finset.single_le_sum (fun j _ => hnn j) (Finset.mem_univ i)`. Establish `hle : Real.log ‖cuspCoord h z i‖⁻¹ ≤ chartRadius h z / 2`. Unfold `chartRadius`. Rewrite `hs` using `[e1]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear relations using `[Real.exp_pos 1]`. Combine the equalities or inequalities in the displayed calculation. Establish `hs : ∑ i, ‖cuspCoord h z i‖⁻¹ ≤ a * Real.exp (chartRadius h z / 2)`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_add_sum_le {n a : ℕ} (h : a ≤ n) {z : Fin n → ℂ}
     (hz : z ∈ puncturedChart h (ball (0 : Fin n → ℂ) 1)) :
@@ -211,7 +209,7 @@ theorem one_add_sum_le {n a : ℕ} (h : a ≤ n) {z : Fin n → ℂ}
   linarith
 
 /- English proof (translation)
-Establish `: 0 ≤ ∑ j, Real.log (‖cuspCoord h z j‖ ^ 2)⁻¹` using `Finset.sum_nonneg fun j _ => log_inv_sq_nonneg (norm_coord_lt hz.1 _)`. Unfold `chartRadius`. Combine the linear relations using `[Real.add_one_le_exp (1 : ℝ)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_le_chartRadius {n a : ℕ} (h : a ≤ n) {z : Fin n → ℂ}
     (hz : z ∈ puncturedChart h (ball (0 : Fin n → ℂ) 1)) : 1 ≤ chartRadius h z := by
@@ -221,11 +219,11 @@ theorem one_le_chartRadius {n a : ℕ} (h : a ≤ n) {z : Fin n → ℂ}
   linarith [Real.add_one_le_exp (1 : ℝ)]
 
 /- English proof (translation)
-Establish `e : (fun y => chartImag h T0 B y p q) = fun y => (T0 y p q).im + ∑ i, cuspTime h y i * B i p q`. Use function extensionality and compare the values at `y`. Simplify using `[chartImag, Matrix.sum_apply]`. Use `choose L hL hLn using fun i => cuspTime_hasFDerivAt h i (hz i)`. Take `⟨h0, h0n⟩` from `im_hasFDerivAt hT`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsum : HasFDerivAt (fun y => ∑ i, cuspTime h y i * B i p q) (∑ i, B i p q • L i) z` using `(HasFDerivAt.sum (u := Finset.univ) (A := fun i y => cuspTime h y i * B i p q) fun i _ => (hL i).mul_const (B i p q)).congr_of_eventuallyEq (Eventually.of_forall fun y => by simp only [Finset.sum_apply])`. Establish `hall : HasFDerivAt (fun y => (T0 y p q).im + ∑ i, cuspTime h y i * B i p q) (Complex.imCLM.comp (fderiv ℝ (fun y => T0 y p q) z) + ∑ i, B i p q • L i) z` using `h0.add hsum`. Rewrite using `[e]`. Use `⟨hall.differentiableAt, ?_⟩` and prove the remaining obligations. Rewrite using `[hall.fderiv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_add_le _ _).trans (add_le_add h0n ?_)` and prove the remaining obligations. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs]`. Conclude with `mul_le_mul_of_nonneg_left (hLn i) (abs_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartImag_entry_deriv {n a g : ℕ} (h : a ≤ n) (T0 : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ)
     (B : Fin a → Matrix (Fin g) (Fin g) ℝ) (p q : Fin g) {z : Fin n → ℂ}
@@ -258,53 +256,43 @@ end HodgeDerivative
 open HodgeDerivative in
 
 /- English proof (translation)
-Introduce `n a g P`. Take `⟨ρ, c, C, hρ0, hρ1, hc, hb⟩` from `h0 n a g P`. Take `⟨-, T0, hT⟩` from `h1 n a g P`. Use `set Bℝ : Fin a → Matrix (Fin g) (Fin g) ℝ := fun i => (P.B i).map (Int.cast : ℤ → ℝ) with hBℝ`. Use `set Y : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℝ := chartImag P.a_le T0 Bℝ with hY`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKc : IsCompact (closedBall (0 : Fin n → ℂ) ρ)` using `isCompact_closedBall _ _`. Establish `hKU : closedBall (0 : Fin n → ℂ) ρ ⊆ ball 0 1` using `closedBall_subset_ball hρ1`. Establish `hT0` using `fun p q => hAn (fun y => T0 y p q) (ball 0 1) _ isOpen_ball (hT.1 p q) hKc hKU`. Use `choose A hA0 hA using hT0`. Use `set β : ℝ := ∑ i, ∑ p, ∑ q, |Bℝ i p q| with hβ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set SA : ℝ := ∑ p, ∑ q, A p q with hSA`. Use `set C0 : ℝ := SA + β with hC0`. Establish `hAle : ∀ p q, A p q ≤ SA` using `fun p q => (Finset.single_le_sum (f := fun q => A p q) (fun q _ => (hA0 p q).le) (Finset.mem_univ q)).trans (Finset.single_le_sum (f := fun p => ∑ q, A p q) (fun p _ => Finset.sum_nonneg fun q _ => (hA0 p q).le) (Finset.mem_univ p))`. Establish `hBle : ∀ i p q, |Bℝ i p q| ≤ β` using `fun i p q => ((Finset.single_le_sum (f := fun q => |Bℝ i p q|) (fun q _ => abs_nonneg _) (Finset.mem_univ q)).trans (Finset.single_le_sum (f := fun p => ∑ q, |Bℝ i p q|) (fun p _ => Finset.sum_nonneg fun q _ => abs_nonneg _) (Finset.mem_univ p))).trans (Finset.single_le_sum (f := …`. Establish `hβ0 : 0 ≤ β` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun p _ => Finset.sum_nonneg fun q _ => abs_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSA0 : 0 ≤ SA` using `Finset.sum_nonneg fun p _ => Finset.sum_nonneg fun q _ => (hA0 p q).le`. Establish `hC00 : 0 ≤ C0` using `add_nonneg hSA0 hβ0`. Establish `hpt : ∀ z ∈ closedBall (0 : Fin n → ℂ) ρ, z ∈ puncturedChart P.a_le (ball 0 1) → (Y z - c • (1 : Matrix (Fin g) (Fin g) ℝ)).PosSemidef ∧ ((max C 1 * chartRadius P.a_le z) • (1 : Matrix (Fin g) (Fin g) ℝ) - Y z).PosSemidef ∧ (∀ p q, DifferentiableAt ℝ (fun y => Y y p q) z ∧ ‖fderi …`. Introduce `z hzρ hz`. Establish `hw` using `logLift_mem P.a_le hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hexp` using `expCover_logLift P.a_le hz.2`. Take `⟨hlow, hup⟩` from `hb _ hw (by rw [hexp]; exact hzρ)`. Establish `hIm : (P.τ (logLift a z)).map Complex.im = Y z` using `imTau_eq P hT hz`. Rewrite `hlow`, `hup` using `[hIm]`. Rewrite `hup` using `[hexp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hr1` using `one_le_chartRadius P.a_le hz`. Establish `hEq : ∀ᶠ y in 𝓝 z, P.imTau y = Y y` using `Filter.eventually_of_mem ((isOpen_punctured P.a_le).mem_nhds hz) fun y hy => imTau_eq P hT hy`. Use `⟨hlow, ?_, fun p q => ?_, fun p q => hEq.mono fun y hy => ?_, fun k F => hEq.mono fun y hy => ?_⟩` and prove the remaining obligations. Establish `e : (max C 1 * chartRadius P.a_le z) • (1 : Matrix (Fin g) (Fin g) ℝ) - Y z = ((C * chartRadius P.a_le z) • (1 : Matrix (Fin g) (Fin g) ℝ) - Y z) + ((max C 1 - C) * chartRadius P.a_le z) • (1 : Matrix (Fin g) (Fin g) ℝ)`. Rewrite using `[sub_mul, sub_smul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `hup.add (PosSemidef.one.smul (mul_nonneg (sub_nonneg.mpr (le_max_left _ _)) (by linarith)))`. Take `⟨hd, hn⟩` from `chartImag_entry_deriv P.a_le T0 Bℝ p q hz.2 (hA p q z hzρ).1`. Use `⟨hd, hn.trans ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules.
 
-Establish `hS0 : 0 ≤ ∑ i, ‖cuspCoord P.a_le z i‖⁻¹` using `Finset.sum_nonneg fun i _ => inv_nonneg.mpr (norm_nonneg _)`. Establish `h2 : ∑ i, |Bℝ i p q| * ‖cuspCoord P.a_le z i‖⁻¹ ≤ β * ∑ i, ‖cuspCoord P.a_le z i‖⁻¹`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_right (hBle i p q) (inv_nonneg.mpr (norm_nonneg _))`. Establish `h3` using `(hA p q z hzρ).2.2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `hAle p q`. Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [PeriodPolydisc.hodge, hy]`. Simplify using `only [hy]`. Use `⟨ρ, hρ0, hρ1, ⟨(g : ℝ) ^ 2 * c⁻¹ ^ 2 * C0 * (1 + a), fun z hzρ hz p q => ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hYc, -, hYd, hH, -⟩` from `hpt z hzρ hz`. Establish `hi` using `hInv g Y z c _ hc hYc hYd p q`. Rewrite using `[(hH p q).differentiableAt_iff, (hH p q).fderiv_eq]`. Establish `hS0 : 0 ≤ ∑ i, ‖cuspCoord P.a_le z i‖⁻¹` using `Finset.sum_nonneg fun i _ => inv_nonneg.mpr (norm_nonneg _)`. Establish `hk0 : 0 ≤ (g : ℝ) ^ 2 * c⁻¹ ^ 2 * C0` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha1 : (1 : ℝ) ≤ 1 + a` using `by linarith [(Nat.cast_nonneg a : (0 : ℝ) ≤ a)]`. Use `⟨hi.1, hi.2.trans ?_, hi.2.trans ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, mul_assoc _ (1 + (a : ℝ))]`. Conclude with `mul_le_mul_of_nonneg_left (le_mul_of_one_le_left (by linarith) ha1) hk0`. Use `one_add_sum_le P.a_le hz` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, mul_assoc _ (1 + (a : ℝ))]`. Conclude with `mul_le_mul_of_nonneg_left this hk0`. Introduce `k F hF hrank`. Take `⟨Kc, hKc0, hKmain⟩` from `hLDG g k`. Establish `hFb` using `fun j l => hAn (fun y => F y j l) (ball 0 1) _ isOpen_ball (hF j l) hKc hKU`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose AF hAF0 hAF using hFb`. Use `set aF : ℝ := ∑ j, ∑ l, AF j l with haF`. Establish `hAFle : ∀ j l, AF j l ≤ aF` using `fun j l => (Finset.single_le_sum (f := fun l => AF j l) (fun l _ => (hAF0 j l).le) (Finset.mem_univ l)).trans (Finset.single_le_sum (f := fun j => ∑ l, AF j l) (fun j _ => Finset.sum_nonneg fun l _ => (hAF0 j l).le) (Finset.mem_univ j))`. Establish `haF0 : 0 ≤ aF` using `Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun l _ => (hAF0 j l).le`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ, hδle⟩ : ∃ δ : ℝ, 0 < δ ∧ ∀ z ∈ closedBall (0 : Fin n → ℂ) ρ, δ ≤ ((F z)ᴴ * F z).det.re := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hcont : ContinuousOn F (closedBall 0 ρ)`. Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Conclude with `continuous_matrix fun j l => ((hF j l).continuousOn.mono hKU).domRestrict`. Establish `hc' : ContinuousOn (fun y => ((F y)ᴴ * F y).det.re) (closedBall 0 ρ)`. Rewrite `hcont`, the goal using `[continuousOn_iff_continuous_domRestrict]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Complex.continuous_re.comp (hcont.matrix_conjTranspose.matrix_mul hcont).matrix_det`. Take `⟨z0, hz0, hmin⟩` from `hKc.exists_isMinOn ⟨0, mem_closedBall_self hρ0.le⟩ hc'`. Conclude with `⟨_, re_det_pos (gram_posDef _ (hrank z0 (hKU hz0))), fun z hz => hmin hz⟩`. Use `set C1 : ℝ := max C 1 with hC1def`. Establish `hC1 : 0 < C1` using `lt_of_lt_of_le one_pos (le_max_right _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set W : ℝ := Kc * (1 + aF) ^ (2 * k) * (1 + c⁻¹) ^ (k + 1) * C1 ^ k / δ with hW`. Establish `hW0 : 0 ≤ W` using `by positivity`. Use `set Q : ℝ := W * (1 + C0) with hQ`. Establish `hQ0 : 0 ≤ Q` using `by positivity`. Establish `ha1 : (1 : ℝ) ≤ 1 + a` using `by linarith [(Nat.cast_nonneg a : (0 : ℝ) ≤ a)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨max (Q * (1 + a)) k, fun z hzρ hz => ?_⟩` and prove the remaining obligations. Take `⟨hYc, hYup, hYd, -, hL⟩` from `hpt z hzρ hz`. Establish `hr1` using `one_le_chartRadius P.a_le hz`. Use `set r := chartRadius P.a_le z with hr`. Use `set S := ∑ i, ‖cuspCoord P.a_le z i‖⁻¹ with hS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun i _ => inv_nonneg.mpr (norm_nonneg _)`. Establish `hYpd` using `posDef_of_ge hc hYc`. Establish `hl : 0 < C1 * r` using `by positivity`. Establish `hμle : (C1 * r)⁻¹ ^ k * δ ≤ ((F z)ᴴ * (Y z)⁻¹.map (fun x : ℝ => (x : ℂ)) * F z).det.re`. Establish `h1` using `posSemidef_map_ofReal (inv_ge_of_le hl hYpd hYup)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[map_sub_smul_one]`. Establish `h2` using `h1.conjTranspose_mul_mul_same (F z)`. Rewrite `h2` using `[conj_sub_smul_one]`. Establish `h3 : ((((C1 * r)⁻¹ : ℝ) : ℂ) • ((F z)ᴴ * F z)).PosSemidef` using `(posSemidef_conjTranspose_mul_self (F z)).smul (Complex.zero_le_real.mpr (inv_nonneg.mpr hl.le))`. Use `re_det_mono h3 h2` as an intermediate fact.
-
-Simplify using `only [RCLike.re_to_complex] at this`. Rewrite `this` using `[re_det_ofReal_smul]`. Conclude with `le_trans (mul_le_mul_of_nonneg_left (hδle z hzρ) (by positivity)) this`. Establish `hFent : ∀ j l, DifferentiableAt ℝ (fun y => F y j l) z ∧ ‖F z j l‖ ≤ aF ∧ ‖fderiv ℝ (fun y => F y j l) z‖ ≤ aF` using `fun j l => ⟨(hAF j l z hzρ).1, (hAF j l z hzρ).2.1.trans (hAFle j l), (hAF j l z hzρ).2.2.trans (hAFle j l)⟩`. Establish `hm` using `hKmain F Y z aF (C0 * (1 + S)) c ((C1 * r)⁻¹ ^ k * δ) hc (by positivity) haF0 (by positivity) hFent hYd hYc hμle`.
-
-Rewrite using `[(hL k F).differentiableAt_iff, (hL k F).fderiv_eq]`. Establish `hX : Kc * (1 + aF) ^ (2 * k) * (1 + c⁻¹) ^ (k + 1) * (1 + C0 * (1 + S)) / ((C1 * r)⁻¹ ^ k * δ) ≤ Q * r ^ k * (1 + S)`. Establish `e : Kc * (1 + aF) ^ (2 * k) * (1 + c⁻¹) ^ (k + 1) * (1 + C0 * (1 + S)) / ((C1 * r)⁻¹ ^ k * δ) = W * r ^ k * (1 + C0 * (1 + S))`. Rewrite using `[hW, inv_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[e, hQ, mul_assoc W (1 + C0), mul_comm (1 + C0), ← mul_assoc W, mul_assoc (W * r ^ k)]`. Conclude with `mul_le_mul_of_nonneg_left (by nlinarith) (by positivity)`. Establish `hCf : Q * (1 + a) ≤ max (Q * (1 + a)) k` using `le_max_left _ _`. Establish `hQf : Q ≤ max (Q * (1 + a)) k` using `(le_mul_of_one_le_right hQ0 ha1).trans hCf`. Establish `hrk : r ^ k ≤ r ^ (max (Q * (1 + a)) k)`.
-
-Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hr1 (le_max_right _ _)`. Establish `hrk0 : 0 ≤ r ^ k` using `by positivity`. Use `⟨hm.1, hm.2.trans (hX.trans ?_), hm.2.trans (hX.trans ?_)⟩` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul hQf hrk hrk0 (by linarith)) (by linarith)`.
-
-Establish `hE` using `one_add_sum_le P.a_le hz`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem HodgeDerivative.proof (h0 : ImTauBounds.Statement) (h1 : Tau0Holomorphic.Statement)
     (hAn : AnalyticDerivBound.Statement) (hInv : InvEntryDeriv.Statement)

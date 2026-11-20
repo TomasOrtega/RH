@@ -12,9 +12,9 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hd : (if ε a then (1 : ℂ) else -1) ≠ (if ε b then (1 : ℂ) else -1)`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp [ha, hb] at hab ⊢ <;> norm_num`. Establish `h` using `congrFun (congrFun hX a) b`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul] at h`. Establish `h2 : X a b * ((if ε b then (1 : ℂ) else -1) - (if ε a then (1 : ℂ) else -1)) = 0`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[mul_sub, h]`. Expand and normalize the polynomial expressions, which then agree. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `h3`. Conclude with `absurd (sub_eq_zero.mp h3).symm hd`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma uq_offdiag_zero {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : X * Jm ε = Jm ε * X)
     {a b : Fin n} (hab : ε a ≠ ε b) : X a b = 0 := by
@@ -29,30 +29,30 @@ lemma uq_offdiag_zero {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX
   · exact absurd (sub_eq_zero.mp h3).symm hd
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => T.w_wt a, fun a b hab he => T.w_hw a b hab he⟩`.
+Supply the required witnesses or components.
 -/
 lemma uq_kHighest {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) :
     Formalism.REAL.KHighest ε (kunits T) Λ T.w :=
   ⟨fun a => T.w_wt a, fun a b hab he => T.w_hw a b hab he⟩
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨φ, hφF, hφw⟩ := uq_exists_isometry ε (kunits T) (kunits T') Λ T.w T'.w (KType.kRel T) (KType.kRel T') (KType.kUnit T) (KType.kUnit T') (uq_kHighest T) (uq_kHighest T') T.w_norm T'.w_norm (KType.kSpan_eq_top T) (KType.kSpan_eq_top T')`. Establish `expand : ∀ (S : KType ε Λ) (X : Matrix (Fin n) (Fin n) ℂ) (u : S.V), S.dτ X u = ∑ a, ∑ b, X a b • S.dτ (Matrix.single a b 1) u`. Introduce `S X u`. Establish `hs : ∀ i j, Matrix.single i j (X i j) = X i j • Matrix.single i j (1 : ℂ)` using `fun i j => by`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [Matrix.matrix_eq_sum_single X]`. Simplify using `only [hs, map_sum, map_smul, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply]`. Establish `hdτ : ∀ X : Matrix (Fin n) (Fin n) ℂ, X * Jm ε = Jm ε * X → ∀ v : T.V, φ (T.dτ X v) = T'.dτ X (φ v)`. Introduce `X hX v`. Rewrite using `[expand T X v, expand T' X (φ v), map_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : ε a = ε b`. Rewrite using `[map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `hφF a b h v`. Rewrite using `[uq_offdiag_zero hX h, zero_smul, zero_smul, map_zero]`. Use `⟨φ, ?_, hdτ, hφw⟩` and prove the remaining obligations. Introduce `k v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, hY, hkY⟩` from `exists_log ε k`. Take `⟨γ, hγ⟩` from `exists_curve ε hY`. Establish `h1 : toMK (γ 1) = toMK k`. Rewrite using `[hγ 1, hkY]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : γ 1 = k` using `Subtype.ext (Subtype.ext (Units.ext h1))`. Establish `hop : ∀ S : KType ε Λ, S.op k = NormedSpace.exp (S.dτ Y)`. Introduce `S`. Rewrite using `[← hk, KType.op_curve S hY γ hγ 1]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hop T, hop T']`. Set `f` to `φ.toContinuousLinearEquiv.conjContinuousAlgEquiv`. Establish `hf : f (T.dτ Y) = T'.dτ Y`. Use extensionality with `u`. Simplify using `only [f, ContinuousLinearEquiv.conjContinuousAlgEquiv_apply, ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearIsometryEquiv.coe_toContinuousLinearEquiv, hdτ Y hY.2]`. Simplify using the standard rewrite rules. Use `letI : NormedAlgebra ℚ (T.V →L[ℂ] T.V) := NormedAlgebra.restrictScalars ℚ ℂ _`. Use `letI : NormedAlgebra ℚ (T'.V →L[ℂ] T'.V) := NormedAlgebra.restrictScalars ℚ ℂ _`. Establish `hexp` using `NormedSpace.map_exp f (map_continuous f) (T.dτ Y)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hexp` using `[hf]`. Rewrite using `[← hexp]`. Simplify using `[f, ContinuousLinearEquiv.conjContinuousAlgEquiv_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kType_unique {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T T' : KType ε Λ) :
     ∃ φ : T.V ≃ₗᵢ[ℂ] T'.V, (∀ (k : KG ε) (v : T.V), φ (T.op k v) = T'.op k (φ v)) ∧

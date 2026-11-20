@@ -15,11 +15,11 @@ noncomputable section
 namespace GlobalTheory.GSuppComb
 
 /- English proof (translation)
-Introduce `l x hi`. Proceed by induction on `l with`. Consider the case `nil => simp at hi`. Consider the case `cons a t ih`. Distinguish the cases in `ha : a = i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Establish `hit : i ∈ t`. Break down `List.mem_cons.1 hi with h | h` into its components or cases. Conclude with `absurd h.symm ha`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h`. Establish `he : (a :: t).erase i = a :: t.erase i`. Simplify using `[List.erase_cons, ha]`. Rewrite using `[he, List.foldr_cons, List.foldr_cons, ih hit, hc a ha]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem foldr_extract {ι X : Type} [DecidableEq ι] (g : ι → X → X) (i : ι)
     (hc : ∀ a, a ≠ i → ∀ x, g a (g i x) = g i (g a x)) :
@@ -42,7 +42,7 @@ theorem foldr_extract {ι X : Type} [DecidableEq ι] (g : ι → X → X) (i : �
 variable {D : D7}
 
 /- English proof (translation)
-Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨α, hα, hv, rest⟩`. Conclude with `⟨α, hα, fun p hp => hv p fun hq => hp (h p hq), rest⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem latO_mono {S T : HSp D} (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E))
     {P P' : Pl D → Prop} (h : ∀ p, P p → P' p) : latO S T LS LT P ≤ latO S T LS LT P' := by
@@ -51,14 +51,14 @@ theorem latO_mono {S T : HSp D} (LS : Set (Fin S.rank → D.host.E)) (LT : Set (
   exact ⟨α, hα, fun p hp => hv p fun hq => hp (h p hq), rest⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1, fun u hu => hf.2.1 u (latO_mono _ _ h hu), fun e he u hu hh => hf.2.2 e he u (latO_mono _ _ h hu) hh⟩`.
+Supply the required witnesses or components.
 -/
 theorem vac_mono {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {LS : Lat S} {LT : Lat T} {P P' : Pl D → Prop}
     (h : ∀ p, P p → P' p) {f : WO S T → ℂ} (hf : Vac ψ S T LS LT P' f) : Vac ψ S T LS LT P f :=
   ⟨hf.1, fun u hu => hf.2.1 u (latO_mono _ _ h hu), fun e he u hu hh => hf.2.2 e he u (latO_mono _ _ h hu) hh⟩
 
 /- English proof (translation)
-Introduce `u hu a b`. Establish `h` using `(G.eg_is j (G.s - j) (by omega)).1 u hu a b`. Conclude with `(GlobalTheory.FinPl.FrameLat.idem_iff G.q _).2 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eg_combAt {c : Comm D} {v : VCom c} (G : GLoc v) (j : ℕ) (hj : j ≤ G.s) : CombAt (· = G.q.v) (G.eg j) := by
   intro u hu a b
@@ -66,13 +66,11 @@ theorem eg_combAt {c : Comm D} {v : VCom c} (G : GLoc v) (j : ℕ) (hj : j ≤ G
   exact (GlobalTheory.FinPl.FrameLat.idem_iff G.q _).2 h
 
 /- English proof (translation)
-Introduce `D c v n hc hv G hG j hj Ψ hΨ i`. Establish `hI` using `GlobalTheory.T.heisenbergCombination_disjoint_places_commute_vacua D c.ψ hc.std (c.V j) (c.V (j + 1))`. Establish `hca : ∀ i', CombAt (· = (G i').q.v) ((G i').eg j)` using `fun i' => eg_combAt (G i') j (by have := (G i').hs; omega)`. Establish `hdisj : ∀ a b : Fin n, a ≠ b → ∀ p, p = (G a).q.v → ¬ p = (G b).q.v` using `fun a b hab p ha hb => hab (hG.inj (ha.symm.trans hb))`. Set `g : Fin n → (WO (c.V j) (c.V (j + 1)) → ℂ) → (WO (c.V j) (c.V (j + 1)) → ℂ)` to `fun a f => comb c.ψ _ _ ((G a).eg j) f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨((List.finRange n).erase i).foldr g Ψ, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· = (G i).q.v) Ψ` using `vac_mono (fun p hp => by rw [hp]; exact (hG.places _).2 ⟨i, rfl⟩) hΨ`. Establish `key : ∀ l : List (Fin n), (∀ a ∈ l, a ≠ i) → Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· = (G i).q.v) (l.foldr g Ψ)`. Introduce `l`. Proceed by induction on `l with`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `nil => intro _`. Conclude with `h0`. Consider the case `cons a t ih`. Introduce `hl`. Conclude with `((hI (· = (G a).q.v) (· = (G i).q.v) (hdisj a i (hl a (List.mem_cons_self ..)))).2.1 _ (hca a)).2 _ _ _ (ih fun b hb => hl b (List.mem_cons_of_mem _ hb))`.
-
-Conclude with `key _ fun a ha => ((List.nodup_finRange n).mem_erase_iff.1 ha).1`. Rewrite using `[hG.eG j hj Ψ hΨ.1]`. Conclude with `foldr_extract g i (fun a ha x => (hI _ _ (hdisj a i ha)).1 _ _ (hca a) (hca i) x) _ Ψ (List.mem_finRange i)`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_eq_at_place : ∀ {D : D7} {c : Comm D} {v : VCom c} {n : ℕ}, c.Is → v.Is → ∀ (G : Fin n → GLoc v), GPin G → ∀ (j : ℕ), j + 1 < D.R.m → ∀ (Ψ : WO (c.V j) (c.V (j + 1)) → ℂ), Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· ∈ v.gP) Ψ → ∀ (i : Fin n), ∃ F, Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· = (G i).q.v) F ∧ comb c.ψ _ _ (v.eG j) Ψ = comb c.ψ _ _ ((G i).eg j) F := by
   intro D c v n hc hv G hG j hj Ψ hΨ i

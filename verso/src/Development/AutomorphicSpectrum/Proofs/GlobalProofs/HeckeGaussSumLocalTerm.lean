@@ -15,9 +15,9 @@ namespace GlobalTheory.CompanionTheory.HeckeBridge.GaussSum
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hv`. Use `h.not_unrAt hm fun x hx => ?_` and prove the remaining obligations. Establish `hx' : Valued.v (x : v.adicCompletion E) = 1` using `hx`. Establish `hmem : x ∈ (Submonoid.ofClass (v.adicCompletionIntegers E)).units`. Use `Submonoid.mem_units_iff _ _ |>.2 ⟨(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 hx'.le, (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hx', inv_one]`. Establish `h1` using `(toHecke χ hu).localComponent_eq_one_of_not_dvd hv hmem`. Establish `h2` using `coe_localComponent χ hu v x`. Rewrite `h2` using `[h1]`. Conclude with `Units.ext (by simpa using h2.symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_conductor (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum (𝓞 E)) {m : ℕ} (hm : m ≠ 0)
     (h : ExpAt χ v m) : v.asIdeal ∣ (toHecke χ hu).conductor := by
@@ -34,32 +34,32 @@ theorem dvd_conductor (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum 
   exact Units.ext (by simpa using h2.symm)
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`.
+A detailed English derivation is pending.
 -/
 theorem hval (v : HeightOneSpectrum (𝓞 E)) (x : E) :
     Valued.v (algebraMap E (v.adicCompletion E) x) = v.valuation E x :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x
 
 /- English proof (translation)
-Conclude with `(hval v _).trans ((v.valuation_eq_one_iff_notMem (K := E)).2 hy)`.
+A detailed English derivation is pending.
 -/
 theorem valued_eq_one {v : HeightOneSpectrum (𝓞 E)} {y : 𝓞 E} (hy : y ∉ v.asIdeal) :
     Valued.v (algebraMap E (v.adicCompletion E) (y : E)) = 1 := by
   exact (hval v _).trans ((v.valuation_eq_one_iff_notMem (K := E)).2 hy)
 
 /- English proof (translation)
-Conclude with `fun h => (v.valuation_eq_one_iff_notMem (K := E)).1 ((hval v _).symm.trans h) hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem valued_ne_one {v : HeightOneSpectrum (𝓞 E)} {y : 𝓞 E} (hy : y ∈ v.asIdeal) :
     Valued.v (algebraMap E (v.adicCompletion E) (y : E)) ≠ 1 := by
   exact fun h => (v.valuation_eq_one_iff_notMem (K := E)).1 ((hval v _).symm.trans h) hy
 
 /- English proof (translation)
-Establish `hy0 : (y : E) ≠ 0`. Introduce `h0`. Establish `: y = 0` using `by exact_mod_cast h0`. Conclude with `hy (this ▸ v.asIdeal.zero_mem)`. Establish `h1` using `(toHecke χ hu).finiteTest_of_dvd hv (atFin v (Units.mk0 (y : E) hy0)) (valued_eq_one hy)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((atFin v (Units.mk0 (y : E) hy0) : (v.adicCompletion E)ˣ) : v.adicCompletion E) = algebraMap E (v.adicCompletion E) (y : E)` using `rfl`. Rewrite `h1` using `[h2]`. Rewrite using `[h1, coe_localComponent, gaussTerm, dif_neg hy0, Units.val_inv_eq_inv_val]`. Establish `h3 : ((atFin v c : (v.adicCompletion E)ˣ) : v.adicCompletion E) = algebraMap E (v.adicCompletion E) (c : E)` using `rfl`. Rewrite using `[h3, map_div₀, div_eq_mul_inv, mul_comm (algebraMap E _ _)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem term_of_notMem (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum (𝓞 E))
     (hv : v.asIdeal ∣ (toHecke χ hu).conductor) (c : Eˣ) {y : 𝓞 E} (hy : y ∉ v.asIdeal) :
@@ -79,11 +79,11 @@ theorem term_of_notMem (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum
   rfl
 
 /- English proof (translation)
-Establish `hv` using `dvd_conductor χ hu v hm hE`. Rewrite using `[gaussSumAt]`. Establish `hG : ∀ y : (𝓞 E ⧸ v.asIdeal ^ m)ˣ, gaussTerm χ v (unif v ^ (m + diffExp v)) ((Quotient.out (y : 𝓞 E ⧸ v.asIdeal ^ m) : 𝓞 E) : E) = (toHecke χ hu).finiteTest v (algebraMap E (v.adicCompletion E) ((Quotient.out (y : 𝓞 E ⧸ v.asIdeal ^ m) : 𝓞 E) : E)) * psiAt v (((atFin v (unif v ^ ( …` using `fun y => (term_of_notMem χ hu v hv _ (out_notMem v hm y)).symm`. Rewrite using `[finsum_congr hG, ← finsum_mem_range (g := ((↑) : (𝓞 E ⧸ v.asIdeal ^ m)ˣ → 𝓞 E ⧸ v.asIdeal ^ m)) Units.val_injective (f := fun r : 𝓞 E ⧸ v.asIdeal ^ m => (toHecke χ hu).finiteTest v (algebraMap E (v.adicCompletion E) ((Quotient.out r : 𝓞 E) : E)) * psiAt v (((atFin v (unif v ^ (m …`. Use `finsum_congr fun r => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hr : r ∈ Set.range ((↑) : (𝓞 E ⧸ v.asIdeal ^ m)ˣ → 𝓞 E ⧸ v.asIdeal ^ m)`. Rewrite using `[Set.indicator_of_mem hr]`. Rewrite using `[Set.indicator_of_notMem hr]`. Establish `hmem : (Quotient.out r : 𝓞 E) ∈ v.asIdeal`. Assume the negation of the conclusion as `hn`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1` using `Ideal.Quotient.isUnit_mk_pow_of_notMem v.asIdeal (n := m) hn`. Rewrite `h1` using `[Ideal.Quotient.mk_out]`. Conclude with `hr ⟨h1.unit, rfl⟩`. Rewrite using `[(toHecke χ hu).finiteTest_eq_zero_of_dvd hv (valued_ne_one hmem), zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteTest_sum_eq_gaussSumAt (E : Type) [Field E] [NumberField E] (χ : HChar E) (hu : IsUnitary χ)
     (v : HeightOneSpectrum (𝓞 E)) (m : ℕ) (hm : m ≠ 0) (hE : ExpAt χ v m) :

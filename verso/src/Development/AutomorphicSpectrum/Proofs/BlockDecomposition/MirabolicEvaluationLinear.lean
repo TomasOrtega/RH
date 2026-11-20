@@ -11,27 +11,27 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {n : ℕ} {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
 
 /- English proof (translation)
-The claim follows from `(continuous_unipIn n).comp continuous_ofAdd`.
+A detailed English derivation is pending.
 -/
 theorem continuous_uM (n : ℕ) : Continuous (uM (k := k) n) :=
   (continuous_unipIn n).comp continuous_ofAdd
 
 /- English proof (translation)
-Simplify using `only [uM, ofAdd_add, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uM_add (n : ℕ) (x y : Fin n → k) : uM n (x + y) = uM n x * uM n y := by
   simp only [uM, ofAdd_add, map_mul]
 
 /- English proof (translation)
-Simplify using `only [uM, ofAdd_zero, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uM_zero (n : ℕ) : uM (k := k) n 0 = 1 := by
   simp only [uM, ofAdd_zero, map_one]
 
 /- English proof (translation)
-Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_exists_open _).2 fun x => ?_)` and prove the remaining obligations. Use `⟨(fun y => uM n (y - x)) ⁻¹' {g | T g v = v}, (hT v).preimage ((continuous_uM n).comp (continuous_id.sub continuous_const)), ?_, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `[uM_zero]`. Establish `hy' : T (uM n (y - x)) v = v` using `hy`. Establish `h : uM n y = uM n x * uM n (y - x)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← uM_add, add_sub_cancel]`. Simplify using `only [coef, h, map_mul, Module.End.mul_apply, hy']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem continuous_coef (T : Representation ℂ (Mir k n) V) (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ) (hT : IsSmooth T)
     (v : V) (v' : V') : Continuous (coef T B v v') := by
@@ -45,7 +45,7 @@ theorem continuous_coef (T : Representation ℂ (Mir k n) V) (B : V →ₗ[ℂ] 
     simp only [coef, h, map_mul, Module.End.mul_apply, hy']
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp (hψ.comp (continuous_apply _).neg)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_wt (ψ : AddChar k Circle) (hψ : Continuous ψ) (n : ℕ) : Continuous (wt ψ n) :=
   continuous_subtype_val.comp (hψ.comp (continuous_apply _).neg)
@@ -53,7 +53,7 @@ theorem continuous_wt (ψ : AddChar k Circle) (hψ : Continuous ψ) (n : ℕ) : 
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `: IsFiniteMeasureOnCompacts (piHaar ν (n + 1))`. Unfold `piHaar`. Use `infer_instance`. Conclude with `((continuous_wt ψ hψ n).mul (continuous_coef T B hT v v')).continuousOn.integrableOn_compact (isCompact_box _ t)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem integrableOn_box (ν : Measure k) [ν.IsAddHaarMeasure] (ψ : AddChar k Circle)
     (T : Representation ℂ (Mir k (n + 1)) V) (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ)
@@ -68,35 +68,35 @@ theorem integrableOn_box (ν : Measure k) [ν.IsAddHaarMeasure] (ψ : AddChar k 
     (isCompact_box _ t)
 
 /- English proof (translation)
-Simplify using `[coef]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coef_add_left (T : Representation ℂ (Mir k n) V) (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ) (v₁ v₂ : V) (v' : V')
     (x : Fin n → k) : coef T B (v₁ + v₂) v' x = coef T B v₁ v' x + coef T B v₂ v' x := by
   simp [coef]
 
 /- English proof (translation)
-Simplify using `[coef]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coef_smul_left (T : Representation ℂ (Mir k n) V) (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ) (z : ℂ) (v : V) (v' : V')
     (x : Fin n → k) : coef T B (z • v) v' x = z * coef T B v v' x := by
   simp [coef]
 
 /- English proof (translation)
-Simplify using `[coef]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coef_add_right (T : Representation ℂ (Mir k n) V) (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ) (v : V) (v₁ v₂ : V')
     (x : Fin n → k) : coef T B v (v₁ + v₂) x = coef T B v v₁ x + coef T B v v₂ x := by
   simp [coef]
 
 /- English proof (translation)
-Simplify using `[coef]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coef_smul_right (T : Representation ℂ (Mir k n) V) (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ) (z : ℂ) (v : V) (v' : V')
     (x : Fin n → k) : coef T B v (z • v') x = z * coef T B v v' x := by
   simp [coef]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hP`. Take `⟨b, hb⟩` from `hQ`. Break down `le_total (valuation k (a : k)) (valuation k (b : k)) with h | h` into its components or cases. Conclude with `⟨b, fun t ht => ⟨ha t (h.trans ht), hb t ht⟩⟩`. Conclude with `⟨a, fun t ht => ⟨ha t ht, hb t (h.trans ht)⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_common_threshold {P Q : kˣ → Prop}
     (hP : ∃ t₀ : kˣ, ∀ t : kˣ, valuation k (t₀ : k) ≤ valuation k (t : k) → P t)
@@ -109,15 +109,13 @@ theorem exists_common_threshold {P Q : kˣ → Prop}
   · exact ⟨a, fun t ht => ⟨ha t ht, hb t (h.trans ht)⟩⟩
 
 /- English proof (translation)
-Use `⟨fun v₁ v₂ v' A₁ A₂ h₁ h₂ => ?_, fun z v v' A h => ?_, fun v v₁ v₂ A₁ A₂ h₁ h₂ => ?_, fun z v v' A h => ?_⟩` and prove the remaining obligations. Take `⟨t₀, ht₀⟩` from `exists_common_threshold h₁ h₂`. Use `⟨t₀, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨e₁, e₂⟩` from `ht₀ t ht`. Rewrite using `[← e₁, ← e₂]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [JJ, coef_add_left, mul_add]`. Conclude with `integral_add (integrableOn_box ν ψ T B hψ hT v₁ v' t) (integrableOn_box ν ψ T B hψ hT v₂ v' t)`. Take `⟨t₀, ht₀⟩` from `h`. Use `⟨t₀, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[← ht₀ t ht]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [JJ, coef_smul_left, mul_left_comm _ z]`. Conclude with `integral_const_mul z _`. Take `⟨t₀, ht₀⟩` from `exists_common_threshold h₁ h₂`. Use `⟨t₀, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨e₁, e₂⟩` from `ht₀ t ht`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e₁, ← e₂]`. Simplify using `only [JJ, coef_add_right, mul_add]`. Conclude with `integral_add (integrableOn_box ν ψ T B hψ hT v v₁ t) (integrableOn_box ν ψ T B hψ hT v v₂ t)`. Take `⟨t₀, ht₀⟩` from `h`. Use `⟨t₀, fun t ht => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← ht₀ t ht]`. Simplify using `only [JJ, coef_smul_right, mul_left_comm _ z]`. Conclude with `integral_const_mul z _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evVal_bilinear (ν : Measure k) [ν.IsAddHaarMeasure] (ψ : AddChar k Circle)
     (T : Representation ℂ (Mir k (n + 1)) V) (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ)
@@ -154,7 +152,7 @@ theorem evVal_bilinear (ν : Measure k) [ν.IsAddHaarMeasure] (ψ : AddChar k Ci
     exact integral_const_mul z _
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν _ ψ n V V' _ _ _ _ T B hψ hT`. Conclude with `evVal_bilinear ν ψ T B hψ hT`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem evVal_additive_homogeneous : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure] (ψ : AddChar k Circle) {n : ℕ} {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (T : Representation ℂ (Mir k (n + 1)) V) (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ), Continuous ψ → IsSmooth T → (∀ (v₁ v₂ : V) (v' : V') (A₁ A₂ : ℂ), EvVal ν ψ T B v₁ v' A₁ → EvVal ν ψ T B v₂ v' A₂ → EvVal ν ψ T B (v₁ + v₂) v' (A₁ + A₂)) ∧ (∀ (z : ℂ) (v : V) (v' : V') (A : ℂ), EvVal ν ψ T B v v' A → EvVal ν ψ T B (z • v) v' (z * A)) ∧ (∀ (v : V) (v₁ v₂ : V') (A₁ A₂ : ℂ), EvVal ν ψ T B v v₁ A₁ → EvVal ν ψ T B v v₂ A₂ → EvVal ν ψ T B v (v₁ + v₂) (A₁ + A₂)) ∧ (∀ (z : ℂ) (v : V) (v' : V') (A : ℂ), EvVal ν ψ T B v v' A → EvVal ν ψ T B v (z • v') (z * A)) := by
   intro k _ _ _ _ _ _ ν _ ψ n V V' _ _ _ _ T B hψ hT

@@ -28,15 +28,15 @@ end GlobalTheory.FlatValZero
 open GlobalTheory.FlatValZero
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hP hD _ hF`. Establish `F` using `_root_.GlobalTheory.CovTop.FlatVal.flat_val_alt hF`. Unfold `_root_.GlobalTheory.CovTop.CoversCondition _root_.GlobalTheory.CovTop.LiftsCondition at *`. Use `(hD.and F).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨C1, h1, e1⟩, ⟨C2, h2, e2⟩⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨C1, h1, ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `e1.and e2`. Use `⟨x0, fun x hx hle ι p hp i hi Y hY Z TF y T io y' g hg hpt hZ w => ?_⟩` and prove the remaining obligations. Take `⟨-, hB⟩` from `hx0 x hx hle ι p hp`. Establish `hFE` using `(hB i hi Y hY).2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hL` using `GlobalTheory.LawsDeep.laws_deep _ p.T _ Y _ _ p.fw.laws ⟨Nat.le_add_left _ _, i.2⟩ hY.1`. Take `⟨t, ht⟩` from `_root_.GlobalTheory.FlatValZero.twisted_section_flat_valuation hP hL hFE Z w`. Use `⟨t, ht T io y' (fun a ha => ?_) hZ⟩` and prove the remaining obligations. Establish `ho : ∀ a, io a ∈ (algebraMap T.V T.Fr).range` using `fun a => by`. Use `letI := io.toAlgebra`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `h1` using `ptY_str TF.X y'.1`. Rewrite `h1` using `[hpt, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, Category.assoc]`. Take `⟨b, hb⟩` from `Spec.map_surjective (Spec.map (CommRingCat.ofHom g) ≫ ((Y₀ TF.X Z).fromSpecStalk y ≫ inc₀ TF.X Z) ≫ flagStr TF.X)`. Rewrite `h1` using `[← hb, ← Spec.map_comp]`. Conclude with `⟨b.hom a, congrArg (fun q => CommRingCat.Hom.hom q a) (Spec.map_injective h1)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Establish `ha' : io a ≠ 0` using `(map_ne_zero io).2 ha`. Establish `h1` using `(GlobalTheory.KeyValZero.mem_range_iff T _).1 (ho a)`. Establish `h2` using `(GlobalTheory.KeyValZero.mem_range_iff T _).1 (ho a⁻¹)`. Establish `h3` using `vV_mul (V := T.V) ha' ((map_ne_zero io).2 (inv_ne_zero ha))`. Rewrite `h3` using `[← map_mul, mul_inv_cancel₀ ha, map_one, show vV T.V (1 : T.Fr) = 0 by simp [vV]]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -80,7 +80,7 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.FlatValZero.flat_val_zero_at_integral_point_stalk | exact _root_.GlobalTheory.FlatValZero.flat_val_zero_at_integral_point_stalk | (intros; apply _root_.GlobalTheory.FlatValZero.flat_val_zero_at_integral_point_stalk <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.integral_frame_point_stalk_compat_third_place_series : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y _ _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂) (y : Y₀ TF.X Z) (T : CDVR) (io : Y.d.c₂.F →+* T.Fr) (y' : IntFr Y.d.Xo₂ Y.d.c₂ T io) (g : (Y₀ TF.X Z).presheaf.stalk y →+* T.V), IsLocalHom g → (letI := io.toAlgebra; TF.X.ptY y'.1 = Spec.map (CommRingCat.ofHom ((algebraMap T.V T.Fr).comp g)) ≫ (Y₀ TF.X Z).fromSpecStalk y ≫ inc₀ TF.X Z) → evI y' (GlobalTheory.FlatLine.idem Z) ≠ 0 → ∀ w : AllWt.Psi p.T.Q.H → ℤ, ∃ t : GlobalTheory.FlatTw.TwSec Y.U (xiR (Fm.D x ι)) Z (AllWt.wtOf (dat p i) (GlobalTheory.FlatLine.parWt (dat p i) w) 0), vV T.V (evI y' t.sig) = 0 := by
   first | exact @_root_.GlobalTheory.FlatValZero.flat_val_zero_at_integral_point_stalk | exact _root_.GlobalTheory.FlatValZero.flat_val_zero_at_integral_point_stalk | (intros; apply _root_.GlobalTheory.FlatValZero.flat_val_zero_at_integral_point_stalk <;> assumption)

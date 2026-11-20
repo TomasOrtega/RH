@@ -10,11 +10,9 @@ open MvPolynomial
 variable {F : Type} [Field F] {n k : ℕ}
 
 /- English proof (translation)
-Take `⟨q, rfl⟩ : f ∣ g` from `(hf.2 g).mp ((hg.2 g).mpr dvd_rfl)`. Take `⟨r, hr⟩ : f * q ∣ f` from `(hg.2 f).mp ((hf.2 f).mpr dvd_rfl)`. Establish `hqr : q * r = 1`. Establish `h' : f * (q * r) = f * 1`. Rewrite using `[mul_one, ← mul_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hr.symm`. Conclude with `mul_left_cancel₀ hf.1 h'`. Take `⟨c, -, rfl⟩` from `(isUnit_iff_eq_C_of_isReduced (P := q)).mp (IsUnit.of_mul_eq_one r hqr)`. Establish `h1 : IsWeightedHomogeneous (groupWeight k n) (f * C c) ((fun _ => δ) + 0)` using `IsWeightedHomogeneous.mul hδ (isWeightedHomogeneous_C _ c)`. Rewrite `h1` using `[add_zero]`.
-
-Conclude with `congrFun (IsWeightedHomogeneous.inj_right hg.1 h1 hδ') ⟨0, hk⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chowForm_degree_unique {I : Ideal (MvPolynomial (Fin n) F)}
     {f g : MvPolynomial (Fin k × Fin n) F} (hk : 0 < k) (hf : IsChowForm I k f)
@@ -34,11 +32,9 @@ theorem chowForm_degree_unique {I : Ideal (MvPolynomial (Fin n) F)}
   exact congrFun (IsWeightedHomogeneous.inj_right hg.1 h1 hδ') ⟨0, hk⟩
 
 /- English proof (translation)
-Introduce `F _ n k I f hf`. Break down `Nat.eq_zero_or_pos k with hk0 | hk` into its components or cases. Substitute `hk0` using the available equality. Conclude with `fun d _ => funext fun i => i.elim0`. Use `choose a ha using fun i => hf.exists_isWeightedHomogeneous_inGroup i`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hδ : IsMultiHomog (a ⟨0, hk⟩) f` using `(isMultiHomog_iff _ _).mpr fun i => by`. Rewrite using `[hf.degrees_eq ha ⟨0, hk⟩ i]`. Conclude with `ha i`. Establish `hdeg : chowDegree I k = a ⟨0, hk⟩`. Apply `le_antisymm` to reduce the goal to its premises.
-
-Conclude with `Nat.sInf_le ⟨f, hf, hδ⟩`. Conclude with `le_csInf ⟨_, f, hf, hδ⟩ fun δ ⟨g, hg, hδg⟩ => (chowForm_degree_unique hk hf hg hδ hδg).le`. Rewrite using `[hdeg]`. Conclude with `hδ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChowFormHomog.proof : ChowFormHomog.Statement := by
   intro F _ n k I f hf
@@ -58,12 +54,12 @@ theorem ChowFormHomog.proof : ChowFormHomog.Statement := by
   exact hδ
 
 /- English proof (translation)
-The claim follows from `ChowFormHomog.proof`.
+A detailed English derivation is pending.
 -/
 theorem chowFormHomog : ChowFormHomog.Statement := ChowFormHomog.proof
 
 /- English proof (translation)
-The claim follows from `ChowFormHomog.proof ℚ 1 1 ⊥ _ (isChowForm_point ℚ)`.
+A detailed English derivation is pending.
 -/
 example : IsMultiHomog (chowDegree (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) 1)
     (X (0, 0) : MvPolynomial (Fin 1 × Fin 1) ℚ) :=

@@ -9,7 +9,7 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE.UV
 
 /- English proof (translation)
-Conclude with `cokernel.π_desc _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem π_cokOps {X : Scheme.{0}} {k : ℕ} {M : ℕ → X.Modules}
     {T : Fin (k + 1) → ∀ e, M e ⟶ M (e + 1)}
@@ -19,14 +19,14 @@ theorem π_cokOps {X : Scheme.{0}} {k : ℕ} {M : ℕ → X.Modules}
   exact cokernel.π_desc _ _ _
 
 /- English proof (translation)
-Rewrite using `[Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem app_comp_apply {X : Scheme.{0}} {A B C : X.Modules} (f : A ⟶ B) (g : B ⟶ C) (U : X.Opens)
     (x : Γ(A, U)) : g.app U (f.app U x) = (f ≫ g).app U x := by
   rw [Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply]
 
 /- English proof (translation)
-Rewrite using `[app_comp_apply, app_comp_apply, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem app_apply_eq_of_comp_eq {X : Scheme.{0}} {A B B' C : X.Modules} (f : A ⟶ B) (g : B ⟶ C)
     (f' : A ⟶ B') (g' : B' ⟶ C) (h : f ≫ g = f' ≫ g') (U : X.Opens) (x : Γ(A, U)) :
@@ -34,17 +34,15 @@ theorem app_apply_eq_of_comp_eq {X : Scheme.{0}} {A B B' C : X.Modules} (f : A �
   rw [app_comp_apply, app_comp_apply, h]
 
 /- English proof (translation)
-Use `haveI := (hM.coherent e).1`. Conclude with `isCoherent_cokernel (T (Fin.last k) e) (hM.coherent (e + 1))`. Use `comm := cokOps_comm hM.comm`. Use `gen e he U := by haveI := (hM.coherent (e + 1)).1 haveI := (hM.coherent (e + 1 + 1)).1`. Rewrite using `[eq_top_iff]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `y -`. Take `⟨z, rfl⟩` from `surjective_cokernel_π_app (T (Fin.last k) (e + 1)) U.2 y`. Establish `hz : z ∈ Submodule.span Γ(X, U) (⋃ i, Set.range ((T i (e + 1)).app U))`. Rewrite using `[hM.gen (e + 1) (by omega) U]; trivial`. Proceed by induction on `hz using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `mem z hz`. Take `⟨i, x, rfl⟩` from `Set.mem_iUnion.1 hz`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Establish `h0 : T (Fin.last k) (e + 1) ≫ cokernel.π (T (Fin.last k) (e + 1)) = 0` using `cokernel.condition _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, h0, Scheme.Modules.Hom.zero_app]`. Conclude with `Submodule.zero_mem _`. Consider the case `cast i`. Use `Submodule.subset_span (Set.mem_iUnion.2 ⟨i, (cokernel.π (T (Fin.last k) e)).app U x, ?_⟩)` and prove the remaining obligations. Conclude with `app_apply_eq_of_comp_eq (B := cokSeq M T e) (C := cokSeq M T (e + 1)) (cokernel.π (T (Fin.last k) e)) (cokOps hM.comm i e) (T i.castSucc (e + 1)) (cokernel.π (T (Fin.last k) (e + 1))) (π_cokOps hM.comm i e) U.1 x`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb`. Rewrite using `[map_add]`.
-
-Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul r a _ ha`. Rewrite using `[Scheme.Modules.Hom.app_smul]`. Conclude with `Submodule.smul_mem _ _ ha`.
+A detailed English derivation is pending.
 -/
 theorem cokOpSeq {X : Scheme.{0}} {k : ℕ} {M : ℕ → X.Modules}
     {T : Fin (k + 1) → ∀ e, M e ⟶ M (e + 1)} {d : ℕ} (hM : OpSeq (k + 1) M T d) :

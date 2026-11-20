@@ -22,9 +22,9 @@ open GlobalTheory.RowEx MeasureTheory
 namespace GlobalTheory.MovedAlgRat
 
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX t γ hγ a ha γ' hγ' a' ha' hfin hfin'`. Take `⟨C, hC, hCe⟩` from `GlobalTheory.T.realPoint_acts_on_vacuum_by_algebraicScalar hX t γ hγ a ha γ' hγ' a' ha' hfin hfin'`. Establish `hR : GlobalTheory.MovedAlg.IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (γ, γ') X.vac)` using `GlobalTheory.T.theta_expansion_rational_coeffs hP hI hL hX t γ hγ a ha γ' hγ' a' ha' hfin hfin'`. Establish `e : X.ω t (γ * a, γ' * a') X.vac = C • X.ω t (γ, γ') X.vac`. Establish `hm : ((γ * a, γ' * a') : GA D A × GA D WW) = (γ, γ') * (a, a')` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hm, map_mul, Module.End.mul_apply, hCe, map_smul]`. Rewrite using `[e]`. Conclude with `GlobalTheory.MovedAlg.IsAlgComb.smul hC hR`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_real_algComb : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

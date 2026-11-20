@@ -12,7 +12,7 @@ open scoped Matrix
 open NumberField IsDedekindDomain Topology GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes PositivityTheory.ThK
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.InvariantSumOfTranslates.main ω f₀ hU`.
+A detailed English derivation is pending.
 -/
 theorem exists_fixed_sum {K S : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K]
     [AddCommGroup S] [Module ℂ S] (ω : K →* Module.End ℂ S) (f₀ : S)
@@ -25,7 +25,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {ω : UA σ X.J × UA σ W.J → Module.End ℂ (Fn F n d v)} {ρ : Matrix (Fin n) (Fin d) (AE F E) → Module.End ℂ (Fn F n d v)}
 
 /- English proof (translation)
-Simplify using `using L.mul g hg 1 (one_mem_UAt W v) g' hg' 1 (one_mem_UAt W v) φ hφ`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsLocRep.mulX (L : IsLocRep M ψ om v ω ρ) {g g' : UA σ X.J} (hg : g ∈ UAt σ X (evFin F v))
     (hg' : g' ∈ UAt σ X (evFin F v)) {φ} (hφ : φ ∈ SB _) : ω (g * g', 1) φ = ω (g, 1) (ω (g', 1) φ) := by
@@ -49,7 +49,7 @@ theorem IsLocRep.onK_apply (L : IsLocRep M ψ om v ω ρ) (k : KSub σ W v) (φ 
     (L.onK k φ).1 = ω (1, k.1) φ.1 := rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨g, hg, φ, hφ, _, L.pres g hg 1 (one_mem_UAt W v) φ hφ, (L.acts g hg 1 (one_mem_UAt W v) φ hφ _).2 rfl, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsLocRep.sub_mem_aug (L : IsLocRep M ψ om v ω ρ) {g : UA σ X.J} (hg : g ∈ UAt σ X (evFin F v)) {φ}
     (hφ : φ ∈ SB _) : ω (g, 1) φ - φ ∈ augAt om v :=
@@ -57,13 +57,11 @@ theorem IsLocRep.sub_mem_aug (L : IsLocRep M ψ om v ω ρ) {g : UA σ X.J} (hg 
     (L.acts g hg 1 (one_mem_UAt W v) φ hφ _).2 rfl, rfl⟩
 
 /- English proof (translation)
-Introduce `φ hφ`. Establish `hs` using `IsUWeilPair.isUSplitting hw`. Take `⟨r₀, x₀, h₀, h₁⟩` from `PositivityTheory.ThKH.Locrep.exists_base (Fin n × Fin d) v`. Set `loc : UA σ X.J → Module.End ℂ (Fn F n d v)` to `fun g => PositivityTheory.ThKH.Locrep.res v x₀ ∘ₗ om (g, 1) ∘ₗ PositivityTheory.ThKH.Locrep.tensL v r₀`. Establish `key : ∀ g ∈ UAt σ X (evFin F v), ∀ φ ∈ SB _, loc g φ = ω (g, 1) φ` using `fun g hg φ hφ => (PositivityTheory.ThKH.Locrep.eq_of_acts v h₁ (h₀ φ hφ) ((L.acts g hg 1 (one_mem_UAt W v) φ hφ _).2 rfl)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨K, hK1, hK2, hK3, hK4⟩` from `PositivityTheory.ThKH.Locrep.exists_small_subgroups σ X v`. Take `⟨m, hm⟩` from `PositivityTheory.ThKH.Locrep.smooth_of_weak (SB _) K hK1 hK2 loc (fun g hg φ hφ => by`. Rewrite using `[key g (hK3 0 hg) φ hφ]`. Conclude with `L.pres g (hK3 0 hg) 1 (one_mem_UAt W v) φ hφ)`. Use the proof step `(fun φ hφ => by rw [key 1 (one_mem_UAt X v) φ hφ]; exact L.one φ hφ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun g hg g' hg' φ hφ => by`. Rewrite using `[key _ (mul_mem_UAt (hK3 0 hg) (hK3 0 hg')) φ hφ, key g' (hK3 0 hg') φ hφ, key g (hK3 0 hg) _ (L.pres g' (hK3 0 hg') 1 (one_mem_UAt W v) φ hφ)]`. Conclude with `(IsLocRep.mulX L) (hK3 0 hg) (hK3 0 hg') hφ)`. Use the proof step `(fun l φ hφ => (hs.cont _ (PositivityTheory.ThKH.Locrep.res_adm v x₀ l) _ (h₀ φ hφ).2).comp (continuous_id.prodMk continuous_const)) φ hφ`. Take `⟨U, hU, hUK⟩` from `hK4 m`.
-
-Conclude with `⟨U, hU, fun g hg hv => by rw [← key g hv φ hφ]; exact hm g (hUK g hg hv)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsLocRep.smoothX (L : IsLocRep M ψ om v ω ρ) {ψ' : AddChar (AF F) ℂ} {χX χW : Chr F E}
     (hw : M.IsWeil ψ' χX χW om) :
@@ -90,13 +88,13 @@ theorem IsLocRep.smoothX (L : IsLocRep M ψ om v ω ρ) {ψ' : AddChar (AF F) �
   exact ⟨U, hU, fun g hg hv => by rw [← key g hv φ hφ]; exact hm g (hUK g hg hv)⟩
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g, hg, rfl⟩` from `hy`. Conclude with `⟨1, by rw [one_smul]; exact (IsLocRep.sub_mem_aug L) hg hs⟩`. Consider the case `zero => exact ⟨0, by rw [zero_smul, sub_zero]; exact Submodule.zero_mem _⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz`. Take `⟨c, hc⟩` from `hy`. Take `⟨c', hc'⟩` from `hz`. Use `⟨c + c', ?_⟩` and prove the remaining obligations. Establish `e : y + z - (c + c') • M.vac v = (y - c • M.vac v) + (z - c' • M.vac v)` using `by rw [add_smul]; abel`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `add_mem hc hc'`. Consider the case `smul a y _ hy`. Take `⟨c, hc⟩` from `hy`. Use `⟨a * c, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : a • y - (a * c) • M.vac v = a • (y - c • M.vac v)` using `by rw [smul_sub, smul_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLocRep.span_vac (L : IsLocRep M ψ om v ω ρ) (hs : M.vac v ∈ SB _) {z}
     (hz : z ∈ Submodule.span ℂ {z | ∃ g ∈ UAt σ X (evFin F v), z = ω (g, 1) (M.vac v)}) :
@@ -121,19 +119,15 @@ theorem IsLocRep.span_vac (L : IsLocRep M ψ om v ω ρ) (hs : M.vac v ∈ SB _)
     exact Submodule.smul_mem _ _ hc
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`. Use `haveI : IsTopologicalGroup (GL (Fin n) (AE F E)) := inferInstance`. Use `haveI : IsTopologicalGroup (GL (Fin d) (AE F E)) := inferInstance`. Use `haveI : IsTopologicalGroup (UA σ X.J) := inferInstance`. Use `haveI : IsTopologicalGroup (UA σ W.J) := inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsTopologicalGroup (KSub σ X v) := inferInstance`. Use `haveI : IsTopologicalGroup (KSub σ W v) := inferInstance`. Use `haveI : CompactSpace (KSub σ X v) := isCompact_iff_compactSpace.1 hKX`. Use `haveI : CompactSpace (KSub σ W v) := isCompact_iff_compactSpace.1 hKW`. Use `⟨H.fixW, fun φ hφ => ?_, fun φ hφ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U, hU, hU'⟩` from `smX φ hφ`. Take `⟨m, k, hk⟩` from `exists_fixed_sum (IsLocRep.onKX L) ⟨φ, hφ⟩ ⟨Subtype.val ⁻¹' U, continuous_subtype_val.continuousAt hU, fun k hk => Subtype.ext (hU' k.1 hk k.2.1)⟩`. Use `set f := ∑ i, ω ((k i).1, 1) φ with hf`. Establish `hfS : f ∈ SB _` using `sum_mem fun i _ => L.pres _ (k i).2.1 1 (one_mem_UAt W v) φ hφ`. Establish `hfix : ∀ g ∈ KAt σ X v, ω (g, 1) f = f` using `fun g hg => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Subtype.val (hk ⟨g, hg⟩)` as an intermediate fact. Simplify `this` using `only [(IsLocRep.onKX_apply L), Submodule.coe_sum]`. Establish `hgen` using `H.genW f hfS hfix`. Establish `haug : ((m + 1 : ℕ) : ℂ) • φ - f ∈ augAt om v`. Establish `e : ((m + 1 : ℕ) : ℂ) • φ - f = ∑ i : Fin (m + 1), -(ω ((k i).1, 1) φ - φ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hf, Finset.sum_neg_distrib, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, ← Nat.cast_smul_eq_nsmul ℂ, neg_sub]`. Rewrite using `[e]`. Conclude with `sum_mem fun i _ => neg_mem ((IsLocRep.sub_mem_aug L) (k i).2.1 hφ)`. Establish `hc : ((m + 1 : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.succ_ne_zero m)`. Use `Submodule.mem_sup.2 ⟨_, Submodule.smul_mem _ (((m + 1 : ℕ) : ℂ)⁻¹) haug, _, Submodule.smul_mem _ (((m + 1 : ℕ) : ℂ)⁻¹) hgen, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← smul_add, sub_add_cancel, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Take `⟨U, hU, hU'⟩` from `L.smooth φ hφ`. Take `⟨m, k, hk⟩` from `exists_fixed_sum L.onK ⟨φ, hφ⟩ ⟨Subtype.val ⁻¹' U, continuous_subtype_val.continuousAt hU, fun k hk => Subtype.ext (hU' k.1 hk k.2.1)⟩`. Use `set f := ∑ i, ω (1, (k i).1) φ with hf`. Establish `hfS : f ∈ SB _` using `sum_mem fun i _ => L.pres 1 (one_mem_UAt X v) _ (k i).2.1 φ hφ`.
-
-Establish `hfix : ∀ g ∈ KAt σ W v, ω (1, g) f = f` using `fun g hg => by`. Use `congrArg Subtype.val (hk ⟨g, hg⟩)` as an intermediate fact. Simplify `this` using `only [(IsLocRep.onK_apply L), Submodule.coe_sum]`. Take `⟨c, hc⟩` from `(IsLocRep.span_vac L) hs (H.genX f hfS hfix)`. Conclude with `⟨m, fun i => (k i).1, c, fun i => (k i).2, hc⟩`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isVacSph_of (L : IsLocRep M ψ om v ω ρ) (H : IsHowe M v ω) (hKX : IsCompact (KAt σ X v))
     (hKW : IsCompact (KAt σ W v)) (hs : M.vac v ∈ SB _)
@@ -181,7 +175,7 @@ theorem isVacSph_of (L : IsLocRep M ψ om v ω ρ) (H : IsHowe M v ω) (hKX : Is
     exact ⟨m, fun i => (k i).1, c, fun i => (k i).2, hc⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v he`. Take `⟨p, p'⟩` from `h F E σ B a a' G X om om' hT v he`. Conclude with `⟨fun ω ρ L => isVacSph_of L (p ω ρ L) (isCompact_KAt G.V hT.geo.hV.lat v) (isCompact_KAt G.W hT.geo.hW.lat v) (hT.geo.hM.vac v).1 ((IsLocRep.smoothX L) hT.weil), fun ω ρ L => isVacSph_of L (p' ω ρ L) (isCompact_KAt G.V' hT.geo.hV'.lat v) (isCompact_KAt G.W hT.geo.hW.lat v) (hT.ge …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem vacInert (h : HoweInert) : VacInert := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hT v he

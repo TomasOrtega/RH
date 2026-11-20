@@ -17,15 +17,15 @@ open GlobalTheory.UnipLine
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hyx : form σ J y x = 1` using `by rw [← GlobalTheory.PlaneLevi.form_swap hσ hJ, hxy, map_one]`. Set `T : (E × E) × (Fin d₂ → E) →ₗ[E] (Fin n → E)` to `LinearMap.coprod (LinearMap.coprod (LinearMap.id.smulRight x) (LinearMap.id.smulRight y)) (Matrix.mulVecLin ι)`. Establish `hT : ∀ p, T p = p.1.1 • x + p.1.2 • y + ι *ᵥ p.2` using `fun p => rfl`. Establish `hinj : Function.Injective T`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨⟨a, b⟩, v⟩ h`. Rewrite `h` using `[hT]`. Establish `e1` using `congrArg (fun w => form σ J w x) h`. Establish `e2` using `congrArg (fun w => form σ J w y) h`. Simplify using `only [GlobalTheory.PlaneLevi.form_add_left, GlobalTheory.PlaneLevi.form_smul_left, hxx, hyy, hxy, hyx, (ho v).1, (ho v).2] at e1 e2`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [form, zero_dotProduct] at e1 e2`. Simplify using `only [mul_zero, mul_one, zero_add, add_zero] at e1 e2`. Substitute `e1` using the available equality. Substitute `e2` using the available equality. Simplify using `only [zero_smul, zero_add] at h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hv : v = 0` using `hι (by rw [h, Matrix.mulVec_zero])`. Simplify using `[hv]`. Establish `hdim : Module.finrank E ((E × E) × (Fin d₂ → E)) = Module.finrank E (Fin n → E)`. Simplify using `only [Module.finrank_prod, Module.finrank_self, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hsurj : Function.Surjective T` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).1 hinj`. Take `⟨⟨⟨a, b⟩, v⟩, hp⟩` from `hsurj w`. Use `⟨a, b, v, ?_⟩` and prove the remaining obligations. Rewrite using `[← hp, hT]`. Simplify using `only`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -60,9 +60,9 @@ theorem span_E {n d₂ : ℕ} {J : Matrix (Fin n) (Fin n) E} {x y : Fin n → E}
   rw [← hp, hT]; dsimp only; abel
 
 /- English proof (translation)
-It suffices to establish `h : w ∈ spanSet (incV F x) (incV F y) (incM F ι) from h`. Rewrite using `[pi_eq_sum_univ w]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Take `⟨a, b, v, h⟩` from `span_E hσ hJ hn hxx hyy hxy ho hι (fun j => if i = j then 1 else 0)`. Use `⟨inclR (AF F) a, inclR (AF F) b, incV F v, funext fun j => ?_⟩` and prove the remaining obligations.
+Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj` using `congrArg (inclR (F := F) (AF F)) (congrFun h j)`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, RingHom.map_mulVec] at hj`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `hj using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
 Both sides reduce to the same expression.
 -/
@@ -85,23 +85,21 @@ theorem span_A {n d₂ : ℕ} {J : Matrix (Fin n) (Fin n) E} {x y : Fin n → E}
   · rfl
 
 /- English proof (translation)
-Establish `hyx : form σ J y x = 1` using `by rw [← GlobalTheory.PlaneLevi.form_swap hσ hJ, hxy, map_one]`. Use `set q := J *ᵥ fun i => σ (x i) with hq`. Use `set g := incV F q`. Establish `hunit : (mat u)ᵀ * incM F J * (mat u).map (cA σ) = incM F J` using `u.2`. Establish `hg : g = incM F J *ᵥ fun i => cA σ (incV F x i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [g, hq, ← incM_mulVec_incV]`. Use `congr 1`. Establish `hcx : (mat u).map (cA σ) *ᵥ (fun i => cA σ (incV F x i)) = fun i => cA σ (incV F x i)`. Use function extensionality and compare the values at `i`. Use `((cA σ).toRingHom.map_mulVec (mat u) (incV F x) i).symm` as an intermediate fact.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hux]`. Conclude with `this`. Establish `hinv : ∀ w, (mat u *ᵥ w) ⬝ᵥ g = w ⬝ᵥ g`. Introduce `w`. Establish `hT : (mat u)ᵀ *ᵥ g = g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg, ← hcx, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hunit, hcx]`. Rewrite using `[dotProduct_comm, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hT, dotProduct_comm]`. Establish `gx : incV F x ⬝ᵥ g = 0` using `by rw [incV_dot]; exact (congrArg _ hxx).trans (map_zero _)`. Establish `gy : incV F y ⬝ᵥ g = 1` using `by rw [incV_dot]; exact (congrArg _ hyx).trans (map_one _)`. Establish `hιq : ιᵀ *ᵥ q = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Use `(ho (Pi.single j 1)).1` as an intermediate fact. Simplify using `only [form, Matrix.mulVec_single_one] at this`. Rewrite using `[Matrix.mulVec_transpose, Pi.zero_apply, ← this, ← hq, dotProduct_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `gi : ∀ z, (incM F ι *ᵥ z) ⬝ᵥ g = 0`. Introduce `z`. Rewrite using `[dotProduct_comm, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose]`. Establish `: (incM F ι)ᵀ *ᵥ g = 0`. Rewrite using `[show (incM F ι)ᵀ = incM F ιᵀ from Matrix.transpose_map.symm, incM_mulVec_incV, hιq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `[incV]`. Rewrite using `[this, zero_dotProduct]`. Take `⟨a, b, z, h⟩` from `span_A hσ hJ hn hxx hyy hxy ho hι (mat u *ᵥ incV F y)`. Establish `hb : b = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e1` using `hinv (incV F y)`. Rewrite `e1` using `[h, add_dotProduct, add_dotProduct, smul_dotProduct, smul_dotProduct, gx, gi, gy, smul_zero, zero_add, smul_eq_mul, mul_one]`. Simplify using `using e1`. Use `⟨a, z, ?_⟩` and prove the remaining obligations. Rewrite using `[h, hb, one_smul]`.
-
-Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem mulVec_y {n d₂ : ℕ} {J : Matrix (Fin n) (Fin n) E} {x y : Fin n → E} {ι : Matrix (Fin n) (Fin d₂) E}
     (hσ : ∀ e, σ (σ e) = e) (hJ : ∀ i j, σ (J j i) = J i j) (hn : d₂ + 2 = n)
@@ -152,7 +150,7 @@ theorem mulVec_y {n d₂ : ℕ} {J : Matrix (Fin n) (Fin n) E} {x y : Fin n → 
   abel
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d₂ X H hJ hσ ⟨hn, hxx, hyy, hxy, ho, hι⟩ u hux hui m m' t hmx hmy hmi hm'x hm'y hm'i`. Take `⟨c, z₀, huy⟩` from `mulVec_y hσ hJ hn hxx hyy hxy ho hι u hux`. Conclude with `conj_eq_pow (span_A hσ hJ hn hxx hyy hxy ho hι) u hux hui c z₀ huy m m' t hmx hmy hmi hm'x hm'y hm'i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem conj_commutator_eq_pow : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d₂ : ℕ) (X : Spc F E n)
     (H : Plane E n d₂), (∀ i j, σ (X.J j i) = X.J i j) → (∀ e : E, σ (σ e) = e) →

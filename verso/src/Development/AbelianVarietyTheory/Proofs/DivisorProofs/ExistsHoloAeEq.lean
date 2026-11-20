@@ -15,7 +15,7 @@ open Set
 variable {n : ℕ}
 
 /- English proof (translation)
-Break down `K.eq_empty_or_nonempty with rfl | hne` into its components or cases. Conclude with `⟨1, one_pos, by simp⟩`. Take `⟨x, hx, hmin⟩` from `hK.exists_isMinOn hne (hρ.mono hKW)`. Conclude with `⟨ρ x, hpos x (hKW hx), fun v hv => hmin hv⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pos_le_on_compact {W K : Set (V n)} {ρ : V n → ℝ} (hρ : ContinuousOn ρ W)
     (hpos : ∀ v ∈ W, 0 < ρ v) (hK : IsCompact K) (hKW : K ⊆ W) :
@@ -26,11 +26,11 @@ theorem exists_pos_le_on_compact {W K : Set (V n)} {ρ : V n → ℝ} (hρ : Con
   exact ⟨ρ x, hpos x (hKW hx), fun v hv => hmin hv⟩
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Apply `setLIntegral_mono' hK` to reduce the goal to its premises. Introduce `v hv`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : 1 ≤ c⁻¹ * ρ v`. Rewrite using `[le_inv_mul_iff₀ hc]`. Simplify using `using hcK v hv`. Establish `h2` using `mul_le_mul_of_nonneg_left h1 (sq_nonneg ‖g v‖)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `_ = ENNReal.ofReal c⁻¹ * ∫⁻ v in K, ENNReal.ofReal (‖g v‖ ^ 2 * ρ v) := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`. Use `_ ≤ _ := by gcongr`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_sq_le {W K : Set (V n)} {ρ : V n → ℝ} {c : ℝ} (hc : 0 < c)
     (hK : MeasurableSet K) (hKW : K ⊆ W) (hcK : ∀ v ∈ K, c ≤ ρ v) (g : V n → ℂ) :
@@ -53,13 +53,11 @@ theorem lintegral_sq_le {W K : Set (V n)} {ρ : V n → ℝ} {c : ℝ} (hc : 0 <
         gcongr
 
 /- English proof (translation)
-Take `⟨c, hc, hcK⟩` from `exists_pos_le_on_compact hρ hpos hK hKW`. Take `⟨m, hm⟩` from `(hlim.eventually (gt_mem_nhds zero_lt_one)).exists`. Establish `hum : IntegrableOn (u m) K` using `((hu m).continuousOn.mono hKW).integrableOn_compact hK`. Establish `hfK : AEStronglyMeasurable f (volume.restrict K)` using `(hf.mono_measure (Measure.restrict_mono hKW le_rfl)).aestronglyMeasurable`. Establish `hfin : ∫⁻ v in K, ‖f v - u m v‖ₑ ^ 2 < ⊤` using `lt_of_le_of_lt (lintegral_sq_le hc hK.measurableSet hKW hcK (fun v => f v - u m v)) (ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hm.trans ENNReal.one_lt_top))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : IntegrableOn (fun v => f v - u m v) K`. Use `⟨hfK.sub hum.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Use `show ∫⁻ v in K, ‖f v - u m v‖ₑ < ⊤`. Establish `hpt : ∀ x : ℝ≥0∞, x ≤ 1 + x ^ 2`. Introduce `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_total x 1 with h | h` into its components or cases. Conclude with `h.trans le_self_add`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_add_left measurable_const]`.
-
-Simplify using the standard rewrite rules. Use `_ < ⊤ := ENNReal.add_lt_top.2 ⟨hK.measure_lt_top, hfin⟩`. Conclude with `(hd.add hum).congr_fun (fun v _ => by simp) hK.measurableSet`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrableOn_of_limit {W K : Set (V n)} {ρ : V n → ℝ} {u : ℕ → V n → ℂ}
     {f : V n → ℂ} (hρ : ContinuousOn ρ W) (hpos : ∀ v ∈ W, 0 < ρ v)
@@ -93,15 +91,15 @@ theorem integrableOn_of_limit {W K : Set (V n)} {ρ : V n → ℝ} {u : ℕ → 
   exact (hd.add hum).congr_fun (fun v _ => by simp) hK.measurableSet
 
 /- English proof (translation)
-Establish `hρm : AEMeasurable ρ (volume.restrict W)` using `hρ.aemeasurable hW.measurableSet`. Establish `hsq : AEMeasurable (fun v => Real.sqrt (ρ v)) (volume.restrict W)` using `Real.continuous_sqrt.measurable.comp_aemeasurable hρm`. Establish `ham : AEMeasurable (fun v => ENNReal.ofReal (‖d v‖ * Real.sqrt (ρ v))) (volume.restrict W)` using `(hd.norm.mul hsq).ennreal_ofReal`. Establish `hbm : AEMeasurable (fun v => ENNReal.ofReal (‖h v‖ / Real.sqrt (ρ v))) (volume.restrict W)` using `(hh.measurable.norm.aemeasurable.div hsq).ennreal_ofReal`. Establish `hab : EqOn (fun v => ‖d v * h v‖ₑ) ((fun v => ENNReal.ofReal (‖d v‖ * Real.sqrt (ρ v))) * fun v => ENNReal.ofReal (‖h v‖ / Real.sqrt (ρ v))) W`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v hv`. Establish `hs : 0 < Real.sqrt (ρ v)` using `Real.sqrt_pos.2 (hpos v hv)`. Simplify using `only [Pi.mul_apply]`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ofReal_norm, norm_mul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Clear the denominators using the available nonvanishing facts. Establish `ha2 : EqOn (fun v => ENNReal.ofReal (‖d v‖ * Real.sqrt (ρ v)) ^ (2 : ℝ)) (fun v => ENNReal.ofReal (‖d v‖ ^ 2 * ρ v)) W`. Introduce `v hv`. Simplify using `only`. Rewrite using `[ENNReal.ofReal_rpow_of_nonneg (by positivity) (by norm_num), Real.rpow_two, mul_pow, Real.sq_sqrt (hpos v hv).le]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hb2 : EqOn (fun v => ENNReal.ofReal (‖h v‖ / Real.sqrt (ρ v)) ^ (2 : ℝ)) (fun v => ENNReal.ofReal (‖h v‖ ^ 2 / ρ v)) W`. Introduce `v hv`. Simplify using `only`. Rewrite using `[ENNReal.ofReal_rpow_of_nonneg (by positivity) (by norm_num), Real.rpow_two, div_pow, Real.sq_sqrt (hpos v hv).le]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[setLIntegral_congr_fun hW.measurableSet ha2, setLIntegral_congr_fun hW.measurableSet hb2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem enorm_integral_mul_le {W : Set (V n)} (hW : IsOpen W) {ρ : V n → ℝ}
     (hρ : ContinuousOn ρ W) (hpos : ∀ v ∈ W, 0 < ρ v) {d h : V n → ℂ}
@@ -149,21 +147,19 @@ theorem enorm_integral_mul_le {W : Set (V n)} (hW : IsOpen W) {ρ : V n → ℝ}
           setLIntegral_congr_fun hW.measurableSet hb2]
 
 /- English proof (translation)
-Establish `hkc : Continuous fun v => ‖h v‖ ^ 2 / ρ v`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Distinguish the cases in `hx : x ∈ W`. Conclude with `(hhc.norm.pow 2).continuousAt.div (hρ.continuousAt (hW.mem_nhds hx)) (hpos x hx).ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hx' : x ∉ tsupport h` using `fun h' => hx (hsupp h')`. Establish `hev : (fun v => ‖h v‖ ^ 2 / ρ v) =ᶠ[𝓝 x] fun _ => 0` using `by filter_upwards [(notMem_tsupport_iff_eventuallyEq.1 hx')] with v hv`. Simplify using `[hv]`. Conclude with `continuousAt_const.congr hev.symm`. Establish `hks : HasCompactSupport fun v => ‖h v‖ ^ 2 / ρ v`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hhs.mono fun x hx => ?_` and prove the remaining obligations. Introduce `h1`. Apply `hx` to reduce the goal to its premises. Simplify using `[h1]`. Establish `hH : ∫⁻ v in W, ENNReal.ofReal (‖h v‖ ^ 2 / ρ v) < ⊤` using `lt_of_le_of_lt (setLIntegral_le_lintegral _ _) (hkc.integrable_of_hasCompactSupport hks).lintegral_lt_top`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hfi : Integrable (fun v => f v * h v) (volume.restrict W)`. Use `swap`. Conclude with `integral_undef hfi`. Establish `key : ∀ m, ‖∫ v in W, f v * h v‖ₑ ≤ (∫⁻ v in W, ENNReal.ofReal (‖f v - u m v‖ ^ 2 * ρ v)) ^ (1 / 2 : ℝ) * (∫⁻ v in W, ENNReal.ofReal (‖h v‖ ^ 2 / ρ v)) ^ (1 / 2 : ℝ)`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hUi : Integrable (fun v => u m v * h v) (volume.restrict W)`. Establish `h1 : IntegrableOn (fun v => u m v * h v) (tsupport h)` using `(((hu m).continuousOn.mono hsupp).mul hhc.continuousOn).integrableOn_compact hhs`. Conclude with `h1.of_forall_sdiff_eq_zero hW.measurableSet fun x hx => by`. Simplify using `[image_eq_zero_of_notMem_tsupport hx.2]`. Establish `heq : ∫ v in W, f v * h v = ∫ v in W, (f v - u m v) * h v`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Repeatedly rewrite using `[sub_mul]`. Rewrite using `[integral_sub hfi hUi, h0 m, sub_zero]`. Rewrite using `[heq]`. Conclude with `enorm_integral_mul_le hW hρ hpos (hf.sub ((hu m).continuousOn.aemeasurable hW.measurableSet)) hhc`. Establish `hT : Tendsto (fun m => (∫⁻ v in W, ENNReal.ofReal (‖f v - u m v‖ ^ 2 * ρ v)) ^ (1 / 2 : ℝ) * (∫⁻ v in W, ENNReal.ofReal (‖h v‖ ^ 2 / ρ v)) ^ (1 / 2 : ℝ)) atTop (𝓝 0)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1 : Tendsto (fun m => (∫⁻ v in W, ENNReal.ofReal (‖f v - u m v‖ ^ 2 * ρ v)) ^ (1 / 2 : ℝ)) atTop (𝓝 0)`. Use `((ENNReal.continuous_rpow_const (y := (1 / 2 : ℝ))).tendsto 0).comp hlim` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Use `ENNReal.Tendsto.mul_const h1 (b := (∫⁻ v in W, ENNReal.ofReal (‖h v‖ ^ 2 / ρ v)) ^ (1 / 2 : ℝ)) (Or.inr (ENNReal.rpow_ne_top_of_nonneg (by norm_num) hH.ne))` as an intermediate fact. Simplify using `using this`.
-
-Establish `hle` using `ge_of_tendsto' hT key`. Conclude with `enorm_eq_zero.mp (le_antisymm hle bot_le)`.
+A detailed English derivation is pending.
 -/
 theorem integral_mul_eq_zero {W : Set (V n)} (hW : IsOpen W) {ρ : V n → ℝ}
     (hρ : ContinuousOn ρ W) (hpos : ∀ v ∈ W, 0 < ρ v) {u : ℕ → V n → ℂ} {f : V n → ℂ}
@@ -223,7 +219,7 @@ theorem integral_mul_eq_zero {W : Set (V n)} (hW : IsOpen W) {ρ : V n → ℝ}
   exact enorm_eq_zero.mp (le_antisymm hle bot_le)
 
 /- English proof (translation)
-Use `(closure_mono ?_).trans (tsupport_fderiv_subset ℝ)` and prove the remaining obligations. Introduce `z hz`. Use `Function.mem_support.2 fun h0 => Function.mem_support.1 hz ?_` and prove the remaining obligations. Simplify using `[C.dbarDir, h0]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tsupport_dbarDir_subset (g : V n → ℂ) (w : V n) :
     tsupport (fun z => C.dbarDir g z w) ⊆ tsupport g := by
@@ -233,9 +229,9 @@ theorem tsupport_dbarDir_subset (g : V n → ℂ) (w : V n) :
   simp [C.dbarDir, h0]
 
 /- English proof (translation)
-Introduce `n W ρ u f hW hρ hpos hu hf hlim`. Establish `hwh : C.WeakHolo W f`. Use `⟨(locallyIntegrableOn_iff hW.isLocallyClosed).2 fun K hKW hK => integrableOn_of_limit hρ hpos hu hf hlim hK hKW, ?_⟩` and prove the remaining obligations. Introduce `g hg w`. Take `⟨hhc, hhs⟩` from `C.dbarDir_continuous_hasCompactSupport hg.1 hg.2.1 w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `integral_mul_eq_zero hW hρ hpos hu hf hlim hhc hhs ((tsupport_dbarDir_subset g w).trans hg.2.2) (fun m => (C.holoWeak n W (u m) hW (hu m)).2 g hg w)`. Take `⟨U, hU, hfU⟩` from `C.reg n W f hW hwh`. Conclude with `⟨U, hU, hfU.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_holo_ae_eq : ∀ (n : ℕ) (W : Set (V n)) (ρ : V n → ℝ) (u : ℕ → V n → ℂ) (f : V n → ℂ), IsOpen W → ContinuousOn ρ W → (∀ v ∈ W, 0 < ρ v) → (∀ m, DifferentiableOn ℂ (u m) W) → AEMeasurable f (volume.restrict W) → Tendsto (fun m => ∫⁻ v in W, ENNReal.ofReal (‖f v - u m v‖ ^ 2 * ρ v)) atTop (𝓝 0) → ∃ g : V n → ℂ, DifferentiableOn ℂ g W ∧ g =ᵐ[volume.restrict W] f := by
   intro n W ρ u f hW hρ hpos hu hf hlim

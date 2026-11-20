@@ -11,13 +11,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.PresSobA
 
 /- English proof (translation)
-Introduce `n _ _ μ _ V _ _ _ hU x`. Use `(hU n μ).1` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Set `g : G n → C(G n, G n)` to `fun h => ⟨fun y => y * h, continuous_id.mul continuous_const⟩`. Establish `hg : Continuous g` using `ContinuousMap.continuous_of_continuous_uncurry _ (continuous_snd.mul continuous_fst)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hm : ∀ h, MeasurePreserving (g h) μ μ` using `fun h => measurePreserving_mul_right μ h`. Establish `key` using `Continuous.compMeasurePreservingLp (f := fun _ : G n => x) continuous_const hg hm (by norm_num : (2 : ENNReal) ≠ ⊤)`. Use `key.congr fun h => ?_` and prove the remaining obligations. Establish `hm' : MeasurePreserving (fun y : G n => y * h) μ μ` using `measurePreserving_mul_right μ h`. Simplify using `only [rR, dif_pos hm']`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Set `g : G n → C(G n, G n)` to `fun y => ⟨fun z => y⁻¹ * z, continuous_const.mul continuous_id⟩`. Establish `hg : Continuous g` using `ContinuousMap.continuous_of_continuous_uncurry _ (continuous_fst.inv.mul continuous_snd)`. Establish `hm : ∀ y, MeasurePreserving (g y) μ μ` using `fun y => measurePreserving_mul_left μ y⁻¹`. Establish `key` using `Continuous.compMeasurePreservingLp (f := fun _ : G n => x) continuous_const hg hm (by norm_num : (2 : ENNReal) ≠ ⊤)`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem translations_strongly_continuous :
     ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]

@@ -12,7 +12,7 @@ def realEisenstein (τ : ℍ) (s : ℝ) : ℝ :=
   ∑' p : ℤ × ℤ, if p = 0 then 0 else τ.im ^ s / ‖(p.1 : ℂ) * τ + p.2‖ ^ (2 * s)
 
 /- English proof (translation)
-Use `tsum_nonneg fun p => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `div_nonneg (Real.rpow_nonneg τ.im_pos.le _) (Real.rpow_nonneg (norm_nonneg _) _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem realEisenstein_nonneg (τ : ℍ) (s : ℝ) : 0 ≤ realEisenstein τ s := by
   refine tsum_nonneg fun p => ?_

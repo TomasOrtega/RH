@@ -7,17 +7,17 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Establish `h0 : ∀ (m : ℕ) (x : A), ξ ^ (m + 1) ∣ x → θ x = 0` using `fun m x hx => (hker x).2 ((dvd_pow_self ξ m.succ_ne_zero).trans hx)`. Establish `hθξ : θ ξ = 0` using `(hker ξ).2 dvd_rfl`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `⟨fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h1` using `h0 n _ ha`. Rewrite `h1` using `[map_mul]`. Take `⟨a', rfl⟩` from `(hker a).1 ((mul_eq_zero.1 h1).resolve_left hp)`. Rewrite `ha` using `[pow_succ', mul_left_comm, mul_dvd_mul_iff_left hξ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pow_succ', mul_dvd_mul_iff_left hξ]`. Conclude with `ih.1 a' ha`. Establish `h1 : θ a = 0` using `hsep _ fun k => by`. Take `⟨b, hb⟩` from `ha k`. Establish `h2` using `h0 n _ hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_sub, map_mul, map_pow, sub_eq_zero]`. Conclude with `⟨θ b, h2⟩`. Take `⟨a', rfl⟩` from `(hker a).1 h1`. Rewrite using `[pow_succ', mul_dvd_mul_iff_left hξ]`. Use `ih.2 a' fun k => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `ha k`. Establish `h2` using `h0 n _ hb`. Rewrite `h2` using `[map_sub, h1, map_mul, map_pow, zero_sub, neg_eq_zero]`. Take `⟨b', rfl⟩` from `(hker b).1 ((mul_eq_zero.1 h2).resolve_left (pow_ne_zero k hp))`. Use `⟨b', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hb` using `[pow_succ', mul_left_comm, ← mul_sub, mul_dvd_mul_iff_left hξ]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem quot_pow_torsionFree_sep {A O : Type*} [CommRing A] [IsDomain A] [CommRing O] [IsDomain O]
     (θ : A →+* O) (ξ p : A) (hξ : ξ ≠ 0) (hker : ∀ a, θ a = 0 ↔ ξ ∣ a) (hp : θ p ≠ 0)
@@ -53,11 +53,11 @@ theorem quot_pow_torsionFree_sep {A O : Type*} [CommRing A] [IsDomain A] [CommRi
       rwa [pow_succ', mul_left_comm, ← mul_sub, mul_dvd_mul_iff_left hξ] at hb
 
 /- English proof (translation)
-Introduce `l _ e he n`. Take `⟨-, hdom, -, hk⟩` from `theta_ker_facts l`. Take `⟨h1, h2⟩` from `hk e he`. Use `quot_pow_torsionFree_sep (Per.θ l) (xi e) _ h2 (fun a => ?_) ?_ (fun x hx => ?_) n` and prove the remaining obligations. Rewrite using `[← RingHom.mem_ker, h1, Ideal.mem_span_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_natCast]`. Conclude with `fun h => GlobalTheory.RingBasics.p_ne_zero (p := l) (by simpa using congrArg Subtype.val h)`. Rewrite `hx` using `[map_natCast]`. Use `IsHausdorff.haus (I := Ideal.span {((l : ℕ) : Per.OC l)}) inferInstance x fun k => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx k`.
+A detailed English derivation is pending.
 -/
 theorem ainf_quot_xi_pow_torsionFree_sep : ∀ (l : ℕ) [Fact l.Prime] (e : Per.Fl l), IsEps e → ∀ n : ℕ, (∀ a : Per.Ainf l, xi e ^ n ∣ ((l : ℕ) : Per.Ainf l) * a → xi e ^ n ∣ a) ∧ ∀ a : Per.Ainf l, (∀ k : ℕ, ∃ b : Per.Ainf l, xi e ^ n ∣ a - ((l : ℕ) : Per.Ainf l) ^ k * b) → xi e ^ n ∣ a := by
   intro l _ e he n

@@ -10,7 +10,7 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.KS.Leray
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FibrePowerProper.isProper_fan_pt m (fun _ => A) (fun _ => hA) (limit.cone _) (limit.isLimit _)`.
+A detailed English derivation is pending.
 -/
 theorem isProper_pow_hom {S : Scheme.{0}} (A : Over S) (hA : IsProper A.hom) (m : ℕ) :
     IsProper (GlobalTheory.KS.pow A m).hom :=

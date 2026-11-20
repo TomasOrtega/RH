@@ -17,29 +17,27 @@ open KStar.IdealValuations
 open KStar.Ram DirichletCharacter
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : K, ∀ c : ℚ, c • (1 : K) ≠ x := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `(finrank_eq_one_iff_of_nonzero' (1 : K) one_ne_zero).2 h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `li : LinearIndependent ℚ ![(1 : K), x]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `at hst`. Conclude with `⟨hst, rfl⟩`. It suffices to derive a contradiction. Apply `hx (-(s / t))` to reduce the goal to its premises. Rewrite using `[neg_smul, neg_eq_iff_add_eq_zero, ← one_smul ℚ x, ← inv_mul_cancel₀ ht, mul_smul, div_eq_inv_mul, mul_smul, ← smul_add, hst, smul_zero]`.
+Supply the required witnesses or components. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `b` to `basisOfLinearIndependentOfCardEqFinrank li (by simp [hK])`. Establish `hb : ⇑b = ![(1 : K), x]` using `coe_basisOfLinearIndependentOfCardEqFinrank _ _`. Use `set A := b.repr (x ^ 2) 0`. Use `set B := b.repr (x ^ 2) 1`. Establish `hx2 : x ^ 2 = A • (1 : K) + B • x` using `by conv_lhs => rw [← b.sum_repr (x ^ 2)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Fin.sum_univ_two, hb, A, B]`. Establish `hrx : b.repr x = Finsupp.single 1 1`. Rewrite using `[show x = b 1 by simp [hb]]`. Conclude with `b.repr_self 1`. Establish `t1 : Algebra.trace ℚ K 1 = 2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Algebra.trace_algebraMap (R := ℚ) (S := K) 1` as an intermediate fact. Simplify `this` using `[hK]`. Establish `tx : Algebra.trace ℚ K x = B`. Rewrite using `[Algebra.trace_eq_matrix_trace b, Matrix.trace_fin_two, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul]`. Simplify using `[hb, hrx, ← sq, B]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `tx2 : Algebra.trace ℚ K (x ^ 2) = 2 * A + B ^ 2`. Rewrite using `[hx2, map_add, map_smul, map_smul, t1, tx]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `db : Algebra.discr ℚ b = 4 * A + B ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Rewrite using `[Algebra.discr_def, Matrix.det_fin_two]`. Simplify using `[Algebra.traceMatrix_apply, Algebra.traceForm_apply, hb, t1, tx, tx2, ← sq]`. Expand and normalize the polynomial expressions, which then agree. Set `I` to `integralBasis K`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 K)) = 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[← Module.finrank_eq_card_basis I, hK]`. Set `e` to `Fintype.equivFinOfCardEq hcard`. Set `c` to `b.reindex e.symm`. Set `P` to `c.toMatrix I`. Establish `hI : Algebra.discr ℚ I = P.det ^ 2 * Algebra.discr ℚ b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Matrix.vecMul (⇑c) (P.map (algebraMap ℚ K)) = ⇑I` using `c.toMatrix_map_vecMul I`. Rewrite using `[← h1, Algebra.discr_of_matrix_vecMul]`. Use `congr 1`. Rewrite using `[Module.Basis.coe_reindex]`. Conclude with `Algebra.discr_reindex ℚ b e.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ((Algebra.discr ℚ I : ℚ) : K) = -(d : K)`. Rewrite using `[← coe_discr, hKd]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨(P.det : K) * (2 * x - B), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← key, hI, db]`. Simplify using `only [Rat.smul_def, mul_one] at hx2`. Simplify using `only [Rat.cast_mul, Rat.cast_pow, Rat.cast_add, Rat.cast_ofNat]`. Take the linear combination `(4 * (P.det : K) ^ 2) * hx2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem exists_sq_eq_neg_of_quadratic_discr {K : Type*} [Field K] [NumberField K]
     (hK : Module.finrank ℚ K = 2) {d : ℕ} (hKd : discr K = -(d : ℤ)) : ∃ δ : K, δ ^ 2 = -(d : K) := by
@@ -107,9 +105,9 @@ private theorem exists_sq_eq_neg_of_quadratic_discr {K : Type*} [Field K] [Numbe
   linear_combination (4 * (P.det : K) ^ 2) * hx2
 
 /- English proof (translation)
-Establish `hs` using `NumberField.sign_discr (K := K)`. Rewrite `hs` using `[hKd]`. Establish `hneg : (-(d : ℤ)).sign = -1` using `Int.sign_eq_neg_one_of_neg (by omega)`. Rewrite `hs` using `[hneg, eq_comm, neg_one_pow_eq_neg_one_iff_odd (by decide)]`. Take `⟨k, hk⟩` from `hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hr` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank K`. Rewrite `hr` using `[hK]`. Apply `NumberField.nrRealPlaces_eq_zero_iff.mp` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem isTotallyComplex_of_quadratic_neg_discr {K : Type*} [Field K] [NumberField K]
     (hK : Module.finrank ℚ K = 2) {d : ℕ} (hd : d ≠ 0) (hKd : discr K = -(d : ℤ)) : IsTotallyComplex K := by
@@ -124,7 +122,7 @@ private theorem isTotallyComplex_of_quadratic_neg_discr {K : Type*} [Field K] [N
   omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exists_sq_eq_neg_of_quadratic_discr hK hKd, isTotallyComplex_of_quadratic_neg_discr hK hd hKd⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_sq_eq_neg_of_discr {K : Type*} [Field K] [NumberField K]
     (hK : Module.finrank ℚ K = 2) {d : ℕ} (hd : d ≠ 0) (hKd : discr K = -(d : ℤ)) :

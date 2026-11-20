@@ -9,13 +9,11 @@ open IsLocalRing Polynomial
 namespace GlobalTheory.VertUnitsNoeth
 
 /- English proof (translation)
-Distinguish the cases in `hb : b = 0`. Conclude with `⟨0, 1, by simp [hb]⟩`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hle : ((Ideal.span {b}).comap f).map f ≤ Ideal.span {b} * maximalIdeal B'`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `d hd`. Rewrite `hd` using `[Ideal.mem_comap, Ideal.mem_span_singleton]`. Take `⟨z, hz⟩` from `hd`. Rewrite using `[Ideal.mem_comap, hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hzu : IsUnit z`. Conclude with `absurd (by rw [hz]; exact (Units.mul_inv_cancel_right b hzu.unit).symm) (hne d hzu.unit⁻¹)`. Conclude with `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self b) ((mem_maximalIdeal z).2 hzu)`. Take `⟨m, hm, hbm⟩` from `(Ideal.mem_span_singleton_mul).1 (hle h)`. Establish `h1 : m = 1`.
-
-Establish `: b * (m - 1) = 0` using `by rw [mul_sub, hbm, mul_one, sub_self]`. Break down `mul_eq_zero.1 this with h0 | h0` into its components or cases. Conclude with `absurd h0 hb`. Conclude with `sub_eq_zero.1 h0`. Conclude with `(mem_maximalIdeal m).1 hm (h1 ▸ isUnit_one)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_mem_map_comap {A' B' : Type} [CommRing A'] [CommRing B'] [IsDomain B']
     [IsLocalRing B'] (f : A' →+* B') (b : B')
@@ -42,11 +40,11 @@ theorem exists_unit_of_mem_map_comap {A' B' : Type} [CommRing A'] [CommRing B'] 
   exact (mem_maximalIdeal m).1 hm (h1 ▸ isUnit_one)
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ _ _ _ hT P _ φ hφ hsh hP A _ _ _ _ _ _ i hi hil EA _ _ _ _ _ QA _ hQA jA hjA bA cA sA hs hbc`. Take `⟨A', _, _, _, _, B', _, _, _, _, _, _, _, ι, α, β, γ, h1, h2, h3, h4, h5⟩` from `GlobalTheory.T.divisorsOfConstants_flat_normal_stage_at_origin T O hT P φ hφ hsh hP A i hi hil EA QA hQA jA hjA sA hs`. Establish `hbc' : β bA * β cA = algebraMap A' B' (ι sA)`. Establish `e` using `congrArg (fun g => g sA) h1`. Simplify using `only [RingHom.comp_apply] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, ← hbc, map_mul]`. Establish `hmem` using `GlobalTheory.T.divisor_descent_flat_normal_domains A' B' (ι sA) h4 h5 (β bA) (β cA) hbc'`. Take `⟨d, w, hdw⟩` from `exists_unit_of_mem_map_comap (algebraMap A' B') (β bA) hmem`. Establish `e3` using `congrArg (fun g => g d) h3`. Simplify using `only [RingHom.comp_apply] at e3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨α d, Units.map γ.toMonoidHom w, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, RingHom.comp_apply, hdw, map_mul, e3]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem divConst_origin_noeth : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing O] [IsLocalRing O] [Algebra T O]
     [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O], GlobalTheory.LocAcyc.AbsIntClosed T →

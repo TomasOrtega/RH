@@ -10,13 +10,13 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 namespace GlobalTheory.Cartier
 
 /- English proof (translation)
-Introduce `Y _ _ B hB`. Establish `hgen : genericPoint Y ∉ (B : Set Y)` using `fun h => hB (eq_top_iff.2 fun x _ => (genericPoint_specializes x).mem_closed B.isClosed h)`. Take `⟨S, hS, hc, hi, hU⟩` from `NoetherianSpace.exists_finite_set_isClosed_irreducible B.isClosed`. Use `(hS.image fun T => if h : IsIrreducible T then h.genericPoint else genericPoint Y).subset fun z hz => ?_` and prove the remaining obligations. Take `⟨T, hT, hzT⟩` from `Set.mem_sUnion.1 (hU.le hz.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨T, hT, ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos (hi T hT)]`. Establish `hg` using `(hi T hT).isGenericPoint_genericPoint (hc T hT)`. Establish `h₁ : z ≤ (hi T hT).genericPoint` using `hg.specializes hzT`. Establish `h₂ : (hi T hT).genericPoint < genericPoint Y`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lt_of_le_not_ge (genericPoint_specializes _) fun e => ?_` and prove the remaining obligations. Establish `e' : _ = genericPoint Y` using `(Specializes.antisymm e (genericPoint_specializes _)).eq`. Conclude with `hgen (e' ▸ hU.ge (Set.mem_sUnion.2 ⟨T, hT, hg.mem⟩))`. Assume the negation of the conclusion as `hne`. Establish `h₃` using `Order.coheight_add_one_le (lt_of_le_not_ge h₁ fun e => hne (Specializes.antisymm h₁ e).eq)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₄` using `Order.coheight_add_one_le h₂`. Rewrite `h₃` using `[hz.1]`. Establish `h₅ : (1 : ℕ∞) + 1 ≤ 1` using `(add_le_add_left (le_add_self.trans h₄) 1).trans h₃`. Conclude with `absurd h₅ (by decide)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_coheight_one_of_ne_top : ∀ (Y : Scheme.{0}) [IsIntegral Y] [IsNoetherian Y]
     (B : Closeds Y), B ≠ ⊤ → {v : Y | Order.coheight v = 1 ∧ v ∈ B}.Finite := by

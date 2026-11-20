@@ -12,15 +12,13 @@ namespace GlobalTheory
 open PDiv
 
 /- English proof (translation)
-Introduce `p R _ G n a ha`. Establish `ha0 : counit (R` using `R) a = 0 := ha`. Establish `hb : G.res n a ∈ RingHom.ker (Bialgebra.counitAlgHom R (G.A n))`. Express the relevant statement in the definitionally equal form `counit (R := R) (G.res n a) = 0`. Rewrite using `[CoalgHomClass.counit_comp_apply, ha0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : mulBy R _ p a ∈ (RingHom.ker (Bialgebra.counitAlgHom R (G.A n))).map ((G.mulP n : G.A n →ₐ[R] G.A (n + 1)) : G.A n →+* G.A (n + 1))`. Rewrite using `[← G.mulP_res n a]`. Conclude with `Ideal.mem_map_of_mem _ hb`. Establish `h2 : dUnit R (mulBy R _ p a - (p : R) • a) = 0`. Establish `e1 : dUnit R (mulBy R _ p a - (p : R) • a) = dUnit R (mulBy R _ p a) - dUnit R ((p : R) • a)` using `map_sub (AugCot.d (Bialgebra.counitAlgHom R (G.A (n + 1)))) _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : dUnit R ((p : R) • a) = (p : R) • dUnit R a` using `map_smul (AugCot.d (Bialgebra.counitAlgHom R (G.A (n + 1)))) _ _`. Rewrite using `[e1, e2, ← cotMap_d, cotMap_mulBy, sub_self]`. Establish `h3 : mulBy R _ p a - (p : R) • a ∈ RingHom.ker (Bialgebra.counitAlgHom R (G.A (n + 1))) ^ 2`. Establish `h` using `(AugCot.d_eq_zero_iff _ _).1 h2`. Establish `he : Bialgebra.counitAlgHom R (G.A (n + 1)) (mulBy R _ p a - (p : R) • a) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `counit (R := R) (mulBy R _ p a - (p : R) • a) = 0`. Rewrite using `[map_sub, map_smul, CoalgHomClass.counit_comp_apply, ha0, smul_zero, sub_zero]`. Rewrite `h` using `[he, map_zero, sub_zero]`. Then use the resulting hypothesis. Establish `: (p : R) • a = mulBy R _ p a - (mulBy R _ p a - (p : R) • a)` using `by abel`. Rewrite using `[this]`.
-
-Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_right h1) (Submodule.mem_sup_left h3)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PDivGroup.natCast_smul_mem_augSq_sup_map : ∀ (p : ℕ) (R : Type) [CommRing R] (G : GlobalTheory.PDivGroup p R) (n : ℕ),
     ∀ a ∈ RingHom.ker (Bialgebra.counitAlgHom R (G.A (n + 1))),

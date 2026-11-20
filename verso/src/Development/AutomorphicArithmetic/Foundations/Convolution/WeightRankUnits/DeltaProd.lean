@@ -9,11 +9,11 @@ open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E _ _ _ hE μ e hμ S hS a b P₁ P₂ h₁ h₂ hc`. Establish `hR : resultant P₁ P₂ ≠ 0` using `Polynomial.resultant_ne_zero P₁ P₂ hc`. Take `⟨fm, hm⟩` from `UpperTheory.ConvolutionTheory.G2.muProd E μ e hμ _ hR`. Take `⟨fa, ha⟩` from `UpperTheory.ConvolutionTheory.G2.absProd E _ hR`. Establish `fg` using `(fm.union fa).subset (Function.mulSupport_mul (fun u : Pl E => UpperTheory.ConvolutionTheory.G2.muAt μ u (resultant P₁ P₂)) (fun u : Pl E => absHalf u (algebraMap E (u.adicCompletion E) (resultant P₁ P₂))))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨fG, hG⟩` from `UpperTheory.ConvolutionTheory.G2.regroup E S hS _ fg`. Establish `hd` using `UpperTheory.ConvolutionTheory.G2.deltaLoc E hE μ e hμ a b P₁ P₂ h₁ h₂ hc`. Simplify using `only [hd]`. Use `⟨fG, ?_⟩` and prove the remaining obligations. Rewrite using `[hG, finprod_mul_distrib fm fa]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [UpperTheory.ConvolutionTheory.G2.phase]`. Rewrite using `[Finset.prod_mul_distrib, mul_mul_mul_comm, hm, ha, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.ConvolutionTheory.G2.deltaProd :
     UpperTheory.ConvolutionTheory.G2.DeltaProd := by

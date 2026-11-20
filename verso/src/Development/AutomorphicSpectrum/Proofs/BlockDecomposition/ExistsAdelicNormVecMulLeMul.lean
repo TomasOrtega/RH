@@ -15,11 +15,9 @@ namespace GlobalTheory.CompanionTheory.IwasawaBound
 open Matrix GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.AutomorphicForm
 
 /- English proof (translation)
-Establish `hb1 : ∀ v, v ∉ (finite_mulSupport_locHeight_finAt h).toFinset → locHeight (finAt v h) = 1` using `fun v hv => by`. Assume the negation of the conclusion as `hne`. Conclude with `hv ((finite_mulSupport_locHeight_finAt h).mem_toFinset.2 hne)`. Use `⟨max 1 ((∏ w : InfinitePlace ℚ, (√((2 : ℕ) : ℝ) * (((2 : ℕ) : ℝ) * locHeight (infAt w h))) ^ w.mult) * ∏ v ∈ (finite_mulSupport_locHeight_finAt h).toFinset, locHeight (finAt v h)), le_max_left _ _, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hinf : ∀ w, euclidNorm (infComp w (y ᵥ* (h : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]))) ≤ √((2 : ℕ) : ℝ) * (((2 : ℕ) : ℝ) * locHeight (infAt w h)) * euclidNorm (infComp w y)` using `fun w => by`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[infComp_vecMul_GL]`. Conclude with `euclidNorm_vecMul_le (locHeight_pos _).le (fun i j => norm_apply_le_locHeight _ i j) _`. Establish `hfin : ∀ v, ‖finComp v (y ᵥ* (h : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]))‖ ≤ locHeight (finAt v h) * ‖finComp v y‖` using `fun v => by`. Rewrite using `[finComp_vecMul_GL]`. Conclude with `norm_vecMul_le_of_norm_le v (locHeight_pos _).le (fun i j => norm_apply_le_locHeight _ i j) _`.
-
-Establish `key` using `adelicNorm_le_of_local (hy.vecMul h) hy (fun w => √((2 : ℕ) : ℝ) * (((2 : ℕ) : ℝ) * locHeight (infAt w h))) (fun v => locHeight (finAt v h)) (finite_mulSupport_locHeight_finAt h).toFinset hinf hb1 hfin`. Conclude with `key.trans (mul_le_mul_of_nonneg_right (le_max_right _ _) (adelicNorm_nonneg _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_adelicNorm_vecMul_le_mul (h : G2) : ∃ C : ℝ, 1 ≤ C ∧ ∀ y : Fin 2 → 𝔸[ℚ],
     HasFiniteContent y → adelicNorm (y ᵥ* (h : Matrix (Fin 2) (Fin 2) 𝔸[ℚ])) ≤ C * adelicNorm y := by
@@ -45,11 +43,11 @@ theorem exists_adelicNorm_vecMul_le_mul (h : G2) : ∃ C : ℝ, 1 ≤ C ∧ ∀ 
   exact key.trans (mul_le_mul_of_nonneg_right (le_max_right _ _) (adelicNorm_nonneg _))
 
 /- English proof (translation)
-Take `⟨b, hb, k, hk, rfl⟩` from `exists_adelicBorel_mul_maxCompact g`. Take `⟨α, hα⟩` from `isUnit_apply_self_of_mem_adelicBorel hb 0`. Take `⟨δ, hδ⟩` from `isUnit_apply_self_of_mem_adelicBorel hb 1`. Establish `h10 : (b : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) 1 0 = 0` using `hb (show (0 : Fin 2) < 1 by decide)`. Use `⟨(b : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) 0 1 * ((δ⁻¹ : Jd) : 𝔸[ℚ]), α * δ⁻¹, δ, ⟨k, hk⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb' : b = uni2 ((b : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) 0 1 * ((δ⁻¹ : Jd) : 𝔸[ℚ])) * dg2 (α * δ⁻¹) 1 * dg2 δ δ`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two, hα, hδ, h10]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hδ, mul_assoc, Units.inv_mul, mul_one]`. Rewrite using `[← hδ, mul_assoc, Units.inv_mul, mul_one]`. Use `show b * k = uni2 _ * dg2 _ 1 * dg2 _ _ * k`. Rewrite using `[← hb']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_pt (g : G2) : ∃ (x : 𝔸[ℚ]) (a z : Jd) (κ : KA), g = pt x a z κ.1 := by
   obtain ⟨b, hb, k, hk, rfl⟩ := exists_adelicBorel_mul_maxCompact g
@@ -69,7 +67,7 @@ theorem exists_eq_pt (g : G2) : ∃ (x : 𝔸[ℚ]) (a z : Jd) (κ : KA), g = pt
   rw [← hb']
 
 /- English proof (translation)
-Apply the tactic sequence `have h : (Pi.single 1 (1 : 𝔸[ℚ]) : Fin 2 → 𝔸[ℚ]) ᵥ* ((uni2 x * dg2 a 1 * dg2 z z : G2) : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) = (z : 𝔸[ℚ]) • (Pi.single 1 (1 : 𝔸[ℚ]) : Fin 2 → 𝔸[ℚ]) := by ext1 j fin_cases j <;> simp [uni2, dg2, Matrix.vecMul, dotProduct, Matrix.mul_apply, Fin.sum_univ_two …`. Rewrite using `[← h, vecMul_vecMul, ← Units.val_mul]`. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lower_row_pt (x : 𝔸[ℚ]) (a z : Jd) (κ : G2) :
     (Pi.single 1 (1 : 𝔸[ℚ]) : Fin 2 → 𝔸[ℚ]) ᵥ* (pt x a z κ : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) =
@@ -83,9 +81,9 @@ theorem lower_row_pt (x : 𝔸[ℚ]) (a z : Jd) (κ : G2) :
   rfl
 
 /- English proof (translation)
-Establish `h1 : GeneralLinearGroup.det (uni2 x) = 1`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[uni2, Matrix.det_fin_two]`. Establish `h2 : ∀ c d : Jd, GeneralLinearGroup.det (dg2 c d) = c * d` using `fun c d => by`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[dg2, Matrix.det_fin_two]`. Simplify using `only [pt, map_mul, h1, h2, one_mul, mul_one]`. Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem det_pt (x : 𝔸[ℚ]) (a z : Jd) (κ : G2) :
     GeneralLinearGroup.det (pt x a z κ) = a * z * z * GeneralLinearGroup.det κ := by
@@ -99,23 +97,23 @@ theorem det_pt (x : 𝔸[ℚ]) (a z : Jd) (κ : G2) :
   simp only [mul_assoc]
 
 /- English proof (translation)
-Simplify using `[md]`.
+Simplify using the standard rewrite rules.
 -/
 theorem md_mul (a b : Jd) : md (a * b) = md a * md b := by
   simp [md]
 
 /- English proof (translation)
-Use `set T := max 1 (max t t⁻¹) with hT`. Establish `hB0 : 0 < B` using `by linarith`. Establish `hT1 : 1 ≤ T` using `le_max_left _ _`. Establish `hT0 : 0 < T` using `by linarith`. Establish `htT : t ≤ T` using `(le_max_left _ _).trans (le_max_right _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htT' : t⁻¹ ≤ T` using `(le_max_right _ _).trans (le_max_right _ _)`. Establish `hm0 : 0 < m` using `lt_of_lt_of_le (inv_pos.2 hB0) hm1`. Establish `hBB : B ≤ B ^ 2` using `by nlinarith`. Establish `hC : B ≤ B ^ 2 * T` using `by nlinarith [sq_nonneg B]`. Establish `hC1 : 1 ≤ B ^ 2 * T` using `hB.trans hC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC0 : 0 < B ^ 2 * T` using `by linarith`. Establish `hmB : 1 ≤ B * m`. Use `mul_le_mul_of_nonneg_left hm1 hB0.le` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ hB0.ne']`. Then use the resulting hypothesis. Establish `hAe : A = t / m ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinvm : (m ^ 2)⁻¹ ≤ B ^ 2`. Rewrite using `[inv_le_iff_one_le_mul₀ (by positivity)]`. Establish `: (1 : ℝ) ≤ (B * m) ^ 2` using `one_le_pow₀ hmB`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hm2' : m ^ 2 ≤ B ^ 2` using `pow_le_pow_left₀ hm0.le hm2 2`. Use `⟨?_, ?_, ?_, hm2.trans hC, hC1⟩` and prove the remaining obligations. Rewrite using `[inv_le_comm₀ hC0 (by rw [hAe]; positivity), hAe, inv_div, div_eq_mul_inv]`. Conclude with `mul_le_mul hm2' htT' (inv_pos.2 ht).le (by positivity)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hAe, div_eq_mul_inv, mul_comm]`. Conclude with `mul_le_mul hinvm htT ht.le (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem real_bound {B t m A : ℝ} (hB : 1 ≤ B) (ht : 0 < t) (hm1 : B⁻¹ ≤ m) (hm2 : m ≤ B)
     (hA : t = A * m ^ 2) :
@@ -153,25 +151,23 @@ theorem real_bound {B t m A : ℝ} (hB : 1 ≤ B) (ht : 0 < t) (hm1 : B⁻¹ ≤
       _ ≤ m := hm1
 
 /- English proof (translation)
-Introduce `h`. Take `⟨C₁, h1, hC₁⟩` from `exists_adelicNorm_vecMul_le_mul h`. Take `⟨C₂, h2, hC₂⟩` from `exists_adelicNorm_vecMul_le_mul h⁻¹`. Use `set B := max C₁ C₂ with hBdef`. Establish `hB : 1 ≤ B` using `h1.trans (le_max_left _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t := md (GeneralLinearGroup.det h) with htdef`. Establish `ht : 0 < t` using `(IdeleGroup.ideleModule ℚ _).2`. Use `⟨B ^ 2 * max 1 (max t t⁻¹), ?_, fun κ => ?_⟩` and prove the remaining obligations. Establish `: (1 : ℝ) ≤ B ^ 2` using `one_le_pow₀ hB`. Conclude with `one_le_mul_of_one_le_of_one_le this (le_max_left _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, a, z, κ', he⟩` from `exists_eq_pt (κ.1 * h)`. Establish `hfc : HasFiniteContent (Pi.single 1 (1 : 𝔸[ℚ]) : Fin 2 → 𝔸[ℚ])` using `hasFiniteContent_single_one 1`. Use `set y : Fin 2 → 𝔸[ℚ] := (Pi.single 1 (1 : 𝔸[ℚ]) : Fin 2 → 𝔸[ℚ]) ᵥ* (κ.1 : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) with hy`. Establish `hyfc : HasFiniteContent y` using `hfc.vecMul κ.1`. Establish `hy1 : adelicNorm y = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy, adelicNorm_vecMul_maxCompact _ κ.2, adelicNorm_single_one]`. Establish `hyh : y ᵥ* (h : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) = ((z : 𝔸[ℚ]) • (Pi.single 1 (1 : 𝔸[ℚ]) : Fin 2 → 𝔸[ℚ])) ᵥ* (κ'.1 : Matrix (Fin 2) (Fin 2) 𝔸[ℚ])`. Rewrite using `[← lower_row_pt x a z κ'.1, ← he, hy, vecMul_vecMul, Units.val_mul]`. Establish `hnorm : adelicNorm (y ᵥ* (h : Matrix (Fin 2) (Fin 2) 𝔸[ℚ])) = md z`. Rewrite using `[hyh, adelicNorm_vecMul_maxCompact _ κ'.2, adelicNorm_smul hfc, adelicNorm_single_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hz0 : 0 < md z` using `(IdeleGroup.ideleModule ℚ _).2`. Establish `hup : md z ≤ B`. Use `hC₁ y hyfc` as an intermediate fact. Rewrite `this` using `[hnorm, hy1, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.trans (le_max_left _ _)`. Establish `hlow : B⁻¹ ≤ md z`. Use `hC₂ _ (hyfc.vecMul h)` as an intermediate fact. Rewrite `this` using `[vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, vecMul_one, hy1, hnorm]`. Establish `hB0 : 0 < B` using `by linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 1 ≤ B * md z` using `this.trans (mul_le_mul_of_nonneg_right (le_max_right _ _) hz0.le)`. Rewrite using `[inv_le_iff_one_le_mul₀ hB0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdet : t = md a * md z ^ 2`. Establish `e` using `congrArg GeneralLinearGroup.det he`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[map_mul, det_pt]`. Establish `e'` using `congrArg md e`. Establish `k1 : md (GeneralLinearGroup.det κ.1) = 1`. Use `GroundTheory.Automorphic.Adele2.ideleModule_det_of_mem_maxCompact κ.2` as an intermediate fact. Simplify using `[md, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `k2 : md (GeneralLinearGroup.det κ'.1) = 1`. Use `GroundTheory.Automorphic.Adele2.ideleModule_det_of_mem_maxCompact κ'.2` as an intermediate fact. Simplify using `[md, this]`. Rewrite `e'` using `[md_mul, md_mul, md_mul, md_mul, k1, k2]`. Rewrite using `[htdef]`.
-
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨b1, b2, b3, b4, -⟩` from `real_bound hB ht hlow hup hdet`. Conclude with `⟨x, a, z, κ', he, b1, b2, b3, b4⟩`.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem iwasawa_coordinates_bounded :
     ∀ h : Ad3.R.G2, ∃ C : ℝ, 1 ≤ C ∧ ∀ κ : Ad3.R.KA, ∃ (x : 𝔸[ℚ]) (a z : Ad3.R.Jd) (κ' : Ad3.R.KA),

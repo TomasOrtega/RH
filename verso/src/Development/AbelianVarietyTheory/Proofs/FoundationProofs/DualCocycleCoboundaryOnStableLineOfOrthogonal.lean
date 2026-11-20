@@ -10,7 +10,7 @@ namespace GlobalTheory.Ord2.OrdCob
 variable {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
 /- English proof (translation)
-Establish `h : (⟨mat W s 1 0, hint s 1 0⟩ : c.O) = 0` using `Subtype.ext (hB s s.2)`. Rewrite using `[matQ_apply, h, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem matQ_one_zero (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O)
     (B : ValuationSubring Ω) (hB : ∀ s ∈ Dec (F := ℚ) B, mat W s 1 0 = 0) (s : Dec (F := ℚ) B) :
@@ -36,7 +36,7 @@ def rhoL (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈
       mul_assoc]
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.Gal.ContAction`. Rewrite using `[continuous_prod_of_discrete_right]`. Introduce `x`. Use `show Continuous fun s : Dec (F := ℚ) B => matQ c n W hint s 0 0 * x`. Conclude with `((continuous_matQ_apply c n W hint hcont 0 0).comp continuous_subtype_val).mul continuous_const`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem contAction_rhoL (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O)
     (B : ValuationSubring Ω) (hB : ∀ s ∈ Dec (F := ℚ) B, mat W s 1 0 = 0) (hcont : Continuous W) :
@@ -48,7 +48,7 @@ theorem contAction_rhoL (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, 
   exact ((continuous_matQ_apply c n W hint hcont 0 0).comp continuous_subtype_val).mul continuous_const
 
 /- English proof (translation)
-Use `show matQ c n W hint s *ᵥ Pi.single 0 u = Pi.single 0 (matQ c n W hint s 0 0 * u)`. Establish `h` using `matQ_one_zero c n W hint B hB s`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two, h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem rhoS_single (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O) (S : Finset Pl)
     (hN : ∀ a ∈ NS Ω (S : Set Pl), W a = 1)
@@ -61,23 +61,21 @@ theorem rhoS_single (c : Coef l) (n : ℕ) (W : R2 Ω l) (hint : ∀ s i j, mat 
   fin_cases i <;> simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two, h]
 
 /- English proof (translation)
-Introduce `hL l _ Ω _ _ _ c n hn W hint hcont S hN μ hμ B v hBv hB f hf`. Establish `hμχ : ∀ s : Dec (F` using `ℚ) B, μ (locHom (S : Set Pl) B s) = ((cycMod ℚ Ω l n).comp (Dec (F := ℚ) B).subtype) s := fun s => DFunLike.congr_fun hμ (s : G ℚ Ω)`. Establish `hinj` using `(hL.lt ℚ Ω l n (Qn c n) B (rhoL c n W hint B hB) v hn hBv (contAction_rhoL c n W hint B hB hcont)).2.2.1.1`. Use `set χ : Dec (F := ℚ) B →* (ZMod (l ^ n))ˣ := (cycMod ℚ Ω l n).comp (Dec (F := ℚ) B).subtype with hχ`. Establish `hs` using `rhoS_single c n W hint S hN B hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : ∀ (s : Dec (F` using `ℚ) B) (u : Qn c n), rhoS c n W hint S hN (locHom (S : Set Pl) B s)⁻¹ (Pi.single 0 u) = Pi.single 0 (rhoL c n W hint B hB s⁻¹ u) := fun s u => by rw [← map_inv, hs]`. Set `ι : Qn c n →ₗ[ZMod (l ^ n)] Mn c n` to `LinearMap.single (ZMod (l ^ n)) (fun _ : Fin 2 => Qn c n) 0`. Set `r : TDual (ZMod (l ^ n)) (Mn c n) → TDual (ZMod (l ^ n)) (Qn c n)` to `fun φ => TDual.mk (LinearMap.comp (show Mn c n →ₗ[ZMod (l ^ n)] ZMod (l ^ n) from φ) ι)`. Establish `hψ : (fun s => r (f.1 s)) ∈ Z1 ((twDual χ (rhoL c n W hint B hB)).comp (MonoidHom.id _))`. Use `⟨(continuous_of_discreteTopology (f := r)).comp f.2.1, fun g h => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `TDual.ext fun u => ?_` and prove the remaining obligations. Establish `e : f.1 (g * h) (Pi.single 0 u) = f.1 g (Pi.single 0 u) + ((μ (locHom (S : Set Pl) B g) : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * f.1 h (rhoS c n W hint S hN (locHom (S : Set Pl) B g)⁻¹ (Pi.single 0 u))`. Rewrite using `[f.2.2 g h]`. Both sides reduce to the same expression. Rewrite `e` using `[hμχ, hs']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e`. Establish `hcup : cupH1H1TwistedDual χ (rhoL c n W hint B hB) (MonoidHom.id _) ((contAction_rhoL c n W hint B hB hcont).comp' continuous_id) (Submodule.mkQ _ ⟨_, hψ⟩) = 0`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨a0, rfl⟩` from `Submodule.mkQ_surjective _ x`. Establish `ha : (fun s => ι (a0.1 s)) ∈ Z1 ((rhoS c n W hint S hN).comp (locHom (S : Set Pl) B))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(continuous_of_discreteTopology (f := ι)).comp a0.2.1, fun g h => ?_⟩` and prove the remaining obligations. Use `show ι (a0.1 (g * h)) = ι (a0.1 g) + rhoS c n W hint S hN (locHom (S : Set Pl) B g) (Pi.single 0 (a0.1 h))`. Rewrite using `[a0.2.2 g h, map_add, hs]`. Both sides reduce to the same expression. Establish `hmem : Submodule.mkQ _ (⟨_, ha⟩ : Z1 _) ∈ ordCond c n W hint S hN B`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `Submodule.mem_map.2 ⟨⟨_, ha⟩, (mem_ordZ _).2 ⟨0, fun s => ?_⟩, rfl⟩` and prove the remaining obligations. Use `show (Pi.single 0 (a0.1 s) : Mn c n) 1 = _`. Simplify using the standard rewrite rules. Take `⟨cc, hcc, hd⟩` from `(separated_dvr_second_cohomology_mem _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 (hf _ hmem))`. Use `(Submodule.Quotient.mk_eq_zero _).2 ((separated_dvr_second_cohomology_mem _ _).2 ⟨cc, hcc, ?_⟩)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `p`. Take `⟨g, h⟩` from `p`. Establish `e : ((μ (locHom (S : Set Pl) B g) : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * cc h - cc (g * h) + cc g = f.1 g (rhoS c n W hint S hN (locHom (S : Set Pl) B g) (Pi.single 0 (a0.1 h)))` using `congrFun hd (g, h)`. Rewrite `e` using `[hμχ, hs]`. Conclude with `e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `hinj (hcup.trans (map_zero _).symm)`. Take `⟨m0, hm0⟩` from `(mem_coboundaries1 _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 h0)`. Use `⟨TDual.mk (LinearMap.comp (show Qn c n →ₗ[ZMod (l ^ n)] ZMod (l ^ n) from m0) (LinearMap.proj 0)), fun s u => ?_⟩` and prove the remaining obligations. Establish `e : f.1 s (Pi.single 0 u) = ((χ s : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * m0 (rhoL c n W hint B hB s⁻¹ u) - m0 u` using `congrArg (fun φ : TDual (ZMod (l ^ n)) (Qn c n) => φ u) (hm0 s)`. Rewrite using `[e, twDual_apply, hμχ, hs']`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dual_cob_on_line : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (c : Coef l) (n : ℕ), 1 ≤ n → ∀ (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O) (hcont : Continuous W) (S : Finset Pl) (hN : ∀ a ∈ NS Ω (S : Set Pl), W a = 1) (μ : GS Ω (S : Set Pl) →* (ZMod (l ^ n))ˣ), μ.comp (toGS Ω (S : Set Pl)) = cycMod ℚ Ω l n → ∀ (B : ValuationSubring Ω) (v : Pl), IsPlaceOver B v → (∀ s ∈ Dec (F := ℚ) B, mat W s 1 0 = 0) → ∀ f : Z1 ((twDual μ (rhoS c n W hint S hN)).comp (locHom (S : Set Pl) B)), (∀ a ∈ ordCond c n W hint S hN B, cupH1H1TwistedDual μ (rhoS c n W hint S hN) (locHom (S : Set Pl) B) ((contAction_rhoS c n W hint S hN hcont).comp' (continuous_locHom _ B)) (Submodule.mkQ _ f) a = 0) → ∃ m : TDual (ZMod (l ^ n)) (Mn c n), ∀ (s : Dec (F := ℚ) B) (u : Qn c n), f.1 s (Pi.single 0 u) = twDual μ (rhoS c n W hint S hN) (locHom (S : Set Pl) B s) m (Pi.single 0 u) - m (Pi.single 0 u) := by
   intro hL l _ Ω _ _ _ c n hn W hint hcont S hN μ hμ B v hBv hB f hf

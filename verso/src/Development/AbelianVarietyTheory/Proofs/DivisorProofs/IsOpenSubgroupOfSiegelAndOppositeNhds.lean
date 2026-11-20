@@ -17,9 +17,9 @@ variable {F : Type} [Field F] {E : Type} [Field E] [Algebra F E] (c : E →ₐ[F
 def vOf (g : UG c (stdJ ν E)) : Matrix ν ν E := (mat c g).toBlocks₂₂⁻¹ * (mat c g).toBlocks₂₁
 
 /- English proof (translation)
-Establish `h : mat c g * stdJ ν E * ((mat c g).map c)ᵀ = stdJ ν E` using `(mem_UG_iff c _).mp g.2`. Establish `h2` using `congrArg Matrix.toBlocks₂₂ h`. Rewrite `h2` using `[← fromBlocks_toBlocks (mat c g)]`. Simplify using `[stdJ, fromBlocks_map, fromBlocks_transpose, fromBlocks_multiply] at h2`. Rewrite `h2` using `[neg_add_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem lower_rel (g : UG c (stdJ ν E)) :
     (mat c g).toBlocks₂₁ * ((mat c g).toBlocks₂₂.map c)ᵀ = (mat c g).toBlocks₂₂ * ((mat c g).toBlocks₂₁.map c)ᵀ := by
@@ -31,13 +31,13 @@ theorem lower_rel (g : UG c (stdJ ν E)) :
   exact h2.symm
 
 /- English proof (translation)
-Use `set D := (mat c g).toBlocks₂₂ with hD`. Use `set C := (mat c g).toBlocks₂₁ with hC`. Establish `hrel : C * (D.map c)ᵀ = D * (C.map c)ᵀ` using `lower_rel c g`. Establish `hdetc : ((D.map c)ᵀ).det = c D.det`. Rewrite using `[det_transpose, show D.map c = (c : E →+* E).mapMatrix D from rfl, ← RingHom.map_det]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hDs : IsUnit ((D.map c)ᵀ).det` using `by rw [hdetc]; exact hd.map c`. Establish `hV : vOf c g = D⁻¹ * C` using `rfl`. Establish `hDV : D * vOf c g = C` using `by rw [hV, mul_nonsing_inv_cancel_left _ _ hd]`. Establish `hstar : ((vOf c g).map c)ᵀ * (D.map c)ᵀ = (C.map c)ᵀ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← transpose_mul, ← hDV]`. Conclude with `congrArg Matrix.transpose (Matrix.map_mul (f := c.toRingHom) (L := D) (M := vOf c g)).symm`. Establish `key : D * ((vOf c g).map c)ᵀ * (D.map c)ᵀ = D * vOf c g * (D.map c)ᵀ`. Rewrite using `[Matrix.mul_assoc, hstar, hDV, hrel]`. Establish `h3 : ((vOf c g).map c)ᵀ = vOf c g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg (fun X => D⁻¹ * X * ((D.map c)ᵀ)⁻¹) key` as an intermediate fact. Simplify using `only [Matrix.mul_assoc] at this`. Rewrite `this` using `[nonsing_inv_mul_cancel_left _ _ hd, nonsing_inv_mul_cancel_left _ _ hd, mul_nonsing_inv _ hDs, Matrix.mul_one, Matrix.mul_one]`. Conclude with `this`. Rewrite using `[Matrix.map_neg _ (map_neg c), transpose_neg, h3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vOf_herm (g : UG c (stdJ ν E)) (hd : IsUnit (mat c g).toBlocks₂₂.det) :
     ((-vOf c g).map c)ᵀ = -vOf c g := by
@@ -72,9 +72,7 @@ def kOf (g : UG c (stdJ ν E)) : UG c (stdJ ν E) := (weyl c ν)⁻¹ * nOf c g 
 def pOf (g : UG c (stdJ ν E)) : UG c (stdJ ν E) := g * (kOf c g)⁻¹
 
 /- English proof (translation)
-Unfold `nOf`. Use `split_ifs with h`. Rewrite using `[mem_sieg]`. Express the relevant statement in the definitionally equal form `(fromBlocks 1 (-vOf c g) 0 1 : Matrix (ν ⊕ ν) (ν ⊕ ν) E).toBlocks₂₁ = 0`. Simplify using the standard rewrite rules.
-
-Conclude with `(sieg c ν).one_mem`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nOf_mem (g : UG c (stdJ ν E)) : nOf c g ∈ sieg c ν := by
   unfold nOf
@@ -85,9 +83,9 @@ theorem nOf_mem (g : UG c (stdJ ν E)) : nOf c g ∈ sieg c ν := by
   · exact (sieg c ν).one_mem
 
 /- English proof (translation)
-Rewrite using `[mem_sieg]`. Establish `hk : mat c (pOf c g) = mat c g * (-stdJ ν E * (fromBlocks 1 (-(-vOf c g)) 0 1 * stdJ ν E))`. Simplify using `only [pOf, kOf, _root_.mul_inv_rev, inv_inv, nOf, dif_pos hd]`. Both sides reduce to the same expression. Rewrite using `[hk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hDV : (mat c g).toBlocks₂₂ * vOf c g = (mat c g).toBlocks₂₁` using `mul_nonsing_inv_cancel_left _ _ hd`. Use `set M := mat c g`. Rewrite using `[← fromBlocks_toBlocks M]`. Simplify using `[stdJ, fromBlocks_multiply, fromBlocks_neg]`. Rewrite using `[hDV, add_neg_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pOf_mem (g : UG c (stdJ ν E)) (hd : IsUnit (mat c g).toBlocks₂₂.det) : pOf c g ∈ sieg c ν := by
   rw [mem_sieg]
@@ -106,37 +104,37 @@ section Top
 variable [TopologicalSpace E] [IsTopologicalRing E] [ContinuousInv₀ E] [T2Space E]
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mat : Continuous (mat c : UG c (stdJ ν E) → Matrix (ν ⊕ ν) (ν ⊕ ν) E) :=
   Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `continuous_matrix fun _ _ => (continuous_mat c).matrix_elem _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_blk₂₂ : Continuous fun g : UG c (stdJ ν E) => (mat c g).toBlocks₂₂ :=
   continuous_matrix fun _ _ => (continuous_mat c).matrix_elem _ _
 
 /- English proof (translation)
-The claim follows from `continuous_matrix fun _ _ => (continuous_mat c).matrix_elem _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_blk₂₁ : Continuous fun g : UG c (stdJ ν E) => (mat c g).toBlocks₂₁ :=
   continuous_matrix fun _ _ => (continuous_mat c).matrix_elem _ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[mat, toBlocks₂₂, one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk₂₂_one : (mat c (1 : UG c (stdJ ν E))).toBlocks₂₂ = 1 := by
   ext i j; simp [mat, toBlocks₂₂, one_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[mat, toBlocks₂₁, one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk₂₁_one : (mat c (1 : UG c (stdJ ν E))).toBlocks₂₁ = 0 := by
   ext i j; simp [mat, toBlocks₂₁, one_apply]
 
 /- English proof (translation)
-Establish `h : Tendsto (fun g : UG c (stdJ ν E) => (mat c g).toBlocks₂₂.det) (𝓝 1) (𝓝 1)`. Use `((continuous_blk₂₂ c).matrix_det).tendsto (1 : UG c (stdJ ν E))` as an intermediate fact. Rewrite `this` using `[blk₂₂_one, det_one]`. Then use the resulting hypothesis. Use `filter_upwards [h.eventually_ne one_ne_zero] with g hg`. Conclude with `isUnit_iff_ne_zero.mpr hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eventually_isUnit : ∀ᶠ g in 𝓝 (1 : UG c (stdJ ν E)), IsUnit (mat c g).toBlocks₂₂.det := by
   have h : Tendsto (fun g : UG c (stdJ ν E) => (mat c g).toBlocks₂₂.det) (𝓝 1) (𝓝 1) := by
@@ -146,9 +144,9 @@ theorem eventually_isUnit : ∀ᶠ g in 𝓝 (1 : UG c (stdJ ν E)), IsUnit (mat
   exact isUnit_iff_ne_zero.mpr hg
 
 /- English proof (translation)
-Establish `hinv : ContinuousAt (fun g : UG c (stdJ ν E) => (mat c g).toBlocks₂₂⁻¹) 1`. Use `ContinuousAt.comp (g := Inv.inv) ?_ (continuous_blk₂₂ c).continuousAt` and prove the remaining obligations. Apply `continuousAt_matrix_inv` to reduce the goal to its premises. Rewrite using `[Ring.inverse_eq_inv', blk₂₂_one, det_one]`. Conclude with `continuousAt_inv₀ one_ne_zero`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Tendsto (vOf c) (𝓝 1) (𝓝 (vOf c 1))` using `(hinv.mul (continuous_blk₂₁ c).continuousAt).tendsto`. Establish `h0 : vOf c (1 : UG c (stdJ ν E)) = 0` using `by rw [vOf, blk₂₁_one, Matrix.mul_zero]`. Rewrite `h2` using `[h0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem tendsto_vOf : Tendsto (vOf c) (𝓝 (1 : UG c (stdJ ν E))) (𝓝 0) := by
   have hinv : ContinuousAt (fun g : UG c (stdJ ν E) => (mat c g).toBlocks₂₂⁻¹) 1 := by
@@ -161,13 +159,13 @@ theorem tendsto_vOf : Tendsto (vOf c) (𝓝 (1 : UG c (stdJ ν E))) (𝓝 0) := 
   rwa [h0] at h2
 
 /- English proof (translation)
-Rewrite using `[tendsto_subtype_rng, Units.isInducing_embedProduct.tendsto_nhds_iff]`. Establish `hv` using `tendsto_vOf c (ν := ν)`. Establish `hA : Tendsto (fun g => (fromBlocks 1 (-vOf c g) 0 1 : Matrix (ν ⊕ ν) (ν ⊕ ν) E)) (𝓝 1) (𝓝 1)`. Establish `hc : Continuous fun v : Matrix ν ν E => (fromBlocks 1 (-v) 0 1 : Matrix (ν ⊕ ν) (ν ⊕ ν) E)` using `continuous_const.matrix_fromBlocks continuous_neg continuous_const continuous_const`. Use `(hc.tendsto 0).comp hv` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[neg_zero, fromBlocks_one]`. Then use the resulting hypothesis. Establish `hB : Tendsto (fun g => (fromBlocks 1 (-(-vOf c g)) 0 1 : Matrix (ν ⊕ ν) (ν ⊕ ν) E)) (𝓝 1) (𝓝 1)`. Establish `hc : Continuous fun v : Matrix ν ν E => (fromBlocks 1 (-(-v)) 0 1 : Matrix (ν ⊕ ν) (ν ⊕ ν) E)` using `continuous_const.matrix_fromBlocks continuous_neg.neg continuous_const continuous_const`. Use `(hc.tendsto 0).comp hv` as an intermediate fact. Rewrite `this` using `[neg_zero, neg_zero, fromBlocks_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hE : (fun g => ((fromBlocks 1 (-vOf c g) 0 1 : Matrix (ν ⊕ ν) (ν ⊕ ν) E), MulOpposite.op (fromBlocks 1 (-(-vOf c g)) 0 1 : Matrix (ν ⊕ ν) (ν ⊕ ν) E))) =ᶠ[𝓝 1] (Units.embedProduct _ ∘ fun g => ((nOf c g : UG c (stdJ ν E)) : GL (ν ⊕ ν) E))` using `by filter_upwards [eventually_isUnit c] with g hg`. Simplify using `only [Function.comp_apply, nOf, dif_pos hg]`. Both sides reduce to the same expression. Use `Tendsto.congr' hE ?_` and prove the remaining obligations. Establish `h1 : Units.embedProduct _ ((1 : UG c (stdJ ν E)) : GL (ν ⊕ ν) E) = (1, MulOpposite.op 1)` using `rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `hA.prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp hB)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_nOf : Tendsto (nOf c) (𝓝 (1 : UG c (stdJ ν E))) (𝓝 1) := by
   rw [tendsto_subtype_rng, Units.isInducing_embedProduct.tendsto_nhds_iff]
@@ -202,13 +200,11 @@ namespace GlobalTheory.KSp
 open OpenCrit in
 
 /- English proof (translation)
-Take `⟨-, hTR, hCI, hT2, -⟩` from `GlobalTheory.T.quadExt_topological_properties F E c δ hE`. Use `haveI := hTR`. Use `haveI := hCI`. Use `haveI := hT2`. Use `Subgroup.isOpen_of_mem_nhds U (g := 1) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : Tendsto (nOf c) (𝓝 (1 : UG c (stdJ ν E))) (𝓝 1)` using `tendsto_nOf c`. Establish `hk : Tendsto (kOf c) (𝓝 (1 : UG c (stdJ ν E))) (𝓝 1)`. Use `((tendsto_const_nhds (x := (weyl c ν)⁻¹)).mul hn).mul (tendsto_const_nhds (x := weyl c ν))` as an intermediate fact. Rewrite `this` using `[mul_one, inv_mul_cancel]`. Then use the resulting hypothesis. Establish `hp : Tendsto (pOf c) (𝓝 (1 : UG c (stdJ ν E))) (𝓝 1)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `(tendsto_id (x := 𝓝 (1 : UG c (stdJ ν E)))).mul hk.inv` as an intermediate fact. Rewrite `this` using `[inv_one, mul_one]`. Then use the resulting hypothesis. Use `filter_upwards [hp.eventually h1, hn.eventually h2, eventually_isUnit c] with g hpg hng hd`. Establish `hg : g = pOf c g * kOf c g` using `by rw [pOf, inv_mul_cancel_right]`. Rewrite using `[hg]`.
-
-Conclude with `U.mul_mem (hpg (pOf_mem c g hd)) (hng (nOf_mem c g))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_of_sieg_of_opp (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E]

@@ -18,9 +18,9 @@ def topsPl : Finset (RPl N.R) :=
   N.TT.map ⟨fun t => (false, t), fun _ _ h => (Prod.ext_iff.1 h).2⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[topsPl, Finset.mem_map]`. Take `⟨t, ht, rfl⟩` from `h`. Conclude with `⟨rfl, ht⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Rewrite using `[topsPl, Finset.mem_map]`. Conclude with `⟨ρ.2, h2, Prod.ext h1.symm rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_topsPl (ρ : RPl N.R) : ρ ∈ N.topsPl ↔ ρ.1 = false ∧ ρ.2 ∈ N.TT := by
   constructor
@@ -93,9 +93,9 @@ namespace NumDatum
 variable (N : NumDatum)
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [Fin.univ_val_map] show ((List.ofFn fun i : Fin n => f i.1 : List α) : Multiset α) = (((List.range n).map f : List α) : Multiset α)`. Use `congr 1`. Apply the tactic sequence `apply List.ext_getElem <;> simp)`. Consider the case `(induction n with`.
+Treat this case separately. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rfl`. Consider the case `succ n ih => simp [Fin.univ_val_map, List.ofFn_succ', Multiset.range_succ])`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem univ_map_fin {α : Type} (n : ℕ) (f : ℕ → α) :
     Finset.univ.val.map (fun i : Fin n => f i.1) = (Multiset.range n).map f := by
@@ -109,9 +109,7 @@ theorem univ_map_fin {α : Type} (n : ℕ) (f : ℕ → α) :
      | succ n ih => simp [Fin.univ_val_map, List.ofFn_succ', Multiset.range_succ])
 
 /- English proof (translation)
-Use `(Fin.sum_univ_eq_sum_range (fun i => if i < n then g i else 0) M).trans ?_` and prove the remaining obligations. Use `show ∑ i ∈ Finset.range M, (if i < n then g i else 0) = _`. Rewrite using `[← Finset.sum_range_add_sum_Ico _ h]`. Establish `h1 : ∑ i ∈ Finset.Ico n M, (if i < n then g i else 0) = 0` using `Finset.sum_eq_zero (fun i hi => if_neg (by rw [Finset.mem_Ico] at hi; omega))`. Rewrite using `[h1, add_zero]`.
-
-Conclude with `Finset.sum_congr rfl (fun i hi => if_pos (Finset.mem_range.1 hi))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_pad (g : ℕ → ℝ) {n M : ℕ} (h : n ≤ M) :
     ∑ i : Fin M, (if i.1 < n then g i.1 else 0) = ∑ i ∈ Finset.range n, g i := by
@@ -124,9 +122,9 @@ theorem sum_pad (g : ℕ → ℝ) {n M : ℕ} (h : n ≤ M) :
   exact Finset.sum_congr rfl (fun i hi => if_pos (Finset.mem_range.1 hi))
 
 /- English proof (translation)
-Use `(Equiv.sum_comp eJ (fun i : Fin N.R.m => F (i.1 + 1))).trans ?_` and prove the remaining obligations. Use `(Fin.sum_univ_eq_sum_range (fun i => F (i + 1)) N.R.m).trans ?_` and prove the remaining obligations. Use `show ∑ i ∈ Finset.range N.R.m, F (i + 1) = ∑ l ∈ Finset.Icc 1 N.R.m, F l`. Rewrite using `[Finset.range_eq_Ico, Finset.sum_Ico_add' F 0 N.R.m 1]`. Apply `Finset.sum_congr _ (fun _ _ => rfl)` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_Ico, Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sum_lifts (F : ℕ → ℝ) {J : Type} [Fintype J] (eJ : J ≃ Fin N.R.m) :
     ∑ j : J, F ((eJ j).1 + 1) = ∑ l ∈ N.lifts, F l := by
@@ -140,7 +138,7 @@ theorem sum_lifts (F : ℕ → ℝ) {J : Type} [Fintype J] (eJ : J ≃ Fin N.R.m
   omega
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hq`. Establish `ha : (0 : ℤ) ≤ a` using `by exact_mod_cast h0`. Rewrite using `[Int.floor_intCast, Rat.cast_intCast]`. Conclude with `Int.toNat_of_nonneg ha` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toNat_floor_cast {q : ℚ} (hq : ∃ a : ℤ, q = a) (h0 : 0 ≤ q) : ((⌊q⌋.toNat : ℕ) : ℝ) = ((q : ℚ) : ℝ) := by
   obtain ⟨a, rfl⟩ := hq
@@ -149,16 +147,16 @@ theorem toNat_floor_cast {q : ℚ} (hq : ∃ a : ℤ, q = a) (h0 : 0 ≤ q) : ((
   exact_mod_cast Int.toNat_of_nonneg ha
 
 /- English proof (translation)
-Use `N.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem k_two : 2 ≤ N.R.k := by
   have := N.R.m_add_three_le_k
   omega
 
 /- English proof (translation)
-Unfold `aT`. Take `⟨n, hn⟩` from `(N.hc (false, t)).u_half ⟨0, by have := N.R.m_add_three_le_k; omega⟩`. Take `⟨c, hc⟩` from `N.R.k_even`. Establish `hk : (N.R.k : ℚ) = 2 * c` using `by rw [hc]; push_cast; ring`. Use `⟨n + 1 - c, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hn, hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aT_int (t : N.R.A) : ∃ a : ℤ, N.aT t = a := by
   unfold aT
@@ -171,9 +169,9 @@ theorem aT_int (t : N.R.A) : ∃ a : ℤ, N.aT t = a := by
   ring
 
 /- English proof (translation)
-Unfold `bT`. Take `⟨n, hn⟩` from `(N.hc (false, t)).u_half ⟨N.R.k - 1, by have := N.R.m_add_three_le_k; omega⟩`. Take `⟨c, hc⟩` from `N.R.k_even`. Establish `hk : (N.R.k : ℚ) = 2 * c` using `by rw [hc]; push_cast; ring`. Use `⟨-n - c, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hn, hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bT_int (t : N.R.A) : ∃ a : ℤ, N.bT t = a := by
   unfold bT
@@ -186,11 +184,11 @@ theorem bT_int (t : N.R.A) : ∃ a : ℤ, N.bT t = a := by
   ring
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `N.R.k_even`. Take `⟨c, hc⟩` from `N.R.t_odd`. Unfold `sN`. Rewrite using `[ha, hc]`. Establish `h1 : (a + a) / 2 = a` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (2 * c + 1 + 1) / 2 = c + 1` using `by omega`. Rewrite using `[h1, h2]`. Establish `h3 : ((2 * j - 1 : ℕ) : ℝ) = 2 * (j : ℝ) - 1`. Rewrite using `[Nat.cast_sub (by omega)]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Nat.cast_add, Nat.cast_mul, Nat.cast_ofNat, Nat.cast_one, h3]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sN_cast (j : ℕ) (hj : 1 ≤ j) :
     (N.sN j : ℝ) = ((N.R.k : ℝ) + (2 * (j : ℝ) - 1) * ((N.R.t : ℝ) + 1)) / 2 := by
@@ -209,7 +207,7 @@ theorem sN_cast (j : ℕ) (hj : 1 ≤ j) :
   ring
 
 /- English proof (translation)
-Unfold `uW`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨h1, -⟩`. Simplify using `at h1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem uW_zero (δ : Code N) (z : RPl N.R) (h : 0 < N.R.k) : N.uW δ z ⟨0, h⟩ = (N.hc z).u ⟨0, h⟩ := by
   unfold uW
@@ -218,7 +216,7 @@ theorem uW_zero (δ : Code N) (z : RPl N.R) (h : 0 < N.R.k) : N.uW δ z ⟨0, h�
   simp at h1
 
 /- English proof (translation)
-Unfold `uW`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨-, h2⟩`. Simplify using `only [] at h2`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem uW_last (δ : Code N) (z : RPl N.R) (h : N.R.k - 1 < N.R.k) :
     N.uW δ z ⟨N.R.k - 1, h⟩ = (N.hc z).u ⟨N.R.k - 1, h⟩ := by
@@ -229,58 +227,56 @@ theorem uW_last (δ : Code N) (z : RPl N.R) (h : N.R.k - 1 < N.R.k) :
   omega
 
 /- English proof (translation)
-Unfold `srcPar`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem srcPar_lt (δ : Code N) (z : RPl N.R) (i : ℕ) (h : i < N.R.k) : N.srcPar δ z i = N.uW δ z ⟨i, h⟩ := by
   unfold srcPar
   rw [dif_pos h]
 
 /- English proof (translation)
-The claim follows from `lt_trans one_pos N.sc.one_lt_alt`.
+A detailed English derivation is pending.
 -/
 theorem x_pos : 0 < N.sc.x := lt_trans one_pos N.sc.one_lt_alt
 
 /- English proof (translation)
-Use `show (1 : ℝ) < N.sc.x ^ N.sc.eps`. Conclude with `Real.one_lt_rpow N.sc.one_lt_alt N.sc.eps_pos`.
+A detailed English derivation is pending.
 -/
 theorem one_lt_L : 1 < N.sc.L := by
   show (1 : ℝ) < N.sc.x ^ N.sc.eps
   exact Real.one_lt_rpow N.sc.one_lt_alt N.sc.eps_pos
 
 /- English proof (translation)
-Use `show (0 : ℝ) < Real.exp N.sc.L`. Conclude with `Real.exp_pos _`.
+A detailed English derivation is pending.
 -/
 theorem b_pos : 0 < N.sc.b := by
   show (0 : ℝ) < Real.exp N.sc.L
   exact Real.exp_pos _
 
 /- English proof (translation)
-Use `show (1 : ℝ) ≤ Real.exp N.sc.L`. Conclude with `Real.one_le_exp (le_of_lt (lt_trans zero_lt_one N.one_lt_L))`.
+A detailed English derivation is pending.
 -/
 theorem one_le_b : 1 ≤ N.sc.b := by
   show (1 : ℝ) ≤ Real.exp N.sc.L
   exact Real.one_le_exp (le_of_lt (lt_trans zero_lt_one N.one_lt_L))
 
 /- English proof (translation)
-Use `show (0 : ℝ) < N.sc.x * N.sc.b`. Conclude with `mul_pos N.x_pos N.b_pos`.
+A detailed English derivation is pending.
 -/
 theorem a_pos : 0 < N.sc.a := by
   show (0 : ℝ) < N.sc.x * N.sc.b
   exact mul_pos N.x_pos N.b_pos
 
 /- English proof (translation)
-Use `show (0 : ℝ) ≤ N.sc.a / Real.exp (N.sc.x ^ (N.sc.eps / 3))`. Conclude with `div_nonneg (le_of_lt N.a_pos) (le_of_lt (Real.exp_pos _))`.
+A detailed English derivation is pending.
 -/
 theorem b'_nonneg : 0 ≤ N.sc.b' := by
   show (0 : ℝ) ≤ N.sc.a / Real.exp (N.sc.x ^ (N.sc.eps / 3))
   exact div_nonneg (le_of_lt N.a_pos) (le_of_lt (Real.exp_pos _))
 
 /- English proof (translation)
-Use `show 1 ≤ N.H.rd`. Use `first`. Consider the case `(unfold Formalism.HC.HostRaw.rd`. Apply `Real.one_le_rpow _ (by positivity)` to reduce the goal to its premises. Establish `h` using `NumberField.discr_ne_zero N.H.E`.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Establish `: (1 : ℤ) ≤ |NumberField.discr N.H.E|` using `Int.one_le_abs h`. Conclude with `this)` after adjusting the coercions. Consider the case `(simp only [Formalism.HC.HostRaw.rd]`. Apply `Real.one_le_rpow _ (by positivity)` to reduce the goal to its premises. Establish `h` using `NumberField.discr_ne_zero N.H.E`.
-
-Establish `: (1 : ℤ) ≤ |NumberField.discr N.H.E|` using `Int.one_le_abs h`. Conclude with `this)` after adjusting the coercions.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_rd : 1 ≤ N.rd := by
   show 1 ≤ N.H.rd
@@ -297,7 +293,7 @@ theorem one_le_rd : 1 ≤ N.rd := by
      exact_mod_cast this)
 
 /- English proof (translation)
-Establish `hrd : 0 < N.rd` using `lt_of_lt_of_le one_pos N.one_le_rd`. Use `show Real.log (N.sc.x * Real.exp N.sc.L * N.rd) = _`. Rewrite using `[Real.log_mul (mul_pos N.x_pos (Real.exp_pos _)).ne' hrd.ne', Real.log_mul N.x_pos.ne' (Real.exp_pos _).ne', Real.log_exp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem La_eq : N.La = Real.log N.sc.x + N.sc.L + Real.log N.rd := by
   have hrd : 0 < N.rd := lt_of_lt_of_le one_pos N.one_le_rd
@@ -306,7 +302,7 @@ theorem La_eq : N.La = Real.log N.sc.x + N.sc.L + Real.log N.rd := by
     Real.log_mul N.x_pos.ne' (Real.exp_pos _).ne', Real.log_exp]
 
 /- English proof (translation)
-Rewrite using `[N.La_eq]`. Establish `h1 : 0 < Real.log N.sc.x` using `Real.log_pos N.sc.one_lt_alt`. Establish `h2 : 0 ≤ Real.log N.rd` using `Real.log_nonneg N.one_le_rd`. Combine the linear relations using `[N.one_lt_L]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_le_La : 1 ≤ N.La := by
   rw [N.La_eq]
@@ -315,11 +311,11 @@ theorem one_le_La : 1 ≤ N.La := by
   linarith [N.one_lt_L]
 
 /- English proof (translation)
-Apply `Real.log_nonneg` to reduce the goal to its premises. Use `show (1 : ℝ) ≤ N.sc.b * N.rd * ((N.g 0 : ℝ) * (N.g 1 : ℝ)) * (N.R.nV : ℝ)`. Establish `hg0 : (1 : ℝ) ≤ (N.g 0 : ℝ)` using `by exact_mod_cast (N.g_prime 0).one_lt.le`. Establish `hg1 : (1 : ℝ) ≤ (N.g 1 : ℝ)` using `by exact_mod_cast (N.g_prime 1).one_lt.le`. Establish `hn : (1 : ℝ) ≤ (N.R.nV : ℝ)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 ≤ N.R.nV`. Take `⟨c, hc⟩` from `N.R.t_odd`. Unfold `Ranks.nV`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : ℝ) ≤ N.sc.b * N.rd` using `one_le_mul_of_one_le_of_one_le N.one_le_b N.one_le_rd`. Establish `h2 : (1 : ℝ) ≤ (N.g 0 : ℝ) * (N.g 1 : ℝ)` using `one_le_mul_of_one_le_of_one_le hg0 hg1`. Conclude with `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le h1 h2) hn`.
+A detailed English derivation is pending.
 -/
 theorem Lp_nonneg : 0 ≤ N.Lp := by
   apply Real.log_nonneg
@@ -337,7 +333,7 @@ theorem Lp_nonneg : 0 ≤ N.Lp := by
   exact one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le h1 h2) hn
 
 /- English proof (translation)
-Use `show ((N.R.k + N.R.m * (N.R.t + 1) : ℕ) : ℝ) = _`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Nm_cast : (N.Nm : ℝ) = (N.R.k : ℝ) + (N.R.m : ℝ) * ((N.R.t : ℝ) + 1) := by
   show ((N.R.k + N.R.m * (N.R.t + 1) : ℕ) : ℝ) = _
@@ -345,18 +341,18 @@ theorem Nm_cast : (N.Nm : ℝ) = (N.R.k : ℝ) + (N.R.m : ℝ) * ((N.R.t : ℝ) 
   ring
 
 /- English proof (translation)
-Use `show N.R.k + j * (N.R.t + 1) ≤ N.R.k + N.R.m * (N.R.t + 1)`. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ h) _`.
+A detailed English derivation is pending.
 -/
 theorem N_le_Nm (j : ℕ) (h : j ≤ N.R.m) : N.R.N j ≤ N.Nm := by
   show N.R.k + j * (N.R.t + 1) ≤ N.R.k + N.R.m * (N.R.t + 1)
   exact Nat.add_le_add_left (Nat.mul_le_mul_right _ h) _
 
 /- English proof (translation)
-Use `show N.R.nV ≤ N.R.k + N.R.m * (N.R.t + 1)`. Establish `h2` using `N.R.two_le_m`. Establish `h4` using `N.R.three_m_lt_t`. Establish `h3 : 2 * (N.R.t + 1) ≤ N.R.m * (N.R.t + 1)` using `Nat.mul_le_mul_right _ h2`. Establish `h5 : N.R.r ≤ N.R.k + N.R.m` using `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(unfold Ranks.r; exact Nat.sub_le _ _)`. Consider the case `(unfold Ranks.r; omega)`. Consider the case `(simp only [Ranks.r]; omega)`. Unfold `Ranks.nV`. Generalize the expression as in `N.R.m * (N.R.t + 1) = X at h3 ⊢`.
+Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem nV_le_Nm : N.R.nV ≤ N.Nm := by
   show N.R.nV ≤ N.R.k + N.R.m * (N.R.t + 1)
@@ -373,25 +369,23 @@ theorem nV_le_Nm : N.R.nV ≤ N.Nm := by
   omega
 
 /- English proof (translation)
-Use `show (0 : ℝ) ≤ (N.R.m : ℝ) * (N.h0 : ℝ)`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem eta_nonneg : 0 ≤ N.eta := by
   show (0 : ℝ) ≤ (N.R.m : ℝ) * (N.h0 : ℝ)
   positivity
 
 /- English proof (translation)
-Use `show (0 : ℝ) ≤ (N.R.k : ℝ) * (4 * (N.Del : ℝ))`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem Sc_nonneg : 0 ≤ N.Sc := by
   show (0 : ℝ) ≤ (N.R.k : ℝ) * (4 * (N.Del : ℝ))
   positivity
 
 /- English proof (translation)
-Establish `hq : ∃ a : ℤ, N.eQ j z = a`. Unfold `eQ`. Use `split`. Use `first`. Consider the case `exact (N.hc z).e_int _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `(obtain ⟨a, ha⟩ := (N.hc z).e_int ⟨j - 1, by omega⟩; exact ⟨a, ha⟩)`. Conclude with `⟨0, by simp⟩`. Establish `h0' : (0 : ℚ) ≤ N.eQ j z`. Establish `: (0 : ℝ) ≤ ((N.eQ j z : ℚ) : ℝ)` using `h0`. Conclude with `this` after adjusting the coercions.
-
-Unfold `wN`. Conclude with `toNat_floor_cast hq h0'`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wN_cast {j : ℕ} (z : RPl N.R) (h0 : 0 ≤ N.w j z) : (N.wN j z : ℝ) = N.w j z := by
   have hq : ∃ a : ℤ, N.eQ j z = a := by
@@ -408,7 +402,7 @@ theorem wN_cast {j : ℕ} (z : RPl N.R) (h0 : 0 ≤ N.w j z) : (N.wN j z : ℝ) 
   exact toNat_floor_cast hq h0'
 
 /- English proof (translation)
-Unfold `nuN`. Use `first`. Consider the case `exact toNat_floor_cast (N.nu_int δ j h1 h2 z i hi) h0`. Consider the case `exact N.toNat_floor_cast (N.nu_int δ j h1 h2 z i hi) h0`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nuN_cast (δ : Code N) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ N.R.m) (z : RPl N.R) {i : ℕ} (hi : i < N.R.N (j - 1))
     (h0 : 0 ≤ N.nu δ j z i) : (N.nuN δ j z i : ℝ) = ((N.nu δ j z i : ℚ) : ℝ) := by
@@ -418,18 +412,18 @@ theorem nuN_cast (δ : Code N) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ N.R.m) (z : 
   | exact N.toNat_floor_cast (N.nu_int δ j h1 h2 z i hi) h0
 
 /- English proof (translation)
-The claim follows from `toNat_floor_cast (N.aPlus_int j z i) (le_trans zero_le_one (N.aPlus_ge_one j h1 h2 z i hi))`.
+A detailed English derivation is pending.
 -/
 theorem apN_cast {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ N.R.m) (z : RPl N.R) {i : ℕ} (hi : i < (N.R.sigW j).1) :
     (N.apN j z i : ℝ) = ((N.aPlus j z i : ℚ) : ℝ) :=
   toNat_floor_cast (N.aPlus_int j z i) (le_trans zero_le_one (N.aPlus_ge_one j h1 h2 z i hi))
 
 /- English proof (translation)
-Establish `hle : N.R.N (j - 1) ≤ N.Nm` using `N.N_le_Nm (j - 1) (by omega)`. Establish `h00 : ph 0 = 0` using `by first`. Consider the case `simp [Formalism.LatticeIndexTer.ph]`. Consider the case `(unfold Formalism.LatticeIndexTer.ph; simp)`. Consider the case `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Unfold `Formalism.DivisionValues.phRows nuRows nuPad`. Rewrite using `[Multiset.map_map]`. Use `Eq.trans (rfl : _ = ∑ i ∈ Finset.range (N.R.N (j - 1)), ph ((N.nuN δ j z i : ℕ) : ℝ)) ?_` and prove the remaining obligations. Simplify using `only [apply_ite ph, h00]`. Use `Eq.trans ?_ (sum_pad (fun i => ph ((N.nu δ j z i : ℚ) : ℝ)) hle).symm` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl (fun i hi => by`. Rewrite using `[N.nuN_cast δ h1 h2 z (Finset.mem_range.1 hi) (h0 i (Finset.mem_range.1 hi))])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phRows_nuRows (δ : Code N) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ N.R.m) (z : RPl N.R)
     (h0 : ∀ i < N.R.N (j - 1), 0 ≤ N.nu δ j z i) :
@@ -449,9 +443,9 @@ theorem phRows_nuRows (δ : Code N) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ N.R.m) 
     rw [N.nuN_cast δ h1 h2 z (Finset.mem_range.1 hi) (h0 i (Finset.mem_range.1 hi))])
 
 /- English proof (translation)
-Establish `hle : N.R.N (j - 1) ≤ N.Nm` using `N.N_le_Nm (j - 1) (by omega)`. Establish `e : ((Multiset.range (N.R.N (j - 1))).map (N.nuN δ j z)).sum = ∑ i ∈ Finset.range (N.R.N (j - 1)), N.nuN δ j z i` using `rfl`. Unfold `nuRows nuPad`. Rewrite using `[e, Nat.cast_sum]`. Use `Eq.trans ?_ (sum_pad (fun i => ((N.nu δ j z i : ℚ) : ℝ)) hle).symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl (fun i hi => N.nuN_cast δ h1 h2 z (Finset.mem_range.1 hi) (h0 i (Finset.mem_range.1 hi)))`.
+A detailed English derivation is pending.
 -/
 theorem sum_nuRows (δ : Code N) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ N.R.m) (z : RPl N.R)
     (h0 : ∀ i < N.R.N (j - 1), 0 ≤ N.nu δ j z i) :
@@ -466,7 +460,7 @@ theorem sum_nuRows (δ : Code N) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ N.R.m) (z 
     N.nuN_cast δ h1 h2 z (Finset.mem_range.1 hi) (h0 i (Finset.mem_range.1 hi)))
 
 /- English proof (translation)
-Establish `hle : N.R.N (j - 1) ≤ N.Nm` using `N.N_le_Nm (j - 1) (by omega)`. Unfold `nuPad nuAbs`. Use `(sum_pad (fun i => ((N.nu δ j z i : ℚ) : ℝ)) hle).trans ?_` and prove the remaining obligations. Rewrite using `[Rat.cast_sum]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_nuPad (δ : Code N) {j : ℕ} (hj : j ≤ N.R.m + 1) (z : RPl N.R) :
     ∑ i, N.nuPad δ j z i = ((N.nuAbs δ j z : ℚ) : ℝ) := by
@@ -476,9 +470,9 @@ theorem sum_nuPad (δ : Code N) {j : ℕ} (hj : j ≤ N.R.m + 1) (z : RPl N.R) :
   rw [Rat.cast_sum]
 
 /- English proof (translation)
-Establish `hle : N.R.N (j - 1) ≤ N.Nm` using `N.N_le_Nm (j - 1) (by omega)`. Establish `h0 : ph 0 = 0` using `by first`. Consider the case `simp [Formalism.LatticeIndexTer.ph]`. Consider the case `(unfold Formalism.LatticeIndexTer.ph; simp)`. Consider the case `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Unfold `nuPad`. Simplify using `only [apply_ite ph, h0]`. Conclude with `sum_pad (fun i => ph ((N.nu δ j z i : ℚ) : ℝ)) hle`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_phPad (δ : Code N) {j : ℕ} (hj : j ≤ N.R.m + 1) (z : RPl N.R) :
     ∑ i, ph (N.nuPad δ j z i) = ∑ i ∈ Finset.range (N.R.N (j - 1)), ph ((N.nu δ j z i : ℚ) : ℝ) := by
@@ -499,9 +493,9 @@ namespace NumDatum
 variable (N : NumDatum)
 
 /- English proof (translation)
-Unfold `nuRows`. Rewrite using `[univ_map_fin (N.R.k - 2 + 2) (N.nuN δ (j + 1) z)]`. Establish `hk : N.R.k - 2 + 2 = N.R.k` using `by have := N.k_two; omega`. Rewrite using `[hk]`. Establish `hN : N.R.N (j + 1 - 1) = N.R.k + (N.R.N j - N.R.k)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.add_sub_cancel]`. Establish `: N.R.k ≤ N.R.N j` using `Nat.le_add_right _ _`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hN, Multiset.range_add, Multiset.map_add, Multiset.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem nuRows_split (δ : Code N) (j : ℕ) (z : RPl N.R) :
     N.nuRows δ (j + 1) z = Finset.univ.val.map (fun i : Fin (N.R.k - 2 + 2) => N.nuN δ (j + 1) z i.1) +
@@ -518,9 +512,9 @@ theorem nuRows_split (δ : Code N) (j : ℕ) (z : RPl N.R) :
   rfl
 
 /- English proof (translation)
-Unfold `apRows`. Rewrite using `[univ_map_fin (N.R.k - 2 + 1) (N.apN (j + 1) z)]`. Establish `hk : N.R.k - 2 + 1 = N.R.k - 1` using `by have := N.k_two; omega`. Rewrite using `[hk]`. Establish `hs : (N.R.sigW (j + 1)).1 = N.R.k - 1 + (j + 1)` using `by first`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `rfl`. Consider the case `(simp [Ranks.sigW]; omega)`. Consider the case `(unfold Ranks.sigW; simp; omega)`. Rewrite using `[hs, Multiset.range_add, Multiset.map_add, Multiset.map_map]`. Both sides reduce to the same expression.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem apRows_split (j : ℕ) (z : RPl N.R) :
     N.apRows (j + 1) z = Finset.univ.val.map (fun i : Fin (N.R.k - 2 + 1) => N.apN (j + 1) z i.1) +
@@ -538,7 +532,7 @@ theorem apRows_split (j : ℕ) (z : RPl N.R) :
   rfl
 
 /- English proof (translation)
-The claim follows from `|N.dN δ (j.1 + 1) ρ| ≤ C0 * (N.w (j.1 + 1) ρ + (N.R.k : ℝ) * ((N.Nm : ℝ) + N.Sc) + (N.R.m : ℝ) * ((N.R.t : ℝ) + 1) * N.eta + (if ρ ∈ N.topsPl then (N.R.k : ℝ) * N.sc.b' else 0)) := by have hk2 := N.k_two have hm2 := N.R.two_le_m have hs : ∀ (j : Fin N.R.m) ρ, (N.sN (j.1 + 1) : ℝ) …`.
+A detailed English derivation is pending.
 -/
 theorem stepE_num (δ : Code N) {Nc lam0 C0 ce Ch Sw C1 : ℝ} (H : N.NumFacts δ Nc lam0 C0 ce Ch Sw C1)
     (j : Fin N.R.m) (ρ : RPl N.R) :
@@ -809,7 +803,7 @@ variable (N : NumDatum) {J : Type} [Fintype J] (eJ : J ≃ Fin N.R.m) (δ : Code
   (Nc lam0 C0 ce Ch Sw C1 : ℝ) (H : N.NumFacts δ Nc lam0 C0 ce Ch Sw C1)
 
 /- English proof (translation)
-Unfold `RecNums.hA NumDatum.hA`. Simplify using `only [ofNum, NumDatum.topsPl, Finset.sum_map, Finset.card_map]`. Apply the tactic sequence `try rfl`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ofNum_hA : (ofNum N eJ δ T Nc lam0 C0 ce Ch Sw C1 H).hA = N.hA Ch T := by
   unfold RecNums.hA NumDatum.hA
@@ -817,11 +811,9 @@ theorem ofNum_hA : (ofNum N eJ δ T Nc lam0 C0 ce Ch Sw C1 H).hA = N.hA Ch T := 
   try rfl
 
 /- English proof (translation)
-Establish `hj : (eJ j).1 + 1 ≤ N.R.m + 1` using `by have := (eJ j).2; omega`. Unfold `RecNums.hB NumDatum.hB`. Rewrite using `[add_assoc]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `ρ _`. Use `show (∑ i, ph (N.nuPad δ ((eJ j).1 + 1) ρ i)) - (∑ i, N.nuPad δ ((eJ j).1 + 1) ρ i) * N.logOm = _`. Unfold `NumDatum.kerPlace`. Rewrite using `[N.sum_phPad δ hj, N.sum_nuPad δ hj]`. Apply the tactic sequence `try ring`.
-
-Use `show Ch * (N.R.f : ℝ) * (N.Nm : ℝ) ^ 2 * (N.La + (N.R.m : ℝ) ^ 3 * N.sc.L) = _`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ofNum_hB (j : J) : (ofNum N eJ δ T Nc lam0 C0 ce Ch Sw C1 H).hB j = N.hB Ch δ ((eJ j).1 + 1) := by
   have hj : (eJ j).1 + 1 ≤ N.R.m + 1 := by have := (eJ j).2; omega
@@ -838,7 +830,7 @@ theorem ofNum_hB (j : J) : (ofNum N eJ δ T Nc lam0 C0 ce Ch Sw C1 H).hB j = N.h
     ring
 
 /- English proof (translation)
-Unfold `RecNums.hX NumDatum.hX`. Simplify using `only [ofNum]`. Apply the tactic sequence `try rfl`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ofNum_hX (j : J) : (ofNum N eJ δ T Nc lam0 C0 ce Ch Sw C1 H).hX j = N.hX Ch ((eJ j).1 + 1) := by
   unfold RecNums.hX NumDatum.hX
@@ -846,7 +838,7 @@ theorem ofNum_hX (j : J) : (ofNum N eJ δ T Nc lam0 C0 ce Ch Sw C1 H).hX j = N.h
   try rfl
 
 /- English proof (translation)
-Unfold `RecNums.hu NumDatum.hU`. Simplify using `only [ofNum_hA, ofNum_hB, ofNum_hX]`. Rewrite using `[Finset.sum_sub_distrib, N.sum_lifts (N.hB Ch δ) eJ, N.sum_lifts (N.hX Ch) eJ]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ofNum_hu : (ofNum N eJ δ T Nc lam0 C0 ce Ch Sw C1 H).hu = N.hU Ch δ T := by
   unfold RecNums.hu NumDatum.hU
@@ -855,7 +847,7 @@ theorem ofNum_hu : (ofNum N eJ δ T Nc lam0 C0 ce Ch Sw C1 H).hu = N.hU Ch δ T 
   ring
 
 /- English proof (translation)
-Unfold `RecNums.rhs`. Simplify using `only [ofNum]`. Unfold `NumDatum.mainT`. Simplify using `only [NumDatum.topsPl, Finset.sum_map, Finset.card_map]`. Apply the tactic sequence `try rfl`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ofNum_rhs : (ofNum N eJ δ T Nc lam0 C0 ce Ch Sw C1 H).rhs =
     N.mainT T + ((50 * C0 + 10) * ((N.TT.card : ℝ) * N.sc.a * N.La) +
@@ -881,7 +873,7 @@ open NumberField IsDedekindDomain Formalism.DivisionValues Formalism.EigenvalueL
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `(unfold FoOf; simp only [hF])`. Consider the case `(simp only [FoOf, hF])`. Consider the case `(unfold FoOf; simp [hF])`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem FoOf_num {Bs : DefBase K} {Df0 : DefSide Bs} {Df1 : DefSide Bs} {Dc : DefCols Df1} {Sp : SPer Dc} {Nn : IndefNum Bs}
     (P : IndefCore Df0 Df1 Dc Sp Nn) (Nd : NumDatum) (eJ : Bs.J ≃ Fin Nd.R.m)
@@ -893,9 +885,9 @@ theorem FoOf_num {Bs : DefBase K} {Df0 : DefSide Bs} {Df1 : DefSide Bs} {Dc : De
   | (unfold FoOf; simp [hF])
 
 /- English proof (translation)
-Establish `hL` using `division_height_bound_clauses A hOk hsep P0 ψ0 P1 ψ1 Dc Sp Zsc C CH Pk (RecNums.ofNum Nd eJ δ Tl Nc lam0 C0 ce Ch Sw C1 H) u Nu sg I`. Establish `hu` using `RecNums.ofNum_hu Nd eJ δ Tl Nc lam0 C0 ce Ch Sw C1 H`. Establish `hr` using `RecNums.ofNum_rhs Nd eJ δ Tl Nc lam0 C0 ce Ch Sw C1 H`. Establish `h2` using `hL.2.1`. Establish `h3` using `hL.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[hu]`. Rewrite `h3` using `[hu, hr]`. Use `⟨hL, h2, h3, fun hF => ?_⟩` and prove the remaining obligations. Rewrite using `[← FoOf_num Pk.core Nd eJ hF]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem division_height_bound_numeric [IsTotallyComplex K] (A : FamIn K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep)
     (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (P1 : Subgroup G) (ψ1 : P1 →* Kˣ)
@@ -973,7 +965,7 @@ def hcTop : HCParam R0 where
 def MBig : ℝ := 200 + |numEx.logOm|
 
 /- English proof (translation)
-Unfold `MBig`. Combine the linear relations using `[abs_nonneg numEx.logOm]`.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem MBig_ge : 200 ≤ MBig := by
   unfold MBig
@@ -1015,9 +1007,7 @@ Both sides reduce to the same expression.
 theorem big_TT : numBig.TT = {0} := rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : z = (false, 0)`. Use `show (if z = (false, 0) then hcTop else hc0).e = hcE`. Rewrite using `[if_pos h]`. Both sides reduce to the same expression. Use `show (if z = (false, 0) then hcTop else hc0).e = hcE`.
-
-Rewrite using `[if_neg h]`. Apply the tactic sequence `first | rfl | simp [hc0] | decide`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem big_hc_e (z : RPl numBig.R) : (numBig.hc z).e = hcE := by
   by_cases h : z = (false, 0)
@@ -1029,9 +1019,7 @@ theorem big_hc_e (z : RPl numBig.R) : (numBig.hc z).e = hcE := by
     first | rfl | simp [hc0] | decide
 
 /- English proof (translation)
-Distinguish the cases in `h : z = (false, 0)`. Use `show (if z = (false, 0) then hcTop else hc0).v = hcV`. Rewrite using `[if_pos h]`. Both sides reduce to the same expression. Use `show (if z = (false, 0) then hcTop else hc0).v = hcV`.
-
-Rewrite using `[if_neg h]`. Apply the tactic sequence `first | rfl | simp [hc0] | decide`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem big_hc_v (z : RPl numBig.R) : (numBig.hc z).v = hcV := by
   by_cases h : z = (false, 0)
@@ -1043,7 +1031,7 @@ theorem big_hc_v (z : RPl numBig.R) : (numBig.hc z).v = hcV := by
     first | rfl | simp [hc0] | decide
 
 /- English proof (translation)
-Use `show Real.exp (100 * MBig) ^ (1 / 100 : ℝ) = Real.exp MBig`. Rewrite using `[← Real.exp_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem big_L : numBig.sc.L = Real.exp MBig := by
   show Real.exp (100 * MBig) ^ (1 / 100 : ℝ) = Real.exp MBig
@@ -1052,14 +1040,14 @@ theorem big_L : numBig.sc.L = Real.exp MBig := by
   ring
 
 /- English proof (translation)
-Use `show Real.log (Real.exp (100 * MBig)) = 100 * MBig`. Conclude with `Real.log_exp _`.
+A detailed English derivation is pending.
 -/
 theorem big_logx : Real.log numBig.sc.x = 100 * MBig := by
   show Real.log (Real.exp (100 * MBig)) = 100 * MBig
   exact Real.log_exp _
 
 /- English proof (translation)
-Use `show Real.exp (Real.exp (100 * MBig) ^ ((1 / 100 : ℝ) / 3)) = Real.exp (Real.exp (MBig / 3))`. Rewrite using `[← Real.exp_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem big_X' : numBig.sc.X' = Real.exp (Real.exp (MBig / 3)) := by
   show Real.exp (Real.exp (100 * MBig) ^ ((1 / 100 : ℝ) / 3)) = Real.exp (Real.exp (MBig / 3))
@@ -1103,7 +1091,7 @@ Both sides reduce to the same expression.
 @[simp] theorem large_example_height : numBig.h0 = 18 := rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `(show (if ((false, 0) : RPl numBig.R) = (false, 0) then hcTop else hc0) = hcTop`. Conclude with `if_pos rfl)`. Consider the case `simp [numBig]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem big_hc_top : numBig.hc (false, 0) = hcTop := by
   first
@@ -1112,7 +1100,7 @@ theorem big_hc_top : numBig.hc (false, 0) = hcTop := by
   | simp [numBig]
 
 /- English proof (translation)
-Use `first`. Consider the case `(show (if z = (false, 0) then hcTop else hc0) = hc0`. Conclude with `if_neg h)`. Consider the case `simp [numBig, h]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem big_hc_off (z : RPl numBig.R) (h : z ≠ (false, 0)) : numBig.hc z = hc0 := by
   first
@@ -1121,20 +1109,20 @@ theorem big_hc_off (z : RPl numBig.R) (h : z ≠ (false, 0)) : numBig.hc z = hc0
   | simp [numBig, h]
 
 /- English proof (translation)
-Rewrite using `[NumDatum.Nm_cast, big_k, big_m, large_parameter_sqrt_bound]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem big_Nm : (numBig.Nm : ℝ) = 40 := by
   rw [NumDatum.Nm_cast, big_k, big_m, large_parameter_sqrt_bound]
   norm_num
 /- English proof (translation)
-Use `show ((numBig.R.k : ℕ) : ℝ) * (4 * ((numBig.Del : ℕ) : ℝ)) = 32`. Rewrite using `[big_k, big_Del]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem big_Sc : numBig.Sc = 32 := by
   show ((numBig.R.k : ℕ) : ℝ) * (4 * ((numBig.Del : ℕ) : ℝ)) = 32
   rw [big_k, big_Del]
   norm_num
 /- English proof (translation)
-Use `show ((numBig.R.m : ℕ) : ℝ) * ((numBig.h0 : ℕ) : ℝ) = 36`. Rewrite using `[big_m, large_example_height]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem big_eta : numBig.eta = 36 := by
   show ((numBig.R.m : ℕ) : ℝ) * ((numBig.h0 : ℕ) : ℝ) = 36
@@ -1142,9 +1130,9 @@ theorem big_eta : numBig.eta = 36 := by
   norm_num
 
 /- English proof (translation)
-Use `first`. Consider the case `(have := Real.pow_div_factorial_le_exp hy 3`. Evaluate the numerical expressions using `[Nat.factorial] at this`. Use the proof step `linarith)`. Consider the case `(have := Real.pow_div_factorial_le_exp y hy 3`.
+Treat this case separately. Evaluate the numerical expressions. Treat this case separately. Evaluate the numerical expressions. Treat this case separately.
 
-Evaluate the numerical expressions using `[Nat.factorial] at this`. Use the proof step `linarith)`. Consider the case `(have h := Real.sum_le_exp_of_nonneg hy 4`. Simplify using `[Finset.sum_range_succ, Nat.factorial] at h`. Use polynomial arithmetic with `[sq_nonneg y, pow_nonneg hy 3])`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exp_cube {y : ℝ} (hy : 0 ≤ y) : y ^ 3 / 6 ≤ Real.exp y := by
   first
@@ -1159,9 +1147,9 @@ theorem exp_cube {y : ℝ} (hy : 0 ≤ y) : y ^ 3 / 6 ≤ Real.exp y := by
      nlinarith [sq_nonneg y, pow_nonneg hy 3])
 
 /- English proof (translation)
-Rewrite using `[big_L]`. Establish `h` using `exp_cube (show (0 : ℝ) ≤ MBig by linarith [MBig_ge])`. Establish `h2 : (200 : ℝ) ^ 3 / 6 ≤ MBig ^ 3 / 6`. Use `MBig_ge` as an intermediate fact. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[show (1000000 : ℝ) ≤ 200 ^ 3 / 6 by norm_num]`.
+A detailed English derivation is pending.
 -/
 theorem big_L_ge : 1000000 ≤ numBig.sc.L := by
   rw [big_L]
@@ -1172,16 +1160,16 @@ theorem big_L_ge : 1000000 ≤ numBig.sc.L := by
   linarith [show (1000000 : ℝ) ≤ 200 ^ 3 / 6 by norm_num]
 
 /- English proof (translation)
-Use `show numBig.sc.L ^ 3 / 6 ≤ Real.exp numBig.sc.L`. Conclude with `exp_cube (le_of_lt (lt_trans zero_lt_one numBig.one_lt_L))`.
+A detailed English derivation is pending.
 -/
 theorem big_b_ge : numBig.sc.L ^ 3 / 6 ≤ numBig.sc.b := by
   show numBig.sc.L ^ 3 / 6 ≤ Real.exp numBig.sc.L
   exact exp_cube (le_of_lt (lt_trans zero_lt_one numBig.one_lt_L))
 
 /- English proof (translation)
-Use `⟨numBig.one_le_rd, ?_⟩` and prove the remaining obligations. Establish `h1 : numBig.rd ≤ ((16 : ℕ) : ℝ) / 2 * Real.sqrt (((11 : ℕ) : ℝ) * ((7 : ℕ) : ℝ))` using `hostEx.der.rd_le`. Establish `h2 : Real.sqrt (((11 : ℕ) : ℝ) * ((7 : ℕ) : ℝ)) ≤ 9`. Rewrite using `[show (9 : ℝ) = Real.sqrt (9 ^ 2) by rw [Real.sqrt_sq (by norm_num)]]`. Conclude with `Real.sqrt_le_sqrt (by norm_num)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ((16 : ℕ) : ℝ) / 2 = 8` using `by norm_num`. Rewrite `h1` using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem big_rd : 1 ≤ numBig.rd ∧ numBig.rd ≤ 72 := by
   refine ⟨numBig.one_le_rd, ?_⟩
@@ -1194,21 +1182,21 @@ theorem big_rd : 1 ≤ numBig.rd ∧ numBig.rd ≤ 72 := by
   linarith
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `big_rd`. Conclude with `⟨Real.log_nonneg h1, by have := Real.log_le_sub_one_of_pos (by linarith : 0 < numBig.rd); linarith⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem big_logrd : 0 ≤ Real.log numBig.rd ∧ Real.log numBig.rd ≤ 71 := by
   obtain ⟨h1, h2⟩ := big_rd
   exact ⟨Real.log_nonneg h1, by have := Real.log_le_sub_one_of_pos (by linarith : 0 < numBig.rd); linarith⟩
 
 /- English proof (translation)
-Use `Real.add_one_le_exp (MBig / 3)` as an intermediate fact. Combine the linear relations using `[MBig_ge]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem big_y : 67 ≤ Real.exp (MBig / 3) := by
   have := Real.add_one_le_exp (MBig / 3)
   linarith [MBig_ge]
 
 /- English proof (translation)
-Rewrite using `[big_L, ← Real.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem big_Ly : numBig.sc.L = Real.exp (MBig / 3) ^ 3 := by
   rw [big_L, ← Real.exp_nat_mul]
@@ -1217,11 +1205,9 @@ theorem big_Ly : numBig.sc.L = Real.exp (MBig / 3) ^ 3 := by
   ring
 
 /- English proof (translation)
-Unfold `Scale.w''`. Establish `hn : numBig.R.n = 4` using `by first`. Consider the case `rfl`. Consider the case `decide`. Consider the case `simp [Ranks.n]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hn]`. Establish `hx` using `numBig.x_pos`. Establish `hX : 0 < numBig.sc.X'` using `Real.exp_pos _`. Use `show numBig.sc.x * numBig.sc.b / numBig.sc.X' / (numBig.sc.x * ((4 : ℕ) : ℝ)) = numBig.sc.b / (4 * numBig.sc.X')`. Clear the denominators using the available nonvanishing facts.
-
-Apply the tactic sequence `try ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem big_w'' : numBig.sc.w'' numBig.R.n = numBig.sc.b / (4 * numBig.sc.X') := by
   unfold Scale.w''
@@ -1238,7 +1224,7 @@ theorem big_w'' : numBig.sc.w'' numBig.R.n = numBig.sc.b / (4 * numBig.sc.X') :=
   try ring
 
 /- English proof (translation)
-Rewrite using `[big_X']`. Use `Real.add_one_le_exp (Real.exp (MBig / 3))` as an intermediate fact. Combine the linear relations using `[big_y]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem big_X'_ge : 67 ≤ numBig.sc.X' := by
   rw [big_X']
@@ -1246,11 +1232,11 @@ theorem big_X'_ge : 67 ≤ numBig.sc.X' := by
   linarith [big_y]
 
 /- English proof (translation)
-Establish `hy` using `big_y`. Establish `hb : numBig.sc.b = Real.exp (Real.exp (MBig / 3) ^ 3)` using `by show Real.exp numBig.sc.L = _`. Rewrite using `[big_Ly]`. Rewrite using `[hb, big_X']`. Establish `h1 : Real.exp (Real.exp (MBig / 3) ^ 3) = Real.exp (Real.exp (MBig / 3)) * Real.exp (Real.exp (MBig / 3) ^ 3 - Real.exp (MBig / 3))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form. Rewrite using `[h1]`. Establish `h3 : (4488 : ℝ) ≤ Real.exp (MBig / 3) ^ 2 - 1` using `by nlinarith`. Establish `h2 : (4608 : ℝ) ≤ Real.exp (Real.exp (MBig / 3) ^ 3 - Real.exp (MBig / 3))`.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.add_one_le_exp (Real.exp (MBig / 3) ^ 3 - Real.exp (MBig / 3))` as an intermediate fact. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0 : ℝ) ≤ Real.exp (MBig / 3) - 67) (by linarith : (0 : ℝ) ≤ Real.exp (MBig / 3) ^ 2 - 1 - 4488)]`. Use `mul_le_mul_of_nonneg_left h2 (Real.exp_pos (Real.exp (MBig / 3))).le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem big_bX : 4608 * numBig.sc.X' ≤ numBig.sc.b := by
   have hy := big_y
@@ -1272,9 +1258,9 @@ theorem big_bX : 4608 * numBig.sc.X' ≤ numBig.sc.b := by
   linarith
 
 /- English proof (translation)
-Rewrite using `[big_w'']`. Establish `hX : 0 < numBig.sc.X'` using `lt_of_lt_of_le (by norm_num) big_X'_ge`. Establish `h4 : (0 : ℝ) < 4 * numBig.sc.X'` using `by linarith`. Use `first`. Consider the case `(rw [le_div_iff₀ h4]; linarith [big_bX])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [le_div_iff h4]; linarith [big_bX])`.
+A detailed English derivation is pending.
 -/
 theorem big_w''_ge : 1152 ≤ numBig.sc.w'' numBig.R.n := by
   rw [big_w'']
@@ -1285,9 +1271,9 @@ theorem big_w''_ge : 1152 ≤ numBig.sc.w'' numBig.R.n := by
   | (rw [le_div_iff h4]; linarith [big_bX])
 
 /- English proof (translation)
-Rewrite using `[big_Nm, big_w'']`. Establish `hX : 0 < numBig.sc.X'` using `lt_of_lt_of_le (by norm_num) big_X'_ge`. Establish `hb` using `numBig.b_pos`. Establish `e : (40 : ℝ) * (numBig.sc.b / (4 * numBig.sc.X')) = numBig.sc.b * (10 / numBig.sc.X')` using `by ring`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h10 : 10 / numBig.sc.X' ≤ 1`. Rewrite using `[div_le_one hX]`. Combine the linear relations using `[big_X'_ge]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 -/
 theorem big_Nw : (numBig.Nm : ℝ) * numBig.sc.w'' numBig.R.n ≤ numBig.sc.b := by
   rw [big_Nm, big_w'']
@@ -1302,14 +1288,14 @@ theorem big_Nw : (numBig.Nm : ℝ) * numBig.sc.w'' numBig.R.n ≤ numBig.sc.b :=
     _ = numBig.sc.b := mul_one _
 
 /- English proof (translation)
-Use `show numBig.sc.a / numBig.sc.X' * numBig.sc.X' = numBig.sc.a`. Conclude with `div_mul_cancel₀ _ (lt_of_lt_of_le (by norm_num : (0 : ℝ) < 67) big_X'_ge).ne'`.
+A detailed English derivation is pending.
 -/
 theorem big_b'X : numBig.sc.b' * numBig.sc.X' = numBig.sc.a := by
   show numBig.sc.a / numBig.sc.X' * numBig.sc.X' = numBig.sc.a
   exact div_mul_cancel₀ _ (lt_of_lt_of_le (by norm_num : (0 : ℝ) < 67) big_X'_ge).ne'
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem big_b'_le {c : ℝ} (hc : c ≤ 67) : numBig.sc.b' * c ≤ numBig.sc.a := by
   calc numBig.sc.b' * c ≤ numBig.sc.b' * numBig.sc.X' :=
@@ -1317,9 +1303,7 @@ theorem big_b'_le {c : ℝ} (hc : c ≤ 67) : numBig.sc.b' * c ≤ numBig.sc.a :
     _ = numBig.sc.a := big_b'X
 
 /- English proof (translation)
-Use `show (1000000000000 : ℝ) ≤ Real.exp (100 * MBig)`. Establish `h` using `exp_cube (show (0 : ℝ) ≤ 100 * MBig by linarith [MBig_ge])`. Establish `h2 : (20000 : ℝ) ^ 3 / 6 ≤ (100 * MBig) ^ 3 / 6`. Establish `: (20000 : ℝ) ≤ 100 * MBig` using `by linarith [MBig_ge]`. Use `gcongr`.
-
-Combine the linear relations using `[show (1000000000000 : ℝ) ≤ 20000 ^ 3 / 6 by norm_num]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem big_x_ge : 1000000000000 ≤ numBig.sc.x := by
   show (1000000000000 : ℝ) ≤ Real.exp (100 * MBig)
@@ -1330,15 +1314,15 @@ theorem big_x_ge : 1000000000000 ≤ numBig.sc.x := by
   linarith [show (1000000000000 : ℝ) ≤ 20000 ^ 3 / 6 by norm_num]
 
 /- English proof (translation)
-Rewrite using `[NumDatum.La_eq, big_logx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem big_La : numBig.La = 100 * MBig + numBig.sc.L + Real.log numBig.rd := by
   rw [NumDatum.La_eq, big_logx]
 
 /- English proof (translation)
-Unfold `NumDatum.aT`. Establish `e0 : ∀ h, (numBig.hc (false, 0)).u ⟨0, h⟩ = 113 / 2`. Introduce `h`. Apply the tactic sequence `first | rfl | (rw [big_hc_top]; rfl) | decide`. Rewrite using `[e0]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 theorem large_example_exponent_zero : numBig.aT 0 = 53 := by
   unfold NumDatum.aT
@@ -1349,9 +1333,9 @@ theorem large_example_exponent_zero : numBig.aT 0 = 53 := by
   norm_num
 
 /- English proof (translation)
-Unfold `NumDatum.bT`. Establish `e7 : ∀ h, (numBig.hc (false, 0)).u ⟨numBig.R.k - 1, h⟩ = -7 / 2`. Introduce `h`. Apply the tactic sequence `first | rfl | (rw [big_hc_top]; rfl) | decide`. Rewrite using `[e7]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 theorem large_example_bound_zero : numBig.bT 0 = 0 := by
   unfold NumDatum.bT
@@ -1362,7 +1346,7 @@ theorem large_example_bound_zero : numBig.bT 0 = 0 := by
   norm_num
 
 /- English proof (translation)
-Unfold `NumDatum.eQ`. Rewrite using `[dif_pos ⟨h1, h2⟩, big_hc_e]`. Apply the tactic sequence `interval_cases j <;> first | rfl | simp [hcE] | norm_num [hcE]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem big_eQ (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ 2) (z : RPl numBig.R) :
     numBig.eQ j z = if j = 1 then 100 else 118 := by
@@ -1371,7 +1355,7 @@ theorem big_eQ (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ 2) (z : RPl numBig.R) :
   interval_cases j <;> first | rfl | simp [hcE] | norm_num [hcE]
 
 /- English proof (translation)
-Unfold `NumDatum.w`. Rewrite using `[big_eQ j h1 h2 z]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem big_w (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ 2) (z : RPl numBig.R) : 100 ≤ numBig.w j z ∧ numBig.w j z ≤ 118 := by
   unfold NumDatum.w
@@ -1385,7 +1369,7 @@ namespace NumInst
 open Formalism.BasicNotions.Examples₂
 
 /- English proof (translation)
-Use `first`. Consider the case `(fin_cases l <;> norm_num [hcV])`. Consider the case `(fin_cases l <;> simp [hcV])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hcV_nonneg (l : Fin 7) : 0 ≤ hcV l := by
   first
@@ -1393,18 +1377,18 @@ theorem hcV_nonneg (l : Fin 7) : 0 ≤ hcV l := by
   | (fin_cases l <;> simp [hcV])
 
 /- English proof (translation)
-Rewrite using `[big_hc_v]`. Conclude with `hcV_nonneg l`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem big_v_nonneg (z : RPl numBig.R) (l : Fin (numBig.R.k - 1)) : 0 ≤ (numBig.hc z).v l := by
   rw [big_hc_v]
   exact hcV_nonneg l
 
 /- English proof (translation)
-Unfold `NumDatum.uW`. Distinguish the cases in `h : 1 ≤ i.1 ∧ i.1 + 1 < numBig.R.k`. Rewrite using `[dif_pos h, if_neg (by simp [wd0])]`. Use `big_v_nonneg z ⟨i.1 - 1, by have := i.2; omega⟩` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[dif_neg h]`. Distinguish the cases in `hz : z = (false, 0)`. Apply the tactic sequence `have hu : ∀ l : Fin 8, -7 / 2 ≤ hcUTop l := by intro l; fin_cases l <;> simp [hcUTop] <;> norm_num`. Rewrite using `[hz, big_hc_top]`. Conclude with `hu i`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have hu : ∀ l : Fin 8, -7 / 2 ≤ hcU l := by intro l; fin_cases l <;> simp [hcU] <;> norm_num`. Rewrite using `[big_hc_off z hz]`. Conclude with `hu i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem big_uW_ge (z : RPl numBig.R) (i : Fin numBig.R.k) : -7 / 2 ≤ numBig.uW wd0 z i := by
   unfold NumDatum.uW
@@ -1422,7 +1406,7 @@ theorem big_uW_ge (z : RPl numBig.R) (i : Fin numBig.R.k) : -7 / 2 ≤ numBig.uW
       exact hu i
 
 /- English proof (translation)
-Establish `: numBig.R.N j ≤ 40` using `by show numBig.R.k + j * (numBig.R.t + 1) ≤ 40`. Rewrite using `[big_k, large_parameter_sqrt_bound]`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem big_N (j : ℕ) (hj : j ≤ 2) : (numBig.R.N j : ℚ) ≤ 40 := by
   have : numBig.R.N j ≤ 40 := by
@@ -1432,11 +1416,11 @@ theorem big_N (j : ℕ) (hj : j ≤ 2) : (numBig.R.N j : ℚ) ≤ 40 := by
   exact_mod_cast this
 
 /- English proof (translation)
-Establish `hu` using `big_uW_ge z ⟨i, hi⟩`. Unfold `NumDatum.nu`. Rewrite using `[NumDatum.srcPar_lt numBig wd0 z i hi, big_eQ j h1 h2 z]`. Establish `h2' : j ≤ 2` using `h2`. Establish `hi' : (i : ℚ) ≤ 7` using `by exact_mod_cast (show i ≤ 7 by omega)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi0 : (0 : ℚ) ≤ i` using `by positivity`. Break down `(show j = 1 ∨ j = 2 by omega) with rfl | rfl` into its components or cases. Establish `e1 : numBig.R.N (1 - 1) = 8` using `rfl`. Establish `e2 : numBig.R.N 1 = 24` using `rfl`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : numBig.R.N (2 - 1) = 24` using `rfl`. Establish `e2 : numBig.R.N 2 = 40` using `rfl`. Rewrite using `[e1, e2]`.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -1461,13 +1445,13 @@ theorem big_nu_first (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ 2) (z : RPl numBig.R) 
     linarith
 
 /- English proof (translation)
-Establish `hk : numBig.R.k = 8` using `rfl`. Establish `ht : numBig.R.t = 15` using `rfl`. Unfold `NumDatum.nu NumDatum.srcPar`. Rewrite using `[dif_neg (by rw [hk]; omega)]`. Rewrite using `[dif_pos (by show (8 + c - 8) / (15 + 1) < 2; omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : (8 + c - numBig.R.k) / (numBig.R.t + 1) = 0` using `by show (8 + c - 8) / (15 + 1) = 0`. Use linear arithmetic over natural numbers and integers. Establish `hr : (8 + c - numBig.R.k) % (numBig.R.t + 1) = c` using `by show (8 + c - 8) % (15 + 1) = c`. Use linear arithmetic over natural numbers and integers. Establish `he : ∀ h, (numBig.hc z).e ⟨(8 + c - numBig.R.k) / (numBig.R.t + 1), h⟩ = 100`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `h`. Rewrite using `[big_hc_e]`. Simplify using `only [hq]`. Both sides reduce to the same expression. Rewrite using `[he, hr, big_eQ 2 (by norm_num) (by norm_num) z]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hN1 : numBig.R.N (2 - 1) = 24` using `rfl`. Establish `hN2 : numBig.R.N 2 = 40` using `rfl`. Rewrite using `[hN1, hN2, ht]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem big_nu_blk (z : RPl numBig.R) (c : ℕ) (hc : c < 16) : numBig.nu wd0 2 z (8 + c) = 2 := by
   have hk : numBig.R.k = 8 := rfl
@@ -1494,13 +1478,13 @@ theorem big_nu_blk (z : RPl numBig.R) (c : ℕ) (hc : c < 16) : numBig.nu wd0 2 
   ring
 
 /- English proof (translation)
-Establish `h2' : j ≤ 2` using `h2`. Distinguish the cases in `hi8 : i < 8`. Conclude with `big_nu_first j h1 h2' z i hi8`. Establish `hj2 : j = 2`. Break down `(show j = 1 ∨ j = 2 by omega) with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `e : numBig.R.N (1 - 1) = 8` using `rfl`. Rewrite `hi` using `[e]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Substitute `hj2` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `e : numBig.R.N (2 - 1) = 24` using `rfl`. Rewrite `hi` using `[e]`. Use `big_nu_blk z (i - 8) (by omega)` as an intermediate fact. Rewrite `this` using `[show 8 + (i - 8) = i by omega]`. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 theorem large_example_weight_nonneg (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ numBig.R.m) (z : RPl numBig.R) (i : ℕ) (hi : i < numBig.R.N (j - 1)) :
     0 ≤ numBig.nu wd0 j z i := by
@@ -1522,13 +1506,13 @@ theorem large_example_weight_nonneg (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ numBig.
     norm_num
 
 /- English proof (translation)
-Rewrite using `[big_eta]`. Establish `hm : ((numBig.R.m : ℕ) : ℝ) = 2` using `by rw [big_m]; norm_num`. Establish `ht : ((numBig.R.t : ℕ) : ℝ) = 15` using `by rw [large_parameter_sqrt_bound]; norm_num`. Rewrite using `[hm, ht]`. Establish `h2' : j ≤ 2` using `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `(show j = 1 ∨ j = 2 by omega) with rfl | rfl` into its components or cases. Establish `e : numBig.R.N (1 - 1) = 8` using `rfl`. Rewrite using `[big_k, e, Finset.Ico_self, Finset.sum_empty]`. Evaluate the numerical expressions. Establish `e : numBig.R.N (2 - 1) = 24` using `rfl`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite using `[big_k, e]`. Establish `hc : ∀ i ∈ Finset.Ico 8 24, ((numBig.nu wd0 2 z i : ℚ) : ℝ) = 2`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_Ico]`. Use `big_nu_blk z (i - 8) (by omega)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[show 8 + (i - 8) = i by omega]`. Rewrite using `[this]`. Evaluate the numerical expressions. Rewrite using `[Finset.sum_congr rfl hc, Finset.sum_const, Nat.card_Ico]`. Evaluate the numerical expressions.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem big_blk (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ numBig.R.m) (z : RPl numBig.R) :
     (∑ i ∈ Finset.Ico numBig.R.k (numBig.R.N (j - 1)), ((numBig.nu wd0 j z i : ℚ) : ℝ)) ≤
@@ -1555,9 +1539,9 @@ theorem big_blk (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ numBig.R.m) (z : RPl numBig
     norm_num
 
 /- English proof (translation)
-Establish `hi : i < 7` using `by simp at h; omega`. Unfold `NumDatum.sigPar NumDatum.uW`. Rewrite using `[dif_pos (show i < numBig.R.k - 1 by simp; omega), big_hc_v]`. Distinguish the cases in `hz : z = (false, 0)`. Apply the tactic sequence `rw [hz, big_hc_top] interval_cases i <;> simp [hcTop, hcUTop, hcV, wd0] <;> norm_num`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [big_hc_off z hz] interval_cases i <;> simp [hc0, hcU, hcV, wd0] <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem big_inter (z : RPl numBig.R) (i : ℕ) (h : i + 1 < numBig.R.k) :
     numBig.sigPar z i < numBig.uW wd0 z ⟨i, by omega⟩ ∧ numBig.uW wd0 z ⟨i + 1, h⟩ < numBig.sigPar z i := by
@@ -1571,11 +1555,11 @@ theorem big_inter (z : RPl numBig.R) (i : ℕ) (h : i + 1 < numBig.R.k) :
     interval_cases i <;> simp [hc0, hcU, hcV, wd0] <;> norm_num
 
 /- English proof (translation)
-Establish `hz' : z ≠ (false, 0)`. Introduce `h`. Apply `hz` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `⟨rfl, by rw [big_TT]; exact Finset.mem_singleton_self _⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `e0 : ∀ h, (numBig.hc z).u ⟨0, h⟩ = 113 / 2`. Introduce `h`. Rewrite using `[big_hc_off z hz']`. Apply the tactic sequence `first | rfl | decide`. Establish `e7 : ∀ h, (numBig.hc z).u ⟨numBig.R.k - 1, h⟩ = -1 / 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite using `[big_hc_off z hz']`. Apply the tactic sequence `first | rfl | decide`. Rewrite using `[e0, e7]`. Apply the tactic sequence `constructor <;> norm_num`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem big_off (z : RPl numBig.R) (hz : ¬ (z.1 = false ∧ z.2 ∈ numBig.TT)) :
     0 ≤ (numBig.hc z).u ⟨numBig.R.k - 1, by have := numBig.R.m_add_three_le_k; omega⟩ + ((numBig.R.k : ℚ) - 1) / 2 ∧
@@ -1597,9 +1581,9 @@ theorem big_off (z : RPl numBig.R) (hz : ¬ (z.1 = false ∧ z.2 ∈ numBig.TT))
   constructor <;> norm_num
 
 /- English proof (translation)
-Rewrite `ht` using `[big_TT, Finset.mem_singleton]`. Substitute `ht` using the available equality. Use `⟨by rw [large_example_exponent_zero]; norm_num, by rw [large_example_bound_zero], ?_, ?_⟩` and prove the remaining obligations. Unfold `NumDatum.sigPar`. Rewrite using `[dif_pos (by simp), big_hc_v]`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hcV]`. Evaluate the numerical expressions. Unfold `NumDatum.sigPar`. Rewrite using `[dif_pos (by simp), big_hc_v]`. Simplify using `[hcV]`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Evaluate the numerical expressions.
 -/
@@ -1620,7 +1604,7 @@ theorem big_top (t : numBig.R.A) (ht : t ∈ numBig.TT) :
     norm_num
 
 /- English proof (translation)
-Establish `hL` using `big_L_ge`. Establish `hb` using `big_b_ge`. Establish `h2 : (1000000 : ℝ) * numBig.sc.L ≤ numBig.sc.L ^ 2` using `by nlinarith`. Establish `h3 : (1000000 : ℝ) * numBig.sc.L ^ 2 ≤ numBig.sc.L ^ 3` using `by nlinarith`. Apply the tactic sequence `constructor <;> nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem big_bL : 12800 * numBig.sc.L ≤ numBig.sc.b ∧ 1000000 ≤ numBig.sc.b := by
   have hL := big_L_ge
@@ -1630,9 +1614,9 @@ theorem big_bL : 12800 * numBig.sc.L ≤ numBig.sc.b ∧ 1000000 ≤ numBig.sc.b
   constructor <;> nlinarith
 
 /- English proof (translation)
-Establish `hb` using `numBig.b_pos`. Establish `hx` using `numBig.sc.one_lt_alt`. Establish `hrd` using `numBig.one_le_rd`. Use `show numBig.sc.b ≤ numBig.sc.x * numBig.sc.b * numBig.rd`. Establish `h1 : numBig.sc.b * 1 ≤ numBig.sc.b * numBig.sc.x` using `mul_le_mul_of_nonneg_left hx.le hb.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : numBig.sc.x * numBig.sc.b * 1 ≤ numBig.sc.x * numBig.sc.b * numBig.rd` using `mul_le_mul_of_nonneg_left hrd (mul_pos numBig.x_pos hb).le`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem big_ard : numBig.sc.b ≤ numBig.sc.a * numBig.rd := by
   have hb := numBig.b_pos
@@ -1645,7 +1629,7 @@ theorem big_ard : numBig.sc.b ≤ numBig.sc.a * numBig.rd := by
   nlinarith
 
 /- English proof (translation)
-Establish `hx` using `big_x_ge`. Establish `h0 : numBig.g 0 = 3697` using `rfl`. Establish `h1 : numBig.g 1 = 7393` using `rfl`. Rewrite using `[h0, h1, big_nV]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -1658,11 +1642,11 @@ theorem big_g : ((numBig.g 0 : ℕ) : ℝ) * ((numBig.g 1 : ℕ) : ℝ) * (numBi
   linarith
 
 /- English proof (translation)
-Establish `hb` using `numBig.b_pos`. Establish `hrd : 0 < numBig.rd` using `lt_of_lt_of_le one_pos numBig.one_le_rd`. Establish `hg0 : (0 : ℝ) < (numBig.g 0 : ℝ)` using `by exact_mod_cast (numBig.g_prime 0).pos`. Establish `hg1 : (0 : ℝ) < (numBig.g 1 : ℝ)` using `by exact_mod_cast (numBig.g_prime 1).pos`. Establish `hn : (0 : ℝ) < (numBig.R.nV : ℝ)` using `by rw [big_nV]; norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `big_g`. Establish `hpos : 0 < numBig.sc.b * numBig.rd * ((numBig.g 0 : ℝ) * (numBig.g 1 : ℝ)) * (numBig.R.nV : ℝ)` using `mul_pos (mul_pos (mul_pos hb hrd) (mul_pos hg0 hg1)) hn`. Establish `hle : numBig.sc.b * numBig.rd * ((numBig.g 0 : ℝ) * (numBig.g 1 : ℝ)) * (numBig.R.nV : ℝ) ≤ numBig.sc.x * numBig.sc.b * numBig.rd`. Establish `hbr : 0 < numBig.sc.b * numBig.rd` using `mul_pos hb hrd`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Unfold `NumDatum.Lp NumDatum.La`. Use `first`. Consider the case `exact Real.log_le_log hpos hle`. Consider the case `exact Real.log_le_log_of_le hpos hle`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem big_Lp : numBig.Lp ≤ numBig.La := by
   have hb := numBig.b_pos
@@ -1685,29 +1669,17 @@ theorem big_Lp : numBig.Lp ≤ numBig.La := by
   | exact Real.log_le_log_of_le hpos hle
 
 /- English proof (translation)
-Combine the linear relations using `[big_logrd.2, big_L_ge] logx := by`. Rewrite using `[big_logx, big_L]`. Establish `h` using `exp_cube (show (0 : ℝ) ≤ MBig by linarith [MBig_ge])`. Establish `hM` using `MBig_ge`. Establish `h2 : (40000 : ℝ) ≤ MBig ^ 2` using `by nlinarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : MBig ^ 3 = MBig * MBig ^ 2` using `by ring`. Use the polynomial consequences of the given equalities and inequalities. Use `Nc0 := by norm_num`. Use `w2b j h1 h2 z := by linarith [(big_w j h1 (by simpa using h2) z).2, big_bL.2]`. Use `Om := by`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[big_logOm, big_La]`. Use `big_logrd.1` as an intermediate fact. Use `big_L_ge` as an intermediate fact. Establish `: |numEx.logOm| ≤ MBig` using `by unfold MBig; linarith`. Combine the linear relations using `[MBig_ge]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `lam := by simp; linarith [big_bL.2]`. Use `lam0 := by norm_num`. Use `n2 := by rw [big_Nm]; linarith [big_bL.2]`. Use `n3 := by rw [big_Nm]; simp; linarith [big_bL.1]`. Use `eta := by rw [big_Nm, big_eta]; simp; linarith [big_bL.1, big_L_ge]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `kN := by rw [big_Nm]; simp; linarith [big_bL.2]`. Use `kS := by rw [big_Sc]; simp; linarith [big_w''_ge]`. Use `blkW := by rw [big_eta]; simp; linarith [big_w''_ge]`. Use `Nw := big_Nw`. Use `bN := by rw [big_Nm]; exact big_b'_le (by norm_num)`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `mkb := by`. Use `big_b'_le (c := 16) (by norm_num)` as an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Use `c1 := by norm_num`.
-
-Use `c2 := le_rfl`. Use `c3 := by norm_num`. Use `c4 := by norm_num`. Use `c5 := by`. Use `big_Lp` as an intermediate fact.
-
-Use `numBig.one_le_La` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `C1two := by norm_num`. Use `constant_weight_sum_bound := by rw [big_Sc]; norm_num`. Use `constant_succ_le := by norm_num`.
-
-Use `sw j h1 h2 z := by`. Establish `hw` using `(big_w j h1 (by simpa using h2) z).1`. Establish `hj : (j : ℝ) ≤ 2` using `by exact_mod_cast (show j ≤ 2 by simpa using h2)`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `rowsA j h1 h2 z := by linarith [(big_w j h1 (by simpa using h2) z).2, big_ard, big_bL.2]`. Use `topsA j h1 h2 t ht := by`. Rewrite `ht` using `[big_TT, Finset.mem_singleton]`. Substitute `ht` using the available equality. Rewrite using `[large_example_exponent_zero]`.
-
-Use `push_cast`. Combine the linear relations using `[(big_w j h1 (by simpa using h2) (false, 0)).2, big_ard, big_bL.2]`. Use `nu0 := large_example_weight_nonneg`. Use `blk := big_blk`. Use `inter := big_inter`.
-
-Use `off := big_off`. Use `top := big_top`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem numFactsBig : numBig.NumFacts wd0 1 1 5 5 1 53 4 where
   logrd := by linarith [big_logrd.2, big_L_ge]

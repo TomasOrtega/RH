@@ -13,15 +13,13 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.TrueGeo GlobalTh
 namespace GlobalTheory.Mean4O.TieArObj
 
 /- English proof (translation)
-Introduce `hP hH D O hC hf A T H h`. Take `⟨s₀, hs₀, hap⟩` from `GlobalTheory.T.exists_induced_metric_approximation hP hH D O hC hf A T H h`. Use `⟨s₀, hs₀, fun L c => Adl.SemiPos (L c), fun L c => Adl.NefFib (L c), fun L _ => ⟨Iff.rfl, Iff.rfl⟩, fun c => ?_⟩` and prove the remaining obligations. Take `⟨M, -⟩` from `GlobalTheory.IntModel.exists_model D.what₂.LL (O.var c) 0`. Establish `hM : IsArithVar M.p (dimY O.Y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `M.ar` as an intermediate fact. Rewrite `this` using `[O.dim_eq c]`. Conclude with `this`. Take `⟨b, hb, hcm⟩` from `GlobalTheory.Mean4O.CompModel.exists_isCompModel D O A h.aux c M hM`. Use `⟨@ArMod.mk _ (𝓞 D.what₂.LL) _ M.X hM.isIntegral M.p hM, b, hcm, fun L hL => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hI : ∃ (M' : TrueGeo.Model (O.var c)) (L' : HermLB M'.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 D.what₂.LL) → ℝ), (L c).Induced M' L' k cf`. Break down `hL with ⟨-, hn⟩ | hL` into its components or cases. Take `⟨M', L', k, cf, hI, -⟩` from `hn c`. Conclude with `⟨M', L', k, cf, hI⟩`. Conclude with `hap L hL c`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M', L', k, cf, hI⟩` from `hI`. Take `⟨X', i, q, π, hπ, H', n, d, hq, hs, hd, hd0, hn, h₁, h₂, h₃, h₄, h₅⟩` from `GlobalTheory.T.exists_arithmetic_variety_cover hP hH _ (O.var c) (dimY O.Y) (O.dim_eq c) (L c) M M' L' k cf hI`. Use `⟨X', i, q, π, hπ, H', n, d, hq, hs, hd, hd0, hn, h₁, h₂, h₃, h₄, fun y hy x hx e => ?_⟩` and prove the remaining obligations. Substitute `hy` using the available equality. Rewrite using `[h.aux.ht L y]`.
-
-Rewrite `e` using `[hb y rfl]`. Conclude with `h₅ _ x hx e`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tieAr_onObj : Hypotheses2 → HypothesesH → OnObj fun _ _ A _ _ _ => TieAr A := by
   intro hP hH D O hC hf A T H h

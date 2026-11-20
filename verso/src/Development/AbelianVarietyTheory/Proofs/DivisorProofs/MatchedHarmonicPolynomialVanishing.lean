@@ -28,13 +28,11 @@ namespace GlobalTheory.HarmKStab
 variable {P Q R S : ℕ}
 
 /- English proof (translation)
-Establish `hH` using `GlobalTheory.T.fockHarmonics_graded_compactStable P Q R S _ (Or.inl rfl)`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Use `Submodule.subset_span ⟨?_, fun X hX => ?_⟩` and prove the remaining obligations. Establish `h1 : fockAct2 P Q R S Y g ∈ Submodule.span ℂ (GlobalTheory.FockAlg.harm1 P Q R S)` using `hH.2.2.1 Y hY g (Submodule.subset_span hg.1)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hH.1]`. Conclude with `h1`. Establish `hc` using `(GlobalTheory.FockPair.pair_lie_commute P Q R S).2.2 X Y`. Establish `e` using `congrArg (fun L : Module.End ℂ (Formalism.BasicNotions.TH.Pol P Q R S) => L g) hc`. Simplify using `only [Module.End.mul_apply] at e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hg.2 X hX, map_smul]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`.
-
-Conclude with `Submodule.smul_mem _ c ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fockAct2_mem_harmTy (x : ℚ) (Y : Mat R S) (hY : IsKC Y) {f : Formalism.BasicNotions.TH.Pol P Q R S}
     (hf : f ∈ harmTy P Q R S x) : fockAct2 P Q R S Y f ∈ harmTy P Q R S x := by
@@ -58,11 +56,11 @@ section Tens
 variable (F : Type) [Field F] [NumberField F]
 
 /- English proof (translation)
-Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨f, hf, rfl⟩` from `hg`. Use `Submodule.subset_span ⟨fun i => Function.update (fun _ => (LinearMap.id : Module.End ℂ (Formalism.BasicNotions.TH.Pol P Q R S))) w (fockAct2 P Q R S Y) i (f i), fun i => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i = w`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `using fockAct2_mem_harmTy (x i) Y hY (hf i)`. Simplify `hf i` using `[Function.update_of_ne h]`. Simplify using `[atPl, PiTensorProduct.map_tprod]`. Consider the case `zero => simp`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c ha`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem atPl_mem_tensHarm (x : InfinitePlace F → ℚ) (w : InfinitePlace F) (Y : Mat R S) (hY : IsKC Y)
     {T : Tens F P Q R S} (hT : T ∈ tensHarm F P Q R S x) :
@@ -81,7 +79,7 @@ theorem atPl_mem_tensHarm (x : InfinitePlace F → ℚ) (w : InfinitePlace F) (Y
   | smul c a _ ha => rw [map_smul]; exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FockBottom.genOp_apply]`. Conclude with `Submodule.sum_mem _ fun w _ => Submodule.add_mem _ (atPl_mem_tensHarm F x w (Yg w) (hY w) hT) (Submodule.smul_mem _ _ hT)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genOp_mem_tensHarm (x : InfinitePlace F → ℚ) (c : InfinitePlace F → ℂ) (Yg : InfinitePlace F → Mat R S)
     (hY : ∀ w, IsKC (Yg w)) {T : Tens F P Q R S} (hT : T ∈ tensHarm F P Q R S x) :
@@ -93,7 +91,7 @@ theorem genOp_mem_tensHarm (x : InfinitePlace F → ℚ) (c : InfinitePlace F �
 end Tens
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' Rm Rf hM P Q Rn Sn A C Φ hD k hk f hf f₁ hf₁`. Take `⟨T, hT, rfl⟩` from `Submodule.mem_map.1 hf`. Take `⟨Yg, U, hKC, hU, hA⟩` from `GlobalTheory.FockBottom.exp_of_kInf hM.triple.base.cm hD.1.1.2.2 hD.1.2.2 (GlobalTheory.FockBottom.actsBy_second hKP hM.triple hD) (GlobalTheory.FockBottom.admissible_weil_action hM.triple) hk`. Rewrite using `[GlobalTheory.FockBottom.acts_unique hf₁ (hA T)]`. Conclude with `Submodule.mem_map_of_mem (GlobalTheory.FockBottom.isExp_mem hU _ (fun v hv => genOp_mem_tensHarm F _ _ Yg hKC hv) hT)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kInf_mem_tensHarm : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)

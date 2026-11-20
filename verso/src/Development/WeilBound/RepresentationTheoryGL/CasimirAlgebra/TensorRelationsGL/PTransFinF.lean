@@ -7,7 +7,7 @@ namespace PositivityTheory.Rg.Cz
 namespace TF
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons c L ih`. Rewrite using `[List.map_cons, List.prod_cons]`. Conclude with `(Polynomial.monic_X_sub_C c).mul ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monic_lprod (L : List ℂ) : (L.map fun c => Polynomial.X - Polynomial.C c).prod.Monic := by
   induction L with
@@ -17,19 +17,17 @@ theorem monic_lprod (L : List ℂ) : (L.map fun c => Polynomial.X - Polynomial.C
     exact (Polynomial.monic_X_sub_C c).mul ih
 
 /- English proof (translation)
-Establish `hcomm : ∀ a ∈ Set.range x, ∀ b ∈ Set.range x, a * b = b * a`. Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨j, rfl⟩`. Conclude with `hc i j`. Use `letI : CommRing (Algebra.adjoin ℂ (Set.range x)) := Algebra.adjoinCommRingOfComm ℂ hcomm`. Establish `hint : ∀ i, IsIntegral ℂ (x i)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Take `⟨L, hL⟩` from `hL i`. Use `⟨(L.map fun c => Polynomial.X - Polynomial.C c).prod, monic_lprod L, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def, map_list_prod, List.map_map]`. Establish `hf : (⇑(Polynomial.aeval (x i)) ∘ fun c => Polynomial.X - Polynomial.C c) = fun c => x i - algebraMap ℂ A c`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `c`. Simplify using `[Polynomial.aeval_X, Polynomial.aeval_C]`. Rewrite using `[hf]`. Conclude with `hL`. Set `y : ι → Algebra.adjoin ℂ (Set.range x)` to `fun i => ⟨x i, Algebra.subset_adjoin ⟨i, rfl⟩⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hyint : ∀ z ∈ Set.range y, IsIntegral ℂ z`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(isIntegral_algHom_iff (Algebra.adjoin ℂ (Set.range x)).val Subtype.val_injective).1 (hint i)`. Establish `hfin` using `Algebra.finite_adjoin_of_finite_of_isIntegral (Set.finite_range y) hyint`. Establish `hset : Set.range y = Subtype.val ⁻¹' (Set.range x)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨i, rfl⟩`. Introduce and unpack `⟨i, hi⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨i, Subtype.ext hi⟩`. Establish `htop : Algebra.adjoin ℂ (Set.range y) = ⊤`. Rewrite using `[hset]`. Conclude with `Algebra.adjoin_adjoin_coe_preimage`. Rewrite `hfin` using `[htop]`.
-
-Establish `hS : Module.Finite ℂ (Algebra.adjoin ℂ (Set.range x))` using `Module.Finite.equiv Subalgebra.topEquiv.toLinearEquiv`. Conclude with `Subalgebra.finiteDimensional_toSubmodule.2 hS`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fin_adjoin {A : Type*} [Ring A] [Algebra ℂ A] {ι : Type*} [Finite ι] (x : ι → A)
     (hc : ∀ i j, Commute (x i) (x j)) (hL : ∀ i, ∃ L : List ℂ, (L.map fun c => x i - algebraMap ℂ A c).prod = 0) :

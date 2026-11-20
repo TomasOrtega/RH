@@ -17,12 +17,12 @@ variable (I : AutInst)
 attribute [local instance] AfT.tAf
 
 /- English proof (translation)
-The claim follows from `AfT.isTopologicalRing_tAf I`.
+A detailed English derivation is pending.
 -/
 theorem topRing : IsTopologicalRing (AEf I) := AfT.isTopologicalRing_tAf I
 
 /- English proof (translation)
-The claim follows from `AfT.t2Space_finite_adeles_ext I`.
+A detailed English derivation is pending.
 -/
 theorem t2 : T2Space (AEf I) := AfT.t2Space_finite_adeles_ext I
 
@@ -33,16 +33,16 @@ def mAf : MeasurableSpace (AEf I) := borel (AEf I)
 attribute [local instance] mAf
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem borel_mAf : BorelSpace (AEf I) := ⟨rfl⟩
 
 attribute [local instance] borel_mAf
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Rewrite using `[(AfT.hasBasis_nhds_tAf I x).mem_iff]`. Use `⟨0, trivial, fun y hy => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y - x ∈ AfT.bsub I (0 + 1) at hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨z, hz, he⟩` from `(AfT.mem_bsub I).1 hy`. Establish `e : y = x + (y - x)` using `by ring`. Use `show y ∈ IntAf I.F I.E`. Rewrite using `[e, ← he]`. Conclude with `add_mem hx (mul_mem (natCast_mem _ _) hz)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_IntAf : IsOpen ((IntAf I.F I.E : Subring (AEf I)) : Set (AEf I)) := by
   rw [isOpen_iff_mem_nhds]
@@ -57,11 +57,9 @@ theorem isOpen_IntAf : IsOpen ((IntAf I.F I.E : Subring (AEf I)) : Set (AEf I)) 
   exact add_mem hx (mul_mem (natCast_mem _ _) hz)
 
 /- English proof (translation)
-Apply `continuous_of_continuousAt_zero` to reduce the goal to its premises. Rewrite using `[ContinuousAt, map_zero]`. Use `(AfT.hasBasis_nhds_zero_tAf I).tendsto_right_iff.2 fun k _ => ?_` and prove the remaining obligations. Establish `hk : ((k + 1 : ℕ) : I.F) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.succ_ne_zero k)`. Establish `hU : IsOpen {a : Af I.F | algebraMap I.F (Af I.F) (((k + 1 : ℕ) : I.F)⁻¹) * a ∈ Wau.Ohat I.F}` using `Wau.isOpen_Ohat.preimage (continuous_const.mul continuous_id)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (0 : Af I.F) ∈ {a : Af I.F | algebraMap I.F (Af I.F) (((k + 1 : ℕ) : I.F)⁻¹) * a ∈ Wau.Ohat I.F}` using `by show _ * 0 ∈ Wau.Ohat I.F`. Rewrite using `[mul_zero]`. Conclude with `Wau.ohat_zero`. Use `filter_upwards [hU.mem_nhds h0] with a ha`. Use `show Algebra.TensorProduct.includeRight a ∈ AfT.bsub I (k + 1)`.
-
-Use `(AfT.mem_bsub I).2 ⟨Algebra.TensorProduct.includeRight (algebraMap I.F (Af I.F) (((k + 1 : ℕ) : I.F)⁻¹) * a), AfT.includeRight_mem_IntAf I ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (Algebra.TensorProduct.includeRight (R := I.F) (A := I.E) (B := Af I.F)), ← map_mul, ← mul_assoc, ← map_natCast (algebraMap I.F (Af I.F)), ← map_mul, mul_inv_cancel₀ hk, map_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_inclR :
     Continuous (Algebra.TensorProduct.includeRight (R := I.F) (A := I.E) (B := Af I.F) : Af I.F → AEf I) := by
@@ -83,9 +81,9 @@ theorem continuous_inclR :
     ← map_natCast (algebraMap I.F (Af I.F)), ← map_mul, mul_inv_cancel₀ hk, map_one, one_mul]
 
 /- English proof (translation)
-Use `continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Establish `e : (fun c : ι → Af I.F => (b j ⊗ₜ[I.F] c j : AEf I)) = fun c => iE I (b j) * Algebra.TensorProduct.includeRight (c j)`. Use function extensionality and compare the values at `c`. Use `show b j ⊗ₜ[I.F] c j = (b j ⊗ₜ[I.F] (1 : Af I.F)) * ((1 : I.E) ⊗ₜ[I.F] c j)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `continuous_const.mul ((continuous_inclR I).comp (continuous_apply j))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_embC {ι : Type} [Fintype ι] (b : Module.Basis ι I.F I.E) :
     Continuous (fun c : ι → Af I.F => (∑ j, b j ⊗ₜ[I.F] c j : AEf I)) := by
@@ -99,9 +97,9 @@ theorem continuous_embC {ι : Type} [Fintype ι] (b : Module.Basis ι I.F I.E) :
   exact continuous_const.mul ((continuous_inclR I).comp (continuous_apply j))
 
 /- English proof (translation)
-Set `b` to `Module.finBasis I.F I.E`. Take `⟨D, hD, hDb⟩` from `AfT.exists_denom I b`. Establish `hK : IsCompact ((fun c => (∑ j, b j ⊗ₜ[I.F] c j : AEf I)) '' Set.univ.pi fun _ => Wau.Cpt.Bx I D)` using `(isCompact_univ_pi fun _ => Wau.Cpt.isCompact_Bx I D).image (continuous_embC I b)`. Establish `hcl : IsClosed ((IntAf I.F I.E : Subring (AEf I)) : Set (AEf I))` using `AddSubgroup.isClosed_of_isOpen (IntAf I.F I.E).toAddSubgroup (isOpen_IntAf I)`. Use `hK.of_isClosed_subset hcl fun x hx => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun j => AfT.crd I b j x, fun j _ => Wau.Cpt.mem_Bx I (by omega) ?_, (AfT.sum_crd I b x).symm⟩` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul]`. Conclude with `AfT.crd_mem I b hDb (AfT.IntAf_le_sumsInt I hx) j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_IntAf : IsCompact ((IntAf I.F I.E : Subring (AEf I)) : Set (AEf I)) := by
   let b := Module.finBasis I.F I.E

@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.SeeConjRead
 
 /- English proof (translation)
-Unfold `SmallAt`. Rewrite using `[map_mul, map_natCast, Valuation.map_mul]`. Establish `hv : Valued.v (N : PP.adicCompletion D.host.E) < 1`. Use `(PP.valuation_lt_one_iff_mem (K := D.host.E) (N : 𝓞 D.host.E)).2 hN` as an intermediate fact. Rewrite `this` using `[← Formalism.UG.P.levelaf_valued_algebraMap]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Establish `ht'` using `(GlobalTheory.AdIsom.mem_OA t).1 ht PP`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' ht') hv`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smallAt_natCast_mul {D : D7} {PP : Pl D.host.E} {N : ℕ} (hN : (N : 𝓞 D.host.E) ∈ PP.asIdeal) {t : EAf D}
     (ht : t ∈ GlobalTheory.StdFrames.OA D) : SmallAt PP ((N : EAf D) * t) := by
@@ -32,7 +32,7 @@ theorem smallAt_natCast_mul {D : D7} {PP : Pl D.host.E} {N : ℕ} (hN : (N : �
   exact lt_of_le_of_lt (mul_le_of_le_one_right' ht') hv
 
 /- English proof (translation)
-Use `GlobalTheory.AdIsom.cjA_hA (Yc D 0) y x` as an intermediate fact. Rewrite `this` using `[GlobalTheory.AdIsom.hA_eq, GlobalTheory.AdIsom.hA_eq]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sg_hY {D : D7} (x y : Fin (Yc D 0).rank → EAf D) : GlobalTheory.StdFrames.sg D (hY D x y) = hY D y x := by
   have := GlobalTheory.AdIsom.cjA_hA (Yc D 0) y x
@@ -40,7 +40,7 @@ theorem sg_hY {D : D7} (x y : Fin (Yc D 0).rank → EAf D) : GlobalTheory.StdFra
   exact this
 
 /- English proof (translation)
-Take `⟨t, ht, rfl⟩` from `h`. Conclude with `smallAt_natCast_mul hN ht`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem smallAt_of_mul {D : D7} {PP : Pl D.host.E} {N : ℕ} (hN : (N : 𝓞 D.host.E) ∈ PP.asIdeal) {c : EAf D}
     (h : ∃ t ∈ GlobalTheory.StdFrames.OA D, c = (N : EAf D) * t) : SmallAt PP c := by
@@ -48,7 +48,7 @@ theorem smallAt_of_mul {D : D7} {PP : Pl D.host.E} {N : ℕ} (hN : (N : 𝓞 D.h
   exact smallAt_natCast_mul hN ht
 
 /- English proof (translation)
-Take `⟨t, ht, e⟩` from `h`. Establish `e'` using `congrArg (GlobalTheory.StdFrames.sg D) e`. Rewrite `e'` using `[map_sub, sg_hY, hd, map_mul, map_natCast]`. Rewrite using `[e']`. Conclude with `smallAt_natCast_mul hN (GlobalTheory.AdIsom.cjA_mem ht)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smallAt_hY_of_swap {D : D7} {PP : Pl D.host.E} {N : ℕ} (hN : (N : 𝓞 D.host.E) ∈ PP.asIdeal)
     {x y : Fin (Yc D 0).rank → EAf D} {d : EAf D} (hd : GlobalTheory.StdFrames.sg D d = d)
@@ -60,7 +60,7 @@ theorem smallAt_hY_of_swap {D : D7} {PP : Pl D.host.E} {N : ℕ} (hN : (N : 𝓞
   exact smallAt_natCast_mul hN (GlobalTheory.AdIsom.cjA_mem ht)
 
 /- English proof (translation)
-Use `smallAt_hY_of_swap hN (x := x) (y := y) (d := 0) (map_zero _) (by simpa using h)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smallAt_hY_of_swap0 {D : D7} {PP : Pl D.host.E} {N : ℕ} (hN : (N : 𝓞 D.host.E) ∈ PP.asIdeal)
     {x y : Fin (Yc D 0).rank → EAf D} (h : ∃ t ∈ GlobalTheory.StdFrames.OA D, hY D y x = (N : EAf D) * t) :
@@ -69,7 +69,7 @@ theorem smallAt_hY_of_swap0 {D : D7} {PP : Pl D.host.E} {N : ℕ} (hN : (N : �
   simpa using this
 
 /- English proof (translation)
-Apply the tactic sequence `refine smallAt_hY_of_swap hN (by split_ifs <;> simp) ?_`. Simplify `h` using `only [eq_comm (a := a)]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smallAt_hY_of_swap_delta {D : D7} {PP : Pl D.host.E} {N : ℕ} (hN : (N : 𝓞 D.host.E) ∈ PP.asIdeal)
     {ι : Type} [DecidableEq ι] {a c : ι} {x y : Fin (Yc D 0).rank → EAf D}
@@ -79,9 +79,9 @@ theorem smallAt_hY_of_swap_delta {D : D7} {PP : Pl D.host.E} {N : ℕ} (hN : (N 
   simpa only [eq_comm (a := a)] using h
 
 /- English proof (translation)
-Take `⟨t, ht, e'⟩` from `h`. Establish `h1 : GlobalTheory.StdFrames.cpt PP (c - if i = j then 1 else 0) = GlobalTheory.StdFrames.cpt PP ((N : EAf D) * t)`. Rewrite using `[← e']`. Apply the tactic sequence `split_ifs <;> simp [he]`. Establish `h2` using `smallAt_natCast_mul hN ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Unfold `SmallAt at h2 ⊢`. Rewrite using `[h1]` and apply the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem smallAt_sub_of_cpt {D : D7} {PP : Pl D.host.E} {N : ℕ} (hN : (N : 𝓞 D.host.E) ∈ PP.asIdeal)
     {ι : Type} [DecidableEq ι] {i j : ι} {c e : EAf D} (he : GlobalTheory.StdFrames.cpt PP e = 1)
@@ -96,11 +96,11 @@ theorem smallAt_sub_of_cpt {D : D7} {PP : Pl D.host.E} {N : ℕ} (hN : (N : 𝓞
   rwa [h1]
 
 /- English proof (translation)
-Introduce `D X h PP hg hew`. Establish `F0g` using `X.gramIntegral`. Establish `F0z` using `X.formsAtZero`. Establish `F0W` using `X.weightVectorsIntegral`. Establish `bd` using `X.bw_dual`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ge` using `X.g_eq`. Break down `X with ⟨⟨I⟩⟩` into its components or cases. Simplify using `only at h F0g F0z F0W bd ge hew ⊢`. Substitute `h` using the available equality. Substitute `ge` using the available equality.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality.
 
-Use `⟨fun a c => smallAt_hY_of_swap_delta hg (F0g c a).2.2, fun a j => smallAt_of_mul hg ((F0W j).2.2 a).2.1, fun a => smallAt_of_mul hg (F0z.2 a).2, fun a c => smallAt_of_mul hg (F0g a c).2.1, fun i a => smallAt_hY_of_swap0 hg ((F0W i).2.2 a).2.2.1, fun i j => smallAt_sub_of_cpt hg h …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem pairTable_of_cpt_one : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (PP : Pl D.host.E), ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal → GlobalTheory.StdFrames.cpt PP (ewT X h) = 1 → PairTable (hY D) (SmallAt PP) (e0T X h) (f0T X h) (bwT X h) (bwdT X h) (z0T X h) := by
   intro D X h PP hg hew

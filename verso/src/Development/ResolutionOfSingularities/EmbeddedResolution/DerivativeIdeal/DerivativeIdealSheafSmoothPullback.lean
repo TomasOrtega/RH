@@ -16,7 +16,7 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Rewrite using `[sectionsAlgebraMap_eq, sectionsAlgebraMap_eq, ← CommRingCat.hom_comp, Category.assoc, Scheme.Hom.appLE_comp_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sectionsAlgebraMap_comp_appLE (k : Type u) [CommRing k] {X Y : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (h : Y ⟶ X) (W : X.Opens) (V : Y.Opens)
@@ -26,7 +26,7 @@ theorem sectionsAlgebraMap_comp_appLE (k : Type u) [CommRing k] {X Y : Scheme.{u
     Scheme.Hom.appLE_comp_appLE]
 
 /- English proof (translation)
-The claim follows from `DFunLike.congr_fun (sectionsAlgebraMap_comp_appLE k p h W V e) a`.
+A detailed English derivation is pending.
 -/
 theorem sectionsAlgebraMap_appLE_apply (k : Type u) [CommRing k] {X Y : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (h : Y ⟶ X) (W : X.Opens) (V : Y.Opens)
@@ -35,11 +35,11 @@ theorem sectionsAlgebraMap_appLE_apply (k : Type u) [CommRing k] {X Y : Scheme.{
   DFunLike.congr_fun (sectionsAlgebraMap_comp_appLE k p h W V e) a
 
 /- English proof (translation)
-Take `⟨⟨a, t⟩, hmul⟩` from `(IsLocalization.mem_map_algebraMap_iff (M := Submonoid.powers f) (S := S)).mp hx`. Establish `hmul' : algebraMap R S (x * (t : R)) = algebraMap R S (a : R)`. Rewrite using `[map_mul]`. Conclude with `hmul`. Take `⟨c, hceq⟩` from `(IsLocalization.eq_iff_exists (M := Submonoid.powers f) (S := S)).mp hmul'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `t.2`. Take `⟨j, hj⟩` from `c.2`. Establish `hi' : f ^ i = (t : R)` using `hi`. Establish `hj' : f ^ j = (c : R)` using `hj`. Use `⟨i + j, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : f ^ (i + j) * x = f ^ j * (x * f ^ i)` using `by ring`. Rewrite using `[key, hi', hj', hceq]`. Conclude with `N.mul_mem_left _ a.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_pow_mul_mem_of_mem_map {R S : Type*} [CommRing R] [CommRing S]
     [Algebra R S] (f : R) [IsLocalization.Away f S] (N : Ideal R) (x : R)
@@ -61,7 +61,7 @@ private theorem exists_pow_mul_mem_of_mem_map {R S : Type*} [CommRing R] [CommRi
   exact N.mul_mem_left _ a.2
 
 /- English proof (translation)
-Substitute `hAB` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem idealSheafData_ideal_le_congr {Y : Scheme.{u}} (J₁ J₂ : Y.IdealSheafData)
     {A B : Y.affineOpens} (hAB : A = B) (h : J₁.ideal B ≤ J₂.ideal B) :
@@ -70,17 +70,15 @@ private theorem idealSheafData_ideal_le_congr {Y : Scheme.{u}} (J₁ J₂ : Y.Id
   exact h
 
 /- English proof (translation)
-Introduce `x hx`. Use `set s : Set Γ(Y, U.1) := {f : Γ(Y, U.1) | ∃ n : ℕ, f ^ n * x ∈ J₂.ideal U} with hs`. Establish `hcover : U.1 ≤ ⨆ f : s, Y.basicOpen (f : Γ(Y, U.1))`. Introduce `z hz`. Take `⟨V, hV, hzV, hle⟩` from `H z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, g, hfg, hzf⟩` from `exists_basicOpen_le_affine_inter U.2 hV z ⟨hz, hzV⟩`. Establish `hres : Ideal.map (Y.presheaf.map (homOfLE (Y.basicOpen_le f)).op).hom (J₁.ideal U) ≤ Ideal.map (Y.presheaf.map (homOfLE (Y.basicOpen_le f)).op).hom (J₂.ideal U)`. Rewrite using `[J₁.map_ideal_basicOpen U f, J₂.map_ideal_basicOpen U f]`. Establish `hABO : Y.affineBasicOpen f = Y.affineBasicOpen (U` using `⟨V, hV⟩) g := Subtype.ext hfg`. Use `idealSheafData_ideal_le_congr J₁ J₂ hABO ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← J₁.map_ideal_basicOpen ⟨V, hV⟩ g, ← J₂.map_ideal_basicOpen ⟨V, hV⟩ g]`. Conclude with `Ideal.map_mono hle`. Establish `hfs : f ∈ s`. Use `U.2.isLocalization_basicOpen f` as an intermediate fact. Rewrite using `[hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `exists_pow_mul_mem_of_mem_map (S := Γ(Y, Y.basicOpen f)) f (J₂.ideal U) x ?_` and prove the remaining obligations. Establish `halg : (algebraMap Γ(Y, U.1) Γ(Y, Y.basicOpen f)) = (Y.presheaf.map (homOfLE (Y.basicOpen_le f)).op).hom` using `rfl`. Rewrite using `[halg]`. Conclude with `hres (Ideal.mem_map_of_mem _ hx)`. Conclude with `Opens.mem_iSup.mpr ⟨⟨f, hfs⟩, hzf⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hspan : Ideal.span s = ⊤` using `(U.2.self_le_iSup_basicOpen_iff).mp hcover`. Use `Submodule.mem_of_span_eq_top_of_smul_pow_mem (J₂.ideal U) s hspan x ?_` and prove the remaining obligations. Introduce and unpack `⟨f, hf⟩`. Rewrite `hf` using `[hs]`. Take `⟨n, hn⟩` from `hf`.
-
-Conclude with `⟨n, by rw [smul_eq_mul]; exact hn⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem idealSheafData_ideal_le_of_locally_le {Y : Scheme.{u}} (J₁ J₂ : Y.IdealSheafData)
     (H : ∀ y : Y, ∃ (V : Y.Opens) (hV : IsAffineOpen V), y ∈ V ∧
@@ -116,9 +114,9 @@ private theorem idealSheafData_ideal_le_of_locally_le {Y : Scheme.{u}} (J₁ J�
   exact ⟨n, by rw [smul_eq_mul]; exact hn⟩
 
 /- English proof (translation)
-Establish `key : ∀ U : Y.affineOpens, J₁.ideal U = J₂.ideal U`. Introduce `U`. Use `le_antisymm (idealSheafData_ideal_le_of_locally_le J₁ J₂ ?_ U) (idealSheafData_ideal_le_of_locally_le J₂ J₁ ?_ U)` and prove the remaining obligations. Introduce `y`. Take `⟨V, hV, h1, h2⟩` from `H y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨V, hV, h1, h2.le⟩`. Introduce `y`. Take `⟨V, hV, h1, h2⟩` from `H y`. Conclude with `⟨V, hV, h1, h2.ge⟩`. Conclude with `Scheme.IdealSheafData.ext (funext key)`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem idealSheafData_eq_of_locally_eq {Y : Scheme.{u}} (J₁ J₂ : Y.IdealSheafData)
     (H : ∀ y : Y, ∃ (V : Y.Opens) (hV : IsAffineOpen V), y ∈ V ∧
@@ -137,17 +135,17 @@ private theorem idealSheafData_eq_of_locally_eq {Y : Scheme.{u}} (J₁ J₂ : Y.
 
 attribute [local instance] EtaleCoordinates.sumEvalAlgebra in
 /- English proof (translation)
-Take `⟨W₀, m, hxW₀, -, ⟨c₀⟩⟩` from `exists_etaleChart p (h.base y)`. Take `⟨W, V, d, e, hW, hV, hyV, hWW₀, -, g, hgE, hg⟩` from `SmoothEtaleChart.exists_isAffineOpen_etale_resLE_le h y W₀ hxW₀ ⊤ (by trivial)`. Use `⟨V, hV, hyV, ?_⟩` and prove the remaining obligations. Establish `: Etale g` using `hgE`. Set `c : EtaleChart p W m` to `c₀.restrict hWW₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `instkS : Algebra k Γ(X, W)` to `sectionsAlgebra k p W`. Set `instkT : Algebra k Γ(Y, V)` to `sectionsAlgebra k (h ≫ p) V`. Set `instPS : Algebra (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, W)` to `c.algebra`. Set `instTow1 : IsScalarTower k (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, W)` to `c.isScalarTower`. Establish `instFE1 : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, W)` using `c.algebra_formallyEtale hW`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `instChartAlgebra : Algebra (MvPolynomial (ULift.{u} (Fin d)) Γ(X, W)) Γ(Y, V)` to `chartAlgebra hW g`. Establish `instFE2 : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin d)) Γ(X, W)) Γ(Y, V)` using `chartAlgebra_formallyEtale hW hV g`. Set `instST : Algebra Γ(X, W) Γ(Y, V)` to `(h.appLE W V e).hom.toAlgebra`. Set `instTowkST : IsScalarTower k Γ(X, W) Γ(Y, V)` to `IsScalarTower.of_algebraMap_eq fun a => (sectionsAlgebraMap_appLE_apply k p h W V e a).symm`. Set `instScalarTowerChart : IsScalarTower Γ(X, W) (MvPolynomial (ULift.{u} (Fin d)) Γ(X, W)) Γ(Y, V)` to `chartAlgebra_isScalarTower hW h e g hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `instSumT : Algebra (MvPolynomial (ULift.{u} (Fin m) ⊕ ULift.{u} (Fin d)) k) Γ(Y, V)` to `((algebraMap (MvPolynomial (ULift.{u} (Fin d)) Γ(X, W)) Γ(Y, V)).comp (algebraMap (MvPolynomial (ULift.{u} (Fin m) ⊕ ULift.{u} (Fin d)) k) (MvPolynomial (ULift.{u} (Fin d)) Γ(X, W)))).toAlgebra`. Set `instScalarTowerSum : IsScalarTower (MvPolynomial (ULift.{u} (Fin m) ⊕ ULift.{u} (Fin d)) k) (MvPolynomial (ULift.{u} (Fin d)) Γ(X, W)) Γ(Y, V)` to `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `instTowkSum : IsScalarTower k (MvPolynomial (ULift.{u} (Fin m) ⊕ ULift.{u} (Fin d)) k) Γ(Y, V)`. Establish `: IsScalarTower k (MvPolynomial (ULift.{u} (Fin m) ⊕ ULift.{u} (Fin d)) k) (MvPolynomial (ULift.{u} (Fin d)) Γ(X, W))` using `EtaleCoordinates.sumEvalAlgebra_isScalarTower k (ULift.{u} (Fin m)) (ULift.{u} (Fin d)) Γ(X, W)`. Use `IsScalarTower.of_algebraMap_eq fun a => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsScalarTower.algebraMap_apply (MvPolynomial (ULift.{u} (Fin m) ⊕ ULift.{u} (Fin d)) k) (MvPolynomial (ULift.{u} (Fin d)) Γ(X, W)) Γ(Y, V) (algebraMap k (MvPolynomial (ULift.{u} (Fin m) ⊕ ULift.{u} (Fin d)) k) a), ← IsScalarTower.algebraMap_apply k (MvPolynomial (ULift.{u} (Fin …`. Establish `instFE3 : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin m) ⊕ ULift.{u} (Fin d)) k) Γ(Y, V)` using `EtaleCoordinates.formallyEtale_trans k (ULift.{u} (Fin m)) (ULift.{u} (Fin d)) Γ(X, W) Γ(Y, V)`. Establish `hcoord : ∀ i : ULift.{u} (Fin m), algebraMap Γ(X, W) Γ(Y, V) (EtaleCoordinates.coord k (ULift.{u} (Fin m)) Γ(X, W) i) = EtaleCoordinates.coord k (ULift.{u} (Fin m) ⊕ ULift.{u} (Fin d)) Γ(Y, V) (Sum.inl i)`. Introduce `i`. Rewrite using `[EtaleCoordinates.coord_def k (ULift.{u} (Fin m) ⊕ ULift.{u} (Fin d)) Γ(Y, V) (Sum.inl i), IsScalarTower.algebraMap_apply (MvPolynomial (ULift.{u} (Fin m) ⊕ ULift.{u} (Fin d)) k) (MvPolynomial (ULift.{u} (Fin d)) Γ(X, W)) Γ(Y, V), EtaleCoordinates.algebraMap_X_inl k (ULift.{u} (F …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE (derivIdealSheaf k p I) h ⟨W, hW⟩ ⟨V, hV⟩ e]`. Simplify using `only [derivIdealSheaf_ideal]`. Rewrite using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE I h ⟨W, hW⟩ ⟨V, hV⟩ e]`. Conclude with `(EtaleCoordinates.map_derivIdeal_sum k (ULift.{u} (Fin m)) (ULift.{u} (Fin d)) Γ(X, W) Γ(Y, V) hcoord (I.ideal ⟨W, hW⟩)).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_affineOpen_derivIdealSheaf_comap_ideal_eq (k : Type u) [Field k] [IsNoetherianRing k]
     {X Y : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [Smooth p] [LocallyOfFiniteType p]
@@ -220,7 +218,7 @@ private theorem exists_affineOpen_derivIdealSheaf_comap_ideal_eq (k : Type u) [F
     Γ(X, W) Γ(Y, V) hcoord (I.ideal ⟨W, hW⟩)).symm
 
 /- English proof (translation)
-The claim follows from `idealSheafData_eq_of_locally_eq _ _ fun y => exists_affineOpen_derivIdealSheaf_comap_ideal_eq k p h I y`.
+A detailed English derivation is pending.
 -/
 theorem derivIdealSheaf_comap (k : Type u) [Field k] [IsNoetherianRing k] {X Y : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [Smooth p] [LocallyOfFiniteType p]
@@ -229,7 +227,7 @@ theorem derivIdealSheaf_comap (k : Type u) [Field k] [IsNoetherianRing k] {X Y :
   idealSheafData_eq_of_locally_eq _ _ fun y => exists_affineOpen_derivIdealSheaf_comap_ideal_eq k p h I y
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => rfl`. Consider the case `succ r ih`. Rewrite using `[derivIdealSheafIterate_succ, derivIdealSheafIterate_succ, ih, derivIdealSheaf_comap k p h (derivIdealSheafIterate k p r I)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem derivIdealSheafIterate_comap (k : Type u) [Field k] [IsNoetherianRing k] {X Y : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [Smooth p] [LocallyOfFiniteType p]

@@ -8,11 +8,11 @@ open GlobalTheory.CompanionTheory.MirPair
 namespace GlobalTheory.CompanionTheory.MirPair
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν _ ψ c n V V' _ _ _ _ T T' B s hψ hc hT hT' hB v v'`. Take `⟨r, hr⟩` from `GlobalTheory.T.mirabolic_pairing_conductor_bound ν ψ c T T' B s hψ hc hT hT' hB 1 v v'`. Use `⟨JJ ν ψ T B (box (n + 1) (c * r⁻¹) : Set (Fin (n + 1) → k)) v v', c * r⁻¹, fun t ht => ?_⟩` and prove the remaining obligations. Establish `hc' : valuation k ((c * (c * r⁻¹)⁻¹ : kˣ) : k) ≤ valuation k (r : k)`. Establish `: c * (c * r⁻¹)⁻¹ = r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[_root_.mul_inv_rev, inv_inv, mul_left_comm, mul_inv_cancel, mul_one]`. Rewrite using `[this]`. Establish `hsub : ∀ x ∈ box (n + 1) (c * r⁻¹), ((1 : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ x ∈ box (n + 1) t`. Introduce `x hx`. Rewrite using `[Units.val_one, one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[mem_box]`. Conclude with `fun i => show valuation k (x i) ≤ valuation k (t : k) from le_trans (show valuation k (x i) ≤ valuation k ((c * r⁻¹ : kˣ) : k) from hx i) ht`. Establish `h` using `hr (c * r⁻¹) hc' t hsub`. Rewrite using `[← h]`. Simplify using `only [Units.val_one, one_mulVec]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/

@@ -20,11 +20,11 @@ namespace RhoA
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Establish `ha' : (a : K) ≠ 0` using `fun e => ha (Subtype.ext e)`. Establish `h0 : 0 < ‖((a : K) : PadicAlgCl l)‖` using `norm_pos_iff.2 (by exact_mod_cast ha')`. Establish `e : (((l : ℕ) : K) : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`. Establish `h1 : ‖(((l : ℕ) : K) : PadicAlgCl l)‖ < 1`. Rewrite using `[e, PadicAlgCl.norm_extends]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Padic.norm_p_lt_one`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one h0 h1`. Use `⟨k, ⟨(a : K)⁻¹ * (l : K) ^ k, (mem_OK _).2 ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[IntermediateField.coe_mul, IntermediateField.coe_inv, IntermediateField.coe_pow, norm_mul, norm_inv, norm_pow]`. Rewrite using `[inv_mul_le_iff₀ h0, mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hk.le`. Express the relevant statement in the definitionally equal form `(((l : OK l K) ^ k : OK l K) : K) = (a : K) * ((a : K)⁻¹ * (l : K) ^ k)`. Rewrite using `[mul_inv_cancel_left₀ ha']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ok_dv (a : OK l K) (ha : a ≠ 0) : ∃ k : ℕ, a ∣ (l : OK l K) ^ k := by
   have ha' : (a : K) ≠ 0 := fun e => ha (Subtype.ext e)
@@ -43,11 +43,11 @@ theorem ok_dv (a : OK l K) (ha : a ≠ 0) : ∃ k : ℕ, a ∣ (l : OK l K) ^ k 
     simp
 
 /- English proof (translation)
-Establish `hb : ∀ r, 1 ≤ r → pdP (dividedPowersBot O) r = ⊥` using `fun r hr => by`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hr`. Use `le_bot_iff.1 (le_trans ?_ (GlobalTheory.CompanionTheory.LiftLat.dividedPowerFiltration_one_eq (dividedPowersBot O)).le)` and prove the remaining obligations. Use `Ideal.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨L, h1, h2, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨L, h1, by omega, rfl⟩`. Use `⟨hb s hs, fun r x hx => ?_, fun n hn => ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Establish `: (1 : O) ∈ pdP (dividedPowersBot O) 0` using `Ideal.subset_span ⟨[], by simp, by simp, by simp⟩`. Simplify using `using Ideal.mul_mem_left _ x this`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hx`, the goal using `[hb r hr, Ideal.mem_bot]`. Conclude with `(mul_eq_zero.1 hx).resolve_left (Nat.cast_ne_zero.2 hl)`. Take `⟨k, u, hu⟩` from `hdv n (Nat.cast_ne_zero.2 hn)`. Conclude with `⟨k, u, hu.symm⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tf_dom {O : Type} [CommRing O] [IsDomain O] [CharZero O] {l : ℕ} (hl : l ≠ 0)
     (hdv : ∀ a : O, a ≠ 0 → ∃ k : ℕ, a ∣ (l : O) ^ k) {s : ℕ} (hs : 1 ≤ s) : TFBase (dividedPowersBot O) l s := by
@@ -72,15 +72,15 @@ variable {A B Λ : Type} [CommRing A] [CommRing B] [CommRing Λ] {ι : A →+* B
   (red : ∀ n, Z →ₗ[A] Zn n) (l : ℕ)
 
 /- English proof (translation)
-Rewrite using `[LinearMap.map_smulₛₗ, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem b_pow (e : ℕ) (z : Z) : b ((l : A) ^ e • z) = (l : B) ^ e • b z := by
   rw [LinearMap.map_smulₛₗ, map_pow, map_natCast]
 
 /- English proof (translation)
-Establish `key : ∀ (w w' : W) e z e' z', (∀ n, red n z = (l : A) ^ e • x n) → (l : B) ^ e • w = b z → (∀ n, red n z' = (l : A) ^ e' • x n) → (l : B) ^ e' • w' = b z' → w = w'`. Introduce `w w' e z e' z' h1 h2 h3 h4`. Establish `h5` using `hs ((l : A) ^ e' • z - (l : A) ^ e • z') fun n => by`. Rewrite using `[map_sub, map_smul, map_smul, h1, h3, smul_comm, sub_self]`. Establish `h6` using `congrArg b h5`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h6` using `[b_pow, map_sub, b_pow, b_pow, ← h2, ← h4, map_zero, smul_comm ((l : B) ^ e) ((l : B) ^ e') w', ← smul_sub, ← smul_sub, smul_smul, smul_smul]`. Conclude with `sub_eq_zero.1 (((((hu.pow k).mul (hu.pow e')).mul (hu.pow e)).smul_eq_zero).1 h6)`. Take `⟨u, hu'⟩` from `(hu.pow e₀).exists_right_inv`. Establish `hw : (l : B) ^ e₀ • (u • b z₀) = b z₀` using `by rw [smul_smul, hu', one_smul]`. Conclude with `⟨u • b z₀, ⟨e₀, z₀, h₀, hw⟩, fun w ⟨e, z, h1, h2⟩ => key _ _ _ _ _ _ h1 h2 h₀ hw⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exu (hu : IsUnit (l : B)) (x : ∀ n, Zn n) (e₀ : ℕ) (z₀ : Z) (h₀ : ∀ n, red n z₀ = (l : A) ^ e₀ • x n) (k : ℕ)
     (hs : ∀ z, (∀ n, red n z = 0) → (l : A) ^ k • z = 0) :
@@ -99,7 +99,7 @@ theorem exu (hu : IsUnit (l : B)) (x : ∀ n, Zn n) (e₀ : ℕ) (z₀ : Z) (h�
   exact ⟨u • b z₀, ⟨e₀, z₀, h₀, hw⟩, fun w ⟨e, z, h1, h2⟩ => key _ _ _ _ _ _ h1 h2 h₀ hw⟩
 
 /- English proof (translation)
-Take `⟨e, z, h1, h2⟩` from `h`. Take `⟨e', z', h3, h4⟩` from `h'`. Use `⟨e + e', (l : A) ^ e' • z + (l : A) ^ e • z', fun n => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, map_smul, h1, h3, smul_smul, smul_smul, smul_add, pow_add, mul_comm ((l : A) ^ e')]`. Rewrite using `[map_add, b_pow, b_pow, ← h2, ← h4, smul_smul, smul_smul, smul_add, pow_add, mul_comm ((l : B) ^ e')]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem add_abs (x y : ∀ n, Zn n) (w w' : W) (h : ∃ (e : ℕ) (z : Z), (∀ n, red n z = (l : A) ^ e • x n) ∧ (l : B) ^ e • w = b z)
     (h' : ∃ (e : ℕ) (z : Z), (∀ n, red n z = (l : A) ^ e • y n) ∧ (l : B) ^ e • w' = b z) :
@@ -111,7 +111,7 @@ theorem add_abs (x y : ∀ n, Zn n) (w w' : W) (h : ∃ (e : ℕ) (z : Z), (∀ 
   · rw [map_add, b_pow, b_pow, ← h2, ← h4, smul_smul, smul_smul, smul_add, pow_add, mul_comm ((l : B) ^ e')]
 
 /- English proof (translation)
-Take `⟨e, z, h1, h2⟩` from `h`. Use `⟨e, a • z, fun n => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, h1, smul_comm]`. Rewrite using `[LinearMap.map_smulₛₗ, ← h2, smul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_abs (x : ∀ n, Zn n) (w : W) (a : A)
     (h : ∃ (e : ℕ) (z : Z), (∀ n, red n z = (l : A) ^ e • x n) ∧ (l : B) ^ e • w = b z) :
@@ -126,14 +126,14 @@ end Abs
 variable {Y : CB l K} {m : ℕ} (L : Lv Y m) (M : Model l K)
 
 /- English proof (translation)
-Use `(isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) : IsUnit (l : K)).map (algebraMap K L.B)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unit_B : IsUnit (l : L.B) := by
   have := (isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) : IsUnit (l : K)).map (algebraMap K L.B)
   rwa [map_natCast] at this
 
 /- English proof (translation)
-The claim follows from `sub_trans (L.d (n + 1)) (L.d n) m {⊤} (Y.redM M n) (Y.c (n + 1)) (Y.c n) L.lam (L.d_lam (n + 1)) (L.d_lam n) (Y.rd_c n) (fun _ _ => rfl) (Y.c_surj (n + 1)) r j x`.
+A detailed English derivation is pending.
 -/
 theorem rS_tr (r j n : ℕ) (x : CH.H (Y.SS M r (n + 1)).fn j) :
     (L.rS M r n).pull j ((pdOm (Y.redM M n) (RingHom.id _) (Y.rd_c n) r).pull j x) =
@@ -142,9 +142,7 @@ theorem rS_tr (r j n : ℕ) (x : CH.H (Y.SS M r (n + 1)).fn j) :
     (fun _ _ => rfl) (Y.c_surj (n + 1)) r j x
 
 /- English proof (translation)
-Use `haveI := AdicGeo.proper_p hM.1`. Use `haveI : IsDiscreteValuationRing (OK l K) := OK_dvr`. Take `⟨U⟩` from `(cov_ex M.p).1 hM.2`. Take `⟨k, h1, h2⟩` from `lift_gr afgA L.γ l m ok_dv (tf_dom (Fact.out : l.Prime).ne_zero ok_dv (by omega)) L.lat M.p U r hr j`. Take `⟨z, hz⟩` from `h1 (fun n => (L.rS M r n).pull j (x n)) fun n => (rS_tr L M r j n (x (n + 1))).symm.trans (congrArg ((L.rS M r n).pull j) (hx n))`.
-
-Conclude with `exu (L.bG M r j) (fun n => redG' (L.QA M) ((l : L.A) ^ n) r j) l (unit_B L) (fun n => (L.rS M r n).pull j (x n)) (2 * k) z hz k h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ex [FiniteDimensional ℚ_[l] K] (hM : M.Sm) (r j : ℕ) (hr : r < m) (x : Y.Fam M r j) (hx : CB.Comp x) : ∃! w, L.Rho x w := by
   haveI := AdicGeo.proper_p hM.1
@@ -157,7 +155,7 @@ theorem ex [FiniteDimensional ℚ_[l] K] (hM : M.Sm) (r j : ℕ) (hr : r < m) (x
     (2 * k) z hz k h2
 
 /- English proof (translation)
-Take `⟨e, z, h1, h2⟩` from `add_abs (L.bG M r j) (fun n => redG' (L.QA M) ((l : L.A) ^ n) r j) l (fun n => (L.rS M r n).pull j (x n)) (fun n => (L.rS M r n).pull j (y n)) w w' h h'`. Conclude with `⟨e, z, fun n => (h1 n).trans (congrArg _ (map_add ((L.rS M r n).pull j) (x n) (y n)).symm), h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem add (r j : ℕ) (x y : Y.Fam M r j) (w w' : HG (L.QB M) r j) (h : L.Rho x w) (h' : L.Rho y w') : L.Rho (x + y) (w + w') := by
   obtain ⟨e, z, h1, h2⟩ := add_abs (L.bG M r j) (fun n => redG' (L.QA M) ((l : L.A) ^ n) r j) l
@@ -165,7 +163,7 @@ theorem add (r j : ℕ) (x y : Y.Fam M r j) (w w' : HG (L.QB M) r j) (h : L.Rho 
   exact ⟨e, z, fun n => (h1 n).trans (congrArg _ (map_add ((L.rS M r n).pull j) (x n) (y n)).symm), h2⟩
 
 /- English proof (translation)
-Take `⟨e, z, h1, h2⟩` from `smul_abs (L.bG M r j) (fun n => redG' (L.QA M) ((l : L.A) ^ n) r j) l (fun n => (L.rS M r n).pull j (x n)) w (L.lam c) h`. Conclude with `⟨e, z, fun n => (h1 n).trans (congrArg _ (LinearMap.map_smulₛₗ ((L.rS M r n).pull j) c (x n)).symm), h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem smul (r j : ℕ) (c : Y.Λ) (x : Y.Fam M r j) (w : HG (L.QB M) r j) (h : L.Rho x w) : L.Rho (c • x) (L.ι (L.lam c) • w) := by
   obtain ⟨e, z, h1, h2⟩ := smul_abs (L.bG M r j) (fun n => redG' (L.QA M) ((l : L.A) ^ n) r j) l
@@ -175,7 +173,7 @@ theorem smul (r j : ℕ) (c : Y.Λ) (x : Y.Fam M r j) (w : HG (L.QB M) r j) (h :
 end RhoA
 
 /- English proof (translation)
-The claim follows from `RhoA.ex L M hM r j hr x hx add L M r j x y w w' := RhoA.add L M r j x y w w' smul L M r j c x w := RhoA.smul L M r j c x w`.
+A detailed English derivation is pending.
 -/
 theorem rhoEx {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} [FiniteDimensional ℚ_[l] K] : RhoEx l K where
   ex L M hM r j hr x hx := RhoA.ex L M hM r j hr x hx

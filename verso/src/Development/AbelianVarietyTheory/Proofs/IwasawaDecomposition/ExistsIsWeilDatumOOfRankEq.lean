@@ -18,29 +18,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.WeilOriented
 
 /- English proof (translation)
-Introduce `D ψ hψ V W χ χ' om ha hw`. Establish `hr : V.rank ≤ W.rank` using `ha.1.le`. Take `⟨e, hc, hcs, he, hrat, hsm, hheis, hth, -⟩` from `GlobalTheory.OrientedCoord.exists_coord D V W hr`. Set `E : (WA V W → ℂ) ≃ₗ[ℂ] (WO V W → ℂ)` to `LinearEquiv.funCongrLeft ℂ ℂ e.toEquiv`. Take `⟨omO, hom⟩` from `exists_extend (ThS ψ V W) E om`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hom' : ∀ p (Φ : ThS ψ V W), omO p (fun x => Φ.1 (e x)) = fun x => (om p Φ).1 (e x)` using `hom`. Establish `hsurj : ∀ f, IsThetaFunO ψ V W f → ∃ Φ : ThS ψ V W, f = fun x => Φ.1 (e x)` using `fun f hf => by`. Establish `e1 : f = fun x => (fun y => f (e.symm y)) (e x)` using `by funext x; simp`. Use `⟨⟨fun y => f (e.symm y), mem_ThS.2 ((hth ψ _).1 ?_)⟩, e1⟩` and prove the remaining obligations. Rewrite using `[← e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf`. Establish `hTh : ∀ Φ : ThS ψ V W, IsThetaFunO ψ V W fun x => Φ.1 (e x)` using `fun Φ => (hth ψ _).2 (mem_ThS.1 Φ.2)`. Establish `hact : ∀ g h x, e (actO V W g h x) = actHom V W g h (e x)` using `fun g h x => by`. Rewrite using `[he, he]`. Conclude with `(GlobalTheory.OrientedSmall.bridgeSmall D V W hr).2 g h x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨omO, ⟨hψ, ha.2.1.1, ha.2.2.1.1, ha.2.2.2.1, ha.2.2.2.2, fun p f hf => ?_, fun g h w₀ f hf => ?_, fun γ hγ γ' hγ' f hf => ?_, fun f hf w => ?_, fun μ 𝓕 hμ h𝓕 p f hf => ?_, fun ε hε g h hg hh x y hx hy => ?_⟩, fun p Φ => ?_⟩` and prove the remaining obligations. Take `⟨Φ, rfl⟩` from `hsurj f hf`. Rewrite using `[hom']`. Conclude with `hTh _`. Take `⟨Φ, rfl⟩` from `hsurj f hf`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `Φ' : ThS ψ V W` to `⟨Heisenberg₂ ψ V W (e w₀) Φ.1, mem_ThS.2 (GlobalTheory.Mem.ThetaClosed.isThetaFun_heis hψ (mem_ThS.1 Φ.2) _)⟩`. Rewrite using `[hheis, hom', hheis, hact, ← hw.Heisenberg₂ g h (e w₀) Φ Φ' rfl]`. Conclude with `hom' _ Φ'`. Take `⟨Φ, rfl⟩` from `hsurj f hf`. Rewrite using `[hom']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_zero]`. Conclude with `hw.aut γ hγ γ' hγ' Φ`. Take `⟨Φ, rfl⟩` from `hsurj f hf`. Simplify using `only [hom']`. Conclude with `hw.cont Φ (e w)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Φ, rfl⟩` from `hsurj f hf`. Rewrite using `[hom']`. Take `⟨i1, i2, i3, i4, i5, K, hK, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D W V`. Take `⟨j1, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D V W`. Establish `: BorelSpace (WA V W)` using `⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `: BorelSpace (WO V W)` using `⟨rfl⟩`. Take `⟨ν, hν, hF, hint⟩` from `GlobalTheory.exists_isAddHaarMeasure_isAddFundamentalDomain_preimage (WA V W) (WO V W) e.symm hcs (by simpa using hc) (ratL V W) (ratL W V) (fun x => by rw [← hrat, e.apply_symm_apply]) μ 𝓕 hμ h𝓕`. Use `lintegral_eq_of_integral_eq (ratL W V) hK hcov (hTh _).cont (hTh _).cont (norm_periodic hψ (hTh _)) (norm_periodic hψ (hTh _)) hμ h𝓕 ?_` and prove the remaining obligations. Rewrite using `[← hint, ← hint]`. Simplify using `only [e.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `hw.unit ν _ hν hF p Φ`. Take `⟨r, hr0, hℓ⟩` from `hw.split ε hε g h hg hh x y hx hy`. Use `⟨r, hr0, fun ℓ hinv f hf => ?_⟩` and prove the remaining obligations. Take `⟨Φ, rfl⟩` from `hsurj f hf`. Use `hℓ (ℓ ∘ₗ E.toLinearMap ∘ₗ (ThS ψ V W).subtype) (fun u hu Ψ Ψ' hΨ => ?_) Φ` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hom']`. Unfold `splitFac at this`. Rewrite `this` using `[if_pos hr]`. Conclude with `this`. Establish `hu' : cA D ε • e.symm u = e.symm u`.
-
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hsm, e.apply_symm_apply]`. Conclude with `Matrix.ext hu`. Use `hinv (e.symm u) (fun i j => congrFun (congrFun hu' i) j) _ (hTh Ψ)` as an intermediate fact. Rewrite `this` using `[hheis, e.apply_symm_apply, ← hΨ]`.
-
-Conclude with `this`. Simplify using `only [← he]`. Conclude with `hom' p Φ`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isWeilDatumO_of_rank_eq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V W : HSp D) (χ χ' : IdC D) (om : GA D V × GA D W →* Module.End ℂ (ThS ψ V W)), AdmE V W χ χ' → IsWeilOn ψ V W χ χ' om → ∃ omO : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ), IsWeilDatumO ψ V W χ χ' omO ∧ ∀ (p : GA D V × GA D W) (Φ : ThS ψ V W), omO p (fun x => Φ.1 (toTWsmall V W x)) = fun x => (om p Φ).1 (toTWsmall V W x) := by
   intro D ψ hψ V W χ χ' om ha hw

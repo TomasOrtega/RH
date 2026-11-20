@@ -6,7 +6,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory
 open scoped CategoryTheory.Obj UpperHalfPlane
 /- English proof (citation)
-Apply `GlobalTheory.isIntegral_of_hom_derivative` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FIsIntegralDerivativeCurveHomGoodReduction.lean&line=67#L67)
 -/

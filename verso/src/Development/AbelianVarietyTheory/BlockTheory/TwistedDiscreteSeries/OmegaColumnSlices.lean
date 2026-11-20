@@ -173,7 +173,7 @@ section Checks
 variable {k : Type} [Field k] [ValuativeRel k] {ι n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[mem_latOf_typeFrame]`. Simplify using `[srcLat, mem_box, Valuation.mem_integer_iff, LinearMap.funLeft_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example (ϖ : kˣ) (o : ι ≃ n ⊕ Fin (0 + 1)) : latOf (typeFrame ϖ o).bas = srcLat n ϖ := by
   ext y
@@ -181,7 +181,7 @@ example (ϖ : kˣ) (o : ι ≃ n ⊕ Fin (0 + 1)) : latOf (typeFrame ϖ o).bas =
   simp [srcLat, mem_box, Valuation.mem_integer_iff, LinearMap.funLeft_apply]
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[mem_latOf_typeFrame]`. Simplify using `[mem_box, Valuation.mem_integer_iff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example (ϖ : kˣ) (o : ι ≃ n ⊕ Fin 0) : latOf (typeFrame ϖ o).bas = box _ 1 := by
   ext y
@@ -189,14 +189,14 @@ example (ϖ : kˣ) (o : ι ≃ n ⊕ Fin 0) : latOf (typeFrame ϖ o).bas = box _
   simp [mem_box, Valuation.mem_integer_iff]
 
 /- English proof (translation)
-The claim follows from `box_one.symm`.
+A detailed English derivation is pending.
 -/
 example {c : ℕ} (o : ι ≃ n ⊕ Fin c) : latOf (plainFrame (k := k) o).bas = box _ 1 := box_one.symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Use `h (Pi.single i 1) (fun j => by` as an intermediate fact. Apply the tactic sequence `rw [Pi.single_apply]; split_ifs <;> simp)`. Simplify using `using this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h y hy`. Conclude with `sum_mem fun i _ => mul_mem (h i) (by simpa [Valuation.mem_integer_iff] using hy i)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 example (η : n → k) : η ∈ dualStd k n ↔ ∀ i, η i ∈ 𝒪[k] := by
   constructor

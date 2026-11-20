@@ -8,9 +8,9 @@ variable {K : Type*} [Field K] [StarRing K] {S : Subring K} {ϖ : K}
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Take `⟨M₀, rfl⟩` from `hM.exists_map`. Set `ϖ₀ : S` to `⟨ϖ, hS.mem⟩`. Use `⟨((Matrix.trace M₀ + (Matrix.det (1 + (Polynomial.X : Polynomial S) • M₀.map Polynomial.C)).divX.divX.eval ϖ₀ * ϖ₀ : S) : K), SetLike.coe_mem _, ?_⟩` and prove the remaining obligations. Establish `hmap : (1 : Matrix n n K) + ϖ • M₀.map S.subtype = S.subtype.mapMatrix (1 + ϖ₀ • M₀)`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `by_cases h : i = j <;> simp [h, ϖ₀]`. Rewrite using `[hmap, ← RingHom.map_det, Matrix.det_one_add_smul ϖ₀ M₀]`. Simplify using `only [map_add, map_mul, map_one, map_pow, Subring.coe_subtype]`. Simplify using `only [Subring.coe_add, Subring.coe_mul, ϖ₀]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Cayley.exists_det_one_add (hS : IsLocUnif S ϖ) {M : Matrix n n K} (hM : Ent S M) :
     ∃ s ∈ S, (1 + ϖ • M).det = 1 + ϖ * s := by
@@ -27,7 +27,7 @@ theorem Cayley.exists_det_one_add (hS : IsLocUnif S ϖ) {M : Matrix n n K} (hM :
   ring
 
 /- English proof (translation)
-Take `⟨s, hs, hdet⟩` from `Cayley.exists_det_one_add hS hM`. Take `⟨hne, hinv⟩` from `hS.rad s hs`. Establish `hA : Ent S (1 + ϖ • M)` using `Ent.add Ent.one (Ent.smul hS.mem hM)`. Use `⟨(1 + ϖ * s)⁻¹ • (1 + ϖ • M).adjugate, Ent.smul hinv hA.adjugate, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.mul_adjugate, hdet, smul_smul, inv_mul_cancel₀ hne, one_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Cayley.exists_inv_one_add (hS : IsLocUnif S ϖ) {M : Matrix n n K} (hM : Ent S M) :
     ∃ Q : Matrix n n K, Ent S Q ∧ (1 + ϖ • M) * Q = 1 := by
@@ -38,41 +38,39 @@ theorem Cayley.exists_inv_one_add (hS : IsLocUnif S ϖ) {M : Matrix n n K} (hM :
   rw [Matrix.mul_smul, Matrix.mul_adjugate, hdet, smul_smul, inv_mul_cancel₀ hne, one_smul]
 
 /- English proof (translation)
-Use `set j := N - 2 * l - e with hj`. Establish `hj1 : 1 ≤ j` using `by omega`. Establish `hNj : N = j + e + 2 * l` using `by omega`. Establish `hϖ0 : ϖ ≠ 0` using `hS.ne`. Establish `hstar : ∀ k : ℕ, star (ϖ ^ k) = ϖ ^ k` using `fun k => by rw [star_pow, hS.fix]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcs : star c ∈ S` using `hS.star_mem c hc`. Take `⟨A, hA⟩ : ∃ A : Matrix n n K, A = c • (1 : Matrix n n K) + star c • X` from `⟨_, rfl⟩`. Rewrite `hWW` using `[← hA]`. Establish `hAent : Ent S A`. Rewrite using `[hA]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ent.add (Ent.smul hc Ent.one) (Ent.smul hcs hX)`. Establish `hWA : W' * A = ϖ ^ l • (1 : Matrix n n K)`. Establish `hne : ϖ ^ l ≠ 0` using `pow_ne_zero _ hϖ0`. Establish `h1 : A * ((ϖ ^ l)⁻¹ • W') = 1`. Rewrite using `[Matrix.mul_smul, hWW, smul_smul, inv_mul_cancel₀ hne, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ((ϖ ^ l)⁻¹ • W') * A = 1` using `mul_eq_one_comm.mp h1`. Rewrite `h2` using `[Matrix.smul_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, mul_inv_cancel₀ hne, one_smul]`. Use `_ = ϖ ^ l • (1 : Matrix n n K) := by rw [h2]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hAW : ∀ M : Matrix n n K, Aᴴ * (W'ᴴ * M) = ϖ ^ l • M`. Introduce `M`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, hWA, Matrix.conjTranspose_smul, Matrix.conjTranspose_one, hstar, Matrix.smul_mul, Matrix.one_mul]`. Establish `hHE' : ∀ M : Matrix n n K, H * (E * M) = ϖ ^ e • M`. Introduce `M`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, hHE, Matrix.smul_mul, Matrix.one_mul]`. Establish `hZh : Zᴴ = Z`. Establish `h1 : (Xᴴ * H * X)ᴴ = Xᴴ * H * X`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hH, Matrix.mul_assoc]`. Rewrite `h1` using `[hXZ, Matrix.conjTranspose_add, Matrix.conjTranspose_smul, hH, hstar]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smul_right_injective _ (pow_ne_zero N hϖ0) (add_left_cancel h1)`. Take `⟨D₁, hD₁⟩ : ∃ D₁ : Matrix n n K, D₁ = E * (W'ᴴ * (Z * W'))` from `⟨_, rfl⟩`. Establish `hD₁ent : Ent S D₁`. Rewrite using `[hD₁]`. Conclude with `Ent.mul hES (Ent.mul (Ent.conjTranspose hS.star_mem hW') (Ent.mul hZ hW'))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Δ, hΔ⟩ : ∃ Δ : Matrix n n K, Δ = (c * ϖ ^ j) • (D₁ * A)` from `⟨_, rfl⟩`. Establish `key1 : Aᴴ * (H * Δ) = (c * ϖ ^ N) • Z`. Rewrite using `[hΔ, hD₁]`. Simplify using `only [Matrix.mul_smul, Matrix.mul_assoc]`. Rewrite using `[hHE']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_smul]`. Rewrite using `[hAW, hWA]`. Simplify using `only [Matrix.mul_smul, Matrix.mul_one, smul_smul]`. Use `congr 1`. Rewrite using `[hNj]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key2 : Δᴴ * (H * A) = (star c * ϖ ^ N) • Z`. Establish `h : Δᴴ * (H * A) = (Aᴴ * (H * Δ))ᴴ`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hH, Matrix.mul_assoc]`. Rewrite using `[h, key1, Matrix.conjTranspose_smul, hZh, star_mul', hstar]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAh : Aᴴ = star c • (1 : Matrix n n K) + c • Xᴴ`. Rewrite using `[hA, Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Matrix.conjTranspose_smul, Matrix.conjTranspose_one, star_star]`. Establish `k1 : star c • (H * Δ) + c • (Xᴴ * (H * Δ)) = (c * ϖ ^ N) • Z`. Rewrite using `[← key1, hAh, Matrix.add_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul]`. Establish `k2 : c • (Δᴴ * H) + star c • (Δᴴ * (H * X)) = (star c * ϖ ^ N) • Z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key2, hA, Matrix.mul_add, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_one]`. Establish `k0 : Xᴴ * (H * X) = H + ϖ ^ N • Z` using `by rw [← Matrix.mul_assoc, hXZ]`. Establish `hTR : (X - c • Δ)ᴴ * H * (X - c • Δ) = (1 + star c • Δ)ᴴ * H * (1 + star c • Δ)`. Simplify using `only [Matrix.conjTranspose_sub, Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Matrix.conjTranspose_one, star_star, Matrix.sub_mul, Matrix.mul_sub, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc]`. Rewrite using `[k0]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(norm := module) -k1 - k2 - hcc • (ϖ ^ N • Z)`. Establish `hMent : Ent S ((star c * c * ϖ ^ (j - 1)) • (D₁ * A))` using `Ent.smul (mul_mem (mul_mem hcs hc) (_root_.pow_mem hS.mem _)) (Ent.mul hD₁ent hAent)`. Take `⟨Q, hQent, hRQ⟩` from `Cayley.exists_inv_one_add hS hMent`. Establish `hjj : ϖ * ϖ ^ (j - 1) = ϖ ^ j`. Rewrite using `[← pow_succ']`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hR : (1 : Matrix n n K) + ϖ • ((star c * c * ϖ ^ (j - 1)) • (D₁ * A)) = 1 + star c • Δ`. Rewrite using `[hΔ, smul_smul, smul_smul]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hjj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hRQ` using `[hR]`. Establish `hRQ' : Q + star c • (Δ * Q) = 1`. Establish `h` using `hRQ`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[Matrix.add_mul, Matrix.one_mul, Matrix.smul_mul]`. Conclude with `h`. Use `⟨(X - c • Δ) * Q, -(star c * c) • (X * (D₁ * (A * Q))) - (c * c) • (D₁ * (A * Q)), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Ent.sub (Ent.smul (neg_mem (mul_mem hcs hc)) (Ent.mul hX (Ent.mul hD₁ent (Ent.mul hAent hQent)))) (Ent.smul (mul_mem hc hc) (Ent.mul hD₁ent (Ent.mul hAent hQent)))`. Rewrite using `[Matrix.conjTranspose_mul]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = H := by rw [hRQ]; simp`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.sub_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul]`.
-
-Normalize the expressions using the abelian group laws. Use `_ = X + ϖ ^ j • (-(star c * c) • (X * (D₁ * (A * Q))) - (c * c) • (D₁ * (A * Q))) := by`. Rewrite using `[hRQ', Matrix.mul_one, hΔ]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]`. Use `module`.
+A detailed English derivation is pending.
 -/
 theorem exists_cayley (hS : IsLocUnif S ϖ) {H E : Matrix n n K} (hH : Hᴴ = H) (hHS : Ent S H)
     (hES : Ent S E) {e l N : ℕ} (hHE : H * E = ϖ ^ e • (1 : Matrix n n K)) (hN : 2 * l + e + 1 ≤ N)

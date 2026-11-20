@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `n z z' h`. Establish `key : ∀ (w : Fin n → ℂˣ) (c : ℂ), Fintype.card {i : Fin n // (w i : ℂ) = c} = Multiset.count c (Multiset.map (fun (i : Fin n) ↦ (↑(w i) : ℂ)) Finset.univ.val)`. Introduce `w c`. Rewrite using `[Multiset.count_map, Fintype.card_subtype, Finset.card_def, Finset.filter_val]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Multiset.filter_congr (fun _ _ => eq_comm)`. Establish `hc : ∀ c : ℂ, Fintype.card {i : Fin n // (z' i : ℂ) = c} = Fintype.card {i : Fin n // (z i : ℂ) = c}`. Introduce `c`. Rewrite using `[key, key, h]`. Set `e : ∀ c : ℂ, {i : Fin n // (z' i : ℂ) = c} ≃ {i : Fin n // (z i : ℂ) = c}` to `fun c => Fintype.equivOfCardEq (hc c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Equiv.ofFiberEquiv (f := fun i => (z' i : ℂ)) (g := fun i => (z i : ℂ)) e, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(Equiv.ofFiberEquiv_map (f := fun i => (z' i : ℂ)) (g := fun i => (z i : ℂ)) e i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yoa3.exists_perm_of_map_eq :
     ∀ {n : ℕ} {z z' : Fin n → ℂˣ},

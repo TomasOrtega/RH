@@ -8,15 +8,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `g r r₀ lam u A hu hA`. Rewrite `hu`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`. Establish `hc' : ∀ m, ∑ i, (c i : ℝ) * (A i m : ℝ) = 0`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrFun hc m`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h1`. Establish `h2` using `congrArg (Rat.cast : ℚ → ℝ) h1`. Move the coercions through the operations in `at h2`. Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hsum : ∑ i, (c i : ℝ) • u i = 0`. Establish `e : ∀ i, (c i : ℝ) • u i = ∑ m, ((c i : ℝ) * (A i m : ℝ)) • lam m`. Introduce `i`. Rewrite using `[hA i, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Int.cast_smul_eq_zsmul ℝ, smul_smul]`. Repeatedly rewrite using `[e]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, hc', zero_smul, Finset.sum_const_zero]`. Establish `h3` using `hu (fun i => (c i : ℝ)) hsum i`.
-
-Conclude with `h3` after adjusting the coercions.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rowsInd_rat_of_real : ∀ (g r r₀ : ℕ) (lam : Fin r → Fin g → ℂ) (u : Fin r₀ → Fin g → ℂ) (A : Fin r₀ → Fin r → ℤ), LinearIndependent ℝ u → (∀ i, u i = ∑ m, A i m • lam m) → LinearIndependent ℚ (fun i j => (A i j : ℚ)) := by
   intro g r r₀ lam u A hu hA

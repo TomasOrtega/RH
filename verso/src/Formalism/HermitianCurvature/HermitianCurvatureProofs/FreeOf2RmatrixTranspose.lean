@@ -10,53 +10,53 @@ section
 variable {A S : Type} [Ring A] [Algebra ℂ A] [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Introduce `_ _` and use `Commute.one_right _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem free_one (c : S) : FreeOf c (1 : SlopeTestRemainingChoices S A) := fun _ _ => Commute.one_right _
 
 /- English proof (translation)
-Introduce `_ _` and use `Commute.zero_right _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem free_zero (c : S) : FreeOf c (0 : SlopeTestRemainingChoices S A) := fun _ _ => Commute.zero_right _
 
 /- English proof (translation)
-Introduce `i j` and use `(hx i j).mul_right (hy i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem free_mul {c : S} {x y : SlopeTestRemainingChoices S A} (hx : FreeOf c x) (hy : FreeOf c y) : FreeOf c (x * y) :=
   fun i j => (hx i j).mul_right (hy i j)
 
 /- English proof (translation)
-Introduce `i j` and use `(hx i j).add_right (hy i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem free_add {c : S} {x y : SlopeTestRemainingChoices S A} (hx : FreeOf c x) (hy : FreeOf c y) : FreeOf c (x + y) :=
   fun i j => (hx i j).add_right (hy i j)
 
 /- English proof (translation)
-Introduce `i j` and use `(hx i j).sub_right (hy i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem free_sub {c : S} {x y : SlopeTestRemainingChoices S A} (hx : FreeOf c x) (hy : FreeOf c y) : FreeOf c (x - y) :=
   fun i j => (hx i j).sub_right (hy i j)
 
 /- English proof (translation)
-Introduce `i j` and use `(hx i j).neg_right`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem free_neg {c : S} {x : SlopeTestRemainingChoices S A} (hx : FreeOf c x) : FreeOf c (-x) :=
   fun i j => (hx i j).neg_right
 
 /- English proof (translation)
-Introduce `i j` and use `(hx i j).smul_right k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem free_smul {c : S} {x : SlopeTestRemainingChoices S A} (k : ℂ) (hx : FreeOf c x) : FreeOf c (k • x) :=
   fun i j => (hx i j).smul_right k
 
 /- English proof (translation)
-Introduce `i j` and use `(hx i j).pow_right n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem free_pow {c : S} {x : SlopeTestRemainingChoices S A} (hx : FreeOf c x) (n : ℕ) : FreeOf c (x ^ n) :=
   fun i j => (hx i j).pow_right n
 
 /- English proof (translation)
-Introduce `i j`. Establish `h` using `(hx j i).star_star`. Rewrite `h` using `[Wd1.star_eU]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem free_star [StarRing A] {c : S} {x : SlopeTestRemainingChoices S A} (hx : FreeOf c x) : FreeOf c (star x) := by
   intro i j
@@ -64,9 +64,9 @@ theorem free_star [StarRing A] {c : S} {x : SlopeTestRemainingChoices S A} (hx :
   rwa [Wd1.star_eU] at h
 
 /- English proof (translation)
-Introduce `i j`. Use `show (eU c i j : SlopeTestRemainingChoices S A) * io x = io x * eU c i j`. Use extensionality with `u v`. Unfold `io`. Rewrite using `[Matrix.scalar_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Wd1.eU_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem free_io (c : S) (x : A) : FreeOf c (io x : SlopeTestRemainingChoices S A) := by
   intro i j
@@ -77,13 +77,13 @@ theorem free_io (c : S) (x : A) : FreeOf c (io x : SlopeTestRemainingChoices S A
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `i j` and use `Wd1.eU_comm_of_ne hc i j k l`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem free_eU {a c : S} (hc : c ≠ a) (k l : Fin 2) : FreeOf c (eU a k l : SlopeTestRemainingChoices S A) :=
   fun i j => Wd1.eU_comm_of_ne hc i j k l
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_two]`. Conclude with `free_add (free_mul (hM _ _) (hN _ _)) (free_mul (hM _ _) (hN _ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem freeOf2_mul {c : S} {M N : M2 (SlopeTestRemainingChoices S A)} (hM : FreeOf2 c M) (hN : FreeOf2 c N) : FreeOf2 c (M * N) := by
   intro i j
@@ -91,15 +91,13 @@ theorem freeOf2_mul {c : S} {M N : M2 (SlopeTestRemainingChoices S A)} (hM : Fre
   exact free_add (free_mul (hM _ _) (hN _ _)) (free_mul (hM _ _) (hN _ _))
 
 /- English proof (translation)
-Introduce `i j` and use `hM j i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem freeOf2_transpose {c : S} {M : M2 (SlopeTestRemainingChoices S A)} (hM : FreeOf2 c M) : FreeOf2 c Mᵀ :=
   fun i j => hM j i
 
 /- English proof (translation)
-Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `hx`. Conclude with `hy`. Conclude with `hz`.
-
-Conclude with `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem freeOf2_matrix_entries {c : S} {x y z w : SlopeTestRemainingChoices S A} (hx : FreeOf c x) (hy : FreeOf c y) (hz : FreeOf c z)
     (hw : FreeOf c w) : FreeOf2 c !![x, y; z, w] := by
@@ -111,9 +109,7 @@ theorem freeOf2_matrix_entries {c : S} {x y z w : SlopeTestRemainingChoices S A}
   · exact hw
 
 /- English proof (translation)
-Introduce `i j`. Distinguish the cases in `h : i = j`. Rewrite using `[h, Matrix.one_apply_eq]`. Conclude with `free_one c`. Rewrite using `[Matrix.one_apply_ne h]`.
-
-Conclude with `free_zero c`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem freeOf2_one (c : S) : FreeOf2 c (1 : M2 (SlopeTestRemainingChoices S A)) := by
   intro i j
@@ -122,7 +118,7 @@ theorem freeOf2_one (c : S) : FreeOf2 c (1 : M2 (SlopeTestRemainingChoices S A))
   · rw [Matrix.one_apply_ne h]; exact free_zero c
 
 /- English proof (translation)
-Introduce `i j`. Unfold `Rh0`. Rewrite using `[Matrix.smul_apply, Matrix.sub_apply, Matrix.smul_apply]`. Conclude with `free_smul _ (free_sub (free_smul _ (freeOf2_one c i j)) (free_eU hc j i))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem freeOf2_rmatrix {a c : S} (hc : c ≠ a) (D : ℂ) : FreeOf2 c (Rh0 a D : M2 (SlopeTestRemainingChoices S A)) := by
   intro i j
@@ -131,7 +127,7 @@ theorem freeOf2_rmatrix {a c : S} (hc : c ≠ a) (D : ℂ) : FreeOf2 c (Rh0 a D 
   exact free_smul _ (free_sub (free_smul _ (freeOf2_one c i j)) (free_eU hc j i))
 
 /- English proof (translation)
-Introduce `i j`. Unfold `Rht0`. Rewrite using `[Matrix.smul_apply, Matrix.sub_apply, Matrix.smul_apply]`. Conclude with `free_smul _ (free_sub (free_smul _ (freeOf2_one c i j)) (free_eU hc i j))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem freeOf2_rmatrix_transpose {a c : S} (hc : c ≠ a) (D : ℂ) : FreeOf2 c (Rht0 a D : M2 (SlopeTestRemainingChoices S A)) := by
   intro i j
@@ -140,13 +136,13 @@ theorem freeOf2_rmatrix_transpose {a c : S} (hc : c ≠ a) (D : ℂ) : FreeOf2 c
   exact free_smul _ (free_sub (free_smul _ (freeOf2_one c i j)) (free_eU hc i j))
 
 /- English proof (translation)
-Introduce `i j` and use `free_io c (M i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem freeOf2_lift (c : S) (M : M2 A) : FreeOf2 c (lift0 M : M2 (SlopeTestRemainingChoices S A)) :=
   fun i j => free_io c (M i j)
 
 /- English proof (translation)
-Unfold `Formalism.YangianSpanCharacter.F.blk E1 Pf`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> fin_cases k <;> fin_cases l <;>`. Simplify using `[Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, Matrix.one_apply, mul_sub]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blk_plus (M : M2 (SlopeTestRemainingChoices S A)) (D : ℂ) (i j k l : Fin 2) :
     Formalism.YangianSpanCharacter.F.blk (E1 M *
@@ -157,7 +153,7 @@ theorem blk_plus (M : M2 (SlopeTestRemainingChoices S A)) (D : ℂ) (i j k l : F
     simp [Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, Matrix.one_apply, mul_sub]
 
 /- English proof (translation)
-Unfold `Formalism.YangianSpanCharacter.F.blk E1 Pf pt1`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> fin_cases k <;> fin_cases l <;>`. Simplify using `[Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, Matrix.one_apply, sub_mul]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blk_minus (M : M2 (SlopeTestRemainingChoices S A)) (d : ℂ) (i j k l : Fin 2) :
     Formalism.YangianSpanCharacter.F.blk (((d - 1)⁻¹ • pt1 (d • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) (SlopeTestRemainingChoices S A)) - Pf (SlopeTestRemainingChoices S A))) *
@@ -168,7 +164,7 @@ theorem blk_minus (M : M2 (SlopeTestRemainingChoices S A)) (d : ℂ) (i j k l : 
     simp [Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, Matrix.one_apply, sub_mul]
 
 /- English proof (translation)
-Unfold `Rh0 P0`. Rewrite using `[Matrix.mul_smul, Matrix.smul_apply, Matrix.mul_sub, Matrix.sub_apply, Matrix.mul_smul, Matrix.smul_apply, Matrix.mul_one, Matrix.mul_apply, Fin.sum_univ_two]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mul_rmatrix_apply (a : S) (M : M2 (SlopeTestRemainingChoices S A)) (D : ℂ) (i j : Fin 2) :
     (M * Rh0 a D : M2 (SlopeTestRemainingChoices S A)) i j =
@@ -179,7 +175,7 @@ theorem mul_rmatrix_apply (a : S) (M : M2 (SlopeTestRemainingChoices S A)) (D : 
   rfl
 
 /- English proof (translation)
-Unfold `Rht0 Q0`. Rewrite using `[Matrix.smul_mul, Matrix.smul_apply, Matrix.sub_mul, Matrix.sub_apply, Matrix.smul_mul, Matrix.smul_apply, Matrix.one_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Rht0_mul_apply (b : S) (M : M2 (SlopeTestRemainingChoices S A)) (d : ℂ) (i j : Fin 2) :
     (Rht0 b d * M : M2 (SlopeTestRemainingChoices S A)) i j =
@@ -190,9 +186,9 @@ theorem Rht0_mul_apply (b : S) (M : M2 (SlopeTestRemainingChoices S A)) (d : ℂ
   rfl
 
 /- English proof (translation)
-Establish `h1` using `Wd1.sum_eU_diag (A := A) a`. Rewrite `h1` using `[Fin.sum_univ_two]`. Establish `h2 : x = eU a 0 0 * x + eU a 1 1 * x` using `by rw [← add_mul, h1, one_mul]`. Unfold `ins`. Use `conv_rhs => rw [h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases m <;>`. Simplify using `[Fin.sum_univ_two, mul_sub, smul_sub, smul_add]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ins_block (a : S) (c D : ℂ) (x : SlopeTestRemainingChoices S A) (y : Fin 2 → SlopeTestRemainingChoices S A) (m : Fin 2) :
     ins a (Matrix.of fun k l => c • (D • (if k = l then x else 0) - (if k = m then y l else 0))) =
@@ -212,46 +208,44 @@ section
 variable {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [Fintype S] [DecidableEq S] {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `free_add (free_io c _) (free_mul (free_io c _) (h.2.2.2.2.2.2.2.2 Y))`.
+A detailed English derivation is pending.
 -/
 theorem free_l (L : LevelData A r) {f : FrameData S A} {c : S} (h : f.Free c) (Y : ℂ) : FreeOf c (f.l L Y) :=
   free_add (free_io c _) (free_mul (free_io c _) (h.2.2.2.2.2.2.2.2 Y))
 
 /- English proof (translation)
-The claim follows from `free_mul (free_pow (free_io c _) _) h.2.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem free_d (L : LevelData A r) {f : FrameData S A} {c : S} (h : f.Free c) : FreeOf c (f.d L) :=
   free_mul (free_pow (free_io c _) _) h.2.2.2.2.2.2.1
 
 /- English proof (translation)
-The claim follows from `free_mul h.2.2.2.2.2.2.2.1 (free_pow (free_io c _) _)`.
+A detailed English derivation is pending.
 -/
 theorem free_di (L : LevelData A r) {f : FrameData S A} {c : S} (h : f.Free c) : FreeOf c (f.di L) :=
   free_mul h.2.2.2.2.2.2.2.1 (free_pow (free_io c _) _)
 
 /- English proof (translation)
-The claim follows from `free_mul (free_mul (free_di L h) (free_star (free_l L h _))) (free_d L h)`.
+A detailed English derivation is pending.
 -/
 theorem free_m (L : LevelData A r) {f : FrameData S A} {c : S} (h : f.Free c) (Y : ℂ) : FreeOf c (f.m L Y) :=
   free_mul (free_mul (free_di L h) (free_star (free_l L h _))) (free_d L h)
 
 /- English proof (translation)
-The claim follows from `free_smul _ (free_sub (h.2.2.2.2.2.2.2.2 Y) (h.2.2.2.2.2.2.2.2 Ya))`.
+A detailed English derivation is pending.
 -/
 theorem free_DD {f : FrameData S A} {c : S} (h : f.Free c) (Y Ya : ℂ) : FreeOf c (f.DD Y Ya) :=
   free_smul _ (free_sub (h.2.2.2.2.2.2.2.2 Y) (h.2.2.2.2.2.2.2.2 Ya))
 
 /- English proof (translation)
-The claim follows from `free_io c _`.
+A detailed English derivation is pending.
 -/
 theorem free_tz (L : LevelData A r) (c : S) : FreeOf c (tz L : SlopeTestRemainingChoices S A) := free_io c _
 
 /- English proof (translation)
-Take `⟨hRR, hTT, hF, hFi, hx, hxi, hcc, hci, hee⟩` from `id h`. Establish `z` using `free_zero (A := A) c`. Establish `o` using `free_one (A := A) c`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `free_mul hRR (Wd1.ins_free hc _ (hTT Ya))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun Y => freeOf2_mul (hTT Y) (freeOf2_rmatrix hc _)`. Conclude with `free_mul (Wd1.ins_free hc _ (freeOf2_mul (freeOf2_matrix_entries (free_io c _) z z (free_io c _)) (freeOf2_matrix_entries o z (free_mul (free_io c _) (free_l L h Ya)) (free_io c _)))) hF`. Conclude with `free_mul hFi (Wd1.ins_free hc _ (freeOf2_mul (freeOf2_matrix_entries o z (free_neg (free_l L h Ya)) (free_io c _)) (freeOf2_matrix_entries (free_io c _) z z (free_io c _))))`. Conclude with `fun Y => free_mul (hx Y) (Wd1.ins_free hc _ (freeOf2_matrix_entries (free_smul _ o) z z o))`. Conclude with `fun Y => free_mul (hxi Y) (Wd1.ins_free hc _ (freeOf2_matrix_entries (free_smul _ o) z z o))`.
-
-Conclude with `free_mul hcc (Wd1.ins_free hc _ (freeOf2_matrix_entries (free_smul _ (hxi _)) z z (hx _)))`. Conclude with `free_mul hci (Wd1.ins_free hc _ (freeOf2_matrix_entries (free_smul _ (hx _)) z z (hxi _)))`. Conclude with `fun Y => Wd1.ins_free hc _ (freeOf2_matrix_entries (free_add (free_sub (hee Y) (free_DD h Y Ya)) (free_tz L c)) (free_neg (free_smul _ o)) z (free_mul (free_mul (hxi _) (hee Y)) (hx _)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem plus_free (L : LevelData A r) {f : FrameData S A} {a c : S} (hc : c ≠ a) (h : f.Free c) (Ya : ℂ) :
     (f.plus L a Ya).Free c := by
@@ -273,11 +267,9 @@ theorem plus_free (L : LevelData A r) {f : FrameData S A} {a c : S} (hc : c ≠ 
       (free_neg (free_smul _ o)) z (free_mul (free_mul (hxi _) (hee Y)) (hx _)))
 
 /- English proof (translation)
-Take `⟨hRR, hTT, hF, hFi, hx, hxi, hcc, hci, hee⟩` from `id h`. Establish `z` using `free_zero (A := A) c`. Establish `o` using `free_one (A := A) c`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `free_mul hRR (Wd1.ins_free hc _ (freeOf2_transpose (hTT Yb)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun Y => freeOf2_mul (freeOf2_rmatrix_transpose hc _) (hTT Y)`. Conclude with `free_mul (Wd1.ins_free hc _ (freeOf2_mul (freeOf2_matrix_entries (free_io c _) z z (free_io c _)) (freeOf2_matrix_entries o z (free_mul (free_io c _) (free_m L h Yb)) (free_io c _)))) hF`. Conclude with `free_mul hFi (Wd1.ins_free hc _ (freeOf2_mul (freeOf2_matrix_entries o z (free_neg (free_m L h Yb)) (free_io c _)) (freeOf2_matrix_entries (free_io c _) z z (free_io c _))))`. Conclude with `fun Y => free_mul (hx Y) (Wd1.ins_free hc _ (freeOf2_matrix_entries (free_smul _ o) z z o))`. Conclude with `fun Y => free_mul (hxi Y) (Wd1.ins_free hc _ (freeOf2_matrix_entries (free_smul _ o) z z o))`.
-
-Conclude with `free_mul hcc (Wd1.ins_free hc _ (freeOf2_matrix_entries (free_smul _ (hxi _)) z z (hx _)))`. Conclude with `free_mul hci (Wd1.ins_free hc _ (freeOf2_matrix_entries (free_smul _ (hx _)) z z (hxi _)))`. Conclude with `fun Y => Wd1.ins_free hc _ (freeOf2_matrix_entries (hee Y) z (free_neg (free_smul _ (free_mul (hxi _) (hxi _)))) (free_add (free_sub (free_mul (free_mul (hxi _) (hee Y)) (hx _)) (free_DD h Y Yb)) (free_tz L c)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem minus_free (L : LevelData A r) {f : FrameData S A} {b c : S} (hc : c ≠ b) (h : f.Free c) (Yb : ℂ) :
     (f.minus L b Yb).Free c := by
@@ -299,7 +291,7 @@ theorem minus_free (L : LevelData A r) {f : FrameData S A} {b c : S} (hc : c ≠
       (free_add (free_sub (free_mul (free_mul (hxi _) (hee Y)) (hx _)) (free_DD h Y Yb)) (free_tz L c)))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨free_one c, fun _ => freeOf2_lift c _, free_one c, free_one c, fun _ => free_io c _, fun _ => free_io c _, free_one c, free_one c, fun _ => free_io c _⟩`.
+Supply the required witnesses or components.
 -/
 theorem start_free (st : Start A) (c : S) : (st.frame : FrameData S A).Free c :=
   ⟨free_one c, fun _ => freeOf2_lift c _, free_one c, free_one c, fun _ => free_io c _, fun _ => free_io c _,
@@ -312,7 +304,7 @@ end Formalism.FourierDecayAlt.P.Fr4
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Introduce `A S _ _ _ _ _ a M D hM i j`. Establish `e : Formalism.YangianSpanCharacter.F.blk (E1 M * ((D - 1)⁻¹ • (D • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) (SlopeTestRemainingChoices S A)) - Pf (SlopeTestRemainingChoices S A)))) i j = Matrix.of fun k l => (D - 1)⁻¹ • (D • (if k = l then M i j else 0) - (if k = j then M i l …`. Use extensionality with `k l`. Conclude with `congrFun (congrFun (Fr4.blk_plus M D i j k l) _) _`. Rewrite using `[e, Fr4.ins_block a _ D (M i j) (fun l => M i l) j, Fr4.mul_rmatrix_apply, (hM i 0 j 0).eq, (hM i 1 j 1).eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem position_block_plus_alt : Formalism.FourierDecayAlt.Fr.CoordinateBlockCondition := by
   intro A S _ _ _ _ _ a M D hM i j
@@ -324,9 +316,9 @@ theorem position_block_plus_alt : Formalism.FourierDecayAlt.Fr.CoordinateBlockCo
   rw [e, Fr4.ins_block a _ D (M i j) (fun l => M i l) j, Fr4.mul_rmatrix_apply, (hM i 0 j 0).eq, (hM i 1 j 1).eq]
 
 /- English proof (translation)
-Introduce `A S _ _ _ _ _ b M d i j`. Establish `e : Formalism.YangianSpanCharacter.F.blk (((d - 1)⁻¹ • pt1 (d • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) (SlopeTestRemainingChoices S A)) - Pf (SlopeTestRemainingChoices S A))) * E1 M) i j = Matrix.of fun k l => (d - 1)⁻¹ • (d • (if k = l then M i j else 0) - (if k = i then M …`. Use extensionality with `k l`. Use `Fr4.blk_minus M d i j k l` as an intermediate fact. Simplify using `only [eq_comm (a := i) (b := k)] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `congrFun (congrFun this _) _`. Rewrite using `[e, Fr4.ins_block b _ d (M i j) (fun l => M l j) i, Fr4.Rht0_mul_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem position_block_minus : Formalism.FourierDecayAlt.Fr.TransposedCoordinateBlockCondition := by
   intro A S _ _ _ _ _ b M d i j
@@ -340,11 +332,9 @@ theorem position_block_minus : Formalism.FourierDecayAlt.Fr.TransposedCoordinate
   rw [e, Fr4.ins_block b _ d (M i j) (fun l => M l j) i, Fr4.Rht0_mul_apply]
 
 /- English proof (translation)
-Introduce `A S _ _ _ _ _ _ r L st w c`. Proceed by induction on `w with`. Consider the case `nil => intro _`. Conclude with `Fr4.start_free st c`. Consider the case `cons l w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hc`. Rewrite `hc` using `[List.map_cons, List.mem_cons, not_or]`. Establish `h` using `ih hc.2`. Use `show (if l.plus then (ofWord L st w).plus L l.intersection_update_fsHerm_neg_one l.pt else (ofWord L st w).minus L l.intersection_update_fsHerm_neg_one l.pt).Free c`. Use `split_ifs`.
-
-Conclude with `Fr4.plus_free L hc.1 h l.pt`. Conclude with `Fr4.minus_free L hc.1 h l.pt`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frame_free_of_new_position : Formalism.FourierDecayAlt.Fr.FrameFree := by
   intro A S _ _ _ _ _ _ r L st w c

@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Ω _ A n`. Proceed by induction on `n using induction_on_primes with`. Consider the case `zero => intro h`. Conclude with `absurd rfl h`. Consider the case `one => intro _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `at h`. Consider the case `prime_mul p a hp ih`. Introduce `hne h`. Establish `ha : a ≠ 0` using `right_ne_zero_of_mul hne`. Distinguish the cases in `hpv : A.valuation (p : Ω) < 1`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨p, hp, dvd_mul_right p a, hpv⟩`. Establish `hav : A.valuation (a : Ω) < 1`. Assume the negation of the conclusion as `hc`. Rewrite `h` using `[Nat.cast_mul, map_mul]`. Conclude with `absurd h (not_lt.mpr (one_le_mul (not_lt.mp hpv) (not_lt.mp hc)))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨t, ht, hd, hv⟩` from `ih ha hav`. Conclude with `⟨t, ht, hd.mul_left p, hv⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi55.val_prime_of_lt :
     ∀ {Ω : Type} [inst : Field Ω]

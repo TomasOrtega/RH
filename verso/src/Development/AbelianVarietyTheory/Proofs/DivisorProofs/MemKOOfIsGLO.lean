@@ -23,36 +23,36 @@ open GlobalTheory.OneSquareZeta
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[blk₁, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk₁_mul {m a a' : ℕ} (M : Matrix (Fin m) (Fin a) k) (X : Matrix (Fin a) (Fin (a + a')) k) :
     blk₁ (M * X) = M * blk₁ X := by
   ext i j; simp [blk₁, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[blk₂, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk₂_mul {m a a' : ℕ} (M : Matrix (Fin m) (Fin a) k) (X : Matrix (Fin a) (Fin (a + a')) k) :
     blk₂ (M * X) = M * blk₂ X := by
   ext i j; simp [blk₂, Matrix.mul_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `first | rfl | exact Matrix.GeneralLinearGroup.val_det_apply g`.
+A detailed English derivation is pending.
 -/
 theorem val_gdet {a : ℕ} (g : GL (Fin a) k) : ((gdet g : kˣ) : k) = g.val.det := by
   first | rfl | exact Matrix.GeneralLinearGroup.val_det_apply g
 
 /- English proof (translation)
-Establish `hv : valuation k g.val.det = 1` using `by rw [← val_gdet]; exact GlobalTheory.SplitFlip.valuation_gdet_of_mem_KO hg`. Conclude with `⟨fun h => by simp [h] at hv, ((GlobalTheory.SplitFlip.mem_KO_iff g).1 hg).1, hv⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isGLO_of_mem_KO {a : ℕ} {g : GL (Fin a) k} (hg : g ∈ KO k (Fin a)) : g.val.det ≠ 0 ∧ IsGLO g.val := by
   have hv : valuation k g.val.det = 1 := by rw [← val_gdet]; exact GlobalTheory.SplitFlip.valuation_gdet_of_mem_KO hg
   exact ⟨fun h => by simp [h] at hv, ((GlobalTheory.SplitFlip.mem_KO_iff g).1 hg).1, hv⟩
 
 /- English proof (translation)
-Take `⟨hM, hd⟩` from `h`. Set `A : Matrix (Fin a) (Fin a) 𝒪[k]` to `fun i j => ⟨g.val i j, hM i j⟩`. Establish `e : (algebraMap 𝒪[k] k).mapMatrix A = g.val` using `rfl`. Establish `hu : IsUnit A.det`. Use `(Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one.2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.map_det, e, hd]`. Take `⟨u, hu'⟩` from `(Matrix.isUnit_iff_isUnit_det A).2 hu`. Use `⟨u, Units.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(algebraMap 𝒪[k] k).mapMatrix u.val = g.val`. Rewrite using `[hu', e]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_KO_of_isGLO {a : ℕ} (g : GL (Fin a) k) (h : IsGLO g.val) : g ∈ KO k (Fin a) := by
   obtain ⟨hM, hd⟩ := h
@@ -67,7 +67,7 @@ theorem mem_KO_of_isGLO {a : ℕ} (g : GL (Fin a) k) (h : IsGLO g.val) : g ∈ K
   rw [hu', e]
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [GlobalTheory.SplitWeil.cball, Set.mem_setOf_eq, Matrix.mul_apply] at hY ⊢`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_mul' ((Valuation.mem_integer_iff _ _).1 (hM i l)) (hY l j)).trans_eq (one_mul _)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_cball {n m p : ℕ} {s : kˣ} {M : Matrix (Fin n) (Fin m) k} {Y : Matrix (Fin m) (Fin p) k}
     (hM : ∀ i j, M i j ∈ 𝒪[k]) (hY : ∀ i j, Y i j ∈ GlobalTheory.SplitWeil.cball s) :
@@ -81,9 +81,9 @@ theorem mul_mem_cball {n m p : ℕ} {s : kˣ} {M : Matrix (Fin n) (Fin m) k} {Y 
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Establish `h0 : ∀ g : Matrix (Fin a) (Fin a) k, stdA ν ϖ c a a' (g * X) = 0`. Introduce `g`. Unfold `stdA`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨h, -⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `h (by rw [blk₁_mul, Matrix.det_mul, hX, mul_zero])`. Simplify using `[bigF, shellSum, shell, h0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bigF_stdA_zero (ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ) (X : Matrix (Fin a) (Fin (a + a')) k)
     (hX : (blk₁ X).det = 0) : bigF (haarVol (KO k (Fin a))) ϖ ν (stdA ν ϖ c a a') X = 0 := by
@@ -96,37 +96,33 @@ theorem bigF_stdA_zero (ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ) (X : Matr
   simp [bigF, shellSum, shell, h0]
 
 /- English proof (translation)
-Use `set N : ℂ := (Fintype.card (Fin (a + a')) : ℂ) / 2 with hN`. Use `set Y := (g₁⁻¹).val * blk₂ X with hY`. Use `set C : ℂ := (((ν (gdet g₁))⁻¹ : ℂˣ) : ℂ) * apow (gdet g₁) (-N) * Set.indicator {M : Matrix (Fin a) (Fin a') k | ∀ i j, M i j ∈ cball (ϖ ^ c)} 1 Y with hC`. Use `set S : Set (GL (Fin a) k) := (fun g => g * g₁) ⁻¹' (KO k (Fin a) : Set (GL (Fin a) k)) with hSdef`. Establish `hSm : @MeasurableSet (GL (Fin a) k) Units.instMeasurableSpace S`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `letI : MeasurableSpace (GL (Fin a) k) := Units.instMeasurableSpace`. Use `haveI : BorelSpace (GL (Fin a) k) := borel_GL`. Conclude with `(isOpen_KO.preimage (continuous_mul_right _)).measurableSet`. Establish `hS1 : (haarVol (KO k (Fin a))).real S = 1`. Simplify using `[hSdef, Measure.real, measure_preimage_mul_right, haarVol_self isOpen_KO le_rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hint : ∀ g : GL (Fin a) k, stdA ν ϖ c a a' (g.val * X) * (ν (gdet g) : ℂ) * apow (gdet g) N = S.indicator (fun _ => C) g`. Introduce `g`. Establish `h1 : blk₁ (g.val * X) = (g * g₁).val` using `by rw [blk₁_mul, Units.val_mul, hg₁]`. Establish `h2 : blk₂ (g.val * X) = (g * g₁).val * Y`. Rewrite using `[blk₂_mul, hY, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hg : g ∈ S`. Rewrite using `[Set.indicator_of_mem hg]`. Establish `hκ : g * g₁ ∈ KO k (Fin a)` using `hg`. Take `⟨hdet, hglo⟩` from `isGLO_of_mem_KO hκ`. Establish `hv : valuation k ((gdet (g * g₁) : kˣ) : k) = 1` using `GlobalTheory.SplitFlip.valuation_gdet_of_mem_KO hκ`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : (g * g₁)⁻¹ ∈ KO k (Fin a)` using `inv_mem hκ`. Establish `hYiff : (∀ i j, ((g * g₁).val * Y) i j ∈ cball (ϖ ^ c)) ↔ ∀ i j, Y i j ∈ cball (ϖ ^ c)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e : Y = ((g * g₁)⁻¹).val * ((g * g₁).val * Y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[e]`. Conclude with `mul_mem_cball ((GlobalTheory.SplitFlip.mem_KO_iff _).1 hinv).1 h`. Conclude with `mul_mem_cball ((GlobalTheory.SplitFlip.mem_KO_iff _).1 hκ).1`. Establish `hap : apow (gdet g) N = apow (gdet g₁) (-N)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `: gdet g = gdet (g * g₁) * (gdet g₁)⁻¹` using `by rw [gdet_mul]; group`. Rewrite using `[this, apow_mul, apow_of_valuation_eq_one hv, one_mul, apow_inv]`. Unfold `stdA`. Distinguish the cases in `hc : ∀ i j, Y i j ∈ cball (ϖ ^ c)`. Establish `hcond : (blk₁ (g.val * X)).det ≠ 0 ∧ IsGLO (blk₁ (g.val * X)) ∧ ∀ i j, blk₂ (g.val * X) i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[h1, h2]`. Conclude with `⟨hdet, hglo, hYiff.2 hc⟩`. Establish `hmk : Units.mk0 _ hcond.1 = gdet g * gdet g₁`. Rewrite using `[← gdet_mul]; exact Units.ext (by rw [Units.val_mk0, val_gdet, h1])`. Rewrite using `[dif_pos hcond, hC, Set.indicator_of_mem (show Y ∈ {M : Matrix (Fin a) (Fin a') k | ∀ i j, M i j ∈ cball (ϖ ^ c)} from hc), Pi.one_apply, mul_one, hmk, hap, map_mul, mul_inv]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`. Establish `h3` using `(ν (gdet g)).ne_zero`. Take the linear combination `((ν (gdet g₁) : ℂ))⁻¹ * apow (gdet g₁) (-N) * inv_mul_cancel₀ h3`. Establish `hneg : ¬ ((blk₁ (g.val * X)).det ≠ 0 ∧ IsGLO (blk₁ (g.val * X)) ∧ ∀ i j, blk₂ (g.val * X) i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c))`. Introduce and unpack `⟨-, -, h⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `h` using `[h2]`. Conclude with `hc (hYiff.1 h)`. Rewrite using `[dif_neg hneg, hC, Set.indicator_of_notMem (show Y ∉ {M : Matrix (Fin a) (Fin a') k | ∀ i j, M i j ∈ cball (ϖ ^ c)} from hc)]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hneg : ¬ ((blk₁ (g.val * X)).det ≠ 0 ∧ IsGLO (blk₁ (g.val * X)) ∧ ∀ i j, blk₂ (g.val * X) i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c))`. Introduce and unpack `⟨-, hglo, -⟩`. Rewrite `hglo` using `[h1]`. Conclude with `hg (mem_KO_of_isGLO _ hglo)`. Unfold `stdA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[dif_neg hneg, zero_mul, zero_mul]`. Establish `hshell : ∀ m : {m : Fin a → ℤ // Antitone m}, shell (haarVol (KO k (Fin a))) ϖ ν N (fun M => stdA ν ϖ c a a' (M * X)) m.1 = (haarVol (KO k (Fin a))).real (shellSet ϖ m.1 ∩ S) • C`. Introduce `m`. Rewrite using `[shell]`. Repeatedly rewrite using `[hint]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `setIntegral_indicator (μ := haarVol (KO k (Fin a))) (s := shellSet ϖ m.1) (f := fun _ => C) hSm`. Rewrite using `[e1, setIntegral_const]`. Take `⟨⟨m₀, hm₀⟩, hmem, huniq⟩` from `exists_unique_shell hϖ g₁⁻¹`. Establish `hsub : S ⊆ shellSet ϖ m₀`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, y, hy, e⟩` from `mem_shellSet.1 hmem`. Use `mem_shellSet.2 ⟨g * g₁ * x, mul_mem hg hx, y, hy, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[bigF, shellSum, finsum_eq_single _ ⟨m₀, hm₀⟩]`. Rewrite using `[hshell, Set.inter_eq_right.2 hsub, hS1, one_smul]`.
-
-Introduce `m hm`. Rewrite using `[hshell]`. Establish `: shellSet ϖ m.1 ∩ S = ∅`. Use `Set.eq_empty_of_forall_notMem fun g ⟨hg1, hg2⟩ => hm (huniq m ?_)` and prove the remaining obligations. Take `⟨x, hx, y, hy, e⟩` from `mem_shellSet.1 hg1`.
-
-Use `mem_shellSet.2 ⟨(g * g₁)⁻¹ * x, mul_mem (inv_mem hg2) hx, y, hy, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bigF_stdA_eq (ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ) (hϖ : IsUnif ϖ) (X : Matrix (Fin a) (Fin (a + a')) k)
     (g₁ : GL (Fin a) k) (hg₁ : g₁.val = blk₁ X) :
@@ -226,7 +222,7 @@ end GlobalTheory.StdPairZeta
 open GlobalTheory.StdPairZeta in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν ϖ c a a' hϖ`. Conclude with `⟨fun X hX => bigF_stdA_zero ν ϖ c a a' X hX, fun X g₁ hg₁ => bigF_stdA_eq ν ϖ c a a' hϖ X g₁ hg₁⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.StdPairZeta.bigF_stdA : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ), IsUnif ϖ →

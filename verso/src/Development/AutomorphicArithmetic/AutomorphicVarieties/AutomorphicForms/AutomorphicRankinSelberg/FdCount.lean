@@ -4,23 +4,23 @@ open MeasureTheory Set UpperHalfPlane
 open scoped MatrixGroups ENNReal
 
 /- English proof (translation)
-Introduce `hN`. Unfold `UpperTheory.V.Af.Rs.FdNull at hN`. Unfold `UpperTheory.V.Af.Rs.FdCount`. Use `haveI : Countable (Matrix (Fin 2) (Fin 2) ℤ) := inferInstanceAs (Countable (Fin 2 → Fin 2 → ℤ))`. Use `haveI : Countable SL(2, ℤ) := inferInstanceAs (Countable {A : Matrix (Fin 2) (Fin 2) ℤ // A.det = 1})`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnull : ∀ γ : SL(2, ℤ), volume ((fun z : ℍ => γ • z) ⁻¹' (ModularGroup.fd \ ModularGroup.fdo)) = 0`. Introduce `γ`. Establish `: (fun z : ℍ => γ • z) = fun z : ℍ => ((γ : GL (Fin 2) ℝ)) • z` using `rfl`. Rewrite using `[this, measure_preimage_smul]`. Conclude with `hN`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB` using `measure_iUnion_null hnull`. Rewrite using `[ae_iff]`. Use `measure_mono_null ?_ hB` and prove the remaining obligations. Introduce `z hz`. Assume the negation of the conclusion as `hzB`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [mem_iUnion, mem_preimage, not_exists] at hzB`. Take `⟨g, hg⟩` from `ModularGroup.exists_smul_mem_fd z`. Establish `hgo : g • z ∈ ModularGroup.fdo`. Assume the negation of the conclusion as `h`. Conclude with `hzB g ⟨hg, h⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : g ≠ -g`. Introduce `h`. Establish `h1 : (1 : SL(2, ℤ)) = -1`. Use `congrArg (fun A => A * g⁻¹) h` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun A : SL(2, ℤ) => (A : Matrix (Fin 2) (Fin 2) ℤ) 0 0) h1` as an intermediate fact. Simplify using `at this`. Apply `hz` to reduce the goal to its premises. Rewrite using `[tsum_eq_sum (s := {g, -g}) ?_]`. Rewrite using `[Finset.sum_pair hne]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hg' : (-g) • z ∈ ModularGroup.fd` using `by simpa using hg`. Rewrite using `[indicator_of_mem hg, indicator_of_mem hg', one_add_one_eq_two]`. Introduce `γ hγ`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hγ`. Apply `indicator_of_notMem` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hmem`. Establish `heq : γ • z = (γ * g⁻¹) • (g • z)`. Rewrite using `[smul_smul, inv_mul_cancel_right]`. Rewrite `hmem` using `[heq]`. Break down `ModularGroup.eq_one_or_neg_one_of_mem_fdo_mem_fd hgo hmem with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hγ.1 (mul_inv_eq_one.mp h)`. Apply `hγ.2` to reduce the goal to its premises. Rewrite `h` using `[mul_inv_eq_iff_eq_mul]`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Rs.fdCount :
     UpperTheory.V.Af.Rs.FdNull → UpperTheory.V.Af.Rs.FdCount := by

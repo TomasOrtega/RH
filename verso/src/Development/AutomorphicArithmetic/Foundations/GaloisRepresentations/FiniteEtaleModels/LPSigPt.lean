@@ -7,13 +7,13 @@ open UpperTheory.Gal.G3 (sp)
 open UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Introduce `I W Ω _`. Use `haveI : Unique (sp Ω) := inferInstanceAs (Unique (PrimeSpectrum Ω))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, x⟩ ⟨j, x'⟩ h`. Establish `h' : x ≫ Sigma.ι (fun _ : I => W) i = x' ≫ Sigma.ι (fun _ : I => W) j` using `h`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (Sigma.ι (fun _ : I => W) i) (x default) = (Sigma.ι (fun _ : I => W) j) (x' default)`. Use `congrArg (fun f : sp Ω ⟶ _ => f default) h'` as an intermediate fact. Simplify using `using this`. Establish `e2` using `(sigmaι_eq_iff _ _ _ _ _).mp e`. Take `⟨rfl⟩ : i = j` from `congrArg Sigma.fst e2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: x = x'` using `(cancel_mono (Sigma.ι (fun _ : I => W) i)).mp h'`. Rewrite using `[this]`. Introduce `y`. Take `⟨i, w, hw⟩` from `(sigmaOpenCover fun _ : I => W).exists_eq (y default)`. Establish `hr : Set.range y ⊆ Set.range (Sigma.ι (fun _ : I => W) i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[Subsingleton.elim p default]`. Conclude with `⟨w, hw⟩`. Conclude with `⟨(i, IsOpenImmersion.lift (Sigma.ι (fun _ : I => W) i) y hr), IsOpenImmersion.lift_fac _ _ _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.lSigPt_holds :
     LSigPt := by

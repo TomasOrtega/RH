@@ -12,7 +12,7 @@ open GlobalTheory.LiftLeaf GlobalTheory.TypeLeaf Formalism.BasicNotions Formalis
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact ((hL w (A.lpZero w) (A.lpZero w) c 0 hc).2.2).symm`. Consider the case `cons k L ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, ih, (hL w _ _ c 0 hc).1, (hL w _ (A.lpZero w) c _ hc).2.1]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem foldr_lpSum_lpTw_lpChar (hL : CharSum N A) {w : PlE H} (x c : A.LP w) (hc : A.lpDim c = 1)
     (s : ℝ) (L : List ℝ) :
@@ -24,7 +24,7 @@ private theorem foldr_lpSum_lpTw_lpChar (hL : CharSum N A) {w : PlE H} (x c : A.
     rw [List.foldr_cons, List.foldr_cons, ih, (hL w _ _ c 0 hc).1, (hL w _ (A.lpZero w) c _ hc).2.1]
 
 /- English proof (translation)
-Unfold `spehLoc`. Simplify using `only [A.locG_tw]`. Conclude with `foldr_lpSum_lpTw_lpChar N A hL (A.locG p.π w) (A.locG χ w) (A.locG_dim χ w) _ _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spehLoc_twist (hL : CharSum N A) (p : Part A.CG) (χ : A.CG 1) (w : PlE H) :
     spehLoc N A ⟨p.a, A.tw p.π χ, p.d⟩ w = A.lpChar (spehLoc N A p w) (A.locG χ w) := by
@@ -33,9 +33,9 @@ theorem spehLoc_twist (hL : CharSum N A) (p : Part A.CG) (χ : A.CG 1) (w : PlE 
   exact foldr_lpSum_lpTw_lpChar N A hL (A.locG p.π w) (A.locG χ w) (A.locG_dim χ w) _ _
 
 /- English proof (translation)
-Establish `hχ : A.lpDim (A.locG χ w) = 1` using `A.locG_dim χ w`. Proceed by induction on `S with`. Consider the case `nil => exact ((hL w (A.lpZero w) (A.lpZero w) (A.locG χ w) 0 hχ).2.2).symm`. Consider the case `cons p S ih`. Express the relevant statement in the definitionally equal form `A.lpSum (spehLoc N A ⟨p.a, A.tw p.π χ, p.d⟩ w) (isoLoc N A (twistIso N A S χ) w) = A.lpChar (A.lpSum (spehLoc N A p w) (isoLoc N A S w)) (A.locG χ w)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[spehLoc_twist N A hL p χ w, ih, (hL w _ _ _ 0 hχ).1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isoLoc_twist (hL : CharSum N A) (S : List (Part A.CG)) (χ : A.CG 1) (w : PlE H) :
     isoLoc N A (twistIso N A S χ) w = A.lpChar (isoLoc N A S w) (A.locG χ w) := by
@@ -48,7 +48,7 @@ theorem isoLoc_twist (hL : CharSum N A) (S : List (Part A.CG)) (χ : A.CG 1) (w 
     rw [spehLoc_twist N A hL p χ w, ih, (hL w _ _ _ 0 hχ).1]
 
 /- English proof (translation)
-Proceed by induction on `S with`. Consider the case `nil => exact A.lpSum_comm _ _`. Consider the case `cons p S ih`. Express the relevant statement in the definitionally equal form `A.lpSum (spehLoc N A p w) (isoLoc N A (S ++ [q]) w) = A.lpSum (A.lpSum (spehLoc N A p w) (isoLoc N A S w)) (spehLoc N A q w)`. Rewrite using `[ih, A.lpSum_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isoLoc_append_singleton (S : List (Part A.CG)) (q : Part A.CG) (w : PlE H) :
     isoLoc N A (S ++ [q]) w = A.lpSum (isoLoc N A S w) (spehLoc N A q w) := by
@@ -60,7 +60,7 @@ theorem isoLoc_append_singleton (S : List (Part A.CG)) (q : Part A.CG) (w : PlE 
     rw [ih, A.lpSum_assoc]
 
 /- English proof (translation)
-Introduce `D hL i Sig Sig' _ _ h w hw`. Rewrite using `[isoLoc_twist D.nd D.naut hL, isoLoc_twist D.nd D.naut hL, isoLoc_append_singleton, isoLoc_append_singleton, h w hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : ∀ (D : D7), CharSum D.nd D.naut → ∀ i : D.nd.Loc, LocCongr D.nd D.naut i := by
   intro D hL i Sig Sig' _ _ h w hw

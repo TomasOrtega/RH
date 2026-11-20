@@ -28,19 +28,15 @@ namespace GlobalTheory.Hk3.LabDetRows
 open GlobalTheory.Hk3 GlobalTheory.Hk3.LabDet
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hC SF hSF c c' hc hc' hs P hP hcP`. Take `⟨-, hgood, hoff, -⟩` from `GlobalTheory.T.theta_lift_levels_good_primes_properties R F hC.lev`. Take `⟨n, hβ⟩` from `hC.lev.βY 0 (by have := D.R.two_le_m; omega)`. Establish `hlev` using `fun (P : Pl D.host.E) (hP : Good R A.μ0 P) => GlobalTheory.T.level_operators_at_prime_off_level_datum (Yc D 0) (R.βY 0) (R.ΛY 0) ((D.host.g 0 * D.host.g 1) ^ n) (R.dat0 R.triv) hβ P (by`. Rewrite using `[Nat.cast_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => (hgood A.μ0 P hP).1 (P.isPrime.mem_of_pow_mem _ h))`. Use the proof step `(by`. Introduce `PP hPP`. Use `hP PP (hPP.imp id ?_)` and prove the remaining obligations. Introduce `h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd h (Finset.notMem_empty _))`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hc`. Take `⟨x', hx', hx0'⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hc'`. Establish `inj : Function.Injective R.HE.e` using `hC.models.HE.1`. Establish `hu : R.HE.e x ≠ 0` using `fun h => hx0 (inj (by rw [h, map_zero]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : R.HE.e x' ≠ 0` using `fun h => hx0' (inj (by rw [h, map_zero]))`. Establish `hp` using `(LabDet.mem_partFull _ _ _ _ _ _ _).1 (Submodule.mem_comap.1 hx)`. Establish `hp'` using `(LabDet.mem_partFull _ _ _ _ _ _ _).1 (Submodule.mem_comap.1 hx')`. Establish `hP' : Good R A.μ0 (Formalism.DivisionValues.conjPl P)` using `(hgood _ P hP).2.1`. Establish `hcc : Formalism.DivisionValues.conjPl (Formalism.DivisionValues.conjPl P) = P` using `Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_of_split (rRep (R.MY 0)) P hcP _ _ hu hu' (fun k hk => mult_lev _ _ _ _ _ hp.1 k ((hlev P hP).1 k hk).1 ((hlev P hP).1 k hk).2) (fun k hk => mult_lev _ _ _ _ _ hp'.1 k ((hlev P hP).1 k hk).1 ((hlev P hP).1 k hk).2) (fun d => c P (dualLab d)) (fun d => c' P (dualLab d)) (fun d …`. Rewrite using `[opOf_single, sum_rRep]`. Conclude with `hp.2 _ _ _ (((hlev P hP).2.1 SF d _).2 ⟨(hoff SF hSF P).2 hP, sphOp_rep hd⟩))`. Use the proof step `(fun d hd => by`. Rewrite using `[opOf_single, sum_rRep]`.
-
-Conclude with `hp'.2 _ _ _ (((hlev P hP).2.1 SF d _).2 ⟨(hoff SF hSF P).2 hP, sphOp_rep hd⟩))`. Use the proof step `(fun d hd => by`. Rewrite using `[opOf_single, sum_rRep]`. Conclude with `hp.2 _ _ _ (((hlev _ hP').2.1 SF d _).2 ⟨(hoff SF hSF _).2 hP', sphOp_rep hd⟩))`. Use the proof step `(fun d hd => by`.
-
-Rewrite using `[opOf_single, sum_rRep]`. Conclude with `hp'.2 _ _ _ (((hlev _ hP').2.1 SF d _).2 ⟨(hoff SF hSF _).2 hP', sphOp_rep hd⟩))`. Use the proof step `(hs P hP hcP) (hs _ hP' (by rw [hcc]; exact fun h => hcP h.symm))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_eq_of_split : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ SF, GlobalTheory.Hk3.IsSF R SF → ∀ (c c' : Pl D.host.E → List ℤ → ℂ), GlobalTheory.Hk3.EEc R SF c ≠ ⊥ → GlobalTheory.Hk3.EEc R SF c' ≠ ⊥ → (∀ P, GlobalTheory.Hk3.Good R A.μ0 P → Formalism.DivisionValues.conjPl P ≠ P → ∀ k ≤ (Yc D 0).rank, c P (dualLab (splitLab (Yc D 0).rank k)) = c' P (dualLab (splitLab (Yc D 0).rank k))) → ∀ P, GlobalTheory.Hk3.Good R A.μ0 P → Formalism.DivisionValues.conjPl P ≠ P → ∀ d, GlobalTheory.Hk3.IsLab (Yc D 0) P d → c P (dualLab d) = c' P (dualLab d) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hC SF hSF c c' hc hc' hs P hP hcP

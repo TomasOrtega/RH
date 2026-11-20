@@ -9,11 +9,11 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 namespace GlobalTheory.SiegLoc
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `h`. Establish `ha : (a : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (left_ne_zero_of_mul hm)`. Establish `hk : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (right_ne_zero_of_mul hm)`. Establish `: zeta a = zeta (a * k) ^ k`. Unfold `zeta`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_mem hz k`.
+A detailed English derivation is pending.
 -/
 theorem zeta_mem_coeff_of_dvd {F : IntermediateField ℚ ℂ} {a m : ℕ} (hm : m ≠ 0) (h : a ∣ m) (hz : zeta m ∈ F) :
     zeta a ∈ F := by
@@ -30,31 +30,27 @@ theorem zeta_mem_coeff_of_dvd {F : IntermediateField ℚ ℂ} {a m : ℕ} (hm : 
   exact pow_mem hz k
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c n R _ b ω hn hd hω hb hloc`. Use `letI : Algebra (𝓞 c.F) R := b.toAlgebra`. Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`. Establish `hn0 : n ≠ 0` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hinj : Function.Injective ω`. Use `letI : Algebra R c.F := ω.toAlgebra`. Use `haveI := hω.2.2`. Conclude with `IsFractionRing.injective R c.F`. Set `f : R →+* ℂ` to `(c.F.val.toRingHom).comp ω`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hf : Function.Injective f` using `Subtype.val_injective.comp hinj`. Establish `hfb : ∀ x : 𝓞 c.F, f (b x) = ((x : c.F) : ℂ)` using `fun x => by`. Use `RingHom.congr_fun hb x` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Use `show ((ω (b x) : c.F) : ℂ) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Establish `hM' : l.M' ≠ 0` using `Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'`. Establish `hz : zeta n ∈ c.F` using `zeta_mem_coeff_of_dvd hM' (hd.trans (Nat.dvd_lcm_left _ _)) c.zeta_mem`. Establish `hzi : IsIntegral ℤ (⟨zeta n, hz⟩ : c.F)`. Establish `h1 : IsPrimitiveRoot (⟨zeta n, hz⟩ : c.F) n` using `IsPrimitiveRoot.of_map_of_injective (f := c.F.val.toRingHom) (Complex.isPrimitiveRoot_exp n hn0) Subtype.val_injective`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.isIntegral (Nat.pos_of_ne_zero hn0)`. Take `⟨u, hu⟩ : IsUnit (algebraMap (𝓞 c.F) R (n : 𝓞 c.F))` from `IsLocalization.Away.algebraMap_isUnit _`. Rewrite `hu` using `[map_natCast]`. Establish `hfu : f ((u⁻¹ : Rˣ) : R) = (n : ℂ)⁻¹`. Apply `eq_inv_of_mul_eq_one_right` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[← map_natCast f n, ← hu, ← map_mul, Units.mul_inv, map_one]`. Establish `hle : cycAway n ≤ f.range`. Unfold `cycAway`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `x (rfl | rfl)`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨b ⟨_, hzi⟩, hfb _⟩`. Conclude with `⟨_, hfu⟩`. Set `e : R ≃+* f.range` to `RingEquiv.ofBijective f.rangeRestrict ⟨fun x y h => hf (show f x = f y from congrArg (fun t : f.range => (t : ℂ)) h), f.rangeRestrict_surjective⟩`. Set `κ : cycAway n →+* R` to `e.symm.toRingHom.comp (Subring.inclusion hle)`. Establish `hκ : ∀ x, f (κ x) = (x : ℂ)` using `fun x => congrArg Subtype.val (e.apply_symm_apply (Subring.inclusion hle x))`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨κ, hκ, ?_⟩` and prove the remaining obligations. Use `letI : Algebra (cycAway n) R := κ.toAlgebra`. Set `v : cycAway n` to `⟨(n : ℂ)⁻¹, Subring.subset_closure (Or.inr rfl)⟩`. Establish `hv : κ v = ((u⁻¹ : Rˣ) : R)` using `hf (by rw [hκ, hfu])`. Take `⟨S, hS⟩ : (⊤ : Submodule ℤ (𝓞 c.F)).FG` from `Module.Finite.fg_top`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Use `⟨⟨S.image b, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Establish `hbx : ∀ x : 𝓞 c.F, b x ∈ Submodule.span (cycAway n) ((S.image b : Finset R) : Set R)`. Introduce `x`. Establish `hx : x ∈ Submodule.span ℤ (S : Set (𝓞 c.F))` using `hS ▸ Submodule.mem_top`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span (by rw [Finset.coe_image]; exact ⟨y, hy, rfl⟩)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hy hz`. Consider the case `smul a y _ hy => rw [map_zsmul]`. Conclude with `zsmul_mem hy a`. Introduce `r _`. Take `⟨k, x, hx⟩` from `IsLocalization.Away.surj (S := R) (n : 𝓞 c.F) r`.
-
-Rewrite `hx` using `[map_natCast, ← hu]`. Establish `hr : r = (v ^ k) • b x` using `by show r = κ (v ^ k) * b x`. Establish `hx' : r * (u : R) ^ k = b x` using `hx`. Rewrite using `[map_pow, hv, ← hx', mul_left_comm, ← mul_pow, Units.inv_mul, one_pow, mul_one]`. Rewrite using `[hr]`.
-
-Conclude with `Submodule.smul_mem _ _ (hbx x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cycAway_finite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l) (n : ℕ) (R : Type) [CommRing R] (b : 𝓞 c.F →+* R) (ω : R →+* c.F), 3 ≤ n → n ∣ l.M → IsDedFrac ω → ω.comp b = algebraMap (𝓞 c.F) c.F → @IsLocalization.Away (𝓞 c.F) _ (n : 𝓞 c.F) R _ b.toAlgebra → ∃ κ : cycAway n →+* R, (∀ x, ((ω (κ x) : c.F) : ℂ) = (x : ℂ)) ∧ κ.Finite := by
   intro E _ _ _ H l c n R _ b ω hn hd hω hb hloc

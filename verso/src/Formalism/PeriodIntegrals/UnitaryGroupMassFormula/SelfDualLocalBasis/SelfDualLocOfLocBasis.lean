@@ -9,13 +9,13 @@ noncomputable section
 namespace PI.SelfDualLoc.W
 
 /- English proof (translation)
-The claim follows from `selfDualLoc_of sigInt hN (spanTop_of hN) hL dualBasis unitLoc`.
+A detailed English derivation is pending.
 -/
 theorem selfDualLoc_of_steps (hN : Nondeg) (hL : LocBasis) : PI.SelfDualLoc :=
   selfDualLoc_of sigInt hN (spanTop_of hN) hL dualBasis unitLoc
 
 /- English proof (translation)
-The claim follows from `selfDualLoc_of_steps nondeg hL`.
+A detailed English derivation is pending.
 -/
 theorem selfDualLoc_of_locBasis (hL : LocBasis) : PI.SelfDualLoc :=
   selfDualLoc_of_steps nondeg hL

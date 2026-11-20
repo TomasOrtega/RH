@@ -10,7 +10,7 @@ namespace Formalism.TwoAdicCyclotomicDecomposition
 namespace UnitConjugation
 
 /- English proof (translation)
-Establish `h1 : ‖z‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one hz hm`. Rewrite using `[Complex.inv_def, Complex.normSq_eq_norm_sq, h1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma conj_eq_inv_of_pow_eq_one {z : ℂ} {m : ℕ} (hm : m ≠ 0) (hz : z ^ m = 1) :
     starRingEnd ℂ z = z⁻¹ := by
@@ -19,7 +19,7 @@ lemma conj_eq_inv_of_pow_eq_one {z : ℂ} {m : ℕ} (hm : m ≠ 0) (hz : z ^ m =
   simp
 
 /- English proof (translation)
-Establish `hζ0 : ζ ≠ 0` using `hζ.ne_zero (NeZero.ne m)`. Establish `e : ζ ^ k = ζ⁻¹ ↔ ζ ^ k * ζ = 1` using `⟨fun h => by rw [h, inv_mul_cancel₀ hζ0], fun h => eq_inv_of_mul_eq_one_left h⟩`. Rewrite using `[e, ← pow_succ, hζ.pow_eq_one_iff_dvd, ← ZMod.natCast_eq_zero_iff]`. Use `push_cast`. Conclude with `add_eq_zero_iff_eq_neg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 lemma pow_eq_inv_iff {K : Type*} [Field K] {m : ℕ} [NeZero m] {ζ : K}
     (hζ : IsPrimitiveRoot ζ m) (k : ℕ) : ζ ^ k = ζ⁻¹ ↔ (k : ZMod m) = -1 := by
@@ -33,7 +33,7 @@ lemma pow_eq_inv_iff {K : Type*} [Field K] {m : ℕ} [NeZero m] {ζ : K}
 variable {n q d : ℕ} {L : Type} [Field L] [NumberField L] {ζ a b : L}
 
 /- English proof (translation)
-Introduce `h0`. Rewrite `ha` using `[h0, zero_pow two_ne_zero, zero_eq_neg]`. Conclude with `hq.ne' (by exact_mod_cast ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ne_zero_of_sq (hq : 0 < q) (ha : a ^ 2 = -(q : L)) : a ≠ 0 := by
   intro h0
@@ -41,11 +41,11 @@ lemma ne_zero_of_sq (hq : 0 < q) (ha : a ^ 2 = -(q : L)) : a ≠ 0 := by
   exact hq.ne' (by exact_mod_cast ha)
 
 /- English proof (translation)
-Use `set z := φ a with hzdef`. Establish `hz : z ^ 2 = -(q : ℂ)`. Rewrite using `[hzdef, ← map_pow, ha, map_neg, map_natCast]`. Establish `h1 : (starRingEnd ℂ z) ^ 2 = z ^ 2`. Rewrite using `[← map_pow, hz, map_neg, map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h2 | h2` into its components or cases. It suffices to derive a contradiction. Establish `hre` using `Complex.conj_eq_iff_re.1 h2`. Establish `h3 : ((z.re ^ 2 : ℝ) : ℂ) = ((-(q : ℝ) : ℝ) : ℂ)` using `by push_cast; rw [hre]; exact hz`. Establish `h4` using `Complex.ofReal_injective h3`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (0 : ℝ) < q` using `by exact_mod_cast hq`. Use polynomial arithmetic with `[sq_nonneg z.re]`. Conclude with `h2`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma phi_conj (hq : 0 < q) (ha : a ^ 2 = -(q : L)) (φ : L →+* ℂ) :
     starRingEnd ℂ (φ a) = -φ a := by
@@ -65,13 +65,11 @@ lemma phi_conj (hq : 0 < q) (ha : a ^ 2 = -(q : L)) (φ : L →+* ℂ) :
   · exact h2
 
 /- English proof (translation)
-Establish `ha0` using `ne_zero_of_sq hq ha`. Establish `hsq : σ a ^ 2 = a ^ 2`. Rewrite using `[← map_pow, ha, map_neg, map_natCast]`. Unfold `sgn`. Use `split_ifs with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h; exact absurd h (by decide)`. Introduce `h`. It suffices to derive a contradiction. Establish `h3 : (2 : L) * a = 0` using `by linear_combination h - hc`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. Conclude with `two_ne_zero h4`. Conclude with `ha0 h4`. Simplify using `only [true_iff]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hsq with h1 | h1` into its components or cases.
-
-Conclude with `absurd h1 hc`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma sgn_eq_neg_one_iff (hq : 0 < q) (ha : a ^ 2 = -(q : L)) (σ : Gal(L/ℚ)) :
     sgn σ a = -1 ↔ σ a = -a := by
@@ -94,7 +92,7 @@ lemma sgn_eq_neg_one_iff (hq : 0 < q) (ha : a ^ 2 = -(q : L)) (σ : Gal(L/ℚ)) 
     · exact h1
 
 /- English proof (translation)
-Rewrite using `[← hζ.autToPow_spec ℚ σ, pow_eq_inv_iff hζ, ZMod.natCast_val, ZMod.cast_id, Units.ext_iff, Units.val_neg, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma autToPow_eq_neg_one_iff (hζ : IsPrimitiveRoot ζ (2 ^ n)) (σ : Gal(L/ℚ)) :
     hζ.autToPow ℚ σ = -1 ↔ σ ζ = ζ⁻¹ := by
@@ -102,14 +100,14 @@ lemma autToPow_eq_neg_one_iff (hζ : IsPrimitiveRoot ζ (2 ^ n)) (σ : Gal(L/ℚ
     Units.val_neg, Units.val_one]
 
 /- English proof (translation)
-Simplify using `only [galMap, JJ, Prod.mk.injEq]`.
+Simplify using the standard rewrite rules.
 -/
 lemma galMap_eq_JJ_iff (hζ : IsPrimitiveRoot ζ (2 ^ n)) (σ : Gal(L/ℚ)) :
     galMap hζ a b σ = JJ n ↔ hζ.autToPow ℚ σ = -1 ∧ sgn σ a = -1 ∧ sgn σ b = -1 := by
   simp only [galMap, JJ, Prod.mk.injEq]
 
 /- English proof (translation)
-Rewrite using `[← IntermediateField.adjoin_toSubalgebra_of_isAlgebraic (fun x _ => Algebra.IsAlgebraic.isAlgebraic x), h.2.2.2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma algAdjoin_eq_top (h : IsLayer n q d ζ a b) : Algebra.adjoin ℚ ({ζ, a, b} : Set L) = ⊤ := by
   rw [← IntermediateField.adjoin_toSubalgebra_of_isAlgebraic
@@ -117,15 +115,15 @@ lemma algAdjoin_eq_top (h : IsLayer n q d ζ a b) : Algebra.adjoin ℚ ({ζ, a, 
   rfl
 
 /- English proof (translation)
-Take `⟨hζ, ha, hb, _⟩` from `h`. Establish `hφζ : (φ ζ) ^ (2 ^ n) = 1` using `by rw [← map_pow, hζ.pow_eq_one, map_one]`. Establish `hconj : starRingEnd ℂ (φ ζ) = φ (ζ⁻¹)`. Rewrite using `[map_inv₀, conj_eq_inv_of_pow_eq_one (pow_ne_zero n two_ne_zero) hφζ]`. Rewrite using `[galMap_eq_JJ_iff, autToPow_eq_neg_one_iff, sgn_eq_neg_one_iff hq ha, sgn_eq_neg_one_iff hd hb]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨φ.injective ?_, φ.injective ?_, φ.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hx, hconj]`. Rewrite using `[hx, map_neg, phi_conj hq ha]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, map_neg, phi_conj hd hb]`. Introduce and unpack `⟨h1, h2, h3⟩`. Establish `heq : (φ.comp (σ : L →+* L)).toRatAlgHom = ((starRingEnd ℂ).comp φ).toRatAlgHom`. Apply `AlgHom.ext_of_adjoin_eq_top (algAdjoin_eq_top ⟨hζ, ha, hb, ‹_›⟩)` to reduce the goal to its premises. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.toRatAlgHom_apply, RingHom.coe_comp, Function.comp_apply]`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Express the relevant statement in the definitionally equal form `φ (σ x) = starRingEnd ℂ (φ x)`. Break down `hx with rfl | rfl | rfl` into its components or cases. Rewrite using `[h1, hconj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, map_neg, phi_conj hq ha]`. Rewrite using `[h3, map_neg, phi_conj hd hb]`. Introduce `x`. Use `congrArg (fun f => f x) heq` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_iff (hq : 0 < q) (hd : 0 < d) (h : IsLayer n q d ζ a b) (φ : L →+* ℂ)
     (σ : Gal(L/ℚ)) :
@@ -162,28 +160,26 @@ end UnitConjugation
 open UnitConjugation
 
 /- English proof (translation)
-Introduce `n q d _ hqd L _ _ ζ a b h φ σ`. Conclude with `conj_iff hqd.1.pos hqd.2.1.pos h φ σ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem layerConj_of (_hG : LayerGalois) : LayerConj := by
   intro n q d _ hqd L _ _ ζ a b h φ σ
   exact conj_iff hqd.1.pos hqd.2.1.pos h φ σ
 
 /- English proof (translation)
-Introduce `n q d hn hqd L _ _ ζ a b h`. Take `⟨hGal, hfin, _hmul, hbij⟩` from `hG n q d hn hqd L ζ a b h`. Establish `h1 : ∀ (φ : L →+* ℂ) (σ : Gal(L/ℚ)), (∀ x, φ (σ x) = starRingEnd ℂ (φ x)) ↔ galMap h.1 a b σ = JJ n` using `fun φ σ => hC n q d hn hqd L ζ a b h φ σ`. Establish `hq : 0 < q` using `hqd.1.pos`. Take `⟨σc, hσc⟩` from `hbij.2 (JJ n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hTC : IsTotallyComplex L`. Use `⟨fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[InfinitePlace.isComplex_iff, ComplexEmbedding.isReal_iff]`. Introduce `hw`. Establish `h2` using `RingHom.congr_fun hw a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h2` using `[ComplexEmbedding.conjugate_coe_eq, phi_conj hq h.2.1]`. Establish `h3 : (2 : ℂ) * w.embedding a = 0` using `by linear_combination -h2`. Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. Conclude with `two_ne_zero h4`. Conclude with `(map_ne_zero _).2 (ne_zero_of_sq hq h.2.1) h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hCM : IsCMField L`. Use `IsCMField.of_forall_isConj L (σ := σc) (fun φ => ?_)` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Conclude with `((h1 φ σc).2 hσc x).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : ∀ x : L, x ∈ maximalRealSubfield L ↔ ∀ σ : Gal(L/ℚ), galMap h.1 a b σ = JJ n → σ x = x`. Introduce `x`. Rewrite using `[mem_maximalRealSubfield_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx σ hσ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `φ : L →+* ℂ` to `Classical.choice (inferInstance : Nonempty _)`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[(h1 φ σ).2 hσ x]`. Conclude with `hx φ`. Introduce `hx φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(h1 φ σc).2 hσc x` as an intermediate fact. Rewrite `this` using `[hx σc hσc]`. Conclude with `this.symm`. Establish `h4 : Module.finrank ℚ (maximalRealSubfield L) = 2 ^ n`. Establish `h` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield L) L`.
-
-Rewrite `h` using `[Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield L) L, hfin, pow_succ]`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨hCM, h5, h4⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem layerReal_of (hG : LayerGalois) (hC : LayerConj) : LayerReal := by
   intro n q d hn hqd L _ _ ζ a b h

@@ -9,7 +9,7 @@ section Gen
 variable {K : Type} [Field K] [Fintype K] [DecidableEq K]
 
 /- English proof (translation)
-Use `⟨fun h => h.1, fun h => ⟨h, ?_⟩⟩` and prove the remaining obligations. Use `letI : Invertible (p : Matrix ι ι K) := Units.invertible p`. Use `Matrix.blockTriangular_inv_of_blockTriangular (M := (p : Matrix ι ι K)) (b := b) h` as an intermediate fact. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_parab_iff {ι : Type} [Fintype ι] [DecidableEq ι] {s : ℕ} (b : ι → Fin s) (p : GL ι K) :
     p ∈ parab K b ↔ IsBlockUT K b (p : Matrix ι ι K) := by
@@ -22,7 +22,7 @@ theorem mem_parab_iff {ι : Type} [Fintype ι] [DecidableEq ι] {s : ℕ} (b : �
 end Gen
 
 /- English proof (translation)
-Rewrite using `[← sum_card_fibers b]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [Fintype.card_congr (e j), Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_c_eq {r s : ℕ} (b : Fin r → Fin s) (c : Fin s → ℕ) (e : ∀ j, {i // b i = j} ≃ Fin (c j)) :
     ∑ j, c j = r := by
@@ -33,15 +33,15 @@ section Perm
 variable {r s : ℕ} (b : Fin r → Fin s) (c : Fin s → ℕ) (e : ∀ j, {i // b i = j} ≃ Fin (c j))
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem e_val_eq (j : Fin s) (i : Fin r) (h : b i = j) : (e (b i) ⟨i, rfl⟩).val = (e j ⟨i, h⟩).val := by
   subst h; rfl
 
 /- English proof (translation)
-Unfold `IsBaseBlockVar at h h'`. Break down `lt_trichotomy j j' with hl | hl | hl` into its components or cases. Use `offs_add_le c hl` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `hl`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `offs_add_le c hl` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem block_membership_unique {j j' : Fin s} {x : ℕ} (h : IsBaseBlockVar c j x) (h' : IsBaseBlockVar c j' x) : j = j' := by
   unfold IsBaseBlockVar at h h'
@@ -58,7 +58,7 @@ def tauFun (i : Fin r) : Fin r :=
     omega⟩
 
 /- English proof (translation)
-Unfold `IsBaseBlockVar tauFun`. Establish `h2` using `(e (b i) ⟨i, rfl⟩).isLt`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem block_membership_permutation (i : Fin r) : IsBaseBlockVar c (b i) (tauFun b c e i).val := by
   unfold IsBaseBlockVar tauFun
@@ -67,11 +67,11 @@ theorem block_membership_permutation (i : Fin r) : IsBaseBlockVar c (b i) (tauFu
   omega
 
 /- English proof (translation)
-Introduce `i i' h`. Establish `hb : b i' = b i` using `block_membership_unique c (h ▸ block_membership_permutation b c e i') (block_membership_permutation b c e i)`. Establish `hv : (e (b i) ⟨i, rfl⟩).val = (e (b i) ⟨i', hb⟩).val`. Establish `h3` using `congrArg Fin.val h`. Unfold `tauFun at h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only at h3`. Rewrite `h3` using `[e_val_eq b c e (b i) i' hb, hb]`. Use linear arithmetic over natural numbers and integers. Establish `h4 : e (b i) ⟨i, rfl⟩ = e (b i) ⟨i', hb⟩` using `Fin.ext hv`. Establish `h5` using `congrArg Subtype.val ((e (b i)).injective h4)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h5`.
+A detailed English derivation is pending.
 -/
 theorem tauFun_injective : Function.Injective (tauFun b c e) := by
   intro i i' h

@@ -15,7 +15,7 @@ section Generic
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Establish `h : rStab u ⊓ K = K` using `inf_eq_right.2 fun k hk => hu k hk`. Unfold `hint`. Rewrite using `[h, Subgroup.relIndex_self]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem hint_of_rinv (K : Subgroup G) (u : G → ℂ) (hu : ∀ k ∈ K, ∀ x, u (x * k) = u x) :
     hint K u = ∑ᶠ q : G ⧸ K, u q.out := by
@@ -25,7 +25,7 @@ private theorem hint_of_rinv (K : Subgroup G) (u : G → ℂ) (hu : ∀ k ∈ K,
   simp
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul K x`. Rewrite using `[hh]`. Conclude with `hu h h.2 x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem out_mk_eq (K : Subgroup G) (u : G → ℂ) (hu : ∀ k ∈ K, ∀ x, u (x * k) = u x) (x : G) :
     u ((x : G ⧸ K).out) = u x := by
@@ -34,9 +34,9 @@ private theorem out_mk_eq (K : Subgroup G) (u : G → ℂ) (hu : ∀ k ∈ K, �
   exact hu h h.2 x
 
 /- English proof (translation)
-Rewrite using `[hint_of_rinv K u hu, hint_of_rinv K _ fun c hc x => by show u (k * (x * c)) = u (k * x)`. Rewrite using `[← mul_assoc]`. Conclude with `hu c hc _]`. Combine the equalities or inequalities in the displayed calculation. Use `finsum_congr fun q => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hq : (MulAction.toPerm k : Equiv.Perm (G ⧸ K)) q = ((k * q.out : G) : G ⧸ K)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Use `show _ = u (((MulAction.toPerm k : Equiv.Perm (G ⧸ K)) q).out)`. Rewrite using `[hq, out_mk_eq K u hu]`. Use `_ = ∑ᶠ q : G ⧸ K, u q.out := finsum_comp_equiv (f := fun q' : G ⧸ K => u q'.out) (MulAction.toPerm k : Equiv.Perm (G ⧸ K))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hint_translate (K : Subgroup G) (u : G → ℂ) (hu : ∀ k ∈ K, ∀ x, u (x * k) = u x) (k : G) :
     hint K (fun z => u (k * z)) = hint K u := by
@@ -57,15 +57,13 @@ private theorem hint_translate (K : Subgroup G) (u : G → ℂ) (hu : ∀ k ∈ 
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Use `⟨?_, fun k hk x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `HasCompactSupport.of_support_subset_isCompact (hA.1.isCompact.mul hB.1.isCompact) fun y hy => ?_` and prove the remaining obligations. Establish `hy' : hint K (fun z => A z * B (z⁻¹ * y)) ≠ 0` using `hy`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, A z * B (z⁻¹ * y) ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hc`. Conclude with `hy' (by simp [hint, hc])`. Conclude with `Set.mem_mul.2 ⟨z, subset_tsupport _ (left_ne_zero_of_mul hz), z⁻¹ * y, subset_tsupport _ (right_ne_zero_of_mul hz), by group⟩`. Establish `hu : ∀ c ∈ K, ∀ z, (fun z => A z * B (z⁻¹ * x)) (z * c) = (fun z => A z * B (z⁻¹ * x)) z`. Introduce `c hc z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show A (z * c) * B ((z * c)⁻¹ * x) = A z * B (z⁻¹ * x)`. Rewrite using `[(hA.2 c hc z).2, _root_.mul_inv_rev, mul_assoc, (hB.2 c⁻¹ (K.inv_mem hc) _).1]`. Use `show hint K (fun z => A z * B (z⁻¹ * (k * x))) = hint K (fun z => A z * B (z⁻¹ * x))`. Rewrite using `[← hint_translate K (fun z => A z * B (z⁻¹ * x)) hu k⁻¹]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Use `show A z * B (z⁻¹ * (k * x)) = A (k⁻¹ * z) * B ((k⁻¹ * z)⁻¹ * x)`. Rewrite using `[(hA.2 k⁻¹ (K.inv_mem hk) z).1]`. Use `congr 2`. Use `group`.
-
-Establish `h : (fun z => A z * B (z⁻¹ * (x * k))) = fun z => A z * B (z⁻¹ * x)`. Use function extensionality and compare the values at `z`. Rewrite using `[← mul_assoc, (hB.2 k hk _).2]`. Use `show hint K (fun z => A z * B (z⁻¹ * (x * k))) = hint K (fun z => A z * B (z⁻¹ * x))`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isHecke_conv (K : Subgroup G) {A B : G → ℂ} (hA : IsHecke K A) (hB : IsHecke K B) :
     IsHecke K fun y => hint K fun z => A z * B (z⁻¹ * y) := by
@@ -97,13 +95,11 @@ private theorem isHecke_conv (K : Subgroup G) {A B : G → ℂ} (hA : IsHecke K 
     rw [h]
 
 /- English proof (translation)
-Use `⟨?_, fun k hk x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Break down `S.eq_empty_or_nonempty with rfl | ⟨d, hd⟩` into its components or cases. Conclude with `HasCompactSupport.of_support_subset_isCompact isCompact_empty (by simp)`. Use `HasCompactSupport.of_support_subset_isCompact (IsCompact.mul (IsCompact.mul hK (isCompact_singleton (x := d))) hK) fun y hy => ?_` and prove the remaining obligations. Establish `hyS : y ∈ S`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hy (Set.indicator_of_notMem h _)`. Take `⟨a, ha, b, hb, rfl⟩` from `ht d hd y hyS`. Conclude with `Set.mul_mem_mul (Set.mul_mem_mul ha rfl) hb`. Establish `: k * x ∈ S ↔ x ∈ S` using `⟨fun h => by simpa using hl k⁻¹ (K.inv_mem hk) _ h, hl k hk x⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hx : x ∈ S`. Simplify using `[hx, this]`. Simplify using `[hx, this]`. Establish `: x * k ∈ S ↔ x ∈ S` using `⟨fun h => by simpa using hr k⁻¹ (K.inv_mem hk) _ h, hr k hk x⟩`. Distinguish the cases in `hx : x ∈ S`.
-
-Simplify using `[hx, this]`. Simplify using `[hx, this]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isHecke_ind (K : Subgroup G) (hK : IsCompact (K : Set G)) (S : Set G)
     (hl : ∀ k ∈ K, ∀ x ∈ S, k * x ∈ S) (hr : ∀ k ∈ K, ∀ x ∈ S, x * k ∈ S)
@@ -129,13 +125,11 @@ private theorem isHecke_ind (K : Subgroup G) (hK : IsCompact (K : Set G)) (S : S
     · simp [hx, this]
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `one`. Conclude with `isHecke_ind K hK _ (fun k hk x hx => K.mul_mem hk hx) (fun k hk x hx => K.mul_mem hx hk) fun x hx y hy => ⟨y * x⁻¹, K.mul_mem hy (K.inv_mem hx), 1, K.one_mem, by group⟩`. Consider the case `gen i => exact hg i`. Consider the case `smul c a ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨HasCompactSupport.of_support_subset_isCompact ih.1.isCompact fun y hy => ?_, fun k hk x => ?_⟩` and prove the remaining obligations. Conclude with `subset_tsupport _ (right_ne_zero_of_mul hy)`. Use `show c * a.fn K g (k * x) = c * a.fn K g x ∧ c * a.fn K g (x * k) = c * a.fn K g x`. Rewrite using `[(ih.2 k hk x).1, (ih.2 k hk x).2]`. Conclude with `⟨rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b iha ihb`. Use `⟨iha.1.add ihb.1, fun k hk x => ?_⟩` and prove the remaining obligations. Use `show a.fn K g (k * x) + b.fn K g (k * x) = a.fn K g x + b.fn K g x ∧ a.fn K g (x * k) + b.fn K g (x * k) = a.fn K g x + b.fn K g x`. Rewrite using `[(iha.2 k hk x).1, (iha.2 k hk x).2, (ihb.2 k hk x).1, (ihb.2 k hk x).2]`. Conclude with `⟨rfl, rfl⟩`.
-
-Consider the case `mul a b iha ihb => exact isHecke_conv K iha ihb`.
+Supply the required witnesses or components. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem isHecke_fn {ι : Type} (K : Subgroup G) (hK : IsCompact (K : Set G)) (g : ι → G → ℂ)
     (hg : ∀ i, IsHecke K (g i)) (e : Ex ι) : IsHecke K (e.fn K g) := by
@@ -161,7 +155,7 @@ private theorem isHecke_fn {ι : Type} (K : Subgroup G) (hK : IsCompact (K : Set
 end Generic
 
 /- English proof (translation)
-Use `⟨HasCompactSupport.of_support_subset_isCompact (hf.1.isCompact.prod hg.1.isCompact) fun y hy => ⟨subset_tsupport _ (left_ne_zero_of_mul hy), subset_tsupport _ (right_ne_zero_of_mul hy)⟩, fun k hk x => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `Subgroup.mem_prod.1 hk`. Use `show f (k.1 * x.1) * g (k.2 * x.2) = _ ∧ f (x.1 * k.1) * g (x.2 * k.2) = _`. Rewrite using `[(hf.2 _ h1 _).1, (hf.2 _ h1 _).2, (hg.2 _ h2 _).1, (hg.2 _ h2 _).2]`. Conclude with `⟨rfl, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem isHecke_pair {G H : Type} [Group G] [Group H] [TopologicalSpace G] [TopologicalSpace H]
     [IsTopologicalGroup G] [IsTopologicalGroup H] (K₁ : Subgroup G) (K₂ : Subgroup H) {f : G → ℂ} {g : H → ℂ}
@@ -176,13 +170,13 @@ private theorem isHecke_pair {G H : Type} [Group G] [Group H] [TopologicalSpace 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `hKe : GlobalTheory.LFun.KGL w n = GLint (Fin n) (Ov E w)` using `rfl`. Establish `hc` using `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w n).2`. Unfold `Tj`. Use `isHecke_ind _ hc _ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `k hk x ⟨a, ha, b, hb, hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨k * a, (GLint (Fin n) (Ov E w)).mul_mem (hKe ▸ hk) ha, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, hx]`. Simplify using `only [mul_assoc]`. Introduce and unpack `k hk x ⟨a, ha, b, hb, hx⟩`. Use `⟨a, ha, b * k, (GLint (Fin n) (Ov E w)).mul_mem hb (hKe ▸ hk), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.val_mul, Units.val_mul, hx]`. Simplify using `only [mul_assoc]`. Introduce and unpack `x ⟨a, ha, b, hb, hx⟩ y ⟨c, hc', d, hd, hy⟩`. Use `⟨c * a⁻¹, hKe ▸ (GLint (Fin n) (Ov E w)).mul_mem hc' ((GLint (Fin n) (Ov E w)).inv_mem ha), b⁻¹ * d, hKe ▸ (GLint (Fin n) (Ov E w)).mul_mem ((GLint (Fin n) (Ov E w)).inv_mem hb) hd, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (a⁻¹).val * a.val = 1` using `Units.inv_mul a`. Establish `h2 : b.val * (b⁻¹).val = 1` using `Units.mul_inv b`. Simplify using `only [Units.val_mul]`. Rewrite using `[hx, hy]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem isHecke_Tj (n : ℕ) (w : Pl E) (ϖ : w.adicCompletion E) (j : ℕ) :
     IsHecke (GlobalTheory.LFun.KGL w n) (Tj ℂ n (Ov E w) ϖ j) := by
@@ -215,7 +209,7 @@ end UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
 open UpperTheory.V.Z.Tf.GlobalTraceComparison in
 /- English proof (translation)
-Introduce `E _ _ _ a b w e`. Conclude with `UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.isHecke_fn (K2 a b w) ((GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).2.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).2) _ (fun p => UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.isHecke_pair _ _ (UpperTheory.V.Z …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.exHecke2 :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.ExHecke2 := by

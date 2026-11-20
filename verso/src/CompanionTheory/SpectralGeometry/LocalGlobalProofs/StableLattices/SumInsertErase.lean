@@ -12,27 +12,27 @@ open CompanionTheory.D.DSIC
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Unfold `sg`. Rewrite using `[Finset.filter_insert, if_neg (lt_irrefl _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sg_insert (i : NC ε) (A : Finset (NC ε)) : sg i (insert i A) = sg i A := by
   unfold sg
   rw [Finset.filter_insert, if_neg (lt_irrefl _)]
 
 /- English proof (translation)
-Unfold `sg`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem conj_sg (i : NC ε) (A : Finset (NC ε)) : (starRingEnd ℂ) (sg i A) = sg i A := by
   unfold sg
   simp
 
 /- English proof (translation)
-Establish `h1 : (∑ A : Finset (NC ε), if i ∈ A then 0 else f (insert i A) A) = ∑ A ∈ univ.filter (fun A : Finset (NC ε) => i ∉ A), f (insert i A) A`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun A _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i ∈ A <;> simp [h]`. Rewrite using `[h1, ← Finset.sum_filter]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_nbij' (fun A => insert i A) (fun B => B.erase i) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `A _`. Simplify using the standard rewrite rules. Introduce `B _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `A hA`. Establish `hA' : i ∉ A` using `by simpa using hA`. Conclude with `Finset.erase_insert hA'`. Introduce `B hB`. Establish `hB' : i ∈ B` using `by simpa using hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.insert_erase hB'`. Introduce `A hA`. Establish `hA' : i ∉ A` using `by simpa using hA`. Simplify using `only [Finset.erase_insert hA']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_insert_erase (i : NC ε) (f : Finset (NC ε) → Finset (NC ε) → ℂ) :
     (∑ A : Finset (NC ε), if i ∈ A then 0 else f (insert i A) A) =
@@ -61,11 +61,11 @@ theorem sum_insert_erase (i : NC ε) (f : Finset (NC ε) → Finset (NC ε) → 
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
 /- English proof (translation)
-Unfold `ip`. Establish `key` using `sum_insert_erase i (fun B A => sg i B * ⟪T (w B), x A⟫_ℂ)`. Establish `hL : (∑ A, ⟪lift ε T (ann i w) A, x A⟫_ℂ) = ∑ A : Finset (NC ε), if i ∈ A then 0 else sg i (insert i A) * ⟪T (w (insert i A)), x A⟫_ℂ`. Use `Finset.sum_congr rfl fun A _ => ?_` and prove the remaining obligations. Distinguish the cases in `hA : i ∈ A`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[ann, hA]`. Simplify using `[ann, hA, conj_sg, sg_insert, mul_comm]`. Establish `hR : -(∑ A, ⟪w A, lift ε T' (cre i x) A⟫_ℂ) = ∑ B : Finset (NC ε), if i ∈ B then sg i B * ⟪T (w B), x (B.erase i)⟫_ℂ else 0`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun A _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hA : i ∈ A`. Simplify using `[cre, hA, h]`. Simplify using `[cre, hA]`. Rewrite using `[hL, hR, key]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem term_adj (i : NC ε) (T T' : Module.End ℂ V) (h : ∀ x y : V, ⟪T x, y⟫_ℂ = -⟪x, T' y⟫_ℂ) (w x : Ch ε V) :
     ip (lift ε T (ann i w)) x = -ip w (lift ε T' (cre i x)) := by
@@ -87,7 +87,7 @@ theorem term_adj (i : NC ε) (T T' : Module.End ℂ V) (h : ∀ x y : V, ⟪T x,
   rw [hL, hR, key]
 
 /- English proof (translation)
-Unfold `ip`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun A _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_apply, sum_inner]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ip_sum_left {ι : Type} (s : Finset ι) (f : ι → Ch ε V) (x : Ch ε V) :
     ip (∑ i ∈ s, f i) x = ∑ i ∈ s, ip (f i) x := by
@@ -97,7 +97,7 @@ theorem ip_sum_left {ι : Type} (s : Finset ι) (f : ι → Ch ε V) (x : Ch ε 
   rw [Finset.sum_apply, sum_inner]
 
 /- English proof (translation)
-Unfold `ip`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun A _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_apply, inner_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ip_sum_right {ι : Type} (s : Finset ι) (f : ι → Ch ε V) (w : Ch ε V) :
     ip w (∑ i ∈ s, f i) = ∑ i ∈ s, ip w (f i) := by
@@ -107,11 +107,11 @@ theorem ip_sum_right {ι : Type} (s : Finset ι) (f : ι → Ch ε V) (w : Ch ε
   rw [Finset.sum_apply, inner_sum]
 
 /- English proof (translation)
-Introduce `n ε V _ _ E hE w x`. Unfold `bd bdA cob`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply, ip_sum_left, ip_sum_right, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `term_adj i _ _ (fun a b => ?_) w x` and prove the remaining obligations. Establish `h` using `hE i.1.1 i.1.2 a b`. Establish `h1` using `i.2.1`. Establish `h2` using `i.2.2`. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.REAL.sgn, h1, h2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adj : CompanionTheory.D.DSIC.Adj := by
   intro n ε V _ _ E hE w x

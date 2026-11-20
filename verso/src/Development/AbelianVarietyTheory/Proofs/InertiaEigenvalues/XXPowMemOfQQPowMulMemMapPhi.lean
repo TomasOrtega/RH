@@ -7,15 +7,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 namespace GlobalTheory.Cyc.FrobIdeal
 
 /- English proof (translation)
-Establish `key : ∀ a : R, ∃ w : ι → R, (∀ j, w j ∈ 𝔟) ∧ a * x = ∑ j, e j * f (w j)`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨t, ht, rfl⟩` from `hx`. Introduce `a`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, rfl⟩` from `hspan a`. Use `⟨fun j => z j * t, fun j => 𝔟.mul_mem_left _ ht, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_mul, mul_assoc]`. Consider the case `zero => exact fun a => ⟨0, fun _ => 𝔟.zero_mem, by simp⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Introduce `a`. Take `⟨u, hu, h1⟩` from `hx a`. Take `⟨v, hv, h2⟩` from `hy a`. Use `⟨u + v, fun j => 𝔟.add_mem (hu j) (hv j), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add, h1, h2, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [Pi.add_apply, map_add, mul_add]`. Consider the case `smul c x _ hx`. Introduce `a`. Take `⟨u, hu, h1⟩` from `hx (a * c)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨u, hu, by rw [← h1, smul_eq_mul, mul_assoc]⟩`. Simplify using `using key 1`.
+A detailed English derivation is pending.
 -/
 theorem exists_coords_mem {R ι : Type} [CommRing R] [Fintype ι] (f : R →+* R) (e : ι → R)
     (hspan : ∀ y : R, ∃ z : ι → R, y = ∑ j, e j * f (z j)) (𝔟 : Ideal R) {x : R} (hx : x ∈ 𝔟.map f) :
@@ -44,11 +44,9 @@ theorem exists_coords_mem {R ι : Type} [CommRing R] [Fintype ι] (f : R →+* R
   simpa using key 1
 
 /- English proof (translation)
-Take `⟨z, hz, -⟩` from `hfree y`. Use `⟨z, ?_, hz⟩` and prove the remaining obligations. Take `⟨w, hw, h⟩` from `exists_coords_mem f e (fun y => (hfree y).exists) 𝔟 (hq _ hy)`. Establish `h2 : q * (x * y) = ∑ j, e j * f (x * z j)` using `by conv_lhs => rw [hz]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_mul, hx]; ring`. Establish `h3 : (fun j => x * z j) = w` using `(hfree _).unique h2 h`. Introduce `j`. Establish `: x * z j = w j` using `congrFun h3 j`. Rewrite using `[this]`.
-
-Conclude with `hw j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colon_le_map {R ι : Type} [CommRing R] [Fintype ι] (f : R →+* R) (e : ι → R)
     (hfree : ∀ y : R, ∃! z : ι → R, y = ∑ j, e j * f (z j)) (𝔞 𝔟 : Ideal R) (x q : R)
@@ -67,13 +65,13 @@ theorem colon_le_map {R ι : Type} [CommRing R] [Fintype ι] (f : R →+* R) (e 
   rw [this]; exact hw j
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `Ideal.mem_span_pair.1 hy`. Take `⟨r, hr⟩` from `Series.phi_X_mod l O`. Take `⟨t, ht⟩` from `hϖ`. Establish `hC : phi l O (PowerSeries.C ϖ) = PowerSeries.C ϖ` using `(phi l O).commutes ϖ`. Establish `hl : (l : PowerSeries O) = PowerSeries.C ϖ * PowerSeries.C t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← ht, map_natCast]`. Take `⟨d, hd⟩` from `sub_dvd_pow_sub_pow (phi l O PowerSeries.X) (PowerSeries.X ^ l) N`. Establish `h2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Take `⟨m, hm⟩ : ∃ m, l * N = m + (N + 1)` from `⟨l * N - (N + 1), by`. Establish `: 2 * N ≤ l * N` using `Nat.mul_le_mul_right N h2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `omega⟩`. Rewrite `hd` using `[← pow_mul, hm, pow_add]`. Use `nth_rewrite 2 [hr] at hd`. Rewrite `hd` using `[hl]`. Use `Ideal.mem_span_pair.2 ⟨phi l O a + phi l O b * PowerSeries.C t * r * d, phi l O b * PowerSeries.X ^ m, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[map_add, map_mul, map_mul, map_pow, hC]`. Take the linear combination `(-(phi l O b)) * hd`.
+A detailed English derivation is pending.
 -/
 theorem phi_mem_span (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O] (ϖ : O)
     (hϖ : ϖ ∣ (l : O)) (N : ℕ) (hN : 1 ≤ N) {y : PowerSeries O}
@@ -105,17 +103,17 @@ namespace GlobalTheory.Cyc
 open FrobIdeal
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ hl0 hlu s n H c _ _ 𝔞 hc hK i`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hdvd : ∀ a : O, ¬ IsUnit a → ϖ ∣ a` using `fun a ha => by`. Rewrite using `[← Ideal.mem_span_singleton, ← hϖ.maximalIdeal_eq]`. Conclude with `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hi`. Establish `main : ∀ (m : ℕ) (y : PowerSeries O), XX l O s ^ H * y ∈ 𝔞 (i + m) → y ∈ Ideal.span {PowerSeries.C ϖ, PowerSeries.X ^ (m + 1)}`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Rewrite `hy` using `[Nat.cast_zero, add_zero]`. Establish `hu : ¬ IsUnit y` using `fun hu => hi ((Ideal.mul_unit_mem_iff_mem _ hu).1 hy)`. Rewrite `hu` using `[PowerSeries.isUnit_iff_constantCoeff]`. Take `⟨t, ht⟩` from `hdvd _ hu`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.mem_span_pair.2 ⟨PowerSeries.C t, PowerSeries.mk fun p => PowerSeries.coeff (p + 1) y, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [PowerSeries.eq_shift_mul_X_add_const y]`. Rewrite using `[ht, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ m ih`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Take `⟨z, hz, rfl⟩` from `colon_le_map (phi l O : PowerSeries O →+* PowerSeries O) (fun j : Fin l => (1 + PowerSeries.X) ^ (j : ℕ)) (GlobalTheory.T.existsUnique_decomposition_one_add_X_pow_mul_phi l O hl0 hlu) (𝔞 (i + (m + 1 : ℕ))) (𝔞 (i + m)) (XX l O s ^ H) (QQ l O s ^ H) (by rw [map_pow, ← mul_pow]; exa …`. Establish `h` using `hK _ g hg`. Rewrite `h` using `[Nat.cast_succ, ← add_assoc, add_sub_cancel_right]`. Conclude with `h) hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (phi_mem_span l O ϖ (hdvd _ hlu) (m + 1) (Nat.le_add_left 1 m) (ih _ (hz j)))`. Take `⟨a, b, hab⟩` from `Ideal.mem_span_pair.1 (main c _ (Ideal.mul_mem_left _ _ (hc _)))`. Establish `h` using `congrArg (PowerSeries.coeff c) hab`. Rewrite `h` using `[map_add, PowerSeries.coeff_mul_C, PowerSeries.coeff_mul_X_pow', if_neg (by omega), PowerSeries.coeff_X_pow, if_pos rfl, add_zero]`. Conclude with `hϖ.not_isUnit (IsUnit.of_mul_eq_one_right _ h)`.
+A detailed English derivation is pending.
 -/
 theorem XX_pow_mem_of_QQ_pow_mul_mem_map_phi : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [Algebra ℤ_[l] O], (l : O) ≠ 0 → ¬ IsUnit (l : O) → ∀ (s n H c : ℕ) [NeZero n], 1 ≤ s → ∀ 𝔞 : ZMod n → Ideal (PowerSeries O), (∀ i, PowerSeries.X ^ c ∈ 𝔞 i) → (∀ i, ∀ g ∈ 𝔞 i, QQ l O s ^ H * g ∈ (𝔞 (i - 1)).map (phi l O)) → ∀ i, XX l O s ^ H ∈ 𝔞 i := by
   intro l _ O _ _ _ _ _ hl0 hlu s n H c _ _ 𝔞 hc hK i

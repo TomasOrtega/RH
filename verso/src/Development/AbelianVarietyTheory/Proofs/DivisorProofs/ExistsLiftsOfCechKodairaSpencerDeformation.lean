@@ -13,7 +13,7 @@ namespace GlobalTheory.CechKS
 variable {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A]
 
 /- English proof (translation)
-The claim follows from `(congrArg (P.x ≫ ·) (Category.comp_id _)).symm.trans P.w`.
+A detailed English derivation is pending.
 -/
 theorem cechPt_over (P : GPt A) : P.x ≫ A.hom = spMap (algebraMap K P.B) :=
   (congrArg (P.x ≫ ·) (Category.comp_id _)).symm.trans P.w
@@ -25,34 +25,34 @@ theorem cechPt_over (P : GPt A) : P.x ≫ A.hom = spMap (algebraMap K P.B) :=
     rw [Category.assoc, cechPt_over, ← Cris.spMap_comp, ← IsScalarTower.algebraMap_eq])
 
 /- English proof (translation)
-The claim follows from `fun _ _ ↦ h (Set.mem_univ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Pt.In.cst {P : GPt A} {U : A.left.Opens} (h : P.In U) : P.cst.In U :=
   fun _ _ ↦ h (Set.mem_univ _)
 
 /- English proof (translation)
-Apply the tactic sequence `ext r <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.algebraMap_eq_inl']`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cst_base (P : GPt A) :
     (dualMap (algebraMap K P.B)).comp (algebraMap K (DualNumber K)) = algebraMap K (DualNumber P.B) := by
   ext r <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.algebraMap_eq_inl']
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.algebraMap_eq_inl']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fst_comp_dualMap (P : GPt A) :
     (TrivSqZeroExt.fstHom K P.B P.B : DualNumber P.B →+* P.B).comp (algebraMap K (DualNumber P.B)) = algebraMap K P.B := by
   ext r; simp [TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.algebraMap_eq_inl']
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.algebraMap_eq_inl']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fst_comp_inl (P : GPt A) :
     (TrivSqZeroExt.fstHom K P.B P.B : DualNumber P.B →+* P.B).comp (algebraMap P.B (DualNumber P.B)) = RingHom.id _ := by
   ext r; simp [TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.algebraMap_eq_inl']
 
 /- English proof (translation)
-Use `show _ ≫ spMap _ ≫ P.x = P.x`. Rewrite using `[← Category.assoc, ← Cris.spMap_comp, fst_comp_inl, Cris.spMap_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cst_red (P : GPt A) :
     spMap (TrivSqZeroExt.fstHom K P.B P.B : DualNumber P.B →+* P.B) ≫ P.cst.x = P.x := by
@@ -60,7 +60,7 @@ theorem cst_red (P : GPt A) :
   rw [← Category.assoc, ← Cris.spMap_comp, fst_comp_inl, Cris.spMap_id, Category.id_comp]
 
 /- English proof (translation)
-Use `show TrivSqZeroExt.fst (valR (spMap _ ≫ P.x) U g) = _`. Rewrite using `[GlobalTheory.Points.valR_spMap_comp _ _ _ hU]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cst_val (P : GPt A) {U : A.left.Opens} (hU : P.In U) (g : Γ(A.left, U)) :
     TrivSqZeroExt.fst (valR P.cst.x U g) = valR P.x U g := by
@@ -69,9 +69,9 @@ theorem cst_val (P : GPt A) {U : A.left.Opens} (hU : P.In U) (g : Γ(A.left, U))
   simp [TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Establish `hin : ⊤ ≤ P.cst.trx v ⁻¹ᵁ U` using `hU.cst.tr hv`. Establish `hm` using `(P.cst.isTransl_trx v).map (TrivSqZeroExt.fstHom K P.B P.B : DualNumber P.B →+* P.B)`. Establish `e1 : (TrivSqZeroExt.fstHom K P.B P.B : DualNumber P.B →+* P.B).comp (algebraMap K P.cst.B) = algebraMap K P.B` using `fst_comp_dualMap P`. Rewrite `hm` using `[e1, cst_red]`. Rewrite using `[← hm.unique (P.isTransl_trx v), GlobalTheory.Points.valR_spMap_comp _ _ _ hin]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[dualMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cst_trx_val (P : GPt A) {v : epsR K ⟶ A} (hv : IsTangent v) {U : A.left.Opens} (hU : P.In U)
     (g : Γ(A.left, U)) : TrivSqZeroExt.fst (valR (P.cst.trx v) U g).snd = (valR (P.trx v) U g).snd := by
@@ -84,7 +84,7 @@ theorem cst_trx_val (P : GPt A) {v : epsR K ⟶ A} (hv : IsTangent v) {U : A.lef
   simp [dualMap]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [dualMap, RingHom.algebraMap_toAlgebra]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eps_eq (P : GPt A) :
     letI : Algebra (DualNumber K) (DualNumber P.B) := (dualMap (algebraMap K P.B)).toAlgebra
@@ -92,27 +92,25 @@ theorem eps_eq (P : GPt A) :
   ext <;> simp [dualMap, RingHom.algebraMap_toAlgebra]
 
 /- English proof (translation)
-Introduce `K _ A _ A' _ i L n u θ hu h`. Take `⟨J, W, c, lam, hcov, hWc, hlift, hdiff⟩` from `h`. Establish `hx : ∀ P : GPt A, letI : Algebra (DualNumber K) (DualNumber P.B)` using `(dualMap (algebraMap K P.B)).toAlgebra P.cst.x ≫ A.hom = spMap ((algebraMap (DualNumber K) (DualNumber P.B)).comp (algebraMap K (DualNumber K))) := fun P ↦ (cechPt_over P.cst).trans (congrArg spMap (cst_base P).symm)`. Use `⟨J, W, c, fun k P ↦ @lam k (DualNumber P.B) _ (dualMap (algebraMap K P.B)).toAlgebra P.cst.x, hcov, hWc, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI : Algebra (DualNumber K) (DualNumber P.B) := (dualMap (algebraMap K P.B)).toAlgebra`. Take `⟨h1, h2, -⟩` from `hlift k (DualNumber P.B) P.cst.x (hx P) hP.cst`. Use `⟨(congrArg (_ ≫ ·) (Category.comp_id _)).trans h1, ?_⟩` and prove the remaining obligations. Set `I` to `Ideal.span {algebraMap (DualNumber K) (DualNumber P.B) DualNumber.eps}`. Establish `hI : ∀ a ∈ I, (TrivSqZeroExt.fstHom K P.B P.B : DualNumber P.B →+* P.B) a = 0`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Rewrite using `[eps_eq P]`. Simplify using the standard rewrite rules. Establish `hq : (Ideal.Quotient.lift I _ hI).comp (Ideal.Quotient.mk I) = (TrivSqZeroExt.fstHom K P.B P.B : DualNumber P.B →+* P.B)` using `RingHom.ext fun _ ↦ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Category.assoc, ← Cris.spMap_comp, hq]`. Use `_ = spMap (Ideal.Quotient.lift I _ hI) ≫ spMap (Ideal.Quotient.mk I) ≫ P.cst.x ≫ i := by rw [h2]`. Use `_ = (spMap (TrivSqZeroExt.fstHom K P.B P.B : DualNumber P.B →+* P.B) ≫ P.cst.x) ≫ i := by`. Rewrite using `[← Category.assoc, ← Category.assoc, ← Cris.spMap_comp, hq, Category.assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Use `_ = P.x ≫ i := by rw [cst_red]`. Introduce `k P Q φ hP`. Use `letI : Algebra (DualNumber K) (DualNumber P.B) := (dualMap (algebraMap K P.B)).toAlgebra`. Use `letI : Algebra (DualNumber K) (DualNumber Q.B) := (dualMap (algebraMap K Q.B)).toAlgebra`. Set `ρ : DualNumber P.B →ₐ[DualNumber K] DualNumber Q.B` to `{ dualMap (φ.ρ : P.B →+* Q.B) with commutes' := fun r ↦ by`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `ext <;> simp [dualMap, RingHom.algebraMap_toAlgebra] }`. Establish `h3` using `(hlift k (DualNumber P.B) P.cst.x (hx P) hP.cst).2.2 (DualNumber Q.B) ρ`. Establish `hc : spMap (dualMap (φ.ρ : P.B →+* Q.B)) ≫ P.cst.x = Q.cst.x` using `by show spMap _ ≫ spMap _ ≫ P.x = spMap _ ≫ Q.x`. Rewrite using `[← φ.pt, ← Category.assoc, ← Category.assoc, ← Cris.spMap_comp, ← Cris.spMap_comp, dualMap_comp_algebraMap]`. Conclude with `h3.trans (congrArg _ hc)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k k' P U f hk hk' hU`. Use `letI : Algebra (DualNumber K) (DualNumber P.B) := (dualMap (algebraMap K P.B)).toAlgebra`. Establish `ht : ∀ a, IsTransl ((algebraMap (DualNumber K) (DualNumber P.B)).comp (algebraMap K (DualNumber K))) P.cst.x (u a) (P.cst.trx (u a))` using `fun a ↦ by`. Rewrite using `[show (algebraMap (DualNumber K) (DualNumber P.B)).comp (algebraMap K (DualNumber K)) = algebraMap K P.cst.B from cst_base P]`. Conclude with `P.cst.isTransl_trx (u a)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `hdiff k k' (DualNumber P.B) P.cst.x U f (fun a ↦ P.cst.trx (u a)) (hx P) (hk.cst.inf hk'.cst) hU.cst ht`. Use `hd.trans ?_` and prove the remaining obligations. Establish `hg : P.In (L.U (c k) ⊓ L.U (c k'))` using `(hk.mono (hWc k)).inf (hk'.mono (hWc k'))`. Establish `e1 : ∀ a, TrivSqZeroExt.fst (valR (P.cst.trx (u a)) _ (L.g (c k) (c k')).val).snd = (valR (P.trx (u a)) _ (L.g (c k) (c k')).val).snd` using `fun a ↦ cst_trx_val P (hu a) hg _`. Establish `e2 : ∀ a, TrivSqZeroExt.fst (valR (P.cst.trx (u a)) (i ⁻¹ᵁ U) ((i.app U).hom f)).snd = (valR (P.trx (u a)) (i ⁻¹ᵁ U) ((i.app U).hom f)).snd` using `fun a ↦ cst_trx_val P (hu a) hU _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e3 : TrivSqZeroExt.fst (valR P.cst.x _ (L.g (c k) (c k'))⁻¹.val) = valR P.x _ (L.g (c k) (c k'))⁻¹.val` using `cst_val P hg _`. Establish `e4 : ∀ r : K, TrivSqZeroExt.fst (((algebraMap (DualNumber K) (DualNumber P.B)).comp (algebraMap K (DualNumber K))) r) = algebraMap K P.B r`. Introduce `r`. Rewrite using `[show (algebraMap (DualNumber K) (DualNumber P.B)).comp (algebraMap K (DualNumber K)) = algebraMap K P.cst.B from cst_base P]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[eps_eq P]`. Establish `hS : ∀ S : DualNumber P.B, TrivSqZeroExt.inr (1 : P.B) * S = TrivSqZeroExt.inr S.fst` using `fun S ↦ by`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[hS]`. Use `congr 1`.
-
-Express the relevant statement in the definitionally equal form `(TrivSqZeroExt.fstHom K P.B P.B) _ = _`. Simplify using `only [map_sum, map_mul, TrivSqZeroExt.fstHom_apply]`. Simplify using `only [e1, e2, e3, e4, dlog, Finset.sum_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cechKS_lifts : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A] (A' : Over (Sp (DualNumber K))) [GrpObj A'] (i : A.left ⟶ A'.left) (L : LB A.left) (n : ℕ) (u : Fin n → (epsR K ⟶ A)) (θ : Matrix (Fin n) (Fin n) K), (∀ a, IsTangent (u a)) → IsCechKS A A' i L u θ → ∃ (J : Type) (W : J → A.left.Opens) (c : J → L.ι) (y : J → ∀ P : GPt A, Sp (DualNumber P.B) ⟶ A'.left), ⨆ k, W k = ⊤ ∧ (∀ k, W k ≤ L.U (c k)) ∧ (∀ (k : J) (P : GPt A), P.In (W k) → IsLift i P (y k P)) ∧ (∀ (k : J) (P Q : GPt A) (φ : P.Hom Q), P.In (W k) → spMap (dualMap (φ.ρ : P.B →+* Q.B)) ≫ y k P = y k Q) ∧ ∀ (k k' : J) (P : GPt A) (U : A'.left.Opens) (f : Γ(A'.left, U)), P.In (W k) → P.In (W k') → P.In (i ⁻¹ᵁ U) → valR (y k P) U f - valR (y k' P) U f = (TrivSqZeroExt.inr (∑ a, (∑ b, algebraMap K P.B (θ a b) * dlog L (u b) (c k) (c k') P) * (valR (P.trx (u a)) (i ⁻¹ᵁ U) ((i.app U).hom f)).snd) : DualNumber P.B) := by
   intro K _ A _ A' _ i L n u θ hu h

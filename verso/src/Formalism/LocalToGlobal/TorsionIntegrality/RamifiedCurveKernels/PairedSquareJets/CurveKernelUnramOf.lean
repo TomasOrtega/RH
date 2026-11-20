@@ -14,15 +14,15 @@ open Formalism.DworkPowerSeriesWeights (jetPair)
 open WeierstrassCurveSeries
 
 /- English proof (translation)
-Take `⟨hlp, hwp, hAx, hFG, -⟩` from `curveFrame K (unitBall K) W hc`. Establish `hPh : IsPh (wpReg W) s2 (logSer W) (Formalism.L2.Th1.B.phO s2 (wpReg W) (logSer W))` using `(phOIsPh K (wpReg W) (logSer W) s2 hlp.1 hlp.2.1).2`. Establish `hFr : Frame (unitBall K) (logSer W) (expSer W) (Formalism.L2.Th1.B.phO s2 (wpReg W) (logSer W))` using `⟨hlp, hFG, hPh.1⟩`. Establish `h2R : (2 : K)⁻¹ ∈ unitBall K` using `inv_mem_unitBall h2`. Establish `hal0 : al ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hal` using `[h, norm_zero]`. Conclude with `zero_ne_one hal`. Establish `halR : al ∈ unitBall K` using `hal.le`. Establish `halI : al⁻¹ ∈ unitBall K` using `inv_mem_unitBall hal`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDat` using `curveEndoR K (unitBall K) W hc ι neg xP yP al albar hE hx hy hNal halR halI hb`. Establish `hEal : EndInt (unitBall K) (logSer W) (expSer W) al` using `endIntFromDatum K (unitBall K) (wpReg W) (logSer W) (expSer W) (xS W) (W.b₂ / 12) ι neg xP _ _ al albar hlp hwp hAx h2R hDat`. Establish `hEbar : EndInt (unitBall K) (logSer W) (expSer W) albar`. Take `⟨-, -, -, -, hm, hadd, hmul⟩` from `ptClosure K (unitBall K) (logSer W) (expSer W) hlp hFG`. Establish `h` using `hadd _ _ (endInt_int (unitBall K) _ _ hlp hFG t) (hmul _ _ hm hEal)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : (t : K) + -1 * al = albar` using `by rw [← ht]; ring`. Rewrite `h` using `[he]`. Then use the resulting hypothesis. Establish `hNorm : PhNormAt (unitBall K) (logSer W) (expSer W) (Formalism.L2.Th1.B.phO s2 (wpReg W) (logSer W)) al albar` using `phNormFromDatum K (unitBall K) (wpReg W) s2 (logSer W) (expSer W) _ (xS W) (W.b₂ / 12) ι neg xP _ _ al albar hlp hPh hwp hAx h2R hDat hs`. Establish `hF1` using `weierstrass_biadditive_mod_equiv K W hc h2 s2`. Establish `hAdj : AdjAt (unitBall K) (logSer W) (expSer W) (Formalism.L2.Th1.B.phO s2 (wpReg W) (logSer W)) al albar` using `adjUnitNorm K (unitBall K) (logSer W) (expSer W) _ al albar ((Fintype.card ι : ℤ) + 1) hFr hF1 hal0 halI hEal hEbar (by rw [hNal]; push_cast; ring) hNorm`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : al ≠ albar`. Introduce `h`. Rewrite `hd` using `[h, sub_self, norm_zero]`. Conclude with `zero_ne_one hd`. Conclude with `(jetsUnramified K (unitBall K) (logSer W) (expSer W) _ al albar hFr hF1 (curveNegNorm K (unitBall K) W hc h2R s2) h2R hAdj (inv_mem_unitBall hd) hne).1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem curveJetsUnram (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K]
     (W : WeierstrassCurve K) (hc : CoeffIn (unitBall K) W) (h2 : ‖(2 : K)‖ = 1)
@@ -70,7 +70,7 @@ theorem curveJetsUnram (K : Type) [NormedField K] [IsUltrametricDist K] [CharZer
     (curveNegNorm K (unitBall K) W hc h2R s2) h2R hAdj (inv_mem_unitBall hd) hne).1
 
 /- English proof (translation)
-Introduce `K _ _ _ W hc h2 s2 al albar t ι _ neg xP yP hE hx hy hNal hal ht hd hb hs n _ c hcn G hG P hP`. Take `⟨hlp, -, -, -, hU⟩` from `curveFrame K (unitBall K) W hc`. Establish `hph0 : PowerSeries.constantCoeff (Formalism.L2.Th1.B.phO s2 (wpReg W) (logSer W)) = 0` using `(phOIsPh K (wpReg W) (logSer W) s2 hlp.1 hlp.2.1).2.1`. Conclude with `(hK K (logSer W) (expSer W) _ hlp hU hph0 (curveJetsUnram K W hc h2 s2 al albar t ι neg xP yP hE hx hy hNal hal ht hd hb hs) n c hcn G hG).2 P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem CurveKernelUnram_of (hK : KernelTwo) : CurveKernelUnram := by
   intro K _ _ _ W hc h2 s2 al albar t ι _ neg xP yP hE hx hy hNal hal ht hd hb hs n _ c hcn G hG P hP

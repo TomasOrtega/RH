@@ -9,7 +9,7 @@ open scoped TensorProduct ENNReal
 open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat GlobalTheory.Published
 
 /- English proof (translation)
-Introduce `E _ _ _ r G Λ hr hU hS v k hk`. Establish `h` using `Subgroup.relIndex_mul_relIndex _ _ _ (GlobalTheory.TamCnt.congG_anti (IsCMField.complexConj E).toAlgHom Gᵀ Λ v k) (GlobalTheory.TamCnt.congG_le_stabG (IsCMField.complexConj E).toAlgHom Gᵀ Λ v k)`. Rewrite using `[GlobalTheory.TamCnt.locCount_eq_relIndex, GlobalTheory.TamCnt.locCount_eq_relIndex, ← h, GlobalTheory.T.relIndex_congruence_subgroup_eq_local _ _ _ _ _ _ v k, GlobalTheory.T.relIndex_local_congruence_eq_absNorm_pow E r G Λ hr hU hS v k hk, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.TamCnt.locCount_succ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)), 2 ≤ r → Unr E → SelfDualLat G Λ → ∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (k : ℕ), 1 ≤ k → locCount (IsCMField.complexConj E).toAlgHom Gᵀ Λ v (k + 1) = locCount (IsCMField.complexConj E).toAlgHom Gᵀ Λ v k * Ideal.absNorm v.asIdeal ^ (r ^ 2 - 1) := by
   intro E _ _ _ r G Λ hr hU hS v k hk

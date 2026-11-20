@@ -33,9 +33,9 @@ def frameChg (M : MChart Z) {A : W.Opens} (hA : IsAffineOpen A) (hle : A ≤ p �
     ((B _ (tau hA)).map (tanEquiv h (tau hA)))
 
 /- English proof (translation)
-Establish `e : spMap (ev z A hz) ≫ tau hA = z` using `spMap_ev z hA hz`. Establish `e' : spMap (ev z A hz) ≫ tau hA ≫ p = z ≫ p` using `by rw [← Category.assoc, e]`. Use extensionality with `i j`. Establish `h1` using `(lieBasis M (tau hA ≫ p) (le_preimage_map p hle (tau_le hA le_rfl))).sum_toMatrix_smul_self ((B _ (tau hA)).map (tanEquiv h (tau hA))) j`. Establish `h2` using `congrArg (tanPull (G := Z.t.G) _ e') h1`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_sum]`. Simplify using `only [map_smulₛₗ, Module.Basis.map_apply, tanPull_tanEquiv h _ e e', hB _ _ _ _ _ e, tanPull_lieBasis M _ e' _ hM] at h2`. Rewrite using `[Module.Basis.toMatrix_apply, Module.Basis.map_apply, ← h2, Module.Basis.repr_sum_self]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frameChg_map (hB : ∀ (S S' : Type) [CommRing S] [CommRing S'] (φ : S →+* S') (x : Sp S ⟶ W) (x' : Sp S' ⟶ W)
       (e : spMap φ ≫ x = x') (j : Fin d), tanPull φ e (B S x j) = B S' x' j)
@@ -59,7 +59,7 @@ def frameUnit (M : MChart Z) {A : W.Opens} (hA : IsAffineOpen A) (hle : A ≤ p 
   (show IsUnit (rdet (frameChg h B M hA hle)) from isUnit_rdet_toMatrix _ _).unit
 
 /- English proof (translation)
-Rewrite using `[← frameChg_map h B hB M hA hle z hz hM, ← map_rdet]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_frameUnit (hB : ∀ (S S' : Type) [CommRing S] [CommRing S'] (φ : S →+* S') (x : Sp S ⟶ W) (x' : Sp S' ⟶ W)
       (e : spMap φ ≫ x = x') (j : Fin d), tanPull φ e (B S x j) = B S' x' j)
@@ -70,13 +70,13 @@ theorem ev_frameUnit (hB : ∀ (S S' : Type) [CommRing S] [CommRing S'] (φ : S 
   rfl
 
 /- English proof (translation)
-Establish `le` using `LB.wchart_le (detLie Z) (fun _ : PUnit => p) J PUnit.unit`. Establish `hc : ((detLie Z).pull p).U J ≤ ⨆ a : {A : W.Opens // IsAffineOpen A ∧ A ≤ ((detLie Z).pull p).U J}, a.1`. Introduce `x hx`. Take `⟨_, ⟨A, hA, rfl⟩, hxA, hle⟩` from `W.isBasis_affineOpens.exists_subset_of_mem_open hx (((detLie Z).pull p).U J).isOpen`. Conclude with `Opens.mem_iSup.2 ⟨⟨A, hA, hle⟩, hxA⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `compat : ∀ (a b : {A : W.Opens // IsAffineOpen A ∧ A ≤ ((detLie Z).pull p).U J}), ∀ x ∈ a.1 ⊓ b.1, gm (𝟙 W) x a.1 (frameUnit h B (J PUnit.unit) a.2.1 (a.2.2.trans le)) = gm (𝟙 W) x b.1 (frameUnit h B (J PUnit.unit) b.2.1 (b.2.2.trans le))`. Introduce `a b x hx`. Establish `e : res (inf_le_left : a.1 ⊓ b.1 ≤ a.1) (frameUnit h B (J PUnit.unit) a.2.1 (a.2.2.trans le)) = res inf_le_right (frameUnit h B (J PUnit.unit) b.2.1 (b.2.2.trans le))`. Use `Units.ext (ext_ev fun S _ z hz => ?_)` and prove the remaining obligations. Establish `ha` using `le_preimage_mono inf_le_left hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `le_preimage_mono inf_le_right hz`. Establish `hM` using `le_preimage_map p (a.2.2.trans le) ha`. Conclude with `((ev_res z _ hz ha _).trans (ev_frameUnit h B hB _ a.2.1 _ z ha hM)).trans ((ev_res z _ hz hb _).trans (ev_frameUnit h B hB _ b.2.1 _ z hb hM)).symm`. Use `congrArg (gm (𝟙 W) x _) e` as an intermediate fact. Rewrite `this` using `[gm_res _ x _ hx, gm_res _ x _ hx]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨s, hs⟩` from `glue_unit (X := W) (((detLie Z).pull p).U J) (fun a : {A : W.Opens // IsAffineOpen A ∧ A ≤ ((detLie Z).pull p).U J} => a.1) (fun a => a.2.2) hc (fun a => frameUnit h B (J PUnit.unit) a.2.1 (a.2.2.trans le)) compat`. Conclude with `⟨s, fun A hA hAJ => hs ⟨A, hA, hAJ⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_frameGlue (hB : ∀ (S S' : Type) [CommRing S] [CommRing S'] (φ : S →+* S') (x : Sp S ⟶ W) (x' : Sp S' ⟶ W)
       (e : spMap φ ≫ x = x') (j : Fin d), tanPull φ e (B S x j) = B S' x' j) (J : PUnit → MChart Z) :
@@ -108,13 +108,13 @@ theorem exists_frameGlue (hB : ∀ (S S' : Type) [CommRing S] [CommRing S'] (φ 
 
 include h in
 /- English proof (translation)
-Establish `le : ∀ J : ((detLie Z).pull p).ι, ((detLie Z).pull p).U J ≤ p ⁻¹ᵁ (J PUnit.unit).U` using `fun J => LB.wchart_le (detLie Z) (fun _ : PUnit => p) J PUnit.unit`. Use `choose s hs using exists_frameGlue h B hB`. Use `⟨⟨s⟩, fun J J' => Units.ext (ext_ev_loc fun q hq => ?_)⟩` and prove the remaining obligations. Take `⟨_, ⟨A, hA, rfl⟩, hqA, hle⟩` from `W.isBasis_affineOpens.exists_subset_of_mem_open hq (((detLie Z).pull p).U J ⊓ ((detLie Z).pull p).U J').isOpen`. Use `⟨A, hqA, fun S _ z hz hzA => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hAJ : A ≤ ((detLie Z).pull p).U J` using `fun x hx => (hle hx).1`. Establish `hAJ' : A ≤ ((detLie Z).pull p).U J'` using `fun x hx => (hle hx).2`. Establish `hJ` using `le_preimage_mono inf_le_left hz`. Establish `hJ'` using `le_preimage_mono inf_le_right hz`. Establish `hM` using `le_preimage_map p (le J) hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM'` using `le_preimage_map p (le J') hJ'`. Establish `vJ : ev z _ hJ (s J).val = rdet ((lieBasis (J PUnit.unit) (z ≫ p) hM).toMatrix ((B S z).map (tanEquiv h z)))` using `(ev_res z hAJ hzA hJ _).symm.trans ((congrArg (fun u => ev z A hzA (Units.val u)) (hs J A hA hAJ)).trans (ev_frameUnit h B hB _ hA _ z hzA hM))`. Establish `vJ' : ev z _ hJ' (s J').val = rdet ((lieBasis (J' PUnit.unit) (z ≫ p) hM').toMatrix ((B S z).map (tanEquiv h z)))` using `(ev_res z hAJ' hzA hJ' _).symm.trans ((congrArg (fun u => ev z A hzA (Units.val u)) (hs J' A hA hAJ')).trans (ev_frameUnit h B hB _ hA _ z hzA hM'))`. Establish `g` using `ev_pull_g (detLie Z) p z J J' hz (le_preimage_inf hM hM')`. Use `((ev_res z _ hz hJ _).trans vJ).trans (Eq.trans ?_ (map_mul (ev z _ hz) _ _).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (congrArg₂ (· * ·) (g.trans (ev_detChg _ _ _ hM hM' _)) ((ev_res z _ hz hJ' _).trans vJ')).symm` and prove the remaining obligations. Conclude with `(rdet_toMatrix_mul _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen_pull_detLie (hB : ∀ (S S' : Type) [CommRing S] [CommRing S'] (φ : S →+* S') (x : Sp S ⟶ W) (x' : Sp S' ⟶ W)
       (e : spMap φ ≫ x = x') (j : Fin d), tanPull φ e (B S x j) = B S' x' j) : ∃ t : LB.Gen ((detLie Z).pull p), t.IsGen := by
@@ -147,7 +147,7 @@ theorem exists_gen_pull_detLie (hB : ∀ (S S' : Type) [CommRing S] [CommRing S'
 end Frame
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Z hL W p G _ _ ψ h d B hB`. Take `⟨t, ht⟩` from `exists_gen_pull_detLie h B hB`. Rewrite using `[← CechPic.cls_pull hL p (pull_isLB hL p), CechPic.cls_eq_zero_iff]`. Conclude with `⟨t, ht⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pull_cls_detLie_eq_zero_of_frame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β)

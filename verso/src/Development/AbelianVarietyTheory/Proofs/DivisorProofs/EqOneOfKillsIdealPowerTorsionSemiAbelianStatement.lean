@@ -7,7 +7,7 @@ open CategoryTheory AlgebraicGeometry NumberField MonoidalCategory CartesianMono
 attribute [local instance] Over.cartesianMonoidalCategory CategoryTheory.Hom.group
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.IdealTorsion.eq_one_of_idealTorsion_comp_eq_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEqOneOfKillsIdealPowerTorsionSemiAbelian.lean&line=73#L73)
 -/

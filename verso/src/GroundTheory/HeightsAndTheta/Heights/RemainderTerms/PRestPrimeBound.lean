@@ -8,11 +8,9 @@ namespace GroundTheory.Heights₂.Heights
 namespace RestTerms
 
 /- English proof (translation)
-Introduce `f r a c B₀ hf hr ha hB`. Take `⟨_, hQex, hsame⟩` from `h₂ f r a c hf hr ha`. Take `⟨_, _, hother⟩` from `h₃ f r a c hf hr ha`. Use `⟨hQex, ?_⟩` and prove the remaining obligations. Introduce `Q hQ s e he p hp hBp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h₁ f r a c B₀ hf hr ha hB Q ?_ s e he p hp hBp` and prove the remaining obligations. Introduce `k hk2 hkN τ τ'`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Conclude with `hsame Q hQ k hk2 hkN τ'`.
-
-Conclude with `(hother Q hQ k hk2 hkN τ τ' h).2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem RestPrimeBound.proof (h₁ : RestPrimeBoundOfFactor.Statement)
     (h₂ : SameFactorBound.Statement) (h₃ : OtherFactorBound.Statement) :

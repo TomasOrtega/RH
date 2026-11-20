@@ -12,9 +12,9 @@ namespace GlobalTheory.KA.TameLim
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `haveI : Module.Finite ℤ_[l] c.O := c.fin`. Establish `hi : IsIntegral ℤ_[l] x`. Establish `h` using `(isIntegral_algHom_iff (c.O.val.restrictScalars ℤ_[l]) Subtype.val_injective).2 (Algebra.IsIntegral.isIntegral (⟨x, hx⟩ : c.O))`. Simplify using `using h`. Establish `hq : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `spectralValue (minpoly ℚ_[l] x) ≤ 1`. Rewrite using `[spectralValue_le_one_iff (minpoly.monic hq)]`. Introduce `k`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] hi, Polynomial.coeff_map]`. Conclude with `PadicInt.norm_le_one _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_mem (c : Coef l) {x : Qbar l} (hx : x ∈ c.O) : ‖x‖ ≤ 1 := by
   haveI : Module.Finite ℤ_[l] c.O := c.fin
@@ -30,11 +30,11 @@ theorem norm_le_one_of_mem (c : Coef l) {x : Qbar l} (hx : x ∈ c.O) : ‖x‖ 
   exact PadicInt.norm_le_one _
 
 /- English proof (translation)
-Break down `h with rfl | h` into its components or cases. Break down `Nat.eq_zero_or_pos e with rfl | he` into its components or cases. Simplify using `using c.O.one_mem`. Simplify `c.O.zero_mem` using `[zero_pow he.ne']`. Establish `hk : IsUnit ((k : ℤ_[l]))`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_def]`. Use `push_cast`. Rewrite using `[Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd Fact.out).mpr h`. Take `⟨u, hu⟩` from `hk.pow e`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : (((k : ℕ) : Qbar l) ^ e)⁻¹ = algebraMap ℤ_[l] (Qbar l) ((u⁻¹ : ℤ_[l]ˣ) : ℤ_[l])`. Rewrite using `[map_units_inv (algebraMap ℤ_[l] (Qbar l)) u, hu, map_pow, map_natCast]`. Rewrite using `[e1]`. Conclude with `c.O.algebraMap_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_pow_mem (c : Coef l) (e k : ℕ) (h : k = 0 ∨ ¬ l ∣ k) : (((k : ℕ) : Qbar l) ^ e)⁻¹ ∈ c.O := by
   rcases h with rfl | h
@@ -53,11 +53,9 @@ theorem inv_pow_mem (c : Coef l) (e k : ℕ) (h : k = 0 ∨ ¬ l ∣ k) : (((k :
     exact c.O.algebraMap_mem _
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Use `left haveI : NeZero (l ^ 0) := ⟨by simp⟩`. Use `ZMod.val_lt (x : ZMod (l ^ 0))` as an intermediate fact. Conclude with `Nat.lt_one_iff.mp (lt_of_lt_of_eq this (pow_zero l))`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `right`. Introduce `hd`. Establish `hc` using `ZMod.val_coe_unit_coprime x`. Establish `h2 : l ∣ Nat.gcd (x : ZMod (l ^ r)).val (l ^ r)` using `Nat.dvd_gcd hd (dvd_pow_self l (by omega))`. Rewrite `h2` using `[hc]`.
-
-Conclude with `hp.one_lt.ne' (Nat.dvd_one.mp h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_unit (r : ℕ) (x : (ZMod (l ^ r))ˣ) :
     (x : ZMod (l ^ r)).val = 0 ∨ ¬ l ∣ (x : ZMod (l ^ r)).val := by
@@ -75,9 +73,9 @@ theorem val_unit (r : ℕ) (x : (ZMod (l ^ r))ˣ) :
     exact hp.one_lt.ne' (Nat.dvd_one.mp h2)
 
 /- English proof (translation)
-Establish `e : a' * u' - a * u = a' * (u' - u) + (a' - a) * u` using `by ring`. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) ha').trans h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) hu).trans h1`.
+A detailed English derivation is pending.
 -/
 theorem mul_sub_mul_le (a a' u u' : Qbar l) (C : ℝ) (ha' : ‖a'‖ ≤ 1) (hu : ‖u‖ ≤ 1)
     (h1 : ‖a' - a‖ ≤ C) (h2 : ‖u' - u‖ ≤ C) : ‖a' * u' - a * u‖ ≤ C := by
@@ -92,51 +90,45 @@ end GlobalTheory.KA.TameLim
 namespace GlobalTheory.KA.TameLim
 
 /- English proof (translation)
-Establish `hq` using `GlobalTheory.norm_natCast_prime_qbar l`. Establish `hC : ∀ r : ℕ, (0 : ℝ) ≤ ‖((l : ℕ) : Qbar l) ^ r‖` using `fun r => norm_nonneg _`. Establish `ht0 : Filter.Tendsto (fun r : ℕ => ‖((l : ℕ) : Qbar l) ^ r‖) Filter.atTop (nhds 0)`. Simplify using `only [norm_pow]`. Conclude with `tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hzero : ∀ z : Qbar l, (∀ r, ‖z‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖) → z = 0` using `fun z hz => norm_le_zero_iff.mp (ge_of_tendsto' ht0 hz)`. Establish `n1 : ∀ {x : Qbar l}, x ∈ c.O → ‖x‖ ≤ 1` using `fun hx => norm_le_one_of_mem c hx`. Establish `hMle : ∀ s i j, ‖mat W s i j‖ ≤ 1` using `fun s i j => n1 (hWO s i j)`. Establish `hρle : ∀ s i j, ‖ρ s i j‖ ≤ 1` using `fun s i j => n1 (hρO s i j)`. Use `set Yr : ℕ → G ℚ Ω → Multiplicative (ZMod (l ^ n)) → Fin 2 → Qbar l := fun r s a => spec (η r) (fun s x => Yw r s (a, x)) s with hYr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hYr_apply : ∀ r s a i, Yr r s a i = ∑ x, η r x * Yw r s (a, x) i`. Introduce `r s a i`. Simplify using `only [hYr, spec, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Establish `hYrO : ∀ r s a i, Yr r s a i ∈ c.O`. Introduce `r s a i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hYr_apply]`. Conclude with `Subalgebra.sum_mem _ fun x _ => Subalgebra.mul_mem _ (hηO r x) (hYO r s (a, x) i)`. Establish `hslice : ∀ a r s, (fun x => Yw r s (a, x)) = push (Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom) (fun s x' => Yw (r + 1) s (a, x')) s`. Introduce `a r s`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hnc r s]`. Simplify using `only [push]`. Use `Finset.sum_nbij' (fun p => p.2) (fun x' => (a, x')) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.map, Prod.mk.injEq] at hp ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hp.2`. Introduce `x' hx'`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.map, Prod.mk.injEq, id] at hx' ⊢`. Apply the tactic sequence `first | exact hx' | exact ⟨rfl, hx'⟩`. Introduce `p hp`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.map, Prod.mk.injEq, id] at hp`. Conclude with `Prod.ext hp.1.symm rfl`. Introduce `x' _`. Both sides reduce to the same expression. Introduce `p hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.map, Prod.mk.injEq, id] at hp`. Rewrite using `[← hp.1]`. Establish `hstep : ∀ r s a i, ‖Yr (r + 1) s a i - Yr r s a i‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖`. Introduce `r s a i`. Conclude with `spec_cauchy l (fun r s x => Yw r s (a, x)) η (fun r s x i => n1 (hYO r s (a, x) i)) (fun r x => n1 (hηO r x)) (fun r s => hslice a r s) hηc r s i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hlim : ∀ s a i, ∃ v ∈ c.O, ∀ r, ‖v - Yr r s a i‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖` using `fun s a i => GlobalTheory.coef_limit l c (fun r => Yr r s a i) (fun r => hYrO r s a i) (fun r => hstep r s a i)`. Use `choose Y hYO' hYap using hlim`. Establish `happ : ∀ r s t a i, ‖Yr r (s * t) a i - (Yr r s a + mat W s *ᵥ Yr r t (a * ψ s)) i‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖`. Introduce `r s t a i`. Establish `key : Yr r (s * t) a - (Yr r s a + mat W s *ᵥ Yr r t (a * ψ s)) = ρ s *ᵥ ∑ x, (η r (x * cycMod ℚ Ω l r s) - η r x * (θ s : Qbar l)) • Yw r t (a * ψ s, x)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `h1 : Yr r (s * t) a = Yr r s a + ρ s *ᵥ ∑ x, η r x • Yw r t (a * ψ s, x * (cycMod ℚ Ω l r s)⁻¹)`. Simplify using `only [hYr, spec, hSh r s t, smul_add, Finset.sum_add_distrib, Matrix.mulVec_sum, Matrix.mulVec_smul, Prod.mk_mul_mk, MonoidHom.prod_apply, MonoidHom.inv_apply]`. Establish `hre : ∑ x, η r x • Yw r t (a * ψ s, x * (cycMod ℚ Ω l r s)⁻¹) = ∑ x, η r (x * cycMod ℚ Ω l r s) • Yw r t (a * ψ s, x)` using `Fintype.sum_equiv (Equiv.mulRight (cycMod ℚ Ω l r s)⁻¹) _ _ (fun x => by simp)`. Rewrite using `[h1, hre, hWρ s]`. Simplify using `only [hYr, spec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_mulVec, ← Matrix.mulVec_smul, add_sub_add_left_eq_sub, ← Matrix.mulVec_sub]`. Use `congr 1`. Simplify using `only [Finset.smul_sum, smul_smul, ← Finset.sum_sub_distrib, sub_smul, mul_comm (θ s : Qbar l)]`. Rewrite using `[← Pi.sub_apply, key]`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (hC r)` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[norm_mul]`. Use `le_trans (mul_le_of_le_one_left (norm_nonneg _) (hρle s i j)) ?_` and prove the remaining obligations. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (hC r)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Rewrite using `[norm_mul]`. Conclude with `le_trans (mul_le_of_le_one_right (norm_nonneg _) (n1 (hYO r t _ j))) (hηa r s x)`. Establish `hcoc : ShCoc (mat W) ψ Y`. Introduce `s t a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[← sub_eq_zero]`. Apply `hzero` to reduce the goal to its premises. Introduce `r`. Establish `e : Y (s * t) a i - (Y s a + mat W s *ᵥ Y t (a * ψ s)) i = (Y (s * t) a i - Yr r (s * t) a i) + (Yr r (s * t) a i - (Yr r s a + mat W s *ᵥ Yr r t (a * ψ s)) i) + (Yr r s a i - Y s a i) + (mat W s *ᵥ (Yr r t (a * ψ s) - Y t (a * ψ s))) i`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, Matrix.mulVec_sub, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `hM : ‖(mat W s *ᵥ (Yr r t (a * ψ s) - Y t (a * ψ s))) i‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.sub_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (hC r)` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[norm_mul, norm_sub_rev]`. Conclude with `le_trans (mul_le_of_le_one_left (norm_nonneg _) (hMle s i j)) (hYap t (a * ψ s) j r)`. Establish `h3 : ‖Yr r s a i - Y s a i‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[norm_sub_rev]`. Conclude with `hYap s a i r`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hYap _ _ _ r) (happ r s t a i))) h3)) hM)` and prove the remaining obligations. Establish `hcontY : ∀ x i, Continuous fun s => Y s x i`. Introduce `x i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hu : TendstoUniformly (fun r s => Yr r s x i) (fun s => Y s x i) Filter.atTop`. Rewrite using `[Metric.tendstoUniformly_iff]`. Introduce `ε hε`. Use `filter_upwards [ht0.eventually (gt_mem_nhds hε)] with r hr s`. Rewrite using `[dist_eq_norm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_le_of_lt (hYap s x i r) hr`. Use `hu.continuous (Filter.Frequently.of_forall fun r => ?_)` and prove the remaining obligations. Simplify using `only [hYr_apply]`. Conclude with `continuous_finset_sum _ fun x' _ => continuous_const.mul (hcont r (x, x') i)`. Take `⟨b', hb'K, φ, hφ, hφt⟩` from `(isCompact_univ_pi (fun _ : Fin 2 => GlobalTheory.Coef.isCompact_O l c)).tendsto_subseq (x := b) (fun r => Set.mem_univ_pi.mpr (hb r))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb'O : ∀ i, b' i ∈ c.O` using `fun i => Set.mem_univ_pi.mp hb'K i`. Establish `hsum : ∀ s, ∑ x, Y s x = P • y s + (mat W s *ᵥ b' - b')`. Introduce `s`. Use function extensionality and compare the values at `i`. Establish `hφ0 : Filter.Tendsto (fun k => ‖((l : ℕ) : Qbar l) ^ φ k‖) Filter.atTop (nhds 0)` using `ht0.comp hφ.tendsto_atTop`.
-
-Establish `h1 : Filter.Tendsto (fun k => (∑ x, Yr (φ k) s x) i) Filter.atTop (nhds ((∑ x, Y s x) i))`. Simplify using `only [Finset.sum_apply]`. Use `tendsto_finset_sum _ fun x _ => ?_` and prove the remaining obligations. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun k => ?_) hφ0` and prove the remaining obligations.
-
-Rewrite using `[norm_sub_rev]`. Conclude with `hYap s x i (φ k)`. Establish `hg : Continuous fun v : Fin 2 → Qbar l => (P • y s + (mat W s *ᵥ v - v)) i` using `by fun_prop`. Establish `h2 : Filter.Tendsto (fun k => (P • y s + (mat W s *ᵥ b (φ k) - b (φ k))) i) Filter.atTop (nhds ((P • y s + (mat W s *ᵥ b' - b')) i))` using `(hg.tendsto b').comp hφt`. Establish `h3 : Filter.Tendsto (fun k => (∑ x, Yr (φ k) s x) i - (P • y s + (mat W s *ᵥ b (φ k) - b (φ k))) i) Filter.atTop (nhds 0)`.
-
-Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Conclude with `squeeze_zero (fun _ => norm_nonneg _) (fun k => hrel (φ k) s i) hφ0`. Conclude with `sub_eq_zero.mp (tendsto_nhds_unique (h1.sub h2) h3)`. Conclude with `⟨Y, b', hcoc, hcontY, hYO', hb'O, hsum, fun r s x i => hYap s x i r⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem core (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : R2 Ω l) (c : Coef l) (n : ℕ)
     (η : ∀ r : ℕ, (ZMod (l ^ r))ˣ → Qbar l) (θ : G ℚ Ω →* (Qbar l)ˣ) (ρ : G ℚ Ω → Matrix (Fin 2) (Fin 2) (Qbar l))
@@ -288,7 +280,7 @@ end GlobalTheory.KA.TameLim
 namespace GlobalTheory.KA
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ W c e n χ θ ρ ψ Yw y P b hWO hWρ hρO hχO hχc hηa hSh hcont hYO hnc _ hb _ hrel`. Use `TameLim.core l Ω W c n (fun r x => ((((x : ZMod (l ^ r)).val : ℕ) : Qbar l) ^ e)⁻¹ * χ r x) θ ρ ψ Yw y P b hWO hWρ hρO (fun r x => Subalgebra.mul_mem _ (TameLim.inv_pow_mem c e _ (TameLim.val_unit r x)) (hχO r x)) (fun r x => ?_) hηa hSh hcont hYO hnc hb hrel` and prove the remaining obligations. Conclude with `TameLim.mul_sub_mul_le _ _ _ _ _ (TameLim.norm_le_one_of_mem c (TameLim.inv_pow_mem c e _ (TameLim.val_unit (r + 1) x))) (TameLim.norm_le_one_of_mem c (hχO r _)) (GlobalTheory.PowCong.powCong l e r x).1 (hχc r x)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tame_limit : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : R2 Ω l) (c : Coef l) (e n : ℕ) (χ : ∀ r : ℕ, (ZMod (l ^ r))ˣ → Qbar l) (θ : G ℚ Ω →* (Qbar l)ˣ) (ρ : G ℚ Ω → Matrix (Fin 2) (Fin 2) (Qbar l)) (ψ : G ℚ Ω →* Multiplicative (ZMod (l ^ n))) (Yw : ∀ r : ℕ, G ℚ Ω → Multiplicative (ZMod (l ^ n)) × (ZMod (l ^ r))ˣ → Fin 2 → Qbar l) (y : G ℚ Ω → Fin 2 → Qbar l) (P : Qbar l) (b : ℕ → Fin 2 → Qbar l), (∀ s i j, mat W s i j ∈ c.O) → (∀ s, mat W s = (θ s : Qbar l) • ρ s) → (∀ s i j, ρ s i j ∈ c.O) → (∀ r x, χ r x ∈ c.O) → (∀ r (x : (ZMod (l ^ (r + 1)))ˣ), ‖χ (r + 1) x - χ r ((Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom) x)‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖) → (∀ r s x, ‖(fun x : (ZMod (l ^ r))ˣ => ((((x : ZMod (l ^ r)).val : ℕ) : Qbar l) ^ e)⁻¹ * χ r x) (x * cycMod ℚ Ω l r s) - (fun x : (ZMod (l ^ r))ˣ => ((((x : ZMod (l ^ r)).val : ℕ) : Qbar l) ^ e)⁻¹ * χ r x) x * (θ s : Qbar l)‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖) → (∀ r, ShCoc ρ (ψ.prod (cycMod ℚ Ω l r)⁻¹) (Yw r)) → (∀ r x i, Continuous fun s => Yw r s x i) → (∀ r s x i, Yw r s x i ∈ c.O) → (∀ r s, Yw r s = push (Prod.map id (Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom)) (Yw (r + 1)) s) → P ∈ c.O → (∀ r i, b r i ∈ c.O) → (∀ s i, y s i ∈ c.O) → (∀ r s i, ‖(∑ a, spec (fun x : (ZMod (l ^ r))ˣ => ((((x : ZMod (l ^ r)).val : ℕ) : Qbar l) ^ e)⁻¹ * χ r x) (fun s x => Yw r s (a, x)) s) i - (P • y s + (mat W s *ᵥ b r - b r)) i‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖) → ∃ (Y : G ℚ Ω → Multiplicative (ZMod (l ^ n)) → Fin 2 → Qbar l) (b' : Fin 2 → Qbar l), ShCoc (mat W) ψ Y ∧ (∀ x i, Continuous fun s => Y s x i) ∧ (∀ s x i, Y s x i ∈ c.O) ∧ (∀ i, b' i ∈ c.O) ∧ (∀ s, ∑ x, Y s x = P • y s + (mat W s *ᵥ b' - b')) ∧ ∀ r s x i, ‖Y s x i - spec (fun x : (ZMod (l ^ r))ˣ => ((((x : ZMod (l ^ r)).val : ℕ) : Qbar l) ^ e)⁻¹ * χ r x) (fun s x' => Yw r s (x, x')) s i‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖ := by
   intro l _ Ω _ _ W c e n χ θ ρ ψ Yw y P b hWO hWρ hρO hχO hχc hηa hSh hcont hYO hnc _ hb _ hrel

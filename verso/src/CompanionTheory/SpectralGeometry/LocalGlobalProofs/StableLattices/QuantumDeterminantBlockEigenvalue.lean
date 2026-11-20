@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.RgTransport
 open CompanionTheory.RgExh CompanionTheory.RgExh.Dec CompanionTheory.RgExh.Dec.J Formalism.REAL ReciprocityTheory.ChartRestriction.DS GlobalTheory.SmGL
 
 /- English proof (translation)
-Introduce `a b c d`. Use `hE (e a) (e b) (e c) (e d)` as an intermediate fact. Simplify `this` using `only [he.eq_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem glRel_comp_inj {A : Type*} [Ring A] {m n : ℕ} {E : Fin n → Fin n → A} (hE : GlRel E)
     (e : Fin m → Fin n) (he : Function.Injective e) : GlRel (fun a b => E (e a) (e b)) := by
@@ -21,9 +21,9 @@ theorem glRel_comp_inj {A : Type*} [Ring A] {m n : ℕ} {E : Fin n → Fin n →
   simpa only [he.eq_iff] using this
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `h` using `congrArg MulOpposite.op (hE d c b a)`. Simplify using `only [MulOpposite.op_sub, MulOpposite.op_mul] at h`. Rewrite using `[h]`. Simplify using `only [eq_comm (a := c) (b := b), eq_comm (a := a) (b := d)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases h1 : b = c <;> by_cases h2 : d = a <;> simp [h1, h2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glRel_op_transpose {A : Type*} [Ring A] {n : ℕ} {E : Fin n → Fin n → A} (hE : GlRel E) :
     GlRel (fun a b => MulOpposite.op (E b a)) := by
@@ -35,17 +35,17 @@ theorem glRel_op_transpose {A : Type*} [Ring A] {n : ℕ} {E : Fin n → Fin n �
   by_cases h1 : b = c <;> by_cases h2 : d = a <;> simp [h1, h2]
 
 /- English proof (translation)
-Set `f : Module.End ℂ Q.V →ₗ[ℂ] (Module.End ℂ Q.V)ᵐᵒᵖ` to `(MulOpposite.opLinearEquiv ℂ).toLinearMap`. Establish `f1 : f 1 = 1` using `rfl`. Establish `fm : ∀ x y, f (x * y) = f y * f x` using `fun _ _ => rfl`. Set `X : Fin n → Fin n → (Module.End ℂ Q.V)ᵐᵒᵖ` to `fun p q => MulOpposite.op (Q.E q p)`. Establish `hX : GlRel X` using `glRel_op_transpose Q.gl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hq : ∀ u, qdet X u = f (qdet Q.E u)` using `fun u => GlobalTheory.T.quantum_determinant_anti_homomorphism f f1 fm Q.E Q.gl u`. Establish `hb : ∀ i u, qdet (fun p q : Fin (d i) => X (stdBlocks d h ⟨i, p⟩) (stdBlocks d h ⟨i, q⟩)) u = f (qdet (bops Q d h i) u)` using `fun i u => GlobalTheory.T.quantum_determinant_anti_homomorphism f f1 fm (bops Q d h i) (glRel_comp_inj Q.gl (fun p => stdBlocks d h ⟨i, p⟩) (fun p q e => by simpa using (stdBlocks d h).injective e)) u`. Establish `hspan` using `GlobalTheory.T.capelliDet_block_levi_congr_mod_upperBlockIdeal (Module.End ℂ Q.V)ᵐᵒᵖ d h X hX Y`. Set `L : (Module.End ℂ Q.V)ᵐᵒᵖ →ₗ[ℂ] Q.V` to `{ toFun := fun a => a.unop w map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hL : ∀ y ∈ Submodule.span ℂ {y : (Module.End ℂ Q.V)ᵐᵒᵖ | ∃ (p q : Fin n) (v : (Module.End ℂ Q.V)ᵐᵒᵖ), blk (stdBlocks d h) p < blk (stdBlocks d h) q ∧ y = X p q * v}, L y = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨p, q, v, hpq, rfl⟩` from `hy`. Use `show (v.unop * Q.E q p) w = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.End.mul_apply, hw q p hpq, map_zero]`. Consider the case `zero => exact map_zero L`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [map_smul, hx, smul_zero]`. Establish `h0` using `hL _ hspan`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[map_sub, sub_eq_zero]`. Establish `hl3 : ∀ g : Fin 3 → (Module.End ℂ Q.V)ᵐᵒᵖ, (List.ofFn g).prod = g 0 * g 1 * g 2`. Introduce `g`. Simplify using `[List.ofFn_succ, mul_assoc]`. Rewrite `h0` using `[hl3]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hb, hq] at h0`. Establish `e1 : qdet Q.E (Y + ((n : ℂ) - 1) / 2) w = Qd Q d h 2 Y (Qd Q d h 1 Y (Qd Q d h 0 Y w))` using `h0`. Simplify using `only [e1, hc, map_smul, smul_smul, Fin.prod_univ_three]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qdet_eigen_of_killed {n : ℕ} (Q : GMod n) (d : Fin 3 → ℕ) (h : ∑ i, d i = n) (w : Q.V)
     (hw : ∀ a b, blk (stdBlocks d h) b < blk (stdBlocks d h) a → Q.E a b w = 0)

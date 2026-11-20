@@ -4,19 +4,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 open IsLocalRing Polynomial Matrix UpperTheory.V
 
 /- English proof (translation)
-Introduce `ι Q _ T d hT hu`. Use `choose f hf hf' using hu`. Establish `hfib : ∀ q, T q = {i | f i = q}`. Introduce `q`. Use extensionality with `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(hf' i q h).symm`. Introduce `h`. Rewrite `h` using `[Set.mem_setOf_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← h]`. Conclude with `hf i`. Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases. Establish `: IsEmpty ι` using `⟨fun i => by`. Establish `h` using `hT (f i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Set.ncard_eq_zero (Set.toFinite _)]`. Establish `hi : i ∈ T (f i)` using `hf i`. Rewrite `hi` using `[h]`. Simplify using `at hi⟩`. Rewrite using `[Nat.card_of_isEmpty (α := ι)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `dvd_zero _`. Establish `hne : ∀ q, (T q).Nonempty` using `fun q => Set.nonempty_of_ncard_ne_zero (by rw [hT q]; omega) choose g hg using hne`. Establish `ginj : Function.Injective g`. Introduce `q q' h`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `haveI : Finite Q := Finite.of_injective g ginj`. Use `letI : Fintype Q := Fintype.ofFinite Q`. Establish `hc : ∀ q, Nat.card {x // f x = q} = d` using `fun q => by`. Rewrite using `[← hT q, hfib q, ← Nat.card_coe_set_eq]`. Both sides reduce to the same expression.
-
-Establish `key : Nat.card ι = Nat.card Q * d`. Rewrite using `[← Nat.card_congr (Equiv.sigmaFiberEquiv f), Nat.card_sigma]`. Simplify using `only [hc, Finset.sum_const, Finset.card_univ, smul_eq_mul, Nat.card_eq_fintype_card]`. Rewrite using `[key]`. Conclude with `dvd_mul_right _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.card_dvd_of_partition_equal_size :
     ∀ (ι Q : Type) [Finite ι] (T : Q → Set ι) (d : ℕ), (∀ q, (T q).ncard = d) → (∀ i, ∃! q, i ∈ T q) →

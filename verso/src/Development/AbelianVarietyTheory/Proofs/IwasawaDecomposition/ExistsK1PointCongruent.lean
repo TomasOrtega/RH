@@ -9,21 +9,19 @@ noncomputable section
 namespace GlobalTheory.Mem.ColAd
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc n _ ST SG Q hQ g hg c`. Establish `hcc : ∀ P : HeightOneSpectrum (𝓞 E), conjPrime₂ (conjPrime₂ P) = P` using `fun P => by`. Use extensionality with `b`. Rewrite using `[mem_conjP, mem_conjP, cO_cO]`. Take `⟨p, hp⟩` from `exists_near (ST := ST) (SG := SG) (Q := Q) hc c hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hN : Formalism.UG.CS.globLat g (stdLat E n) = p.deco.1.N` using `congrArg Deco.N hp.deco`. Take `⟨g', hg', c1, c2, c3⟩` from `PtExist.exists_modify (fun P hP => (hQ P hP).2.2.2.2) hg (ptFr p) fun P _ => hN ▸ isFr_ptFr p P`. Establish `hoff : ∀ P, P ∈ ST ∨ P ∈ SG → P ∉ Q ∧ conjPrime₂ P ∉ Q` using `fun P hP => by`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Break down `hP with hP | hP` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(hQ P h).1 hP`. Conclude with `(hQ P h).2.1 hP`. Use `hQ _ h` as an intermediate fact. Rewrite `this` using `[hcc]`. Break down `hP with hP | hP` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this.2.2.1 hP`. Conclude with `this.2.2.2.1 hP`. Establish `hpt : IsPtOf hc g' p`. Use `⟨hg', hN ▸ c1, fun P v hv i hi => ?_, fun P v hv i => ?_, fun P i j => ?_⟩` and prove the remaining obligations. Establish `e : lastIdx n = i` using `Fin.ext (by simp [lastIdx]; omega)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hv` using `[← hN]`. Establish `ho` using `hoff P.1 (Or.inl P.2)`. Rewrite using `[c3 _ ho.1 ho.2, ← hp.deco]`. Simplify using `only [decoRaw]`. Rewrite using `[if_pos (le_locP _ _ hv), e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `PtExist.hasRes_redA _ ((mem_globLat g v).1 hv i)`. Rewrite `hv` using `[← hN]`. Establish `ho` using `hoff P.1 (Or.inr P.2)`. Rewrite using `[c3 _ ho.1 ho.2, ← hp.deco]`. Simplify using `only [decoRaw]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_pos (le_locP _ _ hv)]`. Conclude with `PtExist.hasRes_redA _ ((mem_globLat g v).1 hv i)`. Rewrite using `[c2 _ P.2, ptFr_of_mem p (hQ P.1 P.2).2.1 P.2]`. Both sides reduce to the same expression. Establish `hd : decoRaw ST SG g = decoRaw ST SG g'` using `hp.deco.trans (near_of_isPtOf hpt c).deco.symm`.
-
-Use `⟨g⁻¹ * g', mem_principal_of_same_decoration hc n ST SG hg hg' hd, fun P => ?_, p, by rwa [mul_inv_cancel_left]⟩` and prove the remaining obligations. Establish `e : locM P.1 g' = ratM P.1 (p.fr P)` using `Matrix.ext fun i j => hpt.fr P i j`. Rewrite using `[locM_mul, e]`. Conclude with `hp.fr P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_K1_isPtOf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : CMData F E) (n : ℕ) [NeZero n] (ST SG Q : Finset (HeightOneSpectrum (𝓞 E))), (∀ P ∈ Q, P ∉ ST ∧ P ∉ SG ∧ conjPrime₂ P ∉ ST ∧ conjPrime₂ P ∉ SG ∧ conjPrime₂ P ∉ Q) → ∀ (g : GL (Fin n) (AfE F E)), g ∈ UAd hc n → ∀ c : ℕ, ∃ z ∈ K1 hc n ST SG, (∀ P : Q, Sm Valued.v (dep P.1 c) (locM P.1 z - 1)) ∧ ∃ p : DecoF E n ST SG Q, IsPtOf hc (g * z) p := by
   intro F E _ _ _ _ _ _ hc n _ ST SG Q hQ g hg c

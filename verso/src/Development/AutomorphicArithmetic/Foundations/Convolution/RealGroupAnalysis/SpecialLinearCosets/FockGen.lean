@@ -23,7 +23,7 @@ private noncomputable def scaleEquiv (F : Type) [Field F] [NumberField F] [IsTot
       right_inv := fun y => by ext p; simp [hc] }
 
 /- English proof (translation)
-Simplify using `only [infPartPi, homeomorphMixedSpace_apply, InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`. Express the relevant statement in the definitionally equal form `_ = InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w) ((v i).1 w)`. Rewrite using `[InfinitePlace.Completion.ringEquivRealOfIsReal_apply]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem coord_infPart {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
     (v : Fin 4 → A F) (i : Fin 4) (w : InfinitePlace F) :
@@ -33,13 +33,13 @@ private theorem coord_infPart {F : Type} [Field F] [NumberField F] [IsTotallyRea
   rw [InfinitePlace.Completion.ringEquivRealOfIsReal_apply]
 
 /- English proof (translation)
-Proceed by induction on `hp using Algebra.adjoin_induction with`. Consider the case `mem p hp`. Take `⟨i, w, rfl⟩` from `hp`. Set `l : (Fin 4 → NumberField.mixedEmbedding.mixedSpace F) →L[ℝ] ℝ` to `(ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : {w : InfinitePlace F // w.IsReal} => ℝ) ⟨w, IsTotallyReal.isReal w⟩).comp ((ContinuousLinearMap.fst ℝ _ _).comp (ContinuousLinearMap.proj (R := ℝ) i))`. Use `⟨fun x => ((l x : ℝ) : ℂ), Complex.ofRealCLM.hasTemperateGrowth.comp l.hasTemperateGrowth, fun X => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `_ = (((infPartPi X i).1 ⟨w, IsTotallyReal.isReal w⟩ : ℝ) : ℂ)`. Rewrite using `[coord_infPart]`. Consider the case `algebraMap r`. Conclude with `⟨fun _ => r, Function.HasTemperateGrowth.const r, fun X => rfl⟩`. Consider the case `add p q _ _ hp hq`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨f, hf, hfp⟩` from `hp`. Take `⟨g, hg, hgq⟩` from `hq`. Conclude with `⟨fun x => f x + g x, hf.add hg, fun X => by simp [hfp, hgq]⟩`. Consider the case `mul p q _ _ hp hq`. Take `⟨f, hf, hfp⟩` from `hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hgq⟩` from `hq`. Conclude with `⟨fun x => f x * g x, hf.mul hg, fun X => by simp [hfp, hgq]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem poly_temperate {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
     {p : V4 F → ℂ} (hp : p ∈ polyFn (F := F)) :
@@ -67,15 +67,15 @@ private theorem poly_temperate {F : Type} [Field F] [NumberField F] [IsTotallyRe
     exact ⟨fun x => f x * g x, hf.mul hg, fun X => by simp [hfp, hgq]⟩
 
 /- English proof (translation)
-Set `a : Fin 4 × InfinitePlace F → ℝ` to `fun p => ![1, 1, 2, -2 * InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal p.2) δ] p.1`. Establish `ha : ∀ p, 0 < a p`. Introduce and unpack `⟨i, w⟩`. Use `hδ (InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal w))` as an intermediate fact. Apply the tactic sequence `fin_cases i <;> simp [a] <;> linarith`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hc : ∀ p, √(a p) ≠ 0` using `fun p => (Real.sqrt_pos.2 (ha p)).ne'`. Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (scaleEquiv F (fun p => √(a p)) hc) (gaussianSchwartz (EuclideanSpace ℝ (Fin 4 × InfinitePlace F))), fun X => ?_⟩` and prove the remaining obligations. Establish `hn : ‖scaleEquiv F (fun p => √(a p)) hc (infPartPi X)‖ ^ 2 = ∑ w, TR.pInf F (X 0 ^ 2 + X 1 ^ 2 + 2 * (X 2 ^ 2 - rt δ * X 3 ^ 2)) w`. Rewrite using `[EuclideanSpace.real_norm_sq_eq, Fintype.sum_prod_type, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : ∀ i, (scaleEquiv F (fun p => √(a p)) hc (infPartPi X)) (i, w) ^ 2 = a (i, w) * TR.pInf F (X i) w ^ 2`. Introduce `i`. Express the relevant statement in the definitionally equal form `(√(a (i, w)) * (infPartPi X i).1 ⟨w, IsTotallyReal.isReal w⟩) ^ 2 = _`. Rewrite using `[coord_infPart, mul_pow, Real.sq_sqrt (ha _).le]`. Establish `hd : TR.pInf F (rt δ) w = InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal w) δ` using `congrFun (GlobalTheory.HilbertThetaSeries.RatPts.pInf_algebraMap F δ) w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Fin.sum_univ_four, h, map_add, map_mul, map_pow, map_sub, Pi.add_apply, Pi.mul_apply, Pi.pow_apply, Pi.sub_apply, map_ofNat, Pi.ofNat_apply, hd]`. Simplify using `[a]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, gaussianSchwartz_apply, hn]`. Simplify using `only [gauss]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 private theorem gauss_schwartz {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (δ : F)
     (hδ : ∀ φ : F →+* ℝ, φ δ < 0) :
@@ -108,9 +108,9 @@ private theorem gauss_schwartz {F : Type} [Field F] [NumberField F] [IsTotallyRe
   rfl
 
 /- English proof (translation)
-Introduce `F _ _ _ δ hδ p hp g hg`. Take `⟨f, hf, hfp⟩` from `poly_temperate hp`. Take `⟨s, hs⟩` from `gauss_schwartz δ hδ`. Establish `h` using `schwartzBruhatTensorPi_mem (SchwartzMap.smulLeftCLM ℂ f s) hg`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `X`. Simplify using `only [schwartzBruhatTensorPi, SchwartzMap.smulLeftCLM_apply_apply hf, hfp, hs, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.I.fockGen :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (δ : F), (∀ φ : F →+* ℝ, φ δ < 0) →

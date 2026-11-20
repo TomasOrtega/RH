@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.EtC.restrMap_spec') | (exact GlobalTheory.EtC.restrMap_spec') | (intros; apply GlobalTheory.EtC.restrMap_spec' <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.restrictScalarsResolutionMap_augmentation_spec : ∀ (R S : Type) [CommRing R] [CommRing S] (φ : R →+* S) (F : Shv S) (U : Scheme.{0}) (a : Sec F U), (restrMap φ F).app U 0 (Sec.map (resι S F) a) = Sec.map (resι R ((restr φ).obj F)) (show Sec ((restr φ).obj F) U from a) := by
   first | (exact @GlobalTheory.EtC.restrMap_spec') | (exact GlobalTheory.EtC.restrMap_spec') | (intros; apply GlobalTheory.EtC.restrMap_spec'  <;> assumption)

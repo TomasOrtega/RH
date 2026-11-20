@@ -12,19 +12,19 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ N hN P hP n`. Proceed by induction on `n generalizing P with`. Consider the case `zero`. Introduce `hdim bs`. Establish `hbs : bs = ![]` using `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hbs` using the available equality. Rewrite using `[hN.base P hP hdim]`. Take `⟨-, h⟩` from `h2 F K ι P hP hdim`. Rewrite using `[h]`. Use `hP.isPrime` as an intermediate fact.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[resDeg, hP.isPrime]`. Consider the case `succ n ih`. Introduce `hdim bs`. Take `⟨bf, bg, f, g, hf, hg, hfP, hgP, hb⟩` from `h3 F K ι P hP (bs (Fin.last n))`. Establish `hbs : bs = Fin.snoc (α` using `fun _ => K → ℤ) (Fin.init bs) (fun k => (bf k : ℤ) - bg k) := by`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hb, Fin.snoc_init_self]`. Rewrite using `[hbs, hN.cut P n hP hdim bf bg f g hf hg hfP hgP, h1 F K ι P hP n hdim bf bg f g hf hg hfP hgP]`. Unfold `cycEval`. Use `congr 1`. Use function extensionality and compare the values at `W`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hW : ratDiv P f g W = 0`. Rewrite using `[hW, zero_mul, zero_mul]`. Establish `hsupp : IsMultiProjPrime W ∧ relDim W = (n : ℕ)`. Unfold `ratDiv at hW`. Distinguish the cases in `hfW : divCycle P f W = 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Establish `hgW : divCycle P g W ≠ 0`. Introduce `h`. Apply `hW` to reduce the goal to its premises. Rewrite using `[hfW, h, sub_zero]`. Conclude with `h4 F K ι P hP n hdim bg g hg hgP W hgW`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h4 F K ι P hP n hdim bf f hf hfP W hfW`. Simplify using `only [ih W hsupp.1 hsupp.2]`.
+A detailed English derivation is pending.
 -/
 theorem IntNumUnique.proof (h1 : CutRational.Statement.{u}) (h2 : IntNumBase.Statement.{u})
     (h3 : ExistsForm.Statement.{u}) (h4 : DivCycleSupport.Statement.{u}) :

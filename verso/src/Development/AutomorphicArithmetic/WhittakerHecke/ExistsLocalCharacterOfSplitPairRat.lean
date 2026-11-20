@@ -15,9 +15,9 @@ open UpperTheory.ConvolutionTheory.R2.H GroundTheory.Global.SemiLocal GroundTheo
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨-, i, hc, ha, hv⟩` from `h`. Use `⟨i, ?_, ha, hv⟩` and prove the remaining obligations. Use `(HeightOneSpectrum.denseRange_algebraMap (K := F) v).equalizer (continuous_completionMap v w) hc (by` as an intermediate fact. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `completionMap v w (algebraMap F (Kv v) x) = i (algebraMap F (Kv v) x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ha, completionMap_algebraMap, IsScalarTower.algebraMap_apply F E (Kv w)])`. Conclude with `fun x => congrFun this x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem split_iota (v : P F) (w : P E) [hl : w.asIdeal.LiesOver v.asIdeal] (h : SplitAt v w) :
     ∃ i : Kv v ≃+* Kv w, (∀ x, completionMap v w x = i x) ∧
@@ -33,15 +33,13 @@ private theorem split_iota (v : P F) (w : P E) [hl : w.asIdeal.LiesOver v.asIdea
   exact fun x => congrFun this x
 
 /- English proof (translation)
-Take `⟨-, -, hc, -, -, -, -, hs, -, -⟩` from `sgLaws F v`. Take `⟨-, -, hc', -, -, -, -, hs', -, -⟩` from `sgLaws E w`. Take `⟨-, -, hc'', -, -, -, -, hs'', -, -⟩` from `sgLaws E w'`. Use `Prod.ext ?_ (FiniteAdeleRing.ext E fun u => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `InfinitePlace.infiniteAdeleRingMap (sg v x).1 = (sg w _).1 + (sg w' _).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[(hs x).1, (hs' _).1, (hs'' _).1, map_zero, add_zero]`. Express the relevant statement in the definitionally equal form `completionMap (below F u) u ((sg v x).2 (below F u)) = (sg w _).2 u + (sg w' _).2 u`. Distinguish the cases in `h : u = w`. Substitute `h` using the available equality. Establish `hb : below F u = v` using `(below_eq_iff _ _).2 hl`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hb` using the available equality. Rewrite using `[(hs'' _).2 _ hne, add_zero]`. Conclude with `(congrArg _ (hc x)).trans (hc' _).symm`. Distinguish the cases in `h' : u = w'`. Substitute `h'` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hb : below F u = v` using `(below_eq_iff _ _).2 hl'`. Substitute `hb` using the available equality. Rewrite using `[(hs' _).2 _ h, zero_add]`. Conclude with `(congrArg _ (hc x)).trans (hc'' _).symm`. Establish `hb : below F u ≠ v` using `fun hb => (hu u ((below_eq_iff _ _).1 hb)).elim h h'`.
-
-Rewrite using `[(hs x).2 _ hb, map_zero, (hs' _).2 _ h, (hs'' _).2 _ h', add_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem adeleMap_split_two_places (v : P F) (w w' : P E) [hl : w.asIdeal.LiesOver v.asIdeal]
     [hl' : w'.asIdeal.LiesOver v.asIdeal] (hne : w ≠ w')
@@ -70,33 +68,29 @@ private theorem adeleMap_split_two_places (v : P F) (w w' : P E) [hl : w.asIdeal
         rw [(hs x).2 _ hb, map_zero, (hs' _).2 _ h, (hs'' _).2 _ h', add_zero]
 
 /- English proof (translation)
-Take `⟨i, hi, hia, hiv⟩` from `split_iota v w h1`. Take `⟨j, hj, hja, hjv⟩` from `split_iota v w' h2`. Take `⟨τ, hτ⟩` from `i.surjective (algebraMap E (Kv w) D.θ)`. Establish `hτ2 : τ ^ 2 = algebraMap F (Kv v) D.δ`. Apply `i.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_pow, hτ, hia, ← map_pow, D.sq]`. Establish `hτv : Valued.v τ = 1`. Establish `h` using `hG.del`. Rewrite `h` using `[← hτ2, map_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le' two_ne_zero).1 h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hτ0 : τ ≠ 0` using `fun h => by simp [h] at hτv`. Establish `h20 : (2 : Kv v) ≠ 0` using `fun h => by simpa [h] using hG.two`. Establish `hτ' : j τ = -algebraMap E (Kv w') D.θ`. Establish `hsq : (j τ) ^ 2 = (algebraMap E (Kv w') D.θ) ^ 2`. Rewrite using `[← map_pow, hτ2, hja, ← map_pow, D.sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(sq_eq_sq_iff_eq_or_eq_neg.1 hsq).resolve_left fun he => hne ?_` and prove the remaining obligations. Establish `hval : ∀ y : E, w.valuation E y = w'.valuation E y`. Introduce `y`. Establish `hy : y = algebraMap F E (D.b.repr y 0) + algebraMap F E (D.b.repr y 1) * D.θ` using `by conv_lhs => rw [← D.b.sum_repr y]`. Simplify using `[Fin.sum_univ_two, D.b0, D.b1, Algebra.smul_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set a := algebraMap F (Kv v) (D.b.repr y 0)`. Use `set b := algebraMap F (Kv v) (D.b.repr y 1)`. Establish `e1 : algebraMap E (Kv w) y = i (a + b * τ)`. Rewrite using `[map_add, map_mul, hτ, hia, hia, ← map_mul, ← map_add, ← hy]`. Establish `e2 : algebraMap E (Kv w') y = j (a + b * τ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, map_mul, he, hja, hja, ← map_mul, ← map_add, ← hy]`. Rewrite using `[← valued_algebraMap_field, ← valued_algebraMap_field, e1, e2, hiv, hjv]`. Use `HeightOneSpectrum.ext (Ideal.ext fun a => ?_)` and prove the remaining obligations. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E), ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E), hval]`. Establish `hcv : Valued.v (2 * τ) = 1` using `by rw [map_mul, hG.two, hτv, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g1, g2, g3⟩` from `hG.psi`. Take `⟨hadd, hmul, -⟩` from `sgLaws F v`. Take `⟨hadd1, hmul1, -⟩` from `sgLaws E w`. Take `⟨hadd2, hmul2, -⟩` from `sgLaws E w'`. Establish `hsv : ∀ x : Kv w, Valued.v (-(i.symm x / (2 * τ))) = Valued.v x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Rewrite using `[Valuation.map_neg, map_div₀, hcv, div_one, ← hiv, RingEquiv.apply_symm_apply]`. Use `⟨fun x => ψ (sg v (-(i.symm x / (2 * τ)))), ⟨fun x y => ?_, fun x hx => ?_, fun x hx => ?_⟩, fun x => ⟨sg v (i.symm x / 2), sg v (i.symm x / (2 * τ)), ?_, ?_⟩⟩` and prove the remaining obligations. Establish `e : -(i.symm (x + y) / (2 * τ)) = -(i.symm x / (2 * τ)) + -(i.symm y / (2 * τ))`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `show ψ (sg v (-(i.symm (x + y) / (2 * τ)))) = _`. Rewrite using `[e]`. Conclude with `g1 _ _`. Conclude with `g2 _ (by unfold IsInt at *; rw [hsv]; exact hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition.
 
-Use `g3 (-(i.symm x / (2 * τ))) fun c hc => by` as an intermediate fact. Establish `h` using `hx (i c) (by unfold IsInt at *; rw [hiv]; exact hc)`. Establish `e : -(i.symm (i c * x) / (2 * τ)) = c * -(i.symm x / (2 * τ))`. Rewrite using `[map_mul, RingEquiv.symm_apply_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `ψ (sg v (-(i.symm (i c * x) / (2 * τ)))) = 1 at h`. Rewrite `h` using `[e]`. Conclude with `h`. Unfold `IsInt at *`. Rewrite `this` using `[hsv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmk : ∀ u t : A F, D.mkE u t = adeleMap F E u + adeleMap F E t * rt D.θ` using `fun _ _ => rfl`. Take `⟨y, rfl⟩` from `i.surjective x`. Establish `z2 : sg w' 0 = 0`. Use `hmul2 0 0` as an intermediate fact. Simplify using `using this.symm`.
-
-Establish `c1 : cp w (rt D.θ) = i τ` using `hτ.symm`. Establish `c2 : cp w' (rt D.θ) = - j τ` using `by rw [hτ', neg_neg]; rfl`. Rewrite using `[RingEquiv.symm_apply_apply, hmk, adeleMap_split_two_places v w w' hne hu, adeleMap_split_two_places v w w' hne hu, add_mul, mul_comm (sg w _), mul_comm (sg w' _), hmul1, hmul2, add_add_add_comm, ← hadd1, ← hadd2, c1, c2, hi, hi, hj, hj, ← map_neg, ← map_mul, ← map_mul, ← map_add …`. Use `hmul (-1) (i.symm x / (2 * τ))` as an intermediate fact. Rewrite `this` using `[map_neg, map_one, neg_one_mul, neg_one_mul]`.
-
-Rewrite using `[this]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem main (D : Dat F E) (v : P F) (w w' : P E) [hl : w.asIdeal.LiesOver v.asIdeal]
     [hl' : w'.asIdeal.LiesOver v.asIdeal] (hne : w ≠ w') (h1 : SplitAt v w) (h2 : SplitAt v w')
@@ -176,7 +170,7 @@ private theorem main (D : Dat F E) (v : P F) (w w' : P E) [hl : w.asIdeal.LiesOv
 end UpperTheory.AdeleBaseChangeSplitting
 
 /- English proof (translation)
-Introduce `E _ _ D v w w' hne hw hw' h1 h2 hu hG`. Use `haveI hl : w.asIdeal.LiesOver v.asIdeal := ⟨by rw [← hw]; rfl⟩`. Use `haveI hl' : w'.asIdeal.LiesOver v.asIdeal := ⟨by rw [← hw']; rfl⟩`. Conclude with `UpperTheory.AdeleBaseChangeSplitting.main D v w w' hne h1 h2 (fun u h => hu u (HeightOneSpectrum.ext h.1.symm)) hG`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_localCharacter_of_split_pair_rat :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (v : H.P ℚ) (w w' : H.P E), w ≠ w' → w.under (𝓞 ℚ) = v → w'.under (𝓞 ℚ) = v → H.SplitAt v w → H.SplitAt v w' →

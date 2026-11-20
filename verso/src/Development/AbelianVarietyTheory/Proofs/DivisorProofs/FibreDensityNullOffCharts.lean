@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.ChartFibreNull
 
 /- English proof (translation)
-Introduce `k _ B Y q p π w n D σ _ _ hq hp hgen ρ`. Take `⟨T, hT, hTgen, hch⟩` from `GlobalTheory.GenericChart.exists_isClosed_chart k B q n hq`. Use `measure_mono_null ?_ (GlobalTheory.MixDensNull.part_over_closed k Y p D hp (π ⁻¹' T) (hT.preimage π.continuous) (by simpa [hgen] using hTgen) σ ρ)` and prove the remaining obligations. Introduce `y hy`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq] at hy ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hnot`. Take `⟨c, hc⟩` from `hch σ (PtsOver.map π w (spMap σ) y) hnot`. Conclude with `hy c hc`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem part_preimage_nonchart : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (n D : ℕ) (σ : k →+* ℂ) [IsIntegral B] [IsIntegral Y], IsArithVar q n → IsArithVar p D → π (genericPoint Y) = genericPoint B → ∀ ρ : AlgChart p σ D → CxPts p σ → ℝ, part ρ (PtsOver.map π w (spMap σ) ⁻¹' {u | ∀ c : AlgChart q σ n, u ∉ c.e.source}) = 0 := by
   intro k _ B Y q p π w n D σ _ _ hq hp hgen ρ

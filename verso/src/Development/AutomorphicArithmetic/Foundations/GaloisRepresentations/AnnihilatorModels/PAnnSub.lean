@@ -5,7 +5,7 @@ open TensorProduct Module
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem algebraTensorModule_map_map_id_right_comm_of_comm {F L U V B : Type} [Field F] [Field L] [Algebra F L]
     [AddCommGroup U] [Module L U] [Module F U] [IsScalarTower F L U]
@@ -22,15 +22,15 @@ private theorem algebraTensorModule_map_map_id_right_comm_of_comm {F L U V B : T
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `F G B _ _ _ _ σ ψ L _ _ U V _ _ _ _ _ _ _ _ ρU ρ i hI hi q n TU T hT hAnn`. Unfold `Inter at hI`. Unfold `AnnD at hAnn ⊢`. Set `M : U ⊗[F] B →ₗ[L] V ⊗[F] B` to `AlgebraTensorModule.map i LinearMap.id`. Establish `hM_inj : Function.Injective M`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : ⇑M = ⇑(LinearMap.rTensor B (i.restrictScalars F))`. Use function extensionality and compare the values at `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [M]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[h1]`. Conclude with `Module.Flat.rTensor_preserves_injective_linearMap (i.restrictScalars F) hi`. Establish `hpow : ∀ k, ∀ b, (LinearMap.id : B →ₗ[F] B) ((ψ ^ k) b) = (ψ ^ k) ((LinearMap.id : B →ₗ[F] B) b)` using `fun _ _ => rfl`. Introduce `x hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmx : M x ∈ Dinv σ ρ`. Simplify using `only [Dinv, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hx ⊢`. Introduce `g`. Conclude with `(algebraTensorModule_map_map_id_right_comm_of_comm i (ρU g) (ρ g) (σ g) (hI g) x).trans (congrArg M (hx g))`. Apply `hM_inj` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zero, ← hAnn (M x) hmx, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul_of_tower]`. Use `congr 1`. Conclude with `(algebraTensorModule_map_map_id_right_comm_of_comm i (TU j) (T j) (ψ ^ (n - j)) (hT j) x).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.annSub_of :
     AnnSub := by

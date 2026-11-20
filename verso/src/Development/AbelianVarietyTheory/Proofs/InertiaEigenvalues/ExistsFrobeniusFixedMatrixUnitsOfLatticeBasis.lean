@@ -11,9 +11,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.PMon.Extract
 
 /- English proof (translation)
-Establish `hc : ∀ c, ∃ g : N → F, ∑ e, g e • v e = u c` using `fun c => (Submodule.mem_span_range_iff_exists_fun F).mp (h (Submodule.subset_span ⟨c, rfl⟩))`. Use `choose g hg using hc`. Use `⟨Matrix.of fun e c => g c e, ?_⟩` and prove the remaining obligations. Introduce `ψ c i`. Rewrite using `[← hg c, Finset.sum_apply, map_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, map_smul, Algebra.smul_def, mul_comm, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_matrix_of_span {F B n N : Type} [Field F] [CommRing B] [Algebra F B] [Fintype N]
     (u v : N → n → B) (h : Submodule.span F (Set.range u) ≤ Submodule.span F (Set.range v)) :
@@ -30,7 +30,7 @@ theorem exists_matrix_of_span {F B n N : Type} [Field F] [CommRing B] [Algebra F
   rw [Pi.smul_apply, map_smul, Algebra.smul_def, mul_comm, Matrix.of_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => mul_mem (hX i k) (hY k j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_sub {R N : Type} [CommRing R] [Fintype N] (S : Subring R) {X Y : Matrix N N R}
     (hX : ∀ i j, X i j ∈ S) (hY : ∀ i j, Y i j ∈ S) (i j : N) : (X * Y) i j ∈ S := by
@@ -38,31 +38,25 @@ theorem mul_mem_sub {R N : Type} [CommRing R] [Fintype N] (S : Subring R) {X Y :
   exact sum_mem fun k _ => mul_mem (hX i k) (hY k j)
 
 /- English proof (translation)
-Use `set M : Fin r → Matrix n n R := fun m => (U m : Matrix n n R) * Matrix.diagonal (fun j => d (j, m)) with hM`. Use `set Mi : Fin r → Matrix n n R := fun m => Matrix.diagonal (fun j => (((hd (j, m)).unit⁻¹ : Rˣ) : R)) * (((U m)⁻¹ : GL n R) : Matrix n n R) with hMi`. Establish `hMiM : ∀ m, Mi m * M m = 1`. Introduce `m`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hM, hMi, Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[Units.inv_mul, Matrix.mul_one, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Conclude with `IsUnit.val_inv_mul _`. Establish `hMMi : ∀ m, M m * Mi m = 1`. Introduce `m`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hM, hMi, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 1 := by`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Establish `: (fun j => d (j, m) * (((hd (j, m)).unit⁻¹ : Rˣ) : R)) = fun _ => (1 : R)`. Use function extensionality and compare the values at `j`. Conclude with `IsUnit.mul_val_inv _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Matrix.diagonal_one, Matrix.one_mul, Units.mul_inv]`. Establish `hdiag : Matrix.diagonal d = Matrix.blockDiagonal (fun m => Matrix.diagonal fun j => d (j, m))`. Rewrite using `[Matrix.blockDiagonal_diagonal]`. Establish `h' : Matrix.blockDiagonal (fun m => (E m : Matrix n n R)) = Matrix.blockDiagonal M * W`. Rewrite using `[h, hdiag, Matrix.blockDiagonal_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Vm : Fin r → Matrix n n R := fun m => Mi m * (E m : Matrix n n R) with hVm`. Use `set Vm' : Fin r → Matrix n n R := fun m => (((E m)⁻¹ : GL n R) : Matrix n n R) * M m with hVm'`. Establish `hVV : ∀ m, Vm m * Vm' m = 1`. Introduce `m`. Simplify using `only [hVm, hVm', Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc (E m : Matrix n n R), Units.mul_inv, Matrix.one_mul, hMiM]`. Establish `hV'V : ∀ m, Vm' m * Vm m = 1`. Introduce `m`. Simplify using `only [hVm, hVm', Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (M m), hMMi, Matrix.one_mul, Units.inv_mul]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWb : W = Matrix.blockDiagonal Vm`. Establish `hone : Matrix.blockDiagonal Mi * Matrix.blockDiagonal M = 1`. Rewrite using `[← Matrix.blockDiagonal_mul]`. Simplify using `only [hMiM]`. Conclude with `Matrix.blockDiagonal_one`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, ← h']`. Use `_ = Matrix.blockDiagonal Vm := by rw [← Matrix.blockDiagonal_mul, hVm]`. Establish `hW'b : W' = Matrix.blockDiagonal Vm'`. Establish `hone : Matrix.blockDiagonal Vm' * W = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hWb, ← Matrix.blockDiagonal_mul]`. Simplify using `only [hV'V]`. Conclude with `Matrix.blockDiagonal_one`. Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨Vm m, Vm' m, hVV m, hV'V m⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
-
-Introduce `i j`. Establish `hij` using `hW (i, m) (j, m)`. Rewrite `hij` using `[hWb, Matrix.blockDiagonal_apply_eq]`. Conclude with `hij`. Introduce `i j`.
-
-Establish `hij` using `hW' (i, m) (j, m)`. Rewrite `hij` using `[hW'b, Matrix.blockDiagonal_apply_eq]`. Conclude with `hij`. Use `show (E m : Matrix n n R) = (U m : Matrix n n R) * Matrix.diagonal (fun j => d (j, m)) * (Mi m * (E m : Matrix n n R))`. Rewrite using `[← Matrix.mul_assoc]`.
-
-Use `hMMi m` as an intermediate fact. Simplify using `only [hM] at this`. Rewrite using `[this, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blocks {R n : Type} [CommRing R] [Fintype n] [DecidableEq n] {r : ℕ} (S : Subring R)
     (E U : Fin r → GL n R) (d : n × Fin r → R) (hd : ∀ x, IsUnit (d x))
@@ -143,47 +137,43 @@ theorem blocks {R n : Type} [CommRing R] [Fintype n] [DecidableEq n] {r : ℕ} (
     rw [this, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hfix : ∀ (m : ℕ) (x : B), φ x = x → (φ ^ m) x = x`. Introduce `m x hx`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, AlgHom.mul_apply, hx, ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨G, hG⟩` from `exists_matrix_of_span (F := F) (fun (jk : n × Fin r) (i : n) => w jk.2 * a jk.1 i) (fun (c : n × Fin r) (i : n) => ∑ k, w k * (A₀ : Matrix (n × Fin r) (n × Fin r) B) (i, k) c) hsp.le`. Take `⟨G', hG'⟩` from `exists_matrix_of_span (F := F) (fun (c : n × Fin r) (i : n) => ∑ k, w k * (A₀ : Matrix (n × Fin r) (n × Fin r) B) (i, k) c) (fun (jk : n × Fin r) (i : n) => w jk.2 * a jk.1 i) hsp.ge`. Use `set A : Matrix n n B := Matrix.of fun i j => a j i with hAdef`. Use `set Gm : Matrix (n × Fin r) (n × Fin r) B := G.map (algebraMap F B) with hGm`. Use `set G'm : Matrix (n × Fin r) (n × Fin r) B := G'.map (algebraMap F B) with hG'm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set D : Matrix (n × Fin r) (n × Fin r) B := Matrix.blockDiagonal fun m : Fin r => A.map ⇑(φ ^ (m : ℕ)) with hDdef`. Establish `hY : ∀ (i : n) (m : Fin r) (e : n × Fin r), (p * (A₀ : Matrix (n × Fin r) (n × Fin r) B)) (i, m) e = (φ ^ (m : ℕ)) (∑ k, w k * (A₀ : Matrix (n × Fin r) (n × Fin r) B) (i, k) e)`. Introduce `i m e`. Rewrite using `[Matrix.mul_apply, Fintype.sum_prod_type, Finset.sum_comm, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [hp, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, map_mul, hfix _ _ (hA₀ _ _)]`. Establish `hZ : ∀ (i : n) (m : Fin r) (c : n × Fin r), (D * p) (i, m) c = (φ ^ (m : ℕ)) (w c.2 * a c.1 i)`. Introduce `i m c`. Establish `hinner : ∀ x : n, ∑ k : Fin r, D (i, m) (x, k) * p (x, k) c = (φ ^ (m : ℕ)) (a x i) * (if x = c.1 then (φ ^ (m : ℕ)) (w c.2) else 0)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_eq_single m]`. Simplify using `only [hDdef, Matrix.blockDiagonal_apply_eq, Matrix.map_apply, hAdef, Matrix.of_apply, hp]`. Introduce `k hk`. Rewrite using `[hDdef, Matrix.blockDiagonal_apply_ne _ _ _ (Ne.symm hk), zero_mul]`. Rewrite using `[Matrix.mul_apply, Fintype.sum_prod_type]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [hinner, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, map_mul]`. Rewrite using `[mul_comm]`. Establish `hZY : D * p = p * (A₀ : Matrix (n × Fin r) (n × Fin r) B) * Gm`. Use extensionality with `⟨i, m⟩ c`. Rewrite using `[hZ, hG (φ ^ (m : ℕ)) c i, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[hY]`. Both sides reduce to the same expression. Establish `hYZ : p * (A₀ : Matrix (n × Fin r) (n × Fin r) B) = D * p * G'm`. Use extensionality with `⟨i, m⟩ c`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hY, hG' (φ ^ (m : ℕ)) c i, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[hZ]`. Both sides reduce to the same expression. Establish `hqp : q * p = 1` using `mul_eq_one_comm.mp hpq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hL : ((A₀⁻¹ : GL (n × Fin r) B) : Matrix (n × Fin r) (n × Fin r) B) * q * (p * (A₀ : Matrix (n × Fin r) (n × Fin r) B)) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc q, hqp, Matrix.one_mul]`. Conclude with `Units.inv_mul A₀`. Establish `hGG : Gm * G'm = 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hD : D = p * (A₀ : Matrix (n × Fin r) (n × Fin r) B) * Gm * q`. Combine the equalities or inequalities in the displayed calculation. Establish `hDinv : D * (p * G'm * ((A₀⁻¹ : GL (n × Fin r) B) : Matrix (n × Fin r) (n × Fin r) B) * q) = 1`. Rewrite using `[hD]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[hqp, Matrix.mul_one, hGG, Matrix.one_mul, ← Matrix.mul_assoc (A₀ : Matrix (n × Fin r) (n × Fin r) B), Units.mul_inv, Matrix.one_mul, hpq]`. Establish `hdetD : IsUnit D.det` using `Matrix.isUnit_det_of_right_inverse hDinv`. Rewrite `hdetD` using `[hDdef, Matrix.det_blockDiagonal]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hdetA : IsUnit A.det`. Establish `h0` using `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun m : Fin r => (A.map ⇑(φ ^ (m : ℕ))).det) (Finset.mem_univ ⟨0, hr⟩)) hdetD`. Establish `hm0 : A.map ⇑(φ ^ ((⟨0, hr⟩ : Fin r) : ℕ)) = A`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `h0` using `only [hm0]`. Use `⟨Matrix.nonsingInvUnit A hdetA, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Express the relevant statement in the definitionally equal form `(φ ^ r) (a j i) = a j i`. Establish `hyfix : ∀ e : n × Fin r, (φ ^ r) (∑ k, w k * (A₀ : Matrix (n × Fin r) (n × Fin r) B) (i, k) e) = ∑ k, w k * (A₀ : Matrix (n × Fin r) (n × Fin r) B) (i, k) e`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `e`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hw k, hfix _ _ (hA₀ _ _)]`. Establish `h1` using `hG (φ ^ r) (j, ⟨0, hr⟩) i`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hG (AlgHom.id F B) (j, ⟨0, hr⟩) i`. Simplify using `only [hyfix, AlgHom.id_apply] at h1 h2`. Rewrite `h1` using `[← h2, map_mul, hw]`. Conclude with `(hwu _).mul_left_cancel h1`. Introduce `m set Wm : Matrix (n × Fin r) (n × Fin r) R := (W₀ : Matrix (n × Fin r) (n × Fin r) R) * Gm.map ι * q.map ι with hWm set W'm : Matrix (n × Fin r) (n × Fin r) R := p.map ι * G'm.map ι * ((W₀⁻¹ : GL (n × Fin r) R) : Matrix (n × Fin r) (n × Fin r) R) with hW'm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `hGS : ∀ i j, (Gm.map ι) i j ∈ S` using `fun i j => hS (G i j)`. Establish `hG'S : ∀ i j, (G'm.map ι) i j ∈ S` using `fun i j => hS (G' i j)`. Establish `hWS : ∀ i j, Wm i j ∈ S` using `fun i j => mul_mem_sub S (fun i j => mul_mem_sub S hW₀ hGS i j) hqS i j`. Establish `hW'S : ∀ i j, W'm i j ∈ S` using `fun i j => mul_mem_sub S (fun i j => mul_mem_sub S hpS hG'S i j) hW₀' i j`. Establish `hWW : Wm * W'm = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hWm, hW'm, Matrix.map_mul, Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[hqp, Matrix.mul_one, hGG, Matrix.map_one _ (map_zero ι) (map_one ι), Matrix.mul_one, Units.mul_inv]`. Establish `hpqι : p.map ι * q.map ι = 1`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, hpq, Matrix.map_one _ (map_zero ι) (map_one ι)]`. Set `E : Fin r → GL n R` to `fun m => Units.map (ι.comp ((φ ^ (m : ℕ) : B →ₐ[F] B) : B →+* B)).mapMatrix.toMonoidHom (Matrix.nonsingInvUnit A hdetA)`. Establish `hEm : (E m : Matrix n n R) = (Matrix.nonsingInvUnit A hdetA : Matrix n n B).map (fun b => ι ((φ ^ (m : ℕ)) b))`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hblk : Matrix.blockDiagonal (fun m => (E m : Matrix n n R)) = Matrix.blockDiagonal (fun m => (U m : Matrix n n R)) * Matrix.diagonal d * Wm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hDdef, Matrix.blockDiagonal_map _ _ (map_zero ι)]`. Both sides reduce to the same expression. Use `_ = p.map ι * (A₀ : Matrix (n × Fin r) (n × Fin r) B).map ι * Gm.map ι * q.map ι := by`.
-
-Rewrite using `[hD]`. Simplify using `only [Matrix.map_mul]`. Use `_ = p.map ι * (q.map ι * Matrix.blockDiagonal (fun m => (U m : Matrix n n R)) * Matrix.diagonal d * (W₀ : Matrix (n × Fin r) (n × Fin r) R)) * Gm.map ι * q.map ι := by rw [hA]`. Use `_ = (p.map ι * q.map ι) * Matrix.blockDiagonal (fun m => (U m : Matrix n n R)) * Matrix.diagonal d * ((W₀ : Matrix (n × Fin r) (n × Fin r) R) * Gm.map ι * q.map ι) := by simp only [Matrix.mul_assoc]`. Use `_ = Matrix.blockDiagonal (fun m => (U m : Matrix n n R)) * Matrix.diagonal d * Wm := by`.
-
-Rewrite using `[hpqι, Matrix.one_mul]`. Take `⟨V, hV1, hV2, hV3⟩` from `blocks S E U d hd Wm W'm hWS hW'S hWW hblk m`. Conclude with `⟨V, hV1, hV2, by rw [← hEm]; exact hV3⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem abstract {F B R n : Type} [Field F] [CommRing B] [Algebra F B] [CommRing R] [Fintype n] [DecidableEq n]
     {r : ℕ} (hr : 0 < r) (φ : B →ₐ[F] B) (ι : B →+* R) (S : Subring R) (hS : ∀ q : F, ι (algebraMap F B q) ∈ S)
@@ -345,39 +335,29 @@ theorem abstract {F B R n : Type} [Field F] [CommRing B] [Algebra F B] [CommRing
     exact ⟨V, hV1, hV2, by rw [← hEm]; exact hV3⟩
 
 /- English proof (translation)
-Introduce `l _ P r ω hω hdet n _ _ U x y hU A₀ hA₀ W₀ hW₀ hA a hsp`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Conclude with `⟨1, fun i j => rfl, fun m => m.elim0⟩`. Establish `hcoe : ∀ (m : ℕ) (b : P.R.B), (P.φB ^ m) b = P.φB^[m] b`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro b`. Both sides reduce to the same expression. Consider the case `succ k ih => intro b`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Rewrite using `[pow_succ, AlgHom.mul_apply, ih, Function.iterate_succ_apply]`. Establish `hWu` using `hW₀`. Unfold `UnitM at hWu`. Set `ι : P.R.B →+* P.R.BdR` to `(P.ιB : P.R.B →+* P.R.BdR)`. Set `pGL : GL (n × Fin r) P.R.B` to `Units.map ((algebraMap ↥(MaximalUnramifiedExtension l) P.R.B).mapMatrix : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l) →+* Matrix (n × Fin r) (n × Fin r) P.R.B).toMonoidHom (resGL n ω hdet)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hpv : ∀ a b, (pGL : Matrix (n × Fin r) (n × Fin r) P.R.B) a b = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B ((resGL n ω hdet : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)) a b)` using `fun a b => rfl`. Establish `hqv : ∀ a b, ((pGL⁻¹ : GL (n × Fin r) P.R.B) : Matrix (n × Fin r) (n × Fin r) P.R.B) a b = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B ((((resGL n ω hdet)⁻¹ : GL (n × Fin r) ↥(MaximalUnramifiedExtension l)) : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)) a …` using `fun a b => rfl`. Establish `hres : (resGL n ω hdet : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)) = resMat n ω` using `rfl`. Establish `hwu : ∀ k, IsUnit (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (ω k))`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `IsUnit.map _ (isUnit_iff_ne_zero.mpr ?_)` and prove the remaining obligations. Introduce `h0`. Apply `hdet` to reduce the goal to its premises. Apply `Matrix.det_eq_zero_of_column_eq_zero k` to reduce the goal to its premises. Introduce `m`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[frobMat, h0]`. Establish `hsp' : Submodule.span ℚ_[l] (Set.range fun (jk : n × Fin r) (i : n) => algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (ω jk.2) * a jk.1 i) = Submodule.span ℚ_[l] (Set.range fun (c : n × Fin r) (i : n) => ∑ k, algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (ω k) * (A₀ : Matrix …`. Establish `e4 : (fun (jk : n × Fin r) (i : n) => algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (ω jk.2) * a jk.1 i) = fun jk => ω jk.2 • a jk.1`. Use function extensionality and compare the values at `jk i`. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e4]`. Conclude with `hsp`. Establish `hAι : (A₀ : Matrix (n × Fin r) (n × Fin r) P.R.B).map ι = ((pGL⁻¹ : GL (n × Fin r) P.R.B) : Matrix (n × Fin r) (n × Fin r) P.R.B).map ι * Matrix.blockDiagonal (fun m => (U m : Matrix n n P.R.BdR)) * Matrix.diagonal (fun j : n × Fin r => tz P (eps x y (j.2, j.1))) * (W₀ : Matrix ( …`. Establish `e1 : (A₀ : Matrix (n × Fin r) (n × Fin r) P.R.B).map ι = (A₀ : Matrix (n × Fin r) (n × Fin r) P.R.B).map (ev P 0)`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e3 : ((pGL⁻¹ : GL (n × Fin r) P.R.B) : Matrix (n × Fin r) (n × Fin r) P.R.B).map ι = ((((resGL n ω hdet)⁻¹ : GL (n × Fin r) ↥(MaximalUnramifiedExtension l)) : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l))).map (kd P)`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, hqv]`. Conclude with `iota_kur P _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (U0 P ω hdet U : Matrix (n × Fin r) (n × Fin r) P.R.BdR) = ((pGL⁻¹ : GL (n × Fin r) P.R.B) : Matrix (n × Fin r) (n × Fin r) P.R.B).map ι * Matrix.blockDiagonal (fun m => (U m : Matrix n n P.R.BdR))`. Rewrite using `[e3]`. Both sides reduce to the same expression. Rewrite using `[e1, hA, e2]`. Take `⟨A, hA1, hA2⟩` from `abstract (F := ℚ_[l]) (B := P.R.B) (R := P.R.BdR) (n := n) hr P.φB ι (S0 P) (fun q => by`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_S0_of_sum_eq]`. Use `show P.ιB (algebraMap ℚ_[l] P.R.B q) ∈ Fil P 0`. Rewrite using `[AlgHom.commutes]`. Conclude with `q_mem_Fil P q)`. Use the proof step `(fun k => algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (ω k))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun k => by rw [hcoe, phi_iter_kur, hω])`. Use `hwu`. Use the proof step `(pGL : Matrix (n × Fin r) (n × Fin r) P.R.B)`. Use the proof step `((pGL⁻¹ : GL (n × Fin r) P.R.B) : Matrix (n × Fin r) (n × Fin r) P.R.B)`. Use the proof step `(fun a b => by`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hpv, hres, resMat_apply]`. Use `split_ifs`. Rewrite using `[hcoe, phi_iter_kur]`. Conclude with `map_zero _)`. Use the proof step `(Units.mul_inv pGL)`.
-
-Use the proof step `(fun a b => by`. Rewrite using `[mem_S0_of_sum_eq]`. Use `show P.ιB ((pGL : Matrix (n × Fin r) (n × Fin r) P.R.B) a b) ∈ Fil P 0`. Rewrite using `[hpv, iota_kur]`. Conclude with `kd_mem_Fil P _)`.
-
-Use the proof step `(fun a b => by`. Rewrite using `[mem_S0_of_sum_eq]`. Use `show P.ιB (((pGL⁻¹ : GL (n × Fin r) P.R.B) : Matrix (n × Fin r) (n × Fin r) P.R.B) a b) ∈ Fil P 0`. Rewrite using `[hqv, iota_kur]`. Conclude with `kd_mem_Fil P _)`.
-
-Use `U (fun j : n × Fin r => tz P (eps x y (j.2, j.1)))`. Use the proof step `(fun j => by`. Unfold `tz`. Conclude with `(Units.isUnit _).map P.ιB)`. Use `A₀ hA₀ W₀ (fun i j => (mem_S0_of_sum_eq P).mpr (hWu.1 i j)) (fun i j => (mem_S0_of_sum_eq P).mpr (hWu.2 i j)) hAι a hsp'`.
-
-Use `⟨A, fun i j => by rw [← hcoe]; exact hA1 i j, fun m => ?_⟩` and prove the remaining obligations. Take `⟨V, hV1, hV2, hV3⟩` from `hA2 m`. Use `⟨V, by unfold UnitM; exact ⟨fun i j => (mem_S0_of_sum_eq P).mp (hV1 i j), fun i j => (mem_S0_of_sum_eq P).mp (hV2 i j)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hV3]`. Use extensionality with `i j`.
-
-Use `show P.ιB (P.φB^[(m : ℕ)] _) = P.ιB ((P.φB ^ (m : ℕ)) _)`. Rewrite using `[hcoe]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extract : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (r : ℕ) (ω : Fin r → ↥(MaximalUnramifiedExtension l)), (∀ k, fr l r (ω k) = ω k) → ∀ (hdet : (frobMat ω).det ≠ 0) (n : Type) [Fintype n] [DecidableEq n] (U : Fin r → GL n P.R.BdR) (x y : Fin r × n), (∀ m, UnitM P (U m)) → ∀ (A₀ : GL (n × Fin r) P.R.B), (∀ i j, P.φB ((A₀ : Matrix (n × Fin r) (n × Fin r) P.R.B) i j) = (A₀ : Matrix (n × Fin r) (n × Fin r) P.R.B) i j) → ∀ W₀ : GL (n × Fin r) P.R.BdR, UnitM P W₀ → (A₀ : Matrix (n × Fin r) (n × Fin r) P.R.B).map (ev P 0) = (U0 P ω hdet U : Matrix (n × Fin r) (n × Fin r) P.R.BdR) * Matrix.diagonal (fun j : n × Fin r => tz P (eps x y (j.2, j.1))) * (W₀ : Matrix (n × Fin r) (n × Fin r) P.R.BdR) → ∀ a : n → n → P.R.B, Submodule.span ℚ_[l] (Set.range fun jk : n × Fin r => ω jk.2 • a jk.1) = Submodule.span ℚ_[l] (Set.range (colv P ω A₀)) → ∃ A : GL n P.R.B, (∀ i j, P.φB^[r] ((A : Matrix n n P.R.B) i j) = (A : Matrix n n P.R.B) i j) ∧ ∀ m : Fin r, ∃ W : GL n P.R.BdR, UnitM P W ∧ (A : Matrix n n P.R.B).map (ev P m) = (U m : Matrix n n P.R.BdR) * Matrix.diagonal (fun j => tz P (eps x y (m, j))) * (W : Matrix n n P.R.BdR) := by
   intro l _ P r ω hω hdet n _ _ U x y hU A₀ hA₀ W₀ hW₀ hA a hsp

@@ -18,9 +18,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 variable {J : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ} {P : Ideal (MRing ι)} {n : ℕ}
 
 /- English proof (translation)
-Introduce `σ v`. Rewrite using `[famExt_apply, famExt_apply]`. Use `Fintype.sum_equiv (Equiv.arrowCongr σ (Equiv.refl (Fin 2))) _ _ fun s => ?_` and prove the remaining obligations. Establish `h1 : e ∘ (Equiv.arrowCongr σ (Equiv.refl (Fin 2)) s) = (e ∘ s) ∘ σ.symm` using `rfl`. Establish `h2 : ∏ j, v j ((Equiv.arrowCongr σ (Equiv.refl (Fin 2)) s) j) = ∏ j, (v ∘ σ) j (s j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Equiv.prod_comp σ fun j => v j (s (σ.symm j))).symm.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[h1, h2, hJ (e ∘ s) σ.symm fun j => he _]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem famExt_symm_of (e : Fin 2 → HermLine ι) (he : ∀ i, IsSmoothHerm (e i))
     (hJ : ∀ (L : Fin n → HermLine ι) (σ : Equiv.Perm (Fin n)), (∀ j, IsSmoothHerm (L j)) →
@@ -36,17 +36,17 @@ theorem famExt_symm_of (e : Fin 2 → HermLine ι) (he : ∀ i, IsSmoothHerm (e 
   rw [h1, h2, hJ (e ∘ s) σ.symm fun j => he _]
 
 /- English proof (translation)
-Establish `hw : (fun _ : Fin n => (![q, p] : Fin 2 → ℝ)) = fun _ => p • (Pi.single 1 1 : Fin 2 → ℝ) + q • (Pi.single 0 1 : Fin 2 → ℝ)`. Use function extensionality and compare the values at `j i`. Apply the tactic sequence `fin_cases i <;> simp`. Rewrite using `[hw, symm_expand _ hs, ← Finset.sum_range_reflect]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hin : i ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Rewrite using `[show n + 1 - 1 - i = n - i by omega]`. Establish `hmix : (mix (n - i) (Pi.single 0 1) (p • Pi.single 1 1) : Fin n → Fin 2 → ℝ) = (Finset.univ.filter fun j : Fin n => ¬ (j : ℕ) < n - i).piecewise (fun j => p • (mix (n - i) (Pi.single 0 1) (Pi.single 1 1) : Fin n → Fin 2 → ℝ) j) (mix (n - i) (Pi.single 0 1) (Pi.single 1 1))`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : (j : ℕ) < n - i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finset.piecewise_eq_of_notMem _ _ _ (by simp; omega)]`. Simplify using `[mix, h]`. Rewrite using `[Finset.piecewise_eq_of_mem _ _ _ (by simp; omega)]`. Simplify using `[mix, h]`. Establish `hcard : (Finset.univ.filter fun j : Fin n => ¬ (j : ℕ) < n - i).card = i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.filter_not, Finset.card_sdiff_of_subset (Finset.filter_subset _ _), Finset.card_univ, Fintype.card_fin, Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers. Establish `hbasis : (mix (n - i) (Pi.single 0 1) (Pi.single 1 1) : Fin n → Fin 2 → ℝ) = fun j => Pi.single ((fun j : Fin n => if (j : ℕ) < n - i then (0 : Fin 2) else 1) j) 1`. Use function extensionality and compare the values at `j`. Simplify using `only [mix]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> rfl`. Establish `hlist : (e ∘ fun j : Fin n => if (j : ℕ) < n - i then (0 : Fin 2) else 1) = fun j : Fin n => if (j : ℕ) < n - i then e 0 else e 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hmix, MultilinearMap.map_piecewise_smul, Finset.prod_const, hcard, hbasis, famExt_basis, hlist, smul_eq_mul, Nat.choose_symm hin]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem famExt_expand (e : Fin 2 → HermLine ι) (hs : IsSymmForm (famExt J P n e)) (q p : ℝ) :
     famExt J P n e (fun _ => ![q, p]) =
@@ -92,33 +92,29 @@ theorem famExt_expand (e : Fin 2 → HermLine ι) (hs : IsSymmForm (famExt J P n
 end ZCombExpand
 
 /- English proof (translation)
-Introduce `K _ ι _ I hI P d M H q p hP hM hH`. Use `set e : Fin 2 → HermLine ι := ![M, H] with he_def`. Establish `he : ∀ i, IsSmoothHerm (e i)`. Introduce `i`. Use `fin_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hM`. Conclude with `hH`. Use `set Z := HermLine.zcomb M H (q : ℤ) (p : ℤ) with hZ_def`. Establish `hZ : IsSmoothHerm Z` using `ZCombLimit.isSmoothHerm_zcomb_int hM hH _ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `hposition : ∀ (L : Fin d → HermLine ι) (a : Fin d), (∀ j, IsSmoothHerm (L j)) → I P d (Function.update L a Z) = (![(q : ℝ), (p : ℝ)] : Fin 2 → ℝ) 0 * I P d (Function.update L a (e 0)) + (![(q : ℝ), (p : ℝ)] : Fin 2 → ℝ) 1 * I P d (Function.update L a (e 1))`. Introduce `L a hL`. Consider the cases of `d with`. Consider the case `zero => exact a.elim0`. Consider the case `succ m`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `ZCombLimit.fam_update_zcomb_int hI hP L hL a hM hH (q : ℤ) (p : ℤ)`. Simplify `h` using `[e]`. Establish `key` using `ZCombLimit.eq_famExt_of_position (J := I) (P := P) IsSmoothHerm e Z ![(q : ℝ), (p : ℝ)] he hZ hposition Finset.univ (fun _ => 0)`. Simplify using `only [Finset.mem_univ, if_true] at key`. Rewrite using `[key, ZCombExpand.famExt_expand e (famExt_symm hI hP e he)]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Introduce `hd`. Take `⟨n, rfl⟩ : ∃ n, d = n + 1` from `⟨d - 1, by omega⟩`. Set `J : Ideal (MRing ι) → (m : ℕ) → (Fin m → HermLine ι) → ℝ` to `fun P' m L => I P' (m + 1) (Fin.cons (α := fun _ => HermLine ι) M L)`. Establish `hcons : ∀ L : Fin n → HermLine ι, (∀ j, IsSmoothHerm (L j)) → ∀ j, IsSmoothHerm (Fin.cons (α` using `fun _ => HermLine ι) M L j) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `L hL j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `using hM`. Simplify using `using hL j`. Establish `hsymm : ∀ (L : Fin n → HermLine ι) (σ : Equiv.Perm (Fin n)), (∀ j, IsSmoothHerm (L j)) → J P n (L ∘ σ) = J P n L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `L σ hL`. Establish `hc : (Fin.cons (α` using `fun _ => HermLine ι) M (L ∘ σ) : Fin (n + 1) → HermLine ι) = (Fin.cons (α := fun _ => HermLine ι) M L) ∘ (Equiv.Perm.decomposeFin.symm (0, σ)) := by`. Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `[Equiv.Perm.decomposeFin_symm_apply_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Equiv.Perm.decomposeFin_symm_apply_succ]`. Use `show I P (n + 1) _ = I P (n + 1) _`. Rewrite using `[hc, hI.1 P (n + 1) _ _ hP (hcons L hL)]`. Establish `hposition : ∀ (L : Fin n → HermLine ι) (a : Fin n), (∀ j, IsSmoothHerm (L j)) → J P n (Function.update L a Z) = (![(q : ℝ), (p : ℝ)] : Fin 2 → ℝ) 0 * J P n (Function.update L a (e 0)) + (![(q : ℝ), (p : ℝ)] : Fin 2 → ℝ) 1 * J P n (Function.update L a (e 1))`. Introduce `L a hL`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show I P (n + 1) _ = _ * I P (n + 1) _ + _ * I P (n + 1) _`. Rewrite using `[Fin.cons_update, Fin.cons_update, Fin.cons_update]`. Establish `h` using `ZCombLimit.fam_update_zcomb_int hI hP _ (hcons L hL) a.succ hM hH (q : ℤ) (p : ℤ)`. Simplify `h` using `[e]`. Establish `key` using `ZCombLimit.eq_famExt_of_position (J := J) (P := P) IsSmoothHerm e Z ![(q : ℝ), (p : ℝ)] he hZ hposition Finset.univ (fun _ => 0)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_univ, if_true] at key`. Establish `hl : (fun j : Fin (n + 1) => if (j : ℕ) = 0 then M else Z) = Fin.cons (α` using `fun _ => HermLine ι) M (fun _ : Fin n => Z) := by`. Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Rewrite using `[hl, show I P (n + 1) (Fin.cons (α := fun _ => HermLine ι) M (fun _ : Fin n => Z)) = J P n (fun _ => Z) from rfl, key, ZCombExpand.famExt_expand e (ZCombExpand.famExt_symm_of e he hsymm), Nat.add_sub_cancel]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hin : i ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Establish `hl2 : (Fin.cons (α` using `fun _ => HermLine ι) M (fun j : Fin n => if (j : ℕ) < n - i then e 0 else e 1) : Fin (n + 1) → HermLine ι) = fun j : Fin (n + 1) => if (j : ℕ) < n + 1 - i then M else H := by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Conclude with `(if_pos (show ((0 : Fin (n + 1)) : ℕ) < n + 1 - i by simp; omega)).symm`. Simplify using `only [Fin.cons_succ, Fin.val_succ] split_ifs with h1 h2 h2`.
-
-Both sides reduce to the same expression. Conclude with `absurd (by omega) h2`. Conclude with `absurd (by omega) h1`. Both sides reduce to the same expression. Use `show _ * I P (n + 1) _ = _`.
-
-Rewrite using `[hl2]`.
+A detailed English derivation is pending.
 -/
 theorem ZCombExpand.proof : ZCombExpand.Statement := by
   intro K _ ι _ I hI P d M H q p hP hM hH

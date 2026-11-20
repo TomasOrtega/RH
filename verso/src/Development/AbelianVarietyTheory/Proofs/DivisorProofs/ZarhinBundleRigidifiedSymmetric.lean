@@ -15,14 +15,14 @@ section
 variable {S : Scheme.{0}} (A B : Over S) [GrpObj A] [GrpObj B] [IsCommMonObj A] [IsCommMonObj B]
 
 /- English proof (translation)
-Rewrite using `[← pull_comp, ← Over.comp_left, comp_lift]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pull_pull_lift {Y W X₁ X₂ : Over S} {M : LB (X₁ ⊗ X₂).left} (hM : M.IsLB) (u : Y ⟶ W) (f : W ⟶ X₁)
     (g : W ⟶ X₂) : CechPic.pull u.left (CechPic.pull (lift f g).left (cls M hM)) = evc hM (u ≫ f) (u ≫ g) := by
   rw [← pull_comp, ← Over.comp_left, comp_lift]; rfl
 
 /- English proof (translation)
-Simplify using `only [zCls, map_add, map_sum, map_zsmul, pull_pull_lift, lift_fst_assoc, lift_snd_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pull_zCls {P : LB (A ⊗ A).left} (hP : P.IsLB) {Q : LB (A ⊗ B).left} (hQ : Q.IsLB) (d : ℕ) (mu : B ⟶ A)
     {Y : Over S} (z z' : Y ⟶ Zob A B) :
@@ -34,7 +34,7 @@ theorem pull_zCls {P : LB (A ⊗ A).left} (hP : P.IsLB) {Q : LB (A ⊗ B).left} 
   simp only [zCls, map_add, map_sum, map_zsmul, pull_pull_lift, lift_fst_assoc, lift_snd_assoc]
 
 /- English proof (translation)
-Rewrite using `[← cls_eq_zero_iff (pull_isLB (zarhinBundle_isLineBundle A B hP hQ d mu) _), cls_pull (zarhinBundle_isLineBundle A B hP hQ d mu), cls_zP]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zarhinBundle_pull_trivial_iff {P : LB (A ⊗ A).left} (hP : P.IsLB) {Q : LB (A ⊗ B).left} (hQ : Q.IsLB) (d : ℕ)
     (mu : B ⟶ A) {Y : Over S} (u : Y ⟶ Zob A B ⊗ Zob A B) :
@@ -43,19 +43,19 @@ theorem zarhinBundle_pull_trivial_iff {P : LB (A ⊗ A).left} (hP : P.IsLB) {Q :
   rw [← cls_eq_zero_iff (pull_isLB (zarhinBundle_isLineBundle A B hP hQ d mu) _), cls_pull (zarhinBundle_isLineBundle A B hP hQ d mu), cls_zP]
 
 /- English proof (translation)
-Simplify using `[pa]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_pa {Y : Over S} (i : Fin 4) : (1 : Y ⟶ Zob A B) ≫ pa A B i = 1 := by
   simp [pa]
 
 /- English proof (translation)
-Simplify using `[pb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_pb {Y : Over S} (j : Fin 4) : (1 : Y ⟶ Zob A B) ≫ pb A B j = 1 := by
   simp [pb]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, one_pb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_pb_assoc {Y X : Over S} (j : Fin 4) (f : B ⟶ X) : (1 : Y ⟶ Zob A B) ≫ pb A B j ≫ f = 1 ≫ f := by
   rw [← Category.assoc, one_pb]
@@ -66,7 +66,7 @@ section Sym
 variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] [IsCommMonObj A] [IsCommMonObj B]
 
 /- English proof (translation)
-Establish `e₁ : cls P hP = evc hP (snd A A) (fst A A)` using `(CechPic.cls_eq_iff hP (pull_isLB hP _)).2 hPs`. Express the relevant statement in the definitionally equal form `CechPic.pull (lift a a').left (cls P hP) = _`. Rewrite using `[e₁, pull_evc, lift_snd, lift_fst]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem evc_symm {P : LB (A ⊗ A).left} (hP : P.IsLB) (hPs : LBIso P (P.pull (lift (snd A A) (fst A A)).left))
     {Y : Over S} (a a' : Y ⟶ A) : evc hP a a' = evc hP a' a := by
@@ -75,29 +75,27 @@ theorem evc_symm {P : LB (A ⊗ A).left} (hP : P.IsLB) (hPs : LBIso P (P.pull (l
   rw [e₁, pull_evc, lift_snd, lift_fst]
 
 /- English proof (translation)
-Establish `hQl` using `hQ.isLB`. Establish `hs` using `hQ'.isLB`. Establish `addL : ∀ (Y : Over S) (a a' : Y ⟶ A) (b : Y ⟶ B), evc hQl (a * a') b = evc hQl a b + evc hQl a' b` using `(isAdditive_iff hQl).1 hQ.additive`. Establish `addR : ∀ (Y : Over S) (a : Y ⟶ A) (b b' : Y ⟶ B), evc hQl a (b * b') = evc hQl a b + evc hQl a b'`. Introduce `Y a b b'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `k` using `(isAdditive_iff hs).1 hQ'.additive Y b b' a`. Rewrite `k` using `[evc_swap hQl hs, evc_swap hQl hs, evc_swap hQl hs]`. Then use the resulting hypothesis. Establish `powL : ∀ (Y : Over S) (a : Y ⟶ A) (b : Y ⟶ B) (n : ℕ), evc hQl (a ^ n) b = n • evc hQl a b`. Introduce `Y a b n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => rw [pow_zero, zero_smul]`. Conclude with `hQ.additive.evc_one hQl b`. Consider the case `succ n ih => rw [pow_succ, addL, ih, succ_nsmul]`. Establish `powR : ∀ (Y : Over S) (a : Y ⟶ A) (b : Y ⟶ B) (n : ℕ), evc hQl a (b ^ n) = n • evc hQl a b`. Introduce `Y a b n`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, zero_smul]`. Conclude with `evc_one_right hQl hQ.zero a`. Consider the case `succ n ih => rw [pow_succ, addR, ih, succ_nsmul]`. Establish `PQ : ∀ (Y : Over S) (a a' : Y ⟶ A), evc hP a a' = evc hQl a (a' ≫ la)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `Y a a'`. Establish `e₂ : cls P hP = evc hQl (fst A A) (snd A A ≫ la)` using `(CechPic.cls_eq_iff hP (pull_isLB hQl _)).2 hPQ`. Express the relevant statement in the definitionally equal form `CechPic.pull (lift a a').left (cls P hP) = _`. Rewrite using `[e₂, pull_evc, lift_fst, lift_snd_assoc]`. Set `Mb : LB (B ⊗ B).left` to `ev Q (fst B B ≫ mu) (snd B B)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : Mb.IsLB` using `pull_isLB hQl _`. Establish `evcM : ∀ (Y : Over S) (b t : Y ⟶ B), evc hM b t = evc hQl (b ≫ mu) t`. Introduce `Y b t`. Rewrite using `[evc_ev hQl, lift_fst_assoc, lift_snd]`. Establish `haM : IsAdditive Mb` using `(isAdditive_iff hM).2 fun Y b b' t => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[evcM, evcM, evcM, MonObj.mul_comp, addL]`. Take `⟨x, hx, -⟩` from `hQ'.univ B Mb hM haM`. Establish `K : ∀ (Y : Over S) (b t : Y ⟶ B), evc hQl (b ≫ mu) t = evc hQl (t ≫ x) b`. Introduce `Y b t`. Establish `c` using `(CechPic.cls_eq_iff hM (pull_isLB hs _)).2 hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k : evc hM b t = evc (pull_isLB hs _) b t` using `congrArg (CechPic.pull (lift b t).left) c`. Rewrite `k` using `[evc_ev hs, lift_fst, lift_snd_assoc, evc_swap hQl hs, evcM]`. Conclude with `k`. Establish `hss : (swap (swap Q)).IsLB` using `pull_isLB hs _`. Establish `ha' : IsAdditive (swap (swap Q))` using `(isAdditive_iff hss).2 fun Y a a' t => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [evc_swap hs hss, evc_swap hQl hs]`. Conclude with `addL Y a a' t`. Establish `hsM : (swap Mb).IsLB` using `pull_isLB hM _`. Establish `haSM : IsAdditive (swap Mb)` using `(isAdditive_iff hsM).2 fun Y t t' b => by`. Simplify using `only [evc_swap hM hsM, evcM]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `addR Y _ t t'`. Establish `hxm : IsMonHom x` using `isMonHom_of_classifying S B B A Mb (swap Q) hQ' ha' hM haSM x hx`. Establish `key : ∀ (Y : Over S) (b : Y ⟶ B) (a : Y ⟶ A), evc hQl (a ≫ la ≫ x) b = evc hQl (a ≫ la ≫ mu) b`. Introduce `Y b a`. Rewrite using `[← Category.assoc a la x, ← K, ← PQ, evc_symm hP hPs, PQ, Category.assoc, hml, hlm, comp_pow, Category.comp_id, comp_pow, Category.comp_id, powR, powL]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lx : la ≫ x = la ≫ mu`. Apply `hQ'.eq_of_evc` to reduce the goal to its premises. Rewrite using `[evc_swap hQl hs, evc_swap hQl hs, key]`. Establish `xd : x ^ d = mu ^ d`. Establish `e₁ : (𝟙 B ^ d) ≫ x = x ^ d` using `by rw [MonObj.pow_comp, Category.id_comp]`.
-
-Establish `e₂ : (𝟙 B ^ d) ≫ mu = mu ^ d` using `by rw [MonObj.pow_comp, Category.id_comp]`. Rewrite using `[← e₁, ← e₂, ← hml, Category.assoc, lx, ← Category.assoc]`. Establish `xm : x = mu` using `htor x mu hxm hmu xd`. Rewrite using `[K, xm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evc_mu_symm {P : LB (A ⊗ A).left} (hP : P.IsLB) (hPs : LBIso P (P.pull (lift (snd A A) (fst A A)).left))
     {Q : LB (A ⊗ B).left} (hQ : IsDual A B Q) (hQ' : IsDual B A (swap Q)) {d : ℕ} {la : A ⟶ B} {mu : B ⟶ A}
@@ -167,13 +165,13 @@ theorem evc_mu_symm {P : LB (A ⊗ A).left} (hP : P.IsLB) (hPs : LBIso P (P.pull
 end Sym
 
 /- English proof (translation)
-Introduce `h M d S t c B _ _ Q la mu hZ _ _ _ hd _ hdu _`. Establish `hQ` using `hZ.2.1`. Use `haveI : IsMonHom mu := hZ.2.2.2.2.1`. Use `⟨(zarhinBundle_pull_trivial_iff _ _ _ _ _ _ _).2 ?_, (zarhinBundle_pull_trivial_iff _ _ _ _ _ _ _).2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pull_zCls]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [one_pa, one_pb, one_pb_assoc, MonObj.one_comp, Category.id_comp, evc_one_left c.isLB c.rig₁, hQ.additive.evc_one hQ.isLB, evc_one_right hQ.isLB hQ.zero, smul_zero, Finset.sum_const_zero, add_zero]`. Rewrite using `[pull_zCls]`. Simplify using `only [one_pa, one_pb, one_pb_assoc, MonObj.one_comp, Category.id_comp, evc_one_right c.isLB c.rig₂, hQ.additive.evc_one hQ.isLB, evc_one_right hQ.isLB hQ.zero, smul_zero, Finset.sum_const_zero, add_zero]`. Establish `hz` using `zarhinBundle_isLineBundle c.A B c.isLB hQ.isLB d mu`. Use `(CechPic.cls_eq_iff hz (pull_isLB hz _)).1 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cls_pull hz, cls_zP]`. Use `conv_lhs => rw [← pull_id (zCls _ _ _ _ _ _), ← Over.id_left, ← lift_fst_snd]`. Rewrite using `[pull_zCls, pull_zCls]`. Establish `htor : ∀ x y : B ⟶ c.A, IsMonHom x → IsMonHom y → x ^ d = y ^ d → x = y` using `GlobalTheory.T.abelianScheme_hom_eq_of_pow_eq S c.A B c.ab hZ.1 d hd hdu`. Establish `h1 : ∑ i, evc c.isLB (fst (Zob c.A B) (Zob c.A B) ≫ pa c.A B i) (snd (Zob c.A B) (Zob c.A B) ≫ pa c.A B i) = ∑ i, evc c.isLB (snd (Zob c.A B) (Zob c.A B) ≫ pa c.A B i) (fst (Zob c.A B) (Zob c.A B) ≫ pa c.A B i)` using `Finset.sum_congr rfl fun i _ => evc_symm c.isLB c.symm _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h4 : ∑ j, evc hQ.isLB (snd (Zob c.A B) (Zob c.A B) ≫ pb c.A B j ≫ mu) (fst (Zob c.A B) (Zob c.A B) ≫ pb c.A B j) = ∑ j, evc hQ.isLB (fst (Zob c.A B) (Zob c.A B) ≫ pb c.A B j ≫ mu) (snd (Zob c.A B) (Zob c.A B) ≫ pb c.A B j)` using `Finset.sum_congr rfl fun j _ => by`. Simplify `evc_mu_symm c.isLB c.symm hQ hZ.2.2.1 hZ.2.2.2.2.1 hZ.2.2.2.2.2.1 hZ.2.2.2.2.2.2.1 hZ.2.2.2.2.2.2.2 htor (fst (Zob c.A B) (Zob c.A B) ≫ pb c.A B j) (snd (Zob c.A B) (Zob c.A B) ≫ pb c.A B j)` using `only [Category.assoc]`. Rewrite using `[h1, h4]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem zarhinBundle_rigidified_symmetric₂ : ∀ (h M d : ℕ) (S : Scheme.{0}) (t : S ⟶ Sp (cycAway M)) (c : SiegPre h M (zetaAway M) t) (B : Over S) [GrpObj B] [IsCommMonObj B] (Q : LB (c.A ⊗ B).left) (la : c.A ⟶ B) (mu : B ⟶ c.A) (hZ : GlobalTheory.ZarhinFam.ZData c d B Q la mu), 1 ≤ h → 3 ≤ M → Odd M → 0 < d → M.Coprime d → IsUnit ((d : ℕ) : Γ(S, ⊤)) → SiegKerBy c d → (∃ t : ((GlobalTheory.ZarhinFam.zP c.A B c.isLB hZ.2.1.isLB d mu).pull (lift (1 : (GlobalTheory.ZarhinFam.Zob c.A B) ⟶ (GlobalTheory.ZarhinFam.Zob c.A B)) (𝟙 (GlobalTheory.ZarhinFam.Zob c.A B))).left).Gen, t.IsGen) ∧ (∃ t : ((GlobalTheory.ZarhinFam.zP c.A B c.isLB hZ.2.1.isLB d mu).pull (lift (𝟙 (GlobalTheory.ZarhinFam.Zob c.A B)) (1 : (GlobalTheory.ZarhinFam.Zob c.A B) ⟶ (GlobalTheory.ZarhinFam.Zob c.A B))).left).Gen, t.IsGen) ∧ LBIso (GlobalTheory.ZarhinFam.zP c.A B c.isLB hZ.2.1.isLB d mu) ((GlobalTheory.ZarhinFam.zP c.A B c.isLB hZ.2.1.isLB d mu).pull (lift (snd (GlobalTheory.ZarhinFam.Zob c.A B) (GlobalTheory.ZarhinFam.Zob c.A B)) (fst (GlobalTheory.ZarhinFam.Zob c.A B) (GlobalTheory.ZarhinFam.Zob c.A B))).left) := by
   intro h M d S t c B _ _ Q la mu hZ _ _ _ hd _ hdu _

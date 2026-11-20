@@ -9,11 +9,11 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.CompanionTheory.CFin
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ hF ι _ d B hd`. Use `haveI := hF`. Establish `hS : {x : E | IsIntegral ℤ x ∧ ∀ φ : E →+* ℂ, ‖φ x‖ ≤ (d : ℝ) * B}.Finite` using `Embeddings.finite_of_norm_le E ℂ _`. Establish `hd0 : (d : E) ≠ 0` using `Nat.cast_ne_zero.2 hd.ne'`. Establish `hT` using `hS.preimage (f := fun e : E => (d : E) * e) (fun a _ b _ h => mul_left_cancel₀ hd0 h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM` using `Set.Finite.pi' (fun _ : ι => Set.Finite.pi' (fun _ : ι => hT))`. Use `hM.subset ?_` and prove the remaining obligations. Introduce and unpack `N ⟨h1, h2⟩ u v`. Use `⟨h1 u v, fun φ => ?_⟩` and prove the remaining obligations. Establish `hr : ComplexEmbedding.IsReal (φ.comp (algebraMap F E))` using `IsTotallyReal.complexEmbedding_isReal _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `h2 (InfinitePlace.mk (φ.comp (algebraMap F E))) ⟨φ, (InfinitePlace.embedding_mk_eq_of_isReal hr).symm⟩ u v`. Rewrite using `[map_mul, map_natCast, norm_mul, Complex.norm_natCast]`. Conclude with `mul_le_mul_of_nonneg_left hb (Nat.cast_nonneg d)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matrices_bounded_denominator_finite : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], IsTotallyReal F → ∀ {ι : Type} [Finite ι] (d : ℕ) (B : ℝ), 0 < d → {N : Matrix ι ι E | (∀ u v, IsIntegral ℤ ((d : E) * N u v)) ∧ ∀ (w : InfinitePlace F) (τ : EmbOver E w) (u v : ι), ‖τ.1 (N u v)‖ ≤ B}.Finite := by
   intro F E _ _ _ _ _ hF ι _ d B hd

@@ -17,28 +17,26 @@ variable {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model �
   {r s r' s' : ℕ}
 
 /- English proof (translation)
-The claim follows from `NumberField.AdeleRing.algebraMap_injective (𝓞 F) F`.
+A detailed English derivation is pending.
 -/
 theorem sq_alg_inj : Function.Injective (algebraMap F (AF F)) := NumberField.AdeleRing.algebraMap_injective (𝓞 F) F
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.includeRight_injective (R := F) (A := AF F) (B := E) sq_alg_inj`.
+A detailed English derivation is pending.
 -/
 theorem sq_inclR_inj : Function.Injective (inclR (F := F) (E := E) (AF F)) :=
   Algebra.TensorProduct.includeRight_injective (R := F) (A := AF F) (B := E) sq_alg_inj
 
 /- English proof (translation)
-Use `choose y z hyz using hp.good.rat`. Establish `hadd : ∀ a b : Matrix (Fin n) (Fin d) E, incM F (a + b) = incM F a + incM F b` using `fun a b => Matrix.ext fun i j => map_add (inclR (F := F) (AF F)) _ _`. Establish `hsm : ∀ (c : F) (a : Matrix (Fin n) (Fin d) E), incM F (c • a) = algebraMap F (AF F) c • incM F a` using `fun c a => Matrix.ext fun i j => by`. Express the relevant statement in the definitionally equal form `(1 : AF F) ⊗ₜ[F] (c • a i j) = algebraMap F (AF F) c • ((1 : AF F) ⊗ₜ[F] a i j)`. Rewrite using `[TensorProduct.tmul_smul, algebraMap_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `l : Matrix (Fin n) (Fin d) E →ₗ[F] (Fin n × Fin d → F) × (Fin n × Fin d → F)` to `{ toFun := fun x => (y x, z x) map_add' := fun a b => by`. Establish `h` using `hyz (a + b)`. Rewrite `h` using `[hadd, map_add, hyz a, hyz b]`. Use `Prod.ext (funext fun i => sq_alg_inj ?_) (funext fun i => sq_alg_inj ?_)` and prove the remaining obligations. Conclude with `(congrFun (congrArg Prod.fst h) i).symm.trans (map_add _ _ _).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(congrFun (congrArg Prod.snd h) i).symm.trans (map_add _ _ _).symm`. Use the proof step `map_smul' := fun c a => by`. Establish `h` using `hyz (c • a)`. Rewrite `h` using `[hsm, map_smul, hyz a]`. Use `Prod.ext (funext fun i => sq_alg_inj ?_) (funext fun i => sq_alg_inj ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(congrFun (congrArg Prod.fst h) i).symm.trans (map_mul _ _ _).symm`. Conclude with `(congrFun (congrArg Prod.snd h) i).symm.trans (map_mul _ _ _).symm }`. Establish `hinj : Function.Injective l` using `fun a b hab => by`. Establish `h1 : y a = y b` using `congrArg Prod.fst hab`. Establish `h2 : z a = z b` using `congrArg Prod.snd hab`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h3 : incM F a = incM F b` using `M.co.e.injective (by rw [hyz a, hyz b, h1, h2])`. Conclude with `Matrix.ext fun i j => sq_inclR_inj (congrFun (congrFun h3 i) j)`. Establish `h2 : Module.finrank F E = 2` using `hp.base.cm.2.2.1`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Establish `hdim : Module.finrank F (Matrix (Fin n) (Fin d) E) = Module.finrank F ((Fin n × Fin d → F) × (Fin n × Fin d → F))`.
-
-Rewrite using `[Module.finrank_matrix, h2]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨Equiv.ofBijective l ⟨hinj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).1 hinj⟩, hyz⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ratEquiv (hp : IsPair B M χX χW om r s r' s') :
     ∃ e : Matrix (Fin n) (Fin d) E ≃ (Fin n × Fin d → F) × (Fin n × Fin d → F), ∀ x,
@@ -79,9 +77,9 @@ theorem exists_ratEquiv (hp : IsPair B M χX χW om r s r' s') :
   exact ⟨Equiv.ofBijective l ⟨hinj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).1 hinj⟩, hyz⟩
 
 /- English proof (translation)
-Take `⟨c, hc, h1⟩` from `hS F _ B.ψ hp.base.std μ hμ`. Take `⟨e, he⟩` from `exists_ratEquiv hp`. Use `⟨c, hc, fun Φ₁ h₁ Φ₂ h₂ g h => ?_⟩` and prove the remaining obligations. Establish `hs` using `(IsUWeilPair.isUSplitting hp.weil).pres (g, h)`. Use `(h1 _ (hs _ h₁) _ (hs _ h₂)).trans (le_of_eq ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e.tsum_eq]`. Use `congr 1`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[← he x, hE F E σ B n d X W M χX χW om r s r' s' hp μ hμ Φ₁ h₁ Φ₂ h₂ g h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_mul_le (hS : CoefSum) (hE : CoefEq) (hp : IsPair B M χX χW om r s r' s') (μ : Measure (Fin n × Fin d → AF F))
     (hμ : μ.IsAddHaarMeasure) : ∃ c : ℝ, 0 < c ∧ ∀ Φ₁ ∈ schA F (Fin n × Fin d), ∀ Φ₂ ∈ schA F (Fin n × Fin d), ∀ g h,
@@ -98,7 +96,7 @@ theorem theta_mul_le (hS : CoefSum) (hE : CoefEq) (hp : IsPair B M χX χW om r 
   rw [← he x, hE F E σ B n d X W M χX χW om r s r' s' hp μ hμ Φ₁ h₁ Φ₂ h₂ g h]
 
 /- English proof (translation)
-Unfold `maj sz`. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem sq_maj_nonneg (τ : ∀ w : InfinitePlace F, EmbOver E w) (C : Set (Ten F E n d)) (N : ℕ) (z : Ten F E n d) :
     0 ≤ maj τ C N z := by
@@ -108,11 +106,11 @@ theorem sq_maj_nonneg (τ : ∀ w : InfinitePlace F, EmbOver E w) (C : Set (Ten 
   · exact le_rfl
 
 /- English proof (translation)
-Rewrite using `[sq]`. Use `h1.trans ?_` and prove the remaining obligations. Establish `e : ∑' x, ‖u x‖ₑ = ∑' x : S, ‖u x.1‖ₑ`. Use `(tsum_subtype_eq_of_support_subset (f := fun x => ‖u x‖ₑ) fun x hx => ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hx (by simp [h0 x hn])`. Rewrite using `[e, ← ENNReal.ofReal_pow (by positivity), mul_pow, Real.sq_sqrt hc.le, ENNReal.ofReal_mul hc.le, mul_assoc, latSum]`. Use `mul_le_mul_right ?_ _` and prove the remaining obligations. Rewrite using `[← ENNReal.tsum_mul_left]`. Use `ENNReal.tsum_le_tsum fun x => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ofReal_norm, ← ENNReal.ofReal_mul (by positivity), sq]`. Conclude with `ENNReal.ofReal_le_ofReal (h2 x.1)`.
+A detailed English derivation is pending.
 -/
 theorem sq_le_of_coef {c a : ℝ} (hc : 0 < c) (ha : 0 ≤ a) {t : ℝ≥0∞} {S : Set (Matrix (Fin n) (Fin d) E)}
     {u : Matrix (Fin n) (Fin d) E → ℂ} {C : Set (Ten F E n d)} {N : ℕ} {g : UA σ X.J} {h : UA σ W.J}
@@ -135,9 +133,9 @@ theorem sq_le_of_coef {c a : ℝ} (hc : 0 < c) (ha : 0 ≤ a) {t : ℝ≥0∞} {
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp φ hφ N`. Take `⟨μ, hμ, -⟩` from `ParityOfCoefficients.exists_haar (F := F) (κ := Fin n × Fin d)`. Take `⟨c, hc, h1⟩` from `theta_mul_le hS hE hp μ hμ`. Take `⟨p, C, hpc, hC, h2⟩` from `hB F E σ B n d X W M χX χW om r s r' s' hp μ hμ φ hφ φ hφ N`. Use `⟨NNReal.mk √c (Real.sqrt_nonneg c) • p, C, (continuous_const.mul hpc : Continuous fun f => √c * p f), hC, fun f g h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : pureA F f φ ∈ schA F (Fin n × Fin d)` using `Submodule.subset_span ⟨f, φ, hφ, rfl⟩`. Conclude with `sq_le_of_coef hc (apply_nonneg p f) (h1 _ hm _ hm g h) (fun x hx => absurd (Set.mem_univ x) hx) fun x => h2 f f _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sqAll_of' (hS : CoefSum) (hE : CoefEq) (hB : CoefBd) : SqAll := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp φ hφ N

@@ -5,21 +5,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Dr
 
 /- English proof (translation)
-Introduce `Γ V S _ _ _ _ d G W hW q γ`. Establish `hρρ : ∀ x, G.ρ γ (G.ρ γ⁻¹ x) = x` using `fun x => by simpa using G.ρ_inv_apply γ⁻¹ x`. Establish `hσ : ∀ s, G.σ γ (G.σ γ⁻¹ s) = s` using `fun s => by simp`. Establish `hout : ∀ p, p ∉ G.Y → G.ρ γ⁻¹ p ∉ G.Y` using `fun p hp h => hp (by simpa [hρρ] using G.maps γ _ h)`. Establish `heq : ∀ s, ∀ p ∈ G.Y, W s (G.ρ γ p) = G.ρ γ (W (G.σ γ⁻¹ s) p)` using `fun s p hp => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hW.equiv γ (G.σ γ⁻¹ s) p hp` as an intermediate fact. Rewrite `this` using `[hσ]`. Then use the resulting hypothesis. Establish `hnat` using `fun s => pbNat V (Fin d → ℂ) G.Y G.isOpen (G.ρ γ) (mulVecL (G.ξ γ)) (W (G.σ γ⁻¹ s)) (W s) (hW.field _) (hW.field s) (G.maps γ) (heq s) q`. Establish `hrel : ∀ (k : ℕ) (w : G.Om k) (s : S), ∀ p ∈ G.Y, ∀ v : Fin k → V, ((G.act k γ w).1 s (G.ρ γ p)) (fun i => G.ρ γ (v i)) = mulVecL (G.ξ γ) (w.1 (G.σ γ⁻¹ s) p v)`. Introduce `k w s p hp v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Geo.act_apply, mulVecL_apply, Geo.ρ_inv_apply]`. Establish `hz : ∀ (k : ℕ) (w : G.Om k) (s : S) (p : V), p ∉ G.Y → w.1 s p = 0` using `fun k w s p hp => (w.2 s).2 p hp`. Establish `hsm` using `fun (k : ℕ) (w : G.Om k) (s : S) => (w.2 s).1`. Take `⟨hA, hB⟩` from `omApply Γ V S d G W hW q`. Use `⟨fun w => ?_, fun w => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s p`. Use extensionality with `v`. Distinguish the cases in `hp : p ∈ G.Y`. Establish `hp'` using `G.maps γ⁻¹ p hp`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[Geo.act_apply, hA w _ _ hp', hA (G.act q γ w) s p hp]`. Use `(hnat s).1 (w.1 (G.σ γ⁻¹ s)) ((G.act q γ w).1 s) (hrel q w s) 1 ⟨zero_le_one, le_rfl⟩ (G.ρ γ⁻¹ p) hp' (fun i => G.ρ γ⁻¹ (v i))` as an intermediate fact. Simplify using `only [hρρ] at this`. Rewrite using `[← mulVecL_apply]`. Conclude with `congrFun this.symm _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Geo.act_apply, hz q _ _ _ (hout p hp), hz q _ s p hp]`. Simplify using the standard rewrite rules. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s p`. Use extensionality with `v`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hp : p ∈ G.Y`. Establish `hp'` using `G.maps γ⁻¹ p hp`. Rewrite using `[Geo.act_apply, hB w _ _ hp', hB (G.act (q + 1) γ w) s p hp]`. Use `((hnat s).2 (w.1 (G.σ γ⁻¹ s)) ((G.act (q + 1) γ w).1 s) (hrel (q + 1) w s)).2 (hsm _ w _) (hsm _ _ s) (G.ρ γ⁻¹ p) hp' (fun i => G.ρ γ⁻¹ (v i))` as an intermediate fact. Simplify using `only [hρρ] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mulVecL_apply]`. Conclude with `congrFun this.symm _`. Rewrite using `[Geo.act_apply, hz q _ _ _ (hout p hp), hz q _ s p hp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.omEquiv :
     OmEquiv := by

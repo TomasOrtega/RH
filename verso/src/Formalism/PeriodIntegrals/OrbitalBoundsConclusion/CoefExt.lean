@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CoefficientBaseChange.C
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CoefficientBaseChange.FinrankIInfKerEquiv
 
 /- English proof (translation)
-The claim follows from `PI.CoefExt.coefCrysGen_of PI.CoefExt.invBaseChange`.
+A detailed English derivation is pending.
 -/
 theorem coefficient_crystal_generation : Formalism.MainNotions.N.GlobalTheory.CoefCrysGen :=
   PI.CoefExt.coefCrysGen_of PI.CoefExt.invBaseChange

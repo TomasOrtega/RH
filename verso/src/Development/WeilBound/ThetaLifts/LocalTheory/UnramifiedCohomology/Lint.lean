@@ -22,45 +22,39 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Spa
 
 include ν μH μT in
 /- English proof (translation)
-Take `⟨c, c0, ct, hc⟩` from `haar_eq ν μH μT h hK μK hG`. Take `⟨C, hC, hC1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hCK` using `hC.mul hK`. Establish `cn` using `h.cn.measurable`. Establish `ci` using `h.ci.measurable`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cm` using `h.cm.measurable`. Use `set b : G → ℝ≥0∞ := (C * (K : Set G)).indicator 1 with hb`. Establish `mb : Measurable b` using `measurable_one.indicator hCK.measurableSet`. Establish `bK : ∀ x, ∀ k ∈ K, b (x * k) = b x` using `fun x k hk => by`. Establish `: x * k ∈ C * (K : Set G) ↔ x ∈ C * (K : Set G)` using `⟨fun ⟨y, hy, z, hz, e⟩ => ⟨y, hy, z * k⁻¹, mul_mem hz (inv_mem hk), by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `y * z = _ at e`. Express the relevant statement in the definitionally equal form `y * (z * k⁻¹) = _`. Rewrite using `[← mul_assoc, e, mul_inv_cancel_right]⟩,`. Use `fun ⟨y, hy, z, hz, e⟩ => ⟨y, hy, z * k, mul_mem hz hk, by rw [← e]; exact (mul_assoc _ _ _).symm⟩⟩`. Distinguish the cases in `hx : x ∈ C * (K : Set G)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hb, indicator_of_mem hx, indicator_of_mem (this.2 hx)]`. Both sides reduce to the same expression. Rewrite using `[hb, indicator_of_notMem hx, indicator_of_notMem (mt this.1 hx)]`. Use `set B : G → ℝ≥0∞ := fun y => ∫⁻ t, ∫⁻ u, ∫⁻ p, b (nn p * ι u * mm t * y) ∂μN ∂μH ∂μT with hB`. Establish `B1 : ∀ y, B y = B 1` using `fun y => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p', u', t', k, hk, rfl⟩` from `hG y`. Establish `e1 : ∀ t u, ∫⁻ p, b (nn p * ι u * mm t * (nn p' * ι u' * mm t' * k)) ∂μN = ∫⁻ p, b (nn p * ι (u * u') * mm (t * t') * 1) ∂μN` using `fun t u => by`. Take `⟨L₃, -, -, h3⟩` from `h.h3 t`. Take `⟨L₂, -, h2⟩` from `h.h2 u`. Take `⟨R, hRm, hR'⟩` from `hR (L₂ (L₃ p'))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← hRm.lintegral_comp (f := fun p => b (nn p * ι (u * u') * mm (t * t') * 1)) (by fun_prop)]`. Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Rewrite using `[← hR', ← bK (nn p * nn (L₂ (L₃ p')) * ι (u * u') * mm (t * t') * 1) k hk]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[h3, ← mul_assoc (ι u), h2]`. Use `group`. Use `_ = _ := by rw [h.h4, map_mul, map_mul]; group`. Simplify using `only [hB, e1]`. Rewrite using `[← lintegral_mul_right_eq_self (fun t => ∫⁻ u, ∫⁻ p, b (nn p * ι u * mm t * 1) ∂μN ∂μH) t']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `lintegral_congr fun t => lintegral_mul_right_eq_self (fun u => ∫⁻ p, b (nn p * ι u * mm (t * t') * 1) ∂μN) u'`. Establish `key : ∀ (f' : G → ℝ≥0∞), Measurable f' → (∀ p u t x, f' (nn p * ι u * mm t * x) * χ t = f' x) → ∀ y, c * ∫⁻ x, f' x * b (x * y) ∂ν = (∫⁻ k, f' k.1 ∂μK) * B 1` using `fun f' hf' hP' y => by`. Rewrite using `[hc _ (by fun_prop), ← lintegral_mul_const _ (by fun_prop)]`. Use `lintegral_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[← B1 (k.1 * y), hB, ← lintegral_const_mul _ (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Measurable.lintegral_prod_right' (f := fun z : T × H => ∫⁻ p, b (nn p * ι z.2 * mm z.1 * (k.1 * y)) ∂μN) ?_` and prove the remaining obligations. Conclude with `Measurable.lintegral_prod_right' (f := fun z : (T × H) × N => b (nn z.2 * ι z.1.2 * mm z.1.1 * (k.1 * y))) (by fun_prop))]`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Rewrite using `[← lintegral_mul_const' _ _ ENNReal.coe_ne_top, ← lintegral_const_mul _ ( Measurable.lintegral_prod_right' (f := fun z : H × N => b (nn z.2 * ι z.1 * mm t * (k.1 * y))) (by fun_prop))]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← lintegral_mul_const' _ _ ENNReal.coe_ne_top, ← lintegral_const_mul _ (by fun_prop)]`. Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Rewrite using `[← hP' p u t k.1, mul_assoc _ k.1 y]`. Expand and normalize the polynomial expressions, which then agree. Establish `Bt : B 1 ≠ ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hc'` using `h.emb.isCompact_preimage hCK`. Establish `hc2 : IsCompact ((fun z : N × H × T => z.1) '' _)` using `hc'.image continuous_fst`. Establish `hc3 : IsCompact ((fun z : N × H × T => z.2.1) '' _)` using `hc'.image (by fun_prop)`. Establish `hc4 : IsCompact ((fun z : N × H × T => z.2.2) '' _)` using `hc'.image (by fun_prop)`. Generalize the expression as in `hA : (fun z : N × H × T => z.1) '' _ = A at hc2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `hD : (fun z : N × H × T => z.2.1) '' _ = D at hc3`. Generalize the expression as in `hE : (fun z : N × H × T => z.2.2) '' _ = E at hc4`. Establish `le : ∀ t u p, b (nn p * ι u * mm t * 1) ≤ E.indicator 1 t * (D.indicator 1 u * A.indicator 1 p)` using `fun t u p => by`. Rewrite using `[mul_one]`. Distinguish the cases in `hm : nn p * ι u * mm t ∈ C * (K : Set G)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hb, indicator_of_mem hm, indicator_of_mem (hE ▸ ⟨(p, u, t), hm, rfl⟩), indicator_of_mem (hD ▸ ⟨(p, u, t), hm, rfl⟩), indicator_of_mem (hA ▸ ⟨(p, u, t), hm, rfl⟩)]`. Simplify using the standard rewrite rules. Rewrite using `[hb, indicator_of_notMem hm]`. Conclude with `zero_le`. Establish `i1 : ∀ {X : Type} [MeasurableSpace X] (μ : Measure X) (S : Set X), ∫⁻ x, S.indicator 1 x ∂μ ≤ μ S` using `fun μ S => (lintegral_indicator_le _ _).trans (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `fin : ∀ {X : Type} (S : Set X) (x : X), S.indicator (1 : X → ℝ≥0∞) x ≠ ⊤` using `fun S x => ne_top_of_le_ne_top ENNReal.one_ne_top (indicator_le_self' (fun _ _ => zero_le) x)`. Use `ne_top_of_le_ne_top (ENNReal.mul_ne_top hc4.measure_lt_top.ne (ENNReal.mul_ne_top hc3.measure_lt_top.ne hc2.measure_lt_top.ne) : μT E * (μH D * μN A) ≠ ⊤) ?_` and prove the remaining obligations. Use `(lintegral_mono fun t => (?_ : _ ≤ E.indicator 1 t * (μH D * μN A))).trans ?_` and prove the remaining obligations. Use `(lintegral_mono fun u => (?_ : _ ≤ E.indicator 1 t * (D.indicator 1 u * μN A))).trans ?_` and prove the remaining obligations. Use `(lintegral_mono (le t u)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lintegral_const_mul' _ _ (fin _ _), lintegral_const_mul' _ _ (fin _ _)]`. Use `gcongr`. Conclude with `i1 _ _`. Rewrite using `[lintegral_const_mul' _ _ (fin _ _), lintegral_mul_const' _ _ hc2.measure_lt_top.ne] gcongr`. Conclude with `i1 _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[lintegral_mul_const' _ _ (ENNReal.mul_ne_top hc3.measure_lt_top.ne hc2.measure_lt_top.ne)] gcongr`. Conclude with `i1 _ _`. Establish `B0 : B 1 ≠ 0` using `fun h0 => by`. Establish `e` using `hc b mb`. Establish `z : ∀ k : K, ∫⁻ t, (∫⁻ u, ∫⁻ p, b (nn p * ι u * mm t * k.1) ∂μN ∂μH) * χ t ∂μT = 0` using `fun k => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `m : Measurable fun t => ∫⁻ u, ∫⁻ p, b (nn p * ι u * mm t * k.1) ∂μN ∂μH`. Use `Measurable.lintegral_prod_right' (f := fun z : T × H => ∫⁻ p, b (nn p * ι z.2 * mm z.1 * k.1) ∂μN) ?_` and prove the remaining obligations. Conclude with `Measurable.lintegral_prod_right' (f := fun z : (T × H) × N => b (nn z.2 * ι z.1.2 * mm z.1.1 * k.1)) (by fun_prop)`. Use `(lintegral_eq_zero_iff m).1 ((B1 k.1).trans h0)` as an intermediate fact. Use `(lintegral_congr_ae ?_).trans lintegral_zero` and prove the remaining obligations.
-
-Use `filter_upwards [this] with t ht`. Rewrite using `[ht]`. Simplify using the standard rewrite rules. Simplify using `only [z, lintegral_zero, mul_eq_zero, c0, false_or] at e`. Rewrite `e` using `[hb, lintegral_indicator_one hCK.measurableSet]`.
-
-Conclude with `(Measure.measure_pos_of_mem_nhds ν (Filter.mem_of_superset hC1 fun x hx => (⟨x, hx, 1, one_mem K, mul_one x⟩ : x ∈ C * (K : Set G)))).ne' e`. Establish `e1` using `key (fun x => f (x * g)) (by fun_prop) (fun p u t x => by rw [mul_assoc _ x g, hP]) 1`. Establish `e2` using `key f hf hP g⁻¹`. Rewrite `e2` using `[← lintegral_mul_right_eq_self _ g]`. Simplify using `only [mul_inv_cancel_right, mul_one] at e1 e2`.
-
-Conclude with `(ENNReal.mul_left_inj B0 Bt).1 (e1.symm.trans e2)`.
+A detailed English derivation is pending.
 -/
 theorem lint (h : Par μN nn ι mm χ) (hR : ∀ p, ∃ R : N → N, MeasurePreserving R μN μN ∧ ∀ x, nn x * nn p = nn (R x))
     {K : Subgroup G} (hK : IsCompact (K : Set G)) (μK : Measure K) [μK.IsHaarMeasure]
@@ -173,11 +167,9 @@ theorem lint (h : Par μN nn ι mm χ) (hR : ∀ p, ∃ R : N → N, MeasurePres
 
 include ν μH μT in
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Establish `re : ∀ f : G → ℝ, Continuous f → (∀ p u t x, f (nn p * ι u * mm t * x) * (χ t : ℝ) = f x) → ∫ k, f (k.1 * g) ∂μK = ∫ k, f k.1 ∂μK` using `fun f hf hP => by`. Establish `a : ∀ f : G → ℝ, Continuous f → (∀ p u t x, f (nn p * ι u * mm t * x) * (χ t : ℝ) = f x) → ∫⁻ k, ENNReal.ofReal (f (k.1 * g)) ∂μK = ∫⁻ k, ENNReal.ofReal (f k.1) ∂μK` using `fun f hf hP => lint ν μH μT h hR hK μK hG (f := fun x => ENNReal.ofReal (f x)) hf.measurable.ennreal_ofReal (fun p u t x => by`. Rewrite using `[← hP p u t x, ENNReal.ofReal_mul' (χ t).coe_nonneg]`. Use the proof step `simp) g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[integral_eq_lintegral_pos_part_sub_lintegral_neg_part ((by fun_prop : Continuous fun k : K => f (k.1 * g)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)), integral_eq_lintegral_pos_part_sub_lintegral_neg_part ((by fun_prop : Continuous fun k : K => f k.1) …`. Establish `i1` using `(by fun_prop : Continuous fun k : K => f (k.1 * g)).integrable_of_hasCompactSupport (μ := μK) (HasCompactSupport.of_compactSpace _)`. Establish `i2` using `(by fun_prop : Continuous fun k : K => f k.1).integrable_of_hasCompactSupport (μ := μK) (HasCompactSupport.of_compactSpace _)`. Use `Complex.ext ?_ ?_` and prove the remaining obligations. Use `re (fun x => (f x).re) (by fun_prop) fun p u t x => by rw [← hP p u t x]; simp` as an intermediate fact.
-
-Conclude with `(Complex.reCLM.integral_comp_comm i1).symm.trans (this.trans (Complex.reCLM.integral_comp_comm i2))`. Use `re (fun x => (f x).im) (by fun_prop) fun p u t x => by rw [← hP p u t x]; simp` as an intermediate fact. Conclude with `(Complex.imCLM.integral_comp_comm i1).symm.trans (this.trans (Complex.imCLM.integral_comp_comm i2))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem int (h : Par μN nn ι mm χ) (hR : ∀ p, ∃ R : N → N, MeasurePreserving R μN μN ∧ ∀ x, nn x * nn p = nn (R x))
     {K : Subgroup G} (hK : IsCompact (K : Set G)) (μK : Measure K) [μK.IsHaarMeasure]

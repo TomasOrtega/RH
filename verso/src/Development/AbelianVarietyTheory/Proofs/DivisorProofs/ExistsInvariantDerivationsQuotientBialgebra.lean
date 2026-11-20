@@ -5,23 +5,21 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `O A _ _ _ I d l hl`. Use `set S := O ⧸ I`. Use `set B := S ⊗[O] A`. Set `ε` to `Bialgebra.counitAlgHom S B`. Set `Δ` to `Bialgebra.comulAlgHom S B`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hεt : ∀ (s : S) (a : A), ε (s ⊗ₜ a) = Coalgebra.counit (R` using `O) a • s := by`. Introduce `s a`. Use `show Coalgebra.counit (R := S) (s ⊗ₜ[O] a) = _`. Rewrite using `[TensorProduct.counit_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hε : (∀ b : B, TensorProduct.lid S B (LinearMap.rTensor B ε.toLinearMap (Δ b)) = b) ∧ (∀ b : B, TensorProduct.rid S B (LinearMap.lTensor B ε.toLinearMap (Δ b)) = b)`. Prove the components needed by the constructor for the conclusion. Introduce `b`. Use `Coalgebra.rTensor_counit_comul (R := S) b` as an intermediate fact. Use `show TensorProduct.lid S B (LinearMap.rTensor B Coalgebra.counit (Coalgebra.comul b)) = b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Introduce `b`. Use `Coalgebra.lTensor_counit_comul (R := S) b` as an intermediate fact. Use `show TensorProduct.rid S B (LinearMap.lTensor B Coalgebra.counit (Coalgebra.comul b)) = b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `key : ∀ i, ∃ D : Derivation S B B, ∀ b, ε (D b) = LinearMap.liftBaseChange S (l i) b`. Introduce `i`. Use `invariant_derivation_exists S B ε Δ hε (LinearMap.liftBaseChange S (l i)) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Introduce `x y`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s a`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `zero => simp`. Consider the case `tmul t c`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, hεt, hεt]`. Rewrite using `[LinearMap.liftBaseChange_tmul, LinearMap.liftBaseChange_tmul, LinearMap.liftBaseChange_tmul, hl]`. Simplify using `only [smul_eq_mul, smul_add, Algebra.smul_def]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `add y₁ y₂ ih₁ ih₂`. Rewrite using `[mul_add, map_add, ih₁, ih₂, map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x₁ x₂ ih₁ ih₂`.
-
-Rewrite using `[add_mul, map_add, ih₁, ih₂, map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Use `choose D hD using key`. Use `⟨D, fun i a => ?_⟩` and prove the remaining obligations. Rewrite using `[hD, LinearMap.liftBaseChange_tmul, one_smul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotient_base_change_invariant_derivations :
     ∀ (O A : Type) [CommRing O] [CommRing A] [Bialgebra O A] (I : Ideal O) (d : ℕ) (l : Fin d → (A →ₗ[O] O ⧸ I)), (∀ i a b, l i (a * b) = Coalgebra.counit (R := O) a • l i b + Coalgebra.counit (R := O) b • l i a) → ∃ D : Fin d → Derivation (O ⧸ I) ((O ⧸ I) ⊗[O] A) ((O ⧸ I) ⊗[O] A), ∀ i a, Bialgebra.counitAlgHom (O ⧸ I) ((O ⧸ I) ⊗[O] A) (D i (1 ⊗ₜ a)) = l i a := by

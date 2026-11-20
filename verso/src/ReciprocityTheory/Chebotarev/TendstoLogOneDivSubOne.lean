@@ -16,11 +16,11 @@ section
 variable {E : Type} [Field E] [NumberField E] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Distinguish the cases in `hχ : χ = 1`. Conclude with `⟨0, Eventually.of_forall fun _ h => absurd hχ h⟩`. Take `⟨L1, hL⟩` from `hK E l hirr χ hχ`. Take `⟨C3, hC3⟩` from `h3a E l χ`. Establish `hev : ∀ᶠ s in 𝓝[>] (1 : ℝ), ‖Lser E χ s‖ < ‖L1‖ + 1` using `((continuous_norm.tendsto L1).comp hL).eventually (gt_mem_nhds (by linarith))`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨Real.log (‖L1‖ + 1) + C3, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev, self_mem_nhdsWithin] with s hs (hs1 : 1 < s) _`. Establish `he : Complex.exp (abelian₂ E χ s) = Lser E χ s` using `h2 E l χ s hs1`. Establish `hre : Real.exp (abelian₂ E χ s).re < ‖L1‖ + 1` using `by rw [← Complex.norm_exp, he]; exact hs`. Establish `hlam : (abelian₂ E χ s).re < Real.log (‖L1‖ + 1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.lt_log_iff_exp_lt (by positivity)]; exact hre`. Establish `hd : |(abelian₂ E χ s - Psum E χ s).re| ≤ C3` using `(Complex.abs_re_le_norm _).trans (hC3 s hs1)`. Rewrite `hd` using `[Complex.sub_re]`. Combine the linear relations using `[(abs_le.mp hd).1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cyc_re_psum_upper (h2 : E2) (h3a : CasimirPowerSurjectiveSymmetric) (hK : KProp)
     (hirr : Irreducible (Polynomial.cyclotomic l E)) (χ : DirichletCharacter ℂ l) :
@@ -42,21 +42,19 @@ theorem cyc_re_psum_upper (h2 : E2) (h3a : CasimirPowerSurjectiveSymmetric) (hK 
   linarith [(abs_le.mp hd).1]
 
 /- English proof (translation)
-Use `choose C hC using fun χ' => cyc_re_psum_upper (E := E) h2 h3a hK hirr χ'`. Take `⟨C1, hC1⟩` from `hS1 E l hirr`. Use `⟨|C1| + ∑ χ' : DirichletCharacter ℂ l, |C χ'|, ?_⟩` and prove the remaining obligations. Establish `hall : ∀ᶠ s in 𝓝[>] (1 : ℝ), ∀ χ', χ' ≠ 1 → (Psum E χ' s).re ≤ C χ'` using `eventually_all.2 hC`. Use `filter_upwards [hall, hC1, self_mem_nhdsWithin] with s hs hs1 (hgt : 1 < s)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `h1.2.2 E s hgt`. Establish `ho` using `psum_orth (E := E) l (1 : (ZMod l)ˣ) s hS`. Simplify using `only [inv_one, Units.val_one, map_one, one_mul] at ho`. Establish `hore : ∑ χ' : DirichletCharacter ℂ l, (Psum E χ' s).re = (Nat.totient l : ℝ) * Pcl E l 1 s`. Use `congrArg Complex.re ho` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Complex.re_sum]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `htot : (Nat.totient l : ℝ) = ((l - 1 : ℕ) : ℝ)` using `by rw [Nat.totient_prime Fact.out]`. Establish `hP` using `pcl_nonneg (E := E) l 1 s`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1le : (Psum E (1 : DirichletCharacter ℂ l) s).re ≤ (Nat.totient l : ℝ) * Pcl E l 1 s + |C1|`. Use `re_psum_one_le (E := E) l s hS` as an intermediate fact. Rewrite using `[htot]`. Combine the linear relations using `[le_abs_self C1]`. Establish `hbd : ∀ χ', (Psum E χ' s).re ≤ |C χ'| + (if χ' = 1 then (Nat.totient l : ℝ) * Pcl E l 1 s + |C1| else 0)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Introduce `χ'`. Use `split_ifs with h`. Substitute `h` using the available equality. Combine the linear relations using `[abs_nonneg (C 1)]`. Combine the linear relations using `[hs χ' h, le_abs_self (C χ')]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsplit` using `Finset.add_sum_erase Finset.univ (fun χ' => (Psum E χ' s).re) (Finset.mem_univ χ)`. Establish `herase : ∑ χ' ∈ Finset.univ.erase χ, (Psum E χ' s).re ≤ ∑ χ' : DirichletCharacter ℂ l, (|C χ'| + (if χ' = 1 then (Nat.totient l : ℝ) * Pcl E l 1 s + |C1| else 0))`. Use `(Finset.sum_le_sum fun χ' _ => hbd χ').trans ?_` and prove the remaining obligations. Apply `Finset.sum_le_sum_of_subset_of_nonneg (Finset.erase_subset _ _)` to reduce the goal to its premises. Introduce `χ' _ _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Use `mul_nonneg (Nat.cast_nonneg (Nat.totient l) : (0 : ℝ) ≤ _) hP` as an intermediate fact. Use `split_ifs`. Combine the linear relations using `[abs_nonneg (C χ'), abs_nonneg C1]`. Simplify using the standard rewrite rules. Rewrite `herase` using `[Finset.sum_add_distrib, Finset.sum_ite_eq' Finset.univ (1 : DirichletCharacter ℂ l)]`.
-
-Simplify using `only [Finset.mem_univ, if_true] at herase`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cyc_re_psum_lower (h1 : E1) (h2 : E2) (h3a : CasimirPowerSurjectiveSymmetric) (hK : KProp) (hS1 : S1)
     (hirr : Irreducible (Polynomial.cyclotomic l E)) (χ : DirichletCharacter ℂ l) :
@@ -105,15 +103,13 @@ section
 variable {E : Type} [Field E] [NumberField E] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨L1, hL⟩` from `hK E l hirr χ hχ`. Take `⟨C, hC⟩` from `cyc_re_psum_lower (E := E) h1 h2 h3a hK hS1 hirr χ`. Take `⟨C3, hC3⟩` from `h3a E l χ`. Establish `hlow : ∀ᶠ s in 𝓝[>] (1 : ℝ), Real.exp (-(C + C3)) ≤ ‖Lser E χ s‖` using `by filter_upwards [hC, self_mem_nhdsWithin] with s hs (hgt : 1 < s)`. Rewrite using `[← h2 E l χ s hgt, Complex.norm_exp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `hd : |(abelian₂ E χ s - Psum E χ s).re| ≤ C3` using `(Complex.abs_re_le_norm _).trans (hC3 s hgt)`. Rewrite `hd` using `[Complex.sub_re]`. Combine the linear relations using `[(abs_le.mp hd).1]`. Establish `hL0 : L1 ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `ge_of_tendsto ((continuous_norm.tendsto L1).comp hL) hlow` as an intermediate fact. Introduce `h0`. Rewrite `this` using `[h0, norm_zero]`. Conclude with `absurd this (not_le.2 (Real.exp_pos _))`. Establish `hexp : Tendsto (fun s => Complex.exp (abelian₂ E χ s)) (𝓝[>] 1) (𝓝 L1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hL.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with s (hs : 1 < s)`. Conclude with `(h2 E l χ s hs).symm`. Take `⟨B, hB⟩` from `bdd_of_exp_tendsto _ (h3c E l χ) L1 hL0 hexp`. Use `⟨B + C3, ?_⟩` and prove the remaining obligations.
-
-Use `filter_upwards [hB, self_mem_nhdsWithin] with s hs (hgt : 1 < s)`. Use `hC3 s hgt` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cyc_psum_bdd (h1 : E1) (h2 : E2) (h3a : CasimirPowerSurjectiveSymmetric) (h3c : SmoothMapSeminormBound) (hK : KProp) (hS1 : S1)
     (hirr : Irreducible (Polynomial.cyclotomic l E)) (χ : DirichletCharacter ℂ l) (hχ : χ ≠ 1) :
@@ -146,9 +142,9 @@ theorem cyc_psum_bdd (h1 : E1) (h2 : E2) (h3a : CasimirPowerSurjectiveSymmetric)
     _ ≤ B + C3 := by linarith
 
 /- English proof (translation)
-Establish `h0 : Tendsto (fun s : ℝ => s - 1) (𝓝[>] 1) (𝓝[>] 0)`. Apply `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within` to reduce the goal to its premises. Establish `: Tendsto (fun s : ℝ => s - 1) (𝓝 1) (𝓝 (1 - 1))` using `(continuous_sub_right 1).tendsto 1`. Simplify using `using this.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with s (hs : 1 < s)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hs`. Conclude with `(Real.tendsto_log_atTop.comp (tendsto_inv_nhdsGT_zero.comp h0)).congr (fun s => by simp only [Function.comp_apply, one_div])`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_log_one_div_sub_one :
     Tendsto (fun s : ℝ => Real.log (1 / (s - 1))) (𝓝[>] 1) atTop := by
@@ -162,25 +158,23 @@ theorem tendsto_log_one_div_sub_one :
     (fun s => by simp only [Function.comp_apply, one_div])
 
 /- English proof (translation)
-Establish `hB0 : ∀ χ : DirichletCharacter ℂ l, ∃ B : ℝ, ∀ᶠ s in 𝓝[>] (1 : ℝ), χ ≠ 1 → ‖Psum E χ s‖ ≤ B`. Introduce `χ`. Distinguish the cases in `hχ : χ = 1`. Conclude with `⟨0, Eventually.of_forall fun _ h => absurd hχ h⟩`. Take `⟨B, hB⟩` from `cyc_psum_bdd (E := E) h1 h2 h3a h3c hK hS1 hirr χ hχ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨B, hB.mono fun _ h _ => h⟩`. Use `choose B hB using hB0`. Take `⟨C1, hC1⟩` from `hS1 E l hirr`. Take `⟨HighestWeightIntegral, hC3b⟩` from `h3b E`. Establish `hall : ∀ᶠ s in 𝓝[>] (1 : ℝ), ∀ χ, χ ≠ 1 → ‖Psum E χ s‖ ≤ B χ` using `eventually_all.2 hB`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set k : ℝ := ((l - 1 : ℕ) : ℝ) with hk`. Use `set S : ℝ := ∑ χ : DirichletCharacter ℂ l, |B χ| with hSdef`. Establish `hkpos : 0 < k`. Use `(Fact.out : l.Prime).two_le` as an intermediate fact. Rewrite using `[hk]; exact_mod_cast (by omega : 0 < l - 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbig` using `tendsto_log_one_div_sub_one.eventually (eventually_ge_atTop (k * (k * X + S) + HighestWeightIntegral + C1))`. Use `filter_upwards [hall, hC1, hbig, Ioc_mem_nhdsGT one_lt_two] with s hs hs1 hlog hsI`. Establish `hgt : 1 < s` using `hsI.1`. Establish `hS` using `h1.2.2 E s hgt`. Establish `htot : (Nat.totient l : ℝ) = k` using `by rw [hk, Nat.totient_prime Fact.out]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ho` using `psum_orth (E := E) l a s hS`. Establish `hore : ∑ χ : DirichletCharacter ℂ l, (χ ((a⁻¹ : (ZMod l)ˣ) : ZMod l) * Psum E χ s).re = k * Pcl E l (a : ZMod l) s`. Use `congrArg Complex.re ho` as an intermediate fact. Rewrite `this` using `[Complex.re_sum]`. Rewrite using `[this, ← htot]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `hterm : ∀ χ : DirichletCharacter ℂ l, (if χ = 1 then (Psum E (1 : DirichletCharacter ℂ l) s).re else 0) - |B χ| ≤ (χ ((a⁻¹ : (ZMod l)ˣ) : ZMod l) * Psum E χ s).re`. Introduce `χ`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[MulChar.one_apply_coe, one_mul]`. Combine the linear relations using `[abs_nonneg (B 1)]`. Establish `h3 : ‖χ ((a⁻¹ : (ZMod l)ˣ) : ZMod l) * Psum E χ s‖ ≤ B χ`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(abs_le.mp ((Complex.abs_re_le_norm _).trans h3)).1` as an intermediate fact. Combine the linear relations using `[le_abs_self (B χ)]`. Establish `hsum` using `Finset.sum_le_sum fun χ (_ : χ ∈ (Finset.univ : Finset (DirichletCharacter ℂ l))) => hterm χ`. Rewrite `hsum` using `[Finset.sum_sub_distrib, Finset.sum_ite_eq' Finset.univ (1 : DirichletCharacter ℂ l), hore]`. Simplify using `only [Finset.mem_univ, if_true] at hsum`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hp1` using `pcl_one_le_re_psum_one (E := E) l s hS`. Establish `hpe : Real.log (1 / (s - 1)) - HighestWeightIntegral ≤ PE E s`. Use `hC3b s hsI` as an intermediate fact. Combine the linear relations using `[(abs_le.mp this).1]`. Establish `hk1 : k * (k * X + S) ≤ k * Pcl E l 1 s` using `by linarith`.
-
-Establish `hk2 : k * X + S ≤ Pcl E l 1 s` using `le_of_mul_le_mul_left hk1 hkpos`. Establish `hk3 : k * X ≤ k * Pcl E l (a : ZMod l) s` using `by linarith`. Conclude with `le_of_mul_le_mul_left hk3 hkpos`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cyc_pcl_large (h1 : E1) (h2 : E2) (h3a : CasimirPowerSurjectiveSymmetric) (h3b : faceMap_castSucc_comp_eq_succ) (h3c : SmoothMapSeminormBound) (hK : KProp) (hS1 : S1)
     (hirr : Irreducible (Polynomial.cyclotomic l E)) (a : (ZMod l)ˣ) (X : ℝ) :
@@ -240,23 +234,21 @@ theorem cyc_pcl_large (h1 : E1) (h2 : E2) (h3a : CasimirPowerSurjectiveSymmetric
   exact le_of_mul_le_mul_left hk3 hkpos
 
 /- English proof (translation)
-Introduce `E _ _ l _ hirr a T`. Assume the negation of the conclusion as `hno`. Simplify using `only [not_exists, not_and] at hno`. Establish `hbad : ∀ q : Prm E, (Nrm q).Prime → Nrm q ∉ T → ((Nrm q : ℕ) : ZMod l) ≠ a` using `fun q hp hT => hno q.asIdeal q.isPrime hp hT`. Set `g : Prm E → ℝ` to `fun q => (if (Nrm q).Prime then (0 : ℝ) else ((Nrm q : ℕ) : ℝ)⁻¹) + Set.indicator {q | Nrm q ∈ T} (fun _ => (1 : ℝ)) q`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg : Summable g` using `summable_nonprime_norm.add (summable_of_hasFiniteSupport ((finite_norm_mem T).subset Set.support_indicator_subset))`. Establish `hle : ∀ s : ℝ, 1 < s → Pcl E l (a : ZMod l) s ≤ ∑' q, g q`. Introduce `s hs`. Establish `hS` using `h1.2.2 E s hs`. Establish `hterm : ∀ q : Prm E, (if ((Nrm q : ℕ) : ZMod l) = a then ((Nrm q : ℕ) : ℝ) ^ (-s) else 0) ≤ g q`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q`. Establish `h2q` using `two_le_nrm q`. Establish `hN1 : (1 : ℝ) ≤ ((Nrm q : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ Nrm q)`. Establish `hpow1 : ((Nrm q : ℕ) : ℝ) ^ (-s) ≤ ((Nrm q : ℕ) : ℝ)⁻¹`. Rewrite using `[← Real.rpow_neg_one]; exact Real.rpow_le_rpow_of_exponent_le hN1 (by linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpow2 : ((Nrm q : ℕ) : ℝ) ^ (-s) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hN1 (by linarith)`. Establish `hind0 : 0 ≤ Set.indicator {q : Prm E | Nrm q ∈ T} (fun _ => (1 : ℝ)) q` using `Set.indicator_nonneg (fun _ _ => zero_le_one) q`. Establish `hinv0 : 0 ≤ ((Nrm q : ℕ) : ℝ)⁻¹` using `by positivity`. Simplify using `only [g]`. Distinguish the cases in `hc : ((Nrm q : ℕ) : ZMod l) = a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hc]`. Distinguish the cases in `hp : (Nrm q).Prime`. Establish `hT : Nrm q ∈ T`. Assume the negation of the conclusion as `hT`. Conclude with `hbad q hp hT hc`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hp, Set.indicator_of_mem (show q ∈ {q : Prm E | Nrm q ∈ T} from hT)]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg hp]`. Combine the linear equalities and inequalities to obtain the conclusion. Apply the tactic sequence `rw [if_neg hc] split_ifs <;> linarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hP : Summable (fun q : Prm E => if ((Nrm q : ℕ) : ZMod l) = a then ((Nrm q : ℕ) : ℝ) ^ (-s) else 0)`. Use `Summable.of_nonneg_of_le (fun q => ?_) (fun q => ?_) hS` and prove the remaining obligations. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Check the signs of the components of the expression. Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `split_ifs`. Conclude with `le_rfl`. Check the signs of the components of the expression. Conclude with `Summable.tsum_le_tsum hterm hP hg`. Take `⟨s, hs, hs1⟩` from `((cyc_pcl_large (E := E) h1 h2 h3a h3b h3c hK hS1 hirr a (∑' q, g q + 1)).and self_mem_nhdsWithin).exists`.
-
-Combine the linear relations using `[hle s hs1]`.
+A detailed English derivation is pending.
 -/
 theorem cyc_of (h1 : E1) (h2 : E2) (h3a : CasimirPowerSurjectiveSymmetric) (h3b : faceMap_castSucc_comp_eq_succ) (h3c : SmoothMapSeminormBound) (hK : KProp) (hS1 : S1) :
     CycStatement := by
@@ -310,7 +302,7 @@ theorem cyc_of (h1 : E1) (h2 : E2) (h3a : CasimirPowerSurjectiveSymmetric) (h3b 
 end
 
 /- English proof (translation)
-The claim follows from `cyc_of affine_proper_base_change proper_base_change casimirPower_surjective_symmetric chebyshev_log_bounded smoothMap_seminorm_bound k_holds power_series_diagonal_linear`.
+A detailed English derivation is pending.
 -/
 theorem cyc_holds : CycStatement :=
   cyc_of affine_proper_base_change proper_base_change casimirPower_surjective_symmetric chebyshev_log_bounded smoothMap_seminorm_bound k_holds power_series_diagonal_linear

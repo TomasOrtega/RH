@@ -2,6 +2,6 @@ import Development.EtaleCohomology.TateTwists.EtaleTateTwistSectionsLocallyGener
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistSectionsLocallyGeneratedStatement
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.tateTwist_sections_locally_generated`.
+A detailed English derivation is pending.
 -/
 theorem LateralTheory.Ext.etale_tate_twist_sections_locally_generated : LateralTheory.EtaleFoundations.EtaleTateTwistSectionsLocallyGenerated := GlobalTheory.T.tateTwist_sections_locally_generated

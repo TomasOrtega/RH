@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.FlagIsoBundle
 
 /- English proof (translation)
-Establish `h1` using `(Scheme.Modules.pullbackComp g' π).hom.naturality f`. Establish `h2` using `(Scheme.Modules.pullbackCongr w).hom.naturality f`. Simplify using `only [Functor.comp_map] at h1`. Rewrite using `[← Category.assoc, h1, Category.assoc, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_natural {B Y T : Scheme.{0}} (π : Y ⟶ B) (g' : T ⟶ Y) (g : T ⟶ B) (w : g' ≫ π = g)
     {M N : B.Modules} (f : M ⟶ N) :
@@ -30,11 +30,11 @@ theorem pull_natural {B Y T : Scheme.{0}} (π : Y ⟶ B) (g' : T ⟶ Y) (g : T �
   rw [← Category.assoc, h1, Category.assoc, h2]
 
 /- English proof (translation)
-Introduce `B Y π ι E E' r fl e h T g fl''`. Take `⟨g', ⟨w, H⟩, uniq⟩` from `h T g fun a => (fl'' a).ofIso ((Scheme.Modules.pullback g).mapIso (e a)).symm`. Use `⟨g', ⟨w, fun a i => ?_⟩, fun y ⟨w', H'⟩ => uniq y ⟨w', fun a i => ?_⟩⟩` and prove the remaining obligations. Take `⟨e0, he0⟩` from `H a i`. Use `⟨e0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k` using `pull_natural π g' g w (e a).hom`. Simplify using `only [Vert.Flag.ofIso, Functor.mapIso_hom, Functor.mapIso_inv, Iso.symm_hom, Functor.map_comp, Category.assoc] at he0 ⊢`. Rewrite using `[k, ← reassoc_of% he0, ← Functor.map_comp, Iso.inv_hom_id, CategoryTheory.Functor.map_id, Category.comp_id]`. Take `⟨e1, he1⟩` from `H' a i`. Use `⟨e1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k` using `pull_natural π y g w' (e a).hom`. Simplify using `only [Vert.Flag.ofIso, Functor.mapIso_hom, Functor.mapIso_inv, Iso.symm_hom, Functor.map_comp, Category.assoc] at he1 ⊢`. Rewrite using `[reassoc_of% he1, reassoc_of% k, ← Functor.map_comp, Iso.hom_inv_id, CategoryTheory.Functor.map_id, Category.comp_id]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isFlagBundle_of_iso : ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) (E E' : ι → B.Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)) (e : ∀ a, E a ≅ E' a), IsFlagBundle π E r fl → IsFlagBundle π E' r (fun a => (fl a).ofIso ((Scheme.Modules.pullback π).mapIso (e a))) := by
   intro B Y π ι E E' r fl e h T g fl''

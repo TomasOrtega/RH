@@ -18,26 +18,24 @@ open Classical
 namespace GlobalTheory.PolSemiAbModel
 
 /- English proof (translation)
-Simplify using `[spMap, ← Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp' {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp [spMap, ← Spec.map_comp]
 
 /- English proof (translation)
-Introduce `W _ _ _ hW P`. Take `⟨hdvr, hcomp, hchar⟩` from `(GlobalTheory.LN.cDvr_iff W).1 hW`. Use `haveI : CharZero (FractionRing W) := charZero_of_injective_algebraMap (IsFractionRing.injective W (FractionRing W))`. Take `⟨W', L, _, _, _, _, _, _, _, _, hsq, hfin, hloc, hcompl, G, _, ⟨e, he⟩, hG⟩` from `GlobalTheory.SS.potModel_isSemiAbelian W (FractionRing W) P.A P.isAb`. Establish `hinj : Function.Injective (algebraMap W W')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Function.Injective ((algebraMap (FractionRing W) L).comp (algebraMap W (FractionRing W)))` using `(algebraMap (FractionRing W) L).injective.comp (IsFractionRing.injective W (FractionRing W))`. Rewrite `h2` using `[← hsq]`. Conclude with `Function.Injective.of_comp h2`. Use `haveI : CharZero W' := charZero_of_injective_algebraMap hinj`. Set `ε : FractionRing W' ≃ₐ[W'] L` to `IsLocalization.algEquiv (nonZeroDivisors W') (FractionRing W') L`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `fK : FractionRing W →+* FractionRing W'` to `(ε.symm : L →+* FractionRing W').comp (algebraMap (FractionRing W) L)`. Establish `hε : (ε.symm : L →+* FractionRing W').comp (algebraMap W' L) = algebraMap W' (FractionRing W')`. Use extensionality with `x`. Conclude with `ε.symm.commutes x`. Take `⟨A, β, hpb, -, hLB⟩` from `GlobalTheory.KeyFam.SameLam.exists_polPB P fK`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `haveI : IsCommMonObj G := hG.comm`. Use `⟨W', inferInstance, inferInstance, inferInstance, algebraMap W W', fK, (GlobalTheory.LN.cDvr_iff W').2 ⟨inferInstance, hcompl, inferInstance⟩, hinj, hloc, RingHom.finite_algebraMap.2 hfin, ?_, A, β, hpb, hLB, ?_⟩` and prove the remaining obligations. Introduce `a show ε.symm (algebraMap (FractionRing W) L (algebraMap W _ a)) = _`. Rewrite using `[← RingHom.comp_apply, ← hsq, RingHom.comp_apply]`. Conclude with `ε.symm.commutes _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `X` to `(Over.pullback (spMap (algebraMap W' L))).obj G`. Set `T` to `(Over.pullback (spMap (ε.symm : L →+* FractionRing W'))).obj X`. Establish `h₁` using `isGrpPullback_pullback G (jK W')`. Establish `hTX` using `isGrpPullback_pullback X (spMap (ε.symm : L →+* FractionRing W'))`. Establish `hXG` using `isGrpPullback_pullback G (spMap (algebraMap W' L))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hTG` using `(hTX.comp hXG).congr (by rw [spMap_comp', hε]) rfl`. Take `⟨e₁, he₁, -⟩` from `grpPullback_iso h₁ hTG`. Establish `hXY` using `isGrpPullback_of_iso e`. Establish `hYP` using `isGrpPullback_pullback P.A (spMap (algebraMap (FractionRing W) L))`. Establish `hTP` using `(hTX.comp (hXY.comp hYP)).congr (by rw [Category.id_comp, spMap_comp']) rfl`.
-
-Take `⟨e₂, he₂, -⟩` from `grpPullback_iso hTP hpb`. Conclude with `⟨G, inferInstance, inferInstance, e₁ ≪≫ e₂, hG, by simp only [Iso.trans_hom]; infer_instance⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_model : ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → ∀ (P : PolAV (Sp (FractionRing W))),
     ∃ (V₁ : Type) (_ : CommRing V₁) (_ : IsDomain V₁) (_ : IsLocalRing V₁) (f : W →+* V₁)

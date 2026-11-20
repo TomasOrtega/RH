@@ -6,41 +6,41 @@ open scoped InnerProductSpace
 namespace GlobalTheory.Core.Rk
 
 /- English proof (translation)
-Rewrite using `[← D.Dstar_eq u]`. Conclude with `(D.mem u).A.Dstar_pos`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dstar_pos_of (D : D7) (u : D.what₂.Word) : 0 < D.what₂.Dstar := by
   rw [← D.Dstar_eq u]; exact (D.mem u).A.Dstar_pos
 
 /- English proof (translation)
-Unfold `DiagS at *`. Conclude with `h.trans (mul_le_mul_of_nonneg_right he (Nat.cast_nonneg _))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem diagS_mono {D : D7} {u : D.what₂.Word} {e e' : ℝ} (h : DiagS D u e) (he : e ≤ e') : DiagS D u e' := by
   unfold DiagS at *
   exact h.trans (mul_le_mul_of_nonneg_right he (Nat.cast_nonneg _))
 
 /- English proof (translation)
-Unfold `kfk`. Conclude with `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (Real.log_natCast_nonneg _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kfk_nonneg (D : D7) : 0 ≤ kfk D := by
   unfold kfk
   exact mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (Real.log_natCast_nonneg _)
 
 /- English proof (translation)
-Establish `first : ∀ (D : D7) (u : D.what₂.Word) (A x κ : ℝ), 0 ≤ A → TwoTerm D u A x → (d0 D u : ℝ) ≤ κ * D.what₂.Dstar → DiagS D u (A * κ + x)`. Introduce `D u A x κ hA h hd`. Establish `hD` using `dstar_pos_of D u`. Establish `hd0 : (0 : ℝ) ≤ (d0 D u : ℝ)` using `Nat.cast_nonneg _`. Establish `hq : (d0 D u : ℝ) ^ 2 / D.what₂.Dstar ≤ κ * (d0 D u : ℝ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ hD]`. Use `mul_le_mul_of_nonneg_left hd hd0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Unfold `DiagS`. Unfold `TwoTerm at h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨first, ?_, ?_⟩` and prove the remaining obligations. Introduce `D u L C hc hS hSm set c := C * mfL D L with hcdef`. Establish `h2 : Real.exp (-(2 * C * mfL D L)) = Real.exp (-c) * Real.exp (-c)`. Rewrite using `[← Real.exp_add]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[hcdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : Real.exp c * Real.exp (-c) = 1` using `by rw [← Real.exp_add]; simp`. Establish `hle : Real.exp (-c) ≤ 1` using `Real.exp_le_one_iff.2 (by linarith)`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < Real.exp (-c)` using `Real.exp_pos _`. Establish `hk` using `kfk_nonneg D`. Establish `hkk : Real.exp (-kfk D) ≤ Real.exp (-(kfk D / 2))` using `Real.exp_le_exp.2 (by linarith)`. Establish `hd` using `first D u (4 * (Real.exp c + 1)) (4 * Real.exp (-(kfk D / 2)) + 2 * Real.exp (-kfk D)) (Real.exp (-(2 * C * mfL D L))) (by positivity) hS (by unfold Small at hSm; linarith [hSm])`. Use `diagS_mono hd ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `eDiag`. Rewrite using `[h2, ← hcdef]`. Establish `: 4 * (Real.exp c + 1) * (Real.exp (-c) * Real.exp (-c)) = 4 * Real.exp (-c) + 4 * (Real.exp (-c) * Real.exp (-c))`. Establish `e : 4 * (Real.exp c + 1) * (Real.exp (-c) * Real.exp (-c)) = 4 * (Real.exp c * Real.exp (-c)) * Real.exp (-c) + 4 * (Real.exp (-c) * Real.exp (-c))` using `by ring`. Rewrite using `[e, h1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities. Introduce `D u Γ₀`. Unfold `SAbs TwoTerm`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[show (1 / 4 : ℝ) * (d0 D u : ℝ) = (d0 D u : ℝ) / 4 by ring]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem diag_corollary :
     (∀ (D : D7) (u : D.what₂.Word) (A x κ : ℝ), 0 ≤ A → TwoTerm D u A x → (d0 D u : ℝ) ≤ κ * D.what₂.Dstar →

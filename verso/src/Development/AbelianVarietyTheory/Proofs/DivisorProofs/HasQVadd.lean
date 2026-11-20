@@ -7,9 +7,9 @@ open GlobalTheory.QFam
 namespace GlobalTheory.QFam
 
 /- English proof (translation)
-Introduce `N f a b h τ`. Establish `h1` using `h (b +ᵥ τ)`. Establish `he : (fun n : ℕ => a n * Complex.exp (2 * Real.pi * Complex.I * n * b / N) * Complex.exp (2 * Real.pi * Complex.I * n * τ / N)) = fun n : ℕ => a n * Complex.exp (2 * Real.pi * Complex.I * n * ((b +ᵥ τ : ℍ) : ℂ) / N)`. Use function extensionality and compare the values at `n`. Rewrite using `[UpperHalfPlane.coe_vadd, mul_assoc (a n), ← Complex.exp_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Use `show HasSum (fun n : ℕ => a n * Complex.exp (2 * Real.pi * Complex.I * n * b / N) * Complex.exp (2 * Real.pi * Complex.I * n * τ / N)) (f (b +ᵥ τ))`. Rewrite using `[he]`. Conclude with `h1`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasQ_vadd : ∀ (N : ℕ) (f : ℍ → ℂ) (a : ℕ → ℂ) (b : ℝ), HasQ N f a →
     HasQ N (fun τ => f (b +ᵥ τ))

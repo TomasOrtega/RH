@@ -30,7 +30,7 @@ open GlobalTheory.HeatMod
 namespace GlobalTheory.HeatMod
 
 /- English proof (translation)
-Establish `hc : ∀ a b : R, constFn G.hom O (a + b) = constFn G.hom O a + constFn G.hom O b` using `fun a b => by`. Simplify using `[constFn]`. Establish `hs : ∀ a b : R, constFn G.hom O (a - b) = constFn G.hom O a - constFn G.hom O b` using `fun a b => by`. Simplify using `[constFn]`. Simplify using `only [op, combF, quadF, Matrix.add_apply, Pi.sub_apply, hc, hs, add_mul, sub_mul, Finset.sum_add_distrib, Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -49,28 +49,28 @@ theorem opMod {R : Type} [CommRing R] (G : Over (Sp R)) {n : ℕ} (dd : Fin n �
   ring
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.KS.rsT_of_le (le_top : U ≤ ⊤), GlobalTheory.KS.rsT_rsT le_top hV, GlobalTheory.KS.rsT_constFn _ le_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rsT_resG_constFn {R : Type} [CommRing R] {Z : Scheme.{0}} (s : Z ⟶ Sp R) {U V : Z.Opens} (hV : V ≤ U)
     (x : R) : rsT (resG Z (le_top : U ≤ ⊤) (constFn s ⊤ x)) V = constFn s V x := by
   rw [← GlobalTheory.KS.rsT_of_le (le_top : U ≤ ⊤), GlobalTheory.KS.rsT_rsT le_top hV, GlobalTheory.KS.rsT_constFn _ le_top]
 
 /- English proof (translation)
-Establish `wsm : ∀ (m : ℕ) (x y : X), w (m • x) y = (m : R) * w x y`. Introduce `m x y`. Proceed by induction on `m with`. Consider the case `zero`. Simplify using `only [zero_smul, Nat.cast_zero, zero_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `hw1 0 0 y` as an intermediate fact. Simplify using `only [add_zero] at this`. Take the linear combination `-this`. Consider the case `succ m ih => rw [succ_nsmul, hw1, ih]`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `psm : ∀ (m : ℕ) (x : X), π' (m • x) = (m : R) * π' x`. Introduce `m x`. Proceed by induction on `m with`. Consider the case `zero`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `only [zero_smul, Nat.cast_zero, zero_mul]`. Use `hπ' 0 0` as an intermediate fact. Simplify using `only [add_zero] at this`. Take the linear combination `-this`. Consider the case `succ m ih => rw [succ_nsmul, hπ', ih]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `qsm : ∀ (m : ℕ) (x : X), π (m • x) = (m : R) * π x + half * ((m : R) ^ 2 - m) * w x x`. Introduce `m x`. Proceed by induction on `m with`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Use `hπ 0 0` as an intermediate fact. Simplify using `only [add_zero, map_zero, AddMonoidHom.zero_apply] at this`. Simplify using `only [zero_smul, Nat.cast_zero]`. Take the linear combination `-this`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Consider the case `succ m ih`. Rewrite using `[succ_nsmul, hπ, ih, map_nsmul, nsmul_eq_mul]`. Use `push_cast`. Take the linear combination `(-(m : R) * w x x) * h2`. Simplify using `only [hπ, hπ', hw1, map_add, wsm, map_nsmul, psm, qsm, nsmul_eq_mul, hw2 α mu]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-((k : R) ^ 2 * w mu mu + 2 * (k : R) ^ 2 * w mu α)) * h2`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem defect_cancel {R X : Type} [CommRing R] [AddCommGroup X] (w : X → X →+ R) (π π' : X → R) (half : R)
     (h2 : 2 * half = 1) (hw1 : ∀ mu mu' α, w (mu + mu') α = w mu α + w mu' α) (hw2 : ∀ mu mu', w mu mu' = w mu' mu)
@@ -114,39 +114,33 @@ theorem defect_cancel {R X : Type} [CommRing R] [AddCommGroup X] (w : X → X �
   linear_combination (-((k : R) ^ 2 * w mu mu + 2 * (k : R) ^ 2 * w mu α)) * h2
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hv D h w π π' hB hD hw1 hw2 hπ' hπ`. Set `ℓ₁ : Dd.toPre.X →+ R` to `AddMonoidHom.mk' π' hπ'`. Set `half : R` to `algebraMap ℚ R (1 / 2)`. Establish `h2 : (2 : R) * half = 1`. Simplify using `only [half]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_ofNat (algebraMap ℚ R) 2, ← map_mul]`. Evaluate the numerical expressions. Set `ℓ₂ : Dd.toPre.X →+ R` to `AddMonoidHom.mk' (fun x => π x - half * w x x) (fun a b => by`. Simplify using `only [hπ, hw1, map_add]`. Rewrite using `[hw2 b a]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-(w a b)) * h2)`. Take `⟨c₁, hc₁⟩` from `GlobalTheory.T.exists_torus_invariantField_const_coeffs R Dd O oa Y n v dd hv ℓ₁`. Take `⟨c₂, hc₂⟩` from `GlobalTheory.T.exists_torus_invariantField_const_coeffs R Dd O oa Y n v dd hv ℓ₂`. Take `⟨M, hMs, hMa, hMg⟩` from `GlobalTheory.T.exists_symmetric_second_order_operator_of_character_form R Dd O oa Y n v dd hv w hw1 hw2`. Take `⟨⟨a1, a2, a3⟩, kc, wt₂, pb₂⟩` from `hc₂`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `h' : Heat Y.H Y.q.left Dd.toPre.P.L dd ⇑D` to `{ Θ := h.Θ + M`. Use symmetry as in `:= by rw [Matrix.transpose_add, h.symm, hMs]`. Use `u := h.u - c₁`. Use `J := h.J`. Use `W := h.W`.
+Introduce a local definition for the expression. Use symmetry to reverse the relation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Use `j := h.j`. Use `d := fun i O f => h.d i O f - combF Y.H.hom dd c₂ O f`. Use `p := h.p`. Use the proof step `p' := h.p'`. Use `cover := h.cover`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `le := h.le`. Use `lift := fun i => by`. Take `⟨⟨f1, f2, f3⟩, fc⟩` from `h.lift i`. Use `⟨⟨fun W hW f f' => ?_, fun W hW f f' => ?_, fun W W' hh hW f => ?_⟩, fun W hW r => ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[f1 W hW, a1 W le_top]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only`. Rewrite using `[f2 W hW, a2 W le_top]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Simplify using `only`. Rewrite using `[f3 W W' hh hW, a3 W W' hh le_top, map_sub]`. Simplify using `only`. Rewrite using `[fc W hW, kc, sub_zero]`. Use `glue := fun k i i' O hO f => by`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately.
 
-Establish `hle : O ≤ Y.q.left ⁻¹ᵁ (Dd.toPre.P.L.U (h.j i) ⊓ Dd.toPre.P.L.U (h.j i'))` using `fun x hx => ⟨h.le i (hO hx).1, h.le i' (hO hx).2⟩`. Rewrite using `[opMod, opMod, h.glue k i i' O hO f, pb₂ _ _ O k f hle, hMg _ _ O k f hle, hc₁.2.2.2 _ _ O k f hle]`. Use `ring }`. Establish `wsm : ∀ (m : ℕ) (x y : Dd.toPre.X), w (m • x) y = (m : R) * w x y`. Introduce `m x y`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Proceed by induction on `m with`. Consider the case `zero => simp only [zero_smul, Nat.cast_zero, zero_mul]`. Use `hw1 0 0 y` as an intermediate fact. Simplify using `only [add_zero] at this`. Take the linear combination `-this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Consider the case `succ m ih => rw [succ_nsmul, hw1, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Set `e : ℕ → Dd.toPre.X → R` to `fun k α => -(2 * (k : R) * ℓ₂ α) - w α α - 2 * ℓ₁ α`. Establish `key : ∀ k α σ σ', TActs Y h' k α σ σ' → TActs Y h k α σ (σ' - constFn Dd.toPre.P.A.hom ⊤ (e k α) • σ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce and unpack `k α σ σ' ⟨τ, τ', hτ, hτ', hA⟩`. Use `⟨τ, τ' - constFn Y.H.hom ⊤ (e k α) • τ, hτ, GlobalTheory.T.isRaynaudFourierTerm_sub_smul R Dd.toPre O oa Y k α σ σ' τ τ' (e k α) hτ hτ', fun i => ?_⟩` and prove the remaining obligations. Establish `hA'` using `hA i`. Take `⟨V, hV⟩` from `(hB i).1`. Establish `hwt` using `GlobalTheory.T.raynaudFourierTerm_chartRestriction_isWeight R Dd.toPre O oa Y k α σ τ hτ (h.j i) (h.W i) ⟨V, hV⟩ (h.le i)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `rsT (τ'.f fun _ => h.j i) (h.W i) = op Y.H dd (h.Θ + M) (h.u - c₁) (fun O f => h.d i O f - combF Y.H.hom dd c₂ O f) (h.p i) (h.p' i) k (h.W i) (rsT (τ.f fun _ => h.j i) (h.W i)) at hA'`. Rewrite `hA'` using `[opMod, wt₂ α _ ⟨V, hV⟩ _ hwt, hMa α _ ⟨V, hV⟩ _ hwt, hc₁.2.2.1 α _ ⟨V, hV⟩ _ hwt]`. Establish `hle' : h.W i ≤ LB.wchart Dd.toPre.P.L (K` using `Fin 1) (fun _ => Y.q.left) (fun _ => h.j i) := fun x hx => Set.mem_iInter.2 fun _ => h.le i hx`. Establish `hce : constFn Y.H.hom (h.W i) (e k α) = -(2 * (k : Γ(Y.H.left, h.W i)) * constFn Y.H.hom (h.W i) (ℓ₂ α)) - constFn Y.H.hom (h.W i) (w α α) - 2 * constFn Y.H.hom (h.W i) (ℓ₁ α)`. Establish `hcf : ∀ a, constFn Y.H.hom (h.W i) a = ((Y.H.hom.appLE ⊤ (h.W i) (fun _ _ => trivial)).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom) a` using `fun _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hcf, e, map_sub, map_neg, map_mul, map_natCast, map_ofNat]`. Express the relevant statement in the definitionally equal form `rsT ((τ'.f fun _ => h.j i) - resG Y.H.left le_top (constFn Y.H.hom ⊤ (e k α)) * τ.f fun _ => h.j i) (h.W i) = _`. Rewrite using `[GlobalTheory.KS.rsT_sub, GlobalTheory.KS.rsT_mul, rsT_resG_constFn, hA', hce]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hle'`.
-
-Use `⟨h', fun i => ?_, ?_⟩` and prove the remaining obligations. Take `⟨b1, b2, b3, b4⟩` from `hB i`. Use `⟨b1, b2, b3, fun α V hV f hf => ?_⟩` and prove the remaining obligations. Use `show IsWt Y α _ (h.d i _ f - combF Y.H.hom dd c₂ _ f)`. Rewrite using `[wt₂ α _ ⟨V, rfl⟩ f hf]`.
-
-Conclude with `GlobalTheory.T.isRaynaudTorusWeightFunction_sub_const_mul R Dd.toPre O oa Y α _ _ f (ℓ₂ α) (b4 α V hV f hf) hf`. Introduce `k mu α σ σ' σ₁ σ₁' hk hS hT1 hT2`. Establish `H` using `hD k mu α σ _ σ₁ _ hk hS (key _ _ _ _ hT1) (key _ _ _ _ hT2)`. Establish `H2` using `GlobalTheory.T.thetaShiftFunctionalEq_sub_constFn_smul R Dd.toPre k mu α σ σ' σ₁ σ₁' _ _ _ hS H`. Use `H2 using 1` and compare the differences between its conclusion and the goal.
-
-Conclude with `defect_cancel w π π' half h2 hw1 hw2 hπ' hπ k mu α`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_heat_defect_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (Dd : DegData R (maximalIdeal R)) (O : Type) [CommRing O] [StarRing O] [Module O Dd.toPre.X] (oa : Dd.toPre.OAct O) (Y : Ray oa) (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) (dd : Fin n → Fld Y.H.left), (∀ a, IsInv Y.H (v a) (dd a)) → ∀ (D : Derivation ℤ R R) (h : Heat Y.H Y.q.left Dd.toPre.P.L dd ⇑D) (w : Dd.toPre.X → Dd.toPre.X →+ R) (π π' : Dd.toPre.X → R), IsBasic Y h → HasDefect Y h (fun (k : ℕ) mu α => 2 * (k : R) * w mu α + 2 * (k : R) ^ 2 * π mu + 2 * (k : R) * π' mu) → (∀ mu mu' α, w (mu + mu') α = w mu α + w mu' α) → (∀ mu mu', w mu mu' = w mu' mu) → (∀ mu mu', π' (mu + mu') = π' mu + π' mu') → (∀ mu mu', π (mu + mu') = π mu + π mu' + w mu' mu) → ∃ h' : Heat Y.H Y.q.left Dd.toPre.P.L dd ⇑D, IsBasic Y h' ∧ HasDefect Y h' (fun _ _ _ => 0) := by
   intro R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hv D h w π π' hB hD hw1 hw2 hπ' hπ

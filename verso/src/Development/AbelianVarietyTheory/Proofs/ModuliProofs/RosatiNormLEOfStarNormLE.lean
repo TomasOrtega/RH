@@ -46,13 +46,11 @@ open CechPic MulOpposite
 variable {K : Type} [Field K] {P : PolAV (Sp K)}
 
 /- English proof (translation)
-Establish `e : ∀ u v : P.A ⊗ P.A ⟶ P.A, padd P.A u v = u * v` using `fun _ _ => rfl`. Establish `key : ∑ i, rosatiε i • pull (rosatiφ P.A f g i) (cls P.L P.isLB) = lam (cls P.L P.isLB) (fst _ _ ≫ f) (snd _ _) - lam (cls P.L P.isLB) (fst _ _) (snd P.A P.A ≫ g)`. Simplify using `only [Fin.sum_univ_succ, rosatiφ, rosatiε, Matrix.cons_val_zero, Matrix.cons_val_succ, e, Fin.sum_univ_zero, lam]`. Use `module`. Establish `key' : ∀ {Y : Scheme.{0}} (q : Y ⟶ (P.A ⊗ P.A).left), cls (LB.LinComb P.L (fun i => q ≫ rosatiφ P.A f g i) rosatiε) (LB.isLB_linComb P.isLB _ _) = pull q (∑ i, rosatiε i • pull (rosatiφ P.A f g i) (cls P.L P.isLB))` using `fun q => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cls_linComb P.isLB]`. Simplify using `only [map_sum, map_zsmul, pull_comp]`. Use `⟨fun h T x y => ?_, fun h s => ⟨⊤, trivial, (cls_eq_zero_iff (LB.isLB_linComb P.isLB _ _)).1 ?_⟩⟩` and prove the remaining obligations. Take `⟨U, hU, ht⟩` from `h (default : PrimeSpectrum K)`. Take `rfl : U = ⊤` from `top_unique fun y _ => by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : y = (default : PrimeSpectrum K)` from `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Conclude with `hU`. Establish `: IsIso ((P.A ⊗ P.A).hom ⁻¹ᵁ ⊤).ι` using `inferInstanceAs (IsIso ((P.A ⊗ P.A).left.topIso).hom)`. Establish `h₁` using `congrArg (pull ((lift x y).left ≫ inv ((P.A ⊗ P.A).hom ⁻¹ᵁ ⊤).ι)) ((key' _).symm.trans ((cls_eq_zero_iff (LB.isLB_linComb P.isLB _ _)).2 ht))`. Rewrite `h₁` using `[← pull_comp, Category.assoc, IsIso.inv_hom_id, Category.comp_id, key, map_sub, pull_lam, pull_lam, map_zero, lift_fst_assoc, lift_snd_assoc, lift_fst, lift_snd]`.
-
-Conclude with `sub_eq_zero.1 h₁`. Rewrite using `[key', key, h, sub_self, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rosatiAdj_iff_lam {f g : P.A ⟶ P.A} : RosatiAdj P.A P.L f g ↔ ∀ (T : Over (Sp K)) (x y : T ⟶ P.A),
     lam (cls P.L P.isLB) (x ≫ f) y = lam (cls P.L P.isLB) x (y ≫ g) := by
@@ -81,7 +79,7 @@ theorem rosatiAdj_iff_lam {f g : P.A ⟶ P.A} : RosatiAdj P.A P.L f g ↔ ∀ (T
   · rw [key', key, h, sub_self, map_zero]
 
 /- English proof (translation)
-Use `P.isAb.comm` as an intermediate fact. Use `rosatiAdj_iff_lam.2 fun T x y => ?_` and prove the remaining obligations. Rewrite using `[lam_comm, ← rosatiAdj_iff_lam.1 h, lam_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rosatiAdj_symm {f g : P.A ⟶ P.A} (h : RosatiAdj P.A P.L f g) : RosatiAdj P.A P.L g f := by
   have := P.isAb.comm
@@ -89,7 +87,7 @@ theorem rosatiAdj_symm {f g : P.A ⟶ P.A} (h : RosatiAdj P.A P.L f g) : RosatiA
   rw [lam_comm, ← rosatiAdj_iff_lam.1 h, lam_comm]
 
 /- English proof (translation)
-Use `rosatiAdj_iff_lam.2 fun T x y => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, rosatiAdj_iff_lam.1 h', rosatiAdj_iff_lam.1 h, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rosatiAdj_comp {f g f' g' : P.A ⟶ P.A} (h : RosatiAdj P.A P.L f g) (h' : RosatiAdj P.A P.L f' g') :
     RosatiAdj P.A P.L (f ≫ f') (g' ≫ g) := by
@@ -197,7 +195,7 @@ def Rep (y : Fin (2 * P.g) → (baseOver (Sp K) ⟶ P.A)) (ψ : P.A ⟶ P.A)
   ∀ i, y i ≫ ψ = lab y fun k => B k i
 
 /- English proof (translation)
-Simplify using `only [lab, linComb, ZMod.val_natCast]`. Conclude with `congrArg (fun f => (List.ofFn f).prod) (funext fun i => (pow_eq_pow_mod _ (h i)).symm)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lab_natCast (h : ∀ i, y i ^ M = 1) (c : Fin (2 * P.g) → ℕ) :
     lab y (fun i => (c i : ZMod M)) = linComb y c := by
@@ -205,7 +203,7 @@ theorem lab_natCast (h : ∀ i, y i ^ M = 1) (c : Fin (2 * P.g) → ℕ) :
   exact congrArg (fun f => (List.ofFn f).prod) (funext fun i => (pow_eq_pow_mod _ (h i)).symm)
 
 /- English proof (translation)
-Use `choose c hc using fun i => h.2 (y i ≫ ψ) (by rw [← MonObj.pow_comp, h.1, MonObj.one_comp])`. Conclude with `⟨fun k i => (c i k : ZMod M), fun i => ((lab_natCast h.1 _).trans (hc i)).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Frame.exists_rep (h : Frame P M y) (ψ : P.A ⟶ P.A) [IsMonHom ψ] :
     ∃ B : Matrix _ _ (ZMod M), Rep y ψ B := by
@@ -238,9 +236,9 @@ def repRing [NeZero M] (ρ : RingAct P.A O) (h : ∀ i, y i ^ M = 1) :
 variable [IsAlgClosed K]
 
 /- English proof (translation)
-Establish `: NeZero (l ^ r)` using `⟨pow_ne_zero _ hl.ne_zero⟩`. Establish `: NeZero ((l ^ r : ℕ) : K)` using `⟨by rw [Nat.cast_pow]; exact pow_ne_zero _ hK⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot K (l ^ r)`. Establish `h` using `hζ.map_of_injective (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.symm.injective`. Take `⟨lev⟩` from `nonempty_level_prime_pow hL K P l r hl hK _ (h.isUnit_unit (NeZero.ne _))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨lev.pt, lev.torsion, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `(pow_eq_one_iff (Nat.mul_one _).symm lev rfl z).1 hz`. Conclude with `⟨_, (pow_one _).symm.trans ha⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_frame (hL : Laws) (P : PolAV (Sp K)) {l : ℕ} (hl : l.Prime) (hK : (l : K) ≠ 0) (r : ℕ) :
     ∃ y, Frame P (l ^ r) y := by
@@ -254,9 +252,9 @@ theorem exists_frame (hL : Laws) (P : PolAV (Sp K)) {l : ℕ} (hl : l.Prime) (hK
   exact ⟨_, (pow_one _).symm.trans ha⟩
 
 /- English proof (translation)
-Take `⟨l, hl, hK⟩ : ∃ l : ℕ, l.Prime ∧ (l : K) ≠ 0` from `by by_contra! h`. Establish `h₂` using `h 2 Nat.prime_two`. Establish `h₃` using `h 3 Nat.prime_three`. Move the coercions through the operations in `at h₂ h₃`. Conclude with `one_ne_zero (α := K) (by linear_combination h₃ - h₂)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `exists_frame hL P hl hK (t - s).natAbs`. Establish `h` using `(ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).1 (H l _ hl hK y hy)`. Use `Nat.eq_zero_of_dvd_of_lt (Int.natCast_dvd.1 h) (Nat.lt_pow_self hl.one_lt)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem int_eq_of_frames (hL : Laws) (P : PolAV (Sp K)) {s t : ℤ} (H : ∀ l r : ℕ, l.Prime → (l : K) ≠ 0 →
     ∀ y, Frame P (l ^ r) y → (s : ZMod (l ^ r)) = t) : s = t := by

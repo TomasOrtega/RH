@@ -14,9 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D}
 
 /- English proof (translation)
-Set `e : AF D.host.F` to `((1 : Ainf D.host.F), (0 : Af D.host.F))`. Set `E : AE D` to `e ⊗ₜ[D.host.F] (1 : D.host.E)`. Establish `h1 : infPart D E = 1` using `rfl`. Establish `h2 : finPart D E = 0` using `by show (0 : Af D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Conclude with `TensorProduct.zero_tmul _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : infPart D (E * a) = infPart D a` using `by rw [RingHom.map_mul, h1, one_mul]`. Establish `h4 : E * a = 0` using `h.ext _ (by rw [RingHom.map_mul, h2, zero_mul]) fun τ => by rw [h3]; exact ha τ`. Rewrite using `[← h3, h4, RingHom.map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPart_eq_zero (h : Chart θ σ) (a : AE D) (ha : ∀ τ, θ τ (infPart D a) = 0) : infPart D a = 0 := by
   let e : AF D.host.F := ((1 : Ainf D.host.F), (0 : Af D.host.F))
@@ -30,7 +30,7 @@ theorem infPart_eq_zero (h : Chart θ σ) (a : AE D) (ha : ∀ τ, θ τ (infPar
   rw [← h3, h4, RingHom.map_zero]
 
 /- English proof (translation)
-Set `f : AE D →ₐ[AF D.host.F] AE D` to `Algebra.TensorProduct.map (AlgHom.id (AF D.host.F) (AF D.host.F)) D.sp.cm.sig`. Conclude with `IsModuleTopology.continuous_of_linearMap f.toLinearMap`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem continuous_conj : Continuous (cA D) := by
   let f : AE D →ₐ[AF D.host.F] AE D :=
@@ -38,7 +38,7 @@ theorem continuous_conj : Continuous (cA D) := by
   exact IsModuleTopology.continuous_of_linearMap f.toLinearMap
 
 /- English proof (translation)
-Establish `hx' : ∀ i j, Continuous fun t => cA D (x t i j)` using `fun i j => continuous_conj.comp ((continuous_apply j).comp ((continuous_apply i).comp hx))`. Establish `hy' : ∀ i j, Continuous fun t => y t i j` using `fun i j => (continuous_apply j).comp ((continuous_apply i).comp hy)`. Unfold `hHom`. Apply the tactic sequence `split_ifs <;>`. Conclude with `continuous_finset_sum _ fun _ _ => continuous_finset_sum _ fun _ _ => continuous_finset_sum _ fun _ _ => continuous_finset_sum _ fun _ _ => (((hx' _ _).mul continuous_const).mul continuous_const).mul (hy' _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem continuous_hHom (V W : HSp D) {X : Type} [TopologicalSpace X] {x y : X → WA V W} (hx : Continuous x)
     (hy : Continuous y) : Continuous fun t => hHom V W (x t) (y t) := by
@@ -52,7 +52,7 @@ theorem continuous_hHom (V W : HSp D) {X : Type} [TopologicalSpace X] {x y : X �
       continuous_finset_sum _ fun _ _ => (((hx' _ _).mul continuous_const).mul continuous_const).mul (hy' _ _)
 
 /- English proof (translation)
-Establish `ht : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Conclude with `continuous_const.mul (ht.comp (continuous_const.mul (continuous_hHom V W hy hx)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_symplH (V W : HSp D) {X : Type} [TopologicalSpace X] {x y : X → WA V W} (hx : Continuous x)
     (hy : Continuous y) : Continuous fun t => symplH V W (x t) (y t) := by
@@ -60,17 +60,15 @@ theorem continuous_symplH (V W : HSp D) {X : Type} [TopologicalSpace X] {x y : X
   exact continuous_const.mul (ht.comp (continuous_const.mul (continuous_hHom V W hy hx)))
 
 /- English proof (translation)
-Take `⟨U, hUo, hU⟩` from `hU`. Use `haveI : IsTopologicalAddGroup (AE D) := IsTopologicalRing.to_topologicalAddGroup`. Use `haveI : IsTopologicalAddGroup (WA V W) := Pi.topologicalAddGroup`. Use `haveI : ContinuousSub (WA V W) := IsTopologicalAddGroup.to_continuousSub`. Use `continuous_iff_continuousAt.2 fun w => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `x : WA V W → RW V W` to `fun w' => piW θ V W (w' - w)`. Set `a : WA V W → WA V W` to `fun w' => w + iotaW σ V W (x w')`. Set `u : WA V W → WA V W` to `fun w' => w' - a w'`. Establish `hx : Continuous x` using `(continuous_pi' h.inf V W).comp (continuous_id.sub continuous_const)`. Establish `ha : Continuous a` using `continuous_const.add ((h.continuous_iota V W).comp hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : Continuous u` using `continuous_id.sub ha`. Establish `huw : u w = 0` using `by show w - (w + iotaW σ V W (piW θ V W (w - w))) = 0`. Rewrite using `[sub_self, AddMonoidHom.map_zero, AddMonoidHom.map_zero, add_zero, sub_self]`. Establish `hinf : ∀ w', (u w').map (infPart D) = 0`. Introduce `w'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hp : piW θ V W (u w') = 0` using `by show piW θ V W (w' - (w + iotaW σ V W (piW θ V W (w' - w)))) = 0`. Rewrite using `[← sub_sub, AddMonoidHom.map_sub, h.pi_iota, sub_self]`. Use extensionality with `i j`. Conclude with `infPart_eq_zero h _ fun τ => congrFun (congrFun (congrFun hp τ) i) j`. Establish `hg : Continuous fun w' => ψ (-symplH V W (a w') (u w')) * f (a w')` using `(hψ.comp (continuous_symplH V W ha hu).neg).mul ((hs w).continuous.comp hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ w' in 𝓝 w, u w' ∈ U` using `hu.continuousAt.preimage_mem_nhds (hUo.mem_nhds (by rw [huw]; exact U.zero_mem))`. Use `hg.continuousAt.congr (hev.mono fun w' hw' => ?_)` and prove the remaining obligations. Establish `e` using `congrFun (hU _ hw' (hinf w')) (a w')`. Establish `e2 : a w' + u w' = w'` using `add_sub_cancel _ _`. Use `show ψ (-symplH V W (a w') (u w')) * f (a w') = f w'`.
-
-Rewrite using `[← e]`. Use `show _ * (ψ (symplH V W (a w') (u w')) * f (a w' + u w')) = _`. Rewrite using `[e2, ← mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_level_of_smooth (D : D7) (θ : InfFam D) (σ : (D.what₂.Tau → ℂ) →+ AE D) (h : Chart θ σ)
     (ψ : AddChar (AF D.host.F) ℂ) (hψ : Continuous ψ) (V W : HSp D) (f : WA V W → ℂ)

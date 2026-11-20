@@ -29,9 +29,9 @@ namespace GlobalTheory.BdDim.PolDescent
 set_option backward.isDefEq.respectTransparency false
 
 /- English proof (translation)
-Set `ρ : ∀ s : (Finset k)ᵒᵖ, X ⟶ (Spread.bcDiagram f₀ k).obj s` to `fun s => H.isoPullback.hom ≫ (Spread.bcCone f₀ k).π.app s`. Establish `w : ∀ {s t} (g : s ⟶ t), ρ s ≫ (Spread.bcDiagram f₀ k).map g = ρ t` using `fun g => (Category.assoc _ _ _).trans (congrArg _ ((Spread.bcCone f₀ k).w g))`. Establish `hc : IsLimit (schemeConeOfFamily _ ρ w)` using `(Spread.isLimitBcCone f₀ k).ofIsoLimit (Cone.ext H.isoPullback fun _ => rfl).symm`. Take `⟨s, M, hM, h, -⟩` from `LBLimit.exists_lb_of_isLimit _ ρ w hc L hL`. Use `⟨s.unop, M, H.isoPullback.hom ≫ Spread.bcMap f₀ (Algebra.adjoin k₀ (s.unop : Set k)).val, hM, h, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, Spread.bcMap_fst, IsPullback.isoPullback_hom_fst]`. Rewrite using `[Category.assoc, Spread.bcMap_snd, IsPullback.isoPullback_hom_snd_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_fg_lb {k₀ k : Type} [CommRing k₀] [CommRing k] [Algebra k₀ k] {X X₀ : Scheme.{0}} {f : X ⟶ Sp k}
     {f₀ : X₀ ⟶ Sp k₀} {π : X ⟶ X₀} [QuasiCompact f₀] [QuasiSeparated f₀]
@@ -53,7 +53,7 @@ theorem exists_fg_lb {k₀ k : Type} [CommRing k₀] [CommRing k] [Algebra k₀ 
   · rw [Category.assoc, Spread.bcMap_snd, IsPullback.isoPullback_hom_snd_assoc]
 
 /- English proof (translation)
-Establish `: Nontrivial (Localization.Away a)` using `(IsLocalization.injective (Localization.Away a) (powers_le_nonZeroDivisors_of_noZeroDivisors ha)).nontrivial`. Establish `: Algebra.FiniteType k₀ (Localization.Away a)` using `Algebra.FiniteType.trans (S := R) inferInstance inferInstance`. Take `⟨χ⟩` from `exists_algHom_of_finiteType_of_isAlgClosed k₀ (Localization.Away a) k₀`. Conclude with `⟨χ.comp (IsScalarTower.toAlgHom k₀ R _), (IsLocalization.Away.algebraMap_isUnit a).map χ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_point {k₀ R : Type} [Field k₀] [IsAlgClosed k₀] [CommRing R] [IsDomain R] [Algebra k₀ R]
     [Algebra.FiniteType k₀ R] {a : R} (ha : a ≠ 0) : ∃ g : R →ₐ[k₀] k₀, IsUnit (g a) := by
@@ -65,23 +65,21 @@ theorem exists_point {k₀ R : Type} [Field k₀] [IsAlgClosed k₀] [CommRing R
   exact ⟨χ.comp (IsScalarTower.toAlgHom k₀ R _), (IsLocalization.Away.algebraMap_isUnit a).map χ⟩
 
 /- English proof (translation)
-Establish `: IsNoetherianRing R` using `Algebra.FiniteType.isNoetherianRing k₀ R`. Use `hB.comm` as an intermediate fact. Establish `hGab` using `PolPull.isAbelianScheme_of_isGrpPullback hB hG`. Use `hGab.comm` as an intermediate fact. Set `K` to `FractionRing R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `i : K →+* k` to `IsFractionRing.lift hv`. Establish `ei : spMap i ≫ spMap (algebraMap R K) = spMap v`. Rewrite using `[spMap_comp_ring]`. Use `congr 1`. Conclude with `RingHom.ext fun x => IsFractionRing.lift_algebraMap hv x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `q` using `isGrpPullback_pullback G (spMap (algebraMap R K))`. Establish `hC` using `PolPull.isAbelianScheme_of_isGrpPullback hGab q`. Use `hC.comm` as an intermediate fact. Set `u : A.left ⟶ ((Over.pullback (spMap (algebraMap R K))).obj G).left` to `q.1.lift j (A.hom ≫ spMap i) (by rw [Category.assoc, ei, hA.1.w])`. Establish `hu : u ≫ pullback.fst G.hom (spMap (algebraMap R K)) = j` using `q.1.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : IsGrpPullback A ((Over.pullback (spMap (algebraMap R K))).obj G) (spMap i) u` using `IsGrpPullback.cancel q (hA.congr ei.symm hu.symm) (q.1.lift_snd _ _ _)`. Establish `hN` using `pull_isLB hM (pullback.fst G.hom (spMap (algebraMap R K)))`. Establish `e'` using `LBIso.trans hL (pull_isLB hM _) (pull_isLB hN _) e (GenSpread.lbIso_pull_pull hM u hu.symm)`. Take `⟨hr', hs', hk'⟩` from `GlobalTheory.PolDescent.rigidified_sym_kTriv_descend K k i _ A u _ L hC hu' hN hL e'`. Establish `ha'` using `AmpleDescent.relAmple_of_fieldExtension K k i _ A u _ L hC hu' hN hL e' ha`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r` using `PolBaseChange.lbIso_refl hN`. Establish `hP : AbLaw.IsProjBy G.hom` using `(ProjSpace.isProjBy_iff_isProjOver _).2 (ProjSpace.isProjOver_of_isPullback_spMap _ hG.1 ((ProjSpace.isProjBy_iff_isProjOver _).1 (AbelianProjective.isProjBy_of_isAbelianScheme k₀ B hB)))`. Take `⟨a₁, h₁, H₁⟩` from `GenSpread.exists_rigidified R K G _ _ M _ hGab q hM hN r (hr' hr)`. Take `⟨a₂, h₂, H₂⟩` from `GenSpread.exists_sym R K G _ _ M _ hGab q hM hN r (hs' hs)`. Take `⟨a₃, h₃, H₃⟩` from `AmpleSpread.relAmple_spread R K G M hGab.proper hM ha'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a₄, h₄, H₄⟩` from `GenSpread.exists_kTriv globalFns_holds R K G _ _ M _ hGab q hM hN r hP (hk' hk)`. Take `⟨g, hg⟩` from `exists_point (k₀ := k₀) (mul_ne_zero (mul_ne_zero h₁ h₂) (mul_ne_zero h₃ h₄))`. Simplify using `only [map_mul, IsUnit.mul_iff] at hg`. Establish `eg : spMap g.toRingHom ≫ spMap (algebraMap k₀ R) = 𝟙 _`. Rewrite using `[spMap_comp_ring, show g.toRingHom.comp (algebraMap k₀ R) = RingHom.id k₀ from RingHom.ext fun x => g.commutes x]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Spec.map_id _`. Establish `: IsMonHom (Iso.refl B).hom` using `inferInstanceAs (IsMonHom (𝟙 B))`. Set `π : B.left ⟶ G.left` to `hG.1.lift (𝟙 _) (B.hom ≫ spMap g.toRingHom) (by`. Rewrite using `[Category.assoc, eg, Category.id_comp, Category.comp_id])`. Establish `hπ : IsGrpPullback B G (spMap g.toRingHom) π` using `IsGrpPullback.cancel hG ((isGrpPullback_of_iso (Iso.refl B)).congr eg.symm (hG.1.lift_fst _ _ _).symm) (hG.1.lift_snd _ _ _)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₀` using `pull_isLB hM π`. Establish `r₀` using `PolBaseChange.lbIso_refl h₀`. Use `⟨M.pull π, h₀, H₁ k₀ g.toRingHom hg.1.1 B π _ hπ h₀ r₀, H₂ k₀ g.toRingHom hg.1.2 B π _ hπ h₀ r₀, ?_, H₄ k₀ g.toRingHom hg.2.2 B π _ hπ h₀ r₀⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `GenSpread.lbIso_pull_pull hM hπ.1.isoPullback.hom hπ.1.isoPullback_hom_fst.symm`. Use `relAmple_pull (f := 𝟙 _) (A := Over.mk (pullback.snd G.hom (spMap g.toRingHom))) (IsPullback.of_horiz_isIso ⟨?_⟩) (pull_isLB hM _) h₀ ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top _) (fun _ => trivial) (H₃ k₀ g.toRingHom hg.2.1)` and prove the remaining obligations.
-
-Conclude with `hπ.1.isoPullback_hom_snd.trans (Category.comp_id _).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_pol_of_family {k₀ R k : Type} [Field k₀] [IsAlgClosed k₀] [CommRing R] [IsDomain R] [Algebra k₀ R]
     [Algebra.FiniteType k₀ R] [Field k] (v : R →+* k) (hv : Function.Injective v) {B : Over (Sp k₀)} [GrpObj B]
@@ -144,13 +142,13 @@ theorem exists_pol_of_family {k₀ R k : Type} [Field k₀] [IsAlgClosed k₀] [
   exact hπ.1.isoPullback_hom_snd.trans (Category.comp_id _).symm
 
 /- English proof (translation)
-Introduce `k₀ k _ _ _ _ ι B _ S P x hB ⟨A, _, φ, ψ, hφ, hψ⟩`. Use `letI := ι.toAlgebra`. Use `hB.proper` as an intermediate fact. Establish `hL` using `pull_isLB P.isLB φ`. Take `⟨w, hw⟩` from `PolBaseChange.lbIso_refl hL`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hc, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := ⊤) (x := x (IsLocalRing.closedPoint k)) trivial`. Establish `ha` using `relAmple_pull hφ.1 P.isLB hL ((isGen_iff w).1 hw) U hU (fun y => (congrArg (fun V => y ∈ V) (Scheme.preimage_eq_top_of_closedPoint_mem x hc)).mpr trivial) P.ample`. Establish `hk` using `kTriv_pull hφ P.isLB hL ((isGen_iff w).1 hw) P.ktriv`. Take `⟨s, M, j, hM, e, hj₁, hj₂⟩` from `exists_fg_lb (k₀ := k₀) hψ.1 hL`. Establish `: Algebra.FiniteType k₀ (Algebra.adjoin k₀ (s : Set k))` using `(Subalgebra.fg_iff_finiteType _).1 ⟨s, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `q` using `isGrpPullback_pullback B (spMap (algebraMap k₀ (Algebra.adjoin k₀ (s : Set k))))`. Establish `es : spMap (Algebra.adjoin k₀ (s : Set k)).val.toRingHom ≫ spMap (algebraMap k₀ (Algebra.adjoin k₀ (s : Set k))) = spMap ι` using `spMap_comp_ring _ _`. Establish `hj` using `IsGrpPullback.cancel q (hψ.congr es.symm hj₁.symm) hj₂`. Take `⟨L₀, h₀, h₁, h₂, h₃, h₄⟩` from `exists_pol_of_family (Algebra.adjoin k₀ (s : Set k)).val.toRingHom Subtype.val_injective hB q hM hj hL e (PolBaseChange.rigidified_pull hφ P.rigid) (PolBaseChange.sym_pull hφ P.sym) ha hk`. Establish `hd` using `(FieldDescentAb.isAbelianScheme_and_relDim_descend k₀ k ι B A ψ hψ (PolPull.isAbelianScheme_of_isGrpPullback hB hψ)).2 P.g ((smoothOfRelativeDimension_isStableUnderBaseChange P.g).of_isPullback hφ.1 P.smoothDim)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨⟨B, hB, P.g, hd, L₀, h₀, h₁, h₂, h₃, h₄⟩, A, _, φ, ψ, hφ, hψ⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_polAV_sameFibre : ∀ (k₀ k : Type) [Field k₀] [IsAlgClosed k₀] [Field k] [IsAlgClosed k] (ι : k₀ →+* k)
     (B : Over (Sp k₀)) [GrpObj B] (S : Scheme.{0}) (P : Out.PolAV S) (x : Sp k ⟶ S), IsAbelianScheme B →

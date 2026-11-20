@@ -20,14 +20,14 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.ProdForm
 /- English proof (translation)
-Introduce `K _ P Q _ _ hc`. Conclude with `Polynomial.resultant_ne_zero P Q hc`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem resNe : ∀ (K : Type) [Field K] (P Q : K[X]), P.Monic → Q.Monic → IsCoprime P Q → resultant P Q ≠ 0 := by
   intro K _ P Q _ _ hc
   exact Polynomial.resultant_ne_zero P Q hc
 
 /- English proof (translation)
-Introduce `K L _ _ f P Q`. Rewrite using `[Polynomial.natDegree_map, Polynomial.natDegree_map]`. Conclude with `Polynomial.resultant_map_map P Q _ _ f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resMap : ∀ (K L : Type) [Field K] [Field L] (f : K →+* L) (P Q : K[X]),
     resultant (P.map f) (Q.map f) = f (resultant P Q) := by

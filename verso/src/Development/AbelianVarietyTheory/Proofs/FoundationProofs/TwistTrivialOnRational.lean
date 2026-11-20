@@ -23,7 +23,7 @@ def DetOne (γ : LaMod Dw l ≃ₗ[𝓞 E] LaMod Dw l) : Prop :=
   LinearMap.det (LinearMap.baseChange (𝓞 E ⧸ l.Mb) (liftLa γ)) = 1
 
 /- English proof (translation)
-Establish `h : ((l.M : ℕ) : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `⟨(Ideal.mul_le_inf.trans inf_le_left) h, (Ideal.mul_le_inf.trans inf_le_right) h⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem natCast_mem_half (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) : ((l.M : ℕ) : 𝓞 E) ∈ l.Mb ∧ ((l.M : ℕ) : 𝓞 E) ∈ Mfr l := by
   have h : ((l.M : ℕ) : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) := by
@@ -31,11 +31,9 @@ theorem natCast_mem_half (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level
   exact ⟨(Ideal.mul_le_inf.trans inf_le_left) h, (Ideal.mul_le_inf.trans inf_le_right) h⟩
 
 /- English proof (translation)
-Establish `hM₁ : 0 < l.M` using `by have := l.three_le; omega`. Take `⟨g, -, hγ, -⟩` from `GlobalTheory.T.exists_completed_isometry_inducing_half_level_automorphism _ _ Dw l γ`. Take `⟨g', hg'⟩` from `g.inv l.M hM₁`. Take `⟨fa, hfa⟩` from `exists_adjoint Dw (g.f l.M)`. Take `⟨ga, hga⟩` from `exists_adjoint Dw g'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsurj : ∀ a, ∃ b, fa b - a ∈ (Mfr l • ⊤ : Submodule (𝓞 E) Dw.La)` using `fun a => ⟨ga a, mem_of_modN Dw (natCast_mem_half l).2 (modN_of_dvd Dw hM₁ fun v => by`. Rewrite using `[map_sub, LinearMap.sub_apply, hfa, hga, ← map_sub]`. Conclude with `dvd_of_modN Dw a (hg' v).1)⟩`. Use `⟨fun b => fa (x b), fun b a => ?_, GlobalTheory.DatumCoverAdjoint.span_image_sup_eq_top (Mfr l) fa hsurj x _ hx⟩` and prove the remaining obligations. Rewrite using `[hfa, map_smul, ← map_sub, ← smul_sub]`.
-
-Conclude with `dvd_pair_of_mem _ ((Submodule.Quotient.eq _).1 ((hγ a).trans (liftLa_spec γ a).symm))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rightMul (γ : LaMod Dw l ≃ₗ[𝓞 E] LaMod Dw l) {n : ℕ} {rk : Bool} {x : Fin n → Dw.La}
     (hx : AdmX (l := l) rk x) : ∃ x' : Fin n → Dw.La, IsRightMul γ x x' ∧ AdmX (l := l) rk x' := by
@@ -54,21 +52,21 @@ theorem exists_rightMul (γ : LaMod Dw l ≃ₗ[𝓞 E] LaMod Dw l) {n : ℕ} {r
   exact dvd_pair_of_mem _ ((Submodule.Quotient.eq _).1 ((hγ a).trans (liftLa_spec γ a).symm))
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hφ⟩` from `hpin`. Establish `hM₂ : 0 < d.l₂.M` using `by have := d.l₂.three_le; omega`. Establish `hM₁ : 0 < l.M` using `by have := l.three_le; omega`. Establish `hpd : 0 < d.pd` using `Nat.pos_of_mul_pos_left (hM ▸ hM₂)`. Establish `hIJ` using `half_prod hM hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbI : d.l₂.Mb ≤ d.I` using `hb ▸ (Ideal.mul_le_inf.trans inf_le_right)`. Establish `hbM : d.l₂.Mb ≤ l.Mb` using `hb ▸ (Ideal.mul_le_inf.trans inf_le_left)`. Establish `hq : ∀ b, f (levRep (σ.symm (q b))) - levRep (q b) ∈ (d.l₂.Mb • ⊤ : Submodule (𝓞 E) Dw.La)`. Introduce `b`. Rewrite using `[← Submodule.Quotient.eq, ← hσ, levRep_spec, levRep_spec]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `σ.apply_symm_apply _`. Establish `hz : zetaM c ^ pairL (l` using `l) x (fun b => levRep (σ.symm (q b))) = zetaM c ^ pairL (l := l) x' (fun b => levRep (q b)) := by`. Use `zpow_congr hM₁ (root_pow c dvd_rfl) ?_` and prove the remaining obligations. Unfold `pairL`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.dvd_sum fun b _ => ?_` and prove the remaining obligations. Establish `h1` using `sub_mem (Submodule.smul_mono hbM le_rfl (hq b)) (hγ (levRep (σ.symm (q b))))`. Establish `h2` using `dvd_pair_of_mem (l := l) (x' b) h1`. Rewrite `h2` using `[sub_sub_sub_cancel_left, smul_sub, map_sub]`. Establish `h3` using `dvd_add (hx b (levRep (σ.symm (q b)))) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h3` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `hroot` using `root_pow d.c₂ (N := d.pd) (hM ▸ Dvd.intro_left _ rfl)`. Establish `hδ : d.eF (d.φδ (fun b => σ.symm (q b))) = d.eF (d.φδ q)`. Rewrite using `[hφ, hφ]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `zpow_congr hpd hroot ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.dvd_sum fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← map_sub, ← smul_sub]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `dvd_right Dw hIJ (cHalf_mem d.I) _ ?_` and prove the remaining obligations. Use `sub_mem (Submodule.smul_mono hbI le_rfl (hq b)) (hg (levRep (σ.symm (q b))))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Unfold `DeltaDat.w`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, map_mul, map_mul, hδ]`.
+A detailed English derivation is pending.
 -/
 theorem datum_move {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n) (hM : d.l₂.M = l.M * d.pd)
     (hb : d.l₂.Mb = l.Mb * d.I) {ph : (Fin n → LaJ Xo c d) → c.F} {ψ : (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) →* c.Fˣ}
@@ -116,19 +114,15 @@ theorem datum_move {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c
   rw [hz, map_mul, map_mul, hδ]
 
 /- English proof (translation)
-Use `haveI := Dw.fin`. Use `haveI := Dw.proj`. Establish `hM0 : l.M ≠ 0` using `by have := l.three_le; omega`. Use `haveI : Finite (𝓞 E ⧸ l.Mb) := Ideal.finiteQuotientOfFreeOfNeBot _ fun h => by`. Use `(natCast_mem_half l).1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[h, Ideal.mem_bot]`. Conclude with `hM0 (by exact_mod_cast this)`. Establish `h4 : ∀ 𝔪 : Ideal (𝓞 E ⧸ l.Mb), 𝔪.IsMaximal → 4 ≤ Nat.card ((𝓞 E ⧸ l.Mb) ⧸ 𝔪)`. Introduce `𝔪 h`. Use `haveI : Nontrivial ((𝓞 E ⧸ l.Mb) ⧸ 𝔪) := Ideal.Quotient.nontrivial_iff.2 h.ne_top`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Finite ((𝓞 E ⧸ l.Mb) ⧸ 𝔪) := Finite.of_surjective _ Ideal.Quotient.mk_surjective`. Use `haveI : Fintype ((𝓞 E ⧸ l.Mb) ⧸ 𝔪) := Fintype.ofFinite _`. Establish `h1 : 1 < Nat.card ((𝓞 E ⧸ l.Mb) ⧸ 𝔪)` using `Finite.one_lt_card`. Establish `h0 : ((Nat.card ((𝓞 E ⧸ l.Mb) ⧸ 𝔪) : ℕ) : (𝓞 E ⧸ l.Mb) ⧸ 𝔪) = 0`. Rewrite using `[Nat.card_eq_fintype_card]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Conclude with `Nat.cast_card_eq_zero _`. Establish `hN' : (l.M : (𝓞 E ⧸ l.Mb) ⧸ 𝔪) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk 𝔪), ← map_natCast (Ideal.Quotient.mk l.Mb), Ideal.Quotient.eq_zero_iff_mem.2 (natCast_mem_half l).1, map_zero]`. Assume the negation of the conclusion as `hlt`. Establish `hc : Nat.Coprime (Nat.card ((𝓞 E ⧸ l.Mb) ⧸ 𝔪)) l.M`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `: Nat.card ((𝓞 E ⧸ l.Mb) ⧸ 𝔪) = 2 ∨ Nat.card ((𝓞 E ⧸ l.Mb) ⧸ 𝔪) = 3` using `by omega`. Apply the tactic sequence `rcases this with h | h <;> rw [h]`. Conclude with `Nat.coprime_two_left.2 l.odd`. Conclude with `(Nat.Prime.coprime_iff_not_dvd Nat.prime_three).2 h3`. Use `hc.cast (R := (𝓞 E ⧸ l.Mb) ⧸ 𝔪)` as an intermediate fact.
-
-Rewrite `this` using `[h0, hN']`. Conclude with `not_isCoprime_zero_zero this`. Establish `h` using `GlobalTheory.char_eq_one_of_inverse_reduction_det_one (𝓞 E) Dw.La Dw.La l.Mb A χ LinearMap.id (liftLa γ) γ⁻¹ h4 (fun b => ⟨b, by simp⟩) (fun _ h => h) hγ fun a => by`. Take `⟨a', ha'⟩` from `Submodule.Quotient.mk_surjective _ (γ⁻¹ (Submodule.Quotient.mk a))`. Use `⟨a', ha', (Submodule.Quotient.eq _).1 ?_⟩` and prove the remaining obligations.
-
-Conclude with `(liftLa_spec γ a').trans ((congrArg γ ha').trans (γ.apply_symm_apply _))`. Rewrite `h` using `[map_inv, inv_eq_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem char_eq_one_of_detOne (h3 : ¬ 3 ∣ l.M) {A : Type} [CommGroup A] (χ : (LaMod Dw l ≃ₗ[𝓞 E] LaMod Dw l) →* A)
     {γ : LaMod Dw l ≃ₗ[𝓞 E] LaMod Dw l} (hγ : DetOne γ) : χ γ = 1 := by
@@ -193,14 +187,14 @@ def IsSeries (T : Top D) (j : ℕ) (w : WeightFamilies.Wt D j) (Λ : GenLat D.ho
 variable {j : ℕ} {w : WeightFamilies.Wt D j}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.2.1, Λ, N, x, P, hG.1, hG.2.1, hG.2.2.1, hG.2.2.2.1, hf.1, hG.2.2.2.2, hf.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsSeries.mem_sh {T : Top D} {Λ N P x f} (hG : GoodDatum T j w Λ N P) (hf : IsSeries T j w Λ N P x f) :
     f ∈ T.sh j w :=
   ⟨hf.2.1, Λ, N, x, P, hG.1, hG.2.1, hG.2.2.1, hG.2.2.2.1, hf.1, hG.2.2.2.2, hf.2.2⟩
 
 /- English proof (translation)
-Take `⟨f, hf, hR⟩` from `(hT.shTot j hj (wtA w) w.n (dom_wtA w) Λ N x P hG.1 hG.2.1 hG.2.2.1 hG.2.2.2.1 hx hG.2.2.2.2).2`. Conclude with `⟨f, hx, hf, hR⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isSeries {T : Top D} (hT : LawsSh T) (hj : InR D j) {Λ N P} (hG : GoodDatum T j w Λ N P)
     {x : Fin w.n → (T.Q.Dw j).La} (hx : AdmX (l := T.Q.l) (decide (w.n = D.R.nV)) x) : ∃ f, IsSeries T j w Λ N P x f := by
@@ -208,11 +202,11 @@ theorem exists_isSeries {T : Top D} (hT : LawsSh T) (hj : InR D j) {Λ N P} (hG 
   exact ⟨f, hx, hf, hR⟩
 
 /- English proof (translation)
-Establish `tot` using `(hT.shTot j hj (wtA w) w.n (dom_wtA w) Λ N x P hG.1 hG.2.1 hG.2.2.1 hG.2.2.2.1 hf.1 hG.2.2.2.2).1`. Establish `hd` using `hT.dLev j hj w.n`. Take `⟨-, h1, h2⟩` from `hf`. Take `⟨-, h1', h2'⟩` from `hf'`. Generalize the expression as in `T.dδ j w.n = d at *`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Use `GlobalTheory.ClassSumUnique.sec_eq_of_geometric h1 h1' fun k _ _ _ y => ?_` and prove the remaining obligations. Use `letI : Algebra d.c₂.F k := ((algebraMap T.Q.c.F k).comp (d.eF.symm : d.c₂.F →+* T.Q.c.F)).toAlgebra`. Establish `hk : ∀ a : T.Q.c.F, algebraMap d.c₂.F k (d.eF a) = algebraMap T.Q.c.F k a` using `fun a => by show algebraMap T.Q.c.F k (d.eF.symm (d.eF a)) = _`. Rewrite using `[AlgEquiv.symm_apply_apply]`. Take `⟨y₂, hy⟩` from `hd.2.2.2.2.2.2.1 k hk y`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, e⟩` from `h2 k hk y y₂ hy`. Take `⟨v', hv', e'⟩` from `h2' k hk y y₂ hy`. Rewrite using `[e, e', (tot k y₂).unique hv hv']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsSeries.unique {T : Top D} (hT : LawsSh T) (hj : InR D j) {Λ N P x f f'} (hG : GoodDatum T j w Λ N P)
     (hf : IsSeries T j w Λ N P x f) (hf' : IsSeries T j w Λ N P x f') : f = f' := by
@@ -238,29 +232,29 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hC` using `GlobalTheory.chartIndependence_unconditional`. Establish `hL` using `GlobalTheory.firstFiveLaws.1`. Establish `hpq` using `rank_eq hT.p.pins hj`. Establish `hA : T.Q.l.A = 1` using `hT.p.pins.2.1.2`. Establish `hAct` using `GlobalTheory.T.actLev_full_level_group_framedPoints D T.Q j hpq hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLev` using `hT.sh.dLev j hj w.n`. Establish `hA₂` using `hT.lvA j hj w.n`. Take `⟨inst, hnab⟩` from `hT.sh.dNab j hj w.n`. Take `⟨ph, ψ, x₀, -, hpin, htie⟩` from `hT.sh.dPhi j hj w.n hw`. Establish `hTot` using `hT.sh.shTot j hj (wtA w) w.n (dom_wtA w)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hν, hγ, hg⟩` from `GlobalTheory.T.exists_completed_isometry_inducing_half_level_automorphism _ _ (T.Q.Dw j) T.Q.l γ`. Take `⟨ρ₂, hρ₂⟩` from `GlobalTheory.LevelActionLaws.exists_levAut hpq (T.dδ j w.n).Xo₂ g (by rw [hν, sub_self]; exact dvd_zero _)`. Take `⟨u, hu, hcd⟩` from `exists_root T hT hj hxi hw g hν ρ₂ hρ₂`. Use `⟨u, hu, fun Λ N P x0 x0' f f' hG hx hf hf' => ?_⟩` and prove the remaining obligations. It suffices to establish `key : IsSeries T.toTop j w Λ N P x0' ((u : T.Q.c.F)⁻¹ • mv T.toTop j γ f) by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion.
 
-Rewrite using `[← key.unique hT.sh hj hG hf', smul_inv_smul₀ hu]`. Take `⟨hX, hsec, hR⟩` from `hf`. Take `⟨hU, hb, hb₂, hO, hP⟩` from `hG`. Use `⟨hf'.1, Submodule.smul_mem _ _ (actL_mem _ _ _ _ hAct.total hAct.nat hAct.bor _ γ hsec), ?_⟩` and prove the remaining obligations. Use `clear hf'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `T.dδ j w.n = d at *`. Establish `hM` using `hLev.2.1`. Establish `hM₁ : 0 < T.Q.l.M` using `by have := T.Q.l.three_le; omega`. Establish `hpd : 0 < d.pd` using `Nat.pos_of_mul_pos_left (hM ▸ (by have := d.l₂.three_le; omega : 0 < d.l₂.M))`. Establish `hI : ∀ a, g.f d.l₂.M a - a ∈ d.I • (⊤ : Submodule (𝓞 D.host.E) (T.Q.Dw j).La)` using `fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpI : ((d.pd : ℕ) : 𝓞 D.host.E) ∈ d.I`. Use `(Ideal.mul_le_inf.trans inf_le_left : d.I * d.I.map (T.Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) ≤ d.I) ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.DatumInverseCharacter.half_prod hM hLev.2.2.2.1]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `h1` using `GlobalTheory.DatumInverseCharacter.mem_of_modN _ hpI (g.tower d.pd T.Q.l.M hpd hM₁ a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.DatumInverseCharacter.mem_of_modN _ hpI (hg d.pd hpd hLev.2.2.1 a)`. Use `add_mem h1 h2` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel, mul_comm, ← hM]`. Then use the resulting hypothesis. Establish `hγ' : ∀ a, g.f d.l₂.M a - liftLa γ a ∈ T.Q.l.Mb • (⊤ : Submodule (𝓞 D.host.E) (T.Q.Dw j).La)` using `fun a => by`. Establish `h1` using `GlobalTheory.DatumInverseCharacter.mem_of_modN _ (natCast_mem_half T.Q.l).1 (g.tower T.Q.l.M d.pd hM₁ hpd a)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : g.f T.Q.l.M a - liftLa γ a ∈ T.Q.l.Mb • (⊤ : Submodule (𝓞 D.host.E) (T.Q.Dw j).La)` using `(Submodule.Quotient.eq _).1 ((hγ a).trans (liftLa_spec γ a).symm)`. Use `add_mem h1 h2` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel, ← hM]`. Then use the resulting hypothesis. Take `⟨σq, hσ, -⟩` from `GlobalTheory.T.levelCoverDatum_similitude_adjoint_transport _ _ _ _ _ _ _ d hM hLev.2.2.2.1 ph ψ x₀ hpin g hI`. Establish `hw'` using `datum_move d hM hLev.2.2.2.1 hpin _ hI hγ' σq hσ hx`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hρs, ν₂, hη, hηA⟩` from `hρ₂`. Establish `hmv₂ : IsLevMove ρ₂.hom ν₂ (g.f d.l₂.M) (g.f d.l₂.A)` using `⟨hρs, hη, hηA⟩`. Establish `hP₂` using `(GlobalTheory.admissible_columns_le_and_harmonic_map_cover _ _ _ _ _ _ _ d).2 _ P hP.1`. Introduce `k _ _ _ _ hk y y₂ ho`. Establish `hev` using `evalAt_actL hAct (hT.p.evalWD j hj) frMap_trans_id γ hsec.1 y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨ρ, ν, -, hmv, hfr⟩` from `mvPt_spec hAct.total γ y`. Generalize the expression as in `mvPt _ _ γ y = y' at hev hfr`. Take `⟨y₂', hfr₂⟩` from `(GlobalTheory.exists_unique_frMove _ _ _ _ d.Xo₂ d.c₂ ρ₂.hom ν₂ hρs k y₂).1`. Take `⟨r', m', hr', hm', hE'⟩` from `GlobalTheory.T.exists_conj_levelMap_by_levelMoves _ _ _ _ _ _ _ d hLev.2.2.2.2.2.1 ρ ν ρ₂ ν₂ _ _ _ _ hmv hmv₂ hγ' (fun a => ⟨_, by rw [hA, one_smul]⟩)`. Establish `ho'` using `GlobalTheory.T.liesOverFramed_of_square_levelMoves _ _ _ _ _ _ _ d ρ ν ρ₂.hom ν₂ r' m' hr' hm' k y y' y₂ y₂' ho hfr hfr₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z₂, hz₂⟩` from `hLev.2.2.2.2.2.2.1 k hk y'`. Take `⟨v, hv, hfv⟩` from `hR k hk y' z₂ hz₂`. Take `⟨v', hv', -⟩` from `(hTot Λ N x0 P hU hb hb₂ hO hX hP).1 k y₂'`. Establish `e₁` using `GlobalTheory.ShortLiftInvariance.cover_product_indep_of_lift hL hC _ _ _ _ _ _ _ d (GlobalTheory.T.moduliScheme_levelMaps_heckePoints'.2 _ _ _ hpq).1 hLev (hA₂.trans hA.symm) hnab ⟨ph, ψ, x₀, hpin, htie⟩ Λ N hU hb₂ hO _ _ hP₂ x0 _ r' m' hE' k hk y' z₂ y₂' hz₂ ho' v v' hv hv'`. Establish `e₂` using `GlobalTheory.T.shortThetaValue_under_levelMove hL hC _ _ _ _ d.Xo₂ d.c₂ d.nab₂ hnab k ρ₂.hom ν₂ _ _ y₂ y₂' hmv₂ hfr₂ σq hσ _ _ _ hP₂ (d.w x0) Λ _ N v' hv'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e₂` using `[funext hw']`. Use `⟨v', e₂, (evalAt_smul _ _ _ _ y).trans ?_⟩` and prove the remaining obligations. Use `(congrArg (_ * ·) (hev.trans (hfv.trans e₁))).trans ?_` and prove the remaining obligations. Rewrite using `[hcd k y₂ y₂' hfr₂.1, hk, ← mul_assoc, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hu, map_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_const (T : Full D) (hT : LawsFull T) (hj : InR D j) (hxi : TwistTrivialOnRational T j) (hw : D.R.r ≤ w.n)
     (γ : LaMod (T.Q.Dw j) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw j) T.Q.l) :
@@ -332,9 +326,9 @@ theorem exists_const (T : Full D) (hT : LawsFull T) (hj : InR D j) (hxi : TwistT
   rw [hcd k y₂ y₂' hfr₂.1, hk, ← mul_assoc, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hu, map_one, one_mul]
 
 /- English proof (translation)
-Establish `hM : T.Q.l.M = D.host.g 0 * D.host.g 1` using `h.pins.2.1.1`. Establish `key : ∀ k, ¬ 3 ∣ D.host.g k` using `fun k hk => by`. Establish `hc` using `D.ntypes.g_cond k`. Establish `h4 : D.host.g k % 4 = 1`. Rewrite using `[← Nat.mod_mod_of_dvd (D.host.g k) (show 4 ∣ D.host.QS * D.host.q * D.host.d from ((((pow_dvd_pow 2 (Nat.le_add_left 2 _)).trans D.host.tower_dvd).mul_right _).mul_right _)), hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `(Nat.prime_dvd_prime_iff_eq Nat.prime_three (D.host.g_prime k)).1 hk` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hM, Nat.prime_three.dvd_mul]`. Conclude with `fun h => h.elim (key 0) (key 1)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_three_dvd_level {T : Top D} (h : LawsP T) : ¬ 3 ∣ T.Q.l.M := by
   have hM : T.Q.l.M = D.host.g 0 * D.host.g 1 := h.pins.2.1.1
@@ -352,11 +346,11 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `choose u hu0 hu using exists_const (w := w) T hT hj hxi hw`. Rewrite using `[hu γ _ _ _ _ _ _ _ hG hx hf hf']`. Distinguish the cases in `h0 : f' = 0`. Rewrite using `[h0, smul_zero]`. Establish `hAct` using `GlobalTheory.T.actLev_full_level_group_framedPoints D T.Q j (rank_eq hT.p.pins hj) hT.p.pins.2.1.2`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : ∀ a b, u (a * b) = u a * u b` using `fun a b => by`. Take `⟨x₁, r₁, a₁⟩` from `exists_rightMul a hf'.1`. Take `⟨x₂, r₂, a₂⟩` from `exists_rightMul b a₁`. Take `⟨f₁, s₁⟩` from `exists_isSeries hT.sh hj hG a₁`. Take `⟨f₂, s₂⟩` from `exists_isSeries hT.sh hj hG a₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : mv T.toTop j (a * b) f₂ = mv T.toTop j a (mv T.toTop j b f₂)` using `actL_mul _ _ _ hAct.total hAct.func hAct.mul a b s₂.2.1.1`. Rewrite `e` using `[hu _ _ _ _ _ _ _ _ hG (r₁.mul r₂) s₂ hf', hu _ _ _ _ _ _ _ _ hG r₂ s₂ s₁, map_smul, hu _ _ _ _ _ _ _ _ hG r₁ s₁ hf', smul_smul, mul_comm]`. Conclude with `smul_left_injective _ h0 e`. Establish `h1` using `char_eq_one_of_detOne (not_three_dvd_level hT.p) (MonoidHom.mk' (fun a => Units.mk0 (u a) (hu0 a)) fun a b => Units.ext (hmul a b)) hγ`. Rewrite using `[show u γ = 1 from congrArg Units.val h1, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mv_series (T : Full D) (hT : LawsFull T) (hj : InR D j) (hxi : TwistTrivialOnRational T j) (hw : D.R.r ≤ w.n)
     {γ : LaMod (T.Q.Dw j) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw j) T.Q.l} (hγ : DetOne γ) {Λ N P x x' f f'}

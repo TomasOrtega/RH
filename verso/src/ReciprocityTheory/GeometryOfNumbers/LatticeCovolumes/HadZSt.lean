@@ -7,33 +7,29 @@ open Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Establish `hu0 : LinearIndependent ℚ (M.map (Int.cast : ℤ → ℚ)).col` using `Matrix.mulVec_injective_iff.mp hM`. Establish `hNq : (N.map (Int.cast : ℤ → ℚ)).det ≠ 0`. Rewrite using `[← Int.cast_det]`. Conclude with `hN` after adjusting the coercions. Establish `hw : LinearIndependent ℚ (N.map (Int.cast : ℤ → ℚ)).col` using `Matrix.linearIndependent_cols_iff_isUnit.mpr ((Matrix.isUnit_iff_isUnit_det _).mpr hNq.isUnit)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, f, hmr, hLI⟩` from `LinearIndependentExtension.exists_append_li _ hu0 _ hw`. Substitute `hmr` using the available equality. Use `set U : Matrix (Fin (r' + m)) (Fin (r' + m)) ℤ := Matrix.of fun i j => Fin.append (fun k => M i k) (fun k => N i (f k)) j with hUdef`. Establish `hUq : (U.map (Int.cast : ℤ → ℚ)).col = Fin.append (M.map (Int.cast : ℤ → ℚ)).col ((N.map (Int.cast : ℤ → ℚ)).col ∘ f)`. Use function extensionality and compare the values at `j i`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Fin.addCases (fun k => ?_) (fun k => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Simplify using `[U, Matrix.col]`. Rewrite using `[Fin.append_right]`. Simplify using `[U, Matrix.col]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hUdet : U.det ≠ 0`. Rewrite `hLI` using `[← hUq, Matrix.linearIndependent_cols_iff_isUnit, Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero, ← Int.cast_det]`. Conclude with `hLI` after adjusting the coercions. Use `set UC := U.map (Int.cast : ℤ → ℂ) with hUC`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set MC := M.map (Int.cast : ℤ → ℂ) with hMC`. Use `set NC := N.map (Int.cast : ℤ → ℂ) with hNC`. Establish `hUCdet : UC.det = ((U.det : ℤ) : ℂ)` using `by rw [hUC, Int.cast_det]`. Establish `hUCinj : Function.Injective UC.mulVec`. Rewrite using `[Matrix.mulVec_injective_iff_isUnit, Matrix.isUnit_iff_isUnit_det, hUCdet, isUnit_iff_ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `hUdet` after adjusting the coercions. Use `set H := UCᴴ * G * UC with hH`. Establish `hHpd : H.PosDef` using `hG.conjTranspose_mul_mul_same hUCinj`. Establish `hUl : ∀ l i, UC l (Fin.castAdd m i) = MC l i` using `by intro l i; simp [UC, U, MC]`. Establish `hUr : ∀ l j, UC l (Fin.natAdd r' j) = NC l (f j)` using `by intro l j; simp [UC, U, NC]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : H.submatrix (Fin.castAdd m) (Fin.castAdd m) = MCᴴ * G * MC`. Use extensionality with `i j`. Simplify using `only [H, submatrix_apply, mul_apply, conjTranspose_apply, hUl]`. Establish `hdiag : ∀ j, H (Fin.natAdd r' j) (Fin.natAdd r' j) = (NCᴴ * G * NC) (f j) (f j)`. Introduce `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [H, mul_apply, conjTranspose_apply, hUr]`. Establish `hMMpd : (MCᴴ * G * MC).PosDef`. Rewrite using `[← hsub]`. Conclude with `hHpd.submatrix (Fin.castAdd_injective r' m)`. Establish `hdetH : H.det.re = ((U.det : ℝ) ^ 2) * G.det.re`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hH, det_mul, det_mul, det_conjTranspose, hUCdet]`. Simplify using `[Complex.mul_re, Complex.mul_im, sq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd1 : (1 : ℝ) ≤ (U.det : ℝ) ^ 2`. Establish `h1` using `Int.one_le_abs hUdet`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (1 : ℤ) ≤ U.det ^ 2` using `by nlinarith [sq_abs U.det]`. Conclude with `this` after adjusting the coercions. Establish `hGpos` using `(posDef_det_re_pos hG).1`. Establish `hG'pos` using `(posDef_det_re_pos hG').1`. Establish `hstep1 : G.det.re ≤ H.det.re` using `by rw [hdetH]; nlinarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hstep2` using `det_re_le_mul_prod_diag hHpd`. Rewrite `hstep2` using `[hsub]`. Establish `hprod : ∏ j : Fin m, (H (Fin.natAdd r' j) (Fin.natAdd r' j)).re ≤ (lam ^ 2) ^ m`. Rewrite using `[← Fin.prod_const]`. Use `Finset.prod_le_prod (fun j _ => (Complex.pos_iff.mp (hHpd.diag_pos)).1.le) (fun j _ => ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hdiag]`. Conclude with `hsmall _`. Establish `hMM : (MCᴴ * G * MC).det.re ≤ (A ^ 2) ^ r' * G'.det.re`. Use `det_re_le_of_sub_posSemidef hMMpd hnorm` as an intermediate fact. Rewrite `this` using `[det_smul, Fintype.card_fin]`.
-
-Establish `e : ((A : ℂ) ^ 2) ^ r' = (((A ^ 2) ^ r' : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite `this` using `[e, Complex.re_ofReal_mul]`. Then use the resulting hypothesis. Establish `hMMpos` using `(posDef_det_re_pos hMMpd).1`. Establish `hfin : G.det.re ≤ (A ^ 2) ^ r' * G'.det.re * (lam ^ 2) ^ m`. Establish `hP0 : 0 ≤ ∏ j : Fin m, (H (Fin.natAdd r' j) (Fin.natAdd r' j)).re` using `Finset.prod_nonneg fun j _ => (Complex.pos_iff.mp (hHpd.diag_pos)).1.le`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hlog` using `Real.log_le_log hGpos hfin`. Rewrite `hlog` using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_pow, Real.log_pow, Real.log_pow]`. Move the coercions through the operations in `at hlog ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem neg_log_det_le {r' r : ℕ} (hr : r' ≤ r) {G' : Matrix (Fin r') (Fin r') ℂ}
     {G : Matrix (Fin r) (Fin r) ℂ} (hG' : G'.PosDef) (hG : G.PosDef)

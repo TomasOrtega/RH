@@ -13,9 +13,9 @@ def LhwinShift {R : Type*} [CommRing R] {r n : ℕ} (P : Polynomial (MvPolynomia
   ∀ k : ℕ, IsWeightedHomogeneous (lhwinHt r n) (P.coeff k) (μ + k * δ)
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[Polynomial.coeff_mul]`. Use `IsWeightedHomogeneous.sum _ _ _ fun x hx => ?_` and prove the remaining obligations. Establish `hx'` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hx`. Establish `e : μ + μ' + (k : ℤ) * δ = (μ + (x.1 : ℤ) * δ) + (μ' + (x.2 : ℤ) * δ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hx']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(hP x.1).mul (hQ x.2)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lhwinShift_mul {R : Type*} [CommRing R] {r n : ℕ}
     {P Q : Polynomial (MvPolynomial (Fin r × Fin n) R)} {μ μ' δ : ℤ}
@@ -30,9 +30,9 @@ theorem lhwinShift_mul {R : Type*} [CommRing R] {r n : ℕ}
   exact (hP x.1).mul (hQ x.2)
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[Polynomial.coeff_one]`. Use `split_ifs with h`. Establish `hk : k = 0` using `by omega`. Substitute `hk` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using isWeightedHomogeneous_one R (lhwinHt r n)`. Conclude with `isWeightedHomogeneous_zero R _ _`.
+A detailed English derivation is pending.
 -/
 theorem lhwinShift_one {R : Type*} [CommRing R] {r n : ℕ} (δ : ℤ) :
     LhwinShift (1 : Polynomial (MvPolynomial (Fin r × Fin n) R)) 0 δ := by
@@ -45,7 +45,7 @@ theorem lhwinShift_one {R : Type*} [CommRing R] {r n : ℕ} (δ : ℤ) :
   · exact isWeightedHomogeneous_zero R _ _
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => rw [pow_zero, zero_smul]`. Conclude with `lhwinShift_one δ`. Consider the case `succ e ih => rw [pow_succ, succ_nsmul]`. Conclude with `lhwinShift_mul ih hP`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lhwinShift_pow {R : Type*} [CommRing R] {r n : ℕ}
     {P : Polynomial (MvPolynomial (Fin r × Fin n) R)} {μ δ : ℤ}
@@ -55,7 +55,7 @@ theorem lhwinShift_pow {R : Type*} [CommRing R] {r n : ℕ}
   | succ e ih => rw [pow_succ, succ_nsmul]; exact lhwinShift_mul ih hP
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (lhwinShift_one (R := R) (r := r) (n := n) δ)`. Consider the case `insert i s his IH`. Rewrite using `[Finset.prod_insert his, Finset.sum_insert his]`. Conclude with `lhwinShift_mul (h i (Finset.mem_insert_self _ _)) (IH fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lhwinShift_prod {R : Type*} [CommRing R] {r n : ℕ} {ι : Type*} (s : Finset ι)
     (P : ι → Polynomial (MvPolynomial (Fin r × Fin n) R)) (μ : ι → ℤ) (δ : ℤ)
@@ -69,9 +69,9 @@ theorem lhwinShift_prod {R : Type*} [CommRing R] {r n : ℕ} {ι : Type*} (s : F
       (IH fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[Polynomial.algebraMap_apply, Polynomial.coeff_C]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[MvPolynomial.algebraMap_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using isWeightedHomogeneous_C (lhwinHt r n) c`. Conclude with `isWeightedHomogeneous_zero R _ _`.
+A detailed English derivation is pending.
 -/
 theorem lhwinShift_algebraMap {R : Type*} [CommRing R] {r n : ℕ} (c : R) (δ : ℤ) :
     LhwinShift (algebraMap R (Polynomial (MvPolynomial (Fin r × Fin n) R)) c) 0 δ := by
@@ -84,13 +84,11 @@ theorem lhwinShift_algebraMap {R : Type*} [CommRing R] {r n : ℕ} (c : R) (δ :
   · exact isWeightedHomogeneous_zero R _ _
 
 /- English proof (translation)
-Introduce `k`. Establish `hX : IsWeightedHomogeneous (lhwinHt r n) (X v : MvPolynomial (Fin r × Fin n) R) (lhwinHt r n v)` using `isWeightedHomogeneous_X R _ v`. Establish `hXa : IsWeightedHomogeneous (lhwinHt r n) (X (a, v.2) : MvPolynomial (Fin r × Fin n) R) (lhwinHt r n (a, v.2))` using `isWeightedHomogeneous_X R _ (a, v.2)`. Rewrite using `[Polynomial.coeff_add]`. Use `IsWeightedHomogeneous.add ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.coeff_C] split_ifs with h`. Substitute `h` using the available equality. Simplify using `using hX`. Conclude with `isWeightedHomogeneous_zero R _ _`. Use `split_ifs with hb`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[mul_comm, Polynomial.coeff_C_mul_X] split_ifs with h`. Substitute `h` using the available equality. Establish `e : lhwinHt r n v + ((1 : ℕ) : ℤ) * ((a.val : ℤ) - b.val) = lhwinHt r n (a, v.2)`. Simplify using `[lhwinHt, hb]`. Rewrite using `[e]`.
-
-Conclude with `hXa`. Conclude with `isWeightedHomogeneous_zero R _ _`. Rewrite using `[Polynomial.coeff_zero]`. Conclude with `isWeightedHomogeneous_zero R _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lhwinShift_gen {R : Type*} [CommRing R] {r n : ℕ} (a b : Fin r) (v : Fin r × Fin n) :
     LhwinShift (Polynomial.C (X v) +
@@ -119,7 +117,7 @@ theorem lhwinShift_gen {R : Type*} [CommRing R] {r n : ℕ} (a b : Fin r) (v : F
       exact isWeightedHomogeneous_zero R _ _
 
 /- English proof (translation)
-Unfold `rowGen`. Rewrite using `[aeval_monomial, Finsupp.weight_apply, ← zero_add (Finsupp.sum d _)]`. Use `lhwinShift_mul (lhwinShift_algebraMap c _) ?_` and prove the remaining obligations. Unfold `Finsupp.prod Finsupp.sum`. Conclude with `lhwinShift_prod _ _ _ _ fun v _ => lhwinShift_pow (lhwinShift_gen a b v) _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lhwinShift_rowGen_monomial (R : Type*) [CommRing R] {r n : ℕ} (a b : Fin r)
     (d : Fin r × Fin n →₀ ℕ) (c : R) :
@@ -132,9 +130,9 @@ theorem lhwinShift_rowGen_monomial (R : Type*) [CommRing R] {r n : ℕ} (a b : F
   exact lhwinShift_prod _ _ _ _ fun v _ => lhwinShift_pow (lhwinShift_gen a b v) _
 
 /- English proof (translation)
-Unfold `rowDiv`. Use `conv => enter [2, 1, 2]`. Rewrite using `[f.as_sum]`. Rewrite using `[map_sum, Polynomial.finsetSum_coeff]`. Use `IsWeightedHomogeneous.sum _ _ _ fun d hd => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `lhwinShift_rowGen_monomial R a b d (coeff d f) k` as an intermediate fact. Rewrite `this` using `[hf (mem_support_iff.mp hd)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lhwin_rowDiv_shift (R : Type*) [CommRing R] {r n : ℕ} (H : ℤ) (a b : Fin r) (k : ℕ)
     (f : MvPolynomial (Fin r × Fin n) R) (hf : IsWeightedHomogeneous (lhwinHt r n) f H) :
@@ -147,9 +145,9 @@ theorem lhwin_rowDiv_shift (R : Type*) [CommRing R] {r n : ℕ} (H : ℤ) (a b :
   rwa [hf (mem_support_iff.mp hd)] at this
 
 /- English proof (translation)
-Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Simplify using `only [map_add, Pi.add_apply, Nat.cast_add, mul_add, Finset.sum_add_distrib, hf, hg]`. Consider the case `single v c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `[Finsupp.weight_apply, lhwinHt, rowW, Pi.single_apply, Finsupp.sum_single_index, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lhwin_weight_ht {r n : ℕ} (d : Fin r × Fin n →₀ ℕ) :
     Finsupp.weight (lhwinHt r n) d =
@@ -163,7 +161,7 @@ theorem lhwin_weight_ht {r n : ℕ} (d : Fin r × Fin n →₀ ℕ) :
     simp [Finsupp.weight_apply, lhwinHt, rowW, Pi.single_apply, Finsupp.sum_single_index, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[lhwin_weight_ht]`. Conclude with `Finset.sum_nonneg fun a _ => by positivity`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lhwin_weight_nonneg {r n : ℕ} (d : Fin r × Fin n →₀ ℕ) :
     0 ≤ Finsupp.weight (lhwinHt r n) d := by
@@ -171,7 +169,7 @@ theorem lhwin_weight_nonneg {r n : ℕ} (d : Fin r × Fin n →₀ ℕ) :
   exact Finset.sum_nonneg fun a _ => by positivity
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `ne_zero_iff.mp hg`. Rewrite using `[← hz hd]`. Conclude with `lhwin_weight_nonneg d`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lhwin_nonneg {R : Type*} [CommRing R] {r n : ℕ} {g : MvPolynomial (Fin r × Fin n) R} {z : ℤ}
     (hg : g ≠ 0) (hz : IsWeightedHomogeneous (lhwinHt r n) g z) : 0 ≤ z := by
@@ -180,17 +178,17 @@ theorem lhwin_nonneg {R : Type*} [CommRing R] {r n : ℕ} {g : MvPolynomial (Fin
   exact lhwin_weight_nonneg d
 
 /- English proof (translation)
-Establish `hex : ∃ N : ℕ, ∃ v ∈ M, v ≠ 0 ∧ IsWeightedHomogeneous (lhwinHt r n) v (N : ℤ)`. Take `⟨f, hfM, hf0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Take `⟨d, hd⟩` from `ne_zero_iff.mp hf0`. Use `⟨∑ a : Fin r, a.val * Finsupp.weight (rowW r n) d a, weightedHomogeneousComponent (rowW r n) (Finsupp.weight (rowW r n) d) f, h2 r n M hM f hfM _, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hd` to reduce the goal to its premises. Use `congrArg (coeff d) h` as an intermediate fact. Rewrite `this` using `[coeff_weightedHomogeneousComponent, if_pos rfl, coeff_zero]`. Then use the resulting hypothesis. Introduce `e he`. Rewrite `he` using `[coeff_weightedHomogeneousComponent]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs at he with hμ`. Rewrite using `[lhwin_weight_ht, hμ]`. Use `push_cast`. Both sides reduce to the same expression. Conclude with `absurd rfl he`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hvM, hv0, hvH⟩` from `Nat.find_spec hex`. Use `⟨v, hvM, hv0, fun a b hab k hk => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne'`. Establish `hH` using `lhwin_rowDiv_shift ℚ _ a b k v hvH`. Establish `hnn` using `lhwin_nonneg hne' hH`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab' : (a.val : ℤ) < b.val` using `by exact_mod_cast (Fin.lt_def.mp hab)`. Establish `hk' : (1 : ℤ) ≤ k` using `by exact_mod_cast hk`. Establish `hlt : ((Nat.find hex : ℕ) : ℤ) + k * ((a.val : ℤ) - b.val) < (Nat.find hex : ℕ)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hmin` using `Nat.find_min hex (m := (((Nat.find hex : ℕ) : ℤ) + k * ((a.val : ℤ) - b.val)).toNat) (by omega)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hmin` to reduce the goal to its premises. Use `⟨_, hM a b k v hvM, hne', ?_⟩` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg hnn]`. Conclude with `hH`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lhwin_exists_killed (h2 : RowDivClosedGraded) {r n : ℕ}
     (M : Submodule ℚ (MvPolynomial (Fin r × Fin n) ℚ)) (hM : RowDivClosed M) (hne : M ≠ ⊥) :

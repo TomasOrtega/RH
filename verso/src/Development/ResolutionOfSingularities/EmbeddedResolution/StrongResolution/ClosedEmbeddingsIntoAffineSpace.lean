@@ -19,14 +19,14 @@ private theorem comp_appTop_apply {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ 
   rfl
 
 /- English proof (translation)
-The claim follows from `map_add (CommRingCat.Hom.hom f.appTop) a b`.
+A detailed English derivation is pending.
 -/
 private theorem appTop_add {X Y : Scheme.{u}} (f : X ⟶ Y) (a b : Γ(Y, ⊤)) :
     f.appTop (a + b) = f.appTop a + f.appTop b :=
   map_add (CommRingCat.Hom.hom f.appTop) a b
 
 /- English proof (translation)
-The claim follows from `map_sub (CommRingCat.Hom.hom f.appTop) a b`.
+A detailed English derivation is pending.
 -/
 private theorem appTop_sub {X Y : Scheme.{u}} (f : X ⟶ Y) (a b : Γ(Y, ⊤)) :
     f.appTop (a - b) = f.appTop a - f.appTop b :=
@@ -40,45 +40,45 @@ private theorem appTop_id_apply {X : Scheme.{u}} (x : Γ(X, ⊤)) :
   simp
 
 /- English proof (translation)
-Take `⟨pr₁, hpr₁, hpr₁c⟩ : ∃ q : AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S ⟶ AffineSpace (ULift.{u} (Fin n)) S, q ≫ (AffineSpace (ULift.{u} (Fin n)) S ↘ S) = (AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S ↘ S) ∧ ∀ a : Fin n, q.appTop (AffineSpace.coord S (ULift.up a : ULift.{u} (Fin n))) = …` from `⟨AffineSpace.homOfVector (AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S ↘ S) (fun a : ULift.{u} (Fin n) => AffineSpace.coord S (ULift.up (Sum.inl a.down) : ULift.{u} (Fin n ⊕ Fin m))), AffineSpace.homOfVector_over _ _, fun a => AffineSpace.homOfVector_appTop_coord _ _ _⟩`. Take `⟨pr₂, hpr₂, hpr₂c⟩ : ∃ q : AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S ⟶ AffineSpace (ULift.{u} (Fin m)) S, q ≫ (AffineSpace (ULift.{u} (Fin m)) S ↘ S) = (AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S ↘ S) ∧ ∀ b : Fin m, q.appTop (AffineSpace.coord S (ULift.up b : ULift.{u} (Fin m))) = …` from `⟨AffineSpace.homOfVector (AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S ↘ S) (fun b : ULift.{u} (Fin m) => AffineSpace.coord S (ULift.up (Sum.inr b.down) : ULift.{u} (Fin n ⊕ Fin m))), AffineSpace.homOfVector_over _ _, fun b => AffineSpace.homOfVector_appTop_coord _ _ _⟩`. Establish `mkHom : ∀ v : ULift.{u} (Fin n ⊕ Fin m) → Γ(AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S, ⊤), ∃ w : AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S ⟶ AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S, w ≫ (AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S ↘ S) = (AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S …` using `fun v => ⟨AffineSpace.homOfVector (AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S ↘ S) v, AffineSpace.homOfVector_over _ _, fun i => AffineSpace.homOfVector_appTop_coord _ _ _⟩`. Take `⟨σ, hσ, hσc⟩` from `mkHom (fun i : ULift.{u} (Fin n ⊕ Fin m) => Sum.elim (fun a : Fin n => AffineSpace.coord S (ULift.up (Sum.inl a) : ULift.{u} (Fin n ⊕ Fin m))) (fun b : Fin m => AffineSpace.coord S (ULift.up (Sum.inr b) : ULift.{u} (Fin n ⊕ Fin m)) + pr₁.appTop (F b)) i.down)`. Take `⟨σ', hσ', hσ'c⟩` from `mkHom (fun i : ULift.{u} (Fin n ⊕ Fin m) => Sum.elim (fun a : Fin n => AffineSpace.coord S (ULift.up (Sum.inl a) : ULift.{u} (Fin n ⊕ Fin m))) (fun b : Fin m => AffineSpace.coord S (ULift.up (Sum.inr b) : ULift.{u} (Fin n ⊕ Fin m)) - pr₁.appTop (F b)) i.down)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ, hτc⟩` from `mkHom (fun i : ULift.{u} (Fin n ⊕ Fin m) => Sum.elim (fun a : Fin n => AffineSpace.coord S (ULift.up (Sum.inl a) : ULift.{u} (Fin n ⊕ Fin m)) - pr₂.appTop (G a)) (fun b : Fin m => AffineSpace.coord S (ULift.up (Sum.inr b) : ULift.{u} (Fin n ⊕ Fin m))) i.down)`. Take `⟨τ', hτ', hτ'c⟩` from `mkHom (fun i : ULift.{u} (Fin n ⊕ Fin m) => Sum.elim (fun a : Fin n => AffineSpace.coord S (ULift.up (Sum.inl a) : ULift.{u} (Fin n ⊕ Fin m)) + pr₂.appTop (G a)) (fun b : Fin m => AffineSpace.coord S (ULift.up (Sum.inr b) : ULift.{u} (Fin n ⊕ Fin m))) i.down)`. Establish `hσinl : ∀ a : Fin n, σ.appTop (AffineSpace.coord S (ULift.up (Sum.inl a) : ULift.{u} (Fin n ⊕ Fin m))) = AffineSpace.coord S (ULift.up (Sum.inl a) : ULift.{u} (Fin n ⊕ Fin m))` using `fun a => hσc _`. Establish `hσinr : ∀ b : Fin m, σ.appTop (AffineSpace.coord S (ULift.up (Sum.inr b) : ULift.{u} (Fin n ⊕ Fin m))) = AffineSpace.coord S (ULift.up (Sum.inr b) : ULift.{u} (Fin n ⊕ Fin m)) + pr₁.appTop (F b)` using `fun b => hσc _`. Establish `hσ'inl : ∀ a : Fin n, σ'.appTop (AffineSpace.coord S (ULift.up (Sum.inl a) : ULift.{u} (Fin n ⊕ Fin m))) = AffineSpace.coord S (ULift.up (Sum.inl a) : ULift.{u} (Fin n ⊕ Fin m))` using `fun a => hσ'c _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ'inr : ∀ b : Fin m, σ'.appTop (AffineSpace.coord S (ULift.up (Sum.inr b) : ULift.{u} (Fin n ⊕ Fin m))) = AffineSpace.coord S (ULift.up (Sum.inr b) : ULift.{u} (Fin n ⊕ Fin m)) - pr₁.appTop (F b)` using `fun b => hσ'c _`. Establish `hτinl : ∀ a : Fin n, τ.appTop (AffineSpace.coord S (ULift.up (Sum.inl a) : ULift.{u} (Fin n ⊕ Fin m))) = AffineSpace.coord S (ULift.up (Sum.inl a) : ULift.{u} (Fin n ⊕ Fin m)) - pr₂.appTop (G a)` using `fun a => hτc _`. Establish `hτinr : ∀ b : Fin m, τ.appTop (AffineSpace.coord S (ULift.up (Sum.inr b) : ULift.{u} (Fin n ⊕ Fin m))) = AffineSpace.coord S (ULift.up (Sum.inr b) : ULift.{u} (Fin n ⊕ Fin m))` using `fun b => hτc _`. Establish `hτ'inl : ∀ a : Fin n, τ'.appTop (AffineSpace.coord S (ULift.up (Sum.inl a) : ULift.{u} (Fin n ⊕ Fin m))) = AffineSpace.coord S (ULift.up (Sum.inl a) : ULift.{u} (Fin n ⊕ Fin m)) + pr₂.appTop (G a)` using `fun a => hτ'c _`. Establish `hτ'inr : ∀ b : Fin m, τ'.appTop (AffineSpace.coord S (ULift.up (Sum.inr b) : ULift.{u} (Fin n ⊕ Fin m))) = AffineSpace.coord S (ULift.up (Sum.inr b) : ULift.{u} (Fin n ⊕ Fin m))` using `fun b => hτ'c _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix₁ : ∀ w : AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S ⟶ AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S, w ≫ (AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S ↘ S) = (AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S ↘ S) → (∀ a : Fin n, w.appTop (AffineSpace.coord S (ULift.up (Sum.inl a) : ULift.{ …`. Introduce `w hw hwc x`. Establish `hcomp : w ≫ pr₁ = pr₁`. Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hpr₁, hw]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨a⟩`. Rewrite using `[comp_appTop_apply, hpr₁c a, hwc a]`. Rewrite using `[← comp_appTop_apply, hcomp]`. Establish `hfix₂ : ∀ w : AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S ⟶ AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S, w ≫ (AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S ↘ S) = (AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S ↘ S) → (∀ b : Fin m, w.appTop (AffineSpace.coord S (ULift.up (Sum.inr b) : ULift.{ …`. Introduce `w hw hwc x`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomp : w ≫ pr₂ = pr₂`. Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hpr₂, hw]`. Introduce and unpack `⟨b⟩`. Rewrite using `[comp_appTop_apply, hpr₂c b, hwc b]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← comp_appTop_apply, hcomp]`. Establish `hσσ' : σ ≫ σ' = 𝟙 _`. Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hσ', hσ, Category.id_comp]`. Introduce and unpack `⟨a | b⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[comp_appTop_apply, hσ'inl a, hσinl a, appTop_id_apply]`. Rewrite using `[comp_appTop_apply, hσ'inr b, appTop_sub, hσinr b, hfix₁ σ hσ hσinl (F b), appTop_id_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hσ'σ : σ' ≫ σ = 𝟙 _`. Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, hσ, hσ', Category.id_comp]`. Introduce and unpack `⟨a | b⟩`. Rewrite using `[comp_appTop_apply, hσinl a, hσ'inl a, appTop_id_apply]`. Rewrite using `[comp_appTop_apply, hσinr b, appTop_add, hσ'inr b, hfix₁ σ' hσ' hσ'inl (F b), appTop_id_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hττ' : τ ≫ τ' = 𝟙 _`. Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hτ', hτ, Category.id_comp]`. Introduce and unpack `⟨a | b⟩`. Rewrite using `[comp_appTop_apply, hτ'inl a, appTop_add, hτinl a, hfix₂ τ hτ hτinr (G a), appTop_id_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[comp_appTop_apply, hτ'inr b, hτinr b, appTop_id_apply]`. Establish `hτ'τ : τ' ≫ τ = 𝟙 _`. Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hτ, hτ', Category.id_comp]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨a | b⟩`. Rewrite using `[comp_appTop_apply, hτinl a, appTop_sub, hτ'inl a, hfix₂ τ' hτ' hτ'inr (G a), appTop_id_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[comp_appTop_apply, hτinr b, hτ'inr b, appTop_id_apply]`. Take `⟨D, hDover, hcoordEq⟩ : ∃ d : Y ⟶ AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S, d ≫ (AffineSpace (ULift.{u} (Fin n ⊕ Fin m)) S ↘ S) = p ∧ ∀ i : ULift.{u} (Fin n ⊕ Fin m), d.appTop (AffineSpace.coord S i) = Sum.elim (fun a : Fin n => e₁.appTop (AffineSpace.coord S (ULift.up a : ULift …` from `⟨AffineSpace.homOfVector p (fun i : ULift.{u} (Fin n ⊕ Fin m) => Sum.elim (fun a : Fin n => e₁.appTop (AffineSpace.coord S (ULift.up a : ULift.{u} (Fin n)))) (fun b : Fin m => e₂.appTop (AffineSpace.coord S (ULift.up b : ULift.{u} (Fin m)))) i.down), AffineSpace.homOfVector_over …`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hDinl : ∀ a : Fin n, D.appTop (AffineSpace.coord S (ULift.up (Sum.inl a) : ULift.{u} (Fin n ⊕ Fin m))) = e₁.appTop (AffineSpace.coord S (ULift.up a : ULift.{u} (Fin n)))` using `fun a => hcoordEq _`. Establish `hDinr : ∀ b : Fin m, D.appTop (AffineSpace.coord S (ULift.up (Sum.inr b) : ULift.{u} (Fin n ⊕ Fin m))) = e₂.appTop (AffineSpace.coord S (ULift.up b : ULift.{u} (Fin m)))` using `fun b => hcoordEq _`. Establish `hLpr₁ : L ≫ pr₁ = e₁`. Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hpr₁, hLover, h₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨a⟩`. Rewrite using `[comp_appTop_apply, hpr₁c a, hLinl a]`. Establish `hLF : ∀ b : Fin m, L.appTop (pr₁.appTop (F b)) = e₂.appTop (AffineSpace.coord S (ULift.up b : ULift.{u} (Fin m)))`. Introduce `b`. Rewrite using `[← comp_appTop_apply, hLpr₁, hF b]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hDpr₂ : D ≫ pr₂ = e₂`. Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hpr₂, hDover, h₂]`. Introduce and unpack `⟨b⟩`. Rewrite using `[comp_appTop_apply, hpr₂c b, hDinr b]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hcompG : ∀ a : Fin n, D.appTop (pr₂.appTop (G a)) = e₁.appTop (AffineSpace.coord S (ULift.up a : ULift.{u} (Fin n)))`. Introduce `a`. Rewrite using `[← comp_appTop_apply, hDpr₂, hG a]`. Establish `hA : L ≫ σ = D`. Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, hσ, hLover, hDover]`. Introduce and unpack `⟨a | b⟩`. Rewrite using `[comp_appTop_apply, hσinl a, hLinl a, hDinl a]`. Rewrite using `[comp_appTop_apply, hσinr b, appTop_add, hLinr b, hLF b, hDinr b, zero_add]`. Establish `hB : D ≫ τ = R`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hτ, hDover, hRover]`. Introduce and unpack `⟨a | b⟩`. Rewrite using `[comp_appTop_apply, hτinl a, appTop_sub, hDinl a, hcompG a, hRinl a, sub_self]`. Rewrite using `[comp_appTop_apply, hτinr b, hDinr b, hRinr b]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨σ ≫ τ, τ' ≫ σ', ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Category.assoc τ τ' σ', hττ', Category.id_comp, hσσ']`. Rewrite using `[Category.assoc, ← Category.assoc σ' σ τ, hσ'σ, Category.id_comp, hτ'τ]`. Use `show (σ ≫ τ) ≫ _ = _`. Rewrite using `[Category.assoc, hτ, hσ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show L ≫ (σ ≫ τ) = R`. Rewrite using `[← Category.assoc, hA, hB]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_iso_affineSpace_sum_comp_eq_of_coord {S : Scheme.{u}} (n m : ℕ)
     {Y : Scheme.{u}}
@@ -314,9 +314,9 @@ private theorem exists_iso_affineSpace_sum_comp_eq_of_coord {S : Scheme.{u}} (n 
     rw [← Category.assoc, hA, hB]
 
 /- English proof (translation)
-Introduce `k hk Y hY p hp n m e₁ he₁ e₂ he₂ h₁ h₂`. Establish `: IsAffine (affineSpaceIndexedBy k (ULift.{u} (Fin n)))`. Unfold `affineSpaceIndexedBy`. Use `infer_instance`. Establish `: IsAffine (affineSpaceIndexedBy k (ULift.{u} (Fin m)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `affineSpaceIndexedBy`. Use `infer_instance`. Use `choose F hF using fun b : Fin m => (IsClosedImmersion.isAffine_surjective_of_isAffine e₁).2 (e₂.appTop (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up b : ULift.{u} (Fin m))))`. Use `choose G hG using fun a : Fin n => (IsClosedImmersion.isAffine_surjective_of_isAffine e₂).2 (e₁.appTop (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up a : ULift.{u} (Fin n))))`. Conclude with `exists_iso_affineSpace_sum_comp_eq_of_coord n m p e₁ e₂ h₁ h₂ F hF G hG (AffineSpace.homOfVector p (coordVectorInl n m e₁)) (AffineSpace.homOfVector p (coordVectorInr n m e₂)) (AffineSpace.homOfVector_over _ _) (AffineSpace.homOfVector_over _ _) (fun a => AffineSpace.homOfVector_ …`.
+A detailed English derivation is pending.
 -/
 theorem closedEmbeddingsRelatedByAutomorphism : ClosedEmbeddingsRelatedByAutomorphism.{u} := by
   intro k hk Y hY p hp n m e₁ he₁ e₂ he₂ h₁ h₂

@@ -23,21 +23,13 @@ open GlobalTheory.UT
 namespace GlobalTheory.PrimDescent
 
 /- English proof (translation)
-Introduce `R _ _ _ I hI D A G _ _ hS U O _ _ _ o oA oG hlin w hprim`. Use `hI.2.2.2` as an intermediate fact. Use `haveI := oG.hom w`. Use `haveI := oG.hom (1 + w)`. Use `haveI := o.onB.hom w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := o.onB.hom (1 + w)`. Take `⟨⟨ρ, hρ, -⟩, -⟩` from `GlobalTheory.JetSer.exists_unique_normPrim _ G U.LG (oG.act w) hprim`. Establish `hRig` using `GlobalTheory.PullGenG.hasGen_one U.LG`. Establish `h0` using `(HasGen.of_gen ρ hρ).neg.add hRig`. Take `⟨uΨ, huΨ⟩` from `h0.gen U.LG.isLB (K' := Fin 4) ![(padd G (𝟙 _) (oG.act w)).left, 𝟙 G.left, (oG.act w).left, (toUnit G ≫ η[G]).left] ![1, -2, -1, 2] (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1' : (toUnit G ≫ η[G] : G ⟶ G) = 1` using `rfl`. Simplify using `[fsum, Fin.sum_univ_four, Fin.sum_univ_five, GlobalTheory.JetSer.primφ, GlobalTheory.JetSer.primε, lf_single, padd_eq_mul, h1', Finsupp.single_neg, single_two, single_neg_two, Matrix.vecHead, Matrix.vecTail]`. Use the proof step `abel)`. Take `⟨u, hu, hn⟩` from `GlobalTheory.PsiRescale.exists_normalised U.LG.isLB (oG.act w) uΨ huΨ`. Establish `iG : ∀ i, IsMonHom ((![oG.act (1 + w), 𝟙 G, oG.act w, 1] : Fin 4 → (G ⟶ G)) i)` using `fun i => by fin_cases i exacts [oG.hom (1 + w), inferInstanceAs (IsMonHom (𝟙 G)), oG.hom w, inferInstanceAs (IsMonHom (toUnit G ≫ η[G]))]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `iB : ∀ i, IsMonHom ((![o.onB.act (1 + w), 𝟙 _, o.onB.act w, 1] : Fin 4 → (D.toPre.P.A ⟶ D.toPre.P.A)) i)` using `fun i => by fin_cases i exacts [o.onB.hom (1 + w), inferInstanceAs (IsMonHom (𝟙 _)), o.onB.hom w, inferInstanceAs (IsMonHom (toUnit _ ≫ η[D.toPre.P.A]))]`. Take `⟨κ, hκ, -⟩` from `GlobalTheory.UT.PullDescent.exists_descent U.toUnifPre GlobalTheory.allSixLaws.1.globalFns hS (fun V _ c => by`. Rewrite using `[Fin.prod_univ_four]`. Use `show c ^ (1 : ℤ) * c ^ (-2 : ℤ) * c ^ (-1 : ℤ) * c ^ (2 : ℤ) = 1`. Use the proof step `group)`.
-
-Use the proof step `![oG.act (1 + w), 𝟙 G, oG.act w, 1] ![o.onB.act (1 + w), 𝟙 _, o.onB.act w, 1] (fun e i => by`. Use `(U.gt e).q_hom` as an intermediate fact. Use `fin_cases i`. Conclude with `hlin.q_lin e (1 + w)`. Use `show (Over.pullback (thick R I e)).map (𝟙 G) ≫ _ = _ ≫ (Over.pullback (thick R I e)).map (𝟙 _)`.
-
-Rewrite using `[CategoryTheory.Functor.map_id, CategoryTheory.Functor.map_id, Category.id_comp, Category.comp_id]`. Conclude with `hlin.q_lin e w`. Use `show (Over.pullback (thick R I e)).map (1 : G ⟶ G) ≫ _ = _ ≫ (Over.pullback (thick R I e)).map (1 : D.toPre.P.A ⟶ D.toPre.P.A)`. Rewrite using `[CategoryTheory.Functor.map_one, CategoryTheory.Functor.map_one, MonObj.one_comp, MonObj.comp_one])`. Use the proof step `(fun i => by fin_cases i`.
-
-Use `show (oG.act (1 + w)).left = (padd G (𝟙 _) (oG.act w)).left`. Rewrite using `[oG.map_add, oG.map_one]`. Apply the tactic sequence `all_goals rfl)`. Use the proof step `(ψ := ![(padd D.toPre.P.A (𝟙 _) (o.onB.act w)).left, 𝟙 D.toPre.P.A.left, (o.onB.act w).left, (toUnit D.toPre.P.A ≫ η[D.toPre.P.A]).left])`. Use the proof step `(fun i => by fin_cases i`.
-
-Use `show (o.onB.act (1 + w)).left = (padd D.toPre.P.A (𝟙 _) (o.onB.act w)).left`. Rewrite using `[o.onB.map_add, o.onB.map_one]`. Apply the tactic sequence `all_goals rfl) u hu hn`. Conclude with `⟨κ, hκ.1⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isPrim_of_unif : AllU fun {R} _ _ {I} {D} {A} {G} _ _ U => ∀ (O : Type) [CommRing O] [StarRing O] [Module O D.toPre.X] (o : D.toPre.OAct O) (oA : A.OAct O) (oG : RingAct G O), U.toUnifPre.OLinear O o oA oG → ∀ w : O, LBIso U.LG.L (cubeLB G ![𝟙 G, oG.act w] U.LG.L) → GlobalTheory.PolDeg.IsPrim D.toPre.P (o.onB.act w) := by
   intro R _ _ _ I hI D A G _ _ hS U O _ _ _ o oA oG hlin w hprim

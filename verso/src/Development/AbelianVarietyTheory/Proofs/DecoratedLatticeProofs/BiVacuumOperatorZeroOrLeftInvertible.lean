@@ -40,7 +40,7 @@ theorem twoT_apply (x : WO A S × WO S A') (C : WO A S → WO S A' → ℂ) (u :
     twoT ψ A S A' x C u v = ψ (symplOH A S u x.1) * (ψ (symplOH S A' v x.2) * C (u + x.1) (v + x.2)) := rfl
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[symplO_add_left, mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_add_l (T T' : HSp D) (x x' y : WO T T') :
     symplOH T T' (x + x') y = symplOH T T' x y + symplOH T T' x' y := by
@@ -48,7 +48,7 @@ theorem symplOH_add_l (T T' : HSp D) (x x' y : WO T T') :
   rw [symplO_add_left, mul_add]
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[symplO_add_right, mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_add_r (T T' : HSp D) (x y y' : WO T T') :
     symplOH T T' x (y + y') = symplOH T T' x y + symplOH T T' x y' := by
@@ -56,20 +56,20 @@ theorem symplOH_add_r (T T' : HSp D) (x y y' : WO T T') :
   rw [symplO_add_right, mul_add]
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[← add_mul, ← RingHom.map_add, add_halves, RingHom.map_one, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_two (T T' : HSp D) (x y : WO T T') : symplOH T T' x y + symplOH T T' x y = symplO T T' x y := by
   unfold symplOH
   rw [← add_mul, ← RingHom.map_add, add_halves, RingHom.map_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[← symplOH_two, ← symplOH_two, symplOH_skew, neg_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_skew' (T T' : HSp D) (x y : WO T T') : symplO T T' y x = -symplO T T' x y := by
   rw [← symplOH_two, ← symplOH_two, symplOH_skew, neg_add]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `ψ.map_add_eq_mul z (-z)`. Rewrite `h1` using `[add_neg_cancel, ψ.map_zero_eq_one, h, zero_mul]`. Conclude with `one_ne_zero h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_ne_zero (z : AF D.host.F) : ψ z ≠ 0 := by
   intro h
@@ -82,7 +82,7 @@ def bet (x y : WO A S × WO S A') : ℂ := ψ (symplOH A S x.1 y.1) * ψ (symplO
 def chi (x γ : WO A S × WO S A') : ℂ := ψ (symplO A S γ.1 x.1) * ψ (symplO S A' γ.2 x.2)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u v`. Express the relevant statement in the definitionally equal form `heisO ψ A S 0 (fun u' => heisO ψ S A' 0 (C u') v) u = C u v`. Simplify using `only [LatVac.heisO_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem twoT_zero (C : WO A S → WO S A' → ℂ) : twoT ψ A S A' 0 C = C := by
   funext u v
@@ -90,7 +90,7 @@ theorem twoT_zero (C : WO A S → WO S A' → ℂ) : twoT ψ A S A' 0 C = C := b
   simp only [LatVac.heisO_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u v`. Simplify using `only [twoT_apply, Pi.smul_apply, smul_eq_mul, bet, Prod.fst_add, Prod.snd_add, symplOH_add_l, symplOH_add_r, AddChar.map_add_eq_mul, add_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem twoT_mul (x y : WO A S × WO S A') (C : WO A S → WO S A' → ℂ) :
     twoT ψ A S A' x (twoT ψ A S A' y C) = bet ψ A S A' x y • twoT ψ A S A' (x + y) C := by
@@ -100,15 +100,15 @@ theorem twoT_mul (x y : WO A S × WO S A') (C : WO A S → WO S A' → ℂ) :
   ring
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (psi_ne_zero ψ _) (psi_ne_zero ψ _)`.
+A detailed English derivation is pending.
 -/
 theorem bet_ne_zero (x y : WO A S × WO S A') : bet ψ A S A' x y ≠ 0 :=
   mul_ne_zero (psi_ne_zero ψ _) (psi_ne_zero ψ _)
 
 /- English proof (translation)
-Rewrite using `[twoT_mul, twoT_mul, smul_smul, add_comm x γ]`. Use `congr 1`. Simplify using `only [bet, chi]`. Rewrite using `[symplOH_skew A S γ.1 x.1, symplOH_skew S A' γ.2 x.2, ← symplOH_two A S γ.1 x.1, ← symplOH_two S A' γ.2 x.2]`. Simplify using `only [AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Clear denominators, using `[psi_ne_zero ψ]` for the nonvanishing conditions.
+Clear the denominators using the available nonvanishing facts.
 -/
 theorem twoT_comm (x γ : WO A S × WO S A') (C : WO A S → WO S A' → ℂ) :
     twoT ψ A S A' γ (twoT ψ A S A' x C) = chi ψ A S A' x γ • twoT ψ A S A' x (twoT ψ A S A' γ C) := by
@@ -120,14 +120,14 @@ theorem twoT_comm (x γ : WO A S × WO S A') (C : WO A S → WO S A' → ℂ) :
   field_simp [psi_ne_zero ψ]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.HeisComb.comb_eq_sum, Finsupp.sum_single_index (zero_smul ℂ (heisO ψ T T' x f))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_single (T T' : HSp D) (x : WO T T') (c : ℂ) (f : WO T T' → ℂ) :
     comb ψ T T' (Finsupp.single x c) f = c • heisO ψ T T' x f := by
   rw [GlobalTheory.HeisComb.comb_eq_sum, Finsupp.sum_single_index (zero_smul ℂ (heisO ψ T T' x f))]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u v`. Simplify using `only [biComb, comb_single, twoT_apply, heisO, Pi.smul_apply, smul_eq_mul, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem biComb_single (x : WO A S × WO S A') (c : ℂ) (C : WO A S → WO S A' → ℂ) :
     biComb ψ A S A' (Finsupp.single x.1 c) (Finsupp.single x.2 1) C = c • twoT ψ A S A' x C := by
@@ -135,7 +135,7 @@ theorem biComb_single (x : WO A S × WO S A') (c : ℂ) (C : WO A S → WO S A' 
   simp only [biComb, comb_single, twoT_apply, heisO, Pi.smul_apply, smul_eq_mul, one_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u v`. Simplify using `only [biComb, comb, heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, twoT_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem biComb_eq (c : WO A S →₀ ℂ) (c' : WO S A' →₀ ℂ) (C : WO A S → WO S A' → ℂ) :
     biComb ψ A S A' c c' C = ∑ x ∈ c.support, ∑ y ∈ c'.support, (c x * c' y) • twoT ψ A S A' (x, y) C := by
@@ -154,11 +154,11 @@ def kOp (op : BiOp A S A') : (WO A S × WO S A') →₀ ℂ :=
   ∑ i, ∑ x ∈ (op.u i).support, ∑ y ∈ (op.u' i).support, Finsupp.single (x, y) (op.u i x * op.u' i y)
 
 /- English proof (translation)
-Set `t : WO A S × WO S A' → ℂ → (WO A S → WO S A' → ℂ)` to `fun p c => c • twoT ψ A S A' p C`. Establish `hz : ∀ p, t p 0 = 0` using `fun p => zero_smul ℂ _`. Establish `ha : ∀ p a b, t p (a + b) = t p a + t p b` using `fun p a b => add_smul a b _`. Express the relevant statement in the definitionally equal form `_ = (kOp A S A' op).sum t`. Unfold `kOp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Finsupp.sum_finset_sum_index hz ha]`. Unfold `BiOp.app`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[biComb_eq, ← Finsupp.sum_finset_sum_index hz ha]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finsupp.sum_finset_sum_index hz ha]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (hz _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem app_eq (op : BiOp A S A') (C : WO A S → WO S A' → ℂ) :
     op.app ψ C = ∑ p ∈ (kOp A S A' op).support, kOp A S A' op p • twoT ψ A S A' p C := by
@@ -177,9 +177,9 @@ theorem app_eq (op : BiOp A S A') (C : WO A S → WO S A' → ℂ) :
   rw [Finsupp.sum_single_index (hz _)]
 
 /- English proof (translation)
-Introduce `p hp`. Take `⟨i, -, hp⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finset_sum hp)`. Take `⟨x, hx, hp⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finset_sum hp)`. Take `⟨y, hy, hp⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finset_sum hp)`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hp)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(hop i).1 x hx, (hop i).2 y hy⟩`.
+Supply the required witnesses or components.
 -/
 theorem kOp_good (P : Pl D → Prop) (op : BiOp A S A') (hop : OpAt P op) :
     ∀ p ∈ (kOp A S A' op).support, p ∈ goodG A S A' P := by
@@ -197,7 +197,7 @@ def ofK (κ : (WO A S × WO S A') →₀ ℂ) : BiOp A S A' where
   u' k := Finsupp.single (κ.support.equivFin.symm k).1.2 1
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑ k : Fin κ.support.card, biComb ψ A S A' (Finsupp.single (κ.support.equivFin.symm k).1.1 (κ (κ.support.equivFin.symm k))) (Finsupp.single (κ.support.equivFin.symm k).1.2 1) C = _`. Rewrite using `[Finset.sum_congr rfl fun k _ => biComb_single ψ A S A' ((κ.support.equivFin.symm k).1) _ C]`. Conclude with `(Equiv.sum_comp κ.support.equivFin.symm (fun p : κ.support => κ p • twoT ψ A S A' p C)).trans (Finset.sum_coe_sort κ.support (fun p => κ p • twoT ψ A S A' p C))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofK_app (κ : (WO A S × WO S A') →₀ ℂ) (C : WO A S → WO S A' → ℂ) :
     (ofK A S A' κ).app ψ C = ∑ p ∈ κ.support, κ p • twoT ψ A S A' p C := by
@@ -208,9 +208,9 @@ theorem ofK_app (κ : (WO A S × WO S A') →₀ ℂ) (C : WO A S → WO S A' �
     (Finset.sum_coe_sort κ.support (fun p => κ p • twoT ψ A S A' p C))
 
 /- English proof (translation)
-Introduce `k`. Establish `hk` using `hκ _ (κ.support.equivFin.symm k).2`. Use `⟨fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hw)]`. Conclude with `hk.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hw)]`. Conclude with `hk.2`.
+A detailed English derivation is pending.
 -/
 theorem ofK_at (P : Pl D → Prop) (κ : (WO A S × WO S A') →₀ ℂ) (hκ : ∀ p ∈ κ.support, p ∈ goodG A S A' P) :
     OpAt P (ofK A S A' κ) := by
@@ -221,7 +221,7 @@ theorem ofK_at (P : Pl D → Prop) (κ : (WO A S × WO S A') →₀ ℂ) (hκ : 
   · rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hw)]; exact hk.2
 
 /- English proof (translation)
-Simplify using `only [biComb_eq, map_sum, Finset.smul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem biComb_sum {ι : Type} (s : Finset ι) (e : WO A S →₀ ℂ) (e' : WO S A' →₀ ℂ) (F : ι → WO A S → WO S A' → ℂ) :
     biComb ψ A S A' e e' (∑ i ∈ s, F i) = ∑ i ∈ s, biComb ψ A S A' e e' (F i) := by
@@ -231,11 +231,9 @@ theorem biComb_sum {ι : Type} (s : Finset ι) (e : WO A S →₀ ℂ) (e' : WO 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use `choose c hcs hcf using fun i => (GlobalTheory.HeisComb.main D ψ A S).1 e (op.u i)`. Use `choose c' hcs' hcf' using fun i => (GlobalTheory.HeisComb.main D ψ S A').1 e' (op.u' i)`. Use `⟨⟨op.n, c, c'⟩, fun i => ⟨fun w hw => ?_, fun w hw => ?_⟩, fun C => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, y, hy, rfl⟩` from `hcs i w hw`. Conclude with `fun a b => add_mem (he x hx a b) ((hop i).1 y hy a b)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Take `⟨x, hx, y, hy, rfl⟩` from `hcs' i w hw`. Conclude with `fun a b => add_mem (he' x hx a b) ((hop i).2 y hy a b)`. Express the relevant statement in the definitionally equal form `∑ i, biComb ψ A S A' (c i) (c' i) C = biComb ψ A S A' e e' (∑ i, biComb ψ A S A' (op.u i) (op.u' i) C)`. Rewrite using `[biComb_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Conclude with `(GlobalTheory.ProdLocInv.biComb_comp ψ A S A' e (op.u i) (c i) e' (op.u' i) (c' i) (hcf i) (hcf' i) C).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem comp_part (P : Pl D → Prop) (op : BiOp A S A') (hop : OpAt P op) (e : WO A S →₀ ℂ) (e' : WO S A' →₀ ℂ)
     (he : CombAt P e) (he' : CombAt P e') :
@@ -253,13 +251,13 @@ theorem comp_part (P : Pl D → Prop) (op : BiOp A S A') (hop : OpAt P op) (e : 
     exact (GlobalTheory.ProdLocInv.biComb_comp ψ A S A' e (op.u i) (c i) e' (op.u' i) (c' i) (hcf i) (hcf' i) C).symm
 
 /- English proof (translation)
-Rewrite using `[symplO_skew', show symplO T T' w 0 = 0 from (symplHom T T' w).map_zero, neg_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_zero_left (T T' : HSp D) (w : WO T T') : symplO T T' 0 w = 0 := by
   rw [symplO_skew', show symplO T T' w 0 = 0 from (symplHom T T' w).map_zero, neg_zero]
 
 /- English proof (translation)
-Rewrite `h` using `[AddChar.map_neg_eq_inv, inv_eq_one]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_eq_one_of_neg {z : AF D.host.F} (h : ψ (-z) = 1) : ψ z = 1 := by
   rw [AddChar.map_neg_eq_inv, inv_eq_one] at h
@@ -270,29 +268,27 @@ end GlobalTheory.ZeroOrInv
 open GlobalTheory.ZeroOrInv GlobalTheory.LatVac in
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ ι p I P hP ψ hψ A S A' op hop`. Use `⟨fun LA LS LA' hA hS hA' => ?_, fun e e' he he' => comp_part ψ A S A' P op hop e e' he he'⟩` and prove the remaining obligations. Set `Γ : AddSubgroup (WO A S × WO S A')` to `(latO A S (LA : Set (Fin A.rank → D.host.E)) (LS : Set (Fin S.rank → D.host.E)) P).prod (latO S A' (LS : Set (Fin S.rank → D.host.E)) (LA' : Set (Fin A'.rank → D.host.E)) P)`. Establish `hΓG : Γ ≤ goodG A S A' P` using `fun x hx => ⟨LatMem.latO_mxAt (AddSubgroup.mem_prod.1 hx).1, LatMem.latO_mxAt (AddSubgroup.mem_prod.1 hx).2⟩`. Establish `hex : ∀ γ : WO A S × WO S A', ∃ s : ℂ, γ ∈ Γ → s ≠ 0 ∧ ∀ C ∈ {C | BiVacAt ψ LA LS LA' P C}, twoT ψ A S A' γ C = s • C`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `γ`. Distinguish the cases in `hγ : γ ∈ Γ`. Take `⟨ε₁, hε₁, h₁⟩` from `GlobalTheory.T.homLatticeCompletion_splitPlaces_acts_by_signs D k ι p I P hP ψ hψ A S LA LS hA hS γ.1 (AddSubgroup.mem_prod.1 hγ).1`. Take `⟨ε₂, hε₂, h₂⟩` from `GlobalTheory.T.homLatticeCompletion_splitPlaces_acts_by_signs D k ι p I P hP ψ hψ S A' LS LA' hS hA' γ.2 (AddSubgroup.mem_prod.1 hγ).2`. Use `⟨ε₁ * ε₂, fun _ => ⟨mul_ne_zero (left_ne_zero_of_mul_eq_one hε₁) (left_ne_zero_of_mul_eq_one hε₂), fun C hC => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `u v`. Express the relevant statement in the definitionally equal form `heisO ψ A S γ.1 (fun u' => heisO ψ S A' γ.2 (C u') v) u = (ε₁ * ε₂) * C u v`. Establish `e2 : (fun u' => heisO ψ S A' γ.2 (C u') v) = ε₂ • fun u' => C u' v`. Use function extensionality and compare the values at `u'`. Rewrite using `[h₂ (C u') (hC.2 u')]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e2, LatVac.heisO_smul, h₁ _ (hC.1 v)]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨1, fun h => absurd h hγ⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 
-Use `choose aF haF using hex`. Establish `hχ : ∀ x, ∀ γ ∈ Γ, ∀ γ' ∈ Γ, chi ψ A S A' (x + γ') γ = chi ψ A S A' x γ`. Introduce `x γ hγ γ' hγ'`. Take `⟨g1, g2⟩` from `AddSubgroup.mem_prod.1 hγ`. Take `⟨g1', g2'⟩` from `AddSubgroup.mem_prod.1 hγ'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1` using `(GlobalTheory.SelfDualAt.latO_ann_at D ψ hψ A S LA LS hA hS P γ.1 (LatMem.latO_mxAt g1)).1 g1 γ'.1 g1'`. Establish `e2` using `(GlobalTheory.SelfDualAt.latO_ann_at D ψ hψ S A' LS LA' hS hA' P γ.2 (LatMem.latO_mxAt g2)).1 g2 γ'.2 g2'`. Simplify using `only [chi, Prod.fst_add, Prod.snd_add, symplO_add_right, AddChar.map_add_eq_mul, e1, e2, mul_one]`. Establish `hsep : ∀ x ∈ goodG A S A' P, ∀ y ∈ goodG A S A' P, x - y ∉ Γ → ∃ γ ∈ Γ, chi ψ A S A' x γ ≠ chi ψ A S A' y γ`. Introduce `x hx y hy hxy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd : x - y ∈ goodG A S A' P` using `sub_mem hx hy`. Rewrite `hxy` using `[AddSubgroup.mem_prod, not_and_or]`. Break down `hxy with h | h` into its components or cases. Rewrite `h` using `[GlobalTheory.SelfDualAt.latO_ann_at D ψ hψ A S LA LS hA hS P (x - y).1 hd.1] at h push_neg`. Take `⟨l, hl, hne⟩` from `h`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(l, 0), AddSubgroup.mem_prod.2 ⟨hl, zero_mem _⟩, fun heq => hne ?_⟩` and prove the remaining obligations. Simplify using `only [chi, symplO_zero_left, AddChar.map_zero_eq_one, mul_one] at heq`. Establish `hx1 : x.1 = (x - y).1 + y.1` using `by rw [Prod.fst_sub, sub_add_cancel]`. Rewrite `heq` using `[hx1, symplO_add_right, AddChar.map_add_eq_mul]`. Establish `h1 : ψ (symplO A S l (x - y).1) = 1` using `mul_right_cancel₀ (psi_ne_zero ψ _) (heq.trans (one_mul _).symm)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[symplO_skew']`. Conclude with `psi_eq_one_of_neg ψ h1`. Rewrite `h` using `[GlobalTheory.SelfDualAt.latO_ann_at D ψ hψ S A' LS LA' hS hA' P (x - y).2 hd.2] at h push_neg`. Take `⟨l, hl, hne⟩` from `h`. Use `⟨(0, l), AddSubgroup.mem_prod.2 ⟨zero_mem _, hl⟩, fun heq => hne ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [chi, symplO_zero_left, AddChar.map_zero_eq_one, one_mul] at heq`. Establish `hx2 : x.2 = (x - y).2 + y.2` using `by rw [Prod.snd_sub, sub_add_cancel]`. Rewrite `heq` using `[hx2, symplO_add_right, AddChar.map_add_eq_mul]`. Establish `h1 : ψ (symplO S A' l (x - y).2) = 1` using `mul_right_cancel₀ (psi_ne_zero ψ _) (heq.trans (one_mul _).symm)`. Rewrite `h1` using `[symplO_skew']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `psi_eq_one_of_neg ψ h1`. Break down `GlobalTheory.T.eq_zero_or_exists_inverse_combination_of_separating (WO A S × WO S A') Γ (goodG A S A' P) (WO A S → WO S A' → ℂ) (twoT ψ A S A') {C | BiVacAt ψ LA LS LA' P C} (bet ψ A S A') aF (chi ψ A S A') hΓG (twoT_zero ψ A S A') (twoT_mul ψ A S A') (bet_ne_zero ψ A S A') (fun …` into its components or cases. Use `left`. Introduce `C hC`. Rewrite using `[app_eq]`.
-
-Conclude with `h C hC`. Use `right`. Conclude with `⟨ofK A S A' κ, ofK_at A S A' P κ hκ, fun C hC => by rw [ofK_app, app_eq]; exact hinv C hC⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinPl.biInv_main : ∀ D : D7, GlobalTheory.FinPl.BiInv D := by
   intro D k _ _ _ _ ι p I P hP ψ hψ A S A' op hop

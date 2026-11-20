@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ChainOnto
 
 /- English proof (translation)
-Introduce `hC D hF _ hL c hc j hj s hs`. Establish `hspan` using `GlobalTheory.T.multiplicitySpace_span_fullSphericalHecke_eigenparts hC D hF hL c hc j hj s hs`. Establish `hpar` using `GlobalTheory.T.thetaChain_eigenPart_has_heckeParameters hC D c hc j hj s hs`. Rewrite using `[eq_top_iff, ← hspan]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `u ⟨e, he⟩`. Distinguish the cases in `h0 : u = 0`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.subset_span ((hpar u e he).1 h0)`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigSpan_of_parts : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, FinDim D → MetEx D → LevFacts D → EigSpan D := by
   intro hC D hF _ hL c hc j hj s hs

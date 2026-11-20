@@ -7,7 +7,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ChiMove
 
 /- English proof (translation)
-Introduce `D χ hχ N M e he`. Establish `hu : e ∈ Matrix.unitaryGroup (Fin N) D.host.E` using `Matrix.mem_unitaryGroup_iff.2 he`. Establish `h` using `GlobalTheory.Mem.NatEqui.chi_smulLat hχ (L := M.1) M.2 ⟨e, hu⟩`. Rewrite `h` using `[Finset.prod_inv_distrib]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_detId_smulLat : ∀ (D : D7) (χ : TaylorLogMetric.IdE D → ℂ), TaylorLogMetric.IsChi D χ → ∀ {N : ℕ} (M : SDLat D.host.E N) (e : Matrix (Fin N) (Fin N) D.host.E), e * star e = 1 → χ (TaylorLogMetric.detId D (StandardLatticesGL3.stdL D N) (SDLat.smulLat e M.1)) = (∏ τ, TaylorLogMetric.embT D τ e.det)⁻¹ * χ (TaylorLogMetric.detId D (StandardLatticesGL3.stdL D N) M.1) := by
   intro D χ hχ N M e he

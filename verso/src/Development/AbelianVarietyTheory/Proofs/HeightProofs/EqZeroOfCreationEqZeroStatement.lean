@@ -7,7 +7,7 @@ open scoped TensorProduct ContDiff ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FockCompare.eq_zero_of_creation_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FHeightProofs%2FEqZeroOfCreationEqZero.lean&line=69#L69)
 -/

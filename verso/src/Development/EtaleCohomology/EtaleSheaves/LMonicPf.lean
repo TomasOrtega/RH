@@ -6,9 +6,7 @@ open Polynomial
 namespace LateralTheory.E.LMonicPf
 
 /- English proof (translation)
-Use extensionality with `i`. Rewrite using `[coeff_map, coeff_X_pow]`. Use `split_ifs with hi`. Substitute `hi` using the available equality. Rewrite using `[hp.coeff_natDegree, map_one]`.
-
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (h i hi)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mk_eq_X_pow {A : Type} [CommRing A] (I : Ideal A) (p : A[X]) (hp : p.Monic)
     (h : ∀ i ≠ p.natDegree, p.coeff i ∈ I) :
@@ -20,17 +18,15 @@ theorem map_mk_eq_X_pow {A : Type} [CommRing A] (I : Ideal A) (p : A[X]) (hp : p
   · exact Ideal.Quotient.eq_zero_iff_mem.mpr (h i hi)
 
 /- English proof (translation)
-Introduce `A _ I B _ φ hφ b hb`. Consider the cases of `subsingleton_or_nontrivial A`. Establish `: Subsingleton B`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_one x, ← mul_one y, ← map_one φ, Subsingleton.elim (1 : A) 0, map_zero, mul_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨0, 1, monic_one, Subsingleton.elim _ _, by simp⟩`. Set `` to `φ.toAlgebra`. Establish `: Algebra.IsIntegral A B` using `⟨hφ⟩`. Take `⟨p, hpm, hp0, hpI⟩` from `exists_monic_aeval_eq_zero_forall_mem_of_mem_map (R := A) (S := B) (I := I) (x := b * b - b) hb`. Establish `hqe : ((X : A[X]) * X - X) = X ^ 2 - X` using `by rw [sq]`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq : ((X : A[X]) * X - X).Monic`. Rewrite using `[hqe]`. Conclude with `monic_X_pow_sub (degree_X_le.trans_lt (by norm_num))`. Establish `hqd : ((X : A[X]) * X - X).natDegree ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (eval 0) ((Polynomial.Monic.natDegree_eq_zero hq).mp h)`. Simplify using `at h1`. Use `⟨p.natDegree, p.comp (X * X - X), hpm.comp hq hqd, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eval₂_comp]`. Simplify using `only [eval₂_mul, eval₂_sub, eval₂_X]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp0` using `[aeval_def]`. Conclude with `hp0`. Rewrite using `[Polynomial.map_comp, map_mk_eq_X_pow I p hpm hpI, X_pow_comp, ← mul_pow]`. Use `congr 1`. Simplify using `[C_1]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem LMonic_of : LateralTheory.E.HensIdemCut.LMonic := by
   intro A _ I B _ φ hφ b hb

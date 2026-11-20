@@ -24,7 +24,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Λ : �
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ) (Gc : ChGlob X R.m)
 
 /- English proof (translation)
-The claim follows from `have h := ciCst_ok hPr hCh (SB := rowSG Pr sel (mu0 X.F X.E X.K S)) (fun P hP => bad_primes_over_g_trivial_tuple sel S ⟨P, hP⟩) (fun P hP => h4 P (bad_primes_over_g_trivial_tuple sel S ⟨P, hP⟩)) (mq := ciMuq Gc (chr0 X S)) { psi_add := h.psi_add psi_int := h.psi_int psi_ne := h.p …`.
+A detailed English derivation is pending.
 -/
 theorem cstC_ok {n : ℕ} (hn : 1 ≤ n) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) : (cstC Ch sel S Gc n).Ok :=
   have h := ciCst_ok hPr hCh (SB := rowSG Pr sel (mu0 X.F X.E X.K S)) (fun P hP => bad_primes_over_g_trivial_tuple sel S ⟨P, hP⟩)
@@ -42,7 +42,7 @@ theorem cstC_ok {n : ℕ} (hn : 1 ≤ n) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w
 variable {Λ Ch sel S Gc}
 
 /- English proof (translation)
-The claim follows from `{ hm := hm cst_ok := cstC_ok Ch sel S Gc hn hPr hCh h4 xiUnitAtPrime := fun P => hG.xi P.1 (bad_primes_over_g_trivial_tuple sel S P) weil := ciCst_weil Ch hX hPr (fun P hP => bad_primes_over_g_trivial_tuple sel S ⟨P, hP⟩) (ciMuq Gc (chr0 X S)) hG.weil (fun P hP => (hG.xi P (bad_p …`.
+A detailed English derivation is pending.
 -/
 theorem idxC_ok {n m2 : ℕ} (hm : R.m = m2 + 2) (hn : 1 ≤ n) (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1)
     (hG : GlobTied Ch Gc) (H : IdxHyp Λ Ch sel S Gc n m2) :

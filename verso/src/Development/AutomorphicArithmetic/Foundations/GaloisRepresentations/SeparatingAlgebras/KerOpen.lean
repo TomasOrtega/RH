@@ -5,9 +5,9 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 open UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Introduce `hP E _ _ w a J hJ A _ _ θ`. Establish `hN : Nat.card A ≠ 0` using `Nat.card_pos.ne'`. Establish `hV` using `hP E w a (Nat.card A) hN (J : Set (GL (Fin a) (w.adicCompletion E))) (hJ.mem_nhds J.one_mem)`. Use `⟨interior ((fun x => x ^ Nat.card A) '' (J : Set (GL (Fin a) (w.adicCompletion E)))), isOpen_interior, mem_interior_iff_mem_nhds.2 hV, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, hxy⟩` from `interior_subset hx`. Establish `hx' : x = (⟨y, hy⟩ : J) ^ Nat.card A` using `Subtype.ext (by simpa using hxy.symm)`. Rewrite using `[hx', map_pow, pow_card_eq_one']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.Gen.kerOpen_pf :
     UpperTheory.Gal.Gen.PowNhds → UpperTheory.Gal.Gen.KerOpen := by

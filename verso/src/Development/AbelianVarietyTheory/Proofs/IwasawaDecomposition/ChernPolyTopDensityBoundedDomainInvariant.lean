@@ -21,17 +21,17 @@ namespace GlobalTheory.DomDensInv
 variable {ι : Type} [Fintype ι] {p q n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use extensionality with `a b`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem unflat_zero : unflat (0 : ι × Fin p × Fin q → ℂ) = 0 := by
   funext i; ext a b; rfl
 
 /- English proof (translation)
-Establish `: ∀ τ, ∃ g : GL (Fin p ⊕ Fin q) ℂ, g ∈ Upq p q ∧ moeb (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) 0 = z τ`. Introduce `τ`. Take `⟨g, hg, hgz⟩` from `GlobalTheory.TrueCx.FrameOnto.exists_moeb_zero (hz τ)`. Establish `hd : g.det ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg det hg`. Establish `h2` using `congrArg det (Jpq_sq (p := p) (q := q))`. Rewrite `h1` using `[det_mul, h0, mul_zero]`. Rewrite `h2` using `[det_mul, ← h1]`. Simplify using `at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨GeneralLinearGroup.mkOfDetNeZero _ hd, upq_iff.2 hg, hgz⟩`. Use `choose g hg hgz using this`. Conclude with `⟨g, fun τ _ => hg τ, funext fun τ => hgz τ⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_upqI {z : ι → Matrix (Fin p) (Fin q) ℂ} (hz : z ∈ DomI ι p q) :
     ∃ g ∈ UpqI ι p q, moebI g 0 = z := by
@@ -50,9 +50,9 @@ theorem exists_upqI {z : ι → Matrix (Fin p) (Fin q) ℂ} (hz : z ∈ DomI ι 
   exact ⟨g, fun τ _ => hg τ, funext fun τ => hgz τ⟩
 
 /- English proof (translation)
-Establish `h` using `hP_moeb hg (zero_mem_hcDom p q)`. Establish `e0 : hP (0 : Matrix (Fin p) (Fin q) ℂ) = 1` using `by simp [hP]`. Rewrite `h` using `[e0, Matrix.mul_one]`. Establish `h2` using `congrArg Matrix.det h`. Rewrite `h2` using `[det_mul, det_conjTranspose, hP, det_one_sub_mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hQ, ← h2, Complex.star_def, Complex.mul_conj, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem normSq_det_jW {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) :
     Complex.normSq (jW g 0).det = ((hQ (moeb (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) 0)).det).re := by
@@ -64,11 +64,11 @@ theorem normSq_det_jW {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) :
   rw [hQ, ← h2, Complex.star_def, Complex.mul_conj, Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `h` using `hQ_moeb hg (zero_mem_hcDom p q)`. Establish `e0 : hQ (0 : Matrix (Fin p) (Fin q) ℂ) = 1` using `by simp [hQ]`. Rewrite `h` using `[e0]`. Establish `h2` using `congrArg Matrix.det h`. Rewrite `h2` using `[det_mul, det_mul, det_conjTranspose, det_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set d := (kapQ g 0).det`. Use `set H := (hQ (moeb (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) 0)).det`. Establish `h3 : H * ((Complex.normSq d : ℝ) : ℂ) = 1`. Rewrite using `[← Complex.mul_conj, ← h2, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : H = ((Complex.normSq d : ℝ) : ℂ)⁻¹` using `eq_inv_of_mul_eq_one_left h3`. Rewrite using `[det_nonsing_inv, Ring.inverse_eq_inv', map_inv₀, h4, ← Complex.ofReal_inv, Complex.ofReal_re]`.
+A detailed English derivation is pending.
 -/
 theorem normSq_det_kapQ_inv {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) :
     Complex.normSq ((kapQ g 0)⁻¹).det = ((hQ (moeb (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) 0)).det).re := by
@@ -91,9 +91,9 @@ namespace GlobalTheory.DomDensInv
 variable {ι : Type} [Fintype ι] {p q n : ℕ}
 
 /- English proof (translation)
-Set `E : (ι × Fin p × Fin q → ℂ) ≃ₗ[ℂ] (ι → Matrix (Fin p) (Fin q) ℂ)` to `{ toFun := unflat, invFun := flat, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl, left_inv := fun _ => rfl, right_inv := fun _ => rfl }`. Establish `key : (E : (ι × Fin p × Fin q → ℂ) →ₗ[ℂ] (ι → Matrix (Fin p) (Fin q) ℂ)) ∘ₗ L ∘ₗ (E.symm : (ι → Matrix (Fin p) (Fin q) ℂ) →ₗ[ℂ] (ι × Fin p × Fin q → ℂ)) = LinearMap.pi fun τ => (GlobalTheory.ModuLR.lrLin (A τ) (B τ)).comp (LinearMap.proj τ)`. Use `LinearMap.ext fun x => funext fun τ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `unflat (L (flat x)) τ = A τ * x τ * B τ`. Rewrite using `[hL]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← LinearMap.det_conj L E, key, LinearMap.det_pi]`. Simplify using `only [GlobalTheory.ModuLR.det_lrLin, Fintype.card_fin]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_flat_mul (A : ι → Matrix (Fin p) (Fin p) ℂ) (B : ι → Matrix (Fin q) (Fin q) ℂ)
     (L : (ι × Fin p × Fin q → ℂ) →ₗ[ℂ] (ι × Fin p × Fin q → ℂ))
@@ -112,11 +112,9 @@ theorem det_flat_mul (A : ι → Matrix (Fin p) (Fin p) ℂ) (B : ι → Matrix 
   simp only [GlobalTheory.ModuLR.det_lrLin, Fintype.card_fin]
 
 /- English proof (translation)
-Establish `hp` using `hP_posDef (hu τ)`. Establish `hunit : IsUnit (hP (unflat (GlobalTheory.UnifDens.flatL h u) τ)).det` using `hp.det_pos.ne'.isUnit`. Use `⟨MContDiffAt.transpose (MContDiffAt.inv ?_ hunit), ?_⟩` and prove the remaining obligations. Establish `hY : MContDiffAt 2 (fun w : ReciprocityTheory.L2DbarEstimates.V n => unflat (GlobalTheory.UnifDens.flatL h w) τ) u`. Introduce `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (fun w : ReciprocityTheory.L2DbarEstimates.V n => unflat (GlobalTheory.UnifDens.flatL h w) τ a b) = fun w => (((ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : ι × Fin p × Fin q => ℂ) (τ, a, b)).comp (GlobalTheory.UnifDens.flatL h : ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] (ι × Fin p × Fin q → ℂ))).restrictScalars ℝ) w := rfl`. Rewrite using `[e]`. Conclude with `(ContinuousLinearMap.contDiff _).contDiffAt`. Conclude with `(mContDiffAt_const 1).sub (hY.mul hY.conjTranspose)`. Rewrite using `[det_transpose]`.
-
-Conclude with `isUnit_nonsing_inv_det _ hunit`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem model_smooth (h : Fintype.card (ι × Fin p × Fin q) = n) {u : ReciprocityTheory.L2DbarEstimates.V n}
     (hu : GlobalTheory.UnifDens.flatL h u ∈ DomFlat ι p q) (τ : ι) :
@@ -135,9 +133,9 @@ theorem model_smooth (h : Fintype.card (ι × Fin p × Fin q) = n) {u : Reciproc
   · rw [det_transpose]; exact isUnit_nonsing_inv_det _ hunit
 
 /- English proof (translation)
-Establish `hJ' : IsUnit Jᴴ.det` using `by rw [det_conjTranspose]; exact hJ.star`. Establish `h1 : Hg = (J⁻¹)ᴴ * Hy * J⁻¹`. Rewrite using `[← h, conjTranspose_nonsing_inv]`. Simplify using `only [← Matrix.mul_assoc, nonsing_inv_mul _ hJ', Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, mul_nonsing_inv _ hJ, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, transpose_mul, transpose_mul]`. Establish `e : ((J⁻¹)ᴴ)ᵀ = ((J⁻¹)ᵀ)ᴴ` using `by ext i j; rfl`. Rewrite using `[e, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_transpose_of_congr {J Hg Hy : Matrix (Fin p) (Fin p) ℂ} (hJ : IsUnit J.det) (h : Jᴴ * Hg * J = Hy) :
     Hgᵀ = (J⁻¹)ᵀ * Hyᵀ * ((J⁻¹)ᵀ)ᴴ := by
@@ -151,41 +149,35 @@ theorem gram_transpose_of_congr {J Hg Hy : Matrix (Fin p) (Fin p) ℂ} (hJ : IsU
   rw [e, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `ι _ p q n h v hv`. Use `set e := GlobalTheory.UnifDens.flatL h with he`. Use `set K : ReciprocityTheory.L2DbarEstimates.V n → ι → Matrix (Fin p) (Fin p) ℂ := fun u τ => ((hP (unflat (e u) τ))⁻¹)ᵀ with hK`. Use `set R : MvPolynomial (ι × ℕ) ℝ := ∏ τ : ι, (MvPolynomial.C ((-1 : ℝ) ^ p) * MvPolynomial.X (τ, p)) ^ q with hR`. Use `set z := unflat (e v) with hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzD : z ∈ DomI ι p q` using `hv`. Take `⟨g, hg, hgz⟩` from `exists_upqI hzD`. Use `set Φ : (ι × Fin p × Fin q → ℂ) → (ι × Fin p × Fin q → ℂ) := fun w => flat (moebI g (unflat w)) with hΦ`. Use `set φ : ReciprocityTheory.L2DbarEstimates.V n → ReciprocityTheory.L2DbarEstimates.V n := fun u => e.symm (Φ (e u)) with hφ`. Establish `h0D : (0 : ι × Fin p × Fin q → ℂ) ∈ DomFlat ι p q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `τ`. Rewrite using `[unflat_zero]`. Conclude with `zero_mem_hcDom p q`. Establish `he0 : e 0 = 0` using `map_zero e`. Establish `hφ0 : φ 0 = v` using `by show e.symm (flat (moebI g (unflat (e 0)))) = v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[he0, unflat_zero, hgz]`. Conclude with `e.symm_apply_apply v`. Take `⟨ho, H⟩` from `GlobalTheory.HodgeDomain.ActionDeriv.isOpen_and_fderiv_moebI ι p q`. Take `⟨hd, hD⟩` from `H g hg`. Establish `hΦan : AnalyticAt ℂ Φ 0` using `GlobalTheory.SCV.analyticOnNhd_of_differentiableOn ho hd 0 h0D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hΦan' : AnalyticAt ℂ Φ (e 0)` using `by rw [he0]; exact hΦan`. Establish `hφan : AnalyticAt ℂ φ 0` using `(e.symm : (ι × Fin p × Fin q → ℂ) →L[ℂ] ReciprocityTheory.L2DbarEstimates.V n).analyticAt _ |>.comp (hΦan'.comp ((e : ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] (ι × Fin p × Fin q → ℂ)).analyticAt 0))`. Establish `hKv` using `fun τ => model_smooth h (u := v) hv τ`. Establish `h0S : e 0 ∈ DomFlat ι p q` using `by rw [he0]; exact h0D`. Establish `hK0` using `fun τ => model_smooth h (u := 0) h0S τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA` using `GlobalTheory.ChernPull.chernTop_comp R K φ 0 hφan (by rw [hφ0]; exact fun τ => (hKv τ).1) (by rw [hφ0]; exact fun τ => (hKv τ).2)`. Rewrite `hA` using `[hφ0]`. Use `set S : Set (ReciprocityTheory.L2DbarEstimates.V n) := e ⁻¹' DomFlat ι p q with hS`. Establish `hSo : IsOpen S` using `ho.preimage e.continuous`. Establish `h0S' : (0 : ReciprocityTheory.L2DbarEstimates.V n) ∈ S` using `h0S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `set g' : ReciprocityTheory.L2DbarEstimates.V n → ι → Matrix (Fin p) (Fin p) ℂ := fun w τ => ((jW (g τ) (unflat (e w) τ))⁻¹)ᵀ with hg'`. Establish `hΦcd : ContDiffOn ℂ 1 Φ (DomFlat ι p q)` using `(GlobalTheory.SCV.analyticOnNhd_of_differentiableOn ho hd).contDiffOn ho.uniqueDiffOn`. Establish `hΨ : ContDiffOn ℂ 1 (fun w => Φ (e w)) S` using `hΦcd.comp (e : ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] (ι × Fin p × Fin q → ℂ)).contDiff.contDiffOn fun w hw => hw`. Establish `hg'an : ∀ τ i j, AnalyticAt ℂ (fun w => g' w τ i j) 0`. Introduce `τ i j`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hent : ∀ a b, ContDiffOn ℂ 1 (fun w => jW (g τ) (unflat (e w) τ) a b) S`. Introduce `a b`. Establish `ee : (fun w => jW (g τ) (unflat (e w) τ) a b) = fun w => (g τ).1.toBlocks₁₁ a b - ∑ k, Φ (e w) (τ, a, k) * (g τ).1.toBlocks₂₁ k b`. Use function extensionality and compare the values at `w`. Simplify using `only [jW, Matrix.sub_apply, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[ee]`. Conclude with `contDiffOn_const.sub (ContDiffOn.sum fun k _ => ((contDiffOn_pi.1 hΨ) (τ, a, k)).mul contDiffOn_const)`. Establish `hinv` using `GlobalTheory.HodgeDomain.ActionDeriv.diffOn_inv (s := S) (M := fun w => jW (g τ) (unflat (e w) τ)) hent (fun w hw => (jW_isUnit (hg τ (Set.mem_univ _)) (hw τ)).ne_zero) j i`. Conclude with `GlobalTheory.SCV.analyticOnNhd_of_differentiableOn hSo (hinv.differentiableOn one_ne_zero) 0 h0S'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg'u : ∀ τ, IsUnit (g' 0 τ).det`. Introduce `τ`. Rewrite using `[hg', det_transpose]`. Conclude with `isUnit_nonsing_inv_det _ (jW_isUnit (hg τ (Set.mem_univ _)) (h0S τ))`. Establish `hev : ∀ᶠ w in nhds (0 : ReciprocityTheory.L2DbarEstimates.V n), ∀ τ, K (φ w) τ = (((fun _ : ι => (1 : ℝ)) τ : ℝ) : ℂ) • (g' w τ * K w τ * (g' w τ)ᴴ)` using `by filter_upwards [hSo.mem_nhds h0S'] with w hw τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hy : unflat (e w) τ ∈ hcDom p q` using `hw τ`. Establish `hgt` using `hg τ (Set.mem_univ _)`. Establish `key` using `gram_transpose_of_congr (jW_isUnit hgt hy) (hP_inv_moeb hgt hy)`. Establish `e1 : K (φ w) τ = ((hP (moeb ((g τ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) (unflat (e w) τ)))⁻¹)ᵀ` using `by show ((hP (unflat (e (e.symm (Φ (e w)))) τ))⁻¹)ᵀ = _`. Rewrite using `[e.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Rewrite using `[e1, key, Complex.ofReal_one, one_smul]`. Establish `hB` using `GlobalTheory.PointChern.chernTop_changeFrame R (fun w => K (φ w)) K g' (fun _ => (1 : ℝ)) 0 (fun _ => one_pos) hg'an hg'u (fun τ => (hK0 τ).1) (fun τ => (hK0 τ).2) hev`. Establish `hΦd : HasFDerivAt Φ (fderiv ℂ Φ 0) (e 0)` using `by rw [he0]; exact hΦan.differentiableAt.hasFDerivAt`. Establish `hφd : HasFDerivAt φ ((e.symm : (ι × Fin p × Fin q → ℂ) →L[ℂ] ReciprocityTheory.L2DbarEstimates.V n).comp ((fderiv ℂ Φ 0).comp (e : ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] (ι × Fin p × Fin q → ℂ)))) 0` using `e.symm.hasFDerivAt.comp 0 (hΦd.comp 0 e.hasFDerivAt)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hdetF : LinearMap.det (fderiv ℂ Φ 0 : (ι × Fin p × Fin q → ℂ) →ₗ[ℂ] (ι × Fin p × Fin q → ℂ)) = ∏ τ, (jW (g τ) 0).det ^ q * ((kapQ (g τ) 0)⁻¹).det ^ p`. Use `det_flat_mul _ _ _ fun x => ?_` and prove the remaining obligations. Use `hD 0 (fun τ => zero_mem_hcDom p q) (unflat x)` as an intermediate fact. Conclude with `this`. Establish `hdet : LinearMap.det (fderiv ℂ φ 0 : ReciprocityTheory.L2DbarEstimates.V n →ₗ[ℂ] ReciprocityTheory.L2DbarEstimates.V n) = ∏ τ, (jW (g τ) 0).det ^ q * ((kapQ (g τ) 0)⁻¹).det ^ p`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hφd.fderiv, ← hdetF, ← LinearMap.det_conj (fderiv ℂ Φ 0 : (ι × Fin p × Fin q → ℂ) →ₗ[ℂ] (ι × Fin p × Fin q → ℂ)) e.symm.toLinearEquiv]`. Both sides reduce to the same expression. Establish `hx : ∀ τ, Complex.normSq (jW (g τ) 0).det = ((hQ (z τ)).det).re ∧ Complex.normSq ((kapQ (g τ) 0)⁻¹).det = ((hQ (z τ)).det).re`. Introduce `τ`. Establish `hgt` using `hg τ (Set.mem_univ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hzτ : moeb ((g τ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) 0 = z τ` using `congrFun hgz τ`. Rewrite using `[← hzτ]`. Conclude with `⟨normSq_det_jW hgt, normSq_det_kapQ_inv hgt⟩`. Establish `hN : Complex.normSq (LinearMap.det (fderiv ℂ φ 0 : ReciprocityTheory.L2DbarEstimates.V n →ₗ[ℂ] ReciprocityTheory.L2DbarEstimates.V n)) = ∏ τ, ((hQ (z τ)).det).re ^ (p + q)`. Rewrite using `[hdet, map_prod]`.
-
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_pow, (hx τ).1, (hx τ).2, pow_add, mul_comm]`. Establish `hpos : ∀ τ, 0 < ((hQ (z τ)).det).re` using `fun τ => (Complex.pos_iff.1 (show (hQ (z τ)).PosDef from hzD τ).det_pos).1`. Establish `hNpos : 0 < ∏ τ, ((hQ (z τ)).det).re ^ (p + q)` using `Finset.prod_pos fun τ _ => pow_pos (hpos τ) _`. Rewrite `hA` using `[hB, hN]`.
-
-Establish `e2 : ∏ τ, ((hQ (z τ)).det).re ^ (-((p + q : ℕ) : ℤ)) = (∏ τ, ((hQ (z τ)).det).re ^ (p + q))⁻¹`. Rewrite using `[← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.zpow_neg, zpow_natCast]`. Use `show GlobalTheory.GoodMetric.chernTop R K v = GlobalTheory.GoodMetric.chernTop R K 0 * ∏ τ, ((hQ (z τ)).det).re ^ (-((p + q : ℕ) : ℤ))`.
-
-Rewrite using `[e2, hA]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem chernTop_model_moeb : ∀ (ι : Type) [Fintype ι] (p q n : ℕ) (h : Fintype.card (ι × Fin p × Fin q) = n) (v : ReciprocityTheory.L2DbarEstimates.V n), GlobalTheory.UnifDens.flatL h v ∈ Formalism.DegreeFormula.DomFlat ι p q → GlobalTheory.GoodMetric.chernTop (m := fun _ : ι => p) (∏ τ : ι, (MvPolynomial.C ((-1 : ℝ) ^ p) * MvPolynomial.X (τ, p)) ^ q) (fun u τ => Matrix.transpose (hP (unflat (GlobalTheory.UnifDens.flatL h u) τ))⁻¹) v = GlobalTheory.GoodMetric.chernTop (m := fun _ : ι => p) (∏ τ : ι, (MvPolynomial.C ((-1 : ℝ) ^ p) * MvPolynomial.X (τ, p)) ^ q) (fun u τ => Matrix.transpose (hP (unflat (GlobalTheory.UnifDens.flatL h u) τ))⁻¹) 0 * ∏ i, ((Formalism.DegreeFormula.hQ (Formalism.DegreeFormula.unflat (GlobalTheory.UnifDens.flatL h v) i)).det.re) ^ (-((p + q : ℕ) : ℤ)) := by
   intro ι _ p q n h v hv

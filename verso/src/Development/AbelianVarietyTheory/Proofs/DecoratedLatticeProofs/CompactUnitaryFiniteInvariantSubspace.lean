@@ -9,9 +9,9 @@ section
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Establish `h : (fun w : H => rankOne ℂ w w) = fun w => ContinuousLinearMap.smulRightL ℂ H H (innerSL ℂ w) w`. Use function extensionality and compare the values at `w`. Use extensionality with `z`. Simplify using `[rankOne_apply]`. Rewrite using `[h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ContinuousLinearMap.smulRightL ℂ H H).continuous₂.comp ((innerSL ℂ).continuous.prodMk continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rankOne_self : Continuous fun w : H => rankOne ℂ w w := by
   have h : (fun w : H => rankOne ℂ w w) =
@@ -24,7 +24,7 @@ theorem continuous_rankOne_self : Continuous fun w : H => rankOne ℂ w w := by
     ((innerSL ℂ).continuous.prodMk continuous_id)
 
 /- English proof (translation)
-Rewrite using `[rankOne_def']`. Conclude with `(isCompactOperator_of_locallyCompactSpace_rng (ContinuousLinearMap.toSpanSingleton ℂ w)).comp_clm (innerSL ℂ w)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompactOperator_rankOne_self (w : H) : IsCompactOperator (rankOne ℂ w w) := by
   rw [rankOne_def']
@@ -32,7 +32,7 @@ theorem isCompactOperator_rankOne_self (w : H) : IsCompactOperator (rankOne ℂ 
     (ContinuousLinearMap.toSpanSingleton ℂ w)).comp_clm (innerSL ℂ w)
 
 /- English proof (translation)
-Conclude with `((compactOperator (RingHom.id ℂ) H H).restrictScalars ℝ).convex`.
+A detailed English derivation is pending.
 -/
 theorem convex_compactOperators : Convex ℝ {f : H →L[ℂ] H | IsCompactOperator f} := by
   exact ((compactOperator (RingHom.id ℂ) H H).restrictScalars ℝ).convex
@@ -40,7 +40,7 @@ theorem convex_compactOperators : Convex ℝ {f : H →L[ℂ] H | IsCompactOpera
 variable [CompleteSpace H] {X : Type} [MeasurableSpace X] {μ : Measure X}
 
 /- English proof (translation)
-Establish `hs : IsClosed {f : H →L[ℂ] H | IsCompactOperator f}` using `isClosed_setOfPred_isCompactOperator`. Establish `hc : Convex ℝ {f : H →L[ℂ] H | IsCompactOperator f}` using `convex_compactOperators`. Establish `hae : ∀ᵐ k ∂μ, F k ∈ {f : H →L[ℂ] H | IsCompactOperator f}` using `Filter.Eventually.of_forall hF`. Establish `hm` using `hc.integral_mem hs hae hFi`. Conclude with `hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompactOperator_integral [IsProbabilityMeasure μ] {F : X → H →L[ℂ] H}
     (hFi : Integrable F μ) (hF : ∀ k, IsCompactOperator (F k)) :
@@ -52,7 +52,7 @@ theorem isCompactOperator_integral [IsProbabilityMeasure μ] {F : X → H →L[�
   exact hm
 
 /- English proof (translation)
-Establish `hix : Integrable (fun k => rankOne ℂ (w k) (w k) x) μ` using `(ContinuousLinearMap.apply ℂ H x).integrable_comp hFi`. Rewrite using `[ContinuousLinearMap.integral_apply hFi x, ← integral_inner hix y]`. Simplify using `only [rankOne_apply, inner_smul_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inner_integral_rankOne {w : X → H} (hFi : Integrable (fun k => rankOne ℂ (w k) (w k)) μ)
     (x y : H) : ⟪y, (∫ k, rankOne ℂ (w k) (w k) ∂μ : H →L[ℂ] H) x⟫_ℂ =
@@ -63,9 +63,9 @@ theorem inner_integral_rankOne {w : X → H} (hFi : Integrable (fun k => rankOne
   simp only [rankOne_apply, inner_smul_right]
 
 /- English proof (translation)
-Introduce `x y`. Simplify using `only [ContinuousLinearMap.coe_coe]`. Rewrite using `[← inner_conj_symm, inner_integral_rankOne hFi x y, inner_integral_rankOne hFi y x, ← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_mul, inner_conj_symm, inner_conj_symm, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isSymmetric_integral_rankOne {w : X → H}
     (hFi : Integrable (fun k => rankOne ℂ (w k) (w k)) μ) :
@@ -79,11 +79,11 @@ theorem isSymmetric_integral_rankOne {w : X → H}
   rw [map_mul, inner_conj_symm, inner_conj_symm, mul_comm]
 
 /- English proof (translation)
-Introduce `h0`. Establish `h` using `inner_integral_rankOne hFi v v`. Rewrite `h` using `[h0, zero_apply, inner_zero_right]`. Establish `h3 : ∫ k, ⟪w k, v⟫_ℂ * ⟪v, w k⟫_ℂ ∂μ = ((∫ k, ‖⟪v, w k⟫_ℂ‖ ^ 2 ∂μ : ℝ) : ℂ)`. Rewrite using `[← integral_complex_ofReal]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[← inner_conj_symm (w k) v, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite `h` using `[h3]`. Conclude with `hpos.ne' (by exact_mod_cast h.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_rankOne_ne_zero {w : X → H}
     (hFi : Integrable (fun k => rankOne ℂ (w k) (w k)) μ) (v : H)
@@ -105,21 +105,21 @@ theorem integral_rankOne_ne_zero {w : X → H}
 end
 
 /- English proof (translation)
-Introduce `K _ _ _ _ _ _ H _ _ _ _ π hnorm hcont`. Set `: MeasurableSpace K` to `borel K`. Establish `: BorelSpace K` using `⟨rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨μ, hμ1, hμ2, hμ3⟩ : ∃ μ : Measure K, IsProbabilityMeasure μ ∧ μ.IsMulLeftInvariant ∧ μ.IsOpenPosMeasure := by`. Use `⟨Measure.haarMeasure ⊤, ⟨?_⟩, inferInstance, inferInstance⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts K))`. Take `⟨v, hv⟩` from `exists_ne (0 : H)`. Establish `hw : Continuous fun k => π k v` using `hcont v`. Establish `hFc : Continuous fun k => rankOne ℂ (π k v) (π k v)` using `continuous_rankOne_self.comp hw`. Establish `hFi : Integrable (fun k => rankOne ℂ (π k v) (π k v)) μ` using `hFc.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTc : IsCompactOperator (∫ k, rankOne ℂ (π k v) (π k v) ∂μ : H →L[ℂ] H)` using `isCompactOperator_integral hFi (fun k => isCompactOperator_rankOne_self _)`. Establish `hTs` using `isSymmetric_integral_rankOne hFi`. Establish `hpos : 0 < ∫ k, ‖⟪v, π k v⟫_ℂ‖ ^ 2 ∂μ`. Establish `hc : Continuous fun k => ‖⟪v, π k v⟫_ℂ‖ ^ 2` using `((continuous_const.inner hw).norm).pow 2`. Use `hc.integral_pos_of_hasCompactSupport_nonneg_nonzero (HasCompactSupport.of_compactSpace _) (fun k => by positivity) (x := 1) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hv]`. Establish `hT0` using `integral_rankOne_ne_zero hFi v hpos`. Use `set T : H →L[ℂ] H := ∫ k, rankOne ℂ (π k v) (π k v) ∂μ with hT`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hc0⟩ : ∃ c, Module.End.HasEigenvalue (T : Module.End ℂ H) c ∧ c ≠ 0 := by`. Assume the negation of the conclusion as `hno`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push Not at hno`. Conclude with `hT0 ((ContinuousLinearMap.eq_zero_of_forall_hasEigenvalue_eq_zero hTc hTs).mp hno)`. Establish `hinner : ∀ g x y, ⟪π g x, π g y⟫_ℂ = ⟪x, y⟫_ℂ` using `fun g x y => LinearIsometry.inner_map_map ⟨(π g).toLinearMap, hnorm g⟩ x y`. Establish `hcomm : ∀ g x, T (π g x) = π g (T x)`. Introduce `g x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hix : Integrable (fun k => rankOne ℂ (π k v) (π k v) x) μ` using `(ContinuousLinearMap.apply ℂ H x).integrable_comp hFi`. Establish `hsh` using `integral_mul_left_eq_self (μ := μ) (fun k => rankOne ℂ (π k v) (π k v) (π g x)) g`. Rewrite using `[hT, ContinuousLinearMap.integral_apply hFi, ContinuousLinearMap.integral_apply hFi, ← ContinuousLinearMap.integral_comp_comm (π g) hix, ← hsh]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : ∀ a b : K, ∀ y, π (a * b) y = π a (π b y)` using `fun a b y => by rw [map_mul]; rfl`. Simplify using `only [rankOne_apply, hm, hinner, map_smul]`. Use `⟨Module.End.eigenspace (T : Module.End ℂ H) c, Module.End.hasEigenvalue_iff.mp hc, ContinuousLinearMap.finite_dimensional_eigenspace hTc c hc0, ?_⟩` and prove the remaining obligations. Introduce `k x hx`. Rewrite `hx`, the goal using `[Module.End.mem_eigenspace_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `T (π k x) = c • π k x`. Express the relevant statement in the definitionally equal form `T x = c • x at hx`. Rewrite using `[hcomm, hx, map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_finiteDimensional_invariant :
     ∀ (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] [T2Space K]

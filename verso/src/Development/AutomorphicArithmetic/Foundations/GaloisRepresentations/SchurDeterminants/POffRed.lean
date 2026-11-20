@@ -8,13 +8,13 @@ namespace UpperTheory.Gal.Schur
 end UpperTheory.Gal.Schur
 
 /- English proof (translation)
-Introduce `h R _ _ n lam g y`. Establish `key` using `h (Polynomial R) n lam (fun k => Polynomial.C (g k)) Polynomial.X`. Establish `key'` using `(Polynomial.isRegular_X_pow ((n - 1).choose 2)).left key`. Set `φ : Polynomial R →ₐ[ℚ] R` to `(Polynomial.evalRingHom y).toRatAlgHom`. Establish `hφ : ∀ (f : Fin n → Polynomial R) (p : MvPolynomial (Fin n) ℚ), φ (MvPolynomial.aeval f p) = MvPolynomial.aeval (fun k => φ (f k)) p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `f p`. Rewrite using `[← MvPolynomial.comp_aeval]`. Both sides reduce to the same expression. Establish `hC : ∀ r : R, φ (Polynomial.C r) = r` using `fun r => by simp [φ]`. Establish `hX : φ Polynomial.X = y` using `by simp [φ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ i, (fun k => φ (scaleOff Polynomial.X i (fun k => Polynomial.C (g k)) k)) = scaleOff y i g`. Introduce `i`. Use function extensionality and compare the values at `k`. Simplify using `only [scaleOff]`. Use `split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hC]`. Rewrite using `[map_mul, hC, hX]`. Use `congrArg φ key'` as an intermediate fact. Simplify using `only [map_sum, map_mul, map_prod, map_pow, map_sub, map_neg, map_one, sch, hφ, vdmAway, vdm, hs, hC, hX] at this`. Simplify `this` using `[sch, vdmAway, vdm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Schur.offClrRed_of :
     OffClrPow → OffClrRed := by

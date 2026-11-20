@@ -15,20 +15,20 @@ namespace GlobalTheory.PullbackForm
 variable {M M' : Type} [TopologicalSpace M] [TopologicalSpace M'] {n n' : ℕ} {A : HolAtlas M n} {A' : HolAtlas M' n'}
 
 /- English proof (translation)
-The claim follows from `(A'.e j).isOpen_inter_preimage_symm ((A.e i).open_source.preimage hf)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_dom {f : M' → M} (hf : Continuous f) (j : A'.ι) (i : A.ι) :
     IsOpen ((A'.e j).target ∩ (A'.e j).symm ⁻¹' (f ⁻¹' (A.e i).source)) :=
   (A'.e j).isOpen_inter_preimage_symm ((A.e i).open_source.preimage hf)
 
 /- English proof (translation)
-Use `contDiffOn_of_locally_contDiffOn fun v hv => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `A.cover (f ((A'.e j).symm v))`. Establish `hU` using `isOpen_dom (A := A) (A' := A') hf.1 j i`. Use `⟨_, hU, ⟨hv, hi⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.inter_eq_self_of_subset_right Set.inter_subset_left]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hτ` using `hf.2 j i`. Establish `hτ' : ContDiffOn ℝ ∞ (A.e i ∘ f ∘ (A'.e j).symm) ((A'.e j).target ∩ (A'.e j).symm ⁻¹' (f ⁻¹' (A.e i).source))` using `(((GlobalTheory.SCV.analyticOnNhd_iff_differentiableOn hU).2 hτ).contDiffOn hU.uniqueDiffOn).restrict_scalars ℝ`. Establish `key : ContDiffOn ℝ ∞ (fun w => ∑ T, (bas n).repr (A.loc α i ((A.e i ∘ f ∘ (A'.e j).symm) w)) T * (bas n').repr (pull (fderiv ℂ (A.e i ∘ f ∘ (A'.e j).symm) w) (bas n T)) S) ((A'.e j).target ∩ (A'.e j).symm ⁻¹' (f ⁻¹' (A.e i).source))` using `ContDiffOn.sum fun T _ => ((hα.smooth i T).comp hτ' fun w hw => (A.e i).map_source hw.2).mul (GlobalTheory.T.contDiffOn_repr_pullbackComplexForm_fderiv _ _ _ _ (bas n T) hU hτ S)`. Use `key.congr fun w hw => ?_` and prove the remaining obligations. Establish `h₁ : A'.loc (A.pullback A' f α) j w = pull (fderiv ℂ (A.e i ∘ f ∘ (A'.e j).symm) w) (A.loc α i ((A.e i ∘ f ∘ (A'.e j).symm) w))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[HolAtlas.loc, dif_pos hw.1]`. Use `(GlobalTheory.T.holAtlas_pullback_eq_chart_expression M M' n n' A A' f α hf hα ⟨(j, (A'.e j).symm w), (A'.e j).map_target hw.1⟩ i hw.2).trans ?_` and prove the remaining obligations. Use `(congrArg _ (A.loc_crd α ⟨(i, f ((A'.e j).symm w)), hw.2⟩).symm).trans ?_` and prove the remaining obligations. Use `show pull (fderiv ℂ (A.e i ∘ f ∘ (A'.e j).symm) (A'.e j ((A'.e j).symm w))) _ = _`. Rewrite using `[(A'.e j).right_inv hw.1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h₁]`. Use `conv_lhs => rw [← (bas n).sum_repr (A.loc α i ((A.e i ∘ f ∘ (A'.e j).symm) w))]`. Simplify using `only [map_sum, map_smul, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smooth_pullback {f : M' → M} {α : A.Fld} (hf : A.IsHolo A' f) (hα : A.IsForm α) (j : A'.ι)
     (S : Finset (Fin (n' + n'))) :
@@ -61,15 +61,13 @@ theorem smooth_pullback {f : M' → M} {α : A.Fld} (hf : A.IsHolo A' f) (hα : 
   simp only [map_sum, map_smul, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨⟨j, y⟩, hy⟩` from `x`. Take `⟨⟨j', y'⟩, hy'⟩` from `x'`. Take `rfl : y = y'` from `h`. Take `⟨i, hi⟩` from `A.cover (f y)`. Use `(GlobalTheory.T.holAtlas_pullback_eq_chart_expression M M' n n' A A' f α hf hα ⟨(j, y), hy⟩ i hi).trans (Eq.trans ?_ (congrArg _ (GlobalTheory.T.holAtlas_pullback_eq_chart_expression M M' n n' A A' f α hf hα ⟨(j', y), hy'⟩ i hi).symm))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← GlobalTheory.T.pullbackComplexFormsLinearMap_comp]`. Use `show pull (fderiv ℂ (A.e i ∘ f ∘ (A'.e j).symm) (A'.e j y)) _ = pull ((fderiv ℂ (A.e i ∘ f ∘ (A'.e j').symm) (A'.e j' y)).comp (fderiv ℂ (A'.e j' ∘ (A'.e j).symm) (A'.e j y))) _`. Establish `e : (A'.e j).symm (A'.e j y) = y` using `(A'.e j).left_inv hy`. Establish `e' : (A'.e j').symm (A'.e j' y) = y` using `(A'.e j').left_inv hy'`. Establish `hW : (A'.e j).target ∩ (A'.e j).symm ⁻¹' (A'.e j').source ∈ 𝓝 (A'.e j y)` using `((A'.e j).isOpen_inter_preimage_symm (A'.e j').open_source).mem_nhds ⟨(A'.e j).map_source hy, by simpa only [Set.mem_preimage, e] using hy'⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d₁ : DifferentiableAt ℂ (A'.e j' ∘ (A'.e j).symm) (A'.e j y)` using `(A'.holo j j').differentiableAt hW`. Establish `e₂ : (A'.e j' ∘ (A'.e j).symm) (A'.e j y) = A'.e j' y` using `congrArg _ e`. Establish `d₂ : DifferentiableAt ℂ (A.e i ∘ f ∘ (A'.e j').symm) ((A'.e j' ∘ (A'.e j).symm) (A'.e j y))`. Rewrite using `[e₂]`. Conclude with `(hf.2 j' i).differentiableAt ((isOpen_dom hf.1 j' i).mem_nhds ⟨(A'.e j').map_source hy', by simpa only [Set.mem_preimage, e'] using hi⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc` using `fderiv_comp _ d₂ d₁`. Rewrite `hc` using `[e₂]`. Rewrite using `[← hc]`. Use `congr 2`. Use `Filter.EventuallyEq.fderiv_eq (Filter.eventually_of_mem hW fun w hw => ?_)` and prove the remaining obligations.
-
-Simplify using `only [Function.comp_apply, (A'.e j').left_inv hw.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem compat_pullback {f : M' → M} {α : A.Fld} (hf : A.IsHolo A' f) (hα : A.IsForm α) (x x' : A'.Pt)
     (h : x.pt = x'.pt) :
@@ -103,7 +101,7 @@ theorem compat_pullback {f : M' → M} {α : A.Fld} (hf : A.IsHolo A' f) (hα : 
   simp only [Function.comp_apply, (A'.e j').left_inv hw.2]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ hf hα` and use `⟨smooth_pullback hf hα, compat_pullback hf hα⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isForm_pullback : ∀ (M M' : Type) [TopologicalSpace M] [TopologicalSpace M'] (n n' : ℕ) (A : HolAtlas M n)
     (A' : HolAtlas M' n') (f : M' → M) (α : A.Fld), A.IsHolo A' f → A.IsForm α → A'.IsForm (A.pullback A' f α) :=

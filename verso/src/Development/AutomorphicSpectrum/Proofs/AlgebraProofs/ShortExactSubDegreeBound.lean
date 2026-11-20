@@ -7,7 +7,7 @@ open GlobalTheory.CompanionTheory.Ar.Crv
 namespace GlobalTheory.CompanionTheory.Ar.Crv.SubDegSes
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Ch.subdeg_ses`.
+A detailed English derivation is pending.
 -/
 theorem subDeg_ses : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGroup V] [Module K V] [FiniteDimensional K V] (V' : Type) [AddCommGroup V'] [Module K V'] [FiniteDimensional K V'] (V'' : Type) [AddCommGroup V''] [Module K V''] [FiniteDimensional K V''] (L : C.I → AddSubgroup V) (L' : C.I → AddSubgroup V') (L'' : C.I → AddSubgroup V'') (f : V →ₗ[K] V') (g : V' →ₗ[K] V'') (X : Submodule K V'), IsBun C L' → ShortExact C L L' L'' f g → subDeg C L' X ≤ subDeg C L (X.comap f) + subDeg C L'' (X.map g) :=
   @PositivityTheory.HtPt.Ch.subdeg_ses

@@ -36,9 +36,9 @@ def lowLevel (l : Level H) : Level H :=
   { l with A := l.M', A_pos := Nat.lcm_pos (by have := l.three_le; omega) l.A_pos }
 
 /- English proof (translation)
-Unfold `KA`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `x hx`. Break down `hx with rfl | hx` into its components or cases. Conclude with `c.le (IntermediateField.subset_adjoin _ _ (by simp))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Conclude with `c.zeta_mem`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ka_le (l : Level H) (c : Coeff l) : KA (lowLevel l) ≤ c.F := by
   unfold KA

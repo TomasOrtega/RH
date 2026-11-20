@@ -16,13 +16,13 @@ open Classical
 namespace GlobalTheory.UPoinc
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw hpq l Xo cf C X wi p _ z ct`. Establish `hw : X.π ((gPt p ≫ ct.y) (closedPoint (PadicAlgCl p))) ∈ Set.range C.i`. Use `⟨(spMap ct.ι ≫ ct.T.y) (closedPoint (PadicAlgCl p)), ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun f : Sp (PadicAlgCl p) ⟶ C.Z => f (closedPoint (PadicAlgCl p))) ct.comm`. Simplify using `only [Scheme.Hom.comp_apply] at e ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `e.symm`. Take `⟨U, c₀, hc, fg, frac, hth, hev, ρ', u', hU, hwU, hsame, hi₀, hpt, G, hG, α, β, hα, hβ, hL, hm⟩` from `GlobalTheory.T.exists_recharting_thetaSystem_affineOpen E H Dw hpq l Xo cf C X wi _ hw`. Take `⟨hle, y₁, hy₁, hpt₁, hint⟩` from `GlobalTheory.T.rechart_at_unitaryClassicalTrait E H Dw hpq l Xo cf C X p z ct U u' hU hwU hpt`. Take `⟨u, lb, j, hq, hcong⟩` from `GlobalTheory.T.exists_uniformisedModel_labels_unitaryTrait E H Dw hpq l Xo cf X.o₁ X.Ω₁ _ ρ' u' G hG α β hα hβ hL p y₁ ct.T ct.ι ct.int hpt₁ hint`. Set `jm : ModN (X.S.r * X.S.N) u.D.toPre.X →+ ModN (X.S.r * X.S.N) ct.T.P.D.toPre.X` to `QuotientAddGroup.map _ _ j.toAddMonoidHom (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨j x, by simp⟩)`. Use `⟨jm.comp lb.yy, c₀, hc, X.M.ringOn U, fg, frac, hth, hev, ρ', u', hsame, hi₀, hpt, hle, G, hG, α, β, hα, hβ, hL, hm, y₁.comp (toRat _), hy₁, u, lb, j, hq, ?_, hcong⟩` and prove the remaining obligations. Introduce `a χ ha`. Simplify using `only [AddMonoidHom.comp_apply, ha, jm]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_uIsLabW : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (cf : Coeff l) (C : UCompact Xo cf), ∀ (X : USetup C) (wi : UWit X) (p : ℕ) [Fact p.Prime] (z : X.M.Z) (ct : UCTrait X p z), ∃ yy : X.S.Gam →+ ModN (X.S.r * X.S.N) ct.T.P.D.toPre.X, UIsLabW X wi ct yy := by
   intro E _ _ _ H Dw hpq l Xo cf C X wi p _ z ct

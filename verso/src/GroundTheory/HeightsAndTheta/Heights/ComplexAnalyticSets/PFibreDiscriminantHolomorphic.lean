@@ -19,7 +19,7 @@ def pairProd {N : ℕ} (l : (σ → ℂ) →L[ℂ] ℂ) (z : Fin N → σ → �
 omit [Fintype σ] in
 
 /- English proof (translation)
-Unfold `pairProd`. Conclude with `continuous_finsetProd _ fun q _ => (l.continuous.comp (continuous_apply q.1)).sub (l.continuous.comp (continuous_apply q.2))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_pairProd {N : ℕ} (l : (σ → ℂ) →L[ℂ] ℂ) : Continuous (pairProd (N := N) l) := by
   unfold pairProd
@@ -27,13 +27,11 @@ theorem continuous_pairProd {N : ℕ} (l : (σ → ℂ) →L[ℂ] ℂ) : Continu
     (l.continuous.comp (continuous_apply q.1)).sub (l.continuous.comp (continuous_apply q.2))
 
 /- English proof (translation)
-Establish `hfin` using `Set.finite_of_encard_eq_coe h`. Establish `hc : hfin.toFinset.card = N`. Use `hfin.encard_eq_coe_toFinset_card` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this.symm` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `e` to `hfin.toFinset.equivFin`. Use `⟨fun i => (e.symm (Fin.cast hc.symm i)).1, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Conclude with `Fin.cast_injective _ (e.symm.injective (Subtype.ext hij))`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `hfin.mem_toFinset.1 (e.symm _).2`. Introduce `hx`. Use `⟨Fin.cast hc (e ⟨x, hfin.mem_toFinset.2 hx⟩), ?_⟩` and prove the remaining obligations.
-
-Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_enum {α : Type*} {S : Set α} {N : ℕ} (h : S.encard = N) :
     ∃ p : Fin N → α, Function.Injective p ∧ range p = S := by
@@ -55,19 +53,17 @@ theorem exists_enum {α : Type*} {S : Set α} {N : ℕ} (h : S.encard = N) :
       simp
 
 /- English proof (translation)
-Establish `hsub : range p ⊆ {x | x ∈ Y ∧ A x = y}`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hpY i`. Establish `hr : (range p).encard = N`. Rewrite using `[← image_univ, hp.encard_image, encard_univ]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `heq : range p = {x | x ∈ Y ∧ A x = y}` using `(Set.finite_range p).eq_of_subset_of_encard_le hsub (by rw [hr]; exact hle)`. Establish `hN : {x | x ∈ Y ∧ A x = y}.encard = N` using `heq ▸ hr`. Unfold `fibreDiscr`. Rewrite using `[dif_pos hN]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `pairProd`. Use `symm`. Use `Finset.prod_bij (fun q _ => (p q.1, p q.2)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `q hq`. Simplify using `only [Finset.mem_offDiag, Finset.mem_univ, true_and] at hq`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_offDiag, Set.Finite.mem_toFinset]`. Conclude with `⟨hpY _, hpY _, fun h => hq (hp h)⟩`. Introduce `a _ b _ hab`. Simplify using `only [Prod.mk.injEq] at hab`. Conclude with `Prod.ext (hp hab.1) (hp hab.2)`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `b hb`. Simplify using `only [Finset.mem_offDiag, Set.Finite.mem_toFinset] at hb`. Take `⟨i, hi⟩ : b.1 ∈ range p` from `heq ▸ hb.1`. Take `⟨j, hj⟩ : b.2 ∈ range p` from `heq ▸ hb.2.1`. Use `⟨(i, j), ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Finset.mem_offDiag, Finset.mem_univ, true_and]`. Introduce and unpack `rfl`. Conclude with `hb.2.2 (hi.symm.trans hj)`. Simplify using `[hi, hj]`. Introduce `q _`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fibreDiscr_eq_pairProd {Y : Set (σ → ℂ)} {d : ℕ} {A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)} {N : ℕ}
     (l : (σ → ℂ) →L[ℂ] ℂ) {y : Fin d → ℂ} (hle : {x | x ∈ Y ∧ A x = y}.encard ≤ N)
@@ -107,7 +103,7 @@ theorem fibreDiscr_eq_pairProd {Y : Set (σ → ℂ)} {d : ℕ} {A : (σ → ℂ
     rfl
 
 /- English proof (translation)
-Rewrite using `[norm_prod]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_prod_le_pow {ι : Type*} (s : Finset ι) (F : ι → ℂ) {C : ℝ} (hC : 1 ≤ C) {n : ℕ}
     (hs : s.card ≤ n) (hF : ∀ i ∈ s, ‖F i‖ ≤ C) : ‖∏ i ∈ s, F i‖ ≤ C ^ n := by
@@ -119,9 +115,9 @@ theorem norm_prod_le_pow {ι : Type*} (s : Finset ι) (F : ι → ℂ) {C : ℝ}
 omit [Fintype σ] in
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn l.continuous.continuousOn`. Use `⟨2 * |M| + 1, by have := abs_nonneg M; linarith, fun a ha b hb => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `hM a ha` as an intermediate fact. Use `hM b hb` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_abs_self M` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_bound_pairs {Y : Set (σ → ℂ)} {d : ℕ} {A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)}
     {K : Set (Fin d → ℂ)} (l : (σ → ℂ) →L[ℂ] ℂ) (hK : IsCompact {x | x ∈ Y ∧ A x ∈ K}) :
@@ -136,11 +132,9 @@ theorem exists_bound_pairs {Y : Set (σ → ℂ)} {d : ℕ} {A : (σ → ℂ) �
       linarith
 
 /- English proof (translation)
-Unfold `fibreDiscr`. Use `split_ifs with h`. Establish `hc : (Set.finite_of_encard_eq_coe h).toFinset.card = N`. Use `(Set.finite_of_encard_eq_coe h).encard_eq_coe_toFinset_card` as an intermediate fact. Rewrite `this` using `[h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `this.symm` after adjusting the coercions. Apply `norm_prod_le_pow _ _ hC` to reduce the goal to its premises. Rewrite using `[Finset.offDiag_card, hc]`. Conclude with `Nat.sub_le _ _`. Introduce `q hq`.
-
-Rewrite `hq` using `[Finset.mem_offDiag, Set.Finite.mem_toFinset, Set.Finite.mem_toFinset]`. Conclude with `hCb _ ⟨hq.1.1, by rw [hq.1.2]; exact hy⟩ _ ⟨hq.2.1.1, by rw [hq.2.1.2]; exact hy⟩`. Rewrite using `[norm_zero]`. Conclude with `pow_nonneg (by linarith) _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_fibreDiscr_le {Y : Set (σ → ℂ)} {d : ℕ} {A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)}
     {K : Set (Fin d → ℂ)} {N : ℕ} (l : (σ → ℂ) →L[ℂ] ℂ) {C : ℝ} (hC : 1 ≤ C)
@@ -162,17 +156,15 @@ theorem norm_fibreDiscr_le {Y : Set (σ → ℂ)} {d : ℕ} {A : (σ → ℂ) �
     exact pow_nonneg (by linarith) _
 
 /- English proof (translation)
-Take `⟨p, hp, hrange⟩` from `exists_enum hN`. Establish `hpY : ∀ i, p i ∈ Y ∧ A (p i) = y₀` using `fun i => by`. Establish `: p i ∈ range p` using `mem_range_self i`. Rewrite `this` using `[hrange]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hdisj⟩` from `(Set.finite_range p).t2_separation`. Unfold `ContinuousAt`. Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨δ, hδ, hΦ⟩` from `Metric.continuousAt_iff.1 (continuous_pairProd l).continuousAt ε hε`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hev : ∀ i, ∀ᶠ y in 𝓝 y₀, y ∈ A '' (Y ∩ (U (p i) ∩ ball (p i) δ))`. Introduce `i`. Use `hopen (p i) (hpY i).1 _ (inter_mem ((hU (p i)).2.mem_nhds (hU (p i)).1) (ball_mem_nhds _ hδ))` as an intermediate fact. Rewrite `this` using `[(hpY i).2]`. Then use the resulting hypothesis. Use `filter_upwards [Filter.eventually_all.2 hev, hD.mem_nhds hy₀] with y hy hyD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose q hq hqy using hy`. Establish `hqinj : Function.Injective q`. Introduce `i j hij`. Assume the negation of the conclusion as `hne`. Establish `hd` using `hdisj (mem_range_self i) (mem_range_self j) (fun h => hne (hp h))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.disjoint_left.1 hd (hq i).2.1 (by rw [hij]; exact (hq j).2.1)`. Rewrite using `[fibreDiscr_eq_pairProd l (hle y hyD) hqinj (fun i => ⟨(hq i).1, hqy i⟩), fibreDiscr_eq_pairProd l (hle y₀ hy₀) hp hpY]`. Apply `hΦ` to reduce the goal to its premises. Rewrite using `[dist_pi_lt_iff hδ]`. Introduce `i`.
-
-Conclude with `(hq i).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem continuousAt_of_count_eq {Y : Set (σ → ℂ)} {d : ℕ} {A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)}
     {D : Set (Fin d → ℂ)} {N : ℕ} (l : (σ → ℂ) →L[ℂ] ℂ) (hD : IsOpen D)
@@ -209,35 +201,31 @@ theorem continuousAt_of_count_eq {Y : Set (σ → ℂ)} {d : ℕ} {A : (σ → �
   exact (hq i).2.2
 
 /- English proof (translation)
-Establish `hf0 : fibreDiscr Y A l N y₀ = 0`. Unfold `fibreDiscr`. Rewrite using `[dif_neg hN]`. Take `⟨ρ, hρ, hρD⟩` from `Metric.isOpen_iff.1 hD y₀ hy₀`. Establish `hKD : closedBall y₀ (ρ / 2) ⊆ D` using `(closedBall_subset_ball (by linarith)).trans hρD`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hYK` using `hproper _ hKD (isCompact_closedBall y₀ (ρ / 2))`. Take `⟨C, hC1, hC⟩` from `exists_bound_pairs l hYK`. Establish `hS₀fin : {x | x ∈ Y ∧ A x = y₀}.Finite` using `Set.finite_of_encard_le_coe (hle y₀ hy₀)`. Establish `hS₀card : hS₀fin.toFinset.card < N`. Establish `h1` using `hS₀fin.encard_eq_coe_toFinset_card`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : {x | x ∈ Y ∧ A x = y₀}.encard < N` using `lt_of_le_of_ne (hle y₀ hy₀) hN`. Rewrite `h3` using `[h1]`. Conclude with `h3` after adjusting the coercions. Unfold `ContinuousAt`. Rewrite using `[hf0, Metric.tendsto_nhds]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ε hε`. Establish `hcont : Continuous fun η : ℝ => ‖l‖ * (2 * η) * C ^ (N * N)` using `by fun_prop`. Choose the witnesses or unpack the hypotheses as in `⟨η, hηε, hη⟩ : ∃ η : ℝ, ‖l‖ * (2 * η) * C ^ (N * N) < ε ∧ η ∈ Ioi (0 : ℝ) := by`. Establish `h0 : (fun η : ℝ => ‖l‖ * (2 * η) * C ^ (N * N)) 0 < ε` using `by simpa using hε`. Conclude with `((((hcont.tendsto 0).eventually (gt_mem_nhds h0)).filter_mono (nhdsWithin_le_nhds (s := Ioi 0))).and self_mem_nhdsWithin).exists`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hclosed : IsClosed {x : σ → ℂ | ∀ s ∈ {x | x ∈ Y ∧ A x = y₀}, η ≤ dist x s}`. Establish `: {x : σ → ℂ | ∀ s ∈ {x | x ∈ Y ∧ A x = y₀}, η ≤ dist x s} = ⋂ s ∈ {x | x ∈ Y ∧ A x = y₀}, {x | η ≤ dist x s}`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isClosed_biInter fun s _ => isClosed_le continuous_const (continuous_id.dist continuous_const)`. Establish `hKη` using `hYK.inter_right hclosed`. Establish `hy₀K : y₀ ∉ A '' ({x | x ∈ Y ∧ A x ∈ closedBall y₀ (ρ / 2)} ∩ {x : σ → ℂ | ∀ s ∈ {x | x ∈ Y ∧ A x = y₀}, η ≤ dist x s})`. Introduce and unpack `⟨x, hx, hxy⟩`. Use `hx.2 x ⟨hx.1.1, hxy⟩` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[dist_self]`. Conclude with `absurd hη (not_lt.2 this)`. Establish `hnear` using `((hKη.image A.continuous).isClosed.isOpen_compl).mem_nhds hy₀K`. Use `filter_upwards [hnear, ball_mem_nhds y₀ (by linarith : (0 : ℝ) < ρ / 2)] with y hyK hyb`. Rewrite using `[dist_zero_right]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hyK' : y ∈ closedBall y₀ (ρ / 2)` using `ball_subset_closedBall hyb`. Distinguish the cases in `hNy : {x | x ∈ Y ∧ A x = y}.encard = N`. Use `swap`. Unfold `fibreDiscr`. Rewrite using `[dif_neg hNy, norm_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hε`. Unfold `fibreDiscr`. Rewrite using `[dif_pos hNy]`. Establish `hTcard : (Set.finite_of_encard_eq_coe hNy).toFinset.card = N`. Use `(Set.finite_of_encard_eq_coe hNy).encard_eq_coe_toFinset_card` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[hNy]`. Conclude with `this.symm` after adjusting the coercions. Establish `hclose : ∀ x ∈ (Set.finite_of_encard_eq_coe hNy).toFinset, ∃ s ∈ hS₀fin.toFinset, dist x s < η`. Introduce `x hx`. Rewrite `hx` using `[Set.Finite.mem_toFinset]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hno`. Simplify using `only [not_exists, not_and, not_lt] at hno`. Apply `hyK` to reduce the goal to its premises. Use `⟨x, ⟨⟨hx.1, by rw [hx.2]; exact hyK'⟩, fun s hs => hno s (hS₀fin.mem_toFinset.2 hs)⟩, hx.2⟩` and prove the remaining obligations. Use `choose! c hcS hcd using hclose`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, b, hb, hab, hcab⟩` from `Finset.exists_ne_map_eq_of_card_lt_of_maps_to (by rw [hTcard]; exact hS₀card) hcS`. Establish `hdist : dist a b < 2 * η`. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : (a, b) ∈ (Set.finite_of_encard_eq_coe hNy).toFinset.offDiag` using `Finset.mem_offDiag.2 ⟨ha, hb, hab⟩`. Rewrite using `[← Finset.mul_prod_erase _ _ hmem, norm_mul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ‖l a - l b‖ ≤ ‖l‖ * (2 * η)`. Rewrite using `[← map_sub]`. Use `(l.le_opNorm _).trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))` and prove the remaining obligations. Rewrite using `[← dist_eq_norm]`. Conclude with `hdist.le`.
-
-Establish `h2 : ‖∏ q ∈ (Set.finite_of_encard_eq_coe hNy).toFinset.offDiag.erase (a, b), (l q.1 - l q.2)‖ ≤ C ^ (N * N)`. Apply `norm_prod_le_pow _ _ hC1` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Introduce `q hq`. Establish `hq'` using `Finset.mem_of_mem_erase hq`.
-
-Rewrite `hq'` using `[Finset.mem_offDiag, Set.Finite.mem_toFinset, Set.Finite.mem_toFinset]`. Conclude with `hC _ ⟨hq'.1.1, by rw [hq'.1.2]; exact hyK'⟩ _ ⟨hq'.2.1.1, by rw [hq'.2.1.2]; exact hyK'⟩`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem continuousAt_of_count_ne {Y : Set (σ → ℂ)} {d : ℕ} {A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)}
     {D : Set (Fin d → ℂ)} {N : ℕ} (l : (σ → ℂ) →L[ℂ] ℂ) (hD : IsOpen D)
@@ -333,21 +321,19 @@ theorem continuousAt_of_count_ne {Y : Set (σ → ℂ)} {d : ℕ} {A : (σ → �
     _ < ε := hηε
 
 /- English proof (translation)
-Take `⟨p, hp, hrange⟩` from `exists_enum hN`. Establish `hpY : ∀ i, p i ∈ Y ∧ A (p i) = y₀` using `fun i => by`. Establish `: p i ∈ range p` using `mem_range_self i`. Rewrite `this` using `[hrange]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `choose O V h hO hV hpV hh hAh hYV using fun i => hsec (p i) (hpY i).1 (hpY i).2`. Establish `hyO : ∀ i, y₀ ∈ O i ∧ h i y₀ = p i`. Introduce `i`. Establish `: p i ∈ h i '' O i`. Rewrite using `[← hYV i]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(hpY i).1, hpV i⟩`. Take `⟨o, ho, hoe⟩` from `this`. Establish `hoy : o = y₀` using `by rw [← hAh i o ho, hoe, (hpY i).2]`. Substitute `hoy` using the available equality. Conclude with `⟨ho, hoe⟩`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ∀ᶠ y in 𝓝 y₀, ∀ q : Fin N × Fin N, q.1 ≠ q.2 → h q.1 y ≠ h q.2 y`. Rewrite using `[Filter.eventually_all]`. Introduce `q`. Distinguish the cases in `hq : q.1 = q.2`. Conclude with `Filter.Eventually.of_forall fun _ h' => absurd hq h'`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ContinuousAt (fun y => h q.1 y - h q.2 y) y₀` using `(hh q.1 y₀ (hyO q.1).1).continuousAt.sub (hh q.2 y₀ (hyO q.2).1).continuousAt`. Establish `h0 : h q.1 y₀ - h q.2 y₀ ≠ 0`. Rewrite using `[(hyO _).2, (hyO _).2, sub_ne_zero]`. Conclude with `fun e => hq (hp e)`. Conclude with `(hc.eventually_ne h0).mono fun y hy _ => sub_ne_zero.1 hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hOev : ∀ᶠ y in 𝓝 y₀, ∀ i, y ∈ O i` using `Filter.eventually_all.2 fun i => (hO i).mem_nhds (hyO i).1`. Establish `heq : (fun y => pairProd l (fun i => h i y)) =ᶠ[𝓝 y₀] fibreDiscr Y A l N` using `by filter_upwards [hne, hOev, hD.mem_nhds hy₀] with y hy hyO' hyD`. Use `(fibreDiscr_eq_pairProd l (hle y hyD) (fun i j hij => ?_) (fun i => ⟨?_, hAh i y (hyO' i)⟩)).symm` and prove the remaining obligations. Assume the negation of the conclusion as `hne'`. Conclude with `hy (i, j) hne' hij`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: h i y ∈ Y ∩ V i`. Rewrite using `[hYV i]`. Conclude with `mem_image_of_mem _ (hyO' i)`. Conclude with `this.1`. Use `AnalyticAt.congr ?_ heq` and prove the remaining obligations.
-
-Unfold `pairProd`. Apply `Finset.analyticAt_fun_prod` to reduce the goal to its premises. Introduce `q _`. Conclude with `((l.analyticAt _).comp (hh q.1 y₀ (hyO q.1).1)).sub ((l.analyticAt _).comp (hh q.2 y₀ (hyO q.2).1))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem analyticAt_of_sections {Y : Set (σ → ℂ)} {d : ℕ} {A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)}
     {D : Set (Fin d → ℂ)} {N : ℕ} (l : (σ → ℂ) →L[ℂ] ℂ) (hD : IsOpen D)
@@ -400,17 +386,15 @@ theorem analyticAt_of_sections {Y : Set (σ → ℂ)} {d : ℕ} {A : (σ → ℂ
   exact ((l.analyticAt _).comp (hh q.1 y₀ (hyO q.1).1)).sub ((l.analyticAt _).comp (hh q.2 y₀ (hyO q.2).1))
 
 /- English proof (translation)
-Introduce `σ _ Y d A D N l hD _ hproper hopen hcov y₀ hy₀`. Take `⟨U, g, hU, hy₀U, hUD, hg, hgdense, hgN⟩` from `hcov.2 y₀ hy₀`. Establish `hle` using `hcov.1`. Establish `hcont : ∀ y ∈ D, ContinuousAt (fibreDiscr Y A l N) y` using `fun y hy => by`. Distinguish the cases in `h : {x | x ∈ Y ∧ A x = y}.encard = N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `continuousAt_of_count_eq l hD hopen hle hy h`. Conclude with `continuousAt_of_count_ne l hD hproper hle hy h`. Establish `hdiff : DifferentiableOn ℂ (fibreDiscr Y A l N) (U ∩ {t | g t ≠ 0})` using `fun t ht => (analyticAt_of_sections l hD hle (hUD ht.1) (hgN t ht.1 ht.2).1 (hgN t ht.1 ht.2).2).differentiableAt.differentiableWithinAt`. Establish `hbdd : ∀ τ ∈ U, ∃ M ∈ 𝓝 τ, Bornology.IsBounded (fibreDiscr Y A l N '' (M ∩ U ∩ {t | g t ≠ 0}))`. Introduce `τ hτ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ρ, hρ, hρD⟩` from `Metric.isOpen_iff.1 hD τ (hUD hτ)`. Establish `hKD : closedBall τ (ρ / 2) ⊆ D` using `(closedBall_subset_ball (by linarith)).trans hρD`. Take `⟨C, hC1, hC⟩` from `exists_bound_pairs l (hproper _ hKD (isCompact_closedBall τ (ρ / 2)))`. Use `⟨closedBall τ (ρ / 2), closedBall_mem_nhds τ (by linarith), ?_⟩` and prove the remaining obligations. Rewrite using `[isBounded_iff_forall_norm_le]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨C ^ (N * N), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `norm_fibreDiscr_le l hC1 hC ht.1.1`. Take `⟨F, hF, hFf⟩` from `RiemannExtensionAnalytic.proof d U g (fibreDiscr Y A l N) hU hg.differentiableOn hgdense hdiff hbdd`. Establish `hclos : U ⊆ closure (U ∩ {t | g t ≠ 0})`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Rewrite using `[_root_.mem_closure_iff]`. Introduce `o ho hto`. Take `⟨s, hs, hgs⟩` from `hgdense (o ∩ U) (ho.inter hU) inter_subset_right ⟨t, hto, ht⟩`. Conclude with `⟨s, hs.1, hs.2, hgs⟩`.
-
-Establish `hEq : EqOn F (fibreDiscr Y A l N) U` using `Set.EqOn.of_subset_closure hFf hF.continuousOn (fun t ht => (hcont t (hUD ht)).continuousWithinAt) inter_subset_left hclos`. Establish `hfU : DifferentiableOn ℂ (fibreDiscr Y A l N) U` using `hF.congr fun t ht => (hEq ht).symm`. Conclude with `RiemannExtensionAnalytic.analyticOnNhd_of_differentiableOn hU hfU y₀ hy₀U`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem proof : FibreDiscriminantHolomorphic.Statement := by
   intro σ _ Y d A D N l hD _ hproper hopen hcov y₀ hy₀

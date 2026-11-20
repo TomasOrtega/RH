@@ -3,19 +3,17 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ O _ io htf f h p q m n hq e hf hh`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `hm : IsLocalRing.maximalIdeal V = Ideal.span {π}` using `hπ.maximalIdeal_eq`. Establish `hπn : π ^ n ∈ IsLocalRing.maximalIdeal V ^ n`. Rewrite using `[hm, Ideal.span_singleton_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_span_singleton_self _`. Establish `key : π ^ n * q ∣ p → ∃ r ∈ IsLocalRing.maximalIdeal V ^ n, p = r * q`. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨π ^ n * c, Ideal.mul_mem_right _ _ hπn, by rw [hc]; ring⟩`. Break down `ValuationRing.dvd_total (π ^ n * q) p with hd | ⟨c, hc⟩` into its components or cases.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails.
 
-Conclude with `key hd`. Distinguish the cases in `hu : IsUnit c`. Apply `key` to reduce the goal to its premises. Take `⟨u, rfl⟩` from `hu`. Conclude with `⟨(u⁻¹ : Vˣ), by rw [hc, mul_assoc, Units.mul_inv, mul_one]⟩`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-It suffices to derive a contradiction. Apply `hh` to reduce the goal to its premises. Establish `hcm : c ∈ IsLocalRing.maximalIdeal V` using `hu`. Rewrite `hcm` using `[hm, Ideal.mem_span_singleton]`. Take `⟨d, rfl⟩` from `hcm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hp : p ≠ 0`. Introduce and unpack `rfl`. Conclude with `mul_ne_zero (pow_ne_zero n hπ.ne_zero) hq (by simpa using hc)`. Rewrite `hf`, the goal using `[hm, Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Take `⟨g, rfl⟩` from `hf`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨io d * g, ?_⟩` and prove the remaining obligations. Establish `h0` using `htf p hp (h - io (π ^ (m + 1)) * (io d * g)) (by`. Establish `hc'` using `congrArg io hc`. Simplify using `only [map_mul, map_pow] at hc' e ⊢`. Take the linear combination `(io π ^ m * g) * hc' - e)`.
-
-Conclude with `sub_eq_zero.mp h0`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_mem_pow_of_ratio_of_torsionFree :
     ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (O : Type) [CommRing O]

@@ -22,9 +22,9 @@ section gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, map_add, hx, hy]`. Consider the case `tmul a x`. Establish `e : compInf F E w (a ⊗ₜ[F] x) = evInf F w a ⊗ₜ[F] x` using `rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[e, GlobalTheory.OppLinChar.trace_tmul', GlobalTheory.OppLinChar.trace_tmul', map_mul, AlgHom.commutes]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evInf_trace [FiniteDimensional F E] (w : InfinitePlace F) (z : AF F ⊗[F] E) :
     evInf F w (Algebra.trace (AF F) (AF F ⊗[F] E) z) =
@@ -37,9 +37,9 @@ theorem evInf_trace [FiniteDimensional F E] (w : InfinitePlace F) (z : AF F ⊗[
     rw [e, GlobalTheory.OppLinChar.trace_tmul', GlobalTheory.OppLinChar.trace_tmul', map_mul, AlgHom.commutes]
 
 /- English proof (translation)
-Use `Prod.ext (funext fun w => hi w) (GlobalTheory.AdelicU.af_ext fun u => ?_)` and prove the remaining obligations. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Express the relevant statement in the definitionally equal form `_ = singleV F u _ u`. Conclude with `(RestrictedProduct.single_eq_same _ u _).symm`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = singleV F v _ u`. Conclude with `(hf u h).trans (RestrictedProduct.single_eq_of_ne _ _ h).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_single (v : HeightOneSpectrum (𝓞 F)) (y : AF F)
     (hi : ∀ w, evInf F w y = 0) (hf : ∀ v' ≠ v, evFin F v' y = 0) :
@@ -54,7 +54,7 @@ theorem eq_single (v : HeightOneSpectrum (𝓞 F)) (y : AF F)
     exact (hf u h).trans (RestrictedProduct.single_eq_of_ne _ _ h).symm
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul a x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_eq_sigR (σ : E →ₐ[F] E) (y : AF F ⊗[F] E) : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ y = sigR (AF F) σ y := by
   induction y using TensorProduct.induction_on with
@@ -63,17 +63,15 @@ theorem cA_eq_sigR (σ : E →ₐ[F] E) (y : AF F ⊗[F] E) : GlobalTheory.Indef
   | tmul a x => rfl
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ hcm.2.2.1`. Use `set z : AF F ⊗[F] E := ∑ i, ∑ j, x i j * inclR (AF F) (b j i) with hz`. Use `set a : Fv F v := ∑ i, ∑ j, splitProj τ (compFin F E v (x i j)) * τ (b j i) with ha`. Establish `hzi : ∀ w, compInf F E w z = 0` using `fun w => by`. Simplify using `only [hz, map_sum, map_mul, hinf, zero_mul, Finset.sum_const_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hzf : ∀ v' ≠ v, compFin F E v' z = 0` using `fun v' h => by`. Simplify using `only [hz, map_sum, map_mul, hfin v' h, zero_mul, Finset.sum_const_zero]`. Establish `hpi : ∀ t : E →ₐ[F] Fv F v, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW t z = ∑ i, ∑ j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW t (x i j) * t (b j i)` using `fun t => by`. Simplify using `only [hz, map_sum, map_mul, GlobalTheory.OppLinChar.piW_inclR]`. Establish `h1 : splitProj τ (compFin F E v z) = a` using `hpi τ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : splitProj (τ.comp σ) (compFin F E v z) = a`. Use `(hpi (τ.comp σ)).trans ?_` and prove the remaining obligations. Rewrite using `[ha, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW (τ.comp σ) (x i j) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW τ (x j i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hx i j, ← cA_eq_sigR]`. Conclude with `GlobalTheory.OppLinChar.piW_cA hcm τ (x j i)`. Rewrite using `[e, AlgHom.comp_apply, hb i j]`. Both sides reduce to the same expression. Use `set y : AF F := algebraMap F (AF F) (1 / 2) * Algebra.trace (AF F) (AF F ⊗[F] E) z with hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv : evFin F v y = a`. Rewrite using `[hy, map_mul, AlgHom.commutes, GlobalTheory.OppLinChar.evFin_trace, GlobalTheory.OppLinChar.trace_split hcm τ, h1, h2, ← two_mul, ← mul_assoc, ← map_ofNat (algebraMap F (Fv F v)) 2, ← map_mul]`. Evaluate the numerical expressions. Establish `hs` using `eq_single v y (fun w => by rw [hy, map_mul, evInf_trace, hzi, map_zero, mul_zero]) (fun v' h => by rw [hy, map_mul, GlobalTheory.OppLinChar.evFin_trace, hzf v' h, map_zero, mul_zero])`. Rewrite `hs` using `[hv]`.
-
-Rewrite using `[hs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem psi_half_trace {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (v : HeightOneSpectrum (𝓞 F))
     (τ : E →ₐ[F] Fv F v) (ψ : AddChar (AF F) ℂ) {n : ℕ}
@@ -118,7 +116,7 @@ theorem psi_half_trace {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (v : HeightOn
 end gen
 
 /- English proof (translation)
-Introduce `D n v τ ψ x hinf hfin β`. Establish `hx : ∀ i j, sigR (AF D.host.F) D.sp.cm.sig (x.1 j i) = x.1 i j` using `fun i j => congrFun (congrFun x.2 i) j`. Establish `hb : ∀ i j, D.sp.cm.sig (β.1 j i) = β.1 i j` using `fun i j => congrFun (congrFun β.2 i) j`. Conclude with `psi_half_trace (isCMExt_host D) v τ ψ x.1 β.1 hx hb hinf hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pch_rat_split : ∀ (D : D7) (n : ℕ) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
     (ψ : AddChar (AF D.host.F) ℂ) (x : hermA D n),

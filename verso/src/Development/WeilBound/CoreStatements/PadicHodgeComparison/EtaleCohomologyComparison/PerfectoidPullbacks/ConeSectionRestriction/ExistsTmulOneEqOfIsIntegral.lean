@@ -9,7 +9,7 @@ open TensorProduct
 namespace CrystallineSemistableComparison.Pb.EtaleIntegralityFacts
 
 /- English proof (translation)
-Use `⟨Polynomial.X * (Polynomial.X - Polynomial.C 1), Polynomial.monic_X.mul (Polynomial.monic_X_sub_C 1), ?_⟩` and prove the remaining obligations. Simplify using `[Polynomial.eval₂_mul, Polynomial.eval₂_sub, mul_sub, he]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isIntegral_of_mul_self_eq {R S : Type*} [CommRing R] [CommRing S] [Algebra R S] {e : S}
     (he : e * e = e) : IsIntegral R e := by
@@ -18,13 +18,13 @@ theorem isIntegral_of_mul_self_eq {R S : Type*} [CommRing R] [CommRing S] [Algeb
   simp [Polynomial.eval₂_mul, Polynomial.eval₂_sub, mul_sub, he]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `(TensorProduct.toIntegralClosure_bijective_of_smooth (R := P) (S := A) (B := FractionRing P)).2 ⟨t, ht⟩`. Establish `key : ∀ u : A ⊗[P] integralClosure P (FractionRing P), ∃ a : A, a ⊗ₜ[P] (1 : FractionRing P) = ((TensorProduct.toIntegralClosure P A (FractionRing P) u : _) : A ⊗[P] FractionRing P)`. Introduce `u`. Proceed by induction on `u with`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a y`. Take `⟨p, hp⟩` from `IsIntegrallyClosed.isIntegral_iff.mp y.2`. Use `⟨p • a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = a ⊗ₜ[P] (y : FractionRing P)`. Rewrite using `[TensorProduct.smul_tmul, ← hp, Algebra.algebraMap_eq_smul_one]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [TensorProduct.add_tmul, ha, hb, map_add, Subalgebra.coe_add]⟩`. Take `⟨a, ha⟩` from `key u`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, by rw [ha, hu]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_tmul_one_eq_of_isIntegral {P A : Type} [CommRing P] [IsDomain P] [IsIntegrallyClosed P]
     [CommRing A] [Algebra P A] [Algebra.Smooth P A] (t : A ⊗[P] FractionRing P)
@@ -50,31 +50,27 @@ theorem exists_tmul_one_eq_of_isIntegral {P A : Type} [CommRing P] [IsDomain P] 
   exact ⟨a, by rw [ha, hu]⟩
 
 /- English proof (translation)
-Establish `hι : Function.Injective (fun a : A => a ⊗ₜ[P] (1 : FractionRing P))`. Establish `hinj : Function.Injective (Algebra.linearMap P (FractionRing P))` using `IsFractionRing.injective P (FractionRing P)`. Establish `h2` using `Module.Flat.lTensor_preserves_injective_linearMap (M := A) (Algebra.linearMap P (FractionRing P)) hinj`. Introduce `a b hab`. Apply `(TensorProduct.rid P A).symm.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h2` to reduce the goal to its premises. Simplify using `using hab`. Take `⟨I, hI, Ai, hAi, hAlg, e, -⟩` from `(Algebra.FormallyEtale.iff_exists_algEquiv_prod (FractionRing P) (FractionRing P ⊗[P] A)).mp inferInstance`. Use `Fintype.ofFinite I` as an intermediate fact. Set `φ : A ⊗[P] FractionRing P ≃+* (Π i, Ai i)` to `(Algebra.TensorProduct.comm P A (FractionRing P)).toRingEquiv.trans e.toRingEquiv`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hε : ∀ i, ∃ a : A, a ⊗ₜ[P] (1 : FractionRing P) = φ.symm (Pi.single i 1)`. Introduce `i`. Use `exists_tmul_one_eq_of_isIntegral _ (isIntegral_of_mul_self_eq ?_)` and prove the remaining obligations. Rewrite using `[← map_mul, ← Pi.single_mul, one_mul]`. Use `choose a ha using hε`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i₀, hi₀⟩ : ∃ i, a i ∉ q` from `by by_contra! h`. Establish `hsum : (∑ i, a i) ∈ q` using `Ideal.sum_mem q fun i _ => h i`. Establish `h1 : (∑ i, a i) = 1`. Apply `hι` to reduce the goal to its premises. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TensorProduct.sum_tmul, Finset.sum_congr rfl (fun i _ => ha i), ← map_sum, Finset.univ_sum_single]`. Conclude with `map_one φ.symm`. Conclude with `(Ideal.IsPrime.ne_top inferInstance) ((Ideal.eq_top_iff_one q).2 (h1 ▸ hsum))`. Use `⟨a i₀, hi₀, ?_⟩` and prove the remaining obligations. Set `F : A →+* Ai i₀` to `(Pi.evalRingHom Ai i₀).comp (φ.toRingHom.comp (Algebra.TensorProduct.includeLeftRingHom))`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hF : ∀ x : A, F x = φ (x ⊗ₜ[P] (1 : FractionRing P)) i₀` using `fun x => rfl`. Establish `hFg : IsUnit (F (a i₀))`. Rewrite using `[hF, ha, RingEquiv.apply_symm_apply, Pi.single_eq_same]`. Conclude with `isUnit_one`. Set `ψ : Localization.Away (a i₀) →+* Ai i₀` to `IsLocalization.Away.lift (a i₀) hFg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hψ : Function.Injective ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨⟨y, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers (a i₀)) x`. Establish `hspec` using `IsLocalization.mk'_spec (Localization.Away (a i₀)) y s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hFy : F y = 0`. Establish `h3` using `congrArg ψ hspec`. Rewrite `h3` using `[map_mul, hx, zero_mul]`. Establish `h4 : ψ (algebraMap A (Localization.Away (a i₀)) y) = F y` using `IsLocalization.lift_eq _ _`. Rewrite using `[← h4, ← h3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hyg : y * a i₀ = 0`. Apply `hι` to reduce the goal to its premises. Simplify using `only`. Establish `hmul : (y * a i₀) ⊗ₜ[P] (1 : FractionRing P) = (y ⊗ₜ[P] (1 : FractionRing P)) * (a i₀ ⊗ₜ[P] (1 : FractionRing P))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hmul, zero_tmul]`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, ha, RingEquiv.apply_symm_apply, map_zero]`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i₀`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `hk` using the available equality. Simplify using `only [Pi.mul_apply, Pi.single_eq_same, mul_one, Pi.zero_apply]`. Conclude with `hFy`. Simplify using `[Pi.mul_apply, Pi.single_eq_of_ne hk]`. Establish `hy0 : algebraMap A (Localization.Away (a i₀)) y = 0`.
-
-Establish `h5` using `congrArg (algebraMap A (Localization.Away (a i₀))) hyg`. Rewrite `h5` using `[map_mul, map_zero]`. Conclude with `(IsUnit.mul_left_eq_zero (IsLocalization.Away.algebraMap_isUnit (a i₀))).1 h5`. Rewrite `hy0` using `[← hspec]`. Conclude with `(IsUnit.mul_left_eq_zero (IsLocalization.map_units _ s)).1 hy0`.
-
-Conclude with `hψ.isDomain ψ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_away_isDomain_of_etale {P A : Type} [CommRing P] [IsDomain P] [IsIntegrallyClosed P]
     [CommRing A] [Algebra P A] [Algebra.Etale P A] (q : Ideal A) [q.IsPrime] :

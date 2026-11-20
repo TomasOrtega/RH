@@ -4,15 +4,15 @@ open NumberField IsDedekindDomain Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hb : β ∈ A` using `(A.valuation_le_one_iff β).mp hβ`. Establish `hb' : β' ∈ A` using `(A.valuation_le_one_iff β').mp hβ'`. Use `set b : A := ⟨β, hb⟩`. Use `set b' : A := ⟨β', hb'⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, hk⟩` from `Polynomial.binomExpansion (f.map (algebraMap ℤ A)) b (b' - b)`. Rewrite `hk` using `[add_sub_cancel, derivative_map, eval_map_algebraMap, eval_map_algebraMap, eval_map_algebraMap]`. Establish `hc` using `congrArg (fun x : A => (x : Ω)) hk`. Establish `e : ∀ (p : ℤ[X]) (x : A), ((aeval x p : A) : Ω) = aeval (x : Ω) p`. Introduce `p x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(aeval_algebraMap_apply Ω x p).symm`. Move the coercions through the operations in `at hc`. Rewrite `hc` using `[e, e, e]`. Establish `hβ0 : (b : Ω) = β` using `rfl`. Establish `hβ1 : (b' : Ω) = β'` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc` using `[hβ0, hβ1, h0, h0']`. Establish `hne' : β' - β ≠ 0` using `sub_ne_zero.mpr (Ne.symm hne)`. Establish `hD : aeval β (derivative f) = -((k : Ω) * (β' - β))`. Establish `: (β' - β) * (aeval β (derivative f) + (k : Ω) * (β' - β)) = 0` using `by linear_combination -hc`. Use `(mul_eq_zero.mp this).resolve_left hne'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `this`. Apply `hd` to reduce the goal to its premises. Rewrite using `[hD, Valuation.map_neg, Valuation.map_mul, Valuation.map_sub_swap]`. Establish `hk1 : A.valuation (k : Ω) ≤ 1` using `(A.valuation_le_one_iff _).mpr k.2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eq_of_root_congr_of_deriv_unit {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (f : Polynomial ℤ) (β β' : Ω)
     (hβ : A.valuation β ≤ 1) (hβ' : A.valuation β' ≤ 1) (h0 : Polynomial.aeval β f = 0) (h0' : Polynomial.aeval β' f = 0)

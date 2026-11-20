@@ -14,11 +14,11 @@ section Terms
 variable {A : Type u} [CommRing A] [IsNoetherianRing A] [IsLocalRing A]
 
 /- English proof (translation)
-Rewrite using `[← length_coker_quot p x]`. Establish `hr : LinearMap.range (LinearMap.lsmul A (A ⧸ p.asIdeal) x) = Submodule.map (p.asIdeal : Submodule A A).mkQ (Ideal.span {x} : Submodule A A)`. Use extensionality with `y`. Take `⟨b, rfl⟩` from `Submodule.mkQ_surjective _ y`. Simplify using `only [LinearMap.mem_range, LinearMap.lsmul_apply, Submodule.mem_map, Ideal.mem_span_singleton']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Take `⟨c, rfl⟩` from `Submodule.mkQ_surjective _ z`. Conclude with `⟨c * x, ⟨c, rfl⟩, by rw [← hz, Submodule.mkQ_apply, Submodule.mkQ_apply, ← Submodule.Quotient.mk_smul, smul_eq_mul, mul_comm]⟩`. Introduce and unpack `⟨a, ⟨c, rfl⟩, hab⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨Submodule.mkQ _ c, by rw [← hab, Submodule.mkQ_apply, Submodule.mkQ_apply, ← Submodule.Quotient.mk_smul, smul_eq_mul, mul_comm]⟩`. Conclude with `((Submodule.quotEquivOfEq _ _ hr).trans (Submodule.quotientQuotientEquivQuotientSup _ _)).length_eq`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ordMod_eq_length_quot_sup (p : PrimeSpectrum A) (x : A) :
     ordMod p x = length A (A ⧸ (p.asIdeal ⊔ Ideal.span {x})) := by
@@ -41,11 +41,11 @@ theorem ordMod_eq_length_quot_sup (p : PrimeSpectrum A) (x : A) :
     (Submodule.quotientQuotientEquivQuotientSup _ _)).length_eq
 
 /- English proof (translation)
-Establish `hiff` using `dim_quot_eq_one_iff hdim p.asIdeal`. Rewrite using `[ordMod_eq_length_quot_sup, finsum_eq_if, finsum_eq_if]`. Distinguish the cases in `hm : p.asIdeal.IsMaximal`. Rewrite using `[if_neg (fun h => hiff.mp h hm), if_neg (fun h => h.2 (eq_maximalIdeal hm))]`. Establish `hne : p.asIdeal ≠ maximalIdeal A` using `fun h => hm (h ▸ maximalIdeal.isMaximal A)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos (hiff.mpr hm)]`. Distinguish the cases in `hle : Module.annihilator A M ≤ p.asIdeal`. Establish `hmin : p.asIdeal ∈ (Module.annihilator A M).minimalPrimes` using `⟨⟨p.isPrime, hle⟩, fun q hq hqp => by`. Use `hq.1` as an intermediate fact. Conclude with `(eq_of_not_max_of_le hdim hm hqp).le⟩`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos ⟨hmin, hne⟩]`. Rewrite using `[if_neg (fun h => hle h.1.le)]`. Establish `h0` using `locLen_eq_zero_of_notMem (N := M) p (by rw [Module.mem_support_iff_of_finite]; exact hle)`. Unfold `locLen at h0`. Rewrite using `[h0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lengthTerm_eq (hdim : ringKrullDim A = 1) (M : Type v) [AddCommGroup M] [Module A M]
     [Module.Finite A M] (x : A) (p : PrimeSpectrum A) :
@@ -78,9 +78,9 @@ theorem lengthTerm_eq (hdim : ringKrullDim A = 1) (M : Type v) [AddCommGroup M] 
 end Terms
 
 /- English proof (translation)
-Introduce `A _ _ _ M _ _ _ x hdim hfin`. Establish `hq : (Ideal.span {x} • ⊤ : Submodule A M) = LinearMap.range (LinearMap.lsmul A M x)`. Rewrite using `[Submodule.ideal_span_singleton_smul, range_lsmul_eq]`. Establish `ht : Submodule.torsionBy A M x = LinearMap.ker (LinearMap.lsmul A M x)` using `rfl`. Rewrite `hfin`, the goal using `[hq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[ht, (h A M x hdim hfin).2]`. Use `congr 1`. Conclude with `finsum_congr (lengthTerm_eq hdim M x)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem NumbersBirationalInvariance.of_lengthFormulaDimOne (h : LengthFormulaDimOne.Statement.{u, v}) :
     IndefiniteRowSideFullHecke.NumbersDVR.NumbersBirationalInvariance.Statement.{u, v} := by
@@ -94,7 +94,7 @@ theorem NumbersBirationalInvariance.of_lengthFormulaDimOne (h : LengthFormulaDim
   exact finsum_congr (lengthTerm_eq hdim M x)
 
 /- English proof (translation)
-The claim follows from `NumbersBirationalInvariance.of_lengthFormulaDimOne lengthFormulaDimOne`.
+A detailed English derivation is pending.
 -/
 theorem NumbersBirationalInvariance.proof : IndefiniteRowSideFullHecke.NumbersDVR.NumbersBirationalInvariance.Statement.{u, v} :=
   NumbersBirationalInvariance.of_lengthFormulaDimOne lengthFormulaDimOne

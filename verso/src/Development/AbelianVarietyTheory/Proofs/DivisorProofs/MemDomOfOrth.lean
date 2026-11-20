@@ -34,7 +34,7 @@ def secM (X : Data E r) (x : Frame X.Ψ r) (w : V (nd X)) (τ : X.Ψ) : Matrix (
   mat x τ * yM X w τ * (mat x τ)⁻¹
 
 /- English proof (translation)
-Use `show gram τ.1 X.Gm (mat x τ * mat (nmat X w) τ) = _`. Rewrite using `[FrameDegreeData.gram_mul, hx τ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gram_cpt (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (w : V (nd X)) (τ : X.Ψ) :
     gram τ.1 X.Gm (mat (cpt X x w) τ) = PoinPf.Gw X w τ := by
@@ -43,7 +43,7 @@ theorem gram_cpt (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (w : V (nd 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Simplify using `only [FrameDegreeData.bOf, FrameDegreeData.uOf, gram_cpt X hx, gsB, gsU]`. Use `congrArg (fun d => FrameDegreeData.uMat (PoinPf.Gw X w τ) * Matrix.diagonal d) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using `only [FrameDegreeData.sOf, FrameDegreeData.dOf, FrameDegreeData.uOf, FrameDegreeData.gram_mul, gram_cpt X hx, gsS, gsU]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem bOf_cpt (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (w : V (nd X)) :
     FrameDegreeData.bOf X (cpt X x w) = fun τ => gsB X w τ := by
@@ -54,7 +54,7 @@ theorem bOf_cpt (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (w : V (nd X
   simp only [FrameDegreeData.sOf, FrameDegreeData.dOf, FrameDegreeData.uOf, FrameDegreeData.gram_mul, gram_cpt X hx, gsS, gsU]
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `congrArg Matrix.det (hx τ)`. Rewrite `h1` using `[FrameDegreeData.gram_eq, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul, zero_mul, Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 (fun a _ => ?_) h1.symm` and prove the remaining obligations. Conclude with `PoinPf.sgn_ne _ _` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem det_ne_of_orth (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.Ψ) : (mat x τ).det ≠ 0 := by
   intro h0
@@ -65,9 +65,9 @@ theorem det_ne_of_orth (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ :
   exact_mod_cast PoinPf.sgn_ne _ _
 
 /- English proof (translation)
-Introduce `τ`. Use `⟨det_ne_of_orth X hx τ, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `PoinPf.dmin_cpt_orth X hx 0 τ i`. Rewrite `h` using `[PoinPf.cpt_zero, PoinPf.Gw_zero, PoinPf.lminor_Jd]`. Rewrite using `[h, Complex.ofReal_re]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_self_pos.2 (PoinPf.psgn_ne _ _)`.
+A detailed English derivation is pending.
 -/
 theorem mem_dom_of_orth (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) : x ∈ X.dom := by
   intro τ
@@ -78,7 +78,7 @@ theorem mem_dom_of_orth (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) : x 
   exact mul_self_pos.2 (PoinPf.psgn_ne _ _)
 
 /- English proof (translation)
-Take `⟨R, hR, h⟩` from `PoinPf.good_ball X 0`. Conclude with `⟨R, hR, fun w hw => PoinPf.cpt_mem_dom X (mem_dom_of_orth X hx) hx (h w hw).1 (h w hw).2.1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ball (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) :
     ∃ R > 0, ∀ w ∈ Metric.ball (0 : V (nd X)) R, cpt X x w ∈ X.dom := by
@@ -86,11 +86,11 @@ theorem exists_ball (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) :
   exact ⟨R, hR, fun w hw => PoinPf.cpt_mem_dom X (mem_dom_of_orth X hx) hx (h w hw).1 (h w hw).2.1⟩
 
 /- English proof (translation)
-Use extensionality with `j c`. Simplify using `only [gsU, PoinPf.Gw_zero, FrameDegreeData.uMat, Matrix.of_apply, Matrix.one_apply]`. Use `split_ifs with h1 h2`. Both sides reduce to the same expression. Establish `: FrameDegreeData.rowc (PoinPf.Jd X) c = 0`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `m`. Simplify using `only [FrameDegreeData.rowc, PoinPf.Jd, Pi.zero_apply]`. Rewrite using `[Matrix.diagonal_apply_ne]`. Introduce `hc`. Establish `: ((Fin.castLE c.isLt.le m : Fin r) : ℕ) < c` using `m.isLt`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hc]`. Conclude with `lt_irrefl _ this`. Rewrite using `[this, Matrix.zero_vecMul, Pi.zero_apply, neg_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gsU_zero (X : Data E r) (τ : X.Ψ) : gsU X 0 τ = 1 := by
   ext j c
@@ -109,7 +109,7 @@ theorem gsU_zero (X : Data E r) (τ : X.Ψ) : gsU X 0 τ = 1 := by
   · rfl
 
 /- English proof (translation)
-Establish `hS : ∀ k, gsS X 0 τ k = 1`. Introduce `k`. Simplify using `only [gsS, gsU_zero, Matrix.transpose_one, Matrix.one_mul, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, PoinPf.Gw_zero, PoinPf.Jd, Matrix.diagonal_apply_eq, Complex.ofReal_re, PoinPf.abs_sgn, Real.sqrt_one, inv_one]`. Rewrite using `[gsB, gsU_zero, Matrix.one_mul]`. Simplify using `only [hS, Complex.ofReal_one, Matrix.diagonal_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gsB_zero (X : Data E r) (τ : X.Ψ) : gsB X 0 τ = 1 := by
   have hS : ∀ k, gsS X 0 τ k = 1 := by
@@ -121,25 +121,25 @@ theorem gsB_zero (X : Data E r) (τ : X.Ψ) : gsB X 0 τ = 1 := by
   simp only [hS, Complex.ofReal_one, Matrix.diagonal_one]
 
 /- English proof (translation)
-Rewrite using `[yM, PoinPf.nmat_zero, gsB_zero, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem yM_zero (X : Data E r) (τ : X.Ψ) : yM X 0 τ = 1 := by
   rw [yM, PoinPf.nmat_zero, gsB_zero, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[secM, yM_zero, Matrix.mul_one, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (det_ne_of_orth X hx τ))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem secM_zero (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.Ψ) : secM X x 0 τ = 1 := by
   rw [secM, yM_zero, Matrix.mul_one, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (det_ne_of_orth X hx τ))]
 
 /- English proof (translation)
-Rewrite using `[gsB, Matrix.mul_diagonal, gsU, FrameDegreeData.uMat_upper _ h, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gsB_lower (X : Data E r) (w : V (nd X)) (τ : X.Ψ) {a b : Fin r} (h : b < a) : gsB X w τ a b = 0 := by
   rw [gsB, Matrix.mul_diagonal, gsU, FrameDegreeData.uMat_upper _ h, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[gsB, Matrix.mul_diagonal, gsU, FrameDegreeData.uMat_diag, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gsB_diag (X : Data E r) (w : V (nd X)) (τ : X.Ψ) (a : Fin r) :
     gsB X w τ a a = ((gsS X w τ a : ℝ) : ℂ) := by

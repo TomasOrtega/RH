@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.rat_of_hypotheses | exact GlobalTheory.CovTop.rat_of_hypotheses | (intros; apply GlobalTheory.CovTop.rat_of_hypotheses <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.rational_cover_bound : Hypotheses2 → GlobalTheory.CovTop.Rat := by
   first | exact @GlobalTheory.CovTop.rat_of_hypotheses | exact GlobalTheory.CovTop.rat_of_hypotheses | (intros; apply GlobalTheory.CovTop.rat_of_hypotheses <;> assumption)

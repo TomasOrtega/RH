@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZV
 /- English proof (citation)
-Apply `GlobalTheory.FormFinite.isFinite_and_surjective_of_formIs` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FIsFiniteAndSurjectiveOfFormIs.lean&line=76#L76)
 -/

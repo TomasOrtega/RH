@@ -41,7 +41,7 @@ Both sides reduce to the same expression.
 example (A : CommRingCat.{0}) (F : Sm A) (n : ℕ) : Sheaf.H.{1} F n = Abelian.Ext (unitSh A) F n := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using ENat.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe x`. Establish `: d - m < x` using `by exact_mod_cast h`. Conclude with `(by omega : d < m + x)` after adjusting the coercions.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma enat_lt_add_of_sub_lt (d m : ℕ) (x : ℕ∞) (hm : m ≤ d) (h : ((d - m : ℕ) : ℕ∞) < x) : (d : ℕ∞) < (m : ℕ∞) + x := by
   induction x using ENat.recTopCoe with
@@ -51,19 +51,17 @@ lemma enat_lt_add_of_sub_lt (d m : ℕ) (x : ℕ∞) (hm : m ≤ d) (h : ((d - m
     exact_mod_cast (by omega : d < m + x)
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le (by exact_mod_cast hm) le_self_add`.
+A detailed English derivation is pending.
 -/
 lemma enat_lt_add_of_lt (d m : ℕ) (x : ℕ∞) (hm : d < m) : (d : ℕ∞) < (m : ℕ∞) + x :=
   lt_of_lt_of_le (by exact_mod_cast hm) le_self_add
 
 /- English proof (translation)
-Introduce `base q _ A B β hq δ d hsm hst n hn i`. Take `⟨K, hacy, htor, hstalk, hiso⟩` from `hP base q β hq i`. Establish `hn0 : (0 : ℤ) ≤ n` using `by omega`. Take `⟨N, rfl⟩` from `Int.eq_ofNat_of_zero_le hn0`. Establish `hdN : d < N` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e⟩` from `hiso N`. Establish `key : Subsingleton ((gamCx (unitSh A) K).homology N)`. Use `hH (Sm A) (unitSh A) K d (fun s k hk => hacy s k hk) ?_ N hdN` and prove the remaining obligations. Introduce `j m hjm`. Distinguish the cases in `hm : m ≤ d`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `hsm (K.homology m) (htor m) (d - m) ?_ j (by omega)` and prove the remaining obligations. Introduce `p hp`. Conclude with `hstalk p m (fun S D f u v hf hpo => hst p S D f u v hf hpo m (enat_lt_add_of_sub_lt d m _ hm hp))`. Use `hZ A (K.homology m) (fun p => ?_) j` and prove the remaining obligations. Conclude with `hstalk p m (fun S D f u v hf hpo => hst p S D f u v hf hpo m (enat_lt_add_of_lt d m _ (by omega)))`.
-
-Conclude with `e.subsingleton`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem goal_of (hH : Hyper.{2, 1, 1}) (hZ : ZeroSheaf) (hP : Push) : LateralTheory.EWeil.ArtinCut.Leray := by
   intro base q _ A B β hq δ d hsm hst n hn i

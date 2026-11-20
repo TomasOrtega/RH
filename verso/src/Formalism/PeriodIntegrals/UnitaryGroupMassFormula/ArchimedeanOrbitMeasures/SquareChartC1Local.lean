@@ -11,47 +11,39 @@ open MeasureTheory Topology Filter NumberField Formalism.BasicNotions Formalism.
 open scoped TensorProduct Matrix
 
 /- English proof (translation)
-Use `set G := gramE σ J Y with hG`. Establish `hu : IsUnit G.det` using `isUnit_iff_ne_zero.2 hdet`. Use `set Tm : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) := G.map (inclR (Ainf F)) with hTm`. Use `set Ti : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) := G⁻¹.map (inclR (Ainf F)) with hTi`. Establish `hTTi : Tm * Ti = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hTm, hTi, ← Matrix.map_mul, Matrix.mul_nonsing_inv G hu, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hTiT : Ti * Tm = 1`. Rewrite using `[hTm, hTi, ← Matrix.map_mul, Matrix.nonsing_inv_mul G hu, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `set c : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) → Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) := Formalism.UG.cT (sigR (Ainf F) σ) with hc`. Establish `hsig` using `sq_sig_inv (Ainf F) σ hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : ∀ P, c (c P) = P` using `by intro P; ext i j; simp [hc, Formalism.UG.cT, hsig]`. Establish `hcadd : ∀ P Q, c (P + Q) = c P + c Q` using `by intro P Q; ext i j; simp [hc, Formalism.UG.cT]`. Establish `hcsub : ∀ P Q, c (P - Q) = c P - c Q` using `by intro P Q; ext i j; simp [hc, Formalism.UG.cT]`. Establish `hcmul : ∀ P Q, c (P * Q) = c Q * c P` using `fun P Q => Formalism.UG.cT_mul _ P Q`. Establish `hc1 : c 1 = 1` using `Formalism.UG.cT_one _`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcT : c Tm = Tm`. Use extensionality with `i j`. Simplify using `only [hc, Formalism.UG.cT, hTm, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[← hT i j]`. Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcTi : c Ti * Tm = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hcont_c : Continuous c` using `by show Continuous fun P : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) => (P.map (sigR (Ainf F) σ))ᵀ`. Conclude with `(continuous_id.matrix_map (continuous_sigRP (Ainf F) σ)).matrix_transpose`. Use `set Bq : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) → Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) → Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) := fun h k => c (Ti * h) * Tm * (Ti * k) with hBq`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result.
 
-Use `set Lq : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) → Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E) := fun h => h - c h with hLq`. Establish `hD : ∀ u, Bq Tm u + Bq u Tm + Lq u = u + u`. Introduce `u`. Simplify using `only [hBq, hLq]`. Rewrite using `[hTiT, hc1, Matrix.one_mul, Matrix.mul_one, ← Matrix.mul_assoc Tm Ti u, hTTi, Matrix.one_mul, hcmul Ti u, Matrix.mul_assoc (c u) (c Ti) Tm, hcTi, Matrix.mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Normalize the expressions using the abelian group laws. Take `⟨g, hgc, hg0, hgev, hgcd, hgd⟩` from `exists_local_solution_contDiffAt e he Bq (by intro x x' y; simp only [hBq, Matrix.mul_add, hcadd, Matrix.add_mul]) (by intro x y y'; simp only [hBq, Matrix.mul_add]) (((hcont_c.comp (continuous_const.matrix_mul continuous_fst)).matrix_mul continuous_const).matrix_mul (continuous_ …`. Establish `hy0 : Bq Tm Tm + Lq Tm = Tm`. Simplify using `only [hBq, hLq]`. Rewrite using `[hTiT, hc1, Matrix.one_mul, Matrix.mul_one, hcT, sub_self, add_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hgc`, `hg0`, `hgev`, `hgcd`, `hgd` using `[hy0]`. Use `⟨Subtype.val ⁻¹' {y | Bq (g y) (g y) + Lq (g y) = y}, fun T => Ti * g T.val, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_subtype_val.continuousAt.preimage_mem_nhds hgev`. Use `show Ti * g Tm = 1`. Rewrite using `[hg0, hTiT]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `(continuous_const.matrix_mul continuous_id).continuousAt.comp (ContinuousAt.comp_of_eq hgc continuous_subtype_val.continuousAt rfl)`. Introduce `T hT'`. Establish `hT'' : Bq (g T.val) (g T.val) + Lq (g T.val) = T.val` using `hT'`. Use `show gramR (Ainf F) σ J (fun b i => ∑ c, (Ti * g T.val) c b * ratTup (Ainf F) Y c i) = T.val`. Rewrite using `[sq_gramR_rmul (Ainf F) σ J (Ti * g T.val) (ratTup (Ainf F) Y), gramR_ratTup]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set h := g T.val`. Establish `hP : c (Bq h h) = Bq h h`. Simplify using `only [hBq]`. Rewrite using `[hcmul (c (Ti * h) * Tm) (Ti * h), hcmul (c (Ti * h)) Tm, hcc, hcT, Matrix.mul_assoc]`. Establish `hTh : c T.val = T.val`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `i j`. Conclude with `T.2 i j`. Establish `hLL : c (Lq h) = -(Lq h)`. Simplify using `only [hLq]`. Rewrite using `[hcsub, hcc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `h2 : Lq h + Lq h = 0`. Establish `e1` using `congrArg c hT''`. Rewrite `e1` using `[hcadd, hP, hLL, hTh]`. Establish `e2` using `add_left_cancel (hT''.trans e1.symm)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_neg_iff_add_eq_zero.mp e2`. Establish `h0 : Lq h = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hT''` using `[h0, add_zero]`. Conclude with `hT''`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `η μ' _ _ eH eM heH heM`. Establish `hHs : ∀ x y, eH.symm (x + y) = eH.symm x + eH.symm y`. Introduce `x y`. Apply `eH.injective` to reduce the goal to its premises. Rewrite using `[heH]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hes : ∀ x y, e.symm (x + y) = e.symm x + e.symm y`. Introduce `x y`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Set `L₁ : EuclideanSpace ℝ η →L[ℝ] (Fin N → ℝ)` to `(AddMonoidHom.mk' (fun z => e ((eH.symm z : HermR (Ainf F) σ m) : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E))) (by intro x y; simp only [hHs, AddSubgroup.coe_add, he])).toRealLinearMap (e.continuous.comp (continuous_subtype_val.comp eH.symm.continuous))`. Set `L₂ : (Fin N → ℝ) →L[ℝ] EuclideanSpace ℝ μ'` to `(AddMonoidHom.mk' (fun y => eM (Ti * e.symm y)) (by intro x y; simp only [hes, Matrix.mul_add, heM])).toRealLinearMap (eM.continuous.comp ((continuous_const.matrix_mul continuous_id).comp e.symm.continuous))`. Establish `hL₁ : ∀ z, L₁ z = e ((eH.symm z : HermR (Ainf F) σ m) : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E))` using `fun z => rfl`. Establish `hL₂ : ∀ y, L₂ y = eM (Ti * e.symm y)` using `fun y => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfun : (fun z => eM (Ti * g ((eH.symm z : HermR (Ainf F) σ m) : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E)))) = fun z => L₂ ((fun y => e (g (e.symm y))) (L₁ z))`. Use function extensionality and compare the values at `z`. Rewrite using `[hL₁, hL₂]`. Simplify using `only [Homeomorph.symm_apply_apply]`. Establish `hpt : L₁ (eH (hermOf (Ainf F) σ (gramE σ J Y) hT)) = e Tm`.
-
-Rewrite using `[hL₁, Homeomorph.symm_apply_apply]`. Both sides reduce to the same expression. Establish `hgcd' : ContDiffAt ℝ 1 (fun y => e (g (e.symm y))) (L₁ (eH (hermOf (Ainf F) σ (gramE σ J Y) hT)))`. Rewrite using `[hpt]`. Conclude with `hgcd`.
-
-Establish `hgd' : HasFDerivAt (fun y => e (g (e.symm y))) ((1 / 2 : ℝ) • ContinuousLinearMap.id ℝ (Fin N → ℝ)) (L₁ (eH (hermOf (Ainf F) σ (gramE σ J Y) hT)))`. Rewrite using `[hpt]`. Conclude with `hgd`. Establish `hD` using `L₂.hasFDerivAt.comp (eH (hermOf (Ainf F) σ (gramE σ J Y) hT)) (hgd'.comp _ L₁.hasFDerivAt)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Use `show ContDiffAt ℝ 1 (fun z => eM (Ti * g ((eH.symm z : HermR (Ainf F) σ m) : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E)))) (eH (hermOf (Ainf F) σ (gramE σ J Y) hT))`. Rewrite using `[hfun]`. Conclude with `L₂.contDiff.contDiffAt.comp _ (hgcd'.comp _ L₁.contDiff.contDiffAt)`. Introduce `v show fderiv ℝ (fun z => eM (Ti * g ((eH.symm z : HermR (Ainf F) σ m) : Matrix (Fin m) (Fin m) (Ainf F ⊗[F] E)))) (eH (hermOf (Ainf F) σ (gramE σ J Y) hT)) v = _`. Establish `hD' : HasFDerivAt (fun z => L₂ ((fun y => e (g (e.symm y))) (L₁ z))) _ (eH (hermOf (Ainf F) σ (gramE σ J Y) hT))` using `hD`.
-
-Rewrite using `[hfun, hD'.fderiv]`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, map_smul]`. Rewrite using `[hL₂, hL₁, Homeomorph.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem square_chart_c1_local {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [FiniteDimensional F E] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M m : ℕ} (J : Matrix (Fin M) (Fin M) E)
@@ -204,9 +196,9 @@ def SquareChartC1 : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Wor
           (1 / 2 : ℝ) • eM (TinvI X u' * ((eH.symm v : HmI X) : Matrix _ _ _))
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP`. Use `haveI : IsTotallyReal X.B.I.F := X.B.I.cm.totReal`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := Module.finite_of_finrank_pos (by rw [X.B.I.cm.deg2]; norm_num)`. Establish `hσ : ∀ x, X.B.I.cm.sig (X.B.I.cm.sig x) = x` using `fun x => star_star x`. Establish `hdet` using `detNZ_holds X u' ψ hT μinf νinf fibInf hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, eK, hK⟩` from `sq_coord_tens X.B.I.F X.B.I.E`. Take `⟨k1, e1, h1⟩` from `sq_coord_pi eK hK (Fin (D.R.rS + 1 + D.R.rS))`. Take `⟨N, eM, hM⟩` from `sq_coord_pi e1 h1 (Fin (D.R.rS + 1 + D.R.rS))`. Take `⟨Ω, a, h1', h2', h3', h4', h5'⟩` from `square_chart_c1_local X.B.I.cm.sig hσ X.B.I.J (tupH (frameOf X u')) hT hdet eM hM`. Conclude with `⟨Ω, a, ⟨h1', h2', h3', fun T hT' => h4' T hT'⟩, fun eH eM' heH heM => h5' eH eM' heH heM⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem square_chart_c1 : SquareChartC1 := by
   intro D X u' ψ hT μinf νinf fibInf hP

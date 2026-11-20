@@ -25,15 +25,15 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Take `⟨V'', pV'', c, hV''aff, hV''red, hV''ft, hV''qc, hcet, hcsurj, hcpV, ⟨G', f, hG'pres, hfsm, hfcomp, hfpb⟩, ⟨H', g, hH'pres, hgsm, hgcomp, hgpb⟩⟩` from `exists_etaleCover_closedEmbeddingIntoAffineSpace_of_smooth hS hsm k (fun A q hq => hsnc k A q hq) Y V pY pV (C.sel k Y pY) (C.pres k Y pY) (C.sel k V pV) (C.pres k V pV) u r hu`. Use `hV''aff` as an intermediate fact. Use `hV''red` as an intermediate fact. Use `hV''ft` as an intermediate fact. Use `hV''qc` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hcet` as an intermediate fact. Use `hcsurj` as an intermediate fact. Use `hfsm` as an intermediate fact. Use `hgsm` as an intermediate fact. Establish `: AlgebraicGeometry.Smooth u` using `AlgebraicGeometry.SmoothOfRelativeDimension.smooth r u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: AlgebraicGeometry.Flat u` using `inferInstance`. Establish `: AlgebraicGeometry.Flat c` using `inferInstance`. Establish `s1 : IsPullbackBlowupSequence (c ≫ u) (E k V'' pV'' G') (E k Y pY (C.sel k Y pY))` using `hsbc k Y V'' pY pV'' (C.sel k Y pY) G' f (c ≫ u) hfcomp hfpb`. Establish `s2 : IsPullbackBlowupSequence c (E k V'' pV'' H') (E k V pV (C.sel k V pV))` using `hsbc k V V'' pV pV'' (C.sel k V pV) H' g c hgcomp hgpb`. Establish `heq : (E k V'' pV'' G').Isomorphic (E k V'' pV'' H')` using `hinv k V'' pV'' G' H' hG'pres.some hH'pres.some`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2' : IsStrictPullbackBlowupSeq c (E k V'' pV'' H') (E k V pV (C.sel k V pV))` using `s2.isStrictPullback_of_surjective (fun i hi => hprop k V pV (C.sel k V pV) i hi)`. Establish `hBu : IsStrictPullbackBlowupSeq u ((E k Y pY (C.sel k Y pY)).baseChange u) (E k Y pY (C.sel k Y pY))` using `isStrictPullbackSequenceOfBlowups_baseChange (E k Y pY (C.sel k Y pY)) u`. Establish `hB' : IsPullbackBlowupSequence u ((E k Y pY (C.sel k Y pY)).baseChange u).withoutIsoBlowups (E k Y pY (C.sel k Y pY))` using `hBu.isPullbackSequenceOfBlowups_withoutIsoBlowups`. Establish `hCc : IsStrictPullbackBlowupSeq c ((((E k Y pY (C.sel k Y pY)).baseChange u).withoutIsoBlowups).baseChange c) (((E k Y pY (C.sel k Y pY)).baseChange u).withoutIsoBlowups)` using `isStrictPullbackSequenceOfBlowups_baseChange (((E k Y pY (C.sel k Y pY)).baseChange u).withoutIsoBlowups) c`. Establish `hC : IsPullbackBlowupSequence (c ≫ u) ((((E k Y pY (C.sel k Y pY)).baseChange u).withoutIsoBlowups).baseChange c) (E k Y pY (C.sel k Y pY))` using `hB'.comp_isStrictPullbackSequenceOfBlowups hCc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq2 : (E k V'' pV'' G').Isomorphic ((((E k Y pY (C.sel k Y pY)).baseChange u).withoutIsoBlowups).baseChange c)` using `s1.isomorphic hC`. Establish `hdesc : (E k V pV (C.sel k V pV)).Isomorphic (((E k Y pY (C.sel k Y pY)).baseChange u).withoutIsoBlowups)` using `IsStrictPullbackBlowupSeq.isomorphic_of_isomorphic s2' hCc (heq.symm.trans heq2)`. Conclude with `hB'.of_isomorphic hdesc.symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPullbackBlowupSequence_presentedSelection_of_smooth (E : EmbeddedResolutionRule.{u}) (C : PresentedSelection.{u})
     (hinv : E.IsIndependentOfPresentedEmbedding) (hsbc : E.IsCompatibleWithSmoothAmbientMaps)
@@ -95,7 +95,7 @@ theorem isPullbackBlowupSequence_presentedSelection_of_smooth (E : EmbeddedResol
   exact hB'.of_isomorphic hdesc.symm
 
 /- English proof (translation)
-Introduce `k _ _ Y V pY pV _ _ _ _ _ _ _ _ φ _ hφ`. Establish `: AlgebraicGeometry.SmoothOfRelativeDimension 0 φ` using `inferInstance`. Conclude with `isPullbackBlowupSequence_presentedSelection_of_smooth E C hinv hsbc hprop hS hsm hsnc k Y V pY pV φ 0 hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompatibleWithOpenImmersions_toAffineResolutionRule (E : EmbeddedResolutionRule.{u})
     (C : PresentedSelection.{u})
@@ -111,7 +111,7 @@ theorem isCompatibleWithOpenImmersions_toAffineResolutionRule (E : EmbeddedResol
     φ 0 hφ
 
 /- English proof (translation)
-Introduce `k _ _ Y W pY pW _ _ _ _ _ _ _ _ φ _ hφ hsurj`. Establish `: AlgebraicGeometry.SmoothOfRelativeDimension 0 φ` using `inferInstance`. Establish `: AlgebraicGeometry.Surjective φ` using `⟨hsurj⟩`. Establish `hpb : IsPullbackBlowupSequence φ (E k W pW (C.sel k W pW)) (E k Y pY (C.sel k Y pY))` using `isPullbackBlowupSequence_presentedSelection_of_smooth E C hinv hsbc hprop hS hsm hsnc k Y W pY pW φ 0 hφ`. Conclude with `hpb.isStrictPullback_of_surjective (fun i hi => hprop k Y pY (C.sel k Y pY) i hi)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompatibleWithEtaleCovers_toAffineResolutionRule (E : EmbeddedResolutionRule.{u})
     (C : PresentedSelection.{u})

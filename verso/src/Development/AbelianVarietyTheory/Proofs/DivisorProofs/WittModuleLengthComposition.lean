@@ -9,19 +9,17 @@ namespace GlobalTheory.Dieu.ColengthLemmas
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `hle : LinearMap.range v ≤ (LinearMap.range (u ∘ₗ v)).comap u`. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `⟨c, rfl⟩`. Establish `hle2 : LinearMap.range (u ∘ₗ v) ≤ LinearMap.range u` using `LinearMap.range_comp_le_range v u`. Set `f` to `(LinearMap.range v).mapQ (LinearMap.range (u ∘ₗ v)) u hle`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `g` to `Submodule.factor hle2`. Establish `hf : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `x hx`. Take `⟨b, rfl⟩` from `Submodule.mkQ_surjective _ x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[LinearMap.mem_ker]`. Simplify using `only [f, Submodule.mkQ_apply, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero] at hx`. Take `⟨c, hc⟩` from `hx`. Rewrite using `[Submodule.mem_bot, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨c, hu hc⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hg : Function.Surjective g` using `Submodule.factor_surjective hle2`. Establish `hex : Function.Exact f g`. Introduce `x`. Take `⟨a, rfl⟩` from `Submodule.mkQ_surjective _ x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `h' : a ∈ LinearMap.range u`. Simplify `h` using `[g, Submodule.factor_mk, Submodule.Quotient.mk_eq_zero]`. Take `⟨b, rfl⟩` from `h'`. Conclude with `⟨Submodule.Quotient.mk b, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, hy⟩`. Take `⟨b, rfl⟩` from `Submodule.mkQ_surjective _ y`. Rewrite using `[← hy]`. Use `show g (Submodule.Quotient.mk (u b)) = 0`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨b, rfl⟩`.
-
-Rewrite using `[Module.length_eq_add_of_exact f g hf hg hex, add_comm]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_comp_range {A B C : Type} [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B]
     [AddCommGroup C] [Module R C] (u : B →ₗ[R] A) (v : C →ₗ[R] B) (hu : Function.Injective u) :
@@ -60,13 +58,13 @@ theorem length_comp_range {A B C : Type} [AddCommGroup A] [Module R A] [AddCommG
   rw [Module.length_eq_add_of_exact f g hf hg hex, add_comm]
 
 /- English proof (translation)
-Set `g` to `Submodule.factor h`. Establish `e` using `Module.length_eq_add_of_exact (LinearMap.ker g).subtype g (LinearMap.ker g).injective_subtype (Submodule.factor_surjective h) (LinearMap.exact_subtype_ker_map g)`. Establish `h0 : Module.length R (LinearMap.ker g) = 0`. Rewrite `e` using `[← hl]`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.1 ht`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `e` using `[← hn]`. Generalize the expression as in `Module.length R (LinearMap.ker g) = b at e ⊢`. Proceed by induction on `b using ENat.recTopCoe with`. Consider the case `top => simp at e`. Consider the case `coe b`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Normalize the coercions in `at e ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite `h0` using `[Module.length_eq_zero_iff]`. Use `le_antisymm h fun x hx => ?_` and prove the remaining obligations. Establish `hmem : (Submodule.Quotient.mk x : A ⧸ L) ∈ LinearMap.ker g`.
+Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.mem_ker]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 hx`. Establish `h1 : (⟨Submodule.Quotient.mk x, hmem⟩ : LinearMap.ker g) = 0` using `Subsingleton.elim _ _`. Establish `h2 : (Submodule.Quotient.mk x : A ⧸ L) = 0` using `congrArg Subtype.val h1`. Conclude with `(Submodule.Quotient.mk_eq_zero _).1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_le_of_length_eq {A : Type} [AddCommGroup A] [Module R A] (L L' : Submodule R A)
     (h : L ≤ L') (hl : Module.length R (A ⧸ L) = Module.length R (A ⧸ L'))
@@ -95,13 +93,11 @@ theorem eq_of_le_of_length_eq {A : Type} [AddCommGroup A] [Module R A] (L L' : S
   exact (Submodule.Quotient.mk_eq_zero _).1 h2
 
 /- English proof (translation)
-Use `set d := Module.finrank O M`. Set `e : M ≃ₗ[O] (Fin d → O)` to `(Module.finBasis O M).equivFun`. Establish `hmap : (LinearMap.range (a • (LinearMap.id : M →ₗ[O] M))).map (e : M →ₗ[O] (Fin d → O)) = Submodule.pi Set.univ (fun _ : Fin d => (Ideal.span {a} : Submodule O O))`. Use extensionality with `x`. Simplify using `only [Submodule.mem_map, LinearMap.mem_range, Submodule.mem_pi, Set.mem_univ, true_implies, LinearMap.smul_apply, LinearMap.id_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨y, rfl⟩, rfl⟩ i`. Rewrite using `[LinearEquiv.coe_coe, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self a)`. Introduce `h choose c hc using fun i => Ideal.mem_span_singleton'.1 (h i)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a • e.symm c, ⟨e.symm c, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, map_smul, LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `i`. Simplify using `[← hc i, mul_comm]`. Set `f` to `(Submodule.Quotient.equiv _ _ e hmap).trans (Submodule.quotientPi (fun _ : Fin d => (Ideal.span {a} : Submodule O O)))`.
-
-Rewrite using `[f.length_eq, Module.length_pi_of_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quot_smul_range_free (O M : Type) [CommRing O] [Nontrivial O] [AddCommGroup M]
     [Module O M] [Module.Free O M] [Module.Finite O M] (a : O) :
@@ -131,7 +127,7 @@ theorem length_quot_smul_range_free (O M : Type) [CommRing O] [Nontrivial O] [Ad
     nsmul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[← Ideal.span_singleton_pow, ← (WittVector.irreducible p).maximalIdeal_eq]`. Conclude with `IsDiscreteValuationRing.length_quotient_pow_maximalIdeal _ n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quot_p_pow (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p]
     (n : ℕ) : Module.length (WittVector p k) (WittVector p k ⧸ Ideal.span {(p : WittVector p k) ^ n}) = n := by
@@ -144,9 +140,9 @@ namespace GlobalTheory.Dieu
 
 open GlobalTheory.Dieu.ColengthLemmas in
 /- English proof (translation)
-Introduce `p _ k _ _ _ A B C _ _ _ _ _ _`. Use `⟨fun u v hu => length_comp_range u v hu, fun _ _ n u hu => ?_, fun L L' h hl ht => eq_of_le_of_length_eq L L' h hl ht⟩` and prove the remaining obligations. Establish `hu' : u = ((p : WittVector p k) ^ n) • (LinearMap.id : A →ₗ[WittVector p k] A)`. Use extensionality with `a`. Rewrite using `[hu a, LinearMap.smul_apply, LinearMap.id_apply, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu', length_quot_smul_range_free, length_quot_p_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem colength_add_and_pow_and_eq : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (A B C : Type) [AddCommGroup A] [Module (WittVector p k) A] [AddCommGroup B] [Module (WittVector p k) B] [AddCommGroup C] [Module (WittVector p k) C], (∀ (u : B →ₗ[(WittVector p k)] A) (v : C →ₗ[(WittVector p k)] B), Function.Injective u → Module.length (WittVector p k) (A ⧸ LinearMap.range (u ∘ₗ v)) = Module.length (WittVector p k) (A ⧸ LinearMap.range u) + Module.length (WittVector p k) (B ⧸ LinearMap.range v)) ∧ (Module.Free (WittVector p k) A → Module.Finite (WittVector p k) A → ∀ (n : ℕ) (u : A →ₗ[(WittVector p k)] A), (∀ a, u a = p ^ n • a) → Module.length (WittVector p k) (A ⧸ LinearMap.range u) = (n * Module.finrank (WittVector p k) A : ℕ)) ∧ ∀ L L' : Submodule (WittVector p k) A, L ≤ L' → Module.length (WittVector p k) (A ⧸ L) = Module.length (WittVector p k) (A ⧸ L') → Module.length (WittVector p k) (A ⧸ L) ≠ ⊤ → L = L' := by
   intro p _ k _ _ _ A B C _ _ _ _ _ _

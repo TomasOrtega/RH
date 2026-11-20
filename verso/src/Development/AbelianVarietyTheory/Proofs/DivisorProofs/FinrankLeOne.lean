@@ -18,13 +18,13 @@ section Exist
 variable {F : Type} [Field F] {r : ℕ}
 
 /- English proof (translation)
-Unfold `edgeSum`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1 : (if blkEdge b i k then ((p : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i k else 0) = ∑ j, if j = k then (if blkEdge b i j then ((p : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i j else 0) else 0`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `he : blkEdge b i j`. Break down `lt_trichotomy j k with h | h | h` into its components or cases. Establish `hij : i ≠ j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Introduce `e`. Use `he.1` as an intermediate fact. Rewrite `this` using `[e]`. Use linear arithmetic over natural numbers and integers. Establish `h0` using `hp.2 i j h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `h0` using `[Matrix.one_apply_ne hij]`. Simplify using `[he, h0]`. Simplify using `[he, h]`. Simplify using `[he, h, h.ne']`. Simplify using `[he]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem edgeSum_split (b : Fin r → ℕ) (k : Fin r) (p : blockTri (κ := F) b) (hp : p ∈ colSet F b k.val) :
     edgeSum (blkEdge b) (p : GL (Fin r) F) =
@@ -50,33 +50,31 @@ theorem edgeSum_split (b : Fin r → ℕ) (k : Fin r) (p : blockTri (κ := F) b)
   · simp [he]
 
 /- English proof (translation)
-Take `⟨l, hl, hne⟩` from `GlobalTheory.T.exists_columnCharacter_eigenSubmodule_ne_bot F ψ hψ r V b σ hσ.mono hσ.infl k h`. Distinguish the cases in `hl0 : l = 0`. Substitute `hl0` using the available equality. Distinguish the cases in `hk : ∃ i, blkEdge b i k`. It suffices to derive a contradiction.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction.
 
-Take `⟨i, hi1, hi2⟩` from `hk`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `y hy`. Rewrite `hy` using `[mem_eig]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Submodule.mem_bot]`. Use `hσ.cusp (Finset.univ.filter fun a => a < k) ⟨i, k, hi2, ?_, by simp⟩ y fun u hu => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] show i.val < k.val`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hu`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Establish `hu' : ∀ i j : Fin r, ¬ (i < k ∧ ¬ j < k) → ((u : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i j = (1 : Matrix (Fin r) (Fin r) F) i j`. Introduce `i j hij`. Assume the negation of the conclusion as `hc`. Conclude with `hij (hu i j hc).2`. Establish `hmem : u ∈ colSet F b k.val`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨fun i j hij => ?_, fun i => ?_⟩, fun i j hj => hu' i j fun hh => hh.2 hj⟩` and prove the remaining obligations. Establish `hij' : j < i` using `hij`. Rewrite using `[hu' i j fun hh => hh.2 (hij'.trans hh.1), Matrix.one_apply_ne hij'.ne']`. Rewrite using `[hu' i i fun hh => hh.2 hh.1, Matrix.one_apply_eq]`. Rewrite using `[hy u hmem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: edgeSum (fun i j => blkEdge b i j ∧ k < j) (u : GL (Fin r) F) = 0`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hh`. Establish `h1` using `hh.1.1`. Establish `h2 : k.val < j.val` using `hh.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hu' i j fun h3 => by have : i.val < k.val := h3.1; omega, Matrix.one_apply_ne]`. Introduce `e`. Rewrite `h1` using `[e]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[colChar, this]`. Rewrite using `[eig_congr σ _ _ (colChar ψ b k 0)]`. Conclude with `hne`. Introduce `p hp`. Rewrite using `[edgeSum_split b k p hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `: ∀ i, ¬ blkEdge b i k` using `fun i hi => hk ⟨i, hi⟩`. Simplify using `[colChar, this]`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hl0`. Take `⟨hik, hbi⟩` from `hl i hi`. Establish `hik' : i.val < k.val` using `hik`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `k' : Fin r` to `⟨k.val - 1, by omega⟩`. Establish `hk' : k'.val + 1 = k.val` using `by show k.val - 1 + 1 = k.val; omega`. Establish `hbk : b k' = b k`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `hσ.mono (show k'.val ≤ k.val by omega)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hbi]; exact hσ.mono (show i.val ≤ k'.val by omega)`. Take `⟨g, hg1, hg2⟩` from `GlobalTheory.T.exists_blockTri_vecMul_eq_single_pred F r b hσ.mono k k' hk' l hl0 hl`. Establish `h2` using `GlobalTheory.T.leviWhittakerColumnCharacter_eigen_vecMul_ne_bot F ψ r V b σ k l g hg1 hne`. Rewrite `h2` using `[hg2]`. Rewrite using `[eig_congr σ _ _ (colChar ψ b k (Pi.single k' 1))]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `h2`. Introduce `p hp`. Rewrite using `[edgeSum_split b k p hp]`. Unfold `colChar`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = k'`. Substitute `ha` using the available equality. Establish `: blkEdge b k' k` using `⟨hk'.symm, hbk⟩`. Simplify using `[this]`.
-
-Establish `: ¬ blkEdge b a k` using `fun hh => ha (Fin.ext (by have := hh.1; omega))`. Simplify using `[this, ha]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem step [Fintype F] (ψ : AddChar F ℂ) (hψ : ψ ≠ 1) {V : Type} [AddCommGroup V] [Module ℂ V]
     (b : Fin r → ℕ) (σ : Representation ℂ (blockTri (κ := F) b) V) (hσ : IsCuspDatum b σ) (k : Fin r)
@@ -151,19 +149,19 @@ theorem step [Fintype F] (ψ : AddChar F ℂ) (hψ : ψ ≠ 1) {V : Type} [AddCo
         simp [this, ha]
 
 /- English proof (translation)
-Establish `key : ∀ k, k ≤ r → eig σ (colSet F b k) (fun p => ψ (edgeSum (blkEdge b) (p : GL (Fin r) F))) ≠ ⊥`. Introduce `k hk`. Proceed by induction on `hk using Nat.decreasingInduction with`. Consider the case `of_succ k hk ih => exact step ψ hψ b σ hσ ⟨k, hk⟩ ih`. Consider the case `self`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hirr` using `hσ.irr`. Establish `hV : (⊤ : Submodule ℂ V) ≠ ⊥`. Introduce `h`. Establish `: (⊤ : Subrepresentation σ) = ⊥` using `Subrepresentation.toSubmodule_injective h`. Conclude with `top_ne_bot this`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hV` to reduce the goal to its premises. Rewrite using `[← h, eq_comm, eq_top_iff]`. Introduce `v _`. Rewrite using `[mem_eig]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Establish `hp1 : p = 1`. Use extensionality with `i j`. Simplify using `using hp.2 i j j.2`. Substitute `hp1` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `: edgeSum (blkEdge b) (1 : GL (Fin r) F) = 0`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hh`. Establish `h1` using `hh.1`. Rewrite using `[Units.val_one, Matrix.one_apply_ne]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `e`. Rewrite `h1` using `[e]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Simplify using `[this]`.
+Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h0 : colSet F b 0 = {p : blockTri (κ` using `F) b | (p : GL (Fin r) F) ∈ unip F r} := by`. Use extensionality with `p`. Simplify using `[colSet]`. Rewrite using `[← h0]`. Conclude with `key 0 (Nat.zero_le r)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_ne_bot [Fintype F] (ψ : AddChar F ℂ) (hψ : ψ ≠ 1) {V : Type} [AddCommGroup V] [Module ℂ V]
     (b : Fin r → ℕ) (σ : Representation ℂ (blockTri (κ := F) b) V) (hσ : IsCuspDatum b σ) :
@@ -209,25 +207,25 @@ section Unique
 variable {F : Type} [Field F] {r : ℕ}
 
 /- English proof (translation)
-Set `T : ℕ → Finset (Fin r)` to `fun c => Finset.univ.filter fun a => b a = c`. Set `f : ∀ c, Fin (T c).card ↪o Fin r` to `fun c => (T c).orderEmbOfFin rfl`. Establish `hf : ∀ c i, b (f c i) = c` using `fun c i => by`. Conclude with `(Finset.mem_filter.1 ((T c).orderEmbOfFin_mem rfl i)).2`. Establish `hs : ∀ c a, b a = c → ∃ i, f c i = a` using `fun c a ha => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: a ∈ Set.range (f c)`. Rewrite using `[Finset.range_orderEmbOfFin]`. Simplify using `[T, ha]`. Conclude with `this`. Set `E0 : (Σ c : ↥(Finset.univ.image b), Fin (T c).card) → Fin r` to `fun x => f x.1 x.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hE : Function.Bijective E0`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨c, hc⟩, i⟩ ⟨⟨c', hc'⟩, j⟩ h`. Establish `h' : f c i = f c' j` using `h`. Establish `e : c = c'` using `by rw [← hf c i, h', hf]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `e` using the available equality. Rewrite using `[(f c).injective h']`. Introduce `a`. Take `⟨i, hi⟩` from `hs (b a) a rfl`. Conclude with `⟨⟨⟨b a, by simp⟩, i⟩, hi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨↥(Finset.univ.image b), inferInstance, fun c => (T c).card, Equiv.ofBijective E0 hE, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y show b (f x.1 x.2) = b (f y.1 y.2) ↔ _`. Rewrite using `[hf, hf, Subtype.ext_iff]`. Introduce `c i j`. Conclude with `(f c).lt_iff_lt`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c i j show (f c j).val = (f c i).val + 1 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : i < j` using `(f c).lt_iff_lt.1 (show (f c i).val < (f c j).val by omega)`. Establish `h1' : i.val < j.val` using `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Assume the negation of the conclusion as `hc`. Establish `h2 : i.val + 1 < j.val` using `by omega`. Set `m : Fin (T c).card` to `⟨i.val + 1, h2.trans j.2⟩`. Establish `h3 : (f c i).val < (f c m).val` using `(f c).lt_iff_lt.2 (show i.val < i.val + 1 by omega)`. Establish `h4 : (f c m).val < (f c j).val` using `(f c).lt_iff_lt.2 (show i.val + 1 < j.val from h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `h`. Establish `h1 : (f c i).val < (f c j).val` using `(f c).lt_iff_lt.2 (show i.val < j.val by omega)`. Assume the negation of the conclusion as `hc`. Establish `h2 : (f c i).val + 1 < (f c j).val` using `by omega`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `m : Fin r` to `⟨(f c i).val + 1, h2.trans (f c j).2⟩`. Establish `hm : b m = c`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← hf c j]; exact hb (show (f c i).val + 1 ≤ (f c j).val by omega)`. Use `conv_lhs => rw [← hf c i]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `hb (show (f c i).val ≤ (f c i).val + 1 by omega)`. Take `⟨l, hl⟩` from `hs c m hm`. Establish `h3 : i.val < l.val` using `(f c).lt_iff_lt.1 (by rw [hl]; show (f c i).val < (f c i).val + 1; omega)`. Establish `h4 : l.val < j.val` using `(f c).lt_iff_lt.1 (by rw [hl]; exact h2)`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exists_blocks (b : Fin r → ℕ) (hb : Monotone b) :
     ∃ (ι : Type) (_ : Fintype ι) (n : ι → ℕ) (E : (Σ c, Fin (n c)) ≃ Fin r),
@@ -287,13 +285,11 @@ theorem exists_blocks (b : Fin r → ℕ) (hb : Monotone b) :
       omega
 
 /- English proof (translation)
-Set `G : (∀ c, GL (Fin (n c)) F) →* (∀ c, Matrix (Fin (n c)) (Fin (n c)) F)` to `Pi.monoidHom fun c => (Units.coeHom _).comp (Pi.evalMonoidHom (fun c => GL (Fin (n c)) F) c)`. Set `M : (∀ c, Matrix (Fin (n c)) (Fin (n c)) F) →* Matrix (Fin r) (Fin r) F` to `((Matrix.reindexAlgEquiv F F E).toRingEquiv.toRingHom.comp (Matrix.blockDiagonal'RingHom (fun c => Fin (n c)) F)).toMonoidHom`. Set `D0 : (∀ c, GL (Fin (n c)) F) →* GL (Fin r) F` to `(M.comp G).toHomUnits`. Establish `hD : ∀ x u v, (D0 x : Matrix (Fin r) (Fin r) F) (E u) (E v) = Matrix.blockDiagonal' (fun c => (x c : Matrix (Fin (n c)) (Fin (n c)) F)) u v`. Introduce `x u v`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show Matrix.blockDiagonal' (fun c => (x c : Matrix (Fin (n c)) (Fin (n c)) F)) (E.symm (E u)) (E.symm (E v)) = _`. Simplify using the standard rewrite rules. Establish `h2 : ∀ x c c' i j, c ≠ c' → (D0 x : Matrix (Fin r) (Fin r) F) (E ⟨c, i⟩) (E ⟨c', j⟩) = 0`. Introduce `x c c' i j h`. Rewrite using `[hD, Matrix.blockDiagonal'_apply_ne _ _ _ h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨D0.codRestrict _ fun x => ?_, fun x c i j => ?_, h2⟩` and prove the remaining obligations. Rewrite using `[mem_blockTri]`. Introduce `i j hij`. Take `⟨⟨c, i⟩, rfl⟩` from `E.surjective i`. Take `⟨⟨c', j⟩, rfl⟩` from `E.surjective j`.
-
-Conclude with `h2 x c c' i j fun e => hij.ne' ((hE _ _).2 e)`. Conclude with `(hD x _ _).trans (Matrix.blockDiagonal'_apply_eq _ _ _ _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_diag (b : Fin r → ℕ) {ι : Type} [Fintype ι] {n : ι → ℕ} (E : (Σ c, Fin (n c)) ≃ Fin r)
     (hE : ∀ x y, b (E x) = b (E y) ↔ x.1 = y.1) :
@@ -325,13 +321,13 @@ theorem exists_diag (b : Fin r → ℕ) {ι : Type} [Fintype ι] {n : ι → ℕ
   · exact (hD x _ _).trans (Matrix.blockDiagonal'_apply_eq _ _ _ _)
 
 /- English proof (translation)
-Establish `hinj : ∀ c, Function.Injective fun i : Fin (n c) => E ⟨c, i⟩` using `fun c i j h => by`. Simplify using `using h`. Set `B0 : ∀ c, blockTri (κ` to `F) b →* Matrix (Fin (n c)) (Fin (n c)) F := fun c => { toFun := fun p => ((p : GL (Fin r) F) : Matrix (Fin r) (Fin r) F).submatrix (fun i : Fin (n c) => E ⟨c, i⟩) (fun i : Fin (n c) => E ⟨c, i⟩) map_one' := Matrix.submatrix_one _ (hinj c) map_mul' := by`. Introduce `x y`. Use `show ((x.1 * y.1 : GL (Fin r) F) : Matrix (Fin r) (Fin r) F).submatrix _ _ = _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul]`. Use `submatrix_mul_of_zero _ (hinj c) _ _ fun i j l hl => ?_` and prove the remaining obligations. Take `⟨⟨c', l⟩, rfl⟩` from `E.surjective l`. Establish `hc : c' ≠ c`. Introduce and unpack `rfl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hl ⟨l, rfl⟩`. Establish `hl' : b (E ⟨c', l⟩) ≠ b (E ⟨c, i⟩)` using `fun h => hc ((hE _ _).1 h)`. Establish `hij : b (E ⟨c, j⟩) = b (E ⟨c, i⟩)` using `(hE _ _).2 rfl`. Break down `lt_or_gt_of_ne hl' with h | h` into its components or cases. Rewrite using `[mem_blockTri.1 x.2 _ _ h, zero_mul]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[mem_blockTri.1 y.2 _ _ (hij ▸ h), mul_zero] }`. Conclude with `⟨Pi.monoidHom fun c => (B0 c).toHomUnits, fun p c i j => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_proj (b : Fin r → ℕ) {ι : Type} {n : ι → ℕ} (E : (Σ c, Fin (n c)) ≃ Fin r)
     (hE : ∀ x y, b (E x) = b (E y) ↔ x.1 = y.1) :
@@ -361,51 +357,47 @@ theorem exists_proj (b : Fin r → ℕ) {ι : Type} {n : ι → ℕ} (E : (Σ c,
   exact ⟨Pi.monoidHom fun c => (B0 c).toHomUnits, fun p c i j => rfl⟩
 
 /- English proof (translation)
-Take `⟨ι, _, n, E, hE, hlt, hsucc⟩` from `exists_blocks b hσ.mono`. Take `⟨D, hD1, hD2⟩` from `exists_diag (F := F) b E hE`. Take `⟨B, hB⟩` from `exists_proj (F := F) b E hE`. Establish `hBD : ∀ x, B (D x) = x`. Introduce `x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `c i j`. Rewrite using `[hB, hD1]`. Establish `hker : ∀ p, B p = 1 → σ p = 1`. Introduce `p hp`. Use `hσ.infl p fun i j hij => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨c, i⟩, rfl⟩` from `E.surjective i`. Take `⟨⟨c', j⟩, rfl⟩` from `E.surjective j`. Establish `e : c = c'` using `(hE _ _).1 hij`. Substitute `e` using the available equality. Rewrite using `[← hB, hp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.one_apply]`. Establish `hfac : ∀ p, σ p = σ (D (B p))`. Introduce `p`. Establish `: σ (p * (D (B p))⁻¹) = 1` using `hker _ (by rw [map_mul, map_inv, hBD, mul_inv_cancel])`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Set `a : ∀ c, Representation ℂ (GL (Fin (n c)) F) V` to `fun c => (σ.comp D).comp (MonoidHom.mulSingle (fun c => GL (Fin (n c)) F) c)`. Establish `ha : ∀ c g, a c g = σ (D (Pi.mulSingle c g))` using `fun c g => rfl`. Establish `hcomm : ∀ c c', c ≠ c' → ∀ g h, Commute (a c g) (a c' h)`. Introduce `c c' hc g h`. Rewrite using `[ha, ha]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Pi.mulSingle_commute (f := fun c => GL (Fin (n c)) F) hc g h).map D).map σ`. Establish `hex` using `fun c => GlobalTheory.T.hecke_comm_of_irreducible_multiplicity_le_one (GL (Fin (n c)) F) (unip F (n c)) (fun g => ψ (edgeSum supEdge g)) (fun x hx y hy => by`. Use `congrArg Multiplicative.toAdd ((supHom F (n c)).map_mul ⟨x, hx⟩ ⟨y, hy⟩)` as an intermediate fact. Establish `h' : edgeSum supEdge (x * y) = edgeSum supEdge x + edgeSum supEdge y` using `this`. Simplify using `only [h', AddChar.map_add_eq_mul])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `(by`. Use `congrArg Multiplicative.toAdd ((supHom F (n c)).map_one)` as an intermediate fact. Establish `h' : edgeSum supEdge (1 : GL (Fin (n c)) F) = 0` using `this`. Simplify using `only [h', AddChar.map_zero_eq_one])`. Use the proof step `(fun W _ _ _ τ hτ => GlobalTheory.T.whittakerSpaceDimFiniteGL_le_one F ψ hψ (n c) W τ hτ) V (a c)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose e he1 he2 he3 he4 using hex`. Establish `hea : ∀ c c', c ≠ c' → ∀ g, Commute (e c) (a c' g)` using `fun c c' hc g => (he3 c _ fun h => hcomm c' c hc.symm g h).symm`. Use `GlobalTheory.T.finrank_commonFixed_le_one_of_commuting_hecke ι (fun c => GL (Fin (n c)) F) V a e he1 hea (fun c c' hc => he3 c' _ (hea c c' hc)) hcomm he4 ?_ _ ?_` and prove the remaining obligations. Introduce `Y hY`. Establish `h1 : ∀ x : ∀ c, GL (Fin (n c)) F, ∀ v ∈ Y, σ (D x) v ∈ Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[← Finset.noncommProd_mulSingle x]`. Use `Finset.noncommProd_induction _ _ _ (fun x => ∀ v ∈ Y, σ (D x) v ∈ Y) ?_ ?_ ?_` and prove the remaining obligations. Introduce `x y hx hy v hv`. Rewrite using `[map_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Conclude with `hx _ (hy v hv)`. Introduce `v hv`. Simplify using `using hv`. Introduce `c _`. Conclude with `hY c _`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `Z : Subrepresentation σ` to `⟨Y, fun p v hv => by rw [hfac]; exact h1 _ v hv⟩`. Establish `hirr` using `hσ.irr`. Break down `eq_bot_or_eq_top Z with h | h` into its components or cases. Conclude with `Or.inl (congrArg Subrepresentation.toSubmodule h)`. Conclude with `Or.inr (congrArg Subrepresentation.toSubmodule h)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v hv c`. Apply `he2` to reduce the goal to its premises. Rewrite `hv`, the goal using `[mem_eig]`. Introduce `u hu`. Establish `hu' : u ∈ unip F (n c)` using `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hent : ∀ c' (i j : Fin (n c')), c' ≠ c → ((D (Pi.mulSingle c u) : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) (E ⟨c', i⟩) (E ⟨c', j⟩) = (1 : Matrix (Fin (n c')) (Fin (n c')) F) i j`. Introduce `c' i j hc`. Rewrite using `[hD1, Pi.mulSingle_eq_of_ne hc, Units.val_one]`. Establish `hent' : ∀ (i j : Fin (n c)), ((D (Pi.mulSingle c u) : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) (E ⟨c, i⟩) (E ⟨c, j⟩) = (u : Matrix (Fin (n c)) (Fin (n c)) F) i j`. Introduce `i j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hD1, Pi.mulSingle_eq_same]`. Establish `hmem : (D (Pi.mulSingle c u) : GL (Fin r) F) ∈ unip F r`. Use `⟨mem_blockTri.2 fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Take `⟨⟨c1, i⟩, rfl⟩` from `E.surjective i`. Take `⟨⟨c2, j⟩, rfl⟩` from `E.surjective j`.
+Substitute using the available equality. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h12 : c1 = c2`. Substitute `h12` using the available equality. Establish `hji : j < i` using `(hlt _ _ _).1 hij`. Distinguish the cases in `hc : c1 = c`. Substitute `hc` using the available equality.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hent', unip_lower hu' hji]`. Rewrite using `[hent _ _ _ hc, Matrix.one_apply_ne hji.ne']`. Conclude with `hD2 _ _ _ _ _ h12`. Take `⟨⟨c1, i⟩, rfl⟩` from `E.surjective i`. Distinguish the cases in `hc : c1 = c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Substitute `hc` using the available equality. Rewrite using `[hent', unip_diag hu']`. Rewrite using `[hent _ _ _ hc, Matrix.one_apply_eq]`. Rewrite using `[ha, hv _ hmem]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `edgeSum`. Rewrite using `[← E.sum_comp, Fintype.sum_sigma, Finset.sum_eq_single c]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← E.sum_comp, Fintype.sum_sigma, Finset.sum_eq_single c]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hent']`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Unfold `blkEdge supEdge`. Rewrite using `[hsucc, hE]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `c' _ hc`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hD2 _ _ _ _ _ hc.symm, ite_self]`. Simplify using the standard rewrite rules. Introduce `c' _ hc`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Take `⟨⟨c2, j⟩, rfl⟩` from `E.surjective j`. Use `split_ifs with hh`. Establish `e2 : c' = c2` using `(hE _ _).1 hh.2`. Substitute `e2` using the available equality.
-
-Use `(hsucc _ _ _).1 hh.1` as an intermediate fact. Rewrite using `[hent _ _ _ hc, Matrix.one_apply_ne]`. Introduce `e3`. Rewrite `this` using `[e3]`. Use linear arithmetic over natural numbers and integers.
-
-Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finrank_le_one [Fintype F] (ψ : AddChar F ℂ) (hψ : ψ ≠ 1) {V : Type} [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (b : Fin r → ℕ) (σ : Representation ℂ (blockTri (κ := F) b) V) (hσ : IsCuspDatum b σ) :
@@ -530,7 +522,7 @@ theorem finrank_le_one [Fintype F] (ψ : AddChar F ℂ) (hψ : ψ ≠ 1) {V : Ty
 end Unique
 
 /- English proof (translation)
-Use `le_antisymm (finrank_le_one ψ hψ b σ hσ) ?_` and prove the remaining obligations. Conclude with `Submodule.one_le_finrank_iff.2 (eig_ne_bot ψ hψ b σ hσ)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem leviWh_eq_one (F : Type) [Field F] [Fintype F] (ψ : AddChar F ℂ) (hψ : ψ ≠ 1) (r : ℕ) (V : Type)
     [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (b : Fin r → ℕ)

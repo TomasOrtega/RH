@@ -31,7 +31,7 @@ Both sides reduce to the same expression.
 @[simp] theorem act_tmul (σ : Ω ≃ₐ[k] Ω) (a : Ω) (r : R) : act R σ (a ⊗ₜ r) = σ a ⊗ₜ r := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a r => rw [TensorProduct.smul_tmul', act_tmul, AlgEquiv.smul_def]`. Consider the case `add x y hx hy => rw [smul_add, hx, hy, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem smul_eq_act (σ : Ω ≃ₐ[k] Ω) (x : Ω ⊗[k] R) : σ • x = act R σ x := by
   induction x using TensorProduct.induction_on with
@@ -45,7 +45,7 @@ scoped instance instAct : MulSemiringAction (Ω ≃ₐ[k] Ω) (Ω ⊗[k] R) :=
     smul_mul := fun σ x y => by rw [smul_eq_act, smul_eq_act, smul_eq_act, map_mul] }
 
 /- English proof (translation)
-The claim follows from `smul_eq_act R σ x`.
+A detailed English derivation is pending.
 -/
 theorem smul_def (σ : Ω ≃ₐ[k] Ω) (x : Ω ⊗[k] R) : σ • x = act R σ x := smul_eq_act R σ x
 
@@ -59,7 +59,7 @@ scoped instance smulComm : SMulCommClass (Ω ≃ₐ[k] Ω) R (Ω ⊗[k] R) where
     simp
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a r`. Simplify using `only [act_tmul, Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul, map_mul, AlgEquiv.commutes]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem repr_act {ι : Type} (b : Module.Basis ι k R) (σ : Ω ≃ₐ[k] Ω) (x : Ω ⊗[k] R) (i : ι) :
     (Algebra.TensorProduct.basis Ω b).repr (act R σ x) i = σ ((Algebra.TensorProduct.basis Ω b).repr x i) := by
@@ -74,13 +74,13 @@ variable [IsGalois k Ω]
 
 open Classical in
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis k R`. Set `B` to `Algebra.TensorProduct.basis Ω b`. Establish `hc : ∀ i, ∃ c : k, algebraMap k Ω c = B.repr x i` using `fun i => (InfiniteGalois.mem_range_algebraMap_iff_fixed (B.repr x i)).2 fun σ => by`. Rewrite using `[← repr_act R b σ x]`. Conclude with `congrArg (fun y => B.repr y i) (hx σ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `φ : Ω → k` to `fun ω => if h : ∃ c : k, algebraMap k Ω c = ω then h.choose else 0`. Establish `hφ0 : φ 0 = 0`. Simplify using `only [φ]`. Use `split_ifs with h`. Conclude with `(algebraMap k Ω).injective (h.choose_spec.trans (map_zero _).symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hφ : ∀ i, algebraMap k Ω (φ (B.repr x i)) = B.repr x i` using `fun i => by`. Simplify using `only [φ, dif_pos (hc i)]`. Conclude with `(hc i).choose_spec`. Set `f : Module.Free.ChooseBasisIndex k R →₀ k` to `Finsupp.mapRange φ hφ0 (B.repr x)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨b.repr.symm f, B.repr.injective ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Express the relevant statement in the definitionally equal form `B.repr (1 ⊗ₜ (b.repr.symm f)) i = _`. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply, Module.Basis.repr_symm_apply, Module.Basis.repr_linearCombination]`. Conclude with `hφ i`.
+A detailed English derivation is pending.
 -/
 theorem isInvariant : Algebra.IsInvariant R (Ω ⊗[k] R) (Ω ≃ₐ[k] Ω) where
   isInvariant x hx := by
@@ -109,13 +109,11 @@ theorem isInvariant : Algebra.IsInvariant R (Ω ⊗[k] R) (Ω ≃ₐ[k] Ω) wher
 
 omit [IsGalois k Ω] in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero`. Use `Subgroup.isOpen_mono (H₁ := ⊤) (fun σ _ => by rw [MulAction.mem_stabilizer_iff, smul_zero]) ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_top]`. Conclude with `isOpen_univ`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `tmul a r`. Use `Subgroup.isOpen_mono (H₁ := MulAction.stabilizer (Ω ≃ₐ[k] Ω) a) ?_ (stabilizer_isOpen_of_isIntegral a)` and prove the remaining obligations. Introduce `σ hσ`. Rewrite `hσ`, the goal using `[MulAction.mem_stabilizer_iff]`. Rewrite using `[smul_def, act_tmul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `congrArg (· ⊗ₜ[k] r) hσ`. Consider the case `add x y hx hy`. Use `Subgroup.isOpen_mono (H₁ := MulAction.stabilizer (Ω ≃ₐ[k] Ω) x ⊓ MulAction.stabilizer (Ω ≃ₐ[k] Ω) y) ?_ (by rw [Subgroup.coe_inf]; exact hx.inter hy)` and prove the remaining obligations. Introduce `σ hσ`. Rewrite using `[MulAction.mem_stabilizer_iff]`.
-
-Rewrite using `[smul_add, MulAction.mem_stabilizer_iff.1 (Subgroup.mem_inf.1 hσ).1, MulAction.mem_stabilizer_iff.1 (Subgroup.mem_inf.1 hσ).2]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_stabilizer [Algebra.IsIntegral k Ω] (x : Ω ⊗[k] R) :
     IsOpen (MulAction.stabilizer (Ω ≃ₐ[k] Ω) x : Set (Ω ≃ₐ[k] Ω)) := by
@@ -138,13 +136,13 @@ theorem isOpen_stabilizer [Algebra.IsIntegral k Ω] (x : Ω ⊗[k] R) :
       MulAction.mem_stabilizer_iff.1 (Subgroup.mem_inf.1 hσ).2]
 
 /- English proof (translation)
-Set `_ : TopologicalSpace (Ω ⊗[k] R)` to `⊥`. Establish `: DiscreteTopology (Ω ⊗[k] R)` using `⟨rfl⟩`. Establish `: ContinuousSMul (Ω ≃ₐ[k] Ω) (Ω ⊗[k] R)`. Rewrite using `[continuousSMul_iff_stabilizer_isOpen]`. Conclude with `isOpen_stabilizer R`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `isInvariant (k := k) (Ω := Ω) R` as an intermediate fact. Use `smulComm (k := k) (Ω := Ω) R` as an intermediate fact. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq_of_profinite (A := R) (G := Ω ≃ₐ[k] Ω) P Q h`. Use `⟨g⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, Ideal.pointwise_smul_eq_comap]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [Ideal.mem_comap]`. Establish `e : (MulSemiringAction.toRingAut (Ω ≃ₐ[k] Ω) (Ω ⊗[k] R) g).symm x = act R g⁻¹ x`. Rewrite using `[← smul_def]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_comap_eq (P Q : Ideal (Ω ⊗[k] R)) [P.IsPrime] [Q.IsPrime]
     (h : P.comap (Algebra.TensorProduct.includeRight : R →ₐ[k] Ω ⊗[k] R).toRingHom =

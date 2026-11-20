@@ -21,15 +21,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat.GagaC
 
 /- English proof (translation)
-Introduce `X s Ω _ ξ W U N F T t v d B Y b₁ hξ hY hb₁ hN hNU hW hv hg hT hE`. Establish `hid : spMap (RingHom.id ℂ) = 𝟙 (Sp ℂ)`. Simplify using `[spMap]`. Take `⟨ε, h', hε, hd, h0, hrel⟩` from `hE d B Y hY.isOpen hY.hol (fun b hb => (hY.isOver b hb).trans hid.symm) b₁ hb₁ rfl`. Establish `hopen : IsOpen (ball b₁ ε ∩ h' ⁻¹' {0}ᶜ)` using `hd.continuousOn.isOpen_inter_preimage isOpen_ball isOpen_compl_singleton`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB₂ : IsOpen (B ∩ (ball b₁ ε ∩ h' ⁻¹' {0}ᶜ))` using `hY.isOpen.inter hopen`. Establish `hsub : B ∩ (ball b₁ ε ∩ h' ⁻¹' {0}ᶜ) ⊆ B` using `Set.inter_subset_left`. Establish `htop : ∀ b ∈ B, ⊤ ≤ Y b ⁻¹ᵁ N` using `fun b hb => (top_le_iff_centre _ _).2 (hN b hb).1`. Use `⟨B ∩ (ball b₁ ε ∩ h' ⁻¹' {0}ᶜ), fun b => h' b * valAt' (Y b) N v, ⟨hb₁, Metric.mem_ball_self hε, h0⟩, ?_⟩` and prove the remaining obligations. Use `{ chart := hY.mono hB₂ hsub inU := fun b hb => hNU (hN b hb.1).1 cpt := fun b hb => (hN b hb.1).2 dense := fun O oO sO nO => hW O oO (sO.trans hsub) nO hol := ?_ ne := ?_ rel := ?_ }` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `DifferentiableOn.mul (hd.mono fun b hb => hb.2.1) ?_` and prove the remaining obligations. Conclude with `(hY.hol N v).2.mono fun b hb => ⟨hb.1, htop b hb.1⟩`. Introduce `b hb`. Use `mul_ne_zero hb.2.2 ?_` and prove the remaining obligations. Introduce `hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `hv`. Establish `e` using `valAt'_mul (Y b) N u.val u⁻¹.val`. Rewrite `e` using `[Units.mul_inv, valAt'_one (Y b) N (htop b hb.1), hz, zero_mul]`. Conclude with `one_ne_zero e`. Introduce `b hb hWb r hr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : ValAt ξ (Y b) (t / T) (valAt' (Y b) N v)` using `ValAt.of_section (hN b hb.1).1 (hN b hb.1).2 (hg _ _ _)`. Establish `e₂ : ValAt ξ (Y b) t (valAt' (Y b) N v * r)`. Use `ValAt.mul e₁ hr` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ _ hT]`. Then use the resulting hypothesis. Rewrite using `[hrel b ⟨hb.1, hb.2.1⟩ ((top_le_iff_centre _ _).2 hWb) _ e₂, _root_.mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hChart_of_extendsUnitAt : ∀ (X : Scheme.{0}) (s : X ⟶ Sp ℂ) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (W U N : X.Opens) (F : (Sp ℂ ⟶ X) → ℂ) (T t : Ω) (v : Γ(X, N)) (d : ℕ) (B : Set (Fin d → ℂ)) (Y : (Fin d → ℂ) → (Sp ℂ ⟶ X)) (b₁ : Fin d → ℂ), IsCptGen ξ → IsChart s B Y → b₁ ∈ B → (∀ b ∈ B, centre (Y b) ∈ N ∧ genPt ξ ⤳ centre (Y b)) → N ≤ U → (∀ O : Set (Fin d → ℂ), IsOpen O → O ⊆ B → O.Nonempty → ∃ b ∈ O, centre (Y b) ∈ W) → IsUnit v → (∀ (q : X) (hq : genPt ξ ⤳ q) (h : q ∈ N), genMap ξ ⟨q, hq⟩ (X.presheaf.germ N q h v) = t / T) → T ≠ 0 → ExtendsUnitAt s (RingHom.id ℂ) ξ W F t (Y b₁) → ∃ (B₂ : Set (Fin d → ℂ)) (H : (Fin d → ℂ) → ℂ), b₁ ∈ B₂ ∧ HChart s ξ W U F T B₂ Y H := by
   intro X s Ω _ ξ W U N F T t v d B Y b₁ hξ hY hb₁ hN hNU hW hv hg hT hE

@@ -43,7 +43,7 @@ def proj (m : ι → ℕ) (τ : ι) : PolyRep m where
   transp R _ A := by ext i j; simp [evEnt]
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `aeval_X (R := ℤ) (fun v : EntIx m => A v.1 v.2.1 v.2.2) ⟨τ, (i, j)⟩`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem ev_proj (τ : ι) {R : Type} [CommRing R] (A : Mat m R) : (proj m τ).ev A = A τ := by
   ext i j

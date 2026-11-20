@@ -10,61 +10,53 @@ open ReciprocityTheory.PGsh.L2 ReciprocityTheory.PGsh.Up GlobalTheory.CompanionT
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp F _ _ _ _ f hc N _ _ _ _ AA hFS K t ht hGen χ hχ`. Use `haveI : Nontrivial R := (algebraMap R C).domain_nontrivial`. Establish `hval : ∀ g ∈ AA.carrier, ∀ x, ∃ r : R, algebraMap R C r = g x` using `fun g hg => (show ∀ x, ∃ r : R, algebraMap R C r = g x from AA.le_int hg)`. Establish `hle : ∀ g ∈ AA.carrier, ∀ x, v (g x) ≤ 1`. Introduce `g hg x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `hval g hg x`. Rewrite using `[← hr]`. Conclude with `hv.map_le_one r`. Establish `hpv : ∀ z ∈ pInt (C` using `C) R p, v z < 1 := by`. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Unfold `pInt at hz`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hz`. Rewrite using `[Algebra.smul_def, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left zero_le (hv.map_le_one a)) hp`. Establish `hinv : ∀ g, g ∈ invFun AA.carrier K.toAddSubgroup → g ∈ AA.carrier ∧ ∀ x, ∀ k ∈ K.toAddSubgroup, g (x + k) = g x` using `fun g hg => hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinvI : ∀ g, (g ∈ AA.carrier ∧ ∀ x, ∀ k ∈ K.toAddSubgroup, g (x + k) = g x) → g ∈ invFun AA.carrier K.toAddSubgroup` using `fun g hg => hg`. Establish `hadd : ∀ g, g ∈ addFun (C` using `C) R p N → ∀ x y, g (x + y) - g x - g y ∈ pInt (C := C) R p := fun g hg => hg`. Establish `h1 : (1 : R) ∈ idealX AA.carrier K t χ`. Rewrite using `[hχ]`. Conclude with `Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨g0, hg0, hg0e⟩` from `Submodule.mem_map.1 (show LinearMap.toSpanSingleton R (F → C) (fun a => algebraMap R C (χ a)) 1 ∈ stepOrder AA.carrier K t from h1)`. Establish `hg0a : ∀ a : F, g0 (a • t) = algebraMap R C (χ a)`. Introduce `a`. Use `congrFun hg0e a` as an intermediate fact. Simplify `this` using `[LinearMap.funLeft_apply, LinearMap.toSpanSingleton_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hg0t : g0 t = 1` using `by simpa using hg0a 1`. Establish `hg0z : g0 0 = 0`. Establish `e` using `hg0a 0`. Rewrite `e` using `[zero_smul, MulChar.map_zero, map_zero]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨h, hA, hh⟩ : ∃ h ∈ afFun p (invFun AA.carrier K.toAddSubgroup), ¬ v (h t - h 0) < 1 := by`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `key : ∀ φ ∈ Algebra.adjoin R ((afFun p (invFun AA.carrier K.toAddSubgroup) : Submodule R (N → C)) : Set (N → C)), φ ∈ AA.carrier ∧ v (φ t - φ 0) < 1`. Introduce `φ hφ`. Proceed by induction on `hφ using Algebra.adjoin_induction with`.
+Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mem x hx`. Establish `hx'` using `Submodule.mem_inf.1 (SetLike.mem_coe.1 hx)`. Conclude with `⟨(hinv x hx'.1).1, hcon x (SetLike.mem_coe.1 hx)⟩`. Consider the case `algebraMap r`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `AA.carrier.smul_mem r AA.one_mem`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Use `⟨AA.carrier.add_mem hx.1 hy.1, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (x + y) t - (x + y) 0 = (x t - x 0) + (y t - y 0)`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `v.map_add_lt hx.2 hy.2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mul x y _ _ hx hy`. Use `⟨AA.mul_mem x y hx.1 hy.1, ?_⟩` and prove the remaining obligations. Establish `e : (x * y) t - (x * y) 0 = x t * (y t - y 0) + y 0 * (x t - x 0)`. Simplify using `only [Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `v.map_add_lt ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left zero_le (hle x hx.1 t)) hy.2`. Rewrite using `[map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left zero_le (hle y hy.1 0)) hx.2`. Establish `hk` using `(key g0 ((show invFun AA.carrier K.toAddSubgroup ≤ _ from hGen) hg0)).2`. Rewrite `hk` using `[hg0t, hg0z, sub_zero, map_one]`. Conclude with `lt_irrefl _ hk`. Establish `hAi` using `Submodule.mem_inf.1 hA`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hM, hK⟩` from `hinv h hAi.1`. Establish `hAd` using `hadd h hAi.2`. Take `⟨r0, hr0⟩` from `hval h hM 0`. Establish `h0p : h 0 ∈ pInt (C` using `C) R p := by`. Establish `h00` using `hAd 0 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h00` using `[add_zero, show h 0 - h 0 - h 0 = -h 0 by ring]`. Simplify using `using (pInt (C := C) R p).neg_mem h00`. Take `⟨h', h'apply, h'M⟩ : ∃ h' : N → C, (∀ x, h' x = h x - h 0) ∧ h' ∈ AA.carrier` from `⟨h - r0 • (1 : N → C), fun x => by show h x - (r0 • (1 : N → C)) x = h x - h 0`. Rewrite using `[Pi.smul_apply, Pi.one_apply, Algebra.smul_def, mul_one, hr0],`. Use the proof step `AA.carrier.sub_mem hM (AA.carrier.smul_mem r0 AA.one_mem)⟩`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h'z : h' 0 = 0` using `by rw [h'apply, sub_self]`. Establish `h'inv : h' ∈ invFun AA.carrier K.toAddSubgroup` using `hinvI h' ⟨h'M, fun x k hk => by rw [h'apply, h'apply, hK x k hk]⟩`. Establish `h'add : h' ∈ addFun (C` using `C) R p N := by show ∀ x y, h' (x + y) - h' x - h' y ∈ pInt (C := C) R p`. Introduce `x y`. Establish `e : h' (x + y) - h' x - h' y = (h (x + y) - h x - h y) + h 0`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h'apply, h'apply, h'apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(pInt (C := C) R p).add_mem (hAd x y) h0p`. Establish `h'af : h' ∈ afFun p AA.carrier`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `afFun`. Conclude with `Submodule.mem_inf.2 ⟨h'M, h'add⟩`. Establish `h'aug : h' ∈ augIdeal AA.carrier`. Unfold `augIdeal`. Conclude with `Submodule.mem_inf.2 ⟨h'M, by simp [LinearMap.mem_ker, h'z]⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h't : ¬ v (h' t) < 1`. Rewrite using `[h'apply]`. Conclude with `hh`. Take `⟨σ, hσ⟩` from `PositivityTheory.HtPt.Rb.fund_ex p C v R hv hp F f hc`. Take `⟨P1, P2, P3, P4, -⟩` from `PositivityTheory.HtPt.Rb.proj_props p C v R hv hp F f hc N AA hFS σ hσ h' h'aug`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨m, -, hm⟩ : ∃ m ∈ Finset.Icc 1 (p ^ f - 1), ¬ v (proj (σ ^ m) h' t) < 1 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `h't` to reduce the goal to its premises. Rewrite using `[P2, Finset.sum_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `v.map_sum_lt one_ne_zero hcon`. Establish `hτ : IsFund p (σ ^ m)`. Assume the negation of the conclusion as `hnf`. Establish `hpf` using `PositivityTheory.HtPt.Rb.proj_nf p C v R hv hp F f hc N AA hFS h' h'af (σ ^ m) hnf`. Conclude with `hm (hpv _ (PositivityTheory.HtPt.Rb.mem_pFun.1 hpf t))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨σ ^ m, hτ, ?_⟩` and prove the remaining obligations. Establish `hgE : proj (σ ^ m) h' ∈ AA.carrier ∧ ∀ (a : F) x, proj (σ ^ m) h' (a • x) = algebraMap R C ((σ ^ m) a) * proj (σ ^ m) h' x` using `P1 (σ ^ m)`. Establish `hgI` using `hinv _ (P4 K h'inv (σ ^ m))`. Establish `hgA : proj (σ ^ m) h' ∈ afFun p AA.carrier` using `P3 h'af (σ ^ m)`. Generalize the expression as in `proj (σ ^ m) h' = g at hgE hgI hgA hm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu⟩` from `hval g hgE.1 t`. Establish `hvu : v (algebraMap R C u) = 1`. Rewrite using `[hu]`. Conclude with `le_antisymm (hle g hgE.1 t) (not_lt.1 hm)`. Establish `huU : IsUnit u`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hv.isUnit_of_one (isUnit_iff_ne_zero.2 ?_) hvu` and prove the remaining obligations. Introduce `h0`. Rewrite `hvu` using `[h0, map_zero]`. Conclude with `zero_ne_one hvu`. Establish `hg0' : g 0 = 0`.
-
-Establish `e` using `hgE.2 0 0`. Rewrite `e` using `[zero_smul, MulChar.map_zero, map_zero, zero_mul]`. Then use the resulting hypothesis. Use `(Ideal.eq_top_iff_one _).2 ?_` and prove the remaining obligations. Use `show ∃ G ∈ afFun p AA.carrier, (∀ (a : F) x, G (a • x) - algebraMap R C ((σ ^ m) a) * G x ∈ pInt (C := C) R p) ∧ (∀ k ∈ K, G k ∈ pInt (C := C) R p) ∧ G t - algebraMap R C 1 ∈ pInt (C := C) R p`. Use `⟨(↑huU.unit⁻¹ : R) • g, (afFun p AA.carrier).smul_mem _ hgA, ?_, ?_, ?_⟩` and prove the remaining obligations.
-
-Introduce `a x`. Establish `e : ((↑huU.unit⁻¹ : R) • g) (a • x) - algebraMap R C ((σ ^ m) a) * ((↑huU.unit⁻¹ : R) • g) x = 0`. Simplify using `only [Pi.smul_apply, hgE.2 a x, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `Submodule.zero_mem _`. Introduce `k hk`. Establish `hgk : g k = 0`. Establish `e` using `hgI.2 0 k hk`. Rewrite `e` using `[zero_add, hg0']`. Then use the resulting hypothesis.
-
-Simplify using `[hgk]`. Establish `e : ((↑huU.unit⁻¹ : R) • g) t - algebraMap R C 1 = 0`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, ← hu, ← map_mul, huU.val_inv_mul, sub_self]`. Rewrite using `[e]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.hopf_order_ideals_eq_top : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (N : Type) [AddCommGroup N] [Module F N] [Fintype N] [DecidableEq N] (AA : HopfOrder (C := C) R N), FStable F AA.carrier → ∀ (K : Submodule F N) (t : N), t ∉ K → GenAF p AA.carrier K.toAddSubgroup → ∀ χ : MulChar F R, idealX AA.carrier K t χ = ⊤ → ∃ τ : MulChar F R, IsFund p τ ∧ idealD p AA.carrier K t τ = ⊤ := by
   intro p _ C _ _ _ v R _ _ hv hp F _ _ _ _ f hc N _ _ _ _ AA hFS K t ht hGen χ hχ

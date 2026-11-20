@@ -33,7 +33,7 @@ Both sides reduce to the same expression.
 theorem sw_symm_tmul (a : Af D.host.F) (x : D.host.E) : (sw D).symm (x ⊗ₜ a) = a ⊗ₜ x := rfl
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingEquiv.map_zero, RingHom.map_zero]`. Consider the case `tmul x a => rfl`. Consider the case `add x y hx hy => rw [RingHom.map_add, RingEquiv.map_add, RingEquiv.map_add, RingHom.map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sw_sig (y : ReciprocityTheory.Aut.AL D.host.E) :
     (sw D).symm (ReciprocityTheory.Aut.conjAL D.host.E y) = sigR (Af D.host.F) D.sp.cm.sig ((sw D).symm y) := by
@@ -43,9 +43,9 @@ theorem sw_sig (y : ReciprocityTheory.Aut.AL D.host.E) :
   | add x y hx hy => rw [RingHom.map_add, RingEquiv.map_add, RingEquiv.map_add, RingHom.map_add, hx, hy]
 
 /- English proof (translation)
-Establish `h1 : JR (F` using `D.host.F) (Af D.host.F) V.gram = 1 := by`. Rewrite using `[hg, JR]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Express the relevant statement in the definitionally equal form `κ.1 * ReciprocityTheory.Aut.conjT _ κ.1 = 1 ↔ Formalism.UG.cT (sigR (Af D.host.F) D.sp.cm.sig) (κ.1.map (sw D).symm.toRingHom) * JR (F := D.host.F) (Af D.host.F) V.gram * κ.1.map (sw D).symm.toRingHom = JR (F := D.host.F) (Af D.host.F) V.gram`. Establish `h2 : Formalism.UG.cT (sigR (Af D.host.F) D.sp.cm.sig) (κ.1.map (sw D).symm.toRingHom) = (ReciprocityTheory.Aut.conjT (ReciprocityTheory.Aut.conjAL D.host.E) κ.1).map (sw D).symm.toRingHom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Conclude with `(sw_sig _).symm`. Rewrite using `[h1, Matrix.mul_one, h2, ← Matrix.map_mul, mul_eq_one_comm, ← Matrix.map_one (sw D).symm.toRingHom (map_zero _) (map_one _)]`. Conclude with `⟨fun h => by rw [h], fun h => Matrix.map_injective (sw D).symm.injective h⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_GA_iff {V : HSp D} (hg : V.gram = 1) (κ : GL (Fin V.rank) (ReciprocityTheory.Aut.AL D.host.E)) :
     κ ∈ ReciprocityTheory.Aut.GA D.host.E V.rank ↔
@@ -64,7 +64,7 @@ theorem mem_GA_iff {V : HSp D} (hg : V.gram = 1) (κ : GL (Fin V.rank) (Reciproc
   exact ⟨fun h => by rw [h], fun h => Matrix.map_injective (sw D).symm.injective h⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.UnitarySplit.ga_glue V 1 _ (one_mem _) ((mem_GA_iff hg κ.1).1 κ.2)`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift {V : HSp D} (hg : V.gram = 1) (κ : Formalism.AUTREP.GAf D.host.E V.rank) :
     ∃ g : GA D V, infHom V g = 1 ∧ finHom V g = Formalism.UG.bc (sw D).symm.toRingHom κ.1 :=
@@ -93,20 +93,20 @@ def unitPsi {V : HSp D} (hg : V.gram = 1) : RowPsi V V.rank where
     · exact (exists_lift hg _).choose_spec.2.trans e
 
 /- English proof (translation)
-The claim follows from `congrArg Units.val (exists_lift hg κ).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem finMat_unitPsi {V : HSp D} (hg : V.gram = 1) (κ : Formalism.AUTREP.GAf D.host.E V.rank) :
     finMat D.sp.cm.sig V.gram ((unitPsi hg).ψ κ) = κ.1.1.map (sw D).symm :=
   congrArg Units.val (exists_lift hg κ).choose_spec.2
 
 /- English proof (translation)
-The claim follows from `h.mem_iff x`.
+A detailed English derivation is pending.
 -/
 theorem mem_std_lattice_iff_integral_coords {V : HSp D} (h : OrthFrame V) (x : Fin V.rank → D.host.E) :
     x ∈ L0c D V ↔ ∀ a, x a ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) := h.mem_iff x
 
 /- English proof (translation)
-Establish `e : sw D (a ⊗ₜ (o : D.host.E)) = ((o : D.host.E) ⊗ₜ (1 : Af D.host.F) : ReciprocityTheory.Aut.AL D.host.E) * ((1 : D.host.E) ⊗ₜ a)`. Rewrite using `[sw_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[e]`. Conclude with `Subring.mul_mem _ (Subring.subset_closure (Or.inl ⟨o, rfl⟩)) (Subring.subset_closure (Or.inr ⟨a, ha, rfl⟩))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmul_mem (o : 𝓞 D.host.E) {a : Af D.host.F} (ha : a ∈ intAf D.host.F) :
     sw D (a ⊗ₜ (o : D.host.E)) ∈ ReciprocityTheory.Aut.ALint D.host.E := by
@@ -117,11 +117,9 @@ theorem tmul_mem (o : 𝓞 D.host.E) {a : Af D.host.F} (ha : a ∈ intAf D.host.
   exact Subring.mul_mem _ (Subring.subset_closure (Or.inl ⟨o, rfl⟩)) (Subring.subset_closure (Or.inr ⟨a, ha, rfl⟩))
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 ((mem_std_lattice_iff_integral_coords h x).1 hx i)`. Use `tmul_mem o ha` as an intermediate fact.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[show (o : D.host.E) = x i from ho]`. Conclude with `this`. Consider the case `zero => rw [Pi.zero_apply, RingEquiv.map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [Pi.add_apply, RingEquiv.map_add]`.
-
-Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [Pi.neg_apply, RingEquiv.map_neg]`. Conclude with `neg_mem hy`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem int_of_mem {V : HSp D} (h : OrthFrame V) {y : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E}
     (hy : y ∈ latHat D.host.F D.host.E (L0c D V)) (i : Fin V.rank) : sw D (y i) ∈ ReciprocityTheory.Aut.ALint D.host.E := by
@@ -137,9 +135,9 @@ theorem int_of_mem {V : HSp D} (h : OrthFrame V) {y : Fin V.rank → Af D.host.F
   | neg y _ hy => rw [Pi.neg_apply, RingEquiv.map_neg]; exact neg_mem hy
 
 /- English proof (translation)
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Conclude with `hc a ha x hx`. Consider the case `zero => rw [smul_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [smul_neg]`. Conclude with `neg_mem hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_gen {M : ℕ} (L : Set (Fin M → D.host.E)) (c : Af D.host.F ⊗[D.host.F] D.host.E)
     (hc : ∀ a ∈ intAf D.host.F, ∀ x ∈ L, c • (fun i => a ⊗ₜ[D.host.F] x i) ∈ latHat D.host.F D.host.E L)
@@ -154,13 +152,11 @@ theorem smul_gen {M : ℕ} (L : Set (Fin M → D.host.E)) (c : Af D.host.F ⊗[D
   | neg y _ hy => rw [smul_neg]; exact neg_mem hy
 
 /- English proof (translation)
-Proceed by induction on `hr using Subring.closure_induction with`. Consider the case `mem r hr => exact h r hr`. Consider the case `zero => intro w _`. Rewrite using `[map_zero, zero_smul]`. Conclude with `zero_mem _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `one => intro w hw`. Rewrite using `[map_one, one_smul]` and apply the resulting hypothesis. Consider the case `add x y _ _ hx hy => intro w hw`. Rewrite using `[map_add, add_smul]`. Conclude with `add_mem (hx w hw) (hy w hw)`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `neg x _ hx => intro w hw`. Rewrite using `[map_neg, neg_smul]`. Conclude with `neg_mem (hx w hw)`. Consider the case `mul x y _ _ hx hy => intro w hw`. Rewrite using `[map_mul, mul_smul]`.
-
-Conclude with `hx _ (hy w hw)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_closure {A B : Type} [CommRing A] [CommRing B] {M : ℕ} (e : B →+* A) (S : AddSubgroup (Fin M → A)) (T : Set B)
     (h : ∀ t ∈ T, ∀ w ∈ S, e t • w ∈ S) {r : B} (hr : r ∈ Subring.closure T) : ∀ w ∈ S, e r • w ∈ S := by
@@ -173,11 +169,11 @@ theorem smul_closure {A B : Type} [CommRing A] [CommRing B] {M : ℕ} (e : B →
   | mul x y _ _ hx hy => intro w hw; rw [map_mul, mul_smul]; exact hx _ (hy w hw)
 
 /- English proof (translation)
-Use `smul_closure (sw D).symm.toRingHom _ _ (fun r hr w hw => ?_) hr` and prove the remaining obligations. Break down `hr with ⟨o, rfl⟩ | ⟨b, hb, rfl⟩` into its components or cases. Use `smul_gen _ _ (fun a ha x hx => AddSubgroup.subset_closure ⟨a, ha, (o : D.host.E) • x, ?_, ?_⟩) hw` and prove the remaining obligations. Rewrite `hx`, the goal using `[mem_std_lattice_iff_integral_coords h]`. Conclude with `fun i => Submodule.smul_mem _ o (hx i)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `((1 : Af D.host.F) ⊗ₜ[D.host.F] (o : D.host.E)) * (a ⊗ₜ[D.host.F] x i) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Both sides reduce to the same expression. Use `smul_gen _ _ (fun a ha x hx => AddSubgroup.subset_closure ⟨b * a, fun v => ?_, x, hx, ?_⟩) hw` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Conclude with `mul_mem (hb v) (ha v)`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `((b : Af D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E)) * (a ⊗ₜ[D.host.F] x i) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem {V : HSp D} (h : OrthFrame V) {r : ReciprocityTheory.Aut.AL D.host.E} (hr : r ∈ ReciprocityTheory.Aut.ALint D.host.E) :
     ∀ w ∈ latHat D.host.F D.host.E (L0c D V), (sw D).symm r • w ∈ latHat D.host.F D.host.E (L0c D V) := by
@@ -198,7 +194,7 @@ theorem smul_mem {V : HSp D} (h : OrthFrame V) {r : ReciprocityTheory.Aut.AL D.h
       rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
 /- English proof (translation)
-Introduce `v` and use `by show evalV F v 1 ∈ _ rw [map_one] exact one_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_mem_intAf (F : Type) [Field F] [NumberField F] : (1 : Af F) ∈ intAf F := fun v => by
   show evalV F v 1 ∈ _
@@ -206,11 +202,9 @@ theorem one_mem_intAf (F : Type) [Field F] [NumberField F] : (1 : Af F) ∈ intA
   exact one_mem _
 
 /- English proof (translation)
-Use `AddSubgroup.subset_closure ⟨1, one_mem_intAf _, Pi.single j 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_std_lattice_iff_integral_coords h]`. Introduce `a`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Conclude with `zero_mem _`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.single_apply, Pi.single_apply]`. Use `split_ifs`.
-
-Both sides reduce to the same expression. Rewrite using `[TensorProduct.tmul_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_mem {V : HSp D} (h : OrthFrame V) (j : Fin V.rank) :
     (Pi.single j 1 : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) ∈ latHat D.host.F D.host.E (L0c D V) := by
@@ -228,9 +222,9 @@ theorem single_mem {V : HSp D} (h : OrthFrame V) (j : Fin V.rank) :
     · rw [TensorProduct.tmul_zero]
 
 /- English proof (translation)
-Use `⟨int_of_mem h, fun hy => ?_⟩` and prove the remaining obligations. Rewrite using `[pi_eq_sum_univ' y]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Use `smul_mem h (hy i) _ (single_mem h i)` as an intermediate fact. Rewrite `this` using `[RingEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem mem_latHat_iff {V : HSp D} (h : OrthFrame V) (y : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) :
     y ∈ latHat D.host.F D.host.E (L0c D V) ↔ ∀ i, sw D (y i) ∈ ReciprocityTheory.Aut.ALint D.host.E := by
@@ -242,9 +236,9 @@ theorem mem_latHat_iff {V : HSp D} (h : OrthFrame V) (y : Fin V.rank → Af D.ho
   exact this
 
 /- English proof (translation)
-Rewrite `hy`, the goal using `[mem_latHat_iff h]`. Introduce `i`. Express the relevant statement in the definitionally equal form `(sw D).toRingHom (∑ j, (sw D).symm (κ.1.1 i j) * y j) ∈ _`. Rewrite using `[map_sum (sw D).toRingHom]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `sw D _ ∈ _`. Rewrite using `[RingEquiv.map_mul, RingEquiv.apply_symm_apply]`. Conclude with `mul_mem (hκ i j) (hy j)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem {V : HSp D} (h : OrthFrame V) {κ : Formalism.AUTREP.GAf D.host.E V.rank}
     (hκ : κ ∈ ReciprocityTheory.Aut.Umax D.host.E V.rank) {y : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E}
@@ -260,11 +254,11 @@ theorem mulVec_mem {V : HSp D} (h : OrthFrame V) {κ : Formalism.AUTREP.GAf D.ho
   exact mul_mem (hκ i j) (hy j)
 
 /- English proof (translation)
-Use `⟨⟨1, 1, mul_one _, mul_one _, fun κ => ?_⟩, fun κ => ⟨fun hκ => ⟨(unitPsi h.gram_eq).into κ, fun y => ?_, by simp⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[finMat_unitPsi, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[finMat_unitPsi]`. Use `⟨mulVec_mem h hκ, fun hy => ?_⟩` and prove the remaining obligations. Use `mulVec_mem h (inv_mem hκ) hy` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `erw [Matrix.mulVec_mulVec, ← Matrix.map_mul] at this`. Rewrite `this` using `[show (κ⁻¹).1.1 * κ.1.1 = 1 from Units.inv_mul κ.1, Matrix.map_one _ (RingHom.map_zero _) (RingHom.map_one _), Matrix.one_mulVec]`. Conclude with `this`. Introduce and unpack `⟨-, hk, -⟩ i j`. Use `(mem_latHat_iff h _).1 ((hk _).1 (single_mem h j)) i` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `this` using `[finMat_unitPsi, Matrix.mulVec_single_one]`. Express the relevant statement in the definitionally equal form `sw D ((sw D).symm (κ.1.1 i j)) ∈ _ at this`. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem stdPsi_unitPsi {V : HSp D} (h : OrthFrame V) : StdPsi (hostF_eq D) (unitPsi h.gram_eq) := by
   refine ⟨⟨1, 1, mul_one _, mul_one _, fun κ => ?_⟩, fun κ => ⟨fun hκ => ⟨(unitPsi h.gram_eq).into κ, fun y => ?_, by simp⟩, ?_⟩⟩
@@ -283,21 +277,21 @@ theorem stdPsi_unitPsi {V : HSp D} (h : OrthFrame V) : StdPsi (hostF_eq D) (unit
     rwa [RingEquiv.apply_symm_apply] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Examples₂.stdSpace Examples₂.star_isIntegral n (fun _ => false) n 0, _, rfl, stdPsi_unitPsi (orthFrame_stdSpace _ n n 0)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_stdPsi (D : D7) (n : ℕ) :
     ∃ (V : HSp D) (P : RowPsi V V.rank), V.rank = n ∧ StdPsi (hostF_eq D) P :=
   ⟨Examples₂.stdSpace Examples₂.star_isIntegral n (fun _ => false) n 0, _, rfl, stdPsi_unitPsi (orthFrame_stdSpace _ n n 0)⟩
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `Ideal.exists_maximal (𝓞 F)`. Conclude with `(evalV F ⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField F)⟩).toRingHom.domain_nontrivial`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nontrivial_Af (F : Type) [Field F] [NumberField F] : Nontrivial (Af F) := by
   obtain ⟨m, hm⟩ := Ideal.exists_maximal (𝓞 F)
   exact (evalV F ⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField F)⟩).toRingHom.domain_nontrivial
 
 /- English proof (translation)
-The claim follows from `haveI := nontrivial_Af F Algebra.TensorProduct.includeRight_injective (algebraMap F (Af F)).injective`.
+A detailed English derivation is pending.
 -/
 theorem incl_inj (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] :
     Function.Injective (Algebra.TensorProduct.includeRight : E →ₐ[F] Af F ⊗[F] E) :=
@@ -305,7 +299,7 @@ theorem incl_inj (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] 
   Algebra.TensorProduct.includeRight_injective (algebraMap F (Af F)).injective
 
 /- English proof (translation)
-Use `haveI := (incl_inj D.host.F D.host.E).nontrivial`. Take `⟨⟨β, β', h1, h2, -⟩, -⟩` from `h`. Simplify using `using Matrix.square_of_invertible β β' h1 h2`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rank_eq {V : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host.E} {P : RowPsi V n} (h : StdPsi hF P) :
     V.rank = n := by
@@ -326,7 +320,7 @@ def conjG : Formalism.AUTREP.GAf L n →* Formalism.AUTREP.GAf L n :=
     rw [← Matrix.map_mul, h, Matrix.map_one _ (RingHom.map_zero _) (RingHom.map_one _)]
 
 /- English proof (translation)
-Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `conjAL_conjAL L _`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem conjG_conjG (κ : Formalism.AUTREP.GAf L n) : conjG L n (conjG L n κ) = κ := by
   refine Subtype.ext (Units.ext ?_)
@@ -334,15 +328,13 @@ theorem conjG_conjG (κ : Formalism.AUTREP.GAf L n) : conjG L n (conjG L n κ) =
   exact conjAL_conjAL L _
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, IsCMField.complexConj L x ≠ x := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `IsCMField.complexConj_ne_one L (AlgEquiv.ext hc)`. Use `set b := x - IsCMField.complexConj L x with hb`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : IsCMField.complexConj L b = -b`. Rewrite using `[hb, map_sub, IsCMField.complexConj_apply_apply, neg_sub]`. Establish `h0 : b ≠ 0` using `sub_ne_zero.2 hx.symm`. Use `clear_value b`. Establish `hp : 1 + b ≠ 0` using `fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (IsCMField.complexConj L) h` as an intermediate fact. Rewrite `this` using `[map_add, map_one, h1, map_zero]`. Conclude with `two_ne_zero (α := L) (by linear_combination h + this)`. Establish `hm : 1 - b ≠ 0` using `fun h => by`. Use `congrArg (IsCMField.complexConj L) h` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_sub, map_one, h1, map_zero]`. Conclude with `two_ne_zero (α := L) (by linear_combination h + this)`. Establish `hc : IsCMField.complexConj L ((1 + b) / (1 - b)) = (1 - b) / (1 + b)`. Rewrite using `[map_div₀, map_add, map_sub, map_one, h1, sub_neg_eq_add, ← sub_eq_add_neg]`. Use `⟨(1 + b) / (1 - b), by rw [hc]; field_simp, fun h => h0 ?_⟩` and prove the remaining obligations.
-
-Rewrite `h` using `[hc, div_eq_div_iff hp hm]`. Establish `h4 : (4 : L) * b = 0` using `by linear_combination -h`. Conclude with `(mul_eq_zero.1 h4).resolve_left (by norm_num)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_normOne : ∃ u : L, u * IsCMField.complexConj L u = 1 ∧ IsCMField.complexConj L u ≠ u := by
   obtain ⟨x, hx⟩ : ∃ x, IsCMField.complexConj L x ≠ x := by
@@ -392,7 +384,7 @@ def twist {V : HSp D} {n : ℕ} (P : RowPsi V n) : RowPsi V n where
     exact ⟨conjG D.host.E n h, congrArg P.ψ (conjG_conjG _ _ _)⟩
 
 /- English proof (translation)
-Rewrite using `[← Matrix.smul_one_eq_diagonal, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_diag {A : Type} [CommRing A] {m n : ℕ} (β : Matrix (Fin m) (Fin n) A) (β' : Matrix (Fin n) (Fin m) A)
     (h : β * β' = 1) (c : A) :
@@ -400,13 +392,13 @@ theorem conj_diag {A : Type} [CommRing A] {m n : ℕ} (β : Matrix (Fin m) (Fin 
   rw [← Matrix.smul_one_eq_diagonal, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, h]
 
 /- English proof (translation)
-Introduce `h'`. Establish `hr` using `rank_eq h`. Take `⟨u, hu, hne⟩` from `exists_normOne D.host.E`. Take `⟨⟨β, β', h1, -, h2⟩, -⟩` from `h`. Take `⟨⟨γ, γ', k1, -, k2⟩, -⟩` from `h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `a` using `(h2 (conjG D.host.E n (scalG n hu))).symm.trans (k2 (scalG n hu))`. Establish `e1 : ((conjG D.host.E n (scalG n hu)).1.1 : Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL D.host.E)).map (sw D).symm = Matrix.diagonal fun _ => (1 : Af D.host.F) ⊗ₜ[D.host.F] (IsCMField.complexConj D.host.E u)`. Express the relevant statement in the definitionally equal form `((Matrix.diagonal fun _ => (u ⊗ₜ 1 : ReciprocityTheory.Aut.AL D.host.E)).map (ReciprocityTheory.Aut.conjAL D.host.E)).map (sw D).symm = _`. Rewrite using `[Matrix.diagonal_map (RingHom.map_zero _), Matrix.diagonal_map (RingEquiv.map_zero _)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : ((scalG n hu).1.1 : Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL D.host.E)).map (sw D).symm = Matrix.diagonal fun _ => (1 : Af D.host.F) ⊗ₜ[D.host.F] u`. Express the relevant statement in the definitionally equal form `(Matrix.diagonal fun _ => (u ⊗ₜ 1 : ReciprocityTheory.Aut.AL D.host.E)).map (sw D).symm = _`. Rewrite using `[Matrix.diagonal_map (RingEquiv.map_zero _)]`. Both sides reduce to the same expression. Rewrite `a` using `[e1, e2, conj_diag _ _ h1, conj_diag _ _ k1]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `b` using `congrFun (congrFun a ⟨0, hr ▸ hn⟩) ⟨0, hr ▸ hn⟩`. Rewrite `b` using `[Matrix.smul_apply, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, smul_eq_mul, mul_one, mul_one]`. Conclude with `hne (incl_inj D.host.F D.host.E b)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_stdPsi_twist {V : HSp D} {n : ℕ} (hn : 0 < n) {P : RowPsi V n} (h : StdPsi (hostF_eq D) P) :
     ¬ StdPsi (hostF_eq D) (twist P) := by
@@ -432,7 +424,7 @@ theorem not_stdPsi_twist {V : HSp D} {n : ℕ} (hn : 0 < n) {P : RowPsi V n} (h 
   exact hne (incl_inj D.host.F D.host.E b)
 
 /- English proof (translation)
-Take `⟨V, P, h1, h2⟩` from `exists_stdPsi D n`. Conclude with `⟨V, P, twist P, h1, h2, not_stdPsi_twist (h1 ▸ hn) h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_std_and_not (D : D7) {n : ℕ} (hn : 0 < n) :
     ∃ (V : HSp D) (P Q : RowPsi V V.rank), V.rank = n ∧ StdPsi (hostF_eq D) P ∧ ¬ StdPsi (hostF_eq D) Q := by

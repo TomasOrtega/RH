@@ -13,30 +13,30 @@ variable {k r : ℕ}
 def cinv (g : Q.Mx k r) : Q.Mx k r := (g + 1)⁻¹ * (g - 1)
 
 /- English proof (translation)
-Simplify using `[cinv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cinv_one : cinv (1 : Q.Mx k r) = 0 := by
   simp [cinv]
 
 /- English proof (translation)
-Rewrite using `[cinv, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hg, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem add_one_mul_cinv {g : Q.Mx k r} (hg : IsUnit (g + 1).det) : (g + 1) * cinv g = g - 1 := by
   rw [cinv, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hg, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[cinv, Matrix.mul_assoc, show (g - 1) * (g + 1) = (g + 1) * (g - 1) by noncomm_ring, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hg, Matrix.one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem cinv_mul_add_one {g : Q.Mx k r} (hg : IsUnit (g + 1).det) : cinv g * (g + 1) = g - 1 := by
   rw [cinv, Matrix.mul_assoc, show (g - 1) * (g + 1) = (g + 1) * (g - 1) by noncomm_ring,
     ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hg, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `k1 : g₁ * (1 - cinv g₁) = 1 + cinv g₁`. Establish `h` using `add_one_mul_cinv h₁`. Rewrite `h` using `[add_mul, Matrix.one_mul]`. Rewrite using `[mul_sub, mul_one, eq_sub_of_add_eq h]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `k2 : g₂ * (1 - cinv g₁) = 1 + cinv g₁`. Establish `h` using `add_one_mul_cinv h₂`. Rewrite `h` using `[add_mul, Matrix.one_mul]`. Rewrite using `[he, mul_sub, mul_one, eq_sub_of_add_eq h]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hL : ((1 / 2 : ℂ) • (g₁ + 1)) * (1 - cinv g₁) = 1`. Rewrite using `[Matrix.smul_mul, mul_sub, mul_one, add_one_mul_cinv h₁, show g₁ + 1 - (g₁ - 1) = (2 : ℂ) • (1 : Q.Mx k r) by rw [two_smul]; abel, smul_smul]`. Evaluate the numerical expressions. Establish `hR : (1 - cinv g₁) * ((1 / 2 : ℂ) • (g₁ + 1)) = 1` using `mul_eq_one_comm.mp hL`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem cinv_inj {g₁ g₂ : Q.Mx k r} (h₁ : IsUnit (g₁ + 1).det) (h₂ : IsUnit (g₂ + 1).det)
     (he : cinv g₁ = cinv g₂) : g₁ = g₂ := by
@@ -58,15 +58,15 @@ theorem cinv_inj {g₁ g₂ : Q.Mx k r} (h₁ : IsUnit (g₁ + 1).det) (h₂ : I
     _ = g₂ := by rw [hR, mul_one]
 
 /- English proof (translation)
-Take `⟨hU, hfix, hz⟩` from `hg`. Establish `fixv : ∀ v, g *ᵥ v = v → cinv g *ᵥ v = 0`. Introduce `v hv`. Simplify using `only [cinv]`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, hv, sub_self, Matrix.mulVec_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨?_, fun a _ => ⟨fixv _ (hfix a).1, fixv _ (hfix a).2⟩⟩, fixv _ hz⟩` and prove the remaining obligations. Establish `hU' : gᴴ * Hpk k r * g = Hpk k r` using `hU`. Establish `hAH : IsUnit (g + 1)ᴴ.det` using `by rw [Matrix.det_conjTranspose]; exact hu.star`. Establish `e1 : (g + 1) * (g + 1)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `e2 : ((g + 1)ᴴ)⁻¹ * (g + 1)ᴴ = 1` using `Matrix.nonsing_inv_mul _ hAH`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : cinv g = (g - 1) * (g + 1)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `mid : (g - 1)ᴴ * Hpk k r * (g + 1) + (g + 1)ᴴ * Hpk k r * (g - 1) = 0`. Simplify using `only [Matrix.conjTranspose_sub, Matrix.conjTranspose_add, Matrix.conjTranspose_one]`. Establish `: (gᴴ - 1) * Hpk k r * (g + 1) + (gᴴ + 1) * Hpk k r * (g - 1) = (gᴴ * Hpk k r * g - Hpk k r) + (gᴴ * Hpk k r * g - Hpk k r)` using `by noncomm_ring`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this, hU', sub_self, add_zero]`. Establish `t1 : ((g + 1)ᴴ)⁻¹ * ((g - 1)ᴴ * Hpk k r * (g + 1)) * (g + 1)⁻¹ = ((g + 1)ᴴ)⁻¹ * (g - 1)ᴴ * Hpk k r`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e1, Matrix.mul_one]`. Establish `t2 : ((g + 1)ᴴ)⁻¹ * ((g + 1)ᴴ * Hpk k r * (g - 1)) * (g + 1)⁻¹ = Hpk k r * ((g - 1) * (g + 1)⁻¹)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[e2, Matrix.one_mul]`. Rewrite using `[hc, Matrix.conjTranspose_mul, Matrix.conjTranspose_nonsing_inv, ← t1, ← t2, ← add_mul, ← mul_add, mid, Matrix.mul_zero, Matrix.zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cinv_lie {z : Fin (2 * r + k + 1) → ℂ} {g : Q.Mx k r} (hg : g ∈ UWset k r z) (hu : IsUnit (g + 1).det) :
     InLieW k r z (cinv g) := by

@@ -11,13 +11,13 @@ noncomputable section
 namespace GlobalTheory.Mem.Col2.TC
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Establish `hN : R.N R.m = (R.k + R.m) + R.m * R.t` using `N_eq_blocks R R.m`. Unfold `Formalism.L2.Forms.sgHC RowPar.sgHC`. Use `congr 1`. Distinguish the cases in `h1 : (i : ℕ) < R.k - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos h1, dif_pos h1]`. Both sides reduce to the same expression. Rewrite using `[dif_neg h1, dif_neg h1]`. Establish `h2 : ((i : ℕ) - (R.k - 1)) / (R.t + 1) < R.m`. Rewrite using `[Nat.div_lt_iff_lt_mul (Nat.succ_pos _)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `R.two_le_m` as an intermediate fact. Establish `e : R.m * (R.t + 1) = R.m + R.m * R.t` using `by ring`. Establish `e' : R.m * R.t.succ = R.m * (R.t + 1)` using `rfl`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_pos h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h3`. Simplify using `[RowPar.bAt, h2]`. Both sides reduce to the same expression. Simplify using `[RowPar.eAt, h2]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tup_sgHC_eq {R : Ranks} (P : HCParam R) (i : Fin (R.N R.m - 1)) :
     Formalism.L2.Forms.sgHC R P i = (RowPar.of P).sgHC i := by
@@ -43,14 +43,14 @@ theorem tup_sgHC_eq {R : Ranks} (P : HCParam R) (i : Fin (R.N R.m - 1)) :
       rfl
 
 /- English proof (translation)
-Unfold `RowPar.of`. Rewrite using `[B.hcW_v, B.hcW_b, B.hcW_e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tup_rowPar_eq (B : Base) (u : B.Word) (τ : Tau B.R) : RowPar.of (B.hcW u τ) = RowPar.of (B.hc τ) := by
   unfold RowPar.of
   rw [B.hcW_v, B.hcW_b, B.hcW_e]
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u a τ i`. Establish `h2` using `(tup_sgHC_eq (B.hcW u τ) i).trans (congrArg (fun P => RowPar.sgHC P i) (tup_rowPar_eq B u τ))`. Conclude with `(RowPar.sg_eq (B.hc τ) i).trans (congrArg (· - _) h2.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fm_sg_eq : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι), ∀ τ (i : Fin ((I.rec7 l Z).R.N (I.rec7 l Z).R.m - 1)), (((I.fm l u a).sg τ).w i : ℚ) = Formalism.L2.Forms.sgHC (I.rec7 l Z).R ((I.rec7 l Z).hcW u τ) i - rhoVec ((I.rec7 l Z).R.N (I.rec7 l Z).R.m - 1) i := by
   intro B X I hI hP l Z u a τ i

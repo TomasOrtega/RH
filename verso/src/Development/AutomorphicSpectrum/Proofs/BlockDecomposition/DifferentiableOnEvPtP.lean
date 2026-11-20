@@ -18,11 +18,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.MPSmooth
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_C]`. Conclude with `differentiableOn_const _`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p j hp`. Simplify using `only [map_mul, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X] at hp ⊢`. Establish `hj : DifferentiableOn ℂ (fun w : Fin (N + 1) → ℂ => w j.1) {w | w c ≠ 0}` using `(differentiable_apply j.1).differentiableOn`.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : DifferentiableOn ℂ (fun w : Fin (N + 1) → ℂ => w c) {w | w c ≠ 0}` using `(differentiable_apply c).differentiableOn`. Establish `hinv : DifferentiableOn ℂ (fun w : Fin (N + 1) → ℂ => (w c)⁻¹) {w | w c ≠ 0}` using `fun w hw => (hc w hw).inv hw`. Simplify using `only [div_eq_mul_inv]`. Conclude with `hp.mul (hj.mul hinv)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableOn_eval₂_ratio (N : ℕ) (c : Fin (N + 1))
     (p : MvPolynomial {j : Fin (N + 1) // j ≠ c} ℤ) :
@@ -48,7 +48,7 @@ theorem differentiableOn_eval₂_ratio (N : ℕ) (c : Fin (N + 1))
     exact hp.mul (hj.mul hinv)
 
 /- English proof (translation)
-Establish `h : (fun w => CxPts.ev (PSpace.str ℤ N) σ₀ (chart ℤ N c) a (ptP N c w)) = fun w : Fin (N + 1) → ℂ => MvPolynomial.eval₂Hom (Int.castRingHom ℂ) (fun j : {j // j ≠ c} => w j.1 / w c) ((chartAlgEquiv ℤ N c).symm a)`. Use function extensionality and compare the values at `w`. Conclude with `CxPts.ev_ofHom _ _ _ a`. Rewrite using `[h]`. Conclude with `differentiableOn_eval₂_ratio N c _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentiableOn_ev_ptP (N : ℕ) (c : Fin (N + 1)) (a : Γ(PSpace ℤ N, chart ℤ N c)) :
     DifferentiableOn ℂ (fun w => CxPts.ev (PSpace.str ℤ N) σ₀ (chart ℤ N c) a (ptP N c w))

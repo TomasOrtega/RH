@@ -13,7 +13,7 @@ set_option autoImplicit false
 namespace GlobalTheory.ChowSection
 
 /- English proof (translation)
-Rewrite using `[((isMultiHomogeneous_iff_block.1 h.homog).isHomogeneous).totalDegree h.ne_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem totalDegree_of_isChowFormInt {k : Type} [Field k] {N e d : ℕ}
     {Q : Ideal (MvPolynomial (Fin N) k)} {g : MvPolynomial (Fin (e + 1) × Fin N) k}

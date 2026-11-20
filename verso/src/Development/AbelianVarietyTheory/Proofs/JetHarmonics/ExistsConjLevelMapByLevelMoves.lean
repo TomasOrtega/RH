@@ -19,9 +19,9 @@ namespace ConjLevelMap
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `ObjMaps.exists_sab_id t`. Take `⟨i', hi'⟩` from `LevelFibre.sab_cast e.inv_hom_id.symm i`. Take `⟨n', hn'⟩` from `ObjMaps.exists_sab_cancel n i'`. Establish `h : n'.φ ≫ n.φ = 𝟙 _` using `hn'.symm.trans (hi'.trans hi)`. Establish `pn : IsPullback n.φ t.G.hom t.G.hom e.hom` using `n.cart.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso n.φ` using `pn.isIso_fst_of_isIso`. Use `⟨n', ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono n.φ, Category.assoc, h, Category.comp_id, Category.id_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_inv {S : Scheme.{0}} {t : SAB H S} (e : S ≅ S) (n : SABMap t t e.hom) :
     ∃ n' : SABMap t t e.inv, n.φ ≫ n'.φ = 𝟙 _ := by
@@ -35,7 +35,7 @@ theorem exists_inv {S : Scheme.{0}} {t : SAB H S} (e : S ≅ S) (n : SABMap t t 
   rw [← cancel_mono n.φ, Category.assoc, h, Category.comp_id, Category.id_comp]
 
 /- English proof (translation)
-Establish `e` using `OverMove.pow_left_comp ν₂ h₂ k`. Establish `a₁ : ρ₂.hom ≫ (σ ^ k).left ≫ m'.φ = ((σ' ^ k).left ≫ m.φ) ≫ ν.φ` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ m'.φ) e.symm).trans ((Category.assoc _ _ _).trans ((congrArg ((σ' ^ k).left ≫ ·) hφ).trans (Category.assoc _ _ _).symm)))`. Establish `a₂ : (r ≫ τ'.left) ≫ ν.φ = ρ₂.hom ≫ r' ≫ τ.left` using `(Category.assoc _ _ _).trans ((congrArg (r ≫ ·) h).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ τ.left) hr.symm).trans (Category.assoc _ _ _))))`. Conclude with `(cancel_epi ρ₂.hom).1 (a₁.trans ((congrArg (· ≫ ν.φ) hm).trans a₂))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conj_sec {S S₂ : Scheme.{0}} {t : SAB H S} {t₂ : SAB H S₂} {r r' : S₂ ⟶ S} {ρ : S ⟶ S} {ρ₂ : S₂ ≅ S₂}
     (m : SABMap t₂ t r) (m' : SABMap t₂ t r') (ν : SABMap t t ρ) (ν₂ : SABMap t₂ t₂ ρ₂.hom)
@@ -57,11 +57,11 @@ end ConjLevelMap
 open ConjLevelMap in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c n d hE ρ ν ρ₂ ν₂ gM gA gM₂ gA₂ h h₂ hM hA`. Take `⟨i, hi⟩` from `exists_inv ρ₂ ν₂`. Take `⟨q, hq⟩` from `ObjMaps.exists_sab_comp ν d.m`. Take `⟨m', hm'⟩` from `ObjMaps.exists_sab_comp q i`. Establish `hr : ρ₂.hom ≫ ρ₂.inv ≫ d.r ≫ ρ = d.r ≫ ρ` using `ρ₂.hom_inv_id_assoc _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hφ : ν₂.φ ≫ m'.φ = d.m.φ ≫ ν.φ`. Rewrite using `[hm', hq, ← Category.assoc, hi, Category.id_comp]`. Establish `eM : ∀ a, Xo.univ.eta (gM₂ a) = Xo.univ.eta (gM a)` using `fun a => by`. Rewrite using `[← sub_add_cancel (gM₂ a) (gM a), Xo.univ.eta_add, Xo.univ.eta_ker _ (hM a), _root_.one_mul]`. Establish `eA : ∀ a, Xo.univ.etaA (gA₂ a) = Xo.univ.etaA (gA a)` using `fun a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `hA a`. Rewrite using `[← sub_add_cancel (gA₂ a) (gA a), Xo.univ.etaA_add, hx, Xo.univ.etaA_ker, _root_.one_mul]`. Use `⟨_, m', hr, hφ, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Conclude with `conj_sec d.m m' ν ν₂ hr hφ d.pd (h₂.2.1 a) (hE.1 (gM₂ a)) (by rw [eM]; exact h.2.1 a)`. Conclude with `conj_sec d.m m' ν ν₂ hr hφ (d.l₂.A / l.A) (h₂.2.2 a) (hE.2 (gA₂ a)) (by rw [eA]; exact h.2.2 a)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_conj_levelMap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n), d.EtaOK → ∀ (ρ : Xo.X ⟶ Xo.X) (ν : SABMap Xo.univ.t Xo.univ.t ρ) (ρ₂ : d.Xo₂.X ≅ d.Xo₂.X) (ν₂ : SABMap d.Xo₂.univ.t d.Xo₂.univ.t ρ₂.hom) (gM gA gM₂ gA₂ : Dw.La →ₗ[𝓞 E] Dw.La), IsLevMove ρ ν gM gA → IsLevMove ρ₂.hom ν₂ gM₂ gA₂ → (∀ a, gM₂ a - gM a ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)) → (∀ a, Dw.ModN l.A (gA₂ a - gA a)) → ∃ (r' : d.Xo₂.X ⟶ Xo.X) (m' : SABMap d.Xo₂.univ.t Xo.univ.t r'), ρ₂.hom ≫ r' = d.r ≫ ρ ∧ ν₂.φ ≫ m'.φ = d.m.φ ≫ ν.φ ∧ DeltaDat.EtaOK { d with r := r', m := m' } := by
   intro E _ _ _ H Dw l Xo c n d hE ρ ν ρ₂ ν₂ gM gA gM₂ gA₂ h h₂ hM hA

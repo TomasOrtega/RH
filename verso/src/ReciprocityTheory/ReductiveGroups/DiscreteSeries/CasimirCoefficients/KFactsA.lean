@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[Matrix.mul_diagonal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma kfa_mul_Jm_apply (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     (Y * Jm ε) a b = Y a b * (if ε b then 1 else -1) := by
@@ -19,7 +19,7 @@ lemma kfa_mul_Jm_apply (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) (a
   rw [Matrix.mul_diagonal]
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma kfa_Jm_mul_apply (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     (Jm ε * Y) a b = (if ε a then 1 else -1) * Y a b := by
@@ -27,13 +27,13 @@ lemma kfa_Jm_mul_apply (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) (a
   rw [Matrix.diagonal_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a b hab`. Establish `h1` using `congrFun (congrFun h a) b`. Rewrite `h1` using `[kfa_mul_Jm_apply, kfa_Jm_mul_apply]`. Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (ε a) with ha | ha <;>`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (ε b) with hb | hb <;>`. Apply the tactic sequence `simp [ha, hb] at h1 hab <;>`. Use `first`. Consider the case `exact h1`. Consider the case `linear_combination h1`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `linear_combination (-1 / 2 : ℂ) * h1`. Consider the case `linear_combination (1 / 2 : ℂ) * h1`. Introduce `h`. Use extensionality with `a b`. Rewrite using `[kfa_mul_Jm_apply, kfa_Jm_mul_apply]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hab : ε a = ε b`. Rewrite using `[hab]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h a b hab]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma kfa_comm_iff_block (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) :
     Y * Jm ε = Jm ε * Y ↔ IsBlock ε Y := by
@@ -59,13 +59,13 @@ lemma kfa_comm_iff_block (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) 
       ring
 
 /- English proof (translation)
-Establish `hJJ : Jm ε * Jm ε = 1`. Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `split_ifs <;> norm_num`. Unfold `inK inG`. Rewrite using `[← kfa_comm_iff_block]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨?_, h2⟩` and prove the remaining obligations. Establish `h3 : (Yᴴ + Y) * Jm ε = 0`. Rewrite using `[Matrix.add_mul, h2]`. Conclude with `h1`. Establish `h4` using `congrArg (· * Jm ε) h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc, hJJ, Matrix.mul_one, Matrix.zero_mul] at h4`. Conclude with `eq_neg_of_add_eq_zero_left h4`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, h2⟩` and prove the remaining obligations. Rewrite using `[h1, Matrix.neg_mul, h2, neg_add_cancel]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma kfa_inK_iff (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) :
     inK ε Y ↔ Yᴴ = -Y ∧ IsBlock ε Y := by
@@ -94,7 +94,7 @@ section ExpL
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Use `first`. Consider the case `exact NormedSpace.exp_continuous.comp (Complex.continuous_ofReal.smul continuous_const)`. Consider the case `fun_prop`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma kfa_exp_cont (X : Matrix (Fin n) (Fin n) ℂ) :
     Continuous (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) := by
@@ -103,7 +103,7 @@ lemma kfa_exp_cont (X : Matrix (Fin n) (Fin n) ℂ) :
   | fun_prop
 
 /- English proof (translation)
-The claim follows from `Commute.exp_left h`.
+A detailed English derivation is pending.
 -/
 lemma kfa_exp_comm {J X : Matrix (Fin n) (Fin n) ℂ} (h : X * J = J * X) :
     NormedSpace.exp X * J = J * NormedSpace.exp X := Commute.exp_left h
@@ -111,21 +111,21 @@ lemma kfa_exp_comm {J X : Matrix (Fin n) (Fin n) ℂ} (h : X * J = J * X) :
 end ExpL
 
 /- English proof (translation)
-Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.refl A).neg_left, neg_add_cancel, NormedSpace.exp_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma kfa_exp_neg_mul (A : Matrix (Fin n) (Fin n) ℂ) :
     NormedSpace.exp (-A) * NormedSpace.exp A = 1 := by
   rw [← Matrix.exp_add_of_commute _ _ (Commute.refl A).neg_left, neg_add_cancel, NormedSpace.exp_zero]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.refl A).neg_right, add_neg_cancel, NormedSpace.exp_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma kfa_exp_mul_neg (A : Matrix (Fin n) (Fin n) ℂ) :
     NormedSpace.exp A * NormedSpace.exp (-A) = 1 := by
   rw [← Matrix.exp_add_of_commute _ _ (Commute.refl A).neg_right, add_neg_cancel, NormedSpace.exp_zero]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, hY, smul_neg]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma kfa_exp_conjTranspose {Y : Matrix (Fin n) (Fin n) ℂ} (hY : Yᴴ = -Y) (t : ℝ) :
     (NormedSpace.exp ((t : ℂ) • Y))ᴴ = NormedSpace.exp (-((t : ℂ) • Y)) := by
@@ -136,9 +136,9 @@ def kfaUnit (Y : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) : (Matrix (Fin n) (Fin n)
   ⟨NormedSpace.exp ((t : ℂ) • Y), NormedSpace.exp (-((t : ℂ) • Y)), kfa_exp_mul_neg _, kfa_exp_neg_mul _⟩
 
 /- English proof (translation)
-Establish `hYJ : Y * Jm ε = Jm ε * Y` using `hY.2`. Establish `hsk : Yᴴ = -Y` using `((kfa_inK_iff ε Y).1 hY).1`. Unfold `Kset`. Rewrite using `[Set.mem_setOf_eq]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, kfa_exp_conjTranspose hsk, kfa_exp_mul_neg]`. Conclude with `kfa_exp_comm (by rw [Matrix.smul_mul, Matrix.mul_smul, hYJ])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma kfa_mem_Kset (ε : Fin n → Bool) {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inK ε Y) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • Y) ∈ Kset ε := by
@@ -152,7 +152,7 @@ lemma kfa_mem_Kset (ε : Fin n → Bool) {Y : Matrix (Fin n) (Fin n) ℂ} (hY : 
   · exact kfa_exp_comm (by rw [Matrix.smul_mul, Matrix.mul_smul, hYJ])
 
 /- English proof (translation)
-Establish `hYJ : Y * Jm ε = Jm ε * Y` using `hY.2`. Establish `hsk : Yᴴ = -Y` using `((kfa_inK_iff ε Y).1 hY).1`. Establish `hc : NormedSpace.exp ((t : ℂ) • Y) * Jm ε = Jm ε * NormedSpace.exp ((t : ℂ) • Y)` using `kfa_exp_comm (by rw [Matrix.smul_mul, Matrix.mul_smul, hYJ])`. Unfold `inUJ`. Rewrite using `[kfa_exp_conjTranspose hsk, Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, kfa_exp_neg_mul, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma kfa_inUJ (ε : Fin n → Bool) {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inK ε Y) (t : ℝ) :
     inUJ ε (NormedSpace.exp ((t : ℂ) • Y)) := by
@@ -177,7 +177,7 @@ lemma kfa_toMK (ε : Fin n → Bool) {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inK 
     toMK (kfaKG ε hY t) = NormedSpace.exp ((t : ℂ) • Y) := rfl
 
 /- English proof (translation)
-Establish `hu : Continuous (kfaUnit Y)`. Use `Units.continuous_iff.2 ⟨kfa_exp_cont Y, ?_⟩` and prove the remaining obligations. Use `show Continuous fun t : ℝ => NormedSpace.exp (-((t : ℂ) • Y))`. Simplify `kfa_exp_cont (-Y)` using `only [smul_neg]`. Conclude with `(hu.subtype_mk _).subtype_mk _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma kfa_continuous (ε : Fin n → Bool) {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inK ε Y) :
     Continuous (kfaKG ε hY) := by
@@ -188,9 +188,7 @@ lemma kfa_continuous (ε : Fin n → Bool) {Y : Matrix (Fin n) (Fin n) ℂ} (hY 
   exact (hu.subtype_mk _).subtype_mk _
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show NormedSpace.exp (((s + t : ℝ) : ℂ) • Y) = NormedSpace.exp ((s : ℂ) • Y) * NormedSpace.exp ((t : ℂ) • Y)`. Rewrite using `[Complex.ofReal_add, add_smul]`.
-
-Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl Y).smul_left _).smul_right _)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma kfa_add (ε : Fin n → Bool) {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inK ε Y) (s t : ℝ) :
     kfaKG ε hY (s + t) = kfaKG ε hY s * kfaKG ε hY t := by

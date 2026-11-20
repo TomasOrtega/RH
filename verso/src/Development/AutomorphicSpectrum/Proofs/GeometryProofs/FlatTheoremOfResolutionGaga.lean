@@ -17,7 +17,7 @@ open CategoryTheory AlgebraicGeometry NumberField GlobalTheory.CompanionTheory.A
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce `hR hG hP` and use `GlobalTheory.T.flat_theorem_of_parts hP (GlobalTheory.T.flat_zero_from_resolution_and_gaga hR hG) (GlobalTheory.T.flat_first_from_resolution_and_gaga hR hG) GlobalTheory.T.finite_constant_holds`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thmFlatA_of_resK_gaga_partI :
     Geo.ResK.ResKStatement → GagaSections → PartI → ThmFlatA :=

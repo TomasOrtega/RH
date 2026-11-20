@@ -7,7 +7,7 @@ open UpperTheory.Gal.CertificateRingHomMap (GUf Gam0 AfQ Plc sim mat comp rat le
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Distinguish the cases in `h : GlobalTheory.Cong.Apart u w`. Conclude with `Or.inl h`. Conclude with `Or.inr (GlobalTheory.BCT.GlobLev.eq_or_eq_conjSrc (not_not.1 h))`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 -/
 private theorem apart_or {E : Type} [Field E] [NumberField E] [IsCMField E] (u w : Plc E) :
     GlobalTheory.Cong.Apart u w ∨ u = w ∨ u = UpperTheory.Gal.CertificateRingHomMap.cj w := by
@@ -16,29 +16,23 @@ private theorem apart_or {E : Type} [Field E] [NumberField E] [IsCMField E] (u w
   · exact Or.inr (GlobalTheory.BCT.GlobLev.eq_or_eq_conjSrc (not_not.1 h))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.OnlyStab.conjSrc_invol w`.
+A detailed English derivation is pending.
 -/
 private theorem cj_cj {E : Type} [Field E] [NumberField E] [IsCMField E] (w : Plc E) :
     UpperTheory.Gal.CertificateRingHomMap.cj (UpperTheory.Gal.CertificateRingHomMap.cj w) = w := GlobalTheory.CompanionTheory.OnlyStab.conjSrc_invol w
 
 /- English proof (translation)
-Introduce `hA hI E _ _ _ A n p _ S T hc S₀ Kw w hw hp hcj`. Establish `hsec : ∀ x, T.sec ((T.at hc w hw hp).loc x) = CertificateRingHomMap.loc hw x` using `(hA E A n p S T hc w hw hp).1`. Establish `hn : 0 < n` using `S.facts.pos`. Use `⟨fun hwS => ⟨fun x hx => ?_, fun g hg => ?_⟩, fun hwS => ⟨fun x hx => ?_, fun g hg => ?_⟩⟩` and prove the remaining obligations. Use `show T.sec _ ∈ lev S₀ Kw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsec, CertificateRingHomMap.mem_lev]`. Use `⟨by rw [CertificateRingHomMap.sim_loc]; exact one_mem _, fun u hu => ?_, fun u hu hcu => ?_⟩` and prove the remaining obligations. Break down `apart_or u w with h | h | h` into its components or cases. Rewrite using `[CertificateRingHomMap.comp_loc_of_apart hw h]`. Conclude with `one_mem _`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[CertificateRingHomMap.comp_loc]`. Conclude with `hx`. Substitute `h` using the available equality. Conclude with `absurd hu hcj`.
+Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Substitute using the available equality.
 
-Break down `apart_or u w with h | h | h` into its components or cases. Rewrite using `[CertificateRingHomMap.comp_loc_of_apart hw h]`. Conclude with `one_mem _`. Substitute `h` using the available equality. Conclude with `absurd hwS hu`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `h; exact absurd (by rwa [cj_cj]) hcu` using the available equality. Conclude with `(CertificateRingHomMap.mem_lev.1 hg).2.1 w hwS`. Use `show T.sec _ ∈ lev S₀ Kw`. Rewrite using `[hsec, CertificateRingHomMap.mem_lev]`. Use `⟨by rw [CertificateRingHomMap.sim_loc]; exact one_mem _, fun u hu => ?_, fun u hu hcu => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Break down `apart_or u w with h | h | h` into its components or cases. Rewrite using `[CertificateRingHomMap.comp_loc_of_apart hw h]`. Conclude with `one_mem _`. Substitute `h` using the available equality. Conclude with `absurd hu hwS`.
-
-Substitute `h` using the available equality. Conclude with `absurd hu hcj`. Break down `apart_or u w with h | h | h` into its components or cases. Rewrite using `[CertificateRingHomMap.comp_loc_of_apart hw h]`. Conclude with `one_mem _`.
-
-Substitute `h` using the available equality. Rewrite using `[CertificateRingHomMap.comp_loc]`. Conclude with `hx`. Substitute `h` using the available equality. Use `(hI E n (CertificateRingHomMap.loc hw x) w hn).1 ?_ ?_` and prove the remaining obligations.
-
-Rewrite using `[CertificateRingHomMap.sim_loc]`. Conclude with `one_mem _`. Rewrite using `[CertificateRingHomMap.comp_loc]`. Conclude with `hx`. Conclude with `(CertificateRingHomMap.mem_lev.1 hg).2.2 w hwS hcj`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pLevFact :
     AtApart → IntConj → LevFact := by

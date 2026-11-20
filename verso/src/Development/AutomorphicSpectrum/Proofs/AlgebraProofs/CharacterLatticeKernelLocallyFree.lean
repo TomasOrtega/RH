@@ -15,7 +15,7 @@ open GlobalTheory.CompanionTheory.Ar.Num
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
 /- English proof (translation)
-Simplify using `only [dotDual, AddSubgroup.mem_iInf, AddSubgroup.mem_comap]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_dotDual_iff (R : Subalgebra o Ω) {m : ℕ} {L : AddSubgroup (Fin m → Ω)}
     {v : Fin m → Ω} : v ∈ dotDual R L ↔ ∀ l ∈ L, l ⬝ᵥ v ∈ R := by
@@ -23,9 +23,9 @@ theorem mem_dotDual_iff (R : Subalgebra o Ω) {m : ℕ} {L : AddSubgroup (Fin m 
   rfl
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite using `[mem_dotDual_iff]`. Introduce `l hl`. Establish `hl'` using `(LatticeGoodness.mem_stdLat R).1 (h hl)`. Establish `hv'` using `(LatticeGoodness.mem_stdLat R).1 hv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ∑ i, l i * v i ∈ R`. Conclude with `sum_mem fun i _ => R.mul_mem (hl' i) (hv' i)`.
+A detailed English derivation is pending.
 -/
 theorem std_le_dual (R : Subalgebra o Ω) {m : ℕ} {A : AddSubgroup (Fin m → Ω)}
     (h : A ≤ stdLat R (Fin m)) : stdLat R (Fin m) ≤ dotDual R A := by
@@ -38,11 +38,11 @@ theorem std_le_dual (R : Subalgebra o Ω) {m : ℕ} {A : AddSubgroup (Fin m → 
   exact sum_mem fun i _ => R.mul_mem (hl' i) (hv' i)
 
 /- English proof (translation)
-Rewrite using `[LatticeGoodness.mem_stdLat]`. Introduce `j`. Establish `h0 : (Pi.single j 1 : Fin m → Ω) ∈ stdLat R (Fin m)`. Rewrite using `[LatticeGoodness.mem_stdLat]`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `using R.one_mem`. Simplify `R.zero_mem` using `[Pi.single_apply, hk]`. Establish `h1 : w • (Pi.single j 1 : Fin m → Ω) ∈ A` using `h (AddSubgroup.mem_map.2 ⟨_, h0, rfl⟩)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2` using `(mem_dotDual_iff R).1 hv _ h1`. Simplify `h2` using `[smul_dotProduct]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smul_mem_std (R : Subalgebra o Ω) {m : ℕ} {A : AddSubgroup (Fin m → Ω)} {w : Ω}
     (h : mulLat w (stdLat R (Fin m)) ≤ A) {v : Fin m → Ω} (hv : v ∈ dotDual R A) :
@@ -61,35 +61,29 @@ theorem smul_mem_std (R : Subalgebra o Ω) {m : ℕ} {A : AddSubgroup (Fin m →
   simpa [smul_dotProduct] using h2
 
 /- English proof (translation)
-Establish `hK : LocFree R b ((Del ⊓ H.prod ⊤).comap (AddMonoidHom.inl _ _))`. Use `(LocFreeSchanuel.main R b c H _ O (Del ⊓ H.prod ⊤) fH fIm fO ?_ ?_ ?_ ?_ ?_).2` and prove the remaining obligations. Introduce `x hx v hv`. Take `⟨h1, h2⟩` from `AddSubgroup.mem_inf.1 hv`. Use `AddSubgroup.mem_inf.2 ⟨sD x hx v h1, AddSubgroup.mem_prod.2 ⟨?_, trivial⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fH.1 x hx _ (AddSubgroup.mem_prod.1 h2).1`. Introduce `v z h`. Conclude with `⟨(AddSubgroup.mem_prod.1 (AddSubgroup.mem_inf.1 h).2).1, AddSubgroup.mem_map.2 ⟨(v, z), h, rfl⟩⟩`. Introduce `v hv`. Take `⟨z, hz⟩` from `(d1 v).2 (hwv v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨z, AddSubgroup.mem_inf.2 ⟨hz, AddSubgroup.mem_prod.2 ⟨hv, trivial⟩⟩⟩`. Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(d3 z).1 (AddSubgroup.mem_inf.1 h).1`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `AddSubgroup.mem_inf.2 ⟨(d3 z).2 h, AddSubgroup.mem_prod.2 ⟨H.zero_mem, trivial⟩⟩`. Introduce `z hz`. Take `⟨⟨v, z'⟩, h, rfl⟩` from `AddSubgroup.mem_map.1 hz`. Conclude with `⟨v, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `sG' : ∀ x ∈ R, ∀ v ∈ Gam ⊓ (⊤ : AddSubgroup _).prod H, x • v ∈ Gam ⊓ (⊤ : AddSubgroup _).prod H`. Introduce `x hx v hv`. Take `⟨h1, h2⟩` from `AddSubgroup.mem_inf.1 hv`. Conclude with `AddSubgroup.mem_inf.2 ⟨sG x hx v h1, AddSubgroup.mem_prod.2 ⟨trivial, fH.1 x hx _ (AddSubgroup.mem_prod.1 h2).2⟩⟩`. Establish `hG' : LocFree R (a + b) (Gam ⊓ (⊤ : AddSubgroup _).prod H)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : (Gam ⊓ (⊤ : AddSubgroup _).prod H).comap (LinearMap.inl Ω (Fin a → Ω) (Fin b → Ω)).toAddMonoidHom = W`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(g3 x).1 (AddSubgroup.mem_inf.1 h).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `AddSubgroup.mem_inf.2 ⟨(g3 x).2 h, AddSubgroup.mem_prod.2 ⟨trivial, H.zero_mem⟩⟩`. Establish `e2 : (Gam ⊓ (⊤ : AddSubgroup _).prod H).map (LinearMap.snd Ω (Fin a → Ω) (Fin b → Ω)).toAddMonoidHom = (Del ⊓ H.prod ⊤).comap (AddMonoidHom.inl _ _)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Take `⟨⟨x, y'⟩, hxy, rfl⟩` from `AddSubgroup.mem_map.1 h`. Take `⟨h1, h2⟩` from `AddSubgroup.mem_inf.1 hxy`. Conclude with `AddSubgroup.mem_inf.2 ⟨(d4 y').2 ⟨x, h1⟩, AddSubgroup.mem_prod.2 ⟨(AddSubgroup.mem_prod.1 h2).2, trivial⟩⟩`. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `AddSubgroup.mem_inf.1 h`. Take `⟨x, hx⟩` from `(d4 y).1 h1`. Conclude with `AddSubgroup.mem_map.2 ⟨(x, y), AddSubgroup.mem_inf.2 ⟨hx, AddSubgroup.mem_prod.2 ⟨trivial, (AddSubgroup.mem_prod.1 h2).1⟩⟩, rfl⟩`. Conclude with `LocFreeExt.main R (LinearMap.inl Ω _ _) (LinearMap.snd Ω _ _) LinearMap.inl_injective LinearMap.snd_surjective (LinearMap.range_inl Ω _ _) _ a b sG' (e1 ▸ fW) (e2 ▸ hK)`. Establish `eF : Gam.map (LinearMap.fst Ω (Fin a → Ω) (Fin b → Ω)).toAddMonoidHom = divLat w W`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨⟨x', y⟩, hxy, rfl⟩` from `AddSubgroup.mem_map.1 h`. Conclude with `(g1 x').1 ⟨y, hxy⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Take `⟨y, hy⟩` from `(g1 x).2 h`. Conclude with `AddSubgroup.mem_map.2 ⟨(x, y), hy, rfl⟩`. Establish `fDiv : LocFree R a (Gam.map (LinearMap.fst Ω (Fin a → Ω) (Fin b → Ω)).toAddMonoidHom)` using `eF ▸ LatticeGoodness.locFree_divLat R hw0 fW`. Establish `hGam : LocFree R (b + a) Gam`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1 : Gam.comap (LinearMap.inr Ω (Fin a → Ω) (Fin b → Ω)).toAddMonoidHom = stdLat R (Fin b)`. Use extensionality with `y`. Conclude with `g2 y`. Conclude with `LocFreeExt.main R (LinearMap.inr Ω _ _) (LinearMap.fst Ω _ _) LinearMap.inr_injective LinearMap.fst_surjective (LinearMap.range_inr Ω _ _) _ b a sG (e1 ▸ LatticeGoodness.locFree_stdLat R b) fDiv`. Establish `hfin : Module.finrank Ω (LinearMap.ker (LinearMap.fst Ω (Fin a → Ω) (Fin b → Ω))) = b`.
-
-Rewrite using `[← LinearMap.range_inr, LinearMap.finrank_range_of_inj LinearMap.inr_injective, Module.finrank_fin_fun]`. Take `⟨ρ, hρ1, hρ2, hρ3⟩` from `(GlobalTheory.T.locally_free_summand_criterion R (LinearMap.ker (LinearMap.fst Ω (Fin a → Ω) (Fin b → Ω))) (b + a) a Gam hGam).1 ((LatticeGoodness.locFree_map_mkQ_iff R _ LinearMap.fst_surjective Gam).2 fDiv)`. Establish `hS : Summand (Gam ⊓ (⊤ : AddSubgroup _).prod H) (LinearMap.ker (LinearMap.fst Ω (Fin a → Ω) (Fin b → Ω)))`. Use `⟨ρ, hρ1, hρ2, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1` using `hρ3 v (AddSubgroup.mem_inf.1 hv).1`.
-
-Establish `h2 : (ρ v).1 = 0` using `hρ1 v`. Use `AddSubgroup.mem_inf.2 ⟨h1, AddSubgroup.mem_prod.2 ⟨trivial, hstd ?_⟩⟩` and prove the remaining obligations. Apply `(g2 _).1` to reduce the goal to its premises. Establish `: ((0 : Fin a → Ω), (ρ v).2) = ρ v` using `by rw [← h2]`. Rewrite using `[this]` and apply the resulting hypothesis.
-
-Establish `hfinal` using `((GlobalTheory.T.locally_free_summand_criterion R (LinearMap.ker (LinearMap.fst Ω (Fin a → Ω) (Fin b → Ω))) (a + b) a _ hG').2 hS).2`. Rewrite `hfinal` using `[hfin, Nat.add_sub_cancel]`. Conclude with `(LatticeGoodness.locFree_map_mkQ_iff R _ LinearMap.fst_surjective _).1 hfinal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (R : Subalgebra o Ω) {a b c : ℕ} (W : AddSubgroup (Fin a → Ω))
     (O : AddSubgroup (Fin c → Ω)) (Gam : AddSubgroup ((Fin a → Ω) × (Fin b → Ω)))
@@ -197,11 +191,11 @@ theorem core (R : Subalgebra o Ω) {a b c : ℕ} (W : AddSubgroup (Fin a → Ω)
   exact (LatticeGoodness.locFree_map_mkQ_iff R _ LinearMap.fst_surjective _).1 hfinal
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ F _ _ _ n Sg r s D R p w χ hC hB hG₁ hG₂ hw τ`. Establish `hw0 : w ≠ 0`. Take `⟨c, -, hc⟩` from `hC.2.2.1`. Introduce `h`. Apply `hC.1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hc, h, mul_zero]`. Take `⟨-, fH, hle, -⟩` from `(GlobalTheory.T.lattice_good_base_change D R p w χ hC hB hG₁).1 τ`. Take `⟨-, fW, -, fO⟩` from `hB.free τ`. Take `⟨g1, g2, g3⟩` from `hB.gam τ`. Take `⟨d1, -, d3, d4⟩` from `hB.del τ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `core R (D.W τ) (D.omHT τ) (D.Gam τ) (D.Del τ) (D.hh R p (χ τ)) w hw0 fW fO fH (std_le_dual R hle) (fun v hv => smul_mem_std R (hw τ) hv) (hG₂.im τ) (fun x hx => (hB.stable τ x hx).1) (fun x hx => (hB.stable τ x hx).2.1) g1 g2 g3 d1 d3 d4`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ) (w : Ω) (χ : Sg → F → Ω), CharData R p w χ → D.Base R p w → D.Good₁ R p χ → D.Good₂ R p χ → (∀ τ, mulLat w (stdLat R _) ≤ D.af R p (χ τ)) → ∀ τ, LocFree R (r τ) (D.kerH R p τ (χ τ)) := by
   intro o Ω _ _ _ F _ _ _ n Sg r s D R p w χ hC hB hG₁ hG₂ hw τ

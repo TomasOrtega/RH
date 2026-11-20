@@ -5,7 +5,7 @@ universe u_1 u_2
 namespace Bl.general_b_fact'''''''
 
 /- English proof (translation)
-Introduce `O _ _ _ ι s a`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.prod_empty, Finset.sum_empty, AddValuation.map_one]`. Consider the case `insert i t hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi, AddValuation.map_mul, ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem goal1 :
   ∀ {O : Type u_1} [inst : CommRing.{u_1} O] [inst_1 : IsDomain.{u_1} O] [inst_2 : IsDiscreteValuationRing.{u_1} O]

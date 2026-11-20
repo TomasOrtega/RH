@@ -17,15 +17,15 @@ open GlobalTheory.KeyPow GlobalTheory.KeyFam GlobalTheory.ZM GlobalTheory.AbLaw
 namespace GlobalTheory.SiegDim
 
 /- English proof (translation)
-Establish `: NeZero k` using `⟨hk⟩`. Establish `key : ∀ a b, l a = l b ↔ ∀ i, ((a i : ℤ) : ZMod k) = (b i : ℤ)` using `fun a b => by`. Establish `e : l b = l a * l (b - a)` using `by rw [← hadd]; congr 1; abel`. Rewrite using `[e, left_eq_mul, hker]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨c, hc⟩ i`. Rewrite using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`. Conclude with `⟨c i, by simpa using congrFun hc i⟩`. Introduce `H choose c hc using fun i => (ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).1 (H i)`. Conclude with `⟨c, funext fun i => by simpa using hc i⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Set `F : (J → ZMod k) → {g : G // g ^ k = 1}` to `fun c => ⟨l fun i => ((c i).val : ℤ), htors _⟩`. Establish `hF : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce `c c' e`. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `using (key _ _).1 (congrArg Subtype.val e) i`. Introduce and unpack `⟨g, hg⟩`. Take `⟨a, rfl⟩` from `hsurj g hg`. Conclude with `⟨fun i => (a i : ZMod k), Subtype.ext ((key _ _).2 fun i => by simp)⟩`. Rewrite using `[← Nat.card_eq_of_bijective F hF]`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Nat.card_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem card_torsion_of_level {G J : Type} [Group G] [Fintype J] (k : ℕ) (hk : k ≠ 0) (l : (J → ℤ) → G)
     (hadd : ∀ a b, l (a + b) = l a * l b) (htors : ∀ a, l a ^ k = 1)
@@ -65,13 +65,13 @@ noncomputable def pointsEquiv {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G 
   map_mul' y y' := Over.OverMorphism.ext (hp.2 T y y' _ _ rfl rfl).symm
 
 /- English proof (translation)
-Set `T` to `𝟙_ (Over (Sp K))`. Set `β : o →+* K` to `(Spec.preimage ((T.hom ≫ x) ≫ s)).hom`. Establish `hβ : (T.hom ≫ x) ≫ s = spMap β` using `(Spec.map_preimage ((T.hom ≫ x) ≫ s)).symm`. Take `⟨h₁, h₂, -⟩` from `c.geom K (T.hom ≫ x) β (hζ.map β).unit hβ rfl`. Establish `n₁` using `card_torsion_of_level k (by omega) (fun a => toUnit (Over.mk (T.hom ≫ x)) ≫ c.lev a) (fun a b => by rw [c.lev_add, MonObj.comp_mul]) (fun a => by rw [← MonObj.comp_pow, c.lev_tors, MonObj.comp_one]) h₁ h₂`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `c.ab.comm` as an intermediate fact. Use `c.ab.smooth` as an intermediate fact. Use `c.ab.proper` as an intermediate fact. Use `c.ab.geomConnected` as an intermediate fact. Establish `hab : IsAbelianScheme ((Over.pullback x).obj c.A)` using `{ comm := Functor.isCommMonObj_obj smooth := by change Smooth (pullback.snd c.A.hom x); infer_instance proper := by change IsProper (pullback.snd c.A.hom x); infer_instance geomConnected := by change GeometricallyConnected (pullback.snd c.A.hom x); infer_instance }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n₂` using `GlobalTheory.UU.TorsionCount.card_torsion_points_unconditional K _ d k hab hd hK`. Set `e` to `pointsEquiv (isGrpPullback_pullback c.A x) T`. Establish `n₃` using `Nat.card_congr (e.toEquiv.subtypeEquiv (p := fun y => y ^ k = 1) (q := fun y => y ^ k = 1) fun y => by`. Express the relevant statement in the definitionally equal form `_ ↔ e y ^ k = 1`. Rewrite using `[← map_pow, MulEquiv.map_eq_one_iff])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `n₄ : k ^ (2 * d) = k ^ (h + h)`. Rewrite using `[← n₂, n₃, n₁]`. Simplify using the standard rewrite rules. Use `Nat.pow_right_injective hk n₄` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dim_geometric_fibre {h k : ℕ} {o : Type} [CommRing o] {ζ : o} {S : Scheme.{0}} {s : S ⟶ Sp o}
     (c : SiegPre h k ζ s) (hk : 2 ≤ k) (hζ : IsUnit ζ) {K : Type} [Field K] [IsAlgClosed K] (hK : (k : K) ≠ 0)
@@ -104,15 +104,13 @@ theorem dim_geometric_fibre {h k : ℕ} {o : Type} [CommRing o] {ζ : o} {S : Sc
   omega
 
 /- English proof (translation)
-Introduce `_ h k o _ ζ R _ _ β c hk hζ`. Use `c.ab.smooth` as an intermediate fact. Use `c.ab.geomConnected` as an intermediate fact. Use `choose n W hW hd using H1.exists_dim c.A.hom`. Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension h)` using `HasRingHomProperty.instIsZariskiLocalAtSource`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsZariskiLocalAtSource.of_iSup_eq_top W (top_le_iff.1 fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hW y⟩) fun y => ?_` and prove the remaining obligations. Set `κ` to `(Sp R).residueField (c.A.hom y)`. Set `K` to `AlgebraicClosure κ`. Set `x : Sp K ⟶ Sp R` to `spMap (algebraMap κ K) ≫ (Sp R).fromSpecResidueField (c.A.hom y)`. Establish `hK : (k : K) ≠ 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `map_natCast ((Spec.preimage x).hom.comp (algebraMap ℚ R)) k` as an intermediate fact. Rewrite using `[← this]`. Conclude with `(_root_.map_ne_zero _).2 (Nat.cast_ne_zero.2 (by omega))`. Establish `hp` using `(isGrpPullback_pullback c.A x).1`. Take `⟨y', hy', -⟩` from `Scheme.exists_preimage_of_isPullback hp y (default : PrimeSpectrum K) (Scheme.fromSpecResidueField_apply _ _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Smooth ((Over.pullback x).obj c.A).hom` using `by change Smooth (pullback.snd c.A.hom x); infer_instance`. Establish `: ConnectedSpace ((Over.pullback x).obj c.A).left` using `GeometricallyConnected.geometrically_connectedSpace (f := c.A.hom) x _ _ hp`. Take `⟨d, hd'⟩` from `exists_dim_of_preconnected ((Over.pullback x).obj c.A).hom y'`. Establish `e : n y = h` using `(H1.dim_base hp (hd y) hd' y' (by rw [hy']; exact hW y)).trans (dim_geometric_fibre c hk hζ hK x hd')`. Use `hd y` as an intermediate fact.
-
-Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension :
     Out.Laws → ∀ (h k : ℕ) (o : Type) [CommRing o] (ζ : o) (R : Type) [CommRing R] [Algebra ℚ R] (β : o →+* R) (c : SiegPre h k ζ (spMap β)), 2 ≤ k → IsUnit ζ → SmoothOfRelativeDimension h c.A.hom := by

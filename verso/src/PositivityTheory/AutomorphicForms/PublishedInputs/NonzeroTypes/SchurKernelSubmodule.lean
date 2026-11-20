@@ -17,11 +17,11 @@ end SchurKernelSubmodule
 
 open SchurKernelSubmodule in
 /- English proof (translation)
-Introduce `K _ d ξ hξ W _ _ ρ g hg hint`. Use `haveI : IsSimpleOrder (Subrepresentation ξ) := hξ`. Break down `eq_bot_or_eq_top (kerSub ξ ρ g hint) with h | h` into its components or cases. Rewrite using `[← LinearMap.ker_eq_bot]`. Establish `hk` using `congrArg Subrepresentation.toSubmodule h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Use `first`. Consider the case `exact hk`. Consider the case `simpa [kerSub] using hk`. It suffices to derive a contradiction. Apply `hg` to reduce the goal to its premises.
+Treat this case separately. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.ker_eq_top]`. Establish `hk` using `congrArg Subrepresentation.toSubmodule h`. Use `first`. Consider the case `exact hk`. Consider the case `simpa [kerSub] using hk`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem schurInjective_holds : SchurInjectiveFromIrreducible := by
   intro K _ d ξ hξ W _ _ ρ g hg hint

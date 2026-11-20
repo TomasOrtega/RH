@@ -17,7 +17,7 @@ import Development.WeilBound.CoreStatements.VolumeEquality.DegPushMuLink
 namespace SheetDecomposition
 
 /- English proof (translation)
-The claim follows from `have hEq : NumEq := numEq ptDim numPull (unitZero ptDim) degPush_of hEq (geoPF ptDim) (fibNum hEq) trdegU testRelabel geoTest numMap muMass fieldJoin genIso (fibLink chartVal centre coordLat) (muLink chartVal centre coordLat)`.
+A detailed English derivation is pending.
 -/
 theorem degPush : DegPush :=
   have hEq : NumEq := numEq ptDim numPull (unitZero ptDim)

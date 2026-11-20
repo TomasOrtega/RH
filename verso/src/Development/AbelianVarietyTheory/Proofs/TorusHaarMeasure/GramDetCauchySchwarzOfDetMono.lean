@@ -6,27 +6,27 @@ open scoped ComplexOrder ENNReal Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `H m n _ _ _ A B`. Establish `hA : (Aᴴ * A).PosSemidef` using `posSemidef_conjTranspose_mul_self A`. Establish `hB : (Bᴴ * B).PosSemidef` using `posSemidef_conjTranspose_mul_self B`. Establish `hA0 : 0 ≤ (Aᴴ * A).det.re` using `(H n _ _ hA hA).1`. Establish `hB0 : 0 ≤ (Bᴴ * B).det.re` using `(H n _ _ hB hB).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hG : (Aᴴ * A).det = 0`. Take `⟨v, hv, hv0⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hG`. Establish `hAv : A *ᵥ v = 0` using `(conjTranspose_mul_self_mulVec_eq_zero A v).mp hv0`. Establish `h1 : (Bᴴ * A).det = 0` using `Matrix.exists_mulVec_eq_zero_iff.mp ⟨v, hv, by rw [← mulVec_mulVec, hAv, mulVec_zero]⟩`. Establish `h2 : (Aᴴ * B).det = 0`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Aᴴ * B = (Bᴴ * A)ᴴ` using `by simp`. Rewrite using `[this, det_conjTranspose, h1, star_zero]`. Use `⟨?_, fun h => (h h2).elim⟩` and prove the remaining obligations. Rewrite using `[h2]`. Simplify using `using mul_nonneg hA0 hB0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hreal : (Aᴴ * A).det = ((Aᴴ * A).det.re : ℂ)`. Establish `: star (Aᴴ * A).det = (Aᴴ * A).det`. Rewrite using `[← det_conjTranspose, hA.1.eq]`. Conclude with `(Complex.conj_eq_iff_re.mp this).symm`. Use `set g : ℝ := (Aᴴ * A).det.re with hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : g ≠ 0` using `fun h => hG (by rw [hreal, h]; simp)`. Establish `hgpos : 0 < g` using `lt_of_le_of_ne hA0 hg0.symm`. Take `⟨C, hC⟩ : ∃ C : Matrix n n ℂ, (Aᴴ * A) * C = Aᴴ * B` from `⟨(Aᴴ * A)⁻¹ * (Aᴴ * B), mul_nonsing_inv_cancel_left _ _ (Ne.isUnit hG)⟩`. Establish `horth : (A * C)ᴴ * (B - A * C) = 0`. Rewrite using `[conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_sub, ← Matrix.mul_assoc Aᴴ A C, hC, sub_self, Matrix.mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `horth' : (B - A * C)ᴴ * (A * C) = 0`. Use `congrArg conjTranspose horth` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_zero]`. Then use the resulting hypothesis. Establish `hsum : Bᴴ * B = (A * C)ᴴ * (A * C) + (B - A * C)ᴴ * (B - A * C)`. Establish `hBe : B = A * C + (B - A * C)` using `by abel`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `B - A * C = D at *`. Generalize the expression as in `A * C = E at *`. Rewrite using `[hBe, conjTranspose_add, Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, horth, horth']`. Simplify using the standard rewrite rules. Establish `hP : ((A * C)ᴴ * (A * C)).det = ((g * ‖C.det‖ ^ 2 : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: (A * C)ᴴ * (A * C) = Cᴴ * (Aᴴ * A) * C`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[this, det_mul, det_mul, det_conjTranspose, hreal]`. Use `push_cast`. Rewrite using `[← Complex.conj_mul' C.det]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `hAB : (Aᴴ * B).det = g * C.det` using `by rw [← hC, det_mul, hreal]`. Establish `hN : ‖(Aᴴ * B).det‖ ^ 2 = g * (g * ‖C.det‖ ^ 2)`. Rewrite using `[hAB, norm_mul, Complex.norm_real, Real.norm_of_nonneg hA0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨-, h2, h3⟩` from `H n _ _ (posSemidef_conjTranspose_mul_self (A * C)) (posSemidef_conjTranspose_mul_self (B - A * C))`. Rewrite `h2`, `h3` using `[← hsum, hP, Complex.ofReal_re]`. Rewrite using `[hN]`. Use `⟨mul_le_mul_of_nonneg_left h2 hA0, fun hne hle => ⟨C, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : C.det ≠ 0` using `fun h => hne (by rw [hAB, h, mul_zero])`. Establish `hQ` using `h3 (by`. Establish `: g * ‖C.det‖ ^ 2 ≠ 0` using `mul_ne_zero hg0 (pow_ne_zero _ (norm_ne_zero_iff.mpr hc))`. Conclude with `this) (le_of_mul_le_mul_left hle hgpos)` after adjusting the coercions. Conclude with `sub_eq_zero.mp (conjTranspose_mul_self_eq_zero.mp hQ)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gram_det_cauchy_schwarz_of_det_mono :
     (∀ (n : Type) [Fintype n] [DecidableEq n] (P Q : Matrix n n ℂ), P.PosSemidef → Q.PosSemidef → 0 ≤ P.det.re ∧ P.det.re ≤ (P + Q).det.re ∧ (P.det ≠ 0 → (P + Q).det.re ≤ P.det.re → Q = 0)) → (∀ (m n : Type) [Fintype m] [Fintype n] [DecidableEq n] (A B : Matrix m n ℂ), ‖(Aᴴ * B).det‖ ^ 2 ≤ (((A)ᴴ * (A)).det.re) * (((B)ᴴ * (B)).det.re) ∧ ((Aᴴ * B).det ≠ 0 → (((A)ᴴ * (A)).det.re) * (((B)ᴴ * (B)).det.re) ≤ ‖(Aᴴ * B).det‖ ^ 2 → ∃ C : Matrix n n ℂ, B = A * C)) := by

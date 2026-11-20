@@ -28,9 +28,9 @@ section General
 variable {α β : Type} [Fintype α] [Fintype β]
 
 /- English proof (translation)
-Establish `hψc : IsSB (fun x => conj (ψ x))` using `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ α β ψ ψ hψ hψ).2.2.2.1`. Establish `hpr : IsSB (φ * fun x => conj (ψ x))` using `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ α β φ _ hφ hψc).2.2.1`. Establish `hlin` using `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ α β _ _ hpr hpr).2.2.2.2.2.1 (a * conj b)`. Establish `hfun : (fun x => (a • φ) x * conj ((b • ψ) x)) = (a * conj b) • (φ * fun x => conj (ψ x))`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, Pi.mul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `show haar (fun x => (a • φ) x * conj ((b • ψ) x)) = a * conj b * haar (φ * fun x => conj (ψ x))`. Rewrite using `[hfun, hlin]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ip_smul_smul {φ ψ : Matrix α β ℚ → ℂ} (hφ : IsSB φ) (hψ : IsSB ψ) (a b : ℂ) :
     ip (a • φ) (b • ψ) = a * conj b * ip φ ψ := by
@@ -45,9 +45,9 @@ theorem ip_smul_smul {φ ψ : Matrix α β ℚ → ℂ} (hφ : IsSB φ) (hψ : I
   rw [hfun, hlin]
 
 /- English proof (translation)
-Establish `hψc : IsSB (fun x => conj (ψ x))` using `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ α β ψ ψ hψ hψ).2.2.2.1`. Establish `hpr : IsSB (φ * fun x => conj (ψ x))` using `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ α β φ _ hφ hψc).2.2.1`. Establish `hc` using `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ α β _ _ hpr hpr).2.2.2.2.2.2.1`. Establish `hfun : (fun x => ψ x * conj (φ x)) = fun x => conj ((φ * fun x => conj (ψ x)) x)`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.mul_apply, map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Use `show haar (fun x => ψ x * conj (φ x)) = conj (haar (φ * fun x => conj (ψ x)))`. Rewrite using `[hfun, hc]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ip_conj {φ ψ : Matrix α β ℚ → ℂ} (hφ : IsSB φ) (hψ : IsSB ψ) :
     ip ψ φ = conj (ip φ ψ) := by
@@ -62,7 +62,7 @@ theorem ip_conj {φ ψ : Matrix α β ℚ → ℂ} (hφ : IsSB φ) (hψ : IsSB �
   rw [hfun, hc]
 
 /- English proof (translation)
-Establish `sφ : Shape φ` using `(GlobalTheory.T.selfDualVacuum_gaussian_shape_rootOfUnity_phases α β φ).2.1 hφ`. Establish `sψ : Shape ψ` using `(GlobalTheory.T.selfDualVacuum_gaussian_shape_rootOfUnity_phases α β ψ).2.1 hψ`. Establish `sψc : Shape (fun x => conj (ψ x))` using `(GlobalTheory.T.isCosetQuadraticPhaseTestFunction_conj_character_mul α β ψ sψ).1`. Establish `spr : Shape (fun x => φ x * conj (ψ x))` using `(GlobalTheory.T.isCosetQuadraticPhaseTestFunction_conj_character_mul α β φ sφ).2.2 _ sψc`. Conclude with `GlobalTheory.T.schwartzBruhatIntegral_gaussianShape_rootOfUnityPhase α β _ spr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ph_ip [DecidableEq β] {φ ψ : Matrix α β ℚ → ℂ} (hφ : PV φ) (hψ : PV ψ) : Ph (ip φ ψ) := by
   have sφ : Shape φ := (GlobalTheory.T.selfDualVacuum_gaussian_shape_rootOfUnity_phases α β φ).2.1 hφ
@@ -77,11 +77,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : D
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ}
 
 /- English proof (translation)
-Establish `hv'` using `hv`. Unfold `IsVac at hv'`. Take `⟨hsb, hip, hfix⟩` from `hv'`. Unfold `IsVac`. Use `⟨(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ (Fin n) (Fin g) v v hsb hsb).2.1 u, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ip_smul_smul hsb hsb, hip, _root_.mul_one, Complex.mul_conj, Complex.normSq_eq_norm_sq, hu]`. Simplify using the standard rewrite rules. Introduce `y hy`. Establish `hlin : heisG X bas y (u • v) = u • heisG X bas y v`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [heisG, heisS, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hlin, smul_comm, hfix y hy]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem isVac_smul {w : E} {A : AddSubgroup (Matrix (Fin n) (Fin r) E)} {v : TF n g}
     (hv : IsVac X bas w A v) {u : ℂ} (hu : ‖u‖ = 1) : IsVac X bas w A (u • v) := by
@@ -100,7 +100,7 @@ theorem isVac_smul {w : E} {A : AddSubgroup (Matrix (Fin n) (Fin r) E)} {v : TF 
     rw [hlin, smul_comm, hfix y hy]
 
 /- English proof (translation)
-Establish `hc : ip (c • v) (c • v) = ((‖c‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[ip_smul_smul hv hv, h1, _root_.mul_one, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Unfold `unitv`. Rewrite using `[hc, Complex.ofReal_re, Real.sqrt_sq (norm_nonneg c), smul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitv_smul {v : TF n g} (hv : IsSB v) (h1 : ip v v = 1) (c : ℂ) :
     unitv (c • v) = (((‖c‖ : ℝ) : ℂ)⁻¹ * c) • v := by
@@ -110,23 +110,21 @@ theorem unitv_smul {v : TF n g} (hv : IsSB v) (h1 : ip v v = 1) (c : ℂ) :
   rw [hc, Complex.ofReal_re, Real.sqrt_sq (norm_nonneg c), smul_smul]
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g bas idx n hs hn w hw hw1 L hL v hv`. Establish `hstd : stdL E n ∈ Vset E n 1` using `GlobalTheory.SW.Base.stdL_mem_Vset n 1`. Establish `hv'` using `hv`. Unfold `IsVac at hv'`. Take `⟨A, ε, hA⟩` from `GlobalTheory.T.vacuum_tensorLattice_fixed_rational_heisenberg E r X g bas idx n hs hn w hw hw1 L hL (stdL E n) hstd v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu1, hupv⟩` from `(GlobalTheory.T.selfDualVacuum_gaussian_shape_rootOfUnity_phases (Fin n) (Fin g) v).2.2.1 A ε hA`. Use `⟨u, hu1, fun Λ hΛ => ?_⟩` and prove the remaining obligations. Establish `H` using `GlobalTheory.T.tensorLattice_vacua_exist_unique E r X g bas idx n hs hn w hw hw1 L hL 1 Λ hΛ`. Take `⟨vΛ, hvΛ⟩` from `H.1`. Establish `hvΛ'` using `hvΛ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `IsVac at hvΛ'`. Establish `hproj : projA X bas w (tens Λ L) v = ip v vΛ • vΛ` using `H.2.2.1 v hv'.1 vΛ hvΛ`. Establish `hnorm` using `H.2.2.2 L hL (stdL E n) hstd vΛ v hvΛ hv`. Rewrite `hnorm` using `[(GlobalTheory.T.tensorLattice_selfDual_semicharacter_index E r X g bas idx n hs hn w hw hw1 L hL 1 Λ hΛ).2.2.2.2.2 (stdL E n) hstd, ip_conj hv'.1 hvΛ'.1, Complex.norm_conj]`. Establish `hsq` using `congrArg Real.sqrt hnorm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hsq` using `[Real.sqrt_mul (Nat.cast_nonneg _), Real.sqrt_sq (norm_nonneg _), Real.sqrt_one]`. Establish `hc0 : ‖ip v vΛ‖ ≠ 0`. Introduce `h0`. Rewrite `hsq` using `[h0, mul_zero]`. Conclude with `zero_ne_one hsq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hunit : unitv (projA X bas w (tens Λ L) v) = (((‖ip v vΛ‖ : ℝ) : ℂ)⁻¹ * ip v vΛ) • vΛ`. Rewrite using `[hproj]`. Conclude with `unitv_smul hvΛ'.1 hvΛ'.2.1 _`. Establish `he : ‖((‖ip v vΛ‖ : ℝ) : ℂ)⁻¹ * ip v vΛ‖ = 1`. Rewrite using `[norm_mul, norm_inv, Complex.norm_real, norm_norm, inv_mul_cancel₀ hc0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hunit]`. Conclude with `isVac_smul hvΛ he`. Take `⟨A', ε', hA'⟩` from `GlobalTheory.T.vacuum_tensorLattice_fixed_rational_heisenberg E r X g bas idx n hs hn w hw hw1 L hL Λ hΛ vΛ hvΛ`. Take `⟨u', hu'1, hu'pv⟩` from `(GlobalTheory.T.selfDualVacuum_gaussian_shape_rootOfUnity_phases (Fin n) (Fin g) vΛ).2.2.1 A' ε' hA'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hph : Ph (ip (u • v) (u' • vΛ))` using `ph_ip hupv hu'pv`. Establish `hu'u : conj u' * u' = 1`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hu'1]`. Simplify using the standard rewrite rules. Establish `heq : u • unitv (projA X bas w (tens Λ L) v) = (ip (u • v) (u' • vΛ) * ((‖ip v vΛ‖ : ℝ) : ℂ)⁻¹) • (u' • vΛ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hunit, ip_smul_smul hv'.1 hvΛ'.1, smul_smul, smul_smul]`. Use `congr 1`. Take the linear combination `(-(u * ip v vΛ * ((‖ip v vΛ‖ : ℝ) : ℂ)⁻¹)) * hu'u`. Rewrite using `[heq]`. Conclude with `(GlobalTheory.T.selfDualVacuum_gaussian_shape_rootOfUnity_phases (Fin n) (Fin g) (u' • vΛ)).2.2.2.1 hu'pv _ (Ph.mul hph (Ph.inv ((GlobalTheory.T.complex_phase_calculus_rootOfUnity).2.2.1 ‖ip v vΛ‖)))`.
-
-Establish `hC : ((Real.sqrt (((stdL E n).toAddSubgroup.relIndex Λ.toAddSubgroup ^ r : ℕ) : ℝ) : ℝ) : ℂ) * ((‖ip v vΛ‖ : ℝ) : ℂ) = 1`. Rewrite using `[← Complex.ofReal_mul, hsq, Complex.ofReal_one]`. Rewrite using `[hunit, hproj, smul_smul, ← _root_.mul_assoc, ← _root_.mul_inv, hC, inv_one, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_phases : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ w : E, IsIntegral ℤ w → w + cc w = 1 → ∀ L : Lt E r, SelfD X L → ∀ v : TF n g, IsVac X bas w (tens (stdL E n) L) v → ∃ u : ℂ, ‖u‖ = 1 ∧ ∀ Λ ∈ Vset E n 1, IsVac X bas w (tens Λ L) (unitv (projA X bas w (tens Λ L) v)) ∧ PV (u • unitv (projA X bas w (tens Λ L) v)) ∧ projA X bas w (tens Λ L) v = ((Real.sqrt (((stdL E n).toAddSubgroup.relIndex Λ.toAddSubgroup ^ r : ℕ) : ℝ) : ℝ) : ℂ)⁻¹ • unitv (projA X bas w (tens Λ L) v) := by
   intro E _ _ _ r X g bas idx n hs hn w hw hw1 L hL v hv

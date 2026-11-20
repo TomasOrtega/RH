@@ -24,7 +24,7 @@ open GlobalTheory.CompanionTheory.SwUnf.SmallCell
 variable {D : D7} {n ρ p : ℕ}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Sum.elim u (fun _ : Fin p => (0 : K)) ((finSumFinEquiv.trans (finCongr hn)).symm _) = u a`. Rewrite using `[Equiv.symm_apply_apply, Sum.elim_inl]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem zinc_inl {K : Type} [Field K] (hn : ρ + p = n) (u : Fin ρ → K) (a : Fin ρ) :
     zinc hn u ((finSumFinEquiv.trans (finCongr hn)) (Sum.inl a)) = u a := by
@@ -32,7 +32,7 @@ theorem zinc_inl {K : Type} [Field K] (hn : ρ + p = n) (u : Fin ρ → K) (a : 
   rw [Equiv.symm_apply_apply, Sum.elim_inl]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Sum.elim u (fun _ : Fin p => (0 : K)) ((finSumFinEquiv.trans (finCongr hn)).symm _) = 0`. Rewrite using `[Equiv.symm_apply_apply, Sum.elim_inr]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem zinc_inr {K : Type} [Field K] (hn : ρ + p = n) (u : Fin ρ → K) (a : Fin p) :
     zinc hn u ((finSumFinEquiv.trans (finCongr hn)) (Sum.inr a)) = 0 := by
@@ -40,7 +40,7 @@ theorem zinc_inr {K : Type} [Field K] (hn : ρ + p = n) (u : Fin ρ → K) (a : 
   rw [Equiv.symm_apply_apply, Sum.elim_inr]
 
 /- English proof (translation)
-Simplify using `only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockMatrix_inl_inl {R : Type} [Zero R] (hn : ρ + p = n) (a : Matrix (Fin ρ) (Fin ρ) R) (i j : Fin ρ) :
     bl hn a 0 0 0 ((finSumFinEquiv.trans (finCongr hn)) (Sum.inl i))
@@ -48,7 +48,7 @@ theorem blockMatrix_inl_inl {R : Type} [Zero R] (hn : ρ + p = n) (a : Matrix (F
   simp only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁]
 
 /- English proof (translation)
-Simplify using `only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₂, Matrix.zero_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockMatrix_inl_inr {R : Type} [Zero R] (hn : ρ + p = n) (a : Matrix (Fin ρ) (Fin ρ) R) (i : Fin ρ) (j : Fin p) :
     bl hn a 0 0 0 ((finSumFinEquiv.trans (finCongr hn)) (Sum.inl i))
@@ -56,7 +56,7 @@ theorem blockMatrix_inl_inr {R : Type} [Zero R] (hn : ρ + p = n) (a : Matrix (F
   simp only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₂, Matrix.zero_apply]
 
 /- English proof (translation)
-Simplify using `only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockMatrix_inr_inl {R : Type} [Zero R] (hn : ρ + p = n) (a : Matrix (Fin ρ) (Fin ρ) R) (i : Fin p) (j : Fin ρ) :
     bl hn a 0 0 0 ((finSumFinEquiv.trans (finCongr hn)) (Sum.inr i))
@@ -64,7 +64,7 @@ theorem blockMatrix_inr_inl {R : Type} [Zero R] (hn : ρ + p = n) (a : Matrix (F
   simp only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]
 
 /- English proof (translation)
-Simplify using `only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockMatrix_inr_inr {R : Type} [Zero R] (hn : ρ + p = n) (a : Matrix (Fin ρ) (Fin ρ) R) (i j : Fin p) :
     bl hn a 0 0 0 ((finSumFinEquiv.trans (finCongr hn)) (Sum.inr i))
@@ -76,7 +76,7 @@ def rk2 {m : ℕ} (τ : AE D) (v r : Fin m → D.host.E) : Mx D m m :=
     adj (rat (Matrix.replicateRow (Fin 1) r) : Mx D 1 m) ⬝ adj (rat (Matrix.replicateCol (Fin 1) v) : Mx D m 1))
 
 /- English proof (translation)
-Simplify using `only [rk2, Matrix.smul_apply, Matrix.add_apply, Matrix.mul_apply, Finset.univ_unique, Finset.sum_singleton, smul_eq_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem rank_two_matrix_apply {m : ℕ} (τ : AE D) (v r : Fin m → D.host.E) (i j : Fin m) :
     rk2 τ v r i j = τ * (incA D (v i) * incA D (r j) + cA D (incA D (r i)) * cA D (incA D (v j))) := by
@@ -84,9 +84,9 @@ theorem rank_two_matrix_apply {m : ℕ} (τ : AE D) (v r : Fin m → D.host.E) (
   rfl
 
 /- English proof (translation)
-Establish `e1 : incA D a * incA D b = 0`. Break down `h1 with rfl | rfl` into its components or cases. Rewrite using `[map_zero (incA D), zero_mul]`. Rewrite using `[map_zero (incA D), mul_zero]`. Establish `e2 : cA D (incA D c) * cA D (incA D d) = 0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `h2 with rfl | rfl` into its components or cases. Rewrite using `[map_zero (incA D), map_zero (cA D), zero_mul]`. Rewrite using `[map_zero (incA D), map_zero (cA D), mul_zero]`. Rewrite using `[e1, e2, add_zero, mul_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rk_term (τ : AE D) (a b c d : D.host.E) (h1 : a = 0 ∨ b = 0) (h2 : c = 0 ∨ d = 0) :
     τ * (incA D a * incA D b + cA D (incA D c) * cA D (incA D d)) = 0 := by
@@ -101,11 +101,9 @@ theorem rk_term (τ : AE D) (a b c d : D.host.E) (h1 : a = 0 ∨ b = 0) (h2 : c 
   rw [e1, e2, add_zero, mul_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨i, rfl⟩` from `(finSumFinEquiv.trans (finCongr hn)).surjective i`. Take `⟨j, rfl⟩` from `(finSumFinEquiv.trans (finCongr hn)).surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Rewrite using `[blockMatrix_inl_inl, rank_two_matrix_apply, rank_two_matrix_apply, zinc_inl, zinc_inl, zinc_inl, zinc_inl]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[blockMatrix_inl_inr, rank_two_matrix_apply]`. Conclude with `rk_term _ _ _ _ _ (Or.inr (zinc_inr hn r j)) (Or.inr (zinc_inr hn v j))`. Rewrite using `[blockMatrix_inr_inl, rank_two_matrix_apply]`. Conclude with `rk_term _ _ _ _ _ (Or.inl (zinc_inr hn v i)) (Or.inl (zinc_inr hn r i))`. Rewrite using `[blockMatrix_inr_inr, rank_two_matrix_apply]`.
-
-Conclude with `rk_term _ _ _ _ _ (Or.inl (zinc_inr hn v i)) (Or.inl (zinc_inr hn r i))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_two_embedding_small (hn : ρ + p = n) (τ : AE D) (v r : Fin ρ → D.host.E) :
     rk2 τ (zinc hn v) (zinc hn r) = bl hn (rk2 τ v r) 0 0 0 := by
@@ -122,23 +120,23 @@ theorem rank_two_embedding_small (hn : ρ + p = n) (τ : AE D) (v r : Fin ρ →
     exact rk_term _ _ _ _ _ (Or.inl (zinc_inr hn v i)) (Or.inl (zinc_inr hn r i))
 
 /- English proof (translation)
-Introduce `D n ρ p hn ψ hψ β hβ W hW`. Take `⟨v, hvW, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW`. Establish `hw : β.1 *ᵥ v ≠ 0` using `fun h => hv0 (Matrix.eq_zero_of_mulVec_eq_zero hβ h)`. Take `⟨i0, hi0⟩` from `Function.ne_iff.1 hw`. Set `r : Fin ρ → D.host.E` to `Pi.single i0 ((β.1 *ᵥ v) i0)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `V0 : Matrix (Fin ρ) (Fin 1) D.host.E` to `Matrix.replicateCol _ v`. Set `R0 : Matrix (Fin 1) (Fin ρ) D.host.E` to `Matrix.replicateRow _ r`. Establish `hbV : β.1 ⬝ V0 = Matrix.replicateCol _ (β.1 *ᵥ v)`. Use extensionality with `i j`. Simplify using `[V0, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hS0 : R0 ⬝ β.1 ⬝ V0 = (1 : Matrix (Fin 1) (Fin 1) D.host.E)`. Rewrite using `[Matrix.mul_assoc, hbV]`. Use extensionality with `a b`. Take `rfl : a = b` from `Subsingleton.elim _ _`. Simplify using `[R0, r, Matrix.mul_apply, Pi.single_apply, inv_mul_cancel₀ (show (β.1 *ᵥ v) i0 ≠ 0 from hi0)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hS : (rat R0 : Mx D 1 ρ) ⬝ (rat β.1 : Mx D ρ ρ) ⬝ (rat V0 : Mx D ρ 1) = 1`. Rewrite using `[← rat_mul, ← rat_mul, hS0]`. Use extensionality with `a b`. Take `rfl : a = b` from `Subsingleton.elim _ _`. Simplify using `[rat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨x0, hx0⟩` from `hψ.2.2.2`. Take `⟨t, ht⟩` from `exists_scalar (D := D) x0`. Establish `hν : adj (rk2 (algebraMap (AF D.host.F) (AE D) t) v r) = rk2 (algebraMap (AF D.host.F) (AE D) t) v r`. Unfold `rk2`. Rewrite using `[adj_smul, cA_algebraMap', adj_add, adj_mul, adj_mul, adj_adj, adj_adj, add_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨_, hν⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `trace_val (rat β.1) (adj_rat_herm β) (rat V0) (rat R0) (algebraMap (AF D.host.F) (AE D) t) hS`. Express the relevant statement in the definitionally equal form `ψ (halfTr (Matrix.trace ((rat β.1 : Mx D ρ ρ) ⬝ _))) ≠ 1`. Express the relevant statement in the definitionally equal form `ψ (halfTr (Matrix.trace ((rat β.1 : Mx D ρ ρ) ⬝ (algebraMap (AF D.host.F) (AE D) t • _)))) ≠ 1`. Rewrite using `[h, ht]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx0`. Introduce `γ u hγ x hx hW' hu`. Use `cell_absorb (rat (Matrix.replicateCol (Fin 1) (zinc hn v))) (rat (Matrix.replicateRow (Fin 1) (zinc hn r))) (algebraMap (AF D.host.F) (AE D) t) ((rank_two_embedding_small hn _ v r).symm) γ u hu ?_` and prove the remaining obligations. Establish `hv : lowerC x *ᵥ zinc hn v = 0`. Rewrite `hvW` using `[← hW']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hvW`. Establish `h0 : (HMul.hMul (lowerC x) (Matrix.replicateCol (Fin 1) (zinc hn v)) : Matrix (Fin n) (Fin 1) D.host.E) = 0`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrFun hv i` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hx, lowerC_map]`. Express the relevant statement in the definitionally equal form `(rat (lowerC x) : Mx D n n) ⬝ (rat (Matrix.replicateCol (Fin 1) (zinc hn v)) : Mx D n 1) = 0`. Rewrite using `[← rat_mul, h0]`. Use extensionality with `i j`. Simplify using `[rat]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem small : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) {ψ : AddChar (AF D.host.F) ℂ}, IsCharAF D.host.F ψ → ∀ (b₀ : HermE D ρ), b₀.1.det ≠ 0 →
     ∀ (W : Submodule D.host.E (Fin ρ → D.host.E)), W ≠ ⊥ → ∃ ν : hermA D ρ, chz ψ b₀ ν ≠ 1 ∧

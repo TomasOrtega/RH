@@ -28,7 +28,7 @@ variable (hu : IsProperHom u)
 include hu
 
 /- English proof (translation)
-Establish `h` using `hu.map_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left.1 h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_zero : u 0 = 1 := by
   have h := hu.map_add 0 0
@@ -36,13 +36,13 @@ theorem map_zero : u 0 = 1 := by
   exact (mul_eq_left.1 h.symm)
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, ← hu.map_add, neg_add_cancel, hu.map_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_neg_mul (b : B) (z : G) : u (-b) * (u b * z) = z := by
   rw [← mul_assoc, ← hu.map_add, neg_add_cancel, hu.map_zero, one_mul]
 
 /- English proof (translation)
-The claim follows from `(hu.isCompact_preimage _ (hC.image (continuous_mul_const z⁻¹))).of_isClosed_subset ((hC.isClosed.preimage (continuous_mul_const z)).preimage hu.continuous) fun b hb => ⟨u b * z, hb, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_setOf_mul_mem {C : Set G} (hC : IsCompact C) (z : G) :
     IsCompact {b | u b * z ∈ C} :=
@@ -58,7 +58,7 @@ def avgWeight (ν : Measure B) (u : B → G) (β : G → ℝ) (z : G) : ℝ≥0�
 variable {ν : Measure B}
 
 /- English proof (translation)
-Establish `: Measurable fun p : B × G => ENNReal.ofReal (β (u (-p.1) * p.2))` using `ENNReal.measurable_ofReal.comp (hβ.comp ((hu.continuous.comp continuous_fst.neg).mul continuous_snd)).measurable`. Conclude with `this.lintegral_prod_left'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_avgWeight [SFinite ν] (hu : IsProperHom u) {β : G → ℝ} (hβ : Continuous β) :
     Measurable (avgWeight ν u β) := by
@@ -68,7 +68,7 @@ theorem measurable_avgWeight [SFinite ν] (hu : IsProperHom u) {β : G → ℝ} 
   exact this.lintegral_prod_left'
 
 /- English proof (translation)
-Unfold `avgWeight`. Establish `h : ∀ b, u (-b) * (u b' * z) = u (-(b - b')) * z` using `fun b => by`. Rewrite using `[← mul_assoc, ← hu.map_add, neg_sub, sub_eq_add_neg, add_comm b' (-b)]`. Repeatedly rewrite using `[h]`. Conclude with `lintegral_sub_right_eq_self (fun b => ENNReal.ofReal (β (u (-b) * z))) b'`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avgWeight_mul_left [ν.IsAddLeftInvariant] (hu : IsProperHom u) (β : G → ℝ) (b' : B)
     (z : G) : avgWeight ν u β (u b' * z) = avgWeight ν u β z := by
@@ -79,11 +79,9 @@ theorem avgWeight_mul_left [ν.IsAddLeftInvariant] (hu : IsProperHom u) (β : G 
   exact lintegral_sub_right_eq_self (fun b => ENNReal.ofReal (β (u (-b) * z))) b'
 
 /- English proof (translation)
-Use `set E := {b : B | u b * z ∈ tsupport β}`. Establish `hE : IsCompact E` using `hu.isCompact_setOf_mul_mem hβc.isCompact z`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun b => ?_` and prove the remaining obligations. Distinguish the cases in `hb : -b ∈ E`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[indicator_of_mem (show b ∈ -E from hb)]`. Conclude with `ENNReal.ofReal_le_one.2 (hβ1 _)`. Rewrite using `[image_eq_zero_of_notMem_tsupport hb, ENNReal.ofReal_zero]`. Conclude with `(zero_le : (0 : ℝ≥0∞) ≤ _)`. Use `_ = ν (-E) := lintegral_indicator_one hE.neg.isClosed.measurableSet`.
-
-Use `_ < ∞ := hE.neg.measure_lt_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avgWeight_lt_top [IsFiniteMeasureOnCompacts ν] (hu : IsProperHom u) {β : G → ℝ}
     (hβc : HasCompactSupport β) (hβ1 : ∀ x, β x ≤ 1) (z : G) : avgWeight ν u β z < ∞ := by
@@ -100,9 +98,9 @@ theorem avgWeight_lt_top [IsFiniteMeasureOnCompacts ν] (hu : IsProperHom u) {β
     _ < ∞ := hE.neg.measure_lt_top
 
 /- English proof (translation)
-Use `set U := {b : B | β z / 2 < β (u (-b) * z)}`. Establish `hU : IsOpen U` using `isOpen_lt continuous_const (hβ.comp ((hu.continuous.comp continuous_neg).mul continuous_const))`. Establish `h0 : (0 : B) ∈ U` using `by show β z / 2 < β (u (-0) * z)`. Rewrite using `[neg_zero, hu.map_zero, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hUpos : 0 < ν U` using `hU.measure_pos ν ⟨0, h0⟩`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem avgWeight_pos [ν.IsOpenPosMeasure] (hu : IsProperHom u) {β : G → ℝ} (hβ : Continuous β)
     {z : G} (hz : 0 < β z) : 0 < avgWeight ν u β z := by
@@ -126,37 +124,31 @@ variable {μ : Measure G} [μ.IsMulLeftInvariant] [SFinite μ]
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨β, hβS, -, hβc, hβ01⟩` from `exists_continuous_one_zero_of_isCompact hhc.isCompact isClosed_empty (disjoint_empty _)`. Use `set S := tsupport h with hSdef`. Use `set c := avgWeight ν u β with hcdef`. Establish `hβ1 : ∀ z ∈ S, β z = 1` using `fun z hz => hβS hz`. Establish `hc_pos : ∀ z ∈ S, 0 < c z` using `fun z hz => avgWeight_pos hu β.continuous (by rw [hβ1 z hz]; norm_num)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc_top : ∀ z, c z < ∞` using `fun z => avgWeight_lt_top hu hβc (fun x => (hβ01 x).2) z`. Establish `hcm : Measurable c` using `measurable_avgWeight hu β.continuous`. Establish `hhz : ∀ z ∉ S, h z = 0` using `fun z hz => image_eq_zero_of_notMem_tsupport hz`. Use `set w : B → G → ℝ≥0∞ := fun b z => ENNReal.ofReal (β (u (-b) * z)) / c z with hwdef`. Establish `hwm : Measurable (uncurry fun z b => w b z)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Measurable.div ?_ (hcm.comp measurable_fst)` and prove the remaining obligations. Conclude with `ENNReal.measurable_ofReal.comp (β.continuous.comp ((hu.continuous.comp continuous_snd.neg).mul continuous_fst)).measurable`. Establish `hwm' : ∀ z, Measurable fun b => w b z` using `fun z => hwm.comp (measurable_const.prodMk measurable_id)`. Establish `hw_lt : ∀ z ∈ S, ∀ b, w b z < ∞` using `fun z hz b => ENNReal.div_lt_top ENNReal.ofReal_ne_top (hc_pos z hz).ne'`. Establish `hw_int : ∀ z ∈ S, ∫⁻ b, w b z ∂ν = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z hz`. Simplify using `only [hwdef, div_eq_mul_inv]`. Rewrite using `[lintegral_mul_const' _ _ (ENNReal.inv_ne_top.2 (hc_pos z hz).ne')]`. Conclude with `ENNReal.mul_inv_cancel (hc_pos z hz).ne' (hc_top z).ne`. Use `set Wt : B → G → ℝ := fun b z => (w b z).toReal with hWtdef`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW_int : ∀ z ∈ S, ∫ b, Wt b z ∂ν = 1`. Introduce `z hz`. Rewrite using `[integral_toReal (hwm' z).aemeasurable (Eventually.of_forall (hw_lt z hz)), hw_int z hz, ENNReal.toReal_one]`. Establish `hW_integrable : ∀ z ∈ S, Integrable (fun b => Wt b z) ν` using `fun z hz => integrable_toReal_of_lintegral_ne_top (hwm' z).aemeasurable (by rw [hw_int z hz]; simp)`. Establish `hW_nonneg : ∀ b z, 0 ≤ Wt b z` using `fun b z => ENNReal.toReal_nonneg`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set W₀ : G → ℝ := fun z => (ENNReal.ofReal (β z) / c z).toReal with hW₀def`. Establish `hW₀ : ∀ b z, Wt b (u b * z) = W₀ z`. Introduce `b z`. Simplify using `only [hWtdef, hwdef, hW₀def, hu.map_neg_mul, hcdef, avgWeight_mul_left hu]`. Use `set F : G → B → ℂ := fun z b => h z * ψ z * (Wt b z : ℂ) with hFdef`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hhψ : Integrable (fun z => h z * ψ z) μ`. Establish `h1 : IntegrableOn (fun z => h z * ψ z) S μ` using `hψi.continuousOn_mul hh.continuousOn hhc.isCompact`. Use `(integrableOn_iff_integrable_of_support_subset ?_).1 h1` and prove the remaining obligations. Introduce `z hz`. Assume the negation of the conclusion as `hzS`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hz (by simp [hhz z hzS])`. Establish `hFm : AEStronglyMeasurable (uncurry F) (μ.prod ν)`. Use `((hh.comp continuous_fst).aestronglyMeasurable.mul (hψm.comp_quasiMeasurePreserving Measure.quasiMeasurePreserving_fst)).mul ?_` and prove the remaining obligations. Conclude with `(Complex.continuous_ofReal.measurable.comp (ENNReal.measurable_toReal.comp hwm)).aestronglyMeasurable`. Establish `hFint : Integrable (uncurry F) (μ.prod ν)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(integrable_prod_iff hFm).2 ⟨Eventually.of_forall fun z => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ S`. Conclude with `((hW_integrable z hz).ofReal).const_mul (h z * ψ z)`. Simplify using `only [uncurry_apply_pair, hFdef, hhz z hz, zero_mul]`. Conclude with `integrable_zero _ _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hhψ.norm.congr (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [uncurry_apply_pair, hFdef]`. Distinguish the cases in `hz : z ∈ S`. Establish `: ∀ b, ‖h z * ψ z * (Wt b z : ℂ)‖ = ‖h z * ψ z‖ * Wt b z` using `fun b => by`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (hW_nonneg b z)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[this]`. Rewrite using `[integral_const_mul, hW_int z hz, mul_one]`. Simplify using `[hhz z hz]`. Use `set F' : B → G → ℂ := fun b z => h (u b * z) * ψ z * (W₀ z : ℂ) with hF'def`. Establish `hΦ : MeasurePreserving (fun p : B × G => (p.1, u p.1 * p.2)) (ν.prod μ) (ν.prod μ)` using `(MeasurePreserving.id ν).skew_product (g := fun b z => u b * z) ((hu.continuous.comp continuous_fst).mul continuous_snd).measurable (Eventually.of_forall fun b => map_mul_left_eq_self μ (u b))`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hF'int : Integrable (uncurry F') (ν.prod μ)`. Establish `hs : Integrable (uncurry F ∘ Prod.swap) (ν.prod μ)` using `hFint.swap`. Establish `h2` using `(hΦ.integrable_comp hs.aestronglyMeasurable).2 hs`. Use `h2.congr (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [comp_apply, Prod.swap, uncurry_apply_pair, hFdef, hF'def, hψu, hW₀]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [hFdef]`. Distinguish the cases in `hz : z ∈ S`.
-
-Rewrite using `[integral_const_mul, integral_complex_ofReal, hW_int z hz, Complex.ofReal_one, mul_one]`. Simplify using `[hhz z hz]`. Use `_ = ∫ b, ∫ z, F z b ∂μ ∂ν := integral_integral_swap hFint`. Use `_ = ∫ b, ∫ z, F' b z ∂μ ∂ν := by`. Use `integral_congr_ae (Eventually.of_forall fun b => ?_)` and prove the remaining obligations.
-
-Simplify using `only`. Rewrite using `[← integral_mul_left_eq_self (fun z => F z b) (u b)]`. Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [hFdef, hF'def, hψu, hW₀]`. Use `_ = ∫ z, ∫ b, F' b z ∂ν ∂μ := integral_integral_swap hF'int`.
-
-Use `_ = 0 := by`. Use `integral_eq_zero_of_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [hF'def, mul_assoc, Pi.zero_apply]`. Rewrite using `[integral_mul_const, h0 z, zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_mul_eq_zero_of_integral_eq_zero [ν.IsAddLeftInvariant] [SFinite ν]
     [ν.IsOpenPosMeasure] [IsFiniteMeasureOnCompacts ν] (hu : IsProperHom u) {h : G → ℂ}

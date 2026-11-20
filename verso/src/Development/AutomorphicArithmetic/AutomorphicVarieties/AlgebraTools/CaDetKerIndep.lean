@@ -7,41 +7,35 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaDet
 open IsLocalRing UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Introduce `f hf`. Use `haveI hQ : (Ideal.map (MvPolynomial.C : P →+* MvPolynomial ι P) (maximalIdeal P)).IsPrime := isPrime_map_C (ι := ι) (maximalIdeal P)`. Use `set Q : Ideal (MvPolynomial ι P) := Ideal.map MvPolynomial.C (maximalIdeal P) with hQdef`. Set `L` to `Localization.AtPrime Q`. Set `J : Ideal L` to `Ideal.map (algebraMap (MvPolynomial ι P) L) (chartIdeal z m d)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI hJ : J.IsPrime := chartIdeal_localization_isPrime P ι z m h d Q le_rfl`. Use `haveI : IsLocalRing (L ⧸ J) := .of_surjective' _ Ideal.Quotient.mk_surjective`. Set `ψ : MvPolynomial ι P →+* L ⧸ J` to `(Ideal.Quotient.mk J).comp (algebraMap (MvPolynomial ι P) L)`. Set `φ : P →+* L ⧸ J` to `ψ.comp MvPolynomial.C`. Establish `hJle : J ≤ maximalIdeal L` using `IsLocalRing.le_maximalIdeal hJ.ne_top`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hψ : ∀ g ∈ chartIdeal z m d, ψ g = 0` using `fun g hg => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ hg)`. Use `haveI : IsLocalHom φ := by`. Prove the components needed by the constructor for the conclusion. Introduce `p hp`. Assume the negation of the conclusion as `hpu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hpm : p ∈ maximalIdeal P` using `(IsLocalRing.mem_maximalIdeal p).2 hpu`. Establish `hC : (MvPolynomial.C p : MvPolynomial ι P) ∈ Q` using `Ideal.mem_map_of_mem _ hpm`. Establish `hL : algebraMap (MvPolynomial ι P) L (MvPolynomial.C p) ∈ maximalIdeal L` using `(IsLocalization.AtPrime.to_map_mem_maximal_iff L Q _).2 hC`. Take `⟨u, hu⟩` from `hp`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (↑(u⁻¹) : L ⧸ J)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : algebraMap (MvPolynomial ι P) L (MvPolynomial.C p) * y - 1 ∈ J`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, map_one, hy]`. Establish `hu' : Ideal.Quotient.mk J (algebraMap (MvPolynomial ι P) L (MvPolynomial.C p)) = ↑u` using `hu.symm`. Rewrite using `[hu', Units.mul_inv, sub_self]`. Establish `h3 : algebraMap (MvPolynomial ι P) L (MvPolynomial.C p) * y ∈ maximalIdeal L` using `Ideal.mul_mem_right _ _ hL`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h4 : (1 : L) ∈ maximalIdeal L`. Establish `h5` using `Ideal.sub_mem _ h3 (hJle h1)`. Simplify using `using h5`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal L).ne_top ((Ideal.eq_top_iff_one _).2 h4)`. Set `l : ι → L ⧸ J` to `fun j => ψ (lam P d j)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : l d = 1` using `by show ψ (lam P d d) = 1`. Simplify using `[lam]`. Establish `hmul : (z.map φ).mulVec l = 0`. Use function extensionality and compare the values at `i`. Establish `hmem : (z.map MvPolynomial.C).mulVec (lam P d) i ∈ chartIdeal z m d` using `Ideal.subset_span ⟨Sum.inl i, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `h0` using `hψ _ hmem`. Rewrite `h0` using `[RingHom.map_mulVec, Matrix.map_map]`. Conclude with `h0`. Establish `hm : ∀ j, φ (m j) = l j * φ (m d)`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hj : j = d`. Substitute `hj` using the available equality. Rewrite using `[hl, one_mul]`. Establish `hmem : MvPolynomial.C (m j) - lam P d j * MvPolynomial.C (m d) ∈ chartIdeal z m d` using `Ideal.subset_span ⟨Sum.inr ⟨j, hj⟩, rfl⟩`. Establish `h0` using `hψ _ hmem`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[map_sub, map_mul, sub_eq_zero]`. Conclude with `h0`. Establish `hlamc : lam P d c ∉ Q`. Rewrite using `[hQdef, MvPolynomial.mem_map_C_iff]`. Introduce `hall`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hcd : c = d`. Establish `h0` using `hall 0`. Rewrite `h0` using `[show lam P d c = 1 from if_pos hcd, MvPolynomial.coeff_zero_one]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal P).ne_top ((Ideal.eq_top_iff_one _).2 h0)`. Establish `h0` using `hall (Finsupp.single c 1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `h0` using `[show lam P d c = MvPolynomial.X c from if_neg hcd, MvPolynomial.coeff_X, if_pos rfl]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal P).ne_top ((Ideal.eq_top_iff_one _).2 h0)`. Establish `hunitL : IsUnit (algebraMap (MvPolynomial ι P) L (lam P d c))` using `IsLocalization.map_units L (⟨lam P d c, hlamc⟩ : Q.primeCompl)`. Establish `hunit : IsUnit (l c)` using `hunitL.map (Ideal.Quotient.mk J)`. Use `set w : L ⧸ J := ↑hunit.unit⁻¹ with hwdef`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : w * l c = 1` using `hunit.val_inv_mul`. Set `l' : ι → L ⧸ J` to `fun j => w * l j`. Establish `hl' : l' c = 1` using `hw`. Establish `hmul' : (z.map φ).mulVec l' = 0`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h7` using `congrFun hmul i`. Simplify using `only [l', Matrix.mulVec, dotProduct, Pi.zero_apply] at h7 ⊢`. Repeatedly rewrite using `[mul_left_comm _ w]`. Rewrite using `[← Finset.mul_sum, h7, mul_zero]`. Establish `hm' : ∀ j, φ (m j) = l' j * φ (m c)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Introduce `j`. Use `show φ (m j) = w * l j * φ (m c)`. Rewrite using `[hm c, hm j]`. Combine the equalities or inequalities in the displayed calculation. Establish `hk` using `genKer_le_ker P ι z m h c (L ⧸ J) φ l' hl' hmul' hm' hf`.
-
-Rewrite `hk` using `[RingHom.mem_ker]`. Establish `hfJ : algebraMap (MvPolynomial ι P) L (MvPolynomial.C f) ∈ J` using `Ideal.Quotient.eq_zero_iff_mem.1 hk`. Take `⟨⟨⟨a, ha⟩, ⟨s, hs⟩⟩, hx⟩` from `(IsLocalization.mem_map_algebraMap_iff Q.primeCompl L).1 hfJ`. Simplify using `only at hx`. Rewrite `hx` using `[← map_mul, IsLocalization.eq_iff_exists Q.primeCompl L]`.
-
-Take `⟨⟨t, ht⟩, htx⟩` from `hx`. Simplify using `only at htx`. Use `⟨t * s, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Q.primeCompl.mul_mem ht hs`. Establish `h6 : t * s * MvPolynomial.C f = t * a` using `by rw [← htx]; ring`.
-
-Rewrite using `[h6]`. Conclude with `Ideal.mul_mem_left _ _ ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.generic_kernel_monotone
     (P : Type) [CommRing P] [IsRegularLocalRing P] (ι : Type) [Fintype ι] [DecidableEq ι]
@@ -149,7 +143,7 @@ private theorem UpperTheory.V.AlgebraTools.generic_kernel_monotone
     exact Ideal.mul_mem_left _ _ ha
 
 /- English proof (translation)
-Introduce `P _ _ ι _ _ z m h c d`. Conclude with `le_antisymm (generic_kernel_monotone P ι z m h c d) (generic_kernel_monotone P ι z m h d c)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.genKer_eq :
     ∀ (P : Type) [CommRing P] [IsRegularLocalRing P] (ι : Type) [Fintype ι] [DecidableEq ι] (z : Matrix ι ι P) (m : ι → P),

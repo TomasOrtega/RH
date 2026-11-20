@@ -11,11 +11,11 @@ namespace GlobalTheory.ThetaMove
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {N N' : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨c, hc, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨a * c, cc.mul_mem_left a hc, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [mul_add]`. Conclude with `AddSubgroup.add_mem _ ha hb`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `neg a _ ha => rw [mul_neg]`. Conclude with `AddSubgroup.neg_mem _ ha`.
+A detailed English derivation is pending.
 -/
 theorem int_mul_mem_lamOf (a : 𝓞 D.host.K) {w : ℂ} (hw : w ∈ TaylorLogMetric.lamOf D cc δ) :
     D.host.φ₀ (((a : D.host.K) : D.host.E)) * w ∈ TaylorLogMetric.lamOf D cc δ := by
@@ -31,9 +31,9 @@ theorem int_mul_mem_lamOf (a : 𝓞 D.host.K) {w : ℂ} (hw : w ∈ TaylorLogMet
   | neg a _ ha => rw [mul_neg]; exact AddSubgroup.neg_mem _ ha
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨w, hw, B, hB, rfl⟩` from `hw`. Conclude with `AddSubgroup.subset_closure ⟨_, int_mul_mem_lamOf a hw, B, hB, smul_smul _ _ _⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `AddSubgroup.add_mem _ ha hb`. Consider the case `neg a _ ha => rw [smul_neg]`. Conclude with `AddSubgroup.neg_mem _ ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem int_smul_mem_La (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
     (a : 𝓞 D.host.K) {x : TaylorLogMetric.VC D N N'} (hx : x ∈ TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) L L') :
@@ -47,13 +47,13 @@ theorem int_smul_mem_La (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L'
   | neg a _ ha => rw [smul_neg]; exact AddSubgroup.neg_mem _ ha
 
 /- English proof (translation)
-Introduce `D cc δ B h N N' L L' hA x hx`. Establish `hsd` using `(h.1 N N' L L' hA).1`. Take `⟨a, ha⟩` from `GlobalTheory.NormSum.exists_integer_map_eq_w0 D`. Establish `hw` using `int_smul_mem_La L L' a hx`. Rewrite `hw` using `[ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw' : StandardLatticesGL3.w0 D • x ∈ dualLat (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') (TaylorLogMetric.La D B.tor L L')`. Rewrite using `[hsd]`. Conclude with `hw`. Take `⟨m, hm⟩` from `hw' x hx`. Establish `him : (TaylorLogMetric.Hf D B.tor x x).im = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: starRingEnd ℂ (TaylorLogMetric.Hf D B.tor x x) = TaylorLogMetric.Hf D B.tor x x`. Simplify using `only [TaylorLogMetric.Hf, map_div₀, map_sum, map_mul, Complex.conj_ofReal, Complex.conj_conj, mul_comm]`. Conclude with `Complex.conj_eq_iff_im.1 this`. Establish `h1 : (StandardLatticesGL3.w0 D).re = 1 / 2` using `by simp [StandardLatticesGL3.w0]`. Establish `h2 : (StandardLatticesGL3.w0 D).im = Real.sqrt D.host.d / 2` using `by simp [StandardLatticesGL3.w0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N' x x = TaylorLogMetric.Hf D B.tor x x` using `rfl`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm, altE, LinearMap.map_smul₂, h3, smul_eq_mul, Complex.mul_im, h1, h2, him]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem qIntAll_of_latAll : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ), B.LatAll → B.QIntAll := by
   intro D cc δ B h N N' L L' hA x hx

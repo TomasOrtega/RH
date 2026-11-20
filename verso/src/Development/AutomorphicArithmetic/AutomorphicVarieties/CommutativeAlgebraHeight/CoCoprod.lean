@@ -6,13 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-Take `⟨n, z, hz⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 (IsNoetherian.noetherian (maximalIdeal R))`. Establish `hm : ∀ s, z s ∈ maximalIdeal R` using `fun s => hz ▸ Submodule.subset_span ⟨s, rfl⟩`. Use `haveI : IsCO O (MvPowerSeries (Fin n) O) := co_mvps O O (Fin n)`. Take `⟨F, ⟨-, hF⟩, -⟩` from `co_ev O O R (Fin n) (Algebra.ofId _ _) z hm`. Use `⟨⟨Fin n, fun _ => (), F, ?_, ?_⟩, fun s => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `co_surj O _ R _ (le_trans ?_ le_sup_left)` and prove the remaining obligations. Rewrite using `[← hz, Submodule.span_le]`. Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[← hF s]`. Use `Ideal.mem_map_of_mem _ fun hu => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using MvPowerSeries.isUnit_constantCoeff _ hu`. Introduce `g hg j`. Establish `: wcomp O (fun _ : Fin n => ()) j g = g`. Use extensionality with `a`. Rewrite using `[coeff_wcomp, if_pos (Subsingleton.elim _ _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[this]` and apply the resulting hypothesis. Use `show F (MvPowerSeries.X s) ∈ _`. Rewrite using `[hF]`. Conclude with `hm s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem co_coprod_pres (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     [IsAdicComplete (maximalIdeal O) O] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] :
@@ -39,7 +39,7 @@ private theorem co_coprod_pres (O : Type) [CommRing O] [IsLocalRing O] [IsNoethe
     exact hm s
 
 /- English proof (translation)
-Introduce `O _ _ _ _ T _ B _ _ _`. Use `haveI := Fintype.ofFinite T`. Use `choose WB hWB using fun t => co_coprod_pres O (B t)`. Take `⟨R, i1, i2, i3, i, _, _, h, -⟩` from `coprod O Unit T B WB hWB`. Conclude with `⟨R, i1, i2, i3, i, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.co_coprod :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (T : Type) [Finite T] (B : T → Type) [∀ t, CommRing (B t)] [∀ t, Algebra O (B t)] [∀ t, IsCO O (B t)], ∃ (R : Type) (_ : CommRing R) (_ : Algebra O R) (_ : IsCO O R) (j : ∀ t, B t →ₐ[O] R), ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (f : ∀ t, B t →ₐ[O] R'), ∃! g : R →ₐ[O] R', ∀ t, g.comp (j t) = f t := by

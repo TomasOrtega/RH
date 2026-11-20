@@ -20,11 +20,11 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 namespace GlobalTheory.FubCell
 
 /- English proof (translation)
-Rewrite using `[e.image_eq_target_inter_inv_preimage hs]`. Establish `h1 : Measurable (e.target.restrict e.symm)` using `e.continuousOn_symm.restrict.measurable`. Establish `h2` using `(MeasurableEmbedding.subtype_coe e.open_target.measurableSet).measurableSet_image.2 (h1 hA)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_image, Set.restrict_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h3, h4⟩`. Conclude with `⟨⟨v, h3⟩, h4, rfl⟩`. Introduce and unpack `⟨⟨u, hu⟩, h4, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hu, h4⟩`.
+Supply the required witnesses or components.
 -/
 theorem measurableSet_image_chart {X Z : Type} [TopologicalSpace X] [TopologicalSpace Z] [MeasurableSpace X]
     [MeasurableSpace Z] [BorelSpace X] [BorelSpace Z] (e : OpenPartialHomeomorph X Z) {A : Set X}
@@ -42,28 +42,26 @@ theorem measurableSet_image_chart {X Z : Type} [TopologicalSpace X] [Topological
     exact ⟨hu, h4⟩
 
 /- English proof (translation)
-Unfold `base`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_base {n r D : ℕ} (ε : Fin D ≃ Fin n ⊕ Low r) : Continuous (base ε : V D → V n) := by
   unfold base
   fun_prop
 
 /- English proof (translation)
-Introduce `k _ B Y q p π w n r D ε σ _ c c' hp hc ρ hρ A hA hAs h hh`. Break down `A.eq_empty_or_nonempty with rfl | ⟨a, ha⟩` into its components or cases. Simplify using the standard rewrite rules. Use `haveI := CxPts.secondCountableTopology_of_isProjOver σ hp.isProjOver`. Establish `hmap : Measurable (PtsOver.map π w (spMap σ))` using `(PtsOver.continuous_map π w (spMap σ)).measurable`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : c'.e.source.Nonempty`. Use `⟨c'.e.symm (pt ε (c.e a) 0), c'.e.map_target ?_⟩` and prove the remaining obligations. Rewrite using `[hc.2.1]`. Simplify `c.e.map_source (hAs ha)` using `[base_pt]`. Establish `hnull` using `GlobalTheory.MixDens.part_compl_ptsIn hp ρ c' hne`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hg1, hg2⟩` from `GlobalTheory.T.cell_chart_base_projection k B Y q p π w n r D ε σ c c' hc`. Establish `hK : MeasurableSet (c.e '' A)` using `measurableSet_image_chart c.e hA hAs`. Establish `hKt : c.e '' A ⊆ c.e.target`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `c.e.map_source (hAs hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : MeasurableSet (base ε ⁻¹' (c.e '' A) : Set (V D))` using `(continuous_base ε).measurable hK`. Establish `hSt : base ε ⁻¹' (c.e '' A) ⊆ c'.e.target`. Rewrite using `[hc.2.1]`. Conclude with `fun v hv => hKt hv`. Establish `hae : (PtsOver.map π w (spMap σ) ⁻¹' A : Set (CxPts p σ)) =ᵐ[part ρ] (PtsOver.map π w (spMap σ) ⁻¹' A ∩ c'.e.source : Set (CxPts p σ))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: ∀ᵐ y ∂part ρ, y ∈ ptsIn p σ c'.U` using `hnull`. Use `filter_upwards [this] with y hy`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `hy'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `⟨hy', ?_⟩` and prove the remaining obligations. Rewrite using `[hc.1]`. Conclude with `⟨hAs hy', hy⟩`. Conclude with `fun hy' => hy'.1`. Establish `hH : AEMeasurable (fun v : V D => h (c.e.symm (base ε v)) * ENNReal.ofReal (ρ c' (c'.e.symm v))) (volume.restrict (base ε ⁻¹' (c.e '' A)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `AEMeasurable.mul (hh.comp_aemeasurable ?_) (ENNReal.measurable_ofReal.comp_aemeasurable ?_)` and prove the remaining obligations. Conclude with `(c.e.continuousOn_symm.comp (continuous_base ε).continuousOn fun v hv => hKt hv).aemeasurable hS`. Conclude with `((hρ.2 c').mono hSt).aemeasurable hS`. Take `⟨ht1, ht2⟩` from `GlobalTheory.T.lintegral_big_cell_fibre n r D ε (c.e '' A) _ hK hH`. Simplify using `only [base_pt] at ht1 ht2`.
-
-Use `⟨?_, ht2⟩` and prove the remaining obligations. Rewrite using `[Measure.restrict_congr_set hae, GlobalTheory.T.lintegral_density_chart k Y p σ D ρ hρ c' _ ((hmap hA).inter c'.e.open_source.measurableSet) Set.inter_subset_right (fun y => h (PtsOver.map π w (spMap σ) y)) (hh.comp hmap), hg2 A hAs, ← ht1]`. Use `setLIntegral_congr_fun hS fun v hv => ?_` and prove the remaining obligations. Simplify using `only [hg1 v (hSt hv)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_cell : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (n r D : ℕ) (ε : Fin D ≃ Fin n ⊕ Low r) (σ : k →+* ℂ) [IsIntegral Y] (c : AlgChart q σ n) (c' : AlgChart p σ D), IsArithVar p D → IsCell ε π w c c' → ∀ ρ : AlgChart p σ D → CxPts p σ → ℝ, IsDens ρ → ∀ A : Set (CxPts q σ), MeasurableSet A → A ⊆ c.e.source → ∀ h : CxPts q σ → ℝ≥0∞, Measurable h → (∫⁻ y in PtsOver.map π w (spMap σ) ⁻¹' A, h (PtsOver.map π w (spMap σ) y) ∂part ρ = ∫⁻ u in c.e '' A, ∫⁻ x : Low r → ℂ, h (c.e.symm u) * ENNReal.ofReal (ρ c' (c'.e.symm (pt ε u x)))) ∧ AEMeasurable (fun u => ∫⁻ x : Low r → ℂ, h (c.e.symm u) * ENNReal.ofReal (ρ c' (c'.e.symm (pt ε u x)))) (volume.restrict (c.e '' A)) := by
   intro k _ B Y q p π w n r D ε σ _ c c' hp hc ρ hρ A hA hAs h hh

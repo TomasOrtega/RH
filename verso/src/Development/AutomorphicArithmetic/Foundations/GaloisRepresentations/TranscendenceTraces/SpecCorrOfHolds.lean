@@ -7,7 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC Positivit
 namespace UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Rewrite using `[Functor.map_comp]`. Simplify using `only [pullHQ, pullHl_comp, LinearMap.baseChange_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pullHQ_comp (l : ℕ) [Fact l.Prime] {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (n i : ℤ) :
     pullHQ l (sch.map (f ≫ g)) n i = pullHQ l (sch.map f) n i ∘ₗ pullHQ l (sch.map g) n i := by

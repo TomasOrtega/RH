@@ -9,9 +9,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual
 namespace UpperTheory.V.Z.Int
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `h0 : 0 < u.valuation E x` using `zero_lt_iff.2 ((map_ne_zero _).2 hx)`. Establish `h1 : 0 < ‖c x‖` using `norm_pos_iff.2 ((map_ne_zero c).2 hx)`. Establish `h` using `hu x⁻¹`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_inv₀, map_inv₀, norm_inv, inv_lt_one₀ h0, inv_lt_one₀ h1]`. Rewrite using `[← not_lt, ← not_lt, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem val_le_one_iff {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberField E]
     (c : E →+* Qbar l) (u : HeightOneSpectrum (𝓞 E))
@@ -26,21 +26,19 @@ private theorem val_le_one_iff {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [Nu
   rw [← not_lt, ← not_lt, h]
 
 /- English proof (translation)
-Introduce `l _ ι E _ _ τ`. Set `c : E →+* Qbar l` to `ι.symm.toRingHom.comp τ`. Establish `hc : ∀ x, c x = ι.symm (τ x)` using `fun _ => rfl`. Take `⟨u, hu⟩` from `GlobalTheory.LadicPlace.exists_place_of_embedding E l c`. Take `⟨j, hj, hjE⟩` from `GlobalTheory.exists_continuous_extension_adicCompletion E l c u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hjx : ∀ x : E, j (algebraMap E (u.adicCompletion E) x) = c x` using `fun x => DFunLike.congr_fun hjE x`. Use `⟨u, ι.toRingHom.comp j, fun x => ?_, fun x => ?_, fun w => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ι (j (algebraMap E (u.adicCompletion E) x)) = τ x`. Rewrite using `[hjx, hc, RingEquiv.apply_symm_apply]`. Establish `hnu : ∀ y, nu ι ((ι.toRingHom.comp j) y) = ‖j y‖` using `fun y => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `‖ι.symm (ι (j y))‖ = _`. Rewrite using `[RingEquiv.symm_apply_apply]`. Rewrite using `[hnu]`. Establish `hB : IsClopen {y : u.adicCompletion E | ‖j y‖ ≤ 1}`. Use `(IsUltrametricDist.isClopen_closedBall (0 : Qbar l) one_ne_zero).preimage hj` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Set.preimage, Metric.closedBall]`. Establish `hC : IsClopen {y : u.adicCompletion E | Valued.v y ≤ 1}` using `Valued.isClopen_integer (u.adicCompletion E)`. Establish `hT : IsClosed {y : u.adicCompletion E | ‖j y‖ ≤ 1 ↔ Valued.v y ≤ 1}`. Establish `: {y : u.adicCompletion E | ‖j y‖ ≤ 1 ↔ Valued.v y ≤ 1} = ({y | ‖j y‖ ≤ 1} ∩ {y | Valued.v y ≤ 1}) ∪ ({y | ‖j y‖ ≤ 1}ᶜ ∩ {y | Valued.v y ≤ 1}ᶜ)`. Use extensionality with `y`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_union, Set.mem_inter_iff, Set.mem_compl_iff]`. The claim follows by propositional logic. Rewrite using `[this]`. Conclude with `(hB.isClosed.inter hC.isClosed).union (hB.compl.isClosed.inter hC.compl.isClosed)`. Use `(HeightOneSpectrum.denseRange_algebraMap (R := 𝓞 E) (K := E) u).induction_on (p := fun y => ‖j y‖ ≤ 1 ↔ Valued.v y ≤ 1) x hT fun a => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hv : Valued.v (algebraMap E (u.adicCompletion E) a) = u.valuation E a` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' u a`. Rewrite using `[hjx, hv, val_le_one_iff c u hu a]`. Establish `hw : ∀ a : 𝓞 E, nu ι (τ a) = ‖c a‖` using `fun _ => rfl`. Establish `hmem : ∀ a : 𝓞 E, a ∈ u.asIdeal ↔ ‖c a‖ < 1` using `fun a => by`. Rewrite using `[← hu, HeightOneSpectrum.valuation_lt_one_iff_mem]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Ov, Finset.mem_filter, Finset.mem_univ, true_and, hw]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `HeightOneSpectrum.ext (Ideal.ext fun a => (h a).trans (hmem a).symm)`. Introduce and unpack `rfl`.
-
-Conclude with `hmem`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem placeHom : PlaceHom := by
   intro l _ ι E _ _ τ

@@ -15,9 +15,9 @@ namespace GlobalTheory.TwistPairs
 open Formalism.L2.Host Formalism.L2.Host.CT GlobalTheory.CMVal.InvConj
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[asIdeal_plMap]`. Use `show P.asIdeal.map (Formalism.DivisionValues.cO D.host.E) = _`. Use `congr 1`. Use `RingEquiv.ext fun x => RingOfIntegers.ext ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem conjPl_eq_plMap {D : D7} [IsCMField D.host.E] (P : HeightOneSpectrum (𝓞 D.host.E)) :
     Formalism.DivisionValues.conjPl P = plMap conjE P := by
@@ -29,27 +29,25 @@ theorem conjPl_eq_plMap {D : D7} [IsCMField D.host.E] (P : HeightOneSpectrum (�
   rfl
 
 /- English proof (translation)
-The claim follows from `RingEquiv.ext fun x => by rw [conjE_symm_apply, conjE_apply]`.
+A detailed English derivation is pending.
 -/
 theorem conjE_symm {E : Type} [Field E] [NumberField E] [IsCMField E] : (conjE (E := E)).symm = conjE :=
   RingEquiv.ext fun x => by rw [conjE_symm_apply, conjE_apply]
 
 /- English proof (translation)
-Introduce `D T Lc sc G μ₀ hL i j t`. Use `haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Use `set ν := nuH G μ₀ i j with hν`. Establish `hT : TrivOnF ν` using `(GlobalTheory.FunObj.SqNum.Model.isValChar_nu hL G i j (s := 0) (Nat.zero_le _)).1.2.1`. Use `set c : HeightOneSpectrum (𝓞 D.host.E) → HeightOneSpectrum (𝓞 D.host.E) := fun P => Formalism.DivisionValues.conjPl P with hcdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ P, c P = plMap conjE P` using `fun P => conjPl_eq_plMap P`. Establish `hcc : ∀ P, c (c P) = P` using `fun P => by`. Rewrite using `[hc, hc]`. Establish `h` using `plMap_symm_plMap (conjE (E := D.host.E)) P`. Rewrite `h` using `[conjE_symm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcinj : Function.Injective c` using `fun x y h => by rw [← hcc x, h, hcc y]`. Establish `hunr : ∀ P, ν.UnrAt P ↔ ν.UnrAt (c P)` using `fun P => by`. Rewrite using `[hc, ← unrAt_inv_iff ν hT P]`. Simplify using `only [HChar.UnrAt, HChar.loc_inv, inv_eq_one]`. Establish `hval : ∀ P, ν.UnrAt P → ((ν.val P : ℂˣ) : ℂ) * ((ν.val (c P) : ℂˣ) : ℂ) = 1` using `fun P hP => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `val_inv_eq ν hT P (by rw [← hc]; exact (hunr P).1 hP)`. Rewrite `h1` using `[HChar.val_inv]`. Rewrite using `[hc, ← h1, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Use `set Q' := (Lc.Q t).filter fun P => ν.UnrAt P with hQ'`. Establish `hset : {w | ¬ (Lc.xiH t).UnrAt w ∧ ν.UnrAt w} = (↑(Q' ∪ Q'.image c) : Set (HeightOneSpectrum (𝓞 D.host.E)))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `w`. Simplify using `only [Set.mem_setOf_eq, Finset.coe_union, Finset.coe_image, Set.mem_union, Set.mem_image, Finset.mem_coe, hQ', Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Break down `(hL.Q_ram t w).1 h1 with h | ⟨P, hP, hcP⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Establish an intermediate fact. Prove the second alternative. Assume the hypotheses and unpack their components.
 
-Conclude with `Or.inl ⟨h, h2⟩`. Establish `e : w = c P` using `GlobalTheory.GoodPrimes.isConjPl_iff.1 hcP`. Conclude with `Or.inr ⟨P, ⟨hP, (hunr P).2 (e ▸ h2)⟩, e.symm⟩`. Introduce and unpack `(⟨h, h2⟩ | ⟨P, ⟨hP, h2⟩, rfl⟩)`. Conclude with `⟨(hL.Q_ram t w).2 (Or.inl h), h2⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨(hL.Q_ram t (c P)).2 (Or.inr ⟨P, hP, GlobalTheory.GoodPrimes.isConjPl_iff.2 rfl⟩), (hunr P).1 h2⟩`. Establish `hdisj : Disjoint Q' (Q'.image c)`. Rewrite using `[Finset.disjoint_left]`. Introduce `P hP hP'`. Take `⟨P', hP'Q, e⟩` from `Finset.mem_image.1 hP'`.
-
-Conclude with `((hL.Q_pl t) P' (Finset.mem_filter.1 hP'Q).1).2 P (Finset.mem_filter.1 hP).1 (GlobalTheory.GoodPrimes.isConjPl_iff.2 e.symm)`. Use `show ∏ᶠ w ∈ {w | ¬ (Lc.xiH t).UnrAt w ∧ ν.UnrAt w}, ((ν.val w : ℂˣ) : ℂ) = 1`. Rewrite using `[hset, finprod_mem_coe_finset, Finset.prod_union hdisj, Finset.prod_image fun x _ y _ h => hcinj h, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun P hP => hval P (Finset.mem_filter.1 hP).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finprod_val_nu_eq_one : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) {μ₀ : T},
     Lc.Is μ₀ → ∀ (i j : Fin D.R.m) (t : T), ∏ᶠ (w : HeightOneSpectrum (𝓞 D.host.E))

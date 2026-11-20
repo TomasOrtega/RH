@@ -19,7 +19,7 @@ def rs {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) : Γ(X, U) →+* Γ(X, V) 
   (X.presheaf.map (homOfLE h).op).hom
 
 /- English proof (translation)
-Unfold `rs`. Rewrite using `[← CommRingCat.comp_apply, ← X.presheaf.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rs_rs {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (k : W ≤ V) (x : Γ(X, U)) :
     rs k (rs h x) = rs (k.trans h) x := by
@@ -28,20 +28,20 @@ theorem rs_rs {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (k : W ≤ V) (x 
   rfl
 
 /- English proof (translation)
-Use `show (X.presheaf.map (𝟙 _)).hom _ = _`. Rewrite using `[CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rs_self {X : Scheme.{0}} {U : X.Opens} (h : U ≤ U) (x : Γ(X, U)) : rs h x = x := by
   show (X.presheaf.map (𝟙 _)).hom _ = _
   rw [CategoryTheory.Functor.map_id]; rfl
 
 /- English proof (translation)
-Introduce `_ hy` and use `h hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pre_mono {X Y : Scheme.{0}} (φ : Y ⟶ X) {U V : X.Opens} (h : V ≤ U) : φ ⁻¹ᵁ V ≤ φ ⁻¹ᵁ U :=
   fun _ hy => h hy
 
 /- English proof (translation)
-The claim follows from `congrArg (fun q => q.hom x) (φ.naturality (homOfLE h).op)`.
+A detailed English derivation is pending.
 -/
 theorem app_rs {X Y : Scheme.{0}} (φ : Y ⟶ X) {U V : X.Opens} (h : V ≤ U) (x : Γ(X, U)) :
     (φ.app V).hom (rs h x) = rs (pre_mono φ h) ((φ.app U).hom x) :=
@@ -60,20 +60,20 @@ theorem constFn_eq {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) (U 
     constFn p U a = constHom p U a := rfl
 
 /- English proof (translation)
-The claim follows from `rs_rs le_top h _`.
+A detailed English derivation is pending.
 -/
 theorem rs_constHom {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {U V : X.Opens} (h : V ≤ U) (a : R) :
     rs h (constHom p U a) = constHom p V a := rs_rs le_top h _
 
 /- English proof (translation)
-The claim follows from `X.sheaf.eq_of_locally_eq' V U (fun i => homOfLE (hV i)) hc s t h`.
+A detailed English derivation is pending.
 -/
 theorem ext_cover {X : Scheme.{0}} {U : X.Opens} {J : Type} (V : J → X.Opens) (hV : ∀ i, V i ≤ U)
     (hc : U ≤ iSup V) {s t : Γ(X, U)} (h : ∀ i, rs (hV i) s = rs (hV i) t) : s = t :=
   X.sheaf.eq_of_locally_eq' V U (fun i => homOfLE (hV i)) hc s t h
 
 /- English proof (translation)
-Introduce `x hx` and use `by obtain ⟨_, ⟨V, hV, rfl⟩, hxV, hVU⟩ := X.isBasis_affineOpens.exists_subset_of_mem_open hx U.isOpen exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨V, hV, hVU⟩, hxV⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_iSup_affine {X : Scheme.{0}} (U : X.Opens) :
     U ≤ ⨆ V : {V : X.Opens // IsAffineOpen V ∧ V ≤ U}, V.1 := fun x hx => by
@@ -81,7 +81,7 @@ theorem le_iSup_affine {X : Scheme.{0}} (U : X.Opens) :
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨V, hV, hVU⟩, hxV⟩
 
 /- English proof (translation)
-The claim follows from `ext_cover (fun V : {V : X.Opens // IsAffineOpen V ∧ V ≤ U} => V.1) (fun V => V.2.2) (le_iSup_affine U) fun V => h V.1 V.2.1 V.2.2`.
+A detailed English derivation is pending.
 -/
 theorem ext_affine {X : Scheme.{0}} {U : X.Opens} {s t : Γ(X, U)}
     (h : ∀ (V : X.Opens) (_ : IsAffineOpen V) (hV : V ≤ U), rs hV s = rs hV t) : s = t :=
@@ -89,7 +89,7 @@ theorem ext_affine {X : Scheme.{0}} {U : X.Opens} {s t : Γ(X, U)}
     fun V => h V.1 V.2.1 V.2.2
 
 /- English proof (translation)
-Take `⟨y, hy, -⟩` from `X.sheaf.existsUnique_gluing' (fun V : {V : X.Opens // IsAffineOpen V ∧ V ≤ U} => V.1) U (fun V => homOfLE V.2.2) (le_iSup_affine U) (fun V => f V.1 V.2.1 V.2.2) (fun V V' => by`. Use `ext_affine (X := X) (U := V.1 ⊓ V'.1) fun W hW h => ?_` and prove the remaining obligations. Use `(rs_rs inf_le_left h _).trans (Eq.trans ?_ (rs_rs inf_le_right h _).symm)` and prove the remaining obligations. Rewrite using `[hf _ _ _ hW, hf _ _ _ hW])`. Conclude with `⟨y, fun V hV h => hy ⟨V, hV, h⟩⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem glue_affine {X : Scheme.{0}} (U : X.Opens)
     (f : ∀ (V : X.Opens), IsAffineOpen V → V ≤ U → Γ(X, V))
@@ -110,13 +110,13 @@ variable {K F : Type} [Field K] [Field F] [Algebra K F] {Y Y' : Scheme.{0}}
   (H : IsPullback p π' π (Spec.map (CommRingCat.ofHom (algebraMap K F))))
 
 /- English proof (translation)
-Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := ⊤) (UX := U) (UY := p ⁻¹ᵁ U) le_top le_top (by simp)).mp (isIso_pushoutSection_of_isAffineOpen H _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) hU)`. Establish `po' : IsPushout (CommRingCat.ofHom (constHom π U)) (CommRingCat.ofHom (algebraMap K F)) (p.app U) (CommRingCat.ofHom (constHom π' (p ⁻¹ᵁ U)))`. Use `po.of_iso (Scheme.ΓSpecIso (.of K)) (Iso.refl _) (Scheme.ΓSpecIso (.of F)) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[constHom, Scheme.Hom.appLE]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[← Scheme.ΓSpecIso_naturality, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Simplify using `[Scheme.Hom.app_eq_appLE]`. Use extensionality with `x`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[constHom, Scheme.Hom.appLE]`. Both sides reduce to the same expression. Set `: Algebra (FnOver π U) (FnOver π' (p ⁻¹ᵁ U))` to `(p.app U).hom.toAlgebra`. Set `: Algebra K (FnOver π' (p ⁻¹ᵁ U))` to `((constHom π' (p ⁻¹ᵁ U)).comp (algebraMap K F)).toAlgebra`. Establish `: IsScalarTower K F (FnOver π' (p ⁻¹ᵁ U))` using `.of_algebraMap_eq fun r ↦ rfl`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsScalarTower K (FnOver π U) (FnOver π' (p ⁻¹ᵁ U))` using `.of_algebraMap_eq fun r ↦ (congrArg (fun q => q.hom r) po'.w).symm`. Establish `: Algebra.IsPushout K F (FnOver π U) (FnOver π' (p ⁻¹ᵁ U))` using `(CommRingCat.isPushout_iff_isPushout.mp po').symm`. Conclude with `isExtension_of_isPushout _ fun x => rs_self _ _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isExtension_affine {U : Y.Opens} (hU : IsAffineOpen U) :
     IsExtension (pullFn H.w (le_refl (p ⁻¹ᵁ U))) := by
@@ -141,7 +141,7 @@ theorem isExtension_affine {U : Y.Opens} (hU : IsAffineOpen U) :
   exact isExtension_of_isPushout _ fun x => rs_self _ _
 
 /- English proof (translation)
-The claim follows from `IsCoord.natural (isExtension_affine H hV).span hΛ hΛ' (LinearMap.mulLeft K (show FnOver π W from u) ∘ₗ resFn π h) (LinearMap.mulLeft F (show FnOver π' (p ⁻¹ᵁ W) from (p.app W).hom u) ∘ₗ resFn π' (pre_mono p h)) (fun v => by show (p.app W).hom u * rs _ (rs _ ((p.app V).hom v)) = r …`.
+A detailed English derivation is pending.
 -/
 theorem coord_mul_rs {V W : Y.Opens} (hV : IsAffineOpen V) (h : W ≤ V) {ℓ : F →ₗ[K] K}
     {Λ : FnOver π' (p ⁻¹ᵁ V) →+ FnOver π V} {Λ' : FnOver π' (p ⁻¹ᵁ W) →+ FnOver π W}
@@ -158,7 +158,7 @@ theorem coord_mul_rs {V W : Y.Opens} (hV : IsAffineOpen V) (h : W ≤ V) {ℓ : 
       exact congrArg _ (app_rs p h v).symm) x
 
 /- English proof (translation)
-The claim follows from `glue_affine U _ fun V W hV hW hVU h => by have := coord_mul_rs H hV h (hΛ V hV) (hΛ W hW) 1 (rs (pre_mono p hVU) x) rw [map_one, _root_.one_mul, _root_.one_mul, rs_rs] at this exact this.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_coord {ℓ : F →ₗ[K] K}
     (Λ : ∀ V : Y.Opens, IsAffineOpen V → FnOver π' (p ⁻¹ᵁ V) →+ FnOver π V)
@@ -170,7 +170,7 @@ theorem exists_coord {ℓ : F →ₗ[K] K}
     exact this.symm
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pre_le_chart (M : LB Y) (p : Y' ⟶ Y) (j : PUnit → M.ι) : p ⁻¹ᵁ M.U (j PUnit.unit) ≤ (M.pull p).U j :=
   fun _ hy => Set.mem_iInter.2 fun _ => hy
@@ -179,7 +179,7 @@ def loc {M : LB Y} (t : (M.pull p).Sec) (j : M.ι) : Γ(Y', p ⁻¹ᵁ M.U j) :=
   rs (pre_le_chart M p fun _ => j) (t.f fun _ => j)
 
 /- English proof (translation)
-Use `congrArg (rs (le_inf hi hj)) (s.compat i j)` as an intermediate fact. Rewrite `this` using `[map_mul]`. Conclude with `(rs_rs inf_le_left _ _).symm.trans (this.trans (congrArg _ (rs_rs inf_le_right _ _)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_compat {M : LB Y} (s : M.Sec) (i j : M.ι) {W : Y.Opens} (hi : W ≤ M.U i) (hj : W ≤ M.U j) :
     rs hi (s.f i) = rs (le_inf hi hj) (M.g i j : Γ(Y, M.U i ⊓ M.U j)) * rs hj (s.f j) := by
@@ -188,9 +188,9 @@ theorem sec_compat {M : LB Y} (s : M.Sec) (i j : M.ι) {W : Y.Opens} (hi : W ≤
   exact (rs_rs inf_le_left _ _).symm.trans (this.trans (congrArg _ (rs_rs inf_le_right _ _)))
 
 /- English proof (translation)
-Unfold `loc`. Rewrite using `[rs_rs, rs_rs, sec_compat t (fun _ => i) (fun _ => j) ((pre_mono p hi).trans (pre_le_chart M p fun _ => i)) ((pre_mono p hj).trans (pre_le_chart M p fun _ => j)), app_rs]`. Use `congr 1`. Establish `e : ((M.pull p).g (fun _ => i) (fun _ => j) : Γ(Y', (M.pull p).U (fun _ => i) ⊓ (M.pull p).U fun _ => j)) = rs (le_inf (inf_le_left.trans (LB.wchart_le M (fun _ : PUnit => p) (fun _ => i) PUnit.unit)) (inf_le_right.trans (LB.wchart_le M (fun _ : PUnit => p) (fun _ => j) PUnit.uni …`. Establish `key : ∀ {G : Type} [CommGroup G] (u : G), ∏ _k : PUnit.{1}, u ^ (1 : ℤ) = u` using `fun u => by simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Units.val (key _)`. Rewrite using `[e]`. Conclude with `rs_rs _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_compat {M : LB Y} (t : (M.pull p).Sec) (i j : M.ι) {W : Y.Opens} (hi : W ≤ M.U i)
     (hj : W ≤ M.U j) :
@@ -210,9 +210,9 @@ theorem loc_compat {M : LB Y} (t : (M.pull p).Sec) (i j : M.ι) {W : Y.Opens} (h
   exact rs_rs _ _ _
 
 /- English proof (translation)
-Use `choose y hy using fun j => exists_coord H Λ hΛ (M.U j) (loc t j)`. Use `⟨⟨y, fun i j => ext_affine fun W hW h => ?_⟩, hy⟩` and prove the remaining obligations. Establish `hi : W ≤ M.U i` using `h.trans inf_le_left`. Establish `hj : W ≤ M.U j` using `h.trans inf_le_right`. Rewrite using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(rs_rs inf_le_left h _).trans (Eq.trans ?_ (congrArg _ (rs_rs inf_le_right h _).symm))` and prove the remaining obligations. Use `coord_mul_rs H hW le_rfl (hΛ W hW) (hΛ W hW) (rs h (M.g i j : Γ(Y, M.U i ⊓ M.U j))) (rs (pre_mono p hj) (loc t j))` as an intermediate fact. Rewrite `this` using `[rs_self]`. Rewrite using `[hy i W hW hi, hy j W hW hj, loc_compat t i j hi hj]`. Conclude with `this.trans (congrArg _ (rs_self _ _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coord_sec {ℓ : F →ₗ[K] K}
     (Λ : ∀ V : Y.Opens, IsAffineOpen V → FnOver π' (p ⁻¹ᵁ V) →+ FnOver π V)
@@ -232,17 +232,15 @@ theorem exists_coord_sec {ℓ : F →ₗ[K] K}
 
 include H in
 /- English proof (translation)
-Set `b` to `Module.Basis.ofVectorSpace K F`. Use `choose Λ hΛ using fun a V (hV : IsAffineOpen V) => (isExtension_affine H hV).coord (b.coord a)`. Use `choose s hs using fun a => exists_coord_sec H (Λ a) (hΛ a) t`. Use `choose S hS hS' using fun j V (hV : IsAffineOpen V) (h : V ≤ M.U j) => exists_expansion b (isExtension_affine H hV).span (fun a => hΛ a V hV) (rs (pre_mono p h) (loc t j))`. Establish `hc : ∀ y : Y, ∃ (j : M.ι) (V : Y.Opens), IsAffineOpen V ∧ V ≤ M.U j ∧ y ∈ V` using `fun y => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hM.cover.ge (Set.mem_univ y))`. Take `⟨V, hV⟩` from `TopologicalSpace.Opens.mem_iSup.1 (le_iSup_affine _ hj)`. Conclude with `⟨j, V.1, V.2.1, V.2.2, hV⟩`. Use `choose J V hV hVJ hy using hc`. Take `⟨T, hT⟩` from `isCompact_univ.elim_finite_subcover (fun y : Y => (V y : Set Y)) (fun y => (V y).isOpen) (fun y _ => Set.mem_iUnion.2 ⟨y, hy y⟩)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `S₀` to `T.biUnion fun y => S (J y) (V y) (hV y) (hVJ y)`. Establish `z : ∀ a ∉ S₀, ∀ j, (s a).f j = 0` using `fun a ha j => by`. Use `ext_cover (fun y : T => M.U j ⊓ V y) (fun _ => inf_le_left) (fun x hx => ?_) fun y => ?_` and prove the remaining obligations. Take `⟨y, hyT, hxy⟩` from `Set.mem_iUnion₂.1 (hT (Set.mem_univ x))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨y, hyT⟩, hx, hxy⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `z₀ : rs (hVJ y) ((s a).f (J y)) = 0` using `(hs a _ _ (hV y) (hVJ y)).trans (hS _ _ _ _ a fun h => ha (Finset.mem_biUnion.2 ⟨y, y.2, h⟩))`. Rewrite using `[sec_compat (s a) j (J y) inf_le_left (inf_le_right.trans (hVJ y)), ← rs_rs (hVJ y) inf_le_right, z₀, map_zero, map_zero, mul_zero]`. Use `⟨_, S₀, b, s, fun j => ?_⟩` and prove the remaining obligations. Use `ext_cover (fun W : {W : Y.Opens // IsAffineOpen W ∧ W ≤ M.U j} => p ⁻¹ᵁ W.1) (fun W => pre_mono p W.2.2) (fun x hx => ?_) fun W => ?_` and prove the remaining obligations. Take `⟨W, hW⟩` from `TopologicalSpace.Opens.mem_iSup.1 (le_iSup_affine (M.U j) (show p x ∈ M.U j from hx))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨W, hW⟩`. Take `⟨W, hW, h⟩` from `W`. Establish `e : ∀ a, rs (pre_mono p h) (constHom π' _ (b a) * (p.app _).hom ((s a).f j)) = constHom π' (p ⁻¹ᵁ W) (b a) * rs le_rfl ((p.app W).hom (Λ a W hW (rs (pre_mono p h) (loc t j))))` using `fun a => by`. Rewrite using `[map_mul, rs_constHom, ← app_rs p h, hs a j W hW h, rs_self]`. Establish `e' : rs (pre_mono p h) (loc t j) = ∑ a ∈ S j W hW h ∪ S₀, constHom π' (p ⁻¹ᵁ W) (b a) * rs le_rfl ((p.app W).hom (Λ a W hW (rs (pre_mono p h) (loc t j))))` using `hS' j W hW h (S j W hW h ∪ S₀) Finset.subset_union_left`.
-
-Use `e'.trans ((Finset.sum_congr rfl fun a _ => (e a).symm).trans ((Finset.sum_subset Finset.subset_union_right fun a _ ha => ?_).symm.trans (map_sum _ _ _).symm))` and prove the remaining obligations. Rewrite using `[z a ha, map_zero, mul_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum_sec [CompactSpace Y] {M : LB Y} (hM : M.IsLB) (t : (M.pull p).Sec) :
     ∃ (J : Type) (S : Finset J) (c : J → F) (s : J → M.Sec), ∀ j : M.ι,
@@ -289,9 +287,9 @@ theorem exists_sum_sec [CompactSpace Y] {M : LB Y} (hM : M.IsLB) (t : (M.pull p)
 end Field
 
 /- English proof (translation)
-Introduce `K₀ K _ _ i X₀ X p₀ p φ _ _ M hM H t`. Set `` to `i.toAlgebra`. Establish `: CompactSpace X₀` using `QuasiCompact.compactSpace_of_compactSpace p₀`. Take `⟨J, S, c, s, e⟩` from `exists_sum_sec (K := K₀) (F := K) H hM t`. Use `⟨S.card, fun a => c (S.equivFin.symm a), fun a => s (S.equivFin.symm a), fun j h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₁ : t.f j = rs h (loc t (j PUnit.unit))` using `((rs_rs _ _ _).trans (rs_self _ _)).symm`. Rewrite using `[e₁, e, map_sum, ← Finset.sum_coe_sort, ← S.equivFin.symm.sum_comp]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, rs_constHom]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem main : ∀ (K₀ K : Type) [Field K₀] [Field K] (i : K₀ →+* K) (X₀ X : Scheme.{0}) (p₀ : X₀ ⟶ Sp K₀) (p : X ⟶ Sp K) (φ : X ⟶ X₀) [QuasiCompact p₀] [QuasiSeparated p₀] (M : LB X₀), M.IsLB → IsPullback φ p p₀ (spMap i) → ∀ t : (M.pull φ).Sec, ∃ (n : ℕ) (c : Fin n → K) (s : Fin n → M.Sec), ∀ j : PUnit → M.ι, ∀ h : (M.pull φ).U j ≤ φ ⁻¹ᵁ M.U (j PUnit.unit), t.f j = ∑ a, constFn p _ (c a) * (φ.appLE _ _ h).hom ((s a).f (j PUnit.unit)) := by
   intro K₀ K _ _ i X₀ X p₀ p φ _ _ M hM H t

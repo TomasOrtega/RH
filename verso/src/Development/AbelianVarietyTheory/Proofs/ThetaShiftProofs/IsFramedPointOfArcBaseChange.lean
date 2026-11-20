@@ -15,7 +15,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.L2.Pj.QAt GlobalTheory.ArcQ GlobalTheory.Frames
 
 /- English proof (translation)
-The claim follows from `and_congr (isGen_iff w) (maps_iff w _ (fun _ => eSec G) _ L'.rig L.rig m.e _ (rigPull_le m.F m.e m.e_comm L.L) (fun _ => rfl))`.
+A detailed English derivation is pending.
 -/
 theorem isRigIso_iff {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [IsCommMonObj G'] [GrpObj G]
     [IsCommMonObj G] (m : CubeMap G' G) (L' : RigLB G') (L : RigLB G) (w : LB.Iso L'.L (L.L.pull m.F)) :
@@ -25,9 +25,9 @@ theorem isRigIso_iff {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G']
     (maps_iff w _ (fun _ => eSec G) _ L'.rig L.rig m.e _ (rigPull_le m.F m.e m.e_comm L.L) (fun _ => rfl))
 
 /- English proof (translation)
-Take `⟨Fn, F3, e, hec, hp⟩` from `n`. Simplify using `only at hF he`. Substitute `hF he` using the available equality. Rewrite `hw`, `hw''` using `[isRigIso_iff]`. Take `⟨g, r⟩` from `hw`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g'', r''⟩` from `hw''`. Take `⟨w', T⟩` from `exists_cancel L.isLB w w'' g g'' L'.isLB L''.isLB`. Conclude with `⟨w', (isRigIso_iff _ _ _ _).2 ⟨T.pgen_cancel L.isLB g g'', T.pmaps_cancel L.isLB (fun _ => m'.e_comm) r r''⟩, T⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rigIso_cancel {S S' S'' : Scheme.{0}} {G'' : Over S''} {G' : Over S'} {G : Over S} [GrpObj G'']
     [IsCommMonObj G''] [GrpObj G'] [IsCommMonObj G'] [GrpObj G] [IsCommMonObj G] (m : CubeMap G' G)
@@ -49,9 +49,9 @@ theorem exists_rigIso_cancel {S S' S'' : Scheme.{0}} {G'' : Over S''} {G' : Over
     T.pmaps_cancel L.isLB (fun _ => m'.e_comm) r r''⟩, T⟩
 
 /- English proof (translation)
-Establish `hz : r z ∈ (L.pull F).U (fun _ => j) ⊓ L'.U k` using `⟨mem_pull.2 hj, hk⟩`. Establish `a` using `congrArg (gs r z _) (h (fun _ => j) k)`. Establish `le : (L.pull F).U (fun _ => j) ≤ F ⁻¹ᵁ L.U j` using `fun q hq => mem_pull.1 hq`. Use `Eq.trans ?_ ((gs_res _ z _ hz _).symm.trans (a.trans ((gs_mul _ z _ hz _ _).trans (congrArg₂ (· * ·) (gs_unit _ z _ hz _) (gs_res _ z _ hz _)))))` and prove the remaining obligations. Rewrite using `[p (fun _ => j) le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(gs_appLE F _ _ le r z (mem_pull.2 hj) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem gs_of_isoMaps {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {w : LB.Iso L' (L.pull F)}
     {σ : LB.Sec L'} {s : LB.Sec (L.pull F)} {θ : LB.Sec L} (h : IsoMaps w σ s) (p : PullSec F θ s)
@@ -68,11 +68,11 @@ theorem gs_of_isoMaps {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X}
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `he : n.cm.e = m'.cm.e ≫ m.cm.e` using `by rw [n.base, m'.base, m.base, hx]`. Take `⟨w', r', tri⟩` from `exists_rigIso_cancel m.cm m'.cm n.cm hφ he t''.PP t'.PP t.PP w w'' hw hw''`. Use `⟨w', r', fun (a : PUnit → t'.PP.L.ι) k => fn_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `hi : m'.φ y ∈ t'.PP.L.U (a PUnit.unit)` using `mem_pull.1 hy.1`. Take `⟨j, hj⟩` from `exists_chart t.PP.isLB (m.φ (m'.φ y))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `pt : n.φ y = m.φ (m'.φ y)` using `congrArg (fun q => q y) hφ`. Establish `e1` using `gs_of_isoMaps i p (𝟙 _ ≫ m'.φ) y j (a PUnit.unit) hj hi`. Establish `e2` using `gs_of_isoMaps i'' p'' (𝟙 _) y j k (pt ▸ hj) hy.2`. Establish `e3` using `tri _ (𝟙 _) y j (a PUnit.unit) k hj hi hy.2`. Establish `e4 : (𝟙 _ ≫ m'.φ) ≫ m.φ = 𝟙 _ ≫ n.φ` using `by rw [Category.assoc, hφ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[e4, e2, e3, Units.val_mul, _root_.mul_assoc, Units.mul_right_inj]`. Use `(gs_res _ y _ hy _).trans ((gs_appLE m'.φ _ _ _ (𝟙 _) y hy.1 _).trans (e1.symm.trans ?_))` and prove the remaining obligations. Use `Eq.symm ((gs_mul _ y _ hy _ _).trans ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (gs_unit _ y _ hy _) (gs_res _ y _ hy _)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isoMaps_cancel {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S}
     {g : S'' ⟶ S'} {x : S'' ⟶ S} (m : SABMap t' t f) (m' : SABMap t'' t' g) (n : SABMap t'' t x) (hx : x = g ≫ f)
@@ -97,7 +97,7 @@ theorem exists_isoMaps_cancel {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H 
   exact congrArg₂ (· * ·) (gs_unit _ y _ hy _) (gs_res _ y _ hy _)
 
 /- English proof (translation)
-Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_comp' {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (io : R →+* S) (φ : S →+* T) :
     spMap (φ.comp io) = spMap φ ≫ spMap io := by
@@ -105,7 +105,7 @@ theorem spMap_comp' {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (io : 
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Rewrite using `[← spMap_comp', ← spMap_comp']`. Use `congr 1`. Apply the tactic sequence `exact RingHom.ext fun a => by ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dual_alg {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) :
     spMap (dualMap φ) ≫ spMap (algebraMap S (DualNumber S)) = spMap (algebraMap T (DualNumber T)) ≫ spMap φ := by
@@ -114,7 +114,7 @@ theorem dual_alg {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) :
   exact RingHom.ext fun a => by ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Rewrite using `[← spMap_comp']`. Use `congr 1`. Apply the tactic sequence `exact RingHom.ext fun a => by ext <;> simp [dualMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dual_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (io : R →+* S) (φ : S →+* T) :
     spMap (dualMap (φ.comp io)) = spMap (dualMap φ) ≫ spMap (dualMap io) := by
@@ -132,25 +132,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open FrBC in
 
 /- English proof (translation)
-Introduce `hL hL2 E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W A' _ _ _ _ b' a' f p W' hj hin hwit e e' th th' he hth S _ _ ι' y h`. Take `⟨m, hm, hlie, hθ⟩` from `GlobalTheory.ArcBaseChange.main hL hL2 E H Dw l Xo c O β Y A b a χ W A' b' a' f p W' hin hwit`. Take `⟨z, G, m1, m2, φ, zj, zx, φb, φ1, φ2, hu, θ, w1, w2, σ, s1, θ2, hT, r1, r2, i1, i2, p2, hg⟩` from `h`. Establish `hio : spMap (ι'.comp (PowerSeries.map f)) = spMap ι' ≫ spMap (PowerSeries.map f)` using `spMap_comp' _ _`. Establish `key : ∀ (g : Sp S ⟶ Sp (PowerSeries A)) (n : SABMap G W.t g), g = spMap ι' ≫ spMap (PowerSeries.map f) → ∃ m' : SABMap G W'.t (spMap ι'), n.φ = m'.φ ≫ m.φ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g n hg`. Substitute `hg` using the available equality. Conclude with `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m n`. Take `⟨m', e₂⟩` from `key _ m2 hio`. Take `⟨w, θ', rw', iw⟩` from `pull_sec W.t W'.t m θ`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `pw : PullSec m.φ θ (thfPull W.t.PP.L m.φ θ)` using `fun _ _ => rfl`. Take `⟨w', r', i'⟩` from `exists_isoMaps_cancel m m' m2 hio e₂ rw' r2 iw pw i2 p2`. Use `⟨z, G, m1, m', φ, ?_, zx, φb, φ1, ?_, fun τ k => ?_, θ', w1, w', σ, s1, _, hθ w th th' θ θ' _ rw' hth hT pw iw, r1, r', i1, i', fun _ _ => rfl, hg⟩` and prove the remaining obligations. Rewrite using `[zj, hio, Category.assoc]`. Rewrite using `[φ2, hm, e₂, Category.assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, q₀, h1, h2, h3, -⟩` from `hu τ k`. Establish `vb : v.left ≫ W.t.G.hom = spMap (algebraMap _ (DualNumber (PowerSeries A)))` using `Over.w v`. Establish `pb : (q₀ ≫ G.G.hom) ≫ spMap (ι'.comp (PowerSeries.map f)) = spMap (algebraMap S (DualNumber S)) ≫ spMap (ι'.comp (PowerSeries.map f))`. Rewrite using `[Category.assoc, ← m2.cart.1.w, ← Category.assoc]`. Conclude with `(congrArg (· ≫ W.t.G.hom) h3).trans (by rw [Category.assoc, vb, dual_alg])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `pz : (q₀ ≫ G.G.hom) ≫ z = spMap (algebraMap S (DualNumber S)) ≫ z`. Rewrite using `[← cancel_mono Y.j, Category.assoc, zj, ← Category.assoc, pb, Category.assoc, Category.assoc, zj]`. Set `q` to `m1.cart.1.lift (y.u τ k) _ (y.tan τ k).1`. Establish `hq : q ≫ m1.φ = y.u τ k` using `m1.cart.1.lift_fst _ _ _`. Establish `qb : q ≫ G.G.hom = spMap (algebraMap S (DualNumber S))` using `m1.cart.1.lift_snd _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `qφ : q ≫ φ = q₀ ≫ φ`. Apply `Y.m0.toSABMap.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `((congrArg _ φ1).trans (hq.trans h2.symm)).trans (congrArg _ φ1.symm)`. Rewrite using `[Category.assoc, Category.assoc, φb, ← Category.assoc, ← Category.assoc, qb, pz]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `q2 : q ≫ m2.φ = q₀ ≫ m2.φ`. Apply `W.m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc]`. Use `(congrArg _ φ2.symm).trans (Eq.trans ?_ (congrArg _ φ2))` and prove the remaining obligations. Rewrite using `[← Category.assoc, qφ, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, m2.cart.1.w, ← Category.assoc, ← Category.assoc, qb, pb]`. Establish `cond : (spMap (dualMap (PowerSeries.map f)) ≫ v.left) ≫ W.t.G.hom = spMap (algebraMap (PowerSeries A') (DualNumber (PowerSeries A'))) ≫ spMap (PowerSeries.map f)`. Rewrite using `[Category.assoc, vb, dual_alg]`. Set `v' : epsR (PowerSeries A') ⟶ W'.t.G` to `Over.homMk (m.cart.1.lift _ _ cond) (m.cart.1.lift_snd _ _ cond)`. Establish `hv : v'.left ≫ m.φ = spMap (dualMap (PowerSeries.map f)) ≫ v.left` using `m.cart.1.lift_fst _ _ cond`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `vb' : v'.left ≫ W'.t.G.hom = spMap (algebraMap _ (DualNumber (PowerSeries A')))` using `Over.w v'`. Use `⟨v', q, hlie _ _ v v' (he τ k) h1 hv, hq, ?_, qb⟩` and prove the remaining obligations. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc]`. Use `(congrArg _ e₂.symm).trans ((q2.trans h3).trans (Eq.trans ?_ (congrArg _ hv.symm)))` and prove the remaining obligations.
-
-Rewrite using `[dual_comp, Category.assoc]`. Rewrite using `[Category.assoc, Category.assoc, m'.cart.1.w, vb', dual_alg, ← Category.assoc, qb]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isArcFr_witBC : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] (b : O →+* A) (a : ArcIn Dw l β A b) (χ : Sp (PowerSeries A) ⟶ Y.X) (W : Wit Y a χ) (A' : Type) [CommRing A'] [IsDomain A'] [IsLocalRing A'] [IsNoetherianRing A'] (b' : O →+* A') (a' : ArcIn Dw l β A' b') (f : A →+* A') (p : Out.IsPullDeg f a.D₀ a'.D₀) (W' : Wit Y a' (spMap (PowerSeries.map f) ≫ χ)), Mono Y.j → InBC f a a' p → WitBC f p W W' → ∀ (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR A)) (e' : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a'.D₀ (epsR A')) th th', (∀ τ k, LetBC p (e τ k) (e' τ k)) → ThBC p th th' → ∀ (S : Type) [CommRing S] [Algebra c.F S] (ι' : PowerSeries A' →+* S) (y : FrPt Xo c S), IsArcFr W e th (ι'.comp (PowerSeries.map f)) y → IsArcFr W' e' th' ι' y := by
   intro hL hL2 E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W A' _ _ _ _ b' a' f p W' hj hin hwit e e' th th' he hth

@@ -10,9 +10,7 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.ThA
 
 /- English proof (translation)
-Distinguish the cases in `hh : IsUnit h.det`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hh, Matrix.mul_one]`. Use `_ = h⁻¹ * (h * a) * h⁻¹ := by rw [hah]`. Use `_ = a * h⁻¹ := by rw [← Matrix.mul_assoc h⁻¹ h a, Matrix.nonsing_inv_mul _ hh, Matrix.one_mul]`.
-
-Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit _ hh, Matrix.zero_mul, Matrix.mul_zero]`.
+Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma inv_mul_comm_of_mul_comm {n : Type*} [Fintype n] [DecidableEq n] (a h : Matrix n n ℂ)
     (hah : a * h = h * a) : h⁻¹ * a = a * h⁻¹ := by
@@ -24,9 +22,9 @@ private lemma inv_mul_comm_of_mul_comm {n : Type*} [Fintype n] [DecidableEq n] (
   · rw [Matrix.nonsing_inv_apply_not_isUnit _ hh, Matrix.zero_mul, Matrix.mul_zero]
 
 /- English proof (translation)
-Establish `e1 : (a * M * a⁻¹)⁻¹ = a * M⁻¹ * a⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ ha, Matrix.mul_assoc]`. Establish `d1 : H⁻¹ * a = a * H⁻¹` using `inv_mul_comm_of_mul_comm a H c1`. Establish `d2 : a⁻¹ * H' = H' * a⁻¹` using `inv_mul_comm_of_mul_comm H' a c2.symm`. Rewrite using `[e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[d2, ← Matrix.mul_assoc H⁻¹ a, d1, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma inv_mul_conj_mul_conj_eq_conj_of_commute {n : Type*} [Fintype n] [DecidableEq n] (a H M g M' H' : Matrix n n ℂ)
     (ha : IsUnit a.det) (c1 : a * H = H * a) (c2 : a * H' = H' * a) :
@@ -41,17 +39,17 @@ private lemma inv_mul_conj_mul_conj_eq_conj_of_commute {n : Type*} [Fintype n] [
   rw [d2, ← Matrix.mul_assoc H⁻¹ a, d1, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hm : Measurable (conjM (k` using `k) (r := r) a) := (BesselUnitaryEquiv.conjE (k := k) (r := r) a ha).measurable`. Set `E : Mt k r ≃ᵐ Mt k r` to `BesselUnitaryEquiv.conjE (k := k) (r := r) a ha`. Set `Φ : (Mt k r × Mt k r) × (Mt k r × Mt k r) ≃ᵐ (Mt k r × Mt k r) × (Mt k r × Mt k r)` to `((MeasurableEquiv.refl (Mt k r)).prodCongr E).prodCongr ((MeasurableEquiv.refl (Mt k r)).prodCongr E)`. Establish `hpm : ∀ (ν : Measure (Mt k r)) [SFinite ν], (ν.prod μN).map (Prod.map id (conjM a)) = ν.prod (μN.map (conjM a))`. Introduce `ν _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Measure.map_prod_map _ _ measurable_id hm, Measure.map_id]`. Establish `hμ : (μW.prod (μN.map (conjM a))).prod (μW'.prod (μN.map (conjM a))) = ((μW.prod μN).prod (μW'.prod μN)).map Φ`. Rewrite using `[← hpm μW, ← hpm μW', Measure.map_prod_map _ _ (measurable_id.prodMap hm) (measurable_id.prodMap hm)]`. Both sides reduce to the same expression. Establish `aW : ∀ᵐ x ∂μW, x ∈ UWset k r z` using `ae_iff.2 hW`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `aN : ∀ᵐ x ∂μN, x ∈ Nset k r` using `ae_iff.2 hN`. Establish `aW' : ∀ᵐ x ∂μW', x ∈ UWset k r z'` using `ae_iff.2 hW'`. Establish `q1 : ∀ᵐ p ∂((μW.prod μN).prod (μW'.prod μN)), p.1.1 ∈ UWset k r z` using `(Measure.quasiMeasurePreserving_fst (μ := μW.prod μN) (ν := μW'.prod μN)).ae ((Measure.quasiMeasurePreserving_fst (μ := μW) (ν := μN)).ae aW)`. Establish `q2 : ∀ᵐ p ∂((μW.prod μN).prod (μW'.prod μN)), p.1.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_fst (μ := μW.prod μN) (ν := μW'.prod μN)).ae ((Measure.quasiMeasurePreserving_snd (μ := μW) (ν := μN)).ae aN)`. Establish `q3 : ∀ᵐ p ∂((μW.prod μN).prod (μW'.prod μN)), p.2.1 ∈ UWset k r z'` using `(Measure.quasiMeasurePreserving_snd (μ := μW.prod μN) (ν := μW'.prod μN)).ae ((Measure.quasiMeasurePreserving_fst (μ := μW') (ν := μN)).ae aW')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q4 : ∀ᵐ p ∂((μW.prod μN).prod (μW'.prod μN)), p.2.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_snd (μ := μW.prod μN) (ν := μW'.prod μN)).ae ((Measure.quasiMeasurePreserving_snd (μ := μW') (ν := μN)).ae aN)`. Unfold `besselJ`. Rewrite using `[hμ, integral_map_equiv]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [q1, q2, q3, q4] with p h1 h2 h3 h4`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hΦ : Φ p = ((p.1.1, conjM a p.1.2), (p.2.1, conjM a p.2.2))` using `rfl`. Establish `e2 : Matrix.of (conjM a p.1.2) = a * Matrix.of p.1.2 * a⁻¹` using `rfl`. Establish `e4 : Matrix.of (conjM a p.2.2) = a * Matrix.of p.2.2 * a⁻¹` using `rfl`. Rewrite using `[hΦ]`. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, e4, hp (Matrix.of p.1.2) h2, hp' (Matrix.of p.2.2) h4, inv_mul_conj_mul_conj_eq_conj_of_commute a (Matrix.of p.1.1) (Matrix.of p.1.2) g (Matrix.of p.2.2) (Matrix.of p.2.1) ha (hc (Matrix.of p.1.1) h1) (hc' (Matrix.of p.2.1) h3)]`.
+A detailed English derivation is pending.
 -/
 theorem besselJ_conj {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddCommGroup Wq]
     [NormedSpace ℂ Wq] (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (c c' : ℂ)
@@ -106,7 +104,7 @@ theorem besselJ_conj {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp]
       (hc (Matrix.of p.1.1) h1) (hc' (Matrix.of p.2.1) h3)]
 
 /- English proof (translation)
-Unfold `besselJ`. Rewrite using `[Measure.prod_smul_right, Measure.prod_smul_right, Measure.prod_smul_left, Measure.prod_smul_right, smul_smul, integral_smul_measure, ENNReal.toReal_mul, ← pow_two, Complex.coe_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem besselJ_smul {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddCommGroup Wq]
     [NormedSpace ℂ Wq] (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (c : ℂ)
@@ -121,23 +119,19 @@ theorem besselJ_smul {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp]
     integral_smul_measure, ENNReal.toReal_mul, ← pow_two, Complex.coe_smul]
 
 /- English proof (translation)
-Introduce `k r L μsec Bs cN F hstd hR hc hκ0 hκT g`. Take `⟨hz, hz', hπ, hπ', hμW, hμW', hμN, -⟩` from `hstd`. Establish `hα : cStd / L.c ≠ 0` using `div_ne_zero (by simp [cStd]) hc`. Establish `hcα : L.c * (cStd / L.c) = cStd` using `by field_simp`. Use `set α := cStd / L.c with hαdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hT, -, -⟩` from `GlobalTheory.T.besselTorusElement_properties k r α hα`. Take `⟨hcz, hnz⟩` from `hT L.z L.hz.1`. Take `⟨hcz', hnz'⟩` from `hT L.z' L.hz'.1`. Establish `hmap` using `GlobalTheory.T.lebesgue_rootCoordinates_map_besselTorus_conj k r α hα`. Establish `ha : IsUnit (aT k r α).det`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aT, Matrix.det_diagonal]`. Use `isUnit_iff_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr fun i _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `pow_ne_zero _ hα`. Conclude with `one_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `inv_ne_zero (pow_ne_zero _ (star_ne_zero.mpr hα))`. Establish `hp : ∀ w : Fin (2 * r + k + 1) → ℂ, (∀ n ∈ Nset k r, ell k r w (aT k r α * n * (aT k r α)⁻¹) = α * ell k r w n) → ∀ n ∈ Nset k r, psi k r w L.c (aT k r α * n * (aT k r α)⁻¹) = psi k r w cStd n`. Introduce `w hw n hn`. Simplify using `only [psi, hw n hn, ← mul_assoc, hcα]`. Use `haveI : IsFiniteMeasure L.μW := ⟨by rw [L.hμW.2]; exact ENNReal.one_lt_top⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsFiniteMeasure L.μW' := ⟨by rw [L.hμW'.2]; exact ENNReal.one_lt_top⟩`. Establish `hNc : (D.muN k r) (Nset k r)ᶜ = 0` using `by rw [← hμN]; exact Bs.haarN.conc`. Use `haveI : IsFiniteMeasureOnCompacts (D.muN k r) := ⟨fun K hK => by rw [← hμN]; exact Bs.haarN.finite_compact K hK⟩`. Establish `hW : L.μW (UWset k r L.z)ᶜ = 0` using `L.hμW.1.2.2.1`. Establish `hW' : L.μW' (UWset k r L.z')ᶜ = 0` using `L.hμW'.1.2.2.1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : 0 < ‖α‖ ^ B.kap k r` using `pow_pos (norm_pos_iff.mpr hα) _`. Establish `hone : ENNReal.ofReal (‖α‖ ^ B.kap k r) * ENNReal.ofReal ((‖α‖ ^ B.kap k r)⁻¹) = 1`. Rewrite using `[← ENNReal.ofReal_mul hx.le, mul_inv_cancel₀ hx.ne', ENNReal.ofReal_one]`. Establish `hLμN : L.μN = (L.κN * ENNReal.ofReal cN * ENNReal.ofReal (‖α‖ ^ B.kap k r)) • (D.muN k r).map (conjM (aT k r α))`. Rewrite using `[hmap, smul_smul, mul_assoc (L.κN * ENNReal.ofReal cN), hone, mul_one, mul_smul, ← hR.2]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Formalism.MainNotions.S.LocBessel.μN, Formalism.MainNotions.S.haarLie, one_smul]`. Establish `ht : (L.κN * ENNReal.ofReal cN * ENNReal.ofReal (‖α‖ ^ B.kap k r)).toReal = lamN L cN`. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal hR.1.le, ENNReal.toReal_ofReal hx.le]`. Both sides reduce to the same expression. Establish `step : L.J F g = ((lamN L cN ^ 2 : ℝ) : ℂ) • besselJ k r L.z L.z' L.c L.π L.π' L.μW ((D.muN k r).map (conjM (aT k r α))) L.μW' F g`.
-
-Rewrite using `[← ht]`. Use `show besselJ k r L.z L.z' L.c L.π L.π' L.μW L.μN L.μW' F g = _`. Rewrite using `[hLμN]`. Conclude with `besselJ_smul k r L.z L.z' L.c L.π L.π' L.μW _ L.μW' _ F g`. Rewrite using `[step, besselJ_conj k r L.z L.z' L.c cStd L.π L.π' L.μW (D.muN k r) L.μW' hW hNc hW' (aT k r α) ha hcz hcz' (hp L.z fun n hn => (hnz n hn).2.2) (hp L.z' fun n hn => (hnz' n hn).2.2) F g, Formalism.FourierDecayAlt.B.JF, hz, hz', hπ, hπ', hμW, hμW', hμN]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem besselJ_changeFrame : ∀ (k r : ℕ) (L : Formalism.MainNotions.S.LocBessel k r) (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (Bs : B.RealPlaceData k r L.Wp L.Wq) (cN : ℝ) (F : B.Mat k r → (L.Wq →L[ℂ] L.Wp)), IsStdOf L μsec Bs → IsRatioN k r cN → L.c ≠ 0 → L.κN ≠ 0 → L.κN ≠ ⊤ → ∀ g : B.Mat k r, L.J F g = ((lamN L cN ^ 2 : ℝ) : ℂ) • B.JF Bs (conjF (cStd / L.c) F) ((aT k r (cStd / L.c))⁻¹ * g * aT k r (cStd / L.c)) := by
   intro k r L μsec Bs cN F hstd hR hc hκ0 hκT g

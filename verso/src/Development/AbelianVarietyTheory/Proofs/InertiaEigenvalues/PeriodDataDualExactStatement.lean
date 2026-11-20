@@ -19,7 +19,7 @@ open TensorProduct
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdmLoc.mk_mem_H1fX_iff_inHfX | exact GlobalTheory.AdmLoc.mk_mem_H1fX_iff_inHfX | (intros; apply GlobalTheory.AdmLoc.mk_mem_H1fX_iff_inHfX <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.period_data_dual_exact : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀]
     [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]

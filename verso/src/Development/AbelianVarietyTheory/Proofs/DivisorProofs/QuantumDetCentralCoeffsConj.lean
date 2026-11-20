@@ -14,7 +14,7 @@ namespace GlobalTheory.CapFrame
 variable {n : ℕ} {A : Type} [Ring A] [Algebra ℂ A]
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Conclude with `Matrix.single_mul_single_of_ne a b c h 1 (c := (1 : ℂ))`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem single_mul_single_one (a b c d : Fin n) :
     (Matrix.single a b (1 : ℂ)) * Matrix.single c d 1 = if b = c then Matrix.single a d 1 else 0 := by
@@ -23,9 +23,9 @@ theorem single_mul_single_one (a b c d : Fin n) :
   · exact Matrix.single_mul_single_of_ne a b c h 1 (c := (1 : ℂ))
 
 /- English proof (translation)
-Establish `h' : P' * P = 1` using `mul_eq_one_comm.mp h`. Introduce `a b c d`. Rewrite using `[← hρ]`. Establish `e : ∀ a b c d : Fin n, P * Matrix.single a b 1 * P' * (P * Matrix.single c d 1 * P') = P * (Matrix.single a b 1 * Matrix.single c d 1) * P'`. Introduce `a b c d`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, e, single_mul_single_one, single_mul_single_one]`. Apply the tactic sequence `split_ifs <;> simp [eq_comm]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem frame_glRel (ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] A) (hρ : IsLieRep ρ) (P P' : Matrix (Fin n) (Fin n) ℂ)
     (h : P * P' = 1) : GlRel (fun a b => ρ (P * Matrix.single a b 1 * P')) := by
@@ -42,7 +42,7 @@ theorem frame_glRel (ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] A) (hρ : IsLie
   split_ifs <;> simp [eq_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.sum_apply, Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conj_single (P0 Q0 : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     P0 * Matrix.single a b 1 * Q0 = ∑ c, ∑ d, (P0 c a * Q0 b d) • Matrix.single c d (1 : ℂ) := by
@@ -50,9 +50,9 @@ theorem conj_single (P0 Q0 : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
   simp [Matrix.sum_apply, Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Unfold `qdet qminor`. Use `Subalgebra.sum_mem _ fun σ _ => Subalgebra.mul_mem _ (Subalgebra.intCast_mem _ _) ?_` and prove the remaining obligations. Use `Subalgebra.list_prod_mem _ fun x hx => ?_` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.mp hx`. Unfold `Tm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Use `Subalgebra.add_mem _ ?_ (Algebra.subset_adjoin ⟨_, rfl⟩)` and prove the remaining obligations. Use `split_ifs`. Conclude with `Subalgebra.algebraMap_mem _ _`. Conclude with `Subalgebra.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem qdet_frame_mem_adjoin (ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] A) (P P' : Matrix (Fin n) (Fin n) ℂ) (u : ℂ) :
     qdet (fun a b => ρ (P * Matrix.single a b 1 * P')) u ∈ Algebra.adjoin ℂ (Set.range ρ) := by
@@ -67,13 +67,13 @@ theorem qdet_frame_mem_adjoin (ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] A) (P
   · exact Subalgebra.zero_mem _
 
 /- English proof (translation)
-Establish `h' : P' * P = 1` using `mul_eq_one_comm.mp h`. Use `mem_invAlg.mpr ⟨qdet_frame_mem_adjoin ρ P P' u, fun r g g' hg hr => ?_⟩` and prove the remaining obligations. Establish `hg' : g' * g = 1` using `mul_eq_one_comm.mp hg`. Rewrite using `[GlobalTheory.CapAdInv.qdet_semiconj _ (fun a b => ρ (g * (P * Matrix.single a b 1 * P') * g')) r (fun a b => hr _) u]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hQP : (P' * g' * P) * (P' * g * P) = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← GlobalTheory.CapAdInv.qdet_ad _ (frame_glRel ρ hρ P P' h) (P' * g * P) (P' * g' * P) hQP u]`. Use `congr 1`. Use function extensionality and compare the values at `a b`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : g * (P * Matrix.single a b 1 * P') * g' = P * ((P' * g * P) * Matrix.single a b 1 * (P' * g' * P)) * P'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, Matrix.one_mul, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, conj_single, Matrix.mul_sum, Matrix.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_sum, Matrix.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qdet_frame_mem_invAlg (ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] A) (hρ : IsLieRep ρ) (P P' : Matrix (Fin n) (Fin n) ℂ)
     (h : P * P' = 1) (u : ℂ) : qdet (fun a b => ρ (P * Matrix.single a b 1 * P')) u ∈ invAlg ρ := by
@@ -104,9 +104,9 @@ end GlobalTheory.CapFrame
 open GlobalTheory.CapFrame in
 
 /- English proof (translation)
-Introduce `n A _ _ ρ hρ P P' h`. Take `⟨c, hcn, hc⟩` from `GlobalTheory.qdet_polyMap_monic A n (fun a b => ρ (P * Matrix.single a b 1 * P'))`. Use `⟨c, hcn, fun k hk => ?_, hc⟩` and prove the remaining obligations. Establish `hS : ∀ u : ℂ, ∑ k ∈ Finset.range (n + 1), u ^ k • c k ∈ Subalgebra.toSubmodule (invAlg ρ)`. Introduce `u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hc u]`. Conclude with `qdet_frame_mem_invAlg ρ hρ P P' h u`. Conclude with `GlobalTheory.T.coeff_mem_submodule_of_complex_poly_values_mem A (Subalgebra.toSubmodule (invAlg ρ)) (n + 1) c hS k (Nat.lt_succ_of_le hk)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.qdet_frame_coeff_mem_invAlg : ∀ (n : ℕ) (A : Type) [Ring A] [Algebra ℂ A]
     (ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] A), IsLieRep ρ → ∀ P P' : Matrix (Fin n) (Fin n) ℂ, P * P' = 1 →

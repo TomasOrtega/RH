@@ -8,13 +8,13 @@ namespace GlobalTheory.FieldBaseChange
 variable {K F : Type} [Field K] [Field F] [Algebra K F]
 
 /- English proof (translation)
-Set `e` to `Module.Basis.ofVectorSpace K F`. Set `φ : F →ₗ[K] MvPolynomial (Module.Basis.ofVectorSpaceIndex K F) K` to `e.constr K MvPolynomial.X`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hP : (M.map φ).det = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `MvPolynomial.funext fun c => ?_` and prove the remaining obligations. Establish `hc : ∀ x, MvPolynomial.aeval c (φ x) = e.constr K c x` using `fun x => LinearMap.congr_fun (e.ext (f₁ := (MvPolynomial.aeval c).toLinearMap ∘ₗ φ) (f₂ := e.constr K c) (fun i => by simp [φ])) x`. Rewrite using `[map_zero, ← h (e.constr K c), RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `hc _`. Establish `hc : ∀ x, MvPolynomial.aeval e (φ x) = x` using `fun x => LinearMap.congr_fun (e.ext (f₁ := (MvPolynomial.aeval e).toLinearMap ∘ₗ φ) (f₂ := LinearMap.id) (fun i => by simp [φ])) x`. Apply `hM` to reduce the goal to its premises. Use `congrArg (MvPolynomial.aeval (R := K) e) hP` as an intermediate fact. Rewrite `this` using `[map_zero, AlgHom.map_det]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← this]`. Use `congr 1`. Use extensionality with `i j`. Conclude with `(hc _).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_functional_det_map_ne_zero [Infinite K] {n : Type} [Fintype n] [DecidableEq n]
     (M : Matrix n n F) (hM : M.det ≠ 0) : ∃ ℓ : F →ₗ[K] K, (M.map ℓ).det ≠ 0 := by
@@ -47,15 +47,13 @@ variable {V W V' W' : Type} [AddCommGroup V] [Module K V] [AddCommGroup W] [Modu
   [AddCommGroup V'] [Module F V'] [AddCommGroup W'] [Module F W']
 
 /- English proof (translation)
-Establish `li : LinearIndependent F (fun i => a (v i))`. Rewrite using `[linearIndependent_iff']`. Introduce `s g hg i hi`. Use `(Module.forall_dual_apply_eq_zero_iff K (g i)).1 fun ℓ => ?_` and prove the remaining obligations. Take `⟨Λ, hΛ⟩` from `h.coord ℓ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `congrArg Λ hg` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Simplify using `only [hΛ _ _] at this`. Conclude with `linearIndependent_iff'.1 v.linearIndependent s (fun j => ℓ (g j)) this i hi`. Establish `sp : ⊤ ≤ Submodule.span F (Set.range fun i => a (v i))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h.span, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : x ∈ Submodule.span K (Set.range v)` using `v.span_eq ▸ Submodule.mem_top`. Use `show a x ∈ Submodule.span F _`. Proceed by induction on `hx using Submodule.span_induction with`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mem y hy => obtain ⟨i, rfl⟩ := hy`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`.
-
-Consider the case `smul d y _ hy => rw [map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hy`. Conclude with `⟨Module.Basis.mk li sp, fun i => by simp⟩`.
+Treat this case separately. Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsExtension.exists_basis {a : V →ₛₗ[algebraMap K F] V'} (h : IsExtension a) {ι : Type}
     (v : Module.Basis ι K V) : ∃ v' : Module.Basis ι F V', ∀ i, v' i = a (v i) := by
@@ -81,7 +79,7 @@ theorem IsExtension.exists_basis {a : V →ₛₗ[algebraMap K F] V'} (h : IsExt
   exact ⟨Module.Basis.mk li sp, fun i => by simp⟩
 
 /- English proof (translation)
-The claim follows from `IsCoord.natural h hΛ hΛ (k • LinearMap.id) (algebraMap K F k • LinearMap.id) (fun v => by simp [map_smulₛₗ]) x`.
+A detailed English derivation is pending.
 -/
 theorem IsCoord.map_algebraMap_smul {a : V →ₛₗ[algebraMap K F] V'}
     (h : Submodule.span F (Set.range a) = ⊤) {ℓ : F →ₗ[K] K} {Λ : V' →+ V} (hΛ : IsCoord a ℓ Λ)
@@ -90,17 +88,15 @@ theorem IsCoord.map_algebraMap_smul {a : V →ₛₗ[algebraMap K F] V'}
     (fun v => by simp [map_smulₛₗ]) x
 
 /- English proof (translation)
-Set `v` to `Module.Basis.ofVectorSpace K V`. Set `w₀` to `Module.Basis.ofVectorSpace K W`. Take `⟨v', hv'⟩` from `hV.exists_basis v`. Take `⟨w₀', -⟩` from `hW.exists_basis w₀`. Set `e` to `LinearEquiv.ofBijective E' hE'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `w` to `w₀.reindex (w₀'.indexEquiv (v'.map e))`. Take `⟨w', hw'⟩` from `hW.exists_basis w`. Use `haveI := Module.Finite.finite_basis v'`. Use `letI := Fintype.ofFinite (Module.Basis.ofVectorSpaceIndex K V)`. Establish `hdet : (LinearMap.toMatrix v' w' E').det ≠ 0` using `(LinearEquiv.isUnit_det e v' w').ne_zero`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ℓ, hℓ⟩` from `exists_functional_det_map_ne_zero (K := K) _ hdet`. Take `⟨Λ, hΛ⟩` from `hW.coord ℓ`. Set `E : V →ₗ[K] W` to `{ toFun := fun x => Λ (E' (iV x)) map_add' := fun x y => by simp only [map_add] map_smul' := fun k x => by`. Rewrite using `[map_smulₛₗ, map_smul, hΛ.map_algebraMap_smul hW.span]`. Use `rfl }`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hM : LinearMap.toMatrix v w E = (LinearMap.toMatrix v' w' E').map ℓ`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, Matrix.map_apply, LinearMap.toMatrix_apply]`. Establish `: E (v j) = ∑ k, ℓ (w'.repr (E' (v' j)) k) • w k` using `by show Λ (E' (iV (v j))) = _`. Rewrite using `[← hv']`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [← w'.sum_repr (E' (v' j)), map_sum]`. Simplify using `only [hw', hΛ _ _]`. Rewrite using `[this, w.repr_sum_self]`. Use `⟨E, ?_, fun i x => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (LinearMap.toMatrix v w E).det` using `by rw [hM]; exact hℓ.isUnit`.
-
-Conclude with `(LinearEquiv.ofIsUnitDet hu).bijective`. Use `show Λ (E' (iV (a i x))) = b i (Λ (E' (iV x)))`. Rewrite using `[← ha, hc]`. Conclude with `IsCoord.natural hW.span hΛ hΛ (b i) (b' i) (hb i) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intertwining_bijective_of_extension (K F : Type) [Field K] [Field F] [Algebra K F]
     [Infinite K] (V W V' W' : Type) [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]

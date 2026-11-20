@@ -28,7 +28,7 @@ def projAway (h : V →ₗ⋆[E] V →ₗ[E] E) (U : Submodule E V) (M : Submodu
 omit [NumberField E] [StarRing E] in
 
 /- English proof (translation)
-The claim follows from `(IsScalarTower.algebraMap_smul E c x).symm`.
+A detailed English derivation is pending.
 -/
 theorem int_smul_eq (c : 𝓞 E) (x : V) : c • x = (c : E) • x :=
   (IsScalarTower.algebraMap_smul E c x).symm
@@ -36,7 +36,7 @@ theorem int_smul_eq (c : 𝓞 E) (x : V) : c • x = (c : E) • x :=
 omit [NumberField E] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V] in
 
 /- English proof (translation)
-Introduce `τ x hx` and use `hU τ x (hle hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PosOn.mono {h : V →ₗ⋆[E] V →ₗ[E] E} {U U' : Submodule E V} (hU : PosOn h U) (hle : U' ≤ U) :
     PosOn h U' := fun τ x hx => hU τ x (hle hx)
@@ -44,9 +44,9 @@ theorem PosOn.mono {h : V →ₗ⋆[E] V →ₗ[E] E} {U U' : Submodule E V} (hU
 omit [NumberField E] [IsScalarTower (𝓞 E) E V] in
 
 /- English proof (translation)
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact hx y hy`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, LinearMap.add_apply, ha, hb, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c a _ ha => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, ha, smul_zero]`.
+Treat this case separately.
 -/
 theorem orth_span (h : V →ₗ⋆[E] V →ₗ[E] E) {M : Submodule (𝓞 E) V} {x : V} (hx : ∀ y ∈ M, h y x = 0) :
     ∀ y ∈ Submodule.span E (M : Set V), h y x = 0 := by
@@ -60,7 +60,7 @@ theorem orth_span (h : V →ₗ⋆[E] V →ₗ[E] E) {M : Submodule (𝓞 E) V} 
 omit [NumberField E] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hM.fg, fun x _ h0 => hn.2 x fun y => orth_span h h0 y (by rw [hM.span_eq_top]; trivial)⟩`.
+Supply the required witnesses or components.
 -/
 theorem ndLat_of_isLattice {h : V →ₗ⋆[E] V →ₗ[E] E} (hn : h.Nondegenerate) {M : Submodule (𝓞 E) V}
     (hM : Submodule.IsLattice E M) : NDLat h M :=
@@ -79,7 +79,7 @@ abbrev gL {S : HSpace E} (Λ : Submodule (𝓞 E) S.V) (g : ℕ) : Submodule (�
   Ideal.span {(g : 𝓞 E)} • Λ
 
 /- English proof (translation)
-Rewrite using `[gL, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Use `exists_congr fun y => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[int_smul_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_gL {S : HSpace E} (Λ : Submodule (𝓞 E) S.V) (g : ℕ) (x : S.V) :
     x ∈ gL Λ g ↔ ∃ y ∈ Λ, (g : E) • y = x := by
@@ -98,7 +98,7 @@ def wittSpace (E : Type) [Field E] [NumberField E] [StarRing E] (k r : ℕ) : HS
   stdSpace star_isIntegral (k + 2 * r + 1) (wittSigns k r) (k + r) (r + 1)
 
 /- English proof (translation)
-The claim follows from `ndLat_of_isLattice (wittSpace E k r).nondeg (wittSpace E k r).standardTuple_isLattice`.
+A detailed English derivation is pending.
 -/
 example (k r : ℕ) : NDLat (wittSpace E k r).hT (wittSpace E k r).L0 :=
   ndLat_of_isLattice (wittSpace E k r).nondeg (wittSpace E k r).standardTuple_isLattice

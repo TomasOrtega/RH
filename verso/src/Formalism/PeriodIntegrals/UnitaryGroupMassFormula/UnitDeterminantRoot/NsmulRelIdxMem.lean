@@ -12,17 +12,17 @@ section Basic
 variable {a : ℕ} {b : ℤ} {d : ℕ} {ha : 0 < a} {hd : 0 < d} {lam : ℂ} {hlam : lam ≠ 0}
 
 /- English proof (translation)
-Simplify using `[UnitDetRootDefs.cmL, UnitDetRootDefs.scalePair, UnitDetRootDefs.cmPair]`.
+Simplify using the standard rewrite rules.
 -/
 lemma cmL_ω₁ : (UnitDetRootDefs.cmL a b d ha hd lam hlam).ω₁ = lam * a := by simp [UnitDetRootDefs.cmL, UnitDetRootDefs.scalePair, UnitDetRootDefs.cmPair]
 
 /- English proof (translation)
-Simplify using `[UnitDetRootDefs.cmL, UnitDetRootDefs.scalePair, UnitDetRootDefs.cmPair]`.
+Simplify using the standard rewrite rules.
 -/
 lemma cmL_ω₂ : (UnitDetRootDefs.cmL a b d ha hd lam hlam).ω₂ = lam * UnitDetRootDefs.cmTheta b d := by simp [UnitDetRootDefs.cmL, UnitDetRootDefs.scalePair, UnitDetRootDefs.cmPair]
 
 /- English proof (translation)
-Rewrite using `[PeriodPair.mem_lattice, cmL_ω₁, cmL_ω₂]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, q, h⟩; exact ⟨p, q, by rw [← h]; ring⟩`. Introduce and unpack `⟨p, q, h⟩; exact ⟨p, q, by rw [h]; ring⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 -/
 lemma mem_cmL {x : ℂ} :
     x ∈ (UnitDetRootDefs.cmL a b d ha hd lam hlam).lattice ↔ ∃ p q : ℤ, x = lam * ((p : ℂ) * a + (q : ℂ) * UnitDetRootDefs.cmTheta b d) := by
@@ -32,25 +32,25 @@ lemma mem_cmL {x : ℂ} :
   · rintro ⟨p, q, h⟩; exact ⟨p, q, by rw [h]; ring⟩
 
 /- English proof (translation)
-Simplify using `[UnitDetRootDefs.stdLat, AddSubgroup.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_stdLat {m : Type} {L : PeriodPair} {x : m → ℂ} : x ∈ UnitDetRootDefs.stdLat L m ↔ ∀ i, x i ∈ L.lattice := by
   simp [UnitDetRootDefs.stdLat, AddSubgroup.mem_pi]
 
 /- English proof (translation)
-Simplify using `[UnitDetRootDefs.cmTheta]`.
+Simplify using the standard rewrite rules.
 -/
 lemma theta_re' : (UnitDetRootDefs.cmTheta b d).re = (b : ℝ) / 2 := by simp [UnitDetRootDefs.cmTheta]
 
 /- English proof (translation)
-Simplify using `[UnitDetRootDefs.cmTheta]`.
+Simplify using the standard rewrite rules.
 -/
 lemma theta_im' : (UnitDetRootDefs.cmTheta b d).im = Real.sqrt d / 2 := by simp [UnitDetRootDefs.cmTheta]
 
 /- English proof (translation)
-Rewrite using `[UnitDetRootDefs.area, cmL_ω₁, cmL_ω₂]`. Establish `hpos : 0 < Complex.normSq lam * a * (Real.sqrt d / 2)`. Establish `h1 : 0 < Complex.normSq lam` using `Complex.normSq_pos.mpr hlam`. Establish `h2 : (0 : ℝ) < a` using `by exact_mod_cast ha`. Establish `h3 : 0 < Real.sqrt d` using `Real.sqrt_pos.mpr (by exact_mod_cast hd)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `e : (conj (lam * a) * (lam * UnitDetRootDefs.cmTheta b d)).im = Complex.normSq lam * a * (Real.sqrt d / 2)`. Simplify using `only [Complex.mul_im, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.natCast_re, Complex.natCast_im, theta_re', theta_im', Complex.normSq_apply, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, abs_of_pos hpos]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 lemma area_cmL : UnitDetRootDefs.area (UnitDetRootDefs.cmL a b d ha hd lam hlam) = Complex.normSq lam * a * (Real.sqrt d / 2) := by
   rw [UnitDetRootDefs.area, cmL_ω₁, cmL_ω₂]
@@ -66,7 +66,7 @@ lemma area_cmL : UnitDetRootDefs.area (UnitDetRootDefs.cmL a b d ha hd lam hlam)
   rw [e, abs_of_pos hpos]
 
 /- English proof (translation)
-Simplify using `only [Complex.mul_im, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.add_re, Complex.add_im, Complex.intCast_re, Complex.intCast_im, Complex.natCast_re, Complex.natCast_im, theta_re', theta_im', Complex.normSq_apply, map_mul, map_add, map_intCast, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma pair_im (p q p' q' : ℤ) :
     ((lam * ((p : ℂ) * a + (q : ℂ) * UnitDetRootDefs.cmTheta b d)) * conj (lam * ((p' : ℂ) * a + (q' : ℂ) * UnitDetRootDefs.cmTheta b d))).im
@@ -80,14 +80,14 @@ lemma pair_im (p q p' q' : ℤ) :
 end Basic
 
 /- English proof (translation)
-Simplify using `[UnitDetRootDefs.stdH, UnitDetRootDefs.matH, LinearMap.mk₂'ₛₗ_apply, Matrix.smul_apply, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma stdH_apply {m : Type} [Fintype m] [DecidableEq m] (L : PeriodPair) (x y : m → ℂ) :
     UnitDetRootDefs.stdH L m x y = ∑ i, x i * ((UnitDetRootDefs.area L : ℝ) : ℂ)⁻¹ * conj (y i) := by
   simp [UnitDetRootDefs.stdH, UnitDetRootDefs.matH, LinearMap.mk₂'ₛₗ_apply, Matrix.smul_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[UnitDetRootDefs.altE, stdH_apply, Complex.im_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (x i), mul_assoc, ← Complex.ofReal_inv, Complex.im_ofReal_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 lemma altE_stdH {m : Type} [Fintype m] [DecidableEq m] (L : PeriodPair) (x y : m → ℂ) :
     UnitDetRootDefs.altE (UnitDetRootDefs.stdH L m) x y = ∑ i, (x i * conj (y i)).im / UnitDetRootDefs.area L := by
@@ -97,11 +97,11 @@ lemma altE_stdH {m : Type} [Fintype m] [DecidableEq m] (L : PeriodPair) (x y : m
   field_simp
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite `hx`, `hy` using `[mem_stdLat]`. Use `choose p q hpq using fun i => (mem_cmL (ha := ha) (hd := hd) (hlam := hlam)).mp (hx i)`. Use `choose p' q' hpq' using fun i => (mem_cmL (ha := ha) (hd := hd) (hlam := hlam)).mp (hy i)`. Use `⟨∑ i, (q i * p' i - p i * q' i), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[altE_stdH]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hpq i, hpq' i, pair_im, area_cmL]`. Establish `h1 : 0 < Complex.normSq lam` using `Complex.normSq_pos.mpr hlam`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (0 : ℝ) < a` using `by exact_mod_cast ha`. Establish `h3 : 0 < Real.sqrt d` using `Real.sqrt_pos.mpr (by exact_mod_cast hd)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 lemma stdLat_le_dual {a : ℕ} {b : ℤ} {d : ℕ} {ha : 0 < a} {hd : 0 < d} {lam : ℂ} {hlam : lam ≠ 0}
     {m : Type} [Fintype m] [DecidableEq m] {x : m → ℂ} (hx : x ∈ UnitDetRootDefs.stdLat (UnitDetRootDefs.cmL a b d ha hd lam hlam) m) :
@@ -122,7 +122,7 @@ lemma stdLat_le_dual {a : ℕ} {b : ℤ} {d : ℕ} {ha : 0 < a} {hd : 0 < d} {la
   field_simp
 
 /- English proof (translation)
-Establish `h` using `(H.addSubgroupOf K).nsmul_index_mem ⟨x, hx⟩`. Rewrite using `[AddSubgroup.relIndex]`. Simplify `h` using `[AddSubgroup.mem_addSubgroupOf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma nsmul_relIdx_mem {V : Type*} [AddCommGroup V] (H K : AddSubgroup V) {x : V} (hx : x ∈ K) :
     (H.relIndex K) • x ∈ H := by
@@ -131,14 +131,14 @@ lemma nsmul_relIdx_mem {V : Type*} [AddCommGroup V] (H K : AddSubgroup V) {x : V
   simpa [AddSubgroup.mem_addSubgroupOf] using h
 
 /- English proof (translation)
-Simplify using `[UnitDetRootDefs.altE, LinearMap.map_smulₛₗ]`.
+Simplify using the standard rewrite rules.
 -/
 lemma altE_natsmul {V : Type*} [AddCommGroup V] [Module ℂ V] (H : UnitDetRootDefs.Sesq V) (k : ℕ) (x y : V) :
     UnitDetRootDefs.altE H ((k : ℂ) • x) y = UnitDetRootDefs.altE H x ((k : ℂ) • y) := by
   simp [UnitDetRootDefs.altE, LinearMap.map_smulₛₗ]
 
 /- English proof (translation)
-Simplify using `only [UnitDetRootDefs.imgLat, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Simplify using `using hw`. Introduce `h; exact ⟨δ.symm z, h, by simp⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 -/
 lemma mem_imgLat {m : Type} {δ : (m → ℂ) ≃ₗ[ℂ] (m → ℂ)} {Λ : AddSubgroup (m → ℂ)} {z : m → ℂ} :
     z ∈ UnitDetRootDefs.imgLat (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) Λ ↔ δ.symm z ∈ Λ := by
@@ -148,17 +148,15 @@ lemma mem_imgLat {m : Type} {δ : (m → ℂ) ≃ₗ[ℂ] (m → ℂ)} {Λ : Add
   · intro h; exact ⟨δ.symm z, h, by simp⟩
 
 /- English proof (translation)
-Introduce `a b c d ha hd lam hlam m _ _ Λa hH l _ δ hA hl`. Take `⟨hok, hsd, hth, hi1, hi2⟩` from `hH`. Take `⟨hiso, hc1, hc2⟩` from `hA`. Use `set Lt := UnitDetRootDefs.stdLat (UnitDetRootDefs.cmL a b d ha hd lam hlam) m with hLt`. Use `set H := UnitDetRootDefs.stdH (UnitDetRootDefs.cmL a b d ha hd lam hlam) m with hHdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set M := UnitDetRootDefs.imgLat (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) Λa with hM`. Use `set k := UnitDetRootDefs.relIdx Lt M with hk`. Establish `partA : ∀ x ∈ M, (k : ℂ) • x ∈ Lt`. Introduce `x hx`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `nsmul_relIdx_mem Lt M hx`. Establish `hdualM : ∀ z, z ∈ UnitDetRootDefs.dualLat H M → z ∈ M`. Introduce `z hz`. Rewrite using `[hM, mem_imgLat]`. Rewrite `hsd` using `[UnitDetRootDefs.IsSelfDual]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hsd]`. Introduce `y hy`. Establish `hδy : δ y ∈ M` using `by rw [hM, mem_imgLat]; simpa using hy`. Take `⟨n, hn⟩` from `hz (δ y) hδy`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hn, UnitDetRootDefs.altE, UnitDetRootDefs.altE, ← hiso (δ.symm z) y]`. Simplify using the standard rewrite rules. Use `⟨k, hl, fun x hx => hdualM _ ?_, partA⟩` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[altE_natsmul]`.
-
-Conclude with `stdLat_le_dual hx _ (partA y hy)`.
+A detailed English derivation is pending.
 -/
 theorem localStd : LocalStd := by
   intro a b c d ha hd lam hlam m _ _ Λa hH l _ δ hA hl

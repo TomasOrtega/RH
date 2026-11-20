@@ -21,37 +21,33 @@ noncomputable section
 namespace GlobalTheory.RiemConst
 
 /- English proof (translation)
-Take `⟨hdc, hd0, hdet⟩` from `GlobalTheory.T.chartDensity_continuousAt_zero_eq_one E r X x hx`. Take `⟨hf, hnd⟩` from `GlobalTheory.T.totallyRealDegree_and_chartDimension_eq E r X`. Take `⟨σ, ρ, D₁, hρ, hσ0, hσc, hσB, hσD, hD₁⟩` from `GlobalTheory.T.exists_specialUnitary_section_lowerUnitriangular_chart E r X x hx`. Take `⟨t, Dt, htx, htmul, htc, htD, hDt, hstab⟩` from `GlobalTheory.T.exists_diagonalTorus_parametrisation_orthonormalFrame E r X x hx`. Establish `ht0 : t 0 = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun g => (t 0)⁻¹ * g) (htmul 0 0)`. Simplify using `only [add_zero, inv_mul_cancel, inv_mul_cancel_left] at h`. Conclude with `h.symm`. Set `D : ChartSp X →L[ℝ] (X.Ψ → Fin r → Fin r → ℂ)` to `D₁.comp (ContinuousLinearMap.fst ℝ (V (nd X)) (X.Ψ → Fin (r - 1) → ℝ)) + Dt.comp (ContinuousLinearMap.snd ℝ (V (nd X)) (X.Ψ → Fin (r - 1) → ℝ))`. Establish `hQD` using `GlobalTheory.T.hasStrictFDerivAt_mul_curves_matrixGroup_identity X.Ψ r (realSU X.Ψ X.Gm) (V (nd X)) (X.Ψ → Fin (r - 1) → ℝ) σ t D₁ Dt hσ0 ht0 hσD htD`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspec : ∀ w : ChartSp X, D w ∈ realLie X.Ψ X.Gm ∧ (∀ τ a b, b < a → inFrame x (D w) τ a b = nmat X w.1 τ a b) ∧ ∀ τ a, inFrame x (D w) τ a a = Complex.I * (angles (w.2 τ) a : ℂ)`. Introduce `w`. Establish `hDw : D w = D₁ w.1 + Dt w.2` using `rfl`. Establish `e : ∀ τ, inFrame x (D w) τ = inFrame x (D₁ w.1) τ + inFrame x (Dt w.2) τ`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [inFrame, hDw]`. Rewrite using `[show Matrix.of ((D₁ w.1 + Dt w.2) τ) = Matrix.of (D₁ w.1 τ) + Matrix.of (Dt w.2 τ) from rfl, Matrix.mul_add, Matrix.add_mul]`. Take `⟨h1, h2, h3⟩` from `hD₁ w.1`. Take `⟨h4, h5⟩` from `hDt w.2`. Use `⟨?_, fun τ a b hab => ?_, fun τ a => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hDw]`. Conclude with `(realLie X.Ψ X.Gm).add_mem h1 h4`. Rewrite using `[e, Matrix.add_apply, h2 τ a b hab, h5, if_neg (ne_of_gt hab), add_zero]`. Rewrite using `[e, Matrix.add_apply, h3, h5, if_pos rfl, zero_add]`. Take `⟨hDinj, hriem⟩` from `GlobalTheory.T.riemannianMeasure_lieAlgebra_eq_smul_map_chartLebesgue E r X x hr hx D hspec`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hform` using `GlobalTheory.T.haar_specialUnitary_product_chart_formula E r X x ν σ t ρ hr hx hν hfib hρ hσc hσB htx htmul htc hstab`. Establish `hsurj` using `GlobalTheory.T.specialUnitary_near_one_eq_chart_mul E r X x σ t ρ hx hρ hσ0 hσc hσB htx htmul htc hstab`. Use `set m := (r - 1) * X.Ψ.card with hm`. Use `set a : ℝ≥0∞ := ENNReal.ofReal (1 / (2 * Real.pi) ^ m) with ha`. Establish `hpi : 0 < (2 * Real.pi) ^ m` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `ha0 : a ≠ 0`. Rewrite using `[ha, Ne, ENNReal.ofReal_eq_zero, not_le]`. Check the signs of the components of the expression. Establish `hatop : a ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `htend : Tendsto (fun w : ChartSp X => ENNReal.ofReal (densF X x w.1 / (2 * Real.pi) ^ m)) (𝓝 0) (𝓝 a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : ContinuousAt (fun w : ChartSp X => densF X x w.1) 0` using `ContinuousAt.comp (g := densF X x) (f := Prod.fst) (x := (0 : ChartSp X)) hdc continuous_fst.continuousAt`. Establish `h2` using `(ENNReal.continuous_ofReal.continuousAt).tendsto.comp ((h1.div_const ((2 * Real.pi) ^ m)).tendsto)`. Rewrite using `[ha]`. Simplify `h2` using `[Function.comp_def, hd0]`. Establish `hρ' : 0 < min ρ Real.pi` using `lt_min hρ Real.pi_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQ0 : (fun w : ChartSp X => σ w.1 * t w.2) 0 = 1` using `by simp [hσ0, ht0]`. Use `haveI : (volume : Measure (X.Ψ → Fin (r - 1) → ℝ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (ChartSp X)).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure (volume : Measure (V (nd X))) (volume : Measure (X.Ψ → Fin (r - 1) → ℝ))`. Establish `hlim` using `GlobalTheory.T.matrixGroup_chart_density_at_identity X.Ψ r (realSU X.Ψ X.Gm) ν (ChartSp X) volume (fun w => σ w.1 * t w.2) D (fun w => ENNReal.ofReal (densF X x w.1 / (2 * Real.pi) ^ m)) a (min ρ Real.pi) hQD hQ0 hDinj hsurj htend ha0 hatop hρ' hform`. Take `⟨hRH, hRdens⟩` from `GlobalTheory.SUVol.DensOne.tangentHaar_riemLie X.Ψ X.Gm X.Gm_det x hdet`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `hRH' : (riemHaar X.Ψ X.Gm x).IsHaarMeasure` using `hRH`. Use `set k := (riemHaar X.Ψ X.Gm x).haarScalarFactor ν with hkdef`. Establish `hk : riemHaar X.Ψ X.Gm x = k • ν` using `Measure.isMulLeftInvariant_eq_smul _ _`. Use `set K := ENNReal.ofReal (2 ^ nd X * Real.sqrt r ^ X.Ψ.card) with hKdef`. Establish `hK0 : K ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hKdef, Ne, ENNReal.ofReal_eq_zero, not_le]`. Establish `: 0 < Real.sqrt r` using `Real.sqrt_pos.2 (by exact_mod_cast hr)`. Check the signs of the components of the expression. Establish `hKtop : K ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `h1 : Tendsto (fun ε : ℝ => (k : ℝ≥0∞) * (ν (grpBall (realSU X.Ψ X.Gm) ε) / ((volume : Measure (ChartSp X)).map D) (tanBall X.Ψ r ε)) * K⁻¹) (𝓝[>] 0) (𝓝 ((k : ℝ≥0∞) * a * K⁻¹))` using `ENNReal.Tendsto.mul_const (ENNReal.Tendsto.const_mul hlim (Or.inr ENNReal.coe_ne_top)) (Or.inr (ENNReal.inv_ne_top.2 hK0))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Unfold `HasDensityOne at hRdens`. Establish `h2 : Tendsto (fun ε : ℝ => (k : ℝ≥0∞) * (ν (grpBall (realSU X.Ψ X.Gm) ε) / ((volume : Measure (ChartSp X)).map D) (tanBall X.Ψ r ε)) * K⁻¹) (𝓝[>] 0) (𝓝 1)`. Use `hRdens.congr fun ε => ?_` and prove the remaining obligations. Rewrite using `[show tangentHaar (realSU X.Ψ X.Gm) (riemLie X.Ψ X.Gm x) = riemHaar X.Ψ X.Gm x from rfl, hk, hriem]`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_eq_mul_inv, div_eq_mul_inv, ENNReal.mul_inv (Or.inl hK0) (Or.inl hKtop)]`. Expand and normalize the polynomial expressions, which then agree. Establish `e` using `tendsto_nhds_unique h1 h2`. Establish `hkval : (k : ℝ≥0∞) = ENNReal.ofReal (((2 : ℝ) ^ (r * (r - 1) / 2) * (2 * Real.pi) ^ (r - 1) * Real.sqrt r) ^ fdeg E)`. Establish `e' : (k : ℝ≥0∞) * (a * K⁻¹) = 1` using `by rw [← mul_assoc]; exact e`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hai : a⁻¹ = ENNReal.ofReal ((2 * Real.pi) ^ m)`. Rewrite using `[ha, ← ENNReal.ofReal_inv_of_pos (by positivity), one_div, inv_inv]`. Rewrite using `[ENNReal.eq_inv_of_mul_eq_one_left e', ENNReal.mul_inv (Or.inl ha0) (Or.inl hatop), inv_inv, hai, hKdef, ← ENNReal.ofReal_mul hpi.le]`. Use `congr 1`. Rewrite using `[hf, hnd, hm]`.
-
-Generalize the expression as in `r * (r - 1) / 2 = n1`. Generalize the expression as in `r - 1 = n2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hk, ← hkval]`. Use extensionality with `s _`.
-
-Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem riemHaar_eq_smul (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r)
     (x : Frame X.Ψ r) [MeasurableSpace (realSU X.Ψ X.Gm)] [BorelSpace (realSU X.Ψ X.Gm)]

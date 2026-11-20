@@ -26,7 +26,7 @@ variable {D : D7} {X : Formalism.L2.Herm.Herm0 D} {u : D.what₂.Word} {w : D.wh
   {eps : UJ (D.sp.cm.sig : D.host.E →+* D.host.E) (D.sp.X (i + 1)).gram →* (D.gat u w hg).Oˣ}
 
 /- English proof (translation)
-Introduce `v a`. Conclude with `(X.g u w hg).spl_alg _ _ a`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem splAlg_locJ (hi : i + 1 ≤ D.R.m) (t : GChartTie (X.g u w hg) Lv i em (D.sp.X (i + 1)).gram Lb Uloc ψ eps)
     (B : GL (Fin (D.sp.X (i + 1)).rank) D.host.E) : GlobalTheory.TwV.SplAlg (locJ hi t B) := by
@@ -36,7 +36,7 @@ theorem splAlg_locJ (hi : i + 1 ≤ D.R.m) (t : GChartTie (X.g u w hg) Lv i em (
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Rewrite using `[hL, reL_eq_map]`. Conclude with `lbAtB_of _ (locInt_locJ hi t B) (splAlg_locJ hi t B) _ (frAtB_re (rankN D (i + 1) hi) (locJ hi t B) Lb B rfl (fun v => t.fr _ ((X.g u w hg).pl v).2) (fun v tt => t.fr_lat _ _ tt) (fun v => hrat _ _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbAtB_locJ (hi : i + 1 ≤ D.R.m) (t : GChartTie (X.g u w hg) Lv i em (D.sp.X (i + 1)).gram Lb Uloc ψ eps)
     (B : GL (Fin (D.sp.X (i + 1)).rank) D.host.E) (hrat : FrRatJ t B) (L : Submodule (𝓞 D.host.E) (Fin (D.R.N (i + 1)) → D.host.E))
@@ -49,7 +49,7 @@ theorem lbAtB_locJ (hi : i + 1 ≤ D.R.m) (t : GChartTie (X.g u w hg) Lv i em (D
 end Step
 
 /- English proof (translation)
-Introduce `D X0 u w hg Tw μ Z Fl ht Gt j hj β`. Conclude with `lbAtB_locJ (hcmp := (Z.loc Fl ht j hj).fin β) hj ((Z.loc Fl ht j hj).t β) (Z.loc Fl ht j hj).B (Z.frRat Fl ht j hj β) _ (reL_symm (rankN D (j + 1) hj) _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lbAtB_inTw : ∀ {D : D7} (X0 : Formalism.L2.Herm.Herm0 D) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (Tw : TwForms D) (μ : D.what₂.Tup) (Z : SiteD X0 u w hg (Tw.fm u μ)) (Fl : Fills (D.gat u w hg)) (ht : Fl.t = D.R.t) (Gt : GatTies D) j hj β, GlobalTheory.TwV.LbAtB (((Z.inTw Fl ht Gt).at' j hj).st.loc β) (((Z.inTw Fl ht Gt).at' j hj).st.K β).lev.Lb := by
   intro D X0 u w hg Tw μ Z Fl ht Gt j hj β

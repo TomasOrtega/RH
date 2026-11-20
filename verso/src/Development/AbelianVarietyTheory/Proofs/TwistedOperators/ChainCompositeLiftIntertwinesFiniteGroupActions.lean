@@ -23,9 +23,9 @@ section Generic
 variable {D : D7} {V W : HSp D} {S : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Establish `h1` using `(mem_multT θ M J χ u).1 hu`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Establish `h2` using `(GlobalTheory.mult_value_left_cont_level θ M J χ _ h1 f).1 γ hγ g`. Establish `h3 : u (PiTensorProduct.tprod ℂ f) (γ * g) = u (PiTensorProduct.tprod ℂ f) g` using `h2`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_smul, Pi.smul_apply, Pi.smul_apply, h3]`. Consider the case `add x y hx hy => rw [map_add, Pi.add_apply, Pi.add_apply, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem multT_left (θ : InfFam D) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ)
     (u : SmT M →ₗ[ℂ] (GA D V → ℂ)) (hu : u ∈ MultT θ M J χ) (v : SmT M) (γ : GA D V) (hγ : γ ∈ GQ V) (g : GA D V) :
@@ -39,9 +39,9 @@ theorem multT_left (θ : InfFam D) (M : DSModel V S) (J : Set (GA D V)) (χ : GA
   | add x y hx hy => rw [map_add, Pi.add_apply, Pi.add_apply, hx, hy]
 
 /- English proof (translation)
-Establish `h1` using `(mem_multT θ M _ _ u.1).1 u.2`. Use `⟨⟨((levChi V β (flagL L) κ)⁻¹ • LinearMap.funLeft ℂ ℂ (fun g : GA D V => g * κ)) ∘ₗ u.1, ?_⟩, fun v g => rfl⟩` and prove the remaining obligations. Rewrite using `[mem_multT]`. Use `GlobalTheory.FlagAction.finiteGroupAction_preserves_principalFlagMultiplicity θ M hθ β L g0 _ h1 _ fun v => funext fun g => ?_` and prove the remaining obligations. Establish `hT : HasType V β (flag1L L) (PiTensorProduct.lift.symm u.1 v)` using `fun k hk h => (GlobalTheory.mult_value_left_cont_level θ M _ _ _ h1 v).2.2 k hk h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(level_action_spec hT ⟨κ, hκ⟩ κ hκ g).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_translate (θ : InfFam D) (hθ : IsInfFam θ) (M : DSModel V S) (β : GL (Fin V.rank) (Lev.EAf D))
     (L : LevDat D.host.E ℂ V.rank) (g0 : G0 L.Pg L.r) (κ : GA D V) (hκ : IsLevelLift V β L g0 κ)
@@ -57,11 +57,11 @@ theorem exists_translate (θ : InfFam D) (hθ : IsInfFam θ) (M : DSModel V S) (
   exact (level_action_spec hT ⟨κ, hκ⟩ κ hκ g).symm
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `htr (io F)`. Establish `hker` using `fun P => GlobalTheory.thetaKO_rat_left_and_eigen_right ψ V W χS χT om hom (pt P) (hpt P)`. Establish `hx : ∃ φ w, It φ w ≠ 0`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hIt (LinearMap.ext fun φ => LinearMap.ext fun w => hn φ w)`. Take `⟨φ0, w0, hx⟩` from `hx`. Establish `e` using `GlobalTheory.thetaLift_translate_of_kernel_fixed ν 𝓖 (thetaKO om) pt It CCs (MultT θ M J χ) io hio (fun u hu => Subtype.ext (GlobalTheory.multT_eq_zero_of_apply_eq_zero θ M J χ μ 𝓕 hθ hμ h𝓕 hS u.1 u.2 _ hx (hu φ0 w0))) k k' a a' (fun g h φ => by rw [(hker φ).2 k k' _ (hk φ) g h, …`. Establish `h1` using `(hker φ).1 1 (GQ V).one_mem γ hγ g h`. Rewrite `h1` using `[one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h1, hleft F v γ hγ h]) (hio.integ F φ v g)) F F' u hF hu`. Rewrite using `[e]`. Conclude with `hu v g`.
+A detailed English derivation is pending.
 -/
 theorem step (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hθ : IsInfFam θ) (χS χT : (AE D)ˣ →* Circle)
     (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (hom : IsWeilDatumO ψ V W χS χT om)
@@ -99,7 +99,7 @@ theorem step (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hθ : IsInfFam θ
   exact hu v g
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact hxy`. Consider the case `succ n ih => exact ih (fun k hk => h k (Nat.lt_succ_of_lt hk)) _ _ (h n (Nat.lt_succ_self n) x y hxy)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem dnFrom_rel {Gp : ℕ → Type} {Dm : ℕ → Type} [∀ j, AddCommGroup (Dm j)] [∀ j, Module ℂ (Dm j)]
     (CC : ∀ j, Submodule ℂ (Dm j →ₗ[ℂ] (Gp j → ℂ))) (io : ∀ k, CC (k + 1) →ₗ[ℂ] CC k) (r : ∀ j, CC j → CC j → Prop) (n : ℕ)
@@ -110,7 +110,7 @@ theorem dnFrom_rel {Gp : ℕ → Type} {Dm : ℕ → Type} [∀ j, AddCommGroup 
   | succ n ih => exact ih (fun k hk => h k (Nat.lt_succ_of_lt hk)) _ _ (h n (Nat.lt_succ_self n) x y hxy)
 
 /- English proof (translation)
-Rewrite using `[mul_smul, ← h, inv_smul_smul₀ ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_eq_of {X : Type} [AddCommGroup X] [Module ℂ X] {a a' : ℂ} (ha : a ≠ 0) {x y : X} (h : a • x = a' • y) :
     x = (a⁻¹ * a') • y := by
@@ -124,9 +124,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h.βY j hj`. Use `GlobalTheory.T.parahoricLevel_liftsExist _ _ _ _ _ hc (fun PP hP PP' hP' => ?_) (GlobalTheory.LevelRamif.ramif_at_levels D T0 R.toLevCh A.μ0 h t ⟨j, hj⟩).1` and prove the remaining obligations. Take `⟨k, hk⟩` from `(h.Pg PP).1 hP`. Break down `hP' with hP' | hP'` into its components or cases. Take `⟨k', hk'⟩` from `(h.Pg PP').1 hP'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.ProjectedLift.not_isConjPl R.C.P hk hk'`. Introduce `hc`. Take `⟨q, hq, hm, hne⟩` from `GlobalTheory.LevelRamif.exists_prime_mem (h.Q_pl t) hP'`. Conclude with `GlobalTheory.LevelRamif.not_two_primes PP' hq (D.host.g_prime k) (hne k) hm (GlobalTheory.LevelRamif.natCast_mem_conj hc (GlobalTheory.LevelRamif.typePrime_mem hk))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem liftsExist_chain (h : R.toLevCh.Is A.μ0) (t : T0) (j : ℕ) (hj : j < D.R.m) :
     LiftsExist (Yc D j) (R.βY j) (R.datYt t j R.triv) := by
@@ -143,7 +143,7 @@ theorem liftsExist_chain (h : R.toLevCh.Is A.μ0) (t : T0) (j : ℕ) (hj : j < D
       (GlobalTheory.LevelRamif.natCast_mem_conj hc (GlobalTheory.LevelRamif.typePrime_mem hk))
 
 /- English proof (translation)
-Distinguish the cases in `h : j + 1 < D.R.m`. Conclude with `⟨(h1 t j h).1.1, (h1 t j h).2⟩`. Take `rfl : j = D.R.m - 1` from `by omega`. Conclude with `⟨(h2 t).1.1, (h2 t).2⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem meas_chain (h1 : R.models_νY) (h2 : R.models_νY') (t : T0) (j : ℕ) (hj : j < D.R.m) :
     (R.νY t j).IsHaarMeasure ∧ IsFundamentalDomain (GQ (Yc D j)) (R.fdY t j) (R.νY t j) := by
@@ -157,16 +157,16 @@ def IsShift (t : T0) (j : ℕ) (κ : GA D (Yc D j)) (u u' : R.CC t j) : Prop :=
     (levChi (Yc D j) (R.βY j) (flagL (R.datYt t j R.triv)) κ)⁻¹ * (u : SmT (R.MY j) →ₗ[ℂ] (GA D (Yc D j) → ℂ)) v (g * κ)
 
 /- English proof (translation)
-The claim follows from `exists_translate R.θ hθ (R.MY j) (R.βY j) (R.datYt t j R.triv) g0 κ hκ u`.
+A detailed English derivation is pending.
 -/
 theorem exists_shift (hθ : R.models_inf) (t : T0) (j : ℕ) (g0 : G0 R.Pg D.R.r) (κ : GA D (Yc D j))
     (hκ : IsLevelLift (Yc D j) (R.βY j) (R.datYt t j R.triv) g0 κ) (u : R.CC t j) : ∃ u', IsShift R t j κ u u' :=
   exists_translate R.θ hθ (R.MY j) (R.βY j) (R.datYt t j R.triv) g0 κ hκ u
 
 /- English proof (translation)
-Establish `hm` using `meas_chain R hM.νY hM.νY' t k (Nat.lt_of_succ_lt hk)`. Establish `hm'` using `meas_chain R hM.νY hM.νY' t (k + 1) hk`. Establish `ha` using `inv_ne_zero (levChi_ne_zero (V := Yc D k) (β := R.βY k) (flagL (R.datYt t k R.triv)) κ)`. Establish `hv` using `smul_eq_of ha (GlobalTheory.T.stepVector_lift_pair_flagLevel_realized_chain R h hM.inf hC.ωY hC.vY t k hk g0 κ κ' hκ hκ')`. Establish `hpt` using `GlobalTheory.FiniteFock.om_pureTensorO_of_finite R.ψ R.θ (Yc D k) (Yc D (k + 1)) _ _ (R.ωY t k) hM.inf (hC.ωY t k hk) _ _ _ _ _ (hC.ptY t k hk) κ hκ.1 κ' hκ'.1 _ hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `step R.ψ R.θ hM.inf _ _ (R.ωY t k) (hC.ωY t k hk) (R.MY k) _ _ (R.ptY t k) (hC.ptY t k hk) (R.ItY k) (hC.ItY t k hk).ne (R.νY t k) (R.fdY t k) hm.1 hm.2 hS (R.νY t (k + 1)) (R.fdY t (k + 1)) (R.CC t (k + 1)) (fun F => multT_left R.θ (R.MY (k + 1)) _ _ F.1 F.2) (R.ioY t k) (hC.ioY …`.
+A detailed English derivation is pending.
 -/
 theorem stepY (h : R.toLevCh.Is A.μ0) (hM : R.IsModels) (hC : R.IsChain) (t : T0) (k : ℕ) (hk : k + 1 < D.R.m)
     (hS : SchurMult R.θ (R.MY k) (levS _ (R.βY k) (R.datYt t k R.triv)) (levChi _ (R.βY k) (R.datYt t k R.triv))
@@ -187,7 +187,7 @@ theorem stepY (h : R.toLevCh.Is A.μ0) (hM : R.IsModels) (hC : R.IsChain) (t : T
     (exists_shift R hM.inf t k g0 κ hκ) u u' hu
 
 /- English proof (translation)
-Take `⟨_, y, rfl⟩` from `F`. Conclude with `congrArg (fun w => R.prX w v) (GlobalTheory.ThetaProjEquiv.ext_left R.cX ((R.HX t).e y) _ _ ((hX t).2.1.le ⟨y, rfl⟩) γ hγ h)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem toMap_left (hX : R.models_HX) (t : T0) (F : LinearMap.range (R.cX.toMap R.prX ∘ₗ (R.HX t).e)) (v : SmT R.MX)
     (γ : GA D D.sp.X') (hγ : γ ∈ GQ D.sp.X') (h : GA D D.sp.X') :
@@ -197,7 +197,7 @@ theorem toMap_left (hX : R.models_HX) (t : T0) (F : LinearMap.range (R.cX.toMap 
     (GlobalTheory.ThetaProjEquiv.ext_left R.cX ((R.HX t).e y) _ _ ((hX t).2.1.le ⟨y, rfl⟩) γ hγ h)
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.ThetaProjEquiv.ext_shift c hc κ hκ a ha f f' hy h`. Use `show pr (c.ext f' h) v = a⁻¹ * pr (c.ext f (h * κ)) v`. Rewrite using `[← h1, map_smul, Pi.smul_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, inv_mul_cancel_left₀ ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toMap_shift {V : HSp D} (c : CoefA V) (hc : c.Is) {Dm : Type} [AddCommGroup Dm] [Module ℂ Dm]
     (pr : c.W →ₗ[ℂ] Dm →ₗ[ℂ] ℂ) (κ : GA D V) (hκ : κ ∈ GfC V) (a : ℂ) (ha : a ≠ 0)
@@ -208,7 +208,7 @@ theorem toMap_shift {V : HSp D} (c : CoefA V) (hc : c.Is) {Dm : Type} [AddCommGr
   rw [← h1, map_smul, Pi.smul_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, inv_mul_cancel_left₀ ha]
 
 /- English proof (translation)
-Establish `ha` using `inv_ne_zero (levChi_ne_zero (V := Yc D (D.R.m - 1)) (β := R.βY (D.R.m - 1)) (flagL (R.datYt t (D.R.m - 1) R.triv)) κ)`. Establish `hv` using `smul_eq_of ha (GlobalTheory.T.lastVector_lift_pair_flagLevel_characters R h hM.inf hC.ωX hC.vX t g0 κ κ' hκ hκ')`. Establish `hpt` using `GlobalTheory.FiniteFock.om_pureTensorO_of_finite R.ψ R.θ (Yc D (D.R.m - 1)) D.sp.X' _ _ (R.ωX t) hM.inf (hC.ωX t) _ _ _ _ _ (hC.ptX t) κ hκ.1 κ' hκ'.1 _ hv`. Conclude with `step R.ψ R.θ hM.inf _ _ (R.ωX t) (hC.ωX t) (R.MY (D.R.m - 1)) _ _ (R.ptX t) (hC.ptX t) R.ItX (hC.ItX t).ne (R.νY t (D.R.m - 1)) (R.fdY t (D.R.m - 1)) (hM.νY' t).1.1 (hM.νY' t).2 hS (R.νX t) (R.fdX t) _ (toMap_left R hM.HX t) (R.ioX t) (hC.ioX t) κ κ' _ _ ha hpt (GlobalTheory.Thet …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stepX (h : R.toLevCh.Is A.μ0) (hM : R.IsModels) (hC : R.IsChain) (t : T0)
     (hS : SchurMult R.θ (R.MY (D.R.m - 1)) (levS _ (R.βY (D.R.m - 1)) (R.datYt t (D.R.m - 1) R.triv))
@@ -233,9 +233,9 @@ theorem stepX (h : R.toLevCh.Is A.μ0) (hM : R.IsModels) (hC : R.IsChain) (t : T
     (toMap_shift R.cX hM.cX R.prX κ' hκ'.1 _ (levChi_ne_zero (V := D.sp.X') (β := R.βX) (flagL (R.datXt t)) κ') _ _ hy)
 
 /- English proof (translation)
-Establish `hr : (Yc D 0).rank = D.R.r`. Rewrite using `[D.sp.Y_rank _ (min_le_right _ _)]`. Simplify using `[Ranks.rankY]`. Establish `e0` using `GlobalTheory.levG_twist_trivial_of_rank_eq (Yc D 0) (R.βY 0) D.R.r D.R.t (r_le_Y 0) hr R.Pg (R.Q t) (LevelP.full _ _ _) R.chi (R.xiR t)`. Establish `e1 : levG (Yc D 0) (R.βY 0) (flagL (R.datYt t 0 R.triv)) = levG (Yc D 0) (R.βY 0) (flagL (R.dat0 R.triv))` using `e0.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∀ k ∈ levG (Yc D 0) (R.βY 0) (flagL (R.datYt t 0 R.triv)), levChi (Yc D 0) (R.βY 0) (flagL (R.datYt t 0 R.triv)) k = levChi (Yc D 0) (R.βY 0) (flagL (R.dat0 R.triv)) k` using `e0.2`. Establish `h1` using `(GlobalTheory.ParahoricCompact.isCompact_flag_and_lift (Yc D 0) (R.βY 0) (R.datYt t 0 R.triv)).2 g0 κ hκ`. Establish `h2 : κ ∈ levG (Yc D 0) (R.βY 0) (flagL (R.dat0 R.triv))` using `e1 ▸ h1`. Conclude with `⟨⟨hκ.1, h2.2.1, hκ.2.2⟩, e2 κ h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem lift_zero (t : T0) (g0 : G0 R.Pg D.R.r) (κ : GA D (Yc D 0))
     (hκ : IsLevelLift (Yc D 0) (R.βY 0) (R.datYt t 0 R.triv) g0 κ) :
@@ -254,7 +254,7 @@ theorem lift_zero (t : T0) (g0 : G0 R.Pg D.R.r) (κ : GA D (Yc D 0))
   exact ⟨⟨hκ.1, h2.2.1, hκ.2.2⟩, e2 κ h1⟩
 
 /- English proof (translation)
-Establish `hm : D.R.m - 1 < D.R.m` using `Nat.sub_lt (lt_of_lt_of_le two_pos D.R.two_le_m) one_pos`. Conclude with `dnFrom_rel (R.CC t) (R.ioY t) (fun j u u' => ∀ κ, IsLevelLift (Yc D j) (R.βY j) (R.datYt t j R.triv) g0 κ → IsShift R t j κ u u') (D.R.m - 1) (fun k hk u u' hu κ hκ => (liftsExist_chain R h t (k + 1) (Nat.add_lt_of_lt_sub hk) g0).elim fun κ₁ hκ₁ => stepY R h hM hC t k (Nat.add_lt …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thDn_shift (h : R.toLevCh.Is A.μ0) (hM : R.IsModels) (hC : R.IsChain) (t : T0)
     (hS : ∀ j, j < D.R.m → SchurMult R.θ (R.MY j) (levS _ (R.βY j) (R.datYt t j R.triv))
@@ -272,7 +272,7 @@ theorem thDn_shift (h : R.toLevCh.Is A.μ0) (hM : R.IsModels) (hC : R.IsChain) (
     _ _ (fun κ hκ => stepX R h hM hC t (hS _ hm) g0 κ κ' hκ hκ' y y' hy) κ hκ v g
 
 /- English proof (translation)
-Establish `h0` using `lift_zero R t g0 κ hκ`. Establish `h1` using `level_action_spec (V := Yc D 0) (β := R.βY 0) (L := R.dat0 R.triv) hT ⟨κ, h0.1⟩ κ h0.1 x`. Conclude with `h1.trans (congrArg (fun c : ℂ => c⁻¹ * f (x * κ)) h0.2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem actL_zero (t : T0) (g0 : G0 R.Pg D.R.r) (κ : GA D (Yc D 0))
     (hκ : IsLevelLift (Yc D 0) (R.βY 0) (R.datYt t 0 R.triv) g0 κ) (f : GA D (Yc D 0) → ℂ)
@@ -284,16 +284,16 @@ theorem actL_zero (t : T0) (g0 : G0 R.Pg D.R.r) (κ : GA D (Yc D 0))
   exact h1.trans (congrArg (fun c : ℂ => c⁻¹ * f (x * κ)) h0.2.symm)
 
 /- English proof (translation)
-Introduce `k hk x` and use `(GlobalTheory.mult_value_left_cont_level R.θ (R.MY 0) _ _ _ (GlobalTheory.ProjectedLift.thDn_mem R t y) v).2.2 k hk x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thDn_type (t : T0) (y : (R.HX t).H) (v : (R.MY 0).Vec) :
     HasType (Yc D 0) (R.βY 0) (R.dat0 R.triv) (R.thDn t y (PiTensorProduct.tprod ℂ v)) := fun k hk x =>
   (GlobalTheory.mult_value_left_cont_level R.θ (R.MY 0) _ _ _ (GlobalTheory.ProjectedLift.thDn_mem R t y) v).2.2 k hk x
 
 /- English proof (translation)
-Use `hE.1 (MultilinearMap.ext fun v => ?_)` and prove the remaining obligations. Establish `e1 : R.HE.e (R.Th t y') v = R.e0 (R.thDn t y' (PiTensorProduct.tprod ℂ v))` using `congrArg (fun T : MMap (R.MY 0) => T v) (hT t y')`. Establish `e2 : R.HE.e (R.Th t y) v = R.e0 (R.thDn t y (PiTensorProduct.tprod ℂ v))` using `congrArg (fun T : MMap (R.MY 0) => T v) (hT t y)`. Establish `e3 : R.HE.e (R.gE g (R.Th t y)) v = actL (Yc D 0) (R.βY 0) (R.dat0 R.triv) (R.eG g) (R.HE.e (R.Th t y) v)` using `congrArg (fun T : MMap (R.MY 0) => T v) (hg g (R.Th t y))`. Establish `e4` using `(GlobalTheory.ProjComm.proj_comm R h hr).1 g _ (thDn_type R t y v)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e1.trans ((congrArg R.e0 (hact v)).trans (e4.trans ((congrArg (actL (Yc D 0) (R.βY 0) (R.dat0 R.triv) (R.eG g)) e2.symm).trans e3.symm)))`.
+A detailed English derivation is pending.
 -/
 theorem th_of_thDn (h : R.toLevCh.Is A.μ0) (hr : R.grp_record) (hE : R.models_HE) (hg : R.models_gE) (hT : R.chain_Th)
     (t : T0) (g : G) (y y' : (R.HX t).H) (hact : ∀ v : (R.MY 0).Vec, R.thDn t y' (PiTensorProduct.tprod ℂ v) =
@@ -313,7 +313,7 @@ theorem th_of_thDn (h : R.toLevCh.Is A.μ0) (hr : R.grp_record) (hE : R.models_H
 end Real
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F h hG _ hM hC hS t g κ' hκ' y y' hy`. Use `(liftsExist_chain R h t 0 (lt_of_lt_of_le two_pos D.R.two_le_m) (R.eG g)).elim fun κ hκ => ?_` and prove the remaining obligations. Conclude with `th_of_thDn R h hG.record hM.HE hM.gE hC.Th t g y y' fun v => funext fun x => (thDn_shift R h hM hC t (hS t) (R.eG g) κ' hκ' y y' hy κ hκ _ x).trans (actL_zero R t (R.eG g) κ hκ _ (thDn_type R t y v) x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem th_intertwines : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), ∀ F : Face D A, R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsFam → R.IsModels → R.IsChain → (∀ t j, j < D.R.m → SchurMult R.θ (R.MY j) (levS _ (R.βY j) (R.datYt t j R.triv)) (levChi _ (R.βY j) (R.datYt t j R.triv)) (R.νY t j) (R.fdY t j)) → ∀ t g κ, IsLevelLift D.sp.X' R.βX (R.datXt t) (R.eG g) κ → ∀ y y' : (R.HX t).H, (∀ h, (R.HX t).e y' h = (levChi _ R.βX (flagL (R.datXt t)) κ)⁻¹ • (R.HX t).e y (h * (finHom _).rangeRestrict κ)) → R.Th t y' = R.gE g (R.Th t y) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F h hG _ hM hC hS t g κ' hκ' y y' hy

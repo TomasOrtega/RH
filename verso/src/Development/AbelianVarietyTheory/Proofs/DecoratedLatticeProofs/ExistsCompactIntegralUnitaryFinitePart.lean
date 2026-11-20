@@ -18,9 +18,9 @@ def red {E : Type} [Field E] [NumberField E] {n : ℕ} (M : ℕ) (A : Matrix (Fi
   if h : IsIntegral ℤ (A i j) then Ideal.Quotient.mk _ ⟨A i j, h⟩ else 0
 
 /- English proof (translation)
-Introduce `i j`. Establish `e` using `congrFun (congrFun h i) j`. Simplify using `only [red, dif_pos (hA i j), dif_pos (hB i j)] at e`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 e)`. Use `clear e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b, RingOfIntegers.isIntegral_coe b, ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : 𝓞 E => (z : E)) hb` as an intermediate fact. Simplify using `only [map_mul, map_natCast, map_sub] at this`. Rewrite using `[Matrix.sub_apply, mul_comm]`. Conclude with `this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_of_red {E : Type} [Field E] [NumberField E] {n : ℕ} (M : ℕ) {A B : Matrix (Fin n) (Fin n) E}
     (hA : ∀ i j, IsIntegral ℤ (A i j)) (hB : ∀ i j, IsIntegral ℤ (B i j)) (h : red M A = red M B) :
@@ -37,9 +37,9 @@ theorem sub_of_red {E : Type} [Field E] [NumberField E] {n : ℕ} (M : ℕ) {A B
   exact this.symm
 
 /- English proof (translation)
-Introduce `i j`. Use `choose b hb hb' using hD`. Use `⟨∑ k, C i k * b k j, IsIntegral.sum _ fun k _ => (hC i k).mul (hb k j), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb' k j]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mul_cong {E : Type} [Field E] [NumberField E] {n : ℕ} (M : ℕ) {C D : Matrix (Fin n) (Fin n) E}
     (hC : ∀ i j, IsIntegral ℤ (C i j)) (hD : ∀ i j, ∃ b : E, IsIntegral ℤ b ∧ D i j = (M : E) * b) :
@@ -52,7 +52,7 @@ theorem mul_cong {E : Type} [Field E] [NumberField E] {n : ℕ} (M : ℕ) {C D :
   rw [hb' k j]; ring
 
 /- English proof (translation)
-Establish `ho` using `I.topf_open 1 le_rfl`. Use `Filter.mem_of_superset (ho.mem_nhds ?_) fun x hx => hx.1` and prove the remaining obligations. Use `⟨(Formalism.UG.stabGL _).one_mem, fun y hy => ⟨0, Submodule.zero_mem _, by simp⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem kset_nhds (I : AutInst) : I.Kset ∈ 𝓝 (1 : I.Gf) := by
   have ho := I.topf_open 1 le_rfl
@@ -68,7 +68,7 @@ def fp (I : AutInst) (γ : GL (Fin I.n) I.E) (hγ : γ ∈ Formalism.UG.UJ (star
     Formalism.UG.Final.RatPtsLe I.F I.E (Fin I.n) I.cm.sig I.J (Af I.F) (Subgroup.mem_map_of_mem _ hγ)⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[fp, map_mul, map_inv]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem fp_mul (I : AutInst) {γ δ : GL (Fin I.n) I.E} (hγ : γ ∈ Formalism.UG.UJ (starRingEnd I.E) I.J)
     (hδ : δ ∈ Formalism.UG.UJ (starRingEnd I.E) I.J) :
@@ -77,9 +77,9 @@ theorem fp_mul (I : AutInst) {γ δ : GL (Fin I.n) I.E} (hγ : γ ∈ Formalism.
   simp [fp, map_mul, map_inv]
 
 /- English proof (translation)
-Establish `h2 : A.map (I.φ v) = B.map (I.φ v)`. Use `congrArg (fun X => I.P v * X * (I.P v)⁻¹) h` as an intermediate fact. Establish `hp` using `Formalism.MainNotions.LeviCoordinates.rrg_P_mul_inv I v`. Simplify using `only [← Matrix.mul_assoc, hp, Matrix.one_mul] at this`. Simplify `this` using `only [Matrix.mul_assoc, hp, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use extensionality with `i j`. Conclude with `(I.φ v).injective (congrFun (congrFun h2 i) j)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem eq_of_real (I : AutInst) (v : InfinitePlace I.F) {A B : Matrix (Fin I.n) (Fin I.n) I.E}
     (h : (I.P v)⁻¹ * A.map (I.φ v) * I.P v = (I.P v)⁻¹ * B.map (I.φ v) * I.P v) : A = B := by
@@ -96,23 +96,21 @@ end GlobalTheory.IntUnitCpt
 namespace GlobalTheory.IntUnitCpt
 
 /- English proof (translation)
-Introduce `I`. Take `⟨M, hM, hcong⟩` from `CompanionTheory.D.gk.RF.congruence_subgroup_compact_open I I.Kset (kset_nhds I)`. Set `T : Set (GL (Fin I.n) I.E)` to `{γ | γ ∈ Formalism.UG.UJ (starRingEnd I.E) I.J ∧ (∀ i j, IsIntegral ℤ ((γ : Matrix (Fin I.n) (Fin I.n) I.E) i j)) ∧ ∀ i j, IsIntegral ℤ (((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) i j)}`. Use `haveI : Finite (𝓞 I.E ⧸ Ideal.span {(M : 𝓞 I.E)}) := Ideal.finiteQuotientOfFreeOfNeBot _ (by`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(Nat.one_le_iff_ne_zero.1 hM))` after adjusting the coercions. Set `Kq : (Fin I.n → Fin I.n → (𝓞 I.E ⧸ Ideal.span {(M : 𝓞 I.E)})) → Set I.Gf` to `fun q => if h : ∃ γ, γ ∈ T ∧ red M (γ : Matrix (Fin I.n) (Fin I.n) I.E) = q then (fun k => fp I h.choose h.choose_spec.1.1 * k) '' I.Kset else ∅`. Use `⟨⋃ q, Kq q, isCompact_iUnion fun q => ?_, fun γ hγ hi hi' => ?_⟩` and prove the remaining obligations. Simplify using `only [Kq] split_ifs`. Conclude with `(Formalism.L2.SG.Closed.AutKCompact_holds I).image (continuous_const_mul _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `isCompact_empty`. Establish `hex : ∃ γ', γ' ∈ T ∧ red M (γ' : Matrix (Fin I.n) (Fin I.n) I.E) = red M (γ : Matrix (Fin I.n) (Fin I.n) I.E)` using `⟨γ, ⟨hγ, hi, hi'⟩, rfl⟩`. Use `⟨(fun v => Formalism.L2.S.S7.DensRat.ratReal I γ hγ v, fp I γ hγ), ⟨γ, hγ, fun v => rfl, rfl⟩, Set.mem_iUnion.2 ⟨red M (γ : Matrix (Fin I.n) (Fin I.n) I.E), ?_⟩, fun v => rfl⟩` and prove the remaining obligations. Simplify using `only [Kq, dif_pos hex]`. Take `⟨hT', hr⟩` from `hex.choose_spec`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set γ' := hex.choose with hγ'def`. Use `⟨(fp I γ' hT'.1)⁻¹ * fp I γ hγ, ?_, mul_inv_cancel_left _ _⟩` and prove the remaining obligations. Establish `hδ : γ'⁻¹ * γ ∈ Formalism.UG.UJ (starRingEnd I.E) I.J` using `mul_mem (inv_mem hT'.1) hγ`. Establish `hsub` using `sub_of_red M hT'.2.1 hi hr`. Establish `c1 : CompanionTheory.D.gk.RF.Cong I M ((γ'⁻¹ * γ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ((γ'⁻¹ * γ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) - 1 = ((γ'⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) * ((γ : Matrix (Fin I.n) (Fin I.n) I.E) - (γ' : Matrix (Fin I.n) (Fin I.n) I.E))`. Rewrite using `[Matrix.mul_sub, Units.val_mul, ← Units.val_mul γ'⁻¹ γ', inv_mul_cancel, Units.val_one]`. Introduce `i j`. Rewrite using `[e]`. Use `mul_cong M hT'.2.2 (fun k l => ?_) i j` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb, hb'⟩` from `hsub k l`. Conclude with `⟨-b, hb.neg, by rw [Matrix.sub_apply] at hb' ⊢; rw [← neg_sub, hb']; ring⟩`. Establish `c2 : CompanionTheory.D.gk.RF.Cong I M (((γ'⁻¹ * γ)⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E)`. Establish `e : (((γ'⁻¹ * γ)⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) - 1 = ((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) * ((γ' : Matrix (Fin I.n) (Fin I.n) I.E) - (γ : Matrix (Fin I.n) (Fin I.n) I.E))`. Rewrite using `[_root_.mul_inv_rev, inv_inv, Matrix.mul_sub, Units.val_mul, ← Units.val_mul γ⁻¹ γ, inv_mul_cancel, Units.val_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `i j`. Rewrite using `[e]`. Use `mul_cong M hi' (fun k l => ?_) i j` and prove the remaining obligations. Take `⟨b, hb, hb'⟩` from `hsub k l`. Conclude with `⟨b, hb, by rw [Matrix.sub_apply] at hb' ⊢; exact hb'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨x, hxK, γ₀, hγ₀, hreal, hfin⟩` from `hcong (fun v => Formalism.L2.S.S7.DensRat.ratReal I (γ'⁻¹ * γ) hδ v) ⟨γ'⁻¹ * γ, ⟨hδ, c1, c2⟩, fun v => rfl⟩`. Take `⟨v⟩` from `(inferInstance : Nonempty (InfinitePlace I.F))`. Establish `h0 : γ₀ = γ'⁻¹ * γ` using `Units.ext (eq_of_real I v (hreal v).symm)`. Establish `hx : x = fp I (γ'⁻¹ * γ) hδ`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `hfin.trans (by rw [h0]; rfl)`. Rewrite using `[← fp_mul I hT'.1 hγ, ← hx]`. Conclude with `hxK`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intUnit_compact : ∀ I : AutInst, ∃ K : Set I.Gf, IsCompact K ∧ ∀ γ : GL (Fin I.n) I.E,
     γ ∈ Formalism.UG.UJ (starRingEnd I.E) I.J → (∀ i j, IsIntegral ℤ ((γ : Matrix (Fin I.n) (Fin I.n) I.E) i j)) →

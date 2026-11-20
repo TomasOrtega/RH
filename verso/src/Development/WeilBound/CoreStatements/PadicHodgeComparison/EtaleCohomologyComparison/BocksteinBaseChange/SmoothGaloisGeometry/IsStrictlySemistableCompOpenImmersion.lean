@@ -9,11 +9,11 @@ namespace CrystallineSemistableComparison
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `y`. Take `⟨U, hU, hxU, m, r, h1r, hrm, ψ, hψ, hcomp⟩` from `h (f.base y)`. Take `⟨g, hg, hyg⟩` from `hU.exists_basicOpen_le (V := f.opensRange) ⟨f.base y, y, rfl⟩ hxU`. Use `haveI := hU.isLocalization_basicOpen g`. Use `haveI : IsIso (f.app (X.basicOpen g)) := f.isIso_app _ hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(Opens.map f.base).obj (X.basicOpen g), (hU.basicOpen g).preimage_of_isOpenImmersion f hg, hyg, m, r, h1r, hrm, (f.app (X.basicOpen g)).hom.comp ((X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom.comp ψ), ?_, ?_⟩` and prove the remaining obligations. Establish `hL : (X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom.Etale` using `RingHom.etale_algebraMap.mpr (Algebra.Etale.of_isLocalizationAway g)`. Establish `h2` using `RingHom.Etale.stableUnderComposition _ _ hψ hL`. Conclude with `(RingHom.Etale.respectsIso.cancel_right_isIso (CommRingCat.ofHom _) (f.app (X.basicOpen g))).mpr h2`. Rewrite using `[RingHom.comp_assoc, RingHom.comp_assoc, hcomp, ← CommRingCat.hom_comp, ← CommRingCat.hom_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Establish `key : ∀ e₁ e₂, p.appLE ⊤ U e₁ ≫ X.presheaf.map (homOfLE (X.basicOpen_le g)).op ≫ f.app (X.basicOpen g) = (f ≫ p).appLE ⊤ ((Opens.map f.base).obj (X.basicOpen g)) e₂`. Introduce `e₁ e₂`. Rewrite using `[← Category.assoc, Scheme.Hom.appLE_map, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE]`. Conclude with `congrArg (fun t => (Scheme.ΓSpecIso (CommRingCat.of O)).inv ≫ t) (key _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isStrictlySemistable_comp_openImmersion {O : Type} [CommRing O] (ϖ : O) {X Y : Scheme.{0}}
     (p : X ⟶ Spec (CommRingCat.of O)) (h : GlobalTheory.Et.IsStrictlySemistable ϖ p) (f : Y ⟶ X) [IsOpenImmersion f] :

@@ -9,7 +9,7 @@ open CategoryTheory AlgebraicGeometry DividedPowers GroundTheory.PAdicHodge Glob
 namespace GlobalTheory.CompanionTheory.AcrMod
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem factor_factor {R : Type} [CommRing R] {I J K : Ideal R} (h1 : I ≤ J) (h2 : J ≤ K) (y : R ⧸ I) :
     Ideal.Quotient.factor h2 (Ideal.Quotient.factor h1 y) = Ideal.Quotient.factor (h1.trans h2) y := by
@@ -17,7 +17,7 @@ theorem factor_factor {R : Type} [CommRing R] {I J K : Ideal R} (h1 : I ≤ J) (
   rfl
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Conclude with `(GlobalTheory.CompanionTheory.PDMap.extended_dividedPowers δ φ δ' h).1 r`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem fil_extend {B B' : Type} [CommRing B] [CommRing B'] {J : Ideal B} {J' : Ideal B'}
     (δ : DividedPowers J) (δ' : DividedPowers J') (φ : B →+* B') (hJ : J' = J.map φ)
@@ -26,7 +26,7 @@ theorem fil_extend {B B' : Type} [CommRing B] [CommRing B'] {J : Ideal B} {J' : 
   exact (GlobalTheory.CompanionTheory.PDMap.extended_dividedPowers δ φ δ' h).1 r
 
 /- English proof (translation)
-Rewrite using `[← δ.factorial_mul_dpow_eq_pow hx]`. Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hp`. Rewrite using `[Nat.factorial_succ, Nat.cast_mul, mul_assoc]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mem_span {R : Type} [CommRing R] {I : Ideal R} (δ : DividedPowers I) {p : ℕ} (hp : p ≠ 0)
     {x : R} (hx : x ∈ I) : x ^ p ∈ Ideal.span {(p : R)} := by
@@ -38,34 +38,32 @@ theorem pow_mem_span {R : Type} [CommRing R] {I : Ideal R} (δ : DividedPowers I
 variable {l : ℕ} [Fact l.Prime] (A : PAlg l) (n : ℕ)
 
 /- English proof (translation)
-The claim follows from `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`.
+A detailed English derivation is pending.
 -/
 theorem l_mem_pfil : (l : A.Acr n) ∈ A.PFil n :=
   Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `A.th (WittVector.teichmuller l 0) = 0`. Rewrite using `[WittVector.teichmuller_zero, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sharp_zero : A.sharp 0 = 0 := by
   change A.th (WittVector.teichmuller l 0) = 0
   rw [WittVector.teichmuller_zero, map_zero]
 
 /- English proof (translation)
-Rewrite using `[uToPQ, RingHom.comp_apply, uToQ_th, Ideal.Quotient.factor_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uToPQ_th (x : A.W) : A.uToPQ n (A.th x) = Ideal.Quotient.mk _ (A.toAcr n x) := by
   rw [uToPQ, RingHom.comp_apply, uToQ_th, Ideal.Quotient.factor_mk]
 
 /- English proof (translation)
-Set `g : A.W →+* A.Acr n ⧸ A.PFil n` to `(Ideal.Quotient.mk _).comp (A.toAcr n)`. Set `π : A.A →+* A.Acr n ⧸ A.PFil n` to `(WittVector.constantCoeff : A.W →+* A.A).liftOfSurjective A.constantCoeff_surjective ⟨g, fun x hx => by`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ((A.mem_span_l_iff x).2 hx)`. Rewrite using `[RingHom.mem_ker, map_mul, RingHom.comp_apply (Ideal.Quotient.mk _) (A.toAcr n) (l : A.W), map_natCast, Ideal.Quotient.eq_zero_iff_mem.2 (l_mem_pfil A n), mul_zero]⟩`. Establish `hπ : ∀ x : A.W, π (x.coeff 0) = g x` using `fun x => RingHom.liftOfSurjective_comp_apply _ _ _ x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht : ∀ a, π a = Ideal.Quotient.mk _ (A.toAcr n (WittVector.teichmuller l a))` using `fun a => by`. Use `hπ (WittVector.teichmuller l a)` as an intermediate fact. Rewrite `this` using `[WittVector.teichmuller_coeff_zero]`. Then use the resulting hypothesis. Establish `hs : ∀ a, π a = A.uToPQ n (A.sharp a)` using `fun a => by`. Rewrite using `[ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(uToPQ_th A n _).symm`. Use `⟨π, ht, fun y => ?_, ?_, fun hn => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `(RL.uToQ A n).2.2.1 y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Conclude with `⟨x.coeff 0, (hπ x).trans (uToPQ_th A n x).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, sharp_pi, map_natCast, ← map_natCast (Ideal.Quotient.mk (A.PFil n))]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (l_mem_pfil A n)`. Use extensionality with `a`. Establish `h` using `(RL.sharp_cong A).2.1 a 0`. Rewrite `h` using `[sharp_zero, sub_zero, sub_zero]`.
-
-Rewrite using `[RingHom.mem_ker, hs, ← RingHom.mem_ker, (RL.uToQ A n).2.2.2 hn, h]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pi : ∃ π : A.A →+* A.Acr n ⧸ A.PFil n,
     (∀ a, π a = Ideal.Quotient.mk _ (A.toAcr n (WittVector.teichmuller l a))) ∧ Function.Surjective π ∧
@@ -95,7 +93,7 @@ theorem exists_pi : ∃ π : A.A →+* A.Acr n ⧸ A.PFil n,
     rw [RingHom.mem_ker, hs, ← RingHom.mem_ker, (RL.uToQ A n).2.2.2 hn, h]
 
 /- English proof (translation)
-Use `le_antisymm ?_ (Ideal.map_le_iff_le_comap.2 (mapAcr_fil A.fromBase n r))` and prove the remaining obligations. Rewrite using `[PAlg.Fil, Ideal.span_le]`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Rewrite using `[← mapAcr_dxi A.fromBase n k]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.subset_span ⟨k, hk, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fil_eq_map (r : ℕ) : A.Fil n r = ((base l).Fil n r).map (mapAcr A.fromBase n) := by
   refine le_antisymm ?_ (Ideal.map_le_iff_le_comap.2 (mapAcr_fil A.fromBase n r))
@@ -105,13 +103,13 @@ theorem fil_eq_map (r : ℕ) : A.Fil n r = ((base l).Fil n r).map (mapAcr A.from
   exact Ideal.mem_map_of_mem _ (Ideal.subset_span ⟨k, hk, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[PFil, PFil, Ideal.map_sup, ← fil_eq_map, Ideal.map_span, Set.image_singleton, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pfil_eq_map : A.PFil n = ((base l).PFil n).map (mapAcr A.fromBase n) := by
   rw [PFil, PFil, Ideal.map_sup, ← fil_eq_map, Ideal.map_span, Set.image_singleton, map_natCast]
 
 /- English proof (translation)
-Consider the cases of `k`. Conclude with `fil_eq_map A n 1`. Conclude with `pfil_eq_map A n`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem jj_eq_map (k : Bool) : JJ k A n = (JJ k (base l) n).map (mapAcr A.fromBase n) := by
   cases k
@@ -119,7 +117,7 @@ theorem jj_eq_map (k : Bool) : JJ k A n = (JJ k (base l) n).map (mapAcr A.fromBa
   · exact pfil_eq_map A n
 
 /- English proof (translation)
-Use `Ideal.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `⟨k, h.trans hk, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem fil_mono {r s : ℕ} (h : r ≤ s) : A.Fil n s ≤ A.Fil n r := by
   refine Ideal.span_mono ?_
@@ -127,15 +125,13 @@ theorem fil_mono {r s : ℕ} (h : r ≤ s) : A.Fil n s ≤ A.Fil n r := by
   exact ⟨k, h.trans hk, rfl⟩
 
 /- English proof (translation)
-Use `le_antisymm ?_ ?_` and prove the remaining obligations. Establish `hprod : ∀ L : List (ℕ × A.Acr n), (∀ p ∈ L, p.2 ∈ A.Fil n 1) → (L.map fun p => (A.pdFil n).dpow p.1 p.2).prod ∈ A.Fil n (L.map Prod.fst).sum`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_`. Simplify using `only [List.map_nil, List.prod_nil, List.sum_nil]`. Rewrite using `[(RL.filtration_multiplicative A).2.2.2.2.2.2.1 n]`. Discharge the goal by the elementary cases of `trivial`. Consider the case `cons p L ih`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Treat this case separately.
 
-Introduce `hL`. Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons]`. Conclude with `(RL.filtration_multiplicative A).2.2.2.2.2.2.2 n _ _ (Ideal.mul_mem_mul (A.dpow_mem_fil n p.1 (hL p (by simp))) (ih fun q hq => hL q (by simp [hq])))`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨L, h1, h2, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fil_mono A n h2 (hprod L h1)`. Rewrite using `[PAlg.Fil, Ideal.span_le]`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Rewrite using `[← A.dpow_dxi n k]`. Establish `h1 : A.dxi n 1 ∈ A.Fil n 1` using `Ideal.subset_span ⟨1, le_rfl, rfl⟩`.
-
-Conclude with `GlobalTheory.CompanionTheory.PDMap.fil_anti (A.pdFil n) hk (GlobalTheory.CompanionTheory.PDMap.dpow_mem_fil (A.pdFil n) h1 k)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fil_pdFil (r : ℕ) : fil (A.pdFil n) r = A.Fil n r := by
   refine le_antisymm ?_ ?_
@@ -163,7 +159,7 @@ theorem fil_pdFil (r : ℕ) : fil (A.pdFil n) r = A.Fil n r := by
     exact GlobalTheory.CompanionTheory.PDMap.fil_anti (A.pdFil n) hk (GlobalTheory.CompanionTheory.PDMap.dpow_mem_fil (A.pdFil n) h1 k)
 
 /- English proof (translation)
-Establish `h` using `pow_mem_span (A.pdPFil n) (Fact.out : l.Prime).ne_zero hx`. Use `⟨?_, h⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h`. Conclude with `⟨l * n, by rw [pow_mul, ← hc, mul_pow, A.pow_l_acr n, mul_zero]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pfil_pow (x : A.Acr n) (hx : x ∈ A.PFil n) : IsNilpotent x ∧ x ^ l ∈ Ideal.span {(l : A.Acr n)} := by
   have h := pow_mem_span (A.pdPFil n) (Fact.out : l.Prime).ne_zero hx
@@ -172,11 +168,11 @@ theorem pfil_pow (x : A.Acr n) (hx : x ∈ A.PFil n) : IsNilpotent x ∧ x ^ l �
   exact ⟨l * n, by rw [pow_mul, ← hc, mul_pow, A.pow_l_acr n, mul_zero]⟩
 
 /- English proof (translation)
-Use `⟨fun y => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨u, hu⟩` from `(RL.uToQ A n).1 (Ideal.Quotient.mk _ z)`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[uJ, RingHom.comp_apply, hu, Ideal.Quotient.factor_mk]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : A.uToPQ n x = Ideal.Quotient.factor (le_pfil k A n) (uJ k A n x)`. Rewrite using `[uJ, RingHom.comp_apply, factor_factor]`. Both sides reduce to the same expression. Establish `h0 : x ∈ RingHom.ker (A.uToPQ n)`. Rewrite using `[RingHom.mem_ker, e, RingHom.mem_ker.1 hx, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[(RL.uToQ A n).2.2.2 hn]`. Conclude with `(Ideal.span_singleton_le_iff_mem _).2 (R.mem_jacobson_of_complete (l : A.U)) h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uJ_facts (k : Bool) (hn : n ≠ 0) :
     Function.Surjective (uJ k A n) ∧ RingHom.ker (uJ k A n) ≤ (⊥ : Ideal A.U).jacobson := by
@@ -194,7 +190,7 @@ theorem uJ_facts (k : Bool) (hn : n ≠ 0) :
     exact (Ideal.span_singleton_le_iff_mem _).2 (R.mem_jacobson_of_complete (l : A.U)) h0
 
 /- English proof (translation)
-Introduce `l _ A n`. Conclude with `⟨exists_pi A n, fil_eq_map A n, jj_eq_map A n, fil_pdFil A n, fun k r => fil_extend _ _ _ (jj_eq_map A n k) (dd_map k A.fromBase n) r, pfil_pow A n, fun k hn => uJ_facts A n k hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem acr_modp : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (n : ℕ), (∃ π : A.A →+* A.Acr n ⧸ A.PFil n, (∀ a, π a = Ideal.Quotient.mk _ (A.toAcr n (WittVector.teichmuller l a))) ∧ Function.Surjective π ∧ π A.pi = 0 ∧ (n ≠ 0 → RingHom.ker π = Ideal.span {A.pi})) ∧ (∀ r, A.Fil n r = ((base l).Fil n r).map (mapAcr A.fromBase n)) ∧ (∀ k, JJ k A n = (JJ k (base l) n).map (mapAcr A.fromBase n)) ∧ (∀ r, fil (A.pdFil n) r = A.Fil n r) ∧ (∀ k r, fil (DD k A n) r = (fil (DD k (base l) n) r).map (mapAcr A.fromBase n)) ∧ (∀ x ∈ A.PFil n, IsNilpotent x ∧ x ^ l ∈ Ideal.span {(l : A.Acr n)}) ∧ ∀ k, n ≠ 0 → Function.Surjective (uJ k A n) ∧ RingHom.ker (uJ k A n) ≤ (⊥ : Ideal A.U).jacobson := by
   intro l _ A n

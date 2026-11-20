@@ -9,13 +9,13 @@ namespace GlobalTheory.AmbBlockDecomp
 open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 
 /- English proof (translation)
-Use `split_ifs with h`. Take `⟨n, rfl⟩ : ∃ n : ℕ, a = n` from `⟨a.toNat, (Int.toNat_of_nonneg h.1).symm⟩`. Rewrite using `[Finset.sum_eq_single (n + 1)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Use linear arithmetic over natural numbers and integers. Introduce `hn`. It suffices to derive a contradiction. Apply `hn` to reduce the goal to its premises.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c hc`. Rewrite `hc` using `[Finset.mem_Icc]`.
+Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sum_ind_block (t : ℕ) (a : ℤ) :
     (∑ c ∈ Finset.Icc 1 t, (if a = (c : ℤ) - 1 then (1 : ℤ) else 0)) =
@@ -39,11 +39,11 @@ theorem sum_ind_block (t : ℕ) (a : ℤ) :
     omega
 
 /- English proof (translation)
-Introduce `D i r ρ π hD _ _ _ w hw C τ`. Establish `hB : GlobalTheory.PtCore.BlockE D i r ρ π` using `GlobalTheory.BlockEnl.blockE_of_isBlockSum D i r ρ π (by`. Take `⟨e, he⟩` from `hD`. Conclude with `⟨e, fun g u => he g u⟩)`. Take `⟨h1, h2⟩` from `hB w hw C.LL C.le τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hl : ∀ {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)), TruncatedSeriesCountingIdentities.locC C M = GlobalTheory.PtCore.locE D i w hw C.LL C.le M` using `fun _ => rfl`. Simplify using `only [hl]`. Use `⟨fun a => ?_, fun c hc a => h2 c hc a⟩` and prove the remaining obligations. Rewrite using `[h1 a]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.sum_congr rfl (fun c hc => h2 c hc a)]`. Conclude with `(sum_ind_block D.R.t a).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i),

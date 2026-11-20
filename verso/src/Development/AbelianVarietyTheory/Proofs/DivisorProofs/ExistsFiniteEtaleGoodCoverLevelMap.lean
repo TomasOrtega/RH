@@ -28,9 +28,9 @@ noncomputable section
 namespace GlobalTheory.CoverGood
 
 /- English proof (translation)
-Establish `key : ∀ h : X ⟶ Sp ℚ, h = X.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (CommRingCat.of ℚ)).inv ≫ h.appTop)`. Introduce `h`. Rewrite using `[Spec.map_comp, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`. Rewrite using `[key f, key g]`. Use `congr 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext1`. Conclude with `RingHom.ext_rat _ _`.
+A detailed English derivation is pending.
 -/
 theorem hom_spQ_ext {X : Scheme.{0}} (f g : X ⟶ Sp ℚ) : f = g := by
   have key : ∀ h : X ⟶ Sp ℚ, h = X.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (CommRingCat.of ℚ)).inv ≫ h.appTop) := by
@@ -44,11 +44,11 @@ theorem hom_spQ_ext {X : Scheme.{0}} (f g : X ⟶ Sp ℚ) : f = g := by
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `GlobalTheory.ObjMaps.exists_sab_comp m u.toSABMap`. Establish `hn' : n.cm.F = u.cm.F ≫ m.cm.F` using `hn`. Use `⟨⟨n, fun a => ?_, fun a => ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(o'.eta a ^ (l₂.M / l.M)).left ≫ n.cm.F = _`. Rewrite using `[hn']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.ObjComp.sec_comp (h₁ a) ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.ObjLower.map_nsmul_of_add _ o'.eta_add, ← GlobalTheory.ObjLower.map_nsmul_of_add _ o₂.eta_add]`. Conclude with `u.eta _`. Express the relevant statement in the definitionally equal form `(o'.etaA a ^ (l₂.A / l.A)).left ≫ n.cm.F = _`. Rewrite using `[hn']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.ObjComp.sec_comp (h₂ a) ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.ObjLower.map_nsmul_of_add _ o'.etaA_add, ← GlobalTheory.ObjLower.map_nsmul_of_add _ o₂.etaA_add]`. Conclude with `u.etaA _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_objMap_lower' {l l₂ : Level H} {B B' : Type} [CommRing B] [CommRing B'] {b : Base l B}
     {b' : Base l B'} {b₂ : Base l₂ B} {S S₂ T : Scheme.{0}}
@@ -73,9 +73,9 @@ theorem exists_objMap_lower' {l l₂ : Level H} {B B' : Type} [CommRing B] [Comm
     exact u.etaA _
 
 /- English proof (translation)
-Establish `hA : l.A ∣ l₂.A` using `hd.2.2`. Take `⟨o', ⟨u⟩⟩` from `GlobalTheory.obj_pull E H Dw l₂ (KA l₂) (KA l₂) (baseKA l₂) (baseKA l₂) (RingHom.id _) Xo₂.X T Xo₂.s (iU ≫ Xo₂.s) iU rfl rfl (by simp [spMap]) Xo₂.univ`. Take `⟨w⟩` from `exists_objMap_lower' hd (GlobalTheory.baseOfFinerLevel_rho hA) (GlobalTheory.baseOfFinerLevel_zeta hA) (o := Xo.univ) m he heA u`. Take `⟨w'⟩` from `exists_objMap_lower' hd (GlobalTheory.baseOfFinerLevel_rho hA) (GlobalTheory.baseOfFinerLevel_zeta hA) (o := Xo.univ) m' he' heA' u`. Establish `hρ : jK (baseKA l).ρ = (GlobalTheory.baseOfFinerLevel hA).ρ` using `Subtype.ext ((hjK _).trans ((GlobalTheory.coe_baseKA_rho l).trans (GlobalTheory.coe_baseKA_rho l₂).symm))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hζ : jK (baseKA l).ζ = (GlobalTheory.baseOfFinerLevel hA).ζ` using `Subtype.ext ((hjK _).trans (GlobalTheory.coe_levelFieldIncl hA _).symm)`. Establish `hu` using `GlobalTheory.moduli_rep_of_base GlobalTheory.ObjMaps.id_comp_cancel E H Dw l Xo (KA l₂) (GlobalTheory.baseOfFinerLevel hA) jK T (iU ≫ Xo₂.s) (GlobalTheory.ObjLower.lower o' hd (GlobalTheory.baseOfFinerLevel_rho hA) (GlobalTheory.baseOfFinerLevel_zeta hA)) inferInstance hρ hζ`. Conclude with `hu.unique ⟨by rw [Category.assoc, h, Category.assoc], ⟨w⟩⟩ ⟨by rw [Category.assoc, h', Category.assoc], ⟨w'⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_levelMaps {l l₂ : Level H} {Xo : Moduli Dw l} {Xo₂ : Moduli Dw l₂} (hd : l.Dvd l₂)
     (jK : KA l →+* KA l₂) (hjK : ∀ x, ((jK x : KA l₂) : ℂ) = ((x : KA l) : ℂ))
@@ -103,7 +103,7 @@ theorem eq_of_levelMaps {l l₂ : Level H} {Xo : Moduli Dw l} {Xo₂ : Moduli Dw
   exact hu.unique ⟨by rw [Category.assoc, h, Category.assoc], ⟨w⟩⟩ ⟨by rw [Category.assoc, h', Category.assoc], ⟨w'⟩⟩
 
 /- English proof (translation)
-Rewrite using `[HasRingHomProperty.Spec_iff (P := @FormallyUnramified)]`. Use `GlobalTheory.LevelUp.finiteDimensional_KA l` as an intermediate fact. Conclude with `Algebra.FormallyUnramified.of_isSeparable ℚ (KA l)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formallyUnramified_spQ (l : Level H) : FormallyUnramified (spMap (algebraMap ℚ (KA l))) := by
   rw [HasRingHomProperty.Spec_iff (P := @FormallyUnramified)]
@@ -111,7 +111,7 @@ theorem formallyUnramified_spQ (l : Level H) : FormallyUnramified (spMap (algebr
   exact Algebra.FormallyUnramified.of_isSeparable ℚ (KA l)
 
 /- English proof (translation)
-Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Use `GlobalTheory.LevelUp.finiteDimensional_KA l` as an intermediate fact. Conclude with `RingHom.finiteType_algebraMap.mpr inferInstance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locallyOfFiniteType_spQ (l : Level H) : LocallyOfFiniteType (spMap (algebraMap ℚ (KA l))) := by
   rw [HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]
@@ -121,31 +121,29 @@ theorem locallyOfFiniteType_spQ (l : Level H) : LocallyOfFiniteType (spMap (alge
 end GlobalTheory.CoverGood
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c d hpq hl`. Take `⟨hdvd, hM, -, -, -, ⟨he, heA⟩, hlift, -, -⟩` from `hl`. Take `⟨r₀, jK, m₀, hjK, hr₀s, he₀, heA₀, -, hrF⟩` from `(GlobalTheory.T.moduliScheme_levelMaps_heckePoints'.2 E H Dw hpq).1 l d.l₂ Xo d.Xo₂ hdvd`. Take `⟨rF, h₁, h₂, hfin, het, -, -⟩` from `hrF c d.c₂ d.hF.symm`. Establish `hdiv : d.l₂.M / l.M = d.pd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hM]; exact Nat.mul_div_cancel_left _ (by have := l.three_le; omega)`. Rewrite `he` using `[← hdiv]`. Establish `hab : (d.r ≫ Xo.s) ≫ spMap (algebraMap ℚ (KA l)) = (d.Xo₂.s ≫ spMap jK) ≫ spMap (algebraMap ℚ (KA l))` using `GlobalTheory.CoverGood.hom_spQ_ext _ _`. Use `GlobalTheory.CoverGood.formallyUnramified_spQ l` as an intermediate fact. Use `GlobalTheory.CoverGood.locallyOfFiniteType_spQ l` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hop : IsOpenImmersion (equalizer.ι (d.r ≫ Xo.s) (d.Xo₂.s ≫ spMap jK))` using `GlobalTheory.isOpenImmersion_equalizer_ι_of_unramified _ hab`. Establish `hcl : IsClosedImmersion (equalizer.ι (d.r ≫ Xo.s) (d.Xo₂.s ≫ spMap jK))` using `GlobalTheory.isClosedImmersion_equalizer_ι_of_isSeparated _ hab`. Establish `hred₂ : IsReduced d.Xo₂.X` using `by haveI := d.Xo₂.smooth`. Conclude with `(GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ _ d.Xo₂.s (SmoothOfRelativeDimension.smooth Dw.dim d.Xo₂.s)).1`. Establish `hredU : IsReduced (equalizer (d.r ≫ Xo.s) (d.Xo₂.s ≫ spMap jK))` using `isReduced_of_isOpenImmersion (equalizer.ι (d.r ≫ Xo.s) (d.Xo₂.s ≫ spMap jK))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hagree : equalizer.ι (d.r ≫ Xo.s) (d.Xo₂.s ≫ spMap jK) ≫ d.r = equalizer.ι (d.r ≫ Xo.s) (d.Xo₂.s ≫ spMap jK) ≫ r₀` using `GlobalTheory.CoverGood.eq_of_levelMaps hdvd jK hjK d.m m₀ he heA he₀ heA₀ _ (equalizer.condition (d.r ≫ Xo.s) (d.Xo₂.s ≫ spMap jK)) (by rw [hr₀s])`. Take `⟨U, iU, hop', hcl', hagree', hlU⟩ : ∃ (U : Scheme.{0}) (iU : U ⟶ d.Xo₂.X), IsOpenImmersion iU ∧ IsClosedImmersion iU ∧ iU ≫ d.r = iU ≫ r₀ ∧ ∀ (K : Type) [Field K] (x : Sp K ⟶ d.Xo₂.X), x ≫ d.r ≫ Xo.s = x ≫ d.Xo₂.s ≫ spMap jK → ∃ u : Sp K ⟶ U, u ≫ iU = x` from `⟨_, _, hop, hcl, hagree, fun K _ x hx => ⟨equalizer.lift x (by simpa only [Category.assoc] using hx), equalizer.lift_ι _ _⟩⟩`. Use `clear hop hcl hagree hredU`. Use `haveI := hop'`. Use `haveI := hcl'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hfin`. Use `haveI := het`. Establish `hsp : spMap (IntermediateField.inclusion d.hF.symm.le).toRingHom ≫ spMap ((d.eF.symm : d.c₂.F →+* c.F).comp (IntermediateField.inclusion d.c₂.le).toRingHom) = spMap (IntermediateField.inclusion d.c₂.le).toRingHom`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `⟨pullback iU (pullback.fst d.Xo₂.s (spMap (IntermediateField.inclusion d.c₂.le).toRingHom)), pullback.snd _ _ ≫ rF, pullback.fst _ _ ≫ iU, inferInstance, inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Take `⟨K, _, _, j, ⟨k0, hk0⟩⟩` from `GlobalTheory.ZM.IsGaloisCover.exists_algClosed_point (Xo.XF c) x`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (j ≫ pullback.snd _ _ : Sp K ⟶ Sp c.F)`. Use `letI : Algebra c.F K := φ.hom.toAlgebra`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `letI : Algebra d.c₂.F K := ((algebraMap c.F K).comp (d.eF.symm : d.c₂.F →+* c.F)).toAlgebra`. Establish `hk : ∀ a : c.F, algebraMap d.c₂.F K (d.eF a) = algebraMap c.F K a` using `fun a => by show algebraMap c.F K (d.eF.symm (d.eF a)) = _`. Rewrite using `[AlgEquiv.symm_apply_apply]`. Establish `hjs : j ≫ pullback.snd _ _ = spMap (algebraMap c.F K)` using `hφ.symm`. Establish `hx₀ : (j ≫ pullback.fst _ _) ≫ Xo.s = sOf c K`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hjs, sOf, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨y, hy⟩` from `GlobalTheory.NonIntegralFrameExample.exists_framed _ hx₀`. Take `⟨y₂, hy₂⟩` from `hlift K hk y`. Establish `hyr : y₂.x ≫ d.r = y.x` using `hy₂.1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Establish `hgood : y₂.x ≫ d.r ≫ Xo.s = y₂.x ≫ d.Xo₂.s ≫ spMap jK`. Rewrite using `[reassoc_of% hyr, y.x_over, reassoc_of% y₂.x_over, sOf, sOf]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show algebraMap c.F K (IntermediateField.inclusion c.le t) = algebraMap c.F K (d.eF.symm (IntermediateField.inclusion d.c₂.le (jK t)))`. Conclude with `congrArg (algebraMap c.F K) (Subtype.ext (hjK t).symm)`. Take `⟨u, hu⟩` from `hlU K y₂.x hgood`. Establish `hw : y₂.x ≫ d.Xo₂.s = spMap (algebraMap d.c₂.F K) ≫ spMap (IntermediateField.inclusion d.c₂.le).toRingHom`. Rewrite using `[y₂.x_over, sOf, spMap, spMap, spMap, ← Spec.map_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hr₀ : y₂.x ≫ r₀ = y.x`. Rewrite using `[← hu, Category.assoc, ← hagree', ← Category.assoc, hu, hyr]`. Take `⟨w, hw₁, hw₂⟩ : ∃ w : Sp K ⟶ d.Xo₂.XF d.c₂, w ≫ pullback.fst _ _ = y₂.x ∧ w ≫ pullback.snd _ _ = spMap (algebraMap d.c₂.F K)` from `⟨pullback.lift _ _ hw, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Take `⟨z, hz⟩ : ∃ z : Sp K ⟶ pullback iU (pullback.fst d.Xo₂.s (spMap (IntermediateField.inclusion d.c₂.le).toRingHom)), z ≫ pullback.snd _ _ = w` from `⟨pullback.lift u w (by rw [hu, hw₁]), pullback.lift_snd _ _ _⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : z ≫ pullback.snd _ _ ≫ rF = j`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, h₁, reassoc_of% hz, reassoc_of% hw₁, hr₀, hy]`. Rewrite using `[Category.assoc, Category.assoc, h₂, reassoc_of% hz, reassoc_of% hw₂, hjs, spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
-
-Conclude with `⟨z k0, by rw [← Scheme.Hom.comp_apply, e, hk0]⟩`. Simplify using `only [Category.assoc]`. Rewrite using `[hagree', h₁, pullback.condition_assoc]`. Simplify using `only [Category.assoc]`. Rewrite using `[pullback.condition_assoc, reassoc_of% h₂, hsp, pullback.condition]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CoverGood.exists_good_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (d : DeltaDat Xo c 0), 1 ≤ Dw.p + Dw.q → d.IsLev →

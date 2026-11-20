@@ -14,19 +14,19 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Simplify using `[chF, u.ne_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chF_coe (c : Fˣ →* ℂˣ) (s : ℂ) (u : Fˣ) : chF c s (u : F) = ((c u : ℂˣ) : ℂ) * mp u s := by
   simp [chF, u.ne_zero]
 
 /- English proof (translation)
-Establish `hcont : Continuous (fun u : Fˣ => ((c u : ℂˣ) : ℂ) * mp u s)`. Use `(Units.continuous_val.comp hc).mul ?_` and prove the remaining obligations. Unfold `mp`. Use `(Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (continuous_modulus.comp Units.continuous_val))).cpow continuous_const fun u => ?_` and prove the remaining obligations. Conclude with `Complex.ofReal_mem_slitPlane.mpr (by exact_mod_cast modulus_pos u.ne_zero)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `he : chF c s = Function.extend (Units.val : Fˣ → F) (fun u : Fˣ => ((c u : ℂˣ) : ℂ) * mp u s) (fun _ => 0)`. Use function extensionality and compare the values at `t`. Distinguish the cases in `h : t = 0`. Substitute `h` using the available equality. Rewrite using `[Function.extend_apply']`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[chF]`. Introduce and unpack `⟨u, hu⟩`. Conclude with `u.ne_zero hu`. Use `Units.val_injective.extend_apply (fun u : Fˣ => ((c u : ℂˣ) : ℂ) * mp u s) (fun _ => (0 : ℂ)) (Units.mk0 t h)` as an intermediate fact. Rewrite `this` using `[Units.val_mk0]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← chF_coe, Units.val_mk0]`. Rewrite using `[he]`. Conclude with `measurableEmbedding_units_val.measurable_extend hcont.measurable measurable_const`.
+A detailed English derivation is pending.
 -/
 theorem measurable_chF {c : Fˣ →* ℂˣ} (hc : Continuous c) (s : ℂ) : Measurable (chF c s) := by
   have hcont : Continuous (fun u : Fˣ => ((c u : ℂˣ) : ℂ) * mp u s) := by
@@ -52,7 +52,7 @@ theorem measurable_chF {c : Fˣ →* ℂˣ} (hc : Continuous c) (s : ℂ) : Meas
   exact measurableEmbedding_units_val.measurable_extend hcont.measurable measurable_const
 
 /- English proof (translation)
-Unfold `mp`. Establish `h0 : ((modulus (u : F) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (modulus_pos u.ne_zero).ne'`. Rewrite using `[← Complex.cpow_add _ _ h0, sub_add_cancel]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mp_mul_mp_one (u : Fˣ) (σ : ℂ) : mp u (σ - 1) * mp u 1 = mp u σ := by
   unfold mp
@@ -60,23 +60,21 @@ theorem mp_mul_mp_one (u : Fˣ) (σ : ℂ) : mp u (σ - 1) * mp u 1 = mp u σ :=
   rw [← Complex.cpow_add _ _ h0, sub_add_cancel]
 
 /- English proof (translation)
-Use `set h : F → ℂ := fun t => g t * chF c (σ - 1) t with hh`. Establish `hm : Measurable h` using `hg.1.continuous.measurable.mul (measurable_chF hc.1 _)`. Establish `hZ` using `integrable_localZeta hg hc.1 (s := σ) (by rw [GlobalTheory.CompanionTheory.TateFE.quasiCharExponent_eq_zero_of_unit hc]; simpa using hσ)`. Establish `hfin` using `hZ.2`. Rewrite `hfin` using `[hasFiniteIntegral_iff_enorm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hG : Measurable (fun x : F => ‖h x‖ₑ * (modulus x : ℝ≥0∞))` using `hm.enorm.mul measurable_modulus.coe_nnreal_ennreal`. Establish `h1` using `lintegral_multHaar hG`. Establish `h2 : ∫⁻ u : Fˣ, ‖h u‖ₑ * (modulus (u : F) : ℝ≥0∞) ∂multHaar F = ∫⁻ u : Fˣ, ‖g u * ((c u : ℂˣ) : ℂ) * ((modulus (u : F) : ℝ) : ℂ) ^ σ‖ₑ ∂multHaar F`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Establish `e : g u * ((c u : ℂˣ) : ℂ) * ((modulus (u : F) : ℝ) : ℂ) ^ σ = h u * ((modulus (u : F) : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mp_mul_mp_one u σ` as an intermediate fact. Simplify using `only [hh, chF_coe]`. Establish `h3 : mp u 1 = ((modulus (u : F) : ℝ) : ℂ)` using `by simp [mp]`. Rewrite `this` using `[h3]`. Establish `h4 : ((modulus (u : F) : ℝ) : ℂ) ^ σ = mp u σ` using `rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4, ← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : ‖((modulus (u : F) : ℝ) : ℂ)‖ₑ = (modulus (u : F) : ℝ≥0∞)`. Rewrite using `[enorm_eq_nnnorm]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[e, enorm_mul (h u), hn]`. Establish `h5 : ∫⁻ x in ({0}ᶜ : Set F), ((modulus x : ℝ≥0∞))⁻¹ * (‖h x‖ₑ * (modulus x : ℝ≥0∞)) ∂haarIntegers F = ∫⁻ x, ‖h x‖ₑ ∂haarIntegers F`. Establish `hae : ∀ᵐ x ∂haarIntegers F, x ∈ ({0}ᶜ : Set F)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ae_iff]`. Simplify using `using haarIntegers_singleton_zero (K := F)`. Use `conv_rhs => rw [← Measure.restrict_eq_self_of_ae_mem hae]`. Use `setLIntegral_congr_fun (measurableSet_singleton 0).compl fun x hx => ?_` and prove the remaining obligations. Establish `a0 : (modulus x : ℝ≥0∞) ≠ 0` using `ENNReal.coe_ne_zero.mpr (modulus_ne_zero hx)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_comm (‖h x‖ₑ), ← mul_assoc, ENNReal.inv_mul_cancel a0 ENNReal.coe_ne_top, one_mul]`. Rewrite `h1` using `[h2, h5]`. Establish `h6 : ∫⁻ x, ‖h x‖ₑ ∂haarIntegers F < ∞`. Rewrite `hfin` using `[h1]`. Rewrite using `[lt_top_iff_ne_top]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `this`. Rewrite `hfin` using `[this, ENNReal.mul_top multHaarConst_ne_zero]`. Conclude with `lt_irrefl _ hfin`. Establish `h7 : Integrable h (haarIntegers F)` using `⟨hm.aestronglyMeasurable, by rw [hasFiniteIntegral_iff_enorm]; exact h6⟩`. Unfold `selfDualMeasure`.
-
-Conclude with `h7.smul_measure_nnreal`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem integrable_mul_chF (ψ : AddChar F Circle) {g : F → ℂ} (hg : g ∈ schwartzBruhat F)
     {c : Fˣ →* ℂˣ} (hc : IsUnit1 c) {σ : ℂ} (hσ : 0 < σ.re) :
@@ -130,7 +128,7 @@ theorem integrable_mul_chF (ψ : AddChar F Circle) {g : F → ℂ} (hg : g ∈ s
   exact h7.smul_measure_nnreal
 
 /- English proof (translation)
-Rewrite using `[← hC]`. Unfold `localZeta`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `h4 : ((modulus (u : F) : ℝ) : ℂ) ^ σ = mp u σ` using `rfl`. Simplify using `only [chF_coe, h4, ← mp_mul_mp_one u σ]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -146,9 +144,9 @@ theorem mul_integral_chF {ψ : AddChar F Circle} {C : ℂ}
   ring
 
 /- English proof (translation)
-Establish `h1` using `mul_integral_chF hC (localFourier (selfDualMeasure ψ) ψ g) χ⁻¹ (1 - s)`. Establish `h2` using `mul_integral_chF hC g χ s`. Establish `h3` using `GlobalTheory.CompanionTheory.TateFE.first_form hψ hχ hg hs.1 hs.2`. Establish `e : (1 - s - 1 : ℂ) = -s` using `by ring`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `mul_left_cancel₀ hC0` to reduce the goal to its premises. Rewrite using `[h1, h3, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem key_one {ψ : AddChar F Circle} (hψ : IsStd ψ) {C : ℂ} (hC0 : C ≠ 0)
     (hC : ∀ G : F → ℂ, ∫ a : Fˣ, G a * mp a 1 ∂multHaar F = C * ∫ t, G t ∂selfDualMeasure ψ)
@@ -165,7 +163,7 @@ theorem key_one {ψ : AddChar F Circle} (hψ : IsStd ψ) {C : ℂ} (hC0 : C ≠ 
   ring
 
 /- English proof (translation)
-Use `integral_fintype_prod_eq_prod (𝕜 := ℂ) (ι := Fin 2) (E := fun _ => F) (μ := fun _ => selfDualMeasure ψ) (fun i => ![a, b] i)` as an intermediate fact. Simplify `this` using `[Fin.prod_univ_two, m2]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integral_plane_measure_product (ψ : AddChar F Circle) (a b : F → ℂ) :
     ∫ r, a (r 0) * b (r 1) ∂m2 ψ =
@@ -175,7 +173,7 @@ theorem integral_plane_measure_product (ψ : AddChar F Circle) (a b : F → ℂ)
   simpa [Fin.prod_univ_two, m2] using this
 
 /- English proof (translation)
-Apply the tactic sequence `have := Integrable.fintype_prod (𝕜 := ℂ) (ι := Fin 2) (E := F) (μ := fun _ => selfDualMeasure ψ) (f := fun i => ![a, b] i) (fun i => by fin_cases i <;> simpa)`. Simplify `this` using `[Fin.prod_univ_two, m2]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integrable_plane_measure_product (ψ : AddChar F Circle) {a b : F → ℂ}
     (ha : Integrable a (selfDualMeasure ψ)) (hb : Integrable b (selfDualMeasure ψ)) :
@@ -186,7 +184,7 @@ theorem integrable_plane_measure_product (ψ : AddChar F Circle) {a b : F → �
   simpa [Fin.prod_univ_two, m2] using this
 
 /- English proof (translation)
-Rewrite using `[integral_finset_sum _ fun i _ => integrable_plane_measure_product ψ (hA i) (hB i)]`. Conclude with `Finset.sum_congr rfl fun i _ => integral_plane_measure_product ψ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_plane_measure_sum_products (ψ : AddChar F Circle) {n : ℕ} {A B : Fin n → F → ℂ}
     (hA : ∀ i, Integrable (A i) (selfDualMeasure ψ)) (hB : ∀ i, Integrable (B i) (selfDualMeasure ψ)) :
@@ -196,7 +194,7 @@ theorem integral_plane_measure_sum_products (ψ : AddChar F Circle) {n : ℕ} {A
   exact Finset.sum_congr rfl fun i _ => integral_plane_measure_product ψ _ _
 
 /- English proof (translation)
-Use `Continuous.integrable_of_hasCompactSupport (hg.1.continuous.mul ?_) hg.2.mul_right` and prove the remaining obligations. Conclude with `continuous_induced_dom.comp (hψ.comp (continuous_id.mul continuous_const))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_mul_char {ψ : AddChar F Circle} (hψ : Continuous ψ) {g : F → ℂ}
     (hg : g ∈ schwartzBruhat F) (y : F) :
@@ -206,9 +204,9 @@ theorem integrable_mul_char {ψ : AddChar F Circle} (hψ : Continuous ψ) {g : F
   exact continuous_induced_dom.comp (hψ.comp (continuous_id.mul continuous_const))
 
 /- English proof (translation)
-Establish `e : ∀ r' : Fin 2 → F, (∑ i, SchwartzSpaceL2.pt (a i) (b i)) r' * (ψ (r' 0 * r 0 + r' 1 * r 1) : ℂ) = ∑ i, (fun x => a i x * (ψ (x * r 0) : ℂ)) (r' 0) * (fun x => b i x * (ψ (x * r 1) : ℂ)) (r' 1)`. Introduce `r'`. Rewrite using `[Finset.sum_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [SchwartzSpaceL2.pt, AddChar.map_add_eq_mul, Circle.coe_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`. Rewrite using `[integral_plane_measure_sum_products ψ (fun i => integrable_mul_char hψ (ha i) _) (fun i => integrable_mul_char hψ (hb i) _)]`. Both sides reduce to the same expression.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem plane_fourier_sum {ψ : AddChar F Circle} (hψ : Continuous ψ) {n : ℕ} {a b : Fin n → F → ℂ}
     (ha : ∀ i, a i ∈ schwartzBruhat F) (hb : ∀ i, b i ∈ schwartzBruhat F) (r : Fin 2 → F) :
@@ -228,19 +226,19 @@ theorem plane_fourier_sum {ψ : AddChar F Circle} (hψ : Continuous ψ) {n : ℕ
   rfl
 
 /- English proof (translation)
-Introduce `hA2 F _ _ _ _ _ _ ψ hψ χ₁ χ₂ h₁ h₂ f hf s hs`. Take `⟨C, hC0, hC, -⟩` from `hA2 F ψ hψ`. Take `⟨n, a, b, hab, rfl⟩` from `GlobalTheory.CompanionTheory.PlanePure.schwartzBruhat2_eq_sum_pt F f hf`. Establish `ha : ∀ i, a i ∈ schwartzBruhat F` using `fun i => (hab i).1`. Establish `hb : ∀ i, b i ∈ schwartzBruhat F` using `fun i => (hab i).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : 0 < (1 - s).re`. Use `hs.2` as an intermediate fact. Simplify using `only [Complex.sub_re, Complex.one_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : (1 - s - 1 : ℂ) = -s` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hT : ∀ {g : F → ℂ}, g ∈ schwartzBruhat F → localFourier (selfDualMeasure ψ) ψ g ∈ schwartzBruhat F` using `fun hg => localFourier_mem_schwartzBruhat (selfDualMeasure ψ) hψ.1 hψ.2.1 hg`. Establish `hI : ∀ {g : F → ℂ} {χ : Fˣ →* ℂˣ}, g ∈ schwartzBruhat F → IsUnit1 χ → Integrable (fun t => localFourier (selfDualMeasure ψ) ψ g t * chF χ⁻¹ (-s) t) (selfDualMeasure ψ)`. Introduce `g χ hg hχ`. Establish `hχ' : IsUnit1 χ⁻¹` using `⟨continuous_quasiChar_inv hχ.1, fun x => by`. Simplify using `[hχ.2]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `integrable_mul_chF ψ (hT hg) hχ' hs'` as an intermediate fact. Rewrite `this` using `[e1]`. Then use the resulting hypothesis. Establish `hL : ∫ r, (∫ r', (∑ i, SchwartzSpaceL2.pt (a i) (b i)) r' * (ψ (r' 0 * r 0 + r' 1 * r 1) : ℂ) ∂m2 ψ) * (chF χ₁⁻¹ (-s) (r 0) * chF χ₂⁻¹ (-s) (r 1)) ∂m2 ψ = ∑ i, (∫ t, localFourier (selfDualMeasure ψ) ψ (a i) t * chF χ₁⁻¹ (-s) t ∂selfDualMeasure ψ) * ∫ t, localFourier (selfDualMeas …`. Rewrite using `[← integral_plane_measure_sum_products ψ (fun i => hI (ha i) h₁) (fun i => hI (hb i) h₂)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only []`. Rewrite using `[plane_fourier_sum hψ.1 ha hb r, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hR : ∫ r, (∑ i, SchwartzSpaceL2.pt (a i) (b i)) r * (chF χ₁ (s - 1) (r 0) * chF χ₂ (s - 1) (r 1)) ∂m2 ψ = ∑ i, (∫ t, a i t * chF χ₁ (s - 1) t ∂selfDualMeasure ψ) * ∫ t, b i t * chF χ₂ (s - 1) t ∂selfDualMeasure ψ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← integral_plane_measure_sum_products ψ (fun i => integrable_mul_chF ψ (ha i) h₁ hs.1) (fun i => integrable_mul_chF ψ (hb i) h₂ hs.1)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations. Simplify using `only []`. Rewrite using `[Finset.sum_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [SchwartzSpaceL2.pt]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL, hR, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[key_one hψ hC0 hC h₁ (ha i) hs, key_one hψ hC0 hC h₂ (hb i) hs]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

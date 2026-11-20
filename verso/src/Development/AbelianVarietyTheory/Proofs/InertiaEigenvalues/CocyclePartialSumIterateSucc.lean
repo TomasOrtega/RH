@@ -17,13 +17,11 @@ namespace GlobalTheory.PMon.Gauss
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hS : 0 ≤ ⨆ n, f n` using `le_ciSup_of_le hb 0 (h0 0)`. Establish `hle : ∀ n, f n ^ k ≤ (⨆ n, f n) ^ k` using `fun n => pow_le_pow_left₀ (h0 n) (le_ciSup hb n) k`. Establish `hb' : BddAbove (Set.range fun n => f n ^ k)` using `⟨_, Set.forall_mem_range.2 hle⟩`. Use `le_antisymm (ciSup_le hle) ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Use `set T := ⨆ n, f n ^ k`. Establish `hT : 0 ≤ T` using `le_ciSup_of_le hb' 0 (pow_nonneg (h0 0) k)`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hroot : T ^ ((1 : ℝ) / k) < ⨆ n, f n`. Use `Real.rpow_lt_rpow hT hlt (by positivity : (0 : ℝ) < 1 / k)` as an intermediate fact. Rewrite `this` using `[← Real.rpow_natCast, ← Real.rpow_mul hS, mul_one_div_cancel (by positivity), Real.rpow_one]`. Then use the resulting hypothesis. Take `⟨n, hn⟩` from `exists_lt_of_lt_ciSup hroot`. Establish `h1` using `pow_lt_pow_left₀ hn (Real.rpow_nonneg hT _) hk.ne'`.
-
-Rewrite `h1` using `[← Real.rpow_natCast, ← Real.rpow_mul hT, one_div_mul_cancel (by positivity), Real.rpow_one]`. Conclude with `absurd (le_ciSup hb' n) (not_le.2 h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSup_pow_eq {f : ℕ → ℝ} (h0 : ∀ n, 0 ≤ f n) (hb : BddAbove (Set.range f)) (k : ℕ) :
     (⨆ n, f n ^ k) = (⨆ n, f n) ^ k := by
@@ -46,13 +44,13 @@ theorem iSup_pow_eq {f : ℕ → ℝ} (h0 : ∀ n, 0 ≤ f n) (hb : BddAbove (Se
   exact absurd (le_ciSup hb' n) (not_le.2 h1)
 
 /- English proof (translation)
-Establish `hl : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Use `set σ := ρ ^ ((1 : ℝ) / l)`. Establish `hσ0 : 0 ≤ σ` using `Real.rpow_nonneg hρ0 _`. Establish `hσ1 : σ ≤ 1` using `Real.rpow_le_one hρ0 hρ1 (by positivity)`. Establish `hσl : σ ^ l = ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hρ0, one_div_mul_cancel hl.ne', Real.rpow_one]`. Use `set f : ℕ → ℝ := fun n => ‖(((a.coeff n).untilt : Formalism.Per.OC l) : ℂ_[l])‖ ^ ((1 : ℝ) / (l : ℝ) ^ n) * σ ^ n`. Establish `hf0 : ∀ n, 0 ≤ f n` using `fun n => by positivity`. Establish `hf1 : ∀ n, f n ≤ 1` using `fun n => mul_le_one₀ (Real.rpow_le_one (norm_nonneg _) ((GlobalTheory.RingBasics.mem_OC _).1 (Subtype.prop _)) (by positivity)) (pow_nonneg hσ0 _) (pow_le_one₀ hσ0 hσ1)`. Establish `hterm : ∀ n, ‖((((Formalism.Per.φA l a).coeff n).untilt : Formalism.Per.OC l) : ℂ_[l])‖ ^ ((1 : ℝ) / (l : ℝ) ^ n) * ρ ^ n = f n ^ l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n`. Establish `hc : (Formalism.Per.φA l a).coeff n = a.coeff n ^ l`. Rewrite using `[GlobalTheory.RingBasics.φA_apply, WittVector.coeff_frobenius_charP]`. Rewrite using `[hc, map_pow, SubmonoidClass.coe_pow, norm_pow, ← hσl, mul_pow, ← pow_mul, ← pow_mul, mul_comm n l, pow_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Real.rpow_natCast_mul (norm_nonneg _), ← Real.rpow_mul_natCast (norm_nonneg _), mul_comm]`. Simplify using `only [gA]`. Repeatedly rewrite using `[hterm]`. Conclude with `iSup_pow_eq hf0 ⟨1, Set.forall_mem_range.2 hf1⟩ l`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gA_phi (ρ : ℝ) (hρ0 : 0 ≤ ρ) (hρ1 : ρ ≤ 1) (a : Formalism.Per.Ainf l) :
     gA l ρ (Formalism.Per.φA l a) = gA l (ρ ^ ((1 : ℝ) / l)) a ^ l := by
@@ -80,13 +78,13 @@ theorem gA_phi (ρ : ℝ) (hρ0 : 0 ≤ ρ) (hρ1 : ρ ≤ 1) (a : Formalism.Per
   exact iSup_pow_eq hf0 ⟨1, Set.forall_mem_range.2 hf1⟩ l
 
 /- English proof (translation)
-Establish `hl : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Establish `hρ0 : 0 ≤ ρ` using `(inv_nonneg.2 hl.le).trans h0`. Take `⟨e1, e2, e3, e4, e5⟩` from `isGauss_gC_of_le l ρ h0 h1`. Establish `hpos : (0 : ℝ) < 1 / l` using `by positivity`. Use `⟨fun x => ⟨Real.rpow_nonneg (e1 _).1 _, Real.rpow_le_one (e1 _).1 (e1 _).2 hpos.le⟩, fun x y => ?_, fun x => ?_, fun x y => ?_, fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_add]`. Use `(Real.rpow_le_rpow (e1 _).1 (e2 _ _) hpos.le).trans ?_` and prove the remaining obligations. Break down `le_total (gC l ρ (φc l x)) (gC l ρ (φc l y)) with h | h` into its components or cases. Rewrite using `[max_eq_right h, max_eq_right (Real.rpow_le_rpow (e1 _).1 h hpos.le)]`. Rewrite using `[max_eq_left h, max_eq_left (Real.rpow_le_rpow (e1 _).1 h hpos.le)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_neg, e3]`. Simplify using `only [map_mul, e4]`. Conclude with `Real.mul_rpow (e1 _).1 (e1 _).1`. Simplify using `only`. Establish `ha : φc l (algebraMap (Formalism.Per.Ainf l) (Formalism.Per.Acris l) a) = algebraMap (Formalism.Per.Ainf l) (Formalism.Per.Acris l) (Formalism.Per.φA l a)` using `(GlobalTheory.CrisMaps.phiA_extends l).alg a`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, e5, gA_phi ρ hρ0 h1.le, ← Real.rpow_natCast, ← Real.rpow_mul, mul_one_div_cancel hl.ne', Real.rpow_one]`. Conclude with `le_ciSup_of_le ⟨1, by`. Introduce and unpack `_ ⟨n, rfl⟩`. Conclude with `mul_le_one₀ (Real.rpow_le_one (norm_nonneg _) ((GlobalTheory.RingBasics.mem_OC _).1 (Subtype.prop _)) (by positivity)) (pow_nonneg (Real.rpow_nonneg hρ0 _) _) (pow_le_one₀ (Real.rpow_nonneg hρ0 _) (Real.rpow_le_one hρ0 h1.le (by positivity)))⟩ 0 (by positivity)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isGauss_phi (ρ : ℝ) (h0 : (l : ℝ)⁻¹ ≤ ρ) (h1 : ρ < 1) :
     IsGauss l (ρ ^ ((1 : ℝ) / l)) (fun x => gC l ρ (φc l x) ^ ((1 : ℝ) / l)) := by
@@ -115,9 +113,9 @@ theorem isGauss_phi (ρ : ℝ) (h0 : (l : ℝ)⁻¹ ≤ ρ) (h1 : ρ < 1) :
           (Real.rpow_le_one hρ0 h1.le (by positivity)))⟩ 0 (by positivity)
 
 /- English proof (translation)
-Introduce `l _ ρ h0 h1 x`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hl : (0 : ℝ) < l` using `by linarith`. Establish `hρ0 : 0 ≤ ρ` using `(inv_nonneg.2 hl.le).trans h0`. Establish `hσ0 : ρ ≤ ρ ^ ((1 : ℝ) / l)` using `by conv_lhs => rw [← Real.rpow_one ρ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Real.rpow_le_rpow_of_exponent_ge' hρ0 h1.le (by positivity) (by rw [div_le_one hl]; exact hl1.le)`. Establish `hσ1 : ρ ^ ((1 : ℝ) / l) < 1` using `Real.rpow_lt_one hρ0 h1 (by positivity)`. Establish `e` using `GlobalTheory.T.gaussNormAcris_unique l (ρ ^ ((1 : ℝ) / l)) _ _ (h0.trans hσ0) hσ1 (isGauss_phi ρ h0 h1) (isGauss_gC_of_le l _ (h0.trans hσ0) hσ1)`. Establish `ex : gC l ρ (φc l x) ^ ((1 : ℝ) / l) = gC l (ρ ^ ((1 : ℝ) / l)) x` using `congrFun e x`. Rewrite using `[← ex, ← Real.rpow_natCast, ← Real.rpow_mul ((isGauss_gC_of_le l ρ h0 h1).1 _).1, one_div_mul_cancel hl.ne', Real.rpow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gC_phi : ∀ (l : ℕ) [Fact l.Prime] (ρ : ℝ), (l : ℝ)⁻¹ ≤ ρ → ρ < 1 → ∀ x : Formalism.Per.Acris l,
     gC l ρ (φc l x) = gC l (ρ ^ ((1 : ℝ) / l)) x ^ l := by

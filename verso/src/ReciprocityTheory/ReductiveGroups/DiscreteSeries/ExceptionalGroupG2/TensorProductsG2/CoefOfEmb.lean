@@ -19,13 +19,13 @@ def tensGrp {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (dual :
   fun c => ∑ d, (cond dual ((g⁻¹) d c) (g c d)) • σ g (f d)
 
 /- English proof (translation)
-Establish `hVf` using `hV.1`. Establish `hVst` using `hV.2.1`. Establish `hV'f` using `hV'.1`. Establish `hV'st` using `hV'.2.1`. Establish `hTG : ∀ g : Matrix (Fin n) (Fin n) ℂ, ∀ w : Fin n → H, tensGrp dual σ g w = coefTG dual σ g w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g w`. Apply the tactic sequence `cases dual <;> rfl`. Establish `hιE : ∀ a b, ∀ x ∈ genSub E V', ι (E a b x) = tensF dual E a b (ι x)` using `hι.2.2.1`. Establish `key : ∀ f ∈ tensSub (genSub E V), ∀ z ∈ genSub E V', (∀ y ∈ genSub E V', inner ℂ z y = ∑ c, inner ℂ (f c) (ι y c)) → ∀ x' ∈ genSub E V', ∀ g ∈ UJset ε, ∑ c, inner ℂ ((f c : D) : H) (tensGrp dual σ g (fun d => ((ι x' d : D) : H)) c) = inner ℂ ((z : D) : H) (σ g ((x' : D) : H))`. Introduce `f _ z _ hz x' hx' g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hTG]`. Conclude with `coefE_all dual hσ hD hVf hVst hc hV'f hV'st hc' hι.1 hιE f z hz g hg x' hx'`. Use `⟨fun f hf x' hx' => ?_, fun z hz x' hx' => ?_⟩` and prove the remaining obligations. Take `⟨z, hzm, hz⟩` from `ReciprocityTheory.ChartRestriction.DS.G2.coefB_toSum_exists dual hσ hD hVf hVst hgap' hV' hc' hι f hf`. Conclude with `⟨z, hzm, key f hf z hzm hz x' hx'⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hzf⟩` from `ReciprocityTheory.ChartRestriction.DS.G2.coefB_ofSum_exists dual hσ hD hgap' hV' hc' hι z hz`. Conclude with `⟨f, hf, fun g hg => (key f hf z hz hzf x' hx' g hg).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coef_of_emb (dual : Bool) {lam lam' : Fin n → ℝ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}

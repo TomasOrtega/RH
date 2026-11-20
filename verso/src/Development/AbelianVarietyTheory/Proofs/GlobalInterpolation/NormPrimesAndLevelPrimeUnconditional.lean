@@ -20,22 +20,20 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Take `⟨A, B, h1, h2, h3⟩` from `h`. Conclude with `⟨(A, B), h1, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem normOne_pair_form {d M p : ℕ} (h : GlobalTheory.Mem.An.NormOne d M p) : GlobalTheory.EX.NormOne d M p := by
   obtain ⟨A, B, h1, h2, h3⟩ := h
   exact ⟨(A, B), h1, h2, h3⟩
 
 /- English proof (translation)
-Introduce `eps he0 he1`. Take `⟨x0, hx0⟩` from `UpperTheory.T3.normPrimesN UpperTheory.T3.shortNorm eps he0`. Use `⟨x0, fun s R N d hs hx hR hq => ?_⟩` and prove the remaining obligations. Establish `hk : (1 : ℝ) ≤ R.k`. Use `R.m_add_three_le_k` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(by omega : 1 ≤ R.k)` after adjusting the coercions. Establish `hb : 0 < s.b` using `Real.exp_pos _`. Establish `hY : 0 < ((R.k : ℝ) * s.b) ^ 8` using `by positivity`. Establish `hlog : 8 * s.x ^ eps ≤ Real.log (((R.k : ℝ) * s.b) ^ 8)`. Rewrite using `[Real.log_pow, Real.log_mul (by linarith) hb.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Real.log s.b = s.x ^ eps`. Rewrite using `[← hs]`. Conclude with `Real.log_exp _`. Establish `h2` using `Real.log_nonneg hk`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `(hx0 s.x hx N d (hs ▸ hq) _ hY hlog).trans ?_` and prove the remaining obligations. Use `Nat.cast_le.mpr (Finset.card_le_card fun g hg => ?_)` and prove the remaining obligations. Simplify using `only [GlobalTheory.Mem.An.normPrimes, Finset.mem_filter, Finset.mem_Ioc, Finset.mem_range] at hg ⊢`. Take `⟨⟨h1, h2⟩, h3, h4⟩` from `hg`.
-
-Conclude with `⟨Nat.lt_succ_of_le h2, h3, (Nat.lt_of_floor_lt h1).le, normOne_pair_form h4⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem normPrimes_unconditional : NormPrimes := by
   intro eps he0 he1
@@ -60,17 +58,15 @@ theorem normPrimes_unconditional : NormPrimes := by
   exact ⟨Nat.lt_succ_of_le h2, h3, (Nat.lt_of_floor_lt h1).le, normOne_pair_form h4⟩
 
 /- English proof (translation)
-Introduce `eps c he0 he1 hc`. Take `⟨x0, hx0⟩` from `UpperTheory.T3.levelPrimeN UpperTheory.T3.shortNorm eps he0 he1 c 9 hc (by norm_num)`. Take `⟨x1, hx1⟩` from `rank_basic_bounds eps he0 he1`. Use `⟨max x0 x1, fun s R N d g0 g1 Ts hs hx hR hq hg0 hg1 hb0 hb1 hTs hlog => ?_⟩` and prove the remaining obligations. Take `⟨hf, -, hr, hkr, -, -, -, -, -, -, -, -, -, -, -, hm, -⟩` from `hx1 s R hs (le_trans (le_max_right _ _) hx) hR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hx1'` using `s.one_lt_alt`. Establish `hxp : 0 < s.x` using `by linarith`. Establish `hn : 1 ≤ R.n` using `R.toFrame.ord_pos`. Establish `hk : (1 : ℝ) ≤ R.k`. Use `R.m_add_three_le_k` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(by omega : 1 ≤ R.k)` after adjusting the coercions. Establish `hf1 : (1 : ℝ) ≤ R.f`. Conclude with `(by unfold Ranks.f; omega : 1 ≤ R.f)` after adjusting the coercions. Establish `hL : s.L = s.x ^ eps` using `by rw [← hs]; rfl`. Establish `hg : ∀ g : ℕ, 1 ≤ g → (g : ℝ) ≤ s.b ^ 9 → Real.log g ≤ 9 * s.x ^ eps`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g h1 h2`. Establish `h3 : (0 : ℝ) < g` using `by exact_mod_cast h1`. Use `(Real.log_le_log h3 h2).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.log_pow, Scale.b, Real.log_exp, hL]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' : s.x ^ ((1 : ℝ) / 3) ≤ (R.m : ℝ)` using `(Real.rpow_le_rpow_of_exponent_le hx1'.le (by rw [hs]; linarith)).trans hm`. Establish `hW1 : (1 : ℝ) ≤ (R.f : ℝ) * R.k` using `one_le_mul_of_one_le_of_one_le hf1 hk`. Establish `hW2 : (R.f : ℝ) * R.k ≤ s.x ^ (12 : ℝ)`. Establish `hk5 : (R.k : ℝ) ≤ s.x ^ (5 : ℝ)` using `(Nat.cast_le.mpr hkr).trans hr`. Conclude with `(rank_mul_le hxp (by linarith) hf hk5).trans (Real.rpow_le_rpow_of_exponent_le hx1'.le (by norm_num))`.
-
-Take `⟨T, hT1, hT2, hT3, hT4⟩` from `hx0 s.x (le_trans (le_max_left _ _) hx) N d g0 g1 R.m (hs ▸ hq) hg0 hg1 (hg g0 hg0 hb0) (hg g1 hg1 hb1) hm' _ Ts hW1 hW2 hTs (hL ▸ hlog)`. Conclude with `⟨T, hT1, hT2.le, hT3, normOne_pair_form hT4⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem levelPrime_unconditional : LevelPrime := by
   intro eps c he0 he1 hc
@@ -106,7 +102,7 @@ theorem levelPrime_unconditional : LevelPrime := by
   exact ⟨T, hT1, hT2.le, hT3, normOne_pair_form hT4⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨normPrimes_unconditional, levelPrime_unconditional⟩`.
+Supply the required witnesses or components.
 -/
 theorem normPrimes_and_levelPrime_unconditional : NormPrimes ∧ LevelPrime :=
   ⟨normPrimes_unconditional, levelPrime_unconditional⟩

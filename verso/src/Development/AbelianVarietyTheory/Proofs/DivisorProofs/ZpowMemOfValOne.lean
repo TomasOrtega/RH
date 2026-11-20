@@ -9,7 +9,7 @@ open Matrix
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Apply `hO` to reduce the goal to its premises. Rewrite using `[map_zpow₀, hu, _root_.one_zpow]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem zpow_mem_of_val_one {O : Subring L}
     (hO : ∀ x : L, (Valued.v : L → WithZero (Multiplicative ℤ)) x ≤ 1 → x ∈ O)
@@ -18,13 +18,13 @@ theorem zpow_mem_of_val_one {O : Subring L}
   rw [map_zpow₀, hu, _root_.one_zpow]
 
 /- English proof (translation)
-Establish `hu0 : u ≠ 0`. Introduce `h`. Rewrite `hu` using `[h, map_zero]`. Conclude with `zero_ne_one hu`. Set `Uo : GL (Fin n) O` to `{ val := Matrix.diagonal (fun i => ⟨u ^ e i, zpow_mem_of_val_one hO hu (e i)⟩) inv := Matrix.diagonal (fun i => ⟨u ^ (-e i), zpow_mem_of_val_one hO hu (-e i)⟩) val_inv := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[mul_inv_cancel₀ (zpow_ne_zero _ hu0)]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `inv_val := by`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[inv_mul_cancel₀ (zpow_ne_zero _ hu0)] }`. Use `⟨Formalism.UG.bc (n := Fin n) O.subtype Uo, ⟨Uo, rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[Formalism.UG.bc, Uo, Matrix.diagonal_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diag_mem {n : ℕ} {O : Subring L}
     (hO : ∀ x : L, (Valued.v : L → WithZero (Multiplicative ℤ)) x ≤ 1 → x ∈ O)
@@ -48,15 +48,15 @@ theorem diag_mem {n : ℕ} {O : Subring L}
   simp [Formalism.UG.bc, Uo, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ, a1, ha1, b1, hb1, hg⟩` from `hg`. Take `⟨ϖ', hϖ', a2, ha2, b2, hb2, hs⟩` from `hs`. Establish `hne : ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) ≠ 0` using `WithZero.coe_ne_zero`. Establish `h0' : ϖ' ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hϖ'` using `[h, map_zero]`. Conclude with `hne hϖ'.symm`. Establish `hu : (Valued.v : L → WithZero (Multiplicative ℤ)) (ϖ / ϖ') = 1`. Rewrite using `[map_div₀, hϖ, hϖ', div_self hne]`. Take `⟨U, hU, hUe⟩` from `diag_mem hO hu (fun i : Fin n => d.getD i 0)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hD : Matrix.diagonal (fun i : Fin n => ϖ ^ d.getD i 0) = (U : Matrix (Fin n) (Fin n) L) * Matrix.diagonal (fun i : Fin n => ϖ' ^ d.getD i 0)`. Rewrite using `[hUe, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← mul_zpow, div_mul_cancel₀ _ h0']`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨a1 * U * a2⁻¹, Subgroup.mul_mem _ (Subgroup.mul_mem _ ha1 hU) (Subgroup.inv_mem _ ha2)⟩, ⟨b2⁻¹ * b1, Subgroup.mul_mem _ (Subgroup.inv_mem _ hb2) hb1⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Establish `e1 : ((a2⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (a2 : Matrix (Fin n) (Fin n) L) = 1` using `Units.inv_mul a2`. Establish `e2 : (b2 : Matrix (Fin n) (Fin n) L) * ((b2⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1` using `Units.mul_inv b2`. Simplify using `only [Units.val_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, hs, hD]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, e2]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sameDiv_doubleCoset {n : ℕ} {O : Subring L}
     (hO : ∀ x : L, (Valued.v : L → WithZero (Multiplicative ℤ)) x ≤ 1 → x ∈ O) {d : List ℤ} {g s : GL (Fin n) L}
@@ -91,7 +91,7 @@ theorem sameDiv_doubleCoset {n : ℕ} {O : Subring L}
     _ = _ := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `hO _ _ _ hg hs` and use `sameDiv_doubleCoset hO hg hs`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {L : Type} [inst : Field L] [inst_1 : Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} {O : Subring L}, (∀ (x : L), (Valued.v : L → WithZero (Multiplicative ℤ)) x ≤ (1 : WithZero (Multiplicative ℤ)) → x ∈ O) → ∀ {d : List ℤ} {g s : GL (Fin n) L}, GlobalTheory.SphPar.HasDiv O d g → GlobalTheory.SphPar.HasDiv O d s → ∃ (a : ↥(Formalism.UG.GLint (Fin n) O)) (b : ↥(Formalism.UG.GLint (Fin n) O)), g = (↑a : GL (Fin n) L) * s * (↑b : GL (Fin n) L) :=
   fun hO _ _ _ hg hs => sameDiv_doubleCoset hO hg hs

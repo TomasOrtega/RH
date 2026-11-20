@@ -25,7 +25,7 @@ namespace PositivityTheory.KRealA
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, piInf, compInf, inclR, infEmb_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_map_piInf {n m : Type} (J : Matrix n m E) {w : InfinitePlace F} (τ : EmbOver E w) :
     (incM F J).map (piInf τ) = J.map τ.1 := by
@@ -33,11 +33,9 @@ theorem incM_map_piInf {n m : Type} (J : Matrix n m E) {w : InfinitePlace F} (τ
   simp [incM, piInf, compInf, inclR, infEmb_tmul]
 
 /- English proof (translation)
-Introduce `z hz`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, h z hz, h' z hz, ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `: piInf (τ w) (z : AE F E) / (‖piInf (τ w) (z : AE F E)‖ : ℂ) ≠ 0`. Establish `h0 : piInf (τ w) (z : AE F E) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `e`. Use `congrArg (piInf (τ w)) z.mul_inv` as an intermediate fact. Rewrite `this` using `[map_mul, e, zero_mul, map_one]`. Conclude with `zero_ne_one this`. Conclude with `div_ne_zero h0 (by exact_mod_cast norm_ne_zero_iff.2 h0)`.
-
-Rewrite using `[zpow_sub₀ this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasExp_div (τ : ∀ w : InfinitePlace F, EmbOver E w) {χ χ' : Chr F E} {m m' : InfinitePlace F → ℤ}
     (h : HasExp τ χ m) (h' : HasExp τ χ' m') : HasExp τ (χ / χ') (fun w => m w - m' w) := by
@@ -58,9 +56,9 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {V W : ι → Type} [∀ i, A
   [∀ i, AddCommGroup (W i)] [∀ i, Module ℂ (W i)]
 
 /- English proof (translation)
-Unfold `atPl`. Rewrite using `[← PiTensorProduct.map_comp, ← PiTensorProduct.map_comp]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = w`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Simplify using `[h]`. Simplify using `[Function.update_of_ne hi]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_atPl (p : ∀ i, V i →ₗ[ℂ] W i) (w : ι) (L : Module.End ℂ (V w)) (L' : Module.End ℂ (W w))
     (h : p w ∘ₗ L = L' ∘ₗ p w) : PiTensorProduct.map p ∘ₗ atPl w L = atPl w L' ∘ₗ PiTensorProduct.map p := by
@@ -73,7 +71,7 @@ theorem map_atPl (p : ∀ i, V i →ₗ[ℂ] W i) (w : ι) (L : Module.End ℂ (
   · simp [Function.update_of_ne hi]
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [sumPl, LinearMap.comp_apply, LinearMap.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => LinearMap.congr_fun (map_atPl p i (L i) (L' i) (h i)) x`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_sumPl (p : ∀ i, V i →ₗ[ℂ] W i) (L : ∀ i, Module.End ℂ (V i)) (L' : ∀ i, Module.End ℂ (W i))
     (h : ∀ i, p i ∘ₗ L i = L' i ∘ₗ p i) : PiTensorProduct.map p ∘ₗ sumPl L = sumPl L' ∘ₗ PiTensorProduct.map p := by
@@ -84,67 +82,67 @@ theorem map_sumPl (p : ∀ i, V i →ₗ[ℂ] W i) (L : ∀ i, Module.End ℂ (V
 end Tensor
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TensIrr.tensor_irr`.
+A detailed English derivation is pending.
 -/
 theorem i_tensirr : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (R S : ℕ) (M : ι → Formalism.BasicNotions.TH.GKMod R S), (∀ i, Formalism.MainNotions.SchurIrreducible.IrrGK (M i) ∧ GlobalTheory.RealLift.ScalarEnd (M i)) → Nontrivial (PiTensorProduct ℂ fun i => (M i).V) ∧ ∀ N : Submodule ℂ (PiTensorProduct ℂ fun i => (M i).V), (∀ i, ∀ Z ∈ Formalism.BasicNotions.TH.upq R S, ∀ y ∈ N, GlobalTheory.RealLift.atPl i ((M i).act Z) y ∈ N) → N = ⊥ ∨ N = ⊤ := GlobalTheory.TensIrr.tensor_irr
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RealLift.locFin_sumPl`.
+A detailed English derivation is pending.
 -/
 theorem i_locfin : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (V : ι → Type) [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)] (L : ∀ i, Module.End ℂ (V i)), (∀ i, GlobalTheory.RealLift.LocFin (L i)) → GlobalTheory.RealLift.LocFin (GlobalTheory.RealLift.sumPl L) := GlobalTheory.RealLift.locFin_sumPl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ExpAct.expAct_fock`.
+A detailed English derivation is pending.
 -/
 theorem i_expact : ∀ (F : Type) [Field F] [NumberField F] (κ V : Type) [Fintype κ] [AddCommGroup V] [Module ℂ V] (Φ : V →ₗ[ℂ] GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ) (L : Module.End ℂ V) (om : Multiplicative ℝ →* Module.End ℂ ((κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) → ℂ)), GlobalTheory.RealLift.LocFin L → (∀ t, ∀ l ∈ (GlobalTheory.WeilM.adeleClass F).adm κ, l ∘ₗ om t ∈ (GlobalTheory.WeilM.adeleClass F).adm κ) → (∀ T, GlobalTheory.RealLift.SD (fun t => om (Multiplicative.ofAdd t)) (Φ T) (Φ (L T))) → ∃ U : Module.End ℂ V, GlobalTheory.RealLift.IsExp L U ∧ ∀ T, GlobalTheory.RealLift.SA (om (Multiplicative.ofAdd 1)) (Φ T) (Φ (U T)) := GlobalTheory.ExpAct.expAct_fock
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.RL.actsLaws`.
+A detailed English derivation is pending.
 -/
 theorem i_actslaws : GlobalTheory.RealLift.ActsLaws := PositivityTheory.RL.actsLaws
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.RL.derEx`.
+A detailed English derivation is pending.
 -/
 theorem i_derex : GlobalTheory.RealLift.DerEx := PositivityTheory.RL.derEx
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.RL.fockEx`.
+A detailed English derivation is pending.
 -/
 theorem i_fockex : GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.FockEx := PositivityTheory.RL.fockEx
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.RL.vacLine`.
+A detailed English derivation is pending.
 -/
 theorem i_vacline : GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.VacLine := PositivityTheory.RL.vacLine
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.ThKEnd.Comp.PR.polRange_of`.
+A detailed English derivation is pending.
 -/
 theorem i_polrange : GlobalTheory.RealLift.ActsLaws → GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.VacLine → GlobalTheory.RealLift.PolRange := PositivityTheory.ThKEnd.Comp.PR.polRange_of
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.RL.genEx`.
+A detailed English derivation is pending.
 -/
 theorem i_genex : GlobalTheory.RealLift.GenEx := PositivityTheory.RL.genEx
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.RL.lineEx`.
+A detailed English derivation is pending.
 -/
 theorem i_lineex : GlobalTheory.RealLift.LineEx := PositivityTheory.RL.lineEx
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.RL.kLine`.
+A detailed English derivation is pending.
 -/
 theorem i_kline : GlobalTheory.RealLift.LineEx → GlobalTheory.RealLift.KLine := PositivityTheory.RL.kLine
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.RL.frameEx`.
+A detailed English derivation is pending.
 -/
 theorem i_frameex : GlobalTheory.RealLift.FrameEx := PositivityTheory.RL.frameEx
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.RL.even_im_hermitian_sub`.
+A detailed English derivation is pending.
 -/
 theorem i_parity : GlobalTheory.RealLift.Parity := PositivityTheory.RL.even_im_hermitian_sub
 
@@ -160,21 +158,21 @@ theorem atPl_eq (w : ι) (L : Module.End ℂ (V w)) :
     atPl w L = PiTensorProduct.mapMultilinear ℂ V V (Function.update (fun i => (LinearMap.id : V i →ₗ[ℂ] V i)) w L) := rfl
 
 /- English proof (translation)
-Simplify using `only [atPl_eq, MultilinearMap.map_update_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem atPl_add (w : ι) (L L' : Module.End ℂ (V w)) : atPl w (L + L') = atPl w L + atPl w L' := by
   simp only [atPl_eq, MultilinearMap.map_update_add]
 
 /- English proof (translation)
-Simplify using `only [atPl_eq, MultilinearMap.map_update_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem atPl_smul (w : ι) (c : ℂ) (L : Module.End ℂ (V w)) : atPl w (c • L) = c • atPl w L := by
   simp only [atPl_eq, MultilinearMap.map_update_smul]
 
 /- English proof (translation)
-Rewrite using `[atPl_eq, show Function.update (fun i => (LinearMap.id : V i →ₗ[ℂ] V i)) w 1 = fun i => LinearMap.id by`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = w`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `[Function.update_of_ne h]]`. Conclude with `PiTensorProduct.map_id`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem atPl_one (w : ι) : atPl w (1 : Module.End ℂ (V w)) = 1 := by
   rw [atPl_eq, show Function.update (fun i => (LinearMap.id : V i →ₗ[ℂ] V i)) w 1 = fun i => LinearMap.id by
@@ -184,13 +182,13 @@ theorem atPl_one (w : ι) : atPl w (1 : Module.End ℂ (V w)) = 1 := by
   exact PiTensorProduct.map_id
 
 /- English proof (translation)
-Simplify using `only [atPl_eq, MultilinearMap.map_update_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem atPl_zero (w : ι) : atPl w (0 : Module.End ℂ (V w)) = 0 := by
   simp only [atPl_eq, MultilinearMap.map_update_zero]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← PiTensorProduct.span_tprod_eq_top, Submodule.span_le]`. Introduce and unpack `_ ⟨y, rfl⟩`. Use `choose x hx using fun i => hp i (y i)`. Conclude with `⟨PiTensorProduct.tprod ℂ x, by rw [PiTensorProduct.map_tprod]; simp [hx]⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_surj (p : ∀ i, V i →ₗ[ℂ] W i) (hp : ∀ i, Function.Surjective (p i)) :
     Function.Surjective (PiTensorProduct.map p) := by
@@ -206,7 +204,7 @@ section Exp
 variable {V V' Z : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] [AddCommGroup Z] [Module ℂ Z]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, ← ih, ← LinearMap.comp_apply, h, LinearMap.comp_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_comm {q : V →ₗ[ℂ] Z} {L : Module.End ℂ V} {L0 : Module.End ℂ Z} (h : q ∘ₗ L = L0 ∘ₗ q) (n : ℕ) (v : V) :
     q ((L ^ n) v) = (L0 ^ n) (q v) := by
@@ -216,9 +214,9 @@ theorem pow_comm {q : V →ₗ[ℂ] Z} {L : Module.End ℂ V} {L0 : Module.End �
       LinearMap.comp_apply]
 
 /- English proof (translation)
-Use `sub_eq_zero.1 ((Module.forall_dual_apply_eq_zero_iff ℂ (q (U v) - q' (U' v'))).1 fun l => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`. Establish `a` using `hU v (l ∘ₗ q)`. Establish `b` using `hU' v' (l ∘ₗ q')`. Simplify using `only [LinearMap.comp_apply, pow_comm h, pow_comm h', e] at a b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `a.unique b`.
+A detailed English derivation is pending.
 -/
 theorem exp_equiv {q : V →ₗ[ℂ] Z} {q' : V' →ₗ[ℂ] Z} {L U : Module.End ℂ V} {L' U' : Module.End ℂ V'} {L0 : Module.End ℂ Z}
     (hU : IsExp L U) (hU' : IsExp L' U') (h : q ∘ₗ L = L0 ∘ₗ q) (h' : q' ∘ₗ L' = L0 ∘ₗ q') {v : V} {v' : V'}
@@ -231,7 +229,7 @@ theorem exp_equiv {q : V →ₗ[ℂ] Z} {q' : V' →ₗ[ℂ] Z} {L U : Module.En
   exact a.unique b
 
 /- English proof (translation)
-Introduce `v l` and use `by have e : (fun n : ℕ => ((n.factorial : ℂ))⁻¹ * l (((0 : Module.End ℂ V) ^ n) v)) = fun n => if n = 0 then l v else 0 := by funext n; rcases n with _ | n · simp · simp [pow_succ] rw [e]; simpa using hasSum_ite_eq 0 (l v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exp_id : IsExp (0 : Module.End ℂ V) 1 := fun v l => by
   have e : (fun n : ℕ => ((n.factorial : ℂ))⁻¹ * l (((0 : Module.End ℂ V) ^ n) v)) = fun n => if n = 0 then l v else 0 := by
@@ -243,7 +241,7 @@ theorem exp_id : IsExp (0 : Module.End ℂ V) 1 := fun v l => by
 end Exp
 
 /- English proof (translation)
-Introduce `v` and use `by obtain ⟨⟨W, hW, hv, hs⟩, -⟩ := (GlobalTheory.FockPolGK.pol_locFin_weights P Q R S).1 v exact ⟨W, hW, hv, fun y hy => W.add_mem (hs X hX y hy) (W.smul_mem c hy)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locFin_fock1 (P Q R S : ℕ) (X : Mat P Q) (hX : IsKC X) (c : ℂ) :
     LocFin (fockAct1 P Q R S X + c • 1) := fun v => by
@@ -251,7 +249,7 @@ theorem locFin_fock1 (P Q R S : ℕ) (X : Mat P Q) (hX : IsKC X) (c : ℂ) :
   exact ⟨W, hW, hv, fun y hy => W.add_mem (hs X hX y hy) (W.smul_mem c hy)⟩
 
 /- English proof (translation)
-Introduce `v` and use `by obtain ⟨⟨W, hW, hv, hs⟩, -⟩ := (GlobalTheory.FockPolGK.pol_locFin_weights P Q R S).2 v exact ⟨W, hW, hv, fun y hy => W.add_mem (hs Y hY y hy) (W.smul_mem c hy)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locFin_fock2 (P Q R S : ℕ) (Y : Mat R S) (hY : IsKC Y) (c : ℂ) :
     LocFin (fockAct2 P Q R S Y + c • 1) := fun v => by
@@ -259,7 +257,7 @@ theorem locFin_fock2 (P Q R S : ℕ) (Y : Mat R S) (hY : IsKC Y) (c : ℂ) :
   exact ⟨W, hW, hv, fun y hy => W.add_mem (hs Y hY y hy) (W.smul_mem c hy)⟩
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.add_apply, map_add, LinearMap.smul_apply, Module.End.one_apply, map_smul, LinearMap.zero_apply]`. Rewrite using `[h.2.1 X f, ← add_smul, show (x : ℂ) * X.trace + c * X.trace = ((x : ℂ) + c) * X.trace by ring, hc, zero_mul, zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem isLift_fock1 {P Q R S : ℕ} {x t : ℚ} {N : GKMod R S} {p : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] N.V}
     (h : IsLift x t N p) (X : Mat P Q) (c : ℂ) (hc : (x : ℂ) + c = 0) :
@@ -270,7 +268,7 @@ theorem isLift_fock1 {P Q R S : ℕ} {x t : ℚ} {N : GKMod R S} {p : Formalism.
   rw [h.2.1 X f, ← add_smul, show (x : ℂ) * X.trace + c * X.trace = ((x : ℂ) + c) * X.trace by ring, hc, zero_mul, zero_smul]
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.add_apply, map_add, LinearMap.smul_apply, Module.End.one_apply, map_smul]`. Rewrite using `[h.2.2 Y f, hc, add_mul, add_smul]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem isLift_fock2 {P Q R S : ℕ} {x t : ℚ} {N : GKMod R S} {p : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] N.V}
     (h : IsLift x t N p) (Y : Mat R S) (c c' : ℂ) (hc : c = (t : ℂ) + c') :
@@ -288,7 +286,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (Φ : Tens F P Q R S →ₗ[ℂ] SInf F (Fin n × Fin d)) (Ψ : SInf F (Fin n × Fin d) →ₗ[ℂ] Tens F P Q R S)
 
 /- English proof (translation)
-Simplify using `[sumPl, atPl_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sumPl_zero {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Type} [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)] :
     sumPl (fun i => (0 : Module.End ℂ (V i))) = 0 := by
@@ -296,7 +294,7 @@ theorem sumPl_zero {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Type} [
 
 include Φ in
 /- English proof (translation)
-Rewrite `hf` using `[← hrange]`. Take `⟨T, rfl⟩` from `hf`. Conclude with `⟨T, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pol_eq (hrange : LinearMap.range Φ = M.Pol B.ψ B.emb) {f : SInf F (Fin n × Fin d)} (hf : f ∈ M.Pol B.ψ B.emb) :
     ∃ T, f = Φ T := by
@@ -305,17 +303,17 @@ theorem pol_eq (hrange : LinearMap.range Φ = M.Pol B.ψ B.emb) {f : SInf F (Fin
   exact ⟨T, rfl⟩
 
 /- English proof (translation)
-Establish `hpΦ : ∀ T, (PiTensorProduct.map p ∘ₗ Ψ) (Φ T) = PiTensorProduct.map p T` using `fun T => by`. Rewrite using `[LinearMap.comp_apply, ← LinearMap.comp_apply Ψ Φ, hΨ, LinearMap.id_apply]`. Establish `hz : PiTensorProduct.map p ∘ₗ sumPl (fun w => fockAct1 P Q R S (0 : Mat P Q) + (c w * (0 : Mat P Q).trace) • 1) = 0`. Simplify using `[sumPl_zero]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hrange, ← LinearMap.range_comp, LinearMap.comp_assoc, hΨ, LinearMap.comp_id, LinearMap.range_eq_top]`. Conclude with `map_surj p fun w => (hp w).1`. Introduce `γ hγ f hf f₁ hf₁`. Take `⟨T, rfl⟩` from `pol_eq B M Φ hrange hf`. Take `⟨Yg, -, hY⟩` from `i_genex F E σ (Fin n) P Q B.emb (incM F Y.J) 1 A hcm hA γ hγ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsd` using `hact γ hγ Yg hY T`. Establish `h1` using `(i_actslaws F _ (Φ T) _ f₁).1 _ (fun t => map_zero _) hsd`. Establish `e` using `(i_actslaws F _ (Φ T) _ f₁).2.2.1 _ h1 hf₁`. Rewrite using `[← e, hpΦ, ← LinearMap.comp_apply, map_sumPl p _ (fun _ => 0) fun w => isLift_fock1 (hp w) _ _ (hxc w), sumPl_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk f hf f₁ hf₁`. Take `⟨T, rfl⟩` from `pol_eq B M Φ hrange hf`. Take `⟨γ, hγ, Yg, hgen, hKC, hγ1⟩` from `i_kline i_lineex F E σ (Fin n) P Q B.emb (incM F Y.J) 1 A Y.θ hcm hA hAθ k hk.1 hk.2`. Establish `hloc` using `i_locfin _ _ _ (fun w => locFin_fock1 P Q R S (Yg w) (hKC w) (c w * (Yg w).trace))`. Take `⟨U, hU, hSA⟩` from `i_expact F (Fin n × Fin d) _ Φ _ ((om.comp (MonoidHom.inl _ _)).comp γ) hloc (fun t l hl => hadm _ l hl) (fun T => hact γ hγ Yg hgen T)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `(i_actslaws F _ (Φ T) (Φ (U T)) f₁).2.1 _ (map_zero _) (hSA T)`. Rewrite `h1` using `[MonoidHom.comp_apply, hγ1]`. Establish `e` using `(i_actslaws F _ (Φ T) _ f₁).2.2.2.1 _ h1 hf₁`. Rewrite using `[← e, hpΦ, hpΦ]`. Establish `h0 : PiTensorProduct.map p ∘ₗ (0 : Module.End ℂ (Tens F P Q R S)) = sumPl (fun w => (0 : Module.End ℂ (N w).V)) ∘ₗ PiTensorProduct.map p`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sumPl_zero, LinearMap.comp_zero, LinearMap.zero_comp]`. Use `exp_equiv hU exp_id (map_sumPl p _ (fun _ => 0) fun w => isLift_fock1 (hp w) _ _ (hxc w)) h0 (v := T) (v' := T) rfl` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem side_quot (x t : InfinitePlace F → ℚ) (hp : ∀ w, IsLift (x w) (t w) (N w) (p w)) (c : InfinitePlace F → ℂ)
     (hxc : ∀ w, (x w : ℂ) + c w = 0) (hΨ : Ψ ∘ₗ Φ = LinearMap.id) (hrange : LinearMap.range Φ = M.Pol B.ψ B.emb)
@@ -365,9 +363,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (Φ : Tens F P Q R S →ₗ[ℂ] SInf F (Fin n × Fin d)) (Ψ : SInf F (Fin n × Fin d) →ₗ[ℂ] Tens F P Q R S)
 
 /- English proof (translation)
-Establish `hpΦ : ∀ T, (PiTensorProduct.map p ∘ₗ Ψ) (Φ T) = PiTensorProduct.map p T` using `fun T => by`. Rewrite using `[LinearMap.comp_apply, ← LinearMap.comp_apply Ψ Φ, hΨ, LinearMap.id_apply]`. Take `⟨T, rfl⟩` from `pol_eq B M Φ hrange hf`. Establish `hsd` using `hact γ hγ Yg hY T`. Establish `h1` using `(i_actslaws F _ (Φ T) _ f₁).1 _ (fun t => map_zero _) hsd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `(i_actslaws F _ (Φ T) _ f₁).2.2.1 _ h1 hf₁`. Rewrite using `[← e, hpΦ, hpΦ, ← LinearMap.comp_apply, map_sumPl p _ _ fun w => isLift_fock2 (hp w) _ _ _ (hct w)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem side_wlie (x t : InfinitePlace F → ℚ) (hp : ∀ w, IsLift (x w) (t w) (N w) (p w)) (c c' : InfinitePlace F → ℂ)
     (hct : ∀ w, c w = (t w : ℂ) + c' w) (hΨ : Ψ ∘ₗ Φ = LinearMap.id) (hrange : LinearMap.range Φ = M.Pol B.ψ B.emb)
@@ -388,9 +386,9 @@ theorem side_wlie (x t : InfinitePlace F → ℚ) (hp : ∀ w, IsLift (x w) (t w
   rfl
 
 /- English proof (translation)
-Establish `hpΦ : ∀ T, (PiTensorProduct.map p ∘ₗ Ψ) (Φ T) = PiTensorProduct.map p T` using `fun T => by`. Rewrite using `[LinearMap.comp_apply, ← LinearMap.comp_apply Ψ Φ, hΨ, LinearMap.id_apply]`. Take `⟨T, rfl⟩` from `pol_eq B M Φ hrange hf`. Establish `hloc` using `i_locfin _ _ _ (fun w => locFin_fock2 P Q R S (Yg w) (hKC w) (c w * (Yg w).trace))`. Take `⟨U, hU, hSA⟩` from `i_expact F (Fin n × Fin d) _ Φ _ ((om.comp (MonoidHom.inr _ _)).comp γ) hloc (fun t l hl => hadm _ l hl) (fun T => hact γ hγ Yg hY T)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `(i_actslaws F _ (Φ T) (Φ (U T)) f₁).2.1 _ (map_zero _) (hSA T)`. Rewrite `h1` using `[MonoidHom.comp_apply, hγ1]`. Establish `e` using `(i_actslaws F _ (Φ T) _ f₁).2.2.2.1 _ h1 hf₁`. Conclude with `⟨T, _, U, hpΦ T, by rw [← e, hpΦ], hU, map_sumPl p _ _ fun w => isLift_fock2 (hp w) _ _ _ (hct w)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem side_wcpt (x t : InfinitePlace F → ℚ) (hp : ∀ w, IsLift (x w) (t w) (N w) (p w)) (c c' : InfinitePlace F → ℂ)
     (hct : ∀ w, c w = (t w : ℂ) + c' w) (hΨ : Ψ ∘ₗ Φ = LinearMap.id) (hrange : LinearMap.range Φ = M.Pol B.ψ B.emb)
@@ -417,44 +415,40 @@ theorem side_wcpt (x t : InfinitePlace F → ℚ) (hp : ∀ w, IsLift (x w) (t w
 end SideW
 
 /- English proof (translation)
-Simplify using `[upq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zero_mem_upq (R S : ℕ) : (0 : Mat R S) ∈ upq R S := by simp [upq]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' h`. Take `⟨hb, hg, hc, hw, hw'⟩` from `h`. Use `choose N p p' hp hp' hirr hsc using fun w => onePlace a a' G.p G.q (B.mα w - B.mβ w) hg.even (hg.kappa w) (i_parity F E σ B a a' G X om om' ⟨hb, hg, hc, hw, hw'⟩ w) hg.eBig hg.aBig`. Use `choose A hA hAθ using fun w => i_frameex _ _ _ _ _ (hg.hV.sig w) (hg.hV.cartan w)`. Use `choose A' hA' hAθ' using fun w => i_frameex _ _ _ _ _ (hg.hV'.sig w) (hg.hV'.cartan w)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose C hC hCθ using fun w => i_frameex _ _ _ _ _ (hg.hW.sig w) (hg.hW.cartan w)`. Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F G.V.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[incM_map_piInf, one_smul]`. Conclude with `hA w`. Establish `hA1' : ∀ w, IsFrame ((1 : ℂ) • (incM F G.V'.J).map (piInf (B.emb w))) (A' w)` using `fun w => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[incM_map_piInf, one_smul]`. Conclude with `hA' w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F G.W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[incM_map_piInf]`. Conclude with `hC w`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `fr : Framed B.emb (incM F G.V.J) (incM F G.W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`. Establish `fr' : Framed B.emb (incM F G.V'.J) (incM F G.W.J) 1 Complex.I A' C` using `⟨one_mul _, hA1', hC1⟩`. Establish `hvl` using `i_vacline i_derex`. Establish `hfe` using `i_fockex i_derex`. Take `⟨Φ, hΦ⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C hb.cm hb.std fr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Φ', hΦ'⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M'.co 1 Complex.I A' C hb.cm hb.std fr'`. Establish `hr` using `i_polrange i_actslaws i_derex hvl F E σ _ _ _ _ _ _ G.V G.W G.M B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`. Establish `hr'` using `i_polrange i_actslaws i_derex hvl F E σ _ _ _ _ _ _ G.V' G.W G.M' B.ψ B.emb A' C Φ' hb.cm hb.std fr' hAθ' hCθ hΦ'`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `hw`. Establish `hwp' : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V'.J) (incM F G.W.J) G.M'.co X.α (X.α / X.β) om'` using `hw'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW2` using `hsec F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C Φ _ X.β B.mβ hb.cm hb.std fr hΦ hwp.1 hc.expβ`. Establish `hW2'` using `hsec F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M'.co 1 Complex.I A' C Φ' _ X.α B.mα hb.cm hb.std fr' hΦ' hwp'.1 hc.expα`. Take `⟨d, hd, hB1⟩` from `hwp.2.1`. Take `⟨d', hd', hB1'⟩` from `hwp'.2.1`. Establish `hW1` using `hfst F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co d 1 Complex.I A C Φ _ _ _ hb.cm hb.std fr hΦ hd hB1 (hasExp_div B.emb hc.expβ hc.expα)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hW1'` using `hfst F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M'.co d' 1 Complex.I A' C Φ' _ _ _ hb.cm hb.std fr' hΦ' hd' hB1' (hasExp_div B.emb hc.expα hc.expβ)`. Establish `hadm` using `fun g => (hwp.isUSplitting).adm g`. Establish `hadm'` using `fun g => (hwp'.isUSplitting).adm g`. Take `⟨Ψ, hΨ⟩` from `LinearMap.exists_leftInverse_of_injective Φ (LinearMap.ker_eq_bot.2 hΦ.1)`. Take `⟨Ψ', hΨ'⟩` from `LinearMap.exists_leftInverse_of_injective Φ' (LinearMap.ker_eq_bot.2 hΦ'.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `Rm : RealMaps F a a'` to `⟨PiTensorProduct ℂ fun w => (N w).V, PiTensorProduct.map p ∘ₗ Ψ, PiTensorProduct.map p' ∘ₗ Ψ'⟩`. Use `⟨Rm, ?_⟩` and prove the remaining obligations. Establish `hx : ∀ w, (((((B.mα w - B.mβ w : ℤ) : ℚ) / 2 : ℚ) : ℂ) + (((B.mβ w - B.mα w : ℤ) : ℂ) / 2)) = 0` using `fun w => by push_cast; ring`. Establish `hx' : ∀ w, ((-(((B.mα w - B.mβ w : ℤ) : ℚ) / 2) : ℚ) : ℂ) + (((B.mα w - B.mβ w : ℤ) : ℂ) / 2) = 0` using `fun w => by push_cast; ring`. Establish `hct : ∀ w, (B.mβ w : ℂ) / 2 = ((0 : ℚ) : ℂ) + (B.mβ w : ℂ) / 2` using `fun w => by push_cast; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hct' : ∀ w, (B.mα w : ℂ) / 2 = ((((B.mα w - B.mβ w : ℤ) : ℚ) / 2 : ℚ) : ℂ) + (B.mβ w : ℂ) / 2` using `fun w => by push_cast; ring`. Use `⟨side_quot B G.M om N p Φ Ψ _ _ hp _ hx hΨ hr hb.cm A hA1 hAθ hW1 hadm, side_quot B G.M' om' N p' Φ' Ψ' _ _ hp' _ hx' hΨ' hr' hb.cm A' hA1' hAθ' hW1' hadm', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ f hf f' hf' f₁ f₁' h1 h1' e`. Take `⟨Yg, -, hY⟩` from `i_genex F E σ (Fin (a + a')) _ _ B.emb (incM F G.W.J) Complex.I C hb.cm hC1 γ hγ`. Express the relevant statement in the definitionally equal form `(PiTensorProduct.map p ∘ₗ Ψ) f₁ = (PiTensorProduct.map p' ∘ₗ Ψ') f₁'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[side_wlie B G.M om N p Φ Ψ _ _ hp _ _ hct hΨ hr C hW2 γ hγ Yg hY hf h1, side_wlie B G.M' om' N p' Φ' Ψ' _ _ hp' _ _ hct' hΨ' hr' C hW2' γ hγ Yg hY hf' h1']`. Conclude with `congrArg _ e`. Introduce `k hk f hf f' hf' f₁ f₁' h1 h1' e`. Take `⟨γ, hγ, Yg, hgen, hKC, hγ1⟩` from `i_kline i_lineex F E σ (Fin (a + a')) _ _ B.emb (incM F G.W.J) Complex.I C G.W.θ hb.cm hC1 hCθ k hk.1 hk.2`. Take `⟨T, L, U, e1, e2, hU, hL⟩` from `side_wcpt B G.M om N p Φ Ψ _ _ hp _ _ hct hΨ hr C hW2 hadm γ hγ Yg hgen hKC hγ1 hf h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨T', L', U', e1', e2', hU', hL'⟩` from `side_wcpt B G.M' om' N p' Φ' Ψ' _ _ hp' _ _ hct' hΨ' hr' C hW2' hadm' γ hγ Yg hgen hKC hγ1 hf' h1'`. Express the relevant statement in the definitionally equal form `(PiTensorProduct.map p ∘ₗ Ψ) f₁ = (PiTensorProduct.map p' ∘ₗ Ψ') f₁'`. Express the relevant statement in the definitionally equal form `(PiTensorProduct.map p ∘ₗ Ψ) f = (PiTensorProduct.map p' ∘ₗ Ψ') f' at e`. Rewrite using `[e2, e2']`. Rewrite `e` using `[e1, e1']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `exp_equiv hU hU' hL hL' e`. Conclude with `(i_tensirr _ _ _ N fun w => ⟨hirr w, hsc w⟩).1`. Introduce `N0 hN0 _`. Use `(i_tensirr _ _ _ N fun w => ⟨hirr w, hsc w⟩).2 N0 fun w Z hZ y hy => ?_` and prove the remaining obligations. Take `⟨T, rfl⟩` from `map_surj p (fun w => (hp w).1) y`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `Yg : InfinitePlace F → Mat _ _` to `Function.update (fun _ => 0) w Z`. Establish `hYu : ∀ w', Yg w' ∈ upq _ _` using `fun w' => by`. Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Simplify `hZ` using `[Yg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `zero_mem_upq _ _` using `[Yg, Function.update_of_ne h]`. Take `⟨γ, hγ, hgen⟩` from `i_lineex F E σ (Fin (a + a')) _ _ B.emb (incM F G.W.J) Complex.I C hb.cm hC1 Yg hYu`. Establish `hpΦ : (PiTensorProduct.map p ∘ₗ Ψ) (Φ T) = PiTensorProduct.map p T`. Rewrite using `[LinearMap.comp_apply, ← LinearMap.comp_apply Ψ Φ, hΨ, LinearMap.id_apply]`. Establish `hf : Φ T ∈ G.M.Pol B.ψ B.emb` using `hr ▸ LinearMap.mem_range_self Φ T`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsd` using `hW2 γ hγ Yg hgen T`. Establish `h1` using `(i_actslaws F _ (Φ T) _ (Φ T)).1 _ (fun t => map_zero _) hsd`. Establish `hin` using `hN0 γ hγ (Φ T) hf _ h1 (by change (PiTensorProduct.map p ∘ₗ Ψ) (Φ T) ∈ N0; rw [hpΦ]; exact hy)`. Express the relevant statement in the definitionally equal form `(PiTensorProduct.map p ∘ₗ Ψ) _ ∈ N0 at hin`. Rewrite `hin` using `[side_wlie B G.M om N p Φ Ψ _ _ hp _ _ hct hΨ hr C hW2 γ hγ Yg hgen hf h1, hpΦ]`.
-
-Establish `hsum : sumPl (fun w' => (N w').act (Yg w') + ((B.mβ w' : ℂ) / 2 * (Yg w').trace) • 1) = atPl w ((N w).act Z) + (((B.mβ w : ℂ) / 2) * Z.trace) • 1`. Unfold `sumPl`. Rewrite using `[Finset.sum_eq_single w]`. Simplify using `[Yg, atPl_add, atPl_smul, atPl_one]`. Introduce `w' _ h`.
-
-Simplify using `[Yg, Function.update_of_ne h, atPl_zero]`. Simplify using the standard rewrite rules. Rewrite `hin` using `[hsum, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply]`. Simplify using `using N0.sub_mem hin (N0.smul_mem (((B.mβ w : ℂ) / 2) * Z.trace) hy)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem kReal_of_lie (hsec : GlobalTheory.RealLift.LieSecond) (hfst : GlobalTheory.RealLift.LieFirst) : GlobalTheory.ThK.KReal := by
   intro F E _ _ _ _ _ σ B a a' G X om om' h

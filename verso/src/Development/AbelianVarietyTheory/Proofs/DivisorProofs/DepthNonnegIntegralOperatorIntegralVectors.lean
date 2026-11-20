@@ -29,7 +29,7 @@ def intSub (v : AddValuation C (WithTop ℝ)) : Subring C where
     exact ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intSub {x : C} : x ∈ intSub v ↔ IsIntV v x := Iff.rfl
 
@@ -37,26 +37,26 @@ def HurInt (v : AddValuation C (WithTop ℝ)) {σ : Type} (g : MvPowerSeries σ 
   ∀ α, mfact α * coeff α g ∈ intSub v
 
 /- English proof (translation)
-The claim follows from `Finsupp.prod_fintype _ _ (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem mfact_fintype {σ : Type} [Fintype σ] (α : σ →₀ ℕ) :
     (mfact α : C) = ∏ i, ((α i).factorial : C) :=
   Finsupp.prod_fintype _ _ (by simp)
 
 /- English proof (translation)
-The claim follows from `Subring.prod_mem _ fun _ _ => natCast_mem _ _`.
+A detailed English derivation is pending.
 -/
 theorem mfact_mem {σ : Type} (α : σ →₀ ℕ) : (mfact α : C) ∈ intSub v :=
   Subring.prod_mem _ fun _ _ => natCast_mem _ _
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mvIsInt_iff {σ : Type} (g : MvPowerSeries σ C) : MvIsInt v g ↔ ∀ α, coeff α g ∈ intSub v :=
   Iff.rfl
 
 /- English proof (translation)
-Introduce `α`. Rewrite using `[← mem_intSub, coeff_mul]`. Conclude with `Subring.sum_mem _ fun p _ => Subring.mul_mem _ (hg _) (hh _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvIsInt_mul {σ : Type} {g h : MvPowerSeries σ C} (hg : MvIsInt v g) (hh : MvIsInt v h) :
     MvIsInt v (g * h) := by
@@ -66,7 +66,7 @@ theorem mvIsInt_mul {σ : Type} {g h : MvPowerSeries σ C} (hg : MvIsInt v g) (h
   exact Subring.sum_mem _ fun p _ => Subring.mul_mem _ (hg _) (hh _)
 
 /- English proof (translation)
-Introduce `α`. Rewrite using `[← mem_intSub, map_sum]`. Conclude with `Subring.sum_mem _ fun i _ => hg i α`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvIsInt_sum {σ ι : Type} (s : Finset ι) {g : ι → MvPowerSeries σ C}
     (hg : ∀ i, MvIsInt v (g i)) : MvIsInt v (∑ i ∈ s, g i) := by
@@ -75,27 +75,27 @@ theorem mvIsInt_sum {σ ι : Type} (s : Finset ι) {g : ι → MvPowerSeries σ 
   exact Subring.sum_mem _ fun i _ => hg i α
 
 /- English proof (translation)
-Introduce `α` and use `Subring.mul_mem _ (mfact_mem α) (hg α)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hurInt_of_mvIsInt {σ : Type} {g : MvPowerSeries σ C} (hg : MvIsInt v g) : HurInt v g :=
   fun α => Subring.mul_mem _ (mfact_mem α) (hg α)
 
 /- English proof (translation)
-Introduce `α` and use `by rw [map_add, mul_add]; exact Subring.add_mem _ (hg α) (hh α)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hurInt_add {σ : Type} {g h : MvPowerSeries σ C} (hg : HurInt v g) (hh : HurInt v h) :
     HurInt v (g + h) := fun α => by
   rw [map_add, mul_add]; exact Subring.add_mem _ (hg α) (hh α)
 
 /- English proof (translation)
-Introduce `α` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hurInt_zero {σ : Type} : HurInt v (0 : MvPowerSeries σ C) := fun α => by simp
 
 /- English proof (translation)
-Introduce `α`. Rewrite using `[coeff_one]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[mfact]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem hurInt_one {σ : Type} : HurInt v (1 : MvPowerSeries σ C) := by
   classical
@@ -106,7 +106,7 @@ theorem hurInt_one {σ : Type} : HurInt v (1 : MvPowerSeries σ C) := by
   · simp
 
 /- English proof (translation)
-Introduce `α`. Rewrite using `[map_sum, Finset.mul_sum]`. Conclude with `Subring.sum_mem _ fun i hi => hg i hi α`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hurInt_sum {σ ι : Type} (s : Finset ι) {g : ι → MvPowerSeries σ C}
     (hg : ∀ i ∈ s, HurInt v (g i)) : HurInt v (∑ i ∈ s, g i) := by
@@ -115,18 +115,18 @@ theorem hurInt_sum {σ ι : Type} (s : Finset ι) {g : ι → MvPowerSeries σ C
   exact Subring.sum_mem _ fun i hi => hg i hi α
 
 /- English proof (translation)
-Introduce `α` and use `by rw [coeff_C_mul, mul_left_comm]; exact Subring.mul_mem _ hc (hg α)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hurInt_C_mul {σ : Type} {c : C} (hc : c ∈ intSub v) {g : MvPowerSeries σ C}
     (hg : HurInt v g) : HurInt v (MvPowerSeries.C c * g) := fun α => by
   rw [coeff_C_mul, mul_left_comm]; exact Subring.mul_mem _ hc (hg α)
 
 /- English proof (translation)
-Introduce `α`. Rewrite using `[coeff_mul, Finset.mul_sum]`. Use `Subring.sum_mem _ fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `key : (mfact α : C) * (coeff p.1 g * coeff p.2 h) = (∏ i, (((p.1 i + p.2 i).choose (p.2 i) : ℕ) : C)) * ((mfact p.1 * coeff p.1 g) * (mfact p.2 * coeff p.2 h))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mfact_fintype, mfact_fintype, mfact_fintype, ← hp]`. Establish `: ∀ i, (((p.1 + p.2) i).factorial : C) = (((p.1 i + p.2 i).choose (p.2 i) : ℕ) : C) * ((p.1 i).factorial : C) * ((p.2 i).factorial : C)`. Introduce `i`. Rewrite using `[Finsupp.add_apply, ← Nat.add_choose_mul_factorial_mul_factorial (p.1 i) (p.2 i)]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[this, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `Subring.mul_mem _ (Subring.prod_mem _ fun i _ => natCast_mem _ _) (Subring.mul_mem _ (hg _) (hh _))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hurInt_mul {σ : Type} [Fintype σ] {g h : MvPowerSeries σ C} (hg : HurInt v g)
     (hh : HurInt v h) : HurInt v (g * h) := by
@@ -151,7 +151,7 @@ theorem hurInt_mul {σ : Type} [Fintype σ] {g h : MvPowerSeries σ C} (hg : Hur
     (Subring.mul_mem _ (hg _) (hh _))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using hurInt_one`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `hurInt_mul ih hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hurInt_pow {σ : Type} [Fintype σ] {g : MvPowerSeries σ C} (hg : HurInt v g) (n : ℕ) :
     HurInt v (g ^ n) := by
@@ -160,7 +160,7 @@ theorem hurInt_pow {σ : Type} [Fintype σ] {g : MvPowerSeries σ C} (hg : HurIn
   | succ n ih => rw [pow_succ]; exact hurInt_mul ih hg
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction _ (HurInt v) (fun _ _ h1 h2 => hurInt_mul h1 h2) hurInt_one (fun s _ => hg s _)`.
+A detailed English derivation is pending.
 -/
 theorem hurInt_finsuppProd' {σ τ : Type} [Fintype τ] (g : σ → ℕ → MvPowerSeries τ C)
     (hg : ∀ s e, HurInt v (g s e)) (d : σ →₀ ℕ) : HurInt v (d.prod g) :=
@@ -168,16 +168,16 @@ theorem hurInt_finsuppProd' {σ τ : Type} [Fintype τ] (g : σ → ℕ → MvPo
     (fun s _ => hg s _)
 
 /- English proof (translation)
-The claim follows from `hurInt_finsuppProd' _ (fun s e => hurInt_pow (ha s) e) d`.
+A detailed English derivation is pending.
 -/
 theorem hurInt_finsuppProd {σ τ : Type} [Fintype τ] (a : σ → MvPowerSeries τ C)
     (ha : ∀ s, HurInt v (a s)) (d : σ →₀ ℕ) : HurInt v (d.prod fun s e => a s ^ e) :=
   hurInt_finsuppProd' _ (fun s e => hurInt_pow (ha s) e) d
 
 /- English proof (translation)
-Introduce `α`. Rewrite using `[coeff_subst hS]`. Use `finsum_induction (fun x => (mfact α : C) * x ∈ intSub v) (by simp) (fun x y hx hy => by rw [mul_add]; exact Subring.add_mem _ hx hy) (fun d => ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Rewrite using `[mul_left_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subring.mul_mem _ (hf d) (hurInt_finsuppProd a ha d α)`.
+A detailed English derivation is pending.
 -/
 theorem hurInt_subst {σ τ : Type} [Fintype τ] {a : σ → MvPowerSeries τ C} (hS : HasSubst a)
     (ha : ∀ s, HurInt v (a s)) {f : MvPowerSeries σ C} (hf : MvIsInt v f) :
@@ -191,9 +191,9 @@ theorem hurInt_subst {σ τ : Type} [Fintype τ] {a : σ → MvPowerSeries τ C}
   exact Subring.mul_mem _ (hf d) (hurInt_finsuppProd a ha d α)
 
 /- English proof (translation)
-Rewrite using `[constantCoeff_subst hS]`. Use `finsum_induction (· ∈ intSub v) (Subring.zero_mem _) (fun x y hx hy => Subring.add_mem _ hx hy) (fun d => ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Use `Subring.mul_mem _ (hf d) ?_` and prove the remaining obligations. Rewrite using `[map_finsuppProd]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subring.prod_mem _ fun s _ => by show constantCoeff (a s ^ d s) ∈ _; rw [map_pow]; exact Subring.pow_mem _ (ha s) _`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_subst_mem {σ τ : Type} {a : σ → MvPowerSeries τ C} (hS : HasSubst a)
     (ha : ∀ s, constantCoeff (a s) ∈ intSub v) {f : MvPowerSeries σ C} (hf : MvIsInt v f) :
@@ -211,7 +211,7 @@ section CharZero
 variable [CharZero C]
 
 /- English proof (translation)
-Introduce `α`. Rewrite using `[← mem_intSub, coeff_X]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvIsInt_X {σ : Type} (s : σ) : MvIsInt v (X s : MvPowerSeries σ C) := by
   classical
@@ -222,23 +222,21 @@ theorem mvIsInt_X {σ : Type} (s : σ) : MvIsInt v (X s : MvPowerSeries σ C) :=
   · exact Subring.zero_mem _
 
 /- English proof (translation)
-Take `⟨D, hD, hJ⟩` from `GlobalTheory.T.exists_integral_invariant_derivation_log C v d G`. Establish `hS : HasSubst (expOf G)` using `hasSubst_of_constantCoeff_zero (isExp_expOf G).1`. It suffices to establish `h : ∀ n, ∀ α : Fin d →₀ ℕ, ∑ i, α i = n → ∀ f : MvPowerSeries (Fin d) C, MvIsInt v f → (mfact α : C) * coeff α (subst (expOf G) f) ∈ intSub v from fun α => h _ α rfl f hf`. Introduce `n`. Proceed by induction on `n with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `α hα f hf`. Establish `: α = 0`. Use extensionality with `i`. Conclude with `(Finset.sum_eq_zero_iff.mp hα) i (Finset.mem_univ i)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Substitute using the available equality.
 
-Substitute `this` using the available equality. Rewrite using `[coeff_zero_eq_constantCoeff]`. Simplify using `only [mfact, Finsupp.prod_zero_index, one_mul]`. Conclude with `constantCoeff_subst_mem hS (fun s => by rw [(isExp_expOf G).1 s]; exact Subring.zero_mem _) hf`. Consider the case `succ n ih`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `α hα f hf`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, α k ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Simplify using `[h] at hα`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨β, rfl⟩ : ∃ β, α = β + Finsupp.single k 1` from `⟨α - Finsupp.single k 1, by`. Use extensionality with `i`. Simplify using `only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use the proof step `omega⟩`. Establish `hsum : ∑ i, β i = n`. Establish `: ∑ i, (β + Finsupp.single k 1 : Fin d →₀ ℕ) i = ∑ i, β i + 1`. Simplify using `[Finset.sum_add_distrib, Finsupp.single_apply]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hm : (mfact (β + Finsupp.single k 1) : C) = mfact β * ((β k : C) + 1)`. Rewrite using `[mfact_fintype, mfact_fintype]`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ k), ← Finset.mul_prod_erase _ _ (Finset.mem_univ k)]`. Establish `: ∀ i ∈ Finset.univ.erase k, (((β + Finsupp.single k 1 : Fin d →₀ ℕ) i).factorial : C) = ((β i).factorial : C)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `i hi`. Simplify using `[Finsupp.single_apply, Ne.symm (Finset.ne_of_mem_erase hi)]`. Rewrite using `[Finset.prod_congr rfl this]`. Simplify using `[Nat.factorial_succ]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hm, mul_assoc, hJ f k β]`. Use `ih β hsum _ ?_` and prove the remaining obligations. Use `mvIsInt_sum _ fun l => mvIsInt_mul (hD k l) fun γ => ?_` and prove the remaining obligations. Use `show ((γ l : C) + 1) * coeff (γ + Finsupp.single l 1) f ∈ intSub v`. Conclude with `Subring.mul_mem _ (Subring.add_mem _ (natCast_mem _ _) (Subring.one_mem _)) (hf _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hurInt_subst_expOf {d : ℕ} (G : LogFGL v d) {f : MvPowerSeries (Fin d) C}
     (hf : MvIsInt v f) : HurInt v (subst (expOf G) f) := by
@@ -294,7 +292,7 @@ def dpow {σ : Type} (n : ℕ) (x : MvPowerSeries σ C) : MvPowerSeries σ C :=
   MvPowerSeries.C ((n.factorial : C)⁻¹) * x ^ n
 
 /- English proof (translation)
-Rewrite using `[dpow, ← mul_assoc, ← map_mul, mul_inv_cancel₀ (by exact_mod_cast n.factorial_ne_zero), map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_eq_dpow {σ : Type} (n : ℕ) (x : MvPowerSeries σ C) :
     x ^ n = MvPowerSeries.C (n.factorial : C) * dpow n x := by
@@ -302,13 +300,13 @@ theorem pow_eq_dpow {σ : Type} (n : ℕ) (x : MvPowerSeries σ C) :
     mul_inv_cancel₀ (by exact_mod_cast n.factorial_ne_zero), map_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[dpow, add_pow, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hmn : m ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hm)`. Simplify using `only [dpow]`. Establish `h1 : (n.choose m : C) ≠ 0` using `by exact_mod_cast (Nat.choose_pos hmn).ne'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (m.factorial : C) ≠ 0` using `by exact_mod_cast m.factorial_ne_zero`. Establish `h3 : ((n - m).factorial : C) ≠ 0` using `by exact_mod_cast (n - m).factorial_ne_zero`. Establish `hc : ((n.factorial : C))⁻¹ * (n.choose m : C) = ((m.factorial : C))⁻¹ * (((n - m).factorial : C))⁻¹`. Rewrite using `[← Nat.choose_mul_factorial_mul_factorial hmn]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[show ((n.choose m : ℕ) : MvPowerSeries σ C) = MvPowerSeries.C (n.choose m : C) from (map_natCast _ _).symm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = _ := by rw [hc, map_mul]; ring`.
+A detailed English derivation is pending.
 -/
 theorem dpow_add {σ : Type} (n : ℕ) (x y : MvPowerSeries σ C) :
     dpow n (x + y) = ∑ m ∈ Finset.range (n + 1), dpow m x * dpow (n - m) y := by
@@ -331,9 +329,9 @@ theorem dpow_add {σ : Type} (n : ℕ) (x y : MvPowerSeries σ C) :
     _ = _ := by rw [hc, map_mul]; ring
 
 /- English proof (translation)
-Introduce `α`. Rewrite using `[dpow, smul_eq_C_mul, mul_pow, ← map_pow, ← mul_assoc, ← map_mul, coeff_C_mul, coeff_X_pow]`. Use `split_ifs with h`. Substitute `h` using the available equality. Establish `hm : (mfact (Finsupp.single a n) : C) = n.factorial`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[mfact, Finsupp.prod_single_index]`. Rewrite using `[hm, mul_one, ← mul_assoc, mul_inv_cancel₀ (by exact_mod_cast n.factorial_ne_zero), one_mul]`. Conclude with `Subring.pow_mem _ hc n`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hurInt_dpow_smul_X {σ : Type} [Fintype σ] {c : C} (hc : c ∈ intSub v) (a : σ) (n : ℕ) :
     HurInt v (dpow n (c • (X a : MvPowerSeries σ C))) := by
@@ -350,9 +348,9 @@ theorem hurInt_dpow_smul_X {σ : Type} [Fintype σ] {c : C} (hc : c ∈ intSub v
   · simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `n`. Consider the cases of `n with`. Consider the case `zero => simpa [dpow] using (hurInt_one (v := v) (σ := σ))`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ n => simpa [dpow] using (hurInt_zero (v := v) (σ := σ))`. Consider the case `insert i s hi ih`. Introduce `n`. Rewrite using `[Finset.sum_insert hi, dpow_add]`. Conclude with `hurInt_sum _ fun m _ => hurInt_mul (hurInt_dpow_smul_X (hc i) _ _) (ih _)`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hurInt_dpow_linear {σ ι : Type} [Fintype σ] (s : Finset ι) (c : ι → C)
     (hc : ∀ i, c i ∈ intSub v) (x : ι → σ) :
@@ -370,11 +368,11 @@ theorem hurInt_dpow_linear {σ ι : Type} [Fintype σ] (s : Finset ι) (c : ι �
     exact hurInt_sum _ fun m _ => hurInt_mul (hurInt_dpow_smul_X (hc i) _ _) (ih _)
 
 /- English proof (translation)
-Introduce `α`. Rewrite using `[coeff_subst hS]`. Use `finsum_induction (fun x => (mfact α : C) * x ∈ intSub v) (by simp) (fun x y hx hy => by rw [mul_add]; exact Subring.add_mem _ hx hy) (fun d => ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Establish `hp : (d.prod fun s e => ℓ s ^ e) = MvPowerSeries.C (mfact d : C) * d.prod fun s e => dpow e (ℓ s)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [pow_eq_dpow]`. Rewrite using `[mfact, map_finsuppProd, ← Finsupp.prod_mul]`. Rewrite using `[hp, coeff_C_mul]`. Establish `: (mfact α : C) * (coeff d h * (mfact d * coeff α (d.prod fun s e => dpow e (ℓ s)))) = (mfact d * coeff d h) * (mfact α * coeff α (d.prod fun s e => dpow e (ℓ s)))` using `by ring`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subring.mul_mem _ (hh d) (hurInt_finsuppProd' _ (fun s e => hℓ s e) d α)`.
+A detailed English derivation is pending.
 -/
 theorem hurInt_subst_dpow {σ τ : Type} [Fintype τ] {ℓ : σ → MvPowerSeries τ C} (hS : HasSubst ℓ)
     (hℓ : ∀ s n, HurInt v (dpow n (ℓ s))) {h : MvPowerSeries σ C} (hh : HurInt v h) :
@@ -397,11 +395,11 @@ theorem hurInt_subst_dpow {σ τ : Type} [Fintype τ] {ℓ : σ → MvPowerSerie
 end CharZero
 
 /- English proof (translation)
-Introduce `C _ _ v κ _ _ d G ι _ _ u P hu hP`. Establish `hℓS : ∀ b, HasSubst (fun e : Fin (d b) => ∑ a, u b a e • (X ⟨b, a⟩ : MvPowerSeries (Σ b, ι b) C))` using `fun b => hasSubst_of_constantCoeff_zero (fun e => by simp)`. Establish `hexp : ∀ b (e : Fin (d b)), HurInt v (expOf (G b) e)` using `fun b e => by`. Use `hurInt_subst_expOf (G b) (mvIsInt_X (v := v) e)` as an intermediate fact. Rewrite `this` using `[subst_X (hasSubst_of_constantCoeff_zero (isExp_expOf (G b)).1)]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hE : ∀ x, HurInt v (expAlong G u x)` using `fun x => hurInt_subst_dpow (hℓS x.1) (fun e n => hurInt_dpow_linear Finset.univ _ (fun a => hu x.1 a e) _ n) (hexp x.1 x.2)`. Establish `hE0 : ∀ x, constantCoeff (expAlong G u x) = 0` using `fun x => constantCoeff_subst_eq_zero (hℓS x.1) (fun e => by simp) ((isExp_expOf (G x.1)).1 x.2)`. Establish `hES : HasSubst (expAlong G u)` using `hasSubst_of_constantCoeff_zero hE0`. Unfold `depth`. Use `le_iInf fun f => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg` using `hurInt_subst hES hE f.2`. Establish `hmem : derivAt0 P (subst (expAlong G u) f.1) ∈ intSub v` using `Subring.sum_mem _ fun α _ => by`. Rewrite using `[mul_assoc]`. Conclude with `Subring.mul_mem _ (hP α) (hg α)`. Conclude with `WithBot.coe_le_coe.mpr hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem depth_nonneg : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (κ : Type) [Fintype κ] [DecidableEq κ] (d : κ → ℕ) (G : ∀ b, LogFGL v (d b)) (ι : κ → Type) [∀ b, Fintype (ι b)] [∀ b, DecidableEq (ι b)] (u : ∀ b, ι b → Fin (d b) → C) (P : MvPolynomial (Σ b, ι b) C), (∀ b a e, IsIntV v (u b a e)) → (∀ α, IsIntV v (P.coeff α)) → 0 ≤ depth G u P := by
   intro C _ _ v κ _ _ d G ι _ _ u P hu hP

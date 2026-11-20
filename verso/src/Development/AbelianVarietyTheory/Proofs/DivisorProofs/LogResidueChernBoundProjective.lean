@@ -14,7 +14,7 @@ namespace GlobalTheory.LogResBound
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.boundary_section_pullback_bound`.
+A detailed English derivation is pending.
 -/
 theorem log_residue_first_chern_bound : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas d X) (m : ℕ) (α : LocPot X) (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ) (c : ℝ),
@@ -30,7 +30,7 @@ theorem log_residue_first_chern_bound : ∀ (d : ℕ) (X : Type) [TopologicalSpa
     ∃ C : ℝ, ∀ (R : ℕ) (T : Fin n → LocPot Y), (∀ k, T k = (α + LocPot.ofFun (w R)).pullback μ hμ.1 ∨ T k = α.pullback μ hμ.1) →
       mInt B (Fin.cons (L.pullback μ hμ.1) T) (fun y => w R (μ y)) ≤ C := GlobalTheory.T.boundary_section_pullback_bound
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.boundary_section_pullback_bound_two`.
+A detailed English derivation is pending.
 -/
 theorem divBound : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas d X) (m : ℕ) (α : LocPot X) (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ) (c : ℝ),
@@ -48,13 +48,13 @@ theorem divBound : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X
       ∀ (R : ℕ) (T : Fin n → LocPot Y), (∀ k, T k = (α + LocPot.ofFun (w R)).pullback μ hμ.1 ∨ T k = α.pullback μ hμ.1) → ∀ k, 1 ≤ e 0 k →
         -C ≤ mInt (Bk k) (fun i => (T i).pullback Subtype.val continuous_subtype_val) (fun y => w R (μ y.1)) := GlobalTheory.T.boundary_section_pullback_bound_two
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.section_pullback_holomorphic`.
+A detailed English derivation is pending.
 -/
 theorem secPull : ∀ (d n : ℕ) (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y] (A : FinHolAtlas d X)
     (B : FinHolAtlas n Y) (μ : Y → X) (hμ : HoloMap B A μ) (L : LocPot X) (s : X → X → ℂ),
     IsSection A L s → IsSection B (L.pullback μ hμ.1) (fun y z => s (μ y) (μ z)) := GlobalTheory.T.section_pullback_holomorphic
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.snc_pullback_section_bound`.
+A detailed English derivation is pending.
 -/
 theorem finCmp : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas d X) (L : LocPot X) (s : X → X → ℂ), IsPotential A L → IsSection A L s →
@@ -68,7 +68,7 @@ theorem finCmp : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] 
       ENNReal.ofReal (mInt B Φ (fun y => -logNormSec L s (μ y))) := GlobalTheory.T.snc_pullback_section_bound
 
 /- English proof (translation)
-Establish `: ∀ j y, locDens B Φ j y = locDens B Ψ j y`. Introduce `j y`. Simplify using `only [locDens, h]`. Simplify using `only [mInt, integralWith, this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mInt_congr_φ {e : ℕ} {Y : Type} [TopologicalSpace Y] (B : FinHolAtlas e Y) (Φ Ψ : Fin e → LocPot Y)
     (h : ∀ i, (Φ i).φ = (Ψ i).φ) (g : Y → ℝ) : mInt B Φ g = mInt B Ψ g := by
@@ -77,14 +77,14 @@ theorem mInt_congr_φ {e : ℕ} {Y : Type} [TopologicalSpace Y] (B : FinHolAtlas
   simp only [mInt, integralWith, this]
 
 /- English proof (translation)
-Simplify using `[mInt, integralWith]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mInt_zero {e : ℕ} {Y : Type} [TopologicalSpace Y] (B : FinHolAtlas e Y) (Φ : Fin e → LocPot Y) :
     mInt B Φ (fun _ => 0) = 0 := by
   simp [mInt, integralWith]
 
 /- English proof (translation)
-Introduce `j K hK hc`. Use `(h j K hK hc).neg` as an intermediate fact. Simplify `this` using `[neg_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem MIntegrable.neg' {e : ℕ} {Y : Type} [TopologicalSpace Y] {B : FinHolAtlas e Y} {Φ : Fin e → LocPot Y}
     {f : Y → ℝ} (h : MIntegrable B Φ f) : MIntegrable B Φ (fun y => -f y) := by
@@ -93,7 +93,7 @@ theorem MIntegrable.neg' {e : ℕ} {Y : Type} [TopologicalSpace Y] {B : FinHolAt
   simpa [neg_mul] using this
 
 /- English proof (translation)
-Establish `hp` using `isPotentialPullback A B μ hμ _ (isPotential_ofFun A f hf)`. Introduce `j t ht`. Conclude with `hp.1 ((B.chart j).symm t) j t ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_comp_holo {d n : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (A : FinHolAtlas d X)
     (B : FinHolAtlas n Y) (μ : Y → X) (hμ : HoloMap B A μ) (f : X → ℝ) (hf : A.Smooth f) :
@@ -103,7 +103,7 @@ theorem smooth_comp_holo {d n : ℕ} {X Y : Type} [TopologicalSpace X] [Topologi
   exact hp.1 ((B.chart j).symm t) j t ht
 
 /- English proof (translation)
-Introduce `y`. Take `⟨χ, hc, hy, κ, hinj, hW, hi⟩` from `h y`. Take `⟨hsub, u, hu, hu0, hprod⟩` from `hi 0`. Simplify using `only [Fin.cons_zero] at hsub hprod`. Conclude with `⟨χ, hc, hy, hsub, κ, hinj, hW, u, hu, hu0, hprod⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem jointSNC_zero {d n : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] {A : FinHolAtlas d X}
     {B : FinHolAtlas n Y} {μ : Y → X} (hμ : HoloMap B A μ) {m r : ℕ} (L : LocPot X) (Λ : Fin m → LocPot X)
@@ -117,7 +117,7 @@ theorem jointSNC_zero {d n : ℕ} {X Y : Type} [TopologicalSpace X] [Topological
   exact ⟨χ, hc, hy, hsub, κ, hinj, hW, u, hu, hu0, hprod⟩
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> funext k <;> refine Fin.cases ?_ (fun k => ?_) k <;>`. Apply the tactic sequence `simp only [Function.comp_apply, Equiv.swap_apply_def, Fin.cons_zero, Fin.cons_succ] <;>`. Apply the tactic sequence `split_ifs <;> simp_all [Fin.ext_iff, Fin.val_succ] <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mix_swap {β : Type} (P Q : β) (n i : ℕ) (hi : i < n + 1) :
     ((fun k : Fin (n + 1) => if (k : ℕ) < i + 1 then P else Q) ∘ Equiv.swap (0 : Fin (n + 1)) ⟨i, hi⟩ =
@@ -129,31 +129,31 @@ theorem mix_swap {β : Type} (P Q : β) (n i : ℕ) (hi : i < n + 1) :
     split_ifs <;> simp_all [Fin.ext_iff, Fin.val_succ] <;> omega
 
 /- English proof (translation)
-Introduce `d X _ _ _ A m α Λ σ c hBS L s hL hs hs1 n Y _ _ _ B hproj μ hμ r W e hJ hRD w K hw hpsh hbd`. Consider the cases of `n with`. Consider the case `zero => exact ⟨0, fun R i hi => absurd hi (Nat.not_lt_zero _)⟩`. Consider the case `succ n`. Take `⟨C1, hC1⟩` from `log_residue_first_chern_bound d X A m α Λ σ c hBS L s hL hs hs1 n Y B hproj μ hμ r W e hJ w K hw hpsh hbd`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨Bk, hBk, C2, hC2⟩` from `divBound d X A m α Λ σ c hBS L s hL hs hs1 n Y B hproj μ hμ r W e hJ hRD w K hw hpsh hbd`. Use `⟨C1 + ∑ k, (e 0 k : ℝ) * C2, fun R i hi => ?_⟩` and prove the remaining obligations. Establish `hα : IsPotential A α` using `hBS.1`. Establish `hL' : IsPotential B (L.pullback μ hμ.1)` using `isPotentialPullback A B μ hμ L hL`. Establish `hs'` using `secPull d (n + 1) X Y A B μ hμ L s hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsnc` using `jointSNC_zero hμ L Λ s σ W e hJ`. Establish `hΦpot : IsPotential B ((α + LocPot.ofFun (w R)).pullback μ hμ.1)` using `isPotentialPullback A B μ hμ _ (isPotentialAdd A α _ hα (isPotential_ofFun A _ (hw R)))`. Establish `hapot : IsPotential B (α.pullback μ hμ.1)` using `isPotentialPullback A B μ hμ α hα`. Establish `hv : B.Smooth (fun y => w R (μ y))` using `smooth_comp_holo A B μ hμ (w R) (hw R)`. Establish `hsw` using `mix_swap ((α + LocPot.ofFun (w R)).pullback μ hμ.1) (α.pullback μ hμ.1) n i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨T, hT⟩ : ∃ T : Fin n → LocPot Y, T = fun k : Fin n => if (k : ℕ) + 1 ≤ i then (α + LocPot.ofFun (w R)).pullback μ hμ.1 else α.pullback μ hμ.1` from `⟨_, rfl⟩`. Rewrite `hsw` using `[← hT]`. Establish `hTmix : ∀ k, T k = (α + LocPot.ofFun (w R)).pullback μ hμ.1 ∨ T k = α.pullback μ hμ.1`. Introduce `k`. Rewrite using `[hT]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Use `split_ifs`. Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`. Establish `hTpot : ∀ k, IsPotential B (T k)` using `fun k => by`.
+Simplify by unfolding definitions. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases hTmix k with h | h <;> rw [h] <;> assumption`. Establish `hcons : ∀ P : LocPot Y, IsPotential B P → ∀ k, IsPotential B ((Fin.cons P T : Fin (n + 1) → LocPot Y) k)` using `fun P hP k => by`. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `using hP`. Simplify using `using hTpot k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hint : ∀ Φ : Fin (n + 1) → LocPot Y, (∀ k, IsPotential B (Φ k)) → MIntegrable B Φ (fun y => -logNormSec L s (μ y))` using `fun Φ hΦ => MIntegrable.neg' (logNormIntegrable B _ _ (e 0) W hL' hs' hsnc Φ hΦ)`. Establish `e1 : mInt B (fun k : Fin (n + 1) => if (k : ℕ) < i + 1 then (α + LocPot.ofFun (w R)).pullback μ hμ.1 else α.pullback μ hμ.1) (fun y => -logNormSec L s (μ y)) = mInt B (Fin.cons ((α + LocPot.ofFun (w R)).pullback μ hμ.1) T) (fun y => -logNormSec L s (μ y))`. Rewrite using `[← mIntSymm B _ (Equiv.swap (0 : Fin (n + 1)) ⟨i, hi⟩), hsw.1]`. Establish `e2 : mInt B (fun k : Fin (n + 1) => if (k : ℕ) < i then (α + LocPot.ofFun (w R)).pullback μ hμ.1 else α.pullback μ hμ.1) (fun y => -logNormSec L s (μ y)) = mInt B (Fin.cons (α.pullback μ hμ.1) T) (fun y => -logNormSec L s (μ y))`. Rewrite using `[← mIntSymm B _ (Equiv.swap (0 : Fin (n + 1)) ⟨i, hi⟩), hsw.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have e3 : mInt B (Fin.cons ((α + LocPot.ofFun (w R)).pullback μ hμ.1) T) (fun y => -logNormSec L s (μ y)) = mInt B (Fin.cons (α.pullback μ hμ.1 + LocPot.ofFun (fun y => w R (μ y))) T) (fun y => -logNormSec L s (μ y)) := mInt_congr_φ B _ _ (fun k => by refine Fin.cases ?_ (fun k = …`. Establish `e4` using `mIntAdd B (α.pullback μ hμ.1) (LocPot.ofFun (fun y => w R (μ y))) T hapot (isPotential_ofFun B _ hv) hTpot (fun y => -logNormSec L s (μ y)) (hint _ (hcons _ hapot)) (hint _ (hcons _ (isPotential_ofFun B _ hv)))`. Establish `e5 : mInt B (Fin.cons (LocPot.ofFun (fun y => w R (μ y))) T) (fun y => -logNormSec L s (μ y)) = -mInt B (Fin.cons (LocPot.ofFun (fun y => w R (μ y))) T) (logNormSec (L.pullback μ hμ.1) (fun y z => s (μ y) (μ z)))`. Establish `hc` using `hcons _ (isPotential_ofFun B _ hv)`. Use `mIntLinear B _ hc (-1) (logNormSec (L.pullback μ hμ.1) (fun y z => s (μ y) (μ z))) (fun _ => 0) (logNormIntegrable B _ _ (e 0) W hL' hs' hsnc _ hc) (mIntegrableCont B _ hc _ continuous_const)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[mInt_zero]`. Establish `hfun : (fun y => -logNormSec L s (μ y)) = (fun x => -1 * logNormSec (L.pullback μ hμ.1) (fun y z => s (μ y) (μ z)) x + 0)`. Use function extensionality and compare the values at `y`. Simplify using `[logNormSec, LocPot.pullback]`. Rewrite using `[hfun, this]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e6` using `poincareLelong B (L.pullback μ hμ.1) (fun y z => s (μ y) (μ z)) (e 0) W Bk hL' hs' hsnc hBk (fun y => w R (μ y)) hv T hTpot`. Establish `hdiv : ∀ k, -((e 0 k : ℝ) * mInt (Bk k) (fun i => (T i).pullback Subtype.val continuous_subtype_val) ((fun y => w R (μ y)) ∘ Subtype.val)) ≤ (e 0 k : ℝ) * C2`. Introduce `k`. Break down `Nat.eq_zero_or_pos (e 0 k) with h0 | h0` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`. Establish `h1` using `hC2 R T hTmix k h0`. Express the relevant statement in the definitionally equal form `-C2 ≤ mInt (Bk k) (fun i => (T i).pullback Subtype.val continuous_subtype_val) ((fun y => w R (μ y)) ∘ Subtype.val) at h1`. Establish `he : (0 : ℝ) ≤ e 0 k` using `by positivity`. Establish `h2` using `mul_le_mul_of_nonneg_left h1 he`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : -(∑ k, (e 0 k : ℝ) * mInt (Bk k) (fun i => (T i).pullback Subtype.val continuous_subtype_val) ((fun y => w R (μ y)) ∘ Subtype.val)) ≤ ∑ k, (e 0 k : ℝ) * C2`. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_le_sum (fun k _ => hdiv k)`. Establish `hc1` using `hC1 R T hTmix`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[e1, e2, e3, e4, e5, e6]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem step : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas d X) (m : ℕ) (α : LocPot X) (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ) (c : ℝ),
@@ -244,15 +244,15 @@ theorem step : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T
   linarith
 
 /- English proof (translation)
-Introduce `d X _ _ _ A m α Λ σ c hBS L s hL hs hs1 n Y _ _ _ B hproj μ hμ r W e hJ hRD w K hw hpsh hbd _ _`. Establish `hα : IsPotential A α` using `hBS.1`. Take `⟨C, hC⟩` from `step d X A m α Λ σ c hBS L s hL hs hs1 n Y B hproj μ hμ r W e hJ hRD w K hw hpsh hbd`. Establish `hsnc` using `jointSNC_zero hμ L Λ s σ W e hJ`. Set `J : ℕ → ℕ → ℝ` to `fun R i => mInt B (fun k : Fin n => if (k : ℕ) < i then (α + LocPot.ofFun (w R)).pullback μ hμ.1 else α.pullback μ hμ.1) (fun y => -logNormSec L s (μ y))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h0 : ∀ R, J R 0 = J 0 0` using `by intro R; simp [J]`. Establish `hind : ∀ R i, i ≤ n → J R i ≤ J 0 0 + i * C`. Introduce `R i`. Proceed by induction on `i with`. Consider the case `zero => intro _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `[h0 R]`. Consider the case `succ i ih`. Introduce `hi`. Establish `h1` using `hC R i (by omega)`. Establish `h2` using `ih (by omega)`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Simplify using `only [J] at h1 h2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨ENNReal.ofReal (J 0 0 + n * C), ENNReal.ofReal_lt_top, fun R => ?_⟩` and prove the remaining obligations. Establish `hn : J R n = mInt B (fun _ => (α + LocPot.ofFun (w R)).pullback μ hμ.1) (fun y => -logNormSec L s (μ y))` using `by simp [J]`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hp : IsPotential A (α + LocPot.ofFun (w R))` using `isPotentialAdd A α _ hα (isPotential_ofFun A _ (hw R))`. Use `le_trans (finCmp d X A L s hL hs hs1 n Y B μ hμ r W (e 0) hsnc (fun _ => (α + LocPot.ofFun (w R)).pullback μ hμ.1) (fun _ => isPotentialPullback A B μ hμ _ hp) (fun _ => GlobalTheory.Mean4O.Deg.psh_pullback A B μ hμ hp (hpsh R))) (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Rewrite using `[← hn]`. Conclude with `hind R n le_rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bound : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas d X) (m : ℕ) (α : LocPot X) (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ) (c : ℝ),

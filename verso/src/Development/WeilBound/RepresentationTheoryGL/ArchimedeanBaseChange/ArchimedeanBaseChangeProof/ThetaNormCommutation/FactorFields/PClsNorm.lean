@@ -15,7 +15,7 @@ theorem thetaGL_val' {k : Type} [CommRing k] (n : ℕ) (c : k →+* k) (g : GL (
     (thetaGL n c g).val = GlobalTheory.Tw.Phi n k * ((g⁻¹).val.map c)ᵀ * (GlobalTheory.Tw.Phi n k)ᵀ := rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GramTwistNorm.phi_mul_transpose n`.
+A detailed English derivation is pending.
 -/
 theorem phi_mul_transpose_eq_one {k : Type} [CommRing k] (n : ℕ) : GlobalTheory.Tw.Phi n k * (GlobalTheory.Tw.Phi n k)ᵀ = 1 :=
   GlobalTheory.GramTwistNorm.phi_mul_transpose n
@@ -27,14 +27,14 @@ theorem units_map_val {k : Type} [Field k] {n : ℕ} {B : Type} [CommRing B]
     (ρ : B →+* Matrix (Fin n) (Fin n) k) (t : Bˣ) : (Units.map ρ.toMonoidHom t).val = ρ t := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem units_map_inv_val {k : Type} [Field k] {n : ℕ} {B : Type} [CommRing B]
     (ρ : B →+* Matrix (Fin n) (Fin n) k) (t : Bˣ) : ((Units.map ρ.toMonoidHom t)⁻¹).val = ρ (↑t⁻¹ : B) := by
   rw [← map_inv]; rfl
 
 /- English proof (translation)
-Rewrite using `[thetaGL_val', units_map_inv_val]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ρ (↑t⁻¹ : B) * (δ.val * GlobalTheory.Tw.Phi n k) * (GlobalTheory.Tw.Phi n k)ᵀ := by rw [← hF.adj]`. Use `_ = ρ (↑t⁻¹ : B) * δ.val := by rw [Matrix.mul_assoc, Matrix.mul_assoc, phi_mul_transpose_eq_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem delta_theta {k : Type} [Field k] {n : ℕ} {c : k →+* k} {δ : GL (Fin n) k} {s : k} {B : Type} [CommRing B]
     {d : B} {ρ : B →+* Matrix (Fin n) (Fin n) k} (hF : IsFrame c δ s d ρ) (t : Bˣ) :
@@ -51,9 +51,9 @@ end PositivityTheory.Rg.BcB.G3.ClsNormP
 namespace PositivityTheory.Rg.BcB.G3
 
 /- English proof (translation)
-Introduce `k _ _ n c _ δ s _ _ B _ d ρ hF t`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [pt, map_mul, Units.val_mul]`. Rewrite using `[ClsNormP.units_map_val]`. Establish `h` using `ClsNormP.delta_theta hF t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ρ (t : B) * ρ (↑t⁻¹ : B) = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = δ.val * (thetaGL n c δ).val := by`. Rewrite using `[h, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clsNorm_pf : ClsNorm := by
   intro k _ _ n c _ δ s _ _ B _ d ρ hF t

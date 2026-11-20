@@ -23,7 +23,7 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory.MixPolar
 
 /- English proof (translation)
-Use `(RingHom.injective_iff_ker_eq_bot σ).2 (Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_)` and prove the remaining obligations. Rewrite using `[RingHom.comap_ker, (RingHom.ext_int _ (Int.castRingHom ℂ) : σ.comp (algebraMap ℤ k) = _)]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 Int.cast_injective`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_emb {k : Type} [CommRing k] [IsDomain k] [Module.Finite ℤ k] (σ : k →+* ℂ) :
     Function.Injective σ := by
@@ -34,11 +34,11 @@ theorem injective_emb {k : Type} [CommRing k] [IsDomain k] [Module.Finite ℤ k]
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}
 
 /- English proof (translation)
-Use `h.isDomain` as an intermediate fact. Use `h.finite` as an intermediate fact. Establish `hnull (ε : ℤˣ) : (N.φ σ).chernPart D ε (ptsIn p σ (nonzeroLocus s))ᶜ = 0`. Use `GlobalTheory.T.mixedChernFormSignedPartMeasure_compl_open_genericPoint_eq_zero k X p σ (injective_emb σ) h.isProjOver D (fun _ => MLine.ofHerm N σ) ε (nonzeroLocus s) hs` as an intermediate fact. Rewrite `this` using `[part_const]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `key (ε : ℤˣ) : ∫ y in offSupp p σ (M.div (isRatSec_ratOfSec s hs)), logNorm (M.φ σ) (ratOfSec s hs) y ∂(N.φ σ).chernPart D ε = ∫ y, (MLine.ofHerm M σ).logSec s y ∂(N.φ σ).chernPart D ε`. Establish `hae : ∀ᵐ y ∂(N.φ σ).chernPart D ε, y ∈ ptsIn p σ (nonzeroLocus s)` using `ae_iff.2 (hnull ε)`. Establish `e : offSupp p σ (M.div (isRatSec_ratOfSec s hs)) = ptsIn p σ (nonzeroLocus s)` using `offSupp_divOfSec`. Rewrite using `[e, Measure.restrict_eq_self_of_ae_mem hae]`. Conclude with `integral_congr_ae (hae.mono fun y hy => logNorm_ratOfSec _ hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Weight.chernInt, key, key, Mix.int, part_const, part_const]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chernInt_eq (h : IsArithVar p D) (N M : HermLB p) (s : M.B.Sec) (hs : genericPoint X ∈ nonzeroLocus s)
     (σ : k →+* ℂ) :
@@ -65,13 +65,13 @@ namespace GlobalTheory.MixPolar
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] {p : X ⟶ Sp k} {D : ℕ}
 
 /- English proof (translation)
-Use `haveI := CxPts.secondCountableTopology_of_isProjOver σ h.isProjOver`. Establish `e : ∀ F : (Fin D → ℤ) → ℝ, ∑ S : Finset (Fin D), (-1 : ℝ) ^ S.card * F (fun i => if i ∈ S then -1 else 0) = FibreProj.pol F` using `fun F => by`. Unfold `FibreProj.pol`. Use `congr!`. Set `Lj : Option (Finset (Fin D)) → Fin D → MLine p σ` to `fun j => j.elim (fun i => MLine.ofHerm (L i) σ) (fun S _ => MLine.ofHerm (ArInt.comb L (fun i => if i ∈ S then -1 else 0)) σ)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `a : Option (Finset (Fin D)) → ℝ` to `fun j => j.elim (-(D.factorial : ℝ)) (fun S => (-1) ^ S.card)`. Establish `hd : ∀ c : AlgChart p σ D, ∀ y ∈ c.e.source, ∑ j, a j * dens (Lj j) c y = 0`. Introduce `c y hy`. Use `GlobalTheory.T.polarisation_topChernDensity_eq_factorial_mixed k X p σ D L c y hy` as an intermediate fact. Rewrite `this` using `[← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fintype.sum_option, a, Lj, Option.elim, dens_const]`. Use `beta_reduce at this`. Simplify using `only [MLine.ofHerm] at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hi : ∀ j, Intg (Lj j) ((MLine.ofHerm M σ).logSec s)` using `fun j => GlobalTheory.T.integrable_logNormSection_arithmeticVariety hP k X p D h σ (Lj j) (MLine.ofHerm M σ) s hs`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.T.linear_relation_mixed_densities_integrals k X p σ D _ a Lj hd _ hi` as an intermediate fact. Simplify using `only [Fintype.sum_option, a, Lj, Option.elim] at this`. Rewrite using `[← e]`. Use `beta_reduce`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pol_int (hP : GlobalTheory.Published.Principalisation) (h : IsArithVar p D) (L : Fin D → HermLB p) (M : HermLB p)
     (s : M.B.Sec) (hs : genericPoint X ∈ nonzeroLocus s) (σ : k →+* ℂ) :
@@ -106,9 +106,9 @@ end GlobalTheory.MixPolar
 open GlobalTheory.MixPolar in
 
 /- English proof (translation)
-Introduce `hP k _ X _ _ p D h L M s hs`. Use `h.finite_emb` as an intermediate fact. Use `haveI := Fintype.ofFinite (k →+* ℂ)`. Simplify using `only [MixHt.mixArch, HermLB.archInt, finsum_eq_sum_of_fintype, chernInt_eq h]`. Rewrite using `[FibreProj.pol_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [pol_int hP h L M s hs]`. Rewrite using `[← Finset.mul_sum, mul_div_cancel_left₀ _ (by positivity)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MixPolar.mixArch_eq_sum : GlobalTheory.Published.Principalisation → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (L : Fin D → HermLB p) (M : HermLB p) (s : M.B.Sec) (hs : genericPoint X ∈ nonzeroLocus s), MixHt.mixArch L M (isRatSec_ratOfSec s hs) = ∑ᶠ σ : k →+* ℂ, Mix.int (fun i => MLine.ofHerm (L i) σ) ((MLine.ofHerm M σ).logSec s) := by
   intro hP k _ X _ _ p D h L M s hs

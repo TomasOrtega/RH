@@ -11,15 +11,15 @@ open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `gl_action_eq_derivation LL S a b F`.
+A detailed English derivation is pending.
 -/
 theorem gl_operator_apply_derivation (LL : Letters ι) (S : Set ι) (a b : Fin n) (F : MvPolynomial (ι × Fin n) K) :
     glOps K n LL S a b F = glDerivation K LL S a b F := gl_action_eq_derivation LL S a b F
 
 /- English proof (translation)
-Use `LinearMap.ext fun F => ?_` and prove the remaining obligations. Establish `h` using `congrArg (fun D : Derivation K (MvPolynomial (ι × Fin n) K) (MvPolynomial (ι × Fin n) K) => D F) (gl_derivation_lie_bracket (K := K) LL S a b c d)`. Simplify using `only [Derivation.commutator_apply] at h`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, gl_operator_apply_derivation]`. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases h1 : b = c <;> by_cases h2 : d = a <;> simp [h1, h2, gl_operator_apply_derivation]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem polynomial_gl_commutation (LL : Letters ι) (S : Set ι) (a b c d : Fin n) :
     glOps K n LL S a b * glOps K n LL S c d - glOps K n LL S c d * glOps K n LL S a b =
@@ -33,11 +33,11 @@ theorem polynomial_gl_commutation (LL : Letters ι) (S : Set ι) (a b c d : Fin 
   by_cases h1 : b = c <;> by_cases h2 : d = a <;> simp [h1, h2, gl_operator_apply_derivation]
 
 /- English proof (translation)
-Establish `h0 : ⁅glDerivation K LL S a b, glDerivation K LL S' c d⁆ = 0`. Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce and unpack `⟨l, e⟩`. Rewrite using `[Derivation.commutator_apply]`. Distinguish the cases in `hl : l ∈ S`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hl' : l ∉ S'` using `fun h => (Set.disjoint_left.1 hd) hl h`. Simplify using `only [gl_derivation_variable, hl, hl', if_true, if_false, map_zero]`. Apply the tactic sequence `split_ifs <;> simp [gl_derivation_variable, hl']`. Apply the tactic sequence `simp only [gl_derivation_variable, hl, if_false, map_zero] split_ifs <;> simp [gl_derivation_variable, hl]`. Use `LinearMap.ext fun F => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `congrArg (fun D : Derivation K (MvPolynomial (ι × Fin n) K) (MvPolynomial (ι × Fin n) K) => D F) h0`. Simplify using `only [Derivation.commutator_apply] at h`. Simplify using `only [Module.End.mul_apply, gl_operator_apply_derivation]`. Conclude with `sub_eq_zero.1 h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem disjoint_letters_commute (LL : Letters ι) (S S' : Set ι) (hd : Disjoint S S') (a b c d : Fin n) :
     glOps K n LL S a b * glOps K n LL S' c d = glOps K n LL S' c d * glOps K n LL S a b := by
@@ -59,9 +59,9 @@ theorem disjoint_letters_commute (LL : Letters ι) (S S' : Set ι) (hd : Disjoin
   exact sub_eq_zero.1 h
 
 /- English proof (translation)
-Establish `h0 : glDerivation K LL S' a b = glDerivation K LL S a b + glDerivation K LL (S' \ S) a b`. Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce and unpack `⟨l, e⟩`. Rewrite using `[Derivation.add_apply]`. Distinguish the cases in `hl : l ∈ S`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hl' : l ∈ S'` using `hs hl`. Simplify using `[gl_derivation_variable, hl, hl']`. Apply the tactic sequence `by_cases hl' : l ∈ S' <;> simp [gl_derivation_variable, hl, hl']`. Use `LinearMap.ext fun F => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, gl_operator_apply_derivation, h0, Derivation.add_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem gl_operator_union_add (LL : Letters ι) (S S' : Set ι) (hs : S ⊆ S') (a b : Fin n) :
     glOps K n LL S' a b = glOps K n LL S a b + glOps K n LL (S' \ S) a b := by
@@ -78,7 +78,7 @@ theorem gl_operator_union_add (LL : Letters ι) (S S' : Set ι) (hs : S ⊆ S') 
   simp only [LinearMap.add_apply, gl_operator_apply_derivation, h0, Derivation.add_apply]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.pderiv_monomial, MvPolynomial.X, MvPolynomial.monomial_mul, one_mul, add_comm (Finsupp.single v 1)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem variable_mul_pderiv_monomial {σ : Type} (v w : σ) (m : σ →₀ ℕ) (c : K) :
     (X v : MvPolynomial σ K) * pderiv w (monomial m c) =
@@ -88,9 +88,9 @@ theorem variable_mul_pderiv_monomial {σ : Type} (v w : σ) (m : σ →₀ ℕ) 
 
 open Classical in
 /- English proof (translation)
-Simplify using `only [glDerivation, derivation_finset_sum_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `split_ifs`. Simplify using `only [Derivation.smul_apply, smul_eq_mul, variable_mul_pderiv_monomial]`. Simplify using `only [Derivation.neg_apply, Derivation.smul_apply, smul_eq_mul, variable_mul_pderiv_monomial]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem gl_derivation_monomial (LL : Letters ι) (S : Set ι) (a b : Fin n) (m : ι × Fin n →₀ ℕ) (c : K) :
     glDerivation K LL S a b (monomial m c) =
@@ -106,15 +106,13 @@ theorem gl_derivation_monomial (LL : Letters ι) (S : Set ι) (a b : Fin n) (m :
   · simp
 
 /- English proof (translation)
-Unfold `multideg`. Establish `hle : ∀ c : Fin n, (Finsupp.single (l, b) 1 : ι × Fin n →₀ ℕ) (i, c) ≤ m (i, c)`. Introduce `c`. Rewrite using `[Finsupp.single_apply]`. Use `split_ifs with hc`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc]`. Conclude with `Nat.one_le_iff_ne_zero.mpr h`. Conclude with `Nat.zero_le _`. Establish `hs : ∑ c : Fin n, (Finsupp.single (l, b) 1 : ι × Fin n →₀ ℕ) (i, c) = ∑ c : Fin n, (Finsupp.single (l, a) 1 : ι × Fin n →₀ ℕ) (i, c)`. Distinguish the cases in `hi : i = l`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `hi` using the available equality. Simplify using `[Finsupp.single_apply]`. Simplify using `[Finsupp.single_apply, Ne.symm hi]`. Establish `key : ∀ c : Fin n, (m - Finsupp.single (l, b) 1 + Finsupp.single (l, a) 1 : ι × Fin n →₀ ℕ) (i, c) + (Finsupp.single (l, b) 1 : ι × Fin n →₀ ℕ) (i, c) = m (i, c) + (Finsupp.single (l, a) 1 : ι × Fin n →₀ ℕ) (i, c)`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Finsupp.add_apply, Finsupp.tsub_apply]`. Use `hle c` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hsum` using `Finset.sum_congr rfl (fun c (_ : c ∈ Finset.univ) => key c)`. Rewrite `hsum` using `[Finset.sum_add_distrib, Finset.sum_add_distrib, hs]`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem multidegree_polarization_move (m : ι × Fin n →₀ ℕ) (l : ι) (a b : Fin n) (h : m (l, b) ≠ 0) (i : ι) :
     multideg (m - Finsupp.single (l, b) 1 + Finsupp.single (l, a) 1) i = multideg m i := by
@@ -144,15 +142,13 @@ theorem multidegree_polarization_move (m : ι × Fin n →₀ ℕ) (l : ι) (a b
   omega
 
 /- English proof (translation)
-Rewrite using `[gl_operator_apply_derivation, F.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Establish `hm' : ∀ i, multideg m i = d i` using `(MvPolynomial.mem_restrictSupport_iff K).1 hF (by simpa using hm)`. Rewrite using `[gl_derivation_monomial]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Rewrite using `[Pol, monomial_mem_restrictSupport]`. Distinguish the cases in `h0 : m (l, b) = 0`. Use `right`. Simplify using `[h0]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Introduce `i`. Rewrite using `[multidegree_polarization_move m l a b h0, hm']`. Use `Submodule.neg_mem _ ?_` and prove the remaining obligations. Rewrite using `[Pol, monomial_mem_restrictSupport]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h0 : m (l, a) = 0`. Use `right`. Simplify using `[h0]`. Use `left`. Introduce `i`.
-
-Rewrite using `[multidegree_polarization_move m l b a h0, hm']`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gl_operator_preserves_multidegree (LL : Letters ι) (S : Set ι) (d : ι → ℕ) (a b : Fin n) (F : MvPolynomial (ι × Fin n) K)
     (hF : F ∈ Pol K n d) : glOps K n LL S a b F ∈ Pol K n d := by
@@ -175,9 +171,9 @@ theorem gl_operator_preserves_multidegree (LL : Letters ι) (S : Set ι) (d : ι
   · exact Submodule.zero_mem _
 
 /- English proof (translation)
-Establish `hfin : Set.Finite {m : ι × Fin n →₀ ℕ | ∀ i, multideg m i = d i}`. Use `(Set.finite_Iic (Finsupp.equivFunOnFinite.symm (fun v : ι × Fin n => d v.1))).subset ?_` and prove the remaining obligations. Introduce `m hm v`. Use `hm v.1` as an intermediate fact. Simplify using `only [Finsupp.equivFunOnFinite_symm_apply_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Conclude with `Finset.single_le_sum (f := fun c => m (v.1, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ v.2)`. Establish `: Finite {m : ι × Fin n →₀ ℕ | ∀ i, multideg m i = d i}` using `hfin`. Conclude with `Module.Finite.of_basis (basisRestrictSupport K {m : ι × Fin n →₀ ℕ | ∀ i, multideg m i = d i})`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem homogeneous_multidegree_findim (d : ι → ℕ) : FiniteDimensional K (Pol K n d) := by
   classical

@@ -11,23 +11,23 @@ namespace GlobalTheory.CosetRow
 open Classical in
 
 /- English proof (translation)
-Establish `hsub : G.pl.W0 ⊆ locPl G t` using `Finset.subset_union_left`. Take `⟨he₁, h01⟩` from `GlobalTheory.T.isIdemSum_sub_of_subset_and_orthogonal he he₀ hsub`. Establish `hee : e₀ + (e - e₀) = e` using `add_sub_cancel e₀ e`. Establish `h0` using `GlobalTheory.PlaceDatum.idemSum_mul_self he₀`. Establish `h1` using `GlobalTheory.PlaceDatum.idemSum_mul_self he₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, c0, -⟩` from `GlobalTheory.FunObj.Comparison₂.cpt_idemSum he₀`. Take `⟨-, c1, -⟩` from `GlobalTheory.FunObj.Comparison₂.cpt_idemSum he₁`. Establish `hAA' : ∀ w ∈ locPl G t \ G.pl.W0, ((∀ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) ≤ 1) ∧ ∃ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) = 1)` using `fun w hw => by`. Rewrite `hw` using `[Finset.mem_sdiff]`. Conclude with `hAA w ((Finset.mem_union.1 hw.1).resolve_left hw.2) hw.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmap : ∀ (a : AE D) (w : Pl D.host.E), cpt (D` using `D) w (toEAf D a) = 1 → ∀ x : WO (G.pS (.chi (i : ℕ) 0)) (G.pT (.chi (i : ℕ) 0)), (a • x).map (cpt (D := D) w ∘ toEAf D) = x.map (cpt (D := D) w ∘ toEAf D) := fun a w ha x => by`. Use extensionality with `p q`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, Function.comp_apply, RingHom.map_mul, ha, one_mul]`. Use function extensionality and compare the values at `x`. Unfold `GlobalTheory.FlipStart.givenFn GlobalTheory.CosetRow.extFn`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hee]`. Distinguish the cases in `hx : IsHalf e x`. Use `swap`. Rewrite using `[if_neg hx, if_neg hx]`. Rewrite using `[if_pos hx, if_pos hx]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfac : ∀ w, givenDatum t w B Φ (edgeOf (.right i 0)) (locArg B t w (.right i 0) x) = if B.coord t w (X` using `((i : ℕ), 0)) (Y := ((i : ℕ) + 1, 0)) ⟨i.2.le, Nat.zero_le _⟩ ⟨i.2, Nat.zero_le _⟩ (x.map (cpt (D := D) w ∘ toEAf D)) ∈ cosetSet t w B i.2 (Φ i) then 1 else 0 := fun w => by`. Establish `hh : (i : ℕ) < D.R.m ∧ 0 ≤ D.R.m` using `⟨i.2, Nat.zero_le _⟩`. Establish `hla : locArg B t w (.right i 0) x = B.coord t w (X` using `((i : ℕ), 0)) (Y := ((i : ℕ) + 1, 0)) ⟨i.2.le, Nat.zero_le _⟩ ⟨i.2, Nat.zero_le _⟩ (x.map (cpt (D := D) w ∘ toEAf D)) := by`. Conclude with `dif_pos hh`. Rewrite using `[hla]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [edgeOf, givenDatum, dif_pos i.2, Set.indicator_apply, Pi.one_apply, Fin.eta]`. Rewrite using `[Finset.prod_congr rfl fun w _ => hfac w, ← Finset.prod_sdiff hsub, Finset.prod_boole, Finset.prod_boole]`. Establish `hx0 : IsHalf e₀ (e₀ • x)` using `fun p q => by`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, h0]`. Establish `hx1 : IsHalf (e - e₀) ((e - e₀) • x)` using `fun p q => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, h1]`. Establish `k0 : cosInd e₀ (Φ i) (e₀ • x) = if ∀ w ∈ G.pl.W0, B.coord t w (X` using `((i : ℕ), 0)) (Y := ((i : ℕ) + 1, 0)) ⟨i.2.le, Nat.zero_le _⟩ ⟨i.2, Nat.zero_le _⟩ (x.map (cpt (D := D) w ∘ toEAf D)) ∈ cosetSet t w B i.2 (Φ i) then 1 else 0 := by`. Unfold `cosInd`. Rewrite using `[Set.indicator_apply, Pi.one_apply]`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[GlobalTheory.FunObj.Comparison₂.mem_cosSet_iff_cosetSet B t hL he₀ i.2 (Φ i) hx0]`. Conclude with `forall₂_congr fun w hw => by rw [hmap e₀ w (c0 w hw)]`. Establish `k1 : halfInd (e - e₀) (latO (G.pS (.chi (i : ℕ) 0)) (G.pT (.chi (i : ℕ) 0)) (G.latS (.chi (i : ℕ) 0) : Set _) (G.latT (.chi (i : ℕ) 0) : Set _) fun _ => True) ((e - e₀) • x) = if ∀ w ∈ locPl G t \ G.pl.W0, B.coord t w (X` using `((i : ℕ), 0)) (Y := ((i : ℕ) + 1, 0)) ⟨i.2.le, Nat.zero_le _⟩ ⟨i.2, Nat.zero_le _⟩ (x.map (cpt (D := D) w ∘ toEAf D)) ∈ cosetSet t w B i.2 (Φ i) then 1 else 0 := by`. Unfold `halfInd`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[and_iff_left hx1, GlobalTheory.T.mem_completedGridArrowLattice_iff_integral_frameMatrix hL B t he₁ hAA' i _ hx1]`. Use `forall₂_congr fun w hw => ?_` and prove the remaining obligations. Rewrite using `[hmap _ w (c1 w hw), GlobalTheory.FunObj.Comparison₂.cosetSet_of_notMem B t w hL (Finset.mem_sdiff.1 hw).2 i.2 (Φ i)]`. Both sides reduce to the same expression. Rewrite using `[k0, k1, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem givenFn_right_eq_extFn {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}
     (hL : L.Is μ₀) (B : Frames G) (t : T) (Φ : G.Datum) {e e₀ : AE D} (he : IsIdemSum e (locPl G t))

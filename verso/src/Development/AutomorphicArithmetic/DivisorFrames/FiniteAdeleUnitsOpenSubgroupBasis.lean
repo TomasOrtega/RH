@@ -4,7 +4,7 @@ open NumberField IsDedekindDomain Filter Topology
 open scoped RestrictedProduct
 
 /- English proof (translation)
-Use `⟨fun s _ hs => ?_⟩` and prove the remaining obligations. Establish `h` using `(hs.image f hf.continuousOn).subsingleton`. Conclude with `fun x hx y hy => hi (h (Set.mem_image_of_mem f hx) (Set.mem_image_of_mem f hy))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem td_of_inj {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] [TotallyDisconnectedSpace Y]
     (f : X → Y) (hf : Continuous f) (hi : Function.Injective f) : TotallyDisconnectedSpace X := by
@@ -13,9 +13,9 @@ private theorem td_of_inj {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
   exact fun x hx y hy => hi (h (Set.mem_image_of_mem f hx) (Set.mem_image_of_mem f hy))
 
 /- English proof (translation)
-Rewrite using `[totallyDisconnectedSpace_iff_connectedComponent_zero]`. Use `Set.eq_singleton_iff_unique_mem.mpr ⟨mem_connectedComponent, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hr : (Valued.v : Valuation (v.adicCompletion F) _).restrict x ≠ 0` using `(Valuation.zero_iff _).not.mpr hne`. Establish `hc` using `Valued.isClopen_ball (R := v.adicCompletion F) ((Valued.v : Valuation (v.adicCompletion F) _).restrict x)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (0 : v.adicCompletion F) ∈ {y | (Valued.v : Valuation (v.adicCompletion F) _).restrict y < (Valued.v : Valuation (v.adicCompletion F) _).restrict x}`. Simplify using `only [Set.mem_ofPred_eq, map_zero]`. Conclude with `pos_iff_ne_zero.mpr hr`. Establish `h1` using `hc.connectedComponent_subset h0 hx`. Conclude with `(lt_irrefl ((Valued.v : Valuation (v.adicCompletion F) _).restrict x)) h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem td_adic {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     TotallyDisconnectedSpace (v.adicCompletion F) := by
@@ -35,7 +35,7 @@ private theorem td_adic {F : Type} [Field F] [NumberField F] (v : HeightOneSpect
   exact (lt_irrefl ((Valued.v : Valuation (v.adicCompletion F) _).restrict x)) h1
 
 /- English proof (translation)
-Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), TotallyDisconnectedSpace (v.adicCompletion F) := fun v => td_adic v`. Use `haveI : TotallyDisconnectedSpace (Πʳ v : HeightOneSpectrum (𝓞 F), [v.adicCompletion F, v.adicCompletionIntegers F]) := td_of_inj (fun x v => x v) (continuous_pi fun v => RestrictedProduct.continuous_eval v) fun x y h => Subtype.ext (funext fun v => congrFun h v)`. Conclude with `inferInstanceAs (TotallyDisconnectedSpace (Πʳ v : HeightOneSpectrum (𝓞 F), [v.adicCompletion F, v.adicCompletionIntegers F]))`.
+A detailed English derivation is pending.
 -/
 private theorem td_finiteAdele (F : Type) [Field F] [NumberField F] :
     TotallyDisconnectedSpace (FiniteAdeleRing (𝓞 F) F) := by
@@ -48,7 +48,7 @@ private theorem td_finiteAdele (F : Type) [Field F] [NumberField F] :
     (Πʳ v : HeightOneSpectrum (𝓞 F), [v.adicCompletion F, v.adicCompletionIntegers F]))
 
 /- English proof (translation)
-The claim follows from `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hc haveI : NonarchimedeanGroup K := ⟨fun U hU => by obtain ⟨N, hN⟩ := ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one (isOpen_interior (s := U)) (mem_interior_iff_mem_nhds.2 hU) exact ⟨N.toOpenSubgroup, hN.trans in …`.
+A detailed English derivation is pending.
 -/
 private theorem nonarch_of_isCompact_isOpen {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [TotallyDisconnectedSpace H] {K : Subgroup H} (hc : IsCompact (K : Set H)) (ho : IsOpen (K : Set H)) :
@@ -61,7 +61,7 @@ private theorem nonarch_of_isCompact_isOpen {H : Type} [Group H] [TopologicalSpa
   NonarchimedeanGroup.nonarchimedean_of_emb K.subtype ho.isOpenEmbedding_subtypeVal
 
 /- English proof (translation)
-Introduce `E _ _ W hW`. Use `haveI := td_finiteAdele E`. Use `haveI : TotallyDisconnectedSpace (FiniteAdeleRing (𝓞 E) E)ˣ := td_of_inj Units.val Units.continuous_val Units.val_injective`. Use `haveI := nonarch_of_isCompact_isOpen (GroundTheory.Global.isCompact_finiteIntegralUnits E) (GroundTheory.Global.isOpen_finiteIntegralUnits E)`. Conclude with `NonarchimedeanGroup.is_nonarchimedean W hW`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.finiteAdele_units_open_subgroup_basis :
     ∀ (E : Type) [Field E] [NumberField E], ∀ W ∈ nhds (1 : (FiniteAdeleRing (𝓞 E) E)ˣ), ∃ U : OpenSubgroup (FiniteAdeleRing (𝓞 E) E)ˣ, (U : Set (FiniteAdeleRing (𝓞 E) E)ˣ) ⊆ W := by

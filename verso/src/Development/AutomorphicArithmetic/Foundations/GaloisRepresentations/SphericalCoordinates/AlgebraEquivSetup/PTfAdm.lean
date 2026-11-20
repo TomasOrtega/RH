@@ -6,9 +6,9 @@ open scoped Classical
 namespace UpperTheory.Gal.W2.Seed
 
 /- English proof (translation)
-Unfold `tyFn`. Distinguish the cases in `ha : a ∈ J`. Establish `haj : a * j ∈ J` using `J.mul_mem ha hj`. Rewrite using `[dif_pos ha, dif_pos haj]`. Establish `e : (⟨a * j, haj⟩ : J) = ⟨a, ha⟩ * ⟨j, hj⟩` using `rfl`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, map_mul, mul_inv, Units.val_mul]`. Establish `haj : a * j ∉ J` using `fun h => ha ((J.mul_mem_cancel_right hj).1 h)`. Rewrite using `[dif_neg ha, dif_neg haj, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma tyFn_mul_right {M : Type} [Group M] (J : Subgroup M) (ψ : J →* ℂˣ) (a j : M) (hj : j ∈ J) :
     tyFn J ψ (a * j) = tyFn J ψ a * (((ψ ⟨j, hj⟩)⁻¹ : ℂˣ) : ℂ) := by
@@ -22,9 +22,9 @@ private lemma tyFn_mul_right {M : Type} [Group M] (J : Subgroup M) (ψ : J →* 
     rw [dif_neg ha, dif_neg haj, zero_mul]
 
 /- English proof (translation)
-Unfold `tyFn`. Distinguish the cases in `ha : a ∈ J`. Establish `haj : j * a ∈ J` using `J.mul_mem hj ha`. Rewrite using `[dif_pos ha, dif_pos haj]`. Establish `e : (⟨j * a, haj⟩ : J) = ⟨j, hj⟩ * ⟨a, ha⟩` using `rfl`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, map_mul, mul_inv, Units.val_mul]`. Establish `haj : j * a ∉ J` using `fun h => ha ((J.mul_mem_cancel_left hj).1 h)`. Rewrite using `[dif_neg ha, dif_neg haj, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma tyFn_mul_left {M : Type} [Group M] (J : Subgroup M) (ψ : J →* ℂˣ) (a j : M) (hj : j ∈ J) :
     tyFn J ψ (j * a) = (((ψ ⟨j, hj⟩)⁻¹ : ℂˣ) : ℂ) * tyFn J ψ a := by
@@ -38,9 +38,9 @@ private lemma tyFn_mul_left {M : Type} [Group M] (J : Subgroup M) (ψ : J →* �
     rw [dif_neg ha, dif_neg haj, mul_zero]
 
 /- English proof (translation)
-Establish `hiff : k * g ∈ DoubleCoset.doubleCoset h (K : Set X) (K : Set X) ↔ g ∈ DoubleCoset.doubleCoset h (K : Set X) (K : Set X)`. Simplify using `only [DoubleCoset.mem_doubleCoset, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, y, hy, e⟩`. Conclude with `⟨k⁻¹ * x, K.mul_mem (K.inv_mem hk) hx, y, hy, by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc x, ← e, inv_mul_cancel_left]⟩`. Introduce and unpack `⟨x, hx, y, hy, e⟩`. Conclude with `⟨k * x, K.mul_mem hk hx, y, hy, by rw [e]; group⟩`. Unfold `dosetInd`. Simplify using `only [Set.indicator_apply, hiff, Pi.one_apply]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma doset_left {X : Type} [Group X] (K : Subgroup X) (h k g : X) (hk : k ∈ K) :
     dosetInd ℂ K h (k * g) = dosetInd ℂ K h g := by
@@ -57,9 +57,9 @@ private lemma doset_left {X : Type} [Group X] (K : Subgroup X) (h k g : X) (hk :
   simp only [Set.indicator_apply, hiff, Pi.one_apply]
 
 /- English proof (translation)
-Establish `hiff : g * k ∈ DoubleCoset.doubleCoset h (K : Set X) (K : Set X) ↔ g ∈ DoubleCoset.doubleCoset h (K : Set X) (K : Set X)`. Simplify using `only [DoubleCoset.mem_doubleCoset, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, y, hy, e⟩`. Conclude with `⟨x, hx, y * k⁻¹, K.mul_mem hy (K.inv_mem hk), by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[← mul_assoc, ← e, mul_inv_cancel_right]⟩`. Introduce and unpack `⟨x, hx, y, hy, e⟩`. Conclude with `⟨x, hx, y * k, K.mul_mem hy hk, by rw [e]; group⟩`. Unfold `dosetInd`. Simplify using `only [Set.indicator_apply, hiff, Pi.one_apply]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma doset_right {X : Type} [Group X] (K : Subgroup X) (h k g : X) (hk : k ∈ K) :
     dosetInd ℂ K h (g * k) = dosetInd ℂ K h g := by
@@ -76,11 +76,11 @@ private lemma doset_right {X : Type} [Group X] (K : Subgroup X) (h k g : X) (hk 
   simp only [Set.indicator_apply, hiff, Pi.one_apply]
 
 /- English proof (translation)
-Establish `hfin : Finite (A ⧸ B.subgroupOf A)` using `Subgroup.index_ne_zero_iff_finite.mp hAB`. Use `haveI := Fintype.ofFinite (A ⧸ B.subgroupOf A)`. Use `⟨Finset.univ.image (fun q : A ⧸ B.subgroupOf A => ((q.out : A) : X)), ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.mp hr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(q.out).2`. Introduce `k hk set q : A ⧸ B.subgroupOf A := ((⟨k, hk⟩ : A) : A ⧸ B.subgroupOf A) with hq`. Use `⟨((q.out : A) : X), Finset.mem_image.mpr ⟨q, Finset.mem_univ _, rfl⟩, ((q.out : A) : X)⁻¹ * k, ?_, by group⟩` and prove the remaining obligations. Establish `h1 : ((q.out : A) : A ⧸ B.subgroupOf A) = ((⟨k, hk⟩ : A) : A ⧸ B.subgroupOf A)`. Rewrite using `[QuotientGroup.out_eq']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h1` using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `using h1`.
+A detailed English derivation is pending.
 -/
 private lemma fin_reps {X : Type} [Group X] (A B : Subgroup X) (hAB : B.relIndex A ≠ 0) :
     ∃ R : Finset X, (∀ r ∈ R, r ∈ A) ∧ ∀ k ∈ A, ∃ r ∈ R, ∃ u ∈ B, k = r * u := by
@@ -100,11 +100,11 @@ private lemma fin_reps {X : Type} [Group X] (A B : Subgroup X) (hAB : B.relIndex
     simpa using h1
 
 /- English proof (translation)
-Take `⟨R, -, hR⟩` from `fin_reps T.K T.K₀ T.idx`. Establish `hs` using `fun s : X => fin_reps T.K (T.K₀.map (MulAut.conj s).toMonoidHom) (Subgroup.relIndex_ne_zero_trans (T.cms s) T.idx)`. Use `choose Rs _ hRs using hs`. Use `⟨R.biUnion (fun a => (Rs (h * a)).image (fun c => c * (h * a))), ?_⟩` and prove the remaining obligations. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, k', hk', rfl⟩` from `DoubleCoset.mem_doubleCoset.mp hg`. Take `⟨a, ha, v, hv, rfl⟩` from `hR k' hk'`. Take `⟨c, hc, u, hu, rfl⟩` from `hRs (h * a) k hk`. Take `⟨t, ht, rfl⟩` from `Subgroup.mem_map.mp hu`. Use `⟨c * (h * a), Finset.mem_biUnion.mpr ⟨a, ha, Finset.mem_image.mpr ⟨c, hc, rfl⟩⟩, 1, ⟨t * v, T.K₀.mul_mem ht hv⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, OneMemClass.coe_one, one_mul, Subgroup.coe_mul]`. Use `group`.
+A detailed English derivation is pending.
 -/
 private lemma fin_doset {X M : Type} [Group X] [Group M] (T : TyLev X M) (h : X) :
     ∃ S : Finset X, ∀ g ∈ DoubleCoset.doubleCoset h (T.K : Set X) (T.K : Set X),
@@ -126,19 +126,19 @@ private lemma fin_doset {X M : Type} [Group X] [Group M] (T : TyLev X M) (h : X)
   group
 
 /- English proof (translation)
-Introduce `X M _ _ T h _`. Establish `hlr : ∀ k (hk : k ∈ T.K) g, T.tf h (k * g) = (((T.ψ ⟨T.L.pr k, T.fact.2 k hk⟩)⁻¹ : ℂˣ) : ℂ) * T.tf h g ∧ T.tf h (g * k) = (((T.ψ ⟨T.L.pr k, T.fact.2 k hk⟩)⁻¹ : ℂˣ) : ℂ) * T.tf h g`. Introduce `k hk g`. Prove the components needed by the constructor for the conclusion. Unfold `TyLev.tf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_mul, tyFn_mul_left _ _ _ _ (T.fact.2 k hk), doset_left _ _ _ _ hk]`. Expand and normalize the polynomial expressions, which then agree. Unfold `TyLev.tf`. Rewrite using `[map_mul, tyFn_mul_right _ _ _ _ (T.fact.2 k hk), doset_right _ _ _ _ hk]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨⟨?_, ?_, ?_⟩, hlr⟩` and prove the remaining obligations. Use `show IsBiInv T.K₀ (T.tf h) ∧ FinDosetSupp T.K₀ (T.tf h)`. Prove the components needed by the constructor for the conclusion. Introduce `a b g`. Rewrite using `[(hlr b (T.le b.2) (a * g)).2, (hlr a (T.le a.2) g).1, T.ker a a.2, T.ker b b.2]`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨S, hS⟩` from `fin_doset T h`. Use `⟨S, fun g hg => hS g ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Apply `hg` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Unfold `TyLev.tf dosetInd`. Rewrite using `[Set.indicator_of_notMem hn, mul_zero]`. Introduce `g hg`. Assume the negation of the conclusion as `hn`. Apply `hg` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Unfold `TyLev.tf tyFn`. Rewrite using `[dif_neg hn]`. Simplify using the standard rewrite rules. Introduce `j g`. Establish `e : (⟨T.L.pr (T.L.loc j), T.fact.2 _ (T.fact.1 j j.2)⟩ : T.J) = j` using `Subtype.ext (T.L.pr_loc j)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hlr _ (T.fact.1 j j.2) g).2, e]`.
+A detailed English derivation is pending.
 -/
 theorem pTfAdm : TfAdm := by
   intro X M _ _ T h _

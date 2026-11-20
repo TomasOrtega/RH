@@ -14,47 +14,47 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {S : Scheme.{0}}
 
 /- English proof (translation)
-Use `Spec.map_injective h` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lieOc_spMap_inj {R₁ R₂ : Type} [CommRing R₁] [CommRing R₂] {f g : R₁ →+* R₂} (h : spMap f = spMap g) : f = g := by
   have := Spec.map_injective h
   exact congrArg CommRingCat.Hom.hom this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Spec.preimage y).hom, by simp [spMap]⟩`.
+Supply the required witnesses or components.
 -/
 theorem lieOc_exists_spMap {R₁ R₂ : Type} [CommRing R₁] [CommRing R₂] (y : Sp R₂ ⟶ Sp R₁) : ∃ f : R₁ →+* R₂, y = spMap f :=
   ⟨(Spec.preimage y).hom, by simp [spMap]⟩
 
 /- English proof (translation)
-Simplify using `[spMap, ← Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lieOc_spMap_comp {R₁ R₂ R₃ : Type} [CommRing R₁] [CommRing R₂] [CommRing R₃] (f : R₁ →+* R₂) (g : R₂ →+* R₃) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp [spMap, ← Spec.map_comp]
 
 /- English proof (translation)
-Set `P : ∀ (R' : Type) [CommRing R'], (Sp R' ⟶ S) → Prop` to `fun R' _ x => ∀ β : R →+* R', x ≫ s = spMap β → LieHer b act β x`. Establish `hP : ∀ (R' : Type) [CommRing R'] (β : R →+* R') (x : Sp R' ⟶ S), x ≫ s = spMap β → (P R' x ↔ LieHer b act β x)`. Introduce `R' _ β x hx`. Use `⟨fun h => h β hx, fun h β' hx' => ?_⟩` and prove the remaining obligations. Establish `: β' = β` using `lieOc_spMap_inj (hx'.symm.trans hx)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Conclude with `h`. Establish `her : ∀ (R' : Type) [CommRing R'] (R'' : Type) [CommRing R''] (g : R' →+* R'') (x : Sp R' ⟶ S), P R' x → P R'' (spMap g ≫ x)`. Introduce `R' _ R'' _ g x hx β'' hβ''`. Take `⟨β, hβ⟩` from `lieOc_exists_spMap (x ≫ s)`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : β'' = g.comp β` using `lieOc_spMap_inj (by rw [← hβ'', Category.assoc, hβ, lieOc_spMap_comp])`. Substitute `e` using the available equality. Introduce `R''' _ g'`. Establish `h` using `hx β hβ R''' (g'.comp g)`. Rewrite `h` using `[← lieOc_spMap_comp]`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[Category.assoc, RingHom.comp_assoc]`. Establish `loc : ∀ (R' : Type) [CommRing R'] (x : Sp R' ⟶ S) (t : Finset R'), Ideal.span (t : Set R') = ⊤ → (∀ r ∈ t, P (Localization.Away r) (spMap (algebraMap R' (Localization.Away r)) ≫ x)) → P R' x` using `by classical`. Introduce `R' _ x t ht hloc β hβ R'' _ g`. Establish `hloc' : ∀ r ∈ t, LieHer b act ((algebraMap R' (Localization.Away r)).comp β) (spMap (algebraMap R' (Localization.Away r)) ≫ x)` using `fun r hr => hloc r hr _ (by rw [Category.assoc, hβ, lieOc_spMap_comp])`. Establish `key : ∀ r : R', (Localization.awayMap g r).comp (algebraMap R' (Localization.Away r)) = (algebraMap R'' (Localization.Away (g r))).comp g` using `fun r => IsLocalization.map_comp _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.harrisTaylor_lie_condition_of_basicOpen_cover p D R b S A act R'' (g.comp β) (spMap g ≫ x) (t.image g) ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.coe_image, ← Ideal.map_span, ht, Ideal.map_top]`. Introduce `r'' hr''`. Take `⟨r, hr, rfl⟩` from `Finset.mem_image.1 hr''`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `(hloc' r hr (Localization.Away (g r)) (Localization.awayMap g r)).1`. Rewrite `h` using `[← Category.assoc, lieOc_spMap_comp, ← RingHom.comp_assoc, key]`. Rewrite using `[← Category.assoc, lieOc_spMap_comp, ← RingHom.comp_assoc]`. Conclude with `h`. Introduce `k _ _ g' i`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hex : ∃ r ∈ t, g' (g r) ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `: Ideal.span (t : Set R') ≤ RingHom.ker (g'.comp g)` using `Ideal.span_le.2 fun r hr => by simpa using hcon r hr`. Rewrite `this` using `[ht]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (1 : R') ∈ RingHom.ker (g'.comp g)` using `this Submodule.mem_top`. Simplify using `at h1`. Take `⟨r, hr, hne⟩` from `hex`. Set `hr' : Localization.Away r →+* k` to `IsLocalization.Away.lift r (g := g'.comp g) (isUnit_iff_ne_zero.2 hne)`. Establish `hlift : hr'.comp (algebraMap R' (Localization.Away r)) = g'.comp g` using `IsLocalization.Away.lift_comp r _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `(hloc' r hr (Localization.Away r) (RingHom.id _)).2 k hr' i`. Establish `e1 : spMap hr' ≫ spMap (RingHom.id (Localization.Away r)) ≫ spMap (algebraMap R' (Localization.Away r)) ≫ x = spMap g' ≫ spMap g ≫ x`. Simplify using `only [← Category.assoc, lieOc_spMap_comp]`. Rewrite using `[RingHom.id_comp, hlift]`. Establish `e2 : hr'.comp ((RingHom.id _).comp ((algebraMap R' (Localization.Away r)).comp β)) = g'.comp (g.comp β)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[RingHom.id_comp, ← RingHom.comp_assoc, hlift, RingHom.comp_assoc]`. Rewrite `h` using `[e1, e2]`. Conclude with `h`. Take `⟨Z, i, hi, hZ⟩` from `GlobalTheory.T.isClosed_of_local_ideal_point_property S P her loc (fun z => by`. Take `⟨U, hU, hz, K, hK⟩` from `GlobalTheory.T.kottwitzLieCondition_locally_cut_out_by_ideal p D R b S s A hA act z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `⟨U, hU, hz, K, fun R' _ f => ?_⟩` and prove the remaining obligations. Take `⟨β, hβ⟩` from `lieOc_exists_spMap (spMap f ≫ hU.fromSpec ≫ s)`. Rewrite using `[hP R' β _ (by rw [Category.assoc]; exact hβ)]`. Conclude with `hK R' f β hβ)`. Conclude with `⟨Z, i, hi, fun R' _ β x hx => (hZ R' x).trans (hP R' β x hx)⟩`.
+A detailed English derivation is pending.
 -/
 theorem lieHer_closed (b : Base D R) (s : S ⟶ Sp R) (A : Over S) [GrpObj A] [IsCommMonObj A]
     (hA : Smooth A.hom) (act : OActN D.O A) :

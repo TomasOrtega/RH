@@ -16,13 +16,13 @@ def haarSub (G : Subgroup (Formalism.REAL.UJ ε)) (hG : IsClosed (G : Set (Forma
   (Measure.haar : Measure G).map Subtype.val
 
 /- English proof (translation)
-Establish `: LocallyCompactSpace G` using `hG.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `hemb` using `hG.isClosedEmbedding_subtypeVal`. Establish `hι : Measurable (Subtype.val : G → Formalism.REAL.UJ ε)` using `measurable_subtype_coe`. Establish `hfin : IsFiniteMeasureOnCompacts (haarSub G hG)`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[haarSub, Measure.map_apply hι hK.measurableSet]`. Conclude with `(hemb.isCompact_preimage hK).measure_lt_top`. Use `⟨⟨?_, ?_, ?_, ?_⟩, hfin⟩` and prove the remaining obligations. Use `hfin infer_instance` as an intermediate fact. Rewrite using `[haarSub, Ne, Measure.map_eq_zero_iff hι.aemeasurable]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `NeZero.ne _`. Rewrite using `[haarSub, Measure.map_apply hι hG.measurableSet.compl]`. Establish `hempty : (Subtype.val : G → Formalism.REAL.UJ ε) ⁻¹' (G : Set (Formalism.REAL.UJ ε))ᶜ = ∅`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hempty, measure_empty]`. Introduce `s hs`. Rewrite using `[haarSub, Measure.map_map (measurable_const_mul s) hι]`. Establish `hcomp : (fun x => s * x) ∘ (Subtype.val : G → Formalism.REAL.UJ ε) = Subtype.val ∘ (fun y : G => (⟨s, hs⟩ : G) * y)` using `rfl`. Rewrite using `[hcomp, ← Measure.map_map hι (measurable_const_mul _), map_mul_left_eq_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haarSub_isHaarS (G : Subgroup (Formalism.REAL.UJ ε)) (hG : IsClosed (G : Set (Formalism.REAL.UJ ε))) :
     IsHaarS (G : Set (Formalism.REAL.UJ ε)) (haarSub G hG) := by

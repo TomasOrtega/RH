@@ -16,28 +16,28 @@ open scoped Classical
 def quad {R κ : Type} [CommRing R] [Fintype κ] (h : R) (A : Matrix κ κ R) (x : κ → R) : R := h * (x ⬝ᵥ (A *ᵥ x))
 
 /- English proof (translation)
-Simplify using `[quad, dotProduct, Matrix.mulVec, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_quad {R S κ : Type} [CommRing R] [CommRing S] [Fintype κ] (q : R →+* S) (h : R) (A : Matrix κ κ R)
     (x : κ → R) : q (quad h A x) = quad (q h) (A.map q) (fun i => q (x i)) := by
   simp [quad, dotProduct, Matrix.mulVec, map_sum]
 
 /- English proof (translation)
-Simplify using `[quad, Matrix.neg_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem quad_neg {R κ : Type} [CommRing R] [Fintype κ] (h : R) (A : Matrix κ κ R) (x : κ → R) :
     quad h (-A) x = -quad h A x := by
   simp [quad, Matrix.neg_mulVec]
 
 /- English proof (translation)
-The claim follows from `continuous_const.mul (continuous_id.dotProduct (continuous_const.matrix_mulVec continuous_id))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_quad {R κ : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [Fintype κ] (h : R)
     (A : Matrix κ κ R) : Continuous (quad h A) :=
   continuous_const.mul (continuous_id.dotProduct (continuous_const.matrix_mulVec continuous_id))
 
 /- English proof (translation)
-Establish `hs : u ⬝ᵥ (A *ᵥ x) = x ⬝ᵥ (A *ᵥ u)`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hA, dotProduct_comm]`. Establish `h2 : ⅟(2 : R) * 2 = 1` using `invOf_mul_self _`. Simplify using `only [quad, Matrix.mulVec_add, dotProduct_add, add_dotProduct, dotProduct_neg, hs]`. Take the linear combination `(-(x ⬝ᵥ (A *ᵥ u))) * h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem quad_add {R κ : Type} [CommRing R] [Invertible (2 : R)] [Fintype κ] (A : Matrix κ κ R) (hA : Aᵀ = A)
     (x u v : κ → R) : quad (⅟2) A x + (x ⬝ᵥ v + ⅟(2 : R) * (u ⬝ᵥ v)) =
@@ -55,9 +55,9 @@ def archMul (h : mixedEmbedding.mixedSpace F) (A : Matrix κ κ (mixedEmbedding.
   eChar (-Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (quad h A y))
 
 /- English proof (translation)
-Establish `hp : ∀ i : κ, Function.HasTemperateGrowth fun y : κ → mixedEmbedding.mixedSpace F => y i` using `fun i => (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : κ => mixedEmbedding.mixedSpace F) i).hasTemperateGrowth`. Establish `hq : Function.HasTemperateGrowth (quad h A)`. Establish `e : quad h A = fun y => h * ∑ i, y i * ∑ j, A i j * y j` using `rfl`. Rewrite using `[e]`. Use `(Function.HasTemperateGrowth.const h).mul (Function.HasTemperateGrowth.sum fun i _ => (hp i).mul ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Function.HasTemperateGrowth.sum fun j _ => (Function.HasTemperateGrowth.const _).mul (hp j)`. Set `L : mixedEmbedding.mixedSpace F →L[ℝ] ℝ` to `-LinearMap.toContinuousLinearMap (Algebra.trace ℝ (mixedEmbedding.mixedSpace F))`. Conclude with `hasTemperateGrowth_eChar.comp (L.hasTemperateGrowth.comp hq)`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem archMul_temperate (h : mixedEmbedding.mixedSpace F) (A : Matrix κ κ (mixedEmbedding.mixedSpace F)) :
     Function.HasTemperateGrowth (archMul h A) := by
@@ -86,13 +86,13 @@ theorem mulQ_apply (ψ : AddChar (AF F) ℂ) (h : AF F) (A : Matrix κ κ (AF F)
     mulQ ψ h A φ x = ψ (quad h A x) * φ x := rfl
 
 /- English proof (translation)
-Set `e` to `InfiniteAdeleRing.ringEquiv_mixedSpace F`. Set `q : AdeleRing (𝓞 F) F →+* mixedEmbedding.mixedSpace F` to `e.toRingHom.comp p1`. Use `⟨fun z => finChar ψ (quad (p2 h) (A.map p2) z) * g z, ⟨((finChar_isLocallyConstant ψ hψ.1).comp_continuous (continuous_quad _ _)).mul hg.1, hg.2.mul_left⟩, SchwartzMap.smulLeftCLM ℂ (archMul (q h) (A.map q)), fun f => funext fun x => ?_⟩` and prove the remaining obligations. Set `y : κ → mixedEmbedding.mixedSpace F` to `fun i => q (x i)`. Set `z : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => p2 (x i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h3 : ψ (quad h A x) = archMul (q h) (A.map q) y * finChar ψ (quad (p2 h) (A.map p2) z)`. Rewrite using `[map_eq_mul ψ, hψ.2.2 _ (at_mk _)]`. Use `congr 1`. Establish `e1 : evI F (mk (p1 (quad h A x)) 0) = quad (q h) (A.map q) y` using `map_quad q h A x`. Rewrite using `[e1, archMul, eChar_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `congrArg _ (map_quad p2 h A x)`. Express the relevant statement in the definitionally equal form `ψ (quad h A x) * (f y * g z) = SchwartzMap.smulLeftCLM ℂ (archMul (q h) (A.map q)) f y * (finChar ψ (quad (p2 h) (A.map p2) z) * g z)`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, SchwartzMap.smulLeftCLM_apply_apply (archMul_temperate _ _), smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mulQ_pureA (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (h : AF F) (A : Matrix κ κ (AF F))
     {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) :
@@ -120,9 +120,9 @@ theorem mulQ_pureA (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (h : AF F) (A : Ma
   ring
 
 /- English proof (translation)
-Establish `hle : schA F κ ≤ (schA F κ).comap (mulQ ψ h A)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Take `⟨g', hg', M, hM⟩` from `mulQ_pureA ψ hψ h A hg`. Conclude with `Submodule.subset_span ⟨M f, g', hg', hM f⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun φ hφ => hle hφ`.
+A detailed English derivation is pending.
 -/
 theorem mulQ_mem (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (h : AF F) (A : Matrix κ κ (AF F)) :
     ∀ φ ∈ schA F κ, mulQ ψ h A φ ∈ schA F κ := by
@@ -134,7 +134,7 @@ theorem mulQ_mem (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (h : AF F) (A : Matr
   exact fun φ hφ => hle hφ
 
 /- English proof (translation)
-Establish `h1 : (1 : Matrix ι ι K).map (algebraMap K R) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h0 : (0 : Matrix ι ι K).map (algebraMap K R) = 0` using `Matrix.map_zero _ (map_zero _)`. Establish `hn : (-C).map (algebraMap K R) = -C.map (algebraMap K R)` using `Matrix.map_neg _ (map_neg _) _`. Simplify using `only [AdelicSvN.act, Matrix.fromBlocks_map, h1, h0, hn, Matrix.fromBlocks_mulVec, Sum.elim_comp_inl, Sum.elim_comp_inr, Matrix.one_mulVec, Matrix.zero_mulVec, add_zero, Matrix.neg_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem act_unip {K R ι : Type} [Field K] [CommRing R] [Algebra K R] [Fintype ι] [DecidableEq ι] (C : Matrix ι ι K)
     (w : (ι → R) × (ι → R)) :
@@ -146,11 +146,11 @@ theorem act_unip {K R ι : Type} [Field K] [CommRing R] [Algebra K R] [Fintype �
     Matrix.one_mulVec, Matrix.zero_mulVec, add_zero, Matrix.neg_mulVec]
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ _ C hC`. Set `A : Matrix κ κ (AF F)` to `C.map (algebraMap F (AF F))`. Establish `hA : Aᵀ = A` using `by rw [← Matrix.transpose_map, hC]`. Use `⟨mulQ ψ (⅟2) A, mulQ_mem ψ hψ _ A, fun φ hφ => ⟨mulQ ψ (⅟2) (-A) φ, mulQ_mem ψ hψ _ _ φ hφ, ?_⟩, fun l hl => ⟨l ∘ₗ mulQ ψ (⅟2) A, fun g hg => ?_, fun _ _ => rfl⟩, fun w φ _ => funext fun x => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[mulQ_apply, mulQ_apply, ← mul_assoc, ← AddChar.map_add_eq_mul, quad_neg, add_neg_cancel, AddChar.map_zero_eq_one, one_mul]`. Take `⟨g', hg', M, hM⟩` from `mulQ_pureA ψ hψ (⅟2) A hg`. Take `⟨T, hT⟩` from `hl g' hg'`. Conclude with `⟨T.comp M, fun f => (congrArg l (hM f)).trans (hT (M f))⟩`. Rewrite using `[act_unip, mulQ_apply]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [schr]`. Rewrite using `[mulQ_apply, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, quad_add A hA]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem realised_unip : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ]
     [DecidableEq κ] (C : Matrix κ κ F), Cᵀ = C → Realised ψ (Matrix.fromBlocks 1 0 (-C) 1) := by

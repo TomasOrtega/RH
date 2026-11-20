@@ -44,7 +44,7 @@ def Occurs {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {
     (∀ a a', (U.Di i).EF (gam a) (gam a') = D'.EF a a') ∧ SameMarking l (fun a => gam (s a)) (U.t i)
 
 /- English proof (translation)
-Break down `n.eq_zero_or_pos with rfl | hn` into its components or cases. Conclude with `⟨0, fun h => absurd h (lt_irrefl 0)⟩`. Establish `hc : IsCoprime ((ordProj[2] n : ℕ) : ℤ) ((ordCompl[2] n : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.coprime_ordCompl Nat.prime_two hn.ne').pow_left _)`. Take `⟨u, v, huv⟩` from `hc`. Conclude with `⟨v * (ordCompl[2] n : ℕ) - u * (ordProj[2] n : ℕ), fun _ => ⟨⟨-2 * u, by linear_combination huv⟩, ⟨2 * v, by linear_combination -huv⟩⟩⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sign (n : ℕ) : ∃ s : ℤ, 0 < n → ((ordProj[2] n : ℕ) : ℤ) ∣ s - 1 ∧ ((ordCompl[2] n : ℕ) : ℤ) ∣ s + 1 := by
   rcases n.eq_zero_or_pos with rfl | hn
@@ -58,14 +58,14 @@ theorem exists_sign (n : ℕ) : ∃ s : ℤ, 0 < n → ((ordProj[2] n : ℕ) : �
 def sign (n : ℕ) : ℤ := (exists_sign n).choose
 
 /- English proof (translation)
-The claim follows from `(exists_sign n).choose_spec hn`.
+A detailed English derivation is pending.
 -/
 theorem sign_spec {n : ℕ} (hn : 0 < n) :
     ((ordProj[2] n : ℕ) : ℤ) ∣ sign n - 1 ∧ ((ordCompl[2] n : ℕ) : ℤ) ∣ sign n + 1 :=
   (exists_sign n).choose_spec hn
 
 /- English proof (translation)
-Establish `hc : IsCoprime ((ordProj[2] n : ℕ) : ℤ) ((ordCompl[2] n : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.coprime_ordCompl Nat.prime_two hn.ne').pow_left _)`. Use `hc.mul_dvd h₁ h₂` as an intermediate fact. Rewrite `this` using `[← Nat.cast_mul, Nat.ordProj_mul_ordCompl_eq_self]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dvd_of_parts {n : ℕ} (hn : 0 < n) {x : ℤ} (h₁ : ((ordProj[2] n : ℕ) : ℤ) ∣ x)
     (h₂ : ((ordCompl[2] n : ℕ) : ℤ) ∣ x) : (n : ℤ) ∣ x := by
@@ -75,7 +75,7 @@ theorem dvd_of_parts {n : ℕ} (hn : 0 < n) {x : ℤ} (h₁ : ((ordProj[2] n : �
   rwa [← Nat.cast_mul, Nat.ordProj_mul_ordCompl_eq_self] at this
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `sign_spec hn`. Rewrite using `[show sign n * sign n - 1 = (sign n - 1) * (sign n + 1) by ring]`. Conclude with `dvd_of_parts hn (h₁.mul_right _) (h₂.mul_left _)`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_sign_sq {n : ℕ} (hn : 0 < n) : (n : ℤ) ∣ sign n * sign n - 1 := by
   obtain ⟨h₁, h₂⟩ := sign_spec hn
@@ -83,9 +83,9 @@ theorem dvd_sign_sq {n : ℕ} (hn : 0 < n) : (n : ℤ) ∣ sign n * sign n - 1 :
   exact dvd_of_parts hn (h₁.mul_right _) (h₂.mul_left _)
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `sign_spec hn`. Take `⟨k₁, k₂⟩` from `sign_spec (Nat.mul_pos hn hm)`. Establish `d₁ : ((ordProj[2] n : ℕ) : ℤ) ∣ ((ordProj[2] (n * m) : ℕ) : ℤ)` using `Int.natCast_dvd_natCast.mpr (Nat.ordProj_dvd_ordProj_of_dvd (Nat.mul_pos hn hm).ne' (dvd_mul_right n m) 2)`. Establish `d₂ : ((ordCompl[2] n : ℕ) : ℤ) ∣ ((ordCompl[2] (n * m) : ℕ) : ℤ)` using `Int.natCast_dvd_natCast.mpr (Nat.ordCompl_dvd_ordCompl_of_dvd (dvd_mul_right n m) 2)`. Use `dvd_of_parts hn ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using (d₁.trans k₁).sub h₁`. Simplify using `using (d₂.trans k₂).sub h₂`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dvd_sign_mul_sub {n m : ℕ} (hn : 0 < n) (hm : 0 < m) : (n : ℤ) ∣ sign (n * m) - sign n := by
   obtain ⟨h₁, h₂⟩ := sign_spec hn
@@ -99,14 +99,14 @@ theorem dvd_sign_mul_sub {n m : ℕ} (hn : 0 < n) (hm : 0 < m) : (n : ℤ) ∣ s
   · simpa using (d₂.trans k₂).sub h₂
 
 /- English proof (translation)
-Establish `h` using `(sign_spec hn.pos).2`. Rewrite `h` using `[Nat.factorization_eq_zero_of_not_dvd (Odd.not_two_dvd_nat hn), pow_zero, Nat.div_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dvd_sign_add_one {n : ℕ} (hn : Odd n) : (n : ℤ) ∣ sign n + 1 := by
   have h := (sign_spec hn.pos).2
   rwa [Nat.factorization_eq_zero_of_not_dvd (Odd.not_two_dvd_nat hn), pow_zero, Nat.div_one] at h
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Conclude with `⟨c • v, by rw [← natCast_zsmul, smul_smul, ← add_smul, ← hc, add_sub_cancel]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_add_nsmul {V : Type} [AddCommGroup V] {n : ℕ} {x y : ℤ} (h : (n : ℤ) ∣ x - y) (v : V) :
     ∃ e, x • v = y • v + n • e := by
@@ -114,15 +114,15 @@ theorem exists_eq_add_nsmul {V : Type} [AddCommGroup V] {n : ℕ} {x y : ℤ} (h
   exact ⟨c • v, by rw [← natCast_zsmul, smul_smul, ← add_smul, ← hc, add_sub_cancel]⟩
 
 /- English proof (translation)
-Take `⟨⟨h₁, h₂⟩, h₃⟩` from `hf`. Use `⟨⟨fun n m hn hm a => ?_, fun n hn => ⟨fun a => ?_, fun a' => ?_⟩⟩, fun n hn a a' => ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `h₁ n m hn hm a`. Take `⟨e', he'⟩` from `exists_eq_add_nsmul (dvd_sign_mul_sub hn hm) (f n a)`. Use `⟨e' + sign (n * m) • e, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.smul_apply]`. Rewrite using `[he, smul_add, he', smul_add, smul_comm n (sign (n * m)) e, add_assoc]`. Rewrite using `[← (h₂ n hn).1 a]`. Simplify using `only [LinearMap.smul_apply]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨e, he⟩`. Take `⟨e', he'⟩` from `exists_eq_add_nsmul (dvd_sign_sq hn) (f n a)`. Use `⟨sign n • e - e', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_sub, smul_comm n (sign n) e, ← he, smul_smul, he', one_smul, add_sub_cancel_right]`. Introduce and unpack `⟨e, he⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨sign n • e, by rw [he, smul_comm]⟩`. Take `⟨a, e, he⟩` from `(h₂ n hn).2 a'`. Take `⟨e', he'⟩` from `exists_eq_add_nsmul (dvd_sign_sq hn) (f n a)`. Use `⟨sign n • a, e - e', ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_zsmul, smul_smul, he', one_smul, he, smul_sub]`. Normalize the expressions using the abelian group laws. Simplify using `only [LinearMap.smul_apply, map_zsmul, smul_eq_mul]`. Use `((dvd_sign_sq hn).mul_right (D'.EF (f n a) (f n a'))).add (h₃ n hn a a')` as an intermediate fact. Rewrite `this` using `[show (sign n * sign n - 1) * D'.EF (f n a) (f n a') + (D'.EF (f n a) (f n a') - D.EF a a') = sign n * (sign n * D'.EF (f n a) (f n a')) - D.EF a a' by ring]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsIsometryTower.twist {D D' : Datum H} {f : ℕ → D.La →ₗ[𝓞 E] D'.La} (hf : IsIsometryTower D D' f) :
     IsIsometryTower D D' fun n => sign n • f n := by
@@ -154,16 +154,16 @@ theorem IsIsometryTower.twist {D D' : Datum H} {f : ℕ → D.La →ₗ[𝓞 E] 
       sign n * (sign n * D'.EF (f n a) (f n a')) - D.EF a a' by ring] at this
 
 /- English proof (translation)
-Use `D.proj` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isTorsionFree (D : Datum H) : Module.IsTorsionFree (𝓞 E) D.La := by
   have := D.proj
   infer_instance
 
 /- English proof (translation)
-Set `m : (E →+* ℂ) → ℕ` to `fun τ => if τ (H.rt : E) = H.rt0 then p else q`. Set `e` to `(Fintype.equivFin (Σ τ : E →+* ℂ, Fin (m τ))).symm`. Establish `h : ∀ τ, Nat.card {i // (e i).1 = τ} = m τ` using `fun τ => by`. Rewrite using `[Nat.card_congr ((e.subtypeEquiv (q := fun x => x.1 = τ) fun _ => Iff.rfl).trans (Equiv.sigmaSubtype τ))]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨_, fun i => (e i).1, fun τ => ⟨fun hτ => by rw [h]; simp [m, hτ], fun hτ => by rw [h]; simp [m, hτ]⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isTypeFn (H : Host E) (p q : ℕ) : ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H p q ty := by
   classical
@@ -178,7 +178,7 @@ theorem exists_isTypeFn (H : Host E) (p q : ℕ) : ∃ (g : ℕ) (ty : Fin g →
 variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
 
 /- English proof (translation)
-Use `D.fin` as an intermediate fact. Use `isTorsionFree D` as an intermediate fact. Conclude with `Module.finrank_zero_iff.mp (D.rank.trans hD)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_rank_zero (D : Datum H) (hD : D.p + D.q = 0) : Subsingleton D.La := by
   have := D.fin
@@ -186,9 +186,9 @@ theorem subsingleton_of_rank_zero (D : Datum H) (hD : D.p + D.q = 0) : Subsingle
   exact Module.finrank_zero_iff.mp (D.rank.trans hD)
 
 /- English proof (translation)
-Set `i : Fin U.n` to `⟨0, U.n_pos⟩`. Use `subsingleton_of_rank_zero D' (by omega)` as an intermediate fact. Use `subsingleton_of_rank_zero (U.Di i) (by have := U.sig i; omega)` as an intermediate fact. Conclude with `⟨i, LinearEquiv.ofSubsingleton _ _, fun a a' => by`. Rewrite using `[Subsingleton.elim a 0, map_zero, map_zero, map_zero, LinearMap.zero_apply, LinearMap.zero_apply],`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `fun a _ => ⟨0, Subsingleton.elim _ _⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem occurs_of_rank_zero (U : FamilyUnif Xo σ ty) (hD : D.p + D.q = 0) (D' : Datum H) (hp : D'.p = D.p)
     (hq : D'.q = D.q) (s : D.La → D'.La) : Occurs U D' s := by
@@ -200,16 +200,16 @@ theorem occurs_of_rank_zero (U : FamilyUnif Xo σ ty) (hD : D.p + D.q = 0) (D' :
     fun a _ => ⟨0, Subsingleton.elim _ _⟩⟩
 
 /- English proof (translation)
-The claim follows from `occurs_of_rank_zero U rfl _ rfl rfl _`.
+A detailed English derivation is pending.
 -/
 example (H : Host E) (l : Level H) (Xo : Moduli (Test.zeroDatum H) l) (σ : KA l →+* ℂ) (ty : Fin 0 → (E →+* ℂ))
     (U : FamilyUnif Xo σ ty) : Occurs U (Test.zeroDatum H) fun a => a :=
   occurs_of_rank_zero U rfl _ rfl rfl _
 
 /- English proof (translation)
-Take `⟨i, gam, h₁, h₂⟩` from `h`. Use `⟨i, gam.trans (LinearEquiv.neg _), fun a a' => by simp [h₁], fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `h₂ a ha`. Take `⟨e', he'⟩` from `exists_eq_add_nsmul (x := sign l.M) (y := -1) (by simpa using dvd_sign_add_one l.odd) (gam (f l.M a))`. Use `⟨e - e', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.smul_apply, LinearEquiv.trans_apply, LinearEquiv.neg_apply, map_zsmul] at he ⊢`. Rewrite using `[smul_neg, he', neg_one_zsmul, he, smul_sub]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem Occurs.twist {U : FamilyUnif Xo σ ty} {D' : Datum H} {f : ℕ → D.La →ₗ[𝓞 E] D'.La}
     (h : Occurs U D' (f l.M)) : Occurs U D' ((fun n => sign n • f n) l.M) := by

@@ -4,13 +4,11 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.MemSpan
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_wcomp, coeff_mul, coeff_mul]`. Use `split_ifs with h`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : Finsupp.weight wt p.2 = c`. Rewrite using `[coeff_wcomp, if_pos]`. Rewrite using `[← h, ← hp', map_add, h2, add_sub_cancel_right]`. Rewrite using `[ha _ h2, mul_zero, mul_zero]`. Use `(Finset.sum_eq_zero fun p hp => ?_).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Distinguish the cases in `h2 : Finsupp.weight wt p.2 = c`. Rewrite using `[coeff_wcomp, if_neg, zero_mul]`. Introduce `h1`. Conclude with `h (by rw [← hp', map_add, h1, h2, sub_add_cancel])`.
-
-Rewrite using `[ha _ h2, mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wcomp_mul_homog {O σ X : Type} [CommRing O] [AddCommGroup X] (wt : σ → X) {c : X}
     {a : MvPowerSeries σ O} (ha : a ∈ wtPart O wt c) (j : X) (b : MvPowerSeries σ O) :
@@ -34,13 +32,13 @@ private theorem wcomp_mul_homog {O σ X : Type} [CommRing O] [AddCommGroup X] (w
     · rw [ha _ h2, mul_zero]
 
 /- English proof (translation)
-Introduce `f hf j`. Establish `key : ∀ b : MvPowerSeries σ O, ∀ j, wcomp O wt j (b * f) ∈ Ideal.span S`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem a ha`. Introduce `b j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc⟩` from `hS a ha`. Rewrite using `[wcomp_mul_homog wt hc]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ha)`. Consider the case `zero => intro b j`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Introduce `b j`. Rewrite using `[mul_add, map_add]`. Conclude with `add_mem (hx b j) (hy b j)`. Consider the case `smul r x _ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b j`. Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hx _ j`. Simplify using `using key 1 j`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem homog_of_span {O σ X : Type} [CommRing O] [AddCommGroup X] (wt : σ → X)
     (S : Set (MvPowerSeries σ O)) (hS : ∀ a ∈ S, ∃ c, a ∈ wtPart O wt c) :
@@ -65,13 +63,13 @@ private theorem homog_of_span {O σ X : Type} [CommRing O] [AddCommGroup X] (wt 
   simpa using key 1 j
 
 /- English proof (translation)
-Establish `key : ∃ T : Set (MvPowerSeries σ O), (∀ a ∈ T, ∃ c, a ∈ wtPart O wt c) ∧ Ideal.span S ^ N = Ideal.span T`. Proceed by induction on `N with`. Consider the case `zero`. Use `⟨{1}, ?_, by simp⟩` and prove the remaining obligations. Introduce and unpack `a rfl`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨0, one_mem_wtPart O wt⟩`. Consider the case `succ n ih`. Take `⟨T, hT, hT'⟩` from `ih`. Use `⟨_, ?_, by rw [pow_succ, hT', Ideal.span_mul_span']⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨c, hc⟩` from `hT a ha`. Take `⟨d, hd⟩` from `hS b hb`. Conclude with `⟨c + d, mul_mem_wtPart O wt hc hd⟩`. Take `⟨T, hT, hT'⟩` from `key`. Rewrite using `[hT']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `homog_of_span wt T hT`.
+A detailed English derivation is pending.
 -/
 private theorem homog_span_pow {O σ X : Type} [CommRing O] [AddCommGroup X] (wt : σ → X)
     (S : Set (MvPowerSeries σ O)) (hS : ∀ a ∈ S, ∃ c, a ∈ wtPart O wt c) (N : ℕ) :
@@ -95,34 +93,32 @@ private theorem homog_span_pow {O σ X : Type} [CommRing O] [AddCommGroup X] (wt
   exact homog_of_span wt T hT
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.MemSpanVariable.mem_span_X f hf`.
+A detailed English derivation is pending.
 -/
 private theorem mem_span_X {O σ : Type} [CommRing O] [Fintype σ] (f : MvPowerSeries σ O)
     (hf : constantCoeff f = 0) : f ∈ Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ O)) :=
   _root_.UpperTheory.Reformulated.B.MemSpanVariable.mem_span_X f hf
 
 /- English proof (translation)
-Introduce `O _ _ _ _ X _ _ _ _ R _ _ hR W hz j x hx`. Establish `hl : IsLocalHom (algebraMap O R)` using `IsCO.isLocalHom`. Establish `hn : IsNoetherianRing R` using `hR.toIsNoetherian`. Set `S : Set (MvPowerSeries W.σ O)` to `Set.range MvPowerSeries.X ∪ algebraMap O _ '' (maximalIdeal O : Set O)`. Establish `hS : ∀ a ∈ S, ∃ c, a ∈ wtPart O W.wt c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `_ (⟨i, rfl⟩ | ⟨a, -, rfl⟩)`. Conclude with `⟨_, X_mem_wtPart O W.wt i⟩`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ (one_mem_wtPart O W.wt)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : (Ideal.span S).map W.π ≤ maximalIdeal R`. Rewrite using `[Ideal.map_le_iff_le_comap, Ideal.span_le]`. Introduce and unpack `_ (⟨i, rfl⟩ | ⟨a, ha, rfl⟩)`. Conclude with `hz i`. Use `show W.π (algebraMap O _ a) ∈ maximalIdeal R`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Rewrite using `[AlgHom.commutes]`. Conclude with `fun h => ha (IsLocalHom.map_nonunit a h)`. Establish `hmap : (Ideal.span S).map W.π = maximalIdeal R`. Use `le_antisymm hle fun r hr => ?_` and prove the remaining obligations. Take `⟨f, rfl⟩` from `W.surj r`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h1 : f - algebraMap O _ (constantCoeff f) ∈ Ideal.span S`. Use `Ideal.span_mono Set.subset_union_left (mem_span_X _ ?_)` and prove the remaining obligations. Simplify using `[MvPowerSeries.algebraMap_apply]`. Establish `h2 : constantCoeff f ∈ maximalIdeal O` using `fun hu => hr ((MvPowerSeries.isUnit_iff_constantCoeff.2 hu).map W.π)`. Establish `h3 : algebraMap O _ (constantCoeff f) ∈ Ideal.span S` using `Ideal.subset_span (Or.inr ⟨_, h2, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.mem_map_of_mem _ (by simpa using add_mem h1 h3)`. Take `⟨f, rfl⟩` from `W.surj x`. Establish `key : ∀ N : ℕ, W.π (f - wcomp O W.wt j f) ∈ maximalIdeal R ^ N`. Introduce `N`. Take `⟨_, ⟨y, hy, rfl⟩, hxy⟩` from `hx N`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hxy`, the goal using `[← hmap, ← Ideal.map_pow]`. Take `⟨g, hg, hgxy⟩` from `(Ideal.mem_map_iff_of_surjective W.π W.surj).1 hxy`. Establish `h1 : f - y - g ∈ RingHom.ker W.π`. Rewrite using `[RingHom.mem_ker, map_sub, map_sub, hgxy]`. Conclude with `sub_self _`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2` using `W.homog _ h1 j`. Establish `h3 : wcomp O W.wt j y = y`. Use extensionality with `n`. Rewrite using `[coeff_wcomp]`. Use `split_ifs with h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `(hy n h).symm`. Establish `h4 : g - wcomp O W.wt j g ∈ Ideal.span S ^ N` using `sub_mem hg (homog_span_pow W.wt S hS N g hg j)`. Establish `h5 : f - wcomp O W.wt j f = (f - y - g) - wcomp O W.wt j (f - y - g) + (g - wcomp O W.wt j g)`. Rewrite using `[map_sub, map_sub, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5, map_add, (RingHom.mem_ker).1 (sub_mem h1 h2), zero_add]`. Conclude with `Ideal.mem_map_of_mem _ h4`. Establish `h0 : W.π (f - wcomp O W.wt j f) = 0`. Use `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal R) (maximalIdeal.isMaximal R).ne_top` as an intermediate fact.
-
-Rewrite using `[← Ideal.mem_bot, ← this, Ideal.mem_iInf]`. Conclude with `key`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Conclude with `⟨_, wcomp_mem O W.wt j f, h0.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.part_closed :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [DecidableEq X] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (W : WPres O X R), (∀ s, W.z s ∈ maximalIdeal R) → ∀ (j : X) (x : R), (∀ N : ℕ, ∃ y ∈ W.part j, x - y ∈ maximalIdeal R ^ N) → x ∈ W.part j := by

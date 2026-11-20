@@ -9,11 +9,11 @@ namespace GlobalTheory.SgLoc.PtAlg
 variable {E : Type} [CommRing E]
 
 /- English proof (translation)
-Proceed by induction on `bs with`. Consider the case `nil`. Introduce `m hm a b`. Simplify using `only [List.map_nil, List.sum_nil] at hm`. Substitute `hm` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `only [List.nil_append, ptEntryL]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Consider the case `cons hd bs ih`. Take `⟨t', s'⟩` from `hd`. Introduce `m hm a b`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [List.map_cons, List.sum_cons] at hm`. Simplify using `only [List.cons_append, ptEntryL]`. Rewrite using `[ih _ rfl]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ptEntryL_append (bs : List (Eˣ × ℕ+)) (t : Eˣ) (s : ℕ+) :
     ∀ (m : ℕ), (bs.map (fun b => (b.2 : ℕ))).sum = m → ∀ a b : ℕ,
@@ -36,7 +36,7 @@ theorem ptEntryL_append (bs : List (Eˣ × ℕ+)) (t : Eˣ) (s : ℕ+) :
     split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Use `show ptEntryL (h.blocks ++ [(t, s)]) a b = _`. Rewrite using `[ptEntryL_append h.blocks t s m h.size]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mat_snoc {m : ℕ} (h : Pt E m) (t : Eˣ) (s : ℕ+) (a b : Fin (m + s)) :
     (h.snoc t s).mat a b =
@@ -47,11 +47,11 @@ theorem mat_snoc {m : ℕ} (h : Pt E m) (t : Eˣ) (s : ℕ+) (a b : Fin (m + s))
   split_ifs <;> rfl
 
 /- English proof (translation)
-Establish `key : Matrix.reindex finSumFinEquiv.symm finSumFinEquiv.symm (h.snoc t s).mat = Matrix.fromBlocks h.mat 0 0 ((t : E) • (Fin.revPerm : Equiv.Perm (Fin s)).permMatrix E)`. Apply the tactic sequence `ext (i | i) (j | j) <;>`. Apply the tactic sequence `simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, mat_snoc, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Fin.val_castAdd, Fin.val_natAdd, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, …`. Apply the tactic sequence `have hi := i.isLt <;> have hj := j.isLt`. Rewrite using `[dif_pos ⟨hi, hj⟩]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg (by omega), if_neg (by omega)]`. Rewrite using `[dif_neg (by omega), if_neg (by omega)]`. Rewrite using `[dif_neg (by omega)]`. Simplify using `only [Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq, Fin.revPerm_apply]`. Distinguish the cases in `hij : Fin.rev i = j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos (by rw [← hij, Fin.val_rev]; omega), if_pos hij, mul_one]`. Rewrite using `[if_neg (fun hc => hij (Fin.ext (by rw [Fin.val_rev]; omega))), if_neg hij, mul_zero]`. Establish `hdet` using `congrArg Matrix.det key`. Rewrite `hdet` using `[Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_smul, Matrix.det_permutation, Fintype.card_fin]`. Rewrite using `[hdet]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -84,9 +84,9 @@ theorem det_snoc_eq {m : ℕ} (h : Pt E m) (t : Eˣ) (s : ℕ+) :
   ring
 
 /- English proof (translation)
-Rewrite using `[det_snoc_eq]`. Break down `Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin s))) with h1 | h1` into its components or cases. Use `left`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_snoc {m : ℕ} (h : Pt E m) (t : Eˣ) (s : ℕ+) :
     (h.snoc t s).mat.det = h.mat.det * (t : E) ^ (s : ℕ) ∨
@@ -101,13 +101,13 @@ theorem det_snoc {m : ℕ} (h : Pt E m) (t : Eˣ) (s : ℕ+) :
     simp
 
 /- English proof (translation)
-Proceed by induction on `bs using List.reverseRecOn with`. Consider the case `nil`. Introduce `n hn`. Establish `hn' : n = 0` using `by rw [← hn]; simp`. Substitute `hn'` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Consider the case `append_singleton bs x ih`. Take `⟨t, s⟩` from `x`. Introduce `n hn`. Establish `hn' : n = (bs.map (fun b => (b.2 : ℕ))).sum + s` using `by rw [← hn]; simp`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hn'` using the available equality. Establish `hu` using `ih _ rfl`. Express the relevant statement in the definitionally equal form `IsUnit (Pt.snoc (⟨bs, rfl⟩ : Pt E _) t s).mat.det`. Break down `det_snoc (⟨bs, rfl⟩ : Pt E _) t s with h1 | h1` into its components or cases. Rewrite using `[h1]`.
+Substitute using the available equality. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu.mul ((Units.isUnit t).pow _)`. Rewrite using `[h1]`. Conclude with `(hu.mul ((Units.isUnit t).pow _)).neg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_det_of_mem_UH_Hpk (bs : List (Eˣ × ℕ+)) :
     ∀ (n : ℕ) (hn : (bs.map (fun b => (b.2 : ℕ))).sum = n),
@@ -132,7 +132,7 @@ private theorem isUnit_det_of_mem_UH_Hpk (bs : List (Eˣ × ℕ+)) :
       exact (hu.mul ((Units.isUnit t).pow _)).neg
 
 /- English proof (translation)
-Conclude with `isUnit_det_of_mem_UH_Hpk h.blocks m h.size`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det {m : ℕ} (h : Pt E m) : IsUnit h.mat.det := by
   exact isUnit_det_of_mem_UH_Hpk h.blocks m h.size

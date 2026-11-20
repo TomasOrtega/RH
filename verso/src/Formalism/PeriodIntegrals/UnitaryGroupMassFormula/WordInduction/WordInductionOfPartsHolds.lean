@@ -16,12 +16,12 @@ variable {P : Type} [NormedAddCommGroup P] [NormedSpace ℝ P] {s : Set P}
 def ES {m n : Type} (f : P → Matrix m n ℂ) (s : Set P) : Prop := ∀ a b, ContDiffOn ℝ ∞ (fun x => f x a b) s
 
 /- English proof (translation)
-Introduce `_ _` and use `contDiffOn_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem es_const {m n : Type} (M : Matrix m n ℂ) (s : Set P) : ES (fun _ => M) s := fun _ _ => contDiffOn_const
 
 /- English proof (translation)
-Introduce `a b`. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiffOn.sum fun c _ => (hf a c).mul (hg c b)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem es_mul {m n o : Type} [Fintype n] {f : P → Matrix m n ℂ} {g : P → Matrix n o ℂ} (hf : ES f s) (hg : ES g s) :
     ES (fun x => f x * g x) s := by
@@ -30,7 +30,7 @@ theorem es_mul {m n o : Type} [Fintype n] {f : P → Matrix m n ℂ} {g : P → 
   exact ContDiffOn.sum fun c _ => (hf a c).mul (hg c b)
 
 /- English proof (translation)
-Introduce `a b`. Simplify using `only [Matrix.conjTranspose_apply, Complex.star_def]`. Conclude with `Complex.conjCLE.contDiff.comp_contDiffOn (hf b a)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem es_conjTranspose {m n : Type} {f : P → Matrix m n ℂ} (hf : ES f s) : ES (fun x => (f x)ᴴ) s := by
   intro a b
@@ -38,7 +38,7 @@ theorem es_conjTranspose {m n : Type} {f : P → Matrix m n ℂ} (hf : ES f s) :
   exact Complex.conjCLE.contDiff.comp_contDiffOn (hf b a)
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply, Units.smul_def, zsmul_eq_mul]`. Use `ContDiffOn.sum fun σ _ => contDiffOn_const.mul ?_` and prove the remaining obligations. Conclude with `contDiffOn_prod fun i _ => hf (σ i) i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem es_det {n : Type} [Fintype n] [DecidableEq n] {f : P → Matrix n n ℂ} (hf : ES f s) :
     ContDiffOn ℝ ∞ (fun x => (f x).det) s := by
@@ -47,7 +47,7 @@ theorem es_det {n : Type} [Fintype n] [DecidableEq n] {f : P → Matrix n n ℂ}
   exact contDiffOn_prod fun i _ => hf (σ i) i
 
 /- English proof (translation)
-Introduce `a b` and use `by simp only [Matrix.updateRow_apply] split_ifs · exact contDiffOn_const · exact hf a b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem es_updateRow {n : Type} [Fintype n] [DecidableEq n] {f : P → Matrix n n ℂ} (hf : ES f s) (r : n) (v : n → ℂ) :
     ES (fun x => (f x).updateRow r v) s := fun a b => by
@@ -57,7 +57,7 @@ theorem es_updateRow {n : Type} [Fintype n] [DecidableEq n] {f : P → Matrix n 
   · exact hf a b
 
 /- English proof (translation)
-Introduce `a b` and use `by have hd' : ContDiffOn ℝ ∞ (fun x => ((f x).det)⁻¹) s := (es_det hf).inv hd have hu : ES (fun x => (f x).updateRow b (Pi.single a 1)) s := es_updateRow hf b _ have hm := hd'.mul (es_det hu) refine hm.congr fun x hx => ?_ simp only [Matrix.inv_def, Matrix.smul_apply, Matrix.adju …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem es_inv {n : Type} [Fintype n] [DecidableEq n] {f : P → Matrix n n ℂ} (hf : ES f s)
     (hd : ∀ x ∈ s, (f x).det ≠ 0) : ES (fun x => (f x)⁻¹) s := fun a b => by
@@ -68,7 +68,7 @@ theorem es_inv {n : Type} [Fintype n] [DecidableEq n] {f : P → Matrix n n ℂ}
   simp only [Matrix.inv_def, Matrix.smul_apply, Matrix.adjugate_apply, Ring.inverse_eq_inv', smul_eq_mul]
 
 /- English proof (translation)
-Introduce `a b`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply]`. Conclude with `hf _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem es_reindex {m n m' n' : Type} (e : m ≃ m') (e' : n ≃ n') {f : P → Matrix m n ℂ} (hf : ES f s) :
     ES (fun x => Matrix.reindex e e' (f x)) s := by
@@ -77,7 +77,7 @@ theorem es_reindex {m n m' n' : Type} (e : m ≃ m') (e' : n ≃ n') {f : P → 
   exact hf _ _
 
 /- English proof (translation)
-Introduce `a b` and use `by rcases a with a | a <;> rcases b with b | b · simpa using hA a b · simpa using hB a b · simpa using hC a b · simpa using hD a b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem es_fromBlocks {l m n o : Type} {A : P → Matrix n l ℂ} {B' : P → Matrix n m ℂ} {C : P → Matrix o l ℂ}
     {D' : P → Matrix o m ℂ} (hA : ES A s) (hB : ES B' s) (hC : ES C s) (hD : ES D' s) :
@@ -89,7 +89,7 @@ theorem es_fromBlocks {l m n o : Type} {A : P → Matrix n l ℂ} {B' : P → Ma
   · simpa using hD a b
 
 /- English proof (translation)
-Introduce `a b` and use `by rcases a with a | a · simpa using hA a b · simpa using hB a b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem es_fromRows {m₁ m₂ n : Type} {A : P → Matrix m₁ n ℂ} {B' : P → Matrix m₂ n ℂ} (hA : ES A s) (hB : ES B' s) :
     ES (fun x => Matrix.fromRows (A x) (B' x)) s := fun a b => by
@@ -98,7 +98,7 @@ theorem es_fromRows {m₁ m₂ n : Type} {A : P → Matrix m₁ n ℂ} {B' : P �
   · simpa using hB a b
 
 /- English proof (translation)
-Introduce `a b` and use `by rcases b with b | b · simpa using hA a b · simpa using hB a b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem es_fromCols {m n₁ n₂ : Type} {A : P → Matrix m n₁ ℂ} {B' : P → Matrix m n₂ ℂ} (hA : ES A s) (hB : ES B' s) :
     ES (fun x => Matrix.fromCols (A x) (B' x)) s := fun a b => by
@@ -109,7 +109,7 @@ theorem es_fromCols {m n₁ n₂ : Type} {A : P → Matrix m n₁ ℂ} {B' : P �
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-The claim follows from `contDiffOn_pi.mpr fun a => contDiffOn_pi.mpr fun b => hf a b`.
+A detailed English derivation is pending.
 -/
 theorem es_contDiffOn {m n : Type} [Fintype m] [Fintype n] {f : P → Matrix m n ℂ} (hf : ES f s) :
     ContDiffOn ℝ ∞ f s :=
@@ -122,15 +122,15 @@ section x0
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Simplify using `[zfull, U.blk2, Matrix.det_fromBlocks_zero₂₁]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_zfull {j : ℕ} (Z : Matrix (Fin j) (Fin j) ℂ) (τ : ℂ) : (zfull Z τ).det = Z.det * τ := by
   simp [zfull, U.blk2, Matrix.det_fromBlocks_zero₂₁]
 
 /- English proof (translation)
-Establish `h1 : ES (fun q : ℂ × (Fin j → Fin j → ℂ) => Matrix.of q.2) s` using `fun a b => by`. Simplify using `only [Matrix.of_apply]`. Use `fun_prop`. Establish `h4 : ES (fun q : ℂ × (Fin j → Fin j → ℂ) => (Matrix.of fun _ _ : Fin 1 => q.1)) s` using `fun a b => by`. Simplify using `only [Matrix.of_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `contDiff_fst.contDiffOn`. Simplify using `only [zfull, U.blk2]`. Conclude with `es_reindex _ _ (es_fromBlocks h1 (es_const _ _) (es_const _ _) h4)`.
+A detailed English derivation is pending.
 -/
 theorem es_zfull (j : ℕ) (s : Set (ℂ × (Fin j → Fin j → ℂ))) :
     ES (fun q : ℂ × (Fin j → Fin j → ℂ) => zfull (Matrix.of q.2) q.1) s := by
@@ -144,9 +144,9 @@ theorem es_zfull (j : ℕ) (s : Set (ℂ × (Fin j → Fin j → ℂ))) :
   exact es_reindex _ _ (es_fromBlocks h1 (es_const _ _) (es_const _ _) h4)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e : D.castM rfl g = g`. Use extensionality with `i j`. Simplify using `[D.castM]`. Rewrite using `[e]`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg`.
+A detailed English derivation is pending.
 -/
 theorem castM_mem {k a b : ℕ} (h : a = b) {g : B.Mat k a} (hg : g ∈ B.GV k a) : D.castM h g ∈ B.GV k b := by
   subst h
@@ -157,11 +157,11 @@ theorem castM_mem {k a b : ℕ} (h : a = b) {g : B.Mat k a} (hg : g ∈ B.GV k a
   exact hg
 
 /- English proof (translation)
-Establish `hu : IsUnit Z.det` using `isUnit_iff_ne_zero.mpr hZ`. Establish `hu' : IsUnit Zᴴ.det`. Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `isUnit_iff_ne_zero.mpr (star_ne_zero.mpr hZ)`. Establish `hγ' : γᴴ * Hpk k ρ * γ = Hpk k ρ` using `hγ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : ∀ M : Matrix (Fin j) (Fin j) ℂ, G.wMat j * (G.wMat j * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, Ux2.wMat_sq, Matrix.one_mul]`. Use `show (U.mMap k j ρ Z γ)ᴴ * Hpk k (j + ρ) * U.mMap k j ρ Z γ = Hpk k (j + ρ)`. Rewrite using `[Ux2.hpkBlocks k j ρ]`. Simplify using `only [U.mMap, Ux2.block3_conjTranspose, Ux2.block3_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `refine Ux2.block3_congr ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;>`. Simplify using `[Matrix.conjTranspose_mul, Ux2.wMat_ct, Matrix.mul_assoc, Matrix.conjTranspose_nonsing_inv, hγ', hW, Matrix.mul_nonsing_inv_cancel_left _ _ hu', Matrix.nonsing_inv_mul _ hu]`.
+A detailed English derivation is pending.
 -/
 private theorem mMap_mem_GV {k j ρ : ℕ} (Z : Matrix (Fin j) (Fin j) ℂ) (hZ : Z.det ≠ 0) {γ : B.Mat k ρ}
     (hγ : γ ∈ B.GV k ρ) : U.mMap k j ρ Z γ ∈ B.GV k (j + ρ) := by
@@ -180,15 +180,13 @@ private theorem mMap_mem_GV {k j ρ : ℕ} (Z : Matrix (Fin j) (Fin j) ℂ) (hZ 
       Matrix.mul_nonsing_inv_cancel_left _ _ hu', Matrix.nonsing_inv_mul _ hu]
 
 /- English proof (translation)
-Introduce `k r j hj γ hγ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hZ` using `es_zfull j {q : ℂ × (Fin j → Fin j → ℂ) | q.1 ≠ 0 ∧ (Matrix.of q.2).det ≠ 0}`. Establish `hdet : ∀ q ∈ {q : ℂ × (Fin j → Fin j → ℂ) | q.1 ≠ 0 ∧ (Matrix.of q.2).det ≠ 0}, (zfull (Matrix.of q.2) q.1)ᴴ.det ≠ 0`. Introduce and unpack `q ⟨h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Matrix.det_conjTranspose, det_zfull]`. Conclude with `star_ne_zero.mpr (mul_ne_zero h2 h1)`. Establish `hI` using `es_inv (es_conjTranspose hZ) hdet`. Establish `hM : ES (fun q : ℂ × (Fin j → Fin j → ℂ) => U.mMap k (j + 1) (r - (j + 1)) (zfull (Matrix.of q.2) q.1) γ) {q : ℂ × (Fin j → Fin j → ℂ) | q.1 ≠ 0 ∧ (Matrix.of q.2).det ≠ 0}`. Simplify using `only [U.mMap, U.blk3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `es_reindex _ _ (es_fromBlocks (es_const _ _) (es_fromRows (es_mul hI (es_const _ _)) (es_const _ _)) (es_fromCols (es_mul (es_const _ _) hZ) (es_const _ _)) (es_const _ _))`. Establish `hX : ES (fun q : ℂ × (Fin j → Fin j → ℂ) => x0 k r j hj (Matrix.of q.2) q.1 γ) {q : ℂ × (Fin j → Fin j → ℂ) | q.1 ≠ 0 ∧ (Matrix.of q.2).det ≠ 0}`. Simplify using `only [x0, D.castM]`. Conclude with `es_reindex _ _ hM`. Conclude with `es_contDiffOn hX`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `q h1 h2`. Apply `PBF.mem_level_zero_of_mem_group` to reduce the goal to its premises. Simplify using `only [x0]`. Apply `castM_mem` to reduce the goal to its premises. Apply `mMap_mem_GV _ _ hγ` to reduce the goal to its premises.
-
-Rewrite using `[det_zfull]`. Conclude with `mul_ne_zero h2 h1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_point_facts_holds : BasePointSmoothAndMem := by
   intro k r j hj γ hγ
@@ -221,7 +219,7 @@ theorem base_point_facts_holds : BasePointSmoothAndMem := by
 end x0
 
 /- English proof (translation)
-The claim follows from `wordIndOfParts_of base_point_facts_holds`.
+A detailed English derivation is pending.
 -/
 theorem word_induction_of_parts_holds : WordIndOfParts := wordIndOfParts_of base_point_facts_holds
 

@@ -64,7 +64,7 @@ Both sides reduce to the same expression.
 theorem zero_apply (i : Fin r) : (0 : Lat ρ g) i = 0 := rfl
 
 /- English proof (translation)
-The claim follows from `funext h`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem ext {x y : Lat ρ g} (h : ∀ i, x i = y i) : x = y := funext h
 
@@ -136,7 +136,7 @@ theorem basis_repr (x : Lat ρ g) (p : Fin r × (Fin g ⊕ Fin g)) :
     (basis ρ g).repr x p = Sum.elim (x p.1).1 (x p.1).2 p.2 := rfl
 
 /- English proof (translation)
-Rewrite using `[basis, Module.Basis.coe_ofEquivFun]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem basis_apply (p : Fin r × (Fin g ⊕ Fin g)) (i : Fin r) :
     basis ρ g p i = (fun k => Pi.single (M := fun _ => ℤ) p 1 (i, Sum.inl k),

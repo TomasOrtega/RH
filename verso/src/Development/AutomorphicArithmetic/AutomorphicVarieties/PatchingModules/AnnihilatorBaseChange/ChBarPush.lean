@@ -6,11 +6,11 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `letI i0 : Algebra B (Polynomial (MvPolynomial (Fin m) B)) := RingHom.toAlgebra ((algebraMap (MvPolynomial (Fin m) B) (Polynomial (MvPolynomial (Fin m) B))).comp MvPolynomial.C)`. Use `letI i1 : Algebra B (Polynomial (MvPolynomial (Fin m) B')) := RingHom.toAlgebra (((algebraMap (MvPolynomial (Fin m) B') (Polynomial (MvPolynomial (Fin m) B'))).comp MvPolynomial.C).comp g)`. Set `φ : Polynomial (MvPolynomial (Fin m) B) →ₐ[B] Polynomial (MvPolynomial (Fin m) B')` to `{ Polynomial.mapRingHom (MvPolynomial.map g) with commutes' := fun b => by simp [RingHom.algebraMap_toAlgebra] }`. Establish `key` using `D.nat _ _ φ (MonoidAlgebra.single 1 Polynomial.X - MonoidAlgebra.mapRingHom G Polynomial.C (GDet.gen y))`. Establish `hx : MonoidAlgebra.mapRingHom G (φ : Polynomial (MvPolynomial (Fin m) B) →+* Polynomial (MvPolynomial (Fin m) B')) (MonoidAlgebra.single 1 Polynomial.X - MonoidAlgebra.mapRingHom G Polynomial.C (GDet.gen y)) = MonoidAlgebra.single 1 Polynomial.X - MonoidAlgebra.mapRingHom G Polyn …`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `h`. Simplify using `[φ, MonoidAlgebra.mapRingHom, MonoidAlgebra.single_apply, Finsupp.single_apply]`. Break down `eq_or_ne h 1 with rfl | hh` into its components or cases. Simplify using `[Polynomial.coeff_X]`. Simplify using `[Finsupp.single_eq_of_ne hh, Finsupp.single_eq_of_ne hh.symm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `key` using `[hx]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gDet_chi_map_C_mapRingHom_gen {n : ℕ} {B B' G : Type} [CommRing B] [CommRing B'] [Group G] (g : B →+* B') (D : GDet n B G) (m : ℕ) (y : Fin m → MonoidAlgebra B G) : ((D.map g).map MvPolynomial.C).chi (MonoidAlgebra.mapRingHom G (MvPolynomial.map g) (GDet.gen y)) = Polynomial.map (MvPolynomial.map g) ((D.map MvPolynomial.C).chi (GDet.gen y)) := by
   letI i0 : Algebra B (Polynomial (MvPolynomial (Fin m) B)) := RingHom.toAlgebra ((algebraMap (MvPolynomial (Fin m) B) (Polynomial (MvPolynomial (Fin m) B))).comp MvPolynomial.C)
@@ -29,9 +29,9 @@ private theorem gDet_chi_map_C_mapRingHom_gen {n : ℕ} {B B' G : Type} [CommRin
   exact key
 
 /- English proof (translation)
-Take `⟨m, y, β, hz⟩` from `hz`. Use `⟨m, fun j => MonoidAlgebra.mapRingHom G g (y j), β, fun h => ?_⟩` and prove the remaining obligations. Establish `hgen : GDet.gen (fun j => MonoidAlgebra.mapRingHom G g (y j)) = MonoidAlgebra.mapRingHom G (MvPolynomial.map g) (GDet.gen y)`. Use extensionality with `h`. Simplify using `[GDet.gen, Finsupp.finset_sum_apply, MonoidAlgebra.mapRingHom]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hcomm : (MonoidAlgebra.mapRingHom G (MvPolynomial.map g)).comp (algebraMap (MvPolynomial (Fin m) B) (MonoidAlgebra (MvPolynomial (Fin m) B) G)) = (algebraMap (MvPolynomial (Fin m) B') (MonoidAlgebra (MvPolynomial (Fin m) B') G)).comp (MvPolynomial.map g)`. Use `RingHom.ext fun q => ?_` and prove the remaining obligations. Simplify using `[MonoidAlgebra.mapRingHom, MonoidAlgebra.coe_algebraMap, Finsupp.mapRange_single]`. Rewrite using `[hgen, gDet_chi_map_C_mapRingHom_gen, Polynomial.aeval_def, Polynomial.eval₂_map, ← hcomm, ← Polynomial.hom_eval₂]`. Simplify using `[MonoidAlgebra.mapRingHom, MvPolynomial.coeff_map, hz h, Polynomial.aeval_def]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem gDet_mapRingHom_mem_ch_map_of_mem_ch {n : ℕ} {B B' G : Type} [CommRing B] [CommRing B'] [Group G] (g : B →+* B') (D : GDet n B G) (z : MonoidAlgebra B G) (hz : z ∈ D.CH) : MonoidAlgebra.mapRingHom G g z ∈ (D.map g).CH := by
   obtain ⟨m, y, β, hz⟩ := hz
@@ -46,7 +46,7 @@ private theorem gDet_mapRingHom_mem_ch_map_of_mem_ch {n : ℕ} {B B' G : Type} [
   simp [MonoidAlgebra.mapRingHom, MvPolynomial.coeff_map, hz h, Polynomial.aeval_def]
 
 /- English proof (translation)
-Use extensionality with `h`. Simplify using `only [MonoidAlgebra.coeff_map, MonoidAlgebra.coeff_mapDomain]`. Rewrite using `[Finsupp.mapDomain_mapRange _ _ _ _ (map_add F)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem monoidAlgebra_map_mapDomain_comm {R S G G' : Type} [Semiring R] [Semiring S] (F : R →+ S) (p : G → G') (x : MonoidAlgebra R G) : MonoidAlgebra.map F (MonoidAlgebra.mapDomain p x) = MonoidAlgebra.mapDomain p (MonoidAlgebra.map F x) := by
   ext h
@@ -54,13 +54,13 @@ private theorem monoidAlgebra_map_mapDomain_comm {R S G G' : Type} [Semiring R] 
   rw [Finsupp.mapDomain_mapRange _ _ _ _ (map_add F)]
 
 /- English proof (translation)
-Take `⟨m, y, β, hz⟩` from `hz`. Use `⟨m, fun j => MonoidAlgebra.mapDomainRingHom B' p (y j), β, fun h => ?_⟩` and prove the remaining obligations. Establish `hgen : GDet.gen (fun j => MonoidAlgebra.mapDomainRingHom B' p (y j)) = MonoidAlgebra.mapDomainRingHom (MvPolynomial (Fin m) B') p (GDet.gen y)`. Simplify using `[GDet.gen, map_sum, MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapRingHom, Finsupp.mapDomain_smul, monoidAlgebra_map_mapDomain_comm]`. Establish `hchi : ((D'.comap p).map MvPolynomial.C).chi (GDet.gen y) = (D'.map MvPolynomial.C).chi (MonoidAlgebra.mapDomainRingHom (MvPolynomial (Fin m) B') p (GDet.gen y))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : MonoidAlgebra.mapDomainRingHom (Polynomial (MvPolynomial (Fin m) B')) p (MonoidAlgebra.single 1 Polynomial.X - MonoidAlgebra.mapRingHom G Polynomial.C (GDet.gen y)) = MonoidAlgebra.single 1 Polynomial.X - MonoidAlgebra.mapRingHom G' Polynomial.C (MonoidAlgebra.mapDomainRingHo …`. Rewrite using `[map_sub]`. Simplify using `[MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapRingHom, monoidAlgebra_map_mapDomain_comm]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcomm : (MonoidAlgebra.mapDomainRingHom (MvPolynomial (Fin m) B') p).comp (algebraMap (MvPolynomial (Fin m) B') (MonoidAlgebra (MvPolynomial (Fin m) B') G)) = algebraMap (MvPolynomial (Fin m) B') (MonoidAlgebra (MvPolynomial (Fin m) B') G')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `RingHom.ext fun q => ?_` and prove the remaining obligations. Simplify using `[MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.coe_algebraMap]`. Establish `hzW : z = MonoidAlgebra.map (MvPolynomial.coeffAddMonoidHom β) ((Polynomial.aeval (GDet.gen y)) (((D'.comap p).map MvPolynomial.C).chi (GDet.gen y)))`. Use extensionality with `g`. Simplify using `[hz g]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hgen, ← hchi, Polynomial.aeval_def, ← hcomm, ← Polynomial.hom_eval₂, ← Polynomial.aeval_def, hzW, MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapDomainRingHom_apply, ← monoidAlgebra_map_mapDomain_comm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem gDet_mapDomainRingHom_mem_ch_of_mem_ch_comap {n : ℕ} {B' G G' : Type} [CommRing B'] [Group G] [Group G'] (p : G →* G') (D' : GDet n B' G') (z : MonoidAlgebra B' G) (hz : z ∈ (D'.comap p).CH) : MonoidAlgebra.mapDomainRingHom B' p z ∈ D'.CH := by
   obtain ⟨m, y, β, hz⟩ := hz
@@ -83,13 +83,13 @@ private theorem gDet_mapDomainRingHom_mem_ch_of_mem_ch_comap {n : ℕ} {B' G G' 
   simp
 
 /- English proof (translation)
-Introduce `n B B' G G' _ _ _ _ _ _ _ _ g _ p D D' Z hp hD z hz`. Unfold `GDet.chBar closureIdeal at hz ⊢`. Simplify using `only [TwoSidedIdeal.mem_iInf] at hz ⊢`. Introduce `N H'`. Set `H : OpenNormalSubgroup G` to `⟨H'.toOpenSubgroup.comap p hp, H'.isNormal'.comap p⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hzN` using `hz N H`. Set `φ : MonoidAlgebra B G →+* MonoidAlgebra B' G'` to `(MonoidAlgebra.mapDomainRingHom B' p).comp (MonoidAlgebra.mapRingHom G g)`. Establish `hm : Ideal.map g (maximalIdeal B) ≤ maximalIdeal B'` using `Ideal.map_le_iff_le_comap.2 (fun x hx => (mem_maximalIdeal _).2 ((map_mem_nonunits_iff g x).2 ((mem_maximalIdeal _).1 hx)))`. Use `(TwoSidedIdeal.mem_comap φ).1 ((TwoSidedIdeal.span_le.2 ?_) hzN)` and prove the remaining obligations. Apply the tactic sequence `rintro x (((hx | hx) | ⟨a, ha, rfl⟩) | ⟨h, hh, rfl⟩) <;> rw [SetLike.mem_coe, TwoSidedIdeal.mem_comap] <;> apply TwoSidedIdeal.subset_span`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `Or.inl (Or.inl (Or.inl ?_))` and prove the remaining obligations. Apply `gDet_mapDomainRingHom_mem_ch_of_mem_ch_comap` to reduce the goal to its premises. Rewrite using `[← hD]`. Conclude with `gDet_mapRingHom_mem_ch_map_of_mem_ch g D x hx`. Conclude with `Or.inl (Or.inl (Or.inr ⟨x, hx, rfl⟩))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inl (Or.inr ⟨g a, Ideal.pow_right_mono hm N (by rw [← Ideal.map_pow]; exact Ideal.mem_map_of_mem g ha), ?_⟩)` and prove the remaining obligations. Simplify using `[φ, MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapRingHom]`. Use `Or.inr ⟨p h, hh, ?_⟩ show φ (MonoidAlgebra.single h 1 - 1) = _` and prove the remaining obligations. Rewrite using `[map_sub, map_one]`. Simplify using `[φ, MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapRingHom]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.chBarPush :
     ∀ (n : ℕ) (B B' G G' : Type) [CommRing B] [IsLocalRing B] [CommRing B'] [IsLocalRing B'] [Group G] [TopologicalSpace G] [Group G'] [TopologicalSpace G'] (g : B →+* B') [IsLocalHom g] (p : G →* G') (D : GDet n B G) (D' : GDet n B' G') (Z : Set (MonoidAlgebra B G)), Continuous p → D.map g = D'.comap p → ∀ z ∈ D.chBar Z, MonoidAlgebra.mapDomainRingHom B' p (MonoidAlgebra.mapRingHom G g z) ∈ D'.chBar ((fun y => MonoidAlgebra.mapDomainRingHom B' p (MonoidAlgebra.mapRingHom G g y)) '' Z) := by

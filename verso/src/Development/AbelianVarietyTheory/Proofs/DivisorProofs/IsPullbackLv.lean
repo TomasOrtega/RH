@@ -17,7 +17,7 @@ def dq {E : Spc} {S : Scheme.{0}} (p : E ⟶ sch.obj S) (k : SimplexCategoryᵒ�
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct in
 /- English proof (translation)
-Establish `h` using `(IsPullback.of_hasPullback p (_root_.GlobalTheory.EtC.sch.map U.hom)).map ((evaluation SimplexCategoryᵒᵖ _root_.GlobalTheory.EtC.PSh).obj k)`. Conclude with `h.map _root_.GlobalTheory.EtC.disc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.EtC.BcLevel.isPullback_lv {E : _root_.GlobalTheory.EtC.Spc} {S : Scheme.{0}}
     (p : E ⟶ _root_.GlobalTheory.EtC.sch.obj S) (k : SimplexCategoryᵒᵖ) (U : Over S) :
@@ -34,13 +34,11 @@ def lvIso {E : Spc} {S : Scheme.{0}} (p : E ⟶ sch.obj S) (k : SimplexCategory�
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct in
 /- English proof (translation)
-Establish `hV₁` using `(_root_.GlobalTheory.EtC.BcLevel.isPullback_lv p k V).isoPullback_hom_fst`. Establish `hV₂` using `(_root_.GlobalTheory.EtC.BcLevel.isPullback_lv p k V).isoPullback_hom_snd`. Establish `hU₁` using `(_root_.GlobalTheory.EtC.BcLevel.isPullback_lv p k U).isoPullback_hom_fst`. Establish `hU₂` using `(_root_.GlobalTheory.EtC.BcLevel.isPullback_lv p k U).isoPullback_hom_snd`. Unfold `_root_.GlobalTheory.EtC.BcLevel.lvIso`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [_root_.GlobalTheory.EtC.bc]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc] erw [hV₁, pullback.lift_fst, Category.comp_id, hU₁]`. Rewrite using `[← Functor.map_comp, ← NatTrans.comp_app, pullback.lift_fst, Category.comp_id]`. Rewrite using `[Category.assoc, Category.assoc] erw [hV₂, pullback.lift_snd, ← Category.assoc, hU₂]`.
+Simplify by unfolding definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = _root_.GlobalTheory.EtC.disc.map _ ≫ _root_.GlobalTheory.EtC.disc.map ((_root_.GlobalTheory.EtC.sch.map g.left).app k)`. Rewrite using `[← Functor.map_comp]`. Use `erw [← Functor.map_comp]`. Use `congr 1`. Rewrite using `[← NatTrans.comp_app]`.
-
-Use `erw [← NatTrans.comp_app, pullback.lift_snd]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.EtC.BcLevel.lv_nat {E : _root_.GlobalTheory.EtC.Spc} {S : Scheme.{0}}
     (p : E ⟶ _root_.GlobalTheory.EtC.sch.obj S) (k : SimplexCategoryᵒᵖ) {U V : Over S} (g : U ⟶ V) :
@@ -71,9 +69,9 @@ def bcDiscIso {E : Spc} {S : Scheme.{0}} (p : E ⟶ sch.obj S) (k : SimplexCateg
   NatIso.ofComponents (lvIso p k) (fun g => lv_nat p k g)
 
 /- English proof (translation)
-Introduce `S E p k X r e h`. Establish `heq : sch.map r = (disc.mapIso e : sch.obj X ≅ disc.obj (E.obj k)).hom ≫ dq p k`. Express the relevant statement in the definitionally equal form `disc.map (yoneda.map r) = disc.map e.hom ≫ disc.map (p.app k)`. Rewrite using `[← h]`. Conclude with `disc.map_comp _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Conclude with `⟨bcIsoOfIso _ (dq p k) ≪≫ (bcDiscIso p k).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bc_level : ∀ (S : Scheme.{0}) (E : Spc) (p : E ⟶ sch.obj S) (k : SimplexCategoryᵒᵖ) (X : Scheme.{0}) (r : X ⟶ S)
     (e : yoneda.obj X ≅ E.obj k), e.hom ≫ p.app k = yoneda.map r →

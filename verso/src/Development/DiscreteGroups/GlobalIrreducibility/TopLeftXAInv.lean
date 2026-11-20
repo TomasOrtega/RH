@@ -34,7 +34,7 @@ def xA : GL (Fin n) k :=
       sub_smul, one_smul]; abel⟩
 
 /- English proof (translation)
-Introduce `i l h`. Use `show (1 + R1 j hj hj1 ξ) i l = _`. Rewrite using `[Matrix.add_apply, rankOne_top_left_zero j hj hj1 ξ i l h, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topLeft_xA : TopLeft j ((xA j hj hj1 ξ hξ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) := by
   intro i l h
@@ -42,7 +42,7 @@ theorem topLeft_xA : TopLeft j ((xA j hj hj1 ξ hξ : GL (Fin n) k) : Matrix (Fi
   rw [Matrix.add_apply, rankOne_top_left_zero j hj hj1 ξ i l h, add_zero]
 
 /- English proof (translation)
-Introduce `i l h`. Use `show (1 - (ξ (i0 j hj hj1))⁻¹ • R1 j hj hj1 ξ) i l = _`. Rewrite using `[Matrix.sub_apply, Matrix.smul_apply, rankOne_top_left_zero j hj hj1 ξ i l h, smul_zero, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topLeft_xA_inv : TopLeft j (((xA j hj hj1 ξ hξ)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) := by
   intro i l h
@@ -50,15 +50,15 @@ theorem topLeft_xA_inv : TopLeft j (((xA j hj hj1 ξ hξ)⁻¹ : GL (Fin n) k) :
   rw [Matrix.sub_apply, Matrix.smul_apply, rankOne_top_left_zero j hj hj1 ξ i l h, smul_zero, sub_zero]
 
 /- English proof (translation)
-Establish `hi0 : (i0 j hj hj1).val < j` using `by simp [i0]; omega`. Establish `key : ∀ i : Fin n, (if i.val < j then ξ i * (((xA j hj hj1 ξ hξ)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i a else 0) = (if i = a then ξ a else 0) - (if i = i0 j hj hj1 then vrow j hj hj1 ξ a else 0)`. Introduce `i`. Use `show (if i.val < j then ξ i * (1 - (ξ (i0 j hj hj1))⁻¹ • R1 j hj hj1 ξ) i a else 0) = _`. Distinguish the cases in `hi : i.val < j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hi]`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, R1, of_apply, one_apply]`. Apply the tactic sequence `by_cases hia : i = a <;> by_cases hii : i = i0 j hj hj1`. Substitute `hia` using the available equality. Substitute `hii` using the available equality.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Substitute `hia` using the available equality. Simplify using `[hii]`. Substitute `hii` using the available equality.
+Clear the denominators using the available nonvanishing facts. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hia]`. Clear the denominators using the available nonvanishing facts. Simplify using `[hia, hii]`. Rewrite using `[if_neg hi, if_neg (fun e => hi (by rw [e]; exact ha)), if_neg (fun e => hi (by rw [e]; exact hi0))]`. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rowMul, Finset.sum_congr rfl fun i _ => key i, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq', if_pos (Finset.mem_univ _), if_pos (Finset.mem_univ _)]`. Simplify using `only [vrow, if_pos ha]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rowMul_xA_inv (a : Fin n) (ha : a.val < j) :
     rowMul j ξ (((xA j hj hj1 ξ hξ)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) a =
@@ -85,7 +85,7 @@ theorem rowMul_xA_inv (a : Fin n) (ha : a.val < j) :
   ring
 
 /- English proof (translation)
-Establish `hi0 : (i0 j hj hj1).val < j` using `by simp [i0]; omega`. Rewrite using `[dotj, Finset.sum_congr rfl fun a _ => (?_ : _ = if a = i0 j hj hj1 then c a else 0), Finset.sum_ite_eq', if_pos (Finset.mem_univ _)]`. Distinguish the cases in `ha : a.val < j`. Apply the tactic sequence `rw [if_pos ha, rowMul_xA_inv j hj hj1 ξ hξ a ha] split_ifs <;> simp`. Rewrite using `[if_neg ha, if_neg (fun e => ha (by rw [e]; exact hi0))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem dotj_xA_inv (c : Fin n → k) :
     dotj j (rowMul j ξ (((xA j hj hj1 ξ hξ)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) c = c (i0 j hj hj1) := by

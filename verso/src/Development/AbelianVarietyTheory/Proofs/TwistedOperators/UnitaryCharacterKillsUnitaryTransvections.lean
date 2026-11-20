@@ -13,7 +13,7 @@ def rk (σ : E →+* E) (G : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) : Mat
   Matrix.of fun a b => x a * ∑ e, G b e * σ (y e)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [rk, Matrix.mulVec, dotProduct, Matrix.of_apply, hf, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rk_mulVec (x y v : Fin n → E) : rk σ G x y *ᵥ v = hf σ G v y • x := by
   funext a
@@ -23,9 +23,9 @@ theorem rk_mulVec (x y v : Fin n → E) : rk σ G x y *ᵥ v = hf σ G v y • x
   ring
 
 /- English proof (translation)
-Establish `h1 : Matrix.vecMul x G ≠ 0` using `fun h => hx (Matrix.eq_zero_of_vecMul_eq_zero hG.det_ne h)`. Take `⟨b, hb⟩` from `Function.ne_iff.mp h1`. Use `⟨Pi.single b (σ (Matrix.vecMul x G b)⁻¹), ?_⟩` and prove the remaining obligations. Establish `: hf σ G x (Pi.single b (σ (Matrix.vecMul x G b)⁻¹)) = Matrix.vecMul x G b * (Matrix.vecMul x G b)⁻¹`. Simplify using `only [hf, Pi.single_apply, apply_ite σ, map_zero, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, hG.invol, ← Finset.sum_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[this, mul_inv_cancel₀ hb]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_dual (hG : IsHerm σ G) {x : Fin n → E} (hx : x ≠ 0) : ∃ y, hf σ G x y = 1 := by
   have h1 : Matrix.vecMul x G ≠ 0 := fun h => hx (Matrix.eq_zero_of_vecMul_eq_zero hG.det_ne h)
@@ -39,9 +39,9 @@ theorem exists_dual (hG : IsHerm σ G) {x : Fin n → E} (hx : x ≠ 0) : ∃ y,
   rw [this, mul_inv_cancel₀ hb]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `exists_dual hG hx`. Establish `hyx : hf σ G y x = 1` using `by rw [← hf_conj σ G hG.invol hG.herm, hy, map_one]`. Establish `hc : σ (-(hf σ G y y / 2)) = -(hf σ G y y / 2)`. Rewrite using `[map_neg, map_div₀, hf_conj σ G hG.invol hG.herm, map_ofNat]`. Use `⟨y + (-(hf σ G y y / 2)) • x, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hf_add_right, hf_smul_right, hxx, hy]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hf_add_left, hf_add_right, hf_smul_left, hf_smul_right, hc, hxx, hy, hyx]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_dual_iso [CharZero E] (hG : IsHerm σ G) {x : Fin n → E} (hx : x ≠ 0)
     (hxx : hf σ G x x = 0) : ∃ y, hf σ G x y = 1 ∧ hf σ G y y = 0 := by
@@ -55,11 +55,11 @@ theorem exists_dual_iso [CharZero E] (hG : IsHerm σ G) {x : Fin n → E} (hx : 
     ring
 
 /- English proof (translation)
-Take `⟨y, hy, hyy⟩` from `exists_dual_iso hG hx hxx`. Establish `hyx : hf σ G y x = 1` using `by rw [← hf_conj σ G hG.invol hG.herm, hy, map_one]`. Establish `hc : σ (-(1 / 2)) = -(1 / 2)`. Rewrite using `[map_neg, map_div₀, map_one, map_ofNat]`. Establish `hm : ∀ v, (1 + rk σ G x y + (-(1 / 2) : E) • rk σ G y x) *ᵥ v = v + hf σ G v y • x + (-(1 / 2) : E) • hf σ G v x • y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v`. Rewrite using `[Matrix.add_mulVec, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, rk_mulVec, rk_mulVec]`. Use `⟨1 + rk σ G x y + (-(1 / 2) : E) • rk σ G y x, ?_, ?_⟩` and prove the remaining obligations. Introduce `v w`. Rewrite using `[hm, hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hf_add_left, hf_add_right, hf_smul_left, hf_smul_right, hc, hxx, hy, hyx, hyy, hf_conj σ G hG.invol hG.herm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hm, hy, hxx, zero_smul, smul_zero, add_zero, one_smul, two_smul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_double [CharZero E] (hG : IsHerm σ G) {x : Fin n → E} (hx : x ≠ 0)
     (hxx : hf σ G x x = 0) : ∃ γ, IsU σ G γ ∧ γ *ᵥ x = (2 : E) • x := by
@@ -81,23 +81,21 @@ theorem exists_double [CharZero E] (hG : IsHerm σ G) {x : Fin n → E} (hx : x 
   · rw [hm, hy, hxx, zero_smul, smul_zero, add_zero, one_smul, two_smul]
 
 /- English proof (translation)
-Introduce `E _ _ n σ G hG A _ X hX`. Establish `hU1 : IsU σ G 1` using `fun x y => by simp`. Establish `hX1 : X 1 = 1`. Use `hX 1 1 hU1 hU1` as an intermediate fact. Rewrite `this` using `[mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_eq_left.mp this.symm`. Establish `key : ∀ m ∈ TvGen σ G, IsU σ G m ∧ X m = 1`. Introduce `m hm`. Proceed by induction on `hm using Submonoid.closure_induction with`. Consider the case `mem m hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨x, t, hx, ht, rfl⟩` from `hm`. Establish `hUq : ∀ q : ℚ, IsU σ G (tv σ G x (q * t))`. Introduce `q`. Use `isU_tv σ G hG.invol hG.herm x _ ?_` and prove the remaining obligations. Rewrite using `[hx, map_mul, map_ratCast]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(q : E) * ht`. Establish `hUt : IsU σ G (tv σ G x t)` using `by simpa using hUq 1`. Use `⟨hUt, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx0 : x = 0`. Substitute `hx0` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `: tv σ G 0 t = 1`. Use extensionality with `a b`. Simplify using `[tv]`. Rewrite using `[this, hX1]`. Take `⟨γ, hγ, hγx⟩` from `exists_double hG hx0 hx`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : IsU σ G (tv σ G x (1 / 3 * t))`. Use `hUq (1 / 3)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hc` using `conj_tv σ G γ x (1 / 3 * t) hγ`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : tv σ G (γ *ᵥ x) (1 / 3 * t) = tv σ G x (1 / 3 * t) * tv σ G x t`. Rewrite using `[hγx, tv_smul, tv_mul, hx, map_ofNat]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hc` using `[he]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `congrArg X hc`. Rewrite `h4` using `[hX _ _ hγ h3, hX _ _ (isU_mul σ G _ _ h3 hUt) hγ, hX _ _ h3 hUt, mul_comm (X γ)]`. Conclude with `mul_eq_left.mp (mul_right_cancel h4).symm`. Consider the case `one => exact ⟨hU1, hX1⟩`. Consider the case `mul a b _ _ ha hb`.
-
-Conclude with `⟨isU_mul σ G _ _ ha.1 hb.1, by rw [hX _ _ ha.1 hb.1, ha.2, hb.2, mul_one]⟩`. Conclude with `fun m hm => (key m hm).2`.
+Treat this case separately. Treat this case separately. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem char_tvGen : ∀ (E : Type) [Field E] [CharZero E] (n : ℕ) (σ : E →+* E) (G : Matrix (Fin n) (Fin n) E), GlobalTheory.UTrans.IsHerm σ G → ∀ (A : Type) [CommGroup A] (X : Matrix (Fin n) (Fin n) E → A), (∀ a b, GlobalTheory.UTrans.IsU σ G a → GlobalTheory.UTrans.IsU σ G b → X (a * b) = X a * X b) → ∀ m ∈ GlobalTheory.UTrans.TvGen σ G, X m = 1 := by
   intro E _ _ n σ G hG A _ X hX

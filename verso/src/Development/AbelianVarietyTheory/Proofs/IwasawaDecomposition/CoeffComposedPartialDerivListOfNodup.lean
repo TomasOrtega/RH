@@ -11,11 +11,11 @@ open MvPolynomial ReciprocityTheory.PGsh GlobalTheory.CayleyBlock
 namespace GlobalTheory.CayleyBlock
 
 /- English proof (translation)
-Proceed by induction on `l generalizing m with`. Consider the case `nil => simp [dList]`. Consider the case `cons v l ih`. Establish `hc : dList (v :: l) G = pderiv v (dList l G)`. Simplify using `[dList]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hl` using `[List.nodup_cons]`. Establish `h0 : m v = 0` using `hm v (List.mem_cons_self ..)`. Establish `h1 : ∀ w ∈ l, (m + Finsupp.single v 1 : σ →₀ ℕ) w = 0`. Introduce `w hw`. Establish `hne : w ≠ v` using `fun h => hl.1 (h ▸ hw)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Finsupp.add_apply, hm w (List.mem_cons_of_mem _ hw), Finsupp.single_eq_of_ne hne, add_zero]`. Rewrite using `[hc, MvPolynomial.coeff_pderiv, ih hl.2 _ h1, h0, List.map_cons, List.sum_cons, add_assoc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_dList_of_nodup {σ : Type} [DecidableEq σ] (l : List σ) (hl : l.Nodup) (m : σ →₀ ℕ)
     (hm : ∀ v ∈ l, m v = 0) (G : MvPolynomial σ ℂ) :

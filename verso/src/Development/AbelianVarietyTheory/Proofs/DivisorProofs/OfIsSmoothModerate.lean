@@ -25,14 +25,14 @@ structure IsSmModOn (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E
     ∃ C : ℝ, ∀ g, ‖l.foldr GlobalTheory.SiegelSet.lineDer φ g‖ ≤ C * (GlobalTheory.AdelicU.height σ J g : ℝ) ^ N
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun γ hγ g => h.left γ (hΓ hγ) g, h.level, h.cont, h.smooth, h.growth⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsSmModOn.of_isSmoothModerate {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {Γ : Set (GAd σ J)}
     {φ : GAd σ J → ℂ} (h : GlobalTheory.SiegelSet.IsSmoothModerate σ J φ) (hΓ : Γ ⊆ ratPts σ J) : IsSmModOn σ J Γ φ :=
   ⟨fun γ hγ g => h.left γ (hΓ hγ) g, h.level, h.cont, h.smooth, h.growth⟩
 
 /- English proof (translation)
-The claim follows from `have h := GlobalTheory.SiegelSet.isSmoothModerate_const σ J c ⟨fun _ _ _ => rfl, h.level, h.cont, h.smooth, h.growth⟩`.
+A detailed English derivation is pending.
 -/
 theorem isSmModOn_const (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (Γ : Set (GAd σ J)) (c : ℂ) :
     IsSmModOn σ J Γ fun _ => c :=

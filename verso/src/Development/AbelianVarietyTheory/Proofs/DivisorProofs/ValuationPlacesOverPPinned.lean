@@ -12,7 +12,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains
 
 /- English proof (translation)
-Introduce `hA h2 hH D O hO p _ _ _ _ W hW jc _ hWv z Sx R hR τ0 τ' hτ i i' hi G hG`. Use `(GlobalTheory.VertTerm.arMix_dRt_of_pair (GlobalTheory.T.pair_statement_of_height_alteration h2 hH hA) D O hO p W hW jc hWv z Sx R hR (τ0, i') G hG).trans ?_` and prove the remaining obligations. Use `congrArg (Real.log p * ·) (Finset.sum_congr rfl fun la _ => ?_)` and prove the remaining obligations. Rewrite using `[← GlobalTheory.VertTerm.lie_Dv_eq (z la) (jc la) (hτ la) (i la) i' (hi la)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.VertTerm.arMix_dRt_lie_of_pair : GlobalTheory.Published.RegularAlteration → GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 →
     UnramE D p → p ∉ O.Y.lev → ∀ (W : Formalism.L2.Geo.PlL D p → ValuationSubring ℂ) (hW : ∀ la, (p : ℂ) ∈ (W la).nonunits)

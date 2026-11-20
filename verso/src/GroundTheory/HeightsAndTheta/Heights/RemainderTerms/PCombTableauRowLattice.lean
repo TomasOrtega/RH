@@ -7,17 +7,17 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Finset Comb
 
 /- English proof (translation)
-Introduce `m lam hlam T hT t i j hij`. Establish `hmem : ∀ p : youngCells lam, p.1.1 = j → (i, p.1.2) ∈ youngCells lam`. Introduce `p hp`. Establish `hp'` using `p.2`. Simplify using `only [youngCells, Finset.mem_filter, Finset.mem_product, Finset.mem_univ, true_and, Finset.mem_range] at hp' ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : p.1.2 < lam i`. Rewrite `hp'` using `[hp]`. Conclude with `lt_of_lt_of_le hp'.2 (hlam hij)`. Use `⟨lt_of_lt_of_le h1 ?_, h1⟩` and prove the remaining obligations. Conclude with `Finset.single_le_sum (fun k _ => Nat.zero_le (lam k)) (Finset.mem_univ i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : youngCells lam → youngCells lam` to `fun p => if h : p.1.1 = j then ⟨(i, p.1.2), hmem p h⟩ else p`. Establish `hf : ∀ p : youngCells lam, ∀ h : p.1.1 = j, f p = ⟨(i, p.1.2), hmem p h⟩`. Introduce `p h`. Simplify using `only [f, dif_pos h]`. Apply `Finset.card_le_card_of_injOn f` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `p hp`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hp ⊢`. Rewrite using `[hf p hp.1]`. Use `⟨rfl, lt_of_le_of_lt ?_ hp.2⟩` and prove the remaining obligations. Use `hT ⟨(i, p.1.2), hmem p hp.1⟩ p (by simpa [hp.1] using hij) le_rfl` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `this` after adjusting the coercions. Introduce `p hp q hq hpq`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hp hq`. Rewrite `hpq` using `[hf p hp.1, hf q hq.1]`. Establish `h2 : p.1.2 = q.1.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg (fun x : youngCells lam => x.1.2) hpq` as an intermediate fact. Simplify using `using this`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Prod.ext (hp.1.trans hq.1.symm) h2`.
+A detailed English derivation is pending.
 -/
 theorem CombTableauRowLattice.proof : CombTableauRowLattice.Statement := by
   classical

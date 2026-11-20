@@ -12,7 +12,7 @@ def colMat {K : Type} [Field K] [NumberField K] {r k : ℕ} (σ : K →+* ℂ)
   Matrix.of fun a i => σ (b i a)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [gramC, colMat, embVec, Matrix.mul_apply, Matrix.of_apply, Matrix.conjTranspose_apply, dotProduct, Matrix.mulVec, Pi.star_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gramC_eq_colMat {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) (b : Fin k → Fin r → K) :
@@ -25,7 +25,7 @@ theorem gramC_eq_colMat {K : Type} [Field K] [NumberField K] {r k : ℕ}
   ring
 
 /- English proof (translation)
-Use extensionality with `a j`. Simplify using `only [colMat, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colMat_comb {K : Type} [Field K] [NumberField K] {r k : ℕ} (σ : K →+* ℂ)
     (b : Fin k → Fin r → K) (N : Matrix (Fin k) (Fin k) K) :
@@ -36,7 +36,7 @@ theorem colMat_comb {K : Type} [Field K] [NumberField K] {r k : ℕ} (σ : K →
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Rewrite using `[gramC_eq_colMat, gramC_eq_colMat, colMat_comb, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gramC_comb {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) (b : Fin k → Fin r → K)
@@ -46,7 +46,7 @@ theorem gramC_comb {K : Type} [Field K] [NumberField K] {r k : ℕ}
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[gramC_comb, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `h : (N.map σ).det = σ N.det` using `(RingHom.map_det σ N).symm`. Rewrite using `[h, ← Complex.mul_conj]`. Simplify using `only [starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_gramC_comb {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) (b : Fin k → Fin r → K)
@@ -60,17 +60,17 @@ theorem det_gramC_comb {K : Type} [Field K] [NumberField K] {r k : ℕ}
   ring
 
 /- English proof (translation)
-Take `⟨B, hB⟩ : ∃ B : Matrix (Fin r) (Fin k) K, B = Matrix.of fun a i => b i a` from `⟨_, rfl⟩`. Establish `hker : LinearMap.ker B.mulVecLin = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `g hg`. Establish `h0 : ∑ i, g i • b i = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Establish `h1` using `congrFun hg a`. Simplify using `only [hB, Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply] at h1`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Rewrite using `[← h1]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.mp hb g h0 i`. Take `⟨L, hL⟩` from `B.mulVecLin.exists_leftInverse_of_injective hker`. Establish `hLB : LinearMap.toMatrix' L * B = 1`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg LinearMap.toMatrix' hL`. Rewrite `h2` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id]`. Establish `h4 : LinearMap.toMatrix' B.mulVecLin = B` using `LinearMap.toMatrix'_toLin' B`. Rewrite `h2` using `[h4]`. Then use the resulting hypothesis. Establish `hc : colMat σ b = B.map σ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a i`. Rewrite using `[hB]`. Both sides reduce to the same expression. Introduce `v w hvw`. Establish `h3 : ((LinearMap.toMatrix' L).map σ * colMat σ b).mulVec v = ((LinearMap.toMatrix' L).map σ * colMat σ b).mulVec w`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hvw]`. Rewrite `h3` using `[hc, ← Matrix.map_mul, hLB, Matrix.map_one σ (map_zero σ) (map_one σ), Matrix.one_mulVec, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem colMat_mulVec_injective {K : Type} [Field K] [NumberField K] {r k : ℕ} (σ : K →+* ℂ)
     (b : Fin k → Fin r → K) (hb : LinearIndependent K b) :
@@ -108,7 +108,7 @@ theorem colMat_mulVec_injective {K : Type} [Field K] [NumberField K] {r k : ℕ}
     Matrix.one_mulVec] at h3
 
 /- English proof (translation)
-Rewrite using `[gramC_eq_colMat]`. Conclude with `hH.conjTranspose_mul_mul_same (colMat_mulVec_injective σ b hb)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramC_posDef {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) (b : Fin k → Fin r → K)
@@ -117,7 +117,7 @@ theorem gramC_posDef {K : Type} [Field K] [NumberField K] {r k : ℕ}
   exact hH.conjTranspose_mul_mul_same (colMat_mulVec_injective σ b hb)
 
 /- English proof (translation)
-Conclude with `(Complex.pos_iff.mp (gramC_posDef H σ b hH hb).det_pos).1`.
+A detailed English derivation is pending.
 -/
 theorem gramC_det_re_pos {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) (b : Fin k → Fin r → K)
@@ -126,11 +126,11 @@ theorem gramC_det_re_pos {K : Type} [Field K] [NumberField K] {r k : ℕ}
   exact (Complex.pos_iff.mp (gramC_posDef H σ b hH hb).det_pos).1
 
 /- English proof (translation)
-Establish `hprod : (∏ σ : K →+* ℂ, σ x) = ((Algebra.norm ℚ x : ℚ) : ℂ)`. Establish `h1` using `Algebra.norm_eq_prod_embeddings ℚ ℂ x`. Establish `h2 : algebraMap ℚ ℂ (Algebra.norm ℚ x) = ((Algebra.norm ℚ x : ℚ) : ℂ)` using `eq_ratCast _ _`. Rewrite `h1` using `[h2]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) _ _ (fun σ => rfl)`. Establish `hne : ∀ σ : K →+* ℂ, Complex.normSq (σ x) ≠ 0` using `fun σ => by`. Rewrite using `[Ne, Complex.normSq_eq_zero]`. Conclude with `(map_ne_zero σ).mpr hx`. Establish `hN : ((Algebra.norm ℚ x : ℚ) : ℝ) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `(Algebra.norm_ne_zero_iff.mpr hx)` after adjusting the coercions. Rewrite using `[← Real.log_prod (s := Finset.univ) (f := fun σ : K →+* ℂ => Complex.normSq (σ x)) (fun σ _ => hne σ), ← map_prod Complex.normSq (fun σ : K →+* ℂ => σ x) Finset.univ, hprod, ← Complex.ofReal_ratCast, Complex.normSq_ofReal, Real.log_mul hN hN, ← Real.log_abs ((Algebra.norm ℚ x : ℚ …`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sum_log_normSq {K : Type} [Field K] [NumberField K] (x : K) (hx : x ≠ 0) :
     ∑ σ : K →+* ℂ, Real.log (Complex.normSq (σ x)) =

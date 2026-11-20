@@ -10,18 +10,18 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 namespace GlobalTheory.PassPolyPow
 
 /- English proof (translation)
-Rewrite using `[map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_mul_apply {L M : Type} [Field L] [AddCommGroup M] [Module L M] (f : Module.End L M)
     (p q : L[X]) (x : M) : Polynomial.aeval f (p * q) x = Polynomial.aeval f p (Polynomial.aeval f q x) := by
   rw [map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Take `⟨t, hrt, hnd⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd r hr.ne_zero c`. Establish `hle` using `Polynomial.rootMultiplicity_le_one_of_separable hr c`. Establish `hcop : IsCoprime ((X - C c) ^ m) t` using `((Polynomial.irreducible_X_sub_C c).coprime_iff_not_dvd.2 hnd).pow_left`. Take `⟨A, B', hAB⟩` from `hcop`. Establish `hs : ∃ s : L[X], (X - C c) * t = s * r` using `by interval_cases hj : r.rootMultiplicity c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨X - C c, by rw [hrt]; ring⟩`. Conclude with `⟨1, by rw [hrt]; ring⟩`. Take `⟨s, hs⟩` from `hs`. Establish `: (X - C c) = (A * (X - C c)) * (X - C c) ^ m + (B' * s) * r`. Rewrite using `[mul_assoc (B') s r, ← hs]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-(X - C c)) * hAB`. Rewrite using `[this, map_add, LinearMap.add_apply, aeval_mul_apply, h1, map_zero, aeval_mul_apply, h2, map_zero, add_zero]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem eigen_of_pow_of_separable {L M : Type} [Field L] [AddCommGroup M] [Module L M] (f : Module.End L M)
     (c : L) (m : ℕ) (r : L[X]) (hr : r.Separable) (x : M)
@@ -43,17 +43,17 @@ theorem eigen_of_pow_of_separable {L M : Type} [Field L] [AddCommGroup M] [Modul
   rw [this, map_add, LinearMap.add_apply, aeval_mul_apply, h1, map_zero, aeval_mul_apply, h2, map_zero, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_ d _ h`. Simplify using `at h`. Simplify using `[h]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Consider the case `insert a t hat ih`. Introduce `hinj d hd h`. Rewrite `h` using `[Finset.prod_insert hat, mul_pow]`. Establish `hcop : IsCoprime ((X - C (c a)) ^ m) ((∏ b ∈ t, (X - C (c b))) ^ m)`. Use `IsCoprime.pow (IsCoprime.prod_right fun b hb => ?_)` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Polynomial.isCoprime_X_sub_C_of_isUnit_sub (IsUnit.mk0 _ (sub_ne_zero.2 fun e => hat ?_))` and prove the remaining obligations. Rewrite using `[hinj a (Finset.mem_insert_self _ _) b (Finset.mem_insert_of_mem hb) e]`. Conclude with `hb`. Take `⟨u, v, huv⟩` from `hcop`. Use `set Q := (∏ b ∈ t, (X - C (c b))) ^ m with hQ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdec : d = Polynomial.aeval f (u * (X - C (c a)) ^ m) d + Polynomial.aeval f (v * Q) d`. Rewrite using `[← LinearMap.add_apply, ← map_add, huv, map_one, Module.End.one_apply]`. Rewrite using `[Finset.iSup_insert, hdec, add_comm]`. Use `Submodule.add_mem_sup ?_ ?_` and prove the remaining obligations. Establish `hmem` using `GlobalTheory.PassPoly.aeval_mem_of_stable f D hD (v * Q) d hd`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hmem, ?_⟩` and prove the remaining obligations. Establish `h1 : Polynomial.aeval f ((X - C (c a)) ^ m) (Polynomial.aeval f (v * Q) d) = 0`. Rewrite using `[← aeval_mul_apply, show (X - C (c a)) ^ m * (v * Q) = v * ((X - C (c a)) ^ m * Q) by ring, aeval_mul_apply, h, map_zero]`. Use `eigen_of_pow_of_separable f (c a) m r hr _ h1 (hrD _ hmem)` as an intermediate fact. Simplify `this` using `[Module.algebraMap_end_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `ih (fun x hx y hy => hinj x (Finset.mem_insert_of_mem hx) y (Finset.mem_insert_of_mem hy)) _ (GlobalTheory.PassPoly.aeval_mem_of_stable f D hD _ d hd) ?_` and prove the remaining obligations. Rewrite using `[← aeval_mul_apply, show Q * (u * (X - C (c a)) ^ m) = u * ((X - C (c a)) ^ m * Q) by ring, aeval_mul_apply, h, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem mem_iSup_eigen_pow {L M ι : Type} [Field L] [AddCommGroup M] [Module L M] (f : Module.End L M)
     (D : Submodule L M) (hD : ∀ x ∈ D, f x ∈ D) (r : L[X]) (hr : r.Separable)
@@ -110,7 +110,7 @@ variable {G : Type} [Group G] {Qp K₀ K K₀' K' : Type} [Field Qp] [Field K₀
     (ρ : Representation LL G V)
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero => simp [GlobalTheory.PassPoly.actVB_one']`. Consider the case `succ n ih => rw [pow_succ, Module.End.mul_apply, ih, pow_succ, GlobalTheory.PassPoly.actVB_mul']`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem actVB_pow (g : G) (n : ℕ) (x : V ⊗[Qp] B) :
     (actVB PC.PD ρ g ^ n) x = actVB PC.PD ρ (g ^ n) x := by
@@ -119,7 +119,7 @@ theorem actVB_pow (g : G) (n : ℕ) (x : V ⊗[Qp] B) :
   | succ n ih => rw [pow_succ, Module.End.mul_apply, ih, pow_succ, GlobalTheory.PassPoly.actVB_mul']
 
 /- English proof (translation)
-Introduce `x hx`. Use `haveI := PC.normal`. Establish `hg : g ^ PC.H.index ∈ PC.H` using `Subgroup.pow_index_mem PC.H g`. Simplify using `only [map_sub, map_pow, Polynomial.aeval_X, map_one, LinearMap.sub_apply, Module.End.one_apply]`. Rewrite using `[actVB_pow, (GlobalTheory.PassPoly.mem_Dpcris_iff PC ρ x).1 hx _ hg, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_index_kill (g : G) : ∀ x ∈ PC.Dpcris ρ,
     Polynomial.aeval (actVB PC.PD ρ g) (X ^ PC.H.index - C (1 : LL)) x = 0 := by
@@ -130,24 +130,24 @@ theorem aeval_index_kill (g : G) : ∀ x ∈ PC.Dpcris ρ,
   rw [actVB_pow, (GlobalTheory.PassPoly.mem_Dpcris_iff PC ρ x).1 hx _ hg, sub_self]
 
 /- English proof (translation)
-Use `haveI := PC.finiteIndex`. Conclude with `Polynomial.separable_X_pow_sub_C 1 (Nat.cast_ne_zero.2 Subgroup.FiniteIndex.index_ne_zero) one_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem separable_index [CharZero LL] : (X ^ PC.H.index - C (1 : LL)).Separable := by
   haveI := PC.finiteIndex
   exact Polynomial.separable_X_pow_sub_C 1 (Nat.cast_ne_zero.2 Subgroup.FiniteIndex.index_ne_zero) one_ne_zero
 
 /- English proof (translation)
-Establish `htriv : ∀ u : PC.Iner, (∀ a ∈ Sig, a u = 1) → ∀ x ∈ PC.Dpcris ρ, actVB PC.PD ρ (u : G) x = x`. Introduce `u hu x hx`. Take `⟨m, hm⟩` from `h3 u`. Establish `hprod : (∏ a ∈ Sig, (X - C ((a u : LLˣ) : LL))) ^ m = (X - C (1 : LL)) ^ (Sig.card * m)`. Rewrite using `[Finset.prod_congr rfl (fun a ha => by rw [hu a ha, Units.val_one]), Finset.prod_const, pow_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk` using `hm x hx`. Rewrite `hk` using `[hprod]`. Use `eigen_of_pow_of_separable _ 1 _ _ (separable_index PC) x hk (aeval_index_kill PC ρ _ x hx)` as an intermediate fact. Simplify `this` using `[Module.algebraMap_end_apply, sub_eq_zero]`. Use `⟨h1, h2, le_antisymm ?_ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hsep, hgen⟩` from `h4`. Introduce `d hd`. Take `⟨m, hm⟩` from `h3 γ`. Use `mem_iSup_eigen_pow (actVB PC.PD ρ (γ : G)) (PC.Dpcris ρ) (GlobalTheory.PassPoly.Dpcris_stable PC ρ γ) _ (separable_index PC) (aeval_index_kill PC ρ _) (fun a : PC.Iner →* LLˣ => ((a γ : LLˣ) : LL)) m Sig (fun a ha b hb e => hsep a ha b hb (Units.ext e)) d hd (hm d hd)` as an intermediate fact. Use `(iSup₂_mono (fun a ha => ?_) : _ ≤ ⨆ a ∈ Sig, PC.Eig ρ PC.Iner a) this` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x ⟨hx, hx'⟩`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Establish `hγ : actVB PC.PD ρ (γ : G) x = ((a γ : LLˣ) : LL) • x`. Simplify `hx'` using `[sub_eq_zero]`. Establish `hn : ∀ n : ℕ, actVB PC.PD ρ ((γ : G) ^ n) x = ((a γ : LLˣ) : LL) ^ n • x`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [GlobalTheory.PassPoly.actVB_one']`. Consider the case `succ n ih => rw [pow_succ, GlobalTheory.PassPoly.actVB_mul', hγ, map_smul, ih, smul_smul, pow_succ, mul_comm]`. Simplify using `only [Submodule.coe_iInf, Set.mem_iInter, SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Introduce `g`. Take `⟨n, u, hu, rfl⟩` from `hgen g`. Rewrite using `[map_mul, hu a ha, mul_one, map_pow, Subgroup.coe_mul, Subgroup.coe_pow, GlobalTheory.PassPoly.actVB_mul', htriv u hu x hx, hn, Units.val_pow_eq_pow_val]`. Conclude with `iSup₂_le fun a _ => inf_le_left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inertiaThrough_of_poly_pow [CharZero LL] (Sig : Finset (PC.Iner →* LLˣ))
     (h1 : ∀ a ∈ Sig, ∀ g : PC.Iner, (g : G) ∈ PC.H → a g = 1)
@@ -197,9 +197,7 @@ theorem inertiaThrough_of_poly_pow [CharZero LL] (Sig : Finset (PC.Iner →* LL�
 end
 
 /- English proof (translation)
-Introduce `l _ P K K' LL h hN hF hS V _ _ _ _ ρ Sig h1 h2 h3 h4`. Use `haveI : CharZero ↥LL.1 := charZero_of_injective_algebraMap (algebraMap ℚ_[l] ↥LL.1).injective`. Use `inertiaThrough_of_poly_pow (pc P h hN hF hS) ρ Sig h1 ?_ h3 h4` and prove the remaining obligations. Establish `hp : (pc P h hN hF hS).PD.p = l` using `P.PD_p K`. Rewrite using `[hp]`.
-
-Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K K' LL : FinExt l) (h : K.1 ≤ K'.1) (hN : (GKin h).Normal) (hF : (GKin h).FiniteIndex) (hS : ∀ (g : ↥(GK K)) (c : ↥(K0 K')), ∃ c' : ↥(K0 K'), (P.PD K).actB g (algebraMap ↥(K0 K') P.R.B c) = algebraMap ↥(K0 K') P.R.B c') (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V) (Sig : Finset ((pc P h hN hF hS).Iner →* (↥LL.1)ˣ)), (∀ a ∈ Sig, ∀ g : (pc P h hN hF hS).Iner, (g : ↥(GK K)) ∈ (pc P h hN hF hS).H → a g = 1) → (∀ a ∈ Sig, Nat.Coprime (orderOf a) l) → (∀ (g : (pc P h hN hF hS).Iner), ∃ m : ℕ, ∀ d ∈ (pc P h hN hF hS).Dpcris ρ, (Polynomial.aeval (actVB (P.PD K) ρ (g : ↥(GK K))) ((∏ a ∈ Sig, (X - C ((a g : (↥LL.1)ˣ) : ↥LL.1))) ^ m)) d = 0) → (∃ γ : (pc P h hN hF hS).Iner, (∀ a ∈ Sig, ∀ b ∈ Sig, a γ = b γ → a = b) ∧ ∀ g : (pc P h hN hF hS).Iner, ∃ (n : ℕ) (u : (pc P h hN hF hS).Iner), (∀ a ∈ Sig, a u = 1) ∧ g = γ ^ n * u) → (pc P h hN hF hS).InertiaThrough ρ Sig := by
   intro l _ P K K' LL h hN hF hS V _ _ _ _ ρ Sig h1 h2 h3 h4

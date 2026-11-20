@@ -10,13 +10,13 @@ open PositivityTheory.Rg.Tf.Loc
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hinj : Function.Injective ((intO F).subtype)` using `Subtype.val_injective`. Set `A : Matrix (Fin n) (Fin n) (intO F)` to `fun i j => ⟨_, h1 i j⟩`. Set `B : Matrix (Fin n) (Fin n) (intO F)` to `fun i j => ⟨_, h2 i j⟩`. Establish `hA : A.map (intO F).subtype = (u : Matrix (Fin n) (Fin n) F)`. Use extensionality with `i j`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `hB : B.map (intO F).subtype = ((u⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hAB : A * B = 1`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Use `beta_reduce`. Rewrite using `[Matrix.map_mul, hA, hB, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hBA : B * A = 1`. Apply `Matrix.map_injective hinj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[Matrix.map_mul, hA, hB, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `⟨⟨A, B, hAB, hBA⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Conclude with `hA`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem mem_unitGL_of_integral {F : Type*} [Field F] [ValuativeRel F] (u : GL (Fin n) F)
     (h1 : ∀ i j, (u : Matrix (Fin n) (Fin n) F) i j ∈ intO F)
@@ -42,7 +42,7 @@ theorem mem_unitGL_of_integral {F : Type*} [Field F] [ValuativeRel F] (u : GL (F
   exact hA
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `hu`. Conclude with `((v : Matrix (Fin n) (Fin n) (intO F)) i j).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integral_of_mem_unitGL {F : Type*} [Field F] [ValuativeRel F] {u : GL (Fin n) F}
     (hu : u ∈ unitGL (n := Fin n) F) (i j : Fin n) :
@@ -51,11 +51,9 @@ theorem integral_of_mem_unitGL {F : Type*} [Field F] [ValuativeRel F] {u : GL (F
   exact ((v : Matrix (Fin n) (Fin n) (intO F)) i j).2
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `i j`. Rewrite using `[pow_zero, Matrix.one_apply]`. Use `split_ifs`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `S.one_mem`. Conclude with `S.zero_mem`. Consider the case `succ m ih`. Introduce `i j`. Rewrite using `[pow_succ, Matrix.mul_apply]`.
-
-Conclude with `S.sum_mem fun l _ => S.mul_mem (ih i l) (hM l j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_entry_mem {F : Type*} [Field F] (S : Subring F) {M : Matrix (Fin n) (Fin n) F}
     (hM : ∀ i j, M i j ∈ S) (m : ℕ) : ∀ i j, (M ^ m) i j ∈ S := by
@@ -72,7 +70,7 @@ theorem pow_entry_mem {F : Type*} [Field F] (S : Subring F) {M : Matrix (Fin n) 
     exact S.sum_mem fun l _ => S.mul_mem (ih i l) (hM l j)
 
 /- English proof (translation)
-Rewrite using `[aeval_eq_sum_range, Matrix.sum_apply]`. Use `S.sum_mem fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `S.mul_mem (hp l) (pow_entry_mem S hM l i j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_entry_mem {F : Type*} [Field F] (S : Subring F) {M : Matrix (Fin n) (Fin n) F}
     (hM : ∀ i j, M i j ∈ S) {p : F[X]} (hp : ∀ i, p.coeff i ∈ S) (i j : Fin n) :
@@ -83,7 +81,7 @@ theorem aeval_entry_mem {F : Type*} [Field F] (S : Subring F) {M : Matrix (Fin n
   exact S.mul_mem (hp l) (pow_entry_mem S hM l i j)
 
 /- English proof (translation)
-Rewrite using `[aeval_eq_sum_range, aeval_eq_sum_range, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Units.conj_pow', mul_smul_comm, smul_mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_aeval {F : Type*} [Field F] (u : GL (Fin n) F) (M : Matrix (Fin n) (Fin n) F)
     (p : F[X]) :
@@ -94,11 +92,11 @@ theorem conj_aeval {F : Type*} [Field F] (u : GL (Fin n) F) (M : Matrix (Fin n) 
   rw [Units.conj_pow', mul_smul_comm, smul_mul_assoc]
 
 /- English proof (translation)
-Establish `hent` using `integral_of_mem_unitGL hΓ`. Simplify using `only [Units.val_mul] at hent`. Apply `mem_unitGL_of_integral` to reduce the goal to its premises. Introduce `i j`. Simplify using `only [Units.val_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hp, conj_aeval]`. Conclude with `aeval_entry_mem _ hent hpi i j`. Introduce `i j`. Establish `: (g⁻¹ * c * g)⁻¹ = g⁻¹ * c⁻¹ * g` using `by group`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mul]`. Rewrite using `[hq, conj_aeval]`. Conclude with `aeval_entry_mem _ hent hqi i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_unitGL {F : Type*} [Field F] [ValuativeRel F] {Γ c g : GL (Fin n) F} {p q : F[X]}
     (hp : (c : Matrix (Fin n) (Fin n) F) = aeval (Γ : Matrix (Fin n) (Fin n) F) p)
@@ -122,9 +120,9 @@ theorem conj_mem_unitGL {F : Type*} [Field F] [ValuativeRel F] {Γ c g : GL (Fin
     exact aeval_entry_mem _ hent hqi i j
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `h1 : g⁻¹ * Γ * g = Γ` using `by rw [mul_assoc, ← hg]; group`. Establish `h2 : ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * (Γ : Matrix (Fin n) (Fin n) F) * (g : Matrix (Fin n) (Fin n) F) = Γ`. Use `congrArg (fun x : GL (Fin n) F => (x : Matrix (Fin n) (Fin n) F)) h1` as an intermediate fact. Simplify `this` using `only [Units.val_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Units.val_mul]`. Rewrite using `[hp, conj_aeval, h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_eq_of_commute {F : Type*} [Field F] {Γ c g : GL (Fin n) F} {p : F[X]}
     (hp : (c : Matrix (Fin n) (Fin n) F) = aeval (Γ : Matrix (Fin n) (Fin n) F) p)
@@ -139,9 +137,9 @@ theorem conj_eq_of_commute {F : Type*} [Field F] {Γ c g : GL (Fin n) F} {p : F[
   rw [hp, conj_aeval, h2]
 
 /- English proof (translation)
-Establish `hpow : ∀ i : ℕ, (θ ^ i) u ∈ K`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => simpa using hu`. Consider the case `succ i ih => rw [pow_succ_apply']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `hK _ ih`. Proceed by induction on `m with`. Consider the case `zero => simpa using K.one_mem`. Consider the case `succ m ih => rw [twNorm_succ]`. Conclude with `K.mul_mem ih (hpow m)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem twNorm_mem {G : Type*} [Group G] (θ : Monoid.End G) (K : Subgroup G)
     (hK : ∀ x ∈ K, θ x ∈ K) {u : G} (hu : u ∈ K) (m : ℕ) : twNorm θ m u ∈ K := by
@@ -155,21 +153,17 @@ theorem twNorm_mem {G : Type*} [Group G] (θ : Monoid.End G) (K : Subgroup G)
   | succ m ih => rw [twNorm_succ]; exact K.mul_mem ih (hpow m)
 
 /- English proof (translation)
-Establish `hfix : ∀ x : E, σ x = x → ∃ a : k, algebraMap k E a = x`. Introduce `x hx`. Establish `hσ : σ ∈ MulAction.stabilizer (E ≃ₐ[k] E) x`. Rewrite using `[MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]`. Conclude with `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hall : ∀ τ : E ≃ₐ[k] E, τ x = x`. Introduce `τ`. Use `(Subgroup.zpowers_le.mpr hσ) (hgen τ)` as an intermediate fact. Rewrite `this` using `[MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]`. Then use the resulting hypothesis. Use `(IsGalois.mem_bot_iff_fixed x).mpr hall` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[IntermediateField.mem_bot]`. Then use the resulting hypothesis. Establish `hent : ∀ (h : GL (Fin n) E), sigmaGL σ h = h → ∀ i j, σ ((h : Matrix (Fin n) (Fin n) E) i j) = (h : Matrix (Fin n) (Fin n) E) i j`. Introduce `h hh i j`. Use `congrArg (fun x : GL (Fin n) E => (x : Matrix (Fin n) (Fin n) E) i j) hh` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : sigmaGL σ g⁻¹ = g⁻¹` using `by rw [map_inv, hg]`. Use `choose A hA using fun i j => hfix _ (hent g hg i j)`. Use `choose B hB using fun i j => hfix _ (hent g⁻¹ hg' i j)`. Establish `hinj : Function.Injective (algebraMap k E)` using `(algebraMap k E).injective`. Establish `hAm : (Matrix.of A).map (algebraMap k E) = (g : Matrix (Fin n) (Fin n) E)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Conclude with `hA i j`. Establish `hBm : (Matrix.of B).map (algebraMap k E) = ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)`. Use extensionality with `i j`. Conclude with `hB i j`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hAB : Matrix.of A * Matrix.of B = 1`. Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Use `beta_reduce`. Rewrite using `[Matrix.map_mul, hAm, hBm, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hBA : Matrix.of B * Matrix.of A = 1`.
-
-Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Use `beta_reduce`. Rewrite using `[Matrix.map_mul, hAm, hBm, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `⟨⟨Matrix.of A, Matrix.of B, hAB, hBA⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
-
-Conclude with `hAm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_incl_of_fixed {k E : Type*} [Field k] [Field E] [Algebra k E]
     [FiniteDimensional k E] [IsGalois k E] (σ : E ≃ₐ[k] E)
@@ -212,7 +206,7 @@ theorem exists_incl_of_fixed {k E : Type*} [Field k] [Field E] [Algebra k E]
   exact hAm
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Conclude with `σ.commutes _`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem sigmaGL_incl {k E : Type*} [Field k] [Field E] [Algebra k E] (σ : E ≃ₐ[k] E)
     (y : GL (Fin n) k) : sigmaGL σ (incl y) = incl y := by
@@ -221,7 +215,7 @@ theorem sigmaGL_incl {k E : Type*} [Field k] [Field E] [Algebra k E] (σ : E ≃
   exact σ.commutes _
 
 /- English proof (translation)
-Introduce `a b hab`. Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.map_injective (algebraMap k E).injective` to reduce the goal to its premises. Conclude with `congrArg (fun x : GL (Fin n) E => (x : Matrix (Fin n) (Fin n) E)) hab`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem incl_injective {k E : Type*} [Field k] [Field E] [Algebra k E] :
     Function.Injective (incl : GL (Fin n) k → GL (Fin n) E) := by
@@ -231,27 +225,23 @@ theorem incl_injective {k E : Type*} [Field k] [Field E] [Algebra k E] :
   exact congrArg (fun x : GL (Fin n) E => (x : Matrix (Fin n) (Fin n) E)) hab
 
 /- English proof (translation)
-Introduce `hD _ k E _ _ _ _ _ _ _ _ _ _ _ _ hur σ hgen n γ c _ hpc hqc hN`. Take `⟨p, hp, hpi⟩` from `hpc`. Take `⟨q, hq, hqi⟩` from `hqc`. Establish `hσℓ : σ ^ Module.finrank k E = 1`. Rewrite using `[← IsGalois.card_aut_eq_finrank]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_card_eq_one'`. Establish `hθ : (sigmaGL σ : Monoid.End (GL (Fin n) E)) ^ Module.finrank k E = 1`. Rewrite using `[← sigmaGL_pow, hσℓ, sigmaGL_one]`. Establish `hstab : ∀ x ∈ unitGL (n` using `Fin n) E, sigmaGL σ x ∈ unitGL (n := Fin n) E := fun x hx => ((hD k E hur σ hgen).2.2.2.1 σ n x).2 hx`. Establish `hNc : twNorm (sigmaGL σ) (Module.finrank k E) c = incl γ` using `hN`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq' : (((c⁻¹)⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = aeval ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) p` using `by rw [inv_inv]; exact hp`. Use `⟨fun g => ⟨fun hu => ?_, fun h => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hγ : g⁻¹ * incl γ * g ∈ unitGL (n` using `Fin n) E := by`. Use `twNorm_mem (sigmaGL σ) _ hstab hu (Module.finrank k E)` as an intermediate fact. Rewrite `this` using `[twNorm_twConj_of_pow_eq_one _ hθ, hNc]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hγ⟩` and prove the remaining obligations. Establish `hcg : g⁻¹ * c⁻¹ * g ∈ unitGL (n` using `Fin n) E := conj_mem_unitGL hq hqi hq' hpi hγ`. Establish `he : g⁻¹ * sigmaGL σ g = (g⁻¹ * c⁻¹ * g) * twConj (sigmaGL σ) g c`. Simplify using `only [twConj]`. Use `group`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he]`. Conclude with `mul_mem hcg hu`. Establish `hcg : g⁻¹ * c * g ∈ unitGL (n` using `Fin n) E := conj_mem_unitGL hp hpi hq hqi h.2`. Establish `he : twConj (sigmaGL σ) g c = (g⁻¹ * c * g) * (g⁻¹ * sigmaGL σ g)`. Simplify using `only [twConj]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use `group`. Rewrite using `[he]`. Conclude with `mul_mem hcg h.1`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hg`. Establish `hcomm` using `twCent_commute_twNorm (sigmaGL σ) hθ c hg`. Rewrite `hcomm` using `[hNc]`. Establish `hcg : g⁻¹ * c * g = c` using `conj_eq_of_commute hp hcomm`. Establish `hg' : g⁻¹ * c * sigmaGL σ g = c` using `hg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : sigmaGL σ g = g`. Establish `h1 : g⁻¹ * c * sigmaGL σ g = g⁻¹ * c * g` using `by rw [hg', hcg]`. Conclude with `mul_left_cancel h1`. Take `⟨y, rfl⟩` from `exists_incl_of_fixed σ hgen g hfix`. Use `⟨y, ?_, rfl⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[SetLike.mem_coe, Subgroup.mem_centralizer_singleton_iff]`. Apply `incl_injective (E := E)` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul]`. Conclude with `hcomm`. Introduce and unpack `⟨y, hy, rfl⟩`.
-
-Rewrite `hy` using `[SetLike.mem_coe, Subgroup.mem_centralizer_singleton_iff]`. Establish `hcomm : incl y * incl γ = (incl γ : GL (Fin n) E) * incl y`. Rewrite using `[← map_mul, ← map_mul, hy]`. Establish `hcg` using `conj_eq_of_commute hp hcomm`. Use `show (incl y)⁻¹ * c * sigmaGL σ (incl y) = c`.
-
-Rewrite using `[sigmaGL_incl, hcg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cstable_iff_and_twCent : D0a → A1 → L4 := by
   intro hD _ k E _ _ _ _ _ _ _ _ _ _ _ _ hur σ hgen n γ c _ hpc hqc hN

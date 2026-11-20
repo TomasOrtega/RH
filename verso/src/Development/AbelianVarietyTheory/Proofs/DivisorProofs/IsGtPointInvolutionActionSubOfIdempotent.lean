@@ -20,7 +20,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F
 variable {O : Type} [Ring O] [StarRing O] [Module O D.X]
 
 /- English proof (translation)
-The claim follows from `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ((val_pull hJ _ _ _).trans (by rw [Category.id_comp]; rfl)))`.
+A detailed English derivation is pending.
 -/
 theorem val_act (oa : D.OAct O) (a : O)
     (u : LB.Gen (LB.LinComb D.P.L (rosatiφ D.P.A (oa.onB.act (star a)) (oa.onB.act a)) rosatiε))
@@ -31,19 +31,19 @@ theorem val_act (oa : D.OAct O) (a : O)
   (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ((val_pull hJ _ _ _).trans (by rw [Category.id_comp]; rfl)))
 
 /- English proof (translation)
-Introduce `R _ _ D F _ _ O _ _ _ oa a ha g₀ g h t hg hh hadd`. Establish `hG : GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Use `oa.onB.hom a` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact. Establish `hs : star a * star a = star a` using `by rw [← star_mul, ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cf : ∀ (T) (x : O) χ, cP D T (x • χ) = cP D T χ ≫ oa.onB.act x` using `fun T x χ => by`. Rewrite using `[cP, oa.c_lin, ← Category.assoc]`. Both sides reduce to the same expression. Establish `aa : oa.onB.act a = oa.onB.act a ≫ oa.onB.act a` using `by rw [← oa.onB.map_mul, ha]`. Establish `ss : oa.onB.act (star a) = oa.onB.act (star a) ≫ oa.onB.act (star a)` using `by rw [← oa.onB.map_mul, hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b₁, v₁⟩` from `(isAdd_iff_val _ _ _).1 hadd`. Establish `gb : g.b = g.b ≫ oa.onB.act a` using `by rw [hg.1, Category.assoc, ← aa]`. Establish `tb : t.b = t.b ≫ oa.onB.act a`. Establish `e` using `gb`. Rewrite `e` using `[b₁, MonObj.mul_comp, ← hh.1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_right_cancel e`. Use `⟨tb, fun u hu u₀ χ => corr_of_val D.P.isLB fun y J hJ => (val_act oa a u t χ hJ).trans ?_⟩` and prove the remaining obligations. Establish `vg : ∀ χ, charVal g χ y J = charVal g₀ (star a • χ) y J * val₂ u y J (cP D _ χ) g₀.b` using `fun χ => (val_corr hJ (hg.2 u hu u₀ χ) _).symm.trans (val_act oa a u g₀ χ hJ)`. Establish `vh : charVal h χ y J = charVal h (star a • χ) y J * val₂ u y J (cP D _ χ) h.b` using `(val_corr hJ (hh.2 u hu u₀ χ) _).symm.trans (val_act oa a u h χ hJ)`. Establish `vc` using `IsRos.val_comp hG D.P.isAb D.P.isLB ss aa ⟨hu, u₀⟩ ⟨hu, u₀⟩ ⟨hu, u₀⟩ hJ (cP D _ χ) g₀.b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `vg' : charVal g χ y J = charVal g (star a • χ) y J * val₂ u y J (cP D _ χ) g.b`. Rewrite using `[vg χ, vg (star a • χ), ← mul_smul, hs, vc, cf, hg.1, _root_.mul_assoc]`. Establish `ra` using `(ros_add D.cub hG D.P.isAb _ _ u hu u₀ (T := TF (R := R) F) hJ t.b h.b (cP D _ χ)).2`. Rewrite `ra` using `[← tb, ← hh.1, ← b₁]`. Establish `e₂` using `v₁ (star a • χ) y J hJ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e₂` using `[cf]`. Establish `a₁` using `congrArg Additive.ofMul ra`. Establish `a₂` using `congrArg Additive.ofMul e₂`. Establish `a₃` using `congrArg Additive.ofMul (v₁ χ y J hJ)`. Establish `a₄` using `congrArg Additive.ofMul vg'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₅` using `congrArg Additive.ofMul vh`. Use `show _ = charVal t χ y J`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, th] at a₁ a₂ a₃ a₄ a₅ ⊢`. Take the linear combination `(norm := abel) a₃ - a₄ + a₅ - a₁ - a₂`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gtPtAct_of_isAdd : ∀ {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F] {O : Type} [Ring O] [StarRing O] [Module O D.X] (oa : D.OAct O) (a : O), a * a = a → ∀ g₀ g h t : GtPtF D F, GtPtAct oa a g₀ g → GtPtAct oa a h h → GtPtF.IsAdd t h g → GtPtAct oa a t t := by
   intro R _ _ D F _ _ O _ _ _ oa a ha g₀ g h t hg hh hadd

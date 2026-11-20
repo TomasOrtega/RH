@@ -38,25 +38,23 @@ structure IsChart (L : Flat.LogPeriods n a g Λ) (bas : Module.Basis (Fin g ⊕ 
     (A (expCover a w))ᵀ *ᵥ (cst (uCo bas x) + tauAt L.a_le T0 B w *ᵥ cst (vCo bas x))
 
 /- English proof (translation)
-Take `⟨bas, Q, A, T0, hE, hAd, hA0, hT0, hBpsd, hPa, hPb⟩` from `GlobalTheory.T.symplectic_polydisc_period_basis n a g Λ L`. Take `⟨ρ₁, c, C₁, hρ₁, hρ₁1, hc, hb⟩` from `(ImTauBounds.cond RiemannExtensionSlices.proof PuncturedExpOrder.proof LogCoverDescent.proof) n a g Q`. Establish `hAc : ContinuousOn A (Metric.ball 0 1)` using `continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => (hAd i j).continuousOn`. Establish `hTc : ContinuousOn T0 (Metric.ball 0 1)` using `continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => (hT0.1 i j).continuousOn`. Establish `hQa : Q.a_le = L.a_le` using `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : ∀ w ∈ logCover L.a_le, Q.τ w = tauAt L.a_le T0 Q.B w`. Introduce `w hw`. Establish `h` using `hT0.2 w hw`. Simplify using `only [PeriodPolydisc.tau0] at h`. Simplify using `only [tauAt]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h]`. Conclude with `(sub_add_cancel _ _).symm`. Use `⟨bas, A, T0, Q.B, c, ρ₁, hE, hAc, hA0, hTc, hBpsd, hc, hρ₁, hρ₁1.le, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz l hl`. Establish `hz1 : ∀ k, ‖z k‖ < 1` using `fun k => lt_of_le_of_lt (norm_le_pi_norm z k) (lt_trans (by simpa [dist_zero_right] using hz) hρ₁1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `w : Fin n → ℂ` to `fun k => if h : k.val < a then l ⟨k.val, h⟩ else z k`. Establish `hwj : ∀ j : Fin a, w (Fin.castLE L.a_le j) = l j`. Introduce `j`. Establish `hj : (Fin.castLE L.a_le j).val < a` using `j.2`. Simplify using `[w, hj]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hexp : expCover a w = z`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k.val < a`. Use `hl ⟨k.val, hk⟩` as an intermediate fact. Simplify using `only [expCover, hk, if_true, w, dif_pos]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Simplify using `[expCover, hk, w]`. Establish `hw : w ∈ logCover L.a_le`. Use `⟨fun i => ?_, fun k hk => ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hwj]`. Establish `h1 : ‖Complex.exp (l i)‖ < 1` using `by rw [hl i]; exact hz1 _`. Rewrite `h1` using `[Complex.norm_exp]`. Conclude with `Real.exp_lt_one_iff.1 h1`. Establish `hk' : ¬ k.val < a` using `not_lt.2 hk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [w, hk', dif_neg, not_false_eq_true]`. Conclude with `hz1 k`. Establish `h1` using `(hb w hw (by rw [hexp]; exact Metric.ball_subset_closedBall hz)).1`. Rewrite `h1` using `[hτ w hw]`. Simplify using `only [tauAt, hexp, hwj] at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1`. Introduce `w hw`. Rewrite using `[← hτ w hw]`. Conclude with `Q.symm w hw`. Introduce `w hw`.
-
-Rewrite using `[← hτ w hw]`. Conclude with `Q.im_posDef w hw`. Introduce `w hw x`. Rewrite using `[← hτ w hw]`. Conclude with `per_coords bas (L.P w) (Q.τ w) (A (expCover a w)) (Q.symm w hw) (hPa w hw) (hPb w hw) x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isChart (L : Flat.LogPeriods n a g Λ) : ∃ bas A T0 B c ρ, IsChart L bas A T0 B c ρ := by
   obtain ⟨bas, Q, A, T0, hE, hAd, hA0, hT0, hBpsd, hPa, hPb⟩ := GlobalTheory.T.symplectic_polydisc_period_basis n a g Λ L

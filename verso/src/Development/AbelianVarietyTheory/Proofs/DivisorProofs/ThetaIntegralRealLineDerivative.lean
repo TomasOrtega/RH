@@ -14,7 +14,7 @@ namespace GlobalTheory.ThK.ZFinDerPol
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 
 /- English proof (translation)
-Rewrite using `[add_smul]`. Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl Z).smul_left s).smul_right t)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_smul_add {n : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) (s t : ℝ) :
     NormedSpace.exp ((s + t) • Z) = NormedSpace.exp (s • Z) * NormedSpace.exp (t • Z) := by
@@ -24,7 +24,7 @@ theorem exp_smul_add {n : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) (s t : ℝ) :
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 
 /- English proof (translation)
-The claim follows from `NormedSpace.exp_continuous.comp (continuous_id.smul continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_exp_smul {n : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) :
     Continuous fun t : ℝ => NormedSpace.exp (t • Z) :=
@@ -33,7 +33,7 @@ theorem continuous_exp_smul {n : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) :
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Apply `(archEquiv J hcm τ).injective` to reduce the goal to its premises. Rewrite `h` using `[GlobalTheory.Orb.archMat_eq_archEquiv J hcm, GlobalTheory.Orb.archMat_eq_archEquiv J hcm]`. Conclude with `Subtype.ext (Units.ext h)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archMat_inj (hcm : IsCMExt F E σ) {m : ℕ} (J : Matrix (Fin m) (Fin m) E) {w : InfinitePlace F}
     (τ : EmbOver E w) {g g' : GArch σ J w} (h : GlobalTheory.Orb.archMat σ J τ g = GlobalTheory.Orb.archMat σ J τ g') : g = g' := by
@@ -42,9 +42,9 @@ theorem archMat_inj (hcm : IsCMExt F E σ) {m : ℕ} (J : Matrix (Fin m) (Fin m)
   exact Subtype.ext (Units.ext h)
 
 /- English proof (translation)
-Establish `h1 : fstA F u = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, smul_add, hx, hy, add_zero]`. Consider the case `tmul a e`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `key : ∀ b : AF F, b.2 = 0 → ∀ e : E, u • (b ⊗ₜ[F] e) = 0` using `fun b hb e => by`. Rewrite using `[TensorProduct.smul_tmul']`. Establish `: u • b = 0` using `Prod.ext (show fstA F u * b.1 = 0 by rw [h1, zero_mul]) (show u.2 * b.2 = 0 by rw [hb, mul_zero])`. Rewrite using `[this, TensorProduct.zero_tmul]`. Conclude with `key (LinearMap.inl F (Ainf F) (Af F) a) rfl e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_tensNU_inl (u : AF F) (hu : evI F u = 0) (z : Ainf F ⊗[F] E) :
     u • GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (R' := AF F) (E := E) (LinearMap.inl F (Ainf F) (Af F)) (fun _ _ => Prod.ext rfl (mul_zero _).symm) z = 0 := by
@@ -60,11 +60,11 @@ theorem smul_tensNU_inl (u : AF F) (hu : evI F u = 0) (z : Ainf F ⊗[F] E) :
     exact key (LinearMap.inl F (Ainf F) (Af F) a) rfl e
 
 /- English proof (translation)
-Introduce `u hu`. Use extensionality with `r s`. Rewrite using `[Matrix.smul_apply, Matrix.sub_apply, Matrix.zero_apply]`. Establish `e` using `GlobalTheory.AutFunCompare.mat_extH (R' := AF F) σ J (LinearMap.inl F (Ainf F) (Af F)) (fun _ _ => Prod.ext rfl (mul_zero _).symm) (embArchInf σ J w y) r s`. Express the relevant statement in the definitionally equal form `u • ((HA.mat (AF F) σ J (ofInf σ J (embArchInf σ J w y))).1 r s - (1 : Matrix (Fin m) (Fin m) (AF F ⊗[F] E)) r s) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[show ofInf σ J = GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.extH (R' := AF F) σ J (LinearMap.inl F (Ainf F) (Af F)) (fun _ _ => Prod.ext rfl (mul_zero _).symm) from rfl, e]`. Distinguish the cases in `h : r = s`. Substitute `h` using the available equality. Simplify using `only [Matrix.one_apply_eq, mul_one, sub_add_cancel_left, add_sub_cancel_left]`. Establish `hab : ∀ a b : AF F ⊗[F] E, 1 - a + b - 1 = b - a` using `fun a b => by ring`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hab, smul_sub, smul_tensNU_inl u hu, smul_tensNU_inl u hu, sub_zero]`. Simplify using `only [Matrix.one_apply_ne h, mul_zero, zero_add, sub_zero]`. Conclude with `smul_tensNU_inl u hu _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem at_embArch {m : ℕ} (J : Matrix (Fin m) (Fin m) E) {w : InfinitePlace F} (y : GArch σ J w) :
     At (evI F) (((HA.mat (AF F) σ J (embArch σ J w y) : GL (Fin m) (AF F ⊗[F] E)) : Matrix (Fin m) (Fin m) (AF F ⊗[F] E)) - 1) := by
@@ -85,17 +85,15 @@ theorem at_embArch {m : ℕ} (J : Matrix (Fin m) (Fin m) E) {w : InfinitePlace F
     exact smul_tensNU_inl u hu _
 
 /- English proof (translation)
-Take `⟨w, τ, Z, -, hy⟩` from `hγ`. Use `choose y hy1 hy2 using hy`. Establish `hyadd : ∀ s t, y (s + t) = y s * y t` using `fun s t => archMat_inj hcm _ τ (by rw [map_mul, hy2, hy2, hy2, exp_smul_add])`. Establish `hγadd : ∀ s t, γ (s + t) = γ s * γ t` using `fun s t => by rw [hy1, hy1, hy1, hyadd, map_mul]`. Establish `hγ0 : γ 0 = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hγadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`. Establish `hyc : Continuous y` using `(GlobalTheory.Orb.isEmbedding_archMat _ hcm τ).continuous_iff.2 (by`. Express the relevant statement in the definitionally equal form `Continuous fun t => fun i j => GlobalTheory.Orb.archMat σ _ τ (y t) i j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hy2]`. Conclude with `continuous_pi fun i => continuous_pi fun j => (continuous_exp_smul Z).matrix_elem i j)`. Establish `hγc : Continuous γ`. Rewrite using `[show γ = fun t => embArch σ _ w (y t) from funext hy1]`. Conclude with `(continuous_embArch σ _ w).comp hyc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : Continuous (toGAd hσ W.J hc).symm` using `continuous_induced_rng.2 continuous_subtype_val`. Use `⟨{ toFun := fun m => back hσ W.J hc γ (Multiplicative.toAdd m), map_one' := ?_, map_mul' := ?_ }, ⟨?_, ?_⟩, fun t => rfl⟩` and prove the remaining obligations. Simplify using `[back, hγ0]`. Introduce `a b`. Simplify using `only [back, toAdd_mul, hγadd, map_mul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hs.comp hγc).comp continuous_toAdd`. Introduce `m show At (evI F) (mat ((toGAd hσ W.J hc).symm (γ (Multiplicative.toAdd m))) - 1)`. Establish `e` using `toGAd_mat hσ W.J hc ((toGAd hσ W.J hc).symm (γ (Multiplicative.toAdd m)))`. Rewrite `e` using `[MulEquiv.apply_symm_apply]`. Establish `e2 : mat ((toGAd hσ W.J hc).symm (γ (Multiplicative.toAdd m))) = ((HA.mat (AF F) σ (c • W.J.map σ) (γ (Multiplicative.toAdd m)) : GL (Fin d) (AF F ⊗[F] E)) : Matrix _ _ _)`.
-
-Rewrite using `[e]`. Both sides reduce to the same expression. Rewrite using `[e2, hy1]`. Conclude with `at_embArch _ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_back (hσ : ∀ x, σ (σ x) = x) (hcm : IsCMExt F E σ) {d : ℕ} (W : Spc F E d) {c : E} (hc : c ≠ 0)
     (γ : ℝ → GAd σ (c • W.J.map σ)) (hγ : IsRealLine σ (c • W.J.map σ) γ) :
@@ -134,17 +132,17 @@ theorem line_back (hσ : ∀ x, σ (σ x) = x) (hcm : IsCMExt F E σ) {d : ℕ} 
     exact at_embArch _ _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' _ hT c hc _ Φ hΦ γ hγ`. Take `⟨γ₀, hγ₀, hb⟩` from `line_back hσ hT.base.cm G.W hc γ hγ`. Take `⟨δ, hδ⟩` from `GlobalTheory.T.exists_lieDerivative_polynomialFock_seesaw B G X om om' hT γ₀ hγ₀`. Establish `key : ∃ Ψ ∈ GlobalTheory.ThK.PolData B G.M, ∀ y, HasDerivAt (fun t => om (1, back hσ G.W.J hc γ t) Φ y) (Ψ y) 0`. Proceed by induction on `hΦ using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem Φ h`. Take `⟨f, hf, φ, hSB, hev, rfl⟩` from `h`. Use `⟨pure (δ f) φ, Submodule.subset_span ⟨δ f, (hδ f hf).1, φ, hSB, hev, rfl⟩, fun y => ?_⟩` and prove the remaining obligations. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hev.and hT.geo.hM.std).mono fun v hv => hv.1.trans hv.2`. Establish `hR` using `GlobalTheory.ThK.EvUniqInf.rest_pure f φ hSB hstd`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hδ f hf).2 _ hR y` as an intermediate fact. Simplify using `only [hb]`. Conclude with `this`. Consider the case `zero => exact ⟨0, zero_mem _, fun y => by simpa using hasDerivAt_const (0:ℝ) (0:ℂ)⟩`. Consider the case `add Φ₁ Φ₂ _ _ h₁ h₂`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨Ψ₁, m₁, d₁⟩` from `h₁`. Take `⟨Ψ₂, m₂, d₂⟩` from `h₂`. Use `⟨Ψ₁ + Ψ₂, add_mem m₁ m₂, fun y => ?_⟩` and prove the remaining obligations. Establish `h` using `(d₁ y).add (d₂ y)`. Simplify using `only [map_add, Pi.add_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `h`. Consider the case `smul r Φ₁ _ h₁`. Take `⟨Ψ₁, m₁, d₁⟩` from `h₁`. Use `⟨r • Ψ₁, Submodule.smul_mem _ r m₁, fun y => ?_⟩` and prove the remaining obligations. Simplify `(d₁ y).const_mul r` using `[map_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Ψ, hΨ, hd⟩` from `key`. Establish `: derR om (back hσ G.W.J hc γ) Φ = Ψ` using `funext fun y => (hd y).deriv`. Rewrite using `[this]`. Conclude with `hΨ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derR_mem_polData : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

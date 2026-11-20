@@ -17,11 +17,11 @@ variable {D : D7} (w : Point D.host.E (D.R.rS + 1))
 def coordX (X : MatR D) : FreeE w → D.host.E := fun q => X q.1.1 q.1.2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a c`. Distinguish the cases in `h : a = c`. Substitute `h` using the available equality. Simplify using `[Xmat, (hU a a).2 rfl]`. Simplify using `only [Xmat, h, if_false]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : a < c ∧ blkOf w.1 a.val = blkOf w.1 c.val`. Rewrite using `[dif_pos h2]`. Both sides reduce to the same expression. Rewrite using `[dif_neg h2]`. Distinguish the cases in `h3 : a < c`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `(hB a c (fun e => h2 ⟨h3, e⟩)).symm`. Conclude with `((hU a c).1 (lt_of_le_of_ne (not_lt.1 h3) (Ne.symm h))).symm`.
+A detailed English derivation is pending.
 -/
 theorem Xmat_coordX {X : MatR D} (hU : UpU X) (hB : IsBlockDiagonalMatrix w X) : Xmat w (coordX w X) = X := by
   funext a c
@@ -36,13 +36,13 @@ theorem Xmat_coordX {X : MatR D} (hU : UpU X) (hB : IsBlockDiagonalMatrix w X) :
       · exact ((hU a c).1 (lt_of_le_of_ne (not_lt.1 h3) (Ne.symm h))).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Conclude with `Xmat_q w y q`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem coordX_Xmat (y : FreeE w → D.host.E) : coordX w (Xmat w y) = y := by
   funext q; exact Xmat_q w y q
 
 /- English proof (translation)
-Take `⟨-, hU, hB⟩` from `X_of_st w hβ hb hW`. Rewrite using `[mem_stabInt_iff_X δ M hA u u' w β hβ hb hW, ← Xmat_coordX w hU hB, coordX_Xmat]`. Conclude with `twistC δ M hA hodd w _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stabInt_iff_twist (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (hA : ∀ p, Agree δ M p) (hodd : Odd (gS D))
@@ -56,9 +56,9 @@ theorem mem_stabInt_iff_twist (δ : ∀ p : PlF D, (D.s.atP p).Fp)
   exact twistC δ M hA hodd w _
 
 /- English proof (translation)
-Take `⟨hlo, hXi, hW, hdet⟩` from `st_of_X w (Xmat_upU w y) (Xmat_blk w y)`. Use `set B := ptMat w * Xmat w y * (ptMat w)⁻¹`. Establish `hd : IsUnit B.det` using `by rw [hdet]; exact isUnit_one`. Use `⟨⟨B, B⁻¹, Matrix.mul_nonsing_inv B hd, Matrix.nonsing_inv_mul B hd⟩, hlo, hXi, hW, ?_⟩` and prove the remaining obligations. Establish `hu` using `ptMat_isUnit w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `show (ptMat w)⁻¹ * (ptMat w * Xmat w y * (ptMat w)⁻¹) * ptMat w = Xmat w y`. Rewrite using `[show (ptMat w)⁻¹ * (ptMat w * Xmat w y * (ptMat w)⁻¹) * ptMat w = ((ptMat w)⁻¹ * ptMat w) * Xmat w y * ((ptMat w)⁻¹ * ptMat w) by simp only [Matrix.mul_assoc], Matrix.nonsing_inv_mul _ hu, Matrix.one_mul, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_of_coord (y : FreeE w → D.host.E) :
     ∃ β : GLR D, IsLoUni (β : MatR D) ∧ IsUpUni (Xmat w y)⁻¹ ∧
@@ -74,13 +74,13 @@ theorem exists_of_coord (y : FreeE w → D.host.E) :
     Matrix.nonsing_inv_mul _ hu, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Apply the tactic sequence `unfold hpr; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpr_lt {p q : FreeE w} (h : hgt w q < hgt w p) : hpr w q < hpr w p := by
   unfold hpr; split_ifs <;> omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Unfold `trunc`. Use `split_ifs with hp`. Conclude with `h p (hpr_lt w hp)`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trunc_eq {y y' : FreeE w → D.host.E} (q : FreeE w) (h : ∀ p, hpr w p < hpr w q → y p = y' p) :
     trunc w y (hgt w q) = trunc w y' (hgt w q) := by
@@ -91,11 +91,11 @@ theorem trunc_eq {y y' : FreeE w → D.host.E} (q : FreeE w) (h : ∀ p, hpr w p
   · rfl
 
 /- English proof (translation)
-Unfold `τA`. Distinguish the cases in `h1 : selfP w q`. Simplify using `only [h1, if_true, cf, trunc_eq w q h]`. Distinguish the cases in `h2 : upperM w q`. Take `⟨hp1, hp2⟩` from `upper_qbar w h2`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hlt : hpr w (qbar w q) < hpr w q`. Unfold `hpr`. Rewrite using `[hgt_qbar]`. Simplify using `only [h2, hp2, if_true, if_false]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hc : cf w y (qbar w q) = cf w y' (qbar w q)`. Unfold `cf`. Rewrite using `[trunc_eq w (qbar w q) (fun p hp => h p (lt_trans hp hlt))]`. Simplify using `only [h1, h2, if_false, if_true, h _ hlt, hc]`. Simplify using `only [h1, h2, if_false]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem τA_lowdep (q : FreeE w) {y y' : FreeE w → D.host.E} (h : ∀ p, hpr w p < hpr w q → y p = y' p) :
     τA w q y = τA w q y' := by

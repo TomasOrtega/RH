@@ -22,9 +22,9 @@ open CompRat
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `hm` using `H.d_mod`. Take `⟨K, _, h2, hr⟩` from `exists_quadraticField_sq_eq_neg (d := H.d) (by omega)`. Take `⟨M, hM, w, P, v, hw, hg, -, -, hΛ, -⟩` from `cmCurve_closed H.d (by omega) H.d_prime.squarefree (by omega) K h2 hr`. Take `⟨Q, φ, hq, hφ, hL⟩` from `exists_baseChange polBaseChange_holds (spMap ((algebraMap M ℂ).comp (algebraMap (𝓞 M) M))) P`. Take `⟨u, hu⟩` from `exists_isThetaUnif thetaUnifAV_all Q`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hl⟩` from `hΛ Q φ ⟨hq, hφ, LBIso.symm hL⟩ u`. Conclude with `⟨M, hM, P, ⟨Q, hq.trans hg, u, hu, c, hc, fun z => by rw [hl z, hw]⟩, φ, hφ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_curve_model (H : Host E) : ∃ (M : IntermediateField ℚ ℂ) (_ : NumberField M)
     (P : Out.PolAV (Sp (𝓞 M))) (C : Curve H) (φ : C.P.A.left ⟶ P.A.left),
@@ -44,7 +44,7 @@ instance nonempty_curve (H : Host E) : Nonempty (Curve H) := by
   exact ⟨C⟩
 
 /- English proof (translation)
-Establish `h : ((Real.sqrt H.d : ℝ) : ℂ) ^ 2 = H.d` using `by exact_mod_cast Real.sq_sqrt (Nat.cast_nonneg H.d)`. Apply `sq_eq_sq_iff_eq_or_eq_neg.1` to reduce the goal to its premises. Rewrite using `[H.sqrt_neg_disc_sq, mul_pow, h, Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cmHost_rootComplex_eq_pm_sqrt (H : Host E) : H.rt0 = Complex.I * Real.sqrt H.d ∨ H.rt0 = -(Complex.I * Real.sqrt H.d) := by
   have h : ((Real.sqrt H.d : ℝ) : ℂ) ^ 2 = H.d := by exact_mod_cast Real.sq_sqrt (Nat.cast_nonneg H.d)
@@ -52,16 +52,16 @@ theorem cmHost_rootComplex_eq_pm_sqrt (H : Host E) : H.rt0 = Complex.I * Real.sq
   rw [H.sqrt_neg_disc_sq, mul_pow, h, Complex.I_sq]; ring
 
 /- English proof (translation)
-Establish `hd : (0 : ℝ) < Real.sqrt H.d` using `Real.sqrt_pos.2 (Nat.cast_pos.2 H.d_prime.pos)`. Apply the tactic sequence `rcases cmHost_rootComplex_eq_pm_sqrt H with h | h <;> rw [h] <;> simp [hd.ne']`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cmHost_rootZero_im_ne_zero (H : Host E) : H.rt0.im ≠ 0 := by
   have hd : (0 : ℝ) < Real.sqrt H.d := Real.sqrt_pos.2 (Nat.cast_pos.2 H.d_prime.pos)
   rcases cmHost_rootComplex_eq_pm_sqrt H with h | h <;> rw [h] <;> simp [hd.ne']
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun a : 𝓞 E => τ (a : E)) H.two_weight_eq_one_add_root`. Simplify using `only [map_mul, map_add, map_one, map_ofNat] at h`. Establish `h' : τ (H.w0 : E) = (1 + H.rt0) / 2`. Rewrite using `[← hτ]`. Take the linear combination `h / 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `[wE, wC, h']`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_wE (τ : E →+* ℂ) (hτ : τ (H.rt : E) = H.rt0) (s : ℤ × ℤ) : τ (wE H s : E) = wC H s := by
   have h := congrArg (fun a : 𝓞 E => τ (a : E)) H.two_weight_eq_one_add_root
@@ -71,9 +71,9 @@ theorem map_wE (τ : E →+* ℂ) (hτ : τ (H.rt : E) = H.rt0) (s : ℤ × ℤ)
   simp [wE, wC, h']
 
 /- English proof (translation)
-Introduce and unpack `⟨m, n⟩ ⟨m', n'⟩ h`. Establish `e` using `congrArg Complex.im h`. Simplify using `[wC, cmHost_rootZero_im_ne_zero H] at e`. Substitute `e` using the available equality. Establish `: (m : ℂ) = m'` using `add_right_cancel h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[show m = m' by exact_mod_cast this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wC_injective (H : Host E) : Function.Injective (wC H) := by
   rintro ⟨m, n⟩ ⟨m', n'⟩ h
@@ -84,15 +84,15 @@ theorem wC_injective (H : Host E) : Function.Injective (wC H) := by
   rw [show m = m' by exact_mod_cast this]
 
 /- English proof (translation)
-Establish `e : C.u.ex (fun _ => C.c * z) = C.u.ex (fun _ => C.c * (z - z')) * C.u.ex (fun _ => C.c * z')`. Rewrite using `[← C.u.ex_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `i0 : Fin C.P.g` using `⟨0, by rw [C.g_eq]; exact one_pos⟩`. Establish `key : C.pt z = C.pt z' ↔ ∃ m n : ℤ, z - z' = m + n * ((1 + Complex.I * Real.sqrt H.d) / 2)`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : C.u.ex (fun _ => C.c * z) = C.u.ex (fun _ => C.c * z')` using `Over.OverMorphism.ext h`. Rewrite `e` using `[h']`. Take `⟨m, n, hmn⟩` from `(C.lat _).1 ((C.u.ker _).1 (mul_eq_right.1 e.symm))`. Conclude with `⟨m, n, mul_left_cancel₀ C.c_ne (congrFun hmn i0)⟩`. Introduce and unpack `⟨m, n, hmn⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `: C.u.ex (fun _ => C.c * (z - z')) = 1` using `(C.u.ker _).2 ((C.lat _).2 ⟨m, n, by rw [hmn]⟩)`. Unfold `Curve.pt`. Rewrite using `[e, this, _root_.one_mul]`. Rewrite using `[key]`. Break down `cmHost_rootComplex_eq_pm_sqrt H with h | h` into its components or cases.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨fun ⟨m, n, e⟩ => ⟨(m, n), by rw [e, wC, h]⟩, fun ⟨s, e⟩ => ⟨s.1, s.2, by rw [e, wC, h]⟩⟩`. Conclude with `⟨fun ⟨m, n, e⟩ => ⟨(m + n, -n), by rw [e, wC, h]; push_cast; ring⟩, fun ⟨s, e⟩ => ⟨s.1 + s.2, -s.2, by rw [e, wC, h]; push_cast; ring⟩⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem pt_eq_iff (C : Curve H) (z z' : ℂ) : C.pt z = C.pt z' ↔ ∃ s, z - z' = wC H s := by
   have e : C.u.ex (fun _ => C.c * z) = C.u.ex (fun _ => C.c * (z - z')) * C.u.ex (fun _ => C.c * z') := by
@@ -116,9 +116,9 @@ theorem pt_eq_iff (C : Curve H) (z z' : ℂ) : C.pt z = C.pt z' ↔ ∃ s, z - z
       fun ⟨s, e⟩ => ⟨s.1 + s.2, -s.2, by rw [e, wC, h]; push_cast; ring⟩⟩
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k : ℤ, (H.d : ℤ) + 1 = 4 * k` from `⟨((H.d : ℤ) + 1) / 4, by have := H.d_mod; omega⟩`. Establish `hk' : (H.d : ℂ) + 1 = 4 * k` using `by exact_mod_cast congrArg (Int.cast : ℤ → ℂ) hk`. Use `⟨(s.1 * a.1 - k * s.2 * a.2, s.1 * a.2 + s.2 * a.1 + s.2 * a.2), ?_⟩` and prove the remaining obligations. Simplify using `only [wC]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `(s.2 * a.2 / 4 : ℂ) * H.sqrt_neg_disc_sq - (s.2 * a.2 / 4 : ℂ) * hk'`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_wC_mul (H : Host E) (s a : ℤ × ℤ) : ∃ b, wC H s * wC H a = wC H b := by
   obtain ⟨k, hk⟩ : ∃ k : ℤ, (H.d : ℤ) + 1 = 4 * k := ⟨((H.d : ℤ) + 1) / 4, by have := H.d_mod; omega⟩
@@ -129,12 +129,12 @@ theorem exists_wC_mul (H : Host E) (s a : ℤ × ℤ) : ∃ b, wC H s * wC H a =
   linear_combination (s.2 * a.2 / 4 : ℂ) * H.sqrt_neg_disc_sq - (s.2 * a.2 / 4 : ℂ) * hk'
 
 /- English proof (translation)
-The claim follows from `Spec.map_id (CommRingCat.of ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem spMap_refl : spMap ((RingEquiv.refl ℂ : ℂ ≃+* ℂ) : ℂ →+* ℂ) = 𝟙 _ := Spec.map_id (CommRingCat.of ℂ)
 
 /- English proof (translation)
-Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[spMap_refl]`. Conclude with `@isGrpPullback_of_iso _ _ _ _ _ (Iso.refl C.P.A) (inferInstanceAs (IsMonHom (𝟙 C.P.A)))`. Rewrite using `[spMap_refl, Category.comp_id, Category.id_comp]`. Simplify using `[wC]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actsBy_refl (C : Curve H) (n : ℕ) : C.ActsBy (RingEquiv.refl ℂ) (𝟙 _) n (1, 0) := by
   refine ⟨?_, fun a => ?_⟩
@@ -142,24 +142,24 @@ theorem actsBy_refl (C : Curve H) (n : ℕ) : C.ActsBy (RingEquiv.refl ℂ) (�
   · rw [spMap_refl, Category.comp_id, Category.id_comp]; simp [wC]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Classical.arbitrary _, _, actsBy_refl _ n⟩`.
+Supply the required witnesses or components.
 -/
 theorem fixesCurve_refl (H : Host E) (n : ℕ) : FixesCurve H (RingEquiv.refl ℂ) n :=
   ⟨Classical.arbitrary _, _, actsBy_refl _ n⟩
 
 /- English proof (translation)
-Introduce `τ h` and use `by rw [show τ = RingEquiv.refl ℂ from RingEquiv.ext fun x => h x trivial] exact fixesCurve_refl H n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem curveOver_top (H : Host E) (n : ℕ) : CurveOver H ⊤ n := fun τ h => by
   rw [show τ = RingEquiv.refl ℂ from RingEquiv.ext fun x => h x trivial]
   exact fixesCurve_refl H n
 
 /- English proof (translation)
-Establish `: IsIso (spMap (τ : ℂ →+* ℂ))` using `inferInstanceAs (IsIso (Spec.map τ.toCommRingCatIso.hom))`. Establish `: IsIso f` using `h.1.1.isIso_fst_of_isIso`. Establish `e` using `(cancel_mono f).1 ((h.2 (1, 0)).trans (h'.2 (1, 0)).symm)`. Take `⟨t, ht⟩` from `(pt_eq_iff C _ _).1 e`. Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: wC H (s.1 - s'.1, s.2 - s'.2) = wC H (n * t.1, n * t.2)`. Simplify using `only [wC] at ht ⊢`. Move the coercions through the operations in `at ht ⊢`. Clear denominators, using `at ht ⊢` for the nonvanishing conditions. Take the linear combination `ht / 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e` using `wC_injective H this`. Conclude with `⟨⟨t.1, congrArg Prod.fst e⟩, ⟨t.2, congrArg Prod.snd e⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem actsBy_unique {C : Curve H} {τ : ℂ ≃+* ℂ} {f : C.P.A.left ⟶ C.P.A.left} {n : ℕ} (hn : n ≠ 0) {s s' : ℤ × ℤ}
     (h : C.ActsBy τ f n s) (h' : C.ActsBy τ f n s') : (n : ℤ) ∣ s.1 - s'.1 ∧ (n : ℤ) ∣ s.2 - s'.2 := by
@@ -177,16 +177,16 @@ theorem actsBy_unique {C : Curve H} {τ : ℂ ≃+* ℂ} {f : C.P.A.left ⟶ C.P
   exact ⟨⟨t.1, congrArg Prod.fst e⟩, ⟨t.2, congrArg Prod.snd e⟩⟩
 
 /- English proof (translation)
-Introduce `h` and use `by have := (actsBy_unique (by norm_num) h (actsBy_refl C 3)).1 norm_num at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_actsBy_neg (C : Curve H) : ¬ C.ActsBy (RingEquiv.refl ℂ) (𝟙 _) 3 (-1, 0) := fun h => by
   have := (actsBy_unique (by norm_num) h (actsBy_refl C 3)).1
   norm_num at this
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hmn`. Establish `hm : (m : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (left_ne_zero_of_mul hn)`. Establish `hk : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (right_ne_zero_of_mul hn)`. Use `⟨h.1, fun a => ?_⟩` and prove the remaining obligations. Establish `e : wC H (k * a.1, k * a.2) = k * wC H a` using `by simp only [wC]; push_cast; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h.2 (k * a.1, k * a.2)` as an intermediate fact. Rewrite `this` using `[e]`. Apply the tactic sequence `convert this using 3 <;> push_cast <;> field_simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem actsBy_of_dvd {C : Curve H} {τ : ℂ ≃+* ℂ} {f : C.P.A.left ⟶ C.P.A.left} {m n : ℕ} (hn : n ≠ 0) (hmn : m ∣ n)
     {s : ℤ × ℤ} (h : C.ActsBy τ f n s) : C.ActsBy τ f m s := by
@@ -200,9 +200,9 @@ theorem actsBy_of_dvd {C : Curve H} {τ : ℂ ≃+* ℂ} {f : C.P.A.left ⟶ C.P
   convert this using 3 <;> push_cast <;> field_simp
 
 /- English proof (translation)
-Rewrite using `[(pt_eq_iff C _ 0).2 ⟨a, sub_zero _⟩]`. Establish `: C.u.ex (fun _ => C.c * 0) = 1` using `(C.u.ker _).2 (by`. Rewrite using `[show (fun _ => C.c * 0 : Fin C.P.g → ℂ) = 0 from funext fun _ => mul_zero _]`. Conclude with `zero_mem _)`. Unfold `Curve.pt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Hom.one_def]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pt_wC (C : Curve H) (a : ℤ × ℤ) : C.pt (wC H a) = η[C.P.A].left := by
   rw [(pt_eq_iff C _ 0).2 ⟨a, sub_zero _⟩]
@@ -212,9 +212,9 @@ theorem pt_wC (C : Curve H) (a : ℤ × ℤ) : C.pt (wC H a) = η[C.P.A].left :=
   rw [this, Hom.one_def]; simp
 
 /- English proof (translation)
-Use `⟨h, fun a => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `exists_wC_mul H s a`. Rewrite using `[Nat.cast_one, div_one, div_one, hb, pt_wC, pt_wC]`. Establish `e` using `congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over (Sp ℂ)))))`. Establish `e₁ : (1 : 𝟙_ (Over (Sp ℂ)) ⟶ C.P.A) = η[C.P.A]` using `by rw [Hom.one_def]; simp`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[e₁]`. Use `e.trans ?_` and prove the remaining obligations. Use `show (toUnit _ ≫ η[C.P.A]).left = _`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actsBy_one {C : Curve H} {τ : ℂ ≃+* ℂ} {f : C.P.A.left ⟶ C.P.A.left}
     (h : IsGrpPullback C.P.A C.P.A (spMap (τ : ℂ →+* ℂ)) f) (s : ℤ × ℤ) : C.ActsBy τ f 1 s := by
@@ -229,16 +229,16 @@ theorem actsBy_one {C : Curve H} {τ : ℂ ≃+* ℂ} {f : C.P.A.left ⟶ C.P.A.
   simp
 
 /- English proof (translation)
-Use `⟨fun ⟨C, f, h⟩ => ⟨C, f, actsBy_one h.1 _⟩, fun ⟨C, f, h⟩ => ⟨C, f, h.1, fun a => ?_⟩⟩` and prove the remaining obligations. Simplify `h.2 (0, 0)` using `[wC]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fixesCurve_zero_iff (τ : ℂ ≃+* ℂ) : FixesCurve H τ 0 ↔ FixesCurve H τ 1 := by
   refine ⟨fun ⟨C, f, h⟩ => ⟨C, f, actsBy_one h.1 _⟩, fun ⟨C, f, h⟩ => ⟨C, f, h.1, fun a => ?_⟩⟩
   simpa [wC] using h.2 (0, 0)
 
 /- English proof (translation)
-Take `⟨M, _, P, C, φ, h⟩` from `exists_curve_model H`. Use `⟨M, inferInstance, fun τ hτ => ?_⟩` and prove the remaining obligations. Establish `e : spMap (τ : ℂ →+* ℂ) ≫ spMap ((algebraMap M ℂ).comp (algebraMap (𝓞 M) M)) = spMap ((algebraMap M ℂ).comp (algebraMap (𝓞 M) M))` using `by show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Conclude with `hτ _ (x : M).2`. Establish `w : φ ≫ P.A.hom = (C.P.A.hom ≫ spMap (τ : ℂ →+* ℂ)) ≫ spMap ((algebraMap M ℂ).comp (algebraMap (𝓞 M) M))`. Rewrite using `[Category.assoc, e, h.1.w]`. Conclude with `⟨C, h.1.lift _ _ w, actsBy_one (h.cancel (h.congr e.symm (h.1.lift_fst _ _ w).symm) (h.1.lift_snd _ _ w)) _⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_curveOver_one (H : Host E) : ∃ F : IntermediateField ℚ ℂ, FiniteDimensional ℚ F ∧ CurveOver H F 1 := by
   obtain ⟨M, _, P, C, φ, h⟩ := exists_curve_model H
@@ -260,11 +260,11 @@ section Split
 variable {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)} (hP : IsPeriod D ty P)
 
 /- English proof (translation)
-Take `⟨Hm, -, hpos, hE⟩` from `hP.2.2.2.2`. Establish `hz : P a ≠ 0` using `fun h => h0 (hP.2.1 (h.trans (map_zero P).symm))`. Establish `h1` using `hE (H.rt • a) a`. Establish `h2` using `hE a a`. Rewrite `h2` using `[D.alt]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : hermForm Hm (P (H.rt • a)) (P a) = ρ * hermForm Hm (P a) (P a)`. Rewrite using `[period_rt_smul hP ha, hermForm, hermForm, smul_dotProduct, smul_eq_mul]`. Rewrite `h1` using `[h3, Complex.mul_im, h2]`. Rewrite using `[← h1]`. Use `mul_pos (mul_self_pos.2 hρ) (hpos _ hz)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Int.cast_zero, mul_zero, zero_add]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sign_lat {ρ : ℂ} (hρ : ρ.im ≠ 0) {a : D.La} (ha : a ∈ lat hP ρ) (h0 : a ≠ 0) :
     0 < ρ.im * D.EF (H.rt • a) a := by
@@ -282,7 +282,7 @@ theorem sign_lat {ρ : ℂ} (hρ : ρ.im ≠ 0) {a : D.La} (ha : a ∈ lat hP ρ
   linarith
 
 /- English proof (translation)
-Use `⟨fun a ha h0 => sign_lat hP (cmHost_rootZero_im_ne_zero H) ha h0, fun a ha h0 => ?_⟩` and prove the remaining obligations. Use `sign_lat hP (by simpa using cmHost_rootZero_im_ne_zero H) ha h0` as an intermediate fact. Rewrite `this` using `[Complex.neg_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem signs : (∀ a ∈ lat hP H.rt0, a ≠ 0 → 0 < H.rt0.im * D.EF (H.rt • a) a) ∧
     ∀ a ∈ lat hP (-H.rt0), a ≠ 0 → H.rt0.im * D.EF (H.rt • a) a < 0 := by
@@ -294,7 +294,7 @@ theorem signs : (∀ a ∈ lat hP H.rt0, a ≠ 0 → 0 < H.rt0.im * D.EF (H.rt �
 end Split
 
 /- English proof (translation)
-Use `⟨?_, fun g ty P hP hty => by rw [IsSplit, lat_eq_top hP (hq ▸ hty), top_sup_eq]⟩` and prove the remaining obligations. Take `⟨g, ty, hty⟩` from `PureTypeModel.exists_isTypeFn H D.p D.q`. Take `⟨P, hP⟩` from `PeriodNonempty.exists_isPeriod E H D g ty hty`. Use `⟨⊤, ⊥, top_sup_eq _, fun a _ b hb => ?_, by rw [finrank_top, D.rank, hq, add_zero], by rw [finrank_bot, hq], fun a _ h0 => (signs hP).1 a (lat_eq_top hP (hq ▸ hty) ▸ Submodule.mem_top) h0, fun a ha h0 => absurd ha h0⟩` and prove the remaining obligations. Rewrite using `[(Submodule.mem_bot _).1 hb, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem splitLat_of_q_zero (D : Datum H) (hq : D.q = 0) : SplitLat D ∧
     ∀ (g : ℕ) (ty : Fin g → (E →+* ℂ)) (P : D.La →+ (Fin g → ℂ)) (hP : IsPeriod D ty P),
@@ -307,18 +307,16 @@ theorem splitLat_of_q_zero (D : Datum H) (hq : D.q = 0) : SplitLat D ∧
   rw [(Submodule.mem_bot _).1 hb, map_zero]
 
 /- English proof (translation)
-Take `⟨D, hp, hq⟩` from `CM.LatModel.exists_datum`. Conclude with `⟨D, hp, hq, (splitLat_of_q_zero D hq).1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_splitLat : ∃ D : Datum CM.LatModel.host, D.p = 1 ∧ D.q = 0 ∧ SplitLat D := by
   obtain ⟨D, hp, hq⟩ := CM.LatModel.exists_datum
   exact ⟨D, hp, hq, (splitLat_of_q_zero D hq).1⟩
 
 /- English proof (translation)
-Take `⟨g, ty, hty⟩` from `PureTypeModel.exists_isTypeFn H D.p D.q`. Take `⟨P, hP⟩` from `PeriodNonempty.exists_isPeriod E H D g ty hty`. Use `(signs hP).2 a (fun j hj => ?_) h0` and prove the remaining obligations. Establish `h2 : (ty j (H.rt : E)) ^ 2 = H.rt0 ^ 2`. Use `congrArg (fun a : 𝓞 E => ty j (a : E)) H.rt_sq` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_pow, map_neg, map_natCast] at this`. Rewrite using `[H.sqrt_neg_disc_sq]`. Conclude with `this`. Establish `h` using `(hty (ty j)).1 ((sq_eq_sq_iff_eq_or_eq_neg.1 h2).resolve_right hj)`. Establish `: Nonempty {i // ty i = ty j}` using `⟨⟨j, rfl⟩⟩`.
-
-Conclude with `absurd (h.trans hp) Nat.card_pos.ne'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem neg_of_p_zero (D : Datum H) (hp : D.p = 0) (a : D.La) (h0 : a ≠ 0) : H.rt0.im * D.EF (H.rt • a) a < 0 := by
   obtain ⟨g, ty, hty⟩ := PureTypeModel.exists_isTypeFn H D.p D.q
@@ -333,15 +331,15 @@ theorem neg_of_p_zero (D : Datum H) (hp : D.p = 0) (a : D.La) (h0 : a ≠ 0) : H
   exact absurd (h.trans hp) Nat.card_pos.ne'
 
 /- English proof (translation)
-Take `⟨D'', e, h1, h2, hE⟩` from `exists_datum_sum_and_all_signatures.1 E H D D'`. Take `⟨g, ty, hty⟩` from `PureTypeModel.exists_isTypeFn H D.p D.q`. Take `⟨P, hP⟩` from `PeriodNonempty.exists_isPeriod E H D g ty hty`. Establish `pos` using `fun a h0 => (signs hP).1 a (lat_eq_top hP (hq ▸ hty) ▸ Submodule.mem_top) h0`. Set `i₁ : D.La →ₗ[𝓞 E] D''.La` to `e.symm.toLinearMap ∘ₗ LinearMap.inl _ _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `i₂ : D'.La →ₗ[𝓞 E] D''.La` to `e.symm.toLinearMap ∘ₗ LinearMap.inr _ _ _`. Establish `j₁ : Function.Injective i₁` using `e.symm.injective.comp LinearMap.inl_injective`. Establish `j₂ : Function.Injective i₂` using `e.symm.injective.comp LinearMap.inr_injective`. Use `⟨D'', by omega, by omega, LinearMap.range i₁, LinearMap.range i₂, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `top_le_iff.1 fun x _ => Submodule.mem_sup.2 ⟨_, ⟨(e x).1, rfl⟩, _, ⟨(e x).2, rfl⟩, e.injective ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[i₁, i₂]`. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨b, rfl⟩`. Simplify using `[hE, i₁, i₂]`. Rewrite using `[LinearMap.finrank_range_of_inj j₁, D.rank]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[LinearMap.finrank_range_of_inj j₂, D'.rank]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `_ ⟨a, rfl⟩ h0`. Simplify `pos a fun h => h0 (by rw [h, map_zero])` using `[hE, i₁]`. Introduce and unpack `_ ⟨a, rfl⟩ h0`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Simplify `neg_of_p_zero D' hp a fun h => h0 (by rw [h, map_zero])` using `[hE, i₂]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem splitLat_sum (D D' : Datum H) (hq : D.q = 0) (hp : D'.p = 0) :
     ∃ D'' : Datum H, D''.p = D.p ∧ D''.q = D'.q ∧ SplitLat D'' := by
@@ -366,7 +364,7 @@ theorem splitLat_sum (D D' : Datum H) (hq : D.q = 0) (hp : D'.p = 0) :
     simpa [hE, i₂] using neg_of_p_zero D' hp a fun h => h0 (by rw [h, map_zero])
 
 /- English proof (translation)
-Take `⟨D, hp, hq⟩` from `CM.LatModel.exists_datum`. Take `⟨D'', a, b, c⟩` from `splitLat_sum D (CM.LatModel.negDatum D) hq hq`. Conclude with `⟨D'', a.trans hp, b.trans hp, c⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_splitLat_indefinite : ∃ D : Datum CM.LatModel.host, D.p = 1 ∧ D.q = 1 ∧ SplitLat D := by
   obtain ⟨D, hp, hq⟩ := CM.LatModel.exists_datum

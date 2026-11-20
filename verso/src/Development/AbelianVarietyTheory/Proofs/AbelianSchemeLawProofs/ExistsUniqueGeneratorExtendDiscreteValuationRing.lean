@@ -14,9 +14,9 @@ namespace GlobalTheory.GenExtend
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.DvrModel
 
 /- English proof (translation)
-Use `choose J hJ using fun χ : Z ⟶ X => exists_chart hL (χ z)`. Establish `hv` using `val_corr hJ hc (𝟙 Z)`. Rewrite `hv` using `[val_pull hJ, val_pull hJ, Category.id_comp, Category.id_comp]`. Rewrite using `[gen_trans ht r z ha (Good.mem hJ φ r), gen_trans ht' r' z ha' (Good.mem hJ φ' r')]`. Use `congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => ?_) hv` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show gm (r ≫ φ k) z (L.U (a k) ⊓ L.U (J (r ≫ φ k))) (L.g (a k) (J (r ≫ φ k))) ^ _ = gm (r' ≫ φ' k) z (L.U (a k) ⊓ L.U (J (r' ≫ φ' k))) (L.g (a k) (J (r' ≫ φ' k))) ^ _`. Rewrite using `[h k]`.
+A detailed English derivation is pending.
 -/
 theorem gm_eq_of_corr {X Y Y' Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) {I : Type} [Fintype I]
     {φ : I → (Y ⟶ X)} {φ' : I → (Y' ⟶ X)} {ε : I → ℤ} {t : LB.Gen (LB.LinComb L φ ε)}
@@ -35,7 +35,7 @@ theorem gm_eq_of_corr {X Y Y' Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) {I : Type
   rw [h k]
 
 /- English proof (translation)
-Establish `hur : res hA' (pullU r' (LB.wchart L φ' a) (t'.s a)) = res hA (pullU r (LB.wchart L φ a) (t.s a))`. Use `unit_ext fun z hz => ?_` and prove the remaining obligations. Rewrite using `[gm_res _ z hA hz, gm_res _ z hA' hz, gm_pull _ r z _ (hA hz), gm_pull _ r' z _ (hA' hz), Category.id_comp, Category.id_comp]`. Conclude with `(gm_eq_of_corr hL ht ht' r r' h hc z a (hA hz) (hA' hz)).symm`. Conclude with `congrArg Units.val hur`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_pullU_eq_of_corr {X Y Y' Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) {I : Type} [Fintype I]
     {φ : I → (Y ⟶ X)} {φ' : I → (Y' ⟶ X)} {ε : I → ℤ} {t : LB.Gen (LB.LinComb L φ ε)}
@@ -55,15 +55,13 @@ theorem res_pullU_eq_of_corr {X Y Y' Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) {I
   exact congrArg Units.val hur
 
 /- English proof (translation)
-Introduce `V _ _ _ K _ _ _ H X p e hsm hgi he eK heK L hL I _ φ ε t ρ ht hρ hc`. Establish `hK` using `IsPullback.of_hasPullback p (etaK V K)`. Establish `hs` using `IsPullback.of_hasPullback p (Spec.map (CommRingCat.ofHom (IsLocalRing.residue V)))`. Use `isIntegral_of_geometricallyIntegral hK` as an intermediate fact. Use `isIntegral_of_geometricallyIntegral hs` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : ∀ i, eK ≫ pullback.fst p (etaK V K) ≫ φ i = etaK V K ≫ e ≫ φ i` using `fun i => by`. Rewrite using `[← Category.assoc, heK, Category.assoc]`. Take `⟨a₀, h₀⟩` from `LB.mem_of_cover (LB.isLB_linComb hL (fun i => e ≫ φ i) ε) (IsLocalRing.closedPoint V)`. Establish `hA' : LB.wchart L (fun i => etaK V K ≫ e ≫ φ i) a₀ = etaK V K ⁻¹ᵁ LB.wchart L (fun i => e ≫ φ i) a₀` using `wchart_comp L _ _ _`. Establish `hA'' : LB.wchart L (fun i => etaK V K ≫ e ≫ φ i) a₀ ≤ eK ⁻¹ᵁ LB.wchart L (fun i => pullback.fst p (etaK V K) ≫ φ i) a₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← wchart_comp, funext hcomp]`. Take `⟨s, ⟨hsu, hsc, hsr⟩, huniq⟩` from `existsUnique_isUnit_appLE_eq hK hs (U := LB.wchart L φ) (g := fun a b ↦ LB.lcg L φ ε a b) (W := LB.wchart L fun k ↦ pullback.fst p (etaK V K) ≫ φ k) (wchart_comp L _ φ) (LB.mem_of_cover (LB.isLB_linComb hL φ ε)) (fun a b ↦ Units.isUnit _) (r := fun a ↦ LB.ts t a) (fun a b ↦ by`. Use `congrArg Units.val ((LB.isGen_iff L t).1 ht a b)` as an intermediate fact. Rewrite `this` using `[LB.lcg_comp]`. Conclude with `this)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun a ↦ Units.isUnit _) he heK (a₀ := a₀) (A := LB.wchart L (fun i => e ≫ φ i) a₀) h₀`. Use the proof step `(wchart_comp L e φ a₀).le hA' hA'' (LB.ts ρ a₀).isUnit`. Use the proof step `(res_pullU_eq_of_corr hL ht hρ eK (etaK V K) hcomp hc a₀ hA'' hA'.le)`. Use `⟨⟨fun a ↦ (hsu a).unit⟩, ⟨fun a b ↦ Units.ext (hsc a b), ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `congrArg LB.Gen.mk (funext fun a ↦ Units.ext (hsr a))`.
-
-Introduce and unpack `⟨r'⟩ ⟨h₁, h₂⟩`. Use `huniq (fun a ↦ (r' a).val) ⟨fun a ↦ Units.isUnit _, fun a b ↦ congrArg Units.val (h₁ a b), fun a ↦ congrArg (fun c ↦ (LB.ts c a).val) h₂⟩` as an intermediate fact. Conclude with `congrArg LB.Gen.mk (funext fun a ↦ Units.ext (congrFun this a))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem existsUnique_gen_extend :
     ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (K : Type) [Field K] [Algebra V K] [IsFractionRing V K] (H X : Scheme.{0}) (p : H ⟶ Spec (CommRingCat.of V)) (e : Spec (CommRingCat.of V) ⟶ H), Smooth p → GeometricallyIntegral p → e ≫ p = 𝟙 _ → ∀ (eK : Spec (CommRingCat.of K) ⟶ pullback p (etaK V K)), eK ≫ pullback.fst p (etaK V K) = etaK V K ≫ e → ∀ (L : LB X), L.IsLB → ∀ (I : Type) [Fintype I] (φ : I → (H ⟶ X)) (ε : I → ℤ) (t : LB.Gen (LB.LinComb L (fun i => pullback.fst p (etaK V K) ≫ φ i) ε)) (ρ : LB.Gen (LB.LinComb L (fun i => e ≫ φ i) ε)), t.IsGen → ρ.IsGen → LB.Gen.Corr L _ _ _ _ (LB.pullGen L _ _ t eK) (LB.pullGen L _ _ ρ (etaK V K)) → ∃! c : LB.Gen (LB.LinComb L φ ε), c.IsGen ∧ LB.pullGen L _ _ c (pullback.fst p (etaK V K)) = t := by

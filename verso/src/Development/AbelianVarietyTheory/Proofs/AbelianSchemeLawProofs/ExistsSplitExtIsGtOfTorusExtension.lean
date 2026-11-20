@@ -12,9 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ G _ _ ⟨T⟩`. Set `_` to `T.addCommGroup`. Set `_` to `T.free`. Set `_` to `T.finite`. Set `_` to `T.grpB`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨O, h₁, h₂, h₃, h⟩` from `GlobalTheory.T.exists_splitExtDatum_of_splitTorus_extension (Spec (CommRingCat.of K)) T.X G T.B T.isAbelian T.q T.i T.q_hom T.i_hom T.q_flat T.q_surjective T.q_quasiCompact T.isKernel`. Take `⟨d, -, -⟩` from `h T.isAbelian`. Conclude with `⟨_, ⟨d⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_splitExt_isGt_of_torusExtension :
     ∀ (K : Type) [Field K] (G : Over (Spec (CommRingCat.of K))) [GrpObj G] [IsCommMonObj G],

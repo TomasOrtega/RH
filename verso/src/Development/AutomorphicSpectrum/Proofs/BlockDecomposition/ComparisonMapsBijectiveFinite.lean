@@ -61,7 +61,7 @@ def cT (m : BC F F') (T : C) : F.obj T →ₛₗ[algebraMap R S] F'.obj T where
   map_smul' := m.smul T
 
 /- English proof (authored)
-The base-change data at T provides an S-linear equivalence e sending 1 ⊗ b to the image of b under m.α at T. By S-linearity e sends s ⊗ b to s times that image. This is also the value of the lift of cT at s ⊗ b by liftSemi_tmul. The lifts agree on pure tensors and extend additively, so the lift of cT equals e and is bijective.
+The base-change data at T provides an S-linear equivalence e sending 1 ⊗ b to the image of b under the component map at T. By S-linearity e sends s ⊗ b to s times that image. This is also the value of the objectwise lift on s ⊗ b by the pure tensor formula. The lifts agree on pure tensors and extend additively, so the objectwise lift equals e and is bijective.
 -/
 theorem liftSemi_cT_bijective (m : BC F F') (T : C) : Function.Bijective (liftSemi (cT m T)) := by
   obtain ⟨e, he⟩ := m.bij T
@@ -78,13 +78,13 @@ theorem liftSemi_cT_bijective (m : BC F F') (T : C) : Function.Bijective (liftSe
   exact e.bijective
 
 /- English proof (authored)
-A degree-zero cochain has one component for each object T. The comparison map is the lift of the product of the maps cT at these objects. Each objectwise lift is bijective by liftSemi_cT_bijective. Apply the finite-product lemma to the object index.
+A degree-zero cochain has one component for each object T. The comparison map is the lift of the product of the component maps at these objects. Each objectwise lift is bijective by the objectwise bijectivity lemma. Apply the finite-product lemma to the object index.
 -/
 theorem comparison_degree_zero_bijective [Finite C] (m : BC F F') : Function.Bijective (th0 m) :=
   liftSemi_piS_bijective (fun T ↦ cT m T) fun T ↦ liftSemi_cT_bijective m T
 
 /- English proof (authored)
-A degree-one cochain is indexed by pairs of objects T, T′ and arrows T → T′. On the component for an arrow the semilinear comparison acts by cT at T′. Its lift is bijective by liftSemi_cT_bijective. Apply the finite-product lemma to the arrows for each fixed pair, then to T′ for each T, and finally to T.
+A degree-one cochain is indexed by pairs of objects T, T′ and arrows T → T′. On the component for an arrow the semilinear comparison acts by the component map at T′. Its lift is bijective by the objectwise bijectivity lemma. Apply the finite-product lemma to the arrows for each fixed pair, then to T′ for each T, and finally to T.
 -/
 theorem comparison_degree_one_bijective [Finite C] [∀ T T' : C, Finite (T ⟶ T')] (m : BC F F') :
     Function.Bijective (th1 m) :=
@@ -92,7 +92,7 @@ theorem comparison_degree_one_bijective [Finite C] [∀ T T' : C, Finite (T ⟶ 
     liftSemi_piS_bijective _ fun T' ↦ liftSemi_piS_bijective _ fun _ ↦ liftSemi_cT_bijective m T'
 
 /- English proof (authored)
-A degree-two cochain is indexed by triples of objects T, T′, T″ and composable arrows T → T′ → T″. The component map is cT at the final object T″, whose lift is bijective. Combine these lifts with the finite-product lemma, first over the second arrow, then over the first arrow, and then over T″, T′, and T in that order.
+A degree-two cochain is indexed by triples of objects T, T′, T″ and composable arrows T → T′ → T″. The component map is the map at the final object T″, whose lift is bijective. Combine these lifts with the finite-product lemma, first over the second arrow, then over the first arrow, and then over T″, T′, and T in that order.
 -/
 theorem comparison_degree_two_bijective [Finite C] [∀ T T' : C, Finite (T ⟶ T')] (m : BC F F') :
     Function.Bijective (th2 m) :=

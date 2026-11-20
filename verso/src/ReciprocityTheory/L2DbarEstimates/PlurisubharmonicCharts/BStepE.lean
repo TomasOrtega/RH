@@ -26,19 +26,19 @@ def bsW (A : WeightedAtlas n Y ι La) (L : La) (w : Fin N → ι → Y → ℂ) 
   A.sqn L s y ^ (-((T' : ℝ) - 3 / 2)) * A.sqn L w y ^ (-(1 / 2 : ℝ))
 
 /- English proof (translation)
-Unfold `bsExt`. Rewrite using `[dif_pos hy]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem bsE_ext_mem {M : Set Y} (h : M → ℂ) {y : Y} (hy : y ∈ M) : bsExt M h y = h ⟨y, hy⟩ := by
   unfold bsExt; rw [dif_pos hy]
 
 /- English proof (translation)
-Establish `hb` using `bsD_denom A hD hσ m`. Establish `hh' : Holo n (flatStein A hD hF).z (fun y : A.Mset w0 s De => bsExt (A.Mset w0 s De) h y)`. Establish `: (fun y : A.Mset w0 s De => bsExt (A.Mset w0 s De) h y) = h`. Use function extensionality and compare the values at `fun y => bsE_ext_mem h y.2`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hh`. Establish `hd` using `(holo_flat_iff A hD hF _).mp hh'`. Use `⟨fun i => ?_, fun i j y hy hi hj => ?_⟩` and prove the remaining obligations. Use `(hd i).mul (hb.1 i)` as an intermediate fact. Use `this.congr fun v _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[bsH]`. Simplify using `only [bsH]`. Use `hb.2 i j y hy hi hj` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem bsE_sec (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) (h : A.Mset w0 s De → ℂ)
@@ -60,13 +60,13 @@ theorem bsE_sec (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     rw [this]; ring
 
 /- English proof (translation)
-Take `⟨ha, hnσ, hZ, hSw, hd⟩` from `bsD_pos A hD hF hσ hX x x.2`. Establish `e1` using `bsC_nsq_prod A mu0 L (T' - 1) (bsH (A.Mset w0 s De) h σ w0 (T' - 1)) σ w0 (h x) x (by simp only [bsH]; rw [bsE_ext_mem h x.2])`. Establish `e2` using `bsC_sqn_ratio A L s w0 x x.2.1`. Establish `e3` using `bsC_sqn_ratio A L w w0 x x.2.1`. Establish `e4` using `exp_neg_frameWeight_eq A w w0 s mu0 σ x hnσ hd hSw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : 0 ≤ A.sqn L s x` using `Finset.sum_nonneg fun k _ => bsA_nsq_nonneg A L (s k) x`. Establish `hw0 : 0 ≤ A.sqn L w x` using `Finset.sum_nonneg fun k _ => bsA_nsq_nonneg A L (w k) x`. Establish `hp : 0 ≤ A.nsq (mu0 + (T' - 1) • L) (bsH (A.Mset w0 s De) h σ w0 (T' - 1)) x * bsW A L w s T' x` using `mul_nonneg (bsA_nsq_nonneg A _ _ x) (mul_nonneg (Real.rpow_nonneg hs0 _) (Real.rpow_nonneg hw0 _))`. Rewrite using `[← ENNReal.ofReal_mul hp]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hc : ((T' - 1 : ℕ) : ℝ) - 1 / 2 = (T' : ℝ) - 3 / 2`. Rewrite using `[Nat.cast_sub hT]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `bsW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Rewrite using `[e1, e2, e3, e4, ← hc, ← mul_assoc]`. Conclude with `bsC_alg _ _ _ _ _ _ (T' - 1) ha hZ hSw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bsE_heq (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) (hX : ∃ i0 : Fin n, MvPolynomial.X i0 ∣ De)
@@ -98,7 +98,7 @@ theorem bsE_heq (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
   exact bsC_alg _ _ _ _ _ _ (T' - 1) ha hZ hSw
 
 /- English proof (translation)
-Take `⟨ha, -, hZ, -, -⟩` from `bsD_pos A hD hF hσ hX x hx`. Rewrite using `[bsC_sqn_ratio A L s w0 x hx.1]`. Check the signs of the components of the expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem bsE_sqn_s_pos (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) (hX : ∃ i0 : Fin n, MvPolynomial.X i0 ∣ De)
@@ -108,9 +108,9 @@ theorem bsE_sqn_s_pos (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
 
 open Classical in
 /- English proof (translation)
-Establish `hMo` using `isOpen_Mset A (De := De) hD`. Establish `h1` using `bsC_nsq_contOn A (bsE_sec A hD hF hσ h hh (T' - 1)) hMo`. Establish `h2 : ContinuousOn (bsW A L w s T') (A.Mset w0 s De)`. Unfold `bsW`. Use `ContinuousOn.mul ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(bsA_sqn_cont A hD.sec_s).continuousOn.rpow_const fun x hx => Or.inl (bsE_sqn_s_pos A hD hF hσ hX hx).ne'`. Conclude with `(bsA_sqn_cont A hD.sec_w).continuousOn.rpow_const fun x _ => Or.inl (bsA_sqn_pos A (hD.no_common_zero x)).ne'`. Conclude with `ContinuousOn.measurable_piecewise (ENNReal.continuous_ofReal.comp_continuousOn (h1.mul h2)) continuousOn_const hMo.measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem bsE_meas (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) (hX : ∃ i0 : Fin n, MvPolynomial.X i0 ∣ De)
@@ -132,9 +132,9 @@ theorem bsE_meas (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[lintegral_flat A hD hF _ (bsE_meas A hD hF hσ hX T' (hh k) (hhol k))]`. Use `lt_of_le_of_lt (lintegral_mono fun x => ?_) hbd` and prove the remaining obligations. Rewrite using `[Set.piecewise_eq_of_mem _ _ _ x.2, bsE_heq A hD hF hσ hX T' hT (hh k) x]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `h1 : ‖hh k x‖ ^ 2 ≤ ∑ j, ‖hh j x‖ ^ 2` using `Finset.single_le_sum (f := fun j => ‖hh j x‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ k)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2 : 0 ≤ (∑ j, ‖s j (A.pick (x : Y)) x / w0 (A.pick (x : Y)) x‖ ^ 2) ^ (-((T' : ℝ) - 3 / 2))` using `Real.rpow_nonneg (by positivity) _`. Establish `h3` using `Real.exp_pos (-bsPh0 A w w0 s mu0 σ x)`. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bsE_int (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) (hX : ∃ i0 : Fin n, MvPolynomial.X i0 ∣ De)
@@ -159,21 +159,17 @@ theorem bsE_int (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
 
 open Classical in
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hD.s_le_w`. Establish `hMo` using `isOpen_Mset A (De := De) hD`. Use `set C' := max C 1 with hC'`. Use `set K := A.sqn L w y + 1 with hK`. Establish `hK0 : 0 < K`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_nonneg fun k (_ : k ∈ Finset.univ) => bsA_nsq_nonneg A L (w k) y` as an intermediate fact. Simplify using `only [sqn] at hK ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hC'1 : 1 ≤ C'` using `le_max_right _ _`. Establish `hp : 0 ≤ (T' : ℝ) - 3 / 2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: (2 : ℝ) ≤ T'` using `by exact_mod_cast hT`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set c := (C' * K) ^ (-((T' : ℝ) - 3 / 2)) * K ^ (-(1 / 2 : ℝ)) with hc`. Establish `hc0 : 0 < c` using `mul_pos (Real.rpow_pos_of_pos (by positivity) _) (Real.rpow_pos_of_pos hK0 _)`. Use `set U := {y' | A.sqn L w y' < K} with hU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hUo : IsOpen U` using `isOpen_lt (bsA_sqn_cont A hD.sec_w) continuous_const`. Establish `hyU : y ∈ U` using `by simp [hU, hK]`. Use `⟨U, hUo.mem_nhds hyU, ?_⟩` and prove the remaining obligations. Use `set ψ := (A.Mset w0 s De).piecewise (fun y => ENNReal.ofReal (A.nsq (mu0 + (T' - 1) • L) (bsH (A.Mset w0 s De) h σ w0 (T' - 1)) y * bsW A L w s T' y)) (fun _ => 0) with hψ`. Establish `hbound : ∀ x ∈ U ∩ A.Mset w0 s De, ENNReal.ofReal (A.nsq (mu0 + (T' - 1) • L) (bsH (A.Mset w0 s De) h σ w0 (T' - 1)) x) ≤ ENNReal.ofReal c⁻¹ * ψ x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[hψ, Set.piecewise_eq_of_mem _ _ _ hx.2, ← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hs` using `bsE_sqn_s_pos A hD hF hσ hX hx.2`. Establish `hw` using `bsA_sqn_pos A (la := L) (hD.no_common_zero x) (w := w)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hwK : A.sqn L w x ≤ K` using `le_of_lt hx.1`. Establish `hsK : A.sqn L s x ≤ C' * K`. Combine the equalities or inequalities in the displayed calculation. Establish `hW : c ≤ bsW A L w s T' x`. Unfold `bsW`.
-
-Conclude with `mul_le_mul (Real.rpow_le_rpow_of_nonpos hs hsK (by linarith)) (Real.rpow_le_rpow_of_nonpos hw hwK (by norm_num)) (Real.rpow_pos_of_pos hK0 _).le (Real.rpow_nonneg hs.le _)`. Establish `hn0` using `bsA_nsq_nonneg A (mu0 + (T' - 1) • L) (bsH (A.Mset w0 s De) h σ w0 (T' - 1)) x`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ c⁻¹ * (A.nsq (mu0 + (T' - 1) • L) (bsH (A.Mset w0 s De) h σ w0 (T' - 1)) x * bsW A L w s T' x) := by gcongr`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem bsE_loc (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) (hX : ∃ i0 : Fin n, MvPolynomial.X i0 ∣ De)

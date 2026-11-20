@@ -22,71 +22,71 @@ def DI {n : ℕ} (f : PS k n d) : Prop := ∀ s, pderiv k s f ∈ IntS φ n d
 variable {φ}
 
 /- English proof (translation)
-Take `⟨a', h1, rfl⟩` from `h`. Conclude with `constantCoeff_mapP_eq_zero φ a' h1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IP.gp {n : ℕ} {a : Pt k n d} (h : IP φ a) : GP a := by
   obtain ⟨a', h1, rfl⟩ := h
   exact constantCoeff_mapP_eq_zero φ a' h1
 
 /- English proof (translation)
-Take `⟨a', -, rfl⟩` from `h`. Conclude with `⟨a' i, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IP.int {n : ℕ} {a : Pt k n d} (h : IP φ a) (i : Fin d) : a i ∈ IntS φ n d := by
   obtain ⟨a', -, rfl⟩ := h
   exact ⟨a' i, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pt R d j, gp_pt j, baseChange_pt φ j⟩`.
+Supply the required witnesses or components.
 -/
 theorem ip_pt {n : ℕ} (j : Fin n) : IP φ (pt k d j) := ⟨pt R d j, gp_pt j, baseChange_pt φ j⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, gp_zero₂, funext fun _ => map_zero _⟩`.
+Supply the required witnesses or components.
 -/
 theorem ip_zero {n : ℕ} : IP φ (0 : Pt k n d) := ⟨0, gp_zero₂, funext fun _ => map_zero _⟩
 
 /- English proof (translation)
-Introduce `j`. Use `fin_cases j`. Conclude with `ha`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ip1 {n : ℕ} {a : Pt k n d} (ha : IP φ a) : ∀ j, IP φ (![a] j) := by
   intro j; fin_cases j; exact ha
 
 /- English proof (translation)
-Introduce `j`. Use `fin_cases j`. Use `exacts [ha, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ip2 {n : ℕ} {a b : Pt k n d} (ha : IP φ a) (hb : IP φ b) : ∀ j, IP φ (![a, b] j) := by
   intro j; fin_cases j; exacts [ha, hb]
 
 /- English proof (translation)
-Introduce `j`. Use `fin_cases j`. Use `exacts [ha, hb, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ip3 {n : ℕ} {a b c : Pt k n d} (ha : IP φ a) (hb : IP φ b) (hc : IP φ c) :
     ∀ j, IP φ (![a, b, c] j) := by
   intro j; fin_cases j; exacts [ha, hb, hc]
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `hr`. Conclude with `⟨C r, MvPowerSeries.map_C φ r⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem int_C {n : ℕ} {r : k} (hr : r ∈ φ.range) : (C r : PS k n d) ∈ IntS φ n d := by
   obtain ⟨r, rfl⟩ := hr
   exact ⟨C r, MvPowerSeries.map_C φ r⟩
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `hf`. Conclude with `⟨constantCoeff f, by simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem int_const {n : ℕ} {f : PS k n d} (hf : f ∈ IntS φ n d) : constantCoeff f ∈ φ.range := by
   obtain ⟨f, rfl⟩ := hf
   exact ⟨constantCoeff f, by simp⟩
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `hf`. Conclude with `fun s => ⟨pderiv R s f, (GlobalTheory.FormalCalc.pderiv_map φ s f).symm⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem int_pderiv {n : ℕ} {f : PS k n d} (hf : f ∈ IntS φ n d) : DI φ f := by
   obtain ⟨f, rfl⟩ := hf
   exact fun s => ⟨pderiv R s f, (GlobalTheory.FormalCalc.pderiv_map φ s f).symm⟩
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `hf`. Use `choose V' h1 h2 using hV`. Take `rfl : V = fun j => mapP φ (V' j)` from `funext fun j => (h2 j).symm`. Conclude with `⟨ev V' f, map_ev φ V' h1 f⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem int_ev {m n : ℕ} {V : Fin m → Pt k n d} (hV : ∀ j, IP φ (V j)) {f : PS k m d}
     (hf : f ∈ IntS φ m d) : ev V f ∈ IntS φ n d := by
@@ -96,7 +96,7 @@ theorem int_ev {m n : ℕ} {V : Fin m → Pt k n d} (hV : ∀ j, IP φ (V j)) {f
   exact ⟨ev V' f, map_ev φ V' h1 f⟩
 
 /- English proof (translation)
-Take `⟨a, h0, rfl⟩` from `ha`. Use `choose V' h1 h2 using hV`. Take `rfl : V = fun j => mapP φ (V' j)` from `funext fun j => (h2 j).symm`. Conclude with `⟨evP V' a, gp_evP V' h1 a h0, funext fun i => map_ev φ V' h1 (a i)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ip_evP {m n : ℕ} {V : Fin m → Pt k n d} (hV : ∀ j, IP φ (V j)) {a : Pt k m d}
     (ha : IP φ a) : IP φ (evP V a) := by
@@ -106,24 +106,24 @@ theorem ip_evP {m n : ℕ} {V : Fin m → Pt k n d} (hV : ∀ j, IP φ (V j)) {a
   exact ⟨evP V' a, gp_evP V' h1 a h0, funext fun i => map_ev φ V' h1 (a i)⟩
 
 /- English proof (translation)
-The claim follows from `ip_evP (ip1 ha) hw`.
+A detailed English derivation is pending.
 -/
 theorem ip_comp1 {n : ℕ} {w : Pt k 1 d} {a : Pt k n d} (hw : IP φ w) (ha : IP φ a) :
     IP φ (comp1 w a) := ip_evP (ip1 ha) hw
 
 /- English proof (translation)
-The claim follows from `ip_evP (ip2 ha hb) hF`.
+A detailed English derivation is pending.
 -/
 theorem ip_addOf {n : ℕ} {F : Pt k 2 d} {a b : Pt k n d} (hF : IP φ F) (ha : IP φ a) (hb : IP φ b) :
     IP φ (addOf F a b) := ip_evP (ip2 ha hb) hF
 
 /- English proof (translation)
-The claim follows from `ip_evP (ip2 (ip_pt 0) (ip_pt 1)) ha`.
+A detailed English derivation is pending.
 -/
 theorem ip_up {a : Pt k 2 d} (ha : IP φ a) : IP φ (up a) := ip_evP (ip2 (ip_pt 0) (ip_pt 1)) ha
 
 /- English proof (translation)
-Introduce `s`. Rewrite using `[pderiv_ev V fun j => (hV j).gp]`. Conclude with `sum_mem fun j _ => sum_mem fun i _ => mul_mem (int_ev hV (hf _)) (int_pderiv ((hV j).int i) s)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem di_ev {m n : ℕ} {V : Fin m → Pt k n d} (hV : ∀ j, IP φ (V j)) {f : PS k m d}
     (hf : DI φ f) : DI φ (ev V f) := by
@@ -133,9 +133,9 @@ theorem di_ev {m n : ℕ} {V : Fin m → Pt k n d} (hV : ∀ j, IP φ (V j)) {f 
     mul_mem (int_ev hV (hf _)) (int_pderiv ((hV j).int i) s)
 
 /- English proof (translation)
-Introduce `s`. Establish `h1 : pderiv k s (FB.expS k a) = FB.expS k a * pderiv k s a`. Unfold `FB.expS`. Rewrite using `[GlobalTheory.FormalCalc.pderiv_powerSeries_subst (PowerSeries.HasSubst.of_constantCoeff_zero ha), PowerSeries.derivative_exp]`. Establish `h2` using `MvPowerSeries.mul_invOfUnit p 1 (by simpa using hp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨invOfUnit p 1 * pderiv R s p, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← GlobalTheory.FormalCalc.pderiv_map, h, h1, ← h, ← mul_assoc, ← map_mul, mul_comm (invOfUnit p 1), h2, map_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem di_of_exp [Algebra ℚ k] {n : ℕ} (p : PS R n d) (hp : constantCoeff p = 1) (a : PS k n d)
     (ha : constantCoeff a = 0) (h : MvPowerSeries.map φ p = FB.expS k a) : DI φ a := by
@@ -150,41 +150,41 @@ theorem di_of_exp [Algebra ℚ k] {n : ℕ} (p : PS R n d) (hp : constantCoeff p
     h2, map_one, one_mul]
 
 /- English proof (translation)
-Simplify using `only [dy, map_sub, gt_ev_sub _ hX0, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dy_sub (v : Fin d → k) (f g : PS k 2 d) : dy v (f - g) = dy v f - dy v g := by
   simp only [dy, map_sub, gt_ev_sub _ hX0, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-The claim follows from `sum_mem fun i _ => mul_mem (int_C (hv i)) (int_ev (ip2 (ip_pt 0) ip_zero) (hf _))`.
+A detailed English derivation is pending.
 -/
 theorem dy_int {v : Fin d → k} (hv : ∀ i, v i ∈ φ.range) {f : PS k 2 d} (hf : DI φ f) :
     dy v f ∈ IntS φ 1 d :=
   sum_mem fun i _ => mul_mem (int_C (hv i)) (int_ev (ip2 (ip_pt 0) ip_zero) (hf _))
 
 /- English proof (translation)
-The claim follows from `sum_mem fun i _ => mul_mem (hv i) (int_const (int_pderiv hf _))`.
+A detailed English derivation is pending.
 -/
 theorem lin_int {v : Fin d → k} (hv : ∀ i, v i ∈ φ.range) {f : PS k 1 d} (hf : f ∈ IntS φ 1 d) :
     lin v f ∈ φ.range :=
   sum_mem fun i _ => mul_mem (hv i) (int_const (int_pderiv hf _))
 
 /- English proof (translation)
-The claim follows from `sum_mem fun j _ => mul_mem (dy_int hv (int_pderiv (hF.int j))) (int_pderiv hf _)`.
+A detailed English derivation is pending.
 -/
 theorem dof_int {F : Pt k 2 d} (hF : IP φ F) {v : Fin d → k} (hv : ∀ i, v i ∈ φ.range)
     {f : PS k 1 d} (hf : f ∈ IntS φ 1 d) : Dof F v f ∈ IntS φ 1 d :=
   sum_mem fun j _ => mul_mem (dy_int hv (int_pderiv (hF.int j))) (int_pderiv hf _)
 
 /- English proof (translation)
-Simplify using `only [← GE.dofD_apply, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dof_sub (F : Pt k 2 d) (v : Fin d → k) (f g : PS k 1 d) :
     Dof F v (f - g) = Dof F v f - Dof F v g := by
   simp only [← GE.dofD_apply, map_sub]
 
 /- English proof (translation)
-Establish `h` using `neg_mem (dy_int hv (int_pderiv hf))`. Rewrite `h` using `[dy_sub, dy_add, formalSecondPointDerivative_subst_first_point, formalSecondPointDerivative_subst_second_point, zero_add, neg_sub, ← dof_eq F hF hU]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dof_almost_additive {F : Pt k 2 d} (hF : GP F)
     (hU : evP (n := 1) ![pt k d 0, 0] F = pt k d 0) {v : Fin d → k} (hv : ∀ i, v i ∈ φ.range)
@@ -203,7 +203,7 @@ def defR (F : Pt k 2 d) (g : PS k 2 d) : PS k 3 d :=
     ev (n := 3) ![pt k d 0, addOf F (pt k d 1) (pt k d 2)] g
 
 /- English proof (translation)
-Establish `hV` using `triple_points_zero_constant ha hb hc`. Establish `hp : ∀ j : Fin 3, GP (pt k d j)` using `gp_pt`. Rewrite using `[defL, gt_ev_sub _ hV, gt_ev_add _ hV, gt_ev_ev' _ _ hV (pair_points_zero_constant (hp _) (hp _)), gt_ev_ev' _ _ hV (pair_points_zero_constant (hp _) (hp _)), gt_ev_ev' _ _ hV (pair_points_zero_constant (gp_addOf F hF _ _ (hp _) (hp _)) (hp _)), eval_pair_points, eval_pair_points …`. Simplify using `only [evP_pt _ hV]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ev_defL (F : Pt k 2 d) (hF : GP F) (g : PS k 2 d)
     {n : ℕ} (a b c : Pt k n d) (ha : GP a) (hb : GP b) (hc : GP c) :
@@ -218,7 +218,7 @@ theorem ev_defL (F : Pt k 2 d) (hF : GP F) (g : PS k 2 d)
   rfl
 
 /- English proof (translation)
-Establish `hV` using `triple_points_zero_constant ha hb hc`. Establish `hp : ∀ j : Fin 3, GP (pt k d j)` using `gp_pt`. Rewrite using `[defR, gt_ev_sub _ hV, gt_ev_add _ hV, gt_ev_ev' _ _ hV (pair_points_zero_constant (hp _) (hp _)), gt_ev_ev' _ _ hV (pair_points_zero_constant (hp _) (hp _)), gt_ev_ev' _ _ hV (pair_points_zero_constant (hp _) (gp_addOf F hF _ _ (hp _) (hp _))), eval_pair_points, eval_pair_points …`. Simplify using `only [evP_pt _ hV]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ev_defR (F : Pt k 2 d) (hF : GP F) (g : PS k 2 d)
     {n : ℕ} (a b c : Pt k n d) (ha : GP a) (hb : GP b) (hc : GP c) :
@@ -233,7 +233,7 @@ theorem ev_defR (F : Pt k 2 d) (hF : GP F) (g : PS k 2 d)
   rfl
 
 /- English proof (translation)
-Establish `e : up (addOf F a b) = addOf F (up a) (up b)` using `evP_addOf _ hUp F _ _ ha.gp hb.gp`. Rewrite using `[← dz_right g _ (ip_addOf hF ha hb).gp, ← dz_right g _ ha.gp, ← dz_right g _ hb.gp, ← gt_ev_add _ hDown, ← gt_ev_sub _ hDown, ← map_add, ← map_sub, e, ← ev_defL F hF.gp g _ _ _ (constantCoeff_up_eq_zero₂ ha.gp) (constantCoeff_up_eq_zero₂ hb.gp) (gp_pt 2)]`. Conclude with `int_ev (ip3 (ip_pt 0) (ip_pt 1) ip_zero) (di_ev (ip3 (ip_up ha) (ip_up hb) (ip_pt 2)) h _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dz_defL {F : Pt k 2 d} (hF : IP φ F) (g : PS k 2 d) (h : DI φ (defL F g))
     {a b : Pt k 2 d} (ha : IP φ a) (hb : IP φ b) (i : Fin d) :
@@ -246,7 +246,7 @@ theorem dz_defL {F : Pt k 2 d} (hF : IP φ F) (g : PS k 2 d) (h : DI φ (defL F 
   exact int_ev (ip3 (ip_pt 0) (ip_pt 1) ip_zero) (di_ev (ip3 (ip_up ha) (ip_up hb) (ip_pt 2)) h _)
 
 /- English proof (translation)
-Establish `e : up (addOf F a b) = addOf F (up a) (up b)` using `evP_addOf _ hUp F _ _ ha.gp hb.gp`. Rewrite using `[← dz_left g _ (ip_addOf hF ha hb).gp, ← dz_left g _ ha.gp, ← dz_left g _ hb.gp, ← gt_ev_add _ hDown, ← gt_ev_sub _ hDown, ← map_add, ← map_sub, e, ← ev_defR F hF.gp g _ _ _ (gp_pt 2) (constantCoeff_up_eq_zero₂ ha.gp) (constantCoeff_up_eq_zero₂ hb.gp)]`. Conclude with `int_ev (ip3 (ip_pt 0) (ip_pt 1) ip_zero) (di_ev (ip3 (ip_pt 2) (ip_up ha) (ip_up hb)) h _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dz_defR {F : Pt k 2 d} (hF : IP φ F) (g : PS k 2 d) (h : DI φ (defR F g))
     {a b : Pt k 2 d} (ha : IP φ a) (hb : IP φ b) (i : Fin d) :
@@ -259,27 +259,27 @@ theorem dz_defR {F : Pt k 2 d} (hF : IP φ F) (g : PS k 2 d) (h : DI φ (defR F 
   exact int_ev (ip3 (ip_pt 0) (ip_pt 1) ip_zero) (di_ev (ip3 (ip_pt 2) (ip_up ha) (ip_up hb)) h _)
 
 /- English proof (translation)
-Establish `hF` using `iF.gp`. Establish `hw` using `iw.gp`. Establish `ip0 : IP φ (pt k (n` using `2) d 0) := ip_pt 0`. Establish `ip1' : IP φ (pt k (n` using `2) d 1) := ip_pt 1`. Establish `iw0` using `ip_comp1 iw ip0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `iw1` using `ip_comp1 iw ip1'`. Establish `p0 : GP (pt k (n` using `2) d 0) := gp_pt 0`. Establish `p1 : GP (pt k (n` using `2) d 1) := gp_pt 1`. Establish `q0 : GP (pt k (n` using `1) d 0) := gp_pt 0`. Establish `w0` using `gp_comp1 w _ hw p0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w1` using `gp_comp1 w _ hw p1`. Establish `e0 : evP (n` using `1) ![pt k d 0, 0] (pt k d 0) = pt k d 0 := evP_pt _ hX0 0`. Establish `e1 : evP (n` using `1) ![pt k d 0, 0] (pt k d 1) = 0 := evP_pt _ hX0 1`. Establish `f0 : evP (n` using `1) ![pt k d 0, 0] (comp1 w (pt k d 0)) = w := by`. Rewrite using `[evP_comp1 _ hX0 _ _ p0, e0, gt_comp1_pt_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `f1 : evP (n` using `1) ![pt k d 0, 0] (comp1 w (pt k d 1)) = 0 := by`. Rewrite using `[evP_comp1 _ hX0 _ _ p1, e1, gt_comp1_zero w hw]`. Establish `g0 : ∀ v i, dy v (comp1 w (pt k d 0) i) = 0` using `fun v i => formalSecondPointDerivative_subst_first_point v _`. Establish `g1 : ∀ v i, dy v (comp1 w (pt k d 1) i) = C (lin v (w i))` using `fun v i => formalSecondPointDerivative_subst_second_point v _`. Establish `z : ∀ s, ev (n` using `1) ![0, 0] (pderiv k s g) = 0 := fun s => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [ev_zero_pts _ (by intro j; fin_cases j <;> rfl), c1, map_zero]`. Take `⟨E, hE, hD⟩ : ∃ E ∈ IntS φ 1 d, Dof F v (ev (n` from `1) ![pt k d 0, w] g) = ∑ j, C (lin v (w j)) * ev (n := 1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), j) g) + ∑ i, C (v i) * ev (n := 1) ![0, w] (pderiv k ((0 : Fin 2), i) g) - E := by`. Use `⟨_, add_mem (add_mem (dy_int hv (di_ev (ip3 ip0 ip1' (ip_addOf iF iw0 iw1)) hl)) (dy_int hv (di_ev (ip3 ip0 iw0 iw1) hr))) (dy_int hv (di_ev (ip3 ip1' iw0 iw1) hr)), ?_⟩` and prove the remaining obligations. Rewrite using `[dof_eq F hF hU, formalSubst_single_of_formalSubst_two F hF _ _ q0 hw, gt_comp1_pt F hF, hom, ev_defL F hF g _ _ _ p0 p1 (gp_addOf F hF _ _ w0 w1), ev_defR F hF g _ _ _ p0 w0 w1, ev_defR F hF g _ _ _ p1 w0 w1, addOf_pt]`. Simplify using `only [dy_sub, dy_add]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[formalSecondPointDerivative_formalSubst_two v _ _ p0 w0, formalSecondPointDerivative_formalSubst_two v _ _ p0 w1, formalSecondPointDerivative_formalSubst_two v _ _ p1 w0, formalSecondPointDerivative_formalSubst_two v _ _ p1 w1]`. Simplify using `only [e0, e1, f0, f1, g0, g1, formalSecondPointDerivative_first_coordinate, formalSecondPointDerivative_second_coordinate, z, zero_mul, mul_zero, Finset.sum_const_zero, zero_add, add_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : ∀ j, Dof F u (ev (n` using `1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), j) g)) - C (∑ i, u i * coeff (Finsupp.single ((0 : Fin 2), i) 1 + Finsupp.single ((1 : Fin 2), j) 1) g) ∈ IntS φ 1 d := by`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `dof_almost_additive hF hU hu (ev (n := 1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), j) g)) (by`. Rewrite using `[formalSubst_single_of_formalSubst_two _ hF _ _ q0 gp_zero₂, formalSubst_single_of_formalSubst_two _ p0 _ _ q0 gp_zero₂, formalSubst_single_of_formalSubst_two _ p1 _ _ q0 gp_zero₂, gt_comp1_pt _ hF, gt_comp1_pt _ p0, gt_comp1_pt _ p1, formalComp_zero_left_point _ hF, formalComp_z …`. Use `dz_defL iF g hl ip0 ip1' j` as an intermediate fact. Rewrite using `[addOf_pt] at this)` and apply the resulting hypothesis. Use `h using 3` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[constantCoeff_pderiv_formalSubst_two _ _ q0 gp_zero₂]`. Simplify using `[pderiv_pt_self, const_pderiv_pderiv, apply_ite]`. Establish `ha : ∀ i, Dof F u (ev (n` using `1) ![0, w] (pderiv k ((0 : Fin 2), i) g)) - C (∑ l, u l * ∑ j, coeff (Finsupp.single ((0 : Fin 2), i) 1 + Finsupp.single ((1 : Fin 2), j) 1) g * coeff (Finsupp.single ((0 : Fin 1), l) 1) (w j)) ∈ IntS φ 1 d := by`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `dof_almost_additive hF hU hu (ev (n := 1) ![0, w] (pderiv k ((0 : Fin 2), i) g)) (by`. Rewrite using `[formalSubst_single_of_formalSubst_two _ hF _ _ gp_zero₂ hw, formalSubst_single_of_formalSubst_two _ p0 _ _ gp_zero₂ hw, formalSubst_single_of_formalSubst_two _ p1 _ _ gp_zero₂ hw, formalComp_zero_left_point _ hF, formalComp_zero_left_point _ p0, formalComp_zero_left_point _ p1, …`. Conclude with `dz_defR iF g hr iw0 iw1 i)`. Use `h using 3` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[constantCoeff_pderiv_formalSubst_two _ _ gp_zero₂ hw]`. Simplify using `only [Pi.zero_apply, map_zero, mul_zero, Finset.sum_const_zero, zero_add]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FormalCalc.pderiv_comm, const_pderiv_pderiv, const_pderiv]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `sub_mem (add_mem (sum_mem (t := Finset.univ) fun j _ => mul_mem (int_C (lin_int hv (iw.int j))) (hb j)) (sum_mem (t := Finset.univ) fun i _ => mul_mem (int_C (hv i)) (ha i))) (dof_int iF hu hE)`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hD, dof_sub, GE.dof_add, GE.dof_sum, GE.dof_sum]`. Simplify using `only [GE.dof_C_mul, mul_sub, Finset.sum_sub_distrib, ← map_mul, ← map_sum, map_add, lin, const_pderiv]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem quad_int {F : Pt k 2 d} (iF : IP φ F) (hU : evP (n := 1) ![pt k d 0, 0] F = pt k d 0)
     {w : Pt k 1 d} (iw : IP φ w)
@@ -374,33 +374,29 @@ namespace GlobalTheory
 open GaugeInt
 
 /- English proof (translation)
-Introduce `R _ d O _ _ k _ _ _ B g hg w0 ι _ u hβ m`. Establish `iF : IP (algebraMap R k) (B.FK k)` using `⟨B.G.F, B.G.const, rfl⟩`. Establish `iw : IP (algebraMap R k) (B.actK k w0)` using `⟨B.A.act w0, B.A.const w0, rfl⟩`. Establish `hF` using `iF.gp`. Establish `hw` using `iw.gp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : evP (n` using `1) ![pt k d 0, 0] (B.FK k) = pt k d 0 := by`. Use `congrArg (mapP (algebraMap R k)) (unit_right B.G)` as an intermediate fact. Rewrite `this` using `[baseChange_addOf _ _ _ _ (gp_pt 0) gp_zero₂, baseChange_pt, show mapP (algebraMap R k) (0 : Pt R 1 d) = 0 from funext fun i => map_zero _]`. Conclude with `this`. Establish `hom : comp1 (B.actK k w0) (B.FK k) = addOf (B.FK k) (comp1 (B.actK k w0) (pt k (n` using `2) d 0)) (comp1 (B.actK k w0) (pt k (n := 2) d 1)) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (mapP (algebraMap R k)) (B.A.hom w0)` as an intermediate fact. Rewrite `this` using `[FGLaw.add, FGLaw.add, addOf_pt, baseChange_comp1 _ _ _ B.G.const, baseChange_addOf _ _ _ _ (gp_comp1 _ _ (B.A.const w0) (gp_pt 0)) (gp_comp1 _ _ (B.A.const w0) (gp_pt 1)), baseChange_comp1 _ _ _ (gp_pt 0), baseChange_comp1 _ _ _ (gp_pt 1), baseChange_pt, baseChange_pt]`. Conclude with `this`. Establish `c0 : constantCoeff g = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `coeff_eq_zero_of_axes g hg.ax0 hg.ax1 0 (by simp)`. Establish `c1 : ∀ s, constantCoeff (pderiv k s g) = 0` using `fun s => by`. Rewrite using `[const_pderiv]`. Conclude with `coeff_eq_zero_of_axes g hg.ax0 hg.ax1 _ (by simp)`. Establish `hp : ∀ j : Fin 3, GP (pt k d j)` using `gp_pt`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : DI (algebraMap R k) (defL (B.FK k) g)`. Use `di_of_exp B.ph1 ?_ _ ?_ hg.ph1` and prove the remaining obligations. Rewrite using `[← gt_const_ev_eq _ (triple_points_zero_constant (n := 2) gp_zero₂ (gp_pt 0) (gp_pt 1)), B.cocycleLeft_zero_fst, map_one]`. Rewrite using `[defL, map_sub, map_add, gt_const_ev _ (pair_points_zero_constant (hp _) (hp _)) _ c0, gt_const_ev _ (pair_points_zero_constant (hp _) (hp _)) _ c0, gt_const_ev _ (pair_points_zero_constant (gp_addOf _ hF _ _ (hp _) (hp _)) (hp _)) _ c0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : DI (algebraMap R k) (defR (B.FK k) g)`. Use `di_of_exp B.ph2 ?_ _ ?_ hg.ph2` and prove the remaining obligations. Rewrite using `[← gt_const_ev_eq _ (triple_points_zero_constant (n := 2) gp_zero₂ (gp_pt 0) (gp_pt 1)), B.cocycleRight_zero_fst, map_one]`. Rewrite using `[defR, map_sub, map_add, gt_const_ev _ (pair_points_zero_constant (hp _) (hp _)) _ c0, gt_const_ev _ (pair_points_zero_constant (hp _) (hp _)) _ c0, gt_const_ev _ (pair_points_zero_constant (hp _) (gp_addOf _ hF _ _ (hp _) (hp _))) _ c0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set U : ι → Fin d → k := fun l i => algebraMap R k (u l i) with hUdef`. Establish `hu : ∀ l i, U l i ∈ (algebraMap R k).range` using `fun l i => ⟨u l i, rfl⟩`. Establish `hq : B.hL k g w0 = ev (n` using `1) ![pt k d 0, B.actK k w0] g := by`. Rewrite using `[FB.hL, gt_comp1_pt_right]`. Establish `h2 : ∀ l l', Dof (B.FK k) (U l) (Dof (B.FK k) (U l') (B.hL k g w0)) ∈ IntS (algebraMap R k) 1 d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Introduce `l l'`. Establish `h` using `add_mem (quad_int iF hU iw hom g c1 hl hr (hu l) (hu l')) (int_C (n := 1) (d := d) (add_mem (hβ l l') (hβ l' l)))`. Rewrite using `[hq]`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[sub_add_eq_add_sub, eq_sub_iff_add_eq]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Simplify using `only [dotProduct, Matrix.mulVec, bilinPart, dAct, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => by ring` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => by ring` and prove the remaining obligations. Set `P : PS k 1 d → Prop` to `fun f => f = B.hL k g w0 ∨ (∃ l, f = Dof (B.FK k) (U l) (B.hL k g w0)) ∨ f ∈ IntS (algebraMap R k) 1 d`. Establish `hstep : ∀ l f, P f → P (Dof (B.FK k) (U l) f)`.
+Assume the hypotheses and unpack their components. Prove the second alternative. Prove the second alternative. Prove the second alternative. Establish an intermediate fact.
 
-Introduce and unpack `l f (rfl | ⟨l', rfl⟩ | hf)`. Conclude with `Or.inr (Or.inl ⟨l, rfl⟩)`. Conclude with `Or.inr (Or.inr (h2 l l'))`. Conclude with `Or.inr (Or.inr (dof_int iF (hu l) hf))`. Establish `hP : P (DmonOf (B.FK k) U m (B.hL k g w0))`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Unfold `DmonOf`. Proceed by induction on `(Finset.univ : Finset ι).toList with`. Consider the case `nil => exact Or.inl rfl`. Consider the case `cons a L ih => exact Function.Iterate.rec P ih (hstep a) (m a)`. Break down `hP with e | ⟨l, e⟩ | e` into its components or cases.
-
-Rewrite using `[e, hq, gt_const_ev _ (pair_points_zero_constant (gp_pt 0) hw) _ c0]`. Conclude with `zero_mem _`. Rewrite using `[e, hq, Dof]`. Simplify using `only [map_sum, map_mul, constantCoeff_pderiv_formalSubst_two _ _ (gp_pt 0) hw, c1, zero_mul, Finset.sum_const_zero, add_zero, mul_zero]`. Conclude with `zero_mem _`.
-
-Conclude with `int_const e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem canonGauge_dmonOf_hL_integral :
     ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (k : Type) [CommRing k]

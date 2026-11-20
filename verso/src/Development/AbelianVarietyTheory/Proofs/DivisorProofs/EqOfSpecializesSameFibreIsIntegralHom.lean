@@ -11,17 +11,15 @@ open GlobalTheory GlobalTheory.USep
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X Y f _ x x' hxx' hf`. Take `⟨_, ⟨V, hV0, rfl⟩, hxV, -⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (f x')) isOpen_univ`. Establish `hV : IsAffineOpen V` using `hV0`. Establish `hU : IsAffineOpen (f ⁻¹ᵁ V)` using `hV.preimage f`. Establish `hx' : x' ∈ f ⁻¹ᵁ V` using `hxV`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : x ∈ f ⁻¹ᵁ V` using `hxx'.mem_open (f ⁻¹ᵁ V).isOpen hx'`. Use `set P := hU.primeIdealOf ⟨x, hx⟩ with hPdef`. Use `set P' := hU.primeIdealOf ⟨x', hx'⟩ with hP'def`. Establish `eP : hU.fromSpec P = x` using `hU.fromSpec_primeIdealOf ⟨x, hx⟩`. Establish `eP' : hU.fromSpec P' = x'` using `hU.fromSpec_primeIdealOf ⟨x', hx'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsp : P ⤳ P'`. Conclude with `hU.fromSpec.isOpenEmbedding.toIsInducing.specializes_iff.1 (by rw [eP, eP']; exact hxx')`. Establish `hle : P.asIdeal ≤ P'.asIdeal` using `(PrimeSpectrum.le_iff_specializes P P').mpr hsp`. Establish `sq : Spec.map (f.app V) ≫ hV.fromSpec = hU.fromSpec ≫ f`. Rewrite using `[Scheme.Hom.app_eq_appLE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `IsAffineOpen.SpecMap_appLE_fromSpec f hV hU le_rfl`. Establish `img : ∀ Q : Spec Γ(X, f ⁻¹ᵁ V), hV.fromSpec (Spec.map (f.app V) Q) = f (hU.fromSpec Q)` using `fun Q => (Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun m : Spec Γ(X, f ⁻¹ᵁ V) ⟶ Y => m Q) sq).trans (Scheme.Hom.comp_apply _ _ _))`. Establish `hc : Spec.map (f.app V) P = Spec.map (f.app V) P'`. Apply `hV.fromSpec.isOpenEmbedding.injective` to reduce the goal to its premises. Conclude with `(img P).trans ((congrArg f eP).trans (hf.trans ((congrArg f eP').symm.trans (img P').symm)))`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hc' : P.asIdeal.comap (f.app V).hom = P'.asIdeal.comap (f.app V).hom` using `congrArg PrimeSpectrum.asIdeal hc`. Use `letI : Algebra Γ(Y, V) Γ(X, f ⁻¹ᵁ V) := (f.app V).hom.toAlgebra`. Use `haveI : Algebra.IsIntegral Γ(Y, V) Γ(X, f ⁻¹ᵁ V) := ⟨f.isIntegral_app V hV⟩`. Establish `heq : P.asIdeal = P'.asIdeal`. Assume the negation of the conclusion as `hne`.
-
-Establish `hlt` using `Ideal.IsIntegral.comap_lt_comap (R := Γ(Y, V)) (lt_of_le_of_ne hle hne)`. Conclude with `(ne_of_lt hlt) hc'`. Establish `: P = P'` using `PrimeSpectrum.ext heq`. Rewrite using `[← eP, ← eP', this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_specializes_of_isIntegralHom : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIntegralHom f] {x x' : X}, x ⤳ x' → f x = f x' → x = x' := by
   intro X Y f _ x x' hxx' hf

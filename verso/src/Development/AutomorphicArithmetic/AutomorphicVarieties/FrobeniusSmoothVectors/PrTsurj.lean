@@ -10,45 +10,43 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 set_option maxHeartbeats 200000 in
 /- English proof (translation)
-Introduce `l _ k _ _ F C₀ n hF O _ _ R _ _ _ ρ B hU hOf hCont hGood x hx`. Take `⟨hco1, hco2⟩` from `co_res O`. Use `haveI := hco1`. Use `haveI := hco2`. Establish `hresk : ∀ c : ResidueField O, res O (ResidueField O) c = c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `c`. Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective c`. Rewrite using `[← IsLocalRing.ResidueField.algebraMap_eq, AlgHom.commutes]`. Set `p` to `TrivSqZeroExt.fstHom O (ResidueField O) (ResidueField O)`. Establish `hresd : ∀ a : DualNumber (ResidueField O), res O (DualNumber (ResidueField O)) a = a.fst`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Rewrite using `[← res_map p a, hresk]`. Both sides reduce to the same expression. Take `⟨-, -, hlc⟩` from `pr_open hF O R B hCont`. Take `⟨B', hB'c, hB'map, hB'snd⟩` from `pr_tbox hF O (B.bar O) hlc x hx`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hOfbar : (Box.map (p : DualNumber (ResidueField O) →+* ResidueField O) B').Of (ρ.bar O)`. Rewrite using `[hB'map]`. Conclude with `hOf.map _`. Establish `hn` using `pr_norm hF O (DualNumber (ResidueField O)) (ResidueField O) p (ρ.bar O) B'`. Establish `hker : maximalIdeal (DualNumber (ResidueField O)) * RingHom.ker p = ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `eq_bot_iff.2 (Ideal.mul_le.2 fun a ha b hb => ?_)` and prove the remaining obligations. Establish `ha0 : a.fst = 0`. Assume the negation of the conclusion as `hne`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 ha (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (isUnit_iff_ne_zero.2 hne))`. Establish `hb0 : b.fst = 0` using `by simpa [p] using RingHom.mem_ker.1 hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [ha0, hb0]`. Establish `hbb : NRep.bar O (NRep.bar O ρ) = NRep.bar O ρ`. Use `NRep.ext ?_ ?_` and prove the remaining obligations. Use `MonoidHom.ext fun g => Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [NRep.bar, NRep.map_r]`. Conclude with `hresk _`. Use function extensionality and compare the values at `v i`. Use `MonoidHom.ext fun g => Units.ext ?_` and prove the remaining obligations. Simplify using `only [NRep.bar, NRep.map_ψ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hresk _`. Take `⟨h, ρ', hh1, hρ'p, hρ'c, hrc, hr0⟩` from `hn hker (by rw [hbb]; exact hGood) hOfbar hB'c`. Establish `hfun : ((res O (DualNumber (ResidueField O))) : DualNumber (ResidueField O) →+* ResidueField O) = (p : DualNumber (ResidueField O) →+* ResidueField O)` using `RingHom.ext fun a => hresd a`. Establish `hbar' : NRep.bar O ρ' = NRep.bar O ρ` using `by show NRep.map _ ρ' = _`. Rewrite using `[hfun, hρ'p]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨D, hD, hDs⟩` from `pr_dof hF O R ρ B hU hOf ρ' (conjBy h B'.r) hρ'c hbar' (fun s => by simp [conjBy, B'.nu s]) hrc hr0`. Set `μ : ResidueField O →+ DualNumber (ResidueField O)` to `(TrivSqZeroExt.inrHom (ResidueField O) (ResidueField O)).toAddMonoidHom`. Establish `hμ : IsSq O μ`. Prove the components needed by the constructor for the conclusion. Introduce `a c`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hresd]`. Use `ext`. Simplify using `[μ]`. Simplify using `[μ, TrivSqZeroExt.snd_mul, MulOpposite.smul_eq_mul_unop, smul_eq_mul, mul_comm]`. Introduce `c`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, TrivSqZeroExt.isUnit_iff_isUnit_fst]`. Simplify using `[μ]`. Take `⟨e, he1, he2, he3, he4, he5⟩` from `pr_sqz O (DualNumber (ResidueField O)) n μ hμ`. Set `Y : Matrix (Fin n) (Fin n) (ResidueField O)` to `(h : Matrix (Fin n) (Fin n) (DualNumber (ResidueField O))).map TrivSqZeroExt.snd`. Establish `hhe : h = e Y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[he1]`. Establish `h0` using `congrFun (congrFun hh1 i) j`. Simplify using `only [Matrix.map_apply] at h0`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify `h0` using `[μ, p]`. Simplify `h0` using `[μ, p, Matrix.one_apply_ne hij]`. Distinguish the cases in `hij : i = j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `hij` using the available equality. Simplify using `[μ, Y]`. Simplify using `[μ, Y, Matrix.one_apply_ne hij]`. Use `⟨D, hD, -Y, fun s => ?_⟩` and prove the remaining obligations. Establish `hgbar : GG.map ((res O (DualNumber (ResidueField O))) : DualNumber (ResidueField O) →+* ResidueField O) (B'.r s) = (B.bar O).r s`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun, ← hB'map]`. Both sides reduce to the same expression. Establish `hconj : conjBy h B'.r s = GG.ofGL (e (Y + ((B.bar O).r s).adFun (-Y))) * B'.r s`. Establish `h5` using `he5 (B'.r s) (-Y)`. Rewrite `h5` using `[hgbar]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[he2, map_mul, mul_assoc, ← h5, ← mul_assoc, ← he3, ← hhe, map_inv]`. Both sides reduce to the same expression. Establish `hm : ∀ (A : GL (Fin n) (DualNumber (ResidueField O))) (g : GG n (DualNumber (ResidueField O))), (GG.ofGL A * g).mat = (A : Matrix (Fin n) (Fin n) (DualNumber (ResidueField O))) * g.mat`. Introduce `A g`. Simplify using `[GG.mat, GG.ofGL]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmat : (conjBy h B'.r s).mat = (B'.r s).mat + ((Y + ((B.bar O).r s).adFun (-Y)) * ((B.bar O).r s).mat).map μ`. Rewrite using `[hconj, hm, he1, add_mul, one_mul, (he4 _ _).2, ← hgbar, GG.map_mat]`. Both sides reduce to the same expression. Establish `hsnd` using `hDs s`. Rewrite `hsnd` using `[hmat]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hadd : ∀ (P Q : Matrix (Fin n) (Fin n) (DualNumber (ResidueField O))), (P + Q).map TrivSqZeroExt.snd = P.map TrivSqZeroExt.snd + Q.map TrivSqZeroExt.snd`. Introduce `P Q`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hmapsnd : ∀ W : Matrix (Fin n) (Fin n) (ResidueField O), (W.map μ).map TrivSqZeroExt.snd = W`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `W`. Use extensionality with `i j`. Simplify using `[μ]`. Rewrite `hsnd` using `[hadd, hmapsnd, hB'snd s, ← add_mul]`. Establish `hM : ((B.bar O).r s).mat * (((B.bar O).r s).left⁻¹ : GL (Fin n) (ResidueField O) ) = (1 : Matrix (Fin n) (Fin n) (ResidueField O))` using `Units.mul_inv _`.
-
-Establish `h6` using `congrArg (· * ((((B.bar O).r s).left⁻¹ : GL (Fin n) (ResidueField O)) : Matrix (Fin n) (Fin n) (ResidueField O))) hsnd`. Simplify using `only [Matrix.mul_assoc, hM, Matrix.mul_one] at h6`. Rewrite using `[← h6]`. Use `show _ = x.1 s + (((B.bar O).r s).adFun (-Y) - -Y)`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.pr_tsurj :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ n : ℕ}, F.Ok C₀ → ∀ (O : Type) [CommRing O] [IsLocalRing O], ∀ (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (ρ : NRep F n R) (B : Box F n R), ρ.Univ O → B.Of ρ → B.Cont (maximalIdeal R) → (ρ.bar O).Good → ∀ x ∈ Z1C F.loc (B.bar O).ad (B.bar O).b, ∃ D ∈ Tan O R, ∃ X, ∀ s, B.tanCo O D s = x.1 s + ((B.bar O).ad s X - X) := by

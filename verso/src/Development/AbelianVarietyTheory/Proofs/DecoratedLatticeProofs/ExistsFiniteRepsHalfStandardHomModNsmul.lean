@@ -13,11 +13,11 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.HalfStdFin
 
 /- English proof (translation)
-Introduce `D S T Q E₂ _ k hk`. Take `⟨R, hR, h⟩` from `GlobalTheory.LatFinMod.latO_finite_mod D S T (Formalism.L2.Col.stdLat D.host.E S.rank) (Formalism.L2.Col.stdLat D.host.E T.rank) (Formalism.L2.Col.stdLat_lattice (E := D.host.E) (n := S.rank)).fg (Formalism.L2.Col.stdLat_lattice (E := D.host.E) (n := T.rank)).fg (fun _ => True) k …`. Rewrite `h` using `[coe_colStdLat, coe_colStdLat]`. Set `G : WO S T → Prop` to `fun r => ∃ u ∈ stdHom S T, IsHalf E₂ u ∧ ∃ w ∈ stdHom S T, u = r + k • w`. Set `pick : WO S T → WO S T` to `fun r => if hG : G r then hG.choose else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨hR.toFinset.image pick, fun u hu hh => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, w, hw, huw⟩` from `h u hu`. Establish `hG : G r` using `⟨u, hu, hh, w, hw, huw⟩`. Take `⟨_, hh₀, w₀, hw₀, hu₀w⟩` from `hG.choose_spec`. Establish `hp : pick r = hG.choose` using `dif_pos hG`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdiff : u = hG.choose + k • (w - w₀)`. Rewrite using `[hu₀w, smul_sub, huw]`. Normalize the expressions using the abelian group laws. Conclude with `⟨pick r, Finset.mem_image_of_mem _ (hR.mem_toFinset.2 hr), w - w₀, sub_mem hw hw₀, GlobalTheory.HalfLatFin.isHalf_of_nsmul E₂ hk hh hh₀ hdiff, by rw [hp]; exact hdiff⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Supply the required witnesses or components.
 -/
 theorem exists_reps_half_stdHom : ∀ (D : D7) (S T : HSp D) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (E₂ : AE D), IsIdemSum E₂ Q → ∀ k : ℕ, 0 < k → ∃ R : Finset (WO S T), ∀ u ∈ stdHom S T, IsHalf E₂ u → ∃ r ∈ R, ∃ v ∈ stdHom S T, IsHalf E₂ v ∧ u = r + k • v := by
   classical

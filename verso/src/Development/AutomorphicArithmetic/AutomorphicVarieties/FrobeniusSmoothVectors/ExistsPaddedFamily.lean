@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite κ`. Establish `hc : Fintype.card {u // q u} ≤ Fintype.card (Fin n)`. Rewrite using `[Fintype.card_fin, ← Nat.card_eq_fintype_card]`. Conclude with `h`. Take `⟨e⟩` from `Function.Embedding.nonempty_of_card_le hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Function.extend e (fun u => f u.1) 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Distinguish the cases in `hi : ∃ u, e u = i`. Take `⟨u, rfl⟩` from `hi right`. Conclude with `⟨u.1, u.2, by rw [e.injective.extend_apply]⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `left`. Rewrite using `[Function.extend_apply' _ _ _ hi]`. Both sides reduce to the same expression. Introduce `u hu`. Conclude with `⟨e ⟨u, hu⟩, by rw [e.injective.extend_apply]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_padded_family {κ M : Type} [Finite κ] [Zero M] (q : κ → Prop) (f : κ → M) (n : ℕ)
     (h : Nat.card {u // q u} ≤ n) :
@@ -31,23 +31,19 @@ private theorem exists_padded_family {κ M : Type} [Finite κ] [Zero M] (q : κ 
     exact ⟨e ⟨u, hu⟩, by rw [e.injective.extend_apply]⟩
 
 /- English proof (translation)
-Introduce `l _ O _ _ F S x L σ hσ P h0 h1 hee`. Take `⟨Fe, hF, hF'⟩` from `exists_padded_family (fun u => P.wf u = 0) P.f (P.a - (3 * F.d + 1)) (by omega)`. Take `⟨Go, hG, hG'⟩` from `exists_padded_family (fun u => P.wf u = 1) P.f P.g h1`. Establish `two : ∀ j : ZMod 2, j = 0 ∨ j = 1` using `by decide`. Use `⟨{ a := P.a, b := P.a - (3 * F.d + 1), g := P.g, p := P.p, Fe := Fe, Go := Go, num := by omega, surj := P.surj, ker := ?_, even := ?_, odd := ?_, min := P.min, ent := ?_, base := ?_, ee := hee }⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[P.ker]`. Apply `le_antisymm` to reduce the goal to its premises. Apply `Ideal.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨u, rfl⟩`. Break down `two (P.wf u) with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl (hF' u h)`. Conclude with `Or.inr (hG' u h)`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ (⟨i, rfl⟩ | ⟨i, rfl⟩)`. Break down `hF i with h | ⟨u, -, h⟩` into its components or cases.
+Prove the first alternative. Prove the second alternative. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h]`. Conclude with `Ideal.zero_mem _`. Rewrite using `[h]`. Conclude with `Ideal.subset_span ⟨u, rfl⟩`. Break down `hG i with h | ⟨u, -, h⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `Ideal.zero_mem _`. Rewrite using `[h]`. Conclude with `Ideal.subset_span ⟨u, rfl⟩`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hF i with h | ⟨u, hu, h⟩` into its components or cases. Rewrite using `[h]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[h, ← hu]`. Conclude with `P.hf u`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Break down `hG i with h | ⟨u, hu, h⟩` into its components or cases. Rewrite using `[h]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[h, ← hu]`.
-
-Conclude with `P.hf u`. Introduce `s i j`. Rewrite using `[P.part]`. Conclude with `hσ.ent s i j`. Introduce `y`.
-
-Rewrite using `[P.part]`. Conclude with `hσ.base y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.ep_pad :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {F : Frame l (ResidueField O)} (S : Space O F 3) (x : Ideal S.A) (L : S.Loc x) (σ : L.R →ₐ[L.O'] L.R), L.IsInv σ → ∀ P : GPres L.O' σ, Nat.card {u // P.wf u = 0} + (3 * F.d + 1) ≤ P.a → Nat.card {u // P.wf u = 1} ≤ P.g → L.ρ.ee = Ideal.span (Set.range fun i => P.p (MvPowerSeries.X (.inr i))) → Nonempty L.EPres := by

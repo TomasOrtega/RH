@@ -15,7 +15,7 @@ namespace InfinitesimalCharacterOf
 variable {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]
 
 /- English proof (translation)
-Use `haveI := v.isMaximal`. Use `haveI : v.asIdeal.LiesOver (v.under (𝓞 K)).asIdeal := ⟨rfl⟩`. Use `haveI := (v.under (𝓞 K)).isMaximal`. Conclude with `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver v.asIdeal (v.under (𝓞 K)).ne_bot) (Ideal.inertiaDeg'_pos (p := (v.under (𝓞 K)).asIdeal) (P := v.asIdeal)).ne')`.
+A detailed English derivation is pending.
 -/
 private theorem one_le_term (v : HeightOneSpectrum (𝓞 M)) :
     1 ≤ (v.under (𝓞 K)).asIdeal.ramificationIdx' v.asIdeal * (v.under (𝓞 K)).asIdeal.inertiaDeg' v.asIdeal := by
@@ -27,15 +27,13 @@ private theorem one_le_term (v : HeightOneSpectrum (𝓞 M)) :
     (Ideal.inertiaDeg'_pos (p := (v.under (𝓞 K)).asIdeal) (P := v.asIdeal)).ne')
 
 /- English proof (translation)
-Establish `hww : w'.asIdeal ≠ w.asIdeal` using `fun e => hne (HeightOneSpectrum.ext e)`. Establish `a` using `one_le_term (K := K) w`. Establish `b` using `one_le_term (K := K) w'`. Rewrite `b` using `[hu]`. Generalize the expression as in `hp : w.under (𝓞 K) = p at a b hu ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Use `haveI := p.isMaximal`. Establish `mem : ∀ v : HeightOneSpectrum (𝓞 M), v.under (𝓞 K) = p → v.asIdeal ∈ IsDedekindDomain.primesOverFinset p.asIdeal (𝓞 M)`. Introduce and unpack `v rfl`. Rewrite using `[IsDedekindDomain.mem_primesOverFinset_iff (v.under (𝓞 K)).ne_bot]`. Conclude with `⟨v.isPrime, ⟨rfl⟩⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hsub : ({w'.asIdeal, w.asIdeal} : Finset (Ideal (𝓞 M))) ⊆ IsDedekindDomain.primesOverFinset p.asIdeal (𝓞 M)`. Introduce `P hP`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hP`. Break down `hP with rfl | rfl` into its components or cases. Conclude with `mem _ hu`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mem _ hp`. Establish `hle` using `Finset.sum_le_sum_of_subset (f := fun P => p.asIdeal.ramificationIdx' P * p.asIdeal.inertiaDeg' P) hsub`. Rewrite `hle` using `[Ideal.sum_ramification_inertia (𝓞 M) K M p.ne_bot, h2, Finset.sum_pair hww]`. Establish `he : p.asIdeal.ramificationIdx' w.asIdeal * p.asIdeal.inertiaDeg' w.asIdeal = 1` using `by omega`. Establish `hf : p.asIdeal.inertiaDeg' w.asIdeal = 1` using `Nat.dvd_one.1 (Dvd.intro_left _ he)`.
-
-Use `haveI : w.asIdeal.LiesOver p.asIdeal := ⟨congrArg HeightOneSpectrum.asIdeal hp.symm⟩`. Establish `hN` using `Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver w.asIdeal p.asIdeal p.isPrime p.ne_bot`. Rewrite `hN` using `[hf]`. Conclude with `hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem normV_split (h2 : Module.finrank K M = 2) {w w' : HeightOneSpectrum (𝓞 M)} (hne : w' ≠ w)
     (hu : w'.under (𝓞 K) = w.under (𝓞 K)) : normV w = normV (w.under (𝓞 K)) ^ 1 := by
@@ -68,7 +66,7 @@ private theorem normV_split (h2 : Module.finrank K M = 2) {w w' : HeightOneSpect
   exact hN
 
 /- English proof (translation)
-Rewrite using `[Filter.eventually_cofinite]`. Use `((GlobalTheory.Mem.UnrAe.finite_ramified χ).preimage' (f := fun w : HeightOneSpectrum (𝓞 M) => w.under (𝓞 K)) fun v _ => ?_).subset fun w hw => hw` and prove the remaining obligations. Use `haveI := v.isMaximal`. Use `((IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 M)).preimage (f := fun w : HeightOneSpectrum (𝓞 M) => w.asIdeal) fun _ _ _ _ e => HeightOneSpectrum.ext e).subset fun w hw => ?_` and prove the remaining obligations. Conclude with `⟨w.isPrime, ⟨congrArg HeightOneSpectrum.asIdeal (Eq.symm hw)⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem eventually_unr (χ : HChar K) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 M) in Filter.cofinite, χ.UnrAt (w.under (𝓞 K)) := by
@@ -81,7 +79,7 @@ private theorem eventually_unr (χ : HChar K) :
   exact ⟨w.isPrime, ⟨congrArg HeightOneSpectrum.asIdeal (Eq.symm hw)⟩⟩
 
 /- English proof (translation)
-Introduce `x hx` and use `by have e : (μ ^ k).loc w x = μ.loc w x ^ k := MonoidHom.pow_apply μ.1 k _ rw [e, h x hx, one_pow]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem unr_pow {L : Type} [Field L] [NumberField L] {μ : HChar L} {w : HeightOneSpectrum (𝓞 L)}
     (h : μ.UnrAt w) (k : ℕ) : (μ ^ k).UnrAt w := fun x hx => by
@@ -89,21 +87,21 @@ private theorem unr_pow {L : Type} [Field L] [NumberField L] {μ : HChar L} {w :
   rw [e, h x hx, one_pow]
 
 /- English proof (translation)
-The claim follows from `MonoidHom.pow_apply μ.1 k _`.
+A detailed English derivation is pending.
 -/
 private theorem val_pow {L : Type} [Field L] [NumberField L] (μ : HChar L) (w : HeightOneSpectrum (𝓞 L)) (k : ℕ) :
     (μ ^ k).val w = μ.val w ^ k := MonoidHom.pow_apply μ.1 k _
 
 /- English proof (translation)
-Use `(Filter.Eventually.and hI (eventually_unr (M := M) χ)).mono ?_` and prove the remaining obligations. Introduce and unpack `w ⟨⟨h1, h3⟩, hu⟩`. Simplify using `only [← CG.twist_mk]`. Use `⟨fun w' hne hw' => ?_, fun hq => ?_⟩` and prove the remaining obligations. Take `⟨B, B', hB, hB', hBP⟩` from `h1 w' hne hw'`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨u1, v1⟩` from `hξ w 1 hu (normV_split h2 hne hw')`. Take `⟨u2, v2⟩` from `hξ w' 1 (hw' ▸ hu) (normV_split h2 hne.symm hw'.symm)`. Use `⟨_, _, hB.twist (unr_pow u1 k), hB'.twist (unr_pow u2 k), ?_⟩` and prove the remaining obligations. Establish `hP` using `hBP.twist (unr_pow hu k)`. Rewrite `hP` using `[Multiset.map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[val_pow, val_pow, v1, v2, hw', pow_one]`. Rewrite `hP` using `[val_pow]`. Then use the resulting hypothesis. Take `⟨B, B', hB, rfl, hBP⟩` from `h3 hq`. Take `⟨u1, v1⟩` from `hξ w 2 hu hq`. Establish `e : (ξ ^ k).val w = ((χ ^ k).val (w.under (𝓞 K))) ^ 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[val_pow, v1, val_pow, ← pow_mul, ← pow_mul, mul_comm]`. Use `⟨_, B'.map (· * (χ ^ k).val (w.under (𝓞 K))), ?_, rfl, ?_⟩` and prove the remaining obligations. Establish `h` using `hB.twist (unr_pow u1 k)`. Rewrite `h` using `[e, Multiset.map_map]`. Rewrite using `[Multiset.map_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `h using 2` and compare the differences between its conclusion and the goal. Simplify using `[mul_pow]`. Establish `h` using `hBP.twist (unr_pow hu k)`. Simplify `h` using `[Multiset.map_add, Multiset.map_map, Function.comp_def]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem indSys_twist [IsTotallyComplex K] [IsTotallyComplex M] (h2 : Module.finrank K M = 2)
     {P : CuspSub K (2 * 2)} {π : CuspSub M 2} (hI : IndSys (CG.mk π).HasSat (CG.mk P).HasSat) (χ : HChar K) (ξ : HChar M)
@@ -136,11 +134,11 @@ private theorem indSys_twist [IsTotallyComplex K] [IsTotallyComplex M] (h2 : Mod
       simpa [Multiset.map_add, Multiset.map_map, Function.comp_def] using h
 
 /- English proof (translation)
-Use `letI : Algebra K ℂ := (τ.comp (algebraMap K M)).toAlgebra`. Use `haveI : FiniteDimensional K M := Module.finite_of_finrank_pos (by omega)`. Set `a : ∀ ρ : M →+* ℂ, ρ.comp (algebraMap K M) = τ.comp (algebraMap K M) → (M →ₐ[K] ℂ)` to `fun ρ h => { ρ with commutes' := fun x => RingHom.congr_fun h x }`. Establish `ha : ∀ ρ h ρ' h', a ρ h = a ρ' h' → ρ = ρ'` using `fun ρ h ρ' h' e => RingHom.ext fun x => DFunLike.congr_fun e x`. Establish `hc` using `AlgHom.card K M ℂ`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[h2]`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `h3' : ({a σ h3, a τ rfl, a τ' h1} : Finset (M →ₐ[K] ℂ)).card = 3`. Rewrite using `[Finset.card_eq_three]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨a σ h3, a τ rfl, a τ' h1, fun e => hcon.1 (ha _ h3 _ rfl e), fun e => hcon.2 (ha _ h3 _ h1 e), fun e => hne (ha _ rfl _ h1 e), rfl⟩`. Use `Finset.card_le_univ ({a σ h3, a τ rfl, a τ' h1} : Finset (M →ₐ[K] ℂ))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem over_two (h2 : Module.finrank K M = 2) {τ τ' σ : M →+* ℂ} (hne : τ ≠ τ')
     (h1 : τ'.comp (algebraMap K M) = τ.comp (algebraMap K M)) (h3 : σ.comp (algebraMap K M) = τ.comp (algebraMap K M)) :
@@ -164,7 +162,7 @@ private theorem over_two (h2 : Module.finrank K M = 2) {τ τ' σ : M →+* ℂ}
   omega
 
 /- English proof (translation)
-The claim follows from `map_sum (Multiset.mapAddMonoidHom f) g s`.
+A detailed English derivation is pending.
 -/
 private theorem map_sum' {ι : Type} (s : Finset ι) (f : ℂ → ℂ) (g : ι → Multiset ℂ) :
     (∑ i ∈ s, g i).map f = ∑ i ∈ s, (g i).map f := map_sum (Multiset.mapAddMonoidHom f) g s
@@ -173,25 +171,23 @@ end InfinitesimalCharacterOf
 
 open InfinitesimalCharacterOf in
 /- English proof (translation)
-Introduce `hSep hUnion hCS hNC K M _ _ _ _ _ _ _ h2 P π hI τ τ' m m' hne hres hm hm'`. Take `⟨χ, hχ⟩` from `hCS K`. Take `⟨ξ, hξe, hξv⟩` from `hNC K M χ`. Establish `hex : ∀ φ, ∃ μ, P.HasInfChar φ μ` using `fun φ => (GlobalTheory.ResW.IrrInfChar.main K (2 * 2) φ).1 P`. Use `choose mP hmP using hex`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex' : ∀ σ : M →+* ℂ, ∃ μ, π.HasInfChar σ μ` using `fun σ => (GlobalTheory.ResW.IrrInfChar.main M 2 σ).1 π`. Use `choose m₀ hm₀ using hex'`. Set `mm : (M →+* ℂ) → Multiset ℂ` to `fun σ => if σ = τ then m else if σ = τ' then m' else m₀ σ`. Establish `e1 : mm τ = m` using `if_pos rfl`. Establish `e2 : mm τ' = m'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(if τ' = τ then m else if τ' = τ' then m' else m₀ τ') = m'`. Rewrite using `[if_neg hne.symm, if_pos rfl]`. Establish `hmm : ∀ σ, π.HasInfChar σ (mm σ)`. Introduce `σ`. Distinguish the cases in `a : σ = τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[a, e1]`. Conclude with `hm`. Distinguish the cases in `b : σ = τ'`. Rewrite using `[b, e2]`. Conclude with `hm'`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `π.HasInfChar σ (if σ = τ then m else if σ = τ' then m' else m₀ σ)`. Rewrite using `[if_neg a, if_neg b]`. Conclude with `hm₀ σ`. Set `rs : (M →+* ℂ) → (K →+* ℂ)` to `fun σ => σ.comp (algebraMap K M)`. Set `A : (K →+* ℂ) → Multiset ℂ` to `fun φ => ∑ σ with rs σ = φ, mm σ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ k : ℕ, ∑ φ, (mP φ).map (· + k * expo χ φ) = ∑ φ, (A φ).map (· + k * expo χ φ)`. Introduce `k`. Establish `h` using `hUnion K M h2 (P.twist (χ ^ k)) (π.twist (ξ ^ k)) (indSys_twist h2 hI χ ξ hξv k) (fun φ => (mP φ).map (· + expo (χ ^ k) φ)) (fun σ => (mm σ).map (· + expo (ξ ^ k) σ)) (fun φ => (hmP φ).twist _) (fun σ => (hmm σ).twist _)`. Simplify using `only [GlobalTheory.BCT.TwistDisc.expo_pow, hξe] at h`. Rewrite using `[h, ← Finset.sum_fiberwise Finset.univ rs]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun φ _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum']`. Use `Finset.sum_congr rfl fun σ hσ => ?_` and prove the remaining obligations. Rewrite using `[← (Finset.mem_filter.1 hσ).2]`. Establish `hA` using `congrFun (hSep (K →+* ℂ) (expo χ) hχ mP A key) (τ.comp (algebraMap K M))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hf : (Finset.univ.filter fun σ => rs σ = τ.comp (algebraMap K M)) = {τ, τ'}`. Use extensionality with `σ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Use `⟨fun h => over_two h2 hne hres.symm h, ?_⟩` and prove the remaining obligations. Introduce and unpack `(rfl | rfl)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `hres.symm`. Establish `hS : A (τ.comp (algebraMap K M)) = m + m'`. Express the relevant statement in the definitionally equal form `∑ σ with rs σ = τ.comp (algebraMap K M), mm σ = m + m'`. Rewrite using `[hf, Finset.sum_pair hne, e1, e2]`.
-
-Rewrite using `[← hS, ← hA]`. Conclude with `hmP _`.
+A detailed English derivation is pending.
 -/
 theorem infOf : InfOf := by
   intro hSep hUnion hCS hNC K M _ _ _ _ _ _ _ h2 P π hI τ τ' m m' hne hres hm hm'

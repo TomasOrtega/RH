@@ -18,9 +18,9 @@ def nMat (β₀ : Matrix β β A) : Matrix (β ⊕ β) (β ⊕ β) A := fromBloc
 def nInv (β₀ : Matrix β β A) : Matrix (β ⊕ β) (β ⊕ β) A := fromBlocks (1 - β₀) β₀ (-β₀) (1 + β₀)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.UnipotentCongruenceInverse.decomposition`. Consider the case `exact _root_.GlobalTheory.UnipotentCongruenceInverse.decomposition`. Consider the case `(apply _root_.GlobalTheory.UnipotentCongruenceInverse.decomposition <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.UnipotentCongruenceInverse.decomposition <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.UnipotentCongruenceInverse.decomposition <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.UnipotentCongruenceInverse.decomposition ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem diag_decomp : ∀ (R A : Type) [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A) (β : Type) [Fintype β] [DecidableEq β]
     (J : Matrix β β A), IsUnit J.det → ∀ e : R, e * e = e → ∀ g k : UG c J,

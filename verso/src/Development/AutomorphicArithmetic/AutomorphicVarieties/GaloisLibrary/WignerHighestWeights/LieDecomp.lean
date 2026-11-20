@@ -6,19 +6,19 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Al
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `e : x = ∑ w : InfinitePlace E, atEmb w.embedding (x w)` using `by conv_lhs => rw [← Finset.univ_sum_single x]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Unfold `atEmb`. Rewrite using `[if_pos (by rw [InfinitePlace.mk_embedding])]`. Apply the tactic sequence `congr 1 <;> simp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← Finset.sum_fiberwise Finset.univ InfinitePlace.mk]`. Use `conv_lhs => rw [e, map_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hne : w.embedding ≠ ComplexEmbedding.conjugate w.embedding` using `fun h => InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w) (InfinitePlace.isReal_iff.2 (ComplexEmbedding.isReal_iff.2 h.symm))`. Establish `hf : (Finset.univ.filter fun τ : E →+* ℂ => InfinitePlace.mk τ = w) = {w.embedding, ComplexEmbedding.conjugate w.embedding}`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `τ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : InfinitePlace.mk w.embedding = InfinitePlace.mk τ` using `by rw [InfinitePlace.mk_embedding, h]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(InfinitePlace.mk_eq_iff.1 h').imp Eq.symm Eq.symm`. Introduce and unpack `(rfl | rfl)`. Conclude with `InfinitePlace.mk_embedding w`. Rewrite using `[InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`. Establish `e' : atEmb w.embedding (-Complex.I) = -atEmb w.embedding Complex.I`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[atEmb_eq]`. Simplify using the standard rewrite rules. Rewrite using `[hf, Finset.sum_pair hne, UpperTheory.V.FieldIso.coord_conj, UpperTheory.V.FieldIso.coord_embedding, atEmb_eq _ (x w), map_add, map_smul, map_smul, ← algebraMap_smul ℂ (x w).re, ← algebraMap_smul ℂ (x w).im]`. Simplify using `only [atEmb_conj, map_one, Complex.conj_I, e', map_neg]`. Establish `h1 : algebraMap ℝ ℂ (x w).re = (x w + starRingEnd ℂ (x w)) / 2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Complex.add_conj]`. Simplify using the standard rewrite rules. Establish `h2 : algebraMap ℝ ℂ (x w).im = -(x w - starRingEnd ℂ (x w)) * Complex.I / 2`. Rewrite using `[Complex.sub_conj]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((x w).im : ℂ) = _`. Take the linear combination `((x w).im : ℂ) * Complex.I_mul_I`. Rewrite using `[h1, h2]`. Apply the tactic sequence `match_scalars <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem scalarDecomp {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : Type} [AddCommGroup N]
     [Module ℂ N] [Module ℝ N] [IsScalarTower ℝ ℂ N] (l : Cinf E →ₗ[ℝ] N) (x : Cinf E) :
@@ -62,11 +62,9 @@ private theorem scalarDecomp {E : Type} [Field E] [NumberField E] [IsTotallyComp
   match_scalars <;> ring
 
 /- English proof (translation)
-Introduce `E _ _ _ a N _ _ _ _ L X`. Set `L' : Matrix (Fin a) (Fin a) (Cinf E) →ₗ[ℝ] N` to `L`. Express the relevant statement in the definitionally equal form `L' X = _`. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single X]`. Simplify using `only [map_sum, hol_apply, Matrix.map_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `scalarDecomp (L' ∘ₗ Matrix.singleLinearMap ℝ i j) (X i j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgRepEndIrreducible.lieDecomp :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (N : Type) [AddCommGroup N] [Module ℂ N] [Module ℝ N] [IsScalarTower ℝ ℂ N] (L : Lie E a →ₗ[ℝ] N) (X : Matrix (Fin a) (Fin a) (Cinf E)),

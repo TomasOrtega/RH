@@ -13,11 +13,11 @@ namespace GlobalTheory.PlaceRestrict
 open ReciprocityTheory.ChartRestriction.G.T0.ValuationResidueLemmas
 
 /- English proof (translation)
-Establish `hc : P.coeff α ≠ 0` using `MvPolynomial.mem_support_iff.mp hα`. Establish `key` using `val_eval_eq_zero w t ht hind (MvPolynomial.C (P.coeff α)⁻¹ * P) ?_ α ?_`. Establish `: MvPolynomial.aeval t P = algebraMap Ω U (P.coeff α) * MvPolynomial.aeval t (MvPolynomial.C (P.coeff α)⁻¹ * P)`. Rewrite using `[map_mul, MvPolynomial.aeval_C, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hc, map_one, one_mul]`. Rewrite using `[this, AddValuation.map_mul, key, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `β`. Rewrite using `[MvPolynomial.coeff_C_mul, map_mul, AddValuation.map_mul]`. Distinguish the cases in `hβ : β ∈ P.support`. Establish `h3` using `hmin β hβ`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← AddValuation.map_mul, ← map_mul, inv_mul_cancel₀ hc, map_one, AddValuation.map_one]`. Use `_ ≤ _ := add_le_add le_rfl h3`. Rewrite using `[MvPolynomial.notMem_support_iff.mp hβ, map_zero, AddValuation.map_zero]`. Simplify using the standard rewrite rules. Rewrite using `[MvPolynomial.coeff_C_mul, inv_mul_cancel₀ hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_aeval_eq_coeff {Ω U σ : Type} [Field Ω] [Field U] [Algebra Ω U]
     (w : AddValuation U (WithTop ℤ)) (t : σ → U) (ht : ∀ s, t s ∈ vRing w)
@@ -46,9 +46,9 @@ theorem val_aeval_eq_coeff {Ω U σ : Type} [Field Ω] [Field U] [Algebra Ω U]
   · rw [MvPolynomial.coeff_C_mul, inv_mul_cancel₀ hc]
 
 /- English proof (translation)
-Distinguish the cases in `hP : P = 0`. Substitute `hP` using the available equality. Simplify using the standard rewrite rules. Establish `hne : P.support.Nonempty`. Take `⟨β, hβ⟩` from `MvPolynomial.ne_zero_iff.mp hP`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨β, MvPolynomial.mem_support_iff.mpr hβ⟩`. Take `⟨α, hα, hmin⟩` from `P.support.exists_min_image (fun β => w (algebraMap Ω U (P.coeff β))) hne`. Rewrite using `[val_aeval_eq_coeff w t ht hind P α hα hmin, val_aeval_eq_coeff w' t ht' hind' P α hα (fun β hβ => by rw [← hres, ← hres]; exact hmin β hβ), hres]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_aeval_congr {Ω U σ : Type} [Field Ω] [Field U] [Algebra Ω U]
     (w w' : AddValuation U (WithTop ℤ)) (t : σ → U) (ht : ∀ s, t s ∈ vRing w)
@@ -72,9 +72,9 @@ theorem val_aeval_congr {Ω U σ : Type} [Field Ω] [Field U] [Algebra Ω U]
     (fun β hβ => by rw [← hres, ← hres]; exact hmin β hβ), hres]
 
 /- English proof (translation)
-Break down `S.eq_empty_or_nonempty with rfl | ⟨w0, hw0⟩` into its components or cases. Conclude with `⟨1, one_ne_zero, by simp⟩`. Use `haveI := hS.fintype`. Set `e` to `(Fintype.equivFin S).symm`. Take `⟨g, hg⟩` from `weak_approx_orders (fun i => v (e i)) (fun i => (hn _ (e i).2).1) (fun i => (hn _ (e i).2).2) (fun i j hij h => hij (e.injective (Subtype.ext (hinj (e i).2 (e j).2 h)))) (fun i => n (e i))`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg' : ∀ w ∈ S, v w g = n w` using `fun w hw => by`. Use `hg (e.symm ⟨w, hw⟩)` as an intermediate fact. Simplify using `using this`. Conclude with `⟨g, wa_ne_zero_of_coe _ (hg' w0 hw0), hg'⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_orders {Ω X : Type} [Field Ω] (S : Set X) (hS : S.Finite)
     (v : X → AddValuation Ω (WithTop ℤ)) (hinj : Set.InjOn v S)
@@ -94,21 +94,17 @@ theorem exists_orders {Ω X : Type} [Field Ω] (S : Set X) (hS : S.Finite)
   exact ⟨g, wa_ne_zero_of_coe _ (hg' w0 hw0), hg'⟩
 
 /- English proof (translation)
-Distinguish the cases in `ha0 : a = 0`. Conclude with `⟨0, by simp, by simp [ha0]⟩`. Establish `hm : ∀ x, ∃ m : ℤ, x ∈ S → v x a = m` using `fun x => by`. Distinguish the cases in `hx : x ∈ S`. Take `⟨m, hm⟩` from `wa_exists_coe (v x) (hn x hx).1 ha0`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m, fun _ => hm⟩`. Conclude with `⟨0, fun h => absurd h hx⟩`. Use `choose m hm using hm`. Take `⟨s, hs0, hs⟩` from `exists_orders S hS v hinj hn (fun x => if x = w then 1 else min (m x) 0 - 1)`. Establish `hsw : v w s = ((1 : ℤ) : WithTop ℤ)` using `by simpa using hs w hw`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1w : v w (1 + s) = ((0 : ℤ) : WithTop ℤ)`. Rewrite using `[AddValuation.map_add_eq_of_lt_left _ (by`. Rewrite using `[AddValuation.map_one, hsw]`. Conclude with `(zero_lt_one : (0 : ℤ) < 1)),` after adjusting the coercions. Use the proof step `AddValuation.map_one, WithTop.coe_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1s : (1 + s) ≠ 0` using `wa_ne_zero_of_coe _ h1w`. Establish `hmw : 0 ≤ m w`. Rewrite `ha` using `[hm w hw]`. Conclude with `ha` after adjusting the coercions. Use `⟨a / (1 + s), fun x hx => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hxw : x = w`. Substitute `hxw` using the available equality. Rewrite using `[wa_div _ (hm x hx) h1w]`. Conclude with `(by omega : (0 : ℤ) ≤ m x - 0)` after adjusting the coercions. Establish `hsx : v x s = ((min (m x) 0 - 1 : ℤ) : WithTop ℤ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hs x hx` as an intermediate fact. Rewrite `this` using `[if_neg hxw]`. Then use the resulting hypothesis. Establish `h1x : v x (1 + s) = ((min (m x) 0 - 1 : ℤ) : WithTop ℤ)`. Rewrite using `[AddValuation.map_add_eq_of_lt_right _ (by`. Rewrite using `[AddValuation.map_one, hsx]`.
-
-Conclude with `(by omega : min (m x) 0 - 1 < (0 : ℤ))), hsx]` after adjusting the coercions. Rewrite using `[wa_div _ (hm x hx) h1x]`. Conclude with `(by omega : (0 : ℤ) ≤ m x - (min (m x) 0 - 1))` after adjusting the coercions. Establish `: a - a / (1 + s) = a * s / (1 + s)` using `by field_simp; ring`. Rewrite using `[this, wa_div _ (wa_mul _ (hm w hw) hsw) h1w]`.
-
-Conclude with `(by omega : (0 : ℤ) < m w + 1 - 0)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_lift {Ω X : Type} [Field Ω] (S : Set X) (hS : S.Finite)
     (v : X → AddValuation Ω (WithTop ℤ)) (hinj : Set.InjOn v S)
@@ -159,53 +155,51 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι]
   {𝒜 : (c : ι) → WT → Submodule (Ω c) (A c)}
 
 /- English proof (translation)
-Establish `hex : ∀ j, ∃ a : Ω c, d.w j c = a • d.w (d.jc c) c`. Introduce `j`. Establish `hb` using `hd.w_base c`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨d.w (d.jc c) c, hd.w_mem _ c⟩ : 𝒜 c d.wL) (fun h0 => hb (congrArg Subtype.val h0))).mp (hd.finrank_one c d.wL) ⟨d.w j c, hd.w_mem j c⟩`. Conclude with `⟨a, (congrArg Subtype.val ha).symm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `a : Fin (d.N + 1) → Ω c` to `fun j => ratio (Ω := Ω c) (d.w j c) (d.w (d.jc c) c)`. Establish `ha : ∀ j, d.w j c = a j • d.w (d.jc c) c` using `fun j => by`. Take `⟨b, hb⟩` from `hex j`. Rewrite using `[show a j = b from ratio_eq (hd.w_base c) hb]`. Conclude with `hb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha_jc : a (d.jc c) = 1` using `ratio_eq (hd.w_base c) (one_smul _ _).symm`. Set `f` to `algebraMap (Ω c) (OmS (Ω c) d.D d.N)`. Establish `ha0 : a j0 ≠ 0`. Introduce `h0`. Apply `hw0` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha j0, h0, zero_smul]`. Establish `hf0 : f (a j0) ≠ 0` using `(map_ne_zero f).mpr ha0`. Set `r : Fin (d.N + 1) → Ω c` to `fun j => ratio (Ω := Ω c) (d.w j c) (d.w j0 c)`. Establish `hr : ∀ j, r j * a j0 = a j` using `fun j => by`. Establish `: r j = a j / a j0` using `ratio_eq hw0 (by rw [ha j, ha j0, smul_smul, div_mul_cancel₀ _ ha0])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, div_mul_cancel₀ _ ha0]`. Establish `hr0 : r j0 = 1` using `ratio_eq hw0 (one_smul _ _).symm`. Set `s : TVar d.D d.N → OmS (Ω c) d.D d.N` to `sImg (D := d.D) (d.jc c) (d.x c)`. Establish `hOT : ∀ p, d.OTtoS c (MvPolynomial.X p) = s p`. Introduce `p`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Data.OTtoS, OTtoKT, Data.sH, sHom, s]`. Establish `hC : ∀ y : Ω c, algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N) (MvPolynomial.C y) = f y` using `fun y => (IsScalarTower.algebraMap_apply (Ω c) (MvPolynomial (SVar d.D d.N) (Ω c)) _ y).symm`. Establish `hrel : ∀ i : Fin (d.D + 1), i ≠ 0 → ∑ j, s (i, j) * f (a j) = 0`. Introduce `i hi`. Rewrite using `[Fin.sum_univ_succAbove _ (d.jc c)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [s, sImg, Fin.succAbove_cases_eq_insertNth, Fin.insertNth_apply_same, Fin.insertNth_apply_succAbove, hi, ↓reduceIte, ha_jc, map_one, mul_one, map_neg, map_sum, map_mul, hC]`. Rewrite using `[neg_add_eq_zero]`. Both sides reduce to the same expression. Establish `hrel0 : ∀ i : Fin (d.D + 1), i ≠ 0 → s (i, j0) = -∑ k, s (i, j0.succAbove k) * f (r (j0.succAbove k))`. Introduce `i hi`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hrel i hi`. Establish `e : ∀ j, s (i, j) * f (a j) = (s (i, j) * f (r j)) * f (a j0)` using `fun j => by`. Rewrite using `[← hr j, map_mul, mul_assoc]`. Simplify using `only [e, ← Finset.sum_mul] at h1`. Establish `h2` using `(mul_eq_zero.mp h1).resolve_right hf0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Fin.sum_univ_succAbove _ j0, hr0, map_one, mul_one]`. Conclude with `eq_neg_of_add_eq_zero_left h2`. Set `q0 : SVar d.D d.N → TVar d.D d.N` to `Sum.elim (fun _ => ((0 : Fin (d.D + 1)), j0)) (fun ik => (ik.1, j0.succAbove ik.2))`. Set `t : SVar d.D d.N → OmS (Ω c) d.D d.N` to `fun x => s (q0 x)`. Set `p : TVar d.D d.N → MvPolynomial (SVar d.D d.N) (Ω c)` to `fun ij => Fin.succAboveCases (α := fun _ => MvPolynomial (SVar d.D d.N) (Ω c)) j0 (if ij.1 = 0 then MvPolynomial.X (Sum.inl ()) else -∑ k, MvPolynomial.X (Sum.inr (ij.1, k)) * MvPolynomial.C (r (j0.succAbove k))) (fun k => MvPolynomial.X (Sum.inr (ij.1, k))) ij.2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpj0 : ∀ i, p (i, j0) = if i = 0 then MvPolynomial.X (Sum.inl ()) else -∑ k, MvPolynomial.X (Sum.inr (i, k)) * MvPolynomial.C (r (j0.succAbove k))`. Introduce `i`. Simplify using `only [p, Fin.succAbove_cases_eq_insertNth, Fin.insertNth_apply_same]`. Establish `hpk : ∀ i k, p (i, j0.succAbove k) = MvPolynomial.X (Sum.inr (i, k))`. Introduce `i k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [p, Fin.succAbove_cases_eq_insertNth, Fin.insertNth_apply_succAbove]`. Establish `hpu : ∀ ij, MvPolynomial.aeval t (p ij) = s ij`. Introduce and unpack `⟨i, j⟩`. Break down `Fin.eq_self_or_eq_succAbove j0 j with rfl | ⟨k, rfl⟩` into its components or cases. Rewrite using `[hpj0] split_ifs with hi`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hi` using the available equality. Simplify using `[t, q0]`. Rewrite using `[hrel0 i hi]`. Simplify using `[t, q0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hpk]`. Simplify using `[t, q0]`. Set `q1 : SVar d.D d.N → TVar d.D d.N` to `Sum.elim (fun _ => ((0 : Fin (d.D + 1)), d.jc c)) (fun ik => (ik.1, (d.jc c).succAbove ik.2))`. Establish `hψ : ∀ P : MvPolynomial (SVar d.D d.N) (Ω c), MvPolynomial.aeval t (MvPolynomial.aeval (fun x => p (q1 x)) P) = algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N) P`. Establish `e : (MvPolynomial.aeval t).comp (MvPolynomial.aeval (fun x => p (q1 x))) = IsScalarTower.toAlgHom (Ω c) (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [AlgHom.comp_apply, MvPolynomial.aeval_X, IsScalarTower.coe_toAlgHom', hpu]`. Break down `x with _ | ⟨i, k⟩` into its components or cases. Simplify using `[q1, s, sImg, Fin.succAbove_cases_eq_insertNth, Fin.insertNth_apply_same]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[q1, s, sImg, Fin.succAbove_cases_eq_insertNth, Fin.insertNth_apply_succAbove]`. Introduce `P`. Conclude with `DFunLike.congr_fun e P`. Use `⟨t, fun P => ⟨_, hψ P⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `w ⟨hNZ, hpl⟩ hrint'`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrint : ∀ j, 0 ≤ w (f (r j))` using `hrint'`. Establish `hX0 : ∀ p, 0 ≤ w (s p)` using `fun p => by rw [← hOT]; exact (hpl _).1`. Establish `ht : ∀ x, t x ∈ vRing w` using `fun x => hX0 _`. Use `letI _iW := ReciprocityTheory.MultiplicativeHeights.residueAlgebra (vRing w) f`. Use `letI _io := ReciprocityTheory.MultiplicativeHeights.residueAlgebra ((vRing w).comap f) (algebraMap K (Ω c))`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `k₁ : IntermediateField (ResidueField (((vRing w).comap f).comap (algebraMap K (Ω c)))) (ResidueField ((vRing w).comap f))` to `IntermediateField.adjoin _ {z | ∃ j, ∃ h : r j ∈ (vRing w).comap f, z = residue ((vRing w).comap f) ⟨r j, h⟩}`. Set `R3 : Subring (MvPolynomial (SVar d.D d.N) (Ω c))` to `((MvPolynomial.map (algebraMap k₁ (ResidueField ((vRing w).comap f)))).range.comap (MvPolynomial.map (residue ((vRing w).comap f)))).map (MvPolynomial.map ((vRing w).comap f).subtype)`. Establish `hR3X : ∀ x, (MvPolynomial.X x : MvPolynomial (SVar d.D d.N) (Ω c)) ∈ R3` using `fun x => ⟨MvPolynomial.X x, ⟨MvPolynomial.X x, by simp⟩, by simp⟩`. Establish `hR3C : ∀ j, MvPolynomial.C (r j) ∈ R3` using `fun j => ⟨MvPolynomial.C ⟨r j, hrint j⟩, ⟨MvPolynomial.C ⟨_, IntermediateField.subset_adjoin _ _ ⟨j, hrint j, rfl⟩⟩, by simp⟩, by simp⟩`. Establish `hpR3 : ∀ ij, p ij ∈ R3`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨i, j⟩`. Break down `Fin.eq_self_or_eq_succAbove j0 j with rfl | ⟨k, rfl⟩` into its components or cases. Rewrite using `[hpj0] split_ifs`. Conclude with `hR3X _`. Conclude with `R3.neg_mem (R3.sum_mem fun k _ => R3.mul_mem (hR3X _) (hR3C _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpk]`. Conclude with `hR3X _`. Establish `hcoefW : ∀ P ∈ R3, ∀ α, P.coeff α ∈ (vRing w).comap f`. Introduce `P hP α`. Take `⟨Q, -, rfl⟩` from `hP`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MvPolynomial.coeff_map]`. Conclude with `(Q.coeff α).2`. Establish `hp : ∀ ij α, (p ij).coeff α ∈ (vRing w).comap f` using `fun ij α => hcoefW _ (hpR3 ij) α`. Set `u : TVar d.D d.N → vRing w` to `fun ij => ⟨s ij, hX0 ij⟩`. Establish `hKU : algebraMap K (OmS (Ω c) d.D d.N) = f.comp (algebraMap K (Ω c))` using `RingHom.ext fun x => IsScalarTower.algebraMap_apply K (Ω c) _ x`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hOT' : ∀ P, d.OTtoS c P = MvPolynomial.eval₂ (f.comp ((algebraMap K (Ω c)).comp (algebraMap (𝓞 K) K))) s P`. Introduce `P`. Simplify using `only [Data.OTtoS, OTtoKT, Data.sH, sHom, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, MvPolynomial.aeval_def, MvPolynomial.eval₂_map, hKU]`. Both sides reduce to the same expression. Establish `h0 : ∀ P : MvPolynomial (TVar d.D d.N) (𝓞 K), 0 < w (MvPolynomial.eval₂ (f.comp ((algebraMap K (Ω c)).comp (algebraMap (𝓞 K) K))) (fun j => (u j : OmS (Ω c) d.D d.N)) P) ↔ ∀ α, P.coeff α ∈ la.asIdeal`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `P`. Use `show 0 < w (MvPolynomial.eval₂ _ s P) ↔ _`. Rewrite using `[← hOT' P, (hpl P).2, laT, MvPolynomial.mem_map_C_iff]`. Establish `h1 : ∀ x : 𝓞 K, 0 ≤ w ((f.comp ((algebraMap K (Ω c)).comp (algebraMap (𝓞 K) K))) x)`. Introduce `x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `(hpl (MvPolynomial.C x)).1` as an intermediate fact. Rewrite `this` using `[hOT', MvPolynomial.eval₂_C]`. Then use the resulting hypothesis. Establish `hind_u` using `indep_u (Ω := Ω c) w la u h0 h1`. Establish `hcard : Fintype.card (TVar d.D d.N) = Fintype.card (SVar d.D d.N) + d.D`. Simplify using `[Fintype.card_sum, Fintype.card_prod]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `RT` using `ReciprocityTheory.MultiplicativeHeights.Closed.residueTrdeg K (Ω c) (OmS (Ω c) d.D d.N) d.D (hd.trdeg c) (SVar d.D d.N) t (vRing w) ht (TVar d.D d.N) u p hp hcard hpu hind_u`. Conclude with `⟨ht, RT.2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_gauss_variables (d : Data K ι Ω WT A) (hd : d.AxH 𝒜)
     (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) (c : ι) (j0 : Fin (d.N + 1))
@@ -370,13 +364,13 @@ theorem exists_gauss_variables (d : Data K ι Ω WT A) (hd : d.AxH 𝒜)
   exact ⟨ht, RT.2.2⟩
 
 /- English proof (translation)
-Introduce `w hw w' hw' heq`. Take `⟨-, -, j0, hj0, hint, -⟩` from `d.admissible_over_prime hd h la c w hw`. Take `⟨t, hsurj, hG⟩` from `exists_gauss_variables d hd la c j0 hj0`. Take `⟨ht, hi⟩` from `hG w hw hint`. Take `⟨ht', hi'⟩` from `hG w' hw' (heq ▸ hint)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hres : ∀ x : Ω c, w (algebraMap (Ω c) (OmS (Ω c) d.D d.N) x) = w' (algebraMap (Ω c) (OmS (Ω c) d.D d.N) x)` using `fun x => by`. Express the relevant statement in the definitionally equal form `d.Wres c w x = d.Wres c w' x`. Rewrite using `[heq]`. Establish `hpoly : ∀ P : MvPolynomial (SVar d.D d.N) (Ω c), w (algebraMap _ (OmS (Ω c) d.D d.N) P) = w' (algebraMap _ (OmS (Ω c) d.D d.N) P)`. Introduce `P`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Q, hQ⟩` from `hsurj P`. Rewrite using `[← hQ]`. Conclude with `val_aeval_congr w w' t ht hi ht' hi' hres Q`. Apply `AddValuation.ext` to reduce the goal to its premises. Introduce `x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨P, Q, -, rfl⟩` from `IsFractionRing.div_surjective (A := MvPolynomial (SVar d.D d.N) (Ω c)) x`. Rewrite using `[div_eq_mul_inv, AddValuation.map_mul, AddValuation.map_mul, AddValuation.map_inv, AddValuation.map_inv, hpoly, hpoly]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wres_injOn (d : Data K ι Ω WT A) (hd : d.AxH 𝒜) (h : d.S1)
     (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) (c : ι) :
@@ -403,11 +397,11 @@ theorem wres_injOn (d : Data K ι Ω WT A) (hd : d.AxH 𝒜) (h : d.S1)
     AddValuation.map_inv, hpoly, hpoly]
 
 /- English proof (translation)
-Establish `hfin` using `(d.places_over_la hd h la c).1`. Establish `hinj` using `wres_injOn d hd h la c`. Establish `hadm : ∀ w ∈ d.PlOver la c, d.admitted c (d.Wres c w)` using `fun w hw => (d.admissible_over_prime hd h la c w hw).1`. Establish `hn : ∀ w ∈ d.PlOver la c, IsNormDiscrete (d.Wres c w)` using `fun w hw => (hadm w hw).1`. Use `⟨hfin, hinj, exists_orders _ hfin _ hinj hn, fun G => ?_, exists_integral_lift _ hfin _ hinj hn⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Nontrivial (𝒜 c G) := Module.nontrivial_of_finrank_pos (R := Ω c) (by rw [hd.finrank_one c G]; exact zero_lt_one)`. Take `⟨e0, he0⟩` from `exists_ne (0 : 𝒜 c G)`. Establish `he0' : (e0 : A c) ≠ 0` using `fun h0 => he0 (Subtype.ext h0)`. Take `⟨g, hg0, hg⟩` from `exists_orders _ hfin _ hinj hn (fun w => -d.ord c (d.Wres c w) G (e0 : A c))`. Use `⟨g • (e0 : A c), (𝒜 c G).smul_mem g e0.2, smul_ne_zero hg0 he0', fun w hw => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hd.ord_smul c _ (hadm w hw) g e0.2 he0' hg0` as an intermediate fact. Rewrite `this` using `[hg w hw, ← WithTop.coe_add, neg_add_cancel]`. Conclude with `this` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem places_restrict_injective (K : Type) [Field K] [NumberField K] (ι : Type) [Fintype ι]
     (Ω : ι → Type) [∀ c, Field (Ω c)] [∀ c, Algebra K (Ω c)] (WT : Type) [AddCommGroup WT]

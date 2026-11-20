@@ -7,11 +7,11 @@ namespace PI.UnitaryGroupMassFormula.CommMult
 open Matrix
 
 /- English proof (translation)
-Introduce `G _ N M π σ hirr T hT hne`. Establish `hstab : ∀ g, ∀ v ∈ LinearMap.ker (Matrix.toLin' T), ((σ g : GL (Fin M) ℂ) : Matrix (Fin M) (Fin M) ℂ).mulVec v ∈ LinearMap.ker (Matrix.toLin' T)`. Introduce `g v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker, Matrix.toLin'_apply]`. Rewrite using `[Matrix.mulVec_mulVec, ← hT g, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `hirr _ hstab with h | h` into its components or cases. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' T) h`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[LinearMap.toMatrix'_toLin']`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = LinearMap.toMatrix' (g ∘ₗ Matrix.toLin' T) := (LinearMap.toMatrix'_comp _ _).symm`. Use `_ = 1 := by rw [hg, LinearMap.toMatrix'_id]`. Establish `h0 : Matrix.toLin' T = 0` using `LinearMap.ker_eq_top.mp h`. Conclude with `absurd (Matrix.toLin'.injective (h0.trans (map_zero _).symm)) hne`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem injStep : InjStep := by
   intro G _ N M π σ hirr T hT hne

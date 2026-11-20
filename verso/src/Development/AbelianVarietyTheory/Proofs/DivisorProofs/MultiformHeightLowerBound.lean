@@ -16,9 +16,9 @@ open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HermTools
 namespace GlobalTheory.HtLowProof
 
 /- English proof (translation)
-Rewrite using `[eval_eq', eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `hr : ∏ q : Fin B × Fin N, r q.1 ^ s q = ∏ i, r i ^ a i`. Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ∏ y, r i ^ s (i, y) = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hh s hs i]`. Repeatedly rewrite using `[mul_pow, Finset.prod_mul_distrib, hr]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eval_blockScale_multi {B N : ℕ} {a : Fin B → ℕ} {h : MvPolynomial (Fin B × Fin N) ℂ}
     (hh : IsMultiHomogeneous a h) (r : Fin B → ℂ) (v : Fin B × Fin N → ℂ) :
@@ -34,9 +34,9 @@ theorem eval_blockScale_multi {B N : ℕ} {a : Fin B → ℕ} {h : MvPolynomial 
   ring
 
 /- English proof (translation)
-Set `T : (Fin N → ℂ) →ₗ[ℂ] EuclideanSpace ℂ (Fin N)` to `(WithLp.linearEquiv 2 ℂ (Fin N → ℂ)).symm.toLinearMap ∘ₗ A⁻¹.mulVecLin`. Establish `hT : ∀ z, frameNorm A z = ‖T z‖` using `fun z => by`. Rewrite using `[frameNorm, EuclideanSpace.norm_eq]`. Both sides reduce to the same expression. Rewrite using `[hT, map_sum]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_smul, norm_smul, ← hT]`. Conclude with `(mul_le_of_le_one_left (GlobalTheory.MaxPoint.frameNorm_nonneg' _ _) (hc k)).trans (hu k)`. Use `_ = n * Λ := by simp`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameNorm_sum_le {N n : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (c : Fin n → ℂ) (u : Fin n → Fin N → ℂ)
     (Λ : ℝ) (hc : ∀ k, ‖c k‖ ≤ 1) (hu : ∀ k, frameNorm A (u k) ≤ Λ) :
@@ -53,23 +53,21 @@ theorem frameNorm_sum_le {N n : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (c : Fin n
     _ = n * Λ := by simp
 
 /- English proof (translation)
-Use `set r : Fin B → ℝ := fun i => frameNorm A (fun j => u (i, j)) with hr`. Establish `hr0 : ∀ i, 0 ≤ r i` using `fun i => GlobalTheory.MaxPoint.frameNorm_nonneg' _ _`. Use `set e : Fin N → ℂ := A.mulVec (Pi.single ⟨0, hN⟩ 1) with he'`. Establish `he : frameNorm A e = 1`. Rewrite using `[he', GlobalTheory.MaxPoint.frameNorm_mulVec hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single (⟨0, hN⟩ : Fin N) (fun j _ hj => by simp [Pi.single_apply, hj]) (by simp)]`. Simplify using the standard rewrite rules. Set `p : Fin B × Fin N → ℂ` to `fun q => if r q.1 = 0 then e q.2 else ((r q.1)⁻¹ : ℂ) * u q`. Establish `hp : ∀ i, frameNorm A (fun j => p (i, j)) = 1` using `fun i => by`. Distinguish the cases in `h0 : r i = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (fun j => p (i, j)) = e` using `by funext j; simp [p, h0]`. Rewrite using `[this, he]`. Establish `: (fun j => p (i, j)) = ((r i)⁻¹ : ℂ) • (fun j => u (i, j))`. Use function extensionality and compare the values at `j`. Simplify using `[p, h0]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, GlobalTheory.MaxPoint.frameNorm_smul, norm_inv, Complex.norm_real, Real.norm_of_nonneg (hr0 i)]`. Conclude with `inv_mul_cancel₀ h0`. Establish `hup : u = fun q => ((r q.1 : ℝ) : ℂ) * p q`. Use function extensionality and compare the values at `q`. Distinguish the cases in `h0 : r q.1 = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hz : (fun j => u (q.1, j)) = 0` using `GlobalTheory.MaxPoint.eq_zero_of_frameNorm_eq_zero hA h0`. Use `congrFun hz q.2` as an intermediate fact. Simplify using `only [Pi.zero_apply] at this`. Simplify using `[h0, this]`. Simplify using `only [p, if_neg h0]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← Complex.ofReal_inv, ← Complex.ofReal_mul, mul_inv_cancel₀ h0, Complex.ofReal_one, one_mul]`. Establish `hval : ‖eval u h‖ = (∏ i, r i ^ a i) * ‖eval p h‖`. Rewrite using `[hup, eval_blockScale_multi hh (fun i => ((r i : ℝ) : ℂ)) p, norm_mul, norm_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_pow, Complex.norm_real, Real.norm_of_nonneg (hr0 i)]`. Establish `hprod : ∏ i, r i ^ a i ≤ R ^ (∑ i, a i)`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Conclude with `Finset.prod_le_prod (fun i _ => pow_nonneg (hr0 i) _) fun i _ => pow_le_pow_left₀ (hr0 i) (hu i) _`. Rewrite using `[hval]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hz : eval p h = 0`. Rewrite using `[hz, norm_zero, mul_zero]`. Conclude with `mul_nonneg (Real.exp_pos _).le (pow_nonneg hR _)`. Establish `harch` using `GlobalTheory.T.log_eval_sub_le_blockSphereMean_multidegree B N a A h hA hh p hp hz`. Establish `hle : ‖eval p h‖ ≤ Real.exp (blockSphereMean B N (linSubst A h) + (∑ i, (a i : ℝ)) * (harmonic (N - 1) : ℝ) / 2)`.
-
-Rewrite using `[← Real.exp_log (norm_pos_iff.2 hz)]`. Conclude with `Real.exp_le_exp.2 (by linarith)`. Rewrite using `[mul_comm]`. Conclude with `mul_le_mul hle hprod (Finset.prod_nonneg fun i _ => pow_nonneg (hr0 i) _) (Real.exp_pos _).le`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eval_le {B N : ℕ} {a : Fin B → ℕ} {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.det ≠ 0) (hN : 0 < N)
     {h : MvPolynomial (Fin B × Fin N) ℂ} (hh : IsMultiHomogeneous a h) (R : ℝ) (hR : 0 ≤ R)
@@ -122,7 +120,7 @@ theorem norm_eval_le {B N : ℕ} {a : Fin B → ℕ} {A : Matrix (Fin N) (Fin N)
     exact mul_le_mul hle hprod (Finset.prod_nonneg fun i _ => pow_nonneg (hr0 i) _) (Real.exp_pos _).le
 
 /- English proof (translation)
-Establish `e : ((eval₂Hom s z).comp (aeval (fun p : Fin B × Fin N => ∑ k, C (w p.2 k) * X (p.1, k)) : MvPolynomial (Fin B × Fin N) F →ₐ[F] MvPolynomial (Fin B × Fin n) F).toRingHom) = (eval (fun q => ∑ k, z (q.1, k) * s (w q.2 k))).comp (MvPolynomial.map s)`. Use `MvPolynomial.ringHom_ext (fun c => by simp) (fun q => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X, map_sum, map_mul, coe_eval₂Hom, eval₂_C, eval₂_X, map_X, eval_X]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Conclude with `RingHom.congr_fun e G`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval₂_linSubst {F : Type} [Field F] {B N n : ℕ} (s : F →+* ℂ) (w : Matrix (Fin N) (Fin n) F)
     (G : MvPolynomial (Fin B × Fin N) F) (z : Fin B × Fin n → ℂ) :
@@ -137,25 +135,23 @@ theorem eval₂_linSubst {F : Type} [Field F] {B N n : ℕ} (s : F →+* ℂ) (w
   exact RingHom.congr_fun e G
 
 /- English proof (translation)
-Introduce `F _ _ B N n w A Λ hL a G hG ha`. Take `⟨P, hP⟩` from `GlobalTheory.HeightUnique.exists_right_inv hL.spans`. Establish `hk : linSubst w G ≠ 0` using `GlobalTheory.HeightUnique.linSubst_ne_zero hP hG`. Establish `hNn : N ≤ n`. Establish `h1` using `finrank_range_le_card (R := F) w.col`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Set.finrank at h1`. Rewrite `h1` using `[hL.spans, finrank_top, Module.finrank_fin_fun, Fintype.card_fin]`. Conclude with `h1`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast (hL.pos.trans_le hNn)`. Establish `hnΛ : (0 : ℝ) < n * Λ` using `mul_pos (by linarith) (by linarith [hL.one_le])`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set deg : ℝ := ∑ b, (a b : ℝ) with hdeg`. Use `set H : ℝ := (harmonic (N - 1) : ℝ) with hH`. Use `set m : (F →+* ℂ) → ℝ := fun σ => blockSphereMean B N (linSubst (A σ) (MvPolynomial.map σ G)) with hm`. Establish `key` using `GlobalTheory.HSFloor.floor F (Fin B × Fin n) (linSubst w G) (fun s => Real.exp (m s + deg * H / 2) * ((n : ℝ) * Λ) ^ (∑ b, a b)) hk (fun s z hz => by`. Rewrite using `[eval₂_linSubst]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `norm_eval_le (hL.det s) hL.pos (isMultiHomogeneous_map_ring a G ha s) _ hnΛ.le _ fun i => ?_` and prove the remaining obligations. Establish `e : (fun j => ∑ k, z (i, k) * s (w j k)) = ∑ k, z (i, k) • (fun j => s (w j k))`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `frameNorm_sum_le _ _ _ Λ (fun k => hz _) fun k => hL.le k s)`. Establish `hd : (0 : ℝ) < Module.finrank ℚ F` using `Nat.cast_pos.2 Module.finrank_pos`. Establish `hcard : (Fintype.card (F →+* ℂ) : ℝ) = Module.finrank ℚ F`. Rewrite using `[NumberField.Embeddings.card]`. Establish `hlog : ∀ s, Real.log (Real.exp (m s + deg * H / 2) * ((n : ℝ) * Λ) ^ (∑ b, a b)) = m s + (deg * H / 2 + deg * Real.log (n * Λ))` using `fun s => by`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Real.log_mul (Real.exp_pos _).ne' (pow_pos hnΛ _).ne', Real.log_exp, Real.log_pow, hdeg]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hmean : mean F (fun s => Real.log (Real.exp (m s + deg * H / 2) * ((n : ℝ) * Λ) ^ (∑ b, a b))) = mean F m + (deg * H / 2 + deg * Real.log (n * Λ))`. Simplify using `only [hlog, mean, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcard]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `hht : ht w A G = finPart (linSubst w G) + mean F m`. Simplify using `only [ht, formHeight, finPart, mean, hm]`. Simplify using `only [Nat.cast_zero, mul_zero, zero_mul, zero_div, add_zero]`. Rewrite using `[add_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hHle : H ≤ Real.log n + 1`. Establish `h1 : H ≤ 1 + Real.log ((N - 1 : ℕ) : ℝ)`. Rewrite using `[hH]`. Conclude with `harmonic_le_one_add_log (N - 1)` after adjusting the coercions. Establish `h2 : Real.log ((N - 1 : ℕ) : ℝ) ≤ Real.log n`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos (N - 1) with h0 | h0` into its components or cases. Rewrite using `[h0, Nat.cast_zero, Real.log_zero]`. Conclude with `Real.log_nonneg hn1`. Conclude with `Real.log_le_log (by exact_mod_cast h0) (by exact_mod_cast (by omega : N - 1 ≤ n))`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hdeg0 : 0 ≤ deg` using `Finset.sum_nonneg fun b _ => Nat.cast_nonneg _`. Rewrite `key` using `[hmean]`. Rewrite using `[hht, cst]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hHle hdeg0]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem htLow : HtLow := by
   intro F _ _ B N n w A Λ hL a G hG ha

@@ -9,7 +9,7 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 /- English proof (translation)
-Introduce `N F Ω _ _ _ _ _ A w h`. Take `⟨rc, hrc⟩` from `_root_.UpperTheory.V.Z.Win.exRec'_alt N h`. Take `⟨a, ha, ε, -⟩` from `_root_.UpperTheory.V.Z.Win.toV' hrc`. Conclude with `⟨a, ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Win.T2.laArtinLit' :
     _root_.UpperTheory.V.Loc.localArtinReciprocity_type := by

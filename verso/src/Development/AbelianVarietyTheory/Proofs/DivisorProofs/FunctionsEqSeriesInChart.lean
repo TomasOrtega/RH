@@ -14,11 +14,9 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory.Katz.Chart
 
 /- English proof (translation)
-Introduce `p k _ d G c`. Use `⟨fun n f => ?_, fun n s => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k (Fin d) (G.A (n + 1))).2 (G.A n) (G.res n : G.A (n + 1) →ₐ[k] G.A n) (c.x (n + 1)) (c.nil (n + 1)) (c.x n) (c.nil n) (fun i => c.res n i) f`. Set `g : G.A (n + 1) →ₐ[k] G.A n` to `G.res n`. Establish `h` using `(GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k (Fin d ⊕ Fin d) (G.A (n + 1) ⊗[k] G.A (n + 1))).2 (G.A n ⊗[k] G.A n) (Algebra.TensorProduct.map g g) (c.x₂ (n + 1)) (c.nil₂ (n + 1)) (c.x₂ n) (c.nil₂ n) (fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `i with`. Consider the case `inl i => simp [x₂, g, c.res n i]`. Consider the case `inr i => simp [x₂, g, c.res n i]) s`. Use `Eq.trans ?_ h` and prove the remaining obligations. Both sides reduce to the same expression.
-
-Conclude with `GlobalTheory.T.existsUnique_powerSeries_of_compatible_system k (Fin d) G.A c.x c.nil (fun n => (G.res n : G.A (n + 1) →ₐ[k] G.A n)) (fun n i => c.res n i) c.presents b hb`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem functions_are_series : ∀ (p : ℕ) (k : Type) [CommRing k] (d : ℕ) (G : PDivGroup p k)
     (c : Chart G d), (∀ n f, G.res n (c.ev (n + 1) f) = c.ev n f) ∧

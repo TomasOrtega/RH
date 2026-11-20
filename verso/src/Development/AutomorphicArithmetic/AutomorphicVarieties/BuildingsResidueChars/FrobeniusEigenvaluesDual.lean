@@ -6,13 +6,13 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 
 open scoped Matrix in
 /- English proof (translation)
-Establish `h0 : (M : Matrix (Fin n) (Fin n) K)ᵀ = (P : Matrix (Fin n) (Fin n) K) * (t • ((M⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) * ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Rewrite using `[Matrix.mul_smul, ← Matrix.smul_mul, ← hP, Units.mul_inv_cancel_right, Units.mul_inv_cancel_right]`. Establish `h1 : (M : Matrix (Fin n) (Fin n) K).charpoly = (t • ((M⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)).charpoly`. Rewrite using `[← Matrix.charpoly_transpose, h0, Matrix.coe_units_inv P, Matrix.charpoly_units_conj]`. Establish `h2` using `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[← Matrix.charpoly_map]`. Establish `h3` using `GlobalTheory.charpoly_smul_inv_of_charpoly_eq_prod n (Matrix.GeneralLinearGroup.map φ M) (φ t) _ h2`. Establish `h4 : (t • ((M⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)).map φ = φ t • (((Matrix.GeneralLinearGroup.map φ M)⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[← map_inv]`. Use extensionality with `i j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`. Both sides reduce to the same expression. Rewrite `h` using `[h1, ← Matrix.charpoly_map, h4, h3]`. Establish `h5` using `congrArg roots h`. Rewrite `h5` using `[roots_multiset_prod_X_sub_C]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← roots_multiset_prod_X_sub_C (S.map fun a => φ t * a⁻¹), Multiset.map_map]`. Conclude with `h5.symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Af.Bc.eig_dual {K : Type} [Field K] (φ : K →+* ℂ) {n : ℕ} (M P : GL (Fin n) K) (t : K)
     (hP : (M : Matrix (Fin n) (Fin n) K)ᵀ * (P : Matrix (Fin n) (Fin n) K) * (M : Matrix (Fin n) (Fin n) K) =
@@ -41,23 +41,21 @@ private theorem UpperTheory.V.Af.Bc.eig_dual {K : Type} [Field K] (φ : K →+* 
   exact h5.symm
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ ι n r θ ⟨P, hP⟩ w hw B z hB hz`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Take `⟨σ, hσ⟩` from `ReciprocityTheory.Gal.exists_isFrob hA`. Establish `h1` using `UpperTheory.V.Af.Bc.eig_dual ι.toRingHom (r σ⁻¹) P _ (hP σ⁻¹) _ ((hB A hA).2 σ hσ)`. Establish `h2 : ((cycBar F Ω l σ : (Qbar l)ˣ) : Qbar l) = (normV w : ℕ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] (Qbar l) (PadicInt.Coe.ringHom ((cycZ F Ω l σ : ℤ_[l]ˣ) : ℤ_[l])) = _`. Rewrite using `[cycZ_of_isFrob hw hA hσ, map_natCast, map_natCast]`. Establish `hq0 : normV w ≠ 0`. Introduce `h0`. Rewrite `h2` using `[h0, Nat.cast_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Units.ne_zero _ h2`. Establish `hqR : (0 : ℝ) < normV w` using `by exact_mod_cast Nat.pos_of_ne_zero hq0`. Establish `hqC : (normV w : ℂ) ≠ 0` using `by exact_mod_cast hq0`. Establish `h3` using `(hz A hA).2 σ hσ`. Rewrite `h3` using `[MonoidHom.mul_apply, MonoidHom.zpow_apply, Units.val_mul, map_mul, map_inv (cycBar F Ω l), Units.val_zpow_eq_zpow_val, Units.val_inv_eq_inv_val, h2, map_zpow₀, map_inv₀, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set c : ℂ := ((((normV w : ℕ) : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) with hc`. Establish `hc0 : c ≠ 0`. Rewrite using `[hc]`. Conclude with `(Real.rpow_pos_of_pos hqR _).ne'` after adjusting the coercions. Establish `hcc : c * c = (normV w : ℂ) ^ ((n : ℤ) - 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[hc, ← Complex.ofReal_mul, ← Real.rpow_add hqR, add_halves, show ((n : ℝ) - 1) = (((n : ℤ) - 1 : ℤ) : ℝ) by push_cast; ring, Real.rpow_intCast]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h4 : ι.toRingHom ((θ σ⁻¹ : (Qbar l)ˣ) : Qbar l) = z * (c * c)`. Rewrite using `[hcc, ← h3, inv_zpow, inv_mul_cancel_right₀ (zpow_ne_zero _ hqC)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hS : algSat n (normV w) B = B.map fun α : ℂˣ => c * (α : ℂ)`. Simplify using `only [algSat, ← hc, Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map, Function.comp_def]`. Rewrite `h1` using `[h4, hS]`. Establish `h5` using `congrArg (Multiset.map fun a : ℂ => c * a⁻¹) h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Multiset.map_map, Function.comp_def] at h5`. Apply `Multiset.map_injective (f := (Units.val : ℂˣ → ℂ)) Units.val_injective` to reduce the goal to its premises. Simplify using `only [Multiset.map_map, Function.comp_def]`. Use `(Multiset.map_congr rfl fun a _ => ?_).trans (h5.trans (Multiset.map_congr rfl fun a _ => ?_))` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Use `a.ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val]`. Use `a.ne_zero` as an intermediate fact. Use `z.ne_zero` as an intermediate fact.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.frobenius_eigenvalues_dual :
     UpperTheory.V.Af.Bc.FrobDual := by

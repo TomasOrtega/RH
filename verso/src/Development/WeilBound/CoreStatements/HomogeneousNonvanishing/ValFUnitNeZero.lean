@@ -15,7 +15,7 @@ section Gen
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω} {H : LB M.Z}
 
 /- English proof (translation)
-Establish `e` using `congrArg (M.res _ h) (u.compat i j)`. Rewrite `e` using `[map_mul, M.res_apply, M.res_apply, M.res_apply]`. Conclude with `(M.valF_resG inf_le_left h _).symm.trans (e.trans (congrArg _ (M.valF_resG inf_le_right h _)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valF_compat (u : H.Sec) {i j : H.ι} (h : ((H.U i ⊓ H.U j : M.Z.Opens) : Set M.Z).Nonempty) :
     valF M.pt (H.U i) (u.f i) = valF M.pt (H.U i ⊓ H.U j) (H.g i j).val * valF M.pt (H.U j) (u.f j) := by
@@ -24,24 +24,22 @@ theorem valF_compat (u : H.Sec) {i j : H.ι} (h : ((H.U i ⊓ H.U j : M.Z.Opens)
   exact (M.valF_resG inf_le_left h _).symm.trans (e.trans (congrArg _ (M.valF_resG inf_le_right h _)))
 
 /- English proof (translation)
-Rewrite using `[← M.res_apply U h]`. Conclude with `(u.isUnit.map (M.res U h)).ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valF_unit_ne_zero {U : M.Z.Opens} (h : (U : Set M.Z).Nonempty) (u : Γ(M.Z, U)ˣ) : valF M.pt U u.val ≠ 0 := by
   rw [← M.res_apply U h]
   exact (u.isUnit.map (M.res U h)).ne_zero
 
 /- English proof (translation)
-Establish `hm : genericPoint M.Z ∈ ⨆ w, nonzeroLocus (s w)` using `by rw [hb]; trivial`. Take `⟨w₀, hk⟩` from `Opens.mem_iSup.1 hm`. Take `⟨l, hl⟩` from `Opens.mem_iSup.1 hk`. Establish `hzl : genericPoint M.Z ∈ H.U l` using `M.Z.basicOpen_le _ hl`. Establish `h0 : valF M.pt (H.U l) ((s w₀).f l) ≠ 0` using `((isUnit_O_iff _).1 ((isUnit_valF_iff hzl _).2 hl)).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ i, (H.U i : Set M.Z).Nonempty → valF M.pt (H.U i) ((s w₀).f i) ≠ 0` using `fun i hi => by`. Establish `h` using `M.nonempty_inf hi ⟨_, hzl⟩`. Rewrite using `[valF_compat (s w₀) h]`. Conclude with `mul_ne_zero (valF_unit_ne_zero h _) h0`. Establish `ht0 : t w₀ ≠ 0` using `fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `ht`. Use `hr w w₀ l ⟨_, hzl⟩` as an intermediate fact. Rewrite `this` using `[h, zero_mul]`. Conclude with `mul_ne_zero hw h0 this`. Use `⟨fun i => if (H.U i : Set M.Z).Nonempty then t w₀ / valF M.pt (H.U i) ((s w₀).f i) else 1, ⟨fun i => ?_, fun i j h => ?_⟩, fun w i hi => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs with hi`. Conclude with `div_ne_zero ht0 (h1 i hi)`. Conclude with `one_ne_zero`. Establish `hi : (H.U i : Set M.Z).Nonempty` using `h.mono fun _ hz => hz.1`. Establish `hj : (H.U j : Set M.Z).Nonempty` using `h.mono fun _ hz => hz.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos hi, if_pos hj, valF_compat (s w₀) h]`. Use `h1 j hj` as an intermediate fact. Use `valF_unit_ne_zero h (H.g i j)` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using `only [if_pos hi]`.
-
-Use `h1 i hi` as an intermediate fact. Establish `e` using `hr w w₀ i hi`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-e`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_genTriv {W : Type} (s : W → H.Sec) (t : W → Ω)
     (hr : ∀ w w' i, (H.U i : Set M.Z).Nonempty →
@@ -81,13 +79,13 @@ theorem exists_genTriv {W : Type} (s : W → H.Sec) (t : W → Ω)
     linear_combination -e
 
 /- English proof (translation)
-Establish `hm : z ∈ ⨆ k, nonzeroLocus (s k)` using `by rw [hs]; trivial`. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 hm`. Take `⟨l, hl⟩` from `Opens.mem_iSup.1 hk`. Establish `hzl : z ∈ H.U l` using `M.Z.basicOpen_le _ hl`. Take `⟨h0, h1⟩` from `(isUnit_O_iff _).1 ((isUnit_valF_iff hzl _).2 hl)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e0` using `hv k l ⟨z, hzl⟩`. Simplify using `only at h0 h1`. Rewrite `h0`, `h1` using `[e0]`. Establish `hi : t k ≠ 0` using `fun h => h0 (by rw [h, zero_div])`. Use `⟨k, hi, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `valF_mem_O (show z ∈ H.U l ⊓ H.U i from ⟨hzl, hz⟩) (H.g l i).val`. Rewrite `h2` using `[he.g_eq l i ⟨z, hzl, hz⟩]`. Establish `h3` using `mul_mem h2 h1`. Use `he.ne l` as an intermediate fact. Establish `e' : e i / e l * (t k / e l)⁻¹ = e i / t k` using `by field_simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[e']`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_unit {e : H.ι → Ω} (he : M.GenTriv H e) {J : Type}
     {s : J → H.Sec} {t : J → Ω} (hv : ∀ k, M.HasVal e (s k) (t k)) (hs : ⨆ k, nonzeroLocus (s k) = ⊤)
@@ -110,7 +108,7 @@ theorem exists_unit {e : H.ι → Ω} (he : M.GenTriv H e) {J : Type}
   rwa [e'] at h3
 
 /- English proof (translation)
-Introduce `z` and use `by have hm : z ∈ ⨆ k, nonzeroLocus (s k) := by rw [hs]; trivial obtain ⟨k, hk⟩ := Opens.mem_iSup.1 hm exact ⟨k, (mem_nonzeroLocus_iff_div hH he hv (exists_unit he hv hs) k z).1 hk⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasDiv (hH : H.IsLB) {e : H.ι → Ω} (he : M.GenTriv H e) {J : Type}
     {s : J → H.Sec} {t : J → Ω} (hv : ∀ k, M.HasVal e (s k) (t k)) (hs : ⨆ k, nonzeroLocus (s k) = ⊤) :
@@ -120,7 +118,7 @@ theorem hasDiv (hH : H.IsLB) {e : H.ι → Ω} (he : M.GenTriv H e) {J : Type}
   exact ⟨k, (mem_nonzeroLocus_iff_div hH he hv (exists_unit he hv hs) k z).1 hk⟩
 
 /- English proof (translation)
-The claim follows from `top_unique fun z _ => by have hm : z ∈ ⨆ k, nonzeroLocus (s k) := by rw [hs]; trivial obtain ⟨j, hk⟩ := Opens.mem_iSup.1 hm obtain ⟨l, hl⟩ := Opens.mem_iSup.1 hk have hzl : z ∈ H.U l := M.Z.basicOpen_le _ hl have hu := (isUnit_valF_iff hzl _).2 hl obtain ⟨a, ha⟩ := hc j have e0 : …`.
+A detailed English derivation is pending.
 -/
 theorem nonzero_of_comb {e : H.ι → Ω} {J : Type} {s : J → H.Sec} {t : J → Ω} (hv : ∀ k, M.HasVal e (s k) (t k))
     (hs : ⨆ k, nonzeroLocus (s k) = ⊤) {n : ℕ} (γ : Fin n → J)
@@ -146,11 +144,11 @@ theorem nonzero_of_comb {e : H.ι → Ω} {J : Type} {s : J → H.Sec} {t : J �
 end Gen
 
 /- English proof (translation)
-Establish `ht : ∃ w : W, ev w ≠ 0`. Assume the negation of the conclusion as `h`. Use `hev (LinearMap.ext_on hW fun v hv => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Conclude with `h ⟨⟨v, hv⟩, h'⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, hv⟩` from `exists_genTriv s (fun w : W => ev w) hr hb ht`. Establish `hs` using `nonzero_of_comb hv hb gw fun w => by`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 K)).1 (hg.ge w.2)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, map_sum]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K (a k), map_smul, Algebra.smul_def, ← IsScalarTower.algebraMap_apply]`. Conclude with `⟨e, he, hv, hs, hasDiv hH he (fun k => hv (gw k)) hs⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gen_all {K V Ω : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (M : RatModel (𝓞 K) Ω) (H : LB M.Z) (hH : H.IsLB)

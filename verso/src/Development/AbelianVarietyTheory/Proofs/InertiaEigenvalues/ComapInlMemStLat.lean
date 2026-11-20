@@ -15,9 +15,9 @@ variable (O : Type) [CommRing O] (E : Type) [Field E] {A : Type} [CommRing A] [A
 def stLat (g : A) : Set (Submodule O A) := {L | IsLat O E L ∧ ∀ y ∈ L, g * y ∈ L}
 
 /- English proof (translation)
-Unfold `mulLat`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify `hy` using `[← mul_assoc]`. Introduce `h`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, h, by simp [← mul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_mulLat_iff (t : Aˣ) (L : Submodule O A) (x : A) :
     x ∈ mulLat O (t : A) L ↔ ((t⁻¹ : Aˣ) : A) * x ∈ L := by
@@ -29,24 +29,24 @@ theorem mem_mulLat_iff (t : Aˣ) (L : Submodule O A) (x : A) :
     exact ⟨_, h, by simp [← mul_assoc]⟩
 
 /- English proof (translation)
-Simplify using `[mulLat, LinearMap.mulLeft_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulLat_one (L : Submodule O A) : mulLat O (1 : A) L = L := by
   simp [mulLat, LinearMap.mulLeft_one]
 
 /- English proof (translation)
-Simplify using `[mulLat, LinearMap.mulLeft_mul, Submodule.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulLat_mul (a b : A) (L : Submodule O A) : mulLat O (a * b) L = mulLat O a (mulLat O b L) := by
   simp [mulLat, LinearMap.mulLeft_mul, Submodule.map_comp]
 
 variable {O E} in
 /- English proof (translation)
-Use `⟨⟨hL.1.1.map _, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `himg : ((mulLat O (t : A) L : Submodule O A) : Set A) = (LinearMap.mulLeft E (t : A)) '' (L : Set A)`. Use extensionality with `x`. Simplify using `[mulLat]`. Rewrite using `[himg, Submodule.span_image, hL.1.2, Submodule.map_top, LinearMap.range_eq_top]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Conclude with `⟨((t⁻¹ : Aˣ) : A) * z, by simp [← mul_assoc]⟩`. Introduce `x hx`. Rewrite `hx`, the goal using `[mem_mulLat_iff]`. Use `hL.2 _ hx` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_left_comm]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mulLat_mem_stLat {g : A} (t : Aˣ) {L : Submodule O A} (hL : L ∈ stLat O E g) :
     mulLat O (t : A) L ∈ stLat O E g := by
@@ -104,15 +104,15 @@ variable [IsDomain O] [IsNoetherianRing O] [Algebra O E] [IsFractionRing O E]
 
 variable {O E} in
 /- English proof (translation)
-Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `haveI := isNoetherian_of_fg_of_noetherian M hM.1.1`. Establish `hle : (M.comap (LinearMap.inl O A₁ A₂)).map (LinearMap.inl O A₁ A₂) ≤ M` using `Submodule.map_comap_le _ _`. Establish `h1 : (((M.comap (LinearMap.inl O A₁ A₂)).map (LinearMap.inl O A₁ A₂)).comap M.subtype).FG` using `IsNoetherian.noetherian _`. Establish `h2` using `h1.map M.subtype`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Submodule.map_comap_subtype, inf_eq_right.mpr hle]`. Conclude with `Submodule.fg_of_fg_map_injective _ LinearMap.inl_injective h2`. Rewrite using `[Submodule.eq_top_iff']`. Introduce `y`. Establish `hy : ((y, 0) : A₁ × A₂) ∈ Submodule.span E (M : Set (A₁ × A₂))` using `by rw [hM.1.2]; trivial`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr, hrM⟩` from `ReciprocityTheory.PGsh.L2.SecondCohomologyLattice.exists_smul_mem_of_mem_span M hy`. Establish `hrC : algebraMap O E r ≠ 0`. Rewrite using `[Ne, ← (algebraMap O E).map_zero]`. Conclude with `fun h => hr (IsFractionRing.injective O E h)`. Establish `hmem : r • y ∈ M.comap (LinearMap.inl O A₁ A₂)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hrM` using `[Submodule.mem_comap]`. Establish `: y = (algebraMap O E r)⁻¹ • (algebraMap O E r • y)`. Rewrite using `[smul_smul, inv_mul_cancel₀ hrC, one_smul]`. Rewrite using `[this, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `y hy`. Simplify using `only [Submodule.mem_comap, LinearMap.coe_inl] at hy ⊢`. Use `hM.2 _ hy` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem comap_inl_mem_stLat {g₁ : A₁} {g₂ : A₂} {M : Submodule O (A₁ × A₂)}
     (hM : M ∈ stLat O E ((g₁, g₂) : A₁ × A₂)) :
@@ -145,9 +145,9 @@ theorem comap_inl_mem_stLat {g₁ : A₁} {g₂ : A₂} {M : Submodule O (A₁ �
 
 variable {O E} in
 /- English proof (translation)
-Use `⟨⟨hM.1.1.map _, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `himg : ((M.map (LinearMap.snd O A₁ A₂) : Submodule O A₂) : Set A₂) = (LinearMap.snd E A₁ A₂) '' (M : Set (A₁ × A₂))`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[himg, Submodule.span_image, hM.1.2, Submodule.map_top, LinearMap.range_eq_top.mpr LinearMap.snd_surjective]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `⟨_, hM.2 m hm, by simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem map_snd_mem_stLat {g₁ : A₁} {g₂ : A₂} {M : Submodule O (A₁ × A₂)}
     (hM : M ∈ stLat O E ((g₁, g₂) : A₁ × A₂)) :

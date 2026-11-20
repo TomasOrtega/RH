@@ -14,7 +14,7 @@ def AFTop : Prop :=
     LocallyCompactSpace (AF F) ∧ SecondCountableTopology (AF F) ∧ T2Space (AF F)
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_restrictScalars_finite ℚ F E`.
+A detailed English derivation is pending.
 -/
 theorem finite_nf (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] : Module.Finite F E :=
@@ -32,13 +32,11 @@ def sigL {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
     | add x y hx hy => simp_all [smul_add]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _`. Take `⟨hlc, hsc, ht2⟩` from `h F`. Use `finite_nf F E` as an intermediate fact. Set `R` to `AF F`. Establish `: IsModuleTopology R (R ⊗[F] E)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b` to `Module.finBasis F E`. Set `bR` to `Algebra.TensorProduct.basis R b`. Set `e : (R ⊗[F] E) ≃ₗ[R] (Fin (Module.finrank F E) → R)` to `bR.equivFun`. Establish `htr : IsTopologicalRing (R ⊗[F] E)` using `IsModuleTopology.isTopologicalRing R (R ⊗[F] E)`. Establish `c1 : Continuous e.toLinearMap` using `IsModuleTopology.continuous_of_linearMap (R := R) _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : Continuous e.symm.toLinearMap` using `IsModuleTopology.continuous_of_linearMap (R := R) _`. Set `hm : (R ⊗[F] E) ≃ₜ (Fin (Module.finrank F E) → R)` to `{ toEquiv := e.toEquiv, continuous_toFun := by simpa using c1, continuous_invFun := by simpa using c2 }`. Use `⟨htr, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hm.isEmbedding.t2Space`. Conclude with `hm.isClosedEmbedding.locallyCompactSpace`.
-
-Conclude with `hm.isEmbedding.secondCountableTopology`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tensTop_of (h : AFTop) : TensTop := by
   intro F E _ _ _ _ _

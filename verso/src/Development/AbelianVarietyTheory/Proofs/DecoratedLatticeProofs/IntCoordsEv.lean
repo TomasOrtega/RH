@@ -18,14 +18,14 @@ open NumberField
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `(algebraMap D.host.F (Af D.host.F) c).2`.
+A detailed English derivation is pending.
 -/
 theorem alg_int_ev (c : D.host.F) : ∀ᶠ w in Filter.cofinite,
     algebraMap D.host.F (Fv D.host.F w) c ∈ (w : Pl D).adicCompletionIntegers D.host.F :=
   (algebraMap D.host.F (Af D.host.F) c).2
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.basis_repr_tmul]`. Simplify using `[Finsupp.mapRange_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem repr_tmul_loc (w : Pl D) (x : Fv D.host.F w) (e : D.host.E) (i : Fin (Module.finrank D.host.F D.host.E)) :
     (Algebra.TensorProduct.basis (Fv D.host.F w) (Module.finBasis D.host.F D.host.E)).repr (x ⊗ₜ[D.host.F] e) i =
@@ -34,19 +34,17 @@ theorem repr_tmul_loc (w : Pl D) (x : Fv D.host.F w) (e : D.host.E) (i : Fin (Mo
   simp [Finsupp.mapRange_apply, smul_eq_mul]
 
 /- English proof (translation)
-Use `set b := Module.finBasis D.host.F D.host.E`. Use `set B := NumberField.RingOfIntegers.basis D.host.E`. Establish `hev : ∀ᶠ w in Filter.cofinite, ∀ i j, algebraMap D.host.F (Fv D.host.F w) (b.repr ((B j : 𝓞 D.host.E) : D.host.E) i) ∈ (w : Pl D).adicCompletionIntegers D.host.F`. Rewrite using `[Filter.eventually_all]`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Filter.eventually_all]`. Introduce `j`. Conclude with `alg_int_ev _`. Use `filter_upwards [hev] with w hw`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, o, rfl⟩` from `hy`. Introduce `i`. Establish `hc : GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D w (α ⊗ₜ[D.host.F] (o : D.host.E)) = evalV D.host.F w α ⊗ₜ[D.host.F] (o : D.host.E)` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hc, repr_tmul_loc]`. Use `mul_mem (hα w) ?_` and prove the remaining obligations. Establish `ho : (o : D.host.E) = ∑ j, (B.repr o j) • ((B j : 𝓞 D.host.E) : D.host.E)` using `by conv_lhs => rw [← B.sum_repr o]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[ho, map_sum, Finsupp.coe_finset_sum, Finset.sum_apply, map_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Finsupp.smul_apply, map_zsmul]`. Conclude with `zsmul_mem (hw i j) _`. Consider the case `zero => intro i`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro i`. Rewrite using `[map_add, map_add, Finsupp.add_apply]`. Conclude with `add_mem (hx i) (hy i)`. Consider the case `neg x _ hx => intro i`.
-
-Rewrite using `[map_neg, map_neg, Finsupp.neg_apply]`. Conclude with `neg_mem (hx i)`.
+A detailed English derivation is pending.
 -/
 theorem int_coords_ev : ∀ᶠ w in Filter.cofinite, ∀ z ∈ intAE D, ∀ i,
     (Algebra.TensorProduct.basis (Fv D.host.F w) (Module.finBasis D.host.F D.host.E)).repr
@@ -91,7 +89,7 @@ open NumberField
 variable {D : D7}
 
 /- English proof (translation)
-Use `conv_rhs => rw [← (Algebra.TensorProduct.basis (Fv D.host.F w) (Module.finBasis D.host.F D.host.E)).sum_repr y]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_repr_tmul (w : Pl D) (y : Fv D.host.F w ⊗[D.host.F] D.host.E) :
     ∑ i, (Algebra.TensorProduct.basis (Fv D.host.F w) (Module.finBasis D.host.F D.host.E)).repr y i ⊗ₜ[D.host.F]
@@ -101,13 +99,11 @@ theorem sum_repr_tmul (w : Pl D) (y : Fv D.host.F w ⊗[D.host.F] D.host.E) :
   rw [Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Introduce `D a _ ⟨T, hT⟩`. Use `set b := Module.finBasis D.host.F D.host.E`. Set `c : Fin (Module.finrank D.host.F D.host.E) → (w : Pl D) → Fv D.host.F w` to `fun i w => (Algebra.TensorProduct.basis (Fv D.host.F w) b).repr (compAt D w (a w)) i`. Establish `hc : ∀ i, ∀ᶠ w in Filter.cofinite, c i w ∈ (w : Pl D).adicCompletionIntegers D.host.F`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `filter_upwards [int_coords_ev (D := D), T.finite_toSet.compl_mem_cofinite] with w hw hwT`. Conclude with `hw _ (hT w hwT).2 i`. Set `C : Fin (Module.finrank D.host.F D.host.E) → Af D.host.F` to `fun i => RestrictedProduct.mk (c i) (hc i)`. Use `⟨∑ i, pairA D.host.F 0 (C i) ⊗ₜ[D.host.F] b i, ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.sum_eq_zero fun i _ => infPart_pair _ _`. Unfold `idOff`. Use `(Submodule.mem_iInf _).2 fun w => RingHom.mem_ker.2 ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `w`. Rewrite using `[map_sub, map_sum, sub_eq_zero]`.
-
-Simplify using `only [compAt_pair]`. Conclude with `sum_repr_tmul w (compAt D w (a w))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem glue : ∀ (D : D7) (a : Pl D → AE D), (∀ x, a x ∈ idAt D (· = x)) →
     (∃ T : Finset (Pl D), ∀ x ∉ T, a x ∈ intAt D (· = x)) →

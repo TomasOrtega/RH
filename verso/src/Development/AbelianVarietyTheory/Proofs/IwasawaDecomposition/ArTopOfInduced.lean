@@ -9,9 +9,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 namespace GlobalTheory.TrueGeo
 
 /- English proof (translation)
-Introduce `hc hd F _ _ C Y A M L k cf hI`. Use `M.ar.isIntegral` as an intermediate fact. Take `⟨h, hh⟩` from `(hc.1 _ M.X M.p Y.dim M.ar).1 L`. Establish `hex : ∃ t, A.IsArTop t` using `⟨_, M, L, k, cf, _, hI, ⟨h, hh, rfl⟩, rfl⟩`. Establish `htop : A.IsArTop A.arTop`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Adl.arTop`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`. Conclude with `⟨htop, fun a ha => GlobalTheory.T.arakelov_top_unique hc hd F C Y A _ _ htop ⟨M, L, k, cf, a, hI, ha, rfl⟩⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem arTop_of_induced : GlobalTheory.Published.ArCalc → GlobalTheory.Published.ArDegree → ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (M : TrueGeo.Model Y) (L : HermLB M.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 F) → ℝ), A.Induced M L k cf → A.IsArTop A.arTop ∧ ∀ a : ℝ, (haveI := M.ar.isIntegral; L.IsSelfInter a) → A.arTop = (a / (((k : ℕ) : ℝ) * (A.n : ℕ)) ^ (Y.dim + 1) + ((Y.dim : ℝ) + 1) * A.deg * ∑ᶠ v, cf v) / (Module.finrank ℚ F : ℝ) := by
   intro hc hd F _ _ C Y A M L k cf hI

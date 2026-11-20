@@ -169,7 +169,7 @@ def CuspLattice.Statement : Prop :=
             covolume ((D.period p.1 ℓ).map Complex.im) v)
 
 /- English proof (translation)
-Unfold `cuspTime`. Rewrite using `[Real.log_inv]`. Conclude with `mul_nonneg (inv_nonneg.mpr (by positivity)) (neg_nonneg.mpr (Real.log_nonpos (norm_nonneg _) hz.le))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspTime_nonneg {n a : ℕ} (h : a ≤ n) (z : Fin n → ℂ) (j : Fin a)
     (hz : ‖cuspCoord h z j‖ < 1) : 0 ≤ cuspTime h z j := by
@@ -281,14 +281,14 @@ def upperHalfPlaneFamily : SiegelFamily 1 1 1 where
   f_rank := fun _ _ => by simp [Matrix.rank_one]
 
 /- English proof (translation)
-The claim follows from `Matrix.posDef_diagonal_iff.mpr fun k => by cases k <;> norm_num`.
+A detailed English derivation is pending.
 -/
 theorem example_schurQuotient_hyp :
     (Matrix.diagonal (Sum.elim (fun _ : Fin 1 => (1 : ℝ)) (fun _ : Fin 1 => 2))).PosDef :=
   Matrix.posDef_diagonal_iff.mpr fun k => by cases k <;> norm_num
 
 /- English proof (translation)
-Use `⟨Matrix.diagonal_transpose _, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.diagonal_map (by simp)]`. Apply the tactic sequence `exact Matrix.posDef_diagonal_iff.mpr fun k => by cases k <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem example_schurQuotientPeriod_hyp :
     let τ : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ :=

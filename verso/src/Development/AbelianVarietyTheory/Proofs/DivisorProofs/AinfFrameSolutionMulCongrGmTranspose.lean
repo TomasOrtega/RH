@@ -7,27 +7,23 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F d k h U U' X u l Gm W hU hN1 hN2 hu hX hXc hl hlc hG hW hWc`. Use `haveI := ReciprocityTheory.PGsh.Ainf.O_local O hv`. Take `⟨c, hc⟩` from `hu`. Establish `hue : u = 1 + F.τ * c` using `by rw [← hc]; ring`. Use `set w : F.B := 1 - F.τ * c with hwdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwu : w * u = 1` using `by rw [hue, hwdef]; linear_combination (-(c * c)) * F.τ_sq`. Establish `hτ0 : F.θ F.τ = 0` using `GlobalTheory.WinLift.theta_tau F hv hε`. Establish `hθu : F.θ u = 1` using `by rw [hue, map_add, map_one, map_mul, hτ0, zero_mul, add_zero]`. Establish `hθw : F.θ w = 1` using `by rw [hwdef, map_sub, map_one, map_mul, hτ0, zero_mul, sub_zero]`. Establish `hwU : IsUnit w` using `⟨⟨w, u, hwu, by rw [mul_comm]; exact hwu⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P := blk d k (p : F.B) 1 with hP`. Use `set D : Matrix (Fin d ⊕ Fin k) (Fin h) F.B := X * W - l • Gm.transpose with hDdef`. Establish `hsm : (l • Gm.transpose).map F.σ = F.σ l • Gm.transpose.map F.σ` using `Matrix.ext fun i j => by simp`. Establish `hsub : D.map F.σ = (X * W).map F.σ - (l • Gm.transpose).map F.σ` using `by rw [hDdef]; exact Matrix.ext fun i j => by simp only [Matrix.map_apply, Matrix.sub_apply, map_sub]`. Establish `hD : U * P * D.map F.σ = ((p : F.B) * u) • D`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsub, Matrix.map_mul, hsm, Matrix.mul_sub, Matrix.mul_smul, ← Matrix.mul_assoc, ← hX, Matrix.mul_assoc, hW, hG, hl, Matrix.mul_smul, smul_smul, hDdef, smul_sub, smul_smul]`. Use `congr 1`. Rewrite using `[show u * l * (p : F.B) = p * u * l by ring]`. Use `set U₁ := w • U with hU₁`. Establish `hD1 : U₁ * P * D.map F.σ = (p : F.B) • D`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hU₁, Matrix.smul_mul, Matrix.smul_mul, hD, smul_smul, show w * ((p : F.B) * u) = p by linear_combination (p : F.B) * hwu]`. Establish `hUdet : IsUnit U.det` using `(Matrix.isUnit_iff_isUnit_det U).1 hU`. Establish `hU₁u : IsUnit U₁`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, hU₁, Matrix.det_smul]`. Conclude with `(hwU.pow _).mul hUdet`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinv : U₁.transpose⁻¹ = u • U.transpose⁻¹`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[hU₁, Matrix.transpose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hwu, one_smul, Matrix.mul_nonsing_inv _ (by rw [Matrix.det_transpose]; exact hUdet)]`. Establish `hp : ¬IsUnit (p : O)` using `Fact.out`. Establish `hN1' : IsNil F.θ F.σ (U₁.transpose⁻¹ * blk d k 1 (p : F.B))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `GlobalTheory.WinLift.isNil_of_theta_eq p F.θ F.σ hp F.σ_pow _ _ (fun i j => ?_) hN1` and prove the remaining obligations. Rewrite using `[hinv, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul, map_mul, hθu, one_mul]`. Establish `hN2' : IsNil F.θ F.σ (U₁ * P)`. Use `GlobalTheory.WinLift.isNil_of_theta_eq p F.θ F.σ hp F.σ_pow _ _ (fun i j => ?_) hN2` and prove the remaining obligations. Rewrite using `[hU₁, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul, map_mul, hθw, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `(GlobalTheory.TauUniq.eq_zero_of_tau_dvd p C v O hv ε hε F d k h U₁ hU₁u hN1' hN2').2`. Establish `hdec : D = (X - 1) * W + (W - Gm.transpose) - (l - 1) • Gm.transpose`. Rewrite using `[hDdef, Matrix.sub_mul, Matrix.one_mul, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Establish `hτD : ∀ i m, F.τ ∣ D i m`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `i m`. Rewrite using `[hdec, Matrix.sub_apply, Matrix.add_apply, Matrix.mul_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, Matrix.transpose_apply]`. Use `dvd_sub (dvd_add (Finset.dvd_sum fun j _ => ?_) (hWc i m)) (Dvd.dvd.mul_right hlc _)` and prove the remaining obligations. Conclude with `Dvd.dvd.mul_right (hXc i j) _`. Establish `hD0 : D = 0`.
-
-Use `Matrix.ext fun i m => ?_` and prove the remaining obligations. Establish `hcol` using `key (fun i => D i m) (funext fun i => by`. Use `congrArg (fun M => M i m) hD1` as an intermediate fact. Simplify `this) (fun i => hτD i m)` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Conclude with `congrFun hcol i`.
-
-Conclude with `sub_eq_zero.1 hD0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CmpG.comparison : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (d k h : ℕ) (U U' X : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B) (u l : F.B) (Gm : Matrix (Fin h) (Fin d ⊕ Fin k) F.B) (W : Matrix (Fin d ⊕ Fin k) (Fin h) F.B), IsUnit U → IsNil F.θ F.σ (U.transpose⁻¹ * blk d k 1 (p : F.B)) → IsNil F.θ F.σ (U * blk d k (p : F.B) 1) → F.τ ∣ u - 1 → X * (U' * blk d k (p : F.B) 1) = U * blk d k (p : F.B) 1 * X.map F.σ → (∀ i j, F.τ ∣ X i j - (1 : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B) i j) → F.σ l = u * l → F.τ ∣ l - 1 → U * blk d k (p : F.B) 1 * Gm.transpose.map F.σ = (p : F.B) • Gm.transpose → U' * blk d k (p : F.B) 1 * W.map F.σ = ((p : F.B) * u) • W → (∀ i m, F.τ ∣ W i m - Gm m i) → X * W = l • Gm.transpose := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F d k h U U' X u l Gm W hU hN1 hN2 hu hX hXc hl hlc hG hW hWc

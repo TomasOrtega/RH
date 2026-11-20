@@ -21,13 +21,13 @@ def FiltB {σ : Type*} (ψ : σ → ℕ) (d : ℕ) : Submodule ℂ (MvPolynomial
     exact ha e (support_smul he)
 
 /- English proof (translation)
-Introduce `_ hp e he` and use `le_trans h (hp e he)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FiltB_mono {σ : Type*} (ψ : σ → ℕ) {d d' : ℕ} (h : d' ≤ d) : FiltB ψ d ≤ FiltB ψ d' :=
   fun _ hp e he => le_trans h (hp e he)
 
 /- English proof (translation)
-Introduce `e he`. Take `⟨a, ha, b, hb, rfl⟩` from `Finset.mem_add.mp (support_mul p q he)`. Rewrite using `[map_add]`. Conclude with `Nat.add_le_add (hp a ha) (hq b hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FiltB_mul {σ : Type*} (ψ : σ → ℕ) {d d' : ℕ} {p q : MvPolynomial σ ℂ} (hp : p ∈ FiltB ψ d)
     (hq : q ∈ FiltB ψ d') : p * q ∈ FiltB ψ (d + d') := by
@@ -38,7 +38,7 @@ theorem FiltB_mul {σ : Type*} (ψ : σ → ℕ) {d d' : ℕ} {p q : MvPolynomia
   exact Nat.add_le_add (hp a ha) (hq b hb)
 
 /- English proof (translation)
-Introduce `e he`. Rewrite `he` using `[support_X, Finset.mem_singleton]`. Substitute `he` using the available equality. Rewrite using `[Finsupp.weight_single, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem X_mem_FiltB {σ : Type*} (ψ : σ → ℕ) (v : σ) : (X v : MvPolynomial σ ℂ) ∈ FiltB ψ (ψ v) := by
   intro e he
@@ -55,11 +55,11 @@ section Good
 variable {σ : Type*} (R : MvPolynomial σ ℂ →ₐ[ℂ] MvPolynomial σ ℂ) (ψ : σ → ℕ)
 
 /- English proof (translation)
-Use `⟨FiltB_mul ψ hp.1 hq.1, ?_⟩` and prove the remaining obligations. Establish `hRq : R q ∈ FiltB ψ d'`. Establish `e : R q = (R q - q) + q` using `by ring`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (FiltB_mono ψ (Nat.le_succ d') hq.2) hq.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : R (p * q) - p * q = (R p - p) * R q + p * (R q - q)`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `FiltB_mul ψ hp.2 hRq` as an intermediate fact. Rewrite `this` using `[show d + 1 + d' = d + d' + 1 by ring]`. Then use the resulting hypothesis. Use `FiltB_mul ψ hp.1 hq.2` as an intermediate fact. Rewrite `this` using `[show d + (d' + 1) = d + d' + 1 by ring]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GoodB_mul {p q : MvPolynomial σ ℂ} {d d' : ℕ} (hp : GoodB R ψ p d) (hq : GoodB R ψ q d') :
     GoodB R ψ (p * q) (d + d') := by
@@ -78,13 +78,13 @@ theorem GoodB_mul {p q : MvPolynomial σ ℂ} {d d' : ℕ} (hp : GoodB R ψ p d)
     rwa [show d + (d' + 1) = d + d' + 1 by ring] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => Nat.zero_le _, by rw [map_one, sub_self]; exact Submodule.zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem GoodB_one : GoodB R ψ 1 0 :=
   ⟨fun _ _ => Nat.zero_le _, by rw [map_one, sub_self]; exact Submodule.zero_mem _⟩
 
 /- English proof (translation)
-The claim follows from `| 0 => by simpa using GoodB_one R ψ | k + 1 => by rw [pow_succ, Nat.succ_mul] exact GoodB_mul R ψ (GoodB_pow hp k) hp`.
+A detailed English derivation is pending.
 -/
 theorem GoodB_pow {p : MvPolynomial σ ℂ} {d : ℕ} (hp : GoodB R ψ p d) : ∀ k : ℕ, GoodB R ψ (p ^ k) (k * d)
   | 0 => by simpa using GoodB_one R ψ
@@ -93,7 +93,7 @@ theorem GoodB_pow {p : MvPolynomial σ ℂ} {d : ℕ} (hp : GoodB R ψ p d) : �
     exact GoodB_mul R ψ (GoodB_pow hp k) hp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using GoodB_one R ψ`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `GoodB_mul R ψ (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GoodB_prod {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ ℂ) (d : ι → ℕ)
     (h : ∀ i ∈ s, GoodB R ψ (f i) (d i)) : GoodB R ψ (∏ i ∈ s, f i) (∑ i ∈ s, d i) := by
@@ -105,7 +105,7 @@ theorem GoodB_prod {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ ℂ)
     exact GoodB_mul R ψ (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Use `⟨Submodule.smul_mem _ c hp.1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← smul_sub]`. Conclude with `Submodule.smul_mem _ c hp.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GoodB_smul (c : ℂ) {p : MvPolynomial σ ℂ} {d : ℕ} (hp : GoodB R ψ p d) : GoodB R ψ (c • p) d := by
   refine ⟨Submodule.smul_mem _ c hp.1, ?_⟩
@@ -113,7 +113,7 @@ theorem GoodB_smul (c : ℂ) {p : MvPolynomial σ ℂ} {d : ℕ} (hp : GoodB R �
   exact Submodule.smul_mem _ c hp.2
 
 /- English proof (translation)
-Establish `he : Finsupp.weight ψ e = ∑ v ∈ e.support, e v * ψ v`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum]`. Simplify using `[smul_eq_mul]`. Rewrite using `[monomial_eq, ← smul_eq_C_mul, Finsupp.prod, he]`. Conclude with `GoodB_smul R ψ c (GoodB_prod R ψ _ _ _ fun v _ => GoodB_pow R ψ (hX v) (e v))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GoodB_monomial (hX : ∀ v, GoodB R ψ (X v) (ψ v)) (e : σ →₀ ℕ) (c : ℂ) :
     GoodB R ψ (monomial e c) (Finsupp.weight ψ e) := by
@@ -124,9 +124,9 @@ theorem GoodB_monomial (hX : ∀ v, GoodB R ψ (X v) (ψ v)) (e : σ →₀ ℕ)
   exact GoodB_smul R ψ c (GoodB_prod R ψ _ _ _ fun v _ => GoodB_pow R ψ (hX v) (e v))
 
 /- English proof (translation)
-Establish `e0 : R g - g = ∑ e ∈ g.support, (R (monomial e (coeff e g)) - monomial e (coeff e g))` using `by conv_lhs => rw [g.as_sum]`. Rewrite using `[map_sum, ← Finset.sum_sub_distrib]`. Rewrite using `[e0]`. Use `Submodule.sum_mem _ fun e he => ?_` and prove the remaining obligations. Use `(GoodB_monomial R ψ hX e (coeff e g)).2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hg (mem_support_iff.mp he)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem GoodB_homog (hX : ∀ v, GoodB R ψ (X v) (ψ v)) (g : MvPolynomial σ ℂ) (d : ℕ)
     (hg : IsWeightedHomogeneous ψ g d) : R g - g ∈ FiltB ψ (d + 1) := by
@@ -141,16 +141,16 @@ theorem GoodB_homog (hX : ∀ v, GoodB R ψ (X v) (ψ v)) (g : MvPolynomial σ �
 end Good
 
 /- English proof (translation)
-Simplify using `[Formalism.GradedWeylDivisibility.rowAct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowAct_X_B {N : ℕ} (M : Matrix (Fin N) (Fin N) ℂ) (v : Fin N × Fin N) :
     Formalism.GradedWeylDivisibility.rowAct ℂ (n := N) M (X v) = ∑ b, C (M v.1 b) * X (b, v.2) := by
   simp [Formalism.GradedWeylDivisibility.rowAct]
 
 /- English proof (translation)
-Use `⟨X_mem_FiltB _ v, ?_⟩` and prove the remaining obligations. Rewrite using `[rowAct_X_B, ← Finset.add_sum_erase _ _ (Finset.mem_univ v.1), hd, map_one, one_mul, Prod.mk.eta, add_sub_cancel_left]`. Use `Submodule.sum_mem _ fun b hb => ?_` and prove the remaining obligations. Establish `hb' : b ≠ v.1` using `Finset.ne_of_mem_erase hb`. Distinguish the cases in `h0 : M v.1 b = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h0, map_zero, zero_mul]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[← smul_eq_C_mul]`. Use `Submodule.smul_mem _ _ (FiltB_mono _ ?_ (X_mem_FiltB _ (b, v.2)))` and prove the remaining obligations. Conclude with `ho v.1 b (Ne.symm hb') h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GoodB_X_tri {n N : ℕ} (M : Matrix (Fin N) (Fin N) ℂ) (hd : ∀ a, M a a = 1)
     (ho : ∀ a b, a ≠ b → M a b ≠ 0 → prowB n N a < prowB n N b) (v : Fin N × Fin N) :
@@ -168,7 +168,7 @@ theorem GoodB_X_tri {n N : ℕ} (M : Matrix (Fin N) (Fin N) ℂ) (hd : ∀ a, M 
     exact ho v.1 b (Ne.symm hb') h0
 
 /- English proof (translation)
-Introduce `e he`. Rewrite using `[weight_psiB, hg he]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem homog_psi_B {n N : ℕ} (g : MvPolynomial (Fin N × Fin N) ℂ) (m : Fin n → ℕ)
     (hg : IsWeightedHomogeneous (wnB n N) g m) : IsWeightedHomogeneous (psiB n N) g (PsiB n m) := by
@@ -176,11 +176,9 @@ theorem homog_psi_B {n N : ℕ} (g : MvPolynomial (Fin N × Fin N) ℂ) (m : Fin
   rw [weight_psiB, hg he]
 
 /- English proof (translation)
-Rewrite using `[← comp_sum_B (wnB n N) x (x.support.image (Finsupp.weight (wnB n N))) (fun e he => Finset.mem_image_of_mem _ he)]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hle` using `hmax _ (graded_B h lam W hW x hxW m) hne m (weightedHomogeneousComponent_isWeightedHomogeneous _ _)`. Take `⟨e, hc⟩` from `MvPolynomial.ne_zero_iff.mp hne`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hc` using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs at hc with hw`. Establish `h1` using `hxF e (mem_support_iff.mpr hc)`. Rewrite `h1` using `[weight_psiB, hw]`. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `hc rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem high_zero_B {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (W : Submodule ℂ (MvPolynomial (Fin N × Fin N) ℂ))
     (hW : IsStable h lam W) (k : ℕ)
@@ -201,9 +199,9 @@ theorem high_zero_B {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (W : Submodu
   · exact hc rfl
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum, Finsupp.sum, Finset.mul_sum]`. Use `Finset.sum_le_sum fun v _ => ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul, Pi.one_apply, mul_one]`. Establish `: psiB n N v ≤ n`. Unfold `psiB prowB`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs <;> omega`. Combine the equalities or inequalities in the displayed calculation.
+Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation.
 -/
 theorem psi_le_B {n N : ℕ} (e : Fin N × Fin N →₀ ℕ) :
     Finsupp.weight (psiB n N) e ≤ n * Finsupp.weight (1 : Fin N × Fin N → ℕ) e := by
@@ -217,9 +215,9 @@ theorem psi_le_B {n N : ℕ} (e : Fin N × Fin N →₀ ℕ) :
     _ = n * e v := mul_comm _ _
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `MvPolynomial.ne_zero_iff.mp hg0`. Establish `hhom` using `dualWeyl_le_homog_B N N lam.natW hg`. Rewrite `hhom` using `[mem_homogeneousSubmodule]`. Establish `h1 : Finsupp.weight (1 : Fin N × Fin N → ℕ) e = ∑ s, lam.natW s` using `hhom he`. Rewrite using `[← hm he, ← weight_psiB, ← h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `psi_le_B e`.
+A detailed English derivation is pending.
 -/
 theorem bound_B {n N : ℕ} (lam : DomWeight N) (g : MvPolynomial (Fin N × Fin N) ℂ) (hg : g ∈ nablaSq ℂ N lam)
     (hg0 : g ≠ 0) (m : Fin n → ℕ) (hm : IsWeightedHomogeneous (wnB n N) g m) :
@@ -232,19 +230,17 @@ theorem bound_B {n N : ℕ} (lam : DomWeight N) (g : MvPolynomial (Fin N × Fin 
   exact psi_le_B e
 
 /- English proof (translation)
-Use `⟨fun a => ?_, fun a b hab hne => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite using `[embGL_apply_B]`. Distinguish the cases in `ha : a.1 < n`. Rewrite using `[dif_pos ha, dif_pos ha]`. Conclude with `hd _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg ha, if_neg ha]`. Establish `ha2` using `a.2`. Establish `hb2` using `b.2`. Rewrite `hne` using `[embGL_apply_B]`. Apply the tactic sequence `by_cases hb : b.1 < n <;> by_cases ha : a.1 < n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hne` using `[dif_pos hb, dif_pos ha]`. Establish `hba : ¬ (a.1 < b.1)` using `fun hlt => hne (hl _ _ (Fin.mk_lt_mk.mpr hlt))`. Establish `hne' : a.1 ≠ b.1` using `fun e => hab (Fin.ext e)`. Unfold `prowB`. Rewrite using `[if_pos ha, if_pos hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `hne` using `[dif_pos hb, dif_neg ha]`. Conclude with `absurd rfl hne`. Rewrite `hne` using `[dif_neg hb, if_pos ha]`. Conclude with `absurd rfl hne`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Fin.ext (by omega)) hab`. Establish `ha2` using `a.2`. Establish `hb2` using `b.2`. Rewrite using `[embGL_apply_B]`. Apply the tactic sequence `by_cases hb : b.1 < n <;> by_cases ha : a.1 < n`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[dif_pos hb, dif_pos ha]`. Conclude with `hl _ _ (Fin.mk_lt_mk.mpr (Fin.lt_def.mp hab))`. Conclude with `absurd (lt_trans (Fin.lt_def.mp hab) hb) ha`. Rewrite using `[dif_neg hb, if_pos ha]`. Use `Fin.lt_def.mp hab` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem embGL_unitri_B {n N : ℕ} (h : n + 1 = N) (u : GL (Fin n) ℂ) (hl : ∀ i j, j < i → u i j = 0)
     (hd : ∀ i, u i i = 1) :
@@ -282,9 +278,9 @@ theorem embGL_unitri_B {n N : ℕ} (h : n + 1 = N) (u : GL (Fin n) ℂ) (hl : �
       omega
 
 /- English proof (translation)
-Take `⟨h1, _, h3⟩` from `embGL_unitri_B h u hl hd`. Establish `hdet : (((embGL ℂ n N h u : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)).det = 1`. Rewrite using `[Matrix.det_of_isUpperTriangular (fun i j hij => h3 j i hij)]`. Simplify using `[h1]`. Establish `hu : Matrix.GeneralLinearGroup.det (embGL ℂ n N h u) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hdet]`. Both sides reduce to the same expression. Unfold `detPow`. Rewrite using `[hu, one_zpow, Units.val_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem detPow_unitri_B {n N : ℕ} (h : n + 1 = N) (u : GL (Fin n) ℂ) (hl : ∀ i j, j < i → u i j = 0)
     (hd : ∀ i, u i i = 1) (c : ℤ) : detPow ℂ N (embGL ℂ n N h u) c = 1 := by

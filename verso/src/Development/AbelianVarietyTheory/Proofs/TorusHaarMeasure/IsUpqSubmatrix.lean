@@ -13,25 +13,25 @@ def swapIdx {r p : ℕ} (hp : p ≤ r) : Fin (r - p) ⊕ Fin p ≃ Fin r :=
   ((Equiv.sumComm _ _).trans finSumFinEquiv).trans (finCongr (by omega))
 
 /- English proof (translation)
-Use `ext`. Simplify using `[swapIdx]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem swapIdx_inr {r p : ℕ} (hp : p ≤ r) (a : Fin p) :
     swapIdx hp (Sum.inr a) = Fin.castLE hp a := by
   ext; simp [swapIdx]
 
 /- English proof (translation)
-Simplify using `[swapIdx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem swapIdx_inl_val {r p : ℕ} (hp : p ≤ r) (a : Fin (r - p)) :
     ((swapIdx hp (Sum.inl a) : Fin r) : ℕ) = p + a := by
   simp [swapIdx]
 
 /- English proof (translation)
-Rewrite using `[Matrix.submatrix_diagonal_equiv]`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Jf, swapIdx_inl_val, sgn]`. Simplify using `[Jf, h, Matrix.one_apply_ne h]`. Simplify using `[Jf]`. Simplify using `[Jf]`. Distinguish the cases in `h : i = j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[Jf, swapIdx_inr, sgn]`. Simplify using `[Jf, h, Matrix.one_apply_ne h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sgn_submatrix {r p : ℕ} (hp : p ≤ r) :
     (Matrix.diagonal fun a : Fin r => ((sgn p (a : ℕ) : ℝ) : ℂ)).submatrix (swapIdx hp) (swapIdx hp) =
@@ -49,9 +49,9 @@ theorem sgn_submatrix {r p : ℕ} (hp : p ≤ r) :
     · simp [Jf, h, Matrix.one_apply_ne h]
 
 /- English proof (translation)
-Use `set J : Matrix (Fin r) (Fin r) ℂ := Matrix.diagonal fun a : Fin r => ((sgn p (a : ℕ) : ℝ) : ℂ) with hJ`. Establish `hJT : Jᵀ = J` using `Matrix.diagonal_transpose _`. Establish `h1 : gᴴ * J * g = J`. Use `congrArg Matrix.transpose hg` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, hJT, ← Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h2 : Jf (r - p) p = -(J.submatrix (swapIdx hp) (swapIdx hp))`. Rewrite using `[hJ, sgn_submatrix, neg_neg]`. Unfold `IsUpq`. Rewrite using `[h2, Matrix.conjTranspose_submatrix, Matrix.mul_neg, Matrix.neg_mul, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, h1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUpq_submatrix {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r) ℂ}
     (hg : gᵀ * (Matrix.diagonal fun a : Fin r => ((sgn p (a : ℕ) : ℝ) : ℂ)) * g.map (starRingEnd ℂ) =
@@ -73,16 +73,14 @@ theorem isUpq_submatrix {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r) �
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `τ` and use `by rw [OntoS.gram_lact X hγ, hx τ]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isOrth_lact {r : ℕ} (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x : Frame X.Ψ r}
     (hx : IsOrth X x) : IsOrth X (lact γ x) := fun τ => by
   rw [OntoS.gram_lact X hγ, hx τ]
 
 /- English proof (translation)
-Apply `isUpq_submatrix` to reduce the goal to its premises. Establish `hu : IsUnit (mat x0 τ).det` using `isUnit_iff_ne_zero.mpr (ExF.det_ne_of_orth X h0 τ)`. Establish `h` using `hy τ`. Use `conv_lhs at h => rw [← Matrix.mul_nonsing_inv_cancel_left (mat x0 τ) (mat y τ) hu]`. Rewrite `h` using `[FrameDegreeData.gram_mul, h0 τ]`.
-
-Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUpq_frame {r : ℕ} (X : Data E r) {x0 y : Frame X.Ψ r} (h0 : IsOrth X x0)
     (hy : IsOrth X y) (τ : X.Ψ) :
@@ -95,11 +93,11 @@ theorem isUpq_frame {r : ℕ} (X : Data E r) {x0 y : Frame X.Ψ r} (h0 : IsOrth 
   exact h
 
 /- English proof (translation)
-Establish `hu0 : IsUnit (mat x0 τ).det` using `isUnit_iff_ne_zero.mpr (ExF.det_ne_of_orth X h0 τ)`. Establish `hu : IsUnit (mat x τ).det` using `isUnit_iff_ne_zero.mpr (ExF.det_ne_of_orth X hx τ)`. Establish `e1 : ∀ γ : GL (Fin r) E, mat (lact γ x) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ` using `fun _ => rfl`. Establish `hγ : ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * (γ : Matrix (Fin r) (Fin r) E).map τ.1 = 1`. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero τ.1) (map_one τ.1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ((mat x0 τ)⁻¹ * mat (lact γ x) τ)⁻¹ = (mat x τ)⁻¹ * (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x0 τ)`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[e1]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hu0, ← Matrix.mul_assoc _ _ (mat x τ), hγ, Matrix.one_mul, Matrix.nonsing_inv_mul _ hu]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinv, e1, Units.val_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hu]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem quot_eq {r : ℕ} (X : Data E r) {x0 x : Frame X.Ψ r} (h0 : IsOrth X x0) (hx : IsOrth X x)
     (γ δ : GL (Fin r) E) (τ : X.Ψ) :
@@ -124,15 +122,15 @@ theorem quot_eq {r : ℕ} (X : Data E r) {x0 x : Frame X.Ψ r} (h0 : IsOrth X x0
   rw [Matrix.mul_nonsing_inv_cancel_left _ _ hu]
 
 /- English proof (translation)
-Introduce `hsep r X x0 h0 hPD s hs`. Take `⟨c, hc, hcs⟩` from `hsep r X x0 h0 hPD`. Establish `hr : r - X.p0 + X.p0 = r` using `Nat.sub_add_cancel X.p0_le`. Take `⟨C, hC, hb⟩` from `sumBd_sum (p := r - X.p0) (q := X.p0) (f := X.Ψ.card) (s := s) (by rw [hr]; exact hs) hc`. Use `⟨C, hC, fun x hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `eΨ : Fin X.Ψ.card ≃ X.Ψ` to `X.Ψ.equivFin.symm`. Establish `key` using `hb X.Γ (fun γ k => ((mat x0 (eΨ k))⁻¹ * mat (lact γ.1 x) (eΨ k)).submatrix (swapIdx X.p0_le) (swapIdx X.p0_le)) (fun γ k => isUpq_frame X h0 (isOrth_lact X γ.2 hx) _) (fun γ δ hne => by`. Establish `hmem : δ.1 * γ.1⁻¹ ∈ X.Γ` using `X.Γ.mul_mem δ.2 (X.Γ.inv_mem γ.2)`. Establish `hne1 : δ.1 * γ.1⁻¹ ≠ 1` using `fun h => hne (Subtype.ext (mul_inv_eq_one.mp h).symm)`. Take `⟨τ, a, b, hab⟩` from `hcs _ hmem hne1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨eΨ.symm τ, (swapIdx X.p0_le).symm a, (swapIdx X.p0_le).symm b, ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.apply_symm_apply, Matrix.inv_submatrix_equiv, Matrix.submatrix_mul_equiv, quot_eq X h0 hx, Matrix.submatrix_apply, Equiv.apply_symm_apply, Equiv.apply_symm_apply]`. Rewrite `hab` using `[Matrix.sub_apply]`. Use `hab using 3` and compare the differences between its conclusion and the goal. Simplify using `[Matrix.one_apply])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Use `le_trans (le_of_eq ?_) key` and prove the remaining obligations. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← Real.finset_prod_rpow _ _ (fun τ _ => by positivity), ← eΨ.prod_comp]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IC.norm_dmin_orth X (isOrth_lact X γ.2 hx), one_div, Complex.normSq_eq_norm_sq]`. Establish `hm : ∀ M : Matrix (Fin r) (Fin r) ℂ, lminor M (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1)) = (M.submatrix (swapIdx X.p0_le) (swapIdx X.p0_le)).toBlocks₂₂.det` using `fun M => by`. Unfold `lminor`. Use `congr 1`. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_sum_bound :
     (∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → PropDisc X → ∃ c : ℝ, 0 < c ∧ ∀ γ ∈ X.Γ, γ ≠ 1 → ∃ (τ : X.Ψ) (a b : Fin r), c ≤ ‖((mat x0 τ)⁻¹ * (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x0 τ - 1) a b‖) → (∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → PropDisc X → ∀ s : ℝ, 2 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < s → ∃ C : ℝ≥0∞, C < ⊤ ∧ ∀ x, IsOrth X x → ∑' γ : X.Γ, ENNReal.ofReal ((∏ τ : X.Ψ, ‖dmin X.Gm (lact γ.1 x) τ (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ / ‖lminor ((mat x0 τ)⁻¹ * mat (lact γ.1 x) τ) (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ ^ 2) ^ s) ≤ C) := by

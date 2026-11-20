@@ -22,28 +22,28 @@ namespace Sum
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-The claim follows from `(E1.kerBasic (E1.ctx E1.ratProper_holds D) φ hφ).1 x y`.
+A detailed English derivation is pending.
 -/
 theorem kerFin (D : Dom E a b) {φ : H E a b → ℂ} (hφ : IsTestH φ) (x y : H E a b) :
     (Function.support fun γ : ratH E a b => φ (x⁻¹ * (γ : H E a b) * y)).Finite :=
   (E1.kerBasic (E1.ctx E1.ratProper_holds D) φ hφ).1 x y
 
 /- English proof (translation)
-The claim follows from `(E1.kernel_rows_columns_square_integrable (E1.ctx E1.ratProper_holds D) φ hφ).2 x`.
+A detailed English derivation is pending.
 -/
 theorem kerRow (D : Dom E a b) {φ : H E a b → ℂ} (hφ : IsTestH φ) (x : H E a b) :
     MemLp (fun y => kerH φ x y) 2 D.ν :=
   (E1.kernel_rows_columns_square_integrable (E1.ctx E1.ratProper_holds D) φ hφ).2 x
 
 /- English proof (translation)
-The claim follows from `(kerRow D hφ x).integrable_mul hf`.
+A detailed English derivation is pending.
 -/
 theorem rowI (D : Dom E a b) {φ : H E a b → ℂ} (hφ : IsTestH φ) {f : H E a b → ℂ} (hf : MemLp f 2 D.ν)
     (x : H E a b) : Integrable (fun y => kerH φ x y * f y) D.ν :=
   (kerRow D hφ x).integrable_mul hf
 
 /- English proof (translation)
-Unfold `kerH`. Conclude with `finsum_add_distrib (kerFin D hφ x y) (kerFin D hψ x y)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kerAdd (D : Dom E a b) {φ ψ : H E a b → ℂ} (hφ : IsTestH φ) (hψ : IsTestH ψ) (x y : H E a b) :
     kerH (φ + ψ) x y = kerH φ x y + kerH ψ x y := by
@@ -51,7 +51,7 @@ theorem kerAdd (D : Dom E a b) {φ ψ : H E a b → ℂ} (hφ : IsTestH φ) (hψ
   exact finsum_add_distrib (kerFin D hφ x y) (kerFin D hψ x y)
 
 /- English proof (translation)
-Unfold `kerH`. Conclude with `(mul_finsum _ _).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kerSmul (D : Dom E a b) {φ : H E a b → ℂ} (hφ : IsTestH φ) (c : ℂ) (x y : H E a b) :
     kerH (c • φ) x y = c * kerH φ x y := by
@@ -59,21 +59,21 @@ theorem kerSmul (D : Dom E a b) {φ : H E a b → ℂ} (hφ : IsTestH φ) (c : �
   exact (mul_finsum _ _).symm
 
 /- English proof (translation)
-Introduce `i j` and use `⟨(hΦ i j).1.add (hΨ i j).1, (hΦ i j).2.add (hΨ i j).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem testAdd {ι : Type} {Φ Ψ : Matrix ι ι (H E a b → ℂ)} (hΦ : IsTestM Φ) (hΨ : IsTestM Ψ) : IsTestM (Φ + Ψ) :=
   fun i j => ⟨(hΦ i j).1.add (hΨ i j).1, (hΦ i j).2.add (hΨ i j).2⟩
 
 /- English proof (translation)
-Introduce `i j` and use `⟨(hΦ i j).1.const_smul c, (hΦ i j).2.mono (Function.support_const_smul_subset c _)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem testSmul {ι : Type} {Φ : Matrix ι ι (H E a b → ℂ)} (c : ℂ) (hΦ : IsTestM Φ) : IsTestM (c • Φ) :=
   fun i j => ⟨(hΦ i j).1.const_smul c, (hΦ i j).2.mono (Function.support_const_smul_subset c _)⟩
 
 /- English proof (translation)
-Introduce `f i`. Establish `e1 : (((0 : Hs (ι` using `ι) D →L[ℂ] Hs (ι := ι) D) f i : Lp ℂ 2 D.ν) : H E a b → ℂ) =ᵐ[D.ν] 0 := by`. Rewrite using `[ContinuousLinearMap.zero_apply, PiLp.zero_apply]`. Conclude with `Lp.coeFn_zero _ _ _`. Use `filter_upwards [e1] with x h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Simplify using `[kerH]`.
+A detailed English derivation is pending.
 -/
 theorem ropZero (D : Dom E a b) {ι : Type} [Fintype ι] : IsROp D (0 : Matrix ι ι (H E a b → ℂ)) 0 := by
   intro f i
@@ -85,11 +85,9 @@ theorem ropZero (D : Dom E a b) {ι : Type} [Fintype ι] : IsROp D (0 : Matrix �
   simp [kerH]
 
 /- English proof (translation)
-Introduce `f i`. Establish `e1 : (((T + S) f i : Lp ℂ 2 D.ν) : H E a b → ℂ) =ᵐ[D.ν] ((T f i : Lp ℂ 2 D.ν) : H E a b → ℂ) + ((S f i : Lp ℂ 2 D.ν) : H E a b → ℂ)`. Rewrite using `[ContinuousLinearMap.add_apply, PiLp.add_apply]`. Conclude with `Lp.coeFn_add _ _`. Use `filter_upwards [e1, hT f i, hS f i] with x h1 h2 h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, Pi.add_apply, h2, h3, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_add (rowI D (hΦ i j) (Lp.memLp (f j)) x) (rowI D (hΨ i j) (Lp.memLp (f j)) x)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.add_apply, kerAdd D (hΦ i j) (hΨ i j)]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ropAdd (D : Dom E a b) {ι : Type} [Fintype ι] {Φ Ψ : Matrix ι ι (H E a b → ℂ)}
     {T S : Hs (ι := ι) D →L[ℂ] Hs (ι := ι) D} (hΦ : IsTestM Φ) (hΨ : IsTestM Ψ) (hT : IsROp D Φ T)
@@ -108,11 +106,9 @@ theorem ropAdd (D : Dom E a b) {ι : Type} [Fintype ι] {Φ Ψ : Matrix ι ι (H
   ring
 
 /- English proof (translation)
-Introduce `f i`. Establish `e1 : (((c • T) f i : Lp ℂ 2 D.ν) : H E a b → ℂ) =ᵐ[D.ν] c • ((T f i : Lp ℂ 2 D.ν) : H E a b → ℂ)`. Rewrite using `[ContinuousLinearMap.smul_apply, PiLp.smul_apply]`. Conclude with `Lp.coeFn_smul _ _`. Use `filter_upwards [e1, hT f i] with x h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, Pi.smul_apply, h2, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, kerSmul D (hΦ i j)]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ropSmul (D : Dom E a b) {ι : Type} [Fintype ι] {Φ : Matrix ι ι (H E a b → ℂ)}
     {T : Hs (ι := ι) D →L[ℂ] Hs (ι := ι) D} (c : ℂ) (hΦ : IsTestM Φ) (hT : IsROp D Φ T) :
@@ -132,11 +128,11 @@ theorem ropSmul (D : Dom E a b) {ι : Type} [Fintype ι] {Φ : Matrix ι ι (H E
 end Sum
 
 /- English proof (translation)
-Introduce `E _ _ _ a b D ι J _ s c Φ T h`. Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `only [Finset.sum_empty]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨fun _ _ => ⟨continuous_const, HasCompactSupport.zero⟩, Sum.ropZero D⟩`. Introduce `j s hj ih h`. Establish `h'` using `ih fun k hk => h k (Finset.mem_insert_of_mem hk)`. Take `⟨h1, h2⟩` from `h j (Finset.mem_insert_self j s)`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Sum.testAdd (Sum.testSmul (c j) h1) h'.1, Sum.ropAdd D (Sum.testSmul (c j) h1) h'.1 (Sum.ropSmul D (c j) h1 h2) h'.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem blkSum : BlockLinearCombinations := by
   intro E _ _ _ a b D ι J _ s c Φ T h
@@ -159,7 +155,7 @@ section Lev
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Take `⟨-, ⟨l1, s1, t1⟩, -⟩` from `PositivityTheory.Rg.BcB.G8.topo_holds E a`. Take `⟨-, ⟨l2, s2, t2⟩, -⟩` from `PositivityTheory.Rg.BcB.G8.topo_holds E b`. Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hfTop (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) :
     LocallyCompactSpace (Hf E a b) ∧ SecondCountableTopology (Hf E a b) ∧ T2Space (Hf E a b) := by
@@ -170,9 +166,9 @@ theorem hfTop (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) :
 variable [BorelSpace (Hf E a b)] (ν : Measure (Hf E a b)) [ν.IsHaarMeasure] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Unfold `mulF`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Use `((integral_mul_left_eq_self (fun h => ψ x z h * ψ' z y (h⁻¹ * (u * g))) u).symm.trans ?_)` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Use `beta_reduce`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show (u * h)⁻¹ * (u * g) = h⁻¹ * g by group, hu]`.
+A detailed English derivation is pending.
 -/
 theorem levLeft {ψ : Matrix κ κ (Hf E a b → ℂ)} (ψ' : Matrix κ κ (Hf E a b → ℂ)) {u : Hf E a b}
     (hu : ∀ x y h, ψ x y (u * h) = ψ x y h) (x y : κ) (g : Hf E a b) :
@@ -185,7 +181,7 @@ theorem levLeft {ψ : Matrix κ κ (Hf E a b → ℂ)} (ψ' : Matrix κ κ (Hf E
   rw [show (u * h)⁻¹ * (u * g) = h⁻¹ * g by group, hu]
 
 /- English proof (translation)
-Unfold `mulF`. Simplify using `only [← mul_assoc, hu]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem levRight (ψ : Matrix κ κ (Hf E a b → ℂ)) {ψ' : Matrix κ κ (Hf E a b → ℂ)} {u : Hf E a b}
     (hu : ∀ x y h, ψ' x y (h * u) = ψ' x y h) (x y : κ) (g : Hf E a b) :
@@ -194,9 +190,9 @@ theorem levRight (ψ : Matrix κ κ (Hf E a b → ℂ)) {ψ' : Matrix κ κ (Hf 
   simp only [← mul_assoc, hu]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x y g`. Simplify using `only [adjF, mulF, map_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_conj]`. Use `Eq.trans ?_ (integral_mul_left_eq_self (fun h => starRingEnd ℂ (ψ' z x h⁻¹) * starRingEnd ℂ (ψ y z (h⁻¹ * g)⁻¹)) g)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Establish `e1 : ((g * h)⁻¹ * g)⁻¹ = h` using `by group`. Establish `e2 : (g * h)⁻¹ = h⁻¹ * g⁻¹` using `by group`. Simplify using `only [e1]`. Simplify using `only [e2, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -215,7 +211,7 @@ theorem adjMul (ψ ψ' : Matrix κ κ (Hf E a b → ℂ)) : adjF (mulF ν ψ ψ'
   ring
 
 /- English proof (translation)
-Use `PMul.mulF_fin (κ := Unit) ν (ψ := fun _ _ => A) (ψ' := fun _ _ => B') (fun _ _ => hA) (fun _ _ => hB) () ()` as an intermediate fact. Unfold `mulF at this`. Simplify using `using this`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem convTest {A B' : Hf E a b → ℂ} (hA : Continuous A ∧ HasCompactSupport A)
     (hB : Continuous B' ∧ HasCompactSupport B') :
@@ -227,11 +223,11 @@ theorem convTest {A B' : Hf E a b → ℂ} (hA : Continuous A ∧ HasCompactSupp
 variable [LocallyCompactSpace (Hf E a b)] [SecondCountableTopology (Hf E a b)] [T2Space (Hf E a b)]
 
 /- English proof (translation)
-Establish `inner : ∀ k, ∫ h, B' h * C (h⁻¹ * (k⁻¹ * g)) ∂ν = ∫ h, B' (k⁻¹ * h) * C (h⁻¹ * g) ∂ν`. Introduce `k`. Combine the equalities or inequalities in the displayed calculation. Establish `lhs : ∀ h, (∫ k, A k * B' (k⁻¹ * h) ∂ν) * C (h⁻¹ * g) = ∫ k, A k * B' (k⁻¹ * h) * C (h⁻¹ * g) ∂ν` using `fun h => (integral_mul_const _ _).symm`. Establish `rhs : ∀ k, A k * ∫ h, B' (k⁻¹ * h) * C (h⁻¹ * g) ∂ν = ∫ h, A k * B' (k⁻¹ * h) * C (h⁻¹ * g) ∂ν` using `fun k => by rw [← integral_const_mul]; simp only [mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Repeatedly rewrite using `[lhs, inner, rhs]`. Establish `hcont : Continuous fun p : Hf E a b × Hf E a b => A p.2 * B' (p.2⁻¹ * p.1) * C (p.1⁻¹ * g)` using `((hA.1.comp continuous_snd).mul (hB.1.comp (continuous_snd.inv.mul continuous_fst))).mul (hC.1.comp (continuous_fst.inv.mul continuous_const))`. Establish `hK : IsCompact ((tsupport A * tsupport B') ×ˢ tsupport A)` using `(hA.2.isCompact.mul hB.2.isCompact).prod hA.2.isCompact`. Use `integral_integral_swap (f := fun h k => A k * B' (k⁻¹ * h) * C (h⁻¹ * g)) ?_` and prove the remaining obligations. Use `hcont.integrable_of_hasCompactSupport (HasCompactSupport.intro hK fun p hp => ?_)` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Establish `h1 : A p.2 ≠ 0` using `left_ne_zero_of_mul (left_ne_zero_of_mul hne)`. Establish `h2 : B' (p.2⁻¹ * p.1) ≠ 0` using `right_ne_zero_of_mul (left_ne_zero_of_mul hne)`. Conclude with `hp ⟨Set.mem_mul.2 ⟨p.2, subset_tsupport _ h1, p.2⁻¹ * p.1, subset_tsupport _ h2, mul_inv_cancel_left _ _⟩, subset_tsupport _ h1⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem assoc1 {A B' C : Hf E a b → ℂ} (hA : Continuous A ∧ HasCompactSupport A)
     (hB : Continuous B' ∧ HasCompactSupport B') (hC : Continuous C ∧ HasCompactSupport C) (g : Hf E a b) :
@@ -262,13 +258,13 @@ theorem assoc1 {A B' C : Hf E a b → ℂ} (hA : Continuous A ∧ HasCompactSupp
     subset_tsupport _ h1⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x y g`. Simplify using `only [mulF]`. Establish `L : ∀ w, ∫ h, (∑ z, ∫ k, ψ x z k * ψ' z w (k⁻¹ * h) ∂ν) * ψ'' w y (h⁻¹ * g) ∂ν = ∑ z, ∫ h, (∫ k, ψ x z k * ψ' z w (k⁻¹ * h) ∂ν) * ψ'' w y (h⁻¹ * g) ∂ν`. Introduce `w`. Repeatedly rewrite using `[Finset.sum_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `integral_finset_sum _ fun z _ => ?_` and prove the remaining obligations. Take `⟨c1, c2⟩` from `convTest ν (h1 x z) (h2 z w)`. Conclude with `(c1.mul ((h3 w y).1.comp (continuous_inv.mul continuous_const))).integrable_of_hasCompactSupport c2.mul_right`. Establish `R : ∀ z, ∫ k, ψ x z k * (∑ w, ∫ h, ψ' z w h * ψ'' w y (h⁻¹ * (k⁻¹ * g)) ∂ν) ∂ν = ∑ w, ∫ k, ψ x z k * ∫ h, ψ' z w h * ψ'' w y (h⁻¹ * (k⁻¹ * g)) ∂ν ∂ν`. Introduce `z`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[Finset.mul_sum]`. Use `integral_finset_sum _ fun w _ => ?_` and prove the remaining obligations. Take `⟨c1, -⟩` from `convTest ν (h2 z w) (h3 w y)`. Establish `c3 : Continuous fun k : Hf E a b => ∫ h, ψ' z w h * ψ'' w y (h⁻¹ * (k⁻¹ * g)) ∂ν` using `c1.comp (continuous_inv.mul continuous_const)`. Conclude with `((h1 x z).1.mul c3).integrable_of_hasCompactSupport (h1 x z).2.mul_right`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.sum_congr rfl fun w _ => L w).trans (Eq.trans ?_ (Finset.sum_congr rfl fun z _ => R z).symm)` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun z _ => Finset.sum_congr rfl fun w _ => assoc1 ν (h1 x z) (h2 z w) (h3 w y) g`.
+A detailed English derivation is pending.
 -/
 theorem assoc {ψ ψ' ψ'' : Matrix κ κ (Hf E a b → ℂ)} (h1 : IsFinM ψ) (h2 : IsFinM ψ') (h3 : IsFinM ψ'') :
     mulF ν (mulF ν ψ ψ') ψ'' = mulF ν ψ (mulF ν ψ' ψ'') := by
@@ -299,7 +295,7 @@ end Lev
 end Sum
 
 /- English proof (translation)
-Introduce `E _ _ _ B ψ ψ' ψ'' h1 h2 h3`. Use `haveI := B.hν`. Use `haveI : BorelSpace (Hf E B.a B.b) := ⟨rfl⟩`. Take `⟨_, _, _⟩` from `Sum.hfTop E B.a B.b`. Conclude with `⟨fun u hu x y g => Sum.levLeft B.ν ψ' hu x y g, fun u hu x y g => Sum.levRight B.ν ψ hu x y g, Sum.assoc B.ν h1 h2 h3, Sum.adjMul B.ν ψ ψ'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem blkLevel : BlockProductLevels := by
   intro E _ _ _ B ψ ψ' ψ'' h1 h2 h3

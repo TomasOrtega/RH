@@ -13,12 +13,12 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 def DiscreteSeriesExists : Prop := DiscreteSeriesUpqExists
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem discreteSeriesExists_iff_upq : DiscreteSeriesExists ↔ DiscreteSeriesUpqExists := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem discreteSeriesExists_iff : DiscreteSeriesExists ↔
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), Formalism.QuantumDeterminants.IsHCParam lam →
@@ -26,17 +26,17 @@ theorem discreteSeriesExists_iff : DiscreteSeriesExists ↔
         (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsDS ε lam σ := Iff.rfl
 
 /- English proof (translation)
-Establish `cp : Fintype.card {a // ε a = true} = p` using `by rw [Fintype.card_subtype]; exact hp`. Establish `cq : Fintype.card {a // ¬ ε a = true} = q`. Rewrite using `[Fintype.card_subtype, ← hq]`. Simplify using the standard rewrite rules. Set `e' : Fin p ⊕ Fin q ≃ Fin n` to `(Equiv.sumCongr (Fintype.equivFinOfCardEq cp).symm (Fintype.equivFinOfCardEq cq).symm).trans (Equiv.sumCompl fun a => ε a = true)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hl : ∀ i, ε (e' (Sum.inl i)) = true` using `fun i => ((Fintype.equivFinOfCardEq cp).symm i).2`. Establish `hr : ∀ i, ¬ ε (e' (Sum.inr i)) = true` using `fun i => ((Fintype.equivFinOfCardEq cq).symm i).2`. Establish `hJm : Formalism.REAL.Jm ε = (Formalism.UG.Jpq p q).submatrix e'.symm e'.symm`. Use extensionality with `a b`. Take `⟨x, rfl⟩` from `e'.surjective a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `e'.surjective b`. Simplify using `only [Formalism.REAL.Jm, Formalism.UG.Jpq, submatrix_apply, Equiv.symm_apply_apply, diagonal_apply, EmbeddingLike.apply_eq_iff_eq]`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y <;> simp [hl, hr, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Take `⟨e, Q, hQ⟩` from `hJ`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Establish `hQ' : (Q : Matrix _ _ ℂ)ᴴ * J.reindex e e * (Q : Matrix _ _ ℂ) = Formalism.UG.Jpq p q` using `hQ`. Establish `h1 : ((Q⁻¹ : GL _ ℂ) : Matrix _ _ ℂ)ᴴ * Formalism.UG.Jpq p q * ((Q⁻¹ : GL _ ℂ) : Matrix _ _ ℂ) = J.reindex e e`. Rewrite using `[← hQ']`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by rw [Units.mul_inv]; simp`. Use `⟨((Q⁻¹ : GL _ ℂ) : Matrix _ _ ℂ).submatrix e'.symm e, ?_, ?_⟩` and prove the remaining obligations. Use `IsUnit.of_mul_eq_one ((Q : Matrix _ _ ℂ).submatrix e e'.symm) ?_` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_mul_equiv, Units.inv_mul, Matrix.submatrix_one_equiv]`. Rewrite using `[hJm, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, h1]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_frame_of_hasSignature {n p q : ℕ} {J : Matrix (Fin n) (Fin n) ℂ} (hJ : Formalism.UG.HasSignature J p q)
     (ε : Fin n → Bool) (hp : (Finset.univ.filter fun a => ε a = true).card = p)
@@ -75,7 +75,7 @@ theorem exists_frame_of_hasSignature {n p q : ℕ} {J : Matrix (Fin n) (Fin n) �
     simp
 
 /- English proof (translation)
-Introduce `D V S hV hS`. Use `choose lam ε hE hP hp hq using hS`. Use `choose H i1 i2 σ hσ using fun τ => discreteSeriesExists_iff.1 h V.rank (ε τ) (lam τ) (hP τ)`. Use `choose A hA hG using fun τ => exists_frame_of_hasSignature (hV (tauE D τ)) (ε τ) (hp τ) (hq τ)`. Conclude with `⟨@Formalism.IndefR.Mult.DSModel.mk D V S H i1 i2 σ lam ε A hE hσ hA hG⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dsExists_of_discreteSeriesExists (h : DiscreteSeriesExists) :
     ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar), Formalism.IndefR.Mult.DSExists V S := by

@@ -16,7 +16,7 @@ def etil (ν : Y →ₗ[ℤ] ℤ) (a : Y) : E :=
   ∑ k, ((ν (RingOfIntegers.basis E k • a) : ℤ) : E) * ed E k
 
 /- English proof (translation)
-Unfold `comp etil`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[map_mul, map_intCast]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem comp_int (ν : Y →ₗ[ℤ] ℤ) (σ : E →+* ℂ) (a : Y) :
     comp (Algebra.linearMap ℤ ℝ ∘ₗ ν) σ a = σ (etil ν a) := by
@@ -26,7 +26,7 @@ theorem comp_int (ν : Y →ₗ[ℤ] ℤ) (σ : E →+* ℂ) (a : Y) :
   simp [map_mul, map_intCast]
 
 /- English proof (translation)
-Use `show etil ν a ∈ ((Dinv E : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E)`. Unfold `etil`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zsmul_eq_mul]`. Conclude with `zsmul_mem (FractionalIdeal.mem_coe.mpr (ed_mem k)) _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etil_mem (ν : Y →ₗ[ℤ] ℤ) (a : Y) : etil ν a ∈ Dinv E := by
   show etil ν a ∈ ((Dinv E : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E)
@@ -36,21 +36,19 @@ theorem etil_mem (ν : Y →ₗ[ℤ] ℤ) (a : Y) : etil ν a ∈ Dinv E := by
   exact zsmul_mem (FractionalIdeal.mem_coe.mpr (ed_mem k)) _
 
 /- English proof (translation)
-Establish `hcj' : ∀ (φ : E →+* ℂ) (z : E), φ (cj z) = conj (φ z)` using `fun φ z => hcj φ z`. Establish `hadd1 : ∀ a a' b : Y, (comp η σ (a + a') * conj (comp η σ b)).re = (comp η σ a * conj (comp η σ b)).re + (comp η σ a' * conj (comp η σ b)).re`. Introduce `a a' b`. Rewrite using `[comp_add, add_mul, Complex.add_re]`. Establish `hadd2 : ∀ a b b' : Y, (comp η σ a * conj (comp η σ (b + b'))).re = (comp η σ a * conj (comp η σ b)).re + (comp η σ a * conj (comp η σ b')).re`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a b b'`. Rewrite using `[comp_add, map_add, mul_add, Complex.add_re]`. Set `β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ` to `(AddMonoidHom.mk' (fun a => (AddMonoidHom.mk' (fun b => (comp η σ a * conj (comp η σ b)).re) (hadd2 a)).toIntLinearMap) (fun a a' => LinearMap.ext fun b => hadd1 a a' b)).toIntLinearMap`. Establish `hβ : ∀ a b, β a b = (comp η σ a * conj (comp η σ b)).re` using `fun a b => rfl`. Establish `hsq : ∀ a, (comp η σ a * conj (comp η σ a)).re = Complex.normSq (comp η σ a)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Use `first`. Consider the case `(rw [Complex.mul_conj, Complex.ofReal_re])`. Consider the case `(simp only [Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.normSq_apply]; ring)`. Establish `hmem : β ∈ SymB cj Y` using `by show _ ∧ _`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a b => ?_, fun c c' hc a b => ?_⟩` and prove the remaining obligations. Rewrite using `[hβ, hβ]`. Simplify using `only [Complex.mul_re, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hβ, hβ, comp_smul, comp_smul, map_mul, hc, hcj', Complex.conj_conj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hpsd : ∀ a, 0 ≤ ((⟨β, hmem⟩ : SymB cj Y) : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a a`. Introduce `a`. Use `show 0 ≤ β a a`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hβ, hsq]`. Conclude with `Complex.normSq_nonneg _`. Establish `hne : (⟨β, hmem⟩ : SymB cj Y) ≠ 0`. Introduce `h`. Establish `h2 : β a₀ a₀ = 0` using `by first`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `exact congrArg (fun γ : SymB cj Y => (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a₀ a₀) h`. Consider the case `simpa using congrArg (fun γ : SymB cj Y => (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a₀ a₀) h`. Rewrite `h2` using `[hβ, hsq]`. Conclude with `ha₀ (Complex.normSq_eq_zero.mp h2)`. Establish `hl : l ⟨β, hmem⟩ = ∑ i, (comp η σ (x i) * conj (comp η σ (x' i))).re` using `(htie _).trans (Finset.sum_congr rfl fun i _ => hβ _ _)`.
-
-Rewrite using `[← hl]`. Conclude with `hpos _ hpsd hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pos_lemma {cj : E → E} (hcj : ∀ (φ : E →+* ℂ) (z : E), φ (cj z) = star (φ z))
     (l : SymB cj Y →ₗ[ℝ] ℝ)
@@ -105,29 +103,27 @@ private theorem pos_lemma {cj : E → E} (hcj : ∀ (φ : E →+* ℂ) (z : E), 
   exact hpos _ hpsd hne
 
 /- English proof (translation)
-Establish `h : ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E) = (Dinv E)⁻¹` using `by first`. Consider the case `exact coeIdeal_differentIdeal (A := ℤ) (K := ℚ) (L := E) (B := 𝓞 E)`. Consider the case `exact coeIdeal_differentIdeal ℤ ℚ`. Consider the case `exact coeIdeal_differentIdeal ℤ ℚ (𝓞 E) E`. Establish `h3 : FractionalIdeal.absNorm ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E) = ((discr E).natAbs : ℚ)` using `by first`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `(rw [FractionalIdeal.coeIdeal_absNorm, absNorm_differentIdeal])`. Consider the case `(rw [FractionalIdeal.coeIdeal_absNorm, NumberField.absNorm_differentIdeal (K := E)])`. Consider the case `(rw [FractionalIdeal.coeIdeal_absNorm, NumberField.absNorm_differentIdeal E])`. Consider the case `(rw [FractionalIdeal.coeIdeal_absNorm]; exact_mod_cast NumberField.absNorm_differentIdeal)`. Rewrite `h3` using `[h, map_inv₀]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdinv : FractionalIdeal.absNorm (Dinv E) = ((discr E).natAbs : ℚ)⁻¹`. Rewrite using `[← h3, inv_inv]`. Apply the tactic sequence `have hd : discr E ≠ 0 := by first | exact NumberField.discr_ne_zero E | exact NumberField.discr_ne_zero`. Establish `hd' : ((discr E).natAbs : ℚ) ≠ 0`. Conclude with `Int.natAbs_ne_zero.mpr hd` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : Dinv E ≠ 0`. Introduce `h0`. Rewrite `hdinv` using `[h0, map_zero]`. Conclude with `hd' (inv_eq_zero.mp hdinv.symm)`. Establish `hD2 : Dinv E * Dinv E ≠ 0` using `mul_ne_zero hD hD`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hle : FractionalIdeal.spanSingleton (𝓞 E)⁰ t ≤ Dinv E * Dinv E` using `FractionalIdeal.spanSingleton_le_iff_mem.mpr ht`. Take `⟨J, hJ⟩ : ∃ J, J = (Dinv E * Dinv E)⁻¹ * FractionalIdeal.spanSingleton (𝓞 E)⁰ t` from `⟨_, rfl⟩`. Establish `hspan : FractionalIdeal.spanSingleton (𝓞 E)⁰ t = (Dinv E * Dinv E) * J`. Rewrite using `[hJ, mul_inv_cancel_left₀ hD2]`. Establish `hJ1 : J ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hJ]`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact mul_le_mul_left' hle _`. Consider the case `exact FractionalIdeal.mul_le_mul_left hle _`. Consider the case `exact mul_right_mono hle`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact mul_le_mul_left hle _`. Consider the case `(rw [mul_comm _ (FractionalIdeal.spanSingleton (𝓞 E)⁰ t), mul_comm _ (Dinv E * Dinv E)];`. Conclude with `mul_left_mono hle)`. Use `_ = 1 := inv_mul_cancel₀ hD2`. Take `⟨I, hI⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.mp hJ1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hJ0 : J ≠ 0`. Introduce `h0`. Rewrite `hspan` using `[h0, mul_zero]`. Conclude with `ht0 (FractionalIdeal.spanSingleton_eq_zero_iff.mp hspan)`. Establish `hI0 : I ≠ ⊥`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Apply `hJ0` to reduce the goal to its premises. Rewrite using `[← hI]`. Apply the tactic sequence `first | exact FractionalIdeal.coeIdeal_bot | simp`. Establish `hJn : (1 : ℚ) ≤ FractionalIdeal.absNorm J`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hI]`. Establish `hI1 : 1 ≤ Ideal.absNorm I` using `Nat.one_le_iff_ne_zero.mpr (fun h => hI0 (Ideal.absNorm_eq_zero_iff.mp h))`. Use `first`. Consider the case `(rw [FractionalIdeal.coeIdeal_absNorm]; exact_mod_cast hI1)`. Consider the case `(rw [FractionalIdeal.absNorm_eq' 1 I (by first | (rw [one_smul]; rfl) | simp [IsLocalization.coeSubmodule] | rfl)]; simp; exact_mod_cast hI1)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : |Algebra.norm ℚ t| = FractionalIdeal.absNorm (Dinv E * Dinv E) * FractionalIdeal.absNorm J`. Rewrite using `[← map_mul, ← hspan]`. Use `first`. Consider the case `exact (FractionalIdeal.absNorm_span_singleton (R := 𝓞 E) t).symm`. Consider the case `exact (FractionalIdeal.absNorm_span_singleton t).symm`.
-
-Establish `h2 : FractionalIdeal.absNorm (Dinv E * Dinv E) = (((discr E).natAbs : ℚ) ^ 2)⁻¹`. Rewrite using `[map_mul, hdinv, sq, mul_inv]`. Rewrite using `[h1, h2]`. Establish `h4 : (0 : ℚ) ≤ (((discr E).natAbs : ℚ) ^ 2)⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem normb_lemma_2 {t : E} (ht : t ∈ Dinv E * Dinv E) (ht0 : t ≠ 0) :
     (((discr E).natAbs : ℚ) ^ 2)⁻¹ ≤ |Algebra.norm ℚ t| := by
@@ -204,9 +200,9 @@ private theorem normb_lemma_2 {t : E} (ht : t ∈ Dinv E * Dinv E) (ht0 : t ≠ 
     _ ≤ _ := mul_le_mul_of_nonneg_left hJn h4
 
 /- English proof (translation)
-Establish `hcard : (Fintype.card (E →+* ℂ) : ℝ) = finrank ℚ E`. Rewrite using `[NumberField.Embeddings.card]`. Apply the tactic sequence `have hn : (0 : ℝ) < finrank ℚ E := by first | exact_mod_cast Module.finrank_pos | exact_mod_cast FiniteDimensional.finrank_pos`. Establish `hn' : (finrank ℚ E : ℝ) ≠ 0` using `hn.ne'`. Establish `hsum : ∑ _σ : E →+* ℂ, (1 : ℝ) / finrank ℚ E = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcard, mul_one_div_cancel hn']`. Establish `h : ∏ σ, w σ ^ ((1 : ℝ) / finrank ℚ E) ≤ ∑ σ, (1 : ℝ) / finrank ℚ E * w σ` using `Real.geom_mean_le_arith_mean_weighted Finset.univ (fun _ => (1 : ℝ) / finrank ℚ E) w (fun _ _ => by positivity) hsum (fun σ _ => hw σ)`. Rewrite `h` using `[Real.finset_prod_rpow _ _ (fun σ _ => hw σ), ← Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem amgm_lemma_3 (w : (E →+* ℂ) → ℝ) (hw : ∀ σ, 0 ≤ w σ) :
     (finrank ℚ E : ℝ) * (∏ σ, w σ) ^ ((1 : ℝ) / finrank ℚ E) ≤ ∑ σ, w σ := by
@@ -227,9 +223,9 @@ private theorem amgm_lemma_3 (w : (E →+* ℂ) → ℝ) (hw : ∀ σ, 0 ≤ w �
     _ = ∑ σ, w σ := by rw [← mul_assoc, mul_one_div_cancel hn', one_mul]
 
 /- English proof (translation)
-Establish `h : algebraMap ℚ ℂ (Algebra.norm ℚ t) = ∏ σ : E →ₐ[ℚ] ℂ, σ t` using `by first`. Consider the case `exact Algebra.norm_eq_prod_embeddings ℚ ℂ t`. Consider the case `exact Algebra.norm_eq_prod_embeddings (K := ℚ) (E := ℂ) t`. Consider the case `exact Algebra.norm_eq_prod_embeddings t`. Establish `h2 : (∏ σ : E →ₐ[ℚ] ℂ, σ t) = ∏ σ : E →+* ℂ, σ t` using `Fintype.prod_equiv (RingHom.equivRatAlgHom E ℂ).symm _ _ (fun σ => rfl)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `h` using `[h2, Finset.prod_congr rfl (fun σ _ => hw σ), ← Complex.ofReal_prod]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← h]`. Apply the tactic sequence `first | simp | (rw [eq_ratCast]; simp) | norm_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem normprod_lemma_4 (t : E) (w : (E →+* ℂ) → ℝ) (hw : ∀ σ : E →+* ℂ, σ t = (w σ : ℂ)) :
     ((Algebra.norm ℚ t : ℚ) : ℝ) = ∏ σ, w σ := by
@@ -246,31 +242,29 @@ private theorem normprod_lemma_4 (t : E) (w : (E →+* ℂ) → ℝ) (hw : ∀ �
   first | simp | (rw [eq_ratCast]; simp) | norm_cast
 
 /- English proof (translation)
-Establish `hv : ∀ (σ : E →+* ℂ) (a : Y), comp (Algebra.linearMap ℤ ℝ ∘ₗ ν) σ a = σ (etil ν a)` using `fun σ a => comp_int ν σ a`. Establish `hcj' : ∀ (φ : E →+* ℂ) (z : E), φ (cj z) = conj (φ z)` using `fun φ z => hcj φ z`. Establish `hη : (Algebra.linearMap ℤ ℝ ∘ₗ ν) ≠ 0`. Introduce `h`. Apply `hν` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `a`. Simplify using `using LinearMap.congr_fun h a`. Choose the witnesses or unpack the hypotheses as in `⟨a₀, ha₀⟩ : ∃ a, (etil ν a : E) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Apply the tactic sequence `have hP : Pm hcj (Algebra.linearMap ℤ ℝ ∘ₗ ν) (Algebra.linearMap ℤ ℝ ∘ₗ ν) ≠ 0 := by first | exact Pm_ne_zero hcj hη | exact Pm_ne_zero hη`. Apply `hP` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext₂` to reduce the goal to its premises. Introduce `a c`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Pm_apply, Pf, hv, hcon]`. Establish `hne : Nonempty (E →+* ℂ)`. Rewrite using `[← Fintype.card_pos_iff, NumberField.Embeddings.card]`. Apply the tactic sequence `first | exact Module.finrank_pos | exact FiniteDimensional.finrank_pos`. Take `⟨L, hL⟩ : ∃ L : (E →+* ℂ) → ℝ, ∀ σ, L σ = ∑ i, (comp (Algebra.linearMap ℤ ℝ ∘ₗ ν) σ (x i) * conj (comp (Algebra.linearMap ℤ ℝ ∘ₗ ν) σ (x' i))).re` from `⟨_, fun _ => rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLpos : ∀ σ, 0 < L σ`. Introduce `σ`. Rewrite using `[hL]`. Conclude with `pos_lemma hcj l hpos x x' htie _ σ a₀ (by rw [hv]; exact (map_ne_zero σ).mpr ha₀)`. Establish `hlP : l (Pm hcj (Algebra.linearMap ℤ ℝ ∘ₗ ν) (Algebra.linearMap ℤ ℝ ∘ₗ ν)) = ∑ σ, 2 * L σ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htie]`. Simplify using `only [Pm_apply, Pf, Complex.re_sum, Complex.add_re]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[hL, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Take `⟨t, ht⟩ : ∃ t : E, t = ∑ i, (etil ν (x i) * cj (etil ν (x' i)) + cj (etil ν (x i)) * etil ν (x' i))` from `⟨_, rfl⟩`. Establish `htσ : ∀ σ : E →+* ℂ, σ t = ((2 * L σ : ℝ) : ℂ)`. Introduce `σ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht, hL, Finset.mul_sum, Complex.ofReal_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, hcj', hcj', hv, hv]`. Apply the tactic sequence `apply Complex.ext <;>`. Apply the tactic sequence `simp only [Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htmem : t ∈ Dinv E * Dinv E`. Rewrite using `[ht]`. Use `FractionalIdeal.mem_coe.mp (Submodule.sum_mem _ fun i _ => Submodule.add_mem _ ?_ ?_)` and prove the remaining obligations. Conclude with `FractionalIdeal.mem_coe.mpr (FractionalIdeal.mul_mem_mul (etil_mem ν (x i)) (cj_mem_Dinv hcj (etil_mem ν (x' i))))`. Conclude with `FractionalIdeal.mem_coe.mpr (FractionalIdeal.mul_mem_mul (cj_mem_Dinv hcj (etil_mem ν (x i))) (etil_mem ν (x' i)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ht0 : t ≠ 0`. Introduce `h0`. Take `⟨φ⟩` from `hne`. Establish `h1` using `htσ φ`. Rewrite `h1` using `[h0, map_zero]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (2 * L φ : ℝ) = 0` using `by exact_mod_cast h1.symm`. Combine the linear relations using `[hLpos φ]`. Establish `hN : ((Algebra.norm ℚ t : ℚ) : ℝ) = ∏ σ, 2 * L σ` using `normprod_lemma_4 t (fun σ => 2 * L σ) htσ`. Establish `hprod : 0 < ∏ σ, 2 * L σ` using `Finset.prod_pos (fun σ _ => by linarith [hLpos σ])`. Establish `hB : ((((discr E).natAbs : ℝ) ^ 2)⁻¹) ≤ ∏ σ, 2 * L σ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `(Rat.cast_le (K := ℝ)).mpr (normb_lemma_2 htmem ht0)`. Rewrite `h1` using `[Rat.cast_abs, hN, abs_of_pos hprod]`. Simplify using `using h1`. Rewrite using `[hlP]`. Establish `hn : (0 : ℝ) ≤ finrank ℚ E` using `Nat.cast_nonneg _`.
-
-Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ hn` to reduce the goal to its premises. Conclude with `Real.rpow_le_rpow (by positivity) hB (by positivity)`. Use `_ ≤ ∑ σ, 2 * L σ := amgm_lemma_3 (fun σ => 2 * L σ) (fun σ => by linarith [hLpos σ])`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem lower_bound {cj : E → E} (hcj : ∀ (φ : E →+* ℂ) (z : E), φ (cj z) = star (φ z))
     (l : SymB cj Y →ₗ[ℝ] ℝ)

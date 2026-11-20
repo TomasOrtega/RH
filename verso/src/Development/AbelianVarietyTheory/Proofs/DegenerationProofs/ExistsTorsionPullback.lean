@@ -19,11 +19,11 @@ noncomputable section
 namespace GlobalTheory.ZH.TorsionValue
 
 /- English proof (translation)
-Establish `h` using `isGrpPullback_pullback H r`. Set `c' : baseOver B' ⟶ (Over.pullback r).obj H` to `Over.homMk (pullback.lift c.left (𝟙 B') ((Over.w c).trans (Category.id_comp r).symm)) (pullback.lift_snd _ _ _)`. Establish `e : c'.left ≫ pullback.fst H.hom r = c.left` using `pullback.lift_fst _ _ _`. Set `U : Over.mk ((baseOver B').hom ≫ r) ⟶ Over.mk r` to `Over.homMk (𝟙 B') rfl`. Establish `e₁ : pushHom h _ c' = preHom U c` using `Over.OverMorphism.ext (e.trans (Category.id_comp _).symm)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₂ : pushHom h _ (c' ^ n) = pushHom h _ 1`. Rewrite using `[map_pow, e₁, ← map_pow, hc, map_one, map_one]`. Use `⟨c', ?_, e⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h.1.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg (fun z => z.left) e₂`. Rewrite using `[Over.w, Over.w]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_torsion_pullback {B B' : Scheme.{0}} (H : Over B) [GrpObj H] (r : B' ⟶ B) (c : Over.mk r ⟶ H) (n : ℕ)
     (hc : c ^ n = 1) : ∃ c' : baseOver B' ⟶ (Over.pullback r).obj H, c' ^ n = 1 ∧
@@ -43,11 +43,11 @@ theorem exists_torsion_pullback {B B' : Scheme.{0}} (H : Over B) [GrpObj H] (r :
   · rw [Over.w, Over.w]
 
 /- English proof (translation)
-Set `k : τ.V →+* PadicAlgCl p` to `(GlobalTheory.ZJ.OO p).subtype.comp τ.j`. Establish `hk : Function.Injective k` using `Subtype.val_injective.comp τ.j_inj`. Establish `e : GlobalTheory.ZJ.gPt p ≫ spMap τ.j = spMap (IsFractionRing.lift (K` using `FractionRing τ.V) hk) ≫ jK τ.V := by`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Conclude with `(IsFractionRing.lift_algebraMap (K := FractionRing τ.V) hk x).symm`. Establish `e2 : GlobalTheory.ZJ.gPt p ≫ y = (spMap (IsFractionRing.lift (K` using `FractionRing τ.V) hk) ≫ τ.yK) ≫ C.U.ι := by`. Rewrite using `[Category.assoc, τ.yK_fac, ← Category.assoc, ← e, Category.assoc, τ.fac]`. Unfold `GlobalTheory.ZJ.Core.Cl`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `((spMap (IsFractionRing.lift (K := FractionRing τ.V) hk) ≫ τ.yK) w).2`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cl_of_test {C : GlobalTheory.ZJ.Core} {p : ℕ} [Fact p.Prime] {y : Sp (GlobalTheory.ZJ.OO p) ⟶ C.Z} (τ : C.Test y) : C.Cl y := by
   let k : τ.V →+* PadicAlgCl p := (GlobalTheory.ZJ.OO p).subtype.comp τ.j
@@ -66,7 +66,7 @@ theorem cl_of_test {C : GlobalTheory.ZJ.Core} {p : ℕ} [Fact p.Prime] {y : Sp (
   exact ((spMap (IsFractionRing.lift (K := FractionRing τ.V) hk) ≫ τ.yK) w).2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (OO p).subtype).2 (by rw [(RingHom.injective_iff_ker_eq_bot _).1 (OO p).subtype_injective]; exact bot_le)`.
+Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem isDominant_gPt (p : ℕ) [Fact p.Prime] : IsDominant (gPt p) := by
   constructor
@@ -74,9 +74,9 @@ theorem isDominant_gPt (p : ℕ) [Fact p.Prime] : IsDominant (gPt p) := by
     (by rw [(RingHom.injective_iff_ker_eq_bot _).1 (OO p).subtype_injective]; exact bot_le)
 
 /- English proof (translation)
-Establish `hr : Set.range y ⊆ Set.range W.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `((IsLocalRing.specializes_closedPoint w).map y.continuous).mem_open W.isOpen hy`. Establish `hy' : IsOpenImmersion.lift W.ι y hr ≫ W.ι = y` using `IsOpenImmersion.lift_fac _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, hy', ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono W.ι, Category.assoc, Category.assoc, Scheme.homOfLE_ι, hy', hx]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift {Z : Scheme.{0}} {N W : Z.Opens} (hN : N ≤ W) {p : ℕ} [Fact p.Prime] (y : Sp (OO p) ⟶ Z)
     (hy : y (cPt p) ∈ W) (x : Sp (kb p) ⟶ N.toScheme) (hx : x ≫ N.ι = rPt p ≫ y) :
@@ -90,7 +90,7 @@ theorem exists_lift {Z : Scheme.{0}} {N W : Z.Opens} (hN : N ≤ W) {p : ℕ} [F
   rw [← cancel_mono W.ι, Category.assoc, Category.assoc, Scheme.homOfLE_ι, hy', hx]
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono j]`. Simplify using `only [Category.assoc] at h₃ ⊢`. Rewrite using `[reassoc_of% h₁, h₂, reassoc_of% h₃, h₄, reassoc_of% h₅]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem chase {k O N W G P H H' Φ X V : Scheme.{0}} {x : k ⟶ N} {i : N ⟶ W} {h : W ⟶ G} {j : G ⟶ P} [Mono j]
     {r : k ⟶ O} {y' : O ⟶ W} {c₁ : O ⟶ X} {f : X ⟶ V} {κ : V ⟶ P} {c' : k ⟶ H'} {e : H' ⟶ Φ} {s : Φ ⟶ X}
@@ -104,7 +104,7 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω
   {U₀ : M.Z.Opens} {EE : M.Lat S.J} {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ M.Z} {y₀ : S.R →+* PadicAlgCl p}
 
 /- English proof (translation)
-Take `⟨e, -, he⟩` from `t.mt`. Use `(he a 0).2 (by rw [map_zero]; exact ha)` as an intermediate fact. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_ker (t : ρ.GeoTest p y₀) {a : S.Gam} (ha : a ∈ t.l.yy.ker) : a ∈ t.τ.yy.ker := by
   obtain ⟨e, -, he⟩ := t.mt
@@ -112,15 +112,15 @@ theorem mem_ker (t : ρ.GeoTest p y₀) {a : S.Gam} (ha : a ∈ t.l.yy.ker) : a 
   exact this
 
 /- English proof (translation)
-Use `Q.proper` as an intermediate fact. Use `isDominant_gPt p` as an intermediate fact. Establish `e : gPt p ≫ spMap t.u.j = jFK (R` using `t.u.V) (PadicAlgCl p) ≫ jK t.u.V := by`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e₀ : jFK (R` using `t.u.V) (PadicAlgCl p) ≫ spMap t.u.yK = spMap y₀ := by`. Use `Eq.trans ?_ (congrArg spMap t.u.fac)` and prove the remaining obligations. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Set `α : Sp (PadicAlgCl p) ⟶ pullback t.u.G.hom (jK t.u.V)` to `a'.left`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `ha : α ≫ pullback.snd _ _ = jFK (R` using `t.u.V) (PadicAlgCl p) := Over.w a'`. Establish `hs : (α ≫ tm.φ) ≫ pullback.snd _ _ = jFK (R` using `t.u.V) (PadicAlgCl p) ≫ c.yK := by`. Rewrite using `[Category.assoc, tm.φ_snd, ← Category.assoc, ha]`. Use `ext_of_isDominant_of_isSeparated Q.P.hom ?_ (gPt p) ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hh, hy, tm.f_over, ← Category.assoc, h₁, c.fac]`. Establish `k` using `hgen (gPt p ≫ y') (α ≫ tm.φ) ?_ ?_`. Rewrite `k` using `[Category.assoc, Category.assoc, tm.φ_f]`. Rewrite using `[k, ← Category.assoc (gPt p), h₂]`. Conclude with `(Category.assoc _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc (α ≫ tm.φ), hs, Category.assoc, Category.assoc, hy, c.yK_fac, ← Category.assoc, ← e, Category.assoc, c.fac]`. Rewrite using `[← Category.assoc (α ≫ tm.φ), hs, Category.assoc, Category.assoc, tm.φ_fst, ← Category.assoc c.yK, c.yK_u, ← Category.assoc (jFK _), e₀]`. Conclude with `h₃`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_eq_section {Q : Clos ρ M U₀ EE} {t : ρ.GeoTest p y₀} {c : Q.Fac y t.u} (tm : Q.TMap t c)
     {a : S.Gam} {W : M.Z.Opens} {h : W.toScheme ⟶ Q.G.toScheme} (hh : h ≫ Q.G.ι ≫ Q.P.hom = W.ι)
@@ -158,17 +158,15 @@ theorem integral_eq_section {Q : Clos ρ M U₀ EE} {t : ρ.GeoTest p y₀} {c :
       exact h₃
 
 /- English proof (translation)
-Introduce `hL o Ω _ _ _ _ S ρ M U₀ EE hB Q ex hS hG hF z _`. Establish `: NeZero (S.r * S.N)` using `⟨Nat.mul_ne_zero (by have := S.r_pos; omega) (by have := S.N_ge; omega)⟩`. Use `choose W h hz hh hgen using fun a : S.HH M z => GlobalTheory.T.exists_section_extending_torsionPoints_support hL o Ω S ρ M U₀ EE hB Q z a.1 a.2`. Set `N : M.Z.Opens` to `⟨⋂ a, (W a : Set M.Z), isOpen_iInter_of_finite fun a => (W a).isOpen⟩`. Establish `hN : ∀ a, N ≤ W a` using `fun a w hw => Set.mem_iInter.1 hw a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N, Set.mem_iInter.2 hz, ?_⟩` and prove the remaining obligations. Introduce `p _ y τ x c hy hx hc`. Establish `hcl` using `cl_of_test τ`. Take `⟨y₀, t, cf, ⟨tm⟩⟩` from `(GlobalTheory.T.exists_geometricTest_map_classicalPoint hL o Ω S ρ M U₀ EE hB Q hS hG).1 p y hcl`. Take `⟨e, he, hef⟩` from `GlobalTheory.T.exists_iso_special_fibre_test_geometric_test hL o Ω S ρ M U₀ EE hB Q ex p y y₀ t cf tm τ hS hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c', hc', hcl'⟩` from `exists_torsion_pullback τ.H _ c _ hc`. Establish `hint : ∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1` using `fun a => by`. Rewrite using `[cf.at_]`. Conclude with `RatModel.norm_val_le_one rfl ((M.O _).algebraMap_mem a)`. Establish `hX : (c' ≫ e.hom) ^ (S.r * S.N) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← MonObj.pow_comp, hc', MonObj.one_comp]`. Take `⟨a, ha, c₁, a', h₁, h₂, h₃, h₄⟩` from `(special_torsion_eq_reduction hL o Ω S ρ p y₀ t.u t.l t.σ t.cls t.mod hint).2.1 (c' ≫ e.hom) hX`. Establish `haH : a ∈ S.HH M z`. Rewrite using `[hB.atTest z p y y₀ t.τ ⟨hy, hcl⟩ cf.at_]`. Conclude with `mem_ker t ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `b : S.HH M z` to `⟨a, haH⟩`. Take `⟨y', hy', hxy⟩` from `exists_lift (Z := M.Z) (hN b) y ((congrArg (· ∈ W b) hy).mpr (hz b)) x hx`. Establish `key` using `integral_eq_section tm (hh b) (hgen b _) hy' h₁ h₂ h₃`. Use `⟨M.Z.homOfLE (hN b) ≫ h b, ?_, chase (j := Q.G.ι) hxy key h₄ hef hcl'⟩` and prove the remaining obligations. Use `show (M.Z.homOfLE (hN b) ≫ h b) ≫ Q.G.ι ≫ Q.P.hom = N.ι`.
-
-Rewrite using `[Category.assoc, hh, Scheme.homOfLE_ι]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsSec : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), BaseFacts S M U₀ EE → ∀ (Q : Clos ρ M U₀ EE) (ex : Q.Ext), S.Big → ρ.HasGeo → ex.core.Fib → ex.core.TorsSec (S.r * S.N) := by
   intro hL o Ω _ _ _ _ S ρ M U₀ EE hB Q ex hS hG hF z _

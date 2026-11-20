@@ -11,15 +11,15 @@ namespace UpperTheory.TNZ.Grp.P_lamBasic
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hA : MulArchimedean (ValueGroupWithZero k)` using `ValuativeRel.isRankLeOne_iff_mulArchimedean.mp inferInstance`. Establish `hker : (μ.ker : Set kˣ) ∈ nhds (1 : kˣ)` using `hμ.mem_nhds (one_mem _)`. Rewrite `hker` using `[Units.isEmbedding_val₀.isInducing.nhds_eq_comap, Filter.mem_comap]`. Take `⟨U, hU, hUsub⟩` from `hker`. Rewrite `hU` using `[Units.val_one, IsValuativeTopology.mem_nhds_iff']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨γ, hγ⟩` from `hU`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[k]`. Establish `hϖ1 : valuation k (ϖ : k) < 1` using `(Valuation.Integer.not_isUnit_iff_valuation_lt_one).mp hϖ.not_isUnit`. Take `⟨c, hc⟩` from `exists_pow_lt₀ hϖ1 γ`. Use `⟨c, fun u hu => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hu` using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨z, hz⟩` from `hu`. Establish `hz1 : valuation k (z : k) ≤ 1` using `(Valuation.mem_integer_iff _ _).mp z.2`. Establish `hv : valuation k (((unitIncl k u : kˣ) : k) - 1) < γ`. Establish `h1 : ((unitIncl k u : kˣ) : k) - 1 = (ϖ : k) ^ c * (z : k)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `((u : 𝒪[k]) : k) - 1 = _`. Use `congrArg (fun x : 𝒪[k] => (x : k)) hz` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[h1, map_mul, map_pow]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `hUsub (hγ hv)`.
+A detailed English derivation is pending.
 -/
 theorem exists_triv (μ : kˣ →* ℂˣ) (hμ : IsSmoothChar μ) :
     ∃ c : ℕ, ∀ u : 𝒪[k]ˣ, (u : 𝒪[k]) - 1 ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ c → res μ u = 1 := by
@@ -51,7 +51,7 @@ theorem exists_triv (μ : kˣ →* ℂˣ) (hμ : IsSmoothChar μ) :
   exact hUsub (hγ hv)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_triv μ hμ`. Conclude with `Nat.sInf_mem (s := {c | ∀ u : 𝒪[k]ˣ, (u : 𝒪[k]) - 1 ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ c → res μ u = 1}) ⟨c, hc⟩ u hu`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem triv_cond (μ : kˣ →* ℂˣ) (hμ : IsSmoothChar μ) (u : 𝒪[k]ˣ)
     (hu : (u : 𝒪[k]) - 1 ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ cond (res μ)) : res μ u = 1 := by
@@ -60,19 +60,19 @@ theorem triv_cond (μ : kˣ →* ℂˣ) (hμ : IsSmoothChar μ) (u : 𝒪[k]ˣ)
     ⟨c, hc⟩ u hu
 
 /- English proof (translation)
-Take `⟨⟨h, rfl⟩, hc⟩` from `hg`. Use `set I := IsLocalRing.maximalIdeal 𝒪[k] ^ r`. Use `set M : Matrix ι ι 𝒪[k] := (h : Matrix (Fin n) (Fin n) 𝒪[k]).submatrix f f with hM`. Establish `hinj : Function.Injective (algebraMap 𝒪[k] k)` using `Subtype.val_injective`. Apply the tactic sequence `have hentry : ∀ i j, (M i j) - (if i = j then 1 else 0) ∈ I := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `i j`. Take `⟨y, hy, hyx⟩` from `hc (f i) (f j)`. Establish `: y = M i j - (if i = j then 1 else 0)`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hyx]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [hM, Matrix.submatrix_apply, map_sub, hf.eq_iff]`. Apply the tactic sequence `split_ifs <;> simp [Matrix.GeneralLinearGroup.map]`. Rewrite using `[← this]`. Conclude with `hy`. Establish `hmk : M.map (Ideal.Quotient.mk I) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.one_apply]`. Apply the tactic sequence `have := Ideal.Quotient.eq.mpr (hentry i j)`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD : M.det - 1 ∈ I`. Rewrite using `[← Ideal.Quotient.eq, RingHom.map_det, RingHom.mapMatrix_apply, hmk, Matrix.det_one, map_one]`. Establish `hDm : M.det - 1 ∈ IsLocalRing.maximalIdeal 𝒪[k]` using `Ideal.pow_le_self (by omega) hD`. Establish `hunit : IsUnit M.det`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : M.det ∈ IsLocalRing.maximalIdeal 𝒪[k]` using `(IsLocalRing.mem_maximalIdeal _).mpr hn`. Establish `: (1 : 𝒪[k]) ∈ IsLocalRing.maximalIdeal 𝒪[k]`. Use `Ideal.sub_mem _ h1 hDm` as an intermediate fact. Simplify using `using this`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal 𝒪[k]).ne_top ((Ideal.eq_top_iff_one _).mpr this)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hunit.unit, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[IsUnit.unit_spec]`. Conclude with `hD`.
+A detailed English derivation is pending.
 -/
 theorem minor_unit {n r : ℕ} (hr : 1 ≤ r) {g : GL (Fin n) k} (hg : g ∈ KC k n r) {ι : Type} {_ : Fintype ι}
     {_ : DecidableEq ι} (f : ι → Fin n) (hf : Function.Injective f) :
@@ -115,7 +115,7 @@ theorem minor_unit {n r : ℕ} (hr : 1 ≤ r) {g : GL (Fin n) k} (hg : g ∈ KC 
     exact hD
 
 /- English proof (translation)
-Establish `h0 : algebraMap 𝒪[k] k u ≠ 0`. Introduce `h`. Conclude with `u.ne_zero (Subtype.val_injective (by simpa using h))`. Rewrite using `[chk, dif_neg h0, show Units.mk0 _ h0 = unitIncl k u from Units.ext rfl]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chk_unit (μ : kˣ →* ℂˣ) (u : 𝒪[k]ˣ) : chk μ (algebraMap 𝒪[k] k u) = ((res μ u : ℂˣ) : ℂ) := by
   have h0 : algebraMap 𝒪[k] k u ≠ 0 := by
@@ -133,17 +133,17 @@ open UpperTheory.TNZ.Grp.P_lamBasic
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `hb`. Take `⟨-, hlt, hcond, hq⟩` from `hb`. Establish `hlev : 1 ≤ G.lev` using `by unfold lev; omega`. Establish `key : ∀ g ∈ KC k n G.lev, G.lam g = 1`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `lam`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Take `⟨u, hu, hu1⟩` from `minor_unit hlev hg (Subtype.val : {i : Fin n // G.bl i ≤ a} → Fin n) Subtype.val_injective`. Establish `hΔ : G.Δ a g = algebraMap 𝒪[k] k u` using `hu`. Rewrite using `[hΔ, chk_unit]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `μnext`. Use `split_ifs with h`. Establish `hle : IsLocalRing.maximalIdeal 𝒪[k] ^ G.lev ≤ IsLocalRing.maximalIdeal 𝒪[k] ^ cc G.μ a ⟨a + 1, h⟩` using `Ideal.pow_le_pow_right (hlt a _).le`. Rewrite using `[hq a ⟨a + 1, h⟩ u (hle hu1)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_one]`. Establish `hle : IsLocalRing.maximalIdeal 𝒪[k] ^ G.lev ≤ IsLocalRing.maximalIdeal 𝒪[k] ^ cond (res (G.μ a))` using `Ideal.pow_le_pow_right (hcond a).le`. Rewrite using `[triv_cond (G.μ a) (G.smooth a) u (hle hu1)]`. Both sides reduce to the same expression. Establish `hone : (1 : GL (Fin n) k) ∈ KC k n G.lev`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨one_mem _, fun i j => ⟨0, zero_mem _, ?_⟩⟩` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`. Use `⟨key 1 hone, fun g => ?_, key⟩` and prove the remaining obligations. Unfold `lam`. Use `Finset.prod_ne_zero_iff.mpr fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `chk`. Use `split_ifs`. Conclude with `one_ne_zero`. Conclude with `Units.ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem step_lamBasic {n : ℕ} (G : Grp k n) : LambdaBasicProp G := by
   intro hb

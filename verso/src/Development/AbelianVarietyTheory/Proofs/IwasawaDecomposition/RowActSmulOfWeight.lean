@@ -18,7 +18,7 @@ section General
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← h, Finsupp.weight_apply, Finsupp.sum, Finsupp.sum]`. Simplify using `only [Finset.sum_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[Formalism.GradedWeylDivisibility.colW, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem degree_of_colWeight {ν : Fin n → ℕ} (m : Fin n × Fin n →₀ ℕ)
     (h : Finsupp.weight (Formalism.GradedWeylDivisibility.colW n n) m = ν) : (m.sum fun _ k => k) = ∑ j, ν j := by
@@ -30,9 +30,9 @@ theorem degree_of_colWeight {ν : Fin n → ℕ} (m : Fin n × Fin n →₀ ℕ)
   simp [Formalism.GradedWeylDivisibility.colW, Pi.single_apply]
 
 /- English proof (translation)
-Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[← degree_of_colWeight m (hf (mem_support_iff.mp hm))]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ v : Fin n × Fin n, (∑ b : Fin n, C ((c • g) v.1 b) * X (b, v.2) : MvPolynomial (Fin n × Fin n) R) = C c * ∑ b : Fin n, C (g v.1 b) * X (b, v.2)`. Introduce `v`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, C_mul, Finset.mul_sum, mul_assoc]`. Simplify using `only [Formalism.GradedWeylDivisibility.rowAct, aeval_monomial, h1, Finsupp.prod, Finsupp.sum, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, smul_eq_C_mul, C_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rowAct_smul_of_weight {R : Type} [CommRing R] {ν : Fin n → ℕ} (c : R) (g : Matrix (Fin n) (Fin n) R)
     (f : MvPolynomial (Fin n × Fin n) R) (hf : IsWeightedHomogeneous (Formalism.GradedWeylDivisibility.colW n n) f ν) :
@@ -54,13 +54,13 @@ theorem rowAct_smul_of_weight {R : Type} [CommRing R] {ν : Fin n → ℕ} (c : 
 def totDeg (lam : ι → DomWeight n) : ℕ := ∑ τ, ∑ j, (lam τ).natW j
 
 /- English proof (translation)
-Unfold `VV Formalism.GradedWeylDivisibility.tensorLat at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem P hP`. Take `⟨F, hF, rfl⟩` from `hP`. Establish `hT` using `(Formalism.GradedWeylDivisibility.blockActTensor K K ι n n (fun τ => a • M τ)).1`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hT'` using `(Formalism.GradedWeylDivisibility.blockActTensor K K ι n n M).1`. Establish `h2 : ∀ τ, Formalism.GradedWeylDivisibility.blockEmb K τ (Formalism.GradedWeylDivisibility.rowAct K (a • M τ) (F τ)) = C (a ^ (∑ j, (lam τ).natW j)) * Formalism.GradedWeylDivisibility.blockEmb K τ (Formalism.GradedWeylDivisibility.rowAct K (M τ) (F τ))`. Introduce `τ`. Rewrite using `[rowAct_smul_of_weight a (M τ) (F τ) (Formalism.GradedWeylDivisibility.mem_dualWeyl_iff.1 (hF τ)).1, map_smul, smul_eq_C_mul]`. Rewrite using `[map_prod, map_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hT, hT']`. Rewrite using `[Finset.prod_congr rfl fun τ _ => h2 τ, Finset.prod_mul_distrib, ← map_prod, Finset.prod_pow_eq_pow_sum, smul_eq_C_mul]`. Both sides reduce to the same expression. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy, smul_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => rw [map_smul, map_smul, hx, smul_comm]`.
+Treat this case separately.
 -/
 theorem blockAct_smul_of_mem (lam : ι → DomWeight n) (a : K) (M : ι → Matrix (Fin n) (Fin n) K)
     {y : Formalism.L2.DIV.Pol K ι n} (hy : y ∈ VV K lam) :
@@ -89,11 +89,11 @@ variable [StarRing K]
 def negSign (lam : ι → DomWeight n) : K := gramTw lam (fun _ => (-1 : Matrix (Fin n) (Fin n) K)) * (-1) ^ totDeg lam
 
 /- English proof (translation)
-Establish `hy` using `blockAct_smul_of_mem lam (-1 : K) (fun τ => (G τ)ᵀ) y.2`. Establish `hT : (fun τ => (-G τ)ᵀ) = fun τ => (-1 : K) • (G τ)ᵀ`. Use function extensionality and compare the values at `τ`. Rewrite using `[Matrix.transpose_neg, neg_one_smul]`. Establish `hg : gramTw lam (fun τ => -G τ) = gramTw lam (fun _ => (-1 : Matrix (Fin n) (Fin n) K)) * gramTw lam G`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `gramTw`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow, ← Matrix.det_mul, neg_mul, one_mul]`. Simplify using `only [pairK, pairP, LinearMap.domRestrict₁₂_apply, LinearMap.smul_apply, LinearMap.compl₂_apply, AlgHom.toLinearMap_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hT, hy, map_smul, hg, negSign, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairK_neg (lam : ι → DomWeight n) (G : ι → Matrix (Fin n) (Fin n) K) (x y : VV K lam) :
     pairK lam (fun τ => -G τ) x y = negSign lam * pairK lam G x y := by
@@ -112,11 +112,11 @@ theorem pairK_neg (lam : ι → DomWeight n) (G : ι → Matrix (Fin n) (Fin n) 
   ring
 
 /- English proof (translation)
-Establish `hd : ((-1 : Matrix (Fin n) (Fin n) K)).det * ((-1 : Matrix (Fin n) (Fin n) K)).det = 1`. Rewrite using `[← Matrix.det_mul, neg_mul_neg, one_mul, Matrix.det_one]`. Establish `hz : ∀ e : ℤ, ((-1 : Matrix (Fin n) (Fin n) K)).det ^ e * ((-1 : Matrix (Fin n) (Fin n) K)).det ^ e = 1`. Introduce `e`. Rewrite using `[← mul_zpow, hd, _root_.one_zpow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : ((-1 : K) ^ totDeg lam) * (-1) ^ totDeg lam = 1`. Rewrite using `[← mul_pow, neg_one_mul, neg_neg, one_pow]`. Establish `hgg : gramTw lam (fun _ => (-1 : Matrix (Fin n) (Fin n) K)) * gramTw lam (fun _ => (-1 : Matrix (Fin n) (Fin n) K)) = 1`. Unfold `gramTw`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_one fun τ _ => hz _`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem negSign_mul_self (lam : ι → DomWeight n) : negSign (K := K) lam * negSign lam = 1 := by
   have hd : ((-1 : Matrix (Fin n) (Fin n) K)).det * ((-1 : Matrix (Fin n) (Fin n) K)).det = 1 := by
@@ -144,19 +144,19 @@ namespace GlobalTheory.RowsSign
 open scoped ComplexOrder InnerProductSpace
 
 /- English proof (translation)
-Establish `hG : gramK emb (-1 : Matrix (Fin n) (Fin n) E) = fun τ => -(gramK emb 1 τ)`. Use function extensionality and compare the values at `τ`. Use extensionality with `i j`. Simplify using `[gramK, Matrix.neg_apply, Matrix.one_apply]`. Establish `hneg : ∀ x y, pairV emb lam (-1) x y = negSign lam * pairV emb lam 1 x y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x y`. Unfold `pairV`. Rewrite using `[hG, pairK_neg]`. Distinguish the cases in `hnt : Nontrivial (VV K lam)`. Break down `mul_self_eq_one_iff.1 (negSign_mul_self (K := K) lam) with hc | hc` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `x y`. Rewrite using `[hneg, hc, one_mul]`. It suffices to derive a contradiction. Establish `hpos` using `Formalism.L2.DIV.pairPos K ι n lam (gramK emb 1) φ (fun τ => by`. Establish `: ((gramK emb (1 : Matrix (Fin n) (Fin n) E) τ).map φ) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[gramK, Matrix.one_apply]`. Rewrite using `[this]`. Conclude with `Matrix.PosDef.one)`. Take `⟨i⟩` from `(bVV K lam).index_nonempty`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hpos.diag_pos (i := i)`. Simplify using `only [Matrix.of_apply] at h1`. Establish `h2` using `h (bVV K lam i) (bVV K lam i)`. Rewrite `h2` using `[hneg, hc, neg_one_mul, map_neg]`. Establish `h3` using `inner_self_nonneg (𝕜 := ℂ) (x := c0 (bVV K lam i))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[h2, map_neg, RCLike.re_to_complex]`. Establish `h4` using `(Complex.lt_def.1 h1).1`. Establish `h5 : (φ (pairV emb lam 1 (bVV K lam i) (bVV K lam i))).re = (φ (pairK lam (gramK emb 1) (bVV K lam i) (bVV K lam i))).re` using `rfl`. Simplify using `only [Complex.zero_re] at h4`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hnt` using `[not_nontrivial_iff_subsingleton]`. Introduce `x y`. Rewrite using `[Subsingleton.elim x 0]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairV_neg_one_eq {E K : Type} [Field E] [Field K] [StarRing K] {ι : Type} [Fintype ι] {n : ℕ}
     (emb : ι → E →+* K) (lam : ι → DomWeight n) (φ : K →+* ℂ) {W : Type} [NormedAddCommGroup W]
@@ -203,11 +203,11 @@ end GlobalTheory.RowsSign
 
 open GlobalTheory.RowsSign in
 /- English proof (translation)
-Introduce `X px I hI cX gramR c0R hcX hg htie hinner x y`. Establish `hJ : X.toD7.sp.X'.gram = 1`. Take `⟨hs, -, h2, -⟩` from `hI.spaces`. Express the relevant statement in the definitionally equal form `X.B.sp.X'.gram = 1`. Rewrite using `[h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Matrix.ext fun i i' => (Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs _ _ _ _ i i').trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]`. Break down `hg with rfl | rfl` into its components or cases. Both sides reduce to the same expression. Rewrite `hinner`, the goal using `[hJ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `pairV_neg_one_eq _ _ _ c0R hinner x y`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RowsSign.pairV_gramR_eq : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px), I.Ok → ∀ (cX : CoefA X.toD7.sp.X') (gramR : Matrix (Fin X.toD7.sp.X'.rank) (Fin X.toD7.sp.X'.rank) X.toD7.host.E) (c0R : VV X.toD7.what₂.LL (fun τ => Bridge.lamRdef (Ptw X.toD7) τ) →ₛₗ[X.toD7.what₂.embLL] cX.W), cX.Is → (gramR = X.toD7.sp.X'.gram ∨ gramR = -X.toD7.sp.X'.gram) → Bridge.CoefMapTie X.toD7.sp.X' cX.coef c0R (rhoV (labLL X.toD7) _) → (∀ x y, inner ℂ (c0R x) (c0R y) = X.toD7.what₂.embLL (pairV (labLL X.toD7) _ gramR x y)) → ∀ x y, pairV (labLL X.toD7) (fun τ => Bridge.lamRdef (Ptw X.toD7) τ) gramR x y = pairV (labLL X.toD7) (fun τ => Bridge.lamRdef (Ptw X.toD7) τ) X.toD7.sp.X'.gram x y := by
   intro X px I hI cX gramR c0R hcX hg htie hinner x y

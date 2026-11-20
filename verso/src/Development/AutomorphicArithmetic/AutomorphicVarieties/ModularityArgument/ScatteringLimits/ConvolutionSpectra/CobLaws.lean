@@ -6,19 +6,19 @@ open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApply
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
 /- English proof (translation)
-Introduce `H _ _ _ F`. Establish `ii : ∀ h a b, IntervalIntegrable (fun s => F.U s h) volume a b` using `fun h a b => (F.cont h).intervalIntegrable a b`. Establish `hs : ∀ (c : ℂ) h, F.Cob h → F.Cob (c • h)` using `fun c h ⟨k, hk⟩ => ⟨c • k, fun t => by simp only [map_smul]; rw [intervalIntegral.integral_smul, hk, smul_sub]⟩`. Establish `ha : ∀ h h', F.Cob h → F.Cob h' → F.Cob (h + h')` using `fun h h' ⟨k, hk⟩ ⟨k', hk'⟩ => ⟨k + k', fun t => by simp only [map_add]; rw [intervalIntegral.integral_add (ii _ _ _) (ii _ _ _), hk, hk']; abel⟩`. Establish `hr : ∀ (F : Flow H) h, F.Cob h → F.rev.Cob h` using `fun F h ⟨k, hk⟩ => ⟨-k, fun t => by show ∫ s in (0 : ℝ)..t, F.U (-s) h = F.U (-t) (-k) - -k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[intervalIntegral.integral_comp_neg fun s => F.U s h, neg_zero, intervalIntegral.integral_symm, hk, map_neg]`. Use the proof step `abel⟩`. Use `⟨⟨0, fun t => by simp⟩, fun h h' a b => ⟨ha _ _ a b, ?_⟩, hs, fun h => ⟨fun x => ?_, hr F h⟩, fun s h => ?_, fun h ⟨k, hk⟩ => ⟨‖k‖ + ‖k‖, fun t => ?_⟩, fun hn h h' c ⟨k, hk⟩ => ?_, ?_⟩` and prove the remaining obligations. Simplify `ha _ _ a (hs (-1) _ b)` using `[sub_eq_add_neg]`. Take `⟨k, hk⟩` from `hr F.rev h x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨k, fun t => by simpa [Flow.rev] using hk t⟩`. Use `⟨-∫ r in (0 : ℝ)..s, F.U r h, fun t => ?_⟩` and prove the remaining obligations. Simplify using `only [map_sub, ← F.add]`. Establish `hc : Continuous fun r => F.U (r + s) h` using `(F.cont h).comp (continuous_id.add continuous_const)`. Rewrite using `[intervalIntegral.integral_sub (ii _ _ _) (hc.intervalIntegrable _ _), intervalIntegral.integral_comp_add_right fun r => F.U r h, map_neg, ← (F.U t).intervalIntegral_comp_comm (ii _ _ _)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← F.add]`. Rewrite using `[intervalIntegral.integral_comp_add_left fun r => F.U r h, zero_add, add_zero]`. Establish `e1` using `intervalIntegral.integral_add_adjacent_intervals (ii h 0 t) (ii h t (t + s))`. Establish `e2` using `intervalIntegral.integral_add_adjacent_intervals (ii h 0 s) (ii h s (t + s))`. Rewrite using `[eq_sub_of_add_eq e1, ← e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hk]; exact (norm_sub_le _ _).trans_eq (by rw [F.norm])`. Establish `e : ∀ a, ∫ s in (c - a)..(c + a), ⟪h', F.U s h⟫_ℂ = ⟪h', F.U (c + a) k⟫_ℂ - ⟪h', F.U (c - a) k⟫_ℂ` using `fun a => by`. Use `(innerSL ℂ h').intervalIntegral_comp_comm (ii h (c - a) (c + a))` as an intermediate fact. Simplify using `only [innerSL_apply_apply] at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← intervalIntegral.integral_interval_sub_left (ii h 0 _) (ii h 0 _), hk, hk, ← inner_sub_right]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Simplify using `only [e]`. Simplify `((hn k h').1.comp (tendsto_atTop_add_const_left _ c tendsto_id)).add ((hn k h').2.comp (tendsto_atBot_add_const_left _ c tendsto_neg_atTop_atBot)).neg` using `[sub_eq_add_neg]`.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `G _ _ _ F' Y hY h ⟨k, hk⟩`. Conclude with `⟨Y k, fun t => by simp only [← hY]; rw [Y.intervalIntegral_comp_comm (ii _ _ _), hk, map_sub]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.cobLaws :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (F : Flow H), F.Cob 0 ∧ (∀ h h', F.Cob h → F.Cob h' → F.Cob (h + h') ∧ F.Cob (h - h')) ∧ (∀ (c : ℂ) h, F.Cob h → F.Cob (c • h)) ∧

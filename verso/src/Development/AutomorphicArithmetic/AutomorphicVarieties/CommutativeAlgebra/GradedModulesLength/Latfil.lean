@@ -10,19 +10,19 @@ variable {O A E τ : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing E] 
   (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜] (wt : τ → ℤ) (φ : A →ₐ[O] MvPowerSeries τ E)
 
 /- English proof (translation)
-Introduce `_ h` and use `absurd h (Nat.not_lt_zero _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem mem_fil_zero (g : MvPowerSeries τ E) : g ∈ fil E wt 0 :=
   fun _ h => absurd h (Nat.not_lt_zero _)
 
 /- English proof (translation)
-The claim follows from `(fil_holds E τ wt a b g h hg hh).1`.
+A detailed English derivation is pending.
 -/
 private theorem fil_mul {a b : ℕ} {g h : MvPowerSeries τ E} (hg : g ∈ fil E wt a) (hh : h ∈ fil E wt b) :
     g * h ∈ fil E wt (a + b) := (fil_holds E τ wt a b g h hg hh).1
 
 /- English proof (translation)
-The claim follows from `(fil_holds E τ wt 0 0 g g (mem_fil_zero wt g) (mem_fil_zero wt g)).2 j hg`.
+A detailed English derivation is pending.
 -/
 private theorem fil_of_wt {j : ℤ} {g : MvPowerSeries τ E} (hg : g ∈ wtPart E wt j) : g ∈ fil E wt (-j).toNat :=
   (fil_holds E τ wt 0 0 g g (mem_fil_zero wt g) (mem_fil_zero wt g)).2 j hg
@@ -38,9 +38,9 @@ private def sf (j : ℤ) (n : ℕ) : Submodule (𝒜 0) A where
     rwa [zero_add, ← map_mul] at this
 
 /- English proof (translation)
-Rewrite using `[Submodule.mul_le]`. Introduce `a ha b hb`. Take `⟨ha1, ha2⟩` from `h ha`. Take `⟨hb1, hb2⟩` from `h' hb`. Use `⟨SetLike.GradedMul.mul_mem ha1 hb1, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Conclude with `fil_mul wt ha2 hb2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sf_mul {j j' : ℤ} {n n' : ℕ} {M M' : Submodule (𝒜 0) A} (h : M ≤ sf 𝒜 wt φ j n)
     (h' : M' ≤ sf 𝒜 wt φ j' n') : M * M' ≤ sf 𝒜 wt φ (j + j') (n + n') := by
@@ -53,9 +53,9 @@ private theorem sf_mul {j j' : ℤ} {n n' : ℕ} {M M' : Submodule (𝒜 0) A} (
   exact fil_mul wt ha2 hb2
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Simplify using `only [pow_zero, Nat.cast_zero, zero_mul]`. Rewrite using `[Submodule.one_le]`. Use `⟨SetLike.GradedOne.one_mem, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mem_fil_zero wt _`. Consider the case `succ k ih`. Use `sf_mul 𝒜 wt φ ih h` as an intermediate fact. Rewrite using `[pow_succ]`. Apply the tactic sequence `convert this using 2 <;> push_cast <;> ring`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem sf_pow {j : ℤ} {n : ℕ} {M : Submodule (𝒜 0) A} (h : M ≤ sf 𝒜 wt φ j n) (k : ℕ) :
     M ^ k ≤ sf 𝒜 wt φ (k * j) (k * n) := by
@@ -73,13 +73,11 @@ private theorem sf_pow {j : ℤ} {n : ℕ} {M : Submodule (𝒜 0) A} (h : M ≤
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ A _ _ 𝒜 _ _ x hW τ _ wt φ hφ F hF hFs μ f hf`. Establish `h0 : oz 𝒜 (-2) ≤ sf 𝒜 wt φ (-2) 2` using `fun g hg => ⟨hg, fil_of_wt wt (hφ.graded (-2) g hg)⟩`. Establish `h1 : oz 𝒜 2 ≤ sf 𝒜 wt φ 2 0` using `fun g hg => ⟨hg, mem_fil_zero wt _⟩`. Establish `hF2 : φ F ∈ fil (FractionRing O) wt 2` using `(satfil_holds O A 𝒜 x hW τ wt φ hφ).1 F hF hFs`. Establish `h2 : Submodule.span (𝒜 0) {F ^ 2} ⊔ oz 𝒜 (-2) * oz 𝒜 (-2) * oz 𝒜 2 ≤ sf 𝒜 wt φ (-2) 4`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sup_le ?_ (sf_mul 𝒜 wt φ (sf_mul 𝒜 wt φ h0 h0) h1)` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Use `⟨sq_mem_neg 𝒜 hF, ?_⟩` and prove the remaining obligations. Rewrite using `[sq, map_mul]`. Conclude with `fil_mul wt hF2 hF2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hf` using `[lat, Fin.prod_univ_three]`. Establish `key` using `sf_mul 𝒜 wt φ (sf_mul 𝒜 wt φ (sf_pow 𝒜 wt φ h0 (μ 0)) (sf_pow 𝒜 wt φ h1 (μ 1))) (sf_pow 𝒜 wt φ h2 (μ 2)) hf`. Establish `e1 : 2 * ((μ 1 : ℤ) - μ 0 - μ 2) = μ 0 * (-2) + μ 1 * 2 + μ 2 * (-2)` using `by ring`. Establish `e2 : 2 * μ 0 + 4 * μ 2 = μ 0 * 2 + μ 1 * 0 + μ 2 * 4` using `by ring`. Rewrite using `[e1, e2]`.
-
-Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.latfil_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

@@ -6,17 +6,15 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (hermForm)
 namespace GlobalTheory.PELU
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, -⟩` from `hP₀`. Establish `hsurj : Function.Surjective R` using `LinearMap.injective_iff_surjective.mp hR`. Set `e : (Fin g → ℂ) ≃ₗ[ℝ] (Fin g → ℂ)` to `LinearEquiv.ofInjectiveEndo R hR`. Establish `he : ∀ z, e z = R z` using `fun z => rfl`. Set `ec` to `e.toContinuousLinearEquiv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨?_, ?_, ?_, ?_, M, hM, hpos, ?_⟩` and prove the remaining obligations. Introduce `a x`. Simplify using `only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe, h1, hRρ]`. Conclude with `hR.comp h2`. Set `f : (R.toAddMonoidHom.comp P₀).range → P₀.range` to `fun z => ⟨ec.symm z.1, by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨z, x, rfl⟩` from `z`. Conclude with `⟨x, (e.symm_apply_apply (P₀ x)).symm⟩⟩`. Establish `hf : Continuous f`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Conclude with `ec.symm.continuous.comp continuous_subtype_val`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi : Function.Injective f`. Introduce `z w h`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (fun u : P₀.range => ec u.1) h` as an intermediate fact. Simplify `this` using `[f]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `DiscreteTopology.of_continuous_injective hf hi`. Establish `: Set.range (R.toAddMonoidHom.comp P₀) = R '' Set.range P₀`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, h4, Submodule.map_top, LinearMap.range_eq_top]`.
-
-Conclude with `hsurj`. Introduce `x y`. Conclude with `hE x y`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isPeriod_comp_realLinear {O : Type} [Ring O] {bar : O → O} (D : PLat O bar) {g : ℕ}
     (ρ : O →+* Matrix (Fin g) (Fin g) ℂ) (P₀ : D.La →+ (Fin g → ℂ)) (R : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ))

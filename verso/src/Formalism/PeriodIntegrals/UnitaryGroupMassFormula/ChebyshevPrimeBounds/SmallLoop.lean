@@ -11,7 +11,7 @@ def force (x : Nat) (f : Nat → Bool) : Bool :=
   | k + 1 => f (k + 1)
 
 /- English proof (translation)
-Apply the tactic sequence `cases x <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem force_eq (x : Nat) (f : Nat → Bool) : force x f = f x := by
   cases x <;> rfl
@@ -25,7 +25,7 @@ def loop (B : Nat) : Nat → Nat → Nat → Nat → Bool
     else tst n c && loop B k (n + 1) c Q
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem loop_run : loop 362 131070 2 0 1 = true := by decide +kernel
 

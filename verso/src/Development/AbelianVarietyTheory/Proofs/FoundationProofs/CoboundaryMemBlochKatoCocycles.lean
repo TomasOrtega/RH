@@ -19,7 +19,7 @@ section Algebra
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Use `haveI : Nontrivial (O ⧸ I) := Ideal.Quotient.nontrivial_iff.2 (Ideal.IsMaximal.ne_top inferInstance)`. Use `haveI : Nontrivial O := (Ideal.Quotient.mk I).domain_nontrivial`. Establish `e` using `(TensorProduct.quotTensorEquivQuotSMul N I).extendScalarsOfSurjective (S := O ⧸ I) Ideal.Quotient.mk_surjective`. Rewrite using `[← e.finrank_eq, Module.finrank_baseChange]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_quot_smul_top (I : Ideal O) [I.IsMaximal] (N : Type) [AddCommGroup N] [Module O N]
     [Module.Free O N] [Module.Finite O N] :
@@ -45,19 +45,17 @@ theorem redMap_mk (I : Ideal O) {N N' : Type} [AddCommGroup N] [Module O N] [Add
     redMap I f (Submodule.Quotient.mk x) = Submodule.Quotient.mk (f x) := rfl
 
 /- English proof (translation)
-Use `letI : Field (O ⧸ I) := Ideal.Quotient.field I`. Use `haveI : Module.Finite (O ⧸ I) (N ⧸ (I • (⊤ : Submodule O N))) := Module.Finite.of_restrictScalars_finite O _ _`. Use `haveI : Module.Finite (O ⧸ I) (Z ⧸ (I • (⊤ : Submodule O Z))) := Module.Finite.of_restrictScalars_finite O _ _`. Use `set R := LinearMap.range (redMap I f) with hR`. Set `Q` to `(Z ⧸ (I • (⊤ : Submodule O Z))) ⧸ R`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b` to `Module.finBasis (O ⧸ I) Q`. Set `π : Z →ₗ[O] Q` to `(R.mkQ.restrictScalars O).comp (Submodule.mkQ _)`. Establish `hπ : Function.Surjective π` using `(Submodule.mkQ_surjective R).comp (Submodule.mkQ_surjective _)`. Use `choose z hz using fun i => hπ (b i)`. Use `⟨_, z, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJ : I ≤ Ideal.jacobson ⊥`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top, IsLocalRing.eq_maximalIdeal hI]`. Use `top_le_iff.1 (Submodule.le_of_le_smul_of_le_jacobson_bot Module.Finite.fg_top hJ ?_)` and prove the remaining obligations. Introduce `x _`. Use `choose c hc using fun i => Ideal.Quotient.mk_surjective (b.repr (π x) i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h0 : π (x - ∑ i, c i • z i) = 0`. Rewrite using `[map_sub, map_sum, sub_eq_zero, ← b.sum_repr (π x)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hz, ← hc]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩ : Submodule.Quotient.mk (x - ∑ i, c i • z i) ∈ R` from `(Submodule.Quotient.mk_eq_zero R).1 h0`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite `hy` using `[redMap_mk, eq_comm, Submodule.Quotient.eq]`. Establish `: x = (∑ i, c i • z i + f y) + (x - ∑ i, c i • z i - f y)` using `by abel`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Submodule.add_mem_sup (Submodule.add_mem_sup ?_ ⟨y, rfl⟩) hy` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `h1` using `R.finrank_quotient_add_finrank`. Establish `h2` using `(redMap I f).finrank_range_add_finrank_ker`. Rewrite `h1`, `h2` using `[finrank_quot_smul_top]`.
-
-Express the relevant statement in the definitionally equal form `finrank (O ⧸ I) Q + _ = _ at h1`. Rewrite `h2` using `[← hR]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_generators [IsLocalRing O] (I : Ideal O) [hI : I.IsMaximal] {N Z : Type}
     [AddCommGroup N] [Module O N] [Module.Free O N] [Module.Finite O N]
@@ -103,7 +101,7 @@ theorem exists_generators [IsLocalRing O] (I : Ideal O) [hI : I.IsMaximal] {N Z 
     omega
 
 /- English proof (translation)
-Establish `h` using `((Module.finBasis O N).linearIndependent.map' f (LinearMap.ker_eq_bot.2 hf))`. Establish `h'` using `(LinearIndependent.iff_fractionRing O LL).1 h`. Simplify using `using h'.fintype_card_le_finrank`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finrank_le_of_injective {LL : Type} [Field LL] [Algebra O LL] [IsDomain O]
     [IsFractionRing O LL] {N W : Type} [AddCommGroup N] [Module O N] [Module.Free O N]
@@ -115,9 +113,9 @@ theorem finrank_le_of_injective {LL : Type} [Field LL] [Algebra O LL] [IsDomain 
   simpa using h'.fintype_card_le_finrank
 
 /- English proof (translation)
-Use `haveI : ∀ i, Module.Finite LL ↥(p i) := fun i => Submodule.finiteDimensional_of_le (hU i)`. Establish `hinj` using `hp.dfinsupp_lsum_injective`. Rewrite using `[← Module.finrank_directSum]`. Use `LinearMap.finrank_le_finrank_of_injective (f := ((DFinsupp.lsum ℕ (M := fun i => ↥(p i)) fun i => (p i).subtype)).codRestrict U ?_) ?_` and prove the remaining obligations. Introduce `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DFinsupp.lsum_apply_apply, DFinsupp.sumAddHom_apply]`. Conclude with `Submodule.sum_mem _ fun i _ => hU i (x i).2`. Introduce `x y h`. Conclude with `hinj (congrArg Subtype.val h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_finrank_le {LL W ι : Type} [Field LL] [AddCommGroup W] [Module LL W] [Fintype ι]
     (p : ι → Submodule LL W) (hp : iSupIndep p) (U : Submodule LL W) [Module.Finite LL ↥U]
@@ -146,15 +144,15 @@ variable {G : Type} [Group G] {LL : Type} [Field LL] {O : Type} [CommRing O] [Al
   {ρ : Representation LL G V}
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Ue16.exists_smul_mem L x`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_mem (L : Lattice (O := O) ρ) (x : V) : ∃ a : O, a ≠ 0 ∧ a • x ∈ L.T :=
   _root_.UpperTheory.Reformulated.B.Ue16.exists_smul_mem L x
 
 /- English proof (translation)
-Use `haveI := L.free`. Use `haveI : Module.Finite O ↥L.T := Module.Finite.iff_fg.2 L.fg`. Use `le_antisymm (finrank_le_of_injective L.T.subtype L.T.injective_subtype) ?_` and prove the remaining obligations. Set `b` to `Module.finBasis O ↥L.T`. Establish `h : Submodule.span LL (Set.range fun i => (b i : V)) = ⊤`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← L.span, ← Submodule.span_span_of_tower O LL]`. Use `congr 2`. Use `congrArg (Submodule.map L.T.subtype) b.span_eq` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, Submodule.map_subtype_top, ← Set.range_comp]`. Then use the resulting hypothesis. Simplify using `using finrank_le_of_span_eq_top h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finrank_lattice [FiniteDimensional LL V] (L : Lattice (O := O) ρ) :
     finrank O ↥L.T = finrank LL V := by
@@ -172,11 +170,9 @@ theorem finrank_lattice [FiniteDimensional LL V] (L : Lattice (O := O) ρ) :
 variable [TopologicalSpace G] [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V]
 
 /- English proof (translation)
-Set `U : {a : O // a ≠ 0} → Set G` to `fun a => {g | a.1 • c g ∈ L.T}`. Establish `hU : ∀ a, IsOpen (U a)` using `fun a => by`. Establish `: Continuous fun g => a.1 • c g`. Simplify using `only [← algebraMap_smul LL a.1]`. Conclude with `hc.const_smul _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `hT.preimage this`. Take `⟨s, hs⟩` from `isCompact_univ.elim_finite_subcover U hU fun g _ => by`. Take `⟨a, ha, h⟩` from `exists_smul_mem L (c g)`. Conclude with `Set.mem_iUnion.2 ⟨⟨a, ha⟩, h⟩`. Use `⟨∏ a ∈ s, a.1, Finset.prod_ne_zero_iff.2 fun a _ => a.2, fun g => ?_⟩` and prove the remaining obligations.
-
-Take `⟨a, ha, h⟩` from `Set.mem_iUnion₂.1 (hs (Set.mem_univ g))`. Rewrite using `[← Finset.prod_erase_mul s _ ha, mul_smul]`. Conclude with `L.T.smul_mem _ h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_fun_mem [CompactSpace G] (L : Lattice (O := O) ρ) (hT : IsOpen (L.T : Set V))
     (c : G → V) (hc : Continuous c) : ∃ a : O, a ≠ 0 ∧ ∀ g, a • c g ∈ L.T := by
@@ -210,9 +206,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {ρ : Representation LL G V}
 
 /- English proof (translation)
-Use `haveI := PD.finK`. Use `sum_finrank_le _ ?_ _ fun τ => inf_le_left` and prove the remaining obligations. Set `pb` to `Field.powerBasisOfFiniteOfSeparable Qp K`. Establish `hinj : Function.Injective fun τ : K →ₐ[Qp] LL => τ pb.gen` using `fun τ τ' h => pb.algHom_ext h`. Use `((Module.End.eigenspaces_iSupIndep (mulVdR (Qp := Qp) (K := K) (BdR := BdR) (V := V) (LL := LL) pb.gen)).comp hinj).mono fun τ x hx => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(Submodule.mem_iInf _).1 hx.2 pb.gen` as an intermediate fact. Rewrite using `[Function.comp_apply, Module.End.mem_eigenspace_iff]`. Simplify `this` using `[sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_finrank_DdRE_le [CharZero Qp] [Fintype (K →ₐ[Qp] LL)] [Module.Finite LL ↥(DdR PD ρ)] :
     ∑ τ : K →ₐ[Qp] LL, finrank LL ↥(DdRE PD ρ τ) ≤ finrank LL ↥(DdR PD ρ) := by
@@ -229,9 +225,9 @@ theorem sum_finrank_DdRE_le [CharZero Qp] [Fintype (K →ₐ[Qp] LL)] [Module.Fi
 variable [TopologicalSpace G] [TopologicalSpace V] [IsTopologicalAddGroup V] [ContinuousConstSMul LL V]
 
 /- English proof (translation)
-Use `⟨⟨(hρ x).sub continuous_const, fun g h => ?_⟩, x ⊗ₜ 1, fun g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ (g * h) x - x = ρ g x - x + ρ g (ρ h x - x)`. Rewrite using `[map_mul, map_sub, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `(ρ g x - x) ⊗ₜ[Qp] (1 : B) = _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[actVB, sub_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coboundary_mem_blochKatoCocycles (hρ : ∀ x, Continuous fun g => ρ g x) (x : V) : cob ρ x ∈ finiteCocycles PD ρ := by
   refine ⟨⟨(hρ x).sub continuous_const, fun g h => ?_⟩, x ⊗ₜ 1, fun g => ?_⟩
@@ -242,11 +238,11 @@ theorem coboundary_mem_blochKatoCocycles (hρ : ∀ x, Continuous fun g => ρ g 
     simp [actVB, sub_tmul]
 
 /- English proof (translation)
-Establish `hle : B1 ρ ≤ finiteCocycles PD ρ`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `coboundary_mem_blochKatoCocycles PD hρ x`. Establish `h1` using `((B1 ρ).comap (finiteCocycles PD ρ).subtype).finrank_quotient_add_finrank`. Establish `h2` using `(cob ρ).finrank_range_add_finrank_ker`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : LinearMap.ker (cob ρ) = H0V ρ`. Rewrite using `[cob, LinearMap.ker_pi, H0V]`. Establish `h4` using `(Submodule.comapSubtypeEquivOfLe hle).finrank_eq`. Rewrite `h2` using `[h3]`. Express the relevant statement in the definitionally equal form `finrank LL ↥(B1 ρ) + _ = _ at h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `finrank LL (FiniteCohomology PD ρ) + _ = _ at h1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_bloch_kato_cocycles [FiniteDimensional LL V] (hρ : ∀ x, Continuous fun g => ρ g x)
     [Module.Finite LL ↥(finiteCocycles PD ρ)] :
@@ -277,9 +273,9 @@ def classT (L : Lattice (O := O) ρ) : ↥(latticeFiniteCocycles PD L) →ₗ[O]
 
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL] in
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨_, c.2, rfl⟩`. Introduce and unpack `⟨c, hc, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨c, hc⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem range_classT (L : Lattice (O := O) ρ) : LinearMap.range (classT PD L) = latticeFiniteCohomology PD L := by
   ext y
@@ -291,9 +287,9 @@ theorem range_classT (L : Lattice (O := O) ρ) : LinearMap.range (classT PD L) =
 
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL] in
 /- English proof (translation)
-Use extensionality with `c`. Rewrite using `[LinearMap.mem_ker]`. Use `(Submodule.Quotient.mk_eq_zero _).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx, h⟩`. Conclude with `⟨⟨x, hx⟩, Subtype.ext h⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x, x.2, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem ker_classT (L : Lattice (O := O) ρ) (hρ : ∀ x, Continuous fun g => ρ g x) :
     LinearMap.ker (classT PD L) = LinearMap.range (cobT PD L hρ) := by
@@ -307,7 +303,7 @@ theorem ker_classT (L : Lattice (O := O) ρ) (hρ : ∀ x, Continuous fun g => �
 
 omit [IsFractionRing O LL] in
 /- English proof (translation)
-Use `haveI : Module.Finite O ↥L.T := Module.Finite.iff_fg.2 L.fg`. Use `⟨Submodule.fg_of_fg_map_of_fg_inf_ker (classT PD L) (IsNoetherian.noetherian _) ?_⟩` and prove the remaining obligations. Rewrite using `[top_inf_eq, ker_classT PD L hρ]`. Conclude with `Submodule.fg_range _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_Z1fT (L : Lattice (O := O) ρ) (hρ : ∀ x, Continuous fun g => ρ g x)
     [Module.Finite O (LatticeCohomology L)] : Module.Finite O ↥(latticeFiniteCocycles PD L) := by
@@ -317,11 +313,9 @@ theorem finite_Z1fT (L : Lattice (O := O) ρ) (hρ : ∀ x, Continuous fun g => 
   exact Submodule.fg_range _
 
 /- English proof (translation)
-Take `⟨s, hs⟩ : (latticeFiniteCocycles PD L).FG` from `Module.Finite.iff_fg.1 inferInstance`. Use `haveI := FiniteDimensional.span_finset LL s`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span LL (s : Set (G → V))) fun c hc => ?_` and prove the remaining obligations. Take `⟨a, ha, h⟩` from `exists_smul_fun_mem L hT c hc.1.1`. Establish `h1 : a • c ∈ (finiteCocycles PD ρ).restrictScalars O` using `Submodule.smul_mem ((finiteCocycles PD ρ).restrictScalars O) a hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : a • c ∈ latticeFiniteCocycles PD L` using `⟨⟨h1.1, fun g _ => h g⟩, h1⟩`. Rewrite `h2` using `[← hs]`. Establish `h3` using `Submodule.span_subset_span O LL _ h2`. Establish `ha' : algebraMap O LL a ≠ 0` using `by simpa using ha`. Rewrite `h3` using `[← algebraMap_smul LL a]`.
-
-Conclude with `(Submodule.smul_mem_iff _ ha').1 h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_bloch_kato_cocycles [CompactSpace G] (L : Lattice (O := O) ρ) (hT : IsOpen (L.T : Set V))
     [Module.Finite O ↥(latticeFiniteCocycles PD L)] : Module.Finite LL ↥(finiteCocycles PD ρ) := by
@@ -341,9 +335,9 @@ theorem finite_bloch_kato_cocycles [CompactSpace G] (L : Lattice (O := O) ρ) (h
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL] in
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite `hy` using `[LinearMap.mem_ker, redMap_mk, Submodule.Quotient.mk_eq_zero]`. Use `(mk_mem_H0Mod L I x).2 fun g => ?_` and prove the remaining obligations. Set `ev : ↥(latticeFiniteCocycles PD L) →ₗ[O] ↥L.T` to `((LinearMap.proj g).comp (latticeFiniteCocycles PD L).subtype).codRestrict _ fun c => c.2.1.2 g (Set.mem_univ g)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `h` using `Submodule.mem_map_of_mem (f := ev) hy`. Rewrite `h` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_redMap_le (L : Lattice (O := O) ρ) (hρ : ∀ x, Continuous fun g => ρ g x) (I : Ideal O) :
     LinearMap.ker (redMap I (cobT PD L hρ)) ≤ galoisLatticeModIdealInvariants L I := by
@@ -358,15 +352,11 @@ theorem ker_redMap_le (L : Lattice (O := O) ρ) (hρ : ∀ x, Continuous fun g =
   exact Submodule.smul_mono le_rfl le_top h
 
 /- English proof (translation)
-Use `haveI hI : (Ideal.span {ϖ}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hϖ`. Use `letI : Field (O ⧸ Ideal.span {ϖ}) := Ideal.Quotient.field _`. Use `haveI := L.free`. Use `haveI : Module.Finite O ↥L.T := Module.Finite.iff_fg.2 L.fg`. Use `haveI := finite_Z1fT PD L hρ`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := finite_bloch_kato_cocycles PD L hT`. Use `haveI : Module.IsTorsionFree O LL := inferInstance`. Use `haveI : Module.IsTorsionFree O V := Module.IsTorsionFree.trans LL`. Use `haveI : Module.Free O ↥(latticeFiniteCocycles PD L) := inferInstance`. Take `⟨m, z, hz, hm⟩` from `exists_generators (Ideal.span {ϖ}) (cobT PD L hρ)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨m, ⟨Finset.univ.image fun i => classT PD L (z i), ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `congrArg (Submodule.map (classT PD L)) hz` as an intermediate fact. Rewrite `this` using `[Submodule.map_sup, ← ker_classT, Submodule.map_top, range_classT, (Submodule.map_le_iff_le_comap.2 le_rfl : (LinearMap.ker (classT PD L)).map (classT PD L) ≤ ⊥).antisymm bot_le, sup_bot_eq, Submodule.map_span, ← Set.range_comp]`. Rewrite using `[← this, Finset.coe_image, Finset.coe_univ, Set.image_univ]`. Both sides reduce to the same expression.
-
-Simplify using `using Finset.card_image_le (s := Finset.univ) (f := fun i => classT PD L (z i))`. Use `haveI := finite_latMod L (Ideal.span {ϖ})`. Establish `h1` using `Submodule.finrank_mono (ker_redMap_le PD L hρ (Ideal.span {ϖ}))`. Establish `h2` using `finrank_bloch_kato_cocycles PD hρ`. Establish `h3` using `finrank_lattice L`.
-
-Establish `h4 : finrank O ↥(latticeFiniteCocycles PD L) ≤ finrank LL ↥(finiteCocycles PD ρ)` using `finrank_le_of_injective (W := ↥(finiteCocycles PD ρ)) { toFun := fun c => ⟨c, c.2.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl } fun _ _ h => Subtype.ext (congrArg (fun c : ↥(finiteCocycles PD ρ) => (c : G → V)) h)`. Establish `h5 : finrank (O ⧸ Ideal.span {ϖ}) ↥(LinearMap.ker (redMap (Ideal.span {ϖ}) (cobT PD L hρ))) ≤ h0ModResidueDim L ϖ` using `h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_generators_H1fT [CompactSpace G] [FiniteDimensional LL V] (L : Lattice (O := O) ρ)
     (hρ : ∀ x, Continuous fun g => ρ g x) (hT : IsOpen (L.T : Set V)) [Module.Finite O (LatticeCohomology L)]
@@ -410,9 +400,7 @@ omit [TopologicalSpace G] [TopologicalSpace V] [IsTopologicalAddGroup V] [Contin
   [IsFractionRing O LL] in
 
 /- English proof (translation)
-Use `haveI hI : (Ideal.span {ϖ}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hϖ`. Use `letI : Field (O ⧸ Ideal.span {ϖ}) := Ideal.Quotient.field _`. Use `haveI := L.free`. Use `haveI : Module.Finite O ↥L.T := Module.Finite.iff_fg.2 L.fg`. Use `haveI := finite_latMod L (Ideal.span {ϖ})`.
-
-Rewrite using `[← finrank_quot_smul_top (Ideal.span {ϖ})]`. Conclude with `Submodule.finrank_le _`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem h0_mod_uniformizer_le_rank (L : Lattice (O := O) ρ) {ϖ : O} (hϖ : Irreducible ϖ) :
     h0ModResidueDim L ϖ ≤ finrank O ↥L.T := by
@@ -438,21 +426,19 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
 /- English proof (translation)
-Use `letI : Field BdR := hF.toField`. Use `haveI := PD.finK`. Use `haveI : Module.Finite Qp V := Module.Finite.trans LL V`. Use `⟨GlobalTheory.Cmp.SmallJumps.finite_ddR_of_isField PD hF ρ, ?_⟩` and prove the remaining obligations. Set `σ : G → BdR ⊗[Qp] V →ₗ[Qp] BdR ⊗[Qp] V` to `fun g => TensorProduct.map (((PD.actdR g).toAlgHom.toLinearMap).restrictScalars Qp) ((ρ g).restrictScalars Qp)`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hσ : ∀ g (b : BdR) w, σ g (b • w) = PD.actdR g b • σ g w`. Introduce `g b w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c v => simp [σ, TensorProduct.smul_tmul']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`. Set `U : Submodule K (BdR ⊗[Qp] V)` to `{ carrier := {x | ∀ g, σ g x = x} zero_mem' := fun g => map_zero _ add_mem' := fun hx hy g => by rw [map_add, hx g, hy g] smul_mem' := fun c x hx g => by`. Rewrite using `[← algebraMap_smul BdR c x, hσ, hx g, AlgEquiv.commutes] }`. Use `haveI : Module.Finite K U := GlobalTheory.Cmp.SmallJumps.finite_of_invariant (F := BdR) (fun g b => PD.actdR g b) (fun g => (σ g).toAddMonoidHom) hσ PD.invdR U fun _ hx => hx`. Use `haveI : Module.Finite Qp U := Module.Finite.trans K U`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : finrank K U ≤ finrank Qp V`. Set `b` to `Module.finBasis K U`. Establish `h1 : LinearIndependent K fun i => (b i : BdR ⊗[Qp] V)` using `b.linearIndependent.map' U.subtype U.ker_subtype`. Establish `h2` using `GlobalTheory.Cmp.SmallJumps.linearIndepOn_of_invariant (F := BdR) (fun g b => PD.actdR g b) (fun g => (σ g).toAddMonoidHom) hσ PD.invdR (fun i => (b i : BdR ⊗[Qp] V)) (fun g i => (b i).2 g) Finset.univ (h1.linearIndepOn _)`. Simplify using `using LinearIndependent.fintype_card_le_finrank h2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hc : ∀ g x, σ g (TensorProduct.comm Qp V BdR x) = TensorProduct.comm Qp V BdR (actVdR PD ρ g x)`. Introduce `g x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c v => simp [σ, actVdR]`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Set `f : DdR PD ρ →ₗ[Qp] U` to `{ toFun := fun x => ⟨TensorProduct.comm Qp V BdR x, fun g => by`. Use `x.2` as an intermediate fact. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at this`. Rewrite using `[hc, this g]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `map_add' := fun x y => Subtype.ext (map_add _ _ _)`. Use the proof step `map_smul' := fun c x => Subtype.ext (map_smul (TensorProduct.comm Qp V BdR) c _) }`. Establish `h1 : finrank Qp ↥(DdR PD ρ) ≤ finrank Qp U` using `LinearMap.finrank_le_finrank_of_injective (f := f) fun x y h => Subtype.ext ((TensorProduct.comm Qp V BdR).injective (congrArg Subtype.val h))`. Rewrite `h1` using `[← finrank_mul_finrank Qp LL ↥(DdR PD ρ), ← finrank_mul_finrank Qp K U]`. Rewrite `hU` using `[← finrank_mul_finrank Qp LL V]`.
-
-Use `Nat.le_of_mul_le_mul_left (h1.trans ?_) (finrank_pos (R := Qp) (M := LL))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem finrank_DdR_le_of_isField (hF : IsField BdR) [FiniteDimensional Qp LL]
     [FiniteDimensional LL V] (ρ : Representation LL G V) :
@@ -530,11 +516,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL]
 
 /- English proof (translation)
-Take `⟨hD, hDVR, hF⟩` from `hO.1`. Use `haveI : IsTopologicalAddGroup T.V := IsModuleTopology.topologicalAddGroup LL T.V`. Use `haveI : Module.Finite O (LatticeCohomology T.L) := hfin _ _ hO (toGRep T) T.L`. Take `⟨m, ⟨s, hs', hc⟩, hm⟩` from `exists_generators_H1fT PD T.L T.cont (GlobalTheory.Cyc.locLat_isOpen hO T) hϖ`. Establish `h1` using `hBK hs T.V T.ρ T.cont hT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `sum_finrank_DdRE_le PD (ρ := T.ρ)`. Establish `h4 : ∑ τ : K →ₐ[Qp] LL, ((finrank LL ↥(DdRE PD T.ρ τ) : ℤ) - finrank LL ↥(FildR PD T.ρ τ 0)) ≤ ((∑ τ : K →ₐ[Qp] LL, finrank LL ↥(DdRE PD T.ρ τ) : ℕ) : ℤ)`. Rewrite using `[Nat.cast_sum]`. Conclude with `Finset.sum_le_sum fun τ _ => sub_le_self _ (Nat.cast_nonneg _)`. Establish `h5` using `h0_mod_uniformizer_le_rank T.L hϖ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h2` using `[← finrank_lattice T.L]`. Use `⟨⟨s, hs', ?_⟩, ?_⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Rewrite using `[add_mul, one_mul]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem generatorBound_of [CharZero Qp] [CompactSpace G] [Fintype (K →ₐ[Qp] LL)]
     (hO : GoodO (Qp := Qp) LL O) (hs : Splits (Qp := Qp) (K := K) LL) (hBK : BlochKatoDim PD LL)
@@ -566,7 +552,7 @@ section Local
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `haveI := K.2`. Establish `h : IsClosed ((GK K : Subgroup (GQ l)) : Set (GQ l))` using `IntermediateField.fixingSubgroup_isClosed K.1`. Conclude with `isCompact_iff_compactSpace.1 h.isCompact`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compactSpace_GK (K : FinExt l) : CompactSpace ↥(GK K) := by
   haveI := K.2
@@ -575,11 +561,9 @@ theorem compactSpace_GK (K : FinExt l) : CompactSpace ↥(GK K) := by
   exact isCompact_iff_compactSpace.1 h.isCompact
 
 /- English proof (translation)
-Use `haveI := K.2`. Use `⟨LL.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← AlgHom.card ℚ_[l] ↥K.1 (Om l)]`. Use `Fintype.card_of_bijective (f := fun τ => LL.1.val.comp τ) ⟨fun τ τ' hτ => ?_, fun σ => ?_⟩` and prove the remaining obligations. Conclude with `AlgHom.ext fun x => Subtype.ext (DFunLike.congr_fun hτ x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hσ : ∀ x, σ x ∈ LL.1`. Introduce `x`. Use `letI : Algebra ↥K.1 ↥(Ks K s) := (IntermediateField.inclusion h.2.2.1).toAlgebra`. Use `haveI : IsScalarTower ℚ_[l] ↥K.1 ↥(Ks K s) := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Algebra.IsAlgebraic ↥K.1 ↥(Ks K s) := Algebra.IsAlgebraic.tower_top (K := ℚ_[l]) _`.
-
-Take `⟨τ, hτ⟩` from `IsAlgClosed.surjective_restrictDomain_of_isAlgebraic (K := ℚ_[l]) (L := ↥K.1) (E := ↥(Ks K s)) (M := Om l) σ`. Rewrite using `[← hτ]`. Conclude with `h.2.2.2 τ _`. Conclude with `⟨σ.codRestrict LL.1.toSubalgebra hσ, AlgHom.ext fun _ => rfl⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem splits_of_good {K LL : FinExt l} {s : ℕ} (h : Good K s LL)
     [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)] : Splits (Qp := ℚ_[l]) (K := ↥K.1) ↥LL.1 := by
@@ -610,21 +594,21 @@ def DeRhamLeAt (P : LocPrime l) : Prop :=
       finrank ↥LL.1 ↥(DdR (P.PD K) T.ρ) ≤ finrank ℚ_[l] ↥K.1 * finrank ↥LL.1 T.V
 
 /- English proof (translation)
-Introduce `K LL T` and use `(h K _ _ (GlobalTheory.LocalIntegers.good_integers l LL).1 (toGRep T)).2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem deRhamLeAt_of_fontCore (P : LocPrime l) (h : ∀ K : FinExt l, fontCore (P.PD K)) :
     DeRhamLeAt P := fun K LL T =>
   (h K _ _ (GlobalTheory.LocalIntegers.good_integers l LL).1 (toGRep T)).2.1
 
 /- English proof (translation)
-Introduce `K LL T` and use `haveI := LL.2 finrank_DdR_le_of_isField (P.PD K) h T.ρ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem deRhamLeAt_of_isField (P : LocPrime l) (h : IsField P.R.BdR) : DeRhamLeAt P := fun K LL T =>
   haveI := LL.2
   finrank_DdR_le_of_isField (P.PD K) h T.ρ
 
 /- English proof (translation)
-Introduce `K LL hA ϖ hϖ T hT`. Use `haveI := K.2`. Use `haveI := compactSpace_GK K`. Conclude with `generatorBound_of (P.PD K) (GlobalTheory.LocalIntegers.good_integers l LL).1 (splits_of_good hA.2.2) (hBK K LL) (hfin K) hϖ T hT (hdR K LL T).1 (hdR K LL T).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem h1fGeneratorsAt_of (P : LocPrime l) (hBK : BlochKatoAt P) (hfin : TateFiniteAt P)
     (hdR : DeRhamLeAt P) : H1fGeneratorBoundAt P := by
@@ -635,14 +619,14 @@ theorem h1fGeneratorsAt_of (P : LocPrime l) (hBK : BlochKatoAt P) (hfin : TateFi
     (hBK K LL) (hfin K) hϖ T hT (hdR K LL T).1 (hdR K LL T).2
 
 /- English proof (translation)
-The claim follows from `h1fGeneratorsAt_of P hBK hfin (deRhamLeAt_of_isField P hF)`.
+A detailed English derivation is pending.
 -/
 theorem h1fGeneratorsAt_of_isField (P : LocPrime l) (hF : IsField P.R.BdR) (hBK : BlochKatoAt P)
     (hfin : TateFiniteAt P) : H1fGeneratorBoundAt P :=
   h1fGeneratorsAt_of P hBK hfin (deRhamLeAt_of_isField P hF)
 
 /- English proof (translation)
-The claim follows from `h1fGeneratorsAt_of_isField P (GlobalTheory.MemLoc.RingsModel.isField_of_isStd h) hBK hfin`.
+A detailed English derivation is pending.
 -/
 theorem h1fGeneratorsAt_of_isStd (P : LocPrime l) (AI : LocAinf l P) (h : GlobalTheory.Per.IsStd P AI)
     (hBK : BlochKatoAt P) (hfin : TateFiniteAt P) : H1fGeneratorBoundAt P :=
@@ -651,14 +635,14 @@ theorem h1fGeneratorsAt_of_isStd (P : LocPrime l) (AI : LocAinf l P) (h : Global
 end Local
 
 /- English proof (translation)
-The claim follows from `h1fGeneratorsAt_of P`.
+A detailed English derivation is pending.
 -/
 theorem h1fGenerators_pointwise (l : ℕ) [Fact l.Prime] (P : LocPrime l) :
     BlochKatoAt P → TateFiniteAt P → DeRhamLeAt P → H1fGeneratorBoundAt P :=
   h1fGeneratorsAt_of P
 
 /- English proof (translation)
-Introduce `l _ P` and use `h1fGeneratorsAt_of P (hBK l P) (hfin l P) (hdR l P)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem h1fGenerators_of (hBK : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l), BlochKatoAt P)
     (hfin : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l), TateFiniteAt P)
@@ -666,21 +650,21 @@ theorem h1fGenerators_of (hBK : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l), B
   fun l _ P => h1fGeneratorsAt_of P (hBK l P) (hfin l P) (hdR l P)
 
 /- English proof (translation)
-Introduce `_ _ P AI h` and use `h1fGeneratorsAt_of_isStd P AI h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem h1fGenerators_std_pointwise : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     GlobalTheory.Per.IsStd P AI → BlochKatoAt P → TateFiniteAt P → H1fGeneratorBoundAt P :=
   fun _ _ P AI h => h1fGeneratorsAt_of_isStd P AI h
 
 /- English proof (translation)
-The claim follows from `h1fGeneratorsAt_of_isStd P AI ⟨T⟩ hBK hfin`.
+A detailed English derivation is pending.
 -/
 theorem h1fGenerators_tied (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P)
     (T : LocTied l P AI) (hBK : BlochKatoAt P) (hfin : TateFiniteAt P) : H1fGeneratorBoundAt P :=
   h1fGeneratorsAt_of_isStd P AI ⟨T⟩ hBK hfin
 
 /- English proof (translation)
-Introduce `l _ P AI h` and use `h1fGeneratorsAt_of_isStd P AI h (hBK l P AI h) (hfin l P AI h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem h1fGeneratorsStd_of
     (hBK : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), GlobalTheory.Per.IsStd P AI →

@@ -18,7 +18,7 @@ structure DensityNumericalFacts (K : Cst) (X : Dat) : Prop where
 
 open Classical in
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_map_le {α β : Type*} (S : Finset α) (S' : Finset β) (φ : α → β) (hinj : Set.InjOn φ S)
     (hmap : ∀ x ∈ S, φ x ∈ S') (g : β → ℝ) (hg : ∀ y ∈ S', 0 ≤ g y) :
@@ -28,14 +28,14 @@ theorem sum_map_le {α β : Type*} (S : Finset α) (S' : Finset β) (φ : α →
       Finset.sum_le_sum_of_subset_of_nonneg (Finset.image_subset_iff.2 hmap) (fun y hy _ => hg y hy)
 
 /- English proof (translation)
-The claim follows from `Nat.choose_pos (Nat.le_add_left _ _)`.
+A detailed English derivation is pending.
 -/
 theorem dimPol_pos (m A : ℕ) : 0 < dimPol m A := Nat.choose_pos (Nat.le_add_left _ _)
 
 /- English proof (translation)
-Establish `hp : 5 ≤ p` using `R.std.1.five_le`. Establish `hn : 2 ≤ n'` using `R.std.1.two_le`. Establish `hq : (1 : ℝ) < ((p ^ n' : ℕ) : ℝ)`. Establish `: 1 < p ^ n'` using `Nat.one_lt_pow (by omega) (by omega)`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `gaussianNumber`. Apply `div_pos` to reduce the goal to its premises. Use `one_lt_pow₀ hq (by omega : k + 1 ≠ 0)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Ne_pos {p n' : ℕ} (R : RS p n') (k : ℕ) : 0 < gaussianNumber (p ^ n') (k + 1) := by
   have hp : 5 ≤ p := R.std.1.five_le
@@ -50,25 +50,25 @@ theorem Ne_pos {p n' : ℕ} (R : RS p n') (k : ℕ) : 0 < gaussianNumber (p ^ n'
   · linarith
 
 /- English proof (translation)
-Simplify using `only [Dat.Wa, Nat.card_Icc]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_Wa (X : Dat) (τ : ℕ) : (X.Wa τ).card = (X.Wa 0).card := by
   simp only [Dat.Wa, Nat.card_Icc]; omega
 
 /- English proof (translation)
-Simplify using `only [Dat.Wb, Nat.card_Icc]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_Wb (X : Dat) (τ : ℕ) : (X.Wb τ).card = (X.Wb 0).card := by
   simp only [Dat.Wb, Nat.card_Icc]; omega
 
 /- English proof (translation)
-Establish `h` using `hK A hA B hB`. Establish `hNe` using `Ne_pos R X.m`. Establish `hHH : ((dimHH (m` using `X.m) R.Kf X.TT (ex A) (ex B) : ℕ) : ℝ) = ∏ s, ((dimPol X.m (A s) : ℝ) * dimPol X.m (B s)) := by`. Rewrite using `[(hD X.p X.n' R X.m hm X.TT A B).1]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Establish `hPpos : 0 < ∏ s, ((dimPol X.m (A s) : ℝ) * dimPol X.m (B s))` using `Finset.prod_pos fun s _ => mul_pos (by exact_mod_cast dimPol_pos _ _) (by exact_mod_cast dimPol_pos _ _)`. Rewrite `h` using `[hHH]`. Establish `hterm : ∀ j : X.TT → ℕ, X.kF K R (fun s => A s - j s) (fun s => B s - j s) * ∏ s, ((dimHar X.m (A s - j s) (B s - j s) : ℝ) / ((dimPol X.m (A s) : ℝ) * dimPol X.m (B s))) = (X.kF K R (fun s => A s - j s) (fun s => B s - j s) * dL R (flatW X.m (fun s => A s - j s) (fun s => B s - …`. Introduce `j`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `dL`. Rewrite using `[(hD X.p X.n' R X.m hm X.TT (fun s => A s - j s) (fun s => B s - j s)).2, Finset.prod_div_distrib]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify using `only [hterm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_kF_mul_prod_le_kx (hD : RestDims) (K : Cst) (X : Dat) (hm : 1 ≤ X.m) (R : RS X.p X.n') (hK : KeyIneq K X R)
     (A : X.TT → ℕ) (hA : A ∈ Fintype.piFinset (fun _ : X.TT => X.WaP K))
@@ -104,25 +104,21 @@ theorem sum_kF_mul_prod_le_kx (hD : RestDims) (K : Cst) (X : Dat) (hm : 1 ≤ X.
     _ = X.kx K R A B := by field_simp
 
 /- English proof (translation)
-Use `set SJ := Fintype.piFinset (fun _ : ι => Finset.range (J + 1)) with hSJ`. Use `set SA := Fintype.piFinset (fun _ : ι => SaP) with hSA`. Use `set SB := Fintype.piFinset (fun _ : ι => SbP) with hSB`. Use `set Ta := Fintype.piFinset (fun _ : ι => Sa) with hTa`. Use `set Tb := Fintype.piFinset (fun _ : ι => Sb) with hTb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `F : (ι → ℕ) → (ι → ℕ) → (ι → ℕ) → ℝ` to `fun A B j => kf (fun s => A s - j s) (fun s => B s - j s) * ∏ s, q (A s) (B s) (j s)`. Establish `hFnn : ∀ A B j, 0 ≤ F A B j` using `fun A B j => mul_nonneg (hkf _ _) (Finset.prod_nonneg fun s _ => hq _ _ _)`. Establish `h1 : ∑ A ∈ SA, ∑ B ∈ SB, ∑ j ∈ SJ, F A B j ≤ ∑ A ∈ SA, ∑ B ∈ SB, kx A B` using `Finset.sum_le_sum fun A hA => Finset.sum_le_sum fun B hB => hkey A hA B hB`. Establish `h2 : ∑ al ∈ Ta, ∑ be ∈ Tb, ∑ j ∈ SJ, F (al + j) (be + j) j ≤ ∑ A ∈ SA, ∑ B ∈ SB, ∑ j ∈ SJ, F A B j`. Establish `e1 : ∑ al ∈ Ta, ∑ be ∈ Tb, ∑ j ∈ SJ, F (al + j) (be + j) j = ∑ j ∈ SJ, ∑ al ∈ Ta, ∑ be ∈ Tb, F (al + j) (be + j) j`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e2 : ∑ A ∈ SA, ∑ B ∈ SB, ∑ j ∈ SJ, F A B j = ∑ j ∈ SJ, ∑ A ∈ SA, ∑ B ∈ SB, F A B j`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, e2]`. Use `Finset.sum_le_sum fun j hj => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hj' : ∀ s, j s ≤ J` using `fun s => by`. Use `(Fintype.mem_piFinset.1 hj) s` as an intermediate fact. Conclude with `Nat.lt_succ_iff.1 (Finset.mem_range.1 this)`. Establish `hmapA : ∀ al ∈ Ta, al + j ∈ SA` using `fun al hal => Fintype.mem_piFinset.2 fun s => hsa _ ((Fintype.mem_piFinset.1 hal) s) _ (hj' s)`. Establish `hmapB : ∀ be ∈ Tb, be + j ∈ SB` using `fun be hbe => Fintype.mem_piFinset.2 fun s => hsb _ ((Fintype.mem_piFinset.1 hbe) s) _ (hj' s)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ∀ al ∈ Ta, ∀ be ∈ Tb, δ ^ Fintype.card ι * kf al be ≤ ∑ j ∈ SJ, F (al + j) (be + j) j`. Introduce `al hal be hbe`. Establish `e : ∀ j : ι → ℕ, F (al + j) (be + j) j = kf al be * ∏ s, q (al s + j s) (be s + j s) (j s)`. Introduce `j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify using `only [F, Pi.add_apply, Nat.add_sub_cancel]`. Simplify using `only [e]`. Rewrite using `[← Finset.mul_sum, hSJ, ← Finset.prod_univ_sum (fun _ : ι => Finset.range (J + 1)) (fun s j => q (al s + j) (be s + j) j), mul_comm]`. Use `mul_le_mul_of_nonneg_left ?_ (hkf _ _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `h4 : δ ^ Fintype.card ι * ∑ al ∈ Ta, ∑ be ∈ Tb, kf al be ≤ ∑ A ∈ SA, ∑ B ∈ SB, kx A B`. Use `le_trans ?_ (le_trans h2 h1)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun al hal => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Finset.sum_le_sum fun be hbe => h3 al hal be hbe`. Unfold `meanN`. Use `set s := ∑ al ∈ Ta, ∑ be ∈ Tb, kf al be with hs`. Use `set x := ∑ A ∈ SA, ∑ B ∈ SB, kx A B with hx`. Establish `hs0 : 0 ≤ s` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => hkf _ _`.
-
-Establish `hx0 : 0 ≤ x` using `le_trans (mul_nonneg (pow_nonneg hδ0 _) hs0) h4`. Use `set u := (Sa.card : ℝ) ^ Fintype.card ι * (Sb.card : ℝ) ^ Fintype.card ι with hu`. Use `set v := (SaP.card : ℝ) ^ Fintype.card ι * (SbP.card : ℝ) ^ Fintype.card ι with hv`. Establish `hv0 : 0 < v` using `mul_pos (pow_pos (by exact_mod_cast hpa) _) (pow_pos (by exact_mod_cast hpb) _)`. Establish `hu0 : 0 ≤ u` using `by positivity`.
-
-Break down `eq_or_lt_of_le hu0 with hu' | hu'` into its components or cases. Rewrite using `[← hu', div_zero]`. Check the signs of the components of the expression. Rewrite using `[div_le_iff₀ hu', ← mul_div_assoc, div_mul_eq_mul_div, le_div_iff₀ hv0]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem avg_abs {ι : Type} [Fintype ι] [DecidableEq ι] (SaP SbP Sa Sb : Finset ℕ) (J : ℕ)
     (kf kx : (ι → ℕ) → (ι → ℕ) → ℝ) (q : ℕ → ℕ → ℕ → ℝ) (hq : ∀ A B j, 0 ≤ q A B j) (hkf : ∀ A B, 0 ≤ kf A B)
@@ -207,11 +203,11 @@ theorem avg_abs {ι : Type} [Fintype ι] [DecidableEq ι] (SaP SbP Sa Sb : Finse
       _ ≤ 2 * x * u := by gcongr
 
 /- English proof (translation)
-Take `⟨δ, hδ0, hδ, hcard⟩` from `hF.dens`. Use `avg_abs (X.WaP K) (X.WbP K) (X.Wa τ) (X.Wb τ) (X.Jn K) (X.kF K R) (X.kx K R) (fun A B j => (dimHar X.m (A - j) (B - j) : ℝ) / ((dimPol X.m A : ℝ) * dimPol X.m B)) (fun A B j => by positivity) (fun _ _ => Real.sInf_nonneg fun _ h => h.1) (fun A hA B hB => sum_kF_mul_prod_le_kx hD …` and prove the remaining obligations. Introduce `a ha j hj`. Use `Finset.mem_Icc.1 ha` as an intermediate fact. Simplify using `only [Dat.WaP, Finset.mem_Icc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `b hb j hj`. Use `Finset.mem_Icc.1 hb` as an intermediate fact. Simplify using `only [Dat.WbP, Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `al hal be hbe`. Use `hδ τ hτ al hal be hbe` as an intermediate fact. Simplify `this` using `only [P1, Nat.add_sub_cancel]`. Rewrite using `[card_Wa, card_Wb, Fintype.card_coe]`. Conclude with `hcard`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_of (hD : RestDims) (K : Cst) (X : Dat) (hF : DensityNumericalFacts K X) (R : RS X.p X.n') (hK : KeyIneq K X R)
     (τ : ℕ) (hτ : τ ≤ X.ccl) : Avg K X R τ := by

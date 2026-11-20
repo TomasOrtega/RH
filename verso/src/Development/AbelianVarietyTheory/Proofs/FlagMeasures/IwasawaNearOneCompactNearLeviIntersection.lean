@@ -10,9 +10,9 @@ namespace GlobalTheory.IwConst.CloseLevi
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Establish `hc : Continuous (fun g : Formalism.REAL.UJ ε => uMat g)` using `GlobalTheory.FlagLeviGroup.continuous_uMat`. Establish `h : {g : Formalism.REAL.UJ ε | ∀ i, ∀ y ∈ W i, uMat g *ᵥ y ∈ W i} = ⋂ i, ⋂ y ∈ (W i : Set (Fin n → ℂ)), (fun g : Formalism.REAL.UJ ε => uMat g *ᵥ y) ⁻¹' (W i : Set (Fin n → ℂ))`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `isClosed_iInter fun i => isClosed_biInter fun y _ => ?_` and prove the remaining obligations. Conclude with `(W i).closed_of_finiteDimensional.preimage (hc.matrix_mulVec continuous_const)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_stab {a : ℕ} (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)) :
     IsClosed {g : Formalism.REAL.UJ ε | ∀ i, ∀ y ∈ W i, uMat g *ᵥ y ∈ W i} := by
@@ -27,7 +27,7 @@ theorem isClosed_stab {a : ℕ} (W : Fin (a + 1) → Submodule ℂ (Fin n → �
   exact (W i).closed_of_finiteDimensional.preimage (hc.matrix_mulVec continuous_const)
 
 /- English proof (translation)
-Establish `hl' : (uMat l)ᴴ * uMat l = 1` using `hl`. Use `show ∀ i, ∀ y ∈ W i, uMat l *ᵥ y ∈ W i ∧ (uMat l)ᴴ *ᵥ y ∈ W i`. Introduce `i y hy`. Conclude with `⟨h i y hy, GlobalTheory.FlagLeviGroup.inv_keeps hl' (W i) (h i) y hy⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_flagM_of_keeps {a : ℕ} (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)) {l : Formalism.REAL.UJ ε}
     (hl : l ∈ maxK ε) (h : ∀ i, ∀ y ∈ W i, uMat l *ᵥ y ∈ W i) : l ∈ flagM ε W := by
@@ -37,13 +37,13 @@ theorem mem_flagM_of_keeps {a : ℕ} (W : Fin (a + 1) → Submodule ℂ (Fin n �
   exact ⟨h i y hy, GlobalTheory.FlagLeviGroup.inv_keeps hl' (W i) (h i) y hy⟩
 
 /- English proof (translation)
-Establish `hC : IsCompact ({g | f g ≤ 1} ∩ Oᶜ)` using `hB.inter_right hO.isClosed_compl`. Break down `({g | f g ≤ 1} ∩ Oᶜ).eq_empty_or_nonempty with hE | hne` into its components or cases. Use `⟨1, one_pos, fun g hg => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hgO`. Establish `hgC : g ∈ ({g | f g ≤ 1} ∩ Oᶜ)` using `⟨le_of_lt hg, hgO⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hgC` using `[hE]`. Simplify using `using hgC`. Take `⟨c, ⟨_, hcO⟩, hmin⟩` from `hC.exists_isMinOn hne hf.continuousOn`. Establish `hc : 0 < f c`. Break down `(h0 c).lt_or_eq with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. It suffices to derive a contradiction. Establish `hc1 : c = 1` using `(h1 c).1 h.symm`. Rewrite `hcO` using `[hc1]`. Conclude with `absurd h1O hcO`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨min 1 (f c), lt_min one_pos hc, fun g hg => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hgO`. Establish `hgC : g ∈ ({g | f g ≤ 1} ∩ Oᶜ)` using `⟨(lt_of_lt_of_le hg (min_le_left _ _)).le, hgO⟩`. Establish `hcg : f c ≤ f g` using `isMinOn_iff.1 hmin g hgC`. Conclude with `absurd (lt_of_lt_of_le hg (min_le_right _ _)) (not_lt.2 hcg)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_unit_valuation_le_subset_nhds {G : Type} [Group G] [TopologicalSpace G] {f : G → ℝ}
     (hf : Continuous f) (h0 : ∀ g, 0 ≤ f g) (h1 : ∀ g, f g = 0 ↔ g = 1) (hB : IsCompact {g | f g ≤ 1})
@@ -70,19 +70,17 @@ private theorem exists_unit_valuation_le_subset_nhds {G : Type} [Group G] [Topol
     exact absurd (lt_of_lt_of_le hg (min_le_right _ _)) (not_lt.2 hcg)
 
 /- English proof (translation)
-Establish `hloc : ∀ k ∈ K, ∀ᶠ z : ℝ × G in nhds ((0 : ℝ), k), ∀ p ∈ P, f (p * z.2) ≤ z.1 → ∃ l ∈ L, f (l * z.2) < t`. Introduce `k hk`. Distinguish the cases in `hkP : k⁻¹ ∈ P`. Establish `hkL` using `hL k hk hkP`. Establish `hc : Continuous fun x : G => f (k⁻¹ * x)` using `hf.comp (continuous_const.mul continuous_id)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hopen : IsOpen {x : G | f (k⁻¹ * x) < t}` using `isOpen_lt hc continuous_const`. Establish `hmem : k ∈ {x : G | f (k⁻¹ * x) < t}` using `by show f (k⁻¹ * k) < t`. Rewrite using `[inv_mul_cancel, (h1 1).2 rfl]`. Conclude with `ht`. Establish `hev : ∀ᶠ z : ℝ × G in nhds ((0 : ℝ), k), z.2 ∈ {x : G | f (k⁻¹ * x) < t}` using `(continuous_snd.tendsto ((0 : ℝ), k)).eventually_mem (hopen.mem_nhds hmem)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `filter_upwards [hev] with z hz`. Introduce `p _ _`. Conclude with `⟨k⁻¹, hkL, hz⟩`. Establish `hcont : Continuous (fun q : G × G => q.1 * q.2⁻¹)` using `continuous_fst.mul continuous_snd.inv`. Establish `hopen : IsOpen ((fun q : G × G => q.1 * q.2⁻¹) ⁻¹' Pᶜ)` using `hP.isOpen_compl.preimage hcont`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ((1 : G), k) ∈ (fun q : G × G => q.1 * q.2⁻¹) ⁻¹' Pᶜ` using `by show (1 : G) * k⁻¹ ∈ Pᶜ`. Rewrite using `[one_mul]`. Conclude with `hkP`. Take `⟨O, V, hO, hV, h1O, hkV, hOV⟩` from `isOpen_prod_iff.1 hopen 1 k hmem`. Take `⟨ρ, hρ, hρO⟩` from `exists_unit_valuation_le_subset_nhds hf h0 h1 hB hO h1O`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ∀ᶠ z : ℝ × G in nhds ((0 : ℝ), k), z.1 < ρ` using `(continuous_fst.tendsto ((0 : ℝ), k)).eventually (gt_mem_nhds hρ)`. Establish `e2 : ∀ᶠ z : ℝ × G in nhds ((0 : ℝ), k), z.2 ∈ V` using `(continuous_snd.tendsto ((0 : ℝ), k)).eventually_mem (hV.mem_nhds hkV)`. Use `filter_upwards [e1, e2] with z hz1 hz2`. Introduce `p hp hpz`. It suffices to derive a contradiction.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hO' : p * z.2 ∈ O` using `hρO _ (lt_of_le_of_lt hpz hz1)`. Establish `hmem'` using `hOV (Set.mk_mem_prod hO' hz2)`. Simplify using `only [Set.mem_preimage, mul_inv_cancel_right, Set.mem_compl_iff] at hmem'`. Conclude with `hmem' hp`. Establish `hev` using `hK.eventually_forall_of_forall_eventually (x₀ := (0 : ℝ)) (P := fun r x => ∀ p ∈ P, f (p * x) ≤ r → ∃ l ∈ L, f (l * x) < t) hloc`.
-
-Establish `hpos : ∀ᶠ r in nhdsWithin (0 : ℝ) (Set.Ioi 0), 0 < r` using `eventually_mem_nhdsWithin`. Take `⟨r, hr, hrK⟩` from `(hpos.and (hev.filter_mono nhdsWithin_le_nhds)).exists`. Conclude with `⟨r, hr, fun p hp k hk hpk => hrK k hk p hp hpk⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem close_of_compact {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {f : G → ℝ}
     (hf : Continuous f) (h0 : ∀ g, 0 ≤ f g) (h1 : ∀ g, f g = 0 ↔ g = 1) (hB : IsCompact {g | f g ≤ 1})
@@ -133,9 +131,9 @@ theorem close_of_compact {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
   exact ⟨r, hr, fun p hp k hk hpk => hrK k hk p hp hpk⟩
 
 /- English proof (translation)
-Rewrite using `[nrm_eq_zero, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Units.ext h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `GlobalTheory.FlagLeviGroup.uMat_one`.
+A detailed English derivation is pending.
 -/
 theorem nrm_uMat_eq_zero (g : Formalism.REAL.UJ ε) : nrm (uMat g - 1) = 0 ↔ g = 1 := by
   rw [nrm_eq_zero, sub_eq_zero]
@@ -147,11 +145,11 @@ theorem nrm_uMat_eq_zero (g : Formalism.REAL.UJ ε) : nrm (uMat g - 1) = 0 ↔ g
     exact GlobalTheory.FlagLeviGroup.uMat_one
 
 /- English proof (translation)
-Introduce `n ε a j W hW t ht`. Establish `hL : ∀ k ∈ maxK ε, k⁻¹ ∈ {g : Formalism.REAL.UJ ε | ∀ i, ∀ y ∈ W i, uMat g *ᵥ y ∈ W i} → k⁻¹ ∈ maxK ε ∩ flagM ε W`. Introduce `k hk hkP`. Establish `hk' : k⁻¹ ∈ maxK ε` using `(GlobalTheory.FlagLeviGroup.compactSub ε).inv_mem hk`. Conclude with `Set.mem_inter hk' (mem_flagM_of_keeps W hk' hkP)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hrP⟩` from `close_of_compact (G := Formalism.REAL.UJ ε) (f := fun g => nrm (uMat g - 1)) (continuous_nrm_uMat ε) (fun g => nrm_nonneg _) (fun g => nrm_uMat_eq_zero g) (isCompact_hsBall ε 1) (isCompact_maxK ε) (isClosed_stab W) hL ht`. Use `⟨r, hr, fun u hu m hm k hk hle => ?_⟩` and prove the remaining obligations. Establish `hm' : ∀ i, ∀ y ∈ W i, uMat m *ᵥ y ∈ W i ∧ (uMat m)ᴴ *ᵥ y ∈ W i` using `hm`. Establish `hum : u * m ∈ {g : Formalism.REAL.UJ ε | ∀ i, ∀ y ∈ W i, uMat g *ᵥ y ∈ W i}`. Rewrite using `[Set.mem_setOf_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i y hy`. Rewrite using `[GlobalTheory.FlagLeviGroup.uMat_mul, ← Matrix.mulVec_mulVec]`. Conclude with `GlobalTheory.FlagMeas.UnipRad.keeps hW u hu i _ (hm' i y hy).1`. Conclude with `hrP (u * m) hum k hk hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem close_levi : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ)
     (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), IsIsoFlag ε j W → ∀ t : ℝ, 0 < t → ∃ r : ℝ, 0 < r ∧

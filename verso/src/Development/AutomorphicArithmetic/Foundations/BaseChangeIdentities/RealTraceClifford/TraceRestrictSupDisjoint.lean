@@ -10,17 +10,17 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 /- English proof (translation)
-Set `φ : (S × S') →ₗ[ℂ] ↥(S ⊔ S')` to `((S.subtype.coprod S'.subtype).codRestrict (S ⊔ S') (fun p => by`. Simplify using `using Submodule.add_mem_sup p.1.2 p.2.2))`. Establish `hφ : ∀ p, (φ p : V) = (p.1 : V) + (p.2 : V)` using `fun p => by simp [φ]`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨a, b⟩ h`. Establish `h0 : (a : V) + (b : V) = 0` using `by simpa [hφ] using congrArg Subtype.val h`. Establish `ha : (a : V) ∈ S'`. Establish `: (a : V) = -(b : V)` using `eq_neg_of_add_eq_zero_left h0`. Rewrite using `[this]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `S'.neg_mem b.2`. Establish `ha0 : (a : V) = 0` using `(Submodule.disjoint_def.1 hd) _ a.2 ha`. Establish `hb0 : (b : V) = 0` using `by simpa [ha0] using h0`. Apply the tactic sequence `ext <;> simp [ha0, hb0]`. Establish `hsurj : Function.Surjective φ`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, hx⟩`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hx`. Conclude with `⟨(⟨a, ha⟩, ⟨b, hb⟩), Subtype.ext (hφ _)⟩`. Set `e : (S × S') ≃ₗ[ℂ] ↥(S ⊔ S')` to `LinearEquiv.ofBijective φ ⟨hinj, hsurj⟩`. Establish `he : ∀ p, (e p : V) = (p.1 : V) + (p.2 : V)` using `fun p => hφ p`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconj : f.restrict hT = e.conj ((f.restrict hS).prodMap (f.restrict hS'))`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨p, rfl⟩` from `e.surjective x`. Establish `hc : e.conj ((f.restrict hS).prodMap (f.restrict hS')) (e p) = e ((f.restrict hS).prodMap (f.restrict hS') p)`. Simplify using `[LinearEquiv.conj_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[LinearMap.restrict_coe_apply, he, he, map_add]`. Both sides reduce to the same expression. Rewrite using `[hconj, LinearMap.trace_conj', LinearMap.trace_prodMap']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trace_restrict_sup_disjoint {V : Type} [AddCommGroup V] [Module ℂ V] (f : Module.End ℂ V)
     (S S' : Submodule ℂ V) (hF : FiniteDimensional ℂ S) (hF' : FiniteDimensional ℂ S')
@@ -61,23 +61,23 @@ private theorem trace_restrict_sup_disjoint {V : Type} [AddCommGroup V] [Module 
   rw [hconj, LinearMap.trace_conj', LinearMap.trace_prodMap']
 
 /- English proof (translation)
-Introduce `V _ _ f`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `S S' hF hF' hd hS hS'`. Establish `hT : ∀ x ∈ S ⊔ S', f x ∈ S ⊔ S'`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hS a ha) (hS' b hb)`. Unfold `PositivityTheory.RgBcC.RealD.trOn`. Rewrite using `[dif_pos hT, dif_pos hS, dif_pos hS']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `trace_restrict_sup_disjoint f S S' hF hF' hd hS hS' hT`. Introduce `S g c hf hg`. Establish `hfg : ∀ x ∈ S, (f + g) x ∈ S` using `fun x hx => S.add_mem (hf x hx) (hg x hx)`. Establish `hcf : ∀ x ∈ S, (c • f) x ∈ S` using `fun x hx => S.smul_mem c (hf x hx)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `PositivityTheory.RgBcC.RealD.trOn`. Rewrite using `[dif_pos hfg, dif_pos hf, dif_pos hg, ← map_add]`. Use `congr 1`. Unfold `PositivityTheory.RgBcC.RealD.trOn`. Rewrite using `[dif_pos hcf, dif_pos hf]`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (c • f).restrict hcf = c • f.restrict hf` using `by ext x; simp`. Rewrite using `[this, map_smul, smul_eq_mul]`. Introduce `he`. Unfold `PositivityTheory.RgBcC.RealD.trOn`. Rewrite using `[dif_pos hf, dif_pos hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using `[he x x.2]`. Introduce `S S' g hF hF' hf hg`. Establish `h1 : ∀ x ∈ S, (g * f) x ∈ S` using `fun x hx => hg _ (hf x hx)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h2 : ∀ x ∈ S', (f * g) x ∈ S'` using `fun x hx => hf _ (hg x hx)`. Unfold `PositivityTheory.RgBcC.RealD.trOn`. Rewrite using `[dif_pos h1, dif_pos h2]`. Set `a : S →ₗ[ℂ] S'` to `f.restrict hf`. Set `b : S' →ₗ[ℂ] S` to `g.restrict hg`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (g * f).restrict h1 = b ∘ₗ a` using `by ext x; rfl`. Establish `e2 : (f * g).restrict h2 = a ∘ₗ b` using `by ext x; rfl`. Rewrite using `[e1, e2]`. Conclude with `LinearMap.trace_comp_comm' a b`. Introduce `S hF`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ x ∈ S, (1 : Module.End ℂ V) x ∈ S` using `fun x hx => hx`. Unfold `PositivityTheory.RgBcC.RealD.trOn`. Rewrite using `[dif_pos h1]`. Establish `: (1 : Module.End ℂ V).restrict h1 = LinearMap.id` using `by ext x; rfl`. Rewrite using `[this, LinearMap.trace_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.trAdd :
     ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (f : Module.End ℂ V),

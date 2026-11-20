@@ -9,7 +9,7 @@ open Formalism.FourierDecayAlt Finset
 namespace GlobalTheory.NormaliserCutBound
 
 /- English proof (translation)
-Establish `h1 : ∏ s, f s = ∏ s : Fin n, g (s.val + 1)` using `Finset.prod_congr rfl (fun s _ => (h s).symm)`. Rewrite using `[h1, Fin.prod_univ_eq_prod_range (fun s => g (s + 1)) n, ← Finset.Ico_add_one_right_eq_Icc, Finset.prod_Ico_eq_prod_range]`. Simplify using `[add_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_fin_eq_prod_Icc (n : ℕ) (f : Fin n → ℝ) (g : ℕ → ℝ)
     (h : ∀ s : Fin n, g (s.val + 1) = f s) : ∏ s, f s = ∏ s ∈ Finset.Icc 1 n, g s := by
@@ -19,7 +19,7 @@ theorem prod_fin_eq_prod_Icc (n : ℕ) (f : Fin n → ℝ) (g : ℕ → ℝ)
   simp [add_comm]
 
 /- English proof (translation)
-Establish `: M.qC P (y : ℂ) = ((I.qpoly P.k P.T P.T' P.u P.u' y : ℝ) : ℂ)`. Unfold `M.qC I.qpoly`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[this, Complex.ofReal_re]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem qC_re (P : M.Par) (y : ℝ) :
     (M.qC P (y : ℂ)).re = I.qpoly P.k P.T P.T' P.u P.u' y := by
@@ -30,31 +30,29 @@ theorem qC_re (P : M.Par) (y : ℝ) :
   rw [this, Complex.ofReal_re]
 
 /- English proof (translation)
-Introduce `C b c P l lam nn Y hP hC hl hlk hc hcb hkb hu hu' hlam hgap hint hint' hT hT' hnn hcut y hy`. Establish `hcy` using `hcut y hy`. Establish `hb3 : 3 ≤ b` using `by linarith`. Take `⟨n, hn⟩ : ∃ n, n = 2 * P.r + P.k + 1` from `⟨_, rfl⟩`. Use `revert lam`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hn]`. Introduce `lam hlam hgap hint hint' hnn`. Set `lamN : ℕ → ℝ` to `fun s => if h : s - 1 < n then lam ⟨s - 1, h⟩ else 0`. Establish `hlamN : ∀ s : Fin n, lamN (s.val + 1) = lam s`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[lamN, s.isLt]`. Establish `hlamN' : ∀ (s : ℕ) (h : s - 1 < n), lamN s = lam ⟨s - 1, h⟩`. Introduce `s h`. Simplify using `[lamN, h]`. Establish `hn' : P.k + 2 * P.r + 1 = n` using `by omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinter : I.Interlaces P.k P.u P.u' P.lo`. Introduce `i hi`. Establish `hg` using `hP.gap i hi`. Unfold `M.Par.hi at hg`. Establish `h1` using `min_le_left (P.u i) (P.u' i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `min_le_right (P.u i) (P.u' i)`. Establish `h3` using `le_max_left (P.u (i + 1)) (P.u' (i + 1))`. Establish `h4` using `le_max_right (P.u (i + 1)) (P.u' (i + 1))`. Apply the tactic sequence `refine ⟨by linarith, by linarith, ?_, ?_⟩ <;> unfold M.Par.lo <;> linarith`. Establish `hint2 : ∀ v : ℕ → ℝ, (∀ s : Fin n, s.val + 2 ≤ P.k → (s.val + 1 ≠ l → lam s + 1 / 2 ≤ v (s.val + 1)) ∧ (s.val + 2 ≠ l → v (s.val + 2) + 1 / 2 ≤ lam s)) → ∀ s : ℕ, 1 ≤ s → s + 1 ≤ P.k → (s ≠ l → lamN s + 1 / 2 ≤ v s) ∧ (s + 1 ≠ l → v (s + 1) + 1 / 2 ≤ lamN s)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv s hs hsk`. Take `⟨t, rfl⟩ : ∃ t, s = t + 1` from `⟨s - 1, by omega⟩`. Establish `ht : t < n` using `by omega`. Establish `h` using `hv ⟨t, ht⟩ hsk`. Rewrite `h` using `[← hlamN ⟨t, ht⟩]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hmain` using `GlobalTheory.two_brackets_le_pow_mul_prod_entries P.k P.r l b c y lamN P.u P.u' hl hlk hc hcb hkb hu hu' (by`. Introduce `s hs`. Rewrite `hs` using `[Finset.mem_Icc]`. Rewrite using `[hlamN' s (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hlam _)`. Use the proof step `(by`. Introduce `s hs hsk`. Take `⟨t, rfl⟩ : ∃ t, s = t + 1` from `⟨s - 1, by omega⟩`. Establish `ht : t < n` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ht' : t + 1 < n` using `by omega`. Establish `h` using `hgap ⟨t, ht⟩ ⟨t + 1, ht'⟩ rfl (by simp only; omega)`. Rewrite `h` using `[← hlamN ⟨t, ht⟩, ← hlamN ⟨t + 1, ht'⟩]`. Conclude with `h)`. Use the proof step `(hint2 _ hint) (hint2 _ hint')`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(by`. Introduce `i hi hik`. Take `⟨h1, h2, h3, h4⟩` from `hinter i (Finset.mem_Icc.mpr ⟨hi, hik⟩)`. Use `⟨by linarith, by linarith, by linarith, by linarith⟩)` and prove the remaining obligations. Use `hcy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hmain` using `[hn']`. Establish `e0 : ∏ s, (|y + lam s| + c) = ∏ s ∈ Finset.Icc 1 n, (|y + lamN s| + c)` using `prod_fin_eq_prod_Icc n _ (fun s => |y + lamN s| + c) (fun s => by simp only [hlamN])`. Establish `e1 : ∏ s, (|y + 1 + lam s| + c) = ∏ s ∈ Finset.Icc 1 n, (|y + 1 + lamN s| + c)` using `prod_fin_eq_prod_Icc n _ (fun s => |y + 1 + lamN s| + c) (fun s => by simp only [hlamN])`. Rewrite `hmain` using `[← e0, ← e1]`. Establish `hq` using `Formalism.FourierDecayAlt.P.q_positive_interlacing P.k P.u P.u' P.lo l y P.T P.T' hl hlk hinter hcy hP.T_pos hP.T'_pos`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hTT : 0 < P.T * P.T'` using `mul_pos hP.T_pos hP.T'_pos`. Establish `hqe : I.qpoly P.k P.T P.T' P.u P.u' y = (P.T * P.T') * ∏ i ∈ Finset.Icc 1 P.k, |(y + 1 / 2 + P.u i) * (y + 1 / 2 + P.u' i)|`. Rewrite using `[← abs_of_pos hq]`. Unfold `I.qpoly`. Rewrite using `[abs_mul, abs_neg, abs_of_pos hTT, Finset.abs_prod]`.
-
-Establish `hsize` using `(GlobalTheory.LamSize.main C b P.T P.T' P.r 1 hC hb3 (by push_cast; linarith) hT hT').2`. Rewrite `hsize` using `[Nat.cast_one, one_mul]`. Establish `hA : 0 ≤ ∏ i ∈ Finset.Icc 1 P.k, |(y + 1 / 2 + P.u i) * (y + 1 / 2 + P.u' i)|` using `Finset.prod_nonneg (fun _ _ => abs_nonneg _)`. Rewrite using `[qC_re, hqe, ← mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem main : ∀ (C b c : ℝ) (P : M.Par) (l : ℕ) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (nn : ℝ → ℝ) (Y : Finset ℝ), P.OK → 0 ≤ C → 1 ≤ l → l ≤ P.k → 1 ≤ c → c + 2 ≤ b → (P.k : ℝ) ≤ b → |P.u l| ≤ b → |P.u' l| ≤ b → (∀ s, |lam s| ≤ b) → (∀ s t : Fin (2 * P.r + P.k + 1), s.val + 1 = t.val → t.val + 2 ≤ P.k → lam t + 2 * c ≤ lam s) → (∀ s : Fin (2 * P.r + P.k + 1), s.val + 2 ≤ P.k → (s.val + 1 ≠ l → lam s + 1 / 2 ≤ P.u (s.val + 1)) ∧ (s.val + 2 ≠ l → P.u (s.val + 2) + 1 / 2 ≤ lam s)) → (∀ s : Fin (2 * P.r + P.k + 1), s.val + 2 ≤ P.k → (s.val + 1 ≠ l → lam s + 1 / 2 ≤ P.u' (s.val + 1)) ∧ (s.val + 2 ≠ l → P.u' (s.val + 2) + 1 / 2 ≤ lam s)) → b ^ (-(C * ((2 * P.r + 2 : ℕ) : ℝ))) ≤ P.T → b ^ (-(C * ((2 * P.r + 2 : ℕ) : ℝ))) ≤ P.T' → (∀ y, 0 ≤ nn y ∧ nn y ≤ ∏ s, (|y + lam s| + c)) → (∀ y ∈ Y, I.OnCut P.u P.u' l y) → ∀ y ∈ Y, nn y * nn (y + 1) ≤ (b ^ ((6 + C) * ((2 * P.r + 2 : ℕ) : ℝ))) ^ 2 * (M.qC P (y : ℂ)).re := by
   intro C b c P l lam nn Y hP hC hl hlk hc hcb hkb hu hu' hlam hgap hint hint' hT hT' hnn hcut y hy

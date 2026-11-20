@@ -47,9 +47,9 @@ theorem archMat_eq_archEquiv {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {w : Infi
     (g : GArch σ J w) : archMat σ J τ g = (archEquiv J h τ g).1.1 := rfl
 
 /- English proof (translation)
-Establish `: IsModuleTopology w.Completion (w.Completion ⊗[F] E)` using `⟨rfl⟩`. Use `letI : Algebra w.Completion ℂ := (InfinitePlace.Completion.extensionEmbedding w).toAlgebra`. Establish `: ContinuousSMul w.Completion ℂ` using `⟨((InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp continuous_fst).mul continuous_snd⟩`. Set `L : w.Completion ⊗[F] E →ₗ[w.Completion] ℂ` to `{ toFun := infEmb τ map_add' := map_add _ map_smul' := fun c y => by`. Establish `: c • y = (c ⊗ₜ[F] (1 : E)) * y` using `by rw [Algebra.smul_def]; rfl`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[this, map_mul, infEmb_tmul, map_one, mul_one]`. Use `rfl }`. Conclude with `IsModuleTopology.continuous_of_linearMap L`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem continuous_infEmb {w : InfinitePlace F} (τ : EmbOver E w) : Continuous (infEmb τ) := by
   have : IsModuleTopology w.Completion (w.Completion ⊗[F] E) := ⟨rfl⟩
@@ -65,19 +65,19 @@ theorem continuous_infEmb {w : InfinitePlace F} (τ : EmbOver E w) : Continuous 
   exact IsModuleTopology.continuous_of_linearMap L
 
 /- English proof (translation)
-The claim follows from `(Units.continuous_val.comp (isEmbedding_matHom _ σ J).continuous).matrix_map (continuous_infEmb τ)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_archMat {w : InfinitePlace F} (τ : EmbOver E w) : Continuous (archMat σ J τ) :=
   (Units.continuous_val.comp (isEmbedding_matHom _ σ J).continuous).matrix_map (continuous_infEmb τ)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun τ => continuous_archMat σ J τ`.
+A detailed English derivation is pending.
 -/
 theorem continuous_archCoord (w : InfinitePlace F) : Continuous (archCoord σ J w) :=
   continuous_pi fun τ => continuous_archMat σ J τ
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun w => (continuous_archCoord σ J w).comp (continuous_projInfArch σ J w)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infCoord : Continuous (infCoord σ J) :=
   continuous_pi fun w => (continuous_archCoord σ J w).comp (continuous_projInfArch σ J w)
@@ -85,9 +85,9 @@ theorem continuous_infCoord : Continuous (infCoord σ J) :=
 variable {σ} in
 
 /- English proof (translation)
-Set `e` to `RingEquiv.ofBijective _ (infEmb_bijective h τ)`. Establish `hb : ∀ {A B : Type} [CommRing A] [CommRing B] [TopologicalSpace A] [TopologicalSpace B] (φ : A →+* B), Continuous φ → Continuous (Formalism.UG.bc (n` using `Fin n) φ) := fun φ hφ => Units.continuous_iff.2 ⟨Units.continuous_val.matrix_map hφ, Units.continuous_coe_inv.matrix_map hφ⟩`. Establish `h1 : Topology.IsEmbedding (Formalism.UG.bc (n` using `Fin n) (infEmb τ)) := Function.LeftInverse.isEmbedding (f := Formalism.UG.bc (n := Fin n) e.symm.toRingHom) (fun x => Units.ext (Matrix.ext fun i j => e.symm_apply_apply _)) (hb _ (Frames.continuous_infEmb_symm h τ)) (hb _ (continuous_infEmb τ))`. Establish `h2 : Topology.IsEmbedding (Units.val : (Matrix (Fin n) (Fin n) ℂ)ˣ → Matrix (Fin n) (Fin n) ℂ)`. Use `Units.isEmbedding_val_mk' (f := fun A => A⁻¹) (fun A hA => ?_) fun u => by simp` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : A.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det A).1 hA).ne_zero`. Conclude with `(continuousAt_matrix_inv _ (by rw [Ring.inverse_eq_inv']; exact continuousAt_inv₀ hd)).continuousWithinAt`. Conclude with `h2.comp (h1.comp (isEmbedding_matHom _ σ J))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isEmbedding_archMat (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) :
     Topology.IsEmbedding (matCoord (archMat σ J τ)) := by
@@ -138,11 +138,9 @@ def IsPureTensor (f : GAd σ J → ℂ) : Prop :=
 variable {σ J L} {fa : ∀ w, GArch σ J w → ℂ} {ff : ∀ v, GLoc σ J v → ℂ}
 
 /- English proof (translation)
-Use `le_antisymm (ccSmooth_le (p := fun y τ' i j => if infEmb τ' = infEmb τ then y i j else conj (y i j)) ?_ ?_) (ccSmooth_le (p := fun y => y τ) (by fun_prop) fun _ => rfl)` and prove the remaining obligations. Use `contDiff_pi.2 fun τ' => contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_ split_ifs` and prove the remaining obligations. Use `fun_prop`. Conclude with `Complex.conjCLE.contDiff.comp (by fun_prop)`. Introduce `g`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Use function extensionality and compare the values at `τ' i j`. Express the relevant statement in the definitionally equal form `infEmb τ' _ = if _ then infEmb τ _ else conj (infEmb τ _)`. Use `split_ifs with e`. Rewrite using `[e]`. Rewrite using `[(infEmb_eq_or_conj h τ τ').resolve_left e]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ccArch_eq (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) :
     CcArch σ J w = CcMat (archMat σ J τ) := by
@@ -163,22 +161,22 @@ theorem ccArch_eq (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) 
 omit [NumberField E] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[tensor, infFin, tensorInf, tensorFin]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tensor_eq_infFin : tensor σ J fa ff = infFin σ J (tensorInf σ J fa) (tensorFin σ J ff) := by
   funext g
   simp [tensor, infFin, tensorInf, tensorFin]
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, ha, b, hb, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem infFin_mem_ccAd {a : GInf σ J → ℂ} {b : GFin σ J → ℂ} (ha : a ∈ CcInf σ J) (hb : b ∈ CcFin σ J) :
     infFin σ J a b ∈ CcAd σ J := Submodule.subset_span ⟨a, ha, b, hb, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨a, ha, b, hb, rfl⟩` from `hf`. Use `⟨((continuous_of_mem_ccSmooth (continuous_infCoord σ J) ha).comp (continuous_projInf σ J)).mul (hb.1.continuous.comp (continuous_projFin σ J)), .intro ((infFinEquiv σ J).toHomeomorph.isClosedEmbedding.isCompact_preimage (IsCompact.prod ha.1 hb.2)) fun g hg => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hg ⟨subset_tsupport a (left_ne_zero_of_mul hne), subset_tsupport b (right_ne_zero_of_mul hne)⟩`. Consider the case `zero => exact ⟨continuous_zero, HasCompactSupport.zero⟩`. Consider the case `add f f' _ _ h h' => exact ⟨h.1.add h'.1, h.2.add h'.2⟩`. Consider the case `smul a f _ h => exact ⟨h.1.const_smul a, h.2.smul_left (f := fun _ => a)⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_of_mem_ccAd {f : GAd σ J → ℂ} (h : f ∈ CcAd σ J) : Continuous f ∧ HasCompactSupport f := by
   induction h using Submodule.span_induction with
@@ -194,7 +192,7 @@ theorem continuous_of_mem_ccAd {f : GAd σ J → ℂ} (h : f ∈ CcAd σ J) : Co
   | smul a f _ h => exact ⟨h.1.const_smul a, h.2.smul_left (f := fun _ => a)⟩
 
 /- English proof (translation)
-Use `choose Φ hΦ e using fun w => (h w).2`. Use `⟨.intro ((infContEquivPi σ J).toHomeomorph.isClosedEmbedding.isCompact_preimage (isCompact_univ_pi fun w => (h w).1)) fun g hg => ?_, fun y => ∏ w, Φ w (y w), contDiff_prod fun w _ => (hΦ w).comp (contDiff_pi.1 contDiff_id w), fun g => Finset.prod_congr rfl fun w _ => e w _⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hg fun w _ => subset_tsupport _ (Finset.prod_ne_zero_iff.1 hne w (Finset.mem_univ w))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem tensorInf_mem (h : ∀ w, fa w ∈ CcArch σ J w) : tensorInf σ J fa ∈ CcInf σ J := by
   choose Φ hΦ e using fun w => (h w).2
@@ -207,25 +205,25 @@ theorem tensorInf_mem (h : ∀ w, fa w ∈ CcArch σ J w) : tensorInf σ J fa �
 variable [Submodule.IsLattice E L]
 
 /- English proof (translation)
-The claim follows from `indicator_mem_SB (isOpen_stabLoc σ J L v) (isCompact_stabLoc σ J L v)`.
+A detailed English derivation is pending.
 -/
 theorem unitLoc_mem (v : HeightOneSpectrum (𝓞 F)) : unitLoc σ J L v ∈ CcLoc σ J v :=
   indicator_mem_SB (isOpen_stabLoc σ J L v) (isCompact_stabLoc σ J L v)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨unitLoc_mem, .of_forall fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFinFamily_unit : IsFinFamily σ J L (unitLoc σ J L) := ⟨unitLoc_mem, .of_forall fun _ => rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, (h.2.and (eventually_stabLoc_eq σ J L L')).mono fun v hv => by rw [hv.1, unitLoc, unitLoc, hv.2]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsFinFamily.of_lattice (h : IsFinFamily σ J L ff) (L' : Submodule (𝓞 E) (Fin n → E))
     [Submodule.IsLattice E L'] : IsFinFamily σ J L' ff :=
   ⟨h.1, (h.2.and (eventually_stabLoc_eq σ J L L')).mono fun v hv => by rw [hv.1, unitLoc, unitLoc, hv.2]⟩
 
 /- English proof (translation)
-The claim follows from `(h.2.and (eventually_projFinLoc_mem_stabLoc σ J L g)).mono (q := fun v => ff v (projFinLoc σ J v g) = 1) fun v hv => by rw [hv.1, unitLoc, indicator_of_mem hv.2, Pi.one_apply]`.
+A detailed English derivation is pending.
 -/
 theorem IsFinFamily.finite_mulSupport (h : IsFinFamily σ J L ff) (g : GFin σ J) :
     (Function.mulSupport fun v => ff v (projFinLoc σ J v g)).Finite :=
@@ -233,7 +231,7 @@ theorem IsFinFamily.finite_mulSupport (h : IsFinFamily σ J L ff) (g : GFin σ J
     fun v hv => by rw [hv.1, unitLoc, indicator_of_mem hv.2, Pi.one_apply]
 
 /- English proof (translation)
-Use `⟨fun hne v hv => hne (finprod_eq_zero _ v hv (h.finite_mulSupport g)), fun hne => ?_⟩` and prove the remaining obligations. Rewrite using `[tensorFin, finprod_eq_prod _ (h.finite_mulSupport g)]`. Conclude with `Finset.prod_ne_zero_iff.2 fun v _ => hne v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsFinFamily.tensorFin_ne_zero_iff (h : IsFinFamily σ J L ff) (g : GFin σ J) :
     tensorFin σ J ff g ≠ 0 ↔ ∀ v, ff v (projFinLoc σ J v g) ≠ 0 := by
@@ -242,13 +240,13 @@ theorem IsFinFamily.tensorFin_ne_zero_iff (h : IsFinFamily σ J L ff) (g : GFin 
   exact Finset.prod_ne_zero_iff.2 fun v _ => hne v
 
 /- English proof (translation)
-Set `S` to `(eventually_cofinite.1 h.2).toFinset`. Establish `hS : ∀ v ∉ S, ff v = unitLoc σ J L v` using `fun v hv => by simpa [S] using hv`. Use `choose U hU hf using fun v => exists_biinvariant (h.1 v)`. Establish `ho : IsOpen ({k | ∀ v, projFinLoc σ J v k ∈ stabLoc σ J L v} ∩ ⋂ v ∈ S, projFinLoc σ J v ⁻¹' U v)` using `(isRestrGroup_GFin σ J L).isOpen_all.inter (isOpen_biInter_finset fun v _ => (hU v).preimage (continuous_projFinLoc σ J v))`. Use `⟨(IsLocallyConstant.iff_exists_open _).2 fun g => ⟨_, ho.preimage (continuous_const_mul g⁻¹), by simp, fun x hx => finprod_congr fun v => ?_⟩, .intro ((isRestrGroup_GFin σ J L).isCompact_cyl S (fun _ => univ) (fun v => tsupport (ff v)) (fun e => e.elim) fun v _ => (h.1 v).2) fun …` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_inv_cancel_left g x, map_mul]`. Distinguish the cases in `hv : v ∈ S`. Conclude with `(hf v _ (mem_iInter₂.1 hx.2 v hv) _).2`. Rewrite using `[hS v hv, unitLoc]`. Distinguish the cases in `hg : projFinLoc σ J v g ∈ stabLoc σ J L v`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[indicator_of_mem hg, indicator_of_mem (mul_mem hg (hx.1 v))]`. Both sides reduce to the same expression. Rewrite using `[indicator_of_notMem hg, indicator_of_notMem fun e => hg ((Subgroup.mul_mem_cancel_right _ (hx.1 v)).1 e)]`. Assume the negation of the conclusion as `hne`. Use `(h.tensorFin_ne_zero_iff g).1 hne` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hg ⟨fun e => e.elim, fun v _ => subset_tsupport _ (this v), fun v hv => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `this v (by rw [hS v hv, unitLoc, indicator_of_notMem hn])`.
+A detailed English derivation is pending.
 -/
 theorem IsFinFamily.tensorFin_mem (h : IsFinFamily σ J L ff) : tensorFin σ J ff ∈ CcFin σ J := by
   let S := (eventually_cofinite.1 h.2).toFinset
@@ -275,22 +273,22 @@ theorem IsFinFamily.tensorFin_mem (h : IsFinFamily σ J L ff) : tensorFin σ J f
     exact this v (by rw [hS v hv, unitLoc, indicator_of_notMem hn])
 
 /- English proof (translation)
-Rewrite using `[tensor_eq_infFin]`. Conclude with `infFin_mem_ccAd (tensorInf_mem ha) hf.tensorFin_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_mem_ccAd (ha : ∀ w, fa w ∈ CcArch σ J w) (hf : IsFinFamily σ J L ff) : tensor σ J fa ff ∈ CcAd σ J :=
   by rw [tensor_eq_infFin]; exact infFin_mem_ccAd (tensorInf_mem ha) hf.tensorFin_mem
 
 /- English proof (translation)
-Take `⟨fa, ff, ha, hf, rfl⟩` from `h`. Conclude with `tensor_mem_ccAd ha hf`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsPureTensor.mem_ccAd {f : GAd σ J → ℂ} (h : IsPureTensor σ J L f) : f ∈ CcAd σ J := by
   obtain ⟨fa, ff, ha, hf, rfl⟩ := h
   exact tensor_mem_ccAd ha hf
 
 /- English proof (translation)
-Use `⟨⟨fun v => starFn_mem_SB (h.1 v), h.2.mono fun v hv => funext fun g => ?_⟩, funext fun g => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `by_cases hg : g ∈ stabLoc σ J L v <;> simp [hv, starFn, unitLoc, indicator, hg]`. Use `h.finite_mulSupport (projFin σ J g⁻¹)` as an intermediate fact. Simplify using `only [projFinLoc_projFin, map_inv] at this`. Simplify using `only [starFn, tensor, map_mul, map_prod, map_inv]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_finprod _ this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsFinFamily.starFn_tensor (h : IsFinFamily σ J L ff) :
     IsFinFamily σ J L (fun v => starFn (ff v)) ∧
@@ -303,11 +301,9 @@ theorem IsFinFamily.starFn_tensor (h : IsFinFamily σ J L ff) :
     rw [map_finprod _ this]
 
 /- English proof (translation)
-Use `hμ.haar_arch` as an intermediate fact. Use `hμ.haar_loc` as an intermediate fact. Set `S` to `(eventually_cofinite.1 (hf.2.and hμ.eventually_eq_one)).toFinset`. Establish `hS : ∀ v ∉ S, ff v = unitLoc σ J L v ∧ μf v (stabLoc σ J L v) = 1` using `fun v hv => by`. Simplify `hv` using `only [S, Finite.mem_toFinset, mem_setOf_eq, not_not]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := S) _ fun v hv => by_contra fun h => hv (by`. Rewrite using `[(hS v h).1, unitLoc]`. Use `(integral_indicator_const _ (isOpen_stabLoc σ J L v).measurableSet).trans ?_` and prove the remaining obligations. Rewrite using `[Measure.real, (hS v h).2, ENNReal.toReal_one, one_smul]`. Use the proof step `rfl)]`.
-
-Conclude with `(((hμ.euler_product S fun v hv => (hS v hv).2).1 fa ff fun w => (continuous_of_mem_ccSmooth (continuous_archCoord σ J w) (ha w)).integrable_of_hasCompactSupport (ha w).1).2.1 (fun v hv => (hS v hv).1) fun v _ => (hf.1 v).1.continuous.integrable_of_hasCompactSupport (hf.1 v).2).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_tensor {μa : ∀ w, Measure (GArch σ J w)} {μf : ∀ v, Measure (GLoc σ J v)} {μ : Measure (GAd σ J)}
     (hμ : IsRestrictedProd σ J L μa μf μ) (ha : ∀ w, fa w ∈ CcArch σ J w) (hf : IsFinFamily σ J L ff) :
@@ -328,7 +324,7 @@ theorem integral_tensor {μa : ∀ w, Measure (GArch σ J w)} {μf : ∀ v, Meas
 variable (J L) in
 
 /- English proof (translation)
-Use `choose φ h1 h2 _ _ using fun w => exists_bump (isEmbedding_archMat J h (Classical.arbitrary (EmbOver E w))).isInducing (g := 1) univ_mem`. Use `⟨_, ⟨fun w x => φ w x, _, fun w => ccArch_eq h _ ▸ h1 w, isFinFamily_unit, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[tensor, h2, unitLoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isPureTensor (h : IsCMExt F E σ) : ∃ f, IsPureTensor σ J L f ∧ f 1 = 1 := by
   choose φ h1 h2 _ _ using fun w => exists_bump (isEmbedding_archMat J h (Classical.arbitrary (EmbOver E w))).isInducing
@@ -365,13 +361,13 @@ def strictTorus {k : Type} [Field k] (n : ℕ) (ϖ : kˣ) : Set (Fin n → kˣ) 
   {t | ∃ a : Fin n → ℤ, StrictAnti a ∧ t = fun i => ϖ ^ a i}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, fun i => -(i : ℤ), fun _ _ h => neg_lt_neg (by exact_mod_cast h), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem strictTorus_nonempty {k : Type} [Field k] (n : ℕ) (ϖ : kˣ) : (strictTorus n ϖ).Nonempty :=
   ⟨_, fun i => -(i : ℤ), fun _ _ h => neg_lt_neg (by exact_mod_cast h), rfl⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `HeightOneSpectrum.valuedAdicCompletion_surjective F v (WithZero.exp (-1 : ℤ))`. Conclude with `⟨Units.mk0 p fun e => WithZero.exp_ne_zero (hp.symm.trans ((congrArg _ e).trans (map_zero _))), hp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isUnif (v : HeightOneSpectrum (𝓞 F)) : ∃ ϖ : (Fv F v)ˣ, IsUnif ϖ := by
   obtain ⟨p, hp⟩ := HeightOneSpectrum.valuedAdicCompletion_surjective F v (WithZero.exp (-1 : ℤ))
@@ -380,7 +376,7 @@ theorem exists_isUnif (v : HeightOneSpectrum (𝓞 F)) : ∃ ϖ : (Fv F v)ˣ, Is
 open ValuativeRel in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocalData.isLocalField v valuation (Fv F v) (ϖ : Fv F v) = uniformizer (Fv F v) := by letI := GlobalTheory.LocalData.complRel v haveI := GlobalTheory.LocalData.isLocalField v haveI : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuatio …`.
+A detailed English derivation is pending.
 -/
 theorem IsUnif.valuation_eq {v : HeightOneSpectrum (𝓞 F)} {ϖ : (Fv F v)ˣ} (h : IsUnif ϖ) :
     letI := GlobalTheory.LocalData.complRel v
@@ -428,17 +424,17 @@ def idem {W : Type} [AddCommGroup W] [Module ℂ W] (μ : Measure (GLoc σ J v))
     (τ : Representation ℂ (GL (Fin n) (ResF v)) W) : GLoc σ J v → ℂ := typeIdem μ s.red τ
 
 /- English proof (translation)
-The claim follows from `splitRed_surjective _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem red_surjective : Function.Surjective s.red := splitRed_surjective _ _ _ _
 
 /- English proof (translation)
-The claim follows from `splitRed_eq_one_iff _ _ _ _ k`.
+A detailed English derivation is pending.
 -/
 theorem red_eq_one_iff (k : stabLoc σ J L v) : s.red k = 1 ↔ k.1 ∈ stabLocOne σ J s.emb L := splitRed_eq_one_iff _ _ _ _ k
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocalData.isLocalField v g ∈ stabLoc σ J L v ↔ s.equiv g ∈ KO (Fv F v) (Fin n) := by rw [← (GLint_eq_KO_and_princ_eq_KOne v n).1] exact mem_stabLoc_iff_GLint s.cm s.herm s.selfDual s.isBasis`.
+A detailed English derivation is pending.
 -/
 theorem mem_stabLoc_iff {g : GLoc σ J v} :
     letI := GlobalTheory.LocalData.complRel v
@@ -448,9 +444,9 @@ theorem mem_stabLoc_iff {g : GLoc σ J v} :
   exact mem_stabLoc_iff_GLint s.cm s.herm s.selfDual s.isBasis
 
 /- English proof (translation)
-Use `letI := GlobalTheory.LocalData.complRel v`. Use `haveI := GlobalTheory.LocalData.isLocalField v`. Use `haveI : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `he` using `ValuativeRel.isEquiv (ValuativeRel.valuation (Fv F v)) (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ)))`. Use `GlobalTheory.SmGL.mem_iwahori.trans (and_congr s.mem_stabLoc_iff.symm ?_)` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [he.lt_one_iff_lt_one]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mem_iwahori {g : GLoc σ J v} :
     g ∈ s.iwahori ↔ g ∈ stabLoc σ J L v ∧ ∀ i j, j < i → Valued.v ((s.equiv g).1 i j) < 1 := by
@@ -464,12 +460,12 @@ theorem mem_iwahori {g : GLoc σ J v} :
   rfl
 
 /- English proof (translation)
-Introduce `_ h` and use `(s.mem_iwahori.1 h).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem iwahori_le : s.iwahori ≤ stabLoc σ J L v := fun _ h => (s.mem_iwahori.1 h).1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocalData.isLocalField v g ∈ s.iwahoriCoset t ↔ ∃ a ∈ GlobalTheory.SmGL.iwahori (Fv F v) (Fin n), ∃ b ∈ GlobalTheory.SmGL.iwahori (Fv F v) (Fin n), s.equiv g = a * GlobalTheory.SmGL.diagT _ _ t * b := by rw [iwahoriCoset, DoubleCoset.mem_doubleCoset] constructor · ri …`.
+A detailed English derivation is pending.
 -/
 theorem mem_iwahoriCoset {t : Fin n → (Fv F v)ˣ} {g : GLoc σ J v} :
     letI := GlobalTheory.LocalData.complRel v
@@ -486,7 +482,7 @@ theorem mem_iwahoriCoset {t : Fin n → (Fv F v)ˣ} {g : GLoc σ J v} :
     · exact Subgroup.mem_comap.2 ((s.equiv.apply_symm_apply b).symm ▸ hb :)
 
 /- English proof (translation)
-The claim follows from `letI := GlobalTheory.LocalData.complRel v haveI := GlobalTheory.LocalData.isLocalField v (GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori (Fv F v) (Fin n)).preimage (map_continuous s.equiv)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_iwahori : IsOpen (s.iwahori : Set (GLoc σ J v)) :=
   letI := GlobalTheory.LocalData.complRel v
@@ -494,7 +490,7 @@ theorem isOpen_iwahori : IsOpen (s.iwahori : Set (GLoc σ J v)) :=
   (GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori (Fv F v) (Fin n)).preimage (map_continuous s.equiv)
 
 /- English proof (translation)
-The claim follows from `letI := GlobalTheory.LocalData.complRel v haveI := GlobalTheory.LocalData.isLocalField v s.equiv.toHomeomorph.isClosedEmbedding.isCompact_preimage (GlobalTheory.SmGL.IwahoriOnto.isCompact_iwahori (Fv F v) (Fin n))`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_iwahori : IsCompact (s.iwahori : Set (GLoc σ J v)) :=
   letI := GlobalTheory.LocalData.complRel v
@@ -502,13 +498,13 @@ theorem isCompact_iwahori : IsCompact (s.iwahori : Set (GLoc σ J v)) :=
   s.equiv.toHomeomorph.isClosedEmbedding.isCompact_preimage (GlobalTheory.SmGL.IwahoriOnto.isCompact_iwahori (Fv F v) (Fin n))
 
 /- English proof (translation)
-The claim follows from `indicator_mem_SB s.isOpen_iwahori.mul_left ((s.isCompact_iwahori.mul isCompact_singleton).mul s.isCompact_iwahori)`.
+A detailed English derivation is pending.
 -/
 theorem cosetFn_mem (t : Fin n → (Fv F v)ˣ) : s.cosetFn t ∈ CcLoc σ J v :=
   indicator_mem_SB s.isOpen_iwahori.mul_left ((s.isCompact_iwahori.mul isCompact_singleton).mul s.isCompact_iwahori)
 
 /- English proof (translation)
-The claim follows from `indicator_of_mem (DoubleCoset.mem_doubleCoset_self _ _ _) _`.
+A detailed English derivation is pending.
 -/
 theorem cosetFn_diag (t : Fin n → (Fv F v)ˣ) : s.cosetFn t (s.diag t) = 1 :=
   indicator_of_mem (DoubleCoset.mem_doubleCoset_self _ _ _) _
@@ -517,7 +513,7 @@ variable {W : Type} [AddCommGroup W] [Module ℂ W] (μ : Measure (GLoc σ J v))
   (τ : Representation ℂ (GL (Fin n) (ResF v)) W)
 
 /- English proof (translation)
-Use `typeIdem_mem_SB μ _ τ (isOpen_stabLoc σ J L v) (isCompact_stabLoc σ J L v) ?_` and prove the remaining obligations. Rewrite using `[show (s.red.ker : Set (stabLoc σ J L v)) = (↑) ⁻¹' (stabLocOne σ J s.emb L : Set (GLoc σ J v)) from Set.ext s.red_eq_one_iff]`. Conclude with `(isOpen_stabLocOne J s.emb L s.cm).preimage continuous_subtype_val`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_mem [Submodule.IsLattice E L] : s.idem μ τ ∈ CcLoc σ J v := by
   refine typeIdem_mem_SB μ _ τ (isOpen_stabLoc σ J L v) (isCompact_stabLoc σ J L v) ?_
@@ -526,7 +522,7 @@ theorem idem_mem [Submodule.IsLattice E L] : s.idem μ τ ∈ CcLoc σ J v := by
   exact (isOpen_stabLocOne J s.emb L s.cm).preimage continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `starFn_typeIdem μ _ τ`.
+A detailed English derivation is pending.
 -/
 theorem starFn_idem [FiniteDimensional ℂ W] : starFn (s.idem μ τ) = s.idem μ τ := starFn_typeIdem μ _ τ
 
@@ -590,9 +586,9 @@ variable {Ψ : ∀ w : InfinitePlace F, EmbOver E w} {D : ∀ w, GArch σ J w �
   {μa : ∀ w, Measure (GArch σ J w)} {μf : ∀ v, Measure (GLoc σ J v)}
 
 /- English proof (translation)
-Take `⟨-, h1, ⟨t, -, h2⟩, h3, h4⟩` from `h`. Use `⟨fun v => ?_, h4⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ T.S`. Take `⟨φ, hφ, e⟩` from `h1 ⟨v, hv⟩`. Use `(T.frame ⟨v, hv⟩).idem_mem (μf v) (T.τ ⟨v, hv⟩)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `e ▸ conv_mem_SB (conv_mem_SB this hφ) this`. Distinguish the cases in `hu : v = U.u`. Substitute `hu` using the available equality. Conclude with `h2 ▸ U.frame.cosetFn_mem t`. Conclude with `h3 v hv hu`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem IsTestFin.isFinFamily (h : IsTestFin T U μf ff) : IsFinFamily σ J L ff := by
   obtain ⟨-, h1, ⟨t, -, h2⟩, h3, h4⟩ := h
@@ -606,7 +602,7 @@ theorem IsTestFin.isFinFamily (h : IsTestFin T U μf ff) : IsFinFamily σ J L ff
     · exact h3 v hv hu
 
 /- English proof (translation)
-Take `⟨fa, ff, ha, hf, rfl⟩` from `h`. Conclude with `⟨fa, ff, fun w => ccArch_eq U.frame.cm (Ψ w) ▸ (ha w).mem, hf.isFinFamily, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsTestFn.isPureTensor {f : GAd σ J → ℂ} (h : IsTestFn Ψ D T U μa μf f) : IsPureTensor σ J L f := by
   obtain ⟨fa, ff, ha, hf, rfl⟩ := h
@@ -616,9 +612,9 @@ open Classical in
 omit [Submodule.IsLattice E L] in
 
 /- English proof (translation)
-Set `ff : ∀ v, GLoc σ J v → ℂ` to `fun v => if hv : v ∈ T.S then conv (μf v) (conv (μf v) (T.idem μf ⟨v, hv⟩) (h ⟨v, hv⟩)) (T.idem μf ⟨v, hv⟩) else Function.update rest U.u (U.frame.cosetFn t) v`. Establish `h1 : ∀ v : T.S, ff v = conv (μf v) (conv (μf v) (T.idem μf v) (h v)) (T.idem μf v)` using `fun v => dif_pos v.2`. Establish `h2 : ff U.u = U.frame.cosetFn t` using `(dif_neg hu).trans (Function.update_self ..)`. Establish `h3 : ∀ v ∉ T.S, v ≠ U.u → ff v = rest v` using `fun v hv hv' => (dif_neg hv).trans (Function.update_of_ne hv' ..)`. Use `⟨ff, ⟨hu, fun v => ⟨_, hh v, h1 v⟩, ⟨t, ht, h2⟩, fun v hv hv' => h3 v hv hv' ▸ hr.1 v, ?_⟩, h1, h2, h3⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hr.2, T.S.eventually_cofinite_notMem, eventually_cofinite_ne U.u] with v e hv hv'`. Rewrite using `[h3 v hv hv', e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isTestFin (hu : U.u ∉ T.S) (μf : ∀ v, Measure (GLoc σ J v)) (h : ∀ v : T.S, GLoc σ J v → ℂ)
     (hh : ∀ v : T.S, h v ∈ CcLoc σ J v) {t : Fin n → (Fv F U.u)ˣ} (ht : t ∈ strictTorus n U.ϖ)
@@ -643,7 +639,7 @@ def transfer {n' : ℕ} {J' : Matrix (Fin n') (Fin n') E} (j : ∀ v, GLoc σ J 
 omit [Submodule.IsLattice E L] in
 
 /- English proof (translation)
-Use `⟨fun v => comp_mem_SB (h.1 v) (j v).symm.toHomeomorph, (h.2.and hj).mono fun v hv => funext fun g => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `(j v).surjective g`. Apply the tactic sequence `by_cases hg : g ∈ stabLoc σ J L v <;> simp [Orb.transfer, hv.1, unitLoc, indicator, hv.2 g, hg]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IsFinFamily.transfer {n' : ℕ} {J' : Matrix (Fin n') (Fin n') E} {L' : Submodule (𝓞 E) (Fin n' → E)}
     (h : IsFinFamily σ J L ff) (j : ∀ v, GLoc σ J v ≃ₜ* GLoc σ J' v)
@@ -656,19 +652,17 @@ theorem IsFinFamily.transfer {n' : ℕ} {J' : Matrix (Fin n') (Fin n') E} {L' : 
 omit [Submodule.IsLattice E L] in
 
 /- English proof (translation)
-Take `⟨a₀, ha₀, ha₁⟩` from `exists_integer_conj_eq_neg h`. Use `choose m hm hm0 using fun v : HeightOneSpectrum (𝓞 F) => Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Use `set a := algebraMap (𝓞 F) (𝓞 E) (∏ v ∈ S, m v) * a₀ with ha_def`. Establish `ha0 : a ≠ 0` using `mul_ne_zero ((map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective _ _)).2 (Finset.prod_ne_zero_iff.2 fun v _ => hm0 v)) ha₀`. Take `⟨s, hs⟩ : ∃ s : 𝓞 E →+* 𝓞 E, ∀ x, (s x : E) = σ x` from `⟨RingOfIntegers.mapRingHom (σ : E →+* E), fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ c, s (algebraMap (𝓞 F) (𝓞 E) c) = algebraMap (𝓞 F) (𝓞 E) c` using `fun c => RingOfIntegers.ext ((hs _).trans (σ.commutes (c : F)))`. Establish `hsa : s a = -a`. Rewrite using `[ha_def, map_mul, hc, show s a₀ = -a₀ from RingOfIntegers.ext ((hs a₀).trans ha₁), mul_neg]`. Establish `ha : σ a = -a` using `(hs a).symm.trans (congrArg Subtype.val hsa)`. Establish `hlt : ∀ w : InfinitePlace E, 1 < w ((1 + 2 * a : 𝓞 E) : E)` using `one_lt_infinitePlace h (RingOfIntegers.coe_ne_zero_iff.2 ha0) ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨P, hP, hle⟩` from `exists_max_ideal_of_mem_nonunits (not_isUnit_of_one_lt hlt)`. Establish `h0 : (1 + 2 * a : 𝓞 E) ≠ 0` using `fun e => by`. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Use `hlt w` as an intermediate fact. Rewrite `this` using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at this`. Establish `hs1 : s (1 - 2 * a) = 1 + 2 * a` using `by rw [map_sub, map_one, map_mul, map_ofNat, hsa]; ring`. Establish `hm' : 1 - 2 * a ∈ P.comap s` using `by rwa [Ideal.mem_comap, hs1]`. Use `hP.isPrime` as an intermediate fact. Establish `hb : P ≠ ⊥` using `fun e => h0 (by rwa [e, Ideal.mem_bot] at hle)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb' : P.comap s ≠ ⊥` using `fun e => h0 (by rw [e, Ideal.mem_bot] at hm'; rw [← hs1, hm', map_zero])`. Take `⟨τ, -⟩` from `existsUnique_splitPrime_eq h (w := ⟨P, hP.isPrime, hb⟩) (w' := ⟨P.comap s, inferInstance, hb'⟩) (fun e => hP.ne_top ((Ideal.eq_top_iff_one _).2 (by`. Establish `e' : P = P.comap s` using `congrArg HeightOneSpectrum.asIdeal e`. Rewrite `hm'` using `[← e']`. Use `sub_mem hle (P.mul_mem_right a (add_mem hle hm')) using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `ring))) rfl`. Use the proof step `(HeightOneSpectrum.ext (Ideal.ext fun c => by`. Express the relevant statement in the definitionally equal form `s (algebraMap (𝓞 F) (𝓞 E) c) ∈ P ↔ algebraMap (𝓞 F) (𝓞 E) c ∈ P`. Rewrite using `[hc]))`. Use `⟨_, fun hv => hP.ne_top ((Ideal.eq_top_iff_one _).2 ?_), ⟨τ⟩⟩` and prove the remaining obligations.
-
-Establish `h1 : algebraMap (𝓞 F) (𝓞 E) (∏ v ∈ S, m v) ∈ P` using `Ideal.mem_of_dvd _ (map_dvd _ (Finset.dvd_prod_of_mem m hv)) (hm (HeightOneSpectrum.under (𝓞 F) ⟨P, hP.isPrime, hb⟩))`. Use `sub_mem hle (P.mul_mem_left 2 (P.mul_mem_right a₀ h1)) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_split_place_notMem (h : IsCMExt F E σ) (S : Finset (HeightOneSpectrum (𝓞 F))) :
     ∃ v ∉ S, Nonempty (E →ₐ[F] Fv F v) := by
@@ -712,7 +706,7 @@ theorem exists_split_place_notMem (h : IsCMExt F E σ) (S : Finset (HeightOneSpe
   ring
 
 /- English proof (translation)
-Take `⟨u, hu, ⟨τ⟩⟩` from `exists_split_place_notMem h S`. Take `⟨β, hβ⟩` from `exists_isSplitBasis τ L h`. Take `⟨ϖ, hϖ⟩` from `exists_isUnif u`. Conclude with `⟨⟨u, ⟨τ, β, h, hJ, hL u, hβ⟩, ϖ, hϖ⟩, hu⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_auxiliaryPlace_not_mem_finset (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hL : ∀ v, IsSelfDualAt σ J L v)
     (S : Finset (HeightOneSpectrum (𝓞 F))) : ∃ U : UnitaryAuxiliaryPlaceData σ J L, U.u ∉ S := by
@@ -722,9 +716,9 @@ theorem exists_auxiliaryPlace_not_mem_finset (h : IsCMExt F E σ) (hJ : IsHermND
   exact ⟨⟨u, ⟨τ, β, h, hJ, hL u, hβ⟩, ϖ, hϖ⟩, hu⟩
 
 /- English proof (translation)
-Take `⟨U₀, -⟩` from `exists_auxiliaryPlace_not_mem_finset h hJ hL ∅`. Take `⟨U, hU⟩` from `exists_auxiliaryPlace_not_mem_finset h hJ hL {U₀.u}`. Set `T : TypeData σ J L` to `{ S := {U₀.u} frame := fun v => (Finset.mem_singleton.1 v.2).symm ▸ U₀.frame W := fun _ => ℂ τ := fun _ => GlobalTheory.SmGL.ofChar 1 irred := fun _ => GlobalTheory.SmGL.isIrreducible_ofChar 1 }`. Take `⟨t, ht⟩` from `strictTorus_nonempty n U.ϖ`. Take `⟨ff, hff, -⟩` from `exists_isTestFin (T := T) hU μf (fun v => unitLoc σ J L v) (fun v => unitLoc_mem v.1) ht isFinFamily_unit`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨T, U, ff, Finset.singleton_nonempty _, hff⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_testData (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hL : ∀ v, IsSelfDualAt σ J L v)
     (μf : ∀ v, Measure (GLoc σ J v)) :
@@ -742,25 +736,25 @@ theorem exists_testData (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hL : ∀ v, I
   exact ⟨T, U, ff, Finset.singleton_nonempty _, hff⟩
 
 /- English proof (translation)
-Use `isLattice_stdLattice (E := E) (n := n)` as an intermediate fact. Establish `hJ` using `isHermND_one σ n`. Establish `hL` using `isSelfDualAt_stdLattice_one (n := n) σ`. Take `⟨U₀, -⟩` from `exists_auxiliaryPlace_not_mem_finset h hJ hL ∅`. Take `⟨U, hU⟩` from `exists_auxiliaryPlace_not_mem_finset h hJ hL {U₀.u}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `T : TypeData σ 1 (stdLattice E n)` to `{ S := {U₀.u} frame := fun v => (Finset.mem_singleton.1 v.2).symm ▸ U₀.frame W := fun _ => ℂ τ := fun _ => GlobalTheory.SmGL.ofChar 1 irred := fun _ => GlobalTheory.SmGL.isIrreducible_ofChar 1 }`. Take `⟨t, ht⟩` from `strictTorus_nonempty n U.ϖ`. Take `⟨ff, hff, h1, h2, h3⟩` from `exists_isTestFin (T := T) hU μf (fun v => unitLoc σ 1 (stdLattice E n) v) (fun v => unitLoc_mem v.1) ht isFinFamily_unit`. Establish `hc : ∀ w, CompactSpace (GArch σ (1 : Matrix (Fin n) (Fin n) E) w)` using `fun w => ⟨by`. Rewrite using `[(isEmbedding_matHom _ σ _).isCompact_iff]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Frames.isCompact_UJ_one (n := n) h w using 1` and compare the differences between its conclusion and the goal. Establish `e : JR (F` using `F) w.Completion (1 : Matrix (Fin n) (Fin n) E) = 1 := by simp [JR]`. Use extensionality with `x`. Conclude with `⟨fun ⟨g, _, hg⟩ => hg ▸ e ▸ g.2, fun hx => ⟨(⟨x, (e.symm ▸ hx :)⟩ : HR _ σ 1), trivial, rfl⟩⟩⟩`. Use `⟨T, U, _, Finset.singleton_nonempty _, ⟨_, ff, fun w => isPseudoCoeff_char (χ := 1) (continuous_archMat σ _ _) ⟨(isClosed_tsupport _).isCompact, fun _ => 1, contDiff_const, fun _ => by simp⟩, hff, rfl⟩, fun h0 => ?_⟩` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hvol : ∀ v, ((μf v).real (stabLoc σ 1 (stdLattice E n) v) : ℂ) ≠ 0` using `fun v => by`. Conclude with `ENNReal.toReal_ne_zero.2 ⟨((isOpen_stabLoc σ 1 _ v).measure_pos _ ⟨1, one_mem _⟩).ne', (isCompact_stabLoc σ 1 _ v).measure_ne_top⟩` after adjusting the coercions. Establish `hconv : ∀ v (a b : ℂ), conv (μf v) (a • unitLoc σ 1 (stdLattice E n) v) (b • unitLoc σ 1 (stdLattice E n) v) = (a * b * (μf v).real (stabLoc σ 1 (stdLattice E n) v)) • unitLoc σ 1 (stdLattice E n) v` using `fun v a b => by`. Use function extensionality and compare the values at `y`. Establish `: ∀ x, (a • unitLoc σ 1 (stdLattice E n) v) x * (b • unitLoc σ 1 (stdLattice E n) v) (x⁻¹ * y) = (stabLoc σ 1 (stdLattice E n) v : Set _).indicator (fun _ => a * b * unitLoc σ 1 (stdLattice E n) v y) x` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ stabLoc σ 1 (stdLattice E n) v`. Apply the tactic sequence `by_cases hy : y ∈ stabLoc σ 1 (stdLattice E n) v <;>`. Simplify using `[unitLoc, hx, hy, Subgroup.mul_mem_cancel_left _ (inv_mem hx)]`. Simplify using `[unitLoc, hx]`. Rewrite using `[conv, integral_congr_ae (.of_forall this), integral_indicator_const _ (isOpen_stabLoc σ 1 _ v).measurableSet]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.real_smul, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hid : ∀ v : T.S, T.idem μf v = ((μf v).real (stabLoc σ 1 (stdLattice E n) v) : ℂ)⁻¹ • unitLoc σ 1 (stdLattice E n) v` using `fun v => by`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ stabLoc σ 1 (stdLattice E n) v`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `(typeIdem_coe _ _ _ ⟨g, hg⟩).trans ?_` and prove the remaining obligations. Establish `: ∀ q, (T.τ v).character q = 1` using `fun q => by`. Rewrite using `[Representation.character, show T.τ v q = LinearMap.id from LinearMap.ext fun x => one_mul x]`. Simplify using `[T]`. Simplify using `[this, unitLoc, hg, T]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(typeIdem_of_notMem _ _ _ hg).trans (by simp [unitLoc, hg])`. Establish `h4` using `congrFun h0 (emb σ 1 U.u (U.frame.diag t))`. Rewrite `h4` using `[tensor_eq_infFin]`. Use `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun w _ => div_ne_zero (by simp) ?_) ((hff.isFinFamily.tensorFin_ne_zero_iff _).2 fun v => ?_) h4` and prove the remaining obligations. Conclude with `ENNReal.toReal_ne_zero.2 ⟨(isOpen_univ.measure_pos _ univ_nonempty).ne', measure_ne_top _ _⟩` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[projFinLoc_projFin]`. Distinguish the cases in `hu : v = U.u`. Substitute `hu` using the available equality. Rewrite using `[proj_emb_self, h2, SplitAt.cosetFn_diag]`. Conclude with `one_ne_zero`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[proj_emb_ne σ 1 hu]`. Distinguish the cases in `hv : v ∈ T.S`. Rewrite using `[h1 ⟨v, hv⟩, hid, ← one_smul ℂ (unitLoc σ 1 (stdLattice E n) v), smul_smul, hconv, hconv]`. Simplify using `[unitLoc, hvol]`. Simplify using `[h3 v hv hu, unitLoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isTestFn_ne_zero (h : IsCMExt F E σ) (μa : ∀ w, Measure (GArch σ (1 : Matrix (Fin n) (Fin n) E) w))
     (μf : ∀ v, Measure (GLoc σ (1 : Matrix (Fin n) (Fin n) E) v)) [∀ w, (μa w).IsHaarMeasure]
@@ -849,9 +843,9 @@ def IsCentProd (γ : GAd σ J) (dta : ∀ w, Measure (cent (projArch σ J w γ))
 variable (L) in
 
 /- English proof (translation)
-Establish `h` using `restrGroup_GAd σ J L`. Use `⟨fun w => ((h.continuous_pa w).comp continuous_subtype_val).subtype_mk _, fun v => ((h.continuous_pf v).comp continuous_subtype_val).subtype_mk _, fun v => (h.isOpen_K v).preimage continuous_subtype_val, fun v => (isClosed_cent _).isClosedEmbedding_subtypeVal.isCompact_preimage ( …` and prove the remaining obligations. Take `⟨x, h1, h2⟩` from `h.exists_eq (fun w => a w) (fun v => y v) hy`. Conclude with `⟨⟨x, mem_cent.2 (h.ext _ _ (fun w => by simpa only [map_mul, h1] using mem_cent.1 (a w).2) fun v => by simpa only [map_mul, h2] using mem_cent.1 (y v).2)⟩, fun w => Subtype.ext (h1 w), fun v => Subtype.ext (h2 v)⟩`. Use `(congrArg IsCompact (Set.ext fun x => ?_)).mpr ((isClosed_cent γ).isClosedEmbedding_subtypeVal.isCompact_preimage (h.isCompact_level (fun w => Subtype.val '' C w) fun w => (hC w).image continuous_subtype_val))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `and_congr_left fun _ => forall_congr' fun w => (Subtype.val_injective.mem_set_image).symm`.
+A detailed English derivation is pending.
 -/
 theorem restrGroup_cent (γ : GAd σ J) :
     GlobalTheory.RestrMeas.IsRestrGroup (fun w => centMap (projArch σ J w) γ) (fun v => centMap (proj σ J v) γ)
@@ -873,7 +867,7 @@ theorem restrGroup_cent (γ : GAd σ J) :
     exact and_congr_left fun _ => forall_congr' fun w => (Subtype.val_injective.mem_set_image).symm
 
 /- English proof (translation)
-Establish `: LocallyCompactSpace (cent γ)` using `(isClosed_cent _).locallyCompactSpace`. Establish `: ∀ w, LocallyCompactSpace (cent (projArch σ J w γ))` using `fun _ => (isClosed_cent _).locallyCompactSpace`. Establish `: ∀ v, LocallyCompactSpace (cent (proj σ J v γ))` using `fun _ => (isClosed_cent _).locallyCompactSpace`. Conclude with `(restrGroup_cent L γ).existsUnique_isHaarProd dta dtf h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem existsUnique_isCentProd (γ : GAd σ J) (dta : ∀ w, Measure (cent (projArch σ J w γ)))
     (dtf : ∀ v, Measure (cent (proj σ J v γ))) [∀ w, (dta w).IsHaarMeasure] [∀ v, (dtf v).IsHaarMeasure]
@@ -901,7 +895,7 @@ def repVia {H X : Type} [Group H] [NormedAddCommGroup X] [InnerProductSpace ℂ 
   map_mul' a b := by rw [map_mul, h.1.2 _ (hι a) _ (hι b)]; rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun g => h.2.1 _ (hι g), fun v => (h.2.2 v).comp_continuous hc hι⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnitaryRep_repVia {H X : Type} [Group H] [TopologicalSpace H] [NormedAddCommGroup X]
     [InnerProductSpace ℂ X] {m : ℕ} {G : Set (Matrix (Fin m) (Fin m) ℂ)}
@@ -910,7 +904,7 @@ theorem isUnitaryRep_repVia {H X : Type} [Group H] [TopologicalSpace H] [NormedA
   ⟨fun g => h.2.1 _ (hι g), fun v => (h.2.2 v).comp_continuous hc hι⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, fun W hW => hi W hW.1 fun x hx => by obtain ⟨g, rfl⟩ := hs x hx; exact hW.2 g⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTopIrreducible_repVia {H X : Type} [Group H] [NormedAddCommGroup X] [InnerProductSpace ℂ X] [Nontrivial X]
     {m : ℕ} {G : Set (Matrix (Fin m) (Fin m) ℂ)} {ρ : Matrix (Fin m) (Fin m) ℂ → (X →L[ℂ] X)} (h : IsURepOn G ρ)
@@ -927,7 +921,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (V : HSp D)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i j => V.herm.eq (V.frame j) (V.frame i), (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V).ne_zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHermND_gram : IsHermND D.sp.cm.sig V.gram :=
   ⟨fun i j => V.herm.eq (V.frame j) (V.frame i), (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V).ne_zero⟩
@@ -944,7 +938,7 @@ abbrev matAt (ρ : D.what₂.Tau) : GArch D.sp.cm.sig V.gram (placeOf D ρ) →*
   archMat D.sp.cm.sig V.gram (embOverOf D ρ)
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `exists_isSplitBasis τ (frameLat V) (isCMExt_host D)`. Conclude with `⟨⟨τ, β, isCMExt_host D, isHermND_gram V, SelfDual.isSelfDualAt_frameLat D V v, hβ⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_splitAt {v : HeightOneSpectrum (𝓞 D.host.F)} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) :
     ∃ s : SplitAt D.sp.cm.sig V.gram (frameLat V) v, s.emb = τ := by
@@ -952,7 +946,7 @@ theorem exists_splitAt {v : HeightOneSpectrum (𝓞 D.host.F)} (τ : D.host.E �
   exact ⟨⟨τ, β, isCMExt_host D, isHermND_gram V, SelfDual.isSelfDualAt_frameLat D V v, hβ⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `exists_testData (isCMExt_host D) (isHermND_gram V) (SelfDual.isSelfDualAt_frameLat D V) μf`.
+A detailed English derivation is pending.
 -/
 theorem exists_testDataG (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)) :
     ∃ (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ),
@@ -970,9 +964,9 @@ def frameMat (ρ : D.what₂.Tau) : GArch D.sp.cm.sig V.gram (placeOf D ρ) →*
       Matrix.nonsing_inv_mul_cancel_left _ _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit ρ))]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `M.fr_unit ρ`. Establish `hb : IsUnit (a⁻¹ : (Matrix _ _ ℂ)ˣ).1ᴴ` using `(a⁻¹).isUnit.star`. Establish `h1 : (a⁻¹ : (Matrix _ _ ℂ)ˣ).1ᴴ * a.1ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Units.mul_inv, Matrix.conjTranspose_one]`. Express the relevant statement in the definitionally equal form `_ᴴ * _ * _ = _ ↔ _ᴴ * _ * _ = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← M.fr_gram ρ, ← ha, ← Matrix.coe_units_inv, ← hb.mul_right_inj (b := xᴴ * _ * x), ← (a⁻¹).isUnit.mul_left_inj (b := _ * (xᴴ * _ * x))]`. Use `Eq.congr (by simp only [Matrix.conjTranspose_mul, mul_assoc]) ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc, h1, one_mul, mul_assoc, Units.mul_inv, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_UJset_iff (ρ : D.what₂.Tau) (x : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     M.fr ρ * x * (M.fr ρ)⁻¹ ∈ UJset (M.ε ρ) ↔ x ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ) := by
@@ -987,7 +981,7 @@ theorem conj_mem_UJset_iff (ρ : D.what₂.Tau) (x : Matrix (Fin V.rank) (Fin V.
   rw [← mul_assoc, ← mul_assoc, h1, one_mul, mul_assoc, Units.mul_inv, mul_one]
 
 /- English proof (translation)
-The claim follows from `(conj_mem_UJset_iff M ρ _).2 (archEquiv_mem_UH V _ rfl g)`.
+A detailed English derivation is pending.
 -/
 theorem frameMat_mem (ρ : D.what₂.Tau) (g : GArch D.sp.cm.sig V.gram (placeOf D ρ)) :
     frameMat M ρ g ∈ UJset (M.ε ρ) := (conj_mem_UJset_iff M ρ _).2 (archEquiv_mem_UH V _ rfl g)
@@ -1002,15 +996,15 @@ theorem dsRep_apply (ρ : D.what₂.Tau) (g : GArch D.sp.cm.sig V.gram (placeOf 
     dsRep M ρ g = M.rep ρ (matAt V ρ g) := rfl
 
 /- English proof (translation)
-The claim follows from `isUnitaryRep_repVia _ _ ((continuous_const.mul (continuous_archMat _ _ _)).mul continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem isUnitaryRep_dsRep (ρ : D.what₂.Tau) : IsUnitaryRep (dsRep M ρ) :=
   isUnitaryRep_repVia _ _ ((continuous_const.mul (continuous_archMat _ _ _)).mul continuous_const)
 
 /- English proof (translation)
-Use `(M.ds ρ).2.1` as an intermediate fact. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit ρ)`. Use `isTopIrreducible_repVia _ _ (fun x hx => ?_) (M.ds ρ).2.2.2.1` and prove the remaining obligations. Establish `e : M.fr ρ * ((M.fr ρ)⁻¹ * x * M.fr ρ) * (M.fr ρ)⁻¹ = x`. Rewrite using `[← mul_assoc, ← mul_assoc, Matrix.mul_nonsing_inv _ hd, one_mul, mul_assoc, Matrix.mul_nonsing_inv _ hd, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `exists_archEquiv_eq V (embOverOf D ρ) rfl ((conj_mem_UJset_iff M ρ _).1 (e.symm ▸ hx))`. Conclude with `⟨g, (congrArg (M.fr ρ * · * (M.fr ρ)⁻¹) hg).trans e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isTopIrreducible_dsRep (ρ : D.what₂.Tau) : IsTopIrreducible (dsRep M ρ) := by
   have := (M.ds ρ).2.1
@@ -1032,7 +1026,7 @@ def IsTestFnG (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) (μa : ∀ 
 variable {M} {μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)} {μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)}
 
 /- English proof (translation)
-Take `⟨ρ, rfl⟩` from `(placeOf_bijective D).2 w`. Use `(M.ds ρ).1` as an intermediate fact. Conclude with `ccArch_eq (isCMExt_host D) (embOverOf D ρ) ▸ (h ρ).mem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsTestArchG.mem {fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ} (h : IsTestArchG M μa fa)
     (w : InfinitePlace D.host.F) : fa w ∈ CcArch D.sp.cm.sig V.gram w := by
@@ -1041,7 +1035,7 @@ theorem IsTestArchG.mem {fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ} (h : Is
   exact ccArch_eq (isCMExt_host D) (embOverOf D ρ) ▸ (h ρ).mem
 
 /- English proof (translation)
-Take `⟨fa, ff, ha, hf, rfl⟩` from `h`. Conclude with `⟨⟨fa, ff, ha.mem, hf.isFinFamily, rfl⟩, tensor_mem_ccAd ha.mem hf.isFinFamily⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsTestFnG.isPureTensor {T : TypeDataG V} {U : AuxiliaryPlaceHermitianSpace V} {f : GA D V → ℂ} (h : IsTestFnG M T U μa μf f) :
     IsPureTensor D.sp.cm.sig V.gram (frameLat V) f ∧ f ∈ CcGA V := by
@@ -1053,9 +1047,9 @@ end Record
 omit [Submodule.IsLattice E L] in
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨⟨![1, 0], Fin.strictAnti_iff_succ_lt.2 fun i => by fin_cases i; simp, funext fun i => by fin_cases i <;> simp⟩, fun ⟨a, ha, e⟩ => ?_⟩`. Establish `key : ∀ m : ℤ, Valued.v ((ϖ ^ m : (Fv F v)ˣ) : Fv F v) = WithZero.exp (-m)` using `fun m => by`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, h, ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules. Establish `h0` using `key (a 0)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `key (a 1)`. Rewrite `h0` using `[← show (1 : (Fv F v)ˣ) = ϖ ^ a 0 from congrFun e 0, Units.val_one, map_one, ← WithZero.exp_zero, WithZero.exp_inj]`. Rewrite `h1` using `[← show ϖ = ϖ ^ a 1 from congrFun e 1, h, WithZero.exp_inj]`. Use `ha (show (0 : Fin 2) < 1 by decide)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 example {v : HeightOneSpectrum (𝓞 F)} {ϖ : (Fv F v)ˣ} (h : IsUnif ϖ) :
     ![ϖ, 1] ∈ strictTorus 2 ϖ ∧ ![1, ϖ] ∉ strictTorus 2 ϖ := by
@@ -1072,7 +1066,7 @@ example {v : HeightOneSpectrum (𝓞 F)} {ϖ : (Fv F v)ˣ} (h : IsUnif ϖ) :
   omega
 
 /- English proof (translation)
-Simplify using `[isFinFamily_unit.tensorFin_ne_zero_iff, unitLoc, mem_levelOffFin]`.
+Simplify using the standard rewrite rules.
 -/
 example (g : GFin σ J) : tensorFin σ J (unitLoc σ J L) g ≠ 0 ↔ g ∈ levelOffFin σ J L ∅ := by
   simp [isFinFamily_unit.tensorFin_ne_zero_iff, unitLoc, mem_levelOffFin]

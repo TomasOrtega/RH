@@ -20,9 +20,7 @@ def ptOverMap {K Ω Ω' : Type} [Field K] [Field Ω] [Field Ω'] [Algebra K Ω] 
     simp)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Epi (spMap (j : Ω →+* Ω'))`. Use `letI := (j : Ω →+* Ω').toAlgebra`. Use `haveI : Flat (spMap (j : Ω →+* Ω')) := by`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `(inferInstance : Module.Flat Ω Ω')`.
-
-Use `haveI : Surjective (spMap (j : Ω →+* Ω')) := ⟨fun p => ⟨(⊥ : PrimeSpectrum Ω'), Subsingleton.elim (α := PrimeSpectrum Ω) _ _⟩⟩`. Conclude with `Flat.epi_of_flat_of_surjective _`.
+Express the relevant assertion in an equivalent form by its definition. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epi_ptOverMap {K Ω Ω' : Type} [Field K] [Field Ω] [Field Ω'] [Algebra K Ω] [Algebra K Ω'] (j : Ω →ₐ[K] Ω') :
     Epi (ptOverMap j).left := by
@@ -36,7 +34,7 @@ theorem epi_ptOverMap {K Ω Ω' : Type} [Field K] [Field Ω] [Field Ω'] [Algebr
   exact Flat.epi_of_flat_of_surjective _
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by change spMap _ ≫ spMap _ = spMap _ ≫ spMap _ rw [← Spec.map_comp, ← Spec.map_comp] congr 1 ext x exact (h x).symm)`.
+A detailed English derivation is pending.
 -/
 theorem ptOverMap_comp_specAut {K Ω Ω' : Type} [Field K] [Field Ω] [Field Ω'] [Algebra K Ω] [Algebra K Ω']
     (j : Ω →ₐ[K] Ω') (σ : Ω ≃ₐ[K] Ω) (σ' : Ω' ≃ₐ[K] Ω') (h : ∀ x, σ' (j x) = j (σ x)) :
@@ -49,9 +47,9 @@ theorem ptOverMap_comp_specAut {K Ω Ω' : Type} [Field K] [Field Ω] [Field Ω'
     exact (h x).symm)
 
 /- English proof (translation)
-Introduce `K Ω Ω' _ _ _ _ _ j A _`. Use `⟨MonoidHom.mk' (fun x => ptOverMap j ≫ x) fun x y => MonObj.comp_mul _ x y, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y e`. Use `epi_ptOverMap j` as an intermediate fact. Conclude with `Over.OverMorphism.ext ((cancel_epi (ptOverMap j).left).1 (by simpa using congrArg (fun q => q.left) (show ptOverMap j ≫ x = ptOverMap j ≫ y from e)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ σ' h x`. Express the relevant statement in the definitionally equal form `ptOverMap j ≫ specAut σ ≫ x = specAut σ' ≫ ptOverMap j ≫ x`. Rewrite using `[← Category.assoc, ptOverMap_comp_specAut j σ σ' h, Category.assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_injective_ptOver_galois : ∀ (K Ω Ω' : Type) [Field K] [Field Ω] [Field Ω'] [Algebra K Ω] [Algebra K Ω'] (j : Ω →ₐ[K] Ω') (A : Over (Sp K)) [GrpObj A], ∃ f : (ptOver K Ω ⟶ A) →* (ptOver K Ω' ⟶ A), Function.Injective f ∧ ∀ (σ : Ω ≃ₐ[K] Ω) (σ' : Ω' ≃ₐ[K] Ω'), (∀ x, σ' (j x) = j (σ x)) → ∀ x, f (specAut σ ≫ x) = specAut σ' ≫ f x := by
   intro K Ω Ω' _ _ _ _ _ j A _

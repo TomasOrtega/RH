@@ -16,7 +16,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace UpperTheory.Lit.Nos.TwistIsomorphismSections
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.appLE_comp_appLE]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private theorem appLE_appLE {X Y Z : Scheme.{0}} (g : Z ⟶ Y) (f : Y ⟶ X) (k : Z ⟶ X) (h : g ≫ f = k)
     {U : X.Opens} {V : Y.Opens} {W : Z.Opens} (e : V ≤ f ⁻¹ᵁ U) (e' : W ≤ g ⁻¹ᵁ V) (e'' : W ≤ k ⁻¹ᵁ U)
@@ -26,7 +26,7 @@ private theorem appLE_appLE {X Y Z : Scheme.{0}} (g : Z ⟶ Y) (f : Y ⟶ X) (k 
   rw [← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.appLE_comp_appLE]
 
 /- English proof (translation)
-Establish `key : ∀ (p : B.ι) (q : A.ι) (p' : B.ι) (q' : A.ι), (res (inf_le_left : B.U p ⊓ A.U q ⊓ (B.U p' ⊓ A.U q') ≤ _) (@id (Γ(X, B.U p ⊓ A.U q)ˣ) (w.s (p, q))) = res (inf_le_inf inf_le_left inf_le_left : B.U p ⊓ A.U q ⊓ (B.U p' ⊓ A.U q') ≤ _) (B.g p p') * (res (inf_le_inf inf_le_right in …` using `fun p q p' q' => by`. Rewrite using `[mul_right_comm, eq_mul_inv_iff_mul_eq, Units.ext_iff, Units.val_mul, Units.val_mul]`. Conclude with `⟨fun h p q p' q' => (key p q p' q').1 (h (p, q) (p', q')), fun h p p' => (key p.1 p.2 p'.1 p'.2).2 (h p.1 p.2 p'.1 p'.2)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem isGen_iff_val {X : Scheme.{0}} {A B : LB X} (w : LB.Iso A B) :
     w.IsGen ↔ ∀ (p : B.ι) (q : A.ι) (p' : B.ι) (q' : A.ι),
@@ -51,9 +51,9 @@ private theorem isGen_iff_val {X : Scheme.{0}} {A B : LB X} (w : LB.Iso A B) :
     fun h p p' => (key p.1 p.2 p'.1 p'.2).2 (h p.1 p.2 p'.1 p'.2)⟩
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.AbLaw.cst, RingHom.comp_apply, GlobalTheory.AbLaw.rs_self]`. Establish `h1` using `congrArg (fun φ : Y ⟶ Sp R => φ.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv r)) h`. Simplify using `only [Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply] at h1`. Rewrite using `[h1]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h2` using `congrArg (fun φ => φ.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom c))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h2`. Conclude with `h2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem appTop_cst {X Y : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R'] (β : Y ⟶ X)
     (f : X ⟶ Sp R) (f' : Y ⟶ Sp R') (c : R →+* R') (h : β ≫ f = f' ≫ spMap c) (r : R) :
@@ -68,7 +68,7 @@ private theorem appTop_cst {X Y : Scheme.{0}} {R R' : Type} [CommRing R] [CommRi
   exact h2.symm
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rfl`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, GlobalTheory.LB.add_f, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem sum_f {X : Scheme.{0}} {L : LB X} {J : Type} (S : Finset J) (s : J → L.Sec) (i : L.ι) :
     (∑ k ∈ S, s k).f i = ∑ k ∈ S, (s k).f i := by
@@ -85,7 +85,7 @@ private theorem secPull_f {X Y : Scheme.{0}} {L : LB X} (s : L.Sec) (f : Y ⟶ X
       (f.appLE _ _ (GlobalTheory.LB.pull_U_le f j)).hom (s.f (j PUnit.unit)) := rfl
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.LB.resG_self le_rfl _).symm.trans (GlobalTheory.LB.resG_pull_g f i j le_rfl)`.
+A detailed English derivation is pending.
 -/
 private theorem pull_g_val {X Y : Scheme.{0}} {L : LB X} (f : Y ⟶ X) (i j : (L.pull f).ι) :
     ((L.pull f).g i j).val =
@@ -95,7 +95,7 @@ private theorem pull_g_val {X Y : Scheme.{0}} {L : LB X} (f : Y ⟶ X) (i j : (L
   (GlobalTheory.LB.resG_self le_rfl _).symm.trans (GlobalTheory.LB.resG_pull_g f i j le_rfl)
 
 /- English proof (translation)
-Establish `h2` using `congrArg (fun φ => φ.hom b) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom σ))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h2`. Rewrite using `[← h2]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem ΓSpec_spMap {K : Type} [CommRing K] (σ : K →+* K) (b : Γ(Sp K, ⊤)) :
     (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom (((spMap σ).appLE ⊤ ⊤ le_top).hom b) =
@@ -106,11 +106,11 @@ private theorem ΓSpec_spMap {K : Type} [CommRing K] (σ : K →+* K) (b : Γ(Sp
   congr 1
 
 /- English proof (translation)
-Establish `lAB : ∀ n i, B.U n ⊓ A'.U i ≤ ρ ⁻¹ᵁ (B.U n ⊓ A.U (τ i))` using `fun n i => inf_le_inf (lB n) (lA i)`. Set `w₁ : LB.Iso A' B` to `⟨fun p => Units.map (ρ.appLE _ _ (lAB p.1 p.2)).hom.toMonoidHom (w.s (p.1, τ p.2))⟩`. Establish `hw₁ : ∀ n i, (@id (Γ(Y, B.U n ⊓ A'.U i)ˣ) (w₁.s (n, i))).val = (ρ.appLE (B.U n ⊓ A.U (τ i)) (B.U n ⊓ A'.U i) (lAB n i)).hom (@id (Γ(Y, B.U n ⊓ A.U (τ i))ˣ) (w.s (n, τ i))).val` using `fun _ _ => rfl`. Use `⟨w₁, (isGen_iff_val w₁).2 fun n i n' i' => ?_, fun a a' b b' ha hb H p => ?_, hw₁⟩` and prove the remaining obligations. Establish `l : B.U n ⊓ A'.U i ⊓ (B.U n' ⊓ A'.U i') ≤ ρ ⁻¹ᵁ (B.U n ⊓ A.U (τ i) ⊓ (B.U n' ⊓ A.U (τ i')))` using `inf_le_inf (lAB n i) (lAB n' i')`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `congrArg (ρ.appLE _ _ l).hom ((isGen_iff_val w).1 hw n (τ i) n' (τ i'))`. Rewrite `e` using `[map_mul, map_mul, GlobalTheory.LB.appLE_resG, GlobalTheory.LB.appLE_resG, GlobalTheory.LB.appLE_resG, GlobalTheory.LB.appLE_resG]`. Rewrite using `[hw₁, hw₁, gA, gB, GlobalTheory.LB.resG_appLE, GlobalTheory.LB.resG_appLE]`. Use `erw [GlobalTheory.LB.resG_appLE, GlobalTheory.LB.resG_appLE]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, i⟩` from `p`. Establish `e` using `congrArg (ρ.appLE _ _ (lAB n i)).hom (H (n, τ i))`. Rewrite `e` using `[map_mul, GlobalTheory.LB.appLE_resG, GlobalTheory.LB.appLE_resG]`. Rewrite using `[hw₁, ha, hb, GlobalTheory.LB.resG_appLE, GlobalTheory.LB.resG_appLE]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem transport {Y : Scheme.{0}} (ρ : Y ⟶ Y) {A A' B : LB Y} (τ : A'.ι → A.ι)
     (lA : ∀ i, A'.U i ≤ ρ ⁻¹ᵁ A.U (τ i)) (lB : ∀ n, B.U n ≤ ρ ⁻¹ᵁ B.U n)
@@ -152,15 +152,13 @@ end UpperTheory.Lit.Nos.TwistIsomorphismSections
 
 open UpperTheory.Lit.Nos.TwistIsomorphismSections in
 /- English proof (translation)
-Introduce `X₁ X₂ Y K' _ L₁ L₂ f₁ f₂ q ρ φ σ h₁ h₂ hq _ _ w hw`. Establish `lB : ∀ n : (L₂.pull f₂).ι, (L₂.pull f₂).U n ≤ ρ ⁻¹ᵁ (L₂.pull f₂).U n` using `fun n => by`. Rewrite using `[GlobalTheory.LB.pull_U, ← Scheme.Hom.comp_preimage, h₂]`. Set `τ : ((L₁.pull φ).pull f₁).ι → (L₁.pull f₁).ι` to `fun i _ => i PUnit.unit PUnit.unit`. Establish `lA : ∀ i : ((L₁.pull φ).pull f₁).ι, ((L₁.pull φ).pull f₁).U i ≤ ρ ⁻¹ᵁ (L₁.pull f₁).U (τ i)` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.LB.pull_U f₁ (τ i), ← Scheme.Hom.comp_preimage, ← h₁, Scheme.Hom.comp_preimage]`. Conclude with `(GlobalTheory.LB.pull_U_le f₁ i).trans (f₁.preimage_mono (GlobalTheory.LB.pull_U_le φ _))`. Take `⟨w₁, hg, hs, hv⟩` from `transport ρ τ lA lB (fun i j => by`. Establish `l : ((L₁.pull φ).pull f₁).U i ⊓ ((L₁.pull φ).pull f₁).U j ≤ (f₁ ≫ φ) ⁻¹ᵁ (L₁.U (i PUnit.unit PUnit.unit) ⊓ L₁.U (j PUnit.unit PUnit.unit))` using `inf_le_inf ((GlobalTheory.LB.pull_U_le f₁ i).trans (f₁.preimage_mono (GlobalTheory.LB.pull_U_le φ _))) ((GlobalTheory.LB.pull_U_le f₁ j).trans (f₁.preimage_mono (GlobalTheory.LB.pull_U_le φ _)))`. Use `(pull_g_val f₁ i j).trans ((congrArg _ (pull_g_val φ _ _)).trans ((appLE_appLE f₁ φ _ rfl _ _ l _).trans ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((congrArg _ (pull_g_val f₁ (τ i) (τ j))).trans (appLE_appLE ρ f₁ _ h₁.symm _ _ l _)).symm)`. Use the proof step `(fun i j => (pull_g_val f₂ i j).trans ((congrArg _ (pull_g_val f₂ i j)).trans (appLE_appLE ρ f₂ _ h₂ _ _ _ _)).symm) w hw`. Use `⟨w₁, hg, fun m s u c H => hs _ _ _ _ (fun i => ?_) (fun n => ?_) H, fun x hx n i h h' => ?_⟩` and prove the remaining obligations. Establish `l : ((L₁.pull φ).pull f₁).U i ≤ (f₁ ≫ φ) ⁻¹ᵁ L₁.U (i PUnit.unit PUnit.unit)` using `(GlobalTheory.LB.pull_U_le f₁ i).trans (f₁.preimage_mono (GlobalTheory.LB.pull_U_le φ _))`. Conclude with `(appLE_appLE f₁ φ _ rfl (GlobalTheory.LB.pull_U_le φ _) (GlobalTheory.LB.pull_U_le f₁ i) l _).trans (appLE_appLE ρ f₁ _ h₁.symm (GlobalTheory.LB.pull_U_le f₁ (τ i)) (lA i) l _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[sum_f, sum_f, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LB.smul_f, GlobalTheory.LB.smul_f, map_mul, secPull_f, appLE_appLE ρ f₂ _ h₂ _ _ (GlobalTheory.LB.pull_U_le f₂ n), GlobalTheory.LB.appLE_resG, ← appTop_cst ρ q q σ hq]`. Both sides reduce to the same expression. Establish `e : (x.appLE _ ⊤ h).hom (w₁.s (n, i)).val = ((spMap σ).appLE ⊤ ⊤ le_top).hom ((x.appLE _ ⊤ h').hom (w.s (n, τ i)).val)`.
-
-Establish `l : ⊤ ≤ (x ≫ ρ) ⁻¹ᵁ ((L₂.pull f₂).U n ⊓ (L₁.pull f₁).U (τ i))` using `h.trans (x.preimage_mono (inf_le_inf (lB n) (lA i)))`. Conclude with `(congrArg _ (hv n i)).trans ((appLE_appLE x ρ _ rfl _ _ l _).trans (appLE_appLE (spMap σ) x _ hx.symm _ _ l _).symm)`. Conclude with `(congrArg _ e).trans (ΓSpec_spMap σ _)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Nos.twistIso :
     ∀ {X₁ X₂ Y : Scheme.{0}} {K' : Type} [Field K'] (L₁ : LB X₁) (L₂ : LB X₂) (f₁ : Y ⟶ X₁) (f₂ : Y ⟶ X₂) (q : Y ⟶ Sp K') (ρ : Y ⟶ Y) (φ : X₁ ⟶ X₁) (σ : K' →+* K'), f₁ ≫ φ = ρ ≫ f₁ → ρ ≫ f₂ = f₂ → ρ ≫ q = q ≫ spMap σ → L₁.IsLB → L₂.IsLB → ∀ (w : LB.Iso (L₁.pull f₁) (L₂.pull f₂)), w.IsGen → ∃ w₁ : LB.Iso ((L₁.pull φ).pull f₁) (L₂.pull f₂), w₁.IsGen ∧ (∀ (n : ℕ) (s : Fin n → L₂.Sec) (u : L₁.Sec) (c : Fin n → K'), GlobalTheory.Cartier.SecMaps w (GlobalTheory.Cartier.secPull u f₁) (∑ k, GlobalTheory.AbLaw.cst q ⊤ (c k) • GlobalTheory.Cartier.secPull (s k) f₂) → GlobalTheory.Cartier.SecMaps w₁ (GlobalTheory.Cartier.secPull (GlobalTheory.Cartier.secPull u φ) f₁) (∑ k, GlobalTheory.AbLaw.cst q ⊤ (σ (c k)) • GlobalTheory.Cartier.secPull (s k) f₂)) ∧ (∀ x : Sp K' ⟶ Y, x ≫ ρ = spMap σ ≫ x → ∀ (n : (L₂.pull f₂).ι) (i : ((L₁.pull φ).pull f₁).ι) (h : ⊤ ≤ x ⁻¹ᵁ ((L₂.pull f₂).U n ⊓ ((L₁.pull φ).pull f₁).U i)) (h' : ⊤ ≤ x ⁻¹ᵁ ((L₂.pull f₂).U n ⊓ (L₁.pull f₁).U (fun _ => i PUnit.unit PUnit.unit))), (Scheme.ΓSpecIso (CommRingCat.of K')).hom.hom ((x.appLE _ ⊤ h).hom (w₁.s (n, i)).val) = σ ((Scheme.ΓSpecIso (CommRingCat.of K')).hom.hom ((x.appLE _ ⊤ h').hom (w.s (n, fun _ => i PUnit.unit PUnit.unit)).val))) := by

@@ -10,9 +10,9 @@ namespace GlobalTheory.CompanionTheory.Ar.SncRes.SegreForm
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GlobalTheory.CompanionTheory.Ar.Cmp
 
 /- English proof (translation)
-Simplify using `only [aeval_def, eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hd : ∑ i, m i = n`. Establish `h` using `hG (mem_support_iff.1 hm)`. Establish `e : Finsupp.weight (1 : σ → ℕ) m = ∑ i, m i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype]`. Rewrite using `[← e]`. Conclude with `h`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem aeval_const_mul {σ R : Type} [Fintype σ] [CommRing R] [Algebra ℤ R] {G : MvPolynomial σ ℤ} {n : ℕ}
     (hG : G.IsHomogeneous n) (κ : R) (a : σ → R) :
@@ -29,19 +29,19 @@ theorem aeval_const_mul {σ R : Type} [Fintype σ] [CommRing R] [Algebra ℤ R] 
   ring
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `t`. Proceed by induction on `ht using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Conclude with `⟨1, 1, X j, one_ne_zero, isHomogeneous_X _ _, by simp⟩`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `algebraMap q`. Use `⟨q.den, 0, C q.num, by exact_mod_cast q.den_nz, isHomogeneous_C _ _, ?_⟩` and prove the remaining obligations. Establish `hd : (q.den : Ω) ≠ 0` using `by exact_mod_cast q.den_nz`. Simplify using `only [map_intCast, eq_intCast, eq_ratCast, Int.cast_natCast]`. Rewrite using `[Rat.cast_def]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Consider the case `add x y hx hy ihx ihy`. Take `⟨m₁, n₁, G₁, hm₁, hG₁, e₁⟩` from `ihx`. Take `⟨m₂, n₂, G₂, hm₂, hG₂, e₂⟩` from `ihy`. Use `⟨m₁ * m₂, n₁ + n₂, C m₂ * X c₀ ^ n₂ * G₁ + C m₁ * X c₀ ^ n₁ * G₂, mul_ne_zero hm₁ hm₂, ?_, ?_⟩` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `MvPolynomial.IsHomogeneous.add ?_ ?_` and prove the remaining obligations. Use `((isHomogeneous_C σ m₂).mul ((isHomogeneous_X ℤ c₀).pow n₂)).mul hG₁` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `((isHomogeneous_C σ m₁).mul ((isHomogeneous_X ℤ c₀).pow n₁)).mul hG₂` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_add, map_mul, map_pow, aeval_X, h1, one_pow, mul_one, eq_intCast, map_intCast, e₁, e₂]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `mul x y hx hy ihx ihy`. Take `⟨m₁, n₁, G₁, hm₁, hG₁, e₁⟩` from `ihx`. Take `⟨m₂, n₂, G₂, hm₂, hG₂, e₂⟩` from `ihy`. Use `⟨m₁ * m₂, n₁ + n₂, G₁ * G₂, mul_ne_zero hm₁ hm₂, hG₁.mul hG₂, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, e₁, e₂]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_homog {σ Ω : Type} [Field Ω] [CharZero Ω] (r : σ → Ω) (c₀ : σ) (h1 : r c₀ = 1)
     (t : Algebra.adjoin ℚ (Set.range r)) :
@@ -81,9 +81,9 @@ theorem exists_homog {σ Ω : Type} [Field Ω] [CharZero Ω] (r : σ → Ω) (c�
     ring
 
 /- English proof (translation)
-Set `S` to `Localization.Away s`. Set `T` to `Localization.Away (algebraMap B S u)`. Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension 0 S T := Algebra.IsStandardSmoothOfRelativeDimension.localization_away (algebraMap B S u)`. Establish `h` using `Algebra.IsStandardSmoothOfRelativeDimension.trans e 0 ℚ S T`. Rewrite `h` using `[zero_add]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use `haveI : IsLocalization.Away (s * u) T := IsLocalization.Away.mul' S T s u`. Set `f : T ≃ₐ[B] Localization.Away (s * u)` to `IsLocalization.algEquiv (Submonoid.powers (s * u)) T (Localization.Away (s * u))`. Conclude with `Algebra.IsStandardSmoothOfRelativeDimension.of_algEquiv e (f.restrictScalars ℚ)`.
+A detailed English derivation is pending.
 -/
 theorem smooth_away_mul {B : Type} [CommRing B] [Algebra ℚ B] (s u : B) (e : ℕ)
     [Algebra.IsStandardSmoothOfRelativeDimension e ℚ (Localization.Away s)] :
@@ -100,7 +100,7 @@ theorem smooth_away_mul {B : Type} [CommRing B] [Algebra ℚ B] (s u : B) (e : �
   exact Algebra.IsStandardSmoothOfRelativeDimension.of_algEquiv e (f.restrictScalars ℚ)
 
 /- English proof (translation)
-Rewrite using `[aeval_def, eval₂_eq_eval_map, algebraMap_int_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_map_int {σ : Type} (w : σ → ℂ) (f : MvPolynomial σ ℤ) :
     eval w (map (Int.castRingHom ℂ) f) = aeval w f := by
@@ -110,9 +110,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
   {N : ℕ} (y : (Σ k, ι k) → Ω) (E : Fin (N + 1) ≃ ((k : K) → ι k)) (c₀ : Fin (N + 1))
 
 /- English proof (translation)
-Take `⟨k₀, i⟩` from `p`. Simplify using `only [Equiv.apply_symm_apply]`. Establish `h0 : (∏ k, y ⟨k, E c₀ k⟩) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hc k`. Rewrite using `[div_eq_div_iff (hc k₀) h0, ← Finset.mul_prod_erase Finset.univ (fun k => y ⟨k, E c₀ k⟩) (Finset.mem_univ k₀), ← Finset.mul_prod_erase Finset.univ (fun k => y ⟨k, Function.update (E c₀) k₀ i k⟩) (Finset.mem_univ k₀)]`. Establish `e : ∏ k ∈ Finset.univ.erase k₀, y ⟨k, Function.update (E c₀) k₀ i k⟩ = ∏ k ∈ Finset.univ.erase k₀, y ⟨k, E c₀ k⟩` using `Finset.prod_congr rfl fun k hk => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hk)]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, Function.update_self]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem blockRatio_eq (hc : ∀ k, y ⟨k, E c₀ k⟩ ≠ 0) (p : Σ k, ι k) [DecidableEq K] :
     y p / y ⟨p.1, E c₀ p.1⟩ =
@@ -130,9 +130,9 @@ theorem blockRatio_eq (hc : ∀ k, y ⟨k, E c₀ k⟩ ≠ 0) (p : Σ k, ι k) [
   ring
 
 /- English proof (translation)
-Proceed by induction on `β using MvPolynomial.induction_on with`. Consider the case `C n => simpa using intCast_mem _ n`. Consider the case `add p q hp hq => simpa using add_mem hp hq`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, aeval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `mul_mem hp (Algebra.subset_adjoin ⟨E.symm (Function.update (E c₀) i.1 i.2), ?_⟩)` and prove the remaining obligations. Conclude with `(blockRatio_eq y E c₀ hc i).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem aeval_blockRatio_mem [CharZero Ω] (hc : ∀ k, y ⟨k, E c₀ k⟩ ≠ 0) (β : MRing ι) :
     aeval (fun p : Σ k, ι k => y p / y ⟨p.1, E c₀ p.1⟩) β ∈
@@ -147,7 +147,7 @@ theorem aeval_blockRatio_mem [CharZero Ω] (hc : ∀ k, y ⟨k, E c₀ k⟩ ≠ 
     exact (blockRatio_eq y E c₀ hc i).symm
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CompanionTheory.Ar.aeval_blockScale hb (fun k => y ⟨k, E c₀ k⟩) (fun p : Σ k, ι k => y p / y ⟨p.1, E c₀ p.1⟩)`. Establish `e : (fun p : Σ k, ι k => y ⟨p.1, E c₀ p.1⟩ * (y p / y ⟨p.1, E c₀ p.1⟩)) = y`. Use function extensionality and compare the values at `fun p => mul_div_cancel₀ _ (hc p.1)`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem aeval_eq_prod_mul (hc : ∀ k, y ⟨k, E c₀ k⟩ ≠ 0) {β : MRing ι} {b : K → ℕ} (hb : IsMultiHomog β b) :
     aeval y β = (∏ k, y ⟨k, E c₀ k⟩ ^ b k) *
@@ -158,7 +158,7 @@ theorem aeval_eq_prod_mul (hc : ∀ k, y ⟨k, E c₀ k⟩ ≠ 0) {β : MRing ι
   rwa [e] at h
 
 /- English proof (translation)
-Simplify using `only [map_prod, mConeMap, aeval_X, Finset.prod_mul_distrib]`. Rewrite using `[mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mConeMap_segre (j : Fin (N + 1)) :
     mConeMap y (∏ k, (X ⟨k, E j k⟩ : MRing ι)) =
@@ -167,21 +167,21 @@ theorem mConeMap_segre (j : Fin (N + 1)) :
   rw [mul_comm]
 
 /- English proof (translation)
-Establish `h0 : (∏ k, y ⟨k, E c₀ k⟩) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hc k`. Establish `hx : aeval (fun j => ∏ k, y ⟨k, E j k⟩) G * ∏ k, y ⟨k, E c₀ k⟩ ^ b k = (m : Ω) * aeval y β * (∏ k, y ⟨k, E c₀ k⟩) ^ n`. Establish `e : (fun j => ∏ k, y ⟨k, E j k⟩) = fun j => (∏ k, y ⟨k, E c₀ k⟩) * ((∏ k, y ⟨k, E j k⟩) / ∏ k, y ⟨k, E c₀ k⟩)`. Use function extensionality and compare the values at `fun j => (mul_div_cancel₀ _ h0).symm`. Rewrite using `[e, aeval_const_mul hG, hval, aeval_eq_prod_mul y E c₀ hc hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Set `P₁ : MRing ι` to `aeval (fun j => ∏ k, (X ⟨k, E j k⟩ : MRing ι)) G * ∏ k, (X ⟨k, E c₀ k⟩ : MRing ι) ^ b k`. Set `P₂ : MRing ι` to `C m * β * (∏ k, (X ⟨k, E c₀ k⟩ : MRing ι)) ^ n`. Establish `hmem : P₁ - P₂ ∈ mCoordIdeal y`. Use `RingHom.mem_ker.2 ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hG' : mConeMap y (aeval (fun j => ∏ k, (X ⟨k, E j k⟩ : MRing ι)) G) = (∏ k, (X k : MvPolynomial K Ω)) ^ n * C (aeval (fun j => ∏ k, y ⟨k, E j k⟩) G)`. Rewrite using `[comp_aeval_apply]`. Simplify using `only [mConeMap_segre]`. Rewrite using `[aeval_const_mul hG]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(comp_aeval_apply _ (IsScalarTower.toAlgHom ℤ Ω (MvPolynomial K Ω)) G).symm`. Establish `hX : mConeMap y (∏ k, (X ⟨k, E c₀ k⟩ : MRing ι) ^ b k) = (∏ k, (X k : MvPolynomial K Ω) ^ b k) * C (∏ k, y ⟨k, E c₀ k⟩ ^ b k)`. Simplify using `only [map_prod, map_pow, mConeMap, aeval_X, mul_pow, Finset.prod_mul_distrib]`. Rewrite using `[mul_comm]`. Establish `hC : mConeMap y (C m) = C (m : Ω)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[mConeMap]`. Establish `hS` using `mConeMap_segre y E c₀`. Simplify using `only [P₁, P₂, map_sub, map_mul, map_pow, hG', hX, hC, hS, GroundTheory.Heights₂.Heights.LowerBoundFree.mConeMap_of_isMultiHomog y hb]`. Rewrite using `[sub_eq_zero]`. Use `congrArg (C : Ω →+* MvPolynomial K Ω) hx` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_pow] at this`. Combine the equalities or inequalities in the displayed calculation. Establish `hzero` using `hz.2 _ hmem`. Establish `hev : aeval z (P₁ - P₂) = 0` using `by rw [← eval_map_int]; exact hzero`. Establish `hβ' : aeval z β = 0` using `by rw [← eval_map_int]; exact hβ`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : aeval (fun j => ∏ k, z ⟨k, E j k⟩) G * ∏ k, z ⟨k, E c₀ k⟩ ^ b k = 0`. Simplify using `only [P₁, P₂, map_sub, map_mul, map_pow, map_prod, aeval_X, hβ', comp_aeval_apply] at hev`. Simplify using `using hev`. Break down `mul_eq_zero.1 hP with h | h` into its components or cases. Conclude with `Or.inr h`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Extract witnesses or component facts from the available result.
 
-Take `⟨k, -, hk⟩` from `Finset.prod_eq_zero_iff.1 h`. Use `Or.inl (Finset.prod_eq_zero_iff.2 ⟨k, Finset.mem_univ _, ?_⟩)` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Conclude with `pow_ne_zero _ h' hk`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem vanish_of_value (hc : ∀ k, y ⟨k, E c₀ k⟩ ≠ 0) {β : MRing ι} {b : K → ℕ} (hb : IsMultiHomog β b)
     {n : ℕ} {m : ℤ} {G : MvPolynomial (Fin (N + 1)) ℤ} (hG : G.IsHomogeneous n)
@@ -241,19 +241,19 @@ end GlobalTheory.CompanionTheory.Ar.SncRes.SegreForm
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.Cmp GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.SncRes in
 
 /- English proof (translation)
-Introduce `Ω _ _ K _ ι _ y e β b hb hβ N E c₀ hc s hs _`. Establish `h0 : (∏ k, y ⟨k, E c₀ k⟩) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hc k`. Establish `h1 : (fun j => (∏ k, y ⟨k, E j k⟩) / ∏ k, y ⟨k, E c₀ k⟩) c₀ = 1` using `div_self h0`. Take `⟨m₁, n₁, G₁, hm₁, hG₁, e₁⟩` from `SegreForm.exists_homog _ c₀ h1 s`. Take `⟨m₂, n₂, G₂, hm₂, hG₂, e₂⟩` from `SegreForm.exists_homog _ c₀ h1 ⟨_, SegreForm.aeval_blockRatio_mem y E c₀ hc β⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hbt : aeval (fun p : Σ k, ι k => y p / y ⟨p.1, E c₀ p.1⟩) β ≠ 0`. Introduce `h`. Apply `hβ` to reduce the goal to its premises. Rewrite using `[form_mem_mCoordIdeal_iff y hb, SegreForm.aeval_eq_prod_mul y E c₀ hc hb, h, mul_zero]`. Establish `hm₁' : (m₁ : Ω) ≠ 0` using `by exact_mod_cast hm₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm₂' : (m₂ : Ω) ≠ 0` using `by exact_mod_cast hm₂`. Establish `hs' : (s : Ω) ≠ 0` using `fun h => hs (Subtype.ext h)`. Use `⟨n₁ + n₂, X c₀ * G₁ * G₂, s * (((m₁ * m₂ : ℤ) : Algebra.adjoin ℚ _) * ⟨_, SegreForm.aeval_blockRatio_mem y E c₀ hc β⟩), ?_, ?_, ?_, ?_, SegreForm.smooth_away_mul s _ e, ?_⟩` and prove the remaining obligations. Use `((isHomogeneous_X ℤ c₀).mul hG₁).mul hG₂` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_assoc]`. Conclude with `dvd_mul_right _ _`. Establish `e₂' : aeval (fun j => (∏ k, y ⟨k, E j k⟩) / ∏ k, y ⟨k, E c₀ k⟩) G₂ = (m₂ : Ω) * aeval (fun p : Σ k, ι k => y p / y ⟨p.1, E c₀ p.1⟩) β` using `e₂`. Rewrite using `[map_mul, map_mul, aeval_X, e₁, e₂', div_self h0]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `h`. Establish `h'` using `congrArg (Subtype.val) h`. Establish `h'' : (s : Ω) * (((m₁ : Ω) * m₂) * aeval (fun p : Σ k, ι k => y p / y ⟨p.1, E c₀ p.1⟩) β) = 0`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h'`. Conclude with `mul_ne_zero hs' (mul_ne_zero (mul_ne_zero hm₁' hm₂') hbt) h''`. Introduce `z hz hzβ`. Rewrite using `[SegreForm.eval_map_int, map_mul, map_mul, aeval_X]`. Break down `SegreForm.vanish_of_value y E c₀ hc hb hG₂ e₂ hz hzβ with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, zero_mul]`. Simplify using `only [h, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.SncRes.exists_segre_form : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (y : (Σ k, ι k) → Ω) (e : ℕ) (β : MRing ι) (b : K → ℕ) (hb : IsMultiHomog β b) (hβ : β ∉ mCoordIdeal y) (N : ℕ) (E : Fin (N + 1) ≃ ((k : K) → ι k)) (c₀ : Fin (N + 1)) (hc : ∀ k, y ⟨k, E c₀ k⟩ ≠ 0) (s : Algebra.adjoin ℚ (Set.range fun j => (∏ k, y ⟨k, E j k⟩) / ∏ k, y ⟨k, E c₀ k⟩)) (hs : s ≠ 0) [Algebra.IsStandardSmoothOfRelativeDimension e ℚ (Localization.Away s)], ∃ (d : ℕ) (Gz : MvPolynomial (Fin (N + 1)) ℤ) (g₀ : Algebra.adjoin ℚ (Set.range fun j => (∏ k, y ⟨k, E j k⟩) / ∏ k, y ⟨k, E c₀ k⟩)), Gz.IsHomogeneous (d + 1) ∧ (X c₀ : MvPolynomial _ ℤ) ∣ Gz ∧ (g₀ : Ω) = aeval (fun j => (∏ k, y ⟨k, E j k⟩) / ∏ k, y ⟨k, E c₀ k⟩) Gz ∧ g₀ ≠ 0 ∧ Algebra.IsStandardSmoothOfRelativeDimension e ℚ (Localization.Away g₀) ∧ ∀ z ∈ mcPts (mCoordIdeal y), evC z β = 0 → eval (fun j => ∏ k, z ⟨k, E j k⟩) (map (Int.castRingHom ℂ) Gz) = 0 := by
   intro Ω _ _ K _ ι _ y e β b hb hβ N E c₀ hc s hs _

@@ -17,7 +17,7 @@ section Alg
 variable {k : Type} [Field k] [ValuativeRel k] {F₀ : Type} [Field F₀] {n : ℕ}
 
 /- English proof (translation)
-Introduce `a b h` and use `Units.ext <| Matrix.ext fun i j => Subtype.ext (congrArg (fun g : GL (Fin n) k => (g : Matrix (Fin n) (Fin n) k) i j) h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem incl_inj :
     Function.Injective (GeneralLinearGroup.map (n := Fin n) (algebraMap 𝒪[k] k)) := fun a b h =>
@@ -25,7 +25,7 @@ private theorem incl_inj :
     (congrArg (fun g : GL (Fin n) k => (g : Matrix (Fin n) (Fin n) k) i j) h)
 
 /- English proof (translation)
-Establish `h : ∃ y' : GL (Fin n) 𝒪[k], GeneralLinearGroup.map (algebraMap 𝒪[k] k) y' = GeneralLinearGroup.map (algebraMap 𝒪[k] k) y` using `⟨y, rfl⟩`. Unfold `infl`. Rewrite using `[dif_pos h, incl_inj h.choose_spec]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem infl_incl (rd : 𝒪[k] →+* F₀) (fb : GL (Fin n) F₀ → ℂ) (y : GL (Fin n) 𝒪[k]) :
     infl rd fb (GeneralLinearGroup.map (algebraMap 𝒪[k] k) y) = fb (GeneralLinearGroup.map rd y) := by
@@ -35,23 +35,23 @@ private theorem infl_incl (rd : 𝒪[k] →+* F₀) (fb : GL (Fin n) F₀ → �
   rw [dif_pos h, incl_inj h.choose_spec]
 
 /- English proof (translation)
-The claim follows from `dif_neg hx`.
+A detailed English derivation is pending.
 -/
 private theorem infl_not_mem (rd : 𝒪[k] →+* F₀) (fb : GL (Fin n) F₀ → ℂ) {x : GL (Fin n) k}
     (hx : x ∉ KO k n) : infl rd fb x = 0 :=
   dif_neg hx
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `⟨y, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem principal_congruence_le_maximal_compact (rd : 𝒪[k] →+* F₀) : K1 rd n ≤ KO k n := by
   rintro _ ⟨y, -, rfl⟩
   exact ⟨y, rfl⟩
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ KO k n`. Take `⟨u, hu, rfl⟩` from `hc`. Take `⟨y, rfl⟩` from `hx`. Rewrite using `[← map_mul, infl_incl, infl_incl, map_mul, MonoidHom.mem_ker.1 hu, one_mul]`. Rewrite using `[infl_not_mem rd fb hx, infl_not_mem rd fb]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => hx (by simpa using (KO k n).mul_mem ((KO k n).inv_mem (principal_congruence_le_maximal_compact rd hc)) h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem infl_left (rd : 𝒪[k] →+* F₀) (fb : GL (Fin n) F₀ → ℂ) {c : GL (Fin n) k}
     (hc : c ∈ K1 rd n) (x : GL (Fin n) k) : infl rd fb (c * x) = infl rd fb x := by
@@ -63,9 +63,9 @@ private theorem infl_left (rd : 𝒪[k] →+* F₀) (fb : GL (Fin n) F₀ → �
     exact fun h => hx (by simpa using (KO k n).mul_mem ((KO k n).inv_mem (principal_congruence_le_maximal_compact rd hc)) h)
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ KO k n`. Take `⟨u, hu, rfl⟩` from `hc`. Take `⟨y, rfl⟩` from `hx`. Rewrite using `[← map_mul, infl_incl, infl_incl, map_mul, MonoidHom.mem_ker.1 hu, mul_one]`. Rewrite using `[infl_not_mem rd fb hx, infl_not_mem rd fb]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => hx (by simpa using (KO k n).mul_mem h ((KO k n).inv_mem (principal_congruence_le_maximal_compact rd hc)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem infl_right (rd : 𝒪[k] →+* F₀) (fb : GL (Fin n) F₀ → ℂ) {c : GL (Fin n) k}
     (hc : c ∈ K1 rd n) (x : GL (Fin n) k) : infl rd fb (x * c) = infl rd fb x := by
@@ -77,13 +77,13 @@ private theorem infl_right (rd : 𝒪[k] →+* F₀) (fb : GL (Fin n) F₀ → �
     exact fun h => hx (by simpa using (KO k n).mul_mem h ((KO k n).inv_mem (principal_congruence_le_maximal_compact rd hc)))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Take `⟨y, hy⟩` from `hrd (rd x)⁻¹`. Establish `hxy : rd (1 - x * y) = 0`. Rewrite using `[map_sub, map_mul, hy, mul_inv_cancel₀ h0, map_one, sub_self]`. Establish `hyle : valuation k (y : k) ≤ 1` using `y.2`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt : valuation k ((x * y : 𝒪[k]) : k) < 1`. Rewrite using `[Subring.coe_mul, map_mul]`. Conclude with `mul_lt_one_of_lt_of_le hx hyle`. Establish `hval : valuation k ((1 - x * y : 𝒪[k]) : k) = 1`. Establish `: ((1 - x * y : 𝒪[k]) : k) = 1 - ((x * y : 𝒪[k]) : k)` using `by push_cast; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Valuation.map_one_sub_of_lt _ hlt]`. Use `set u : 𝒪[k] := 1 - x * y with hu`. Establish `hu0 : (u : k) ≠ 0` using `fun h => by rw [h, map_zero] at hval; exact zero_ne_one hval`. Establish `hinv : valuation k (u : k)⁻¹ ≤ 1` using `by rw [map_inv₀, hval, inv_one]`. Establish `hone : u * ⟨(u : k)⁻¹, hinv⟩ = 1` using `Subtype.ext (mul_inv_cancel₀ hu0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg rd hone` as an intermediate fact. Rewrite `this` using `[map_mul, hxy, zero_mul, map_one]`. Conclude with `zero_ne_one this`.
+A detailed English derivation is pending.
 -/
 private theorem rd_eq_zero (rd : 𝒪[k] →+* F₀) (hrd : Function.Surjective rd) (x : 𝒪[k])
     (hx : valuation k (x : k) < 1) : rd x = 0 := by
@@ -109,29 +109,27 @@ private theorem rd_eq_zero (rd : 𝒪[k] →+* F₀) (hrd : Function.Surjective 
 end Alg
 
 /- English proof (translation)
-Introduce `k _ _ _ _ F₀ _ _ rd hrd n`. Establish `hKO : KO k n = GroundTheory.Automorphic.GLnLocal.integralGL k n` using `rfl`. Establish `hU : KO k n = PositivityTheory.Rg.Tf.Loc.unitGL k` using `rfl`. Establish `hopenKO : IsOpen (KO k n : Set (GL (Fin n) k))`. Rewrite using `[hKO]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GroundTheory.Automorphic.GLnLocal.isOpen_integralGL k n`. Establish `hcompKO : IsCompact (KO k n : Set (GL (Fin n) k))`. Rewrite using `[hKO]`. Conclude with `GroundTheory.Automorphic.GLnLocal.isCompact_integralGL k n`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr0, hr1⟩ : ∃ r : ValueGroupWithZero k, 0 < r ∧ r < 1 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨γ, h0, h1⟩` from `ValuativeRel.IsNontrivial.condition (R := k)`. Break down `lt_or_gt_of_ne h1 with h | h` into its components or cases. Conclude with `⟨γ, zero_lt_iff.2 h0, h⟩`. Conclude with `⟨γ⁻¹, inv_pos.2 (zero_lt_iff.2 h0), inv_lt_one_of_one_lt₀ h⟩`. Take `⟨B, hB, hBo, -⟩` from `UpperTheory.ConvolutionTheory.Loc.ballSub k n r hr0 hr1`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hent : ∀ g ∈ B, ∀ i j, valuation k ((g : Matrix (Fin n) (Fin n) k) i j) ≤ 1`. Introduce `g hg i j`. Establish `hb : valuation k ((g : Matrix (Fin n) (Fin n) k) i j - (1 : Matrix (Fin n) (Fin n) k) i j) ≤ r`. Establish `: g ∈ (B : Set (GL (Fin n) k))` using `hg`. Rewrite `this` using `[hB]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `this i j`. Establish `h1 : valuation k ((1 : Matrix (Fin n) (Fin n) k) i j) ≤ 1`. Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`. Rewrite using `[← sub_add_cancel ((g : Matrix (Fin n) (Fin n) k) i j) ((1 : Matrix (Fin n) (Fin n) k) i j)]`. Conclude with `Valuation.map_add_le _ (hb.trans hr1.le) h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hBK : B ≤ K1 rd n`. Introduce `g hg`. Establish `hgO : g ∈ GroundTheory.Automorphic.GLnLocal.integralGL k n` using `(GroundTheory.Automorphic.GLnLocal.mem_integralGL_iff k n).2 ⟨hent g hg, hent _ (B.inv_mem hg)⟩`. Take `⟨y, rfl⟩ : g ∈ KO k n` from `hgO`. Use `⟨y, ?_, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map rd y = 1`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `hb : valuation k (((GeneralLinearGroup.map (algebraMap 𝒪[k] k) y : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j - (1 : Matrix (Fin n) (Fin n) k) i j) ≤ r`. Establish `: GeneralLinearGroup.map (algebraMap 𝒪[k] k) y ∈ (B : Set (GL (Fin n) k))` using `hg`. Rewrite `this` using `[hB]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `this i j`. Establish `h0` using `rd_eq_zero rd hrd ((y : Matrix (Fin n) (Fin n) 𝒪[k]) i j - (1 : Matrix (Fin n) (Fin n) 𝒪[k]) i j) (by`. Use `lt_of_le_of_lt (le_of_eq ?_) (hb.trans_lt hr1)` and prove the remaining obligations. Use `congr 1`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij] <;> rfl)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `h0` using `[map_sub, sub_eq_zero]`. Simplify using `only [GeneralLinearGroup.map_apply, Units.val_one]`. Rewrite using `[h0]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `hopen : IsOpen (K1 rd n : Set (GL (Fin n) k))` using `Subgroup.isOpen_mono hBK hBo`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hclosed : IsClosed (K1 rd n : Set (GL (Fin n) k))` using `Subgroup.isClosed_of_isOpen _ hopen`. Establish `hcomp : IsCompact (K1 rd n : Set (GL (Fin n) k))` using `hcompKO.of_isClosed_subset hclosed (principal_congruence_le_maximal_compact rd)`. Establish `hclosedKO : IsClosed (KO k n : Set (GL (Fin n) k))` using `Subgroup.isClosed_of_isOpen _ hopenKO`. Establish `hsupp : ∀ fb : GL (Fin n) F₀ → ℂ, HasCompactSupport (infl rd fb)` using `fun fb => HasCompactSupport.intro' hcompKO hclosedKO fun x hx => infl_not_mem rd fb hx`. Use `⟨hU, hopen, hcomp, principal_congruence_le_maximal_compact rd, fun fb y => infl_incl rd fb y, fun fb => ⟨⟨hsupp fb, fun c hc x => ⟨infl_left rd fb hc x, infl_right rd fb hc x⟩⟩, ⟨?_, hsupp fb⟩, ?_⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `(IsLocallyConstant.iff_exists_open _).2 fun x => ⟨(fun z => x⁻¹ * z) ⁻¹' (K1 rd n : Set (GL (Fin n) k)), hopen.preimage (continuous_const.mul continuous_id), by simp [(K1 rd n).one_mem], fun z hz => ?_⟩` and prove the remaining obligations. Use `infl_right rd fb hz x` as an intermediate fact. Simplify using `using this`. Introduce `x hx`. Assume the negation of the conclusion as `h`.
-
-Conclude with `hx (infl_not_mem rd fb h)`.
+A detailed English derivation is pending.
 -/
 theorem inflFacts :
     UpperTheory.Gal.InertialTypesAlt.L.InflFacts := by

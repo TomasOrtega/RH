@@ -11,15 +11,15 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.ThK.DescB.CuspAut
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hA hI c _ _ i hi f hf c₀ hc₀ hJ φ' hφ`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hM.triple.base.cm`. Establish `hsk` using `GlobalTheory.ThK.DescB.PrimeSplit.skew_sp hσ B hM.triple.geo.hW.skew hA hI i hi.le`. Establish `hσc : σ c₀ = -c₀`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hrank : d₁ - 2 * i = d₁ - 2 * (i + 1) + 2` using `(hI i hi).1`. Establish `hzero : c₀ • (sp i).J.map σ = 0`. Use extensionality with `k l`. Establish `h1` using `hJ.1 k l`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, hσ] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `hsk l k`. Rewrite `h1` using `[h2]`. Establish `h3 : (σ c₀ + c₀) * (sp i).J l k = 0` using `by linear_combination h1`. Establish `h4 : (sp i).J l k = 0` using `(mul_eq_zero.1 h3).resolve_left fun h => hne (eq_neg_of_add_eq_zero_left h)`. Simplify using `[h2, h4]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: Nonempty (Fin (d₁ - 2 * i))` using `⟨⟨0, by omega⟩⟩`. Conclude with `hJ.2 (by rw [hzero]; exact Matrix.det_zero)`. Take `⟨K, hK, -, hall⟩` from `GlobalTheory.ThK.DescB.LevAutSup.lev_isAut_maxCpt hKP F E σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hA hI _ (diffs_le_sup B G X om om' R Rf c) hσ c₀ hc₀ hσc i hi.le`. Use `⟨K, hK, ?_⟩` and prove the remaining obligations. Establish `e : φ' = fun x => f ((GlobalTheory.ThK.SquareIntegrability.toGAd hσ (sp i).J hc₀).symm x)` using `funext fun x => hφ _ x rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hall f hf`.
+A detailed English derivation is pending.
 -/
 theorem isAut_lev : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),

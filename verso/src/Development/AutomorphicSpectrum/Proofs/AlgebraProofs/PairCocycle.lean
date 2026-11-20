@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.CommAlg.PairCocycleClosed
 open GroundTheory.Heights₂.Heights.NumbersDVR
 
 /- English proof (translation)
-The claim follows from `PairCocycle.proof GlobalTheory.T.flag_independence GlobalTheory.T.vertical_divisors_commute IntNumAddFirst.full`.
+A detailed English derivation is pending.
 -/
 theorem pairCocycle : PairCocycle.Statement :=
   PairCocycle.proof GlobalTheory.T.flag_independence GlobalTheory.T.vertical_divisors_commute IntNumAddFirst.full

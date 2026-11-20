@@ -18,7 +18,7 @@ private def evalEquiv {v : Pl F} (w : PlacesOver E v) (hw : ∀ u : PlacesOver E
   RingEquiv.piUnique fun u : PlacesOver E v => u.1.adicCompletion E
 
 /- English proof (translation)
-The claim follows from `letI : Unique (PlacesOver E v) := ⟨⟨w⟩, hw⟩ (Homeomorph.piUnique fun u : PlacesOver E v => u.1.adicCompletion E).symm.continuous`.
+A detailed English derivation is pending.
 -/
 private theorem evalEquiv_symm_cont {v : Pl F} (w : PlacesOver E v) (hw : ∀ u : PlacesOver E v, u = w) :
     Continuous (evalEquiv w hw).symm :=
@@ -38,9 +38,7 @@ private def cmpEquiv (n : ℕ) {v : Pl F} (w : PlacesOver E v) (hw : ∀ u : Pla
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n v w hw`. Use `⟨⟨cmpEquiv n w hw, fun _ => rfl⟩, fun g => ⟨fun h => h w, fun h u => ?_⟩, fun h => funext fun g => ?_⟩` and prove the remaining obligations. Take `rfl` from `hw u`. Conclude with `h`. Use `letI : Unique (PlacesOver E v) := ⟨⟨w⟩, hw⟩`.
-
-Conclude with `finprod_unique _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem cmpIso : CmpIso := by
   intro F E _ _ _ _ _ n v w hw

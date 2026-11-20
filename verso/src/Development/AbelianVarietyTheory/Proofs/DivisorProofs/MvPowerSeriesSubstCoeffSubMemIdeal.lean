@@ -8,9 +8,9 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog
 namespace GlobalTheory.SubstMod
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.OrderProductDifference.target`. Consider the case `exact _root_.GlobalTheory.OrderProductDifference.target`. Consider the case `(apply _root_.GlobalTheory.OrderProductDifference.target <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.OrderProductDifference.target <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.OrderProductDifference.target <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.OrderProductDifference.target ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem order_prod_sub_prod {R τ ι : Type} [CommRing R] (s : Finset ι)
     (a b : ι → MvPowerSeries τ R) (k : ι → ℕ)
@@ -26,7 +26,7 @@ theorem order_prod_sub_prod {R τ ι : Type} [CommRing R] (s : Finset ι)
   | (intros; exact _root_.GlobalTheory.OrderProductDifference.target ..)
 
 /- English proof (translation)
-Use `order_prod_sub_prod (Finset.range n) (fun _ => u) (fun _ => l) (fun _ => 1) (fun _ _ => by simpa using one_le_order_iff_constCoeff_eq_zero.mpr hu) (fun _ _ => by simpa using one_le_order_iff_constCoeff_eq_zero.mpr hl) (fun _ _ => by simpa [one_add_one_eq_two] using hul)` as an intermediate fact. Simplify `this` using `[Finset.prod_const]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem order_pow_sub_pow {R τ : Type} [CommRing R] (u l : MvPowerSeries τ R)
     (hu : constantCoeff u = 0) (hl : constantCoeff l = 0) (hul : (2 : ℕ∞) ≤ (u - l).order)
@@ -38,7 +38,7 @@ theorem order_pow_sub_pow {R τ : Type} [CommRing R] (u l : MvPowerSeries τ R)
   simpa [Finset.prod_const] using this
 
 /- English proof (translation)
-Use `order_prod_sub_prod α.support (fun s => u s ^ α s) (fun s => l s ^ α s) α (fun s _ => le_order_pow_of_constantCoeff_eq_zero _ (hu s)) (fun s _ => le_order_pow_of_constantCoeff_eq_zero _ (hl s)) (fun s _ => order_pow_sub_pow _ _ (hu s) (hl s) (hul s) _)` as an intermediate fact. Rewrite using `[Finsupp.degree_apply]`. Use `push_cast`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem order_monoProd_sub {R σ τ : Type} [CommRing R] (u l : σ → MvPowerSeries τ R)
     (hu : ∀ s, constantCoeff (u s) = 0) (hl : ∀ s, constantCoeff (l s) = 0)
@@ -54,15 +54,15 @@ theorem order_monoProd_sub {R σ τ : Type} [CommRing R] (u l : σ → MvPowerSe
   exact this
 
 /- English proof (translation)
-Introduce `B Q σ τ _ _ _ _ N u ℓ hu hl m c hc w hw`. Establish `hℓ : ∀ s, constantCoeff (ℓ s) = 0` using `fun s => by`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, ← hl s 0 (by simp), coeff_zero_eq_constantCoeff_apply, hu s]`. Establish `hul : ∀ s, (2 : ℕ∞) ≤ (u s - ℓ s).order` using `fun s => nat_le_order (n := 2) fun β hβ => by`. Rewrite using `[map_sub, hl s β (by omega), sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : HasSubst (up Q u)` using `hasSubst_of_constantCoeff_zero fun s => by`. Simplify using `[up, hu s]`. Establish `hL : HasSubst (up Q ℓ)` using `hasSubst_of_constantCoeff_zero fun s => by`. Simplify using `[up, hℓ s]`. Rewrite using `[coeff_subst hU, coeff_subst hL, ← finsum_sub_distrib (coeff_subst_finite hU c w) (coeff_subst_finite hL c w)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_induction (fun x : Q => ∃ r ∈ N, x = algebraMap B Q r) ⟨0, N.zero_mem, by simp⟩ (fun x y ⟨r, hr, hx⟩ ⟨t, ht, hy⟩ => ⟨r + t, N.add_mem hr ht, by rw [hx, hy, map_add]⟩) fun α => ?_` and prove the remaining obligations. Establish `hprod : ∀ v : σ → MvPowerSeries τ B, (α.prod fun s e => up Q v s ^ e) = map (algebraMap B Q) (α.prod fun s e => v s ^ e)`. Introduce `v`. Simplify using `only [up, Finsupp.prod, map_prod, map_pow]`. Rewrite using `[hprod u, hprod ℓ, coeff_map, coeff_map, smul_eq_mul, smul_eq_mul, ← mul_sub, ← map_sub, ← map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : α.degree < m`. Take `⟨b, hb, hcb⟩` from `hc α h`. Conclude with `⟨b * _, N.mul_mem_right _ hb, by rw [hcb, map_mul]⟩`. Establish `h0 : coeff w ((α.prod fun s e => u s ^ e) - α.prod fun s e => ℓ s ^ e) = 0`. Use `coeff_of_lt_order (lt_of_lt_of_le ?_ (order_monoProd_sub u ℓ hu hℓ hul α))` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: w.degree ≤ α.degree` using `by omega`. Conclude with `Nat.lt_succ_of_le this` after adjusting the coercions. Conclude with `⟨0, N.zero_mem, by rw [h0, map_zero, mul_zero]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem subst_coeff_sub_mem : ∀ {B Q σ τ : Type} [CommRing B] [CommRing Q] [Algebra B Q] [Fintype σ]
     (N : Ideal B) (u ℓ : σ → MvPowerSeries τ B), (∀ s, constantCoeff (u s) = 0) →

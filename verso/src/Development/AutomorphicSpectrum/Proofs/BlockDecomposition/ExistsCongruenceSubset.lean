@@ -7,9 +7,9 @@ namespace GlobalTheory.CompanionTheory.CongruenceBasis
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `haveI : MulArchimedean (ValueGroupWithZero k) := ValuativeRel.isRankLeOne_iff_mulArchimedean.1 inferInstance`. Establish `h1 : 1 < a⁻¹` using `(one_lt_inv₀ (zero_lt_iff.2 ha0)).2 ha`. Take `⟨n, hn⟩` from `MulArchimedean.arch γ⁻¹ h1`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h2 : a ^ n ≤ γ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[inv_pow]`. Conclude with `(inv_le_inv₀ (zero_lt_iff.2 hγ) (zero_lt_iff.2 (pow_ne_zero n ha0))).1 hn`. Conclude with `lt_of_lt_of_le (pow_lt_pow_right_of_lt_one₀ (zero_lt_iff.2 ha0) ha n.lt_succ_self) h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_succ_lt {a γ : ValueGroupWithZero k} (ha0 : a ≠ 0) (ha : a < 1) (hγ : γ ≠ 0) :
     ∃ m : ℕ, a ^ (m + 1) < γ := by
@@ -24,21 +24,17 @@ theorem exists_pow_succ_lt {a γ : ValueGroupWithZero k} (ha0 : a ≠ 0) (ha : a
   exact lt_of_lt_of_le (pow_lt_pow_right_of_lt_one₀ (zero_lt_iff.2 ha0) ha n.lt_succ_self) h2
 
 /- English proof (translation)
-Use `set A : Matrix (Fin N) (Fin N) k := (g : Matrix (Fin N) (Fin N) k) - 1 with hA`. Use `set B : Matrix (Fin N) (Fin N) k := ((g⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) - 1 with hB`. Establish `hAle : ∀ i j, valuation k (A i j) ≤ t` using `fun i j => by simpa [hA] using hg i j`. Establish `hrel : B = -A - A * B`. Establish `hgh : (g : Matrix (Fin N) (Fin N) k) * ((g⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hg' : (g : Matrix (Fin N) (Fin N) k) = A + 1` using `by simp [hA]`. Establish `hh' : ((g⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) = B + 1` using `by simp [hB]`. Rewrite `hgh` using `[hg', hh']`. Establish `: (A + 1) * (B + 1) = A * B + A + B + 1` using `by noncomm_ring`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hgh` using `[this]`. Establish `h3 : A * B + A + B = 0` using `by simpa using hgh`. Rewrite using `[eq_sub_iff_add_eq, eq_neg_iff_add_eq_zero, ← h3]`. Normalize the expressions using the abelian group laws. Use `show valuation k (B i j) ≤ t`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_le]`. Take `⟨⟨i₀, j₀⟩, -, hmax⟩` from `Finset.exists_max_image (Finset.univ : Finset (Fin N × Fin N)) (fun p => valuation k (B p.1 p.2)) ⟨(i, j), Finset.mem_univ _⟩`. Use `set M := valuation k (B i₀ j₀) with hM`. Establish `hMt : t < M` using `lt_of_lt_of_le hcon (hmax (i, j) (Finset.mem_univ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM0 : 0 < M` using `lt_of_le_of_lt zero_le' hMt`. Establish `hprod : valuation k ((A * B) i₀ j₀) ≤ t * M`. Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_le_mul' (hAle _ _) (hmax (l, j₀) (Finset.mem_univ _))`. Establish `htM : t * M < M`. Simplify using `using mul_lt_mul_of_pos_right ht hM0`. Establish `hent : B i₀ j₀ = -A i₀ j₀ - (A * B) i₀ j₀` using `by conv_lhs => rw [hrel]`. Simplify using the standard rewrite rules.
-
-Establish `: M < M`. Combine the equalities or inequalities in the displayed calculation. Use `max_lt ?_ (lt_of_le_of_lt hprod htM)` and prove the remaining obligations. Rewrite using `[Valuation.map_neg]`. Conclude with `lt_of_le_of_lt (hAle _ _) hMt`.
-
-Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem_of_mem {N : ℕ} {t : ValueGroupWithZero k} (ht : t < 1) (g : GL (Fin N) k)
     (hg : ∀ i j, valuation k ((g : Matrix (Fin N) (Fin N) k) i j -
@@ -87,15 +83,13 @@ theorem inv_mem_of_mem {N : ℕ} {t : ValueGroupWithZero k} (ht : t < 1) (g : GL
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N ϖ hϖ0 hϖ1 _ U hU`. Use `set a := valuation k ϖ with ha`. Establish `ha0 : a ≠ 0` using `(Valuation.ne_zero_iff _).2 hϖ0`. Set `K : ℕ → Set (GL (Fin N) k)` to `fun m => {g | ∀ i j, valuation k ((g : Matrix (Fin N) (Fin N) k) i j - (1 : Matrix (Fin N) (Fin N) k) i j) ≤ a ^ (m + 1)}`. Establish `hanti : Antitone K` using `fun m n hmn g hg i j => (hg i j).trans (pow_le_pow_of_le_one zero_le' hϖ1.le (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbasis : (⨅ m, 𝓟 (K m)).HasBasis (fun _ => True) K` using `hasBasis_iInf_principal hanti.directed_ge`. Establish `hent : ∀ (i j : Fin N) (c : GL (Fin N) k → k), (∀ m, ∀ g ∈ K m, valuation k (c g - (1 : Matrix (Fin N) (Fin N) k) i j) ≤ a ^ (m + 1)) → Tendsto c (⨅ m, 𝓟 (K m)) (𝓝 ((1 : Matrix (Fin N) (Fin N) k) i j))`. Introduce `i j c hc`. Rewrite using `[(IsValuativeTopology.hasBasis_nhds' _).tendsto_right_iff]`. Introduce `γ hγ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `exists_pow_succ_lt ha0 hϖ1 hγ`. Conclude with `hbasis.eventually_iff.2 ⟨m, trivial, fun g hg => lt_of_le_of_lt (hc m g hg) hm⟩`. Establish `hlim : Tendsto (id : GL (Fin N) k → GL (Fin N) k) (⨅ m, 𝓟 (K m)) (𝓝 1)`. Rewrite using `[Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Use `Tendsto.prodMk_nhds ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Conclude with `hent i j _ fun m g hg => hg i j`. Use `(MulOpposite.continuous_op.tendsto _).comp ?_` and prove the remaining obligations. Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Conclude with `hent i j (fun g => ((g⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j) fun m g hg => inv_mem_of_mem (pow_lt_one₀ zero_le' hϖ1 (by omega)) g hg i j`.
-
-Take `⟨m, -, hm⟩` from `hbasis.mem_iff.1 (hlim hU)`. Use `⟨m + 1, by omega, fun g hg => hm fun i j => ?_⟩` and prove the remaining obligations. Simplify `hg i j` using `[ha, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_congruence_subset : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (N : ℕ) (ϖ : k), ϖ ≠ 0 →

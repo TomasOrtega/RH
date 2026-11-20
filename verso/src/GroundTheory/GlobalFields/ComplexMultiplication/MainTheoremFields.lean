@@ -16,7 +16,7 @@ section Torsion
 variable {F : Type*} [Field F] [Algebra F ℂ] (A : WeierstrassCurve F)
 
 /- English proof (translation)
-Rewrite using `[WeierstrassCurve.baseChange, WeierstrassCurve.map_map]`. Use `congr 1`. Use extensionality with `a`. Conclude with `ρ.commutes a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem baseChange_map_algEquiv (ρ : ℂ ≃ₐ[F] ℂ) :
     (A.baseChange ℂ).map (ρ : ℂ →+* ℂ) = A.baseChange ℂ := by
@@ -26,7 +26,7 @@ theorem baseChange_map_algEquiv (ρ : ℂ ≃ₐ[F] ℂ) :
   exact ρ.commutes a
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem nsmul_some_congr {V₁ V₂ : WeierstrassCurve ℂ} (e : V₁ = V₂) {x y : ℂ}
     (h₁ : V₁.toAffine.Nonsingular x y) (h₂ : V₂.toAffine.Nonsingular x y) {m : ℕ}
@@ -36,9 +36,9 @@ theorem nsmul_some_congr {V₁ V₂ : WeierstrassCurve ℂ} (e : V₁ = V₂) {x
   exact h
 
 /- English proof (translation)
-Take `⟨h₁, e⟩` from `pointMapRing_some (ρ : ℂ →+* ℂ) (A.baseChange ℂ) h`. Establish `hA` using `baseChange_map_algEquiv A ρ`. Establish `h₂ : (A.baseChange ℂ).toAffine.Nonsingular (ρ x) (ρ y)`. Rewrite using `[← hA]`. Conclude with `h₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h₂, nsmul_some_congr hA h₁ h₂ ?_⟩` and prove the remaining obligations. Use `congrArg (pointMapRing (ρ : ℂ →+* ℂ) (A.baseChange ℂ)) hP` as an intermediate fact. Rewrite `this` using `[map_nsmul, e, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_some_algEquiv (ρ : ℂ ≃ₐ[F] ℂ) {m : ℕ} {x y : ℂ}
     (h : (A.baseChange ℂ).toAffine.Nonsingular x y)
@@ -56,7 +56,7 @@ theorem exists_nsmul_some_algEquiv (ρ : ℂ ≃ₐ[F] ℂ) {m : ℕ} {x y : ℂ
   rwa [map_nsmul, e, map_zero] at this
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Substitute `hy` using the available equality. Conclude with `⟨h, hm⟩`.
+Substitute using the available equality. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_nsmul_some_of_eq {V : WeierstrassCurve ℂ} {x y x' y' : ℂ} (hx : x = x') (hy : y = y')
     (h : V.toAffine.Nonsingular x y) {m : ℕ} (hm : m • (Point.some x y h : V.toAffine.Point) = 0) :
@@ -67,7 +67,7 @@ theorem exists_nsmul_some_of_eq {V : WeierstrassCurve ℂ} {x y x' y' : ℂ} (hx
 
 omit [Algebra F ℂ] in
 /- English proof (translation)
-Establish `h` using `hx.sub (isIntegral_algebraMap (R := F) (x := (n : F)))`. Rewrite `h` using `[map_natCast, add_sub_cancel_right]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isIntegral_of_isIntegral_add_natCast {B : Type*} [CommRing B] [Algebra F B] {x : B} (n : ℕ)
     (hx : IsIntegral F (x + n)) : IsIntegral F x := by
@@ -77,19 +77,15 @@ theorem isIntegral_of_isIntegral_add_natCast {B : Type*} [CommRing B] [Algebra F
 variable [A.IsElliptic]
 
 /- English proof (translation)
-Establish `hfin` using `finite_torsionBy_natCast (A.baseChange ℂ) hm`. Establish `hmem : ∀ {u v : ℂ} (k : (A.baseChange ℂ).toAffine.Nonsingular u v), m • (Point.some u v k : (A.baseChange ℂ).toAffine.Point) = 0 → (Point.some u v k : (A.baseChange ℂ).toAffine.Point) ∈ AddSubgroup.torsionBy (A.baseChange ℂ).toAffine.Point (m : ℤ)` using `fun k hk ↦ (mem_torsionBy_natCast_iff _ m _).2 hk`. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hx`. Establish `ht : ∀ n : ℕ, Transcendental F (x + n)` using `fun n hn ↦ hx (isIntegral_of_isIntegral_add_natCast n hn.isIntegral).isAlgebraic`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hρ : ∀ n : ℕ, ∃ ρ : ℂ ≃ₐ[F] ℂ, ρ x = x + n` using `fun n ↦ exists_algEquiv_apply_eq_of_transcendental (fun h' ↦ hx h') (ht n)`. Use `choose ρ hρ using hρ`. Establish `hpt : ∀ n : ℕ, ∃ k : (A.baseChange ℂ).toAffine.Nonsingular (x + n) (ρ n y), m • (Point.some (x + n) (ρ n y) k : (A.baseChange ℂ).toAffine.Point) = 0` using `fun n ↦ by`. Take `⟨k, hk⟩` from `exists_nsmul_some_algEquiv A (ρ n) h hP`. Conclude with `exists_nsmul_some_of_eq (hρ n) rfl k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose k hk using hpt`. Establish `hinj : Function.Injective fun n : ℕ ↦ (⟨Point.some (x + n) (ρ n y) (k n), hmem (k n) (hk n)⟩ : AddSubgroup.torsionBy (A.baseChange ℂ).toAffine.Point (m : ℤ))`. Introduce `a b hab`. Use `congrArg Subtype.val hab` as an intermediate fact. Simplify using `only [Point.some.injEq, add_right_inj, Nat.cast_inj] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `this.1`. Use `Finite.of_injective _ hinj` as an intermediate fact. Conclude with `not_finite ℕ`. Assume the negation of the conclusion as `hy`. Establish `ht : ∀ n : ℕ, Transcendental F (y + n)` using `fun n hn ↦ hy (isIntegral_of_isIntegral_add_natCast n hn.isIntegral).isAlgebraic`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hρ : ∀ n : ℕ, ∃ ρ : ℂ ≃ₐ[F] ℂ, ρ y = y + n` using `fun n ↦ exists_algEquiv_apply_eq_of_transcendental (fun h' ↦ hy h') (ht n)`. Use `choose ρ hρ using hρ`. Establish `hpt : ∀ n : ℕ, ∃ k : (A.baseChange ℂ).toAffine.Nonsingular (ρ n x) (y + n), m • (Point.some (ρ n x) (y + n) k : (A.baseChange ℂ).toAffine.Point) = 0` using `fun n ↦ by`. Take `⟨k, hk⟩` from `exists_nsmul_some_algEquiv A (ρ n) h hP`. Conclude with `exists_nsmul_some_of_eq rfl (hρ n) k hk`.
-
-Use `choose k hk using hpt`. Establish `hinj : Function.Injective fun n : ℕ ↦ (⟨Point.some (ρ n x) (y + n) (k n), hmem (k n) (hk n)⟩ : AddSubgroup.torsionBy (A.baseChange ℂ).toAffine.Point (m : ℤ))`. Introduce `a b hab`. Use `congrArg Subtype.val hab` as an intermediate fact. Simplify using `only [Point.some.injEq, add_right_inj, Nat.cast_inj] at this`.
-
-Conclude with `this.2`. Use `Finite.of_injective _ hinj` as an intermediate fact. Conclude with `not_finite ℕ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_nsmul_eq_zero {m : ℕ} (hm : m ≠ 0) {x y : ℂ}
     (h : (A.baseChange ℂ).toAffine.Nonsingular x y)
@@ -151,17 +147,15 @@ section TorsionField
 variable {K : Type*} [Field K] [Algebra K ℂ]
 
 /- English proof (translation)
-Use `set T := AddSubgroup.torsionBy (A.baseChange ℂ).toAffine.Point (m : ℤ)`. Establish `: Finite T` using `finite_torsionBy_natCast (A.baseChange ℂ) hm`. Set `c : (A.baseChange ℂ).toAffine.Point → Set ℂ` to `fun P ↦ match P with`. Consider the case `.zero => ∅`. Consider the case `.some x y _ => {x, y}`.
+Establish an intermediate fact. Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hc : ∀ P, (c P).Finite` using `fun P ↦ by`. Break down `P with _ | ⟨x, y, h⟩` into its components or cases. Conclude with `Set.finite_empty`. Conclude with `(Set.finite_singleton y).insert x`. Use `set S : Set ℂ := ⋃ P : T, c P.1`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hSfin : S.Finite` using `Set.finite_iUnion fun P ↦ hc P.1`. Establish `hcoord : ∀ z ∈ S, IsIntegral K z`. Introduce `z hz`. Take `⟨⟨P, hP⟩, hzP⟩` from `Set.mem_iUnion.1 hz`. Establish `hP' : m • P = 0` using `(mem_torsionBy_natCast_iff _ m P).1 hP`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `P with _ | ⟨x, y, h⟩` into its components or cases. Conclude with `absurd hzP (Set.notMem_empty z)`. Take `⟨hx, hy⟩` from `isAlgebraic_of_nsmul_eq_zero A hm h hP'`. Establish `hz' : z = x ∨ z = y` using `hzP`. Break down `hz' with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isIntegral_trans (R := K) (A := L₀) _ hx.isIntegral`. Conclude with `isIntegral_trans (R := K) (A := L₀) _ hy.isIntegral`. Establish `: Finite S` using `hSfin.to_subtype`. Establish `: FiniteDimensional K (IntermediateField.adjoin K S)` using `IntermediateField.finiteDimensional_adjoin hcoord`. Use `⟨L₀ ⊔ IntermediateField.adjoin K S, inferInstance, le_sup_left, fun x y h hP ↦ ?_⟩` and prove the remaining obligations.
-
-Establish `hPT : (Point.some x y h : (A.baseChange ℂ).toAffine.Point) ∈ T` using `(mem_torsionBy_natCast_iff _ m _).2 hP`. Establish `hx : x ∈ S` using `Set.mem_iUnion.2 ⟨⟨_, hPT⟩, Set.mem_insert x _⟩`. Establish `hy : y ∈ S` using `Set.mem_iUnion.2 ⟨⟨_, hPT⟩, Set.mem_insert_of_mem x rfl⟩`. Conclude with `⟨le_sup_right (a := L₀) (IntermediateField.subset_adjoin K S hx), le_sup_right (a := L₀) (IntermediateField.subset_adjoin K S hy)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_le_forall_torsion_mem (L₀ : IntermediateField K ℂ) [FiniteDimensional K L₀]
     (A : WeierstrassCurve L₀) [A.IsElliptic] {m : ℕ} (hm : m ≠ 0) :
@@ -212,17 +206,15 @@ open scoped Pointwise
 variable {K : Type} [Field K] [NumberField K] [Algebra K ℂ]
 
 /- English proof (translation)
-Establish `: NumberField L` using `NumberField.of_module_finite K L`. Use `set C : Set (L ≃ₐ[K] L) := {ρ | IsConj τ ρ}`. Establish `hC : ∀ σ ∈ C, ∀ ρ : L ≃ₐ[K] L, ρ * σ * ρ⁻¹ ∈ C` using `fun σ hσ ρ ↦ IsConj.trans hσ (isConj_iff.2 ⟨ρ, rfl⟩)`. Establish `hdens` using `hasDirichletDensity_setOf_arithFrobAt_mem C hC`. Rewrite `hdens` using `[← hasDirichletDensity_inter_degreeOnePrimes_iff ℚ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: Nonempty C` using `⟨⟨τ, IsConj.refl τ⟩⟩`. Establish `hpos : (0 : ℝ) < Nat.card C / Nat.card (L ≃ₐ[K] L)` using `div_pos (Nat.cast_pos.2 Nat.card_pos) (Nat.cast_pos.2 Nat.card_pos)`. Choose the witnesses or unpack the hypotheses as in `⟨v, ⟨hvA, hv1⟩, hvS⟩ : (({v : HeightOneSpectrum (𝓞 K) | ∀ w : HeightOneSpectrum (𝓞 L), w.asIdeal.LiesOver v.asIdeal → w.asIdeal.ramificationIdx (𝓞 K) = 1 ∧ arithFrobAt (𝓞 K) (L ≃ₐ[K] L) w.asIdeal ∈ C} ∩ degreeOnePrimes ℚ K) \ S).Nonempty := by`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[Set.not_nonempty_iff_eq_empty, Set.sdiff_eq_empty]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `hasDirichletDensity_zero_of_finite (hS.subset hne)`. Use `hdens.dirichletDensity_eq.symm.trans h0.dirichletDensity_eq` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨⟨w, hw⟩⟩` from `nonempty_placesOver L v`. Take `⟨c, hc⟩` from `isConj_iff.1 (hvA w hw).2`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfrob : IsArithFrobAt (𝓞 K) (c * τ * c⁻¹) w.asIdeal`. Rewrite using `[hc]`. Conclude with `IsArithFrobAt.arithFrobAt (𝓞 K) (L ≃ₐ[K] L) w.asIdeal`. Use `set w' : HeightOneSpectrum (𝓞 L) := ⟨c⁻¹ • w.asIdeal, Ideal.IsPrime.smul c⁻¹, fun h ↦ w.ne_bot (by`. Rewrite using `[← smul_inv_smul c w.asIdeal, h, Ideal.smul_bot])⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hw' : w'.asIdeal.LiesOver v.asIdeal` using `⟨(hw.over).trans (Ideal.under_smul (𝓞 K) w.asIdeal c⁻¹).symm⟩`. Use `⟨v, hvS, hv1, w', hw', (hvA w' hw').1, ?_⟩` and prove the remaining obligations. Use `hfrob.conj c⁻¹` as an intermediate fact. Establish `e : c⁻¹ * (c * τ * c⁻¹) * c⁻¹⁻¹ = τ` using `by group`. Rewrite `this` using `[e]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isArithFrobAt (L : IntermediateField K ℂ) [FiniteDimensional K L] [IsGalois K L]
     (τ : L ≃ₐ[K] L) {S : Set (HeightOneSpectrum (𝓞 K))} (hS : S.Finite) :

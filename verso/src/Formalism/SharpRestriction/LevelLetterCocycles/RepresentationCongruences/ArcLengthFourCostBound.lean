@@ -22,11 +22,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 variable [FiniteDimensional Qp LL]
 
 /- English proof (translation)
-Establish `h4` using `max_sub_le_errorScale l hl b wm w S η hb B ((s : ℝ) - 1) (si : ℝ) (max_le (Nat.cast_nonneg _) hsi) (by linarith)`. Take `⟨-, -, -, -, -, -, h1⟩` from `CaseA.sg_ge l (b + η + S) wm S η hl (by omega)`. Establish `hsub : ((s - si : ℕ) : ℝ) ≤ max 0 ((s : ℝ) - 1 - si) + 1`. Break down `le_total si s with h | h` into its components or cases. Rewrite using `[Nat.cast_sub h]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `le_max_right (0:ℝ) ((s : ℝ) - 1 - si)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Nat.sub_eq_zero_of_le h]`. Use `le_max_left (0:ℝ) ((s : ℝ) - 1 - si)` as an intermediate fact. Simplify using `only [Nat.cast_zero]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem arc_length_four_cost_bound (l : ℕ) (hl : 11 ≤ l) (b wm w S η : ℕ) (hb : 1 ≤ b) (B : ℝ) (s si rr σ : ℕ)
     (hs : (s : ℝ) ≤ max 1 ((w : ℝ) - B / l + 16 / 5 * Sg l (b + η + S) wm S η) + 1)
@@ -49,7 +49,7 @@ theorem arc_length_four_cost_bound (l : ℕ) (hl : 11 ≤ l) (b wm w S η : ℕ)
   linarith
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.N.Ln17.Sg Sg Formalism.MainNotions.TruncatedSeriesCountingBounds.hB`. Rewrite using `[if_pos hT]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_eq_of_thick_letter {n : ℕ} (l b w S η : ℕ) (size : ZMod n → ℕ) (hT : ∃ i, Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size i) :
     Formalism.MainNotions.N.Ln17.Sg l b w S η size = Sg l (b + η + S) w S η := by
@@ -62,24 +62,24 @@ section EEh
 variable {W : LocWach PD LL O v n}
 
 /- English proof (translation)
-Simplify using `[lE, lA, map_pow, map_natCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lE_eq (k : ℕ) : lE W k = algebraMap (LetA O n) W.EE (lA W ^ k) := by
   simp [lE, lA, map_pow, map_natCast]
 
 /- English proof (translation)
-Introduce `δ _` and use `GS.γA_letE W δ c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem letE_mem (c : ZMod n) : (letE c : LetA O n) ∈ W.AΔ := fun δ _ => GS.γA_letE W δ c
 
 /- English proof (translation)
-Conclude with `natCast_mem _ _`.
+A detailed English derivation is pending.
 -/
 theorem lA_mem : lA W ∈ W.AΔ := by
   exact natCast_mem _ _
 
 /- English proof (translation)
-Take `⟨u, hu, hf⟩` from `hf`. Take `⟨u', hu', hg⟩` from `hg`. Use `⟨u - u', sub_mem hu hu', ?_⟩` and prove the remaining obligations. Rewrite using `[mul_sub, hf, hg, ← map_sub, mul_sub]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem inFr_sub {a : ZMod n} {num den : LetA O n} {f g : W.EE} (hf : InFr W a num den f) (hg : InFr W a num den g) :
     InFr W a num den (f - g) := by
@@ -89,7 +89,7 @@ theorem inFr_sub {a : ZMod n} {num den : LetA O n} {f g : W.EE} (hf : InFr W a n
   rw [mul_sub, hf, hg, ← map_sub, mul_sub]
 
 /- English proof (translation)
-Take `⟨u, hu, hf⟩` from `hf`. Use `⟨lA W ^ k * u, mul_mem (pow_mem lA_mem k) hu, ?_⟩` and prove the remaining obligations. Rewrite using `[lE_eq, mul_left_comm, hf, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inFr_lE {a : ZMod n} {num den : LetA O n} {f : W.EE} (k : ℕ) (hf : InFr W a num den f) :
     InFr W a num den (lE W k * f) := by
@@ -100,7 +100,7 @@ theorem inFr_lE {a : ZMod n} {num den : LetA O n} {f : W.EE} (k : ℕ) (hf : InF
   ring
 
 /- English proof (translation)
-Take `⟨u, hu, hf⟩` from `hf`. Use `⟨n₂ * u, mul_mem h₂ hu, ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inFr_num_left {a : ZMod n} {n₁ n₂ den : LetA O n} {f : W.EE} (hf : InFr W a (n₁ * n₂) den f) (h₂ : n₂ ∈ W.AΔ) :
     InFr W a n₁ den f := by
@@ -111,7 +111,7 @@ theorem inFr_num_left {a : ZMod n} {n₁ n₂ den : LetA O n} {f : W.EE} (hf : I
   ring
 
 /- English proof (translation)
-Take `⟨u, hu, hf⟩` from `hf`. Use `⟨n₁ * u, mul_mem h₁ hu, ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inFr_num_right {a : ZMod n} {n₁ n₂ den : LetA O n} {f : W.EE} (hf : InFr W a (n₁ * n₂) den f) (h₁ : n₁ ∈ W.AΔ) :
     InFr W a n₂ den f := by
@@ -122,7 +122,7 @@ theorem inFr_num_right {a : ZMod n} {n₁ n₂ den : LetA O n} {f : W.EE} (hf : 
   ring
 
 /- English proof (translation)
-Take `⟨u, hu, hf⟩` from `hf`. Use `⟨d' * u, mul_mem hd' hu, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc, hf, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inFr_den_mul {a : ZMod n} {num d : LetA O n} (d' : LetA O n) {f : W.EE} (hf : InFr W a num d f) (hd' : d' ∈ W.AΔ) :
     InFr W a num (d' * d) f := by
@@ -137,13 +137,13 @@ end EEh
 end ArcLengthFourSecond
 
 /- English proof (translation)
-Take `⟨u₀, hu₀, e₀⟩` from `h1`. Take `⟨K, u₁, hu₁, e₁⟩` from `hK`. Establish `key : lA W ^ K * (1 * (letE c * u₀)) = num * (letE c * u₁)`. Apply `W.EE_inj` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[ArcLengthFourSecond.lE_eq, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = algebraMap (LetA O n) W.EE den * (lE W K * g) := by rw [← e₀]; ring`. Use `_ = _ := by rw [e₁]; congr 1; ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, hxy⟩` from `saturation_fraction_ring W hcase hP9 hinj num 1 1 hnum (one_mem _) (one_mem _) (letE c * u₀) (by rw [one_mul]; exact W.AΔ.mul_mem (ArcLengthFourSecond.letE_mem c) hu₀) ⟨K, letE c * u₁, W.AΔ.mul_mem (ArcLengthFourSecond.letE_mem c) hu₁, key⟩`. Use `⟨letE c * y, W.AΔ.mul_mem (ArcLengthFourSecond.letE_mem c) hy, ?_⟩` and prove the remaining obligations. Rewrite using `[e₀]`. Use `congr 1`. Establish `hidem : (letE c : LetA O n) * letE c = letE c`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `letE`. Rewrite using `[← Pi.single_mul, one_mul]`. Take the linear combination `(letE c : LetA O n) ^ 2 * hxy - (((letE c : LetA O n) + 1) * u₀) * hidem`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ArcLengthFourSecond.inFr_sat [IsDomain O] [IsDiscreteValuationRing O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (hinj : Function.Injective (algebraMap O LL)) {c : ZMod n} {num den : LetA O n}

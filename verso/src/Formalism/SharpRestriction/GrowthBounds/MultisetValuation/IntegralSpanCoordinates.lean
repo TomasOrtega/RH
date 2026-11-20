@@ -15,7 +15,7 @@ variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
   (P : Places p O Kf)
 
 /- English proof (translation)
-Conclude with `(Function.update_idem (β := fun v => Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) A1 (L w) L).trans (Function.update_eq_self (β := fun v => Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) w L)`.
+A detailed English derivation is pending.
 -/
 theorem upd_back (L : P.Tup) (w : Fin P.nV) (A1 : Submodule (P.W w) (Fin (P.m + 1) → P.Qq w)) :
     Function.update (β := fun v => Submodule (P.W v) (Fin (P.m + 1) → P.Qq v))
@@ -24,7 +24,7 @@ theorem upd_back (L : P.Tup) (w : Fin P.nV) (A1 : Submodule (P.W w) (Fin (P.m + 
     (Function.update_eq_self (β := fun v => Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) w L)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Function.update_self (β := fun v => Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) w A1 L`. Consider the case `exact Function.update_same (β := fun v => Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) w A1 L`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem upd_at (L : P.Tup) (w : Fin P.nV) (A1 : Submodule (P.W w) (Fin (P.m + 1) → P.Qq w)) :
     Function.update (β := fun v => Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) L w A1 w = A1 := by
@@ -35,7 +35,7 @@ theorem upd_at (L : P.Tup) (w : Fin P.nV) (A1 : Submodule (P.W w) (Fin (P.m + 1)
 end Gen
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun u => x ^ g u) (Finset.mem_univ v), ← Finset.mul_prod_erase Finset.univ (fun u => x ^ f u) (Finset.mem_univ v)]`. Establish `hprod : ∏ u ∈ Finset.univ.erase v, x ^ g u = ∏ u ∈ Finset.univ.erase v, x ^ f u` using `Finset.prod_congr rfl (fun u hu => by rw [h2 u (Finset.ne_of_mem_erase hu)])`. Rewrite using `[hprod, h1, zpow_add₀ hx]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_zpow_upd {K ι : Type} [Field K] [Fintype ι] [DecidableEq ι] (x : K) (hx : x ≠ 0) (f g : ι → ℤ) (v : ι)
     (d : ℤ) (h1 : g v = f v + d) (h2 : ∀ u, u ≠ v → g u = f u) :
@@ -55,7 +55,7 @@ def Traw (j : ℕ) (s1 s2 : X.G.Kf) (Ξ : MvPowerSeries (X.ZA j) Y.Kc) (G : (X.P
   s1 • Y.DelF j G (s2 • Ξ)
 
 /- English proof (translation)
-Unfold `Traw`. Rewrite using `[mul_comm s2 c2, mul_smul c2 s2, map_smul, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Traw_mul (j : ℕ) (s1 s2 c1 c2 : X.G.Kf) (Ξ : MvPowerSeries (X.ZA j) Y.Kc) (G : (X.Pj j).Xsp) :
     Traw Y j (s1 * c1) (s2 * c2) Ξ G = (c1 * c2) • Traw Y j s1 s2 Ξ G := by
@@ -72,7 +72,7 @@ def T0 (a a' : X.G.Kf) (v : X.Pl) (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1))
     (Y.Xi v j (Y.aw v j La La') f) G
 
 /- English proof (translation)
-Unfold `T0 Traw`. Rewrite using `[map_sum, Finset.smul_sum, map_sum, Finset.smul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_span_coordinates (a a' : X.G.Kf) (v : X.Pl) (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) {ι : Type} (s : Finset ι)
     (f : ι → Matrix (Fin ((X.Pj (j + 1)).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v) → ℚ) (G : (X.Pj j).Xsp) :
@@ -81,7 +81,7 @@ theorem integral_span_coordinates (a a' : X.G.Kf) (v : X.Pl) (j : ℕ) (La : X.L
   rw [map_sum, Finset.smul_sum, map_sum, Finset.smul_sum]
 
 /- English proof (translation)
-Unfold `T0 Traw`. Rewrite using `[map_nsmul, smul_comm _ n, map_nsmul, smul_comm _ n, Nat.cast_smul_eq_nsmul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kernel_nsmul (a a' : X.G.Kf) (v : X.Pl) (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) (n : ℕ)
     (f : Matrix (Fin ((X.Pj (j + 1)).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v) → ℚ) (G : (X.Pj j).Xsp) :
@@ -96,17 +96,17 @@ def cC (X : Sys p) (a : X.G.Kf) (v : X.Pl) (j k : ℕ) : X.G.Kf :=
   (p : X.G.Kf) ^ (X.vm v (j + 1) * k) * (a ^ (k : ℤ) * (p : X.G.Kf) ^ (hv X v * (NN X.G.P.m X.t (j + 1) : ℤ) * k))
 
 /- English proof (translation)
-Establish `e1 : Y.len v (j + 1) (Function.update L' (X.vJ (j + 1) v) L1) = Y.len v (j + 1) L' - i`. Use `Y.len_edge (j + 1) (X.vJ (j + 1) v) i L' L1 hE` as an intermediate fact. Rewrite `this` using `[vB_vJ]`. Then use the resulting hypothesis. Establish `e2 : ∀ u, u ≠ v → Y.len u (j + 1) (Function.update L' (X.vJ (j + 1) v) L1) = Y.len u (j + 1) L'`. Introduce `u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Y.len_other (j + 1) (X.vJ (j + 1) v) u L' L1 (by rw [vB_vJ]; exact hu)`. Establish `e3 : Y.eT j (c', Function.update L' (X.vJ (j + 1) v) L1) = Y.eT j (c', L') * (p : X.G.Kf) ^ (-(X.vm v (j + 1) * i))`. Unfold `Pend.eT`. Apply `prod_zpow_upd _ hp _ _ v` to reduce the goal to its premises. Use `show X.vm v (j + 1) * Y.len v (j + 1) (Function.update L' (X.vJ (j + 1) v) L1) = _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u hu show X.vm u (j + 1) * Y.len u (j + 1) (Function.update L' (X.vJ (j + 1) v) L1) = _`. Rewrite using `[e2 u hu]`. Establish `e4 : Y.volE v j La.2 (Function.update L' (X.vJ (j + 1) v) L1) = Y.volE v j La.2 L' - (NN X.G.P.m X.t j : ℤ) * i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Pend.volE`. Rewrite using `[e1]`. Expand and normalize the polynomial expressions, which then agree. Establish `e5` using `Y.aw_tgt v j La (c', L') L1`. Unfold `T0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show Traw Y j (Y.eS j La * (Y.eT j (c', Function.update L' (X.vJ (j + 1) v) L1))⁻¹) (a ^ (Y.len v j La.2) * a' ^ (Y.len v (j + 1) (Function.update L' (X.vJ (j + 1) v) L1)) * (p : X.G.Kf) ^ (-(hv X v * Y.volE v j La.2 (Function.update L' (X.vJ (j + 1) v) L1)))) (Y.Xi v j (Y.aw v j …`. Rewrite using `[e5, e3, e1, e4]`. Establish `s1 : Y.eS j La * (Y.eT j (c', L') * (p : X.G.Kf) ^ (-(X.vm v (j + 1) * i)))⁻¹ = (Y.eS j La * (Y.eT j (c', L'))⁻¹) * (p : X.G.Kf) ^ (X.vm v (j + 1) * i)`. Rewrite using `[mul_inv, ← zpow_neg, neg_neg, mul_assoc]`. Establish `s2 : a ^ (Y.len v j La.2) * a' ^ (Y.len v (j + 1) L' - i) * (p : X.G.Kf) ^ (-(hv X v * (Y.volE v j La.2 L' - (NN X.G.P.m X.t j : ℤ) * i))) = (a ^ (Y.len v j La.2) * a' ^ (Y.len v (j + 1) L') * (p : X.G.Kf) ^ (-(hv X v * Y.volE v j La.2 L'))) * (a' ^ (-(i : ℤ)) * (p : X.G.Kf) ^ (h …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_add_neg, zpow_add₀ ha', show -(hv X v * (Y.volE v j La.2 L' - (NN X.G.P.m X.t j : ℤ) * i)) = -(hv X v * Y.volE v j La.2 L') + hv X v * (NN X.G.P.m X.t j : ℤ) * i by ring, zpow_add₀ hp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[s1, s2, Traw_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kernel_target_identity (hp : (p : X.G.Kf) ≠ 0) (a a' : X.G.Kf) (ha' : a' ≠ 0) (v : X.Pl) (j : ℕ) (La : X.Lt j)
     (c' : X.Lv.comp (j + 1)) (L' : (X.Pj (j + 1)).Tup) (i : ℕ)
@@ -156,17 +156,17 @@ theorem kernel_target_identity (hp : (p : X.G.Kf) ≠ 0) (a a' : X.G.Kf) (ha' : 
   rfl
 
 /- English proof (translation)
-Establish `e1 : Y.len v j (Function.update La.2 (X.vJ j v) A1) = Y.len v j La.2 + k`. Use `Y.len_edge j (X.vJ j v) k (Function.update La.2 (X.vJ j v) A1) (La.2 (X.vJ j v)) (by rw [upd_at]; exact hE)` as an intermediate fact. Rewrite `this` using `[vB_vJ, upd_back]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2 : ∀ u, u ≠ v → Y.len u j (Function.update La.2 (X.vJ j v) A1) = Y.len u j La.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `u hu`. Conclude with `Y.len_other j (X.vJ j v) u La.2 A1 (by rw [vB_vJ]; exact hu)`. Establish `e3 : Y.eS j (La.1, Function.update La.2 (X.vJ j v) A1) = Y.eS j La * (p : X.G.Kf) ^ (X.vm v (j + 1) * k)`. Unfold `Pend.eS`. Apply `prod_zpow_upd _ hp _ _ v` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show X.vm v (j + 1) * Y.len v j (Function.update La.2 (X.vJ j v) A1) = _`. Rewrite using `[e1]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u hu show X.vm u (j + 1) * Y.len u j (Function.update La.2 (X.vJ j v) A1) = _`. Rewrite using `[e2 u hu]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e4 : Y.volE v j (Function.update La.2 (X.vJ j v) A1) La'.2 = Y.volE v j La.2 La'.2 - (NN X.G.P.m X.t (j + 1) : ℤ) * k`. Unfold `Pend.volE`. Rewrite using `[e1]`. Expand and normalize the polynomial expressions, which then agree. Establish `e5` using `Y.weight_update_at_place v j La La' A1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `T0`. Use `show Traw Y j (Y.eS j (La.1, Function.update La.2 (X.vJ j v) A1) * (Y.eT j La')⁻¹) (a ^ (Y.len v j (Function.update La.2 (X.vJ j v) A1)) * a' ^ (Y.len v (j + 1) La'.2) * (p : X.G.Kf) ^ (-(hv X v * Y.volE v j (Function.update La.2 (X.vJ j v) A1) La'.2))) (Y.Xi v j (Y.aw v j (La.1, …`. Rewrite using `[e5, e3, e1, e4]`. Establish `s1 : Y.eS j La * (p : X.G.Kf) ^ (X.vm v (j + 1) * k) * (Y.eT j La')⁻¹ = (Y.eS j La * (Y.eT j La')⁻¹) * (p : X.G.Kf) ^ (X.vm v (j + 1) * k)` using `by ring`. Establish `s2 : a ^ (Y.len v j La.2 + k) * a' ^ (Y.len v (j + 1) La'.2) * (p : X.G.Kf) ^ (-(hv X v * (Y.volE v j La.2 La'.2 - (NN X.G.P.m X.t (j + 1) : ℤ) * k))) = (a ^ (Y.len v j La.2) * a' ^ (Y.len v (j + 1) La'.2) * (p : X.G.Kf) ^ (-(hv X v * Y.volE v j La.2 La'.2))) * (a ^ (k : ℤ) * (p …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_add₀ ha, show -(hv X v * (Y.volE v j La.2 La'.2 - (NN X.G.P.m X.t (j + 1) : ℤ) * k)) = -(hv X v * Y.volE v j La.2 La'.2) + hv X v * (NN X.G.P.m X.t (j + 1) : ℤ) * k by ring, zpow_add₀ hp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[s1, s2, Traw_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kernel_source_identity (hp : (p : X.G.Kf) ≠ 0) (a a' : X.G.Kf) (ha : a ≠ 0) (v : X.Pl) (j : ℕ) (La : X.Lt j)
     (La' : X.Lt (j + 1)) (k : ℕ)

@@ -7,9 +7,9 @@ noncomputable section
 namespace PI.SqfPrimeFactor.W
 
 /- English proof (translation)
-Unfold `monicDeg`. Rewrite using `[Finset.mem_image]`. Use `⟨fun i => q.coeff i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Substitute `hd` using the available equality. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => C (q.coeff i) * X ^ i) q.natDegree]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hq.as_sum.symm`.
+A detailed English derivation is pending.
 -/
 lemma irr_mem_monicDeg {g d : ℕ} [Fact g.Prime] {q : (ZMod g)[X]} (hq : q.Monic)
     (hd : q.natDegree = d) : q ∈ monicDeg g d := by
@@ -21,25 +21,23 @@ lemma irr_mem_monicDeg {g d : ℕ} [Fact g.Prime] {q : (ZMod g)[X]} (hq : q.Moni
   exact hq.as_sum.symm
 
 /- English proof (translation)
-Introduce `g p _ hp`. Set `_ : Fintype (GaloisField g p)` to `Fintype.ofFinite _`. Establish `hp0 : p ≠ 0` using `hp.ne_zero`. Establish `hcardK : Fintype.card (GaloisField g p) = g ^ p`. Rewrite using `[← Nat.card_eq_fintype_card]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GaloisField.card g p hp0`. Establish `hfin : Module.finrank (ZMod g) (GaloisField g p) = p` using `GaloisField.finrank g hp0`. Establish `hint : ∀ x : GaloisField g p, IsIntegral (ZMod g) x` using `fun x => Algebra.IsIntegral.isIntegral x`. Use `set A := (univ : Finset (GaloisField g p)).filter (fun x => x ∉ (algebraMap (ZMod g) (GaloisField g p)).range) with hA`. Use `set B := (univ : Finset (GaloisField g p)).filter (fun x => x ∈ (algebraMap (ZMod g) (GaloisField g p)).range) with hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAB : B.card + A.card = g ^ p`. Rewrite using `[hA, hB, card_filter_add_card_filter_not, card_univ, hcardK]`. Establish `hBle : B.card ≤ g`. Establish `hsub : B ⊆ (univ : Finset (ZMod g)).image (algebraMap (ZMod g) (GaloisField g p))`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hx` using `[hB, mem_filter]`. Take `⟨y, rfl⟩` from `hx.2`. Conclude with `mem_image_of_mem _ (mem_univ y)`. Combine the equalities or inequalities in the displayed calculation. Establish `hdegA : ∀ x ∈ A, (minpoly (ZMod g) x).natDegree = p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Rewrite `hx` using `[hA, mem_filter]`. Establish `hdvd` using `minpoly.degree_dvd (hint x)`. Rewrite `hdvd` using `[hfin]`. Break down `(Nat.dvd_prime hp).1 hdvd with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd (minpoly.natDegree_eq_one_iff.1 h) hx.2`. Conclude with `h`. Establish `himg : A.image (minpoly (ZMod g)) ⊆ irrDeg g p`. Introduce `q hq`. Rewrite `hq` using `[mem_image]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx, rfl⟩` from `hq`. Unfold `irrDeg`. Rewrite using `[mem_filter]`. Conclude with `⟨irr_mem_monicDeg (minpoly.monic (hint x)) (hdegA x hx), minpoly.irreducible (hint x)⟩`. Establish `hfib : ∀ q ∈ A.image (minpoly (ZMod g)), (A.filter (fun x => minpoly (ZMod g) x = q)).card ≤ p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `q hq`. Take `⟨x0, hx0, rfl⟩` from `mem_image.1 hq`. Establish `hne : (minpoly (ZMod g) x0).map (algebraMap (ZMod g) (GaloisField g p)) ≠ 0` using `Polynomial.map_ne_zero (minpoly.ne_zero (hint x0))`. Establish `hsub : A.filter (fun x => minpoly (ZMod g) x = minpoly (ZMod g) x0) ⊆ ((minpoly (ZMod g) x0).map (algebraMap (ZMod g) (GaloisField g p))).roots.toFinset`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hy` using `[mem_filter]`. Rewrite using `[Multiset.mem_toFinset, mem_roots hne, IsRoot.def, eval_map_algebraMap, ← hy.2]`. Conclude with `minpoly.aeval _ _`. Combine the equalities or inequalities in the displayed calculation. Establish `hAle : A.card ≤ p * (A.image (minpoly (ZMod g))).card` using `card_le_mul_card_image A p hfib`.
-
-Establish `hAle' : A.card ≤ p * (irrDeg g p).card` using `hAle.trans (Nat.mul_le_mul_left _ (card_le_card himg))`. Establish `hN : g ^ p ≤ p * (irrDeg g p).card + g` using `by omega`. Establish `hR : ((g ^ p : ℕ) : ℝ) ≤ ((p * (irrDeg g p).card + g : ℕ) : ℝ)` using `by exact_mod_cast hN`. Move the coercions through the operations in `at hR`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem irreducible_count_lower_bound : IrrLower := by
   intro g p _ hp

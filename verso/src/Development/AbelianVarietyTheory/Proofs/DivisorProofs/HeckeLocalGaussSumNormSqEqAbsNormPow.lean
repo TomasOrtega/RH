@@ -13,11 +13,11 @@ namespace GlobalTheory.GaussMod
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `hval : ∀ z : E, Valued.v (algebraMap E (w.adicCompletion E) z) = w.valuation E z` using `fun z => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w z`. Establish `hx1` using `(w.valuation_eq_one_iff_notMem (K := E)).2 hx`. Establish `hy1` using `(w.valuation_eq_one_iff_notMem (K := E)).2 hy`. Establish `h1 : χ.loc w (atFin w (Units.mk0 _ hx0 * (Units.mk0 _ hy0)⁻¹)) = 1`. Establish `e : ((atFin w (Units.mk0 _ hx0 * (Units.mk0 _ hy0)⁻¹) : (w.adicCompletion E)ˣ) : w.adicCompletion E) = algebraMap E (w.adicCompletion E) ((x : E) / y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[atFin, div_eq_mul_inv]`. Use `hχ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[IsUnitAt, e, hval, map_div₀, hx1, hy1, div_one]`. Rewrite using `[e, ← map_one (algebraMap E (w.adicCompletion E)), ← map_sub, hval, div_sub_one hy0, map_div₀, hy1, div_one]`. Conclude with `valuation_sub_le h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_mul, map_inv, map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem locK_congr {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ} (hχ : χ.LevelLe w a) {x y : 𝓞 E}
     (hx : x ∉ w.asIdeal) (hy : y ∉ w.asIdeal) (hx0 : (x : E) ≠ 0) (hy0 : (y : E) ≠ 0) (h : x - y ∈ w.asIdeal ^ a) :
@@ -38,39 +38,37 @@ theorem locK_congr {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ} (h�
   exact h1
 
 /- English proof (translation)
-Establish `hχ : χ.LevelLe w a` using `(hE a).2 le_rfl`. Use `w.isMaximal` as an intermediate fact. Use `set P := w.asIdeal with hP`. Establish `hfin : Finite (𝓞 E ⧸ P ^ a)` using `Ideal.finiteQuotientOfFreeOfNeBot _ (pow_ne_zero _ w.ne_bot)`. Use `haveI : Fintype (𝓞 E ⧸ P ^ a) := Fintype.ofFinite _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : ∀ z : E, Valued.v (algebraMap E (w.adicCompletion E) z) = w.valuation E z` using `fun z => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w z`. Establish `hne0 : ∀ x : 𝓞 E, x ∉ P → (x : E) ≠ 0` using `fun x hx h0 => hx (by`. Establish `: x = 0` using `RingOfIntegers.coe_eq_zero_iff.1 h0`. Rewrite using `[this]`. Conclude with `P.zero_mem)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : 𝓞 E → ℂ` to `fun x => psiAt w (algebraMap E (w.adicCompletion E) ((x : E) / c))`. Establish `f_add : ∀ x y, f (x + y) = f x * f y` using `fun x y => by`. Establish `e : ((x + y : 𝓞 E) : E) / c = (x : E) / c + (y : E) / c` using `by push_cast; ring`. Use `show psiAt w _ = psiAt w _ * psiAt w _`. Rewrite using `[e, map_add, psiAt_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `f_zero : ∀ x ∈ P ^ a, f x = 1` using `fun x hx => by`. Apply `psiAt_eq_one` to reduce the goal to its premises. Establish `h1` using `valuation_sub_le (w := w) (y := x) (y' := 0) (by simpa using hx)`. Rewrite using `[hval, map_div₀, hc, div_le_iff₀ (zero_lt_iff.2 WithZero.exp_ne_zero), ← WithZero.exp_add]`. Apply the tactic sequence `convert h1 using 2 <;> (push_cast; ring)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `f_congr : ∀ x y, x - y ∈ P ^ a → f x = f y` using `fun x y h => by`. Rewrite using `[show x = y + (x - y) by ring, f_add, f_zero _ h, mul_one]`. Set `ψb : AddChar (𝓞 E ⧸ P ^ a) ℂ` to `{ toFun := fun q => f (Quotient.out q) map_zero_eq_one' := f_zero _ (by rw [← Ideal.Quotient.eq_zero_iff_mem, Ideal.Quotient.mk_out]) map_add_eq_mul' := fun q r => by`. Rewrite using `[← f_add]`. Apply `f_congr` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq, map_add, Ideal.Quotient.mk_out, Ideal.Quotient.mk_out, Ideal.Quotient.mk_out] }`. Establish `ψb_mk : ∀ x, ψb (Ideal.Quotient.mk _ x) = f x` using `fun x => f_congr _ _ (by rw [← Ideal.Quotient.eq, Ideal.Quotient.mk_out])`. Establish `hout : ∀ u : (𝓞 E ⧸ P ^ a)ˣ, (Quotient.out (u : 𝓞 E ⧸ P ^ a) : 𝓞 E) ∉ P` using `out_notMem w ha`. Establish `h1P : (1 : 𝓞 E) ∉ P` using `(Ideal.ne_top_iff_one _).1 w.isPrime.ne_top`. Set `χb : (𝓞 E ⧸ P ^ a)ˣ →* ℂˣ` to `{ toFun := fun u => χ.locK w (Units.mk0 _ (hne0 _ (hout u))) map_one' := by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[locK_congr hχ (hout 1) h1P _ (hne0 _ h1P) (by rw [← Ideal.Quotient.eq, Ideal.Quotient.mk_out, map_one, Units.val_one])]`. Rewrite using `[show (Units.mk0 (((1 : 𝓞 E)) : E) (hne0 _ h1P)) = 1 by ext; simp, map_one]`. Use the proof step `map_mul' := fun u v => by`. Establish `hm : (Quotient.out ((u * v : (𝓞 E ⧸ P ^ a)ˣ) : 𝓞 E ⧸ P ^ a) : 𝓞 E) - Quotient.out (u : 𝓞 E ⧸ P ^ a) * Quotient.out (v : 𝓞 E ⧸ P ^ a) ∈ P ^ a`. Rewrite using `[← Ideal.Quotient.eq, map_mul, Ideal.Quotient.mk_out, Ideal.Quotient.mk_out, Ideal.Quotient.mk_out, Units.val_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hp : Quotient.out (u : 𝓞 E ⧸ P ^ a) * Quotient.out (v : 𝓞 E ⧸ P ^ a) ∉ P` using `fun h => (w.isPrime.mem_or_mem h).elim (hout u) (hout v)`. Rewrite using `[locK_congr hχ (hout _) hp _ (hne0 _ hp) hm, ← map_mul]`. Use `congr 1`. Use `ext`. Simplify using `}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hG : gaussSumAt χ w a c = ∑ u : (𝓞 E ⧸ P ^ a)ˣ, (((χb u)⁻¹ : ℂˣ) : ℂ) * ψb (u : 𝓞 E ⧸ P ^ a)`. Rewrite using `[gaussSumAt, finsum_eq_sum_of_fintype]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[gaussTerm, dif_neg (hne0 _ (hout u))]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hM : ∀ q : 𝓞 E ⧸ P ^ a, IsUnit q ↔ q ∉ P.map (Ideal.Quotient.mk (P ^ a))` using `fun q => by`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Rewrite using `[Ideal.mem_quotient_iff_mem (Ideal.pow_le_self ha)]`. Prove the components needed by the constructor for the conclusion. Introduce `hu hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hu.map (Ideal.Quotient.factor (Ideal.pow_le_self ha : P ^ a ≤ P))`. Rewrite `h1` using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem.2 hx]`. Use `Ideal.Quotient.nontrivial_iff.2 w.isPrime.ne_top` as an intermediate fact. Conclude with `not_isUnit_zero h1`. Conclude with `Ideal.Quotient.isUnit_mk_pow_of_notMem P`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hψ : ∀ d : 𝓞 E ⧸ P ^ a, (∀ x, ψb (d * x) = 1) → d = 0` using `fun d hd => by`. Take `⟨d, rfl⟩` from `Ideal.Quotient.mk_surjective d`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Use `GlobalTheory.GaussModulus.mem_pow_of_psiAt_trivial w a c hc d fun x => ?_` and prove the remaining obligations. Use `hd (Ideal.Quotient.mk _ x)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[← map_mul, ψb_mk]`. Simplify `this` using `[f]`. Take `⟨r, ur, hur, hrP, hr1, hrχ⟩` from `GlobalTheory.GaussModulus.exists_int_witness χ w a ha hE`. Establish `hr0 : (r : E) ≠ 0` using `hne0 r hrP`. Establish `hur' : ur = Units.mk0 (r : E) hr0` using `Units.ext hur`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hrχ` using `[hur']`. Take `⟨t, ht⟩` from `Ideal.Quotient.isUnit_mk_pow_of_notMem P (n := a) hrP`. Establish `hχt : ∃ t : (𝓞 E ⧸ P ^ a)ˣ, (∀ m ∈ P.map (Ideal.Quotient.mk (P ^ a)), ((t : 𝓞 E ⧸ P ^ a) - 1) * m = 0) ∧ χb t ≠ 1`. Use `⟨t, fun m hm => ?_, ?_⟩` and prove the remaining obligations. Take `⟨m, rfl⟩` from `Ideal.Quotient.mk_surjective m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hm` using `[Ideal.mem_quotient_iff_mem (Ideal.pow_le_self ha)]`. Rewrite using `[ht, ← map_one (Ideal.Quotient.mk (P ^ a)), ← map_sub, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Establish `e : P ^ (a - 1) * P = P ^ a` using `by rw [← pow_succ, Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.2 ha)]`. Rewrite using `[← e]`. Conclude with `Ideal.mul_mem_mul hr1 hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `show χ.locK w _ ≠ 1`. Rewrite using `[locK_congr hχ (hout t) hrP _ hr0 (by rw [← Ideal.Quotient.eq, Ideal.Quotient.mk_out, ht])]` and apply the resulting hypothesis. Take `⟨t0, ht0, hχ0⟩` from `hχt`. Establish `hnorm : ∀ u : (𝓞 E ⧸ P ^ a)ˣ, ‖((χb u : ℂˣ) : ℂ)‖ = 1` using `fun u => hu _`. Establish `hG' : gaussSumAt χ w a c = ∑ u : (𝓞 E ⧸ P ^ a)ˣ, (((χb u : ℂˣ) : ℂ))⁻¹ * ψb (u : 𝓞 E ⧸ P ^ a)`.
-
-Rewrite using `[hG]`. Simplify using `only [Units.val_inv_eq_inv_val]`. Rewrite using `[hG', GlobalTheory.gauss_units_norm_sq _ hM ψb hψ (fun u => ((χb u : ℂˣ) : ℂ)) (fun u v => by rw [map_mul, Units.val_mul]) hnorm t0 ht0 (fun h => hχ0 (Units.ext h)), Fintype.card_eq_nat_card, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, map_pow]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gaussSumAt_normSq (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (a : ℕ) (c : Eˣ) (ha : a ≠ 0) (hE : ExpAt χ w a)
     (hu : IsUnitary χ) (hc : w.valuation E (c : E) = WithZero.exp (-((a + diffExp w : ℕ) : ℤ))) :

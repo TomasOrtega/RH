@@ -14,17 +14,17 @@ namespace UpperTheory.ConvolutionTheory.R2.D
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `hD : Matrix.diagonal ε * Matrix.diagonal ε = (1 : Matrix κ κ F)`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `hε k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Set `M : Matrix κ ι F` to `(Matrix.diagonal ε).submatrix id e.symm`. Set `N : Matrix ι κ F` to `(Matrix.diagonal ε).submatrix e.symm id`. Establish `hNM : N * M = 1`. Establish `h` using `Matrix.submatrix_mul (Matrix.diagonal ε) (Matrix.diagonal ε) e.symm id e.symm Function.bijective_id`. Rewrite `h` using `[hD, Matrix.submatrix_one_equiv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h.symm`. Establish `hMN : M * N = 1`. Establish `h` using `Matrix.submatrix_mul (Matrix.diagonal ε) (Matrix.diagonal ε) id e.symm id e.symm.bijective`. Rewrite `h` using `[hD, Matrix.submatrix_id_id]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `GroundTheory.Heights₂.Theta.comp_mulVec_mem_schwartzBruhatPi M N hNM hMN hG`. Establish `hx : ∀ x : ι → A F, (M.map (algebraMap F (A F)) *ᵥ x) = fun k => rt (ε k) * x (e k)`. Introduce `x`. Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, M, Matrix.submatrix_apply, id]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e.sum_comp]`. Simplify using `only [Matrix.diagonal_apply]`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Simplify `h` using `only [hx]`.
+A detailed English derivation is pending.
 -/
 private theorem comp_signed_mem {ι κ : Type} [Fintype ι] [Fintype κ] (e : κ ≃ ι) (ε : κ → F)
     (hε : ∀ k, ε k * ε k = 1) {G : (κ → A F) → ℂ} (hG : G ∈ schwartzBruhatPi F κ) :
@@ -74,7 +74,7 @@ private def eS : Fin 3 ⊕ Unit ≃ Fin 4 where
 private def sg : Fin 3 ⊕ Unit → F := Sum.elim 1 fun _ => -1
 
 /- English proof (translation)
-Apply the tactic sequence `rcases k with i | i <;> simp [sg]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sg_mul (k) : (sg k : F) * sg k = 1 := by
   rcases k with i | i <;> simp [sg]
@@ -82,9 +82,9 @@ private theorem sg_mul (k) : (sg k : F) * sg k = 1 := by
 private def FF (φ : V4 F → ℂ) (z : Fin 3 ⊕ Unit → A F) : ℂ := φ fun i => z (eS.symm i)
 
 /- English proof (translation)
-Establish `h` using `comp_signed_mem (F := F) eS.symm (fun _ => 1) (fun _ => by simp) hφ`. Establish `he : FF φ = fun x => φ fun k => rt ((fun _ => 1 : Fin 4 → F) k) * x (eS.symm k)`. Use function extensionality and compare the values at `x`. Simplify using `[FF]`. Rewrite using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private theorem FF_mem {φ : V4 F → ℂ} (hφ : φ ∈ schwartzBruhatPi F (Fin 4)) :
     FF φ ∈ schwartzBruhatPi F (Fin 3 ⊕ Unit) := by
@@ -96,11 +96,11 @@ private theorem FF_mem {φ : V4 F → ℂ} (hφ : φ ∈ schwartzBruhatPi F (Fin
   exact h
 
 /- English proof (translation)
-Establish `hmp` using `measurePreserving_funUnique (adeleMeasure F) Unit`. Establish `h` using `hmp.integral_comp' (g := fun s => φ (Function.update x 1 s) * ψ (-(s * x 1)))`. Rewrite using `[hat, ← h, GroundTheory.Heights₂.Theta.partialFourierPi, adelicFourierPi, adeleMeasurePi]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `h1 : Function.update x 1 (MeasurableEquiv.funUnique Unit (A F) y) = fun i => (Sum.elim (fun i => rt (sg (Sum.inl i)) * x (eS (Sum.inl i))) y : Fin 3 ⊕ Unit → A F) (eS.symm i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [eS, sg]`. Establish `h2 : ψ (-(MeasurableEquiv.funUnique Unit (A F) y * x 1)) = ((adelicChar F (∑ i, y i * (rt (sg (Sum.inr i)) * x (eS (Sum.inr i)))) : Circle) : ℂ)`. Simplify using `[ψ, eS, sg]`. Simplify using `only [FF]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem hat_eq (φ : V4 F → ℂ) (x : V4 F) :
     hat φ x = GroundTheory.Heights₂.Theta.partialFourierPi (FF φ) fun k => rt (sg k) * x (eS k) := by
@@ -134,15 +134,15 @@ end UpperTheory.ConvolutionTheory.R2.D
 end
 
 /- English proof (translation)
-Introduce `F _ _ φ`. Establish `hF` using `FF_mem φ.2`. Prove the components needed by the constructor for the conclusion. Establish `h` using `comp_signed_mem (F := F) eS sg sg_mul (GroundTheory.Heights₂.Theta.partialFourierPi_mem hF)`. Establish `he : hat φ.1 = fun x => GroundTheory.Heights₂.Theta.partialFourierPi (FF φ.1) fun k => rt (sg k) * x (eS k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `(hat_eq φ.1)`. Rewrite using `[he]`. Conclude with `h`. Establish `hP` using `GroundTheory.Heights₂.Theta.tsum_partialFourierPi hF`. Establish `h1 : Th φ.1 = ∑' ξ : Fin 3 ⊕ Unit → F, FF φ.1 fun s => algebraMap F (A F) (ξ s)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Th, ← (tE (F := F) eS (fun _ => 1) (fun _ => by simp)).tsum_eq]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Simplify using `[FF, tE]`. Establish `h2 : Th (hat φ.1) = ∑' ξ : Fin 3 ⊕ Unit → F, GroundTheory.Heights₂.Theta.partialFourierPi (FF φ.1) fun s => algebraMap F (A F) (ξ s)`. Rewrite using `[Th, ← (tE (F := F) eS sg sg_mul).tsum_eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[hat_eq]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[tE]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, hP]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.D.hatMem :
     ∀ (F : Type) [Field F] [NumberField F] (φ : S4 F), hat φ.1 ∈ schwartzBruhatPi F (Fin 4) ∧ Th φ.1 = Th (hat φ.1) := by

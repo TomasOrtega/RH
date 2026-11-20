@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X Y Z S h f sX sY d hs hX hY he`. Substitute `hs` using the available equality. Use `haveI : FormallyUnramified (h ≫ f) := inferInstance`. Use `haveI : FormallyUnramified h := FormallyUnramified.of_comp h f`. Conclude with `etale_of_formallyUnramified_of_smoothOfRelativeDimension h sY d hY hX`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem etale_of_comp_etale_of_smoothOfRelativeDimension :
     ∀ (X Y Z S : Scheme.{0}) (h : X ⟶ Y) (f : Y ⟶ Z) (sX : X ⟶ S) (sY : Y ⟶ S) (d : ℕ),

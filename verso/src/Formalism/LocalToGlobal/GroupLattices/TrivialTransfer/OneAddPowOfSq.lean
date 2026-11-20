@@ -13,14 +13,14 @@ namespace Formalism.L2.G.Triv
 section Helpers
 
 /- English proof (translation)
-Use `conj_pow (a := a⁻¹) (b := b) (i := n)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_pow' {G : Type} [Group G] (a b : G) (n : ℕ) : (a⁻¹ * b * a) ^ n = a⁻¹ * b ^ n * a := by
   have := conj_pow (a := a⁻¹) (b := b) (i := n)
   simpa using this
 
 /- English proof (translation)
-Introduce `x y hxy`. Apply `Units.ext` to reduce the goal to its premises. Establish `h` using `congrArg (fun z : GL n B => (z : Matrix n n B)) hxy`. Conclude with `Matrix.map_injective hφ h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bc_injective {A B : Type} [CommRing A] [CommRing B] {n : Type} [Fintype n] [DecidableEq n] (φ : A →+* B)
     (hφ : Function.Injective φ) : Function.Injective (bc (n := n) φ) := by
@@ -36,25 +36,25 @@ section Ring
 variable {R : Type} [CommRing R] {k : ℕ}
 
 /- English proof (translation)
-Set `π` to `Ideal.Quotient.mk I`. Set `φ` to `π.mapMatrix (m := Fin k)`. Set `N : Matrix (Fin k) (Fin k) (R ⧸ I)` to `φ (A - 1)`. Establish `hN0 : ∀ i j : Fin k, j ≤ i → N i j = 0` using `fun i j h => Ideal.Quotient.eq_zero_iff_mem.2 (hA i j h)`. Establish `hpow : ∀ m : ℕ, ∀ i j : Fin k, (j : ℕ) < i + m → (N ^ m) i j = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `i j h`. Rewrite using `[pow_zero, Matrix.one_apply, if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Consider the case `succ m ih`. Introduce `i j h`. Rewrite using `[pow_succ, Matrix.mul_apply]`.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Distinguish the cases in `hl : (l : ℕ) < i + m`. Rewrite using `[ih i l hl, zero_mul]`. Rewrite using `[hN0 l j (by rw [Fin.le_def]; omega), mul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hAm : φ A = N + 1` using `by simp [N]`. Establish `hg0 : ((g : ℕ) : R ⧸ I) = 0`. Use `Ideal.Quotient.eq_zero_iff_mem.2 hgI` as an intermediate fact. Simplify using `using this`. Establish `key : (φ A) ^ (g ^ s) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hAm, (Commute.one_right N).add_pow, Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `m hm hm0`. Rewrite `hm` using `[Finset.mem_range]`. Distinguish the cases in `hmm : m = g ^ s`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `: N ^ m = 0`. Use extensionality with `a b`. Conclude with `hpow m a b (by have := b.2; omega)`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hd : g ∣ (g ^ s).choose m` using `hg.dvd_choose_pow hm0 hmm`. Take `⟨c, hc⟩` from `hd`. Establish `: (((g ^ s).choose m : ℕ) : Matrix (Fin k) (Fin k) (R ⧸ I)) = 0`. Rewrite using `[hc, Nat.cast_mul]`. Establish `: ((g : ℕ) : Matrix (Fin k) (Fin k) (R ⧸ I)) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using `[Matrix.natCast_apply, hg0]`. Rewrite using `[this, zero_mul]`. Rewrite using `[this, mul_zero]`. Introduce `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `at h`. Establish `: φ (A ^ (g ^ s) - 1) = 0` using `by rw [map_sub, map_pow, key, map_one, sub_self]`. Establish `h2` using `congrFun (congrFun this i) j`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unip_pow (I : Ideal R) (g : ℕ) (hg : g.Prime) (hgI : (g : R) ∈ I) (A : Matrix (Fin k) (Fin k) R)
     (hA : ∀ i j, j ≤ i → (A - 1) i j ∈ I) (s : ℕ) (hs : k ≤ g ^ s) (i j : Fin k) : (A ^ (g ^ s) - 1) i j ∈ I := by
@@ -108,29 +108,27 @@ theorem unip_pow (I : Ideal R) (g : ℕ) (hg : g.Prime) (hgI : (g : R) ∈ I) (A
   exact Ideal.Quotient.eq_zero_iff_mem.1 h2
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero .. | (apply GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero <;> assumption) | (intros; apply GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero <;> assumption) | (apply @ …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem one_add_pow_of_sq {S : Type} [Ring S] (X : S) (h : X * X = 0) (N : ℕ) : (1 + X) ^ N = 1 + (N : S) * X := by
   first | exact GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero .. | (apply GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero <;> assumption) | (intros; apply GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero <;> assumption) | (apply @GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero <;> assumption) | (intros; apply @GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero <;> assumption) | (apply @GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero <;> first | assumption | infer_instance) | exact @GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero S ‹_› X h N | exact @GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero S ‹_› X h | exact @GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero S ‹_› X | exact @GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero S ‹_› | exact @GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero S
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hN.exists_left_inv`. Establish `step : ∀ m : ℕ, ∀ i j, (B - 1) i j ∈ I ^ (m + 1)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simpa using hB`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ m ih`. Set `φ` to `(Ideal.Quotient.mk (I ^ (m + 1 + 1))).mapMatrix (m := Fin k)`. Establish `hXX : φ (B - 1) * φ (B - 1) = 0`. Rewrite using `[← map_mul]`. Use extensionality with `a b`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `show Ideal.Quotient.mk _ (((B - 1) * (B - 1)) a b) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Matrix.mul_apply]`. Use `Ideal.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Establish `h1 : (B - 1) a l * (B - 1) l b ∈ I ^ (m + 1) * I ^ (m + 1)` using `Ideal.mul_mem_mul (ih a l) (ih l b)`. Rewrite `h1` using `[← pow_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.pow_le_pow_right (by omega) h1`. Establish `h2 : (1 + φ (B - 1)) ^ N = 1`. Establish `: 1 + φ (B - 1) = φ B` using `by rw [map_sub, map_one]; abel`. Rewrite using `[this, ← map_pow, hBN, map_one]`. Rewrite `h2` using `[one_add_pow_of_sq _ hXX]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3 : ((N : ℕ) : Matrix (Fin k) (Fin k) (R ⧸ I ^ (m + 1 + 1))) * φ (B - 1) = 0`. Simplify using `using h2`. Introduce `i j`. Establish `e : ((N : ℕ) : R ⧸ I ^ (m + 1 + 1)) * Ideal.Quotient.mk (I ^ (m + 1 + 1)) ((B - 1) i j) = 0`. Establish `h4` using `congrFun (congrFun h3 i) j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h4` using `[← nsmul_eq_mul, Matrix.smul_apply, nsmul_eq_mul]`. Conclude with `h4`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc, map_one, one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `_ = Ideal.Quotient.mk (I ^ (m + 1 + 1)) c * (((N : ℕ) : R ⧸ I ^ (m + 1 + 1)) * Ideal.Quotient.mk (I ^ (m + 1 + 1)) ((B - 1) i j)) := by`. Rewrite using `[map_mul, map_natCast, mul_assoc]`. Use `_ = 0 := by rw [e, mul_zero]`. Establish `hz : B - 1 = 0`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: (B - 1) i j ∈ (⨅ m : ℕ, I ^ m)`. Rewrite using `[Ideal.mem_iInf]`. Introduce `m`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ m) (step m i j)`. Rewrite `this` using `[hinf]`.
-
-Simplify using `using this`. Conclude with `sub_eq_zero.1 hz`.
+A detailed English derivation is pending.
 -/
 theorem cong_coprime (I : Ideal R) (hinf : (⨅ m : ℕ, I ^ m) = ⊥) (B : Matrix (Fin k) (Fin k) R)
     (hB : ∀ i j, (B - 1) i j ∈ I) (N : ℕ) (hN : IsUnit (N : R)) (hBN : B ^ N = 1) : B = 1 := by
@@ -180,7 +178,7 @@ theorem cong_coprime (I : Ideal R) (hinf : (⨅ m : ℕ, I ^ m) = ⊥) (B : Matr
   exact sub_eq_zero.1 hz
 
 /- English proof (translation)
-Take `⟨s, hs⟩ : ∃ s, k ≤ g ^ s` from `⟨k, (Nat.lt_pow_self hg.one_lt).le⟩`. Establish `h1 : A ^ (g ^ s) = 1` using `cong_coprime I hinf _ (unip_pow I g hg hgI A hA s hs) N hN (by rw [← pow_mul, mul_comm, pow_mul, hAN, one_pow])`. Establish `h2` using `pow_gcd_eq_one.2 ⟨hAN, h1⟩`. Rewrite `h2` using `[Nat.Coprime.pow_right s hc, pow_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unip_coprime (I : Ideal R) (hinf : (⨅ m : ℕ, I ^ m) = ⊥) (g : ℕ) (hg : g.Prime) (hgI : (g : R) ∈ I)
     (A : Matrix (Fin k) (Fin k) R) (hA : ∀ i j, j ≤ i → (A - 1) i j ∈ I) (N : ℕ) (hN : IsUnit (N : R))
@@ -192,7 +190,7 @@ theorem unip_coprime (I : Ideal R) (hinf : (⨅ m : ℕ, I ^ m) = ⊥) (g : ℕ)
   rwa [Nat.Coprime.pow_right s hc, pow_one] at h2
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qe27.closure_upperUni .. | (apply UpperTheory.Reformulated.B.Qe27.closure_upperUni <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qe27.closure_upperUni <;> assumption) | (apply @UpperTheory.Reformulated.B.Qe27.closure_upperUni …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem closure_upperUni (A : Type) [CommRing A] (x : GL (Fin k) A) (hx : x ∈ Subgroup.closure (upperUni k A)) :
     x ∈ upperUni k A := by
@@ -205,13 +203,13 @@ section Place
 variable {F : Type} [Field F] [NumberField F] {k : ℕ}
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨u, hu⟩` from `hu.exists_right_inv`. Establish `h1 : Valued.v ((g : v.adicCompletion F)) * Valued.v (u : v.adicCompletion F) = 1`. Rewrite using `[← map_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun z : v.adicCompletionIntegers F => (z : v.adicCompletion F)) hu` as an intermediate fact. Simplify using `only [MulMemClass.coe_mul, OneMemClass.coe_one] at this`. Establish `e : (((g : v.adicCompletionIntegers F)) : v.adicCompletion F) = (g : v.adicCompletion F)` using `by simp`. Rewrite `this` using `[e]`. Rewrite using `[this, map_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Valued.v ((g : v.adicCompletion F)) < 1`. Establish `e : (g : v.adicCompletion F) = ((algebraMap (𝓞 F) F (g : 𝓞 F) : F) : v.adicCompletion F)`. Rewrite using `[map_natCast]`. Conclude with `(map_natCast (algebraMap F (v.adicCompletion F)) g).symm`. Rewrite using `[e, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_lt_one_iff_mem]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hg`. Establish `h3 : Valued.v (u : v.adicCompletion F) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 u.2`. Establish `h4 : Valued.v ((g : v.adicCompletion F)) * Valued.v (u : v.adicCompletion F) < 1` using `lt_of_le_of_lt (mul_le_of_le_one_right' h3) h2`. Rewrite `h4` using `[h1]`. Conclude with `lt_irrefl _ h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_max (v : HeightOneSpectrum (𝓞 F)) (g : ℕ) (hg : (g : 𝓞 F) ∈ v.asIdeal) :
     (g : v.adicCompletionIntegers F) ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) := by
@@ -239,19 +237,17 @@ theorem natCast_mem_max (v : HeightOneSpectrum (𝓞 F)) (g : ℕ) (hg : (g : �
   exact lt_irrefl _ h4
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hδ`. Establish `hinj : Function.Injective (bc (n` using `Fin k) (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F))) := bc_injective _ (FaithfulSMul.algebraMap_injective _ _)`. Establish `haN : a ^ N = 1` using `hinj (by rw [map_pow, hN, map_one])`. Establish `hu` using `closure_upperUni _ _ (Subgroup.mem_comap.1 ha)`. Establish `hgm` using `natCast_mem_max v g hgv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNu : IsUnit (N : v.adicCompletionIntegers F)`. Assume the negation of the conclusion as `h`. Establish `hm : (N : v.adicCompletionIntegers F) ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)` using `(IsLocalRing.mem_maximalIdeal _).2 h`. Establish `h1 : ((Nat.gcd N g : ℕ) : v.adicCompletionIntegers F) ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)`. Establish `hb` using `Nat.gcd_eq_gcd_ab N g`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((Nat.gcd N g : ℕ) : v.adicCompletionIntegers F) = (N : v.adicCompletionIntegers F) * ((Nat.gcdA N g : ℤ) : v.adicCompletionIntegers F) + (g : v.adicCompletionIntegers F) * ((Nat.gcdB N g : ℤ) : v.adicCompletionIntegers F)`. Use `congrArg (fun z : ℤ => (z : v.adicCompletionIntegers F)) hb` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ hm) (Ideal.mul_mem_right _ _ hgm)`. Rewrite `h1` using `[hc, Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 (IsLocalRing.maximalIdeal.isMaximal _).ne_top h1`. Establish `hA : ∀ i j : Fin k, j ≤ i → ((a : Matrix (Fin k) (Fin k) (v.adicCompletionIntegers F)) - 1) i j ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)`. Introduce `i j hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, Matrix.sub_apply, map_sub]`. Break down `hij.lt_or_eq with h | h` into its components or cases. Use `(hu i j).1 h` as an intermediate fact. Establish `h' : Ideal.Quotient.mk _ ((a : Matrix (Fin k) (Fin k) (v.adicCompletionIntegers F)) i j) = 0` using `this`. Rewrite using `[h', Matrix.one_apply_ne h.ne', map_zero, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Use `(hu j j).2` as an intermediate fact. Establish `h' : Ideal.Quotient.mk _ ((a : Matrix (Fin k) (Fin k) (v.adicCompletionIntegers F)) j j) = 1` using `this`. Rewrite using `[h', Matrix.one_apply_eq, map_one, sub_self]`. Establish `h1 : (a : Matrix (Fin k) (Fin k) (v.adicCompletionIntegers F)) = 1` using `unip_coprime _ (Ideal.iInf_pow_eq_bot_of_isLocalRing _ (IsLocalRing.maximalIdeal.isMaximal _).ne_top) g hg hgm _ hA N hNu hc (by rw [← Units.val_pow_eq_pow_val, haN, Units.val_one])`.
-
-Establish `: a = 1` using `Units.ext h1`. Rewrite using `[this, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwU_coprime (v : HeightOneSpectrum (𝓞 F)) (g : ℕ) (hg : g.Prime) (hgv : (g : 𝓞 F) ∈ v.asIdeal)
     (δ : GL (Fin k) (v.adicCompletion F)) (hδ : δ ∈ iwU F k v) (N : ℕ) (hc : Nat.Coprime N g) (hN : δ ^ N = 1) : δ = 1 := by
@@ -296,7 +292,7 @@ theorem iwU_coprime (v : HeightOneSpectrum (𝓞 F)) (g : ℕ) (hg : g.Prime) (h
   rw [this, map_one]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_left_tail.goal1 .. | (apply Bl.general_b_fact_left_tail.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_tail.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_tail.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_left_ta …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_place (g : ℕ) (hg : g.Prime) : ∃ v : HeightOneSpectrum (𝓞 F), (g : 𝓞 F) ∈ v.asIdeal := by
   first | exact Bl.general_b_fact_left_tail.goal1 .. | (apply Bl.general_b_fact_left_tail.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_tail.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_tail.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_left_tail.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_tail.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_left_tail.goal1 F ‹_› ‹_› g hg | exact @Bl.general_b_fact_left_tail.goal1 F ‹_› ‹_› g | exact @Bl.general_b_fact_left_tail.goal1 F ‹_› ‹_› | exact @Bl.general_b_fact_left_tail.goal1 F ‹_› | exact @Bl.general_b_fact_left_tail.goal1 F

@@ -16,13 +16,13 @@ section Ideles
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Simplify using `[md, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem md_mul (a b : (AF F)ˣ) : md (a * b) = md a * md b := by
   simp [md, map_mul]
 
 /- English proof (translation)
-Establish `h` using `IdeleGroup.ideleModule_diagonal (K := F) t`. Establish `h2 : pr t = IdeleGroup.diagonal F t` using `rfl`. Simplify using `[md, h2, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem md_pr (t : Fˣ) : md (pr t) = 1 := by
   have h := IdeleGroup.ideleModule_diagonal (K := F) t
@@ -30,15 +30,15 @@ theorem md_pr (t : Fˣ) : md (pr t) = 1 := by
   simp [md, h2, h]
 
 /- English proof (translation)
-Rewrite using `[md_mul, md_pr, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem md_pr_mul (t : Fˣ) (a : (AF F)ˣ) : md (pr t * a) = md a := by
   rw [md_mul, md_pr, one_mul]
 
 /- English proof (translation)
-Unfold `th`. Establish `h : ∀ u : Fˣ, pr u * (pr t * a) = pr (u * t) * a` using `fun u => by`. Rewrite using `[← mul_assoc]`. Use `congr 1`. Conclude with `(map_mul (Units.map (algebraMap F (AF F)).toMonoidHom) u t).symm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[h]`. Conclude with `(Equiv.mulRight t).tsum_eq (fun u => f (pr u * a))`.
+A detailed English derivation is pending.
 -/
 theorem th_pr_mul (f : (AF F)ˣ → ℝ≥0∞) (t : Fˣ) (a : (AF F)ˣ) : th f (pr t * a) = th f a := by
   unfold th
@@ -58,15 +58,15 @@ def ray (θ : ℝ →+* Ainf F) (δ : ℝ) : (AF F)ˣ :=
       rw [← map_mul, inv_mul_cancel₀ h, map_one]⟩
 
 /- English proof (translation)
-Introduce `δ hδ` and use `by simp [ray, hδ.ne']`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isRay_ray (θ : ℝ →+* Ainf F) : IsRay θ (ray θ) := fun δ hδ => by
   simp [ray, hδ.ne']
 
 /- English proof (translation)
-Establish `h2 : ε ^ 2 ≠ 0` using `pow_ne_zero 2 hε`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [ray, hε, h2, dite_false, Units.val_mul]`. Use `Prod.ext ?_ (mul_one _)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `θ ε * θ ε = θ (ε ^ 2)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← map_mul, sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ray_mul_self (θ : ℝ →+* Ainf F) {ε : ℝ} (hε : ε ≠ 0) : ray θ ε * ray θ ε = ray θ (ε ^ 2) := by
   have h2 : ε ^ 2 ≠ 0 := pow_ne_zero 2 hε
@@ -83,7 +83,7 @@ section Norms
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Unfold `IsNm`. Express the relevant statement in the definitionally equal form `((1 : AF F) ⊗ₜ[F] (1 : E)) = sigR (AF F) σ 1 * 1`. Rewrite using `[map_one, mul_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isNm_one : IsNm σ (1 : (AF F ⊗[F] E)ˣ) (1 : (AF F)ˣ) := by
   unfold IsNm
@@ -92,9 +92,9 @@ theorem isNm_one : IsNm σ (1 : (AF F ⊗[F] E)ˣ) (1 : (AF F)ˣ) := by
   rfl
 
 /- English proof (translation)
-Unfold `IsNm at h ⊢`. Establish `hs : sigR (AF F) σ ((u : AF F) ⊗ₜ[F] (1 : E)) = (u : AF F) ⊗ₜ[F] (1 : E)`. Simplify using `[sigR]`. Establish `e : ((Units.map (Algebra.TensorProduct.includeLeft : AF F →ₐ[F] AF F ⊗[F] E).toMonoidHom u : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = (u : AF F) ⊗ₜ[F] (1 : E)` using `rfl`. Rewrite using `[Units.val_mul, Units.val_mul, Units.val_mul, e, map_mul, hs]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ((n : AF F) * ((u : AF F) * (u : AF F))) ⊗ₜ[F] (1 : E) = ((n : AF F) ⊗ₜ[F] (1 : E)) * (((u : AF F) ⊗ₜ[F] (1 : E)) * ((u : AF F) ⊗ₜ[F] (1 : E)))`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[e2, h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isNm_mul {x : (AF F ⊗[F] E)ˣ} {n : (AF F)ˣ} (h : IsNm σ x n) (u : (AF F)ˣ) :
     IsNm σ (x * Units.map (Algebra.TensorProduct.includeLeft : AF F →ₐ[F] AF F ⊗[F] E).toMonoidHom u) (n * (u * u)) := by
@@ -111,25 +111,23 @@ theorem isNm_mul {x : (AF F ⊗[F] E)ˣ} {n : (AF F)ˣ} (h : IsNm σ x n) (u : (
   ring
 
 /- English proof (translation)
-The claim follows from `(hH _).2 ⟨t, 1, 1, isNm_one, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem pr_mem {H : Subgroup (AF F)ˣ} (hH : IsH σ H) (t : Fˣ) : pr t ∈ H :=
   (hH _).2 ⟨t, 1, 1, isNm_one, by simp⟩
 
 /- English proof (translation)
-Establish `hth0 : ∀ a, a ∉ H → th f a = 0` using `fun a ha => by`. Unfold `th`. Use `ENNReal.tsum_eq_zero.2 fun t => hoff _ fun h => ha ?_` and prove the remaining obligations. Use `H.mul_mem (H.inv_mem (pr_mem hH t)) h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨C, hC⟩` from `hb`. Take `⟨R, hR⟩` from `hv`. Use `⟨⟨C, fun a => ?_⟩, ⟨R, fun a ha => ?_⟩, hth0, fun a haH => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : a ∈ H`. Take `⟨t, x, n, hn, rfl⟩` from `(hH a).1 h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[md_pr_mul, th_pr_mul, ← hM x n hn]`. Conclude with `hC x n hn`. Simplify using `[hth0 a h]`. Distinguish the cases in `h : a ∈ H`. Take `⟨t, x, n, hn, rfl⟩` from `(hH a).1 h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[md_pr_mul]`. Rewrite using `[th_pr_mul, ← hM x n hn]`. Conclude with `hR x n hn ha`. Conclude with `hth0 a h`. Take `⟨t, x, n, hn, rfl⟩` from `(hH a).1 haH`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsq : Tendsto Real.sqrt (𝓝[>] 0) (𝓝[>] 0)`. Use `tendsto_nhdsWithin_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `(Real.continuous_sqrt.tendsto 0).mono_left (nhdsWithin_le_nhds (s := Set.Ioi (0:ℝ)))` as an intermediate fact. Simplify using `using this`. Use `filter_upwards [self_mem_nhdsWithin] with δ hδ`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Real.sqrt_pos.2 hδ`. Use `((hl x n hn).comp hsq).congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with δ hδ`. Establish `hδ' : (0:ℝ) < δ` using `hδ`. Establish `hε : 0 < Real.sqrt δ` using `Real.sqrt_pos.2 hδ'`.
-
-Establish `e1 : Real.sqrt δ ^ 2 = δ` using `Real.sq_sqrt hδ'.le`. Establish `hN` using `isNm_mul hn (r (Real.sqrt δ))`. Rewrite `hN` using `[hr _ hε, e1]`. Simplify using `only [Function.comp, e1]`. Rewrite using `[hM _ _ hN, mul_assoc, md_pr_mul, th_pr_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem asym_of {H : Subgroup (AF F)ˣ} (hH : IsH σ H) {r : ℝ → (AF F)ˣ} (f : (AF F)ˣ → ℝ≥0∞)
     (hr : ∀ ε : ℝ, 0 < ε → r ε * r ε = r (ε ^ 2))
@@ -183,14 +181,14 @@ section Euler
 variable {F : Type} [Field F] [NumberField F] (E : Type) [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `eR PositivityTheory.SiegelWeilFormula.Gen.eSp`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eR_cases (v : HeightOneSpectrum (𝓞 F)) : eR E v = 1 ∨ eR E v = -1 := by
   unfold eR PositivityTheory.SiegelWeilFormula.Gen.eSp
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `eR PositivityTheory.SiegelWeilFormula.Gen.eSp`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eSp_eq (v : HeightOneSpectrum (𝓞 F)) : PositivityTheory.SiegelWeilFormula.Gen.eSp E v = ((eR E v : ℝ) : ℂ) := by
   unfold eR PositivityTheory.SiegelWeilFormula.Gen.eSp
@@ -198,7 +196,7 @@ theorem eSp_eq (v : HeightOneSpectrum (𝓞 F)) : PositivityTheory.SiegelWeilFor
 
 omit [Field E] [NumberField E] [Algebra F E] in
 /- English proof (translation)
-Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1` using `fun h => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`. Conclude with `Nat.one_lt_iff_ne_zero_and_ne_one.2 ⟨h0, h1⟩` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_lt_q (v : HeightOneSpectrum (𝓞 F)) : (1 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ) := by
   have h0 : Ideal.absNorm v.asIdeal ≠ 0 := fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)
@@ -208,7 +206,7 @@ theorem one_lt_q (v : HeightOneSpectrum (𝓞 F)) : (1 : ℝ) < (Ideal.absNorm v
 def fac (s : ℝ) (v : HeightOneSpectrum (𝓞 F)) : ℝ := 1 - eR E v * (Ideal.absNorm v.asIdeal : ℝ) ^ (-s)
 
 /- English proof (translation)
-Establish `h1 : (Ideal.absNorm v.asIdeal : ℝ) ^ (-s) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg (one_lt_q v) (by linarith)`. Establish `h2 : 0 < (Ideal.absNorm v.asIdeal : ℝ) ^ (-s)` using `Real.rpow_pos_of_pos (by linarith [one_lt_q v]) _`. Unfold `fac`. Apply the tactic sequence `rcases eR_cases E v with h | h <;> rw [h] <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fac_pos {s : ℝ} (hs : 0 < s) (v : HeightOneSpectrum (𝓞 F)) : 0 < fac E s v := by
   have h1 : (Ideal.absNorm v.asIdeal : ℝ) ^ (-s) < 1 := Real.rpow_lt_one_of_one_lt_of_neg (one_lt_q v) (by linarith)
@@ -217,9 +215,9 @@ theorem fac_pos {s : ℝ} (hs : 0 < s) (v : HeightOneSpectrum (𝓞 F)) : 0 < fa
   rcases eR_cases E v with h | h <;> rw [h] <;> linarith
 
 /- English proof (translation)
-Establish `hsum` using `Formalism.MainNotions.DIV.Proofs.QuadraticNormBounds.summable_absNorm_rpow F hs`. Establish `h : Summable fun v : HeightOneSpectrum (𝓞 F) => ‖-(eR E v * (Ideal.absNorm v.asIdeal : ℝ) ^ (-s))‖`. Use `hsum.congr fun v => ?_` and prove the remaining obligations. Establish `h2 : 0 < (Ideal.absNorm v.asIdeal : ℝ) ^ (-s)` using `Real.rpow_pos_of_pos (by linarith [one_lt_q v]) _`. Apply the tactic sequence `rcases eR_cases E v with e | e <;> rw [e] <;> simp [abs_of_pos h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `multipliable_one_add_of_summable (h.subtype T)` as an intermediate fact. Use `this.congr fun v => ?_` and prove the remaining obligations. Simplify using `[fac, sub_eq_add_neg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem fac_mult_sub {s : ℝ} (hs : 1 < s) (T : Set (HeightOneSpectrum (𝓞 F))) :
     Multipliable (fun v : T => fac E s v.1) := by
@@ -233,15 +231,15 @@ theorem fac_mult_sub {s : ℝ} (hs : 1 < s) (T : Set (HeightOneSpectrum (𝓞 F)
   simp [fac, sub_eq_add_neg]
 
 /- English proof (translation)
-The claim follows from `((Equiv.Set.univ _).multipliable_iff (f := fac E s)).1 (fac_mult_sub E hs Set.univ)`.
+A detailed English derivation is pending.
 -/
 theorem fac_mult {s : ℝ} (hs : 1 < s) : Multipliable (fac E s : HeightOneSpectrum (𝓞 F) → ℝ) :=
   ((Equiv.Set.univ _).multipliable_iff (f := fac E s)).1 (fac_mult_sub E hs Set.univ)
 
 /- English proof (translation)
-Establish `h` using `(fac_mult (F := F) E hs).map_tprod Complex.ofRealHom Complex.continuous_ofReal`. Simplify using `only [Complex.ofRealHom_eq_coe] at h`. Rewrite using `[h]`. Use `tprod_congr fun v => ?_` and prove the remaining obligations. Establish `hq : (0 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ)` using `by positivity`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [fac, eSp_eq]`. Move the coercions through the operations in `[Complex.ofReal_cpow hq]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem tot_eq {s : ℝ} (hs : 1 < s) : ∏' v : HeightOneSpectrum (𝓞 F),
       (1 - PositivityTheory.SiegelWeilFormula.Gen.eSp E v * (Ideal.absNorm v.asIdeal : ℂ) ^ (-(s : ℂ))) =
@@ -256,7 +254,7 @@ theorem tot_eq {s : ℝ} (hs : 1 < s) : ∏' v : HeightOneSpectrum (𝓞 F),
   rfl
 
 /- English proof (translation)
-Establish `h` using `Multipliable.tprod_mul_tprod_compl (f := fac E s) (s := (S : Set (HeightOneSpectrum (𝓞 F)))) (fac_mult_sub E hs _) (fac_mult_sub E hs _)`. Establish `h1 : ∏' v : (S : Set (HeightOneSpectrum (𝓞 F))), fac E s v.1 = ∏ v ∈ S, fac E s v` using `Finset.tprod_subtype' S (fac E s)`. Establish `h2 : ∏' v : ((S : Set (HeightOneSpectrum (𝓞 F)))ᶜ : Set _), fac E s v.1 = ∏' v : {v // v ∉ S}, fac E s v.1` using `(Equiv.subtypeEquivRight (fun v => by simp)).tprod_eq (fun v : {v // v ∉ S} => fac E s v.1)`. Rewrite using `[← h, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tot_split {s : ℝ} (hs : 1 < s) (S : Finset (HeightOneSpectrum (𝓞 F))) :
     ∏' v : HeightOneSpectrum (𝓞 F), fac E s v = (∏ v ∈ S, fac E s v) * ∏' v : {v // v ∉ S}, fac E s v.1 :=
@@ -269,21 +267,19 @@ theorem tot_split {s : ℝ} (hs : 1 < s) (S : Finset (HeightOneSpectrum (𝓞 F)
   rw [← h, h1, h2]
 
 /- English proof (translation)
-Establish `hev : ∀ᶠ s : ℝ in 𝓝[>] 1, 1 < s` using `self_mem_nhdsWithin`. Establish `hC : Tendsto (fun s : ℝ => ((∏' v : HeightOneSpectrum (𝓞 F), fac E s v : ℝ) : ℂ)) (𝓝[>] 1) (𝓝 Λ)`. Use `Tendsto.congr' ?_ h` and prove the remaining obligations. Use `filter_upwards [hev] with s hs using tot_eq E hs`. Establish `him : Λ.im = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Complex.continuous_im.tendsto Λ).comp hC` as an intermediate fact. Simplify using `only [Function.comp_def, Complex.ofReal_im] at this`. Conclude with `tendsto_nhds_unique this tendsto_const_nhds`. Establish `hre : Tendsto (fun s : ℝ => ∏' v : HeightOneSpectrum (𝓞 F), fac E s v) (𝓝[>] 1) (𝓝 Λ.re)`. Use `(Complex.continuous_re.tendsto Λ).comp hC` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `only [Function.comp_def, Complex.ofReal_re]`. Establish `hnn : 0 ≤ Λ.re`. Use `ge_of_tendsto hre ?_` and prove the remaining obligations. Use `filter_upwards [hev] with s hs`. Conclude with `ge_of_tendsto' (fac_mult (F := F) E hs).hasProd fun u => Finset.prod_nonneg fun v _ => (fac_pos E (by linarith) v).le`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨him, hnn, ?_⟩` and prove the remaining obligations. Establish `hc0 : 0 < ∏ v ∈ S, fac E 1 v` using `Finset.prod_pos fun v _ => fac_pos E one_pos v`. Establish `hQ : Tendsto (fun s : ℝ => ∏ v ∈ S, fac E s v) (𝓝[>] 1) (𝓝 (∏ v ∈ S, fac E 1 v))`. Use `tendsto_finsetProd _ fun v _ => ?_` and prove the remaining obligations. Establish `hq : (Ideal.absNorm v.asIdeal : ℝ) ≠ 0` using `by linarith [one_lt_q (F := F) v]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : Continuous fun s : ℝ => fac E s v`. Unfold `fac`. Conclude with `continuous_const.sub (continuous_const.mul (Real.continuous_const_rpow hq |>.comp continuous_neg))`. Conclude with `(hc.tendsto 1).mono_left nhdsWithin_le_nhds`. Establish `hP : Tendsto (fun s : ℝ => ∏' v : {v // v ∉ S}, (1 - eR E v.1 * (Ideal.absNorm v.1.asIdeal : ℝ) ^ (-s))) (𝓝[>] 1) (𝓝 (Λ.re / ∏ v ∈ S, fac E 1 v))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `(hre.div hQ hc0.ne').congr' ?_` and prove the remaining obligations. Use `filter_upwards [hev] with s hs`. Establish `hq0 : ∏ v ∈ S, fac E s v ≠ 0` using `(Finset.prod_pos fun v _ => fac_pos E (by linarith) v).ne'`. Simplify using `only [Pi.div_apply]`. Rewrite using `[tot_split E hs S, mul_div_cancel_left₀ _ hq0]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hL : ENNReal.ofReal (Λ.re / ∏ v ∈ S, fac E 1 v) = ENNReal.ofReal Λ.re * ∏ v ∈ S, (cfac E v : ℝ≥0∞)`. Rewrite using `[div_eq_mul_inv, ENNReal.ofReal_mul hnn, ← Finset.prod_inv_distrib, ENNReal.ofReal_prod_of_nonneg fun v _ => (inv_pos.2 (fac_pos E one_pos v)).le]`. Use `congr 1`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
-
-Simplify using `only [fac, cfac, Real.rpow_neg_one, div_eq_mul_inv]`. Both sides reduce to the same expression. Rewrite using `[← hL]`. Conclude with `(ENNReal.continuous_ofReal.tendsto _).comp hP`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_tendsto (S : Finset (HeightOneSpectrum (𝓞 F))) {Λ : ℂ} (h : IsLamLim F E Λ) :
     Λ.im = 0 ∧ 0 ≤ Λ.re ∧ Tendsto (fun s : ℝ => ENNReal.ofReal
@@ -333,7 +329,7 @@ theorem lam_tendsto (S : Finset (HeightOneSpectrum (𝓞 F))) {Λ : ℂ} (h : Is
   exact (ENNReal.continuous_ofReal.tendsto _).comp hP
 
 /- English proof (translation)
-Establish `h` using `inv_pos.2 (fac_pos (F := F) E one_pos v)`. Simplify using `only [fac, Real.rpow_neg_one, ← div_eq_mul_inv] at h`. Simplify `h` using `[cfac]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cfac_ne_zero (v : HeightOneSpectrum (𝓞 F)) : cfac E v ≠ 0 := by
   have h := inv_pos.2 (fac_pos (F := F) E one_pos v)
@@ -343,13 +339,13 @@ theorem cfac_ne_zero (v : HeightOneSpectrum (𝓞 F)) : cfac E v ≠ 0 := by
 end Euler
 
 /- English proof (translation)
-Establish `hW0 : vol * V ≠ 0` using `mul_ne_zero hv0 hV0`. Establish `hWt : vol * V ≠ ⊤` using `ENNReal.mul_ne_top hvt hVt`. Establish `hLp : L * pc ≠ ⊤` using `ENNReal.mul_ne_top hLt h1`. Establish `hWh : vol * V / 2 ≠ ⊤` using `ENNReal.div_ne_top hWt (by norm_num)`. Establish `e1` using `ENNReal.Tendsto.mul hP (Or.inr hWh) hA (Or.inr hLp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `ENNReal.Tendsto.const_mul (a := (κ : ℝ≥0∞)) hB (Or.inr ENNReal.coe_ne_top)`. Establish `e3 : (L * pc) * (vol * V / 2) = (κ : ℝ≥0∞) * (pc * vol * V)`. Use `tendsto_nhds_unique e1 (e2.congr' ?_)` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Rewrite using `[← hR s hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hpw : pc * (vol * V) ≠ 0` using `mul_ne_zero h0 hW0`. Establish `hpwt : pc * (vol * V) ≠ ⊤` using `ENNReal.mul_ne_top h1 hWt`. Establish `e4 : (L / 2) * (pc * (vol * V)) = (κ : ℝ≥0∞) * (pc * (vol * V))`. Rewrite `e3` using `[mul_assoc pc vol V]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e3, div_eq_mul_inv, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(ENNReal.mul_left_inj hpw hpwt).1 e4`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem limit_cancel {κ : ℝ≥0} {pc vol V L : ℝ≥0∞} {P a b : ℝ → ℝ≥0∞}
     (h0 : pc ≠ 0) (h1 : pc ≠ ⊤) (hv0 : vol ≠ 0) (hvt : vol ≠ ⊤) (hV0 : V ≠ 0) (hVt : V ≠ ⊤)
@@ -378,23 +374,23 @@ theorem limit_cancel {κ : ℝ≥0} {pc vol V L : ℝ≥0∞} {P a b : ℝ → �
   exact (ENNReal.mul_left_inj hpw hpwt).1 e4
 
 /- English proof (translation)
-Introduce `hTate hPsi hRatio hHEx hTest hDens hLS hTI F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hCM hJ hli hlam hμ h𝓕 hmi hm κ hκ Λ hΛ`. Establish `hF : IsTotallyReal F` using `hCM.1`. Take `⟨⟨θ, hθc⟩, -⟩` from `PositivityTheory.PlacePermOperatorBicommutantSpan.theta_real F hF`. Establish `hr : IsRay θ (ray θ)` using `isRay_ray θ`. Take `⟨S, hS⟩` from `hTI F E σ J d b li lam μ 𝓕 mi m hCM hJ hli hlam hμ h𝓕 hmi hm κ hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, A, htest, hv0, hvt⟩` from `hTest F E σ J d b li lam μ 𝓕 mi m hCM hJ hli hlam hμ h𝓕 hmi hm S`. Take `⟨hmean, hoff⟩` from `hS S (Finset.Subset.refl _) φ A htest`. Take `⟨hGc, hGs, hgS, hdens⟩` from `hDens F E σ J d b li lam μ 𝓕 mi m hCM hJ hli hlam hμ h𝓕 hmi hm S φ A htest`. Take `⟨hb, hv, hl⟩` from `hLS F E σ J d b li lam μ 𝓕 mi m hCM hJ hli hlam hμ h𝓕 hmi hm θ hθc (ray θ) hr S φ A htest`. Take `⟨H, hH, hHo, hHi⟩` from `hHEx F E σ hCM`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV0, hVt, hT⟩` from `hTate F hF θ hθc (ray θ) hr`. Establish `hG0 : ∀ y, 0 ≤ Gi mi φ y` using `fun y => integral_nonneg fun X => htest.2.2.1 X`. Establish `hg0 : ∀ v y, 0 ≤ gv m A v y` using `fun v y => mul_nonneg (NNReal.coe_nonneg _) ENNReal.toReal_nonneg`. Take `⟨hDm, hRat⟩` from `hRatio F S (Gi mi φ) (gv m A) (eR E) hGc hG0 hg0 (fun v hv => (hgS v hv).1) (eR_cases E)`. Establish `hf : Measurable fun a => (κ : ℝ≥0∞) * pure S (Gi mi φ) (gv m A) (fun v => rv v (eR E v)) a` using `hDm.const_mul _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hth : ∀ n, th (fun a => (κ : ℝ≥0∞) * pure S (Gi mi φ) (gv m A) (fun v => rv v (eR E v)) a) n = κ * th (pure S (Gi mi φ) (gv m A) fun v => rv v (eR E v)) n` using `fun n => ENNReal.tsum_mul_left`. Establish `hAs : Asym (ray θ) H (fun a => (κ : ℝ≥0∞) * pure S (Gi mi φ) (gv m A) (fun v => rv v (eR E v)) a) (vol b li lam S φ A)` using `asym_of hH _ (fun ε hε => ray_mul_self θ hε.ne') (mean σ J μ 𝓕 φ A) _ (fun x n hn => by rw [hth]; exact hmean x n hn) (fun a ha => by simp [hoff H hH a ha]) hb hv hl`. Establish `hrH : ∀ δ : ℝ, 0 < δ → ray θ δ ∈ H` using `fun δ hδ => by`. Establish `hε : Real.sqrt δ ≠ 0` using `(Real.sqrt_pos.2 hδ).ne'`. Establish `e : ray θ δ = pr (1 : Fˣ) * (1 * (ray θ (Real.sqrt δ) * ray θ (Real.sqrt δ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ray_mul_self θ hε, Real.sq_sqrt hδ.le]`. Simplify using `[pr]`. Conclude with `(hH _).2 ⟨1, _, _, isNm_mul isNm_one _, e⟩`. Take `⟨-, hA⟩` from `hT H hHo (by rw [hHi]; norm_num) (pr_mem hH) hrH _ _ hf hAs`. Take `⟨hPm, hPas⟩` from `hPsi F hF θ hθc (ray θ) hr li lam hli hlam S (Gi mi φ) (gv m A) hGc hGs hG0 hg0 hgS`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hfin, hB⟩` from `hT ⊤ (by simp) (by simp) (fun _ => trivial) (fun _ _ => trivial) _ _ hPm hPas`. Take `⟨him, hre, hP⟩` from `lam_tendsto E S hΛ`. Rewrite `hB` using `[hdens]`. Establish `hzi : ∀ s : ℝ, zi (fun a => (κ : ℝ≥0∞) * pure S (Gi mi φ) (gv m A) (fun v => rv v (eR E v)) a) s = κ * zi (pure S (Gi mi φ) (gv m A) fun v => rv v (eR E v)) s` using `fun s => by`. Unfold `zi`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[mul_assoc]`. Conclude with `lintegral_const_mul' _ _ ENNReal.coe_ne_top`. Rewrite `hA` using `[hzi]`. Rewrite `hA` using `[hHi]`. Establish `hpc0 : ∏ v ∈ S, (cfac E v : ℝ≥0∞) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => ENNReal.coe_ne_zero.2 (cfac_ne_zero E v)`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpct : ∏ v ∈ S, (cfac E v : ℝ≥0∞) ≠ ⊤`. Rewrite using `[← ENNReal.ofNNReal_finsetProd]`. Conclude with `ENNReal.coe_ne_top`. Establish `key` using `limit_cancel (κ := κ) hpc0 hpct hv0 hvt hV0 hVt hP ENNReal.ofReal_ne_top (by simpa using hA) (by simpa using hB) (fun s hs => hRat s hs (hfin s hs))`. Establish `hk : Λ.re / 2 = (κ : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg ENNReal.toReal key` as an intermediate fact. Simplify `this` using `[ENNReal.toReal_div, ENNReal.toReal_ofReal hre]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[← hk]`. Simplify using `[him]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cnt_of : Tate → PsiSide → Ratio → HEx → TestEx → Dens → LSide → ThetaId → Cnt := by
   intro hTate hPsi hRatio hHEx hTest hDens hLS hTI F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hCM hJ hli hlam hμ h𝓕 hmi hm κ hκ Λ hΛ

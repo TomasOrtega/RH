@@ -28,11 +28,11 @@ def precompIso : (K₂ → ℤ) ≃o (K₁ → ℤ) where
       exact h (e k)
 
 /- English proof (translation)
-Establish `key : ∀ c, (∀ᶠ m in atTop, (fun m : K₂ → ℤ => g (m ∘ e)) m = c) ↔ ∀ᶠ m in atTop, g m = c`. Introduce `c`. Rewrite using `[← (precompIso e).map_atTop, Filter.eventually_map]`. Both sides reduce to the same expression. Unfold `eventualValue`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hg : ∃ c, ∀ᶠ m in atTop, g m = c`. Establish `hf : ∃ c, ∀ᶠ m in atTop, (fun m : K₂ → ℤ => g (m ∘ e)) m = c` using `hg.imp fun c hc => (key c).2 hc`. Rewrite using `[dif_pos hf, dif_pos hg]`. Take `⟨m, h1, h2⟩` from `(((key _).1 hf.choose_spec).and hg.choose_spec).exists`. Conclude with `h1.symm.trans h2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf : ¬ ∃ c, ∀ᶠ m in atTop, (fun m : K₂ → ℤ => g (m ∘ e)) m = c` using `fun ⟨c, hc⟩ => hg ⟨c, (key c).1 hc⟩`. Rewrite using `[dif_neg hf, dif_neg hg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventualValue_comp (g : (K₁ → ℤ) → ℤ) :
     eventualValue (fun m : K₂ → ℤ => g (m ∘ e)) = eventualValue g := by
@@ -53,9 +53,9 @@ theorem eventualValue_comp (g : (K₁ → ℤ) → ℤ) :
     rw [dif_neg hf, dif_neg hg]
 
 /- English proof (translation)
-Unfold `mixedDiff`. Establish `hl : List.ofFn (fun i => bs i ∘ e) = (List.ofFn bs).map (fun b => b ∘ e)`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Rewrite using `[hl]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `List.ofFn bs = l`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons b l ih`. Rewrite using `[List.foldr_cons, List.map_cons, List.foldr_cons, ih]`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -74,7 +74,7 @@ theorem mixedDiff_comp {n : ℕ} (bs : Fin n → K₂ → ℤ) (h : (K₁ → �
     rfl
 
 /- English proof (translation)
-Introduce `F _ S K' _ _ κ ι' E σ hσ P n bs`. Establish `hH : hilbFn (P.comap (rename σ)) = fun m => hilbFn P (m ∘ E.symm)`. Use function extensionality and compare the values at `fun m => h F S K' κ ι' E σ hσ P m`. Unfold `intNum`. Rewrite using `[hH, mixedDiff_comp E.symm bs (hilbFn P), eventualValue_comp E.symm (mixedDiff (fun i => bs i ∘ E.symm) (hilbFn P))]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem proof (h : RenameHilbFn.Statement.{u}) : RenameIntNum.Statement.{u} := by
   intro F _ S K' _ _ κ ι' E σ hσ P n bs

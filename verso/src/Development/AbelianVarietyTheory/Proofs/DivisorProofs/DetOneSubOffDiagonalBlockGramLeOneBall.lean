@@ -8,9 +8,9 @@ open scoped ENNReal Matrix
 namespace GlobalTheory.IntBall.DetLe
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_unique]`. Simplify using `only [Matrix.sub_apply, Matrix.one_apply_eq, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.sub_re, Complex.one_re, Complex.re_sum]`. Establish `: ∀ a : κ, 0 ≤ (star (Z a default) * Z a default).re`. Introduce `a`. Rewrite using `[show star (Z a default) = (starRingEnd ℂ) (Z a default) from rfl, mul_comm, Complex.mul_conj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Complex.normSq_nonneg]`. Combine the linear relations using `[Finset.sum_nonneg fun a (_ : a ∈ Finset.univ) => this a]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem re_det_one_sub_le_of_unique {κ ι : Type} [Fintype κ] [Fintype ι] [DecidableEq ι] [Unique ι]
     (Z : Matrix κ ι ℂ) : ((1 - Zᴴ * Z).det).re ≤ 1 := by
@@ -24,7 +24,7 @@ theorem re_det_one_sub_le_of_unique {κ ι : Type} [Fintype κ] [Fintype ι] [De
   linarith [Finset.sum_nonneg fun a (_ : a ∈ Finset.univ) => this a]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_one_sub_mul_comm]`. Use `re_det_one_sub_le_of_unique (Zᴴ)` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_conjTranspose]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem re_det_one_sub_le_of_unique' {κ ι : Type} [Fintype κ] [Fintype ι] [DecidableEq ι]
     [DecidableEq κ] [Unique κ] (Z : Matrix κ ι ℂ) : ((1 - Zᴴ * Z).det).re ≤ 1 := by
@@ -39,9 +39,9 @@ namespace GlobalTheory.IntBall
 open GlobalTheory.IntBall.DetLe
 
 /- English proof (translation)
-Introduce `E _ _ _ r X h z _ τ`. Establish `hle` using `X.p0_le`. Unfold `zDet`. Break down `h with h | h` into its components or cases. Use `letI : Unique {b : Fin r // (b : ℕ) < X.p0} := { default := ⟨⟨0, by omega⟩, by simp [h]⟩ uniq := fun b => Subtype.ext (Fin.ext (by have := b.2; simp only; omega)) }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Equip the data with the indicated structure.
 
-Conclude with `re_det_one_sub_le_of_unique _`. Use `letI : Unique {a : Fin r // X.p0 ≤ (a : ℕ)} := { default := ⟨⟨X.p0, by omega⟩, le_refl _⟩ uniq := fun a => Subtype.ext (Fin.ext (by have := a.2; have := a.1.2; simp only; omega)) }`. Conclude with `re_det_one_sub_le_of_unique' _`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem zDet_le_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r),
     (X.p0 = 1 ∨ X.p0 + 1 = r) → ∀ z : V (nd X), z ∈ Om X → ∀ τ : X.Ψ, zDet X z τ ≤ 1 := by

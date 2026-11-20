@@ -21,7 +21,7 @@ open GlobalTheory.PtTie
 namespace GlobalTheory.RecDepth
 
 /- English proof (translation)
-Introduce `hHT D T h j hj hinj EX w c hO hR la y`. Distinguish the cases in `hla : ∃ i : Fin 2, ((D.host.g i : ℕ) : 𝓞 T.Q.c.F) ∈ la.asIdeal`. Take `⟨i, hi⟩` from `hla`. Conclude with `GlobalTheory.T.thetaLatticeDepth_le_at_places_over_level hHT D T h j hj hinj EX w c hO hR la i hi y`. Conclude with `GlobalTheory.T.thetaLatticeDepth_le_at_places_prime_to_level D T h j hj hinj EX w c hO hR la (fun i hi => hla ⟨i, hi⟩) y`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem depth_le : (∀ (p : ℕ) [Fact p.Prime], Pdiv.ChartF.HTFSt p) → ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (w : WeightFamilies.Wt D j) (c : ℝ), Oriented T EX → RunNum D w c → ∀ (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (y : T.PtA j la), (recPJ h j hj).depth (sWt (recB h.toLawsCore) hinj EX w) w la y ≤ ((nusOf (recB h.toLawsCore) w (nuWt T w) la + c * (recPJ h j hj).phiC la y : ℝ) : EReal) := by
   intro hHT D T h j hj hinj EX w c hO hR la y

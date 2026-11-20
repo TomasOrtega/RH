@@ -5,15 +5,13 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory.LocM.Lift
 
 /- English proof (translation)
-Take `⟨V, hle⟩` from `(LocalSubring.range (locToFrac P)).exists_le_valuationSubring`. Take `⟨h1, h2⟩` from `hle`. Establish `hV : ∀ x, locToFrac P x ∈ V` using `fun x => h1 ⟨x, rfl⟩`. Set `g : Localization.AtPrime P →+* V` to `(locToFrac P).codRestrict V hV`. Establish `hg : IsLocalHom g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `hr : IsLocalHom (locToFrac P).rangeRestrict` using `.of_surjective _ (locToFrac P).rangeRestrict_surjective`. Use `hr.1 x (h2.1 ⟨locToFrac P x, x, rfl⟩ ?_)` and prove the remaining obligations. Take `⟨⟨y, hy⟩, e⟩` from `isUnit_iff_exists_inv.mp hx`. Conclude with `isUnit_iff_exists_inv.mpr ⟨⟨y, hy⟩, Subtype.ext congr(($e).1)⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨V, g.comp (algebraMap R (Localization.AtPrime P)), ?_, fun r hr => ?_, fun r hr => ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Conclude with `locToFrac_algebraMap P r`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(isUnit_map_iff g _).mp hu` as an intermediate fact. Establish `hm : algebraMap R (Localization.AtPrime P) r ∈ IsLocalRing.maximalIdeal _`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Conclude with `Ideal.mem_map_of_mem _ hr`. Conclude with `hm this`.
-
-Conclude with `(IsLocalization.map_units (Localization.AtPrime P) (⟨r, hr⟩ : P.primeCompl)).map g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_valuationSubring_centre (R : Type) [CommRing R] [IsDomain R] (P : Ideal R)
     [P.IsPrime] :

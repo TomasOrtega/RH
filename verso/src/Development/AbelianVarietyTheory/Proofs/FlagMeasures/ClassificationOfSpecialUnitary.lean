@@ -15,7 +15,7 @@ namespace GlobalTheory.SUtoU
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `hT`. Use `⟨T, fun g hg v => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, g₀, hg₀, rfl, -⟩` from `(GlobalTheory.T.unitary_to_special_unitary_local n hn ε).1 g hg`. Rewrite using `[h z hz g₀ hg₀, h' z hz g₀ hg₀, _root_.smul_apply, _root_.smul_apply, LinearIsometryEquiv.map_smul, hT g₀ hg₀ v]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem equivOn_of_ext (hn : 1 ≤ n) (ε : Fin n → Bool) {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] (m : ℤ)
@@ -40,9 +40,9 @@ def famU (ε : Fin n → Bool) (F : Fam n) : Fam n where
   π lam := Classical.epsilon (ExtProp ε F lam)
 
 /- English proof (translation)
-Establish `hn0 : (n : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [meanFree, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Rewrite using `[mul_div_cancel₀ _ hn0, sub_self]`. Introduce `a b h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hlam.1 (by simpa [meanFree] using h)`. Introduce `a b`. Take `⟨p, hp⟩` from `hlam.2 a`. Take `⟨q, hq⟩` from `hlam.2 b`. Conclude with `⟨p - q, by simp only [meanFree]; push_cast; linarith⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem parS_meanFree (hn : 1 ≤ n) {lam : Fin n → ℝ} (hlam : IsParU lam) : IsParS (meanFree lam) := by
   have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
@@ -57,9 +57,9 @@ theorem parS_meanFree (hn : 1 ≤ n) {lam : Fin n → ℝ} (hlam : IsParU lam) :
     exact ⟨p - q, by simp only [meanFree]; push_cast; linarith⟩
 
 /- English proof (translation)
-Take `⟨m, hsum, -, hext⟩` from `GlobalTheory.T.harish_chandra_parameter_descent n hn ε (F.H (meanFree lam)) (F.π (meanFree lam)) lam hlam`. Establish `hμ : meanFree lam = fun a => lam a - (m : ℝ) / n` using `by funext a; simp [meanFree, hsum]`. Establish `key : ∀ ν, ν = meanFree lam → IsHCS ε ν (F.π (meanFree lam))`. Introduce and unpack `ν rfl`. Conclude with `hF.1 _ (parS_meanFree hn hlam)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨π, hπ1, hπ2⟩` from `hext (key _ hμ.symm)`. Conclude with `⟨π, m, hsum, hπ1, hπ2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ext (hn : 1 ≤ n) (ε : Fin n → Bool) (F : Fam n) (hF : ParamS ε F) (lam : Fin n → ℝ)
     (hlam : IsParU lam) : ∃ π, ExtProp ε F lam π := by
@@ -71,28 +71,28 @@ theorem exists_ext (hn : 1 ≤ n) (ε : Fin n → Bool) (F : Fam n) (hF : ParamS
   exact ⟨π, m, hsum, hπ1, hπ2⟩
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (exists_ext hn ε F hF lam hlam)`.
+A detailed English derivation is pending.
 -/
 theorem famU_spec (hn : 1 ≤ n) (ε : Fin n → Bool) (F : Fam n) (hF : ParamS ε F) (lam : Fin n → ℝ)
     (hlam : IsParU lam) : ExtProp ε F lam ((famU ε F).π lam) :=
   Classical.epsilon_spec (exists_ext hn ε F hF lam hlam)
 
 /- English proof (translation)
-Introduce `n hn ε hS`. Take `⟨F, hP, hE⟩` from `hS`. Use `⟨famU ε F, fun lam hlam => ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, h⟩` from `famU_spec hn ε F hP lam hlam`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `lam lam' hlam ⟨w, hw, rfl⟩`. Establish `hlam' : IsParU (lam ∘ w)` using `⟨hlam.1.comp w.injective, fun a => hlam.2 (w a)⟩`. Take `⟨m, hs, he, -⟩` from `famU_spec hn ε F hP lam hlam`. Take `⟨m', hs', he', -⟩` from `famU_spec hn ε F hP _ hlam'`. Establish `hsum : ∑ a, lam (w a) = ∑ a, lam a` using `Equiv.sum_comp w lam`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmm : m' = m` using `by exact_mod_cast (hs'.symm.trans ((show ∑ a, (lam ∘ w) a = ∑ a, lam a from hsum).trans hs))`. Substitute `hmm` using the available equality. Use `equivOn_of_ext hn ε _ he he' ?_` and prove the remaining obligations. Establish `hc : ConjK ε (meanFree lam) (meanFree (lam ∘ w))` using `⟨w, hw, by funext a; simp [meanFree, Function.comp_apply, hsum]⟩`. Conclude with `(hP.2 _ _ (parS_meanFree hn hlam) (parS_meanFree hn hlam')).2 hc`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `H' _ _ σ hσ`. Take `⟨hc, hnt, hu, hirr, hsq⟩` from `hσ`. Take `⟨m, hm⟩` from `GlobalTheory.CentralChar.central_char n hn ε H' σ hc hnt hu hirr`. Take `⟨huS, hirrS, -, -⟩` from `GlobalTheory.T.extension_preserves_properties n hn ε H' m σ σ hm`. Establish `hsqS` using `(GlobalTheory.T.square_integrable_iff_extension n hn ε H' m σ σ hm hu).1 hsq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨lam', hpar', T, hT⟩` from `hE H' σ ⟨hc, hnt, huS hu, hirrS.1 hirr, hsqS⟩`. Set `ρ : Matrix (Fin n) (Fin n) ℂ → (F.H lam' →L[ℂ] F.H lam')` to `fun g => (T.toContinuousLinearEquiv : H' →L[ℂ] F.H lam').comp ((σ g).comp (T.symm.toContinuousLinearEquiv : F.H lam' →L[ℂ] H'))`. Establish `hρ : Ext ε m (F.π lam') ρ`. Introduce `z hz g hg`. Use extensionality with `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ρ (z • g) v = T (σ (z • g) (T.symm v))` using `rfl`. Rewrite using `[h1, hm z hz g hg, _root_.smul_apply, _root_.smul_apply, LinearIsometryEquiv.map_smul, hT g hg, LinearIsometryEquiv.apply_symm_apply]`. Take `⟨S, hS, -⟩` from `(hP.1 lam' hpar').2.2.1`. Take `⟨hparU, hsumU⟩` from `GlobalTheory.T.lowest_type_parameter_ascent n hn ε (F.H lam') m (F.π lam') ρ hρ lam' hpar' ⟨S, hS⟩`. Use `⟨fun a => lam' a + (m : ℝ) / n, hparU, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m₁, hs₁, he₁, -⟩` from `famU_spec hn ε F hP _ hparU`. Establish `hm₁ : m₁ = m` using `by exact_mod_cast hs₁.symm.trans hsumU`. Substitute `hm₁` using the available equality. Establish `hμ : meanFree (fun a => lam' a + (m₁ : ℝ) / n) = lam'`. Use function extensionality and compare the values at `a`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [meanFree]`. Rewrite using `[hsumU]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ ν, ν = lam' → EquivOn (SUset ε) σ (F.π ν)` using `by rintro ν rfl; exact ⟨T, hT⟩`. Conclude with `equivOn_of_ext hn ε _ hm he₁ (key _ hμ)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem classF_of_classS : ∀ (n : ℕ), 1 ≤ n → ∀ ε : Fin n → Bool, ClassS ε → ClassF ε := by
   intro n hn ε hS

@@ -10,9 +10,9 @@ open Formalism.IndefR.Fin.LevelGroupLemmas (resG detAt)
 namespace GlobalTheory.TopLevelInv
 
 /- English proof (translation)
-Unfold `kapAt GlobalTheory.FunObj.inBasis`. Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, GlobalTheory.SplitFlip.gdet, GlobalTheory.StepData.det_reGL]`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Take `⟨X, hX⟩ : ∃ X, X = (MulAut.conj (S.βp (j + 1))⁻¹) ((finG (G.V (.top (j + 1)))) k)` from `⟨_, rfl⟩`. Rewrite using `[← hX]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `((RingHom.map_det (StdFrames.cpt w) X.val).symm : _).trans (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[hX, MulAut.conj_apply, Units.val_mul, Units.val_mul, det_mul, det_mul, inv_inv, mul_right_comm, ← det_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, det_one, one_mul]`. Use `show ((Lev.finE (G.V (.top (j + 1))) (k : GA D (G.V (.top (j + 1))))).val).det = _`. Rewrite using `[GlobalTheory.VecInv.finE_val, RingHom.map_det]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem det_kapAt_val {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) (t : T) (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.top (j + 1))) (w : Pl D.host.E) :
@@ -34,21 +34,17 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Establish `he2 : e * e = e` using `(GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum hI).idem`. Establish `hinf` using `GlobalTheory.PlaceDatum.infPart_idemSum hI`. Establish `hcomp : ∀ Q, GlobalTheory.StdFrames.cpt (D` using `D) Q (toEAf D e) = if Q ∈ locPl G t then 1 else 0 := by`. Introduce `Q`. Take `⟨⟨es, hes, hsum⟩, -⟩` from `hI`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hsum, map_sum (toEAf D), map_sum (GlobalTheory.StdFrames.cpt (D := D) Q)]`. Use `split_ifs with hQ`. Rewrite using `[Finset.sum_eq_single Q (fun P hP hPQ => (GlobalTheory.StdFrames.cpt_of_isIdemAt (hes P hP)).2 Q (Ne.symm hPQ)) (fun h => absurd hQ h)]`. Conclude with `(GlobalTheory.StdFrames.cpt_of_isIdemAt (hes Q hQ)).1`. Conclude with `Finset.sum_eq_zero fun P hP => (GlobalTheory.StdFrames.cpt_of_isIdemAt (hes P hP)).2 Q (fun h => hQ (h ▸ hP))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hloc : ∀ (w Q : Pl D.host.E) (y : (Kw w)ˣ), GlobalTheory.StdFrames.cpt (D` using `D) Q (toEAf D (GlobalTheory.LFun.locIdele D.host.F w y : AE D)) = (Neutral.B1.finiteSingle D.host.E w (y : Kw w)) Q := by`. Introduce `w Q y`. Rewrite using `[GlobalTheory.DepthFix.cpt_eq_finAd]`. Conclude with `congrArg (fun z : FiniteAdeleRing (𝓞 D.host.E) D.host.E => z Q) (GlobalTheory.LFun.finTens_locIdele (F := D.host.F) w y)`. Establish `hdet : (mt (G.V (.top (j + 1))) (conjPt S j k)).det = (mt (G.V (.top (j + 1))) (k : GA D _)).det`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Unfold `Formalism.L2.Theta.mt`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply, ← Matrix.GeneralLinearGroup.val_det_apply]`. Use `congr 1`. Simplify using `only [conjPt, Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`. Rewrite using `[mul_right_comm, inv_mul_cancel, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Formalism.IndefR.Fin.LevelGroupLemmas.detAt_val he2, Units.coe_prod, hdet]`. Apply `GlobalTheory.FunObj.ae_ext` to reduce the goal to its premises. Rewrite using `[RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one, hinf, zero_mul, zero_add, sub_zero, map_prod]`. Conclude with `(Finset.prod_eq_one fun w _ => GlobalTheory.LFun.infTens_locIdele (F := D.host.F) w.1 _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `Q`. Simplify using `only [RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one, map_prod, hcomp, hloc]`. Distinguish the cases in `hQ : Q ∈ locPl G t`. Rewrite using `[if_pos hQ, one_mul, sub_self, add_zero, Finset.prod_eq_single ⟨Q, hQ⟩]`. Rewrite using `[GlobalTheory.LFun.finSingle_self, det_kapAt_val]`.
-
-Introduce `b _ hb`. Conclude with `GlobalTheory.LFun.finSingle_ne (fun h => hb (Subtype.ext h.symm)) _`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[if_neg hQ, zero_mul, zero_add, sub_zero]`.
-
-Conclude with `(Finset.prod_eq_one fun w _ => GlobalTheory.LFun.finSingle_ne (fun h => hQ (by rw [h]; exact w.2)) _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detAt_conjPt_eq_prod {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {U : Set T} (S : GridChoice W U) {t : T} (_ht : t ∈ U) (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.top (j + 1)))

@@ -15,19 +15,19 @@ def Kills (l : (V → ℂ) →ₗ[ℂ] ℂ) (U : Set V) : Prop := ∀ φ ∈ SB 
 def cosI (L : AddSubgroup V) (x : V) : V → ℂ := Set.indicator {y | y - x ∈ L} 1
 
 /- English proof (translation)
-The claim follows from `Set.indicator_of_mem (show y ∈ {y | y - x ∈ L} from h) _`.
+A detailed English derivation is pending.
 -/
 theorem cosI_of_mem {L : AddSubgroup V} {x y : V} (h : y - x ∈ L) : cosI L x y = 1 :=
   Set.indicator_of_mem (show y ∈ {y | y - x ∈ L} from h) _
 
 /- English proof (translation)
-The claim follows from `Set.indicator_of_notMem (show y ∉ {y | y - x ∈ L} from h) _`.
+A detailed English derivation is pending.
 -/
 theorem cosI_of_not {L : AddSubgroup V} {x y : V} (h : y - x ∉ L) : cosI L x y = 0 :=
   Set.indicator_of_notMem (show y ∉ {y | y - x ∈ L} from h) _
 
 /- English proof (translation)
-Establish `h1 : IsClopen {y | y - x ∈ L}` using `IsClopen.preimage (f := fun y => y - x) ⟨L.isClosed_of_isOpen ho, ho⟩ (by fun_prop)`. Use `⟨(LocallyConstant.indicator (1 : LocallyConstant V ℂ) h1).2, HasCompactSupport.intro' (hc.image (f := fun v => v + x) (by fun_prop)) ?_ fun y hy => cosI_of_not fun e => hy ⟨y - x, e, by simp⟩⟩` and prove the remaining obligations. Use `h1.1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Conclude with `⟨by rintro ⟨v, hv, rfl⟩; simpa using hv, fun e => ⟨y - x, e, by simp⟩⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem cosI_mem {L : AddSubgroup V} (ho : IsOpen (L : Set V)) (hc : IsCompact (L : Set V)) (x : V) : cosI L x ∈ SB V := by
   have h1 : IsClopen {y | y - x ∈ L} :=
@@ -39,7 +39,7 @@ theorem cosI_mem {L : AddSubgroup V} (ho : IsOpen (L : Set V)) (hc : IsCompact (
   exact ⟨by rintro ⟨v, hv, rfl⟩; simpa using hv, fun e => ⟨y - x, e, by simp⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hφ.1.comp_continuous hf, HasCompactSupport.intro (hφ.2.isCompact.image hg) fun x hx => by by_contra e exact hx ⟨f x, subset_closure e, h x⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem sb_comp {X : Type} [TopologicalSpace X] [T2Space X] {φ : X → ℂ} (hφ : φ ∈ SB X) {f g : X → X} (hf : Continuous f)
     (hg : Continuous g) (h : ∀ x, g (f x) = x) : (fun x => φ (f x)) ∈ SB X :=
@@ -48,19 +48,17 @@ theorem sb_comp {X : Type} [TopologicalSpace X] [T2Space X] {φ : X → ℂ} (h�
     exact hx ⟨f x, subset_closure e, h x⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `φ _ h0 _`. Establish `: φ = 0` using `funext fun y => by by_contra e; simpa using h0 y e`. Rewrite using `[this, map_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `insert c s _ ih`. Introduce `φ hφ h0 h1`. Establish `e0 : ∀ y, y - c ∈ L → (φ - φ c • cosI L c) y = 0` using `fun y hy => by`. Use `hφ c _ hy` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[cosI_of_mem hy, this]`. Establish `e1 : ∀ y, y - c ∉ L → (φ - φ c • cosI L c) y = φ y` using `fun y hy => by simp [cosI_of_not hy]`. Establish `h2` using `ih (φ - φ c • cosI L c) (fun x v hv => by`. Distinguish the cases in `hx : x - c ∈ L`. Rewrite using `[e0 x hx, e0 _ (by convert add_mem hx hv using 1; abel)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1 x hx, e1 _ fun e => hx (by convert sub_mem e hv using 1; abel), hφ x v hv]) (fun y hy => by`. Distinguish the cases in `hx : y - c ∈ L`. Conclude with `(hy (e0 y hx)).elim`. Rewrite `hy` using `[e1 y hx]`. Take `⟨c', hc', e⟩` from `h0 y hy`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_insert.1 hc' with rfl | hc'` into its components or cases. Conclude with `(hx e).elim`. Conclude with `⟨c', hc', e⟩) fun y hy => by`. Distinguish the cases in `hx : y - c ∈ L`. Conclude with `(hy (e0 y hx)).elim`.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy` using `[e1 y hx]`. Conclude with `h1 y hy`. Rewrite `h2` using `[map_sub, map_smul, sub_eq_zero]`. Rewrite using `[h2]`. Distinguish the cases in `hc : φ c = 0`.
-
-Rewrite using `[hc, zero_smul]`. Rewrite using `[h1 c hc, smul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decomp (l : (V → ℂ) →ₗ[ℂ] ℂ) (L : AddSubgroup V) (s : Finset V) : ∀ φ : V → ℂ, (∀ x, ∀ v ∈ L, φ (x + v) = φ x) →
     (∀ y, φ y ≠ 0 → ∃ c ∈ s, y - c ∈ L) → (∀ x, φ x ≠ 0 → l (cosI L x) = 0) → l φ = 0 := by
@@ -111,18 +109,18 @@ def scl (a : k) (Λ : AddSubgroup V) : AddSubgroup V where
     rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_scl {a : k} {Λ : AddSubgroup V} {v : V} : v ∈ scl a Λ ↔ a⁻¹ • v ∈ Λ := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `ho.preimage (f := fun v : V => a⁻¹ • v) (by fun_prop)`.
+A detailed English derivation is pending.
 -/
 theorem scl_open {Λ : AddSubgroup V} (ho : IsOpen (Λ : Set V)) (a : k) : IsOpen (scl a Λ : Set V) :=
   ho.preimage (f := fun v : V => a⁻¹ • v) (by fun_prop)
 
 /- English proof (translation)
-Use `hc.image (f := fun v : V => a • v) (by fun_prop) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `v`. Use `⟨fun h => ⟨_, h, by simp [smul_smul, ha]⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨w, hw, rfl⟩`. Simplify `hw` using `[mem_scl, smul_smul, ha]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem scl_compact {Λ : AddSubgroup V} (hc : IsCompact (Λ : Set V)) {a : k} (ha : a ≠ 0) : IsCompact (scl a Λ : Set V) := by
   convert hc.image (f := fun v : V => a • v) (by fun_prop) using 1
@@ -132,7 +130,7 @@ theorem scl_compact {Λ : AddSubgroup V} (hc : IsCompact (Λ : Set V)) {a : k} (
   simpa [mem_scl, smul_smul, ha] using hw
 
 /- English proof (translation)
-Establish `h : ∀ᶠ z : k × V in 𝓝 (0, Y₀), ∀ w ∈ (Λ : Set V), z.2 + z.1 • w ∈ Ω` using `hc.eventually_forall_of_forall_eventually fun w _ => by`. Establish `hh : Continuous fun p : (k × V) × V => p.1.2 + p.1.1 • p.2` using `by fun_prop`. Conclude with `hh.continuousAt.eventually_mem (by simpa using hΩ)`. Use `filter_upwards [h] with z hz h0 v hv`. Simplify `hz _ hv` using `[smul_smul, h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem near {Λ : AddSubgroup V} (hc : IsCompact (Λ : Set V)) {Y₀ : V} {Ω : Set V} (hΩ : Ω ∈ 𝓝 Y₀) :
     ∀ᶠ z : k × V in 𝓝 (0, Y₀), z.1 ≠ 0 → ∀ v ∈ scl z.1 Λ, z.2 + v ∈ Ω := by
@@ -146,13 +144,13 @@ theorem near {Λ : AddSubgroup V} (hc : IsCompact (Λ : Set V)) {Y₀ : V} {Ω :
 variable [NeBot (𝓝[≠] (0 : k))]
 
 /- English proof (translation)
-Establish `hK : IsCompact {y | φ y ≠ 0}` using `hφ.2.isCompact.of_isClosed_subset (hφ.1.isClopen_fiber 0).compl.1 subset_closure`. Establish `h1 : ∀ᶠ a : k in 𝓝 0, ∀ x ∈ {y | φ y ≠ 0}, a ≠ 0 → (∀ v ∈ scl a Λ, φ (x + v) = φ x) ∧ l (cosI (scl a Λ) x) = 0` using `hK.eventually_forall_of_forall_eventually fun Y₀ hY => by`. Take `⟨Ω, hΩ, hh⟩` from `h Y₀ hY`. Use `filter_upwards [near (k := k) hc hΩ, near (k := k) hc ((hφ.1.isOpen_fiber (φ Y₀)).mem_nhds rfl)] with z e1 e2 h0`. Use `⟨fun v hv => ?_, hh _ h0 _ (e1 h0)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a1 : φ (z.2 + v) = φ Y₀` using `e2 h0 v hv`. Establish `a2 : φ (z.2 + 0) = φ Y₀` using `e2 h0 0 (zero_mem _)`. Rewrite using `[a1, ← a2, add_zero]`. Take `⟨a, ha, ha0⟩` from `((h1.filter_mono (nhdsWithin_le_nhds (s := {0}ᶜ))).and self_mem_nhdsWithin).exists`. Establish `ha0 : a ≠ 0` using `ha0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, -, hs⟩` from `hK.elim_nhds_subcover (fun c => {y | y - c ∈ scl a Λ}) fun c _ => ((scl_open ho a).preimage (f := fun y => y - c) (by fun_prop)).mem_nhds (by simp)`. Use `decomp l (scl a Λ) s φ (fun x v hv => ?_) (fun y hy => by simpa using hs hy) fun x hx => (ha x hx ha0).2` and prove the remaining obligations. Distinguish the cases in `hx : φ x = 0`. Assume the negation of the conclusion as `e`. Use `(ha (x + v) (fun e' => e (e'.trans hx.symm)) ha0).1 (-v) (neg_mem hv)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[add_neg_cancel_right]`. Conclude with `e this.symm`. Conclude with `(ha x hx ha0).1 v hv`.
+A detailed English derivation is pending.
 -/
 theorem small {Λ : AddSubgroup V} (ho : IsOpen (Λ : Set V)) (hc : IsCompact (Λ : Set V)) (l : (V → ℂ) →ₗ[ℂ] ℂ) {φ : V → ℂ}
     (hφ : φ ∈ SB V) (h : ∀ Y₀, φ Y₀ ≠ 0 → ∃ Ω ∈ 𝓝 Y₀, ∀ a : k, a ≠ 0 → ∀ x, (∀ v ∈ scl a Λ, x + v ∈ Ω) → l (cosI (scl a Λ) x) = 0) :
@@ -180,7 +178,7 @@ theorem small {Λ : AddSubgroup V} (ho : IsOpen (Λ : Set V)) (hc : IsCompact (�
   · exact (ha x hx ha0).1 v hv
 
 /- English proof (translation)
-Introduce `φ hφ hU` and use `small (k := k) ho hc l hφ fun Y₀ hY => by obtain ⟨Ω, hΩ, hh⟩ := h Y₀ (hU _ hY) refine ⟨Ω, hΩ, fun a ha x hx => hh _ (cosI_mem (scl_open ho a) (scl_compact hc ha) x) fun y hy => ?_⟩ have := hx (y - x) (by by_contra e; exact hy (cosI_of_not e)) rwa [add_sub_cancel] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kills_of_local (k : Type) [Field k] [TopologicalSpace k] [Module k V] [ContinuousSMul k V] [NeBot (𝓝[≠] (0 : k))] {Λ : AddSubgroup V} (ho : IsOpen (Λ : Set V)) (hc : IsCompact (Λ : Set V)) (l : (V → ℂ) →ₗ[ℂ] ℂ) {U : Set V}
     (h : ∀ Y₀ ∈ U, ∃ Ω ∈ 𝓝 Y₀, Kills l Ω) : Kills l U := fun φ hφ hU =>
@@ -191,7 +189,7 @@ theorem kills_of_local (k : Type) [Field k] [TopologicalSpace k] [Module k V] [C
     rwa [add_sub_cancel] at this
 
 /- English proof (translation)
-Introduce `φ hφ hs` and use `small (k := k) ho hc l hφ fun Y₀ hY => by refine ⟨Ω, mem_interior_iff_mem_nhds.1 (hs _ hY), fun a ha x hx => ?_⟩ have hm := cosI_mem (scl_open ho a) (scl_compact hc ha) x by_cases hh : ∀ y, y - x ∈ scl a Λ → y ∈ U · exact hU _ hm fun y hy => hh y (by by_contra e; exact hy (cosI_o …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kills_interior {Λ : AddSubgroup V} (ho : IsOpen (Λ : Set V)) (hc : IsCompact (Λ : Set V)) (l : (V → ℂ) →ₗ[ℂ] ℂ) {U Ω : Set V}
     (hU : Kills l U) (h : ∀ Y ∈ Ω, Y ∈ U ∨ ∃ (s : V →ₗ[k] V) (c : ℂ), c ≠ 1 ∧ s Y = Y ∧ (∀ v, s v ∈ Λ ↔ v ∈ Λ) ∧
@@ -219,17 +217,15 @@ theorem kills_interior {Λ : AddSubgroup V} (ho : IsOpen (Λ : Set V)) (hc : IsC
       exact (mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hc1)
 
 /- English proof (translation)
-Establish `cA : Continuous (A Y₀)` using `continuous_iff_continuousAt.2 fun v => ContinuousAt.comp (g := fun p : V × V => A p.1 p.2) (f := fun w => (Y₀, w)) (hA v) (by fun_prop)`. Establish `cB : Continuous (B Y₀)` using `continuous_iff_continuousAt.2 fun v => ContinuousAt.comp (g := fun p : V × V => B p.1 p.2) (f := fun w => (Y₀, w)) (hB v) (by fun_prop)`. Set `Λ : AddSubgroup V` to `Λ₀ ⊓ Λ₀.comap (A Y₀).toAddMonoidHom ⊓ Λ₀.comap (B Y₀).toAddMonoidHom ⊓ Λ₀.comap ((A Y₀).comp (B Y₀)).toAddMonoidHom`. Establish `hm : ∀ v, v ∈ Λ ↔ ((v ∈ Λ₀ ∧ A Y₀ v ∈ Λ₀) ∧ B Y₀ v ∈ Λ₀) ∧ A Y₀ (B Y₀ v) ∈ Λ₀` using `fun v => Iff.rfl`. Establish `ho' : IsOpen (Λ : Set V)` using `((ho.inter (ho.preimage cA)).inter (ho.preimage cB)).inter (ho.preimage (cA.comp cB))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : IsCompact (Λ : Set V)` using `hc.of_isClosed_subset (Λ.isClosed_of_isOpen ho') fun v hv => ((hm v).1 hv).1.1.1`. Establish `eA : ∀ᶠ Y in 𝓝 Y₀, ∀ v ∈ (Λ : Set V), A Y v ∈ Λ` using `hc'.eventually_forall_of_forall_eventually fun v hv => (hA v).eventually_mem (ho'.mem_nhds (by`. Take `⟨⟨⟨_, a2⟩, _⟩, a4⟩` from `(hm v).1 hv`. Use `(hm _).2 ⟨⟨⟨a2, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hA0]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Rewrite using `[← hAB]` and apply the resulting hypothesis. Rewrite using `[← hAB, hA0]`. Conclude with `zero_mem _))`. Establish `eB : ∀ᶠ Y in 𝓝 Y₀, ∀ v ∈ (Λ : Set V), B Y v ∈ Λ` using `hc'.eventually_forall_of_forall_eventually fun v hv => (hB v).eventually_mem (ho'.mem_nhds (by`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨⟨_, _⟩, a3⟩, a4⟩` from `(hm v).1 hv`. Use `(hm _).2 ⟨⟨⟨a3, a4⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hB0]`. Conclude with `zero_mem _`. Rewrite using `[hB0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `zero_mem _))`. Establish `key : ∀ C : V →ₗ[k] V, (∀ v ∈ (Λ : Set V), C v ∈ Λ) → (∀ v, C (C v) = 0) → ∀ v, v + C v ∈ Λ ↔ v ∈ Λ` using `fun C h1 h2 v => ⟨fun e => by`. Use `sub_mem e (h1 _ e)` as an intermediate fact. Rewrite using `[map_add, h2, add_zero, add_sub_cancel_right] at this, fun e => add_mem e (h1 v e)⟩` and apply the resulting hypothesis. Use `⟨_, interior_mem_nhds.2 ((h.and eA).and eB), kills_interior (k := k) ho' hc' l hU fun Y hY => ?_⟩` and prove the remaining obligations.
-
-Take `⟨⟨hY | ⟨a1, a2, a3, c, a4, a5⟩, b1⟩, b2⟩` from `hY`. Conclude with `Or.inl hY`. Conclude with `Or.inr ⟨(LinearMap.id + A Y).comp (LinearMap.id + B Y), c, a4, a3, fun v => (key _ b1 a1 _).trans (key _ b2 a2 v), a5⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem dead {Λ₀ : AddSubgroup V} (ho : IsOpen (Λ₀ : Set V)) (hc : IsCompact (Λ₀ : Set V)) (l : (V → ℂ) →ₗ[ℂ] ℂ) {U : Set V}
     (hU : Kills l U) (Y₀ : V) (A B : V → V →ₗ[k] V) (hA : ∀ v, ContinuousAt (fun p : V × V => A p.1 p.2) (Y₀, v))

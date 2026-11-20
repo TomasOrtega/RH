@@ -25,28 +25,28 @@ variable {V V' H Z : HSp D} {r : ℕ} (d : HypDec V V' r) (dH : HypDec H Z r)
 def embMat : Matrix (Fin V.rank) (Fin H.rank) D.host.E := d.e * dH.qX + d.e' * dH.qY
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc]`. Conclude with `d.ee`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ee_assoc {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : d.eᴴ * (S.gram * d.e) = 0 := by
   rw [← Matrix.mul_assoc]
   exact d.ee
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc]`. Conclude with `d.e'e'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e'e'_assoc {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : d.e'ᴴ * (S.gram * d.e') = 0 := by
   rw [← Matrix.mul_assoc]
   exact d.e'e'
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc]`. Conclude with `d.e'e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e'e_assoc {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : d.e'ᴴ * (S.gram * d.e) = 1 := by
   rw [← Matrix.mul_assoc]
   exact d.e'e
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.conjTranspose d.e'e`. Rewrite `h` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, GlobalTheory.MixModel.gram_conjTranspose, Matrix.conjTranspose_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ee'_assoc {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : d.eᴴ * (S.gram * d.e') = 1 := by
   have h := congrArg Matrix.conjTranspose d.e'e
@@ -55,21 +55,21 @@ theorem ee'_assoc {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : d.eᴴ * 
   exact h
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc]`. Conclude with `d.i₀e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem i₀e_assoc {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : d.i₀ᴴ * (S.gram * d.e) = 0 := by
   rw [← Matrix.mul_assoc]
   exact d.i₀e
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc]`. Conclude with `d.i₀e'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem i₀e'_assoc {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : d.i₀ᴴ * (S.gram * d.e') = 0 := by
   rw [← Matrix.mul_assoc]
   exact d.i₀e'
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.conjTranspose d.i₀e`. Rewrite `h` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, GlobalTheory.MixModel.gram_conjTranspose, Matrix.conjTranspose_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ei₀_assoc {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : d.eᴴ * (S.gram * d.i₀) = 0 := by
   have h := congrArg Matrix.conjTranspose d.i₀e
@@ -78,7 +78,7 @@ theorem ei₀_assoc {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : d.eᴴ 
   exact h
 
 /- English proof (translation)
-Establish `h1` using `e'e_assoc dH`. Establish `h0` using `ee_assoc dH`. Simplify using `only [embMat, GlobalTheory.MixModel.HypDec.qX, GlobalTheory.MixModel.HypDec.qY, Matrix.add_mul, Matrix.mul_assoc, h1, h0, Matrix.mul_one, Matrix.mul_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem embMat_e : embMat d dH * dH.e = d.e := by
   have h1 := e'e_assoc dH
@@ -87,7 +87,7 @@ theorem embMat_e : embMat d dH * dH.e = d.e := by
     Matrix.mul_one, Matrix.mul_zero, add_zero]
 
 /- English proof (translation)
-Establish `h1` using `ee'_assoc dH`. Establish `h0` using `e'e'_assoc dH`. Simplify using `only [embMat, GlobalTheory.MixModel.HypDec.qX, GlobalTheory.MixModel.HypDec.qY, Matrix.add_mul, Matrix.mul_assoc, h1, h0, Matrix.mul_one, Matrix.mul_zero, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem embMat_e' : embMat d dH * dH.e' = d.e' := by
   have h1 := ee'_assoc dH
@@ -96,7 +96,7 @@ theorem embMat_e' : embMat d dH * dH.e' = d.e' := by
     Matrix.mul_one, Matrix.mul_zero, zero_add]
 
 /- English proof (translation)
-Establish `h1 : d.eᴴ * V.gram * d.e' = 1`. Rewrite using `[Matrix.mul_assoc]`. Conclude with `ee'_assoc d`. Rewrite using `[embMat, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, d.ee, h1, Matrix.zero_mul, Matrix.one_mul, zero_add]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem iso_embMat : d.eᴴ * V.gram * embMat d dH = dH.eᴴ * H.gram := by
   have h1 : d.eᴴ * V.gram * d.e' = 1 := by
@@ -107,7 +107,7 @@ theorem iso_embMat : d.eᴴ * V.gram * embMat d dH = dH.eᴴ * H.gram := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[embMat, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, d.i₀e, d.i₀e', Matrix.zero_mul, Matrix.zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mid_embMat : d.i₀ᴴ * V.gram * embMat d dH = 0 := by
   rw [embMat, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, d.i₀e, d.i₀e', Matrix.zero_mul,
@@ -120,7 +120,7 @@ section Form
 variable {V V' H Z : HSp D} {r : ℕ} (d : HypDec V V' r) (dH : HypDec H Z r) (W : HSp D)
 
 /- English proof (translation)
-Use `haveI : IsEmpty (Fin Z.rank) := by`. Rewrite using `[hZ]`. Use `infer_instance`. Rewrite using `[GlobalTheory.MixModel.hO_eq_trace]`. Simplify using `[Matrix.trace]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hO_rank_zero (hZ : Z.rank = 0) (x y : WO Z W) : hO Z W x y = 0 := by
   haveI : IsEmpty (Fin Z.rank) := by
@@ -130,7 +130,7 @@ theorem hO_rank_zero (hZ : Z.rank = 0) (x y : WO Z W) : hO Z W x y = 0 := by
   simp [Matrix.trace]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc]`. Use `congr 1`. Use `show rat (embMat d dH) * rat dH.e = rat d.e`. Rewrite using `[← GlobalTheory.MixModel.rat_mul, embMat_e]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_embMat_jX (x : WO V W) : x * rat (embMat d dH) * dH.jX = x * d.jX := by
   rw [Matrix.mul_assoc]
@@ -139,7 +139,7 @@ theorem mul_embMat_jX (x : WO V W) : x * rat (embMat d dH) * dH.jX = x * d.jX :=
   rw [← GlobalTheory.MixModel.rat_mul, embMat_e]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc]`. Use `congr 1`. Use `show rat (embMat d dH) * rat dH.e' = rat d.e'`. Rewrite using `[← GlobalTheory.MixModel.rat_mul, embMat_e']`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_embMat_jY (x : WO V W) : x * rat (embMat d dH) * dH.jY = x * d.jY := by
   rw [Matrix.mul_assoc]
@@ -148,7 +148,7 @@ theorem mul_embMat_jY (x : WO V W) : x * rat (embMat d dH) * dH.jY = x * d.jY :=
   rw [← GlobalTheory.MixModel.rat_mul, embMat_e']
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.MixModel.HypDec.hO_coordS d, GlobalTheory.MixModel.HypDec.hO_coordS dH, hO_rank_zero W hZ, mul_embMat_jX d dH W x, mul_embMat_jX d dH W y, mul_embMat_jY d dH W x, mul_embMat_jY d dH W y]`. Use `show _ = hO V' W (x * d.j0) (y * d.j0) + _`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem hO_split (hZ : Z.rank = 0) (x y : WO V W) :
     hO V W x y = hO V' W (x * rat d.i₀) (y * rat d.i₀) + hO H W (x * rat (embMat d dH)) (y * rat (embMat d dH)) := by
@@ -158,7 +158,7 @@ theorem hO_split (hZ : Z.rank = 0) (x y : WO V W) :
   abel
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.MixModel.symplOH_eq, GlobalTheory.MixModel.sandwich_apply, GlobalTheory.MixModel.rat_one, Matrix.one_mul]`. Rewrite using `[hO_split d dH W hZ, map_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_split (hZ : Z.rank = 0) (x y : WO V W) :
     symplOH V W x y =
@@ -174,9 +174,9 @@ section Res
 variable {V V' H Z W : HSp D} {r : ℕ} (d : HypDec V V' r) (dH : HypDec H Z r)
 
 /- English proof (translation)
-Establish `hadj : ∀ {m n : ℕ} (A : Matrix (Fin m) (Fin n) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D A = Aᴴ` using `fun A => GlobalTheory.MixModel.cT_sig A`. Establish `h1 : (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D d.e * V.gram).map (incA D) * rat d.i₀ = 0` using `by show rat (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D d.e * V.gram) * rat d.i₀ = 0`. Rewrite using `[← GlobalTheory.MixModel.rat_mul, hadj, Matrix.mul_assoc, ei₀_assoc d, GlobalTheory.MixModel.rat_zero]`. Establish `h2 : (V'.gram⁻¹ * GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D d.i₀ * V.gram).map (incA D) * rat d.i₀ = 1` using `by show rat (V'.gram⁻¹ * GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D d.i₀ * V.gram) * rat d.i₀ = 1`. Rewrite using `[← GlobalTheory.MixModel.rat_mul, hadj, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc d.i₀ᴴ, d.iso, Matrix.nonsing_inv_mul _ (GlobalTheory.MixModel.gram_isUnit_det V'), GlobalTheory.MixModel.rat_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.MixModel.sandwich_apply, GlobalTheory.MixModel.rat_one, Matrix.one_mul, Matrix.add_mul]`. Unfold `isoPart midPart`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h1, h2, Matrix.mul_zero, Matrix.mul_one, zero_add]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sand_B (y : Mx D W.rank r) (x : WO V' W) :
     sandwich (rat 1) (rat d.i₀) (isoPart V W d.e y + midPart V V' W d.i₀ x) = x := by
@@ -194,9 +194,9 @@ theorem sand_B (y : Mx D W.rank r) (x : WO V' W) :
   rw [Matrix.mul_assoc, Matrix.mul_assoc, h1, h2, Matrix.mul_zero, Matrix.mul_one, zero_add]
 
 /- English proof (translation)
-Establish `hadj : ∀ {m n : ℕ} (A : Matrix (Fin m) (Fin n) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D A = Aᴴ` using `fun A => GlobalTheory.MixModel.cT_sig A`. Establish `h1 : (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D d.e * V.gram).map (incA D) * rat (embMat d dH) = (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D dH.e * H.gram).map (incA D)` using `by show rat (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D d.e * V.gram) * rat (embMat d dH) = rat (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D dH.e * H.gram)`. Rewrite using `[← GlobalTheory.MixModel.rat_mul, hadj, hadj, iso_embMat]`. Establish `h2 : (V'.gram⁻¹ * GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D d.i₀ * V.gram).map (incA D) * rat (embMat d dH) = 0` using `by show rat (V'.gram⁻¹ * GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D d.i₀ * V.gram) * rat (embMat d dH) = 0`. Rewrite using `[← GlobalTheory.MixModel.rat_mul, hadj, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc d.i₀ᴴ, mid_embMat, Matrix.mul_zero, GlobalTheory.MixModel.rat_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.MixModel.sandwich_apply, GlobalTheory.MixModel.rat_one, Matrix.one_mul, Matrix.add_mul]`. Unfold `isoPart midPart`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h1, h2, Matrix.mul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sand_A (y : Mx D W.rank r) (x : WO V' W) :
     sandwich (rat 1) (rat (embMat d dH)) (isoPart V W d.e y + midPart V V' W d.i₀ x) = isoPart H W dH.e y := by
@@ -215,13 +215,13 @@ theorem sand_A (y : Mx D W.rank r) (x : WO V' W) :
   rw [Matrix.mul_assoc, Matrix.mul_assoc, h1, h2, Matrix.mul_zero, add_zero]
 
 /- English proof (translation)
-Take `⟨fH, hfH, hne⟩` from `(GlobalTheory.TowerRestrict.res_theta D H Z W r dH.e dH.i₀ hsH ψ hψ μ 𝓨 hμ).2`. Generalize the expression as in `hcv : res H Z W dH.e dH.i₀ μ 𝓨 fH 0 = c`. Establish `hc : c ≠ 0`. Introduce and unpack `rfl`. Apply `hne` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `z`. Establish `hz : z = 0` using `by haveI : IsEmpty (Fin Z.rank) := by`. Rewrite using `[hZ]`. Use `infer_instance`. Conclude with `Matrix.ext fun _ j => isEmptyElim j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hz` using the available equality. Conclude with `hcv`. Establish `hint : ∫ y in 𝓨, fH (isoPart H W dH.e y) ∂μ = c`. Rewrite using `[← hcv]`. Simplify using `only [res, GlobalTheory.TowerRestrict.midPart_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `⟨fun w => f' (sandwich (rat 1) (rat d.i₀) w) * (c⁻¹ • fH) (sandwich (rat 1) (rat (embMat d dH)) w), ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.MixModel.isThetaFunO_prod 1 d.i₀ 1 (embMat d dH) (symplOH_split d dH W hZ) hf' (GlobalTheory.OrientedHeis.theta_smul c⁻¹ hfH)`. Use function extensionality and compare the values at `x`. Simplify using `only [res, sand_B, sand_A, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_const_mul, integral_const_mul, hint, inv_mul_cancel₀ hc, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surj_core (hZ : Z.rank = 0) (hsH : IsIsoSplit H Z dH.e dH.i₀) (ψ : AddChar (AF D.host.F) ℂ)
     (hψ : IsStdChar D ψ (-1)) (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r))
@@ -251,15 +251,13 @@ theorem surj_core (hZ : Z.rank = 0) (hsH : IsIsoSplit H Z dH.e dH.i₀) (ψ : Ad
     rw [integral_const_mul, integral_const_mul, hint, inv_mul_cancel₀ hc, mul_one]
 
 /- English proof (translation)
-Establish `hadj : ∀ {m n : ℕ} (A : Matrix (Fin m) (Fin n) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj D A = Aᴴ` using `fun A => GlobalTheory.MixModel.cT_sig A`. Use `⟨⟨hρ, ?_, ?_⟩, ?_, ?_, d.rank_add.symm.trans (Nat.add_comm _ _ ▸ rfl)⟩` and prove the remaining obligations. Apply `Fintype.linearIndependent_iff.2` to reduce the goal to its premises. Introduce `g hg`. Establish `h1 : d.e.mulVec g = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Establish `hk` using `congrFun hg k`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Matrix.transpose_apply, smul_eq_mul, Pi.zero_apply] at hk`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`. Rewrite using `[← hk]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `h2 : (d.e'ᴴ * S.gram * d.e).mulVec g = 0`. Rewrite using `[← Matrix.mulVec_mulVec, h1, Matrix.mulVec_zero]`. Rewrite `h2` using `[d.e'e, Matrix.one_mulVec]`. Conclude with `fun i => congrFun h2 i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.MixModel.cT_sig]`. Conclude with `d.ee`. Rewrite using `[hadj]`. Conclude with `d.iso`. Rewrite using `[hadj, Matrix.mul_assoc]`.
-
-Conclude with `ei₀_assoc d`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIsoSplit_of_hypDec {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (hρ : 0 < ρ) :
     GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.IsIsoSplit S S₀ d.e d.i₀ := by
@@ -289,7 +287,7 @@ private theorem isIsoSplit_of_hypDec {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : H
 end Res
 
 /- English proof (translation)
-Introduce `D V V' W r C B hs ψ hψ μ 𝓨 hμ f' hf'`. Take `⟨d, hdC, hdB, -⟩` from `GlobalTheory.T.exists_wittDecomposition_isotropicSplit_unipotent D V V' r C B hs`. Substitute `hdC hdB` using the available equality. Conclude with `surj_core d (GlobalTheory.Core.Rk.SWLaw.dblDec (Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral r)) rfl (isIsoSplit_of_hypDec _ hs.frame.1) ψ hψ μ 𝓨 hμ f' hf'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem res_surjective : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.IsIsoSplit V V' C B → ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D W.rank r) μ 𝓨 → ∀ f', IsThetaFunO ψ V' W f' → ∃ f, IsThetaFunO ψ V W f ∧ f' = GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 f := by
   intro D V V' W r C B hs ψ hψ μ 𝓨 hμ f' hf'

@@ -14,11 +14,11 @@ noncomputable section
 namespace GlobalTheory.LamF.KeyArch
 
 /- English proof (translation)
-Take `⟨u, Hm, W, χ, θ, Fd, h₁, h₂, h₃, h₄, h₅, h₆, h₇⟩` from `h`. Take `⟨u', τ, M, a, b, c, -, -, -, -, -, -, -, -, -, -, e⟩` from `keyIn_normal_form_and_archimedean_constant hU x u Hm W χ θ Fd nth nη h₁ h₂ h₃ h₄ h₅ h₆ h₇`. Establish `p₁ : 0 ≤ nth` using `h₆ ▸ div_nonneg (MeasureTheory.integral_nonneg fun z => by positivity) ENNReal.toReal_nonneg`. Establish `p₂ : 0 ≤ nη` using `h₇ ▸ by positivity`. Establish `hne : ‖M.det ^ 4 / c ^ 8‖ * nth ^ 4 * nη ^ 2 ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression. Establish `q₁` using `right_ne_zero_of_mul (left_ne_zero_of_mul hne)`. Establish `q₂` using `right_ne_zero_of_mul hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨p₁.lt_of_ne' fun h0 => q₁ (by rw [h0]; norm_num), p₂.lt_of_ne' fun h0 => q₂ (by rw [h0]; norm_num)⟩`.
+Supply the required witnesses or components.
 -/
 theorem pos_of_isArchNorm (hU : ThetaUnifAV) (x : KeyIn ℂ) {nth nη : ℝ} (h : KeyPow.IsArchNorm x nth nη) :
     0 < nth ∧ 0 < nη := by
@@ -35,9 +35,9 @@ theorem pos_of_isArchNorm (hU : ThetaUnifAV) (x : KeyIn ℂ) {nth nη : ℝ} (h 
   exact ⟨p₁.lt_of_ne' fun h0 => q₁ (by rw [h0]; norm_num), p₂.lt_of_ne' fun h0 => q₂ (by rw [h0]; norm_num)⟩
 
 /- English proof (translation)
-Introduce `hU K _ _ x σ`. Take `⟨x', hx⟩` from `KeyPow.exists_keyPB x σ`. Take `⟨nth, nη, h⟩` from `KeyPow.exists_isArchNorm hU x'`. Take `⟨p₁, p₂⟩` from `pos_of_isArchNorm hU x' h`. Take `⟨u, Hm, W, χ, θ, Fd, h₁, h₂, h₃, h₄, h₅, h₆, h₇⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Real.sqrt nth, Real.sqrt nη⁻¹, Real.sqrt_pos.2 p₁, Real.sqrt_pos.2 (inv_pos.2 p₂), fun T abelian₂ hT hL => ⟨x', u, Hm, W, χ, θ, Fd, hx, h₁, h₂, h₃, h₄, h₅, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hT, Real.sq_sqrt p₁.le, h₆]`. Rewrite using `[hL, Real.sq_sqrt (inv_pos.2 p₂).le, h₇, inv_div]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pos_keyArchAt : ThetaUnifAV → ∀ (K : Type) [Field K] [NumberField K] (x : KeyIn K) (σ : K →+* ℂ), ∃ t n : ℝ, 0 < t ∧ 0 < n ∧ ∀ T abelian₂ : MLine K, T.n σ = t → abelian₂.n σ = n → KeyArchAt x T abelian₂ σ := by
   intro hU K _ _ x σ

@@ -9,13 +9,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.ToralGalois.R2
 
 /- English proof (translation)
-Introduce `hS K M _ _ _ _ _ _ _ _ hp n hn π P hw τ`. Take `⟨hconj, -⟩` from `hS K M hp n hn π P hw`. Establish `hK : IsTotallyComplex K` using `inferInstance`. Take `⟨-, hD, hF⟩` from `UpperTheory.ConvolutionTheory.cbcc K M hp hK n hn`. Take `⟨Q, hQw, hQinf, -⟩` from `hD (.cx P) hconj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the cases of `Q with`. Consider the case `re Q => exact (PositivityTheory.Pf1.CLGD.K.LKW.not_real_complex K inferInstance hK).elim`. Consider the case `cx π₁`. Take `⟨η, hη, hi⟩` from `(hF (.cx π) (.cx P) hconj hw).2 (.cx π₁) hQw`. Establish `hP` using `GlobalTheory.CuspRep.ParLaws.hasInfChar_infChar (CG.mk P) τ`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : π₁.HasInfChar (τ.comp (algebraMap K M)) ((CG.mk P).infChar τ)` using `hQinf τ _ hP`. Establish `h3 : (CG.mk π₁).infChar (τ.comp (algebraMap K M)) = (CG.mk P).infChar τ` using `CG.HasInfChar.infChar_eq h2`. Establish `h4 : CG.mk (π.twist η) = CG.mk π₁` using `Quotient.sound hi`. Establish `h5 : (CG.mk (π.twist η)).infChar (τ.comp (algebraMap K M)) = (CG.mk π).infChar (τ.comp (algebraMap K M))`. Break down `hη with rfl | hη` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `GlobalTheory.RoadU.FinTwist.infChar_twist π (GlobalTheory.RoadU.FinTwist.isAlg_zero (m := 1) one_pos (pow_one _)) _`. Conclude with `GlobalTheory.RoadU.FinTwist.infChar_twist π (GlobalTheory.RoadU.FinTwist.isAlg_zero hp.pos hη.2.1) _`. Rewrite using `[← h3, ← h4, h5]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.ToralGalois.R2.infStep :
     UpperTheory.Gal.InertialTypesAlt.StableOf → InfStep := by

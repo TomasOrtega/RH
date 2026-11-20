@@ -10,7 +10,7 @@ namespace PositivityTheory.ThKF0.Split
 variable (F : Type) [Field F] [NumberField F] (κ : Type)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Continuous fun x : InfiniteAdeleRing F => ((fun (v : {w : InfinitePlace F // w.IsReal}) => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)), (fun (v : {w : InfinitePlace F // w.IsComplex}) => InfinitePlace.Completion.extensionEmbedding v.1 (x v)))`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
   change Continuous fun x : InfiniteAdeleRing F =>
@@ -21,9 +21,7 @@ theorem continuous_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace 
   · exact (InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)
 
 /- English proof (translation)
-Use `continuous_pi fun v => ?_` and prove the remaining obligations. Break down `v.isReal_or_isComplex with hv | hv` into its components or cases. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.continuous_iff]`. Conclude with `((continuous_apply _).comp continuous_fst).congr fun y => (congrFun (congrArg Prod.fst ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm`. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.continuous_iff]`.
-
-Conclude with `((continuous_apply _).comp continuous_snd).congr fun y => (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_ofMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm := by
   refine continuous_pi fun v => ?_
@@ -49,7 +47,7 @@ theorem splitE_apply (p : (κ → mixedEmbedding.mixedSpace F) × (κ → Finite
     splitE F κ p = fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (p.1 i), p.2 i) := rfl
 
 /- English proof (translation)
-Rewrite using `[show ⇑(splitE F κ) = fun p : (κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F) => fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (p.1 i), p.2 i) from rfl]`. Conclude with `continuous_pi fun i => ((continuous_ofMixed F).comp ((continuous_apply i).comp continuous_fst)).prodMk ((continuous_apply i).comp continuous_snd)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_splitE : Continuous (splitE F κ) := by
   rw [show ⇑(splitE F κ) = fun p : (κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F) =>
@@ -58,7 +56,7 @@ theorem continuous_splitE : Continuous (splitE F κ) := by
     ((continuous_apply i).comp continuous_fst)).prodMk ((continuous_apply i).comp continuous_snd)
 
 /- English proof (translation)
-Rewrite using `[show ⇑(splitE F κ).symm = fun x : κ → AdeleRing (𝓞 F) F => ((fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1, fun i => (x i).2) : (κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F)) from rfl]`. Conclude with `(continuous_pi fun i => (continuous_toMixed F).comp (continuous_fst.comp (continuous_apply i))).prodMk (continuous_pi fun i => continuous_snd.comp (continuous_apply i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_splitE_symm : Continuous (splitE F κ).symm := by
   rw [show ⇑(splitE F κ).symm = fun x : κ → AdeleRing (𝓞 F) F =>
@@ -68,7 +66,7 @@ theorem continuous_splitE_symm : Continuous (splitE F κ).symm := by
     (continuous_fst.comp (continuous_apply i))).prodMk (continuous_pi fun i => continuous_snd.comp (continuous_apply i))
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.WeilM.pureA, splitE_apply, RingEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pureA_splitE (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ)
     (p : (κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F)) :
@@ -76,9 +74,9 @@ theorem pureA_splitE (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ
   simp only [GlobalTheory.WeilM.pureA, splitE_apply, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Simplify using `only [pureA_splitE]`. Conclude with `(f.continuous.comp continuous_fst).mul (hg.1.continuous.comp continuous_snd)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `zero => exact continuous_const`. Consider the case `add x x' _ _ hx hx' => exact hx.add hx'`. Consider the case `smul a x _ hx => exact hx.const_smul a`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_comp_splitE [Fintype κ] (Φ : (κ → AdeleRing (𝓞 F) F) → ℂ) (hΦ : Φ ∈ GlobalTheory.WeilM.schA F κ) :
     Continuous fun p => Φ (splitE F κ p) := by
@@ -92,7 +90,7 @@ theorem continuous_comp_splitE [Fintype κ] (Φ : (κ → AdeleRing (𝓞 F) F) 
   | smul a x _ hx => exact hx.const_smul a
 
 /- English proof (translation)
-Use `haveI : MeasurableAdd (mixedEmbedding.mixedSpace F) := ContinuousAdd.measurableAdd`. Conclude with `Measure.pi.isAddHaarMeasure _`.
+A detailed English derivation is pending.
 -/
 theorem volume_isAddHaar [Fintype κ] : (volume : Measure (κ → mixedEmbedding.mixedSpace F)).IsAddHaarMeasure := by
   haveI : MeasurableAdd (mixedEmbedding.mixedSpace F) := ContinuousAdd.measurableAdd

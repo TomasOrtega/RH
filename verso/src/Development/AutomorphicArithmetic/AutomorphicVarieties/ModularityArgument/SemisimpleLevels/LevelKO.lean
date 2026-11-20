@@ -33,7 +33,7 @@ variable {K Ω : Type} [Field K] [NumberField K] [IsCMField K] [Field Ω] [Algeb
   {l : ℕ} [Fact l.Prime] {n : ℕ} {ι : Qbar l ≃+* ℂ} {r R : G K Ω →* GL (Fin n) (Qbar l)} {π : CuspSub K n}
 
 /- English proof (translation)
-Take `⟨⟨σ, hσ⟩, hi⟩` from `locCompC P K n π w`. Conclude with `satFrob P K Ω l ι n R hc w hw σ B (((satLoc P K n w σ).2 _ π.finPart (hi σ hσ) B).1 hB) fun A h rc hrc => H w hw A h rc hrc σ hσ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem frob_of_away (P : Hypotheses₂) (hc : Continuous R)
     (H : ∀ (w : HeightOneSpectrum (𝓞 K)), ((l : ℕ) : 𝓞 K) ∉ w.asIdeal → ∀ (A : ValuationSubring Ω) (h : IsPlaceOver A w)
@@ -45,7 +45,7 @@ private theorem frob_of_away (P : Hypotheses₂) (hc : Continuous R)
     fun A h rc hrc => H w hw A h rc hrc σ hσ
 
 /- English proof (translation)
-Use `isoOfFrob P K Ω l ι n r R hr hc ha.1 hs ((ha.2.and (eventually_not_mem K l)).mono ?_)` and prove the remaining obligations. Introduce and unpack `w ⟨⟨B, h1, h2⟩, hw⟩`. Conclude with `⟨_, h2, frob_of_away P hc H w hw B h1⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem iso_of_away (P : Hypotheses₂) (hr : Continuous r) (ha : AttC ι r π) (hc : Continuous R) (hs : IsSSRep R)
     (H : ∀ (w : HeightOneSpectrum (𝓞 K)), ((l : ℕ) : 𝓞 K) ∉ w.asIdeal → ∀ (A : ValuationSubring Ω) (h : IsPlaceOver A w)
@@ -56,7 +56,7 @@ private theorem iso_of_away (P : Hypotheses₂) (hr : Continuous r) (ha : AttC �
   exact ⟨_, h2, frob_of_away P hc H w hw B h1⟩
 
 /- English proof (translation)
-Establish `h2` using `congrArg (Multiset.map fun z : ℂ => ((n : ℂ) - 1) / 2 - z) h`. Simplify using `only [Multiset.map_map, Function.comp_def, sub_sub_cancel, Multiset.map_id'] at h2`. Rewrite using `[← h2, infOf]`. Conclude with `Multiset.map_congr rfl fun i _ => by push_cast; ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem infOf_of_weights {m : Fin n → ℤ} {x : Multiset ℂ}
     (h : (Finset.univ.val.map fun i => -m i).map (fun k : ℤ => (k : ℂ)) = x.map fun z => ((n : ℂ) - 1) / 2 - z) :
@@ -67,7 +67,7 @@ private theorem infOf_of_weights {m : Fin n → ℤ} {x : Multiset ℂ}
   exact Multiset.map_congr rfl fun i _ => by push_cast; ring
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨a, b, e⟩ : IsCoprime ((l : ℕ) : 𝓞 F) (M : 𝓞 F) := Nat.Coprime.cast ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hM) exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (e ▸ w.asIdeal.add_mem (w.asIdeal.mul_mem_left a hw) (w.asIdeal.mul_mem_left b h)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem not_mem_of_not_dvd {F : Type} [Field F] [NumberField F] {M : ℕ} {w : HeightOneSpectrum (𝓞 F)}
     (hw : ((l : ℕ) : 𝓞 F) ∈ w.asIdeal) (hM : ¬ l ∣ M) : (M : 𝓞 F) ∉ w.asIdeal := fun h => by
@@ -77,11 +77,11 @@ private theorem not_mem_of_not_dvd {F : Type} [Field F] [NumberField F] {M : ℕ
     (e ▸ w.asIdeal.add_mem (w.asIdeal.mul_mem_left a hw) (w.asIdeal.mul_mem_left b h)))
 
 /- English proof (translation)
-Take `⟨a, ha, ε, -, H⟩` from `hrc`. Establish `hu : (rc (algNorm σ)).unr`. Take `⟨k, b, e⟩` from `WD.exists_rep (rc (algNorm σ))`. Rewrite `h0`, `hI`, the goal using `[← e]`. Rewrite using `[WD.unr_mk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(WD.monodromyZero_ofWeilDeligneRepClass_iff b).1 h0, fun s => ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.aeval_self_charpoly (b.ρ (ineIncl h s))`. Establish `h2` using `hI s`. Rewrite `h2` using `[WD.charPol_mk]`. Rewrite `h1` using `[h2, map_pow, map_sub, aeval_X, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : Module.End.IsSemisimple (b.ρ (ineIncl h s) - algebraMap ℂ (Module.End ℂ (Fin k → ℂ)) 1)` using `Module.End.isSemisimple_sub_algebraMap_iff.2 (b.semisimple _)`. Rewrite `hs` using `[map_one]`. Conclude with `sub_eq_zero.1 (Module.End.eq_zero_of_isNilpotent_isSemisimple ⟨_, h1⟩ hs)`. Take `⟨v, hv0, hv⟩` from `UpperTheory.hasFixed_of_algNorm_fixed_ne_bot F w n σ _ le_rfl ((H.sph _).2 hu)`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, fun g => by simpa using hv g.1 g.2, hv0⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem sph_of {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {n : ℕ}
     {w : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω} {h : IsPlaceOver A w}
@@ -117,23 +117,21 @@ end UpperTheory.V.Lev
 
 open UpperTheory.V.Af UpperTheory.V.Lev in
 /- English proof (translation)
-Introduce `P hC hO hF K _ _ _ n hn m _ M hM l _ hl Ω _ _ _ ι r π hL hodd hreg hd ha`. Establish `hpol : GlobalTheory.ContraPair.PolarizedPair π (quadChar K ^ n)` using `⟨fun v => by rw [locInf_pow, quadChar_locInf], by`. Rewrite using `[map_pow, compNorm_quadChar, one_pow]`. Conclude with `(GlobalTheory.ContraPair.dualIsConjBy_one π).2 hd⟩`. Take `⟨R₁, wt, HT, H₁⟩` from `P.litN.aut.gal K Ω l ι n (by omega) π _ hreg hpol`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hc, hs, Haw, Hab⟩` from `hC K Ω l ι n hn π hd (P.litN.aut.coh K n (by omega) π hreg)`. Establish `hiso₁` using `iso_of_away P hL.cont ha H₁.cont H₁.ss H₁.away`. Establish `L₁` using `hL.of_iso hiso₁`. Establish `hiso` using `iso_of_away P hL.cont ha hc hs Haw`. Establish `L` using `hL.of_iso hiso`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨fun φ => ?_, hd, ?_⟩, fun w hw B hB => (frob_of_away P hc Haw w hw B hB).of_iso hiso.symm'⟩` and prove the remaining obligations. Set `τ : K →+* Qbar l` to `ι.symm.toRingHom.comp φ`. Establish `hφ : ι.toRingHom.comp τ = φ` using `RingHom.ext fun x => ι.apply_symm_apply _`. Take `⟨w, hw, hτ⟩` from `GlobalTheory.GalFirstClause.existsIsInduced l K Ω τ`. Take `⟨A, hA, χ, κ, h1, h2, h3, -⟩` from `L₁.above w hw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨O, _, _, _, Bw, hj⟩` from `exists_bridge (l := l) hA hw`. Take `⟨τ', hτ'⟩` from `hτ A hA O Bw hj`. Establish `hJ` using `jumpsAbove P K Ω l hl n M hM m R₁ H₁.cont w A hA O Bw hj κ ⟨χ, h1, h2, h3⟩ τ _ ((H₁.above _ _ (UpperTheory.V.Loc.tiedP l) w A hA O Bw hj).jumps τ _ τ' hτ')`. Establish `hw` using `H₁.weights τ`. Rewrite `hw` using `[hJ, hφ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← infOf_of_weights hw]`. Conclude with `ParLaws.hasInfChar_infChar (CG.mk π) φ`. Use `globFixed P K n M hM _ π.finPart π.isSmooth_finPart fun w => ?_` and prove the remaining obligations. Take `⟨⟨σ, hσ⟩, hi⟩` from `locCompC P K n π w`. Use `⟨σ, hi σ hσ, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hw : ((l : ℕ) : 𝓞 K) ∈ w.asIdeal`. Take `⟨A, hA, χ, κ, h1, h2, h3, h4⟩` from `hL.above w hw`. Take `⟨O, _, _, _, Bw, hj⟩` from `exists_bridge (l := l) hA hw`. Take `⟨rc, hrc⟩` from `P.exists_rec hA`. Take `⟨hp, he⟩` from `Hab _ _ (UpperTheory.V.Loc.tiedP l) w A hA O Bw hj`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hS` using `fun hor => hF K Ω l ι n M hM m R hc w A hA O Bw hj κ ⟨χ, h1, h2.of_iso hiso, h3⟩ hp rc hrc σ (fun ⟨μ, hμ⟩ => he σ hσ rc hrc (Or.inl ((ssCalc K Ω A w hA).1 n _ μ hμ))) hor`. Break down `h4 with h4 | h4` into its components or cases. Conclude with `hS (Or.inr (Or.inl h4))`. Distinguish the cases in `hlM : l ∣ M`. Conclude with `hS (Or.inl hlM)`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hS (Or.inr (Or.inr fun _ => ?_))` and prove the remaining obligations. Take `⟨μ, m1, m2, -⟩` from `flagPol K Ω l ι n M hM m R hc w A hA O Bw hj κ ⟨χ, h1, h2.of_iso hiso, h3⟩ hp`. Establish `e` using `he σ hσ rc hrc (Or.inl ((ssCalc K Ω A w hA).1 n _ μ m1))`. Use `sph_of hrc σ (hO K n hodd l Ω ι r π hL.cont hreg hd ha w A hA h4 σ hσ rc hrc) n fun s => ?_` and prove the remaining obligations. Rewrite using `[← e, m1]`.
-
-Simplify using `[fun i => m2 i s (UpperTheory.inertia_fixes_roots_of_unity_prime_to_residue_char K Ω w A hA M (not_mem_of_not_dvd hw hlM) s s.2)]`. Take `⟨A, hA, χ, h1, h2⟩` from `L.away w hw`. Take `⟨rc, hrc⟩` from `P.exists_rec hA`. Conclude with `locFixed P K Ω n M hM w A hA rc hrc σ (wdAway P K Ω l ι n M hM R hc w hw A hA χ h1 h2 _ (Haw w hw A hA rc hrc σ hσ))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lev.levelKO :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Lev.CsdSs → UpperTheory.V.Lev.MonoOdd → UpperTheory.V.Lev.FixedSs → UpperTheory.V.Lev.LevelKO := by

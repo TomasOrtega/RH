@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-Rewrite using `[hA_symm]`. Use `Z_sig X.B.I X.B.g (Z_pair_Mo X (X.vectorsInLattice.2.2 j).2 ?_ _ hm)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `dual_beta_reference_congruence j a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem hermitian_module_dual_beta_congruence {m : VA X.B.I} (hm : m ∈ Mo X.B.I X.B.g (Set.range X.e0)) (j : Fin D.R.k) :
     ZMod' X.B.I X.B.g (hA X.B.I m (X.bwd j)) := by
@@ -24,11 +24,9 @@ theorem hermitian_module_dual_beta_congruence {m : VA X.B.I} (hm : m ∈ Mo X.B.
   exact dual_beta_reference_congruence j a
 
 /- English proof (translation)
-Take `⟨hE, hF, hZ, hB, hBd⟩` from `frame_Lf X`. Establish `hd` using `dual_coords X hv`. Rewrite using `[show v = (v - repr0 X v) + repr0 X v by abel]`. Use `add_mem (mL_Mo X.B.I hd) ?_` and prove the remaining obligations. Unfold `repr0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `add_mem (add_mem (sub_mem (add_mem ?_ ?_) ?_) ?_) ?_` and prove the remaining obligations. Use `sum_mem fun a _ => ?_` and prove the remaining obligations. Establish `: hA X.B.I (X.f0 a) v • X.e0 a = (⟨_, hA_int X.B.I (hF a) hv⟩ : IntAf X.B.I.F X.B.I.E) • X.e0 a` using `rfl`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (sub_Mo X.B.I ⟨a, rfl⟩)`.
-
-Conclude with `sum_mem fun a _ => mL_Mo X.B.I (Z_smul_mL X (he a) (hF a))`. Conclude with `mL_Mo X.B.I (Z_smul_mL X hz hZ)`. Conclude with `sum_mem fun l _ => mL_Mo X.B.I (Z_smul_mL X (hbd l) (hB l))`. Conclude with `sum_mem fun l _ => mL_Mo X.B.I (Z_smul_mL X (hb l) (hBd l))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_module_of_congruences {v : VA X.B.I} (hv : v ∈ X.B.I.Lf) (he : ∀ a, ZMod' X.B.I X.B.g (hA X.B.I (X.e0 a) v))
     (hz : ZMod' X.B.I X.B.g (hA X.B.I X.z0 v)) (hbd : ∀ l, ZMod' X.B.I X.B.g (hA X.B.I (X.bwd l) v))
@@ -48,7 +46,7 @@ theorem mem_module_of_congruences {v : VA X.B.I} (hv : v ∈ X.B.I.Lf) (he : ∀
   · exact sum_mem fun l _ => mL_Mo X.B.I (Z_smul_mL X (hb l) (hBd l))
 
 /- English proof (translation)
-Rewrite using `[X.bwd_w k, X.bwd_w j, Matrix.mulVec_smul, hA_smul_left, hA_smul_right, sigA_sigA]`. Use `X.ew_orth` as an intermediate fact. Take the linear combination `(hA X.B.I (X.bwd k) (X.B.I.fmat δ *ᵥ X.bwd j)) * this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hA_bwd_K (δ : X.B.I.Gf) (k j : Fin D.R.k) : hA X.B.I (X.bwd k) (X.B.I.fmat δ *ᵥ X.bwd j) = 0 := by
   rw [X.bwd_w k, X.bwd_w j, Matrix.mulVec_smul, hA_smul_left, hA_smul_right, sigA_sigA]
@@ -59,7 +57,7 @@ variable {X} (TR : TypedRed X)
 include TR
 
 /- English proof (translation)
-Establish `gδ` using `good_of_ncong X hK hN`. Establish `h1 : levi TR δ = 1` using `(Formalism.L2.SG.Pf.IotaDictPf.levi_one_iff TR gδ).2 hT`. Use `(Formalism.L2.SG.Pf.IotaDictPf.levi_one_iff TR (good_inv X gδ)).1 ?_` and prove the remaining obligations. Rewrite using `[levi_inv TR gδ, h1, inv_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem adTriv_inv {δ : X.B.I.Gf} (hK : δ ∈ X.B.I.Kset) (hN : NCong X δ) (hT : Formalism.L2.SG.Pf.AdTriv X δ) :
     Formalism.L2.SG.Pf.AdTriv X δ⁻¹ := by
@@ -69,11 +67,11 @@ theorem adTriv_inv {δ : X.B.I.Gf} (hK : δ ∈ X.B.I.Kset) (hN : NCong X δ) (h
   rw [levi_inv TR gδ, h1, inv_one]
 
 /- English proof (translation)
-Take `⟨hE, hF, hZ, hB, hBd⟩` from `frame_Lf X`. Establish `hNi` using `ncong_inv X hK hN`. Establish `hTi` using `adTriv_inv TR hK hN hT`. Establish `hadj : ∀ y : VA X.B.I, hA X.B.I y ((X.B.I.fmat δ - 1) *ᵥ X.bwd j) = hA X.B.I ((X.B.I.fmat δ⁻¹ - 1) *ᵥ y) (X.bwd j)`. Introduce `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, hA_sub_right, hA_adj, Matrix.sub_mulVec, Matrix.one_mulVec, hA_sub_left]`. Use `mem_module_of_congruences X (K_sub_mv X.B.I hK (hBd j)) (fun a => ?_) ?_ (fun l => ?_) (fun l => ?_)` and prove the remaining obligations. Rewrite using `[hadj]`. Conclude with `hermitian_module_dual_beta_congruence X (Mo_mono X.B.I (Set.image_subset_range _ _) (hNi.1 a)) j`. Rewrite using `[hadj]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hermitian_module_dual_beta_congruence X hNi.2 j`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, hA_sub_right, hA_bwd_K, hA_bwd_bwd, sub_zero]`. Conclude with `Z_zero X.B.I X.B.g`. Rewrite using `[hadj]`. Conclude with `hermitian_module_dual_beta_congruence X (hTi l) j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adTriv_bwd {δ : X.B.I.Gf} (hK : δ ∈ X.B.I.Kset) (hN : NCong X δ) (hT : Formalism.L2.SG.Pf.AdTriv X δ) (j : Fin D.R.k) :
     (X.B.I.fmat δ - 1) *ᵥ X.bwd j ∈ Mo X.B.I X.B.g (Set.range X.e0) := by
@@ -94,13 +92,11 @@ theorem adTriv_bwd {δ : X.B.I.Gf} (hK : δ ∈ X.B.I.Kset) (hN : NCong X δ) (h
   · rw [hadj]; exact hermitian_module_dual_beta_congruence X (hTi l) j
 
 /- English proof (translation)
-Take `⟨hE, hF, hZ, hB, hBd⟩` from `frame_Lf X`. Establish `hd` using `dual_coords X hw`. Establish `hsm : ∀ (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (m : VA X.B.I), c ∈ IntAf X.B.I.F X.B.I.E → m ∈ Mo X.B.I X.B.g (Set.range X.e0) → c • m ∈ Mo X.B.I X.B.g (Set.range X.e0)` using `fun c m hc hm => by`. Establish `: c • m = (⟨c, hc⟩ : IntAf X.B.I.F X.B.I.E) • m` using `rfl`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ hm`. Rewrite using `[show w = (w - repr0 X w) + repr0 X w by abel, Matrix.mulVec_add]`. Use `add_mem (mL_Mo X.B.I ?_) ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `sub_mem (mem_mL_of_Kset X hK _ hd) hd`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `repr0`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_sub, mulVec_fsum X, Matrix.mulVec_smul]`. Use `add_mem (add_mem (sub_mem (add_mem ?_ ?_) ?_) ?_) ?_` and prove the remaining obligations. Conclude with `sum_mem fun a _ => hsm _ _ (hA_int X.B.I (hF a) hw) (Mo_mono X.B.I (Set.image_subset_range _ _) (hN.1 a))`. Conclude with `sum_mem fun a _ => mL_Mo X.B.I (Z_smul_mL X (he a) (K_sub_mv X.B.I hK (hF a)))`.
-
-Conclude with `hsm _ _ (hA_int X.B.I hZ hw) hN.2`. Conclude with `sum_mem fun l _ => hsm _ _ (hA_int X.B.I (hBd l) hw) (hT l)`. Conclude with `sum_mem fun l _ => hsm _ _ (hA_int X.B.I (hB l) hw) (adTriv_bwd TR hK hN hT l)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem adFull_of_adTriv {δ : X.B.I.Gf} (hK : δ ∈ X.B.I.Kset) (hN : NCong X δ) (hT : Formalism.L2.SG.Pf.AdTriv X δ)
     {w : VA X.B.I} (hw : w ∈ X.B.I.Lf) (he : ∀ a, ZMod' X.B.I X.B.g (hA X.B.I (X.e0 a) w)) :

@@ -24,14 +24,14 @@ noncomputable def tm (b : Sp B ⟶ S) (φ : A →+* A') (h : φ.comp g = g') :
     rw [← Category.assoc, spMap_spMap, h])
 
 /- English proof (translation)
-The claim follows from `TorusModel.charVal_comp φ t _ rfl χ`.
+A detailed English derivation is pending.
 -/
 theorem charVal_tm {X : Type} [AddCommGroup X] (φ : A →+* A') (h : φ.comp g = g')
     (t : Over.mk (spMap g ≫ b) ⟶ splitTorus S X) (χ : X) : charVal (tm b φ h ≫ t) χ = φ (charVal t χ) :=
   TorusModel.charVal_comp φ t _ rfl χ
 
 /- English proof (translation)
-Establish `: f ≫ (1 : Q ⟶ G) = 1`. Rewrite using `[Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (f ≫ toUnit Q) (toUnit P)]`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem one_left_lemma_3 {S : Scheme.{0}} {G : Over S} [GrpObj G] {P Q : Over S} (f : P ⟶ Q) :
     (1 : P ⟶ G).left = f.left ≫ (1 : Q ⟶ G).left := by
@@ -40,7 +40,7 @@ private theorem one_left_lemma_3 {S : Scheme.{0}} {G : Over S} [GrpObj G] {P Q :
   rw [← this]
   rfl
 /- English proof (translation)
-Unfold `charVal`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem charVal_congr_left {S : Scheme.{0}} {X : Type} [AddCommGroup X] {A : Type} [CommRing A]
     {a a' : Sp A ⟶ S} (t : Over.mk a ⟶ splitTorus S X) (t' : Over.mk a' ⟶ splitTorus S X)
@@ -49,13 +49,13 @@ private theorem charVal_congr_left {S : Scheme.{0}} {X : Type} [AddCommGroup X] 
   rw [h]
 
 /- English proof (translation)
-Set `J` to `I.map g`. Set `g0 : B ⧸ I →+* A ⧸ J` to `Ideal.quotientMap J g Ideal.le_comap_map`. Establish `hg0 : g0.comp (Ideal.Quotient.mk I) = (Ideal.Quotient.mk J).comp g` using `Ideal.quotientMap_comp_mk _`. Establish `w : spMap (Ideal.Quotient.mk J) ≫ spMap g ≫ b = spMap g0 ≫ spMap (Ideal.Quotient.mk I) ≫ b`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_spMap, spMap_spMap, hg0]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `f : Over.mk (spMap g0 ≫ spMap (Ideal.Quotient.mk I) ≫ b) ⟶ Over.mk (spMap g ≫ b)` to `Over.homMk (spMap (Ideal.Quotient.mk J)) w`. Establish `hc : ∀ y ∈ Y, charVal (f ≫ t) y = 1`. Introduce `y hy`. Establish `e0 : (f ≫ t).left = (tm b (Ideal.Quotient.mk J) (rfl : (Ideal.Quotient.mk J).comp g = _) ≫ t).left`. Simplify using `only [Over.comp_left, f, tm, Over.homMk_left]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1` using `charVal_congr_left _ _ e0 y`. Establish `e2` using `charVal_tm (b := b) (Ideal.Quotient.mk J) (rfl : (Ideal.Quotient.mk J).comp g = _) t y`. Rewrite using `[e1, e2, ht y hy, map_one]`. Establish `h2` using `hk _ g0 (f ≫ t) hc`. Establish `hl : ((f ≫ t) ≫ u).left = (1 : Over.mk (spMap g0 ≫ spMap (Ideal.Quotient.mk I) ≫ b) ⟶ G).left`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Rewrite `hl` using `[one_left_lemma_3 f]`. Simplify using `only [f, Over.comp_left, Over.homMk_left, Category.assoc] at hl`. Conclude with `hl`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem red {G : Over S} [GrpObj G] {X : Type} [AddCommGroup X] {u : splitTorus S X ⟶ G} {Y : AddSubgroup X}
     {I : Ideal B} (hk : KillsOver u Y (spMap (Ideal.Quotient.mk I) ≫ b))
@@ -84,13 +84,13 @@ theorem red {G : Over S} [GrpObj G] {X : Type} [AddCommGroup X] {u : splitTorus 
   exact hl
 
 /- English proof (translation)
-Rewrite using `[← Ideal.map_pow, hI, Ideal.map_bot]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sq_map {I : Ideal B} (hI : I ^ 2 = ⊥) (g : B →+* A) : (I.map g) ^ 2 = ⊥ := by
   rw [← Ideal.map_pow, hI, Ideal.map_bot]
 
 /- English proof (translation)
-Establish `: (Over.homMk (spMap g) rfl : Over.mk (spMap g ≫ b) ⟶ Over.mk b) ≫ (1 : Over.mk b ⟶ G) = 1`. Rewrite using `[Hom.one_def, Hom.one_def, ← Category.assoc]`. Use `congr 1`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem isGrpPullback_one_left {S : Scheme.{0}} {B : Type} [CommRing B] {b : Sp B ⟶ S} {A : Type} [CommRing A]
     {G : Over S} [GrpObj G] (g : B →+* A) :
@@ -102,7 +102,7 @@ private theorem isGrpPullback_one_left {S : Scheme.{0}} {B : Type} [CommRing B] 
   rfl
 
 /- English proof (translation)
-Rewrite using `[isGrpPullback_one_left]`. Establish `hW : (1 : Over.mk b ⟶ G).left ⁻¹ᵁ W = ⊤` using `top_le_iff.mp ho`. Rewrite using `[Scheme.Hom.comp_preimage, hW]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem one_in {G : Over S} [GrpObj G] {W : G.left.Opens} (ho : ⊤ ≤ (1 : Over.mk b ⟶ G).left ⁻¹ᵁ W)
     (g : B →+* A) : ⊤ ≤ (1 : Over.mk (spMap g ≫ b) ⟶ G).left ⁻¹ᵁ W := by
@@ -112,9 +112,9 @@ theorem one_in {G : Over S} [GrpObj G] {W : G.left.Opens} (ho : ⊤ ≤ (1 : Ove
   simp
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `h0 : (⊤ : (Sp A').Opens) ≤ spMap φ ⁻¹ᵁ ⊤` using `by simp`. Establish `key : Scheme.Hom.appLE (spMap φ) ⊤ ⊤ h0 ≫ (Scheme.ΓSpecIso (CommRingCat.of A')).hom = (Scheme.ΓSpecIso (CommRingCat.of A)).hom ≫ CommRingCat.ofHom φ`. Rewrite using `[← Scheme.ΓSpecIso_naturality]`. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [val]`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (spMap φ) z V ⊤ ⊤ hz h0, Category.assoc, key]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem val_eq_of_eq_spMap_comp {Z : Scheme} {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A')
     (z : Sp A ⟶ Z) (z' : Sp A' ⟶ Z) (e : z' = spMap φ ≫ z) (V : Z.Opens) (hz : ⊤ ≤ z ⁻¹ᵁ V)
@@ -130,7 +130,7 @@ private theorem val_eq_of_eq_spMap_comp {Z : Scheme} {A A' : Type} [CommRing A] 
   rfl
 
 /- English proof (translation)
-Conclude with `val_eq_of_eq_spMap_comp g _ _ (isGrpPullback_one_left g) W ho (one_in ho g) s`.
+A detailed English derivation is pending.
 -/
 theorem val_one {G : Over S} [GrpObj G] {W : G.left.Opens} (ho : ⊤ ≤ (1 : Over.mk b ⟶ G).left ⁻¹ᵁ W)
     (g : B →+* A) (s : Γ(G.left, W)) :
@@ -142,13 +142,13 @@ variable {G : Over S} [GrpObj G] {X : Type} [AddCommGroup X] {u : splitTorus S X
   {I : Ideal B}
 
 /- English proof (translation)
-Establish `hJ : (I.map g) ^ 2 = ⊥` using `sq_map hI g`. Establish `hle : I.map g ≤ nilradical A`. Introduce `x hx`. Use `⟨2, ?_⟩` and prove the remaining obligations. Establish `h2` using `Ideal.pow_mem_pow hx 2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[hJ]`. Simplify using `using h2`. Establish `hsurj` using `(PrimeSpectrum.comap_quotientMk_bijective_of_le_nilradical hle).2`. Establish `e` using `red hk t ht`. Establish `h1 : ⊤ ≤ (1 : Over.mk (spMap g ≫ b) ⟶ G).left ⁻¹ᵁ W` using `one_in ho g`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x _`. Take `⟨y, hy⟩` from `hsurj x`. Establish `hy' : y ∈ (spMap (Ideal.Quotient.mk (I.map g)) ≫ (t ≫ u).left) ⁻¹ᵁ W`. Rewrite using `[e, Scheme.Hom.comp_preimage, top_le_iff.mp h1]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Discharge the goal by the elementary cases of `trivial`. Rewrite using `[← hy]`. Conclude with `hy'`.
+Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_in (hI : I ^ 2 = ⊥) (hk : KillsOver u Y (spMap (Ideal.Quotient.mk I) ≫ b)) {W : G.left.Opens}
     (ho : ⊤ ≤ (1 : Over.mk b ⟶ G).left ⁻¹ᵁ W) (t : Over.mk (spMap g ≫ b) ⟶ splitTorus S X)
@@ -173,15 +173,15 @@ theorem pt_in (hI : I ^ 2 = ⊥) (hk : KillsOver u Y (spMap (Ideal.Quotient.mk I
   exact hy'
 
 /- English proof (translation)
-Establish `hJ : (I.map g') ^ 2 = ⊥` using `sq_map hI g'`. Establish `hb' : ⊤ ≤ (spMap g' ≫ b) ⁻¹ᵁ U`. Rewrite using `[Scheme.Hom.comp_preimage, top_le_iff.mp hb]`. Simplify using the standard rewrite rules. Establish `hp` using `pt_in hI hk ho t hY`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : ⊤ ≤ (1 : Over.mk (spMap g' ≫ b) ⟶ G).left ⁻¹ᵁ W` using `one_in ho g'`. Establish `hc : ∀ (φ : A →+* A') (e : φ.comp g = g'), ∀ y ∈ Y, charVal (tm b φ e ≫ t) y = 1`. Introduce `φ e y hy`. Rewrite using `[charVal_tm, hY y hy, map_one]`. Establish `hl : ∀ (φ : A →+* A') (e : φ.comp g = g'), ((tm b φ e ≫ t) ≫ u).left = spMap φ ≫ (t ≫ u).left`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `φ e`. Simplify using `only [tm, Over.comp_left, Over.homMk_left, Category.assoc]`. Establish `hin : ∀ (φ : A →+* A') (e : φ.comp g = g'), ⊤ ≤ ((tm b φ e ≫ t) ≫ u).left ⁻¹ᵁ W` using `fun φ e => pt_in hI hk ho _ (hc φ e)`. Establish `hmul : tm b Δ e₃ ≫ t = (tm b i₁ e₁ ≫ t) * (tm b i₂ e₂ ≫ t)`. Apply `GlobalTheory.CompanionTheory.Ar.TorusModel.charVal_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `χ`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.TorusModel.charVal_mul, charVal_tm, charVal_tm, charVal_tm, hΔ]`. Establish `hxy : ((tm b i₁ e₁ ≫ t) ≫ u) * ((tm b i₂ e₂ ≫ t) ≫ u) = (tm b Δ e₃ ≫ t) ≫ u`. Rewrite using `[hmul, MonObj.mul_comp]`. Establish `hr : ∀ (φ : A →+* A') (e : φ.comp g = g'), spMap (Ideal.Quotient.mk (I.map g')) ≫ ((tm b φ e ≫ t) ≫ u).left = spMap (Ideal.Quotient.mk (I.map g')) ≫ (1 : Over.mk (spMap g' ≫ b) ⟶ G).left` using `fun φ e => red hk _ (hc φ e)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `val_add (spMap g' ≫ b) hJ hU hb' hW h1 ((tm b i₁ e₁ ≫ t) ≫ u) ((tm b i₂ e₂ ≫ t) ≫ u) (hr i₁ e₁) (hr i₂ e₂) W (hin i₁ e₁) (hin i₂ e₂) (by rw [hxy]; exact hin Δ e₃) h1 s`. Establish `hxl : (((tm b i₁ e₁ ≫ t) ≫ u) * ((tm b i₂ e₂ ≫ t) ≫ u)).left = spMap Δ ≫ (t ≫ u).left`. Rewrite using `[hxy, hl Δ e₃]`. Rewrite `key` using `[val_comp i₁ (t ≫ u).left W hp (hl i₁ e₁) (hin i₁ e₁) s, val_comp i₂ (t ≫ u).left W hp (hl i₂ e₂) (hin i₂ e₂) s, val_comp Δ (t ≫ u).left W hp hxl _ s, val_one ho g' s]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_prim [IsMonHom u] (hI : I ^ 2 = ⊥) (hk : KillsOver u Y (spMap (Ideal.Quotient.mk I) ≫ b))
     {U : S.Opens} (hU : IsAffineOpen U) (hb : ⊤ ≤ b ⁻¹ᵁ U) {W : G.left.Opens} (hW : IsAffineOpen W)
@@ -228,21 +228,19 @@ theorem val_prim [IsMonHom u] (hI : I ^ 2 = ⊥) (hk : KillsOver u Y (spMap (Ide
 end
 
 /- English proof (translation)
-Set `c : M → (AddMonoidAlgebra B M →ₗ[B] B)` to `fun m => (Finsupp.lapply m).comp (AddMonoidAlgebra.coeffLinearEquiv B).toLinearMap`. Set `ψ : M → (AddMonoidAlgebra B M ⊗[B] AddMonoidAlgebra B M →ₗ[B] B)` to `fun m => TensorProduct.lift ((LinearMap.mul B B).compl₁₂ (c m) (c m))`. Establish `hψ : ∀ m (x y : AddMonoidAlgebra B M), ψ m (x ⊗ₜ y) = x.coeff m * y.coeff m` using `fun _ _ _ => rfl`. Establish `hΔ : ∀ m (x : AddMonoidAlgebra B M), ψ m (Bialgebra.comulAlgHom B (AddMonoidAlgebra B M) x) = x.coeff m`. Introduce `m x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Bialgebra.comulAlgHom_apply]`. Proceed by induction on `x using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, AddMonoidAlgebra.coeff_add, Finsupp.add_apply]`. Consider the case `single a r`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[AddMonoidAlgebra.comul_single]`. Simplify using `only [CommSemiring.comul_apply, TensorProduct.map_tmul, AddMonoidAlgebra.lsingle_apply, hψ, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h1 : ∀ m, (1 : AddMonoidAlgebra B M).coeff m = if m = 0 then 1 else 0`. Introduce `m`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AddMonoidAlgebra.one_def, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`. Use `split_ifs with p q q`. Both sides reduce to the same expression. Conclude with `absurd p.symm q`. Conclude with `absurd q.symm p`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hk : ∀ m, d.coeff m + e * ((1 : AddMonoidAlgebra B M).coeff m * (1 : AddMonoidAlgebra B M).coeff m) = d.coeff m * (1 : AddMonoidAlgebra B M).coeff m + (1 : AddMonoidAlgebra B M).coeff m * d.coeff m`. Introduce `m`. Use `congrArg (ψ m) h` as an intermediate fact. Rewrite `this` using `[map_add, map_add, hΔ, Algebra.TensorProduct.includeLeft_apply, Algebra.TensorProduct.includeRight_apply, hψ, hψ, Algebra.algebraMap_eq_smul_one, map_smul, Algebra.TensorProduct.one_def, hψ, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `ha : ∀ m, (algebraMap B (AddMonoidAlgebra B M) e).coeff m = e * (1 : AddMonoidAlgebra B M).coeff m`. Introduce `m`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hc : d.coeff = (algebraMap B (AddMonoidAlgebra B M) e).coeff`. Use extensionality with `m`. Use `hk m` as an intermediate fact. Rewrite `*` using `[ha, h1]`. Apply the tactic sequence `split_ifs at this ⊢ <;> simp at this ⊢ <;> first | linear_combination this | linear_combination -this`.
-
-Rewrite using `[← AddMonoidAlgebra.ofCoeff_coeff d, hc, AddMonoidAlgebra.ofCoeff_coeff]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_eq {B M : Type} [CommRing B] [AddCommGroup M] (d : AddMonoidAlgebra B M) (e : B)
     (h : (Bialgebra.comulAlgHom B (AddMonoidAlgebra B M)) d +
@@ -296,29 +294,27 @@ theorem prim_eq {B M : Type} [CommRing B] [AddCommGroup M] (d : AddMonoidAlgebra
   rw [← AddMonoidAlgebra.ofCoeff_coeff d, hc, AddMonoidAlgebra.ofCoeff_coeff]
 
 /- English proof (translation)
-Introduce `S G _ X _ u _ Y B _ _ b I hI hk A _ g t ht`. Take `⟨U, hU, hb⟩` from `exists_affine b`. Take `⟨W, hW, ho⟩` from `exists_affine (1 : Over.mk b ⟶ G).left`. Set `M` to `X ⧸ Y`. Set `R` to `AddMonoidAlgebra B M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `c0 : Multiplicative X →* Rˣ` to `MonoidHom.toHomUnits ((AddMonoidAlgebra.of B M).comp (AddMonoidHom.toMultiplicative (QuotientAddGroup.mk' Y)))`. Take `⟨t0, ht0⟩` from `GlobalTheory.CompanionTheory.Ar.TorusModel.exists_charVal (spMap (algebraMap B R) ≫ b) c0`. Establish `hv0 : ∀ χ : X, charVal t0 χ = AddMonoidAlgebra.single (QuotientAddGroup.mk χ : M) (1 : B)`. Introduce `χ`. Rewrite using `[ht0]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hY0 : ∀ y ∈ Y, charVal t0 y = 1`. Introduce `y hy`. Rewrite using `[hv0, (QuotientAddGroup.eq_zero_iff y).mpr hy]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hk0 : t0 ≫ u = 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `val_ext hW (pt_in hI hk ho t0 hY0) (one_in ho _) (fun s => ?_)` and prove the remaining obligations. Establish `hp` using `val_prim (g' := algebraMap B (R ⊗[B] R)) hI hk hU hb hW ho t0 hY0 (Algebra.TensorProduct.includeLeft : R →ₐ[B] R ⊗[B] R).toRingHom (Algebra.TensorProduct.includeRight : R →ₐ[B] R ⊗[B] R).toRingHom (Bialgebra.comulAlgHom B R).toRingHom (AlgHom.comp_algebraMap (Algebra.TensorProduc …`. Rewrite using `[val_one ho _ s]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `prim_eq _ _ hp`. Introduce `χ`. Rewrite using `[hv0]`. Use `show Bialgebra.comulAlgHom B R (AddMonoidAlgebra.single _ 1) = (Algebra.TensorProduct.includeLeft : R →ₐ[B] R ⊗[B] R) (AddMonoidAlgebra.single _ 1) * (Algebra.TensorProduct.includeRight : R →ₐ[B] R ⊗[B] R) (AddMonoidAlgebra.single _ 1)`. Rewrite using `[Bialgebra.comulAlgHom_apply, AddMonoidAlgebra.comul_single, Algebra.TensorProduct.includeLeft_apply, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one, _root_.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [CommSemiring.comul_apply, TensorProduct.map_tmul, AddMonoidAlgebra.lsingle_apply]`. Set `f : X →+ Additive A` to `{ toFun := fun x => Additive.ofMul (charVal t x) map_zero' := by`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.TorusModel.charVal_zero]`. Both sides reduce to the same expression. Use the proof step `map_add' := fun x y => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.CompanionTheory.Ar.TorusModel.charVal_add]`. Use `rfl }`. Establish `hle : Y ≤ f.ker`. Introduce `y hy`. Rewrite using `[AddMonoidHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Use `show Additive.ofMul (charVal t y) = 0`. Rewrite using `[ht y hy]`. Both sides reduce to the same expression. Set `q` to `QuotientAddGroup.lift Y f hle`. Set `F : Multiplicative M →* A` to `{ toFun := fun m => Additive.toMul (q (Multiplicative.toAdd m)) map_one' := by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[toAdd_one, map_zero]`. Both sides reduce to the same expression. Use the proof step `map_mul' := fun x y => by`. Rewrite using `[toAdd_mul, map_add]`. Use `rfl }`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `φ : R →+* A` to `AddMonoidAlgebra.liftNCRingHom g F (fun _ _ => Commute.all _ _)`. Establish `he : φ.comp (algebraMap B R) = g`. Use extensionality with `x`. Use `show φ (AddMonoidAlgebra.single 0 x) = g x`. Rewrite using `[AddMonoidAlgebra.liftNCRingHom_single]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `[F]`. Establish `htt : t = tm b φ he ≫ t0`. Apply `GlobalTheory.CompanionTheory.Ar.TorusModel.charVal_ext` to reduce the goal to its premises. Introduce `χ`. Rewrite using `[charVal_tm, hv0, AddMonoidAlgebra.liftNCRingHom_single, map_one, _root_.one_mul]`.
-
-Both sides reduce to the same expression. Rewrite using `[htt, Category.assoc, hk0, comp_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kills_over_of_square_zero_ideal : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (X : Type) [AddCommGroup X] (u : splitTorus S X ⟶ G) [IsMonHom u] (Y : AddSubgroup X) (B : Type) [CommRing B] [IsLocalRing B] (b : Sp B ⟶ S) (I : Ideal B), I ^ 2 = ⊥ → KillsOver u Y (spMap (Ideal.Quotient.mk I) ≫ b) → KillsOver u Y b := by
   intro S G _ X _ u _ Y B _ _ b I hI hk A _ g t ht

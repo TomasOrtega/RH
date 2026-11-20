@@ -20,7 +20,7 @@ section General
 variable {R : Type} [CommRing R] (I : Ideal R)
 
 /- English proof (translation)
-Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congrArg (fun q => Spec.map (CommRingCat.ofHom q)) (RingHom.ext fun r => ?_)` and prove the remaining obligations. Apply the tactic sequence `refine TrivSqZeroExt.ext ?_ ?_ <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem dualMap_mk_struct (e : ℕ) :
     spMap (algebraMap (R ⧸ I ^ (e + 1)) (DualNumber (R ⧸ I ^ (e + 1)))) ≫ thick R I e =
@@ -31,15 +31,13 @@ theorem dualMap_mk_struct (e : ℕ) :
   refine TrivSqZeroExt.ext ?_ ?_ <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (dualMap (Ideal.Quotient.mk (I ^ (e + 1))))` using `fun x => by`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective x.fst`. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective x.snd`. Apply the tactic sequence `refine ⟨TrivSqZeroExt.inl a + TrivSqZeroExt.inr b, TrivSqZeroExt.ext ?_ ?_⟩ <;> simp [dualMap, ha, hb]`. Establish `hk : RingHom.ker (dualMap (Ideal.Quotient.mk (I ^ (e + 1)))) ≤ RingHom.ker (Ideal.Quotient.mk ((I.map (algebraMap R (DualNumber R))) ^ (e + 1)))` using `fun x hx => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `hx` using `[RingHom.mem_ker]`. Establish `h1 : x.fst ∈ I ^ (e + 1)`. Use `congrArg TrivSqZeroExt.fst hx` as an intermediate fact. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify `this` using `[dualMap]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : x.snd ∈ I ^ (e + 1)`. Use `congrArg TrivSqZeroExt.snd hx` as an intermediate fact. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify `this` using `[dualMap]`. Establish `ex : x = algebraMap R (DualNumber R) x.fst + algebraMap R (DualNumber R) x.snd * DualNumber.eps`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[Ideal.mk_ker, ← Ideal.map_pow, ex]`. Conclude with `add_mem (Ideal.mem_map_of_mem _ h1) (Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ h2))`. Use `⟨spMap (RingHom.liftOfSurjective _ hs ⟨_, hk⟩), ?_⟩` and prove the remaining obligations. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`.
-
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, RingHom.liftOfSurjective_comp]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor_dualMap (e : ℕ) :
     ∃ l, l ≫ spMap (dualMap (Ideal.Quotient.mk (I ^ (e + 1)))) =
@@ -71,11 +69,11 @@ variable {I} [IsDomain R] {D : DegData R I} {A : PolAV (Sp (FractionRing R))}
   {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(FormalPoint.isPointOf_iff_reduction U gm y).2 fun e => ?_` and prove the remaining obligations. Take `⟨ye, h1, h2⟩` from `h e`. Take `⟨l, hl⟩` from `exists_factor_dualMap I e`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h3 : FormalPoint.HasCoords U e gm _ ye` using `h2`. Establish `h4` using `h3.comp l`. Establish `h5 : FormalPoint.reduction I y e = l ≫ ye`. Rewrite using `[← cancel_mono (fstG I e G).left, FormalPoint.reduction_fstG, Category.assoc, h1, ← hl]`. Conclude with `Category.assoc _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h5, ← hl]`. Conclude with `h4`. Introduce `h e`. Take `⟨ye, hy⟩` from `FormalPoint.exists_hasCoords U e gm _ _ (dualMap_mk_struct I e)`. Conclude with `⟨ye, h.comp_fstG_eq hy, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tanRel_iff_isPointOf (y : epsR R ⟶ G) (gm : GtPt D.toPre (epsR R)) :
     TanRel U y gm ↔ FormalPoint.IsPointOf U gm y := by
@@ -96,9 +94,9 @@ theorem tanRel_iff_isPointOf (y : epsR R ⟶ G) (gm : GtPt D.toPre (epsR R)) :
     exact ⟨ye, h.comp_fstG_eq hy, hy⟩
 
 /- English proof (translation)
-Take `⟨o, ho, hp⟩` from `hg`. Set `k : baseOver (Sp R) ⟶ epsR R` to `Over.homMk (redE R) (by show Spec.map _ ≫ Spec.map _ = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `h3 : (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R` using `RingHom.ext fun r => (TrivSqZeroExt.fstHom R R R).commutes r`. Rewrite using `[h3]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Spec.map_id _)`. Establish `h1 : k ≫ y = 1` using `(FormalPoint.existsUnique_isPointOf_unit U o).unique (h.pull k hp) (FormalPoint.isPointOf_one U ho)`. Use `(congrArg (·.left) h1).trans ?_` and prove the remaining obligations. Use `show (toUnit _ ≫ η[G]).left = _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isTangent_of_isPointOf [IsLocalRing R] [IsAdicComplete I R] {y : epsR R ⟶ G} {gm : GtPt D.toPre (epsR R)}
     (hg : GtTan gm) (h : FormalPoint.IsPointOf U gm y) : IsTangent y := by
@@ -119,9 +117,9 @@ theorem isTangent_of_isPointOf [IsLocalRing R] [IsAdicComplete I R] {y : epsR R 
 end General
 
 /- English proof (translation)
-Introduce `V _ _ _ _ hV D A G _ _ _ U gm hg`. Establish `: Module.Finite V (DualNumber V)` using `inferInstanceAs (Module.Finite V (V × V))`. Use `isAdicComplete_map_of_finite (IsLocalRing.maximalIdeal V) (DualNumber V)` as an intermediate fact. Establish `: Nontrivial (DualNumber V)` using `(TrivSqZeroExt.inl_injective (R := V) (M := V)).nontrivial`. Establish `: IsLocalRing (DualNumber V)` using `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.isUnit_iff_isUnit_fst]`. Simplify using `using IsLocalRing.isUnit_or_isUnit_one_sub_self x.fst`. Take `⟨y, hy, hu⟩` from `FormalPoint.existsUnique_isPointOf U.toUnifPre gm`. Conclude with `⟨y, ⟨isTangent_of_isPointOf _ hg hy, (tanRel_iff_isPointOf _ _ _).2 hy⟩, fun y' h' => hu y' ((tanRel_iff_isPointOf _ _ _).1 h'.2)⟩`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_tangent_of_gtTan : AllV fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ gm : GtPt D.toPre (epsR V), GtTan gm → ∃! y : epsR V ⟶ G, IsTangent y ∧ TanRel U.toUnifPre y gm := by
   intro V _ _ _ _ hV D A G _ _ _ U gm hg

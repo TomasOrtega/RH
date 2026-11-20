@@ -26,7 +26,7 @@ def Rel {H : LB X} {H' : LB X'} (β : X' ⟶ X) (w : LB.Iso H' (H.pull β)) (s :
     gs β z _ (s.f k) = (gw w (𝟙 _) z k k').val * gs (𝟙 _) z _ (s'.f k')
 
 /- English proof (translation)
-Rewrite using `[← gs_pull r β z U h, gs_eq β _ U h, gs_eq r z _ h]`. Conclude with `Scheme.Hom.germ_stalkMap_apply r (β ⁻¹ᵁ U) z h _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_stalkMap (r : Z ⟶ X') (β : X' ⟶ X) (z : Z) (U : X.Opens) (h : β (r z) ∈ U) (a : Γ(X, U)) :
     (r.stalkMap z).hom (gs β (r z) U a) = gs (r ≫ β) z U a := by
@@ -34,9 +34,9 @@ theorem gs_stalkMap (r : Z ⟶ X') (β : X' ⟶ X) (z : Z) (U : X.Opens) (h : β
   exact Scheme.Hom.germ_stalkMap_apply r (β ⁻¹ᵁ U) z h _
 
 /- English proof (translation)
-Establish `hm : r z ∈ (H.pull β).U (fun _ => k) ⊓ H'.U k'` using `⟨mem_pull.2 hk, hk'⟩`. Establish `e` using `congrArg (r.stalkMap z).hom (h (r z) k k' hk hk')`. Rewrite `e` using `[map_mul, gs_stalkMap r β z _ hk, gs_stalkMap r (𝟙 _) z _ hk', Category.comp_id]`. Use `e.trans (congrArg (· * _) ?_)` and prove the remaining obligations. Use `(congrArg (r.stalkMap z).hom (gs_unit (𝟙 X') (r z) _ hm _).symm).trans ((gs_stalkMap r (𝟙 _) z _ hm _).trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.comp_id]`. Conclude with `gs_unit r z _ hm _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rel.pull {H : LB X} {H' : LB X'} {β : X' ⟶ X} {w : LB.Iso H' (H.pull β)} {s : LB.Sec H} {s' : LB.Sec H'}
     (h : Rel β w s s') (r : Z ⟶ X') (z : Z) (k : H.ι) (k' : H'.ι) (hk : β (r z) ∈ H.U k) (hk' : r z ∈ H'.U k') :
@@ -51,7 +51,7 @@ theorem Rel.pull {H : LB X} {H' : LB X'} {β : X' ⟶ X} {w : LB.Iso H' (H.pull 
   exact gs_unit r z _ hm _
 
 /- English proof (translation)
-Introduce `z k k'' hk hk''`. Take `⟨i, hi⟩` from `exists_chart hH' (β' z)`. Rewrite using `[h.pull β' z k i hk hi, h' z i k'' hi hk'', T _ (𝟙 _) z k i k'' hk hi hk'', Category.id_comp, Units.val_mul, _root_.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Rel.comp {H : LB X} {H' : LB X'} {H'' : LB X''} {β : X' ⟶ X} {β' : X'' ⟶ X'} {w : LB.Iso H' (H.pull β)}
     {w' : LB.Iso H'' (H'.pull β')} {w'' : LB.Iso H'' (H.pull (β' ≫ β))} (T : Tri w w' w'') (hH' : H'.IsLB)
@@ -63,13 +63,11 @@ theorem Rel.comp {H : LB X} {H' : LB X'} {H'' : LB X''} {β : X' ⟶ X} {β' : X
     _root_.mul_assoc]
 
 /- English proof (translation)
-Use `⟨fun x => ?_⟩` and prove the remaining obligations. Establish `h : I ^ (e + 1 + 1) ≤ I ^ (e + 1)` using `Ideal.pow_le_pow_right (by omega)`. Establish `hx : (x : PrimeSpectrum (R ⧸ I ^ (e + 1 + 1))) ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.factor h))`. Rewrite using `[range_comap_of_surjective _ _ (Ideal.Quotient.factor_surjective h)]`. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `ha' : a ∈ I ^ (e + 1)`. Simplify `ha` using `[RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`. Use `x.2.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Establish `: Ideal.Quotient.mk (I ^ (e + 1 + 1)) a ^ 2 = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Use `Ideal.pow_le_pow_right (show e + 1 + 1 ≤ (e + 1) * 2 by omega) ?_` and prove the remaining obligations. Rewrite using `[pow_mul]`. Conclude with `Ideal.pow_mem_pow ha' 2`. Rewrite using `[this]`.
-
-Conclude with `Ideal.zero_mem _`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_thickTrans (R : Type) [CommRing R] (I : Ideal R) (e : ℕ) : Surjective (thickTrans R I e) := by
   refine ⟨fun x => ?_⟩
@@ -92,19 +90,17 @@ theorem surjective_thickTrans (R : Type) [CommRing R] (I : Ideal R) (e : ℕ) : 
   exact hx
 
 /- English proof (translation)
-Introduce `R _ _ _ I hI hc Y β hβ B b hB hfl hb hbb H v hH n s hs h0`. Establish `hgen : ∀ e, ⨆ i, nonzeroLocus (s e i) = ⊤`. Introduce `e`. Proceed by induction on `e with`. Consider the case `zero => exact h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ e ih`. Establish `hsur : Surjective (β e)` using `MorphismProperty.of_isPullback (P := @Surjective) (hβ e).flip (surjective_thickTrans R I e)`. Use `top_le_iff.1 fun y _ => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hsur.surj y`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show z ∈ ⨆ i, nonzeroLocus (s e i) by rw [ih]; trivial)`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hi` using `[(GlobalTheory.SecPullIso.section_pull _ _ (β e) _ _ (v e) (hH (e + 1)).1 (hH e).1 (hH e).2 (s (e + 1) i)).2 (s e i) (hs e i)]`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, hi⟩`. Establish `c₁ : ∀ e, β e ≫ (Y (e + 1)).hom ≫ thick R I (e + 1) = (Y e).hom ≫ thick R I e` using `fun e => by`. Rewrite using `[← Category.assoc, (hβ e).w, Category.assoc, thickTrans_comp]`. Take `⟨P, f, O, t, hO, hva, hP⟩` from `GlobalTheory.ProjQuot.exists_veryAmpleBy_of_ideal R n ⊥ (fun F hF d => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hF`, the goal using `[Ideal.mem_bot]`. Rewrite using `[hF, map_zero])`. Use `choose c w hc' hw hr using fun e => GlobalTheory.exists_hom_of_veryAmpleBy R P f O n t hO hva _ ((Y e).hom ≫ thick R I e) (H e) (s e) (hH e).1 (hgen e) (fun d F hF h k => by`. Take `⟨m, hm⟩` from `(hP d F hF).1 h 0`. Establish `: F = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[Ideal.mem_bot]`. Conclude with `((MvPolynomial.isRegular_X (n := (0 : Fin (n + 1)))).pow m).left (by simpa using hm)`. Rewrite using `[this, map_zero])`. Establish `hcc : ∀ e, β e ≫ c (e + 1) = c e` using `fun e => by`. Establish `hv` using `(isGen_iff _).1 (hH e).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hw'` using `(isGen_iff _).1 (hw (e + 1))`. Take `⟨w'', T⟩` from `exists_comp (hH (e + 1)).1 (w (e + 1)) (v e) hw' hv hO (hH e).1`. Conclude with `GlobalTheory.MapUniq.hom_eq_of_pull_sections R P f O n t hO hva _ (H e) (s e) _ _ w'' (w e) (hH e).1 (by rw [Category.assoc, hc', hc', c₁]) ((isGen_iff _).2 (T.pgen_comp (hH (e + 1)).1 hw' hv)) (hw e) (fun j => Rel.comp T (hH (e + 1)).1 (hr (e + 1) j) (hs e j)) (hr e)`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_hom_algebraisation_of_reductionTower R I hI hc Y β hβ B b hB hfl hb hbb (Over.mk f) ⟨O, hO, n, t, hva⟩ c hc' hcc`. Use `⟨O.pull g.left, pull_isLB hO _, fun e => ?_⟩` and prove the remaining obligations.
-
-Conclude with `LBIso.trans (hH e).1 (pull_isLB hO _) (pull_isLB (pull_isLB hO _) _) ⟨w e, hw e⟩ (GlobalTheory.GenSpread.lbIso_pull_pull hO (b e) (hg e).symm)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_lb_of_generated_system : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (I : Ideal R), I ≠ ⊤ → IsAdicComplete I R → ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) → ∀ (B : Over (Spec (CommRingCat.of R))) (b : ∀ e, (Y e).left ⟶ B.left), IsProjBy B.hom → Flat B.hom → (∀ e, IsPullback (b e) (Y e).hom B.hom (thick R I e)) → (∀ e, β e ≫ b (e + 1) = b e) → ∀ (H : ∀ e, LB (Y e).left) (v : ∀ e, LB.Iso (H e) ((H (e + 1)).pull (β e))), (∀ e, (H e).IsLB ∧ (v e).IsGen) → ∀ (n : ℕ) (s : ∀ e, Fin (n + 1) → LB.Sec (H e)), (∀ e j, (∀ z (k : (H (e + 1)).ι) (k' : (H e).ι), (β e) z ∈ (H (e + 1)).U k → z ∈ (H e).U k' → gs (β e) z _ ((s (e + 1) j).f k) = (Geo.Tor.gw (v e) (𝟙 _) z k k').val * gs (𝟙 _) z _ ((s e j).f k'))) → (⨆ i, nonzeroLocus (s 0 i) = ⊤) → ∃ M : LB B.left, M.IsLB ∧ ∀ e, LBIso (H e) (M.pull (b e)) := by
   intro R _ _ _ I hI hc Y β hβ B b hB hfl hb hbb H v hH n s hs h0

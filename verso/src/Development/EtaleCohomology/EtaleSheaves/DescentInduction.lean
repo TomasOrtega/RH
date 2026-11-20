@@ -23,9 +23,9 @@ def CxDesc : Prop := ∀ (R : Type) [CommRing R] (I : Cx R) [I.IsStrictlyGE 0], 
   (∀ j : ℤ, j < n + 1 → Function.Bijective (cpull g I j)) ∧ Function.Injective (cpull g I (n + 1))
 
 /- English proof (translation)
-Introduce `_ R _ F E E' f n hc he`. Take `⟨h1, h2, h3⟩` from `hB R F E`. Take `⟨h1', -, -⟩` from `hB R F E'`. Use `h2` as an intermediate fact. Use `h1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1'` as an intermediate fact. Conclude with `hX R (res R F) h3 ((chains R).map f) n (fun p j hj => ((hL R F f p j).1).1 ((hc (op (SimplexCategory.mk p))).1 j hj)) (fun p => ((hL R F f p n).2).1 (hc (op (SimplexCategory.mk p))).2) (fun j => ((hL R F f 0 j).1).1 (he j))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem DescStep_of (hB : Bounds) (hL : LevelIdent) (hX : CxDesc) : LateralTheory.E.t_E1Cut.DescStep := by
   intro _ R _ F E E' f n hc he

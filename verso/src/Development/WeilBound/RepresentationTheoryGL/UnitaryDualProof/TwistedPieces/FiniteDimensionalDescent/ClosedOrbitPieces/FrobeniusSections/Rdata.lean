@@ -8,23 +8,21 @@ namespace PositivityTheory.RgUd.TP.Desc.Piece.PSect
 open Module Polynomial
 
 /- English proof (translation)
-Take `⟨S, hSred, hSlift⟩` from `sectionEx p c hnil hroot`. Establish `: IsReduced S` using `⟨fun x hx => Subtype.ext (hSred x x.2 (hx.map S.val))⟩`. Establish `: FiniteDimensional k S` using `FiniteDimensional.finiteDimensional_submodule (Subalgebra.toSubmodule S)`. Take `⟨m, e, he1, he2, he3, he4⟩` from `idem (k := k) (S := S)`. Take `⟨ε, hεn, hε⟩` from `sEps S hSlift (p ^ c) hnil`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `b` to `Module.finBasis k S`. Establish `hsum : ∀ x : S, ∑ j, b.repr x j • ((b j : S) : R) = (x : R)`. Introduce `x`. Establish `h` using `congrArg S.val (b.sum_repr x)`. Rewrite `h` using `[map_sum]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h`. Use `⟨finrank k S, fun j => (b j : R), fun j j' t => b.repr (b j * b j') t, fun j => b.repr 1 j, ε, m, fun t j => b.repr (e t) j, ?_, ?_, hnil ε hεn, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j j'`. Rewrite using `[hsum]`. Both sides reduce to the same expression.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hsum]`. Both sides reduce to the same expression. Introduce `y`. Take `⟨σ, hσ, hy⟩` from `hε y`. Use `⟨fun l j => b.repr ⟨σ l, hσ l⟩ j, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hy]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [← smul_mul_assoc, ← Finset.sum_mul]`. Rewrite using `[hsum]`. Introduce `t`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hsum]`. Conclude with `congrArg Subtype.val (he1 t)`. Simplify using `only [hsum]`. Establish `h` using `congrArg S.val he2`. Rewrite `h` using `[map_sum, map_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h`. Introduce `t t' htt`. Simplify using `only [hsum]`. Conclude with `congrArg Subtype.val (he3 t t' htt)`. Introduce `t v`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hsum]`. Establish `hx : ∑ j, v j • ((b j : S) : R) = ((∑ j, v j • b j : S) : R)`. Simplify using the standard rewrite rules. Rewrite using `[hx]`. Break down `he4 t (∑ j, v j • b j) with h0 | ⟨w, hw⟩` into its components or cases.
-
-Use `left`. Conclude with `congrArg Subtype.val h0`. Use `right`. Conclude with `⟨w, congrArg Subtype.val hw⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rdata {k R : Type*} [Field k] [CommRing R] [Algebra k R] [FiniteDimensional k R] [IsPrincipalIdealRing R]
     (p c : ℕ) [Fact p.Prime] [CharP k p] [FiniteDimensional k (Tw k p c)]

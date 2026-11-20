@@ -14,17 +14,15 @@ open GlobalTheory.SeeConjRead
 namespace GlobalTheory.SeeConjRead
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R hL`. Establish `hPg` using `hL.Pg`. Use `⟨fun PP hP => ?_, fun Q hQ => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `(hPg PP).1 hP`. Establish `h1 : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal` using `R.C.P.overP hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_mul]`. Use `fin_cases k`. Conclude with `PP.asIdeal.mul_mem_right _ h1`. Conclude with `PP.asIdeal.mul_mem_left _ h1`. Rewrite `hQ` using `[Nat.cast_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : Fin 2, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal := by`. Break down `Q.isPrime.mem_or_mem hQ with h | h` into its components or cases. Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`. Establish `hc : GlobalTheory.Mem.Chr.ConjPl D.host.conj.toRingEquiv Q (GlobalTheory.IdemSupport.cP Q)`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(GlobalTheory.Mem.Chr.conjPl_iff_mem _ _ _).2 fun x y hxy => ?_` and prove the remaining obligations. Establish `h1 : y = GlobalTheory.IdemSupport.cO D x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hxy, GlobalTheory.IdemSupport.cO_coe]`. Conclude with `(Formalism.BasicNotions.bridge_star_holds D.R D.host _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Rewrite using `[GlobalTheory.IdemSupport.mem_cP, h1, GlobalTheory.IdemSupport.cO_cO]`. Establish `hsp` using `(GlobalTheory.Mem.Chr.splitsC_main D.R D.host _ (D.host.g_prime k) (D.nd.g_split k) Q hk).2.2.2 (R.C.P.pb k) (R.C.P.pb_over k) _ hc`. Distinguish the cases in `hu : Q.under (𝓞 D.host.K) = R.C.P.pb k`. Conclude with `⟨Q, (hPg Q).2 ⟨k, hu⟩, Or.inl rfl⟩`. Establish `hu' : (GlobalTheory.IdemSupport.cP Q).under (𝓞 D.host.K) = R.C.P.pb k`.
-
-Assume the negation of the conclusion as `hn`. Conclude with `hu (hsp.2.2 hn)`. Conclude with `⟨GlobalTheory.IdemSupport.cP Q, (hPg _).2 ⟨k, hu'⟩, Or.inr (GlobalTheory.StdFrames.cP_cP Q).symm⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem places_over_g : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → (∀ PP ∈ R.Pg, ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) ∧ ∀ Q : Pl D.host.E, ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal → ∃ PP ∈ R.Pg, Q = PP ∨ Q = GlobalTheory.IdemSupport.cP PP := by
   intro D G _ _ Pl0 T A Ks _ _ _ R hL

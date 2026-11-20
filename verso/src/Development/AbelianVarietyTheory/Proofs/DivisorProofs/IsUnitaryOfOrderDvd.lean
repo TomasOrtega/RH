@@ -21,9 +21,9 @@ namespace GlobalTheory.XiSplit
 open Formalism.L2.Host
 
 /- English proof (translation)
-Introduce `x`. Establish `h1 : (χ.1 x) ^ n = 1`. Establish `: (χ ^ n).1 x = 1` using `by rw [h]; rfl`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : ‖((χ.1 x : ℂˣ) : ℂ)‖ ^ n = 1`. Rewrite using `[← norm_pow, ← Units.val_pow_eq_pow_val, h1, Units.val_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnitary_of_orderDvd {L : Type} [Field L] [NumberField L] {χ : HChar L} {n : ℕ} (hn : 0 < n)
     (h : χ.OrderDvd n) : χ.IsUnitary := by
@@ -36,13 +36,11 @@ theorem isUnitary_of_orderDvd {L : Type} [Field L] [NumberField L] {χ : HChar L
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h2
 
 /- English proof (translation)
-Establish `hx : ∀ x, (χ.1 x) ^ n = 1` using `fun x => congrArg (fun ξ : HChar L => ξ.1 x) h`. Establish `hw : ∀ (w : InfinitePlace L) (y : (w.Completion)ˣ), χ.locInf w y = 1`. Introduce `w y`. Set `e` to `InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (e (y : w.Completion)) hn`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hz' : (e.symm z) ^ n = y` using `by rw [← map_pow, hz]; simp`. Establish `hz0 : e.symm z ≠ 0`. Introduce `h0`. Rewrite `hz'` using `[h0, zero_pow hn.ne']`. Conclude with `y.ne_zero hz'.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: y = (Units.mk0 _ hz0) ^ n` using `Units.ext (by simp [hz'])`. Rewrite using `[this, map_pow]`. Conclude with `hx _`. Use `show χ.1 (Formalism.L2.Host.infDiag k) = 1`. Unfold `Formalism.L2.Host.infDiag`.
-
-Rewrite using `[MonoidHom.finset_prod_apply, map_prod]`. Conclude with `Finset.prod_eq_one fun w _ => hw w _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_eq_one {L : Type} [Field L] [NumberField L] [IsTotallyComplex L] {χ : HChar L} {n : ℕ} (hn : 0 < n)
     (h : χ.OrderDvd n) (k : Lˣ) : χ.inf k = 1 := by
@@ -63,11 +61,11 @@ theorem inf_eq_one {L : Type} [Field L] [NumberField L] [IsTotallyComplex L] {χ
   exact Finset.prod_eq_one fun w _ => hw w _
 
 /- English proof (translation)
-Establish `hle : D.host.conj • w.asIdeal ≤ w'.asIdeal`. Introduce `y hy`. Rewrite `hy` using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Take `⟨z, hzv, hz⟩` from `hc _ hy`. Establish `e : z = y` using `RingOfIntegers.ext ((hz.trans (GlobalTheory.TypePlaces.star_eq_conj D _)).trans (D.host.conj.apply_symm_apply (y : D.host.E)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `e ▸ hzv`. Establish `hmax : (D.host.conj • w.asIdeal).IsMaximal`. Use `w.isPrime` as an intermediate fact. Use `Ideal.IsPrime.isMaximal inferInstance fun h0 => w.ne_bot ?_` and prove the remaining obligations. Use `congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) h0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Conclude with `hmax.eq_of_le w'.isPrime.ne_top hle`.
+A detailed English derivation is pending.
 -/
 theorem smul_eq_of_isConjPl {D : D7} {w w' : HeightOneSpectrum (𝓞 D.host.E)} (hc : Formalism.IndefR.Lev.IsConjPl w w') :
     D.host.conj • w.asIdeal = w'.asIdeal := by
@@ -86,18 +84,16 @@ theorem smul_eq_of_isConjPl {D : D7} {w w' : HeightOneSpectrum (𝓞 D.host.E)} 
   exact hmax.eq_of_le w'.isPrime.ne_top hle
 
 /- English proof (translation)
-Introduce `c hc` and use `⟨D.host.conj • c, h ▸ Ideal.smul_mem_pointwise_smul _ _ _ hc, (GlobalTheory.TypePlaces.star_eq_conj D _).symm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isConjPl_of_smul_eq {D : D7} {w w' : HeightOneSpectrum (𝓞 D.host.E)}
     (h : D.host.conj • w.asIdeal = w'.asIdeal) : Formalism.IndefR.Lev.IsConjPl w w' := fun c hc =>
   ⟨D.host.conj • c, h ▸ Ideal.smul_mem_pointwise_smul _ _ _ hc, (GlobalTheory.TypePlaces.star_eq_conj D _).symm⟩
 
 /- English proof (translation)
-Take `⟨q, -, hI, hqP⟩` from `hP`. Establish `hfix : D.host.conj • P.asIdeal = P.asIdeal` using `hI P.asIdeal P.isPrime P.ne_bot hqP`. Assume the negation of the conclusion as `h`. Break down `(hL.Q_ram t P).1 h with hPQ | ⟨P', hP', hc⟩` into its components or cases. Conclude with `((hL.Q_pl t) P hPQ).2 P hPQ (isConjPl_of_smul_eq hfix)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `e1` using `(smul_eq_of_isConjPl hc).trans hfix.symm`. Establish `e2 : P'.asIdeal = P.asIdeal`. Simplify using `using congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) e1`. Establish `e3 : P' = P` using `HeightOneSpectrum.ext e2`. Substitute `e3` using the available equality.
-
-Conclude with `((hL.Q_pl t) P' hP').2 P' hP' hc`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem unrAt_of_inert {D : D7} {T : Type} {L : LevCh D T} {μ₀ : T} (hL : L.Is μ₀) (t : T)
     (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : ∃ q : ℕ, q.Prime ∧ InertQ D q ∧ ((q : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal) :
@@ -115,13 +111,11 @@ theorem unrAt_of_inert {D : D7} {T : Type} {L : LevCh D T} {μ₀ : T} (hL : L.I
     exact ((hL.Q_pl t) P' hP').2 P' hP' hc
 
 /- English proof (translation)
-Introduce `D T L μ₀ hL t`. Use `haveI : IsTotallyComplex D.host.E := D.sp.cm.cmUnram.1`. Take `⟨n, hn, ho⟩` from `hL.xi_fin t`. Establish `hu : (L.xiH t).IsUnitary` using `isUnitary_of_orderDvd hn ho`. Establish `hi : (L.xiH t).HasInf (Formalism.L2.Host.embTau D) 0` using `fun k => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inf_eq_one hn ho k]`. Simplify using the standard rewrite rules. Establish `hp : ∀ τ, Even ((0 : D.what₂.Tau → ℤ) τ - ((0 : ℕ) : ℤ))` using `fun τ => by simp`. Establish `hc : ∃ m : ℕ, 0 < m ∧ ∀ u, IntU D u → (∃ s ∈ OhE D, (u : AE D) - 1 = (m : AE D) * s) → (L.xiH t).1 (finIdl D u) = 1`. Take `⟨M, hM, h⟩` from `GlobalTheory.Mem.HeckeLevel.exists_level_nat D.host.E (L.xiH t)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨M, hM, fun u hu ⟨s, hs, e⟩ => h _ (GlobalTheory.Mem.Col2.SplitChar.finIdl_unit hu) (fun w => by rw [GlobalTheory.Mem.Col2.SplitChar.finIdl_fst]; rfl) fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Mem.Col2.SplitChar.vl_sub_one, e, map_mul, GlobalTheory.Mem.Col2.SplitChar.vl_nat, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `mul_le_of_le_one_right' (GlobalTheory.Mem.Col2.SplitChar.vl_le hs P)`. Establish `hnorm` using `GlobalTheory.NuCharNorm.chi_norm_one D (L.xiH t) (hL.xi_triv t) (GlobalTheory.Mem.HeckeLevel.exists_level_nat D.host.E (L.xiH t))`. Establish `hr` using `GlobalTheory.UnrKill.unr_kill D (L.xiH t) (unrAt_of_inert hL t)`.
-
-Conclude with `⟨GlobalTheory.SplitCharGen.ofHChar 0 (L.xiH t) 0 hu hi hp hc hnorm hr, fun _ => rfl, fun _ => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_heckeU_xi : ∀ {D : D7} {T : Type} {L : LevCh D T} {μ₀ : T}, L.Is μ₀ → ∀ t : T,
     ∃ χ : HeckeU D 0, (∀ x, χ.f x = (L.xiH t).1 (finIdl D x)) ∧ ∀ τ, χ.n τ = 0 := by

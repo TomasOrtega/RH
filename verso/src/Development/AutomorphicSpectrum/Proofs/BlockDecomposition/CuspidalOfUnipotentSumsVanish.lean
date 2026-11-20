@@ -51,18 +51,18 @@ def stdRadical (K : Type) [Field K] [Fintype K] [DecidableEq K] (d a : ℕ) : Su
       exact hpow _ }
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_stdRadical {K : Type} [Field K] [Fintype K] [DecidableEq K] {d a : ℕ} {u : GL (Fin d) K} :
     u ∈ stdRadical K d a ↔ ∀ i j : Fin d, (u : Matrix (Fin d) (Fin d) K) i j = (if i = j then 1 else 0) ∨
       ((i : ℕ) < a ∧ a ≤ (j : ℕ)) := Iff.rfl
 
 /- English proof (translation)
-Establish `hp : ∀ i j, (pm K σ : Matrix ι ι K) i j = if i = σ j then 1 else 0`. Introduce `i j`. Use `show (Equiv.toPEquiv σ⁻¹).toMatrix i j = _`. Simplify using `only [PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq]`. Conclude with `if_congr Equiv.Perm.inv_eq_iff_eq rfl rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[mul_inv_eq_iff_eq_mul]`. Use extensionality with `i j`. Establish `hg : ∀ x : GL ι K, ((glEquiv K σ x : GL ι K) : Matrix ι ι K) = (x : Matrix ι ι K).submatrix σ.symm σ.symm` using `fun _ => rfl`. Simplify using `only [Units.val_mul, Matrix.mul_apply, hp, hg, Matrix.submatrix_apply]`. Simplify using `only [ite_mul, one_mul, zero_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single (σ.symm i) (fun x _ hx => if_neg (fun h => hx (by simp [h]))) (by simp)]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem pm_conj {K : Type} [Field K] [Fintype K] [DecidableEq K] {ι : Type} [Fintype ι] [DecidableEq ι]
     (σ : Equiv.Perm ι) (g : GL ι K) : pm K σ * g * (pm K σ)⁻¹ = glEquiv K σ g := by
@@ -81,13 +81,11 @@ theorem pm_conj {K : Type} [Field K] [Fintype K] [DecidableEq K] {ι : Type} [Fi
   simp
 
 /- English proof (translation)
-Establish `hc : (Nat.card U : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Use `invertibleOfNonzero hc` as an intermediate fact. Establish `h1` using `Representation.card_inv_mul_sum_char_eq_finrank (ρ.comp U.subtype : Representation ℂ U V)`. Establish `hs : (∑ u : G, if u ∈ U then ρ.character u else 0) = ∑ g : U, Representation.character (ρ.comp U.subtype : Representation ℂ U V) g`. Rewrite using `[← Finset.sum_filter]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_subtype _ (by simp) (fun g => ρ.character g)`. Rewrite `h` using `[hs]`. Rewrite `h1` using `[h, mul_zero]`. Establish `h2 : Representation.invariants (ρ.comp U.subtype : Representation ℂ U V) = ⊥`. Rewrite using `[← Submodule.finrank_eq_zero, ← Nat.cast_eq_zero (R := ℂ)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1.symm`. Establish `hm : v ∈ Representation.invariants (ρ.comp U.subtype : Representation ℂ U V)`. Rewrite using `[Representation.mem_invariants]`. Conclude with `fun u => hv u.1 u.2`. Rewrite `hm` using `[h2]`.
-
-Simplify using `using hm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sum_char {G V : Type} [Group G] [Fintype G] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (ρ : Representation ℂ G V) (U : Subgroup G) [DecidablePred (· ∈ U)]
@@ -111,35 +109,31 @@ theorem eq_zero_of_sum_char {G V : Type} [Group G] [Fintype G] [AddCommGroup V] 
   simpa using hm
 
 /- English proof (translation)
-Introduce `K _ _ _ d τ h s b hb hs v hv`. Set `c0 : Fin s` to `⟨0, by omega⟩`. Set `c1 : Fin s` to `⟨1, by omega⟩`. Establish `hc : c0 ≠ c1` using `by simp [c0, c1, Fin.ext_iff]`. Take `⟨i0, hi0⟩` from `hb c0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i1, hi1⟩` from `hb c1`. Use `set a := Fintype.card {i // b i = c0} with ha`. Establish `ha0 : 0 < a` using `Fintype.card_pos_iff.2 ⟨⟨i0, hi0⟩⟩`. Establish `had : a < d`. Use `Fintype.card_subtype_lt (p := fun i => b i = c0) (x := i1) (by rw [hi1]; exact hc.symm)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hcard : Fintype.card {i // b i = c0} = Fintype.card {i : Fin d // (i : ℕ) < a}`. Rewrite using `[← ha]`. Conclude with `(Fintype.card_fin a).symm.trans (Fintype.card_congr { toFun := fun k => ⟨⟨k, by omega⟩, k.2⟩ invFun := fun i => ⟨i.1, i.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl })`. Set `e` to `Fintype.equivOfCardEq hcard`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `σ : Equiv.Perm (Fin d)` to `e.extendSubtype`. Establish `hσ : ∀ i, (σ i : ℕ) < a ↔ b i = c0`. Introduce `i`. Distinguish the cases in `hi : b i = c0`. Conclude with `⟨fun _ => hi, fun _ => e.extendSubtype_mem i hi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨fun h' => absurd h' (e.extendSubtype_not_mem i hi), fun h' => absurd h' hi⟩`. Establish `hfix : ∀ w : τ, (∀ u ∈ stdRadical K d a, τ.ρ u w = w) → w = 0`. Use `eq_zero_of_sum_char τ.ρ (stdRadical K d a) ?_` and prove the remaining obligations. Use `Eq.trans (Finset.sum_congr rfl fun u _ => ?_) (h a ha0 had)` and prove the remaining obligations. Distinguish the cases in `hu : u ∈ stdRadical K d a`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[if_pos hu, if_pos (mem_stdRadical.1 hu)]`. Both sides reduce to the same expression. Rewrite using `[if_neg hu, if_neg (fun h' => hu (mem_stdRadical.2 h'))]`. Establish `hent : ∀ (x : GL (Fin d) K) (i j : Fin d), ((pm K σ * x * (pm K σ)⁻¹ : GL (Fin d) K) : Matrix (Fin d) (Fin d) K) (σ i) (σ j) = (x : Matrix (Fin d) (Fin d) K) i j`. Introduce `x i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[pm_conj]`. Use `show (x : Matrix (Fin d) (Fin d) K) (σ.symm (σ i)) (σ.symm (σ j)) = _`. Simplify using the standard rewrite rules. Establish `key : ∀ x : GL (Fin d) K, pm K σ * x * (pm K σ)⁻¹ ∈ stdRadical K d a → ∀ i j, (x : Matrix (Fin d) (Fin d) K) i j = (if i = j then 1 else 0) ∨ (b i = c0 ∧ b j ≠ c0)`. Introduce `x hx i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `hx (σ i) (σ j)` as an intermediate fact. Rewrite `this` using `[hent]`. Break down `this with h1 | ⟨h1, h2⟩` into its components or cases. Use `left`. Simplify `h1` using `[σ.injective.eq_iff]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `right`. Use `⟨(hσ i).1 h1, fun h3 => ?_⟩` and prove the remaining obligations. Use `(hσ j).2 h3` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hut : ∀ x : GL (Fin d) K, pm K σ * x * (pm K σ)⁻¹ ∈ stdRadical K d a → IsBlockUT K b (x : Matrix (Fin d) (Fin d) K)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx i j hij`. Break down `key x hx i j with h1 | ⟨h1, -⟩` into its components or cases. Establish `: i ≠ j` using `by rintro rfl; exact lt_irrefl _ hij`. Simplify `h1` using `[this]`. Rewrite `hij` using `[h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd hij (by simp [c0, Fin.lt_def])`. Establish `hun : ∀ x : GL (Fin d) K, pm K σ * x * (pm K σ)⁻¹ ∈ stdRadical K d a → x ∈ unip K b`. Introduce `x hx`. Use `⟨⟨hut x hx, hut x⁻¹ ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: pm K σ * x⁻¹ * (pm K σ)⁻¹ = (pm K σ * x * (pm K σ)⁻¹)⁻¹` using `by group`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `inv_mem hx`. Introduce `i j hij`. Break down `key x hx i j with h1 | ⟨h1, h2⟩` into its components or cases. Conclude with `h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (hij ▸ h1) h2`. Establish `hw` using `hfix (τ.ρ (pm K σ) v) (by`. Introduce `u hu`. Establish `hx : (pm K σ)⁻¹ * u * pm K σ ∈ unip K b`. Apply `hun` to reduce the goal to its premises.
-
-Establish `: pm K σ * ((pm K σ)⁻¹ * u * pm K σ) * (pm K σ)⁻¹ = u` using `by group`. Rewrite using `[this]`. Conclude with `hu`. Establish `hh : u * pm K σ = pm K σ * ((pm K σ)⁻¹ * u * pm K σ)` using `by group`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hh, map_mul, Module.End.mul_apply, hv _ hx])`.
-
-Establish `h3` using `congrArg (τ.ρ (pm K σ)⁻¹) hw`. Simplify `h3` using `[← Module.End.mul_apply, ← map_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isCuspidal_of_sum_char : ∀ (K : Type) [Field K] [Fintype K] [DecidableEq K] (d : ℕ) (τ : FDRep ℂ (GL (Fin d) K)),
     (∀ a, 0 < a → a < d → (open Classical in ∑ u : GL (Fin d) K,

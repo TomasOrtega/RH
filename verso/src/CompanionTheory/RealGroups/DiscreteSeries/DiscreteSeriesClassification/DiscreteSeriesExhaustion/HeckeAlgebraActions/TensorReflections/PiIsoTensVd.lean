@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.DS.Lap.Capelli
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h`. Use `⟨e.symm, fun a b x => ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem iso_symm' {X X' : GMod n} (h : Iso X X') : Iso X' X := by
   obtain ⟨e, he⟩ := h
@@ -18,7 +18,7 @@ theorem iso_symm' {X X' : GMod n} (h : Iso X X') : Iso X' X := by
   rw [he, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h`. Take `⟨e', he'⟩` from `h'`. Conclude with `⟨e.trans e', fun a b x => by simp [he, he']⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iso_trans' {X X' X'' : GMod n} (h : Iso X X') (h' : Iso X' X'') : Iso X X'' := by
   obtain ⟨e, he⟩ := h
@@ -26,15 +26,15 @@ theorem iso_trans' {X X' X'' : GMod n} (h : Iso X X') (h' : Iso X' X'') : Iso X 
   exact ⟨e.trans e', fun a b x => by simp [he, he']⟩
 
 /- English proof (translation)
-Establish `key : ∀ (k : ℕ) (x : M), φ (((T - μ • (1 : Module.End ℂ M)) ^ k) x) = ((T' - μ • (1 : Module.End ℂ M')) ^ k) (φ x)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Introduce `x`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih]`. Use `congr 1`. Simplify using `[hφ]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use extensionality with `y`. Rewrite using `[Submodule.mem_map_equiv, Module.End.mem_maxGenEigenspace, Module.End.mem_maxGenEigenspace]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `key k (φ.symm y)` as an intermediate fact. Rewrite `this` using `[hk, map_zero, LinearEquiv.apply_symm_apply]`. Conclude with `this.symm`. Introduce and unpack `⟨k, hk⟩`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[key, LinearEquiv.apply_symm_apply, hk, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_maxGen {M M' : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup M'] [Module ℂ M']
     (φ : M ≃ₗ[ℂ] M') (T : Module.End ℂ M) (T' : Module.End ℂ M') (hφ : ∀ x, φ (T x) = T' (φ x)) (μ : ℂ) :
@@ -63,7 +63,7 @@ theorem map_maxGen {M M' : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup 
     rw [key, LinearEquiv.apply_symm_apply, hk, map_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨φ.ofSubmodules S S' hS, fun a b x => Subtype.ext (hφ a b x.1)⟩`.
+Supply the required witnesses or components.
 -/
 theorem iso_sub' {X X' : GMod n} (φ : X.V ≃ₗ[ℂ] X'.V) (hφ : ∀ a b x, φ (X.E a b x) = X'.E a b (φ x))
     (S : Submodule ℂ X.V) (S' : Submodule ℂ X'.V) (hS : S.map (φ : X.V →ₗ[ℂ] X'.V) = S')
@@ -75,7 +75,7 @@ def piIso {X X' : GMod n} (e : X.V ≃ₗ[ℂ] X'.V) : (Fin n → X.V) ≃ₗ[�
   LinearEquiv.piCongrRight fun _ : Fin n => e
 
 /- English proof (translation)
-Use function extensionality and compare the values at `d`. Distinguish the cases in `hd : d = b`. Substitute `hd` using the available equality. Simplify using `[piIso, tensVd, he]`. Simplify using `[piIso, tensVd, he, hd]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem piIso_tensVd {X X' : GMod n} (e : X.V ≃ₗ[ℂ] X'.V) (he : ∀ a b x, e (X.E a b x) = X'.E a b (e x))
     (a b : Fin n) (f : Fin n → X.V) : piIso e (tensVd X.E a b f) = tensVd X'.E a b (piIso e f) := by
@@ -86,7 +86,7 @@ theorem piIso_tensVd {X X' : GMod n} (e : X.V ≃ₗ[ℂ] X'.V) (he : ∀ a b x,
   · simp [piIso, tensVd, he, hd]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[piIso, eeVd, he, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem piIso_eeVd {X X' : GMod n} (e : X.V ≃ₗ[ℂ] X'.V) (he : ∀ a b x, e (X.E a b x) = X'.E a b (e x))
     (f : Fin n → X.V) : piIso e (eeVd X.E f) = eeVd X'.E (piIso e f) := by
@@ -94,7 +94,7 @@ theorem piIso_eeVd {X X' : GMod n} (e : X.V ≃ₗ[ℂ] X'.V) (he : ∀ a b x, e
   simp [piIso, eeVd, he, map_sum]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hY`. Conclude with `iso_sub' (X := tensD Y) (X' := tensD Y') (piIso e) (fun a b f => piIso_tensVd e he a b f) _ _ (map_maxGen (piIso e) (omD Y) (omD Y') (fun f => piIso_eeVd e he f) _) h h'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem iso_back' {Y Y' : GMod n} (hY : Iso Y Y') (z : ℂ)
     (h : ∀ a b, ∀ x ∈ backSub Y z, (tensD Y).E a b x ∈ backSub Y z)
@@ -105,7 +105,7 @@ theorem iso_back' {Y Y' : GMod n} (hY : Iso Y Y') (z : ℂ)
     (map_maxGen (piIso e) (omD Y) (omD Y') (fun f => piIso_eeVd e he f) _) h h'
 
 /- English proof (translation)
-Introduce `_ hOm hB _ hU n X X' χ s hX hX' hfree hsimp hiso`. Establish `h1` using `hU n X χ s hB hX hfree hsimp (hOm n X χ s hX hsimp)`. Establish `h2` using `hU n X' χ s hB hX' hfree hsimp (hOm n X' χ s hX' hsimp)`. Conclude with `iso_trans' (iso_symm' h1) (iso_trans' (iso_back' hiso _ _ _) h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem reflect_of' : QdetTens → OmScal → BackStable → DualFacts → Unit → Reflect := by
   intro _ hOm hB _ hU n X X' χ s hX hX' hfree hsimp hiso

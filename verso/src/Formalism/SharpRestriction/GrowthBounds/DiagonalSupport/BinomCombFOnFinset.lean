@@ -11,14 +11,14 @@ namespace Formalism.MainNotions.Proposition5Numerics
 open Formalism.MainNotions.G Formalism.MainNotions.PlaneGramData Formalism.MainNotions.TestSideWords Formalism.MainNotions.G.Joints Formalism.MainNotions.G.GLWeightTheory Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Unfold `gamR`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem gamR_zero_zero (P : ℕ) : gamR P 0 0 = 1 := by
   unfold gamR
   simp
 
 /- English proof (translation)
-Unfold `gamR`. Establish `: ((be.factorial : ℕ) : ℚ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Simplify using `[this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem gamR_one_zero (be : ℕ) : gamR 1 0 be = 1 := by
   unfold gamR
@@ -26,33 +26,31 @@ theorem gamR_one_zero (be : ℕ) : gamR 1 0 be = 1 := by
   simp [this]
 
 /- English proof (translation)
-Take `⟨hA, hB⟩` from `lemma_five_two_first_holds D p hp h5`. Establish `hrho' : ∀ v, rho v < p ^ (g v - 1 + 1)`. Introduce `v`. Distinguish the cases in `h : g v = 0`. Establish `h1` using `hrho v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `h1` using `[h, pow_zero]`. Establish `: rho v = 0` using `by omega`. Rewrite using `[this]`. Conclude with `pow_pos hp.pos _`. Establish `: g v - 1 + 1 = g v` using `by omega`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hrho v`. Take `⟨hU, _, hQ⟩` from `hB σ (fun v => g v - 1) rho hrho'`. Establish `hgam : ∀ (v : σ) (e' : ℕ), gamR (p ^ (g v - 1 + 1)) (rho v) e' = cUnit (p ^ (g v - 1 + 1)) e' * dUnit (p ^ (g v - 1 + 1)) e' (rho v)`. Introduce `v e'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `gamR`. Establish `h1 : ((rho v).factorial : ℚ) ≠ 0` using `by exact_mod_cast (Nat.factorial_ne_zero _)`. Establish `h2 : (e'.factorial : ℚ) ≠ 0` using `by exact_mod_cast (Nat.factorial_ne_zero _)`. Establish `h3 : ((p ^ (g v - 1 + 1)).factorial : ℚ) ≠ 0` using `by exact_mod_cast (Nat.factorial_ne_zero _)`. Rewrite using `[hA (g v - 1) (rho v) e' (hrho' v)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ((rho v).factorial : ℚ) * (e'.factorial : ℚ) * ((p ^ (g v - 1 + 1)).factorial : ℚ) ^ e' ≠ 0` using `mul_ne_zero (mul_ne_zero h1 h2) (pow_ne_zero _ h3)`. Rewrite using `[mul_assoc _ (cUnit _ _) _, mul_div_cancel_left₀ _ hne]`. Establish `hkey : ∀ (be : σ → ℕ) (v : σ), gamR (p ^ (g v - 1 + 1)) (rho v) (if g v = 0 then 0 else be v) = gamR (p ^ g v) (rho v) (be v)`. Introduce `be v`. Distinguish the cases in `h : g v = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hrho v`. Rewrite `h1` using `[h, pow_zero]`. Establish `h2 : rho v = 0` using `by omega`. Rewrite using `[if_pos h, h2, gamR_zero_zero, h, pow_zero, gamR_one_zero]`. Establish `: g v - 1 + 1 = g v` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg h, this]`. Establish `hratio : ∀ e' : σ → ℕ, ((∏ k, (((rho k + p ^ (g k - 1 + 1) * e' k).factorial : ℕ) : ℚ)) / (∏ k, ((rho k).factorial : ℚ) * ((e' k).factorial : ℚ) * ((p ^ (g k - 1 + 1)).factorial : ℚ) ^ (e' k))) = ∏ k, gamR (p ^ (g k - 1 + 1)) (rho k) (e' k)`. Introduce `e'`. Rewrite using `[← Finset.prod_div_distrib]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun be => ?_, fun inv c => ?_⟩` and prove the remaining obligations. Establish `h` using `hU (fun v => if g v = 0 then 0 else be v)`. Establish `e1 : (∏ k, cUnit (p ^ (g k - 1 + 1)) (if g k = 0 then 0 else be k) * dUnit (p ^ (g k - 1 + 1)) (if g k = 0 then 0 else be k) (rho k)) = ∏ v, gamR (p ^ g v) (rho v) (be v)` using `Finset.prod_congr rfl fun v _ => by rw [← hgam, hkey]`. Rewrite `h` using `[e1]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨T, q, hT, hq⟩` from `hQ inv c`. Use `⟨T.filter (fun j => ∀ k, g k = 0 → j k = 0), q, fun j hj => hT j (Finset.mem_filter.1 hj).1, fun be => ?_⟩` and prove the remaining obligations. Establish `h` using `hq (fun v => if g v = 0 then 0 else be v)`. Simplify using `only [hratio] at h`. Establish `e1 : (∏ k, gamR (p ^ (g k - 1 + 1)) (rho k) (if g k = 0 then 0 else be k)) = ∏ v, gamR (p ^ g v) (rho v) (be v)` using `Finset.prod_congr rfl fun v _ => hkey be v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[e1]`. Establish `e2 : ∑ j ∈ T, q j * ∏ k, (((if g k = 0 then 0 else be k).choose (j k) : ℕ) : ℚ) = ∑ j ∈ T.filter (fun j => ∀ k, g k = 0 → j k = 0), q j * ∏ k, ((be k).choose (j k) : ℚ)`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hj`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : g k = 0`. Rewrite using `[if_pos hk, hj k hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_neg hk]`. Use `push Not at hj`. Take `⟨k, hk, hjk⟩` from `hj`. Establish `: ∏ k, (((if g k = 0 then 0 else be k).choose (j k) : ℕ) : ℚ) = 0`. Use `Finset.prod_eq_zero (Finset.mem_univ k) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hk]`. Establish `: Nat.choose 0 (j k) = 0` using `Nat.choose_eq_zero_of_lt (Nat.pos_of_ne_zero hjk)`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Rewrite using `[this, mul_zero]`.
-
-Rewrite `h` using `[e2]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem digQ (D : Formalism.BasicNotions.D7) (p : ℕ) (hp : p.Prime) (h5 : 5 ≤ p) (σ : Type) [Fintype σ] (g rho : σ → ℕ)
     (hrho : ∀ v, rho v < p ^ g v) :
@@ -141,19 +139,19 @@ theorem digQ (D : Formalism.BasicNotions.D7) (p : ℕ) (hp : p.Prime) (h5 : 5 �
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Set `em : (σ → ℕ) ↪ (σ →₀ ℕ)` to `(Finsupp.equivFunOnFinite (α := σ) (M := ℕ)).symm.toEmbedding`. Establish `hem : ∀ j : σ → ℕ, (⇑(em j) : σ → ℕ) = j` using `fun j => by`. Use function extensionality and compare the values at `k`. Both sides reduce to the same expression. Establish `hsub : ∀ m : σ →₀ ℕ, (if (⇑m : σ → ℕ) ∈ T then o ⇑m else 0) ≠ 0 → m ∈ T.map em`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `m hm`. Distinguish the cases in `hT : (⇑m : σ → ℕ) ∈ T`. Use `Finset.mem_map.2 ⟨⇑m, hT, ?_⟩` and prove the remaining obligations. Use extensionality with `k`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Simplify using `[hT] at hm`. Use `⟨Finsupp.onFinset (T.map em) (fun m => if (⇑m : σ → ℕ) ∈ T then o ⇑m else 0) hsub, fun m hm => ?_, fun be => ?_⟩` and prove the remaining obligations. Establish `h1` using `Finsupp.mem_support_iff.1 hm`. Rewrite `h1` using `[Finsupp.onFinset_apply]`. Assume the negation of the conclusion as `hT`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `[hT] at h1`. Unfold `binomCombF`. Rewrite using `[Finset.sum_subset (Finsupp.support_onFinset_subset)]`. Rewrite using `[Finset.sum_map]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finsupp.onFinset_apply, hem, if_pos hj]`. Use `congr 1`. Rewrite using `[← Finset.prod_subset (Finset.subset_univ (em j).support)]`. Introduce `k _ hk`. Establish `h0 : j k = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Finsupp.notMem_support_iff.1 hk` as an intermediate fact. Conclude with `this`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Introduce `m _ hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.notMem_support_iff.1 hm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem binomCombF_onFinset {σ : Type} [Fintype σ] (T : Finset (σ → ℕ)) (o : (σ → ℕ) → O) :
     ∃ lam : (σ →₀ ℕ) →₀ O, (∀ m ∈ lam.support, (⇑m : σ → ℕ) ∈ T) ∧
@@ -192,17 +190,15 @@ theorem binomCombF_onFinset {σ : Type} [Fintype σ] (T : Finset (σ → ℕ)) (
       simp
 
 /- English proof (translation)
-Introduce `σ _ g rho hrho`. Establish `hO : CharZero O` using `dvr_ring_charZero hp S`. Establish `hK : CharZero (KK O)` using `dvr_fraction_field_char_zero hp S`. Take `⟨h1, h2⟩` from `digQ D p hp h5 σ g rho hrho`. Use `⟨fun be => h1 be, fun inv c => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T, q, hT, hq⟩` from `h2 inv c`. Establish `hex : ∀ j, ∃ o : O, j ∈ T → ((q j : ℚ) : KK O) = algebraMap O (KK O) o`. Introduce `j`. Distinguish the cases in `hj : j ∈ T`. Take `⟨o, ho⟩` from `rat_padicGe_cast hp S (q j) 0 (by simpa using (hT j hj).2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨o, fun _ => by simpa using ho⟩`. Conclude with `⟨0, fun h => absurd h hj⟩`. Use `choose o ho using hex`. Take `⟨lam, hsup, hlam⟩` from `binomCombF_onFinset (O := O) T o`. Use `⟨lam, fun m hm => ?_, fun be => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl)]`. Conclude with `(hT _ (hsup m hm)).1`. Take `⟨z, hz⟩` from `rat_padicGe_cast hp S _ c (hq be)`. Establish `hsum : binomCombF (K` using `KK O) lam be = ((∑ j ∈ T, q j * ∏ k, ((be k).choose (j k) : ℚ) : ℚ) : KK O) := by`. Rewrite using `[hlam be]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `push_cast`. Conclude with `Finset.sum_congr rfl fun j hj => by rw [ho j hj]`. Establish `heq : ((if inv = true then (((∏ v, gamR (p ^ g v) (rho v) (be v) : ℚ) : KK O))⁻¹ else ((∏ v, gamR (p ^ g v) (rho v) (be v) : ℚ) : KK O)) - binomCombF (K` using `KK O) lam be) = (p : KK O) ^ c * algebraMap O (KK O) z := by`. Rewrite using `[← hz, hsum]`. Apply the tactic sequence `cases inv <;> simp`.
-
-Rewrite using `[heq]`. Conclude with `geQ_vK_pow_mul S c z`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem digAbs (D : Formalism.BasicNotions.D7) (p : ℕ) (hp : p.Prime) (h5 : 5 ≤ p) (S : UniformizedDVR p O) : DigAbs p O := by
   intro σ _ g rho hrho
@@ -237,11 +233,11 @@ theorem digAbs (D : Formalism.BasicNotions.D7) (p : ℕ) (hp : p.Prime) (h5 : 5 
     exact geQ_vK_pow_mul S c z
 
 /- English proof (translation)
-Establish `hO : CharZero O` using `dvr_ring_charZero hp S`. Establish `hK : CharZero (KK O)` using `dvr_fraction_field_char_zero hp S`. Establish `: Fact p.Prime` using `⟨hp⟩`. Take `⟨a, ha⟩` from `rat_padicGe_cast hp S x 0 (Or.inr (by rw [hv]; simp))`. Take `⟨b, hb⟩` from `rat_padicGe_cast hp S x⁻¹ 0 (Or.inr (by rw [padicValRat.inv, hv]; simp))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `ha`, `hb` using `[pow_zero, one_mul]`. Use `⟨a, ?_, ha.symm⟩` and prove the remaining obligations. Establish `hab : a * b = 1`. Apply `IsFractionRing.injective O (KK O)` to reduce the goal to its premises. Rewrite using `[map_mul, ← ha, ← hb, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Conclude with `mul_inv_cancel₀ (by exact_mod_cast hx)`. Conclude with `IsUnit.of_mul_eq_one b hab`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_rat (p : ℕ) (hp : p.Prime) (S : UniformizedDVR p O) (x : ℚ) (hx : x ≠ 0) (hv : padicValRat p x = 0) :
     ∃ u : O, IsUnit u ∧ algebraMap O (KK O) u = ((x : ℚ) : KK O) := by
@@ -260,13 +256,13 @@ theorem exists_unit_of_rat (p : ℕ) (hp : p.Prime) (S : UniformizedDVR p O) (x 
   exact IsUnit.of_mul_eq_one b hab
 
 /- English proof (translation)
-Introduce `rho hrho`. Establish `hDA` using `digAbs (O := O) D p hp h5 S`. Take `⟨hn1, _⟩` from `hDA (TL J nL r × Fin K) (fun v => Fr.dist (segZ v.1.1) (posTL Fr v.1)) (fun v => rho (v.1, Fin.natAdd r v.2)) (fun v => hrho v.1 _)`. Take `⟨hp1, hp2⟩` from `hDA (TL J nL r × Fin r) (fun v => Fr.dist (segZ v.1.1) (posTL Fr v.1)) (fun v => rho (v.1, Fin.castAdd K v.2)) (fun v => hrho v.1 _)`. Use `⟨fun bn => hn1 bn, fun bp => hp1 bp, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hex : ∀ al : TL J nL r × Fin r →₀ ℕ, ∃ u : O, IsUnit u ∧ algebraMap O (KK O) u = ((gamPl Fr p nL rho al : ℚ) : KK O)` using `fun al => exists_unit_of_rat p hp S _ (hp1 al).1 (hp1 al).2`. Use `choose ga hu hga using hex`. Use `⟨ga, hu, hga, fun k _ ε => ?_⟩` and prove the remaining obligations. Take `⟨lam, hl1, hl2⟩` from `hp2 (!ε) k`. Use `⟨lam, fun m hm => le_trans (hl1 m hm) (by omega), fun al => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hl2 al`. Rewrite using `[hga al]`. Establish `hdef : gamPl Fr p nL rho al = ∏ v : TL J nL r × Fin r, gamR (p ^ Fr.dist (segZ v.1.1) (posTL Fr v.1)) (rho (v.1, Fin.castAdd K v.2)) (al v)` using `rfl`. Rewrite using `[hdef]`. Consider the cases of `ε`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gaAt (D : Formalism.BasicNotions.D7) (p : ℕ) (hp : p.Prime) (h5 : 5 ≤ p) (S : UniformizedDVR p O) {n' r K : ℕ} [NeZero n'] [NeZero r]
     [NeZero K] (Fr : Frames n' r) {J : ℕ} [NeZero J] (nL : ZMod J → ℕ) : GaAt (K := K) p O Fr nL := by

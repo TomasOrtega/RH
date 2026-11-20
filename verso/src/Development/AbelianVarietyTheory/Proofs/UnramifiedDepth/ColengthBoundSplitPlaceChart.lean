@@ -30,21 +30,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Introduce `p _ T _ _ _ _ _ _ hpT G _ _ D A U d F x hx OE _ _ _ _ _ _ _ io oD oA hlin act hact C _ _ _ v O _ _ hv _ _ _ iota hiota w t vd hvd rp rm W hW hW'`. Take `⟨X, hX, hXr⟩` from `GlobalTheory.T.exists_nilChart_reads_of_isChartJ T G U.smooth d F x hx`. Establish `hread` using `hXr OE io act hact`. Take `⟨FB, XB, hXB⟩` from `GlobalTheory.T.exists_nilpotentGroupChart_smooth_commGroup T D.toPre.P.A D.toPre.P.g D.toPre.P.smoothDim`. Establish `hαB : ∀ a : OE, ∃ φ : Fin D.toPre.P.g → PS T 1 D.toPre.P.g, Reads XB XB (oD.onB.act a) φ` using `fun a => GlobalTheory.T.exists_powerSeries_reading_groupHom_nilpotentCharts T D.toPre.P.A D.toPre.P.A _ _ FB.F FB.F XB XB hXB hXB _ (oD.onB.hom a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose αB hαB using hαB`. Take `⟨r, J, Q, hext, heq⟩` from `GlobalTheory.T.uniformization_split_formal_group_law_equivariant T _ D A G U d _ F FB X XB hX hXB`. Take `⟨N, hN⟩` from `heq OE io oD oA hlin act.act αB hread hαB`. Take `⟨hlaw, hlinm, hextm⟩` from `GlobalTheory.T.formalGroupLaw_jacobian_extension_changeCoeff T O iota`. Take `⟨F', hF'⟩` from `hlaw d F`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨FB', hFB'⟩` from `hlaw _ FB`. Take `⟨ρ, hρ⟩` from `GlobalTheory.T.formalGroupAction_linearPart_ringHom T d F OE act O iota`. Establish `hext'` using `hextm d _ r F FB J Q hext`. Establish `hFH : FH p F'.F`. Introduce `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF']`. Take `⟨h1, h2, -, h4⟩` from `GlobalTheory.FormalTorsion.fhSt p T hpT G D A U d F x hx C v O hv iota hiota k`. Conclude with `⟨h1, h2, h4⟩`. Establish `hB` using `GlobalTheory.T.exists_hodgeTateDatum_polarisedAbelian_characters p C v O hv T iota D.toPre.P _ rfl OE oD.onB FB XB hXB αB hαB`. Rewrite `hext'` using `[← hF', ← hFB']`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hB` using `[← hFB']`. Take `⟨cp, hS, H, B, m, u, hu, hL⟩` from `GlobalTheory.T.exists_linearData_of_split_formalGroup_extension p C v O hv OE d _ r F' FB' _ _ hext' hFH ρ N (fun a j => MvPowerSeries.map iota (αB a j)) (fun a => by`. Rewrite using `[hlinm, hlinm, (hρ a).2, ← Matrix.map_mul, ← Matrix.map_mul, (hN a).1])`. Use the proof step `(fun a => by`. Rewrite using `[hlinm, (hρ a).2, ← Matrix.map_mul, (hN a).2, Matrix.map_mul, Matrix.map_map]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 2`. Use function extensionality and compare the values at `z`. Use the proof step `simp) hB`. Establish `hρf : (ρ : OE → Matrix (Fin d) (Fin d) O) = fun a => linPart (actMap iota act a)`. Use function extensionality and compare the values at `fun a => (hρ a).1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨xs, hxs, hle⟩` from `GlobalTheory.T.colength_bound_split_place_linear_data p C v O hv OE cp hS _ H d r m _ B ρ N _ hL w t vd hvd rp rm W (fun j => by rw [hρf]; exact (isEigBasis_iff _ _ _).1 (hW j)) (fun τ hτ => by`. Take `⟨W', h⟩` from `hW' τ hτ`. Conclude with `⟨W', by rw [hρf]; exact (isEigBasis_iff _ _ _).1 h⟩)`. Use `⟨xs, fun j => ⟨m, u, fun k => ?_, hxs j⟩, hle⟩` and prove the remaining obligations. Rewrite using `[← hF']`.
-
-Conclude with `hu k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colength_bound_split_place_chart : ∀ (p : ℕ) [Fact p.Prime], AvFSt p := by
   intro p _ T _ _ _ _ _ _ hpT G _ _ D A U d F x hx OE _ _ _ _ _ _ _ io oD oA hlin act hact

@@ -5,25 +5,25 @@ open CategoryTheory Limits AlgebraicGeometry
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S S' U U' X Y Y' YU Y'' f j f' j' _ _ _ _ _ hUsq x _ y _ y' π hπ yU ιY hι y'' c cU hc hcU hcomm h' hU hx hagree`. Establish `: Flat π` using `MorphismProperty.of_isPullback (P := @Flat) hπ.flip ‹_›`. Establish `: Surjective π` using `MorphismProperty.of_isPullback (P := @Surjective) hπ.flip ‹_›`. Establish `: QuasiCompact π` using `MorphismProperty.of_isPullback (P := @QuasiCompact) hπ.flip ‹_›`. Establish `: Flat f'` using `MorphismProperty.of_isPullback (P := @Flat) hUsq ‹_›`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Surjective f'` using `MorphismProperty.of_isPullback (P := @Surjective) hUsq ‹_›`. Establish `: Flat cU` using `MorphismProperty.of_isPullback (P := @Flat) hcU.flip ‹_›`. Establish `: Surjective cU` using `MorphismProperty.of_isPullback (P := @Surjective) hcU.flip ‹_›`. Establish `: Epi cU` using `Flat.epi_of_flat_of_surjective cU`. Establish `key : ∀ {T : Scheme.{0}} (a : T ⟶ Y') (ψ : T ⟶ U) (w : (a ≫ π) ≫ y = ψ ≫ j), a ≫ h' = hι.lift (a ≫ π) ψ w ≫ hU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `T a ψ w`. Establish `w1 : (a ≫ y') ≫ f = ψ ≫ j`. Rewrite using `[Category.assoc, ← hπ.w, ← Category.assoc, w]`. Set `u : T ⟶ U'` to `hUsq.lift (a ≫ y') ψ w1`. Establish `w2 : a ≫ y' = u ≫ j'` using `(hUsq.lift_fst _ _ _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `q : T ⟶ Y''` to `hc.lift a u w2`. Establish `hq : q ≫ cU = hι.lift (a ≫ π) ψ w`. Apply `hι.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hcomm, ← Category.assoc, hc.lift_fst, hι.lift_fst]`. Rewrite using `[Category.assoc, hcU.w, ← Category.assoc, hc.lift_snd, hι.lift_snd, hUsq.lift_snd]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hP : pullback.fst π π ≫ h' = pullback.snd π π ≫ h'`. Set `g : pullback π π ⟶ S` to `pullback.fst π π ≫ π ≫ y`. Establish `: Flat g` using `by dsimp [g]; infer_instance`. Set `φ : pullback g j ⟶ pullback π π` to `pullback.fst g j`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: IsSchemeTheoreticallyDominant φ` using `IsSchemeTheoreticallyDominant.pullbackFst g j`. Use `ExtUnique.hom_ext_of_dominant x ?_ φ ?_` and prove the remaining obligations. Simplify using `only [Category.assoc, hx]`. Rewrite using `[← hπ.w, pullback.condition_assoc]`. Establish `e1 : ((φ ≫ pullback.fst π π) ≫ π) ≫ y = pullback.snd g j ≫ j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `pullback.condition (f := g) (g := j)` using `[g, Category.assoc]`. Establish `e2 : ((φ ≫ pullback.snd π π) ≫ π) ≫ y = pullback.snd g j ≫ j`. Rewrite using `[Category.assoc φ, ← pullback.condition]`. Conclude with `e1`. Establish `l : hι.lift ((φ ≫ pullback.fst π π) ≫ π) (pullback.snd g j) e1 = hι.lift ((φ ≫ pullback.snd π π) ≫ π) (pullback.snd g j) e2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition]`. Rewrite using `[← Category.assoc, ← Category.assoc, key _ _ e1, key _ _ e2, l]`. Establish `H : ∀ {Z : Scheme.{0}} (a b : Z ⟶ Y'), a ≫ π = b ≫ π → a ≫ h' = b ≫ h'`. Introduce `Z a b hab`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Set `h : Y ⟶ X` to `EffectiveEpi.desc π h' H`. Establish `h1 : π ≫ h = h'` using `EffectiveEpi.fac π h' H`. Use `⟨h, h1, ?_, ?_⟩` and prove the remaining obligations. Apply `(cancel_epi cU).1` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hcomm, Category.assoc, h1, hagree]`. Apply `(cancel_epi π).1` to reduce the goal to its premises. Rewrite using `[← Category.assoc, h1, hx, hπ.w]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_desc_of_flat_of_schemeTheoreticallyDominant :
     ∀ {S S' U U' X Y Y' YU Y'' : Scheme.{0}} (f : S' ⟶ S) (j : U ⟶ S) (f' : U' ⟶ U) (j' : U' ⟶ S')

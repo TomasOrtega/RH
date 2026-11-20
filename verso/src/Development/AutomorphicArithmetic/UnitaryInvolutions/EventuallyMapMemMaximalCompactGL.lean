@@ -4,7 +4,7 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 open scoped Classical TensorProduct
 
 /- English proof (translation)
-Use `filter_upwards [(HeightOneSpectrum.Support.finite (𝓞 E) e).eventually_cofinite_notMem] with w hw`. Establish `h : ¬ 1 < w.valuation E e` using `hw`. Establish `h' : Valued.v (algebraMap E (w.adicCompletion E) e) = w.valuation E e` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w e`. Rewrite using `[h']`. Conclude with `not_lt.mp h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma val_le_one_ae (E : Type) [Field E] [NumberField E] (e : E) :
     ∀ᶠ w : Pl E in cofinite, Valued.v (algebraMap E (w.adicCompletion E) e) ≤ 1 := by
@@ -16,11 +16,11 @@ private lemma val_le_one_ae (E : Type) [Field E] [NumberField E] (e : E) :
   exact not_lt.mp h
 
 /- English proof (translation)
-Set `A : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨_, h₁ i j⟩`. Set `B : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨_, h₂ i j⟩`. Establish `hA : A.map O.subtype = (g : Matrix (Fin n) (Fin n) L)`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `hB : B.map O.subtype = ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hinj : Function.Injective (fun M : Matrix (Fin n) (Fin n) O => M.map O.subtype)` using `Matrix.map_injective Subtype.val_injective`. Establish `hAB : A * B = 1` using `hinj (by show (A * B).map O.subtype = (1 : Matrix (Fin n) (Fin n) O).map O.subtype`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_mul, hA, hB, Matrix.map_one _ (map_zero _) (map_one _), ← Units.val_mul, mul_inv_cancel, Units.val_one])`. Establish `hBA : B * A = 1` using `hinj (by show (B * A).map O.subtype = (1 : Matrix (Fin n) (Fin n) O).map O.subtype`. Rewrite using `[Matrix.map_mul, hA, hB, Matrix.map_one _ (map_zero _) (map_one _), ← Units.val_mul, inv_mul_cancel, Units.val_one])`. Use `⟨⟨A, B, hAB, hBA⟩, ?_⟩` and prove the remaining obligations. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
 Both sides reduce to the same expression.
 -/
@@ -49,9 +49,9 @@ private lemma mem_GLint {n : ℕ} {L : Type} [Field L] (O : Subring L) (g : GL (
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ n δ`. Establish `h₁ : ∀ᶠ w : Pl E in cofinite, ∀ i j, Valued.v (algebraMap E (w.adicCompletion E) ((δ : Matrix (Fin n) (Fin n) E) i j)) ≤ 1` using `eventually_all.2 fun i => eventually_all.2 fun j => val_le_one_ae E _`. Establish `h₂ : ∀ᶠ w : Pl E in cofinite, ∀ i j, Valued.v (algebraMap E (w.adicCompletion E) (((δ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j)) ≤ 1` using `eventually_all.2 fun i => eventually_all.2 fun j => val_le_one_ae E _`. Use `filter_upwards [h₁, h₂] with w hw₁ hw₂`. Use `mem_GLint (Ov E w) _ (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw₁ i j`. Rewrite using `[← map_inv]`. Conclude with `hw₂ i j`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.eventually_map_mem_maximalCompactGL :
     ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (δ : GL (Fin n) E), ∀ᶠ w : Pl E in cofinite,

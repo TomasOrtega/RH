@@ -54,7 +54,7 @@ def sqPol (P : Out.PolAV S) : Out.PolAV S :=
     ktriv := kTriv_boxLB S _ P.A 2 (sqIsPowGrp P.A) P.L P.isLB P.ktriv }
 
 /- English proof (translation)
-Simplify using `only [sqPol, Out.boxLB]`. Apply the tactic sequence `congr 1 <;> funext i <;> fin_cases i <;> rfl`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sqPol_L (P : Out.PolAV S) :
     (sqPol P).L = LB.LinComb P.L (K := Fin 2) ![(fst P.A P.A).left, (snd P.A P.A).left] ![1, 1] := by
@@ -62,11 +62,9 @@ theorem sqPol_L (P : Out.PolAV S) :
   congr 1 <;> funext i <;> fin_cases i <;> rfl
 
 /- English proof (translation)
-Introduce `K _ _ P`. Use `⟨sqPol P, Iso.refl _, ?_, ?_, rfl, ?_⟩` and prove the remaining obligations. Use `show IsMonHom (𝟙 (P.A ⊗ P.A) ≫ fst P.A P.A)`. Rewrite using `[Category.id_comp]`. Conclude with `(sqIsPowGrp P.A).hom 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show IsMonHom (𝟙 (P.A ⊗ P.A) ≫ snd P.A P.A)`. Rewrite using `[Category.id_comp]`. Conclude with `(sqIsPowGrp P.A).hom 1`. Use `show LBIso (sqPol P).L (LB.LinComb P.L (K := Fin 2) ![(𝟙 (P.A ⊗ P.A) ≫ fst P.A P.A).left, (𝟙 (P.A ⊗ P.A) ≫ snd P.A P.A).left] ![1, 1])`. Simplify using `only [Category.id_comp]`.
-
-Establish `h : LBIso (sqPol P).L (sqPol P).L` using `⟨idIso _, idIso_isGen (sqPol P).isLB⟩`. Rewrite `h`, the goal using `[sqPol_L]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_square : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)), ∃ (P₂ : Out.PolAV (Sp K)) (e : P₂.A ≅ P.A ⊗ P.A), IsMonHom (e.hom ≫ fst P.A P.A) ∧ IsMonHom (e.hom ≫ snd P.A P.A) ∧ P₂.g = 2 * P.g ∧ LBIso P₂.L (LB.LinComb P.L (K := Fin 2) ![(e.hom ≫ fst P.A P.A).left, (e.hom ≫ snd P.A P.A).left] ![1, 1]) := by
   intro K _ _ P

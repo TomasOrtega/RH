@@ -12,7 +12,7 @@ open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qf7.weight_components_mem_invariant E W hW s`.
+A detailed English derivation is pending.
 -/
 theorem weight_components_mem_invariant [CharZero K] (E : GLOps n K V) (W : Submodule K V) (hW : ∀ a, ∀ x ∈ W, E a a x ∈ W)
     (s : Finset (Fin n → ℤ)) : ∀ f : (Fin n → ℤ) → V, (∀ mu ∈ s, f mu ∈ weightSp E mu) →
@@ -20,7 +20,7 @@ theorem weight_components_mem_invariant [CharZero K] (E : GLOps n K V) (W : Subm
   _root_.UpperTheory.Reformulated.B.Qf7.weight_components_mem_invariant E W hW s
 
 /- English proof (translation)
-Rewrite using `[iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero]`. Introduce `s v hv h0 i hi`. Use `weight_components_mem_invariant E ⊥ (fun a x hx => by simp [(Submodule.mem_bot K).1 hx]) s v hv (by simp [h0]) i hi` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem weightSpace_independent [CharZero K] (E : GLOps n K V) : iSupIndep (weightSp E) := by
   rw [iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero]
@@ -36,7 +36,7 @@ Both sides reduce to the same expression.
 @[simp] theorem restricted_operator_coe (a b : Fin n) (x : W) : ((restrictStableOperators E W h a b x : W) : V) = E a b x := rfl
 
 /- English proof (translation)
-Rewrite using `[mem_weightSpace_iff_diagonal_rep, mem_weightSpace_iff_diagonal_rep]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[Subtype.ext_iff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem restricted_mem_weightSpace_iff (mu : Fin n → ℤ) (x : W) :
     x ∈ weightSp (restrictStableOperators E W h) mu ↔ (x : V) ∈ weightSp E mu := by
@@ -46,7 +46,7 @@ theorem restricted_mem_weightSpace_iff (mu : Fin n → ℤ) (x : W) :
   simp
 
 /- English proof (translation)
-Unfold `IsHWV`. Rewrite using `[restricted_mem_weightSpace_iff]`. Use `and_congr (by simp) (and_congr Iff.rfl ?_)` and prove the remaining obligations. Use `forall_congr' fun a => forall_congr' fun b => forall_congr' fun _ => ?_` and prove the remaining obligations. Rewrite using `[Subtype.ext_iff]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -59,17 +59,17 @@ theorem restricted_isHWV_iff (lam : Fin n → ℤ) (v : W) : IsHWV (restrictStab
   simp
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b c d`. Use extensionality with `x`. Establish `h1` using `congrArg (fun f : Module.End K V => f (x : V)) (hE.1 a b c d)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, restricted_operator_coe]`. Rewrite using `[h1]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `x`. Take `⟨W0, hfd, hx0, hst⟩` from `hE.2.1 (x : V)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨W0.comap W.subtype, ?_, hx0, fun a b y hy => hst a b _ hy⟩` and prove the remaining obligations. Establish `h1 : FiniteDimensional K ((W0.comap W.subtype).map W.subtype)` using `Submodule.finiteDimensional_of_le (Submodule.map_comap_le _ _)`. Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective W.subtype W.injective_subtype (W0.comap W.subtype)).symm`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx : (x : V) ∈ ⨆ mu, weightSp E mu` using `by rw [hE.2.2]; trivial`. Take `⟨f, hf, hsum⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 hx`. Establish `hmem` using `weight_components_mem_invariant E W (fun a => h a a) f.support f (fun mu _ => hf mu) (by have : ∑ mu ∈ f.support, f mu = (x : V) := hsum`. Rewrite using `[this]`. Conclude with `x.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hx2 : x = ∑ mu ∈ f.support.attach, (⟨f mu.1, hmem mu.1 mu.2⟩ : W)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Simplify using `only`. Rewrite using `[Finset.sum_attach f.support (fun mu => f mu)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hsum.symm`. Rewrite using `[hx2]`. Use `Submodule.sum_mem _ fun mu _ => ?_` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem mu.1 ((restricted_mem_weightSpace_iff E W h mu.1 _).2 (hf mu.1))`.
+A detailed English derivation is pending.
 -/
 theorem restricted_isGLRep [CharZero K] (hE : IsGLRep E) : IsGLRep (restrictStableOperators E W h) := by
   refine ⟨?_, ?_, ?_⟩

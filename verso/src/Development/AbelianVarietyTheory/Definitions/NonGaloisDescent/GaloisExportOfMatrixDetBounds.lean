@@ -12,7 +12,7 @@ section Ord
 variable (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Use `⟨MvPolynomial.X (Sum.inl 0), 1, ?_, ?_, 1, fun _ => 1, by simp, fun _ => le_rfl, by simp⟩` and prove the remaining obligations. Apply `Ideal.subset_span left` to reduce the goal to its premises. Conclude with `⟨0, by ring⟩`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem ordHyp_X (l M : ℕ) :
     OrdHyp O l M 1 1 0 (MvPolynomial.X (Sum.inl 0) + MvPolynomial.X (Sum.inr 0)) := by
@@ -23,15 +23,13 @@ theorem ordHyp_X (l M : ℕ) :
   · simp
 
 /- English proof (translation)
-Take `⟨Dd, g, h1, h2, u, n, hu, hn, h3⟩` from `h`. Establish `hn0 : ∀ i, n i = 0` using `fun i => Nat.le_zero.1 (hn i)`. Establish `e1 : MvPolynomial.constantCoeff (f - Dd * g) = 0`. Establish `: Ideal.span (Set.range (fun i : Fin R => (MvPolynomial.X (Sum.inr i) : MvPolynomial (Fin R ⊕ Fin R) O)) ∪ Set.range (fun i : Fin R => (1 + MvPolynomial.X (Sum.inl i)) ^ (l ^ M) - 1)) ≤ RingHom.ker MvPolynomial.constantCoeff`. Rewrite using `[Ideal.span_le]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rintro _ (⟨i, rfl⟩ | ⟨i, rfl⟩) <;> simp`. Conclude with `this h1`. Establish `e2 : MvPolynomial.constantCoeff (Dd.map (IsLocalRing.residue O) - u * ∏ i, MvPolynomial.X (Sum.inl i) ^ n i) = 0`. Establish `: Ideal.span (Set.range fun q => (MvPolynomial.X q : MvPolynomial (Fin R ⊕ Fin R) (IsLocalRing.ResidueField O)) ^ (l ^ M)) ≤ RingHom.ker MvPolynomial.constantCoeff`. Rewrite using `[Ideal.span_le]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `[hl]`. Conclude with `this h3`. Simplify using `only [hn0, pow_zero, Finset.prod_const_one, mul_one, map_sub, MvPolynomial.constantCoeff_map, sub_eq_zero] at e2`. Establish `hD : IsUnit (MvPolynomial.constantCoeff Dd)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, e2]`. Conclude with `hu`. Rewrite `e1` using `[map_sub, map_mul, sub_eq_zero]`. Establish `: f.coeff 0 = MvPolynomial.constantCoeff Dd * g.coeff 0` using `e1`. Rewrite using `[this, IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_eq_zero_iff.2 hD, zero_add]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addVal_le_of_ordHyp {l M R v : ℕ} (hl : l ≠ 0) {f : MvPolynomial (Fin R ⊕ Fin R) O}
     (h : OrdHyp O l M R 0 v f) : IsDiscreteValuationRing.addVal O (f.coeff 0) ≤ v := by
@@ -62,7 +60,7 @@ theorem addVal_le_of_ordHyp {l M R v : ℕ} (hl : l ≠ 0) {f : MvPolynomial (Fi
   exact h2
 
 /- English proof (translation)
-Introduce `h`. Use `addVal_le_of_ordHyp O hl h` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_ordHyp_X {l M v : ℕ} (hl : l ≠ 0) : ¬ OrdHyp O l M 1 0 v (MvPolynomial.X (Sum.inr 0)) := by
   intro h
@@ -76,11 +74,9 @@ variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : N
 open Classical in
 
 /- English proof (translation)
-Set `c : ∀ (Q : Finset (PlE D.host)) (P : PlE D.host), P ∈ Q → (GE N →* Multiplicative (ZMod (X.l i ^ M)))` to `fun Q P hP => (AddMonoidHom.toMultiplicative (Pi.evalAddMonoidHom (fun _ : ↥Q => ZMod (X.l i ^ M)) ⟨P, hP⟩)).comp (Y.delU i Q M)`. Use `⟨fun P => if h : ∃ Q, ConjCl (D := D) Q ∧ P ∈ Q then c h.choose P h.choose_spec.2 else 1, ?_⟩` and prove the remaining obligations. Introduce `Q hQ P hP σ`. Establish `h : ∃ Q, ConjCl (D` using `D) Q ∧ P ∈ Q := ⟨Q, hQ, hP⟩`. Simplify using `only [dif_pos h]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hU : ConjCl (D` using `D) (Q ∪ h.choose) := by`. Introduce `P hP P' hc`. Break down `Finset.mem_union.1 hP with h1 | h1` into its components or cases. Conclude with `Finset.mem_union_left _ (hQ P h1 P' hc)`. Conclude with `Finset.mem_union_right _ (h.choose_spec.1 P h1 P' hc)`.
-
-Rewrite using `[Y.delU_res i M Q (Q ∪ h.choose) Finset.subset_union_left hQ hU σ P hP]`. Conclude with `(Y.delU_res i M h.choose (Q ∪ h.choose) Finset.subset_union_right h.choose_spec.1 hU σ P h.choose_spec.2).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isCoord (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (M : ℕ) : ∃ d, IsCoord Y i M d := by
   let c : ∀ (Q : Finset (PlE D.host)) (P : PlE D.host), P ∈ Q → (GE N →* Multiplicative (ZMod (X.l i ^ M))) :=
@@ -100,13 +96,13 @@ theorem exists_isCoord (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (M :
 
 open Classical in
 /- English proof (translation)
-Establish `hl : NeZero (X.l i ^ M)` using `⟨pow_ne_zero _ (Fact.out : (X.l i).Prime).ne_zero⟩`. Establish `key : ∀ g : Del X i M ι, MonoidAlgebra.of (X.O0 i) (Del X i M ι) g ∈ (toLam X i M ι).range`. Introduce `g`. Use `⟨∏ q, (1 + MvPolynomial.X q) ^ (Multiplicative.toAdd g q).val, ?_⟩` and prove the remaining obligations. Simplify using `only [toLam, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_prod, map_pow, map_add, map_one, MvPolynomial.aeval_X, add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [← map_pow, ← map_prod]`. Use `congr 1`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Use extensionality with `q`. Simplify using `only [toAdd_prod, toAdd_pow, toAdd_ofAdd, Finset.sum_apply, Pi.smul_apply, Pi.single_apply, smul_ite, smul_zero]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[nsmul_eq_mul]`. Introduce `x`. Establish `: x ∈ (toLam X i M ι).range`. Proceed by induction on `x using MonoidAlgebra.induction_on with`. Consider the case `of g => exact key g`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `add f g hf hg => exact add_mem hf hg`. Consider the case `smul r f hf => exact Subalgebra.smul_mem _ hf r`. Conclude with `this`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem toLam_surjective (i : X.Tw) (M : ℕ) (ι : Type) [Fintype ι] : Function.Surjective (toLam X i M ι) := by
   have hl : NeZero (X.l i ^ M) := ⟨pow_ne_zero _ (Fact.out : (X.l i).Prime).ne_zero⟩
@@ -129,13 +125,11 @@ theorem toLam_surjective (i : X.Tw) (M : ℕ) (ι : Type) [Fintype ι] : Functio
   exact this
 
 /- English proof (translation)
-Introduce `i T hT`. Establish `hO : OrdBound bkP i (IsDiscreteValuationRing.addVal (X.O0 i) ((X.l i : X.O0 i) ^ nu X i))`. Break down `Nat.eq_zero_or_pos (nu X i) with h | h` into its components or cases. Rewrite using `[h, pow_zero, IsDiscreteValuationRing.addVal_one]`. Conclude with `h3 i h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hC i h`. Take `⟨R, Dd, M₀, h⟩` from `hO T hT`. Use `⟨R, Dd, max M₀ 1, le_max_right _ _, fun M hM H S d hd z hz H' h1 h2 A => ?_⟩` and prove the remaining obligations. Take `⟨P, hA, hSt, hF⟩` from `h M (le_of_max_le_left hM) H S d hd z hz H' h1 h2 A`. Use `⟨P, hA, hSt, fun s hs Q hQ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hA0 : SlopeTestRemainingChoices X i M ∅ P (fun q => d (P q))` using `⟨fun q v hv => by`. Take `⟨a, b, c, d', -, f⟩` from `hA.1 q v hv`. Conclude with `⟨a, b, c, d', by simp, f⟩, hA.2⟩`. Take `⟨a, Φ, hΦ, -⟩` from `hS i s (hT s hs) M _ P _ Q (le_of_max_le_right hM) hA0 hQ`. Take `⟨F, hFd⟩` from `toLam_surjective i M (Fin R ⊕ Fin R) Φ.det`.
-
-Conclude with `⟨F, hS4 i s M _ P _ Q (le_of_max_le_right hM) hA0 hQ a Φ hΦ F hFd, hF s hs Q hQ a Φ hΦ F hFd⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem galois_export_of_matrix_det_bounds (bkP : BKPh X) (hS : ThmS bkP) (hS4 : SelmerLengthsByDeterminant bkP) (h3 : ResidualBoundOddPrimes bkP) (hC : ThmC bkP) : GaloisSideTwistedSelmerAuxiliaryPrimes bkP := by
   intro i T hT

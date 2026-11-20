@@ -10,9 +10,7 @@ noncomputable section
 namespace GlobalTheory.FinPtsAway
 
 /- English proof (translation)
-Take `⟨-, -, -, S, hS⟩` from `hf`. Use `⟨⋃ s ∈ S, (fun k : G.GAf × G.GAf => k.1 * s * k.2) '' ((L.K : Set G.GAf) ×ˢ (L.K : Set G.GAf)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `S.isCompact_biUnion fun s _ => (L.compact.prod L.compact).image (by fun_prop)`. Introduce `g hg`. Take `⟨s, hs, k₁, hk₁, k₂, hk₂, rfl⟩` from `hS g hg`.
-
-Conclude with `Set.mem_iUnion₂.2 ⟨s, hs, (k₁, k₂), ⟨hk₁, hk₂⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem supp_compact (p : ℕ) [Fact p.Prime] (G : HTGroup p) (L : G.Level) (f : G.GAf → ℂ)
     (hf : IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f) :
@@ -25,7 +23,7 @@ theorem supp_compact (p : ℕ) [Fact p.Prime] (G : HTGroup p) (L : G.Level) (f :
     exact Set.mem_iUnion₂.2 ⟨s, hs, (k₁, k₂), ⟨hk₁, hk₂⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.continuous_charpoly_coeff_mulLeft_finiteAdeles_awayP p G k`.
+A detailed English derivation is pending.
 -/
 theorem coeff_continuous (p : ℕ) [Fact p.Prime] (G : HTGroup p) (k : ℕ) :
     Continuous fun g : G.GAf => (LinearMap.charpoly (LinearMap.mulLeft (AfP p)
@@ -33,14 +31,14 @@ theorem coeff_continuous (p : ℕ) [Fact p.Prime] (G : HTGroup p) (k : ℕ) :
   GlobalTheory.T.continuous_charpoly_coeff_mulLeft_finiteAdeles_awayP p G k
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.compact_finiteAdelesAwayP_bounded_denominators p Q hQ`.
+A detailed English derivation is pending.
 -/
 theorem bdd_at_places (p : ℕ) [Fact p.Prime] (Q : Set (AfP p)) (hQ : IsCompact Q) :
     ∃ D : ℕ, 0 < D ∧ ∀ a ∈ Q, ∀ v : AwayP p, AfP.eval v ((D : AfP p) * a) ∈ v.1.adicCompletionIntegers ℚ :=
   GlobalTheory.T.compact_finiteAdelesAwayP_bounded_denominators p Q hQ
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_prime_pow_mul_rat_eq_int_of_integral_away p q hq`.
+A detailed English derivation is pending.
 -/
 theorem rat_of_integral_away (p : ℕ) [Fact p.Prime] (q : ℚ)
     (hq : ∀ v : AwayP p, algebraMap ℚ (v.1.adicCompletion ℚ) q ∈ v.1.adicCompletionIntegers ℚ) :
@@ -48,9 +46,9 @@ theorem rat_of_integral_away (p : ℕ) [Fact p.Prime] (q : ℚ)
   GlobalTheory.T.exists_prime_pow_mul_rat_eq_int_of_integral_away p q hq
 
 /- English proof (translation)
-Take `⟨D, hD, hQD⟩` from `bdd_at_places p Q hQ`. Use `⟨D, hD, fun q hq => ?_⟩` and prove the remaining obligations. Take `⟨m, z, hz⟩` from `rat_of_integral_away p (D * q) fun v => by`. Use `hQD _ hq v` as an intermediate fact. Rewrite `this` using `[← map_natCast (algebraMap ℚ (AfP p)), ← map_mul, (AfP.eval v).commutes]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `⟨m, z, by rw [← hz, mul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem bdd_denom (p : ℕ) [Fact p.Prime] (Q : Set (AfP p)) (hQ : IsCompact Q) :
     ∃ D : ℕ, 0 < D ∧ ∀ q : ℚ, algebraMap ℚ (AfP p) q ∈ Q → ∃ m : ℕ, ∃ z : ℤ, (p : ℚ) ^ m * D * q = z := by
@@ -62,9 +60,9 @@ theorem bdd_denom (p : ℕ) [Fact p.Prime] (Q : Set (AfP p)) (hQ : IsCompact Q) 
   exact ⟨m, z, by rw [← hz, mul_assoc]⟩
 
 /- English proof (translation)
-Set `e : (A ⊗[ℚ] C) ≃ₗ[A] (A ⊗[ℚ] C)` to `{ LinearMap.mulLeft A (u : A ⊗[ℚ] C) with invFun := fun z => ((u⁻¹ : (A ⊗[ℚ] C)ˣ) : A ⊗[ℚ] C) * z left_inv := fun z => by simp [← mul_assoc] right_inv := fun z => by simp [← mul_assoc] }`. Establish `h1 : LinearMap.mulLeft A ((u : A ⊗[ℚ] C) * ((1 : A) ⊗ₜ[ℚ] y) * ((u⁻¹ : (A ⊗[ℚ] C)ˣ) : A ⊗[ℚ] C)) = e.conj (LinearMap.mulLeft A ((1 : A) ⊗ₜ[ℚ] y))`. Use extensionality with `z`. Simplify using `[e, LinearEquiv.conj_apply, mul_assoc]`. Establish `h2 : LinearMap.mulLeft A ((1 : A) ⊗ₜ[ℚ] y) = (LinearMap.mulLeft ℚ y).baseChange A`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `c`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[h1, LinearEquiv.charpoly_conj, h2, LinearMap.charpoly_baseChange]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_conj_tmul (C : Type) [Ring C] [Algebra ℚ C] [FiniteDimensional ℚ C] (A : Type) [CommRing A]
     [Algebra ℚ A] (y : C) (u : (A ⊗[ℚ] C)ˣ) :
@@ -85,23 +83,23 @@ theorem charpoly_conj_tmul (C : Type) [Ring C] [Algebra ℚ C] [FiniteDimensiona
   rw [h1, LinearEquiv.charpoly_conj, h2, LinearMap.charpoly_baseChange]
 
 /- English proof (translation)
-Use `choose m z hz using h`. Use `set χ := LinearMap.charpoly (LinearMap.mulLeft ℚ y) with hχ`. Use `set N := χ.natDegree`. Use `set M := ∑ i ∈ Finset.range N, m i`. Use `⟨M, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set s : ℚ := (p : ℚ) ^ M * D with hs`. Establish `hχy : Polynomial.aeval y χ = 0`. Establish `e` using `LinearMap.aeval_self_charpoly (LinearMap.mulLeft ℚ y)`. Establish `e2 : Polynomial.aeval (LinearMap.mulLeft ℚ y) χ = Algebra.lmul ℚ C (Polynomial.aeval y χ)`. Rewrite using `[← Polynomial.aeval_algHom_apply]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite `e` using `[e2]`. Use `congrArg (fun f : Module.End ℚ C => f 1) e` as an intermediate fact. Simplify using `using this`. Establish `hlift : χ.scaleRoots s ∈ Polynomial.lifts (algebraMap ℤ ℚ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `i`. Rewrite using `[Polynomial.coeff_scaleRoots]`. Break down `lt_trichotomy i N with hi | hi | hi` into its components or cases. Establish `hmi : m i ≤ M` using `Finset.single_le_sum (fun j _ => Nat.zero_le (m j)) (Finset.mem_range.2 hi)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Use `⟨(p : ℤ) ^ (M - m i) * z i * ((p : ℤ) ^ M * D) ^ (N - i - 1), ?_⟩` and prove the remaining obligations. Establish `e1 : s ^ (N - i) = s * s ^ (N - i - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Establish `e2 : s * χ.coeff i = (p : ℚ) ^ (M - m i) * z i`. Rewrite using `[← hz i, hs, ← mul_assoc, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hmi]`. Simplify using `only [eq_intCast, Int.cast_mul, Int.cast_pow, Int.cast_natCast]`. Rewrite using `[e1, ← mul_assoc, mul_comm (χ.coeff i) s, e2, hs]`. Substitute `hi` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.sub_self, pow_zero, mul_one, ← Polynomial.leadingCoeff, LinearMap.charpoly_monic]`. Simplify using the standard rewrite rules. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt hi]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take `⟨P, hP, hPdeg, hPm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hlift ((Polynomial.monic_scaleRoots_iff s).2 (LinearMap.charpoly_monic _))`. Use `⟨P, hPm, ?_⟩` and prove the remaining obligations. Establish `e3 : Polynomial.eval₂ (algebraMap ℤ C) ((p : C) ^ M * D * y) P = Polynomial.aeval ((p : C) ^ M * D * y) (χ.scaleRoots s)`. Rewrite using `[← hP, Polynomial.aeval_map_algebraMap, Polynomial.aeval_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3, Polynomial.aeval_def]`. Establish `e4 : (p : C) ^ M * D * y = algebraMap ℚ C s * y`. Rewrite using `[hs]`. Simplify using the standard rewrite rules. Rewrite using `[e4, Polynomial.scaleRoots_eval₂_mul_of_commute _ _ _ (Algebra.commutes _ _) (fun a b => Algebra.commutes _ _), ← Polynomial.aeval_def, hχy, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem integral_of_charpoly (C : Type) [Ring C] [Algebra ℚ C] [FiniteDimensional ℚ C] (y : C) (p D : ℕ)
     (h : ∀ i, ∃ m : ℕ, ∃ z : ℤ, (p : ℚ) ^ m * D * (LinearMap.charpoly (LinearMap.mulLeft ℚ y)).coeff i = z) :
@@ -150,15 +148,13 @@ theorem integral_of_charpoly (C : Type) [Ring C] [Algebra ℚ C] [FiniteDimensio
     ← Polynomial.aeval_def, hχy, mul_zero]
 
 /- English proof (translation)
-Distinguish the cases in `hc0 : c = 0`. Substitute `hc0` using the available equality. Break down `lt_trichotomy k (minpoly F y).natDegree with hk | hk | hk` into its components or cases. Rewrite using `[zero_pow (by omega), zero_mul]; exact isIntegral_zero`. Rewrite using `[hk, Nat.sub_self, pow_zero, one_mul, ← Polynomial.leadingCoeff, minpoly.monic hy, ]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntegral_one`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt hk, mul_zero]`. Conclude with `isIntegral_zero`. Take `⟨P, hPm, hP⟩` from `hc`. Use `set Pm := P.map (algebraMap ℤ F)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPz : Polynomial.eval₂ (algebraMap F S) (algebraMap F S c * y) Pm = 0`. Rewrite using `[Polynomial.eval₂_map, ← IsScalarTower.algebraMap_eq]`. Conclude with `hP`. Establish `h1 : Polynomial.aeval y (Pm.scaleRoots c⁻¹) = 0`. Establish `e` using `Polynomial.scaleRoots_eval₂_mul_of_commute (p := Pm) (algebraMap F S) (algebraMap F S c * y) c⁻¹ (Algebra.commutes _ _) (fun a b => Algebra.commutes _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[hPz, mul_zero, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hc0, map_one, one_mul]`. Rewrite using `[Polynomial.aeval_def]`. Conclude with `e`. Establish `h2 : minpoly F y ∣ Pm.scaleRoots c⁻¹` using `minpoly.dvd F y h1`. Establish `h3 : (minpoly F y).scaleRoots c ∣ Pm`.
-
-Use `Polynomial.scaleRoots_dvd _ _ (r := c) h2` as an intermediate fact. Rewrite `this` using `[← Polynomial.scaleRoots_mul, inv_mul_cancel₀ hc0, Polynomial.scaleRoots_one]`. Then use the resulting hypothesis. Establish `h4` using `Polynomial.isIntegral_coeff_of_dvd P _ hPm ((Polynomial.monic_scaleRoots_iff c).2 (minpoly.monic hy)) h3 k`. Rewrite `h4` using `[Polynomial.coeff_scaleRoots, mul_comm]`. Conclude with `h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minpoly_coeff_integral (F : Type) [Field F] (S : Type) [Ring S] [Algebra F S] (y : S) (c : F)
     (hc : IsIntegral ℤ (algebraMap F S c * y)) (hy : IsIntegral F y) (k : ℕ) :
@@ -187,27 +183,23 @@ theorem minpoly_coeff_integral (F : Type) [Field F] (S : Type) [Ring S] [Algebra
   exact h4
 
 /- English proof (translation)
-Introduce `p _ G L f hf β x t hx`. Take `⟨Q, hQc, hQ⟩` from `supp_compact p G L f hf`. Use `set N := Module.finrank ℚ G.C`. Set `cf : ℕ → G.GAf → AfP p` to `fun k g => (LinearMap.charpoly (LinearMap.mulLeft (AfP p) (((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C))).coeff k`. Establish `hQ'c : IsCompact (⋃ k ∈ Finset.range (N + 1), cf k '' Q)` using `(Finset.range (N + 1)).isCompact_biUnion fun k _ => hQc.image (coeff_continuous p G k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨D', hD'0, hD'⟩` from `bdd_denom p _ hQ'c`. Use `⟨D' ^ Module.finrank G.F G.C, pow_pos hD'0 _, ?_⟩` and prove the remaining obligations. Introduce `y h hfy k`. Use `set yc : G.C := (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) with hyc`. Establish `hg` using `hQ _ hfy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set u : (AfP p ⊗[ℚ] G.C)ˣ := ((h : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1)⁻¹ * x with hu`. Establish `hrep : ((((h⁻¹ * toAfF G β x t hx y * h : G.GAf) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C) = (u : AfP p ⊗[ℚ] G.C) * ((1 : AfP p) ⊗ₜ[ℚ] yc) * ((u⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C)`. Establish `e : (((h⁻¹ * toAfF G β x t hx y * h : G.GAf) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 : (AfP p ⊗[ℚ] G.C)ˣ) = u * Units.map (inC G (AfP p)).toMonoidHom ((y : G.Cˣ × ℚˣ).1) * u⁻¹`. Establish `e0 : (((h⁻¹ * toAfF G β x t hx y * h : G.GAf) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 : (AfP p ⊗[ℚ] G.C)ˣ) = ((h : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1)⁻¹ * (x * Units.map (inC G (AfP p)).toMonoidHom ((y : G.Cˣ × ℚˣ).1) * x⁻¹) * (h : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1` using `rfl`. Rewrite using `[e0, hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `group`. Rewrite using `[e]`. Simplify using `only [Units.val_mul]`. Both sides reduce to the same expression. Establish `hchar : LinearMap.charpoly (LinearMap.mulLeft (AfP p) ((((h⁻¹ * toAfF G β x t hx y * h : G.GAf) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C)) = (LinearMap.charpoly (LinearMap.mulLeft ℚ yc)).map (algebraMap ℚ (AfP p))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hrep]`. Conclude with `charpoly_conj_tmul G.C (AfP p) yc u`. Establish `hcoef : ∀ i, ∃ m : ℕ, ∃ z : ℤ, (p : ℚ) ^ m * D' * (LinearMap.charpoly (LinearMap.mulLeft ℚ yc)).coeff i = z`. Introduce `i`. Distinguish the cases in `hi : i ≤ N`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hD'` to reduce the goal to its premises. Use `Set.mem_iUnion₂.2 ⟨i, Finset.mem_range.2 (Nat.lt_succ_of_le hi), _, hg, ?_⟩` and prove the remaining obligations. Simplify using `only [cf]`. Rewrite using `[hchar, Polynomial.coeff_map]`. Use `⟨0, 0, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by rw [LinearMap.charpoly_natDegree]; omega)]`. Simplify using the standard rewrite rules. Take `⟨M, hM⟩` from `integral_of_charpoly G.C yc p D' hcoef`. Establish `hint : IsIntegral ℤ (algebraMap G.F G.C ((p : G.F) ^ M * D') * yc)`. Use `hM using 2` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[map_mul, map_pow, map_natCast]`. Establish `hI` using `minpoly_coeff_integral G.F G.C yc _ hint (Algebra.IsIntegral.isIntegral _) k`. Use `set d := (minpoly G.F yc).natDegree`. Establish `hd : d ≤ Module.finrank G.F G.C` using `minpoly.natDegree_le yc`. Distinguish the cases in `hk : k ≤ d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `⟨M * (d - k), ?_⟩` and prove the remaining obligations. Establish `e : (p : G.F) ^ (M * (d - k)) * ((D' ^ Module.finrank G.F G.C : ℕ) : G.F) * (minpoly G.F yc).coeff k = (D' : G.F) ^ (Module.finrank G.F G.C - (d - k)) * (((p : G.F) ^ M * D') ^ (d - k) * (minpoly G.F yc).coeff k)`. Rewrite using `[mul_pow, ← pow_mul, Nat.cast_pow]`. Establish `: Module.finrank G.F G.C = (Module.finrank G.F G.C - (d - k)) + (d - k)` using `by omega`. Use `conv_lhs => rw [this, pow_add]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `hD : IsIntegral ℤ (D' : G.F)`. Simplify using `using (isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ G.F (D' : ℤ)))`. Conclude with `(hD.pow _).mul hI`.
-
-Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by omega), mul_zero]`. Conclude with `isIntegral_zero`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den_minpoly_coeff : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (L : G.Level) (f : G.GAf → ℂ), IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f → ∀ (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) β x t), ∃ D : ℕ, 0 < D ∧ ∀ (y : grp G β) (h : G.GAf), f (h⁻¹ * toAfF G β x t hx y * h) ≠ 0 → ∀ k : ℕ, ∃ m : ℕ, IsIntegral ℤ ((p : G.F) ^ m * D * (minpoly G.F (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)).coeff k) := by
   intro p _ G L f hf β x t hx

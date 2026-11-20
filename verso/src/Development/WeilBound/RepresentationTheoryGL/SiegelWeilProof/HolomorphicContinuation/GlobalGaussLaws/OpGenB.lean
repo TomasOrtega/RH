@@ -20,16 +20,16 @@ namespace PositivityTheory.Rg.Sw.Glob.OG
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `mat at e`. Conclude with `Subtype.ext (Units.ext e)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem g_ext {n : ℕ} {g h : G D n} (e : mat g = mat h) : g = h := by
   unfold mat at e
   exact Subtype.ext (Units.ext e)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.AdForm.RatMove.realPt_spec hθ (fun τ' => if τ' = τ then z - compAt θ τ x0 else 0)`. Use `⟨x0 + GlobalTheory.AdForm.realPt θ (fun τ' => if τ' = τ then z - compAt θ τ x0 else 0), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.RealParamSize.compAt_add, h2]`. Simplify using the standard rewrite rules. Introduce `τ' h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[GlobalTheory.RealParamSize.compAt_add, h2]`. Simplify using `[h]`. Rewrite using `[Matrix.map_add _ (map_add (finPart D)), h1, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_slice {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what₂.Tau) (x0 : Mx D m n)
     (z : Matrix (Fin m) (Fin n) ℂ) : ∃ x : Mx D m n, compAt θ τ x = z ∧
@@ -45,7 +45,7 @@ theorem exists_slice {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (τ : D.wha
   · rw [Matrix.map_add _ (map_add (finPart D)), h1, add_zero]
 
 /- English proof (translation)
-Simplify using `only [tens, hx, Matrix.nonsing_inv_mul_cancel_left _ _ hfr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tens_at {θ : InfFam D} {m n : ℕ} (τ : D.what₂.Tau) {fr : Matrix (Fin m) (Fin m) ℂ} (hfr : IsUnit fr.det)
     (f : (Fin m → Fin n → ℂ) → ℂ) (Ψ : Mx D m n → ℂ) (x : Mx D m n) (u : Matrix (Fin m) (Fin n) ℂ)
@@ -53,9 +53,9 @@ theorem tens_at {θ : InfFam D} {m n : ℕ} (τ : D.what₂.Tau) {fr : Matrix (F
   simp only [tens, hx, Matrix.nonsing_inv_mul_cancel_left _ _ hfr]
 
 /- English proof (translation)
-Use `⟨fun _ _ _ _ => rfl, fun f _ => ?_⟩` and prove the remaining obligations. Establish `: tens θ τ fr f (0 : Mx D m n → ℂ) = 0`. Use function extensionality and compare the values at `x`. Simplify using `[tens]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem awayCls_zero {θ : InfFam D} {m n : ℕ} (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ) :
     AwayCls θ τ fr (0 : Mx D m n → ℂ) := by
@@ -67,7 +67,7 @@ theorem awayCls_zero {θ : InfFam D} {m n : ℕ} (τ : D.what₂.Tau) (fr : Matr
   exact zero_mem _
 
 /- English proof (translation)
-Set `u : GL (Fin n ⊕ Fin n) ℂ` to `⟨nU b, nU (-b), by simp [nU, Matrix.fromBlocks_multiply], by simp [nU, Matrix.fromBlocks_multiply]⟩`. Establish `hu : u ∈ GR n` using `by show InG (nU b)`. Simplify using `only [InG, nU, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hb]`. Simplify using the standard rewrite rules. Conclude with `⟨⟨u, hu⟩, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem exists_nU (n : ℕ) (b : Matrix (Fin n) (Fin n) ℂ) (hb : bᴴ = b) : ∃ y : GR n, mR y = nU b := by
   let u : GL (Fin n ⊕ Fin n) ℂ :=
@@ -79,21 +79,21 @@ theorem exists_nU (n : ℕ) (b : Matrix (Fin n) (Fin n) ℂ) (hb : bᴴ = b) : �
   exact ⟨⟨u, hu⟩, rfl⟩
 
 /- English proof (translation)
-Conclude with `GlobalTheory.StdUnn.Frame.block_matrix_map _ a b c d`.
+A detailed English derivation is pending.
 -/
 theorem component_block_matrix (θ : InfFam D) (τ : D.what₂.Tau) {n : ℕ} (a b c d : Mx D n n) :
     compAt θ τ (blk4 a b c d) = blk4 (compAt θ τ a) (compAt θ τ b) (compAt θ τ c) (compAt θ τ d) := by
   exact GlobalTheory.StdUnn.Frame.block_matrix_map _ a b c d
 
 /- English proof (translation)
-Conclude with `GlobalTheory.StdUnn.Frame.block_matrix_map _ a b c d`.
+A detailed English derivation is pending.
 -/
 theorem finite_part_block_matrix {n : ℕ} (a b c d : Mx D n n) :
     (blk4 a b c d).map (finPart D) = blk4 (a.map (finPart D)) (b.map (finPart D)) (c.map (finPart D)) (d.map (finPart D)) := by
   exact GlobalTheory.StdUnn.Frame.block_matrix_map _ a b c d
 
 /- English proof (translation)
-Unfold `blk4`. Rewrite using `[← Matrix.fromBlocks_neg]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem neg_block_matrix {R : Type} [CommRing R] {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) R) :
     -blk4 a b c d = blk4 (-a) (-b) (-c) (-d) := by
@@ -102,7 +102,7 @@ theorem neg_block_matrix {R : Type} [CommRing R] {n : ℕ} (a b c d : Matrix (Fi
   rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.StdUnn.Frame.submatrix_fromBlocks_mul, ← GlobalTheory.StdUnn.Frame.block_matrix_one, neg_block_matrix]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jsq {R : Type} [CommRing R] {n : ℕ} :
     (blk4 (0 : Matrix (Fin n) (Fin n) R) 1 (-1) 0) * blk4 0 1 (-1) 0 = -1 := by
@@ -110,7 +110,7 @@ theorem jsq {R : Type} [CommRing R] {n : ℕ} :
   simp
 
 /- English proof (translation)
-Establish `h1 : mat w⁻¹ * mat w = 1` using `by show mat (w⁻¹ * w) = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Establish `h2 : mat w * (-mat w) = 1` using `by rw [mul_neg, hw, jsq, neg_neg]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mat_inv_w {n : ℕ} (w : G D n) (hw : mat w = blk4 0 1 (-1) 0) : mat w⁻¹ = -blk4 0 1 (-1) 0 := by
   have h1 : mat w⁻¹ * mat w = 1 := by

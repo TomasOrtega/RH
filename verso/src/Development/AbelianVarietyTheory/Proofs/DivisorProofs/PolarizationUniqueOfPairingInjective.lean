@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupBplus.Closed
 
 /- English proof (translation)
-Use `t.act.hom a` as an intermediate fact. Use `TateOver.ext (funext fun n => ?_)` and prove the remaining obligations. Use `tw.inj n k _ _ ?_` and prove the remaining obligations. Establish `e : (tateMap GG GG k (tw.act t.act a : GG ⟶ GG) (tau tw I y)).pt n = (latPt tw I n y).comp ((tw.map tw (t.act.act a)).app n : GG.A n →ₐ[k] GG.A n)` using `AlgHom.ext fun _ => rfl`. Rewrite using `[e, tau_pt, ← spOver_comp, Category.assoc, tw.map_y, ← Category.assoc, latPt_y, latPt_y, I.lin, Category.assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tateMap_act_tau_adj {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {k : Type}
     [Field k] {t : SAB H (Sp k)} {p : ℕ} [Fact p.Prime] {GG : PDivGroup p k} (tw : GG.TorsionTower t.G)
@@ -32,9 +32,9 @@ theorem tateMap_act_tau_adj {E : Type} [Field E] [NumberField E] [IsCMField E] {
   rw [e, tau_pt, ← spOver_comp, Category.assoc, tw.map_y, ← Category.assoc, latPt_y, latPt_y, I.lin, Category.assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw k _ _ _ t p _ GG tw I φ hext hφ a`. Establish `hb : H.bar (H.bar a) = a` using `RingOfIntegers.ext (by`. Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply])`. Use `hext _ _ fun x y n => ?_` and prove the remaining obligations. Rewrite using `[tateMap_comp, tateMap_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `pairing_tateMap (B := k) (tw.act t.act (H.bar a) : GG ⟶ GG) (tau tw I x) (tateMap GG GG.dual k φ (tau tw I y))`. Rewrite `h1` using `[tateMap_act_tau_adj]`. Rewrite using `[tateMap_act_tau_adj, hφ]`. Use `Eq.trans ?_ (congrArg (muRoot · n) h1)` and prove the remaining obligations. Rewrite using `[hφ, Dw.adj, hb]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_comp_pol_eq : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {k : Type} [Field k] [IsAlgClosed k] [CharZero k] {t : SAB H (Sp k)} {p : ℕ} [Fact p.Prime] {GG : PDivGroup p k} (tw : GG.TorsionTower t.G) (I : GeomTate Dw t), ∀ φ : GG ⟶ GG.dual, (∀ ψ ψ' : GG ⟶ GG.dual, (∀ (x y : Dw.La) (n : ℕ), muRoot (pairing GG k (tau tw I x) (tateMap GG GG.dual k ψ (tau tw I y))) n = muRoot (pairing GG k (tau tw I x) (tateMap GG GG.dual k ψ' (tau tw I y))) n) → ψ = ψ') → (∀ (x y : Dw.La) (n : ℕ), muRoot (pairing GG k (tau tw I x) (tateMap GG GG.dual k φ (tau tw I y))) n = ((I.ζ (p ^ n) ^ Dw.EF x y : kˣ) : k)) → ∀ a : 𝓞 E, (tw.act t.act a : GG ⟶ GG) ≫ φ = φ ≫ dualHom GG GG (tw.act t.act (H.bar a)) := by
   intro E _ _ _ H Dw k _ _ _ t p _ GG tw I φ hext hφ a

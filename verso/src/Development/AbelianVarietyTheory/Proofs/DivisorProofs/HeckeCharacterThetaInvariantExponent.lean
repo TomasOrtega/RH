@@ -13,15 +13,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Unfold `atEmb`. Simplify using `[InfinitePlace.mk_embedding]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem atEmb_emb (w : InfinitePlace E) (z : ℂ) : atEmb w.embedding z = Pi.single w z := by
   unfold atEmb; simp [InfinitePlace.mk_embedding]
 
 /- English proof (translation)
-Rewrite using `[h.2.2.2.2, Finset.prod_eq_single v]`. Express the relevant statement in the definitionally equal form `(Complex.exp ((Pi.single v z : Cinf E) v) / ((‖Complex.exp ((Pi.single v z : Cinf E) v)‖ : ℝ) : ℂ)) ^ e v = _`. Rewrite using `[Pi.single_eq_same, Complex.norm_exp, Complex.ofReal_exp, ← Complex.exp_sub, ← Complex.exp_int_mul]`. Use `congr 1`. Use `Complex.add_conj z` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Take the linear combination `((e v : ℂ) / 2) * this`. Introduce `u _ hu`. Express the relevant statement in the definitionally equal form `(Complex.exp ((Pi.single v z : Cinf E) u) / ((‖Complex.exp ((Pi.single v z : Cinf E) u)‖ : ℝ) : ℂ)) ^ e u = 1`. Rewrite using `[Pi.single_eq_of_ne hu]`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
@@ -42,7 +42,7 @@ theorem chiInf_expU_single {μ : HChar E} {e : InfinitePlace E → ℤ} (h : IsM
   · simp
 
 /- English proof (translation)
-The claim follows from `expo_eq_of_exp μ v.embedding _ (-(e v : ℂ) / 2) fun z => by rw [atEmb_emb]; exact chiInf_expU_single h v z`.
+A detailed English derivation is pending.
 -/
 theorem expo_emb {μ : HChar E} {e : InfinitePlace E → ℤ} (h : IsMu μ e) (v : InfinitePlace E) :
     expo μ v.embedding = (e v : ℂ) / 2 :=
@@ -50,7 +50,7 @@ theorem expo_emb {μ : HChar E} {e : InfinitePlace E → ℤ} (h : IsMu μ e) (v
     rw [atEmb_emb]; exact chiInf_expU_single h v z
 
 /- English proof (translation)
-The claim follows from `expo_eq_of_exp μ _ _ ((e v : ℂ) / 2) fun z => by rw [atEmb_conj, atEmb_emb, chiInf_expU_single h v] congr 1 simp only [Complex.conj_conj] ring`.
+A detailed English derivation is pending.
 -/
 theorem expo_conj {μ : HChar E} {e : InfinitePlace E → ℤ} (h : IsMu μ e) (v : InfinitePlace E) :
     expo μ (ComplexEmbedding.conjugate v.embedding) = -(e v : ℂ) / 2 :=
@@ -61,9 +61,9 @@ theorem expo_conj {μ : HChar E} {e : InfinitePlace E → ℤ} (h : IsMu μ e) (
     ring
 
 /- English proof (translation)
-Establish `h1` using `expo_emb h v`. Establish `h2` using `expo_conj h v`. Simplify using `only [expo, atEmb_conj, atEmb_emb, map_one, Complex.conj_I, Pi.single_neg, map_neg] at h1 h2`. Establish `hd1 : dchi μ (Pi.single v 1) = 0` using `by linear_combination h1 + h2`. Rewrite using `[← atEmb_emb, atEmb_eq, map_add, map_smul, map_smul, atEmb_emb, atEmb_emb, hd1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_zero, zero_add, Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dchi_single {μ : HChar E} {e : InfinitePlace E → ℤ} (h : IsMu μ e) (v : InfinitePlace E) (w : ℂ) :
     dchi μ (Pi.single v w) = (w.im : ℂ) * dchi μ (Pi.single v Complex.I) := by
@@ -75,7 +75,7 @@ theorem dchi_single {μ : HChar E} {e : InfinitePlace E → ℤ} (h : IsMu μ e)
   rw [smul_zero, zero_add, Complex.real_smul]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Finset.univ_sum_single (-star z)]`. Use `conv_rhs => rw [← Finset.univ_sum_single z]`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[dchi_single h v, dchi_single h v (z v), Pi.neg_apply, Pi.star_apply, Complex.neg_im, Complex.star_def, Complex.conj_im, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dchi_neg_star {μ : HChar E} {e : InfinitePlace E → ℤ} (h : IsMu μ e) (z : Cinf E) :
     dchi μ (-star z) = dchi μ z := by
@@ -86,7 +86,7 @@ theorem dchi_neg_star {μ : HChar E} {e : InfinitePlace E → ℤ} (h : IsMu μ 
   rw [dchi_single h v, dchi_single h v (z v), Pi.neg_apply, Pi.star_apply, Complex.neg_im, Complex.star_def, Complex.conj_im, neg_neg]
 
 /- English proof (translation)
-Use `Units.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : InfiniteAdeleRing E) - 0 + 0 = (infEq E) (starRingEnd (Cinf E) ((infEq E).symm ((1 : InfiniteAdeleRing E) - 0 + 0)))`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(1 : Af E) - 1 + conjFin (IsCMField.complexConj E).toRingEquiv (u : Af E) = conjFin (IsCMField.complexConj E).toRingEquiv ((1 : Af E) - 1 + (u : Af E))`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem finId_conjFin (u : (Af E)ˣ) :
     finId E (Units.map (conjFin (IsCMField.complexConj E).toRingEquiv).toMonoidHom u) =
@@ -99,7 +99,7 @@ theorem finId_conjFin (u : (Af E)ˣ) :
     simp
 
 /- English proof (translation)
-Rewrite using `[← map_mul, ← GlobalTheory.GalOfCusp.ideleMap_ideleNorm, h.2.1]`. Use `congrArg (fun c : HChar E => c.1 x) (GlobalTheory.GalOfCusp.compNorm_quadChar E)` as an intermediate fact. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mu_mul_conj {μ : HChar E} {e : InfinitePlace E → ℤ} (h : IsMu μ e) (x : Neutral.B1.Ideles E) :
     μ.1 x * μ.1 (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleConj (maximalRealSubfield E) E x) = 1 := by
@@ -108,7 +108,7 @@ theorem mu_mul_conj {μ : HChar E} {e : InfinitePlace E → ℤ} (h : IsMu μ e)
   exact this
 
 /- English proof (translation)
-Use `CG.thetaInv_of (fun u => ?_) (dchi_neg_star h)` and prove the remaining obligations. Rewrite using `[map_inv, finId_conjFin, ← GlobalTheory.PolChar.ideleConj_eq, map_inv]`. Use `mu_mul_conj h (finId E u)` as an intermediate fact. Conclude with `inv_eq_of_mul_eq_one_left this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thetaInv {μ : HChar E} {e : InfinitePlace E → ℤ} (h : IsMu μ e) (a : ℕ) : ThetaInv a μ := by
   refine CG.thetaInv_of (fun u => ?_) (dchi_neg_star h)
@@ -117,7 +117,7 @@ theorem thetaInv {μ : HChar E} {e : InfinitePlace E → ℤ} (h : IsMu μ e) (a
   exact inv_eq_of_mul_eq_one_left this
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ h` and use `⟨thetaInv h, expo_emb h, expo_conj h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (μ : HChar E) (e : InfinitePlace E → ℤ), IsMu μ e → (∀ a, ThetaInv a μ) ∧ (∀ v : InfinitePlace E, expo μ v.embedding = (e v : ℂ) / 2) ∧ ∀ v : InfinitePlace E, expo μ (ComplexEmbedding.conjugate v.embedding) = -(e v : ℂ) / 2 :=
   fun _ _ _ _ _ _ _ h => ⟨thetaInv h, expo_emb h, expo_conj h⟩

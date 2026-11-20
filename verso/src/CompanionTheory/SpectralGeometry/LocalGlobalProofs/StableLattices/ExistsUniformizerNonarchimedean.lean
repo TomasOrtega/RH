@@ -6,19 +6,17 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.CartGL
 
 /- English proof (translation)
-Introduce `L _ _ _`. Take `⟨x₀, h0, h1⟩` from `NormedField.exists_norm_lt_one L`. Establish `hc : IsCompact (Metric.ball (0 : L) 1)` using `Metric.isCompact_of_isClosed_isBounded (IsUltrametricDist.isClosed_ball 0 1) Metric.isBounded_ball`. Establish `hx : x₀ ∈ Metric.ball (0 : L) 1` using `by simpa using h1`. Take `⟨p, hp, hmax⟩` from `hc.exists_isMaxOn ⟨x₀, hx⟩ continuous_norm.continuousOn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmax' : ∀ w : L, ‖w‖ < 1 → ‖w‖ ≤ ‖p‖` using `fun w hw => isMaxOn_iff.mp hmax w (by simpa using hw)`. Establish `hp1 : ‖p‖ < 1` using `by simpa using hp`. Establish `hp0 : 0 < ‖p‖` using `h0.trans_le (hmax' x₀ h1)`. Establish `hpne : p ≠ 0` using `norm_pos_iff.mp hp0`. Use `⟨Units.mk0 p hpne, hp1, fun x hx0 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.val_mk0]`. Establish `hxpos : 0 < ‖x‖` using `norm_pos_iff.mpr hx0`. Establish `hy : 1 < ‖p‖⁻¹` using `(one_lt_inv₀ hp0).mpr hp1`. Take `⟨n, hn1, hn2⟩` from `exists_mem_Ico_zpow hxpos hy`. Establish `hyn : 0 < ‖p‖⁻¹ ^ n` using `zpow_pos (inv_pos.mpr hp0) n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set w : L := p ^ (-n) * x⁻¹ with hw`. Establish `hwn : ‖w‖ = ‖p‖⁻¹ ^ n / ‖x‖`. Rewrite using `[hw, norm_mul, norm_inv, norm_zpow, _root_.inv_zpow', div_eq_mul_inv]`. Establish `hle : ‖w‖ ≤ 1`. Rewrite using `[hwn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(div_le_one hxpos).mpr hn1`. Establish `hgt : ‖p‖ < ‖w‖`. Rewrite using `[hwn, lt_div_iff₀ hxpos]`. Establish `: ‖x‖ < ‖p‖⁻¹ ^ n * ‖p‖⁻¹` using `by rwa [zpow_add_one₀ (inv_pos.mpr hp0).ne'] at hn2`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `heq : ‖w‖ = 1`. Assume the negation of the conclusion as `hne`. Conclude with `absurd (hmax' w (lt_of_le_of_ne hle hne)) (not_le.mpr hgt)`. Use `⟨-n, ?_⟩` and prove the remaining obligations. Rewrite `heq` using `[hwn, div_eq_one_iff_eq hxpos.ne']`.
-
-Rewrite using `[← heq, _root_.inv_zpow']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isUnif : ∀ (L : Type) [NontriviallyNormedField L] [IsUltrametricDist L] [ProperSpace L],
     ∃ p : Lˣ, GlobalTheory.CompanionTheory.CartGL.IsUnif p := by

@@ -26,11 +26,11 @@ namespace CuspidalConjugateSelfDual
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use `⟨by rw [Multiset.card_map, hm.1], ?_⟩` and prove the remaining obligations. Introduce and unpack `u _ ⟨φ, hφ, rfl⟩`. Express the relevant statement in the definitionally equal form `cap τ u (GlobalTheory.ThetaPull.pull E a φ) = _ • GlobalTheory.ThetaPull.pull E a φ`. Rewrite using `[GlobalTheory.ThetaPull.cap_pull, LinearMap.smul_apply, hm.2 _ φ hφ, smul_smul, map_smul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : ((m.map Neg.neg).map (u + ·)) = (m.map (-u + ·)).map Neg.neg`. Rewrite using `[Multiset.map_map, Multiset.map_map]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, Multiset.prod_map_neg, Multiset.card_map, hm.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hasInfChar_thetaSub {a : ℕ} (P : CuspSub E a) (τ : E →+* ℂ) (m : Multiset ℂ)
     (hm : P.HasInfChar (ComplexEmbedding.conjugate τ) m) :
@@ -48,7 +48,7 @@ theorem hasInfChar_thetaSub {a : ℕ} (P : CuspSub E a) (τ : E →+* ℂ) (m : 
   rw [e, Multiset.prod_map_neg, Multiset.card_map, hm.1]
 
 /- English proof (translation)
-Take `⟨k, -, rfl⟩` from `Multiset.mem_map.1 hx`. Simplify using `[map_div₀, map_ofNat]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem conj_of_mem_infOfWeight {n : ℕ} (lam : DomWeight n) {x : ℂ} (hx : x ∈ infOfWeight lam) :
     (starRingEnd ℂ) x = x := by
@@ -56,7 +56,7 @@ theorem conj_of_mem_infOfWeight {n : ℕ} (lam : DomWeight n) {x : ℂ} (hx : x 
   simp [map_div₀, map_ofNat]
 
 /- English proof (translation)
-Take `⟨rfl, he⟩` from `Sigma.mk.inj_iff.mp h`. Establish `hi : π.Iso π'` using `Quotient.exact (eq_of_heq he)`. Conclude with `hi.hasInfChar hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasInfChar_of_sigma {a b : ℕ} {π : CuspSub E a} {π' : CuspSub E b}
     (h : (⟨a, CG.mk π⟩ : Σ c, CG E c) = ⟨b, CG.mk π'⟩) {τ : E →+* ℂ} {m : Multiset ℂ} (hm : π.HasInfChar τ m) :
@@ -66,7 +66,7 @@ theorem hasInfChar_of_sigma {a b : ℕ} {π : CuspSub E a} {π' : CuspSub E b}
   exact hi.hasInfChar hm
 
 /- English proof (translation)
-Take `⟨rfl, he⟩` from `Sigma.mk.inj_iff.mp h`. Take `rfl` from `eq_of_heq he`. Conclude with `hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCsd_of_sigma {a b : ℕ} {π : CuspSub E a} {π' : CuspSub E b}
     (h : (⟨a, π⟩ : Σ c, CuspSub E c) = ⟨b, π'⟩) (hc : π.IsCsd) : π'.IsCsd := by
@@ -75,14 +75,14 @@ theorem isCsd_of_sigma {a b : ℕ} {π : CuspSub E a} {π' : CuspSub E b}
   exact hc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThetaPull.isCsd_of_iso (Quotient.exact (eq_of_heq (Sigma.mk.inj h).2))`.
+A detailed English derivation is pending.
 -/
 theorem isCsd_of_sigma_theta {a : ℕ} {π : CuspSub E a}
     (h : (⟨a, CG.mk (GlobalTheory.ThetaPull.thetaSub π)⟩ : Σ c, CG E c) = ⟨a, CG.mk π⟩) : π.IsCsd :=
   GlobalTheory.ThetaPull.isCsd_of_iso (Quotient.exact (eq_of_heq (Sigma.mk.inj h).2))
 
 /- English proof (translation)
-Use `⟨GlobalTheory.DefU.LocRet.under_conjSrc w, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : GlobalTheory.ThetaSatake.cw w = w`. Conclude with `Or.inr ((GlobalTheory.ConjAtPlace.conjSrc_eq_iff w).1 h)`. Conclude with `Or.inl h`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative.
 -/
 theorem conjPl_cw (w : HeightOneSpectrum (𝓞 E)) : ConjPl w (GlobalTheory.ThetaSatake.cw w) := by
   refine ⟨GlobalTheory.DefU.LocRet.under_conjSrc w, ?_⟩
@@ -91,14 +91,14 @@ theorem conjPl_cw (w : HeightOneSpectrum (𝓞 E)) : ConjPl w (GlobalTheory.Thet
   · exact Or.inl h
 
 /- English proof (translation)
-The claim follows from `map_sum (Multiset.mapAddMonoidHom (·⁻¹)) f Finset.univ`.
+A detailed English derivation is pending.
 -/
 theorem map_inv_sum {ι : Type} [Fintype ι] (f : ι → Multiset ℂˣ) :
     (∑ i, f i).map (·⁻¹) = ∑ i, (f i).map (·⁻¹) :=
   map_sum (Multiset.mapAddMonoidHom (·⁻¹)) f Finset.univ
 
 /- English proof (translation)
-Rewrite using `[map_inv_sum]`. Conclude with `Fintype.sum_equiv Fin.revPerm _ _ fun k => by rw [Fin.revPerm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_rev_map {d : ℕ} (f : Fin d → Multiset ℂˣ) :
     ∑ k : Fin d, (f k.rev).map (·⁻¹) = (∑ k, f k).map (·⁻¹) := by
@@ -110,7 +110,7 @@ variable (E) in
 def nuT (s : ℝ) : Formalism.L2.Host.HChar E := GlobalTheory.ThetaPull.thetaChar (GlobalTheory.HeckeGal.Model.absPow E (-s))
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.ThetaPull.isAbsPow_thetaChar (GlobalTheory.HeckeGal.Model.absPow_isAbsPow E (-s))`. Rewrite `h` using `[neg_neg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isAbsPow_nuT (s : ℝ) : (nuT E s).IsAbsPow s := by
   have h := GlobalTheory.ThetaPull.isAbsPow_thetaChar (GlobalTheory.HeckeGal.Model.absPow_isAbsPow E (-s))
@@ -122,7 +122,7 @@ def muT (d : ℕ) (k : Fin d) : Formalism.L2.Host.HChar E := GlobalTheory.HeckeG
 
 omit [IsCMField E] in
 /- English proof (translation)
-Establish `e : -spehExp d k.rev = spehExp d k` using `by rw [InfinitesimalCharacterAscent.spehExp_rev, neg_neg]`. Use `show (GlobalTheory.HeckeGal.Model.absPow E (-spehExp d k.rev)).IsAbsPow (spehExp d k)`. Rewrite using `[e]`. Conclude with `GlobalTheory.HeckeGal.Model.absPow_isAbsPow E _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAbsPow_muT (d : ℕ) (k : Fin d) : (muT E d k).IsAbsPow (spehExp d k) := by
   have e : -spehExp d k.rev = spehExp d k := by rw [InfinitesimalCharacterAscent.spehExp_rev, neg_neg]
@@ -135,29 +135,27 @@ end CuspidalConjugateSelfDual
 open CuspidalConjugateSelfDual in
 
 /- English proof (translation)
-Introduce `hJ hSS hStr E _ _ _ n D hr ht i a d P ha hd hu hn he`. Establish `hx : ∀ j, ∃ (a' d' : ℕ) (P' : CuspSub E a'), 1 ≤ a' ∧ 1 ≤ d' ∧ P'.IsUnitary ∧ IsNormalised P' ∧ AscEmb (D.V j) P' d' ∧ (j = i → (⟨a', P'⟩ : Σ b, CuspSub E b) = ⟨a, P⟩)` using `fun j => by`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Conclude with `⟨a, d, P, ha, hd, hu, hn, he, fun _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Take `⟨a', d', P', h1, h2, h3, h4, h5⟩` from `hStr E n D hr j`. Conclude with `⟨a', d', P', h1, h2, h3, h4, h5 P' (Setoid.refl (α := CuspSub E a') P'), fun e => absurd e h⟩`. Use `choose A Dd PP hA hDd hU hN hE hI using hx`. Establish `hW : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∀ j, ∃ b : Fin (Dd j) → Multiset ℂˣ, (∀ k, (CG.mk ((PP j).twist (nuT E (spehExp (Dd j) k)))).HasSat w (b k)) ∧ GlobalTheory.LGrp.IsSpherical (D.σ j w).ρ (GlobalTheory.LFun.KGL w (D.N j)) ∧ GlobalTheory.LFun.HasSatGL w (D.σ j …` using `Filter.eventually_all.2 fun j => hSS E (D.N j) (A j) (Dd j) (D.V j) (PP j) (D.σ j) (D.pos j) (D.discrete j) (hU j) (hN j) (hE j) (D.loc j) (fun k => nuT E (spehExp (Dd j) k)) (fun k => isAbsPow_nuT _)`. Establish `hinj : Function.Injective (GlobalTheory.ThetaSatake.cw (E` using `E)) := Function.LeftInverse.injective (g := GlobalTheory.ThetaSatake.cw) fun v => GlobalTheory.ThetaPull.conjSrc_conjSrc v`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∀ j, ∃ c : Fin (Dd j) → Multiset ℂˣ, (∀ k, (CG.mk ((PP j).twist (muT E (Dd j) k))).HasSat (GlobalTheory.ThetaSatake.cw w) (c k)) ∧ GlobalTheory.LGrp.IsSpherical (D.σ j (GlobalTheory.ThetaSatake.cw w)).ρ (GlobalTheory.LFun.KG …` using `hinj.tendsto_cofinite.eventually (Filter.eventually_all.2 fun j => hSS E (D.N j) (A j) (Dd j) (D.V j) (PP j) (D.σ j) (D.pos j) (D.discrete j) (hU j) (hN j) (hE j) (D.loc j) (fun k => muT E (Dd j) k) (fun k => isAbsPow_muT _ _))`. Take `⟨s, hs⟩` from `hJ.unitary (ι := Σ j, Fin (Dd j)) (κ := Σ j, Fin (Dd j)) (m := fun x => A x.1) (m' := fun x => A x.1) (fun x => CG.mk (GlobalTheory.ThetaPull.thetaSub (PP x.1))) (fun x => CG.mk (PP x.1)) (fun x => hA x.1) (fun x => hA x.1) (fun x => (CG.isUnitary_mk _).2 (GlobalTheory.SpehPair.i …`. Take `⟨Bt, ⟨bw, hbw, hbsum⟩, hconj⟩` from `hθ`. Take `⟨bc, hbc, hbcsum⟩` from `hconj _ (conjPl_cw w)`. Establish `e1 : ∀ j, bw j = ∑ k, b j k` using `fun j => GlobalTheory.LFun.HasSatGL.unique (hbw j).2 (hb3 j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∀ j, bc j = ∑ k, c j k` using `fun j => GlobalTheory.LFun.HasSatGL.unique (hbc j).2 (hc3 j)`. Use `⟨fun x => (c x.1 x.2.rev).map (·⁻¹), fun x => b x.1 x.2, fun x => ?_, fun x => hb1 x.1 x.2, ?_⟩` and prove the remaining obligations. Establish `h` using `hc1 x.1 x.2.rev`. Simplify using `only [muT, Fin.rev_rev] at h`. Use `show ((CG.mk (GlobalTheory.ThetaPull.thetaSub (PP x.1))).twist (GlobalTheory.ThetaPull.thetaChar (GlobalTheory.HeckeGal.Model.absPow E (-spehExp (Dd x.1) x.2)))).HasSat w ((c x.1 x.2.rev).map (·⁻¹))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CG.twist_mk, ← GlobalTheory.ThetaPull.thetaSub_twist]`. Conclude with `GlobalTheory.ThetaSatake.hasSat_thetaSub _ w _ h`. Rewrite using `[Fintype.sum_sigma, Fintype.sum_sigma, Finset.sum_congr rfl fun j _ => sum_rev_map (c j), ← map_inv_sum (fun j => ∑ k, c j k), ← Finset.sum_congr rfl fun j _ => e2 j, ← Finset.sum_congr rfl fun j _ => e1 j, hbcsum, hbsum, Multiset.map_map] simp)`. Establish `hstr` using `GlobalTheory.Rigid.strings_eq_of_equiv (fun j => (⟨A j, CG.mk (GlobalTheory.ThetaPull.thetaSub (PP j))⟩ : Σ b, CG E b)) Dd (fun j => (⟨A j, CG.mk (PP j)⟩ : Σ b, CG E b)) Dd s fun x => hs x`. Take `⟨s0, hs0⟩` from `GlobalTheory.T.multiset_of_strings_determines_points_degrees _ Dd _ Dd hDd hDd hstr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfix : s0 i = i`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Take `⟨lam, hlam⟩` from `hr τ`. Take `⟨m0, hm0, e0⟩` from `infAsc_holds E (D.N i) (A i) (Dd i) (D.V i) (PP i) (D.discrete i) (hE i) τ _ (D.inf i τ)`. Take `⟨m1, hm1, -⟩` from `infAsc_holds E (D.N i) (A i) (Dd i) (D.V i) (PP i) (D.discrete i) (hE i) (ComplexEmbedding.conjugate τ) _ (D.inf i _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m2, hm2, e2⟩` from `infAsc_holds E (D.N (s0 i)) (A (s0 i)) (Dd (s0 i)) (D.V (s0 i)) (PP (s0 i)) (D.discrete _) (hE _) τ _ (D.inf _ τ)`. Take `⟨μ, hμ1, hμ2⟩` from `GlobalTheory.T.exists_right_haar_measure E (A i)`. Use `hμ1` as an intermediate fact. Use `hμ2` as an intermediate fact. Take `⟨B, hB⟩` from `GlobalTheory.T.exists_invariant_hermitian_form PositivityTheory.Rg.HF.GL.cuspFormsBoundedGL E (A i) μ (PP i) (hN i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconj` using `GlobalTheory.T.infinitesimal_character_conjugate E (A i) (PP i) B hB τ m0 m1 hm0 hm1`. Establish `hθ` using `hasInfChar_of_sigma (hs0 i).1 (hasInfChar_thetaSub (PP i) τ m1 hm1)`. Establish `hmem : ∀ z ∈ m0, z + (spehExp (Dd i) ⟨0, hDd i⟩ : ℂ) ∈ D.m i τ` using `fun z hz => by`. Rewrite using `[e0]`. Conclude with `Multiset.mem_sum.2 ⟨⟨0, hDd i⟩, Finset.mem_univ _, Multiset.mem_map_of_mem _ hz⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hreal : ∀ z ∈ m0, (starRingEnd ℂ) z = z` using `fun z hz => by`. Establish `h1 : z + (spehExp (Dd i) ⟨0, hDd i⟩ : ℂ) ∈ ∑ j, D.m j τ` using `Multiset.mem_of_le (Finset.single_le_sum (f := fun j => D.m j τ) (fun _ _ => Multiset.zero_le _) (Finset.mem_univ i)) (hmem z hz)`. Rewrite `h1` using `[hlam]`. Establish `h2` using `conj_of_mem_infOfWeight lam h1`. Rewrite `h2` using `[map_add, Complex.conj_ofReal]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `add_right_cancel h2`. Establish `h20 : m2 = m0`. Rewrite using `[hm2.unique hθ, hconj, Multiset.map_map]`. Use `conv_rhs => rw [← Multiset.map_id m0]`. Use `Multiset.map_congr rfl fun z hz => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `[hreal z hz]`. Establish `heq : D.m i τ = D.m (s0 i) τ`. Rewrite using `[e0, e2, h20, (hs0 i).2]`. Establish `hne : D.m i τ ≠ 0`. Take `⟨z, hz⟩` from `Multiset.card_pos_iff_exists_mem.1 (by rw [hm0.1]; exact hA i)`.
-
-Conclude with `fun h0 => by simpa [h0] using hmem z hz`. Conclude with `(GlobalTheory.eq_of_nodup_sum_multiset_of_eq (Fin D.c) (fun j => D.m j τ) (by rw [hlam]; exact GlobalTheory.DefiniteBC.nodup_infOfWeight lam) i (s0 i) hne heq).symm`. Establish `hcsd : (PP i).IsCsd` using `isCsd_of_sigma_theta (by have h := (hs0 i).1; rwa [hfix] at h)`. Conclude with `isCsd_of_sigma (hI i rfl) hcsd`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rCuspCsd : RCuspCsd := by
   intro hJ hSS hStr E _ _ _ n D hr ht i a d P ha hd hu hn he

@@ -5,17 +5,17 @@ namespace GlobalTheory
 open Matrix
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨j, hj, rfl⟩` from `hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨Pi.single j 1, fun j' hj' => ?_, ?_⟩` and prove the remaining obligations. Establish `: j' ≠ j` using `by rintro rfl; omega`. Simplify using `[this]`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Consider the case `zero => exact ⟨0, fun _ _ => rfl, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨c, hc, rfl⟩` from `hy`. Take `⟨d, hd, rfl⟩` from `hz`. Conclude with `⟨c + d, fun j hj => by simp [hc j hj, hd j hj], by rw [Matrix.mulVec_add]⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul a y _ hy`. Take `⟨c, hc, rfl⟩` from `hy`. Conclude with `⟨a • c, fun j hj => by simp [hc j hj], by rw [Matrix.mulVec_smul]⟩`. Introduce and unpack `⟨c, hc, rfl⟩`. Establish `: M *ᵥ c = ∑ j, c j • (fun i => M i j)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Rewrite using `[this]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : (j : ℕ) < k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, hj, rfl⟩)`. Rewrite using `[hc j (not_lt.mp hj), zero_smul]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_first_columns_iff {R : Type} [CommRing R] {n r : ℕ}
     (M : Matrix (Fin n) (Fin r) R) (k : ℕ) (x : Fin n → R) :
@@ -51,9 +51,9 @@ theorem mem_span_first_columns_iff {R : Type} [CommRing R] {n r : ℕ}
       exact Submodule.zero_mem _
 
 /- English proof (translation)
-Establish `key : ∀ j : Fin r, ∃ c : Fin r → R, (∀ j' : Fin r, (j : ℕ) + 1 ≤ (j' : ℕ) → c j' = 0) ∧ (fun i => u' i j) = u *ᵥ c` using `fun j => (mem_span_first_columns_iff u _ _).mp (h (j + 1) (Submodule.subset_span ⟨j, Nat.lt_succ_self _, rfl⟩))`. Use `choose c hc hc' using key`. Use `⟨Matrix.of fun i j => c j i, fun i j hij => hc j i hij, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrFun (hc' j) i` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+A detailed English derivation is pending.
 -/
 theorem exists_triangular_of_span_first_columns_le {R : Type} [CommRing R] {n r : ℕ}
     (u u' : Matrix (Fin n) (Fin r) R)
@@ -72,29 +72,25 @@ theorem exists_triangular_of_span_first_columns_le {R : Type} [CommRing R] {n r 
   simpa [Matrix.mul_apply, Matrix.mulVec, dotProduct] using this
 
 /- English proof (translation)
-Introduce `V L _ _ _ _ _ n r ι u ⟨h0, h1⟩`. Use `set A : Matrix (Fin r) (Fin r) V := u.submatrix ι id with hA`. Establish `hdet : A.det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular A (fun i j hij => h0 i j hij)]`. Simplify using `[hA, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hAu : IsUnit A.det` using `hdet ▸ isUnit_one`. Establish `hinj : Function.Injective (algebraMap V L)` using `IsFractionRing.injective V L`. Establish `hmap : ∀ {m : ℕ} (M : Matrix (Fin m) (Fin r) V) (c : Fin r → V) (i : Fin m), algebraMap V L ((M *ᵥ c) i) = ((M.map (algebraMap V L)) *ᵥ (fun j => algebraMap V L (c j))) i`. Introduce `m M c i`. Simplify using `[Matrix.mulVec, dotProduct]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k x => ?_, fun u' hu' => ?_⟩` and prove the remaining obligations. Establish `e` using `mem_span_first_columns_iff (u.map (algebraMap V L)) k (fun i => algebraMap V L (x i))`. Simplify using `only [Matrix.map_apply] at e`. Rewrite using `[e, mem_span_first_columns_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨c, hc, hx⟩ set c₀ : Fin r → V := A⁻¹ *ᵥ (fun i => x (ι i)) with hc₀`. Establish `hAc : A *ᵥ c₀ = fun i => x (ι i)`. Rewrite using `[hc₀, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hAu, Matrix.one_mulVec]`. Establish `hAL : IsUnit (A.map (algebraMap V L))`. Rewrite using `[Matrix.isUnit_iff_isUnit_det]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(algebraMap V L).map_det A` as an intermediate fact. Rewrite `this` using `[hdet, map_one]`. Conclude with `(show (1 : L) = (A.map (algebraMap V L)).det from this) ▸ isUnit_one`. Establish `hcc : (fun j => algebraMap V L (c₀ j)) = c`. Apply `Matrix.mulVec_injective_iff_isUnit.mpr hAL` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Rewrite using `[← hmap, hAc]`. Conclude with `congrFun hx (ι i)`. Use `⟨c₀, fun j hj => hinj ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, ← hc j hj, ← hcc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hmap, hcc]`. Conclude with `congrFun hx i`. Introduce and unpack `⟨c, hc, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun j => algebraMap V L (c j), fun j hj => by simp [hc j hj], ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Conclude with `hmap u c i`. Take `⟨b, hb, hub⟩` from `exists_triangular_of_span_first_columns_le u u' fun k => (hu' k).le`. Take `⟨b', hb', hub'⟩` from `exists_triangular_of_span_first_columns_le u' u fun k => (hu' k).ge`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : u = u * (b * b')` using `by rw [← Matrix.mul_assoc, ← hub, ← hub']`. Establish `h3 : A = A * (b * b')`. Use extensionality with `i j`. Conclude with `congrFun (congrFun h2 (ι i)) j`. Establish `h4 : b * b' = 1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun M => A⁻¹ * M) h3` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hAu, Matrix.one_mul] at this`. Conclude with `this.symm`. Use `⟨b, hb, fun i => ?_, hub⟩` and prove the remaining obligations. Establish `h5 : (b * b') i i = b i i * b' i i`.
-
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun j _ hj => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hb h, zero_mul]`. Rewrite using `[hb' h, mul_zero]`.
-
-Rewrite `h5` using `[h4, Matrix.one_apply_eq]`. Conclude with `IsUnit.of_mul_eq_one _ h5.symm`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_columns_saturated_and_triangular :
     ∀ (V L : Type) [CommRing V] [IsDomain V] [Field L] [Algebra V L] [IsFractionRing V L] (n r : ℕ) (ι : Fin r ↪ Fin n) (u : Matrix (Fin n) (Fin r) V), (∀ i j : Fin r, i < j → u (ι i) j = 0) ∧ (∀ i : Fin r, u (ι i) i = 1) → (∀ (k : ℕ) (x : Fin n → V), (fun i => algebraMap V L (x i)) ∈ Submodule.span L {y : Fin n → L | ∃ j : Fin r, (j : ℕ) < k ∧ y = fun i => algebraMap V L (u i j)} ↔ x ∈ Submodule.span V {y : Fin n → V | ∃ j : Fin r, (j : ℕ) < k ∧ y = fun i => u i j}) ∧ ∀ u' : Matrix (Fin n) (Fin r) V, (∀ k : ℕ, Submodule.span V {y : Fin n → V | ∃ j : Fin r, (j : ℕ) < k ∧ y = fun i => u' i j} = Submodule.span V {y : Fin n → V | ∃ j : Fin r, (j : ℕ) < k ∧ y = fun i => u i j}) → ∃ b : Matrix (Fin r) (Fin r) V, b.BlockTriangular id ∧ (∀ i, IsUnit (b i i)) ∧ u' = u * b := by

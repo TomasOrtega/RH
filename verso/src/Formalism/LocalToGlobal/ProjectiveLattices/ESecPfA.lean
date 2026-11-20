@@ -11,13 +11,13 @@ variable {D : D7} {T : Top D} (h : LawsP T) {j : ℕ} (hj : InR D j)
 include h hj
 
 /- English proof (translation)
-Rewrite using `[cutR_eq T.C hj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem esec_mem_C {w : WeightFamilies.Wt D j} {f : T.R j} : f ∈ cutR T.C j w ↔ f ∈ T.C j w := by
   rw [cutR_eq T.C hj]
 
 /- English proof (translation)
-Rewrite `hf`, `hg`, the goal using `[esec_mem_C h hj]`. Conclude with `h.toLawsCore.mul j hj w w' f hf g hg`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem esec_mul_mem {w w' : WeightFamilies.Wt D j} {f g : T.R j} (hf : f ∈ cutR T.C j w) (hg : g ∈ cutR T.C j w') :
     f * g ∈ cutR T.C j (wadd w w') := by
@@ -42,7 +42,7 @@ theorem esec_inc_apply {w : WeightFamilies.Wt D j} (F : (recB h.toLawsCore).Cusp
     (recPJ h j hj).inc w F = AddMonoidAlgebra.single (deg w) (F : T.R j) := rfl
 
 /- English proof (translation)
-The claim follows from `(incG_mul deg (cutR T.C j) (deg_wadd w w') F F' (esec_mul_mem h hj F.2 F'.2)).symm`.
+A detailed English derivation is pending.
 -/
 theorem esec_inc_mul {w w' : WeightFamilies.Wt D j} (F : (recB h.toLawsCore).Cusp j w)
     (F' : (recB h.toLawsCore).Cusp j w') :
@@ -55,7 +55,7 @@ def esecW (wL : WeightFamilies.Wt D j) : ℕ → WeightFamilies.Wt D j
 
 omit h hj in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact (add_zero_weight_one_eq wL).symm`. Consider the case `succ n ih => rw [esecW, ih, wadd_addL]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem esecW_eq (wL : WeightFamilies.Wt D j) (n : ℕ) : esecW wL n = addL (wt0 D j) wL (n + 1) := by
   induction n with
@@ -68,7 +68,7 @@ def esecPow {wL : WeightFamilies.Wt D j} (F : (recB h.toLawsCore).Cusp j wL) :
   | n + 1 => esecMul h hj F (esecPow F n)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_add, pow_one]`. Both sides reduce to the same expression. Consider the case `succ n ih => show (recPJ h j hj).inc (wadd wL (esecW wL n)) (esecMul h hj F (esecPow h hj F n)) = _`. Rewrite using `[esec_inc_mul, ih, pow_succ' _ (n + 1)]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem esec_inc_pow {wL : WeightFamilies.Wt D j} (F : (recB h.toLawsCore).Cusp j wL) (n : ℕ) :
     (recPJ h j hj).inc (esecW wL n) (esecPow h hj F n) = (recPJ h j hj).inc wL F ^ (n + 1) := by
@@ -79,7 +79,7 @@ theorem esec_inc_pow {wL : WeightFamilies.Wt D j} (F : (recB h.toLawsCore).Cusp 
     rw [esec_inc_mul, ih, pow_succ' _ (n + 1)]
 
 /- English proof (translation)
-Use `esec_mul_mem h hj hf hg` as an intermediate fact. Rewrite `this` using `[wadd_addL_addL, zero_weight_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem esec_mem_mulL {wL : WeightFamilies.Wt D j} {a b : ℕ} {f g : T.R j}
     (hf : f ∈ cutR T.C j (addL (wt0 D j) wL a)) (hg : g ∈ cutR T.C j (addL (wt0 D j) wL b)) :
@@ -88,9 +88,9 @@ theorem esec_mem_mulL {wL : WeightFamilies.Wt D j} {a b : ℕ} {f g : T.R j}
   rwa [wadd_addL_addL, zero_weight_add] at this
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_add, pow_one, add_zero_weight_one_eq]`. Conclude with `hf`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf' : f ∈ cutR T.C j (addL (wt0 D j) wL 1)` using `by rw [add_zero_weight_one_eq]; exact hf`. Conclude with `esec_mem_mulL h hj ih hf'`.
+A detailed English derivation is pending.
 -/
 theorem esec_pow_mem {wL : WeightFamilies.Wt D j} {f : T.R j} (hf : f ∈ cutR T.C j wL) (n : ℕ) :
     f ^ (n + 1) ∈ cutR T.C j (addL (wt0 D j) wL (n + 1)) := by
@@ -102,9 +102,9 @@ theorem esec_pow_mem {wL : WeightFamilies.Wt D j} {f : T.R j} (hf : f ∈ cutR T
     exact esec_mem_mulL h hj ih hf'
 
 /- English proof (translation)
-Proceed by induction on `α using Finsupp.induction with`. Consider the case `zero => exact Or.inl rfl`. Consider the case `single_add a b f ha hb ih => right`. Take `⟨b, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hb`. Rewrite using `[Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.prod_single_index (h := fun i k => x i ^ k) (pow_zero _), Finsupp.sum_single_index rfl]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Break down `ih with h0 | hmem` into its components or cases. Substitute `h0` using the available equality. Simplify using `only [Finsupp.prod_zero_index, Finsupp.sum_zero_index, mul_one, add_zero]`. Conclude with `esec_pow_mem h hj (hx a) b`. Conclude with `esec_mem_mulL h hj (esec_pow_mem h hj (hx a) b) hmem`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem esec_monomial_mem {N : ℕ} {wL : WeightFamilies.Wt D j} (x : Fin N → T.R j) (hx : ∀ i, x i ∈ cutR T.C j wL)
     (α : Fin N →₀ ℕ) :
@@ -125,11 +125,11 @@ theorem esec_monomial_mem {N : ℕ} {wL : WeightFamilies.Wt D j} (x : Fin N → 
     · exact esec_mem_mulL h hj (esec_pow_mem h hj (hx a) b) hmem
 
 /- English proof (translation)
-Rewrite using `[P.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun α hα => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_monomial, ← Algebra.smul_def]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hdeg : (α.sum fun _ k => k) = k + 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hP (MvPolynomial.mem_support_iff.mp hα)` as an intermediate fact. Rewrite `this` using `[Finsupp.weight_apply]`. Simplify using `using this`. Break down `esec_monomial_mem h hj x hx α with h0 | hmem` into its components or cases. Substitute `h0` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Simplify using `at hdeg`. Rewrite `hmem` using `[hdeg]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem esec_hom_mem {N : ℕ} {wL : WeightFamilies.Wt D j} (x : Fin N → T.R j) (hx : ∀ i, x i ∈ cutR T.C j wL)
     (P : MvPolynomial (Fin N) T.Q.c.F) {k : ℕ} (hP : P.IsHomogeneous (k + 1)) :
@@ -149,7 +149,7 @@ theorem esec_hom_mem {N : ℕ} {wL : WeightFamilies.Wt D j} (x : Fin N → T.R j
   · rwa [hdeg] at hmem
 
 /- English proof (translation)
-Rewrite using `[← evCAlg_apply hG hT Z]`. Conclude with `DFunLike.congr_fun (MvPolynomial.comp_aeval x (evCAlg hG hT Z)) P`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem esec_evC_aeval (hG : GenFrEx (T.Q.Xo j) T.Q.c) (hT : GenFromTest (T.Q.Xo j) T.Q.c hG)
     (Z : Comp (T.Q.Xo j) T.Q.c) {N : ℕ} (x : Fin N → T.R j) (P : MvPolynomial (Fin N) T.Q.c.F) :

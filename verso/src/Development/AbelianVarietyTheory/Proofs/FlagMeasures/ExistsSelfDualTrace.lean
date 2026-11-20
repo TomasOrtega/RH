@@ -26,7 +26,7 @@ theorem traceBilin_apply (x y : ι → R ⊗[F] E) :
     traceBilin R ι x y = ∑ i, Algebra.trace R (R ⊗[F] E) (x i * y i) := rfl
 
 /- English proof (translation)
-Simplify using `only [traceBilin_apply, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem traceBilin_symm (x y : ι → R ⊗[F] E) : traceBilin R ι x y = traceBilin R ι y x := by
   simp only [traceBilin_apply, mul_comm]
@@ -34,9 +34,9 @@ theorem traceBilin_symm (x y : ι → R ⊗[F] E) : traceBilin R ι x y = traceB
 variable [NumberField F] [NumberField E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `GlobalTheory.SelfDualFinite.eq_zero_of_trace R h _ fun c => ?_` and prove the remaining obligations. Use `hx (Pi.single j c)` as an intermediate fact. Rewrite `this` using `[traceBilin_apply, Finset.sum_eq_single j]`. Rewrite `this` using `[Pi.single_eq_same, mul_comm]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `i _ hi`. Rewrite using `[Pi.single_eq_of_ne hi, mul_zero, map_zero]`. Introduce `hj`. Conclude with `absurd (Finset.mem_univ j) hj`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_traceBilin {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : ι → R ⊗[F] E)
     (hx : ∀ y, traceBilin R ι x y = 0) : x = 0 := by
@@ -54,7 +54,7 @@ theorem eq_zero_of_traceBilin {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : ι 
 end Form
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h ψ hψ v hne ι _`. Set `χ : AddChar (Fv F v) ℂ` to `ψ.compAddMonoidHom ((AddMonoidHom.inr (Ainf F) (Af F)).comp (GlobalTheory.AdelicU.singleFin v).toAddMonoidHom)`. Establish `hc : Continuous χ` using `hψ.1.comp (Continuous.prodMk continuous_const (GlobalTheory.AdelicU.continuous_singleFin v))`. Establish `hu : ∀ t, ‖χ t‖ = 1` using `fun t => hψ.2.1 _`. Conclude with `(GlobalTheory.SelfDualFinite.existsUnique_of_bilin v χ hc hu hne _ (traceBilin (Fv F v) ι) (traceBilin_symm _ ι) (eq_zero_of_traceBilin _ ι h)).exists`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_selfDual_trace : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ (v : HeightOneSpectrum (𝓞 F)), (∃ r, psiV F ψ v r ≠ 1) → ∀ (ι : Type) [Fintype ι], ∃ μ : Measure (ι → Fv F v ⊗[F] E), SelfDual μ (fun x y => psiV F ψ v (∑ i, Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (x i * y i))) := by
   intro F E _ _ _ _ _ σ h ψ hψ v hne ι _

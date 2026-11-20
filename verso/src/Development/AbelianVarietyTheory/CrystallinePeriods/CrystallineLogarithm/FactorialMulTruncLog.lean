@@ -18,7 +18,7 @@ def IsLog (l : ℕ) [Fact l.Prime] (e : (Reformulated.AutPerF.Tilt l ↥(PadicCo
   ∃ h, y = Reformulated.AutPerF.BdRPlus.log (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) (WittVector.teichmuller l e)) h
 
 /- English proof (translation)
-Introduce `l _ e _ y y' h h'`. Take `⟨_, hy⟩` from `h`. Take `⟨_, hy'⟩` from `h'`. Conclude with `hy.trans hy'.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisIncl.log_unique : ∀ (l : ℕ) [Fact l.Prime] (e : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))) (he : PreTilt.untilt e = 1) (y y' : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) (h : IsLog l e y) (h' : IsLog l e y'), y = y' := by
   intro l _ e _ y y' h h'
@@ -39,7 +39,7 @@ def IsLog (l : ℕ) [Fact l.Prime] (e : (Reformulated.AutPerF.Tilt l ↥(PadicCo
   ∃ h, y = Reformulated.AutPerF.BdRPlus.log (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) (WittVector.teichmuller l e)) h
 
 /- English proof (translation)
-Introduce `l _ ι h a`. Conclude with `h.on0 (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) ↥(Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) a)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisIncl.incl_aB : ∀ (l : ℕ) [Fact l.Prime] (ι : (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l)) →+* (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) (h : IsCrisDR l ι) (a : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), ι (((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) a) = algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) a)) := by
   intro l _ ι h a
@@ -62,9 +62,9 @@ namespace Bridge.CrisIncl.FactorialMulEvaluationLemmas
 open Reformulated.AutPerF
 
 /- English proof (translation)
-Rewrite using `[truncLog, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hk' : k + 1 ≤ n` using `Finset.mem_range.1 hk`. Take `⟨c, hc⟩ : (k + 1) ∣ n.factorial` from `Nat.dvd_factorial (Nat.succ_pos k) hk'`. Rewrite using `[hc, Nat.mul_div_cancel_left c (Nat.succ_pos k), Algebra.smul_def, ← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `e2 : ((-1 : B)) ^ k = algebraMap ℚ B ((-1) ^ k)` using `by simp`. Rewrite using `[e2, ← map_natCast (algebraMap ℚ B), ← map_natCast (algebraMap ℚ B) c, ← map_mul, ← map_mul]`. Use `congr 1`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -84,7 +84,7 @@ theorem factorial_mul_truncLog {B : Type*} [CommRing B] [Algebra ℚ B] (n : ℕ
   field_simp
 
 /- English proof (translation)
-Establish `e : algebraMap (Ainf p R) (BdRPlus p R) u - 1 = algebraMap (AinfInv p R) (BdRPlus p R) (algebraMap (Ainf p R) (AinfInv p R) (u - 1))`. Rewrite using `[← IsScalarTower.algebraMap_apply, map_sub, map_one]`. Rewrite using `[BdRPlus.eval_log, factorial_mul_truncLog, e, BdRPlus.eval_algebraMap, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, map_neg, map_one, map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem general {p : ℕ} [Fact p.Prime] {R : Type*} [CommRing R] [Fact ¬IsUnit (p : R)]
     [IsAdicComplete (Ideal.span {(p : R)}) R] (u : Ainf p R)
@@ -103,7 +103,7 @@ theorem general {p : ℕ} [Fact p.Prime] {R : Type*} [CommRing R] [Fact ¬IsUnit
 end Bridge.CrisIncl.FactorialMulEvaluationLemmas
 
 /- English proof (translation)
-Introduce `l _ e y he h n`. Take `⟨h, rfl⟩` from `h`. Conclude with `Bridge.CrisIncl.FactorialMulEvaluationLemmas.general _ h n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisIncl.factorial_mul_ev : ∀ (l : ℕ) [Fact l.Prime] (e : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))) (y : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) (he : PreTilt.untilt e = 1) (h : IsLog l e y) (n : ℕ), ((n.factorial : ℕ) : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)) ⧸ (Reformulated.AutPerF.AinfInv.kerTheta l ↥(PadicComplexInt l)) ^ n) * Reformulated.AutPerF.BdRPlus.eval l ↥(PadicComplexInt l) n y = Ideal.Quotient.mk _ (∑ k ∈ Finset.range n, (-1) ^ k * ((n.factorial / (k + 1) : ℕ) : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) * (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) (WittVector.teichmuller l e - 1)) ^ (k + 1)) := by
   intro l _ e y he h n
@@ -127,11 +127,11 @@ namespace Bridge.CrisIncl.LogOfPartialLemmas
 open Reformulated.AutPerF
 
 /- English proof (translation)
-Establish `hn : ((n.factorial : ℕ) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 n.factorial_ne_zero`. Establish `hu : IsUnit ((n.factorial : ℕ) : B)`. Rewrite using `[← map_natCast (algebraMap ℚ B)]`. Conclude with `(IsUnit.mk0 _ hn).map _`. Use `hu.mul_left_cancel ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, truncLog, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hd : k + 1 ∣ n.factorial` using `Nat.dvd_factorial k.succ_pos (Finset.mem_range.1 hk)`. Establish `e1 : ((-1 : B)) ^ k = algebraMap ℚ B ((-1) ^ k)` using `by simp`. Rewrite using `[e1, ← map_natCast (algebraMap ℚ B), ← map_natCast (algebraMap ℚ B), Algebra.smul_def, ← mul_assoc, ← map_mul, ← map_mul, Nat.cast_div hd (by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eq_truncLog {B : Type*} [CommRing B] [Algebra ℚ B] (n : ℕ) (c x : B)
     (h : ((n.factorial : ℕ) : B) * c =
@@ -157,14 +157,14 @@ variable {p : ℕ} [Fact p.Prime] {R : Type*} [CommRing R] [Fact ¬IsUnit (p : R
   [IsAdicComplete (Ideal.span {(p : R)}) R]
 
 /- English proof (translation)
-Rewrite using `[BdRPlus.theta_algebraMap_ainf, hu, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_eq_one (u : Ainf p R) (hu : Ainf.theta p R u = 1) :
     BdRPlus.theta p R (algebraMap (Ainf p R) (BdRPlus p R) u) = 1 := by
   rw [BdRPlus.theta_algebraMap_ainf, hu, map_one]
 
 /- English proof (translation)
-Use `BdRPlus.ext_eval fun n => ?_` and prove the remaining obligations. Take `⟨c, hc, hy⟩` from `h n`. Establish `e : algebraMap (Ainf p R) (BdRPlus p R) u - 1 = algebraMap (AinfInv p R) (BdRPlus p R) (algebraMap (Ainf p R) (AinfInv p R) (u - 1))`. Rewrite using `[← IsScalarTower.algebraMap_apply, map_sub, map_one]`. Rewrite using `[hy, BdRPlus.eval_log, eq_truncLog n c _ hc, map_truncLog, e, BdRPlus.eval_algebraMap]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_log (u : Ainf p R) (hu : BdRPlus.theta p R (algebraMap (Ainf p R) (BdRPlus p R) u) = 1)
     (y : BdRPlus p R)
@@ -183,7 +183,7 @@ theorem eq_log (u : Ainf p R) (hu : BdRPlus.theta p R (algebraMap (Ainf p R) (Bd
 end Bridge.CrisIncl.LogOfPartialLemmas
 
 /- English proof (translation)
-Introduce `l _ e he y h`. Conclude with `⟨Bridge.CrisIncl.LogOfPartialLemmas.theta_eq_one _ ((Reformulated.AutPerF.Ainf.theta_teich e).trans he), Bridge.CrisIncl.LogOfPartialLemmas.eq_log _ _ y h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem Bridge.CrisIncl.isLog_of_partial : ∀ (l : ℕ) [Fact l.Prime] (e : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))) (he : PreTilt.untilt e = 1) (y : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) (h : ∀ n : ℕ, ∃ c : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)), ((n.factorial : ℕ) : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) * c = ∑ k ∈ Finset.range n, (-1) ^ k * ((n.factorial / (k + 1) : ℕ) : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) * (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) (WittVector.teichmuller l e - 1)) ^ (k + 1) ∧ Reformulated.AutPerF.BdRPlus.eval l ↥(PadicComplexInt l) n y = Ideal.Quotient.mk _ c), IsLog l e y := by
   intro l _ e he y h

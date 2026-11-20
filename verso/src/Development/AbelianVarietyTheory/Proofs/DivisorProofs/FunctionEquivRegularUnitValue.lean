@@ -11,13 +11,11 @@ set_option autoImplicit false
 namespace GlobalTheory.ConstLat.CramerFrame
 
 /- English proof (translation)
-Introduce `F _ _ Y V`. Use `GlobalTheory.HtGen.SplitCover.isPreimmersion_j V` as an intermediate fact. Establish `hreg : ∀ (z : V.G) (f : V.X.functionField), RegAt z (fnEquiv V f) ↔ RegAt (V.j z) f`. Introduce `z f`. Rewrite using `[fnEquiv_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.TrueGeo.SmallSec.regAt_fnMap_iff _ _`. Use `⟨fun z f => ⟨hreg z f, ?_⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hf : f = 0`. Substitute `hf` using the available equality. Rewrite using `[map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun h => absurd rfl h.ne_zero, fun h => absurd rfl h.ne_zero⟩`. Establish `hf' : fnEquiv V f ≠ 0` using `(map_ne_zero _).2 hf`. Rewrite using `[unitAt_iff hf, unitAt_iff hf', ← map_inv₀, hreg, hreg]`. Introduce `K _ z f h`. Rewrite using `[fnEquiv_apply]`.
-
-Conclude with `GlobalTheory.TrueGeo.SmallSec.valAt_fnMap _ _ z h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fnEquiv_transport : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y), (∀ (z : V.G) (f : V.X.functionField), (RegAt z (fnEquiv V f) ↔ RegAt (V.j z) f) ∧ (UnitAt z (fnEquiv V f) ↔ UnitAt (V.j z) f)) ∧ ∀ {K : Type} [Field K] (z : Sp K ⟶ V.G) (f : V.X.functionField), RegAt (V.j (below z)) f → valAt z (fnEquiv V f) = valAt (z ≫ V.j) f := by
   intro F _ _ Y V

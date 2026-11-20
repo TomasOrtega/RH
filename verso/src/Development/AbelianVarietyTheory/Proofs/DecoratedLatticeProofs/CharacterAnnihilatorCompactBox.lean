@@ -17,7 +17,7 @@ open scoped ComplexOrder ENNReal NNReal ContDiff
 namespace GlobalTheory.MatAnnih
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_smul, Matrix.trace_smul, Matrix.trace_mul_single, map_smul, smul_eq_mul, op_smul_eq_mul, mul_comm (y i j)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_mul_smul_single (D : D7) {m n : ℕ} (y : Mx D n m) (r : AF D.host.F) (i : Fin n) (j : Fin m)
     (a : D.host.E) :
@@ -26,7 +26,7 @@ theorem trace_mul_smul_single (D : D7) {m n : ℕ} (y : Mx D n m) (r : AF D.host
   rw [Matrix.mul_smul, Matrix.trace_smul, Matrix.trace_mul_single, map_smul, smul_eq_mul, op_smul_eq_mul, mul_comm (y i j)]
 
 /- English proof (translation)
-Unfold `finPart`. Rewrite using `[AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_sum]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finPart_sum_tmul (D : D7) {d : ℕ} (x : Fin d → Af D.host.F) (e : Fin d → D.host.E) :
     finPart D (∑ l, pairA D.host.F 0 (x l) ⊗ₜ[D.host.F] e l) = ∑ l, x l ⊗ₜ[D.host.F] e l := by
@@ -35,23 +35,21 @@ theorem finPart_sum_tmul (D : D7) {d : ℕ} (x : Fin d → Af D.host.F) (e : Fin
   rfl
 
 /- English proof (translation)
-Introduce `D ψ hψ m n V hV`. Take `⟨d, c, e, hce⟩` from `GlobalTheory.TwistCoords.finPart_eq_sum_trace D`. Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Use `haveI : ContinuousSMul (AF D.host.F) (AE D) := IsModuleTopology.toContinuousSMul _ _`. Set `M : (Fin n × Fin m × Fin d) → Mx D m n` to `fun p => Matrix.single p.2.1 p.1 (incA D (c p.2.2))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : (Fin n × Fin m × Fin d) → Af D.host.F → Mx D m n` to `fun p t => (pairA D.host.F 0 t) • M p`. Establish `hpair : Continuous fun t : Af D.host.F => pairA D.host.F 0 t` using `continuous_const.prodMk continuous_id`. Establish `hφ : ∀ p, Continuous (φ p)` using `fun p => Continuous.smul (f := fun t : Af D.host.F => pairA D.host.F 0 t) (g := fun _ => M p) hpair continuous_const`. Establish `hφ0 : ∀ p, φ p 0 = 0` using `fun p => by`. Establish `: pairA D.host.F 0 (0 : Af D.host.F) = 0` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [φ, this, zero_smul]`. Establish `hO : (⋂ p, φ p ⁻¹' V) ∈ nhds (0 : Af D.host.F)` using `Filter.iInter_mem.2 fun p => (hφ p).continuousAt.preimage_mem_nhds (by rw [hφ0]; exact hV)`. Take `⟨K₀, hK₀, hmem⟩` from `GlobalTheory.ScalarAnnih.exists_compact_of_annih D ψ hψ _ hO`. Set `g : (Fin n × Fin m × Fin d → Af D.host.F) → Mx D n m` to `fun z => Matrix.of fun i j => ∑ l, pairA D.host.F 0 (z (i, j, l)) ⊗ₜ[D.host.F] e l`. Establish `hg : Continuous g`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `show Continuous fun z : Fin n × Fin m × Fin d → Af D.host.F => ∑ l, pairA D.host.F 0 (z (i, j, l)) ⊗ₜ[D.host.F] e l`. Use `continuous_finset_sum _ fun l _ => ?_` and prove the remaining obligations. Establish `: (fun z : Fin n × Fin m × Fin d → Af D.host.F => (pairA D.host.F 0 (z (i, j, l)) ⊗ₜ[D.host.F] e l : AE D)) = fun z => pairA D.host.F 0 (z (i, j, l)) • ((1 : AF D.host.F) ⊗ₜ[D.host.F] e l : AE D)`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this]`. Conclude with `(hpair.comp (continuous_apply (A := fun _ : Fin n × Fin m × Fin d => Af D.host.F) (i, j, l))).smul (continuous_const (y := ((1 : AF D.host.F) ⊗ₜ[D.host.F] e l : AE D)))`. Use `⟨g '' Set.pi Set.univ (fun _ => K₀), (isCompact_univ_pi fun _ => hK₀).image hg, fun y hy => ?_⟩` and prove the remaining obligations. Set `z : Fin n × Fin m × Fin d → Af D.host.F` to `fun p => sndA D.host.F (Algebra.trace (AF D.host.F) (AE D) (incA D (c p.2.2) * y p.1 p.2.1))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `⟨g z, ⟨z, fun p _ => hmem _ fun t ht => ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hu : (pairA D.host.F 0 t • Matrix.single p.2.1 p.1 (incA D (c p.2.2)) : Mx D m n) ∈ V` using `Set.mem_iInter.1 ht p`. Establish `hinf : (pairA D.host.F 0 t • Matrix.single p.2.1 p.1 (incA D (c p.2.2)) : Mx D m n).map (infPart D) = 0`. Use extensionality with `k l`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.zero_apply, Matrix.single_apply]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Express the relevant statement in the definitionally equal form `infPart D (pairA D.host.F 0 t • ((1 : AF D.host.F) ⊗ₜ[D.host.F] c p.2.2)) = 0`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Express the relevant statement in the definitionally equal form `(fstA D.host.F (pairA D.host.F 0 t)) ⊗ₜ[D.host.F] (c p.2.2) = 0`. Conclude with `TensorProduct.zero_tmul _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_zero, map_zero]`. Establish `h1` using `hy _ hu hinf`. Establish `e2` using `trace_mul_smul_single D y (pairA D.host.F 0 t) p.1 p.2.1 (c p.2.2)`. Establish `e1 : pairA D.host.F 0 (t * z p) = pairA D.host.F 0 t * Algebra.trace (AF D.host.F) (AE D) (incA D (c p.2.2) * y p.1 p.2.1)` using `Prod.ext (zero_mul _).symm rfl`. Conclude with `(congrArg ψ (e1.trans e2.symm)).trans h1`.
-
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, Matrix.sub_apply, Matrix.zero_apply, (finPart D).map_sub, sub_eq_zero, hce]`. Conclude with `(finPart_sum_tmul D (fun l => z (i, j, l)) e).symm`.
+A detailed English derivation is pending.
 -/
 theorem annih_mem_box : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (m n : ℕ), ∀ V ∈ nhds (0 : Mx D m n), ∃ K : Set (Mx D n m), IsCompact K ∧ ∀ y : Mx D n m, (∀ ξ ∈ V, ξ.map (infPart D) = 0 → ψ (Algebra.trace (AF D.host.F) (AE D) (y ⬝ ξ).trace) = 1) → InBox K y := by
   intro D ψ hψ m n V hV

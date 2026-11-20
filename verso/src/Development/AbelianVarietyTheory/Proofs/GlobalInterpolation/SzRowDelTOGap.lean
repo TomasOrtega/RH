@@ -7,19 +7,19 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Introduce `eps he he' C _`. Take `⟨x0, hx0⟩` from `GlobalTheory.T.explicitRanks_basic_bounds_large_scale eps he he'`. Use `⟨805, fun cD hcD => ⟨0, fun ch _ => ⟨max x0 35, fun D L hs hx hV => ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨-, -, -, -, -, -, -, -, -, hDY, -, -, -, -, hN, -⟩` from `hx0 L.sc D.R hs (le_trans (le_max_left _ _) hx) hV.ranks`. Establish `hx35 : (35 : ℝ) ≤ L.sc.x` using `le_trans (le_max_right _ _) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx1 : (1 : ℝ) ≤ L.sc.x` using `by linarith`. Establish `hxp : (0 : ℝ) < L.sc.x` using `by linarith`. Use `set y : ℝ := L.sc.x ^ (402 : ℝ) with hy`. Establish `hy1 : (1 : ℝ) ≤ y` using `Real.one_le_rpow hx1 (by norm_num)`. Establish `h377 : L.sc.x ^ (377 : ℝ) ≤ y` using `Real.rpow_le_rpow_of_exponent_le hx1 (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h12 : L.sc.x ^ (12 : ℝ) ≤ y` using `Real.rpow_le_rpow_of_exponent_le hx1 (by norm_num)`. Establish `hT : ((TOv L.sc : ℕ) : ℝ) ≤ y + 1`. Use `Nat.ceil_lt_add_one (Real.rpow_nonneg hxp.le (377 : ℝ))` as an intermediate fact. Unfold `TOv`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hDel : 35 * y ^ 2 ≤ ((D.s.Del : ℚ) : ℝ)`. Rewrite using `[hV.Del_eq]`. Establish `h1 : L.sc.x ^ cD ≤ ((Delv L.sc cD : ℕ) : ℝ)` using `Nat.le_ceil _`. Establish `h2 : L.sc.x ^ (805 : ℝ) ≤ L.sc.x ^ cD` using `Real.rpow_le_rpow_of_exponent_le hx1 hcD`. Establish `h3 : L.sc.x ^ (805 : ℝ) = L.sc.x * y ^ 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, show (805 : ℝ) = 1 + (402 + 402) by norm_num, Real.rpow_add hxp, Real.rpow_add hxp, Real.rpow_one, sq]`. Establish `h4 : 35 * y ^ 2 ≤ L.sc.x * y ^ 2` using `mul_le_mul_of_nonneg_right hx35 (sq_nonneg _)`. Rewrite using `[Rat.cast_natCast]`. Conclude with `h4.trans (h3.symm.le.trans (h2.trans h1))`. Establish `hT0 : (0 : ℝ) ≤ ((TOv L.sc : ℕ) : ℝ)` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD0 : (0 : ℝ) ≤ ((D.R.f * D.R.r.choose 2 : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hN0 : (0 : ℝ) ≤ (D.R.N D.R.m : ℝ)` using `Nat.cast_nonneg _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: ((TOv L.sc : ℕ) : ℝ) ^ 2 ≤ (2 * y) ^ 2` using `pow_le_pow_left₀ hT0 (by linarith) 2`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `le_trans ?_ hDel` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem szRow_Del_TO_gap : SzRow (fun C D L => ((((TOv L.sc : ℕ) : ℝ)) ^ 2 ≤ ((D.s.Del : ℚ) : ℝ)) ∧ ((((TOv L.sc : ℕ) : ℝ) + (D.R.f * D.R.r.choose 2 : ℕ) + 2) * (((TOv L.sc : ℕ) : ℝ) + (D.R.f * D.R.r.choose 2 : ℕ) + 2 + 2 * (D.R.N D.R.m : ℝ)) ≤ ((D.s.Del : ℚ) : ℝ))) := by
   intro eps he he' C _

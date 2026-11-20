@@ -14,13 +14,13 @@ noncomputable section
 namespace GlobalTheory.TanLiftPull
 
 /- English proof (translation)
-Simplify using `using Over.w f`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toUnit_left_eq {S : Scheme.{0}} (A : Over S) (f : A ⟶ 𝟙_ (Over S)) : f.left = A.hom := by
   simpa using Over.w f
 
 /- English proof (translation)
-Rewrite using `[← toUnit_left_eq A (toUnit A)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem one_left_eq {S : Scheme.{0}} (A : Over S) (G : Over S) [GrpObj G] :
     (1 : A ⟶ G).left = A.hom ≫ η[G].left := by
@@ -28,19 +28,17 @@ theorem one_left_eq {S : Scheme.{0}} (A : Over S) (G : Over S) [GrpObj G] :
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y V _ x G ψ v`. Establish `hpb : IsPullback ψ.φ G.G.hom Y.t.G.hom x` using `ψ.cart.1`. Establish `hsq : (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv v).left ≫ Y.t.G.hom = (epsOver V V).hom ≫ x`. Rewrite using `[Over.w]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hfa : spMap (TrivSqZeroExt.fstHom V V V).toRingHom ≫ spMap (algebraMap V (DualNumber V)) = 𝟙 _`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `Spec.map_id (CommRingCat.of V)` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨Over.homMk (hpb.lift _ _ hsq) (hpb.lift_snd _ _ _), ?_, (hpb.lift_fst _ _ _).symm⟩` and prove the remaining obligations. Use `show spMap (TrivSqZeroExt.fstHom V V V).toRingHom ≫ hpb.lift _ _ hsq = (1 : ptOver V V ⟶ G.G).left`. Apply `hpb.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hpb.lift_fst]`. Establish `h1` using `congrArg (fun f => f.left) (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_mem v)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [smT_left] at h1`. Establish `key : spMap (TrivSqZeroExt.fstHom V V V).toRingHom ≫ spMap (epsMul (0 : V)) = spMap (TrivSqZeroExt.fstHom V V V).toRingHom`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext <;> simp [epsMul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hunit : η[G.G].left ≫ ψ.φ = x ≫ η[Y.t.G].left`. Establish `h` using `ψ.cm.e_comm`. Rewrite `h` using `[ψ.base]`. Conclude with `h`. Rewrite using `[← key, Category.assoc, h1, one_left_eq, one_left_eq, Category.assoc, hunit]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.mk_hom, ← Category.assoc, hfa]`. Simplify using `[spMap]`. Rewrite using `[Category.assoc, hpb.lift_snd, Over.w]`. Simplify using `only [Over.mk_hom]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
-
-Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_isTan_lift : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {V : Type} [CommRing V] (x : Sp V ⟶ Y.X) (G : SAB H (Sp V)) (ψ : SABMap G Y.t x) (v : ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM x Y.t.G), ∃ w : epsOver V V ⟶ G.G, IsTan w ∧ (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv v).left = w.left ≫ ψ.φ := by
   intro E _ _ _ H Dw l Xo c O _ β Y V _ x G ψ v

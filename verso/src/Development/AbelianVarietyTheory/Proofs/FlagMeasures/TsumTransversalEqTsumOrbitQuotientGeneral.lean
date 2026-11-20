@@ -4,17 +4,17 @@ open scoped ENNReal Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `c : A → MulAction.orbitRel.Quotient G X` to `fun a => Quotient.mk (MulAction.orbitRel G X) (ι a)`. Establish `hc : Function.Injective c`. Introduce `a b hab`. Establish `h : (MulAction.orbitRel G X) (ι a) (ι b)` using `Quotient.exact hab`. Rewrite `h` using `[MulAction.orbitRel_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨g, hg⟩` from `h`. Conclude with `(hinj b a ⟨g, hg⟩).symm`. Establish `hout : ∀ a, ∃ g : G, g • ι a = (c a).out`. Introduce `a`. Establish `h : (MulAction.orbitRel G X) ((c a).out) (ι a)` using `Quotient.exact (Quotient.out_eq (c a))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[MulAction.orbitRel_apply]`. Conclude with `h`. Establish `hsupp : Function.support (fun o : MulAction.orbitRel.Quotient G X => if T o.out then φ o.out else 0) ⊆ Set.range c`. Introduce `o ho`. Establish `hTo : T o.out`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hn`. Conclude with `ho (if_neg hn)`. Take `⟨a, g, hg⟩` from `hsurj _ hTo`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← Quotient.out_eq o]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Quotient.sound` to reduce the goal to its premises. Establish `h : (MulAction.orbitRel G X) o.out (ι a)`. Rewrite using `[MulAction.orbitRel_apply]`. Conclude with `⟨g, hg⟩`. Conclude with `(MulAction.orbitRel G X).symm h`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc.tsum_eq hsupp]`. Use `tsum_congr fun a => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `hout a`. Rewrite using `[← hg, if_pos (hT g _ (hι a)), hφ g _ (hι a)]`.
+A detailed English derivation is pending.
 -/
 theorem tsum_transversal_eq_tsum_orbitQuotient_general {G X A M : Type} [Group G] [MulAction G X]
     [AddCommMonoid M] [TopologicalSpace M] (ι : A → X) (T : X → Prop)
@@ -55,7 +55,7 @@ theorem tsum_transversal_eq_tsum_orbitQuotient_general {G X A M : Type} [Group G
   rw [← hg, if_pos (hT g _ (hι a)), hφ g _ (hι a)]
 
 /- English proof (translation)
-Introduce `G X A _ _ ι T hT hι hsurj hinj`. Conclude with `⟨fun φ hφ => tsum_transversal_eq_tsum_orbitQuotient_general ι T hT hι hsurj hinj φ hφ, fun φ hφ => tsum_transversal_eq_tsum_orbitQuotient_general ι T hT hι hsurj hinj φ hφ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem tsum_transversal_eq_tsum_orbitQuotient : ∀ {G X A : Type} [Group G] [MulAction G X] (ι : A → X) (T : X → Prop), (∀ g : G, ∀ x, T x → T (g • x)) → (∀ a, T (ι a)) → (∀ x, T x → ∃ a, ∃ g : G, g • ι a = x) → (∀ a b, (∃ g : G, g • ι a = ι b) → a = b) → (∀ φ : X → ℂ, (∀ g : G, ∀ x, T x → φ (g • x) = φ x) → ∑' a, φ (ι a) = ∑' o : MulAction.orbitRel.Quotient G X, if T o.out then φ o.out else 0) ∧ ∀ φ : X → ℝ≥0∞, (∀ g : G, ∀ x, T x → φ (g • x) = φ x) → ∑' a, φ (ι a) = ∑' o : MulAction.orbitRel.Quotient G X, if T o.out then φ o.out else 0 := by
   intro G X A _ _ ι T hT hι hsurj hinj

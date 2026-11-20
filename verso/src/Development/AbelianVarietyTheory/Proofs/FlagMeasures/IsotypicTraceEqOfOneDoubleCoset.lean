@@ -9,14 +9,14 @@ variable {G : Type} [Group G] [Fintype G]
 
 omit [Fintype G] in
 /- English proof (translation)
-Use `hφ (y * x) x` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isClass_mul_comm {φ : G → ℂ} (hφ : IsClass φ) (x y : G) : φ (x * y) = φ (y * x) := by
   have := hφ (y * x) x
   rw [← this]; congr 1; group
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum, ← Equiv.sum_comp (Equiv.mulRight b⁻¹)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, map_mul, map_inv, mul_inv_rev, inv_inv, Units.val_mul, Subgroup.coe_mul, Subgroup.coe_inv, mul_assoc, inv_mul_cancel, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem coset_sum_mem (K : Subgroup G) (l : K →* ℂˣ) (φ : G → ℂ) (b : K) :
     ∑ a : K, (((l a)⁻¹ : ℂˣ) : ℂ) * φ (a * b) =
@@ -27,15 +27,13 @@ theorem coset_sum_mem (K : Subgroup G) (l : K →* ℂˣ) (φ : G → ℂ) (b : 
     Subgroup.coe_mul, Subgroup.coe_inv, mul_assoc, inv_mul_cancel, mul_one]
 
 /- English proof (translation)
-Use `set F := ∑ a : K, (((l a)⁻¹ : ℂˣ) : ℂ) * φ (a * h) with hF`. Establish `key : F = ((l a₁ * (l a₀)⁻¹ : ℂˣ) : ℂ) * F` using `by conv_lhs => rw [hF, ← Equiv.sum_comp ((Equiv.mulRight a₀).trans (Equiv.mulLeft a₁⁻¹))]`. Rewrite using `[hF, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `h1 : φ (((a₁⁻¹ * (c * a₀) : K) : G) * h) = φ (c * h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← hφ (c * h) (a₁ : G)⁻¹]`. Use `congr 1`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, inv_inv]`. Rewrite using `[mul_assoc, mul_assoc, mul_assoc, mul_assoc]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `group`. Simplify using `only [Equiv.trans_apply, Equiv.coe_mulRight, Equiv.coe_mulLeft]`. Rewrite using `[h1]`. Simplify using `only [map_mul, map_inv, mul_inv_rev, inv_inv, Units.val_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion and derive a contradiction.
 
-Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion as `hne`. Apply `ne` to reduce the goal to its premises. Establish `: ((l a₁ * (l a₀)⁻¹ : ℂˣ) : ℂ) = 1`. Establish `h2 : (((l a₁ * (l a₀)⁻¹ : ℂˣ) : ℂ) - 1) * F = 0` using `by rw [sub_mul, ← key]; ring`.
-
-Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h2).resolve_right hne)`. Conclude with `mul_inv_eq_one.1 (Units.val_eq_one.1 this)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coset_sum_eq_zero (K : Subgroup G) (l : K →* ℂˣ) {φ : G → ℂ} (hφ : IsClass φ) (h : G)
     (a₀ a₁ : K) (e : (a₁ : G) = h⁻¹ * a₀ * h) (ne : l a₁ ≠ l a₀) :
@@ -64,11 +62,11 @@ theorem coset_sum_eq_zero (K : Subgroup G) (l : K →* ℂˣ) {φ : G → ℂ} (
   exact mul_inv_eq_one.1 (Units.val_eq_one.1 this)
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_boole]`. Use `congr 1`. Use `Finset.card_bij (fun b _ => (b : G)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `⟨hb, b.2⟩`. Introduce `a _ b _ h`. Conclude with `Subtype.ext h`. Introduce `g hg`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hg`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨⟨g, hg.2⟩, by simpa using hg.1, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem sum_indicator (H₁ H₂ : Subgroup G) :
     ∑ b : H₂, (if (b : G) ∈ H₁ then (1 : ℂ) else 0) =
@@ -86,9 +84,9 @@ theorem sum_indicator (H₁ H₂ : Subgroup G) :
     exact ⟨⟨g, hg.2⟩, by simpa using hg.1, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← sum_indicator, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Use `split_ifs with hb`. Use `coset_sum_mem H₁ l₁ φ ⟨b, hb⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only at this`. Rewrite using `[this, hag ⟨b, hb⟩ b rfl, ← mul_assoc, Units.inv_mul]`. Take `⟨a₀, a₁, e, ne⟩` from `hM b b.2 hb`. Rewrite using `[coset_sum_eq_zero H₁ l₁ hφ b a₀ a₁ e ne]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem double_sum (H₁ H₂ : Subgroup G) (l₁ : H₁ →* ℂˣ) (l₂ : H₂ →* ℂˣ)
     (hag : ∀ (a : H₁) (b : H₂), (a : G) = b → l₁ a = l₂ b)
@@ -108,11 +106,11 @@ theorem double_sum (H₁ H₂ : Subgroup G) (l₁ : H₁ →* ℂˣ) (l₂ : H�
     rw [coset_sum_eq_zero H₁ l₁ hφ b a₀ a₁ e ne]; simp
 
 /- English proof (translation)
-Introduce `G _ _ H H₁ H₂ l₁ l₂ h1 h2 hc hag hM1 hM2 φ hφ`. Establish `e1` using `double_sum H₁ H₂ l₁ l₂ hag (fun h hh => hM1 h (h2 hh)) hφ`. Establish `e2` using `double_sum H₂ H₁ l₂ l₁ (fun b a e => (hag a b e.symm).symm) (fun h hh => hM2 h (h1 hh)) hφ`. Establish `hf : (Finset.univ.filter fun g : G => g ∈ H₂ ∧ g ∈ H₁) = (Finset.univ.filter fun g : G => g ∈ H₁ ∧ g ∈ H₂)` using `Finset.filter_congr fun g _ => and_comm`. Rewrite `e2` using `[hf, Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hN : ((Finset.univ.filter fun g : G => g ∈ H₁ ∧ g ∈ H₂).card : ℂ) ≠ 0`. Rewrite using `[Nat.cast_ne_zero, Finset.card_ne_zero]`. Conclude with `⟨1, by simp⟩`. Rewrite using `[hc]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `mul_left_cancel₀ hN` to reduce the goal to its premises. Rewrite using `[← e1, ← e2]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[isClass_mul_comm hφ (a : G) b]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isotypic_trace_eq : ∀ (G : Type) [Group G] [Fintype G] (H H₁ H₂ : Subgroup G) (l₁ : H₁ →* ℂˣ) (l₂ : H₂ →* ℂˣ), H₁ ≤ H → H₂ ≤ H → Nat.card H₁ = Nat.card H₂ → (∀ (a : H₁) (b : H₂), (a : G) = b → l₁ a = l₂ b) → (∀ h ∈ H, h ∉ H₁ → ∃ a a' : H₁, (a' : G) = h⁻¹ * a * h ∧ l₁ a' ≠ l₁ a) → (∀ h ∈ H, h ∉ H₂ → ∃ b b' : H₂, (b' : G) = h⁻¹ * b * h ∧ l₂ b' ≠ l₂ b) → ∀ φ : G → ℂ, IsClass φ → (Nat.card H₁ : ℂ)⁻¹ * ∑ a : H₁, ((l₁ a)⁻¹ : ℂˣ) * φ a = (Nat.card H₂ : ℂ)⁻¹ * ∑ b : H₂, ((l₂ b)⁻¹ : ℂˣ) * φ b := by
   intro G _ _ H H₁ H₂ l₁ l₂ h1 h2 hc hag hM1 hM2 φ hφ

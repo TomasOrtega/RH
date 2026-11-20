@@ -11,29 +11,23 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ComplexSets
 open scoped ContDiff
 
 /- English proof (translation)
-Introduce `n d J u g k φ hJ hdim hu hg hgc hφ hk hkpos`. Establish `hψ : ∀ i, SmoothNear (zeroSet J) (vecCons g φ i)` using `fun i => by`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `(⟨Set.univ, isOpen_univ, Set.subset_univ _, hg.contDiffOn⟩ : SmoothNear (zeroSet J) g)`. Simplify using `using hφ j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hcs : ∃ i, HasCompactSupport (vecCons g φ i)` using `⟨0, by simpa using hgc⟩`. Distinguish the cases in `hA : ∃ A : Matrix (Fin (d + 1)) (Fin n) ℂ, IsFiniteProjection J A`. Use `swap`. Simplify using `only [varInt, dif_neg hA, sub_self]`. Conclude with `tendsto_const_nhds`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [varInt, dif_pos hA]`. Use `set A := hA.choose`. Establish `hAf : IsFiniteProjection J A` using `hA.choose_spec`. Establish `hfin : ∀ y, (fibre J A y).Finite` using `fun y => (FibreBound.proof n (d + 1) J A hJ hdim hAf y).2.1`. Establish `hkc : ContinuousOn k (zeroSet J)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U, -, hU, hkU⟩` from `hk`. Conclude with `hkU.continuousOn.mono hU`. Establish `hlc : Continuous fun x => ‖linEval u x‖ ^ 2` using `((contDiff_linEval u).continuous.norm).pow 2`. Use `set D : ℝ → (Fin n → ℂ) → ℝ := fun ε x => Real.log (‖linEval u x‖ ^ 2 + ε * k x ^ 2) / 2 - logReg u ε x`. Establish `hWc : ∀ ε : ℝ, 0 < ε → ContinuousOn (fun x => Real.log (‖linEval u x‖ ^ 2 + ε * k x ^ 2) / 2) (zeroSet J)` using `fun ε hε => ((hlc.continuousOn.add (continuousOn_const.mul (hkc.pow 2))).log fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(add_pos_of_nonneg_of_pos (sq_nonneg _) (mul_pos hε (pow_pos (hkpos x hx) 2))).ne').div_const 2`. Establish `hLc : ∀ ε : ℝ, 0 < ε → ContinuousOn (logReg u ε) (zeroSet J)` using `fun ε hε => (contDiff_logReg u hε).continuous.continuousOn`. Establish `hint : ∀ f, ContinuousOn f (zeroSet J) → Integrable (chartDens J A f (vecCons g φ))` using `fun f hf => (hM n (d + 1) J A f _ hJ hdim hAf hf hψ (Or.inr hcs)).mono' (LelongWeightDiff.measurable_chartDens hJ hdim hAf hf hψ).aestronglyMeasurable (Eventually.of_forall fun y => by rw [Real.norm_eq_abs]; exact LelongWeightDiff.abs_chartDens_le _ _ (hfin y))`. Establish `heq : (fun ε : ℝ => ∫ y, chartDens J A (D ε) (vecCons g φ) y) =ᶠ[𝓝[>] 0] fun ε => chartInt J A (fun x => Real.log (‖linEval u x‖ ^ 2 + ε * k x ^ 2) / 2) (vecCons g φ) - chartInt J A (logReg u ε) (vecCons g φ)` using `by filter_upwards [self_mem_nhdsWithin] with ε (hε : 0 < ε)`. Rewrite using `[chartInt, chartInt, ← integral_sub (hint _ (hWc ε hε)) (hint _ (hLc ε hε))]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `integral_congr_ae (Eventually.of_forall fun y => (LelongWeightDiff.chartDens_sub _ _ _ (hfin y)).symm)`. Use `Tendsto.congr' heq ?_` and prove the remaining obligations. Take `⟨P, hP0, hPu⟩` from `LelongWeightDiff.exists_poly_of_linEval_eq_zero J A hAf u hu`. Establish `h` using `tendsto_integral_filter_of_dominated_convergence (μ := volume) (l := 𝓝[>] (0 : ℝ)) (F := fun ε => chartDens J A (D ε) (vecCons g φ)) (f := fun _ => (0 : ℝ)) (chartAbsDens J A (fun x => Real.log (k x)) (vecCons g φ)) ?_ ?_ (hM n (d + 1) J A _ _ hJ hdim hAf (hkc.log fun x hx => (hk …`. Rewrite `h` using `[integral_zero]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [self_mem_nhdsWithin] with ε (hε : 0 < ε)`. Conclude with `(LelongWeightDiff.measurable_chartDens hJ hdim hAf ((hWc ε hε).sub (hLc ε hε)) hψ).aestronglyMeasurable`. Use `filter_upwards [self_mem_nhdsWithin] with ε (hε : 0 < ε)`. Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Unfold `chartDens chartAbsDens`. Simplify using `only [CutOffDominated.sheetSum_eq_sum _ (hfin y)]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun x hx => ?_)` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Use `split_ifs`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[abs_mul, abs_mul]`. Conclude with `mul_le_mul_of_nonneg_right (LelongWeightDiff.abs_half_log_sub_le (sq_nonneg _) hε (hkpos x hx.1)) (abs_nonneg _)`. Simplify using the standard rewrite rules. Use `filter_upwards [CutOffDominated.ae_eval_ne_zero P hP0] with y hy`. Unfold `chartDens`.
-
-Simplify using `only [CutOffDominated.sheetSum_eq_sum _ (hfin y)]`. Use `LelongWeightDiff.tendsto_finset_sum_zero _ _ fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Distinguish the cases in `hs : ∃ s, IsSheetAt J A x s`. Use `swap`.
-
-Simplify using `only [dif_neg hs]`. Conclude with `tendsto_const_nhds`. Simplify using `only [dif_pos hs]`. Establish `hux : linEval u x ≠ 0` using `fun h0 => hy (by rw [← hx.2]; exact hPu x hx.1 h0)`. Establish `ha : 0 < ‖linEval u x‖ ^ 2` using `pow_pos (norm_pos_iff.mpr hux) 2`.
-
-Establish `hc : ContinuousAt (fun ε : ℝ => D ε x) 0`. Simplify using `only [D, logReg]`. Apply the tactic sequence `refine ((ContinuousAt.log (by fun_prop) ?_).div_const 2).sub ((ContinuousAt.log (by fun_prop) ?_).div_const 2) <;> simp [hux]`. Establish `h0 : D 0 x = 0` using `by simp [D, logReg]`. Simplify `((hc.tendsto.mono_left nhdsWithin_le_nhds).mul_const (ReciprocityTheory.AnForm.maDens (fun i => vecCons g φ i ∘ hs.choose) y))` using `[h0]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem LelongWeightDiff.proof (hM : ChartMassCompact.Statement) : LelongWeightDiff.Statement := by
   classical

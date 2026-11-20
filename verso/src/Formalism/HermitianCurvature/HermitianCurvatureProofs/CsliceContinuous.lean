@@ -17,37 +17,31 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [FiniteDimensional ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-The claim follows from `continuous_const.prodMk continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem cslice_continuous (c : Fin r → ℂ) : Continuous (fun x : Mt k r => (c, Matrix.of x)) :=
   continuous_const.prodMk continuous_id
 
 /- English proof (translation)
-Take `⟨s, hs⟩ : ∃ s : Set (Mt k r), s = (fun x : Mt k r => (c, Matrix.of x)) ⁻¹' DomR k r z z'` from `⟨_, rfl⟩`. Establish `hsm : MeasurableSet s`. Rewrite using `[hs, DomR_eq, Set.preimage_inter]`. Conclude with `((P.Qx5.isOpen_OpR k r z z').preimage (cslice_continuous c)).measurableSet.inter (((P.Qx5.Glev_closed (Fin.last r)).preimage continuous_snd).preimage (cslice_continuous c)).measurableSet`. Establish `hA : ∀ Ξ : RadSp k r z z' π π', ContinuousOn (fun x : Mt k r => (Ξ : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x) v) s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Ξ`. Establish `h1` using `(radSp_continuousOn Ξ).comp ((cslice_continuous c).continuousOn : ContinuousOn _ s) (fun x hx => by rw [hs] at hx; exact hx)`. Conclude with `h1.clm_apply continuousOn_const`. Establish `hcont : ContinuousOn f s`. Break down `hf with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hA Φ).inner (hA Θ)`. Conclude with `(hA Θ).inner (hA Φ)`. Establish `hzero : ∀ x, (c, Matrix.of x) ∉ DomR k r z z' ∨ Matrix.of x ∉ K → f x = 0`. Introduce `x hx`. Establish `hΦx : (Φ : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x) = 0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Break down `hx with hx | hx` into its components or cases. Conclude with `radSp_zero_off Φ (x := (c, Matrix.of x)) hx`. Distinguish the cases in `hg : Matrix.of x ∈ Glev k r (Fin.last r)`. Conclude with `hΦ0 _ hg hx`. Conclude with `radSp_zero_off Φ (x := (c, Matrix.of x)) (fun h => hg h.2.1)`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `hf with h | h` into its components or cases. Substitute `h show ⟪(Φ : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x) v, (Θ : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x) v⟫_ℂ = 0` using the available equality. Rewrite using `[hΦx, _root_.zero_apply, inner_zero_left]`. Substitute `h show ⟪(Θ : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x) v, (Φ : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x) v⟫_ℂ = 0` using the available equality. Rewrite using `[hΦx, _root_.zero_apply, inner_zero_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨C, hC⟩ : ∃ C : Set (Mt k r), C = (fun g : Mx k r => (Matrix.of.symm g : Mt k r)) '' (K ∩ Glev k r (Fin.last r))` from `⟨_, rfl⟩`. Establish `hCmem : ∀ x, x ∈ C ↔ Matrix.of x ∈ K ∧ Matrix.of x ∈ Glev k r (Fin.last r)`. Introduce `x`. Rewrite using `[hC]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨g, hg, rfl⟩`. Simplify using `using hg`. Introduce `hx`. Conclude with `⟨Matrix.of x, hx, rfl⟩`. Establish `hCc : IsCompact C`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hC]`. Conclude with `(hKc.inter_right (P.Qx5.Glev_closed _)).image continuous_id`. Establish `hCs : C ⊆ s`. Introduce `x hx`. Rewrite `hx` using `[hCmem]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Conclude with `⟨hc, hx.2, hKG hx.1⟩`. Take `⟨M, hM⟩` from `hCc.exists_bound_of_continuousOn (hcont.mono hCs)`. Establish `hmeas : Measurable f` using `measurable_of_continuousOn_zero hsm hcont (fun x hx => hzero x (Or.inl (by rw [hs] at hx; exact hx)))`. Establish `hbound : ∀ x, ‖f x‖ ≤ C.indicator (fun _ => M) x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Distinguish the cases in `hx : x ∈ C`. Rewrite using `[Set.indicator_of_mem hx]`. Conclude with `hM x hx`. Rewrite using `[Set.indicator_of_notMem hx]`.
-
-Establish `: f x = 0`. Apply `hzero` to reduce the goal to its premises. Distinguish the cases in `hd : (c, Matrix.of x) ∈ DomR k r z z'`. Use `right`. Introduce `hK`.
-
-Conclude with `hx ((hCmem x).2 ⟨hK, hd.2.1⟩)`. Use `left`. Conclude with `hd`. Rewrite using `[this, norm_zero]`. Use `Integrable.mono' ?_ hmeas.aestronglyMeasurable (Filter.Eventually.of_forall hbound)` and prove the remaining obligations.
-
-Conclude with `(integrable_indicator_iff hCc.measurableSet).mpr (integrableOn_const (hμ.finite_compact C hCc).ne)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem int_cpt_gen (μ : Measure (Mt k r)) (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ)
     (Φ Θ : RadSp k r z z' π π') (c : Fin r → ℂ) (v : Wq) (K : Set (Mx k r)) (hKc : IsCompact K)
@@ -127,7 +121,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Take `⟨K, hKc, hKG, hK0⟩` from `hK`. Use `pairAt_t_adj_cpt P z z' π π' hP X μ hμ Φ Ψ c hc ⟨K, hKc, hKG, hK0⟩ Y a b (fun m => ?_) (fun m => ?_)` and prove the remaining obligations. Conclude with `int_cpt_gen μ hμ Ψ (X.t Y a b Φ) c _ K hKc hKG hc _ (Or.inl rfl) (fun g hg hgK => (hK0 g hg hgK).2)`. Conclude with `int_cpt_gen μ hμ Φ (X.t (star Y) b a Ψ) c _ K hKc hKG hc _ (Or.inr rfl) (fun g hg hgK => (hK0 g hg hgK).1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pairAt_t_adj_cpt' (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (hP : IsPlace P z z' π π') (X : ActualOps P.k P.r z z' π π')

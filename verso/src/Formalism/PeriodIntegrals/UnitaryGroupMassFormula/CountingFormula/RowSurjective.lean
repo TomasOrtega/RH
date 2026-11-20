@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.Unimodu
 namespace PI.UnitaryGroupMassFormula.CntFormula.RowsMassW
 
 /- English proof (translation)
-The claim follows from `rowSurj_of_genus PI.UnitaryGroupMassFormula.CntFormula.UG.unimodular_one_genus`.
+A detailed English derivation is pending.
 -/
 theorem row_surjective : RowSurj := rowSurj_of_genus PI.UnitaryGroupMassFormula.CntFormula.UG.unimodular_one_genus
 

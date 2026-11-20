@@ -7,9 +7,9 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.SplitOfNegPrime
 
 /- English proof (translation)
-Introduce `hmem`. Set `x : maximalRealSubfield L` to `⟨δ, hmem⟩`. Establish `hx : x ^ 2 = -(p : maximalRealSubfield L)` using `Subtype.ext (by simpa [x] using hδ)`. Take `⟨v⟩ : Nonempty (InfinitePlace (maximalRealSubfield L))` from `inferInstance`. Establish `hv : v.IsReal` using `IsTotallyReal.isReal v`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `congrArg (InfinitePlace.embedding_of_isReal hv) hx`. Rewrite `h` using `[map_pow, map_neg, map_natCast]`. Establish `h1 : (0 : ℝ) < p` using `by exact_mod_cast hp`. Use polynomial arithmetic with `[sq_nonneg (InfinitePlace.embedding_of_isReal hv x)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sqrt_neg_not_mem_maximalRealSubfield (L : Type) [Field L] [NumberField L] [IsCMField L]
     (p : ℕ) (δ : L) (hp : 0 < p) (hδ : δ ^ 2 = -(p : L)) : δ ∉ maximalRealSubfield L := by
@@ -24,15 +24,13 @@ theorem sqrt_neg_not_mem_maximalRealSubfield (L : Type) [Field L] [NumberField L
   nlinarith [sq_nonneg (InfinitePlace.embedding_of_isReal hv x)]
 
 /- English proof (translation)
-Introduce `L _ _ _ p q δ hp hδ hdvd w hw`. Use `set Lp := maximalRealSubfield L`. Use `set u := w.under (𝓞 Lp)`. Take `⟨k, hk⟩` from `hdvd`. Use `set z : 𝓞 Lp := -(2 * (q : 𝓞 Lp) * (k : 𝓞 Lp)) with hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : (q : 𝓞 Lp) ∈ u.asIdeal`. Express the relevant statement in the definitionally equal form `_ ∈ Ideal.comap _ _`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hw`. Establish `hzu : z ∈ u.asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Conclude with `u.asIdeal.neg_mem_iff.2 (Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hq))`. Establish `hk' : ((p : ℤ) : 𝓞 Lp) + 1 = (((8 * q : ℕ) : ℤ) : 𝓞 Lp) * (k : 𝓞 Lp)`. Conclude with `congrArg (Int.cast : ℤ → 𝓞 Lp) hk` after adjusting the coercions. Establish `hsq : (1 + 4 * z : 𝓞 Lp) = -(p : 𝓞 Lp)`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hz]`. Move the coercions through the operations in `at hk'`. Take the linear combination `hk'`. Establish `h1` using `GlobalTheory.HenselSquare.isSquare_one_add_four_mul Lp u z hzu`. Rewrite `h1` using `[hsq]`.
-
-Use `GlobalTheory.SplitOfSquare.isSplitAt_of_isSquare L (-(p : Lp)) δ (by rw [hδ]; push_cast; rfl) (sqrt_neg_not_mem_maximalRealSubfield L p δ hp hδ) w ?_` and prove the remaining obligations. Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isSplitAt : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (p q : ℕ) (δ : L), 0 < p → δ ^ 2 = -(p : L) → ((8 * q : ℕ) : ℤ) ∣ (p : ℤ) + 1 → ∀ w : HeightOneSpectrum (𝓞 L), (q : 𝓞 L) ∈ w.asIdeal → GlobalTheory.UnitaryBC.IsSplitAt w := by
   intro L _ _ _ p q δ hp hδ hdvd w hw

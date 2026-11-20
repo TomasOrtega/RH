@@ -5,7 +5,7 @@ open MeasureTheory GroundTheory.Automorphic
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Establish `h` using `lintegral_rpow_enorm_lt_top_of_eLpNorm_lt_top (by norm_num) (by norm_num) hu.2`. Simplify using `using h.ne`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem lintegral_sq_ne_top {X H : Type} [MeasurableSpace X] {ν : Measure X}
     [NormedAddCommGroup H] {u : X → H} (hu : MemLp u 2 ν) : ∫⁻ x, ‖u x‖ₑ ^ 2 ∂ν ≠ ⊤ := by
@@ -13,11 +13,9 @@ private theorem lintegral_sq_ne_top {X H : Type} [MeasurableSpace X] {ν : Measu
   simpa using h.ne
 
 /- English proof (translation)
-Establish `hm : ∀ i, AEStronglyMeasurable (fun x => ⟪u x, b i⟫_ℂ * ⟪b i, v x⟫_ℂ) ν` using `fun i => (hu.1.inner aestronglyMeasurable_const).mul (aestronglyMeasurable_const.inner hv.1)`. Rewrite using `[← integral_tsum hm]`. Simplify using `only [b.tsum_inner_mul_inner]`. Rewrite using `[← lintegral_tsum fun i => (hm i).enorm]`. Use `ne_top_of_le_ne_top (b := ∫⁻ x, (‖u x‖ₑ ^ 2 + ‖v x‖ₑ ^ 2) ∂ν) ?_ (lintegral_mono fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lintegral_add_left' (hu.1.enorm.pow_const 2)]`. Conclude with `ENNReal.add_ne_top.2 ⟨lintegral_sq_ne_top hu, lintegral_sq_ne_top hv⟩`. Rewrite using `[enorm_sq_eq_tsum b (u x), enorm_sq_eq_tsum b (v x), ← ENNReal.tsum_add]`. Use `ENNReal.tsum_le_tsum fun i => ?_` and prove the remaining obligations. Rewrite using `[enorm_mul, enorm_inner_comm (u x)]`.
-
-Conclude with `ennreal_mul_le_sq_add_sq _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem parseval_integral {X H ι : Type} [MeasurableSpace X] {ν : Measure X}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [Countable ι]
@@ -37,11 +35,11 @@ private theorem parseval_integral {X H ι : Type} [MeasurableSpace X] {ν : Meas
       exact ennreal_mul_le_sq_add_sq _ _
 
 /- English proof (translation)
-Introduce `X _ ν _ _ A M B k₁ k₂ h₁ h₂ hA hB eA eB`. Take `⟨w, b, -⟩` from `exists_hilbertBasis ℂ (Lp ℂ 2 ν)`. Establish `: Countable w` using `Formalism.MainNotions.LeviCoordinates.rrd_countable b.orthonormal`. Establish `hMB : IsHilbertSchmidt (M ∘L B)` using `hB.comp_left M`. Establish `h0 : trace (A ∘L M ∘L B) = ∑' i, ⟪b i, (M ∘L B) (A (b i))⟫_ℂ` using `(hasSum_inner_comp_comm (stdHilbertBasis ℂ (Lp ℂ 2 ν)) b hA hMB).tsum_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h0, ← parseval_integral b (v := fun x => M (k₂ x)) h₁ (M.comp_memLp' h₂)]`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, ← ContinuousLinearMap.adjoint_inner_left M, ← ContinuousLinearMap.adjoint_inner_left B, L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [eA (b i), eB (ContinuousLinearMap.adjoint M (b i))] with x hx hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, hy, RCLike.inner_apply, inner_conj_symm, ContinuousLinearMap.adjoint_inner_left]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.K.traceKer :
     ∀ {X : Type} [MeasurableSpace X] (ν : Measure X) [SFinite ν] [TopologicalSpace.SeparableSpace (Lp ℂ 2 ν)]

@@ -27,99 +27,99 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 namespace UpperTheory.Gal.G1
 
 /- English proof (translation)
-The claim follows from `pLocFour`.
+A detailed English derivation is pending.
 -/
 theorem LocFour_holds : LocFour := pLocFour
 /- English proof (translation)
-The claim follows from `pHenselV`.
+A detailed English derivation is pending.
 -/
 theorem HenselV_holds : HenselV := pHenselV
 /- English proof (translation)
-The claim follows from `pSplitRep`.
+A detailed English derivation is pending.
 -/
 theorem SplitRep_holds : SplitRep := pSplitRep
 /- English proof (translation)
-The claim follows from `pBlockMat`.
+A detailed English derivation is pending.
 -/
 theorem BlockMat_holds : BlockMat := pBlockMat
 /- English proof (translation)
-The claim follows from `pPadMap`.
+A detailed English derivation is pending.
 -/
 theorem PadMap_holds : PadMap := pPadMap
 /- English proof (translation)
-The claim follows from `pScale`.
+A detailed English derivation is pending.
 -/
 theorem Scale_holds : Scale := pScale
 /- English proof (translation)
-The claim follows from `pPadicUnitNorm`.
+A detailed English derivation is pending.
 -/
 theorem PadicUnitNorm_holds : PadicUnitNorm := pPadicUnitNorm
 /- English proof (translation)
-The claim follows from `pPadicSqFin`.
+A detailed English derivation is pending.
 -/
 theorem PadicSqFin_holds : PadicSqFin := pPadicSqFin
 /- English proof (translation)
-The claim follows from `pTrivMat`.
+A detailed English derivation is pending.
 -/
 theorem TrivMat_holds : TrivMat := pTrivMat
 /- English proof (translation)
-The claim follows from `pCongrScale`.
+A detailed English derivation is pending.
 -/
 theorem CongrScale_holds : CongrScale := pCongrScale
 /- English proof (translation)
-The claim follows from `pSplitCongr`.
+A detailed English derivation is pending.
 -/
 theorem SplitCongr_holds : SplitCongr := pSplitCongr
 /- English proof (translation)
-The claim follows from `pInfCongr`.
+A detailed English derivation is pending.
 -/
 theorem InfCongr_holds : InfCongr := pInfCongr
 /- English proof (translation)
-The claim follows from `pDefSign`.
+A detailed English derivation is pending.
 -/
 theorem DefSign_holds : DefSign := pDefSign
 /- English proof (translation)
-The claim follows from `pRelOf`.
+A detailed English derivation is pending.
 -/
 theorem RelOf_holds : RelOf := pRelOf
 /- English proof (translation)
-The claim follows from `pLocUnit HenselV_holds`.
+A detailed English derivation is pending.
 -/
 theorem LocUnit_holds : LocUnit := pLocUnit HenselV_holds
 /- English proof (translation)
-The claim follows from `pLocRoot HenselV_holds`.
+A detailed English derivation is pending.
 -/
 theorem LocRoot_holds : LocRoot := pLocRoot HenselV_holds
 /- English proof (translation)
-The claim follows from `pZUnitNorm PadicUnitNorm_holds`.
+A detailed English derivation is pending.
 -/
 theorem ZUnitNorm_holds : ZUnitNorm := pZUnitNorm PadicUnitNorm_holds
 /- English proof (translation)
-The claim follows from `pZSqFin PadicSqFin_holds`.
+A detailed English derivation is pending.
 -/
 theorem ZSqFin_holds : ZSqFin := pZSqFin PadicSqFin_holds
 /- English proof (translation)
-The claim follows from `pAdFour LocFour_holds LocUnit_holds LocRoot_holds SplitRep_holds`.
+A detailed English derivation is pending.
 -/
 theorem AdFour_holds : AdFour := pAdFour LocFour_holds LocUnit_holds LocRoot_holds SplitRep_holds
 /- English proof (translation)
-The claim follows from `pUnitCls Scale_holds ZUnitNorm_holds ZSqFin_holds`.
+A detailed English derivation is pending.
 -/
 theorem UnitCls_holds : UnitCls := pUnitCls Scale_holds ZUnitNorm_holds ZSqFin_holds
 /- English proof (translation)
-The claim follows from `pFinCongr PadMap_holds LocRoot_holds TrivMat_holds CongrScale_holds SplitCongr_holds DefSign_holds`.
+A detailed English derivation is pending.
 -/
 theorem FinCongr_holds : FinCongr := pFinCongr PadMap_holds LocRoot_holds TrivMat_holds CongrScale_holds SplitCongr_holds DefSign_holds
 /- English proof (translation)
-The claim follows from `pNormTwo AdFour_holds`.
+A detailed English derivation is pending.
 -/
 theorem NormTwo_holds : NormTwo := pNormTwo AdFour_holds
 /- English proof (translation)
-The claim follows from `pFinCls UnitCls_holds FinCongr_holds InfCongr_holds DefSign_holds RelOf_holds`.
+A detailed English derivation is pending.
 -/
 theorem FinCls_holds : FinCls := pFinCls UnitCls_holds FinCongr_holds InfCongr_holds DefSign_holds RelOf_holds
 /- English proof (translation)
-The claim follows from `pIsoEx NormTwo_holds BlockMat_holds`.
+A detailed English derivation is pending.
 -/
 theorem IsoEx_holds : IsoEx := pIsoEx NormTwo_holds BlockMat_holds
 

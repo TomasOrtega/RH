@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.PolarDeg
 
 /- English proof (translation)
-Establish `hP : (∑ i ∈ s, Polynomial.C (a i) * Polynomial.X ^ e i) = ∑ j ∈ s', Polynomial.C (b j) * Polynomial.X ^ e' j`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `t`. Simplify using `only [Polynomial.eval_finsetSum, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]`. Conclude with `h t`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg (fun p => Polynomial.coeff p 1) hP` as an intermediate fact. Simplify using `only [Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow] at this`. Simplify `this` using `[eq_comm]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lin_coeff_eq {ι κ : Type} (s : Finset ι) (s' : Finset κ) (a : ι → ℝ) (e : ι → ℕ) (b : κ → ℝ) (e' : κ → ℕ)
     (h : ∀ t : ℝ, ∑ i ∈ s, a i * t ^ e i = ∑ j ∈ s', b j * t ^ e' j) :
@@ -28,9 +28,9 @@ theorem lin_coeff_eq {ι κ : Type} (s : Finset ι) (s' : Finset κ) (a : ι →
   simpa [eq_comm] using this
 
 /- English proof (translation)
-Establish `h1 : (fun _ : Fin (n + 1) => x + t • y) = (fun _ => t • y) + (fun _ => x)`. Use function extensionality and compare the values at `i`. Simplify using `[add_comm]`. Rewrite using `[h1, MultilinearMap.map_add_univ]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : s.piecewise (fun _ : Fin (n + 1) => t • y) (fun _ => x) = s.piecewise (fun i => (fun _ : Fin (n + 1) => t) i • (s.piecewise (fun _ => y) (fun _ => x)) i) (s.piecewise (fun _ => y) (fun _ => x))`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases hi : i ∈ s <;> simp [Finset.piecewise, hi]`. Rewrite using `[h2, MultilinearMap.map_piecewise_smul, Finset.prod_const, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem num_expand {V : Type} [AddCommGroup V] [Module ℝ V] {n : ℕ}
     (f : MultilinearMap ℝ (fun _ : Fin (n + 1) => V) ℝ)
@@ -49,13 +49,13 @@ theorem num_expand {V : Type} [AddCommGroup V] [Module ℝ V] {n : ℕ}
   rw [h2, MultilinearMap.map_piecewise_smul, Finset.prod_const, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Establish `hS : (Finset.univ.filter fun s : Finset (Fin (n + 1)) => s.card = 1) = Finset.univ.map ⟨fun i => {i}, Finset.singleton_injective⟩`. Use extensionality with `s`. Rewrite using `[Finset.mem_filter, Finset.mem_map, Finset.card_eq_one]`. Simplify using `only [Finset.mem_univ, true_and, Function.Embedding.coeFn_mk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `constructor <;> rintro ⟨a, h⟩ <;> exact ⟨a, h.symm⟩`. Rewrite using `[hS, Finset.sum_map]`. Establish `h3 : ∀ i : Fin (n + 1), f (({i} : Finset (Fin (n + 1))).piecewise (fun _ => y) (fun _ => x)) = f (Fin.cons y fun _ => x)`. Introduce `i`. Rewrite using `[Finset.piecewise_singleton]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : Function.update (fun _ : Fin (n + 1) => x) i y ∘ (Equiv.swap 0 i) = (Fin.cons y fun _ => x : Fin (n + 1) → V)`. Rewrite using `[Function.update_comp_equiv]`. Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun k => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.update, Equiv.swap_apply_def]`. Rewrite using `[← h4, hf]`. Simplify using `only [Function.Embedding.coeFn_mk, h3, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem num_lin {V : Type} [AddCommGroup V] [Module ℝ V] {n : ℕ}
     (f : MultilinearMap ℝ (fun _ : Fin (n + 1) => V) ℝ)
@@ -93,7 +93,7 @@ namespace GlobalTheory.PolarDeg
 open MvPolynomial in
 
 /- English proof (translation)
-Simplify using `only [Formalism.DegreeFormula.linRoot, Pi.add_apply, Pi.smul_apply, smul_eq_mul, C_add, C_mul, add_mul, Finset.sum_add_distrib, Finset.mul_sum, mul_neg, mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem linRoot_add_smul {ι : Type} [Fintype ι] {N : ℕ} (u w : ι → Fin N → ℝ) (t : ℝ) :
     Formalism.DegreeFormula.linRoot (u + t • w) = C t * Formalism.DegreeFormula.linRoot w + Formalism.DegreeFormula.linRoot u := by
@@ -104,19 +104,17 @@ theorem linRoot_add_smul {ι : Type} [Fintype ι] {N : ℕ} (u w : ι → Fin N 
 open MvPolynomial in
 
 /- English proof (translation)
-Use `set A := Y.arDeg (GlobalTheory.FlagAr.setB Y B) R with hA`. Use `set lw := Formalism.DegreeFormula.linRoot w`. Use `set lu := Formalism.DegreeFormula.linRoot u`. Establish `hf : ∀ t : ℝ, A (Formalism.DegreeFormula.linRoot (u + t • w) ^ (Formalism.MainNotions.WeightThresholdDefs.dimY Y + 1)) = ∑ m ∈ Finset.range (Formalism.MainNotions.WeightThresholdDefs.dimY Y + 1 + 1), ((Formalism.MainNotions.WeightThresholdDefs.dimY Y + 1).choose m * A (lw ^ m * l …`. Introduce `t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[linRoot_add_smul, add_pow, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `h1 : (C t * lw) ^ m * lu ^ (Formalism.MainNotions.WeightThresholdDefs.dimY Y + 1 - m) * ((Formalism.MainNotions.WeightThresholdDefs.dimY Y + 1).choose m : MvPolynomial _ ℝ) = (t ^ m * ((Formalism.MainNotions.WeightThresholdDefs.dimY Y + 1).choose m : ℝ)) • (lw ^ m * lu ^ (Formali …`. Rewrite using `[MvPolynomial.smul_eq_C_mul, mul_pow, ← map_pow, C_mul, ← map_natCast (C : ℝ →+* MvPolynomial _ ℝ)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[h1, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hg : ∀ t : ℝ, ∑ c, T.fR B c (u + t • w) 0 R = ∑ p : Y.Comp × Finset (Fin (Formalism.MainNotions.WeightThresholdDefs.dimY Y + 1)), (T.K B p.1).num (p.2.piecewise (fun _ => T.L B p.1 w + (T.K B p.1).ar ((T.F p.1).phR R w)) (fun _ => T.L B p.1 u + (T.K B p.1).ar ((T.F p.1).phR R u)) …`. Introduce `t`. Rewrite using `[Fintype.sum_prod_type]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `h2 : T.L B c (u + t • w) + (0 : ℝ) • T.a B c + (T.K B c).ar ((T.F c).phR R (u + t • w)) = (T.L B c u + (T.K B c).ar ((T.F c).phR R u)) + t • (T.L B c w + (T.K B c).ar ((T.F c).phR R w))`. Simplify using `only [map_add, map_smul, zero_smul, add_zero, smul_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[Real0.fR, Calc.top, h2]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `num_expand (T.K B c).num (T.K B c).symm _ _ t`. Establish `hfg : ∀ t : ℝ, ∑ m ∈ Finset.range (Formalism.MainNotions.WeightThresholdDefs.dimY Y + 1 + 1), ((Formalism.MainNotions.WeightThresholdDefs.dimY Y + 1).choose m * A (lw ^ m * lu ^ (Formalism.MainNotions.WeightThresholdDefs.dimY Y + 1 - m))) * t ^ m = ∑ p : Y.Comp × Finset (Fin (For …`. Introduce `t`. Rewrite using `[← hf, ← hg]`. Conclude with `hT B hB R hR (u + t • w)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hc` using `lin_coeff_eq _ _ _ (fun m => m) _ (fun p : Y.Comp × Finset (Fin (Formalism.MainNotions.WeightThresholdDefs.dimY Y + 1)) => p.2.card) hfg`. Rewrite `hc` using `[Fintype.sum_prod_type]`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_range] at hc`. Establish `hsum : ∀ c, (∑ s : Finset (Fin (Formalism.MainNotions.WeightThresholdDefs.dimY Y + 1)), if s.card = 1 then (T.K B c).num (s.piecewise (fun _ => T.L B c w + (T.K B c).ar ((T.F c).phR R w)) (fun _ => T.L B c u + (T.K B c).ar ((T.F c).phR R u))) else 0) = ((Formalism.MainNotions.Wei …` using `fun c => by`. Use `num_lin (T.K B c).num (T.K B c).symm _ _ using 5` and compare the differences between its conclusion and the goal.
-
-Use `replace hc := hc.trans (Finset.sum_congr rfl fun c _ => hsum c)`. Establish `hn1 : (0 : ℝ) < (Formalism.MainNotions.WeightThresholdDefs.dimY Y : ℝ) + 1` using `by positivity`. Rewrite `hc` using `[if_pos (by omega), Nat.choose_one_right, pow_one, Nat.add_sub_cancel, ← Finset.mul_sum]`. Move the coercions through the operations in `at hc`. Conclude with `mul_left_cancel₀ hn1.ne' hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem arDeg_lin_mul_pow (D : D7) (Y : DV.ShimX D.what₂.Tau) (T : Real0 Y) (hT : TieDeg T) (B : ℝ) (hB : 2 ≤ B)
     (R : ℝ) (hR : Real.exp 2 ≤ R) (w u : Wt Y) :

@@ -13,11 +13,11 @@ open GlobalTheory.ThetaFamily
 open Filter Set in
 open scoped Topology in
 /- English proof (translation)
-Use `choose! ρ hρ0 hρ using hloc`. Use `⟨fun z ↦ ρ z z, ?_, hρ0, fun z hz ↦ (hρ z hz).self_of_nhds.2⟩` and prove the remaining obligations. Establish `heq : ∀ z ∈ O, (fun w ↦ ρ w w) =ᶠ[𝓝 z] ρ z`. Introduce `z hz`. Use `filter_upwards [(hρ z hz).eventually_nhds, hO.mem_nhds hz] with w hw hwO`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hρ w hwO`. Establish `hc1 : ContinuousAt (ρ w) w` using `h1.self_of_nhds.1.continuousAt`. Establish `hc2 : ContinuousAt (ρ z) w` using `hw.self_of_nhds.1.continuousAt`. Use `tendsto_nhds_unique_of_frequently_eq hc1 hc2 ?_` and prove the remaining obligations. Use `((hnz w).and_eventually (h1.and hw)).mono fun y hy ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hθ, ⟨_, h1y⟩, ⟨_, h2y⟩⟩` from `hy`. Conclude with `mul_right_cancel₀ hθ (h1y.trans h2y.symm)`. Introduce `z hz`. Conclude with `(((hρ z hz).self_of_nhds.1).congr_of_eventuallyEq (heq z hz)).differentiableWithinAt`.
+A detailed English derivation is pending.
 -/
 private theorem exists_differentiableOn_ne_zero_mul_eq {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℂ E] {O : Set E} (hO : IsOpen O) {θ f : E → ℂ}
@@ -43,7 +43,7 @@ private theorem exists_differentiableOn_ne_zero_mul_eq {E : Type} [NormedAddComm
 open Filter Set in
 open scoped Topology in
 /- English proof (translation)
-Use `tendsto_nhds_unique_of_frequently_eq h₁ h₂ ?_` and prove the remaining obligations. Use `(hnz.and_eventually (e₁.and e₂)).mono fun y hy ↦ ?_` and prove the remaining obligations. Conclude with `mul_right_cancel₀ hy.1 (hy.2.1.trans hy.2.2.symm)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem eq_of_continuousAt_mul_eq_eventually {E : Type} [TopologicalSpace E] {θ f ρ₁ ρ₂ : E → ℂ} {z : E}
     (hnz : ∃ᶠ w in 𝓝 z, θ w ≠ 0) (h₁ : ContinuousAt ρ₁ z) (h₂ : ContinuousAt ρ₂ z)
@@ -57,37 +57,31 @@ open Filter Set in
 open scoped Topology in
 
 /- English proof (translation)
-Establish `hb₀B : b₀ ∈ B` using `mem_of_mem_nhds hB`. Establish `hκ₀ : κ b₀ ∈ C` using `hκ b₀ hb₀B`. Establish `hslice : ∀ j b, IsOpen {z : V' | (b, z) ∈ W j}` using `fun j b ↦ (hW j).preimage (continuous_const.prodMk continuous_id)`. Establish `hF : ∀ j, ∀ b ∈ B, ∃ F : V' → ℂ, DifferentiableOn ℂ F {z | (b, z) ∈ W j} ∧ (∀ z ∈ {z | (b, z) ∈ W j}, F z ≠ 0) ∧ ∀ z ∈ {z | (b, z) ∈ W j}, F z * θ (κ b) (b, z) = f j (b, z)` using `fun j b hb ↦ exists_differentiableOn_ne_zero_mul_eq (hslice j b) (hnz _ (hκ b hb) b hb) (fun z hz ↦ by`. Take `⟨ρ, h0, -, hρ⟩` from `hq j b z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ρ, h0, hρ⟩)`. Establish `hev : ∀ᶠ b in 𝓝 b₀, κ b = κ b₀`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[not_eventually]`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk, hfreq⟩ : ∃ k ∈ C, ∃ᶠ b in 𝓝 b₀, b ∈ B ∧ κ b = k ∧ k ≠ κ b₀ := by`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hall`. Establish `h1 : ∀ k ∈ C, ∀ᶠ b in 𝓝 b₀, ¬ (b ∈ B ∧ κ b = k ∧ k ≠ κ b₀)` using `fun k hk ↦ not_frequently.1 (fun h ↦ hall ⟨k, hk, h⟩)`. Establish `h2` using `(Filter.eventually_all_finite hC).2 h1`. Use `(hne.and_eventually (h2.and hB)).exists.elim fun b hb ↦ ?_` and prove the remaining obligations. Conclude with `hb.2.1 (κ b) (hκ b hb.2.2) ⟨hb.2.2, rfl, hb.1⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set S : Set V := {b | b ∈ B ∧ κ b = k} with hSdef`. Establish `hS : ∀ j, ∀ b ∈ S, ∃ F : V' → ℂ, DifferentiableOn ℂ F {z | (b, z) ∈ W j} ∧ (∀ z ∈ {z | (b, z) ∈ W j}, F z ≠ 0) ∧ ∀ z ∈ {z | (b, z) ∈ W j}, F z * θ k (b, z) = f j (b, z)`. Introduce `j b hb`. Take `⟨F, h1, h2, h3⟩` from `hF j b hb.1`. Rewrite `h3` using `[hb.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨F, h1, h2, h3⟩`. Establish `hb₀S : b₀ ∈ closure S` using `mem_closure_iff_frequently.2 (hfreq.mono fun b hb ↦ ⟨hb.1, hb.2.1⟩)`. Establish `hloc : ∀ z, ∃ ρ : V' → ℂ, ρ z ≠ 0 ∧ ∀ᶠ w in 𝓝 z, DifferentiableAt ℂ ρ w ∧ ρ w * θ (κ b₀) (b₀, w) = θ k (b₀, w)`. Introduce `z`. Take `⟨j, hj⟩` from `cov z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ρ, hρz, -, hρ⟩` from `hq j b₀ z hj`. Establish `hρne : ∀ᶠ w in 𝓝 z, ρ w ≠ 0` using `hρ.self_of_nhds.1.continuousAt.eventually_ne hρz`. Establish `hfnz : ∃ᶠ w in 𝓝 z, f j (b₀, w) ≠ 0` using `((hnz _ hκ₀ b₀ hb₀B z).and_eventually (hρne.and hρ)).mono fun w hw ↦ by`. Rewrite using `[← hw.2.2.2]`. Conclude with `mul_ne_zero hw.2.1 hw.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨U₁, G₁, hU₁, hzU₁, -, hG₁, hG₁e⟩` from `_root_.GlobalTheory.ThetaFamily.exists_quotient_closure (hW j) (hf j) (hθ k hk j) (fun b hb ↦ (hS j b hb).elim fun F hF ↦ ⟨F, hF.1, hF.2.2⟩) hj (hnz k hk b₀ hb₀B z)`. Take `⟨U₂, G₂, hU₂, hzU₂, -, hG₂, hG₂e⟩` from `_root_.GlobalTheory.ThetaFamily.exists_quotient_closure (hW j) (hθ k hk j) (hf j) (S := S) (fun b hb ↦ (hS j b hb).elim fun F hF ↦ ⟨F⁻¹, hF.1.inv hF.2.1, fun z hz ↦ by`. Rewrite using `[← hF.2.2 z hz, Pi.inv_apply, inv_mul_cancel_left₀ (hF.2.1 z hz)]⟩) hj hfnz`. Establish `hcont : Continuous fun w : V' ↦ (b₀, w)` using `continuous_const.prodMk continuous_id`. Establish `hU₁z : ∀ᶠ w in 𝓝 z, (b₀, w) ∈ U₁` using `hcont.continuousAt.preimage_mem_nhds (hU₁.mem_nhds hzU₁)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU₂z : ∀ᶠ w in 𝓝 z, (b₀, w) ∈ U₂` using `hcont.continuousAt.preimage_mem_nhds (hU₂.mem_nhds hzU₂)`. Establish `hG₁c : ContinuousAt (fun w ↦ G₁ (b₀, w)) z` using `((hG₁.continuousOn.continuousAt (hU₁.mem_nhds hzU₁))).comp hcont.continuousAt`. Establish `hG₂c : ContinuousAt (fun w ↦ G₂ (b₀, w)) z` using `((hG₂.continuousOn.continuousAt (hU₂.mem_nhds hzU₂))).comp hcont.continuousAt`. Establish `hone : G₁ (b₀, z) * G₂ (b₀, z) = 1`. Use `tendsto_nhds_unique_of_frequently_eq (hG₁c.mul hG₂c) tendsto_const_nhds ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hfnz.and_eventually (hU₁z.and hU₂z)).mono fun w hw ↦ ?_` and prove the remaining obligations. Establish `e₁` using `hG₁e _ hw.2.1 hb₀S`. Establish `e₂` using `hG₂e _ hw.2.2 hb₀S`. Use `mul_right_cancel₀ hw.1 ?_` and prove the remaining obligations. Use `show G₁ (b₀, w) * G₂ (b₀, w) * f j (b₀, w) = 1 * f j (b₀, w)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul, mul_assoc, e₂, e₁]`. Use `⟨fun w ↦ G₂ (b₀, w) * ρ w, mul_ne_zero (right_ne_zero_of_mul_eq_one hone) hρz, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hρ, hU₂z] with w hw hw₂`. Use `⟨((hG₂.differentiableAt (hU₂.mem_nhds hw₂)).comp w ((differentiableAt_const _).prodMk differentiableAt_id)).mul hw.1, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, hw.2, hG₂e _ hw₂ hb₀S]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ρ, hρd, hρ0, hρ⟩` from `_root_.GlobalTheory.ThetaFamily.exists_entire_quotient (θ := fun z ↦ θ k (b₀, z)) (θ' := fun z ↦ θ (κ b₀) (b₀, z)) (hnz _ hκ₀ b₀ hb₀B) hloc`. Conclude with `(hfreq.exists.elim fun b hb ↦ hb.2.2) (uniq k hk ρ hρd hρ0 hρ)`. Take `⟨j, hj⟩` from `cov 0`. Take `⟨hrc, hr0⟩` from `hr j hj`. Take `⟨N, hNsub, hNo, hb₀N⟩` from `eventually_nhds_iff.1 (hev.and hB)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `choose! Fs hFsd hFs0 hFse using hF j`. Use `set Wst : Set (V × V') := W j ∩ Prod.fst ⁻¹' N with hWst`. Establish `hWo : IsOpen Wst` using `(hW j).inter (hNo.preimage continuous_fst)`. Establish `hFd : DifferentiableOn ℂ (fun y : V × V' ↦ Fs y.1 y.2) Wst` using `_root_.GlobalTheory.differentiableOn_quotient_of_differentiableOn_slice V V' Wst (f j) (θ (κ b₀)) _ hWo ((hf j).mono inter_subset_left) ((hθ _ hκ₀ j).mono inter_subset_left) (fun w hw ↦ by`. Take `⟨hκw, hBw⟩` from `hNsub w.1 hw.2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h` using `hFse w.1 hBw w.2 hw.1`. Rewrite `h` using `[hκw]`. Conclude with `h)`. Use the proof step `(fun b z hz ↦ ((hFsd b (hNsub b hz.2).2).mono fun z' hz' ↦ hz'.1) z hz)`. Use the proof step `(fun w hw ↦ hnz _ hκ₀ w.1 (hNsub w.1 hw.2).2 w.2)`.
-
-Establish `hmem : (b₀, (0 : V')) ∈ Wst` using `⟨hj, hb₀N⟩`. Establish `hpair : Continuous fun b : V ↦ (b, (0 : V'))` using `continuous_id.prodMk continuous_const`. Establish `hFc : ContinuousAt (fun b ↦ Fs b 0) b₀` using `ContinuousAt.comp (f := fun b : V ↦ (b, (0 : V'))) (g := fun y : V × V' ↦ Fs y.1 y.2) (hFd.continuousOn.continuousAt (hWo.mem_nhds hmem)) hpair.continuousAt`. Use `(hFc.div hrc hr0).congr ?_` and prove the remaining obligations. Establish `hWz : ∀ᶠ b in 𝓝 b₀, (b, (0 : V')) ∈ Wst` using `hpair.continuousAt.preimage_mem_nhds (hWo.mem_nhds hmem)`.
-
-Use `filter_upwards [hWz, hrc.eventually_ne hr0] with b hb hrb`. Take `⟨-, hBb⟩` from `hNsub b hb.2`. Take `⟨ρ, -, h0, hρ⟩` from `hq j b 0 hb.1`. Establish `hFsc : ContinuousAt (Fs b) 0` using `(hFsd b hBb).continuousOn.continuousAt ((hslice j b).mem_nhds hb.1)`. Establish `heq : Fs b 0 = ρ 0` using `eq_of_continuousAt_mul_eq_eventually (hnz _ (hκ b hBb) b hBb 0) hFsc hρ.self_of_nhds.1.continuousAt (by filter_upwards [(hslice j b).mem_nhds hb.1] with w hw`.
-
-Conclude with `hFse b hBb w hw)`. Use the proof step `(hρ.mono fun w hw ↦ hw.2)`. Use `show Fs b 0 / r j b = c b`. Rewrite using `[heq, h0 rfl, mul_div_cancel_right₀ _ hrb]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ThetaValueCont.continuousAt_constant {V V' K ι : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]
     [NormedAddCommGroup V'] [NormedSpace ℂ V'] [FiniteDimensional ℂ V'] {B : Set V} {b₀ : V}
@@ -218,27 +212,23 @@ open scoped Topology in
 open Complex Matrix in
 
 /- English proof (translation)
-Use `set P : Matrix (Fin g) (Fin g) ℂ := Matrix.of fun a k ↦ e k a with hPdef`. Use `set F : Matrix (Fin g) (Fin g) ℂ := Matrix.of fun a k ↦ f k a with hFdef`. Establish `hPe : ∀ k, P *ᵥ Pi.single k 1 = e k` using `fun k ↦ by`. Rewrite using `[Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hFf : ∀ k, F *ᵥ Pi.single k 1 = f k` using `fun k ↦ by`. Rewrite using `[Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Use `set YC : Matrix (Fin g) (Fin g) ℂ := P.transpose * Hm * P.map star with hYCdef`. Establish `hYC : ∀ z w, z ⬝ᵥ YC.mulVec (star w) = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (P *ᵥ z) (P *ᵥ w)` using `fun z w ↦ by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hYCdef, ← _root_.GlobalTheory.SiegelNormalForm.form_pull]`. Both sides reduce to the same expression. Establish `hYCe : ∀ i j, YC i j = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (e i) (e j)` using `fun i j ↦ by`. Rewrite using `[← _root_.GlobalTheory.SiegelNormalForm.form_single YC i j, hYC, hPe, hPe]`. Use `set Y : Matrix (Fin g) (Fin g) ℝ := YC.map Complex.re with hYdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hYre : Y.map Complex.ofReal = YC`. Use extensionality with `i j`. Use `Complex.ext (by simp [hYdef]) ?_` and prove the remaining obligations. Simplify using `only [hYdef, Matrix.map_apply, Complex.ofReal_im]`. Rewrite using `[hYCe, hee]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPu : IsUnit P` using `_root_.GlobalTheory.SiegelNormalForm.isUnit_of_lagrangian P Hm f hpos Y hYre.symm (fun i j ↦ by rw [hPe]; exact hef i j)`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hPu`. Establish `hPinj : ∀ z, P *ᵥ z = 0 → z = 0` using `fun z hz ↦ by`. Rewrite using `[← Matrix.one_mulVec z, ← Matrix.nonsing_inv_mul P hdet, ← Matrix.mulVec_mulVec, hz, Matrix.mulVec_zero]`. Establish `hYpos : Y.PosDef`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Matrix.PosDef.of_dotProduct_mulVec_pos ?_ ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, star_trivial, hYdef, Matrix.map_apply, hYCe]`. Rewrite using `[show _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (e j) (e i) = star (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (e i) (e j)) from (_root_.GlobalTheory.SiegelNormalForm.form_conj hH _ _).symm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `x hx set z : Fin g → ℂ := fun i ↦ (x i : ℂ) with hzdef`. Establish `hz : z ≠ 0` using `fun h ↦ hx (funext fun i ↦ by`. Simplify `congrFun h i)` using `[hzdef]`. Establish `key : ((star x ⬝ᵥ Y *ᵥ x : ℝ) : ℂ) = z ⬝ᵥ YC.mulVec (star z)`. Rewrite using `[← hYre]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hzdef, dotProduct, Matrix.mulVec, Complex.ofReal_sum, Complex.ofReal_mul]`. Establish `h2` using `hpos (P *ᵥ z) (fun h ↦ hz (hPinj z h))`. Rewrite using `[← Complex.ofReal_re (star x ⬝ᵥ Y *ᵥ x), key, hYC]`. Conclude with `h2`. Use `set τ : Matrix (Fin g) (Fin g) ℂ := P⁻¹ * F with hτdef`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hPτ : ∀ k, P *ᵥ (τ *ᵥ Pi.single k 1) = f k` using `fun k ↦ by`. Rewrite using `[Matrix.mulVec_mulVec, hτdef, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv P hdet, Matrix.one_mul, hFf]`. Take `⟨hsymm, hpd, hYI⟩` from `_root_.GlobalTheory.SiegelNormalForm.siegel_of_relations Y hYpos τ (fun i j ↦ by rw [hYre, hYC, hPe, hPτ]; exact hef i j) (fun i j ↦ by rw [hYre, hYC, hPτ, hPτ]; exact hff i j)`. Use `letI : Invertible P := P.invertibleOfIsUnitDet hdet`. Use `⟨Matrix.toLinearEquiv' P this, τ, hsymm, hpd, fun k ↦ ⟨?_, ?_⟩, fun z w ↦ ?_⟩` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `P *ᵥ Pi.single k 1 = e k`. Conclude with `hPe k`. Express the relevant statement in the definitionally equal form `P *ᵥ (τ *ᵥ Pi.single k 1) = f k`. Conclude with `hPτ k`. Express the relevant statement in the definitionally equal form `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (P *ᵥ z) (P *ᵥ w) = _`.
-
-Rewrite using `[Matrix.inv_eq_left_inv hYI, hYre, ← hYC]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ThetaValueCont.exists_coordinates_of_relations {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian)
     (hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm.mulVec (star z)).re) (e f : Fin g → Fin g → ℂ)

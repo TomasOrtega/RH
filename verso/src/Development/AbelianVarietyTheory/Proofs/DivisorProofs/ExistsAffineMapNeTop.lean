@@ -11,17 +11,15 @@ open GlobalTheory.DeRham
 namespace GlobalTheory.PointSec
 
 /- English proof (translation)
-Introduce `R' _ X X' s' φ hs m hm`. Take `⟨x', hx'⟩` from `hs.surj (⟨m, hm.isPrime⟩ : PrimeSpectrum R')`. Take `⟨U, hU, hxU, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens) (show φ.base x' ∈ (⊤ : X.Opens) from trivial)`. Use `⟨⟨U, hU⟩, ?_⟩` and prove the remaining obligations. Establish `hx : x' ∈ φ ⁻¹ᵁ U` using `hxU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `htop`. Set `g : Sec s' (φ ⁻¹ᵁ U) →+* X'.presheaf.stalk x'` to `(X'.presheaf.germ (φ ⁻¹ᵁ U) x' hx).hom`. Establish `key : ∀ a ∈ m, ¬ IsUnit (g (algebraMap R' (Sec s' (φ ⁻¹ᵁ U)) a))`. Introduce `a ha hu`. Establish `h1 : x' ∈ X'.basicOpen (algebraMap R' (Sec s' (φ ⁻¹ᵁ U)) a : Γ(X', φ ⁻¹ᵁ U))` using `(Scheme.mem_basicOpen _ _ _ hx).2 hu`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `x' ∈ X'.basicOpen ((X'.presheaf.map (homOfLE (le_top : φ ⁻¹ᵁ U ≤ s' ⁻¹ᵁ ⊤)).op) (s'.app ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R')).inv a))) at h1`. Establish `h2 : x' ∈ X'.basicOpen (s'.app ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R')).inv a))` using `Scheme.basicOpen_restrict X' (homOfLE (le_top : φ ⁻¹ᵁ U ≤ s' ⁻¹ᵁ ⊤)) _ h1`. Establish `h3 : x' ∈ s' ⁻¹ᵁ (Sp R').basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R')).inv a)`. Rewrite using `[Scheme.preimage_basicOpen]`. Conclude with `h2`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : s'.base x' ∈ (Sp R').basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R')).inv a)` using `h3`. Rewrite `h4` using `[basicOpen_eq_of_affine]`. Establish `h2 : s'.base x' ∈ PrimeSpectrum.basicOpen a` using `h4`. Rewrite `h2` using `[hx']`. Conclude with `h2 ha`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : Ideal.map (algebraMap R' (Sec s' (φ ⁻¹ᵁ U))) m ≤ (IsLocalRing.maximalIdeal (X'.presheaf.stalk x')).comap g`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Conclude with `key a ha`. Establish `h1 : (1 : Sec s' (φ ⁻¹ᵁ U)) ∈ (IsLocalRing.maximalIdeal (X'.presheaf.stalk x')).comap g` using `hle (by rw [show Ideal.map (algebraMap R' (Sec s' (φ ⁻¹ᵁ U))) m = ⊤ from htop]; trivial)`.
-
-Rewrite `h1` using `[Ideal.mem_comap, map_one]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 h1 isUnit_one`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_affine_map_ne_top : ∀ (R' : Type) [CommRing R'] (X X' : Scheme.{0}) (s' : X' ⟶ Sp R') (φ : X' ⟶ X), Surjective s' → ∀ m : Ideal R', m.IsMaximal → ∃ U : X.affineOpens, Ideal.map (algebraMap R' (Sec s' (φ ⁻¹ᵁ U.1))) m ≠ ⊤ := by
   intro R' _ X X' s' φ hs m hm

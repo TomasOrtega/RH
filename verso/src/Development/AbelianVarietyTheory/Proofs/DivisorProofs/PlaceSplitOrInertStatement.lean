@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Complement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceSplitOrInert
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 /- English proof (citation)
-Apply `GlobalTheory.KFinLoc.split_or_inert` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPlaceSplitOrInert.lean&line=17#L17)
 -/

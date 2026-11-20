@@ -13,7 +13,7 @@ namespace GlobalTheory.AV.QuadSum
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, add_hom, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem hom_finset_sum {B A : AbVar K} {J : Type} (s : Finset J) (g : J → (B ⟶ A)) :
     Hom.hom (A := B) (B := A) (show B ⟶ A from ∑ i ∈ s, g i) = ∏ i ∈ s, (g i).hom := by
@@ -23,7 +23,7 @@ theorem hom_finset_sum {B A : AbVar K} {J : Type} (s : Finset J) (g : J → (B �
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, add_hom, ih]
 
 /- English proof (translation)
-Unfold `AbVar.lam`. Rewrite using `[mul_comm x y]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem lam_symm {A : AbVar K} (c : Pic A.X.left) {Y : Over (Sp K)} (x y : Y ⟶ A.X) :
     AbVar.lam c x y = AbVar.lam c y x := by
@@ -32,7 +32,7 @@ theorem lam_symm {A : AbVar K} (c : Pic A.X.left) {Y : Over (Sp K)} (x y : Y ⟶
   abel
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (GlobalTheory.T.abelianVarietyMumfordClass_bilinear K A c Y x 1 1 0).2.2.1`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, (GlobalTheory.T.abelianVarietyMumfordClass_bilinear K A c Y x (y a) _ 0).1, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_prod_right {A : AbVar K} (c : Pic A.X.left) {Y : Over (Sp K)} (x : Y ⟶ A.X) {J : Type}
     (s : Finset J) (y : J → (Y ⟶ A.X)) :
@@ -44,7 +44,7 @@ theorem lam_prod_right {A : AbVar K} (c : Pic A.X.left) {Y : Over (Sp K)} (x : Y
     rw [Finset.prod_insert ha, Finset.sum_insert ha, (GlobalTheory.T.abelianVarietyMumfordClass_bilinear K A c Y x (y a) _ 0).1, ih]
 
 /- English proof (translation)
-Rewrite using `[lam_symm, lam_prod_right]`. Conclude with `Finset.sum_congr rfl (fun i _ => lam_symm c y (x i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_prod_left {A : AbVar K} (c : Pic A.X.left) {Y : Over (Sp K)} {J : Type}
     (s : Finset J) (x : J → (Y ⟶ A.X)) (y : Y ⟶ A.X) :
@@ -53,7 +53,7 @@ theorem lam_prod_left {A : AbVar K} (c : Pic A.X.left) {Y : Over (Sp K)} {J : Ty
   exact Finset.sum_congr rfl (fun i _ => lam_symm c y (x i))
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.T.abelianVarietyMumfordClass_bilinear K A c Y (x ^ m) y y n).2.2.2.2, (GlobalTheory.T.abelianVarietyMumfordClass_bilinear K A c Y x y y m).2.2.2.1, smul_smul, mul_comm n m]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_zpow_zpow {A : AbVar K} (c : Pic A.X.left) {Y : Over (Sp K)} (x y : Y ⟶ A.X) (m n : ℤ) :
     AbVar.lam c (x ^ m) (y ^ n) = (m * n) • AbVar.lam c x y := by
@@ -63,9 +63,9 @@ theorem lam_zpow_zpow {A : AbVar K} (c : Pic A.X.left) {Y : Over (Sp K)} (x y : 
 end GlobalTheory.AV.QuadSum
 
 /- English proof (translation)
-Introduce `K _ B A c hc n f m`. Rewrite using `[← (GlobalTheory.T.mumfordClass_symmetric_pullback_quadratic K B A c hc (∑ i, m i • f i) 1).1, QuadSum.hom_finset_sum, QuadSum.lam_prod_left]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[QuadSum.lam_prod_right]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[zsmul_hom, zsmul_hom, QuadSum.lam_zpow_zpow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.AV.QuadSum.pull_sum_smul : ∀ (K : Type) [Field K] (B A : AbVar K) (c : Pic A.X.left), CechPic.pull (Hom.hom (-(𝟙 A))).left c = c → ∀ (n : ℕ) (f : Fin n → (B ⟶ A)) (m : Fin n → ℤ), 2 • CechPic.pull (Hom.hom (A := B) (B := A) (show B ⟶ A from ∑ i, m i • f i)).left c = ∑ i, ∑ j, (m i * m j) • AbVar.lam c (f i).hom (f j).hom := by
   intro K _ B A c hc n f m

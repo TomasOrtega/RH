@@ -23,27 +23,27 @@ section Gen
 variable {X0 : Scheme.{0}} {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) {G G' : Over X0} [GrpObj G] [GrpObj G']
 
 /- English proof (translation)
-The claim follows from `(Category.assoc _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem smT_post' (a : S) (v : overAt x0 (DualNumber S) ⟶ G) (φ : G ⟶ G') :
     smT x0 a (v ≫ φ) = smT x0 a v ≫ φ := (Category.assoc _ _ _).symm
 
 /- English proof (translation)
-Rewrite using `[smT_smT, smT_smT, _root_.mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smT_comm (a b : S) (v : overAt x0 (DualNumber S) ⟶ G) :
     smT x0 a (smT x0 b v) = smT x0 b (smT x0 a v) := by
   rw [smT_smT, smT_smT, _root_.mul_comm]
 
 /- English proof (translation)
-Rewrite using `[smT_comm, smT_post', h0, MonObj.one_comp, smT_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tan_image (q : S) (v : overAt x0 (DualNumber S) ⟶ G) (h0 : smT x0 0 v = 1) (φ : G ⟶ G') [IsMonHom φ] :
     smT x0 0 (smT x0 q (v ≫ φ)) = 1 := by
   rw [smT_comm, smT_post', h0, MonObj.one_comp, smT_one']
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using h0`. Consider the case `succ n ih => rw [Nat.cast_succ, smT_add x0 v h0, ih, smT_unit, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem smT_natCast (v : overAt x0 (DualNumber S) ⟶ G) (h0 : smT x0 0 v = 1) (n : ℕ) :
     smT x0 (n : S) v = v ^ n := by
@@ -52,7 +52,7 @@ theorem smT_natCast (v : overAt x0 (DualNumber S) ⟶ G) (h0 : smT x0 0 v = 1) (
   | succ n ih => rw [Nat.cast_succ, smT_add x0 v h0, ih, smT_unit, pow_succ]
 
 /- English proof (translation)
-Establish `h` using `map_pow (IntRebase.preHom (G := G) v) (𝟙 G) n`. Establish `h2 : IntRebase.preHom (G` using `G) v (𝟙 G) = v := Category.comp_id v`. Rewrite `h` using `[h2]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_id_pow {P : Over X0} (v : P ⟶ G) (n : ℕ) : v ≫ (𝟙 G ^ n) = v ^ n := by
   have h := map_pow (IntRebase.preHom (G := G) v) (𝟙 G) n
@@ -63,7 +63,7 @@ theorem comp_id_pow {P : Over X0} (v : P ⟶ G) (n : ℕ) : v ≫ (𝟙 G ^ n) =
 variable [IsCommMonObj G] [IsCommMonObj G']
 
 /- English proof (translation)
-Set `ph : (overAt x0 (DualNumber S) ⟶ G) →* (overAt x0 (DualNumber S) ⟶ G')` to `{ toFun := fun v => v ≫ φ map_one' := MonObj.one_comp φ map_mul' := fun u w => MonObj.mul_comp u w φ }`. Establish `h : combT x0 v a ≫ φ = ∏ j, smT x0 (a j) (v j) ≫ φ` using `map_prod ph (fun j => smT x0 (a j) (v j)) Finset.univ`. Rewrite using `[h, smT_prod]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← smT_post', smT_comm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem combT_image {m : ℕ} (q : S) (v : Fin m → (overAt x0 (DualNumber S) ⟶ G)) (a : Fin m → S) (φ : G ⟶ G')
     [IsMonHom φ] : smT x0 q (combT x0 v a ≫ φ) = combT x0 (fun j => smT x0 q (v j ≫ φ)) a := by
@@ -78,11 +78,11 @@ theorem combT_image {m : ℕ} (q : S) (v : Fin m → (overAt x0 (DualNumber S) �
   rw [← smT_post', smT_comm]
 
 /- English proof (translation)
-Use extensionality with `j i`. Establish `h1 : smT x0 q (smT x0 q (U' i ≫ F') ≫ F) = U' i`. Rewrite using `[← smT_post', Category.assoc, hF, comp_id_pow, ← smT_natCast x0 _ (hU' i), smT_smT, smT_smT]`. Establish `e : q * q * ((p ^ 2 : ℕ) : S) = 1`. Use `push_cast`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `(q * p + 1) * hq`. Rewrite using `[e, smT_unit]`. Rewrite `h1` using `[hk', combT_image, funext hk, combT_combT x0 U' hU']`. Establish `h2` using `congrFun (huniq i _ _ h1.symm (combT_single x0 U' hU' i).symm) j`. Rewrite using `[Matrix.one_apply, Matrix.mul_apply]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[Pi.single_apply]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_eq_one_of_pair {m : ℕ} (p : ℕ) (q : S) (hq : q * p = 1) (U : Fin m → (overAt x0 (DualNumber S) ⟶ G))
     (U' : Fin m → (overAt x0 (DualNumber S) ⟶ G')) (hU' : ∀ j, smT x0 0 (U' j) = 1)
@@ -109,7 +109,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Use `(hb _ (isTan_kapI _ (tan_image _ q _ (smT_zero_kap w ht) F)) ?_).exists` and prove the remaining obligations. Use `(isEigV_kapI_iff io G' τ _).2 fun a z hz => ?_` and prove the remaining obligations. Establish `h1` using `(isEigV_kapI_iff io G τ (IntRebase.kap ≫ w)).1 (by rw [kapI_kap_assoc]; exact he) a z hz`. Rewrite using `[← smT_post', Category.assoc (IntRebase.kap ≫ w), ← hF, ← Category.assoc (IntRebase.kap ≫ w), h1, ← smT_post', smT_comm]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_coords {V Fr : Type} [CommRing V] [Field Fr] [Algebra V Fr] (io : c.F →+* Fr) {G G' : SAB H (Sp V)}
     (τ : E →+* ℂ) (F : G.G ⟶ G'.G) [IsMonHom F] (hF : ∀ a, G.act.act a ≫ F = F ≫ G'.act.act a) (q : V) {m : ℕ}
@@ -123,23 +123,21 @@ theorem exists_coords {V Fr : Type} [CommRing V] [Field Fr] [Algebra V Fr] (io :
   rw [← smT_post', Category.assoc (IntRebase.kap ≫ w), ← hF, ← Category.assoc (IntRebase.kap ≫ w), h1, ← smT_post', smT_comm]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c T io y y' I I' f F F' p v hp hF hF' hExt _ hFF hl hl'`. Set `_` to `io.toAlgebra`. Introduce `hv`. Take `⟨q, hq⟩` from `hp.exists_left_inv`. Use `choose k hk using fun τ i => exists_coords io τ F hl q (I'.ub τ) (I'.basis τ) (I.ub τ i) (I.tan τ i) (I.eig τ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose k' hk' using fun τ i => exists_coords io τ F' hl' q (I.ub τ) (I.basis τ) (I'.ub τ i) (I'.tan τ i) (I'.eig τ i)`. Use `⟨fun τ => Matrix.of fun j i => k τ i j, fun τ => ?_, fun τ i => ?_⟩` and prove the remaining obligations. Use `Matrix.isUnit_det_of_right_inverse (B := Matrix.of fun j i => k' τ i j) ?_` and prove the remaining obligations. Use `mul_eq_one_of_pair (𝟙 (Sp T.V)) p q hq (fun i => IntRebase.kap ≫ I.ub τ i) (fun i => IntRebase.kap ≫ I'.ub τ i) (fun i => smT_zero_kap _ (I'.tan τ i)) ?_ F F' hFF _ _ (fun i => (isComb_iff _ _ _).1 (hk τ i)) (fun i => (isComb_iff _ _ _).1 (hk' τ i))` and prove the remaining obligations. Introduce `i a b ha hb`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha'` using `(isComb_iff (I'.ub τ) a _).2 ha`. Establish `hb'` using `(isComb_iff (I'.ub τ) b _).2 hb`. Rewrite `ha'`, `hb'` using `[kapI_kap_assoc]`. Conclude with `(I'.basis τ _ (I'.tan τ i) (I'.eig τ i)).unique ha' hb'`. Take `⟨ψ, -, hψ, hg⟩` from `hExt`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu1, hu2⟩` from `I.lift τ i`. Use `choose u' hu1' hu2' using I'.lift τ`. Take `⟨w, hw1, hw2, hw3⟩` from `hv τ i`. Establish `hqp : algebraMap T.V T.Fr q = (p : T.Fr)⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (algebraMap T.V T.Fr), ← map_mul, hq, map_one]`. Establish `hov : u ≫ I.t'.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr))`. Apply `GlobalTheory.IntLie.spMap_frac_cancel (V := T.V)` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← I.m2.cart.1.w, ← Category.assoc, hu2, Category.assoc, Over.w (I.ub τ i)]`. Use `show spMap _ ≫ spMap _ = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.IntLie.spMap_comp₂, GlobalTheory.IntLie.spMap_comp₂]`. Use `show spMap ((dualMap (algebraMap T.V T.Fr)).comp (algebraMap T.V (DualNumber T.V))) = _`. Rewrite using `[GlobalTheory.IntLie.dualMap_alg]`. Establish `h` using `GlobalTheory.IntLie.comb_generic I'.m1 I'.m2 (I'.ub τ) u' hu2' _ (spMap (epsMul (algebraMap T.V T.Fr q)) ≫ u ≫ ψ.left) (by`. Simplify using `only [Over.comp_left, kapI, IntRebase.kap, smT_left, Over.homMk_left, Category.id_comp, Category.assoc]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hψ, ← Category.assoc u, hu2, Category.assoc, ← Category.assoc, ← Category.assoc (spMap _) (spMap _), GlobalTheory.IntLie.spMap_comp₂, GlobalTheory.IntLie.spMap_comp₂, GlobalTheory.IntLie.dualMap_epsMul]) (k τ i) (hk τ i)`. Set `g : I.t'.G.left ⟶ pullback Xo.univ.t.G.hom (xOf y)` to `pullback.lift I.m1.φ I.t'.G.hom I.m1.cart.1.w`. Set `g' : I'.t'.G.left ⟶ pullback Xo.univ.t.G.hom (xOf y')` to `pullback.lift I'.m1.φ I'.t'.G.hom I'.m1.cart.1.w`. Establish `hgg` using `hg g g' (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _) (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)`. Establish `hw : w = u ≫ g`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[hw1, Category.assoc, pullback.lift_fst, hu1]`. Rewrite using `[hw2, Category.assoc, pullback.lift_snd, hov]`. Establish `hg' : g' ≫ pullback.fst _ _ = I'.m1.φ` using `pullback.lift_fst _ _ _`. Establish `hvv : v τ i = (spMap (epsMul (algebraMap T.V T.Fr q)) ≫ u ≫ ψ.left) ≫ I'.m1.φ`.
-
-Rewrite using `[hw3, hqp, hw, ← hg', Category.assoc, Category.assoc, Category.assoc, ← Category.assoc ψ.left, ← hgg, Category.assoc]`. Rewrite `h` using `[funext hu1', ← hvv]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_lattice_onto : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (y y' : IntFr Xo c T io) (I : IntData Xo c T io y.1) (I' : IntData Xo c T io y'.1) (f : Fib Xo (xOf y) ⟶ Fib Xo (xOf y')) (F : I.G.G ⟶ I'.G.G) (F' : I'.G.G ⟶ I.G.G) (p : ℕ) (v : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber T.Fr) ⟶ Xo.univ.t.G.left)), IsUnit (p : T.V) → IsMonHom F → IsMonHom F' → Ext I.m1 I.m2 I'.m1 I'.m2 f F → F ≫ F' = 𝟙 _ ^ (p ^ 2) → F' ≫ F = 𝟙 _ ^ (p ^ 2) → (∀ a, I.G.act.act a ≫ F = F ≫ I'.G.act.act a) → (∀ a, I'.G.act.act a ≫ F' = F' ≫ I.G.act.act a) → letI := io.toAlgebra; (∀ τ j, IsLieImageH p f.left (y.1.u τ j) (v τ j)) → ∃ k : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) T.V, (∀ τ, IsUnit (k τ).det) ∧ ∀ τ i, IsCombAt y'.1.x (y'.1.u τ) (fun j => algebraMap T.V T.Fr (k τ j i)) (v τ i) := by
   intro E _ _ _ H Dw l Xo c T io y y' I I' f F F' p v hp hF hF' hExt _ hFF hl hl'

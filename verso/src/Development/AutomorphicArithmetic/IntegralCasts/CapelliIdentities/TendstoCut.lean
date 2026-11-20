@@ -7,9 +7,9 @@ open scoped Classical
     fun (F : Type) [Field F] [NumberField F] ↦ IsDedekindDomain.FiniteAdeleRing (NumberField.RingOfIntegers F) F
 
 /- English proof (translation)
-Introduce `F _ _ v a`. Use `(Set.finite_singleton v).subset fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Apply `hx` to reduce the goal to its premises. Establish `hne : x ≠ v` using `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq, Pi.single_eq_of_ne hne]`. Conclude with `zero_mem _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi11.aux2 :
     ∀ {F : Type} [inst : Field F] [inst_1 : NumberField F]
@@ -58,13 +58,11 @@ noncomputable def UpperTheory.Reformulated.B.Qi11.sglS :
       ∑ v ∈ A, UpperTheory.Reformulated.B.Qi11.sglV v (1 : IsDedekindDomain.HeightOneSpectrum.adicCompletion F v)
 
 /- English proof (translation)
-Establish `hS : Filter.cofinite ≤ Filter.principal {i | y i ∈ A i}` using `Filter.le_principal_iff.2 y.2`. Set `g : Finset ι → RestrictedProduct R A (Filter.principal {i | y i ∈ A i})` to `fun B => ⟨fun i => if i ∈ B then 0 else y i, fun i hi => by show (if i ∈ B then 0 else y i) ∈ A i split_ifs`. Conclude with `h0 i`. Conclude with `hi⟩`. Set `o : RestrictedProduct R A (Filter.principal {i | y i ∈ A i})` to `⟨fun _ => 0, fun i _ => h0 i⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : Filter.Tendsto g Filter.atTop (nhds o)`. Rewrite using `[RestrictedProduct.isEmbedding_coe_of_principal.tendsto_nhds_iff, tendsto_pi_nhds]`. Introduce `i`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_ge_atTop ({i} : Finset ι)] with B hB`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : i ∈ B` using `hB (Finset.mem_singleton_self i)`. Use `show (0 : R i) = if i ∈ B then 0 else y i`. Rewrite using `[if_pos hi]`. Establish `h1 : f = RestrictedProduct.inclusion R A hS ∘ g`. Use function extensionality and compare the values at `fun B => RestrictedProduct.ext _ _ fun i => hf B i`.
-
-Establish `h2 : z = RestrictedProduct.inclusion R A hS o` using `RestrictedProduct.ext _ _ fun i => hz i`. Rewrite using `[h1, h2]`. Conclude with `((RestrictedProduct.continuous_inclusion hS).tendsto o).comp hg`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Qi11.tendsto_cut {ι : Type*} {R : ι → Type*} [∀ i, Zero (R i)]
     [∀ i, TopologicalSpace (R i)] {A : (i : ι) → Set (R i)} (h0 : ∀ i, (0 : R i) ∈ A i)
@@ -95,11 +93,11 @@ private theorem UpperTheory.Reformulated.B.Qi11.tendsto_cut {ι : Type*} {R : ι
   exact ((RestrictedProduct.continuous_inclusion hS).tendsto o).comp hg
 
 /- English proof (translation)
-Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty => rfl`. Consider the case `insert v A hv ih`. Establish `h : UpperTheory.Reformulated.B.Qi11.sglS (insert v A) = UpperTheory.Reformulated.B.Qi11.sglV v 1 + UpperTheory.Reformulated.B.Qi11.sglS A` using `Finset.sum_insert hv`. Establish `h' : UpperTheory.Reformulated.B.Qi11.sglS (insert v A) w = (Pi.single v 1 : ∀ u, IsDedekindDomain.HeightOneSpectrum.adicCompletion F u) w + UpperTheory.Reformulated.B.Qi11.sglS A w`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h]`. Both sides reduce to the same expression. Rewrite using `[h', ih]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hv]`. Simplify using `[hw]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.Reformulated.B.Qi11.sglS_apply {F : Type} [Field F] [NumberField F]
     (A : Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)))
@@ -122,9 +120,9 @@ private theorem UpperTheory.Reformulated.B.Qi11.sglS_apply {F : Type} [Field F] 
     · simp [hw]
 
 /- English proof (translation)
-Introduce `F _ _ y`. Establish `key` using `UpperTheory.Reformulated.B.Qi11.tendsto_cut (R := fun v => IsDedekindDomain.HeightOneSpectrum.adicCompletion F v) (A := fun v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F) => SetLike.coe (IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers F v)) (fun v …`. Use `key y (0 : UpperTheory.Reformulated.B.Qi11.Af F) (fun w => ?_) (fun B => ((1 - UpperTheory.Reformulated.B.Qi11.sglS B) * y : UpperTheory.Reformulated.B.Qi11.Af F)) fun B w => ?_` and prove the remaining obligations. Both sides reduce to the same expression. Use `show (1 - UpperTheory.Reformulated.B.Qi11.sglS B w) * y w = if w ∈ B then 0 else y w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[UpperTheory.Reformulated.B.Qi11.sglS_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi11.tendsto_fin :
     ∀ {F : Type} [inst : Field F] [inst_1 : NumberField F] (y : UpperTheory.Reformulated.B.Qi11.Af F),

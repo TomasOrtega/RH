@@ -20,11 +20,9 @@ open GlobalTheory.RowEx MeasureTheory
 namespace GlobalTheory.BotAlgI'
 
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX`. Take `⟨Ω, hΩ, H⟩` from `GlobalTheory.T.bottom_triangle_period_expansion hP hI hL hX`. Use `⟨Ω, hΩ, fun t h hh k => ?_⟩` and prove the remaining obligations. Take `⟨n, c, z, hc, hz, he⟩` from `H t h hh k`. Rewrite using `[he, mul_div_cancel_left₀ _ hΩ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hz' : ∀ l, IsAlgebraic ℚ (z l)` using `fun l => by`. Take `⟨δ, t0, Q, P, h', U, e⟩` from `hz l`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.norm_sum_pair_coordinate_algebraic hP hI D δ t0 Q P h' U`. Establish `: ∀ l, (c l * z l) ∈ algebraicClosure ℚ ℂ` using `fun l => mul_mem (mem_algebraicClosure_iff.2 (hc l)) (mem_algebraicClosure_iff.2 (hz' l))`.
-
-Conclude with `mem_algebraicClosure_iff.1 (sum_mem fun l _ => this l)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem classSums'_algebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

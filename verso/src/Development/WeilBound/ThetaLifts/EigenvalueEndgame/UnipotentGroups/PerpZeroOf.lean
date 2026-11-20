@@ -19,7 +19,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 open PositivityTheory.ThKG
 
 /- English proof (translation)
-Introduce `γ hγ h` and use `by simp only [Model.I] congr 1 funext g simpa using ((hT F E σ B n d X W M χX χW om r s r' s' hp).1 Φ hΦ).2.1 1 (one_mem _) γ hγ g h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem I_inv {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
     {r s r' s' : ℕ} (hT : ThetaBasic) (hp : IsPair B M χX χW om r s r' s') {Φ : Fn F n d} (hΦ : Φ ∈ schA F _) :
@@ -30,7 +30,7 @@ theorem I_inv {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Mo
   simpa using ((hT F E σ B n d X W M χX χW om r s r' s' hp).1 Φ hΦ).2.1 1 (one_mem _) γ hγ g h
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' t`. Conclude with `⟨fun Φ hΦ => ⟨(hC F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV t)).1 (weilCondV t) Φ (polData_le t.geo.hM hΦ), I_inv hT (pairV t) (polData_le t.geo.hM hΦ)⟩, fun Φ hΦ => ⟨(hC F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' t)).2 (hS F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' t)) Φ hΦ.2, I_inv hT ( …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem iAut_of (hT : ThetaBasic) (hC : PositivityTheory.ThKF.ICont) (hS : PositivityTheory.ThKCT.SoStab) : IAut := by
   intro F E _ _ _ _ _ σ B a a' G X om om' t
@@ -40,17 +40,15 @@ theorem iAut_of (hT : ThetaBasic) (hC : PositivityTheory.ThKF.ICont) (hS : Posit
       I_inv hT (pairV' t) (polData_le t.geo.hM' hΦ.1)⟩⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' t f hf h1 h2`. Establish `ha` using `sig_isAut hA t hf`. Take `⟨Φ, hΦ, Φ', hΦ', e⟩` from `hf`. Take `⟨c, ⟨μ, 𝓕, hμ, h𝓕⟩, -⟩` from `PositivityTheory.ThKF.unimodularity_holds F E σ t.base.cm _ G.W.J (-1) (fun i j => by simpa using t.geo.hW.skew i j) (PositivityTheory.ThKG.Tow.Levi.det_ne_zero t.geo.hW)`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsTopologicalGroup (UA σ G.W.J) := Subgroup.instIsTopologicalGroupSubtypeMem _`. Take `⟨q1, q2⟩` from `hQ F E σ B a a' G X om om' t μ 𝓕 hμ h𝓕`. Take `⟨a1, a2⟩` from `hA F E σ B a a' G X om om' t`. Establish `c1` using `(a1 Φ hΦ).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c2` using `(a2 Φ' hΦ').1`. Establish `f2 : IntegrableOn (fun x => ‖f x‖ ^ 2) 𝓕 μ`. Use `Integrable.mono' (((q1 Φ hΦ).add (q2 Φ' hΦ')).const_mul 2) (ha.1.norm.pow 2).aestronglyMeasurable (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[e, Real.norm_of_nonneg (sq_nonneg _), Pi.sub_apply, Pi.add_apply]`. Use `norm_sub_le (G.M.I om Φ x) (G.M'.I om' Φ' x)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_nonneg (‖G.M.I om Φ x‖ - ‖G.M'.I om' Φ' x‖), norm_nonneg (G.M.I om Φ x - G.M'.I om' Φ' x)]`. Use `PositivityTheory.ThKF.L2.eq_zero h𝓕 ha.1 ha.2 f2 ?_` and prove the remaining obligations. Establish `p1` using `h1 Φ hΦ μ 𝓕 hμ h𝓕`. Establish `p2` using `h2 Φ' hΦ' μ 𝓕 hμ h𝓕`. Simplify using `only [mul_comm _ (starRingEnd ℂ _)] at p1 p2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `integral_sub (PositivityTheory.ThKF.L2.integrableOn_mul ha.1 c1 f2 (q1 Φ hΦ)) (PositivityTheory.ThKF.L2.integrableOn_mul ha.1 c2 f2 (q2 Φ' hΦ'))` as an intermediate fact. Rewrite `this` using `[p1, p2, sub_zero]`. Rewrite using `[← this]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
-
-Rewrite using `[← mul_sub, ← Pi.sub_apply, ← e]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perpZero_of (hQ : SqInt) (hA : IAut) : PerpZero := by
   intro F E _ _ _ _ _ σ B a a' G X om om' t f hf h1 h2

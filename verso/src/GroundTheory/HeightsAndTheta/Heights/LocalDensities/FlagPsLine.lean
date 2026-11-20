@@ -10,9 +10,9 @@ open Polynomial Matrix
 noncomputable section
 
 /- English proof (translation)
-Establish `h1 : (Finset.univ.filter fun c : Fin N => c.val < i) = Finset.univ.map (Fin.castLEEmb hi)`. Use extensionality with `c`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map, Fin.castLEEmb_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨c.val, h⟩, Fin.ext rfl⟩`. Introduce and unpack `⟨c', rfl⟩`. Conclude with `c'.isLt`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun c : Fin N => c.val < i), h1, Finset.sum_map, Finset.sum_filter]`. Simplify using `only [Fin.castLEEmb_apply, not_lt]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_fin_split_castLE {M : Type*} [AddCommMonoid M] {i N : ℕ} (hi : i ≤ N)
     (f : Fin N → M) :
@@ -29,7 +29,7 @@ theorem sum_fin_split_castLE {M : Type*} [AddCommMonoid M] {i N : ℕ} (hi : i �
   simp only [Fin.castLEEmb_apply, not_lt]
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply]`. Use `ContDiff.sum fun σ _ => ?_` and prove the remaining obligations. Conclude with `(contDiff_prod fun a _ => h _ _).const_smul _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiff_det_of_entries {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {m : Type*} [Fintype m] [DecidableEq m] {M : E → Matrix m m ℂ}
@@ -43,7 +43,7 @@ variable {N : ℕ}
 def sigSign (p : ℕ) (a : Fin N) : ℝ := if a.val < p then 1 else -1
 
 /- English proof (translation)
-Unfold `signatureForm`. Use `congr 1`. Use function extensionality and compare the values at `a`. Unfold `sigSign`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem signatureForm_eq (p : ℕ) :
     signatureForm N p = diagonal fun a => ((sigSign p a : ℝ) : ℂ) := by
@@ -84,13 +84,13 @@ def kerPoly : Matrix (Fin i) (Fin i) ℂ[X] :=
     (topPoly i hi L).adjugate
 
 /- English proof (translation)
-Rewrite using `[signatureForm_eq]`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, Matrix.mul_apply, Matrix.smul_apply, Matrix.map_apply]`. Simplify using `only [Matrix.diagonal_map (map_zero C), Matrix.mul_diagonal]`. Rewrite using `[sum_fin_split_castLE hi]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[sigTop, Matrix.diagonal_map (map_zero C), Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal]`. Both sides reduce to the same expression. Simplify using `only [tailForm, Matrix.of_apply, map_sum, Finset.mul_sum, smul_eq_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with hc`. Establish `h1 : ∀ a : Fin i, c ≠ Fin.castLE hi a` using `fun a h => by`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [rowPoly, colPoly, Matrix.of_apply, h1, if_false, zero_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_eq : rowPoly i hi L * (signatureForm N p).map C * colPoly i hi L =
     topPoly' i hi L * (sigTop p i hi).map C * topPoly i hi L +
@@ -116,7 +116,7 @@ theorem gram_eq : rowPoly i hi L * (signatureForm N p).map C * colPoly i hi L =
     · simp
 
 /- English proof (translation)
-Rewrite using `[sigTop, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Unfold `sigSign`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sigTop_mul_self : sigTop p i hi * sigTop p i hi = 1 := by
   rw [sigTop, diagonal_mul_diagonal, ← diagonal_one]
@@ -128,9 +128,9 @@ theorem sigTop_mul_self : sigTop p i hi * sigTop p i hi = 1 := by
 variable {L}
 
 /- English proof (translation)
-Rewrite using `[det_of_isLowerTriangular _ ?_]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Simplify using `[topPoly, colPoly, hL _ _ (lt_irrefl _)]`. Introduce `a b hab`. Establish `hab' : a < b` using `by simpa using hab`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : Fin.castLE hi a ≠ Fin.castLE hi b` using `fun h => (ne_of_lt hab') (Fin.castLE_injective hi h)`. Establish `h2 : L (Fin.castLE hi a) (Fin.castLE hi b) = 0` using `hL _ _ (by simp only [Fin.lt_def, Fin.val_castLE]; exact fun h => absurd hab' (by`. Rewrite using `[Fin.lt_def]`. Use the proof step `omega))`. Simplify using `[topPoly, colPoly, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_topPoly (hL : ∀ a b : Fin N, ¬ b < a → L a b = 0) : (topPoly i hi L).det = 1 := by
   rw [det_of_isLowerTriangular _ ?_]
@@ -146,9 +146,9 @@ theorem det_topPoly (hL : ∀ a b : Fin N, ¬ b < a → L a b = 0) : (topPoly i 
     simp [topPoly, colPoly, h1, h2]
 
 /- English proof (translation)
-Rewrite using `[det_of_isUpperTriangular ?_]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Simplify using `[topPoly', rowPoly, hL _ _ (lt_irrefl _)]`. Introduce `a b hab`. Establish `hab' : b < a` using `by simpa using hab`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : Fin.castLE hi b ≠ Fin.castLE hi a` using `fun h => (ne_of_lt hab') (Fin.castLE_injective hi h)`. Establish `h2 : L (Fin.castLE hi b) (Fin.castLE hi a) = 0` using `hL _ _ (by simp only [Fin.lt_def, Fin.val_castLE]; exact fun h => absurd hab' (by`. Rewrite using `[Fin.lt_def]`. Use the proof step `omega))`. Simplify using `[topPoly', rowPoly, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_topPoly' (hL : ∀ a b : Fin N, ¬ b < a → L a b = 0) : (topPoly' i hi L).det = 1 := by
   rw [det_of_isUpperTriangular ?_]
@@ -164,11 +164,11 @@ theorem det_topPoly' (hL : ∀ a b : Fin N, ¬ b < a → L a b = 0) : (topPoly' 
     simp [topPoly', rowPoly, h1, h2]
 
 /- English proof (translation)
-Establish `hSS : (sigTop p i hi).map C * (sigTop p i hi).map C = 1`. Rewrite using `[← Matrix.map_mul, sigTop_mul_self]`. Simplify using the standard rewrite rules. Establish `hK : topPoly' i hi L * (sigTop p i hi).map C * kerPoly p i hi L * topPoly i hi L = (tailForm p i hi L).map C`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [kerPoly, Matrix.mul_assoc]`. Use `_ = (tailForm p i hi L).map C := by`. Rewrite using `[hSS, Matrix.mul_one, Matrix.mul_adjugate, Matrix.adjugate_mul, det_topPoly i hi hL, det_topPoly' i hi hL, one_smul, Matrix.one_mul, Matrix.mul_one]`. Establish `hfac : rowPoly i hi L * (signatureForm N p).map C * colPoly i hi L = topPoly' i hi L * (sigTop p i hi).map C * (1 + (X ^ 2 : ℂ[X]) • kerPoly p i hi L) * topPoly i hi L`. Rewrite using `[gram_eq, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.mul_smul, Matrix.smul_mul, hK]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfac, det_mul, det_mul, det_mul, det_topPoly i hi hL, det_topPoly' i hi hL, one_mul, mul_one]`. Rewrite using `[show ((sigTop p i hi).map C).det = C (sigTop p i hi).det from ((C : ℂ →+* ℂ[X]).map_det _).symm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_gram (hL : ∀ a b : Fin N, ¬ b < a → L a b = 0) :
     (rowPoly i hi L * (signatureForm N p).map C * colPoly i hi L).det =
@@ -198,7 +198,7 @@ theorem det_gram (hL : ∀ a b : Fin N, ¬ b < a → L a b = 0) :
 end Poly
 
 /- English proof (translation)
-Rewrite using `[det_one_add_smul]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> simp [coeff_one, ← pow_mul, coeff_mul_X_pow']`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_det_one_add_X_sq_smul {n : Type*} [Fintype n] [DecidableEq n]
     (K : Matrix n n ℂ[X]) :

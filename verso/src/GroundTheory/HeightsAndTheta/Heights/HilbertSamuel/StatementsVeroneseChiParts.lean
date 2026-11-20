@@ -26,7 +26,7 @@ def VeroneseGramMono.Statement : Prop :=
       Matrix.diagonal (fun l => monoNormSq (adtEnum D (2 * n) l)) * (A.map (Int.cast : ℤ → ℝ)).transpose
 
 /- English proof (translation)
-Establish `h` using `Finset.Nat.mem_antidiagonalTuple.mp (((Finset.Nat.antidiagonalTuple (D + 1) 0).equivFin.symm l).2)`. Use function extensionality and compare the values at `i`. Conclude with `(Finset.sum_eq_zero_iff.mp h) i (Finset.mem_univ i)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem adtEnum_zero_eq (D : ℕ) (l : Fin (Finset.Nat.antidiagonalTuple (D + 1) 0).card) :
     adtEnum D 0 l = 0 := by
@@ -36,9 +36,9 @@ theorem adtEnum_zero_eq (D : ℕ) (l : Fin (Finset.Nat.antidiagonalTuple (D + 1)
   exact (Finset.sum_eq_zero_iff.mp h) i (Finset.mem_univ i)
 
 /- English proof (translation)
-Introduce `k`. Establish `hc : (Finset.Nat.antidiagonalTuple (D + 1) (2 * 0)).card = 1`. Rewrite using `[Nat.mul_zero, Finset.Nat.antidiagonalTuple_zero_right, Finset.card_singleton]`. Rewrite using `[map_one]`. Establish `: ∀ l : Fin (Finset.Nat.antidiagonalTuple (D + 1) (2 * 0)).card, (((1 : ℤ) : Veronese.Fld D) * ∏ i, Veronese.t D i ^ adtEnum D (2 * 0) l i) = 1` using `fun l => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[adtEnum_zero_eq D l]`. Simplify using `only [this, Finset.sum_const, Finset.card_univ, Fintype.card_fin, hc, one_smul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 example (D : ℕ) : ∀ k, aeval (Veronese.x D) ((fun _ : Fin 1 => (1 : MvPolynomial (Ix (Idx D)) ℚ)) k) =
     ∑ l : Fin (Finset.Nat.antidiagonalTuple (D + 1) (2 * 0)).card,

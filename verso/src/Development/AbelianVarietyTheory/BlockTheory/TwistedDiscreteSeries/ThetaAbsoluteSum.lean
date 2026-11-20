@@ -89,7 +89,7 @@ def RapidMeas (G : GA D T → ℂ) : Prop :=
   (∀ γ ∈ GQ T, ∀ h, G (γ * h) = G h) ∧ Measurable G ∧ ∀ N : ℕ, ∃ C : ℝ, ∀ h, ‖G h‖ * quotHeight T h ^ N ≤ C
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1.measurable, h.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem rapidMeas_of_rapidDec {G : GA D T → ℂ} (h : RapidDec T G) : RapidMeas T G :=
   ⟨h.1, h.2.1.measurable, h.2.2⟩
@@ -192,14 +192,14 @@ def ThetaGrowthFull : Prop :=
       PairBounds A d ψ om θ μ 𝓕 ∧ LagBound A d ψ om θ μ 𝓕 ∧ TensorBound d ψ θ μ 𝓕
 
 /- English proof (translation)
-Introduce `n` and use `let ⟨A, d, H⟩ := h _ n ⟨A, d, H D rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ThetaGrowth.at (h : ThetaGrowth) (D : D7) : ThetaGrowthAt D := fun n =>
   let ⟨A, d, H⟩ := h _ n
   ⟨A, d, H D rfl⟩
 
 /- English proof (translation)
-Introduce `deg n` and use `let ⟨A, d, H⟩ := h deg n ⟨A, d, fun D hD S T hn ψ χS χT om ho θ hθ μ 𝓕 hμ => (H D hD S T hn ψ χS χT om ho θ hθ μ 𝓕 hμ).1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ThetaGrowthFull.thetaGrowth (h : ThetaGrowthFull) : ThetaGrowth := fun deg n =>
   let ⟨A, d, H⟩ := h deg n
@@ -211,13 +211,13 @@ variable {A d : ℕ} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {om : GA D S
   {θ : InfFam D} {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
 
 /- English proof (translation)
-Simplify using `[semi, semiOn, wordOp]`.
+Simplify using the standard rewrite rules.
 -/
 example (f : WO S T → ℂ) : semi ψ θ S T μ 𝓕 0 f = eLpNorm f 2 (μ.restrict 𝓕) := by
   simp [semi, semiOn, wordOp]
 
 /- English proof (translation)
-The claim follows from `funext fun g => (H.lift_deriv τ X hX f hf ν 𝓖 hν h𝓖 G hG g).deriv`.
+A detailed English derivation is pending.
 -/
 theorem PairBounds.rder_lift (H : PairBounds A d ψ om θ μ 𝓕) {τ : D.what₂.Tau} {X : Matrix (Fin S.rank) (Fin S.rank) ℂ}
     (hX : X ∈ lieAt S τ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) {ν : Measure (GA D T)} {𝓖 : Set (GA D T)}
@@ -226,9 +226,9 @@ theorem PairBounds.rder_lift (H : PairBounds A d ψ om θ μ 𝓕) {τ : D.what�
   funext fun g => (H.lift_deriv τ X hX f hf ν 𝓖 hν h𝓖 G hG g).deriv
 
 /- English proof (translation)
-Take `⟨U, hU, hfU⟩` from `hf.level`. Take `⟨C, hC⟩` from `H.lift_le U hU`. Establish `h1` using `H.semi_ne_top d f hf`. Establish `h2` using `H.weight_ne_top ν 𝓖 hν h𝓖 G hG`. Use `⟨(C * semi ψ θ S T μ 𝓕 d f * weightInt A ν 𝓖 G).toReal, fun g => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `(hC f hf hfU ν 𝓖 hν h𝓖 G hG g).2`. Rewrite `h3` using `[mul_right_comm]`. Establish `h4` using `ENNReal.toReal_mono (ENNReal.mul_ne_top (ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.coe_ne_top h1) h2) ENNReal.ofReal_ne_top) h3`. Rewrite `h4` using `[toReal_enorm, ENNReal.toReal_mul, ENNReal.toReal_ofReal (pow_pos (height_pos S g) A).le]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem PairBounds.modGrowthExp_lift (H : PairBounds A d ψ om θ μ 𝓕) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     {ν : Measure (GA D T)} {𝓖 : Set (GA D T)} (hν : ν.IsHaarMeasure) (h𝓖 : IsFundamentalDomain (GQ T) 𝓖 ν)

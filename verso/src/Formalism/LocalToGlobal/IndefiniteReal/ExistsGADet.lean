@@ -16,24 +16,24 @@ variable {D : D7}
 abbrev sigE (D : D7) : D.host.E →+* D.host.E := (D.sp.cm.sig : D.host.E →+* D.host.E)
 
 /- English proof (translation)
-The claim follows from `star_star a`.
+A detailed English derivation is pending.
 -/
 theorem sigE_sigE (a : D.host.E) : sigE D (sigE D a) = a := star_star a
 
 /- English proof (translation)
-The claim follows from `V.herm.eq (V.frame i) (V.frame j)`.
+A detailed English derivation is pending.
 -/
 theorem gram_herm (V : HSp D) (i j : Fin V.rank) : sigE D (V.gram i j) = V.gram j i :=
   V.herm.eq (V.frame i) (V.frame j)
 
 /- English proof (translation)
-Simplify using `[cA, incA, sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_incA' (a : D.host.E) : cA D (incA D a) = incA D (sigE D a) := by
   simp [cA, incA, sigR, inclR]
 
 /- English proof (translation)
-Simplify using `only [Matrix.map_apply, cA_incA', gram_herm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gramA_herm (V : HSp D) (i j : Fin V.rank) :
     cA D (V.gram.map (incA D) i j) = V.gram.map (incA D) j i := by
@@ -45,7 +45,7 @@ def mkGA (V : HSp D) (M : Matrix (Fin V.rank) (Fin V.rank) (AE D))
   g
 
 /- English proof (translation)
-Establish `: Nonempty (Fin V.rank)` using `⟨⟨0, hn⟩⟩`. Take `⟨u, hu⟩` from `exists_aniso (sigE D) sigE_sigE V.gram (gram_herm V) (gram_det_ne V)`. Use `⟨u, (hsq (sigE D) V.gram u)⁻¹, inv_mul_cancel₀ hu, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, sigma_hsq (sigE D) sigE_sigE V.gram (gram_herm V) u]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem aniso_data (V : HSp D) (hn : 0 < V.rank) :
     ∃ (u : Fin V.rank → D.host.E) (ainv : D.host.E), ainv * hsq (sigE D) V.gram u = 1 ∧ sigE D ainv = ainv := by
@@ -55,9 +55,9 @@ theorem aniso_data (V : HSp D) (hn : 0 < V.rank) :
   rw [map_inv₀, sigma_hsq (sigE D) sigE_sigE V.gram (gram_herm V) u]
 
 /- English proof (translation)
-Take `⟨u, ainv, ha, hainv⟩` from `aniso_data V hn`. Establish `haA : incA D ainv * hsq (cA D) (V.gram.map (incA D)) (fun i => incA D (u i)) = 1`. Rewrite using `[← hsq_map (incA D) (sigE D) (cA D) (fun a => (cA_incA' a).symm), ← map_mul, ha, map_one]`. Establish `hainvA : cA D (incA D ainv) = incA D ainv` using `by rw [cA_incA', hainv]`. Use `set R := proj (cA D) (V.gram.map (incA D)) (fun i => incA D (u i)) (incA D ainv)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM` using `proj_unitary (cA D) cA_cA (V.gram.map (incA D)) (gramA_herm V) (fun i => incA D (u i)) (incA D ainv) haA hainvA x hx`. Establish `hdet` using `det_proj' (cA D) (V.gram.map (incA D)) (fun i => incA D (u i)) (incA D ainv) haA x`. Conclude with `⟨R, mkGA V _ hM (by rw [hdet]; exact hxu), rfl, hdet⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_GA_det (V : HSp D) (hn : 0 < V.rank) (x : AE D) (hx : cA D x * x = 1) (hxu : IsUnit x) :
     ∃ (R : Matrix (Fin V.rank) (Fin V.rank) (AE D)) (g : GA D V), mt V g = 1 + (x - 1) • R ∧ (mt V g).det = x := by
@@ -72,13 +72,13 @@ theorem exists_GA_det (V : HSp D) (hn : 0 < V.rank) (x : AE D) (hx : cA D x * x 
   exact ⟨R, mkGA V _ hM (by rw [hdet]; exact hxu), rfl, hdet⟩
 
 /- English proof (translation)
-Introduce `D V hn e he x hx hsupp`. Take `⟨R, g, hg, hdet⟩` from `exists_GA_det V hn (x : AE D) (by rw [mul_comm]; exact hx) x.isUnit`. Use `⟨g, ?_, ?_, hdet⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[hg, add_sub_cancel_left, Matrix.smul_apply, smul_eq_mul, ← mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `SuppAtU at hsupp`. Rewrite using `[hsupp]`. Establish `hxi : (x : AE D) * ((x⁻¹ : (AE D)ˣ) : AE D) = 1` using `x.mul_inv set xi : AE D := ((x⁻¹ : (AE D)ˣ) : AE D) with hxi_def set x0 : AE D := (x : AE D) with hx0`. Establish `p1 : (e * x0 + (1 - e)) * (e * xi + (1 - e)) = 1`. Take the linear combination `(x0 * xi - x0 - xi + 1) * he.1 + e * hxi`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `p2 : (e * xi + (1 - e)) * (e * x0 + (1 - e)) = 1`. Take the linear combination `(x0 * xi - x0 - xi + 1) * he.1 + e * hxi`. Take `⟨y, hy⟩ : ∃ y : (AE D)ˣ, (y : AE D) = e * x0 + (1 - e)` from `⟨⟨_, _, p1, p2⟩, rfl⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations. Unfold `IsDetAt`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[hy, hdet]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem splitDet : SplitDetP := by
   intro D V hn e he x hx hsupp

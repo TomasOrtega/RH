@@ -31,11 +31,11 @@ def ResLineAt : Prop :=
       ∃ c : Fin X.m, psiRes0 X O S.w g c.succ ≠ 0
 
 /- English proof (translation)
-Introduce `X _ O _ _ _ _ S hS hD hseg j0 g hg hrat`. Use `haveI : (Ideal.span {S.w}).IsMaximal := by`. Rewrite using `[← (IsDiscreteValuationRing.irreducible_iff_uniformizer S.w).mp S.w_irr]`. Conclude with `IsLocalRing.maximalIdeal.isMaximal O`. Use `letI : Field (O ⧸ Ideal.span {S.w}) := Ideal.Quotient.field _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : psiRes0 X O S.w g 0 = 0`. Use `left`. Rewrite using `[(hP X O S hS hD g 0).1 j0, h0, zero_pow (pow_ne_zero _ (Fact.out : X.p.Prime).ne_zero)]`. Use `right`. Take `⟨c, hc⟩` from `hL X O S hS hD g hg hrat h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `e0` using `(hP X O S hS hD g 0).1`. Establish `ec` using `(hP X O S hS hD g c.succ).1`. Simplify using `only [e0, ec]`. Conclude with `(hT X _ _ hD hseg h0 (hP X O S hS hD g 0).2).trans (hT X _ _ hD hseg hc (hP X O S hS hD g c.succ).2).symm`.
+A detailed English derivation is pending.
 -/
 theorem loc4Res_of (hP : ResPowAt) (hT : ResTelAt) (hL : ResLineAt) : LocalResidueBound := by
   intro X _ O _ _ _ _ S hS hD hseg j0 g hg hrat
@@ -56,15 +56,15 @@ theorem loc4Res_of (hP : ResPowAt) (hT : ResTelAt) (hL : ResLineAt) : LocalResid
       (hT X _ _ hD hseg hc (hP X O S hS hD g c.succ).2).symm
 
 /- English proof (translation)
-Introduce `X _ O _ _ _ _ S hS hD g a`. Establish `hf : 1 ≤ X.n'` using `by have := hD.2.2.1; omega`. Establish `hF` using `frobCong (p := X.p) (f := X.n') hf`. Establish `hp0 : Ideal.Quotient.mk (Ideal.span {S.w}) (X.p : O) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, ← (show S.w ^ 2 = (X.p : O) from hS), pow_two]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Establish `key : ∀ (s s' : ℤ), s ≤ s' → ∀ β : WF X.p X.n', Ideal.Quotient.mk (Ideal.span {S.w}) (algebraMap (WF X.p X.n') O (sigPow X.p X.n' s β)) ^ (X.p ^ (s' - s).toNat) = Ideal.Quotient.mk (Ideal.span {S.w}) (algebraMap (WF X.p X.n') O (sigPow X.p X.n' s' β))`. Introduce `s s' hs β`. Take `⟨τ, hτ⟩` from `hF s s' hs β`. Establish `h1` using `congrArg (fun z => Ideal.Quotient.mk (Ideal.span {S.w}) (algebraMap (WF X.p X.n') O z)) hτ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sub, map_pow, map_mul, map_natCast, hp0, zero_mul] at h1`. Conclude with `sub_eq_zero.1 h1`. Prove the components needed by the constructor for the conclusion. Introduce `j`. Use `key 0 ((segStart X.TT j).val : ℤ) (by positivity) (g⁻¹ 0 a)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [sub_zero, Int.toNat_natCast] at this`. Conclude with `this.symm`. Use `key 0 (X.n' : ℤ) (by positivity) (g⁻¹ 0 a)` as an intermediate fact. Simplify using `only [sub_zero, Int.toNat_natCast] at this`. Unfold `psiRes0`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : sigPow X.p X.n' (X.n' : ℤ) = sigPow X.p X.n' 0`. Rewrite using `[sigPow_mod' X.p X.n' (X.n' : ℤ), Int.emod_self]`. Use `show Ideal.Quotient.mk (Ideal.span {S.w}) (algebraMap (WF X.p X.n') O (sigPow X.p X.n' 0 (g⁻¹ 0 a))) ^ (X.p ^ X.n') = Ideal.Quotient.mk (Ideal.span {S.w}) (algebraMap (WF X.p X.n') O (sigPow X.p X.n' 0 (g⁻¹ 0 a)))`. Rewrite using `[this, e]`.
+A detailed English derivation is pending.
 -/
 theorem resPowAt : ResPowAt := by
   intro X _ O _ _ _ _ S hS hD g a
@@ -96,19 +96,19 @@ theorem resPowAt : ResPowAt := by
     rw [this, e]
 
 /- English proof (translation)
-Introduce `X K _ y hD h2 hy hq`. Establish `hn : 0 < X.n'` using `by have := hD.2.2.1; omega`. Establish `hper : ∀ s, y ^ (X.p ^ (s + X.n')) = y ^ (X.p ^ s)`. Introduce `s`. Rewrite using `[pow_add, pow_mul, ← pow_mul, mul_comm, pow_mul, hq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hmod : ∀ s, y ^ (X.p ^ s) = y ^ (X.p ^ (s % X.n'))`. Introduce `s`. Use `conv_lhs => rw [← Nat.mod_add_div s X.n']`. Proceed by induction on `s / X.n' with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ t ih`. Rewrite using `[Nat.mul_succ, ← add_assoc, hper, ih]`. Establish `hnext : ∀ j : Fin (numSeg X.TT), ((segStart X.TT j).val + segG X.TT j) % X.n' = (segNext X.TT j).val`. Introduce `j`. Take `⟨e1, _⟩` from `segG_eq X.TT h2 j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Unfold `cdist`. Establish `h1` using `(segStart X.TT j).isLt`. Establish `h2'` using `(segNext X.TT j).isLt`. Rewrite using `[Nat.add_mod_mod]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (segStart X.TT j).val + ((segNext X.TT j).val + X.n' - (segStart X.TT j).val) = (segNext X.TT j).val + X.n'` using `by omega`. Rewrite using `[this, Nat.add_mod_right, Nat.mod_eq_of_lt h2']`. Use `set A : Fin (numSeg X.TT) → K := fun j => y ^ (X.p ^ (segStart X.TT j).val) with hA`. Establish `hA0 : ∀ j, A j ≠ 0` using `fun j => pow_ne_zero _ hy`. Establish `hP0 : (∏ j, A j) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => hA0 j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpow : ∀ j, A j ^ (X.p ^ segG X.TT j - 1) * A j = A (rot (numSeg X.TT) j)`. Introduce `j`. Establish `hge : 1 ≤ X.p ^ segG X.TT j` using `Nat.one_le_pow _ _ hD.1.pos`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hge]`. Use `show (y ^ (X.p ^ (segStart X.TT j).val)) ^ (X.p ^ segG X.TT j) = y ^ (X.p ^ (segStart X.TT (rot _ j)).val)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_mul, ← pow_add, hmod, hnext j, next_eq]`. Establish `hprod : (∏ j, A j ^ (X.p ^ segG X.TT j - 1)) * ∏ j, A j = ∏ j, A j`. Rewrite using `[← Finset.prod_mul_distrib, Finset.prod_congr rfl fun j _ => hpow j]`. Conclude with `(rot_bij (numSeg X.TT)).prod_comp A`. Conclude with `mul_right_cancel₀ hP0 (by rw [hprod, one_mul])`.
+A detailed English derivation is pending.
 -/
 theorem resTelAt : ResTelAt := by
   intro X K _ y hD h2 hy hq
@@ -148,7 +148,7 @@ theorem resTelAt : ResTelAt := by
   exact mul_right_cancel₀ hP0 (by rw [hprod, one_mul])
 
 /- English proof (translation)
-The claim follows from `loc4Res_of resPowAt resTelAt hL`.
+A detailed English derivation is pending.
 -/
 theorem loc4Res_of_line (hL : ResLineAt) : LocalResidueBound :=
   loc4Res_of resPowAt resTelAt hL

@@ -6,7 +6,7 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CardH1EqCardH0MulCard
 namespace GlobalTheory.Laid
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Hypotheses₂.LocalEuler.localEulerChar_holds`.
+A detailed English derivation is pending.
 -/
 theorem loceuler_holds : ReciprocityTheory.Gal.LocalEulerChar := GlobalTheory.CompanionTheory.Hypotheses₂.LocalEuler.localEulerChar_holds
 

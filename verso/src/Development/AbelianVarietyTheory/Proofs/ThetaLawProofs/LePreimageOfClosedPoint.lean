@@ -23,13 +23,11 @@ section Alg
 variable {O : Type} [CommRing O] {B : Type} [CommRing B] [Algebra O B] {g : ℕ}
 
 /- English proof (translation)
-Use `letI : Algebra (MvPolynomial (Fin g) O) B := π.toRingHom.toAlgebra`. Use `haveI : Algebra.Etale (MvPolynomial (Fin g) O) B := hπ`. Set `ρ : MvPolynomial (Fin g) O →ₐ[O] A` to `φ₁.comp π`. Establish `hρ2 : φ₂.comp π = ρ`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Conclude with `(hs j).symm`. Use `letI : Algebra (MvPolynomial (Fin g) O) A := ρ.toRingHom.toAlgebra`. Set `ψ₁ : B →ₐ[MvPolynomial (Fin g) O] A` to `{ φ₁.toRingHom with commutes' := fun p => rfl }`. Set `ψ₂ : B →ₐ[MvPolynomial (Fin g) O] A` to `{ φ₂.toRingHom with commutes' := fun p => AlgHom.congr_fun hρ2 p }`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ : ⨅ i, J ^ i = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Conclude with `GlobalTheory.eq_of_forall_sub_mem_ideal_pow J fun n => by`. Rewrite using `[sub_zero]`.
-
-Conclude with `Ideal.mem_iInf.1 hx n`. Establish `: ψ₁ = ψ₂` using `Algebra.FormallyUnramified.ext_of_iInf J hJ fun b => Ideal.Quotient.eq.2 (h b)`. Use extensionality with `x`. Conclude with `AlgHom.congr_fun this x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem ext_of_isHausdorff (π : MvPolynomial (Fin g) O →ₐ[O] B) (hπ : π.toRingHom.Etale)
     {A : Type} [CommRing A] [Algebra O A] (J : Ideal A) [IsHausdorff J A] (φ₁ φ₂ : B →ₐ[O] A)
@@ -58,17 +56,17 @@ theorem ext_of_isHausdorff (π : MvPolynomial (Fin g) O →ₐ[O] B) (hπ : π.t
   exact AlgHom.congr_fun this x
 
 /- English proof (translation)
-Use `letI : Algebra (MvPolynomial (Fin g) O) B := π.toRingHom.toAlgebra`. Use `haveI : Algebra.Etale (MvPolynomial (Fin g) O) B := hπ`. Set `A` to `MvPowerSeries (Fin g) O`. Set `ρ : MvPolynomial (Fin g) O →ₐ[O] A` to `MvPolynomial.aeval (fun j => algebraMap O A (e (π (MvPolynomial.X j))) + MvPowerSeries.X j)`. Use `letI : Algebra (MvPolynomial (Fin g) O) A := ρ.toRingHom.toAlgebra`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `J : Ideal A` to `Ideal.span (Set.range MvPowerSeries.X)`. Establish `hf₀ : ((Ideal.Quotient.mkₐ O J).comp ((Algebra.ofId O A).comp e)).comp π = (Ideal.Quotient.mkₐ O J).comp ρ`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `j`. Simplify using `only [AlgHom.coe_comp, Function.comp_apply, Ideal.Quotient.mkₐ_eq_mk, ρ, MvPolynomial.aeval_X, Algebra.ofId_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_comm, Ideal.Quotient.eq, add_sub_cancel_left]`. Conclude with `Ideal.subset_span ⟨j, rfl⟩`. Set `f₀ : B →ₐ[MvPolynomial (Fin g) O] A ⧸ J` to `{ ((Ideal.Quotient.mkₐ O J).comp ((Algebra.ofId O A).comp e)).toRingHom with commutes' := fun p => AlgHom.congr_fun hf₀ p }`. Take `⟨φ', hφ'⟩` from `Algebra.FormallySmooth.exists_mkₐ_comp_eq_of_isAdicComplete (I := J) f₀`. Establish `hc : ∀ p, φ' (π p) = ρ p` using `fun p => φ'.commutes p`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `φ : B →ₐ[O] A` to `{ φ'.toRingHom with commutes' := fun r => by show φ' (algebraMap O B r) = _`. Rewrite using `[← π.commutes, hc, ρ.commutes] }`. Establish `hφ : ∀ b, φ b = φ' b` using `fun _ => rfl`. Establish `hJ : J ≤ RingHom.ker (MvPowerSeries.constantCoeff)`. Rewrite using `[Ideal.span_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `MvPowerSeries.constantCoeff_X i`. Use `⟨φ, fun b => ?_, fun j => ?_⟩` and prove the remaining obligations. Establish `e1 : Ideal.Quotient.mk J (φ' b) = Ideal.Quotient.mk J (algebraMap O A (e b))` using `AlgHom.congr_fun hφ' b`. Rewrite `e1` using `[Ideal.Quotient.eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `hJ e1`. Rewrite `e2` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `e2.trans (MvPowerSeries.constantCoeff_C _)`. Rewrite using `[map_sub, AlgHom.commutes, hφ, hc]`. Simplify using `[ρ]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_expansion (π : MvPolynomial (Fin g) O →ₐ[O] B) (hπ : π.toRingHom.Etale)
     (e : B →ₐ[O] O) :
@@ -114,11 +112,11 @@ theorem exists_expansion (π : MvPolynomial (Fin g) O →ₐ[O] B) (hπ : π.toR
     simp [ρ]
 
 /- English proof (translation)
-Set `v` to `GlobalTheory.mvEvalAdic O J (fun j => ψ (π (MvPolynomial.X j)) - algebraMap O T (e (π (MvPolynomial.X j)))) (fun j => hψ _)`. Establish `hv : ∀ j, v (MvPowerSeries.X j) = ψ (π (MvPolynomial.X j)) - algebraMap O T (e (π (MvPolynomial.X j)))` using `fun j => GlobalTheory.mvEvalAdic_X _ _ _ j`. Establish `hv' : ∀ j, v (MvPowerSeries.X j) ∈ J` using `fun j => hv j ▸ hψ _`. Use `⟨v, hv', ext_of_isHausdorff π hπ J _ _ (fun b => ?_) (fun j => ?_)⟩` and prove the remaining obligations. Use `GlobalTheory.algHom_sub_constantCoeff_mem v hv' (φ b)` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[h₁]`. Establish `h3` using `sub_mem this (hψ b)`. Rewrite `h3` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Use `hv j` as an intermediate fact. Rewrite `this` using `[← h₂, map_sub, map_sub, AlgHom.commutes, AlgHom.commutes, sub_left_inj]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_factor (π : MvPolynomial (Fin g) O →ₐ[O] B) (hπ : π.toRingHom.Etale)
     (e : B →ₐ[O] O) (φ : B →ₐ[O] MvPowerSeries (Fin g) O)
@@ -150,7 +148,7 @@ open GlobalTheory.KeyKa.EtBaseChange
 variable {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V) {T : Type} [CommRing T]
 
 /- English proof (translation)
-Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec w hV (isAffineOpen_top (Spec (CommRingCat.of T))) hw`. Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Use `show Spec.map (w.appLE V ⊤ hw ≫ (Scheme.ΓSpecIso (CommRingCat.of T)).hom) ≫ hV.fromSpec = w`. Rewrite using `[Spec.map_comp, Category.assoc, h, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_valH (w : Sp T ⟶ X) (hw : ⊤ ≤ w ⁻¹ᵁ V) :
     spMap (R := Γ(X, V)) (valH w V hw) ≫ hV.fromSpec = w := by
@@ -161,13 +159,13 @@ theorem spMap_valH (w : Sp T ⟶ X) (hw : ⊤ ≤ w ⁻¹ᵁ V) :
     Category.id_comp]
 
 /- English proof (translation)
-Introduce `_ _` and use `hV.range_fromSpec.subset (Set.mem_range_self _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_preimage (φ : Γ(X, V) →+* T) : ⊤ ≤ (spMap (R := Γ(X, V)) φ ≫ hV.fromSpec) ⁻¹ᵁ V :=
   fun _ _ => hV.range_fromSpec.subset (Set.mem_range_self _)
 
 /- English proof (translation)
-Establish `h` using `spMap_valH hV _ (le_preimage hV φ)`. Rewrite `h` using `[cancel_mono]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valH_spMap (φ : Γ(X, V) →+* T) :
     valH (spMap (R := Γ(X, V)) φ ≫ hV.fromSpec) V (le_preimage hV φ) = φ := by
@@ -176,7 +174,7 @@ theorem valH_spMap (φ : Γ(X, V) →+* T) :
   exact congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R')
     (f' : R' →+* R'') : spMap (f'.comp f) = spMap f' ≫ spMap f := by
@@ -184,7 +182,7 @@ theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (
   rfl
 
 /- English proof (translation)
-Establish `e` using `IsAffineOpen.SpecMap_appLE_fromSpec h (isAffineOpen_top (Spec (CommRingCat.of O))) hV (le_top : V ≤ h ⁻¹ᵁ ⊤)`. Rewrite `e` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Rewrite using `[← e, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fromSpec_comp {O : Type} [CommRing O] (h : X ⟶ Sp O) :
     hV.fromSpec ≫ h = spMap (R' := Γ(X, V))
@@ -196,7 +194,7 @@ theorem fromSpec_comp {O : Type} [CommRing O] (h : X ⟶ Sp O) :
   rfl
 
 /- English proof (translation)
-Introduce `p _` and use `((IsLocalRing.specializes_closedPoint p).map w.continuous).mem_open V.isOpen hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_preimage_of_closedPoint [IsLocalRing T] (w : Sp T ⟶ X)
     (hw : w (IsLocalRing.closedPoint T) ∈ V) : ⊤ ≤ w ⁻¹ᵁ V := fun p _ =>
@@ -207,23 +205,23 @@ end Geo
 open GlobalTheory.KeyKa.EtBaseChange in
 
 /- English proof (translation)
-Introduce `O _ _ X h g z hG hz`. Take `⟨U, hU, V, hV, hx, e, hs⟩` from `hG.exists_isStandardSmoothOfRelativeDimension (z (IsLocalRing.closedPoint O))`. Establish `hU' : U = ⊤`. Establish `h1 : (z ≫ h) (IsLocalRing.closedPoint O) ∈ U` using `(Scheme.Hom.comp_apply z h (IsLocalRing.closedPoint O)).symm ▸ e hx`. Establish `h2` using `le_preimage_of_closedPoint (z ≫ h) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[hz]`. Conclude with `eq_top_iff.2 h2`. Substitute `hU'` using the available equality. Set `a : O →+* Γ(X, V)` to `((Scheme.ΓSpecIso (CommRingCat.of O)).inv ≫ h.appLE ⊤ V le_top).hom`. Establish `ha : hV.fromSpec ≫ h = spMap (R'` using `Γ(X, V)) a := fromSpec_comp hV h`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : RingHom.IsStandardSmoothOfRelativeDimension g a` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of O)).symm.commRingCatIsoToRingEquiv hs`. Take `⟨π₀, hπ1, hπ⟩` from `h2.exists_etale_mvPolynomial`. Use `clear_value a`. Use `letI : Algebra O Γ(X, V) := a.toAlgebra`. Set `π : MvPolynomial (Fin g) O →ₐ[O] Γ(X, V)` to `{ π₀ with commutes' := fun r => RingHom.congr_fun hπ1 r }`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpt : ∀ (T : Type) [CommRing T] [Algebra O T] (w : Sp T ⟶ X), ⊤ ≤ w ⁻¹ᵁ V → w ≫ h = spMap (algebraMap O T) → ∃ ψ : Γ(X, V) →ₐ[O] T, spMap (R` using `Γ(X, V)) ψ.toRingHom ≫ hV.fromSpec = w := by`. Introduce `T _ _ w hw hw'`. Establish `e1` using `spMap_valH hV w hw`. Establish `e2 : spMap ((valH w V hw).comp a) = spMap (algebraMap O T)`. Rewrite using `[spMap_comp, ← ha, ← Category.assoc, e1, hw']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `e3 : (valH w V hw).comp a = algebraMap O T` using `congrArg CommRingCat.Hom.hom (Spec.map_injective e2)`. Conclude with `⟨⟨valH w V hw, fun r => RingHom.congr_fun e3 r⟩, e1⟩`. Take `⟨ε, rfl⟩` from `hpt O z (le_preimage_of_closedPoint z hx) (hz.trans (Spec.map_id _).symm)`. Take `⟨φ, hφ₁, hφ₂⟩` from `exists_expansion π hπ ε`. Establish `hcl : (spMap (R` using `Γ(X, V)) φ.toRingHom ≫ hV.fromSpec) (IsLocalRing.closedPoint (MvPowerSeries (Fin g) O)) = (spMap (R := Γ(X, V)) ε.toRingHom ≫ hV.fromSpec) (IsLocalRing.closedPoint O) := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg hV.fromSpec (PrimeSpectrum.ext (Ideal.ext fun b => ?_))` and prove the remaining obligations. Use `show φ b ∈ IsLocalRing.maximalIdeal _ ↔ ε b ∈ IsLocalRing.maximalIdeal _`. Rewrite using `[IsLocalRing.mem_maximalIdeal, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff, hφ₁]`. Use `⟨spMap (R := Γ(X, V)) φ.toRingHom ≫ hV.fromSpec, hcl, ?_, ⟨V, fun j => π (MvPolynomial.X j) - algebraMap O _ (ε (π (MvPolynomial.X j))), le_preimage hV _, fun j => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ha, ← spMap_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrArg spMap φ.comp_algebraMap`. Rewrite using `[valT_eq _ _ (le_preimage hV _), valH_spMap]`. Conclude with `hφ₂ j`. Introduce `T _ _ _ _ w hw hw'`. Rewrite `hw'` using `[hcl]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨ψ, rfl⟩` from `hpt T w (le_preimage_of_closedPoint w (hw' ▸ hx)) hw`. Establish `h3` using `congrArg PrimeSpectrum.asIdeal (hV.fromSpec.isOpenEmbedding.injective hw')`. Take `⟨v, hv, rfl⟩` from `exists_factor π hπ ε φ hφ₁ hφ₂ (IsLocalRing.maximalIdeal T) ψ fun b => by`. Establish `h4 : b - algebraMap O _ (ε b) ∈ (IsLocalRing.maximalIdeal O).comap ε.toRingHom` using `by show ε (b - algebraMap O _ (ε b)) ∈ IsLocalRing.maximalIdeal O`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h5 : ψ (b - algebraMap O _ (ε b)) ∈ IsLocalRing.maximalIdeal T` using `h3.ge h4`. Rewrite `h5` using `[map_sub, AlgHom.commutes]`. Then use the resulting hypothesis. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← spMap_comp]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_formal_chart : ∀ (O : Type) [CommRing O] [IsLocalRing O] (X : Scheme.{0}) (h : X ⟶ Sp O) (g : ℕ) (z : Sp O ⟶ X), SmoothOfRelativeDimension g h → z ≫ h = 𝟙 _ → ∃ θ : Sp (MvPowerSeries (Fin g) O) ⟶ X, θ (IsLocalRing.closedPoint (MvPowerSeries (Fin g) O)) = z (IsLocalRing.closedPoint O) ∧ θ ≫ h = spMap (algebraMap O (MvPowerSeries (Fin g) O)) ∧ (∃ (V : X.Opens) (t : Fin g → Γ(X, V)), ⊤ ≤ θ ⁻¹ᵁ V ∧ ∀ i, valT (T := (MvPowerSeries (Fin g) O)) θ V (t i) = MvPowerSeries.X i) ∧ (∀ (T : Type) [CommRing T] [IsLocalRing T] [Algebra O T] [IsAdicComplete (IsLocalRing.maximalIdeal T) T] (w : Sp T ⟶ X), w ≫ h = spMap (algebraMap O T) → w (IsLocalRing.closedPoint T) = θ (IsLocalRing.closedPoint (MvPowerSeries (Fin g) O)) → ∃ e : (MvPowerSeries (Fin g) O) →ₐ[O] T, (∀ i, e (MvPowerSeries.X i) ∈ IsLocalRing.maximalIdeal T) ∧ spMap e.toRingHom ≫ θ = w) := by
   intro O _ _ X h g z hG hz

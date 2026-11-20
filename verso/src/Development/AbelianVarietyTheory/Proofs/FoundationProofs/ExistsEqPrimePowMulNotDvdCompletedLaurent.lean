@@ -6,11 +6,11 @@ open GlobalTheory.K5
 namespace GlobalTheory.K5.Basic
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `AdicCompletion.mk_surjective (pI p) (Lau p) x`. Take `⟨a, ha⟩` from `exists_not_dvd p s hx`. Use `⟨a, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨z, hz⟩`. Apply `ha a le_rfl` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1` using `congrArg (AdicCompletion.evalₐ (pI p) a) hz`. Rewrite `h1` using `[AdicCompletion.evalₐ_mk, map_mul, map_pow, map_natCast, ← map_natCast (Ideal.Quotient.mk (pI p ^ a)), ← map_pow]`. Establish `h2 : Ideal.Quotient.mk (pI p ^ a) ((p : Lau p) ^ a) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, mem_pI_pow]`. Rewrite `h1` using `[h2, zero_mul, Ideal.Quotient.eq_zero_iff_mem, mem_pI_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_not_prime_pow_dvd_completedLaurent (p : ℕ) [Fact p.Prime] (x : O0 p) (hx : x ≠ 0) :
     ∃ a : ℕ, ¬ (p : O0 p) ^ a ∣ x := by
@@ -28,7 +28,7 @@ theorem exists_not_prime_pow_dvd_completedLaurent (p : ℕ) [Fact p.Prime] (x : 
   exact h1
 
 /- English proof (translation)
-Introduce `p _ x hx`. Take `⟨a, ha⟩` from `exists_not_prime_pow_dvd_completedLaurent p x hx`. Establish `hfin : FiniteMultiplicity (p : O0 p) x` using `⟨a, fun h => ha ((pow_dvd_pow _ (Nat.le_succ a)).trans h)⟩`. Take `⟨y, hy, hnd⟩` from `hfin.exists_eq_pow_mul_and_not_dvd`. Conclude with `⟨_, y, hy, hnd⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_prime_pow_mul_not_dvd_completedLaurent : ∀ (p : ℕ) [Fact p.Prime], ∀ x : O0 p, x ≠ 0 →
     ∃ (k : ℕ) (y : O0 p), x = (p : O0 p) ^ k * y ∧ ¬ (p : O0 p) ∣ y := by

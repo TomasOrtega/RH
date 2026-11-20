@@ -16,9 +16,9 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [DiscreteTop
   {ι : Type*} {P : Rep.{u} k G} {A : ι → Rep.{u} k G}
 
 /- English proof (translation)
-Use `homologyMap_pi_bijective (fun i => cochainsMapAlong (MonoidHom.id G) continuous_id (p i)) (fun m => ⟨fun f f' h => ?_, fun F => ?_⟩) n` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Apply `hp.1` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `congrFun (congrArg Subtype.val (congrFun h i)) g`. Use `⟨⟨fun g => Function.surjInv hp.2 (fun i => (F i).1 g), IsLocallyConstant.of_discrete _⟩,` and prove the remaining obligations. Use function extensionality and compare the values at `fun i => Subtype.ext (funext fun g => ?_)⟩`. Conclude with `congrFun (Function.surjInv_eq hp.2 (fun i => (F i).1 g)) i`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem cohomology_pi_bijective (p : ∀ i, P ⟶ A i)
     (hp : Function.Bijective fun (x : P) (i : ι) => (p i).hom x) (n : ℕ) :
@@ -65,7 +65,7 @@ variable {k G X : Type u} [CommRing k] [Group G] [MulAction G X]
 include hρ in
 
 /- English proof (translation)
-Use `hρ.apply_eq g h` as an intermediate fact. Rewrite `this` using `[hg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem _root_.GroundTheory.Global.PermutesFactors.apply_base_eq {g : G} (hg : g • x₀ = x₀) {f f' : ∀ x, M x}
     (h : f x₀ = f' x₀) : ρ g f x₀ = ρ g f' x₀ := by
@@ -96,7 +96,7 @@ theorem stabRep_apply (d : D) (a : M x₀) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[stabRep_apply]`. Conclude with `hρ.apply_base_eq ((hD d).1 d.2) (Pi.single_eq_same x₀ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_base_eq_stabRep (d : D) (f : ∀ x, M x) :
     ρ d f x₀ = stabRep ρ hρ x₀ D hD d (f x₀) := by
@@ -141,17 +141,15 @@ theorem toCoindLinear_apply (f : ∀ x, M x) (h : G) :
 variable [MulAction.IsPretransitive G X]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `f hf`. Use function extensionality and compare the values at `y`. Take `⟨g, rfl⟩` from `MulAction.exists_smul_eq G x₀ y`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Establish `h0 : ρ g⁻¹ f x₀ = 0` using `congrFun (congrArg Subtype.val hf) g⁻¹`. Use `hρ g (ρ g⁻¹ f) x₀ h0` as an intermediate fact. Rewrite `this` using `[Representation.self_inv_apply]`. Then use the resulting hypothesis. Introduce `F classical`. Set `r : X → G` to `fun y => (MulAction.exists_smul_eq G x₀ y).choose`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `⟨fun y => ρ (r y) (Pi.single x₀ (F.1 (r y)⁻¹)) y, Subtype.ext (funext fun h => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ h (fun y => ρ (r y) (Pi.single x₀ (F.1 (r y)⁻¹)) y) x₀ = F.1 h`. Use `set y := h⁻¹ • x₀ with hy`. Establish `hry : r y • x₀ = y` using `(MulAction.exists_smul_eq G x₀ y).choose_spec`. Establish `hhy : h • y = x₀` using `by rw [hy, smul_inv_smul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ {z : X} (hz : h • y = z) {f f' : ∀ x, M x}, f y = f' y → ρ h f z = ρ h f' z`. Introduce `z hz f f' hff'`. Substitute `hz` using the available equality. Conclude with `hρ.apply_eq h hff'`. Use `(key hhy (f := fun z => ρ (r z) (Pi.single x₀ (F.1 (r z)⁻¹)) z) (f' := ρ (r y) (Pi.single x₀ (F.1 (r y)⁻¹))) rfl).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Establish `hd : h * r y ∈ D` using `(hD _).2 (by rw [mul_smul, hry, hhy])`. Establish `h1` using `apply_base_eq_stabRep hρ hD ⟨h * r y, hd⟩ (Pi.single x₀ (F.1 (r y)⁻¹))`. Simplify using `only [Pi.single_eq_same] at h1`. Rewrite using `[h1, ← F.2 ⟨h * r y, hd⟩ (r y)⁻¹]`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toCoindLinear_bijective : Function.Bijective (toCoindLinear hρ hD) := by
   constructor
@@ -215,7 +213,7 @@ instance isDiscreteRep_coind_stabRep :
   isDiscreteRep_coind U _
 
 /- English proof (translation)
-Establish `h : orbitProj hρ hU = (Rep.resFunctor (U : Subgroup G).subtype).map (orbitCoindIso hρ hU).hom ≫ coindEvalOne (U : Subgroup G) (Rep.of (stabRep ρ hρ x₀ (U : Subgroup G) hU))`. Use extensionality with `f`. Express the relevant statement in the definitionally equal form `f x₀ = ρ 1 f x₀`. Rewrite using `[map_one, Module.End.one_apply]`. Rewrite using `[← cohomologyMapAlong_id_eq_cohomologyMap, shapiroMap_eq, ← cohomologyMapAlong_comp, ← h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

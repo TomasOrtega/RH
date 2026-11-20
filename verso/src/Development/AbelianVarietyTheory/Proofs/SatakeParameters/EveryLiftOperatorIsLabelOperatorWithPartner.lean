@@ -33,26 +33,26 @@ section Zero
 variable {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} (R : RealDat D A Ks)
 
 /- English proof (translation)
-The claim follows from `Finsupp.sum_zero_index`.
+A detailed English derivation is pending.
 -/
 theorem hk_zero (V : HSp D) (P : Pl D.host.E) : hk V P 0 = 0 := Finsupp.sum_zero_index
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[postOn]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem postOn_zero (V : HSp D) {S} (M : DSModel V S) (T : MMap M) : postOn M 0 T = 0 := by
   ext v
   simp [postOn]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Conclude with `Finsupp.sum_zero_index`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem hkF_zero (V : HSp D) {W : Type} [AddCommGroup W] [Module ℂ W] (P : Pl D.host.E) (F : Bridge.Gf V → W) : hkF V P 0 F = 0 := by
   funext g
   exact Finsupp.sum_zero_index
 
 /- English proof (translation)
-Use `(hM.HV j t).1 ?_` and prove the remaining obligations. Rewrite using `[hh P hP 0 y, map_zero]`. Conclude with `hkF_zero _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ops_zero (hM : R.IsModels) (j : Fin D.R.m) (t : T) (P : Pl D.host.E) (hP : Good R t P)
     (h : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ (R.HV j t).H) (hh : IsOpsV R j t h) (y : (R.HV j t).H) : h P 0 y = 0 := by
@@ -61,9 +61,9 @@ theorem ops_zero (hM : R.IsModels) (j : Fin D.R.m) (t : T) (P : Pl D.host.E) (hP
   exact hkF_zero _ _ _
 
 /- English proof (translation)
-Introduce `y y' hy`. Establish `h0 : y' = 0`. Use `(hM.HV j t).1 ?_` and prove the remaining obligations. Rewrite using `[hy, map_zero]`. Conclude with `hkF_zero _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (R.thG j t) y' = 0` using `by rw [h0]; exact (R.thG j t).map_zero`. Establish `e2 : (R.HW j (sg0 D A)).e ((R.thG j t) y') = 0` using `by rw [e1]; exact (R.HW j (sg0 D A)).e.map_zero`. Use `e2.trans ?_` and prove the remaining obligations. Rewrite using `[hk_zero]`. Conclude with `(postOn_zero _ _ _).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem match_zero (hM : R.IsModels) (j : Fin D.R.m) (t : T) (P : Pl D.host.E) : MatchW R j t P 0 0 := by
   intro y y' hy
@@ -78,7 +78,7 @@ theorem match_zero (hM : R.IsModels) (j : Fin D.R.m) (t : T) (P : Pl D.host.E) :
   exact (postOn_zero _ _ _).symm
 
 /- English proof (translation)
-Rewrite using `[ops_zero R hM j t P hP h hh, ho, LinearMap.zero_apply]`. Conclude with `(R.jV j t).map_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem op_zero (hM : R.IsModels) (j : Fin D.R.m) (t : T) (P : Pl D.host.E) (hP : Good R t P)
     (o : Module.End D.what₂.LL (A.MtCSD j t).Forms) (ho : o = 0)
@@ -94,13 +94,13 @@ section Cases
 variable {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} (R : RealDat D A Ks)
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.GoodPrimes.good_primes R F core.lev).2.2.2 core.fam t P P.2).1`.
+A detailed English derivation is pending.
 -/
 theorem split_good (F : Face D A) (core : Core R F) (t : T) (P : A.ok t) : Good R t (R.pl P) :=
   ((GlobalTheory.GoodPrimes.good_primes R F core.lev).2.2.2 core.fam t P P.2).1
 
 /- English proof (translation)
-Take `⟨z, hz, -⟩` from `GlobalTheory.T.thetaLift_transfer_heckePoly_splitPrime R F core hS j t P`. Conclude with `⟨R.pl P, Finsupp.single (splitLab (Vc D j).rank k) 1, splitC (Wc D j).rank (z k), split_good R F core t P, fun h hh x => (GlobalTheory.SplitHeckeLabel.split_ops R F core.lev core.fam core.models).2 j t h hh P k hk x, hz k hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem split_low (F : Face D A) (core : Core R F) (hS : SchurAll R) (j : Fin D.R.m) (t : T) (P : A.ok t) (k : ℕ)
     (hk : k ≤ (Vc D j).rank) :
@@ -111,7 +111,7 @@ theorem split_low (F : Face D A) (core : Core R F) (hS : SchurAll R) (j : Fin D.
     fun h hh x => (GlobalTheory.SplitHeckeLabel.split_ops R F core.lev core.fam core.models).2 j t h hh P k hk x, hz k hk⟩
 
 /- English proof (translation)
-Establish `h0 : A.heckeL j t (P, k) = 0` using `(core.fam.degL j t P).2 k (not_le.1 hk)`. Establish `hg` using `split_good R F core t P`. Use `⟨R.pl P, 0, 0, hg, fun h hh x => ?_, match_zero R core.models j t _⟩` and prove the remaining obligations. Conclude with `op_zero R core.models j t (R.pl P) hg (A.heckeL j t (P, k)) h0 h hh x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem split_high (F : Face D A) (core : Core R F) (j : Fin D.R.m) (t : T) (P : A.ok t) (k : ℕ)
     (hk : ¬ k ≤ (Vc D j).rank) :
@@ -129,11 +129,11 @@ section Inert
 variable {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} (R : RealDat3 D A3 Ks) (F : Face3 D A3)
 
 /- English proof (translation)
-Take `⟨hCore, -, hGoodI, -, -, -, -⟩` from `GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation R F hC`. Establish `core` using `hCore hEx`. Take `⟨hg, hconj⟩` from `hGoodI t Q Q.2`. Establish `two` using `GlobalTheory.T.twoSidedHeckePartner_inertPrime hH R.toRealDat F.lv2 hI core hS t (R.plI Q) hg hconj (GlobalTheory.T.hyperspecialFixesAllChainVacua_at_inert_prime R F hC t _ hg hconj)`. Take `⟨cW, hW⟩` from `(two.2 j).1 (Finsupp.single (GlobalTheory.Hk3.labIn (Vc D j).rank s) 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨R.plI Q, Finsupp.single (GlobalTheory.Hk3.labIn (Vc D j).rank s) 1, cW, hg, fun h hh x => ?_, hW⟩` and prove the remaining obligations. Establish `hty : ∀ i : A3.okI t × List ℕ, Formalism.L2.Col.InertTypeOk (Vc D j).rank i.2 → Good R.toRealDat t (R.plI i.1) ∧ conjPl (R.plI i.1) = R.plI i.1 ∧ (GlobalTheory.Hk3.labIn (Vc D j).rank i.2).Pairwise (fun a b => b ≤ a)`. Introduce `i hi`. Take `⟨g1, g2⟩` from `hGoodI t i.1 i.1.2`. Conclude with `⟨g1, g2, ((GlobalTheory.T.selfDual_antitone_list_iff_inertPrimeHeckeExponents (Vc D j).rank _).2 ⟨i.2, hi.2.2, hi.1, hi.2.1, rfl⟩).2.1⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `(GlobalTheory.T.inertHeckeOperators_lifts_rational_selfAdjoint_labels R.toRealDat F.lv2 core.lev core.fam core.models j t (A3.okI t × List ℕ) (fun i => R.plI i.1) (fun i => GlobalTheory.Hk3.labIn (Vc D j).rank i.2) (A3.heckeLI j t) (fun i => Formalism.L2.Col.InertTypeOk (Vc D j). …`.
+A detailed English derivation is pending.
 -/
 theorem inert_valid (hH : HoweUnram) (hI : GlobalTheory.Chain.LiftInteg D) (hC : R.WeakCharacterisation F) (hEx : R.toRealDat.ExAt)
     (hS : SchurAll R.toRealDat) (j : Fin D.R.m) (t : T) (Q : A3.okI t) (s : List ℕ)
@@ -158,7 +158,7 @@ theorem inert_valid (hH : HoweUnram) (hI : GlobalTheory.Chain.LiftInteg D) (hC :
     (hC.inert.hL j t).some (Q, s) hs).2.2.2 h hh x
 
 /- English proof (translation)
-Take `⟨hCore, -, hGoodI, -, -, -, -⟩` from `GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation R F hC`. Establish `core` using `hCore hEx`. Take `⟨hg, -⟩` from `hGoodI t Q Q.2`. Use `⟨R.plI Q, 0, 0, hg, fun h hh x => ?_, match_zero R.toRealDat core.models j t _⟩` and prove the remaining obligations. Conclude with `op_zero R.toRealDat core.models j t (R.plI Q) hg (A3.heckeLI j t (Q, s)) h0 h hh x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem inert_vanish (hC : R.WeakCharacterisation F) (hEx : R.toRealDat.ExAt) (j : Fin D.R.m) (t : T) (Q : A3.okI t) (s : List ℕ)
     (h0 : A3.heckeLI j t (Q, s) = 0) :
@@ -174,13 +174,11 @@ theorem inert_vanish (hC : R.WeakCharacterisation F) (hEx : R.toRealDat.ExAt) (j
 end Inert
 
 /- English proof (translation)
-Introduce `hH D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hI hC hEx hS hJ j t`. Establish `core` using `(GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation R F hC).1 hEx`. Establish `key : ∀ i : (A3.liftI j t).OpIx, ∃ (pl : Pl D.host.E) (cV cW : List ℤ →₀ ℂ), Good R.toRealDat t pl ∧ (∀ h, IsOpsV R.toRealDat j t h → ∀ x, R.jV j t ((A3.liftI j t).opAll i x) = h pl cV (R.jV j t x)) ∧ MatchW R.toRealDat j t pl cV cW`. Introduce and unpack `(⟨P, k⟩ | ⟨Q, s⟩)`. Distinguish the cases in `hk : k ≤ (Vc D j).rank`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Conclude with `split_low R.toRealDat F.lv2 core hS j t P k hk`. Conclude with `split_high R.toRealDat F.lv2 core j t P k hk`. Break down `hJ.L j t Q s with h0 | ⟨s', hs', he⟩` into its components or cases. Conclude with `inert_vanish R F hC hEx j t Q s h0`. Establish `hrank : A3.A.r + A3.A.t = (Vc D j).rank` using `(R.B.rankL j).symm`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hs'` using `[hrank]`. Take `⟨pl, cV, cW, g, o, m⟩` from `inert_valid R F hH hI hC hEx hS j t Q s' hs'`. Use `⟨pl, cV, cW, g, fun h hh x => ?_, m⟩` and prove the remaining obligations. Establish `e : (A3.liftI j t).opAll (Sum.inr (Q, s)) = A3.heckeLI j t (Q, s')` using `he`. Rewrite using `[e]`.
-
-Conclude with `o h hh x`. Use `choose pl cV cW h1 h2 h3 using key`. Conclude with `⟨pl, cV, cW, ⟨h1, fun h hh i x => h2 i h hh x, h3⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem every_op_label : HoweUnram → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), GlobalTheory.Chain.LiftInteg D → R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → InertJunk A3 → ∀ j t, ∃ pl cV cW, LiftDict R j t pl cV cW := by
   intro hH D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hI hC hEx hS hJ j t

@@ -33,7 +33,7 @@ variable (hP : IsPeriod (Fu.Di i) (fun j => Formalism.L2.PjFree.relab c σ (e j)
 include hP hy hx
 
 /- English proof (translation)
-Take `⟨v₀, h1, rfl⟩` from `exists_lift Z.m (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ y) v (by rw [hv.1, ← hx, Category.assoc])`. Take `⟨w, hw, -⟩` from `(isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ Fu i P hP).2.2 _ ((tan_iff Z.m0.toSABMap hy h1).2 ((tan_iff Z.m hx h1).1 hv))`. Conclude with `⟨w, v₀, h1, rfl, hw⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_dir {v : Sp (DualNumber ℂ) ⟶ Z.t.G.left} (hv : IsTanAtG Z.t x v) : ∃ w, Lifts Z P y w v := by
   obtain ⟨v₀, h1, rfl⟩ := exists_lift Z.m (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ y) v
@@ -43,9 +43,9 @@ theorem exists_dir {v : Sp (DualNumber ℂ) ⟶ Z.t.G.left} (hv : IsTanAtG Z.t x
   exact ⟨w, v₀, h1, rfl, hw⟩
 
 /- English proof (translation)
-Use `choose u h1 h2 h3 using hW`. Take `⟨u', h1', rfl, h3'⟩` from `hw`. Take `rfl : v = fun k => u k ≫ Z.m.φ` from `funext fun k => (h2 k).symm`. Establish `h4` using `(comb_iff Z.m0.toSABMap hy h1 a h1').2 ((comb_iff Z.m hx h1 a h1').1 h)`. Establish `h5` using `(DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ g _ Fu i P hP n _ W h3 a _).1 h4`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ Fu i P hP`. Conclude with `(ht.2.2 _ (ht.1 _ _ h3')).unique h3' h5`.
+A detailed English derivation is pending.
 -/
 theorem eq_sum_of_comb {n : ℕ} {v : Fin n → (Sp (DualNumber ℂ) ⟶ Z.t.G.left)} {W : Fin n → Fin g → ℂ}
     (hW : ∀ k, Lifts Z P y (W k) (v k)) {v' : Sp (DualNumber ℂ) ⟶ Z.t.G.left} {w : Fin g → ℂ} (hw : Lifts Z P y w v')
@@ -59,11 +59,11 @@ theorem eq_sum_of_comb {n : ℕ} {v : Fin n → (Sp (DualNumber ℂ) ⟶ Z.t.G.l
   exact (ht.2.2 _ (ht.1 _ _ h3')).unique h3' h5
 
 /- English proof (translation)
-Rewrite using `[← (Pi.basisFun ℂ (Fin g)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `ht` using `isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ Fu i P hP`. Take `⟨v, hv, -⟩` from `ht.2.1 (Pi.basisFun ℂ (Fin g) j)`. Establish `he` using `(isEigAt_iff_of_isDerivAt0 E H Dw l Xo c σ g e Fu i P hP _ v (e j).1 hv).2 (fun k hk => by`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `rfl : k = j := by`. Assume the negation of the conclusion as `hne`. Conclude with `hk (by simp [hne])`. Use the proof step `rfl)`. Establish `htan` using `ht.1 _ _ hv`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v₀, h1, rfl⟩` from `exists_lift Z.m0.toSABMap (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ y) v (by rw [htan.1, ← hy, Category.assoc])`. Take `⟨a, ha, -⟩` from `f.basis (e j).1 (v₀ ≫ Z.m.φ) ((tan_iff Z.m hx h1).2 ((tan_iff Z.m0.toSABMap hy h1).1 htan)) fun a => (eig_iff Z.m h1 a _).2 ((eig_iff Z.m0.toSABMap h1 a _).1 (he a))`. Rewrite using `[eq_sum_of_comb hP hy hx (W := fun k => W ⟨(e j).1, k⟩) (fun k => hW ⟨_, k⟩) ⟨v₀, h1, rfl, hv⟩ ha]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_eq_top (f : EigFrame Z σ x) {W : Letter Dw → Fin g → ℂ} (hW : ∀ z, Lifts Z P y (W z) (f.v z.1 z.2)) :
     ⊤ ≤ Submodule.span ℂ (Set.range W) := by
@@ -85,7 +85,7 @@ theorem span_eq_top (f : EigFrame Z σ x) {W : Letter Dw → Fin g → ℂ} (hW 
   exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `linearIndependent_of_top_le_span_of_card_eq_finrank (span_eq_top hP hy hx f hW) (by rw [← Fintype.card_congr e]; simp)`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent (f : EigFrame Z σ x) {W : Letter Dw → Fin g → ℂ}
     (hW : ∀ z, Lifts Z P y (W z) (f.v z.1 z.2)) : LinearIndependent ℂ W :=
@@ -97,15 +97,13 @@ end GlobalTheory.ShFam.Hor.Chg
 namespace GlobalTheory.ShFam.Hor
 
 /- English proof (translation)
-Introduce and unpack `E _ _ _ H Dw l Xo c O _ β Z σ g e Fu ⟨x, f⟩ ⟨x', f'⟩ i Q ⟨P, W, y, hP, hy, hyx, hW, hQ⟩ hxx`. Take `rfl : x = x'` from `hxx`. Establish `hx : y ≫ Z.jQ ≫ pullback.fst _ _ = x.1 ≫ genι Z` using `by rw [← Category.assoc, hyx]`. Use `choose W' hW' using fun z : Letter Dw => Chg.exists_dir hP hy hx (f'.tan z.1 z.2)`. Set `b` to `Module.Basis.mk (Chg.linearIndependent hP hy hx f' hW') (Chg.span_eq_top hP hy hx f' hW')`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Q' : (Fu.Di i).La →+ (Letter Dw → ℂ)` to `b.equivFun.toLinearMap.toAddMonoidHom.comp P`. Establish `hQ' : ∀ v, P v = ∑ z, Q' v z • W' z` using `fun v => by`. Use `b.sum_equivFun (P v)` as an intermediate fact. Simplify using `only [b, Module.Basis.coe_mk] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Q', ⟨P, W', y, hP, hy, hyx, hW', hQ'⟩, fun ρ M hM v k => ?_⟩` and prove the remaining obligations. Use `choose N hN using fun (τ : E →+* ℂ) j => (f.basis τ _ (f'.tan τ j) (f'.eig τ j)).exists`. Establish `hNM : ∀ j, N ρ j = M j` using `fun j => (f.basis ρ _ (f'.tan ρ j) (f'.eig ρ j)).unique (hN ρ j) (hM.2 j)`. Establish `hc : ∀ τ j, W' ⟨τ, j⟩ = ∑ k, N τ j k • W ⟨τ, k⟩` using `fun τ j => Chg.eq_sum_of_comb hP hy hx (W := fun k => W ⟨τ, k⟩) (fun k => hW ⟨τ, k⟩) (hW' ⟨τ, j⟩) (hN τ j)`. Establish `h1 : ∑ z, Q v z • W z = ∑ z : Letter Dw, (∑ j, Q' v ⟨z.1, j⟩ * N z.1 j z.2) • W z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hQ, hQ', Fintype.sum_sigma, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [hc, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`. Establish `h2` using `Fintype.linearIndependent_iffₛ.1 (Chg.linearIndependent hP hy hx f hW) _ _ h1 ⟨ρ, k⟩`.
-
-Simplify using `only [hNM] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem per_chg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Letter Dw) (Fu : Fam Xo c σ e) (a a' : CxFr Z σ) (i : Fin Fu.n) (Q : (Fu.Di i).La →+ (Letter Dw → ℂ)), Per Fu a i Q → a.1 = a'.1 → ∃ Q', Per Fu a' i Q' ∧ ∀ ρ M, Chg a a' ρ M → ∀ v k, Q v ⟨ρ, k⟩ = ∑ j, Q' v ⟨ρ, j⟩ * M j k := by
   rintro E _ _ _ H Dw l Xo c O _ β Z σ g e Fu ⟨x, f⟩ ⟨x', f'⟩ i Q ⟨P, W, y, hP, hy, hyx, hW, hQ⟩ hxx

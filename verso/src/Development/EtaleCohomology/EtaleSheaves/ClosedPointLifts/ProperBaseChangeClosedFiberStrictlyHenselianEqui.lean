@@ -21,11 +21,9 @@ def ProperBaseChangeClosedFiberStrictlyHenselianEquivalence : Prop := Hyps → �
   Eqv (ZMod q) (sch.map (prS p ι s)) (tw q i)
 
 /- English proof (translation)
-Introduce `hH q _ k _ hq i B W Y toK ι _ V hV p hp A _ s hA hs m`. Take `⟨hh, _⟩` from `hA`. Establish `hx : ∃ x, s.base x ∈ Set.range ι.base`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hs` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `: s.base x ∈ (V : Set B)`. Rewrite using `[hV]`. Conclude with `hc x`.
-
-Conclude with `this`. Take `⟨w, hw⟩` from `hL A ι s hx`. Conclude with `hZ (ZMod q) (tw q i) (sch.map (prS p ι s)) (hE hH q k hq i toK ι p hp A s ⟨hh, ‹_›⟩ w hw) m`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem LeafPtW_of (hZ : LeafHrelZero) (hL : LeafClosedLift) (hE : ProperBaseChangeClosedFiberStrictlyHenselianEquivalence) : LateralTheory.E.SecondDegreeKilling.LeafPtW := by
   intro hH q _ k _ hq i B W Y toK ι _ V hV p hp A _ s hA hs m

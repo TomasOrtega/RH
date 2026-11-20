@@ -19,9 +19,9 @@ variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] {ST : Fin
   (h : BasePi ST π)
 
 /- English proof (translation)
-Establish `hm : inclE (F` using `F) (v.adicCompletion F) (algebraMap (𝓞 E) E r) * ((1 : Formalism.BasicNotions.intV E v) : E ⊗[F] v.adicCompletion F) ∈ Formalism.BasicNotions.intV E v := mul_mem (rll_incl_int v r) (one_mem _)`. Establish `h1` using `rll_rho_incl_mul v P r 1 hm`. Rewrite `h1` using `[rll_rho_one v hov, mul_one]`. Rewrite using `[← h1]`. Use `show rll_rho v P _ = rll_rho v P _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show inclE (F := F) (v.adicCompletion F) (star (algebraMap (𝓞 E) E π)) * t.1 (lastIdx n) = inclE (F := F) (v.adicCompletion F) (algebraMap (𝓞 E) E r) * ((1 : Formalism.BasicNotions.intV E v) : E ⊗[F] v.adicCompletion F)`. Rewrite using `[ht, ← map_mul, ← hr]`. Conclude with `(mul_one _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tb_psi_incl {P : Pl E} (hov : IsOver v P) (t : baseDualV hc n ST v) (x : Fin n → E) (r : 𝓞 E)
     (ht : t.1 = fun a => inclE (F := F) (v.adicCompletion F) (x a))
@@ -50,9 +50,9 @@ variable {X : Fields} {Pr : Primes X} (hc : CMData X.F X.E) (hX : X.Ok) (hPr : P
 variable (c₀ : DiaG X.E (Pr.vT u))
 
 /- English proof (translation)
-Use `(rf_hform_one (X := X) _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hStd_apply, Finset.sum_eq_single (lastIdx n)]`. Rewrite using `[Pi.single_eq_same]`. Introduce `j _ hj`. Rewrite using `[Pi.single_eq_of_ne hj, star_zero, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hermForm_lastVector_apply (x : Fin n → X.E) :
     hform (hc.sig : X.E →+* X.E) (1 : Matrix (Fin n) (Fin n) X.E)
@@ -66,9 +66,9 @@ theorem hermForm_lastVector_apply (x : Fin n → X.E) :
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `h1 : Ideal.Quotient.mk P.1.asIdeal (cO X.E (Pr.piT u)) * Ideal.Quotient.mk P.1.asIdeal (tieInv hPr u P) = 1`. Rewrite using `[← map_mul, ← sub_eq_zero, ← map_one (Ideal.Quotient.mk P.1.asIdeal), ← map_sub]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (tieInv_spec hPr u P)`. Establish `ha : (c₀ P).1 * Ideal.Quotient.mk P.1.asIdeal (tieInv hPr u P) = 1` using `(congrArg (· * _) hc₀).trans h1`. Establish `hp` using `tb_psi_incl hc n (tieEV hc hX hPr u P).1 (basePi_of_ok hX hPr u) (tieEV_over hc hX hPr u P) t x r ht hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(fvMeL_fLoc hc n (tieEV hc hX hPr u P).1 (basePi_of_ok hX hPr u) P.2 (tieEV_over hc hX hPr u P) ((basePi_of_ok hX hPr u).over_unique hc P.2 (tieEV_over hc hX hPr u P)) _ _ (fv_unit hPr u c₀ P) t).trans ?_` and prove the remaining obligations. Conclude with `((congrArg (· * rll_psi hc n (tieEV hc hX hPr u P).1 (basePi_of_ok hX hPr u) P.1 t) ha).trans (one_mul _)).trans hp`.
+A detailed English derivation is pending.
 -/
 theorem tb_fvMe_fLoc (P : Pr.vT u) (hc₀ : (c₀ P).1 = Ideal.Quotient.mk P.1.asIdeal (cO X.E (Pr.piT u)))
     (t : baseDualV hc n (Pr.vT u) (tieEV hc hX hPr u P).1) (x : Fin n → X.E) (r : 𝓞 X.E)
@@ -91,7 +91,7 @@ variable (s : DecoCl n (Pr.vT u) Pr.vGs Λ.grp → DecoSet X.E n (Pr.vT u) Pr.vG
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩` from `Q`. Conclude with `tb_fvMe_fLoc hc hX hPr u c₀ P hc₀ t x r ht (hr.trans (hermForm_lastVector_apply hc u x))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tb_baseFv (P : Pr.vT u) (hc₀ : (c₀ P).1 = Ideal.Quotient.mk P.1.asIdeal (cO X.E (Pr.piT u)))
     (t : latS (F := X.F) ((tieEV hc hX hPr u P).1.adicCompletion X.F) (intV X.E (tieEV hc hX hPr u P).1)
@@ -109,9 +109,9 @@ theorem tb_baseFv (P : Pr.vT u) (hc₀ : (c₀ P).1 = Ideal.Quotient.mk P.1.asId
 omit [NeZero n] in
 
 /- English proof (translation)
-Establish `hu : IsUnit (Ideal.Quotient.mk P.1.asIdeal (X.conjO (Pr.piT u)))`. Establish `hmax : P.1.asIdeal.IsMaximal` using `P.1.isMaximal`. Set `_` to `Ideal.Quotient.field P.1.asIdeal`. Conclude with `isUnit_iff_ne_zero.2 fun h0 => conj_piT_notMem hPr u P (Ideal.Quotient.eq_zero_iff_mem.1 h0)`. Unfold `colDia`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (lt_irrefl _)]`. Unfold `diaT`. Rewrite using `[dif_pos hu]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tb_colDia_top (hPr : Pr.Ok) (u : Pr.Word) (R : Ranks) (P : Pr.vT u) :
     (colDia (X := X) (Pr := Pr) R u R.m P).1 = Ideal.Quotient.mk P.1.asIdeal (cO X.E (Pr.piT u)) := by
@@ -134,7 +134,7 @@ variable {d : ColDat} (a : ColArgs d) (hS : SpStd d.toColBase) (hH : HostHyp d) 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `v t x r ht hr` and use `tb_baseFv d.sp.cm d.hX d.hPr d.σ₀ u (d.lev d.R.m) (colDia (X := d.X) (Pr := d.Pr) d.R u d.R.m) (d.repr u d.R.m) (hQ u d.R.m) (fun c => (stepGSD (Pr := d.Pr) d.W d.lev u d.R.m).outSec.spec c) (stepCrd a hS hH u d.R.m le_rfl) v (tb_colDia_top d.hPr u d.R v) t x r ht hr`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tilBaseFv (u : d.what₂.Word) :
     CF.TilBaseFv (tildeLatticeAgreement a hS hH hP u) (classAgreement a hS hH hQ u d.R.m le_rfl) (formModuleEquivAtPlace a hS hH hQ u d.R.m le_rfl) :=

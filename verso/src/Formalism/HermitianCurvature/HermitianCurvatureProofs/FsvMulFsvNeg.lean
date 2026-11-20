@@ -12,7 +12,7 @@ namespace Formalism.FourierDecayAlt.P5
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd
 
 /- English proof (translation)
-Rewrite using `[fsv, fsv, ← Complex.exp_add]`. Use `Complex.exp_zero using 2` and compare the differences between its conclusion and the goal. Simplify using `only [map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fsv_mul_fsv_neg (s t : ℂ) : fsv s t * fsv (-s) t = 1 := by
   rw [fsv, fsv, ← Complex.exp_add]
@@ -21,20 +21,20 @@ theorem fsv_mul_fsv_neg (s t : ℂ) : fsv s t * fsv (-s) t = 1 := by
   ring
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `fsv_mul_fsv_neg s t`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fsv_neg_mul_fsv (s t : ℂ) : fsv (-s) t * fsv s t = 1 := by
   rw [mul_comm]
   exact fsv_mul_fsv_neg s t
 
 /- English proof (translation)
-Set `L : (Fin m → ℂ) →L[ℝ] ℂ` to `t • (ContinuousLinearMap.proj l : (Fin m → ℂ) →L[ℝ] ℂ) - (conj t) • (Complex.conjCLE.toContinuousLinearMap.comp (ContinuousLinearMap.proj l : (Fin m → ℂ) →L[ℝ] ℂ))`. Establish `hL : ∀ c' : Fin m → ℂ, L c' = t * c' l - conj t * conj (c' l)`. Introduce `c'`. Simplify using `[L]`. Use `⟨fsv t (c l) • L, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `(L.hasFDerivAt (x := c)).cexp`. Establish `he : (fun c' : Fin m → ℂ => fsv t (c' l)) = fun c' => Complex.exp (L c')`. Use function extensionality and compare the values at `c'`. Rewrite using `[hL]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hc : Complex.exp (L c) = fsv t (c l)`. Rewrite using `[hL]`. Both sides reduce to the same expression. Rewrite using `[he, ← hc]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.smul_apply, hL, Pi.single_eq_same, map_one, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [ContinuousLinearMap.smul_apply, hL, Pi.single_eq_same, Complex.conj_I, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_fsv {m : ℕ} (t : ℂ) (l : Fin m) (c : Fin m → ℂ) :
     ∃ D : (Fin m → ℂ) →L[ℝ] ℂ, HasFDerivAt (fun c' : Fin m → ℂ => fsv t (c' l)) D c ∧
@@ -67,9 +67,9 @@ section Leibniz
 variable {m : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Take `⟨D, hD, h1, hI⟩` from `hasFDerivAt_fsv t l c`. Establish `hP : HasFDerivAt (fun c' => fsv t (c' l) • φ c') (fsv t (c l) • fderiv ℝ φ c + D.smulRight (φ c)) c` using `hD.smul hφ.hasFDerivAt`. Unfold `wirt wirtBar`. Rewrite using `[hP.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, h1, hI, smul_add, smul_sub, smul_smul, ← mul_assoc, Complex.I_mul_I]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `constructor <;> module`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wirt_fsv_smul (t : ℂ) (l : Fin m) (φ : (Fin m → ℂ) → E) (c : Fin m → ℂ)
     (hφ : DifferentiableAt ℝ φ c) :
@@ -86,7 +86,7 @@ theorem wirt_fsv_smul (t : ℂ) (l : Fin m) (φ : (Fin m → ℂ) → E) (c : Fi
   constructor <;> module
 
 /- English proof (translation)
-Unfold `pOp`. Distinguish the cases in `h : c ∈ OmX m`. Rewrite using `[if_pos h, if_pos h, (wirt_fsv_smul t l φ c (hd h)).1] module`. Rewrite using `[if_neg h, if_neg h, h0 h]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pOp_fsv_smul (t : ℂ) (l : Fin m) (φ : (Fin m → ℂ) → E) (c : Fin m → ℂ)
     (hd : c ∈ OmX m → DifferentiableAt ℝ φ c) (h0 : c ∉ OmX m → φ c = 0) :
@@ -100,9 +100,9 @@ theorem pOp_fsv_smul (t : ℂ) (l : Fin m) (φ : (Fin m → ℂ) → E) (c : Fin
     simp
 
 /- English proof (translation)
-Unfold `pbOp`. Distinguish the cases in `h : c ∈ OmX m`. Rewrite using `[if_pos h, if_pos h, (wirt_fsv_smul (-t) l φ c (hd h)).2]`. Simplify using `only [map_neg, neg_neg, Complex.star_def]`. Use `module`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg h, h0 h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pbOp_fsv_smul (t : ℂ) (l : Fin m) (φ : (Fin m → ℂ) → E) (c : Fin m → ℂ)
     (hd : c ∈ OmX m → DifferentiableAt ℝ φ c) (h0 : c ∉ OmX m → φ c = 0) :
@@ -124,15 +124,15 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [NormedAddCommGroup Wq] [NormedSpace ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Establish `hΦm : (Φ : Fn k r (Wq →L[ℂ] Wp)) ∈ RadSp k r z z' π π'` using `Φ.2`. Take `⟨h0, hs, -⟩` from `hΦm`. Use `⟨fun hc => ?_, fun hc => h0 (c, g) (fun hx => hc (by` and prove the remaining obligations. Simplify using `only [DomR, Set.mem_setOf_eq] at hx`. Conclude with `hx.1))⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hg : g ∈ Glev k r (Fin.last r) ∧ 0 < GGl k r z z' g`. Take `⟨U, F, hU, hxU, hF, hΦ⟩` from `hs (c, g) (by`. Simplify using `only [DomR, Set.mem_setOf_eq]`. Conclude with `⟨hc, hg.1, hg.2⟩)`. Establish `hcont : Continuous (fun c' : Fin r → ℂ => (c', g))` using `by fun_prop`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ c' in nhds c, (Φ : Fn k r (Wq →L[ℂ] Wp)) c' g = F (c', g)`. Establish `hU' : ∀ᶠ c' in nhds c, (c', g) ∈ U` using `hcont.continuousAt.preimage_mem_nhds (hU.mem_nhds hxU)`. Use `filter_upwards [hU'] with c' hc'`. Conclude with `hΦ (c', g) hc' hg.1`. Establish `hFd : DifferentiableAt ℝ F (c, g)` using `(hF.contDiffAt (hU.mem_nhds hxU)).differentiableAt (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpair : DifferentiableAt ℝ (fun c' : Fin r → ℂ => (c', g)) c` using `by fun_prop`. Establish `hcomp : DifferentiableAt ℝ (fun c' => F (c', g)) c` using `hFd.comp c hpair`. Conclude with `hcomp.congr_of_eventuallyEq hev`. Establish `hz : (fun c' => (Φ : Fn k r (Wq →L[ℂ] Wp)) c' g) = fun _ => 0`. Use function extensionality and compare the values at `c'`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `h0 (c', g) (fun hx => hg ?_)` and prove the remaining obligations. Simplify using `only [DomR, Set.mem_setOf_eq] at hx`. Conclude with `⟨hx.2.1, hx.2.2⟩`. Rewrite using `[hz]`. Conclude with `differentiableAt_const 0`.
+A detailed English derivation is pending.
 -/
 theorem radSp_regular (Φ : RadSp k r z z' π π') (g : Mx k r) (c : Fin r → ℂ) :
     (c ∈ OmX r → DifferentiableAt ℝ (fun c' => (Φ : Fn k r (Wq →L[ℂ] Wp)) c' g) c) ∧
@@ -170,7 +170,7 @@ section PairLemmas
 variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-The claim follows from `Prod.ext h1 (MulOpposite.unop_injective h2)`.
+A detailed English derivation is pending.
 -/
 theorem pr_ext {a b : Pr V} (h1 : a.1 = b.1) (h2 : a.2.unop = b.2.unop) : a = b :=
   Prod.ext h1 (MulOpposite.unop_injective h2)
@@ -220,29 +220,29 @@ Both sides reduce to the same expression.
 end PairLemmas
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ P z z' π π' X L hL l s Wv Wv' hW hW'`. Take `⟨hp, -, hc, hci, -⟩` from `hL`. Establish `hW1 : ∀ (Φ : RadSp P.k P.r z z' π π') c g, (Wv Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g = fsv s (c l) • (Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g` using `hW`. Establish `hW2 : ∀ (Φ : RadSp P.k P.r z z' π π') c g, (Wv' Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g = fsv (-s) (c l) • (Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g` using `hW'`. Establish `hop : ∀ i (Φ : RadSp P.k P.r z z' π π'), (X.op l i Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) = crd (opL l i) (Φ : Fn P.k P.r (Wq →L[ℂ] Wp))` using `fun i Φ => X.op_apply l i Φ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWW' : Wv * Wv' = 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c g`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Module.End.mul_apply, Module.End.one_apply, hW1, hW2, smul_smul, fsv_mul_fsv_neg, one_smul]`. Establish `hW'W : Wv' * Wv = 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `c g`. Simplify using `only [Module.End.mul_apply, Module.End.one_apply, hW1, hW2, smul_smul, fsv_neg_mul_fsv, one_smul]`. Establish `hcomm : ∀ (W : Module.End ℂ (RadSp P.k P.r z z' π π')) (u : ℂ → ℂ), (∀ (Φ : RadSp P.k P.r z z' π π') c g, (W Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g = u (c l) • (Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g) → ∀ i : Fin 6, (i = 1 ∨ i = 2 ∨ i = 4 ∨ i = 5) → W * X.op l i = X.op l i * W`. Introduce `W u hWu i hi`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c g`. Simplify using `only [Module.End.mul_apply, hWu, hop, crd]`. Apply the tactic sequence `rcases hi with rfl | rfl | rfl | rfl <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [opL, cOp, ciOp, cbOp, cbiOp] <;> exact smul_comm _ _ _`. Establish `hsite : ∀ f : Pr (RadSp P.k P.r z z' π π'), (site L l).p = L.p l ∧ (site L l).c = L.c l ∧ (site L l).ci = L.ci l` using `fun _ => ⟨rfl, rfl, rfl⟩`. Take `⟨hsp, hsc, hsci⟩` from `hsite 0`. Rewrite using `[hsp, hsc, hsci, hp l, hc l, hci l]`. Use `⟨⟨pr_ext ?_ ?_, pr_ext ?_ ?_, rfl⟩, pr_ext ?_ ?_, pr_ext ?_ ?_, pr_ext ?_ ?_⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hWW'`. Simplify using `using hWW'`. Simplify using `using hW'W`. Simplify using `using hW'W`. Simplify using `using hcomm Wv _ hW1 1 (by decide)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (hcomm Wv' _ hW2 4 (by decide)).symm`. Simplify using `using hcomm Wv _ hW1 2 (by decide)`. Simplify using `using (hcomm Wv' _ hW2 5 (by decide)).symm`. Simplify using `only [mkPair_fst', pr_mul_fst, pr_add_fst, pr_alg_fst]`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c g`. Take `⟨hd, h0⟩` from `radSp_regular Φ g c`. Simplify using `only [Module.End.mul_apply, LinearMap.add_apply, Module.algebraMap_end_apply, Submodule.coe_add, Submodule.coe_smul, Pi.add_apply, Pi.smul_apply, hop, crd, hW1, opL]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[pOp_fsv_smul s l _ c hd h0]`. Simplify using `only [cOp]`. Simplify using `only [mkPair_snd', pr_mul_snd, pr_add_snd, pr_alg_snd]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `Φ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c g`. Take `⟨hd, h0⟩` from `radSp_regular Φ g c`. Simplify using `only [Module.End.mul_apply, LinearMap.add_apply, LinearMap.neg_apply, Module.algebraMap_end_apply, Submodule.coe_add, Submodule.coe_neg, Submodule.coe_smul, Pi.add_apply, Pi.neg_apply, Pi.smul_apply, hop, crd, hW2, opL]`. Rewrite using `[pbOp_fsv_smul s l _ c hd h0]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cbOp]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem waveSiteAll : WaveSiteAll := by
   intro Wp Wq _ _ _ _ P z z' π π' X L hL l s Wv Wv' hW hW'

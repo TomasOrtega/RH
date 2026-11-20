@@ -8,15 +8,15 @@ open scoped ComplexConjugate
 namespace Formalism.FourierDecayAlt.P.FiniteSumSwap
 
 /- English proof (translation)
-Establish `h1 : ∀ f : I → ℂ, ∑ᶠ q : I, (if P q then f q else 0) * e q = ∑ q ∈ hP.toFinset, f q * e q`. Introduce `f`. Rewrite using `[finsum_eq_sum_of_support_subset (s := hP.toFinset)]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Rewrite using `[if_pos (by simpa using hq)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `q hq`. Assume the negation of the conclusion as `hq'`. Establish `: ¬ P q` using `by simpa using hq'`. Simplify using `[this] at hq`. Establish `h2 : ∀ f : J → ℂ, ∑ᶠ z : J, (if T z then f z else 0) = ∑ z ∈ hT.toFinset, f z`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `f`. Rewrite using `[finsum_eq_sum_of_support_subset (s := hT.toFinset)]`. Use `Finset.sum_congr rfl fun z hz => ?_` and prove the remaining obligations. Rewrite using `[if_pos (by simpa using hz)]`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hz'`. Establish `: ¬ T z` using `by simpa using hz'`. Simplify using `[this] at hz`. Rewrite using `[h1, h2]`. Repeatedly rewrite using `[h1, h2]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun z _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finsum_swap {I J : Type} (P : I → Prop) [DecidablePred P] (T : J → Prop) [DecidablePred T]
     (hP : {q | P q}.Finite) (hT : {z | T z}.Finite) (a : ℂ) (g : J → ℂ) (F : J → I → ℂ)
@@ -56,11 +56,11 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.P.FiniteSumSwap
 
 /- English proof (translation)
-Introduce `hGerm hKp hInt hRoots K _ _ _ R ψ hD hn m hm γ hγ h Q hQ hQu`. Take `⟨V, hV, H⟩` from `hGerm K R ψ hD hn m hm γ hγ h Q hQ hQu`. Use `⟨V, hV, fun t c ht hc w' => ?_⟩` and prove the remaining obligations. Use `hD.artin` as an intermediate fact. Use `hD.red` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : {z : Kˣ | z ^ (m + 1) = (-t) ^ m * c}.Finite` using `hRoots K (m + 1) (Nat.succ_le_succ (Nat.zero_le m)) ((-t) ^ m * c)`. Establish `hP : {q : Cos R w' | IsInt R (orbZ w' (rep R q))}.Finite` using `hInt K R ψ hD w'`. Rewrite using `[hKp K R ψ hD (pt2 h m t c) w']`. Repeatedly rewrite using `[H t c ht hc]`. Unfold `germSum`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Replace the relevant objects with their definitions.
 
-Repeatedly rewrite using `[hKp K R ψ hD (addBlock h (m + 1) _) w']`. Use `finsum_swap (fun q : Cos R w' => IsInt R (orbZ w' (rep R q))) (fun z : Kˣ => z ^ (m + 1) = (-t) ^ m * c) hP hT _ (germCoef R ψ m γ t) (fun z q => bbZ R ψ (addBlock h (m + 1) z) (orbZ w' (rep R q))) (fun q => conj (phase ψ (rep R q)))` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion repeatedly using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem germExpansionKernelOfSteps : Formalism.FourierDecayAlt.A6.GermKernelAssemble := by
   intro hGerm hKp hInt hRoots K _ _ _ R ψ hD hn m hm γ hγ h Q hQ hQu

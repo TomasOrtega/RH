@@ -7,7 +7,7 @@ open Filter Topology Set
 namespace PositivityTheory.Rg.Sw.HSt
 
 /- English proof (translation)
-Rewrite using `[← iteratedDerivWithin_univ, ← iteratedDerivWithin_univ]`. Conclude with `Filter.EventuallyEq.iteratedDerivWithin_eq (by simpa using h) h.eq_of_nhds`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_eq_of_eventuallyEq {f g : ℂ → ℂ} {s : ℂ} (h : f =ᶠ[𝓝 s] g) (k : ℕ) :
     iteratedDeriv k f s = iteratedDeriv k g s := by
@@ -15,15 +15,15 @@ theorem iteratedDeriv_eq_of_eventuallyEq {f g : ℂ → ℂ} {s : ℂ} (h : f =�
   exact Filter.EventuallyEq.iteratedDerivWithin_eq (by simpa using h) h.eq_of_nhds
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro h₁ h₂ _ _ s _`. Simplify using the standard rewrite rules. Consider the case `succ j ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `h₁ h₂ hd₁ hd₂ s hs`. Establish `hd₁' : DifferentiableOn ℂ (deriv h₁) U` using `hd₁.deriv hU`. Establish `hd₂' : DifferentiableOn ℂ (deriv h₂) U` using `hd₂.deriv hU`. Establish `hev : deriv (fun z => h₁ z * h₂ z) =ᶠ[𝓝 s] fun z => deriv h₁ z * h₂ z + h₁ z * deriv h₂ z` using `by filter_upwards [hU.mem_nhds hs] with z hz`. Conclude with `deriv_mul ((hd₁.differentiableAt (hU.mem_nhds hz))) ((hd₂.differentiableAt (hU.mem_nhds hz)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iteratedDeriv_succ', iteratedDeriv_eq_of_eventuallyEq hev]`. Establish `hc₁ : ContDiffAt ℂ j (fun z => deriv h₁ z * h₂ z) s` using `((hd₁'.mul hd₂).contDiffOn hU).contDiffAt (hU.mem_nhds hs) |>.of_le le_top`. Establish `hc₂ : ContDiffAt ℂ j (fun z => h₁ z * deriv h₂ z) s` using `((hd₁.mul hd₂').contDiffOn hU).contDiffAt (hU.mem_nhds hs) |>.of_le le_top`. Establish `hsplit : (fun z => deriv h₁ z * h₂ z + h₁ z * deriv h₂ z) = (fun z => deriv h₁ z * h₂ z) + (fun z => h₁ z * deriv h₂ z)` using `rfl`. Rewrite using `[hsplit, iteratedDeriv_add hc₁ hc₂, ih _ _ hd₁' hd₂ s hs, ih _ _ hd₁ hd₂' s hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `Finset.sum_choose_succ_mul (R := ℂ) (fun a b => iteratedDeriv a h₁ s * iteratedDeriv b h₂ s) j`. Simplify using `only [mul_assoc] at key ⊢`. Rewrite using `[key, add_comm]`. Use `congr 1`. Use `all_goals`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ j` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Apply the tactic sequence `(try rw [← iteratedDeriv_succ']); (try rw [show j + 1 - i = j - i + 1 by omega])`.
+A detailed English derivation is pending.
 -/
 theorem leib {U : Set ℂ} (hU : IsOpen U) : ∀ (j : ℕ) (h₁ h₂ : ℂ → ℂ), DifferentiableOn ℂ h₁ U → DifferentiableOn ℂ h₂ U →
     ∀ s ∈ U, iteratedDeriv j (fun z => h₁ z * h₂ z) s =

@@ -13,39 +13,39 @@ variable {n : ℕ}
 def dR (β : Fin n → ℝ) : Matrix (Fin n) (Fin n) ℂ := diagonal fun j => (β j : ℂ)
 
 /- English proof (translation)
-Simplify using `[dR, Matrix.diagonal_conjTranspose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dR_conjTranspose (β : Fin n → ℝ) : (dR β)ᴴ = dR β := by
   simp [dR, Matrix.diagonal_conjTranspose]
 
 /- English proof (translation)
-Simplify using `[dR, Matrix.diagonal_mul_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dR_mul (β β' : Fin n → ℝ) : dR β * dR β' = dR (fun j => β j * β' j) := by
   simp [dR, Matrix.diagonal_mul_diagonal]
 
 /- English proof (translation)
-Simplify using `[dR, Matrix.diagonal_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dR_add (β β' : Fin n → ℝ) : dR β + dR β' = dR (fun j => β j + β' j) := by
   simp [dR, Matrix.diagonal_add]
 
 /- English proof (translation)
-Simplify using `[dR, Matrix.diagonal_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dR_neg (β : Fin n → ℝ) : -dR β = dR (fun j => -β j) := by
   simp [dR, Matrix.diagonal_neg]
 
 /- English proof (translation)
-Simplify using `[dR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dR_one : dR (fun _ : Fin n => (1 : ℝ)) = 1 := by
   simp [dR]
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[dR_mul]`. Rewrite using `[← dR_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `inv_mul_cancel₀ (hβ j)`.
+A detailed English derivation is pending.
 -/
 theorem dR_inv (β : Fin n → ℝ) (hβ : ∀ j, β j ≠ 0) : (dR β)⁻¹ = dR (fun j => (β j)⁻¹) := by
   apply Matrix.inv_eq_left_inv
@@ -62,15 +62,15 @@ theorem kth_eq (θ : Fin n → ℝ) : kth θ = fromBlocks (dR fun j => Real.cos 
     (-dR fun j => Real.sin (θ j)) (dR fun j => Real.cos (θ j)) := rfl
 
 /- English proof (translation)
-Establish `hinv : ((dR fun j => (Real.cos (θ j))⁻¹)ᴴ)⁻¹ = dR fun j => Real.cos (θ j)`. Rewrite using `[dR_conjTranspose, dR_inv _ (fun j => inv_ne_zero (hc j))]`. Simplify using `only [inv_inv]`. Rewrite using `[kth_eq]`. Simplify using `only [nU, nbar, mM, hinv, Matrix.fromBlocks_multiply, Matrix.mul_one, Matrix.one_mul, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.add_mul, dR_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[dR_add, dR_neg]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `j`. Establish `h1` using `hc j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[Real.tan_eq_sin_div_cos]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(Real.sin_sq_add_cos_sq (θ j))`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `hc j`. Rewrite using `[Real.tan_eq_sin_div_cos]`. Clear the denominators using the available nonvanishing facts. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `hc j`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem kth_decomp (θ : Fin n → ℝ) (hc : ∀ j, Real.cos (θ j) ≠ 0) :
     kth θ = nU (dR fun j => Real.tan (θ j)) * nbar (dR fun j => -(Real.sin (θ j) * Real.cos (θ j))) *
@@ -100,17 +100,17 @@ theorem kth_decomp (θ : Fin n → ℝ) (hc : ∀ j, Real.cos (θ j) ≠ 0) :
     field_simp
 
 /- English proof (translation)
-Establish `hc : ∀ j, Real.cos (θ j) = Real.cos (θ j / 2) * Real.cos (θ j / 2) - Real.sin (θ j / 2) * Real.sin (θ j / 2)`. Introduce `j`. Use `Real.cos_two_mul (θ j / 2)` as an intermediate fact. Rewrite `this` using `[show 2 * (θ j / 2) = θ j by ring]`. Rewrite using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `Real.sin_sq_add_cos_sq (θ j / 2)`. Establish `hs : ∀ j, Real.sin (θ j) = Real.cos (θ j / 2) * Real.sin (θ j / 2) + Real.sin (θ j / 2) * Real.cos (θ j / 2)`. Introduce `j`. Use `Real.sin_two_mul (θ j / 2)` as an intermediate fact. Rewrite `this` using `[show 2 * (θ j / 2) = θ j by ring]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[kth_eq, kth_eq, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, dR_mul, dR_neg, dR_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[hc j]`. Expand and normalize the polynomial expressions, which then agree. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[hs j]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[hs j]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[hc j]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kth_half (θ : Fin n → ℝ) : kth θ = kth (fun j => θ j / 2) * kth (fun j => θ j / 2) := by
   have hc : ∀ j, Real.cos (θ j) = Real.cos (θ j / 2) * Real.cos (θ j / 2) -

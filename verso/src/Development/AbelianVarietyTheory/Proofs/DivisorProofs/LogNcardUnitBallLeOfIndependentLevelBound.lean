@@ -9,37 +9,33 @@ open GlobalTheory GlobalTheory.VolBr
 namespace GlobalTheory.VolBr
 
 /- English proof (translation)
-Introduce `G _ _ Λ B hB hfin q T hq hT hbound`. Use `set S : ℕ → Set G := fun i => B ((2 / q : ℝ) ^ i) with hS`. Establish `hqpos : (0 : ℝ) < q` using `by exact_mod_cast (by omega : 0 < q)`. Establish `hmono` using `(isBallFam_mono_neg_add G Λ B hB).1`. Establish `hSdec : ∀ i, S (i + 1) ⊆ S i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Apply `hmono` to reduce the goal to its premises. Establish `h0 : (0 : ℝ) ≤ 2 / q` using `by positivity`. Establish `h1 : (2 / q : ℝ) ≤ 1`. Rewrite using `[div_le_one hqpos]; exact_mod_cast (by omega : 2 ≤ q)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `pow_le_pow_of_le_one h0 h1 (Nat.le_succ i)`. Use `set K : ℕ := ⌊T⌋₊ with hK`. Establish `hsize : ∀ i m (e : Fin m → G), LinearIndependent ℤ e → (∀ j, e j ∈ S i) → m ≤ K`. Introduce `i m e he hmem`. Establish `h` using `hbound m e (fun _ => i) he hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `Nat.le_floor` to reduce the goal to its premises. Use `le_trans ?_ h` and prove the remaining obligations. Establish `: m ≤ ∑ _j : Fin m, (i + 1)` using `by simp; exact Nat.le_mul_of_pos_right m (Nat.succ_pos i)`. Conclude with `this` after adjusting the coercions. Set `P : ℕ → ℕ → Prop` to `fun i m => ∃ e : Fin m → G, LinearIndependent ℤ e ∧ ∀ j, e j ∈ S i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `r : ℕ → ℕ` to `fun i => Nat.findGreatest (P i) K`. Establish `hP0 : ∀ i, P i 0` using `fun i => ⟨Fin.elim0, linearIndependent_empty_type, fun j => j.elim0⟩`. Establish `hrspec : ∀ i, P i (r i)` using `fun i => Nat.findGreatest_spec (Nat.zero_le K) (hP0 i)`. Establish `hrmax : ∀ i m (e : Fin m → G), LinearIndependent ℤ e → (∀ j, e j ∈ S i) → m ≤ r i`. Introduce `i m e he hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Nat.le_findGreatest (hsize i m e he hmem) ⟨e, he, hmem⟩`. Establish `hrdec : ∀ i, r (i + 1) ≤ r i`. Introduce `i`. Take `⟨e, he, hmem⟩` from `hrspec (i + 1)`. Conclude with `hrmax i _ e he (fun j => hSdec i (hmem j))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hstep : ∀ i, (S i).encard ≤ ((q ^ r i : ℕ) : ℕ∞) * (S (i + 1)).encard`. Introduce `i`. Establish `h` using `GlobalTheory.T.encard_seminormBall_le_pow_mul_smaller G Λ B hB ((2 / q : ℝ) ^ i) q (r i) (by omega) (fun n e he hmem => hrmax i n e he hmem)`. Establish `heq : 2 * (2 / q : ℝ) ^ i / q = (2 / q : ℝ) ^ (i + 1)`. Rewrite using `[pow_succ]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify `h` using `[hS, heq]`. Establish `hiter : ∀ k, (S 0).encard ≤ ((q ^ (∑ i ∈ Finset.range k, r i) : ℕ) : ℕ∞) * (S k).encard`. Introduce `k`. Proceed by induction on `k with`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero => simp`. Consider the case `succ k ih`. Use `ih.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_range_succ, pow_add, Nat.cast_mul, mul_assoc]`. Use `gcongr`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hstep k`. Establish `hSK : S K ⊆ {0}`. Introduce `x hx`. Assume the negation of the conclusion as `hx0`. Establish `hli : LinearIndependent ℤ (fun _ : Fin 1 => x)`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Rewrite using `[linearIndependent_unique_iff]`. Conclude with `hx0`. Establish `h` using `hbound 1 (fun _ => x) (fun _ => K) hli (fun _ => hx)`. Establish `hlt : T < (K : ℝ) + 1` using `Nat.lt_floor_add_one T`. Simplify using `at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hSK1 : (S K).encard ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Take `⟨e, n, he, hmem, hsum⟩` from `GlobalTheory.T.exists_linearIndependent_adapted_to_decreasing_chain' G S hSdec K r hrspec hrdec`. Establish `hM : ((∑ i ∈ Finset.range K, r i : ℕ) : ℝ) ≤ T`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h1` using `hbound (r 0) e n he hmem`. Establish `h2 : ∑ i ∈ Finset.range K, r i ≤ ∑ i ∈ Finset.range (K + 1), r i` using `Finset.sum_le_sum_of_subset (Finset.range_subset_range.mpr (Nat.le_succ K))`. Establish `h3 : ((∑ i ∈ Finset.range K, r i : ℕ) : ℝ) ≤ ((∑ j, (n j + 1) : ℕ) : ℝ)`. Conclude with `h2.trans hsum` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set M := ∑ i ∈ Finset.range K, r i with hMdef`. Establish `hS0 : S 0 = B 1` using `by simp [hS]`. Establish `hcard : (B 1).encard ≤ ((q ^ M : ℕ) : ℕ∞)`. Rewrite using `[← hS0]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hncard : (B 1).ncard ≤ q ^ M`. Rewrite `hcard` using `[← hfin.cast_ncard_eq]`. Conclude with `hcard` after adjusting the coercions. Establish `hlogq : 0 ≤ Real.log q` using `Real.log_nonneg (by exact_mod_cast (by omega : 1 ≤ q))`. Break down `Nat.eq_zero_or_pos (B 1).ncard with h0 | hpos` into its components or cases.
-
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish `hpos' : (0 : ℝ) < (B 1).ncard` using `by exact_mod_cast hpos`. Combine the equalities or inequalities in the displayed calculation.
+Check the signs of the components of the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem log_ncard_unit_ball_le_of_indep_bound :
     ∀ (G : Type) [AddCommGroup G] [IsAddTorsionFree G] (Λ : AddSubgroup G) (B : ℝ → Set G), IsBallFam Λ B →
@@ -140,6 +136,6 @@ theorem log_ncard_unit_ball_le_of_indep_bound :
 end GlobalTheory.VolBr
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.VolBr.log_ncard_unit_ball_le_of_indep_bound`.
+A detailed English derivation is pending.
 -/
 example : ∀ (G : Type) [AddCommGroup G] [IsAddTorsionFree G] (Λ : AddSubgroup G) (B : ℝ → Set G), IsBallFam Λ B → (B 1).Finite → ∀ (q : ℕ) (T : ℝ), 3 ≤ q → 0 ≤ T → (∀ (r : ℕ) (e : Fin r → G) (n : Fin r → ℕ), LinearIndependent ℤ e → (∀ j, e j ∈ B ((2 / q : ℝ) ^ n j)) → ((∑ j, (n j + 1) : ℕ) : ℝ) ≤ T) → Real.log ((B 1).ncard : ℝ) ≤ Real.log q * T := GlobalTheory.VolBr.log_ncard_unit_ball_le_of_indep_bound

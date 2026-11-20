@@ -25,13 +25,13 @@ open ReciprocityTheory.AnForm.A (IsPsh)
 open _root_.Metric
 
 /- English proof (translation)
-Use `⟨fun z hz y hy => ?_, fun z w hd => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ᶠ x in 𝓝[U] z, f x < 2 * y` using `h.1 z hz (2 * y) (by simp only at hy; linarith) filter_upwards [h1] with x hx`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨h1, h2⟩` from `h.2 z w hd`. Establish `e : Real.circleAverage (fun ζ : ℂ => f (z + ζ • w) / 2) 0 1 = Real.circleAverage (fun ζ : ℂ => f (z + ζ • w)) 0 1 / 2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Real.circleAverage_fun_smul (c := 0) (R := 1) (a := (1 / 2 : ℝ)) (f := fun ζ : ℂ => f (z + ζ • w))` as an intermediate fact. Simplify using `only [smul_eq_mul] at this`. Rewrite using `[show (fun ζ : ℂ => f (z + ζ • w) / 2) = fun ζ : ℂ => 1 / 2 * f (z + ζ • w) by`. Use function extensionality and compare the values at `ζ`. Use the proof step `ring, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: CircleIntegrable ((1 / 2 : ℝ) • fun ζ : ℂ => f (z + ζ • w)) 0 1` using `h1.const_smul`. Use `(circleIntegrable_congr (fun ζ _ => ?_)).1 this` and prove the remaining obligations. Simplify using `[div_eq_inv_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isPsh_half {n : ℕ} {U : Set (Fin n → ℂ)} {f : (Fin n → ℂ) → ℝ} (h : IsPsh U f) :
     IsPsh U (fun z => f z / 2) := by
@@ -60,7 +60,7 @@ def affInv {n : ℕ} (t₀ : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm (Fin n))
   ((ρ : ℂ)⁻¹ • (t - t₀)) ∘ π.symm
 
 /- English proof (translation)
-Establish `h : (ρ : ℂ) ≠ 0` using `by exact_mod_cast hρ.ne'`. Use function extensionality and compare the values at `i`. Simplify using `[aff, affInv, Function.comp, h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem aff_affInv {n : ℕ} (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 < ρ) (π : Equiv.Perm (Fin n)) (t : Fin n → ℂ) :
     aff t₀ ρ π (affInv t₀ ρ π t) = t := by
@@ -69,9 +69,9 @@ theorem aff_affInv {n : ℕ} (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 < ρ) (�
   simp [aff, affInv, Function.comp, h]
 
 /- English proof (translation)
-Rewrite `ht` using `[mem_ball, dist_eq_norm, sub_eq_add_neg]`. Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff one_pos]`. Introduce `i`. Establish `h1 : ‖(t - t₀) (π.symm i)‖ < ρ`. Establish `: ‖t + -t₀‖ < ρ` using `ht`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[pi_norm_lt_iff hρ]`. Simplify `this (π.symm i)` using `[sub_eq_add_neg]`. Simplify using `only [affInv, Function.comp, Pi.smul_apply, smul_eq_mul, norm_mul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hρ]`. Rewrite using `[inv_mul_lt_iff₀ hρ]`. Simplify using `using h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_affInv {n : ℕ} (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 < ρ) (π : Equiv.Perm (Fin n)) {t : Fin n → ℂ}
     (ht : t ∈ ball t₀ ρ) : affInv t₀ ρ π t ∈ ball 0 1 := by
@@ -88,7 +88,7 @@ theorem norm_affInv {n : ℕ} (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 < ρ) (
   simpa using h1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[affInv, Function.comp]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem affInv_add {n : ℕ} (t₀ : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm (Fin n)) (z w : Fin n → ℂ) (ζ : ℂ) :
     affInv t₀ ρ π (z + ζ • w) = affInv t₀ ρ π z + ζ • (((ρ : ℂ)⁻¹ • w) ∘ π.symm) := by
@@ -97,11 +97,11 @@ theorem affInv_add {n : ℕ} (t₀ : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm 
   ring
 
 /- English proof (translation)
-Establish `hc : Continuous (affInv t₀ ρ π)`. Unfold `affInv`. Use `fun_prop`. Use `⟨h.1.comp (g := affInv t₀ ρ π) hc.continuousOn (fun t ht => norm_affInv t₀ hρ π ht), fun z w hd => ?_⟩` and prove the remaining obligations. Establish `hd' : ∀ ζ : ℂ, ‖ζ‖ ≤ 1 → affInv t₀ ρ π z + ζ • (((ρ : ℂ)⁻¹ • w) ∘ π.symm) ∈ ball 0 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ζ hζ`. Rewrite using `[← affInv_add]`. Conclude with `norm_affInv t₀ hρ π (hd ζ hζ)`. Establish `e : (fun ζ : ℂ => ψ (affInv t₀ ρ π (z + ζ • w))) = fun ζ : ℂ => ψ (affInv t₀ ρ π z + ζ • (((ρ : ℂ)⁻¹ • w) ∘ π.symm))`. Use function extensionality and compare the values at `ζ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[affInv_add]`. Simplify using `only [e]`. Conclude with `h.2 _ _ hd'`.
+A detailed English derivation is pending.
 -/
 theorem isPsh_comp_affInv {n : ℕ} (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 < ρ) (π : Equiv.Perm (Fin n))
     {ψ : (Fin n → ℂ) → ℝ} (h : IsPsh (ball 0 1) ψ) : IsPsh (ball t₀ ρ) (fun t => ψ (affInv t₀ ρ π t)) := by
@@ -120,11 +120,11 @@ theorem isPsh_comp_affInv {n : ℕ} (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 <
   exact h.2 _ _ hd'
 
 /- English proof (translation)
-Establish `hH : AnalyticAt ℂ (fun t => F t / F t₀) t₀` using `hF.div analyticAt_const h0`. Establish `h1 : ∀ᶠ t in 𝓝 t₀, F t / F t₀ ∈ Complex.slitPlane`. Establish `: F t₀ / F t₀ ∈ Complex.slitPlane` using `by rw [div_self h0]; exact Complex.one_mem_slitPlane`. Conclude with `hH.continuousAt.eventually_mem (Complex.isOpen_slitPlane.mem_nhds this)`. Establish `h2 : ∀ᶠ t in 𝓝 t₀, AnalyticAt ℂ (fun t => F t / F t₀) t` using `hH.eventually_analyticAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hb⟩` from `Metric.eventually_nhds_iff_ball.1 (h1.and h2)`. Use `⟨r, hr, fun t => Complex.log (F t / F t₀), fun t ht => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Conclude with `((hb t ht).2.differentiableAt.clog (hb t ht).1).differentiableWithinAt`. Establish `hne : F t / F t₀ ≠ 0` using `Complex.slitPlane_ne_zero (hb t ht).1`. Establish `hFt : F t ≠ 0` using `fun h => hne (by simp [h])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Complex.log_re, norm_div, Real.log_div (norm_ne_zero_iff.2 hFt) (norm_ne_zero_iff.2 h0)]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_log_norm {n : ℕ} {t₀ : Fin n → ℂ} {F : (Fin n → ℂ) → ℂ} (hF : AnalyticAt ℂ F t₀) (h0 : F t₀ ≠ 0) :
     ∃ r > (0 : ℝ), ∃ G : (Fin n → ℂ) → ℂ, DifferentiableOn ℂ G (ball t₀ r) ∧
@@ -143,11 +143,11 @@ theorem exists_log_norm {n : ℕ} {t₀ : Fin n → ℂ} {F : (Fin n → ℂ) �
     ring
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simpa using analyticAt_const`. Consider the case `add p r hp hr`. Establish `e : (fun t => MvPolynomial.eval (q t) (MvPolynomial.map (Int.castRingHom ℂ) (p + r))) = (fun t => MvPolynomial.eval (q t) (MvPolynomial.map (Int.castRingHom ℂ) p)) + fun t => MvPolynomial.eval (q t) (MvPolynomial.map (Int.castRingHom ℂ) r)`. Use function extensionality and compare the values at `t`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `hp.add hr`. Consider the case `mul_X p i hp`. Establish `e : (fun t => MvPolynomial.eval (q t) (MvPolynomial.map (Int.castRingHom ℂ) (p * MvPolynomial.X i))) = (fun t => MvPolynomial.eval (q t) (MvPolynomial.map (Int.castRingHom ℂ) p)) * fun t => q t i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `hp.mul (hq i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analyticAt_eval {A : Type} {n : ℕ} {q : (Fin n → ℂ) → A → ℂ} {t₀ : Fin n → ℂ}
     (hq : ∀ i, AnalyticAt ℂ (fun t => q t i) t₀) (p : MvPolynomial A ℤ) :
@@ -169,15 +169,15 @@ theorem analyticAt_eval {A : Type} {n : ℕ} {q : (Fin n → ℂ) → A → ℂ}
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Establish `hH : (R.Hmᵀ).IsHermitian`. Use extensionality with `i j`. Conclude with `R.herm.apply j i`. Establish `hM : (R.Hmᵀ).PosDef`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos hH fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `R.pos x hx`. Establish `e : star x ⬝ᵥ (R.Hmᵀ *ᵥ x) = x ⬝ᵥ R.Hm *ᵥ star x`. Rewrite using `[Matrix.mulVec_transpose, dotProduct_comm, ← Matrix.dotProduct_mulVec]`. Establish `him : (star x ⬝ᵥ (R.Hmᵀ *ᵥ x)).im = 0` using `hH.im_star_dotProduct_mulVec_self x`. Rewrite using `[Complex.pos_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨by rw [e]; exact h1, him.symm⟩`. Set `C : Matrix (Fin g) (Fin m) ℂ` to `(Matrix.of u)ᵀ`. Establish `hC : Function.Injective C.mulVec` using `Matrix.mulVec_injective_iff.2 hu`. Establish `e : R.gram u = Cᴴ * R.Hmᵀ * C`. Use extensionality with `a b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [RiemLat.gram, RiemLat.ip, Matrix.of_apply, Matrix.mul_apply, dotProduct, Matrix.mulVec, Matrix.conjTranspose_apply, Matrix.transpose_apply, Pi.star_apply, C]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hp` using `(hM.conjTranspose_mul_mul_same hC).det_pos`. Rewrite `hp` using `[← e]`. Conclude with `(Complex.pos_iff.1 hp).1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_det_pos {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
     [Module (𝓞 E) Λ] (R : RiemLat E g Λ) {m : ℕ} (u : Fin m → Fin g → ℂ) (hu : LinearIndependent ℂ u) :
@@ -208,7 +208,7 @@ theorem gram_det_pos {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ
   exact (Complex.pos_iff.1 hp).1
 
 /- English proof (translation)
-Take `⟨A, _, φ, u, χ, h1, h2, -, -, -, h3⟩` from `h`. Take `⟨v', e', d'⟩` from `h3 i`. Take `⟨w', f', g'⟩` from `h3 j`. Conclude with `⟨t.PP.isLB, tan i, tan j, A, inferInstance, φ, g, u, R.Hm, χ, v', w', x i, x j, h1, h2, e', f', d', g', rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hodgeInnerProduct_of_fibreLatticeVector {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {X : Scheme.{0}} {t : SAB H X} {z : Sp ℂ ⟶ X} {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
@@ -226,11 +226,11 @@ variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {II : In
   {Ω : Type} [Field Ω] [Algebra ℚ Ω] {W : Ψ → Type} [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)]
 
 /- English proof (translation)
-Establish `e : offBd D a = ball 0 1 ∩ ⋂ i : Fin (Fintype.card Ψ * D.j * (D.N - D.j)), {t | (i : ℕ) < (D.chart a).a → t i ≠ 0}`. Use extensionality with `t`. Simplify using `only [offBd, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter]`. Use `and_congr_right fun ht => ?_` and prove the remaining obligations. Rewrite using `[(D.chart a).boundary t ht]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `isOpen_ball.inter (isOpen_iInter_of_finite fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `h : (i : ℕ) < (D.chart a).a`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `isOpen_ne_fun (continuous_apply i) continuous_const` using `[h]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isOpen_offBd (D : ComponentData II Ψ K J Ω W) (a : Fin D.nCharts) : IsOpen (offBd D a) := by
   have e : offBd D a = ball 0 1 ∩ ⋂ i : Fin (Fintype.card Ψ * D.j * (D.N - D.j)),

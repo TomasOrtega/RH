@@ -25,15 +25,13 @@ attribute [local instance 2000] Rep.hV2
 
 set_option maxHeartbeats 8000000 in
 /- English proof (translation)
-Use `haveI := d.isDiscrete`. Use `haveI : Finite d.A := Finite.of_equiv M d.eM.toEquiv`. Use `haveI hDd : IsDiscreteRep (dualRep (gsRoots (K := Kf) (S : Set (HeightOneSpectrum (𝓞 Kf.1))) (l ^ r)) d.A) := isDiscreteRep_dualRep _ _`. Use `haveI hDv : ∀ v : S, IsDiscreteRep (Rep.res (gsFinFamily (S : Set (HeightOneSpectrum (𝓞 Kf.1))) d.ιs ⟨v.1, Finset.mem_coe.2 v.2⟩).toMonoidHom (dualRep (gsRoots (K := Kf) (S : Set (HeightOneSpectrum (𝓞 Kf.1))) (l ^ r)) d.A)) := fun v => isDiscreteRep_res_dualRep_of_finite _ _ _`. Establish `hρ' : ContAction (twDual μ ρ)` using `contAction_twDual_C S μ hμ ρ hρ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : NeZero (l ^ r) := ⟨pow_ne_zero r (Fact.out : l.Prime).ne_zero⟩`. Establish `hSN : ∀ v : HeightOneSpectrum (𝓞 Kf.1), (((l ^ r : ℕ) : ℕ) : 𝓞 Kf.1) ∈ v.asIdeal → v ∈ (S : Set (HeightOneSpectrum (𝓞 Kf.1)))`. Introduce `v hv`. Rewrite `hv` using `[Nat.cast_pow]`. Conclude with `Finset.mem_coe.2 (hS v (v.isPrime.mem_of_pow_mem r hv))`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hK : Odd (l ^ r) ∨ IsTotallyComplex Kf.1`. Break down `hl with h | h` into its components or cases. Conclude with `Or.inl ((Fact.out : l.Prime).odd_of_ne_two h).pow`. Conclude with `Or.inr h`. Establish `hMt : ∀ m : d.A, (l ^ r) • m = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m`. Rewrite using `[← d.eM.apply_symm_apply m, ← map_nsmul, nsmul_eq_zero_of_zmod, map_zero]`. Establish `F9` using `poitouTate_nineTerm_gs (K := Kf) (S : Set (HeightOneSpectrum (𝓞 Kf.1))) d.ιs hSN hK d.A hMt`. Establish `hM0` using `tate_duality_degree_zero_middle Kf S ζ Av μ ρ d hρ`. Establish `hM1` using `tate_duality_degree_one_middle Kf S ζ Av μ ρ d hρ`.
-
-Establish `hM2` using `tate_duality_degree_two_middle Kf S ζ Av μ ρ d hρ`. Establish `hD0` using `tate_duality_degree_zero_left Kf S ζ Av μ ρ d hρ'`. Establish `hD1` using `tate_duality_degree_one_left Kf S ζ Av μ ρ d hρ'`. Establish `hD2` using `degree_two_cohomology_comparison_left Kf S ζ Av μ ρ d hρ'`. Conclude with `nineAdd_of_found3 (N := l ^ r) S (gsFinFamily (S : Set (HeightOneSpectrum (𝓞 Kf.1))) d.ιs) (gsRoots (S : Set (HeightOneSpectrum (𝓞 Kf.1))) (l ^ r)) d.A (gsLocalInvRootsQZ (S : Set (HeightOneSpectrum (𝓞 Kf.1))) d.ιs (l ^ r)) _ _ F9 (fun k => resH0 ρ (locFam S Av k)) (fun k => resH …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nineAdd_core (Kf : FiniteSubfield)
     [IsAlgClosure Kf.1 (AlgebraicClosure ℚ)] {l r : ℕ} [Fact l.Prime] (hl : l ≠ 2 ∨ IsTotallyComplex Kf.1) (hr : 0 < r)

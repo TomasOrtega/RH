@@ -11,17 +11,17 @@ set_option autoImplicit false
 namespace GlobalTheory.HTTorsCount
 
 /- English proof (translation)
-Take `⟨β, hβ, z, hz, hsum⟩` from `Submodule.mem_sup.1 (h ▸ Submodule.mem_top (x := (1 : 𝓞 K)))`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`. Establish `hpos : 0 < Ideal.absNorm 𝔟`. Rewrite using `[Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `hβ` using `[Submodule.mem_bot]`. Substitute `hβ` using the available equality. Rewrite `hsum` using `[zero_add, _root_.mul_comm]`. Establish `hu : IsUnit (p : 𝓞 K)` using `isUnit_iff_exists_inv.2 ⟨y, hsum⟩`. Establish `e : (p : 𝓞 K) = algebraMap ℤ (𝓞 K) (p : ℤ)` using `by simp`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn` using `hu.map (Algebra.norm ℤ (S := 𝓞 K))`. Rewrite `hn` using `[e, Algebra.norm_algebraMap, Int.isUnit_iff_natAbs_eq, Int.natAbs_pow, Int.natAbs_natCast]`. Break down `Nat.pow_eq_one.1 hn with h1 | h1` into its components or cases. Conclude with `hp.out.one_lt.ne' h1`. Conclude with `(Module.finrank_pos (R := ℤ) (M := 𝓞 K)).ne' h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hpos, ?_⟩` and prove the remaining obligations. Use `(Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hp.out).2 fun hd => ?_))` and prove the remaining obligations. Rewrite `hd`, `hpos` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `: Finite (𝓞 K ⧸ 𝔟)` using `Nat.finite_of_card_ne_zero hpos.ne'`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' p hd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpx : (p : 𝓞 K ⧸ 𝔟) * x = 0` using `by rw [← nsmul_eq_mul, ← hx, addOrderOf_nsmul_eq_zero]`. Establish `h1 : Ideal.Quotient.mk 𝔟 y * (p : 𝓞 K ⧸ 𝔟) = 1`. Use `congrArg (Ideal.Quotient.mk 𝔟) hsum` as an intermediate fact. Rewrite `this` using `[map_add, Ideal.Quotient.eq_zero_iff_mem.2 hβ, zero_add, map_mul, map_natCast, map_one]`. Then use the resulting hypothesis. Establish `hx0 : x = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite `hx` using `[hx0, addOrderOf_zero]`. Conclude with `hp.out.one_lt.ne hx`.
+A detailed English derivation is pending.
 -/
 theorem absNorm_pos_coprime {K : Type} [Field K] [NumberField K] (p : ℕ) [hp : Fact p.Prime]
     (𝔟 : Ideal (𝓞 K)) (h : 𝔟 ⊔ Ideal.span {(p : 𝓞 K)} = ⊤) :
@@ -57,35 +57,33 @@ theorem absNorm_pos_coprime {K : Type} [Field K] [NumberField K] (p : ℕ) [hp :
   exact hp.out.one_lt.ne hx
 
 /- English proof (translation)
-Introduce `p _ D R _ b N S s o 𝔟 h𝔟 k _ _ t`. Take `⟨hcpos, hcop⟩` from `absNorm_pos_coprime p 𝔟 h𝔟`. Take `⟨β, hβ⟩ : ∃ β : R →+* k, spMap β = t ≫ s` from `⟨(Spec.preimage (t ≫ s)).hom, Spec.map_preimage _⟩`. Take `⟨I, -⟩` from `o.geom k t β hβ.symm`. Use `letI : Module (𝓞 D.F) D.La := Module.compHom D.La (algebraMap (𝓞 D.F) D.O)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Establish `hsmul : ∀ (a : 𝓞 D.F) (x : D.La), a • x = (algebraMap (𝓞 D.F) D.O a) • x` using `fun _ _ => rfl`. Establish `hcnt` using `GlobalTheory.T.card_killed_by_ideal_mod_int_eq_absNorm_pow D.F D.La D.freeLa D.finLa (D.m * D.n) D.rankLa 𝔟 (Ideal.absNorm 𝔟) hcpos (Ideal.absNorm_mem 𝔟)`. Rewrite using `[← hcnt]`. Use `set c := Ideal.absNorm 𝔟 with hc`. Use `set P : Submodule (𝓞 D.F) D.La := Ideal.span {(c : 𝓞 D.F)} • (⊤ : Submodule (𝓞 D.F) D.La) with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmemP : ∀ x, x ∈ P ↔ ∃ y, x = c • y`. Introduce `x`. Rewrite using `[hP, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, -, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y, by rw [hsmul, map_natCast, Nat.cast_smul_eq_nsmul]⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, Submodule.mem_top, by rw [hsmul, map_natCast, Nat.cast_smul_eq_nsmul]⟩`. Set `g : D.La → (Over.mk t ⟶ o.A)` to `I.ev c`. Establish `hker : ∀ x, g x = 1 ↔ x ∈ P` using `fun x => by rw [hmemP]; exact I.ker c hcpos hcop x`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ∀ x y, g (x - y) = g x * (g y)⁻¹` using `fun x y => eq_mul_inv_of_mul_eq (by rw [← I.add, sub_add_cancel])`. Establish `hlin : ∀ (a : 𝓞 D.F) x, g (a • x) = g x ≫ o.act.act (algebraMap (𝓞 D.F) D.O a)` using `fun a x => by`. Rewrite using `[hsmul]`. Conclude with `I.lin c _ x`. Establish `hmap : 𝔟.map (algebraMap (𝓞 D.F) D.O) = Ideal.span (algebraMap (𝓞 D.F) D.O '' 𝔟)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `f : D.La ⧸ P → (Over.mk t ⟶ o.A)` to `fun z => Quotient.liftOn' z g (fun x y hxy => by`. Establish `h1 : g (x - y) = 1` using `(hker _).2 ((Submodule.quotientRel_def P).1 hxy)`. Rewrite `h1` using `[hsub]`. Conclude with `mul_inv_eq_one.1 h1)`. Establish `hf : ∀ x, f (Submodule.Quotient.mk x) = g x` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hkill : ∀ x, (∀ a ∈ 𝔟, a • (Submodule.Quotient.mk x : D.La ⧸ P) = 0) ↔ GlobalTheory.IwLevel.KilledBy (GlobalTheory.IwLevel.htAct o) (𝔟.map (algebraMap (𝓞 D.F) D.O)) (g x)`. Introduce `x`. Rewrite using `[hmap, GlobalTheory.IwLevel.killedBy_span]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨a, ha, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.IwLevel.htAct_act, ← hlin, hker, ← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul]`. Conclude with `h a ha`. Introduce `h a ha`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, ← hker, hlin]`. Use `h _ ⟨a, ha, rfl⟩` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[GlobalTheory.IwLevel.htAct_act]`. Then use the resulting hypothesis. Establish `hpow : ∀ (q : Over.mk t ⟶ o.A) (n : ℕ), q ≫ o.act.act (n : D.O) = q ^ n`. Introduce `q n`. Establish `h0 : o.act.act 0 = 1`. Use `o.act.add 0 0` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`. Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, h0, pow_zero, MonObj.comp_one]`. Consider the case `succ n ih => rw [Nat.cast_succ, o.act.add, o.act.one, MonObj.comp_mul, ih, Category.comp_id, pow_succ]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Set `F : {z : D.La ⧸ P // ∀ a ∈ 𝔟, a • z = 0} → {y : Over.mk t ⟶ o.A // GlobalTheory.IwLevel.KilledBy (GlobalTheory.IwLevel.htAct o) (𝔟.map (algebraMap (𝓞 D.F) D.O)) y}` to `fun z => ⟨f z.1, by`. Take `⟨z, hz⟩` from `z`. Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `H x => exact (hkill x).1 hz⟩`. Use `(Nat.card_eq_of_bijective F ⟨?_, ?_⟩).symm` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Introduce and unpack `⟨z₁, h₁⟩ ⟨z₂, h₂⟩ h`. Establish `h' : f z₁ = f z₂` using `congrArg Subtype.val h`. Proceed by induction on `z₁ using Submodule.Quotient.induction_on with`. Consider the case `H x`. Proceed by induction on `z₂ using Submodule.Quotient.induction_on with`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Consider the case `H y`. Rewrite `h'` using `[hf, hf]`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk x = Submodule.Quotient.mk y`. Rewrite using `[Submodule.Quotient.eq, ← hker, hsub, h', mul_inv_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨q, hq⟩`. Establish `hq1 : q ^ c = 1`. Rewrite using `[← hpow, ← map_natCast (algebraMap (𝓞 D.F) D.O)]`. Use `hq _ (Ideal.mem_map_of_mem (algebraMap (𝓞 D.F) D.O) (Ideal.absNorm_mem 𝔟))` as an intermediate fact. Rewrite `this` using `[GlobalTheory.IwLevel.htAct_act]`. Then use the resulting hypothesis.
-
-Take `⟨x, hx⟩` from `(I.onto c hcpos hcop q).1 hq1`. Use `⟨⟨Submodule.Quotient.mk x, (hkill x).2 (by change GlobalTheory.IwLevel.KilledBy _ _ (I.ev c x); rw [hx]; exact hq)⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem card_killedBy_eq_absNorm_pow : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : GlobalTheory.UPel.HT.Obj b N s) (𝔟 : Ideal (𝓞 D.F)), 𝔟 ⊔ Ideal.span {(p : 𝓞 D.F)} = ⊤ → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ S), Nat.card {y : Over.mk t ⟶ o.A // GlobalTheory.IwLevel.KilledBy (GlobalTheory.IwLevel.htAct o) (𝔟.map (algebraMap (𝓞 D.F) D.O)) y} = Ideal.absNorm 𝔟 ^ (D.m * D.n) := by
   intro p _ D R _ b N S s o 𝔟 h𝔟 k _ _ t

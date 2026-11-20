@@ -52,9 +52,9 @@ def coordC (X : Matrix (Fin (Module.finrank ℚ D + 1)) (Fin (Module.finrank ℚ
   X (finSumFinEquiv (Sum.inr 0)) (finSumFinEquiv (Sum.inr 0))
 
 /- English proof (translation)
-Establish `h` using `Algebra.leftMulMatrix_mulVec_repr (basR D R) z.1 1`. Rewrite `h` using `[mul_one]`. Simplify using `only [coordA, blk, blk0, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁]`. Establish `key : (fun i => ∑ j, lreg D R z.1 i j * (basR D R).repr 1 j) = (basR D R).equivFun z.1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun h i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`. Rewrite using `[Module.Basis.equivFun_apply, ← this]`. Rewrite using `[key]`. Conclude with `(basR D R).equivFun.symm_apply_apply z.1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordA_blk (z : (R ⊗[ℚ] D) × R) : coordA D R (blk D R z) = z.1 := by
   have h := Algebra.leftMulMatrix_mulVec_repr (basR D R) z.1 1
@@ -71,13 +71,13 @@ theorem coordA_blk (z : (R ⊗[ℚ] D) × R) : coordA D R (blk D R z) = z.1 := b
   exact (basR D R).equivFun.symm_apply_apply z.1
 
 /- English proof (translation)
-Simplify using `[coordC, blk, blk0, Matrix.reindexAlgEquiv_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordC_blk (z : (R ⊗[ℚ] D) × R) : coordC D R (blk D R z) = z.2 := by
   simp [coordC, blk, blk0, Matrix.reindexAlgEquiv_apply]
 
 /- English proof (translation)
-Introduce `z w h` and use `by have h1 := coordA_blk D R z have h2 := coordC_blk D R z rw [h, coordA_blk] at h1 rw [h, coordC_blk] at h2 exact Prod.ext h1.symm h2.symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blk_injective : Function.Injective (blk D R) := fun z w h => by
   have h1 := coordA_blk D R z
@@ -97,7 +97,7 @@ variable {D : Type} [Ring D] [Algebra ℚ D] [FiniteDimensional ℚ D]
 variable {R R' : Type} [CommRing R] [Algebra ℚ R] [CommRing R'] [Algebra ℚ R']
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r m`. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul, map_mul, AlgHom.commutes]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem repr_map (f : R →ₐ[ℚ] R') (x : R ⊗[ℚ] D) (k : Fin (Module.finrank ℚ D)) :
     (basR D R').repr (Algebra.TensorProduct.map f (AlgHom.id ℚ D) x) k = f ((basR D R).repr x k) := by
@@ -109,7 +109,7 @@ theorem repr_map (f : R →ₐ[ℚ] R') (x : R ⊗[ℚ] D) (k : Fin (Module.finr
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [lreg, Algebra.leftMulMatrix_eq_repr_mul, RingHom.mapMatrix_apply, Matrix.map_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[← repr_map f]`. Use `congr 2`. Simplify using `[Algebra.TensorProduct.basis_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem lreg_map (f : R →ₐ[ℚ] R') (a : R ⊗[ℚ] D) :
     lreg D R' (Algebra.TensorProduct.map f (AlgHom.id ℚ D) a) = f.toRingHom.mapMatrix (lreg D R a) := by
@@ -121,7 +121,7 @@ theorem lreg_map (f : R →ₐ[ℚ] R') (a : R ⊗[ℚ] D) :
   simp [Algebra.TensorProduct.basis_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blk, blk0, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply, lreg_map]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> (try rw [Subsingleton.elim i j]) <;>`. Simplify using `[Matrix.fromBlocks_apply₁₁, Matrix.scalar_apply, Matrix.diagonal_apply, apply_ite]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blk_map (f : R →ₐ[ℚ] R') (z : (R ⊗[ℚ] D) × R) :
     blk D R' (Algebra.TensorProduct.map f (AlgHom.id ℚ D) z.1, f z.2) = f.toRingHom.mapMatrix (blk D R z) := by
@@ -133,7 +133,7 @@ theorem blk_map (f : R →ₐ[ℚ] R') (z : (R ⊗[ℚ] D) × R) :
     simp [Matrix.fromBlocks_apply₁₁, Matrix.scalar_apply, Matrix.diagonal_apply, apply_ite]
 
 /- English proof (translation)
-Simplify using `only [coordA]`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_coordA (X : Matrix (Fin (Module.finrank ℚ D + 1)) (Fin (Module.finrank ℚ D + 1)) R)
     (k : Fin (Module.finrank ℚ D)) :
@@ -143,9 +143,9 @@ theorem repr_coordA (X : Matrix (Fin (Module.finrank ℚ D + 1)) (Fin (Module.fi
   rw [← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Apply `(basR D R').repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Rewrite using `[repr_map, repr_coordA, repr_coordA, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← repr_map f]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Algebra.TensorProduct.map f (AlgHom.id ℚ D) (1 : R ⊗[ℚ] D) = 1` using `map_one _`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coordA_map (f : R →ₐ[ℚ] R') (X : Matrix (Fin (Module.finrank ℚ D + 1)) (Fin (Module.finrank ℚ D + 1)) R) :
     coordA D R' (f.toRingHom.mapMatrix X) = Algebra.TensorProduct.map f (AlgHom.id ℚ D) (coordA D R X) := by
@@ -175,7 +175,7 @@ variable {D : Type} [Ring D] [Algebra ℚ D] [FiniteDimensional ℚ D] (σ : D �
 variable {R R' : Type} [CommRing R] [Algebra ℚ R] [CommRing R'] [Algebra ℚ R']
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r m => simp only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, starT_tmul]`. Consider the case `add x y hx hy => simp only [map_add, MulOpposite.unop_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem starT_tmap (f : R →ₐ[ℚ] R') (x : R ⊗[ℚ] D) :
     (starT σ R' (Algebra.TensorProduct.map f (AlgHom.id ℚ D) x)).unop =
@@ -195,7 +195,7 @@ variable (R) in
 def commE (a : R ⊗[ℚ] D) : R ⊗[ℚ] D := a * ((1 : R) ⊗ₜ y) - ((1 : R) ⊗ₜ y) * a
 
 /- English proof (translation)
-Simplify using `only [formE, map_sub, map_mul, starT_tmap, Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem formE_map (f : R →ₐ[ℚ] R') (a : R ⊗[ℚ] D) (c : R) :
     Algebra.TensorProduct.map f (AlgHom.id ℚ D) (formE σ β R a c) =
@@ -204,7 +204,7 @@ theorem formE_map (f : R →ₐ[ℚ] R') (a : R ⊗[ℚ] D) (c : R) :
   simp [Algebra.TensorProduct.algebraMap_apply]
 
 /- English proof (translation)
-Simplify using `only [commE, map_sub, map_mul, Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem commE_map (f : R →ₐ[ℚ] R') (a : R ⊗[ℚ] D) :
     Algebra.TensorProduct.map f (AlgHom.id ℚ D) (commE y R a) =
@@ -221,9 +221,9 @@ def cond (X : Matrix (Fin (Module.finrank ℚ D + 1)) (Fin (Module.finrank ℚ D
   | Sum.inr (Sum.inr k) => (basR D R).repr (commE y R (coordA D R X)) k
 
 /- English proof (translation)
-Break down `ω with ⟨i, j⟩ | k | k` into its components or cases. Establish `hb` using `congrFun (congrFun (blk_map f (coordA D R X, coordC D R X)) i) j`. Simplify using `only [cond, map_sub, coordA_map, coordC_map, hb]`. Both sides reduce to the same expression. Simplify using `only [cond, coordA_map, coordC_map, ← formE_map, repr_map]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [cond, coordA_map, ← commE_map, repr_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cond_map (f : R →ₐ[ℚ] R') (X : Matrix (Fin (Module.finrank ℚ D + 1)) (Fin (Module.finrank ℚ D + 1)) R)
     (ω) : f (cond σ β y R X ω) = cond σ β y R' (f.toRingHom.mapMatrix X) ω := by
@@ -235,11 +235,9 @@ theorem cond_map (f : R →ₐ[ℚ] R') (X : Matrix (Fin (Module.finrank ℚ D +
   · simp only [cond, coordA_map, ← commE_map, repr_map]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨Matrix.ext fun i j => sub_eq_zero.1 (h (Sum.inl (i, j))), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(basR D R).forall_coord_eq_zero_iff.1 fun k => h (Sum.inr (Sum.inl k))`. Conclude with `(basR D R).forall_coord_eq_zero_iff.1 fun k => h (Sum.inr (Sum.inr k))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce and unpack `⟨h1, h2, h3⟩ ω`. Break down `ω with ⟨i, j⟩ | k | k` into its components or cases. Simplify using `only [cond]`. Rewrite using `[← h1, sub_self]`. Simplify using `only [cond, h2, map_zero, Finsupp.zero_apply]`.
-
-Simplify using `only [cond, h3, map_zero, Finsupp.zero_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cond_zero_iff (X : Matrix (Fin (Module.finrank ℚ D + 1)) (Fin (Module.finrank ℚ D + 1)) R) :
     (∀ ω, cond σ β y R X ω = 0) ↔ X = blk D R (coordA D R X, coordC D R X) ∧
@@ -266,19 +264,17 @@ variable {D : Type} [Ring D] [Algebra ℚ D] [FiniteDimensional ℚ D]
 variable {R : Type} [CommRing R] [Algebra ℚ R]
 
 /- English proof (translation)
-Use `set Y' := Matrix.reindexAlgEquiv R R (finSumFinEquiv (m := Module.finrank ℚ D) (n := 1)).symm Y with hY'`. Establish `hY : Y = Matrix.reindexAlgEquiv R R finSumFinEquiv Y'`. Rewrite using `[hY']`. Use extensionality with `i j`. Simplify using `[Matrix.reindexAlgEquiv_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : blk0 D R z * Y' = 1`. Apply `(Matrix.reindexAlgEquiv R R (finSumFinEquiv (m := Module.finrank ℚ D) (n := 1))).injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_one, ← hY]`. Conclude with `h`. Rewrite `h0` using `[← Matrix.fromBlocks_toBlocks Y', blk0, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_inj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨h11, -, -, h22⟩` from `h0`. Simplify using `only [Matrix.zero_mul, add_zero, zero_add] at h11 h22`. Prove the components needed by the constructor for the conclusion. Use `set B := Y'.toBlocks₁₁ set a := z.1`. Establish `hBL : B * lreg D R a = 1` using `mul_eq_one_comm.1 h11`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `set a' := (basR D R).equivFun.symm (Matrix.mulVec B ⇑((basR D R).repr 1)) with ha'`. Establish `hr : ⇑((basR D R).repr a') = Matrix.mulVec B ⇑((basR D R).repr 1)`. Use function extensionality and compare the values at `i`. Rewrite using `[← Module.Basis.equivFun_apply, ha', LinearEquiv.apply_symm_apply]`. Establish `e1 : a * a' = 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `(basR D R).repr.injective` to reduce the goal to its premises. Apply `DFunLike.coe_injective` to reduce the goal to its premises. Rewrite using `[← Algebra.leftMulMatrix_mulVec_repr, hr, Matrix.mulVec_mulVec]`. Express the relevant statement in the definitionally equal form `Matrix.mulVec (lreg D R a * B) _ = _`. Rewrite using `[h11, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : a' * a = 1`. Apply `Algebra.leftMulMatrix_injective (basR D R)` to reduce the goal to its premises. Establish `: lreg D R a * lreg D R a' = 1` using `by rw [← map_mul, e1, map_one]`. Rewrite using `[map_mul, map_one]`. Conclude with `mul_eq_one_comm.1 this`.
-
-Conclude with `⟨⟨a, a', e1, e2⟩, rfl⟩`. Use `congrFun (congrFun h22 0) 0` as an intermediate fact. Simplify using `only [Matrix.scalar_apply, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul] at this`. Conclude with `isUnit_iff_exists_inv.2 ⟨_, by simpa [Matrix.diagonal_mul] using this⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_of_blk_mul (z : (R ⊗[ℚ] D) × R)
     (Y : Matrix (Fin (Module.finrank ℚ D + 1)) (Fin (Module.finrank ℚ D + 1)) R) (h : blk D R z * Y = 1) :
@@ -322,18 +318,18 @@ theorem isUnit_of_blk_mul (z : (R ⊗[ℚ] D) × R)
 variable (σ : D →+* Dᵐᵒᵖ) (β y : D)
 
 /- English proof (translation)
-Use `⟨?_, Commute.one_left _⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tc_one : GlobalTheory.TorCls.TC D σ β y R 1 := by
   refine ⟨?_, Commute.one_left _⟩
   simp
 
 /- English proof (translation)
-Take `⟨hz1, hz2⟩` from `hz`. Take `⟨hw1, hw2⟩` from `hw`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Prod.fst_mul, Prod.snd_mul, Units.val_mul, map_mul, MulOpposite.unop_mul] set B : R ⊗[ℚ] D := (1 : R) ⊗ₜ β`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [mul_assoc]`. Use `_ = algebraMap R (R ⊗[ℚ] D) (w.2 : R) * ((z.1 : R ⊗[ℚ] D) * B * (starT σ R (z.1 : R ⊗[ℚ] D)).unop) := by`. Rewrite using `[hw1, ← mul_assoc (z.1 : R ⊗[ℚ] D), ← Algebra.commutes]`. Simplify using `only [mul_assoc]`. Use `_ = _ := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hz1, ← mul_assoc, ← map_mul, mul_comm (w.2 : R), map_mul]`. Simplify using `only [Prod.fst_mul, Units.val_mul]`. Conclude with `hz2.mul_left hw2`.
+A detailed English derivation is pending.
 -/
 theorem tc_mul (z w : (R ⊗[ℚ] D)ˣ × Rˣ) (hz : GlobalTheory.TorCls.TC D σ β y R z) (hw : GlobalTheory.TorCls.TC D σ β y R w) :
     GlobalTheory.TorCls.TC D σ β y R (z * w) := by
@@ -354,11 +350,11 @@ theorem tc_mul (z w : (R ⊗[ℚ] D)ˣ × Rˣ) (hz : GlobalTheory.TorCls.TC D σ
     exact hz2.mul_left hw2
 
 /- English proof (translation)
-Take `⟨hz1, hz2⟩` from `hz`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Prod.fst_inv, Prod.snd_inv] set B : R ⊗[ℚ] D := (1 : R) ⊗ₜ β set a := z.1 set c := z.2`. Establish `hs : (starT σ R (a : R ⊗[ℚ] D)).unop * (starT σ R ((a⁻¹ : (R ⊗[ℚ] D)ˣ) : R ⊗[ℚ] D)).unop = 1`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((a⁻¹ : (R ⊗[ℚ] D)ˣ) : R ⊗[ℚ] D) * ((a : R ⊗[ℚ] D) * B * (starT σ R (a : R ⊗[ℚ] D)).unop) * (starT σ R ((a⁻¹ : (R ⊗[ℚ] D)ˣ) : R ⊗[ℚ] D)).unop = B`. Rewrite using `[show ((a⁻¹ : (R ⊗[ℚ] D)ˣ) : R ⊗[ℚ] D) * ((a : R ⊗[ℚ] D) * B * (starT σ R (a : R ⊗[ℚ] D)).unop) * (starT σ R ((a⁻¹ : (R ⊗[ℚ] D)ˣ) : R ⊗[ℚ] D)).unop = (((a⁻¹ : (R ⊗[ℚ] D)ˣ) : R ⊗[ℚ] D) * a) * B * ((starT σ R (a : R ⊗[ℚ] D)).unop * (starT σ R ((a⁻¹ : (R ⊗[ℚ] D)ˣ) : R ⊗[ℚ] D)).unop) …`. Simplify using `only [mul_assoc], Units.inv_mul, hs, one_mul, mul_one]`. Rewrite `e` using `[hz1, ← Algebra.smul_def, mul_smul_comm, smul_mul_assoc]`. Use `conv_rhs => rw [← e]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Algebra.smul_def, smul_smul, Units.inv_mul, one_smul]`. Conclude with `hz2.units_inv_left`.
+A detailed English derivation is pending.
 -/
 theorem tc_inv (z : (R ⊗[ℚ] D)ˣ × Rˣ) (hz : GlobalTheory.TorCls.TC D σ β y R z) :
     GlobalTheory.TorCls.TC D σ β y R z⁻¹ := by
@@ -400,7 +396,7 @@ def locusSet : Set (MvPolynomial (Fin (Module.finrank ℚ D + 1) × Fin (Module.
 variable {D}
 
 /- English proof (translation)
-Rewrite using `[cond_map]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Xu]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem aeval_cond {R : Type} [CommRing R] [Algebra ℚ R]
     (X : Matrix (Fin (Module.finrank ℚ D + 1)) (Fin (Module.finrank ℚ D + 1)) R) (ω) :
@@ -412,7 +408,7 @@ theorem aeval_cond {R : Type} [CommRing R] [Algebra ℚ R]
   simp [Xu]
 
 /- English proof (translation)
-Simplify using `only [HeckeCharacterZeroLocus.zeroLocusGL, locusSet, Set.mem_setOf_eq, Set.forall_mem_range, aeval_cond]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_zeroLocus_iff {R : Type} [CommRing R] [Algebra ℚ R] (g : GL (Fin (Module.finrank ℚ D + 1)) R) :
     g ∈ HeckeCharacterZeroLocus.zeroLocusGL (locusSet D σ β y) R ↔ ∀ ω, cond σ β y R (g : Matrix _ _ R) ω = 0 := by
@@ -432,11 +428,11 @@ theorem blkU_val {R : Type} [CommRing R] [Algebra ℚ R] (z : (R ⊗[ℚ] D)ˣ �
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_zeroLocus_iff, cond_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hX, hf, hc⟩`. Establish `hmul : blk D R (coordA D R (g : Matrix _ _ R), coordC D R (g : Matrix _ _ R)) * ((g⁻¹ : GL (Fin (Module.finrank ℚ D + 1)) R) : Matrix _ _ R) = 1`. Rewrite using `[← hX, Units.mul_inv]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ua, uc⟩` from `isUnit_of_blk_mul _ _ hmul`. Use `⟨(ua.unit, uc.unit), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `sub_eq_zero.1 hf`. Conclude with `sub_eq_zero.1 hc`. Apply `Units.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[blkU_val]`. Conclude with `hX.symm`. Introduce and unpack `⟨z, ⟨h1, h2⟩, rfl⟩`. Rewrite using `[blkU_val, coordA_blk, coordC_blk]`. Conclude with `⟨rfl, sub_eq_zero.2 h1, sub_eq_zero.2 h2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_locus_iff {R : Type} [CommRing R] [Algebra ℚ R] (g : GL (Fin (Module.finrank ℚ D + 1)) R) :
     g ∈ HeckeCharacterZeroLocus.zeroLocusGL (locusSet D σ β y) R ↔ ∃ z, GlobalTheory.TorCls.TC D σ β y R z ∧ blkU D R z = g := by
@@ -458,9 +454,9 @@ theorem mem_locus_iff {R : Type} [CommRing R] [Algebra ℚ R] (g : GL (Fin (Modu
     exact ⟨rfl, sub_eq_zero.2 h1, sub_eq_zero.2 h2⟩
 
 /- English proof (translation)
-Introduce `R _ _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(mem_locus_iff σ β y _).2 ⟨1, tc_one σ β y, map_one _⟩`. Introduce `g hg h hh`. Take `⟨z, hz, rfl⟩` from `(mem_locus_iff σ β y _).1 hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, rfl⟩` from `(mem_locus_iff σ β y _).1 hh`. Conclude with `(mem_locus_iff σ β y _).2 ⟨z * w, tc_mul σ β y z w hz hw, map_mul _ _ _⟩`. Introduce `g hg`. Take `⟨z, hz, rfl⟩` from `(mem_locus_iff σ β y _).1 hg`. Conclude with `(mem_locus_iff σ β y _).2 ⟨z⁻¹, tc_inv σ β y z hz, map_inv _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isGroupLocus : HeckeCharacterZeroLocus.IsGroupLocus (locusSet D σ β y) := by
   intro R _ _
@@ -488,9 +484,9 @@ def psi (R : Type) [CommRing R] [Algebra ℚ R] :
     (fun z => (mem_locus_iff σ β y _).2 ⟨z, z.2, rfl⟩)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `z w h`. Establish `h'` using `congrArg (fun g : HeckeCharacterZeroLocus.locusSubgroup (locusSet D σ β y) (isGroupLocus σ β y) R => ((g : GL (Fin (Module.finrank ℚ D + 1)) R) : Matrix (Fin (Module.finrank ℚ D + 1)) (Fin (Module.finrank ℚ D + 1)) R)) h`. Establish `h''` using `blk_injective D R h'`. Conclude with `Subtype.ext (Prod.ext (Units.ext (congrArg Prod.fst h'')) (Units.ext (congrArg Prod.snd h'')))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Take `⟨z, hz, hzg⟩` from `(mem_locus_iff σ β y _).1 g.2`. Conclude with `⟨⟨z, hz⟩, Subtype.ext hzg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem psi_bijective (R : Type) [CommRing R] [Algebra ℚ R] : Function.Bijective (psi σ β y R) := by
   constructor
@@ -508,7 +504,7 @@ def phi (R : Type) [CommRing R] [Algebra ℚ R] :
   (tcSub D σ β y R).subtype.comp (MulEquiv.ofBijective (psi σ β y R) (psi_bijective σ β y R)).symm.toMonoidHom
 
 /- English proof (translation)
-Use `congrArg Subtype.val ((MulEquiv.ofBijective (psi σ β y R) (psi_bijective σ β y R)).apply_symm_apply g)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem blkU_phi (R : Type) [CommRing R] [Algebra ℚ R]
     (g : HeckeCharacterZeroLocus.locusSubgroup (locusSet D σ β y) (isGroupLocus σ β y) R) :
@@ -518,7 +514,7 @@ theorem blkU_phi (R : Type) [CommRing R] [Algebra ℚ R]
   exact this
 
 /- English proof (translation)
-Rewrite using `[← blkU_phi σ β y R g, blkU_val, coordA_blk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_fst (R : Type) [CommRing R] [Algebra ℚ R]
     (g : HeckeCharacterZeroLocus.locusSubgroup (locusSet D σ β y) (isGroupLocus σ β y) R) :
@@ -527,7 +523,7 @@ theorem phi_fst (R : Type) [CommRing R] [Algebra ℚ R]
   rw [← blkU_phi σ β y R g, blkU_val, coordA_blk]
 
 /- English proof (translation)
-Rewrite using `[← blkU_phi σ β y R g, blkU_val, coordC_blk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_snd (R : Type) [CommRing R] [Algebra ℚ R]
     (g : HeckeCharacterZeroLocus.locusSubgroup (locusSet D σ β y) (isGroupLocus σ β y) R) :
@@ -545,7 +541,7 @@ section Final
 variable {D : Type} [Ring D] [Algebra ℚ D] [FiniteDimensional ℚ D] (σ : D →+* Dᵐᵒᵖ) (β y : D)
 
 /- English proof (translation)
-Simplify using `only [coordA, Module.Basis.equivFun_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordA_eq_sum {R : Type} [CommRing R] [Algebra ℚ R]
     (X : Matrix (Fin (Module.finrank ℚ D + 1)) (Fin (Module.finrank ℚ D + 1)) R) :
@@ -554,9 +550,7 @@ theorem coordA_eq_sum {R : Type} [CommRing R] [Algebra ℚ R]
   simp only [coordA, Module.Basis.equivFun_symm_apply]
 
 /- English proof (translation)
-Use `haveI : ContinuousAdd (R ⊗[ℚ] D) := IsModuleTopology.toContinuousAdd R _`. Establish `: coordA D R = fun X => ∑ i, (∑ j, X (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inl j)) * (basR D R).repr 1 j) • basR D R i` using `funext coordA_eq_sum`. Rewrite using `[this]`. Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Use `Continuous.smul (f := fun X : Matrix (Fin (Module.finrank ℚ D + 1)) (Fin (Module.finrank ℚ D + 1)) R => ∑ j, X (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inl j)) * (basR D R).repr 1 j) (g := fun _ => basR D R i) (continuous_finset_sum _ fun j _ => ?_) continuous_const` and prove the remaining obligations.
-
-Conclude with `(continuous_apply_apply _ _).mul continuous_const`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_coordA {R : Type} [CommRing R] [Algebra ℚ R] [TopologicalSpace R] [IsTopologicalRing R]
     [TopologicalSpace (R ⊗[ℚ] D)] [IsModuleTopology R (R ⊗[ℚ] D)] : Continuous (coordA D R) := by
@@ -571,17 +565,17 @@ theorem continuous_coordA {R : Type} [CommRing R] [Algebra ℚ R] [TopologicalSp
   exact (continuous_apply_apply _ _).mul continuous_const
 
 /- English proof (translation)
-The claim follows from `continuous_apply_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coordC {R : Type} [CommRing R] [Algebra ℚ R] [TopologicalSpace R] :
     Continuous (coordC D R) := continuous_apply_apply _ _
 
 /- English proof (translation)
-Establish `hv : Continuous fun g : HeckeCharacterZeroLocus.locusSubgroup (locusSet D σ β y) (isGroupLocus σ β y) R => ((g : GL (Fin (Module.finrank ℚ D + 1)) R) : Matrix (Fin (Module.finrank ℚ D + 1)) (Fin (Module.finrank ℚ D + 1)) R)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hi : Continuous fun g : HeckeCharacterZeroLocus.locusSubgroup (locusSet D σ β y) (isGroupLocus σ β y) R => (((g⁻¹ : HeckeCharacterZeroLocus.locusSubgroup (locusSet D σ β y) (isGroupLocus σ β y) R) : GL (Fin (Module.finrank ℚ D + 1)) R) : Matrix (Fin (Module.finrank ℚ D + 1)) (Fin …` using `Units.continuous_coe_inv.comp continuous_subtype_val`. Use `Continuous.prodMk (f := fun g => (phi σ β y R g).1) (g := fun g => (phi σ β y R g).2) ?_ ?_` and prove the remaining obligations. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_coordA.comp hv).congr fun g => (phi_fst σ β y R g).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(continuous_coordA.comp hi).congr fun g => ?_` and prove the remaining obligations. Use `phi_fst σ β y R g⁻¹` as an intermediate fact. Rewrite `this` using `[map_inv]`. Conclude with `this.symm`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(continuous_coordC.comp hv).congr fun g => (phi_snd σ β y R g).symm`. Use `(continuous_coordC.comp hi).congr fun g => ?_` and prove the remaining obligations. Use `phi_snd σ β y R g⁻¹` as an intermediate fact. Rewrite `this` using `[map_inv]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_phi (R : Type) [CommRing R] [Algebra ℚ R] [TopologicalSpace R] [IsTopologicalRing R]
     [TopologicalSpace (R ⊗[ℚ] D)] [IsModuleTopology R (R ⊗[ℚ] D)] : Continuous (phi σ β y R) := by
@@ -611,17 +605,13 @@ theorem continuous_phi (R : Type) [CommRing R] [Algebra ℚ R] [TopologicalSpace
 end Final
 
 /- English proof (translation)
-Introduce `D _ _ _ σ β y`. Use `⟨Module.finrank ℚ D + 1, locusSet D σ β y, isGroupLocus σ β y, fun R _ _ => phi σ β y R, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `R _ _`. Use `⟨?_, fun z => ⟨fun hz => ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `g h hgh`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← blkU_phi σ β y R g, ← blkU_phi σ β y R h]`. Conclude with `congrArg _ hgh`. Use `⟨psi σ β y R ⟨z, hz⟩, ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val ((MulEquiv.ofBijective (psi σ β y R) (psi_bijective σ β y R)).symm_apply_apply ⟨z, hz⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨g, rfl⟩`. Conclude with `((MulEquiv.ofBijective (psi σ β y R) (psi_bijective σ β y R)).symm g).2`. Introduce `R R' _ _ _ _ f g g' hg`. Use `Prod.ext (Units.ext ?_) (Units.ext ?_)` and prove the remaining obligations. Establish `h1` using `phi_fst σ β y R' g'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[hg]`. Use `h1.trans ((coordA_map f _).trans ?_)` and prove the remaining obligations. Conclude with `congrArg _ (phi_fst σ β y R g).symm`. Establish `h1` using `phi_snd σ β y R' g'`. Rewrite `h1` using `[hg]`.
-
-Use `h1.trans ((coordC_map f _).trans ?_)` and prove the remaining obligations. Conclude with `congrArg _ (phi_snd σ β y R g).symm`. Introduce `R _ _ _ _`. Use `letI : TopologicalSpace (R ⊗[ℚ] D) := moduleTopology R (R ⊗[ℚ] D)`. Use `haveI : IsModuleTopology R (R ⊗[ℚ] D) := ⟨rfl⟩`.
-
-Conclude with `continuous_phi σ β y R`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem exists_locus :
     ∀ (D : Type) [Ring D] [Algebra ℚ D] [FiniteDimensional ℚ D] (σ : D →+* Dᵐᵒᵖ) (β y : D),

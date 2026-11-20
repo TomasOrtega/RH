@@ -20,9 +20,9 @@ namespace GlobalTheory.TorsionDense
 open RationalPoint
 
 /- English proof (translation)
-Take `⟨E⟩` from `hG.fibres k (𝟙 _)`. Set `e : (Over.pullback (𝟙 (Sp k))).mapMon.obj (Mon.mk G) ≅ Mon.mk G` to `(Functor.mapMonNatIso (Over.pullbackId (X := Sp k)) ≪≫ Functor.mapMonIdIso).app (Mon.mk G)`. Set `e' : (Over.pullback (𝟙 (Sp k))).obj G ≅ G` to `(Mon.forget _).mapIso e`. Establish `: IsMonHom e'.hom`. Express the relevant statement in the definitionally equal form `IsMonHom e.hom.hom`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `infer_instance`. Conclude with `⟨torusExtOfIso e' E⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_torusExtension {k : Type} [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G]
     (hG : IsSemiAbelian G) : Nonempty (TorusExtension G) := by
@@ -36,7 +36,7 @@ theorem nonempty_torusExtension {k : Type} [Field k] [IsAlgClosed k] (G : Over (
   exact ⟨torusExtOfIso e' E⟩
 
 /- English proof (translation)
-Establish `: IsLocallyNoetherian X.left` using `LocallyOfFiniteType.isLocallyNoetherian X.hom`. Establish `: CompactSpace X.left` using `QuasiCompact.compactSpace_of_compactSpace X.hom`. Establish `: IsNoetherian X.left` using `{}`. Use `letI := zariski X`. Conclude with `(IsInducing.induced pt).noetherianSpace`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem noetherianSpace_zariski {k : Type} [Field k] (X : Over (Sp k)) [LocallyOfFiniteType X.hom]
     [QuasiCompact X.hom] : @NoetherianSpace _ (zariski X) := by
@@ -47,11 +47,11 @@ theorem noetherianSpace_zariski {k : Type} [Field k] (X : Over (Sp k)) [LocallyO
   exact (IsInducing.induced pt).noetherianSpace
 
 /- English proof (translation)
-Use `letI := zariski N`. Use `haveI := separatelyContinuousMul N`. Use `haveI := noetherianSpace_zariski N`. Establish `: LocallyOfFiniteType N₀.hom` using `by rw [← ν.w]; infer_instance`. Set `φ : (𝟙_ (Over (Sp k)) ⟶ N₀) →* (𝟙_ (Over (Sp k)) ⟶ N)` to `MonoidHom.mk' (fun x => x ≫ ν) fun x y => MonObj.mul_comp x y ν`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ho : IsOpen (φ.range : Set (𝟙_ (Over (Sp k)) ⟶ N))`. Use `isOpen_induced_iff.2 ⟨Set.range ν.left, ν.left.isOpenMap.isOpen_range, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[Set.mem_preimage, ← Set.image_univ, pt_mem_image_iff ν isClosed_univ]`. Conclude with `⟨fun ⟨x, _, hx⟩ => ⟨x, hx⟩, fun ⟨x, hx⟩ => ⟨x, trivial, hx⟩⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfin : (φ.range : Set (𝟙_ (Over (Sp k)) ⟶ N)).Finite` using `Set.finite_range φ`. Take `⟨t, ht⟩` from `(NoetherianSpace.isCompact (Set.univ : Set (𝟙_ (Over (Sp k)) ⟶ N))).elim_finite_subcover (fun g : 𝟙_ (Over (Sp k)) ⟶ N => (fun y => g * y) ⁻¹' (φ.range : Set _)) (fun g => ho.preimage (continuous_const_mul g)) (fun y _ => Set.mem_iUnion.2 ⟨y⁻¹, Set.mem_preimage.2 (by rw [inv_mul_ …`. Use `Set.finite_univ_iff.1 (Set.Finite.subset ?_ ht)` and prove the remaining obligations. Conclude with `t.finite_toSet.biUnion fun g _ => hfin.preimage (mul_right_injective g).injOn`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_points_of_isOpenImmersion {k : Type} [Field k] [IsAlgClosed k] {N₀ N : Over (Sp k)}
     [GrpObj N₀] [GrpObj N] [LocallyOfFiniteType N.hom] [QuasiCompact N.hom] (ν : N₀ ⟶ N)
@@ -77,17 +77,17 @@ theorem finite_points_of_isOpenImmersion {k : Type} [Field k] [IsAlgClosed k] {N
   exact t.finite_toSet.biUnion fun g _ => hfin.preimage (mul_right_injective g).injOn
 
 /- English proof (translation)
-Introduce `k _ _ B _ n hB hn hnk C Z hZ hC htor`. Use `hB.smooth` as an intermediate fact. Use `hB.proper` as an intermediate fact. Use `hB.comm` as an intermediate fact. Take `⟨N, _, ν, hν, hνc, hNs, hr⟩` from `GlobalTheory.ReducedSubgroup.exists_smooth_closed_subgroup k B inferInstance C Z hZ hC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hNp : IsProper N.hom` using `by rw [← ν.w]; infer_instance`. Take `⟨N₀, _, ν₀, g, hν₀, hν₀o, hν₀c, hgc, hg, -⟩` from `GlobalTheory.exists_neutralComponent k N hNs inferInstance`. Establish `: IsClosedImmersion (ν₀ ≫ ν).left` using `by rw [Over.comp_left]; infer_instance`. Establish `: Mono (ν₀ ≫ ν)` using `Over.mono_of_mono_left _`. Establish `hA : IsAbelianScheme N₀` using `{ comm := AbelianSubgroupFinite.isCommMonObj_of_mono (ν₀ ≫ ν) smooth := SmoothOfRelativeDimension.smooth g N₀.hom proper := by rw [← ν₀.w]; infer_instance geomConnected := hgc }`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ x : 𝟙_ (Over (Sp k)) ⟶ N, x ≫ ν ∈ C` using `fun x => by`. Rewrite using `[hC, ← hr]`. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `⟨x.left t, rfl⟩`. Establish `h1 : Finite (𝟙_ (Over (Sp k)) ⟶ N₀)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `hno k N₀ hA n hn.two_le hnk fun x hx => ?_` and prove the remaining obligations. Establish `h2 : x ≫ ν₀ ≫ ν = 1`. Use `htor _ (by rw [← Category.assoc]; exact hmem _) ?_` and prove the remaining obligations. Rewrite using `[← MonObj.pow_comp, hx, MonObj.one_comp]`. Rewrite using `[← cancel_mono (ν₀ ≫ ν), h2, MonObj.one_comp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `finite_points_of_isOpenImmersion ν₀` as an intermediate fact. Use `Finite.of_surjective (fun x : 𝟙_ (Over (Sp k)) ⟶ N => (⟨x ≫ ν, hmem x⟩ : C)) ?_` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`. Establish `: IsReduced (𝟙_ (Over (Sp k))).left` using `inferInstanceAs (IsReduced (Sp k))`. Take `⟨l, hl⟩` from `AbelianSubgroupFinite.exists_lift_of_range_subset x.left ν.left (hr ▸ (hC x).1 hx)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Over.homMk l ?_, Subtype.ext (Over.OverMorphism.ext hl)⟩` and prove the remaining obligations. Rewrite using `[← ν.w, ← Category.assoc, hl, x.w]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem finite_of_isClosed_abelian
     (hno : ∀ (k : Type) [Field k] [IsAlgClosed k] (A : Over (Sp k)) [GrpObj A], IsAbelianScheme A →
@@ -130,17 +130,15 @@ theorem finite_of_isClosed_abelian
   rw [← ν.w, ← Category.assoc, hl, x.w]
 
 /- English proof (translation)
-Use `letI := zariski G`. Use `haveI := noetherianSpace_zariski G`. Establish `hpow : ∀ n : ℕ, IsMonHom (𝟙 G ^ n)` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero`.
+Equip the data with the indicated structure. Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_zero]`. Conclude with `inferInstanceAs (IsMonHom (toUnit G ≫ η[G]))`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Conclude with `inferInstanceAs (IsMonHom (lift (𝟙 G ^ n) (𝟙 G) ≫ μ[G]))`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcl : ∀ n : ℕ, IsClosed {z : 𝟙_ (Over (Sp k)) ⟶ G | ∃ y ∈ K, y ^ n = z}` using `fun n => by`. Take `⟨Z', hZ', h⟩` from `exists_isClosed_image_of_isClosed_subgroup k G G (𝟙 G ^ n) (hpow n) inferInstance inferInstance inferInstance inferInstance K Z hZ hK`. Use `isClosed_induced_iff.2 ⟨Z', hZ', ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Rewrite using `[Set.mem_preimage, ← range_left_subset_iff, ← h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Simplify using `only [MonObj.comp_pow, Category.comp_id, Set.mem_setOf_eq]`. Set `F : ℕ → Closeds (𝟙_ (Over (Sp k)) ⟶ G)` to `fun a => ⟨_, hcl (l ^ a)⟩`. Take `⟨_, ⟨a, rfl⟩, hmin⟩` from `(wellFounded_lt (α := Closeds (𝟙_ (Over (Sp k)) ⟶ G))).has_min (Set.range F) ⟨_, 0, rfl⟩`. Establish `hle : F (a + 1) ≤ F a`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨y ^ l, K.pow_mem hy l, by rw [← pow_mul, ← pow_succ']⟩`. Establish `heq : F (a + 1) = F a` using `hle.eq_of_not_lt (hmin _ ⟨_, rfl⟩)`. Use `⟨a, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: x ^ (l ^ a) ∈ F (a + 1)`. Rewrite using `[heq]`.
-
-Conclude with `⟨x, hx, rfl⟩`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow_stable {k : Type} [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G]
     [IsCommMonObj G] [LocallyOfFiniteType G.hom] [QuasiCompact G.hom] (l : ℕ)
@@ -178,17 +176,15 @@ theorem exists_pow_stable {k : Type} [Field k] [IsAlgClosed k] (G : Over (Sp k))
   exact this
 
 /- English proof (translation)
-Set `e : 𝟙_ (Over (Sp k)) ⟶ G'` to `1`. Set `S : Set G'.left` to `⋃ y ∈ (Set.range fun x : 𝟙_ (Over (Sp k)) ⟶ G => x ≫ f) \ {e}, {pt y}`. Establish `hS : IsClosed S` using `(h.subset Set.diff_subset).isClosed_biUnion fun y _ => isClosed_pt y`. Establish `hsub : Set.range f.left ⊆ {pt e} ∪ S`. Use `ReducedSubgroup.range_subset_of_points f ((isClosed_pt e).union hS) fun x => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[range_left_subset_iff]`. Distinguish the cases in `hx : x ≫ f = e`. Conclude with `Or.inl (by rw [hx]; rfl)`. Conclude with `Or.inr (Set.mem_biUnion (x := x ≫ f) ⟨⟨x, rfl⟩, hx⟩ rfl)`. Establish `heS : pt e ∉ S`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Introduce `he`. Take `⟨y, hy, hey⟩` from `Set.mem_iUnion₂.1 he`. Conclude with `hy.2 (pt_injective hey).symm`. Establish `hc : _root_.IsPreconnected (Set.range f.left)` using `isPreconnected_range f.left.continuous`. Establish `he : pt e ∈ Set.range f.left` using `⟨pt (1 : 𝟙_ (Over (Sp k)) ⟶ G), by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pt_comp, MonObj.one_comp]⟩`. Establish `hsub' : Set.range f.left ⊆ {pt e}`. Break down `isPreconnected_iff_subset_of_disjoint_closed.1 hc _ _ (isClosed_pt e) hS hsub (by rw [Set.singleton_inter_eq_empty.2 heS, Set.inter_empty]) with h1 | h1` into its components or cases. Conclude with `h1`. Conclude with `absurd (h1 he) heS`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Subsingleton (𝟙_ (Over (Sp k))).left` using `inferInstanceAs (Subsingleton (Sp k))`. Establish `: IsClosedImmersion e.left` using `isClosedImmersion_of_comp_eq_id _ _ e.w`. Take `⟨t, ht⟩` from `AbelianSubgroupFinite.exists_lift_of_range_subset f.left e.left (hsub'.trans (by rintro _ rfl; exact ⟨_, rfl⟩))`. Establish `ht' : t = G.hom`. Rewrite using `[← f.w, ← ht, Category.assoc, e.w]`.
-
-Conclude with `(Category.comp_id _).symm`. Establish `: f = toUnit G ≫ e` using `Over.OverMorphism.ext (by rw [← ht, ht']; rfl)`. Rewrite using `[this, MonObj.comp_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_finite_range {k : Type} [Field k] [IsAlgClosed k] {G G' : Over (Sp k)} [GrpObj G]
     [GrpObj G'] [IsIntegral G.left] [LocallyOfFiniteType G.hom] [LocallyOfFiniteType G'.hom]
@@ -226,15 +222,15 @@ theorem eq_one_of_finite_range {k : Type} [Field k] [IsAlgClosed k] {G G' : Over
   rw [this, MonObj.comp_one]
 
 /- English proof (translation)
-Introduce `k _ _ G G' _ _ hG hG' l hl hlk f hf htor`. Use `replace htor := htor 1 (one_pow l)`. Use `hG.comm` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hG'.comm` as an intermediate fact. Use `hG'.smooth` as an intermediate fact. Use `hG'.quasiCompact` as an intermediate fact. Use `isIntegral_left_of_isSemiAbelian G` as an intermediate fact. Set `φ : (𝟙_ (Over (Sp k)) ⟶ G) →* (𝟙_ (Over (Sp k)) ⟶ G')` to `MonoidHom.mk' (fun x => x ≫ f) fun x y => MonObj.mul_comp x y f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `exists_pow_stable G l φ.ker (f.left ⁻¹' {pt (1 : 𝟙_ (Over (Sp k)) ⟶ G')}) ((isClosed_pt _).preimage f.left.continuous) fun x => by`. Rewrite using `[range_left_subset_iff, Set.mem_preimage, ← pt_comp, Set.mem_singleton_iff, pt_injective.eq_iff]`. Both sides reduce to the same expression. Take `⟨Z', hZ', h'⟩` from `exists_isClosed_image_of_isClosed_subgroup k G G' f hf inferInstance inferInstance inferInstance inferInstance ⊤ Set.univ isClosed_univ (by simp)`. Establish `hfin : Finite φ.range`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `finite_of_isClosed_torusExtension_of_pow_eq_one (finite_of_isClosed_abelian GlobalTheory.T.finite_points_abelianVariety_of_no_torsion) k G' l inferInstance inferInstance (nonempty_torusExtension G' hG') hl hlk _ Z' hZ' (fun y => ?_) ?_` and prove the remaining obligations. Rewrite using `[← h']`. Conclude with `⟨fun ⟨x, hx⟩ => ⟨x, trivial, hx⟩, fun ⟨x, _, hx⟩ => ⟨x, hx⟩⟩`. Introduce and unpack `_ ⟨g, rfl⟩ hg`. Take `⟨y, hy, hyg⟩` from `ha (g ^ l) (by rw [MonoidHom.mem_ker, map_pow, hg])`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : φ (g / y) = 1` using `htor (g / y) (a + 1) (by`. Rewrite using `[div_pow, hyg, ← pow_mul, ← pow_succ', div_self'])`. Rewrite `h1` using `[map_div, MonoidHom.mem_ker.1 hy, div_one]`. Then use the resulting hypothesis. Conclude with `eq_one_of_finite_range f hfin`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eq_one_of_torsion_comp_eq_one : ∀ (k : Type) [Field k] [IsAlgClosed k] (G G' : Over (Sp k)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ (l : ℕ), l.Prime → (l : k) ≠ 0 → ∀ f : G ⟶ G', IsMonHom f → (∀ (x : 𝟙_ (Over (Sp k)) ⟶ G), x ^ l = 1 → ∀ y : 𝟙_ (Over (Sp k)) ⟶ G, ∀ a : ℕ, y ^ (l ^ a) = 1 → y ≫ f = 1) → f = 1 := by
   intro k _ _ G G' _ _ hG hG' l hl hlk f hf htor

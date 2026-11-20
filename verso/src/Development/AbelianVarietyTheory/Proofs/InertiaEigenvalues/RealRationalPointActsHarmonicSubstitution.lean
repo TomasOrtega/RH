@@ -26,13 +26,13 @@ noncomputable section
 namespace GlobalTheory.LevelSeries.ArchAct
 
 /- English proof (translation)
-Establish `hdet : ∀ A : Matrix (Fin n) (Fin n) ℂ, (∀ x y, z * A x y ∈ O) → z ^ n * A.det ∈ O`. Introduce `A hA`. Establish `e : z ^ n * A.det = (z • A).det` using `by rw [Matrix.det_smul, Fintype.card_fin]`. Rewrite using `[e, Matrix.det_apply]`. Use `Subring.sum_mem _ fun σ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.smul_def]`. Use `zsmul_mem (Subring.prod_mem _ fun i _ => ?_) _` and prove the remaining obligations. Simplify `hA (σ i) i` using `[Matrix.smul_apply]`. Establish `hinv : ((g : Matrix (Fin n) (Fin n) ℂ).det)⁻¹ = ((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ).det`. Rewrite using `[eq_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← Matrix.det_mul, Units.inv_mul, Matrix.det_one]`. Take `⟨k, rfl | rfl⟩` from `k.eq_nat_or_neg`. Rewrite using `[Int.natAbs_natCast, zpow_natCast, pow_mul, ← mul_pow]`. Conclude with `pow_mem (hdet _ h1) _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Int.natAbs_neg, Int.natAbs_natCast, _root_.zpow_neg, zpow_natCast, ← inv_pow, hinv, pow_mul, ← mul_pow]`. Conclude with `pow_mem (hdet _ h2) _`.
+A detailed English derivation is pending.
 -/
 theorem det_pow_mem {n : ℕ} (O : Subring ℂ) (z : ℂ) (g : GL (Fin n) ℂ)
     (h1 : ∀ x y, z * (g : Matrix (Fin n) (Fin n) ℂ) x y ∈ O)
@@ -57,23 +57,21 @@ theorem det_pow_mem {n : ℕ} (O : Subring ℂ) (z : ℂ) (g : GL (Fin n) ℂ)
     exact pow_mem (hdet _ h2) _
 
 /- English proof (translation)
-Introduce `D ψ θ V W χV χW om ΛV ΛW sW f₀ hP H Dw BW lt wa hrk hΨ hON hlt l c`. Take `⟨k, hk⟩` from `GlobalTheory.T.realPoint_acts_on_thetaFockVacua_by_det_power D ψ θ V W χV χW om ΛV ΛW sW f₀ hP Dw.p BW hON`. Take `⟨d, hd⟩ : ∃ d : ℕ, d = ∑ ρ, ∑ j : Fin (Dw.mult ρ), wa (ρ, j)` from `⟨_, rfl⟩`. Use `⟨c * d + ∑ τ, c * (V.rank * (k τ).natAbs), ?_⟩` and prove the remaining obligations. Introduce `γ a γ' O hγ hrat ha hγa hden Q hQ hQO`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hθ : IsInfFam θ` using `hP.1.inf`. Use `choose σ hσ using GlobalTheory.T.realComponent_eq_conj_inverse_rationalMatrix D θ hθ V γ a γ' hγ hrat ha hγa`. Set `u : GlobalTheory.ExportSeries.GLR D V.rank` to `fun τ => Matrix.GeneralLinearGroup.map (σ τ) γ'⁻¹`. Establish `hu : ∀ τ, ((u τ : GL (Fin V.rank) ℂ) : Matrix (Fin V.rank) (Fin V.rank) ℂ) = Formalism.IndefR.Datum.compAt θ τ (Formalism.L2.Theta.mt V a)` using `fun τ => by`. Rewrite using `[hσ τ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hui : ∀ τ, (((u τ)⁻¹ : GL (Fin V.rank) ℂ) : Matrix (Fin V.rank) (Fin V.rank) ℂ) = (γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (σ τ)` using `fun τ => by`. Simplify using `only [u, map_inv, inv_inv]`. Both sides reduce to the same expression. Establish `hden' : ∀ τ x y, (l : ℂ) ^ c * (((u τ)⁻¹ : GL (Fin V.rank) ℂ) : Matrix (Fin V.rank) (Fin V.rank) ℂ) x y ∈ O ∧ (l : ℂ) ^ c * ((u τ : GL (Fin V.rank) ℂ) : Matrix (Fin V.rank) (Fin V.rank) ℂ) x y ∈ O` using `fun τ x y => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hui τ, hu τ, hσ τ]`. Conclude with `⟨(hden (σ τ) x y).1, (hden (σ τ) x y).2⟩`. Establish `hQ2` using `GlobalTheory.T.fockSubstitution_preserves_harmonicLetterPolynomials D H Dw W.rank V.rank lt hrk hΨ hlt u wa Q hQ`. Use `⟨((l : ℂ) ^ (c * d + ∑ τ, c * (V.rank * (k τ).natAbs)) * ∏ τ, (Formalism.IndefR.Datum.compAt θ τ (Formalism.L2.Theta.mt V a)).det ^ k τ) • MvPolynomial.rename lt.symm (GlobalTheory.ExportSeries.fockSubst (m := W.rank) (fun _ => Dw.p) u (MvPolynomial.rename lt Q)), GlobalTheory.sm …` and prove the remaining obligations. Introduce `mo`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨mo', rfl⟩` from `Finsupp.mapDomain_surjective lt.symm.surjective mo`. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, MvPolynomial.coeff_rename_mapDomain _ lt.symm.injective]`. Establish `hhom : (MvPolynomial.rename lt Q).IsHomogeneous d`. Rewrite using `[hd]`. Conclude with `(GlobalTheory.PtId.isHomogeneous_of_rowDeg Dw.mult V.rank ℂ (fun τ i => wa (τ, i)) hQ.2.2).rename_isHomogeneous`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcO : ∀ mo, (MvPolynomial.rename lt Q).coeff mo ∈ O` using `fun mo => by`. Take `⟨mo, rfl⟩` from `Finsupp.mapDomain_surjective lt.surjective mo`. Rewrite using `[MvPolynomial.coeff_rename_mapDomain _ lt.injective]`. Conclude with `hQO mo`. Establish `h1` using `GlobalTheory.T.fockSubstitution_homogeneous_coeff_mem_after_scaling D W.rank V.rank (fun _ => Dw.p) u O ((l : ℂ) ^ c) hden' d _ hhom hcO mo'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : (l : ℂ) ^ (∑ τ, c * (V.rank * (k τ).natAbs)) * ∏ τ, (Formalism.IndefR.Datum.compAt θ τ (Formalism.L2.Theta.mt V a)).det ^ k τ ∈ O`. Rewrite using `[← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Use `Subring.prod_mem _ fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← hu τ, pow_mul]`. Conclude with `det_pow_mem O _ (u τ) (fun x y => (hden' τ x y).2) (fun x y => (hden' τ x y).1) (k τ)`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mul_mem h2 h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[pow_add, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `M e O₁ hM f hf`. Take `⟨hft, hff⟩` from `GlobalTheory.T.span_finiteTranslates_vacuum_thetaFockVacua D ψ θ V W χV χW om ΛV ΛW sW f₀ hP e M O₁ hM f hf`.
-
-Rewrite using `[GlobalTheory.T.weilRep_real_point_fockVector_substitution D ψ θ V W χV χW om ΛV ΛW sW f₀ hP Dw.p BW hON a ha u hu f hft hff, hk a ha f hft hff, stdF, GlobalTheory.FiniteFock.pureTensorO_smul, map_smul, map_smul, MvPolynomial.rename_rename, Equiv.self_comp_symm, MvPolynomial.rena …`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_act_harm : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (f₀ : WO V W → ℂ), VacPair ψ θ V W χV χW om ΛV ΛW sW f₀ → ∀ (H : Geo.Tor.Host D.host.E) (Dw : Datum H) (BW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (lt : LtN Dw V.rank ≃ FVar D W.rank V.rank) (wa : (D.host.E →+* ℂ) × ℕ → ℕ), W.rank = Dw.p + Dw.q → (∀ τ : D.host.E →+* ℂ, InPsi H τ ↔ ∃ ρ, τ = tauE D ρ) → (∀ τ, IsONBasis (gramAt D W τ) (sW τ) (BW τ) Dw.p) → IsLetters Dw lt → ∀ l c : ℕ, ∃ c' : ℕ, ∀ (γ a : GA D V) (γ' : GL (Fin V.rank) D.host.E) (O : Subring ℂ), γ ∈ GQ V → GlobalTheory.Member.IsRat V γ γ' → a ∈ GinfC V → γ * a ∈ GfC V → (∀ (τ : D.host.E →+* ℂ) x y, (l : ℂ) ^ c * τ (γ'.val x y) ∈ O ∧ (l : ℂ) ^ c * τ (γ'⁻¹.val x y) ∈ O) → ∀ Q ∈ HHa Dw.mult V.rank ℂ ComplexEmbedding.conjugate (InPsi H) (fun τ i => wa (τ, i)), (∀ mo, Q.coeff mo ∈ O) → ∃ Q' ∈ HHa Dw.mult V.rank ℂ ComplexEmbedding.conjugate (InPsi H) (fun τ i => wa (τ, i)), (∀ mo, Q'.coeff mo ∈ O) ∧ ∀ (M : ℕ) (e : AE D) (O₁ : Subring ℂ), M ≠ 0 → ∀ f ∈ trSp ψ V W ΛV ΛW f₀ e M O₁, ((l : ℂ) ^ c') • om (a, 1) (stdF ψ θ V W sW BW f (MvPolynomial.rename lt Q)) = stdF ψ θ V W sW BW f (MvPolynomial.rename lt Q') := by
   intro D ψ θ V W χV χW om ΛV ΛW sW f₀ hP H Dw BW lt wa hrk hΨ hON hlt l c

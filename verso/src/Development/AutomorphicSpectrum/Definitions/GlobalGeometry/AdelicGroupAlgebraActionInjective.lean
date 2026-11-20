@@ -30,12 +30,12 @@ Both sides reduce to the same expression.
 theorem coe_integer_automorphism (g : HostAut H) (a : 𝓞 E) : ((g.s a : 𝓞 E) : E) = g.σ (a : E) := rfl
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (by rw [coe_integer_automorphism]; exact g.fix)`.
+A detailed English derivation is pending.
 -/
 theorem s_rt (g : HostAut H) : g.s H.rt = H.rt := RingOfIntegers.ext (by rw [coe_integer_automorphism]; exact g.fix)
 
 /- English proof (translation)
-Establish `h` using `congrArg g.s H.two_weight_eq_one_add_root`. Rewrite `h` using `[map_mul, map_add, map_one, s_rt, map_ofNat, ← H.two_weight_eq_one_add_root]`. Conclude with `mul_left_cancel₀ two_ne_zero h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integer_automorphism_fixes_weight (g : HostAut H) : g.s H.w0 = H.w0 := by
   have h := congrArg g.s H.two_weight_eq_one_add_root
@@ -43,9 +43,9 @@ theorem integer_automorphism_fixes_weight (g : HostAut H) : g.s H.w0 = H.w0 := b
   exact mul_left_cancel₀ two_ne_zero h
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show g.σ ((H.bar a : 𝓞 E) : E) = ((H.bar (g.s a) : 𝓞 E) : E)`. Rewrite using `[H.bar_eq, H.bar_eq, coe_integer_automorphism]`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `φ.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsCMField.complexEmbedding_complexConj]`. Conclude with `IsCMField.complexEmbedding_complexConj E (φ.comp g.σ.toRingHom) (a : E)`.
+A detailed English derivation is pending.
 -/
 theorem s_bar (g : HostAut H) (a : 𝓞 E) : g.s (H.bar a) = H.bar (g.s a) := by
   apply RingOfIntegers.ext

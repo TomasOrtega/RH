@@ -14,17 +14,15 @@ noncomputable section
 namespace GlobalTheory.LocFlat
 
 /- English proof (translation)
-Introduce `k _ _ _ _ s κ S t _ _ j c H r hc u hm`. Establish `hodd` using `S.odd`. Establish `hsh` using `GlobalTheory.T.rootExchangeRowUnipotent_latticeFrame_conj_apply k (Fin κ) t S.ϖ j (c + 1 + 1) (s + 1) (by omega) r (by omega) u`. Take `⟨g, hg, hl⟩` from `GlobalTheory.T.iteratedDepthOneLevel_char_of_one_row_first_block k _ t S.P S.μ S.tame j (Sum.inr ⟨r, by omega⟩) ⟨_, hm⟩ (fun a b ha => by`. Use `hsh a b` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[if_neg ha, add_zero]`. Conclude with `this)`. Use the proof step `(by`. Use `hsh (Sum.inl (Sum.inr ⟨r, by omega⟩)) (Sum.inl (Sum.inr ⟨r, by omega⟩))` as an intermediate fact. Rewrite `this` using `[if_pos rfl]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `standardOrderExtendedBasis_apply_low_block (Fin κ) t j (c + 1 + 1) (l := s + 1) (by omega) ⟨r, by omega⟩`. Simplify using `only at e`. Rewrite `this` using `[e]`. Simplify using `using this)`. Establish `hsym : S.P.lam g = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.T.symmetricPositionLevel_character_eq_one_single_row k S.ψ S.ϖ S.ρ κ (s + 1) S.P S.sym ⟨r, by omega⟩ g (fun a b ha => ?_) (fun i hi => ?_)` and prove the remaining obligations. Rewrite using `[hg, submatrix_apply]`. Use `hsh (Sum.inl a) (Sum.inl b)` as an intermediate fact. Rewrite `this` using `[if_neg (fun e => ha (Sum.inl_injective e)), add_zero]`. Conclude with `this.trans (by simp [Matrix.one_apply])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ei : i = ⟨r + 1, by omega⟩` using `Fin.ext hi`. Rewrite using `[hg, submatrix_apply, ei]`. Use `hsh (Sum.inl (Sum.inr ⟨r, by omega⟩)) (Sum.inl (Sum.inr ⟨r + 1, by omega⟩))` as an intermediate fact. Rewrite `this` using `[if_pos rfl]`. Establish `e` using `standardOrderExtendedBasis_apply_low_block (Fin κ) t j (c + 1 + 1) (l := s + 1) (by omega) ⟨r + 1, by omega⟩`.
-
-Simplify using `only at e`. Rewrite `this` using `[e]`. Conclude with `this.trans (by simp [Matrix.one_apply])`. Conclude with `hl.trans hsym`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_rowE_symLevel : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (s κ : ℕ) (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t],
@@ -63,21 +61,19 @@ theorem lam_rowE_symLevel : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologic
   exact hl.trans hsym
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν hν s κ S t _ _ hP hE`. Use `haveI := hν.1`. Introduce `j c H r hc`. Establish `hodd` using `S.odd`. Take `⟨C, hC, hEq⟩` from `hE j (c + 1) (by omega) (r + 1) (by omega) (by omega) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `HR : (S.T t).Regular` using `Chain.ofType_regular _ _ _ _ _`. Establish `HL : (S.T t).Laws` using `Chain.ofType_laws _ _ _ _ _`. Use `set Φ := (S.T t).Phi j (c + 1) (by omega) with hΦ`. Use `set V := volNat ν ((S.T t).bas (j + 1) (c + 1) (by omega)) (Cgrp ((S.T t).lev (j + 1) (c + 1) (by omega)).J 1) with hV`. Establish `hVpos : 0 < V` using `volNat_Cgrp_pos ν (HR.2.2 (j + 1) (c + 1) (by omega)).1 (HR.2.2 (j + 1) (c + 1) (by omega)).2.1 _ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hom1 : om ((S.T t).mu (j + 1)) 1 1 Φ = Φ`. Use function extensionality and compare the values at `z`. Simplify using `[om, nabs]`. Apply the tactic sequence `have hentry : ∀ x₀, (S.T t).entry S.ψ ν j c H 1 1 x₀ = ((V⁻¹ : ℝ) : ℂ) * opE S.ψ ν 1 Φ x₀ := by`. Introduce `x₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Chain.entry, xi, flat]`. Rewrite using `[hom1]`. Use `⟨C * V, mul_pos hC hVpos, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hu : x (Sum.inr ()) ∈ box (XIx (Fin κ) t j) (S.ϖ ^ (r + 1))`. Rewrite using `[if_pos hu, mul_one, hentry]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `GlobalTheory.T.rootExchangeRowUnipotent_mem_sourceLevel k s κ S t hP j c H r hc _ hu`. Establish `hl` using `lam_rowE_symLevel k s κ S t j c H r hc _ hm`. Establish `hdet : Matrix.GeneralLinearGroup.det (rowE (c + 1 + 1) (r + 1) (x (Sum.inr ()))) = 1` using `by ext; simp [rowE, lowU, Matrix.det_fromBlocks_zero₁₂]`. Establish `hT` using `(HL.1 j (c + 1) (by omega)).1 ⟨_, hm⟩`. Rewrite `hT` using `[hl]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hfun : (fun z => Φ (z * (rowE (c + 1 + 1) (r + 1) (x (Sum.inr ()))).val)) = Φ`. Use function extensionality and compare the values at `z`. Use `congrFun hT z` as an intermediate fact. Simplify `this` using `[om, hdet, nabs]`. Rewrite using `[GlobalTheory.T.flatRowMap_eq_rootExchangeOperator_translate k S.ψ ν S.cond.continuous inferInstance (XIx (Fin κ) t (j + 1)) (XIx (Fin κ) t j) (c + 1) (r + 1) (by omega) (by omega) Φ (HR.1 j (c + 1) (by omega)) x]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `erw [hfun]`. Rewrite using `[congrFun hEq]`. Establish `hV0 : (V : ℂ) ≠ 0` using `by exact_mod_cast hVpos.ne'`. Rewrite using `[Pi.smul_apply, smul_eq_mul, Complex.ofReal_mul, Complex.ofReal_inv]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[if_neg hu, mul_zero, GlobalTheory.T.flatMapRow_eq_zero_unless_row_mem_dualLattice k ν s κ S t j c H r hc x hu]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pureRow_of_exchange : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν → ∀ (s κ : ℕ) (S : SymData k s κ) (t : Type)

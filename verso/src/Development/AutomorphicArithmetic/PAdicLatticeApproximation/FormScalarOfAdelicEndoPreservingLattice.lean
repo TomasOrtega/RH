@@ -9,17 +9,13 @@ open scoped Matrix TensorProduct Classical
 open GlobalTheory.AdelicSim
 
 /- English proof (translation)
-Establish `ez : ∀ (a : AfP p) (x : D.La), a ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] x : VQ D) = a • inAf D x`. Introduce `a x`. Rewrite using `[inAf, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Establish `hgen : ∀ (a : AfP p) (x : D.La), IsIntAf a → ∀ w ∈ LaHat D, IsIntAf (F (a • inAf D x) w)`. Introduce `a x ha w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw'`. Take `⟨a', y, ha', rfl⟩` from `hw'`. Rewrite using `[ez, map_smul, map_smul, LinearMap.smul_apply, hF, smul_eq_mul, smul_eq_mul]`. Conclude with `isInt_mul ha' (isInt_mul ha (isInt_intCast _))`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `isIntAf_zero`. Consider the case `add w₁ w₂ _ _ h₁ h₂ => rw [map_add]`. Conclude with `isIntAf_add h₁ h₂`. Consider the case `neg w _ h => rw [map_neg]`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `isIntAf_neg h`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, x, ha, rfl⟩` from `hz`. Rewrite using `[ez]`.
-
-Conclude with `hgen a x ha w hw`. Consider the case `zero => rw [map_zero, LinearMap.zero_apply]`. Conclude with `isIntAf_zero`. Consider the case `add v₁ v₂ _ _ h₁ h₂ => rw [map_add, LinearMap.add_apply]`. Conclude with `isIntAf_add h₁ h₂`.
-
-Consider the case `neg v _ h => rw [map_neg, LinearMap.neg_apply]`. Conclude with `isIntAf_neg h`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem formIntegral {p : ℕ} [Fact p.Prime] {D : Datum p}
     (F : LinearMap.BilinForm (AfP p) (AfP p ⊗[ℚ] VQ D)) (e : D.La → D.La → ℤ)
@@ -48,15 +44,15 @@ private theorem formIntegral {p : ℕ} [Fact p.Prime] {D : Datum p}
   | neg v _ h => rw [map_neg, LinearMap.neg_apply]; exact isIntAf_neg h
 
 /- English proof (translation)
-Introduce `p _ D F e hF A _ gs hA nu c hc hsim`. Establish `key : ∀ x x', F (A (inAf D x)) (A (inAf D x')) = (2 * c) * formAf D (inAf D x) (inAf D x')`. Introduce `x x'`. Use `zero p (F (A (inAf D x)) (A (inAf D x')) - (2 * c) * formAf D (inAf D x) (inAf D x')) fun n hn hnp => by` as an intermediate fact. Take `⟨w, hw, e₁⟩` from `hA n hn hnp x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hw', e₂⟩` from `hA n hn hnp x'`. Take `⟨β, hβ, eβ⟩` from `hc n hn hnp`. Take `⟨k, hk⟩` from `hsim n hn hnp x x'`. Use `⟨(k : AfP p) + F (inAf D (gs n x)) w' + F w (inAf D (gs n x')) + n • F w w' - (2 : ℤ) * β * (D.EF x x' : AfP p), ?_, ?_⟩` and prove the remaining obligations. Conclude with `isInt_sub (isInt_add (isInt_add (isInt_add (isInt_intCast k) (formIntegral F e hF (inAf_mem D _) hw')) (formIntegral F e hF hw (inAf_mem D _))) (isInt_nsmul (formIntegral F e hF hw hw') n)) (isInt_mul (isInt_mul (isInt_intCast 2) hβ) (isInt_intCast _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hk'` using `congrArg (Int.cast : ℤ → AfP p) hk`. Move the coercions through the operations in `at hk'`. Rewrite using `[e₁, e₂, eβ]`. Simplify using `only [map_add, LinearMap.add_apply, map_nsmul, LinearMap.smul_apply, form_inAf, hF, nsmul_eq_mul]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hk'`. Conclude with `sub_eq_zero.1 this`. Establish `e2` using `bilinear_ext_adelic_inclusion D (f := F.compl₁₂ A A) (g := (2 * c) • formAf D) fun x x' => by`. Simplify using `only [LinearMap.compl₁₂_apply, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `key x x'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `v w`. Use `LinearMap.congr_fun₂ e2 v w` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.form_scalar_of_adelic_endo_preserving_lattice :
     ∀ {p : ℕ} [Fact p.Prime] {D : Datum p} (F : LinearMap.BilinForm (AfP p) (AfP p ⊗[ℚ] VQ D)) (e : D.La → D.La → ℤ),

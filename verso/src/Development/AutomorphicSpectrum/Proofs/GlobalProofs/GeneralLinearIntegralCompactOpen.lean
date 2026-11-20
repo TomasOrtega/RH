@@ -11,9 +11,9 @@ open ValuativeRel
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Set `` to `IsTopologicalAddGroup.rightUniformSpace k`. Use `isUniformAddGroup_of_addCommGroup (G := k)` as an intermediate fact. Set `: (Valued.v (R` to `k)).RankOne :=`. Use the proof step `{ hom' := IsRankLeOne.nonempty.some.emb (R := k).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`. Use `open scoped Valued in`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `: ProperSpace k` using `.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace k`. Conclude with `⟨secondCountable_of_proper, inferInstance⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonarchimedeanLocalField_secondCountable_t2Space (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] : SecondCountableTopology k ∧ T2Space k := by
@@ -28,7 +28,7 @@ theorem nonarchimedeanLocalField_secondCountable_t2Space (k : Type) [Field k] [V
   exact ⟨secondCountable_of_proper, inferInstance⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Valuation.isOpen_valuationSubring (valuation F)`. Conclude with `isCompact_iff_compactSpace.2 (inferInstance : CompactSpace 𝒪[F])`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_isCompact_integers : IsOpen ((𝒪[F] : Subring F) : Set F) ∧ IsCompact ((𝒪[F] : Subring F) : Set F) := by
   refine ⟨?_, ?_⟩
@@ -39,7 +39,7 @@ def intSet (O : Subring F) (n : ℕ) : Set (Matrix (Fin n) (Fin n) F) := {M | Is
 
 omit [ValuativeRel F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Establish `: intSet O n = ⋂ i, ⋂ j, (fun M : Matrix (Fin n) (Fin n) F => M i j) ⁻¹' (O : Set F)`. Use extensionality with `M`. Simplify using `[intSet, IsInt]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hO.preimage ((continuous_apply j).comp (continuous_apply i))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_intSet {O : Subring F} (hO : IsOpen (O : Set F)) (n : ℕ) : IsOpen (intSet O n) := by
   have : intSet O n = ⋂ i, ⋂ j, (fun M : Matrix (Fin n) (Fin n) F => M i j) ⁻¹' (O : Set F) := by
@@ -50,7 +50,7 @@ theorem isOpen_intSet {O : Subring F} (hO : IsOpen (O : Set F)) (n : ℕ) : IsOp
 
 omit [ValuativeRel F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Establish `: intSet O n = Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => (O : Set F)`. Use extensionality with `M`. Conclude with `⟨fun h i _ j _ => h i j, fun h i j => h i (Set.mem_univ _) j (Set.mem_univ _)⟩`. Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hO`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_intSet {O : Subring F} (hO : IsCompact (O : Set F)) (n : ℕ) : IsCompact (intSet O n) := by
   have : intSet O n = Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => (O : Set F) := by
@@ -61,9 +61,9 @@ theorem isCompact_intSet {O : Subring F} (hO : IsCompact (O : Set F)) (n : ℕ) 
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, ⟨_, h2, rfl⟩⟩`. Introduce and unpack `⟨h1, ⟨y, hy, he⟩⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `hy' : y = ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)` using `MulOpposite.op_injective he`. Conclude with `⟨h1, hy' ▸ hy⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem GLint_eq_preimage (O : Subring F) (n : ℕ) :
     (GLint O n : Set (GL (Fin n) F)) =
@@ -77,15 +77,13 @@ theorem GLint_eq_preimage (O : Subring F) (n : ℕ) :
     exact ⟨h1, hy' ▸ hy⟩
 
 /- English proof (translation)
-Introduce `F _ _ _ _ O ϖ nrm q h n`. Take `⟨hsc, ht2⟩` from `nonarchimedeanLocalField_secondCountable_t2Space F`. Choose the witnesses or unpack the hypotheses as in `⟨hOo, hOc⟩ : IsOpen (O : Set F) ∧ IsCompact (O : Set F) := by`. Rewrite using `[h.O_eq]`. Conclude with `isOpen_isCompact_integers`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: T2Space (Matrix (Fin n) (Fin n) F)` using `inferInstanceAs (T2Space (Fin n → Fin n → F))`. Establish `: SecondCountableTopology (Matrix (Fin n) (Fin n) F)` using `inferInstanceAs (SecondCountableTopology (Fin n → Fin n → F))`. Establish `: LocallyCompactSpace (Matrix (Fin n) (Fin n) F)` using `inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → F))`. Establish `: SecondCountableTopology (Matrix (Fin n) (Fin n) F)ᵐᵒᵖ` using `(MulOpposite.opHomeomorph (M := Matrix (Fin n) (Fin n) F)).symm.isEmbedding.secondCountableTopology`. Establish `hSo` using `isOpen_intSet hOo n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSc` using `isCompact_intSet hOc n`. Establish `hemb` using `Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) F)`. Establish `hMint : Mint O n = Units.val ⁻¹' intSet O n` using `rfl`. Use `⟨?_, ?_, hemb.locallyCompactSpace, hemb.isEmbedding.secondCountableTopology, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GLint_eq_preimage]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hSo.prod (MulOpposite.opHomeomorph.isOpenMap _ hSo)).preimage hemb.continuous`. Rewrite using `[GLint_eq_preimage]`. Conclude with `hemb.isCompact_preimage (hSc.prod (hSc.image MulOpposite.continuous_op))`. Rewrite using `[hMint]`. Conclude with `hSo.preimage Units.continuous_val`.
-
-Rewrite using `[hMint]`. Conclude with `hSc.isClosed.preimage Units.continuous_val`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gl_topology : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}, LF O ϖ nrm q → ∀ n : ℕ,

@@ -22,15 +22,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-Establish `hne : (e₀ : T.V) ≠ 0`. Introduce `h0`. Establish `hm : (⟨e, heT⟩ : ↥T.L.T) ∈ Submodule.span O {e₀}` using `by rw [h₀]; trivial`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.mp hm`. Apply `he` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `only [Submodule.coe_smul, h0, smul_zero] at this`. Conclude with `this.symm`. Establish `hb : Function.Bijective (LinearMap.toSpanSingleton O ↥T.L.T e₀)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Establish `h1 : c • (e₀ : T.V) = 0` using `congrArg Subtype.val hc`. Rewrite `h1` using `[← algebraMap_smul LL c, smul_eq_zero]`. Break down `h1 with h1 | h1` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hO (by rw [h1, map_zero])`. Conclude with `absurd h1 hne`. Rewrite using `[← LinearMap.range_eq_top, ← LinearMap.span_singleton_eq_range, h₀]`. Set `φ` to `LinearEquiv.ofBijective _ hb`. Establish `hφ : φ.symm e₀ = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Simplify using `[φ]`. Use `congrArg (fun z => TensorProduct.rid O R (LinearMap.lTensor R φ.symm.toLinearMap z)) h` as an intermediate fact. Simplify `this` using `[hφ]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tmul_gen_cancel (hO : Function.Injective (algebraMap O LL)) (T : LocLat G Qp LL O)
     (e : T.V) (he : e ≠ 0) (heT : e ∈ T.L.T) (e₀ : ↥T.L.T) (h₀ : Submodule.span O {e₀} = ⊤)
@@ -62,9 +62,9 @@ theorem tmul_gen_cancel (hO : Function.Injective (algebraMap O LL)) (T : LocLat 
   simpa [hφ] using this
 
 /- English proof (translation)
-Take `⟨e, e₀, h₀, hj, -⟩` from `E.one_e`. Take `⟨e₁, he₁, hT⟩` from `W.one_line`. Establish `he₁T : e₁ ∈ W.one.L.T` using `by rw [hT]; exact Submodule.mem_span_singleton_self e₁`. Establish `hact : W.one.actT g e₀ = e₀` using `Subtype.ext (W.one_triv g e₀)`. Establish `h1 : TWact (gR g) W.one g ((1 : RW) ⊗ₜ[O] e₀) = (1 : RW) ⊗ₜ[O] e₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[TWact, hact]`. Establish `h2` using `E.jD_act W.one g (algebraMap (LetA O n) W.EE a • e)`. Rewrite `h2` using `[W.γD_smul, E.jD_smul, E.jD_smul, E.jD_act, hj, TWact_smul, h1, W.γE_ext, E.ioE_ext, E.ioE_ext, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, mul_one, mul_one]`. Conclude with `tmul_gen_cancel hO W.one e₁ he₁ he₁T e₀ h₀ _ _ h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etTie_io_act (hO : Function.Injective (algebraMap O LL)) {W : LocWach PD LL O v n}
     {RA RW : Type} [CommRing RA] [CommRing RW] [Algebra O RA] [Algebra O RW]
@@ -88,7 +88,7 @@ end Generic
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `l _ P AI K s LL h W E g a`. Conclude with `etTie_io_act Subtype.val_injective E.tie g a`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem io_equivariant : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) (Module.finrank ℚ_[l] ↥(K0 K))) (E : EtSit P AI K s LL h W) (g : ↥(GK K)) (a : LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))), inclR LL (E.tie.io (W.γA (W.resΓ g) a)) = AI.gRW LL (g : GQ l) (inclR LL (E.tie.io a)) := by
   intro l _ P AI K s LL h W E g a

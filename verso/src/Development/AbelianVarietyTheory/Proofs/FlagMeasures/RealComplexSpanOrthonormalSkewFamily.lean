@@ -5,7 +5,7 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.SkewSpan
 
 /- English proof (translation)
-Establish `h' : Bᴴ * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * B)` using `eq_neg_of_add_eq_zero_left h`. Rewrite using `[Matrix.mul_assoc, h', Matrix.mul_neg, ← Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem skew_conj {n : ℕ} (ε : Fin n → Bool) {B : Matrix (Fin n) (Fin n) ℂ}
     (h : Formalism.REAL.inG ε B) : Formalism.REAL.Jm ε * Bᴴ * Formalism.REAL.Jm ε = -B := by
@@ -14,9 +14,9 @@ theorem skew_conj {n : ℕ} (ε : Fin n → Bool) {B : Matrix (Fin n) (Fin n) �
     Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h1 : (Formalism.REAL.Jm ε * Xᴴ * Formalism.REAL.Jm ε * Bᴴ).trace = (Xᴴ * (Formalism.REAL.Jm ε * Bᴴ * Formalism.REAL.Jm ε)).trace`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`. Establish `h2 : starRingEnd ℂ (X * Bᴴ).trace = (Xᴴ * B).trace`. Rewrite using `[starRingEnd_apply, ← Matrix.trace_conjTranspose, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.trace_mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, skew_conj ε h, Matrix.mul_neg, Matrix.trace_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_twisted {n : ℕ} (ε : Fin n → Bool) {B : Matrix (Fin n) (Fin n) ℂ}
     (h : Formalism.REAL.inG ε B) (X : Matrix (Fin n) (Fin n) ℂ) :
@@ -31,25 +31,25 @@ theorem trace_twisted {n : ℕ} (ε : Fin n → Bool) {B : Matrix (Fin n) (Fin n
   rw [h1, h2, skew_conj ε h, Matrix.mul_neg, Matrix.trace_neg]
 
 /- English proof (translation)
-Establish `h2 : ∀ X ∈ Submodule.span ℂ (B '' s), ∀ i, i ∉ s → (X * (B i)ᴴ).trace = 0`. Introduce `X hX i hi`. Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, hk, rfl⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hB, if_neg]`. Introduce and unpack `rfl`. Conclude with `hi hk`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.add_mul, Matrix.trace_add, hx, hy, add_zero]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => rw [Matrix.smul_mul, Matrix.trace_smul, hx, smul_zero]`. Establish `hexp : ∀ X ∈ Submodule.span ℂ (B '' s), X = ∑ i, (X * (B i)ᴴ).trace • B i`. Introduce `X hX`. Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, rfl⟩` from `hx`. Simplify using `[hB]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Simplify using `only [Matrix.add_mul, Matrix.trace_add, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hx, ← hy]`. Consider the case `smul c x _ hx`. Simplify using `only [Matrix.smul_mul, Matrix.trace_smul, smul_assoc, ← Finset.smul_sum]`. Rewrite using `[← hx]`. Use `⟨fun X => ⟨?_, ?_⟩, h2, fun X i => trace_twisted ε (hG i) X⟩` and prove the remaining obligations.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hX, hXG⟩`. Rewrite using `[hexp X hX]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ s`. Establish `h3` using `trace_twisted ε (hG i) X`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[skew_conj ε hXG, Matrix.neg_mul, Matrix.trace_neg, neg_inj]`. Establish `h4 : (X * (B i)ᴴ).trace = (((X * (B i)ᴴ).trace.re : ℝ) : ℂ)` using `(Complex.conj_eq_iff_re.mp h3.symm).symm`. Rewrite using `[h4, Complex.coe_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hi, rfl⟩)`. Rewrite using `[h2 X hX i hi, zero_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.zero_mem _`. Introduce `hX`. Use `⟨Submodule.span_le_restrictScalars ℝ ℂ _ hX, ?_⟩` and prove the remaining obligations. Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem x hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Take `⟨k, hk, rfl⟩` from `hx`. Conclude with `hG k`. Consider the case `zero => simp [Formalism.REAL.inG]`. Consider the case `add x y _ _ hx hy`. Unfold `Formalism.REAL.inG at *`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add, add_add_add_comm, hx, hy, add_zero]`. Consider the case `smul c x _ hx`. Unfold `Formalism.REAL.inG at *`. Rewrite using `[Matrix.conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hx, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem real_span (n d : ℕ) (ε : Fin n → Bool) (B : Fin d → Matrix (Fin n) (Fin n) ℂ)
     (s : Set (Fin d)) (hB : ∀ i k, (B i * (B k)ᴴ).trace = if i = k then 1 else 0)

@@ -34,7 +34,7 @@ variable {F E : Type} [Field F] [Field E] [NumberField E] [Algebra F E] {n : Typ
   [DecidableEq n] (R : Type) [CommRing R] [Algebra F R] (S₂ : Subring R)
 
 /- English proof (translation)
-Apply `Subring.subset_closure` to reduce the goal to its premises. Use `left`. Conclude with `⟨⟨e, he⟩, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem easyc_inclE_mem (e : E) (he : e ∈ intOE E) :
     inclE (F := F) R e ∈ tensInt (F := F) R (intOE E) S₂ := by
@@ -43,7 +43,7 @@ theorem easyc_inclE_mem (e : E) (he : e ∈ intOE E) :
   exact ⟨⟨e, he⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[mem_stdLat_iff']`. Introduce `k`. Distinguish the cases in `hk : k = i`. Substitute `hk; exact ⟨1, by simp⟩` using the available equality. Conclude with `⟨0, by simp [hk]⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem easyc_single_mem (i : n) :
     (Pi.single i (1 : E) : n → E) ∈ stdLat (n := n) (A := E) (𝓞 E) := by
@@ -54,15 +54,15 @@ theorem easyc_single_mem (i : n) :
   · exact ⟨0, by simp [hk]⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[latS, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[SetLike.mem_coe, mem_stdLat_iff']`. Introduce `i`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxi` using `(mem_stdLat_iff' (R := 𝓞 E) x).1 hx i`. Establish `hm : x i ∈ intOE E`. Take `⟨y, hy⟩` from `hxi`. Conclude with `⟨y, hy⟩`. Conclude with `⟨⟨_, easyc_inclE_mem R S₂ (x i) hm⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce `x hx`. Rewrite `hx` using `[mem_stdLat_iff']`. Use `choose s hs using hx`. Establish `hx : x = ∑ i, s i • (fun j => inclE (F` using `F) R ((Pi.single i (1 : E) : n → E) j)) := by`. Use extensionality with `j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using `[← hs j, Algebra.smul_def]`. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Rewrite using `[hx]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨_, easyc_single_mem i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem easyc_latS_std :
     latS (F := F) R (tensInt (F := F) R (intOE E) S₂) (stdLat (n := n) (A := E) (𝓞 E)) =
@@ -95,7 +95,7 @@ theorem easyc_latS_std :
 end Lattice
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n _ _ σ J`. Unfold `levelAfL levelAf`. Rewrite using `[easyc_latS_std]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem level_subgroup_finite_adelic_standard : Formalism.UG.LevelAfLStd := by
   intro F E _ _ _ _ _ n _ _ σ J
@@ -103,7 +103,7 @@ theorem level_subgroup_finite_adelic_standard : Formalism.UG.LevelAfLStd := by
   rw [easyc_latS_std]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n _ _ σ J v`. Unfold `levelVL levelV`. Rewrite using `[easyc_latS_std]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem level_subgroup_local_standard : Formalism.UG.LevelVLStd := by
   intro F E _ _ _ _ _ n _ _ σ J v

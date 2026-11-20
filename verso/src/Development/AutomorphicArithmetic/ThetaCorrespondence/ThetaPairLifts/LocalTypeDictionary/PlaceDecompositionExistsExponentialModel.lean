@@ -13,9 +13,9 @@ open scoped InnerProductSpace
 noncomputable section
 namespace GlobalTheory.PlaceDecomp
 /- English proof (translation)
-Introduce `D θ hθ hPr N τ f hf hty x`. Take `⟨H', i1, i2, σ', lam', ε', P', hE', hD', hP', hJ', hx⟩` from `hty`. Take `⟨hl, he⟩` from `GlobalTheory.SignedParTest.isEnum_unique (N.M.enum τ) hE'`. Substitute `hl he` using the available equality. Take `⟨U, hU⟩` from `hPr.discreteSeriesHermitianUnique _ (N.M.ε τ) (N.M.lam τ) (GlobalTheory.Published.HermitianUnique.isHCParam_of_isDS (N.M.enum τ).1 (N.M.ds τ)) _ (N.M.fr τ) P' (N.M.fr_unit τ) hP' (N.M.fr_gram τ) hJ' _ _ (N.M.σ τ) σ' (N.M.ds τ) hD'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `t` using `GlobalTheory.TypeSum.hasTypeAll_transport _ H' (N.M.H τ) (fun g => σ' (P' * g * P'⁻¹)) (N.M.σ τ) (gramAt D N.V τ) (Formalism.REAL.Jm (N.M.ε τ)) (N.M.fr τ) (isUnit_gram (N.M.fr_unit τ) (N.M.fr_gram τ)) (N.M.fr_unit τ) (N.M.fr_gram τ) U hU (fun g => f (x * atTau θ N.V τ g)) (Global …`. Take `⟨S, hS, hc, v, ℓ, C, h⟩` from `t`. Conclude with `⟨S, v, ℓ, C, hS, hc, h⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem placeDecomposition_exists_exponential_model : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (N : GlobalTheory.Grid.Node D) (τ : D.what₂.Tau) (f : GA D N.V → ℂ), IsAutFunSm θ N.V f → IsTypeAt θ N.V τ (N.S τ) f → ∀ x : GA D N.V, ∃ (S : List (List (Mx N.V.rank))) (v : ℕ → N.M.H τ) (ℓ : ℕ → (N.M.H τ →ₗ[ℂ] ℂ)) (C : ℕ → ℝ), Words (lieSet (N.M.ε τ)) S ∧ Ctrl (lieSet (N.M.ε τ)) (UJset (N.M.ε τ)) (N.M.σ τ) S ∧ Expn (N.M.ε τ) (N.M.σ τ) S v ℓ C (res θ N.V τ (N.M.fr τ) f x) := by
   intro D θ hθ hPr N τ f hf hty x
@@ -44,7 +44,7 @@ open Formalism.REAL Formalism.MainNotions.S GlobalTheory.SmoothGlob GlobalTheory
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.PlaceDecomp.placeDecomposition_exists_exponential_model | exact _root_.GlobalTheory.PlaceDecomp.placeDecomposition_exists_exponential_model | (intros; apply _root_.GlobalTheory.PlaceDecomp.placeDecomposition_exists_exponential_model <;> assumpti …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twist_exists_exponential_model : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (N : GlobalTheory.Grid.Node D) (τ : D.what₂.Tau) (f : GA D N.V → ℂ), IsAutFunSm θ N.V f → IsTypeAt θ N.V τ (N.S τ) f → ∀ x : GA D N.V, ∃ (S : List (List (Mx N.V.rank))) (v : ℕ → N.M.H τ) (ℓ : ℕ → (N.M.H τ →ₗ[ℂ] ℂ)) (C : ℕ → ℝ), Words (lieSet (N.M.ε τ)) S ∧ Ctrl (lieSet (N.M.ε τ)) (UJset (N.M.ε τ)) (N.M.σ τ) S ∧ Expn (N.M.ε τ) (N.M.σ τ) S v ℓ C (res θ N.V τ (N.M.fr τ) f x) := by
   first | exact @_root_.GlobalTheory.PlaceDecomp.placeDecomposition_exists_exponential_model | exact _root_.GlobalTheory.PlaceDecomp.placeDecomposition_exists_exponential_model | (intros; apply _root_.GlobalTheory.PlaceDecomp.placeDecomposition_exists_exponential_model <;> assumption)

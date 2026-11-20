@@ -40,9 +40,9 @@ def IdxCountStep : Prop :=
     ((unitaryLevelClosureSubgroup X hb u).relIndex (KHg X u) : ℝ) = ∏ p : TypX X, ((glkC D.R.k (gOf p) : ℝ) / (ukC D.R.k (gOf p) : ℝ))
 
 /- English proof (translation)
-Introduce `D X hb hK u hM hL`. Take `⟨hG, hK2⟩` from `h1 X hb hK u hM hL`. Take `⟨hT, hB, hO, hC⟩` from `h2 X hb hK u hM hL`. Establish `hHaar : (X.measW u).μHf.IsHaarMeasure` using `(X.measW_norm u).2.2.1`. Establish `hr` using `@hH _ _ _ hT _ hB (X.measW u).μHf hHaar (KHg X u) (unitaryLevelClosureSubgroup X hb u) hK2 hO hC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h3 X hb hK u hM hL, ← hr, hG]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem colsIdxStep_of (hH : HaarRatio) (h1 : IdxGroupStep) (h2 : IdxTopStep) (h3 : IdxCountStep) :
     ColsIdxStep := by

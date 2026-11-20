@@ -15,21 +15,21 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.FockCompare GlobalTheory.HeckeFinTrivial in
 
 /- English proof (translation)
-Use `choose n hn hx using h`. Use `⟨n, hn, fun k => ?_⟩` and prove the remaining obligations. Take `⟨⟨θ', hθ'⟩, -⟩` from `GlobalTheory.Member.infiniteAdele_bijective D`. Take `⟨θ, hθ⟩ : ∃ θ : GlobalTheory.Mem.Th.InfF D, IsInfFam θ` from `⟨fun τ => θ' (tauE D τ), fun τ => hθ' _⟩`. Take `⟨ρ, hρ, r1, r0⟩` from `exists_real_chart D θ hθ (GlobalTheory.CMTypePlaces.places_bijective D)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `RealChart.exists_chart D θ hθ ρ hρ r1 r0`. Take `⟨-, a, b, -, -, hab, ha, hb⟩` from `GlobalTheory.IdeleParts.congr_open_and_parts D`. Establish `ext : ∀ a b : AE D, finPart D a = finPart D b → (∀ τ, θ τ (infPart D a) = θ τ (infPart D b)) → a = b`. Introduce `a b h1 h2`. Rewrite using `[← sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs.ext _ (by rw [RingHom.map_sub, h1, sub_self]) fun τ => by`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, h2, sub_self]`. Set `t : (D.what₂.Tau → ℂˣ) → AE D` to `fun z => s (fun τ => (z τ : ℂ)) + (1 - s 1)`. Establish `tf : ∀ z, finPart D (t z) = 1` using `fun z => by`. Simplify using `only [t, RingHom.map_add, RingHom.map_sub, RingHom.map_one, hs.fin, zero_add, sub_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ti : ∀ z τ, θ τ (infPart D (t z)) = z τ` using `fun z τ => by`. Simplify using `only [t, RingHom.map_add, RingHom.map_sub, RingHom.map_one, hs.comp, Pi.one_apply, sub_self, add_zero]`. Set `T : (D.what₂.Tau → ℂˣ) →* AE D` to `{ toFun := t map_one' := ext _ _ (by rw [tf, RingHom.map_one]) fun τ => by`. Rewrite using `[ti, RingHom.map_one, RingHom.map_one]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use the proof step `map_mul' := fun x y => ext _ _ (by rw [RingHom.map_mul, tf, tf, tf, mul_one]) fun τ => by`. Rewrite using `[RingHom.map_mul, RingHom.map_mul, ti, ti, ti]`. Use `rfl }`. Establish `hT : ∀ x : (AE D)ˣ, finPart D (x : AE D) = 1 → x = T.toHomUnits fun τ => Units.map ((θ τ).comp (infPart D)).toMonoidHom x` using `fun x hx => Units.ext (ext _ _ (hx.trans (tf _).symm) fun τ => (ti (fun τ => Units.map ((θ τ).comp (infPart D)).toMonoidHom x) τ).symm)`. Establish `key : ∀ z : D.what₂.Tau → ℂˣ, ((c (T.toHomUnits z) : Circle) : ℂ) = ∏ τ, ((z τ : ℂ) / ((‖(z τ : ℂ)‖ : ℝ) : ℂ)) ^ n τ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Establish `h1 : c (T.toHomUnits z) = ∏ τ, c (T.toHomUnits (Pi.mulSingle τ (z τ)))` using `by conv_lhs => rw [← Finset.univ_prod_mulSingle z]`. Rewrite using `[map_prod, map_prod]`. Establish `h2` using `congrArg Circle.coeHom h1`. Rewrite `h2` using `[map_prod]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h2.trans (Finset.prod_congr rfl fun τ _ => ?_)` and prove the remaining obligations. Establish `h3` using `(hx τ).2 θ hθ (T.toHomUnits (Pi.mulSingle τ (z τ))) (tf _) fun τ' hτ' => (ti _ τ').trans (by rw [Pi.mulSingle_eq_of_ne hτ', Units.val_one])`. Establish `h4 : θ τ (infPart D ((T.toHomUnits (Pi.mulSingle τ (z τ)) : (AE D)ˣ) : AE D)) = z τ` using `(ti _ τ).trans (by rw [Pi.mulSingle_eq_same])`. Rewrite `h3` using `[h4]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← eq_inf D c χ hc k _ _ (hab _) (hb _).1 (hb _).2, hT _ (ha (Units.map (incA D).toMonoidHom k)).2, key]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h5 : ((Units.map ((θ τ).comp (infPart D)).toMonoidHom (a (Units.map (incA D).toMonoidHom k)) : ℂˣ) : ℂ) = tauE D τ (k : D.host.E)` using `(congrArg (θ τ) (ha (Units.map (incA D).toMonoidHom k)).1).trans ((hθ τ).1 k)`. Rewrite using `[h5]`.
+A detailed English derivation is pending.
 -/
 theorem hasInfQ_of_hasInfExp (D : D7) (c : (AE D)ˣ →* Circle) (χ : Formalism.L2.Host.HChar D.host.E) (e : D.what₂.Tau → ℚ)
     (hc : ChrEq c χ) (h : ∀ τ, HasInfExp D c τ (e τ)) : χ.HasInfQ (tauE D) e := by
@@ -84,7 +84,7 @@ theorem hasInfQ_of_hasInfExp (D : D7) (c : (AE D)ˣ →* Circle) (χ : Formalism
   rw [h5]
 
 /- English proof (translation)
-Introduce `D c χ a hc` and use `⟨hasInfQ_of_hasInfExp D c χ a hc, hasInfExp_of_chrEq D c χ a hc⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem hasInfExp_iff_hasInfQ : ∀ (D : D7) (c : GlobalTheory.Mem.Th.IdC D) (χ : Formalism.L2.Host.HChar D.host.E) (a : D.what₂.Tau → ℚ),
     Formalism.IndefR.Links.ChrEq c χ → ((∀ τ, HasInfExp D c τ (a τ)) ↔ χ.HasInfQ (Formalism.L2.Host.embTau D) a) :=

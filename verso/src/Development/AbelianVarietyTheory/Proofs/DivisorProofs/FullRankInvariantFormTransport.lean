@@ -18,51 +18,45 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 open GlobalTheory.SplitFlip
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n d ν hnd hν Bf hA hS Ψ₁ Ψ₂ hF0`. Establish `hle : GlobalTheory.FullRankCoinv.augRk n d ν ≤ GlobalTheory.FullRankCoinv.fullRk k n d`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, Ψ, hΨ, rfl⟩`. Conclude with `sub_mem (GlobalTheory.FullRankCoinv.Reduce.lact_mem ν g hΨ) hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hkill : ∀ x (hx : x ∈ GlobalTheory.FullRankCoinv.augRk n d ν), Bf ⟨x, hle hx⟩ Ψ₂ = 0`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨g, Ψ, hΨ, rfl⟩` from `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (⟨GlobalTheory.FullRankCoinv.lact ν g Ψ - Ψ, hle (Submodule.subset_span ⟨g, Ψ, hΨ, rfl⟩)⟩ : GlobalTheory.FullRankCoinv.fullRk k n d) = ⟨GlobalTheory.FullRankCoinv.lact ν g Ψ, GlobalTheory.FullRankCoinv.Reduce.lact_mem ν g hΨ⟩ - ⟨Ψ, hΨ⟩` using `rfl`. Rewrite using `[e, map_sub, LinearMap.sub_apply, hA g ⟨Ψ, hΨ⟩ _ Ψ₂ rfl, sub_self]`. Consider the case `zero`. Establish `e : (⟨0, hle (Submodule.zero_mem _)⟩ : GlobalTheory.FullRankCoinv.fullRk k n d) = 0` using `rfl`. Rewrite using `[e, map_zero, LinearMap.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y hx hy ihx ihy`. Establish `e : (⟨x + y, hle (Submodule.add_mem _ hx hy)⟩ : GlobalTheory.FullRankCoinv.fullRk k n d) = ⟨x, hle hx⟩ + ⟨y, hle hy⟩` using `rfl`. Rewrite using `[e, map_add, LinearMap.add_apply, ihx, ihy, add_zero]`. Consider the case `smul c x hx ihx`. Establish `e : (⟨c • x, hle (Submodule.smul_mem _ c hx)⟩ : GlobalTheory.FullRankCoinv.fullRk k n d) = c • ⟨x, hle hx⟩` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_smul, LinearMap.smul_apply, ihx, smul_zero]`. Use `set S := GlobalTheory.FullRankCoinv.UnitMinor.unitMinorSet k n d with hSdef`. Establish `hSc : IsClopen S` using `GlobalTheory.T.isClopen_unit_minor_set k n d`. Take `⟨s, hs⟩` from `GlobalTheory.T.open_cover_finite_translates_support k n d S hSc.isOpen (GlobalTheory.T.exists_unit_minor_translate k n d) Ψ₁.1 Ψ₁.2`. Take `⟨Φ, hΦ, hΦS, hdiff, hFΦ⟩` from `GlobalTheory.T.clopen_integrability_full_rank_orbit k n d ν S hSc (fun Φ hΦ Y => GlobalTheory.T.integrable_full_rank_zeta k n d ν hν Φ hΦ Y) s Ψ₁.1 Ψ₁.2 hs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : Ψ₁ = ⟨Ψ₁.1 - Φ, hle hdiff⟩ + ⟨Φ, hΦ⟩` using `Subtype.ext (by simp)`. Rewrite using `[e1, map_add, LinearMap.add_apply, hkill _ hdiff, zero_add]`. Take `⟨⟨hlc₂, hcs₂⟩, _⟩` from `Ψ₂.2`. Use `set V := Function.support Ψ₂.1 with hVdef`. Establish `hVo : IsOpen V` using `hlc₂ {0}ᶜ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVc : IsCompact V`. Establish `hcl : IsClosed V`. Establish `h` using `(hlc₂.isOpen_fiber 0).isClosed_compl`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `Y`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[V, Function.mem_support]`. Conclude with `IsCompact.of_isClosed_subset hcs₂ hcl (subset_tsupport _)`. Take `⟨s₂, hs₂⟩` from `GlobalTheory.T.open_cover_finite_translates_support k n d S hSc.isOpen (GlobalTheory.T.exists_unit_minor_translate k n d) Ψ₂.1 Ψ₂.2`. Use `set C : Set (Matrix (Fin n) (Fin d) k) := {Y | Y ∈ S ∧ ∃ a : GL (Fin n) k, Ψ₂.1 (a.val * Y) ≠ 0} with hCdef`. Establish `hCo : IsOpen C`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: C = S ∩ ⋃ a : GL (Fin n) k, (fun Y => a.val * Y) ⁻¹' V`. Use extensionality with `Y`. Simplify using `[C, V, Function.mem_support]`. Rewrite using `[this]`. Conclude with `hSc.isOpen.inter (isOpen_iUnion fun a => hVo.preimage (continuous_const.matrix_mul continuous_id))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `set T : Set (Matrix (Fin n) (Fin d) k) := (⋃ E ∈ s₂, (fun Y => E.val * Y) '' V) ∩ S with hTdef`. Establish `hTc : IsCompact T` using `(s₂.isCompact_biUnion fun E _ => hVc.image (continuous_const.matrix_mul continuous_id)).inter_right hSc.isClosed`. Establish `hCimg : C = (fun p : GL (Fin n) k × Matrix (Fin n) (Fin d) k => p.1.val * p.2) '' ((GlobalTheory.SplitWeil.KO k (Fin n) : Set (GL (Fin n) k)) ×ˢ T)`. Use extensionality with `Y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨hYS, a, ha⟩`. Take `⟨E, hE, hES⟩` from `hs₂ _ ha`. Establish `hκ : E * a ∈ GlobalTheory.SplitWeil.KO k (Fin n)` using `GlobalTheory.T.integral_group_of_unit_minor_stable k n d (E * a) Y hYS (by rwa [Units.val_mul, Matrix.mul_assoc])`. Use `⟨((E * a)⁻¹, (E * a).val * Y), ⟨inv_mem hκ, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `Set.mem_biUnion hE ⟨a.val * Y, ha, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Units.val_mul, Matrix.mul_assoc]`. Rewrite using `[Units.val_mul, Matrix.mul_assoc]`. Conclude with `hES`. Simplify using `only [← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Introduce and unpack `⟨⟨κ, Z⟩, ⟨hκ, hZ, hZS⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨E, hE, v, hv, rfl⟩` from `Set.mem_iUnion₂.1 hZ`. Use `⟨GlobalTheory.T.unit_minor_stable_integral_group k n d κ _ hκ hZS, E⁻¹ * κ⁻¹, ?_⟩` and prove the remaining obligations. Establish `: (E⁻¹ * κ⁻¹).val * (κ.val * (E.val * v)) = v`. Simplify using `only [Units.val_mul, ← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc (E⁻¹).val, Units.inv_mul, Matrix.mul_one, Units.inv_mul, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show Ψ₂.1 ((E⁻¹ * κ⁻¹).val * (κ.val * (E.val * v))) ≠ 0`. Rewrite using `[this]`. Conclude with `hv`. Establish `hCc : IsClosed C`. Rewrite using `[hCimg]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `((GlobalTheory.SplitFlip.isCompact_KO).prod hTc).image ((Units.continuous_val.comp continuous_fst).matrix_mul continuous_snd) |>.isClosed`. Establish `hC : IsClopen C` using `⟨hCc, hCo⟩`. Establish `h1` using `GlobalTheory.FullRankCoinv.Reduce.indicator_mem hC hΦ`. Establish `h2` using `GlobalTheory.FullRankCoinv.Reduce.indicator_mem hC.compl hΦ`. Establish `e2 : (⟨Φ, hΦ⟩ : GlobalTheory.FullRankCoinv.fullRk k n d) = ⟨C.indicator Φ, h1⟩ + ⟨Cᶜ.indicator Φ, h2⟩` using `Subtype.ext (Set.indicator_self_add_compl C Φ).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e2, map_add, LinearMap.add_apply]`. Establish `hCorb : ∀ (g : GL (Fin n) k) (Y : Matrix (Fin n) (Fin d) k), Y ∈ C → g.val * Y ∈ S → g.val * Y ∈ C`. Introduce and unpack `g Y ⟨_, a, ha⟩ hgY`. Use `⟨hgY, a * g⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (g⁻¹).val, Units.inv_mul, Matrix.one_mul]` and apply the resulting hypothesis.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Establish `hA1 : C.indicator Φ ∈ GlobalTheory.FullRankCoinv.augRk n d ν`. Use `GlobalTheory.T.smooth_character_orbital_integral_stable k n d ν hν C (fun E Y hY hEY => GlobalTheory.T.integral_group_of_unit_minor_stable k n d E Y hY.1 hEY.1) (fun E hE Y hY => hCorb E Y hY (GlobalTheory.T.unit_minor_stable_integral_group k n d E Y hE hY.1)) _ h1 (fun Y hY => S …` and prove the remaining obligations. Establish `hint : smallF (haarVol (GlobalTheory.SplitWeil.KO k (Fin n))) ν (C.indicator Φ) Y = smallF (haarVol (GlobalTheory.SplitWeil.KO k (Fin n))) ν Φ Y`. Unfold `smallF`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g.val * Y ∈ C`. Rewrite using `[Set.indicator_of_mem hg]`. Establish `: Φ (g.val * Y) = 0`. Assume the negation of the conclusion as `h0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hg (hCorb g Y hY (by by_contra hn; exact h0 (hΦS _ hn)))`. Rewrite using `[Set.indicator_of_notMem hg, this]`. Rewrite using `[hint, hFΦ]`. Take `⟨_, a, ha⟩` from `hY`. Establish `hz` using `hF0 (a.val * Y) ha`.
+Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← smallF_mul_left (haarVol (GlobalTheory.SplitWeil.KO k (Fin n))) ν Ψ₁.1 a Y, hz, mul_zero]`. Establish `e3` using `hkill _ hA1`. Rewrite using `[e3, zero_add]`. Use `hS _ _ fun Y₁ Y₂ hY₁ hY₂ a heq => ?_` and prove the remaining obligations. Establish `hn : Y₁ ∉ C` using `fun hm => hY₁ (Set.indicator_of_notMem (Set.notMem_compl_iff.2 hm) _)`.
-
-Establish `hΦ1 : Φ Y₁ ≠ 0`. Introduce `h0`. Apply `hY₁` to reduce the goal to its premises. Use `show Cᶜ.indicator Φ Y₁ = 0`. Distinguish the cases in `hm : Y₁ ∈ Cᶜ`.
-
-Rewrite using `[Set.indicator_of_mem hm, h0]`. Conclude with `Set.indicator_of_notMem hm _`. Establish `hY₁S : Y₁ ∈ S` using `by by_contra hn'; exact hΦ1 (hΦS _ hn')`. Use `hn ⟨hY₁S, a⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[heq, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`.
-
-Conclude with `hY₂`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FullRankCoinv.form_vanish_of_smallF_vanish : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (n d : ℕ) (ν : kˣ →* ℂˣ), n ≤ d → GlobalTheory.SmGL.IsSmoothChar ν →

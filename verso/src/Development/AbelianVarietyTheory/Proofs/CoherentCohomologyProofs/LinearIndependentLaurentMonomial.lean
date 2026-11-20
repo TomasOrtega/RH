@@ -6,17 +6,17 @@ open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct G
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `ι _ _ R _ s n v hv`. Rewrite using `[linearIndependent_iff']`. Introduce `T g hg j hj`. Set `k : ℕ` to `T.sup fun a => Finset.univ.sup fun i => (a.1 i).natAbs`. Set `m : {a : ι → ℤ // ∑ i, a i = n ∧ ∀ i, i ∉ s → 0 ≤ a i} → (ι →₀ ℕ)` to `fun a => Finsupp.equivFunOnFinite.symm fun i => (a.1 i + if i ∈ s then (k : ℤ) else 0).toNat`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hm : ∀ a ∈ T, ∀ i, (m a i : ℤ) = a.1 i + if i ∈ s then (k : ℤ) else 0`. Introduce `a ha i`. Establish `hk : (a.1 i).natAbs ≤ k` using `(Finset.le_sup (f := fun i => (a.1 i).natAbs) (Finset.mem_univ i)).trans (Finset.le_sup (f := fun a : {a : ι → ℤ // ∑ i, a i = n ∧ ∀ i, i ∉ s → 0 ≤ a i} => Finset.univ.sup fun i => (a.1 i).natAbs) ha)`. Use `Int.toNat_of_nonneg ?_` and prove the remaining obligations. Use `split_ifs with hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `using a.2.2 i hi`. Establish `hinj : ∀ a ∈ T, m a = m j → a = j`. Introduce `a ha e`. Use `Subtype.ext (funext fun i => ?_)` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hm a ha i`. Establish `h2` using `hm j hj i`. Rewrite `h1` using `[e, h2]`. Conclude with `(add_right_cancel h1).symm`. Establish `h0 : awayFrac (MvPolynomial ι R) (xProd R s) k (∑ a ∈ T, g a • monomial (m a) (1 : R)) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum, ← hg]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[hv a k (m a) (hm a ha), LinearMap.map_smul_of_tower]`. Establish `h1` using `congrArg (coeff (m j)) ((map_eq_zero_iff _ (awayFrac_injective (xProd_smul_injective s) k)).1 h0)`. Rewrite `h1` using `[coeff_sum, Finset.sum_eq_single j, coeff_smul, coeff_monomial, if_pos rfl, coeff_zero, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Introduce `a ha hne`. Rewrite using `[coeff_smul, coeff_monomial, if_neg fun e => hne (hinj a ha e), smul_zero]`. Conclude with `fun h => absurd hj h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem linearIndependent_laurentMonomial :
     ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type) [CommRing R] (s : Finset ι) (n : ℤ) (v : {a : ι → ℤ // ∑ i, a i = n ∧ ∀ i, i ∉ s → 0 ≤ a i} → LocalizedModule.Away (xProd R s) (MvPolynomial ι R)), (∀ a (k : ℕ) (m : ι →₀ ℕ), (∀ i, (m i : ℤ) = a.1 i + if i ∈ s then (k : ℤ) else 0) → v a = awayFrac (MvPolynomial ι R) (xProd R s) k (monomial m 1)) → LinearIndependent R v := by

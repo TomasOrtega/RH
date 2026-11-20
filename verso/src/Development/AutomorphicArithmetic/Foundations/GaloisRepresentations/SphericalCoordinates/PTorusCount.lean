@@ -7,9 +7,9 @@ open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
 /- English proof (translation)
-Use `haveI := ZLattice.module_free ℝ Lz`. Use `haveI := ZLattice.module_finite ℝ Lz`. Set `b` to `Module.Free.chooseBasis ℤ Lz`. Set `bR` to `Module.Basis.ofZLatticeBasis ℝ Lz b`. Rewrite using `[← LinearMap.det_toMatrix b, ← LinearMap.det_toMatrix bR, ← eq_intCast (Int.castRingHom ℝ), RingHom.map_det]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `i j`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, LinearMap.toMatrix_apply, LinearMap.toMatrix_apply, Module.Basis.ofZLatticeBasis_apply, ← hfL, Module.Basis.ofZLatticeBasis_repr_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem det_lattice_restrict_eq_det {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] (Lz : Submodule ℤ E) [DiscreteTopology Lz] [IsZLattice ℝ Lz]
@@ -28,31 +28,27 @@ private theorem det_lattice_restrict_eq_det {E : Type} [NormedAddCommGroup E] [N
   rfl
 
 /- English proof (translation)
-Set `Lz : Submodule ℤ E` to `AddSubgroup.toIntSubmodule L`. Use `haveI : DiscreteTopology Lz := hd`. Use `haveI : IsZLattice ℝ Lz := ⟨hs⟩`. Use `haveI := ZLattice.module_free ℝ Lz`. Use `haveI := ZLattice.module_finite ℝ Lz`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `fL : Lz →ₗ[ℤ] Lz` to `{ toFun := fun x => ⟨f x, hf x x.2⟩ map_add' := by intro x y; ext; simp map_smul' := by intro c x; ext; simp }`. Establish `hfL : ∀ x, (fL x : E) = f x` using `fun x => rfl`. Establish `hdetZ` using `det_lattice_restrict_eq_det Lz f fL hfL`. Establish `hdetL : LinearMap.det fL ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Apply `hdet` to reduce the goal to its premises. Rewrite using `[← hdetZ, h]`. Simplify using the standard rewrite rules. Set `fe` to `LinearMap.equivOfDetNeZero f hdet`. Establish `hfe : ∀ z, fe z = f z` using `fun z => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `finj : Function.Injective f`. Introduce `x y h`. Apply `fe.injective` to reduce the goal to its premises. Rewrite using `[hfe, hfe, h]`. Establish `hinj : Function.Injective fL` using `fun x y h => Subtype.ext (finj (congrArg Subtype.val h))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `N` to `LinearMap.range fL`. Set `e` to `LinearEquiv.ofInjective fL hinj`. Establish `hcard` using `Submodule.natAbs_det_equiv N e`. Establish `hcomp : N.subtype ∘ₗ (e : Lz →+ N).toIntLinearMap = fL` using `by ext x; rfl`. Rewrite `hcard` using `[hcomp]`.
+Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Finite (Lz ⧸ N) := Nat.finite_of_card_ne_zero (by rw [← hcard]; exact Int.natAbs_ne_zero.mpr hdetL)`. Use `letI := Fintype.ofFinite (Lz ⧸ N)`. Set `s : (Lz ⧸ N) → E` to `fun q => fe.symm ((Quotient.out q : Lz) : E)`. Establish `hs_f : ∀ q, f (s q) = ((Quotient.out q : Lz) : E)` using `fun q => by`. Rewrite using `[← hfe]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `fe.apply_symm_apply _`. Establish `hsinj : Function.Injective s`. Introduce `q q' h`. Establish `h1 : (Quotient.out q : Lz) = Quotient.out q'` using `Subtype.ext (by rw [← hs_f, ← hs_f, h])`. Rewrite using `[← Submodule.Quotient.mk_out q, ← Submodule.Quotient.mk_out q', h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∀ z (hz : f z ∈ L) (q' : Lz ⧸ N), z - s q' ∈ L ↔ q' = Submodule.Quotient.mk (⟨f z, hz⟩ : Lz)`. Introduce `z hz q'`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hm : (⟨f z, hz⟩ : Lz) - Quotient.out q' ∈ N` using `⟨⟨z - s q', h⟩, by ext; simp [fL, hs_f]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hm` using `[← Submodule.Quotient.eq, Submodule.Quotient.mk_out]`. Conclude with `hm.symm`. Introduce `h`. Establish `hm : (⟨f z, hz⟩ : Lz) - Quotient.out q' ∈ N`. Rewrite using `[← Submodule.Quotient.eq, Submodule.Quotient.mk_out, h]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨l, hl⟩` from `hm`. Establish `: f (l : E) = f (z - s q')`. Rewrite using `[← hfL, hl, map_sub, hs_f]`. Both sides reduce to the same expression. Rewrite using `[← finj this]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `l.2`. Use `⟨Finset.univ.image s, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨q, _, rfl⟩` from `Finset.mem_image.mp hz`. Rewrite using `[hs_f]`.
-
-Conclude with `(Quotient.out q).2`. Introduce `z hz`. Use `⟨s (Submodule.Quotient.mk (⟨f z, hz⟩ : Lz)), ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), (key z hz _).mpr rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `z' ⟨hz', hzz'⟩`. Take `⟨q, _, rfl⟩` from `Finset.mem_image.mp hz'`.
-
-Rewrite using `[(key z hz q).mp hzz']`. Rewrite using `[Finset.card_image_of_injective _ hsinj, Finset.card_univ, ← Nat.card_eq_fintype_card, ← hcard, ← hdetZ, Nat.cast_natAbs, Int.cast_abs]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_lattice_reps {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] (L : AddSubgroup E) (hd : DiscreteTopology L)
@@ -124,13 +120,13 @@ private theorem exists_lattice_reps {E : Type} [NormedAddCommGroup E] [NormedSpa
       ← hdetZ, Nat.cast_natAbs, Int.cast_abs]
 
 /- English proof (translation)
-Introduce `hDR W _ _ _ Λ hd hs Θ hΘ hdet`. Set `f : W →ₗ[ℝ] W` to `(1 - Θ).restrictScalars ℝ`. Establish `hR : ((LinearMap.det f : ℝ) : ℂ) = _` using `hDR W (1 - Θ)`. Establish `hdf : LinearMap.det f = Complex.normSq (LinearMap.det (1 - Θ))`. Apply `Complex.ofReal_injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hR, Complex.mul_conj]`. Establish `hfz : ∀ z, f z ∈ Λ ↔ Θ z - z ∈ Λ`. Introduce `z`. Use `show (1 - Θ) z ∈ Λ ↔ _`. Rewrite using `[LinearMap.sub_apply, Module.End.one_apply, ← neg_sub, neg_mem_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfL : ∀ z ∈ Λ, f z ∈ Λ` using `fun z hz => (hfz z).mpr (sub_mem (hΘ z hz) hz)`. Establish `hpos : 0 < LinearMap.det f` using `by rw [hdf]; exact Complex.normSq_pos.mpr hdet`. Take `⟨Fz, h1, h2, h3⟩` from `exists_lattice_reps Λ hd hs f hfL hpos.ne'`. Use `⟨Fz, fun z hz => (hfz z).mp (h1 z hz), fun z hz => h2 z ((hfz z).mpr hz), ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, ← hdf, ← abs_of_pos hpos, ← h3]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Use `norm_cast`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.torusCount_of :
     UpperTheory.Gal.W2.DetReal → UpperTheory.Gal.W2.TorusCount := by

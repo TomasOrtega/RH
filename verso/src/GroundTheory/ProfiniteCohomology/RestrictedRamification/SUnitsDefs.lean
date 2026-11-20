@@ -34,7 +34,7 @@ def sUnitsOf : Subgroup Eˣ where
 variable {S E}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_sUnitsOf {x : Eˣ} :
     x ∈ sUnitsOf S E ↔
@@ -42,14 +42,14 @@ theorem mem_sUnitsOf {x : Eˣ} :
   Iff.rfl
 
 /- English proof (translation)
-The claim follows from `hx.map ((σ : E →ₐ[F] E).restrictScalars (S.integer F))`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_algEquiv_apply (σ : E ≃ₐ[F] E) {x : E} (hx : IsIntegral (S.integer F) x) :
     IsIntegral (S.integer F) (σ x) :=
   hx.map ((σ : E →ₐ[F] E).restrictScalars (S.integer F))
 
 /- English proof (translation)
-Establish `hn : 0 < n` using `Nat.pos_of_ne_zero hn0`. Establish `h1 : ∀ y : Eˣ, y ^ n = 1 → IsIntegral (S.integer F) (y : E)` using `fun y hy => ⟨Polynomial.X ^ n - 1, Polynomial.monic_X_pow_sub_C 1 hn.ne', by`. Rewrite using `[Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_one, ← Units.val_pow_eq_pow_val, hy, Units.val_one, sub_self]⟩`. Establish `hζ' : ζ ^ n = 1` using `(mem_rootsOfUnity n ζ).1 hζ`. Conclude with `⟨h1 ζ hζ', h1 ζ⁻¹ (by rw [inv_pow, hζ', inv_one])⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem mem_sUnitsOf_of_mem_rootsOfUnity {n : ℕ} (hn0 : n ≠ 0) {ζ : Eˣ}
     (hζ : ζ ∈ rootsOfUnity n E) : ζ ∈ sUnitsOf S E := by
@@ -62,7 +62,7 @@ theorem mem_sUnitsOf_of_mem_rootsOfUnity {n : ℕ} (hn0 : n ≠ 0) {ζ : Eˣ}
   exact ⟨h1 ζ hζ', h1 ζ⁻¹ (by rw [inv_pow, hζ', inv_one])⟩
 
 /- English proof (translation)
-Use `⟨isIntegral_algEquiv_apply σ hx.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `isIntegral_algEquiv_apply σ hx.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galUnitsHom_mem_sUnitsOf (σ : E ≃ₐ[F] E) {x : Eˣ} (hx : x ∈ sUnitsOf S E) :
     galUnitsHom F E σ x ∈ sUnitsOf S E := by
@@ -116,7 +116,7 @@ theorem sUnitsToUnits_hom_apply (x : Additive (sUnitsOf S E)) :
   rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Additive.toMul.injective (Subtype.ext (Additive.ofMul.symm.injective h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sUnitsToUnits_injective : Function.Injective (sUnitsToUnits S E).hom := fun _ _ h =>
   Additive.toMul.injective (Subtype.ext (Additive.ofMul.symm.injective h))
@@ -176,7 +176,7 @@ noncomputable abbrev galSUnitsMax : Rep.{u} (ULift.{u} ℤ) (galUnramifiedOutsid
   galSUnits S (maxUnramifiedOutside F Ω S)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example [Algebra.IsIntegral F Ω] : IsDiscreteRep (galSUnitsMax F Ω S) := inferInstance
 

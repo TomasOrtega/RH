@@ -18,21 +18,21 @@ open GlobalTheory.FinWeilO
 variable {D : D7}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.pow n, fun x => by rw [MonoidHom.pow_apply, h.2 x, one_pow]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHeckeChar_pow {η : (AE D)ˣ →* Circle} (h : IsHeckeChar D η) (n : ℕ) : IsHeckeChar D (η ^ n) :=
   ⟨h.1.pow n, fun x => by rw [MonoidHom.pow_apply, h.2 x, one_pow]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun e he a => by rw [MonoidHom.pow_apply, h.2 e he a, pow_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem resEta_pow {η : (AE D)ˣ →* Circle} (h : ResEta D η 1) (n : ℕ) : ResEta D (η ^ n) n :=
   ⟨h.1, fun e he a => by rw [MonoidHom.pow_apply, h.2 e he a, pow_one]⟩
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h : infPart D ((mt V g - 1) i j) = 0`. Rewrite using `[← hg i j, RingHom.map_mul, ha, zero_mul]`. Rewrite `h` using `[Matrix.sub_apply, RingHom.map_sub, sub_eq_zero]`. Use `show infPart D (mt V g i j) = (1 : Matrix _ _ _) i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[RingHom.map_one]`. Rewrite using `[RingHom.map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_GfC_of_supp {a : AE D} (ha : infPart D a = 0) {V : HSp D} {g : GA D V}
     (hg : ∀ i j, a * (mt V g - 1) i j = (mt V g - 1) i j) : g ∈ GfC V := by
@@ -47,7 +47,7 @@ theorem mem_GfC_of_supp {a : AE D} (ha : infPart D a = 0) {V : HSp D} {g : GA D 
   · rw [RingHom.map_zero]
 
 /- English proof (translation)
-Take `⟨α, rfl, -⟩` from `h`. Use `show Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) (pairA D.host.F 0 α ⊗ₜ 1) = 0`. Rewrite using `[Algebra.TensorProduct.map_tmul, show fstA D.host.F (pairA D.host.F 0 α) = 0 from rfl, TensorProduct.zero_tmul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPart_placeIdem {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (h : IsPlaceIdem D v ε) :
     infPart D (algebraMap (AF D.host.F) (AE D) ε) = 0 := by
@@ -56,26 +56,24 @@ theorem infPart_placeIdem {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.hos
   rw [Algebra.TensorProduct.map_tmul, show fstA D.host.F (pairA D.host.F 0 α) = 0 from rfl, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Take `⟨-, -, v, ε, h1, h2⟩` from `he`. Conclude with `mem_GfC_of_supp (h2 ▸ infPart_placeIdem h1) hg`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_GfC_of_suppAt {e : AE D} (he : IsSplitIdem D e) {V : HSp D} {g : GA D V} (hg : SuppAt e V g) : g ∈ GfC V := by
   obtain ⟨-, -, v, ε, h1, h2⟩ := he
   exact mem_GfC_of_supp (h2 ▸ infPart_placeIdem h1) hg
 
 /- English proof (translation)
-Introduce `D ψ hψ S T θ hθ ΛS ΛT hS hT η hη`. Take `⟨of, hf⟩` from `exists_isFinWeil D ψ hψ S T ΛS ΛT hS hT _ _ (isHeckeChar_pow hη.1 S.rank) (isHeckeChar_pow hη.1 T.rank) (resEta_pow hη.2.2.1 _) (resEta_pow hη.2.2.1 _)`. Take `⟨oi, hi⟩` from `GlobalTheory.RealWeil.exists_isInfWeil D ψ hψ θ hθ S T`. Establish `hcomm` using `fun p q f h1 => fin_inf_comm hψ hS hT hf hi p q (f := f) h1`. Take `⟨om, hom⟩` from `exists_extend (thetaSub ψ S T) ({ toFun := fun p => (of p * oi p).restrict fun f h1 => hf.pres p _ (hi.pres p f h1) map_one' := LinearMap.ext fun f => Subtype.ext (by show of 1 (oi 1 f) = f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_one, map_one]`. Use the proof step `rfl)`. Use the proof step `map_mul' := fun p q => LinearMap.ext fun f => Subtype.ext (by show of (p * q) (oi (p * q) f) = of p (oi p (of q (oi q f)))`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hcomm q p _ (hi.pres q _ f.2)]) } :`. Use `GA D S × GA D T →* Module.End ℂ (thetaSub ψ S T))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ho : ∀ p f, IsThetaFunO ψ S T f → om p f = of p (oi p f)` using `fun p f h1 => hom p ⟨f, h1⟩`. Establish `hp : ∀ p f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (om p f)` using `fun p f h1 => by`. Rewrite using `[ho p f h1]`. Conclude with `hf.pres p _ (hi.pres p f h1)`. Establish `hfin : ∀ g ∈ GfC S, ∀ h ∈ GfC T, ∀ f, IsThetaFunO ψ S T f → om (g, h) f = of (g, h) f` using `fun g hg h hh f h1 => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ho _ f h1, hi.triv g hg h hh f h1]`. Establish `hinf : ∀ g ∈ GinfC S, ∀ h ∈ GinfC T, ∀ f, IsThetaFunO ψ S T f → om (g, h) f = oi (g, h) f` using `fun g hg h hh f h1 => by rw [ho _ f h1, hf.triv g hg h hh _ (hi.pres _ f h1)]`. Establish `hth` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1`. Use `⟨om, ⟨hψ, isHeckeChar_pow hη.1 _, isHeckeChar_pow hη.1 _, resEta_pow hη.2.2.1 _, resEta_pow hη.2.2.1 _, hp, fun g h u f h1 => ?_, fun γ hγ γ' hγ' f h1 => ?_, fun f h1 u => ?_, fun μ 𝓕 hμ h𝓕 p f h1 => ?_, fun e he g h hg hh x y hx hy => ?_⟩, fun v ε hv g h hg hh hst f h1 hfix => ? …` and prove the remaining obligations. Take `⟨a, ha, b, hb, k, hk, l, hl, e, -⟩` from `exists_parts (g, h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨rfl, rfl⟩ : g = a * k ∧ h = b * l` from `Prod.ext_iff.1 e`. Rewrite using `[actO_mul, e, map_mul, Module.End.mul_apply, Module.End.mul_apply, hfin k hk l hl _ (hth u f h1), hf.Heisenberg₂ k hk l hl u f h1, hfin k hk l hl f h1, hinf a ha b hb _ (hth _ _ (hf.pres _ f h1)), hi.Heisenberg₂ a ha b hb _ _ (hf.pres _ f h1), hinf a ha b hb _ (hf.pres _ f h1)]`. Rewrite using `[show ((γ, γ') : GA D S × GA D T) = (γ, 1) * (1, γ') by simp, map_mul, Module.End.mul_apply, ho _ _ (hp _ f h1), GlobalTheory.T.thetaDistribution_automorphy_source_group D ψ hψ S T θ hθ ΛS ΛT hS hT η hη of oi hf hi γ hγ _ (hp _ f h1), ho _ f h1]`. Conclude with `GlobalTheory.T.thetaDistribution_invariant_rationalTarget D ψ hψ S T θ hθ ΛS ΛT hS hT η hη of oi hf hi γ' hγ' f h1`. Simplify using `only [ho _ f h1]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_product hψ hS hT hf hi h1 u`. Rewrite using `[ho p f h1, hf.unit μ 𝓕 hμ h𝓕 p _ (hi.pres p f h1), hi.unit μ 𝓕 hμ h𝓕 p f h1]`. Take `⟨r, hr, h2⟩` from `hf.split e he g h hg hh x y hx hy`. Use `⟨r, hr, fun ℓ hℓ f h1 => ?_⟩` and prove the remaining obligations. Rewrite using `[hfin g (mem_GfC_of_suppAt he hg) h (mem_GfC_of_suppAt he hh) f h1]`.
-
-Conclude with `h2 ℓ hℓ f h1`. Rewrite using `[hfin g (mem_GfC_of_supp (infPart_placeIdem hv.1) hg) h (mem_GfC_of_supp (infPart_placeIdem hv.1) hh) f h1]`. Conclude with `hf.inert v ε hv g h hg hh hst f h1 hfix`. Rewrite using `[hinf g hg h hh f h1]`. Conclude with `hi.vac sS sT cS cT g hg h hh kS kT f h1 hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_weilDatum_etaTilde : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (θ : InfFam D), IsInfFam θ → ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ η, IsEtaTilde D η → ∃ om, IsWeilDatumO ψ S T (η ^ S.rank) (η ^ T.rank) om ∧ (∀ v ε, NonSplitAt D v ε → FixesVacAt ψ S T ΛS ΛT om v ε) ∧ VacCharPlus ψ θ S T om := by
   intro D ψ hψ S T θ hθ ΛS ΛT hS hT η hη

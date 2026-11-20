@@ -16,13 +16,13 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] {T : TeichLift p L Γ}
 
 /- English proof (translation)
-Introduce `r h0 h1` and use `T.mem_Econ.1 (T.algebraMap_teich_mem_Econ c ⟨r, h0, h1⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem convAll_algebraMap_teich (c : L) : T.ConvAll (algebraMap Γ T.B (T.teich c)) := fun r h0 h1 =>
   T.mem_Econ.1 (T.algebraMap_teich_mem_Econ c ⟨r, h0, h1⟩)
 
 /- English proof (translation)
-Rewrite using `[extNorm_ofAll, coeffB_algebraMap, zcoeff_teich, gaussNorm_pi_single _ _ ρ.2.1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem extNorm_ofAll_teich {σ : Set.Ioo (0 : ℝ) 1} (ρ : Set.Ioc (0 : ℝ) σ) (c : L) :
     T.extNorm σ ρ (T.ofAll _ (convAll_algebraMap_teich c) σ) = ‖c‖ := by
@@ -30,9 +30,7 @@ theorem extNorm_ofAll_teich {σ : Set.Ioo (0 : ℝ) 1} (ρ : Set.Ioc (0 : ℝ) �
   simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, extNorm_zero, zero_pow hq]`. Conclude with `hM`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`.
-
-Conclude with `(pow_le_pow_left₀ (T.extNorm_nonneg _ _) (T.extNorm_add_le ρ _ _) _).trans (max_pow_le (T.extNorm_nonneg _ _) (T.extNorm_nonneg _ _) (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extNorm_sum_pow_le {σ : Set.Ioo (0 : ℝ) 1} (ρ : Set.Ioc (0 : ℝ) σ) {ι : Type*} (s : Finset ι)
     (f : ι → T.RobbaExt σ) {q : ℕ} (hq : q ≠ 0) {M : ℝ} (hM : 0 ≤ M)
@@ -47,7 +45,7 @@ theorem extNorm_sum_pow_le {σ : Set.Ioo (0 : ℝ) 1} (ρ : Set.Ioc (0 : ℝ) σ
         (ih fun j hj => h j (Finset.mem_insert_of_mem hj)))
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, q = k + 1` from `⟨q - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel, pow_succ, mul_comm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_eq_mul_pow_pred (x : ℝ) {q : ℕ} (hq : 1 ≤ q) : x ^ q = x * x ^ (q - 1) := by
   obtain ⟨k, rfl⟩ : ∃ k, q = k + 1 := ⟨q - 1, by omega⟩
@@ -62,7 +60,7 @@ abbrev twistDiff {ρ : Set.Ioo (0 : ℝ) 1} (A : Matrix (Fin n) (Fin n) (T.Robba
   F.twistFrob A N ρ (F.powRadius_le_self ρ) w - fun i => T.res (F.powRadius_le_self ρ) (w i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [twistDiff, twistFrob_sub, Pi.sub_apply, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem twistDiff_sub {ρ : Set.Ioo (0 : ℝ) 1} (A : Matrix (Fin n) (Fin n) (T.RobbaExt ρ)) (N : ℕ)
     (w w' : Fin n → T.RobbaExt ρ) :
@@ -72,47 +70,41 @@ theorem twistDiff_sub {ρ : Set.Ioo (0 : ℝ) 1} (A : Matrix (Fin n) (Fin n) (T.
   ring
 
 /- English proof (translation)
-Establish `hq2 : 2 ≤ p ^ F.a` using `F.two_le_q ha`. Establish `hq0 : p ^ F.a ≠ 0` using `by omega`. Establish `hσ0 : (0 : ℝ) < F.powRadius ρ` using `(F.powRadius ρ).2.1`. Establish `hσ1 : (F.powRadius ρ : ℝ) < 1` using `(F.powRadius ρ).2.2`. Establish `hσρ : (F.powRadius ρ : ℝ) ≤ ρ` using `F.powRadius_le_self ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρr : (ρ : ℝ) ≤ F.rootRadius ρ` using `F.le_rootRadius ρ`. Establish `hC0 : 0 < C` using `zero_lt_one.trans_le hC`. Establish `hκ0 : 0 < (F.powRadius ρ : ℝ) ^ N` using `pow_pos hσ0 N`. Establish `hlam0 : 0 ≤ (F.powRadius ρ : ℝ) ^ (N * (p ^ F.a - 1))` using `pow_nonneg hσ0.le _`. Establish `hlam : ((F.powRadius ρ : ℝ) ^ p ^ F.a) ^ N = (F.powRadius ρ : ℝ) ^ N * (F.powRadius ρ : ℝ) ^ (N * (p ^ F.a - 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_mul, ← pow_add]`. Use `congr 1`. Rewrite using `[Nat.mul_sub_one, Nat.add_sub_cancel' (Nat.le_mul_of_pos_right N (by omega)), mul_comm]`. Use `set lo : ℝ := 2 ^ p ^ F.a * C * ((F.powRadius ρ : ℝ) ^ p ^ F.a) ^ N with hlo`. Use `set hi : ℝ := (F.powRadius ρ : ℝ) ^ N / (2 * C) with hhi`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlo0 : 0 < lo` using `by positivity`. Establish `hlohi : lo < hi`. Rewrite using `[hlo, hhi, hlam, lt_div_iff₀ (by positivity)]`. Establish `h8 : 2 * 2 ^ p ^ F.a * C ^ 2 * (F.powRadius ρ : ℝ) ^ (N * (p ^ F.a - 1)) < 1`. Establish `: 0 ≤ 2 ^ p ^ F.a * C ^ 2 * (F.powRadius ρ : ℝ) ^ (N * (p ^ F.a - 1))` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `e : 2 ^ p ^ F.a * C * ((F.powRadius ρ : ℝ) ^ N * (F.powRadius ρ : ℝ) ^ (N * (p ^ F.a - 1))) * (2 * C) = (2 * 2 ^ p ^ F.a * C ^ 2 * (F.powRadius ρ : ℝ) ^ (N * (p ^ F.a - 1))) * (F.powRadius ρ : ℝ) ^ N` using `by ring`. Rewrite using `[e]`. Conclude with `(mul_lt_mul_of_pos_right h8 hκ0).trans_le (one_mul _).le`. Establish `hm : (p ^ F.a - 1 : ℕ) ≠ 0` using `by omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hαβ : lo ^ (((p ^ F.a - 1 : ℕ) : ℝ)⁻¹) < hi ^ (((p ^ F.a - 1 : ℕ) : ℝ)⁻¹)` using `Real.rpow_lt_rpow hlo0.le hlohi (by positivity)`. Take `⟨c, hc1, hc2⟩` from `exists_norm_mem_Ioo_of_perfect p (L := L) (Real.rpow_pos_of_pos hlo0 _) hαβ`. Establish `ha0 : 0 < ‖c‖` using `(Real.rpow_pos_of_pos hlo0 _).trans hc1`. Establish `hclo : lo ≤ ‖c‖ ^ (p ^ F.a - 1)`. Use `pow_le_pow_left₀ (Real.rpow_pos_of_pos hlo0 _).le hc1.le (p ^ F.a - 1)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.rpow_inv_natCast_pow hlo0.le hm]`. Then use the resulting hypothesis. Establish `hchi : ‖c‖ ^ (p ^ F.a - 1) ≤ hi`. Use `pow_le_pow_left₀ ha0.le hc2.le (p ^ F.a - 1)` as an intermediate fact. Rewrite `this` using `[Real.rpow_inv_natCast_pow (hlo0.trans hlohi).le hm]`. Then use the resulting hypothesis. Use `set V0 : Fin n → T.RobbaExt ρ := fun j => if j = i0 then T.ofAll _ (convAll_algebraMap_teich c) ρ else 0 with hV0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hV0le : ∀ (r : Set.Ioc (0 : ℝ) ρ) j, T.extNorm ρ r (V0 j) ≤ ‖c‖` using `fun r j => by`. Simplify using `only [hV0]`. Use `split_ifs`. Rewrite using `[extNorm_ofAll_teich]`. Rewrite using `[extNorm_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha0.le`. Establish `hP : ∀ i, T.extNorm (F.powRadius ρ) (topRad _) (F.twistFrob A N ρ (F.powRadius_le_self ρ) V0 i) ≤ ‖c‖ / 2` using `fun i => by`. Establish `h1` using `extNorm_twistFrob_le A N (F.powRadius_le_self ρ) V0 (topRad ρ) hC0.le (pow_nonneg ha0.le _) (fun i j => hAσ i j) (fun j => pow_le_pow_left₀ (T.extNorm_nonneg _ _) (hV0le _ j) _) i`. Use `h1.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((F.powRadius ρ : ℝ) ^ N)⁻¹ * (C * ‖c‖ ^ p ^ F.a) ≤ ‖c‖ / 2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_eq_mul_pow_pred ‖c‖ (by omega : 1 ≤ p ^ F.a), inv_mul_le_iff₀ hκ0]`. Use `mul_le_mul_of_nonneg_left hchi (mul_nonneg hC0.le ha0.le)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Set `sσ : Set.Ioc (0 : ℝ) (F.rootRadius ρ)` to `⟨F.powRadius ρ, hσ0, hσρ.trans hρr⟩`. Establish `hB : ∀ i, T.extNorm (F.rootRadius ρ) sσ (F.untwist A' N V0 i) ≤ ‖c‖ / 2` using `fun i => by`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1` using `extNorm_untwist_pow_le N A' V0 sσ hC0.le ha0.le (fun i j => hA'σ2 i j) (fun j => hV0le _ j) i`. Use `(pow_le_pow_iff_left₀ (T.extNorm_nonneg _ _) (by linarith) hq0).1 (h1.trans ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((F.powRadius ρ : ℝ) ^ p ^ F.a) ^ N * (C * ‖c‖) ≤ (‖c‖ / 2) ^ p ^ F.a`. Rewrite using `[div_pow, le_div_iff₀ (by positivity), pow_eq_mul_pow_pred ‖c‖ (by omega : 1 ≤ p ^ F.a)]`. Use `mul_le_mul_of_nonneg_left hclo ha0.le` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hlo]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ‖c‖ * ‖c‖ ^ (p ^ F.a - 1) := this`. Use `set b0 : Fin n → T.RobbaExt ρ := fun i => T.res hρr (F.untwist A' N V0 i) with hb0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set u : Fin n → T.RobbaExt ρ := V0 + b0 with hu`. Establish `he0 : ∀ i, twistDiff (F` using `F) A N u i = F.twistFrob A N ρ (F.powRadius_le_self ρ) V0 i + -T.res hσρ (b0 i) := fun i => by`. Establish `h1` using `congrFun (twistFrob_res_untwist (F := F) A N A' hAA V0) i`. Simplify using `only [twistDiff, hu, twistFrob_add, Pi.sub_apply, Pi.add_apply, map_add]`. Rewrite using `[show F.twistFrob A N ρ (F.powRadius_le_self ρ) b0 i = T.res hσρ (V0 i) from h1]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `he0b : ∀ i, T.extNorm (F.powRadius ρ) (topRad _) (twistDiff (F` using `F) A N u i) ≤ ‖c‖ / 2 := fun i => by`. Rewrite using `[he0]`. Use `(T.extNorm_add_le _ _ _).trans (max_le (hP i) ?_)` and prove the remaining obligations. Rewrite using `[extNorm_neg, hb0, extNorm_res, extNorm_res]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Conclude with `hB i`. Take `⟨e, z, hez, hstep, heb, hzσ, hzρ⟩` from `exists_solve_seq ha A A' hAA N hC hAσ hA'σ hA'σ2 hN (twistDiff (F := F) A N u) (half_pos ha0) he0b`. Use `set U : ℕ → Fin n → T.RobbaExt ρ := fun J => u - ∑ j ∈ Finset.range J, z j with hU`. Establish `hUe : ∀ J, twistDiff (F` using `F) A N (U J) = e J := by`. Introduce `J`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Proceed by induction on `J with`. Consider the case `zero => simp only [hU, Finset.range_zero, Finset.sum_empty, sub_zero]`. Conclude with `hez.symm`. Consider the case `succ J ih`. Establish `: U (J + 1) = U J - z J`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hU, Finset.sum_range_succ]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, twistDiff_sub, ih, hstep J]`. Establish `hdiff : ∀ J K, J ≤ K → U J - U K = ∑ j ∈ Finset.Ico J K, z j` using `fun J K hJK => by`. Simplify using `only [hU]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_range_add_sum_Ico _ hJK]`. Normalize the expressions using the abelian group laws. Establish `hhalf : ∀ J j, J ≤ j → ‖c‖ / 2 / 2 ^ j ≤ ‖c‖ / 2 / 2 ^ J` using `fun J j h => div_le_div_of_nonneg_left (by positivity) (by positivity) (pow_le_pow_right₀ (by norm_num) h)`. Use `⟨U, e, c, ha0, fun J => ?_, hUe, heb, fun J K hJK i => ?_⟩` and prove the remaining obligations. Establish `e1 : U J i0 - T.ofAll _ (convAll_algebraMap_teich c) ρ = b0 i0 + -∑ j ∈ Finset.range J, z j i0`.
-
-Simplify using `only [hU, hu, Pi.sub_apply, Pi.add_apply, hV0, ↓reduceIte, Finset.sum_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Use `(T.extNorm_add_le _ _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[hb0, extNorm_res]`.
-
-Conclude with `hB i0`. Rewrite using `[extNorm_neg]`. Use `extNorm_sum_le _ _ _ (by positivity) fun j _ => (hzσ j i0).trans ?_` and prove the remaining obligations. Simplify using `using hhalf 0 j (Nat.zero_le j)`. Rewrite using `[show U J i - U K i = (U J - U K) i from rfl, hdiff J K hJK, Finset.sum_apply]`.
-
-Use `⟨extNorm_sum_le _ _ _ (by positivity) fun j hj => (hzσ j i).trans (hhalf J j (Finset.mem_Ico.1 hj).1), ?_⟩` and prove the remaining obligations. Conclude with `extNorm_sum_pow_le _ _ _ hq0 (by positivity) fun j hj => (hzρ j i).trans (mul_le_mul_of_nonneg_left (hhalf J j (Finset.mem_Ico.1 hj).1) hC0.le)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_start (ha : 0 < F.a) {ρ : Set.Ioo (0 : ℝ) 1}
     (A A' : Matrix (Fin n) (Fin n) (T.RobbaExt ρ)) (hAA : A * A' = 1) (N : ℕ) {C : ℝ} (hC : 1 ≤ C)
@@ -270,14 +262,14 @@ def radSeq (ρ : Set.Ioo (0 : ℝ) 1) : ℕ → Set.Ioo (0 : ℝ) 1
   | t + 1 => F.powRadius (radSeq ρ t)
 
 /- English proof (translation)
-The claim follows from `F.powRadius_le_self _`.
+A detailed English derivation is pending.
 -/
 theorem radSeq_succ_le (ρ : Set.Ioo (0 : ℝ) 1) (t : ℕ) :
     (F.radSeq ρ (t + 1) : ℝ) ≤ F.radSeq ρ t :=
   F.powRadius_le_self _
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => exact le_rfl`. Consider the case `succ t ih => exact (F.radSeq_succ_le ρ t).trans ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem radSeq_le (ρ : Set.Ioo (0 : ℝ) 1) (t : ℕ) : (F.radSeq ρ t : ℝ) ≤ ρ := by
   induction t with
@@ -285,9 +277,9 @@ theorem radSeq_le (ρ : Set.Ioo (0 : ℝ) 1) (t : ℕ) : (F.radSeq ρ t : ℝ) �
   | succ t ih => exact (F.radSeq_succ_le ρ t).trans ih
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => simp [radSeq]`. Consider the case `succ t ih`. Establish `h0 : (0 : ℝ) ≤ F.radSeq ρ t` using `(F.radSeq ρ t).2.1.le`. Establish `h1 : (F.radSeq ρ t : ℝ) ≤ 1` using `(F.radSeq ρ t).2.2.le`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(F.radSeq ρ t : ℝ) ^ p ^ F.a ≤ _`. Combine the equalities or inequalities in the displayed calculation.
+Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation.
 -/
 theorem radSeq_le_pow (ha : 0 < F.a) (ρ : Set.Ioo (0 : ℝ) 1) (t : ℕ) :
     (F.radSeq ρ t : ℝ) ≤ (ρ : ℝ) ^ (t + 1) := by
@@ -304,7 +296,7 @@ theorem radSeq_le_pow (ha : 0 < F.a) (ρ : Set.Ioo (0 : ℝ) 1) (t : ℕ) :
       _ = (ρ : ℝ) ^ (t + 1 + 1) := (pow_succ _ _).symm
 
 /- English proof (translation)
-Establish `h` using `(tendsto_pow_atTop_nhds_zero_of_lt_one ρ.2.1.le ρ.2.2).comp (tendsto_add_atTop_nat 1)`. Conclude with `squeeze_zero (fun t => (F.radSeq ρ t).2.1.le) (F.radSeq_le_pow ha ρ) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_radSeq (ha : 0 < F.a) (ρ : Set.Ioo (0 : ℝ) 1) :
     Tendsto (fun t => (F.radSeq ρ t : ℝ)) atTop (𝓝 0) := by
@@ -328,11 +320,9 @@ def SeqCauchy {τ : Set.Ioo (0 : ℝ) 1} (x : ℕ → Fin n → T.RobbaExt τ) (
 variable {ρ : Set.Ioo (0 : ℝ) 1} (A : Matrix (Fin n) (Fin n) (T.RobbaExt ρ)) (N : ℕ)
 
 /- English proof (translation)
-Use `set s : Set.Ioc (0 : ℝ) ρ := ⟨_, (F.powRad r).2.1, (F.powRad r).2.2.trans hτ⟩`. Use `set K : ℝ := ∑ i, ∑ j, T.extNorm ρ s (A i j) with hK`. Establish `hK0 : 0 ≤ K` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => T.extNorm_nonneg _ _`. Establish `hKA : ∀ i j, T.extNorm ρ s (A i j) ≤ K` using `fun i j => (Finset.single_le_sum (f := fun j => T.extNorm ρ s (A i j)) (fun j _ => T.extNorm_nonneg _ _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, T.extNorm ρ s (A i j)) (fun i _ => Finset.sum_nonneg fun j _ => T.extNorm_nonneg _ _) (Finset.mem_univ i))`. Use `set c0 : ℝ := (((r : ℝ) ^ p ^ F.a) ^ N)⁻¹ * (K + 1) with hc0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc00 : 0 < c0` using `mul_pos (inv_pos.2 (pow_pos (pow_pos r.2.1 _) _)) (by linarith)`. Use `⟨min 1 (ε / c0), lt_min one_pos (div_pos hε hc00), fun w hw i => ?_⟩` and prove the remaining obligations. Use `set δ := min 1 (ε / c0)`. Establish `hδ0 : 0 ≤ δ` using `le_min zero_le_one (div_pos hε hc00).le`. Establish `hwq : ∀ j, T.extNorm τ r (w j) ^ p ^ F.a ≤ δ` using `fun j => (pow_le_pow_left₀ (T.extNorm_nonneg _ _) (hw j) _).trans (pow_le_of_le_one hδ0 (min_le_left _ _) F.q_pos.ne')`.
-
-Use `(extNorm_twistFrob_le A N hτ w r hK0 hδ0 (fun i j => hKA i j) hwq i).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem twistFrob_small {τ : Set.Ioo (0 : ℝ) 1}
     (hτ : ((F.powRadius τ : Set.Ioo (0 : ℝ) 1) : ℝ) ≤ ρ) (r : Set.Ioc (0 : ℝ) τ) {ε : ℝ}
@@ -363,7 +353,7 @@ theorem twistFrob_small {τ : Set.Ioo (0 : ℝ) 1}
     _ = ε := by field_simp
 
 /- English proof (translation)
-Introduce `ε hε`. Take `⟨δ, hδ, h⟩` from `twistFrob_small A N hτ r hε`. Take `⟨J₀, hJ₀⟩` from `hx δ hδ`. Conclude with `⟨J₀, fun J hJ i => h (x J) (hJ₀ J hJ) i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SeqSmall.twistFrob {τ : Set.Ioo (0 : ℝ) 1}
     (hτ : ((F.powRadius τ : Set.Ioo (0 : ℝ) 1) : ℝ) ≤ ρ) {x : ℕ → Fin n → T.RobbaExt τ}
@@ -375,9 +365,9 @@ theorem SeqSmall.twistFrob {τ : Set.Ioo (0 : ℝ) 1}
   exact ⟨J₀, fun J hJ i => h (x J) (hJ₀ J hJ) i⟩
 
 /- English proof (translation)
-Introduce `ε hε`. Take `⟨δ, hδ, h⟩` from `twistFrob_small A N hτ r hε`. Take `⟨J₀, hJ₀⟩` from `hx δ hδ`. Use `⟨J₀, fun J hJ K hK i => ?_⟩` and prove the remaining obligations. Use `h (x J - x K) (fun j => hJ₀ J hJ K hK j) i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[twistFrob_sub]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem SeqCauchy.twistFrob {τ : Set.Ioo (0 : ℝ) 1}
     (hτ : ((F.powRadius τ : Set.Ioo (0 : ℝ) 1) : ℝ) ≤ ρ) {x : ℕ → Fin n → T.RobbaExt τ}
@@ -410,51 +400,45 @@ namespace TeichFrob
 variable {F : T.TeichFrob} {n : ℕ}
 
 /- English proof (translation)
-Take `⟨U, e, c, ha0, hU0, hUe, heb, hUC⟩` from `exists_start ha A A' hAA N hC hAσ hA'σ hA'σ2 hN i0`. Establish `hq0 : p ^ F.a ≠ 0` using `F.q_pos.ne'`. Establish `hC0 : 0 < C` using `zero_lt_one.trans_le hC`. Establish `hgeo : ∀ ε > 0, ∃ J₀ : ℕ, ∀ J ≥ J₀, ‖c‖ / 2 / 2 ^ J ≤ ε`. Introduce `ε hε`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨J₀, hJ₀⟩` from `exists_pow_lt_of_lt_one (div_pos hε (half_pos ha0)) (by norm_num : (1 / 2 : ℝ) < 1)`. Use `⟨J₀, fun J hJ => ?_⟩` and prove the remaining obligations. Establish `h1 : ((1 : ℝ) / 2) ^ J ≤ (1 / 2) ^ J₀` using `pow_le_pow_of_le_one (by norm_num) (by norm_num) hJ`. Combine the equalities or inequalities in the displayed calculation. Establish `hC0' : SeqCauchy U (topRad ρ) ∧ SeqCauchy U (F.radPow ρ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `key : ∀ ε > 0, ∃ J₀, ∀ J ≥ J₀, ∀ K ≥ J₀, ∀ i, T.extNorm ρ (F.radPow ρ) (U J i - U K i) ≤ ε ∧ T.extNorm ρ (topRad ρ) (U J i - U K i) ≤ ε`. Introduce `ε hε`. Take `⟨J₀, hJ₀⟩` from `hgeo (min ε (ε ^ p ^ F.a / C)) (lt_min hε (by positivity))`. Use `⟨J₀, fun J hJ K hK i => ?_⟩` and prove the remaining obligations. Establish `hb : ∀ J K, J₀ ≤ J → J ≤ K → T.extNorm ρ (F.radPow ρ) (U J i - U K i) ≤ ε ∧ T.extNorm ρ (topRad ρ) (U J i - U K i) ≤ ε` using `fun J K hJ hJK => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `hUC J K hJK i`. Establish `h3` using `hJ₀ J hJ`. Use `⟨h1.trans (h3.trans (min_le_left _ _)), ?_⟩` and prove the remaining obligations. Use `(pow_le_pow_iff_left₀ (T.extNorm_nonneg _ _) hε.le hq0).1 (h2.trans ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Break down `le_total J K with h | h` into its components or cases. Conclude with `hb J K hJ h`. Rewrite using `[T.extNorm_sub_comm, T.extNorm_sub_comm (topRad ρ)]`. Conclude with `hb K J hK h`. Conclude with `⟨fun ε hε => (key ε hε).imp fun J₀ h J hJ K hK i => (h J hJ K hK i).2, fun ε hε => (key ε hε).imp fun J₀ h J hJ K hK i => (h J hJ K hK i).1⟩`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set x : (t : ℕ) → ℕ → Fin n → T.RobbaExt (F.radSeq ρ t) := fun t J => F.phiIter A N (U J) t with hxdef`. Establish `hCt : ∀ t, SeqCauchy (x t) (topRad _) ∧ SeqCauchy (x t) ⟨F.radSeq ρ (t + 1), (F.radSeq ρ (t + 1)).2.1, F.radSeq_succ_le ρ t⟩`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => exact hC0'`.
+Proceed by induction. Treat this case separately. Treat this case separately. Supply the required witnesses or components. Establish an intermediate fact.
 
-Consider the case `succ t ih`. Conclude with `⟨ih.1.twistFrob A N (F.radSeq_le ρ (t + 1)), ih.2.twistFrob A N (F.radSeq_le ρ (t + 1))⟩`. Establish `hDt : ∀ t, SeqSmall (fun J => x (t + 1) J - fun i => T.res (F.radSeq_succ_le ρ t) (x t J i)) (topRad (F.radSeq ρ (t + 1)))`. Introduce `t`. Proceed by induction on `t with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Consider the case `zero`. Introduce `ε hε`. Take `⟨J₀, hJ₀⟩` from `hgeo ε hε`. Use `⟨J₀, fun J hJ i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T.extNorm _ _ (twistDiff (F := F) A N (U J) i) ≤ ε`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[hUe J]`. Conclude with `(heb J i).trans (hJ₀ J hJ)`. Consider the case `succ t ih`. Establish `h` using `SeqSmall.twistFrob A N (F.radSeq_le ρ (t + 2)) ih`. Use `fun ε hε => (h ε hε).imp fun J₀ hJ₀ J hJ i => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (x (t + 2) J - fun i => T.res (F.radSeq_succ_le ρ (t + 1)) (x (t + 1) J i)) = F.twistFrob A N (F.radSeq ρ (t + 1)) (F.radSeq_le ρ (t + 2)) (x (t + 1) J - fun i => T.res (F.radSeq_succ_le ρ t) (x t J i))`. Establish `h2` using `twistFrob_res A N (F.radSeq_succ_le ρ t) (F.radSeq_le ρ (t + 1)) (F.radSeq_le ρ (t + 2)) (x t J)`. Establish `h3 : F.twistFrob A N (F.radSeq ρ (t + 1)) (F.radSeq_le ρ (t + 2)) (x (t + 1) J) - F.twistFrob A N (F.radSeq ρ (t + 1)) (F.radSeq_le ρ (t + 2)) (fun j => T.res (F.radSeq_succ_le ρ t) (x t J j)) = F.twistFrob A N (F.radSeq ρ (t + 1)) (F.radSeq_le ρ (t + 2)) (x (t + 1) J - fun i => …` using `(twistFrob_sub A N (F.radSeq_le ρ (t + 2)) _ _).symm`. Rewrite using `[← h3]`. Conclude with `congrArg₂ (· - ·) rfl h2.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `show T.extNorm _ (topRad (F.radSeq ρ (t + 2))) ((x (t + 2) J - fun i => T.res (F.radSeq_succ_le ρ (t + 1)) (x (t + 1) J i)) i) ≤ ε`. Rewrite using `[e1]`. Conclude with `hJ₀ J hJ i`. Establish `hglue : ∀ i, ∃ g : T.RobbaExt ρ, ∀ ε > 0, ∃ J₀, ∀ J ≥ J₀, T.extNorm ρ (topRad ρ) (g - U J i) ≤ ε ∧ T.extNorm ρ (F.radPow ρ) (g - U J i) ≤ ε`. Introduce `i`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `exists_glue (F.radSeq ρ) (F.radSeq_succ_le ρ) (F.tendsto_radSeq ha ρ) (fun t J => x t J i) (fun t ε hε => ?_) (fun t ε hε => ?_)` and prove the remaining obligations. Take `⟨J₁, h1⟩` from `(hCt t).1 ε hε`. Take `⟨J₂, h2⟩` from `(hCt t).2 ε hε`. Conclude with `⟨max J₁ J₂, fun J hJ K hK => ⟨h1 J (le_of_max_le_left hJ) K (le_of_max_le_left hK) i, h2 J (le_of_max_le_right hJ) K (le_of_max_le_right hK) i⟩⟩`. Take `⟨J₀, h⟩` from `hDt t ε hε`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨J₀, fun J hJ => ?_⟩` and prove the remaining obligations. Use `h J hJ i` as an intermediate fact. Rewrite using `[← extNorm_neg, neg_sub]`. Conclude with `this`. Use `choose g hg using hglue`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨g, fun hv => ?_, ?_⟩` and prove the remaining obligations. Establish `hg0 : g i0 = 0` using `congrFun hv i0`. Take `⟨J₀, hJ₀⟩` from `hg i0 (‖c‖ / 4) (by positivity)`. Establish `h1 : T.extNorm ρ (F.radPow ρ) (g i0 - U J₀ i0) ≤ ‖c‖ / 4` using `(hJ₀ J₀ le_rfl).2`. Establish `h2` using `hU0 J₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3 : T.extNorm ρ (F.radPow ρ) (T.ofAll _ (convAll_algebraMap_teich c) ρ) = ‖c‖` using `extNorm_ofAll_teich _ c`. Establish `e1 : T.ofAll _ (convAll_algebraMap_teich c) ρ = -((g i0 - U J₀ i0) + (U J₀ i0 - T.ofAll _ (convAll_algebraMap_teich c) ρ))`. Rewrite using `[hg0]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : T.extNorm ρ (F.radPow ρ) (T.ofAll _ (convAll_algebraMap_teich c) ρ) ≤ max (‖c‖ / 4) (‖c‖ / 2)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e1, extNorm_neg]`. Conclude with `(T.extNorm_add_le _ _ _).trans (max_le_max h1 h2)`. Rewrite `h4` using `[h3]`. Establish `: max (‖c‖ / 4) (‖c‖ / 2) < ‖c‖` using `max_lt (by linarith) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.zero_apply]`. Apply `(T.extNorm_eq_zero_iff (topRad _)).1` to reduce the goal to its premises. Establish `key : ∀ ε > 0, T.extNorm _ (topRad _) (twistDiff (F` using `F) A N g i) ≤ ε := by`. Introduce `ε hε`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨δ, hδ, hsm⟩` from `twistFrob_small A N (F.powRadius_le_self ρ) (topRad ρ) hε`. Establish `hev : ∀ j, ∀ᶠ J in atTop, T.extNorm ρ (topRad ρ) (g j - U J j) ≤ δ` using `fun j => by`. Take `⟨J₀, h⟩` from `hg j δ hδ`. Conclude with `eventually_atTop.2 ⟨J₀, fun J hJ => (h J hJ).1⟩`. Establish `hev2 : ∀ᶠ J in atTop, T.extNorm ρ (F.radPow ρ) (g i - U J i) ≤ ε`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨J₀, h⟩` from `hg i ε hε`. Conclude with `eventually_atTop.2 ⟨J₀, fun J hJ => (h J hJ).2⟩`. Establish `hev3 : ∀ᶠ J in atTop, T.extNorm _ (topRad _) (e J i) ≤ ε`. Take `⟨J₀, h⟩` from `hgeo ε hε`. Conclude with `eventually_atTop.2 ⟨J₀, fun J hJ => (heb J i).trans (h J hJ)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨J, hJ1, hJ2, hJ3⟩` from `((Filter.eventually_all.2 hev).and (hev2.and hev3)).exists`. Establish `h1 : F.twistFrob A N ρ (F.powRadius_le_self ρ) g i = F.twistFrob A N ρ (F.powRadius_le_self ρ) (g - U J) i + F.twistFrob A N ρ (F.powRadius_le_self ρ) (U J) i`. Rewrite using `[twistFrob_sub, Pi.sub_apply, sub_add_cancel]`. Establish `h2 : twistDiff (F` using `F) A N (U J) i = e J i := congrFun (hUe J) i`. Simplify using `only [twistDiff, Pi.sub_apply] at h2 ⊢`.
-
-Establish `e2 : F.twistFrob A N ρ (F.powRadius_le_self ρ) g i - T.res (F.powRadius_le_self ρ) (g i) = F.twistFrob A N ρ (F.powRadius_le_self ρ) (g - U J) i + e J i + -T.res (F.powRadius_le_self ρ) (g i - U J i)`. Rewrite using `[h1, ← h2, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Use `(extNorm_add_add_le_max _ _ _ _).trans (max_le (hsm (g - U J) (fun j => hJ1 j) i) (max_le hJ3 ?_))` and prove the remaining obligations.
-
-Rewrite using `[extNorm_neg, extNorm_res]`. Conclude with `hJ2`. Establish `h0` using `T.extNorm_nonneg (topRad (F.powRadius ρ)) (twistDiff (F := F) A N g i)`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < T.extNorm _ (topRad _) (twistDiff (F` using `F) A N g i) := lt_of_le_of_ne h0 (Ne.symm hne)`.
-
-Combine the linear relations using `[key _ (half_pos hpos)]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_fixed (ha : 0 < F.a) {ρ : Set.Ioo (0 : ℝ) 1}
     (A A' : Matrix (Fin n) (Fin n) (T.RobbaExt ρ)) (hAA : A * A' = 1) (N : ℕ) {C : ℝ} (hC : 1 ≤ C)
@@ -625,19 +609,19 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] {T : TeichLift p L Γ}
 
 /- English proof (translation)
-The claim follows from `(T.edagToTilde_apply (T.algebraMap_π_mem_Econ σ)).symm`.
+A detailed English derivation is pending.
 -/
 theorem ofRad_piE (σ : Set.Ioo (0 : ℝ) 1) : T.ofRad σ (T.piE σ) = T.πTilde :=
   (T.edagToTilde_apply (T.algebraMap_π_mem_Econ σ)).symm
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, ∃ (ρ : Set.Ioo (0 : ℝ) 1) (g : ι → T.RobbaExt ρ), ∀ i ∈ s, T.ofRad ρ (g i) = f i`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨⟨1 / 2, by norm_num, by norm_num⟩, 0, fun i hi => by simp at hi⟩`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨ρ1, g1, h1⟩` from `ih`. Take `⟨ρ2, y, hy⟩` from `T.exists_ofRad (f a)`. Set `m : Set.Ioo (0 : ℝ) 1` to `⟨min (ρ1 : ℝ) ρ2, lt_min ρ1.2.1 ρ2.2.1, min_lt_of_left_lt ρ1.2.2⟩`. Establish `hm1 : (m : ℝ) ≤ ρ1` using `min_le_left _ _`. Establish `hm2 : (m : ℝ) ≤ ρ2` using `min_le_right _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨m, fun i => if i = a then T.res hm2 y else T.res hm1 (g1 i), fun i hi => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hia : i = a`. Substitute `hia` using the available equality. Simplify using `only [↓reduceIte, T.ofRad_res, hy]`. Break down `Finset.mem_insert.1 hi with h | hi'` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h hia`. Simplify using `only [if_neg hia, T.ofRad_res, h1 i hi']`. Take `⟨ρ, g, h⟩` from `key Finset.univ`. Conclude with `⟨ρ, g, fun i => h i (Finset.mem_univ i)⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ofRad_fintype {ι : Type*} [Fintype ι] (f : ι → T.RobbaTilde) :
     ∃ (ρ : Set.Ioo (0 : ℝ) 1) (g : ι → T.RobbaExt ρ), ∀ i, T.ofRad ρ (g i) = f i := by
@@ -667,27 +651,27 @@ namespace TeichFrob
 variable {F : T.TeichFrob} {n : ℕ}
 
 /- English proof (translation)
-Establish `hq2 : 2 ≤ p ^ F.a` using `F.two_le_q ha`. Use `set f : Fin n → Fin n → ℝ := fun i j => T.extNorm ρ (F.radPow ρ) (A i j) + T.extNorm ρ (F.radPow ρ) (A' i j) + T.extNorm ρ (F.radPow2 ρ) (A' i j) with hf`. Establish `hfe : ∀ i j, f i j = T.extNorm ρ (F.radPow ρ) (A i j) + T.extNorm ρ (F.radPow ρ) (A' i j) + T.extNorm ρ (F.radPow2 ρ) (A' i j)` using `fun i j => rfl`. Establish `hf0 : ∀ i j, 0 ≤ f i j` using `fun i j => by`. Use `T.extNorm_nonneg (F.radPow ρ) (A i j)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `T.extNorm_nonneg (F.radPow ρ) (A' i j)` as an intermediate fact. Use `T.extNorm_nonneg (F.radPow2 ρ) (A' i j)` as an intermediate fact. Rewrite using `[hfe]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set C : ℝ := 1 + ∑ i, ∑ j, f i j with hCdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfC : ∀ i j, f i j ≤ C` using `fun i j => by`. Establish `h1` using `Finset.single_le_sum (f := fun j => f i j) (fun j _ => hf0 i j) (Finset.mem_univ j)`. Establish `h2` using `Finset.single_le_sum (f := fun i => ∑ j, f i j) (fun i _ => Finset.sum_nonneg fun j _ => hf0 i j) (Finset.mem_univ i)`. Rewrite using `[hCdef]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC1 : 1 ≤ C`. Use `Finset.sum_nonneg fun i (_ : i ∈ Finset.univ) => Finset.sum_nonneg fun j (_ : j ∈ Finset.univ) => hf0 i j` as an intermediate fact. Rewrite using `[hCdef]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hAσ : ∀ i j, T.extNorm ρ (F.radPow ρ) (A i j) ≤ C` using `fun i j => by`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hfC i j` as an intermediate fact. Use `T.extNorm_nonneg (F.radPow ρ) (A' i j)` as an intermediate fact. Use `T.extNorm_nonneg (F.radPow2 ρ) (A' i j)` as an intermediate fact. Rewrite `*` using `[hfe]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA'σ : ∀ i j, T.extNorm ρ (F.radPow ρ) (A' i j) ≤ C` using `fun i j => by`. Use `hfC i j` as an intermediate fact. Use `T.extNorm_nonneg (F.radPow ρ) (A i j)` as an intermediate fact. Use `T.extNorm_nonneg (F.radPow2 ρ) (A' i j)` as an intermediate fact. Rewrite `*` using `[hfe]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA'σ2 : ∀ i j, T.extNorm ρ (F.radPow2 ρ) (A' i j) ≤ C` using `fun i j => by`. Use `hfC i j` as an intermediate fact. Use `T.extNorm_nonneg (F.radPow ρ) (A i j)` as an intermediate fact. Use `T.extNorm_nonneg (F.radPow ρ) (A' i j)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `*` using `[hfe]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hσ0 : (0 : ℝ) < F.powRadius ρ` using `(F.powRadius ρ).2.1`. Establish `hσ1 : (F.powRadius ρ : ℝ) < 1` using `(F.powRadius ρ).2.2`. Establish `hl1 : (F.powRadius ρ : ℝ) ^ (p ^ F.a - 1) < 1` using `pow_lt_one₀ hσ0.le hσ1 (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hK : 0 < 8 * 2 ^ p ^ F.a * C ^ 2` using `by positivity`. Take `⟨N₀, hN₀⟩` from `exists_pow_lt_of_lt_one (inv_pos.2 hK) hl1`. Use `⟨N₀, fun N hN => ?_⟩` and prove the remaining obligations. Establish `hN' : 8 * 2 ^ p ^ F.a * C ^ 2 * (F.powRadius ρ : ℝ) ^ (N * (p ^ F.a - 1)) ≤ 1`. Establish `h1 : (F.powRadius ρ : ℝ) ^ (N * (p ^ F.a - 1)) ≤ ((F.powRadius ρ : ℝ) ^ (p ^ F.a - 1)) ^ N₀`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mul_comm, pow_mul]`. Conclude with `pow_le_pow_of_le_one (pow_nonneg hσ0.le _) hl1.le hN`. Combine the equalities or inequalities in the displayed calculation. Take `⟨v, hv0, hv⟩` from `exists_fixed ha A A' hAA N hC1 hAσ hA'σ hA'σ2 hN' ⟨0, hn⟩`. Use `⟨v, hv0, fun i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrFun hv i`. Simplify using `only [twistDiff, twistFrob, Pi.sub_apply, Pi.zero_apply, sub_eq_zero] at h`. Rewrite using `[← h, ← mul_assoc, ← mul_pow, piE_mul_piInvE, one_pow, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_eigen_ext (ha : 0 < F.a) {ρ : Set.Ioo (0 : ℝ) 1}
     (A A' : Matrix (Fin n) (Fin n) (T.RobbaExt ρ)) (hAA : A * A' = 1) (hn : 0 < n) :
@@ -753,15 +737,15 @@ theorem exists_eigen_ext (ha : 0 < F.a) {ρ : Set.Ioo (0 : ℝ) 1}
 variable (F) in
 
 /- English proof (translation)
-Take `⟨ρ, B, hB⟩` from `exists_ofRad_fintype (T := T) fun x : Bool × Fin n × Fin n => if x.1 then A.val x.2.1 x.2.2 else A⁻¹.val x.2.1 x.2.2`. Use `set A0 : Matrix (Fin n) (Fin n) (T.RobbaExt ρ) := fun i j => B (true, i, j) with hA0def`. Use `set A0' : Matrix (Fin n) (Fin n) (T.RobbaExt ρ) := fun i j => B (false, i, j) with hA0'def`. Establish `hA0 : ∀ i j, T.ofRad ρ (A0 i j) = (A : Matrix (Fin n) (Fin n) T.RobbaTilde) i j` using `fun i j => by simpa using hB (true, i, j)`. Establish `hA0' : ∀ i j, T.ofRad ρ (A0' i j) = A⁻¹.val i j` using `fun i j => by simpa using hB (false, i, j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hAA : A0 * A0' = 1`. Use extensionality with `i k`. Apply `T.ofRad_injective ρ` to reduce the goal to its premises. Establish `h1 : (A.val * A⁻¹.val) i k = (1 : Matrix (Fin n) (Fin n) T.RobbaTilde) i k`. Rewrite using `[Units.mul_inv]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_apply, map_sum]`. Simplify using `only [map_mul, hA0, hA0']`. Rewrite using `[← Matrix.mul_apply, h1, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Take `⟨N₀, hN₀⟩` from `exists_eigen_ext (F := F) ha A0 A0' hAA hn`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨N₀, fun N hN => ?_⟩` and prove the remaining obligations. Take `⟨v, hv0, hv⟩` from `hN₀ N hN`. Use `⟨fun i => T.ofRad ρ (v i), fun h => hv0 (funext fun i => T.ofRad_injective ρ ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.zero_apply, map_zero]`. Conclude with `congrFun h i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul]`. Establish `h` using `congrArg (T.ofRad (F.powRadius ρ)) (hv i)`. Simplify using `only [map_sum, map_mul, map_pow, ofRad_piE, T.ofRad_res, ← F.tildeFrob_ofRad, hA0] at h`. Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_eigenvector (ha : 0 < F.a) (hn : 0 < n) (A : Matrix.GeneralLinearGroup (Fin n) T.RobbaTilde) :
     ∃ N₀ : ℕ, ∀ N ≥ N₀, ∃ v : Fin n → T.RobbaTilde, v ≠ 0 ∧

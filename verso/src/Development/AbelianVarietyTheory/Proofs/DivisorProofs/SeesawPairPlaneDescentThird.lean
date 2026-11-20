@@ -16,7 +16,7 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Unfold `form`. Simplify using `only [dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -30,17 +30,17 @@ private theorem form_swap_herm {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (hσ : �
 
 open GlobalTheory.AnisRatInv in
 /- English proof (translation)
-Take `⟨hn, hxx, hyy, hxy, horth, hinj⟩` from `hH`. Establish `hyx : form σ J H.y H.x = 1` using `by rw [form_swap_herm J hσ hJ, hxy, map_one]`. Set `L : (E × E × (Fin d₂ → E)) →ₗ[E] (Fin n → E)` to `{ toFun := fun p => p.1 • H.x + H.ι *ᵥ p.2.2 + p.2.1 • H.y map_add' := fun p q => by`. Simplify using `only [Prod.fst_add, Prod.snd_add, Matrix.mulVec_add, add_smul]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Use the proof step `map_smul' := fun c p => by`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, Matrix.mulVec_smul, smul_eq_mul, mul_smul, RingHom.id_apply, smul_add] }`. Establish `hL : Function.Injective L`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨s, t, u⟩ h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `s • H.x + H.ι *ᵥ u + t • H.y = 0 at h`. Establish `e1` using `congrArg (fun z => form σ J z H.y) h`. Establish `e2` using `congrArg (fun z => form σ J z H.x) h`. Simplify using `only [form_add_left, form_smul_left, hxy, hyy, (horth u).2, (horth u).1, hxx, hyx] at e1 e2`. Establish `hz : ∀ z : Fin n → E, form σ J 0 z = 0` using `fun z => by unfold form; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1`, `e2` using `[hz]`. Establish `hs : s = 0` using `by simpa using e1`. Establish `ht : t = 0` using `by simpa using e2`. Substitute `hs ht` using the available equality. Simplify using `only [zero_smul, zero_add, add_zero] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hu : u = 0` using `hinj (by rw [h, Matrix.mulVec_zero])`. Substitute `hu` using the available equality. Both sides reduce to the same expression. Establish `hdim : Module.finrank E (E × E × (Fin d₂ → E)) = Module.finrank E (Fin n → E)`. Simplify using `[Module.finrank_prod, ← hn]`.
+Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hS : Function.Surjective L` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mp hL`. Take `⟨⟨s, t, u⟩, hp⟩` from `hS r`. Conclude with `⟨s, t, u, hp.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem split_vec {n d₂ : ℕ} (J : Matrix (Fin n) (Fin n) E) (hσ : ∀ x, σ (σ x) = x)
     (hJ : ∀ i j, σ (J j i) = J i j) (H : Plane E n d₂)
@@ -78,9 +78,9 @@ private theorem split_vec {n d₂ : ℕ} (J : Matrix (Fin n) (Fin n) E) (hσ : �
   exact ⟨s, t, u, hp.symm⟩
 
 /- English proof (translation)
-Establish `himpl` using `(IsUWeilPair.isUSplitting hP.weil).impl (u, (1 : UA σ W.J)) (Matrix.vecMulVec (mat u⁻¹ *ᵥ y) w) Ψ hΨ`. Establish `h1 : mat u * mat u⁻¹ = 1` using `Units.mul_inv u.1`. Establish `hact : actAB (cA σ) (u, (1 : UA σ W.J)) (Matrix.vecMulVec (mat u⁻¹ *ᵥ y) w) = Matrix.vecMulVec y w` using `by show mat u * _ * (1 : Matrix (Fin d) (Fin d) (AE F E))ᵀ = _`. Rewrite using `[Matrix.transpose_one, Matrix.mul_one, Matrix.mul_vecMulVec, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Rewrite `himpl` using `[hact]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `himpl.symm`.
+A detailed English derivation is pending.
 -/
 private theorem rho_om {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E}
     {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') (u : UA σ X.J) (y : Fin n → AE F E)
@@ -98,19 +98,19 @@ private theorem rho_om {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d
 open GlobalTheory.AnisRatInv in
 
 /- English proof (translation)
-Establish `hψ : IsStd B.ψ` using `hP.base.std`. Establish `hM : M.IsGood B.ψ` using `hP.good`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.AdelicU.cm_conj_conj hP.base.cm`. Take `⟨G, hG⟩` from `exists_rat (inv_mem hγr)`. Establish `hGu : Gᵀ * X.J * G.map σ = X.J` using `unitary_rat _ G hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hGx : G *ᵥ H.x = H.x` using `incV_injective (F := F) (by`. Rewrite using `[← GlobalTheory.UnipMass.incM_mulVec_incV, ← hG]`. Conclude with `unip_fix (inv_mem hγu))`. Take `⟨a, t, b, hv⟩` from `split_vec X.J hσ hP.herm.herm H hH (G *ᵥ H.y - H.y)`. Establish `hyx : form σ X.J H.y H.x = 1` using `by rw [form_swap_herm X.J hσ hP.herm.herm, hH.2.2.2.1, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : t = 0`. Establish `h0 : form σ X.J (G *ᵥ H.y - H.y) H.x = 0`. Rewrite using `[form_sub_left]`. Use `conv_lhs => rw [← hGx]`. Rewrite using `[form_mulVec σ X.J G hGu, hGx, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `h0` using `[hv, form_add_left, form_add_left, form_smul_left, form_smul_left, hH.2.1, (hH.2.2.2.2.1 b).1, hyx]`. Take the linear combination `h0`. Substitute `ht` using the available equality. Establish `hGy : G *ᵥ H.y = H.y + a • H.x + H.ι *ᵥ b`. Rewrite `hv` using `[zero_smul, add_zero, sub_eq_iff_eq_add']`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hv, add_assoc]`. Establish `hsum : Matrix.vecMulVec (G *ᵥ H.y) w = Matrix.vecMulVec H.x (a • w) + (H.ι * Matrix.vecMulVec b w + Matrix.vecMulVec H.y w)`. Rewrite using `[hGy, Matrix.mul_vecMulVec]`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.vecMulVec_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hiso : incM F (Matrix.vecMulVec H.x (a • w)) ∈ ({u | ∃ z, u = Matrix.vecMulVec (incV F H.x) z} : Set (Matrix (Fin n) (Fin d) (AE F E)))` using `⟨incV F (a • w), GlobalTheory.ThetaExpandInv.incM_vecMulVec _ _⟩`. Establish `hI : incM F (1 : Matrix (Fin d) (Fin d) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hmul : incM F (H.ι * Matrix.vecMulVec b w) = incM F H.ι * incM F (Matrix.vecMulVec b w) * (incM F (1 : Matrix (Fin d) (Fin d) E))ᵀ`. Rewrite using `[hI, Matrix.transpose_one, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `incM`. Rewrite using `[Matrix.map_mul]`. Rewrite using `[rho_om hP γ _ _ Φ hΦ, hN γ hγu _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ _ _ hΦ), hG, GlobalTheory.UnipMass.incM_mulVec_incV, ← GlobalTheory.ThetaExpandInv.incM_vecMulVec, hsum, ← GlobalTheory.ThetaExpandInv.rho_rat_rho_rat M hψ hM, he.inv _ hiso _ (GlobalTheory.HeisSchA.rh …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem term_rat {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E}
     {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') {d₂ : ℕ} {H : Plane E n d₂}
@@ -166,17 +166,15 @@ private theorem term_rat {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E
     GlobalTheory.ThetaExpandInv.thetaSum_rho_rat M₁ hψ hM₁, GlobalTheory.ThetaExpandInv.incM_vecMulVec]
 
 /- English proof (translation)
-Establish `hψ : IsStd B.ψ` using `hP.base.std`. Use `set yw := Matrix.vecMulVec (incV F H.y) w with hyw`. Use `set a := Matrix.vecMulVec (-(c • incV F H.x)) w with ha`. Establish `hsum : Matrix.vecMulVec (mat z⁻¹ *ᵥ incV F H.y) w = a + yw`. Rewrite using `[hzy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `only [hyw, ha, Matrix.add_apply, Matrix.vecMulVec_apply, Pi.neg_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : a ∈ ({u | ∃ z, u = Matrix.vecMulVec (incV F H.x) z} : Set (Matrix (Fin n) (Fin d) (AE F E)))`. Use `⟨-(c • w), ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `only [ha, Matrix.vecMulVec_apply, Pi.neg_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm2` using `GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ yw Φ hΦ`. Use `set S := symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) a yw with hS`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : M.co.rho B.ψ a (M.co.rho B.ψ yw Φ) = B.ψ (⅟2 * S) • M.co.rho B.ψ (a + yw) Φ`. Simplify using `only [Darboux.rho]`. Rewrite using `[schr_schr, hS, M.co.form a yw, map_add]`. Establish `hρ : M.co.rho B.ψ (a + yw) Φ = B.ψ (-(⅟2 * S)) • M.co.rho B.ψ a (M.co.rho B.ψ yw Φ)`. Rewrite using `[hcomp, smul_smul, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (incV F H.x ⬝ᵥ incM F X.J *ᵥ fun k => cA σ (incV F H.y k)) = 1`. Rewrite using `[show (incV F H.x ⬝ᵥ incM F X.J *ᵥ fun k => cA σ (incV F H.y k)) = GlobalTheory.UnipMass.hA σ X.J (incV F H.x) (incV F H.y) from rfl, GlobalTheory.UnipMass.hA_incV, hxy, map_one]`. Establish `hS' : S = Algebra.trace (AF F) (AE F E) (c * GlobalTheory.UnipMass.hA σ W.J w w)`. Rewrite using `[hS, symp, ha, hyw, GlobalTheory.ThK.AnisPhase.hTens_vecMulVec, neg_dotProduct, smul_dotProduct, smul_eq_mul, e2, mul_one, neg_one_mul, neg_mul, neg_neg]`. Both sides reduce to the same expression.
-
-Rewrite using `[hyw, rho_om hP z _ _ Φ hΦ, hN z hz _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ _ _ hΦ), hsum, hρ, map_smul, he.inv a hmem _ hm2, hS']`. Simplify using `only [thetaSum, Pi.smul_apply, smul_eq_mul]`. Conclude with `tsum_mul_left`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem term_center {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E}
     {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') {d₂ : ℕ} {H : Plane E n d₂}
@@ -226,35 +224,27 @@ end
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hH' d₂ H hH V₁ M₁ e hV₁ hM₁ he μ 𝓕 hμ h𝓕 h1 Ψ hΨ w hw`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsTopologicalGroup (UA σ X.J) := inferInstance`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN` using `GlobalTheory.T.seesaw_pair_plane_descent_first hKP F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hH' d₂ H hH V₁ M₁ e hV₁ hM₁ he`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.AdelicU.cm_conj_conj hP.base.cm`. Take `⟨δ, hδ, hσδ⟩` from `GlobalTheory.HermAnisConstTerm.exists_anti hP.base.cm`. Use `set f : E := δ * form σ W.J w w with hf`. Establish `hf0 : f ≠ 0` using `mul_ne_zero hδ hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hskew : σ (form σ W.J w w) = -form σ W.J w w`. Rewrite using `[neg_eq_iff_eq_neg.2 (GlobalTheory.AnisRatInv.form_swap σ hσ hP.skew.skew w w)]`. Establish `hσf : σ f = f` using `by rw [hf, map_mul, hσδ, hskew, neg_mul_neg]`. Establish `htr : Algebra.trace F E f ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `GlobalTheory.SplitAdeleTrace.add_conj_eq_trace hP.base.cm f`. Rewrite `h1` using `[hσf, h0, map_zero, ← two_mul]`. Conclude with `hf0 ((mul_eq_zero.1 h1).resolve_left two_ne_zero)`. Take `⟨s₀, hs₀⟩` from `GlobalTheory.T.standard_adelic_char_exists_ne_one F B.ψ hP.base.std`. Use `set t : AF F := -s₀ * algebraMap F (AF F) (2 / Algebra.trace F E f) with ht`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set c : AE F E := t ⊗ₜ[F] δ with hc`. Establish `hc' : c = algebraMap (AF F) (AE F E) t * inclR (F` using `F) (AF F) δ := by`. Rewrite using `[hc, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Use `show _ = (t ⊗ₜ[F] (1 : E)) * ((1 : AF F) ⊗ₜ[F] δ)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hcc : cA σ c = -c`. Rewrite using `[hc', map_mul (cA σ), AlgHom.commutes, GlobalTheory.UnipMass.cA_inclR, hσδ, map_neg, mul_neg]`. Take `⟨z, hzU, hzc, hzy⟩` from `GlobalTheory.HermAnisConstTerm.exists_central_shift_herm hσ hP.herm.herm H hH.2.1 hH.2.2.2.1 c hcc`. Establish `hph : -(⅟(2 : AF F) * Algebra.trace (AF F) (AE F E) (c * GlobalTheory.UnipMass.hA σ W.J (incV F w) (incV F w))) = s₀`. Establish `e3 : c * GlobalTheory.UnipMass.hA σ W.J (incV F w) (incV F w) = t ⊗ₜ[F] f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.UnipMass.hA_incV, hc]`. Use `show (t ⊗ₜ[F] δ) * ((1 : AF F) ⊗ₜ[F] form σ W.J w w) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Rewrite using `[e3, GlobalTheory.SplitAdeleTrace.trace_baseChange_tmul, GlobalTheory.ThK.AnisPhase.invOf_two_eq, ht, mul_assoc, ← map_mul, div_mul_cancel₀ _ htr, mul_left_comm, ← map_mul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Establish `hpres'` using `(IsUWeilPair.isUSplitting hP.weil).pres`. Use `set T : UA σ X.J → ℂ := fun u => thetaSum F (e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (om (u, 1) Ψ))) with hTdef`. Establish `hmul : ∀ g u : UA σ X.J, om (g * u, 1) Ψ = om (g, 1) (om (u, 1) Ψ)` using `fun g u => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Establish `hT : ∀ u, T (z * u) = B.ψ s₀ * T u` using `fun u => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hTdef]`. Rewrite using `[hmul, term_center hP hH.2.2.2.1 he hN (incV F w) c z hzU hzy _ (hpres' (u, 1) Ψ hΨ), hph]`. Establish `hR : ∀ γ ∈ ratU σ X.J, γ ∈ unip σ X H → ∀ u, T (γ * u) = T u` using `fun γ hγ hγU u => by`. Simplify using `only [hTdef]`. Rewrite using `[hmul, term_rat hP hH hM₁ he hN w γ hγ hγU _ (hpres' (u, 1) Ψ hΨ)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set z' : unip σ X H := ⟨z, hzU⟩`. Use `haveI : Countable ((ratU σ X.J).subgroupOf (unip σ X H)) := GlobalTheory.UnipMass.countable_ratU' σ X.J (unip σ X H)`. Use `letI : MeasurableSpace ((ratU σ X.J).subgroupOf (unip σ X H)) := ⊤`. Use `haveI : MeasurableSMul ((ratU σ X.J).subgroupOf (unip σ X H)) (unip σ X H) := { measurable_const_smul := fun c => measurable_const_mul (c : unip σ X H) measurable_smul_const := fun _ => measurable_from_top }`. Use `haveI : SMulInvariantMeasure ((ratU σ X.J).subgroupOf (unip σ X H)) (unip σ X H) μ := ⟨fun c _ _ => measure_preimage_mul μ (c : unip σ X H) _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Set `φ : unip σ X H ≃ᵐ unip σ X H` to `MeasurableEquiv.mulLeft z'`. Establish `hpres : MeasurePreserving φ μ μ` using `measurePreserving_mul_left μ z'`. Establish `h𝓕' : IsFundamentalDomain ((ratU σ X.J).subgroupOf (unip σ X H)) (φ ⁻¹' 𝓕) μ`. Use `h𝓕.preimage_of_equiv hpres.quasiMeasurePreserving (e := id) Function.bijective_id ?_` and prove the remaining obligations. Introduce `g x`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show z * ((g : unip σ X H) * x : unip σ X H).1 = ((g : unip σ X H) : UA σ X.J) * (z * x.1)`. Rewrite using `[Subgroup.coe_mul, ← mul_assoc, hzc _ (g : unip σ X H).2, mul_assoc]`. Establish `hinvz : ∀ (g : (ratU σ X.J).subgroupOf (unip σ X H)) (x : unip σ X H), T (z * (g • x).1) = T (z * x.1)`. Introduce `g x`.
-
-Use `show T (z * ((g : unip σ X H) * x : unip σ X H).1) = _`. Rewrite using `[Subgroup.coe_mul, ← mul_assoc, hzc _ (g : unip σ X H).2, mul_assoc]`. Conclude with `hR _ (Subgroup.mem_subgroupOf.1 g.2) (g : unip σ X H).2 _`. Establish `A : ∫ u in 𝓕, T (z * u.1) ∂μ = ∫ u in φ ⁻¹' 𝓕, T (z * u.1) ∂μ` using `h𝓕.setIntegral_eq h𝓕' hinvz`. Establish `B' : ∫ u in φ ⁻¹' 𝓕, T (z * u.1) ∂μ = ∫ u in 𝓕, T u.1 ∂μ` using `hpres.setIntegral_preimage_emb φ.measurableEmbedding (fun u : unip σ X H => T u.1) 𝓕`.
-
-Establish `C : ∫ u in 𝓕, T (z * u.1) ∂μ = B.ψ s₀ * ∫ u in 𝓕, T u.1 ∂μ`. Repeatedly rewrite using `[hT]`. Conclude with `integral_const_mul _ _`. Establish `D : (B.ψ s₀ - 1) * ∫ u in 𝓕, T u.1 ∂μ = 0`. Rewrite using `[sub_mul, ← C, A, B', one_mul, sub_self]`.
-
-Conclude with `(mul_eq_zero.1 D).resolve_left (sub_ne_zero.2 hs₀)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.seesaw_pair_plane_descent_third : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),

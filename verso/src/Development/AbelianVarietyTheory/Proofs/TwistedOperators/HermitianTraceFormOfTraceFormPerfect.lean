@@ -13,9 +13,9 @@ section
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Establish `hJij : ∀ i j, σ (J i j) = J j i` using `fun i j => by`. Use `congrFun (congrFun hJ j) i` as an intermediate fact. Simplify `this` using `[cT]`. Simplify using `only [form, hform, map_sum, map_mul, hσ, hJij]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_conj_symm (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) {J : Matrix n n A}
     (hJ : IsHerm σ J) (a b : n → A) : σ (form σ J b a) = form σ J a b := by
@@ -28,11 +28,11 @@ theorem form_conj_symm (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) {J : Matrix
   ring
 
 /- English proof (translation)
-Establish `hJa : J *ᵥ a = 0`. Use function extensionality and compare the values at `i`. Use `h0 (Pi.single i 1)` as an intermediate fact. Establish `hs : (fun k => σ ((Pi.single i (1 : A) : n → A) k)) = Pi.single i 1`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`. Rewrite `this` using `[form, hform_eq, hs]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[dotProduct, Pi.single_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 -/
 theorem eq_zero_of_form_eq_zero (σ : A →+* A) {J : Matrix n n A} (hJ : IsUnit J.det)
     (a : n → A) (h0 : ∀ w, form σ J a w = 0) : a = 0 := by
@@ -51,31 +51,27 @@ theorem eq_zero_of_form_eq_zero (σ : A →+* A) {J : Matrix n n A} (hJ : IsUnit
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ n _ _ σ J γ h hA`. Use `haveI := quad_finite h.quad`. Use `haveI := genAlg_isReduced h hA`. Take `⟨b⟩` from `hA.2.2.1`. Use `haveI : Module.Free E (genAlg (γ : Matrix n n E)) := Module.Free.of_basis b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Module.Finite E (genAlg (γ : Matrix n n E)) := Module.Finite.of_basis b`. Take `⟨v, hv⟩` from `hA.2.2.2.1`. Take `⟨τ, hτ, hττ, hτE, hplus⟩` from `exists_adjEquiv h hA`. Establish `hP'` using `hP F E (genAlg (γ : Matrix n n E))`. Set `φ : genAlg (γ : Matrix n n E) →ₗ[E] E` to `{ toFun := fun y => form (σ : E →+* E) J ((y : Matrix n n E) *ᵥ v) v map_add' := fun a b => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [form, hform_eq, Subalgebra.coe_add, Matrix.add_mulVec, Matrix.mulVec_add, dotProduct_add]`. Use the proof step `map_smul' := fun c a => by`. Simplify using `only [form, hform_eq, Subalgebra.coe_smul, Matrix.smul_mulVec, Matrix.mulVec_smul, dotProduct_smul, RingHom.id_apply, smul_eq_mul] }`. Take `⟨x, hx⟩` from `hP'.2 φ`. Establish `hxy : ∀ y, Algebra.trace E _ (x * y) = form (σ : E →+* E) J ((y : Matrix n n E) *ᵥ v) v` using `fun y => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `LinearMap.congr_fun hx y` as an intermediate fact. Rewrite `this` using `[Algebra.traceForm_apply]`. Then use the resulting hypothesis. Establish `hK : ∀ y y' : genAlg (γ : Matrix n n E), form (σ : E →+* E) J ((y : Matrix n n E) *ᵥ v) ((y' : Matrix n n E) *ᵥ v) = Algebra.trace E _ (x * (τ y' * y))` using `fun y y' => by`. Rewrite using `[hxy, form_adj _ h.nondeg, ← hτ, Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `σE : E ≃+* E` to `RingEquiv.ofBijective (σ : E →+* E) (Function.Involutive.bijective h.quad.invol)`. Establish `hTr : ∀ z, Algebra.trace E _ (τ z) = σ (Algebra.trace E (genAlg (γ : Matrix n n E)) z)`. Introduce `z`. Establish `he : (algebraMap E (genAlg (γ : Matrix n n E))).comp (σE : E →+* E) = (τ.toRingEquiv : genAlg (γ : Matrix n n E) →+* genAlg (γ : Matrix n n E)).comp (algebraMap E (genAlg (γ : Matrix n n E)))` using `RingHom.ext fun e => (hτE e).symm`. Use `Algebra.trace_eq_of_equiv_equiv σE τ.toRingEquiv he z` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(σE.apply_symm_apply _).symm`. Establish `hxτ : τ x = x`. Use `hP'.1 (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Simplify using `only [Algebra.traceForm_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : τ x * y = τ (x * (τ y * 1))` using `by rw [mul_one, map_mul, hττ]`. Rewrite using `[e1, hTr, ← hK]`. Establish `hs` using `form_conj_symm (σ : E →+* E) h.quad.invol h.herm ((y : Matrix n n E) *ᵥ v) (((1 : genAlg (γ : Matrix n n E)) : Matrix n n E) *ᵥ v)`. Simplify using `only [RingHom.coe_coe] at hs`. Rewrite using `[hs, hK, map_one, one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hxplus : x ∈ plusAlg σ J (γ : Matrix n n E)` using `(hplus x).2 hxτ`. Establish `hinj : ∀ y : genAlg (γ : Matrix n n E), x * y = 0 → y = 0`. Introduce `y hy`. Establish `h0 : (y : Matrix n n E) *ᵥ v = 0`. Use `eq_zero_of_form_eq_zero (σ : E →+* E) h.nondeg _ fun w => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Take `⟨y', rfl⟩` from `hv.2 w`. Simplify using `only`. Rewrite using `[hK, mul_left_comm, hy, mul_zero, map_zero]`. Use `hv.1 ?_` and prove the remaining obligations. Simplify using `only [h0, ZeroMemClass.coe_zero, Matrix.zero_mulVec]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `xp : plusAlg σ J (γ : Matrix n n E)` to `⟨x, hxplus⟩`. Use `haveI : Module.Finite F (genAlg (γ : Matrix n n E)) := Module.Finite.trans E _`. Establish `hsurj : Function.Surjective (LinearMap.mulLeft F xp)`. Use `LinearMap.injective_iff_surjective.1 fun a c hac => ?_` and prove the remaining obligations. Establish `: x * ((a : genAlg (γ : Matrix n n E)) - c) = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Subtype.val hac` as an intermediate fact. Simplify using `only [LinearMap.mulLeft_apply] at this`. Rewrite using `[mul_sub]`. Conclude with `sub_eq_zero.2 this`. Conclude with `Subtype.ext (sub_eq_zero.1 (hinj _ this))`.
-
-Take `⟨w, hw⟩` from `hsurj 1`. Establish `hu : IsUnit xp` using `⟨⟨xp, w, hw, by rw [mul_comm]; exact hw⟩, rfl⟩`. Use `⟨hu.unit, v, hv, fun y y' => ⟨τ y', hτ y', ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hK]`. Use `congr 1`.
-
-Express the relevant statement in the definitionally equal form `x * (τ y' * y) = x * y * τ y'`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem traceClause_of_tracePerfect (hP : TracePerfect) : TraceClause := by
   intro F E _ _ _ _ n _ _ σ J γ h hA

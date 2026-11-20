@@ -20,11 +20,9 @@ variable {σ : UnitaryRep (normOneGL K n) H}
 variable {μ : Measure (normOneGL K n)} [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Establish `e` using `σ.map_comp_integrated μ h (UnitaryRep.ccToL1 μ f)`. Establish `e2 : UnitaryRep.leftTranslate μ h (UnitaryRep.ccToL1 μ f) = UnitaryRep.ccToL1 μ f`. Use `Lp.ext ?_` and prove the remaining obligations. Establish `hc` using `(f.continuous.memLp_of_hasCompactSupport (μ := μ) (p := 1) f.hasCompactSupport).coeFn_toLp`. Use `filter_upwards [UnitaryRep.coeFn_leftTranslate μ h (UnitaryRep.ccToL1 μ f), hc, (measurePreserving_mul_left μ h⁻¹).quasiMeasurePreserving.ae_eq_comp hc] with x h1 h2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `(UnitaryRep.ccToL1 μ f : normOneGL K n → ℂ) (h⁻¹ * x) = (UnitaryRep.ccToL1 μ f) x`. Rewrite using `[show (UnitaryRep.ccToL1 μ f : normOneGL K n → ℂ) (h⁻¹ * x) = f (h⁻¹ * x) from h3, show (UnitaryRep.ccToL1 μ f : normOneGL K n → ℂ) x = f x from h2]`. Conclude with `hf x`. Rewrite `e` using `[e2]`.
-
-Conclude with `congrArg (fun A : H →L[ℂ] H => A v) e`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_integrated_of_left_invariant {f : CompactlySupportedContinuousMap (normOneGL K n) ℂ}
     {h : normOneGL K n} (hf : ∀ x, f (h⁻¹ * x) = f x) (v : H) :
@@ -45,13 +43,11 @@ theorem map_integrated_of_left_invariant {f : CompactlySupportedContinuousMap (n
   exact congrArg (fun A : H →L[ℂ] H => A v) e
 
 /- English proof (translation)
-Use `hσ.1` as an intermediate fact. Take `⟨v, hv⟩` from `exists_ne (0 : H)`. Take `⟨g, hg⟩` from `UnitaryRep.exists_integrated_ne_zero σ μ hv`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf, hfv⟩ : ∃ f, IsSmoothTest f ∧ σ.integrated μ (UnitaryRep.ccToL1 μ f) v ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hcon`. Conclude with `hg (UnitaryRep.integrated_eq_zero_of_dense σ μ IsSmoothTest (fun g' ε hε => exists_isSmoothTest_near μ g' hε) hcon g)`. Take `⟨U, hU, hinv⟩` from `hf.exists_finOne_mul`. Use `⟨U, hU, fun hbot => hfv ?_⟩` and prove the remaining obligations. Establish `hmem : σ.integrated μ (UnitaryRep.ccToL1 μ f) v ∈ fixedSubspace σ (openSubgroupOf U hU : Subgroup (AdelicGLn.FiniteAdelicGL K n))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨u, hu, rfl⟩`. Rewrite using `[Subgroup.coe_subtype, finProj_eq_finOne]`. Use `map_integrated_of_left_invariant (fun x => ?_) v` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `hinv u⁻¹ (U.inv_mem hu) x`.
-
-Rewrite `hmem` using `[hbot]`. Conclude with `(Submodule.mem_bot ℂ).1 hmem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fixedSubspace_ne_bot (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (hσ : σ.IsIrreducible) :

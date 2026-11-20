@@ -278,9 +278,9 @@ def AdForm : Prop :=
     ∀ (W : V) i j, U ⟨_, hV.lie _ W.2 i j⟩ = EA i j (U W)
 
 /- English proof (translation)
-Introduce `k N _ hk χ hχ f a hf ha hp`. Take `⟨D, rfl, hs, hfe⟩` from `h8 k N hk χ hχ f a hf ha hp`. Break down `h10 a D hfe (h9 h7 N χ D f a hf ha hs) with h | h` into its components or cases. Conclude with `Or.inl h`. Take `⟨V, hV, hg⟩` from `h5 h1 h2 h3 h4 D h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inr ⟨D, rfl, hs, V, hV, hg, h6 V hV hg.1⟩`.
+Prove the second alternative.
 -/
 theorem adForm_of (h1 : LocF) (h2 : LocU) (h3 : LocR) (h4 : Mellin) (h5 : Glob) (h6 : ConvA) (h7 : Shim) (h8 : RS)
     (h9 : EulOf) (h10 : AnOf) : AdForm := by

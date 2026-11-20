@@ -13,24 +13,24 @@ namespace DiscreteGroups.T1.G
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex v) (u.1 v)‖ = _`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v).norm_map_of_map_zero (map_zero _) _`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem norm_cV_eq (v : InfinitePlace E) (u : Ad E) : ‖cV v u‖ = ‖u.1 v‖ := by
   change ‖InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex v) (u.1 v)‖ = _
   exact (InfinitePlace.Completion.isometry_extensionEmbedding v).norm_map_of_map_zero (map_zero _) _
 
 /- English proof (translation)
-Simplify using `[InfinitePlace.mult, InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex v)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mult_eq_two (v : InfinitePlace E) : v.mult = 2 := by
   simp [InfinitePlace.mult, InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex v)]
 
 /- English proof (translation)
-Establish `hu : ∀ v, ‖cV v (u : Ad E)‖ ≠ 0` using `fun v => norm_ne_zero_iff.2 (u.isUnit.map (cV v)).ne_zero`. Establish `hw : ∀ w, ‖cW w (u : Ad E)‖ ≠ 0` using `fun w => norm_ne_zero_iff.2 (u.isUnit.map (cW w)).ne_zero`. Establish `hinf : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteIdeleNorm u = ∏ v : InfinitePlace E, ‖cV v (u : Ad E)‖ ^ 2`. Express the relevant statement in the definitionally equal form `∏ v : InfinitePlace E, _ = _`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_cV_eq, mult_eq_two]`. Establish `hfin : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteIdeleNorm u = ∏ᶠ w : HeightOneSpectrum (𝓞 E), ‖cW w (u : Ad E)‖` using `rfl`. Establish `hs : (Function.mulSupport fun w : HeightOneSpectrum (𝓞 E) => ‖cW w (u : Ad E)‖).Finite` using `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finite_mulSupport (E := E) u`. Establish `hsub : (Function.support fun w : HeightOneSpectrum (𝓞 E) => Real.log ‖cW w (u : Ad E)‖) ⊆ (hs.toFinset : Set (HeightOneSpectrum (𝓞 E)))` using `fun w hw' => by`. Simplify using `only [Finset.mem_coe, Set.Finite.mem_toFinset, Function.mem_mulSupport, Function.mem_support] at hw' ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h1`. Rewrite `hw'` using `[h1, Real.log_one]`. Conclude with `hw' rfl`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm, MonoidHom.mul_apply, hinf, hfin, finprod_eq_prod_of_mulSupport_subset _ (s := hs.toFinset) (fun _ h => hs.mem_toFinset.2 h), Real.log_mul (Finset.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ (hu v)) (Fi …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logAbs_eq_log_ideleNorm (u : (Ad E)ˣ) :
     logAbs (u : Ad E) = Real.log (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm u) := by
@@ -57,7 +57,7 @@ theorem logAbs_eq_log_ideleNorm (u : (Ad E)ˣ) :
     finsum_eq_sum_of_support_subset _ hsub]
 
 /- English proof (translation)
-Establish `e : (fun g : GA E n => logAbs g.val.det) = fun g => Real.log (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm (Matrix.GeneralLinearGroup.det g))`. Use function extensionality and compare the values at `fun g => logAbs_eq_log_ideleNorm (Matrix.GeneralLinearGroup.det g)`. Rewrite using `[e]`. Conclude with `(GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.continuous_ideleNorm.comp Matrix.GeneralLinearGroup.continuous_det).log fun _ => GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm_ne_zero _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_logAbs_det : Continuous fun g : GA E n => logAbs g.val.det := by
   have e : (fun g : GA E n => logAbs g.val.det) =
@@ -68,13 +68,13 @@ theorem continuous_logAbs_det : Continuous fun g : GA E n => logAbs g.val.det :=
     fun _ => GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm_ne_zero _
 
 /- English proof (translation)
-The claim follows from `continuous_logAbs_det.comp continuous_fst`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ldet : Continuous (ldet : H E n 0 → ℝ) :=
   continuous_logAbs_det.comp continuous_fst
 
 /- English proof (translation)
-The claim follows from `ContAut.continuous_of_isOpen_stab E n ψ (π.cusp ψ h).1.level`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_mem (π : CuspSub E n) {ψ : Sm E n} (h : ψ ∈ π.V) : Continuous ψ.1 :=
   ContAut.continuous_of_isOpen_stab E n ψ (π.cusp ψ h).1.level

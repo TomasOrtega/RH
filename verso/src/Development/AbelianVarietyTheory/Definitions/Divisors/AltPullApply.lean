@@ -10,7 +10,7 @@ def matAct (ρ : O →+* Module.End R V) {m : ℕ} (M : Matrix (Fin m) (Fin m) O
   LinearMap.pi fun i => ∑ j, ρ (M i j) ∘ₗ LinearMap.proj j
 
 /- English proof (translation)
-Simplify using `[matAct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem matAct_apply (ρ : O →+* Module.End R V) {m : ℕ} (M : Matrix (Fin m) (Fin m) O) (x : Fin m → V) (i : Fin m) :
     matAct ρ M x i = ∑ j, ρ (M i j) (x j) := by
@@ -63,11 +63,11 @@ def powRep (σ : Representation R Γ V) (m : ℕ) : Representation R Γ (Fin m �
     simp
 
 /- English proof (translation)
-Establish `h : ∀ (M : Matrix (Fin m) (Fin m) O) (x : Fin m → V), matAct ρ M (powRep σ m γ⁻¹ x) = powRep σ m γ⁻¹ (matAct ρ M x)`. Introduce `M x`. Use function extensionality and compare the values at `i`. Establish `h1 : ∀ b y, σ γ⁻¹ (ρ b y) = ρ b (σ γ⁻¹ y)` using `fun b y => LinearMap.congr_fun (hσ γ⁻¹ b) y`. Simplify using `[matAct_apply, powRep, map_sum, h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `altOp Finsupp.sum`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun M _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_mul_assoc]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `f x`. Express the relevant statement in the definitionally equal form `f (fun i => matAct ρ M (powRep σ m γ⁻¹ (x i))) = f (fun i => powRep σ m γ⁻¹ (matAct ρ M (x i)))`. Simplify using `only [h]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem altOp_comm (ρ : O →+* Module.End R V) (σ : Representation R Γ V) (hσ : ∀ γ b, σ γ * ρ b = ρ b * σ γ) {m : ℕ}
     (ε : Matrix (Fin m) (Fin m) O →₀ E) (q : ℕ) (γ : Γ) :
@@ -94,9 +94,9 @@ def xiRep (ρ : O →+* Module.End R V) (σ : Representation R Γ V) (hσ : ∀ 
     exact ⟨altRep E (powRep σ m) k γ f, (LinearMap.congr_fun (altOp_comm ρ σ hσ ε k γ) f).symm⟩
 
 /- English proof (translation)
-Establish `: altOp ρ (Finsupp.single (1 : Matrix (Fin 0) (Fin 0) O) (1 : E)) 0 = 1`. Use extensionality with `f x`. Simplify using `only [altOp, zero_smul, Finsupp.sum_single_index, one_smul, altPull_apply, Module.End.one_apply]`. Conclude with `congrArg f (Subsingleton.elim _ _)`. Rewrite using `[this, one_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `zero q hq := by`. Use extensionality with `f x`. Take `⟨q, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hq`. Simplify using `only [altOp, zero_smul, Finsupp.sum_single_index, one_smul, altPull, LinearMap.coe_mk, AddHom.coe_mk, AlternatingMap.compLinearMap_apply, LinearMap.zero_apply, AlternatingMap.zero_apply]`. Conclude with `f.map_coord_zero 0 (Subsingleton.elim _ _)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example (ρ : O →+* Module.End R V) : IsCut ρ (Finsupp.single (1 : Matrix (Fin 0) (Fin 0) O) (1 : E)) 0 where
   idem := by

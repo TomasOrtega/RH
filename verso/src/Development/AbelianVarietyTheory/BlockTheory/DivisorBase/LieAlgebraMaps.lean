@@ -68,7 +68,7 @@ def TorusSaturated : Prop :=
         IsSaturatedTorus u
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x y => Subtype.ext (MonObj.mul_comp x.1 y.1 u), fun a x => Subtype.ext (Category.assoc _ _ _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLieLinear_lieMap {R : Type} [CommRing R] {T G : Over (Spec (CommRingCat.of R))}
     [GrpObj T] [GrpObj G] (u : T ⟶ G) [IsMonHom u] : IsLieLinear (lieMap u) :=
@@ -76,7 +76,7 @@ theorem isLieLinear_lieMap {R : Type} [CommRing R] {T G : Over (Spec (CommRingCa
     fun a x => Subtype.ext (Category.assoc _ _ _)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, by rw [Over.id_left]; infer_instance⟩`.
+Supply the required witnesses or components.
 -/
 example (R K : Type) [CommRing R] [Field K] [Algebra R K] (r : ℕ) :
     IsMonHom (𝟙 ((baseChange R K).obj (torus R r))) ∧
@@ -84,7 +84,7 @@ example (R K : Type) [CommRing R] [Field K] [Algebra R K] (r : ℕ) :
   ⟨inferInstance, by rw [Over.id_left]; infer_instance⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨id, ⟨fun _ _ => rfl, fun _ _ => rfl⟩, fun x => Subtype.ext (Category.comp_id x.1)⟩`.
+Supply the required witnesses or components.
 -/
 example (R : Type) [CommRing R] (r : ℕ) :
     ∃ ρ : LieG (torus R r) → LieG (torus R r), IsLieLinear ρ ∧ ∀ x, ρ (lieMap (𝟙 _) x) = x :=

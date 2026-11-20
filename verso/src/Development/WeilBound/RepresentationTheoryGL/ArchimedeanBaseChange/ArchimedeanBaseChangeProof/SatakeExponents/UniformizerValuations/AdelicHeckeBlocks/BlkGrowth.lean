@@ -20,52 +20,52 @@ namespace PositivityTheory.Rg.BcB.F.BlockFiniteConvolution
 open PositivityTheory.RgBcC PositivityTheory.Rg.BcB.CG PositivityTheory.Rg.BcB.D1
 
 /- English proof (translation)
-The claim follows from `finConv intHint hintProd slots`.
+A detailed English derivation is pending.
 -/
 theorem finConv' : FinConv := finConv intHint hintProd slots
 
 /- English proof (translation)
-The claim follows from `fmAlg finConv' slots`.
+A detailed English derivation is pending.
 -/
 theorem fmAlg' : FmAlg := fmAlg finConv' slots
 
 /- English proof (translation)
-The claim follows from `fmTr slots`.
+A detailed English derivation is pending.
 -/
 theorem fmTr' : FmTr := fmTr slots
 
 /- English proof (translation)
-The claim follows from `rtAlg sizeBasic`.
+A detailed English derivation is pending.
 -/
 theorem rtAlg' : RtAlg := rtAlg sizeBasic
 
 /- English proof (translation)
-The claim follows from `adelRep fmAlg' fmTr' rtAlg'`.
+A detailed English derivation is pending.
 -/
 theorem adelRep' : AdelRep := adelRep fmAlg' fmTr' rtAlg'
 
 /- English proof (translation)
-The claim follows from `blkOp E1.opEx_holds h tensTest tensMul`.
+A detailed English derivation is pending.
 -/
 theorem blkOp' (h : MultAlg) : BlockOperatorsProductAdjoint := blkOp E1.opEx_holds h tensTest tensMul
 
 /- English proof (translation)
-The claim follows from `blkComm E1.opEx_holds h tensTest tensMul`.
+A detailed English derivation is pending.
 -/
 theorem blkComm' (h : MultAlg) : BlockPureTensorsCommute := blkComm E1.opEx_holds h tensTest tensMul
 
 /- English proof (translation)
-The claim follows from `blkWord (blkOp' h)`.
+A detailed English derivation is pending.
 -/
 theorem blkWord' (h : MultAlg) : BlockWordOperators := blkWord (blkOp' h)
 
 /- English proof (translation)
-The claim follows from `pTTest regOf finConv' fmTr' h`.
+A detailed English derivation is pending.
 -/
 theorem pTTest' (h : KerEx) : PTTest := pTTest regOf finConv' fmTr' h
 
 /- English proof (translation)
-The claim follows from `blkGrowth (blkOp' h) (blkWord' h) blkSum (ellLin h')`.
+A detailed English derivation is pending.
 -/
 theorem blkGrowth' (h : MultAlg) (h' : D4.EllFormula2J) : BlockEllipticGrowth := blkGrowth (blkOp' h) (blkWord' h) blkSum (ellLin h')
 

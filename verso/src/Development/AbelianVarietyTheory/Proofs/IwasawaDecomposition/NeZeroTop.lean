@@ -18,7 +18,7 @@ section Loc
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n : ℕ}
 
 /- English proof (translation)
-Establish `h : Valued.v ((algebraMap E (P.adicCompletion E)) (algebraMap (𝓞 E) E r)) = P.valuation E (algebraMap (𝓞 E) E r)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (v := P) _`. Rewrite using `[h]`. Conclude with `HeightOneSpectrum.valuation_le_one (K := E) (v := P) r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_int (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E) :
     Valued.v ((algebraMap E (P.adicCompletion E)) (algebraMap (𝓞 E) E r)) ≤ 1 := by
@@ -30,7 +30,7 @@ theorem phi_int (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E) :
   exact HeightOneSpectrum.valuation_le_one (K := E) (v := P) r
 
 /- English proof (translation)
-Establish `h : Valued.v ((algebraMap E (P.adicCompletion E)) (algebraMap (𝓞 E) E r)) = P.valuation E (algebraMap (𝓞 E) E r)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (v := P) _`. Rewrite using `[h]`. Conclude with `HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) (v := P) r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_lt (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E) :
     Valued.v ((algebraMap E (P.adicCompletion E)) (algebraMap (𝓞 E) E r)) < 1 ↔ r ∈ P.asIdeal := by
@@ -70,13 +70,13 @@ def topU (U : Subgroup (GL (Fin n) (AfE F E))) (t : GL (Fin n) (AfE F E)) (Θ : 
   U ⊓ ⨅ P : Q, (locLev P.1 (Θ P) (d P)).comap (rhoT F P.1 t)
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem topU_le (U : Subgroup (GL (Fin n) (AfE F E))) (t : GL (Fin n) (AfE F E)) (Θ : LevQFam E K n Q) (d : Q → E) : topU U t Θ d ≤ U :=
   inf_le_left
 
 /- English proof (translation)
-Establish `hx' : x ∈ U ⊓ ⨅ P : Q, (locLev P.1 (Θ P) (d P)).comap (rhoT F P.1 t)` using `hx`. Conclude with `Subgroup.mem_comap.mp (Subgroup.mem_iInf.mp (Subgroup.mem_inf.mp hx').2 P)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rhoT_mem {U : Subgroup (GL (Fin n) (AfE F E))} {t : GL (Fin n) (AfE F E)} {Θ : LevQFam E K n Q} {d : Q → E}
     {x : GL (Fin n) (AfE F E)} (hx : x ∈ topU U t Θ d) (P : Q) : rhoT F P.1 t x ∈ locLev P.1 (Θ P) (d P) := by

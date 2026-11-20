@@ -16,11 +16,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨W, hWe, hWn⟩` from `GlobalTheory.Reg.exists_valuationSubring_comap_eq_nonunits c.F.val.toRingHom (la.valuation c.F).valuationSubring`. Establish `hpU : (p : c.F) ∈ (la.valuation c.F).valuationSubring.nonunits`. Rewrite using `[ValuationSubring.mem_nonunits_iff, ← (Valuation.isEquiv_valuation_valuationSubring (la.valuation c.F)).lt_one_iff_lt_one]`. Use `(la.valuation_lt_one_iff_mem (K := c.F) (p : 𝓞 c.F)).2 hpl` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hW : (p : ℂ) ∈ W.nonunits` using `by simpa using hWn _ hpU`. Establish `key : ∀ X : ∀ l : Level H, Moduli Dw l, ∃ Y : Model (X l) c (c.V W).subtype, Y.LevelStructureConditions p ∧ Y.N3 ∧ Y.N4 ∧ Y.SplitFibres` using `fun X => by`. Take `⟨Y, hY, -⟩` from `GlobalTheory.partI_closed.2 E H Dw hpq X`. Take `⟨h1, h2⟩` from `hY p W hp hW`. Take `⟨h3, h4, h5⟩` from `h2 ⟨l, c, hgp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, h1.1 ⟨l, c, hgp⟩, h4, h5, h3⟩`. Establish `h` using `key (Function.update (fun l' => Classical.choice (GlobalTheory.Moduli.moduli_scheme_exists E H Dw l' hpq)) l Xo)`. Rewrite `h` using `[Function.update_self]`. Take `⟨Y, hY⟩` from `h`. Conclude with `⟨W, Y, hWe, hY⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_model_at (Xo : Moduli Dw l) (c : Coeff l) (hpq : 1 ≤ Dw.p + Dw.q)
     (la : HeightOneSpectrum (𝓞 c.F)) {p : ℕ} (hp : p.Prime) (hpl : (p : 𝓞 c.F) ∈ la.asIdeal) (hgp : l.GoodAt p) :
@@ -47,15 +47,15 @@ theorem exists_model_at (Xo : Moduli Dw l) (c : Coeff l) (hpq : 1 ≤ Dw.p + Dw.
   exact ⟨W, Y, hWe, hY⟩
 
 /- English proof (translation)
-Take `⟨W, Y, hW, h2, h3, h4, h5⟩` from `exists_model_at Xo c hpq la hp hpl hgp`. Take `⟨b, hb⟩` from `GlobalTheory.EtaVal.exists_base_map_of_overLa (β := (c.V W).subtype) (fun a => (Valuation.mem_valuationSubring_iff _ _).1 (hW ▸ a.2)) T io e ho`. Establish `hcond : x ≫ Xo.s = spMap io ≫ spMap (IntermediateField.inclusion c.le).toRingHom`. Rewrite using `[hxs, GlobalTheory.EtaVal.spMap_comp_spMap]`. Set `z : Sp T.Fr ⟶ Xo.XF c` to `pullback.lift x (spMap io) hcond`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hzs : z ≫ pullback.snd _ _ = spMap io` using `pullback.lift_snd _ _ _`. Establish `hzf : z ≫ pullback.fst _ _ = x` using `pullback.lift_fst _ _ _`. Establish `hx : z ≫ Y.j ≫ Y.s = Out.jK T.V ≫ spMap b` using `by show z ≫ (Y.jQ ≫ pullback.fst _ _) ≫ Y.s = _`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, ← Category.assoc, hzs]`. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hb]`. Take `⟨yt, h1, -⟩` from `extPt Y T b z hx`. Choose the witnesses or unpack the hypotheses as in `⟨tP, ⟨mP'⟩⟩ : ∃ t : SAB H (Sp T.V), Nonempty (SABMap t Y.t yt) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull yt Y.t`. Conclude with `⟨_, ⟨m⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨mF, -⟩` from `sabCancel pullCubCancel E H _ _ _ Xo.univ.t Y.oF.t t' (pullback.fst _ _) z Y.m0.toSABMap (PullbackSections.sabMapCast m1 hzf.symm)`. Take `⟨mJ, -⟩` from `sabComp pullCubComp E H _ _ _ Y.t Y.oF.t t' (Y.jQ ≫ pullback.fst _ _) z Y.m mF`. Establish `hj : z ≫ Y.jQ ≫ pullback.fst _ _ = Out.jK T.V ≫ yt` using `h1.symm`. Take `⟨mK, -⟩` from `sabCancel pullCubCancel E H _ _ _ Y.t tP t' yt (Out.jK T.V) mP' (PullbackSections.sabMapCast mJ hj)`. Establish `hprop : IsProper t'.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) m1.cart.1 Xo.univ.proper`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, -⟩` from `GlobalTheory.semiAbelian_model_determined_by_generic_fibre E H T.V inferInstance G tP t' hprop m2 mK`. Take `⟨n', -⟩` from `sabComp pullCubComp E H _ _ _ Y.t tP G yt (𝟙 _) mP' ψ`. Conclude with `(((GlobalTheory.T.thetaKeyScalar_isUnit_on_integralModels κ hκ E H Dw l Xo c _ _ Y p hpq (isBaseRing_local c W) hp h2 h3 h4 h5).1 T.V T.Fr z yt h1 G (PullbackSections.sabMapCast n' (Category.id_comp yt)) n w hw θ k hk).1 hθ).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem key_unit_at {κ : KeyRule} (hκ : IsKeyRule κ) (hpq : 1 ≤ Dw.p + Dw.q)
     {la : HeightOneSpectrum (𝓞 c.F)} {p : ℕ} (hp : p.Prime) (hpl : (p : 𝓞 c.F) ∈ la.asIdeal) (hgp : l.GoodAt p)
@@ -113,7 +113,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨p, hp, hpl⟩` from `GlobalTheory.Reg.exists_prime_natCast_mem la`. Distinguish the cases in `hgp : l.GoodAt p`. Conclude with `key_unit_at hκ hpq hp hpl hgp ho hxs m1 m2 hw hθ k hk`. Conclude with `GlobalTheory.T.thetaKeyRule_isUnit_at_bad_level_place E H Dw l Xo c κ hκ hpq la p hp hpl hgp T io e ho x hxs G t' m1 m2 n w hw θ hθ k hk`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem key_unit_any {κ : KeyRule} (hκ : IsKeyRule κ) (hpq : 1 ≤ Dw.p + Dw.q)
     {la : HeightOneSpectrum (𝓞 c.F)} {T : CDVR} {io : c.F →+* T.Fr} {e : ℕ} (ho : OverLa la T.V io e)
@@ -129,19 +129,19 @@ theorem key_unit_any {κ : KeyRule} (hκ : IsKeyRule κ) (hpq : 1 ≤ Dw.p + Dw.
   · exact GlobalTheory.T.thetaKeyRule_isUnit_at_bad_level_place E H Dw l Xo c κ hκ hpq la p hp hpl hgp T io e ho x hxs G t' m1 m2 n w hw θ hθ k hk
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Take `⟨G, t', m1, m2, ⟨ub, u1, u2, u3, u4⟩, θ, hθ, w1, w2, σ, s1, θ2, r1, r2, i1, i2, hp, hs⟩` from `hy`. Take `⟨U₀, hU₀, hg₀⟩` from `GlobalTheory.CM.exists_pat_of_obj E H Dw l _ _ _ _ Xo.univ`. Take `⟨⟨P, rfl, hPg⟩, -⟩` from `GlobalTheory.CM.PAT.exists_of_sabMap E H _ _ y.x U₀ t' (hU₀ ▸ m1)`. Take `⟨Ψ, -, hΨ, -⟩` from `exists_tied E H Dw l Xo c g e T.Fr y hpq`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hgp : 1 ≤ g` using `hΨ ▸ Ψ.g_pos`. Take `rfl : P.g = g` from `hPg.trans (hg₀.trans (card_frame_index Dw e))`. Establish `ht : SecTie m1 σ y.s` using `⟨w1, s1, r1, i1, hs⟩`. Establish `hne` using `((SecTieEx.secTie_exists_unique E H Dw l Xo T.Fr y.x P.t m1).2.2 σ _ ht).2.1 (GlobalTheory.Frames.secNZ_of_secGen GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo T.Fr _ _ y.gen)`. Establish `hB` using `(GlobalTheory.Frames.eigBasis_iff_tanBasis E H Dw l Xo c T.Fr y.x y.u P.g e y.tan y.eig).1 y.basis`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, hb⟩` from `GlobalTheory.Frames.lieBasis_iff_tanBasis E H Dw l Xo T.Fr y.x P.t.G m1.φ m1.cart`. Use `choose u' hu₁ hu₂ using u4`. Establish `hov : ∀ τ i, u' τ i ≫ P.t.G.hom = (epsR T.Fr).hom` using `fun τ i => by`. Establish `: IsPreimmersion (spMap (algebraMap T.V T.Fr))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors T.V)`. Rewrite using `[← cancel_mono (spMap (algebraMap T.V T.Fr)), Category.assoc, ← m2.cart.1.w, ← Category.assoc, hu₂, Category.assoc, Over.w]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(GlobalTheory.EtaVal.spMap_comp_spMap _ _).trans ((congrArg spMap (RingHom.ext fun a => by`. Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl])).trans (GlobalTheory.EtaVal.spMap_comp_spMap _ _).symm)`. Set `v : Fin P.g → (epsR T.Fr ⟶ P.t.G)` to `fun j => Over.homMk (u' (e j).1 (e j).2) (hov _ _)`. Establish `hv : IsLieBasis v` using `(hb _ v).2 (by`. Rewrite using `[show (fun j => (v j).left ≫ m1.φ) = fun j => y.u (e j).1 (e j).2 from funext fun j => hu₁ _ _]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hB)`. Take `⟨n, w, hw⟩` from `Chart.exists_isLieBasis G.G G.semi.smooth`. Take `⟨w', hw', hww⟩` from `GlobalTheory.exists_isLieBasis_baseChange _ _ _ G.G P.t.G m2.φ m2.cart G.semi.smooth n w hw`. Choose the witnesses or unpack the hypotheses as in `rfl : P.g = n := by`. Simplify using `using Fintype.card_congr ((GlobalTheory.Serre.Lie.basis P.t.act hv).indexEquiv (GlobalTheory.Serre.Lie.basis P.t.act hw'))`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `inj` using `IsFractionRing.injective T.V T.Fr`. Take `⟨A, U, a1, a2, a3⟩` from `exists_lie_matrices G.act hw τ' (m := Dw.mult) ub (fun τ k => (isTan_iff_isTangent _).1 (u1 τ k)) (fun τ k a => u2 τ k a _ (hτ τ a)) (fun τ x hx he => (u3 τ x ((isTan_iff_isTangent _).2 hx) fun a z hz => by`. Rewrite using `[inj (hz.trans (hτ τ a).symm)]`. Conclude with `he a).exists)`. Take `⟨u, hu⟩` from `key_unit_any hκ hpq ho y.x_over m1 m2 hw hθ _ (isFibreOf_of_sabMap _ P m2 hgp hne r2 i2 hp hw' hww)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨P, m1, hgp, σ, hne, v, hv⟩, A, U, u, ⟨ht, rfl, fun j => hu₁ _ _⟩, a1, a2, ?_⟩` and prove the remaining obligations. Establish `h` using `hκ.1 T.Fr P.pol hgp P.t.PP.rig P.t.PP.rigGen σ hne w' hw' σ hne v hv 1 ((Matrix.of fun j k => U (e j).1 (e j).2 k).map (algebraMap T.V T.Fr)) (fun i => by simp [constFn]) (fun j => Chart.comb_baseChange _ m2.cart (a3 (e j).1 (e j).2) hww (hu₂ _ _))`. Rewrite `h` using `[one_pow, one_mul, hu]`. Rewrite using `[map_mul, map_pow, RingHom.map_det]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem exists_tied_det_any {κ : KeyRule} (hκ : IsKeyRule κ) (hpq : 1 ≤ Dw.p + Dw.q)
     {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
@@ -208,11 +208,9 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor R
 open GlobalTheory.KeyIntegralVal
 
 /- English proof (translation)
-Introduce `κ hκ E _ _ _ H Dw l Xo c g e K hpq _ hK w v hv`. Take `⟨⟨_, T, io, r, ho, y, -, η, -, rfl⟩, rfl⟩` from `hv`. Use `letI := io.toAlgebra`. Use `choose τ' hτ using fun τ : E →+* ℂ => GlobalTheory.EtaVal.exists_base_map_of_overLa (β := embK c τ) (fun a => w.valuation_le_one (K := c.F) (RingOfIntegers.mapRingHom (embF c τ) a)) T io r ho`. Use `replace hτ : ∀ τ a, algebraMap T.V T.Fr (τ' τ a) = io (embK c τ a) := fun τ a => DFunLike.congr_fun (hτ τ) a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hinj : Function.Injective τ'` using `fun τ₁ τ₂ h => IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => congrArg Subtype.val (io.injective ((hτ τ₁ a).symm.trans ((h ▸ rfl : _ = _).trans (hτ τ₂ a)))))`. Take `⟨Φ, A, U, u, hΦ, a1, a2, hu⟩` from `exists_tied_det_any hκ hpq e ho τ' hτ y.1 y.2.2`. Use `choose δ hδ hδ0 hδv using fun τ : E →+* ℂ => exists_mem_different_vLa (embF c τ) w`. Establish `hD` using `GlobalTheory.ColengthDifferent.colength_dvd E T.Fr T.V (E →+* ℂ) τ' Dw.mult g e A U hinj (Embeddings.card E ℂ) inferInstance a1 a2 δ hδ`. Establish `hb` using `nval_bounds ho (fun τ => embF c τ (δ τ)) (fun τ => τ' τ (δ τ)) Dw.mult _ u (fun τ => (map_ne_zero _).2 (RingOfIntegers.coe_ne_zero_iff.2 (hδ0 τ))) (fun τ => hτ τ (δ τ)) hD`.
-
-Rewrite `hb` using `[← hu, ← hK T.Fr y.1 Φ hΦ]`. Conclude with `hb.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key_valuation_nonneg : ∀ (κ : GlobalTheory.KeyCl.Rule), GlobalTheory.IndefiniteRowSideFullHecke.FibreFramesOnModels.IsKeyRule κ → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (K : (Rul Xo c)ˣ), 1 ≤ Dw.p + Dw.q → (K : Rul Xo c) ∈ GlobalTheory.AllWt.secZ Xo c ((4 : ℤ) • keyEx Dw) → (∀ (F : Type) [Field F] [CharZero F] [Algebra c.F F] (y : FrPt Xo c F) (Φ : FibKey Xo F y.x), Tied e y.s y.u Φ → evR Xo c (K : Rul Xo c) y = (κ F Φ.key : F)) → ∀ (w : HeightOneSpectrum (𝓞 c.F)), ∀ v ∈ valSet Xo c (algCls Xo c) w, 0 ≤ v (K : Rul Xo c) := by
   intro κ hκ E _ _ _ H Dw l Xo c g e K hpq _ hK w v hv

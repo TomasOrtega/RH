@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.BetaPull
 universe u₁ v₁ u₂ v₂ u₃ v₃ u₄ v₄ w₁ w₂ w₃ w₄
 
 /- English proof (translation)
-Rewrite using `[← (CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) m b n x).1, ← (CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) b' q n x).1]`. Conclude with `CrystallineSemistableComparison.P.prism (m.comp b) (b'.comp q) η hτ n x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_square {R : Type} [CommRing R]
     {C₁ : Type u₁} [Category.{v₁} C₁] {C₂ : Type u₂} [Category.{v₂} C₂]
@@ -29,7 +29,7 @@ theorem pull_square {R : Type} [CommRing R]
   exact CrystallineSemistableComparison.P.prism (m.comp b) (b'.comp q) η hτ n x
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Rewrite using `[P'.map_id]`. Conclude with `ConcreteCategory.congr_hom (a.naturality f) y`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_nat {P P' : CommRingCat.{0} ⥤ Type} (a : P ⟶ P') {B C : CommRingCat.{0}} (f : B ⟶ C)
     (g : C ⟶ C) (hg : g = 𝟙 C) (y : P.obj B) :
@@ -42,7 +42,7 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {F F' : Fn O} (κ : O 
   (u : Fn.Map F F') (k : Bool) (n : ℕ)
 
 /- English proof (translation)
-Substitute `ha` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem units_pullback_empty_product_one {B B' : Type} [CommRing B] [CommRing B'] (i : B' →+* B) (a : B'ˣ) (ha : a = 1)
     (e : Empty → Bˣ) : (1 : Bˣ) =
@@ -72,7 +72,7 @@ def cmpNat : gT F κ k n ⋙ (pullMorC κ u k n).G ⟶ (pullMor (u.pt κ) n).G �
   naturality T T' f := Thick.Hom.ext rfl (funext fun j => j.elim)
 
 /- English proof (translation)
-The claim follows from `pull_square (pullMorC κ u k n) (βMor F κ k n) (βMor F' κ k n) (pullMor (u.pt κ) n) (cmpNat κ u k n) (fun _ _ => rfl) j x`.
+A detailed English derivation is pending.
 -/
 theorem beta_pull {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {F F' : Fn O} (κ : O →+* OC l)
     (u : Fn.Map F F') (k : Bool) (n j : ℕ) (x : Hc F' κ k n j) :

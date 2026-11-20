@@ -19,13 +19,13 @@ open scoped ENNReal nonZeroDivisors
 namespace GlobalTheory.RSEulerId
 
 /- English proof (translation)
-Introduce `E _ _ _ a π ha hu T hT`. Take `⟨α, ℓ, Φ, J, η, π₀, ω, φ, hℓ, hα, hπ₀, hω, hc, hφ, hφ0, hΦs, hΦc, hΦr, hΦp, hΦ0, hcore⟩` from `GlobalTheory.T.unfoldedWhittakerIntegral_eq_eulerProduct_schurSums E a π ha hu T hT`. Establish `hF : φ.1 ∈ GlobalTheory.JSW.mspanR π₀` using `hφ.elim (fun h => Submodule.mem_sInf.2 fun _ hS => hS.1 φ h) id`. Establish `hπu : π₀.IsUnitary` using `⟨ω, hω, CuspSub.hasCentral_iff.2 hc⟩`. Establish `hFc : Continuous φ.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ψ, hψ, hw⟩` from `GlobalTheory.JSW.mspanR_words GlobalTheory.CuspOrth.cuspFormsBounded hπu φ.1 hF`. Establish `h0` using `(hw []).2`. Rewrite `h0` using `[GlobalTheory.JSW.word_nil, hψ]`. Conclude with `h0.cont`. Use `⟨α, ℓ, Φ, J, η, π₀, ω, φ, hα, hπ₀, hω, hc, hφ, hφ0, hΦs, hΦc, hΦr, hΦp, hΦ0, fun μ _ 𝓕 h𝓕 => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨𝓕₀, h𝓕₀⟩` from `GlobalTheory.T.exists_isFundamentalDomain_rationalUpperUnitriangular E a μ`. Take `⟨H, hHc, hH1, hH⟩` from `hcore μ 𝓕₀ h𝓕₀`. Use `⟨H, hHc, hH1, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨hHx, heq⟩` from `hH x hx`. Establish `hU` using `GlobalTheory.T.lintegral_rankinSelbergTheta_eq_whittakerUnfolding E a ℓ hℓ π₀ hπu φ.1 hF Φ hΦs.continuous hΦc hΦr J η μ 𝓕 𝓕₀ h𝓕 h𝓕₀ x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `GlobalTheory.T.lintegral_theta_self_cusp_rapid_span_ne_top E a ℓ π₀ ω hω hc φ.1 hF Φ hΦs hΦc hΦr hΦp J η μ 𝓕 h𝓕 x hx`. Establish `hZ` using `GlobalTheory.T.rankinSelbergThetaIntegral_smoothSpan_eq_toReal_lintegral E a ℓ π₀ φ.1 hF hFc Φ hΦs.continuous hΦr hΦp J η μ 𝓕 h𝓕 x hfin`. Rewrite `hfin`, `hZ` using `[hU, heq]`. Use `⟨hHx, fun h => hfin (by rw [h, ENNReal.mul_top (ENNReal.ofReal_pos.2 hHx).ne']), ?_⟩` and prove the remaining obligations. Rewrite using `[hZ, ENNReal.toReal_mul, ENNReal.toReal_ofReal hHx.le]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaZ_eq_mul_eulD : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CG E a), 1 ≤ a → π.IsUnitary →
     ∀ T : Finset (HeightOneSpectrum (𝓞 E)), UnrOutside T π →

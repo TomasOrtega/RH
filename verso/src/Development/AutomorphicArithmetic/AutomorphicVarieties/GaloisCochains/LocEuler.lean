@@ -11,17 +11,15 @@ private noncomputable def subquotEquiv {R R' X : Type*} [CommRing R] [CommRing R
     exact hB _
 
 /- English proof (translation)
-Use `haveI : Finite R := Finite.of_injective _ (algebraMap R k).injective`. Set `T : Module.Dual k M →+ Module.Dual R M` to `{ toFun := fun f => (Algebra.trace R k).comp (f.restrictScalars R) map_zero' := by ext; simp map_add' := fun f f' => by ext; simp }`. Establish `hT : ∀ f m, T f m = Algebra.trace R k (f m)` using `fun _ _ => rfl`. Establish `hinj : Function.Injective T`. Rewrite using `[injective_iff_map_eq_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Use extensionality with `m`. Use `(traceForm_nondegenerate R k).1 (f m) fun a => ?_` and prove the remaining obligations. Use `hT f (a • m)` as an intermediate fact. Rewrite `this` using `[hf, f.map_smul, smul_eq_mul, mul_comm]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.symm`. Use `haveI : Finite (Module.Dual R M) := DFunLike.finite _`. Establish `hbij : Function.Bijective T` using `hinj.bijective_of_nat_card_le (by`. Rewrite using `[Module.natCard_eq_pow_finrank (K := R) (V := Dual R M), Module.natCard_eq_pow_finrank (K := k) (V := Dual k M), Subspace.dual_finrank_eq, Subspace.dual_finrank_eq, ← Module.natCard_eq_pow_finrank, ← Module.natCard_eq_pow_finrank])`. Use `Nat.card_congr ((Equiv.ofBijective _ hbij).subtypeEquiv fun f => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Equiv.ofBijective_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hf g x`. Rewrite using `[hT, hT, h, hf, hχ, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Introduce `hf g x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, rfl⟩` from `e.surjective g`. Establish `: f.comp (ρ (e g)) = (χ (e g) : k) • f` using `hinj (LinearMap.ext fun y => by`. Use `hf g y` as an intermediate fact. Rewrite `this` using `[hT, hT, h]`. Rewrite using `[hT, hT, LinearMap.comp_apply, this, LinearMap.smul_apply, smul_eq_mul, hχ, ← Algebra.smul_def, map_smul, smul_eq_mul])`.
-
-Conclude with `LinearMap.congr_fun this x`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_H0dual {R k Γ Γ' M : Type} [Field R] [Field k] [Finite k] [Algebra R k] [Group Γ] [Group Γ']
     [AddCommGroup M] [Module R M] [Module k M] [IsScalarTower R k M] [Finite M]
@@ -62,11 +60,11 @@ private theorem card_H0dual {R k Γ Γ' M : Type} [Field R] [Field k] [Finite k]
     exact LinearMap.congr_fun this x
 
 /- English proof (translation)
-Use `Nat.card_congr (Equiv.subtypeEquivRight (α := TDual R M) fun y => ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hy g m`. Establish `e` using `congrArg (fun φ : TDual R M => φ (ρ g m)) (hy g)`. Simplify using `only [MonoidHom.comp_apply, MonoidHom.id_apply, twDual_apply] at e`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Conclude with `e.symm`. Introduce `hy g`. Use `TDual.ext fun m => ?_` and prove the remaining obligations. Simplify using `only [MonoidHom.comp_apply, MonoidHom.id_apply, twDual_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hy g (ρ g⁻¹ m)` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_twDual {R Γ M : Type} [CommRing R] [Group Γ] [AddCommGroup M] [Module R M]
     (χ : Γ →* Rˣ) (ρ : Representation R Γ M) :
@@ -86,21 +84,17 @@ private theorem card_twDual {R Γ M : Type} [CommRing R] [Group Γ] [AddCommGrou
     exact this.symm
 
 /- English proof (translation)
-Introduce `hF hT hE0 F Ω _ _ _ _ _ l _ w A hAw k _ _ hc M _ _ _ _ _ ρ hρ`. Establish `hl : l.Prime` using `Fact.out`. Use `haveI : Fact (l ^ 1).Prime := ⟨by rwa [pow_one]⟩`. Use `haveI : CharP k (l ^ 1) := by rwa [pow_one]`. Use `letI : Algebra (ZMod (l ^ 1)) k := ZMod.algebra k (l ^ 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `letI : Module (ZMod (l ^ 1)) M := Module.compHom M (algebraMap (ZMod (l ^ 1)) k)`. Use `haveI : IsScalarTower (ZMod (l ^ 1)) k M := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Use `haveI : Finite M := Module.finite_of_finite k`. Set `ρ' : Representation (ZMod (l ^ 1)) ↥(Dec (F` to `F) A) M := Loc.resCoef (ZMod (l ^ 1)) ρ`. Establish `h : ∀ g m, ρ' g m = ρ (MulEquiv.refl _ g) m` using `fun _ _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ' : ContAction ρ'` using `hρ`. Establish `e0 : H0 ρ ≃ H0 ρ'` using `Equiv.subtypeEquivRight fun _ => Iff.rfl`. Establish `e1 : H1 ρ ≃ H1 ρ'` using `subquotEquiv _ _ _ _ (fun _ => Iff.rfl) (fun _ => Iff.rfl)`. Establish `e2 : H2 ρ ≃ H2 ρ'` using `subquotEquiv _ _ _ _ (fun _ => Iff.rfl) (fun _ => Iff.rfl)`. Take `⟨-, f1, f2, -⟩` from `hF F Ω l 1 M A ρ' w one_pos hAw hρ'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨inv⟩, -, -, -, hb⟩` from `hT F Ω l 1 M A ρ' w one_pos hAw hρ'`. Establish `hE` using `hE0 F Ω l 1 M A ρ' w one_pos hAw hρ'`. Use `haveI : Finite (H1 ρ) := Finite.of_equiv _ e1.symm`. Use `haveI : Finite (H2 ρ) := Finite.of_equiv _ e2.symm`. Establish `hk : 1 < Nat.card k` using `Finite.one_lt_card`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨Module.Finite.of_finite, Module.Finite.of_finite, fun hw => ?_, fun hw => ?_, ?_⟩` and prove the remaining obligations. Apply `Nat.pow_right_injective hk beta_reduce` to reduce the goal to its premises. Rewrite using `[pow_add, pow_add, mul_comm (locDeg w), pow_mul, ← Module.natCard_eq_pow_finrank, ← Module.natCard_eq_pow_finrank, ← Module.natCard_eq_pow_finrank, ← Module.natCard_eq_pow_finrank, Nat.card_congr e0, Nat.card_congr e1, Nat.card_congr e2]`. Conclude with `hE.1 hw`. Apply `Nat.pow_right_injective hk beta_reduce` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_add, ← Module.natCard_eq_pow_finrank, ← Module.natCard_eq_pow_finrank, ← Module.natCard_eq_pow_finrank, Nat.card_congr e0, Nat.card_congr e1, Nat.card_congr e2]`. Conclude with `hE.2 hw`. Apply `Nat.pow_right_injective hk beta_reduce` to reduce the goal to its premises. Set `χ` to `(cycMod F Ω l 1).comp (Dec (F := F) A).subtype`. Use `haveI : Finite (Module.Dual k M) := DFunLike.finite _`.
-
-Use `haveI : Finite (TDual (ZMod (l ^ 1)) M) := (DFunLike.finite _ : Finite (M →ₗ[ZMod (l ^ 1)] ZMod (l ^ 1)))`. Set `B : Type` to `H0 ((twDual χ ρ').comp (MonoidHom.id _))`. Set `E : H2 ρ' ≃ Module.Dual (ZMod (l ^ 1)) B` to `(Equiv.ofBijective _ hb).trans (LinearEquiv.congrRight inv).toEquiv`. Use `haveI : Finite B := Subtype.finite`. Use `haveI := hc`.
-
-Establish `hχ : ∀ g, ((((cycF F Ω l k).comp (Dec (F` using `F) A).subtype) (MulEquiv.refl _ g) : kˣ) : k) = algebraMap (ZMod (l ^ 1)) k (χ g) := fun g => RingHom.congr_fun (Subsingleton.elim (ZMod.castHom (dvd_pow_self l one_ne_zero) k) (algebraMap (ZMod (l ^ 1)) k)) _`. Rewrite using `[← Module.natCard_eq_pow_finrank, ← Module.natCard_eq_pow_finrank, Nat.card_congr e2, card_H0dual ρ ρ' (MulEquiv.refl _) h _ χ hχ, ← card_twDual, Nat.card_congr E, Module.natCard_eq_pow_finrank (K := ZMod (l ^ 1)), Subspace.dual_finrank_eq, ← Module.natCard_eq_pow_finrank]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GC.locEuler :
     LocalFiniteness → LocalTateDuality → LocalEulerChar → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (v : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω), IsPlaceOver A v → ∀ (k : Type) [Field k] [Finite k] [CharP k l] (M : Type) [AddCommGroup M] [Module k M] [Module.Finite k M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation k (Dec (F := F) A) M), ContAction ρ →

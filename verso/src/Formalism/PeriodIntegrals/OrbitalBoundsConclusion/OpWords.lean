@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialDifferentialW
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialDifferentialWords.VanishMain
 
 /- English proof (translation)
-The claim follows from `PI.OpWords.opBound_of_vanish PI.OpWords.vanishingOnQuadric`.
+A detailed English derivation is pending.
 -/
 theorem operator_words_bound : Formalism.MainNotions.TestSideCounting.OpBound :=
   PI.OpWords.opBound_of_vanish PI.OpWords.vanishingOnQuadric

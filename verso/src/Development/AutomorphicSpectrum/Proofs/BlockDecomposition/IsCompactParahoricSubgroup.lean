@@ -7,9 +7,9 @@ open PositivityTheory.LowerBoundConstant GlobalTheory GlobalTheory.Published Glo
 namespace GlobalTheory.CompanionTheory.MoyPrasad
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n s d e`. Establish `hle : PositivityTheory.LowerBoundConstant.Gx k e ≤ GlobalTheory.SplitWeil.KO k (Fin n)`. Unfold `PositivityTheory.LowerBoundConstant.Gx`. Conclude with `sup_le GlobalTheory.StepData.KOne_le_KO inf_le_right`. Establish `hopen : IsOpen (PositivityTheory.LowerBoundConstant.Gx k e : Set (GL (Fin n) k))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `PositivityTheory.LowerBoundConstant.Gx`. Conclude with `Subgroup.isOpen_mono le_sup_left GlobalTheory.StepData.isOpen_KOne`. Conclude with `GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hopen) (fun x hx => hle hx)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_Gx : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n), IsCompact (Gx k e : Set (GL (Fin n) k)) := by
   intro k _ _ _ _ n s d e

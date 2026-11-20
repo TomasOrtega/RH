@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodIffEtaleAt
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.KeyOriginEnlarge.closureEtaleAt_of_comap_height_le_one) | (exact GlobalTheory.KeyOriginEnlarge.closureEtaleAt_of_comap_height_le_one) | (intros; apply GlobalTheory.KeyOriginEnlarge.closureEtaleAt_of_comap_height_le_one <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.integralClosureEtaleAt_of_height_le_one_purity : ∀ (q : ℕ) (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] [IsIntegrallyClosed A]
     [Algebra.EssFiniteType ℤ A]

@@ -11,13 +11,13 @@ open scoped Formalism.Per
 namespace GlobalTheory.PMon
 
 /- English proof (translation)
-Use `set M := Matrix.of fun i j : Fin (n + 1) => P.φB^[i] (a j) with hM`. Establish `h1 : P.φB M.det = (M.map P.φB).det`. Rewrite using `[AlgHom.map_det]`. Both sides reduce to the same expression. Establish `h2 : M.map P.φB = Matrix.diagonal (fun i : Fin (n + 1) => if i = Fin.last n then (l : P.R.B) else 1) * M.submatrix (finRotate (n + 1)) id`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_mul, Matrix.map_apply, Matrix.submatrix_apply, finRotate_succ_apply, id]`. Simplify using `only [hM, Matrix.of_apply]`. Rewrite using `[← Function.iterate_succ_apply' (f := P.φB)]`. Distinguish the cases in `hi : i = Fin.last n`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hi` using the available equality. Simplify using `[ha]`. Rewrite using `[if_neg hi, one_mul, Fin.val_add_one, if_neg hi]`. Rewrite using `[h1, h2, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_permute, sign_finRotate]`. Simplify using `[Finset.prod_ite_eq']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem phiB_moore_det {l : ℕ} [Fact l.Prime] (P : LocPrime l) (n : ℕ) (a : Fin (n + 1) → P.R.B)
     (ha : ∀ j, P.φB^[n + 1] (a j) = (l : P.R.B) * a j) :
@@ -41,23 +41,21 @@ theorem phiB_moore_det {l : ℕ} [Fact l.Prime] (P : LocPrime l) (n : ℕ) (a : 
   ring
 
 /- English proof (translation)
-Introduce `l _ P AI T h hh a ha _ hd hF`. Take `⟨n, rfl⟩ : ∃ n, h = n + 1` from `⟨h - 1, by omega⟩`. Use `set d := (Matrix.of fun i j : Fin (n + 1) => P.φB^[i] (a j)).det with hdd`. Establish `hφd : P.φB d = (-1) ^ n * (l : P.R.B) * d` using `phiB_moore_det P n a ha`. Establish `ht : IsUnit P.tB` using `isUnit_tB P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : IsUnit (l : P.R.B)`. Establish `h0 : (l : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero`. Use `(IsUnit.mk0 _ h0).map (algebraMap ℚ_[l] P.R.B)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hφt : P.φB P.tB = (l : P.R.B) * P.tB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[localPrime_frobenius_periodT, Algebra.smul_def, map_natCast]`. Use `set c := d * ((ht.unit⁻¹ : P.R.Bˣ) : P.R.B) with hc`. Establish `hct : c * P.tB = d`. Rewrite using `[hc, mul_assoc, Units.inv_mul_of_eq ht.unit_spec, mul_one]`. Establish `hφc : P.φB c = (-1) ^ n * c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `(hl.mul ht).mul_right_cancel` to reduce the goal to its premises. Establish `e` using `congrArg P.φB hct`. Rewrite `e` using `[map_mul, hφt, hφd, ← hct]`. Rewrite using `[show P.φB c * ((l : P.R.B) * P.tB) = P.φB c * ((l : P.R.B) * P.tB) from rfl]`. Take the linear combination `e`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφ2 : P.φB^[2] c = c`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_one, hφc, map_mul, hφc, map_pow, map_neg, map_one, ← mul_assoc, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_mul]`. Establish `hFc : P.ιB c ∈ Fil P 0`. Establish `e : tz P 1 * P.ιB c = P.ιB d`. Rewrite using `[show tz P 1 = P.ιB P.tB by simp [tz], ← map_mul, mul_comm, hct]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `(GlobalTheory.T.deRhamPeriodRing_field_tPow_filtration_units l P AI T).2.2.1 0 1 (P.ιB c)`. Rewrite `key` using `[zero_add, e]`. Conclude with `key.2 hF`. Establish `hev : ∀ j < 2, ev P j c ∈ Fil P 0`. Introduce `j hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Use `interval_cases j`. Simplify `hFc` using `[ev]`. Simplify using `only [ev, Function.iterate_one, hφc, map_mul, map_pow, map_neg, map_one]`. Break down `neg_one_pow_eq_or P.R.BdR n with h1 | h1` into its components or cases. Rewrite using `[h1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hFc`. Rewrite using `[h1, neg_one_mul]`. Simplify using `only [Fil, SetLike.mem_coe] at hFc ⊢`. Conclude with `neg_mem hFc`. Take `⟨κ, -, hκ⟩` from `GlobalTheory.T.unramified_of_frobeniusIterate_fixed_filZero l P AI T 2 two_pos c hφ2 hev`.
-
-Use `⟨κ, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Apply `hd` to reduce the goal to its premises. Rewrite using `[← hct, hκ, map_zero, zero_mul]`. Rewrite using `[← hκ, hct]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mooreDeterminant_eq_unramified_mul_period_alt : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (h : ℕ), 0 < h → ∀ a : Fin h → P.R.B, (∀ j, P.φB^[h] (a j) = (l : P.R.B) * a j) → (∀ (i : ℕ) j, ev P i (a j) ∈ Fil P 0) → (Matrix.of fun i j : Fin h => P.φB^[i] (a j)).det ≠ 0 → P.ιB (Matrix.of fun i j : Fin h => P.φB^[i] (a j)).det ∈ Fil P 1 → ∃ κ : ↥(MaximalUnramifiedExtension l), κ ≠ 0 ∧ (Matrix.of fun i j : Fin h => P.φB^[i] (a j)).det = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B κ * P.tB := by
   intro l _ P AI T h hh a ha _ hd hF

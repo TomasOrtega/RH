@@ -22,13 +22,13 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.FlatModel.BdryGeo
 
 /- English proof (translation)
-Establish `hne : valV T.V x ≠ 0` using `valV_ne_zero hx`. Establish `h1 : valV T.V x = 1`. Establish `h2 : WithZero.log (valV T.V x) = 0` using `by simpa [vV] using h0`. Rewrite using `[← WithZero.exp_log hne, h2, WithZero.exp_zero]`. Establish `hunit : ∀ z : T.V, (IsDiscreteValuationRing.maximalIdeal T.V).valuation T.Fr (algebraMap T.V T.Fr z) = 1 → IsUnit z` using `fun z hz => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzn` using `(IsDedekindDomain.HeightOneSpectrum.valuation_eq_one_iff_notMem _).1 hz`. Assume the negation of the conclusion as `hn`. Conclude with `hzn ((IsLocalRing.mem_maximalIdeal z).2 hn)`. Break down `ValuationRing.isInteger_or_isInteger T.V x with ⟨z, hz⟩ | ⟨z, hz⟩` into its components or cases. Take `⟨u, rfl⟩` from `hunit z (by rw [hz]; exact h1)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨u, hz⟩`. Take `⟨u, rfl⟩` from `hunit z (by`. Rewrite using `[hz, map_inv₀]`. Express the relevant statement in the definitionally equal form `(valV T.V x)⁻¹ = 1`. Rewrite using `[h1, inv_one])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_units_inv, hz, inv_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_of_vV (T : CDVR) {x : T.Fr} (hx : x ≠ 0) (h0 : vV T.V x = 0) :
     ∃ u : T.Vˣ, algebraMap T.V T.Fr (u : T.V) = x := by
@@ -52,11 +52,11 @@ theorem unit_of_vV (T : CDVR) {x : T.Fr} (hx : x ≠ 0) (h0 : vV T.V x = 0) :
     rw [map_units_inv, hz, inv_inv]
 
 /- English proof (translation)
-Establish `hinjT : Function.Injective (algebraMap T.V T.Fr)` using `IsFractionRing.injective T.V T.Fr`. Break down `ValuationRing.isInteger_or_isInteger T₀.V v with ⟨z, hz⟩ | ⟨z, hz⟩` into its components or cases. Establish `h1 : i z = u` using `hinjT (by rw [hiF, hz, hv])`. Establish `: IsUnit z` using `(isUnit_map_iff i z).1 (h1 ▸ u.isUnit)`. Take `⟨w, rfl⟩` from `this`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w, hz⟩`. Establish `h1 : i z = ((u⁻¹ : T.Vˣ) : T.V)` using `hinjT (by rw [hiF, hz, map_inv₀, hv, map_units_inv])`. Establish `: IsUnit z` using `(isUnit_map_iff i z).1 (h1 ▸ (u⁻¹).isUnit)`. Take `⟨w, rfl⟩` from `this`. Use `⟨w⁻¹, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_units_inv, hz, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem descend (T₀ T : CDVR) (i : T₀.V →+* T.V) (iF : T₀.Fr →+* T.Fr)
     (hiF : ∀ a, algebraMap T.V T.Fr (i a) = iF (algebraMap T₀.V T₀.Fr a)) (hi : Function.Injective i)
@@ -75,29 +75,27 @@ theorem descend (T₀ T : CDVR) (i : T₀.V →+* T.V) (iF : T₀.Fr →+* T.Fr)
     rw [map_units_inv, hz, inv_inv]
 
 /- English proof (translation)
-Introduce `hP1 hP2 hP3 E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν hle r₀ U x hL Z τ s la p Xw hp hcov A _ _ _ _ ξ β hξo hξβ hpA hgen g e U₁ h₁ U₂ h₂ htan heig hd1 hd2 𝔭 h𝔭 _`. Take `⟨hover, -, hpW, hpc, hXw, -, hZ, -, -⟩` from `hcov`. Establish `hβu` using `GlobalTheory.T.base_ring_units_invert_p E H l' c' W p hp hpW A β hpA`. Use `haveI : CharZero A := by`. Use `⟨fun m n hmn => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hinjβ : Function.Injective β`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `h0`. Conclude with `(hβu a h0).ne_zero ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h` using `hinjβ (show β m = β n by rw [map_natCast, map_natCast]; exact hmn)`. Conclude with `congrArg (fun t : c'.V W => ((t : c'.F) : ℂ)) h` after adjusting the coercions. Take `⟨T₀, iT, hinj, hloc⟩` from `GlobalTheory.T.exists_dvr_over_height_one A 𝔭 h𝔭`. Set `α₀ : A →+* T₀.V` to `iT.comp (algebraMap A (Localization.AtPrime 𝔭.asIdeal))`. Establish `hα₀ : Function.Injective α₀` using `hinj.comp (IsLocalization.injective _ 𝔭.asIdeal.primeCompl_le_nonZeroDivisors)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hψ : Function.Injective ((algebraMap T₀.V T₀.Fr).comp α₀)` using `(IsFractionRing.injective T₀.V T₀.Fr).comp hα₀`. Take `⟨yy₀, hyy₀⟩` from `GlobalTheory.T.generic_fibre_point_field E H Dw l' Xo' c' W Y p hp hpW hpc A ξ (hXw hgen) T₀.Fr _ hψ`. Take `⟨T, i, iF, hiF, hi, hil, io, y₀, hio, hpt⟩` from `GlobalTheory.T.integral_model_domain_over_inclusion E H Dw l l' Xo Xo' c c' W Y r ν hle hover A ξ β hξβ hβu T₀ α₀ hα₀ yy₀ hyy₀`. Use `⟨T₀, iT, hinj, hloc, fun v hv => ?_⟩` and prove the remaining obligations. Set `α : A →+* T.V` to `i.comp α₀`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφeq : iF.comp ((algebraMap T₀.V T₀.Fr).comp (iT.comp (algebraMap A _))) = (algebraMap T.V T.Fr).comp α` using `RingHom.ext fun a => (hiF _).symm`. Set `yy : Sp T.Fr ⟶ Xo'.XF c'` to `spMap iF ≫ yy₀`. Establish `hyy : yy ≫ Y.j = spMap ((algebraMap T.V T.Fr).comp α) ≫ ξ`. Rewrite using `[← hφeq, Category.assoc, hyy₀, sp_sp]`. Establish `hpt' : (letI` using `io.toAlgebra; GlobalTheory.AllWt.ptF y₀.1 = yy ≫ r) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Rewrite using `[hpt, Category.assoc]`. Take `⟨w₁, w₂, g₁, g₂, hc1, hc2, ⟨hc3, hc4⟩, ⟨u₁, hu₁⟩, ⟨u₂, hu₂⟩⟩` from `GlobalTheory.T.integral_model_conjugate_embedding E H Dw l l' Xo Xo' c c' W Y r ν hle hover τ.1 A ξ β hξβ g e U₁ h₁ U₂ h₂ htan heig hd1 hd2 T α io y₀ yy hyy hpt'`. Use `letI := io.toAlgebra`. Establish `hv'` using `hv T.Fr iF`. Rewrite `hv'` using `[hφeq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `hv' io.toAlgebra yy hyy y₀.1 y₀.2.1 hpt' w₁ w₂ g₁ g₂ hc1 hc2 hc3 hc4`. Establish `hLies : GlobalTheory.AllWt.LiesOn Z y₀.1`. Introduce `s'`. Rewrite using `[hpt']`. Apply `hZ` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs' : s' = (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum T.Fr)` using `Subsingleton.elim _ _`. Establish `e1 : (yy ≫ Y.j) s' ∈ Xw`. Rewrite using `[hyy, hs', bot_map (φ := (algebraMap T.V T.Fr).comp α) ((IsFractionRing.injective T.V T.Fr).comp (hi.comp hα₀))]`. Conclude with `hgen`. Conclude with `e1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hn` using `GlobalTheory.T.archimedean_section_integral_frame hP1 hP2 hP3 E H Dw l Xo c r₀ U x hL Z τ s T io y₀ hio hLies`. Establish `hev0 : evI y₀ s.sig ≠ 0`. Introduce `h0`. Rewrite `hn` using `[h0, nval_zero]`. Conclude with `EReal.top_ne_zero hn`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvv : vV T.V (evI y₀ s.sig) = 0`. Rewrite `hn` using `[nval_of_ne hev0]`. Establish `: ((vV T.V (evI y₀ s.sig) : ℝ) / ((1 : ℕ) : ℝ) : ℝ) = 0` using `by exact_mod_cast hn`. Simplify using `using this`. Take `⟨u₃, hu₃⟩` from `unit_of_vV T hev0 hvv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hkey : iF v = algebraMap T.V T.Fr ((u₂ * u₃ * u₁⁻¹ : T.Vˣ) : T.V)`. Establish `hne : algebraMap T.V T.Fr (u₁ : T.V) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective T.V T.Fr)).2 u₁.ne_zero`. Rewrite using `[Units.val_mul, Units.val_mul, map_mul, map_mul, hu₂, hu₃, map_units_inv, hu₁]`. Establish `: iF v * g₁.det = g₂.det * evI y₀ s.sig` using `key`. Rewrite `this`, the goal using `[← hu₁]`.
-
-Clear the denominators using the available nonvanishing facts. Take the linear combination `this`. Conclude with `descend T₀ T i iF hiF hi hil v _ hkey`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem secVal_isUnit : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.CanonicalExtensionRankOne → GlobalTheory.Published.DeRhamCanonicalExtension →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)

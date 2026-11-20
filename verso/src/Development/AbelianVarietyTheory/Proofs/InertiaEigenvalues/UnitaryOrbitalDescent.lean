@@ -14,21 +14,19 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ hψ m r M τ p lam hgen x j hx Ax hAx f hf`. Establish `hν : m.ν.IsHaarMeasure` using `m.nat.1`. Use `set Z : Set (Matrix (Fin r) (Fin r) E) := (fun X : Hn r F E => X.1.1) '' tsupport f with hZdef`. Establish `hZ : IsCompact Z` using `hf.2.image (continuous_subtype_val.comp continuous_fst)`. Take `⟨α, hαlc, hαcs, hα0, hα1⟩` from `GlobalTheory.T.exists_unitary_group_torus_cutoff F E A r τ p hgen (x : A.K) j hx Ax hAx m.ν hν Z hZ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsuppf : ∀ X, f X ≠ 0 → X.1.1 ∈ Z` using `fun X hX => ⟨X, subset_tsupport f hX, rfl⟩`. Establish `hsuppF : ∀ X, fourU M ψ f X ≠ 0 → X.1.1 ∈ Z`. Introduce `X hX`. Assume the negation of the conclusion as `hZ'`. Apply `hX` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h0 : ∀ c, f (X.1, c, X.2.2) = 0` using `fun c => by`. Assume the negation of the conclusion as `hc`. Conclude with `hZ' (hsuppf (X.1, c, X.2.2) hc)`. Simplify using `[fourU, h0]`. Establish `hFtest : IsTest (fourU M ψ f)` using `(GlobalTheory.T.partialFourier_preserves_test_fixes_unit F E r M ψ hψ).2.1 f hf`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hint : ∀ f₀ : Hn r F E → ℂ, IsTest f₀ → ∀ y : A.L, IsUnit y → (letI` using `M.mU; Integrable (fun g => f₀ (actU g (Ax, j y, lam))) M.μU) := by`. Introduce `f₀ hf₀ y hy`. Use `letI := M.mU`. Use `haveI := M.bU`. Use `haveI := M.haarU`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha : IsUnit ((x : A.K) * A.NL y)` using `x.isUnit.mul (hy.map (Algebra.norm A.K))`. Establish `hD` using `((GlobalTheory.T.jacquetRallis_invK_regular_iff_isUnit F E A r τ p lam hgen).2 ((x : A.K) * A.NL y)).2.mpr ha`. Apply the tactic sequence `obtain ⟨Ax', hAx', hinv⟩ := (GlobalTheory.T.hermitianBlock_invariants_iff_isometry F E A r τ p lam hgen).2 x j hx`. Establish `hAA : Ax' = Ax`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Take `⟨z, rfl⟩` from `j.surjective v`. Simplify using `only [Matrix.toLin'_apply, ← hAx', ← hAx]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Substitute `hAA` using the available equality. Establish `ht` using `(GlobalTheory.T.jacquetRallis_orbitalIntegrand_isLocallyConstantCompactSupport F E r M).2 f₀ hf₀ _ _ hD (hinv y)`. Conclude with `ht.1.continuous.integrable_of_hasCompactSupport ht.2`. Use `⟨A.descFn M Ax j lam α f, GlobalTheory.T.isLocallyConstantCompactSupport_descendedFunction F E A r M Ax j lam α hαlc hαcs f hf, fun y hy => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.orbitalIntegral_descended_eq_unitary F E A r M τ x j hx Ax hAx lam m.ν hν α hαlc hα0 Z hα1 f hf.1.continuous hsuppf y (hint f hf y hy)).symm`.
-
-Rewrite using `[GlobalTheory.T.fourier_descendedFunction_eq_partialFourier F E A ψ hψ r M x j hx (m.μL x) (m.sdL x) Ax lam α hαlc hαcs f hf]`. Conclude with `(GlobalTheory.T.orbitalIntegral_descended_eq_unitary F E A r M τ x j hx Ax hAx lam m.ν hν α hαlc hα0 Z hα1 _ hFtest.1.continuous hsuppF y (hint _ hFtest y hy)).symm`.
+A detailed English derivation is pending.
 -/
 theorem unitary_orbital_descent : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (m : A.Meas ψ) (r : ℕ) (M : Meas r F E) (τ : A.K) (p : Fin r → F) (lam : F), A.IsGen τ p → ∀ (x : A.Kˣ) (j : A.L ≃ₗ[E] (Fin r → E)), A.IsIsom x j → ∀ Ax : selfAdjoint (Matrix (Fin r) (Fin r) E), (∀ z, j (algebraMap A.K A.L τ * z) = Ax.1 *ᵥ j z) → ∀ f : Hn r F E → ℂ, IsTest f → ∃ φ : A.L → ℂ, IsTest φ ∧ ∀ y : A.L, IsUnit y → orbU M f (Ax, j y, lam) = A.orbL m.ν φ y ∧ orbU M (fourU M ψ f) (Ax, j y, lam) = A.orbL m.ν (fourB (m.μL x) (A.kerL ψ x) φ) y := by
   intro F E _ _ _ _ _ A ψ hψ m r M τ p lam hgen x j hx Ax hAx f hf

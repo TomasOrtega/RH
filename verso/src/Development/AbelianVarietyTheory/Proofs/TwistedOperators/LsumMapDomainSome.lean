@@ -18,7 +18,7 @@ namespace GlobalTheory.ProductForm
 variable {ι Pr Pi κ : Type} [AddCommGroup Pr] [Module ℂ Pr] [AddCommGroup Pi] [Module ℂ Pi]
 
 /- English proof (translation)
-Establish `: (Finsupp.lsum ℂ b) ∘ₗ (Finsupp.mapRange.linearMap (ρ i)) = σ i ∘ₗ Finsupp.lsum ℂ b`. Use `Finsupp.lhom_ext fun k x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Finsupp.mapRange.linearMap_apply, Finsupp.mapRange_single, Finsupp.lsum_single]`. Conclude with `LinearMap.congr_fun (hb k i) x`. Conclude with `LinearMap.congr_fun this d`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lsum_mapRange (ρ : ι → Module.End ℂ Pr) (σ : ι → Module.End ℂ Pi)
     (b : κ → Pr →ₗ[ℂ] Pi) (hb : ∀ k i, b k ∘ₗ ρ i = σ i ∘ₗ b k) (i : ι) (d : κ →₀ Pr) :
@@ -31,37 +31,33 @@ theorem lsum_mapRange (ρ : ι → Module.End ℂ Pr) (σ : ι → Module.End �
   exact LinearMap.congr_fun this d
 
 /- English proof (translation)
-It suffices to establish `h : ∀ n, ∀ c : κ →₀ Pr, c.support.card = n → Finsupp.lsum ℂ b c = 0 → c = 0 from fun c hc => h _ c rfl hc`. Introduce `n`. Use `Nat.strong_induction_on n ?_` and prove the remaining obligations. Introduce `n ih c hcard hc`. Assume the negation of the conclusion as `hne`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨k₀, hk₀⟩ : ∃ k, k ∈ c.support` from `Finsupp.support_nonempty_iff.mpr hne`. Use `set s := c.support with hs`. Set `R : Submodule ℂ (κ →₀ Pr)` to `Finsupp.supported Pr ℂ (↑s : Set κ) ⊓ LinearMap.ker (Finsupp.lsum ℂ b)`. Establish `memR : ∀ d, d ∈ R ↔ d.support ⊆ s ∧ Finsupp.lsum ℂ b d = 0`. Introduce `d`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[R, Finsupp.mem_supported]`. Establish `inj : ∀ d ∈ R, d k₀ = 0 → d = 0`. Introduce `d hd h0`. Rewrite `hd` using `[memR]`. Establish `hsub : d.support ⊆ s.erase k₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Use `Finset.mem_erase.mpr ⟨?_, hd.1 hk⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `(Finsupp.mem_support_iff.mp hk) h0`. Establish `hlt : d.support.card < n`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← hcard]`. Conclude with `lt_of_le_of_lt (Finset.card_le_card hsub) (Finset.card_erase_lt_of_mem hk₀)`. Conclude with `ih _ hlt d rfl hd.2`. Set `π : R →ₗ[ℂ] Pr` to `(Finsupp.lapply k₀) ∘ₗ R.subtype`. Establish `πinj : Function.Injective π`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `d hd`. Conclude with `Subtype.ext (inj d.1 d.2 hd)`. Establish `mapR : ∀ i, ∀ d ∈ R, Finsupp.mapRange (ρ i) (map_zero _) d ∈ R`. Introduce `i d hd`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hd`, the goal using `[memR]`. Use `⟨fun k hk => hd.1 (Finsupp.support_mapRange hk), ?_⟩` and prove the remaining obligations. Rewrite using `[lsum_mapRange ρ σ b hb, hd.2, map_zero]`. Establish `hcR : c ∈ R` using `(memR c).mpr ⟨subset_refl _, hc⟩`. Establish `hx0 : c k₀ ≠ 0` using `Finsupp.mem_support_iff.mp hk₀`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `πsurj : Function.Surjective π`. Establish `hinv : ∀ i, ∀ x ∈ LinearMap.range π, ρ i x ∈ LinearMap.range π`. Introduce and unpack `i x ⟨d, rfl⟩`. Conclude with `⟨⟨_, mapR i d.1 d.2⟩, by simp [π]⟩`. Break down `hirr _ hinv with h | h` into its components or cases.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-It suffices to derive a contradiction. Establish `: π ⟨c, hcR⟩ ∈ LinearMap.range π` using `⟨_, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `hx0 this`. Conclude with `LinearMap.range_eq_top.mp h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Set `E` to `LinearEquiv.ofBijective π ⟨πinj, πsurj⟩`. Set `T : κ → Module.End ℂ Pr` to `fun k => (Finsupp.lapply k) ∘ₗ R.subtype ∘ₗ E.symm.toLinearMap`. Establish `hE : ∀ x, ((E.symm x : R) : κ →₀ Pr) k₀ = x` using `fun x => by`. Use `E.apply_symm_apply x` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hT : ∀ k, ∀ i, T k * ρ i = ρ i * T k`. Introduce `k i`. Use extensionality with `x`. Establish `key : E.symm (ρ i x) = ⟨_, mapR i _ (E.symm x).2⟩`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `ρ i x = (Finsupp.mapRange (ρ i) (map_zero _) ((E.symm x : R) : κ →₀ Pr)) k₀`. Rewrite using `[Finsupp.mapRange_apply, hE]`. Simplify using `[T, key]`. Use `choose a ha using fun k => hschur (T k) (hT k)`. Establish `ha0 : a k₀ = 1`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : T k₀ (c k₀) = c k₀` using `hE _`. Rewrite `h1` using `[ha k₀]`. Establish `h2 : a k₀ • c k₀ = c k₀` using `by simpa using h1`. Establish `: (a k₀ - 1) • c k₀ = 0` using `by rw [sub_smul, one_smul, h2, sub_self]`. Break down `smul_eq_zero.mp this with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.mp h`. Conclude with `absurd h hx0`. Establish `hrel : ∑ k ∈ s, a k • b k = 0`. Use extensionality with `x`. Establish `hd` using `(memR _).mp (E.symm x).2`.
-
-Establish `hsum` using `hd.2`. Rewrite `hsum` using `[Finsupp.lsum_apply, Finsupp.sum_of_support_subset _ hd.1 _ (fun k _ => map_zero _)]`. Establish `hTx : ∀ k, ((E.symm x : R) : κ →₀ Pr) k = a k • x` using `fun k => by`. Use `LinearMap.congr_fun (ha k) x` as an intermediate fact. Simplify `this` using `[T]`.
-
-Simplify using `only [hTx, map_smul] at hsum`. Simplify `hsum` using `[LinearMap.sum_apply]`. Use `linearIndependent_iff'.mp hli s a hrel k₀ hk₀` as an intermediate fact. Rewrite `this` using `[ha0]`. Conclude with `one_ne_zero this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_injective (ρ : ι → Module.End ℂ Pr) (σ : ι → Module.End ℂ Pi)
     (hirr : ∀ N : Submodule ℂ Pr, (∀ i, ∀ x ∈ N, ρ i x ∈ N) → N = ⊥ ∨ N = ⊤)
@@ -173,14 +169,14 @@ def factorSpace (ρ : ι → Module.End ℂ Pr) (σ : ι → Module.End ℂ Pi) 
     · rw [map_smul, hβ, LinearMap.smul_comp]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_factorSpace {ρ : ι → Module.End ℂ Pr} {σ : ι → Module.End ℂ Pi} {q : Q →ₗ[ℂ] Pr}
     {β : V →ₗ[ℂ] Q →ₗ[ℂ] Pi} {S : Submodule ℂ V} {φ : Pr →ₗ[ℂ] Pi} :
     φ ∈ factorSpace ρ σ q β S ↔ ∃ f ∈ S, (∀ i, φ ∘ₗ ρ i = σ i ∘ₗ φ) ∧ β f = φ ∘ₗ q := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨y, rfl⟩` from `hq x`. Conclude with `LinearMap.congr_fun h y`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem comp_cancel {q : Q →ₗ[ℂ] Pr} (hq : Function.Surjective q) {φ ψ : Pr →ₗ[ℂ] Pi}
     (h : φ ∘ₗ q = ψ ∘ₗ q) : φ = ψ := by
@@ -193,14 +189,14 @@ def ev (F : Submodule ℂ (Pr →ₗ[ℂ] Pi)) : Pr ⊗[ℂ] F →ₗ[ℂ] Pi :=
     (fun _ _ _ => by simp) (fun _ _ _ => by simp) (fun _ _ _ => by simp) (fun _ _ _ => by simp))
 
 /- English proof (translation)
-Simplify using `[ev]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem ev_tmul (F : Submodule ℂ (Pr →ₗ[ℂ] Pi)) (x : Pr) (φ : F) :
     ev F (x ⊗ₜ φ) = (φ : Pr →ₗ[ℂ] Pi) x := by
   simp [ev]
 
 /- English proof (translation)
-Use `Finsupp.lhom_ext fun k x => ?_` and prove the remaining obligations. Simplify using `[TensorProduct.equivFinsuppOfBasisRight_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ev_comp_symm (F : Submodule ℂ (Pr →ₗ[ℂ] Pi)) [DecidableEq κ] (b : Module.Basis κ ℂ F) :
     ev F ∘ₗ (TensorProduct.equivFinsuppOfBasisRight (M := Pr) b).symm.toLinearMap =
@@ -209,9 +205,9 @@ theorem ev_comp_symm (F : Submodule ℂ (Pr →ₗ[ℂ] Pi)) [DecidableEq κ] (b
   simp [TensorProduct.equivFinsuppOfBasisRight_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hspan, Submodule.span_le]`. Introduce and unpack `y ⟨f, hf, P, rfl⟩`. Take `⟨φ, h1, h2⟩` from `hS f hf`. Use `⟨q P ⊗ₜ ⟨φ, hF ⟨f, hf, h1, h2⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[ev_tmul]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(LinearMap.congr_fun h2 P).symm`.
+A detailed English derivation is pending.
 -/
 theorem ev_surjective (ρ : ι → Module.End ℂ Pr) (σ : ι → Module.End ℂ Pi) (q : Q →ₗ[ℂ] Pr)
     (β : V →ₗ[ℂ] Q →ₗ[ℂ] Pi) (S : Submodule ℂ V) (F : Submodule ℂ (Pr →ₗ[ℂ] Pi))
@@ -227,9 +223,9 @@ theorem ev_surjective (ρ : ι → Module.End ℂ Pr) (σ : ι → Module.End �
   exact (LinearMap.congr_fun h2 P).symm
 
 /- English proof (translation)
-Set `b` to `Module.Basis.ofVectorSpace ℂ F`. Set `E` to `TensorProduct.equivFinsuppOfBasisRight (M := Pr) b`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `t ht`. Establish `hli : LinearIndependent ℂ (fun k => ((b k : F) : Pr →ₗ[ℂ] Pi))` using `b.linearIndependent.map' F.subtype F.ker_subtype`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : Finsupp.lsum ℂ (fun k => ((b k : F) : Pr →ₗ[ℂ] Pi)) (E t) = 0`. Rewrite using `[← ev_comp_symm F b, LinearMap.comp_apply, LinearEquiv.coe_coe, E.symm_apply_apply, ht]`. Use `eval_injective ρ σ hirr hschur _ hli (fun k i => hF _ (b k).2 i) (E t) h0` as an intermediate fact. Simplify using `using congrArg E.symm this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ev_injective (ρ : ι → Module.End ℂ Pr) (σ : ι → Module.End ℂ Pi)
     (hirr : ∀ N : Submodule ℂ Pr, (∀ i, ∀ x ∈ N, ρ i x ∈ N) → N = ⊥ ∨ N = ⊤)
@@ -257,7 +253,7 @@ variable {Q V Q' V' : Type} [AddCommGroup Q] [Module ℂ Q] [AddCommGroup V] [Mo
   [AddCommGroup Q'] [Module ℂ Q'] [AddCommGroup V'] [Module ℂ V']
 
 /- English proof (translation)
-Establish `: Finsupp.lsum ℂ v ∘ₗ Finsupp.lmapDomain Pr ℂ some = Finsupp.lsum ℂ (fun k => v (some k))` using `Finsupp.lhom_ext fun k x => by simp`. Conclude with `LinearMap.congr_fun this c`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lsum_mapDomain_some (v : Option κ → Pr →ₗ[ℂ] Pi) (c : κ →₀ Pr) :
     Finsupp.lsum ℂ v (c.mapDomain some) = Finsupp.lsum ℂ (fun k => v (some k)) c := by
@@ -266,21 +262,19 @@ theorem lsum_mapDomain_some (v : Option κ → Pr →ₗ[ℂ] Pi) (c : κ →₀
   exact LinearMap.congr_fun this c
 
 /- English proof (translation)
-Introduce `φ hφ`. Assume the negation of the conclusion as `hφ'`. Use `set F' := factorSpace ρ σ q' β' S'`. Set `b` to `Module.Basis.ofVectorSpace ℂ F'`. Set `b' : _ → Pr →ₗ[ℂ] Pi` to `fun k => ((b k : F') : Pr →ₗ[ℂ] Pi)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, φ x ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hφ' (by rw [show φ = 0 from LinearMap.ext h]; exact F'.zero_mem)`. Take `⟨t, ht⟩` from `ev_surjective ρ σ q' β' S' F' le_rfl hS' hspan' (φ x)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `E` to `TensorProduct.equivFinsuppOfBasisRight (M := Pr) b`. Establish `hc' : Finsupp.lsum ℂ b' (E t) = φ x`. Rewrite using `[← ev_comp_symm F' b, LinearMap.comp_apply, LinearEquiv.coe_coe, E.symm_apply_apply, ht]`. Set `v : Option _ → Pr →ₗ[ℂ] Pi` to `fun o => o.elim φ b'`. Establish `hspanb : Submodule.span ℂ (Set.range b') = F'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: b' = F'.subtype ∘ b` using `rfl`. Rewrite using `[this, Set.range_comp, Submodule.span_image, b.span_eq, Submodule.map_subtype_top]`. Establish `hli : LinearIndependent ℂ v`. Rewrite using `[linearIndependent_option]`. Use `⟨b.linearIndependent.map' F'.subtype F'.ker_subtype, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `φ ∉ Submodule.span ℂ (Set.range b')`. Rewrite using `[hspanb]`. Conclude with `hφ'`. Establish `hv : ∀ o i, v o ∘ₗ ρ i = σ i ∘ₗ v o`. Introduce and unpack `(_ | k) i`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, -, h1, -⟩` from `hφ`. Conclude with `h1 i`. Take `⟨f, -, h1, -⟩` from `(mem_factorSpace.mp (b k).2)`. Conclude with `h1 i`. Establish `hrel : Finsupp.lsum ℂ v (Finsupp.single none x - (E t).mapDomain some) = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_sub, Finsupp.lsum_single, lsum_mapDomain_some]`. Express the relevant statement in the definitionally equal form `φ x - Finsupp.lsum ℂ b' (E t) = 0`. Rewrite using `[hc', sub_self]`. Establish `h0` using `congrArg (fun c : Option _ →₀ Pr => c none) (eval_injective ρ σ hirr hschur v hli hv _ hrel)`. Simplify using `only [Finsupp.coe_sub, _root_.Pi.sub_apply, Finsupp.single_eq_same, Finsupp.coe_zero, _root_.Pi.zero_apply] at h0`.
-
-Rewrite `h0` using `[Finsupp.mapDomain_notin_range _ _ (by simp), sub_zero]`. Conclude with `hx (by rw [h0, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem factorSpace_le (ρ : ι → Module.End ℂ Pr) (σ : ι → Module.End ℂ Pi)
     (hirr : ∀ N : Submodule ℂ Pr, (∀ i, ∀ x ∈ N, ρ i x ∈ N) → N = ⊥ ∨ N = ⊤)
@@ -332,13 +326,11 @@ theorem factorSpace_le (ρ : ι → Module.End ℂ Pr) (σ : ι → Module.End �
   exact hx (by rw [h0, map_zero])
 
 /- English proof (translation)
-Establish `hmem : ∀ f : S, ∃ φ ∈ factorSpace ρ σ q β S, β f = φ ∘ₗ q` using `fun f =>`. Set `⟨φ, h1, h2⟩` to `hS f f.2`. Use the proof step `⟨φ, ⟨f, f.2, h1, h2⟩, h2⟩`. Use `choose g hg hgβ using hmem`. Set `r₀ : S →ₗ[ℂ] F` to `{ toFun := fun f => ⟨g f, hF (hg f)⟩ map_add' := fun f f' => by ext1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `g (f + f') = g f + g f'`. Apply `comp_cancel hq` to reduce the goal to its premises. Rewrite using `[LinearMap.add_comp, ← hgβ, ← hgβ, ← hgβ, Submodule.coe_add, map_add]`. Use the proof step `map_smul' := fun a f => by ext1`. Express the relevant statement in the definitionally equal form `g (a • f) = a • g f`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `comp_cancel hq` to reduce the goal to its premises. Rewrite using `[LinearMap.smul_comp, ← hgβ, ← hgβ, Submodule.coe_smul, map_smul] }`. Take `⟨r, hr⟩` from `LinearMap.exists_extend r₀`. Use `⟨r, fun f hf => ?_⟩` and prove the remaining obligations. Establish `: r f = r₀ ⟨f, hf⟩` using `LinearMap.congr_fun hr ⟨f, hf⟩`.
-
-Rewrite using `[this]`. Conclude with `(hgβ ⟨f, hf⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift (ρ : ι → Module.End ℂ Pr) (σ : ι → Module.End ℂ Pi) (q : Q →ₗ[ℂ] Pr)
     (hq : Function.Surjective q) (β : V →ₗ[ℂ] Q →ₗ[ℂ] Pi) (S : Submodule ℂ V)
@@ -371,15 +363,15 @@ theorem exists_lift (ρ : ι → Module.End ℂ Pr) (σ : ι → Module.End ℂ 
 end GlobalTheory.ProductForm
 
 /- English proof (translation)
-Introduce `ι Pr Pi Q Q' V V' _ _ _ _ _ _ _ _ _ _ _ _ ρ σ q q' β β' S S' hq hq' hirr hschur hS hS' hspan hspan'`. Set `F` to `GlobalTheory.ProductForm.factorSpace ρ σ q β S`. Establish `hle : GlobalTheory.ProductForm.factorSpace ρ σ q' β' S' ≤ F` using `GlobalTheory.ProductForm.factorSpace_le ρ σ hirr hschur q' β' S' q β S hS hspan`. Establish `hge : F ≤ GlobalTheory.ProductForm.factorSpace ρ σ q' β' S'` using `GlobalTheory.ProductForm.factorSpace_le ρ σ hirr hschur q β S q' β' S' hS' hspan'`. Establish `hFeq : ∀ φ ∈ F, ∀ i, φ ∘ₗ ρ i = σ i ∘ₗ φ` using `fun φ hφ i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f, -, h1, -⟩` from `GlobalTheory.ProductForm.mem_factorSpace.mp hφ`. Conclude with `h1 i`. Take `⟨r, hr⟩` from `GlobalTheory.ProductForm.exists_lift ρ σ q hq β S F le_rfl hS`. Take `⟨r', hr'⟩` from `GlobalTheory.ProductForm.exists_lift ρ σ q' hq' β' S' F hle hS'`. Set `e : Pr ⊗[ℂ] F ≃ₗ[ℂ] Pi` to `LinearEquiv.ofBijective (GlobalTheory.ProductForm.ev F) ⟨GlobalTheory.ProductForm.ev_injective ρ σ hirr hschur F hFeq, GlobalTheory.ProductForm.ev_surjective ρ σ q β S F le_rfl hS hspan⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ModuleCat.of ℂ F, r, r', e, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Take `⟨f, hf, -, hβ⟩` from `GlobalTheory.ProductForm.mem_factorSpace.mp (x : F).2`. Conclude with `⟨f, hf, Subtype.ext (GlobalTheory.ProductForm.comp_cancel hq ((hr f hf).trans hβ))⟩`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, -, hβ⟩` from `GlobalTheory.ProductForm.mem_factorSpace.mp (hge (x : F).2)`. Conclude with `⟨f, hf, Subtype.ext (GlobalTheory.ProductForm.comp_cancel hq' ((hr' f hf).trans hβ))⟩`. Introduce `f hf P`. Express the relevant statement in the definitionally equal form `β f P = GlobalTheory.ProductForm.ev F (q P ⊗ₜ r f)`. Rewrite using `[GlobalTheory.ProductForm.ev_tmul, ← hr f hf]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `f hf P`. Express the relevant statement in the definitionally equal form `β' f P = GlobalTheory.ProductForm.ev F (q' P ⊗ₜ r' f)`. Rewrite using `[GlobalTheory.ProductForm.ev_tmul, ← hr' f hf]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SquareLM.productForm : ∀ (ι Pr Pi Q Q' V V' : Type) [AddCommGroup Pr] [Module ℂ Pr] [AddCommGroup Pi] [Module ℂ Pi] [AddCommGroup Q] [Module ℂ Q]
   [AddCommGroup Q'] [Module ℂ Q'] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']

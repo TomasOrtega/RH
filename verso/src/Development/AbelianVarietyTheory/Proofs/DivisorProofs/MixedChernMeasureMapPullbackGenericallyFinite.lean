@@ -22,27 +22,23 @@ set_option autoImplicit false
 noncomputable section
 
 /- English proof (translation)
-Introduce `F _ X Y _ _ p q σ D hp hD hq π hπ hgen hdeg L ε`. Use `haveI := CxPts.t2Space_cxPts_of_isProjOver σ hp`. Use `haveI := CxPts.t2Space_cxPts_of_isProjOver σ hq`. Use `haveI := CxPts.secondCountableTopology_of_isProjOver σ hp`. Use `haveI := CxPts.secondCountableTopology_of_isProjOver σ hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsLocallyNoetherian X := by`. Take `⟨N, i, _, rfl⟩` from `hp`. Use `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str F N` as an intermediate fact. Conclude with `LocallyOfFiniteType.isLocallyNoetherian (i ≫ PSpace.str F N)`. Take `⟨U, hU, hfibU, hchU⟩` from `GlobalTheory.T.exists_open_complexPoints_covering_generic_degree F X Y p q σ D hp hq π hπ hgen hdeg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨U', hU', hcharts⟩` from `GlobalTheory.T.exists_holomorphic_charts_genericPoint_projective F X p σ D hp hD`. Use `set m := ptMap π hπ σ with hm_def`. Use `set Z : Set X := ((U ⊓ U' : X.Opens) : Set X)ᶜ with hZ_def`. Establish `hZ : IsClosed Z` using `(U ⊓ U').isOpen.isClosed_compl`. Establish `hgZ : genericPoint X ∉ Z` using `fun h => h ⟨hU, hU'⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `set T : Set (CxPts p σ) := (ptsIn p σ (U ⊓ U'))ᶜ with hT_def`. Establish `hTset : T = {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ Z}`. Use extensionality with `y`. Simplify using `only [hT_def, hZ_def, mem_compl_iff, mem_setOf_eq, mem_ptsIn]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmT : m ⁻¹' T = {z : CxPts q σ | z.1 (IsLocalRing.closedPoint ℂ) ∈ π ⁻¹' Z}`. Rewrite using `[hTset]`. Use extensionality with `z`. Simplify using `only [mem_preimage, mem_setOf_eq, hm_def, ptMap, PtsOver.map_val]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hZ' : IsClosed (π ⁻¹' Z : Set Y)` using `hZ.preimage π.continuous`. Establish `hgZ' : genericPoint Y ∉ (π ⁻¹' Z : Set Y)`. Simplify using `only [mem_preimage, hgen]`. Conclude with `hgZ`. Establish `hm : Continuous m` using `PtsOver.continuous_map π hπ (spMap σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.GlueCoverNull.map_glueMeas_of_cover D (CxPts p σ) (CxPts q σ) (AlgChart p σ D) (AlgChart q σ D) (fun c => c.e) (fun c y => ENNReal.ofReal ((ε : ℤ) * dens L c y)) (fun c => c.e) (fun c y => ENNReal.ofReal ((ε : ℤ) * dens (fun i => (L i).pull π hπ) c y)) (fun i j => i. …` and prove the remaining obligations. Introduce `i j y hi hj`. Rewrite using `[GlobalTheory.T.mixedChernFormDensity_change_of_chart F X p σ D L i j y hi hj, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j y hi hj`. Rewrite using `[GlobalTheory.T.mixedChernFormDensity_change_of_chart F Y q σ D _ i j y hi hj, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hTset]`. Conclude with `GlobalTheory.ChernNull.chart_null_field F X p σ D Z hZ hgZ c`. Introduce `c`. Rewrite using `[hmT]`. Conclude with `GlobalTheory.ChernNull.chart_null_field F Y q σ D _ hZ' hgZ' c`.
-
-Introduce `x hx`. Establish `hx' : x ∈ ptsIn p σ (U ⊓ U')` using `not_not.1 hx`. Conclude with `hfibU x (mem_ptsIn_inf.1 hx').1`. Introduce `z hz`. Establish `hz'` using `mem_ptsIn_inf.1 (not_not.1 hz : m z ∈ ptsIn p σ (U ⊓ U'))`.
-
-Take `⟨c, hc⟩` from `hcharts (m z) hz'.2`. Take `⟨c', hzc', hw⟩` from `hchU z hz'.1 c hc`. Use `⟨c, c', hzc', hc, fun w hwc' _ => ⟨(hw w hwc').2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.mixedChernFormDensity_pullback_matching_charts F X Y p q σ D π hπ L c c' hw w hwc']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mix.map_part_pull_of_genFinite : ∀ (F : Type) [Field F] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp F) (q : Y ⟶ Sp F) (σ : F →+* ℂ) (D : ℕ), IsProjOver p → topologicalKrullDim X = (D : ℕ) → IsProjOver q → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q), π (genericPoint Y) = genericPoint X → π.residueDegree (genericPoint Y) ≠ 0 → ∀ (L : Fin D → MLine p σ) (ε : ℤˣ), Measure.map (ptMap π hπ σ) (part (fun i => (L i).pull π hπ) ε) = (π.residueDegree (genericPoint Y) : ENNReal) • part L ε := by
   intro F _ X Y _ _ p q σ D hp hD hq π hπ hgen hdeg L ε

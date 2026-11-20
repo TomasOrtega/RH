@@ -26,7 +26,7 @@ noncomputable def proj (U : Submodule D.host.E (VS D).V) : (VS D).V →ₗ[D.hos
   Fintype.linearCombination D.host.E (bU U) ∘ₗ (gram U)⁻¹.mulVecLin ∘ₗ pairs U
 
 /- English proof (translation)
-Simplify using `only [proj, pairs, LinearMap.comp_apply, Matrix.mulVecLin_apply, Fintype.linearCombination_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem proj_apply (U : Submodule D.host.E (VS D).V) (x : (VS D).V) :
     proj U x = ∑ i, (Matrix.mulVec (gram U)⁻¹ (fun j => (VS D).hT (bU U j) x)) i • bU U i := by
@@ -49,7 +49,7 @@ noncomputable def projP (U : Submodule D.host.E (VS D).V) : Vp D p →ₗ[(D.s.a
     ((gram U)⁻¹.map (D.s.atP p).ιE).mulVecLin ∘ₗ pairsP Z p U
 
 /- English proof (translation)
-Simplify using `only [projP, pairsP, LinearMap.comp_apply, Matrix.mulVecLin_apply, Fintype.linearCombination_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem projP_apply (U : Submodule D.host.E (VS D).V) (y : Vp D p) :
     projP Z p U y = ∑ i, (Matrix.mulVec ((gram U)⁻¹.map (D.s.atP p).ιE) (fun j => (locH Z p).h y (baseChange₂ D p (bU U j)))) i •
@@ -58,9 +58,9 @@ theorem projP_apply (U : Submodule D.host.E (VS D).V) (y : Vp D p) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[proj_apply, projP_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[baseChange_smul₂, RingHom.map_mulVec]`. Use `congr 2`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `_ = LocFacts₂ Z.M p (baseChange₂ D p x) (baseChange₂ D p (bU U j))`. Rewrite using `[baseChangeAt_form Z.M p (Z.hcj p)]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem baseChangeAt_proj (U : Submodule D.host.E (VS D).V) (x : (VS D).V) :
     baseChange₂ D p (proj U x) = projP Z p U (baseChange₂ D p x) := by
@@ -79,7 +79,7 @@ namespace GlobalTheory.FrameProj
 variable {D : D7} (Z : LocDat D) (p : PlF D)
 
 /- English proof (translation)
-Unfold `lattice₂`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨x, h hx, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem localLattice_mono {Λ₁ Λ₂ : LV D} (h : Λ₁ ≤ Λ₂) : lattice₂ D Z.M p Λ₁ ≤ lattice₂ D Z.M p Λ₂ := by
   unfold lattice₂
@@ -88,9 +88,9 @@ theorem localLattice_mono {Λ₁ Λ₂ : LV D} (h : Λ₁ ≤ Λ₂) : lattice�
   exact ⟨x, h hx, rfl⟩
 
 /- English proof (translation)
-Use `le_antisymm ?_ (sup_le (localLattice_mono Z p le_sup_left) (localLattice_mono Z p le_sup_right))` and prove the remaining obligations. Rewrite using `[lattice₂, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hx`. Rewrite using `[map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left (Submodule.subset_span ⟨a, ha, rfl⟩)) (Submodule.mem_sup_right (Submodule.subset_span ⟨b, hb, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem localLattice_sup (Λ₁ Λ₂ : LV D) : lattice₂ D Z.M p (Λ₁ ⊔ Λ₂) = lattice₂ D Z.M p Λ₁ ⊔ lattice₂ D Z.M p Λ₂ := by
   refine le_antisymm ?_ (sup_le (localLattice_mono Z p le_sup_left) (localLattice_mono Z p le_sup_right))
@@ -102,7 +102,7 @@ theorem localLattice_sup (Λ₁ Λ₂ : LV D) : lattice₂ D Z.M p (Λ₁ ⊔ Λ
     (Submodule.mem_sup_right (Submodule.subset_span ⟨b, hb, rfl⟩))
 
 /- English proof (translation)
-Unfold `lattice₂`. Rewrite using `[Submodule.map_span, Submodule.map_coe, Set.image_image, Set.image_image]`. Use `congr 1`. Use `Set.image_congr fun x _ => ?_` and prove the remaining obligations. Conclude with `hf x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem localLattice_map (f : (VS D).V →ₗ[D.host.E] (VS D).V) (fp : Vp D p →ₗ[(D.s.atP p).Ep] Vp D p)
     (hf : ∀ x, baseChange₂ D p (f x) = fp (baseChange₂ D p x)) (Λ : LV D) :
@@ -120,12 +120,12 @@ namespace GlobalTheory.FrameProj
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `(Module.finBasis D.host.E U i).2`.
+A detailed English derivation is pending.
 -/
 theorem bU_mem (U : Submodule D.host.E (VS D).V) (i) : bU U i ∈ U := (Module.finBasis D.host.E U i).2
 
 /- English proof (translation)
-Use `⟨(Module.finBasis D.host.E U).repr ⟨u, hu⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Subtype.val ((Module.finBasis D.host.E U).sum_repr ⟨u, hu⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h`. Conclude with `h.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sum_bU (U : Submodule D.host.E (VS D).V) {u : (VS D).V} (hu : u ∈ U) :
     ∃ c : Fin (Module.finrank D.host.E U) → D.host.E, u = ∑ i, c i • bU U i := by
@@ -135,14 +135,14 @@ theorem exists_sum_bU (U : Submodule D.host.E (VS D).V) {u : (VS D).V} (hu : u �
   exact h.symm
 
 /- English proof (translation)
-Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_orth_iff (U : Submodule D.host.E (VS D).V) (y : (VS D).V) :
     y ∈ orth (VS D) U ↔ ∀ u ∈ U, (VS D).hT u y = 0 := by
   simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker]
 
 /- English proof (translation)
-Rewrite using `[mem_orth_iff]`. Introduce `u hu`. Take `⟨c, rfl⟩` from `exists_sum_bU U hu`. Simplify using `[map_sum, LinearMap.sum_apply, h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem mem_orth_of_bU (U : Submodule D.host.E (VS D).V) (y : (VS D).V)
     (h : ∀ i, (VS D).hT (bU U i) y = 0) : y ∈ orth (VS D) U := by
@@ -152,13 +152,13 @@ theorem mem_orth_of_bU (U : Submodule D.host.E (VS D).V) (y : (VS D).V)
   simp [map_sum, LinearMap.sum_apply, h]
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_ne_zero]`. Introduce `hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Apply `hv0` to reduce the goal to its premises. Establish `hyU : (∑ j, v j • bU U j) ∈ U` using `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (bU_mem U j)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hyo : (∑ j, v j • bU U j) ∈ orth (VS D) U`. Apply `mem_orth_of_bU` to reduce the goal to its premises. Introduce `i`. Establish `h1 : (VS D).hT (bU U i) (∑ j, v j • bU U j) = ∑ j, gram U i j * v j`. Simplify using `only [map_sum, map_smul, smul_eq_mul, gram, Matrix.of_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[h1]`. Simplify `congrFun hv i` using `[Matrix.mulVec, dotProduct]`. Establish `hy0` using `hU _ hyU hyo`. Establish `hli` using `Fintype.linearIndependent_iff.mp (Module.finBasis D.host.E U).linearIndependent`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Use `hli v ?_ j` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hy0` using `[Submodule.coe_sum, Submodule.coe_smul, bU]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gram_det_isUnit (U : Submodule D.host.E (VS D).V)
     (hU : ∀ y ∈ U, y ∈ orth (VS D) U → y = 0) : IsUnit (gram U).det := by
@@ -183,16 +183,16 @@ theorem gram_det_isUnit (U : Submodule D.host.E (VS D).V)
   simpa [Submodule.coe_sum, Submodule.coe_smul, bU] using hy0
 
 /- English proof (translation)
-Rewrite using `[proj_apply]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (bU_mem U i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_mem (U : Submodule D.host.E (VS D).V) (x : (VS D).V) : proj U x ∈ U := by
   rw [proj_apply]
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (bU_mem U i)
 
 /- English proof (translation)
-Apply `mem_orth_of_bU` to reduce the goal to its premises. Introduce `k`. Establish `key : ∀ w : Fin (Module.finrank D.host.E U) → D.host.E, Matrix.mulVec (gram U) w k = ∑ i, w i * (VS D).hT (bU U k) (bU U i)`. Introduce `w`. Simplify using `only [Matrix.mulVec, dotProduct, gram, Matrix.of_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite using `[map_sub, proj_apply, map_sum, sub_eq_zero]`. Simplify using `only [map_smul, smul_eq_mul]`. Rewrite using `[← key (Matrix.mulVec (gram U)⁻¹ fun j => (VS D).hT (bU U j) x), Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hG, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_proj_mem_orth (U : Submodule D.host.E (VS D).V) (hG : IsUnit (gram U).det) (x : (VS D).V) :
     x - proj U x ∈ orth (VS D) U := by
@@ -214,11 +214,9 @@ namespace GlobalTheory.FrameProj
 variable {D : D7} (Z : LocDat D) (p : PlF D)
 
 /- English proof (translation)
-Establish `hf : ∀ a, frame F a ∈ Submodule.span D.host.E (Set.range (frame F))` using `fun a => Submodule.subset_span ⟨a, rfl⟩`. Use `show F.fl.X ⊔ Submodule.span D.host.E {F.fl.z} ≤ _`. Use `sup_le ?_ ?_` and prove the remaining obligations. Use `show Submodule.span D.host.E (Set.range F.fl.e) ≤ _`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Use `hf a.castSucc using 1` and compare the differences between its conclusion and the goal. Simplify using `[frame, Formalism.MainNotions.S.FlagG.fvec]`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Use `hf (Fin.last _) using 1` and compare the differences between its conclusion and the goal.
-
-Simplify using `[frame, Formalism.MainNotions.S.FlagG.fvec]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Xplus_le_span {T : D.host.E} (F : LFlag (VS D) D.R.rS T) :
     Xplus F ≤ Submodule.span D.host.E (Set.range (frame F)) := by
@@ -262,23 +260,19 @@ def commSub (P : Vp D p →ₗ[(D.s.atP p).Ep] Vp D p) : Subgroup (Vp D p ≃ₗ
     simp
 
 /- English proof (translation)
-Establish `hunit : ∀ a, IsUnit (frFac Z.δ p a)`. Introduce `a`. Establish `hδ : Z.δ p ≠ 0` using `(Z.agree p).2.1`. Establish `hu : ((uP p : ℚ) : D.host.E) ≠ 0`. Rewrite using `[Rat.cast_ne_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `uP gpart`. Use `div_ne_zero ?_ ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_ne_zero] split_ifs`. Conclude with `(D.host.g_prime 0).ne_zero`. Conclude with `(D.host.g_prime 1).ne_zero`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `one_ne_zero`. Rewrite using `[Nat.cast_ne_zero]`. Conclude with `mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`. Establish `hx : IsUnit (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Z.δ p) * (D.s.atP p).ιE (uP p : D.host.E))` using `((isUnit_iff_ne_zero.mpr hδ).map _).mul ((isUnit_iff_ne_zero.mpr hu).map _)`. Take `⟨w, hw⟩` from `hx.pow (D.R.rS - a.val)`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities.
 
-Unfold `frFac`. Rewrite using `[← hw, Ring.inverse_unit]`. Conclude with `Units.isUnit _`. Use `revert y`. It suffices to establish `h : FP.UW0 ≤ commSub p (projP Z p (Xplus F ⊔ Xplus F')) from fun y => h hg y`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[LocNG.FPair.UW0, Subgroup.closure_le]`. Introduce and unpack `g ⟨hu, hfix⟩ y`. Establish `hfixU : Xplus F ⊔ Xplus F' ≤ fixSub p g`. Use `sup_le ((Xplus_le_span F).trans (Submodule.span_le.mpr ?_)) ((Xplus_le_span F').trans (Submodule.span_le.mpr ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩ show g (baseChange₂ D p (frame F a)) = baseChange₂ D p (frame F a)`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `(hfix a).1`. Simplify using `only [hA, map_smul] at h1`. Conclude with `(hunit a).smul_left_cancel.mp h1`. Introduce and unpack `_ ⟨a, rfl⟩ show g (baseChange₂ D p (frame F' a)) = baseChange₂ D p (frame F' a)`. Establish `h1` using `(hfix a).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [hB, map_smul] at h1`. Conclude with `(hunit a).smul_left_cancel.mp h1`. Establish `hb : ∀ i, g (baseChange₂ D p (bU (Xplus F ⊔ Xplus F') i)) = baseChange₂ D p (bU (Xplus F ⊔ Xplus F') i)` using `fun i => hfixU (bU_mem _ i)`. Rewrite using `[projP_apply, projP_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_smul, hb i]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Establish `h2` using `hu y (baseChange₂ D p (bU (Xplus F ⊔ Xplus F') j))`. Rewrite `h2` using `[hb j]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localOrthogonalProj_comm_complementUnitary {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (FP : LocNG.FPair (locH Z p) D.R.rS)
@@ -340,9 +334,9 @@ namespace GlobalTheory.FrameProj
 variable {D : D7} (Z : LocDat D) (p : PlF D)
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.mp hv`. Unfold `LocNG.img at hw ⊢`. Take `⟨l, hl, rfl⟩` from `Submodule.mem_map.mp hw`. Use `Submodule.mem_map.mpr ⟨Qp l, hL (Submodule.mem_map_of_mem hl), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using (hc l).symm`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem img_map_le (Qp : Vp D p →ₗ[(D.s.atP p).Ep] Vp D p) (h : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p)
     (hc : ∀ y, Qp (h y) = h (Qp y)) (L₀ : Submodule (Z.M p).L.O (Vp D p))

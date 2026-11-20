@@ -10,11 +10,11 @@ noncomputable section
 namespace GlobalTheory.TwV.DelA
 
 /- English proof (translation)
-Establish `hB : (A.transpose.submatrix Fin.rev id).det = sgRev n * A.det` using `by show (A.transpose.submatrix (Fin.revPerm : Equiv.Perm (Fin n)) id).det = _`. Rewrite using `[Matrix.det_permute, Matrix.det_transpose, sgRev]`. Establish `hI : (A.transpose.submatrix Fin.rev id)⁻¹ = A⁻¹.transpose.submatrix id Fin.rev` using `by show (A.transpose.submatrix (Fin.revPerm : Equiv.Perm (Fin n)) (Equiv.refl _))⁻¹ = _`. Rewrite using `[Matrix.inv_submatrix_equiv, Matrix.transpose_nonsing_inv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hne : (A.transpose.submatrix Fin.rev id).det ≠ 0`. Rewrite using `[hB]`. Use `mul_ne_zero ?_ h` and prove the remaining obligations. Unfold `sgRev`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n))) with h1 | h1 <;> rw [h1] <;> norm_num`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← hI, ← hB, Matrix.inv_def, smul_smul, Ring.inverse_eq_inv', mul_inv_cancel₀ hne, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adjugate_transpose_rev {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (h : A.det ≠ 0) :
     (A.transpose.submatrix Fin.rev id).adjugate = (sgRev n * A.det) • (A⁻¹.transpose.submatrix id Fin.rev) := by
@@ -39,21 +39,21 @@ namespace GlobalTheory.TwV.DelA
 variable {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau)
 
 /- English proof (translation)
-Apply the tactic sequence `cases j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem posJ_blkJ (j : ℕ) (x : Σ v : Fin (X.Fl.Pj j).nV, Fin ((X.Fl.Pj j).n' v) × (Fin ((X.Fl.Pj j).m + 1) × Fin ((X.Fl.Pj j).m + 1))) :
     posJ X D pos j ⟨x.1, x.2.1⟩ = pos (blkJ X j x) := by
   cases j <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `cases j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem levelIndex_row_val_eq (j : ℕ) (x : Σ v : Fin (X.Fl.Pj j).nV, Fin ((X.Fl.Pj j).n' v) × (Fin ((X.Fl.Pj j).m + 1) × Fin ((X.Fl.Pj j).m + 1))) :
     ((idxJ X j x).2.2.1 : ℕ) = x.2.2.1 := by
   cases j <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `cases j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem levelIndex_col_val_eq (j : ℕ) (x : Σ v : Fin (X.Fl.Pj j).nV, Fin ((X.Fl.Pj j).n' v) × (Fin ((X.Fl.Pj j).m + 1) × Fin ((X.Fl.Pj j).m + 1))) :
     ((idxJ X j x).2.2.2 : ℕ) = x.2.2.2 := by
@@ -64,19 +64,19 @@ def kOdd {j : ℕ} (hN : RankTie X D j) (d : D.what₂.Tau → Matrix (Fin (D.R.
   (zT X D pos f' τ).det ^ ((D.R.N j : ℤ) - 1) * sgRev (D.R.N j) * (dfr X D hN d f' τ).det
 
 /- English proof (translation)
-Take `⟨_, hE, hO⟩` from `GlobalTheory.T.operatorMatrices_at_complexPoint X D pos Kc ι j hN d f' hf hd v s`. Establish `hsym : IsOddPos (pos.symm (pos ⟨v, s⟩)).2 ↔ IsOddPos s`. Establish `hb : ∀ b : (Σ v : X.Pl, Fin (X.G.P.n' v)), b = ⟨v, s⟩ → (IsOddPos b.2 ↔ IsOddPos s)`. Introduce and unpack `_ rfl`. Conclude with `Iff.rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Unfold both sides to obtain the same proposition, which implies itself.
 
-Conclude with `hb _ (Equiv.symm_apply_apply _ _)`. Distinguish the cases in `ho : IsOddPos s`. Rewrite using `[if_pos ho, ySub_odd X Kc j v s ho]`. Establish `h1` using `RingHom.map_adjugate (evD X D pos ι hN d f') (YtMat X Kc j v s)`. Simplify using `only [RingHom.mapMatrix_apply] at h1`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `congrFun (congrFun h1 a) t`. Rewrite `h2` using `[Matrix.map_apply]`. Rewrite using `[h2, hO ho, Matrix.adjugate_smul, Fintype.card_fin, show (Fin.cast hN.1.symm : Fin (NN X.G.P.m X.t j) → Fin (D.R.N j)) = ⇑(finCongr hN.1.symm) from rfl, Matrix.adjugate_submatrix_equiv_self]`. Establish `h3` using `RingHom.map_adjugate ι ((dfr X D hN d f' (pos ⟨v, s⟩)).transpose.submatrix Fin.rev id)`. Simplify using `only [RingHom.mapMatrix_apply] at h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h3, adjugate_transpose_rev _ (hd _)]`. Establish `hz : zT X D pos (dfr X D hN d f') (pos ⟨v, s⟩) = ((dfr X D hN d f' (pos ⟨v, s⟩))⁻¹).transpose.submatrix id Fin.rev`. Unfold `zT`. Rewrite using `[if_pos (hsym.2 ho)]`. Establish `hpos : 1 ≤ D.R.N j` using `by have := rkS X D hN; omega`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ((D.R.N j : ℤ) - 1) = ((NN X.G.P.m X.t j - 1 : ℕ) : ℤ)`. Rewrite using `[← hN.1]`. Move the coercions through the operations in `[Nat.cast_sub hpos]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hz, kOdd, he, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.smul_apply, Matrix.submatrix_apply, Matrix.map_apply, smul_eq_mul, map_mul, map_pow, mul_assoc]`. Rewrite using `[if_neg ho, one_mul]`. Establish `h0 : ySub X Kc j v s = dyMat X Kc j v s` using `by unfold ySub; rw [if_neg ho]`. Establish `hz : zT X D pos (dfr X D hN d f') (pos ⟨v, s⟩) = dfr X D hN d f' (pos ⟨v, s⟩)`. Unfold `zT`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h => ho (hsym.1 h))]`. Establish `h2` using `congrFun (congrFun (hE ho) a) t`. Rewrite `h2` using `[Matrix.map_apply]`. Rewrite using `[h0, h2, hz]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem evD_ySub (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] (ι : ℂ →+* Kc) {j : ℕ} (hN : RankTie X D j)
     (d : D.what₂.Tau → Matrix (Fin (D.R.N j)) (Fin (D.R.N (j + 1))) ℂ)
@@ -124,23 +124,21 @@ end GlobalTheory.TwV.DelA
 namespace GlobalTheory.TwV.DelA
 
 /- English proof (translation)
-Introduce `p _ X D pos Kc _ _ ι j hN Gc G hG hO d f' hf hd`. Set `g : Var (X.Pj j) → ℂ` to `fun y => zT X D pos (dfr X D hN d f') (posJ X D pos j ⟨y.1, y.2.1⟩) (Fin.cast (rkS X D hN) y.2.2.1) (Fin.cast (rkS X D hN) y.2.2.2)`. Set `φ : (X.Pj j).Xsp →+* Kc` to `(evD X D pos ι hN d f').comp (subD X Kc j : (X.Pj j).Xsp →+* DA X Kc j)`. Set `ψ : (X.Pj j).Xsp →+* Kc` to `MvPolynomial.eval₂Hom (algebraMap X.G.Kf Kc) (fun y => ι (g y))`. Establish `hR : ι (valZ X D pos j (rkS X D hN) Gc (dfr X D hN d f')) = ψ G` using `by show ι (MvPolynomial.eval g Gc) = MvPolynomial.eval₂ (algebraMap X.G.Kf Kc) (fun y => ι (g y)) G`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.eval, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_comp_left, RingHom.comp_id, ← MvPolynomial.eval_map, ← hG, MvPolynomial.eval_map]`. Both sides reduce to the same expression. Establish `hC : ∀ a, φ (MvPolynomial.C a) = ψ (MvPolynomial.C a)`. Introduce `a`. Use `show evD X D pos ι hN d f' (subD X Kc j (MvPolynomial.C a)) = MvPolynomial.eval₂ _ _ (MvPolynomial.C a)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.eval₂_C, ← MvPolynomial.algebraMap_eq, AlgHom.commutes, MvPolynomial.algebraMap_apply, MvPolynomial.algebraMap_apply]`. Simplify using `[evD]`. Establish `hX : ∀ x, φ (MvPolynomial.X x) = (if IsOddPos (blkJ X j x).2 then ι (kOdd X D pos hN d f' (pos (blkJ X j x))) else 1) * ψ (MvPolynomial.X x)`. Introduce `x`. Use `show evD X D pos ι hN d f' (subD X Kc j (MvPolynomial.X x)) = _ * MvPolynomial.eval₂ _ _ (MvPolynomial.X x)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[subD_X, MvPolynomial.eval₂_X, evD_ySub X D pos Kc ι hN d f' hf hd]`. Use `congr 2`. Use `show _ = zT X D pos (dfr X D hN d f') (posJ X D pos j ⟨x.1, x.2.1⟩) _ _`. Rewrite using `[posJ_blkJ]`. Apply the tactic sequence `congr 1 <;> ext <;> simp [levelIndex_row_val_eq, levelIndex_col_val_eq]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `ringHom_scale φ ψ (fun x => if IsOddPos (blkJ X j x).2 then ι (kOdd X D pos hN d f' (pos (blkJ X j x))) else 1) hC hX (ι (∏ τ, if IsOddPos (pos.symm τ).2 then ((zT X D pos f' τ).det ^ ((D.R.N j : ℤ) - 1) * sgRev (D.R.N j) * (dfr X D hN d f' τ).det) ^ ((D.R.N j : ℤ) * cT1 X D pos …`. Rewrite using `[map_mul, hR]`. Conclude with `key`. Introduce `m hm`. Set `H : (Σ v : X.Pl, Fin (X.G.P.n' v)) → ℂ` to `fun b => if IsOddPos b.2 then kOdd X D pos hN d f' (pos b) ^ ((D.R.N j : ℤ) * cMu X j b.1 b.2 - szMu X j b.1 b.2) else 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hF : ∀ τ, (if IsOddPos (pos.symm τ).2 then ((zT X D pos f' τ).det ^ ((D.R.N j : ℤ) - 1) * sgRev (D.R.N j) * (dfr X D hN d f' τ).det) ^ ((D.R.N j : ℤ) * cT1 X D pos j τ - szT X D pos j τ) else 1) = H (pos.symm τ)`. Introduce `τ`. Simplify using `only [H, cT1, szT, Equiv.apply_symm_apply]`. Both sides reduce to the same expression. Rewrite using `[Finset.prod_congr rfl (fun τ _ => hF τ), Fintype.prod_equiv pos.symm (fun τ => H (pos.symm τ)) H (fun _ => rfl), map_prod, ← Finset.prod_fiberwise Finset.univ (blkJ X j)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `h2 : ∏ x ∈ Finset.univ.filter (fun x => blkJ X j x = b), (if IsOddPos (blkJ X j x).2 then ι (kOdd X D pos hN d f' (pos (blkJ X j x))) else 1) ^ m x = (if IsOddPos b.2 then ι (kOdd X D pos hN d f' (pos b)) else 1) ^ (∑ x ∈ Finset.univ.filter (fun x => blkJ X j x = b), m x)`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hx).2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Distinguish the cases in `hb : IsOddPos b.2`. Simplify using `only [H]`. Rewrite using `[if_pos hb, if_pos hb, hN.1, ← hO m hm b hb, zpow_natCast, map_pow]`. Simplify using `only [H]`.
-
-Rewrite using `[if_neg hb, if_neg hb, one_pow, map_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evD_subD : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] (ι : ℂ →+* Kc) (j : ℕ) (hN : RankTie X D j) (Gc : XR (X.Pj j) ℂ) (G : (X.Pj j).Xsp), MvPolynomial.map (algebraMap X.G.Kf Kc) G = MvPolynomial.map ι Gc → OddDeg X j G → ∀ (d : D.what₂.Tau → Matrix (Fin (D.R.N j)) (Fin (D.R.N (j + 1))) ℂ) (f' : D.what₂.Tau → Matrix (Fin (D.R.N (j + 1))) (Fin (D.R.N (j + 1))) ℂ), (∀ τ, (f' τ).det ≠ 0) → (∀ τ, (dfr X D hN d f' τ).det ≠ 0) → evD X D pos ι hN d f' (subD X Kc j G) = ι ((∏ τ, if IsOddPos (pos.symm τ).2 then ((zT X D pos f' τ).det ^ ((D.R.N j : ℤ) - 1) * sgRev (D.R.N j) * (dfr X D hN d f' τ).det) ^ ((D.R.N j : ℤ) * cT1 X D pos j τ - szT X D pos j τ) else 1) * valZ X D pos j (rkS X D hN) Gc (dfr X D hN d f')) := by
   intro p _ X D pos Kc _ _ ι j hN Gc G hG hO d f' hf hd

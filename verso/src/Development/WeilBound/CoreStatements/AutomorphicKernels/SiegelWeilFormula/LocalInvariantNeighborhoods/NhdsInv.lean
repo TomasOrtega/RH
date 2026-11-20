@@ -5,19 +5,17 @@ namespace PositivityTheory.SiegelWeilFormula.OswLocFin
 open Filter Topology
 
 /- English proof (translation)
-Take `⟨hlc, hcs⟩` from `hΦ`. Establish `hT : ∀ x : G, {z : G | Φ (x + z) = Φ x} ∈ 𝓝 (0 : G)`. Introduce `x`. Establish `hopen : IsOpen {z : G | Φ (x + z) = Φ x}` using `(hlc.isOpen_fiber (Φ x)).preimage (continuous_const.add continuous_id)`. Conclude with `hopen.mem_nhds (by simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose V₁ hV₁ hV₁s using fun x => exists_nhds_zero_half (hT x)`. Use `choose V₂ hV₂ hV₂s using fun x => exists_nhds_half_neg (hT x)`. Establish `hU : ∀ x : G, {y : G | y - x ∈ V₁ x ∩ V₂ x} ∈ 𝓝 x`. Introduce `x`. Establish `ht : Tendsto (fun y : G => y - x) (𝓝 x) (𝓝 (x - x))` using `(continuous_sub_right x).tendsto x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `ht` using `[sub_self]`. Conclude with `ht (Filter.inter_mem (hV₁ x) (hV₂ x))`. Take `⟨t, -, hcover⟩` from `hcs.isCompact.elim_nhds_subcover (fun x => {y : G | y - x ∈ V₁ x ∩ V₂ x}) (fun x _ => hU x)`. Use `⟨⋂ x ∈ t, V₁ x ∩ V₂ x, (Filter.biInter_finset_mem t).mpr fun x _ => Filter.inter_mem (hV₁ x) (hV₂ x), fun Y Z hZ => ?_⟩` and prove the remaining obligations. Establish `hZ' : ∀ x ∈ t, Z ∈ V₁ x ∩ V₂ x` using `Set.mem_iInter₂.mp hZ`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hY : Y ∈ tsupport Φ`. Take `⟨x, hxt, hx⟩` from `Set.mem_iUnion₂.mp (hcover hY)`. Establish `hx' : Y - x ∈ V₁ x ∩ V₂ x` using `hx`. Establish `h1 : Φ (x + (Y - x + Z)) = Φ x` using `hV₁s x _ hx'.1 Z (hZ' x hxt).1`. Establish `h2 : Φ (x + (Y - x + 0)) = Φ x` using `hV₁s x _ hx'.1 0 (mem_of_mem_nhds (hV₁ x))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `h1` using `[show x + (Y - x + Z) = Y + Z by abel]`. Rewrite `h2` using `[show x + (Y - x + 0) = Y by abel]`. Rewrite using `[h1, h2]`. Distinguish the cases in `hYZ : Y + Z ∈ tsupport Φ`. Take `⟨x, hxt, hx⟩` from `Set.mem_iUnion₂.mp (hcover hYZ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx' : Y + Z - x ∈ V₁ x ∩ V₂ x` using `hx`. Establish `h1 : Φ (x + (Y + Z - x - Z)) = Φ x` using `hV₂s x _ hx'.2 Z (hZ' x hxt).2`. Establish `h2 : Φ (x + (Y + Z - x + 0)) = Φ x` using `hV₁s x _ hx'.1 0 (mem_of_mem_nhds (hV₁ x))`. Rewrite `h1` using `[show x + (Y + Z - x - Z) = Y by abel]`. Rewrite `h2` using `[show x + (Y + Z - x + 0) = Y + Z by abel]`.
-
-Rewrite using `[h1, h2]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hY, image_eq_zero_of_notMem_tsupport hYZ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nhds_invariant {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     {Φ : G → ℂ} (hΦ : IsLocallyConstant Φ ∧ HasCompactSupport Φ) :

@@ -24,9 +24,9 @@ noncomputable section
 namespace GlobalTheory.ShFam.Hor.LogCh.Core
 
 /- English proof (translation)
-Rewrite `h` using `[Complex.exp_eq_one_iff]`. Take `⟨m, hm⟩` from `h`. Establish `hN' : (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Rewrite `hm` using `[div_eq_iff hN']`. Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (2 * Real.pi * Complex.I) * ((k : ℂ) + m * N) = 0` using `by linear_combination -hm`. Establish `h4 : ((k + m * N : ℤ) : ℂ) = 0` using `by push_cast; exact (mul_eq_zero.1 h3).resolve_left hpi`. Establish `h5 : k + m * N = 0` using `by exact_mod_cast h4`. Conclude with `⟨-m, by linarith⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem dvd_of_exp_eq_one (k : ℤ) (N : ℕ) (hN : 0 < N)
     (h : Complex.exp (-(2 * Real.pi * Complex.I) * (k : ℂ) / N) = 1) : (N : ℤ) ∣ k := by
@@ -41,9 +41,9 @@ theorem dvd_of_exp_eq_one (k : ℤ) (N : ℕ) (hN : 0 < N)
   exact ⟨-m, by linarith⟩
 
 /- English proof (translation)
-Establish `hN : 0 < (m - m').natAbs + 1` using `Nat.succ_pos _`. Establish `h1` using `h _ hN`. Establish `h2 : Complex.exp (-(2 * Real.pi * Complex.I) * (((m - m' : ℤ)) : ℂ) / (((m - m').natAbs + 1 : ℕ) : ℂ)) = 1`. Establish `e : -(2 * Real.pi * Complex.I) * (((m - m' : ℤ)) : ℂ) / (((m - m').natAbs + 1 : ℕ) : ℂ) = -(2 * Real.pi * Complex.I) * (m : ℂ) / (((m - m').natAbs + 1 : ℕ) : ℂ) - -(2 * Real.pi * Complex.I) * (m' : ℂ) / (((m - m').natAbs + 1 : ℕ) : ℂ)` using `by push_cast; ring`. Rewrite using `[e, Complex.exp_sub, h1, div_self (Complex.exp_ne_zero _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `dvd_of_exp_eq_one _ _ hN h2`. Establish `h4 : m - m' = 0` using `Int.eq_zero_of_abs_lt_dvd h3 (by rw [Int.abs_eq_natAbs]; push_cast; omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eq_of_exp_eq (m m' : ℤ) (h : ∀ N : ℕ, 0 < N → Complex.exp (-(2 * Real.pi * Complex.I) * (m : ℂ) / N) =
     Complex.exp (-(2 * Real.pi * Complex.I) * (m' : ℂ) / N)) : m = m' := by
@@ -60,7 +60,7 @@ theorem eq_of_exp_eq (m m' : ℤ) (h : ∀ N : ℕ, 0 < N → Complex.exp (-(2 *
   omega
 
 /- English proof (translation)
-Establish `hs : ∀ (k : ℤ) (v : Fin g → ℂ), k • v = (k : ℂ) • v` using `fun k v => (Int.cast_smul_eq_zsmul ℂ k v).symm`. Simplify using `only [hermForm, hs, star_sum, star_smul, Matrix.mulVec_sum, Matrix.mulVec_smul, sum_dotProduct, dotProduct_sum, smul_dotProduct, dotProduct_smul, smul_eq_mul, star_intCast, Finset.mul_sum, Complex.im_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.mul_im, Complex.mul_re, Complex.intCast_re, Complex.intCast_im]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -80,7 +80,7 @@ end GlobalTheory.ShFam.Hor.LogCh.Core
 namespace GlobalTheory.ShFam.Hor.LogCh.Core
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.punctPolydiscUniversalCover_open_convex_exp_analytic n a`.
+A detailed English derivation is pending.
 -/
 theorem logDom_facts (n a : ℕ) : IsOpen (logDom n a) ∧ Convex ℝ (logDom n a) ∧
     (∀ s, AnalyticAt ℂ (logExp a : (Fin n → ℂ) → Fin n → ℂ) s) ∧
@@ -88,13 +88,13 @@ theorem logDom_facts (n a : ℕ) : IsOpen (logDom n a) ∧ Convex ℝ (logDom n 
   GlobalTheory.T.punctPolydiscUniversalCover_open_convex_exp_analytic n a
 
 /- English proof (translation)
-Simplify using `[logExp, hk, Complex.exp_ne_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem logExp_ne_zero (n a : ℕ) (s : Fin n → ℂ) (k : Fin n) (hk : (k : ℕ) < a) : logExp a s k ≠ 0 := by
   simp [logExp, hk, Complex.exp_ne_zero]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isLatFam_comp_of_analyticOnNhd m n g B B' K φ`.
+A detailed English derivation is pending.
 -/
 theorem isLatFam_comp (m n g : ℕ) (B : Set (Fin n → ℂ)) (B' : Set (Fin m → ℂ))
     (K : (Fin n → ℂ) → Set (Fin g → ℂ)) (φ : (Fin m → ℂ) → Fin n → ℂ) : IsLatFam B K → IsOpen B' →
@@ -102,7 +102,7 @@ theorem isLatFam_comp (m n g : ℕ) (B : Set (Fin n → ℂ)) (B' : Set (Fin m �
   GlobalTheory.T.isLatFam_comp_of_analyticOnNhd m n g B B' K φ
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.det_ne_zero_of_imHermForm_integral_real_basis g r Hm lam M`.
+A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_herm (g r : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) (lam : Fin r → Fin g → ℂ)
     (M : Matrix (Fin r) (Fin r) ℤ) : (∀ u : Fin g → ℂ, u ≠ 0 → 0 < (hermForm Hm u u).re) → LinearIndependent ℝ lam →
@@ -110,14 +110,14 @@ theorem det_ne_zero_of_herm (g r : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) (lam :
   GlobalTheory.T.det_ne_zero_of_imHermForm_integral_real_basis g r Hm lam M
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.rat_linearIndependent_coords_of_real_independent g r r₀ lam u A`.
+A detailed English derivation is pending.
 -/
 theorem linIndep_rows (g r r₀ : ℕ) (lam : Fin r → Fin g → ℂ) (u : Fin r₀ → Fin g → ℂ) (A : Fin r₀ → Fin r → ℤ) :
     LinearIndependent ℝ u → (∀ i, u i = ∑ m, A i m • lam m) → LinearIndependent ℚ (fun i j => (A i j : ℚ)) :=
   GlobalTheory.T.rat_linearIndependent_coords_of_real_independent g r r₀ lam u A
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.bounded_combination_of_span_coordinate_rows X g r r₀ T lam u A C`.
+A detailed English derivation is pending.
 -/
 theorem bounded_span (X : Type) (g r r₀ : ℕ) (T : Set X) (lam : X → Fin r → Fin g → ℂ) (u : X → Fin r₀ → Fin g → ℂ)
     (A : Fin r₀ → Fin r → ℤ) (C : ℝ) : (∀ x ∈ T, ∀ i, u x i = ∑ m, A i m • lam x m) → (∀ x ∈ T, ‖u x‖ ≤ C) →
@@ -125,14 +125,14 @@ theorem bounded_span (X : Type) (g r r₀ : ℕ) (T : Set X) (lam : X → Fin r 
   GlobalTheory.T.bounded_combination_of_span_coordinate_rows X g r r₀ T lam u A C
 
 /- English proof (translation)
-The claim follows from `(h.2 (b i)).2 ⟨Pi.single i 1, by simp [Pi.single_apply]⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_isLatBasis {g r : ℕ} {K : Set (Fin g → ℂ)} {b : Fin r → Fin g → ℂ} (h : IsLatBasis K b) (i : Fin r) :
     b i ∈ K :=
   (h.2 (b i)).2 ⟨Pi.single i 1, by simp [Pi.single_apply]⟩
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← hK, Submodule.span_le]`. Introduce `w hw`. Take `⟨m, rfl⟩` from `(h.2 w).1 hw`. Conclude with `Submodule.sum_mem _ fun j _ => zsmul_mem (Submodule.subset_span (Set.mem_range_self (f := b) j)) _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem span_top_of_isLatBasis {g r : ℕ} {K : Set (Fin g → ℂ)} {b : Fin r → Fin g → ℂ} (h : IsLatBasis K b)
     (hK : Submodule.span ℝ K = ⊤) : Submodule.span ℝ (Set.range b) = ⊤ := by
@@ -146,43 +146,39 @@ end GlobalTheory.ShFam.Hor.LogCh.Core
 namespace GlobalTheory.ShFam.Hor.LogCh.Core
 
 /- English proof (translation)
-Introduce `n a g r₀ K ζ Pair hK hζan hζli hζK hζ0 hζbd hstd huniq hprop hinner hS`. Take `⟨hDo, hDc, hEa, hEm⟩` from `logDom_facts n a`. Establish `hDp : IsPreconnected (logDom n a)` using `hDc.isPreconnected`. Establish `hEd : Differentiable ℂ (logExp a : (Fin n → ℂ) → Fin n → ℂ)` using `fun s => (hEa s).differentiableAt`. Establish `hK' : IsLatFam (logDom n a) (fun s => K (logExp a s))` using `isLatFam_comp n n g _ _ K (logExp a) hK hDo (fun s _ => hEa s) hEm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hin` using `fun s (hs : s ∈ logDom n a) => hinner _ (hEm hs) (fun k hk => logExp_ne_zero n a s k hk)`. Take `⟨lam, hlamD, hlamB⟩` from `GlobalTheory.T.exists_global_holomorphic_lattice_basis_convex n g (2 * g) (logDom n a) (fun s => K (logExp a s)) hDo hDc (fun s hs => GlobalTheory.T.exists_analytic_local_lattice_basis n g (logDom n a) (fun s => K (logExp a s)) s hK' hs (hin s hs).choose_spec.2.2.1)`. Establish `hmem : ∀ s ∈ logDom n a, ∀ i, lam s i ∈ K (logExp a s)` using `fun s hs i => mem_of_isLatBasis (hlamB s hs) i`. Establish `hlamDi : ∀ i, DifferentiableOn ℂ (fun s => lam s i) (logDom n a)` using `fun i => differentiableOn_pi.1 hlamD i`. Set `s₀ : Fin n → ℂ` to `fun _ => (-1 / 2 : ℂ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hs₀ : s₀ ∈ logDom n a`. Simplify using `only [logDom, Set.mem_setOf_eq]`. Introduce `k`. Apply the tactic sequence `split_ifs <;> norm_num [s₀]`. Take `⟨Hm₀, -, hpos₀, hspan₀, hint₀, hpair₀⟩` from `hin s₀ hs₀`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Establish `hMex : ∀ i j, ∃ m : ℤ, (hermForm Hm₀ (lam s₀ i) (lam s₀ j)).im = m` using `fun i j => hint₀ _ (hmem s₀ hs₀ i) _ (hmem s₀ hs₀ j)`. Take `⟨M, hM₀⟩ : ∃ M : Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ, ∀ i j, (hermForm Hm₀ (lam s₀ i) (lam s₀ j)).im = M i j` from `⟨fun i j => (hMex i j).choose, fun i j => (hMex i j).choose_spec⟩`. Establish `hM : ∀ s ∈ logDom n a, ∀ Hm : Matrix (Fin g) (Fin g) ℂ, (∀ v ∈ K (logExp a s), ∀ w ∈ K (logExp a s), ∃ m : ℤ, (hermForm Hm v w).im = m) → (∀ (N : ℕ) (v w : Fin g → ℂ), 0 < N → v ∈ K (logExp a s) → w ∈ K (logExp a s) → Pair N (logExp a s) v w (Units.mk0 (Complex.exp (-(2 * Real.pi …`. Introduce `s hs Hm hint hpair i j`. Take `⟨m', hm'⟩` from `hint _ (hmem s hs i) _ (hmem s hs j)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `key : m' = M i j`. Apply `eq_of_exp_eq` to reduce the goal to its premises. Introduce `N hN`. Establish `h1` using `hpair₀ N _ _ hN (hmem s₀ hs₀ i) (hmem s₀ hs₀ j)`. Establish `h2` using `hprop n N (logDom n a) (logExp a) (fun s => lam s i) (fun s => lam s j) _ s₀ s hN hDo hDp hEd.differentiableOn hEm (hlamDi i) (hlamDi j) (fun b hb => ⟨hmem b hb i, hmem b hb j⟩) hs₀ hs h1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hpair N _ _ hN (hmem s hs i) (hmem s hs j)`. Establish `h4` using `congrArg Units.val (huniq _ _ _ _ _ _ h3 h2)`. Simplify using `only [Units.val_mk0, hm', hM₀, Complex.ofReal_intCast] at h4`. Conclude with `h4`. Rewrite using `[hm', key]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hstdK : ∀ j : Fin g, ∀ s ∈ logDom n a, (Pi.single j 1 : Fin g → ℂ) ∈ K (logExp a s)`. Introduce `j s hs`. Take `⟨i, hi⟩` from `hstd j`. Rewrite using `[← hi _ (hEm hs)]`. Conclude with `hζK _ (hEm hs) i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρex : ∀ j : Fin g, ∃ m : Fin (2 * g) → ℤ, ∀ s ∈ logDom n a, (Pi.single j 1 : Fin g → ℂ) = ∑ k, m k • lam s k` using `fun j => GlobalTheory.T.exists_const_integral_coords_lattice_section n g (2 * g) (logDom n a) (fun s => K (logExp a s)) lam (fun _ => Pi.single j 1) s₀ hDp hlamD.continuousOn continuousOn_const hlamB (fun s hs => hstdK j s hs) hs₀`. Use `choose mρ hmρ using hρex`. Establish `hζc : ContinuousOn ζ (Metric.ball 0 1)` using `hζan.continuousOn`. Establish `hζEc : ∀ i, ContinuousOn (fun s => ζ (logExp a s) i) (logDom n a)` using `fun i => (continuousOn_pi.1 (hζc.comp hEd.continuous.continuousOn hEm)) i`. Establish `hAex : ∀ i, ∃ m : Fin (2 * g) → ℤ, ∀ s ∈ logDom n a, ζ (logExp a s) i = ∑ k, m k • lam s k` using `fun i => GlobalTheory.T.exists_const_integral_coords_lattice_section n g (2 * g) (logDom n a) (fun s => K (logExp a s)) lam (fun s => ζ (logExp a s) i) s₀ hDp hlamD.continuousOn (hζEc i) hlamB (fun s hs => hζK _ (hEm hs) i) hs₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose A hA using hAex`. Establish `hz₁ : logExp a s₀ ∈ Metric.ball (0 : Fin n → ℂ) 1` using `hEm hs₀`. Establish `hsumK : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, ∀ c : Fin r₀ → ℤ, ∑ j, c j • ζ z j ∈ K z`. Introduce `z hz c`. Take `⟨H, hH⟩` from `hK.2.1 z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : ∀ j, ζ z j ∈ H` using `fun j => by rw [← SetLike.mem_coe, hH]; exact hζK z hz j`. Rewrite using `[← hH]`. Conclude with `H.sum_mem fun j _ => H.zsmul_mem (hj j) _`. Establish `hζd : DifferentiableOn ℂ ζ (Metric.ball 0 1)` using `hζan.differentiableOn`. Establish `hsumD : ∀ c : Fin r₀ → ℤ, DifferentiableOn ℂ (fun z => ∑ j, c j • ζ z j) (Metric.ball 0 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `c`. Establish `h : ∀ j ∈ (Finset.univ : Finset (Fin r₀)), DifferentiableOn ℂ (fun z => c j • ζ z j) (Metric.ball 0 1)` using `fun j _ => (differentiableOn_pi.1 hζd j).const_smul (c j)`. Use `(DifferentiableOn.sum h).congr fun z _ => ?_` and prove the remaining obligations. Simplify using `[Finset.sum_apply]`. Establish `hsum_eq : ∀ c : Fin r₀ → ℤ, ∑ j, c j • ζ (logExp a s₀) j = ∑ k, (∑ i, c i • A i) k • lam s₀ k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Simplify using `only [fun i => hA i s₀ hs₀, Finset.smul_sum, smul_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Establish `hform : ∀ x y : Fin (2 * g) → ℤ, (hermForm Hm₀ (∑ k, x k • lam s₀ k) (∑ k, y k • lam s₀ k)).im = ((x ⬝ᵥ (M : Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) *ᵥ y : ℤ) : ℝ)`. Introduce `x y`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hermForm_im_sum]`. Simplify using `only [hM₀, dotProduct, Matrix.mulVec, Int.cast_sum, Int.cast_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdvd : ∀ N : ℕ, 0 < N → ∃ S : Set (Fin r₀ → ZMod N), N ^ r₀ * Nat.card S = N ^ (2 * g) ∧ ∀ c c' : Fin r₀ → ℤ, (fun j => (c j : ZMod N)) ∈ S → (N : ℤ) ∣ (∑ i, c i • A i) ⬝ᵥ (M : Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) *ᵥ (∑ i, c' i • A i)`. Introduce `N hN`. Take `⟨S, hcard, hSp⟩` from `hS N hN`. Use `⟨S, hcard, fun c c' hc => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `hSp c c' hc`. Establish `h2` using `hprop n N (Metric.ball 0 1) id (fun z => ∑ j, c j • ζ z j) (fun z => ∑ j, c' j • ζ z j) 1 0 (logExp a s₀) hN Metric.isOpen_ball (convex_ball 0 1).isPreconnected differentiableOn_id (Set.mapsTo_id _) (hsumD c) (hsumD c') (fun b hb => ⟨hsumK b hb c, hsumK b hb c'⟩) (Metric.mem_ball …`. Establish `h3` using `hpair₀ N _ _ hN (hsumK _ hz₁ c) (hsumK _ hz₁ c')`. Establish `h4` using `congrArg Units.val (huniq _ _ _ _ _ _ h3 h2)`. Simplify using `only [Units.val_mk0, Units.val_one, id, hsum_eq, hform, Complex.ofReal_intCast] at h4`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `dvd_of_exp_eq_one _ N hN h4`. Establish `hdet : (M : Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ).det ≠ 0` using `det_ne_zero_of_herm g (2 * g) Hm₀ (lam s₀) M hpos₀ (hlamB s₀ hs₀).1 (span_top_of_isLatBasis (hlamB s₀ hs₀) hspan₀) hM₀`. Establish `hlinQ` using `linIndep_rows g (2 * g) r₀ (lam s₀) (ζ (logExp a s₀)) A (hζli _ hz₁) (fun i => hA i s₀ hs₀)`. Establish `hco` using `GlobalTheory.T.coisotropic_sublattice_of_torsion_count (2 * g) r₀ M A hdet hlinQ hdvd`. Take `⟨C, hC⟩` from `hζbd`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgr` using `GlobalTheory.T.periods_polyGrowth_of_bounded_coisotropic n a g (2 * g) lam ((M : Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ).map (Int.cast : ℤ → ℝ)) (Submodule.span ℝ (Set.range fun i j => (A i j : ℝ))) hlamD (fun s hs => by`. Take `⟨Hm, hH, hpos, hspan, hint, hpair⟩` from `hin s hs`. Conclude with `⟨(hlamB s hs).1, span_top_of_isLatBasis (hlamB s hs) hspan, Hm, hH, hpos, fun i j => by`. Rewrite using `[hM s hs Hm hint hpair i j]`. Use the proof step `simp⟩)`.
-
-Use the proof step `(fun v hv => hco v fun i => hv _ (Submodule.subset_span (Set.mem_range_self (f := fun i j => (A i j : ℝ)) i)))`. Use the proof step `(fun w hw => by`. Take `⟨C', hC'⟩` from `bounded_span (Fin n → ℂ) g (2 * g) r₀ (logDom n a) lam (fun s => ζ (logExp a s)) A C (fun s hs i => hA i s hs) (fun s hs => hC _ (hEm hs)) w hw`. Conclude with `⟨C', fun s hs _ => hC' s hs⟩)`. Use `⟨2 * g, lam, fun j k => (mρ j k : ℂ), hlamD.continuousOn, fun s hs => ⟨(hlamB s hs).1.restrict_scalars' ℤ, (hlamB s hs).2, fun j => ?_⟩, hgr⟩` and prove the remaining obligations.
-
-Rewrite using `[hmρ j s hs]`. Conclude with `Finset.sum_congr rfl fun k _ => Int.cast_smul_eq_zsmul ℂ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core : ∀ (n a g r₀ : ℕ) (K : (Fin n → ℂ) → Set (Fin g → ℂ)) (ζ : (Fin n → ℂ) → Fin r₀ → Fin g → ℂ) (Pair : ℕ → (Fin n → ℂ) → (Fin g → ℂ) → (Fin g → ℂ) → ℂˣ → Prop), IsLatFam (Metric.ball 0 1) K → AnalyticOnNhd ℂ ζ (Metric.ball 0 1) → (∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, LinearIndependent ℝ (ζ z)) → (∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, ∀ i, ζ z i ∈ K z) → IsLatBasis (K 0) (ζ 0) → (∃ C : ℝ, ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, ‖ζ z‖ ≤ C) → (∀ j : Fin g, ∃ i, ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, ζ z i = Pi.single j 1) → (∀ N z v w c c', Pair N z v w c → Pair N z v w c' → c = c') → (∀ (m N : ℕ) (B : Set (Fin m → ℂ)) (φ : (Fin m → ℂ) → Fin n → ℂ) (v w : (Fin m → ℂ) → Fin g → ℂ) (c : ℂˣ) (b₀ b₁ : Fin m → ℂ), 0 < N → IsOpen B → IsPreconnected B → DifferentiableOn ℂ φ B → Set.MapsTo φ B (Metric.ball 0 1) → DifferentiableOn ℂ v B → DifferentiableOn ℂ w B → (∀ b ∈ B, v b ∈ K (φ b) ∧ w b ∈ K (φ b)) → b₀ ∈ B → b₁ ∈ B → Pair N (φ b₀) (v b₀) (w b₀) c → Pair N (φ b₁) (v b₁) (w b₁) c) → (∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, (∀ k : Fin n, (k : ℕ) < a → z k ≠ 0) → ∃ Hm : Matrix (Fin g) (Fin g) ℂ, Hm.IsHermitian ∧ (∀ u : Fin g → ℂ, u ≠ 0 → 0 < (hermForm Hm u u).re) ∧ Submodule.span ℝ (K z) = ⊤ ∧ (∀ v ∈ K z, ∀ w ∈ K z, ∃ m : ℤ, (hermForm Hm v w).im = m) ∧ ∀ (N : ℕ) (v w : Fin g → ℂ), 0 < N → v ∈ K z → w ∈ K z → Pair N z v w (Units.mk0 (Complex.exp (-(2 * Real.pi * Complex.I) * ((hermForm Hm v w).im : ℂ) / N)) (Complex.exp_ne_zero _))) → (∀ N : ℕ, 0 < N → ∃ S : Set (Fin r₀ → ZMod N), N ^ r₀ * Nat.card S = N ^ (2 * g) ∧ ∀ a a' : Fin r₀ → ℤ, (fun j => (a j : ZMod N)) ∈ S → Pair N 0 (∑ j, a j • ζ 0 j) (∑ j, a' j • ζ 0 j) 1) → ∃ (r : ℕ) (lam : (Fin n → ℂ) → Fin r → Fin g → ℂ) (ρ : Fin g → Fin r → ℂ), ContinuousOn lam (logDom n a) ∧ (∀ s ∈ logDom n a, LinearIndependent ℤ (lam s) ∧ (∀ w, w ∈ K (logExp a s) ↔ ∃ m : Fin r → ℤ, w = ∑ j, m j • lam s j) ∧ ∀ j, ∑ m, ρ j m • lam s m = Pi.single j 1) ∧ ∃ (C : ℝ) (k : ℕ), ∀ s ∈ logDom n a, ‖logExp a s‖ ≤ 1 / 2 → (∀ j : Fin n, (j : ℕ) < a → |(s j).im| ≤ Real.pi) → ‖lam s‖ ≤ C * (1 + ‖s‖) ^ k := by
   intro n a g r₀ K ζ Pair hK hζan hζli hζK hζ0 hζbd hstd huniq hprop hinner hS

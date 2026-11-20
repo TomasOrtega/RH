@@ -23,7 +23,7 @@ section Alg
 variable {A B : Type} [Ring A] [Ring B]
 
 /- English proof (translation)
-Proceed by induction on `m generalizing j with`. Consider the case `zero => cases j <;> simp [bco]`. Consider the case `succ m ih => cases j <;> simp [bco, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_bco (φ : A →+* B) (N : A) (τ : ℕ → A) (m j : ℕ) :
     φ (bco N τ m j) = bco (φ N) (φ ∘ τ) m j := by
@@ -32,16 +32,16 @@ theorem map_bco (φ : A →+* B) (N : A) (τ : ℕ → A) (m j : ℕ) :
   | succ m ih => cases j <;> simp [bco, ih]
 
 /- English proof (translation)
-Rewrite using `[phiSeq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phiSeq_unfold (N : A) (τ : ℕ → A) (m : ℕ) :
     phiSeq N τ m = τ m - ∑ j : Fin m, bco N τ m j * phiSeq N τ j := by
   rw [phiSeq]
 
 /- English proof (translation)
-Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Rewrite using `[phiSeq_unfold N, phiSeq_unfold (φ N)]`. Simplify using `only [map_sub, map_sum, map_mul, map_bco, Function.comp]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by rw [ih j j.isLt]`.
+A detailed English derivation is pending.
 -/
 theorem map_phiSeq (φ : A →+* B) (N : A) (τ : ℕ → A) (m : ℕ) :
     φ (phiSeq N τ m) = phiSeq (φ N) (φ ∘ τ) m := by
@@ -53,13 +53,13 @@ theorem map_phiSeq (φ : A →+* B) (N : A) (τ : ℕ → A) (m : ℕ) :
     exact Finset.sum_congr rfl fun j _ => by rw [ih j j.isLt]
 
 /- English proof (translation)
-Establish `hspan : P ∈ Submodule.span ℂ (Set.range fun w : List ℕ => (w.map (FreeAlgebra.ι ℂ)).prod)`. Establish `h1 : P ∈ Algebra.adjoin ℂ (Set.range (FreeAlgebra.ι ℂ))`. Rewrite using `[FreeAlgebra.adjoin_range_ι]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `h1` using `[← Subalgebra.mem_toSubmodule, Algebra.adjoin_eq_span]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.span_mono ?_ h1` and prove the remaining obligations. Introduce `x hx`. Proceed by induction on `hx using Submonoid.closure_induction with`. Consider the case `mem x hx => obtain ⟨k, rfl⟩ := hx; exact ⟨[k], by simp⟩`. Consider the case `one => exact ⟨[], by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a ++ b, by simp⟩`. Take `⟨d, rfl⟩` from `(Finsupp.mem_span_range_iff_exists_finsupp).1 hspan`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Set `e` to `d.support.equivFin`. Use `⟨d.support.card, fun i => d (e.symm i), fun i => (e.symm i).1, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.sum, ← Finset.sum_coe_sort]`. Conclude with `(Equiv.sum_comp e.symm (fun i : d.support => d i • (i.1.map (FreeAlgebra.ι ℂ)).prod)).symm`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_words (P : FreeAlgebra ℂ ℕ) : ∃ (N : ℕ) (c : Fin N → ℂ) (w : Fin N → List ℕ),
     P = ∑ i, c i • ((w i).map (FreeAlgebra.ι ℂ)).prod := by
@@ -84,11 +84,11 @@ theorem exists_words (P : FreeAlgebra ℂ ℕ) : ∃ (N : ℕ) (c : Fin N → �
   exact (Equiv.sum_comp e.symm (fun i : d.support => d i • (i.1.map (FreeAlgebra.ι ℂ)).prod)).symm
 
 /- English proof (translation)
-Take `⟨N, c, w, h⟩` from `exists_words (phiSeq (n : FreeAlgebra ℂ ℕ) (FreeAlgebra.ι ℂ) m)`. Use `⟨N, c, w, fun {A} _ _ τ => ?_⟩` and prove the remaining obligations. Establish `h1` using `map_phiSeq ((FreeAlgebra.lift ℂ τ : FreeAlgebra ℂ ℕ →ₐ[ℂ] A) : FreeAlgebra ℂ ℕ →+* A) (n : FreeAlgebra ℂ ℕ) (FreeAlgebra.ι ℂ) m`. Establish `h2 : ((FreeAlgebra.lift ℂ τ : FreeAlgebra ℂ ℕ →ₐ[ℂ] A) : FreeAlgebra ℂ ℕ →+* A) ∘ (FreeAlgebra.ι ℂ) = τ`. Use function extensionality and compare the values at `k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite `h1` using `[h2, map_natCast]`. Rewrite using `[← h1, h]`. Simplify using `only [map_sum, RingHom.coe_coe, map_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Rewrite using `[map_list_prod, List.map_map]`. Use `congr 1`. Conclude with `List.map_congr_left fun k _ => by simp`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem phiSeq_words (n m : ℕ) : ∃ (N : ℕ) (c : Fin N → ℂ) (w : Fin N → List ℕ),
     ∀ {A : Type} [Ring A] [Algebra ℂ A] (τ : ℕ → A),
@@ -115,21 +115,21 @@ section Ops
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Establish `: Continuous fun g : Mat n => g.det` using `Continuous.matrix_det continuous_id`. Conclude with `isOpen_ne.preimage this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_GLs : IsOpen (GLs n) := by
   have : Continuous fun g : Mat n => g.det := Continuous.matrix_det continuous_id
   exact isOpen_ne.preimage this
 
 /- English proof (translation)
-The claim follows from `(hf.contDiffAt (isOpen_GLs.mem_nhds hg)).differentiableAt (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem diffAt {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) {g : Mat n} (hg : g ∈ GLs n) :
     DifferentiableAt ℝ f g :=
   (hf.contDiffAt (isOpen_GLs.mem_nhds hg)).differentiableAt (by simp)
 
 /- English proof (translation)
-Use `((diffAt hf hg).hasFDerivAt.add (diffAt hf' hg).hasFDerivAt).fderiv` as an intermediate fact. Simplify using `only [Rd]`. Conclude with `DFunLike.congr_fun this _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Rd_add' (X : Mat n) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n))
     (hf' : ContDiffOn ℝ ∞ f' (GLs n)) {g : Mat n} (hg : g ∈ GLs n) :
@@ -139,7 +139,7 @@ theorem Rd_add' (X : Mat n) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs
   exact DFunLike.congr_fun this _
 
 /- English proof (translation)
-Use `((diffAt hf hg).hasFDerivAt.const_smul c).fderiv` as an intermediate fact. Simplify using `only [Rd]`. Conclude with `DFunLike.congr_fun this _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Rd_smul' (X : Mat n) (c : ℂ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n))
     {g : Mat n} (hg : g ∈ GLs n) : Rd X (c • f) g = c • Rd X f g := by
@@ -151,26 +151,26 @@ def Du (u : ℂ) (X : Mat n) (f : Mat n → V) : Mat n → V :=
   (1 / 2 : ℂ) • (Rd X f + u • Rd (Complex.I • X) f)
 
 /- English proof (translation)
-Simplify using `[Eu, Du, Matrix.smul_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Eu_eq_Du (s : Bool) (a b : Fin n) (f : Mat n → V) :
     Eu s a b f = Du (if s then -Complex.I else Complex.I) (Matrix.single a b 1) f := by
   simp [Eu, Du, Matrix.smul_single]
 
 /- English proof (translation)
-Simplify using `[Rd, mul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Rd_addX (X Y : Mat n) (f : Mat n → V) (g : Mat n) : Rd (X + Y) f g = Rd X f g + Rd Y f g := by
   simp [Rd, mul_add]
 
 /- English proof (translation)
-Simplify using `[Rd, mul_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Rd_negX (X : Mat n) (f : Mat n → V) (g : Mat n) : Rd (-X) f g = - Rd X f g := by
   simp [Rd, mul_neg]
 
 /- English proof (translation)
-Simplify using `only [Du, Pi.smul_apply, Pi.add_apply, sub_eq_add_neg, smul_add, Rd_addX, Rd_negX, smul_neg]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Du_sub (u : ℂ) (X Y : Mat n) (f : Mat n → V) (g : Mat n) :
     Du u (X - Y) f g = Du u X f g - Du u Y f g := by
@@ -178,13 +178,13 @@ theorem Du_sub (u : ℂ) (X Y : Mat n) (f : Mat n → V) (g : Mat n) :
   module
 
 /- English proof (translation)
-Simplify using `[Du, Rd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Du_zero (u : ℂ) (f : Mat n → V) (g : Mat n) : Du u (0 : Mat n) f g = 0 := by
   simp [Du, Rd]
 
 /- English proof (translation)
-Establish `h4 : ContDiffOn ℝ ∞ (u • f') (GLs n)` using `hf'.const_smul u`. Establish `h3 : ContDiffOn ℝ ∞ (f + u • f') (GLs n)` using `hf.add h4`. Rewrite using `[Rd_smul' X _ h3 hg, Rd_add' X hf h4 hg, Rd_smul' X _ hf' hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Rd_Du (X : Mat n) (u : ℂ) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n))
     (hf' : ContDiffOn ℝ ∞ f' (GLs n)) {g : Mat n} (hg : g ∈ GLs n) :
@@ -194,15 +194,15 @@ theorem Rd_Du (X : Mat n) (u : ℂ) {f f' : Mat n → V} (hf : ContDiffOn ℝ �
   rw [Rd_smul' X _ h3 hg, Rd_add' X hf h4 hg, Rd_smul' X _ hf' hg]
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `(hR n).1 V f hf`. Establish `a1` using `h2 X Y g hg`. Establish `a2` using `h2 X (Complex.I • Y) g hg`. Establish `a3` using `h2 (Complex.I • X) Y g hg`. Establish `a4` using `h2 (Complex.I • X) (Complex.I • Y) g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : X * (Complex.I • Y) - (Complex.I • Y) * X = Complex.I • (X * Y - Y * X)`. Simplify using `[smul_sub]`. Establish `e3 : (Complex.I • X) * Y - Y * (Complex.I • X) = Complex.I • (X * Y - Y * X)`. Simplify using `[smul_sub]`. Establish `e4 : (Complex.I • X) * (Complex.I • Y) - (Complex.I • Y) * (Complex.I • X) = -(X * Y - Y * X)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[smul_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite `a2` using `[e2]`. Rewrite `a3` using `[e3]`. Rewrite `a4` using `[e4, Rd_negX]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Du, Pi.smul_apply, Pi.add_apply]`. Rewrite using `[Rd_Du X u (h1 Y) (h1 _) hg, Rd_Du (Complex.I • X) u (h1 Y) (h1 _) hg, Rd_Du Y u (h1 X) (h1 _) hg, Rd_Du (Complex.I • Y) u (h1 X) (h1 _) hg]`. Generalize the expression as in `Rd (X * Y - Y * X) f g = K at *`. Generalize the expression as in `Rd (Complex.I • (X * Y - Y * X)) f g = L at *`. Rewrite `a1`, `a2`, `a3`, `a4` using `[sub_eq_iff_eq_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[a1, a2, a3, a4]`. Apply the tactic sequence `match_scalars <;> first | ring1 | linear_combination (-1 / 4 : ℂ) * hu | linear_combination (1 / 4 : ℂ) * hu`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Du_bracket (hR : RCalc) {u : ℂ} (hu : u * u = -1) (X Y : Mat n) {f : Mat n → V}
     (hf : ContDiffOn ℝ ∞ f (GLs n)) {g : Mat n} (hg : g ∈ GLs n) :
@@ -248,14 +248,14 @@ def Sm (n : ℕ) (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] : Submodu
     exact ⟨h1.const_smul c, fun x hx => by simp [h2 x hx]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.congr fun x hx => by simp [hx], fun x hx => by simp [hx]⟩`.
+Supply the required witnesses or components.
 -/
 theorem indicator_mem {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     (GLs n).indicator f ∈ Sm n V :=
   ⟨hf.congr fun x hx => by simp [hx], fun x hx => by simp [hx]⟩
 
 /- English proof (translation)
-Take `⟨h1, -⟩` from `(hR n).1 V f hf`. Conclude with `((h1 _).add ((h1 _).const_smul _)).const_smul _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Eu_smooth (hR : RCalc) (s : Bool) (a b : Fin n) {f : Mat n → V}
     (hf : ContDiffOn ℝ ∞ f (GLs n)) : ContDiffOn ℝ ∞ (Eu s a b f) (GLs n) := by
@@ -263,7 +263,7 @@ theorem Eu_smooth (hR : RCalc) (s : Bool) (a b : Fin n) {f : Mat n → V}
   exact ((h1 _).add ((h1 _).const_smul _)).const_smul _
 
 /- English proof (translation)
-Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, Rd_add' _ hf hf' hg]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Eu_add' (s : Bool) (a b : Fin n) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n))
     (hf' : ContDiffOn ℝ ∞ f' (GLs n)) {g : Mat n} (hg : g ∈ GLs n) :
@@ -272,7 +272,7 @@ theorem Eu_add' (s : Bool) (a b : Fin n) {f f' : Mat n → V} (hf : ContDiffOn �
   module
 
 /- English proof (translation)
-Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, Rd_smul' _ _ hf hg]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Eu_smul' (s : Bool) (a b : Fin n) (c : ℂ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n))
     {g : Mat n} (hg : g ∈ GLs n) : Eu s a b (c • f) g = c • Eu s a b f g := by
@@ -295,21 +295,21 @@ def eS (hR : RCalc) (s : Bool) (a b : Fin n) : Module.End ℂ (Sm n V) where
     · simp [hg]
 
 /- English proof (translation)
-Simplify using `[eS, hg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eS_apply (hR : RCalc) (s : Bool) (a b : Fin n) (f : Sm n V) {g : Mat n} (hg : g ∈ GLs n) :
     (eS hR s a b f).1 g = Eu s a b f.1 g := by
   simp [eS, hg]
 
 /- English proof (translation)
-Simplify using `[eS, hg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eS_apply_off (hR : RCalc) (s : Bool) (a b : Fin n) (f : Sm n V) {g : Mat n} (hg : g ∉ GLs n) :
     (eS hR s a b f).1 g = 0 := by
   simp [eS, hg]
 
 /- English proof (translation)
-Rewrite using `[eS_apply hR s a b _ hg]`. Conclude with `Eu_agree_GLs s a b (fun x hx => eS_apply hR s c d f hx) g hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eS_eS (hR : RCalc) (s : Bool) (a b c d : Fin n) (f : Sm n V) {g : Mat n} (hg : g ∈ GLs n) :
     (eS hR s a b (eS hR s c d f)).1 g = Eu s a b (Eu s c d f.1) g := by
@@ -317,21 +317,19 @@ theorem eS_eS (hR : RCalc) (s : Bool) (a b c d : Fin n) (f : Sm n V) {g : Mat n}
   exact Eu_agree_GLs s a b (fun x hx => eS_apply hR s c d f hx) g hg
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Apply the tactic sequence `obtain ⟨u, hu, hE⟩ : ∃ u : ℂ, u * u = -1 ∧ ∀ (p q : Fin n) (F : Mat n → V), Eu s p q F = Du u (Matrix.single p q 1) F := ⟨if s then -Complex.I else Complex.I, by cases s <;> simp, fun p q F => Eu_eq_Du s p q F⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Distinguish the cases in `hg : g ∈ GLs n`. Establish `h0 : ((eS hR s a b * eS hR s c d - eS hR s c d * eS hR s a b : Module.End ℂ (Sm n V)) f).1 g = Eu s a b (Eu s c d f.1) g - Eu s c d (Eu s a b f.1) g`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply]`. Conclude with `congrArg₂ (· - ·) (eS_eS hR s a b c d f hg) (eS_eS hR s c d a b f hg)`. Rewrite using `[h0]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hE]`. Rewrite using `[Du_bracket hR hu _ _ f.2.1 hg]`. Establish `hm : (Matrix.single a b 1 * Matrix.single c d 1 - Matrix.single c d 1 * Matrix.single a b 1 : Mat n) = (if b = c then Matrix.single a d 1 else 0) - (if a = d then Matrix.single c b 1 else 0)`. Use `congr 1`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Conclude with `Matrix.single_mul_single_of_ne _ _ _ _ h _`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Conclude with `Matrix.single_mul_single_of_ne _ _ _ _ (Ne.symm h) _`. Rewrite using `[hm, Du_sub]`. Simplify using `only [LinearMap.sub_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `split_ifs`. Rewrite using `[eS_apply hR s a d f hg, hE]`. Simplify using `[Du_zero]`. Use `split_ifs`. Rewrite using `[eS_apply hR s c b f hg, hE]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Du_zero]`. Establish `h0 : ((eS hR s a b * eS hR s c d - eS hR s c d * eS hR s a b : Module.End ℂ (Sm n V)) f).1 g = 0`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply]`. Express the relevant statement in the definitionally equal form `(eS hR s a b (eS hR s c d f)).1 g - (eS hR s c d (eS hR s a b f)).1 g = 0`. Rewrite using `[eS_apply_off hR s a b _ hg, eS_apply_off hR s c d _ hg, sub_zero]`.
-
-Rewrite using `[h0]`. Establish `h3 : ∀ (p q : Fin n), (eS hR s p q f).1 g = 0` using `fun p q => eS_apply_off hR s p q f hg`. Simplify using `only [LinearMap.sub_apply]`. Express the relevant statement in the definitionally equal form `0 = ((if b = c then eS hR s a d else 0 : Module.End ℂ (Sm n V)) f).1 g - ((if a = d then eS hR s c b else 0 : Module.End ℂ (Sm n V)) f).1 g`. Apply the tactic sequence `split_ifs <;> simp [h3]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eS_rel (hR : RCalc) (s : Bool) (a b c d : Fin n) :
     (eS hR s a b : Module.End ℂ (Sm n V)) * eS hR s c d - eS hR s c d * eS hR s a b =
@@ -387,9 +385,9 @@ section Main
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero`. Introduce `x hx`. Distinguish the cases in `hab : a = b`. Simplify `h x hx` using `[EpowT, hab]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[EpowT, hab]`. Consider the case `succ m ih`. Introduce `x hx`. Simplify using `only [EpowT, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun c _ => Eu_agree_GLs s c a (ih c b) x hx`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem EpowT_agree_GLs (s : Bool) (m : ℕ) (a b : Fin n) {F F' : Mat n → V}
     (h : ∀ g ∈ GLs n, F g = F' g) : ∀ x ∈ GLs n, EpowT s m a b F x = EpowT s m a b F' x := by
@@ -405,7 +403,7 @@ theorem EpowT_agree_GLs (s : Bool) (m : ℕ) (a b : Fin n) {F F' : Mat n → V}
     exact Finset.sum_congr rfl fun c _ => Eu_agree_GLs s c a (ih c b) x hx
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [gelT, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => EpowT_agree_GLs s m a a h x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gelT_agree_GLs (s : Bool) (m : ℕ) {F F' : Mat n → V} (h : ∀ g ∈ GLs n, F g = F' g) :
     ∀ x ∈ GLs n, gelT s m F x = gelT s m F' x := by
@@ -414,11 +412,11 @@ theorem gelT_agree_GLs (s : Bool) (m : ℕ) {F F' : Mat n → V} (h : ∀ g ∈ 
   exact Finset.sum_congr rfl fun a _ => EpowT_agree_GLs s m a a h x hx
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero`. Introduce `g hg`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Epw, Epow]`. Simplify using `[Epw, Epow, hab]`. Consider the case `succ m ih`. Introduce `g hg`. Simplify using `only [Epw, Epow, Finset.sum_apply, LinearMap.sum_apply, Module.End.mul_apply, AddSubmonoidClass.coe_finset_sum]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[eS_apply hR s a c _ hg]`. Conclude with `Eu_agree_GLs s a c (ih c b) g hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Epw_apply (hR : RCalc) (s : Bool) (f : Sm n V) (m : ℕ) (a b : Fin n) :
     ∀ g ∈ GLs n, (Epw (eS (V := V) hR s) m a b f).1 g = Epow s m a b f.1 g := by
@@ -437,11 +435,11 @@ theorem Epw_apply (hR : RCalc) (s : Bool) (f : Sm n V) (m : ℕ) (a b : Fin n) :
     exact Eu_agree_GLs s a c (ih c b) g hg
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero`. Introduce `g hg`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Epw, EpowT]`. Simplify using `[Epw, EpowT, hab]`. Consider the case `succ m ih`. Introduce `g hg`. Simplify using `only [Epw, EpowT, Finset.sum_apply, LinearMap.sum_apply, Module.End.mul_apply, AddSubmonoidClass.coe_finset_sum]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[eS_apply hR s c a _ hg]`. Conclude with `Eu_agree_GLs s c a (ih c b) g hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EpwT_apply (hR : RCalc) (s : Bool) (f : Sm n V) (m : ℕ) (a b : Fin n) :
     ∀ g ∈ GLs n, (Epw (fun a b => eS (V := V) hR s b a) m a b f).1 g = EpowT s m a b f.1 g := by
@@ -460,7 +458,7 @@ theorem EpwT_apply (hR : RCalc) (s : Bool) (f : Sm n V) (m : ℕ) (a b : Fin n) 
     exact Eu_agree_GLs s c a (ih c b) g hg
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [trE, gel, Finset.sum_apply, LinearMap.sum_apply, AddSubmonoidClass.coe_finset_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Epw_apply hR s f j a a g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trE_apply (hR : RCalc) (s : Bool) (f : Sm n V) (j : ℕ) :
     ∀ g ∈ GLs n, (trE (eS (V := V) hR s) j f).1 g = gel s j f.1 g := by
@@ -469,7 +467,7 @@ theorem trE_apply (hR : RCalc) (s : Bool) (f : Sm n V) (j : ℕ) :
   exact Finset.sum_congr rfl fun a _ => Epw_apply hR s f j a a g hg
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [trE, gelT, Finset.sum_apply, LinearMap.sum_apply, AddSubmonoidClass.coe_finset_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => EpwT_apply hR s f j a a g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trET_apply (hR : RCalc) (s : Bool) (f : Sm n V) (j : ℕ) :
     ∀ g ∈ GLs n, (trE (fun a b => eS (V := V) hR s b a) j f).1 g = gelT s j f.1 g := by
@@ -478,9 +476,9 @@ theorem trET_apply (hR : RCalc) (s : Bool) (f : Sm n V) (j : ℕ) :
   exact Finset.sum_congr rfl fun a _ => EpwT_apply hR s f j a a g hg
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => intro g hg`. Simplify using `[zOp]`. Consider the case `cons p w ih`. Introduce `g hg`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply]`. Rewrite using `[trE_apply hR s _ p g hg]`. Conclude with `gel_agree_GLs s p ih g hg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_apply (hR : RCalc) (s : Bool) (f : Sm n V) (w : List ℕ) :
     ∀ g ∈ GLs n, (((w.map (trE (eS (V := V) hR s))).prod : Module.End ℂ (Sm n V)) f).1 g =
@@ -496,11 +494,11 @@ theorem prod_apply (hR : RCalc) (s : Bool) (f : Sm n V) (w : List ℕ) :
 end Main
 
 /- English proof (translation)
-Introduce `n m`. Take `⟨N, c, w, h⟩` from `phiSeq_words n m`. Use `⟨N, c, w, fun cc => ?_, fun hR s V _ _ f hf x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.gelfand_value_negation, h (A := ℂ)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `F : Sm n V` to `⟨(GLs n).indicator f, indicator_mem hf⟩`. Establish `hF : ∀ g ∈ GLs n, f g = F.1 g` using `fun g hg => by simp [F, hg]`. Establish `key` using `GlTranspose.trE_transpose_eq_phiSeq n (eS (n := n) (V := V) hR s) (eS_rel hR s) m`. Rewrite `key` using `[h (trE (eS (n := n) (V := V) hR s))]`. Rewrite using `[gelT_agree_GLs s m hF x hx, ← trET_apply hR s F m x hx, key]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, AddSubmonoidClass.coe_finset_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[prod_apply hR s F (w i) x hx, zOp_agree_GLs n _ f F.1 hF x hx]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem transposed_invariants : ∀ (n m : ℕ), ∃ (N : ℕ) (c : Fin N → ℂ) (w : Fin N → List ℕ), (∀ cc : Fin n → ℂ, (-1 : ℂ) ^ m * GlobalTheory.Dec.gelfVal (fun a => - cc a) m = ∑ i, c i * ((w i).map (GlobalTheory.Dec.gelfVal cc)).prod) ∧ (RCalc → ∀ (s : Bool) {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (f : Mat n → V), ContDiffOn ℝ ∞ f (GLs n) → ∀ x ∈ GLs n, gelT s m f x = ∑ i, c i • zOp ((w i).map (fun j => (s, j))) f x) := by
   intro n m

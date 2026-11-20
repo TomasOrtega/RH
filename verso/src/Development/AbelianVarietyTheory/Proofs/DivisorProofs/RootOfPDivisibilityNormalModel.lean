@@ -19,11 +19,11 @@ noncomputable section
 namespace GlobalTheory.ChainParts
 
 /- English proof (translation)
-Use `haveI := hB`. Take `⟨u, hu⟩` from `hg`. Take `⟨v, hv⟩` from `hγ`. Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `hdvd : (γ ^ p ^ m) ^ p ∣ g ^ p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(u * v⁻¹ : Γ(B.X, ⊤)ˣ), ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, ← pow_succ, hv, hu]`. Simplify using `only [Units.val_mul]`. Take the linear combination `(-((u : Γ(B.X, ⊤)) * (p : Γ(B.X, ⊤)))) * v.mul_inv`. Take `⟨c, hc⟩` from `(IsIntegrallyClosed.pow_dvd_pow_iff hp0).mp hdvd`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c, hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem dvd_of_isRootOfP_pow_succ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime]
     [CharZero O] [CharP (ResidueField O) p] {B : Vert.Model O} (hB : GlobalTheory.IsNormalScheme B.X) (g γ : Γ(B.X, ⊤)) (m : ℕ)

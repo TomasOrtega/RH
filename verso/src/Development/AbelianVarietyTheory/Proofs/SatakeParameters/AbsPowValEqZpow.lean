@@ -12,7 +12,7 @@ namespace GlobalTheory.TotDisjUnlinked
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hq : (0 : ℝ) < resCard k` using `by exact_mod_cast zero_lt_one.trans (SplitWeil.one_lt_resCard k)`. Establish `hq' : (resCard k : ℂ) ≠ 0` using `by exact_mod_cast hq.ne'`. Rewrite using `[val_absPow, LGrp.nabs_eq_zpow, Complex.cpow_def_of_ne_zero (by exact_mod_cast (zpow_pos hq _).ne'), Complex.cpow_def_of_ne_zero hq', ← Complex.ofReal_log (zpow_pos hq _).le, Real.log_zpow, ← Complex.exp_int_mul, ← Complex.natCast_log]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -28,7 +28,7 @@ theorem absPow_val_eq_zpow (s : ℂ) (x : kˣ) :
   ring
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[absPow_val_eq_zpow, unrChar_apply, Units.val_zpow_eq_zpow_val, Units.val_mk0]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem absPow_eq_unrChar (s : ℂ) :
     absPow k s = unrChar k (Units.mk0 ((resCard k : ℂ) ^ (-s))
@@ -41,7 +41,7 @@ theorem absPow_eq_unrChar (s : ℂ) :
 end GlobalTheory.TotDisjUnlinked
 
 /- English proof (translation)
-Introduce `H k _ _ _ _ r t s s' π₁ π₂ d d' σ σ' h₁ h₂ hu`. Use `H k r t s s' π₁ π₂ d d' σ σ' h₁ h₂ fun a b h j _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.TotDisjUnlinked.absPow_eq_unrChar]`. Conclude with `hu a b h _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TotDisjUnlinked.main :
     GlobalTheory.Published.TotallyDisjointProductIrreducible → GlobalTheory.Published.UnlinkedProductIrreducible := by

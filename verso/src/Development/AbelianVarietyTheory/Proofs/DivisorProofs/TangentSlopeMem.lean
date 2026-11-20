@@ -6,15 +6,13 @@ open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Pub
 open scoped IntermediateField BigOperators Topology
 
 /- English proof (translation)
-Introduce `V a₄ a₆ r s t X Y u hI hx hy hv`. Take `⟨h1, h2, -, h4, -⟩` from `hI`. Use `set W' := (⟨u, r, s, t⟩ : VariableChange ℂ) • (⟨0, 0, 0, a₄, a₆⟩ : WeierstrassCurve ℂ) with hW'`. Establish `hu : (u : ℂ) ≠ 0` using `u.ne_zero`. Establish `hY : 2 * Y ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `hv` using `[h, map_zero]`. Conclude with `pow_ne_zero 3 ((Valuation.ne_zero_iff _).2 hu) hv.symm`. Establish `hY0 : Y ≠ 0` using `right_ne_zero_of_mul hY`. Establish `hq : (u : ℂ) ^ 3 / (2 * Y) ∈ V`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ValuationSubring.valuation_le_one_iff, map_div₀, map_pow, ← hv, div_self]`. Conclude with `(Valuation.ne_zero_iff _).2 hY`. Establish `hE : 3 * ((X - r) / (u : ℂ) ^ 2) ^ 2 + 2 * W'.a₂ * ((X - r) / (u : ℂ) ^ 2) + W'.a₄ - W'.a₁ * ((Y - t - s * (X - r)) / (u : ℂ) ^ 3) ∈ V`. Establish `h3 : (3 : ℂ) ∈ V` using `by simpa using natCast_mem V 3`. Establish `h2' : (2 : ℂ) ∈ V` using `by simpa using natCast_mem V 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `sub_mem (add_mem (add_mem (mul_mem h3 (pow_mem hx 2)) (mul_mem (mul_mem h2' h2) hx)) h4) (mul_mem h1 hy)`. Establish `key : ((3 * X ^ 2 + a₄) / (2 * Y) - s) / (u : ℂ) = (3 * ((X - r) / (u : ℂ) ^ 2) ^ 2 + 2 * W'.a₂ * ((X - r) / (u : ℂ) ^ 2) + W'.a₄ - W'.a₁ * ((Y - t - s * (X - r)) / (u : ℂ) ^ 3)) * ((u : ℂ) ^ 3 / (2 * Y))`. Simplify using `only [hW', WeierstrassCurve.variableChange_a₁, WeierstrassCurve.variableChange_a₂, WeierstrassCurve.variableChange_a₄, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[key]`. Conclude with `mul_mem hE hq`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CMModel.tangentSlope_mem : ∀ (V : ValuationSubring ℂ) (a₄ a₆ r s t X Y : ℂ) (u : ℂˣ), IntV V ((⟨u, r, s, t⟩ : VariableChange ℂ) • (⟨0, 0, 0, a₄, a₆⟩ : WeierstrassCurve ℂ)) → (X - r) / (u : ℂ) ^ 2 ∈ V → (Y - t - s * (X - r)) / (u : ℂ) ^ 3 ∈ V → V.valuation (2 * Y) = V.valuation (u : ℂ) ^ 3 → ((3 * X ^ 2 + a₄) / (2 * Y) - s) / (u : ℂ) ∈ V := by
   intro V a₄ a₆ r s t X Y u hI hx hy hv

@@ -5,39 +5,37 @@ open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheo
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ bar hbar ω tr nm htr hnm hD M hcop t ht hgen hpos τ₀`. Take `⟨hti, e, he, hez⟩` from `hgen`. Establish `hbω : bar ω = (tr : 𝓞 E) - ω` using `eq_sub_of_add_eq' htr`. Establish `hnm' : ω * ((tr : 𝓞 E) - ω) = (nm : 𝓞 E)` using `by rw [← hbω]; exact hnm`. Use `set u : 𝓞 E := 2 * ω - (tr : 𝓞 E) with hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D : ℤ := tr ^ 2 - 4 * nm with hDdef`. Establish `huu : u * u = (D : 𝓞 E)`. Rewrite using `[hu, hDdef]`. Use `push_cast`. Take the linear combination `(-4 : 𝓞 E) * hnm'`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huuE : (u : E) * (u : E) = (D : E)`. Use `congrArg (fun x : 𝓞 E => (x : E)) huu` as an intermediate fact. Simplify using `using this`. Establish `huE : (u : E) = 2 * (ω : E) - (tr : E)`. Rewrite using `[hu]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Establish an intermediate fact.
 
-Use `norm_cast`. Establish `h1 : (IsCMField.complexConj E) (ω : E) = (tr : E) - ω`. Rewrite using `[← hbar ω, hbω]`. Use `norm_cast`. Establish `hconj : (IsCMField.complexConj E) (u : E) = -(u : E)`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[huE, map_sub, map_mul, h1, map_intCast, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `hτu : ∀ τ : E →+* ℂ, (τ u).re = 0`. Introduce `τ`. Establish `h` using `IsCMField.complexEmbedding_complexConj E τ (u : E)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hconj, map_neg]`. Establish `h2` using `congrArg Complex.re h`. Simplify using `at h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hτt : ∀ τ : E →+* ℂ, (τ t).im = 0`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `τ`. Establish `h` using `IsCMField.complexEmbedding_complexConj E τ t`. Rewrite `h` using `[ht]`. Establish `h2` using `congrArg Complex.im h`. Simplify using `at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hu0 : (τ₀ u).im ≠ 0`. Introduce `h`. Establish `h0 : τ₀ u = 0` using `Complex.ext (hτu τ₀) h`. Establish `h3` using `congrArg τ₀ huuE`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_mul, h0, zero_mul, map_intCast]`. Establish `: D = 0` using `by exact_mod_cast h3.symm`. Combine the linear equalities and inequalities to obtain the conclusion. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hcs⟩ : ∃ c : ℤ, c * c = 1 ∧ (c : ℝ) * (τ₀ u).im < 0 := by`. Break down `lt_or_gt_of_ne hu0 with h | h` into its components or cases.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨1, by norm_num, by simpa using h⟩`. Conclude with `⟨-1, by norm_num, by simpa using h⟩`. Establish `hcE : (c : E) * (c : E) = 1` using `by exact_mod_cast hc`. Establish `hDabs : ((D.natAbs : ℕ) : E) = -((u : E) * (u : E))`. Rewrite using `[huuE]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((D.natAbs : ℕ) : ℤ) = -D` using `Int.ofNat_natAbs_of_nonpos hD.le`. Establish `h2` using `congrArg (fun k : ℤ => (k : E)) this`. Simplify using `using h2`. Use `⟨(c : E) * t * u, ?_, ⟨?_, e * D.natAbs, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_intCast, ht, hconj]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `x`. Take `⟨m, hm⟩` from `hti ((c : 𝓞 E) * u * x)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `hcast : (((c : 𝓞 E) * u * x : 𝓞 E) : E) = (c : E) * u * x` using `by norm_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[hcast]`. Rewrite using `[← hm]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : Int.gcd D (M : ℤ) = 1` using `Int.isCoprime_iff_gcd_eq_one.mp hcop`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3 : Nat.Coprime D.natAbs M`. Simplify `h2` using `[Int.gcd, Nat.Coprime]`. Conclude with `Nat.Coprime.mul he h3`. Introduce `z hz`. Take `⟨x, hx⟩` from `hez z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨-(c : 𝓞 E) * u * x, ?_⟩` and prove the remaining obligations. Establish `hcast : ((-(c : 𝓞 E) * u * x : 𝓞 E) : E) = -(c : E) * u * x` using `by norm_cast`. Rewrite using `[hcast]`. Use `push_cast`. Take the linear combination `((D.natAbs : ℕ) : E) * hx + (t * (x : E)) * hDabs + (t * (u : E) * (u : E) * (x : E)) * hcE`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ hτ`. Establish `hτu' : τ u = τ₀ u`. Rewrite using `[huE, map_sub, map_mul, map_sub, map_mul, hτ, map_intCast, map_intCast, map_ofNat, map_ofNat]`. Rewrite using `[map_mul, map_mul, map_intCast, hτu']`. Simplify using `only [Complex.mul_im, Complex.mul_re, Complex.intCast_re, Complex.intCast_im, hτt τ, hτu τ₀]`.
-
-Use polynomial arithmetic with `[mul_neg_of_pos_of_neg (hpos τ) hcs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pDeltaEx :
     DeltaEx := by

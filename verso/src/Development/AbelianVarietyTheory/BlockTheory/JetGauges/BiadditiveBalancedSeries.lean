@@ -31,7 +31,7 @@ structure IsBiaddBalanced (g : PS k 2 d) : Prop where
       ev (n := 2) ![pt k d 0, comp1 (B.actK k (star a)) (pt k d 1)] g)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.ax0, h.ax1, h.ph1, h.ph2, h.ad⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsBiaddBalanced.of_canon {g : PS k 2 d} (h : B.IsCanonGauge k g) : IsBiaddBalanced B k g :=
   ⟨h.ax0, h.ax1, h.ph1, h.ph2, h.ad⟩
@@ -44,15 +44,15 @@ variable {O : Type} [CommRing O] [StarRing O] {k : Type} [Field k] [CharZero k] 
 
 omit [CharZero k] in
 /- English proof (translation)
-Simplify using `[pt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cc_pt (j : Fin n) (i : Fin d) : constantCoeff (pt k d j i) = 0 := by simp [pt]
 
 omit [CharZero k] in
 /- English proof (translation)
-Establish `h : ∀ (l : Fin 2) (m : Fin d), constantCoeff ((![a, b] : Fin 2 → Pt k n d) l m) = 0`. Introduce `l m`. Use `fin_cases l`. Use `exacts [ha m, hb m]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show ev ![a, b] (X ((0 : Fin 2), i) + X ((1 : Fin 2), i) : PS k 2 d) = _`. Rewrite using `[ev_add _ h, ev_X _ h, ev_X _ h]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem addOf_addLaw (a b : Pt k n d) (ha : ∀ i, constantCoeff (a i) = 0)
     (hb : ∀ i, constantCoeff (b i) = 0) : addOf (addLaw k d).F a b = a + b := by
@@ -65,9 +65,7 @@ theorem addOf_addLaw (a b : Pt k n d) (ha : ∀ i, constantCoeff (a i) = 0)
 
 omit [CharZero k] in
 /- English proof (translation)
-Establish `h : ∀ (l : Fin 2) (m : Fin d), constantCoeff ((![a, b] : Fin 2 → Pt k n d) l m) = 0`. Introduce `l m`. Use `fin_cases l`. Use `exacts [ha m, hb m]`. Rewrite using `[ev_mul _ h, ev_X _ h, ev_X _ h]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ev_XX (a b : Pt k n d) (ha : ∀ i, constantCoeff (a i) = 0)
     (hb : ∀ i, constantCoeff (b i) = 0) (i j : Fin d) :
@@ -81,9 +79,9 @@ def diagAct (ty : Fin d → (O →+* k)) (a : O) : Pt k 1 d := fun i => C (ty i 
 
 omit [CharZero k] [StarRing O] in
 /- English proof (translation)
-Establish `h : ∀ (l : Fin 1) (m : Fin d), constantCoeff ((![b] : Fin 1 → Pt k n d) l m) = 0`. Introduce `l m`. Use `fin_cases l`. Conclude with `hb m`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show ev ![b] (C (ty i a) * X ((0 : Fin 1), i) : PS k 1 d) = _`. Rewrite using `[ev_mul _ h, ev_C, ev_X _ h]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem comp_diagonalAction (ty : Fin d → (O →+* k)) (a : O) (b : Pt k n d)
     (hb : ∀ i, constantCoeff (b i) = 0) :
@@ -120,7 +118,7 @@ def diagOAct (ty : Fin d → (O →+* k)) : OAct O (addLaw k d) where
     simp [diagAct, pt]
 
 /- English proof (translation)
-Use extensionality with `e`. Rewrite using `[FB.expS, PowerSeries.coeff_subst PowerSeries.HasSubst.zero, finsum_eq_single _ 0]`. Simplify using `[PowerSeries.coeff_exp]`. Introduce `j hj`. Simplify using `[zero_pow hj]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem expS_zero : FB.expS k (0 : PS k n d) = 1 := by
   ext e
@@ -130,13 +128,13 @@ theorem expS_zero : FB.expS k (0 : PS k n d) = 1 := by
     simp [zero_pow hj]
 
 /- English proof (translation)
-Establish `hF : (FB.triv (addLaw k d) (diagOAct ty)).FK k = (addLaw k d).F`. Use function extensionality and compare the values at `l`. Simplify using `[FB.FK, FGLaw.mapF, FB.triv]`. Establish `hA : ∀ a, (FB.triv (addLaw k d) (diagOAct ty)).actK k a = diagAct ty a`. Introduce `a`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `l`. Simplify using `[FB.actK, FB.triv, diagOAct]`. Use `⟨?_, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[ev_XX _ _ (by simp) (cc_pt 0)]; simp`. Rewrite using `[ev_XX _ _ (cc_pt 0) (by simp)]; simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF, addOf_addLaw _ _ (cc_pt 0) (cc_pt 1), ev_XX _ _ (cc_pt 0) (cc_pt 2), ev_XX _ _ (cc_pt 1) (cc_pt 2), ev_XX _ _ (fun l => by simp [pt]) (cc_pt 2), Pi.add_apply, add_mul, sub_self, expS_zero]`. Simplify using `[FB.triv]`. Rewrite using `[hF, addOf_addLaw _ _ (cc_pt 1) (cc_pt 2), ev_XX _ _ (cc_pt 0) (cc_pt 1), ev_XX _ _ (cc_pt 0) (cc_pt 2), ev_XX _ _ (cc_pt 0) (fun l => by simp [pt]), Pi.add_apply, mul_add, sub_self, expS_zero]`. Simplify using `[FB.triv]`. Rewrite using `[hA, hA, comp_diagonalAction _ _ _ (cc_pt 0), comp_diagonalAction _ _ _ (cc_pt 1), ev_XX _ _ (fun l => by simp [pt]) (cc_pt 1), ev_XX _ _ (cc_pt 0) (fun l => by simp [pt]), hij a, mul_left_comm, mul_assoc, sub_self, expS_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[FB.triv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isBiaddBalanced_XX (ty : Fin d → (O →+* k)) (i j : Fin d)
     (hij : ∀ a, ty i a = ty j (star a)) :
@@ -168,9 +166,9 @@ theorem isBiaddBalanced_XX (ty : Fin d → (O →+* k)) (i j : Fin d)
 omit [CharZero k] in
 
 /- English proof (translation)
-Rewrite using `[ev_XX _ _ (cc_pt 1) (cc_pt 0)]`. Introduce `h`. Simplify using `only [pt, X_def, monomial_mul_monomial, mul_one] at h`. Establish `h2` using `congrArg (coeff (Finsupp.single ((0 : Fin 2), i) 1 + Finsupp.single ((1 : Fin 2), j) 1)) h`. Rewrite `h2` using `[coeff_monomial_same, coeff_monomial_ne]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h2`. Introduce `h3`. Establish `h4` using `DFunLike.congr_fun h3 ((0 : Fin 2), i)`. Simplify using `[hij.symm] at h4`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem XX_not_symm (i j : Fin d) (hij : i ≠ j) :
     ev (n := 2) ![pt k d 1, pt k d 0] (X ((0 : Fin 2), i) * X ((1 : Fin 2), j) : PS k 2 d) ≠
@@ -246,7 +244,7 @@ def IsHarmonic [IsCMField E] (r : (E →+* k) → ℕ) {n : ℕ}
       (MvPolynomial.pderiv ((⟨conjEmb τ, i'⟩ : Σ τ : E →+* k, Fin (r τ)), b) P) = 0
 
 /- English proof (translation)
-Introduce `τ i i'`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.pderiv_X, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isHarmonic_X [IsCMField E] (r : (E →+* k) → ℕ) {n : ℕ}
     (p : (Σ τ : E →+* k, Fin (r τ)) × Fin n) :

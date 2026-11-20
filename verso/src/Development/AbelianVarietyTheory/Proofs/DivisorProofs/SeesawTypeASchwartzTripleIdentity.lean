@@ -21,7 +21,7 @@ namespace GlobalTheory.ConeFinVanish
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul, dc.form]`. Rewrite using `[add_right_comm x]`. Use `congr 2`. Simplify using `only [add_dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -38,15 +38,13 @@ theorem rho_comm {R : Type} [CommRing R] [Invertible (2 : R)] {V : Type} [AddCom
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `key : ∀ (P : R × (κ → R) → ℂ × ℂ), IsLocallyConstant P → (∀ z, (P (0, z)).1 = (P (0, z)).2) → ∀ᶠ α in 𝓝 (0 : R), ∀ z ∈ tsupport g, (P (α, z)).1 = (P (α, z)).2`. Introduce `P hP hz`. Use `IsCompact.eventually_forall_of_forall_eventually hg.2 (P := fun α z => (P (α, z)).1 = (P (α, z)).2) fun z _ => ?_` and prove the remaining obligations. Use `filter_upwards [hP.eventually_eq (0, z)] with p hp`. Express the relevant statement in the definitionally equal form `(P p).1 = (P p).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp, hz]`. Establish `c1 : Continuous fun p : R × (κ → R) => p.1 * (p.2 ⬝ᵥ d) + p.1 * p.1 * c`. Establish `: Continuous fun p : R × (κ → R) => p.2 ⬝ᵥ d` using `continuous_snd.dotProduct continuous_const`. Use `fun_prop`. Establish `c2 : Continuous fun p : R × (κ → R) => p.2 + p.1 • s` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c3 : Continuous fun p : R × (κ → R) => p.2 - p.1 • s` using `by fun_prop`. Establish `l0` using `hg.1.comp_continuous (continuous_snd (X := R) (Y := κ → R))`. Establish `e1` using `key _ (((hχ.comp_continuous c1).mul (hg.1.comp_continuous c2)).prodMk l0) (fun z => by simp [h0])`. Establish `e2` using `key _ ((hg.1.comp_continuous c3).prodMk l0) (fun z => by simp)`. Use `filter_upwards [e1, e2] with α h1 h2 z`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hz : z ∈ tsupport g`. Conclude with `h1 z hz`. Establish `hz0` using `image_eq_zero_of_notMem_tsupport hz`. Distinguish the cases in `hz' : z + α • s ∈ tsupport g`. Use `h2 _ hz'` as an intermediate fact.
-
-Simplify using `only [Function.comp_apply, add_sub_cancel_right] at this`. Rewrite using `[← this, hz0, mul_zero]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hz', hz0, mul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_fixed {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] {κ : Type} [Fintype κ] {χ : R → ℂ} (hχ : IsLocallyConstant χ) (h0 : χ 0 = 1)
     {g : (κ → R) → ℂ} (hg : g ∈ SB (κ → R)) (s d : κ → R) (c : R) :
@@ -80,15 +78,15 @@ theorem eventually_fixed {R : Type} [CommRing R] [TopologicalSpace R] [IsTopolog
     · rw [image_eq_zero_of_notMem_tsupport hz', hz0, mul_zero]
 
 /- English proof (translation)
-Use `filter_upwards [eventually_fixed (GlobalTheory.HeisSchA.finChar_isLocallyConstant ψ hψ) (AddChar.map_zero_eq_one _) hg (fun i => GlobalTheory.HeisSchA.p2 (w.1 i)) (fun i => GlobalTheory.HeisSchA.p2 (w.2 i)) (GlobalTheory.HeisSchA.p2 (⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)))] with α hα f`. Use function extensionality and compare the values at `x`. Establish `h` using `hα fun i => GlobalTheory.HeisSchA.p2 (x i)`. Establish `e1 : x ⬝ᵥ (pairA F 0 α • w).2 + ⅟(2 : AF F) * ((pairA F 0 α • w).1 ⬝ᵥ (pairA F 0 α • w).2) = pairA F 0 α * (x ⬝ᵥ w.2 + pairA F 0 α * (⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)))`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, dotProduct_smul, smul_dotProduct, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : pairA F 0 α * (x ⬝ᵥ w.2 + pairA F 0 α * (⅟(2 : AF F) * (w.1 ⬝ᵥ w.2))) = GlobalTheory.HeisSchA.mk 0 (α * ((fun i => GlobalTheory.HeisSchA.p2 (x i)) ⬝ᵥ fun i => GlobalTheory.HeisSchA.p2 (w.2 i)) + α * α * GlobalTheory.HeisSchA.p2 (⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)))`. Use `Prod.ext (zero_mul _) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.HeisSchA.p2 (_ * _) = _ + _`. Rewrite using `[map_mul, map_add, map_mul, RingHom.map_dotProduct]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `α * (_ + α * _) = _`. Rewrite using `[mul_add, mul_assoc]`. Both sides reduce to the same expression. Establish `e3 : (fun i => ((x + (pairA F 0 α • w).1) i).1) = fun i => (x i).1`. Use function extensionality and compare the values at `fun i => show (x i).1 + 0 * (w.1 i).1 = (x i).1 by rw [zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `e3' : ∀ i, ((x + (pairA F 0 α • w).1) i).1 = (x i).1` using `congrFun e3`. Unfold `schr pureA`. Rewrite using `[e1, e2, ← GlobalTheory.HeisSchA.finChar_apply]`. Simplify using `only [e3']`. Rewrite using `[mul_left_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`.
+A detailed English derivation is pending.
 -/
 theorem eventually_schr_pureA {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} (hψ : Continuous ψ)
     {g : (κ → Af F) → ℂ} (hg : g ∈ SB (κ → Af F)) (w : (κ → AF F) × (κ → AF F)) :
@@ -122,15 +120,13 @@ theorem eventually_schr_pureA {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ}
   congr 1
 
 /- English proof (translation)
-Take `⟨a, ha, H⟩` from `(GlobalTheory.StdDual.codiff F).isFractional`. Establish `ha0 : Ideal.span {a} ≠ ⊥` using `by simpa using nonZeroDivisors.ne_zero ha`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {a}))`. Use `⟨Ideal.absNorm (Ideal.span {a}), Nat.pos_of_ne_zero (mt Ideal.absNorm_eq_zero_iff.1 ha0), fun y hy v => ?_⟩` and prove the remaining obligations. Establish `hm` using `(GlobalTheory.SplitUnram.mem_adelicIdeal_codiff_iff hψ.1 (GlobalTheory.LatVacArith.psi_fin_rat hψ) y).2 hy v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Generalize the expression as in `y v = t at hm`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨x, hx, rfl⟩` from `hx`. Take `⟨o, ho⟩` from `H x hx`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : ((Ideal.absNorm (Ideal.span {a}) : ℕ) : F) * x = algebraMap (𝓞 F) F (c * o)`. Rewrite using `[map_mul, ho, Algebra.smul_def, ← mul_assoc, ← map_mul, hc, map_natCast]`. Rewrite using `[← map_natCast (algebraMap F (v.adicCompletion F)), ← map_mul, e, HeightOneSpectrum.mem_adicCompletionIntegers, GlobalTheory.Idele.valued_algebraMap]`. Conclude with `v.valuation_le_one _`. Consider the case `zero => rw [mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx`. Express the relevant statement in the definitionally equal form `_ * ((r : v.adicCompletion F) * x) ∈ _`.
-
-Rewrite using `[mul_left_comm]`. Conclude with `mul_mem r.2 hx`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) : ∃ D : ℕ, 0 < D ∧ ∀ y : Af F,
     (∀ α : Af F, (∀ v, α v ∈ v.adicCompletionIntegers F) → ψ (pairA F 0 (α * y)) = 1) →
@@ -160,11 +156,11 @@ theorem exists_den {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) : ∃ D : ℕ, 0 <
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `hc : ∀ e : E, cA σ (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := fun e => rfl`. Simplify using `only [hTens, form, dotProduct, Matrix.mulVec, map_sum, map_mul, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul, incV, incM, Matrix.map_apply, hc, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => arg 2`. Use extensionality with `k`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem hTens_vecMulVec {n d : ℕ} (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E)
     (x x' : Fin n → E) (y y' : Fin d → E) (l t : AE F E) :
@@ -184,9 +180,9 @@ theorem hTens_vecMulVec {n d : ℕ} (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Establish `h2 : form σ JW H'.y H'.x = -1`. Use `GlobalTheory.ThK.HypSplit.form_skew hcm hW H'.y H'.x` as an intermediate fact. Rewrite `this` using `[h', map_one]`. Conclude with `(neg_eq_iff_eq_neg.1 this.symm)`. Rewrite using `[symp, shiftA, hTens_vecMulVec, h, h2, map_one, map_neg, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem symp_shiftA (hcm : IsCMExt F E σ) {n d n₁ d₁ : ℕ} {JX : Matrix (Fin n) (Fin n) E}
     {JW : Matrix (Fin d) (Fin d) E} (hW : ∀ i j, σ (JW j i) = -JW i j) (H : Plane E n n₁) (H' : Plane E d d₁)
@@ -202,7 +198,7 @@ theorem symp_shiftA (hcm : IsCMExt F E σ) {n d n₁ d₁ : ℕ} {JX : Matrix (F
   ring
 
 /- English proof (translation)
-Use `⟨inclR (F := F) (AF F) (σ ((Module.finBasis F E).traceDual i)), fun a l => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ e : E, cA σ (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := fun e => rfl`. Rewrite using `[map_smul, hc, GlobalTheory.ThK.HypSplit.invol hcm, mul_smul_comm, map_smul, smul_eq_mul, mul_comm l]`. Conclude with `congrArg (a * ·) (GlobalTheory.TraceAnnCompact.trace_traceDual_mul (AF F) (Module.finBasis F E) i l)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_trace_eq_coord (hcm : IsCMExt F E σ) (i : Fin (Module.finrank F E)) : ∃ c : AE F E,
     ∀ (a : AF F) (l : AE F E), Algebra.trace (AF F) (AE F E) (l * cA σ (a • c)) = a * GlobalTheory.IdeleDecay.coord F E l i := by
@@ -213,19 +209,19 @@ theorem exists_trace_eq_coord (hcm : IsCMExt F E σ) (i : Fin (Module.finrank F 
   exact congrArg (a * ·) (GlobalTheory.TraceAnnCompact.trace_traceDual_mul (AF F) (Module.finBasis F E) i l)
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT _ g hg`. Establish `hψ` using `hT.base.std`. Establish `hcm` using `hT.base.cm`. Use `choose c hc using exists_trace_eq_coord (σ := σ) hcm`. Set `u : Fin (Module.finrank F E) → Matrix (Fin (b + 2)) (Fin (b + 2 + a')) (AE F E)` to `fun i => c i • Matrix.vecMulVec (incV F H.y) (incV F H'.x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hev` using `eventually_all.2 fun i => eventually_schr_pureA hψ.1 hg (G.M.co.e (u i))`. Take `⟨N, hN, hNm⟩` from `GlobalTheory.OpenSubAdele.exists_nat_mul_mem_of_mem_nhds hev`. Take `⟨D, hD, hDm⟩` from `exists_den hψ`. Use `⟨D * N, Nat.mul_pos hD hN, fun l hl f y => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `hl fun i v => ?_` and prove the remaining obligations. Establish `key` using `hDm ((N : Af F) * GlobalTheory.HeisSchA.p2 (GlobalTheory.IdeleDecay.coord F E l.1 i)) (fun α hα => ?_) v`. Rewrite using `[Nat.cast_mul, mul_assoc, map_mul, map_natCast]`. Rewrite `key` using `[← map_natCast (GlobalTheory.HeisSchA.p2 (F := F)), ← map_mul]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix` using `hNm α (Subring.mem_iInf.2 hα) i f`. Use `set a : AF F := pairA F 0 ((N : Af F) * α) with ha`. Establish `hu : a • u i = (a • c i) • Matrix.vecMulVec (incV F H.y) (incV F H'.x)` using `(smul_assoc _ _ _).symm`. Establish `hfix' : G.M.co.rho B.ψ (a • u i) (pureA F f g) = pureA F f g`. Rewrite using `[Darboux.rho, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hfix`. Establish `hI : a • u i ∈ isoA H H'` using `Or.inl ⟨(a • c i) • incV F H.y, by rw [hu, Matrix.smul_vecMulVec]⟩`. Establish `hΦ : pureA F f g ∈ schA F _` using `Submodule.subset_span ⟨f, g, hg, rfl⟩`. Establish `h1` using `rho_comm G.M.co B.ψ (shiftA H H' l) (a • u i) (pureA F f g)`. Rewrite `h1` using `[hfix']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrFun (congrArg e h1) y`. Rewrite `h2` using `[map_smul, he.inv _ hI _ (GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hψ _ _ hΦ), Pi.smul_apply, smul_eq_mul, hu, symp_shiftA hcm hT.geo.hW.skew H H' hC.hH.xy hC.hH'.xy, hc]`. Establish `h3 : B.ψ (a * GlobalTheory.IdeleDecay.coord F E l.1 i) = 1` using `mul_right_cancel₀ hne (h2.symm.trans (one_mul _).symm)`. Rewrite using `[← h3]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Prod.ext (zero_mul _).symm ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `α * ((N : Af F) * _) = (N : Af F) * α * _`. Rewrite using `[mul_left_comm, mul_assoc]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ev_shiftA_pure_eq_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

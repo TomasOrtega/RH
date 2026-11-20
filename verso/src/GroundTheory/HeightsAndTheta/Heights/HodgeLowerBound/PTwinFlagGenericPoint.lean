@@ -10,23 +10,21 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Cardinal
 
 /- English proof (translation)
-Introduce `K _ ι _ P d hP`. Take `⟨_, ⟨hprime, -, hrel⟩, hhor, -⟩` from `hP`. Use `hprime` as an intermediate fact. Set `Q` to `MRing ι ⧸ P`. Set `F` to `FractionRing Q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hQ : Function.Injective (algebraMap ℤ Q)`. Establish `e : algebraMap ℤ Q = (Ideal.Quotient.mk P).comp C` using `RingHom.ext_int _ _`. Rewrite using `[e, injective_iff_map_eq_zero]`. Introduce `n hn`. Establish `hn0 : (C n : MRing ι) ∈ P` using `Ideal.Quotient.eq_zero_iff_mem.mp hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn' : n ∈ P.comap (C : ℤ →+* MRing ι)` using `hn0`. Rewrite `hhor` using `[IsHorizontal]`. Rewrite `hn'` using `[hhor]`. Conclude with `(Ideal.mem_bot).mp hn'`. Establish `: CharZero Q` using `charZero_of_injective_algebraMap hQ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CharZero F` using `charZero_of_injective_algebraMap (R := Q) (IsFractionRing.injective Q F)`. Establish `hcard : #F ≤ 𝔠`. Rewrite using `[Cardinal.mk_fractionRing]`. Use `(Cardinal.mk_le_of_surjective (Ideal.Quotient.mk_surjective (I := P))).trans ?_` and prove the remaining obligations. Use `MvPolynomial.cardinalMk_le_max.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `max_le (max_le (mk_int.le.trans aleph0_le_continuum) (Cardinal.mk_le_aleph0.trans aleph0_le_continuum)) aleph0_le_continuum`. Take `⟨ψ⟩` from `HilbertSamuel.exists_ringHom_complex_of_charZero F hcard`. Set `φ : MRing ι →+* ℂ` to `(ψ.comp (algebraMap Q F)).comp (Ideal.Quotient.mk P)`. Establish `hker : ∀ f, φ f = 0 ↔ f ∈ P`. Introduce `f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : Function.Injective (ψ.comp (algebraMap Q F))` using `ψ.injective.comp (IsFractionRing.injective Q F)`. Rewrite using `[show φ f = (ψ.comp (algebraMap Q F)) (Ideal.Quotient.mk P f) from rfl, map_eq_zero_iff _ hi, Ideal.Quotient.eq_zero_iff_mem]`. Set `z : (Σ k, ι k) → ℂ` to `fun p => φ (X p)`. Establish `hev : ∀ f : MRing ι, eval z (map (Int.castRingHom ℂ) f) = φ f`. Introduce `f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : (eval z).comp (map (Int.castRingHom ℂ)) = φ`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun i => ?_)` and prove the remaining obligations. Conclude with `RingHom.congr_fun (RingHom.ext_int (((eval z).comp (map (Int.castRingHom ℂ))).comp C) (φ.comp C)) r`. Simplify using `[z]`. Conclude with `RingHom.congr_fun h f`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨z, ⟨fun k => ?_, fun f hf => ?_⟩, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hrel k`. Conclude with `⟨i, fun h => hi ((hker _).mp h)⟩`. Rewrite using `[hev]`. Conclude with `(hker f).mpr hf`.
-
-Conclude with `(hker f).mp (by rw [← hev]; exact hf)`.
+A detailed English derivation is pending.
 -/
 theorem FlagGenericPoint.proof : FlagGenericPoint.Statement := by
   intro K _ ι _ P d hP

@@ -11,14 +11,14 @@ def prim_loc : Prop := ∀ (q : ℕ) [NeZero q] (U : Scheme.{0}), (IsUnit (q : �
 def sec_glue : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) (U : Scheme.{0}), (∀ a b : Sec F U, (Loc U fun _ g => Sec.res g a = Sec.res g b) → a = b) ∧ ∀ (S : Sieve U), S ∈ Scheme.etaleTopology U → ∀ s : ∀ (V : Scheme.{0}) (g : V ⟶ U), S.arrows g → Sec F V, (∀ (V W : Scheme.{0}) (g : V ⟶ U) (k : W ⟶ V) (hg : S.arrows g), Sec.res k (s V g hg) = s W (k ≫ g) (S.downward_closed hg k)) → ∃ a : Sec F U, ∀ V g hg, Sec.res g a = s V g hg
 
 /- English proof (translation)
-Unfold `res InjectiveResolution.cochainComplex`. Conclude with `HomologicalComplex.isZero_extend_X _ _ _ (by intro i h; change ((i : ℕ) : ℤ) = s at h; omega)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem res_neg_isZero (R : Type) [CommRing R] (F : Shv R) (s : ℤ) (hs : s < 0) : IsZero ((res R F).X s) := by
   unfold res InjectiveResolution.cochainComplex
   exact HomologicalComplex.isZero_extend_X _ _ _ (by intro i h; change ((i : ℕ) : ℤ) = s at h; omega)
 
 /- English proof (translation)
-Use `ext`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem units_map_comp {V U X : Scheme.{0}} (g : V ⟶ U) (x : U ⟶ X) (u : (Γ(X, ⊤))ˣ) :
     Units.map (g ≫ x).appTop.hom.toMonoidHom u =
@@ -26,22 +26,20 @@ theorem units_map_comp {V U X : Scheme.{0}} (g : V ⟶ U) (x : U ⟶ X) (u : (Γ
   ext; simp; rfl
 
 /- English proof (translation)
-Simplify using `using hq.map x.appTop.hom`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_q_map {U X : Scheme.{0}} (x : U ⟶ X) (q : ℕ) (hq : IsUnit (q : Γ(X, ⊤))) :
     IsUnit (q : Γ(U, ⊤)) := by
   simpa using hq.map x.appTop.hom
 
 /- English proof (translation)
-Apply `Cocycle.ext` to reduce the goal to its premises. Apply `(hev (ZMod q)).2.2.1` to reduce the goal to its premises. Introduce `p s h U x`. Use `match p, s, h with`. Consider the case `0, s, h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `rfl : s = 1` from `by omega`. Use `revert x`. Use `show ∀ x : U ⟶ X, _`. Introduce `x`. Apply `(hsg (ZMod q) _ U).1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS, hroot⟩` from `(hpl q U).2.2.2 (isUnit_q_map x q hq) (Units.map x.appTop.hom.toMonoidHom u)`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `hroot V g hg`. Establish `hv' : v ^ q = Units.map (g ≫ x).appTop.hom.toMonoidHom u` using `by rw [units_map_comp]; exact hv`. Conclude with `((hev (ZMod q)).2.1 γ.1 0 1 h V U g x).trans ((h2 V (g ≫ x) v hv').trans ((h2' V (g ≫ x) v hv').symm.trans ((hev (ZMod q)).2.1 γ'.1 0 1 h V U g x).symm))`.
+Establish an intermediate fact. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `1, s, h`. Take `rfl : s = 0` from `by omega`. Conclude with `(h1 U x).trans (h1' U x).symm`. Consider the case `p + 2, s, h`. Establish `hz` using `res_neg_isZero (ZMod q) (tw q 1) s (by omega)`.
-
-Establish `hv : γ.1.v (-((p + 2 : ℕ) : ℤ)) s h = γ'.1.v (-((p + 2 : ℕ) : ℤ)) s h` using `hz.eq_of_tgt _ _`. Unfold `ev`. Rewrite using `[hv]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kum_unique (hev : ev_basic) (hpl : prim_loc) (hsg : sec_glue) (q : ℕ) [NeZero q] (X : Scheme.{0})
     (u : (Γ(X, ⊤))ˣ) (hq : IsUnit (q : Γ(X, ⊤)))
@@ -78,11 +76,11 @@ theorem kum_unique (hev : ev_basic) (hpl : prim_loc) (hsg : sec_glue) (q : ℕ) 
     rw [hv]
 
 /- English proof (translation)
-Introduce `q _ Y X f u hq`. Take `⟨γ, hc, h1, h2⟩` from `kum_spec_of_exists he q X u hq`. Establish `hqY` using `isUnit_q_map f q hq`. Take `⟨γ', hc', h1', h2'⟩` from `kum_spec_of_exists he q Y (Units.map f.appTop.hom.toMonoidHom u) hqY`. Rewrite using `[← hc, ← hc']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains (ZMod q)).map (sch.map f))) γ (zero_add 1)) = _`. Use `congr 1`. Use `kum_unique hev hpl hsg q Y _ hqY _ γ' ?_ ?_ h1' h2'` and prove the remaining obligations. Introduce `U x`. Conclude with `((hev (ZMod q)).2.2.2.1 (sch.map f) γ.1 1 0 (by simp) U x).trans (h1 U (x ≫ f))`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U x v hv`. Conclude with `((hev (ZMod q)).2.2.2.1 (sch.map f) γ.1 0 1 (by simp) U x).trans (h2 U (x ≫ f) v (by rw [hv, units_map_comp]))`.
+A detailed English derivation is pending.
 -/
 theorem kum_nat_of (he : kum_exists) (hev : ev_basic) (hpl : prim_loc) (hsg : sec_glue) : kum_nat := by
   intro q _ Y X f u hq

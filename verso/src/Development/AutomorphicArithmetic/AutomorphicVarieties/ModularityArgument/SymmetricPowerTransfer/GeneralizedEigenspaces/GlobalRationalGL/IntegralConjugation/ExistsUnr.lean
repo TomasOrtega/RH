@@ -13,13 +13,13 @@ namespace UpperTheory.V.Z.Sym.Dict.Br.QuadraticCharacterExistence
 open scoped WithZero
 
 /- English proof (translation)
-Set `w : HeightOneSpectrum O` to `IsDiscreteValuationRing.maximalIdeal O`. Set `f : Kˣ →* Multiplicative ℤ` to `(WithZero.unitsWithZeroEquiv (α := Multiplicative ℤ)).toMonoidHom.comp (Units.map ((w.valuation K : Valuation K ℤᵐ⁰) : K →* ℤᵐ⁰))`. Establish `hf : ∀ (x : Kˣ) (n : Multiplicative ℤ), w.valuation K (x : K) = (n : ℤᵐ⁰) → f x = n`. Introduce `x n h`. Apply `WithZero.coe_injective` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(WithZero.coe_unitsWithZeroEquiv_eq_units_val _).trans h`. Use `⟨(zpowersHom ℂˣ c⁻¹).comp f, fun u => ?_, fun ϖ x hϖ hx => ?_⟩` and prove the remaining obligations. Establish `h1 : w.valuation K (Units.map (algebraMap O K : O →* K) u : K) = ((1 : Multiplicative ℤ) : ℤᵐ⁰)`. Rewrite using `[Units.coe_map, MonoidHom.coe_coe, HeightOneSpectrum.valuation_of_algebraMap, WithZero.coe_one, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `fun h => (IsLocalRing.mem_maximalIdeal _).1 h u.isUnit`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.comp_apply, hf _ _ h1, map_one]`. Establish `h1 : w.valuation K (x : K) = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : ℤᵐ⁰)`. Rewrite using `[hx, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_singleton _ hϖ.ne_zero hϖ.maximalIdeal_eq]`. Both sides reduce to the same expression. Rewrite using `[MonoidHom.comp_apply, hf _ _ h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[zpowersHom_apply]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_unr {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K]
     [IsFractionRing O K] (c : ℂˣ) :
@@ -47,11 +47,9 @@ private theorem exists_unr {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteVal
     simp [zpowersHom_apply]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (QuadraticAlgebra.omega : Lsq (Lp L) R.Δ) * QuadraticAlgebra.omega = 0`. Apply the tactic sequence `ext <;> simp [h]`. Establish `h2 : R.e QuadraticAlgebra.omega = 0`. Use `congrArg R.e h1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_zero]`. Conclude with `mul_self_eq_zero.1 this`. Establish `h3 : (QuadraticAlgebra.omega : Lsq (Lp L) R.Δ) = 0`. Conclude with `(map_eq_zero_iff R.e R.e.injective).1 h2`. Use `congrArg QuadraticAlgebra.im h3` as an intermediate fact.
-
-Simplify using `at this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem delta_ne {L : Type} [Field L] [NumberField L] [IsCMField L] (R : RingBr L) : R.Δ ≠ 0 := by
   intro h
@@ -67,7 +65,7 @@ private theorem delta_ne {L : Type} [Field L] [NumberField L] [IsCMField L] (R :
   simp at this
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `h`. Establish `hr : r ≠ 0` using `fun e => h0 (by rw [e, mul_zero])`. Use `if_pos ⟨(x + 1) / 2, (x - 1) / (2 * r), ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem hs_one {K : Type} [Field K] [CharZero K] {D : K} (h0 : D ≠ 0) (h : IsSquare D) (x : K) : hs D x = 1 := by
   obtain ⟨r, rfl⟩ := h
@@ -77,9 +75,7 @@ private theorem hs_one {K : Type} [Field K] [CharZero K] {D : K} (h0 : D ≠ 0) 
   ring
 
 /- English proof (translation)
-Use `haveI := L.frac`. Take `⟨ε, s, hs0, rfl⟩` from `L.even`. Establish `hp' : algebraMap O K p ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hp.ne_zero`. Use `if_neg fun ⟨a, b, e⟩ => L.not_even hp ?_` and prove the remaining obligations. Establish `e' : a ^ 2 - algebraMap O K ε * (s * b) ^ 2 = algebraMap O K p` using `by rw [← e]; ring`.
-
-Conclude with `e' ▸ L.even_of_norm ε (fun ⟨r, hr⟩ => hD ⟨r * s, by rw [hr]; ring⟩) (e' ▸ hp')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem hs_neg {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K]
     {D : K} (L : IsLoc O D) (hD : ¬ IsSquare D) {p : O} (hp : Irreducible p) : hs D (algebraMap O K p) = -1 := by
@@ -94,15 +90,13 @@ end UpperTheory.V.Z.Sym.Dict.Br.QuadraticCharacterExistence
 
 open UpperTheory.V.Z.Sym.Dict.Br.QuadraticCharacterExistence in
 /- English proof (translation)
-Introduce `L _ _ _ R`. Establish `key : ∀ v : Pl (Lp L), ∃ χ : (Kv v)ˣ →* ℂˣ, (2 : 𝓞 (Lp L)) ∉ v.asIdeal ∨ IsSquare (cv v R.Δ) → IsChi (Ov v) (cv v R.Δ) χ`. Introduce `v`. Take `⟨hf, -, hfin, -⟩` from `locBase (Lp L) v`. Use `haveI := hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hfin`. Establish `hq : (Nat.card (IsLocalRing.ResidueField (Ov v)) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Distinguish the cases in `hsq : IsSquare (cv v R.Δ)`. Use `haveI : CharZero (Kv v) := charZero_of_injective_ringHom (cv v).injective`. Establish `hΔ : cv v R.Δ ≠ 0` using `(map_ne_zero _).2 (delta_ne R)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨χ, h1, h2⟩` from `exists_unr (O := Ov v) (K := Kv v) (Units.mk0 _ (div_ne_zero one_ne_zero hq))`. Use `⟨χ, fun _ => ⟨h1, fun ϖ x hϖ hx => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h2 ϖ x hϖ hx, hs_one hΔ hsq]`. Both sides reduce to the same expression. Take `⟨χ, h1, h2⟩` from `exists_unr (O := Ov v) (K := Kv v) (Units.mk0 _ (div_ne_zero (neg_ne_zero.2 one_ne_zero) hq))`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨χ, fun h => ⟨h1, fun ϖ x hϖ hx => ?_⟩⟩` and prove the remaining obligations. Establish `hL` using `R.loc v (h.resolve_right hsq)`. Rewrite using `[h2 ϖ x hϖ hx, hx, hs_neg hL hsq hϖ]`. Both sides reduce to the same expression. Use `choose χ hχ using key`.
-
-Conclude with `⟨χ, hχ⟩`.
+Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Dict.Br.chiEx :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (R : RingBr L), ∃ χ : ∀ v : Pl (Lp L), (Kv v)ˣ →* ℂˣ, (∀ v : Pl (Lp L), (2 : 𝓞 (Lp L)) ∉ v.asIdeal ∨ IsSquare (cv v R.Δ) → IsChi (Ov v) (cv v R.Δ) (χ v)) := by

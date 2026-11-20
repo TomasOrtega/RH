@@ -17,12 +17,12 @@ variable (𝕜) in
 def gramVol (v : ι → V) : ℝ := √(RCLike.re (gram 𝕜 v).det)
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem gramVol_nonneg (v : ι → V) : 0 ≤ gramVol 𝕜 v := Real.sqrt_nonneg _
 
 /- English proof (translation)
-Establish `h` using `(posSemidef_gram 𝕜 v).det_nonneg`. Rewrite `h` using `[RCLike.nonneg_iff]`. Rewrite using `[← RCLike.ofReal_pow, gramVol, Real.sq_sqrt h.1]`. Apply the tactic sequence `apply RCLike.ext <;> simp [h.2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gramVol_sq (v : ι → V) : ((gramVol 𝕜 v : ℝ) : 𝕜) ^ 2 = (gram 𝕜 v).det := by
   have h := (posSemidef_gram 𝕜 v).det_nonneg
@@ -31,7 +31,7 @@ theorem gramVol_sq (v : ι → V) : ((gramVol 𝕜 v : ℝ) : 𝕜) ^ 2 = (gram 
   apply RCLike.ext <;> simp [h.2]
 
 /- English proof (translation)
-Rewrite `h` using `[← gramVol_sq]`. Establish `: r ^ 2 = gramVol 𝕜 v ^ 2` using `by exact_mod_cast h`. Conclude with `((sq_eq_sq₀ hr (gramVol_nonneg v)).mp this).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gramVol_eq_of_sq {v : ι → V} {r : ℝ} (hr : 0 ≤ r) (h : (r : 𝕜) ^ 2 = (gram 𝕜 v).det) :
     gramVol 𝕜 v = r := by
@@ -40,15 +40,15 @@ theorem gramVol_eq_of_sq {v : ι → V} {r : ℝ} (hr : 0 ≤ r) (h : (r : 𝕜)
   exact ((sq_eq_sq₀ hr (gramVol_nonneg v)).mp this).symm
 
 /- English proof (translation)
-The claim follows from `gramVol_eq_of_sq zero_le_one (by simp [gram_eq_one_iff_orthonormal.mpr hv])`.
+A detailed English derivation is pending.
 -/
 theorem gramVol_of_orthonormal {v : ι → V} (hv : Orthonormal 𝕜 v) : gramVol 𝕜 v = 1 :=
   gramVol_eq_of_sq zero_le_one (by simp [gram_eq_one_iff_orthonormal.mpr hv])
 
 /- English proof (translation)
-Use `gramVol_eq_of_sq (Finset.prod_nonneg fun _ _ => norm_nonneg _) ?_` and prove the remaining obligations. Establish `: gram 𝕜 v = diagonal fun i => ((‖v i‖ : 𝕜) ^ 2)`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[inner_self_eq_norm_sq_to_K]`. Simplify using `[h, hv h]`. Rewrite using `[this, det_diagonal]`. Use `push_cast`. Rewrite using `[Finset.prod_pow]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gramVol_of_pairwise_orthogonal {v : ι → V}
     (hv : Pairwise fun i j => ⟪v i, v j⟫_𝕜 = 0) : gramVol 𝕜 v = ∏ i, ‖v i‖ := by
@@ -63,13 +63,13 @@ theorem gramVol_of_pairwise_orthogonal {v : ι → V}
   rw [Finset.prod_pow]
 
 /- English proof (translation)
-Rewrite using `[gramVol_of_pairwise_orthogonal (Subsingleton.pairwise), Fintype.prod_unique]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem gramVol_unique [Unique ι] (v : ι → V) : gramVol 𝕜 v = ‖v default‖ := by
   rw [gramVol_of_pairwise_orthogonal (Subsingleton.pairwise), Fintype.prod_unique]
 
 /- English proof (translation)
-Simplify using `[gramVol]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem gramVol_of_isEmpty [IsEmpty ι] (v : ι → V) : gramVol 𝕜 v = 1 := by
   simp [gramVol]
@@ -77,7 +77,7 @@ Simplify using `[gramVol]`.
 omit [DecidableEq ι] [Fintype κ] [DecidableEq κ] in
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gram_apply, sum_inner, inner_sum, inner_smul_left, inner_smul_right, mul_apply, conjTranspose_apply, Finset.sum_mul, RCLike.star_def]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_sum_smul (v : ι → V) (Y : Matrix ι κ 𝕜) :
     gram 𝕜 (fun j => ∑ i, Y i j • v i) = Yᴴ * gram 𝕜 v * Y := by
@@ -89,7 +89,7 @@ theorem gram_sum_smul (v : ι → V) (Y : Matrix ι κ 𝕜) :
   exact Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Use `gramVol_eq_of_sq (mul_nonneg (norm_nonneg _) (gramVol_nonneg v)) ?_` and prove the remaining obligations. Rewrite using `[gram_sum_smul, det_mul, det_mul, det_conjTranspose, ← gramVol_sq, RCLike.star_def]`. Use `push_cast`. Rewrite using `[mul_pow, ← RCLike.conj_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gramVol_sum_smul (v : ι → V) (Y : Matrix ι ι 𝕜) :
     gramVol 𝕜 (fun j => ∑ i, Y i j • v i) = ‖Y.det‖ * gramVol 𝕜 v := by
@@ -100,9 +100,9 @@ theorem gramVol_sum_smul (v : ι → V) (Y : Matrix ι ι 𝕜) :
   ring
 
 /- English proof (translation)
-Establish `h` using `gramVol_sum_smul (b : ι → V) (b.toBasis.toMatrix v)`. Rewrite `h` using `[gramVol_of_orthonormal b.orthonormal, mul_one]`. Rewrite using `[← h]`. Use `congr 1`. Use extensionality with `j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify `(b.sum_repr (v j)).symm` using `[Basis.toMatrix_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gramVol_eq_norm_det (b : OrthonormalBasis ι 𝕜 V) (v : ι → V) :
     gramVol 𝕜 v = ‖(b.toBasis.toMatrix v).det‖ := by
@@ -114,7 +114,7 @@ theorem gramVol_eq_norm_det (b : OrthonormalBasis ι 𝕜 V) (v : ι → V) :
   simpa [Basis.toMatrix_apply] using (b.sum_repr (v j)).symm
 
 /- English proof (translation)
-Set `b : OrthonormalBasis ι 𝕜 V` to `(stdOrthonormalBasis 𝕜 V).reindex (Fintype.equivFinOfCardEq hι).symm`. Establish `: (Matrix.of fun i j => ⟪w i, v j⟫_𝕜) = (b.toBasis.toMatrix w)ᴴ * b.toBasis.toMatrix v`. Use extensionality with `i j`. Simplify using `[mul_apply, Basis.toMatrix_apply, b.repr_apply_apply, b.sum_inner_mul_inner]`. Rewrite using `[this, det_mul, det_conjTranspose, norm_mul, norm_star, gramVol_eq_norm_det b, gramVol_eq_norm_det b]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_det_inner [FiniteDimensional 𝕜 V] (hι : Fintype.card ι = finrank 𝕜 V)
     (w v : ι → V) :
@@ -128,7 +128,7 @@ theorem norm_det_inner [FiniteDimensional 𝕜 V] (hι : Fintype.card ι = finra
     gramVol_eq_norm_det b]
 
 /- English proof (translation)
-Rewrite using `[← norm_det_inner hι]`. Establish `: (Matrix.of fun i j => ⟪w i, v j⟫_𝕜) = 1`. Use extensionality with `i j`. Simplify using `[h, one_apply]`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gramVol_mul_gramVol_of_biorthogonal [FiniteDimensional 𝕜 V]
     (hι : Fintype.card ι = finrank 𝕜 V) {w v : ι → V}
@@ -148,14 +148,14 @@ section NormDet
 variable [FiniteDimensional 𝕜 V]
 
 /- English proof (translation)
-The claim follows from `(gramVol_eq_of_sq T.normDet_nonneg (by simpa using T.normDet_sq_eq_det_gram b)).symm`.
+A detailed English derivation is pending.
 -/
 theorem normDet_eq_gramVol (T : V →ₗ[𝕜] W) (b : OrthonormalBasis ι 𝕜 V) :
     T.normDet = gramVol 𝕜 (fun i => T (b i)) :=
   (gramVol_eq_of_sq T.normDet_nonneg (by simpa using T.normDet_sq_eq_det_gram b)).symm
 
 /- English proof (translation)
-Set `b` to `stdOrthonormalBasis 𝕜 V`. Rewrite using `[normDet_eq_gramVol _ b, normDet_eq_gramVol _ b]`. Use `gramVol_mul_gramVol_of_biorthogonal (by simpa using h) fun i j => ?_` and prove the remaining obligations. Rewrite using `[hST, orthonormal_iff_ite.mp b.orthonormal]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem normDet_mul_normDet_of_inner_eq [FiniteDimensional 𝕜 W] {S T : V →ₗ[𝕜] W}
     (h : finrank 𝕜 V = finrank 𝕜 W) (hST : ∀ x y, ⟪S x, T y⟫_𝕜 = ⟪x, y⟫_𝕜) :
@@ -168,12 +168,12 @@ theorem normDet_mul_normDet_of_inner_eq [FiniteDimensional 𝕜 W] {S T : V →�
 abbrev detNorm (T : V ≃ₗ[𝕜] W) : ℝ := (T : V →ₗ[𝕜] W).normDet
 
 /- English proof (translation)
-The claim follows from `LinearMap.normDet_id`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem detNorm_refl : detNorm (LinearEquiv.refl 𝕜 V) = 1 := LinearMap.normDet_id
 
 /- English proof (translation)
-The claim follows from `f.toLinearIsometry.normDet_eq_one`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem detNorm_linearIsometryEquiv (f : V ≃ₗᵢ[𝕜] W) : detNorm f.toLinearEquiv = 1 :=
   f.toLinearIsometry.normDet_eq_one
@@ -185,7 +185,7 @@ def invAdjoint (T : V ≃ₗ[𝕜] W) : V ≃ₗ[𝕜] W :=
     (by rw [← LinearMap.adjoint_comp]; simp) (by rw [← LinearMap.adjoint_comp]; simp)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `⟪LinearMap.adjoint (T.symm : W →ₗ[𝕜] V) x, T y⟫_𝕜 = _`. Rewrite using `[LinearMap.adjoint_inner_left]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inner_invAdjoint_apply (T : V ≃ₗ[𝕜] W) (x y : V) :
     ⟪invAdjoint T x, T y⟫_𝕜 = ⟪x, y⟫_𝕜 := by
@@ -193,7 +193,7 @@ theorem inner_invAdjoint_apply (T : V ≃ₗ[𝕜] W) (x y : V) :
   rw [LinearMap.adjoint_inner_left]; simp
 
 /- English proof (translation)
-The claim follows from `eq_inv_of_mul_eq_one_left (normDet_mul_normDet_of_inner_eq T.finrank_eq (inner_invAdjoint_apply T))`.
+A detailed English derivation is pending.
 -/
 theorem detNorm_invAdjoint (T : V ≃ₗ[𝕜] W) : detNorm (invAdjoint T) = (detNorm T)⁻¹ :=
   eq_inv_of_mul_eq_one_left
@@ -318,7 +318,7 @@ instance dualInnerProductSpace : InnerProductSpace 𝕜 (StrongDual 𝕜 V) wher
   smul_left φ ψ r := by rw [map_smulₛₗ, inner_smul_right]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `⟪(rieszEquiv 𝕜 V).symm _, (rieszEquiv 𝕜 V).symm _⟫_𝕜 = _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem inner_rieszEquiv (x y : V) :
     ⟪rieszEquiv 𝕜 V x, rieszEquiv 𝕜 V y⟫_𝕜 = ⟪y, x⟫_𝕜 := by
@@ -349,21 +349,21 @@ Both sides reduce to the same expression.
 end Dual
 
 /- English proof (translation)
-Rewrite using `[gramVol_unique, Complex.norm_eq_sqrt_sq_add_sq]`. Evaluate the numerical expressions using `[show (3 : ℝ) ^ 2 + 4 ^ 2 = 5 ^ 2 by norm_num]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 example : gramVol ℂ (fun _ : Unit => (3 + 4 * Complex.I : ℂ)) = 5 := by
   rw [gramVol_unique, Complex.norm_eq_sqrt_sq_add_sq]
   norm_num [show (3 : ℝ) ^ 2 + 4 ^ 2 = 5 ^ 2 by norm_num]
 
 /- English proof (translation)
-Rewrite using `[gramVol_eq_norm_det (EuclideanSpace.basisFun (Fin 2) ℂ), det_fin_two]`. Simplify using `[Basis.toMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : gramVol ℂ (![!₂[1, 0], !₂[1, 2 * Complex.I]] : Fin 2 → EuclideanSpace ℂ (Fin 2)) = 2 := by
   rw [gramVol_eq_norm_det (EuclideanSpace.basisFun (Fin 2) ℂ), det_fin_two]
   simp [Basis.toMatrix_apply]
 
 /- English proof (translation)
-Rewrite using `[detNorm_invAdjoint]`. Use `congr 1`. Conclude with `(LinearMap.normDet_smul (LinearMap.id : V →ₗ[𝕜] V) (c : 𝕜)).trans (by simp)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 example [FiniteDimensional 𝕜 V] (c : 𝕜ˣ) :
     detNorm (invAdjoint (c • LinearEquiv.refl 𝕜 V)) = (‖(c : 𝕜)‖ ^ finrank 𝕜 V)⁻¹ := by
@@ -372,7 +372,7 @@ example [FiniteDimensional 𝕜 V] (c : 𝕜ˣ) :
   exact (LinearMap.normDet_smul (LinearMap.id : V →ₗ[𝕜] V) (c : 𝕜)).trans (by simp)
 
 /- English proof (translation)
-The claim follows from `gramVol_eq_of_sq (norm_nonneg _) (by rw [← exteriorPower.inner_ιMulti_self, real_inner_self_eq_norm_sq]; simp)`.
+A detailed English derivation is pending.
 -/
 example {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     {n : ℕ} (v : Fin n → E) : gramVol ℝ v = ‖exteriorPower.ιMulti ℝ n v‖ :=
@@ -380,7 +380,7 @@ example {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDime
     (by rw [← exteriorPower.inner_ιMulti_self, real_inner_self_eq_norm_sq]; simp)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (U : Submodule ℂ (EuclideanSpace ℂ (Fin 2))) :
     InnerProductSpace ℂ (StrongDual ℂ (EuclideanSpace ℂ (Fin 2) ⧸ U)) := inferInstance

@@ -34,7 +34,7 @@ def RelRealP_k : Prop := ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
     HeckeCharacterZeroLocus.SiegelWeilU.IsCharAF F d.B.ψ ∧ Gen.IsPlaces σ d.B.ψ θ l ∧ Gen.IsFrames (_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k d η) θ εs fr ∧
     HeckeCharacterZeroLocus.SiegelWeilU.IsPureFin d.bs Φf Φv ∧ HeckeCharacterZeroLocus.SiegelWeilU.IsProdInfFin Φg (Gen.phiInf θ l fr g P) Φf
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d R Φ P gf hP x t u _ η hη herm`. Take `⟨Φf, Φv, hpf, hpr⟩` from `_root_.PositivityTheory.SiegelWeilFormula.ThetaDictR.pure_prod_of'_k R Φ P gf hP u η (thW d.B) (thW_th' d.B) (_root_.PositivityTheory.SiegelWeilFormula.ThetaDictR.frW_k R η hη) (fun w => _root_.PositivityTheory.SiegelWeilFormula.ThetaDictR.frW_frc_k R η hη w) (_root_.PositivityTh …`. Use `⟨thW d.B, _root_.PositivityTheory.SiegelWeilFormula.ThetaDictR.frW_k R η hη, _root_.PositivityTheory.SiegelWeilFormula.ThetaDictR.gW_k d u η hη, fun _ => -1, _root_.PositivityTheory.SiegelWeilFormula.ThetaDictR.εsW_k R η, _, Φf, Φv, thW_th' d.B, fun w => _root_.PositivityTheory.S …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem relReal_k : _root_.PositivityTheory.SiegelWeilFormula.ThetaDictR.RelRealP_k := by
   intro F E _ _ _ _ _ σ d R Φ P gf hP x t u _ η hη herm

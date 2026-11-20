@@ -14,17 +14,15 @@ noncomputable section
 namespace GlobalTheory.LocConstChar
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ ν hν z v`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evFin F v)`. Use `haveI : TotallyDisconnectedSpace (Fv F v ⊗[F] E) := by`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (Fv F v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `e.symm.totallyDisconnectedSpace`. Set `S : Subgroup (idelesAt E (evFin F v))` to `(unitsAt E v).comap (idelesAt E (evFin F v)).subtype`. Take `⟨hc, ho⟩` from `isCompact_isOpen_unitsAt (E := E) v`. Establish `hc' : IsCompact (S : Set (idelesAt E (evFin F v)))` using `hc`. Establish `ho' : IsOpen (S : Set (idelesAt E (evFin F v)))` using `ho`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `haveI : CompactSpace S := isCompact_iff_compactSpace.1 hc'`. Use `haveI : TotallyDisconnectedSpace S := by`. Establish `hcont : Continuous fun s : S => ((idelesAtEquiv E v s.1 : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E)` using `Units.continuous_val.comp ((idelesAtEquiv E v).continuous.comp continuous_subtype_val)`. Establish `hinj : Function.Injective fun s : S => ((idelesAtEquiv E v s.1 : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E)` using `fun a b h => Subtype.val_injective ((idelesAtEquiv E v).injective (Units.val_injective h))`. Conclude with `⟨isTotallyDisconnected_of_image hcont.continuousOn hinj (isTotallyDisconnected_of_totallyDisconnectedSpace _)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `νS : S →* Circle` to `ν.comp ((idelesAt E (evFin F v)).subtype.comp S.subtype)`. Establish `hνS : Continuous νS` using `hν.comp (continuous_subtype_val.comp continuous_subtype_val)`. Establish `hker : IsOpen (νS.ker : Set S)` using `GroundTheory.Global.isOpen_ker_of_profinite_circle νS hνS`. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Establish `hV : IsOpen ((fun y : idelesAt E (evFin F v) => x⁻¹ * y) ⁻¹' (Subtype.val '' (νS.ker : Set S)))` using `(ho'.isOpenMap_subtype_val _ hker).preimage (continuous_mul_left _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hV.mem_nhds (show x ∈ _ from ⟨1, one_mem _, by simp⟩)] with y hy`. Take `⟨s, hs, hsy⟩` from `hy`. Establish `hy' : y = x * s.1` using `by rw [hsy]; group`. Establish `h1 : ν s.1.1 = 1` using `hs`. Establish `h2 : absE F E s.1.1 = 1` using `absE_of_mem_unitsAt s.2`.
-
-Rewrite using `[hy', Subgroup.coe_mul, map_mul, map_mul, h1, h2, mul_one, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_char_absPow : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (ν : Chr F E), Continuous ν →
     ∀ (z : ℕ) (v : Pl F), IsLocallyConstant (fun l : idelesAt E (evFin F v) => (ν l.1 : ℂ) * ((absE F E l.1 : ℝ) : ℂ) ^ z) := by

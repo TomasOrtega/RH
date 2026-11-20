@@ -5,21 +5,19 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.Unita
 open scoped Classical
 
 /- English proof (translation)
-Introduce `hC hI hL hO E _ _ _ n Up w₀ hw₀ S Kw hS`. Take `⟨-, hAp, -, -, -, -⟩` from `hL E n w₀ hw₀`. Establish `hclosed : IsClosed (lev S Kw : Set (GUf E n))` using `Subgroup.isClosed_of_isOpen _ (hO E n S Kw hS.opn)`. Establish `hK₁` using `hC E n`. Establish `hJ` using `hS.cpt w₀ hS.mem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKo` using `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w₀ n).1`. Take `⟨F, -, hF⟩` from `hJ.elim_nhds_subcover (fun a => {y : GLw n w₀ | a⁻¹ * y ∈ GlobalTheory.LFun.KGL w₀ n}) (fun a _ => by`. Use `IsOpen.mem_nhds (hKo.preimage (continuous_const.mul continuous_id)) ?_` and prove the remaining obligations. Simplify using `[Subgroup.one_mem])`. Establish `hcov : IsCompact (⋃ a ∈ F, (fun x : GUf E n => loc hw₀ a * x) '' (lev (E` using `E) (n := n) ∅ (fun _ => ⊤) : Set (GUf E n))) := F.isCompact_biUnion fun a _ => hK₁.image (continuous_const.mul continuous_id)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hcov.of_isClosed_subset hclosed fun k hk => ?_` and prove the remaining obligations. Take `⟨hsim, hmem, hoff⟩` from `mem_lev.1 hk`. Take `⟨a, haF, ha⟩` from `Set.mem_iUnion₂.1 (hF (hmem w₀ hS.mem))`. Establish `ha' : a⁻¹ * comp w₀ k ∈ GlobalTheory.LFun.KGL w₀ n` using `ha`. Establish `hsim' : sim ((loc hw₀ a)⁻¹ * k) ∈ ZU` using `by simpa using hsim`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : comp w₀ ((loc hw₀ a)⁻¹ * k) ∈ GlobalTheory.LFun.KGL w₀ n` using `by simpa using ha'`. Establish `hint : ∀ u : Plc E, u ≠ w₀ → u ≠ cj w₀ → comp u k ∈ GlobalTheory.LFun.KGL u n`. Introduce `u h1 h2`. Establish `hcc : cj (cj u) = u` using `GlobalTheory.SplitPts.conjSrc_conjSrc_cm u`. Distinguish the cases in `hu : u ∈ S`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `hS.le u hu h1 (hmem u hu)`. Distinguish the cases in `hc : cj u ∈ S`. Establish `hne : cj u ≠ w₀` using `fun h => h2 (by rw [← h, hcc])`. Use `hI E n k (cj u) hsim (hS.le _ hc hne (hmem _ hc))` as an intermediate fact. Rewrite `this` using `[hcc]`. Then use the resulting hypothesis.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `hoff u hu hc`. Establish `hk' : (loc hw₀ a)⁻¹ * k ∈ lev (E` using `E) (n := n) ∅ (fun _ => ⊤) := by`. Use `mem_lev.2 ⟨hsim', by simp, fun u _ _ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : u = w₀`. Substitute `h1` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `hw`. Distinguish the cases in `h2 : u = cj w₀`. Substitute `h2` using the available equality. Conclude with `hI E n _ w₀ hsim' hw`. Establish `happ : GlobalTheory.Cong.Apart u w₀` using `(hAp u).2 ⟨h1, h2⟩`.
-
-Establish `: comp u ((loc hw₀ a)⁻¹ * k) = comp u k`. Rewrite using `[map_mul, map_inv, comp_loc_of_apart hw₀ happ, inv_one, one_mul]`. Rewrite using `[this]`. Conclude with `hint u h1 h2`. Conclude with `Set.mem_iUnion₂.2 ⟨a, haF, _, hk', by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pLevCompact_of :
     UpperTheory.Gal.CertificateRingHomMap.IntCompact → UpperTheory.Gal.CertificateRingHomMap.IntConj → UpperTheory.Gal.CertificateRingHomMap.LocComm → UpperTheory.Gal.CertificateRingHomMap.LevOpen → UpperTheory.Gal.CertificateRingHomMap.LevCompact := by

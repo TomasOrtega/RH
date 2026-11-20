@@ -12,13 +12,11 @@ namespace GlobalTheory.HostRamif
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hn`. Assume the negation of the conclusion as `hnd`. Establish `hc : IsCoprime (l : ℤ) n` using `((Nat.prime_iff_prime_int.mp hl).irreducible.coprime_iff_not_dvd).2 hnd`. Take `⟨a, b, hab⟩` from `hc`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply `hw.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : (1 : 𝓞 E) = (a : 𝓞 E) * (l : 𝓞 E) + (b : 𝓞 E) * (n : 𝓞 E)`. Use `congrArg (Int.cast : ℤ → 𝓞 E) hab` as an intermediate fact. Move the coercions through the operations in `at this`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `this.symm`. Rewrite using `[h1]`. Conclude with `add_mem (w.mul_mem_left _ hlw) (w.mul_mem_left _ hn)`. Introduce and unpack `⟨c, rfl⟩`. Use `push_cast`.
-
-Conclude with `w.mul_mem_right _ hlw`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem intCast_mem_iff {l : ℕ} (hl : l.Prime) {w : Ideal (𝓞 E)} (hw : w.IsMaximal) (hlw : (l : 𝓞 E) ∈ w) (n : ℤ) :
     (n : 𝓞 E) ∈ w ↔ (l : ℤ) ∣ n := by
@@ -40,9 +38,9 @@ theorem intCast_mem_iff {l : ℕ} (hl : l.Prime) {w : Ideal (𝓞 E)} (hw : w.Is
     exact w.mul_mem_right _ hlw
 
 /- English proof (translation)
-Establish `hp : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp hl`. Establish `hwp` using `hw.isPrime`. Use `haveI : w.LiesOver (Ideal.span {(l : ℤ)}) := (Ideal.liesOver_span_iff hw.ne_top hp).mpr (by simpa using hlw)`. Rewrite using `[← not_iff_not, not_dvd_differentIdeal_iff, not_dvd_discr_iff_forall_liesOver E (𝓞 E) hp]`. Use `⟨fun h P hP hPl => ?_, fun h => h w hw inferInstance⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hPp` using `hP.isPrime`. Rewrite `h`, the goal using `[← Ideal.ramificationIdx_eq_one_iff]`. Rewrite using `[← h]`. Conclude with `Ideal.ramificationIdx_eq_of_isGaloisGroup (Ideal.span {(l : ℤ)}) _ _ (E ≃ₐ[ℚ] E)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_different_iff [IsGalois ℚ E] {l : ℕ} (hl : l.Prime) {w : Ideal (𝓞 E)} (hw : w.IsMaximal)
     (hlw : (l : 𝓞 E) ∈ w) : w ∣ differentIdeal ℤ (𝓞 E) ↔ (l : ℤ) ∣ discr E := by
@@ -59,13 +57,13 @@ theorem dvd_different_iff [IsGalois ℚ E] {l : ℕ} (hl : l.Prime) {w : Ideal (
 variable [IsCMField E]
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k : ℕ, H.d = 4 * k + 3` from `⟨H.d / 4, by have := H.d_mod; omega⟩`. Establish `hsq : H.w0 ^ 2 = H.w0 - (k + 1)`. Establish `h` using `H.rt_sq`. Rewrite `h` using `[rt_eq, hk]`. Move the coercions through the operations in `at h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Apply `mul_left_cancel₀ (show (4 : 𝓞 E) ≠ 0 by norm_num)` to reduce the goal to its premises. Take the linear combination `h`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact ⟨0, 1, by rw [Set.mem_singleton_iff.mp hx]; simp⟩`. Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Take `⟨x, y, rfl⟩` from `ha`. Take `⟨x', y', rfl⟩` from `hb`. Conclude with `⟨x + x', y + y', by push_cast; ring⟩`. Consider the case `mul a b _ _ ha hb`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨x, y, rfl⟩` from `ha`. Take `⟨x', y', rfl⟩` from `hb`. Conclude with `⟨x * x' - y * y' * (k + 1), x * y' + y * x' + y * y', by push_cast; linear_combination (y : 𝓞 E) * y' * hsq⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_coords (H : Host E) {a : 𝓞 E} (ha : a ∈ Algebra.adjoin ℤ {H.w0}) :
     ∃ x y : ℤ, a = x + y * H.w0 := by
@@ -90,39 +88,37 @@ theorem exists_coords (H : Host E) {a : 𝓞 E} (ha : a ∈ Algebra.adjoin ℤ {
       push_cast; linear_combination (y : 𝓞 E) * y' * hsq⟩
 
 /- English proof (translation)
-Establish `hwp` using `hw.isPrime`. Use `haveI := Fact.mk hl`. Establish `h1 : (1 : 𝓞 E) ∉ w` using `fun h => hw.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Establish `hw0 : H.w0 ∈ Algebra.adjoin ℤ {H.w0}` using `Algebra.self_mem_adjoin_singleton ℤ _`. Distinguish the cases in `h2 : l = 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h2` using the available equality. Use `⟨fun _ => ?_, fun _ => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩ : ∃ k : ℕ, H.d = 8 * k + 7` from `⟨H.d / 8, by have := H.d_mod; omega⟩`. Establish `hsq : H.w0 * (1 - H.w0) = (k + 1) * ((2 : ℕ) : 𝓞 E)`. Establish `h` using `H.rt_sq`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[rt_eq, hk]`. Move the coercions through the operations in `at h ⊢`. Apply `mul_left_cancel₀ (show (4 : 𝓞 E) ≠ 0 by norm_num)` to reduce the goal to its premises. Take the linear combination `-h`. Establish `hm : H.w0 * (1 - H.w0) ∈ w` using `hsq ▸ w.mul_mem_left _ hlw`.
+Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hwp.mem_or_mem hm with h | h` into its components or cases. Use `⟨_, hw0, h, fun h' => h1 ?_⟩` and prove the remaining obligations. Rewrite `h'` using `[cmHost_bar_halfIntegerGenerator]`. Simplify using `using add_mem h h'`. Use `⟨_, sub_mem (one_mem _) hw0, h, fun h' => h1 ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[map_sub, map_one, cmHost_bar_halfIntegerGenerator]`. Simplify using `using add_mem h h'`. Generalize the expression as in `(-(H.d : ZMod 2)) = z revert z`. Evaluate the decidable proposition. Establish `hl2 : ¬ (l : ℤ) ∣ 2` using `fun h => h2 ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).1 (by exact_mod_cast h))`.
+Simplify to obtain the desired conclusion from the available facts. Replace the chosen expression with an arbitrary variable. Evaluate the decidable proposition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp hl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs⟩`. Take `⟨s, rfl⟩` from `ZMod.intCast_surjective s`. Establish `hdv : (l : ℤ) ∣ -(H.d : ℤ) - s * s`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[hs, sub_self]`. Establish `hm : (H.rt - s) * (-H.rt - s) ∈ w`. Use `(intCast_mem_iff hl hw hlw _).2 hdv` as an intermediate fact.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (H.rt - s) * (-H.rt - s) = -((-(H.d : ℤ) - s * s : ℤ) : 𝓞 E)`. Use `push_cast`. Take the linear combination `-H.rt_sq`. Rewrite using `[e]`. Conclude with `neg_mem this`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hnb : ¬ (H.rt - s ∈ w ∧ -H.rt - s ∈ w)`. Introduce and unpack `⟨ha, hb⟩`. Establish `: ((2 * s : ℤ) : 𝓞 E) ∈ w`. Establish `e : ((2 * s : ℤ) : 𝓞 E) = -((H.rt - s) + (-H.rt - s))` using `by push_cast; ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `neg_mem (add_mem ha hb)`. Establish `hs'` using `(hp.dvd_or_dvd ((intCast_mem_iff hl hw hlw _).1 this)).resolve_left hl2`. Establish `: (l : ℤ) ∣ (H.d : ℤ)`. Use `dvd_add hdv (hs'.mul_right s)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hd ((Nat.prime_dvd_prime_iff_eq hl H.d_prime).1 (by exact_mod_cast this))`. Break down `hwp.mem_or_mem hm with h | h` into its components or cases. Use `⟨_, sub_mem (rt_mem_adjoin H) (intCast_mem _ s), h, fun h' => hnb ⟨h, ?_⟩⟩` and prove the remaining obligations. Rewrite `h'` using `[map_sub, bar_rt, map_intCast]`. Then use the resulting hypothesis. Use `⟨_, sub_mem (neg_mem (rt_mem_adjoin H)) (intCast_mem _ s), h, fun h' => hnb ⟨?_, h⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h'` using `[map_sub, map_neg, bar_rt, neg_neg, map_intCast]`. Then use the resulting hypothesis. Introduce and unpack `⟨a, ha, haw, hbw⟩`. Take `⟨x, y, rfl⟩` from `exists_coords H ha`. Establish `hb : H.bar (x + y * H.w0) = x + y * (1 - H.w0)`. Rewrite using `[map_add, map_mul, map_intCast, map_intCast, cmHost_bar_halfIntegerGenerator]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hbw` using `[hb]`. Establish `hy : ¬ (l : ℤ) ∣ y`. Introduce `hy`. Apply `hbw` to reduce the goal to its premises. Establish `hyw` using `(intCast_mem_iff hl hw hlw _).2 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (x : 𝓞 E) + y * (1 - H.w0) = (x + y * H.w0) + y * (1 - 2 * H.w0)` using `by ring`. Rewrite using `[e]`. Conclude with `add_mem haw (w.mul_mem_right _ hyw)`. Establish `hn : (l : ℤ) ∣ (2 * x + y) ^ 2 + H.d * y ^ 2`. Rewrite using `[← intCast_mem_iff hl hw hlw]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e : (((2 * x + y) ^ 2 + H.d * y ^ 2 : ℤ) : 𝓞 E) = (x + y * H.w0) * (4 * (x + y * (1 - H.w0)))`. Establish `h` using `H.rt_sq`. Rewrite `h` using `[rt_eq]`. Use `push_cast`. Take the linear combination `(y : 𝓞 E) ^ 2 * h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e]`. Conclude with `w.mul_mem_right _ haw`. Rewrite `hn`, `hy` using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Move the coercions through the operations in `at hn`. Use `⟨(2 * x + y) / y, ?_⟩` and prove the remaining obligations.
-
-Clear the denominators using the available nonvanishing facts. Take the linear combination `-hn`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isSquare_iff (H : Host E) {l : ℕ} (hl : l.Prime) {w : Ideal (𝓞 E)} (hw : w.IsMaximal)
     (hlw : (l : 𝓞 E) ∈ w) (hd : l ≠ H.d) :
@@ -213,17 +209,15 @@ theorem isSquare_iff (H : Host E) {l : ℕ} (hl : l.Prime) {w : Ideal (𝓞 E)} 
       linear_combination -hn
 
 /- English proof (translation)
-Introduce `E _ _ _ H`. Unfold `EigenvectorLieDegree.IsHostField AdelicDegreeTameRamification.TameAtRamified`. Use `and_congr_right fun hab => ⟨fun h l w hl hld hw hlw => ?_, fun h w hwd => ?_⟩` and prove the remaining obligations. Establish `hne : w ≠ ⊥`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hl.ne_zero (by exact_mod_cast (Ideal.mem_bot.mp hlw))`. Take `⟨h1, h2⟩` from `h ⟨w, hw.isPrime, hne⟩ ((dvd_different_iff hl hw hlw).2 hld)`. Use `⟨h1, fun hd => ?_, fun hd => ?_⟩` and prove the remaining obligations. Break down `h2 l hl hlw with h3 | h3` into its components or cases. Conclude with `(isSquare_iff H hl hw hlw hd).1 h3.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `absurd h3.1 hd`. Break down `h2 l hl hlw with h3 | h3` into its components or cases. Conclude with `absurd hd h3.1`. Conclude with `fun h4 => h3.2 (Ideal.dvd_span_singleton.2 h4)`. Establish `hw` using `w.isMaximal`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun l hl hlw => ?_⟩` and prove the remaining obligations. Take `⟨l, hl, hlw⟩ : ∃ l : ℕ, l.Prime ∧ (l : 𝓞 E) ∈ w.asIdeal` from `by haveI : Finite (𝓞 E ⧸ w.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`. Use `letI := Ideal.Quotient.field w.asIdeal`. Use `⟨ringChar (𝓞 E ⧸ w.asIdeal), CharP.char_is_prime (𝓞 E ⧸ w.asIdeal) _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative.
 
-Conclude with `ringChar.Nat.cast_ringChar`. Conclude with `(h l _ hl ((dvd_different_iff hl hw hlw).1 hwd) hw hlw).1`. Take `⟨-, h2, h3⟩` from `h l _ hl ((dvd_different_iff hl hw hlw).1 hwd) hw hlw`. Distinguish the cases in `hd : l = H.d`. Conclude with `Or.inr ⟨hd, fun h4 => h3 hd (Ideal.dvd_span_singleton.1 h4)⟩`.
-
-Conclude with `Or.inl ⟨hd, (isSquare_iff H hl hw hlw hd).2 (h2 hd)⟩`.
+A detailed English derivation is pending.
 -/
 theorem isHostField_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E),
     EigenvectorLieDegree.IsHostField H ↔ IsAbelianGalois ℚ E ∧ AdelicDegreeTameRamification.TameAtRamified H := by

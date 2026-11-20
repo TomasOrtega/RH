@@ -44,11 +44,9 @@ noncomputable section
 namespace GlobalTheory.TestFibre
 
 /- English proof (translation)
-Set `B : D.toPre.X →+ D.toPre.X →+ ℤ` to `AddMonoidHom.mk' (fun a => AddMonoidHom.mk' (fun b => QForm.bOf D.toPre Q a b) (fun b b' => by`. Rewrite using `[QForm.bOf_comm D (Q := Q) a, QForm.bOf_add_left hϖ D hQ, QForm.bOf_comm D (Q := Q) b, QForm.bOf_comm D (Q := Q) b']))`. Use the proof step `(fun a a' => AddMonoidHom.ext fun b => QForm.bOf_add_left hϖ D hQ a a' b)`. Use `shortest_vector_strict_of_mul _ Q B (fun a b => ?_) (fun a => ?_) (fun a ha => QForm.Q_pos hϖ D hQ ha) n r hn hr z hz m hm` and prove the remaining obligations. Use `show _ = Q a + Q b + QForm.bOf D.toPre Q a b`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[QForm.bOf]`. Expand and normalize the polynomial expressions, which then agree. Use `show _ = QForm.bOf D.toPre Q a a`. Establish `h` using `QForm.bOf_add_left hϖ D hQ a (-a) a`. Simplify using `only [QForm.bOf, add_neg_cancel, neg_add_cancel, zero_add, QForm.Q_neg hϖ D hQ, QForm.Q_zero hϖ D hQ] at h ⊢`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem val_lt_of_shortest {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V} (hϖ : Irreducible ϖ)
     (D : DegData V (IsLocalRing.maximalIdeal V)) {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ D.toPre ϖ Q) {n r : ℕ}
@@ -69,11 +67,11 @@ theorem val_lt_of_shortest {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValua
     linarith
 
 /- English proof (translation)
-Take `⟨-, -, h₁, -, h₂⟩` from `gt_onto_divisible_kernel hLL V _ hadm D F`. Take `⟨g, hg, -⟩` from `h₁ 1`. Take `⟨w, hw⟩` from `(CoefBasic.coef_basic V D.toPre F k g).2.1 hg.1`. Take `⟨⟨l, hl, hu⟩, -, h₃, h₄, -⟩` from `CoefVal.main hLL hT hVR hTW hUU V hc ϖ hϖ D Q hQ F v hv g`. Establish `hadd : g.IsAdd g g` using `(h₂ 1 1 g g g hg hg).2 (by rwa [_root_.mul_one])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : l + l = l` using `hu (l + l) (h₄ g g l l hadd hl hl)`. Establish `e₀ : l = 0` using `by simpa using e`. Use `⟨g, w, (isZero_iff g).2 ⟨hg.1, fun χ y J hJ => Units.ext ?_⟩, hw, ?_, h₃ k w hw hg.1⟩` and prove the remaining obligations. Use `(hg.2 χ y J hJ).trans ?_` and prove the remaining obligations. Rewrite using `[CoefBasic.cst_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_one _`. Rewrite `hl` using `[e₀]`. Conclude with `hl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_origin (hLL : LL) (hT : TwistBCSpanStatement) (hVR : TWM.VRatioGtStatement) (hTW : TWStatement)
     (hUU : UUStatement) {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V]
@@ -100,37 +98,33 @@ theorem exists_origin (hLL : LL) (hT : TwistBCSpanStatement) (hVR : TWM.VRatioGt
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hL hL2 hU o Ω _ _ _ _ S ρ p _ y₀ u l hint α hα`. Take `⟨hLL, hT, hVR, hTW, hUU⟩` from `laws_all hL hL2`. Take `⟨hch, -, hadm, hN', hζ, ϖ, Q, v, lam, hϖ, hv, hnorm⟩` from `GlobalTheory.T.uniformisedModel_valuation_data o Ω S ρ p y₀ u l hint`. Take `⟨⟨x, hx⟩, -⟩` from `GlobalTheory.T.uniformisedModel_torsionPoints_group_pairing hL o Ω S ρ p y₀ u`. Take `⟨rig, e, th, s, hs⟩` from `GlobalTheory.T.exists_thetaSystem_test_sections_on_geometric_fibre hL o Ω S ρ p y₀ u x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hle : S.perp l.yy.ker ≤ l.yy.ker` using `l.isoFree.1.trans ((thetaSys_FF_mem_finite_perp_proj o Ω S).2.2.1 _).le`. Use `GlobalTheory.T.thetaSystem_exists_rootOfUnity_sum_norm_attained o Ω S p y₀ hint _ (l.wt α) _ (fun t i => GlobalTheory.T.weightSpace_values_integralTorsion_bound_shortestVector hL hL2 hU o Ω S ρ p y₀ u l hint α hα t (hle t.2) i) ?_` and prove the remaining obligations. Take `⟨w₀, hw₀⟩` from `(EvalZero.value_at_origin hLL u.V _ hadm u.D u.A u.G u.semi u.U (PadicAlgCl p)).2.1 rig hs.1`. Take `⟨th', ϑ, hϑ, hprim, hgen⟩` from `exists_prim_generator hLL hT hVR hTW hUU u.V u.complete ϖ hϖ u.D Q hnorm.2.1 (PadicAlgCl p) v hv u.A u.G u.semi u.U w₀ hw₀.1`. Take `⟨c₀, hc₀⟩` from `hgen th`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩ : ∃ c : PadicAlgCl p, cF u.V c = c₀` from `⟨(Scheme.ΓSpecIso (CommRingCat.of (PadicAlgCl p))).hom.hom c₀, (Scheme.ΓSpecIso (CommRingCat.of (PadicAlgCl p))).hom_inv_id_apply c₀⟩`. Establish `hδ : S.delta y₀ ≤ ‖c‖` using `ciSup_le (GlobalTheory.T.norm_thetaConstant_le_primitiveGenerator_scale hL hL2 hU o Ω S ρ p y₀ u l hint x rig e th s hx hs ϖ Q v lam hϖ hv hnorm w₀ th' ϑ c hw₀ hϑ hprim hc₀)`. Distinguish the cases in `hc : c = 0`. Rewrite `hδ` using `[hc, norm_zero]`. Conclude with `⟨0, ρ.i₀, (mul_nonpos_of_nonpos_of_nonneg hδ (Real.exp_pos _).le).trans (norm_nonneg _)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨hlam, hQ, hq, hge, heq⟩` from `id hnorm`. Establish `hN0 : 1 ≤ S.N` using `le_trans (by norm_num) S.N_ge`. Establish `hrN : 1 ≤ S.r * S.N` using `Nat.mul_pos S.r_pos hN0`. Establish `hN4 : 4 ≤ S.N`. Establish `: 2 ≤ ρ.n ^ ρ.k` using `ρ.n_prime.two_le.trans (Nat.le_self_pow (by have := ρ.two_le; omega) _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ρ.N_eq]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hr2 : 2 ≤ S.r`. Take `⟨j, hj, hr⟩` from `ρ.r_eq`. Rewrite using `[hr]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ρ.n_prime.two_le.trans (Nat.le_self_pow (by omega) _)`. Use `haveI : NeZero (S.r * S.N) := ⟨by omega⟩`. Use `haveI : Fintype (S.perp l.yy.ker) := Fintype.ofFinite _`. Take `⟨g, w₁, hg, hw₁, hgv, hwv⟩` from `exists_origin hLL hT hVR hTW hUU u.complete hadm hϖ u.D hQ hv S.N`. Take `⟨Φ, hΦ, hsupp, hval⟩` from `CoefUnit.exists_fam_coef_val hLL hT hVR hTW hUU u.V u.complete ϖ hϖ u.D Q hQ (PadicAlgCl p) v hv S.N hN4 g w₁ _ 0 hw₁.1 hgv hwv α`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, σ, hb, hσ, hσΦ⟩` from `GlobalTheory.T.exists_integral_basis_combination_of_integral_family hL hL2 hU o Ω S ρ p y₀ u l hint x rig e th s hx hs ϖ Q v lam hϖ hv hnorm w₀ th' ϑ c hw₀ hϑ hprim hc₀ hc Φ hΦ`. Use `choose τ q hqy hτ hqx hτv using GlobalTheory.T.thetaSystem_orthogonal_labels_are_torus_points hL hL2 hU o Ω S ρ p y₀ u l hint x hx`. Establish `key : ∀ t : S.perp l.yy.ker, ∃ ζ : PadicAlgCl p, v ζ = 0 ∧ SumV v (fun β => (τ t (Multiplicative.ofAdd β)).val * coef Φ g w₁ β) (ζ * ∑ j, b j * y₀ ⟨S.ev t j, S.ev_mem t j⟩)` using `fun t => by`. Take `⟨ζ, hζ, H⟩` from `WeightValue.value_at_formal_torsion hLL hT hVR hTW hUU u.V u.complete ϖ hϖ u.D Q hQ (PadicAlgCl p) v hv u.A u.G u.semi u.U w₀ rig hw₀ (S.r * S.N) S.N hrN hN0 (q t) (x t) (hqy t) (hqx t) (e t) (hs.2.1 t)`. Conclude with `⟨ζ, hζ, (H σ Φ _ hσΦ ((GlobalTheory.T.isFibreSectionValueInFrame_linear_unique_exists hL u.V u.A (PadicAlgCl p) S.N (x t) (e t)).1 S.J s b _ σ hσ fun i => hs.2.2.2.1 i t)).2 _ (hτ t) g w₁ hg hw₁⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose ζ hζv hsum using key`. Establish `v1 : ∀ z : PadicAlgCl p, ‖z‖ = 1 → v z = 0` using `fun z hz => (heq z 0).2 (by simpa using hz)`. Establish `hζ1 : ‖y₀ (algebraMap o S.R S.ζ)‖ = 1` using `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (pow_ne_zero 2 (NeZero.ne (S.r * S.N)))).1 (by rw [← norm_pow, hζ.pow_eq_one, norm_one])`. Take `⟨t, ht⟩` from `GlobalTheory.T.exists_val_le_of_valuedSum_against_characters (PadicAlgCl p) v u.D.toPre.X (S.perp l.yy.ker) (fun t β => (τ t (Multiplicative.ofAdd β)).val) (coef Φ g w₁) ζ _ α ((Q α : ℚ) / S.N) hsum hζv (fun t β => by`. Take `⟨a, ha⟩` from `l.yy_onto (QuotientAddGroup.mk β)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Conclude with `v1 _ (by rw [hτv t a β ha, norm_pow, hζ1, one_pow]))`. Use the proof step `(by`. Take `⟨d, ⟨E⟩⟩` from `l.isoFree.2`. Use `v1 _ ?_` and prove the remaining obligations. Rewrite using `[Fintype.card_congr E.toEquiv, Fintype.card_fun, ZMod.card, Nat.cast_pow, norm_pow, hN', one_pow])`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(by simpa using hval)`. Use the proof step `(fun β hβ => by`. Take `⟨a, ha⟩` from `l.yy_onto (QuotientAddGroup.mk (β - α))`. Distinguish the cases in `hk : a ∈ l.yy.ker`. Use `right`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hk` using `[AddMonoidHom.mem_ker, ha, QuotientAddGroup.eq_zero_iff]`. Take `⟨m, hm⟩` from `hk`. Establish `hm' : (S.N * S.r) • m = β - α` using `by rw [Nat.mul_comm]; exact hm`. Establish `hlt` using `val_lt_of_shortest hϖ u.D hQ hN0 hr2 α (fun m => by`. Use `hα m` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hq, hq]`. Conclude with `le_of_mul_le_mul_left this hlam) m (by rw [hm']; exact sub_ne_zero.2 hβ)` after adjusting the coercions. Rewrite `hlt` using `[hm', add_sub_cancel]`. Use `lt_of_lt_of_le (WithTop.coe_lt_coe.2 ?_) ((((CoefVal.main hLL hT hVR hTW hUU u.V u.complete ϖ hϖ u.D Q hQ (PadicAlgCl p) v hv g).2.2.2.2.2.2 S.N hN0 w₁ Φ hw₁.1).2 _ 0 0 hgv hwv hΦ β))` and prove the remaining obligations. Establish `: (0 : ℚ) < S.N` using `by exact_mod_cast hN0`.
+Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [zero_add, add_zero]`. Conclude with `div_lt_div_of_pos_right (by exact_mod_cast hlt) this`. Use `left`. Use `Eq.trans (Finset.sum_congr rfl fun t _ => ?_) (GlobalTheory.T.thetaSystem_sum_character_orthogonal_eq_zero o Ω S _ _ hζ l.yy.ker a hk)` and prove the remaining obligations. Rewrite using `[← hτv t a _ ha, ofAdd_sub, map_div, Units.val_div_eq_div_val, div_eq_inv_mul])`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[← GlobalTheory.T.thetaSystem_weightProjector_fixes_eigenvector o Ω S (PadicAlgCl p) (y₀.comp (algebraMap o S.R)) _ (l.wt α) l.isoFree b _ (fun t' => GlobalTheory.T.torusOperator_eigen_of_expansion_single_class hL hL2 hU o Ω S ρ p y₀ u l hint x rig e th s hx hs w₀ hw₀.1 α b σ Φ h …`. Establish `hE : Real.exp (-(l.q α / S.N)) = Real.exp (-(lam * (((Q α : ℚ) / S.N : ℚ) : ℝ)))`. Rewrite using `[hq]`. Use `push_cast`. Put the polynomial expressions in normal form.
-
-Take `⟨i, -, hi⟩` from `IsUltrametricDist.exists_norm_finset_sum_le_of_nonempty Finset.univ_nonempty (fun i => b i * ∑ j, y₀ (algebraMap o S.R (S.proj _ (l.wt α) j i)) * y₀ ⟨S.ev t j, S.ev_mem t j⟩)`. Use `⟨t, i, ?_⟩` and prove the remaining obligations. Establish `hw : Real.exp (-(l.q α / S.N)) ≤ ‖∑ i, b i * ∑ j, y₀ (algebraMap o S.R (S.proj _ (l.wt α) j i)) * y₀ ⟨S.ev t j, S.ev_mem t j⟩‖`. Rewrite using `[hE]`. Assume the negation of the conclusion as `hlt`.
-
-Establish `hlt` using `not_le.1 hlt`. Conclude with `hlt.ne ((heq _ _).1 (le_antisymm ht ((hge _ _).2 hlt.le)))`. Establish `hbi` using `hb i`. Rewrite `hi`, `hbi` using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_norm_FF_eq : Laws → Laws2 → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab), (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) → (∀ α : u.D.toPre.X, (∀ v₀, l.q α ≤ l.q (α + S.N • v₀)) → ∃ (k : _) (hk : S.FF _ (l.wt α) k ∈ S.R), ‖y₀ ⟨S.FF _ (l.wt α) k, hk⟩‖ = S.delta y₀ * Real.exp (-(l.q α / S.N))) := by
   intro hL hL2 hU o Ω _ _ _ _ S ρ p _ y₀ u l hint α hα

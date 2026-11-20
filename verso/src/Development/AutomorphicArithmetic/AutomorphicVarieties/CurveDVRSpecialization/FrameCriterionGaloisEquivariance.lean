@@ -5,11 +5,9 @@ open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.
 
 open scoped Pointwise in
 /- English proof (translation)
-Establish `key : ∀ y : Ω, g.toRingEquiv y ∈ g • A ↔ y ∈ A`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨z, hz, hzy⟩` from `(ValuationSubring.mem_smul_pointwise_iff_exists _ _ _).1 hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hzy' : g z = g y` using `hzy`. Rewrite `hz` using `[g.injective hzy']`. Conclude with `hz`. Introduce `hy`. Conclude with `ValuationSubring.smul_mem_pointwise_smul g y A hy`.
-
-Conclude with `val_lt_one key x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem val_smul {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (g : G F Ω) (A : ValuationSubring Ω) (x : Ω) :
     (g • A).valuation (g x) < 1 ↔ A.valuation x < 1 := by
@@ -27,7 +25,7 @@ private theorem val_smul {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alg
 
 open scoped Pointwise in
 /- English proof (translation)
-Introduce `x`. Establish `hx : g ((algebraMap F Ω) (x : F)) = (algebraMap F Ω) (x : F)` using `g.commutes _`. Rewrite using `[← hx, val_smul]`. Conclude with `h x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem place_smul {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (g : G F Ω) {A : ValuationSubring Ω}
     {v : W.Plc F} (h : IsPlaceOver A v) : IsPlaceOver (g • A) v := by
@@ -38,27 +36,25 @@ private theorem place_smul {F Ω : Type} [Field F] [NumberField F] [Field Ω] [A
 
 open scoped Pointwise in
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ O _ _ η Ψ σ g₁ B M L _ _ _ _ _ Φ k hB`. Establish `hsm : ∀ (τ : G (W.Lp L) Ω) (X : ValuationSubring Ω), τ • X = ((toUpl Ω L τ : upl Ω L) : Gal(Ω/ℚ)) • X`. Introduce `τ X`. Use extensionality with `y`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ((toUpl Ω L τ : upl Ω L) : Gal(Ω/ℚ))⁻¹ = ((toUpl Ω L τ⁻¹ : upl Ω L) : Gal(Ω/ℚ))`. Rewrite using `[map_inv]`. Both sides reduce to the same expression. Rewrite using `[hinv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hpl : ∀ w : Φ.V, (k.pl w).valuation (l : Ω) < 1`. Introduce `w`. Take `⟨γ, -, hγ⟩` from `k.pl_conj w`. Establish `h1` using `(val_smul γ B (l : Ω)).2 hB`. Rewrite `h1` using `[map_natCast]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hγ]`. Conclude with `h1`. Establish `hpick : ∀ v : W.Vl l L, ∃ w : Φ.V, IsPlaceOver (k.pl w) (v : W.Plc (W.Lp L))`. Introduce `v`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω (v : W.Plc (W.Lp L))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlA : A.valuation (l : Ω) < 1`. Rewrite using `[natCast_place hA]`. Conclude with `v.2`. Take `⟨w, ⟨u, hu, hAu⟩, -⟩` from `k.pl_all A hlA`. Take `⟨g, hg⟩` from `toUpl_surj (Ω := Ω) (L := L) (⟨u, hu⟩⁻¹)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨w, ?_⟩` and prove the remaining obligations. Establish `heq : g • A = k.pl w`. Rewrite using `[hsm, hg, hAu]`. Express the relevant statement in the definitionally equal form `u⁻¹ • u • k.pl w = k.pl w`. Rewrite using `[inv_smul_smul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← heq]`. Conclude with `place_smul g hA`. Use `choose e he using hpick`. Establish `hinj : Function.Injective e`. Introduce `v v' hvv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `he v'`. Rewrite `h2` using `[← hvv]`. Conclude with `Subtype.ext (eq_of_isPlaceOver (he v) h2)`. Establish `hsurj : Function.Surjective e`. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfacts` using `places (W.Lp L) Ω l (k.pl w)`. Establish `hne : k.pl w ≠ ⊤`. Introduce `htop`. Conclude with `(hfacts.2.1 htop).2 (hpl w)`. Take `⟨v0, hv0⟩` from `hfacts.1 hne`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl0 : ((l : 𝓞 (W.Lp L))) ∈ v0.asIdeal` using `(natCast_place hv0 l).1 (hpl w)`. Set `v : W.Vl l L` to `⟨v0, hl0⟩`. Use `⟨v, ?_⟩` and prove the remaining obligations. Take `⟨τ, hτ⟩` from `exists_smul_eq_of_isPlaceOver (he v) hv0`. Take `⟨w', -, huniq⟩` from `k.pl_all (k.pl w) (hpl w)`.
-
-Establish `hw : w = w'` using `huniq w ⟨1, one_mem _, (one_smul _ _).symm⟩`. Establish `hev : e v = w'` using `huniq (e v) ⟨_, (toUpl Ω L τ).2, by rw [← hsm, hτ]⟩`. Rewrite using `[hw, hev]`. Conclude with `⟨Equiv.ofBijective e ⟨hinj, hsurj⟩, he⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.frame_criterion_galois_equivariance :
     UpperTheory.V.Pr.CrE := by

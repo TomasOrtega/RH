@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SW.GramNear
 
 /- English proof (translation)
-Take `⟨χ, hχ, hμ⟩` from `GlobalTheory.T.haar_modular_character_of_continuous_action V μ Q`. Take `⟨χ', hχ', hν⟩` from `GlobalTheory.T.haar_modular_character_of_continuous_action X ν Q`. Conclude with `GlobalTheory.T.exists_fibre_family_on_open_orbit V X Y μ ν f g ι hι hg hf Q heq χ χ' hχ hχ' hμ hν b₀ ho`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fibre_on_orbit (V X Y : Type) [AddCommGroup V] [TopologicalSpace V] [LocallyCompactSpace V]
     [SecondCountableTopology V] [T2Space V] [MeasurableSpace V] [BorelSpace V] [IsTopologicalAddGroup V]
@@ -35,43 +35,39 @@ theorem fibre_on_orbit (V X Y : Type) [AddCommGroup V] [TopologicalSpace V] [Loc
   exact GlobalTheory.T.exists_fibre_family_on_open_orbit V X Y μ ν f g ι hι hg hf Q heq χ χ' hχ hχ' hμ hν b₀ ho
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hR n μ ν hμ hν S hS`. Establish `hR'` using `hR`. Take `⟨_, _, _, _, -, -, -, -⟩` from `hR'`. Take `⟨_, _, _, _, hsig, -, -, hbor, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R`. Establish `hbor'` using `hbor n M`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, _, _, _, hlift⟩` from `GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ hσ R n`. Take `⟨g, hgc, hgf⟩` from `hlift M J hJ`. Take `⟨hgram, hmul, hone, hherm, -⟩` from `GlobalTheory.T.gram_right_action_identities F E σ hσ M J hJ R n`. Take `⟨Q, o, _, _, hoe, ho⟩` from `GlobalTheory.T.hermitian_orbit_local_section_subgroup F E σ hσ R hR n S hS`. Set `c : Q → Matrix (Fin n) (Fin n) (R ⊗[F] E)` to `fun q => (((q⁻¹ : Q) : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hc1 : c 1 = 1` using `by simp [c]`. Establish `hcm : ∀ a b : Q, c (a * b) = c b * c a`. Introduce `a b`. Simplify using `only [c, mul_inv_rev]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hcc : Continuous c` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_inv)`. Use `letI actV : DistribMulAction Q (Fin n → Fin M → R ⊗[F] E) := { smul := fun q X => rmul R X (c q) one_smul := fun X => by`. Express the relevant statement in the definitionally equal form `rmul R X (c 1) = X`. Rewrite using `[hc1, hone]`. Use `mul_smul := fun a b X => by`.
+Establish an intermediate fact. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `rmul R X (c (a * b)) = rmul R (rmul R X (c b)) (c a)`. Rewrite using `[hcm, hmul]`. Use `smul_zero := fun q => by`. Express the relevant statement in the definitionally equal form `rmul R 0 (c q) = 0`. Use function extensionality and compare the values at `a i`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[rmul]`. Use `smul_add := fun q X Y => by`. Express the relevant statement in the definitionally equal form `rmul R (X + Y) (c q) = rmul R X (c q) + rmul R Y (c q)`. Use function extensionality and compare the values at `a i`. Simplify using `[rmul, add_mul, Finset.sum_add_distrib] }`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsmulV : ∀ (q : Q) (X : Fin n → Fin M → R ⊗[F] E), q • X = rmul R X (c q)` using `fun _ _ => rfl`. Use `letI actH : DistribMulAction Q (HermR R σ n) := { smul := fun q T => ⟨cT (sigR R σ) (c q) * (T : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * c q, hherm T (c q)⟩ one_smul := fun T => by`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `cT (sigR R σ) (c 1) * (T : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * c 1 = T`. Rewrite using `[hc1]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[cT]`. Use `mul_smul := fun a b T => by`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `cT (sigR R σ) (c (a * b)) * (T : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * c (a * b) = cT (sigR R σ) (c a) * (cT (sigR R σ) (c b) * (T : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * c b) * c a`. Rewrite using `[hcm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [cT, Matrix.map_mul, Matrix.transpose_mul, Matrix.mul_assoc]`. Use `smul_zero := fun q => by`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `cT (sigR R σ) (c q) * (0 : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * c q = 0`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `smul_add := fun q T T' => by`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `cT (sigR R σ) (c q) * ((T : Matrix (Fin n) (Fin n) (R ⊗[F] E)) + T') * c q = cT (sigR R σ) (c q) * (T : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * c q + cT (sigR R σ) (c q) * (T' : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * c q`. Rewrite using `[Matrix.mul_add, Matrix.add_mul] }`. Establish `hsmulH : ∀ (q : Q) (T : HermR R σ n), ((q • T : HermR R σ n) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = cT (sigR R σ) (c q) * (T : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * c q` using `fun _ _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcontV : ContinuousSMul Q (Fin n → Fin M → R ⊗[F] E)`. Use `⟨?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun p : Q × (Fin n → Fin M → R ⊗[F] E) => rmul R p.2 (c p.1)`. Use `continuous_pi fun a => continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [rmul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `continuous_finset_sum _ fun b _ => Continuous.mul ?_ ?_` and prove the remaining obligations. Conclude with `(continuous_apply i).comp ((continuous_apply b).comp continuous_snd)`. Conclude with `(hcc.comp continuous_fst).matrix_elem b a`. Establish `hcontH : ContinuousSMul Q (HermR R σ n)`. Use `⟨?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Continuous.subtype_mk (f := fun p : Q × HermR R σ n => cT (sigR R σ) (c p.1) * (p.2 : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * c p.1) ?_ _` and prove the remaining obligations. Establish `h1 : Continuous fun p : Q × HermR R σ n => c p.1` using `hcc.comp continuous_fst`. Establish `h2 : Continuous fun p : Q × HermR R σ n => cT (sigR R σ) (c p.1)` using `(h1.matrix_map hsig).matrix_transpose`. Conclude with `(h2.matrix_mul (continuous_subtype_val.comp continuous_snd)).matrix_mul h1`. Establish `heq : ∀ (q : Q) (X : Fin n → Fin M → R ⊗[F] E), g (q • X) = q • g X`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `q X`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hsmulV, hsmulH, ← hgf, ← hgf, hgram]`. Establish `horb : IsOpenEmbedding (fun q : Q => q • S)`. Establish `: (fun q : Q => q • S) = o ∘ (Homeomorph.inv Q)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `q`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hsmulH]`. Conclude with `(ho q⁻¹).symm`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hoe.comp (Homeomorph.inv Q).isOpenEmbedding`. Take `⟨fib, hfib⟩` from `fibre_on_orbit (Fin n → Fin M → R ⊗[F] E) (HermR R σ n) (Matrix (Fin n) (Fin n) (R ⊗[F] E)) μ ν (gramR R σ J) g Subtype.val Subtype.val_injective hgc hgf Q heq S horb`. Use `⟨Set.range fun q : Q => q • S, horb.isOpen_range, ⟨1, one_smul _ _⟩, ?_, fib, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Express the relevant statement in the definitionally equal form `IsUnit ((q • S : HermR R σ n) : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsmulH]`. Establish `hdc : IsUnit (c q).det` using `Matrix.isUnits_det_units _`. Establish `hdc' : IsUnit (cT (sigR R σ) (c q)).det`. Simplify using `only [cT, Matrix.det_transpose]`. Use `hdc.map (sigR R σ)` as an intermediate fact.
-
-Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Rewrite using `[Matrix.det_mul, Matrix.det_mul]`. Conclude with `(hdc'.mul hS).mul hdc`. Establish `hpre : gramR R σ J ⁻¹' (Subtype.val '' (Set.range fun q : Q => q • S)) = g ⁻¹' (Set.range fun q : Q => q • S)`. Use extensionality with `X`.
-
-Simplify using `only [Set.mem_preimage, hgf X]`. Conclude with `Subtype.val_injective.mem_set_image`. Rewrite using `[hpre]`. Conclude with `hfib`.
+A detailed English derivation is pending.
 -/
 theorem exists_fibre_near : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (n : ℕ) (μ : Measure (Fin n → Fin M → R ⊗[F] E)) (ν : Measure (HermR R σ n)), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → ∀ S : HermR R σ n, IsUnit (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det → ∃ B : Set (HermR R σ n), IsOpen B ∧ S ∈ B ∧ (∀ S' ∈ B, IsUnit (S' : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det) ∧ ∃ fib, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ (gramR R σ J) Subtype.val (gramR R σ J ⁻¹' (Subtype.val '' B)) ν B fib := by
   intro F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hR n μ ν hμ hν S hS

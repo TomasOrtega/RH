@@ -16,14 +16,14 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-The claim follows from `hU.preimage Z.subschemeι`.
+A detailed English derivation is pending.
 -/
 theorem isAffineOpen_preimage_subschemeι {X : Scheme.{u}} (Z : X.IdealSheafData) {U : X.Opens}
     (hU : IsAffineOpen U) : IsAffineOpen (Z.subschemeι ⁻¹ᵁ U) :=
   hU.preimage Z.subschemeι
 
 /- English proof (translation)
-Rewrite using `[Finset.card_compl, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem card_compl_eq_sub (m : ℕ) (S : Finset (Fin m)) : Sᶜ.card = m - S.card := by
   rw [Finset.card_compl, Fintype.card_fin]
@@ -32,14 +32,14 @@ def complOrderEmb (m : ℕ) (S : Finset (Fin m)) : Fin (m - S.card) ↪o Fin m :
   Sᶜ.orderEmbOfFin (card_compl_eq_sub m S)
 
 /- English proof (translation)
-The claim follows from `Finset.mem_compl.mp (Finset.orderEmbOfFin_mem Sᶜ (card_compl_eq_sub m S) i)`.
+A detailed English derivation is pending.
 -/
 theorem complOrderEmb_notMem (m : ℕ) (S : Finset (Fin m)) (i : Fin (m - S.card)) :
     complOrderEmb m S i ∉ S :=
   Finset.mem_compl.mp (Finset.orderEmbOfFin_mem Sᶜ (card_compl_eq_sub m S) i)
 
 /- English proof (translation)
-Establish `hmem : j ∈ (↑(Sᶜ) : Set (Fin m))` using `Finset.mem_coe.mpr (Finset.mem_compl.mpr hj)`. Rewrite `hmem` using `[← Finset.range_orderEmbOfFin Sᶜ (card_compl_eq_sub m S)]`. Take `⟨i, hi⟩` from `hmem`. Conclude with `⟨i, hi⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_complOrderEmb_eq (m : ℕ) (S : Finset (Fin m)) {j : Fin m} (hj : j ∉ S) :
     ∃ i : Fin (m - S.card), complOrderEmb m S i = j := by
@@ -61,7 +61,7 @@ theorem mvPolynomialCoordIdeal_eq_span (k : Type u) [Field k] (m : ℕ) (S : Fin
   rfl
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span ⟨j, Finset.mem_coe.mpr hj, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem X_mem_mvPolynomialCoordIdeal (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m)) {j : Fin m}
     (hj : j ∈ S) :
@@ -74,7 +74,7 @@ def renameCompl (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m)) :
     MvPolynomial.X (ULift.up.{u} (complOrderEmb m S i.down))
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.aeval_X _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem renameCompl_X (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m))
     (i : Fin (m - S.card)) :
@@ -83,7 +83,7 @@ The claim follows from `MvPolynomial.aeval_X _ _`.
   MvPolynomial.aeval_X _ _
 
 /- English proof (translation)
-Use `show MvPolynomial.aeval (fun i : ULift.{u} (Fin (m - S.card)) => MvPolynomial.X (ULift.up.{u} (complOrderEmb m S i.down))) (MvPolynomial.C a) = MvPolynomial.C a`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem renameCompl_C (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m)) (a : k) :
     renameCompl k m S (MvPolynomial.C a) = MvPolynomial.C a := by
@@ -102,7 +102,7 @@ def setCoordsZero (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m)) :
   MvPolynomial.aeval (substZeroOnFinset k m S)
 
 /- English proof (translation)
-Establish `h1 : setCoordsZero k m S (MvPolynomial.X (ULift.up.{u} j)) = substZeroOnFinset k m S (ULift.up.{u} j)` using `MvPolynomial.aeval_X _ _`. Rewrite using `[h1]`. Conclude with `dif_pos hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setCoordsZero_X_of_mem (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m)) {j : Fin m}
     (hj : j ∈ S) : setCoordsZero k m S (MvPolynomial.X (ULift.up.{u} j)) = 0 := by
@@ -112,7 +112,7 @@ theorem setCoordsZero_X_of_mem (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin
   exact dif_pos hj
 
 /- English proof (translation)
-Establish `hnot : complOrderEmb m S i ∉ S` using `complOrderEmb_notMem m S i`. Establish `h1 : setCoordsZero k m S (MvPolynomial.X (ULift.up.{u} (complOrderEmb m S i))) = substZeroOnFinset k m S (ULift.up.{u} (complOrderEmb m S i))` using `MvPolynomial.aeval_X _ _`. Establish `h2 : substZeroOnFinset k m S (ULift.up.{u} (complOrderEmb m S i)) = MvPolynomial.X (ULift.up.{u} (Classical.choose (exists_complOrderEmb_eq m S hnot)))` using `dif_neg hnot`. Establish `h3 : Classical.choose (exists_complOrderEmb_eq m S hnot) = i` using `(complOrderEmb m S).injective (Classical.choose_spec (exists_complOrderEmb_eq m S hnot))`. Rewrite using `[h1, h2, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem setCoordsZero_X_complOrderEmb (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m))
     (i : Fin (m - S.card)) :
@@ -129,9 +129,9 @@ theorem setCoordsZero_X_complOrderEmb (k : Type u) [Field k] (m : ℕ) (S : Fins
   rw [h1, h2, h3]
 
 /- English proof (translation)
-Establish `hker : mvPolynomialCoordIdeal k m S ≤ RingHom.ker ((setCoordsZero k m S).toRingHom)`. Rewrite using `[mvPolynomialCoordIdeal_eq_span, Ideal.span_le]`. Introduce and unpack `x ⟨j, hj, rfl⟩`. Establish `hx : (setCoordsZero k m S).toRingHom (MvPolynomial.X (ULift.up.{u} j)) = 0` using `setCoordsZero_X_of_mem k m S (Finset.mem_coe.mp hj)`. Conclude with `RingHom.mem_ker.mpr hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : q ∈ RingHom.ker ((setCoordsZero k m S).toRingHom)` using `hker hq`. Establish `h2 : (setCoordsZero k m S).toRingHom q = 0` using `RingHom.mem_ker.mp h`. Conclude with `h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem setCoordsZero_eq_zero_of_mem (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m))
     {q : MvPolynomial (ULift.{u} (Fin m)) k} (hq : q ∈ mvPolynomialCoordIdeal k m S) :
@@ -148,29 +148,27 @@ theorem setCoordsZero_eq_zero_of_mem (k : Type u) [Field k] (m : ℕ) (S : Finse
 
 open scoped TensorProduct in
 /- English proof (translation)
-Set `instPA : Algebra P A` to `f.toAlgebra`. Establish `hfA : Algebra.Etale P A` using `hf`. Set `instQuot : Algebra (P ⧸ I) (A ⧸ Ideal.map f I)` to `(Ideal.quotientMap (Ideal.map f I) f Ideal.le_comap_map).toAlgebra`. Establish `hqm : ∀ x : P, algebraMap (P ⧸ I) (A ⧸ Ideal.map f I) (Ideal.Quotient.mk I x) = Ideal.Quotient.mk (Ideal.map f I) (f x)`. Introduce `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show Ideal.quotientMap (Ideal.map f I) f Ideal.le_comap_map (Ideal.Quotient.mk I x) = _`. Rewrite using `[Ideal.quotientMap_mk]`. Establish `hst : IsScalarTower P (P ⧸ I) (A ⧸ Ideal.map f I)`. Use `IsScalarTower.of_algebraMap_eq fun x => ?_` and prove the remaining obligations. Use `show Ideal.Quotient.mk (Ideal.map f I) (f x) = algebraMap (P ⧸ I) (A ⧸ Ideal.map f I) (algebraMap P (P ⧸ I) x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.Quotient.algebraMap_eq, hqm x]`. Establish `hcomm : ∀ x : P, (1 : P ⧸ I) ⊗ₜ[P] (f x) = (Ideal.Quotient.mk I x) ⊗ₜ[P] (1 : A)`. Introduce `x`. Establish `h1 : (Algebra.TensorProduct.includeRight : A →ₐ[P] ((P ⧸ I) ⊗[P] A)) (f x) = algebraMap P ((P ⧸ I) ⊗[P] A) x` using `AlgHom.commutes (Algebra.TensorProduct.includeRight : A →ₐ[P] ((P ⧸ I) ⊗[P] A)) x`. Establish `h2 : (Algebra.TensorProduct.includeLeft : (P ⧸ I) →ₐ[P] ((P ⧸ I) ⊗[P] A)) (Ideal.Quotient.mk I x) = algebraMap P ((P ⧸ I) ⊗[P] A) x` using `AlgHom.commutes (Algebra.TensorProduct.includeLeft : (P ⧸ I) →ₐ[P] ((P ⧸ I) ⊗[P] A)) x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (Algebra.TensorProduct.includeRight : A →ₐ[P] ((P ⧸ I) ⊗[P] A)) (f x) = (1 : P ⧸ I) ⊗ₜ[P] (f x)` using `rfl`. Establish `h4 : (Algebra.TensorProduct.includeLeft : (P ⧸ I) →ₐ[P] ((P ⧸ I) ⊗[P] A)) (Ideal.Quotient.mk I x) = (Ideal.Quotient.mk I x) ⊗ₜ[P] (1 : A)` using `rfl`. Rewrite using `[← h3, ← h4, h1, h2]`. Establish `hb : ∀ (x : P) (a : A), (1 : P ⧸ I) ⊗ₜ[P] (f x * a) = (Ideal.Quotient.mk I x) ⊗ₜ[P] a`. Introduce `x a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ((1 : P ⧸ I) ⊗ₜ[P] (f x)) * ((1 : P ⧸ I) ⊗ₜ[P] a) = (1 : P ⧸ I) ⊗ₜ[P] (f x * a)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Establish `e2 : ((Ideal.Quotient.mk I x) ⊗ₜ[P] (1 : A)) * ((1 : P ⧸ I) ⊗ₜ[P] a) = (Ideal.Quotient.mk I x) ⊗ₜ[P] a`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[← e1, ← e2, hcomm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨φ, hφ⟩ : ∃ φ : ((P ⧸ I) ⊗[P] A) →ₐ[P ⧸ I] (A ⧸ Ideal.map f I), ∀ (q : P ⧸ I) (a : A), φ (q ⊗ₜ[P] a) = algebraMap (P ⧸ I) (A ⧸ Ideal.map f I) q * Ideal.Quotient.mk (Ideal.map f I) a` from `⟨Algebra.TensorProduct.lift (Algebra.ofId (P ⧸ I) (A ⧸ Ideal.map f I)) (Ideal.Quotient.mkₐ P (Ideal.map f I)) (fun _ _ => Commute.all _ _), fun q a => by`. Simplify using `[Algebra.TensorProduct.lift_tmul, Algebra.ofId_apply, Ideal.Quotient.mkₐ_eq_mk]⟩`. Choose the witnesses or unpack the hypotheses as in `⟨ψ, hψ⟩ : ∃ ψ : (A ⧸ Ideal.map f I) →+* ((P ⧸ I) ⊗[P] A), ∀ a : A, ψ (Ideal.Quotient.mk (Ideal.map f I) a) = (1 : P ⧸ I) ⊗ₜ[P] a := by`. Establish `hzero : ∀ a ∈ Ideal.map f I, (Algebra.TensorProduct.includeRight : A →ₐ[P] ((P ⧸ I) ⊗[P] A)).toRingHom a = 0`. Establish `hle : Ideal.map f I ≤ RingHom.ker (Algebra.TensorProduct.includeRight : A →ₐ[P] ((P ⧸ I) ⊗[P] A)).toRingHom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Use `show (1 : P ⧸ I) ⊗ₜ[P] (f x) = 0`. Rewrite using `[hcomm, Ideal.Quotient.eq_zero_iff_mem.mpr hx, TensorProduct.zero_tmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `a ha`. Conclude with `RingHom.mem_ker.mp (hle ha)`. Conclude with `⟨Ideal.Quotient.lift (Ideal.map f I) (Algebra.TensorProduct.includeRight : A →ₐ[P] ((P ⧸ I) ⊗[P] A)).toRingHom hzero, fun _ => rfl⟩`. Establish `hleft : ∀ t : ((P ⧸ I) ⊗[P] A), ψ (φ t) = t`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `TensorProduct.induction_on t ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `q a`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Rewrite using `[hφ, hqm, ← map_mul (Ideal.Quotient.mk (Ideal.map f I)), hψ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hb x a`. Introduce `u v hu hv`. Rewrite using `[map_add, map_add, hu, hv]`. Establish `hsurj : Function.Surjective φ`. Introduce `b`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Conclude with `⟨(1 : P ⧸ I) ⊗ₜ[P] a, by rw [hφ, map_one, one_mul]⟩`. Establish `e : ((P ⧸ I) ⊗[P] A) ≃ₐ[P ⧸ I] (A ⧸ Ideal.map f I)` using `AlgEquiv.ofBijective φ ⟨Function.LeftInverse.injective hleft, hsurj⟩`. Establish `hbc : Algebra.Etale (P ⧸ I) ((P ⧸ I) ⊗[P] A)` using `inferInstance`. Establish `hfe : Algebra.FormallyEtale (P ⧸ I) ((P ⧸ I) ⊗[P] A)` using `hbc.formallyEtale`.
-
-Establish `hfp : Algebra.FinitePresentation (P ⧸ I) ((P ⧸ I) ⊗[P] A)` using `hbc.finitePresentation`. Use `show Algebra.Etale (P ⧸ I) (A ⧸ Ideal.map f I)`. Conclude with `⟨Algebra.FormallyEtale.of_equiv e, hfp.equiv e⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem etale_quotientMap {P A : Type u} [CommRing P] [CommRing A] {f : P →+* A}
     (hf : f.Etale) (I : Ideal P) :
@@ -258,7 +256,7 @@ theorem etale_quotientMap {P A : Type u} [CommRing P] [CommRing A] {f : P →+* 
   exact ⟨Algebra.FormallyEtale.of_equiv e, hfp.equiv e⟩
 
 /- English proof (translation)
-Establish `h : (setCoordsZero k m S).comp (renameCompl k m S) = AlgHom.id k _`. Use `MvPolynomial.algHom_ext fun i => ?_` and prove the remaining obligations. Take `⟨i⟩` from `i`. Rewrite using `[AlgHom.comp_apply, renameCompl_X, setCoordsZero_X_complOrderEmb, AlgHom.id_apply]`. Conclude with `DFunLike.congr_fun h q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem setCoordsZero_renameCompl (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m))
     (q : MvPolynomial (ULift.{u} (Fin (m - S.card))) k) :
@@ -270,11 +268,9 @@ private theorem setCoordsZero_renameCompl (k : Type u) [Field k] (m : ℕ) (S : 
   exact DFunLike.congr_fun h q
 
 /- English proof (translation)
-Establish `h : (Ideal.Quotient.mkₐ k (mvPolynomialCoordIdeal k m S)).comp ((renameCompl k m S).comp (setCoordsZero k m S)) = Ideal.Quotient.mkₐ k (mvPolynomialCoordIdeal k m S)`. Use `MvPolynomial.algHom_ext fun j => ?_` and prove the remaining obligations. Take `⟨j⟩` from `j`. Distinguish the cases in `hj : j ∈ S`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, setCoordsZero_X_of_mem k m S hj, map_zero, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Rewrite using `[Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `X_mem_mvPolynomialCoordIdeal k m S hj`. Take `⟨i, rfl⟩` from `exists_complOrderEmb_eq m S hj`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, setCoordsZero_X_complOrderEmb, renameCompl_X]`.
-
-Conclude with `DFunLike.congr_fun h p`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem quotientMk_renameCompl_setCoordsZero (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m))
     (p : MvPolynomial (ULift.{u} (Fin m)) k) :
@@ -295,11 +291,9 @@ private theorem quotientMk_renameCompl_setCoordsZero (k : Type u) [Field k] (m :
   exact DFunLike.congr_fun h p
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `q hq`. Establish `hq' : renameCompl k m S q ∈ mvPolynomialCoordIdeal k m S` using `(Ideal.Quotient.eq_zero_iff_mem).1 hq`. Establish `h0` using `setCoordsZero_eq_zero_of_mem k m S hq'`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[setCoordsZero_renameCompl]`. Then use the resulting hypothesis. Introduce `x`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `⟨setCoordsZero k m S p, ?_⟩` and prove the remaining obligations. Use `show Ideal.Quotient.mk (mvPolynomialCoordIdeal k m S) (renameCompl k m S (setCoordsZero k m S p)) = Ideal.Quotient.mk (mvPolynomialCoordIdeal k m S) p`.
-
-Conclude with `quotientMk_renameCompl_setCoordsZero k m S p`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem bijective_quotientMk_comp_renameCompl (k : Type u) [Field k] (m : ℕ)
     (S : Finset (Fin m)) :
@@ -320,9 +314,9 @@ private theorem bijective_quotientMk_comp_renameCompl (k : Type u) [Field k] (m 
     exact quotientMk_renameCompl_setCoordsZero k m S p
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Establish `hcomp : ((Ideal.Quotient.mk (Ideal.map f (mvPolynomialCoordIdeal k m S))).comp f).comp (renameCompl k m S).toRingHom = (Ideal.quotientMap (Ideal.map f (mvPolynomialCoordIdeal k m S)) f Ideal.le_comap_map).comp ((Ideal.Quotient.mk (mvPolynomialCoordIdeal k m S)).comp (renameCompl …` using `RingHom.ext fun q => by`. Simplify using `only [RingHom.comp_apply, Ideal.quotientMap_mk]`. Rewrite using `[hcomp]`. Apply `RingHom.Etale.stableUnderComposition` to reduce the goal to its premises.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingHom.Etale.of_bijective` to reduce the goal to its premises. Conclude with `bijective_quotientMk_comp_renameCompl k m S`. Conclude with `etale_quotientMap hf (mvPolynomialCoordIdeal k m S)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem etale_quotientMk_comp_renameCompl (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m))
     {A : Type u} [CommRing A] (f : MvPolynomial (ULift.{u} (Fin m)) k →+* A)
@@ -342,9 +336,9 @@ theorem etale_quotientMk_comp_renameCompl (k : Type u) [Field k] (m : ℕ) (S : 
   · exact etale_quotientMap hf (mvPolynomialCoordIdeal k m S)
 
 /- English proof (translation)
-Establish `key : ∀ {A B C D : (Opens ↥X)ᵒᵖ} {R : CommRingCat.{u}} (f : R ⟶ X.presheaf.obj A) (α : A ⟶ B) (β : B ⟶ D) (γ : A ⟶ C) (δ : C ⟶ D) (z : R), (X.presheaf.map β).hom ((f ≫ X.presheaf.map α).hom z) = (X.presheaf.map δ).hom ((X.presheaf.map γ).hom (f.hom z))`. Introduce `A B C D R f α β γ δ z`. Establish `h : X.presheaf.map α ≫ X.presheaf.map β = X.presheaf.map γ ≫ X.presheaf.map δ` using `(X.presheaf.map_comp α β).symm.trans ((congrArg X.presheaf.map (Quiver.Hom.unop_inj (Subsingleton.elim _ _))).trans (X.presheaf.map_comp γ δ))`. Conclude with `congrArg (fun g : X.presheaf.obj A ⟶ X.presheaf.obj D => g.hom (f.hom z)) h`. Simplify using `[EtaleChart.restrict, EtaleChart.coord]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `exact key _ _ _ _ _ _`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem EtaleChart.coord_restrict {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U V : X.Opens} {m : ℕ} (c : EtaleChart p U m)
@@ -370,9 +364,9 @@ variable {X : Scheme.{u}} {k : Type u} [Field k] {p : X ⟶ Spec (CommRingCat.of
   {U : X.Opens} {m : ℕ}
 
 /- English proof (translation)
-Establish `hfun : (fun j : Fin m => c.coordRingHom (MvPolynomial.X (ULift.up.{u} j))) = c.coord`. Use function extensionality and compare the values at `fun j => c.coordRingHom_X j`. Rewrite using `[c.ideal_eq_span_coord hU Z S h, mvPolynomialCoordIdeal_eq_span, Ideal.map_span]`. Use `congr 1`. Rewrite using `[Set.image_image]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun g => g '' (S : Set (Fin m))) hfun`.
+A detailed English derivation is pending.
 -/
 theorem EtaleChart.map_mvPolynomialCoordIdeal_eq_ideal (c : EtaleChart p U m) (hU : IsAffineOpen U)
     (Z : X.IdealSheafData) (S : Finset (Fin m)) (h : restrictIdeal Z U = c.coordIdeal S) :
@@ -411,9 +405,9 @@ private theorem commRingCatIso_hom_inv_apply {A B : CommRingCat.{u}} (e : A ≅ 
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Establish `h` using `congrArg e.hom.hom hxy`. Rewrite `h` using `[commRingCatIso_hom_inv_apply, commRingCatIso_hom_inv_apply]`. Then use the resulting hypothesis. Introduce `x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨e.hom.hom x, commRingCatIso_inv_hom_apply e x⟩`.
+Supply the required witnesses or components.
 -/
 private theorem bijective_commRingCatIso_inv {A B : CommRingCat.{u}} (e : A ≅ B) :
     Function.Bijective e.inv.hom := by
@@ -425,7 +419,7 @@ private theorem bijective_commRingCatIso_inv {A B : CommRingCat.{u}} (e : A ≅ 
     exact ⟨e.hom.hom x, commRingCatIso_inv_hom_apply e x⟩
 
 /- English proof (translation)
-Establish `h1 : ((e.hom ≫ e.inv).appTop).hom x = ((CategoryTheory.CategoryStruct.id A : A ⟶ A).appTop).hom x` using `by rw [e.hom_inv_id]`. Rewrite `h1` using `[appTop_comp_hom_apply]`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem iso_hom_appTop_inv_appTop_apply {A B : Scheme.{u}} (e : A ≅ B) (x : Γ(A, ⊤)) :
     (e.hom.appTop).hom ((e.inv.appTop).hom x) = x := by
@@ -446,7 +440,7 @@ private theorem affineSpaceGlobalSectionsHom_apply (K : Type u) [Field K] (n : �
   rfl
 
 /- English proof (translation)
-Establish `h` using `AffineSpace.SpecIso_inv_appTop_coord (CommRingCat.of K) i`. Rewrite using `[affineSpaceGlobalSectionsHom_apply, ← h]`. Conclude with `iso_hom_appTop_inv_appTop_apply (AffineSpace.SpecIso (ULift.{u} (Fin n)) (CommRingCat.of K)) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem affineSpaceGlobalSectionsHom_X_eq_coord (K : Type u) [Field K] (n : ℕ) (i : ULift.{u} (Fin n)) :
     affineSpaceGlobalSectionsHom K n (MvPolynomial.X i) =
@@ -457,9 +451,9 @@ private theorem affineSpaceGlobalSectionsHom_X_eq_coord (K : Type u) [Field K] (
     (AffineSpace.SpecIso (ULift.{u} (Fin n)) (CommRingCat.of K)) _
 
 /- English proof (translation)
-Establish `hov : (AffineSpace.SpecIso (ULift.{u} (Fin n)) (CommRingCat.of K)).inv ≫ affineSpaceFinToSpec K n = Spec.map (CommRingCat.ofHom (MvPolynomial.C : K →+* MvPolynomial (ULift.{u} (Fin n)) K))` using `AffineSpace.SpecIso_inv_over ..`. Establish `hmor : (AffineSpace.SpecIso (ULift.{u} (Fin n)) (CommRingCat.of K)).hom ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.C : K →+* MvPolynomial (ULift.{u} (Fin n)) K)) = affineSpaceFinToSpec K n`. Rewrite using `[← hov, Iso.hom_inv_id_assoc]`. Establish `h1 : ((Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (ULift.{u} (Fin n)) K))).inv).hom (MvPolynomial.C a) = ((Spec.map (CommRingCat.ofHom (MvPolynomial.C : K →+* MvPolynomial (ULift.{u} (Fin n)) K))).appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom a)`. Establish `hnat` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (MvPolynomial.C : K →+* MvPolynomial (ULift.{u} (Fin n)) K))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ((CommRingCat.ofHom (MvPolynomial.C : K →+* MvPolynomial (ULift.{u} (Fin n)) K)) ≫ (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (ULift.{u} (Fin n)) K))).inv).hom a = _`. Use `conv_lhs => rw [hnat]`. Both sides reduce to the same expression. Rewrite using `[affineSpaceGlobalSectionsHom_apply, h1, ← appTop_comp_hom_apply, hmor]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem affineSpaceGlobalSectionsHom_C (K : Type u) [Field K] (n : ℕ) (a : K) :
     affineSpaceGlobalSectionsHom K n (MvPolynomial.C a) =
@@ -489,7 +483,7 @@ private theorem affineSpaceGlobalSectionsHom_C (K : Type u) [Field K] (n : ℕ) 
   rw [affineSpaceGlobalSectionsHom_apply, h1, ← appTop_comp_hom_apply, hmor]
 
 /- English proof (translation)
-Rewrite using `[AlgebraicGeometry.HasRingHomProperty.Spec_iff (P := @Etale)]`. Conclude with `hφ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem etale_specMap_of_etale {R T : CommRingCat.{u}} (φ : R ⟶ T) (hφ : φ.hom.Etale) :
     Etale (Spec.map φ) := by
@@ -497,11 +491,9 @@ private theorem etale_specMap_of_etale {R T : CommRingCat.{u}} (φ : R ⟶ T) (h
   exact hφ
 
 /- English proof (translation)
-Use `set f := AffineSpace.homOfVector q v`. Use `set e := AffineSpace.SpecIso (ULift.{u} (Fin n)) (CommRingCat.of K)`. Use `set φ := (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (ULift.{u} (Fin n)) K))).inv ≫ (f ≫ e.hom).appTop with hφ`. Establish `hφe : φ.hom.Etale` using `hv`. Establish `nat : (f ≫ e.hom) ≫ (Spec (CommRingCat.of (MvPolynomial (ULift.{u} (Fin n)) K))).toSpecΓ = Wsch.toSpecΓ ≫ Spec.map (f ≫ e.hom).appTop` using `Scheme.toSpecΓ_naturality _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `key : f = Wsch.toSpecΓ ≫ Spec.map φ ≫ e.inv`. Rewrite using `[hφ, Spec.map_comp]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Category.assoc]`. Establish `: Etale (Spec.map φ)` using `etale_specMap_of_etale φ hφe`.
-
-Rewrite using `[key]`. Use `infer_instance`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem etale_homOfVector_of_appTop_etale {Wsch : Scheme.{u}} [IsAffine Wsch]
     {K : Type u} [Field K]
@@ -536,7 +528,7 @@ private theorem etale_homOfVector_of_appTop_etale {Wsch : Scheme.{u}} [IsAffine 
   infer_instance
 
 /- English proof (translation)
-Rewrite using `[affineSpaceGlobalSectionsHom_apply]`. Use `show ((F ≫ (AffineSpace.SpecIso (ULift.{u} (Fin n)) (CommRingCat.of K)).hom).appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (ULift.{u} (Fin n)) K))).inv.hom x) = _`. Rewrite using `[appTop_comp_hom_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem appTop_comp_specIso_eq_affineSpaceGlobalSectionsHom {Wsch : Scheme.{u}} {K : Type u} [Field K] {n : ℕ}
     (F : Wsch ⟶ affineSpaceFin K n) (x : MvPolynomial (ULift.{u} (Fin n)) K) :
@@ -549,9 +541,9 @@ private theorem appTop_comp_specIso_eq_affineSpaceGlobalSectionsHom {Wsch : Sche
   rw [appTop_comp_hom_apply]
 
 /- English proof (translation)
-Establish `hh : Zd.subschemeι.app Uo = CommRingCat.ofHom (Ideal.Quotient.mk (Zd.ideal ⟨Uo, hUo⟩)) ≫ (Zd.subschemeObjIso ⟨Uo, hUo⟩).inv` using `Scheme.IdealSheafData.subschemeι_app Zd ⟨Uo, hUo⟩`. Establish `h2 : Zd.subschemeι.appLE Uo (Zd.subschemeι ⁻¹ᵁ Uo) le_rfl = Zd.subschemeι.app Uo`. Simplify using `[Scheme.Hom.appLE]`. Rewrite using `[h2]`. Use `conv_lhs => rw [hh]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem subschemeι_appLE_apply (Zd : X.IdealSheafData) (Uo : X.Opens)
     (hUo : IsAffineOpen Uo) (z : Γ(X, Uo)) :
@@ -577,9 +569,9 @@ private theorem coordRingHom_apply (c : EtaleChart p U m)
   rfl
 
 /- English proof (translation)
-Establish `htop1 : q ⁻¹ᵁ (⊤ : Ysch.Opens) = ⊤` using `by simp`. Establish `htop2 : (Zd.subschemeι ≫ q) ⁻¹ᵁ (⊤ : Ysch.Opens) = ⊤` using `by simp`. Establish `e1 : Uo ≤ q ⁻¹ᵁ (⊤ : Ysch.Opens)` using `le_top.trans htop1.ge`. Establish `e2 : (Zd.subschemeι ⁻¹ᵁ Uo) ≤ (Zd.subschemeι ≫ q) ⁻¹ᵁ (⊤ : Ysch.Opens)` using `le_top.trans htop2.ge`. Establish `hq : (Uo.ι ≫ q).appTop = q.appLE ⊤ Uo e1 ≫ Uo.topIso.inv` using `(appLE_top_comp_topIso_inv q Uo e1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq2 : (Zd.subschemeι ≫ q).appLE ⊤ (Zd.subschemeι ⁻¹ᵁ Uo) e2 ≫ (Zd.subschemeι ⁻¹ᵁ Uo).topIso.inv = ((Zd.subschemeι ⁻¹ᵁ Uo).ι ≫ (Zd.subschemeι ≫ q)).appTop` using `appLE_top_comp_topIso_inv (Zd.subschemeι ≫ q) (Zd.subschemeι ⁻¹ᵁ Uo) e2`. Establish `key : (Uo.ι ≫ q).appTop ≫ Uo.topIso.hom ≫ Zd.subschemeι.appLE Uo (Zd.subschemeι ⁻¹ᵁ Uo) le_rfl ≫ (Zd.subschemeι ⁻¹ᵁ Uo).topIso.inv = ((Zd.subschemeι ⁻¹ᵁ Uo).ι ≫ (Zd.subschemeι ≫ q)).appTop`. Rewrite using `[hq, ← hq2, Category.assoc, Iso.inv_hom_id_assoc, ← Category.assoc, Scheme.Hom.appLE_comp_appLE]`. Use `show ((Uo.ι ≫ q).appTop ≫ Uo.topIso.hom ≫ Zd.subschemeι.appLE Uo (Zd.subschemeι ⁻¹ᵁ Uo) le_rfl ≫ (Zd.subschemeι ⁻¹ᵁ Uo).topIso.inv).hom x = _`. Rewrite using `[key]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem subschemeι_appLE_topIso_hom_appTop_apply {Wsch Ysch : Scheme.{u}} (q : Wsch ⟶ Ysch)
     (Zd : Wsch.IdealSheafData) (Uo : Wsch.Opens) (x : Γ(Ysch, ⊤)) :
@@ -610,9 +602,9 @@ private theorem subschemeι_appLE_topIso_hom_appTop_apply {Wsch Ysch : Scheme.{u
   rw [key]
 
 /- English proof (translation)
-Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun i => ?_)` and prove the remaining obligations. Establish `hover : AffineSpace.homOfVector ((Z.subschemeι ⁻¹ᵁ U).ι ≫ (Z.subschemeι ≫ p)) (c.restrictToSubschemeCoords Z S) ≫ affineSpaceFinToSpec k (m - S.card) = (Z.subschemeι ⁻¹ᵁ U).ι ≫ (Z.subschemeι ≫ p)` using `AffineSpace.homOfVector_over ..`. Rewrite using `[appTop_comp_specIso_eq_affineSpaceGlobalSectionsHom, affineSpaceGlobalSectionsHom_C, ← appTop_comp_hom_apply, hover]`. Use `show _ = (Z.subschemeι ⁻¹ᵁ U).topIso.inv.hom ((Z.subschemeObjIso ⟨U, hU⟩).inv.hom (Ideal.Quotient.mk (Z.ideal ⟨U, hU⟩) (c.coordRingHom (renameCompl k m S (MvPolynomial.C a)))))`. Rewrite using `[renameCompl_C, coordRingHom_apply, affineSpaceGlobalSectionsHom_C, ← appTop_comp_hom_apply, c.comp_struct, ← subschemeι_appLE_apply Z U hU, subschemeι_appLE_topIso_hom_appTop_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i⟩` from `i`. Rewrite using `[appTop_comp_specIso_eq_affineSpaceGlobalSectionsHom, affineSpaceGlobalSectionsHom_X_eq_coord, AffineSpace.homOfVector_appTop_coord]`. Use `show (Z.subschemeι ⁻¹ᵁ U).topIso.inv.hom ((Z.subschemeι.appLE U (Z.subschemeι ⁻¹ᵁ U) le_rfl).hom (c.coord (complOrderEmb m S i))) = (Z.subschemeι ⁻¹ᵁ U).topIso.inv.hom ((Z.subschemeObjIso ⟨U, hU⟩).inv.hom (Ideal.Quotient.mk (Z.ideal ⟨U, hU⟩) (c.coordRingHom (renameCompl k m S (Mv …`. Rewrite using `[renameCompl_X, EtaleChart.coordRingHom_X, ← subschemeι_appLE_apply Z U hU]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem appTop_homOfVector_restrictToSubschemeCoords_eq (c : EtaleChart p U m)
     (hU : IsAffineOpen U) (Z : X.IdealSheafData) (S : Finset (Fin m)) :
@@ -647,9 +639,9 @@ private theorem appTop_homOfVector_restrictToSubschemeCoords_eq (c : EtaleChart 
     rw [renameCompl_X, EtaleChart.coordRingHom_X, ← subschemeι_appLE_apply Z U hU]
 
 /- English proof (translation)
-Establish `hVa : IsAffine (Z.subschemeι ⁻¹ᵁ U).toScheme` using `isAffineOpen_preimage_subschemeι Z hU`. Use `etale_homOfVector_of_appTop_etale _ _ ?_` and prove the remaining obligations. Rewrite using `[appTop_homOfVector_restrictToSubschemeCoords_eq c hU Z S]`. Apply `RingHom.Etale.stableUnderComposition` to reduce the goal to its premises. Conclude with `etale_quotientMk_comp_renameCompl k m S c.coordRingHom (c.coordRingHom_etale hU) (Z.ideal ⟨U, hU⟩) (c.map_mvPolynomialCoordIdeal_eq_ideal hU Z S h).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingHom.Etale.of_bijective` to reduce the goal to its premises. Conclude with `(bijective_commRingCatIso_inv (Z.subschemeι ⁻¹ᵁ U).topIso).comp (bijective_commRingCatIso_inv (Z.subschemeObjIso ⟨U, hU⟩))`.
+A detailed English derivation is pending.
 -/
 theorem EtaleChart.etale_homOfVector_restrictToSubschemeCoords (c : EtaleChart p U m)
     (hU : IsAffineOpen U) (Z : X.IdealSheafData) (S : Finset (Fin m))
@@ -673,9 +665,9 @@ def EtaleChart.restrictToSubscheme (c : EtaleChart p U m) (hU : IsAffineOpen U)
     (c.etale_homOfVector_restrictToSubschemeCoords hU Z S h)
 
 /- English proof (translation)
-Establish `hmapeq : (c.restrictToSubscheme hU Z S h).map = AffineSpace.homOfVector ((Z.subschemeι ⁻¹ᵁ U).ι ≫ (Z.subschemeι ≫ p)) (c.restrictToSubschemeCoords Z S)` using `EtaleChart.ofCoords_map (Z.subschemeι ≫ p) (Z.subschemeι ⁻¹ᵁ U) (c.restrictToSubschemeCoords Z S) (c.etale_homOfVector_restrictToSubschemeCoords hU Z S h)`. Establish `hcoord : ((c.restrictToSubscheme hU Z S h).map.appTop).hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i : ULift.{u} (Fin (m - S.card)))) = (Z.subschemeι ⁻¹ᵁ U).topIso.inv.hom ((Z.subschemeι.appLE U (Z.subschemeι ⁻¹ᵁ U) le_rfl).hom (c.coord (complOrderEmb m S i)))`. Rewrite using `[hmapeq]`. Apply `AffineSpace.homOfVector_appTop_coord` to reduce the goal to its premises. Rewrite using `[EtaleChart.coord_def (c.restrictToSubscheme hU Z S h) i, hcoord]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `commRingCatIso_hom_inv_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem EtaleChart.restrictToSubscheme_coord (c : EtaleChart p U m) (hU : IsAffineOpen U)
     (Z : X.IdealSheafData) (S : Finset (Fin m)) (h : restrictIdeal Z U = c.coordIdeal S)
@@ -699,7 +691,7 @@ theorem EtaleChart.restrictToSubscheme_coord (c : EtaleChart p U m) (hU : IsAffi
   exact commRingCatIso_hom_inv_apply _ _
 
 /- English proof (translation)
-The claim follows from `(W.presheaf.map_comp α β).symm.trans (congrArg W.presheaf.map (Quiver.Hom.unop_inj (Subsingleton.elim _ _)))`.
+A detailed English derivation is pending.
 -/
 private theorem presheaf_map_comp_eq {W : Scheme.{u}} {A B C : (Opens ↥W)ᵒᵖ}
     (α : A ⟶ B) (β : B ⟶ C) (γ : A ⟶ C) :
@@ -708,7 +700,7 @@ private theorem presheaf_map_comp_eq {W : Scheme.{u}} {A B C : (Opens ↥W)ᵒ�
     (congrArg W.presheaf.map (Quiver.Hom.unop_inj (Subsingleton.elim _ _)))
 
 /- English proof (translation)
-Simplify using `[Scheme.Hom.appLE]`. Conclude with `presheaf_map_comp_eq _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem opens_ι_appLE_top_eq_topIso_inv {W : Scheme.{u}} (V : W.Opens)
     (e : (⊤ : (V.toScheme).Opens) ≤ V.ι ⁻¹ᵁ V) :
@@ -717,7 +709,7 @@ private theorem opens_ι_appLE_top_eq_topIso_inv {W : Scheme.{u}} (V : W.Opens)
   exact presheaf_map_comp_eq _ _ _
 
 /- English proof (translation)
-Simplify using `[EtaleChart.restrictToSubscheme, EtaleChart.ofCoords_map, EtaleChart.restrictToSubschemeCoords]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem restrictToSubscheme_map_appTop_coord (c : EtaleChart p U m)
     (hU : IsAffineOpen U)
@@ -731,13 +723,13 @@ private theorem restrictToSubscheme_map_appTop_coord (c : EtaleChart p U m)
     EtaleChart.restrictToSubschemeCoords]
 
 /- English proof (translation)
-Establish `hVaff : IsAffineOpen (Z.subschemeι ⁻¹ᵁ U)` using `isAffineOpen_preimage_subschemeι Z hU`. Establish `hVa : IsAffine (Z.subschemeι ⁻¹ᵁ U).toScheme` using `hVaff`. Establish `hAa : IsAffine (affineSpaceFin k (m - S.card))` using `inferInstance`. Establish `e1 : (⊤ : ((Z.subschemeι ⁻¹ᵁ U).toScheme).Opens) ≤ (Z.subschemeι ⁻¹ᵁ U).ι ⁻¹ᵁ (Z.subschemeι ⁻¹ᵁ U)` using `by simp`. Establish `hL1 : (restrictIdeal (E.comap Z.subschemeι) (Z.subschemeι ⁻¹ᵁ U)).ideal ⟨⊤, isAffineOpen_top _⟩ = Ideal.map ((Z.subschemeι ⁻¹ᵁ U).ι.appLE (Z.subschemeι ⁻¹ᵁ U) ⊤ e1).hom ((E.comap Z.subschemeι).ideal ⟨Z.subschemeι ⁻¹ᵁ U, hVaff⟩)` using `Scheme.IdealSheafData.comap_ideal_eq_map_appLE (E.comap Z.subschemeι) (Z.subschemeι ⁻¹ᵁ U).ι ⟨Z.subschemeι ⁻¹ᵁ U, hVaff⟩ ⟨⊤, isAffineOpen_top _⟩ e1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL2 : (E.comap Z.subschemeι).ideal ⟨Z.subschemeι ⁻¹ᵁ U, hVaff⟩ = Ideal.map (Z.subschemeι.appLE U (Z.subschemeι ⁻¹ᵁ U) le_rfl).hom (E.ideal ⟨U, hU⟩)` using `Scheme.IdealSheafData.comap_ideal_eq_map_appLE E Z.subschemeι ⟨U, hU⟩ ⟨Z.subschemeι ⁻¹ᵁ U, hVaff⟩ le_rfl`. Establish `hL3 : E.ideal ⟨U, hU⟩ = Ideal.span {c.coord (complOrderEmb m S i)}`. Rewrite using `[c.ideal_eq_span_coord hU E {complOrderEmb m S i} hE, Finset.coe_singleton, Set.image_singleton]`. Establish `hR1 : ((c.restrictToSubscheme hU Z S h).coordIdeal {i}).ideal ⟨⊤, isAffineOpen_top _⟩ = Ideal.map ((c.restrictToSubscheme hU Z S h).map.appTop).hom ((coordSubspaceIdeal k (m - S.card) {i}).ideal ⟨⊤, isAffineOpen_top _⟩)`. Rewrite using `[EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Scheme.IdealSheafData.comap_ideal_top_eq_map_appTop _ _`. Establish `hR2 : (coordSubspaceIdeal k (m - S.card) {i}).ideal ⟨⊤, isAffineOpen_top _⟩ = Ideal.span {AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i)}`. Rewrite using `[coordSubspaceIdeal_eq_ofIdealTop_span_coord, Scheme.IdealSheafData.ofIdealTop_ideal_top, Finset.coe_singleton, Set.image_singleton]`. Use `Scheme.IdealSheafData.ext_of_isAffine ?_` and prove the remaining obligations. Use `show (restrictIdeal (E.comap Z.subschemeι) (Z.subschemeι ⁻¹ᵁ U)).ideal ⟨⊤, isAffineOpen_top _⟩ = ((c.restrictToSubscheme hU Z S h).coordIdeal {i}).ideal ⟨⊤, isAffineOpen_top _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hL1, hL2, hL3, hR1, hR2]`. Simplify using `only [Ideal.map_span, Set.image_singleton]`. Rewrite using `[restrictToSubscheme_map_appTop_coord, opens_ι_appLE_top_eq_topIso_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EtaleChart.restrictToSubscheme_coordIdeal_singleton (c : EtaleChart p U m)
     (hU : IsAffineOpen U) (Z : X.IdealSheafData) (S : Finset (Fin m))
@@ -781,7 +773,7 @@ theorem EtaleChart.restrictToSubscheme_coordIdeal_singleton (c : EtaleChart p U 
   rw [restrictToSubscheme_map_appTop_coord, opens_ι_appLE_top_eq_topIso_inv]
 
 /- English proof (translation)
-Rewrite `hE` using `[restrictIdeal_eq_comap_ι]`. Rewrite using `[restrictIdeal_eq_comap_ι, ← Scheme.IdealSheafData.comap_comp, ← morphismRestrict_ι Z.subschemeι U, Scheme.IdealSheafData.comap_comp, hE, Scheme.IdealSheafData.comap_top]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictIdeal_comap_subschemeι_eq_top {X : Scheme.{u}} (Z : X.IdealSheafData)
     (U : X.Opens) (E : X.IdealSheafData) (hE : restrictIdeal E U = ⊤) :

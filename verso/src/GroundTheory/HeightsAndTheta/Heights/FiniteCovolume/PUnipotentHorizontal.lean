@@ -21,7 +21,7 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Use `ArchInvariant.proof h v g⁻¹ (fun _ => a) (fun _ => b) w` as an intermediate fact. Simplify `this` using `only [invApply, inv_inv]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem archUnitary_preserves_form (h : HermitianForm F E W) (v : Basis ι E W)
     (g : archUnitary h v) (w : InfinitePlace E) (a b : ι → ℂ) :
@@ -32,37 +32,37 @@ theorem archUnitary_preserves_form (h : HermitianForm F E W) (v : Basis ι E W)
   simpa only [invApply, inv_inv] using this
 
 /- English proof (translation)
-Introduce `D La x₀ w₀ hD hx₀ hp`. Take `⟨m, hm, hγ⟩` from `h0 D La x₀ w₀ hD hx₀ hp`. Take `⟨K5, hK5, hK⟩` from `h5 La x₀ w₀ (2 * m) hD.isLattice hp (by omega)`. Use `⟨-K5, hK5.neg, fun n => ?_⟩` and prove the remaining obligations. Take `⟨hxx, -, hxw⟩` from `hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hwx : h.toSesq w₀ x₀ = 1`. Rewrite using `[← LinearMap.isSymm_def.mp h.isSymm x₀ w₀, hxw, map_one]`. Establish `hH` using `HermAtPlace.proof h v`. Establish `bXX : ∀ w, star (vecAt v x₀ w) ⬝ᵥ (gramAt h v w *ᵥ vecAt v x₀ w) = 0` using `fun w => by`. Rewrite using `[← hH, hxx, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `bWX : ∀ w, star (vecAt v w₀ w) ⬝ᵥ (gramAt h v w *ᵥ vecAt v x₀ w) = 1` using `fun w => by`. Rewrite using `[← hH, hwx, map_one]`. Establish `hn` using `mem_unipRadical.1 n.2`. Take `⟨u, hu⟩ : ∃ u, u = unipCoord h v x₀ w₀ n` from `⟨_, rfl⟩`. Establish `bXu : ∀ w, star (vecAt v x₀ w) ⬝ᵥ (gramAt h v w *ᵥ u w) = 0` using `fun w => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `archUnitary_preserves_form h v n w (vecAt v x₀ w) (vecAt v w₀ w)`. Rewrite `e` using `[(hn w).1]`. Rewrite using `[hu, unipCoord_apply, mulVec_sub, dotProduct_sub, e, sub_self]`. Take `⟨t0, ht0⟩ : ∃ t0 : InfinitePlace E → ℂ, ∀ w, t0 w = star (vecAt v w₀ w) ⬝ᵥ (gramAt h v w *ᵥ u w)` from `⟨fun _ => _, fun _ => rfl⟩`. Take `⟨Y, hY⟩ : ∃ Y : InfinitePlace E → ι → ℂ, ∀ w, Y w = u w - t0 w • vecAt v x₀ w` from `⟨fun _ => _, fun _ => rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `bXY : ∀ w, star (vecAt v x₀ w) ⬝ᵥ (gramAt h v w *ᵥ Y w) = 0` using `fun w => by`. Rewrite using `[hY, mulVec_sub, dotProduct_sub, mulVec_smul, dotProduct_smul, bXu, bXX, smul_zero, sub_zero]`. Establish `bWY : ∀ w, star (vecAt v w₀ w) ⬝ᵥ (gramAt h v w *ᵥ Y w) = 0` using `fun w => by`. Rewrite using `[hY, mulVec_sub, dotProduct_sub, mulVec_smul, dotProduct_smul, bWX, ← ht0, smul_eq_mul, mul_one, sub_self]`. Take `⟨y, hyW, ⟨z, hzLa, hyz⟩, hyK⟩` from `hK (-Y) fun w => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Pi.neg_apply, mulVec_neg, dotProduct_neg, neg_eq_zero]`. Conclude with `⟨bXY w, bWY w⟩`. Establish `hzz : h.toSesq z z ∈ integralClosure ℤ E` using `hD.integral z hzLa z hzLa`. Establish `hzzc : conj F E (h.toSesq z z) = h.toSesq z z` using `LinearMap.isSymm_def.mp h.isSymm z z`. Set `a : 𝓞 E` to `-((2 * m : ℕ) : 𝓞 E) * ⟨h.toSesq z z, hzz⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `haE : (a : E) = -((2 * m : ℕ) : E) * h.toSesq z z`. Establish `h2 : (((2 * m : ℕ) : 𝓞 E) : E) = ((2 * m : ℕ) : E)` using `map_natCast (algebraMap (𝓞 E) E) (2 * m)`. Rewrite using `[show (a : E) = -(((2 * m : ℕ) : 𝓞 E) : E) * h.toSesq z z from rfl, h2]`. Set `c : E` to `(m : E) * (a : E)`. Establish `hyy : h.toSesq y y = ((2 * m : ℕ) : E) * ((2 * m : ℕ) : E) * h.toSesq z z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hyz]`. Simplify using `only [map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : c + conj F E c = -h.toSesq y y`. Simplify using `only [c, hyy, haE, map_mul, map_neg, map_natCast, hzzc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨γ, hγLa, hγx, hγw, hγz⟩` from `hγ y c hyW ⟨2 • z, nsmul_mem hzLa 2, by rw [hyz, smul_smul, mul_comm]⟩ ⟨a, rfl⟩ hc`. Establish `hgood : ∀ z : W, h.toSesq x₀ z = 0 → ∃ b : E, γ • z = z + b • x₀`. Introduce `z hz`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz' : z - h.toSesq w₀ z • x₀ ∈ hypComplement h x₀ w₀`. Rewrite using `[mem_hypComplement]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[map_sub, map_smul, hz, hxx, smul_zero, sub_zero]`. Rewrite using `[map_sub, map_smul, hwx, smul_eq_mul, mul_one, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨-h.toSesq y (z - h.toSesq w₀ z • x₀), ?_⟩` and prove the remaining obligations. Establish `e : (γ : W ≃ₗ[E] W) z = (γ : W ≃ₗ[E] W) (z - h.toSesq w₀ z • x₀) + h.toSesq w₀ z • (γ : W ≃ₗ[E] W) x₀`. Rewrite using `[← map_smul, ← map_add, sub_add_cancel]`. Establish `e1 : (γ : W ≃ₗ[E] W) (z - h.toSesq w₀ z • x₀) = (z - h.toSesq w₀ z • x₀) - h.toSesq y (z - h.toSesq w₀ z • x₀) • x₀` using `hγz _ hz'`. Establish `e2 : (γ : W ≃ₗ[E] W) x₀ = x₀` using `hγx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(γ : W ≃ₗ[E] W) z = _`. Rewrite using `[e, e1, e2, neg_smul]`. Normalize the expressions using the abelian group laws. Establish `hδ` using `h4 x₀ γ hγx hgood`. Establish `hδw` using `mem_unipRadical.1 hδ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ w, ∃ s : ℂ, (((archEmbed h v γ : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ Y w = Y w + s • vecAt v x₀ w` using `fun w => (hδw w).2 (Y w) (bXY w)`. Use `choose s hs using hs`. Use `⟨⟨archEmbed h v γ, hδ⟩, Subgroup.mem_map.2 ⟨⟨γ, hγLa⟩, MulAction.mem_stabilizer_iff.2 hγx, rfl⟩, fun w => w.embedding c + t0 w + s w, ?_⟩` and prove the remaining obligations. Establish `hprod : ∀ w, unipCoord h v x₀ w₀ (⟨archEmbed h v γ, hδ⟩ * n) w = (((archEmbed h v γ : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ ((((n : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ vecAt v w₀ w) - vecAt v w₀ w` using `fun w => by`. Rewrite using `[unipCoord_apply, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hdW : ∀ w, (((archEmbed h v γ : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ vecAt v w₀ w = vecAt v w₀ w + vecAt v y w + w.embedding c • vecAt v x₀ w` using `fun w => by`. Rewrite using `[← vecAt_unitary, show (γ : W ≃ₗ[E] W) w₀ = γ • w₀ from rfl, hγw, StabilizerLevi.vecAt_add, StabilizerLevi.vecAt_add, StabilizerLevi.vecAt_smul]`. Establish `hgW : ∀ w, (((n : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ vecAt v w₀ w = u w + vecAt v w₀ w` using `fun w => by`. Rewrite using `[hu, unipCoord_apply, sub_add_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `huY : ∀ w, u w = Y w + t0 w • vecAt v x₀ w` using `fun w => by rw [hY, sub_add_cancel]`. Rewrite using `[Set.mem_neg]`. Use `hyK using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `w`. Simplify using `only [Pi.neg_apply, Pi.sub_apply, hprod w, hgW w, huY w, mulVec_add, mulVec_smul, hs w, (hδw w).1, hdW w, add_smul]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem UnipotentHorizontal.proof (h : HermitianForm F E W) (v : Basis ι E W)
     (h0 : RationalUnipotent.Statement h) (h4 : UnipRadicalOfRational.Statement h v)

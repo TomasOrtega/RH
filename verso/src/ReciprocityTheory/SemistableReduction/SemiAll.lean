@@ -7,12 +7,12 @@ namespace ReciprocityTheory.MultiplicativeHeights.Closed
 open ReciprocityTheory.MultiplicativeHeights
 
 /- English proof (translation)
-The claim follows from `semiDeg_holds degAdd`.
+A detailed English derivation is pending.
 -/
 theorem semiPoint : SemiPointStatement := semiDeg_holds degAdd
 
 /- English proof (translation)
-The claim follows from `semiContract_holds semiPoint degAdd`.
+A detailed English derivation is pending.
 -/
 theorem semistable : SemistableStatement := semiContract_holds semiPoint degAdd
 

@@ -11,14 +11,14 @@ def ptQ (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ) : Ideal (MvPo
   (ptIdeal p).map (Ideal.Quotient.mk K)
 
 /- English proof (translation)
-Conclude with `Ideal.mem_quotient_iff_mem hK`.
+A detailed English derivation is pending.
 -/
 theorem mk_mem_ptQ {K : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin n → ℂ} (hK : K ≤ ptIdeal p)
     (f : MvPolynomial (Fin n) ℂ) : Ideal.Quotient.mk K f ∈ ptQ K p ↔ f ∈ ptIdeal p := by
   exact Ideal.mem_quotient_iff_mem hK
 
 /- English proof (translation)
-Use `haveI : (ptIdeal p).IsPrime := RingHom.ker_isPrime _`. Conclude with `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hK)`.
+A detailed English derivation is pending.
 -/
 theorem ptQ_isPrime {K : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin n → ℂ} (hK : K ≤ ptIdeal p) :
     (ptQ K p).IsPrime := by
@@ -26,7 +26,7 @@ theorem ptQ_isPrime {K : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin n → ℂ} (
   exact Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hK)
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_quot_mk (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ)
     (f : MvPolynomial (Fin n) ℂ) :
@@ -35,11 +35,11 @@ theorem algebraMap_quot_mk (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n →
   rw [← Ideal.Quotient.algebraMap_eq, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Use `letI := ptQ_isPrime hK`. Establish `hM : Algebra.algebraMapSubmonoid (MvPolynomial (Fin n) ℂ ⧸ K) (ptIdeal p).primeCompl = (ptQ K p).primeCompl`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Ideal.mem_primeCompl_iff, Ideal.Quotient.algebraMap_eq, mk_mem_ptQ hK]`. Conclude with `hf`. Introduce `hx`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hx` using `[Ideal.mem_primeCompl_iff, mk_mem_ptQ hK]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨f, hx, rfl⟩`. Establish `h` using `IsLocalization.instQuotientIdealAlgebraMapSubmonoidMapRingHomAlgebraMap (ptIdeal p).primeCompl (locPt p) K`. Rewrite `h` using `[hM]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalization_locRing {K : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin n → ℂ}
     (hK : K ≤ ptIdeal p) :
@@ -62,7 +62,7 @@ theorem isLocalization_locRing {K : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin n
   exact h
 
 /- English proof (translation)
-Use `letI := ptQ_isPrime hK`. Use `haveI := isLocalization_locRing hK`. Conclude with `IsLocalization.AtPrime.isLocalRing (locRing K p) (ptQ K p)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isLocalRing_locRing {K : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin n → ℂ}
     (hK : K ≤ ptIdeal p) : IsLocalRing (locRing K p) := by
@@ -71,7 +71,7 @@ theorem isLocalRing_locRing {K : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin n �
   exact IsLocalization.AtPrime.isLocalRing (locRing K p) (ptQ K p)
 
 /- English proof (translation)
-Use `letI := ptQ_isPrime hK`. Use `haveI := isLocalization_locRing hK`. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal (ptQ K p) (locRing K p), ptQ, Ideal.map_map]`. Use `congr 1`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem maximalIdeal_locRing {K : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin n → ℂ}
     (hK : K ≤ ptIdeal p) [IsLocalRing (locRing K p)] :
@@ -82,7 +82,7 @@ theorem maximalIdeal_locRing {K : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin n �
   congr 1
 
 /- English proof (translation)
-Simplify using `[ptIdeal, SetLike.le_def, RingHom.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem le_ptIdeal_iff' (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ) :
     K ≤ ptIdeal p ↔ ∀ h ∈ K, eval p h = 0 := by

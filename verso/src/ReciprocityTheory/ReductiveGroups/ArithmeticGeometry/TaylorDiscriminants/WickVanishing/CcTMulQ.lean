@@ -23,11 +23,11 @@ variable (F : Fin d → PS k 2 d) (u : ι → Fin d → k) (q : PS k 1 d)
 include hq2
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simp at hw`. Consider the case `cons a w ih`. Rewrite using `[T_cons]`. Break down `w with _ | ⟨b, _ | ⟨e, _ | ⟨f, w⟩⟩⟩` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `at hw`. Simplify using `at hw`. Rewrite using `[T_cons, T_cons]`. Express the relevant statement in the definitionally equal form `Dof F (u a) (Dof F (u b) (Dof F (u e) q)) = 0`. Rewrite using `[hq2, dof_C]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih (by simp)]`. Conclude with `dof_zero ..`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_q_long (w : List ι) (hw : 3 ≤ w.length) : T F u w q = 0 := by
   induction w with
@@ -46,9 +46,9 @@ theorem T_q_long (w : List ι) (hw : 3 ≤ w.length) : T F u w q = 0 := by
 include hq0 hq1
 
 /- English proof (translation)
-Break down `b with _ | ⟨x, _ | ⟨y, _ | ⟨z, b⟩⟩⟩` into its components or cases. Conclude with `hq0`. Rewrite using `[T_cons]`. Conclude with `hq1 x`. Rewrite using `[T_cons, T_cons]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `constantCoeff (Dof F (u x) (Dof F (u y) q)) = c x y`. Rewrite using `[hq2, constantCoeff_C]`. Rewrite using `[T_q_long c F u q hq2 _ (by simp), map_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cc_T_q (b : List ι) : constantCoeff (T F u b q) = ev2 c b := by
   rcases b with _ | ⟨x, _ | ⟨y, _ | ⟨z, b⟩⟩⟩
@@ -62,9 +62,9 @@ theorem cc_T_q (b : List ι) : constantCoeff (T F u b q) = ev2 c b := by
     rfl
 
 /- English proof (translation)
-Rewrite using `[T_mul, map_list_sum, List.map_map]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `p _`. Simplify using `only [Function.comp_apply, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[cc_T_q c F u q hq0 hq1 hq2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_T_mul_q (w : List ι) (A : PS k 1 d) :
     constantCoeff (T F u w (A * q)) =

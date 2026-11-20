@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.RegConj
 
 /- English proof (translation)
-Use `show p'.1 _ = p.1 _`. Rewrite using `[e]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg _ (Subsingleton.elim (α := PrimeSpectrum ℂ) _ _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem under_eq_of_conj {F : Type} [Field F] [NumberField F] {Y : Var F} {σ σ' : F →+* ℂ} {p : Pts Y σ}
     {p' : Pts Y σ'} (e : p'.1 = spMap (starRingEnd ℂ) ≫ p.1) : under p' = under p := by
@@ -26,7 +26,7 @@ theorem under_eq_of_conj {F : Type} [Field F] [NumberField F] {Y : Var F} {σ σ
   exact (Scheme.Hom.comp_apply _ _ _).trans (congrArg _ (Subsingleton.elim (α := PrimeSpectrum ℂ) _ _))
 
 /- English proof (translation)
-Establish `h₁ : y ∈ Var.eqnSet σ Δ (eqn Δ (under y))` using `Base.isEqn_eqn _ _`. Establish `e₁` using `Var.pn_frame (m := m) h₁`. Establish `e₂` using `Var.pn_frame (m := m') h₁`. Simplify using `only [lnRatio, lnN]`. Rewrite using `[← e₁, ← e₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -43,9 +43,9 @@ theorem lnRatio_eq_log {F : Type} [Field F] [NumberField F] {Y : Var F} {σ : F 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ}
 
 /- English proof (translation)
-Establish `hu` using `under_eq_of_conj e`. Unfold `phW`. Use `congrArg (2 * ·) (Finset.sum_congr rfl fun r _ => congrArg (_ * ·) ?_)` and prove the remaining obligations. Establish `h₁ : p ∈ Var.eqnSet σ (divOf (Φ.C k) (rootExp S r)) (eqn (divOf (Φ.C k) (rootExp S r)) (under p))` using `Base.isEqn_eqn _ _`. Take `⟨hm, h0, -⟩` from `mets_conj _ _ _ _ _ _ _ x Φ k σ σ' _ p p' _ e h₁`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[lnRatio_eq_log, lnRatio_eq_log, hu, hm none, h0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phW_conj (x : ToroidalCompactificationData s) (Φ : s.Flag) (k : s.Comp) {σ σ' : D.what₂.LL →+* ℂ} (u : D.what₂.Tau → Fin N → ℝ)
     {p : Pts (Φ.C k).Y σ} {p' : Pts (Φ.C k).Y σ'} (e : p'.1 = spMap (starRingEnd ℂ) ≫ p.1) :
@@ -59,11 +59,11 @@ theorem phW_conj (x : ToroidalCompactificationData s) (Φ : s.Flag) (k : s.Comp)
   rw [lnRatio_eq_log, lnRatio_eq_log, hu, hm none, h0]
 
 /- English proof (translation)
-Establish `hσ' : σ' = (starRingEnd ℂ).comp σ`. Establish `h1` using `y'.2`. Rewrite `h1` using `[hy, Category.assoc, y.2, spMap, spMap, spMap, ← Spec.map_comp]`. Conclude with `(congrArg CommRingCat.Hom.hom (Spec.map_injective h1)).symm`. Establish `hσ : σ = (starRingEnd ℂ).comp σ'` using `by rw [hσ', ConjMet.conj_comp_conj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ι, hι⟩` from `GlobalTheory.ConjExph.exists_isConjMap (Φ.C k).Y (σ := σ) (σ' := σ') hσ`. Take `⟨ι', hι'⟩` from `GlobalTheory.ConjExph.exists_isConjMap (Φ.C k).Y (σ := σ') (σ' := σ) hσ'`. Establish `cc : ∀ {τ τ' : D.what₂.LL →+* ℂ} (f : Pts (Φ.C k).Y τ' → Pts (Φ.C k).Y τ) (g : Pts (Φ.C k).Y τ → Pts (Φ.C k).Y τ'), IsConjMap f → IsConjMap g → ∀ z, g (f z) = z` using `fun f g hf hg z => Subtype.ext (by`. Rewrite using `[hg, hf, ← Category.assoc, ConjMet.spMap_conj_conj, Category.id_comp])`. Establish `c₁` using `(GlobalTheory.ConjChart.continuous_and_exists_conj_chart _ _ _ (Φ.C k).Y.dim σ σ' ι hσ hι).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₂` using `(GlobalTheory.ConjChart.continuous_and_exists_conj_chart _ _ _ (Φ.C k).Y.dim σ' σ ι' hσ' hι').1`. Use `⟨⟨⟨ι, ι', cc ι ι' hι hι', cc ι' ι hι' hι⟩, c₁, c₂⟩, hι, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (by show (ι y').1 = y.1`. Rewrite using `[hι, hy, ← Category.assoc, ConjMet.spMap_conj_conj, Category.id_comp])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj_homeo (Φ : s.Flag) (k : s.Comp) {σ σ' : D.what₂.LL →+* ℂ} {y : Pts (Φ.C k).Y σ}
     {y' : Pts (Φ.C k).Y σ'} (hy : y'.1 = spMap (starRingEnd ℂ) ≫ y.1) :
@@ -86,13 +86,13 @@ theorem exists_conj_homeo (Φ : s.Flag) (k : s.Comp) {σ σ' : D.what₂.LL →+
     rw [hι, hy, ← Category.assoc, ConjMet.spMap_conj_conj, Category.id_comp])
 
 /- English proof (translation)
-Take `⟨ι, hι, hιy⟩` from `exists_conj_homeo Φ k hy`. Establish `hinv : ∀ z, z.1 = spMap (starRingEnd ℂ) ≫ (ι z).1` using `fun z => by`. Rewrite using `[hι z, ← Category.assoc, ConjMet.spMap_conj_conj, Category.id_comp]`. Establish `hph : ∀ v : D.what₂.Tau → Fin N → ℝ, phW (metsOf x Φ) (refMet x Φ) k σ' v = phW (metsOf x Φ) (refMet x Φ) k σ v ∘ ι` using `fun v => funext fun z => phW_conj x Φ k v (hinv z)`. Establish `hoff : offBd Φ k σ' = ι ⁻¹' offBd Φ k σ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `z`. Simplify using `only [offBd, Set.mem_preimage, Set.mem_setOf_eq, under_eq_of_conj (hι z)]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => congrArg (_ * ·) ?_` and prove the remaining obligations. Unfold `PolDat.regFund`. Use `split_ifs with hi`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hph, GlobalTheory.ShFam.RhoConj.rho_comp_conj _ _ σ σ' ι _ _ _ _ hι (P.om_kaehler k σ) (P.om_kaehler k σ') (P.om_conj k σ σ' ι hι) (P.exph_is k σ) (P.exph_is k σ') (P.exph_conj k σ σ' ι hι), hιy]`. Establish `hmem : y' ∈ offBd Φ k σ' ↔ y ∈ offBd Φ k σ` using `by rw [hoff, Set.mem_preimage, hιy]`. Unfold `extBd`. Distinguish the cases in `h : y ∈ offBd Φ k σ`. Rewrite using `[if_pos (hmem.2 h), if_pos h, hph, Function.comp_apply, hιy]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (mt hmem.1 h), if_neg h, hph, Filter.limsup_comp, hoff, ι.isInducing.map_nhdsWithin_eq, Set.image_preimage_eq _ ι.surjective, hιy]`.
+A detailed English derivation is pending.
 -/
 theorem reg_conj_of {x : ToroidalCompactificationData s} {Φ : s.Flag} (P : PolDat s Φ (metsOf x Φ) (refMet x Φ)) (k : s.Comp)
     {σ σ' : D.what₂.LL →+* ℂ} (u : D.what₂.Tau → Fin N → ℝ) (t : ℝ) {y : Pts (Φ.C k).Y σ} {y' : Pts (Φ.C k).Y σ'}
@@ -121,7 +121,7 @@ theorem reg_conj_of {x : ToroidalCompactificationData s} {Φ : s.Flag} (P : PolD
 end GlobalTheory.RegConj
 
 /- English proof (translation)
-Introduce `D O hO c σ σ' u t y y' hy`. Take `⟨x, P, h⟩` from `hO`. Rewrite using `[h.reg_eq]`. Conclude with `GlobalTheory.RegConj.reg_conj_of P c u t hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mean4O.Setup.reg_conj : ∀ (D : D7) (O : Setup D), O.Core → ∀ (c : O.s.Comp) (σ σ' : D.what₂.LL →+* ℂ)
     (u : D.what₂.Tau → Fin O.N → ℝ) (t : ℝ) (y : Pts (O.var c) σ) (y' : Pts (O.var c) σ'),

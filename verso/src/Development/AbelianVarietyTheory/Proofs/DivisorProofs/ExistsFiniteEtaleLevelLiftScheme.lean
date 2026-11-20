@@ -24,9 +24,9 @@ def TateAt {b : Base D R} {N : ℕ} {s : S ⟶ Sp R} (o : Obj b N s) (N' : ℕ) 
     ∀ y, l y = I.ev N' y
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `h' : ∀ a, l a = l' a` using `fun a => by`. Rewrite using `[← h a]`. Establish `: (Over.homMk (𝟙 _) (by simp) : Over.mk x ⟶ Over.mk x) = 𝟙 _` using `by ext; simp`. Rewrite using `[this, Category.id_comp]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨I, hI⟩`. Conclude with `⟨I, fun a => (h' a).symm.trans (hI a)⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem tateAt_congr {b : Base D R} {N : ℕ} {s : S ⟶ Sp R} (o : Obj b N s) (N' : ℕ) {k : Type} [Field k]
     {x x' : Sp k ⟶ S} (e : x = x') (l : D.La → (Over.mk x ⟶ o.A)) (l' : D.La → (Over.mk x' ⟶ o.A))
@@ -41,7 +41,7 @@ theorem tateAt_congr {b : Base D R} {N : ℕ} {s : S ⟶ Sp R} (o : Obj b N s) (
   exact ⟨I, fun a => (h' a).symm.trans (hI a)⟩
 
 /- English proof (translation)
-Use `act.hom c` as an intermediate fact. Rewrite using `[add_map_nsmul act.add, MonObj.comp_pow, MonObj.pow_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_actN_nsmul {A : Over S} [GrpObj A] [IsCommMonObj A] (act : OActN D.O A) {T : Over S}
     (x : T ⟶ A) (n : ℕ) (c : D.O) : x ≫ act.act (n • c) = (x ^ n) ≫ act.act c := by
@@ -49,25 +49,21 @@ theorem comp_actN_nsmul {A : Over S} [GrpObj A] [IsCommMonObj A] (act : OActN D.
   rw [add_map_nsmul act.add, MonObj.comp_pow, MonObj.pow_comp]
 
 /- English proof (translation)
-Establish `hN'` using `levelPos_of_coprime hc`. Establish `hNS : IsUnit (N' : Γ(S, ⊤))`. Use `(b.unit N' hc).map (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `haveI := D.freeLa`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `haveI := D.finLa`. Use `haveI := D.freeO`. Use `haveI := D.finO`. Take `⟨Z, y, hfin, het, yadd, ypow, huniv⟩` from `GlobalTheory.exists_finiteEtale_latticeTorsionHom S o.A N' D.La o.ab hNS`. Establish `R : RepTors o.A N' D.La Z y` using `⟨hfin, het, yadd, ypow, huniv⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hfin`. Use `haveI := het`. Establish `ymod : ∀ a c, y (a + N' • c) = y a` using `fun a c => by`. Rewrite using `[yadd, add_map_nsmul yadd, ypow, _root_.mul_one]`. Establish `etaN : ∀ a, o.eta (N' • a) = 1` using `fun a => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Nat.mul_div_cancel' hd, mul_smul, o.eta_ker]`. Take `⟨κ', _, q', hq'⟩` from `exists_finite_mod D.O hN'`. Establish `c1 : ClopenCond Z fun _ h => ∀ (c : D.O) a, h ≫ y (c • a) = h ≫ y a ≫ o.act.act c`. Use `ClopenCond.forall_of_finite q' (fun c => ?_) fun c c' e T' h Hc a => ?_` and prove the remaining obligations. Use `o.act.hom c` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `R.clopenCond (fun a => y (c • a)) (fun a => y a ≫ o.act.act c) (fun a a' => by rw [smul_add, yadd]) (fun a => ypow _) (fun a a' => by rw [yadd, MonObj.mul_comp]) fun a => by` and prove the remaining obligations. Rewrite using `[← MonObj.pow_comp, ypow, MonObj.one_comp]`. Take `⟨d, rfl⟩` from `hq' c c' e`. Use `o.act.hom d` as an intermediate fact. Rewrite using `[add_smul, smul_assoc, ymod, Hc, o.act.add, MonObj.comp_mul, comp_actN_nsmul, ypow, MonObj.one_comp, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c2 : ClopenCond Z fun _ h => ∀ a, h ≫ y ((N' / N) • a) = h ≫ (toUnit Z ≫ o.eta a)` using `R.clopenCond (fun a => y ((N' / N) • a)) (fun a => toUnit Z ≫ o.eta a) (fun a a' => by rw [smul_add, yadd]) (fun a => ypow _) (fun a a' => by rw [o.eta_add, MonObj.comp_mul]) fun a => by`. Rewrite using `[← MonObj.comp_pow, ← add_map_nsmul o.eta_add, etaN, MonObj.comp_one]`. Take `⟨U, hU, HU⟩` from `c1.and c2`. Take `⟨W, i, hW1, hW2, hmono, Hi⟩` from `exists_sub U hU`. Establish `hi` using `(HU W i).2 ((Hi W i).2 ⟨𝟙 W, Category.id_comp i⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨W, fun a => i ≫ y a, hW1, hW2, fun a c => by beta_reduce; rw [yadd, MonObj.comp_mul], fun a => by beta_reduce; rw [add_map_nsmul yadd, ypow, MonObj.comp_one], fun c a => by beta_reduce; rw [hi.1, Category.assoc], fun a => ?_, fun T lv hadd hker hlin hlev => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hi.2, ← Category.assoc]`. Use `congr 1`. Conclude with `toUnit_unique _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Establish `hpow : ∀ a, lv a ^ N' = 1` using `fun a => by rw [← add_map_nsmul hadd, hker]`. Take `⟨h, hh, -⟩` from `huniv T lv hadd hpow`. Establish `hP1 : ∀ (c : D.O) a, h ≫ y (c • a) = h ≫ y a ≫ o.act.act c` using `fun c a => by`. Rewrite using `[hh, hlin, ← hh a, Category.assoc]`. Establish `hP2 : ∀ a, h ≫ y ((N' / N) • a) = h ≫ (toUnit Z ≫ o.eta a)` using `fun a => by`.
-
-Rewrite using `[hh, hlev, ← Category.assoc]`. Use `congr 1`. Conclude with `toUnit_unique _ _`. Take `⟨h', hh'⟩` from `(Hi T h).1 ((HU T h).1 ⟨hP1, hP2⟩)`. Use `⟨h', fun a => by beta_reduce; rw [← Category.assoc, hh', hh], fun g hg => ?_⟩` and prove the remaining obligations.
-
-Establish `: g ≫ i = h' ≫ i` using `R.ext fun a => by`. Rewrite using `[Category.assoc, Category.assoc, hg, ← Category.assoc, hh', hh]`. Conclude with `(cancel_mono i).1 this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_liftHom {b : Base D R} {N : ℕ} {s : S ⟶ Sp R} (o : Obj b N s) (N' : ℕ) (hc : N'.Coprime p)
     (hd : N ∣ N') :
@@ -133,29 +129,25 @@ theorem exists_liftHom {b : Base D R} {N : ℕ} {s : S ⟶ Sp R} (o : Obj b N s)
   exact (cancel_mono i).1 this
 
 /- English proof (translation)
-Introduce `p _ D R _ b N N' hc hd S _ s o`. Take `⟨Z, et, hZf, hZe, eadd, eker, elin, elev, huniv⟩` from `exists_liftHom o N' hc hd`. Use `haveI := hZf`. Use `haveI := hZe`. Use `haveI : IsLocallyNoetherian Z.left := LocallyOfFiniteType.isLocallyNoetherian Z.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsp : ∀ {k k' : Type} [Field k] [IsAlgClosed k] [Field k'] [IsAlgClosed k'] (x : Sp k ⟶ Z.left) (x' : Sp k' ⟶ Z.left) (u : Sp k) (u' : Sp k'), x'.base u' ⤳ x.base u → (TateAt o N' (x ≫ Z.hom) (fun a => (Over.homMk x rfl : Over.mk (x ≫ Z.hom) ⟶ Z) ≫ et a) ↔ TateAt o N' (x' ≫ Z.hom …` using `fun x x' u u' h => GlobalTheory.T.tateSimilitude_iff_of_specializes_geometric_points p D R b N N' hc S s o Z et eadd eker elin x x' u u' h`. Set `U : Set Z.left` to `{z | ∃ (k : Type) (_ : Field k) (_ : IsAlgClosed k) (x : Sp k ⟶ Z.left), z ∈ Set.range x.base ∧ TateAt o N' (x ≫ Z.hom) (fun a => (Over.homMk x rfl : Over.mk (x ≫ Z.hom) ⟶ Z) ≫ et a)}`. Establish `key : ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ Z.left), TateAt o N' (x ≫ Z.hom) (fun a => (Over.homMk x rfl : Over.mk (x ≫ Z.hom) ⟶ Z) ≫ et a) ↔ Set.range x.base ⊆ U`. Introduce `k _ _ x`. Use `⟨fun hG z hz => ⟨k, inferInstance, inferInstance, x, hz, hG⟩, fun hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `pt : Sp k` to `(⊥ : PrimeSpectrum k)`. Take `⟨k', _, _, x', ⟨u', hu'⟩, hG'⟩` from `hx ⟨pt, rfl⟩`. Conclude with `(hsp x x' pt u' (hu' ▸ specializes_rfl)).2 hG'`. Establish `hclo : IsClopen U`. Use `GlobalTheory.SpecGenClopen.isClopen_of_specializes_iff Z.left U fun z w hzw => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, _, _, x, ⟨u, hu⟩, hG⟩`. Take `⟨k', _, _, x', hx'⟩` from `FinEt.exists_algClosed_point Z.left w`. Take `⟨u', hu'⟩ : w ∈ Set.range x'.base` from `by rw [show Set.range x'.base = {w} from hx']; rfl`. Use `⟨k', inferInstance, inferInstance, x', ⟨u', hu'⟩, (hsp x' x u' u ?_).2 hG⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hu, hu']`. Conclude with `hzw`. Introduce and unpack `⟨k, _, _, x, ⟨u, hu⟩, hG⟩`. Take `⟨k', _, _, x', hx'⟩` from `FinEt.exists_algClosed_point Z.left z`. Take `⟨u', hu'⟩ : z ∈ Set.range x'.base` from `by rw [show Set.range x'.base = {z} from hx']; rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k', inferInstance, inferInstance, x', ⟨u', hu'⟩, (hsp x x' u u' ?_).1 hG⟩` and prove the remaining obligations. Rewrite using `[hu, hu']`. Conclude with `hzw`. Set `U' : Z.left.Opens` to `⟨U, hclo.isOpen⟩`. Take `⟨V, i, hV1, hV2, hmono, Hi⟩` from `exists_sub U' hclo.isClosed`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨V, fun a => i ≫ et a, hV1, hV2, fun T lv => ⟨fun hL => ?_, fun hex => ?_⟩⟩` and prove the remaining obligations. Take `⟨hadd, hker, hlin, hlev, hgeo⟩` from `hL`. Take `⟨h, hh, hu⟩` from `huniv T lv hadd hker hlin hlev`. Establish `hr : Set.range h.left ⊆ U'`. Introduce and unpack `_ ⟨t, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, _, _, x, hx⟩` from `FinEt.exists_algClosed_point T.left t`. Take `⟨u, hu⟩ : t ∈ Set.range x.base` from `by rw [show Set.range x.base = {t} from hx]; rfl`. Apply the tactic sequence `have hG := tateAt_congr o N' (x' := (x ≫ h.left) ≫ Z.hom) (by rw [Category.assoc, Over.w h]) _ (fun a => (Over.homMk (x ≫ h.left) rfl : Over.mk ((x ≫ h.left) ≫ Z.hom) ⟶ Z) ≫ et a) (fun a => by rw [← hh a, ← Category.assoc, ← Category.assoc]; congr 1; try (ext; simp)) (hgeo k x)`. Use `(key k (x ≫ h.left)).1 hG ⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply, hu]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h', hh'⟩` from `(Hi T h).1 hr`. Use `⟨h', fun a => by beta_reduce; rw [← Category.assoc, hh', hh], fun g hg => ?_⟩` and prove the remaining obligations. Establish `: g ≫ i = h` using `hu _ fun a => by rw [Category.assoc]; exact hg a`. Conclude with `(cancel_mono i).1 (this.trans hh'.symm)`. Take `⟨f, hf⟩` from `hex`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf' : ∀ a, lv a = (f ≫ i) ≫ et a` using `fun a => by rw [Category.assoc]; exact (hf a).symm`. Use `⟨fun a c => by rw [hf', hf', hf', eadd, MonObj.comp_mul], fun a => by rw [hf', eker, MonObj.comp_one], fun c a => by rw [hf', hf', elin]; simp only [Category.assoc], fun a => ?_, fun k _ _ x => ?_⟩` and prove the remaining obligations. Rewrite using `[hf', elev, ← Category.assoc]`. Use `congr 1`. Conclude with `toUnit_unique _ _`.
-
-Establish `hr : Set.range (f ≫ i).left ⊆ U'` using `(Hi T (f ≫ i)).2 ⟨f, rfl⟩`. Establish `hG` using `(key k (x ≫ (f ≫ i).left)).2 fun z ⟨u, hu⟩ => hr ⟨x.base u, by rw [← hu, Scheme.Hom.comp_apply]⟩`. Use `tateAt_congr o N' (by rw [Category.assoc, Over.w (f ≫ i)]) _ _ ?_ hG` and prove the remaining obligations. Introduce `a`. Rewrite using `[hf' a]`.
-
-Simplify using `only [← Category.assoc]`. Use `congr 1`. Apply the tactic sequence `try (ext; simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_liftScheme : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N N' : ℕ), N'.Coprime p → N ∣ N' → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (s : S ⟶ Sp R) (o : Obj b N s), ∃ (Y : Over S) (ηu : D.La → (Y ⟶ o.A)), IsFinite Y.hom ∧ Etale Y.hom ∧ ∀ (T : Over S) (lv : D.La → (T ⟶ o.A)), (IsLift o N' T lv → ∃! f : T ⟶ Y, ∀ a, f ≫ ηu a = lv a) ∧ ((∃ f : T ⟶ Y, ∀ a, f ≫ ηu a = lv a) → IsLift o N' T lv) := by
   intro p _ D R _ b N N' hc hd S _ s o

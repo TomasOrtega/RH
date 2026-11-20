@@ -16,9 +16,9 @@ def IsIntegralVec (c : ι → K) : Prop := ∀ j, v (c j) ≤ 1
 variable {v}
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Use `v.map_sum_le fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_prod]`. Establish `hs : v ((Equiv.Perm.sign σ : ℤ) : K) = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> rw [h] <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hs, one_mul]`. Conclude with `Finset.prod_le_one (fun _ _ => zero_le) fun i _ => hU _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsIntegralMat.det_le_one {U : Matrix ι ι K} (hU : IsIntegralMat v U) : v U.det ≤ 1 := by
   rw [Matrix.det_apply']
@@ -30,13 +30,13 @@ theorem IsIntegralMat.det_le_one {U : Matrix ι ι K} (hU : IsIntegralMat v U) :
   exact Finset.prod_le_one (fun _ _ => zero_le) fun i _ => hU _ _
 
 /- English proof (translation)
-Simplify using `using mul_le_mul ha hb (zero_le) zero_le_one`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem nnreal_mul_le_one {a b : NNReal} (ha : a ≤ 1) (hb : b ≤ 1) : a * b ≤ 1 := by
   simpa using mul_le_mul ha hb (zero_le) zero_le_one
 
 /- English proof (translation)
-Introduce `i`. Use `show v (∑ j, U i j * c j) ≤ 1`. Conclude with `v.map_sum_le fun j _ => by rw [map_mul]; exact _root_.ReciprocityTheory.PGsh.nnreal_mul_le_one (hU i j) (hc j)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem IsIntegralMat.mulVec {U : Matrix ι ι K} {c : ι → K} (hU : IsIntegralMat v U)
     (hc : IsIntegralVec v c) : IsIntegralVec v (U *ᵥ c) := by
@@ -45,7 +45,7 @@ theorem IsIntegralMat.mulVec {U : Matrix ι ι K} {c : ι → K} (hU : IsIntegra
   exact v.map_sum_le fun j _ => by rw [map_mul]; exact _root_.ReciprocityTheory.PGsh.nnreal_mul_le_one (hU i j) (hc j)
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `v.map_sum_le fun k _ => by rw [map_mul]; exact _root_.ReciprocityTheory.PGsh.nnreal_mul_le_one (hU i k) (hV k j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsIntegralMat.mul {U V : Matrix ι ι K} (hU : IsIntegralMat v U)
     (hV : IsIntegralMat v V) : IsIntegralMat v (U * V) := by
@@ -54,7 +54,7 @@ theorem IsIntegralMat.mul {U V : Matrix ι ι K} (hU : IsIntegralMat v U)
   exact v.map_sum_le fun k _ => by rw [map_mul]; exact _root_.ReciprocityTheory.PGsh.nnreal_mul_le_one (hU i k) (hV k j)
 
 /- English proof (translation)
-Introduce `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isIntegralVec_single (j : ι) : IsIntegralVec v (Pi.single j (1 : K)) := by
   intro k
@@ -83,17 +83,17 @@ def mulRight (L : Lat v ι) (U : Matrix ι ι K) (hU : U.det ≠ 0) : Lat v ι :
   ⟨L.B * U, by rw [Matrix.det_mul]; exact mul_ne_zero L.det_ne hU⟩
 
 /- English proof (translation)
-The claim follows from `isUnit_iff_ne_zero.mpr L.det_ne`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det (L : Lat v ι) : IsUnit L.B.det :=
   isUnit_iff_ne_zero.mpr L.det_ne
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Take `⟨c, hc, hx⟩` from `h ⟨Pi.single j 1, ReciprocityTheory.PGsh.isIntegralVec_single j, rfl⟩`. Establish `hM : (L.B⁻¹ * L'.B) *ᵥ Pi.single j 1 = c`. Rewrite using `[← Matrix.mulVec_mulVec, hx, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_det L), Matrix.one_mulVec]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `congrFun hM i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply] at e`. Rewrite using `[e]`. Conclude with `hc i`. Introduce `hM x ⟨c, hc, hx⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(L.B⁻¹ * L'.B) *ᵥ c, hM.mulVec hc, ?_⟩` and prove the remaining obligations. Rewrite using `[hx, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_det L), Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pts_subset_iff (L' L : Lat v ι) :
     L'.pts ⊆ L.pts ↔ IsIntegralMat v (L.B⁻¹ * L'.B) := by
@@ -113,7 +113,7 @@ theorem pts_subset_iff (L' L : Lat v ι) :
       Matrix.one_mul]
 
 /- English proof (translation)
-Use `le_antisymm hU.det_le_one ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, ← Matrix.det_mul, hUV, Matrix.det_one, map_one]`. Use `_ ≤ v U.det * 1 := mul_le_mul_of_nonneg_left hV.det_le_one (zero_le)`. Use `_ = v U.det := mul_one _`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_det_eq_one_of_integral {U V : Matrix ι ι K} (hU : IsIntegralMat v U)
     (hV : IsIntegralMat v V) (hUV : U * V = 1) : v U.det = 1 := by
@@ -124,13 +124,13 @@ theorem v_det_eq_one_of_integral {U V : Matrix ι ι K} (hU : IsIntegralMat v U)
     _ = v U.det := mul_one _
 
 /- English proof (translation)
-The claim follows from `(Valuation.ne_zero_iff v).mpr L.det_ne`.
+A detailed English derivation is pending.
 -/
 private theorem valuation_lat_det_ne_zero (L : ReciprocityTheory.PGsh.Lat v ι) : v L.B.det ≠ 0 :=
   (Valuation.ne_zero_iff v).mpr L.det_ne
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', map_mul, map_inv₀, div_eq_inv_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem valuation_det_inv_mul_eq_div (L' L : ReciprocityTheory.PGsh.Lat v ι) :
     v (L.B⁻¹ * L'.B).det = v L'.B.det / v L.B.det := by
@@ -138,9 +138,9 @@ private theorem valuation_det_inv_mul_eq_div (L' L : ReciprocityTheory.PGsh.Lat 
     div_eq_inv_mul]
 
 /- English proof (translation)
-Establish `h₁` using `(pts_subset_iff L₁ L₂).mp h.subset`. Establish `h₂` using `(pts_subset_iff L₂ L₁).mp h.symm.subset`. Establish `hMN : (L₂.B⁻¹ * L₁.B) * (L₁.B⁻¹ * L₂.B) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc L₁.B, Matrix.mul_nonsing_inv _ (isUnit_det L₁), Matrix.one_mul, Matrix.nonsing_inv_mul _ (isUnit_det L₂)]`. Use `v_det_eq_one_of_integral h₁ h₂ hMN` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[valuation_det_inv_mul_eq_div]`. Conclude with `(div_eq_one_iff_eq (valuation_lat_det_ne_zero L₂)).mp this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_det_eq_of_pts_eq {L₁ L₂ : Lat v ι} (h : L₁.pts = L₂.pts) :
     v L₁.B.det = v L₂.B.det := by
@@ -168,14 +168,14 @@ variable {K : Type} [Field K] {v : Valuation K NNReal} {ι : Type} [Fintype ι] 
 noncomputable def colen (L' L : Lat v ι) : NNReal := v L'.B.det / v L.B.det
 
 /- English proof (translation)
-Rewrite using `[_root_.ReciprocityTheory.PGsh.Lat.valuation_det_inv_mul_eq_div]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem colen_eq_v_det (L' L : Lat v ι) : colen L' L = v (L.B⁻¹ * L'.B).det := by
   rw [_root_.ReciprocityTheory.PGsh.Lat.valuation_det_inv_mul_eq_div]
   rfl
 
 /- English proof (translation)
-Unfold `colen`. Rewrite using `[ReciprocityTheory.PGsh.Lat.v_det_eq_of_pts_eq h', ReciprocityTheory.PGsh.Lat.v_det_eq_of_pts_eq h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem colen_congr {L₁' L₂' L₁ L₂ : Lat v ι} (h' : L₁'.pts = L₂'.pts) (h : L₁.pts = L₂.pts) :
     colen L₁' L₁ = colen L₂' L₂ := by
@@ -183,14 +183,14 @@ theorem colen_congr {L₁' L₂' L₁ L₂ : Lat v ι} (h' : L₁'.pts = L₂'.p
   rw [ReciprocityTheory.PGsh.Lat.v_det_eq_of_pts_eq h', ReciprocityTheory.PGsh.Lat.v_det_eq_of_pts_eq h]
 
 /- English proof (translation)
-Rewrite using `[colen_eq_v_det]`. Conclude with `((ReciprocityTheory.PGsh.Lat.pts_subset_iff L' L).mp h).det_le_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colen_le_one {L' L : Lat v ι} (h : L'.pts ⊆ L.pts) : colen L' L ≤ 1 := by
   rw [colen_eq_v_det]
   exact ((ReciprocityTheory.PGsh.Lat.pts_subset_iff L' L).mp h).det_le_one
 
 /- English proof (translation)
-Unfold `colen`. Rewrite using `[div_mul_div_comm, mul_comm (v L''.B.det), mul_div_mul_left _ _ (_root_.ReciprocityTheory.PGsh.Lat.valuation_lat_det_ne_zero L')]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem colen_trans (L'' L' L : Lat v ι) : colen L'' L = colen L'' L' * colen L' L := by
   unfold colen
@@ -198,22 +198,22 @@ theorem colen_trans (L'' L' L : Lat v ι) : colen L'' L = colen L'' L' * colen L
     mul_div_mul_left _ _ (_root_.ReciprocityTheory.PGsh.Lat.valuation_lat_det_ne_zero L')]
 
 /- English proof (translation)
-The claim follows from `div_self (_root_.ReciprocityTheory.PGsh.Lat.valuation_lat_det_ne_zero L)`.
+A detailed English derivation is pending.
 -/
 theorem colen_self (L : Lat v ι) : colen L L = 1 :=
   div_self (_root_.ReciprocityTheory.PGsh.Lat.valuation_lat_det_ne_zero L)
 
 /- English proof (translation)
-The claim follows from `pos_iff_ne_zero.mpr (div_ne_zero (_root_.ReciprocityTheory.PGsh.Lat.valuation_lat_det_ne_zero L') (_root_.ReciprocityTheory.PGsh.Lat.valuation_lat_det_ne_zero L))`.
+A detailed English derivation is pending.
 -/
 theorem colen_pos (L' L : Lat v ι) : 0 < colen L' L :=
   pos_iff_ne_zero.mpr
     (div_ne_zero (_root_.ReciprocityTheory.PGsh.Lat.valuation_lat_det_ne_zero L') (_root_.ReciprocityTheory.PGsh.Lat.valuation_lat_det_ne_zero L))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h1`. Establish `hM` using `(ReciprocityTheory.PGsh.Lat.pts_subset_iff L' L).mp h`. Rewrite `h1` using `[colen_eq_v_det]`. Establish `hInv` using `hZ K v ι _ hM h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hInv` using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ (ReciprocityTheory.PGsh.Lat.isUnit_det L)]`. Conclude with `Set.Subset.antisymm h ((ReciprocityTheory.PGsh.Lat.pts_subset_iff L L').mpr hInv)`. Introduce `he`. Rewrite using `[colen_congr he rfl, colen_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colen_eq_one_iff (hZ : ColengthZeroStatement) {L' L : Lat v ι} (h : L'.pts ⊆ L.pts) :
     colen L' L = 1 ↔ L'.pts = L.pts := by
@@ -228,7 +228,7 @@ theorem colen_eq_one_iff (hZ : ColengthZeroStatement) {L' L : Lat v ι} (h : L'.
     rw [colen_congr he rfl, colen_self]
 
 /- English proof (translation)
-Use `show v ((L.Bᵀ)⁻¹).det = _`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv', Matrix.det_transpose, map_inv₀]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valuation_det_dual_eq_inv {K : Type} [Field K] {v : Valuation K NNReal} {ι : Type} [Fintype ι] [DecidableEq ι] (L : Lat v ι) :
     v L.dual.B.det = (v L.B.det)⁻¹ := by
@@ -236,16 +236,14 @@ private theorem valuation_det_dual_eq_inv {K : Type} [Field K] {v : Valuation K 
   rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv', Matrix.det_transpose, map_inv₀]
 
 /- English proof (translation)
-Unfold `colen`. Rewrite using `[valuation_det_dual_eq_inv, valuation_det_dual_eq_inv, inv_div_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem colen_dual (L' L : Lat v ι) : colen L.dual L'.dual = colen L' L := by
   unfold colen
   rw [valuation_det_dual_eq_inv, valuation_det_dual_eq_inv, inv_div_inv]
 
 /- English proof (translation)
-Establish `hM` using `(ReciprocityTheory.PGsh.Lat.pts_subset_iff L' L).mp h`. Rewrite using `[ReciprocityTheory.PGsh.Lat.pts_subset_iff]`. Use `show IsIntegralMat v (((L'.Bᵀ)⁻¹)⁻¹ * (L.Bᵀ)⁻¹)`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ (by rw [Matrix.det_transpose]; exact ReciprocityTheory.PGsh.Lat.isUnit_det L'), ← Matrix.transpose_nonsing_inv, ← Matrix.transpose_mul]`. Introduce `i j`.
-
-Conclude with `hM j i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dual_subset {L' L : Lat v ι} (h : L'.pts ⊆ L.pts) : L.dual.pts ⊆ L'.dual.pts := by
   have hM := (ReciprocityTheory.PGsh.Lat.pts_subset_iff L' L).mp h

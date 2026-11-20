@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[MulChar.coe_toUnitHom, comp, MulChar.ofUnitHom_coe, MonoidHom.comp_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comp_unit {O : Type} [CommRing O] {N : ℕ} (r : ℕ) (χ : DirichletCharacter O N) (u : (ZMod N)ˣ) :
     (comp r χ).toUnitHom u = χ.toUnitHom (proj r N u) := by
@@ -13,7 +13,7 @@ private theorem comp_unit {O : Type} [CommRing O] {N : ℕ} (r : ℕ) (χ : Diri
   rw [MulChar.coe_toUnitHom, comp, MulChar.ofUnitHom_coe, MonoidHom.comp_apply]
 
 /- English proof (translation)
-Rewrite using `[← MulChar.coe_toUnitHom, comp_unit, MulChar.coe_toUnitHom]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem comp_coe {O : Type} [CommRing O] {N : ℕ} (r : ℕ) (χ : DirichletCharacter O N) (u : (ZMod N)ˣ) :
     comp r χ (u : ZMod N) = χ (proj r N u : (ZMod N)ˣ) := by
@@ -32,9 +32,9 @@ private noncomputable def evalHom (O : Type) [CommRing O] (N : ℕ) (u : (ZMod N
   map_mul' χ χ' := by rw [MulChar.coeToFun_mul, Pi.mul_apply]
 
 /- English proof (translation)
-Use `MulChar.ext fun u => ?_` and prove the remaining obligations. Establish `h1 : (∏ p ∈ N.primeFactors, comp p χ) (u : ZMod N) = evalHom O N u (∏ p ∈ N.primeFactors, comp p χ)` using `rfl`. Rewrite using `[h1, map_prod]`. Establish `h2 : ∀ p ∈ N.primeFactors, evalHom O N u (comp p χ) = ((χ.toUnitHom (proj p N u) : Oˣ) : O)`. Introduce `p _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `comp p χ (u : ZMod N) = _`. Rewrite using `[comp_coe, MulChar.coe_toUnitHom]`. Rewrite using `[Finset.prod_congr rfl h2, ← Units.coe_prod, ← map_prod, projProd N u, MulChar.coe_toUnitHom]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_comp {O : Type} [CommRing O] {N : ℕ} [NeZero N] (χ : DirichletCharacter O N) :
     ∏ p ∈ N.primeFactors, comp p χ = χ := by
@@ -48,13 +48,13 @@ private theorem prod_comp {O : Type} [CommRing O] {N : ℕ} [NeZero N] (χ : Dir
   rw [Finset.prod_congr rfl h2, ← Units.coe_prod, ← map_prod, projProd N u, MulChar.coe_toUnitHom]
 
 /- English proof (translation)
-Introduce `O _ _ N _ r hr`. Establish `facts` using `projFacts N r hr`. Use `⟨fun χ u => comp_unit r χ u, fun χ χ' => map_mul (compHom O N r) χ χ', ?_, fun χ => map_inv (compHom O N r) χ, fun χ k => map_pow (compHom O N r) χ k, fun χ => ⟨?_, orderOf_map_dvd (compHom O N r) χ, ?_, ?_⟩, fun χ => prod_comp χ, ?_⟩` and prove the remaining obligations. Use `MulChar.ext fun u => ?_` and prove the remaining obligations. Rewrite using `[comp_coe, MulChar.one_apply_coe, MulChar.one_apply_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `MulChar.ext fun u => ?_` and prove the remaining obligations. Rewrite using `[comp_coe, comp_coe, comp_coe, facts.2.2.1]`. Introduce `h`. Use `MulChar.ext fun u => ?_` and prove the remaining obligations. Rewrite using `[comp_coe, facts.2.2.2.2.1 h u, Units.val_one, MulChar.map_one, MulChar.one_apply_coe]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `r' hr' hne`. Use `MulChar.ext fun u => ?_` and prove the remaining obligations. Rewrite using `[comp_coe, comp_coe, (projFacts N r' hr').2.2.2.1 r hr hne.symm u, Units.val_one, MulChar.map_one, MulChar.one_apply_coe]`. Introduce `χ m h`. Rewrite using `[← prod_comp χ, ← Finset.prod_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_one h`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.compAlg :
     ∀ (O : Type) [CommRing O] [IsDomain O] (N : ℕ) [NeZero N] (r : ℕ), r.Prime →

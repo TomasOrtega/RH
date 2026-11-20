@@ -11,7 +11,7 @@ private lemma hCoef_num (x : ℝ) (hx : 11 ≤ x) : 0 ≤ 7 * x ^ 3 - 78 * x ^ 2
   nlinarith [mul_nonneg (mul_nonneg hy hy) hy, mul_nonneg hy hy]
 
 /- English proof (authored)
-Subtract the three terms on the left from 32/x² and use the common denominator x²(x−1)³. The numerator is 7x³−78x²+95x−32, which is nonnegative by hCoef_num. The denominator is positive for x ≥ 11, so the difference is nonnegative.
+Subtract the three terms on the left from 32/x² and use the common denominator x²(x−1)³. The numerator is 7x³−78x²+95x−32, which is nonnegative by the preceding numerator estimate. The denominator is positive for x ≥ 11, so the difference is nonnegative.
 -/
 theorem h_coefficient_bound : HCoef := by
   intro x hx

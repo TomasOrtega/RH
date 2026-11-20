@@ -20,9 +20,9 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.IndLine
 
 /- English proof (translation)
-Use `⟨fun u _ => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `: mat (1 : UA σ X.J) - 1 = 0` using `by simp [mat]`. Rewrite using `[this, smul_zero]`. Establish `: (mat (1 : UA σ X.J)).map (piInf (τ w)) = 1` using `by simp [mat]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Commute.one_left _`.
+A detailed English derivation is pending.
 -/
 theorem one_mem_KInf_real {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {m : ℕ} (X : Spc F E m) (τ : ∀ w : InfinitePlace F, EmbOver E w) : (1 : UA σ X.J) ∈ KInf σ X τ := by
@@ -33,13 +33,13 @@ theorem one_mem_KInf_real {F E : Type} [Field F] [NumberField F] [Field E] [Numb
     rw [this]; exact Commute.one_left _
 
 /- English proof (translation)
-Take `⟨k, hk, t, hL, c, hc, hx⟩` from `hx`. Establish `hx0 : x ∈ (G.M.Pol B.ψ B.emb).map R.p` using `by rw [hM.real.quot.onto]; exact Submodule.mem_top`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 hx0`. Take `⟨A, hA⟩` from `GlobalTheory.T.exists_archOperator_compact_unitaryW F E σ B _ _ G.V G.W G.M om X.β (X.β / X.α) hM.triple.base hM.triple.geo.hM hM.triple.weil k hk`. Establish `h1` using `hx f hf (A f) (hA f) rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy0 : φ (R.p f) ∈ (G₁.M.Pol B.ψ B.emb).map R₁.p` using `by rw [hM₁.real.quot.onto]; exact Submodule.mem_top`. Take `⟨g, hg, hgx⟩` from `Submodule.mem_map.1 hy0`. Establish `hacts : Acts (evI F) (om₁ (1, 1)) g g`. Introduce `r _`. Rewrite using `[show ((1 : UA σ G₁.V.J), (1 : UA σ G₁.W.J)) = 1 from rfl, map_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2` using `hφ.cpt k hk t 1 hL (one_mem_KInf_real G₁.W B.emb) f hf (A f) (hA f) g hg g hacts hgx.symm`. Rewrite `h2` using `[h1, map_smul, hgx]`. Establish `h3 : (c - (X.α t : ℂ) * (((absE F E t : ℝ) ^ ((a' : ℝ) / 2) : ℝ) : ℂ)) • φ (R.p f) = 0`. Rewrite using `[sub_smul, h2, sub_self]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(smul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 hc)`.
+A detailed English derivation is pending.
 -/
 theorem frobInf_offEig {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {b a' : ℕ} {G : Geo σ (b + 2) a'} {G₁ : Geo σ b a'} {H' : Plane E (b + 2 + a') (b + a')}
@@ -67,11 +67,11 @@ theorem frobInf_offEig {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   exact (smul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 hc)
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ φ φ' hφ hφ'`. Establish `hdec` using `GlobalTheory.T.config_a_theta_unramified hK F E σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Establish `hS` using `GlobalTheory.T.config_a_theta_vanishing hK F E σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ (GlobalTheory.T.config_a_theta_local_factor hK F E σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁) (GlobalTheory.T.config_a_theta_global_factor hK F E σ B b a' G …`. Establish `hoff : ∀ ψ : R.Pi →ₗ[ℂ] R₁.Pi, IsFrobInf B G.M G₁.M om om₁ R.p R₁.p H' X.α ((a' : ℝ) / 2) ψ → ∀ z ∈ offPart B G.M om R.p G₁.W H' X.α ((a' : ℝ) / 2) (lowPartInf B G.M R.p), ψ z = 0` using `fun ψ hψ z hz => LinearMap.mem_ker.1 ((Submodule.span_le.2 fun y hy => LinearMap.mem_ker.2 (frobInf_offEig hM hM₁ hψ hy.2)) hz)`. Break down `hS with h0 | ⟨c, hc⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `left`. Introduce `x hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 (hdec hx)`. Rewrite using `[map_add, h0 y hy, hoff φ hφ z hz, add_zero]`. Use `right`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨c, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 (hdec hx)`. Rewrite using `[map_add, map_add, hc y hy, hoff φ hφ z hz, hoff φ' hφ' z hz, smul_add, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowPart_frobInf_line : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)

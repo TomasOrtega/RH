@@ -7,7 +7,7 @@ noncomputable section
 namespace Formalism.RepresentationBoundsCohomology
 
 /- English proof (translation)
-Rewrite using `[Multiset.filter_add, Multiset.filter_eq_nil.2 hs, zero_add]`. Conclude with `Multiset.card_le_card (Multiset.filter_le _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_filter_add_le_of_none {α : Type*} (p : α → Prop) [DecidablePred p]
     (s t : Multiset α) (hs : ∀ u ∈ s, ¬ p u) :
@@ -16,7 +16,7 @@ theorem card_filter_add_le_of_none {α : Type*} (p : α → Prop) [DecidablePred
   exact Multiset.card_le_card (Multiset.filter_le _ _)
 
 /- English proof (translation)
-Introduce `ι _ cloud lows m j h0 hc hl hj hh`. Establish `hτ : ∀ τ, negCount (cloud τ + lows τ) ≤ m` using `fun τ => by`. Unfold `negCount`. Conclude with `(card_filter_add_le_of_none _ _ _ fun u hu => not_lt.2 (hc τ u hu).le).trans (hl τ)`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem jumpsColumn : Formalism.RepresentationBoundsCohomology.StatJumpsColumn := by
   intro ι _ cloud lows m j h0 hc hl hj hh
@@ -28,11 +28,11 @@ theorem jumpsColumn : Formalism.RepresentationBoundsCohomology.StatJumpsColumn :
     _ = Fintype.card ι * m := by simp
 
 /- English proof (translation)
-Introduce `ι _ cloud lows m j h0 hc hl hj hh`. Establish `hτ : ∀ τ, negCount ((cloud τ + lows τ).map (fun u => -u - 1)) ≤ m` using `fun τ => by`. Unfold `negCount`. Rewrite using `[Multiset.map_add]`. Use `(card_filter_add_le_of_none _ _ _ ?_).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Take `⟨u, hu, rfl⟩` from `Multiset.mem_map.1 hv`. Use `hc τ u hu` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Multiset.card_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hl τ`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem jumpsRow : Formalism.RepresentationBoundsCohomology.StatJumpsRow := by
   intro ι _ cloud lows m j h0 hc hl hj hh

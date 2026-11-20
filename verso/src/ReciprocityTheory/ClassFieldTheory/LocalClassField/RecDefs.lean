@@ -26,7 +26,7 @@ def normSub : AddSubgroup (KbarMult p) := (multOf p L).map (normHom p K L)
 def normGrp : Subgroup Kˣ := AddSubgroup.toSubgroup' ((normSub p K L).comap (ofK p K))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_normGrp_iff (x : Kˣ) :
     x ∈ normGrp p K L ↔ ∃ y ∈ multOf p L, normHom p K L y = ofK p K (Additive.ofMul x) := Iff.rfl

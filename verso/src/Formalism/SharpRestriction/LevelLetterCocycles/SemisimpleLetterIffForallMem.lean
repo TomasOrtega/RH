@@ -9,7 +9,7 @@ namespace Formalism.MainNotions.UnusedSlot35.DssRec
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hp`. Set `s : ℕ → M` to `fun k => Nat.rec y₀ (fun k sk => ((u⁻¹ : Eˣ) : E) • F k sk) k`. Use `⟨s, rfl, fun k => ?_⟩` and prove the remaining obligations. Use `show p • (((u⁻¹ : Eˣ) : E) • F k (s k)) = F k (s k)`. Rewrite using `[← algebraMap_smul E p, ← hu, smul_smul, Units.mul_inv, one_smul]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rec_exists {R E M : Type} [CommRing R] [CommRing E] [Algebra R E] [AddCommGroup M]
     [Module R M] [Module E M] [IsScalarTower R E M] (p : R) (hp : IsUnit (algebraMap R E p))
@@ -21,9 +21,9 @@ theorem rec_exists {R E M : Type} [CommRing R] [CommRing E] [Algebra R E] [AddCo
   rw [← algebraMap_smul E p, ← hu, smul_smul, Units.mul_inv, one_smul]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hp`. Establish `h' : (u : E) • a = (u : E) • b`. Rewrite using `[hu, algebraMap_smul, algebraMap_smul]`. Conclude with `h`. Use `congrArg (fun m => ((u⁻¹ : Eˣ) : E) • m) h'` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[smul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem smul_inj {R E M : Type} [CommRing R] [CommRing E] [Algebra R E] [AddCommGroup M]
     [Module R M] [Module E M] [IsScalarTower R E M] (p : R) (hp : IsUnit (algebraMap R E p))
@@ -36,9 +36,9 @@ theorem smul_inj {R E M : Type} [CommRing R] [CommRing E] [Algebra R E] [AddComm
   simpa [smul_smul] using this
 
 /- English proof (translation)
-Introduce `k hk`. Proceed by induction on `k with`. Consider the case `zero => exact h0`. Consider the case `succ k ih`. Establish `ih'` using `ih (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1` using `hs k (by omega)`. Establish `h2` using `hs' k (by omega)`. Rewrite `h2` using `[← ih']`. Use `smul_inj (E := E) p hp (h1.trans h2.symm)` as an intermediate fact. Conclude with `add_right_cancel this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rec_unique {R E O M : Type} [CommRing R] [CommRing E] [CommRing O] [Algebra R E]
     [AddCommGroup M] [Module R M] [Module E M] [Module O M] [IsScalarTower R E M] (p : R)
@@ -69,7 +69,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-Establish `hK : Module.finrank K₀ K = 1`. Rewrite using `[← (LinearEquiv.ofBijective (Algebra.linearMap K₀ K) hA.1).finrank_eq, Module.finrank_self]`. Take `⟨w, hw⟩` from `((h9 T hT hA.2.1 hA.2.2).2.2 hK).1.2.2.1`. Rewrite using `[hw, map_mul, map_pow]`. Conclude with `(w.isUnit.map _).mul (W.EE_π.pow _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem π₀_unit (W : LocWach PD LL O v n) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (hA : Formalism.MainNotions.LiftingTheory.CaseA W)
     (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) : IsUnit (algebraMap (LetA O n) W.EE W.π₀) := by
@@ -93,11 +93,11 @@ def DssMem (W : LocWach PD LL O v n) : Prop :=
         seq (Formalism.MainNotions.LiftingTheory.xList W T (Formalism.MainNotions.LiftingTheory.Mmax n Mi) (Formalism.MainNotions.LiftingTheory.Mmax n hi) Y).length ∈ W.N T
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hc hA T Mi hi hT hJ ug hug hv cO hcO Y y₀ hY hδ seq h0 hrec`. Take `⟨s, hs0, hsrec, hsN⟩` from `hc hA T Mi hi hT hJ ug hug hv cO hcO Y y₀ hY hδ`. Establish `hu` using `π₀_unit W h9 hA T hT`. Establish `heq` using `rec_unique (E := W.EE) W.π₀ hu (fun k => cO ((Formalism.MainNotions.LiftingTheory.xList W T (Formalism.MainNotions.LiftingTheory.Mmax n Mi) (Formalism.MainNotions.LiftingTheory.Mmax n hi) Y).getD k 0)) (fun m => W.γD T W.gam m - m) _ s seq (hs0.trans h0.symm) hsrec hrec _ le_rfl`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← heq]`. Conclude with `hsN`. Introduce `hm hA T Mi hi hT hJ ug hug hv cO hcO Y y₀ hY hδ`. Establish `hu` using `π₀_unit W h9 hA T hT`. Take `⟨s, hs0, hs⟩` from `rec_exists (E := W.EE) W.π₀ hu (fun k m => (W.γD T W.gam m - m) - W.π₀ • (cO ((Formalism.MainNotions.LiftingTheory.xList W T (Formalism.MainNotions.LiftingTheory.Mmax n Mi) (Formalism.MainNotions.LiftingTheory.Mmax n hi) Y).getD k 0) • m)) y₀`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrec : ∀ k : ℕ, k < (Formalism.MainNotions.LiftingTheory.xList W T (Formalism.MainNotions.LiftingTheory.Mmax n Mi) (Formalism.MainNotions.LiftingTheory.Mmax n hi) Y).length → W.π₀ • (s (k + 1) + cO ((Formalism.MainNotions.LiftingTheory.xList W T (Formalism.MainNotions.LiftingTheo …`. Introduce `k _`. Rewrite using `[smul_add, hs]`. Normalize the expressions using the abelian group laws. Conclude with `⟨s, hs0, hrec, hm hA T Mi hi hT hJ ug hug hv cO hcO Y y₀ hY hδ s hs0 hrec⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coreDss_iff_mem (W : LocWach PD LL O v n) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) :
     Formalism.MainNotions.LiftingTheory.coreDss W ↔ DssMem W := by
@@ -138,11 +138,11 @@ def DssLetMem (W : LocWach PD LL O v n) : Prop :=
         Formalism.MainNotions.LiftingTheory.qp W ^ y' • seq (Formalism.MainNotions.RamifiedCoefficientChains.xListL W T i (Mi i) (hi i) y' Y).length ∈ W.Nl T i
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hc hA T Mi hi hT hJ ug hug hv cO hcO i y' Y y₀ hyY hY hδ seq h0 hrec`. Take `⟨s, hs0, hsrec, hsN⟩` from `hc hA T Mi hi hT hJ ug hug hv cO hcO i y' Y y₀ hyY hY hδ`. Establish `hu` using `π₀_unit W h9 hA T hT`. Establish `heq` using `rec_unique (E := W.EE) W.π₀ hu (fun k => cO ((Formalism.MainNotions.RamifiedCoefficientChains.xListL W T i (Mi i) (hi i) y' Y).getD k 0)) (fun m => W.γD T W.gam m - m) _ s seq (hs0.trans h0.symm) hsrec hrec _ le_rfl`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← heq]`. Conclude with `hsN`. Introduce `hm hA T Mi hi hT hJ ug hug hv cO hcO i y' Y y₀ hyY hY hδ`. Establish `hu` using `π₀_unit W h9 hA T hT`. Take `⟨s, hs0, hs⟩` from `rec_exists (E := W.EE) W.π₀ hu (fun k m => (W.γD T W.gam m - m) - W.π₀ • (cO ((Formalism.MainNotions.RamifiedCoefficientChains.xListL W T i (Mi i) (hi i) y' Y).getD k 0) • m)) y₀`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrec : ∀ k : ℕ, k < (Formalism.MainNotions.RamifiedCoefficientChains.xListL W T i (Mi i) (hi i) y' Y).length → W.π₀ • (s (k + 1) + cO ((Formalism.MainNotions.RamifiedCoefficientChains.xListL W T i (Mi i) (hi i) y' Y).getD k 0) • s k) = W.γD T W.gam (s k) - s k`. Introduce `k _`. Rewrite using `[smul_add, hs]`. Normalize the expressions using the abelian group laws. Conclude with `⟨s, hs0, hrec, hm hA T Mi hi hT hJ ug hug hv cO hcO i y' Y y₀ hyY hY hδ s hs0 hrec⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dssLet_iff_mem (W : LocWach PD LL O v n) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) :
     Formalism.MainNotions.RamifiedCoefficientChains.DssLet W ↔ DssLetMem W := by
@@ -171,9 +171,9 @@ theorem dssLet_iff_mem (W : LocWach PD LL O v n) (h9 : Formalism.MainNotions.Del
 end Core
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h hAdm l _ K s LL hG`. Establish `h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K s LL hG)` using `hAdm.2.2.2.1 l K s LL hG`. Conclude with `(coreDss_iff_mem _ h9).1 (h hAdm l K s LL hG)`. Introduce `h hAdm l _ K s LL hG`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K s LL hG)` using `hAdm.2.2.2.1 l K s LL hG`. Conclude with `(coreDss_iff_mem _ h9).2 (h hAdm l K s LL hG)`.
+A detailed English derivation is pending.
 -/
 theorem semisimpleProductTheorem_iff_dssMem (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) :
@@ -189,9 +189,9 @@ theorem semisimpleProductTheorem_iff_dssMem (D : D7) (HW : HWOf D.loc) (F : FonO
     exact (coreDss_iff_mem _ h9).2 (h hAdm l K s LL hG)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h hAdm l _ K s LL hG`. Establish `h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K s LL hG)` using `hAdm.2.2.2.1 l K s LL hG`. Conclude with `(dssLet_iff_mem _ h9).1 (h hAdm l K s LL hG)`. Introduce `h hAdm l _ K s LL hG`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K s LL hG)` using `hAdm.2.2.2.1 l K s LL hG`. Conclude with `(dssLet_iff_mem _ h9).2 (h hAdm l K s LL hG)`.
+A detailed English derivation is pending.
 -/
 theorem semisimple_letter_iff_forall_mem (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) :

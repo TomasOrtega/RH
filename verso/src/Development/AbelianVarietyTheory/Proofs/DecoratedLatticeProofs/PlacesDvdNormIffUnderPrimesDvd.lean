@@ -8,19 +8,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.NormPlaces
 
 /- English proof (translation)
-Establish `hmap : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (T : 𝓞 D.host.F) = (T : 𝓞 D.host.E)` using `map_natCast _ _`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hinj : Function.Injective (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))` using `FaithfulSMul.algebraMap_injective (𝓞 D.host.F) (𝓞 D.host.E)`. Establish `hker : RingHom.ker (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) ≤ x.asIdeal`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 hinj]`. Conclude with `bot_le`. Use `haveI := x.isPrime`. Take `⟨Q, -, hQp, hQ⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral x.asIdeal (⊥ : Ideal (𝓞 D.host.E)) (by rw [← RingHom.ker_eq_comap_bot]; exact hker)`. Establish `hQb : Q ≠ ⊥`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `rfl`. Apply `x.ne_bot` to reduce the goal to its premises. Rewrite using `[← hQ, Ideal.comap_bot_of_injective _ hinj]`. Set `w : HeightOneSpectrum (𝓞 D.host.E)` to `⟨Q, hQp, hQb⟩`. Establish `hw : w.under (𝓞 D.host.F) = x` using `HeightOneSpectrum.ext hQ`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hTw : π * π' ∈ w.asIdeal`. Rewrite using `[hT, ← hmap]`. Use `show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (T : 𝓞 D.host.F) ∈ Q`. Rewrite using `[← Ideal.mem_comap, hQ]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Break down `w.isPrime.mem_or_mem hTw with h | h` into its components or cases. Conclude with `⟨w, (Formalism.L2.Col.mem_divs hπ w).2 h, hw⟩`. Use `⟨GlobalTheory.IdemSupport.cP w, (Formalism.L2.Col.mem_divs hπ _).2 ?_, (GlobalTheory.IdemSupport.under_cP w).trans hw⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.IdemSupport.mem_cP]`. Establish `: GlobalTheory.IdemSupport.cO D π = π'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.IdemSupport.cO_coe, hc]`. Rewrite using `[this]`. Conclude with `h`. Introduce and unpack `⟨w, hw, rfl⟩`.
-
-Establish `h1 : π ∈ w.asIdeal` using `(Formalism.L2.Col.mem_divs hπ w).1 hw`. Establish `h2 : (T : 𝓞 D.host.E) ∈ w.asIdeal` using `hT ▸ w.asIdeal.mul_mem_right π' h1`. Use `show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (T : 𝓞 D.host.F) ∈ w.asIdeal`. Rewrite using `[hmap]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem places_dvd_iff (D : Formalism.BasicNotions.D7) (π π' : 𝓞 D.host.E) (T : ℕ)
     (hc : (π' : D.host.E) = star (π : D.host.E)) (hT : π * π' = (T : 𝓞 D.host.E)) (hπ : π ≠ 0)

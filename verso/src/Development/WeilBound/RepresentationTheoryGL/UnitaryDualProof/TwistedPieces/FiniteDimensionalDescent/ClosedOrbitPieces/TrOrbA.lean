@@ -9,15 +9,13 @@ namespace PositivityTheory.RgUd.TP.Desc.Piece.TrOrb
 universe u
 
 /- English proof (translation)
-Use `letI : Field (A ⧸ I) := Ideal.Quotient.field I`. Use `letI := hM.module`. Use `letI := hM'.module`. Establish `tw : ∀ (P : Type u) [AddCommGroup P] [Module k P] [Module A P] [IsScalarTower k A P] (hP : Module.IsTorsionBySet A P I), @IsScalarTower k (A ⧸ I) P _ hP.module.toSMul _`. Introduce `P _ _ _ _ hP`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI := hP.module`. Use `⟨fun c x m => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Algebra.smul_def, ← Ideal.Quotient.mk_algebraMap, ← map_mul, hP.mk_smul, hP.mk_smul, mul_smul, algebraMap_smul]`. Use `haveI := tw M hM`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := tw M' hM'`. Use `haveI : Module.Finite (A ⧸ I) M := Module.Finite.of_restrictScalars_finite k (A ⧸ I) M`. Use `haveI : Module.Finite (A ⧸ I) M' := Module.Finite.of_restrictScalars_finite k (A ⧸ I) M'`. Establish `h1` using `Module.finrank_mul_finrank k (A ⧸ I) M`. Establish `h2` using `Module.finrank_mul_finrank k (A ⧸ I) M'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpos : 0 < finrank k (A ⧸ I)` using `Module.finrank_pos`. Establish `hK : finrank (A ⧸ I) M = finrank (A ⧸ I) M'` using `Nat.eq_of_mul_eq_mul_left hpos (by rw [h1, h2, h])`. Set `T` to `LinearEquiv.ofFinrankEq M M' hK`. Use `⟨{ toFun := T map_add' := T.map_add map_smul' := fun a m => ?_ invFun := T.symm left_inv := T.left_inv right_inv := T.right_inv }⟩` and prove the remaining obligations. Use `show T (a • m) = a • T m`.
-
-Rewrite using `[← hM.mk_smul, T.map_smul, hM'.mk_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_equiv_of_torsion {k A : Type*} [Field k] [CommRing A] [Algebra k A] [FiniteDimensional k A]
     (I : Ideal A) [I.IsMaximal] (M M' : Type u) [AddCommGroup M] [Module k M] [Module A M] [IsScalarTower k A M]
@@ -63,18 +61,18 @@ open Classical
 variable {A : Type*} [CommRing A] [IsArtinianRing A] [IsReduced A]
 
 /- English proof (translation)
-Rewrite using `[pidem, AlgEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem equivPi_pidem (I J : MaximalSpectrum A) :
     IsArtinianRing.equivPi A (pidem A I) J = Pi.single (M := fun I : MaximalSpectrum A => A ⧸ I.asIdeal) I 1 J := by
   rw [pidem, AlgEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Apply `(IsArtinianRing.equivPi A).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `L`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[map_mul, Pi.mul_apply, equivPi_pidem]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hL : L = I`. Substitute `hL` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hL]`. Rewrite using `[map_mul, Pi.mul_apply, equivPi_pidem, equivPi_pidem, map_zero, Pi.zero_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hL : L = I`. Substitute `hL` using the available equality. Simplify using `[Pi.single_apply, Ne.symm h]`. Simplify using `[Pi.single_apply, hL]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pidem_mul (I J : MaximalSpectrum A) : pidem A I * pidem A J = if I = J then pidem A I else 0 := by
   apply (IsArtinianRing.equivPi A).injective
@@ -91,7 +89,7 @@ theorem pidem_mul (I J : MaximalSpectrum A) : pidem A I * pidem A J = if I = J t
     · simp [Pi.single_apply, hL]
 
 /- English proof (translation)
-Establish `h` using `pidem_mul I I`. Rewrite `h` using `[if_pos rfl]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pidem_idem (I : MaximalSpectrum A) : IsIdempotentElem (pidem A I) := by
   have h := pidem_mul I I
@@ -99,7 +97,7 @@ theorem pidem_idem (I : MaximalSpectrum A) : IsIdempotentElem (pidem A I) := by
   exact h
 
 /- English proof (translation)
-Apply `(IsArtinianRing.equivPi A).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `L`. Rewrite using `[map_sum, Finset.sum_apply, map_one, Pi.one_apply]`. Repeatedly rewrite using `[equivPi_pidem]`. Simplify using `[Pi.single_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_pidem [Fintype (MaximalSpectrum A)] : ∑ I, pidem A I = 1 := by
   apply (IsArtinianRing.equivPi A).injective
@@ -109,9 +107,9 @@ theorem sum_pidem [Fintype (MaximalSpectrum A)] : ∑ I, pidem A I = 1 := by
   simp [Pi.single_apply]
 
 /- English proof (translation)
-Apply `(IsArtinianRing.equivPi A).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `L`. Rewrite using `[map_mul, Pi.mul_apply, equivPi_pidem, map_zero, Pi.zero_apply]`. Distinguish the cases in `hL : L = I`. Substitute `hL` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[IsArtinianRing.equivPi_apply, (Ideal.Quotient.eq_zero_iff_mem).2 hx, zero_mul]`. Simplify using `[Pi.single_apply, hL]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_pidem_of_mem (I : MaximalSpectrum A) {x : A} (hx : x ∈ I.asIdeal) : x * pidem A I = 0 := by
   apply (IsArtinianRing.equivPi A).injective
@@ -132,9 +130,7 @@ open Classical
 variable {A : Type*} [CommRing A] [IsArtinianRing A] [IsReduced A] [Fintype (MaximalSpectrum A)]
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `hy`. Rewrite using `[LinearMap.lsmul_apply, smul_smul, pidem_mul]`. Use `split_ifs with h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
-
-Conclude with `zero_smul A m`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pidem_smul_piece (P : Type*) [AddCommGroup P] [Module A P] (I J : MaximalSpectrum A) {y : P}
     (hy : y ∈ piece P (pidem A I)) : pidem A J • y = if J = I then y else 0 := by
@@ -165,9 +161,9 @@ def decomp (P : Type*) [AddCommGroup P] [Module A P] : P ≃ₗ[A] ∀ I : Maxim
 end dec
 
 /- English proof (translation)
-Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite k A`. Use `haveI : Fintype (MaximalSpectrum A) := Fintype.ofFinite _`. Establish `tor : ∀ (P : Type u) [AddCommGroup P] [Module A P] (I : MaximalSpectrum A), Module.IsTorsionBySet A (piece P (pidem A I)) I.asIdeal`. Introduce `P _ _ I y a`. Take `⟨y, m, rfl⟩` from `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `ext`. Simplify using `[smul_smul, mul_pidem_of_mem I a.2]`. Establish `fd : ∀ (P : Type u) [AddCommGroup P] [Module k P] [Module A P] [IsScalarTower k A P] [FiniteDimensional k P] (e : A), FiniteDimensional k (piece P e)` using `fun P _ _ _ _ _ e => Module.Finite.of_injective ((piece P e).subtype.restrictScalars k) Subtype.val_injective`. Establish `T : ∀ I : MaximalSpectrum A, Nonempty (piece M (pidem A I) ≃ₗ[A] piece M' (pidem A I))` using `fun I => haveI := fd M (pidem A I) haveI := fd M' (pidem A I) exists_equiv_of_torsion I.asIdeal _ _ (tor M I) (tor M' I) (h _ (pidem_idem I))`. Conclude with `⟨(decomp M).trans ((LinearEquiv.piCongrRight fun I => (T I).some).trans (decomp M').symm)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_equiv_of_finrank {k A : Type*} [Field k] [CommRing A] [Algebra k A] [FiniteDimensional k A]
     [IsReduced A] (M M' : Type u) [AddCommGroup M] [Module k M] [Module A M] [IsScalarTower k A M]
@@ -217,7 +213,7 @@ instance : IsScalarTower k A (Rep ρ) := ⟨fun c a v => by
   exact Matrix.smul_mulVec _ _ _⟩
 
 /- English proof (translation)
-Establish `hs : ((piece (Rep ρ) e).restrictScalars k : Submodule k (Fin N → k)) = LinearMap.range (ρ e).mulVecLin`. Use extensionality with `v`. Simplify using `only [Submodule.restrictScalars_mem, piece, LinearMap.mem_range, LinearMap.lsmul_apply, Matrix.mulVecLin_apply]`. Both sides reduce to the same expression. Rewrite using `[Matrix.rank, ← hs]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -234,13 +230,13 @@ theorem finrank_piece_rep (e : A) : finrank k (piece (Rep ρ) e) = (ρ e).rank :
 end rep
 
 /- English proof (translation)
-Take `⟨F⟩` from `exists_equiv_of_finrank (k := k) (A := A) (Rep ρ) (Rep ρ') fun e he => by`. Rewrite using `[finrank_piece_rep, finrank_piece_rep, h e he]`. Set `f : (Fin N → k) ≃ₗ[k] (Fin N → k)` to `F.restrictScalars k`. Establish `hf : ∀ a v, f (ρ a *ᵥ v) = ρ' a *ᵥ f v` using `fun a v => F.map_smul a v`. Set `g : GL (Fin N) k` to `⟨LinearMap.toMatrix' f.toLinearMap, LinearMap.toMatrix' f.symm.toLinearMap, by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]; congr 1; ext v; simp, by`. Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`. Use `congr 1`. Use extensionality with `v`. Use the proof step `simp⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, fun a => ?_⟩` and prove the remaining obligations. Establish `hc : ρ' a * g.val = g.val * ρ a`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_mul]`. Use `show Matrix.toLin' (ρ' a) ∘ₗ Matrix.toLin' (LinearMap.toMatrix' f.toLinearMap) = Matrix.toLin' (LinearMap.toMatrix' f.toLinearMap) ∘ₗ Matrix.toLin' (ρ a)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.toLin'_toMatrix']`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, Matrix.toLin'_apply, Matrix.toLin'_apply]`. Conclude with `(hf a v).symm`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem orbHom_gen (k : Type*) [Field k] (N : ℕ) (A : Type*) [CommRing A] [Algebra k A] [FiniteDimensional k A]
     (hA : IsReduced A) (ρ ρ' : A →ₐ[k] Matrix (Fin N) (Fin N) k)

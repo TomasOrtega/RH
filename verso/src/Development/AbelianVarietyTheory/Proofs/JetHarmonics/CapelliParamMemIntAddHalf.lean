@@ -7,11 +7,11 @@ open Formalism.FourierDecayAlt Formalism.QuantumDeterminants
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k r Wp _ _ _ z π u hz hT hπ i hi`. Take `⟨u₀, h₀⟩` from `GlobalTheory.besType_hcParam k r Wp z π u hz hT hπ`. Establish `ha` using `(GlobalTheory.BesselMapCompare.isHCParam_of_isHCTypeW h₀).2`. Rewrite `hi` using `[Finset.mem_Icc]`. Establish `h1` using `GlobalTheory.SupNonzero.prod_eq hπ h₀ (-(u i : ℂ))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∏ s : Fin k, (-(u i : ℂ) + (u (s.val + 1) : ℂ)) = 0`. Use `Finset.prod_eq_zero (Finset.mem_univ ⟨i - 1, by omega⟩) ?_` and prove the remaining obligations. Establish `: i - 1 + 1 = i` using `by omega`. Simplify using `[this]`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, -, ht⟩` from `Finset.prod_eq_zero_iff.1 h1`. Establish `e : u i = u₀ t` using `by exact_mod_cast neg_add_eq_zero.1 ht`. Take `⟨m, hm⟩` from `ha t`. Conclude with `⟨m, by rw [e]; linarith⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem capelliParam_mem_int_add_half : ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Q.Mx k r → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ), inWb k r z → 0 < Tz k r z → Q.IsType k r z π u → ∀ i ∈ Finset.Icc 1 k, ∃ m : ℤ, u i = (m : ℝ) + ((k : ℝ) - 1) / 2 := by
   intro k r Wp _ _ _ z π u hz hT hπ i hi

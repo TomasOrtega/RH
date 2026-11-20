@@ -5,17 +5,15 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hfun : (fun v : HeightOneSpectrum (𝓞 F) => NumberField.HeightOneSpectrum.adicAbv F v N) = (fun w : FinitePlace F => w N) ∘ (FinitePlace.equivHeightOneSpectrum (K` using `F)).symm := by`. Use function extensionality and compare the values at `v`. Simplify using `only [Function.comp, FinitePlace.equivHeightOneSpectrum_symm_apply, FinitePlace.norm_embedding]`. Establish `hfin : (Function.mulSupport fun v : HeightOneSpectrum (𝓞 F) => NumberField.HeightOneSpectrum.adicAbv F v N).Finite`. Rewrite using `[hfun, Function.mulSupport_comp_eq_preimage]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.Finite.preimage (FinitePlace.equivHeightOneSpectrum (K := F)).symm.injective.injOn (FinitePlace.hasFiniteMulSupport hN)`. Establish `hpos : ∀ v : HeightOneSpectrum (𝓞 F), 0 < NumberField.HeightOneSpectrum.adicAbv F v N` using `fun v => (NumberField.HeightOneSpectrum.adicAbv F v).pos hN`. Establish `hprod : ∏ᶠ v : HeightOneSpectrum (𝓞 F), NumberField.HeightOneSpectrum.adicAbv F v N = ((|Algebra.norm ℚ N|⁻¹ : ℚ) : ℝ)`. Rewrite using `[← FinitePlace.prod_eq_inv_abs_norm hN, ← finprod_comp_equiv (FinitePlace.equivHeightOneSpectrum (K := F)).symm]`. Conclude with `congrArg finprod hfun`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub : (Function.support fun v : HeightOneSpectrum (𝓞 F) => Real.log (NumberField.HeightOneSpectrum.adicAbv F v N)) ⊆ hfin.toFinset`. Introduce `v hv`. Simplify using `only [Set.Finite.coe_toFinset, Function.mem_mulSupport]`. Introduce `h`. Conclude with `hv (by simp only [h, Real.log_one])`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hfin.toFinset.finite_toSet.subset hsub, ?_⟩` and prove the remaining obligations. Establish `h1 : ∑ᶠ v : HeightOneSpectrum (𝓞 F), Real.log (NumberField.HeightOneSpectrum.adicAbv F v N) = - Real.log ((|Algebra.norm ℚ N| : ℚ) : ℝ)`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsub, ← Real.log_prod (fun v _ => (hpos v).ne'), ← finprod_eq_prod_of_mulSupport_subset _ (by simp), hprod, Rat.cast_inv, Real.log_inv]`. Establish `h2 : ∑ σ : F →+* ℂ, Real.log ‖σ N‖ = Real.log ((|Algebra.norm ℚ N| : ℚ) : ℝ)`. Establish `h` using `congr_arg (‖·‖) (Algebra.norm_eq_prod_embeddings ℚ ℂ N)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [norm_prod] at h`. Rewrite using `[← Real.log_prod (fun σ _ => by simpa using hN)]`. Use `congr 1`. Rewrite using `[Fintype.prod_equiv (RingHom.equivRatAlgHom F ℂ) (fun σ : F →+* ℂ => ‖σ N‖) (fun σ : F →ₐ[ℚ] ℂ => ‖σ N‖) (fun _ => by simp [RingHom.equivRatAlgHom_apply]), ← h]`. Simplify using `[← Complex.norm_ratCast]`.
-
-Rewrite using `[h1, h2, add_neg_cancel]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_log_embedding_add_finsum_log_adicAbv_eq_zero
     (F : Type) [Field F] [NumberField F] (N : F) (hN : N ≠ 0) :

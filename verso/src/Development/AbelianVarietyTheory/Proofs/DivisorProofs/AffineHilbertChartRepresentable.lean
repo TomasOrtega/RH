@@ -18,29 +18,27 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hch : ∀ U : Z.affineOpens, ∃ φ : C →+* Γ(Z, U), ∃ hφ : ∀ a : A, φ (algebraMap A C a) = secAlg A g U a,`. Use `letI := (secAlg A g U).toAlgebra`. Use the proof step `RingHom.ker (kappa A B g I U) = J.map (Algebra.TensorProduct.map ({ toRingHom := φ, commutes' := hφ } : C →ₐ[A] Γ(Z, U)) (AlgHom.id A B)) ∧`. Use the proof step `∀ ψ : C →ₐ[A] Γ(Z, U), RingHom.ker (kappa A B g I U) = J.map (Algebra.TensorProduct.map ψ (AlgHom.id A B)) → ψ.toRingHom = φ := by`. Introduce `U`.
+Establish an intermediate fact. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI := (secAlg A g U).toAlgebra`. Take `⟨-, hli', hsp'⟩` from `(GlobalTheory.T.tensor_basis_criterion A B Γ(Z, U) _ _ (fun k => e (σ k))).mp (hy U)`. Take `⟨φ, hφ, hφu⟩` from `huniv Γ(Z, U) _ hli' hsp'`. Conclude with `⟨φ.toRingHom, φ.commutes, hφ, fun ψ hψ => congrArg AlgHom.toRingHom (hφu ψ hψ)⟩`. Use `choose φ hφA hφ hφu using hch`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Establish `compat : ∀ (U V : Z.affineOpens) (hUV : (U : Z.Opens) ≤ V), (Z.presheaf.map (homOfLE hUV).op).hom.comp (φ V) = φ U`. Introduce `U V hUV`. Use `letI iU := (secAlg A g U).toAlgebra`. Use `letI iV := (secAlg A g V).toAlgebra`. Take `⟨ρ, hρ, hle⟩` from `GlobalTheory.T.ker_affineHilbertTensorToSubschemeSections_restrict A B g I U V hUV`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `φV : C →ₐ[A] Γ(Z, V)` to `{ toRingHom := φ V, commutes' := hφA V }`. Establish `hmap : J.map (Algebra.TensorProduct.map (ρ.comp φV) (AlgHom.id A B)) = (RingHom.ker (kappa A B g I V)).map (Algebra.TensorProduct.map ρ (AlgHom.id A B))`. Rewrite using `[hφ V, show Algebra.TensorProduct.map (ρ.comp φV) (AlgHom.id A B) = (Algebra.TensorProduct.map ρ (AlgHom.id A B)).comp (Algebra.TensorProduct.map φV (AlgHom.id A B)) by`. Rewrite using `[← Algebra.TensorProduct.map_comp, AlgHom.comp_id]]`. Conclude with `(Ideal.map_map (Algebra.TensorProduct.map φV (AlgHom.id A B)).toRingHom (Algebra.TensorProduct.map ρ (AlgHom.id A B)).toRingHom).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsp2` using `(GlobalTheory.T.basis_quotient_tensor_base_change A B C Γ(Z, U) (fun k => e (σ k)) J (ρ.comp φV) hli hsp).2`. Establish `hliU` using `((GlobalTheory.T.tensor_basis_criterion A B Γ(Z, U) _ _ (fun k => e (σ k))).mp (hy U)).2.1`. Establish `heq` using `GlobalTheory.T.ideals_eq_of_span_independent A B Γ(Z, U) (fun k => e (σ k)) _ _ (hmap ▸ hle) hsp2 hliU`. Rewrite using `[← hφu U (ρ.comp φV) heq.symm, ← hρ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Φ, hΦ, hΦu⟩` from `GlobalTheory.T.ring_map_from_affine_opens Z C φ compat`. Take `⟨h, hh⟩` from `GlobalTheory.T.exists_hom_affineHilbertBaseSectionRingHom Z C Φ`. Establish `hhU : ∀ U : Z.affineOpens, secAlg C h U = φ U` using `fun U => by`. Rewrite using `[← secAlg_res C h (le_top : (U : Z.Opens) ≤ ⊤), hh, hΦ U]`. Establish `hgA : h ≫ Spec.map (CommRingCat.ofHom (algebraMap A C)) = g`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `eq_of_secAlg_top` to reduce the goal to its premises. Rewrite using `[secAlg_comp, hh]`. Take `⟨Ψ, -, hΨu⟩` from `GlobalTheory.T.ring_map_from_affine_opens Z A (fun U => secAlg A g U) (fun U V hUV => secAlg_res A g hUV)`. Establish `h1` using `hΨu (Φ.comp (algebraMap A C)) (fun U => by`. Rewrite using `[← RingHom.comp_assoc, hΦ U]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `a`. Conclude with `hφA U a)`. Establish `h2` using `hΨu (secAlg A g ⊤) (fun U => secAlg_res A g le_top)`. Rewrite using `[h1, h2]`. Use `⟨h, ?_, ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Substitute `hgA` using the available equality. Use `Sigma.ext rfl (heq_of_eq (Subtype.ext ?_))` and prove the remaining obligations. Apply `GlobalTheory.T.idealSheaf_eq_of_ker_tensorToSubschemeSections` to reduce the goal to its premises. Introduce `U`. Take `⟨φ', hφ', hker⟩` from `GlobalTheory.T.ker_affineHilbertTensor_pullback_eq_map A B C J Z h U`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `letI := (secAlg A (h ≫ Spec.map (CommRingCat.ofHom (algebraMap A C))) U).toAlgebra`. Use `(hker.trans ?_).trans (hφ U).symm` and prove the remaining obligations. Use `congr 2`. Conclude with `AlgHom.ext fun c => congrArg (fun F => F c) (hφ'.trans (hhU U))`. Introduce `h' hh'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU : ∀ U : Z.affineOpens, secAlg C h' U = φ U`. Introduce `U`. Take `⟨φ', hφ', hker⟩` from `GlobalTheory.T.ker_affineHilbertTensor_pullback_eq_map A B C J Z h' U`. Consider the cases of `hh'`. Rewrite using `[← hφ']`.
-
-Conclude with `hφu U φ' hker`. Establish `hΦ' : secAlg C h' ⊤ = Φ` using `hΦu _ (fun U => by rw [secAlg_res, hU U])`. Conclude with `eq_of_secAlg_top C (hΦ'.trans hh.symm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_unique_lift (A B : Type) [CommRing A] [CommRing B] [Algebra A B] {N r : ℕ}
     (e : Module.Basis (Fin N) A B) (σ : Fin r ↪ Fin N) (C : Type) [CommRing C] [Algebra A C]
@@ -125,17 +123,15 @@ theorem exists_unique_lift (A B : Type) [CommRing A] [CommRing B] [Algebra A B] 
     exact eq_of_secAlg_top C (hΦ'.trans hh.symm)
 
 /- English proof (translation)
-Take `⟨C, _, _, J, hfp, hli, hsp, huniv⟩` from `GlobalTheory.hilbChart_representable A B N r e σ`. Establish `hgood : Good A B r (Spec.map (CommRingCat.ofHom (algebraMap A C))) (xI A B C J)` using `GlobalTheory.T.isFiniteFlatRankClosedSubscheme_of_quotient_basis A B C J (fun k => e (σ k)) hli hsp`. Set `x : (functor A B r).obj (op (Spec (CommRingCat.of C)))` to `⟨Spec.map (CommRingCat.ofHom (algebraMap A C)), ⟨xI A B C J, hgood⟩⟩`. Establish `hBx : ∀ (Z : Scheme.{0}) (h : Z ⟶ Spec (CommRingCat.of C)), Basic A B e σ ((functor A B r).map h.op x)`. Introduce `Z h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[functor_map, basic_iff_kappa]`. Introduce `U`. Take `⟨φ, -, hker⟩` from `GlobalTheory.T.ker_affineHilbertTensor_pullback_eq_map A B C J Z h U`. Use `letI := (secAlg A (h ≫ Spec.map (CommRingCat.ofHom (algebraMap A C))) U).toAlgebra`. Take `⟨hli', hsp'⟩` from `GlobalTheory.T.basis_quotient_tensor_base_change A B C Γ(Z, U) (fun k => e (σ k)) J φ hli hsp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `(GlobalTheory.T.tensor_basis_criterion A B Γ(Z, U) _ _ (fun k => e (σ k))).mpr ⟨GlobalTheory.T.affineHilbertTensorToSubschemeSections_surjective A B _ _ U, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hker]`. Conclude with `hli'`. Rewrite using `[hker]`. Conclude with `hsp'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hBasic : Basic A B e σ x`. Simplify using `using hBx _ (𝟙 _)`. Use `⟨Spec (CommRingCat.of C), x, inferInstance, ?_, hBasic, ?_⟩` and prove the remaining obligations. Use `show LocallyOfFiniteType (Spec.map (CommRingCat.ofHom (algebraMap A C)))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := hfp`. Conclude with `RingHom.finiteType_algebraMap.mpr inferInstance`. Introduce `Z y hy`. Take `⟨g, I, hI⟩` from `y`. Rewrite `hy` using `[basic_iff_kappa]`.
-
-Conclude with `exists_unique_lift A B e σ C J hli hsp huniv hgood Z g I hI hy`.
+A detailed English derivation is pending.
 -/
 theorem chart_represents (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (N r : ℕ)
     (e : Module.Basis (Fin N) A B) (σ : Fin r ↪ Fin N) :

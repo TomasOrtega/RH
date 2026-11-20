@@ -16,11 +16,11 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.CoverRead.Cover
 
 /- English proof (translation)
-Introduce `D T hT j hj σ hσ C hC n`. Take `⟨u, hu1, hu⟩` from `GlobalTheory.T.exists_unitConstant_coverPullbackReading D T hT j hj σ hσ C hC n`. Apply the tactic sequence `choose k γ hk using fun k₂ => GlobalTheory.T.coverComponent_over_baseComponent_rationalIsometry D T hT j hj σ hσ C hC k₂`. Establish `hu0 : ∀ k₂, u k₂ ≠ 0` using `fun k₂ h => by simpa [h] using hu1 k₂`. Use `⟨fun k₂ => T.cE j σ (k k₂) / u k₂, fun a ha => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k₂ show ‖T.cE j σ (k k₂) / u k₂‖ = 1`. Rewrite using `[norm_div, hu1, hT.cUnit j hj σ hσ, div_one]`. Introduce `f hf f₂ hf₂ hp`. Use function extensionality and compare the values at `g`. Establish `hp' : C.IsPull f f₂` using `hp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (T.dict j σ g).1 = k (C.dict₂ g).1` using `(hk (C.dict₂ g).1).2.2.1 g rfl`. Use `show (lieFac (T.Q.Dw j) (xiR D) a : ℂ) * (T.cE j σ (k (C.dict₂ g).1) / u (C.dict₂ g).1 * T.mu j σ g * rdU C.U₂ f₂ (C.dict₂ g).1 (C.dict₂ g).2) = (lieFac (T.Q.Dw j) (xiR D) a : ℂ) * (T.cE j σ (T.dict j σ g).1 * T.mu j σ g * rdU (T.U j σ) f (T.dict j σ g).1 (T.dict j σ g).2)`. Rewrite using `[hu a ha f hf f₂ hf₂ hp' g, ← h3]`. Clear denominators, using `[hu0 (C.dict₂ g).1]` for the nonvanishing conditions.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_pinned_dom : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ,
     GoodEmb T.Q.c σ → ∀ C : Cover T j σ, C.IsUnif → ∀ n : ℕ, ∃ cc₂ : C.U₂.Comp → ℂ,

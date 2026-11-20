@@ -26,9 +26,9 @@ noncomputable section
 namespace GlobalTheory.KFourier
 
 /- English proof (translation)
-Establish `e : (fun k : KG ε => (((Matrix.trace (toMK k)).re : ℝ) : ℂ)) = ∑ a : Fin n, ((1/2 : ℂ) • coord ε (a, a, true) + (1/2 : ℂ) • coord ε (a, a, false))`. Use function extensionality and compare the values at `k`. Rewrite using `[Complex.re_eq_add_conj]`. Simplify using `only [Finset.sum_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, coord]`. Simplify using `only [if_true, Bool.false_eq_true, if_false, Matrix.trace, Matrix.diag, map_sum, ← Finset.sum_add_distrib, Finset.sum_div, Complex.star_def]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun a _ => add_mem (Submodule.smul_mem _ _ (coord_mem ε _)) (Submodule.smul_mem _ _ (coord_mem ε _))`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem retr_mem {n : ℕ} (ε : Fin n → Bool) :
     (fun k : KG ε => (((Matrix.trace (toMK k)).re : ℝ) : ℂ)) ∈ polyV ε 1 := by
@@ -46,11 +46,11 @@ theorem retr_mem {n : ℕ} (ε : Fin n → Bool) :
     (Submodule.smul_mem _ _ (coord_mem ε _))
 
 /- English proof (translation)
-Establish `h1 : (fun k : KG ε => (((1 - Formalism.REAL.hs (toMK k - 1) / A) : ℝ) : ℂ)) ∈ polyV ε 1`. Establish `e : (fun k : KG ε => (((1 - Formalism.REAL.hs (toMK k - 1) / A) : ℝ) : ℂ)) = (fun _ => ((1 - 2 * n / A : ℝ) : ℂ)) + ((2 / A : ℝ) : ℂ) • (fun k : KG ε => (((Matrix.trace (toMK k)).re : ℝ) : ℂ))`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, GlobalTheory.T.hilbertSchmidt_compactUnitary_sub_one_eq_trace]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (const_mem ε 1 _) (Submodule.smul_mem _ _ (retr_mem ε))`. Proceed by induction on `m with`. Consider the case `zero => simpa using const_mem ε 0 1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ m ih`. Use `mul_mem ih h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `[pow_succ]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phipow_mem {n : ℕ} (ε : Fin n → Bool) (A : ℝ) (m : ℕ) :
     (fun k : KG ε => (((1 - Formalism.REAL.hs (toMK k - 1) / A) ^ m : ℝ) : ℂ)) ∈ polyV ε m := by
@@ -73,65 +73,61 @@ theorem phipow_mem {n : ℕ} (ε : Fin n → Bool) (A : ℝ) (m : ℕ) :
     simp [pow_succ]
 
 /- English proof (translation)
-Introduce `n ε`. Use `set A : ℝ := 4 * n + 4 with hA`. Establish `hApos : 0 < A` using `by positivity`. Take `⟨c, hc, D, hball⟩` from `GlobalTheory.T.compactUnitaryHaar_smallBall_lower_bound ε`. Take `⟨C5, hC5⟩` from `GlobalTheory.T.exists_exp_neg_mul_div_rpow_pow_le_mul_sqrt (1 / (2 * A)) D (by positivity)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC5pos : 0 ≤ C5`. Use `hC5 0` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨1 + 2 * Real.sqrt n * 2 ^ D / c * C5, by positivity, fun m => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set h : KG ε → ℝ := fun k => Formalism.REAL.hs (toMK k - 1) with hh`. Establish `hcont : Continuous h`. Establish `: Continuous (fun g : Matrix (Fin n) (Fin n) ℂ => Formalism.REAL.hs g)`. Unfold `Formalism.REAL.hs`. Use `fun_prop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.comp ((GlobalTheory.TypeSum.continuous_toMK ε).sub continuous_const)`. Establish `h0 : ∀ k, 0 ≤ h k` using `fun k => Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => sq_nonneg _`. Establish `h4 : ∀ k, h k ≤ 4 * n` using `fun k => GlobalTheory.T.hilbertSchmidt_compactUnitary_sub_one_le_four_mul ε k`. Use `set φ : KG ε → ℝ := fun k => 1 - h k / A with hφ`. Establish `φpos : ∀ k, 1 / ((n : ℝ) + 1) ≤ φ k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Introduce `k`. Establish `: h k / A ≤ 4 * n / A` using `div_le_div_of_nonneg_right (h4 k) hApos.le`. Establish `e : 1 - 4 * (n : ℝ) / A = 1 / ((n : ℝ) + 1)`. Rewrite using `[hA]`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hφ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `φle : ∀ k, φ k ≤ 1` using `fun k => by`. Use `div_nonneg (h0 k) hApos.le` as an intermediate fact.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hφ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `φcont : Continuous φ` using `continuous_const.sub (hcont.div_const A)`. Establish `hint : ∀ f : KG ε → ℝ, Continuous f → Integrable f (muK ε)` using `fun f hf => hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)`. Use `set Z := ∫ k, φ k ^ m ∂(muK ε) with hZ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `Zpos : 0 < Z`. Use `integral_mono (μ := muK ε) (integrable_const ((1 / ((n : ℝ) + 1)) ^ m)) (hint _ (φcont.pow m)) (fun k => pow_le_pow_left₀ (by positivity) (φpos k) m)` as an intermediate fact. Rewrite `this` using `[integral_const]`. Simplify using `only [probReal_univ, measure_univ, ENNReal.toReal_one, one_smul, Measure.real] at this`. Conclude with `lt_of_lt_of_le (by positivity) this`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `⟨fun k => φ k ^ m / Z, (φcont.pow m).div_const Z, fun k => div_nonneg (pow_nonneg (le_trans (by positivity) (φpos k)) m) Zpos.le, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_div, ← hZ, div_self Zpos.ne']`. Use `Submodule.smul_mem _ ((Z⁻¹ : ℝ) : ℂ) (phipow_mem ε A m)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, hφ, hh]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `set δ : ℝ := ((m : ℝ) + 1) ^ (-(1 / 2 : ℝ)) with hδ`. Establish `hm1 : (1 : ℝ) ≤ (m : ℝ) + 1` using `by have := (Nat.cast_nonneg m : (0:ℝ) ≤ m); linarith`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `δpos : 0 < δ` using `Real.rpow_pos_of_pos (by linarith) _`. Establish `δle : δ ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hm1 (by norm_num)`. Establish `hA1 : δ / A < 1` using `by rw [div_lt_one hApos]; linarith`. Establish `hpt : ∀ k, φ k ^ m * Real.sqrt (h k) ≤ Real.sqrt δ * φ k ^ m + 2 * Real.sqrt n * (1 - δ / A) ^ m`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `φ0 : 0 ≤ φ k` using `le_trans (by positivity) (φpos k)`. Establish `pm0 : 0 ≤ φ k ^ m` using `pow_nonneg φ0 m`. Break down `le_or_gt (h k) δ with hk | hk` into its components or cases. Use `Real.sqrt_le_sqrt hk` as an intermediate fact. Establish `: 0 ≤ 2 * Real.sqrt n * (1 - δ / A) ^ m`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: 0 ≤ 1 - δ / A` using `by linarith`. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities. Establish `hφk : φ k ≤ 1 - δ / A`. Establish `: δ / A ≤ h k / A` using `div_le_div_of_nonneg_right hk.le hApos.le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hφ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hp : φ k ^ m ≤ (1 - δ / A) ^ m` using `pow_le_pow_left₀ φ0 hφk m`. Establish `hs : Real.sqrt (h k) ≤ 2 * Real.sqrt n`. Establish `: Real.sqrt (h k) ≤ Real.sqrt (4 * n)` using `Real.sqrt_le_sqrt (h4 k)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Real.sqrt_mul (by norm_num), show Real.sqrt 4 = 2 by` and apply the resulting hypothesis. Rewrite `this` using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]]`. Establish `: 0 ≤ Real.sqrt δ * φ k ^ m` using `by positivity`. Establish `hsq0 : 0 ≤ Real.sqrt (h k)` using `Real.sqrt_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hup : ∫ k, φ k ^ m * Real.sqrt (h k) ∂(muK ε) ≤ Real.sqrt δ * Z + 2 * Real.sqrt n * (1 - δ / A) ^ m`. Use `integral_mono (μ := muK ε) (f := fun k => φ k ^ m * Real.sqrt (h k)) (g := fun k => Real.sqrt δ * φ k ^ m + 2 * Real.sqrt n * (1 - δ / A) ^ m) (hint _ ((φcont.pow m).mul (Real.continuous_sqrt.comp hcont))) ((hint (fun k => φ k ^ m) (φcont.pow m)).const_mul (Real.sqrt δ) |>.add (i …` as an intermediate fact. Rewrite `this` using `[integral_add ((hint (fun k => φ k ^ m) (φcont.pow m)).const_mul (Real.sqrt δ)) (integrable_const _), integral_const_mul, integral_const]`. Simplify `this` using `only [probReal_univ, measure_univ, ENNReal.toReal_one, one_smul, Measure.real]`. Use `set B : Set (KG ε) := {k | Formalism.REAL.hs (toMK k - 1) ≤ δ / 2} with hB`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBm : MeasurableSet B` using `(isClosed_le hcont continuous_const).measurableSet`. Establish `hlow : (1 - δ / (2 * A)) ^ m * (muK ε B).toReal ≤ Z`. Establish `hpt2 : ∀ k, B.indicator (fun _ => (1 - δ / (2 * A)) ^ m) k ≤ φ k ^ m`. Introduce `k`. Distinguish the cases in `hk : k ∈ B`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Set.indicator_of_mem hk]`. Establish `hk' : h k ≤ δ / 2` using `hk`. Establish `h1 : 0 ≤ 1 - δ / (2 * A)`. Establish `: δ / (2 * A) ≤ δ / A` using `div_le_div_of_nonneg_left δpos.le hApos (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : 1 - δ / (2 * A) ≤ φ k`. Establish `: h k / A ≤ δ / 2 / A` using `div_le_div_of_nonneg_right hk' hApos.le`. Rewrite `this` using `[div_div]`. Simplify using `only [hφ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `pow_le_pow_left₀ h1 h2 m`. Rewrite using `[Set.indicator_of_notMem hk]`. Conclude with `pow_nonneg (le_trans (by positivity) (φpos k)) m`. Use `integral_mono (μ := muK ε) (g := fun k => φ k ^ m) ((integrable_const _).indicator hBm) (hint (fun k => φ k ^ m) (φcont.pow m)) hpt2` as an intermediate fact. Rewrite `this` using `[integral_indicator_const _ hBm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Simplify `this` using `only [smul_eq_mul, Measure.real, mul_comm]`. Establish `hball'` using `hball (δ / 2) (by positivity) (by linarith)`. Establish `hC : Real.exp (-(1 / (2 * A) * m * δ)) / δ ^ D ≤ C5 * Real.sqrt δ` using `hC5 m`. Establish `hq0 : 0 < 1 - δ / (2 * A)`. Establish `: δ / (2 * A) ≤ δ / A` using `div_le_div_of_nonneg_left δpos.le hApos (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hratio : (1 - δ / A) ^ m ≤ (1 - δ / (2 * A)) ^ m * Real.exp (-(1 / (2 * A) * m * δ))`. Establish `hexp : 1 - δ / (2 * A) ≤ Real.exp (-(δ / (2 * A)))`. Use `Real.add_one_le_exp (-(δ / (2 * A)))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 1 - δ / A ≤ (1 - δ / (2 * A)) * Real.exp (-(δ / (2 * A)))`. Establish `e : 1 - δ / A = (1 - δ / (2 * A)) * (1 - δ / (2 * A)) - (δ / (2 * A)) ^ 2` using `by field_simp; ring`. Establish `: (1 - δ / (2 * A)) * (1 - δ / (2 * A)) ≤ (1 - δ / (2 * A)) * Real.exp (-(δ / (2 * A)))` using `mul_le_mul_of_nonneg_left hexp hq0.le`. Use polynomial arithmetic with `[sq_nonneg (δ / (2 * A))]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mul_pow, ← Real.exp_nat_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hL : (1 - δ / (2 * A)) ^ m * (c * (δ / 2) ^ D) ≤ Z` using `le_trans (mul_le_mul_of_nonneg_left hball' (pow_nonneg hq0.le m)) hlow`. Establish `hLpos : 0 < (1 - δ / (2 * A)) ^ m * (c * (δ / 2) ^ D)` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∫ k, (fun k => φ k ^ m / Z) k * Real.sqrt (Formalism.REAL.hs (toMK k - 1)) ∂(muK ε) = (∫ k, φ k ^ m * Real.sqrt (h k) ∂(muK ε)) / Z`. Rewrite using `[← integral_div]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [hh]`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsq : Real.sqrt δ = ((m : ℝ) + 1) ^ (-(1 / 4 : ℝ))`. Rewrite using `[Real.sqrt_eq_rpow, hδ, ← Real.rpow_mul (by linarith)]; norm_num`. Establish `hK0 : 0 ≤ 2 * Real.sqrt n * 2 ^ D / c` using `by positivity`. Establish `hT : 2 * Real.sqrt n * (1 - δ / A) ^ m / Z ≤ 2 * Real.sqrt n * 2 ^ D / c * (Real.exp (-(1 / (2 * A) * m * δ)) / δ ^ D)`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts.
 
-Establish `hE : 0 ≤ Real.exp (-(1 / (2 * A) * m * δ))` using `(Real.exp_pos _).le`. Combine the equalities or inequalities in the displayed calculation. Apply `div_le_div₀ (by positivity) (mul_le_mul_of_nonneg_left hratio (by positivity)) hLpos hL` to reduce the goal to its premises. Use `_ = 2 * Real.sqrt n * 2 ^ D / c * (Real.exp (-(1 / (2 * A) * m * δ)) / δ ^ D) := by`. Establish `hq : (1 - δ / (2 * A)) ^ m ≠ 0` using `(pow_pos hq0 m).ne'`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : δ ^ D ≠ 0` using `(pow_pos δpos D).ne'`. Establish `h2 : (2 : ℝ) ^ D ≠ 0` using `by positivity`. Rewrite using `[div_pow]`. Generalize the expression as in `(1 - δ / (2 * A)) ^ m = q at hq ⊢`. Generalize the expression as in `Real.exp (-(1 / (2 * A) * m * δ)) = E`.
-
-Generalize the expression as in `δ ^ D = d at hd ⊢`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left hC hK0` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (1 + 2 * Real.sqrt n * 2 ^ D / c * C5) * ((m : ℝ) + 1) ^ (-(1 / 4 : ℝ)) := by`. Rewrite using `[← hsq]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kernel_near_one : ∀ {n : ℕ} (ε : Fin n → Bool), ∃ C : ℝ, 0 ≤ C ∧ ∀ m : ℕ, ∃ κ : KG ε → ℝ,
     Continuous κ ∧ (∀ k, 0 ≤ κ k) ∧ ∫ k, κ k ∂(muK ε) = 1 ∧ (fun k => (κ k : ℂ)) ∈ polyV ε m ∧

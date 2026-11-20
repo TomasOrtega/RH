@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun g => φ (p g), fun N => (hφ N).comp_continuous hp, fun g => by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem bnd_of {A Fr Γ Γ' : Type} [CommRing A] [CommRing Fr] [Algebra A Fr] [TopologicalSpace Γ]
     [TopologicalSpace Γ'] (t : A) (φ : Γ' → A) (hφ : AdicCont (Ideal.span {t}) φ) (p : Γ → Γ') (hp : Continuous p) :
@@ -11,11 +11,11 @@ private theorem bnd_of {A Fr Γ Γ' : Type} [CommRing A] [CommRing Fr] [Algebra 
   ⟨0, fun g => φ (p g), fun N => (hφ N).comp_continuous hp, fun g => by simp⟩
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x k`. Establish `hp : Continuous (h.p₀ : G.G₀ → G0.G₀)`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Conclude with `h.cont.comp continuous_subtype_val`. Establish `hpi : Continuous (fun g : G.G₀ => h.p₀ g⁻¹)` using `hp.comp continuous_inv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ : ∀ i j, AdicCont (Ideal.span {x.t}) (fun g : G0.G₀ => (mat x.ρ) g i j)`. Introduce `i j`. Use `x.cont i j` as an intermediate fact. Rewrite `this` using `[PowerSeries.maximalIdeal_eq_span_X]`. Then use the resulting hypothesis. Use `⟨fun i j => bnd_of x.t _ (hρ i j) _ hp, fun i j => bnd_of x.t _ (hρ i j) _ hpi, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j i i'`. Establish `hk` using `((k.mem j).2.1 i i')`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply] at hk`. Conclude with `bnd_of x.t _ hk _ hp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.bndRho :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n), ∀ (k : Kap x), BndM x.t (fun g : G.G₀ => x.ρX x.Fr (h.p₀ g)) ∧ BndM x.t (fun g : G.G₀ => x.ρX x.Fr (h.p₀ g⁻¹)) ∧ ∀ j, BndM x.t (kapF h k j) := by

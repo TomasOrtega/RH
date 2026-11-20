@@ -18,41 +18,37 @@ open CategoryTheory TopologicalSpace in
 variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
   {F : _root_.GlobalTheory.AnPer.Fam I g Λ} in
 /- English proof (translation)
-Establish `box` using `_root_.GlobalTheory.exists_cechPrimitive_box_segment W c ω V hV hW hcov hc hcoc hω hcl hd`. Establish `box' : ∀ q : P × (Fin g → ℂ), ∃ Z : Set P, ∃ C : Set (Fin g → ℂ), ∃ G : K → P × (Fin g → ℂ) → ℂ, q.1 ∈ V → (IsOpen Z ∧ q.1 ∈ Z ∧ Z ⊆ V ∧ IsOpen C ∧ Convex ℝ C ∧ (0 : Fin g → ℂ) ∈ C ∧ q.2 ∈ C ∧ (∀ k, AnalyticOnNhd ℂ (G k) (W k ∩ Z ×ˢ C)) ∧ (∀ k a, ∀ p ∈ W k, p ∈ Z ×ˢ C → fderiv ℂ …`. Introduce `q`. Distinguish the cases in `hq : q.1 ∈ V`. Take `⟨Z, C, G, h⟩` from `box q.1 hq q.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Z, C, G, fun _ => h⟩`. Conclude with `⟨∅, ∅, fun _ _ => 0, fun h => absurd h hq⟩`. Use `choose Z C G hG using box'`. Use `choose κ hκ using hcov`. Establish `hfib : ∀ q, q.1 ∈ V → ∀ k, ∀ y ∈ W k, y ∈ Z q ×ˢ C q → ∀ v : Fin g → ℂ, fderiv ℂ (G q k) y ((0 : P), v) = ∑ a, v a * ω k a y`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `q hq k y hy hyB v`. Establish `hv : ((0 : P), v) = ∑ a, v a • ((0 : P), (Pi.single a (1 : ℂ) : Fin g → ℂ))`. Use extensionality with `j`. Simplify using `[Prod.fst_sum]`. Simplify using `[Prod.snd_sum, Finset.sum_apply, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hv, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, (hG q hq).2.2.2.2.2.2.2.2.1 k a y hy hyB]`. Use `set H : P × (Fin g → ℂ) → K → P × (Fin g → ℂ) → ℂ := fun q k x => G q k x - G q k₀ (x.1, 0) with hH`. Establish `huniq : ∀ q q' k x, q.1 ∈ V → q'.1 ∈ V → x ∈ W k → x.1 ∈ Z q → x.1 ∈ Z q' → x.2 ∈ C q → x.2 ∈ C q' → H q k x = H q' k x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `q q' k x hq hq' hxk hz hz' hw hw'`. Take `⟨-, -, hZV, hCo, hCc, h0C, -, hGa, -, hGc⟩` from `hG q hq`. Take `⟨-, -, -, hCo', hCc', h0C', -, hGa', -, hGc'⟩` from `hG q' hq'`. Establish `hzV : x.1 ∈ V` using `hZV hz`. Establish `hind : ∀ k k' (y : P × (Fin g → ℂ)), y ∈ W k → y ∈ W k' → y.1 ∈ Z q → y.1 ∈ Z q' → y.2 ∈ C q → y.2 ∈ C q' → G q k y - G q' k y = G q k' y - G q' k' y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k k' y hk hk' h1 h2 h3 h4`. Establish `e1` using `hGc k k' y hk hk' ⟨h1, h3⟩`. Establish `e2` using `hGc' k k' y hk hk' ⟨h2, h4⟩`. Take the linear combination `e1 - e2`. Use `set φ : (Fin g → ℂ) → ℂ := fun w => G q (κ (x.1, w) hzV) (x.1, w) - G q' (κ (x.1, w) hzV) (x.1, w) with hφ`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hS : IsOpen (C q ∩ C q')` using `hCo.inter hCo'`. Establish `hderiv : ∀ w ∈ C q ∩ C q', HasFDerivAt φ (0 : (Fin g → ℂ) →L[ℂ] ℂ) w`. Introduce `w hw`. Use `set k := κ (x.1, w) hzV`. Establish `hk : (x.1, w) ∈ W k` using `hκ (x.1, w) hzV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : IsOpen ({w' | (x.1, w') ∈ W k} ∩ (C q ∩ C q'))` using `((hW k).preimage (continuous_const.prodMk continuous_id)).inter hS`. Establish `heq : (fun w' => G q k (x.1, w') - G q' k (x.1, w')) =ᶠ[nhds w] φ` using `by filter_upwards [hU.mem_nhds ⟨hk, hw⟩] with w' hw'`. Conclude with `hind k _ (x.1, w') hw'.1 (hκ (x.1, w') hzV) hz hz' hw'.2.1 hw'.2.2`. Establish `hA : HasFDerivAt (G q k) (fderiv ℂ (G q k) (x.1, w)) (x.1, w)` using `((hGa k (x.1, w) ⟨hk, hz, hw.1⟩).differentiableAt).hasFDerivAt`. Establish `hA' : HasFDerivAt (G q' k) (fderiv ℂ (G q' k) (x.1, w)) (x.1, w)` using `((hGa' k (x.1, w) ⟨hk, hz', hw.2⟩).differentiableAt).hasFDerivAt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hin : HasFDerivAt (fun w' : Fin g → ℂ => (x.1, w')) ((0 : (Fin g → ℂ) →L[ℂ] P).prod (ContinuousLinearMap.id ℂ (Fin g → ℂ))) w` using `(hasFDerivAt_const x.1 w).prodMk (hasFDerivAt_id w)`. Establish `hsum` using `(hA.comp w hin).sub (hA'.comp w hin)`. Use `(hsum.congr_of_eventuallyEq heq.symm).congr_fderiv ?_` and prove the remaining obligations. Use extensionality with `v`. Simplify using `only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.prod_apply, ContinuousLinearMap.zero_apply, ContinuousLinearMap.id_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfib q hq k _ hk ⟨hz, hw.1⟩, hfib q' hq' k _ hk ⟨hz', hw.2⟩, sub_self]`. Establish `hconst : φ x.2 = φ 0`. Use `Convex.is_const_of_fderivWithin_eq_zero (hCc.inter hCc') (fun w hw => (hderiv w hw).differentiableAt.differentiableWithinAt) (fun w hw => ?_) ⟨hw, hw'⟩ ⟨h0C, h0C'⟩` and prove the remaining obligations. Rewrite using `[fderivWithin_of_isOpen hS hw, (hderiv w hw).fderiv]`. Establish `e1 : φ x.2 = G q k x - G q' k x` using `hind _ k (x.1, x.2) (hκ (x.1, x.2) hzV) hxk hz hz' hw hw'`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e2 : φ 0 = G q k₀ (x.1, 0) - G q' k₀ (x.1, 0)` using `hind _ k₀ (x.1, 0) (hκ (x.1, 0) hzV) (h₀ _ hzV) hz hz' h0C h0C'`. Simplify using `only [hH]`. Take the linear combination `e1.symm.trans (hconst.trans e2)`. Establish `hloc : ∀ k x, x ∈ W k → x.1 ∈ V → (fun y => H y k y) =ᶠ[nhds x] H x k`. Introduce `k x hxk hxV`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨hZo, hxZ, hZV, hCo, -, -, hxC, -⟩` from `hG x hxV`. Use `filter_upwards [((hW k).inter (hZo.prod hCo)).mem_nhds ⟨hxk, hxZ, hxC⟩] with y hy`. Establish `hyV : y.1 ∈ V` using `hZV hy.2.1`. Take `⟨-, hyZ, -, -, -, -, hyC, -⟩` from `hG y hyV`. Conclude with `huniq y x k y hyV hxV hy.1 hyZ hy.2.1 hyC hy.2.2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set L : P × (Fin g → ℂ) →L[ℂ] P × (Fin g → ℂ) := (ContinuousLinearMap.fst ℂ P (Fin g → ℂ)).prod 0 with hL`. Establish `hfun : ∀ x k, H x k = G x k - G x k₀ ∘ L`. Introduce `x k`. Use function extensionality and compare the values at `y`. Simplify using `[hH, hL]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨fun k y => H y k y, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k x hxk hxV`. Take `⟨-, hxZ, -, -, -, h0C, hxC, hGa, -⟩` from `hG x hxV`. Establish `h1 : AnalyticAt ℂ (G x k) x` using `hGa k x ⟨hxk, hxZ, hxC⟩`. Establish `h2 : AnalyticAt ℂ (G x k₀) (L x)` using `hGa k₀ (x.1, 0) ⟨h₀ _ hxV, hxZ, h0C⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `(h1.sub (h2.comp (L.analyticAt x)))`. Rewrite `h3` using `[← hfun]`. Conclude with `h3.congr (hloc k x hxk hxV).symm`. Introduce `k a x hxk hxV`. Take `⟨-, hxZ, -, -, -, h0C, hxC, hGa, hGd, -⟩` from `hG x hxV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `h1 : HasFDerivAt (G x k) (fderiv ℂ (G x k) x) x` using `(hGa k x ⟨hxk, hxZ, hxC⟩).differentiableAt.hasFDerivAt`. Establish `h2 : HasFDerivAt (G x k₀) (fderiv ℂ (G x k₀) (L x)) (L x)` using `(hGa k₀ (x.1, 0) ⟨h₀ _ hxV, hxZ, h0C⟩).differentiableAt.hasFDerivAt`. Establish `h3` using `h1.sub (h2.comp x L.hasFDerivAt)`. Rewrite `h3` using `[← hfun]`. Rewrite using `[(hloc k x hxk hxV).fderiv_eq, h3.fderiv]`.
-
-Establish `hL0 : L ((0 : P), (Pi.single a (1 : ℂ) : Fin g → ℂ)) = 0` using `by simp [hL]`. Rewrite using `[ContinuousLinearMap.sub_apply, ContinuousLinearMap.comp_apply, hL0, map_zero, sub_zero, hGd k a x hxk ⟨hxZ, hxC⟩]`. Introduce `k l x hxk hxl hxV`. Take `⟨-, hxZ, -, -, -, -, hxC, -, -, hGc⟩` from `hG x hxV`. Simplify using `only [hH]`.
-
-Take the linear combination `hGc k l x hxk hxl ⟨hxZ, hxC⟩`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem exists_global_cechPrimitive_of_zero_section_lemma
     {P : Type} [NormedAddCommGroup P] [NormedSpace ℂ P] [FiniteDimensional ℂ P] {g : ℕ} {K : Type}
@@ -191,7 +187,7 @@ open CategoryTheory TopologicalSpace in
 variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
   {F : _root_.GlobalTheory.AnPer.Fam I g Λ} in
 /- English proof (translation)
-Rewrite using `[← _root_.GlobalTheory.AnPer.Hol.ev_apply p hp, map_sub, _root_.GlobalTheory.AnPer.Hol.ev_apply, _root_.GlobalTheory.AnPer.Hol.ev_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem hol_sub_fn {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {W : TopologicalSpace.Opens E} (f h : _root_.GlobalTheory.AnPer.Hol W) {p : E} (hp : p ∈ W) :
@@ -205,39 +201,33 @@ variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
   {F : _root_.GlobalTheory.AnPer.Fam I g Λ} in
 
 /- English proof (translation)
-Take `⟨hcov, hmeet⟩` from `hR`. Take `⟨k₀, hk₀⟩` from `hB`. Establish `hsub : ∀ {k k' : K.K}, K.le 0 k' k → ∀ p ∈ K.W k', p ∈ K.W k`. Introduce `k k' e p hp`. Use `K.maps e p hp` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[_root_.GlobalTheory.AnPer.Fam.shift_zero]`. Then use the resulting hypothesis. Establish `htrans : ∀ {k k' k'' : K.K}, K.le 0 k' k → K.le 0 k'' k' → K.le 0 k'' k`. Introduce `k k' k'' e e'`. Simplify using `using K.le_trans e e'`. Establish `hsh : ∀ {k k' : K.K} (e : K.le 0 k' k) (f : _root_.GlobalTheory.AnPer.Hol (K.W k)), ∀ p ∈ K.W k', (_root_.GlobalTheory.AnPer.Charts.sh e f).fn p = f.fn p`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `k k' e f p hp`. Rewrite using `[_root_.GlobalTheory.AnPer.Charts.fn_sh e f hp, _root_.GlobalTheory.AnPer.Fam.shift_zero]`. Establish `hdw : ∀ {k : K.K} (i : Fin g) (f : _root_.GlobalTheory.AnPer.Hol (K.W k)), ∀ p ∈ K.W k, (_root_.GlobalTheory.AnPer.dw i f).fn p = fderiv ℂ f.fn p (0, Pi.single i 1)`. Introduce `k i f p hp`. Conclude with `_root_.GlobalTheory.AnPer.Hol.fn_der _ f hp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpc : ∀ k k' k'' (e : K.le 0 k' k) (e' : K.le 0 k'' k') (e'' : K.le 0 k'' k), ∀ p ∈ K.W k'', (a k k'' e'').fn p = (a k k' e).fn p + (a k' k'' e').fn p`. Introduce `k k' k'' e e' e'' p hp`. Rewrite using `[hcoc k k' k'' e e' e'', _root_.GlobalTheory.AnPer.Hol.fn_add _ _ hp, hsh e' _ p hp]`. Establish `hmeet0 : ∀ (k₁ k₂ : K.K) (p : _root_.GlobalTheory.AnPer.Tot I g), p ∈ K.W k₁ → p ∈ K.W k₂ → ∃ k, p ∈ K.W k ∧ K.le 0 k k₁ ∧ K.le 0 k k₂`. Introduce `k₁ k₂ p h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Conclude with `hmeet 0 k₁ k₂ p h₁ (by rwa [_root_.GlobalTheory.AnPer.Fam.shift_zero])`. Use `choose! μ hμ using hmeet0`. Set `c : K.K → K.K → _root_.GlobalTheory.AnPer.Tot I g → ℂ` to `fun k₁ k₂ p => if h : p ∈ K.W k₁ ∧ p ∈ K.W k₂ then (a k₂ (μ k₁ k₂ p) (hμ k₁ k₂ p h.1 h.2).2.2).fn p - (a k₁ (μ k₁ k₂ p) (hμ k₁ k₂ p h.1 h.2).2.1).fn p else 0`. Establish `hind : ∀ (k₁ k₂ k : K.K) (e₁ : K.le 0 k k₁) (e₂ : K.le 0 k k₂), ∀ p ∈ K.W k, c k₁ k₂ p = (a k₂ k e₂).fn p - (a k₁ k e₁).fn p`. Introduce `k₁ k₂ k e₁ e₂ p hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h₁` using `hsub e₁ p hp`. Establish `h₂` using `hsub e₂ p hp`. Simplify using `only [c, dif_pos (And.intro h₁ h₂)]`. Take `⟨hpm, em₁, em₂⟩` from `hμ k₁ k₂ p h₁ h₂`. Use `set k' := μ k (μ k₁ k₂ p) p with hk'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hpk', f₁, f₂⟩` from `hμ k (μ k₁ k₂ p) p hp hpm`. Establish `r1` using `hpc k₁ k k' e₁ f₁ (htrans e₁ f₁) p hpk'`. Establish `r2` using `hpc k₂ k k' e₂ f₁ (htrans e₂ f₁) p hpk'`. Establish `r3` using `hpc k₁ _ k' em₁ f₂ (htrans e₁ f₁) p hpk'`. Establish `r4` using `hpc k₂ _ k' em₂ f₂ (htrans e₂ f₁) p hpk'`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take the linear combination `r3 - r4 - r1 + r2`. Take `⟨Gf, hGa, hGd, hGc⟩` from `exists_global_cechPrimitive_of_zero_section_lemma (P := I → ℂ) (g := g) (fun k => (K.W k : Set (_root_.GlobalTheory.AnPer.Tot I g))) c (fun k i => (ω k i).fn) (F.V : Set (I → ℂ)) F.V.isOpen (fun k => (K.W k).isOpen) hcov (by`. Introduce `k₁ k₂ p hp`. Take `⟨hpk, e₁, e₂⟩` from `hμ k₁ k₂ p hp.1 hp.2`. Establish `hev : (fun q => (a k₂ _ e₂).fn q - (a k₁ _ e₁).fn q) =ᶠ[nhds p] c k₁ k₂` using `by filter_upwards [(K.W _).isOpen.mem_nhds hpk] with q hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hind k₁ k₂ _ e₁ e₂ q hq).symm`. Conclude with `(((a k₂ _ e₂).analytic p hpk).sub ((a k₁ _ e₁).analytic p hpk)).congr hev)`. Use the proof step `(by`. Introduce `k l m p hk hl hm`. Take `⟨hp', e₁, e₂⟩` from `hμ k l p hk hl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hp'', f₁, f₂⟩` from `hμ _ m p hp' hm`. Rewrite using `[hind k m _ (htrans e₁ f₁) f₂ p hp'', hind k l _ (htrans e₁ f₁) (htrans e₂ f₁) p hp'', hind l m _ (htrans e₂ f₁) f₂ p hp'']`. Use the proof step `ring)`. Use the proof step `(fun k i => (ω k i).analytic)`. Use the proof step `(by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `k i j p hp`. Rewrite using `[← hdw i _ p hp, ← hdw j _ p hp, hcl])`. Use the proof step `(by`. Introduce `k₁ k₂ i p h₁ h₂`. Take `⟨hpk, e₁, e₂⟩` from `hμ k₁ k₂ p h₁ h₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hev : ((a k₂ _ e₂).fn - (a k₁ _ e₁).fn) =ᶠ[nhds p] c k₁ k₂` using `by filter_upwards [(K.W _).isOpen.mem_nhds hpk] with q hq`. Conclude with `(hind k₁ k₂ _ e₁ e₂ q hq).symm`. Establish `d₁` using `((a k₁ _ e₁).analytic p hpk).differentiableAt`. Establish `d₂` using `((a k₂ _ e₂).analytic p hpk).differentiableAt`. Establish `hfd` using `(d₂.hasFDerivAt.sub d₁.hasFDerivAt).fderiv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hev.fderiv_eq]`. Rewrite using `[hfd, ContinuousLinearMap.sub_apply, ← hdw i _ p hpk, ← hdw i _ p hpk, ← hd k₂ _ e₂ i, ← hd k₁ _ e₁ i, hol_sub_fn _ _ hpk, hol_sub_fn _ _ hpk, hsh e₂ _ p hpk, hsh e₁ _ p hpk]`. Use the proof step `ring)`. Use `k₀ hk₀`. Use `set Gh : ∀ k, _root_.GlobalTheory.AnPer.Hol (K.W k) := fun k => _root_.GlobalTheory.AnPer.Hol.mk (Gf k) (fun p hp => hGa k p hp (K.base k p hp)) with hGh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hfn : ∀ k, ∀ q ∈ K.W k, (Gh k).fn q = Gf k q` using `fun k q hq => _root_.GlobalTheory.AnPer.Hol.fn_mk _ _ hq`. Use `⟨Gh, ?_, ?_⟩` and prove the remaining obligations. Introduce `k i`. Apply `_root_.GlobalTheory.AnPer.Hol.ext_fn` to reduce the goal to its premises. Introduce `p hp`.
-
-Rewrite using `[hdw i (Gh k) p hp, _root_.GlobalTheory.AnPer.Hol.fderiv_fn_congr (Gh k) (hfn k) hp]`. Conclude with `hGd k i p hp (K.base k p hp)`. Introduce `k k' e`. Apply `_root_.GlobalTheory.AnPer.Hol.ext_fn` to reduce the goal to its premises. Introduce `p hp`.
-
-Rewrite using `[hol_sub_fn _ _ hp, hsh e _ p hp]`. Rewrite using `[hfn k' p hp, hfn k p (hsub e p hp)]`. Establish `h1` using `hGc k k' p (hsub e p hp) hp (K.base k' p hp)`. Establish `h2` using `hind k k' k' e (K.le_refl k') p hp`. Establish `h3` using `hpc k' k' k' (K.le_refl k') (K.le_refl k') (K.le_refl k') p hp`.
-
-Take the linear combination `h1 + h2 - h3`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AnPer.Charts.exists_primitive_of_rich {I : Type} [Fintype I] {g : ℕ} {Λ : Type}
     [AddCommGroup Λ] {F : _root_.GlobalTheory.AnPer.Fam I g Λ}

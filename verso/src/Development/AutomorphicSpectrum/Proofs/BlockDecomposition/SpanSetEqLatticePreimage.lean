@@ -17,13 +17,13 @@ open GlobalTheory.CompanionTheory.WS
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ball_iff {n : ℤ} {x : F} :
     x ∈ valBall F n ↔ normalizedValuation F x ≤ WithZero.exp (-n) := Iff.rfl
 
 /- English proof (translation)
-Establish `h` using `@mem_valBall_zero_iff F _ _ _ _ a`. Rewrite `h` using `[mem_ball_iff]`. Simplify using `using h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_int_iff {a : F} : a ∈ 𝒪[F] ↔ normalizedValuation F a ≤ 1 := by
   have h := @mem_valBall_zero_iff F _ _ _ _ a
@@ -31,9 +31,9 @@ theorem mem_int_iff {a : F} : a ∈ 𝒪[F] ↔ normalizedValuation F a ≤ 1 :=
   simpa using h.symm
 
 /- English proof (translation)
-Establish `h` using `@ord_unifUnit F _ _ _ _`. Establish `h0 : normalizedValuation F (unifUnit F : F) ≠ 0`. Simplify using the standard rewrite rules. Establish `hl : WithZero.log (normalizedValuation F (unifUnit F : F)) = -1`. Unfold `ord at h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[← hl, WithZero.exp_log h0]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_unif : normalizedValuation F (unifUnit F : F) = WithZero.exp (-1 : ℤ) := by
   have h := @ord_unifUnit F _ _ _ _
@@ -45,7 +45,7 @@ theorem val_unif : normalizedValuation F (unifUnit F : F) = WithZero.exp (-1 : �
   rw [← hl, WithZero.exp_log h0]
 
 /- English proof (translation)
-Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, val_unif, ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem val_zpow (n : ℤ) :
     normalizedValuation F (((unifUnit F ^ n : Fˣ)) : F) = WithZero.exp (-n) := by
@@ -53,7 +53,7 @@ theorem val_zpow (n : ℤ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_inv₀, ← div_eq_mul_inv]`. Conclude with `div_le_one₀ (zero_lt_iff.2 (by simpa using hb))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_inv_le_one_iff {a b : F} (hb : b ≠ 0) :
     normalizedValuation F (a * b⁻¹) ≤ 1 ↔ normalizedValuation F a ≤ normalizedValuation F b := by
@@ -61,7 +61,7 @@ theorem mul_inv_le_one_iff {a b : F} (hb : b ≠ 0) :
   exact div_le_one₀ (zero_lt_iff.2 (by simpa using hb))
 
 /- English proof (translation)
-Simplify using `only [rowAct, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Apply the tactic sequence `ext <;> simp <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowAct_mul (g h : GL (Fin 2) F) (v : F × F) :
     rowAct (g * h) v = rowAct h (rowAct g v) := by
@@ -69,15 +69,15 @@ theorem rowAct_mul (g h : GL (Fin 2) F) (v : F × F) :
   ext <;> simp <;> ring
 
 /- English proof (translation)
-Take `⟨p, hp, hwp⟩ : ∃ p : F, p ≠ 0 ∧ normalizedValuation F p = WithZero.exp (-n)` from `⟨_, Units.ne_zero _, val_zpow n⟩`. Establish `hdet : (!![p⁻¹, 0; 0, p⁻¹] : Matrix (Fin 2) (Fin 2) F).det ≠ 0`. Rewrite using `[Matrix.det_fin_two_of]`. Simplify using `using hp`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `⟨v₁, v₂⟩`. Establish `hact : rowAct (Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet) (v₁, v₂) = (v₁ * p⁻¹, v₂ * p⁻¹)`. Simplify using `[rowAct, Matrix.GeneralLinearGroup.mkOfDetNeZero]`. Establish `hball : ∀ y : F, y * p⁻¹ ∈ valBall F 0 ↔ y ∈ valBall F n` using `fun y => by`. Rewrite using `[mem_ball_iff, mem_ball_iff, ← hwp]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using mul_inv_le_one_iff hp`. Simplify using `only [Set.mem_preimage, hact, Ln, spanSet, Set.mem_setOf_eq, hball]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, h₁, h₂⟩`. Establish `hax : ∀ y ∈ valBall F n, a * y ∈ valBall F n` using `fun y hy => by`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[mem_ball_iff, map_mul]`. Conclude with `mul_le_of_le_one_left' (mem_int_iff.1 ha) |>.trans hy`. Establish `e₁` using `add_mem h₁ (hax _ hx.1)`. Establish `e₂` using `add_mem h₂ (hax _ hx.2)`. Simplify using `only [Prod.fst_sub, Prod.snd_sub, Prod.smul_fst, Prod.smul_snd, smul_eq_mul, sub_add_cancel] at e₁ e₂`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨e₁, e₂⟩`. Introduce and unpack `⟨h₁, h₂⟩`. Conclude with `⟨0, zero_mem _, by simpa using h₁, by simpa using h₂⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_of_mem (n : ℤ) (x : F × F) (hx : x ∈ Ln F n) :
     ∃ h : GL (Fin 2) F, spanSet n x = rowAct h ⁻¹' Ln F 0 := by
@@ -108,25 +108,25 @@ theorem exists_of_mem (n : ℤ) (x : F × F) (hx : x ∈ Ln F n) :
     exact ⟨0, zero_mem _, by simpa using h₁, by simpa using h₂⟩
 
 /- English proof (translation)
-Establish `hx : x₁ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hn`. Take `⟨p, hp, hwp⟩ : ∃ p : F, p ≠ 0 ∧ normalizedValuation F p = WithZero.exp (-n)` from `⟨_, Units.ne_zero _, val_zpow n⟩`. Establish `hdet : (!![x₁⁻¹, -(x₂ * x₁⁻¹ * p⁻¹); 0, p⁻¹] : Matrix (Fin 2) (Fin 2) F).det ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_fin_two_of]`. Simplify using `using ⟨hx, hp⟩`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨v₁, v₂⟩`. Establish `hact : rowAct (Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet) (v₁, v₂) = (v₁ * x₁⁻¹, (v₂ - v₁ * x₁⁻¹ * x₂) * p⁻¹)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [rowAct, Matrix.GeneralLinearGroup.mkOfDetNeZero]`. Use `ext`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hq : normalizedValuation F (x₂ * x₁⁻¹) ≤ 1` using `(mul_inv_le_one_iff hx).2 h21`. Establish `hball : ∀ y : F, y * p⁻¹ ∈ valBall F 0 ↔ y ∈ valBall F n` using `fun y => by`. Rewrite using `[mem_ball_iff, mem_ball_iff, ← hwp]`. Simplify using `using mul_inv_le_one_iff hp`. Simplify using `only [Set.mem_preimage, hact, Ln, spanSet, Set.mem_setOf_eq, hball]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, h₁, h₂⟩`. Simplify using `only [Prod.mk_sub_mk, Prod.smul_mk, smul_eq_mul, Prod.fst_sub, Prod.snd_sub, Prod.smul_fst, Prod.smul_snd] at h₁ h₂`. Establish `he : normalizedValuation F ((v₁ - a * x₁) * x₁⁻¹) ≤ 1` using `(mul_inv_le_one_iff hx).2 ((mem_ball_iff.1 h₁).trans hn.le)`. Establish `hv : v₁ * x₁⁻¹ = a + (v₁ - a * x₁) * x₁⁻¹`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hw : v₂ - v₁ * x₁⁻¹ * x₂ = (v₂ - a * x₂) - (v₁ - a * x₁) * (x₂ * x₁⁻¹)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ball_iff, hv]`. Simplify using `using Valuation.map_add_le _ (mem_int_iff.1 ha) he`. Rewrite using `[hw]`. Use `sub_mem h₂ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_ball_iff, map_mul]`. Conclude with `(mul_le_of_le_one_right' hq).trans h₁`. Introduce and unpack `⟨h₁, h₂⟩`. Use `⟨v₁ * x₁⁻¹, mem_int_iff.2 ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite `h₁` using `[mem_ball_iff]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h₁`. Establish `: v₁ - v₁ * x₁⁻¹ * x₁ = 0`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify `zero_mem (valBall F n)` using `[this]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h₂` using `[mul_comm, mul_assoc, mul_left_comm]`.
+A detailed English derivation is pending.
 -/
 theorem exists_of_lt (n : ℤ) (x₁ x₂ : F)
     (h21 : normalizedValuation F x₂ ≤ normalizedValuation F x₁)
@@ -188,19 +188,17 @@ end GlobalTheory.CompanionTheory.WS.Lat
 namespace GlobalTheory.CompanionTheory.WS
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ Ln F n`. Conclude with `Lat.exists_of_mem n x hx`. Establish `hx' : ¬ (normalizedValuation F x.1 ≤ WithZero.exp (-n) ∧ normalizedValuation F x.2 ≤ WithZero.exp (-n))` using `hx`. Break down `le_total (normalizedValuation F x.2) (normalizedValuation F x.1) with h | h` into its components or cases. Establish `hn : WithZero.exp (-n) < normalizedValuation F x.1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Establish `hc'` using `not_lt.1 hc`. Conclude with `hx' ⟨hc', h.trans hc'⟩`. Conclude with `Lat.exists_of_lt n x.1 x.2 h hn`. Establish `hn : WithZero.exp (-n) < normalizedValuation F x.2`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc`. Establish `hc'` using `not_lt.1 hc`. Conclude with `hx' ⟨h.trans hc', hc'⟩`. Take `⟨g, hg⟩` from `Lat.exists_of_lt n x.2 x.1 h hn`. Establish `hdet : (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) F).det ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.det_fin_two_of]`. Simplify using the standard rewrite rules. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet * g, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨v₁, v₂⟩`. Establish `hact : rowAct (Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet) (v₁, v₂) = (v₂, v₁)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `[rowAct, Matrix.GeneralLinearGroup.mkOfDetNeZero]`. Establish `hm : rowAct g (v₂, v₁) ∈ Ln F 0 ↔ (v₂, v₁) ∈ spanSet n (x.2, x.1)`. Rewrite using `[hg]`. Both sides reduce to the same expression. Rewrite using `[Set.mem_preimage, Lat.rowAct_mul, hact, hm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Simplify using `only [spanSet, Ln, Set.mem_setOf_eq, Prod.fst_sub, Prod.snd_sub, Prod.smul_fst, Prod.smul_snd]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, h₁, h₂⟩`. Conclude with `⟨a, ha, h₂, h₁⟩`. Introduce and unpack `⟨a, ha, h₁, h₂⟩`.
-
-Conclude with `⟨a, ha, h₂, h₁⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem spanSet_eq_preimage_Ln (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (n : ℤ) (x : F × F) :

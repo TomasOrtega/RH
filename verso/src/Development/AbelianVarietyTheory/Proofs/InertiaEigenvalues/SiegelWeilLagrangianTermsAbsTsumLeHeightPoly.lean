@@ -33,13 +33,11 @@ open Formalism.UG (bc)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hN` using `GlobalTheory.Doubling.algebraMap_norm_eq hσ (R := Fv F v) x`. Establish `e1 : absFin F v (algebraMap (Fv F v) (Fv F v ⊗[F] E) (Algebra.norm (Fv F v) x)) = ‖Algebra.norm (Fv F v) x‖₊`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Conclude with `absFin_tmul_one F v _`. Establish `hs : absFin F v (sigR (Fv F v) σ x) ≤ absFin F v x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(absFin_le_iff F v).2 fun τ => ?_` and prove the remaining obligations. Establish `e2 : ∀ w, finEmb F v τ (sigR (Fv F v) σ w) = finEmb F v ((τ : E →ₐ[F] FvBar F v).comp σ) w`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a b => simp [sigR]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Rewrite using `[e2]`. Conclude with `le_absFin F v _ x`. Rewrite using `[← e1, hN, sq]`.
-
-Conclude with `(absFin_mul_le F v _ _).trans (mul_le_mul' le_rfl hs)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_le_sq {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v ⊗[F] E) :
     ‖Algebra.norm (Fv F v) x‖₊ ≤ absFin F v x ^ 2 := by
@@ -62,9 +60,9 @@ theorem absNorm_le_sq {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) (v : HeightOne
   exact (absFin_mul_le F v _ _).trans (mul_le_mul' le_rfl hs)
 
 /- English proof (translation)
-Establish `h1` using `(Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) y).le_opNNNorm (EuclideanSpace.single j 1)`. Establish `h2` using `PiLp.norm_apply_le (Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) y (EuclideanSpace.single j 1)) i`. Establish `h3 : (Matrix.toEuclideanCLM (n` using `n) (𝕜 := ℂ) y (EuclideanSpace.single j 1)) i = y i j := by`. Express the relevant statement in the definitionally equal form `∑ k, y i k * (EuclideanSpace.single j (1 : ℂ)) k = _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[h3]`. Rewrite `h1` using `[PiLp.nnnorm_single, nnnorm_one, mul_one]`. Conclude with `(show ‖y i j‖₊ ≤ _ from h2).trans h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_le_opNorm {n : Type} [Fintype n] [DecidableEq n] (y : Matrix n n ℂ) (i j : n) : ‖y i j‖₊ ≤ opNorm y := by
   have h1 := (Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) y).le_opNNNorm (EuclideanSpace.single j 1)
@@ -77,17 +75,17 @@ theorem entry_le_opNorm {n : Type} [Fintype n] [DecidableEq n] (y : Matrix n n �
   exact (show ‖y i j‖₊ ≤ _ from h2).trans h1
 
 /- English proof (translation)
-Use `⟨∏ _w : InfinitePlace F, ((n.factorial : ℝ≥0) * 2 ^ n) ^ 2, fun x u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[absE_apply, heightGL, mul_pow _ _ (2 * n), ← mul_assoc, ← Finset.prod_pow, ← Finset.prod_mul_distrib, finprod_pow (finite_mulSupport_htFin F x)]`. Use `mul_le_mul' (Finset.prod_le_prod' fun w _ => ?_) (finprod_le_finprod' (finite_mulSupport_absEv u) ?_ fun v => ?_)` and prove the remaining obligations. Take `⟨τ⟩ : Nonempty (EmbOver E w)` from `inferInstance`. Rewrite using `[absEw_eq_sq hσ τ, mul_comm 2 n, pow_mul, ← mul_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `pow_le_pow_left' ?_ 2` and prove the remaining obligations. Use `set H := htInf F w (bc (compInf F E w) x) with hH`. Establish `hent : ∀ i j, ‖infEmb τ (compInf F E w (x.1 i j))‖₊ ≤ H` using `fun i j => (entry_le_opNorm ((x.1.map (compInf F E w)).map (infEmb τ)) i j).trans (((normInf_le_iff F w).1 le_rfl τ).trans (le_htOf (normInf F w) (bc (compInf F E w) x)))`. Establish `e : infEmb τ (unitInf F E w u).1 = (leviMat finSumFinEquiv ((x.1.map (compInf F E w)).map (infEmb τ))).det`. Rewrite using `[leviMat_map, leviMat_map, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← RingHom.map_det, ← RingHom.map_det, ← hu]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e, Matrix.det_apply]`. Use `(nnnorm_sum_le _ _).trans ((Finset.sum_le_card_nsmul _ _ ((2 * H) ^ n) fun s _ => ?_).trans (le_of_eq ?_))` and prove the remaining obligations. Establish `: ‖Equiv.Perm.sign s • ∏ i, leviMat finSumFinEquiv ((x.1.map (compInf F E w)).map (infEmb τ)) (s i) i‖₊ = ∏ i, ‖leviMat finSumFinEquiv ((x.1.map (compInf F E w)).map (infEmb τ)) (s i) i‖₊`. Rewrite using `[← nnnorm_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign s) with h | h <;> simp [h]`. Rewrite using `[this]`. Use `(Finset.prod_le_pow_card _ _ (2 * H) fun i _ => ?_).trans (by simp)` and prove the remaining obligations. Rewrite using `[two_mul]`. Conclude with `(nnnorm_add_le _ _).trans (add_le_add (hent _ _) (hent _ _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Fintype.card_perm, mul_pow, mul_assoc]`. Conclude with `(finite_mulSupport_htFin F x).subset fun v hv h => hv (by simp only [h, one_pow])`. Establish `e : (unitFin F E v u).1 = (leviMat finSumFinEquiv (x.1.map (compFin F E v))).det`. Rewrite using `[leviMat_map, ← RingHom.mapMatrix_apply, ← RingHom.map_det, ← hu]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[absEv_apply, e, mul_comm 2 n, pow_mul]`. Use `(absNorm_le_sq hσ v _).trans (pow_le_pow_left' ((GlobalTheory.Core.Rk.HgtFin.absFin_det_le v _).trans (pow_le_pow_left' ((normFin_le_iff F v).2 fun i j => ?_) n)) 2)` and prove the remaining obligations. Establish `hent : ∀ i j, absFin F v ((x.1.map (compFin F E v)) i j) ≤ htFin F v (bc (compFin F E v) x)` using `fun i j => (absFin_le_normFin F v _ i j).trans (le_htOf (normFin F v) (bc (compFin F E v) x))`. Conclude with `(absFin_add_le F v _ _).trans (max_le (hent _ _) (hent _ _))`.
+A detailed English derivation is pending.
 -/
 theorem absE_le_heightGL {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) (n : ℕ) :
     ∃ C : ℝ≥0, ∀ (x : GL (Fin (n + n)) (AF F ⊗[F] E)) (u : (AF F ⊗[F] E)ˣ),
@@ -144,15 +142,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Use `haveI := t2Space_adeleRing' (F := D.host.F)`. Establish `hI` using `GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D A a ha`. Establish `hK` using `isCompact_Khat A a`. Take `⟨C, hC⟩` from `absE_le_heightGL (isCMExt_host D) A.rank`. Take `⟨B, hB⟩` from `GlobalTheory.Grow.exists_height_le_of_isCompact (dblSp A) hK`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB0 : 0 ≤ B` using `(GlobalTheory.Grow.height_pos _ _).le.trans (hB 1 (one_mem _))`. Use `⟨C * (B * B) ^ (2 * A.rank), by positivity, fun x y => ?_⟩` and prove the remaining obligations. Take `⟨p, k, hk, rfl⟩` from `hI x`. Take `⟨p', k', hk', e⟩` from `hI (k * y)`. Establish `h1 : hgt A a (p * k * y) = absA D (aP A p) * absA D (aP A p')`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, e, ← mul_assoc, ← Subgroup.coe_mul, hgt_mul A a _ hk', map_mul, map_mul]`. Rewrite using `[h1, hgt_mul A a _ hk, NNReal.coe_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (NNReal.coe_nonneg _)` and prove the remaining obligations. Establish `h2 : (absA D (aP A p') : ℝ) ≤ C * GlobalTheory.Grow.height (dblSp A) p' ^ (2 * A.rank)`. Use `hC (Formalism.L2.Theta.matHom (dblSp A) p') (aP A p') rfl` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `GlobalTheory.Grow.height`. Conclude with `this` after adjusting the coercions. Establish `h3 : GlobalTheory.Grow.height (dblSp A) p' ≤ B * B * GlobalTheory.Grow.height (dblSp A) y`. Establish `e' : (p' : GA D (dblSp A)) = k * y * k'⁻¹` using `by rw [e, mul_inv_cancel_right]`. Establish `hy` using `(GlobalTheory.Grow.height_pos _ y).le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← mul_pow]`. Conclude with `h2.trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (GlobalTheory.Grow.height_pos _ _).le h3 _) C.coe_nonneg)`.
+A detailed English derivation is pending.
 -/
 theorem hgt_mul_le (A : HSp D) (a : GL (Fin A.rank) (AE D)) (ha : IsMaj A a) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ x y : GA D (dblSp A),
@@ -189,9 +187,9 @@ theorem hgt_mul_le (A : HSp D) (a : GL (Fin A.rank) (AE D)) (ha : IsMaj A a) :
   exact h2.trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (GlobalTheory.Grow.height_pos _ _).le h3 _) C.coe_nonneg)
 
 /- English proof (translation)
-Establish `hI` using `GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D A a ha`. Establish `hc` using `(GlobalTheory.Core.Rk.IP.swSec_integrable_continuous D ψ A B χ omh hω ν 𝓕 hν φ hφ).2`. Take `⟨C, hC⟩` from `(isCompact_Khat A a).exists_bound_of_continuousOn hc.continuousOn`. Use `⟨C, (norm_nonneg _).trans (hC 1 (one_mem _)), fun x => ?_⟩` and prove the remaining obligations. Take `⟨p, k, hk, rfl⟩` from `hI x`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `ex : (sZero A B + (A.rank : ℂ) / 2).re = (B.rank : ℝ) / 2`. Simplify using `only [sZero, Complex.add_re, Complex.div_ofNat_re, Complex.sub_re, Complex.natCast_re]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[GlobalTheory.Core.Rk.SWLaw.swSec_law GlobalTheory.weilRepresentationUnitaryPair D ψ A B χ omh hω ν 𝓕 hν φ hφ p k, norm_mul, norm_mul, Circle.norm_coe, one_mul, norm_npow (hom_pos _ _), ex, hgt_mul A a p hk, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hC k hk) (by positivity)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_swSec_le {ψ : AddChar (AF D.host.F) ℂ} {A B : HSp D} {χ : (AE D)ˣ →* Circle}
     {omh : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)} (hω : IsWeilDatumO ψ (dblSp A) B 1 χ omh)
@@ -210,19 +208,17 @@ theorem norm_swSec_le {ψ : AddChar (AF D.host.F) ℂ} {A B : HSp D} {χ : (AE D
   exact mul_le_mul_of_nonneg_right (hC k hk) (by positivity)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_isMaj A`. Establish `hI` using `GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D A a ha`. Take `⟨C₁, hC₁, h₁⟩` from `norm_swSec_le hω hν hφ a ha`. Take `⟨C₂, hC₂, h₂⟩` from `hgt_mul_le A a ha`. Establish `hb' : (2 * A.rank : ℝ) < B.rank` using `by exact_mod_cast hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs` using `GlobalTheory.Eis.sphConv D A a hI (((B.rank : ℝ) - A.rank) / 2) (by linarith)`. Rewrite `hs` using `[show ((B.rank : ℝ) - A.rank) / 2 + (A.rank : ℝ) / 2 = (B.rank : ℝ) / 2 by ring]`. Use `set S := ∑' q : GlobalTheory.Eis.SiegelCosets A, (hgt A a (q.out : GQ (dblSp A)) : ℝ) ^ ((B.rank : ℝ) / 2) with hS`. Establish `hS0 : 0 ≤ S` using `tsum_nonneg fun _ => by positivity`. Use `⟨2 * A.rank * B.rank, C₁ * (max C₂ 1) ^ B.rank * S, by positivity, fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set H := GlobalTheory.Grow.height (dblSp A) y with hH`. Establish `hH1 : 1 ≤ H` using `GlobalTheory.Grow.one_le_height _ y`. Use `set c := C₁ * (max C₂ 1 * H ^ (2 * A.rank)) ^ B.rank with hc`. Establish `hc0 : 0 ≤ c` using `by positivity`. Establish `hone : 1 ≤ max C₂ 1 * H ^ (2 * A.rank)` using `one_le_mul_of_one_le_of_one_le (le_max_right _ _) (one_le_pow₀ hH1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq : ∀ x : GA D (dblSp A), ‖swSec A B omh ν 𝓕 φ (x * y)‖ ≤ c * (hgt A a x : ℝ) ^ ((B.rank : ℝ) / 2)`. Introduce `x`. Use `(h₁ _).trans ?_` and prove the remaining obligations. Rewrite using `[hc, mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ hC₁` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (hgt A a (x * y) : ℝ) ≤ hgt A a x * (max C₂ 1 * H ^ (2 * A.rank))` using `(h₂ x y).trans (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)) (NNReal.coe_nonneg _))`. Use `(Real.rpow_le_rpow (NNReal.coe_nonneg _) h3 (by positivity)).trans ?_` and prove the remaining obligations. Rewrite using `[Real.mul_rpow (NNReal.coe_nonneg _) (by positivity), mul_comm]`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast _ B.rank]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.rpow_le_rpow_of_exponent_le hone (by linarith [(Nat.cast_nonneg B.rank : (0 : ℝ) ≤ _)])`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (hq _)`. Use `_ = ENNReal.ofReal (c * S) := by`.
-
-Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun _ => by positivity) (hs.mul_left c), tsum_mul_left]`. Use `_ = _ := by`. Use `congr 1`. Rewrite using `[hc, mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tsum_swSec_le {ψ : AddChar (AF D.host.F) ℂ} {A B : HSp D} {χ : (AE D)ˣ →* Circle}
     {omh : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)} (hω : IsWeilDatumO ψ (dblSp A) B 1 χ omh)
@@ -283,25 +279,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RawLift
 
 /- English proof (translation)
-Introduce `D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hs θ hθ f₁ f₂ h₁ h₂`. Establish `hw` using `hs.weil`. Establish `hS` using `GlobalTheory.AdjLawPf.adjLaw D ψ hw.std V W`. Establish `hom'` using `GlobalTheory.ConjAdjWeil.isWeilDatumO_conjAdjoint D ψ V W χV χW om hw`. Establish `hr : ResEta D 1 (GlobalTheory.Doubling.dblSp W).rank`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.Eis.SimplePoleModel.resEta_one_two_mul D W.rank` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `[GlobalTheory.Doubling.dblSp]`. Use linear arithmetic over natural numbers and integers. Take `⟨omh, hω⟩` from `GlobalTheory.weilRepresentationUnitaryPair D ψ (GlobalTheory.Doubling.dblSp W) V 1 χV hw.std ⟨continuous_const, fun _ => rfl⟩ hw.hecS hr hw.resS`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `TC` using `GlobalTheory.DoublingTheta.thetaClause D ψ W V χW χV (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.conjAdjoint om) omh hom' hω`. Take `⟨hF, hrest⟩` from `TC (GlobalTheory.PairLift.dag V W f₂) (GlobalTheory.PairLift.dag V W f₁) (hS.theta _ h₂) (hS.theta _ h₁)`. Establish `dd : ∀ f : WO V W → ℂ, GlobalTheory.PairLift.dag W V (GlobalTheory.PairLift.dag V W f) = f` using `fun f => by`. Use function extensionality and compare the values at `y`. Simplify using `only [GlobalTheory.PairLift.dag, hS.invol, Complex.conj_conj]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Take `⟨ν, 𝓖', hν⟩` from `GlobalTheory.Size.exists_isCovolOne W V`. Take `⟨M, C, hC, H⟩` from `tsum_swSec_le hω hs.big hν hF`. Take `⟨K, hK, hcmp⟩` from `GlobalTheory.Grow.height_comparison W hθ`. Use `⟨M, C * (K * K) ^ M, fun g₁ g₂ => ?_⟩` and prove the remaining obligations. Establish `h₁'` using `hw.om_pres (1, g₁) f₁ h₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h₂'` using `hw.om_pres (1, g₂) f₂ h₂`. Establish `hF' : IsThetaFunO ψ (GlobalTheory.Doubling.dblSp W) V (GlobalTheory.SWPairProof.dbl V W (om (1, g₁) f₁) (om (1, g₂) f₂))` using `(TC _ _ (hS.theta _ h₂') (hS.theta _ h₁')).1`. Take `⟨e, he⟩` from `GlobalTheory.T.siegelEisenstein_doubledTheta_terms_eq_lagrangianIntegrals D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hs _ _ h₁' h₂' ν 𝓖' hν`. Establish `hmove` using `(hrest g₂ g₁ 1).1`. Rewrite `hmove` using `[GlobalTheory.ConjAdjWeil.conjAdjoint_apply, GlobalTheory.ConjAdjWeil.conjAdjoint_apply, dd, dd]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hterm : ∀ q, ‖lagTerm μ 𝓕 (fr (e q)) (om (1, g₁) f₁) (om (1, g₂) f₂)‖ₑ = ‖GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.swSec W V omh ν 𝓖' (GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.delta W V (GlobalTheory.PairLift.dag V W f₂) (GlobalTheory.PairLift.dag V W f₁ …`. Introduce `q`. Take `⟨c, hc, hq⟩` from `he q`. Rewrite using `[← lagTerm_frame_indep D ψ V W μ 𝓕 hs.covol hw.std _ _ h₁' h₂' (e q) c (fr (e q)) hc (hs.frame _), ← hq]`. Establish `e1 : ((((q.out : GQ (GlobalTheory.Doubling.dblSp W)) : GA D (GlobalTheory.Doubling.dblSp W)) * GlobalTheory.Doubling.io W (g₂, g₁), 1) : GA D (GlobalTheory.Doubling.dblSp W) × GA D V) = (((q.out : GQ (GlobalTheory.Doubling.dblSp W)) : GA D (GlobalTheory.Doubling.dblSp W)), 1) * ( …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.swSec, GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.evZero]`. Rewrite using `[e1, map_mul, Module.End.mul_apply, hmove, map_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_const_mul, enorm_mul, ← ofReal_norm ((_ : Circle) : ℂ), Circle.norm_coe, ENNReal.ofReal_one, one_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `y`. Conclude with `(GlobalTheory.RatSubst.om_rat_left_apply D ψ _ V 1 χV omh hω _ hF' _ (q.out : GQ (GlobalTheory.Doubling.dblSp W)).2 _).symm`. Rewrite using `[← e.tsum_eq]`. Simplify using `only [hterm]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(H _).trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`. Use `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (GlobalTheory.Grow.height_pos _ _).le ?_ M) hC` and prove the remaining obligations. Use `(GlobalTheory.Grow.IoHeight.height_io_le D W g₂ g₁).trans ?_` and prove the remaining obligations. Use `(mul_le_mul (hcmp g₂).2 (hcmp g₁).2 (GlobalTheory.Grow.height_pos _ _).le (by positivity)).trans (le_of_eq ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem tsum_lagTerm_le : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (νV : Measure (GA D V)) (𝓗 : Set (GA D V)) (νW : Measure (GA D W)) (𝓖 : Set (GA D W)) (μ : Measure (WO V W)) (𝓕 : Set (WO V W)) (fr : Lag W → Matrix (Fin W.rank) (Fin W.rank) D.host.E × Matrix (Fin W.rank) (Fin W.rank) D.host.E), SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr → ∀ (θ : InfFam D), IsInfFam θ → ∀ (f₁ f₂ : WO V W → ℂ), IsThetaFunO ψ V W f₁ → IsThetaFunO ψ V W f₂ → ∃ (M : ℕ) (C : ℝ), ∀ g₁ g₂ : GA D W, ∑' Y : Lag W, ‖lagTerm μ 𝓕 (fr Y) (om (1, g₁) f₁) (om (1, g₂) f₂)‖ₑ ≤ ENNReal.ofReal (C * ((GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ W g₁ : ℝ) * (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ W g₂ : ℝ)) ^ M) := by
   intro D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hs θ hθ f₁ f₂ h₁ h₂

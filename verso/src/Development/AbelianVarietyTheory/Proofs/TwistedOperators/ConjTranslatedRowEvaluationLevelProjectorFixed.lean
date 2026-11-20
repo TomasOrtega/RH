@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.RowEvalHH.LevelFix
 
 /- English proof (translation)
-Substitute `p` using the available equality. Conclude with `hγ`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem castGA_symm_mem {I I' : Formalism.MainNotions.S.AutInst} (p : I = I') (γ : I'.GA) (hγ : γ ∈ I'.GFset) :
     (castGA p).symm γ ∈ I.GFset := by
@@ -27,7 +27,7 @@ theorem castGA_symm_mem {I I' : Formalism.MainNotions.S.AutInst} (p : I = I') (�
   exact hγ
 
 /- English proof (translation)
-Use `(Formalism.IndefR.RationalEmbedding.iota_rat D ((iotaX X h).symm γ)).2 ?_` and prove the remaining obligations. Use `show Formalism.IndefR.RationalEmbedding.iota D ((Formalism.IndefR.RationalEmbedding.iota D).symm ((castGA h.symm).symm γ)) ∈ _`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Conclude with `castGA_symm_mem _ γ hγ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaX_symm_rat {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (γ : X.B.I.GA) (hγ : γ ∈ X.B.I.GFset) : (iotaX X h).symm γ ∈ GQ (D.sp.Y 0) := by
@@ -37,9 +37,9 @@ theorem iotaX_symm_rat {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) 
   exact castGA_symm_mem _ γ hγ
 
 /- English proof (translation)
-Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.lev`. Consider the case `zero => intro v k _ g`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `v k hk g`. Simplify using `only [MultilinearMap.add_apply, Pi.add_apply, hx v k hk g, hy v k hk g, mul_add]`. Consider the case `smul a x _ hx`. Introduce `v k hk g`. Simplify using `only [MultilinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, hx v k hk g]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -63,31 +63,29 @@ end GlobalTheory.RowEvalHH.LevelFix
 open GlobalTheory.RowEvalHH GlobalTheory.RowEvalHH.LevelFix in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F X h hLev hGrp hMod hHost hιE t c ht hLM S hS y`. Establish `hSM` using `Formalism.IndefR.Mult.goodPart_le _ _ _ _ _ hS`. Establish `hcl` using `Formalism.IndefR.PeterssonHilbertSpace.mult_cont_left (MP R) R.θ _ _ hSM (vecOf R X c y)`. Establish `hlev` using `mult_lev hSM (vecOf R X c y)`. Set `ιY : X.B.I.GA ≃* GA D (Yc D 0)` to `(iotaX X h).symm.toMulEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Unfold `evF`. Distinguish the cases in `hm : MemLp (fun x => ev (MP R) (vecOf R X c y) S (@HMul.hMul (GA D (Yc D 0)) (GA D (Yc D 0)) (GA D (Yc D 0)) _ ((iotaX X h).symm x) t)) 2 (muX X)`. Rewrite using `[dif_pos hm] set f : X.B.I.GA → ℂ := fun x => ev (MP R) (vecOf R X c y) S (@HMul.hMul (GA D (Yc D 0)) (GA D (Yc D 0)) (GA D (Yc D 0)) _ ((iotaX X h).symm x) t) with hf`. Establish `hm0 : MemLp (fun x => star (f x)) 2 (muX X)` using `hm.star`. Establish `eF : star (hm.toLp f) = hm0.toLp (fun x => star (f x))`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Lp.ext` to reduce the goal to its premises. Use `filter_upwards [Lp.coeFn_star (hm.toLp f), hm.coeFn_toLp, hm0.coeFn_toLp] with x a1 a2 a3`. Rewrite using `[a1, a3, Pi.star_apply, a2]`. Rewrite using `[eF]`. Establish `hfY : ∀ x, f x = S (vecOf R X c y) (ιY x * t)` using `fun x => rfl`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ γ ∈ X.B.I.GFset, ∀ x, star (f (γ * x)) = star (f x)`. Introduce `γ hγ x`. Use `congr 1`. Rewrite using `[hfY, hfY, map_mul, mul_assoc]`. Conclude with `hcl.2 _ (iotaX_symm_rat X h γ hγ) _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmeas : Measurable fun x => star (f x)` using `by haveI : IsTopologicalGroup (GA D (D.sp.Y 0)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `: Continuous f` using `hcl.1.comp ((iotaX X h).symm.continuous.mul continuous_const)`. Conclude with `(continuous_star.comp this).measurable`. Establish `hright : ∀ k ∈ X.K2, ∀ x, star (f (x * (1, k))) = X.chi2 k * star (f x)`. Introduce `k hk x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ek : (kap X h t k : GA D (Yc D 0)) = t⁻¹ * ιY (1, k) * t` using `rfl`. Establish `e2 : ιY (x * (1, k)) * t = (ιY x * t) * kap X h t k`. Rewrite using `[ek, map_mul]`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`. Establish `h1 : f (x * (1, k)) = star (X.chi2 k) * f x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hl` using `hlev _ (hLM k hk).1 (ιY x * t)`. Rewrite `hl` using `[(hLM k hk).2]`. Rewrite using `[hfY, hfY, e2]`. Conclude with `hl`. Rewrite using `[h1, star_mul', star_star, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK` using `Formalism.L2.SG.Closed.level_subgroup_is_group X`. Establish `hKL` using `Formalism.L2.SG.Closed.level_subgroup_properties X`. Establish `hKM : MeasurableSet X.K2` using `(Formalism.L2.SG.PoincareInHH.Cut.level_subgroup_isClopen X hK hKL).isOpen.measurableSet`. Establish `hfix : ∀ᵐ z ∂(X.B.I.muA X.B.μf), ∫ g, X.B.e g * star (f (z * (1, g))) ∂X.B.μf = star (f z)`. Use `Filter.Eventually.of_forall fun z => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hvol : (X.B.μf X.K2).toReal ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨hKL.2.2.1.ne', hKL.2.2.2.ne⟩`. Establish `hfun : (fun g => X.B.e g * star (f (z * (1, g)))) = X.K2.indicator (fun _ => star (f z) / ((X.B.μf X.K2).toReal : ℂ))`. Use function extensionality and compare the values at `g`. Rewrite using `[X.e_eq g]`. Distinguish the cases in `hg : g ∈ X.K2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : g ∈ Formalism.L2.SG.HidaSetting.K2set X.B.I X.B.g X.e0 X.z0 X.bw` using `hg`. Rewrite using `[if_pos hg', Set.indicator_of_mem hg, hright g hg z]`. Establish `hn : ‖X.chi2 g‖ = 1` using `hK.2.2.2.2 g hg`. Establish `hc : star (X.chi2 g) * X.chi2 g = 1`. Rewrite using `[RCLike.star_def, RCLike.conj_mul, hn]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `show star (X.chi2 g) / ((X.B.μf X.K2).toReal : ℂ) * (X.chi2 g * star (f z)) = star (f z) / ((X.B.μf X.K2).toReal : ℂ)`. Rewrite using `[div_mul_eq_mul_div, ← mul_assoc, hc, one_mul]`. Establish `hg' : g ∉ Formalism.L2.SG.HidaSetting.K2set X.B.I X.B.g X.e0 X.z0 X.bw` using `hg`. Rewrite using `[if_neg hg', Set.indicator_of_notMem hg, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun, integral_indicator hKM, setIntegral_const]`. Simplify using `only [measureReal_def, Complex.real_smul]`. Establish `hC : ((X.B.μf X.K2).toReal : ℂ) ≠ 0` using `by exact_mod_cast hvol`. Rewrite using `[mul_div_assoc', mul_div_cancel_left₀ _ hC]`. Conclude with `Formalism.L2.SG.Pf.idempotent_fixes_invariant_L2 X (fun x => star (f x)) hmeas hinv hm0 hfix`.
-
-Rewrite using `[dif_neg hm]`. Establish `h0 : (star (0 : L2X X)) = 0` using `(Formalism.L2.SG.RowDict.conjL (muX X)).map_zero`. Rewrite using `[h0, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RowEvalHH.Re_evF : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsModels → HostHyp D → (∀ x : X.B.I.E, HEq (X.ιE x) x) → ∀ (t : GA D (Yc D 0)) (c : ∀ τ, (MP R).H τ ≃ₗᵢ⋆[ℂ] X.B.H (X.pl.symm τ)), t ∈ GfC (Yc D 0) → LevelMatchA R F X h t → ∀ S ∈ EP R F, ∀ y : ∀ τ, ↥(GlobalTheory.RowEvalHH.Wsub R X c τ), X.B.Re (GlobalTheory.RowEvalHH.evF R X h t c S y) = GlobalTheory.RowEvalHH.evF R X h t c S y := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F X h hLev hGrp hMod hHost hιE t c ht hLM S hS y

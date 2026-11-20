@@ -10,7 +10,7 @@ section
 variable (K : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
 /- English proof (translation)
-Use `letI := IsTopologicalAddGroup.rightUniformSpace K`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := K)`. Use `infer_instance`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem t2Space_isNonarchimedeanLocalField_singleBlock : T2Space K := by
   letI := IsTopologicalAddGroup.rightUniformSpace K
@@ -18,7 +18,7 @@ theorem t2Space_isNonarchimedeanLocalField_singleBlock : T2Space K := by
   infer_instance
 
 /- English proof (translation)
-Establish `e` using `IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K`. Establish `: MulArchimedean (ValueGroupWithZero K)` using `.comap e.toMonoidHom e.strictMono`. Conclude with `exists_pow_lt₀ ha (Units.mk0 γ hγ)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_pow_lt_value {a γ : ValueGroupWithZero K} (ha : a < 1) (hγ : γ ≠ 0) :
     ∃ m : ℕ, a ^ m < γ := by
@@ -29,17 +29,15 @@ theorem exists_pow_lt_value {a γ : ValueGroupWithZero K} (ha : a < 1) (hγ : γ
 variable {K}
 
 /- English proof (translation)
-Set `e` to `IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K`. Establish `hb0 : e (valuation K π) ≠ 0`. Introduce `h`. Conclude with `h0 (e.injective (h.trans (map_zero e).symm))`. Take `⟨y, hy⟩` from `ValuativeRel.valuation_surjective (e.symm (WithZero.exp (-1 : ℤ)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hey : e (valuation K y) = WithZero.exp (-1 : ℤ)` using `by rw [hy]; simp`. Establish `hy1 : valuation K y < 1`. Rewrite using `[← e.strictMono.lt_iff_lt, hey, map_one, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Establish `hle : e (valuation K y) ≤ e (valuation K π)` using `e.strictMono.monotone (hmax y hy1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : e (valuation K π) < 1` using `by simpa using e.strictMono h1`. Establish `hb : e (valuation K π) = WithZero.exp (-1 : ℤ)`. Take `⟨b, hbe⟩ : ∃ b : ℤ, e (valuation K π) = WithZero.exp b` from `⟨_, (WithZero.exp_log hb0).symm⟩`. Rewrite `hle`, `hlt`, the goal using `[hbe]`. Rewrite `hle` using `[hey, WithZero.exp_le_exp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hlt` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hx0 : e (valuation K x) ≠ 0`. Introduce `h`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Valuation.ne_zero_iff _).2 hx (e.injective (h.trans (map_zero e).symm))`. Use `⟨-WithZero.log (e (valuation K x)), e.injective ?_⟩` and prove the remaining obligations. Establish `hz : (WithZero.exp (-1 : ℤ)) ^ (-WithZero.log (e (valuation K x))) = e (valuation K x)`. Rewrite using `[← WithZero.exp_zsmul]`. Simplify using `using WithZero.exp_log hx0`.
-
-Use `show e (valuation K x) = e (valuation K π ^ (-WithZero.log (e (valuation K x))))`. Rewrite using `[map_zpow₀ e, hb, hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_value_eq_zpow {π : K} (h0 : valuation K π ≠ 0) (h1 : valuation K π < 1)
     (hmax : ∀ x : K, valuation K x < 1 → valuation K x ≤ valuation K π) {x : K} (hx : x ≠ 0) :
@@ -78,13 +76,13 @@ end
 section Matrices
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Use `⟨fun i j => ((h : Matrix (Fin n) (Fin n) (intO F)) i j).2, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `(((h⁻¹ : GL (Fin n) (intO F)) : Matrix (Fin n) (Fin n) (intO F)) i j).2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hA, hB⟩`. Set `f : intO F →+* F` to `(intO F).subtype`. Set `A : Matrix (Fin n) (Fin n) (intO F)` to `fun i j => ⟨_, hA i j⟩`. Set `B : Matrix (Fin n) (Fin n) (intO F)` to `fun i j => ⟨_, hB i j⟩`. Establish `hinj : Function.Injective (f.mapMatrix (m` using `Fin n)) := Matrix.map_injective Subtype.val_injective`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAf : f.mapMatrix A = (g : Matrix (Fin n) (Fin n) F)` using `by ext i j; rfl`. Establish `hBf : f.mapMatrix B = ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hAB : A * B = 1` using `hinj (by rw [map_mul, hAf, hBf, map_one]; exact Units.mul_inv g)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBA : B * A = 1` using `hinj (by rw [map_mul, hAf, hBf, map_one]; exact Units.inv_mul g)`. Conclude with `⟨⟨A, B, hAB, hBA⟩, Units.ext hAf⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_unitGL_iff {F : Type*} [Field F] [ValuativeRel F] {n : ℕ} (g : GL (Fin n) F) :
     g ∈ unitGL (n := Fin n) F ↔
@@ -117,7 +115,7 @@ variable {k E : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k]
   [IsNonarchimedeanLocalField E] [Algebra k E]
 
 /- English proof (translation)
-Rewrite using `[← Valuation.Compatible.vle_iff_le, ← Valuation.Compatible.vle_iff_le, ValuativeExtension.vle_iff_vle]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem value_algebraMap_le_iff [ValuativeExtension k E] (a b : k) :
     valuation E (algebraMap k E a) ≤ valuation E (algebraMap k E b) ↔
@@ -126,9 +124,7 @@ theorem value_algebraMap_le_iff [ValuativeExtension k E] (a b : k) :
     ValuativeExtension.vle_iff_vle]
 
 /- English proof (translation)
-Rewrite using `[(IsValuativeTopology.hasBasis_nhds_zero' E).tendsto_right_iff]`. Introduce `γ hγ`. Take `⟨m, hm⟩` from `exists_pow_lt_value E hx hγ`. Use `filter_upwards [eventually_ge_atTop m] with n hn`. Use `show valuation E (x ^ n) < γ`.
-
-Rewrite using `[map_pow]`. Conclude with `(pow_le_pow_right_of_le_one' hx.le hn).trans_lt hm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_pow_zero {x : E} (hx : valuation E x < 1) :
     Tendsto (fun n : ℕ => x ^ n) atTop (𝓝 0) := by
@@ -141,13 +137,11 @@ theorem tendsto_pow_zero {x : E} (hx : valuation E x < 1) :
   exact (pow_le_pow_right_of_le_one' hx.le hn).trans_lt hm
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_zero (algebraMap k E) ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, (IsValuativeTopology.hasBasis_nhds_zero' E).tendsto_right_iff]`. Introduce `γ hγ`. Take `⟨m, hm⟩` from `exists_pow_lt_value E h1 hγ`. Establish `hπ0 : π ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `at h0`. Establish `hmem : {a : k | valuation k a < valuation k (π ^ m)} ∈ 𝓝 (0 : k)` using `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_of_mem (by simpa using pow_ne_zero m hπ0)`. Use `filter_upwards [hmem] with a ha`. Establish `h2 : valuation E (algebraMap k E a) < valuation E (algebraMap k E (π ^ m))`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← not_le, value_algebraMap_le_iff, not_le]`. Conclude with `ha`. Use `show valuation E (algebraMap k E a) < γ`. Use `h2.trans_le ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_pow]`.
-
-Conclude with `hm.le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_algebraMap_of_lt_one [ValuativeExtension k E] {π : k}
     (h0 : valuation E (algebraMap k E π) ≠ 0) (h1 : valuation E (algebraMap k E π) < 1) :
@@ -171,9 +165,7 @@ theorem continuous_algebraMap_of_lt_one [ValuativeExtension k E] {π : k}
   exact hm.le
 
 /- English proof (translation)
-Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `letI : (Valued.v (R := k)).RankOne :=`. Use the proof step `{ hom' := IsRankLeOne.nonempty.some.emb (R := k).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`. Use `letI : NontriviallyNormedField k := Valued.toNontriviallyNormedField k (ValueGroupWithZero k)`.
-
-Use `haveI := t2Space_isNonarchimedeanLocalField_singleBlock E`. Conclude with `f.continuous_of_finiteDimensional`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem continuous_linearMap [FiniteDimensional k E] [ContinuousSMul k E] (f : E →ₗ[k] E) :
     Continuous f := by
@@ -188,11 +180,9 @@ theorem continuous_linearMap [FiniteDimensional k E] [ContinuousSMul k E] (f : E
   exact f.continuous_of_finiteDimensional
 
 /- English proof (translation)
-Establish `ht : Tendsto (fun n : ℕ => τ (x ^ n)) atTop (𝓝 0)`. Establish `h` using `(hτ.tendsto 0).comp (tendsto_pow_zero hx)`. Rewrite `h` using `[map_zero]`. Conclude with `h`. Establish `hmem : {y : E | valuation E y < 1} ∈ 𝓝 (0 : E)` using `(IsValuativeTopology.hasBasis_nhds_zero' E).mem_of_mem one_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, hn0⟩` from `((ht.eventually hmem).and (eventually_gt_atTop 0)).exists`. Assume the negation of the conclusion as `hc`. Establish `h1 : 1 ≤ valuation E (τ x) ^ n` using `one_le_pow₀ (not_lt.1 hc)`. Establish `h2 : valuation E (τ (x ^ n)) < 1` using `hn`. Rewrite `h2` using `[map_pow, map_pow]`.
-
-Conclude with `absurd h2 (not_lt.2 h1)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value_lt_one_of_continuous (τ : E ≃ₐ[k] E) (hτ : Continuous τ) {x : E}
     (hx : valuation E x < 1) : valuation E (τ x) < 1 := by
@@ -210,11 +200,11 @@ theorem value_lt_one_of_continuous (τ : E ≃ₐ[k] E) (hτ : Continuous τ) {x
   exact absurd h2 (not_lt.2 h1)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `h1 : 1 < valuation E (τ x)` using `not_le.1 h`. Establish `hy0 : valuation E (τ x) ≠ 0` using `(zero_lt_one.trans h1).ne'`. Establish `h2 : valuation E (τ x)⁻¹ < 1`. Rewrite using `[map_inv₀]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_lt_one_of_one_lt₀ h1`. Establish `h3` using `value_lt_one_of_continuous τ.symm (hc _) h2`. Rewrite `h3` using `[map_inv₀, AlgEquiv.symm_apply_apply, map_inv₀]`. Establish `hx0 : valuation E x ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: x = 0` using `(Valuation.zero_iff _).1 h0`. Simplify using `[this] at hy0`. Conclude with `absurd ((inv_lt_one₀ (zero_lt_iff.2 hx0)).1 h3) (not_lt.2 hx)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem value_le_one_of_continuous (hc : ∀ τ : E ≃ₐ[k] E, Continuous τ) (τ : E ≃ₐ[k] E) {x : E}
     (hx : valuation E x ≤ 1) : valuation E (τ x) ≤ 1 := by
@@ -233,9 +223,9 @@ theorem value_le_one_of_continuous (hc : ∀ τ : E ≃ₐ[k] E, Continuous τ) 
   exact absurd ((inv_lt_one₀ (zero_lt_iff.2 hx0)).1 h3) (not_lt.2 hx)
 
 /- English proof (translation)
-Use `le_antisymm (value_le_one_of_continuous hc τ hx.le) ?_` and prove the remaining obligations. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`. Establish `h1 : valuation E x⁻¹ ≤ 1` using `by rw [map_inv₀, hx, inv_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `value_le_one_of_continuous hc τ h1`. Rewrite `h2` using `[map_inv₀, map_inv₀]`. Establish `hy0 : valuation E (τ x) ≠ 0` using `by simpa using hx0`. Conclude with `(inv_le_one₀ (zero_lt_iff.2 hy0)).1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem value_eq_one_of_continuous (hc : ∀ τ : E ≃ₐ[k] E, Continuous τ) (τ : E ≃ₐ[k] E) {x : E}
     (hx : valuation E x = 1) : valuation E (τ x) = 1 := by
@@ -250,9 +240,9 @@ theorem value_eq_one_of_continuous (hc : ∀ τ : E ≃ₐ[k] E, Continuous τ) 
   exact (inv_le_one₀ (zero_lt_iff.2 hy0)).1 h2
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Take `⟨m, hm⟩` from `exists_value_eq_zpow h0 h1 hmax hx`. Use `set p := algebraMap k E π with hp`. Establish `hy : valuation E (x * p ^ (-m)) = 1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_zpow₀, hm, ← zpow_add₀ h0]`. Simplify using the standard rewrite rules. Establish `h2` using `value_eq_one_of_continuous hc τ hy`. Rewrite `h2` using `[map_mul, map_zpow₀ τ, hp, τ.commutes, ← hp, map_mul, map_zpow₀, zpow_neg, mul_inv_eq_one₀ (zpow_ne_zero _ h0)]`. Rewrite using `[h2, hm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value_map_eq (hc : ∀ τ : E ≃ₐ[k] E, Continuous τ) {π : k}
     (h0 : valuation E (algebraMap k E π) ≠ 0) (h1 : valuation E (algebraMap k E π) < 1)
@@ -273,17 +263,15 @@ theorem value_map_eq (hc : ∀ τ : E ≃ₐ[k] E, Continuous τ) {π : k}
 end Extension
 
 /- English proof (translation)
-Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ hun σ _`. Take `⟨π, h1, hmax⟩` from `hun`. Establish `h0 : valuation E (algebraMap k E π) ≠ 0`. Take `⟨r, hr0, hr1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation E)`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hmax r hr1` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `hr0 ((Valuation.zero_iff _).1 (le_antisymm this zero_le'))`. Establish `hcont` using `continuous_algebraMap_of_lt_one h0 h1`. Use `haveI : ContinuousSMul k E := continuousSMul_of_algebraMap k E hcont`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ τ : E ≃ₐ[k] E, Continuous τ` using `fun τ => continuous_linearMap τ.toLinearMap`. Establish `hval` using `value_map_eq hc h0 h1 hmax`. Establish `hint : ∀ a : k, algebraMap k E a ∈ intO E ↔ a ∈ intO k`. Introduce `a`. Use `value_algebraMap_le_iff (E := E) a 1` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[Valuation.mem_integer_iff]`. Use `⟨hval, hint, ?_, ?_, hcont, ?_⟩` and prove the remaining obligations. Introduce `n g`. Rewrite using `[mem_unitGL_iff, mem_unitGL_iff, ← map_inv]`. Conclude with `and_congr (forall₂_congr fun i j => hint _) (forall₂_congr fun i j => hint _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ n g`. Establish `hτ : ∀ x : E, τ x ∈ intO E ↔ x ∈ intO E`. Introduce `x`. Simplify using `only [Valuation.mem_integer_iff, hval]`. Rewrite using `[mem_unitGL_iff, mem_unitGL_iff, ← map_inv]`.
-
-Conclude with `and_congr (forall₂_congr fun i j => hτ _) (forall₂_congr fun i j => hτ _)`. Introduce `n`. Conclude with `Continuous.units_map _ (continuous_id.matrix_map hcont)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unramifiedDictionary_a : PositivityTheory.Rg.Tf.Loc.D0a := by
   intro k E _ _ _ _ _ _ _ _ _ _ _ _ hun σ _

@@ -8,7 +8,7 @@ namespace GlobalTheory
 open NumberField
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw hr l Xo c`. Take `⟨φs, hs, -⟩` from `GlobalTheory.T.exists_invariant_smoothProjFan_noSelfIntersections (max 1 (Module.finrank ℚ E * min Dw.p Dw.q))`. Take `⟨φ, h₁, h₂, -⟩` from `GlobalTheory.PolFan.exists_fine_invariant_fan H hs (le_max_right _ _) ∅ (by simp)`. Take `⟨Y, -, -, -, -, -, a₁, a₂, a₃, -⟩` from `GlobalTheory.Published.ToroidalForFanKS.exists_model_of_fan GlobalTheory.T.toroidalCompactificationFan_logKodairaSpencer_iso hr h₁ h₂ Xo c`. Conclude with `⟨Y, a₁, a₂, a₃⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toroidalCompactification_holds : GlobalTheory.Published.ToroidalCompactification := by
   intro E _ _ _ H Dw hr l Xo c

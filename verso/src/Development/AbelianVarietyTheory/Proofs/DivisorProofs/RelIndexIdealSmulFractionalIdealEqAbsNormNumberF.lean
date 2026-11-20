@@ -9,21 +9,19 @@ set_option autoImplicit false
 namespace GlobalTheory.FracIdealIndex
 
 /- English proof (translation)
-Introduce `F _ _ I p hp hI ⟨c, hc0, hc⟩`. Establish `hc' : (c : F) ≠ 0` using `by exact_mod_cast hc0`. Set `f : F →ₗ[𝓞 F] F` to `c • LinearMap.id`. Establish `hf : ∀ y, f y = c • y` using `fun y => rfl`. Establish `hfi : Function.Injective f` using `fun y z h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hf, Algebra.smul_def] at h`. Conclude with `mul_left_cancel₀ (by simpa using hc') h`. Set `g : 𝓞 F →ₗ[𝓞 F] F` to `Algebra.linearMap (𝓞 F) F`. Establish `hgi : Function.Injective g` using `fun y z h => by`. Simplify `h` using `[g]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hle : Submodule.map f I ≤ LinearMap.range g`. Rewrite using `[← Submodule.one_eq_range]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hc y hy`. Set `J : Ideal (𝓞 F)` to `(Submodule.map f I).comap g`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : Submodule.map g J = Submodule.map f I` using `Submodule.map_comap_eq_of_le hle`. Establish `hJ0 : J ≠ ⊥`. Introduce `h`. Apply `hI` to reduce the goal to its premises. Establish `: Submodule.map f I = ⊥` using `by rw [← hJ, h, Submodule.map_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.map_injective_of_injective hfi (this.trans (Submodule.map_bot f).symm)`. Establish `hpJ : Submodule.map g (p * J) = Submodule.map f (p • I)`. Rewrite using `[← Ideal.smul_eq_mul, Submodule.map_smul'', Submodule.map_smul'', hJ]`. Establish `e1 : (p • I).toAddSubgroup.relIndex I.toAddSubgroup = (p * J).toAddSubgroup.relIndex J.toAddSubgroup`. Establish `a1` using `AddSubgroup.relIndex_map_map_of_injective (p • I).toAddSubgroup I.toAddSubgroup (f := (f : F →+ F)) hfi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `a2` using `AddSubgroup.relIndex_map_map_of_injective (p * J).toAddSubgroup J.toAddSubgroup (f := (g : 𝓞 F →+ F)) hgi`. Rewrite `a1`, `a2` using `[← Submodule.map_toAddSubgroup, ← Submodule.map_toAddSubgroup]`. Rewrite using `[← a1, ← a2, hpJ, hJ]`. Apply the tactic sequence `have hle2 : p * J ≤ J := by first | exact Ideal.mul_le_left | exact Ideal.mul_le_right`. Establish `hidx : (p * J).toAddSubgroup.relIndex J.toAddSubgroup * Ideal.absNorm J = Ideal.absNorm (p * J)` using `AddSubgroup.relIndex_mul_index (H := (p * J).toAddSubgroup) (K := J.toAddSubgroup) hle2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hN : Ideal.absNorm J ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `hJ0`. Rewrite using `[e1]`. Rewrite `hidx` using `[map_mul]`.
-
-Conclude with `mul_right_cancel₀ hN hidx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_smul_eq_absNorm : ∀ (F : Type) [Field F] [NumberField F] (I : Submodule (𝓞 F) F) (p : Ideal (𝓞 F)), p ≠ ⊥ → I ≠ ⊥ → (∃ c : 𝓞 F, c ≠ 0 ∧ ∀ y ∈ I, c • y ∈ (1 : Submodule (𝓞 F) F)) → (p • I).toAddSubgroup.relIndex I.toAddSubgroup = Ideal.absNorm p := by
   intro F _ _ I p hp hI ⟨c, hc0, hc⟩

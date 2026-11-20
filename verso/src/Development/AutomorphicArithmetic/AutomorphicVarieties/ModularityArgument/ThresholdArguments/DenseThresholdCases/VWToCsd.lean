@@ -12,15 +12,13 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published
 open scoped Matrix
 /- English proof (translation)
-Introduce `hP F Ω _ _ _ _ _ _ _ l _ ι n hn r c hc ⟨P, hpair⟩ ⟨π, hreg, hatt⟩`. Use `haveI : IsScalarTower ℚ F Ω := IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`. Use `haveI : IsAlgClosure F Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) F⟩`. Use `haveI : IsAlgClosure (maximalRealSubfield F) Ω := ⟨IsAlgClosure.isAlgClosed F, Algebra.IsAlgebraic.trans (maximalRealSubfield F) F Ω⟩`. Take `⟨art, hart⟩ : ∃ art : Neutral.B1.Ideles (maximalRealSubfield F) →* Gab (maximalRealSubfield F) Ω, IsGlobalArtin art` from `hP.litN.aut.art _ Ω`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h1 : IsLAdicCharOf (E` using `F) (Ω := Ω) ι 1 1 := by`. Use `⟨continuous_const, art, 0, hart, fun k _ => ?_, fun x σ _ => ?_⟩` and prove the remaining obligations. Simplify using `[HChar.inf]`. Rewrite using `[infPow_zero, lPow_zero]`. Express the relevant statement in the definitionally equal form `(1 : Qbar l) = ι.symm (1 * 1⁻¹) * 1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Simplify using the standard rewrite rules. Take `⟨j, hj⟩` from `hc`. Set `c' : G (maximalRealSubfield F) Ω` to `AlgEquiv.ofRingEquiv (f := c.toRingEquiv) fun x => by`. Apply `j.injective` to reduce the goal to its premises. Use `(hj _).trans ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_maximalRealSubfield_iff x.1).1 x.2 (j.comp (algebraMap F Ω))`. Establish `hd` using `_root_.selfDual_of_automorphic_inputs hP F Ω l ι n hn r π hatt 1 1 h1 c' P ⟨j, hj⟩ (by`. Introduce `s s' hs`. Rewrite using `[MonoidHom.one_comp, mul_one]`. Use `hpair s s' (AlgEquiv.ext fun x => ?_)` and prove the remaining obligations.
-
-Conclude with `DFunLike.congr_fun hs x)`. Rewrite `hd` using `[map_one, GlobalTheory.ContraPair.dualIsConjBy_one]`. Conclude with `⟨π, hreg, hd, hatt⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.GalN.V.aut_csd_zero_of_complex_conj_pair_automorphic :
     _root_.UpperTheory.V.Af.Hypotheses' → ∀ (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra L Ω] (l : ℕ) [Fact l.Prime]

@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.CovMap.Deg
 
 /- English proof (translation)
-Introduce `x`. Take `⟨W, hW, hx, r, f, hf, hSW⟩` from `hS (g x)`. Use `⟨g ⁻¹' W, hW.preimage hg.1, hx, r, fun i => f i ∘ g, fun i => Cj.holoOn_comp hg (hf i), ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Establish `h1` using `Set.ext_iff.1 hSW (g y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isAnalyticSubset_preimage {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     {A : FinHolAtlas e X} {B : FinHolAtlas e Y} {g : X → Y} (hg : HoloMap A B g) {S : Set Y}
@@ -28,11 +28,11 @@ theorem isAnalyticSubset_preimage {e : ℕ} {X Y : Type} [TopologicalSpace X] [T
   simpa using h1
 
 /- English proof (translation)
-Introduce `h0`. Establish `hlt` using `LinearMap.bot_lt_ker_of_det_eq_zero h0`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hlt.ne'`. Establish `hv' : fderiv ℂ T t v = 0` using `hv`. Establish `hd : fderiv ℂ L t = (fderiv ℂ Q (T t)).comp (fderiv ℂ T t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hL.fderiv_eq]`. Conclude with `fderiv_comp t hQ hT`. Establish `hmem : v ∈ (fderiv ℂ L t).ker` using `by show fderiv ℂ L t v = 0`. Rewrite using `[hd]`. Simplify using `[hv']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[hker]`. Conclude with `hv0 (by simpa using hmem)`.
+A detailed English derivation is pending.
 -/
 theorem det_fderiv_ne_zero_of_factor {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {T : (Fin n → ℂ) → Fin n → ℂ} {Q L : (Fin n → ℂ) → E} {t : Fin n → ℂ}
@@ -56,7 +56,7 @@ theorem det_fderiv_ne_zero_of_factor {n : ℕ} {E : Type} [NormedAddCommGroup E]
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Use function extensionality and compare the values at `q`. Simplify using `only [affCoord]`. Conclude with `mul_div_mul_left _ _ (hc q.1)`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem affCoord_eq_of_orbit {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') (p : (k : K) → ι k) :
     affCoord p z = affCoord p z' := by
@@ -66,7 +66,7 @@ theorem affCoord_eq_of_orbit {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') 
   exact mul_div_mul_left _ _ (hc q.1)
 
 /- English proof (translation)
-Establish `hc : ∀ q, AnalyticAt ℂ (fun v => F v q) u` using `analyticAt_pi_iff.1 hF`. Use `analyticAt_pi_iff.2 fun q => ?_` and prove the remaining obligations. Conclude with `(hc q).div (hc ⟨q.1, p q.1⟩) (hp q.1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem analyticAt_affCoord {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {F : E → (Σ k, ι k) → ℂ} {u : E} (hF : AnalyticAt ℂ F u) (p : (k : K) → ι k)
@@ -83,43 +83,35 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
 
 /- English proof (translation)
-Take `⟨x, hx⟩ : ∃ x, x = (R'.A.chart j).symm t` from `⟨_, rfl⟩`. Rewrite `hc`, `hzJ`, `hwV`, `hzV` using `[← hx]`. Take `⟨x₀, hx₀⟩ : ∃ x₀, x₀ = ρ (h x)` from `⟨_, rfl⟩`. Rewrite `hwV` using `[← hx₀]`. Establish `hxs : x ∈ (R'.A.chart j).source` using `hx ▸ (R'.A.chart j).map_target ht`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hjt : R'.A.chart j x = t` using `by rw [hx]; exact (R'.A.chart j).right_inv ht`. Take `⟨T, hT⟩ : ∃ T, T = A.chart c ∘ h ∘ (R'.A.chart j).symm` from `⟨_, rfl⟩`. Rewrite using `[← hT]`. Establish `hTa : AnalyticAt ℂ T t`. Rewrite using `[hT]; exact hh.2 j c t ⟨ht, by rw [Set.mem_preimage, Set.mem_preimage, ← hx]; exact hc⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hTval : T t = A.chart c (h x)` using `by rw [hT, hx]; rfl`. Establish `hTs : (A.chart c).symm (T t) = h x` using `by rw [hTval]; exact (A.chart c).left_inv hc`. Establish `hTtar : T t ∈ (A.chart c).target` using `by rw [hTval]; exact (A.chart c).map_source hc`. Take `⟨E, hE⟩ : ∃ E : (Fin D → ℂ) → (Σ k, ι k) → ℂ, E = fun u => R.lift x₀ (ρ ((A.chart c).symm u))` from `⟨_, rfl⟩`. Establish `hEa : AnalyticAt ℂ E (T t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `analyticAt_pi_iff.2 fun q => ?_` and prove the remaining obligations. Establish `h1` using `Cj.holoOn_comp hρ (R.holo x₀ q)`. Establish `h2` using `h1 c (T t) ⟨hTtar, by`. Rewrite using `[Set.mem_preimage, Set.mem_preimage, hTs, ← hx₀]`. Conclude with `R.mem_U x₀⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE]`. Conclude with `h2`. Establish `hEt : E (T t) = R.lift x₀ x₀`. Rewrite using `[hE]`. Use `show R.lift x₀ (ρ ((A.chart c).symm (T t))) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hTs, ← hx₀]`. Establish `hzP : R'.lift x x ∈ mcPts P'` using `R'.mem x x (R'.mem_U x)`. Establish `hwP : R.lift x₀ x₀ ∈ mcPts P` using `R.mem x₀ x₀ (R.mem_U x₀)`. Establish `hπ₀ : π x₀ = h x` using `by rw [hx₀]; exact hπρ _`. Establish `horb0 : SameOrbit (f (R.lift x₀ x₀)) (R'.lift x x)` using `hrel _ ⟨hzV, hzP⟩ _ ⟨hwV, hwP⟩ (hgr x x₀ hπ₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose p hp using hzP.1`. Establish `hfE : AnalyticAt ℂ (f ∘ E) (T t)`. Establish `h1 : AnalyticAt ℂ f (E (T t))` using `by rw [hEt]; exact hf _ hwV`. Conclude with `h1.comp hEa`. Establish `hfp : ∀ k, (f ∘ E) (T t) ⟨k, p k⟩ ≠ 0` using `fun k => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha, hfa⟩` from `horb0`. Use `show f (E (T t)) ⟨k, p k⟩ ≠ 0`. Rewrite using `[hEt, hfa]`. Conclude with `mul_ne_zero (ha k) (hp k)`. Establish `hQ` using `analyticAt_affCoord hfE p hfp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨L, hLdef⟩ : ∃ L : (Fin D → ℂ) → (Σ k, ι' k) → ℂ, L = fun y => R'.lift x ((R'.A.chart j).symm y)` from `⟨_, rfl⟩`. Establish `hLa : AnalyticAt ℂ L t`. Use `analyticAt_pi_iff.2 fun q => ?_` and prove the remaining obligations. Establish `h2` using `R'.holo x q j t ⟨ht, by`. Rewrite using `[Set.mem_preimage, ← hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `R'.mem_U x⟩`. Rewrite using `[hLdef]`. Conclude with `h2`. Establish `hLt : L t = R'.lift x x` using `by rw [hLdef, hx]`. Establish `hsc : ContinuousAt (R'.A.chart j).symm t` using `(R'.A.chart j).continuousAt_symm ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsx : (R'.A.chart j).symm t = x` using `hx.symm`. Establish `hhc : ContinuousAt (fun y => h ((R'.A.chart j).symm y)) t` using `hh.1.continuousAt.comp hsc`. Establish `hρc : ContinuousAt (fun y => ρ (h ((R'.A.chart j).symm y))) t` using `hρ.1.continuousAt.comp hhc`. Establish `e1 : ∀ᶠ y in 𝓝 t, y ∈ (R'.A.chart j).target` using `(R'.A.chart j).open_target.mem_nhds ht`. Establish `e2 : ∀ᶠ y in 𝓝 t, (R'.A.chart j).symm y ∈ R'.U x` using `hsc.eventually_mem ((R'.isOpen_U x).mem_nhds (by rw [hsx]; exact R'.mem_U x))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : ∀ᶠ y in 𝓝 t, L y ∈ V'` using `hLa.continuousAt.eventually_mem (hV'.mem_nhds (by rw [hLt]; exact hzV))`. Establish `e4 : ∀ᶠ y in 𝓝 t, h ((R'.A.chart j).symm y) ∈ (A.chart c).source` using `hhc.eventually_mem ((A.chart c).open_source.mem_nhds (by rw [hsx]; exact hc))`. Establish `e5 : ∀ᶠ y in 𝓝 t, ρ (h ((R'.A.chart j).symm y)) ∈ R.U x₀` using `hρc.eventually_mem ((R.isOpen_U x₀).mem_nhds (by rw [hsx, ← hx₀]; exact R.mem_U x₀))`. Establish `e6 : ∀ᶠ y in 𝓝 t, E (T y) ∈ V`. Establish `hcc : ContinuousAt (fun y => E (T y)) t` using `ContinuousAt.comp (g := E) hEa.continuousAt hTa.continuousAt`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcc.eventually_mem (hV.mem_nhds (by rw [hEt]; exact hwV))`. Establish `hfac : (fun y => affCoord p (L y)) =ᶠ[𝓝 t] (fun u => affCoord p ((f ∘ E) u)) ∘ T` using `by filter_upwards [e2, e3, e4, e5, e6] with y h2 h3 h4 h5 h6`. Take `⟨x', hx'⟩ : ∃ x', x' = (R'.A.chart j).symm y` from `⟨_, rfl⟩`. Rewrite `h2`, `h4`, `h5` using `[← hx']`. Establish `hTy : (A.chart c).symm (T y) = h x'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hT]`. Use `show (A.chart c).symm (A.chart c (h ((R'.A.chart j).symm y))) = _`. Rewrite using `[← hx']`. Conclude with `(A.chart c).left_inv h4`. Establish `hEy : E (T y) = R.lift x₀ (ρ (h x'))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hE]`. Use `show R.lift x₀ (ρ ((A.chart c).symm (T y))) = _`. Rewrite using `[hTy]`. Establish `hLy : L y = R'.lift x x'` using `by rw [hLdef, hx']`. Rewrite `h3` using `[hLy]`.
-
-Establish `hg` using `hgr x' (ρ (h x')) (hπρ _)`. Establish `o1 : SameOrbit (R'.lift x x') (R'.lift x' x')` using `R'.compat x x' x' ⟨h2, R'.mem_U x'⟩`. Establish `o2 : SameOrbit (R.lift x₀ (ρ (h x'))) (R.lift (ρ (h x')) (ρ (h x')))` using `R.compat x₀ _ _ ⟨h5, R.mem_U _⟩`. Establish `hr : Rel (R'.lift x x') (E (T y))`. Rewrite using `[hEy]`.
-
-Conclude with `hRelO _ _ _ _ hg o1 o2`. Establish `hso` using `hrel _ ⟨h3, R'.mem x x' h2⟩ _ ⟨h6, by rw [hEy]; exact R.mem x₀ _ h5⟩ hr`. Use `show affCoord p (L y) = affCoord p (f (E (T y)))`. Rewrite using `[hLy]`. Conclude with `(affCoord_eq_of_orbit hso p).symm`.
-
-Establish `himm` using `R'.immersion x hzJ p hp j hxs`. Rewrite `himm` using `[hjt]`. Establish `hker : (fderiv ℂ (fun y => affCoord p (L y)) t).ker = ⊥`. Rewrite using `[hLdef]`. Conclude with `himm`.
-
-Conclude with `det_fderiv_ne_zero_of_factor hTa.differentiableAt hQ.differentiableAt hfac hker`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_local_inverse {P J : Ideal (MRing ι)} {P' J' : Ideal (MRing ι')} {D : ℕ}
     {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X} (R : AnLogRes P J D) (R' : AnLogRes P' J' D)
@@ -235,37 +227,33 @@ theorem det_ne_zero_of_local_inverse {P J : Ideal (MRing ι)} {P' J' : Ideal (MR
   exact det_fderiv_ne_zero_of_factor hTa.differentiableAt hQ.differentiableAt hfac hker
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ P J P' J' D X _ _ _ A R π R' h Rel G G₂ aG aG₂ e _ hP hP' hπ hπ1 hh hG hGP hG₂ hG₂P hRelO hgr hgr' hcount hJ' hG₂z hinv`. Take `⟨ρ, hρπ, hπρ, hρ⟩` from `Cj.exists_holoMap_inverse_of_degree_one A R.A π hπ hπ1`. Take `⟨S, hS⟩ : ∃ S : Set R.X, S = {x | eval (R.lift x x) (map (Int.castRingHom ℂ) G) = 0}` from `⟨_, rfl⟩`. Rewrite using `[← hS]`. Establish `hbr : π '' S = ρ ⁻¹' S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite using `[Set.mem_preimage, hρπ]`. Conclude with `hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hs`. Conclude with `⟨ρ s, hs, hπρ s⟩`. Rewrite using `[hbr]`. Establish `hSa : R.A.IsAnalyticSubset S`. Rewrite using `[hS]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `HilbertSamuel.AnResNullForm.isAnalyticSubset R.toAnRes hG`. Establish `hSi : interior S = ∅`. Rewrite using `[hS]`. Conclude with `HilbertSamuel.AnResNullForm.interior_eq_empty HilbertSamuel.NonvanishingDense.full R.toAnRes hP hG hGP`. Establish `hS₂i : interior {x | eval (R'.lift x x) (map (Int.castRingHom ℂ) G₂) = 0} = ∅` using `HilbertSamuel.AnResNullForm.interior_eq_empty HilbertSamuel.NonvanishingDense.full R'.toAnRes hP' hG₂ hG₂P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hbA : A.IsAnalyticSubset (ρ ⁻¹' S)` using `isAnalyticSubset_preimage hρ hSa`. Use `⟨hbA, ?_, isAnalyticSubset_preimage hh hbA, ?_, ?_, ?_⟩` and prove the remaining obligations. Set `Eq : X ≃ₜ R.X` to `{ toFun := ρ, invFun := π, left_inv := hπρ, right_inv := hρπ, continuous_toFun := hρ.1, continuous_invFun := hπ.1 }`. Establish `h1 : Eq ⁻¹' interior S = interior (Eq ⁻¹' S)` using `Eq.preimage_interior S`. Establish `h2 : interior (ρ ⁻¹' S) = Eq ⁻¹' interior S` using `h1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, hSi, Set.preimage_empty]`. Use `Set.eq_empty_of_subset_empty ?_` and prove the remaining obligations. Rewrite using `[← hS₂i]`. Use `interior_mono fun x hx => ?_` and prove the remaining obligations. Establish `hxS : ρ (h x) ∈ S` using `hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hxS` using `[hS]`. Conclude with `hG₂z _ (R'.mem x x (R'.mem_U x)) _ (R.mem _ _ (R.mem_U _)) (hgr x _ (hπρ _)) hxS`. Introduce `s hs`. Take `⟨x₀, hx₀⟩ : ∃ x₀, x₀ = ρ s` from `⟨_, rfl⟩`. Establish `hπs : π x₀ = s` using `by rw [hx₀]; exact hπρ s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hGw : eval (R.lift x₀ x₀) (map (Int.castRingHom ℂ) G) ≠ 0`. Introduce `h0`. Apply `hs` to reduce the goal to its premises. Use `show ρ s ∈ S`. Rewrite using `[← hx₀, hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `h0`. Establish `hwP : R.lift x₀ x₀ ∈ mcPts P` using `R.mem x₀ x₀ (R.mem_U x₀)`. Establish `hc` using `hcount _ hwP hGw`. Establish `himg : {O | ∃ z ∈ mcPts P', O = {z'' | SameOrbit z'' z} ∧ Rel z (R.lift x₀ x₀)} = (fun x => {z'' | SameOrbit z'' (R'.lift x x)}) '' (h ⁻¹' {s})`. Use extensionality with `O`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl, hr⟩`. Establish `hzJ : z ∉ mcPts J'` using `fun hzJ => hGw (hJ' z hz hzJ _ hwP hr)`. Take `⟨x, hx⟩` from `R'.surj z hz hzJ`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1` using `hgr' x x₀ (hRelO _ _ _ _ hr hx (Cj.sameOrbit_refl _)) show h x = s`. Rewrite using `[← h1, hπs]`. Use extensionality with `z''`. Conclude with `⟨fun h1 => Cj.sameOrbit_trans h1 hx, fun h1 => Cj.sameOrbit_trans h1 (Cj.sameOrbit_symm hx)⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxs : h x = s` using `hx`. Conclude with `⟨R'.lift x x, R'.mem x x (R'.mem_U x), rfl, hgr x x₀ (by rw [hπs, hxs])⟩`. Rewrite `hc` using `[himg]`. Rewrite using `[← hc]`. Use `(Set.ncard_image_of_injOn ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx x' _ hxx`. Establish `hxs : h x = s` using `hx`. Establish `hxJ : R'.lift x x ∉ mcPts J'` using `fun hzJ => hGw (hJ' _ (R'.mem x x (R'.mem_U x)) hzJ _ hwP (hgr x x₀ (by rw [hπs, hxs])))`. Establish `hmem : R'.lift x x ∈ {z'' | SameOrbit z'' (R'.lift x' x')}`. Establish `h1 : R'.lift x x ∈ {z'' | SameOrbit z'' (R'.lift x x)}` using `Cj.sameOrbit_refl _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Set.ext_iff.1 hxx _).1 h1`. Conclude with `R'.inj x x' hxJ hmem`. Introduce `j c y hy hyn hc`. Establish `hyS : ρ (h ((R'.A.chart j).symm y)) ∉ S` using `hyn`. Rewrite `hyS` using `[hS]`.
-
-Establish `hGw : eval (R.lift (ρ (h ((R'.A.chart j).symm y))) (ρ (h ((R'.A.chart j).symm y)))) (map (Int.castRingHom ℂ) G) ≠ 0` using `hyS`. Establish `hzP` using `R'.mem _ _ (R'.mem_U ((R'.A.chart j).symm y))`. Establish `hwP` using `R.mem _ _ (R.mem_U (ρ (h ((R'.A.chart j).symm y))))`. Establish `hr` using `hgr ((R'.A.chart j).symm y) (ρ (h ((R'.A.chart j).symm y))) (hπρ _)`. Establish `hzJ : R'.lift ((R'.A.chart j).symm y) ((R'.A.chart j).symm y) ∉ mcPts J'` using `fun hzJ => hGw (hJ' _ hzP hzJ _ hwP hr)`.
-
-Take `⟨V, V', f, hV, hwV, hV', hzV, hf, hrel⟩` from `hinv _ hzP _ hwP hr hGw`. Conclude with `det_ne_zero_of_local_inverse R R' hρ hπρ hh hRelO hgr j c y hy hc hzJ hV hwV hV' hzV hf hrel`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isDegreeOff_of_correspondence : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (P J : Ideal (MRing ι)) (P' J' : Ideal (MRing ι')) (D : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas D X) (R : AnLogRes P J D) (π : R.X → X) (R' : AnLogRes P' J' D) (h : R'.X → X) (Rel : ((Σ k, ι' k) → ℂ) → ((Σ k, ι k) → ℂ) → Prop) (G : MRing ι) (G₂ : MRing ι') (aG : K → ℕ) (aG₂ : K' → ℕ) (e : ℕ), J = ⊤ → IsArithVar P (D + 1) → IsArithVar P' (D + 1) → HoloMap R.A A π → IsDegreeOff A R.A π 1 ∅ → HoloMap R'.A A h → IsMultiHomog G aG → G ∉ P → IsMultiHomog G₂ aG₂ → G₂ ∉ P' → (∀ z z₁ w w₁, Rel z w → SameOrbit z₁ z → SameOrbit w₁ w → Rel z₁ w₁) → (∀ x x₀, π x₀ = h x → Rel (R'.lift x x) (R.lift x₀ x₀)) → (∀ x x₀, Rel (R'.lift x x) (R.lift x₀ x₀) → π x₀ = h x) → (∀ w ∈ mcPts P, eval w (map (Int.castRingHom ℂ) G) ≠ 0 → {O | ∃ z ∈ mcPts P', O = {z'' | SameOrbit z'' z} ∧ Rel z w}.ncard = e) → (∀ z ∈ mcPts P', z ∈ mcPts J' → ∀ w ∈ mcPts P, Rel z w → eval w (map (Int.castRingHom ℂ) G) = 0) → (∀ z ∈ mcPts P', ∀ w ∈ mcPts P, Rel z w → eval w (map (Int.castRingHom ℂ) G) = 0 → eval z (map (Int.castRingHom ℂ) G₂) = 0) → (∀ z ∈ mcPts P', ∀ w₀ ∈ mcPts P, Rel z w₀ → eval w₀ (map (Int.castRingHom ℂ) G) ≠ 0 → ∃ (V : Set ((Σ k, ι k) → ℂ)) (V' : Set ((Σ k, ι' k) → ℂ)) (f : ((Σ k, ι k) → ℂ) → (Σ k, ι' k) → ℂ), IsOpen V ∧ w₀ ∈ V ∧ IsOpen V' ∧ z ∈ V' ∧ AnalyticOnNhd ℂ f V ∧ ∀ z'' ∈ V' ∩ mcPts P', ∀ w ∈ V ∩ mcPts P, Rel z'' w → SameOrbit (f w) z'') → IsDegreeOff A R'.A h e (π '' {x | eval (R.lift x x) (map (Int.castRingHom ℂ) G) = 0}) := by
   intro K _ ι _ K' _ ι' _ P J P' J' D X _ _ _ A R π R' h Rel G G₂ aG aG₂ e _ hP hP' hπ hπ1 hh hG hGP hG₂

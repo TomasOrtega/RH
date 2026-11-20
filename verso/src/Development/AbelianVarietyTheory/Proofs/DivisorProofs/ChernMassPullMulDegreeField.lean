@@ -16,11 +16,11 @@ set_option autoImplicit false
 namespace GlobalTheory.ChernMassPull
 
 /- English proof (translation)
-Introduce `k _ X Y _ _ p q σ D hX hY hsm π hπ hη hδ B φ hφ ε`. Take `⟨U, hUη, hcard, hchart, hlift⟩` from `GlobalTheory.T.exists_open_covering_charts_generically_finite_field k X Y p q σ D hX hY hsm π hπ hη hδ`. Establish `hpre : PtsOver.map π hπ (spMap σ) ⁻¹' ptsIn p σ U = ptsIn q σ (π ⁻¹ᵁ U)`. Use extensionality with `z`. Simplify using `only [Set.mem_preimage, mem_ptsIn]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `h0Y` using `GlobalTheory.T.chernPart_complement_dense_open_null_field k Y q σ D hY (π ⁻¹ᵁ U) (by simp [hη, hUη]) _ (φ.pull π hπ) ε`. Establish `h0X` using `GlobalTheory.T.chernPart_complement_dense_open_null_field k X p σ D hX U hUη B φ ε`. Establish `h3` using `GlobalTheory.T.chernMeasurePart_preimage_covering_field k X Y p q σ D hX hY π hπ B φ hφ ε (ptsIn p σ U) (isOpen_ptsIn U) _ hcard hchart hlift`. Rewrite `h3` using `[hpre]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← measure_add_measure_compl (isOpen_ptsIn (π ⁻¹ᵁ U)).measurableSet, h0Y, add_zero, h3, ← measure_add_measure_compl (isOpen_ptsIn (p := p) (σ := σ) U).measurableSet, h0X, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mass : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ), IsProjOver p → IsProjOver q → SmoothOfRelativeDimension D p → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q), π (genericPoint Y) = genericPoint X → π.residueDegree (genericPoint Y) ≠ 0 → ∀ (B : LB X) (φ : Weight p σ B), φ.IsCInf → ∀ ε : ℤˣ, (φ.pull π hπ).chernPart D ε Set.univ = (π.residueDegree (genericPoint Y) : ENNReal) * φ.chernPart D ε Set.univ := by
   intro k _ X Y _ _ p q σ D hX hY hsm π hπ hη hδ B φ hφ ε

@@ -11,11 +11,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {y : (Σ k, ι k) → Φ} {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ} (M : FlagModel y Ψ N j)
 
 /- English proof (translation)
-Take `⟨cb', hcb'⟩` from `Classical.axiomOfChoice (isPt_base M hz).1`. Take `⟨F, hF, hG⟩` from `M.frames _ (RingHom.ker_isPrime _) (CoordinateConeArithVar.relevant _ cb' hcb') (isPt_base M hz).le`. Establish `hG' : M.GoodAt F (mCoordIdeal (basePart M.blk z))` using `hG`. Use `choose uv huv using fun q I => exists_hasVal_of_regAt (hG'.2.1 q I).1`. Establish `hυ : ∀ i, ∃ v, M.blk (τ, i) = none → HasVal M.x (basePart M.blk z) (F.υ (τ, i)) v` using `fun i => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : M.blk (τ, i) = none`. Conclude with `(exists_hasVal_of_regAt (hG'.2.2 _ h).2.1).imp fun _ hv _ => hv`. Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose υv hυ using hυ`. Take `⟨PF, -⟩` from `core M ⟨M.j_le, hb, hab, hca, hcb⟩ hk hz c hc hF hG' uv huv υv hυ`.
-
-Conclude with `⟨PF⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_penFrame {τ : Ψ} {a b ca cb : Fin N} {k₀ : K} (hb : (b : ℕ) = a + 1)
     (hab : (b : ℕ) < j ∨ j ≤ (a : ℕ)) (hk : M.blk (τ, a) = some k₀) (hca : (ca : ℕ) = lastCol N j a)

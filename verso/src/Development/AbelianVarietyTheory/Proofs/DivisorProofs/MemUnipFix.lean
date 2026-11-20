@@ -16,15 +16,15 @@ noncomputable section
 namespace GlobalTheory.ThK.LemF.QuotInv.UnipInv
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d d₁ W H' g hg`. Unfold `unip at hg`. Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem u hu => exact hu`. Consider the case `one`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `⟨by rw [GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec], fun z => ⟨0, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec, zero_smul, add_zero]`. Consider the case `mul u w _ _ hu hw`. Use `⟨by rw [GlobalTheory.StabHaar.mat_mul, ← Matrix.mulVec_mulVec, hw.1, hu.1], fun z => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hw.2 z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha'⟩` from `hu.2 z`. Use `⟨a' + a, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.StabHaar.mat_mul, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_add, Matrix.mulVec_smul, ha', hu.1, add_smul, add_assoc]`. Consider the case `inv u _ hu`. Establish `hinv : mat u⁻¹ * mat u = 1` using `by rw [← GlobalTheory.StabHaar.mat_mul, inv_mul_cancel, GlobalTheory.StabHaar.mat_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `hx : mat u⁻¹ *ᵥ incV F H'.x = incV F H'.x` using `by conv_lhs => rw [← hu.1]`. Rewrite using `[Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Use `⟨hx, fun z => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hu.2 z`. Use `⟨-a, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : incM F H'.ι *ᵥ z = mat u *ᵥ (incM F H'.ι *ᵥ z) - a • incV F H'.x` using `by rw [ha, add_sub_cancel_right]`. Use `conv_lhs => rw [h1]`. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec, Matrix.mulVec_smul, hx, neg_smul, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unip_fix : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d d₁ : ℕ)
     (W : Spc F E d) (H' : Plane E d d₁) (g : UA σ W.J), g ∈ unip σ W H' →

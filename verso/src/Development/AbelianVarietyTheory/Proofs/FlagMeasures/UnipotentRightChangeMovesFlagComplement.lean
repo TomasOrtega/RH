@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.UnipRight
 
 /- English proof (translation)
-Use `show Submodule.span E (F.fl.e '' {i | i.1 < j}) = Submodule.span E (Set.range F.fl.e)`. Use `congr 1`. Use extensionality with `v`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq, Set.mem_range]`. Conclude with `⟨fun ⟨i, _, h⟩ => ⟨i, h⟩, fun ⟨i, h⟩ => ⟨i, lt_of_lt_of_le i.2 hj, h⟩⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Xflag_eq_Xsp {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
     (F : LFlag S r T) {j : ℕ} (hj : r ≤ j) : Xflag F j = Xsp F := by
@@ -22,9 +22,9 @@ theorem Xflag_eq_Xsp {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpa
   exact ⟨fun ⟨i, _, h⟩ => ⟨i, h⟩, fun ⟨i, h⟩ => ⟨i, lt_of_lt_of_le i.2 hj, h⟩⟩
 
 /- English proof (translation)
-Establish `hle : (Xsp F).map (n : (VS D).V →ₗ[D.host.E] (VS D).V) ≤ Xsp F`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h1 : x ∈ Xflag F (D.R.rS + 1)` using `by rw [Xflag_eq_Xsp F (by omega)]; exact hx`. Establish `h2` using `hn.2.1 D.R.rS x h1`. Rewrite `h2` using `[Xflag_eq_Xsp F le_rfl]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(Xsp F).add_mem h2 hx` as an intermediate fact. Simplify using `using this`. Use `haveI : FiniteDimensional D.host.E (Xsp F) := FiniteDimensional.span_of_finite _ (Set.finite_range _)`. Conclude with `Submodule.eq_of_le_of_finrank_eq hle (LinearEquiv.finrank_map_eq n (Xsp F))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem map_Xsp_NRat {D : D7} {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (n : GV D) (hn : n ∈ NRat F) :
     (Xsp F).map (n : (VS D).V →ₗ[D.host.E] (VS D).V) = Xsp F := by
@@ -41,7 +41,7 @@ theorem map_Xsp_NRat {D : D7} {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (n : GV
     (LinearEquiv.finrank_map_eq n (Xsp F))
 
 /- English proof (translation)
-Unfold `mapLF`. Rewrite using `[dif_pos hγ]`. Use `show Submodule.span E (Set.range fun a => γ (F.fl.e a)) = (Submodule.span E (Set.range F.fl.e)).map (γ : S.V →ₗ[E] S.V)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Xsp_mapLF' {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
     (γ : S.V ≃ₗ[E] S.V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : LFlag S r T) :
@@ -54,17 +54,17 @@ theorem Xsp_mapLF' {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace
   rfl
 
 /- English proof (translation)
-Introduce `D T' F' γ₁ γ₂ m n' h1 hm hn hγ x' hx'`. Establish `h2 : γ₂ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT`. Rewrite using `[hγ]`. Conclude with `(Formalism.HermitianLatticesTheory.isom _).mul_mem ((Formalism.HermitianLatticesTheory.isom _).mul_mem hm h1) hn.1`. Use `set y := γ₁.symm x' with hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hyo : y ∈ orth (VS D) (Xsp F')`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hx' ⊢`. Introduce `z hz`. Establish `hz' : γ₁ z ∈ Xsp (mapLF γ₁ F')`. Rewrite using `[Xsp_mapLF' γ₁ h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨z, hz, rfl⟩`. Use `hx' (γ₁ z) hz'` as an intermediate fact. Rewrite using `[← h1 z y, hy]`. Simplify using `using this`. Establish `hd : n' y - y ∈ Xsp F'` using `hn.2.2 y hyo`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd' : y - n' y ∈ Xsp F'`. Use `(Xsp F').neg_mem hd` as an intermediate fact. Simplify using `using this`. Rewrite `hd'` using `[← map_Xsp_NRat F' n' hn]`. Take `⟨w, hw, hwe⟩` from `hd'`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Xsp_mapLF' γ₂ h2]`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Establish `hx'y : x' = γ₁ y` using `by simp [hy]`. Use `show γ₂ w = m x' - (γ₂ * γ₁⁻¹) x'`. Rewrite using `[hγ, hx'y]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.mul_apply]`. Establish `hinv : γ₁⁻¹ (γ₁ y) = y` using `by show γ₁.symm (γ₁ y) = y`. Simplify using the standard rewrite rules. Establish `hwe' : n' w = y - n' y` using `hwe`. Rewrite using `[hinv, hwe', map_sub, map_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unip_right : ∀ (D : D7) (T' : D.host.E) (F' : LFlag (VS D) D.R.rS T') (γ₁ γ₂ m n' : GV D),
     γ₁ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT → m ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT → n' ∈ NRat F' → γ₂ = m * γ₁ * n' →

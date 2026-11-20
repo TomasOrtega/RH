@@ -10,11 +10,11 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.GenFan
 
 /- English proof (translation)
-Establish `h1 : (s.stalkMap x).hom.EssFiniteType` using `LocallyOfFiniteType.stalkMap s x`. Set `p : PrimeSpectrum F` to `s x`. Establish `h2 : (algebraMap F ((Spec.structureSheaf F).presheaf.stalk p)).EssFiniteType` using `RingHom.essFiniteType_algebraMap.2 (Algebra.EssFiniteType.of_isLocalization _ p.asIdeal.primeCompl)`. Establish `hQ : Algebra.EssFiniteType ℤ ℚ` using `Algebra.EssFiniteType.of_isLocalization ℚ (nonZeroDivisors ℤ)`. Establish `hF : Algebra.EssFiniteType ℚ F` using `inferInstance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZF : Algebra.EssFiniteType ℤ F` using `Algebra.EssFiniteType.comp ℤ ℚ F`. Establish `h3 : (algebraMap ℤ F).EssFiniteType` using `RingHom.essFiniteType_algebraMap.2 hZF`. Establish `h4` using `(h3.comp h2).comp h1`. Rewrite using `[← RingHom.essFiniteType_algebraMap]`. Use `h4` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `RingHom.ext_int _ _`.
+A detailed English derivation is pending.
 -/
 theorem essFiniteType_int_stalk (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) (s : X ⟶ Sp F)
     [LocallyOfFiniteType s] (x : X) : Algebra.EssFiniteType ℤ (X.presheaf.stalk x) := by
@@ -32,7 +32,7 @@ theorem essFiniteType_int_stalk (F : Type) [Field F] [NumberField F] (X : Scheme
   exact RingHom.ext_int _ _
 
 /- English proof (translation)
-Set `p : PrimeSpectrum F` to `s x`. Conclude with `⟨(s.stalkMap x).hom.comp (algebraMap F ((Spec.structureSheaf F).presheaf.stalk p))⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_ringHom_stalk (F : Type) [Field F] (X : Scheme.{0}) (s : X ⟶ Sp F) (x : X) :
     Nonempty (F →+* X.presheaf.stalk x) := by
@@ -40,7 +40,7 @@ theorem exists_ringHom_stalk (F : Type) [Field F] (X : Scheme.{0}) (s : X ⟶ Sp
   exact ⟨(s.stalkMap x).hom.comp (algebraMap F ((Spec.structureSheaf F).presheaf.stalk p))⟩
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Use `⟨RingHom.id _, Function.bijective_id, ?_⟩` and prove the remaining obligations. Establish `: ψ = φ` using `Spec.map_injective ((cancel_mono _).1 h)`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem stalk_factor_eq {X : Scheme.{0}} {R : CommRingCat.{0}} {x y : X} (hy : y = x) (φ : X.presheaf.stalk x ⟶ R)
     (ψ : X.presheaf.stalk y ⟶ R) (h : Spec.map ψ ≫ X.fromSpecStalk y = Spec.map φ ≫ X.fromSpecStalk x) :
@@ -56,23 +56,17 @@ end GlobalTheory.GenFan
 namespace GlobalTheory.GenFan
 
 /- English proof (translation)
-Introduce `F _ _ X s hs hN x`. Take `⟨hd, hic⟩` from `hN x`. Use `haveI : IsDomain (X.presheaf.stalk x) := hd`. Use `haveI : IsIntegrallyClosed (X.presheaf.stalk x) := hic`. Use `haveI : Algebra.EssFiniteType ℤ (X.presheaf.stalk x) := essFiniteType_int_stalk F X s x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsNoetherianRing (X.presheaf.stalk x) := Algebra.EssFiniteType.isNoetherianRing ℤ _`. Take `⟨ι⟩` from `exists_ringHom_stalk F X s x`. Use `haveI : CharZero (X.presheaf.stalk x) := (RingHom.charZero_iff ι.injective).1 inferInstance`. Establish `fg : (maximalIdeal (X.presheaf.stalk x)).FG` using `IsNoetherian.noetherian _`. Use `haveI hloc : IsLocalRing (AdicCompletion (maximalIdeal (X.presheaf.stalk x)) (X.presheaf.stalk x)) := AdicCompletion.isLocalRing_of_fg fg`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hRd, hRi⟩` from `GlobalTheory.AnalyticNormality.completion_isDomain_and_isIntegrallyClosed (X.presheaf.stalk x)`. Use `haveI hRn : IsNoetherianRing (AdicCompletion (maximalIdeal (X.presheaf.stalk x)) (X.presheaf.stalk x)) := GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion _ _`. Establish `hm` using `AdicCompletion.maximalIdeal_eq_map_of_fg fg`. Use `set R := AdicCompletion (maximalIdeal (X.presheaf.stalk x)) (X.presheaf.stalk x) with hR`. Use `set φ := algebraMap (X.presheaf.stalk x) R with hφ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsLocalHom φ := ((IsLocalRing.local_hom_TFAE φ).out 0 2).mpr hm.symm.le`. Establish `hres : Function.Surjective ((residue R).comp φ)`. Introduce `r`. Take `⟨a, ha⟩` from `(AdicCompletion.residueField_map_bijective (X.presheaf.stalk x)).2 r`. Take `⟨b, rfl⟩` from `residue_surjective a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, RingHom.comp_apply, ResidueField.map_residue]`. Set `ξ : Sp R ⟶ X` to `Spec.map (CommRingCat.ofHom φ) ≫ X.fromSpecStalk x`. Establish `hξ : ∀ p, ξ p = X.fromSpecStalk x (Spec.map (CommRingCat.ofHom φ) p)` using `fun p => Scheme.Hom.comp_apply _ _ _`. Establish `hx : ξ (closedPoint R) = x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(hξ _).trans ?_` and prove the remaining obligations. Establish `: Spec.map (CommRingCat.ofHom φ) (closedPoint R) = closedPoint (X.presheaf.stalk x)` using `comap_closedPoint φ`. Rewrite using `[this]`. Conclude with `Scheme.fromSpecStalk_closedPoint`. Take `⟨e, he, hψ⟩` from `stalk_factor_eq hx (CommRingCat.ofHom φ) (Scheme.stalkClosedPointTo ξ) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ)`.
-
-Use `⟨R, inferInstance, hRd, hloc, ξ, ⟨hRn, hRi, ?_, ?_⟩, hx, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Conclude with `AdicCompletion.isAdicComplete_self _ fg`. Conclude with `(RingHom.charZero_iff (φ.comp ι).injective).1 inferInstance`. Rewrite using `[hψ]`.
-
-Conclude with `isEtaleCompletion_comp_bij e he φ ⟨RingHom.flat_algebraMap_iff.2 (AdicCompletion.flat_of_isNoetherian _), hm.symm, RingHom.Finite.of_surjective _ hres⟩`. Rewrite using `[hψ, ← RingHom.comp_assoc]`. Conclude with `RingHom.FormallyUnramified.of_surjective (hres.comp he.2)`. Introduce `p`. Establish `h : ξ p ∈ Set.range (X.fromSpecStalk x)` using `⟨_, (hξ p).symm⟩`.
-
-Rewrite `h` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_chart : ∀ (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) (s : X ⟶ Sp F), LocallyOfFiniteType s →
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → ∀ x : X, ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : IsLocalRing R)

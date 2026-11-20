@@ -22,26 +22,26 @@ private def quoMap (ν : Representation ℂ G V) (X : Subrepresentation ν) : ν
   ⟨X.toSubmodule.mkQ, fun _ => rfl⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.mkQ_surjective _`.
+A detailed English derivation is pending.
 -/
 private theorem quoMap_surj (ν : Representation ℂ G V) (X : Subrepresentation ν) :
     Function.Surjective (quoMap ν X) := Submodule.mkQ_surjective _
 
 /- English proof (translation)
-The claim follows from `Submodule.Quotient.mk_eq_zero _`.
+A detailed English derivation is pending.
 -/
 private theorem quoMap_eq_zero (ν : Representation ℂ G V) (X : Subrepresentation ν) (v : V) :
     quoMap ν X v = 0 ↔ v ∈ X.toSubmodule := Submodule.Quotient.mk_eq_zero _
 
 /- English proof (translation)
-The claim follows from `(Submodule.ne_bot_iff _).1 fun e => h (Subrepresentation.toSubmodule_injective e)`.
+A detailed English derivation is pending.
 -/
 private theorem exists_ne_of_ne_bot {ν : Representation ℂ G V} {X : Subrepresentation ν} (h : X ≠ ⊥) :
     ∃ v ∈ X.toSubmodule, v ≠ 0 :=
   (Submodule.ne_bot_iff _).1 fun e => h (Subrepresentation.toSubmodule_injective e)
 
 /- English proof (translation)
-Introduce `hi` and use `by obtain ⟨v, hv, h0⟩ := exists_ne_of_ne_bot h exact h0 ((injective_iff_map_eq_zero _).1 hi v ((quoMap_eq_zero ν X v).2 hv))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem quoMap_not_inj {ν : Representation ℂ G V} {X : Subrepresentation ν} (h : X ≠ ⊥) :
     ¬ Function.Injective (quoMap ν X) := fun hi => by
@@ -49,13 +49,13 @@ private theorem quoMap_not_inj {ν : Representation ℂ G V} {X : Subrepresentat
   exact h0 ((injective_iff_map_eq_zero _).1 hi v ((quoMap_eq_zero ν X v).2 hv))
 
 /- English proof (translation)
-Take `⟨v, hv, h0⟩` from `exists_ne_of_ne_bot h.1`. Use `haveI : Nontrivial (Subrepresentation X.toRepresentation) := ⟨⊥, ⊤, fun e => by`. Establish `h1 : (⟨v, hv⟩ : X.toSubmodule) ∈ (⊥ : Subrepresentation X.toRepresentation).toSubmodule` using `e ▸ trivial`. Conclude with `h0 (congrArg Subtype.val (show (⟨v, hv⟩ : X.toSubmodule) = 0 from h1))⟩`. Use `⟨fun S => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Set `T : Subrepresentation ν` to `⟨S.toSubmodule.map X.toSubmodule.subtype, by`. Introduce and unpack `g _ ⟨w, hw, rfl⟩`. Conclude with `⟨X.toRepresentation g w, S.apply_mem_toSubmodule g hw, rfl⟩⟩`. Establish `hT : T ≤ X`. Introduce and unpack `_ ⟨w, -, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `w.2`. Break down `h.le_iff.1 hT with e | e` into its components or cases. Use `Or.inl (le_bot_iff.1 fun w hw => ?_)` and prove the remaining obligations. Establish `h1 : (w : V) ∈ T.toSubmodule` using `⟨w, hw, rfl⟩`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Conclude with `Subtype.ext h1`. Use `Or.inr (top_le_iff.1 fun w _ => ?_)` and prove the remaining obligations. Take `⟨u, hu, h1⟩ : (w : V) ∈ T.toSubmodule` from `by rw [e]; exact w.2`. Rewrite using `[← Subtype.ext h1]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem irr_of_atom {ν : Representation ℂ G V} {X : Subrepresentation ν} (h : IsAtom X) :
     X.toRepresentation.IsIrreducible := by
@@ -80,7 +80,7 @@ private theorem irr_of_atom {ν : Representation ℂ G V} {X : Subrepresentation
     rwa [← Subtype.ext h1]
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Take `⟨s, rfl⟩` from `hf w`. Rewrite using `[← f.isIntertwining, ← map_smul]`. Conclude with `congrArg f (Subtype.ext (hc s))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem scalar_of_subquot {σ : Representation ℂ G W} {ν : Representation ℂ G V} (h : IsSubquotient σ ν)
     {g : G} {c : ℂ} (hc : ∀ v, ν g v = c • v) (w : W) : σ g w = c • w := by
@@ -90,9 +90,9 @@ private theorem scalar_of_subquot {σ : Representation ℂ G W} {ν : Representa
   exact congrArg f (Subtype.ext (hc s))
 
 /- English proof (translation)
-Use `haveI := ((hasFiniteLength_iff_wellFounded μ).1 hl).1`. Set `P : Subrepresentation μ → Prop` to `fun K => ∃ (U : Type) (_ : AddCommGroup U) (_ : Module ℂ U) (ν : Representation ℂ G U) (q : μ.IntertwiningMap ν), Function.Surjective q ∧ IsSubquotient A (ν.comp ψ : Representation ℂ H U) ∧ q.ker = K`. Take `⟨K, ⟨U, _, _, ν, q, hq, hν, rfl⟩, hmax⟩` from `exists_maximal_of_wellFoundedGT P ⟨_, V, _, _, μ, .id μ, Function.surjective_id, hA, rfl⟩`. Use `⟨U, _, _, ν, q, hq, hν, fun Y _ _ τ f hf hτ => (injective_iff_map_eq_zero _).2 fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hq u`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (f.comp q).ker ≤ q.ker` using `hmax ⟨Y, _, _, τ, f.comp q, hf.comp hq, hτ, rfl⟩ fun w hw => by show f (q w) = 0`. Rewrite using `[show q w = 0 from hw, map_zero]`. Conclude with `h1 (show v ∈ (f.comp q).ker from hu)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_min_quot (ψ : H →* G) (A : Representation ℂ H W) {μ : Representation ℂ G V}
     (hl : HasFiniteLength μ) (hA : IsSubquotient A (μ.comp ψ : Representation ℂ H V)) :
@@ -114,9 +114,9 @@ private theorem exists_min_quot (ψ : H →* G) (A : Representation ℂ H W) {μ
   exact h1 (show v ∈ (f.comp q).ker from hu)
 
 /- English proof (translation)
-Use `haveI := ((hasFiniteLength_iff_wellFounded μ).1 hl).2`. Use `StrictMono.wellFoundedLT (f := subComap q) fun S T h => lt_of_le_of_ne (subComap_mono q h.le) fun e => ?_` and prove the remaining obligations. Use `h.not_ge fun w hw => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hq w`. Establish `h1 : v ∈ (subComap q T).toSubmodule` using `hw`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← e]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 private theorem wf_of_surj {μ : Representation ℂ G V} {ν : Representation ℂ G W} (hl : HasFiniteLength μ)
     (q : μ.IntertwiningMap ν) (hq : Function.Surjective q) : WellFoundedLT (Subrepresentation ν) := by
@@ -137,9 +137,7 @@ variable {ψ : H →* G} {A : Representation ℂ H W} {ν : Representation ℂ G
 
 include hAi hA hmin in
 /- English proof (translation)
-Establish `h` using `jhMult_exact (σ := A) (compMap (⟨X.toSubmodule.subtype, fun _ => rfl⟩ : X.toRepresentation.IntertwiningMap ν) ψ) (compMap (quoMap ν X) ψ) hAi Subtype.val_injective (quoMap_surj ν X) (fun u => (quoMap_eq_zero ν X _).2 u.2) fun v hv => ⟨⟨v, (quoMap_eq_zero ν X _).1 hv⟩, rfl⟩`. Establish `h2 : jhMult A ((quo ν X).comp ψ : Representation ℂ H _) = 0`. Assume the negation of the conclusion as `h3`. Conclude with `quoMap_not_inj hX (hmin _ _ _ (quoMap_surj ν X) (jhMult_ne_zero_iff.1 h3))`. Rewrite `h` using `[h2, add_zero]`.
-
-Conclude with `jhMult_ne_zero_iff.1 (h ▸ jhMult_ne_zero_iff.2 hA)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sub_has {X : Subrepresentation ν} (hX : X ≠ ⊥) :
     IsSubquotient A (X.toRepresentation.comp ψ : Representation ℂ H _) := by
@@ -155,11 +153,11 @@ private theorem sub_has {X : Subrepresentation ν} (hX : X ≠ ⊥) :
 
 include hAi hA hmin in
 /- English proof (translation)
-Establish `hzg : ∀ g v, ν z (ν g v) = ν g (ν z v)` using `fun g v => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← hz, map_mul, Module.End.mul_apply]`. Set `T₀ : V →ₗ[ℂ] V` to `ν z - c • LinearMap.id`. Establish `hT₀ : ∀ v, T₀ v = ν z v - c • v` using `fun v => rfl`. Establish `hTg : ∀ g v, T₀ (ν g v) = ν g (T₀ v)` using `fun g v => by rw [hT₀, hT₀, hzg, map_sub, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `R : Subrepresentation ν` to `⟨LinearMap.range T₀, by`. Introduce and unpack `g _ ⟨w, rfl⟩`. Conclude with `⟨ν g w, hTg g w⟩⟩`. Set `T : ν.IntertwiningMap R.toRepresentation` to `⟨T₀.rangeRestrict, fun g => LinearMap.ext fun w => Subtype.ext (hTg g w)⟩`. Distinguish the cases in `hR : R = ⊥`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails.
 
-Establish `h1 : T₀ v ∈ R.toSubmodule` using `⟨v, rfl⟩`. Rewrite `h1` using `[hR]`. Conclude with `sub_eq_zero.1 h1`. Establish `hi` using `hmin _ _ T T₀.surjective_rangeRestrict (sub_has hAi hA hmin hR)`. Conclude with `absurd ((injective_iff_map_eq_zero _).1 hi v₀ (Subtype.ext (sub_eq_zero.2 hv₀))) h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem scalar_all {z : G} (hz : ∀ g, g * z = z * g) {c : ℂ} {v₀ : V} (h0 : v₀ ≠ 0)
     (hv₀ : ν z v₀ = c • v₀) (v : V) : ν z v = c • v := by
@@ -182,7 +180,7 @@ private theorem scalar_all {z : G} (hz : ∀ g, g * z = z * g) {c : ℂ} {v₀ :
 
 include hAi hmin in
 /- English proof (translation)
-Break down `Representation.IsIrreducible.injective_or_eq_zero ((compMap (quoMap ν X) ψ).comp ι) with h | h` into its components or cases. Conclude with `absurd (hmin _ _ _ (quoMap_surj ν X) (.of_injective _ h)) (quoMap_not_inj hX)`. Conclude with `(quoMap_eq_zero ν X _).1 (congrArg (fun F => F w) h)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem range_le {X : Subrepresentation ν} (hX : X ≠ ⊥)
     (ι : A.IntertwiningMap (ν.comp ψ : Representation ℂ H V)) (w : W) : ι w ∈ X.toSubmodule := by
@@ -192,7 +190,7 @@ private theorem range_le {X : Subrepresentation ν} (hX : X ≠ ⊥)
 
 include hAi hmin in
 /- English proof (translation)
-Set `F' : Representation.IntertwiningMap ((quo ν X).comp ψ : Representation ℂ H _) A` to `⟨X.toSubmodule.liftQ F.toLinearMap hF, fun h => Submodule.linearMap_qext _ (LinearMap.ext fun u => F.isIntertwining _ _ h u)⟩`. Break down `Representation.IsIrreducible.surjective_or_eq_zero F' with h | h` into its components or cases. Conclude with `absurd (hmin _ _ _ (quoMap_surj ν X) (.of_surjective _ h)) (quoMap_not_inj hX)`. Conclude with `congrArg (fun F => F (Submodule.Quotient.mk v)) h`.
+Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem map_eq_zero' {X : Subrepresentation ν} (hX : X ≠ ⊥)
     (F : Representation.IntertwiningMap (ν.comp ψ : Representation ℂ H V) A) (hF : ∀ v ∈ X.toSubmodule, F v = 0)
@@ -213,27 +211,23 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 open GroundTheory.Automorphic.Parabolic (isotypicPart isotypicKernel) in
 
 /- English proof (translation)
-Take `⟨U, _, _, ν, q, hq, hν, hmin⟩` from `exists_min_quot ψ A hl hA`. Use `⟨U, _, _, ν, q, hq, hν, ?_⟩` and prove the remaining obligations. Use `haveI := wf_of_surj hl q hq`. Use `haveI := Model.nontrivial_of_isIrreducible hAi`. Establish `hνs : IsSmooth ν` using `(IsSubquotient.of_surjective q hq).isSmooth hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbt : (⊤ : Subrepresentation ν) ≠ ⊥`. Introduce `e`. Take `⟨S, f, hf⟩` from `hν`. Take `⟨w, hw⟩` from `exists_ne (0 : W)`. Take `⟨s, rfl⟩` from `hf w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (s : U) ∈ (⊤ : Subrepresentation ν).toSubmodule` using `trivial`. Rewrite `h1` using `[e]`. Conclude with `hw (by rw [show s = 0 from Subtype.ext h1, map_zero])`. Take `⟨X, hX, -⟩` from `(eq_bot_or_exists_atom_le (⊤ : Subrepresentation ν)).resolve_left hbt`. Establish `hXμ : IsSubquotient X.toRepresentation μ` using `(IsSubquotient.of_injective (⟨X.toSubmodule.subtype, fun _ => rfl⟩ : X.toRepresentation.IntertwiningMap ν) Subtype.val_injective).trans (.of_surjective q hq)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcen : ∀ z ∈ Subgroup.center (GL (Fin b) k), ∃ c : ℂ, ∀ u, ν (ψ z) u = c • u`. Introduce `z hz`. Take `⟨c, hc⟩` from `hsc _ _ (irr_of_atom hX) hXμ z hz`. Take `⟨v, hv, h0⟩` from `exists_ne_of_ne_bot hX.1`. Use `⟨c, scalar_all hAi hν hmin (fun g => ?_) h0 (congrArg Subtype.val (hc ⟨v, hv⟩))⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨h, g', rfl, hg'⟩` from `hdec g`. Rewrite using `[mul_assoc, ← hg', ← mul_assoc, ← map_mul, Subgroup.mem_center_iff.1 hz h, map_mul, mul_assoc]`. Use `choose c hc using hcen`. Set `ω : GL (Fin b) k → ℂ` to `fun z => if h : z ∈ Subgroup.center (GL (Fin b) k) then c z h else 0`. Establish `hων : GroundTheory.Automorphic.Parabolic.HasCentralChar (ν.comp ψ : Representation ℂ _ U) ω` using `fun z hz u => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ω, dif_pos hz]`. Conclude with `hc z hz u`. Establish `hωA : GroundTheory.Automorphic.Parabolic.HasCentralChar A ω` using `fun z hz => scalar_of_subquot hν (hων z hz)`. Establish `hsup` using `GlobalTheory.CompanionTheory.CuspNotInd.isSupercuspidal_of_isCuspidal hAc`. Establish `hsm : IsSmooth (ν.comp ψ : Representation ℂ _ U)` using `isSmooth_comp hνs ψ hψ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hAi`. Establish `hco` using `GroundTheory.Automorphic.Parabolic.isCompl_isotypicPart_isotypicKernel hAc.1 hsup hωA hsm hων`. Set `K : Subrepresentation ν` to `⟨isotypicKernel A (ν.comp ψ : Representation ℂ _ U), fun g u hu => by`. Take `⟨h, g', rfl, hg'⟩` from `hdec g`. Rewrite using `[map_mul, Module.End.mul_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `GroundTheory.Automorphic.Parabolic.isotypicKernel_stable (ρ := (ν.comp ψ : Representation ℂ _ U)) h ?_` and prove the remaining obligations. Rewrite `hu`, the goal using `[GroundTheory.Automorphic.Parabolic.mem_isotypicKernel]`. Introduce `F`. Use `hu ⟨F.toLinearMap ∘ₗ ν g', fun x => LinearMap.ext fun w => ?_⟩` and prove the remaining obligations. Use `show F (ν g' (ν (ψ x) w)) = A x (F (ν g' w))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← F.isIntertwining, ← Module.End.mul_apply, ← map_mul, ← hg', map_mul, Module.End.mul_apply]`. Use the proof step `rfl⟩`. Establish `hK : K = ⊥`. Assume the negation of the conclusion as `hK`. Take `⟨S, f, hf⟩` from `hν`.
-
-Use `GroundTheory.Automorphic.Parabolic.not_surjective_of_le_isotypicKernel hAc.1 hsup hωA hsm hων S (fun u _ => GroundTheory.Automorphic.Parabolic.mem_isotypicKernel.2 fun F => ?_) f hf` and prove the remaining obligations. Conclude with `map_eq_zero' hAi hmin hK F (fun v hv => GroundTheory.Automorphic.Parabolic.mem_isotypicKernel.1 hv F) u`. Establish `hK' : isotypicKernel A (ν.comp ψ : Representation ℂ _ U) = ⊥` using `congrArg Subrepresentation.toSubmodule hK`. Rewrite `hco` using `[hK']`. Establish `hle : isotypicPart A (ν.comp ψ : Representation ℂ _ U) ≤ X.toSubmodule` using `iSup_le fun ι => by`.
-
-Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `range_le hAi hmin hX.1 ι w`. Rewrite `hle` using `[eq_top_of_isCompl_bot hco]`. Take `rfl : X = ⊤` from `top_le_iff.1 hle`. Conclude with `isSimpleOrder_iff_isAtom_top.2 hX`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem exists_irr_quot {G V W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V]
     [Module ℂ V] [AddCommGroup W] [Module ℂ W] {b : ℕ} (ψ : GL (Fin b) k →* G) (hψ : Continuous ψ)
@@ -309,19 +303,19 @@ private theorem exists_irr_quot {G V W : Type} [Group G] [TopologicalSpace G] [I
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Set `π : GlobalTheory.SplitRead.Irr k x.1` to `⟨x.2.rep.V, x.rep, x.2.rep.smooth, x.2.rep.irr⟩`. Set `e` to `stdBlocks (fun a => (q a).1) hq`. Set `ψ : GL (Fin (q c).1) k →* Levi k (fun a => Fin (q a).1)` to `MonoidHom.mulSingle (fun a => GL (Fin (q a).1) k) c`. Establish `hfl : HasFiniteLength (jac e π.π)` using `(hBZ k).2.1 _ _ _ e π.V π.π π.smooth (hasFiniteLength_of_isIrreducible π.irr)`. Establish `hsub : IsSubquotient (q c).rep ((jac e π.π).comp ψ : Representation ℂ _ _)` using `(GlobalTheory.CompanionTheory.Hypotheses₂.TD.isSubquotient_comp_mulSingle (fun a => (q a).rep) (fun a => (q a).2.rep.irr) c).trans (SupportUnique.isSubquotient_comp (jhMult_ne_zero_iff.1 hj) ψ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U, _, _, ν, p, hp, hν, hνi⟩` from `exists_irr_quot ψ (continuous_mulSingle (A := fun a => GL (Fin (q a).1) k) c) (fun g => by`. Use `⟨g c, Function.update g c 1, ?_, fun y => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Distinguish the cases in `ha : a = c`. Substitute `ha` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[ψ]`. Simplify using `[ψ, Pi.mulSingle_eq_of_ne ha, Function.update_of_ne ha]`. Use function extensionality and compare the values at `a`. Distinguish the cases in `ha : a = c`. Substitute `ha` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[ψ]`. Simplify using `[ψ, Pi.mulSingle_eq_of_ne ha, Function.update_of_ne ha])`. Use the proof step `(q c).2.rep.irr hc.2 (isSmooth_jac e π.smooth) hfl hsub (by`. Introduce `Y _ _ τ hτ hτs z hz`. Take `⟨σ, hσ⟩` from `GlobalTheory.CuspSupportExist.L_tens hG k _ π _ _ e Y τ hτ hτs`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ω, -, hω⟩` from `exists_smooth_hasCentralChar (σ c).smooth (σ c).irr`. Rewrite `hz` using `[Matrix.GeneralLinearGroup.center_eq_range_scalar]`. Take `⟨z, rfl⟩` from `hz`. Use `⟨_, scalar_of_subquot hσ (GlobalTheory.CompanionTheory.Hypotheses₂.TDSwap.piTensor_scalar (fun a => (σ a).π) _ (fun a => if a = c then (ω z : ℂ) else 1) fun a v => ?_)⟩` and prove the remaining obligations. Distinguish the cases in `ha : a = c`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `ha` using the available equality. Simplify `hω z v` using `[ψ]`. Simplify using `[ψ, Pi.mulSingle_eq_of_ne ha, ha])`. Take `⟨σ, hσ⟩` from `GlobalTheory.CuspSupportExist.L_tens hG k _ π _ _ e U ν hνi (.of_surjective p hp)`. Take `⟨φ, hφ⟩` from `GlobalTheory.injective_of_jacquet_surjective π e hνi p hp`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hirr : (piTensor fun a => (σ a).π).IsIrreducible` using `GlobalTheory.ExtTensorIrr.piTensor_isIrreducible hBZ k (Fin h) (fun a => Fin (q a).1) (fun j => ⟨(σ j).V, (σ j).π, (σ j).smooth, (σ j).irr⟩)`. Take `⟨ε⟩` from `SupportUnique.nonempty_equiv_of_isSubquotient hνi hirr hσ`. Take `⟨η⟩` from `SupportUnique.nonempty_equiv_of_isSubquotient (q c).2.rep.irr (σ c).irr (SupportUnique.isSubquotient_factor (fun a => (σ a).π) c (q c).2.rep.irr (hν.trans (SupportUnique.isSubquotient_comp hσ ψ)))`. Set `Ψ` to `(parIndEquiv e ε.symm).trans (prodIrrEquiv hq (fun a => (σ a).π) (fun a => (σ a).smooth) fun a => (σ a).irr)`. Conclude with `⟨fun a => IrrGL.of (σ a).π (σ a).smooth (σ a).irr, hq, Ψ.toIntertwiningMap.comp φ, (IrrGL.of_eq_of.2 ⟨η⟩).trans (IrrGL.of_rep (q c)), Ψ.toLinearEquiv.injective.comp hφ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_emb (hG : GlobalTheory.Published.GeometricLemma) (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) (x : IrrGL k)
     {h : ℕ} (q : Fin h → IrrGL k) (hq : ∑ a, (q a).1 = x.1) (c : Fin h) (hc : (q c).IsCusp)
@@ -378,7 +372,7 @@ theorem exists_emb (hG : GlobalTheory.Published.GeometricLemma) (hBZ : GlobalThe
     (IrrGL.of_eq_of.2 ⟨η⟩).trans (IrrGL.of_rep (q c)), Ψ.toLinearEquiv.injective.comp hφ⟩
 
 /- English proof (translation)
-Establish `key : ∀ y z : IrrGL k, r = ![y, z] → Emb x y z`. Introduce and unpack `y z rfl`. Conclude with `⟨hr, f, hf⟩`. Use `key _ _ (funext fun a => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases a <;> rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem emb_of (x : IrrGL k) (r : Fin 2 → IrrGL k) (hr : ∑ a, (r a).1 = x.1)
     (f : x.rep.IntertwiningMap (prodIrr r hr)) (hf : Function.Injective f) : Emb x (r 0) (r 1) := by
@@ -391,7 +385,7 @@ theorem emb_of (x : IrrGL k) (r : Fin 2 → IrrGL k) (hr : ∑ a, (r a).1 = x.1)
 end UpperTheory.Lit.Full.EmbR
 
 /- English proof (translation)
-Introduce `hG hBZ k _ _ _ _ x q hq hc hj`. Take `⟨r, hr, f, h1, hf⟩` from `EmbR.exists_emb hG hBZ x q hq 1 hc hj`. Conclude with `⟨r 0, h1 ▸ EmbR.emb_of x r hr f hf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Lit.Full.embR :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (x : IrrGL k) (q : Fin 2 → IrrGL k) (hq : ∑ a, (q a).1 = x.1), (q 1).IsCusp → jm q hq x.rep ≠ 0 → ∃ y, Emb x y (q 1) := by

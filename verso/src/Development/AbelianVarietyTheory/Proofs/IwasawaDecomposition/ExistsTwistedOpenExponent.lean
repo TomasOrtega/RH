@@ -10,7 +10,7 @@ namespace GlobalTheory.HeightCounting.FitTwExp
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Introduce `hL D' b hE hC`. Take `⟨Tw⟩` from `GlobalTheory.HeightCounting.FitTw.nonempty_twOpen b.D b.cf b.jE b.A b.low b.Pq b.S b.hL b.eig b.θ b.Bs b.M b.C b.tp b.ch b.mt hE.star hE.int hE.split hC b.big b.L b.Sp b.Au`. Use `⟨{ Tw with exp := GlobalTheory.HeightCounting.FitTw.expL b.L b.Bs.exp, ch := GlobalTheory.HeightCounting.FitTw.chSideL b.Sp b.ch }, ?_⟩` and prove the remaining obligations. Conclude with `{ tau := fun h => h pl := fun _ _ _ _ _ _ _ _ _ => rfl reads := fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ h => h }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_twOpen_expRel : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D' : D7) (b : NBuilt hL D'), Elem b.D → GlobalTheory.RowTie.ChebSplit b.D.nd → ∃ Tw : TwOpen (withLoc b.L) (chL b.L b.C) (cfL b.L b.cf) (tpL b.L b.tp) (mtL b.L b.M) b.low, ExpRel b.L b.Bs.exp Tw.exp := by
   intro hL D' b hE hC

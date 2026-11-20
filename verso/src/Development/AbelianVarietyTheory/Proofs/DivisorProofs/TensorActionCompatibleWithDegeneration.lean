@@ -25,7 +25,7 @@ def degCHom {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) :
   map_add' x y := by rw [D.c_add]; rfl
 
 /- English proof (translation)
-Establish `h` using `congrArg Additive.toMul (map_sum (degCHom D) (fun j => n j • x j) Finset.univ)`. Rewrite `h` using `[toMul_sum]`. Use `h.trans ?_` and prove the remaining obligations. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, toMul_zsmul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -39,11 +39,11 @@ theorem degC_sum_zsmul {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {r : 
   rfl
 
 /- English proof (translation)
-Introduce `R _ _ D D' r W T s`. Use `letI := T.mod s`. Introduce `a y`. Use `Fan.IsLimit.hom_ext T.lim _ _ fun i => ?_` and prove the remaining obligations. Use `show D'.c (a • y) ≫ T.pr i = (D'.c y ≫ T.act (TensO.mat s a)) ≫ T.pr i`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[T.c_pr, Category.assoc, T.act_pr, Tens.xe_smul, degC_sum_zsmul D]`. Establish `h` using `map_prod (precompHom (M := D.P.A) (D'.c y)) (fun j => T.pr j ^ TensO.mat s a i j) Finset.univ`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = (D'.c y ≫ T.pr j) ^ _`. Rewrite using `[T.c_pr]`.
+A detailed English derivation is pending.
 -/
 theorem Tens.c_smul : ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ)
     (T : Tens D D' W) (s : SymUnit r), letI := T.mod s; ∀ (a : TensO s) (y : D'.X),

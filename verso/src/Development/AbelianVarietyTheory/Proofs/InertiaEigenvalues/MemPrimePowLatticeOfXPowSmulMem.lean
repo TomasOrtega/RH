@@ -7,7 +7,7 @@ namespace GlobalTheory.CokerL
 open Matrix
 
 /- English proof (translation)
-Use `congrArg (coeff (k + N)) h` as an intermediate fact. Rewrite `this` using `[coeff_X_pow_mul, coeff_smul, smul_eq_mul]`. Rewrite using `[this, inv_mul_cancel_left₀ hc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mul_coeff_eq_of_X_pow_mul {K : Type} [Field K] {N : ℕ} {c : K} (hc : c ≠ 0)
     {f g : K⟦X⟧} (h : X ^ N * f = c • g) (k : ℕ) : c⁻¹ * coeff k f = coeff (k + N) g := by
@@ -16,11 +16,11 @@ theorem inv_mul_coeff_eq_of_X_pow_mul {K : Type} [Field K] {N : ℕ} {c : K} (hc
   rw [this, inv_mul_cancel_left₀ hc]
 
 /- English proof (translation)
-Establish `hc : (l : K) ^ b ≠ 0` using `pow_ne_zero _ (l_ne_zero l)`. Use `⟨((l : K) ^ b)⁻¹ • w, mem_tot.2 fun τ => P.mem_extc_iff.2 fun i => ?_, (smul_inv_smul₀ hc w).symm⟩` and prove the remaining obligations. Establish `hm` using `P.mem_extc_iff.1 (mem_tot.1 hw τ)`. Establish `hm'` using `P.mem_extc_iff.1 (mem_tot.1 hz τ)`. Establish `hi : X ^ (e * n) * (P.mxInv τ *ᵥ w τ) i = (l : K) ^ b • (P.mxInv τ *ᵥ z τ) i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ` using `congrArg (fun v : Vec K a ι => (P.mxInv τ *ᵥ v τ) i) h`. Simplify using `only [Pi.smul_apply, Matrix.mulVec_smul, smul_eq_mul] at hτ`. Rewrite using `[pow_mul]`. Conclude with `hτ`. Rewrite using `[mem_A]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Rewrite using `[Pi.smul_apply, Matrix.mulVec_smul, Pi.smul_apply, coeff_smul, smul_eq_mul, inv_mul_coeff_eq_of_X_pow_mul hc hi]`. Conclude with `mem_A.1 (hm' i) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_lpow_L_of_vpow_smul (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
     [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime]

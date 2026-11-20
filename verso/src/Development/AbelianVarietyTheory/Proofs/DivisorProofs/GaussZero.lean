@@ -26,7 +26,7 @@ def ulog {K : Type} [Field K] [NumberField K] (φ : I → K →+* ℂ) (u : (�
   fun i => Real.log (‖φ i ((u : 𝓞 K) : K)‖ ^ 2)
 
 /- English proof (translation)
-Unfold `hmon`. Use `split_ifs with h`. Rewrite using `[map_zero]; exact zero_pow (by omega)`. Conclude with `zero_pow (by omega)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hmon_zero {n : ℤ} (hn : n ≠ 0) : hmon n 0 = 0 := by
   unfold hmon
@@ -35,16 +35,16 @@ theorem hmon_zero {n : ℤ} (hn : n ≠ 0) : hmon n 0 = 0 := by
   · exact zero_pow (by omega)
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hn`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hmon_zero hi])`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gauss_zero {n : I → ℤ} (hn : ∃ i, n i ≠ 0) : gauss n 0 = 0 := by
   obtain ⟨i, hi⟩ := hn
   exact Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hmon_zero hi])
 
 /- English proof (translation)
-Unfold `hmon`. Use `split_ifs with h`. Rewrite using `[norm_pow, Complex.norm_conj]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_pow]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem norm_hmon (n : ℤ) (z : ℂ) : ‖hmon n z‖ = ‖z‖ ^ n.natAbs := by
   unfold hmon

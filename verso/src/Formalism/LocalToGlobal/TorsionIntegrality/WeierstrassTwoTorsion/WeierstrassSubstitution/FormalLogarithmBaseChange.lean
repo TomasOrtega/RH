@@ -28,9 +28,9 @@ abbrev curveM : WeierstrassCurve (MvPowerSeries (Fin 2) R) :=
   W.map (MvPowerSeries.C : R →+* MvPowerSeries (Fin 2) R)
 
 /- English proof (translation)
-Establish `hs'` using `PowerSeries.HasSubst.of_constantCoeff_zero hs`. Establish `hC : ∀ a : R, (PowerSeries.C a).subst s = MvPowerSeries.C a` using `fun a => by`. Rewrite using `[← PowerSeries.coe_substAlgHom hs']`. Conclude with `(PowerSeries.substAlgHom hs').commutes a`. Rewrite using `[← PowerSeries.coe_substAlgHom hs']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [fw, fu, fwAt, fuAt, map_sub, map_mul, map_add, map_pow, map_ofNat, map_one]`. Rewrite using `[PowerSeries.coe_substAlgHom hs']`. Simplify using `only [hC, PowerSeries.subst_X hs', WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆]`. Apply the tactic sequence `try ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fw_subst {s : MvPowerSeries (Fin 2) R} (hs : cc s = 0) :
     (fw W).subst s = fwAt (curveM W) s ((wSer W).subst s) := by
@@ -46,9 +46,9 @@ theorem fw_subst {s : MvPowerSeries (Fin 2) R} (hs : cc s = 0) :
   try ring
 
 /- English proof (translation)
-Establish `hs'` using `PowerSeries.HasSubst.of_constantCoeff_zero hs`. Establish `hC : ∀ a : R, (PowerSeries.C a).subst s = MvPowerSeries.C a` using `fun a => by`. Rewrite using `[← PowerSeries.coe_substAlgHom hs']`. Conclude with `(PowerSeries.substAlgHom hs').commutes a`. Rewrite using `[← PowerSeries.coe_substAlgHom hs']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [fw, fu, fwAt, fuAt, map_sub, map_mul, map_add, map_pow, map_ofNat, map_one]`. Rewrite using `[PowerSeries.coe_substAlgHom hs']`. Simplify using `only [hC, PowerSeries.subst_X hs', WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆]`. Apply the tactic sequence `try ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fu_subst {s : MvPowerSeries (Fin 2) R} (hs : cc s = 0) :
     (fu W).subst s = fuAt (curveM W) s ((wSer W).subst s) := by
@@ -64,11 +64,9 @@ theorem fu_subst {s : MvPowerSeries (Fin 2) R} (hs : cc s = 0) :
   try ring
 
 /- English proof (translation)
-Establish `hs'` using `PowerSeries.HasSubst.of_constantCoeff_zero hs`. Establish `hC : ∀ a : R, (PowerSeries.C a).subst s = MvPowerSeries.C a` using `fun a => by`. Rewrite using `[← PowerSeries.coe_substAlgHom hs']`. Conclude with `(PowerSeries.substAlgHom hs').commutes a`. Establish `h` using `(unit_flow R W).2.2.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `WEq at h ⊢`. Establish `h2` using `congrArg (PowerSeries.substAlgHom (R := R) hs') h`. Simplify using `only [map_sub, map_mul, map_add, map_pow, map_ofNat, map_one] at h2`. Rewrite `h2` using `[PowerSeries.coe_substAlgHom hs']`. Simplify using `only [hC, PowerSeries.subst_X hs', WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] at h2 ⊢`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weq_subst {s : MvPowerSeries (Fin 2) R} (hs : cc s = 0) :
     WEq (curveM W) s ((wSer W).subst s) := by
@@ -89,7 +87,7 @@ def Dm (i : Fin 2) (a : MvPowerSeries (Fin 2) R) : MvPowerSeries (Fin 2) R :=
   (fw W).subst (MvPowerSeries.X i : MvPowerSeries (Fin 2) R) * MvPowerSeries.pderiv R i a
 
 /- English proof (translation)
-Use `⟨fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Unfold `Dm`. Rewrite using `[map_add, mul_add]`. Unfold `Dm`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -102,7 +100,7 @@ theorem isDer_Dm (i : Fin 2) : IsDer (Dm W i) := by
     ring
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;>`. Unfold `Dm`. Simplify using `[MvPowerSeries.pderiv_C]`.
+Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem const_Dm (i : Fin 2) : ConstCurve (Dm W i) (curveM W) := by
   refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;>
@@ -110,7 +108,7 @@ theorem const_Dm (i : Fin 2) : ConstCurve (Dm W i) (curveM W) := by
     simp [MvPowerSeries.pderiv_C]
 
 /- English proof (translation)
-Unfold `Dm`. Rewrite using `[Formalism.G.LogCR.pderiv_psubst hs]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Dm_subst (i : Fin 2) {s : MvPowerSeries (Fin 2) R} (hs : cc s = 0) (f : R⟦X⟧) :
     Dm W i (f.subst s) = (derivative R f).subst s * Dm W i s := by
@@ -119,11 +117,11 @@ theorem Dm_subst (i : Fin 2) {s : MvPowerSeries (Fin 2) R} (hs : cc s = 0) (f : 
   ring
 
 /- English proof (translation)
-Establish `hX : MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPowerSeries (Fin 2) R) = 0` using `MvPowerSeries.constantCoeff_X i`. Establish `hF` using `unit_flow R W`. Establish `hDX : Dm W i (MvPowerSeries.X i) = (fw W).subst (MvPowerSeries.X i : MvPowerSeries (Fin 2) R)`. Unfold `Dm`. Rewrite using `[MvPowerSeries.pderiv_X_self, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨weq_subst W hX, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hDX, fw_subst W hX]`. Rewrite using `[Dm_subst W i hX, ← fu_subst W hX, hDX]`. Establish `h3 : fw W * derivative R (wSer W) = fu W`. Establish `h4` using `hF.2.2.1.2.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[hF.2.2.2.2.1]`. Simplify `h4` using `only [D, Derivation.smul_apply, smul_eq_mul]`. Establish `hs'` using `PowerSeries.HasSubst.of_constantCoeff_zero hX`. Rewrite using `[← h3, ← PowerSeries.coe_substAlgHom (R := R) hs', map_mul, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem flow_Dm (i : Fin 2) : IsFlowUW (curveM W) (Dm W i) (MvPowerSeries.X i) (Fgl1.Wi W i) := by
   have hX : MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPowerSeries (Fin 2) R) = 0 :=
@@ -143,16 +141,16 @@ theorem flow_Dm (i : Fin 2) : IsFlowUW (curveM W) (Dm W i) (MvPowerSeries.X i) (
     rw [← h3, ← PowerSeries.coe_substAlgHom (R := R) hs', map_mul, mul_comm]
 
 /- English proof (translation)
-Unfold `Dm`. Rewrite using `[MvPowerSeries.pderiv_X_of_ne h, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Dm_X_of_ne {i j : Fin 2} (h : j ≠ i) : Dm W i (MvPowerSeries.X j) = 0 := by
   unfold Dm
   rw [MvPowerSeries.pderiv_X_of_ne h, mul_zero]
 
 /- English proof (translation)
-Establish `h : lam W * (MvPowerSeries.X 1 - MvPowerSeries.X 0) = Fgl1.Wi W 1 - Fgl1.Wi W 0` using `(formal_group_chord R W).1`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify using the standard rewrite rules. Use `show lam W * (MvPowerSeries.X 0 - MvPowerSeries.X 1) = Fgl1.Wi W 0 - Fgl1.Wi W 1`. Rewrite using `[← neg_sub, mul_neg, h, neg_sub]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem lam_mul' (i j : Fin 2) :
     lam W * (MvPowerSeries.X i - MvPowerSeries.X j) = Fgl1.Wi W i - Fgl1.Wi W j := by
@@ -166,9 +164,7 @@ theorem lam_mul' (i j : Fin 2) :
   · simp
 
 /- English proof (translation)
-Establish `h : lam W * (MvPowerSeries.X 1 - MvPowerSeries.X 0) = Fgl1.Wi W 1 - Fgl1.Wi W 0` using `(formal_group_chord R W).1`. Use `fin_cases i`. Both sides reduce to the same expression. Use `show nu W = Fgl1.Wi W 1 - lam W * MvPowerSeries.X 1`. Unfold `nu`.
-
-Take the linear combination `h`.
+Establish an intermediate fact. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem nu_eq (i : Fin 2) : nu W = Fgl1.Wi W i - lam W * MvPowerSeries.X i := by
   have h : lam W * (MvPowerSeries.X 1 - MvPowerSeries.X 0) = Fgl1.Wi W 1 - Fgl1.Wi W 0 :=
@@ -180,7 +176,7 @@ theorem nu_eq (i : Fin 2) : nu W = Fgl1.Wi W i - lam W * MvPowerSeries.X i := by
     linear_combination h
 
 /- English proof (translation)
-Establish `hinv : cThree W * MvPowerSeries.invOfUnit (cThree W) 1 = 1` using `MvPowerSeries.mul_invOfUnit _ _ (by simp [Fgl1.cThree_cc])`. Apply the tactic sequence `have hsum : (MvPowerSeries.X i : MvPowerSeries (Fin 2) R) + MvPowerSeries.X j = MvPowerSeries.X 0 + MvPowerSeries.X 1 := by fin_cases i <;> fin_cases j <;> first | exact absurd rfl hij | rfl | exact add_comm _ _`. Rewrite using `[hsum, uThird]`. Take the linear combination `(-(cTwo W)) * hinv`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem third_rel (i j : Fin 2) (hij : i ≠ j) :
     cThree W * (MvPowerSeries.X i + MvPowerSeries.X j + uThird W) + cTwo W = 0 := by
@@ -193,17 +189,17 @@ theorem third_rel (i j : Fin 2) (hij : i ≠ j) :
   linear_combination (-(cTwo W)) * hinv
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨j, hji⟩ : ∃ j : Fin 2, j ≠ i := ⟨i + 1, by fin_cases i <;> decide⟩`. Establish `hXj : MvPowerSeries.constantCoeff (MvPowerSeries.X j : MvPowerSeries (Fin 2) R) = 0` using `MvPowerSeries.constantCoeff_X j`. Establish `hD2 : Dm W i (Fgl1.Wi W j) = 0`. Rewrite using `[Dm_subst W i hXj, Dm_X_of_ne W hji, mul_zero]`. Establish `hne12 : (MvPowerSeries.X i : MvPowerSeries (Fin 2) R) ≠ MvPowerSeries.X j` using `fun h => hji (MvPowerSeries.X_inj.mp h).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcoef : ∀ k l : Fin 2, MvPowerSeries.coeff (Finsupp.single k 1) (MvPowerSeries.X l : MvPowerSeries (Fin 2) R) = if k = l then 1 else 0`. Introduce `k l`. Rewrite using `[MvPowerSeries.coeff_X]`. Distinguish the cases in `h : k = l`. Simplify using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Finsupp.single_left_inj one_ne_zero]`. Establish `hne31 : uThird W ≠ MvPowerSeries.X i` using `fun h => by`. Establish `h1` using `Fgl1.uThird_L (W := W) j`. Rewrite `h1` using `[h, hcoef, if_neg hji]`. Conclude with `one_ne_zero (neg_eq_zero.mp h1.symm)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne32 : uThird W ≠ MvPowerSeries.X j` using `fun h => by`. Establish `h1` using `Fgl1.uThird_L (W := W) i`. Rewrite `h1` using `[h, hcoef, if_neg (Ne.symm hji)]`. Conclude with `one_ne_zero (neg_eq_zero.mp h1.symm)`. Establish `hC3 : (1 + (curveM W).a₂ * lam W + (curveM W).a₄ * lam W ^ 2 + (curveM W).a₆ * lam W ^ 3) ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1` using `congrArg MvPowerSeries.constantCoeff (show cThree W = 0 from h)`. Rewrite `h1` using `[Fgl1.cThree_cc, map_zero]`. Conclude with `one_ne_zero h1`. Establish `h9 : (1 + (curveM W).a₂ * lam W + (curveM W).a₄ * lam W ^ 2 + (curveM W).a₆ * lam W ^ 3) * (MvPowerSeries.X i + MvPowerSeries.X j + uThird W) + ((curveM W).a₁ * lam W + (curveM W).a₂ * nu W + (curveM W).a₃ * lam W ^ 2 + 2 * (curveM W).a₄ * lam W * nu W + 3 * (curveM W).a₆ * lam W …` using `third_rel W i j (Ne.symm hji)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `haveI : IsDomain (MvPowerSeries (Fin 2) R) := NoZeroDivisors.to_isDomain _`. Establish `hT` using `flowThirdPoint (MvPowerSeries (Fin 2) R) (curveM W) (Dm W i) (MvPowerSeries.X i) (Fgl1.Wi W i) (MvPowerSeries.X j) (Fgl1.Wi W j) (lam W) (nu W) (uThird W) (isDer_Dm W i) (const_Dm W i) (flow_Dm W i) (weq_subst W hXj) (Dm_X_of_ne W hji) hD2 (lam_mul' W i j) (nu_eq W i) h9 hC3 hne1 …`. Rewrite using `[hT.2.1, fw_subst W (Fgl1.uThird_cc (W := W)), ← Fgl1.wThird_eq (W := W)]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem Dm_uThird [IsDomain R] (i : Fin 2) : Dm W i (uThird W) = -(fw W).subst (uThird W) := by
   obtain ⟨j, hji⟩ : ∃ j : Fin 2, j ≠ i := ⟨i + 1, by fin_cases i <;> decide⟩
@@ -245,16 +241,16 @@ theorem Dm_uThird [IsDomain R] (i : Fin 2) : Dm W i (uThird W) = -(fw W).subst (
   rfl
 
 /- English proof (translation)
-The claim follows from `iSerSpec_of w_series_spec w_series_factorization invariant_differential_units unit_flow chartFlowNegation`.
+A detailed English derivation is pending.
 -/
 theorem formal_inverse_spec : ISerSpec.{u} := iSerSpec_of w_series_spec w_series_factorization invariant_differential_units unit_flow chartFlowNegation
 
 /- English proof (translation)
-Establish `hu : MvPowerSeries.constantCoeff (uThird W) = 0` using `(formal_group_chord R W).2.1`. Establish `hu'` using `PowerSeries.HasSubst.of_constantCoeff_zero hu`. Establish `hS` using `formal_inverse_spec R W`. Establish `hI : PowerSeries.HasSubst (iSer W)` using `PowerSeries.HasSubst.of_constantCoeff_zero hS.1`. Establish `hD : derivative R (iSer W) * fw W = -(fw W).subst (iSer W)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hS.2.2.2.2.2.2.1`. Simplify using `only [D, Derivation.smul_apply, smul_eq_mul] at h`. Rewrite using `[mul_comm]`. Conclude with `h`. Establish `hmul : ∀ f g : R⟦X⟧, (f * g).subst (uThird W) = f.subst (uThird W) * g.subst (uThird W)` using `fun f g => by rw [← PowerSeries.coe_substAlgHom (R := R) hu', map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hneg : ∀ f : R⟦X⟧, (-f).subst (uThird W) = -(f.subst (uThird W))` using `fun f => by rw [← PowerSeries.coe_substAlgHom (R := R) hu', map_neg]`. Rewrite using `[Fgl1.fgl_eq, Dm_subst W i hu, Dm_uThird W i, ← PowerSeries.subst_comp_subst_apply hI hu', mul_neg, ← hmul, hD, hneg, neg_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dm_fgl [IsDomain R] (i : Fin 2) : Dm W i (fgl W) = (fw W).subst (fgl W) := by
   have hu : MvPowerSeries.constantCoeff (uThird W) = 0 := (formal_group_chord R W).2.1
@@ -280,7 +276,7 @@ section Transfer
 variable {R : Type u} {S : Type v} [CommRing R] [CommRing S]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[MvPowerSeries.coeff_pderiv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_pderiv (φ : R →+* S) (i : Fin 2) (f : MvPowerSeries (Fin 2) R) :
     MvPowerSeries.map φ (MvPowerSeries.pderiv R i f)
@@ -289,7 +285,7 @@ theorem map_pderiv (φ : R →+* S) (i : Fin 2) (f : MvPowerSeries (Fin 2) R) :
   simp [MvPowerSeries.coeff_pderiv]
 
 /- English proof (translation)
-Unfold `Dm`. Rewrite using `[map_mul, map_pderiv, PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i)), (series_map R S φ W).2.2.2.2.1, MvPowerSeries.map_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_Dm (φ : R →+* S) (W : WeierstrassCurve R) (i : Fin 2) (f : MvPowerSeries (Fin 2) R) :
     MvPowerSeries.map φ (Dm W i f) = Dm (W.map φ) i (MvPowerSeries.map φ f) := by
@@ -299,7 +295,7 @@ theorem map_Dm (φ : R →+* S) (W : WeierstrassCurve R) (i : Fin 2) (f : MvPowe
     (series_map R S φ W).2.2.2.2.1, MvPowerSeries.map_X]
 
 /- English proof (translation)
-Establish `hcc : PowerSeries.HasSubst (fgl Univ.W₀)` using `PowerSeries.HasSubst.of_constantCoeff_zero (Fgl1.fgl_cc Univ.W₀)`. Establish `h1` using `congrArg (MvPowerSeries.map (Univ.φ_of W)) (Dm_fgl Univ.W₀ i)`. Rewrite `h1` using `[map_Dm, Univ.map_eq, ← Fgl1.fgl_univ, PowerSeries.map_subst hcc, (series_map _ _ (Univ.φ_of W) Univ.W₀).2.2.2.2.1, Univ.map_eq, ← Fgl1.fgl_univ]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dm_fgl' (W : WeierstrassCurve R) (i : Fin 2) : Dm W i (fgl W) = (fw W).subst (fgl W) := by
   have hcc : PowerSeries.HasSubst (fgl Univ.W₀) :=
@@ -310,9 +306,9 @@ theorem Dm_fgl' (W : WeierstrassCurve R) (i : Fin 2) : Dm W i (fgl W) = (fw W).s
   exact h1
 
 /- English proof (translation)
-Establish `h1 : fw W * om W = 1`. Establish `h` using `(unit_flow R W).2.2.2.2.2 X`. Simplify using `only [D, Derivation.smul_apply, PowerSeries.derivative_X, smul_eq_mul, mul_one] at h`. Rewrite using `[mul_comm]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs'` using `PowerSeries.HasSubst.of_constantCoeff_zero hs`. Rewrite using `[← PowerSeries.coe_substAlgHom (R := R) hs', ← map_mul, h1, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fw_mul_om_subst (W : WeierstrassCurve R) {s : MvPowerSeries (Fin 2) R} (hs : cc s = 0) :
     (fw W).subst s * (om W).subst s = 1 := by
@@ -325,9 +321,9 @@ theorem fw_mul_om_subst (W : WeierstrassCurve R) {s : MvPowerSeries (Fin 2) R} (
   rw [← PowerSeries.coe_substAlgHom (R := R) hs', ← map_mul, h1, map_one]
 
 /- English proof (translation)
-Establish `h` using `Dm_fgl' W i`. Unfold `Dm at h`. Establish `hF : MvPowerSeries.constantCoeff (fgl W) = 0` using `Fgl1.fgl_cc W`. Establish `h1` using `fw_mul_om_subst W hF`. Establish `h2` using `fw_mul_om_subst W (MvPowerSeries.constantCoeff_X i)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `((om W).subst (fgl W) * (om W).subst (MvPowerSeries.X i : MvPowerSeries (Fin 2) R)) * h + (om W).subst (MvPowerSeries.X i : MvPowerSeries (Fin 2) R) * h1 - ((om W).subst (fgl W) * MvPowerSeries.pderiv R i (fgl W)) * h2`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem om_fgl (W : WeierstrassCurve R) (i : Fin 2) :
     (om W).subst (fgl W) * MvPowerSeries.pderiv R i (fgl W)
@@ -342,7 +338,7 @@ theorem om_fgl (W : WeierstrassCurve R) (i : Fin 2) :
     ((om W).subst (fgl W) * MvPowerSeries.pderiv R i (fgl W)) * h2
 
 /- English proof (translation)
-Unfold `PowerSeries.subst`. Conclude with `MvPowerSeries.subst_comp_subst_apply ha.const hb f`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mvsubst_psubst {σ τ : Type*} {a : MvPowerSeries σ R} (ha : PowerSeries.HasSubst a)
     {b : σ → MvPowerSeries τ R} (hb : MvPowerSeries.HasSubst b) (f : R⟦X⟧) :
@@ -357,30 +353,28 @@ section Log
 variable {K : Type u} [Field K] [CharZero K] (W : WeierstrassCurve K)
 
 /- English proof (translation)
-The claim follows from `logSpec_of integration_spec invariant_differential_units`.
+A detailed English derivation is pending.
 -/
 theorem formal_logarithm_spec : LogSpec.{u} := logSpec_of integration_spec invariant_differential_units
 
 /- English proof (translation)
-The claim follows from `expSpec_of integration_spec composition_inverse_spec invariant_differential_units`.
+A detailed English derivation is pending.
 -/
 theorem formal_exponential_spec : ExpSpec.{u} := expSpec_of integration_spec composition_inverse_spec invariant_differential_units
 
 /- English proof (translation)
-The claim follows from `logNeg_of integration_spec composition_inverse_spec invariant_differential_units formal_inverse_spec`.
+A detailed English derivation is pending.
 -/
 theorem formal_logarithm_neg : LogNeg.{u} := logNeg_of integration_spec composition_inverse_spec invariant_differential_units formal_inverse_spec
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[map_zero]`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Simplify using `using hc`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, n i ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `hn (Finsupp.ext hne)`. Establish `hD : MvPowerSeries.pderiv K i h = 0` using `by fin_cases i`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h0`. Conclude with `h1`. Establish `h2` using `congrArg (MvPowerSeries.coeff (n - Finsupp.single i 1)) hD`. Rewrite `h2` using `[MvPowerSeries.coeff_pderiv, map_zero]`. Establish `hsum : n - Finsupp.single i 1 + Finsupp.single i 1 = n`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use extensionality with `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
-
-Simplify using `[Finsupp.single_apply, Ne.symm hj]`. Rewrite `h2` using `[hsum]`. Conclude with `(mul_eq_zero.mp h2).resolve_right (Nat.cast_add_one_ne_zero _)`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_pderiv_zero_of_pderiv_one_eq_zero {h : MvPowerSeries (Fin 2) K}
     (h0 : MvPowerSeries.pderiv K 0 h = 0) (h1 : MvPowerSeries.pderiv K 1 h = 0)
@@ -411,11 +405,11 @@ private theorem eq_zero_of_pderiv_zero_of_pderiv_one_eq_zero {h : MvPowerSeries 
     exact (mul_eq_zero.mp h2).resolve_right (Nat.cast_add_one_ne_zero _)
 
 /- English proof (translation)
-Establish `hL` using `formal_logarithm_spec K W`. Establish `hF : MvPowerSeries.constantCoeff (fgl W) = 0` using `Fgl1.fgl_cc W`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_pderiv_zero_of_pderiv_one_eq_zero` to reduce the goal to its premises. Rewrite using `[map_sub, map_add, Formalism.G.LogCR.pderiv_psubst hF, Formalism.G.LogCR.pderiv_psubst (MvPowerSeries.constantCoeff_X 0), Formalism.G.LogCR.pderiv_psubst (MvPowerSeries.constantCoeff_X 1), hL.2.2.1, om_fgl W 0, MvPowerSeries.pderiv_X_self, MvPowerSeries.pderiv_X_of_ne (by decide) …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_add, Formalism.G.LogCR.pderiv_psubst hF, Formalism.G.LogCR.pderiv_psubst (MvPowerSeries.constantCoeff_X 0), Formalism.G.LogCR.pderiv_psubst (MvPowerSeries.constantCoeff_X 1), hL.2.2.1, om_fgl W 1, MvPowerSeries.pderiv_X_self, MvPowerSeries.pderiv_X_of_ne (by decide) …`. Establish `hc : ∀ a : MvPowerSeries (Fin 2) K, MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff ((logSer W).subst a) = 0` using `fun a ha => by`. Rewrite using `[PowerSeries.subst, Formalism.G.LogP.constantCoeff_subst_of_zero _ (fun _ => ha)]`. Conclude with `hL.1`. Rewrite using `[map_sub, map_add, hc _ hF, hc _ (MvPowerSeries.constantCoeff_X 0), hc _ (MvPowerSeries.constantCoeff_X 1)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem log_fgl : (logSer W).subst (fgl W) = (logSer W).subst (U₁ : MvPowerSeries (Fin 2) K)
     + (logSer W).subst (U₂ : MvPowerSeries (Fin 2) K) := by
@@ -442,7 +436,7 @@ section Group
 
 open MvPowerSeries in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cons_map {τ : Type*} {A : Type*} {B : Type*} [CommRing A] [CommRing B] (f : A →+* B)
     (g₁ g₂ : MvPowerSeries τ A) :
@@ -451,19 +445,17 @@ theorem cons_map {τ : Type*} {A : Type*} {B : Type*} [CommRing A] [CommRing B] 
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Establish `hGc : MvPowerSeries.constantCoeff (fgl Univ.WK) = 0` using `Fgl1.fgl_cc _`. Establish `hlog` using `log_fgl Univ.WK`. Establish `hE` using `formal_exponential_spec Univ.K₀ Univ.WK`. Establish `hLs : PowerSeries.HasSubst (logSer Univ.WK)` using `PowerSeries.HasSubst.of_constantCoeff_zero (formal_logarithm_spec Univ.K₀ Univ.WK).1`. Establish `hhs : ∀ a b : MvPowerSeries (Fin 3) Univ.K₀, MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff b = 0 → MvPowerSeries.HasSubst ![a, b]` using `fun a b ha hb => MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by fin_cases i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ha`. Conclude with `hb`. Establish `hadd : ∀ a b : MvPowerSeries (Fin 3) Univ.K₀, MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff b = 0 → (logSer Univ.WK).subst (MvPowerSeries.subst ![a, b] (fgl Univ.WK)) = (logSer Univ.WK).subst a + (logSer Univ.WK).subst b`. Introduce `a b ha hb`. Establish `hab` using `hhs a b ha hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `congrArg (MvPowerSeries.subst ![a, b]) hlog`. Rewrite `h` using `[mvsubst_psubst (PowerSeries.HasSubst.of_constantCoeff_zero hGc) hab, ← MvPowerSeries.coe_substAlgHom hab, map_add, MvPowerSeries.coe_substAlgHom hab, mvsubst_psubst (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 0)) hab, mvsubst_psubst (PowerSeries.Ha …`. Simplify `h` using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`. Establish `hcs : ∀ a b : MvPowerSeries (Fin 3) Univ.K₀, MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff b = 0 → MvPowerSeries.constantCoeff (MvPowerSeries.subst ![a, b] (fgl Univ.WK)) = 0` using `fun a b ha hb => by`. Rewrite using `[Formalism.G.LogP.constantCoeff_subst_of_zero _ (fun i => by fin_cases i`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ha`. Conclude with `hb)]`. Conclude with `hGc`. Establish `hinj : ∀ u v : MvPowerSeries (Fin 3) Univ.K₀, MvPowerSeries.constantCoeff u = 0 → MvPowerSeries.constantCoeff v = 0 → (logSer Univ.WK).subst u = (logSer Univ.WK).subst v → u = v`. Introduce `u v hu hv huv`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu'` using `PowerSeries.HasSubst.of_constantCoeff_zero hu`. Establish `hv'` using `PowerSeries.HasSubst.of_constantCoeff_zero hv`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show PowerSeries.subst u (logSer Univ.WK) = PowerSeries.subst v (logSer Univ.WK) from huv]`. Use `_ = PowerSeries.subst v (PowerSeries.subst (logSer Univ.WK) (expSer Univ.WK)) := (PowerSeries.subst_comp_subst_apply hLs hv' _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `_ = v := by rw [hE.2.2.2.1, PowerSeries.subst_X hv']`. Establish `c0 : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) Univ.K₀) = 0` using `MvPowerSeries.constantCoeff_X _`. Establish `c1 : MvPowerSeries.constantCoeff (MvPowerSeries.X 1 : MvPowerSeries (Fin 3) Univ.K₀) = 0` using `MvPowerSeries.constantCoeff_X _`. Establish `c2 : MvPowerSeries.constantCoeff (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) Univ.K₀) = 0` using `MvPowerSeries.constantCoeff_X _`. Use `⟨{ toPowerSeries := fgl Univ.WK zero_constantCoeff := hGc lin_coeff_X := Fgl1.fgl_L _ 0 lin_coeff_Y := Fgl1.fgl_L _ 1 assoc := ?_ }, rfl⟩` and prove the remaining obligations.
-
-Apply `hinj _ _ (hcs _ _ (hcs _ _ c0 c1) c2) (hcs _ _ c0 (hcs _ _ c1 c2))` to reduce the goal to its premises. Rewrite using `[hadd _ _ (hcs _ _ c0 c1) c2, hadd _ _ c0 c1, hadd _ _ c0 (hcs _ _ c1 c2), hadd _ _ c1 c2, add_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_FK : ∃ F : FormalGroup Univ.K₀, F.toPowerSeries = fgl Univ.WK := by
   have hGc : MvPowerSeries.constantCoeff (fgl Univ.WK) = 0 := Fgl1.fgl_cc _
@@ -549,17 +541,15 @@ def FZ : FormalGroup Univ.Z where
 variable {R : Type u} [CommRing R] (W : WeierstrassCurve R)
 
 /- English proof (translation)
-Establish `hK : fgl Univ.WK = (fgl Univ.WK).subst ![(MvPowerSeries.X 1 : MvPowerSeries (Fin 2) Univ.K₀), MvPowerSeries.X 0]`. Apply the tactic sequence `have hsw : MvPowerSeries.HasSubst (![(MvPowerSeries.X 1 : MvPowerSeries (Fin 2) Univ.K₀), MvPowerSeries.X 0]) := MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> exact MvPowerSeries.constantCoeff_X _`. Establish `hL : fgl Univ.WK = (expSer Univ.WK).subst ((logSer Univ.WK).subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) Univ.K₀) + (logSer Univ.WK).subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) Univ.K₀))`. Establish `hE` using `formal_exponential_spec Univ.K₀ Univ.WK`. Establish `hF : PowerSeries.HasSubst (fgl Univ.WK)` using `PowerSeries.HasSubst.of_constantCoeff_zero (Fgl1.fgl_cc Univ.WK)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLs : PowerSeries.HasSubst (logSer Univ.WK)` using `PowerSeries.HasSubst.of_constantCoeff_zero (formal_logarithm_spec Univ.K₀ Univ.WK).1`. Rewrite using `[← log_fgl Univ.WK, ← PowerSeries.subst_comp_subst_apply hLs hF, hE.2.2.2.1, PowerSeries.subst_X hF]`. Establish `hl0` using `(Fgl2.formal_logarithm_spec Univ.K₀ Univ.WK).1`. Establish `hc : ∀ a : MvPowerSeries (Fin 2) Univ.K₀, MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff ((logSer Univ.WK).subst a) = 0` using `fun a ha => by`. Rewrite using `[PowerSeries.subst, Formalism.G.LogP.constantCoeff_subst_of_zero _ (fun _ => ha)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hl0`. Establish `hS : MvPowerSeries.constantCoeff ((logSer Univ.WK).subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) Univ.K₀) + (logSer Univ.WK).subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) Univ.K₀)) = 0`. Rewrite using `[map_add, hc _ (MvPowerSeries.constantCoeff_X 0), hc _ (MvPowerSeries.constantCoeff_X 1), add_zero]`. Use `conv_rhs => rw [hL]`. Rewrite using `[mvsubst_psubst (PowerSeries.HasSubst.of_constantCoeff_zero hS) hsw, ← MvPowerSeries.coe_substAlgHom hsw, map_add, MvPowerSeries.coe_substAlgHom hsw, mvsubst_psubst (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 0)) hsw, mvsubst_psubst (PowerSeries.Has …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`. Rewrite using `[add_comm]`. Conclude with `hL`. Apply the tactic sequence `have hZsw : MvPowerSeries.HasSubst (![(MvPowerSeries.X 1 : MvPowerSeries (Fin 2) Univ.Z), MvPowerSeries.X 0]) := MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> exact MvPowerSeries.constantCoeff_X _`. Establish `hι : MvPowerSeries.map Univ.ι (fgl Univ.W₀) = MvPowerSeries.map Univ.ι ((fgl Univ.W₀).subst ![(MvPowerSeries.X 1 : MvPowerSeries (Fin 2) Univ.Z), MvPowerSeries.X 0])`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[MvPowerSeries.map_subst hZsw, cons_map, MvPowerSeries.map_X, MvPowerSeries.map_X, Fgl1.fgl_WK]`. Conclude with `hK`. Establish `h` using `Univ.mv_transfer W hι`. Apply the tactic sequence `have hRsw : MvPowerSeries.HasSubst (![(MvPowerSeries.X 1 : MvPowerSeries (Fin 2) R), MvPowerSeries.X 0]) := MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> exact MvPowerSeries.constantCoeff_X _`. Rewrite `h` using `[← Fgl1.fgl_univ, MvPowerSeries.map_subst hZsw, cons_map, MvPowerSeries.map_X, MvPowerSeries.map_X, ← Fgl1.fgl_univ]`.
-
-Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fgl_symm : fgl W = (fgl W).subst
     ![(MvPowerSeries.X 1 : MvPowerSeries (Fin 2) R), MvPowerSeries.X 0] := by
@@ -617,7 +607,7 @@ end Group
 section Inv
 
 /- English proof (translation)
-Conclude with `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by fin_cases i`. Conclude with `PowerSeries.constantCoeff_X`. Conclude with `(formal_inverse_spec R W).1`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_X_iSer {R : Type u} [CommRing R] (W : WeierstrassCurve R) :
     MvPowerSeries.HasSubst (![X, iSer W] : Fin 2 → R⟦X⟧) := by
@@ -627,9 +617,9 @@ theorem hasSubst_X_iSer {R : Type u} [CommRing R] (W : WeierstrassCurve R) :
     · exact (formal_inverse_spec R W).1
 
 /- English proof (translation)
-Establish `h` using `MvPowerSeries.map_subst (h := φ) (hasSubst_X_iSer W) (fgl W)`. Express the relevant statement in the definitionally equal form `MvPowerSeries.map φ _ = _`. Rewrite using `[h, formal_group_map R S φ W]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases i`. Conclude with `PowerSeries.map_X _`. Conclude with `CurveSer.map_iSer (φ := φ) (W := W)`.
+A detailed English derivation is pending.
 -/
 theorem inv_map {R : Type u} {S : Type v} [CommRing R] [CommRing S] (φ : R →+* S)
     (W : WeierstrassCurve R) :
@@ -645,17 +635,15 @@ theorem inv_map {R : Type u} {S : Type v} [CommRing R] [CommRing S] (φ : R →+
   · exact CurveSer.map_iSer (φ := φ) (W := W)
 
 /- English proof (translation)
-Establish `hb` using `hasSubst_X_iSer W`. Establish `hF : PowerSeries.HasSubst (fgl W)` using `PowerSeries.HasSubst.of_constantCoeff_zero (Fgl1.fgl_cc W)`. Establish `hS` using `formal_inverse_spec K W`. Establish `hE` using `formal_exponential_spec K W`. Establish `hN` using `formal_logarithm_neg K W`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hself : ∀ f : K⟦X⟧, f.subst (X : K⟦X⟧) = f` using `fun f => by`. Rewrite using `[PowerSeries.subst, show (fun _ : Unit => (X : K⟦X⟧)) = MvPowerSeries.X from funext fun _ => rfl, MvPowerSeries.subst_self]`. Both sides reduce to the same expression. Establish `hcG : MvPowerSeries.constantCoeff (MvPowerSeries.subst (![X, iSer W] : Fin 2 → K⟦X⟧) (fgl W)) = 0`. Rewrite using `[Formalism.G.LogP.constantCoeff_subst_of_zero _ (fun i => by fin_cases i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PowerSeries.constantCoeff_X`. Conclude with `hS.1)]`. Conclude with `Fgl1.fgl_cc W`. Establish `hG` using `PowerSeries.HasSubst.of_constantCoeff_zero hcG`. Establish `hlogG : (logSer W).subst (MvPowerSeries.subst (![X, iSer W] : Fin 2 → K⟦X⟧) (fgl W)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h` using `congrArg (MvPowerSeries.subst (![X, iSer W] : Fin 2 → K⟦X⟧)) (log_fgl W)`. Rewrite `h` using `[mvsubst_psubst hF hb, ← MvPowerSeries.coe_substAlgHom hb, map_add, MvPowerSeries.coe_substAlgHom hb, mvsubst_psubst (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 0)) hb, mvsubst_psubst (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.consta …`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h`. Rewrite `h` using `[hself, hN.1, add_neg_cancel]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsh` using `PowerSeries.sub_const_eq_X_mul_shift (expSer W)`. Simplify using `only [hE.1, map_zero, sub_zero] at hsh`. Establish `h0 : PowerSeries.HasSubst (0 : K⟦X⟧)` using `PowerSeries.HasSubst.of_constantCoeff_zero (map_zero _)`. Establish `hT : (expSer W).subst (0 : K⟦X⟧) = 0`. Rewrite using `[hsh, ← PowerSeries.coe_substAlgHom (R := K) h0, map_mul, PowerSeries.coe_substAlgHom h0, PowerSeries.subst_X h0, zero_mul]`.
-
-Establish `hL : PowerSeries.HasSubst (logSer W)` using `PowerSeries.HasSubst.of_constantCoeff_zero (formal_logarithm_spec K W).1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hE.2.2.2.1]`. Use `_ = PowerSeries.subst (PowerSeries.subst (MvPowerSeries.subst (![X, iSer W] : Fin 2 → K⟦X⟧) (fgl W)) (logSer W)) (expSer W) := PowerSeries.subst_comp_subst_apply hL hG _`. Use `_ = 0 := by rw [hlogG, hT]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_field {K : Type u} [Field K] [CharZero K] (W : WeierstrassCurve K) :
     MvPowerSeries.subst (![X, iSer W] : Fin 2 → K⟦X⟧) (fgl W) = 0 := by
@@ -708,9 +696,9 @@ end Inv
 end Fgl2
 
 /- English proof (translation)
-Introduce `R _ W`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `Fgl2.Dm_fgl' W 0`. Unfold `Fgl2.Dm at h`. Rewrite using `[mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `h` using `Fgl2.Dm_fgl' W 1`. Unfold `Fgl2.Dm at h`. Rewrite using `[mul_comm]`. Conclude with `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formal_group_invariant : FglInvariant.{u} := by
   intro R _ W
@@ -725,9 +713,9 @@ theorem formal_group_invariant : FglInvariant.{u} := by
     exact h
 
 /- English proof (translation)
-Introduce `K _ _ W`. Use `⟨Fgl2.log_fgl W, ?_⟩` and prove the remaining obligations. Establish `hE` using `Fgl2.formal_exponential_spec K W`. Establish `hF : PowerSeries.HasSubst (fgl W)` using `PowerSeries.HasSubst.of_constantCoeff_zero (Fgl1.fgl_cc W)`. Establish `hL : PowerSeries.HasSubst (logSer W)` using `PowerSeries.HasSubst.of_constantCoeff_zero (Fgl2.formal_logarithm_spec K W).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Fgl2.log_fgl W, ← PowerSeries.subst_comp_subst_apply hL hF, hE.2.2.2.1, PowerSeries.subst_X hF]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem formal_group_logarithm : FglLog.{u} := by
   intro K _ _ W
@@ -738,7 +726,7 @@ theorem formal_group_logarithm : FglLog.{u} := by
   rw [← Fgl2.log_fgl W, ← PowerSeries.subst_comp_subst_apply hL hF, hE.2.2.2.1, PowerSeries.subst_X hF]
 
 /- English proof (translation)
-Introduce `R K _ _ _ φ W`. Rewrite using `[formal_group_map R K φ W]`. Conclude with `Fgl2.log_fgl (W.map φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formal_logarithm_base_change : FglLogBase.{u, v} := by
   intro R K _ _ _ φ W
@@ -746,9 +734,9 @@ theorem formal_logarithm_base_change : FglLogBase.{u, v} := by
   exact Fgl2.log_fgl (W.map φ)
 
 /- English proof (translation)
-Introduce `R _ W`. Establish `he : (Fgl2.FZ.map (Univ.φ_of W)).toPowerSeries = fgl W` using `(Fgl1.fgl_univ W).symm`. Use `⟨Fgl2.FZ.map (Univ.φ_of W), he, ?_⟩` and prove the remaining obligations. Establish `hs` using `Fgl2.fgl_symm W`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[he]`. Use `first`. Consider the case `exact hs`. Consider the case `exact hs.symm`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem formal_group_group_law : FglGroup.{u} := by
   intro R _ W
@@ -762,9 +750,9 @@ theorem formal_group_group_law : FglGroup.{u} := by
   | exact hs.symm
 
 /- English proof (translation)
-Introduce `R _ W`. Establish `h1` using `Fgl2.inv_map Univ.ι Univ.W₀`. Rewrite `h1` using `[Fgl2.inv_field]`. Establish `h2` using `Univ.ps_transfer W (A := MvPowerSeries.subst (![X, iSer Univ.W₀] : Fin 2 → Univ.Z⟦X⟧) (fgl Univ.W₀)) (B := 0) (by rw [h1, map_zero])`. Rewrite `h2` using `[map_zero, Fgl2.inv_map, Univ.map_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem formal_group_inverse : FglInv.{u} := by
   intro R _ W

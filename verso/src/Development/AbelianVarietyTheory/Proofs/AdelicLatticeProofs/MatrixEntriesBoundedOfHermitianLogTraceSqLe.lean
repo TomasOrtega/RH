@@ -6,9 +6,9 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Establish `h : (Matrix.trace (xᴴ * x)).re = ∑ b, ∑ a, ‖x a b‖ ^ 2`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `norm_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Rewrite using `[h]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private lemma energy_entry_sq_le {ι : Type} [Fintype ι] (x : Matrix ι ι ℂ) (i j : ι) :
     ‖x i j‖ ^ 2 ≤ (Matrix.trace (xᴴ * x)).re := by
@@ -25,7 +25,7 @@ private lemma energy_entry_sq_le {ι : Type} [Fintype ι] (x : Matrix ι ι ℂ)
         (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ j)
 
 /- English proof (translation)
-Establish `hU' : Uᴴ * U = 1` using `mul_eq_one_comm.mp hU`. Rewrite using `[Matrix.trace_mul_cycle, hU', one_mul, Matrix.trace_diagonal, Complex.re_sum]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma energy_trace_conj {ι : Type} [Fintype ι] [DecidableEq ι] (U : Matrix ι ι ℂ) (hU : U * Uᴴ = 1)
     (d : ι → ℝ) : (Matrix.trace (U * diagonal (fun i => (d i : ℂ)) * Uᴴ)).re = ∑ i, d i := by
@@ -34,19 +34,19 @@ private lemma energy_trace_conj {ι : Type} [Fintype ι] [DecidableEq ι] (U : M
   simp
 
 /- English proof (translation)
-Introduce `ι _ _ E`. Use `⟨max (√E) (√(Fintype.card ι * Real.exp (√E))), ?_⟩` and prove the remaining obligations. Introduce and unpack `x H ⟨U, d, hU, hH, hA⟩ hE i j`. Establish `hU' : Uᴴ * U = 1` using `mul_eq_one_comm.mp hU`. Establish `hherm : Hᴴ = H`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hH]`. Simplify using `[Matrix.conjTranspose_mul, Matrix.diagonal_conjTranspose, Matrix.mul_assoc, Pi.star_def]`. Establish `hHH : H * H = U * diagonal (fun i => ((d i ^ 2 : ℝ) : ℂ)) * Uᴴ`. Rewrite using `[hH]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by`. Rewrite using `[hU', Matrix.mul_one, Matrix.diagonal_mul_diagonal]`. Use `congr 3`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : ∀ k, d k ≤ √E`. Introduce `k`. Establish `h1 : ∑ k, d k ^ 2 ≤ E`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hE` using `[hHH, energy_trace_conj U hU]`. Conclude with `hE`. Establish `h2 : d k ^ 2 ≤ ∑ k, d k ^ 2` using `Finset.single_le_sum (f := fun k => d k ^ 2) (fun _ _ => by positivity) (Finset.mem_univ k)`. Conclude with `Real.le_sqrt_of_sq_le (h2.trans h1)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Use `(energy_entry_sq_le x i j).trans ?_` and prove the remaining obligations. Rewrite using `[hA, energy_trace_conj U hU (fun i => Real.exp (d i))]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ (le_max_left _ _)` and prove the remaining obligations. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Use `(energy_entry_sq_le H i j).trans ?_` and prove the remaining obligations. Rewrite using `[hherm]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem entries_le_of_energy_le : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (E : ℝ), ∃ C : ℝ, ∀ x H : Matrix ι ι ℂ, IsLog H (xᴴ * x) → (Matrix.trace (H * H)).re ≤ E → ∀ i j, ‖x i j‖ ≤ C ∧ ‖H i j‖ ≤ C := by
   intro ι _ _ E

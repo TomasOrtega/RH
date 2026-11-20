@@ -14,13 +14,13 @@ def SAf : Prop :=
     ∀ x : FiniteAdeleRing (𝓞 F) F, ∃ a : F, x - algebraMap F (FiniteAdeleRing (𝓞 F) F) a ∈ U
 
 /- English proof (translation)
-Introduce `F _ _ U hU x`. Take `⟨m, hm, hmx⟩` from `PIW.AdelClassFin.DictRing.af_denom x`. Take `⟨N, hN1, hNU⟩` from `PI.InvTopW.finite_neighbourhood_second F U (hU.mem_nhds U.zero_mem)`. Take `⟨β, y, hy, hxy⟩` from `PIW.AdelClassFin.DictRing.af_approx _ hmx (m * N) (Nat.mul_pos hm (by omega))`. Use `⟨(β : F) / (m : F), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmF : (m : F) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `hu : IsUnit (algebraMap F (FiniteAdeleRing (𝓞 F) F) (m : F))` using `(IsUnit.mk0 _ hmF).map _`. Establish `key : x - algebraMap F (FiniteAdeleRing (𝓞 F) F) ((β : F) / (m : F)) = (N : FiniteAdeleRing (𝓞 F) F) * y`. Apply `hu.mul_left_cancel` to reduce the goal to its premises. Establish `e1 : algebraMap F (FiniteAdeleRing (𝓞 F) F) (m : F) = (m : FiniteAdeleRing (𝓞 F) F)` using `map_natCast _ m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e2 : algebraMap F (FiniteAdeleRing (𝓞 F) F) (m : F) * algebraMap F (FiniteAdeleRing (𝓞 F) F) ((β : F) / (m : F)) = algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) β`. Rewrite using `[← map_mul, mul_div_cancel₀ _ hmF, IsScalarTower.algebraMap_apply (𝓞 F) F]`. Rewrite using `[mul_sub, e2, e1]`. Rewrite using `[hxy]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `hNU y hy`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sAf_holds : SAf := by
   intro F _ _ U hU x

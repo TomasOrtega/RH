@@ -15,25 +15,25 @@ variable {D : D7} {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE]
   [FiniteDimensional ℂ EE] (S : RowSide D EE)
 
 /- English proof (translation)
-Unfold `RowSide.V0`. Rewrite using `[he]`. Conclude with `LinearMap.range_id`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseSubspace_top_of_identity {μ} (he : S.eOp μ = LinearMap.id) : S.V0 μ = ⊤ := by
   unfold RowSide.V0; rw [he]; exact LinearMap.range_id
 
 /- English proof (translation)
-Unfold `RowSide.Usp`. Rewrite using `[baseSubspace_top_of_identity S he, LinearMap.ker_eq_bot.mpr hi, inf_bot_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Usp_bot {μ} (he : S.eOp μ = LinearMap.id) (hi : Function.Injective (S.iota μ)) : S.Usp μ = ⊥ := by
   unfold RowSide.Usp; rw [baseSubspace_top_of_identity S he, LinearMap.ker_eq_bot.mpr hi, inf_bot_eq]
 
 /- English proof (translation)
-Unfold `RowSide.Qsp`. Rewrite using `[baseSubspace_top_of_identity S he, Usp_bot S he hi, Submodule.bot_orthogonal_eq_top, inf_top_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Qsp_top {μ} (he : S.eOp μ = LinearMap.id) (hi : Function.Injective (S.iota μ)) : S.Qsp μ = ⊤ := by
   unfold RowSide.Qsp; rw [baseSubspace_top_of_identity S he, Usp_bot S he hi, Submodule.bot_orthogonal_eq_top, inf_top_eq]
 
 /- English proof (translation)
-Unfold `RowSide.LamSet`. Establish `hp : ∀ x, (S.Qsp μ).starProjection x = x` using `fun x => Submodule.starProjection_eq_self_iff.mpr (by rw [Qsp_top S he hi]; trivial)`. Rewrite using `[baseSubspace_top_of_identity S he]`. Use extensionality with `x`. Simplify using `[hp]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem LamSet_eq {μ} (he : S.eOp μ = LinearMap.id) (hi : Function.Injective (S.iota μ)) :
     S.LamSet μ = (S.Mtilde μ).carrier := by
@@ -45,20 +45,20 @@ theorem LamSet_eq {μ} (he : S.eOp μ = LinearMap.id) (hi : Function.Injective (
   simp [hp]
 
 /- English proof (translation)
-Unfold `RowSide.RRset`. Rewrite using `[LamSet_eq S he hi]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem RRset_eq {μ} (he : S.eOp μ = LinearMap.id) (hi : Function.Injective (S.iota μ)) :
     S.RRset μ = S.iota μ '' (S.Mtilde μ).carrier := by
   unfold RowSide.RRset; rw [LamSet_eq S he hi]
 
 /- English proof (translation)
-Introduce `x`. Establish `hs : ∀ w, Submodule.span (𝓞 D.what₂.LL) {y | S.jEE y ∈ S.RRset (D.what₂.muAt w)} = Λ` using `fun w => by`. Establish `: {y | S.jEE y ∈ S.RRset (D.what₂.muAt w)} = (Λ : Set S.RR.V)` using `Set.ext fun y => h w y`. Rewrite using `[this, Submodule.span_eq]`. Rewrite using `[hL]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx w`. Conclude with `⟨1, fun h1 => (D.plEq w).isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1), by`. Rewrite using `[one_smul, hs]`. Conclude with `hx⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Use `mem_of_local Λ x fun P hP => ?_` and prove the remaining obligations. Establish `hne : P ≠ ⊥` using `fun hb => RingOfIntegers.not_isField D.what₂.LL (Ring.isField_iff_maximal_bot.mpr (hb ▸ hP))`. Take `⟨d, hd, hdx⟩` from `hx (D.plEq.symm ⟨P, hP.isPrime, hne⟩)`. Rewrite `hdx` using `[hs]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[Equiv.apply_symm_apply]`. Conclude with `⟨d, hd, hdx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rrDef_of (Λ : Submodule (𝓞 D.what₂.LL) S.RR.V)
     (h : ∀ w y, S.jEE y ∈ S.RRset (D.what₂.muAt w) ↔ y ∈ Λ) (hL : S.RR.L = Λ) : S.RRDef := by
@@ -114,7 +114,7 @@ def stdSide : RowSide D EE where
   jEE_norm := jB_norm _ b
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => show ((stdSide D c b).downTo μ j).comp LinearMap.id = _`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem stdSide_downTo (μ) (j : ℕ) : (stdSide D c b).downTo μ j = LinearMap.id := by
   induction j with
@@ -122,7 +122,7 @@ theorem stdSide_downTo (μ) (j : ℕ) : (stdSide D c b).downTo μ j = LinearMap.
   | succ j ih => show ((stdSide D c b).downTo μ j).comp LinearMap.id = _; rw [ih]; rfl
 
 /- English proof (translation)
-Use `show (LinearMap.id : EE →ₗ[ℂ] EE) ∘ₗ (stdSide D c b).downTo μ D.R.m ∘ₗ (LinearMap.id : EE →ₗ[ℂ] EE) = _`. Rewrite using `[stdSide_downTo]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stdSide_iota (μ) : (stdSide D c b).iota μ = LinearMap.id := by
   show (LinearMap.id : EE →ₗ[ℂ] EE) ∘ₗ (stdSide D c b).downTo μ D.R.m ∘ₗ (LinearMap.id : EE →ₗ[ℂ] EE) = _
@@ -131,11 +131,11 @@ theorem stdSide_iota (μ) : (stdSide D c b).iota μ = LinearMap.id := by
 end Std
 
 /- English proof (translation)
-Rewrite using `[mem_oB, mem_stdL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩ i`. Use `(hf (x i)).mp ⟨c i, σ.injective ?_⟩` and prove the remaining obligations. Establish `h2 : (∑ k, (σ.comp f) (c k) • b k) = jB σ b (fun k => f (c k))` using `rfl`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun y => b.repr y i) hc`. Simplify using `only [h2, repr_jB] at h1`. Conclude with `h1.symm`. Introduce `h`. Establish `h'` using `fun i => (hf (x i)).mpr (h i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `choose c hc using h'`. Conclude with `⟨c, by rw [jB_apply]; exact Finset.sum_congr rfl fun i _ => by rw [RingHom.comp_apply, hc i]⟩`.
+A detailed English derivation is pending.
 -/
 theorem jB_mem_oB {K : Type} [Field K] [NumberField K] [StarRing K] (σ : K →+* ℂ) {n : ℕ}
     {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (b : OrthonormalBasis (Fin n) ℂ V)
@@ -163,7 +163,7 @@ variable (D : D7) (c : CentralCharacterOne D) (hO : OFull D) {EE : Type} [Normed
 
 include hO in
 /- English proof (translation)
-Use `rrDef_of _ (stdH D.what₂.LL n).L (fun w y => ?_) rfl` and prove the remaining obligations. Rewrite using `[RRset_eq _ rfl (by rw [stdSide_iota]; exact Function.injective_id), stdSide_iota]`. Establish `e : (⇑(LinearMap.id : EE →ₗ[ℂ] EE)) '' ((stdSide D c b).Mtilde (D.what₂.muAt w)).carrier = (oB b (D.what₂.embLL.comp D.what₂.OtoLL)).carrier` using `Set.image_id _`. Conclude with `(iff_of_eq (congrArg (fun s => jB D.what₂.embLL b y ∈ s) e)).trans (jB_mem_oB D.what₂.embLL b D.what₂.OtoLL hO y)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stdSide_rrDef : (stdSide D c b).RRDef := by
   refine rrDef_of _ (stdH D.what₂.LL n).L (fun w y => ?_) rfl
@@ -174,7 +174,7 @@ theorem stdSide_rrDef : (stdSide D c b).RRDef := by
     (jB_mem_oB D.what₂.embLL b D.what₂.OtoLL hO y)
 
 /- English proof (translation)
-The claim follows from `(stdH_good D.what₂.LL n).2`.
+A detailed English derivation is pending.
 -/
 theorem stdSide_rrFull : (stdSide D c b).RRFull := (stdH_good D.what₂.LL n).2
 
@@ -192,7 +192,7 @@ def standardBaseSide : BaseLevelRowSide D := ⟨stdSide D c D.what₂.onb0⟩
 
 include hO in
 /- English proof (translation)
-The claim follows from `stdSide_rrDef D c hO _`.
+A detailed English derivation is pending.
 -/
 theorem standardBaseSide_latticeDefined : (standardBaseSide D c).s.RRDef := stdSide_rrDef D c hO _
 

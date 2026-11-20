@@ -11,9 +11,9 @@ namespace GlobalTheory.TwU
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.FrobeniusOrbits Classical Formalism.L2.KerInert.Loc
 
 /- English proof (translation)
-Rewrite using `[resV_subst hf ha, resV_eq_subst hg T, MvPowerSeries.subst_comp_subst_apply (hasSubst_resFam g) ha']`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : ∃ k, g k = i`. Take `⟨k, rfl⟩` from `h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1, resFam_apply hg, MvPowerSeries.subst_X ha']`. Use `push_neg at h`. Rewrite using `[h0 i h, resFam_off g i h, ← MvPowerSeries.coe_substAlgHom ha', map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resV_subst_two {ι κ σ τ R : Type} [CommRing R] [Finite ι] [Finite σ]
     {f : κ → ι} (hf : Function.Injective f) {g : τ → σ} (hg : Function.Injective g)
@@ -32,11 +32,11 @@ theorem resV_subst_two {ι κ σ τ R : Type} [CommRing R] [Finite ι] [Finite �
     rw [h0 i h, resFam_off g i h, ← MvPowerSeries.coe_substAlgHom ha', map_zero]
 
 /- English proof (translation)
-Rewrite using `[resV_mul hf, resV_X hf]`. Use `congr 1`. Use extensionality with `n`. Rewrite using `[resV_coeff, MvPowerSeries.coeff_C, MvPowerSeries.coeff_C]`. Distinguish the cases in `hn : n = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hn` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hn, if_neg]`. Introduce `h0`. Apply `hn` to reduce the goal to its premises.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg Finsupp.degree h0` as an intermediate fact. Rewrite `this` using `[degree_mapDomain]`. Conclude with `(Finsupp.degree_eq_zero_iff n).1 (by simpa using this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resV_CX {ι κ R : Type} [CommRing R] [Finite ι] {f : κ → ι} (hf : Function.Injective f) (c : R) (k : κ) :
     resV f (MvPowerSeries.C c * MvPowerSeries.X (f k) : MvPowerSeries ι R) = MvPowerSeries.C c * MvPowerSeries.X k := by
@@ -54,7 +54,7 @@ theorem resV_CX {ι κ R : Type} [CommRing R] [Finite ι] {f : κ → ι} (hf : 
     exact (Finsupp.degree_eq_zero_iff n).1 (by simpa using this)
 
 /- English proof (translation)
-Rewrite using `[resV_mul hf, resV_X_off hf i hi, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem resV_CX_off {ι κ R : Type} [CommRing R] [Finite ι] {f : κ → ι} (hf : Function.Injective f) (c : R) (i : ι)
     (hi : ∀ k, f k ≠ i) :
@@ -62,14 +62,14 @@ theorem resV_CX_off {ι κ R : Type} [CommRing R] [Finite ι] {f : κ → ι} (h
   rw [resV_mul hf, resV_X_off hf i hi, mul_zero]
 
 /- English proof (translation)
-Introduce `a b h` and use `eq_of_heq (Sigma.mk.inj_iff.1 h).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inj_at {p : ℕ} [Fact p.Prime] (X : Sys p) (j : ℕ) (v : X.Pl) :
     Function.Injective (fun z : Zidx (X.G.P.n' v) (NN X.G.P.m X.t j) (NN X.G.P.m X.t (j + 1)) => (⟨v, z⟩ : X.ZA j)) :=
   fun a b h => eq_of_heq (Sigma.mk.inj_iff.1 h).2
 
 /- English proof (translation)
-Establish `hg : Function.Injective (fun e : Eidx (X.G.P.n' v) (NN X.G.P.m X.t j) (NN X.G.P.m X.t (j + 1)) => (⟨v, e⟩ : X.EA j))` using `fun a b h => eq_of_heq (Sigma.mk.inj_iff.1 h).2`. Conclude with `hg.sumMap hg`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inE_inj {p : ℕ} [Fact p.Prime] (X : Sys p) (j : ℕ) (v : X.Pl) : Function.Injective (inE X j v) := by
   have hg : Function.Injective (fun e : Eidx (X.G.P.n' v) (NN X.G.P.m X.t j) (NN X.G.P.m X.t (j + 1)) => (⟨v, e⟩ : X.EA j)) :=
@@ -83,7 +83,7 @@ namespace GlobalTheory.TwU
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.FrobeniusOrbits Classical Formalism.L2.KerInert.Loc
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero (by rintro (⟨w, r, a, b⟩ | ⟨w, r, a, b⟩) <;> simp [Sys.coordZA])`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_coordZA {p : ℕ} [Fact p.Prime] (X : Sys p) (j : ℕ) :
     MvPowerSeries.HasSubst (X.coordZA (K0 p) j) :=
@@ -91,7 +91,7 @@ theorem hasSubst_coordZA {p : ℕ} [Fact p.Prime] (X : Sys p) (j : ℕ) :
     rintro (⟨w, r, a, b⟩ | ⟨w, r, a, b⟩) <;> simp [Sys.coordZA])
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero (by rintro (⟨r, a, b⟩ | ⟨r, a, b⟩) <;> simp [coordZ])`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_coordZ {p : ℕ} [Fact p.Prime] {n' r0 r1 : ℕ} (B : OmBasis p n') :
     MvPowerSeries.HasSubst (coordZ (r0 := r0) (r1 := r1) B (K0 p) 1) :=
@@ -99,19 +99,15 @@ theorem hasSubst_coordZ {p : ℕ} [Fact p.Prime] {n' r0 r1 : ℕ} (B : OmBasis p
     rintro (⟨r, a, b⟩ | ⟨r, a, b⟩) <;> simp [coordZ])
 
 /- English proof (translation)
-Establish `hE` using `inE_inj X j v`. Establish `hZ` using `inj_at X j v`. Unfold `Sys.ThZA ThZ`. Use `resV_subst_two hZ hE (hasSubst_coordZA X j) (hasSubst_coordZ _) ?_ ?_ T` and prove the remaining obligations. Introduce and unpack `(⟨r, a, b⟩ | ⟨r, a, b⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `show resV _ (X.coordZA (K0 p) j (Sum.inl ⟨v, (r, a, b)⟩)) = _`. Simplify using `only [Sys.coordZA, coordZ]`. Rewrite using `[resV_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[one_mul, Algebra.algebraMap_self, RingHom.id_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `resV_CX hZ _ (s, a, b)`. Use `show resV _ (X.coordZA (K0 p) j (Sum.inr ⟨v, (r, a, b)⟩)) = _`. Simplify using `only [Sys.coordZA, coordZ]`. Rewrite using `[resV_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[one_mul, Algebra.algebraMap_self, RingHom.id_apply]`. Conclude with `resV_CX hZ _ (s, a, b)`. Introduce and unpack `(⟨w, r, a, b⟩ | ⟨w, r, a, b⟩) hi`. Establish `hw : w ≠ v`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hi (Sum.inl (r, a, b)) rfl`. Simplify using `only [Sys.coordZA]`. Rewrite using `[resV_sum]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Conclude with `resV_CX_off hZ _ _ (fun z h => hw (congrArg Sigma.fst h).symm)`.
-
-Establish `hw : w ≠ v`. Introduce and unpack `rfl`. Conclude with `hi (Sum.inr (r, a, b)) rfl`. Simplify using `only [Sys.coordZA]`. Rewrite using `[resV_sum]`.
-
-Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Conclude with `resV_CX_off hZ _ _ (fun z h => hw (congrArg Sigma.fst h).symm)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem resV_ThZA {p : ℕ} [Fact p.Prime] (X : Sys p) (j : ℕ) (v : X.Pl) (T : MvPowerSeries (X.EA j ⊕ X.EA j) (K0 p)) :
     resV (fun z : Zidx (X.G.P.n' v) (NN X.G.P.m X.t j) (NN X.G.P.m X.t (j + 1)) => (⟨v, z⟩ : X.ZA j)) (X.ThZA (K0 p) j T) =
@@ -150,9 +146,9 @@ theorem resV_ThZA {p : ℕ} [Fact p.Prime] (X : Sys p) (j : ℕ) (v : X.Pl) (T :
       exact resV_CX_off hZ _ _ (fun z h => hw (congrArg Sigma.fst h).symm)
 
 /- English proof (translation)
-Establish `hE` using `inE_inj X j v`. Unfold `phAt`. Rewrite using `[resV_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[restrict_formalSum hE be (by simp) (by simp)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg₂ (sub2 p be) (resV_X hE (Sum.inl e)) (resV_X hE (Sum.inr e))`.
+A detailed English derivation is pending.
 -/
 theorem resV_phAt {p : ℕ} [Fact p.Prime] (X : Sys p) (be : MvPowerSeries (Fin 2) (K0 p)) (j : ℕ) (v : X.Pl) :
     resV (inE X j v) (phAt X be j v) =
@@ -166,9 +162,9 @@ theorem resV_phAt {p : ℕ} [Fact p.Prime] (X : Sys p) (be : MvPowerSeries (Fin 
   exact congrArg₂ (sub2 p be) (resV_X hE (Sum.inl e)) (resV_X hE (Sum.inr e))
 
 /- English proof (translation)
-Introduce `p _ X be j v U _ hU`. Establish `hE` using `inE_inj X j v`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `hU`. Conclude with `⟨resV (inE X j v) g, by rw [← resV_inParam hE, hg, resV_map]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[resV_ThZA, resV_mul hE, resV_expS hE, resV_neg, resV_phAt]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem restr_onePlace : ∀ (p : ℕ) [Fact p.Prime] (X : Sys p) (be : MvPowerSeries (Fin 2) (K0 p)) (j : ℕ) (v : X.Pl)
     (U : MvPowerSeries (X.EA j ⊕ X.EA j) (K0 p)), MvPowerSeries.constantCoeff be = 0 → IntS p (inParam p U) →

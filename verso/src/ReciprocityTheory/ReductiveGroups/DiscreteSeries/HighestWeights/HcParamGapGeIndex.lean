@@ -11,19 +11,19 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `gap : ∀ i j : Fin n, i < j → lam j + 1 ≤ lam i`. Introduce `i j hij`. Take `⟨mi, hi⟩` from `hlam.2 i`. Take `⟨mj, hj⟩` from `hlam.2 j`. Establish `hlt : lam j < lam i` using `hlam.1 hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (mj : ℝ) < mi` using `by linarith`. Establish `h2 : mj < mi` using `by exact_mod_cast h1`. Establish `h3 : (mj : ℝ) + 1 ≤ mi`. Use `Int.add_one_le_of_lt h2` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ k : ℕ, ∀ c : Fin n, a ≤ c → (c : ℕ) = a + k → ((c : ℕ) : ℝ) - (a : ℕ) ≤ lam a - lam c`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c _ hc`. Establish `: c = a` using `Fin.ext (by omega)`. Substitute `this` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hac hc`. Establish `hc1 : (c : ℕ) - 1 < n` using `by omega`. Set `c' : Fin n` to `⟨(c : ℕ) - 1, hc1⟩`. Establish `hac' : a ≤ c'` using `Fin.le_def.mpr (by show (a : ℕ) ≤ (c : ℕ) - 1; omega)`. Establish `hc' : (c' : ℕ) = a + k` using `by show (c : ℕ) - 1 = _; omega`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `ih c' hac' hc'`. Establish `h2` using `gap c' c (Fin.lt_def.mpr (by show (c : ℕ) - 1 < c; omega))`. Establish `h3 : ((c : ℕ) : ℝ) = ((c' : ℕ) : ℝ) + 1`. Rewrite using `[show (c : ℕ) = (c' : ℕ) + 1 by show (c : ℕ) = (c : ℕ) - 1 + 1; omega]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hab'` using `Fin.le_def.mp hab`. Conclude with `key ((b : ℕ) - a) b hab (by omega)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hc_param_gap_ge_index (lam : Fin n → ℝ) (hlam : IsHCParam lam) (a b : Fin n) (hab : a ≤ b) :
     ((b : ℕ) : ℝ) - (a : ℕ) ≤ lam a - lam b := by
@@ -64,9 +64,9 @@ theorem hc_param_gap_ge_index (lam : Fin n → ℝ) (hlam : IsHCParam lam) (a b 
   exact key ((b : ℕ) - a) b hab (by omega)
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset (Fin n), (s.filter (fun b => ε b ≠ ε a)).card + (s.filter (fun b => ¬ (ε b ≠ ε a))).card = s.card`. Introduce `s`. Use `first`. Consider the case `exact Finset.card_filter_add_card_filter_not _`. Consider the case `exact Finset.filter_card_add_filter_neg_card_eq_card _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [← Finset.card_union_of_disjoint (Finset.disjoint_filter_filter_neg s s _), Finset.filter_union_filter_neg_eq]`. Consider the case `rw [← Finset.card_disjoint_union (Finset.disjoint_filter_filter_neg s s _), Finset.filter_union_filter_neg_eq]`. Rewrite using `[← Fin.card_Ioi a, ← key (Finset.Ioi a)]`. Apply the tactic sequence `congr 1 <;> congr 1 <;> ext b <;> simp`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lowK_card_gt (ε : Fin n → Bool) (a : Fin n) :
     (univ.filter fun b => a < b ∧ ε b ≠ ε a).card + (univ.filter fun b => a < b ∧ ε b = ε a).card
@@ -85,9 +85,9 @@ theorem lowK_card_gt (ε : Fin n → Bool) (a : Fin n) :
   congr 1 <;> congr 1 <;> ext b <;> simp
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset (Fin n), (s.filter (fun b => ε b ≠ ε a)).card + (s.filter (fun b => ¬ (ε b ≠ ε a))).card = s.card`. Introduce `s`. Use `first`. Consider the case `exact Finset.card_filter_add_card_filter_not _`. Consider the case `exact Finset.filter_card_add_filter_neg_card_eq_card _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [← Finset.card_union_of_disjoint (Finset.disjoint_filter_filter_neg s s _), Finset.filter_union_filter_neg_eq]`. Consider the case `rw [← Finset.card_disjoint_union (Finset.disjoint_filter_filter_neg s s _), Finset.filter_union_filter_neg_eq]`. Rewrite using `[← Fin.card_Iio a, ← key (Finset.Iio a)]`. Apply the tactic sequence `congr 1 <;> congr 1 <;> ext b <;> simp`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lowK_card_lt (ε : Fin n → Bool) (a : Fin n) :
     (univ.filter fun b => b < a ∧ ε b ≠ ε a).card + (univ.filter fun b => b < a ∧ ε b = ε a).card
@@ -106,11 +106,9 @@ theorem lowK_card_lt (ε : Fin n → Bool) (a : Fin n) :
   congr 1 <;> congr 1 <;> ext b <;> simp
 
 /- English proof (translation)
-Establish `hg` using `lowK_card_gt ε a`. Establish `hl` using `lowK_card_lt ε a`. Establish `ha` using `a.isLt`. Simplify using `only [lowK, rhoN, rhoC, Pi.add_apply, Pi.sub_apply]`. Use `set A1 := (univ.filter fun b => a < b ∧ ε b ≠ ε a).card`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set A2 := (univ.filter fun b => a < b ∧ ε b = ε a).card`. Use `set A3 := (univ.filter fun b => b < a ∧ ε b ≠ ε a).card`. Use `set A4 := (univ.filter fun b => b < a ∧ ε b = ε a).card`. Establish `e1 : ((A1 : ℕ) : ℝ) + A2 + 1 + (a : ℕ) = n`. Conclude with `(show A1 + A2 + 1 + (a : ℕ) = n by omega)` after adjusting the coercions.
-
-Establish `e2 : ((A3 : ℕ) : ℝ) + A4 = (a : ℕ)` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lowest_k_type_formula (ε : Fin n → Bool) (lam : Fin n → ℝ) (a : Fin n) :
     lowK ε lam a = lam a + ((n : ℝ) - 1) / 2 - (a : ℕ)
@@ -130,23 +128,23 @@ theorem lowest_k_type_formula (ε : Fin n → Bool) (lam : Fin n → ℝ) (a : F
   linarith
 
 /- English proof (translation)
-Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hlam.2 a`. Use `⟨m + (n : ℤ) - 1 - ((a : ℕ) : ℤ) - ((univ.filter fun b => a < b ∧ ε b = ε a).card : ℤ) + ((univ.filter fun b => b < a ∧ ε b = ε a).card : ℤ), ?_⟩` and prove the remaining obligations. Rewrite using `[lowest_k_type_formula]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : ε b = ε a` using `he.symm`. Establish `hab' : (a : ℕ) ≤ b` using `le_of_lt (Fin.lt_def.mp hab)`. Establish `c1 : (univ.filter fun c => a < c ∧ ε c = ε a).card ≤ (univ.filter fun c => b < c ∧ ε c = ε b).card + ((b : ℕ) - a)`. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `c hc`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union, Finset.mem_Ioc] at hc ⊢`. Rewrite using `[hs]`. Distinguish the cases in `hcb : b < c`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl ⟨hcb, hc.2⟩`. Conclude with `Or.inr ⟨hc.1, not_lt.mp hcb⟩`. Use `_ ≤ _ := by`. Rewrite using `[← Fin.card_Ioc]`. Conclude with `Finset.card_union_le _ _`.
+Prove the first alternative. Prove the second alternative. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `c2 : (univ.filter fun c => c < b ∧ ε c = ε b).card ≤ (univ.filter fun c => c < a ∧ ε c = ε a).card + ((b : ℕ) - a)`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `c hc`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union, Finset.mem_Ico] at hc ⊢`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← hs]`. Distinguish the cases in `hca : c < a`. Conclude with `Or.inl ⟨hca, hc.2⟩`. Conclude with `Or.inr ⟨not_lt.mp hca, hc.1⟩`. Use `_ ≤ _ := by`.
+Prove the first alternative. Prove the second alternative. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Fin.card_Ico]`. Conclude with `Finset.card_union_le _ _`. Establish `gap` using `hc_param_gap_ge_index lam hlam a b hab.le`. Establish `c1r : (((univ.filter fun c => a < c ∧ ε c = ε a).card : ℕ) : ℝ) ≤ ((univ.filter fun c => b < c ∧ ε c = ε b).card : ℕ) + (((b : ℕ) : ℝ) - (a : ℕ))`. Use `c1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `this` using `[← Nat.cast_le (α := ℝ)]`. Move the coercions through the operations in `[Nat.cast_sub hab'] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcard₃ : (((univ.filter fun c => c < b ∧ ε c = ε b).card : ℕ) : ℝ) ≤ ((univ.filter fun c => c < a ∧ ε c = ε a).card : ℕ) + (((b : ℕ) : ℝ) - (a : ℕ))`. Use `c2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← Nat.cast_le (α := ℝ)]`. Move the coercions through the operations in `[Nat.cast_sub hab'] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[lowest_k_type_formula, lowest_k_type_formula]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lowK_int_dom (ε : Fin n → Bool) (lam : Fin n → ℝ) (hlam : IsHCParam lam) :
     (∀ a, ∃ m : ℤ, lowK ε lam a = m) ∧ ∀ a b, a < b → ε a = ε b → lowK ε lam b ≤ lowK ε lam a := by

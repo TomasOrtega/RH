@@ -8,14 +8,14 @@ open scoped InnerProductSpace TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[star_dotProduct, star_mulVec, hH, ← dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frameForm_symm_zero {N : ℕ} {H : Matrix (Fin N) (Fin N) ℂ} (hH : Hᴴ = H)
     (x y : Fin N → ℂ) : star x ⬝ᵥ (H *ᵥ y) = star (star y ⬝ᵥ (H *ᵥ x)) := by
   rw [star_dotProduct, star_mulVec, hH, ← dotProduct_mulVec]
 
 /- English proof (translation)
-Simplify using `[mulVec_sum, mulVec_smul, dotProduct_sum, dotProduct_smul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dotProduct_mulVec_sum_smul {N : ℕ} {H : Matrix (Fin N) (Fin N) ℂ} {ι : Type}
     [Fintype ι] (x : Fin N → ℂ) (g : ι → ℂ) (v : ι → Fin N → ℂ) :
@@ -23,27 +23,27 @@ private theorem dotProduct_mulVec_sum_smul {N : ℕ} {H : Matrix (Fin N) (Fin N)
   simp [mulVec_sum, mulVec_smul, dotProduct_sum, dotProduct_smul]
 
 /- English proof (translation)
-Establish `sym` using `fun x y => frameForm_symm_zero hH x y`. Establish `hfe : ∀ a b, star (f a) ⬝ᵥ (H *ᵥ e b) = if a = b then 1 else 0`. Introduce `a b`. Rewrite using `[sym, hef b a]`. Break down `eq_or_ne a b with rfl | hab` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Simplify using `[hab, hab.symm]`. Establish `hze : ∀ a, star z ⬝ᵥ (H *ᵥ e a) = 0` using `fun a => by rw [sym, (hz a).1, star_zero]`. Establish `hzf : ∀ a, star z ⬝ᵥ (H *ᵥ f a) = 0` using `fun a => by rw [sym, (hz a).2, star_zero]`. Establish `hwe : ∀ a c, star (w a) ⬝ᵥ (H *ᵥ e c) = 0` using `fun a c => by rw [sym, ((hw a).1 c).1, star_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwf : ∀ a c, star (w a) ⬝ᵥ (H *ᵥ f c) = 0` using `fun a c => by rw [sym, ((hw a).1 c).2, star_zero]`. Establish `hwz : ∀ a, star (w a) ⬝ᵥ (H *ᵥ z) = 0` using `fun a => by rw [sym, (hw a).2, star_zero]`. Establish `hew : ∀ c a, star (e c) ⬝ᵥ (H *ᵥ w a) = 0` using `fun c a => ((hw a).1 c).1`. Establish `hfw : ∀ c a, star (f c) ⬝ᵥ (H *ᵥ w a) = 0` using `fun c a => ((hw a).1 c).2`. Establish `hzw : ∀ a, star z ⬝ᵥ (H *ᵥ w a) = 0` using `fun a => (hw a).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hez : ∀ a, star (e a) ⬝ᵥ (H *ᵥ z) = 0` using `fun a => (hz a).1`. Establish `hfz : ∀ a, star (f a) ⬝ᵥ (H *ᵥ z) = 0` using `fun a => (hz a).2`. Use `set v : (Fin r ⊕ Fin r) ⊕ (Fin k ⊕ Unit) → Fin N → ℂ := Sum.elim (Sum.elim e f) (Sum.elim w fun _ => z) with hv`. Establish `key : ∀ g : (Fin r ⊕ Fin r) ⊕ (Fin k ⊕ Unit) → ℂ, (∀ j, star (v j) ⬝ᵥ (H *ᵥ ∑ i, g i • v i) = 0) → g = 0`. Introduce `g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [dotProduct_mulVec_sum_smul] at hg`. Simplify using `only [Fintype.sum_sum_type] at hg`. Use function extensionality and compare the values at `i`. Break down `i with ((a | a) | (a | u))` into its components or cases. Use `hg (.inl (.inr a))` as an intermediate fact.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[hv, hfe, hff, hwe, hfw, hfz, mul_ite]`. Use `hg (.inl (.inl a))` as an intermediate fact. Simplify `this` using `[hv, hee, hef, hew, hez, mul_ite]`. Use `hg (.inr (.inl a))` as an intermediate fact. Simplify `this` using `[hv, hwe, hwf, hww, hwz, mul_ite]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hg (.inr (.inr u))` as an intermediate fact. Simplify `this` using `[hv, hze, hzf, hzw, hzz]`. Establish `hli : LinearIndependent ℂ v`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `key g (fun j => by rw [hg, mulVec_zero, dotProduct_zero])` as an intermediate fact. Conclude with `congrFun this i`. Establish `hcard : Fintype.card ((Fin r ⊕ Fin r) ⊕ (Fin k ⊕ Unit)) = Module.finrank ℂ (Fin N → ℂ)`. Simplify using `[hN]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan` using `hli.span_eq_top_of_card_eq_finrank' hcard`. Establish `hu' : u ∈ Submodule.span ℂ (Set.range v)` using `by rw [hspan]; trivial`. Take `⟨g, hg⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp hu'`. Establish `hg0` using `key g (fun j => by`. Rewrite using `[hg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `j with ((a | a) | (a | _))` into its components or cases. Simplify `(hu.1 a).1` using `[hv]`. Simplify `(hu.1 a).2` using `[hv]`. Simplify `huw a` using `[hv]`. Simplify `hu.2)` using `[hv]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hg, hg0]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem frame_orthogonal_eq_zero {N r k : ℕ} {H : Matrix (Fin N) (Fin N) ℂ}
     {e f : Fin r → Fin N → ℂ} {z : Fin N → ℂ} {w : Fin k → Fin N → ℂ}
@@ -113,31 +113,27 @@ theorem frame_orthogonal_eq_zero {N r k : ℕ} {H : Matrix (Fin N) (Fin N) ℂ}
   simp
 
 /- English proof (translation)
-Introduce `N r k n h H e f z w q hN hH _hdet hee hff hef hz hzz hww hw hq G hG hGdet`. Substitute `h` using the available equality. Establish `sym` using `fun x y => frameForm_symm_zero hH x y`. Establish `expand : ∀ x : Fin N → ℂ, ((∀ c, star (e c) ⬝ᵥ (H *ᵥ x) = 0 ∧ star (f c) ⬝ᵥ (H *ᵥ x) = 0) ∧ star z ⬝ᵥ (H *ᵥ x) = 0) → x = ∑ a, (star (w a) ⬝ᵥ (H *ᵥ x)) • w a`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0` using `frame_orthogonal_eq_zero hN hH hee hff hef hz hzz hww hw (x - ∑ a, (star (w a) ⬝ᵥ (H *ᵥ x)) • w a) ?_ ?_`. Conclude with `sub_eq_zero.mp h0`. Use `⟨fun c => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `[mulVec_sub, dotProduct_sub, dotProduct_mulVec_sum_smul, (hx.1 c).1, fun a => ((hw a).1 c).1]`. Simplify using `[mulVec_sub, dotProduct_sub, dotProduct_mulVec_sum_smul, (hx.1 c).2, fun a => ((hw a).1 c).2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[mulVec_sub, dotProduct_sub, dotProduct_mulVec_sum_smul, hx.2, fun a => (hw a).2]`. Introduce `a`. Simplify using `[mulVec_sub, dotProduct_sub, dotProduct_mulVec_sum_smul, hww, mul_ite]`. Establish `parseval : ∀ x y : Fin N → ℂ, ((∀ c, star (e c) ⬝ᵥ (H *ᵥ y) = 0 ∧ star (f c) ⬝ᵥ (H *ᵥ y) = 0) ∧ star z ⬝ᵥ (H *ᵥ y) = 0) → star x ⬝ᵥ (H *ᵥ y) = ∑ c, star (star (w c) ⬝ᵥ (H *ᵥ x)) * (star (w c) ⬝ᵥ (H *ᵥ y))`. Introduce `x y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [expand y hy]`. Rewrite using `[dotProduct_mulVec_sum_smul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[sym x (w c), mul_comm]`. Use `set P := Matrix.of fun c b => star (w c) ⬝ᵥ (H *ᵥ q b) with hPdef`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hGP : G = Pᴴ * P`. Use extensionality with `a b`. Rewrite using `[hG, parseval (q a) (q b) (hq b), Matrix.mul_apply]`. Simplify using `[hPdef, Matrix.conjTranspose_apply]`. Establish `hP : IsUnit P.det`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hGdet` using `[hGP, Matrix.det_mul, Matrix.det_conjTranspose]`. Conclude with `isUnit_of_mul_isUnit_right hGdet`. Establish `hPh : IsUnit Pᴴ.det`. Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `hP.star`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨P⁻¹, Matrix.isUnit_nonsing_inv_det _ hP, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hGP, Matrix.conjTranspose_nonsing_inv, ← Matrix.mul_assoc (Pᴴ)⁻¹, Matrix.nonsing_inv_mul _ hPh, Matrix.one_mul, Matrix.mul_nonsing_inv _ hP]`. Introduce `s hs hfix hzfix`. Establish `pres : ∀ x y : Fin N → ℂ, star (s *ᵥ x) ⬝ᵥ (H *ᵥ (s *ᵥ y)) = star x ⬝ᵥ (H *ᵥ y)`. Introduce `x y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hs]`. Establish `sperp : ∀ x : Fin N → ℂ, ((∀ c, star (e c) ⬝ᵥ (H *ᵥ x) = 0 ∧ star (f c) ⬝ᵥ (H *ᵥ x) = 0) ∧ star z ⬝ᵥ (H *ᵥ x) = 0) → ((∀ c, star (e c) ⬝ᵥ (H *ᵥ (s *ᵥ x)) = 0 ∧ star (f c) ⬝ᵥ (H *ᵥ (s *ᵥ x)) = 0) ∧ star z ⬝ᵥ (H *ᵥ (s *ᵥ x)) = 0)`. Introduce `x hx`. Use `⟨fun c => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← (hfix c).1, pres]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `(hx.1 c).1`. Rewrite using `[← (hfix c).2, pres]`. Conclude with `(hx.1 c).2`. Rewrite using `[← hzfix, pres]`. Conclude with `hx.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set M := Matrix.of fun a b => star (w a) ⬝ᵥ (H *ᵥ (s *ᵥ w b)) with hMdef`. Use `⟨M, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply, ← hww a b, ← pres (w a) (w b), parseval _ _ (sperp _ (hw b))]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hMdef, Matrix.conjTranspose_apply]`. Use extensionality with `a b`. Simplify using `[hMdef]`. Establish `hQ : (Matrix.of fun a b => star (q a) ⬝ᵥ (H *ᵥ (s *ᵥ q b))) = Pᴴ * (M * P)`. Use extensionality with `a b`.
-
-Establish `hsq : s *ᵥ q b = ∑ d, P d b • (s *ᵥ w d)` using `by conv_lhs => rw [expand (q b) (hq b)]`. Rewrite using `[mulVec_sum]`. Simplify using `[mulVec_smul, hPdef]`. Rewrite using `[Matrix.of_apply, parseval _ _ (sperp _ (hq b)), Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hsq, dotProduct_mulVec_sum_smul, Matrix.mul_apply]`. Simplify using `[hPdef, hMdef, Matrix.conjTranspose_apply, mul_comm]`. Rewrite using `[hQ, hGP, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hP, Matrix.mul_assoc, ← Matrix.mul_assoc (Pᴴ)⁻¹, Matrix.nonsing_inv_mul _ hPh, Matrix.one_mul, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_complement_change_of_basis : ∀ (N r k n : ℕ) (h : k = n) (H : Matrix (Fin N) (Fin N) ℂ) (e f : Fin r → Fin N → ℂ) (z : Fin N → ℂ) (w : Fin k → Fin N → ℂ) (q : Fin n → Fin N → ℂ), N = 2 * r + k + 1 → Hᴴ = H → IsUnit H.det → (∀ a b, star (e a) ⬝ᵥ (H *ᵥ e b) = 0) → (∀ a b, star (f a) ⬝ᵥ (H *ᵥ f b) = 0) → (∀ a b, star (e a) ⬝ᵥ (H *ᵥ f b) = if a = b then 1 else 0) → (∀ a, star (e a) ⬝ᵥ (H *ᵥ z) = 0 ∧ star (f a) ⬝ᵥ (H *ᵥ z) = 0) → star z ⬝ᵥ (H *ᵥ z) ≠ 0 → (∀ a b, star (w a) ⬝ᵥ (H *ᵥ w b) = if a = b then 1 else 0) → (∀ a, (∀ c, star (e c) ⬝ᵥ (H *ᵥ w a) = 0 ∧ star (f c) ⬝ᵥ (H *ᵥ w a) = 0) ∧ star z ⬝ᵥ (H *ᵥ w a) = 0) → (∀ a, (∀ c, star (e c) ⬝ᵥ (H *ᵥ q a) = 0 ∧ star (f c) ⬝ᵥ (H *ᵥ q a) = 0) ∧ star z ⬝ᵥ (H *ᵥ q a) = 0) → ∀ G : Matrix (Fin n) (Fin n) ℂ, (∀ a b, G a b = star (q a) ⬝ᵥ (H *ᵥ q b)) → IsUnit G.det → ∃ o : Matrix (Fin n) (Fin n) ℂ, IsUnit o.det ∧ oᴴ * G * o = 1 ∧ ∀ s : Matrix (Fin N) (Fin N) ℂ, sᴴ * H * s = H → (∀ a, s *ᵥ e a = e a ∧ s *ᵥ f a = f a) → s *ᵥ z = z → ∃ m ∈ Matrix.unitaryGroup (Fin n) ℂ, m.submatrix (Fin.cast h) (Fin.cast h) = (Matrix.of fun a b => star (w a) ⬝ᵥ (H *ᵥ (s *ᵥ w b))) ∧ G⁻¹ * (Matrix.of fun a b => star (q a) ⬝ᵥ (H *ᵥ (s *ᵥ q b))) = o * m * o⁻¹ := by
   intro N r k n h H e f z w q hN hH _hdet hee hff hef hz hzz hww hw hq G hG hGdet

@@ -41,23 +41,23 @@ noncomputable section
 namespace GlobalTheory.EvenOnto.LiftUp
 
 /- English proof (translation)
-Introduce `hDS hHC hCD hCW D c k s s' ω f hc hk hs _hs' hp`. Take `⟨X, hX, _h1, _h2, h3, h4, h5⟩` from `GlobalTheory.T.exists_real_discreteSeries_data_theta_properties hDS hHC`. Establish `hIn : Inputs D X` using `GlobalTheory.T.thetaPairAnalyticHypotheses_of_discreteSeries hDS hHC hCD hCW D X hX`. Establish `hPL : PairLifts D X` using `GlobalTheory.T.pairThetaLift_factors_through_intertwiner D X hIn (GlobalTheory.T.thetaLifts_cuspidal_of_lower_tower_lifts_vanish D X hIn (GlobalTheory.T.lowerTowerLiftsVanish_of_vanish_on_fock D X hIn (GlobalTheory.T.lowerTowerLifts_vanish_on_fock D X hIn)))`. Establish `hW` using `hp.weil`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstd : IsStdChar D c.ψ (-1)` using `hW.std`. Establish `hadj : AdjLaw c.ψ s.V s'.V` using `GlobalTheory.T.hermitianAdjoint_laws_standardCharacter D c.ψ hstd s.V s'.V`. Establish `h0 : adjO s.V s'.V 0 = 0`. Use `hadj.add 0 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨ω', hW', hω'⟩` from `GlobalTheory.T.exists_conj_weilDatum_exchangedPair D c.ψ s.V s'.V (c.χ k) (c.χ k) ω hW`. Take `⟨j, -, hj⟩` from `GlobalTheory.T.fockVectors_conjAdjointPullback_bijection D c.ψ c.θ hstd hc.inf s.V s'.V (Fr.ofModel s.M) (Fr.ofModel s'.M)`. Take `⟨hvac', hpt⟩` from `hj f (isVacF_of_isVacVec hp.vac)`. Establish `hω'e : IsWeilExp c.ψ s'.V s.V (c.a k) (c.a k) ω'` using `⟨c.χ k, c.χ k, hW', fun τ => ⟨hc.exp k hk τ, hc.exp k hk τ⟩⟩`. Establish `hne : dag s.V s'.V f ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hz`. Apply `hp.vac.ne` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Establish `hx` using `congrFun hz (adjO s'.V s.V x)`. Simplify using `only [dag, hadj.invol, Pi.zero_apply] at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using hx`. Establish `hf' : IsVacVec c.ψ c.θ s'.M s.M (dag s.V s'.V f)` using `⟨hvac'.1, hne, hvac'.2⟩`. Take `⟨It, hIt⟩` from `(GlobalTheory.T.exists_realIntertwiners_upwardThetaPair hDS hHC D c.t s.V s'.V s.par s'.par s.M s'.M (c.a k) (c.a k) c.θ c.ψ hc.inf hp.par).2`. Establish `hItW` using `hIt ω' (dag s.V s'.V f) hω'e hf'`. Establish `hrule : ∀ τ, RulePar X (s'.par τ) (s.par τ) (c.a k τ) (c.a k τ)` using `fun τ => ((GlobalTheory.T.realThetaCorrespondence_upwardPair_both_directions hDS hHC D c.t _ _ _ _ (hp.par τ)).2 X h3 h4 h5).2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `hPL _ _ _ _ hrule s'.V s.V s'.M s.M c.θ c.ψ hc.inf ω' hω'e (dag s.V s'.V f) It hf' hItW s.ν s.fd hs.haar hs.fund (dag s.V s'.V f) (isVacF_of_isVacVec hf')`. Use `⟨fun P v => It (j P) v, fun P v => GlobalTheory.T.real_intertwiner_values_kFinite D s'.V s.V _ _ s'.M s.M c.θ c.ψ _ _ ω' (dag s.V s'.V f) It hc.inf hω'e hf' hItW (j P) v, ?_, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.ItOnto.kfinSpan_le_span_it hDS hHC D s'.V s.V _ _ s'.M s.M c.θ c.ψ _ _ ω' (dag s.V s'.V f) It hc.inf hω'e hf' hItW).trans (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `w ⟨P, v, -, rfl⟩`. Conclude with `⟨j.symm P, v, by simp⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `F hF`. Take `⟨F', hF', hF'e⟩` from `hL F hF`. Use `⟨F', hF', fun P v h => ?_⟩` and prove the remaining obligations. Establish `key : ∀ g, conj (thetaKO ω g h (ptOf c.ψ c.θ s.M s'.M f P)) = thetaKO ω' h g (ptOf c.ψ c.θ s'.M s.M (dag s.V s'.V f) (j P))`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ptOf c.ψ c.θ s'.M s.M (dag s.V s'.V f) (j P) = dag s.V s'.V (ptOf c.ψ c.θ s.M s'.M f P)` using `hpt P`. Simplify using `only [thetaKO]`. Rewrite using `[e1, hω']`. Simplify using `[dag, h0]`. Simplify using `only [key]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hF'e (j P) v h`.
+A detailed English derivation is pending.
 -/
 theorem liftUp_stage_span : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → ∀ (D : D7) (c : Com D) (k : ℕ) (s s' : PiLocalization₂ D) ω f, c.Is → k < c.m → s.Is c k → s'.Is c (k + 1) → PreStep c k s s' ω f → ∃ T : PolF D s'.V.rank s.V.rank → SmT s.M → SmT s'.M, (∀ P v, T P v ∈ s'.KF) ∧ s'.KF ≤ Submodule.span ℂ {w | ∃ P v, w = T P v} ∧ GlobalTheory.PairLift.LiftsM c.θ s.M s'.M s.ν s.fd (fun P h g => conj (thetaKO ω g h (GlobalTheory.Chain.ptOf c.ψ c.θ s.M s'.M f P))) T := by
   intro hDS hHC hCD hCW D c k s s' ω f hc hk hs _hs' hp

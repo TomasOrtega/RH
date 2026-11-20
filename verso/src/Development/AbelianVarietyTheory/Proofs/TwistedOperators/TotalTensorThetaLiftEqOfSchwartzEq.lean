@@ -12,7 +12,7 @@ namespace GlobalTheory.FlipRun
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
 
 /- English proof (translation)
-Apply the tactic sequence `rcases ha with ⟨i, j, -, -, rfl⟩ | ⟨i, j, -, -, rfl⟩ <;>`. Simplify using `[GridData.Weil.kerA, GridData.Weil.ker, thetaKO, map_sum, map_smul, Finset.sum_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem kerA_sum_of_grid {t : T} {a : Arrow T} (ha : IsGridArrow D.R.m t a) {ι : Type} (L : Finset ι) (w : ι → ℂ)
     (gs : ι → Sch G a) (g₀ : GA D (G.V a.src)) (h : GA D (G.V a.tgt)) :
@@ -21,9 +21,9 @@ theorem kerA_sum_of_grid {t : T} {a : Arrow T} (ha : IsGridArrow D.R.m t a) {ι 
     simp [GridData.Weil.kerA, GridData.Weil.ker, thetaKO, map_sum, map_smul, Finset.sum_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Simplify using `only [liftA_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, kerA_sum_of_grid ha, Finset.sum_mul]`. Rewrite using `[integral_finsetSum _ fun l hl => ?_]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `(hc l hl h).const_mul (w l)` as an intermediate fact. Use `this.congr (.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -43,9 +43,9 @@ theorem liftA_sum_datum (M : Vol G) {t : T} {a : Arrow T} (ha : IsGridArrow D.R.
     ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Simplify using `only [liftA_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[integral_finsetSum _ fun k hk => ?_]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `(hc k hk h).const_mul (w k)` as an intermediate fact. Use `this.congr (.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -65,14 +65,14 @@ theorem liftA_sum_form (M : Vol G) (a : Arrow T) (f : Sch G a) {ι : Type} (s : 
     ring
 
 /- English proof (translation)
-Use `liftA_smul W M a f 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem liftA_zero_form (M : Vol G) (a : Arrow T) (f : Sch G a) : liftA W M a f 0 = 0 := by
   have := liftA_smul W M a f 0 0
   rwa [zero_smul, zero_smul] at this
 
 /- English proof (translation)
-The claim follows from `| _, .nil, _, ι, s, c, φ, d, _, hsum, P, F, _ => by have h0 : ∑ k ∈ s, c k = 0 := by have := hsum () trivial simpa [famProd] using this show ∑ k ∈ s, c k • F = 0 rw [← Finset.sum_smul, h0, zero_smul] | _, .snoc a p, hg, ι, s, c, φ, d, hv, hsum, P, F, hF => by classical obtain ⟨Tm …`.
+A detailed English derivation is pending.
 -/
 theorem sum_liftP_eq_zero {μ₀ : T} (hL : L.Is μ₀) (M : Vol G) (ρ : RealMatch W) (t : T) {e : AE D}
     (he : IsIdemSum e (locPl G t)) (hC : CuspStep W M ρ t) {X : Node} :
@@ -162,9 +162,9 @@ theorem sum_liftP_eq_zero {μ₀ : T} (hL : L.Is μ₀) (M : Vol G) (ρ : RealMa
           rw [hIH l, liftA_zero_form]
 
 /- English proof (translation)
-Unfold `tensE tensT`. Rewrite using `[Finsupp.sum, liftT_sum]`. Use `Finset.sum_congr rfl fun P _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum, liftT_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[liftT_single, mul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem liftT_tensE_expand (M : Vol G) {X Y : Node} (p : Path T X Y) (Q : PolE G →₀ ℂ) (τ : TotT G p) (F : Fn G X) :
     liftT W M p (tensE W p Q τ) F =
@@ -178,13 +178,11 @@ theorem liftT_tensE_expand (M : Vol G) {X Y : Node} (p : Path T X Y) (Q : PolE G
   rw [liftT_single, mul_smul]
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W M ρ t e he hC X Y p hg τ₁ τ₂ φ₁ φ₂ hv₁ hv₂ heq F hF Q`. Rewrite using `[liftT_tensE_expand, liftT_tensE_expand]`. Use `Finset.sum_congr rfl fun P _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `key` using `sum_liftP_eq_zero hL M ρ t he hC p hg (τ₁.support.disjSum τ₂.support) (Sum.elim (fun d => τ₁ d) fun d => -τ₂ d) (Sum.elim φ₁ φ₂) (Sum.elim id id) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce and unpack `(k | k) hk`. Conclude with `hv₁ k (Finset.inl_mem_disjSum.1 hk)`. Conclude with `hv₂ k (Finset.inr_mem_disjSum.1 hk))`. Use the proof step `(fun x hx => by`. Rewrite using `[Finset.sum_disjSum]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `heq x hx` as an intermediate fact. Simplify using `only [Finsupp.sum] at this`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib, this, add_neg_cancel])`. Use `P F hF`. Rewrite `key` using `[Finset.sum_disjSum]`.
-
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, id, neg_smul, Finset.sum_neg_distrib] at key`. Conclude with `sub_eq_zero.1 ((sub_eq_add_neg _ _).trans key)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftT_tensE_eq_of_famProd : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ {W : G.Weil} (M : Vol G) (ρ : RealMatch W) (t : T) {e : AE D}, IsIdemSum e (locPl G t) → GlobalTheory.FlipRun.CuspStep W M ρ t → ∀ {X Y : Node} (p : Path T X Y), GlobalTheory.FlipRun.OnGrid D.R.m t p → ∀ (τ₁ τ₂ : TotT G p) (φ₁ φ₂ : PureT G p → PureT G p), (∀ d ∈ τ₁.support, GlobalTheory.FlipRun.VecAll ρ e p (φ₁ d) d) → (∀ d ∈ τ₂.support, GlobalTheory.FlipRun.VecAll ρ e p (φ₂ d) d) → (∀ x : GlobalTheory.FlipRun.ArgT G p, GlobalTheory.FlipRun.HalfAll e p x → (τ₁.sum fun d c => c * GlobalTheory.FlipRun.famProd p (φ₁ d) x) = τ₂.sum fun d c => c * GlobalTheory.FlipRun.famProd p (φ₂ d) x) → ∀ F : Fn G X, GlobalTheory.FlipRun.IsCuspListed W.θ X F → ∀ Q : GlobalTheory.FlipRun.PolE G →₀ ℂ, liftT W M p (GlobalTheory.FlipRun.tensE W p Q τ₁) F = liftT W M p (GlobalTheory.FlipRun.tensE W p Q τ₂) F := by
   intro D T L sc G μ₀ hL W M ρ t e he hC X Y p hg τ₁ τ₂ φ₁ φ₂ hv₁ hv₂ heq F hF Q

@@ -3,6 +3,6 @@ import Formalism.LocalToGlobal.AdelicCompactOpens.HermDefONFamily
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HermitianDefiniteOrthonormal.Imports
 
 /- English proof (translation)
-Introduce `_ G hG` and use `PI.UnitaryGroupMassFormula.HermDefON.exists_congr_one G hG`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem posDefCongruentOne : Formalism.L2.Props.HermDefON := fun _ G hG => PI.UnitaryGroupMassFormula.HermDefON.exists_congr_one G hG

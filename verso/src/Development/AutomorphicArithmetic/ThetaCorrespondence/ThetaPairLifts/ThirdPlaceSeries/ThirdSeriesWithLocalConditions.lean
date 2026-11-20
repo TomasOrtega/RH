@@ -45,11 +45,9 @@ open Formalism.MainNotions.N Formalism.L2.Host Formalism.IndefR.NX ReciprocityTh
 attribute [local instance] GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Take `⟨Sp, ⟨Au⟩, ss⟩` from `hB`. Establish `hmt : MtInput (Dof x) l.mt.M l.c.tp.tup l.c.ch.Q`. Establish `key : ∀ (xi : (Dof x).what₂.Tup → HChar (Dof x).host.E) (Q : (Dof x).what₂.places.Pl → Finset (PlE (Dof x).host)), MtInput (Dof x) l.mt.M (fun μ j => (cfOf x).mu0 j * xi μ) Q → l.c.tp.xi = xi → l.c.ch.Q = Q → MtInput (Dof x) l.mt.M l.c.tp.tup l.c.ch.Q`. Introduce `xi Q h hx hQ`. Substitute `hx hQ` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Conclude with `h`. Conclude with `key _ _ l.mt.mt l.c.xi_eq l.c.Q_eq`. Set `nt : _root_.GlobalTheory.HeightCounting.NormChoiceRealisation hL (withLoc L) (cfL L (cfOf x)) (chL L l.c.ch) (tpL L l.c.tp)` to `{ D := Dof x, cf := cfOf x, jE := l.a.jE, A := l.a.A, cg := l.a.cg, au := l.a.au, rep := repOf x.r.Y, row := l.a.row, low := lowAll (Dof x), Pq := l.Pq, S := l.rat.S, hL := l.rat.In.hL, eig := l.rat.In.eig, θ := l.rat.In.θ, Bs := l.b.Bs, M := l.mt.M, C := l.c.ch, tp := l.c.tp, ch …`. Establish `hval : ValLL0 (withLoc L) (cfL L (cfOf x))` using `⟨l.a.val.mu0, l.a.val.eta, l.a.val.chiPsi, l.a.val.del, l.a.val.del'⟩`. Take `⟨Q, -, -, -, -, h5⟩` from `_root_.GlobalTheory.NPin.exists_character_choice_of_nTrue_split hL _ _ _ _ nt hval (fun σ σ' h => x.r.Y.eFT.injective (Formalism.IndefR.principalLevelFrame.rowRepR_inj _ _ _ h)) l.a.elem.star l.a.elem.int l.a.elem.split (GlobalTheory.ChebSplitDense.chebSplit_nd hP.what₂.cheb _)`.
-
-Conclude with `⟨Q, eq_of_heq h5⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_character_choice_with_loc_of_built (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (hP : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt) {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B}
     {w : ColW B f T} {P : Pre2 K w} (x : St P) (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x) (big : (Dof x).what₂.places.Pl → Finset ℂ)
@@ -77,9 +75,9 @@ theorem exists_character_choice_with_loc_of_built (hL : _root_.UpperTheory.Zero.
   exact ⟨Q, eq_of_heq h5⟩
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `hL hP`. Use `StepW.of_all ?_` and prove the remaining obligations. Introduce `K B f T w _ _ _ P x l`. Use `⟨fun _ => ∅, fun Lc hB _ => ?_⟩` and prove the remaining obligations. Take `⟨Pn, hM⟩` from `_root_.GlobalTheory.SerThird.exists_character_choice_with_loc_of_built hL hP x l _ Lc hB`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `_root_.UpperTheory.Lit.Dz.compatibleSystemLocalProperty_explicit hP.what₂ hP.green hP.zel hL (withLoc Lc) Pn _ (labTie_withLoc x Lc) (_root_.GlobalTheory.SerThird.tame_coupled_with_loc x l Lc) (hM ▸ _root_.GlobalTheory.SerThird.cenLoc_third_alt x l Lc)`.
+A detailed English derivation is pending.
 -/
 theorem locComp_of_isRc_classMapD_cenLoc : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → AllSt fun _ _ _ _ _ _ x =>
     ∀ l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x, _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → GlobalTheory.TypeLeaf.SerLoc D' := by
@@ -98,7 +96,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SerThird.locComp_of_isRc_classMapD_cenLoc | exact _root_.GlobalTheory.SerThird.locComp_of_isRc_classMapD_cenLoc | (intros; apply _root_.GlobalTheory.SerThird.locComp_of_isRc_classMapD_cenLoc <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.ser_loc_eventually_of_built : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → AllSt fun _ _ _ _ _ _ x => ∀ l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x, _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → GlobalTheory.TypeLeaf.SerLoc D' := by
   first | exact @_root_.GlobalTheory.SerThird.locComp_of_isRc_classMapD_cenLoc | exact _root_.GlobalTheory.SerThird.locComp_of_isRc_classMapD_cenLoc | (intros; apply _root_.GlobalTheory.SerThird.locComp_of_isRc_classMapD_cenLoc <;> assumption)

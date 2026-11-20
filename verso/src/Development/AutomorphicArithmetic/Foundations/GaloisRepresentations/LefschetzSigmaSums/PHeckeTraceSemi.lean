@@ -13,7 +13,7 @@ variable {Γ H V V' : Type} [Group Γ] [Group H] [AddCommGroup V] [Module ℂ V]
   [AddCommGroup V'] [Module ℂ V']
 
 /- English proof (translation)
-Introduce `c y`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hs]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem symm_semi {σ : ℂ ≃+* ℂ} {e : V ≃+ V'} (hs : IsSemi σ e) :
     IsSemi σ.symm e.symm := by
@@ -23,7 +23,7 @@ private theorem symm_semi {σ : ℂ ≃+* ℂ} {e : V ≃+ V'} (hs : IsSemi σ e
   simp
 
 /- English proof (translation)
-Introduce `g x`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hi]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem symm_int {ξ : Representation ℂ Γ V} {ξ' : Representation ℂ Γ V'} {e : V ≃+ V'}
     (hi : ∀ g x, e (ξ g x) = ξ' g (e x)) : ∀ g x, e.symm (ξ' g x) = ξ g (e.symm x) := by
@@ -33,13 +33,13 @@ private theorem symm_int {ξ : Representation ℂ Γ V} {ξ' : Representation �
   simp
 
 /- English proof (translation)
-The claim follows from `φ.2.1 γ g`.
+A detailed English derivation is pending.
 -/
 private theorem forms_left {ι : Γ →* H} {K : Subgroup H} {ξ : Representation ℂ Γ V}
     (φ : HeckeTraceForms.forms ι K ξ) (γ : Γ) (g : H) : φ.1 (ι γ * g) = ξ γ (φ.1 g) := φ.2.1 γ g
 
 /- English proof (translation)
-The claim follows from `φ.2.2 k hk g`.
+A detailed English derivation is pending.
 -/
 private theorem forms_right {ι : Γ →* H} {K : Subgroup H} {ξ : Representation ℂ Γ V}
     (φ : HeckeTraceForms.forms ι K ξ) (k : H) (hk : k ∈ K) (g : H) : φ.1 (g * k) = φ.1 g := φ.2.2 k hk g
@@ -70,7 +70,7 @@ private def fequiv (ι : Γ →* H) (K : Subgroup H) {ξ : Representation ℂ Γ
     exact map_add e _ _
 
 /- English proof (translation)
-Introduce `c φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Conclude with `hs c (φ.1 g)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem fequiv_semi (ι : Γ →* H) (K : Subgroup H) {ξ : Representation ℂ Γ V}
     {ξ' : Representation ℂ Γ V'} {σ : ℂ ≃+* ℂ} {e : V ≃+ V'} (hs : IsSemi σ e)
@@ -80,11 +80,11 @@ private theorem fequiv_semi (ι : Γ →* H) (K : Subgroup H) {ξ : Representati
   exact hs c (φ.1 g)
 
 /- English proof (translation)
-Establish `hsym` using `symm_semi (fequiv_semi ι K hs hi)`. Use `⟨{ toFun := fun ψ => fequiv ι K e hi (T ((fequiv ι K e hi).symm ψ)) map_add' := fun a b => by simp map_smul' := fun c ψ => by` and prove the remaining obligations. Rewrite using `[hsym c ψ, map_smul, fequiv_semi ι K hs hi]`. Simplify using `}, ?_, ?_⟩`. Introduce `ψ g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `e ((T ((fequiv ι K e hi).symm ψ)).1 g) = _`. Rewrite using `[hT, AddEquiv.map_finsum]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[hs]`. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `e.apply_symm_apply _`. Introduce `x`. Express the relevant statement in the definitionally equal form `fequiv ι K e hi (T x) = fequiv ι K e hi (T ((fequiv ι K e hi).symm (fequiv ι K e hi x)))`. Rewrite using `[AddEquiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem transport {ι : Γ →* H} {K : Subgroup H} {ξ : Representation ℂ Γ V}
     {ξ' : Representation ℂ Γ V'} {σ : ℂ ≃+* ℂ} {e : V ≃+ V'} (hs : IsSemi σ e)
@@ -111,7 +111,7 @@ private theorem transport {ι : Γ →* H} {K : Subgroup H} {ξ : Representation
     rw [AddEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Rewrite using `[h φ g, h' φ g]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hecke_unique {ι : Γ →* H} {K : Subgroup H} {ξ : Representation ℂ Γ V} {F : H → ℂ}
     {T T' : HeckeTraceForms.forms ι K ξ →ₗ[ℂ] HeckeTraceForms.forms ι K ξ} (h : HeckeTraceForms.IsHecke ι K ξ F T)
@@ -123,11 +123,11 @@ private theorem hecke_unique {ι : Γ →* H} {K : Subgroup H} {ξ : Representat
 end Transport
 
 /- English proof (translation)
-Introduce `hTr σ Γ H V V' _ _ _ _ _ _ ξ ξ' e hs hi ι K F`. Distinguish the cases in `h : ∃ T, HeckeTraceForms.IsHecke ι K ξ F T`. Take `⟨T', hT', hint⟩` from `transport (ι := ι) (K := K) hs hi h.choose_spec`. Establish `h' : ∃ T, HeckeTraceForms.IsHecke ι K ξ' (fun x => σ (F x)) T` using `⟨T', hT'⟩`. Establish `hc : h'.choose = T'` using `hecke_unique h'.choose_spec hT'`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[HeckeTraceForms.heckeTrace, HeckeTraceForms.heckeTrace, dif_pos h, dif_pos h', hc]`. Conclude with `hTr σ _ _ (fequiv ι K e hi) (fequiv_semi ι K hs hi) _ _ hint`. Establish `h' : ¬ ∃ T, HeckeTraceForms.IsHecke ι K ξ' (fun x => σ (F x)) T`. Introduce and unpack `⟨T', hT'⟩`. Take `⟨T, hT, -⟩` from `transport (ι := ι) (K := K) (symm_semi hs) (symm_int hi) hT'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `h ⟨T, ?_⟩` and prove the remaining obligations. Simplify `hT` using `only [RingEquiv.symm_apply_apply]`. Rewrite using `[HeckeTraceForms.heckeTrace, HeckeTraceForms.heckeTrace, dif_neg h, dif_neg h', map_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeTraceSemi_of :
     TraceSemi → HeckeTraceSemi := by

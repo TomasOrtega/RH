@@ -5,14 +5,14 @@ open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qh71.cubeSign_emb t h k`.
+A detailed English derivation is pending.
 -/
 private theorem cubeSign_emb {κ : Type} [LinearOrder κ] (t : Finset κ) {n : ℕ} (h : t.card = n) (k : Fin n) :
     GlobalTheory.cubeSign t (t.orderEmbOfFin h k) = (-1) ^ (k : ℕ) :=
   _root_.UpperTheory.Reformulated.B.Qh71.cubeSign_emb t h k
 
 /- English proof (translation)
-Use `Finset.orderEmbOfFin_unique h' (f := fun a => t.orderEmbOfFin h (k.succAbove a)) (fun x => Finset.mem_erase.2 ⟨fun hx => Fin.succAbove_ne k x ((t.orderEmbOfFin h).injective hx), Finset.orderEmbOfFin_mem _ _ _⟩) ((t.orderEmbOfFin h).strictMono.comp (Fin.strictMono_succAbove k))` as an intermediate fact. Conclude with `(congrFun this a).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem erase_emb {κ : Type} [LinearOrder κ] (t : Finset κ) {n : ℕ} (h : t.card = n + 1) (k : Fin (n + 1))
     (h' : (t.erase (t.orderEmbOfFin h k)).card = n) (a : Fin n) :
@@ -24,9 +24,9 @@ private theorem erase_emb {κ : Type} [LinearOrder κ] (t : Finset κ) {n : ℕ}
   exact (congrFun this a).symm
 
 /- English proof (translation)
-Establish `h' : (t.erase (t.orderEmbOfFin h k)).card = p`. Rewrite using `[Finset.card_erase_of_mem (Finset.orderEmbOfFin_mem _ _ _), h]`. Both sides reduce to the same expression. Unfold `detC`. Rewrite using `[dif_pos h']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[erase_emb t h k h' a]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem detC_erase {S κ : Type} [CommRing S] [LinearOrder κ] {p : ℕ} (ρ : κ → Fin p → S) (t : Finset κ)
     (h : t.card = p + 1) (k : Fin (p + 1)) :
@@ -42,17 +42,17 @@ private theorem detC_erase {S κ : Type} [CommRing S] [LinearOrder κ] {p : ℕ}
   rw [erase_emb t h k h' a]
 
 /- English proof (translation)
-Use `set e := t.orderEmbOfFin h with he`. Set `A : Matrix (Fin (p + 1)) (Fin (p + 1)) S` to `Matrix.of fun a => Fin.cons (∑ b, ρ (e a) b * f b) (ρ (e a))`. Establish `hA : A.det = 0`. Establish `h1` using `Matrix.det_updateCol_sum A 0 (Fin.cons 0 f : Fin (p + 1) → S)`. Establish `h2 : (A.updateCol 0 fun k => ∑ i, (Fin.cons 0 f : Fin (p + 1) → S) i • A k i) = A`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Use `Fin.cases ?_ (fun b => ?_) b` and prove the remaining obligations. Simplify using `[A, Matrix.updateCol_apply, Fin.sum_univ_succ, mul_comm]`. Simplify using `[A, Matrix.updateCol_apply, Fin.succ_ne_zero]`. Rewrite `h1` using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1`. Establish `ht : t = Finset.univ.map e.toEmbedding`. Rewrite using `[he, Finset.map_orderEmbOfFin_univ]`. Establish `hs : ∑ i ∈ t, ((GlobalTheory.cubeSign t i : ℤ) : S) * ((∑ b, ρ i b * f b) * detC ρ (t.erase i)) = ∑ k : Fin (p + 1), (((-1 : ℤ) ^ (k : ℕ) : ℤ) : S) * ((∑ b, ρ (e k) b * f b) * detC ρ (t.erase (e k)))` using `by conv_lhs => rw [show (∑ i ∈ t, ((GlobalTheory.cubeSign t i : ℤ) : S) * ((∑ b, ρ i b * f b) * detC ρ (t.erase i))) = ∑ i ∈ Finset.univ.map e.toEmbedding, ((GlobalTheory.cubeSign t i : ℤ) : S) * ((∑ b, ρ i b * f b) * detC ρ (t.erase i)) by`. Rewrite using `[← ht]]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_map]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [RelEmbedding.coe_toEmbedding]`. Rewrite using `[he, cubeSign_emb t h k]`. Rewrite using `[hs, ← hA, Matrix.det_succ_column_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[he, detC_erase ρ t h k]`. Establish `: (A.submatrix k.succAbove Fin.succ) = Matrix.of fun a b => ρ (t.orderEmbOfFin h (k.succAbove a)) b`. Use extensionality with `a b`. Simplify using `[A, he]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Simplify using `[A, he, mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ring_core {S κ : Type} [CommRing S] [LinearOrder κ] {p : ℕ} (ρ : κ → Fin p → S) (f : Fin p → S)
     (t : Finset κ) (h : t.card = p + 1) :
@@ -90,13 +90,13 @@ private theorem ring_core {S κ : Type} [CommRing S] [LinearOrder κ] {p : ℕ} 
   simp [A, he, mul_assoc]
 
 /- English proof (translation)
-Introduce `S E _ _ _ _ act κ _ p ρ f m`. Use function extensionality and compare the values at `t`. Establish `key : wd (fun l => act (∑ b, ρ l b * f b)) (fun s => act (detC ρ s) m) t = ∑ i ∈ t, (GlobalTheory.cubeSign t i : ℤ) • act (∑ b, ρ i b * f b) (act (detC ρ (t.erase i)) m)`. Simplify using `[wd, LinearMap.pi_apply, LinearMap.sum_apply]`. Rewrite using `[key]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : t.card = p + 1`. Establish `h0` using `congrArg (fun x => act x m) (ring_core ρ f t h)`. Simplify using `only [map_zero, LinearMap.zero_apply, map_sum, LinearMap.sum_apply] at h0`. Rewrite using `[Pi.zero_apply, ← h0]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← zsmul_eq_mul, map_zsmul, LinearMap.smul_apply, map_mul, Module.End.mul_apply]`. Rewrite using `[Pi.zero_apply]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `hc : (t.erase i).card ≠ p`. Rewrite using `[Finset.card_erase_of_mem hi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.card_pos.2 ⟨i, hi⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `[detC, hc]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Gal.productCup_of_system.det_of :
     Det := by

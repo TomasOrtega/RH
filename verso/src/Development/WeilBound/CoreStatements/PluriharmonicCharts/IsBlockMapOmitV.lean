@@ -25,9 +25,9 @@ def omitV (q₀ : FlBlock Ψ N) : (Σ q : {q : FlBlock Ψ N // q ≠ q₀}, FlId
   fun p => ⟨p.1.1, p.2⟩
 
 /- English proof (translation)
-Use `⟨Subtype.val_injective, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨q, hq⟩, i⟩ ⟨⟨q', hq'⟩, i'⟩ h`. Simplify using `only [omitV, Sigma.mk.inj_iff] at h`. Take `⟨rfl, h⟩` from `h`. Consider the cases of `h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨q, i⟩ ⟨y, rfl⟩`. Conclude with `⟨⟨y, i⟩, rfl⟩`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isBlockMap_omitV (q₀ : FlBlock Ψ N) :
     IsBlockMap (Subtype.val : {q : FlBlock Ψ N // q ≠ q₀} → FlBlock Ψ N) (omitV q₀) := by
@@ -41,11 +41,11 @@ theorem isBlockMap_omitV (q₀ : FlBlock Ψ N) :
     exact ⟨⟨y, i⟩, rfl⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q show a q = Function.extend Subtype.val (fun k : {q : FlBlock Ψ N // q ≠ q₀} => a k.1) 0 q`. Distinguish the cases in `hq : q = q₀`. Substitute `hq` using the available equality. Rewrite using `[Function.extend_apply']`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using ha`. Introduce and unpack `⟨k, hk⟩`. Conclude with `k.2 hk`. Conclude with `(Subtype.val_injective.extend_apply (fun k : {q : FlBlock Ψ N // q ≠ q₀} => a k.1) 0 ⟨q, hq⟩).symm`. Introduce `z`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [fsHerm, refNorm]`. Rewrite using `[← Finset.prod_erase _ (a := q₀)]`. Conclude with `Finset.prod_subtype _ (by simp) _`. Simplify using `[ha]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPullHerm_fs (q₀ : FlBlock Ψ N) (a : FlBlock Ψ N → ℤ) (ha : a q₀ = 0) :
     IsPullHerm (Subtype.val : {q : FlBlock Ψ N // q ≠ q₀} → FlBlock Ψ N) (omitV q₀)
@@ -74,7 +74,7 @@ section Triv
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Consider the cases of `A`. Consider the cases of `B`. Simplify using `only at ha hh`. Substitute `ha` using the available equality. Substitute `hh` using the available equality.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -87,7 +87,7 @@ theorem hermLine_ext {A B : HermLine ι} (ha : A.a = B.a) (hh : A.h = B.h) : A =
   rfl
 
 /- English proof (translation)
-Apply `hermLine_ext` to reduce the goal to its premises. Simplify using `[HermLine.tensor, fsHerm]`. Use function extensionality and compare the values at `z`. Simplify using `[HermLine.tensor, fsHerm, refNorm]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fs_zero_tensor : (fsHerm ι (0 : K → ℤ)).tensor (fsHerm ι 0) = fsHerm ι 0 := by
   apply hermLine_ext
@@ -102,13 +102,13 @@ end FlZero
 open FlZero FlLines
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [imageZ, mCoordIdeal, Ideal.mem_comap, RingHom.mem_ker]`. Establish `h : (mConeMap y) (rename v g) = rename κ (mConeMap (y ∘ v) g)`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `mul_X f p hf`. Simplify using `only [map_mul, rename_X, hf]`. Simplify using `[mConeMap, hv]`. Express the relevant statement in the definitionally equal form `(mConeMap y) (rename v g) = 0 ↔ (mConeMap (y ∘ v)) g = 0`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion. Introduce `h'`. Conclude with `rename_injective κ hκ (by rw [h', map_zero])`. Introduce `h'`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h', map_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem imageZ_mCoordIdeal' {K : Type} {ι : K → Type} {K' : Type} {ι' : K' → Type} {Ω : Type}
     [Field Ω] (κ : K → K') (v : (Σ k, ι k) → Σ k', ι' k') (hκ : Function.Injective κ)
@@ -132,41 +132,35 @@ private theorem imageZ_mCoordIdeal' {K : Type} {ι : K → Type} {K' : Type} {ι
     rw [h', map_zero]
 
 /- English proof (translation)
-Establish `hdim : dimFl Ψ N = antisymDegree Ψ N`. Simplify using `[dimFl, antisymDegree, Nat.choose_two_right]`. Establish `hP : IsArithVar (PFl Ψ N) (antisymDegree Ψ N + 1)`. Rewrite using `[← hdim]`. Conclude with `FlagArithVar.proof Ψ N hN`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : (p.2 : ℕ) < N - 1` using `by omega`. Establish `hz : ∀ j, yDeg Ψ N (w j) (p.1, ⟨p.2, hq⟩) = 0`. Introduce `j`. Unfold `FlLines.yDeg`. Use `split_ifs with h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Replace the chosen expression with an arbitrary variable.
 
-Conclude with `absurd (Prod.ext h.1.symm (Fin.ext h.2.symm)) (hw j)`. Both sides reduce to the same expression. Generalize the expression as in `((p.1, ⟨p.2, hq⟩) : FlBlock Ψ N) = q₀ at hz`. Distinguish the cases in `hK : Nonempty {q : FlBlock Ψ N // q ≠ q₀}`. Establish `hNe : Nonempty (FlBlock Ψ N)` using `⟨(Classical.arbitrary Ψ, ⟨0, by omega⟩)⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hnz : ∀ k : FlBlock Ψ N, yFl Ψ N ⟨k, FlagArithVar.leadIdx Ψ N k⟩ ≠ 0`. Introduce `k h`. Establish `h1` using `PositivityTheory.Xgp.fl_arith.ev_lead k (0 : ℚ)`. Establish `h2 : PositivityTheory.Xgp.fl_arith.yP ⟨k, FlagArithVar.leadIdx Ψ N k⟩ = 0` using `IsFractionRing.to_map_eq_zero_iff.mp h`. Rewrite `h1` using `[h2, map_zero, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_ne_one h1`. Establish `hfinL : ∃ D : ℕ, Algebra.trdeg ℤ (Subfield.closure (coneRatios (yFl Ψ N) (FlagArithVar.leadIdx Ψ N))) = D`. Establish `hs : (coneRatios (yFl Ψ N) (FlagArithVar.leadIdx Ψ N)).Finite` using `Set.finite_range _`. Use `haveI : Algebra.EssFiniteType ℚ (IntermediateField.adjoin ℚ (coneRatios (yFl Ψ N) (FlagArithVar.leadIdx Ψ N))) := IntermediateField.essFiniteType_iff.mpr (IntermediateField.fg_adjoin_of_finite hs)`. Establish `hlt` using `_root_.trdeg_lt_aleph0 ℚ (IntermediateField.adjoin ℚ (coneRatios (yFl Ψ N) (FlagArithVar.leadIdx Ψ N)))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hlt` using `[← FlagArithVar.trdeg_int_eq_rat, FlagArithVar.trdeg_int_adjoin]`. Conclude with `Cardinal.lt_aleph0.mp hlt`. Take `⟨D, hD⟩` from `hfinL`. Establish `hA` using `PositivityTheory.Xgp.fl_arith.arith_of_trdeg hNe (yFl Ψ N) (FlagArithVar.leadIdx Ψ N) hnz D hD`. Establish `hDn : D = antisymDegree Ψ N`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Establish `h` using `hA.2.2.2.symm.trans hP.2.2.2`. Establish `h' : D + 1 + Fintype.card (FlBlock Ψ N) = antisymDegree Ψ N + 1 + Fintype.card (FlBlock Ψ N)` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers. Establish `hle : Subfield.closure (coneRatios (fun p : (Σ k : {q : FlBlock Ψ N // q ≠ q₀}, FlIdx Ψ N k.1) => yFl Ψ N (omitV q₀ p)) (fun k => FlagArithVar.leadIdx Ψ N k.1)) ≤ Subfield.closure (coneRatios (yFl Ψ N) (FlagArithVar.leadIdx Ψ N))`. Apply `Subfield.closure_mono` to reduce the goal to its premises.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `⟨⟨p.1.1, p.2⟩, rfl⟩`. Establish `hfix1 : ∀ (c : ℚ) (p : Σ k : {q : FlBlock Ψ N // q ≠ q₀}, FlIdx Ψ N k.1), PositivityTheory.Xgp.fl_arith.subF q₀ c (yFl Ψ N (omitV q₀ p)) = yFl Ψ N (omitV q₀ p)`. Introduce `c p`. Use `show PositivityTheory.Xgp.fl_arith.subF q₀ c (algebraMap _ (ΩFl Ψ N) (PositivityTheory.Xgp.fl_arith.yP ⟨p.1.1, p.2⟩)) = algebraMap _ (ΩFl Ψ N) (PositivityTheory.Xgp.fl_arith.yP ⟨p.1.1, p.2⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PositivityTheory.Xgp.fl_arith.subF_alg, PositivityTheory.Xgp.fl_arith.sub_yP _ _ _ p.1.2]`. Establish `hfix : ∀ (m : ℕ), ∀ x ∈ Subfield.closure (coneRatios (fun p : (Σ k : {q : FlBlock Ψ N // q ≠ q₀}, FlIdx Ψ N k.1) => yFl Ψ N (omitV q₀ p)) (fun k => FlagArithVar.leadIdx Ψ N k.1)), PositivityTheory.Xgp.fl_arith.subF q₀ (m : ℚ) x = x`. Introduce `m x hx`. Establish `hsub : Subfield.closure (coneRatios (fun p : (Σ k : {q : FlBlock Ψ N // q ≠ q₀}, FlIdx Ψ N k.1) => yFl Ψ N (omitV q₀ p)) (fun k => FlagArithVar.leadIdx Ψ N k.1)) ≤ RingHom.eqLocusField (PositivityTheory.Xgp.fl_arith.subF q₀ (m : ℚ)) (RingHom.id _)`. Rewrite using `[Subfield.closure_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Use `show PositivityTheory.Xgp.fl_arith.subF q₀ (m : ℚ) (yFl Ψ N (omitV q₀ p) / yFl Ψ N (omitV q₀ ⟨p.1, FlagArithVar.leadIdx Ψ N p.1.1⟩)) = yFl Ψ N (omitV q₀ p) / yFl Ψ N (omitV q₀ ⟨p.1, FlagArithVar.leadIdx Ψ N p.1.1⟩)`. Rewrite using `[map_div₀, hfix1, hfix1]`. Conclude with `hsub hx`. Establish `ht : yFl Ψ N ⟨q₀, PositivityTheory.Xgp.fl_arith.nextIdx q₀⟩ / yFl Ψ N ⟨q₀, FlagArithVar.leadIdx Ψ N q₀⟩ ∈ Subfield.closure (coneRatios (yFl Ψ N) (FlagArithVar.leadIdx Ψ N))` using `Subfield.subset_closure ⟨⟨q₀, PositivityTheory.Xgp.fl_arith.nextIdx q₀⟩, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective fun m : ℕ => PositivityTheory.Xgp.fl_arith.subF q₀ (m : ℚ) (yFl Ψ N ⟨q₀, PositivityTheory.Xgp.fl_arith.nextIdx q₀⟩ / yFl Ψ N ⟨q₀, FlagArithVar.leadIdx Ψ N q₀⟩)`. Establish `key : ∀ c : ℚ, PositivityTheory.Xgp.fl_arith.subF q₀ c (yFl Ψ N ⟨q₀, PositivityTheory.Xgp.fl_arith.nextIdx q₀⟩ / yFl Ψ N ⟨q₀, FlagArithVar.leadIdx Ψ N q₀⟩) = algebraMap _ (ΩFl Ψ N) (PositivityTheory.Xgp.fl_arith.sub q₀ c (PositivityTheory.Xgp.fl_arith.yP ⟨q₀, PositivityTheory.Xgp …`. Introduce `c`. Rewrite using `[map_div₀]`. Conclude with `congrArg₂ (· / ·) (PositivityTheory.Xgp.fl_arith.subF_alg q₀ c _) (PositivityTheory.Xgp.fl_arith.subF_alg q₀ c _)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hB : ∀ c : ℚ, algebraMap _ (ΩFl Ψ N) (PositivityTheory.Xgp.fl_arith.sub q₀ c (PositivityTheory.Xgp.fl_arith.yP ⟨q₀, FlagArithVar.leadIdx Ψ N q₀⟩)) ≠ 0`. Introduce `c h`. Establish `h0` using `PositivityTheory.Xgp.fl_arith.ev_lead q₀ c`. Rewrite `h0` using `[IsFractionRing.to_map_eq_zero_iff.mp h, map_zero]`. Conclude with `zero_ne_one h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a b hab`. Simplify using `only at hab`. Rewrite `hab` using `[key, key, div_eq_div_iff (hB _) (hB _), ← map_mul, ← map_mul]`. Establish `h2` using `congrArg PositivityTheory.Xgp.fl_arith.ev1 (IsFractionRing.injective _ (ΩFl Ψ N) hab)`. Simplify using `only [map_mul, PositivityTheory.Xgp.fl_arith.ev_next, PositivityTheory.Xgp.fl_arith.ev_lead, mul_one] at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `h2` after adjusting the coercions. Take `⟨d, hd, hdL⟩` from `PositivityTheory.Xgp.fl_arith.trdeg_lt _ _ hle _ ht (fun m => PositivityTheory.Xgp.fl_arith.subF q₀ (m : ℚ)) hfix hinj D hD`. Establish `hA'` using `PositivityTheory.Xgp.fl_arith.arith_of_trdeg hK (fun p : (Σ k : {q : FlBlock Ψ N // q ≠ q₀}, FlIdx Ψ N k.1) => yFl Ψ N (omitV q₀ p)) (fun k => FlagArithVar.leadIdx Ψ N k.1) (fun k => hnz k.1) d hdL`. Establish `himg : IsArithVar (imageZ (omitV q₀) (PFl Ψ N)) (d + 1)`. Establish `hb` using `isBlockMap_omitV (Ψ := Ψ) (N := N) q₀`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[show PFl Ψ N = mCoordIdeal (yFl Ψ N) from rfl, imageZ_mCoordIdeal' _ _ hb.1 hb.2.2.1]`. Conclude with `hA'`. Establish `hc` using `hII.2.2.2 {q : FlBlock Ψ N // q ≠ q₀} (fun q => FlIdx Ψ N q.1) (FlBlock Ψ N) (FlIdx Ψ N) Subtype.val (omitV q₀) (PFl Ψ N) (d + 1) (antisymDegree Ψ N + 1) 0 (fun r => fsHerm (fun q : {q : FlBlock Ψ N // q ≠ q₀} => FlIdx Ψ N q.1) (fun k => yDeg Ψ N (w r) k.1)) (fun r => fsHerm (FlI …`. Rewrite `hc` using `[Fin.append_elim0]`. Conclude with `hc`.
-
-Establish `hall : ∀ q : FlBlock Ψ N, q = q₀` using `fun q => by_contra fun h => hK ⟨⟨q, h⟩⟩`. Establish `hL : (fun r => fsHerm (FlIdx Ψ N) (yDeg Ψ N (w r))) = fun _ => fsHerm (FlIdx Ψ N) 0`. Use function extensionality and compare the values at `r`. Use `congr 1`. Use function extensionality and compare the values at `q`.
-
-Rewrite using `[hall q]`. Conclude with `hz r`. Rewrite using `[hL]`. Establish `hu : Function.update (fun _ : Fin (antisymDegree Ψ N + 1) => fsHerm (FlIdx Ψ N) (0 : FlBlock Ψ N → ℤ)) 0 (fsHerm (FlIdx Ψ N) 0) = fun _ => fsHerm (FlIdx Ψ N) 0`. Use function extensionality and compare the values at `i`.
-
-Simplify using `[Function.update_apply]`. Establish `hm` using `hII.2.1 (FlBlock Ψ N) (FlIdx Ψ N) (PFl Ψ N) (antisymDegree Ψ N + 1) (fun _ => fsHerm (FlIdx Ψ N) 0) 0 (fsHerm (FlIdx Ψ N) 0) (fsHerm (FlIdx Ψ N) 0) hP (fun _ => FlagHeightMultilinear.isSmoothHerm_fsHerm _) (FlagHeightMultilinear.isSmoothHerm_fsHerm _) (FlagHeightMultilinear.isSmo …`. Rewrite `hm` using `[fs_zero_tensor, hu]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem II_fsHerm_yDeg_eq_zero_of_ne (II : IntersectionSystem) (hII : IsFullIntersectionSystem II)
     (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] [Nonempty Ψ] (N : ℕ) (hN : 2 ≤ N)
@@ -305,17 +299,15 @@ private theorem II_fsHerm_yDeg_eq_zero_of_ne (II : IntersectionSystem) (hII : Is
     linarith
 
 /- English proof (translation)
-Introduce `_ II hII Ψ _ _ _ N hN lam p hp hgap`. Establish `hdim : dimFl Ψ N = antisymDegree Ψ N`. Simplify using `[dimFl, antisymDegree, Nat.choose_two_right]`. Establish `hP : IsArithVar (PFl Ψ N) (antisymDegree Ψ N + 1)`. Rewrite using `[← hdim]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `FlagArithVar.proof Ψ N hN`. Establish `hfam` using `hII.1 (FlBlock Ψ N) (FlIdx Ψ N)`. Establish `hpoly : hFlPoly Ψ N II = toWt (formPoly (antisymDegree Ψ N + 1) fun w => II (FlBlock Ψ N) (FlIdx Ψ N) (PFl Ψ N) (antisymDegree Ψ N + 1) fun r => fsHerm (FlIdx Ψ N) (yDeg Ψ N (w r)))`. Apply `FlLines.formPoly_eq_toWt` to reduce the goal to its premises. Introduce `μ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `FlagHeightMultilinear.I_fsHerm_sum hfam hP (fun _ => μ) (xDeg Ψ N)`. Establish `h2` using `FlagHeightMultilinear.I_fsHerm_sum hfam hP (fun _ => gapZ μ) (yDeg Ψ N)`. Apply the tactic sequence `try simp only [] at h1 h2`. Simplify using `only [xLine]`. Rewrite using `[← h1, ← h2, FlLines.deg_abel_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hpoly, eval_toWt_gap]`. Simplify using `only [formPoly, map_sum, map_mul, map_prod, eval_C, eval_X]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `w _`. Distinguish the cases in `hw : ∃ j, w j = p`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨j, hj⟩` from `hw`. Apply `mul_eq_zero_of_right` to reduce the goal to its premises. Conclude with `Finset.prod_eq_zero (Finset.mem_univ j) (by rw [hj]; exact hgap)`. Use `push_neg at hw`. Apply `mul_eq_zero_of_left` to reduce the goal to its premises.
-
-Conclude with `II_fsHerm_yDeg_eq_zero_of_ne II hII Ψ N hN p hp w hw`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem flZero_main : Inputs → ∀ (II : IntersectionSystem), IsFullIntersectionSystem II → ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] [Nonempty Ψ] (N : ℕ), 2 ≤ N → ∀ (lam : Ψ × Fin N → ℝ) (p : Ψ × Fin N), (p.2 : ℕ) + 1 < N → gap lam p = 0 → eval lam (hFlPoly Ψ N II) = 0 := by
   intro _ II hII Ψ _ _ _ N hN lam p hp hgap

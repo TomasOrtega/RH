@@ -31,9 +31,9 @@ def term (ρ : Representation ℂ G V) (l : Module.Dual ℂ V) (v w : V) (g : G)
   l (ρ g⁻¹ v) * starRingEnd ℂ (l (ρ g⁻¹ w))
 
 /- English proof (translation)
-Take `⟨c, hc, hl⟩` from `(scal ρ l).inv_mem hh`. Establish `h1 : c * starRingEnd ℂ c = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hc]`. Simplify using the standard rewrite rules. Simplify using `only [term, mul_inv_rev, map_mul, Module.End.mul_apply, hl]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take the linear combination `(l (ρ g⁻¹ v) * starRingEnd ℂ (l (ρ g⁻¹ w))) * h1`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem term_mul {ρ : Representation ℂ G V} {l : Module.Dual ℂ V} (v w : V) (g : G) {h : G}
     (hh : h ∈ scal ρ l) : term ρ l v w (g * h) = term ρ l v w g := by
@@ -44,7 +44,7 @@ theorem term_mul {ρ : Representation ℂ G V} {l : Module.Dual ℂ V} (v w : V)
   linear_combination (l (ρ g⁻¹ v) * starRingEnd ℂ (l (ρ g⁻¹ w))) * h1
 
 /- English proof (translation)
-Simplify using `only [term, mul_inv_rev, inv_inv, map_mul, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem term_inv_mul (ρ : Representation ℂ G V) (l : Module.Dual ℂ V) (v w : V) (x g : G) :
     term ρ l v w (x⁻¹ * g) = term ρ l (ρ x v) (ρ x w) g := by
@@ -54,7 +54,7 @@ def qterm (ρ : Representation ℂ G V) (l : Module.Dual ℂ V) (v w : V) (q : G
   term ρ l v w q.out
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (scal ρ l) g`. Rewrite using `[qterm, hh, term_mul v w g h.2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem qterm_mk (ρ : Representation ℂ G V) (l : Module.Dual ℂ V) (v w : V) (g : G) :
     qterm ρ l v w (g : G ⧸ scal ρ l) = term ρ l v w g := by
@@ -62,7 +62,7 @@ theorem qterm_mk (ρ : Representation ℂ G V) (l : Module.Dual ℂ V) (v w : V)
   rw [qterm, hh, term_mul v w g h.2]
 
 /- English proof (translation)
-Introduce `z hz'` and use `by obtain ⟨c, hc, h⟩ := hz z hz' exact ⟨c, hc, fun y => by rw [h, map_smul, smul_eq_mul]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem center_le_scal {ρ : Representation ℂ G V} (l : Module.Dual ℂ V)
     (hz : ∀ z ∈ Subgroup.center G, ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ v, ρ z v = c • v) :
@@ -73,9 +73,9 @@ theorem center_le_scal {ρ : Representation ℂ G V} (l : Module.Dual ℂ V)
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Use `(scal ρ l).isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset ((show IsOpen {g : G | ρ.dual g l = l} from hl).mem_nhds (by` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, map_one, Module.End.one_apply])) fun g hg => ⟨1, by simp, fun y => ?_⟩)`. Establish `h1 : (ρ.dual g l) (ρ g y) = l (ρ g y)` using `by rw [show ρ.dual g l = l from hg]`. Rewrite `h1` using `[Representation.dual_apply]`. Simplify using `only [Module.Dual.transpose_apply, LinearMap.comp_apply, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] at h1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[one_mul, h1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isOpen_scal {ρ : Representation ℂ G V} {l : Module.Dual ℂ V} (hl : l ∈ smoothPart ρ.dual) :
     IsOpen (scal ρ l : Set G) := by
@@ -89,9 +89,9 @@ theorem isOpen_scal {ρ : Representation ℂ G V} {l : Module.Dual ℂ V} (hl : 
   rw [one_mul, h1]
 
 /- English proof (translation)
-Take `⟨C, hC, hCz⟩` from `hsc.2 v l hl`. Use `haveI := QuotientGroup.discreteTopology (isOpen_scal hl)`. Establish `hD : ((fun c : G => ((c⁻¹ : G) : G ⧸ scal ρ l)) '' C).Finite` using `(hC.image (by fun_prop)).finite_of_discrete`. Use `⟨hD.toFinset, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨z, hz', c, hc, e⟩` from `hCz g⁻¹ hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.Finite.mem_toFinset]`. Use `⟨c, hc, QuotientGroup.eq.2 ?_⟩` and prove the remaining obligations. Establish `h2 : (c⁻¹)⁻¹ * g = z⁻¹` using `by rw [← inv_inv g, e]; group`. Rewrite using `[h2]`. Conclude with `center_le_scal l hz (inv_mem hz')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset {ρ : Representation ℂ G V} {l : Module.Dual ℂ V} (hl : l ∈ smoothPart ρ.dual)
     (hsc : IsSupercuspidal ρ) (hz : ∀ z ∈ Subgroup.center G, ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ v, ρ z v = c • v)
@@ -115,35 +115,31 @@ namespace GlobalTheory
 open GlobalTheory.SupercuspUnitary in
 
 /- English proof (translation)
-Introduce `G V _ _ _ _ _ ρ l hl hl0 hirr hsc hz`. Establish `hfin : ∀ v w, (Function.support (qterm ρ l v w)).Finite` using `fun v w => by`. Take `⟨s, hs⟩` from `exists_finset hl hsc hz v`. Use `s.finite_toSet.subset fun q hq => ?_` and prove the remaining obligations. Proceed by induction on `q using QuotientGroup.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `H g`. Rewrite `hq` using `[Function.mem_support, qterm_mk]`. Conclude with `hs g (left_ne_zero_of_mul hq)`. Establish `hadd1 : ∀ v v' w q, qterm ρ l (v + v') w q = qterm ρ l v w q + qterm ρ l v' w q`. Introduce `v v' w q`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g => simp only [qterm_mk, term, map_add, add_mul]`. Establish `hsmul1 : ∀ (a : ℂ) v w q, qterm ρ l (a • v) w q = a * qterm ρ l v w q`. Introduce `a v w q`. Proceed by induction on `q using QuotientGroup.induction_on with`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `H g => simp only [qterm_mk, term, map_smul, smul_eq_mul, mul_assoc]`. Establish `hadd2 : ∀ v w w' q, qterm ρ l v (w + w') q = qterm ρ l v w q + qterm ρ l v w' q`. Introduce `v w w' q`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g => simp only [qterm_mk, term, map_add, mul_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Establish `hsmul2 : ∀ (a : ℂ) v w q, qterm ρ l v (a • w) q = starRingEnd ℂ a * qterm ρ l v w q`. Introduce `a v w q`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`. Simplify using `only [qterm_mk, term, map_smul, smul_eq_mul, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hconj : ∀ v w q, qterm ρ l w v q = starRingEnd ℂ (qterm ρ l v w q)`. Introduce `v w q`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [qterm_mk, term, map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Establish `hinv : ∀ (x : G) v w q, qterm ρ l (ρ x v) (ρ x w) q = qterm ρ l v w (x⁻¹ • q)`. Introduce `x v w q`. Proceed by induction on `q using QuotientGroup.induction_on with`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `H g => rw [MulAction.Quotient.smul_mk, smul_eq_mul, qterm_mk, qterm_mk, term_inv_mul]`. Set `B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun v w => ∑ᶠ q, qterm ρ l v w q) (fun v v' w => by simp only [hadd1]; exact finsum_add_distrib (hfin v w) (hfin v' w)) (fun a v w => by simp only [hsmul1, RingHom.id_apply, smul_eq_mul, mul_finsum]) (fun v w w' => by simp only [ha …`. Establish `hB : ∀ v w, B v w = ∑ᶠ q, qterm ρ l v w q` using `fun v w => LinearMap.mk₂'ₛₗ_apply _ _ _`. Use `⟨B, fun v w => ?_, fun v hv => ?_, fun x v w => ?_⟩` and prove the remaining obligations. Rewrite using `[hB, hB, map_finsum _ (hfin v w)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `finsum_congr fun q => hconj v w q`. Establish `hex : ∃ g : G, l (ρ g v) ≠ 0` using `by by_contra! h0`. Set `U : Subrepresentation ρ` to `{ toSubmodule := ⨅ g : G, LinearMap.ker (l ∘ₗ (ρ g : V →ₗ[ℂ] V)) apply_mem_toSubmodule := fun g y hy => by`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.comp_apply] at hy ⊢`. Introduce `g'`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Conclude with `hy _ }`. Use `haveI := hirr`. Break down `eq_bot_or_eq_top U with hU | hU` into its components or cases. Establish `hvU : v ∈ U.toSubmodule`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [U, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.comp_apply]`. Conclude with `h0`. Rewrite `hvU` using `[hU]`. Conclude with `hv ((Submodule.mem_bot ℂ).1 hvU)`. Use `hl0 (LinearMap.ext fun y => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hyU : y ∈ U.toSubmodule` using `by rw [hU]; exact Submodule.mem_top`. Simplify using `only [U, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.comp_apply] at hyU`. Simplify using `using hyU 1`. Take `⟨g, hg⟩` from `hex`. Rewrite using `[hB, finsum_eq_sum _ (hfin v v), Complex.re_sum]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_pos' (fun q _ => ?_) ⟨((g⁻¹ : G) : G ⧸ scal ρ l), ?_, ?_⟩` and prove the remaining obligations. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g'`. Rewrite using `[qterm_mk, term, Complex.mul_conj, Complex.ofReal_re]`. Conclude with `Complex.normSq_nonneg _`.
-
-Rewrite using `[Set.Finite.mem_toFinset, Function.mem_support, qterm_mk, term, inv_inv, Complex.mul_conj]`. Conclude with `(Complex.normSq_pos.2 hg).ne'` after adjusting the coercions. Rewrite using `[qterm_mk, term, inv_inv, Complex.mul_conj, Complex.ofReal_re]`. Conclude with `Complex.normSq_pos.2 hg`. Rewrite using `[hB, hB]`.
-
-Simplify using `only [hinv]`. Conclude with `finsum_comp_equiv (MulAction.toPerm (x⁻¹ : G) : Equiv.Perm (G ⧸ scal ρ l))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnitarisable_of_isSupercuspidal : ∀ (G V : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (l : Module.Dual ℂ V), l ∈ smoothPart ρ.dual →

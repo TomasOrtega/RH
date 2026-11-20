@@ -24,7 +24,7 @@ theorem coneForm_zero {n e : ℕ} (Ψ : (((k : Unit) → PBlk n k) → ℂ) →�
     coneForm Ψ 0 = coneFirstForm Ψ := rfl
 
 /- English proof (translation)
-Rewrite using `[coneForm, eval_rename]`. Conclude with `ReciprocityTheory.ChartRestriction.G.Geo.eval_psiPoly Ψ j _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_coneForm {n e : ℕ} (Ψ : (((k : Unit) → PBlk n k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))
     (j : Fin (e + 1)) (z : Fin n → ℂ) :
@@ -33,7 +33,7 @@ theorem eval_coneForm {n e : ℕ} (Ψ : (((k : Unit) → PBlk n k) → ℂ) →�
   exact ReciprocityTheory.ChartRestriction.G.Geo.eval_psiPoly Ψ j _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `f`. Simplify using `[segre]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem segre_one_block {n : ℕ} (x : Fin n → ℂ) :
     segre (fun p : Σ k, PBlk n k => x p.2) = fun f => x (f ()) := by
@@ -41,15 +41,15 @@ theorem segre_one_block {n : ℕ} (x : Fin n → ℂ) :
   simp [segre]
 
 /- English proof (translation)
-Take `⟨r, hr, G, hG, hrel⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.segre_rel hP.2.1.2.1 Ψ hΨ (fun _ => i)`. Use `⟨r, hr, fun j => rename (fun f : (k : Unit) → PBlk n k => f ()) (G j), fun j => (totalDegree_rename_le _ _).trans (hG j), ?_⟩` and prove the remaining obligations. Rewrite using `[← vanishingIdeal_zeroLocus_eq_radical (K := ℂ), mem_vanishingIdeal_iff]`. Introduce `x hx`. Establish `hae : ∀ p : MvPolynomial (Fin n) ℂ, aeval x p = eval x p` using `fun _ => rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hae]`. Establish `hxP : ∀ q ∈ complexFibreIdeal P, eval x q = 0` using `fun q hq => by`. Rewrite using `[← hae]`. Conclude with `hx q hq`. Simplify using `only [map_sub, map_pow, eval_X, map_sum, map_mul, eval_coneForm, eval_rename, segre_one_block]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx0 : ∃ i0, x i0 ≠ 0`. Take `⟨i0, hi0⟩` from `hx0`. Establish `hzm : (fun p : Σ k, PBlk n k => x p.2) ∈ mcPts P` using `⟨fun _ => ⟨i0, hi0⟩, forall_eval_of_complexFibreIdeal hxP⟩`. Establish `h` using `hrel _ hzm`. Rewrite `h` using `[segre_one_block]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_zero]`. Conclude with `h`. Use `push Not at hx0`. Establish `hx' : x = 0` using `funext hx0`. Substitute `hx'` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h0 : (fun _ : (k : Unit) → PBlk n k => (0 : ℂ)) = 0` using `rfl`. Simplify using `only [Pi.zero_apply] at *`. Simplify using `[h0, zero_pow hr.ne']`.
+A detailed English derivation is pending.
 -/
 theorem cone_rel {n e : ℕ} {P : Ideal (MRing (PBlk n))}
     {Ψ : (((k : Unit) → PBlk n k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (hP : IsArithVar P (e + 1))
@@ -86,33 +86,31 @@ theorem cone_rel {n e : ℕ} {P : Ideal (MRing (PBlk n))}
     simp [h0, zero_pow hr.ne']
 
 /- English proof (translation)
-Set `φ : MvPolynomial (Fin m) ℂ →+* (MvPolynomial (Fin n) ℂ ⧸ I)` to `(Ideal.Quotient.mk I).comp (aeval L).toRingHom`. Set `instA : Algebra (MvPolynomial (Fin m) ℂ) (MvPolynomial (Fin n) ℂ ⧸ I)` to `φ.toAlgebra`. Set `instM : Module (MvPolynomial (Fin m) ℂ) (MvPolynomial (Fin n) ℂ ⧸ I)` to `instA.toModule`. Establish `hsmul : ∀ (s : MvPolynomial (Fin m) ℂ) (p : MvPolynomial (Fin n) ℂ), s • Ideal.Quotient.mk I p = Ideal.Quotient.mk I (aeval L s * p)`. Introduce `s p`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Use `set M := Submodule.span (MvPolynomial (Fin m) ℂ) (((Fintype.piFinset fun i => Finset.range (r i)).image (fun α => Ideal.Quotient.mk I (monomial (Finsupp.equivFunOnFinite.symm α) 1))) : Set (MvPolynomial (Fin n) ℂ ⧸ I)) with hM`. Establish `hdeg : ∀ N, ∀ β : Fin n →₀ ℕ, (β.sum fun _ e => e) = N → Ideal.Quotient.mk I (monomial β 1) ∈ M`. Introduce `N`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `β hβ`. Establish `hpoly : ∀ q : MvPolynomial (Fin n) ℂ, q.totalDegree < N → Ideal.Quotient.mk I q ∈ M`. Introduce `q hq`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[q.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Establish `hd' : (d.sum fun _ e => e) < N` using `lt_of_le_of_lt (le_totalDegree hd) hq`. Establish `h1` using `ih _ hd' d rfl`. Establish `: Ideal.Quotient.mk I (monomial d (coeff d q)) = (C (coeff d q) : MvPolynomial (Fin m) ℂ) • Ideal.Quotient.mk I (monomial d 1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsmul, aeval_C, algebraMap_eq, C_mul_monomial, mul_one]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ h1`. Distinguish the cases in `hsmall : ∀ i, β i < r i`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.mem_coe.mpr (Finset.mem_image.mpr ⟨Finsupp.equivFunOnFinite β, ?_, ?_⟩)` and prove the remaining obligations. Conclude with `Fintype.mem_piFinset.mpr fun i => Finset.mem_range.mpr (hsmall i)`. Simplify using the standard rewrite rules. Use `push Not at hsmall`. Take `⟨i, hi⟩` from `hsmall`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use `set β' := β - Finsupp.single i (r i) with hβ'`. Establish `hβeq : β = β' + Finsupp.single i (r i)`. Use extensionality with `i'`. Simplify using `only [hβ', Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply]`. Distinguish the cases in `h : i' = i`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[Ne.symm h]`. Establish `hmk : Ideal.Quotient.mk I (monomial β 1) = ∑ j, (X j : MvPolynomial (Fin m) ℂ) • Ideal.Quotient.mk I (monomial β' 1 * H i j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : monomial β (1 : ℂ) = monomial β' 1 * X i ^ r i`. Rewrite using `[hβeq, X_pow_eq_monomial, monomial_mul, one_mul]`. Establish `h2 : Ideal.Quotient.mk I (X i ^ r i) = Ideal.Quotient.mk I (∑ j, L j * H i j)` using `Ideal.Quotient.eq.mpr (hrel i)`. Rewrite using `[h1, map_mul, h2, ← map_mul, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsmul, aeval_X]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hmk]`. Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hpoly _ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hβsum : (β.sum fun _ e => e) = (β'.sum fun _ e => e) + r i`. Rewrite using `[hβeq, Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[totalDegree_monomial _ one_ne_zero]`. Conclude with `Nat.add_le_add_left (hH i j) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `_ < N := by have := hr i; omega`. Establish `: Module.Finite (MvPolynomial (Fin m) ℂ) (MvPolynomial (Fin n) ℂ ⧸ I)`. Use `⟨⟨(Fintype.piFinset fun i => Finset.range (r i)).image (fun α => Ideal.Quotient.mk I (monomial (Finsupp.equivFunOnFinite.symm α) 1)), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hM, eq_top_iff]`. Introduce and unpack `x -`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[p.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Establish `: Ideal.Quotient.mk I (monomial d (coeff d p)) = (C (coeff d p) : MvPolynomial (Fin m) ℂ) • Ideal.Quotient.mk I (monomial d 1)`. Rewrite using `[hsmul, aeval_C, algebraMap_eq, C_mul_monomial, mul_one]`.
-
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (hdeg _ d rfl)`. Establish `: Algebra.IsIntegral (MvPolynomial (Fin m) ℂ) (MvPolynomial (Fin n) ℂ ⧸ I)` using `Algebra.IsIntegral.of_finite _ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, Nat.card_eq_fintype_card, Fintype.card_fin, zero_add]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem krullDim_le_of_rel {n m : ℕ} (I : Ideal (MvPolynomial (Fin n) ℂ))
     (L : Fin m → MvPolynomial (Fin n) ℂ) (r : Fin n → ℕ) (hr : ∀ i, 0 < r i)
@@ -211,11 +209,11 @@ theorem krullDim_le_of_rel {n m : ℕ} (I : Ideal (MvPolynomial (Fin n) ℂ))
           Nat.card_eq_fintype_card, Fintype.card_fin, zero_add]
 
 /- English proof (translation)
-Introduce `n e P Ψ hP hΨ`. Use `set J := complexFibreIdeal P ⊔ Ideal.span {coneFirstForm Ψ} with hJ`. Establish `hrad : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J.radical)`. Rewrite using `[ringKrullDim_quotient, ringKrullDim_quotient, PrimeSpectrum.zeroLocus_radical]`. Rewrite using `[hrad]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose r hr H hH hrelP using fun i => cone_rel hP hΨ i`. Establish `h0 : coneForm Ψ 0 ∈ J.radical`. Rewrite using `[coneForm_zero]`. Conclude with `Ideal.le_radical (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Use `krullDim_le_of_rel J.radical (fun j : Fin e => coneForm Ψ j.succ) r hr (fun i j => H i j.succ) (fun i j => hH i j.succ) (fun i => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : X i ^ r i - ∑ j, coneForm Ψ j * H i j ∈ J.radical` using `Ideal.radical_mono le_sup_left (hrelP i)`. Rewrite `h1` using `[Fin.sum_univ_succ]`. Establish `heq : X i ^ r i - ∑ j : Fin e, coneForm Ψ j.succ * H i j.succ = (X i ^ r i - (coneForm Ψ 0 * H i 0 + ∑ j : Fin e, coneForm Ψ j.succ * H i j.succ)) + coneForm Ψ 0 * H i 0` using `by ring`. Rewrite using `[heq]`. Conclude with `add_mem h1 (Ideal.mul_mem_right _ _ h0)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof : ConeProjHyperplaneDim.Statement := by
   intro n e P Ψ hP hΨ

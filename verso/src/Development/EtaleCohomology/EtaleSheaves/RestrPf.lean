@@ -7,26 +7,24 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_
 namespace LateralTheory.E.RestrPf
 
 /- English proof (translation)
-Rewrite using `[Functor.map_comp, pull_comp, h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_zero {q : ℕ} {n i : ℤ} {A B C : Scheme.{0}} (a : A ⟶ B) (b : B ⟶ C) (y : Ht q (sch.obj C) n i)
     (h : pull _ (sch.map b) _ _ y = 0) : pull _ (sch.map (a ≫ b)) _ _ y = 0 := by
   rw [Functor.map_comp, pull_comp, h, map_zero]
 
 /- English proof (translation)
-Introduce `h q J _ _ D c hc ha hcs hqs hu j0 X e U hU pU`. Establish `: ∀ {a b : J} (g : a ⟶ b), IsAffineHom (D.map g)` using `ha`. Set `W : (D.obj j0).Opens` to `e.hom ⁻¹ᵁ U`. Establish `haff : ∀ {a b : Over j0} (g : a ⟶ b), IsAffineHom ((opensDiagram D j0 W).map g)` using `fun g => inferInstance`. Establish `hcpt : ∀ a : Over j0, CompactSpace ((opensDiagram D j0 W).obj a)` using `fun a => isCompact_iff_compactSpace.mp ((D.map a.hom).isCompact_preimage hU)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqs' : ∀ a : Over j0, QuasiSeparatedSpace ((opensDiagram D j0 W).obj a)` using `fun a => by`. Use `hqs a.left` as an intermediate fact. Conclude with `(D.map a.hom ⁻¹ᵁ W).isOpen.isOpenEmbedding_subtypeVal.quasiSeparatedSpace`. Establish `hu' : ∀ a : Over j0, IsUnit (q : Γ((opensDiagram D j0 W).obj a, ⊤))` using `fun a => by show IsUnit (q : Γ((D.map a.hom ⁻¹ᵁ W).toScheme, ⊤))`. Simplify using `using (hu a.left).map (Scheme.Hom.appTop (Scheme.Opens.ι (D.map a.hom ⁻¹ᵁ W))).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hiso : Nonempty ((opensDiagram D j0 W).obj (Over.mk (𝟙 j0)) ≅ U.toScheme)`. Use `⟨(D.obj j0).isoOfEq ?_ ≪≫ asIso (e.hom ∣_ U)⟩` and prove the remaining obligations. Simplify using `[W]`. Establish `P` using `pU q (opensDiagram D j0 W) (opensCone D c j0 W) (isLimitOpensCone D c hc j0 W) haff hcpt hqs' hu' (Over.mk (𝟙 j0)) hiso`. Introduce `n i`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨P1, P2⟩` from `P n i`. Use `⟨fun x => ?_, fun k f y hy => ?_⟩` and prove the remaining obligations. Take `⟨j', y, hy⟩` from `P1 x`. Conclude with `⟨j'.left, j'.hom, y, hy⟩`. Take `⟨k', g', hg'⟩` from `P2 (Over.mk f) y hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k'.left, g'.left, ?_⟩` and prove the remaining obligations. Establish `hle : lv D e U (g'.left ≫ f) ≤ D.map k'.hom ⁻¹ᵁ W`. Rewrite using `[← Over.w g']`. Conclude with `le_rfl`. Set `ι0 : (lv D e U (g'.left ≫ f)).toScheme ⟶ (opensDiagram D j0 W).obj k'` to `(D.obj k'.left).homOfLE hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `heq : rD D e U f g'.left = ι0 ≫ (opensDiagram D j0 W).map g'`. Apply `(cancel_mono (lv D e U f).ι).mp` to reduce the goal to its premises. Establish `e1 : (opensDiagram D j0 W).map g' ≫ (D.map (Over.mk f).hom ⁻¹ᵁ W).ι = (D.map k'.hom ⁻¹ᵁ W).ι ≫ D.map g'.left` using `Scheme.Hom.resLE_comp_ι _ _`. Establish `e2 : ι0 ≫ (D.map k'.hom ⁻¹ᵁ W).ι = (lv D e U (g'.left ≫ f)).ι` using `Scheme.homOfLE_ι _ _`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[heq]`. Conclude with `pull_zero ι0 ((opensDiagram D j0 W).map g') y hg'`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Restr_of : Restr := by
   intro h q J _ _ D c hc ha hcs hqs hu j0 X e U hU pU

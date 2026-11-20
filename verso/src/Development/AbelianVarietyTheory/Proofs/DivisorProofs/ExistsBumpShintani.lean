@@ -12,7 +12,7 @@ open scoped ContDiff
 namespace GlobalTheory.JSW.BumpShintani
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem map_comp_eq {E : Type} [Field E] [NumberField E] {a : ℕ} (w : HeightOneSpectrum (𝓞 E)) (g : GA E a) :
     GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) g =
@@ -20,9 +20,9 @@ theorem map_comp_eq {E : Type} [Field E] [NumberField E] {a : ℕ} (w : HeightOn
   ext i j; rfl
 
 /- English proof (translation)
-Unfold `GlobalTheory.JSW.tl`. Rewrite using `[map_list_prod]`. Apply `List.prod_eq_one` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [List.map_map, List.mem_map] at hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨w, _, rfl⟩` from `hx`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem pInf_tl {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ) (l : HeightOneSpectrum (𝓞 E) →₀ (Fin a → ℕ)) :
@@ -36,9 +36,9 @@ theorem pInf_tl {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : �
   simp
 
 /- English proof (translation)
-Unfold `GlobalTheory.JSW.tl`. Rewrite using `[map_list_prod]`. Apply `List.prod_eq_one` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [List.map_map, List.mem_map] at hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨w, hw, rfl⟩` from `hx`. Establish `hne : v ≠ w` using `fun h => hv (h ▸ (Finset.mem_toList.1 hw))`. Simplify using `only [Function.comp_apply, map_comp_eq, pFin_finGL]`. Conclude with `pLoc_locGL_of_ne hne _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_tl {E : Type} [Field E] [NumberField E] {a : ℕ} (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ)
     (l : HeightOneSpectrum (𝓞 E) →₀ (Fin a → ℕ)) (v : HeightOneSpectrum (𝓞 E)) (hv : v ∉ l.support) :
@@ -54,13 +54,13 @@ theorem loc_tl {E : Type} [Field E] [NumberField E] {a : ℕ} (ϖ : ∀ w : Heig
   exact pLoc_locGL_of_ne hne _
 
 /- English proof (translation)
-Introduce `E _ _ _ m S hcond`. Take `⟨b, hb1, hbN, hbC, hbU, hbS⟩` from `GlobalTheory.T.exists_adelic_whittaker_equivariant_bump_mirabolic E m S`. Use `⟨b, hb1, hbN, hbC, ?_⟩` and prove the remaining obligations. Introduce `π α hSat`. Take `⟨φ, hφV, hφK, hφx⟩` from `GlobalTheory.T.exists_spherical_cuspForm_whittaker_ne_zero E m S hcond π α hSat`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hFV, hFb, hFU, hFinv, hFeig⟩` from `GlobalTheory.T.kirillov_semilocal_smooth_bump E m S b hbN hbC hbU hbS π φ hφV hφx`. Use `⟨F, hFV, hFU, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw k hk g`. Use `hFinv _ (pInf_finGL _) ?_ ?_ g` and prove the remaining obligations. Introduce `w' hw'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : w' ≠ w` using `fun h => hw (h ▸ hw')`. Rewrite using `[map_comp_eq, pFin_finGL]`. Conclude with `pLoc_locGL_of_ne hne _`. Introduce `g'`. Conclude with `congrArg (fun ψ : Sm E (m + 1) => ψ.1 g') (hφK w hw k hk)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ϖ hϖ l hl p hp`. Establish `hC` using `GlobalTheory.T.whittaker_mul_torus_iterated_factorisation E (m + 1) S hcond π α hSat φ hφV hφK ϖ hϖ l hl`. Establish `hS : ∀ w ∈ S, GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) (GlobalTheory.JSW.tl ϖ l) = 1` using `fun w hw => loc_tl ϖ l w (fun h => hl w h hw)`. Rewrite using `[hFeig _ _ (pInf_tl ϖ l) hS hC p hp.1, hFb p hp, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bump_shintani : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))), (∀ w ∉ S, ∀ x : w.adicCompletion E, (∀ y ∈ Ov E w, GlobalTheory.JSW.psiLoc w (x * y) = 1) ↔ x ∈ Ov E w) → ∃ b : GA E (m + 1) → ℂ, b 1 = 1 ∧ (∀ u ∈ GlobalTheory.JSW.NA E (m + 1), ∀ g, b (u * g) = GlobalTheory.JSW.psiN u * b g) ∧ (∃ C : Set (GA E (m + 1)), IsCompact C ∧ ∀ p ∈ GlobalTheory.JSW.mirS E S m, b p ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (m + 1), u⁻¹ * p ∈ C) ∧ ∀ (π : CuspSub E (m + 1)) (α : HeightOneSpectrum (𝓞 E) → Fin (m + 1) → ℂˣ), (∀ w ∉ S, HasSatGL w (π.locRep w) (Finset.univ.val.map (α w))) → ∃ F ∈ GlobalTheory.JSW.mspanR π, (∃ U : Subgroup (GL (Fin (m + 1)) (Af E)), IsOpen (U : Set (GL (Fin (m + 1)) (Af E))) ∧ ∀ u ∈ U, ∀ g, F (g * finGL E (m + 1) u) = F g) ∧ (∀ w ∉ S, ∀ k ∈ KGL w (m + 1), ∀ g, F (g * finGL E (m + 1) (locGL E (m + 1) w k)) = F g) ∧ ∀ (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ), (∀ w, IsUnifV E w (ϖ w : w.adicCompletion E)) → ∀ l : HeightOneSpectrum (𝓞 E) →₀ (Fin (m + 1) → ℕ), (∀ w ∈ l.support, w ∉ S) → ∀ p ∈ GlobalTheory.JSW.mirS E S m, GlobalTheory.JSW.whit F (p * GlobalTheory.JSW.tl ϖ l) = b p * ∏ w ∈ l.support, GlobalTheory.JSW.sphW (qV E w) (fun i => (α w i : ℂ)) (l w) := by
   intro E _ _ _ m S hcond

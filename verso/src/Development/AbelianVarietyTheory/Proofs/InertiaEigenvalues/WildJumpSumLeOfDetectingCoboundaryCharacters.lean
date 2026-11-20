@@ -9,17 +9,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 namespace GlobalTheory.PMon.Ram
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ _ _ _ _ _ _ p E r A B hp hE hord hax hdet`. Take `⟨j, hinj, hrange, happ, hram⟩` from `GlobalTheory.T.galoisGroup_fixedField_baseChange_localField K L A`. Establish `haxF : AxIn (IntermediateField.fixedField A) L p`. Introduce `J x hx`. Take `⟨y, hy, hxy⟩` from `hax (J.map j) x (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `σ ⟨τ, hτ, rfl⟩`. Rewrite using `[happ]`. Conclude with `hx τ hτ)`. Use `⟨y, fun τ hτ => ?_, hxy⟩` and prove the remaining obligations. Rewrite using `[← happ]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hy (j τ) ⟨τ, hτ, rfl⟩`. Establish `hdetF : Detects p r ⊤ (B.comap j)`. Introduce `τ₀ _ hτ₀`. Establish `hA : j τ₀ ∈ A` using `hrange.le (MonoidHom.mem_range.mpr ⟨τ₀, rfl⟩)`. Take `⟨x, a, hxa, hnd⟩` from `hdet (j τ₀) hA hτ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨x, fun τ => a (j τ), fun τ _ => ?_, hnd⟩` and prove the remaining obligations. Take `⟨z, hz, hzx⟩` from `hxa (j τ) (hrange.le (MonoidHom.mem_range.mpr ⟨τ, rfl⟩))`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← happ]`. Conclude with `hzx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `key` using `GlobalTheory.T.wild_jumpSum_le_of_coboundary_detects (IntermediateField.fixedField A) L p E r (B.comap j) hp hE hord haxF hdetF`. Establish `hwild : wild (IntermediateField.fixedField A) L = fun t => (wild K L t).comap j`. Use function extensionality and compare the values at `t`. Conclude with `hram _`. Rewrite `key` using `[hwild, jumpSum_comap_injective _ _ j _ B hinj, hrange]`.
-
-Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jumpSum_le_of_detects : ∀ (K L : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L] [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L] [IsGalois K L] (p E r : ℕ) (A B : Subgroup (L ≃ₐ[K] L)), p.Prime → 0 < E → OrdIs L p E → AxIn K L p → Detects p r A B → jumpSum (wild K L) A B ≤ 6 * E := by
   intro K L _ _ _ _ _ _ _ _ _ _ _ _ p E r A B hp hE hord hax hdet

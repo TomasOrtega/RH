@@ -8,13 +8,11 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB GlobalTh
 namespace GlobalTheory.CompanionTheory.Ar.PB.FMX.BasePt
 
 /- English proof (translation)
-Establish `hspan : Submodule.span Ω (Set.range fun j => M j) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Establish `hw : w = (w ᵥ* B) ᵥ* M` using `by rw [Matrix.vecMul_vecMul, h, Matrix.vecMul_one]`. Rewrite using `[hw, Matrix.vecMul_eq_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Take `⟨f, hf, -, hl⟩` from `Submodule.exists_fun_fin_finrank_span_eq Ω (Set.range fun j => M j)`. Establish `e : Module.finrank Ω (Submodule.span Ω (Set.range fun j => M j)) = m`. Rewrite using `[hspan, finrank_top, Module.finrank_fin_fun]`. Use `choose J hJ using fun i : Fin m => hf (Fin.cast e.symm i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨J, ?_⟩` and prove the remaining obligations. Establish `hl' : LinearIndependent Ω (M.submatrix J id).row`. Establish `: (M.submatrix J id).row = f ∘ Fin.cast e.symm`. Use function extensionality and compare the values at `i`. Conclude with `hJ i`.
-
-Rewrite using `[this]`. Conclude with `hl.comp _ (Fin.cast_injective _)`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.linearIndependent_rows_iff_isUnit.1 hl')).ne_zero`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rows_det_ne_zero {Ω : Type} [Field Ω] {n m : ℕ} (M : Matrix (Fin n) (Fin m) Ω)
     (B : Matrix (Fin m) (Fin n) Ω) (h : B * M = 1) :
@@ -41,7 +39,7 @@ theorem exists_rows_det_ne_zero {Ω : Type} [Field Ω] {n m : ℕ} (M : Matrix (
     (Matrix.linearIndependent_rows_iff_isUnit.1 hl')).ne_zero
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Take `⟨J, hJ⟩` from `exists_rows_det_ne_zero M B h`. Conclude with `⟨J, hJ⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rows_castLE_det_ne_zero {Ω : Type} [Field Ω] {n m a : ℕ} (M : Matrix (Fin n) (Fin m) Ω)
     (B : Matrix (Fin m) (Fin n) Ω) (h : B * M = 1) (ha : a + 1 ≤ m) (hm : a + 1 = m) :
@@ -51,15 +49,15 @@ theorem exists_rows_castLE_det_ne_zero {Ω : Type} [Field Ω] {n m a : ℕ} (M :
   exact ⟨J, hJ⟩
 
 /- English proof (translation)
-Take `⟨s, a⟩` from `t`. Break down `s with τ | τ` into its components or cases. Establish `ha : (a : ℕ) < p` using `a.2`. Assume the negation of the conclusion as `hne`. Establish `hne' : (a : ℕ) + 1 ≠ p` using `hne`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `h (τ, ⟨a, by omega⟩) ?_` and prove the remaining obligations. Establish `hp : IsProperStep (p + q) p (⟨a, by omega⟩ : Fin (p + q))` using `⟨hne', by show (a : ℕ) + 1 ≠ p + q; intro h'; omega⟩`. Rewrite using `[blkF, if_pos hp]`. Simplify using `[stepOf, ha]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `ha : (a : ℕ) < q` using `a.2`. Assume the negation of the conclusion as `hne`. Establish `hne' : (a : ℕ) + 1 ≠ q` using `hne`. Use `h (τ, ⟨p + a, by omega⟩) ?_` and prove the remaining obligations. Establish `hp : IsProperStep (p + q) p (⟨p + a, by omega⟩ : Fin (p + q))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Use `show p + (a : ℕ) + 1 ≠ p`. Use linear arithmetic over natural numbers and integers. Use `show p + (a : ℕ) + 1 ≠ p + q`. Use linear arithmetic over natural numbers and integers.
+Prove the components needed by the constructor for the conclusion. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[blkF, if_pos hp]`. Simplify using `[stepOf]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem step_full {Ψ : Type} {p q : ℕ} (K₀ : Type) (t : StepIx Ψ p q)
     (h : ∀ r, blkF Ψ p q K₀ r ≠ some (.inr t)) : (t.2 : ℕ) + 1 = rk Ψ p q t.1 := by
@@ -90,9 +88,7 @@ theorem step_full {Ψ : Type} {p q : ℕ} (K₀ : Type) (t : StepIx Ψ p q)
     rfl
 
 /- English proof (translation)
-Introduce `Ψ _ p q Ω _ n A K₀ _ J₀ _ x₀ hx hB k`. Take `⟨k, hk⟩` from `k`. Break down `k with k | t` into its components or cases. Conclude with `hx k`. Take `⟨B, hB⟩` from `hB t.1`.
-
-Conclude with `exists_rows_castLE_det_ne_zero (A t.1) B hB t.2.2 (step_full K₀ t hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem xb_block_ne : ∀ (Ψ : Type) [Fintype Ψ] (p q : ℕ) (Ω : Type) [Field Ω] (n : Ψ ⊕ Ψ → ℕ)
     (A : ∀ s, Matrix (Fin (n s)) (Fin (rk Ψ p q s)) Ω) (K₀ : Type) [Fintype K₀] (J₀ : K₀ → Type)

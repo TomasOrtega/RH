@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.LocDualInt
 
 /- English proof (translation)
-Set `s` to `Function.surjInv (Submodule.Quotient.mk_surjective S)`. Establish `hs : ∀ x : N, x - s (Submodule.Quotient.mk x) ∈ S` using `fun x => (Submodule.Quotient.eq S).1 (Function.surjInv_eq (Submodule.Quotient.mk_surjective S) _).symm`. Use `Finite.of_injective (fun x : N => ((Submodule.Quotient.mk x : N ⧸ S), (⟨_, hs x⟩ : S))) ?_` and prove the remaining obligations. Introduce `x y h`. Simplify using `only [Prod.mk.injEq, Subtype.mk.injEq] at h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨h1, h2⟩` from `h`. Rewrite `h2` using `[h1]`. Simplify using `using h2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finite_of_finite_quotient_submodule {R N : Type*} [Ring R] [AddCommGroup N] [Module R N]
     (S : Submodule R N) [Finite (N ⧸ S)] [Finite S] : Finite N := by
@@ -29,9 +29,7 @@ theorem finite_of_finite_quotient_submodule {R N : Type*} [Ring R] [AddCommGroup
   simpa using h2
 
 /- English proof (translation)
-Use `haveI : Finite ((B1 σ).comap (Z1 σ).subtype) := by haveI : Finite (B1 σ) := by haveI : Finite (Set.range (d0 σ)) := Set.finite_range _`. Conclude with `Finite.of_injective (fun x : B1 σ => (⟨x.1, x.2⟩ : Set.range (d0 σ))) (fun x y h => Subtype.ext (congrArg Subtype.val h))`. Conclude with `Finite.of_injective (fun x : (B1 σ).comap (Z1 σ).subtype => (⟨x.1.1, x.2⟩ : B1 σ)) (fun x y h => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `using this)`. Conclude with `finite_of_finite_quotient_submodule ((B1 σ).comap (Z1 σ).subtype)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finite_cocycles_of_finite_h1 {R : Type*} [CommRing R] {H : Type*} [Group H] [TopologicalSpace H]
     {Q : Type*} [AddCommGroup Q] [Module R Q] [TopologicalSpace Q] [IsTopologicalAddGroup Q]
@@ -76,15 +74,15 @@ variable {R G H Q : Type*} [CommRing R] [Group G] [TopologicalSpace G] [Group H]
   [ContinuousConstSMul (ZMod m) Q]
 
 /- English proof (translation)
-The claim follows from `hτ`.
+A detailed English derivation is pending.
 -/
 theorem contAction_toZModRep (τ : Representation R H Q) (hτ : ContAction τ) :
     ContAction (toZModRep m τ) := hτ
 
 /- English proof (translation)
-Introduce `f hf`. Use `⟨f ∘ i.symm, ⟨hf.1.comp i.symm.continuous, fun g h => ?_⟩, ?_⟩` and prove the remaining obligations. Use `show f (i.symm (g * h)) = f (i.symm g) + τ (i.symm g) (f (i.symm h))`. Rewrite using `[map_mul, hf.2]`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem cocycles_subset_image_toZModRestriction (i : G ≃ₜ* H) (τ : Representation R G Q) :
     (Z1 τ : Set (G → Q)) ⊆
@@ -105,21 +103,15 @@ noncomputable section
 namespace GlobalTheory.LocDualInt
 
 /- English proof (translation)
-Introduce `hT p _ K O _ _ _ G _ _ M _ _ _ _ _ _ hK hp i ρ hρ ϖ hϖ hopen n`. Establish `hmk` using `Submodule.isOpenQuotientMap_mkQ (powSub (M := M) ϖ n)`. Use `haveI hdisc : DiscreteTopology (M ⧸ powSub (M := M) ϖ n) := by`. Rewrite using `[discreteTopology_iff_isOpen_singleton_zero, ← hmk.isQuotientMap.isOpen_preimage]`. Use `hopen n using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `[Submodule.Quotient.mk_eq_zero]`. Use `haveI : CompactSpace (M ⧸ powSub (M := M) ϖ n) := ⟨by simpa [hmk.surjective.range_eq] using isCompact_univ.image hmk.continuous⟩`. Use `haveI : Finite (M ⧸ powSub (M := M) ϖ n) := finite_of_compact_of_discrete`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Proceed by induction.
 
-Use `haveI : Subsingleton (M ⧸ powSub (M := M) ϖ 0) := by`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using Submodule.Quotient.induction_on with | _ x => ?_`. Proceed by induction on `b using Submodule.Quotient.induction_on with | _ y => ?_`. Rewrite using `[Submodule.Quotient.eq]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `mem_powSub.2 ⟨x - y, by simp⟩`. Conclude with `Set.Subsingleton.finite fun f _ g _ => Subsingleton.elim f g`. Take `⟨a, ha⟩` from `(Ideal.mem_span_singleton'.1 (hϖ.maximalIdeal_eq ▸ hp))`. Establish `kill : ∀ x : M ⧸ powSub (M` using `M) ϖ n, (p ^ n) • x = 0 := by`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Proceed by induction on `x using Submodule.Quotient.induction_on with | _ y => ?_`. Rewrite using `[← Nat.cast_smul_eq_nsmul O, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `push_cast`. Rewrite using `[← ha, mul_pow, mul_comm, mul_smul]`. Conclude with `smul_mem_powSub ϖ n _`.
-
-Use `letI : Module (ZMod (p ^ n)) (M ⧸ powSub (M := M) ϖ n) := AddCommGroup.zmodModule kill`. Use `haveI : ContinuousConstSMul (ZMod (p ^ n)) (M ⧸ powSub (M := M) ϖ n) := ⟨fun _ => continuous_of_discreteTopology⟩`. Establish `hcont : ContAction ((quotRep ρ ϖ n).comp i.symm.toMonoidHom)`. Use `continuous_prod_of_discrete_right.2 fun q => ?_` and prove the remaining obligations. Proceed by induction on `q using Submodule.Quotient.induction_on with | _ x => ?_`.
-
-Use `show Continuous fun g => quotRep ρ ϖ n (i.symm g) (Submodule.Quotient.mk x)`. Simplify using `only [quotRep_mk]`. Conclude with `hmk.continuous.comp (hρ.comp (i.symm.continuous.prodMk continuous_const))`. Use `haveI := (GlobalTheory.finite_H1_H2_of_localTateDuality hT p K hK n (M ⧸ powSub (M := M) ϖ n) (toZModRep (p ^ n) ((quotRep ρ ϖ n).comp i.symm.toMonoidHom)) hn (contAction_toZModRep _ _ hcont)).1`. Use `haveI := finite_cocycles_of_finite_h1 (toZModRep (p ^ n) ((quotRep ρ ϖ n).comp i.symm.toMonoidHom))`.
-
-Conclude with `((Set.toFinite _).image _).subset (cocycles_subset_image_toZModRestriction (p ^ n) i (quotRep ρ ϖ n))`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_cocycles_quotient_pow_smul_module : Formalism.GaloisCohomology.LocalTateDualityK → ∀ {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {G : Type} [Group G] [TopologicalSpace G] {M : Type} [AddCommGroup M] [Module O M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul O M] [CompactSpace M], FiniteDimensional ℚ_[p] K → (p : O) ∈ IsLocalRing.maximalIdeal O → ∀ (i : G ≃ₜ* Formalism.GaloisCohomology.GK p K) (ρ : Representation O G M), ContAction ρ → ∀ ϖ : O, Irreducible ϖ → (∀ n : ℕ, IsOpen ((powSub (M := M) ϖ n : Submodule O M) : Set M)) → ∀ n : ℕ, (Z1 (quotRep ρ ϖ n) : Set (G → M ⧸ powSub (M := M) ϖ n)).Finite := by
   intro hT p _ K O _ _ _ G _ _ M _ _ _ _ _ _ hK hp i ρ hρ ϖ hϖ hopen n

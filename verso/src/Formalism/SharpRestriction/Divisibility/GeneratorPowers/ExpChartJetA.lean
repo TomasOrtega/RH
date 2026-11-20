@@ -11,9 +11,9 @@ open Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdJet Forma
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `show RingHom.ker (TrivSqZeroExt.fstHom R R R) ^ 2 = ⊥`. Rewrite using `[sq, eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`. Establish `hx' : x.fst = 0` using `by simpa using hx`. Establish `hy' : y.fst = 0` using `by simpa using hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.fst_mul, TrivSqZeroExt.snd_mul, hx', hy']`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ker_fst_sq : RingHom.ker (TrivSqZeroExt.fstHom R R R) ^ (0 + 1 + 1) = ⊥ := by
   show RingHom.ker (TrivSqZeroExt.fstHom R R R) ^ 2 = ⊥
@@ -32,7 +32,7 @@ def tp {κ : Type} (g : κ → R) : Jet R κ (0 + 1) →ₐ[R] DualNumber R :=
     simp)
 
 /- English proof (translation)
-Use `show MvPolynomial.aeval (fun q => (TrivSqZeroExt.inr (g q) : DualNumber R)) (MvPolynomial.X q) = _`. Rewrite using `[MvPolynomial.aeval_X]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tp_mk {κ : Type} (g : κ → R) (q : κ) :
     tp g (Ideal.Quotient.mk _ (MvPolynomial.X q)) = TrivSqZeroExt.inr (g q) := by
@@ -40,21 +40,21 @@ theorem tp_mk {κ : Type} (g : κ → R) (q : κ) :
   rw [MvPolynomial.aeval_X]
 
 /- English proof (translation)
-The claim follows from `(Finsupp.single_ne_zero.mpr one_ne_zero).symm`.
+A detailed English derivation is pending.
 -/
 theorem zero_ne_single {κ : Type} (q : κ) : (0 : κ →₀ ℕ) ≠ Finsupp.single q 1 :=
   (Finsupp.single_ne_zero.mpr one_ne_zero).symm
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [MvPolynomial.coeff_C, zero_ne_single, TrivSqZeroExt.algebraMap_eq_inl]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, hp, hq]`. Simplify using `only [MvPolynomial.coeff_add, mul_add, Finset.sum_add_distrib, TrivSqZeroExt.inl_add, TrivSqZeroExt.inr_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Consider the case `mul_X p n hp`. Establish `hc : ∀ q, MvPolynomial.coeff (Finsupp.single q 1) (p * MvPolynomial.X n) = if q = n then MvPolynomial.coeff 0 p else 0`. Introduce `q`. Rewrite using `[MvPolynomial.coeff_mul_X']`.
+Normalize the expressions using the abelian group laws. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : q = n`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg]`. Rewrite using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h' => h h'.symm`. Establish `h0 : MvPolynomial.coeff 0 (p * MvPolynomial.X n) = 0`. Rewrite using `[MvPolynomial.coeff_mul_X']`. Simplify using the standard rewrite rules. Rewrite using `[map_mul, hp, MvPolynomial.aeval_X, h0]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp [hc, TrivSqZeroExt.fst_mul, TrivSqZeroExt.snd_mul, mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem aeval_inr {κ : Type} [Fintype κ] [DecidableEq κ] (g : κ → R) (P : MvPolynomial κ R) :
     MvPolynomial.aeval (fun q => (TrivSqZeroExt.inr (g q) : DualNumber R)) P =
@@ -85,7 +85,7 @@ theorem aeval_inr {κ : Type} [Fintype κ] [DecidableEq κ] (g : κ → R) (P : 
     ext <;> simp [hc, TrivSqZeroExt.fst_mul, TrivSqZeroExt.snd_mul, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[psTrunc_eq, MvPowerSeries.coeff_truncTotal _ he]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma coeff_psTrunc_lemma {κ : Type} [Fintype κ] [DecidableEq κ] (f : MvPowerSeries κ R)
     (e : κ →₀ ℕ) (he : e.degree < 0 + 1 + 1) :
@@ -93,7 +93,7 @@ private lemma coeff_psTrunc_lemma {κ : Type} [Fintype κ] [DecidableEq κ] (f :
   rw [psTrunc_eq, MvPowerSeries.coeff_truncTotal _ he]
 
 /- English proof (translation)
-Establish `h1 : tp g (psJet (0 + 1) f) = MvPolynomial.aeval (fun q => (TrivSqZeroExt.inr (g q) : DualNumber R)) (psTrunc (0 + 1) f)` using `rfl`. Rewrite using `[h1, aeval_inr, coeff_psTrunc_lemma f 0 (by simp [Finsupp.degree]), MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Use `congr 2`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_psTrunc_lemma f _ (by simp [Finsupp.degree_single])]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tp_psJet {κ : Type} [Fintype κ] [DecidableEq κ] (g : κ → R) (f : MvPowerSeries κ R) :
     tp g (psJet (0 + 1) f) = TrivSqZeroExt.inl (MvPowerSeries.constantCoeff f) +
@@ -107,9 +107,9 @@ theorem tp_psJet {κ : Type} [Fintype κ] [DecidableEq κ] (g : κ → R) (f : M
   rw [coeff_psTrunc_lemma f _ (by simp [Finsupp.degree_single])]
 
 /- English proof (translation)
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Use `show MvPolynomial.aeval (fun i => if i = ℓ then (DualNumber.eps : DualNumber R) else 0) (MvPolynomial.X i) = MvPolynomial.aeval (fun q => (TrivSqZeroExt.inr (if q = ℓ then 1 else 0) : DualNumber R)) (MvPolynomial.X i)`. Rewrite using `[MvPolynomial.aeval_X, MvPolynomial.aeval_X]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : i = ℓ`. Apply the tactic sequence `(simp only [if_pos h]) <;> rfl`. Simplify using `only [if_neg h, TrivSqZeroExt.inr_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetTan_eq_tp {κ : Type} [DecidableEq κ] (ℓ : κ) :
     (jetTan ℓ : Jet R κ (0 + 1) →ₐ[R] DualNumber R) = tp (fun q => if q = ℓ then 1 else 0) := by
@@ -126,9 +126,9 @@ theorem jetTan_eq_tp {κ : Type} [DecidableEq κ] (ℓ : κ) :
   · simp only [if_neg h, TrivSqZeroExt.inr_zero]
 
 /- English proof (translation)
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Establish `h1 : (jetMap (m` using `0 + 1) (fun p => psTrunc (0 + 1) (a p)) (fun p => psTrunc_mem_orig (0 + 1) (a p) (ha p))) (Ideal.Quotient.mk _ (MvPolynomial.X p)) = psJet (0 + 1) (a p) := by show (Ideal.Quotient.mk (orig R κ' ^ (0 + 1 + 1))) (MvPolynomial.aeval (fun p => psTrunc (0 + 1) (a p)) (MvPolynomial.X p …`. Apply the tactic sequence `rw [MvPolynomial.aeval_X] <;> rfl`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk]`. Rewrite using `[h1, tp_psJet, ha p, tp_mk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tp_comp_jetMap {κ κ' : Type} [Fintype κ'] [DecidableEq κ'] (h : κ' → R) (a : κ → MvPowerSeries κ' R)
     (ha : ∀ p, MvPowerSeries.constantCoeff (a p) = 0) :
@@ -148,7 +148,7 @@ theorem tp_comp_jetMap {κ κ' : Type} [Fintype κ'] [DecidableEq κ'] (h : κ' 
   simp
 
 /- English proof (translation)
-Rewrite using `[psJet_subst (0 + 1) a ha f, ← AlgHom.comp_apply, tp_comp_jetMap h a ha, tp_psJet]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem snd_tp_psJet_subst {κ κ' : Type} [Fintype κ] [DecidableEq κ] [Fintype κ'] [DecidableEq κ'] (h : κ' → R)
     (a : κ → MvPowerSeries κ' R) (ha : ∀ p, MvPowerSeries.constantCoeff (a p) = 0) (f : MvPowerSeries κ R) :
@@ -159,16 +159,16 @@ theorem snd_tp_psJet_subst {κ κ' : Type} [Fintype κ] [DecidableEq κ] [Fintyp
   simp
 
 /- English proof (translation)
-Simplify using `[MvPowerSeries.coeff_X, Finsupp.single_left_inj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_coeff_X {κ : Type} [Fintype κ] [DecidableEq κ] (h : κ → R) (s : κ) :
     ∑ q, h q * MvPowerSeries.coeff (Finsupp.single q 1) (MvPowerSeries.X s : MvPowerSeries κ R) = h s := by
   simp [MvPowerSeries.coeff_X, Finsupp.single_left_inj]
 
 /- English proof (translation)
-Take `⟨s1, s2⟩` from `s`. Rewrite using `[Finset.sum_eq_single s1, Finset.sum_eq_single s2]`. Simplify using `[MvPowerSeries.coeff_X]`. Introduce `j _ hj`. Simplify using `[MvPowerSeries.coeff_X, Finsupp.single_left_inj, hj]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `i _ hi`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`. Simplify using `[MvPowerSeries.coeff_X, Finsupp.single_left_inj, hi]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -189,11 +189,11 @@ theorem sum_coeff_variable_pair {κ₁ κ₂ : Type} [Fintype κ₁] [DecidableE
   · simp
 
 /- English proof (translation)
-Take `⟨s1, s2⟩` from `s`. Simplify using `only`. Distinguish the cases in `hi : i = s1`. Substitute `hi` using the available equality. Rewrite using `[if_pos rfl, Finset.sum_eq_single s2]`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[MvPowerSeries.coeff_X]`. Introduce `j _ hj`. Simplify using `[MvPowerSeries.coeff_X, Finsupp.single_left_inj, hj]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hi]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`. Simplify using `[MvPowerSeries.coeff_X, Finsupp.single_left_inj, hi]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem sum_coeff_X_fst {κ₁ κ₂ : Type} [Fintype κ₂] [DecidableEq κ₁] [DecidableEq κ₂] (u : κ₂ → R) (i : κ₁)
     (s : κ₁ × κ₂) :
@@ -216,11 +216,11 @@ theorem sum_coeff_X_fst {κ₁ κ₂ : Type} [Fintype κ₂] [DecidableEq κ₁]
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 
 /- English proof (translation)
-Establish `ha : ∀ p : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((![0, pt R d 0] : Fin 2 → Pt R 1 d) p.1 p.2) = 0`. Introduce and unpack `⟨i, j⟩`. Apply the tactic sequence `fin_cases i <;> simp [pt]`. Establish `key` using `snd_tp_psJet_subst (fun q : Fin 1 × Fin d => u q.2) (fun p : Fin 2 × Fin d => (![0, pt R d 0] : Fin 2 → Pt R 1 d) p.1 p.2) ha (G.F k)`. Establish `hu : MvPowerSeries.subst (fun p : Fin 2 × Fin d => (![0, pt R d 0] : Fin 2 → Pt R 1 d) p.1 p.2) (G.F k) = MvPowerSeries.X ((0 : Fin 1), k)` using `G.unit k`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inner0 : ∀ i : Fin d, ∑ q : Fin 1 × Fin d, u q.2 * MvPowerSeries.coeff (Finsupp.single q 1) ((![0, pt R d 0] : Fin 2 → Pt R 1 d) 0 i) = 0`. Introduce `i`. Simplify using the standard rewrite rules. Establish `inner1 : ∀ i : Fin d, ∑ q : Fin 1 × Fin d, u q.2 * MvPowerSeries.coeff (Finsupp.single q 1) ((![0, pt R d 0] : Fin 2 → Pt R 1 d) 1 i) = u i` using `fun i => sum_coeff_X (fun q : Fin 1 × Fin d => u q.2) ((0 : Fin 1), i)`. Rewrite `key` using `[hu, Fintype.sum_prod_type, Fin.sum_univ_two]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [inner0, inner1, zero_mul, Finset.sum_const_zero, zero_add] at key`. Rewrite using `[← key, tp_psJet]`. Simplify using `only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]`. Conclude with `sum_coeff_X (fun q : Fin 1 × Fin d => u q.2) ((0 : Fin 1), k)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lin_unit {d : ℕ} (G : FGLaw R d) (u : Fin d → R) (k : Fin d) :
     ∑ j, u j * MvPowerSeries.coeff (Finsupp.single ((1 : Fin 2), j) 1) (G.F k) = u k := by
@@ -247,13 +247,11 @@ theorem lin_unit {d : ℕ} (G : FGLaw R d) (u : Fin d → R) (k : Fin d) :
   exact sum_coeff_X (fun q : Fin 1 × Fin d => u q.2) ((0 : Fin 1), k)
 
 /- English proof (translation)
-Use `set h : Fin 2 × Fin d → R := fun q => if q.1 = 0 then u q.2 else 0 with hh`. Establish `h_0 : ∀ j, h ((0 : Fin 2), j) = u j` using `fun j => by simp [hh]`. Establish `h_1 : ∀ j, h ((1 : Fin 2), j) = 0` using `fun j => by simp [hh]`. Establish `ha : ∀ p : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((![pt R d 1, pt R d 0] : Fin 2 → Pt R 2 d) p.1 p.2) = 0`. Introduce and unpack `⟨i, j⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> simp [pt]`. Establish `key` using `snd_tp_psJet_subst h (fun p : Fin 2 × Fin d => (![pt R d 1, pt R d 0] : Fin 2 → Pt R 2 d) p.1 p.2) ha (G.F k)`. Establish `hc : MvPowerSeries.subst (fun p : Fin 2 × Fin d => (![pt R d 1, pt R d 0] : Fin 2 → Pt R 2 d) p.1 p.2) (G.F k) = G.F k` using `G.comm k`. Establish `inner0 : ∀ i : Fin d, ∑ q : Fin 2 × Fin d, h q * MvPowerSeries.coeff (Finsupp.single q 1) ((![pt R d 1, pt R d 0] : Fin 2 → Pt R 2 d) 0 i) = 0` using `fun i => (sum_coeff_X h ((1 : Fin 2), i)).trans (h_1 i)`. Establish `inner1 : ∀ i : Fin d, ∑ q : Fin 2 × Fin d, h q * MvPowerSeries.coeff (Finsupp.single q 1) ((![pt R d 1, pt R d 0] : Fin 2 → Pt R 2 d) 1 i) = u i` using `fun i => (sum_coeff_X h ((0 : Fin 2), i)).trans (h_0 i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hc, tp_psJet]`. Simplify using `only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add] at key`. Rewrite `key` using `[Fintype.sum_prod_type, Fin.sum_univ_two, Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify using `only [inner0, inner1, h_0, h_1, zero_mul, Finset.sum_const_zero, zero_add, add_zero] at key`. Rewrite using `[key]`.
-
-Conclude with `lin_unit G u k`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_comm {d : ℕ} (G : FGLaw R d) (u : Fin d → R) (k : Fin d) :
     ∑ j, u j * MvPowerSeries.coeff (Finsupp.single ((0 : Fin 2), j) 1) (G.F k) = u k := by
@@ -284,7 +282,7 @@ theorem lin_comm {d : ℕ} (G : FGLaw R d) (u : Fin d → R) (k : Fin d) :
   exact lin_unit G u k
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`. Rewrite using `[lin_comm G v k, lin_unit G w k]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lin_F {d : ℕ} (G : FGLaw R d) (v w : Fin d → R) (k : Fin d) :
     ∑ p : Fin 2 × Fin d, (![v, w] : Fin 2 → Fin d → R) p.1 p.2 *

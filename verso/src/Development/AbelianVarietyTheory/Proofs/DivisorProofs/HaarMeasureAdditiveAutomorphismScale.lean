@@ -9,16 +9,16 @@ open scoped Matrix in
 open MeasureTheory in
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field.1`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HaarScaleMatrix.secondCountable_of_localField (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] : SecondCountableTopology k :=
   _root_.GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field.1
 
 /- English proof (translation)
-Use `haveI : (μ.map L).IsAddHaarMeasure := AddEquiv.isAddHaarMeasure_map μ L hL hL'`. Set `H : G ≃ₜ G` to `{ toEquiv := L.toEquiv, continuous_toFun := hL, continuous_invFun := hL' }`. Establish `hs` using `Measure.isAddLeftInvariant_eq_smul (μ.map L) μ`. Use `⟨(Measure.addHaarScalarFactor (μ.map L) μ : ℝ), ?_, fun f => ?_⟩` and prove the remaining obligations. Conclude with `Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure (μ.map L) μ` after adjusting the coercions.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∫ x, f x ∂(μ.map L) = ∫ x, f (L x) ∂μ` using `integral_map_equiv H.toMeasurableEquiv f`. Rewrite using `[← h1]`. Use `conv_lhs => rw [hs]`. Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_comp_addEquiv {G : Type} [AddCommGroup G] [TopologicalSpace G]
     [IsTopologicalAddGroup G] [LocallyCompactSpace G] [SecondCountableTopology G]
@@ -37,7 +37,7 @@ theorem integral_comp_addEquiv {G : Type} [AddCommGroup G] [TopologicalSpace G]
     rw [integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ e d _ _ μ _ L hL hL'`. Use `haveI := secondCountable_of_localField k`. Use `haveI : LocallyCompactSpace (Matrix (Fin e) (Fin d) k) := inferInstanceAs (LocallyCompactSpace (Fin e → Fin d → k))`. Use `haveI : SecondCountableTopology (Matrix (Fin e) (Fin d) k) := inferInstanceAs (SecondCountableTopology (Fin e → Fin d → k))`. Conclude with `integral_comp_addEquiv μ L hL hL'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem integral_comp_addEquiv_matrix :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (e d : ℕ)

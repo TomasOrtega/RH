@@ -5,13 +5,13 @@ open TensorProduct
 namespace GlobalTheory.CompanionTheory.EqCrit
 
 /- English proof (translation)
-Establish `h' : z ⊗ₜ[A] (1 : B) = 0`. Use `congrArg (TensorProduct.comm A B Q) h` as an intermediate fact. Rewrite `this` using `[TensorProduct.comm_tmul, map_zero]`. Then use the resulting hypothesis. Set `N0 : {N : Submodule A Q // N.FG}` to `⟨Submodule.span A {z}, Submodule.fg_span_singleton z⟩`. Establish `hz0 : z ∈ (N0 : Submodule A Q)` using `Submodule.mem_span_singleton_self z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : (Module.fgSystem.equiv A Q).symm z = Module.DirectLimit.of A {N : Submodule A Q // N.FG} (fun i => ↥(i : Submodule A Q)) (Module.fgSystem A Q) N0 ⟨z, hz0⟩`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use `congrArg (fun f => f ⟨z, hz0⟩) (Module.fgSystem.equiv_comp_of (R := A) (M := Q) N0)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, Submodule.subtype_apply] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (TensorProduct.directLimitLeft (Module.fgSystem A Q) B) ((LinearMap.rTensor B ((Module.fgSystem.equiv A Q).symm : Q →ₗ[A] _)) (z ⊗ₜ[A] (1 : B))) = 0`. Rewrite using `[h', map_zero, map_zero]`. Rewrite `h2` using `[LinearMap.rTensor_tmul, LinearEquiv.coe_coe, he, TensorProduct.directLimitLeft_tmul_of]`. Use `haveI : DirectedSystem (fun i : {N : Submodule A Q // N.FG} => TensorProduct A (↥(i : Submodule A Q)) B) (fun i j h => ⇑(LinearMap.rTensor B (Module.fgSystem A Q i j h))) := DirectedSystem.rTensor A B (f := fun ⦃i j⦄ h => Module.fgSystem A Q i j h) inferInstance`. Take `⟨j, hij, hj⟩` from `Module.DirectLimit.of.zero_exact h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨(j : Submodule A Q), (show (N0 : Submodule A Q) ≤ j from hij) hz0, j.2, ?_⟩` and prove the remaining obligations. Rewrite `hj` using `[LinearMap.rTensor_tmul]`. Conclude with `hj`.
+A detailed English derivation is pending.
 -/
 theorem exists_fg_tmul_eq_zero {A : Type} [CommRing A] (B : Type) [CommRing B] [Algebra A B]
     {Q : Type} [AddCommGroup Q] [Module A Q] (z : Q) (h : (1 : B) ⊗ₜ[A] z = 0) :
@@ -42,21 +42,19 @@ theorem exists_fg_tmul_eq_zero {A : Type} [CommRing A] (B : Type) [CommRing B] [
   exact hj
 
 /- English proof (translation)
-Take `⟨Q', hz, hfg, hzero⟩` from `exists_fg_tmul_eq_zero B z h`. Use `haveI : Module.Finite A Q' := Module.Finite.iff_fg.mpr hfg`. Take `⟨n, π, hπ⟩` from `Module.Finite.exists_fin' A Q'`. Take `⟨w, hw⟩` from `hπ ⟨z, hz⟩`. Establish `hex` using `lTensor_exact B (LinearMap.exact_subtype_ker_map π) hπ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : LinearMap.lTensor B π ((1 : B) ⊗ₜ[A] w) = 0`. Rewrite using `[LinearMap.lTensor_tmul, hw]`. Use `congrArg (TensorProduct.comm A Q' B) hzero` as an intermediate fact. Rewrite `this` using `[TensorProduct.comm_tmul, map_zero]`. Then use the resulting hypothesis. Take `⟨x, hx⟩` from `(hex ((1 : B) ⊗ₜ[A] w)).mp h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS⟩` from `TensorProduct.exists_finset x`. Set `e` to `S.equivFin`. Set `b : Fin S.card → B` to `fun t => (e.symm t : B × LinearMap.ker π).1`. Set `kk : Fin S.card → LinearMap.ker π` to `fun t => (e.symm t : B × LinearMap.ker π).2`. Establish `hxsum : x = ∑ t, b t ⊗ₜ[A] kk t`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS, ← Finset.sum_coe_sort, ← Equiv.sum_comp e.symm]`. Establish `hx' : ∑ t, b t ⊗ₜ[A] (kk t : Fin n → A) = (1 : B) ⊗ₜ[A] w`. Rewrite using `[← hx, hxsum, map_sum]`. Simplify using `only [LinearMap.lTensor_tmul, Submodule.subtype_apply]`. Use `⟨n, S.card, fun s t => (kk t : Fin n → A) s, w, ⟨b, fun s => ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hvec` using `congrFun (congrArg (TensorProduct.piScalarRight A B B (Fin n)) hx') s`. Simplify using `only [map_sum, TensorProduct.piScalarRight_apply, TensorProduct.piScalarRightHom_tmul, Finset.sum_apply] at hvec`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `hvec`. Introduce `B₁ _ _ hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `hy`. Establish `h2 : ∑ t, y t ⊗ₜ[A] (kk t : Fin n → A) = (1 : B₁) ⊗ₜ[A] w`. Apply `(TensorProduct.piScalarRight A B₁ B₁ (Fin n)).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `s`. Simplify using `only [map_sum, TensorProduct.piScalarRight_apply, TensorProduct.piScalarRightHom_tmul, Finset.sum_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Algebra.algebraMap_eq_smul_one]`. Conclude with `hy s`. Establish `h3` using `congrArg (LinearMap.lTensor B₁ (Q'.subtype ∘ₗ π)) h2`. Establish `hk : ∀ t, π (kk t : Fin n → A) = 0` using `fun t => LinearMap.mem_ker.mp (kk t).2`. Simplify using `only [map_sum, LinearMap.lTensor_tmul, LinearMap.comp_apply, hk, hw, map_zero, TensorProduct.tmul_zero, Finset.sum_const_zero, Submodule.subtype_apply] at h3`.
-
-Conclude with `h3.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_system {A : Type} [CommRing A] (B : Type) [CommRing B] [Algebra A B]
     {Q : Type} [AddCommGroup Q] [Module A Q] (z : Q) (h : (1 : B) ⊗ₜ[A] z = 0) :

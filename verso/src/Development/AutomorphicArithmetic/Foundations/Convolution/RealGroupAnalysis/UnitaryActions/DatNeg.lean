@@ -6,17 +6,15 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ δ θ b h0 h1 hθ φ`. Assume the negation of the conclusion as `hneg`. Establish `hpos : 0 ≤ φ δ` using `not_lt.mp hneg`. Use `haveI : Module.Finite F E := Module.Finite.of_basis b`. Use `haveI : Algebra.IsAlgebraic F E := Algebra.IsAlgebraic.of_finite F E`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ψ : F →+* ℂ` to `Complex.ofRealHom.comp φ`. Set `τ : E →+* ℂ` to `NumberField.ComplexEmbedding.lift E ψ`. Establish `hτ : ∀ x : F, τ (algebraMap F E x) = ((φ x : ℝ) : ℂ)`. Introduce `x`. Conclude with `NumberField.ComplexEmbedding.lift_algebraMap_apply E ψ x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsq : (τ θ) ^ 2 = ((Real.sqrt (φ δ) : ℝ) : ℂ) ^ 2`. Rewrite using `[← map_pow, hθ, hτ, ← Complex.ofReal_pow, Real.sq_sqrt hpos]`. Establish `hreal : (starRingEnd ℂ) (τ θ) = τ θ`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hsq with h | h` into its components or cases. Rewrite using `[h, Complex.conj_ofReal]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h, map_neg, Complex.conj_ofReal]`. Establish `hall : ∀ z : E, (starRingEnd ℂ) (τ z) = τ z`. Introduce `z`. Establish `hz` using `b.sum_repr z`. Rewrite `hz` using `[Fin.sum_univ_two, h0, h1, Algebra.smul_def, Algebra.smul_def]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hz]`. Simplify using `only [map_add, map_mul, map_one, hτ, Complex.conj_ofReal, hreal]`. Apply `IsTotallyComplex.complexEmbedding_not_isReal τ` to reduce the goal to its premises. Rewrite using `[NumberField.ComplexEmbedding.isReal_iff]`. Use extensionality with `z`.
-
-Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`. Conclude with `hall z`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.datNeg :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyComplex E] (δ : F) (θ : E) (b : Module.Basis (Fin 2) F E),

@@ -9,7 +9,7 @@ open scoped ENNReal ComplexOrder
 namespace GlobalTheory.HCXi
 
 /- English proof (translation)
-Unfold `gram`. Establish `h` using `((Matrix.posSemidef_conjTranspose_mul_self (g * frame k r)).submatrix (Fin.castLE (Nat.succ_le_of_lt a.isLt))).det_nonneg`. Conclude with `(Complex.nonneg_iff.mp h).1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gram_nonneg_vmul (k r : ℕ) (g : Mat k r) (a : Fin (r + 1)) : 0 ≤ gram k r g a := by
   unfold gram
@@ -18,7 +18,7 @@ theorem gram_nonneg_vmul (k r : ℕ) (g : Mat k r) (a : Fin (r + 1)) : 0 ≤ gra
   exact (Complex.nonneg_iff.mp h).1
 
 /- English proof (translation)
-Establish `h : (κ * g * frame k r)ᴴ * (κ * g * frame k r) = (g * frame k r)ᴴ * (g * frame k r)`. Rewrite using `[Matrix.mul_assoc κ g, Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc κᴴ, hκ, Matrix.one_mul]`. Unfold `gram`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_unitary_mul (k r : ℕ) (κ g : Mat k r) (hκ : κᴴ * κ = 1) (a : Fin (r + 1)) :
     gram k r (κ * g) a = gram k r g a := by
@@ -29,9 +29,9 @@ theorem gram_unitary_mul (k r : ℕ) (κ g : Mat k r) (hκ : κᴴ * κ = 1) (a 
   rw [h]
 
 /- English proof (translation)
-Take `⟨-, u, hu, hpu⟩` from `hp`. Establish `hF` using `(GlobalTheory.T.frame_isotropic_orthonormal k r hk).1`. Establish `h1` using `GlobalTheory.T.gram_minor_det_triangular_mul _ _ (g * frame k r) u _ (Nat.succ_le_of_lt a.isLt) hu`. Establish `h2` using `GlobalTheory.T.gram_minor_det_triangular_mul _ _ (frame k r) u _ (Nat.succ_le_of_lt a.isLt) hu`. Establish `e1 : g * p * frame k r = g * frame k r * u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, hpu, Matrix.mul_assoc]`. Rewrite `h2` using `[hF, Matrix.submatrix_one _ (Fin.castLE_injective _), Matrix.det_one, mul_one]`. Unfold `gram`. Rewrite using `[e1, hpu, h1, h2, Complex.re_ofReal_mul, Complex.ofReal_re, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_mul_flag (k r : ℕ) (hk : 1 ≤ k) (g p : Mat k r) (hp : p ∈ Pset k r)
     (a : Fin (r + 1)) : gram k r (g * p) a = gram k r g a * gram k r p a := by
@@ -46,9 +46,9 @@ theorem gram_mul_flag (k r : ℕ) (hk : 1 ≤ k) (g p : Mat k r) (hp : p ∈ Pse
   rw [e1, hpu, h1, h2, Complex.re_ofReal_mul, Complex.ofReal_re, mul_comm]
 
 /- English proof (translation)
-Introduce `k r hk`. Use `⟨fun κ hκ g => ?_, fun g _ p hp => ?_⟩` and prove the remaining obligations. Unfold `vHalf`. Simplify using `only [gram_unitary_mul k r κ g hκ.2]`. Unfold `vHalf`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `only [gram_mul_flag k r hk g p hp, mul_inv, Finset.prod_mul_distrib]`. Rewrite using `[Real.mul_rpow (gram_nonneg_vmul k r g _) (gram_nonneg_vmul k r p _)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vHalf_left_inv_and_mul : ∀ k r : ℕ, 1 ≤ k →
     (∀ κ ∈ Kset k r, ∀ g : Mat k r, vHalf k r (κ * g) = vHalf k r g) ∧

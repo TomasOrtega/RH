@@ -18,31 +18,27 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   {B₀ : Sesq V} (hpos : ∀ v, v ≠ 0 → 0 < (B₀ v v).re)
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => LinearMap.ext fun u => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply, LinearMap.zero_apply]`. Distinguish the cases in `hv0 : v = 0`. Rewrite using `[hv0, map_zero, LinearMap.zero_apply]`. Distinguish the cases in `hu0 : u = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hu0, map_zero]`. Establish `hU : (stabilizerOf ρ v : Set G) ∩ (stabilizerOf ρ u : Set G) ∈ nhds (1 : G)` using `Filter.inter_mem ((hρ.1 v).mem_nhds (one_mem _)) ((hρ.1 u).mem_nhds (one_mem _))`. Take `⟨K, hKc, hKU⟩` from `exists_openSubgroup_isCompact_subset hU`. Establish `hKo : IsOpen ((K : Subgroup G) : Set G)` using `K.isOpen`. Use `hρ.2 (K : Subgroup G) hKc hKo` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvW : v ∈ fixedVectors ρ (K : Subgroup G)`. Rewrite using `[mem_fixedVectors]`. Introduce `x hx`. Conclude with `(hKU hx).1`. Establish `huW : u ∈ fixedVectors ρ (K : Subgroup G)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_fixedVectors]`. Introduce `x hx`. Conclude with `(hKU hx).2`. Establish `hW : fixedVectors ρ (K : Subgroup G) ≠ ⊥` using `fun hb => hv0 (by`. Use `hvW` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `this` using `[hb]`. Conclude with `(Submodule.mem_bot ℂ).1 this)`. Use `set W := fixedVectors ρ (K : Subgroup G)`. Set `vW : W` to `⟨v, hvW⟩`. Set `uW : W` to `⟨u, huW⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `φ : W →ₗ[ℂ] ℂ` to `(B₀.flip u : V →ₗ[ℂ] ℂ) ∘ₗ W.subtype`. Set `A : Module.End ℂ W` to `φ.smulRight vW`. Take `⟨r, hr⟩` from `level_density (μ := μ) hKc hKo hρ.1 hW A`. Set `rf : locallyConstantCompactSupport G ℂ ℂ` to `(r : HeckeAlgebra μ)`. Establish `hbi : BiInv (K : Subgroup G) (rf : G → ℂ)` using `fun κ hκ x => (HeckeAlgebraLevel.val_mem hKc hKo r) κ hκ x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hf` using `h rf rf.2`. Rewrite `hf` using `[formD_apply, hPr rf]`. Express the relevant statement in the definitionally equal form `DF μ hρ hpos C rf = 0 at hf`. Rewrite `hf` using `[DF_eq μ hρ hpos hinv C _ hKc hKo hbi]`. Establish `hres : ∀ x : W, resA μ hρ (K : Subgroup G) rf x = B₀ x u • v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `x`. Establish `e` using `congrArg (fun T : Module.End ℂ W => (T x : V)) hr`. Rewrite using `[← show ((levelLin hKc hKo ρ r x : W) : V) = resA μ hρ (K : Subgroup G) rf x from rfl, e]`. Both sides reduce to the same expression. Establish `huu : (B₀ u u) ≠ 0` using `fun e => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hpos u hu0` as an intermediate fact. Rewrite `this` using `[e]`. Simplify using `at this`. Use `set N := rN μ hρ hpos hKc hKo C rf with hN`. Establish `sN` using `rN_spec μ hρ hpos hKc hKo C rf`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `m : W` to `(B₀ u u)⁻¹ • N uW`. Establish `hm : ∀ y : W, B₀ (m : V) y = C v y`. Introduce `y`. Use `sN uW y` as an intermediate fact. Rewrite `this` using `[hres]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show B₀ ((B₀ u u)⁻¹ • (N uW : V)) y = C v y`. Rewrite using `[map_smul, LinearMap.smul_apply, this, map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ huu, one_mul]`. Establish `hNe : N = φ.smulRight m`. Use `riesz_unique hpos sN fun x y => ?_` and prove the remaining obligations. Use `show B₀ ((φ x) • (m : V)) y = C (resA μ hρ (K : Subgroup G) rf x) y`.
-
-Rewrite using `[hres, map_smul, LinearMap.smul_apply, hm, map_smul, LinearMap.smul_apply]`. Both sides reduce to the same expression. Unfold `DK at hf`. Rewrite `hf` using `[← hN, hNe, LinearMap.trace_smulRight]`. Establish `: φ m = C v u` using `hm uW`.
-
-Rewrite using `[← this]`. Conclude with `hf`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formD_faithful [ρ.IsIrreducible] (hinv : ∀ g v w, B₀ (ρ g v) (ρ g w) = B₀ v w)
     (Pr : (G → ℂ) →ₗ[ℂ] testFn G) (hPr : ∀ f : testFn G, Pr f = f) (C : Sesq V)
@@ -111,9 +107,9 @@ end Faith
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `n V _ _ π hadm hirr ⟨B₀, _, h2, h3⟩`. Use `borelize (GL (Fin (n + 1)) k)`. Use `hirr` as an intermediate fact. Use `GroundTheory.Automorphic.Measures.isMulRightInvariant_GL k (n + 1) (Measure.haar : Measure (GL (Fin (n + 1)) k))` as an intermediate fact. Take `⟨Pr, hPr⟩` from `exists_testProj (G := GL (Fin (n + 1)) k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨formD Measure.haar hadm h2 h3 Pr, fun g B f hf => formD_equiv Measure.haar hadm h2 h3 Pr hPr g B f hf, fun B hB => formD_faithful Measure.haar hadm h2 h3 Pr hPr B hB⟩`.
+A detailed English derivation is pending.
 -/
 theorem formTraceDistrGL : FormTraceDistrGL k := by
   intro n V _ _ π hadm hirr ⟨B₀, _, h2, h3⟩
@@ -125,13 +121,13 @@ theorem formTraceDistrGL : FormTraceDistrGL k := by
     fun B hB => formD_faithful Measure.haar hadm h2 h3 Pr hPr B hB⟩
 
 /- English proof (translation)
-Introduce `n D hD g f hf`. Establish `hf' : f ∈ supportedIn (Set.univ : Set (GL (Fin (n + 1)) k))` using `⟨hf, Set.subset_univ _⟩`. Establish `hP : ∀ p ∈ GlobalTheory.BZMir.Mir k n, ∀ f ∈ supportedIn (Set.univ : Set (GL (Fin (n + 1)) k)), D (fun x => f (p * x * p⁻¹)) = D f`. Introduce `p hp f hf`. Use `hD p⁻¹ ((GlobalTheory.BZMir.Mir k n).inv_mem hp) f hf.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : conjFn p⁻¹ f = fun x => f (p * x * p⁻¹)`. Use function extensionality and compare the values at `x`. Unfold `conjFn`. Rewrite using `[inv_inv]`. Rewrite using `[← e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Use `hA n D hP g⁻¹ f hf'` as an intermediate fact. Establish `e : conjFn g f = fun x => f (g⁻¹ * x * g⁻¹⁻¹)`. Use function extensionality and compare the values at `x`. Unfold `conjFn`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_inv]`. Rewrite using `[e]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theoremA_of_thmA (hA : PositivityTheory.RgUd.ThmA k) : TheoremA k := by
   intro n D hD g f hf
@@ -149,7 +145,7 @@ theorem theoremA_of_thmA (hA : PositivityTheory.RgUd.ThmA k) : TheoremA k := by
   rw [e]; exact this
 
 /- English proof (translation)
-Introduce `n V _ _ π hs hirr B hB β hβ`. Establish `hadm : GroundTheory.Automorphic.IsAdmissible π` using `(PositivityTheory.rg.gu.whit.isAdmissible_iff π).1 (PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top k (n + 1) V π hs hirr)`. Take `⟨c, hc⟩` from `hK n V π B hadm hirr hB.1 hB.2.1 hB.2.2 β hβ`. Conclude with `⟨c, fun v w => by rw [hc]; rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem thmB_of_kirillov (hK : KirillovForm k) : PositivityTheory.RgUd.ThmB k := by
   intro n V _ _ π hs hirr B hB β hβ
@@ -159,7 +155,7 @@ theorem thmB_of_kirillov (hK : KirillovForm k) : PositivityTheory.RgUd.ThmB k :=
   exact ⟨c, fun v w => by rw [hc]; rfl⟩
 
 /- English proof (translation)
-The claim follows from `thmB_of_kirillov k (kirillovForm_of_theoremA' k (theoremA_of_thmA k hA) (formTraceDistrGL k))`.
+A detailed English derivation is pending.
 -/
 theorem thmB (hA : PositivityTheory.RgUd.ThmA k) : PositivityTheory.RgUd.ThmB k :=
   thmB_of_kirillov k (kirillovForm_of_theoremA' k (theoremA_of_thmA k hA) (formTraceDistrGL k))

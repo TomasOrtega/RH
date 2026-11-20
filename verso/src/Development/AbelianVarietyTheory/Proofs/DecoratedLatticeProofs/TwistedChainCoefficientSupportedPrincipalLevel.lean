@@ -33,7 +33,7 @@ noncomputable section
 namespace GlobalTheory.TwSuppLev
 
 /- English proof (translation)
-Introduce `D S T ΛS ΛT βS βT L χ ξ Q Z e hS hT _ _ he`. Establish `hinf` using `GlobalTheory.PlaceDatum.infPart_idemSum he`. Take `⟨K, hK, hC⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_of_frMapO hS.1 hT.1 βS βT`. Conclude with `GlobalTheory.PlaceDatum.isSBHalf_of_red e _ (frMapO S T βS βT) (GlobalTheory.PlaceDatum.frMapO_add βS βT) (GlobalTheory.PlaceDatum.exists_den_frMapO hS.1.fg hT.1.fg βS βT) ⟨K, hK, fun t ht => hC t (GlobalTheory.PlaceDatum.infPart_of_half hinf ht)⟩ (L.Pg ∪ Q) (fun y => omegaG L χ …`. Rewrite using `[GlobalTheory.PlaceDatum.omegaG_congr L χ y y' fun PP hP => h PP (Finset.mem_union_left _ hP), GlobalTheory.PlaceDatum.omegaQ_congr Q L.r ξ 1 y y' fun PP hP => h PP (Finset.mem_union_right _ hP)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSBHalf_twDatum : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ S.rank) (χ ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (Q Z : Finset (Pl D.host.E)) (e : AE D), IsSelfDualC S ΛS → IsSelfDualC T ΛT → Formalism.L2.DIV.IsFrame βS ΛS → Formalism.L2.DIV.IsFrame βT ΛT → IsIdemSum e Z → IsSBHalf e (latO S T ΛS ΛT fun _ => True) (fun x : WO S T => if IsHalf e x ∧ IsIntM (frMapO S T βS βT x) then omegaG L χ (fun PP => redM PP (frMapO S T βS βT x)) * omegaQ Q L.r ξ 1 (fun PP => redM PP (frMapO S T βS βT x)) else 0) := by
   classical
@@ -48,7 +48,7 @@ theorem isSBHalf_twDatum : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.h
         GlobalTheory.PlaceDatum.omegaQ_congr Q L.r ξ 1 y y' fun PP hP => h PP (Finset.mem_union_right _ hP)]
 
 /- English proof (translation)
-Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq hu with h1 | h1` into its components or cases. Conclude with `h1`. Conclude with `absurd (GlobalTheory.GoodPrimes.isConjPl_iff.2 h1) (GlobalTheory.ChainOnto.FlagAct.not_isConjPl_of_idemSum h PP hP PP' hP')`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eq_of_under_eq {D : D7} {e : AE D} {Z : Finset (Pl D.host.E)} (h : IsIdemSum e Z) {PP PP' : Pl D.host.E}
     (hP : PP ∈ Z) (hP' : PP' ∈ Z) (hu : PP'.under (𝓞 D.host.F) = PP.under (𝓞 D.host.F)) : PP' = PP := by
@@ -57,7 +57,7 @@ theorem eq_of_under_eq {D : D7} {e : AE D} {Z : Finset (Pl D.host.E)} (h : IsIde
   · exact absurd (GlobalTheory.GoodPrimes.isConjPl_iff.2 h1) (GlobalTheory.ChainOnto.FlagAct.not_isConjPl_of_idemSum h PP hP PP' hP')
 
 /- English proof (translation)
-Introduce `D S T ΛS βS βT L χ ξ e hsd hfr hrk he hP g x hx hx' PP hPP huniq hQu`. Take `⟨hSt, hB, hR⟩` from `GlobalTheory.T.principalPlace_component_stabilises_lattice_twisted D S T ΛS βS βT L χ ξ e hsd hfr hrk he hP g x hx hx' PP hPP huniq`. Conclude with `GlobalTheory.T.principalPlace_component_mem_level_of_reduction D S βS L hP g PP hPP (fun PP' hP' hu => huniq PP' (Finset.mem_union_left _ hP') hu) hQu hSt hB hR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gAt_mem_levG_of_supp : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ S.rank) (χ ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (e : AE D), IsSelfDualC S ΛS → Formalism.L2.DIV.IsFrame βS ΛS → S.rank ≤ T.rank → IsIdemSum e (L.Pg ∪ L.Q) → L.P.H = ⊥ → ∀ (g : GA D S) (x : WO S T), (fun x : WO S T => if IsHalf e x ∧ IsIntM (frMapO S T βS βT x) then omegaG L χ (fun PP => redM PP (frMapO S T βS βT x)) * omegaQ L.Q L.r ξ 1 (fun PP => redM PP (frMapO S T βS βT x)) else 0) x ≠ 0 → (fun x : WO S T => if IsHalf e x ∧ IsIntM (frMapO S T βS βT x) then omegaG L χ (fun PP => redM PP (frMapO S T βS βT x)) * omegaQ L.Q L.r ξ 1 (fun PP => redM PP (frMapO S T βS βT x)) else 0) (actO S T g 1 x) ≠ 0 → ∀ PP ∈ L.Pg, (∀ PP' ∈ L.Pg ∪ L.Q, PP'.under (𝓞 D.host.F) = PP.under (𝓞 D.host.F) → PP' = PP) → (∀ PP' ∈ L.Q, PP'.under (𝓞 D.host.F) ≠ PP.under (𝓞 D.host.F)) → gAt S (.inl (PP.under (𝓞 D.host.F))) g ∈ Lev.levG S βS L := by
   intro D S T ΛS βS βT L χ ξ e hsd hfr hrk he hP g x hx hx' PP hPP huniq hQu
@@ -65,21 +65,19 @@ theorem gAt_mem_levG_of_supp : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞
   exact GlobalTheory.T.principalPlace_component_mem_level_of_reduction D S βS L hP g PP hPP (fun PP' hP' hu => huniq PP' (Finset.mem_union_left _ hP') hu) hQu hSt hB hR
 
 /- English proof (translation)
-Introduce `D _hgap c w hw k _hk s s' hs hs' p hp m X hX φ g hne v hv`. Take `⟨hr, hL, hfl⟩` from `hs`. Take `⟨hr', hL', hfl'⟩` from `hs'`. Establish `hsd : IsSelfDualC s.V s.Λ` using `hfl.selfDual`. Establish `hsd' : IsSelfDualC s'.V s'.Λ` using `hfl'.selfDual`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfr : Formalism.L2.DIV.IsFrame s.β s.Λ` using `hfl.frame`. Establish `hfr' : Formalism.L2.DIV.IsFrame s'.β s'.Λ` using `hfl'.frame`. Establish `hrank : s.V.rank ≤ s'.V.rank`. Establish `h1 : s.V.rank = D.R.rankY k` using `hfl.rank`. Establish `h2 : s'.V.rank = D.R.rankY (k + 1)` using `hfl'.rank`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Use `show D.R.r + k * D.R.t ≤ D.R.r + (k + 1) * D.R.t`. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ (Nat.le_succ k)) _`. Take `⟨f₀, hvec⟩` from `hp.vec`. Establish `hthf : IsThetaFunO c.ψ s.V s'.V p.f` using `GlobalTheory.VecTheta.isThetaFunO_stepVec hvec`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_hvac, e, he, hth⟩` from `hvec`. Establish `hQ : s.L.Q = w.Q` using `by rw [hL]; rfl`. Establish `hPg : s.L.Pg = w.Pg` using `by rw [hL]; rfl`. Establish `hPH : s.L.P.H = ⊥` using `by rw [hL]; rfl`. Simplify using `only [Twist.S₀, Finset.coe_image, Set.mem_image, Finset.mem_coe] at hv`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨PP, hPP, rfl⟩` from `hv`. Assume the negation of the conclusion as `hnot`. Establish `hsupp` using `fun x hx => by_contra fun h => hnot (gAt_mem_levG_of_supp D s.V s'.V s.Λ s.β s'.β s.L (w.chi (k + 1)) w.ξ e hsd hfr hrank (hQ ▸ he) hPH g x (by rw [hQ]; exact hx) (by rw [hQ]; exact h) PP (hPg ▸ hPP) (fun PP' hP' hu => eq_of_under_eq he (Finset.mem_union_left _ (hPg ▸ hPP)) (hQ ▸ …`. Establish `hP'' : PP' ∈ w.Q` using `hQ ▸ hP'`. Use `eq_of_under_eq he (Finset.mem_union_left _ (hPg ▸ hPP)) (Finset.mem_union_right _ hP'') hu` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Conclude with `hP''))`. Establish `hsb` using `isSBHalf_twDatum D s.V s'.V s.Λ s'.Λ s.β s'.β s.L (w.chi (k + 1)) w.ξ w.Q (s.L.Pg ∪ w.Q) e hsd hsd' hfr hfr' he`. Take `⟨n, a, y, hy, h1, h2⟩` from `GlobalTheory.T.heisenberg_fix_and_kill_theta_off_support_move D c.ψ s.V s'.V hw.com.std s.Λ s'.Λ hsd hsd' (s.L.Pg ∪ w.Q) e he f₀ _ p.f hsb hth g hsupp`. Take `⟨H1, -⟩` from `GlobalTheory.T.heisenberg_combination_comm_fockPolynomialVectors D c.ψ c.θ s.V s'.V hw.com.std hw.com.inf (cart s.M) (cart s'.M) (onb s.M) (onb s'.M) p.f hthf n a y (fun i => (hy i).1) φ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨H2, H0⟩` from `GlobalTheory.T.heisenberg_combination_comm_fockPolynomialVectors D c.ψ c.θ s.V s'.V hw.com.std hw.com.inf (cart s.M) (cart s'.M) (onb s.M) (onb s'.M) p.f hthf n (fun i => conj (a i)) (fun i => actO s.V s'.V g⁻¹ 1 (-(y i))) (fun i => (hy i).2) φ`. Establish `R1 : ∑ i, a i • heisO c.ψ s.V s'.V (y i) (p.pt φ) = p.pt φ` using `by show ∑ i, a i • heisO c.ψ s.V s'.V (y i) (pureTensorO c.ψ c.θ s.V s'.V (cart s.M) (cart s'.M) (onb s.M) (onb s'.M) p.f φ) = _`. Rewrite using `[H1, h1]`. Both sides reduce to the same expression. Establish `R2 : ∑ i, conj (a i) • heisO c.ψ s.V s'.V (actO s.V s'.V g⁻¹ 1 (-(y i))) (p.pt φ) = 0` using `by show ∑ i, conj (a i) • heisO c.ψ s.V s'.V (actO s.V s'.V g⁻¹ 1 (-(y i))) (pureTensorO c.ψ c.θ s.V s'.V (cart s.M) (cart s'.M) (onb s.M) (onb s'.M) p.f φ) = _`.
-
-Rewrite using `[H2, h2, H0]`. Conclude with `hne (GlobalTheory.T.weilMatrixCoefficient_eq_zero_of_heisenberg_relations D c.ψ s.V s'.V (c.chS (k + 1)) (c.chT (k + 1)) p.ω hp.weil m X hX (p.pt φ) (hp.theta φ) g n a y R1 R2)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supp_at_principal : ∀ D : D7, ForStepQ D fun c w _ s s' p => ∀ m X, IsCovolOne (ratL s'.V s.V) m X → ∀ P (g : GA D s.V), coefW p.ω m X (p.pt P) g ≠ 0 → ∀ v ∈ w.S₀, gAt s.V (.inl v) g ∈ Lev.levG s.V s.β s.L := by
   intro D _hgap c w hw k _hk s s' hs hs' p hp m X hX φ g hne v hv

@@ -13,7 +13,7 @@ class Wide : Prop where
   up : UpAll
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by intro F E Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ ι hE n hn r hr ⟨π, hreg, hatt⟩ hirr obtain ⟨P, hBC⟩ := (Br.weakEx cyc F E hE n hn π).resolve_left fun ⟨η, hη, ht⟩ => Bc.noTwist hP F E Ω l ι hE n r π hr hatt hirr η (Br.normQuad hP.litN.aut.art F E hE η hη) (Br.selfIso hP.smoR F n hn π …`.
+Supply the required witnesses or components.
 -/
 theorem wide_of_cyclic (hP : Hypotheses₂) (cyc : CyclicBaseChange) : Wide := ⟨by
   intro F E Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ ι hE n hn r hr ⟨π, hreg, hatt⟩ hirr
@@ -24,7 +24,7 @@ theorem wide_of_cyclic (hP : Hypotheses₂) (cyc : CyclicBaseChange) : Wide := �
   exact ⟨P, h.1 hreg, h.2 hatt ((Bc.irrBasic.1 _ Unit _ n _).2.1 hirr)⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by intro F E Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ ι hE n hn r hr ⟨π, hreg, hatt⟩ hirr obtain ⟨P, hBC⟩ := (hQ F E hE n hn π).resolve_left fun ⟨η, hη, ht⟩ => Bc.noTwist hP F E Ω l ι hE n r π hr hatt hirr η hη ht have h := Bc.bcAtt F E Ω l ι n r π P hBC exact ⟨P, h.1 hreg, h.2 hatt ((Bc.i …`.
+Supply the required witnesses or components.
 -/
 theorem wide_of_quad (hP : Hypotheses₂) (hQ : QuadBaseChange) : Wide := ⟨by
   intro F E Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ ι hE n hn r hr ⟨π, hreg, hatt⟩ hirr
@@ -34,7 +34,7 @@ theorem wide_of_quad (hP : Hypotheses₂) (hQ : QuadBaseChange) : Wide := ⟨by
   exact ⟨P, h.1 hreg, h.2 hatt ((Bc.irrBasic.1 _ Unit _ n _).2.1 hirr)⟩⟩
 
 /- English proof (translation)
-The claim follows from `h.up`.
+A detailed English derivation is pending.
 -/
 theorem upQuadW [h : Wide] (_ : Hypotheses₂) : UpAll := h.up
 

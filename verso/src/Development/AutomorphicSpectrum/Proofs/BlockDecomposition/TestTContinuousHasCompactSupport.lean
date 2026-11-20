@@ -21,23 +21,23 @@ def boxW (S : Finset (HeightOneSpectrum (𝓞 F))) (U : ∀ v : HeightOneSpectru
   {x | (v ∈ S → x ∈ U v) ∧ (v ∉ S → x ∈ v.adicCompletionIntegers F)}
 
 /- English proof (translation)
-The claim follows from `Valued.isOpen_integer _`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_integers (v : HeightOneSpectrum (𝓞 F)) :
     IsOpen (v.adicCompletionIntegers F : Set (Fv F v)) :=
   Valued.isOpen_integer _
 
 /- English proof (translation)
-Conclude with `isCompact_iff_compactSpace.2 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_integers (v : HeightOneSpectrum (𝓞 F)) :
     IsCompact (v.adicCompletionIntegers F : Set (Fv F v)) := by
   exact isCompact_iff_compactSpace.2 inferInstance
 
 /- English proof (translation)
-Establish `h1 : IsOpen {y : Af F | ∀ v ∈ S, y v ∈ U v}`. Establish `: {y : Af F | ∀ v ∈ S, y v ∈ U v} = ⋂ v ∈ S, (fun y : Af F => y v) ⁻¹' U v`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_biInter_finset fun v _ => (hU v).preimage (RestrictedProduct.continuous_eval v)`. Establish `h2 : IsOpen {y : Af F | ∀ v, v ∉ S → y v ∈ v.adicCompletionIntegers F}` using `RestrictedProduct.isOpen_forall_imp_mem (fun v => isOpen_integers v)`. Conclude with `h1.inter h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_boxA (S : Finset (HeightOneSpectrum (𝓞 F)))
     (U : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (hU : ∀ v, IsOpen (U v)) :
@@ -52,11 +52,9 @@ theorem isOpen_boxA (S : Finset (HeightOneSpectrum (𝓞 F)))
   exact h1.inter h2
 
 /- English proof (translation)
-Distinguish the cases in `hv : v ∈ S`. Establish `: boxW S U v = U v`. Use extensionality with `x`. Simplify using `[boxW, hv]`. Rewrite using `[this]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU v`. Establish `: boxW S U v = (v.adicCompletionIntegers F : Set (Fv F v))`. Use extensionality with `x`. Simplify using `[boxW, hv]`. Rewrite using `[this]`.
-
-Conclude with `isCompact_integers v`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_boxW (S : Finset (HeightOneSpectrum (𝓞 F)))
     (U : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (hU : ∀ v, IsCompact (U v))
@@ -70,11 +68,11 @@ theorem isCompact_boxW (S : Finset (HeightOneSpectrum (𝓞 F)))
     rw [this]; exact isCompact_integers v
 
 /- English proof (translation)
-Use `haveI : ∀ v, CompactSpace (boxW S U v) := fun v => isCompact_iff_compactSpace.1 (isCompact_boxW S U hU v)`. Establish `hle : (Filter.cofinite : Filter (HeightOneSpectrum (𝓞 F))) ≤ Filter.principal ((S : Set _)ᶜ)` using `Filter.le_principal_iff.2 S.finite_toSet.compl_mem_cofinite`. Set `gP : (∀ v, boxW S U v) → RestrictedProduct (fun v : HeightOneSpectrum (𝓞 F) => Fv F v) (fun v => (v.adicCompletionIntegers F : Set (Fv F v))) (Filter.principal ((S : Set _)ᶜ))` to `fun x => ⟨fun v => (x v).1, Filter.eventually_principal.2 fun v hv => (x v).2.2 (by simpa using hv)⟩`. Establish `hgP : Continuous gP` using `RestrictedProduct.isEmbedding_coe_of_principal.continuous_iff.2 (continuous_pi fun v => continuous_subtype_val.comp (continuous_apply v))`. Set `g : (∀ v, boxW S U v) → Af F` to `fun x => RestrictedProduct.inclusion _ _ hle (gP x)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : Continuous g` using `(RestrictedProduct.continuous_inclusion hle).comp hgP`. Establish `hr : GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.boxA S U = Set.range g`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨fun v => ⟨y v, fun hv => h1 v hv, fun hv => h2 v hv⟩, by ext v; rfl⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨fun v hv => (x v).2.1 hv, fun v hv => (x v).2.2 hv⟩`. Rewrite using `[hr]`. Conclude with `isCompact_range hg`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_boxA (S : Finset (HeightOneSpectrum (𝓞 F)))
     (U : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (hU : ∀ v, IsCompact (U v)) :
@@ -101,7 +99,7 @@ theorem isCompact_boxA (S : Finset (HeightOneSpectrum (𝓞 F)))
   exact isCompact_range hg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isCompact_boxA S U fun v => (hU v).1).isClosed, isOpen_boxA S U fun v => (hU v).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isClopen_boxA (S : Finset (HeightOneSpectrum (𝓞 F)))
     (U : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (hU : ∀ v, IsCompact (U v) ∧ IsOpen (U v)) :
@@ -109,13 +107,13 @@ theorem isClopen_boxA (S : Finset (HeightOneSpectrum (𝓞 F)))
   ⟨(isCompact_boxA S U fun v => (hU v).1).isClosed, isOpen_boxA S U fun v => (hU v).2⟩
 
 /- English proof (translation)
-Introduce `F _ _ ρ S U hρ hρc hU`. Establish `hB` using `isClopen_boxA S U hU`. Establish `hBc` using `isCompact_boxA S U fun v => (hU v).1`. Establish `hfst : Continuous (fun y : AF F => fstA F y)` using `continuous_fst`. Establish `hsnd : Continuous (fun y : AF F => sndA F y)` using `continuous_snd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.testT`. Use `(Complex.continuous_ofReal.comp (hρ.comp hfst)).mul ?_` and prove the remaining obligations. Conclude with `(IsClopen.continuous_indicator hB continuous_const).comp hsnd`. Establish `hK : IsCompact ((tsupport ρ) ×ˢ (GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.boxA S U) : Set (Ainf F × Af F))` using `hρc.isCompact.prod hBc`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasCompactSupport.intro (K := ((tsupport ρ) ×ˢ (GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.boxA S U) : Set (Ainf F × Af F))) hK ?_` and prove the remaining obligations. Introduce `y hy`. Unfold `GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.testT`. Distinguish the cases in `h1 : sndA F y ∈ GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.boxA S U`. Establish `h2 : ρ (fstA F y) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h3`. Conclude with `hy ⟨subset_tsupport ρ h3, h1⟩`. Simplify using `[h2]`. Simplify using `[Set.indicator_of_notMem h1]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem testT_continuous_hasCompactSupport : ∀ (F : Type) [Field F] [NumberField F] (ρ : Ainf F → ℝ)
     (S : Finset (HeightOneSpectrum (𝓞 F))) (U : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)),

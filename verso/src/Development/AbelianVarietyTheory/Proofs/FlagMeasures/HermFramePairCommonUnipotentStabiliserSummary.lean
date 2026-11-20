@@ -19,7 +19,7 @@ open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) in
 /- English proof (translation)
-Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.Xa`. Use `Submodule.span_mono (Set.image_mono fun c hc => ?_)` and prove the remaining obligations. Establish `hc' : (c : ℕ) < a` using `hc`. Conclude with `lt_of_lt_of_le hc' h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnipStab.Xa_mono {a b : ℕ} (h : a ≤ b) : F.Xa a ≤ F.Xa b := by
   unfold _root_.Formalism.HermitianLatticeCounting.S6.FlagD.Xa
@@ -32,7 +32,7 @@ open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) in
 /- English proof (translation)
-Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.Xa`. Conclude with `Submodule.subset_span ⟨a, h, rfl⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem hermFlag_basis_vector_mem_graded_lemma (a : Fin r) {n : ℕ} (h : (a : ℕ) < n) :
     F.e a.castSucc ∈ F.Xa n := by
@@ -44,7 +44,7 @@ open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) in
 /- English proof (translation)
-The claim follows from `hermFlag_basis_vector_mem_graded_lemma F a a.isLt`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnipStab.e_mem_X (a : Fin r) : F.e a.castSucc ∈ F.X :=
   hermFlag_basis_vector_mem_graded_lemma F a a.isLt
@@ -54,9 +54,9 @@ open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) in
 /- English proof (translation)
-Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.Xa at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `hy a ha`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => simp [hx, hz]`. Consider the case `smul c x _ hx => simp [hx]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem hermFlag_orthogonal_graded_of_basis_lemma_2 {n : ℕ} {y : V}
     (hy : ∀ a : Fin r, (a : ℕ) < n → H.B (F.e a.castSucc) y = 0) {x : V} (hx : x ∈ F.Xa n) :
@@ -75,7 +75,7 @@ open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) in
 /- English proof (translation)
-The claim follows from `hermFlag_orthogonal_graded_of_basis_lemma_2 F (fun a _ => hy a) hx`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnipStab.orth_X {y : V}
     (hy : ∀ a : Fin r, H.B (F.e a.castSucc) y = 0) {x : V} (hx : x ∈ F.X) :
@@ -85,7 +85,7 @@ theorem _root_.GlobalTheory.UnipStab.orth_X {y : V}
 variable {F}
 
 /- English proof (translation)
-Establish `: F.Xa (a + 1) ≤ (F.Xa a).comap (g - LinearMap.id)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `Xa_mono F (Nat.lt_succ_iff.1 hb) (hg.2.2.1 b)`. Conclude with `this hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem step {g : V →ₗ[K] V} (hg : F.InN g) (a : ℕ) {x : V} (hx : x ∈ F.Xa (a + 1)) :
     g x - x ∈ F.Xa a := by
@@ -101,11 +101,11 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) in
 variable {F} in
 /- English proof (translation)
-Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.InN at hg`. Take `⟨-, -, he, -⟩` from `hg`. Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.Xa at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨b, hb, rfl⟩` from `hx`. Establish `hb' : (b : ℕ) < a` using `hb`. Establish `h1 : g (F.e b.castSucc) - F.e b.castSucc ∈ F.Xa a` using `_root_.GlobalTheory.UnipStab.Xa_mono F hb'.le (he b)`. Establish `h2` using `hermFlag_basis_vector_mem_graded_lemma F b hb'`. Simplify using `using add_mem h1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => simpa using add_mem hx hz`. Consider the case `smul c x _ hx => simpa using Submodule.smul_mem _ c hx`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem _root_.GlobalTheory.UnipStab.map_Xa {g : V →ₗ[K] V} (hg : F.InN g) (a : ℕ) {x : V}
     (hx : x ∈ F.Xa a) : g x ∈ F.Xa a := by
@@ -130,7 +130,7 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) in
 variable {F} in
 /- English proof (translation)
-Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.InN at hg`. Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.z`. Conclude with `hg.2.2.2 _ F.zperp`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnipStab.hermFlagUnipotent_anisotropic_vector_sub_mem {g : V →ₗ[K] V} (hg : F.InN g) :
     g F.z - F.z ∈ F.X := by
@@ -144,7 +144,7 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) in
 variable {F} in
 /- English proof (translation)
-Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.InN`. Apply the tactic sequence `refine ⟨fun x y => rfl, (1 : V ≃ₗ[K] V).bijective, fun a => ?_, fun y _ => ?_⟩ <;>`. Simplify using `[LinearEquiv.coe_coe]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.UnipStab.inN_one : F.InN ((1 : V ≃ₗ[K] V) : V →ₗ[K] V) := by
   unfold _root_.Formalism.HermitianLatticeCounting.S6.FlagD.InN
@@ -166,7 +166,7 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) in
 variable {F} in
 /- English proof (translation)
-Rewrite `hx`, the goal using `[hermFlag_isotropic_eq_graded_lemma_4 F]`. Conclude with `_root_.GlobalTheory.UnipStab.map_Xa hg r hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hermFlagUnipotent_maps_isotropic_lemma_3 {g : V →ₗ[K] V} (hg : F.InN g) {x : V}
     (hx : x ∈ F.X) : g x ∈ F.X := by
@@ -179,13 +179,13 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) in
 variable {F} in
 /- English proof (translation)
-Establish `hs'` using `hs`. Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.InN at hs ht ⊢`. Take `⟨hsi, -, hse, hsy⟩` from `hs`. Take `⟨hti, -, hte, hty⟩` from `ht`. Use `⟨fun x y => ?_, (s * t).bijective, fun a => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `H.B (s (t x)) (s (t y)) = H.B x y`. Conclude with `(hsi _ _).trans (hti _ _)`. Express the relevant statement in the definitionally equal form `s (t (F.e a.castSucc)) - F.e a.castSucc ∈ F.Xa a`. Establish `h1 : s (t (F.e a.castSucc) - F.e a.castSucc) ∈ F.Xa a` using `_root_.GlobalTheory.UnipStab.map_Xa hs' a (hte a)`. Establish `h2 : s (F.e a.castSucc) - F.e a.castSucc ∈ F.Xa a` using `hse a`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `add_mem h1 h2` as an intermediate fact. Rewrite `this` using `[map_sub, sub_add_sub_cancel]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `s (t y) - y ∈ F.X`. Establish `h1 : s (t y - y) ∈ F.X` using `hermFlagUnipotent_maps_isotropic_lemma_3 hs' (hty y hy)`. Establish `h2 : s y - y ∈ F.X` using `hsy y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `add_mem h1 h2` as an intermediate fact. Rewrite `this` using `[map_sub, sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnipStab.inN_mul {s t : V ≃ₗ[K] V} (hs : F.InN (s : V →ₗ[K] V))
     (ht : F.InN (t : V →ₗ[K] V)) : F.InN ((s * t : V ≃ₗ[K] V) : V →ₗ[K] V) := by
@@ -209,9 +209,9 @@ theorem _root_.GlobalTheory.UnipStab.inN_mul {s t : V ≃ₗ[K] V} (hs : F.InN (
     rwa [map_sub, sub_add_sub_cancel] at this
 
 /- English proof (translation)
-Establish `h1 : S.map (s : V →ₗ[K] V) = S`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `h y hy`. Conclude with `LinearEquiv.finrank_map_eq s S`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[← h1]`. Take `⟨y, hy, rfl⟩` from `hx`. Simplify using `using hy`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem symm_mem [FiniteDimensional K V] (s : V ≃ₗ[K] V) (S : Submodule K V)
     (h : ∀ x ∈ S, s x ∈ S) {x : V} (hx : x ∈ S) : s.symm x ∈ S := by
@@ -230,9 +230,9 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) in
 variable {F} in
 /- English proof (translation)
-Establish `hle : (F.Xa a).map (s : V →ₗ[K] V) ≤ F.Xa a`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `_root_.GlobalTheory.UnipStab.map_Xa hs a hw`. Establish `heq` using `Submodule.eq_of_le_of_finrank_eq hle (LinearEquiv.finrank_map_eq s (F.Xa a))`. Rewrite `hx` using `[← heq]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, rfl⟩` from `hx`. Simplify using `using hw`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem hermFlagUnipotent_symm_maps_graded_lemma_5 [FiniteDimensional K V] {s : V ≃ₗ[K] V}
     (hs : F.InN (s : V →ₗ[K] V)) (a : ℕ) {x : V} (hx : x ∈ F.Xa a) : s.symm x ∈ F.Xa a := by
@@ -250,15 +250,15 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) in
 variable {F} in
 /- English proof (translation)
-Establish `hs'` using `hs`. Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.InN at hs ⊢`. Take `⟨hsi, -, hse, hsy⟩` from `hs`. Use `⟨fun x y => ?_, (s⁻¹).bijective, fun a => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `H.B (s.symm x) (s.symm y) = H.B x y`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `hsi (s.symm x) (s.symm y)` as an intermediate fact. Simplify using `using this.symm`. Express the relevant statement in the definitionally equal form `s.symm (F.e a.castSucc) - F.e a.castSucc ∈ F.Xa a`. Establish `h` using `Submodule.neg_mem _ (hermFlagUnipotent_symm_maps_graded_lemma_5 hs' a (hse a))`. Establish `heq : -(s.symm ((s : V →ₗ[K] V) (F.e a.castSucc) - F.e a.castSucc)) = s.symm (F.e a.castSucc) - F.e a.castSucc`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite `h` using `[heq]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `s.symm y - y ∈ F.X`. Establish `hperp : ∀ a : Fin r, H.B (F.e a.castSucc) (s.symm y) = 0`. Introduce `a`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hsi (F.e a.castSucc) (s.symm y)`. Establish `h2 : H.B ((s : V →ₗ[K] V) (F.e a.castSucc) - F.e a.castSucc) y = 0`. Use `_root_.GlobalTheory.UnipStab.orth_X F hy ?_` and prove the remaining obligations. Rewrite using `[hermFlag_isotropic_eq_graded_lemma_4 F]`. Conclude with `_root_.GlobalTheory.UnipStab.Xa_mono F a.isLt.le (hse a)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at h1`. Rewrite using `[← h1]`. Simplify `h2` using `[hy a]`. Establish `h3` using `Submodule.neg_mem _ (hsy (s.symm y) hperp)`. Simplify using `using h3`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnipStab.inN_inv [FiniteDimensional K V] {s : V ≃ₗ[K] V}
     (hs : F.InN (s : V →ₗ[K] V)) : F.InN ((s⁻¹ : V ≃ₗ[K] V) : V →ₗ[K] V) := by
@@ -295,11 +295,11 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) in
 variable {F} in
 /- English proof (translation)
-Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.InN at hg`. Take `⟨-, -, he, -⟩` from `hg`. Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.Xa at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨b, hb, rfl⟩` from `hx`. Establish `hb' : (b : ℕ) < k + 1` using `hb`. Conclude with `_root_.GlobalTheory.UnipStab.Xa_mono F (by omega) (he b)`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, add_sub_add_comm]`. Conclude with `add_mem hx hz`. Consider the case `smul c x _ hx`. Rewrite using `[map_smul, ← smul_sub]`. Conclude with `Submodule.smul_mem _ c hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hermFlagUnipotent_sub_lowers_graded_lemma_6 {g : V →ₗ[K] V} (hg : F.InN g) (k : ℕ)
     {x : V} (hx : x ∈ F.Xa (k + 1)) : g x - x ∈ F.Xa k := by
@@ -324,7 +324,7 @@ open scoped Pointwise ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (F : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r) in
 /- English proof (translation)
-Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.Xa at hx`. Simplify using `using hx`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem hermFlag_graded_zero_lemma_7 {x : V} (hx : x ∈ F.Xa 0) : x = 0 := by
   unfold _root_.Formalism.HermitianLatticeCounting.S6.FlagD.Xa at hx
@@ -337,25 +337,23 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
 variable {F} in
 
 /- English proof (translation)
-Establish `hs'` using `hs`. Establish `hinv` using `_root_.GlobalTheory.UnipStab.inN_inv hs`. Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.InN at hs hinv`. Take `⟨hsi, -, -, hsy⟩` from `hs`. Take `⟨-, -, hie, -⟩` from `hinv`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set u : V →ₗ[K] V := (s : V →ₗ[K] V) - 1 with hu`. Establish `hu_apply : ∀ v, u v = s v - v` using `fun v => by simp [hu]`. Establish `hdown : ∀ n ≤ r, ∀ v : V, ∀ b : Fin r, (b : ℕ) < n → H.B (F.e b.castSucc) ((u ^ n) v) = 0`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => intro _ v b hb`. Conclude with `absurd hb (Nat.not_lt_zero _)`. Consider the case `succ n ih`. Introduce `hn v b hb`. Establish `hwperp` using `ih (by omega) v`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[pow_succ', Module.End.mul_apply]`. Generalize the expression as in `(u ^ n) v = w at hwperp ⊢`. Rewrite using `[hu_apply, map_sub]`. Establish `h1` using `hsi (s.symm (F.e b.castSucc)) w`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Establish `hx : s.symm (F.e b.castSucc) - F.e b.castSucc ∈ F.Xa n` using `_root_.GlobalTheory.UnipStab.Xa_mono F (by omega) (hie b)`. Establish `h2` using `hermFlag_orthogonal_graded_of_basis_lemma_2 F hwperp hx`. Rewrite `h2` using `[map_sub, LinearMap.sub_apply]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hX : ∀ v, u ((u ^ r) v) ∈ F.Xa r` using `fun v => by`. Rewrite using `[hu_apply]`. Conclude with `hsy _ (fun b => hdown r le_rfl v b b.isLt)`. Establish `hup : ∀ n m : ℕ, ∀ x ∈ F.Xa (m + n), (u ^ n) x ∈ F.Xa m`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Proceed by induction on `n with`. Consider the case `zero => intro m x hx`. Simplify using `using hx`. Consider the case `succ n ih`. Introduce `m x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pow_succ, Module.End.mul_apply]`. Use `ih m _ ?_` and prove the remaining obligations. Rewrite using `[hu_apply]`. Rewrite `hx` using `[← add_assoc]`. Conclude with `hermFlagUnipotent_sub_lowers_graded_lemma_6 hs' _ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h21 : 2 * r + 1 = r + (1 + r)` using `by omega`. Rewrite using `[h21, pow_add, pow_add, pow_one]`. Use extensionality with `v`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, LinearMap.zero_apply]`. Apply `hermFlag_graded_zero_lemma_7 F` to reduce the goal to its premises.
-
-Apply `hup r 0` to reduce the goal to its premises. Rewrite using `[zero_add]`. Conclude with `hX v`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnipStab.pow_eq_zero [FiniteDimensional K V]
     {s : V ≃ₗ[K] V} (hs : F.InN (s : V →ₗ[K] V)) :
@@ -410,7 +408,7 @@ theorem _root_.GlobalTheory.UnipStab.pow_eq_zero [FiniteDimensional K V]
   exact hX v
 
 /- English proof (translation)
-Use `hg.2.2.2 y fun a => ?_` and prove the remaining obligations. Rewrite using `[← H.herm, (mem_perp_iff H S y).1 hy _ (hS (e_mem_X F a)), star_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_mem_X {g : V →ₗ[K] V} (hg : F.InN g) {S : Submodule K V} (hS : F.X ≤ S) {y : V}
     (hy : y ∈ perp H S) : g y - y ∈ F.X := by
@@ -432,11 +430,11 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (N : _root_.GlobalTheory.DegCnt.NF H r) in
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Unfold `_root_.GlobalTheory.DegCnt.NF.R at h`. Proceed by induction on `h using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Consider the case `one => exact ⟨_root_.GlobalTheory.UnipStab.inN_one, _root_.GlobalTheory.UnipStab.inN_one⟩`. Consider the case `mul x y _ _ hx hy`. Conclude with `⟨_root_.GlobalTheory.UnipStab.inN_mul hx.1 hy.1, _root_.GlobalTheory.UnipStab.inN_mul hx.2 hy.2⟩`. Consider the case `inv x _ hx => exact ⟨_root_.GlobalTheory.UnipStab.inN_inv hx.1, _root_.GlobalTheory.UnipStab.inN_inv hx.2⟩`. Introduce `h`.
+Treat this case separately. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `_root_.GlobalTheory.DegCnt.NF.R`. Conclude with `Subgroup.subset_closure h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnipStab.mem_R (s : V ≃ₗ[K] V) :
     s ∈ N.R ↔
@@ -462,7 +460,7 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (N : _root_.GlobalTheory.DegCnt.NF H r) in
 omit [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.DegCnt.NF.fixing`. Rewrite using `[mem_fixingSubgroup_iff]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.UnipStab.mem_fixing (S : Submodule K V) (t : V ≃ₗ[K] V) :
     t ∈ N.fixing S ↔ ∀ v ∈ S, t v = v := by
@@ -477,9 +475,9 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (N : _root_.GlobalTheory.DegCnt.NF H r) in
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(_root_.GlobalTheory.UnipStab.mem_R N s).1 hs`. Unfold `_root_.GlobalTheory.HermLat.uPerp at hy`. Rewrite `hy` using `[_root_.GlobalTheory.HermLat.mem_perp_iff]`. Establish `hF : ∀ a : Fin r, H.B (N.F.e a.castSucc) y = 0` using `fun a => by`. Rewrite using `[← H.herm, hy _ (Submodule.mem_sup_left (_root_.GlobalTheory.UnipStab.e_mem_X _ a)), star_zero]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hF' : ∀ a : Fin r, H.B (N.F'.e a.castSucc) y = 0` using `fun a => by`. Rewrite using `[← H.herm, hy _ (Submodule.mem_sup_right (_root_.GlobalTheory.UnipStab.e_mem_X _ a)), star_zero]`. Unfold `_root_.Formalism.HermitianLatticeCounting.S6.II`. Unfold `_root_.Formalism.HermitianLatticeCounting.S6.FlagD.InN at h1 h2`. Conclude with `Submodule.mem_inf.mpr ⟨h1.2.2.2 y hF, h2.2.2.2 y hF'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnipStab.sub_mem_II {s : V ≃ₗ[K] V}
     (hs : s ∈ N.R) {y : V}
@@ -505,13 +503,13 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (N : _root_.GlobalTheory.DegCnt.NF H r) in
 omit [NumberField K] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Establish `hle : _root_.Formalism.HermitianLatticeCounting.S6.V0 F F' ≤ (_root_.Formalism.HermitianLatticeCounting.S6.V0 F F').comap g`. Unfold `_root_.Formalism.HermitianLatticeCounting.S6.V0`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[Submodule.mem_comap]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (hermFlagUnipotent_maps_isotropic_lemma_3 hg hy))`. Introduce `y hy`. Rewrite using `[Submodule.mem_comap]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right (hermFlagUnipotent_maps_isotropic_lemma_3 hg' hy))`. Simplify using `only [Submodule.span_le, Set.insert_subset_iff, Set.singleton_subset_iff, SetLike.mem_coe, Submodule.mem_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : g F.z - F.z ∈ F.X ⊔ F'.X ⊔ Submodule.span K {F.z, F'.z}` using `Submodule.mem_sup_left (Submodule.mem_sup_left (_root_.GlobalTheory.UnipStab.hermFlagUnipotent_anisotropic_vector_sub_mem hg))`. Establish `h2 : F.z ∈ F.X ⊔ F'.X ⊔ Submodule.span K {F.z, F'.z}` using `Submodule.mem_sup_right (Submodule.subset_span (by simp))`. Simplify using `using add_mem h1 h2`. Establish `h1 : g F'.z - F'.z ∈ F.X ⊔ F'.X ⊔ Submodule.span K {F.z, F'.z}` using `Submodule.mem_sup_left (Submodule.mem_sup_right (_root_.GlobalTheory.UnipStab.hermFlagUnipotent_anisotropic_vector_sub_mem hg'))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : F'.z ∈ F.X ⊔ F'.X ⊔ Submodule.span K {F.z, F'.z}` using `Submodule.mem_sup_right (Submodule.subset_span (by simp))`. Simplify using `using add_mem h1 h2`. Conclude with `hle hx`.
+A detailed English derivation is pending.
 -/
 private theorem hermFramePairCommonUnipotent_maps_span_lemma_9 {F F' : _root_.Formalism.HermitianLatticeCounting.S6.FlagD H r} {g : V →ₗ[K] V}
     (hg : F.InN g) (hg' : F'.InN g) {x : V} (hx : x ∈ _root_.Formalism.HermitianLatticeCounting.S6.V0 F F') : g x ∈ _root_.Formalism.HermitianLatticeCounting.S6.V0 F F' := by
@@ -548,9 +546,9 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (N : _root_.GlobalTheory.DegCnt.NF H r) in
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.DegCnt.NF.R1 at ht ⊢`. Rewrite `ht`, the goal using `[Subgroup.mem_inf]`. Use `⟨mul_mem (mul_mem hs ht.1) (inv_mem hs), ?_⟩` and prove the remaining obligations. Establish `ht2` using `(_root_.GlobalTheory.UnipStab.mem_fixing N _ t).1 ht.2`. Rewrite using `[_root_.GlobalTheory.UnipStab.mem_fixing]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Establish `hinv` using `(_root_.GlobalTheory.UnipStab.mem_R N s⁻¹).1 (inv_mem hs)`. Establish `hmem : s.symm v ∈ _root_.Formalism.HermitianLatticeCounting.S6.V0 N.F N.F'` using `hermFramePairCommonUnipotent_maps_span_lemma_9 hinv.1 hinv.2 hv`. Express the relevant statement in the definitionally equal form `s (t (s.symm v)) = v`. Rewrite using `[ht2 _ hmem, LinearEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hermFramePairCommonUnipotent_conj_mem_fixingBoth_lemma_8 {s t : V ≃ₗ[K] V}
     (hs : s ∈ N.R) (ht : t ∈ N.R1) :
@@ -574,17 +572,17 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (N : _root_.GlobalTheory.DegCnt.NF H r) in
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.DegCnt.NF.ZI at ht ⊢`. Rewrite `ht`, the goal using `[Subgroup.mem_inf]`. Use `⟨hermFramePairCommonUnipotent_conj_mem_fixingBoth_lemma_8 N hs ht.1, ?_⟩` and prove the remaining obligations. Establish `ht1` using `ht.1`. Unfold `_root_.GlobalTheory.DegCnt.NF.R1 at ht1`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `ht1` using `[Subgroup.mem_inf]`. Establish `hfix1` using `(_root_.GlobalTheory.UnipStab.mem_fixing N _ t).1 ht1.2`. Establish `hfix2` using `(_root_.GlobalTheory.UnipStab.mem_fixing N _ t).1 ht.2`. Rewrite using `[_root_.GlobalTheory.UnipStab.mem_fixing]`. Introduce `v hv`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvperp : v ∈ _root_.GlobalTheory.HermLat.uPerp N.F N.F'`. Establish `hv'` using `hv`. Unfold `_root_.GlobalTheory.DegCnt.NF.Wt at hv'`. Unfold `_root_.GlobalTheory.HermLat.uPerp`. Rewrite `hv'`, the goal using `[_root_.GlobalTheory.HermLat.mem_perp_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `x hx`. Apply `hv'` to reduce the goal to its premises. Apply `Submodule.mem_sup_left` to reduce the goal to its premises. Unfold `_root_.Formalism.HermitianLatticeCounting.S6.V0`. Conclude with `Submodule.mem_sup_left hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hw` using `_root_.GlobalTheory.UnipStab.sub_mem_II N (inv_mem hs) hvperp`. Establish `hw0 : s.symm v - v ∈ _root_.Formalism.HermitianLatticeCounting.S6.V0 N.F N.F'`. Unfold `_root_.Formalism.HermitianLatticeCounting.S6.II at hw`. Unfold `_root_.Formalism.HermitianLatticeCounting.S6.V0`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_inf.mp hw).1)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htv : t v = v` using `hfix2 v hv`. Establish `htw : t (s.symm v - v) = s.symm v - v` using `hfix1 _ hw0`. Rewrite `htw` using `[map_sub, htv, sub_left_inj]`. Express the relevant statement in the definitionally equal form `s (t (s.symm v)) = v`. Rewrite using `[htw, LinearEquiv.apply_symm_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnipStab.conj_ZI {s t : V ≃ₗ[K] V}
     (hs : s ∈ N.R)
@@ -627,7 +625,7 @@ open NumberField in
 open scoped Pointwise ENNReal Classical in
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ H _ r N`. Use `⟨_root_.GlobalTheory.UnipStab.mem_R N, fun s hs y hy => _root_.GlobalTheory.UnipStab.sub_mem_II N hs hy, fun s hs t ht => hermFramePairCommonUnipotent_conj_mem_fixingBoth_lemma_8 N hs ht, fun s hs t ht => _root_.GlobalTheory.UnipStab.conj_ZI N hs ht, fun s hs => _root_.GlobalTheo …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem _root_.GlobalTheory.UnipStab.common_unipotent_stabiliser : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V), _root_.Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ) (N : _root_.GlobalTheory.DegCnt.NF H r), (∀ s : V ≃ₗ[K] V, s ∈ N.R ↔ N.F.InN (s : V →ₗ[K] V) ∧ N.F'.InN (s : V →ₗ[K] V)) ∧ (∀ s ∈ N.R, ∀ y ∈ _root_.GlobalTheory.HermLat.uPerp N.F N.F', s y - y ∈ _root_.Formalism.HermitianLatticeCounting.S6.II N.F N.F') ∧ (∀ s ∈ N.R, ∀ t ∈ N.R1, s * t * s⁻¹ ∈ N.R1) ∧ (∀ s ∈ N.R, ∀ t ∈ N.ZI, s * t * s⁻¹ ∈ N.ZI) ∧ ∀ s ∈ N.R, ((s : V →ₗ[K] V) - 1) ^ (2 * r + 1) = 0 := by
   intro K V _ _ _ _ _ _ _ _ H _ r N

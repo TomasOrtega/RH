@@ -15,16 +15,16 @@ section Hom
 variable {R : Type} [CommRing R] {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(dv_pol_iff _ _).2 (IsWeightedHomogeneous.prod s f e fun a ha => (dv_pol_iff _ _).1 (h a ha))`.
+A detailed English derivation is pending.
 -/
 theorem pol_prod {α : Type} (s : Finset α) (f : α → MvPolynomial (ι × Fin n) R) (e : α → ι → ℕ)
     (h : ∀ a ∈ s, f a ∈ Pol R n (e a)) : ∏ a ∈ s, f a ∈ Pol R n (∑ a ∈ s, e a) :=
   (dv_pol_iff _ _).2 (IsWeightedHomogeneous.prod s f e fun a ha => (dv_pol_iff _ _).1 (h a ha))
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Establish `h1 : ∏ i : Fin r, M (σ i) i ∈ Pol R n (∑ i : Fin r, e (σ i))` using `pol_prod Finset.univ _ _ fun i _ => h (σ i) i`. Establish `h2 : (∑ i : Fin r, e (σ i)) = ∑ l, e l` using `Equiv.sum_comp σ e`. Rewrite `h1` using `[h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs` into its components or cases. Rewrite using `[hs, one_smul]`. Conclude with `h1`. Rewrite using `[hs, Units.neg_smul, one_smul]`. Conclude with `Submodule.neg_mem _ h1`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pol_det {r : ℕ} (M : Matrix (Fin r) (Fin r) (MvPolynomial (ι × Fin n) R)) (e : Fin r → ι → ℕ)
     (h : ∀ l b, M l b ∈ Pol R n (e l)) : M.det ∈ Pol R n (∑ l, e l) := by
@@ -46,11 +46,11 @@ variable (p n' : ℕ) [Fact p.Prime] [NeZero n'] (O : Type) [CommRing O] [IsDoma
 variable {r k : ℕ} (F : Frames n' r)
 
 /- English proof (translation)
-Unfold `xg`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Rewrite using `[dv_pol_iff]`. Establish `h1` using `isWeightedHomogeneous_X (KK O) (letterWeight (ι := Fin n') (n := k)) (posOf n' a, c)`. Establish `h2` using `isWeightedHomogeneous_C (letterWeight (ι := Fin n') (n := k)) (sigMat p n' O g a c b)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1.mul h2` as an intermediate fact. Rewrite `this` using `[add_zero]`. Establish `e : (letterWeight (ι` using `Fin n') (n := k) (posOf n' a, c)) = (Pi.single (posOf n' a) 1 : Fin n' → ℕ) := by`. Use function extensionality and compare the values at `i`. Unfold `letterWeight`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Simplify using `only [Pi.single_apply]`. Reduce the equality to equality of the corresponding arguments. Rewrite `this` using `[e]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xg_hom (g : Matrix (Fin k) (Fin k) (WF p n')) (a : ℤ) (b : Fin k) :
     xg p n' O n' g a b ∈ Pol (KK O) k (Pi.single (posOf n' a) 1 : Fin n' → ℕ) := by
@@ -76,9 +76,7 @@ def eD (s : ℤ) : Fin n' → ℕ :=
   ∑ l : Fin r, p ^ (s - Arow F s l.val).toNat • (Pi.single (posOf n' (Arow F s l.val)) 1 : Fin n' → ℕ)
 
 /- English proof (translation)
-Unfold `Del minorI`. Use `split_ifs with h`. Use `pol_det _ _ fun l b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Unfold `twRow`.
-
-Conclude with `dv_pol_pow _ _ (xg_hom p n' O g _ _) _`. Conclude with `Submodule.zero_mem _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Del_hom (g : Matrix (Fin k) (Fin k) (WF p n')) (j : ℤ) :
     Del p n' O F g j ∈ Pol (KK O) k (eDel p n' F j) := by
@@ -91,7 +89,7 @@ theorem Del_hom (g : Matrix (Fin k) (Fin k) (WF p n')) (j : ℤ) :
   · exact Submodule.zero_mem _
 
 /- English proof (translation)
-Unfold `Dtop`. Use `pol_det _ _ fun l b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Conclude with `dv_pol_pow _ _ (xg_hom p n' O g _ _) _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Dtop_hom (hrk : r ≤ k) (g : Matrix (Fin k) (Fin k) (WF p n')) (s : ℤ) :
     Dtop p n' O F hrk g s ∈ Pol (KK O) k (eD p n' F s) := by
@@ -106,7 +104,7 @@ def eSP (k c' Q : ℕ) : Fin n' → ℕ :=
     ∑ s ∈ F.TT, ((2 * Q + 3) * c' + k * Q) • eD p n' F (s.val : ℤ)
 
 /- English proof (translation)
-Unfold `HasMultideg SPtrue eSP R0 DtopProd`. Use `dv_pol_mul _ _ _ _ (dv_pol_mul _ _ _ _ (dv_pol_pow _ _ ?_ _) ?_) ?_` and prove the remaining obligations. Conclude with `pol_prod _ _ _ fun j _ => dv_pol_pow _ _ (Del_hom p n' O F g j) _`. Conclude with `pol_prod _ _ _ fun j _ => dv_pol_pow _ _ (Del_hom p n' O F g j) _`. Conclude with `pol_prod _ _ _ fun s _ => dv_pol_pow _ _ (Dtop_hom p n' O F hrk g s.val) _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem SPtrue_hom (hrk : r ≤ k) (g : Matrix (Fin k) (Fin k) (WF p n')) (c' Q : ℕ) :
     HasMultideg (SPtrue p n' O F hrk g c' Q) (eSP p n' F k c' Q) := by

@@ -4,7 +4,7 @@ import Formalism.LocalRingCardinality.DataTheta
 open Formalism.BasicNotions.TH
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FockScalarType.mem_span_raising | exact GlobalTheory.FockScalarType.mem_span_raising | (intros; apply GlobalTheory.FockScalarType.mem_span_raising <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.fock_action_homogeneous_eigenvector : ∀ (P Q R S : ℕ) (x : ℚ) (e e₀ : ℕ) (f g : Formalism.BasicNotions.TH.Pol P Q R S),
     f ∈ Formalism.BasicNotions.TH.homog (Formalism.BasicNotions.TH.Ln P Q R S) e →

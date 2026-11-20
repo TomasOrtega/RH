@@ -16,7 +16,7 @@ namespace LimTy
 variable {C : Type} [Field C] {V : VF C}
 
 /- English proof (translation)
-Introduce `μ`. Simplify using `only [map_sum]`. Conclude with `Tends.sum S (fun i hi => h i hi μ)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsS_sum {σ ι : Type} (S : Finset ι) {f : ι → ℕ → MvPowerSeries σ C} {F : ι → MvPowerSeries σ C}
     (h : ∀ i ∈ S, TendsS V (f i) (F i)) : TendsS V (fun k => ∑ i ∈ S, f i k) (∑ i ∈ S, F i) := by
@@ -25,7 +25,7 @@ theorem tendsS_sum {σ ι : Type} (S : Finset ι) {f : ι → ℕ → MvPowerSer
   exact Tends.sum S (fun i hi => h i hi μ)
 
 /- English proof (translation)
-Introduce `μ`. Use `first`. Consider the case `simp only [map_smul, smul_eq_mul]`. Consider the case `simp only [MvPowerSeries.coeff_smul]`. Conclude with `(tends_const c).mul (h μ)`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tendsS_smul {σ : Type} (c : C) {f : ℕ → MvPowerSeries σ C} {F : MvPowerSeries σ C}
     (h : TendsS V f F) : TendsS V (fun k => c • f k) (c • F) := by
@@ -36,7 +36,7 @@ theorem tendsS_smul {σ : Type} (c : C) {f : ℕ → MvPowerSeries σ C} {F : Mv
   exact (tends_const c).mul (h μ)
 
 /- English proof (translation)
-Use `split_ifs`. Conclude with `h`. Conclude with `TendsS.const 0`.
+A detailed English derivation is pending.
 -/
 theorem tendsS_ite {σ : Type} (P : Prop) [Decidable P] {f : ℕ → MvPowerSeries σ C} {F : MvPowerSeries σ C}
     (h : TendsS V f F) : TendsS V (fun k => if P then f k else 0) (if P then F else 0) := by
@@ -51,9 +51,7 @@ theorem coeff_tyS_mv (l : ℕ) (b : ℕ → C) (μ : Unit →₀ ℕ) :
     MvPowerSeries.coeff μ (tyS l b) = ∑ s ∈ Finset.range (μ () + 1), if l ^ s = μ () then b s else 0 := rfl
 
 /- English proof (translation)
-Introduce `μ`. Simplify using `only [coeff_tyS_mv]`. Use `Tends.sum _ (fun s _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `h s`.
-
-Conclude with `tends_const 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tendsS_tyS (l : ℕ) {a : ℕ → ℕ → C} {a' : ℕ → C} (h : ∀ s, Tends V (fun k => a k s) (a' s)) :
     TendsS V (fun k => tyS l (a k)) (tyS l a') := by
@@ -65,16 +63,16 @@ theorem tendsS_tyS (l : ℕ) {a : ℕ → ℕ → C} {a' : ℕ → C} (h : ∀ s
   · exact tends_const 0
 
 /- English proof (translation)
-The claim follows from `h (Finsupp.single () n)`.
+A detailed English derivation is pending.
 -/
 theorem tendsP {f : ℕ → PowerSeries C} {F : PowerSeries C} (h : TendsS V f F) (n : ℕ) :
     Tends V (fun k => PowerSeries.coeff n (f k)) (PowerSeries.coeff n F) :=
   h (Finsupp.single () n)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hy`. Establish `hne : V.v y ≠ ⊤` using `fun ht => hy ((AddValuation.top_iff V.v).mp ht)`. Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.mp hne`. Take `⟨n0, hn0⟩` from `h (r + 1)`. Establish `h1 : ((r + 1 : ℝ) : WithTop ℝ) ≤ V.v (y - 0)` using `hn0 n0 le_rfl`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[sub_zero, ← hr]`. Establish `h2` using `WithTop.coe_le_coe.mp h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem eq_zero_of_tends_const_zero {y : C} (h : Tends V (fun _ => (0 : C)) y) : y = 0 := by
   by_contra hy
@@ -87,9 +85,9 @@ private theorem eq_zero_of_tends_const_zero {y : C} (h : Tends V (fun _ => (0 : 
   linarith
 
 /- English proof (translation)
-Take `⟨n0, hn0⟩` from `h 0`. Establish `h1 : ((0 : ℝ) : WithTop ℝ) ≤ V.v (y - s n0)` using `hn0 n0 le_rfl`. Establish `h2 : ((0 : ℝ) : WithTop ℝ) ≤ V.v (s n0)` using `hs n0`. Establish `e : y = (y - s n0) + s n0` using `by ring`. Use `show ((0 : ℝ) : WithTop ℝ) ≤ V.v y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `le_trans (le_min h1 h2) (V.v.map_add _ _)`.
+A detailed English derivation is pending.
 -/
 private theorem ge_zero_of_tends_of_forall_ge_zero {s : ℕ → C} {y : C} (h : Tends V s y) (hs : ∀ k, V.Ge 0 (s k)) :
     V.Ge 0 y := by
@@ -102,9 +100,9 @@ private theorem ge_zero_of_tends_of_forall_ge_zero {s : ℕ → C} {y : C} (h : 
   exact le_trans (le_min h1 h2) (V.v.map_add _ _)
 
 /- English proof (translation)
-Introduce `i`. Establish `hcoef : ∀ n, Tends V (fun k => PowerSeries.coeff n (γ k i)) (PowerSeries.coeff n (Γ i))` using `fun n => tendsP (h i) n`. Use `⟨?_, fun n => ge_zero_of_tends_of_forall_ge_zero (hcoef n) (fun k => (hc k i).2 n)⟩` and prove the remaining obligations. Establish `e : ∀ k, PowerSeries.coeff 0 (γ k i) = 0` using `fun k => by`. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hc k i).1`. Establish `h0` using `hcoef 0`. Simplify using `only [e] at h0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `eq_zero_of_tends_const_zero h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCv_lim {σ : Type} {γ : ℕ → σ → PowerSeries C} {Γ : σ → PowerSeries C}
     (h : ∀ i, TendsS V (fun k => γ k i) (Γ i)) (hc : ∀ k, IsCv V (γ k)) : IsCv V Γ := by
@@ -121,9 +119,9 @@ theorem isCv_lim {σ : Type} {γ : ℕ → σ → PowerSeries C} {Γ : σ → Po
   exact eq_zero_of_tends_const_zero h0
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Use `first`. Consider the case `rw [map_smul, coeff_tyS_mv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [MvPowerSeries.coeff_smul, coeff_tyS_mv]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_lin {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] {κ : Type}
     (X : RawChart C d I κ) (l : ℕ) (hl : 2 ≤ l) (g : Fin 2) (b : I g → ℕ → C) (i : κ) :
@@ -137,7 +135,7 @@ theorem constantCoeff_lin {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] 
   simp
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [ha s]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [ha s]; exact IsNilpotent.zero)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem hasSubst_of_constantCoeff_eq_zero' {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ C}
     (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) : MvPowerSeries.HasSubst a := by
@@ -147,29 +145,25 @@ private theorem hasSubst_of_constantCoeff_eq_zero' {σ τ : Type} [Finite σ] {a
     | exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [ha s]; exact IsNilpotent.zero)
 
 /- English proof (translation)
-Unfold `RawChart.TySet at hx ⊢`. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Use `choose γk lamk hγk hlamk hA hB using hx`. Take `⟨T, hTdef⟩ : ∃ T : ℕ → κ → PowerSeries C, T = fun k i => ∑ c : I g, X.u g c i • tyS V.l (fun s => x k s (Sum.inl c))` from `⟨_, rfl⟩`. Take `⟨T', hT'def⟩ : ∃ T' : κ → PowerSeries C, T' = fun i => ∑ c : I g, X.u g c i • tyS V.l (fun s => x' s (Sum.inl c))` from `⟨_, rfl⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hT0 : ∀ k i, MvPowerSeries.constantCoeff (T k i) = 0`. Introduce `k i`. Rewrite using `[hTdef]`. Conclude with `constantCoeff_lin X V.l hl g (fun c s => x k s (Sum.inl c)) i`. Establish `hT'0 : ∀ i, MvPowerSeries.constantCoeff (T' i) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[hT'def]`. Conclude with `constantCoeff_lin X V.l hl g (fun c s => x' s (Sum.inl c)) i`. Establish `hTlim : ∀ i, TendsS V (fun k => T k i) (T' i)`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hTdef, hT'def]`. Conclude with `tendsS_sum Finset.univ (fun c _ => tendsS_smul (X.u g c i) (tendsS_tyS (a := fun k s => x k s (Sum.inl c)) (a' := fun s => x' s (Sum.inl c)) V.l (fun s w => hlim w s (Sum.inl c))))`. Establish `hHSlg : MvPowerSeries.HasSubst X.lg` using `hasSubst_of_constantCoeff_eq_zero' hlg0`. Establish `hHSex : MvPowerSeries.HasSubst X.ex` using `hasSubst_of_constantCoeff_eq_zero' hex0`. Establish `hHS : ∀ k, MvPowerSeries.HasSubst (γk k)` using `fun k => hasSubst_of_constantCoeff_eq_zero' (fun i => (hγk k i).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hHST' : MvPowerSeries.HasSubst T'` using `hasSubst_of_constantCoeff_eq_zero' hT'0`. Establish `hγeq : ∀ k i, γk k i = MvPowerSeries.subst (T k) (X.ex i)`. Introduce `k i`. Establish `e1 : T k = fun j => MvPowerSeries.subst (γk k) (X.lg j)`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hTdef]`. Conclude with `(hA k j).symm`. Rewrite using `[e1, ← MvPowerSeries.subst_comp_subst_apply hHSlg (hHS k), hexlg, MvPowerSeries.subst_X (hHS k)]`. Take `⟨γ', hγ'def⟩ : ∃ γ' : κ → PowerSeries C, γ' = fun i => MvPowerSeries.subst T' (X.ex i)` from `⟨_, rfl⟩`. Establish `hγlim : ∀ i, TendsS V (fun k => γk k i) (γ' i)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Simplify using `only [hγeq, hγ'def]`. Conclude with `TendsS.subst (fun k j => hT0 k j) hT'0 hTlim (TendsS.const _)`. Establish `hγ' : IsCv V γ'` using `isCv_lim hγlim hγk`. Establish `hγ'0 : ∀ i, MvPowerSeries.constantCoeff (γ' i) = 0` using `fun i => (hγ' i).1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrel : ∀ i, alongCv γ' (X.lg i) = T' i`. Introduce `i`. Unfold `alongCv`. Rewrite using `[hγ'def, ← MvPowerSeries.subst_comp_subst_apply hHSex hHST', hlgex, MvPowerSeries.subst_X hHST']`. Take `⟨lam', hlam'def⟩ : ∃ lam' : JJ I g → PowerSeries C, lam' = fun q => tyS V.l (fun s => x' s (Sum.inr q)) + alongCv γ' (X.sg (X.u (1 - g) q)) - ∑ c : I g, (if X.ty g c = X.ty (1 - g) q then X.sg1 (X.u g c) (X.u (1 - g) q) • tyS V.l (fun s => x' s (Sum.inl c)) else 0)` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hlamlim : ∀ q, TendsS V (fun k => lamk k q) (lam' q)`. Introduce `q`. Establish `e : ∀ k, lamk k q = tyS V.l (fun s => x k s (Sum.inr q)) + alongCv (γk k) (X.sg (X.u (1 - g) q)) - ∑ c : I g, (if X.ty g c = X.ty (1 - g) q then X.sg1 (X.u g c) (X.u (1 - g) q) • tyS V.l (fun s => x k s (Sum.inl c)) else 0)`. Introduce `k`. Rewrite using `[hB k q]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, hlam'def]`. Use `TendsS.sub (TendsS.add ?_ ?_) ?_` and prove the remaining obligations. Conclude with `tendsS_tyS (a := fun k s => x k s (Sum.inr q)) (a' := fun s => x' s (Sum.inr q)) V.l (fun s w => hlim w s (Sum.inr q))`. Unfold `alongCv`.
-
-Conclude with `TendsS.subst (fun k j => (hγk k j).1) hγ'0 hγlim (TendsS.const _)`. Use `tendsS_sum _ (fun c _ => ?_) split_ifs` and prove the remaining obligations. Conclude with `tendsS_smul _ (tendsS_tyS (a := fun k s => x k s (Sum.inl c)) (a' := fun s => x' s (Sum.inl c)) V.l (fun s w => hlim w s (Sum.inl c)))`. Conclude with `TendsS.const 0`. Use `⟨γ', lam', hγ', isCv_lim hlamlim hlamk, fun i => ?_, fun q => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hrel i, hT'def]`. Simplify using `only [hlam'def]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lim_mem {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] {κ : Type} [Fintype κ] (X : RawChart C d I κ)
     (hl : 2 ≤ V.l)
@@ -255,7 +249,7 @@ theorem lim_mem {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] {κ : Type
 end LimTy
 
 /- English proof (translation)
-Unfold `LimTySt AllFB`. Introduce `C _ _ V O _ _ dd Y d _ I _ p g x x' hx hlim`. Conclude with `LimTy.lim_mem (Y.raw p) V.l_prime.two_le (fun i => FBChart.chart_log_constantCoeff (Y := Y) (p := p) i) (fun i => FBChart.chart_exp_constantCoeff (Y := Y) (p := p) i) (fun i => FBChart.raw_lgex (Y := Y) (p := p) i) (fun i => FBChart.raw_exlg (Y := Y) (p := p) i) g x x' hx hlim`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem limTy_holds : LimTySt := by
   unfold LimTySt AllFB

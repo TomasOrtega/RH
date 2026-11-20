@@ -14,13 +14,13 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Fc
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `n _ _ μ _ E _ Ω T F c hS h hh v`. Establish `hS'` using `hS`. Take `⟨hLg, hUn, hRC, hSG, hAE, -, -, hCS, hSO, -, -, -, -, -, hOm, -⟩` from `hS'`. Take `⟨h₁, h₂, r₁, r₂, r₂s, rfl⟩` from `hFac h hh`. Take `⟨κ, hκ, hrow⟩` from `hEv n μ E Ω T F c hS h₁ r₁ v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C₁, hC₁⟩` from `hSO n μ E Ω T F hLg hUn hRC hSG hAE hCS hOm (star h₂) r₂s`. Take `⟨C₂, hC₂⟩` from `hSO n μ E Ω T F hLg hUn hRC hSG hAE hCS hOm h₂ r₂`. Take `⟨f, hfS, hfE, hfc, -⟩` from `hC₁ κ hκ`. Use `⟨f, hfS, hfE, ?_⟩` and prove the remaining obligations. Introduce `φ f' hφS hφE hf'S hf'E hf'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨φ₂, hφ₂S, hφ₂E, hφ₂c, -⟩` from `hC₂ (cls μ φ) (subset_closure ⟨φ, hφS, hφE, rfl⟩)`. Establish `hmul : cls μ f' = F.Φ h₁ (cls μ φ₂)`. Rewrite using `[hf', F.map_mul, hφ₂c]`. Both sides reduce to the same expression. Rewrite using `[hfc, F.map_star, ContinuousLinearMap.adjoint_inner_left, ← hφ₂c]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hrow φ₂ f' hφ₂S hφ₂E hf'S hf'E hmul`.
+A detailed English derivation is pending.
 -/
 theorem rowExists_of_factor (hFac : FactorRapid) (hEv : EvAdj) : RowExists := by
   intro n _ _ μ _ E _ Ω T F c hS h hh v

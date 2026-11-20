@@ -28,7 +28,7 @@ def sph (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchime
 
 omit [MeasurableSpace k] [BorelSpace k] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨SplitFlip.isOpen_KO, SplitFlip.isCompact_KO⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCO_sph : IsCO (sph k n).J := ⟨SplitFlip.isOpen_KO, SplitFlip.isCompact_KO⟩
 
@@ -37,11 +37,11 @@ abbrev ind (k : Type) [Field k] [ValuativeRel k] (n n' : Type) : Matrix n n' k �
 
 omit [MeasurableSpace k] [BorelSpace k] in
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `a` using `valuation_det_of_mem_KO hg`. Establish `b` using `valuation_det_of_mem_KO hh`. Establish `e : IntM ((h⁻¹).val * x * g.val) ↔ IntM x`. Use `⟨fun H => ?_, fun H => ((mem_KO.1 hh).2.mul H).mul (mem_KO.1 hg).1⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((mem_KO.1 hh).1.mul H).mul (mem_KO.1 hg).2` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Then use the resulting hypothesis. Simplify using `only [om, hμ _ a, hμ _ b, nabs_eq_one_of_valuation_eq_one a, nabs_eq_one_of_valuation_eq_one b, Real.one_rpow]`. Simplify using `only [Units.val_one, inv_one, Complex.ofReal_one, one_mul, ind]`. Distinguish the cases in `H : IntM x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem (by exact e.2 H), Set.indicator_of_mem (by exact H)]`. Rewrite using `[Set.indicator_of_notMem (by exact fun H' => H (e.1 H')), Set.indicator_of_notMem (by exact H)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem om_ind {μ : kˣ →* ℂˣ} (hμ : IsUnram μ) {g : GL n' k} {h : GL n k} (hg : g ∈ KO k n') (hh : h ∈ KO k n) :
     om μ g h (ind k n n') = ind k n n' := by
@@ -61,14 +61,14 @@ theorem om_ind {μ : kˣ →* ℂˣ} (hμ : IsUnram μ) {g : GL n' k} {h : GL n 
 
 omit [MeasurableSpace k] [BorelSpace k] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun g => (om_ind hμ g.2 (one_mem _)).trans (one_smul ℂ _).symm, fun h => (om_ind hμ (one_mem _) h.2).trans (by rw [show (sph k n).lam h = 1 from rfl, inv_one, Units.val_one, one_smul])⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasTypes_ind {μ : kˣ →* ℂˣ} (hμ : IsUnram μ) : HasTypes μ (sph k n') (sph k n) (ind k n n') :=
   ⟨fun g => (om_ind hμ g.2 (one_mem _)).trans (one_smul ℂ _).symm,
     fun h => (om_ind hμ (one_mem _) h.2).trans (by rw [show (sph k n).lam h = 1 from rfl, inv_one, Units.val_one, one_smul])⟩
 
 /- English proof (translation)
-Use `⟨by simp, fun h h0 => ⟨1, by simp, ?_⟩⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `Function.ne_iff.1 h0`. Take `⟨r, hr, w, hw, rfl⟩` from `(Unram.opE_unramified k n n' (c + 1) 1 le_rfl (by omega) ψ hψ ν hν μ _ rfl).1 h x hx`. Conclude with `((DoubleCoset.eq _ _ _ _).2 ⟨r, hr, w, hw, by simp⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem covers_ind {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ν : Measure k} (hν : IsUnitVol ν) (μ : kˣ →* ℂˣ) :
     Covers 1 (KO k (n ⊕ Fin (c + 1))) {1} fun h => GlobalTheory.StepData.flat ψ ν μ (ind k (n ⊕ Fin (c + 1)) (n' ⊕ Fin (c + 1 + 1))) 1 h := by
@@ -78,11 +78,11 @@ theorem covers_ind {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ν : Measu
   exact ((DoubleCoset.eq _ _ _ _).2 ⟨r, hr, w, hw, by simp⟩).symm
 
 /- English proof (translation)
-Use `haveI := hν.1`. Establish `v : volNat ν (1 : GL (n ⊕ Fin (c + 1)) k) (Cgrp (KO k _) 1) = 1`. Rewrite using `[← volNat_stabLat ν (1 : GL (n ⊕ Fin (c + 1)) k)]`. Unfold `volNat`. Use `congr 3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `u`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_subgroupOf, mem_Cgrp, stabLat]`. Establish `hu : u.1 ∈ R k n (c + 1) 1` using `Subgroup.mem_sup_right u.2`. Simplify using `[hu]`. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[xi, v, GlobalTheory.StepData.flat, om_one, (Unram.opE_unramified k n n' (c + 1) 1 le_rfl (by omega) ψ hψ ν hν μ (ind k _ _) rfl).2.1]`. Simplify using `only [inv_one, Complex.ofReal_one, one_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem xi_ind {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ν : Measure k} (hν : IsUnitVol ν) (μ : kˣ →* ℂˣ) :
     xi ψ ν μ (ind k (n ⊕ Fin (c + 1)) (n' ⊕ Fin (c + 1 + 1))) (KO k _) 1 1 1 = ind k n n' := by
@@ -102,14 +102,14 @@ theorem xi_ind {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ν : Measure k
   rfl
 
 /- English proof (translation)
-Introduce `A _ _ σ _ l _ v _` and use `by simp [GlobalTheory.PosOne.comb, GlobalTheory.PosOne.toOne_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isOneComb_one (ψ : AddChar k Circle) (ν : Measure k) (L : Level (GL (n ⊕ Fin c) k)) (β : GL (n ⊕ Fin c) k) :
     IsOneComb ψ ν 1 L β (Finsupp.single β 1) := fun A _ _ σ _ l _ v _ => by
   simp [GlobalTheory.PosOne.comb, GlobalTheory.PosOne.toOne_one]
 
 /- English proof (translation)
-Introduce `A _ _ σ hσ l hl v hv` and use `by haveI := hν.1 obtain ⟨_, _⟩ := GlobalTheory.RootExchangeFixed.nonarchimedeanLocalField_secondCountable_t2Space (k := k) have hK : ∀ g ∈ KO k (n ⊕ Fin c), σ g v = v := fun g hg => (hv ⟨g, hg⟩).trans (one_smul ℂ v) have key := ((ExchangeSupport.exchange_support k n c 1 le_rfl hc …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isOneComb_two {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ν : Measure k} (hν : IsUnitVol ν) (hc : 1 < c) :
     IsOneComb ψ ν 2 (sph k (n ⊕ Fin c)) 1 (Finsupp.single 1 1) := fun A _ _ σ hσ l hl v hv => by
@@ -155,7 +155,7 @@ theorem isOneComb_two {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ν : Me
   simp [GlobalTheory.PosOne.comb, hν.2]
 
 /- English proof (translation)
-Take `⟨h0, _, _, h1, h2, -⟩` from `volGL_haar k n ν`. Use `haveI : BorelSpace (GL n k) := h0`. Use `haveI := (GlobalTheory.RootExchangeFixed.nonarchimedeanLocalField_secondCountable_t2Space (k := k)).2`. Set `K : TopologicalSpace.PositiveCompacts (GL n k)` to `⟨⟨KO k n, h1⟩, by rw [h2.interior_eq]; exact ⟨1, one_mem _⟩⟩`. Conclude with `⟨Measure.haarMeasure K, inferInstance, Measure.haarMeasure_self⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_haar (ν : Measure k) [ν.IsAddHaarMeasure] (n : Type) [Fintype n] [DecidableEq n] :
     ∃ m : Measure (GL n k), m.IsHaarMeasure ∧ m (KO k n) = 1 := by
@@ -167,7 +167,7 @@ theorem exists_haar (ν : Measure k) [ν.IsAddHaarMeasure] (n : Type) [Fintype n
 
 omit [MeasurableSpace k] [BorelSpace k] in
 /- English proof (translation)
-Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset (x := Units.val ⁻¹' ((· - 1) ⁻¹' {x : k | valuation k x < 1})) (IsOpen.mem_nhds (IsOpen.preimage Units.continuous_val (IsOpen.preimage (by fun_prop) ?_)) (by simp)) fun x hx => ?_)` and prove the remaining obligations. Simplify using `using (valuation k).isOpen_ball 1`. Conclude with `DblInhab.isTame_of_isUnram hμ x hx`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isOpen_ker {μ : kˣ →* ℂˣ} (hμ : IsUnram μ) : IsOpen (μ.ker : Set kˣ) := by
   refine Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset (x := Units.val ⁻¹' ((· - 1) ⁻¹' {x : k | valuation k x < 1}))
@@ -180,13 +180,13 @@ end Local
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨χ, a1, a2⟩` from `GlobalTheory.RawLift.exists_hecke_resEta D J.W₀.rank`. Take `⟨η, b1, b2⟩` from `GlobalTheory.RawLift.exists_hecke_resEta D 1`. Establish `c1 : IsHeckeChar D (χ * η)` using `⟨a1.1.mul b1.1, fun x => by rw [MonoidHom.mul_apply, a1.2, b1.2, mul_one]⟩`. Establish `c2` using `resEta_mul a2 b2`. Establish `r1` using `B.o.rank_add`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r2` using `B.line.1`. Establish `r3` using `B'.o.rank_add`. Establish `r4` using `B'.line.1`. Establish `p1` using `Inhab.even_im_hermitian_sub B.d`. Establish `p2` using `Inhab.even_im_hermitian_sub J.d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p3` using `Inhab.even_im_hermitian_sub B'.d`. Take `⟨o₁, w₁⟩` from `Inhab.exists_weil hψ B.V J.W c1 a1 (resEta_parity c2 (by omega)) (resEta_parity a2 (by omega))`. Take `⟨o₁', w₁'⟩` from `Inhab.exists_weil hψ B.V₀ J.W₀ c1 a1 (resEta_parity c2 (by omega)) a2`. Take `⟨o₂, w₂⟩` from `Inhab.exists_weil hψ J.W B'.V a1 c1 (resEta_parity a2 (by omega)) (resEta_parity c2 (by omega))`. Take `⟨o₂', w₂'⟩` from `Inhab.exists_weil hψ J.W₀ B'.V₀ a1 c1 a2 (resEta_parity c2 (by omega))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨oa, wa⟩` from `Inhab.exists_weil hψ B.A J.W₀ a1 a1 (resEta_parity a2 (by omega)) a2`. Take `⟨ob, wb⟩` from `Inhab.exists_weil hψ J.W₀ B'.A a1 a1 a2 (resEta_parity a2 (by omega))`. Conclude with `⟨⟨B, J, B', ⟨_, _, o₁, o₁', w₁, w₁', (Inhab.nonempty_vol _).some, (Inhab.nonempty_volM _ _ _).some, (Inhab.nonempty_volM _ _ _).some, (Inhab.nonempty_volU _ _).some⟩, ⟨_, _, o₂, o₂', w₂, w₂', (Inhab.nonempty_vol _).some, (Inhab.nonempty_volM _ _ _).some, (Inhab.nonempty_volM _ _ …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_doubleDescent_of_parity {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {σ : ℕ} (B : BesLev D (σ + 1)) (J : JacLev D (σ + 1))
     (B' : BesLev D σ) (l : Link B B'.L B'.ζ) (h₁ : B.A.rank % 2 = J.W₀.rank % 2) (h₂ : J.W₀.rank % 2 = B'.A.rank % 2) :
@@ -215,9 +215,7 @@ theorem exists_doubleDescent_of_parity {ψ : AddChar (AF D.host.F) ℂ} (hψ : I
     χ, χ, η, oa, ob, rfl, rfl, rfl, rfl, wa, wb⟩, rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Establish `key : ∀ {χ : (AE D)ˣ →* Circle} {a b : ℕ}, ResEta D χ a → ResEta D χ b → a % 2 = b % 2` using `fun {χ a b} ha hb => by`. Assume the negation of the conclusion as `h`. Break down `Nat.mod_two_eq_zero_or_one a with e | e` into its components or cases. Conclude with `resEta_not_both (resEta_parity ha (by omega)) (resEta_parity hb (by omega))`. Conclude with `resEta_not_both (resEta_parity hb (by omega)) (resEta_parity ha (by omega))`.
-
-Conclude with `⟨key S.weila.resS S.weila.resT, key S.weilb.resS S.weilb.resT⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem even_im_hermitian_sub {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} (S : Dbl2 ψ σ) :
     S.B.A.rank % 2 = S.J.W₀.rank % 2 ∧ S.J.W₀.rank % 2 = S.B'.A.rank % 2 := by
@@ -229,7 +227,7 @@ theorem even_im_hermitian_sub {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} (S : D
   exact ⟨key S.weila.resS S.weila.resT, key S.weilb.resS S.weilb.resT⟩
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `(Inhab.exists_chain D).1`. Take `⟨B, J, B', r₀, r₁, r₂, ⟨l⟩⟩` from `DblInhab.exists_levels D`. Take `⟨S, rfl, rfl, rfl⟩` from `exists_doubleDescent_of_parity hψ B J B' l (by omega) (by omega)`. Conclude with `⟨ψ, S, hψ, r₀.symm, r₁.symm, r₂.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_doubleDescent_ranks_one_three_five (D : D7) : ∃ (ψ : AddChar (AF D.host.F) ℂ) (S : Dbl2 ψ 0), IsStdChar D ψ (-1) ∧
     S.B.A.rank = 1 ∧ S.J.W₀.rank = 3 ∧ S.B'.A.rank = 5 := by
@@ -243,7 +241,7 @@ def IsSph {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {S : Dbl2 ψ σ} (Q : QSte
     (∃ f₁ f₂, Q.Vac f₁ f₂ ∧ f₁ ≠ 0 ∧ f₂ ≠ 0) ∧ Q.Typed fun _ => 1
 
 /- English proof (translation)
-The claim follows from `let ⟨gl, h1, h2⟩ := GlobalTheory.GlEmbed.exists_gl D k q V Y F.β F.γ F.βγ F.γβ ⟨gl, fun g => ⟨h1 g, h2 g⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_gl {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (q : GlobalTheory.FinPl.SplitPt D k) (V : HSp D) {Y : Type} [Fintype Y] [DecidableEq Y] (F : GlobalTheory.LocMod.Frame k V.rank Y) :
@@ -254,19 +252,13 @@ theorem exists_gl {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `borelize k`. Take `⟨ν, hν⟩` from `GlobalTheory.SplitWeil.exists_isUnitVol (k := k)`. Use `haveI := hν.1`. Take `⟨F, -⟩` from `PinModel.exists_dbl (σ := 0) (ofSplit q) S.B S.J S.B' _ _ _ one_ne_zero (Frame.ofGL 1) (Frame.ofGL 1) (Frame.ofGL 1)`. Take `⟨gl₀, l₀⟩` from `exists_gl q _ F.G₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨gl₁, l₁⟩` from `exists_gl q _ F.G₁`. Take `⟨gl₂, l₂⟩` from `exists_gl q _ F.G₂`. Take `⟨Φ₁, h₁, z₁⟩` from `PinModel.exists_isOne (k := k) (Y := Fin S.J.W₀.rank ⊕ Fin (0 + 1 + 1)) (Y' := Fin S.B.A.rank ⊕ Fin (0 + 1 + 1 + 1))`. Take `⟨Φ₂, h₂, z₂⟩` from `PinModel.exists_isOne (k := k) (Y := Fin S.B'.A.rank ⊕ Fin (0 + 1)) (Y' := Fin S.J.W₀.rank ⊕ Fin (0 + 1 + 1))`. Establish `e₁ : Φ₁.1 = ind k _ _` using `h₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e₂ : Φ₂.1 = ind k _ _` using `h₂`. Take `⟨m₁, a₁, b₁⟩` from `exists_haar ν (Fin S.J.W₀.rank)`. Take `⟨m₂, a₂, b₂⟩` from `exists_haar ν (Fin S.B'.A.rank)`. Take `⟨T₁, t₁, i₁⟩` from `Exist.exists_injective_model D k (ofSplit q) ψ hψ _ _ _ _ F.G₀ F.G₁`. Take `⟨T₂, t₂, i₂⟩` from `Exist.exists_injective_model D k (ofSplit q) ψ hψ _ _ _ _ F.G₁ F.G₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨{ k := k, ν := ν, unitVol := hν, q := q, ψk := ψk, char := hk, cond := hc, c := 0, F := F n₀ := Fin S.B.A.rank, n₁ := Fin S.J.W₀.rank, n₂ := Fin S.B'.A.rank gl₀ := gl₀, gl₁ := gl₁, gl₂ := gl₂, loc₀ := l₀, loc₁ := l₁, loc₂ := l₂, μ₁ := μ₁, μ₂ := μ₂, comp₁ := c₁, comp₂ := c₂ open₁ …` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton.1 γ.2, e₁]`. Conclude with `(congrArg _ (xi_ind (c := 1) hc hν μ₁)).mpr (PinModel.isCombAt_one _ ψ F.F₀ F.F₁)`. Use `ent₂ := fun γ β => by`. Rewrite using `[Finset.mem_singleton.1 γ.2, Finset.mem_singleton.1 β.2, e₂]`.
-
-Conclude with `(congrArg _ (xi_ind (c := 0) hc hν μ₂)).mpr (PinModel.isCombAt_one _ ψ F.F₁ F.F₂)`. Use `e₀ := Finsupp.single 1 1, e₂ := fun β => Finsupp.single β.1 1`. Use `one₀ := isOneComb_two hc hν (by omega), one₂ := fun β => isOneComb_one _ _ _ _`. Use `m₁ := m₁, m₂ := m₂, haar₁ := a₁, haar₂ := a₂, vol₁ := b₁, vol₂ := b₂ }, rfl, h₁, h₂, rfl, rfl, ?_, rfl,`. Use the proof step `⟨T₁ Φ₁, T₂ Φ₂, ⟨⟨T₁, Φ₁, t₁, h₁, rfl⟩, T₂, Φ₂, t₂, h₂, rfl⟩, fun h => ?_, fun h => ?_⟩, fun j => ?_⟩`.
-
-Simplify using `[QStep.volJ, sph]`. Rewrite `z₁` using `[i₁ (h.trans (map_zero T₁).symm)]`. Conclude with `zero_ne_one z₁`. Rewrite `z₂` using `[i₂ (h.trans (map_zero T₂).symm)]`. Conclude with `zero_ne_one z₂`.
-
-Conclude with `(one_smul ℂ (fun _ => (1 : ℂ))).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_qstep_at {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S : Dbl2 ψ 0) {k : Type} [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) {ψk : AddChar k Circle}
@@ -320,9 +312,9 @@ theorem exists_qstep_at {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 
 /- English proof (translation)
-Establish `hev` using `(GlobalTheory.T.standard_character_conductor_almost_all D ψ hψ).and ((GlobalTheory.FinPl.AeUnit.eventually_incA_mul_mem_intAt D D.host.xi0).and ((GlobalTheory.FinPl.AeUnit.eventually_incA_mul_mem_intAt D D.host.xi0⁻¹).and ((DblInhab.eventually_isUnram D S.χ₁⁻¹ S.weila.hecS.1.inv) …`. Use `Filter.frequently_cofinite_iff_infinite.1 (((Filter.frequently_cofinite_iff_infinite.2 (GlobalTheory.T.infinitely_many_split_places D)).and_eventually hev).mono ?_)` and prove the remaining obligations. Introduce and unpack `v ⟨⟨e, ε, he, hε, hs⟩, a1, a2, a3, a4, a5⟩`. Take `⟨q, -, hq⟩` from `GlobalTheory.FinPl.SplitPoint.exists_splitPt D v e ε he hε hs`. Take `⟨⟨ψk, hk⟩, -, -, -, hc⟩` from `GlobalTheory.LocChar.weil_char_split D _ (ofSplit q) ψ hψ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨μ₁, c₁⟩` from `hc S.χ₁⁻¹`. Take `⟨μ₂, c₂⟩` from `hc S.χ₂⁻¹`. Rewrite using `[← hq]`. Conclude with `exists_qstep_at hψ S q hk (DblInhab.hasConductor q (by rw [hq]; exact a1) (by rw [hq]; exact a2) (by rw [hq]; exact a3) hk) c₁ c₂ (a4 _ q hq _ c₁) (a5 _ q hq _ c₂)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infinite_qstep {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S : Dbl2 ψ 0) :
     {v | ∃ Q : QStep S, Q.q.v = v ∧ IsSph Q}.Infinite := by
@@ -341,7 +333,7 @@ theorem infinite_qstep {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-
     c₁ c₂ (a4 _ q hq _ c₁) (a5 _ q hq _ c₂)
 
 /- English proof (translation)
-Take `⟨ψ, S, hψ, r₀, r₁, r₂⟩` from `exists_doubleDescent_ranks_one_three_five D`. Set `e` to `(infinite_qstep hψ S).natEmbedding`. Use `choose Q hQ hS using fun i : Fin r => (e i).2`. Use `⟨ψ, S, Q, hψ, r₀, r₁, r₂, fun i j h => ?_, hS⟩` and prove the remaining obligations. Conclude with `Fin.ext (e.injective (Subtype.ext ((hQ i).symm.trans (h.trans (hQ j)))))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_family (D : D7) (r : ℕ) : ∃ (ψ : AddChar (AF D.host.F) ℂ) (S : Dbl2 ψ 0) (Q : Fin r → QStep S), IsStdChar D ψ (-1) ∧
     S.B.A.rank = 1 ∧ S.J.W₀.rank = 3 ∧ S.B'.A.rank = 5 ∧ Function.Injective (fun i => (Q i).q.v) ∧ ∀ i, IsSph (Q i) := by
@@ -352,7 +344,7 @@ theorem exists_family (D : D7) (r : ℕ) : ∃ (ψ : AddChar (AF D.host.F) ℂ) 
   exact Fin.ext (e.injective (Subtype.ext ((hQ i).symm.trans (h.trans (hQ j)))))
 
 /- English proof (translation)
-Establish `key : ∀ {Y : Type} [Fintype Y] [DecidableEq Y] (J : Subgroup (GL Y Q.k)), IsOpen (J : Set (GL Y Q.k)) → J.relIndex (KO Q.k Y) ≠ 0` using `fun {Y} _ _ J hJ => by haveI : CompactSpace (KO Q.k Y) := isCompact_iff_compactSpace.1 SplitFlip.isCompact_KO haveI := Subgroup.quotient_finite_of_isOpen (J.subgroupOf (KO Q.k Y)) (hJ.preimage continuous_subtype_val)`. Conclude with `Subgroup.index_ne_zero_of_finite`. Conclude with `inv_ne_zero (mul_ne_zero (Nat.cast_ne_zero.2 (key _ Q.co₁.1)) (Nat.cast_ne_zero.2 (key _ Q.co₂.1)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem volJ_ne_zero {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {S : Dbl2 ψ σ} (Q : QStep S) : Q.volJ ≠ 0 := by
   have key : ∀ {Y : Type} [Fintype Y] [DecidableEq Y] (J : Subgroup (GL Y Q.k)), IsOpen (J : Set (GL Y Q.k)) →
@@ -363,7 +355,7 @@ theorem volJ_ne_zero {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {S : Dbl2 ψ σ
   exact inv_ne_zero (mul_ne_zero (Nat.cast_ne_zero.2 (key _ Q.co₁.1)) (Nat.cast_ne_zero.2 (key _ Q.co₂.1)))
 
 /- English proof (translation)
-Establish `key : ∀ {Y : Type} [Fintype Y] [DecidableEq Y] (m : Measure (GL Y Q.k)), m.IsHaarMeasure → ∀ C : Subgroup (GL Y Q.k), IsCO C → (((m C).toReal⁻¹ : ℝ) : ℂ) ≠ 0` using `fun {Y} _ _ m hm C hC => Complex.ofReal_ne_zero.2 (inv_ne_zero (ENNReal.toReal_ne_zero.2 ⟨hC.1.measure_ne_zero m ⟨1, C.one_mem⟩, hC.2.measure_lt_top.ne⟩))`. Conclude with `⟨key _ Q.haar₁ _ (GlobalTheory.PrCompactOpen.isCO_prX_Cgrp _ _ _ _ Q.co₁ _).1, key _ Q.haar₂ _ (GlobalTheory.PrCompactOpen.isCO_prX_Cgrp _ _ _ _ Q.co₂ _).1⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem w_ne_zero {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {S : Dbl2 ψ σ} (Q : QStep S) (γ : Q.A₁) (β : Q.A₂) :
     Q.w₁ γ ≠ 0 ∧ Q.w₂ β ≠ 0 := by
@@ -375,21 +367,21 @@ theorem w_ne_zero {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {S : Dbl2 ψ σ} (
     key _ Q.haar₂ _ (GlobalTheory.PrCompactOpen.isCO_prX_Cgrp _ _ _ _ Q.co₂ _).1⟩
 
 /- English proof (translation)
-Use `Q.F.bes.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem c_eq {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {S : Dbl2 ψ σ} (Q : QStep S) : Q.c = 2 * σ := by
   have := Q.F.bes.1
   omega
 
 /- English proof (translation)
-Simplify using `[conv, -Finsupp.single_mul]`.
+Simplify using the standard rewrite rules.
 -/
 example {G : Type} [Monoid G] (e : G →₀ ℂ) (g h : G) (a b : ℂ) :
     conv [e] = e ∧ conv [Finsupp.single g a, Finsupp.single h b] = Finsupp.single (g * h) (a * b) := by
   simp [conv, -Finsupp.single_mul]
 
 /- English proof (translation)
-Simplify using `[aconv, -Finsupp.single_mul]`.
+Simplify using the standard rewrite rules.
 -/
 example {G : Type} [AddMonoid G] (e : G →₀ ℂ) (g h : G) (a b : ℂ) :
     aconv [e] = e ∧ aconv [Finsupp.single g a, Finsupp.single h b] = Finsupp.single (g + h) (a * b) := by

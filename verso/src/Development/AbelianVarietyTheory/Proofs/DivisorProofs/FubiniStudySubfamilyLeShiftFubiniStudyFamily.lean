@@ -16,9 +16,9 @@ namespace GlobalTheory.HSNef
 variable {X : Scheme.{0}} [IsIntegral X]
 
 /- English proof (translation)
-Take `⟨b, hb, rfl⟩` from `hh`. Introduce `e`. Establish `h1 : algebraMap (X.presheaf.stalk x) X.functionField (b * ↑hb.unit⁻¹) = 1`. Rewrite using `[IsUnit.mul_val_inv, map_one]`. Rewrite `h1` using `[map_mul, e, zero_mul]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h1`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_ne_zero {x : X} {h : X.functionField} (hh : UnitAt x h) : h ≠ 0 := by
   obtain ⟨b, hb, rfl⟩ := hh
@@ -29,9 +29,9 @@ theorem unitAt_ne_zero {x : X} {h : X.functionField} (hh : UnitAt x h) : h ≠ 0
   exact zero_ne_one h1
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hg`. Take `⟨b, hb, hbh⟩` from `hh`. Use `⟨a * ↑hb.unit⁻¹, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap (X.presheaf.stalk x) X.functionField b * algebraMap (X.presheaf.stalk x) X.functionField ↑hb.unit⁻¹ = 1`. Rewrite using `[← map_mul, IsUnit.mul_val_inv, map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ha, div_eq_mul_inv, ← hbh, eq_inv_of_mul_eq_one_right h1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem regAt_div_unitAt {x : X} {g h : X.functionField} (hg : RegAt x g) (hh : UnitAt x h) :
     RegAt x (g / h) := by
@@ -44,31 +44,27 @@ theorem regAt_div_unitAt {x : X} {g h : X.functionField} (hg : RegAt x g) (hh : 
   rw [map_mul, ha, div_eq_mul_inv, ← hbh, eq_inv_of_mul_eq_one_right h1]
 
 /- English proof (translation)
-Introduce `k _ X _ p M M' J J' _ _ f w w' ι Δ hι hM hM' hw`. Rewrite using `[GlobalTheory.T.hermLBLeBySmallSection_iff_localQuotients]`. Take `⟨ρ, hρ, hreg, hφ⟩` from `hM`. Take `⟨ρ', hρ', hreg', hφ'⟩` from `hM'`. Simplify using `only [Function.comp_apply] at hreg' hφ'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hq : ∀ (x : X) c d (j' : J'), UnitAt x (f (ι j') * (ρ' d : X.functionField)) → (ρ c : X.functionField) / (ρ' d : X.functionField) = f (ι j') * (ρ c : X.functionField) / (f (ι j') * (ρ' d : X.functionField))`. Introduce `x c d j' hu`. Establish `hf : f (ι j') ≠ 0` using `left_ne_zero_of_mul (unitAt_ne_zero hu)`. Rewrite using `[mul_div_mul_left _ _ hf]`. Establish `hτ : ∀ (x : X) c d, x ∈ M.B.U c → x ∈ M'.B.U d → RegAt x ((ρ c : X.functionField) / (ρ' d : X.functionField))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x c d hc hd`. Take `⟨-, j', hj'⟩` from `hreg' x d hd`. Rewrite using `[hq x c d j' hj']`. Conclude with `regAt_div_unitAt ((hreg x c hc).1 (ι j')) hj'`. Use `⟨ρ, ρ', hρ, hρ', hτ, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ y c d hc hd`. Establish `hc'` using `mem_ptsIn.1 hc`. Establish `hd'` using `mem_ptsIn.1 hd`. Use `set τ : X.functionField := (ρ c : X.functionField) / (ρ' d : X.functionField) with hτdef`. Establish `hτr : RegAt (under y) τ` using `hτ _ c d hc' hd'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hval : ∀ j' : J', ratVal (f (ι j') * (ρ c : X.functionField)) y = ratVal τ y * ratVal (f (ι j') * (ρ' d : X.functionField)) y`. Introduce `j'`. Establish `e : f (ι j') * (ρ c : X.functionField) = τ * (f (ι j') * (ρ' d : X.functionField))`. Rewrite using `[hτdef]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, ratVal_mul hτr ((hreg' _ d hd').1 j')]`. Use `set S : ℝ := ∑ j, ‖ratVal (f j * (ρ c : X.functionField)) y‖ ^ 2 * Real.exp (2 * w j) with hS`. Use `set S' : ℝ := ∑ j', ‖ratVal (f (ι j') * (ρ' d : X.functionField)) y‖ ^ 2 * Real.exp (2 * w' j') with hS'`. Establish `e1 : (M.φ σ).φ c y = Real.log S` using `hφ σ y c hc`. Establish `e2 : ((M'.shift (fun _ => Δ) fun _ => rfl).φ σ).φ d y = Real.log S' + 2 * Δ`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `(M'.φ σ).φ d y + 2 * Δ = _`. Rewrite using `[hφ' σ y d hd]`. Establish `hS'pos : 0 < S'`. Take `⟨-, j₀, hj₀⟩` from `hreg' _ d hd'`. Use `Finset.sum_pos' (fun j _ => by positivity) ⟨j₀, Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `: ratVal (f (ι j₀) * (ρ' d : X.functionField)) y ≠ 0` using `ratVal_ne_zero hj₀`. Establish `: 0 < ‖ratVal (f (ι j₀) * (ρ' d : X.functionField)) y‖` using `norm_pos_iff.2 this`. Check the signs of the components of the expression. Use `set t : ℝ := ‖ratVal τ y‖ with ht`. Establish `hineq : t ^ 2 * Real.exp (2 * Δ) * S' ≤ S` using `by classical`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hS', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Rewrite using `[hval, norm_mul, ← ht, mul_add, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ ∑ j', ‖ratVal (f (ι j') * (ρ c : X.functionField)) y‖ ^ 2 * Real.exp (2 * w (ι j')) := by`. Use `Finset.sum_le_sum fun j' _ => ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `hw j'`. Use `_ = ∑ j ∈ Finset.univ.image ι, ‖ratVal (f j * (ρ c : X.functionField)) y‖ ^ 2 * Real.exp (2 * w j) := by rw [Finset.sum_image (fun a _ b _ h => hι h)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ S := Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun j _ _ => by positivity`. Rewrite using `[e1, e2]`. Establish `ht0 : 0 ≤ t` using `norm_nonneg _`. Break down `ht0.eq_or_lt with h0 | hpos` into its components or cases. Rewrite using `[← h0, zero_mul]`.
-
-Conclude with `zero_le_one`. Establish `hSpos : 0 < S` using `lt_of_lt_of_le (by positivity) hineq`. Establish `hE : Real.exp (-(Real.log S - (Real.log S' + 2 * Δ)) / 2) ^ 2 = S' * Real.exp (2 * Δ) / S`. Rewrite using `[← Real.exp_nat_mul]`. Establish `: ((2 : ℕ) : ℝ) * (-(Real.log S - (Real.log S' + 2 * Δ)) / 2) = (Real.log S' + 2 * Δ) - Real.log S` using `by push_cast; ring`.
-
-Rewrite using `[this, Real.exp_sub, Real.exp_add, Real.exp_log hS'pos, Real.exp_log hSpos]`. Rewrite using `[← sq_le_one_iff₀ (by positivity), mul_pow, hE]`. Rewrite using `[← mul_div_assoc, div_le_one hSpos]`. Combine the linear relations using `[hineq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem le_shift_of_isFS_sub : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k),
     ∀ (M M' : HermLB p) (J J' : Type) [Fintype J] [Fintype J'] (f : J → X.functionField) (w : J → ℝ)

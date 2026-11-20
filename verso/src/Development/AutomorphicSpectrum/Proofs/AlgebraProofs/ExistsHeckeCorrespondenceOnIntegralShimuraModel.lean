@@ -17,7 +17,7 @@ namespace GlobalTheory.CompanionTheory.CommAlg.SegreFlag
 open GroundTheory.Heights₂.Heights.NumbersDVR GroundTheory.Heights₂.Heights.AutoClose
 
 /- English proof (translation)
-The claim follows from `SegreFlagClosureCut.proof GlobalTheory.T.cut_effective_divisor (PairNumberExpansionIndependence.proof GlobalTheory.T.vertical_divisors_commute) NumbersDVR_SegreFlagClosureModel (SegreFlagCutSection.proof NumbersDVR_SegreFlagClosureModel SegreFlagCutForms.proof SegreFlagCutDivisor …`.
+A detailed English derivation is pending.
 -/
 theorem segreFlagClosureCut : SegreFlagClosureCut.Statement :=
   SegreFlagClosureCut.proof GlobalTheory.T.cut_effective_divisor

@@ -17,7 +17,7 @@ def ann (L : Submodule (𝓞 K) (Fin i → K)) (y : Fin i → K) : Ideal (𝓞 K
   L.comap (LinearMap.toSpanSingleton (𝓞 K) (Fin i → K) y)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ann {L : Submodule (𝓞 K) (Fin i → K)} {y : Fin i → K} {μ : 𝓞 K} :
     μ ∈ ann L y ↔ μ • y ∈ L := Iff.rfl
@@ -25,7 +25,7 @@ theorem mem_ann {L : Submodule (𝓞 K) (Fin i → K)} {y : Fin i → K} {μ : �
 variable {F F' : HermLattice K i}
 
 /- English proof (translation)
-Take `⟨z, hz, ν, rfl⟩` from `exists_decomp hle hcov hyF hy hx`. Rewrite using `[smul_add, smul_comm μ ν]`. Conclude with `add_mem (F'.lattice.smul_mem μ hz) (F'.lattice.smul_mem ν (mem_ann.mp hμ))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_of_mem_ann (hle : F'.lattice ≤ F.lattice)
     (hcov : ∀ N : Submodule (𝓞 K) (Fin i → K), F'.lattice ≤ N → N ≤ F.lattice → N = F'.lattice ∨ N = F.lattice)
@@ -36,9 +36,9 @@ theorem smul_mem_of_mem_ann (hle : F'.lattice ≤ F.lattice)
   exact add_mem (F'.lattice.smul_mem μ hz) (F'.lattice.smul_mem ν (mem_ann.mp hμ))
 
 /- English proof (translation)
-Rewrite using `[Ideal.isMaximal_iff]`. Use `⟨fun h => hy (by simpa using mem_ann.mp h), fun J x hJ hx hxJ => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, ν, hzν⟩` from `exists_decomp hle hcov (F.lattice.smul_mem x hyF) (mem_ann.not.mp hx) hyF`. Establish `h1 : 1 - ν * x ∈ ann F'.lattice y`. Rewrite using `[mem_ann, sub_smul, one_smul, mul_smul, sub_eq_of_eq_add hzν]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz`. Establish `h2` using `J.add_mem (hJ h1) (J.mul_mem_left ν hxJ)`. Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ann_isMaximal (hle : F'.lattice ≤ F.lattice)
     (hcov : ∀ N : Submodule (𝓞 K) (Fin i → K), F'.lattice ≤ N → N ≤ F.lattice → N = F'.lattice ∨ N = F.lattice)
@@ -53,7 +53,7 @@ theorem ann_isMaximal (hle : F'.lattice ≤ F.lattice)
   rwa [sub_add_cancel] at h2
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[smul_dotProduct, ← dotProduct_smul, algebraMap_smul]`. Conclude with `hφ _ (smul_mem_of_mem_ann hle hcov hyF hy hc hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_dual_of_mem_ann (hle : F'.lattice ≤ F.lattice)
     (hcov : ∀ N : Submodule (𝓞 K) (Fin i → K), F'.lattice ≤ N → N ≤ F.lattice → N = F'.lattice ∨ N = F.lattice)
@@ -64,13 +64,13 @@ theorem smul_mem_dual_of_mem_ann (hle : F'.lattice ≤ F.lattice)
   exact hφ _ (smul_mem_of_mem_ann hle hcov hyF hy hc hx)
 
 /- English proof (translation)
-Establish `hbot : 𝔪 ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hmax (RingOfIntegers.not_isField K)`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Set `M : Submodule (𝓞 K) K` to `Submodule.map (Algebra.linearMap (𝓞 K) K) 𝔪`. Establish `hint' : IsIntegral (𝓞 K) u`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `isIntegral_of_smul_mem_submodule M ?_ ?_ u ?_` and prove the remaining obligations. Rewrite using `[Submodule.ne_bot_iff]`. Take `⟨m, hm, hm0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hbot`. Use `⟨_, ⟨m, hm, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `using hm0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.FG.map _ (IsNoetherian.noetherian _)`. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Take `⟨β, hβ⟩` from `hint m hm`. Use `⟨β, hcon m hm β hβ.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.linearMap_apply, hβ, smul_eq_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Take `⟨w, hw⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hint'`. Conclude with `hu ⟨w, hw⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_not_mem {𝔪 : Ideal (𝓞 K)} (hmax : 𝔪.IsMaximal) {u : K}
     (hint : ∀ m ∈ 𝔪, algebraMap (𝓞 K) K m * u ∈ (algebraMap (𝓞 K) K).range)
@@ -96,15 +96,13 @@ theorem exists_mul_not_mem {𝔪 : Ideal (𝓞 K)} (hmax : 𝔪.IsMaximal) {u : 
   exact hu ⟨w, hw⟩
 
 /- English proof (translation)
-Introduce `c hc hc𝔪`. Take `⟨m, hm, β, hβ, hβ𝔪⟩` from `exists_mul_not_mem hmax hint hu`. Take `⟨B, hB⟩` from `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hπ)`. Take `⟨β', hβ'B, hβ'𝔪⟩ : ∃ β' ∈ B, β' ∉ 𝔪` from `by by_contra! h`. Apply `hπ2` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : Ideal.span {π} ≤ 𝔪 ^ 2`. Rewrite using `[hB, sq]`. Conclude with `Ideal.mul_mono_right h`. Conclude with `h1 (Ideal.mem_span_singleton_self π)`. Establish `hmβ : m * β' ∈ Ideal.span {π}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hB]`. Conclude with `Ideal.mul_mem_mul hm hβ'B`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.mp hmβ`. Establish `h1 : β' * β = r * c`. Apply `FaithfulSMul.algebraMap_injective (𝓞 K) K` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h2` using `congrArg (algebraMap (𝓞 K) K) hr`. Simplify using `only [map_mul] at h2 ⊢`. Take the linear combination `(-algebraMap (𝓞 K) K β') * hβ - algebraMap (𝓞 K) K r * hc - u * h2`. Establish `h2 : β' * β ∈ 𝔪` using `h1 ▸ 𝔪.mul_mem_left r hc𝔪`. Break down `hmax.isPrime.mem_or_mem h2 with h | h` into its components or cases.
-
-Use `exacts [hβ'𝔪 h, hβ𝔪 h]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mul_not_mem {𝔪 : Ideal (𝓞 K)} (hmax : 𝔪.IsMaximal) {π : 𝓞 K} (hπ : π ∈ 𝔪) (hπ2 : π ∉ 𝔪 ^ 2) {u : K}
     (hint : ∀ m ∈ 𝔪, algebraMap (𝓞 K) K m * u ∈ (algebraMap (𝓞 K) K).range)
@@ -143,13 +141,13 @@ theorem coe_intAt (F : HermLattice K i) (w : Fin i → K) (hw : w ∈ F.lattice)
     algebraMap (𝓞 K) K (intAt F w hw φ) = (φ : Fin i → K) ⬝ᵥ w := rfl
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.coe_injective (zero_dotProduct w)`.
+A detailed English derivation is pending.
 -/
 theorem intAt_zero (F : HermLattice K i) (w : Fin i → K) (hw : w ∈ F.lattice) : intAt F w hw 0 = 0 :=
   RingOfIntegers.coe_injective (zero_dotProduct w)
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.coe_injective (add_dotProduct (φ : Fin i → K) ψ w)`.
+A detailed English derivation is pending.
 -/
 theorem intAt_add (F : HermLattice K i) (w : Fin i → K) (hw : w ∈ F.lattice) (φ ψ : dualLattice F) :
     intAt F w hw (φ + ψ) = intAt F w hw φ + intAt F w hw ψ :=
@@ -168,7 +166,7 @@ theorem redAt_apply (F : HermLattice K i) {k : Type} [CommRing k] (ρ : 𝓞 K �
     (hw : w ∈ F.lattice) (φ : dualLattice F) : redAt F ρ w hw φ = ρ (intAt F w hw φ) := rfl
 
 /- English proof (translation)
-Use `by_contra! h`. Apply `hφ` to reduce the goal to its premises. Establish `h1 : L.toIntLinearMap = 0` using `b.ext fun t => h t`. Conclude with `LinearMap.congr_fun h1 φ`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_basis_ne {D T k : Type} [AddCommGroup D] [AddCommGroup k] (b : Module.Basis T ℤ D) (L : D →+ k)
     {φ : D} (hφ : L φ ≠ 0) : ∃ t, L (b t) ≠ 0 := by
@@ -178,17 +176,17 @@ theorem exists_basis_ne {D T k : Type} [AddCommGroup D] [AddCommGroup k] (b : Mo
   exact LinearMap.congr_fun h1 φ
 
 /- English proof (translation)
-Establish `hF' : ∀ z ∈ F'.lattice, ∃ c ∈ 𝔪, algebraMap (𝓞 K) K c = φ ⬝ᵥ z`. Introduce `z hz`. Rewrite `hz` using `[← hg]`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Take `⟨j, rfl⟩` from `hx`. Establish `hgj : g j ∈ F'.lattice`. Rewrite using `[← hg]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Take `⟨c, hc⟩` from `hφ (g j) (hle hgj)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c, hj j c hc, hc⟩`. Consider the case `zero => exact ⟨0, zero_mem _, by rw [map_zero, dotProduct_zero]⟩`. Consider the case `add x z _ _ hx hz`. Take `⟨c, hc, e⟩` from `hx`. Take `⟨d, hd, f⟩` from `hz`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c + d, add_mem hc hd, by rw [map_add, e, f, dotProduct_add]⟩`. Consider the case `smul μ x _ hx`. Take `⟨c, hc, e⟩` from `hx`. Conclude with `⟨μ * c, 𝔪.mul_mem_left μ hc, by`. Rewrite using `[map_mul, e, ← algebraMap_smul K μ x, dotProduct_smul, smul_eq_mul]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨z, hz, ν, rfl⟩` from `exists_decomp hle hcov hyF hy hx`. Take `⟨c, hc, e⟩` from `hF' z hz`. Take `⟨d, hd⟩` from `hφ y hyF`. Conclude with `⟨c + ν * d, add_mem hc (𝔪.mul_mem_left ν (h0 d hd)), by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_mul, e, hd, dotProduct_add, ← algebraMap_smul K ν y, dotProduct_smul, smul_eq_mul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem forall_mem_of (hle : F'.lattice ≤ F.lattice)
     (hcov : ∀ N : Submodule (𝓞 K) (Fin i → K), F'.lattice ≤ N → N ≤ F.lattice → N = F'.lattice ∨ N = F.lattice)
@@ -225,17 +223,15 @@ theorem forall_mem_of (hle : F'.lattice ≤ F.lattice)
     rw [map_add, map_mul, e, hd, dotProduct_add, ← algebraMap_smul K ν y, dotProduct_smul, smul_eq_mul]⟩
 
 /- English proof (translation)
-Establish `hπK : algebraMap (𝓞 K) K π ≠ 0` using `by simpa using hπ0`. Establish `key : ∀ z ∈ 𝔪 * B, (algebraMap (𝓞 K) K z / algebraMap (𝓞 K) K π) • φ ∈ Submodule.span ℤ {ψ | ∃ c : 𝓞 K, Ideal.Quotient.mk 𝔪 c = 0 ∧ ∃ χ ∈ dualLattice F, ψ = algebraMap (𝓞 K) K c • χ}`. Introduce `z hz`. Use `Submodule.mul_induction_on hz ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hχ : (algebraMap (𝓞 K) K b / algebraMap (𝓞 K) K π) • φ ∈ dualLattice F`. Introduce `x hx`. Take `⟨c, hc𝔪, hc⟩` from `hφ x hx`. Establish `hcb : c * b ∈ Ideal.span {π}`. Rewrite using `[hB]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_mul hc𝔪 hb`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.mp hcb`. Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (algebraMap (𝓞 K) K) hr`. Simplify using `only [map_mul] at h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_dotProduct, ← hc, smul_eq_mul, div_mul_eq_mul_div, eq_div_iff hπK]`. Take the linear combination `h2`. Use `Submodule.subset_span ⟨a, Ideal.Quotient.eq_zero_iff_mem.mpr ha, _, hχ, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, map_mul, mul_div_assoc]`. Introduce `x y hx hy`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, add_div, add_smul]`. Conclude with `add_mem hx hy`. Establish `hπB : π ∈ 𝔪 * B`. Rewrite using `[← hB]`. Conclude with `Ideal.mem_span_singleton_self π`.
-
-Establish `h1` using `key π hπB`. Rewrite `h1` using `[div_self hπK, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_span_of_forall {𝔪 B : Ideal (𝓞 K)} {π : 𝓞 K} (hπ0 : π ≠ 0) (hB : Ideal.span {π} = 𝔪 * B)
     {φ : Fin i → K} (hφ : ∀ x ∈ F.lattice, ∃ c ∈ 𝔪, algebraMap (𝓞 K) K c = φ ⬝ᵥ x) :
@@ -276,29 +272,27 @@ end StackedExceptionalCoordinates
 open StackedExceptionalCoordinates in
 
 /- English proof (translation)
-Introduce `K _ _ i F F' T _ _ b b' a _ hlt hcov _`. Establish `hle` using `hlt.le`. Take `⟨y₀, hyF, hy⟩` from `SetLike.exists_of_lt hlt`. Establish `hmax : (ann F'.lattice y₀).IsMaximal` using `ann_isMaximal hle hcov hyF hy`. Use `set 𝔪 := ann F'.lattice y₀ with h𝔪`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbot : 𝔪 ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hmax (RingOfIntegers.not_isField K)`. Choose the witnesses or unpack the hypotheses as in `⟨π, hπ, hπ2⟩ : ∃ π ∈ 𝔪, π ∉ 𝔪 ^ 2 := by`. Simplify using `using Ideal.exists_mem_pow_notMem_pow_succ 𝔪 hbot hmax.ne_top 1`. Establish `hπ0 : π ≠ 0` using `fun h => hπ2 (h ▸ zero_mem _)`. Take `⟨B, hB⟩` from `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hπ)`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp F'.fg`. Establish `hgF' : ∀ j, g j ∈ F'.lattice` using `fun j => by`. Rewrite using `[← hg]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Establish `hgF : ∀ j, g j ∈ F.lattice` using `fun j => hle (hgF' j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φc, hc, hc'⟩` from `StackedExceptionalResidueExists.exists_mem_not_mem hlt`. Establish `hu : φc ⬝ᵥ y₀ ∉ (algebraMap (𝓞 K) K).range` using `fun h => hc' (mem_dual_of hle hcov hyF hy hc h)`. Establish `hint : ∀ μ ∈ 𝔪, algebraMap (𝓞 K) K μ * (φc ⬝ᵥ y₀) ∈ (algebraMap (𝓞 K) K).range`. Introduce `μ hμ`. Establish `h1` using `hc _ (mem_ann.mp hμ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1` using `[← algebraMap_smul K μ y₀, dotProduct_smul, smul_eq_mul]`. Then use the resulting hypothesis. Establish `hkey` using `mul_not_mem hmax hπ hπ2 hint hu`. Establish `hπy : algebraMap (𝓞 K) K π • y₀ ∈ F'.lattice`. Rewrite using `[algebraMap_smul]`. Conclude with `mem_ann.mp hπ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `_ : Field (𝓞 K ⧸ 𝔪)` to `Ideal.Quotient.field 𝔪`. Establish `hρ : ∀ c : 𝓞 K, Ideal.Quotient.mk 𝔪 c = 0 ↔ c ∈ 𝔪` using `fun c => Ideal.Quotient.eq_zero_iff_mem`. Establish `h10 : ∀ c : 𝓞 K, Ideal.Quotient.mk 𝔪 c = 0 → ∀ φ ∈ dualLattice F', algebraMap (𝓞 K) K c • φ ∈ dualLattice F` using `fun c hc0 φ hφ => smul_mem_dual_of_mem_ann hle hcov hyF hy ((hρ c).mp hc0) hφ`. Use `⟨𝓞 K ⧸ 𝔪, inferInstance, Ideal.Quotient.mk 𝔪, π, y₀, m, g, fun t => redAt F' (Ideal.Quotient.mk 𝔪) _ hπy (b' t), fun t => (Fin.cons (redAt F (Ideal.Quotient.mk 𝔪) y₀ hyF (b t)) (fun j => redAt F (Ideal.Quotient.mk 𝔪) (g j) (hgF j) (b t)) : Fin (m + 1) → 𝓞 K ⧸ 𝔪), Ideal.Quotient.m …` and prove the remaining obligations. Use `exists_basis_ne b' _ (φ := ⟨φc, hc⟩) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[redAt_apply, Ne, hρ]`. Use `hkey _ ?_` and prove the remaining obligations. Rewrite using `[coe_intAt, dotProduct_smul, smul_eq_mul]`. Take `⟨t, ht⟩` from `exists_basis_ne b (redAt F (Ideal.Quotient.mk 𝔪) y₀ hyF) (φ := ⟨algebraMap (𝓞 K) K π • φc, h10 π ((hρ π).mpr hπ) φc hc⟩) (by`. Rewrite using `[redAt_apply, Ne, hρ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `hkey _ ?_` and prove the remaining obligations. Rewrite using `[coe_intAt, smul_dotProduct, smul_eq_mul])`. Conclude with `⟨t, by simpa using ht⟩`. Introduce `φ hφ c hcdef hc0`. Take `⟨l, hl⟩` from `exists_sub_mem_dual hlt hcov hc hc' hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `hl y₀ hyF`. Take `⟨c₀, hc₀⟩` from `hc _ hπy`. Establish `hc₀𝔪 : c₀ ∉ 𝔪` using `hkey c₀ (by rw [hc₀, dotProduct_smul, smul_eq_mul])`. Establish `hsum : c = π * s + l * c₀`. Apply `FaithfulSMul.algebraMap_injective (𝓞 K) K` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_add, map_mul, map_mul, hs, hc₀, hcdef]`. Simplify using `only [dotProduct_smul, sub_dotProduct, smul_dotProduct, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hl𝔪 : l ∈ 𝔪`. Establish `h1 : l * c₀ ∈ 𝔪`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : l * c₀ = c - π * s` using `by rw [hsum]; ring`. Rewrite using `[h2]`. Conclude with `sub_mem ((hρ c).mp hc0) (𝔪.mul_mem_right s hπ)`. Conclude with `(hmax.isPrime.mem_or_mem h1).resolve_right hc₀𝔪`. Establish `h1` using `add_mem hl (h10 l ((hρ l).mpr hl𝔪) φc hc)`.
-
-Rewrite `h1` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce `φ hφ h0 hj`. Conclude with `mem_span_of_forall hπ0 hB (forall_mem_of hle hcov hyF hy hg 𝔪 hφ (fun c hc1 => (hρ c).mp (h0 c hc1)) (fun j c hc1 => (hρ c).mp (hj j c hc1)))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem DualStackedExcCoords.proof : DualStackedExcCoords.Statement := by
   intro K _ _ i F F' T _ _ b b' a _ hlt hcov _

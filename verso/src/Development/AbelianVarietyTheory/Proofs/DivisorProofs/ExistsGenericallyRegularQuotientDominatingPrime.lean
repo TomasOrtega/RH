@@ -7,23 +7,19 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Λ _ _ _ _ B _ _ _ p _ hp`. Take `⟨n, φ, hφ⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp (inferInstance : Algebra.FiniteType Λ B)`. Use `set Q : Ideal (MvPolynomial (Fin n) Λ) := p.comap φ with hQdef`. Use `haveI : Q.IsPrime := Ideal.comap_isPrime _ _`. Establish `hQ : ∀ a : Λ, MvPolynomial.C a ∈ Q → a = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a ha`. Apply `hp a` to reduce the goal to its premises. Establish `: φ (MvPolynomial.C a) ∈ p` using `ha`. Rewrite `this` using `[MvPolynomial.algHom_C]`. Then use the resulting hypothesis. Take `⟨h, f, s, g₀, hg₀, hfQ, hgQ, hdet⟩` from `GlobalTheory.T.exists_local_generators_jacobian_det_not_mem Λ (Fin n) Q hQ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set δ := (Matrix.of fun i j => MvPolynomial.pderiv (s i) (f j)).det with hδ`. Use `⟨φ (g₀ * δ), ?_, ?_⟩` and prove the remaining obligations. Introduce `hmem`. Establish `: g₀ * δ ∈ Q` using `hmem`. Break down `Ideal.IsPrime.mem_or_mem inferInstance this with h1 | h1` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hg₀ h1`. Conclude with `hdet h1`. Introduce `q _ hpq hgq set N : Ideal (MvPolynomial (Fin n) Λ) := q.comap φ with hN haveI : N.IsPrime := Ideal.comap_isPrime _ _`. Establish `hQN : Q ≤ N` using `Ideal.comap_mono hpq`. Establish `hgN : g₀ * δ ∉ N` using `hgq`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hg₀N : g₀ ∉ N` using `fun h1 => hgN (N.mul_mem_right _ h1)`. Establish `hδN : δ ∉ N` using `fun h1 => hgN (N.mul_mem_left _ h1)`. Set `D : Fin h → Derivation ℤ (MvPolynomial (Fin n) Λ) (MvPolynomial (Fin n) Λ)` to `fun i => (MvPolynomial.pderiv (s i)).restrictScalars ℤ`. Establish `hdetD : (Matrix.of fun i j => D i (f j)).det ∉ N`. Simplify `hδN` using `[D]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hreg` using `GlobalTheory.T.isRegularLocalRing_quotient_of_det_derivation_unit (MvPolynomial (Fin n) Λ) h f D N (fun j => hQN (hfQ j)) hdetD`. Establish `heq : (Ideal.span (Set.range f)).map (algebraMap (MvPolynomial (Fin n) Λ) (Localization.AtPrime N)) = Q.map (algebraMap (MvPolynomial (Fin n) Λ) (Localization.AtPrime N))`. Apply `le_antisymm` to reduce the goal to its premises. Apply `Ideal.map_mono` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hfQ j`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap]`.
-
-Establish `hu : IsUnit (algebraMap (MvPolynomial (Fin n) Λ) (Localization.AtPrime N) g₀)` using `IsLocalization.map_units (Localization.AtPrime N) (⟨g₀, hg₀N⟩ : N.primeCompl)`. Rewrite using `[← Ideal.unit_mul_mem_iff_mem _ hu, ← map_mul]`. Conclude with `Ideal.mem_map_of_mem _ (hgQ x hx)`. Rewrite `hreg` using `[heq]`. Take `⟨e⟩` from `GlobalTheory.localization_quotient_comap_equiv (MvPolynomial (Fin n) Λ) B φ.toRingHom hφ p q`.
-
-Use `haveI : IsRegularLocalRing (Localization.AtPrime (q.comap φ.toRingHom) ⧸ (p.comap φ.toRingHom).map (algebraMap _ (Localization.AtPrime (q.comap φ.toRingHom)))) := hreg`. Conclude with `IsRegularLocalRing.of_ringEquiv e`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prime_generically_regular_quotient :
     ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsRegularRing Λ] [PerfectField (FractionRing Λ)]

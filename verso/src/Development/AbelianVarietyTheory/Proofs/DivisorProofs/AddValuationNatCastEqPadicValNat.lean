@@ -3,27 +3,25 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `C _ _ v p hp hvp n hn`. Establish `h1 : v (1 : C) = 0` using `v.map_one`. Establish `hnat : ∀ m : ℕ, 0 ≤ v (m : C)`. Introduce `m`. Proceed by induction on `m with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `h` using `v.map_add (k : C) 1`. Rewrite `h` using `[h1]`. Use `push_cast`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `le_trans (le_min ih le_rfl) h`. Establish `hint : ∀ a : ℤ, 0 ≤ v (a : C)`. Introduce `a`. Take `⟨m, rfl | rfl⟩` from `a.eq_nat_or_neg`. Simplify using `using hnat m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hnat m` using `[v.map_neg]`. Establish `hcop : ∀ m : ℕ, Nat.Coprime m p → v (m : C) = 0`. Introduce `m hm`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < v (m : C)` using `lt_of_le_of_ne (hnat m) (Ne.symm hne)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbez : ((1 : ℤ)) = (m : ℤ) * Nat.gcdA m p + (p : ℤ) * Nat.gcdB m p`. Use `Nat.gcd_eq_gcd_ab m p` as an intermediate fact. Rewrite `this` using `[hm]`. Simplify using `using this`. Establish `hC : (1 : C) = (m : C) * ((Nat.gcdA m p : ℤ) : C) + (p : C) * ((Nat.gcdB m p : ℤ) : C)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun z : ℤ => (z : C)) hbez` as an intermediate fact. Simplify using `using this`. Establish `ha : 0 < v ((m : C) * ((Nat.gcdA m p : ℤ) : C))`. Rewrite using `[v.map_mul]`. Conclude with `lt_of_lt_of_le hpos (le_add_of_nonneg_right (hint _))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : 0 < v ((p : C) * ((Nat.gcdB m p : ℤ) : C))`. Rewrite using `[v.map_mul, hvp]`. Conclude with `lt_of_lt_of_le (by exact_mod_cast zero_lt_one) (le_add_of_nonneg_right (hint _))`. Establish `h` using `v.map_add ((m : C) * ((Nat.gcdA m p : ℤ) : C)) ((p : C) * ((Nat.gcdB m p : ℤ) : C))`. Rewrite `h` using `[← hC, h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `absurd (lt_of_lt_of_le (lt_min ha hb) h) (lt_irrefl _)`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨m, hm⟩` from `pow_padicValNat_dvd (p := p) (n := n)`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hn (by simpa using hm)`. Establish `hnd : ¬ p ∣ m`. Introduce `hd`. Take `⟨c, rfl⟩` from `hd`. Establish `: p ^ (padicValNat p n + 1) ∣ n` using `⟨c, by rw [pow_succ, mul_assoc, ← hm]⟩`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `pow_succ_padicValNat_not_dvd hn this`. Establish `hcm : Nat.Coprime m p` using `((Nat.Prime.coprime_iff_not_dvd hp).2 hnd).symm`. Establish `hcast : (n : C) = (p : C) ^ (padicValNat p n) * (m : C)` using `by conv_lhs => rw [hm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hcast, v.map_mul, v.map_pow, hvp, hcop m hcm, add_zero]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem addValuation_natCast_eq_padicValNat :
     ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (p : ℕ), p.Prime →

@@ -9,11 +9,11 @@ section
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `h0 : d 0 * d 3 = ν` using `h 0`. Establish `h1 : d 1 * d 2 = ν` using `h 1`. Establish `hM : uQ x y t * Matrix.diagonal d = !![d 0, 0, 0, 0; x * d 0, d 1, 0, 0; y * d 0, 0, d 2, 0; t * d 0, y * d 1, -x * d 2, d 3]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uQ, Matrix.mul_diagonal]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Unfold `IsGSp`. Rewrite using `[hM]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [adj, sgn, Matrix.mul_apply, Fin.sum_univ_four, Fin.rev] <;>`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `first | exact h0 | exact h1 | ring1 | linear_combination h0 | linear_combination h1`.
+A detailed English derivation is pending.
 -/
 private theorem gsp_uD (d : Fin 4 → R) (ν : R) (h : ∀ i, d i * d i.rev = ν) (x y t : R) :
     IsGSp ν (uQ x y t * Matrix.diagonal d) := by
@@ -31,7 +31,7 @@ private theorem gsp_uD (d : Fin 4 → R) (ν : R) (h : ∀ i, d i * d i.rev = ν
     first | exact h0 | exact h1 | ring1 | linear_combination h0 | linear_combination h1
 
 /- English proof (translation)
-Introduce `i j hij hw`. Simplify using `[Matrix.mul_diagonal, h i j hij hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem suppM_mul {S : Finset (ℤ × ℤ)} {X : M4 R} (h : SuppM S X) (d : Fin 4 → R) :
     SuppM S (X * Matrix.diagonal d) := by
@@ -39,7 +39,7 @@ private theorem suppM_mul {S : Finset (ℤ × ℤ)} {X : M4 R} (h : SuppM S X) (
   simp [Matrix.mul_diagonal, h i j hij hw]
 
 /- English proof (translation)
-Introduce `i j h1 h2` and use `h i j h1 fun h3 => h2 (hS h3)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem suppM_mono {S S' : Finset (ℤ × ℤ)} (hS : S ⊆ S') {X : M4 R} (h : SuppM S X) : SuppM S' X :=
   fun i j h1 h2 => h i j h1 fun h3 => h2 (hS h3)
@@ -51,7 +51,7 @@ section
 variable {O Γ R : Type} [CommRing O] [Group Γ] [CommRing R] (Φ : Fr O Γ) (a : O →+* R)
 
 /- English proof (translation)
-Simplify using `only [Fr.rt, wAl, MonoidHom.coe_mk, OneHom.coe_mk, zpow_neg, zpow_one, zpow_zero, mul_one, mul_inv_rev, inv_inv]`. Rewrite using `[← map_mul]`. Use `congr 1`. Simplify using `[Units.ext_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 private theorem chi1 (g : Γ) : a (Φ.χ 1 g) = a (Φ.rt (-wAl) g) * a (Φ.χ 0 g) := by
   simp only [Fr.rt, wAl, MonoidHom.coe_mk, OneHom.coe_mk, zpow_neg, zpow_one, zpow_zero, mul_one, mul_inv_rev, inv_inv]
@@ -60,7 +60,7 @@ private theorem chi1 (g : Γ) : a (Φ.χ 1 g) = a (Φ.rt (-wAl) g) * a (Φ.χ 0 
   simp [Units.ext_iff]
 
 /- English proof (translation)
-Simplify using `only [Fr.rt, wPs, MonoidHom.coe_mk, OneHom.coe_mk, zpow_neg, zpow_one, zpow_zero, one_mul, mul_inv_rev, inv_inv]`. Rewrite using `[← map_mul]`. Use `congr 1`. Simplify using `[Units.ext_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 private theorem chi2 (g : Γ) : a (Φ.χ 2 g) = a (Φ.rt (-wPs) g) * a (Φ.χ 0 g) := by
   simp only [Fr.rt, wPs, MonoidHom.coe_mk, OneHom.coe_mk, zpow_neg, zpow_one, zpow_zero, one_mul, mul_inv_rev, inv_inv]
@@ -69,9 +69,9 @@ private theorem chi2 (g : Γ) : a (Φ.χ 2 g) = a (Φ.rt (-wPs) g) * a (Φ.χ 0 
   simp [Units.ext_iff]
 
 /- English proof (translation)
-Establish `h0 : Φ.χ 0 g * Φ.χ 3 g = Φ.ν g` using `h 0 g`. Establish `h1 : Φ.χ 1 g * Φ.χ 2 g = Φ.ν g` using `h 1 g`. Establish `key : Φ.χ 3 g = Φ.rt (-wAl) g * Φ.rt (-wPs) g * Φ.χ 0 g`. Simplify using `only [Fr.rt, wAl, wPs, MonoidHom.coe_mk, OneHom.coe_mk, Prod.fst_neg, Prod.snd_neg, neg_zero, zpow_neg, zpow_one, zpow_zero, mul_one, one_mul]`. Rewrite using `[eq_inv_mul_of_mul_eq h0, ← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_inv_rev, inv_inv]`. Simplify using `only [mul_assoc]`. Rewrite using `[inv_mul_cancel, mul_one, mul_left_comm]`. Rewrite using `[key]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem chi3 (h : ∀ i g, Φ.χ i g * Φ.χ i.rev g = Φ.ν g) (g : Γ) :
     a (Φ.χ 3 g) = a (Φ.rt (-wAl) g) * a (Φ.rt (-wPs) g) * a (Φ.χ 0 g) := by
@@ -92,15 +92,15 @@ end
 end UpperTheory.V.Ws.Gys
 
 /- English proof (translation)
-Establish `x1 : x 1 = 0`. Establish `h` using `hx.coc 1 1`. Simplify using `only [mul_one, map_one, Units.val_one, one_mul] at h`. Take the linear combination `-h`. Establish `y1 : y 1 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h` using `hy.coc 1 1`. Simplify using `only [mul_one, map_one, Units.val_one, one_mul] at h`. Take the linear combination `-h`. Establish `z1 : z 1 = 0`. Establish `h` using `hz.coc 1 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mul_one, map_one, Units.val_one, one_mul] at h`. Take the linear combination `-h - y 1 * x1`. Use `⟨{ toFun := fun g => uQ (x g) (y g) (2 * z g - x g * y g) * Matrix.diagonal (fun i => a ↑(Φ.χ i g)), map_one' := ?_, map_mul' := ?_ }, fun g => rfl⟩` and prove the remaining obligations. Simplify using `[x1, y1, z1, uQ_zero]`. Introduce `g h`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_assoc, ← mul_assoc (Matrix.diagonal _), diag_mul_uQ (fun i => a ↑(Φ.χ i g)) _ _ (UpperTheory.V.Ws.Gys.chi1 Φ a g) (UpperTheory.V.Ws.Gys.chi2 Φ a g) (UpperTheory.V.Ws.Gys.chi3 Φ a hΦ.mul g), mul_assoc (uQ _ _ _) (Matrix.diagonal _), Matrix.diagonal_mul_diagonal, ← mul_assoc, …`. Rewrite using `[hx.coc, hy.coc, hz.coc, Fr.rt_add, Units.val_mul, map_mul]`. Use `congr 1`. Apply the tactic sequence `congr 1 <;> ring`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Simplify using `[map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem exists_hom_M4_eq_uQ_mul_diagonal_of_cup {O Γ R : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [CommRing R]
     (Φ : Fr O Γ) (a : O →+* R) (hΦ : Φ.Ok a) (x y z : Γ → R) (m : Φ.ι → R)
@@ -135,16 +135,16 @@ private theorem exists_hom_M4_eq_uQ_mul_diagonal_of_cup {O Γ R : Type} [CommRin
       simp [map_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj, uQ, sgn, Fin.rev]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adj_uQ_eq_uQ_neg {R : Type} [CommRing R] (p q u : R) : adj (uQ p q u) = uQ (-p) (-q) (-u) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [adj, uQ, sgn, Fin.rev]
 
 /- English proof (translation)
-Rewrite using `[adj_uQ_eq_uQ_neg, mul_assoc, mul_assoc, diag_mul_uQ (fun i => a ↑(Φ.χ i s)) _ _ (UpperTheory.V.Ws.Gys.chi1 Φ a s) (UpperTheory.V.Ws.Gys.chi2 Φ a s) (UpperTheory.V.Ws.Gys.chi3 Φ a hmul s), ← mul_assoc, ← mul_assoc, uQ_mul, uQ_mul]`. Rewrite `hz` using `[Fr.rt_add, Units.val_mul, map_mul]`. Substitute `hz` using the available equality. Substitute `hx` using the available equality. Substitute `hy` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Establish `e : ∀ A B C : R, A = 0 → B = 0 → C = 0 → uQ A B C * Matrix.diagonal (fun i => a ↑(Φ.χ i s)) = Matrix.diagonal (fun i => a ↑(Φ.χ i s))`. Introduce `A B C hA hB hC`. Rewrite using `[hA, hB, hC, uQ_zero, one_mul]`. Apply the tactic sequence `apply e <;> ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adj_uQ_conj_uQ_mul_diagonal_eq_diagonal {O Γ R : Type} [CommRing O] [Group Γ] [CommRing R] (Φ : Fr O Γ) (a : O →+* R)
     (hmul : ∀ i g, Φ.χ i g * Φ.χ i.rev g = Φ.ν g) (s : Γ) (x y z p q u : R)
@@ -167,43 +167,37 @@ private theorem adj_uQ_conj_uQ_mul_diagonal_eq_diagonal {O Γ R : Type} [CommRin
   apply e <;> ring
 
 /- English proof (translation)
-Introduce `O Γ R _ _ _ _ Φ a hΦ hMu x y z m n hx hx0 hxl hy hy0 hyl hz hz0`. Use `choose o ho using hz.loc`. Take `⟨r, hr⟩` from `exists_hom_M4_eq_uQ_mul_diagonal_of_cup Φ a hΦ x y z m hx hy hz`. Establish `hconj : ∀ v, ∀ s ∈ Φ.Gv v, adj (uQ (m v) (n v) (2 * o v - m v * n v)) * r s * uQ (m v) (n v) (2 * o v - m v * n v) = Matrix.diagonal (fun i => a ↑(Φ.χ i s))`. Introduce `v s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr]`. Conclude with `adj_uQ_conj_uQ_mul_diagonal_eq_diagonal Φ a hΦ.mul s _ _ _ _ _ _ (hxl v s hs) (hyl v s hs) (ho v s hs)`. Establish `hlc : ∀ i j, IsLocallyConstant fun g => r g i j`. Introduce `i j`. Simplify using `only [hr, Matrix.mul_diagonal]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply `IsLocallyConstant.mul` to reduce the goal to its premises. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uQ] <;> first`. Consider the case `exact IsLocallyConstant.const _`. Consider the case `exact hx.lc`. Consider the case `exact hy.lc`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact hx.lc.neg`. Consider the case `exact ((IsLocallyConstant.const 2).mul hz.lc).sub (hx.lc.mul hy.lc)`. Conclude with `hΦ.lc j`. Use `⟨⟨r, fun v => uQ (m v) (n v) (2 * o v - m v * n v)⟩, ⟨⟨?mult, ?kill, ?nrm, ?low, ?flag, ?mu⟩, ⟨?diag, ?char, ?shape⟩, ?cont⟩, ?inn, ?e1, ?e2, ?e3, ?e4⟩` and prove the remaining obligations. Use `case mult =>`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Simplify using `only`. Rewrite using `[hr]`. Apply `UpperTheory.V.Ws.Gys.gsp_uD` to reduce the goal to its premises. Introduce `i`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show a ↑(Φ.χ i g) * a ↑(Φ.χ i.rev g) = a ↑(Φ.ν g)`. Rewrite using `[← map_mul, ← Units.val_mul, hΦ.mul]`. Use `case kill =>`. Introduce `g hg`. Simplify using `only`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Simplify by unfolding definitions.
 
-Rewrite using `[hr, hx.kill g hg, hy.kill g hg, hz.kill g hg]`. Simplify using `[hΦ.kill g hg, uQ_zero]`. Use `case nrm => dsimp only`. Rewrite using `[hr, hx0, hy0, hz0]`. Simplify `Matrix.isDiag_diagonal (fun i => a ↑(Φ.χ i Φ.g0))` using `[uQ_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Use `case low =>`. Introduce `v`. Conclude with `isLow_uQ _ _ _`. Use `case flag =>`. Introduce `v s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Simplify using `only`. Rewrite using `[hconj v s hs]`. Introduce `i j hij`. Conclude with `Matrix.diagonal_apply_ne _ hij.ne'`. Use `case mu =>`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `v s hs i`. Take `⟨hg, h1⟩` from `hMu v s hs`. Use `show (adj (uQ (m v) (n v) (2 * o v - m v * n v)) * r s * uQ (m v) (n v) (2 * o v - m v * n v)) i i = 1`. Rewrite using `[hconj v s hg]`. Simplify using `[h1 i]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Use `case diag =>`. Introduce `g i`. Simplify using `only`. Rewrite using `[hr]`. Apply the tactic sequence `fin_cases i <;> simp [uQ, Matrix.mul_diagonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Prove the components needed by the constructor for the conclusion.
 
-Use `case char =>`. Introduce `v s hs i`. Use `show (adj (uQ (m v) (n v) (2 * o v - m v * n v)) * r s * uQ (m v) (n v) (2 * o v - m v * n v)) i i = _`. Rewrite using `[hconj v s hs]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `case shape => left`. Prove the components needed by the constructor for the conclusion. Introduce `g show SuppM nP (r g)`. Rewrite using `[hr]`. Conclude with `UpperTheory.V.Ws.Gys.suppM_mono (by decide) (UpperTheory.V.Ws.Gys.suppM_mul (suppM_uQ _ _ _) _)`.
+Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Conclude with `suppM_uQ _ _ _`. Use `case cont =>`. Introduce `i j N`. Conclude with `(hlc i j).comp _`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `case inn =>`. Prove the components needed by the constructor for the conclusion. Introduce `g show SuppM qQ (r g)`. Rewrite using `[hr]`. Conclude with `UpperTheory.V.Ws.Gys.suppM_mul (suppM_uQ _ _ _) _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Conclude with `suppM_uQ _ _ _`. Use `case e1 =>`. Introduce `g`. Use `show r g 1 0 = _`.
-
-Rewrite using `[hr]`. Simplify using `[uQ, Matrix.mul_diagonal]`. Use `case e2 =>`. Introduce `v`. Simplify using `[uQ]`.
-
-Use `case e3 =>`. Introduce `g`. Use `show r g 2 0 = _`. Rewrite using `[hr]`. Simplify using `[uQ, Matrix.mul_diagonal]`.
-
-Use `case e4 =>`. Introduce `v`. Simplify using `[uQ]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Gys.ob :
     ∀ {O Γ R : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [CommRing R] (Φ : Fr O Γ) (a : O →+* R), Φ.Ok a → (∀ v, ∀ s ∈ Φ.Mu v, s ∈ Φ.Gv v ∧ ∀ i, a (Φ.χ i s) = 1) → ∀ (x y z : Γ → R) (m n : Φ.ι → R),

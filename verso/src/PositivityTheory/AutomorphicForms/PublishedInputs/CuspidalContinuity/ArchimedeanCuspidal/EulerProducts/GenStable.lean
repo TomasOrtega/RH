@@ -12,7 +12,7 @@ namespace Ad3.GP
 def wR : InfinitePlace ℚ := Rat.infinitePlace
 
 /- English proof (translation)
-The claim follows from `Rat.isReal_infinitePlace`.
+A detailed English derivation is pending.
 -/
 theorem wR_isReal : wR.IsReal := Rat.isReal_infinitePlace
 

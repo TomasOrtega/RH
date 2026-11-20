@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.siegelIntegralToroidal_of_polarisedChartsForFan GlobalTheory.T.siegelToroidalCompactification_polarisedCharts`.
+A detailed English derivation is pending.
 -/
 theorem siegelToroidalIntegral_holds : GlobalTheory.Published.SiegelToroidalIntegral :=
   GlobalTheory.T.siegelIntegralToroidal_of_polarisedChartsForFan GlobalTheory.T.siegelToroidalCompactification_polarisedCharts

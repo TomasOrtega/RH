@@ -8,9 +8,9 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `R _ r n ν g f hf`. Rewrite `hf`, the goal using `[rowst_mem_dualWeyl_iff]`. Take `⟨hw, hc⟩` from `hf`. Use `⟨isWH_algHom (rowAct R g) (colW r n) (colW r n) (rowAct_X_isWH g) hw, ?_⟩` and prove the remaining obligations. Introduce `l j hlj`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[colAddGen_rowAct, rename_rowAct, hc l j hlj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dualWeylModuleRowActionStable : DualWeylRowStable := by
   intro R _ r n ν g f hf

@@ -26,13 +26,13 @@ namespace GlobalTheory.CosetOrth
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `hO`. Rewrite using `[hS, hT, inv_one, Finset.sum_eq_single q, Finset.sum_eq_single q, Finset.sum_eq_single p, Finset.sum_eq_single p]`. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, Matrix.single_apply_same, map_one, one_mul, mul_one]`. Introduce `b _ hb`. Simplify using `[Matrix.one_apply_ne hb.symm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `fun h => absurd (Finset.mem_univ _) h`. Introduce `b _ hb`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : d = p`. Substitute `h` using the available equality.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Matrix.one_apply_ne hb]`. Simplify using `[Matrix.single_apply_of_row_ne (Ne.symm h)]`. Conclude with `fun h => absurd (Finset.mem_univ _) h`. Introduce `b _ hb`. Simplify using `[Matrix.one_apply_ne hb.symm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `fun h => absurd (Finset.mem_univ _) h`. Introduce `b _ hb`. Simplify using `[Matrix.single_apply_of_col_ne _ _ (Ne.symm hb)]`. Conclude with `fun h => absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hO_single_of_gram_one {S T : HSp D} (hS : S.gram = 1) (hT : T.gram = 1) (p : Fin T.rank) (q : Fin S.rank)
     (x : AE D) (y : WO S T) : hO S T (Matrix.single p q x) y = cA D (y p q) * x := by
@@ -53,28 +53,28 @@ theorem hO_single_of_gram_one {S T : HSp D} (hS : S.gram = 1) (hT : T.gram = 1) 
   · exact fun h => absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Rewrite using `[map_mul, fe_apply (incA D a), GlobalTheory.LatVac.finPart_incA, GlobalTheory.FinIdlRead.finAdEquiv_one_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fe_incA_mul (a : D.host.E) (z : AE D) : fe D (incA D a * z) = algebraMap D.host.E (FA D) a * fe D z := by
   rw [map_mul, fe_apply (incA D a), GlobalTheory.LatVac.finPart_incA, GlobalTheory.FinIdlRead.finAdEquiv_one_tmul]
 
 /- English proof (translation)
-Rewrite using `[inHat_one_iff, GlobalTheory.FinIdlRead.mem_intAE_iff_finAdEquiv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inHat_one_fe_iff (z : AE D) : InHat 1 (fe D z) ↔ finPart D z ∈ intAE D := by
   rw [inHat_one_iff, GlobalTheory.FinIdlRead.mem_intAE_iff_finAdEquiv]
   rfl
 
 /- English proof (translation)
-Introduce `D ψ S T r LB n hψ hS hT hΛS hΛT hr hL p q c hc h`. Establish `hmem : (Matrix.single p q (incA D (n : D.host.E) * c) : WO S T) ∈ latO S T (stdLat S) LB fun _ => True`. Use `GlobalTheory.LatVac.mem_of_char hψ hΛS hΛT ?_ fun u' hu' => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_single, map_mul, hc, mul_zero, Matrix.single_zero]`. Take `⟨h0, h1⟩` from `hL u' hu'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h0' : infPart D (u' p q) = 0` using `congrFun (congrFun h0 p) q`. Establish `ht` using `h (cA D (incA D ((n : D.host.E) * r) * u' p q)) (by rw [(GlobalTheory.IdemSupport.parts_cA _).1, map_mul, h0', mul_zero, map_zero]) (by`. Rewrite using `[inHat_one_fe_iff]`. Use `GlobalTheory.IdemSupport.finPart_cA_mem ?_` and prove the remaining obligations. Rewrite using `[← inHat_one_fe_iff, fe_incA_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 p q)`. Establish `e : incA D (star r⁻¹) * (cA D (incA D ((n : D.host.E) * r) * u' p q) * c) = cA D (u' p q) * (incA D (n : D.host.E) * c)`. Establish `e1 : incA D (star r⁻¹) * incA D (star ((n : D.host.E) * r)) = incA D (n : D.host.E)`. Rewrite using `[← map_mul, ← star_mul, mul_assoc, mul_inv_cancel₀ hr, mul_one, star_natCast]`. Rewrite using `[map_mul, GlobalTheory.IdemSupport.cA_incA, ← e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `ht` using `[e]`. Unfold `symplO`. Rewrite using `[hO_single_of_gram_one hS hT]`. Conclude with `ht`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(hL _ hmem).2 p q`. Rewrite `h2` using `[Matrix.single_apply_same, fe_incA_mul, ← mul_assoc, ← map_mul]`. Rewrite using `[mul_right_comm]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inHat_of_char_dual : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (r : D.host.E) (LB : Lat T) (n : ℕ), IsStdChar D ψ (-1) →
   S.gram = 1 → T.gram = 1 → IsSelfDualC S (stdLat S) → IsSelfDualC T LB → r ≠ 0 →

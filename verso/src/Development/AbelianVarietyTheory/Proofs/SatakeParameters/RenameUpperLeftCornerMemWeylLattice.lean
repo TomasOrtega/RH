@@ -15,7 +15,7 @@ abbrev corner : Fin a × Fin a → Fin b × Fin b :=
   fun v => (Fin.castLE hab v.1, Fin.castLE hab v.2)
 
 /- English proof (translation)
-Unfold `lpMinor`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `p q : 2`. Simplify using `[corner]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rename_lpMinor (s : ℕ) (h1 : s ≤ a) (h2 : s ≤ b) :
     rename (corner hab) (lpMinor R s h1 h1) = lpMinor R s h2 h2 := by
@@ -26,15 +26,15 @@ theorem rename_lpMinor (s : ℕ) (h1 : s ≤ a) (h2 : s ≤ b) :
   simp [corner]
 
 /- English proof (translation)
-Unfold `hw`. Rewrite using `[map_prod]`. Use `symm`. Use `(Finset.prod_of_injOn (Fin.castLE hab) ((Fin.castLE_injective hab).injOn) (fun _ _ => Finset.mem_coe.2 (Finset.mem_univ _)) ?_ ?_).symm` and prove the remaining obligations. Introduce `j _ hj`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hja : ¬ (j : ℕ) < a`. Introduce `hlt`. Conclude with `hj ⟨⟨j, hlt⟩, by simp, by ext; simp⟩`. Rewrite using `[h j, dif_neg hja]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Rewrite using `[map_pow, rename_lpMinor R hab _ _ (by have := i.2; omega)]`. Establish `e1 : ν' (Fin.castLE hab i) = ν i`. Rewrite using `[h, dif_pos (by simp)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e2 : nuNext ν' (Fin.castLE hab i) = nuNext ν i`. Unfold `nuNext`. Distinguish the cases in `h1 : (i : ℕ) + 1 < a`. Rewrite using `[dif_pos h1, dif_pos (by simp; omega), h, dif_pos (by simpa using h1)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h1] split_ifs with h2`. Rewrite using `[h, dif_neg (by simpa using h1)]`. Both sides reduce to the same expression. Rewrite using `[e1, e2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rename_hw (ν : Fin a → ℕ) (ν' : Fin b → ℕ)
     (h : ∀ j : Fin b, ν' j = if h : (j : ℕ) < a then ν ⟨j, h⟩ else 0) :
@@ -68,9 +68,9 @@ theorem rename_hw (ν : Fin a → ℕ) (ν' : Fin b → ℕ)
     rfl
 
 /- English proof (translation)
-Establish `key : (Polynomial.mapAlgHom (rename (R` using `R) (corner hab))).comp (rowGen R x y) = (rowGen R (Fin.castLE hab x) (Fin.castLE hab y)).comp (rename (corner hab)) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Distinguish the cases in `hv : v.1 = y`. Simplify using `[rowGen, hv, corner]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hv' : Fin.castLE hab v.1 ≠ Fin.castLE hab y` using `fun e => hv (Fin.castLE_injective hab e)`. Simplify using `[rowGen, hv, corner]`. Establish `h2` using `congrArg (fun φ => (φ f).coeff k) key`. Simplify `h2` using `[rowDiv, Polynomial.coeff_map]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rename_rowDiv (x y : Fin a) (k : ℕ) (f : MvPolynomial (Fin a × Fin a) R) :
     rename (corner hab) (rowDiv R x y k f) =
@@ -87,7 +87,7 @@ theorem rename_rowDiv (x y : Fin a) (k : ℕ) (f : MvPolynomial (Fin a × Fin a)
   simpa [rowDiv, Polynomial.coeff_map] using h2
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih`. Simplify using `only [applyWord, List.foldr_cons, List.map_cons] at ih ⊢`. Rewrite using `[rename_rowDiv, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rename_applyWord (w : List (Fin a × Fin a × ℕ)) (f : MvPolynomial (Fin a × Fin a) R) :
     rename (corner hab) (applyWord R w f) =
@@ -102,11 +102,11 @@ theorem rename_applyWord (w : List (Fin a × Fin a × ℕ)) (f : MvPolynomial (F
 end WeylRankEmbed
 
 /- English proof (translation)
-Introduce `R _ a b hab ν ν' h f hf`. Express the relevant statement in the definitionally equal form `rename (WeylRankEmbed.corner hab) f ∈ _`. Unfold `weyl at hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨w, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨w.map fun x => (Fin.castLE hab x.1, Fin.castLE hab x.2.1, x.2.2), ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[WeylRankEmbed.rename_applyWord, WeylRankEmbed.rename_hw R hab ν ν' h]`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem weyl_rename_castLE_mem :
     ∀ (R : Type) [CommRing R] (a b : ℕ) (hab : a ≤ b) (ν : Fin a → ℕ) (ν' : Fin b → ℕ), (∀ j : Fin b, ν' j = if h : (j : ℕ) < a then ν ⟨j, h⟩ else 0) → ∀ f ∈ Formalism.GradedWeylDivisibility.weyl R a a le_rfl ν, MvPolynomial.rename (fun v : Fin a × Fin a => ((Fin.castLE hab v.1, Fin.castLE hab v.2) : Fin b × Fin b)) f ∈ Formalism.GradedWeylDivisibility.weyl R b b le_rfl ν' := by

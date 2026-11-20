@@ -10,15 +10,13 @@ namespace Formalism.MainNotions.ModuliIntegralCharts.H1
 namespace CIndRelPf
 
 /- English proof (translation)
-Set `f : (ι → S) →ₗ[S] (Fin d → S)` to `{ toFun := fun a j => ∑ ℓ, a ℓ * u ℓ j map_add' := by`. Introduce `a b`. Use function extensionality and compare the values at `j`. Simplify using `[add_mul, Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c a`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.mul_sum, mul_assoc] }`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Take `⟨c, -, hc⟩` from `h (f a)`. Establish `ha : a = c` using `hc a (fun j => rfl)`. Establish `hb : b = c` using `hc b (fun j => congrFun hab.symm j)`. Rewrite using `[ha, hb]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Take `⟨a, ha, -⟩` from `h v`. Conclude with `⟨a, funext ha⟩`. Establish `hr` using `(LinearEquiv.ofBijective f hf).finrank_eq`. Rewrite `hr` using `[Module.finrank_fintype_fun_eq_card, Module.finrank_fin_fun]`.
-
-Conclude with `hr.symm`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_eq_card {S : Type} [CommRing S] [Nontrivial S] {ι : Type} [Fintype ι] {d : ℕ}
     (u : ι → Fin d → S) (h : ∀ v : Fin d → S, ∃! a : ι → S, ∀ j, ∑ ℓ, a ℓ * u ℓ j = v j) :

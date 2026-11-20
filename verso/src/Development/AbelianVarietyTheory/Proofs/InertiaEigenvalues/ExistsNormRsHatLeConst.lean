@@ -21,7 +21,7 @@ namespace GlobalTheory.RSThetaLowM
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.inverseTranspose_mem_cuspFormRapidKernelSpan_contragredient E a π F hF`.
+A detailed English derivation is pending.
 -/
 theorem mspanR_invT (π : CuspSub E a) {F : GA E a → ℂ} (hF : F ∈ GlobalTheory.JSW.mspanR π) :
     (fun g => F (invT a (Ad E) g)) ∈ GlobalTheory.JSW.mspanR π.contra :=
@@ -30,7 +30,7 @@ theorem mspanR_invT (π : CuspSub E a) {F : GA E a → ℂ} (hF : F ∈ GlobalTh
 def rsm (π : CuspSub E a) : Submodule ℂ (Sm E a) := (GlobalTheory.JSW.mspanR π).comap (Sm E a).subtype
 
 /- English proof (translation)
-Take `⟨ψ, hψ, hw, -⟩` from `GlobalTheory.T.cuspFormRapidKernelSmoothSpan_smooth_cuspidal_bounded E a GlobalTheory.CuspOrth.cuspFormsBounded π hπ F.1 hF`. Take `rfl : ψ = F` from `Subtype.ext hψ`. Simplify `hw [X]` using `[GlobalTheory.GLFin.word, rsm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lie_mem_rsm {π : CuspSub E a} (hπ : π.IsUnitary) (X : Lie E a) {F : Sm E a} (hF : F ∈ rsm π) :
     lie E a X F ∈ rsm π := by
@@ -39,16 +39,16 @@ theorem lie_mem_rsm {π : CuspSub E a} (hπ : π.IsUnitary) (X : Lie E a) {F : S
   simpa [GlobalTheory.GLFin.word, rsm] using hw [X]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.cuspFormRapidKernelSmoothSpan_smooth_cuspidal_bounded E a GlobalTheory.CuspOrth.cuspFormsBounded π hπ F.1 hF).choose_spec.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem bounded_of_mem_rsm {π : CuspSub E a} (hπ : π.IsUnitary) {F : Sm E a} (hF : F ∈ rsm π) :
     ∃ C : ℝ, ∀ g, ‖F.1 g‖ ≤ C :=
   (GlobalTheory.T.cuspFormRapidKernelSmoothSpan_smooth_cuspidal_bounded E a GlobalTheory.CuspOrth.cuspFormsBounded π hπ F.1 hF).choose_spec.2.2.2
 
 /- English proof (translation)
-Take `⟨ψ, hψ, -, -⟩` from `GlobalTheory.T.cuspFormRapidKernelSmoothSpan_smooth_cuspidal_bounded E a GlobalTheory.CuspOrth.cuspFormsBounded π.contra hπ.contra _ (mspanR_invT π hF)`. Introduce `L hL C₀ hC₀ N`. Take `⟨C, h⟩` from `GlobalTheory.T.cuspFormSmoothSpan_norm_le_shortRationalVector E a π.contra hπ.contra ψ (Or.inr (hψ ▸ mspanR_invT π hF)) [] L hL C₀ hC₀ N`. Use `⟨C, fun g c hc ξ hξ hm => ?_⟩` and prove the remaining obligations. Use `h g c hc ξ hξ hm` as an intermediate fact.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[GlobalTheory.GLFin.word, hψ]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem decays_invT_of_mem_rsm {π : CuspSub E a} (hπ : π.IsUnitary) {F : Sm E a} (hF : F ∈ rsm π) :
     Decays fun g => F.1 (invT a (Ad E) g) := by
@@ -60,7 +60,7 @@ theorem decays_invT_of_mem_rsm {π : CuspSub E a} (hπ : π.IsUnitary) {F : Sm E
   simpa [GlobalTheory.GLFin.word, hψ] using this
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `φ.1 ∈ GlobalTheory.JSW.mspanR π`. Rewrite using `[← GlobalTheory.JSW.rspan_eq_mspanR]`. Break down `h with h | h` into its components or cases. Conclude with `GlobalTheory.JSW.mem_rspan h`. Conclude with `GlobalTheory.T.matrix_span_le_rapid_span π h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mem_rsm {π : CuspSub E a} {φ : Sm E a} (h : φ ∈ π.V ∨ φ.1 ∈ GlobalTheory.JSW.mspan π) : φ ∈ rsm π := by
   change φ.1 ∈ GlobalTheory.JSW.mspanR π
@@ -73,7 +73,7 @@ variable {ℓ : Fin a} {Φ : (Fin a → Cinf E) → ℂ} (J : (FractionalIdeal (
 variable {π π' : CuspSub E a} {φ φ' : Sm E a}
 
 /- English proof (translation)
-Take `⟨C, h⟩` from `exists_norm_rsHat_le J η (g := id) (w := fun _ => 1) (fun X _ => lie_mem_rsm hπ X) (fun X _ => lie_mem_rsm hπ' X) (fun F hF _ _ => (bounded_of_mem_rsm hπ hF).imp fun C h _ _ _ => (h _).trans_eq (mul_one _).symm) (fun F hF => bounded_of_mem_rsm hπ' hF) hφ hφ' hΦ 0`. Conclude with `⟨C, fun g y => by simpa using h g y⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_norm_rsHat_le_const (hπ : π.IsUnitary) (hπ' : π'.IsUnitary) (hφ : φ ∈ rsm π)
     (hφ' : φ' ∈ rsm π') (hΦ : IsTest (rowSet E ℓ) Φ) :
@@ -85,13 +85,11 @@ theorem exists_norm_rsHat_le_const (hπ : π.IsUnitary) (hπ' : π'.IsUnitary) (
   exact ⟨C, fun g y => by simpa using h g y⟩
 
 /- English proof (translation)
-Use `set N := K + Module.finrank ℝ (Fin a → Cinf E) with hN`. Establish `had : 1 ≤ a * Module.finrank ℚ E` using `Nat.mul_pos ℓ.pos Module.finrank_pos`. Take `⟨M, C₁, h₁⟩` from `GlobalTheory.T.summable_nonzeroRationalVector_le_shortestVector E a (traceDualIdeal E J) (a * Module.finrank ℚ E * N) ((Nat.le_add_left _ K).trans (Nat.le_mul_of_pos_left _ had))`. Take `⟨C₂, h₂⟩` from `exists_norm_rsHat_le J η (ι := {p : GA E a × (Fin a → E) // p.2 ≠ 0 ∧ (fun i => pFin E (((fun j => algebraMap E (Ad E) (p.2 j)) ᵥ* p.1.val) i)) ∈ latt a (traceDualIdeal E J)}) (g := fun p => invT a (Ad E) p.1.1) (w := fun p => (‖fun i => pInf E (((fun j => algebraMap E (Ad E) (p. …`. Use `⟨|C₁| * |C₂|, fun g hg => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set δ : ℝ := (ideleModule E (GeneralLinearGroup.det g) : ℝ) with hδ`. Establish `hδ0 : 0 < δ` using `(ideleModule E _).2`. Establish `h` using `(h₁ (invT a (Ad E) g) (|C₂| * δ ^ N) (fun ξ => rsHat ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ j)) ᵥ* (g⁻¹).valᵀ)) (by positivity) (fun ξ hξ => by`. Rewrite using `[rsHat_eq J η φ φ' hΦ]`. Conclude with `mul_eq_zero_of_left (mul_eq_zero_of_right _ (Set.indicator_of_notMem hξ _)) _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun ξ ξ' h0 hξ' => by`. Establish `h3` using `h₂ ⟨(invT a (Ad E) g, ξ'), h0, hξ'⟩ ((fun j => algebraMap E (Ad E) (ξ j)) ᵥ* (g⁻¹).valᵀ)`. Simplify using `only [invT_invT, absDet_invT, ← hδ, div_inv_eq_mul, mul_pow, ← pow_mul] at h3`. Use `h3.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc |C₂|, mul_comm (δ ^ N)]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity))).2`. Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `mul_le_mul (le_abs_self _) (mul_le_mul_of_nonneg_left (pow_le_pow_of_le_one hδ0.le hg (Nat.le_add_right _ _)) (abs_nonneg _)) (by positivity) (abs_nonneg _)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_tsum_norm_rsHat_le (hπ : π.IsUnitary) (hπ' : π'.IsUnitary) (hφ : φ ∈ rsm π)
     (hφ' : φ' ∈ rsm π') (hΦ : IsTest (rowSet E ℓ) Φ) (K : ℕ) : ∃ C : ℝ, ∀ g ∈ lowSet E a,
@@ -134,7 +132,7 @@ theorem exists_tsum_norm_rsHat_le (hπ : π.IsUnitary) (hπ' : π'.IsUnitary) (h
 variable {μ : Measure (GA E a)} [μ.IsHaarMeasure] {𝓕 : Set (GA E a)}
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `exists_norm_rsHat_le_const J η hπ hπ' hφ hφ' hΦ`. Use `((GlobalTheory.T.integrableOn_absDet_rpow_le_one_fundamentalDomain E a ℓ.pos μ 𝓕 h𝓕 (s.re - 1) (by linarith)).const_mul C).mono' ((stronglyMeasurable_rsHat J η hc hc' hΦ continuous_const).aestronglyMeasurable.mul ((Complex.measurable_ofReal.comp GlobalTheory.RSThetaLow.continuous …` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos (ideleModule E _).2, Complex.sub_re, Complex.one_re]`. Conclude with `mul_le_mul_of_nonneg_right (hC g 0) (Real.rpow_nonneg (ideleModule E _).2.le _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_partA (hπ : π.IsUnitary) (hπ' : π'.IsUnitary) (hφ : φ ∈ rsm π)
     (hφ' : φ' ∈ rsm π') (hc : Continuous φ.1) (hc' : Continuous φ'.1) (hΦ : IsTest (rowSet E ℓ) Φ)
@@ -150,11 +148,11 @@ theorem integrableOn_partA (hπ : π.IsUnitary) (hπ' : π'.IsUnitary) (hφ : φ
   exact mul_le_mul_of_nonneg_right (hC g 0) (Real.rpow_nonneg (ideleModule E _).2.le _)
 
 /- English proof (translation)
-Use `haveI : Countable E := Finsupp.Countable.of_moduleFinite (R := ℚ)`. Establish `hm : ∀ ξ : {ξ : Fin a → E // ξ ≠ 0}, AEStronglyMeasurable (fun g : GA E a => rsHat ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* (g⁻¹).valᵀ)) (μ.restrict (𝓕 ∩ lowSet E a))` using `fun ξ => (stronglyMeasurable_rsHat J η hc hc' hΦ (continuous_const.matrix_vecMul Units.continuous_coe_inv.matrix_transpose)).aestronglyMeasurable`. Establish `hlow : ∀ᵐ g ∂μ.restrict (𝓕 ∩ lowSet E a), g ∈ lowSet E a` using `ae_restrict_of_ae_restrict_of_subset Set.inter_subset_right (ae_restrict_mem (isClosed_le GlobalTheory.RSThetaLow.continuous_absDet continuous_const).measurableSet)`. Establish `hδ` using `hlow.mono (q := fun g => 0 < (ideleModule E (GeneralLinearGroup.det g) : ℝ) ∧ (ideleModule E (GeneralLinearGroup.det g) : ℝ) ≤ 1) fun g hg => ⟨(ideleModule E _).2, hg⟩`. Establish `hi` using `GlobalTheory.T.integrableOn_absDet_rpow_le_one_fundamentalDomain E a ℓ.pos μ 𝓕 h𝓕 1 one_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Real.rpow_one] at hi`. Establish `hb` using `exists_tsum_norm_rsHat_le J η hπ hπ' hφ hφ' hΦ`. Establish `h1` using `GlobalTheory.T.mellin_integral_rapidDecay_entire_of_le_one _ _ _ _ GlobalTheory.RSThetaLow.continuous_absDet.measurable hδ hi (AEStronglyMeasurable.tsum hm) fun K => (hb K).imp fun C h => hlow.mono fun g hg => (norm_tsum_le_tsum_norm (poisson_rsPsi J η φ φ' hΦ g).2.1).trans (h g …`. Establish `h2` using `GlobalTheory.T.mellin_integral_rapidDecay_entire_of_le_one _ _ _ _ GlobalTheory.RSThetaLow.continuous_absDet.measurable hδ hi (Complex.continuous_ofReal.comp_aestronglyMeasurable (AEStronglyMeasurable.tsum fun ξ => (hm ξ).norm)) fun K => (hb K).imp fun C h => hlow.mono fun g hg = …`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (tsum_nonneg fun _ => norm_nonneg _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h g hg`. Use `⟨fun x => ((h2.1 ((x - 1 : ℝ) : ℂ)).norm).congr (.of_forall fun g => ?_), fun s => h1.1 _, h1.2.comp (differentiable_id.sub_const 1)⟩` and prove the remaining obligations. Simplify using `only [norm_mul, Complex.norm_real, Complex.norm_cpow_eq_rpow_re_of_pos (ideleModule E _).2, Complex.ofReal_re]`. Rewrite using `[Real.norm_of_nonneg (tsum_nonneg fun _ => norm_nonneg _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partB_entire (hπ : π.IsUnitary) (hπ' : π'.IsUnitary) (hφ : φ ∈ rsm π)
     (hφ' : φ' ∈ rsm π') (hc : Continuous φ.1) (hc' : Continuous φ'.1) (hΦ : IsTest (rowSet E ℓ) Φ)
@@ -193,9 +191,9 @@ theorem partB_entire (hπ : π.IsUnitary) (hπ' : π'.IsUnitary) (hφ : φ ∈ r
   rw [Real.norm_of_nonneg (tsum_nonneg fun _ => norm_nonneg _)]
 
 /- English proof (translation)
-Establish `hA` using `integrableOn_partA J η hπ hπ' hφ hφ' hc hc' hΦ h𝓕 hs`. Establish `hB` using `(partB_entire J η hπ hπ' hφ hφ' hc hc' hΦ h𝓕).2.1 s`. Establish `e : ∀ g : GA E a, (∑' ξ : Fin a → E, rsPsi ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ j)) ᵥ* g.val)) * ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ s = rsHat ℓ φ.1 φ'.1 Φ J η g 0 * ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ (s - 1) + (∑' ξ : {ξ : F …` using `fun g => by`. Rewrite using `[(poisson_rsPsi J η φ φ' hΦ g).2.2, Complex.cpow_sub _ _ (Complex.ofReal_ne_zero.2 (ideleModule E _).2.ne'), Complex.cpow_one]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [e]`. Conclude with `⟨hA.add hB, integral_add hA hB⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem integral_low_eq (hπ : π.IsUnitary) (hπ' : π'.IsUnitary) (hφ : φ ∈ rsm π)
     (hφ' : φ' ∈ rsm π') (hc : Continuous φ.1) (hc' : Continuous φ'.1) (hΦ : IsTest (rowSet E ℓ) Φ)

@@ -23,9 +23,9 @@ theorem mulF_tmul (x : 𝓞 D.F) (a : AfP p) (y : D.La) :
     mulF D x (a ⊗ₜ ((1 : ℚ) ⊗ₜ y)) = a ⊗ₜ ((1 : ℚ) ⊗ₜ (algebraMap (𝓞 D.F) D.O x • y)) := rfl
 
 /- English proof (translation)
-Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, y, ha, rfl⟩` from `hz`. Conclude with `AddSubgroup.subset_closure ⟨a, _, ha, mulF_tmul x a y⟩`. Consider the case `zero => rw [map_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [map_neg]`. Conclude with `neg_mem ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mulF_mem (x : 𝓞 D.F) {v} (hv : v ∈ LaHat D) : mulF D x v ∈ LaHat D := by
   induction hv using AddSubgroup.closure_induction with
@@ -37,9 +37,9 @@ theorem mulF_mem (x : 𝓞 D.F) {v} (hv : v ∈ LaHat D) : mulF D x v ∈ LaHat 
   | neg a _ ha => rw [map_neg]; exact neg_mem ha
 
 /- English proof (translation)
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Consider the case `tmul a z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => rw [TensorProduct.tmul_zero, map_zero, map_zero]`. Consider the case `add b c hb hc => rw [TensorProduct.tmul_add, map_add, map_add, hb, hc]`. Consider the case `tmul r y => exact h a r y`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem end_ext {f g : AfP p ⊗[ℚ] VQ D →+ AfP p ⊗[ℚ] VQ D}
     (h : ∀ (a : AfP p) (r : ℚ) (y : D.La), f (a ⊗ₜ (r ⊗ₜ y)) = g (a ⊗ₜ (r ⊗ₜ y))) (v) : f v = g v := by
@@ -53,7 +53,7 @@ theorem end_ext {f g : AfP p ⊗[ℚ] VQ D →+ AfP p ⊗[ℚ] VQ D}
     | tmul r y => exact h a r y
 
 /- English proof (translation)
-Use `end_ext (f := (mulF D ((N : 𝓞 D.F) * x)).toAddMonoidHom) (g := (N • mulF D x).toAddMonoidHom) (fun a r y => ?_) v` and prove the remaining obligations. Use `show a ⊗ₜ[ℚ] (r ⊗ₜ[ℤ] (algebraMap (𝓞 D.F) D.O ((N : 𝓞 D.F) * x) • y)) = N • a ⊗ₜ[ℚ] (r ⊗ₜ[ℤ] (algebraMap (𝓞 D.F) D.O x • y))`. Rewrite using `[map_mul, map_natCast, mul_smul, Nat.cast_smul_eq_nsmul]`. Conclude with `(map_nsmul ((TensorProduct.mk ℚ _ _ a).toAddMonoidHom.comp (TensorProduct.mk ℤ ℚ D.La r).toAddMonoidHom) N _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulF_nat_mul (N : ℕ) (x : 𝓞 D.F) (v) : mulF D ((N : 𝓞 D.F) * x) v = N • mulF D x v := by
   refine end_ext (f := (mulF D ((N : 𝓞 D.F) * x)).toAddMonoidHom) (g := (N • mulF D x).toAddMonoidHom) (fun a r y => ?_) v
@@ -62,7 +62,7 @@ theorem mulF_nat_mul (N : ℕ) (x : 𝓞 D.F) (v) : mulF D ((N : 𝓞 D.F) * x) 
   exact (map_nsmul ((TensorProduct.mk ℚ _ _ a).toAddMonoidHom.comp (TensorProduct.mk ℤ ℚ D.La r).toAddMonoidHom) N _)
 
 /- English proof (translation)
-Use `end_ext (f := (mulF D 1).toAddMonoidHom) (g := AddMonoidHom.id _) (fun a r y => ?_) v` and prove the remaining obligations. Use `show a ⊗ₜ[ℚ] (r ⊗ₜ[ℤ] (algebraMap (𝓞 D.F) D.O 1 • y)) = a ⊗ₜ[ℚ] (r ⊗ₜ[ℤ] y)`. Rewrite using `[map_one, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulF_one (v) : mulF D 1 v = v := by
   refine end_ext (f := (mulF D 1).toAddMonoidHom) (g := AddMonoidHom.id _) (fun a r y => ?_) v
@@ -70,11 +70,11 @@ theorem mulF_one (v) : mulF D 1 v = v := by
   rw [map_one, one_smul]
 
 /- English proof (translation)
-Establish `key : ∀ c : AfP p ⊗[ℚ] G.C, actOn L.rep (AfP p) c * mulF D x = mulF D x * actOn L.rep (AfP p) c`. Introduce `c`. Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, add_mul, mul_add, ha, hb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a y`. Establish `h` using `(L.rep_range (L.rep y)).1 ⟨y, rfl⟩ (algebraMap (𝓞 D.F) D.O x)`. Establish `h2 : (L.rep y).baseChange (AfP p) * mulF D x = mulF D x * (L.rep y).baseChange (AfP p)`. Unfold `mulF`. Rewrite using `[← LinearMap.baseChange_mul, ← LinearMap.baseChange_mul, h]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : actOn L.rep (AfP p) (a ⊗ₜ y) = a • (L.rep y).baseChange (AfP p)`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[h3, smul_mul_assoc, mul_smul_comm, h2]`. Conclude with `LinearMap.congr_fun (key _) v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actG_mulF (g : G.GAf) (x : 𝓞 D.F) (v) : L.actG g (mulF D x v) = mulF D x (L.actG g v) := by
   have key : ∀ c : AfP p ⊗[ℚ] G.C, actOn L.rep (AfP p) c * mulF D x = mulF D x * actOn L.rep (AfP p) c := by
@@ -94,13 +94,13 @@ theorem actG_mulF (g : G.GAf) (x : 𝓞 D.F) (v) : L.actG g (mulF D x v) = mulF 
   exact LinearMap.congr_fun (key _) v
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, v, hv, rfl⟩` from `hz`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton.1 hx`. Conclude with `⟨_, mulF_mem y hv, mulF_nat_mul N y v⟩`. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨u, hu, rfl⟩` from `ha`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨u', hu', rfl⟩` from `hb`. Conclude with `⟨u + u', add_mem hu hu', by rw [smul_add]⟩`. Consider the case `neg a _ ha`. Take `⟨u, hu, rfl⟩` from `ha`. Conclude with `⟨-u, neg_mem hu, by rw [smul_neg]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨w, hw, rfl⟩`. Use `AddSubgroup.subset_closure ⟨(N : 𝓞 D.F) * 1, Ideal.mem_span_singleton.2 ⟨1, rfl⟩, w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[mulF_nat_mul, mulF_one]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_idHat_nat (N : ℕ) (z) : z ∈ idHat D (Ideal.span {(N : 𝓞 D.F)}) ↔ ∃ w ∈ LaHat D, z = N • w := by
   constructor
@@ -123,9 +123,9 @@ theorem mem_idHat_nat (N : ℕ) (z) : z ∈ idHat D (Ideal.span {(N : 𝓞 D.F)}
     rw [mulF_nat_mul, mulF_one]
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, v, hv, rfl⟩` from `hz`. Conclude with `AddSubgroup.subset_closure ⟨x, hx, _, hg v hv, actG_mulF L g x v⟩`. Consider the case `zero => rw [map_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [map_neg]`. Conclude with `neg_mem ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Integ_idHat {g : G.GAf} (hg : Integ L g) {𝔟 : Ideal (𝓞 D.F)} {z} (hz : z ∈ idHat D 𝔟) : L.actG g z ∈ idHat D 𝔟 := by
   induction hz using AddSubgroup.closure_induction with
@@ -137,32 +137,32 @@ theorem Integ_idHat {g : G.GAf} (hg : Integ L g) {𝔟 : Ideal (𝓞 D.F)} {z} (
   | neg a _ ha => rw [map_neg]; exact neg_mem ha
 
 /- English proof (translation)
-Rewrite using `[map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actG_mul (g h : G.GAf) (v) : L.actG (g * h) v = L.actG g (L.actG h v) := by
   rw [map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[← actG_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actG_inv_act (g : G.GAf) (v) : L.actG g⁻¹ (L.actG g v) = v := by
   rw [← actG_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Rewrite using `[← actG_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actG_act_inv (g : G.GAf) (v) : L.actG g (L.actG g⁻¹ v) = v := by
   rw [← actG_mul, mul_inv_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Introduce `v hv` and use `by have := neg_mem (h _ (hg v hv)) rwa [actG_act_inv, neg_sub] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CongId.inv {𝔟 : Ideal (𝓞 D.F)} {g : G.GAf} (hg : Integ L g⁻¹) (h : CongId L 𝔟 g) : CongId L 𝔟 g⁻¹ := fun v hv => by
   have := neg_mem (h _ (hg v hv))
   rwa [actG_act_inv, neg_sub] at this
 
 /- English proof (translation)
-Use `forall₂_congr fun v hv => ?_` and prove the remaining obligations. Rewrite using `[mem_idHat_nat]`. Use `exists_congr fun w => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[sub_eq_iff_eq_add']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem congOne_iff (N : ℕ) (g : G.GAf) : L.CongOne N g ↔ CongId L (Ideal.span {(N : 𝓞 D.F)}) g := by
   refine forall₂_congr fun v hv => ?_
@@ -171,7 +171,7 @@ theorem congOne_iff (N : ℕ) (g : G.GAf) : L.CongOne N g ↔ CongId L (Ideal.sp
   rw [sub_eq_iff_eq_add']
 
 /- English proof (translation)
-Introduce `v hv` and use `by obtain ⟨v', hv', e⟩ := hb v hv obtain ⟨w, hw, e'⟩ := hu v' hv' refine ⟨_, hh w hw, ?_⟩ have e1 : v' = c • L.actG h⁻¹ v := by rw [← map_nsmul, ← e, actG_inv_act] have e2 : c • L.actG (h * u * h⁻¹) v = c • (v + N • L.actG h w) := by rw [actG_mul, actG_mul, ← map_nsmul, ← map_nsm …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem congOne_conj {N c : ℕ} {h u : G.GAf} (hh : Integ L h) (hb : ∀ v ∈ LaHat D, ∃ v' ∈ LaHat D, L.actG h v' = c • v) (hc : 0 < c)
     (hu : L.CongOne (N * c) u) : L.CongOne N (h * u * h⁻¹) := fun v hv => by
@@ -187,13 +187,13 @@ theorem congOne_conj {N c : ℕ} {h u : G.GAf} (hh : Integ L h) (hb : ∀ v ∈ 
 end
 
 /- English proof (translation)
-Introduce `p _ D G L`. Use `⟨fun 𝔟 => ⟨⟨⟨⟨{g | g ∈ L.KN 1 ∧ CongId L 𝔟 g}, ?_⟩, one_mem _, fun v _ => by simp⟩, ?_⟩, fun _ => Iff.rfl⟩, fun 𝔟 𝔟' K K' h h' hle g hg => ?_, fun N g => ⟨fun hg => ⟨KN_anti (one_dvd N) hg, (congOne_iff L N g).1 hg.1⟩, fun hg => ?_⟩, congOne_iff L, fun 𝔟 K h k hk u hu => ?_, fun …` and prove the remaining obligations. Introduce and unpack `a b ⟨ha, ha'⟩ ⟨hb, hb'⟩`. Use `⟨mul_mem ha hb, fun v hv => ?_⟩` and prove the remaining obligations. Use `add_mem (ha' _ (integ_of_mem hb v hv)) (hb' v hv)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_add_sub_cancel, ← actG_mul]`. Then use the resulting hypothesis. Introduce and unpack `a ⟨ha, ha'⟩`. Conclude with `⟨inv_mem ha, CongId.inv L (integ_of_mem (inv_mem ha)) ha'⟩`. Take `⟨h1, h2⟩` from `(h g).1 hg`. Use `(h' g).2 ⟨h1, fun v hv => AddSubgroup.closure_mono ?_ (h2 v hv)⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `z ⟨x, hx, r⟩`. Conclude with `⟨x, hle hx, r⟩`. Conclude with `⟨(congOne_iff L N g).2 hg.2, (congOne_iff L N _).2 (CongId.inv L (integ_of_mem (inv_mem hg.1)) hg.2)⟩`. Take `⟨h1, h2⟩` from `(h u).1 hu`. Use `(h _).2 ⟨mul_mem (mul_mem hk h1) (inv_mem hk), fun v hv => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Integ_idHat L (integ_of_mem hk) (h2 _ (integ_of_mem (inv_mem hk) v hv))` as an intermediate fact. Rewrite `this` using `[map_sub, actG_act_inv, ← actG_mul, ← actG_mul]`. Then use the resulting hypothesis. Use `congOne_conj L hh hb hc hu.2` as an intermediate fact. Rewrite `this` using `[show h * u⁻¹ * h⁻¹ = (h * u * h⁻¹)⁻¹ by group]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem levBasic_holds : LevBasic := by
   intro p _ D G L

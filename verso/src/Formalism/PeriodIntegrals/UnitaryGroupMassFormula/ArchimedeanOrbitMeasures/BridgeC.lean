@@ -14,9 +14,9 @@ def betaV {D : D7} (X : HidaSetting D) (v : InfinitePlace X.B.I.F) (Y : TupI X) 
   Matrix.of fun i b => ((X.B.I.P v)⁻¹ *ᵥ fun j => PI.AprimeInfU.thetaInf X v (Y b j)) i
 
 /- English proof (translation)
-Use extensionality with `i b`. Simplify using `only [betaV, Matrix.of_apply, Matrix.add_apply]`. Rewrite using `[← Pi.add_apply ((X.B.I.P v)⁻¹ *ᵥ _), ← Matrix.mulVec_add]`. Use `congr 2`. Use function extensionality and compare the values at `j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem betaV_add {D : D7} (X : HidaSetting D) (v : InfinitePlace X.B.I.F) (Y Z : TupI X) :
     betaV X v (Y + Z) = betaV X v Y + betaV X v Z := by
@@ -28,13 +28,13 @@ theorem betaV_add {D : D7} (X : HidaSetting D) (v : InfinitePlace X.B.I.F) (Y Z 
   exact map_add _ _ _
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Establish `hPu : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Use `set Mm : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) := ((HA.mat (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J (X.toInf hb s) : GL (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) with hMm`. Establish `hmap : Mm.map (PI.AprimeInfU.thetaInf X v) = X.B.I.P v * uMat (s v) * (X.B.I.P v)⁻¹`. Rewrite using `[uMat_toInf X hb s v, ← hMm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hPu, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hPu, Matrix.mul_one]`. Establish `hcol : ∀ b, (fun j => PI.AprimeInfU.thetaInf X v ((X.toInf hb s • Y) b j)) = (X.B.I.P v * uMat (s v) * (X.B.I.P v)⁻¹) *ᵥ fun j => PI.AprimeInfU.thetaInf X v (Y b j)`. Introduce `b`. Rewrite using `[← hmap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Use `show PI.AprimeInfU.thetaInf X v ((Mm *ᵥ Y b) i) = _`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]`. Use extensionality with `i b`. Simplify using `only [betaV, Matrix.of_apply, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcol b]`. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hPu, Matrix.one_mul, ← Matrix.mulVec_mulVec]`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+A detailed English derivation is pending.
 -/
 theorem betaV_act {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (s : X.B.I.Ginf) (v : InfinitePlace X.B.I.F)
     (Y : TupI X) : betaV X v (X.toInf hb s • Y) = uMat (s v) * betaV X v Y := by
@@ -62,7 +62,7 @@ theorem betaV_act {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (s : X.B
   simp only [Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use extensionality with `i b`. Simplify using `only [betaV, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply, rmulT, Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem betaV_rmul {D : D7} (X : HidaSetting D) (v : InfinitePlace X.B.I.F) (a : MfI X) (Y : TupI X) :
     betaV X v (rmulT X a Y) = betaV X v Y * a.map (PI.AprimeInfU.thetaInf X v) := by
@@ -74,11 +74,11 @@ theorem betaV_rmul {D : D7} (X : HidaSetting D) (v : InfinitePlace X.B.I.F) (a :
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b j`. Use `sub_eq_zero.1 (thetaInf_inj X _ fun v => ?_)` and prove the remaining obligations. Establish `hPu : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Establish `hc : (fun j => PI.AprimeInfU.thetaInf X v (Y b j)) = fun j => PI.AprimeInfU.thetaInf X v (Z b j)`. Establish `e : (X.B.I.P v)⁻¹ *ᵥ (fun j => PI.AprimeInfU.thetaInf X v (Y b j)) = (X.B.I.P v)⁻¹ *ᵥ (fun j => PI.AprimeInfU.thetaInf X v (Z b j))`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Use `congrFun (congrFun (h v) i) b` as an intermediate fact. Simplify `this` using `[betaV]`. Establish `e2` using `congrArg (fun y => X.B.I.P v *ᵥ y) e`. Simplify `e2` using `only [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hPu, Matrix.one_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[map_sub, congrFun hc j, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem betaV_inj {D : D7} (X : HidaSetting D) (Y Z : TupI X) (h : ∀ v, betaV X v Y = betaV X v Z) : Y = Z := by
   funext b j

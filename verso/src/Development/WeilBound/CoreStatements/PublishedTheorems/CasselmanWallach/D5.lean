@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.PolarJmC
 namespace PositivityTheory.CW
 
 /- English proof (translation)
-Introduce `n ε g hg`. Establish `hu : ReciprocityTheory.ChartRestriction.DS.inUJ ε g` using `hg`. Use `⟨g * NormedSpace.exp (-ReciprocityTheory.ChartRestriction.DS.PolarDecomposition.polar_L g), ReciprocityTheory.ChartRestriction.DS.PolarDecomposition.polar_k_mem hu, ReciprocityTheory.ChartRestriction.DS.PolarDecomposition.polar_L g, (ReciprocityTheory.ChartRestriction.DS.PolarDec …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem d5 : D5 := by
   intro n ε g hg

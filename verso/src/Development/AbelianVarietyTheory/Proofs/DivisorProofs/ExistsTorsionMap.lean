@@ -15,7 +15,7 @@ namespace GlobalTheory.RaynaudTorsionMap
 open GlobalTheory.KernelNoTorsion GlobalTheory.TangentPow GlobalTheory.TorsionCharacter GlobalTheory.HTLat.OmegaRank
 
 /- English proof (translation)
-Establish `e` using `Spec.map_injective (congrArg CommaMorphism.left h)`. Conclude with `AlgHom.ext fun z => congrArg (fun k => k.hom z) e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ptMap_inj {O A R : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing R] [Algebra O R]
     {φ ψ : A →ₐ[O] R} (h : ptMap φ = ptMap ψ) : φ = ψ := by
@@ -23,9 +23,9 @@ theorem ptMap_inj {O A R : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRi
   exact AlgHom.ext fun z => congrArg (fun k => k.hom z) e
 
 /- English proof (translation)
-Use `choose a ha using fun m => exists_ptMap (y m)`. Take `⟨L, hL⟩` from `ChPt.algLimSt O A B (p : B) hc a (by`. Introduce `m z w hw`. Establish `e` using `hy m`. Rewrite `e` using `[ha, ha, ptMap_comp_ptMap]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e'` using `congrArg (fun k => k z) (ptMap_inj e)`. Conclude with `(congrArg (Ideal.Quotient.factor (Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow (p : B) (Nat.le_succ m)))) hw).trans e')`. Conclude with `⟨ptMap L, fun m => by rw [ptMap_comp_ptMap, ha, ← hL m]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lim_affine {p : ℕ} {O A B : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing B]
     [Algebra O B] (hc : IsAdicComplete (Ideal.span {(p : B)}) B)
@@ -44,21 +44,19 @@ theorem exists_lim_affine {p : ℕ} {O A B : Type} [CommRing O] [CommRing A] [Al
   exact ⟨ptMap L, fun m => by rw [ptMap_comp_ptMap, ha, ← hL m]⟩
 
 /- English proof (translation)
-Introduce `p _ C _ v O _ _ _ hO Λ _ _ P P' gm hgm N hN`. Use `haveI := P.isLocalRing`. Use `haveI := (P.finite_flat N hN).1`. Use `haveI := (P.finite_flat N hN).2`. Use `haveI := (P'.finite_flat N hN).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := (P'.finite_flat N hN).2`. Take `⟨B, _, _, _, _, ⟨e⟩⟩` from `exists_finite_free (torsion P.Gt N)`. Take `⟨A, _, _, _, _, ⟨e'⟩⟩` from `exists_finite_free (torsion P'.Gt N)`. Establish `hc : IsAdicComplete (Ideal.span {(p : B)}) B`. Use `FlatComplete.isAdicComplete_of_finite_flat _ _ hO B` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Then use the resulting hypothesis. Set `y : ∀ m : ℕ, specO O (B ⧸ Ideal.span {(p : B) ^ m}) ⟶ P'.Gt` to `fun m => (P'.cmp _ (nilpR m)).symm (P.cmp _ (nilpR m) (ptMap (redR p O B m) ≫ e.hom ≫ torsion.ι P.Gt N) ≫ gm)`. Establish `hyN : ∀ m, y m ^ N = 1` using `fun m => by`. Simplify using `only [y]`. Rewrite using `[← map_pow, ← MonObj.pow_comp, ← map_pow, ← MonObj.comp_pow, ← MonObj.comp_pow, torsionι_pow, MonObj.comp_one, MonObj.comp_one, map_one, MonObj.one_comp, map_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Q, hQ⟩` from `exists_lim_affine hc (fun m => torsionLift (y m) (hyN m) ≫ e'.inv) fun m => by`. Rewrite using `[← Category.assoc]`. Use `congr 1`. Apply `torsion_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, torsionLift_ι, torsionLift_ι]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Apply `(P'.cmp _ (nilpR m)).injective` to reduce the goal to its premises. Simplify using `only [y]`. Rewrite using `[P'.cmp_nat _ _ (nilpR (m + 1)) (nilpR m), MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply, ← Category.assoc, ← P.cmp_nat _ _ (nilpR (m + 1)) (nilpR m), ← Category.assoc (ptMap _) (ptMap _), factor_redR]`. Use `⟨e.inv ≫ Q ≫ e'.hom, fun R _ _ hR w => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `exists_ptMap (w ≫ e.inv)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `id hR`. Set `φ : (B ⧸ Ideal.span {(p : B) ^ m}) →ₐ[O] R` to `Ideal.Quotient.liftₐ _ ψ fun a ha => by`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton.1 ha`. Rewrite using `[map_mul, map_pow, map_natCast, hm, zero_mul]`. Establish `hw : w = ptMap φ ≫ ptMap (redR p O B m) ≫ e.hom`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, ptMap_comp_ptMap, show φ.comp (redR p O B m) = ψ from rfl, ← hψ, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Establish `h1 : w ≫ (e.inv ≫ Q ≫ e'.hom) ≫ torsion.ι P'.Gt N = ptMap φ ≫ y m`. Rewrite using `[hw]`. Simplify using `only [Category.assoc, Iso.hom_inv_id_assoc]`. Rewrite using `[← Category.assoc (ptMap (redR p O B m)), hQ, Category.assoc, Iso.inv_hom_id_assoc, torsionLift_ι]`.
-
-Rewrite using `[h1, P'.cmp_nat _ _ (nilpR m) hR, MulEquiv.apply_symm_apply, ← Category.assoc, ← P.cmp_nat _ _ (nilpR m) hR, hw]`. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_torsion_map : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] (v : Valuation C ℝ≥0) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (Λ : Type) [CommRing Λ] [StarRing Λ] (P P' : Point p v O Λ) (gm : P.G ⟶ P'.G), IsMonHom gm → ∀ N : ℕ, 1 ≤ N → ∃ dl : Semi.torsion P.Gt N ⟶ Semi.torsion P'.Gt N, ∀ (R : Type) [CommRing R] [Algebra O R] (hR : IsNilpotent (p : R)) (w : specO O R ⟶ Semi.torsion P.Gt N), P'.cmp R hR (w ≫ dl ≫ Semi.torsion.ι P'.Gt N) = P.cmp R hR (w ≫ Semi.torsion.ι P.Gt N) ≫ gm := by
   intro p _ C _ v O _ _ _ hO Λ _ _ P P' gm hgm N hN

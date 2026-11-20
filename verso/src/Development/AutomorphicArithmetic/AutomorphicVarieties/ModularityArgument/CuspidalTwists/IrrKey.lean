@@ -20,7 +20,7 @@ def Qp : Matrix (Fin 2) (Fin 4) K := !![(2 : K)⁻¹, (2 : K)⁻¹, 0, 0; 0, 0, 
 def Qm : Matrix (Fin 2) (Fin 4) K := !![(2 : K)⁻¹, -(2 : K)⁻¹, 0, 0; 0, 0, (2 : K)⁻¹, (2 : K)⁻¹]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp [tn, Pm, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, h1, h2] <;> ring`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tnP_on (X B : Matrix (Fin 2) (Fin 2) K) (h : B 1 1 = B 0 0 ∧ B 1 0 = B 0 1) (x : Fin 2 → K) :
     tn X B *ᵥ (Pm *ᵥ x) = (B 0 0 + B 0 1) • (Pm *ᵥ (X *ᵥ x)) := by
@@ -29,7 +29,7 @@ theorem tnP_on (X B : Matrix (Fin 2) (Fin 2) K) (h : B 1 1 = B 0 0 ∧ B 1 0 = B
   fin_cases k <;> simp [tn, Pm, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, h1, h2] <;> ring
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp [tn, Mm, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, h1, h2] <;> ring`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tnM_on (X B : Matrix (Fin 2) (Fin 2) K) (h : B 1 1 = B 0 0 ∧ B 1 0 = B 0 1) (x : Fin 2 → K) :
     tn X B *ᵥ (Mm *ᵥ x) = (B 0 0 - B 0 1) • (Mm *ᵥ (X *ᵥ x)) := by
@@ -38,7 +38,7 @@ theorem tnM_on (X B : Matrix (Fin 2) (Fin 2) K) (h : B 1 1 = B 0 0 ∧ B 1 0 = B
   fin_cases k <;> simp [tn, Mm, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, h1, h2] <;> ring
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp [tn, Pm, Mm, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, h1, h2] <;> ring`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tnP_off (X B : Matrix (Fin 2) (Fin 2) K) (h : B 1 1 = -B 0 0 ∧ B 1 0 = -B 0 1) (x : Fin 2 → K) :
     tn X B *ᵥ (Pm *ᵥ x) = (B 0 0 + B 0 1) • (Mm *ᵥ (X *ᵥ x)) := by
@@ -47,7 +47,7 @@ theorem tnP_off (X B : Matrix (Fin 2) (Fin 2) K) (h : B 1 1 = -B 0 0 ∧ B 1 0 =
   fin_cases k <;> simp [tn, Pm, Mm, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, h1, h2] <;> ring
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp [tn, Pm, Mm, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, h1, h2] <;> ring`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tnM_off (X B : Matrix (Fin 2) (Fin 2) K) (h : B 1 1 = -B 0 0 ∧ B 1 0 = -B 0 1) (x : Fin 2 → K) :
     tn X B *ᵥ (Mm *ᵥ x) = (B 0 0 - B 0 1) • (Pm *ᵥ (X *ᵥ x)) := by
@@ -56,7 +56,7 @@ theorem tnM_off (X B : Matrix (Fin 2) (Fin 2) K) (h : B 1 1 = -B 0 0 ∧ B 1 0 =
   fin_cases k <;> simp [tn, Pm, Mm, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, h1, h2] <;> ring
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp [tn, Qp, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, h1, h2] <;> ring`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Qp_tn (X B : Matrix (Fin 2) (Fin 2) K) (h : B 1 1 = B 0 0 ∧ B 1 0 = B 0 1) (v : Fin 4 → K) :
     Qp *ᵥ (tn X B *ᵥ v) = (B 0 0 + B 0 1) • (X *ᵥ (Qp *ᵥ v)) := by
@@ -65,9 +65,9 @@ theorem Qp_tn (X B : Matrix (Fin 2) (Fin 2) K) (h : B 1 1 = B 0 0 ∧ B 1 0 = B 
   fin_cases k <;> simp [tn, Qp, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, h1, h2] <;> ring
 
 /- English proof (translation)
-Establish `h2' : (2 : K)⁻¹ + 2⁻¹ = 1` using `by rw [← two_mul, mul_inv_cancel₀ h2]`. Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp [Pm, Qp, Mm, Qm, Matrix.mulVec, dotProduct, Fin.sum_univ_succ]`. Take the linear combination `(v 0) * h2'`. Take the linear combination `(v 1) * h2'`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(v 2) * h2'`. Take the linear combination `(v 3) * h2'`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dec (h2 : (2 : K) ≠ 0) (v : Fin 4 → K) : Pm *ᵥ (Qp *ᵥ v) + Mm *ᵥ (Qm *ᵥ v) = v := by
   have h2' : (2 : K)⁻¹ + 2⁻¹ = 1 := by rw [← two_mul, mul_inv_cancel₀ h2]
@@ -79,63 +79,57 @@ theorem dec (h2 : (2 : K) ≠ 0) (v : Fin 4 → K) : Pm *ᵥ (Qp *ᵥ v) + Mm *�
   · linear_combination (v 3) * h2'
 
 /- English proof (translation)
-Establish `hdec : ∀ v : Fin 4 → K, Pm *ᵥ (Qp *ᵥ v) + Mm *ᵥ (Qm *ᵥ v) = v` using `dec h2`. Establish `aP : ∀ i ∈ On, ∀ x, tn (A i) (B i) *ᵥ (Pm *ᵥ x) = (B i 0 0 + B i 0 1) • (Pm *ᵥ (A i *ᵥ x))` using `fun i hi x => tnP_on (A i) (B i) (hon i hi) x`. Establish `aM : ∀ i ∈ On, ∀ x, tn (A i) (B i) *ᵥ (Mm *ᵥ x) = (B i 0 0 - B i 0 1) • (Mm *ᵥ (A i *ᵥ x))` using `fun i hi x => tnM_on (A i) (B i) (hon i hi) x`. Establish `aPt : ∀ x, tn (A t) (B t) *ᵥ (Pm *ᵥ x) = (B t 0 0 + B t 0 1) • (Mm *ᵥ (A t *ᵥ x))` using `fun x => tnP_off (A t) (B t) hoff x`. Establish `aMt : ∀ x, tn (A t) (B t) *ᵥ (Mm *ᵥ x) = (B t 0 0 - B t 0 1) • (Pm *ᵥ (A t *ᵥ x))` using `fun x => tnM_off (A t) (B t) hoff x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdetBt : (B t).det = -((B t 0 0 + B t 0 1) * (B t 0 0 - B t 0 1))`. Rewrite using `[Matrix.det_fin_two, hoff.1, hoff.2]`. Expand and normalize the polynomial expressions, which then agree. Establish `kpt : B t 0 0 + B t 0 1 ≠ 0` using `fun h => hBt (by rw [hdetBt, h, zero_mul, neg_zero])`. Establish `kmt : B t 0 0 - B t 0 1 ≠ 0` using `fun h => hBt (by rw [hdetBt, h, mul_zero, neg_zero])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `surjt : ∀ y, ∃ x, A t *ᵥ x = y` using `fun y => ⟨(A t)⁻¹ *ᵥ y, by rw [mulVec_mulVec, mul_nonsing_inv _ (Ne.isUnit hAt), one_mulVec]⟩`. Establish `unsc : ∀ (c : K) (w : Fin 4 → K), c ≠ 0 → c • w ∈ W → w ∈ W` using `fun c w hc h => by`. Use `W.smul_mem c⁻¹ h` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis. Establish `hP` using `hirr (W.comap (Matrix.mulVecLin Pm)) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `i hi v hv`. Simplify using `only [Submodule.mem_comap, Matrix.mulVecLin_apply] at hv ⊢`. Use `hW i (Or.inl hi) _ hv` as an intermediate fact. Rewrite `this` using `[aP i hi]`. Conclude with `unsc _ _ (hkp i hi) this)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hM` using `hirr (W.comap (Matrix.mulVecLin Mm)) (by`. Introduce `i hi v hv`. Simplify using `only [Submodule.mem_comap, Matrix.mulVecLin_apply] at hv ⊢`. Use `hW i (Or.inl hi) _ hv` as an intermediate fact. Rewrite `this` using `[aM i hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `unsc _ _ (hkm i hi) this)`. Establish `hI` using `hirr (W.map (Matrix.mulVecLin Qp)) (by`. Introduce `i hi x hx`. Take `⟨v, hv, rfl⟩` from `Submodule.mem_map.1 hx`. Use `Submodule.mem_map.2 ⟨(B i 0 0 + B i 0 1)⁻¹ • (tn (A i) (B i) *ᵥ v), W.smul_mem _ (hW i (Or.inl hi) v hv), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVecLin_apply]`. Rewrite using `[mulVec_smul, Qp_tn (A i) (B i) (hon i hi), smul_smul, inv_mul_cancel₀ (hkp i hi), one_smul])`. Establish `memP : W.comap (Matrix.mulVecLin Pm) = ⊤ → ∀ x, Pm *ᵥ x ∈ W` using `fun h x => by`. Establish `: x ∈ W.comap (Matrix.mulVecLin Pm)` using `h ▸ Submodule.mem_top`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `memM : W.comap (Matrix.mulVecLin Mm) = ⊤ → ∀ x, Mm *ᵥ x ∈ W` using `fun h x => by`. Establish `: x ∈ W.comap (Matrix.mulVecLin Mm)` using `h ▸ Submodule.mem_top`. Simplify using `using this`. Break down `hP with hP | hP` into its components or cases. Use `swap`.
+Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Rewrite using `[← hdec v]`. Use `W.add_mem (memP hP _) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨x, hx⟩` from `surjt (Qm *ᵥ v)`. Establish `h1` using `hW t (Or.inr rfl) _ (memP hP x)`. Rewrite `h1` using `[aPt, hx]`. Conclude with `unsc _ _ kpt h1`. Break down `hM with hM | hM` into its components or cases.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `swap`. Use `right`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Rewrite using `[← hdec v]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `W.add_mem ?_ (memM hM _)` and prove the remaining obligations. Take `⟨x, hx⟩` from `surjt (Qp *ᵥ v)`. Establish `h1` using `hW t (Or.inr rfl) _ (memM hM x)`. Rewrite `h1` using `[aMt, hx]`. Conclude with `unsc _ _ kmt h1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `inj : ∀ x, Pm *ᵥ x ∈ W → x = 0` using `fun x hx => by`. Establish `: x ∈ W.comap (Matrix.mulVecLin Pm)` using `by simpa using hx`. Rewrite `this` using `[hP]`. Simplify using `using this`. Establish `injM : ∀ y, Mm *ᵥ y ∈ W → y = 0` using `fun y hy => by`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: y ∈ W.comap (Matrix.mulVecLin Mm)` using `by simpa using hy`. Rewrite `this` using `[hM]`. Simplify using `using this`. Break down `hI with hI | hI` into its components or cases. Use `left`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Establish `h1 : Qp *ᵥ v = 0`. Establish `: Qp *ᵥ v ∈ W.map (Matrix.mulVecLin Qp)` using `Submodule.mem_map_of_mem hv`. Rewrite `this` using `[hI]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h3 : Mm *ᵥ (Qm *ᵥ v) ∈ W`. Establish `e` using `hdec v`. Rewrite `e` using `[h1, mulVec_zero, zero_add]`. Rewrite using `[e]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hv`. Establish `h4` using `injM _ h3`. Rewrite using `[Submodule.mem_bot, ← hdec v, h1, h4, mulVec_zero, mulVec_zero, add_zero]`. It suffices to derive a contradiction. Establish `hex : ∀ j : Fin 2, ∃ w ∈ W, Qp *ᵥ w = Pi.single j 1` using `fun j => by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (Pi.single j (1 : K) : Fin 2 → K) ∈ W.map (Matrix.mulVecLin Qp)` using `hI ▸ Submodule.mem_top`. Take `⟨w, hw, e⟩` from `Submodule.mem_map.1 this`. Conclude with `⟨w, hw, e⟩`. Use `choose w hwW hwQ using hex`. Set `Wt : Matrix (Fin 4) (Fin 2) K` to `Matrix.of fun a j => w j a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hWt : ∀ x, Wt *ᵥ x ∈ W` using `fun x => by`. Establish `e : Wt *ᵥ x = x 0 • w 0 + x 1 • w 1`. Use extensionality with `a`. Simplify using `[Wt, Matrix.mulVec, dotProduct, Fin.sum_univ_two, mul_comm]`. Rewrite using `[e]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W.add_mem (W.smul_mem _ (hwW 0)) (W.smul_mem _ (hwW 1))`. Establish `hQW : ∀ x, Qp *ᵥ (Wt *ᵥ x) = x` using `fun x => by`. Establish `e : Wt *ᵥ x = x 0 • w 0 + x 1 • w 1`. Use extensionality with `a`. Simplify using `[Wt, Matrix.mulVec, dotProduct, Fin.sum_univ_two, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e, mulVec_add, mulVec_smul, mulVec_smul, hwQ, hwQ]`. Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp`. Establish `hG : ∀ x, Pm *ᵥ x + Mm *ᵥ (Qm *ᵥ (Wt *ᵥ x)) ∈ W` using `fun x => by`. Establish `e` using `hdec (Wt *ᵥ x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `e` using `[hQW]`. Rewrite using `[e]`. Conclude with `hWt x`. Establish `huniq : ∀ x y, Pm *ᵥ x + Mm *ᵥ y ∈ W → y = Qm *ᵥ (Wt *ᵥ x)` using `fun x y h => by`. Establish `h1` using `W.sub_mem h (hG x)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[add_sub_add_left_eq_sub, ← mulVec_sub]`. Conclude with `sub_eq_zero.1 (injM _ h1)`. Take `⟨Φ, hΦ⟩ : ∃ Φ : Matrix (Fin 2) (Fin 2) K, ∀ x, Φ *ᵥ x = Qm *ᵥ (Wt *ᵥ x)` from `⟨Qm * Wt, fun x => (Matrix.mulVec_mulVec x Qm Wt).symm⟩`. Establish `hΦdet : Φ.det ≠ 0`. Introduce `hd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hd`. Rewrite `hv` using `[hΦ]`. Apply `hv0` to reduce the goal to its premises. Apply `inj` to reduce the goal to its premises. Use `hG v` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hv, mulVec_zero, add_zero]`. Then use the resulting hypothesis. Establish `hkp0` using `hkp u hu`. Establish `heq : ∀ x, ((B u 0 0 + B u 0 1)⁻¹ * (B u 0 0 - B u 0 1)) • (A u *ᵥ (Qm *ᵥ (Wt *ᵥ x))) = Qm *ᵥ (Wt *ᵥ (A u *ᵥ x))` using `fun x => by`. Establish `h1` using `hW u (Or.inl hu) _ (hG x)`. Rewrite `h1` using `[mulVec_add, aP u hu, aM u hu]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `W.smul_mem (B u 0 0 + B u 0 1)⁻¹ h1`. Rewrite `h2` using `[smul_add, smul_smul, inv_mul_cancel₀ hkp0, one_smul, smul_smul, ← mulVec_smul]`. Conclude with `(huniq _ _ h2)`. Establish `hmat : ((B u 0 0 + B u 0 1)⁻¹ * (B u 0 0 - B u 0 1)) • (A u * Φ) = Φ * A u`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises.
-
-Rewrite using `[map_smul, Matrix.toLin'_mul, Matrix.toLin'_mul]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.comp_apply, Matrix.toLin'_apply, Matrix.toLin'_apply, Matrix.toLin'_apply, Matrix.toLin'_apply, hΦ, hΦ, heq]`. Establish `hd` using `congrArg Matrix.det hmat`.
-
-Rewrite `hd` using `[Matrix.det_smul, Matrix.det_mul, Matrix.det_mul, Fintype.card_fin]`. Establish `hc : ((B u 0 0 + B u 0 1)⁻¹ * (B u 0 0 - B u 0 1)) ^ 2 = 1`. Establish `hne0 : (A u).det * Φ.det ≠ 0` using `mul_ne_zero hAu hΦdet`. Use `mul_right_cancel₀ hne0 ?_` and prove the remaining obligations. Rewrite using `[hd, one_mul, mul_comm]`.
-
-Apply `hne` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc, mul_one]`. Use `_ = (B u 0 0 - B u 0 1) ^ 2 := by`. Rewrite using `[mul_pow, inv_pow, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero 2 hkp0), one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key {ι : Type} (h2 : (2 : K) ≠ 0) (On : Set ι) (A B : ι → Matrix (Fin 2) (Fin 2) K)
     (hon : ∀ i ∈ On, B i 1 1 = B i 0 0 ∧ B i 1 0 = B i 0 1)

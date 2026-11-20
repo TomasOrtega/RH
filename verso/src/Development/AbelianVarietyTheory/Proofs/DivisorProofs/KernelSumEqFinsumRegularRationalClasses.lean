@@ -14,7 +14,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT.Regroup
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finsum_eq_finsum_conjugacyClasses_centraliserCosets a ha`.
+A detailed English derivation is pending.
 -/
 theorem finsum_classes {H : Type} [Group H] (a : H → ℂ) (ha : (Function.support a).Finite) :
     ∑ᶠ γ, a γ = ∑ᶠ c : TwCl (MonoidHom.id H),
@@ -22,7 +22,7 @@ theorem finsum_classes {H : Type} [Group H] (a : H → ℂ) (ha : (Function.supp
   GlobalTheory.T.finsum_eq_finsum_conjugacyClasses_centraliserCosets a ha
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.unfold_doubleCoset_classSum_to_subgroup ι hι Γ hΓ T Γ' hΓ' K u hu h1 h2 h3`.
+A detailed English derivation is pending.
 -/
 theorem unfold {G H : Type} [Group G] [Group H] (ι : H →* G) (hι : Function.Injective ι) (Γ : Subgroup G)
     (hΓ : ∀ g, g ∈ Γ ↔ ∃ h, ι h = g) (T : Subgroup H) (Γ' : Subgroup G) (hΓ' : ∀ g, g ∈ Γ' ↔ ∃ t ∈ T, ι t = g)
@@ -38,31 +38,31 @@ theorem unfold {G H : Type} [Group G] [Group H] (ι : H →* G) (hι : Function.
   GlobalTheory.T.unfold_doubleCoset_classSum_to_subgroup ι hι Γ hΓ T Γ' hΓ' K u hu h1 h2 h3
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.definiteUnitaryFinitePart_mul_injective_range`.
+A detailed English derivation is pending.
 -/
 theorem finPt_props : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), (∀ a b : UE E n, finPt (a * b) = finPt a * finPt b) ∧ Function.Injective (finPt : UE E n → finU E n) ∧ ∀ x : finU E n, x ∈ ratFinU E n ↔ ∃ γ : UE E n, finPt γ = x :=
   GlobalTheory.T.definiteUnitaryFinitePart_mul_injective_range
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finite_doubleCoset_rational_productOfLocalLevels`.
+A detailed English derivation is pending.
 -/
 theorem finite_classes : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → Finite (DoubleCoset.Quotient (ratFinU E n : Set (finU E n)) (globLev S K' : Set (finU E n))) :=
   GlobalTheory.T.finite_doubleCoset_rational_productOfLocalLevels
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finite_definiteUnitaryRational_inf_conj_level`.
+A detailed English derivation is pending.
 -/
 theorem finite_stab : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → ∀ x : finU E n, Finite ↥(ratFinU E n ⊓ (globLev S K').map (MulAut.conj x).toMonoidHom) :=
   GlobalTheory.T.finite_definiteUnitaryRational_inf_conj_level
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finite_rationalPoints_support_definiteUnitary_testFunction`.
+A detailed English derivation is pending.
 -/
 theorem finite_supp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → ∀ f : ∀ w : Pl E, UL n w → ℂ, IsTest (KL n) K' f → ∀ x : finU E n, {γ : UE E n | globFn S f (x⁻¹ * finPt γ * x) ≠ 0}.Finite :=
   GlobalTheory.T.finite_rationalPoints_support_definiteUnitary_testFunction
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.separable_charpoly_of_testFunction_ne_zero_regularPlace`.
+A detailed English derivation is pending.
 -/
 theorem separable_of_globFn_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (S : Set (Pl E)) (K' : ∀ w : Pl E, Subgroup (UL n w)) (f : ∀ w : Pl E, UL n w → ℂ), IsTest (KL n) K' f → ∀ w ∈ S, (∀ y, f w y ≠ 0 → y.1.val.charpoly.Separable) → ∀ (x : finU E n) (γ : UE E n), globFn S f (x⁻¹ * finPt γ * x) ≠ 0 → γ.1.val.charpoly.Separable :=
   GlobalTheory.T.separable_charpoly_of_testFunction_ne_zero_regularPlace
@@ -72,11 +72,11 @@ end GlobalTheory.BCT.Regroup
 namespace GlobalTheory.BCT.Regroup
 
 /- English proof (translation)
-Use `Set.Finite.of_finite_image (f := fun δ : H ⧸ twCent (MonoidHom.id H) c => Quotient.out δ * c * (Quotient.out δ)⁻¹) (h4.subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨δ, hδ, rfl⟩ show Φ (x⁻¹ * ι (Quotient.out δ * c * (Quotient.out δ)⁻¹) * x) ≠ 0`. Establish `hδ' : Φ (((ι (Quotient.out δ))⁻¹ * x)⁻¹ * ι c * ((ι (Quotient.out δ))⁻¹ * x)) ≠ 0` using `hδ`. Use `hδ' using 2` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul, map_inv, _root_.mul_inv_rev, inv_inv]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Use `group`. Introduce `δ₁ _ δ₂ _ e`. Simplify using `only at e`. Rewrite using `[← Quotient.out_eq δ₁, ← Quotient.out_eq δ₂]`. Apply `QuotientGroup.eq.2` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(Quotient.out δ₁)⁻¹ * Quotient.out δ₂ * c = c * ((Quotient.out δ₁)⁻¹ * Quotient.out δ₂)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem support_conj_finite {G H : Type} [Group G] [Group H] (ι : H →* G) (Φ : G → ℂ) (x : G)
     (h4 : {γ : H | Φ (x⁻¹ * ι γ * x) ≠ 0}.Finite) (c : H) :
@@ -100,31 +100,27 @@ theorem support_conj_finite {G H : Type} [Group G] [Group H] (ι : H →* G) (Φ
       _ = c * ((Quotient.out δ₁)⁻¹ * Quotient.out δ₂) := by group
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite (DoubleCoset.Quotient (Γ : Set G) (K : Set G))`. Use `set D : DoubleCoset.Quotient (Γ : Set G) (K : Set G) → TwCl (MonoidHom.id H) → ℂ := fun q c => ∑ᶠ δ : H ⧸ twCent (MonoidHom.id H) c.rep, Φ ((Quotient.out q)⁻¹ * ι (Quotient.out δ * c.rep * (Quotient.out δ)⁻¹) * Quotient.out q) with hD`. Establish `s1 : ∀ q : DoubleCoset.Quotient (Γ : Set G) (K : Set G), ∑ᶠ γ : H, Φ ((Quotient.out q)⁻¹ * ι γ * Quotient.out q) * ψ γ = ∑ᶠ c : TwCl (MonoidHom.id H), ψ c.rep * D q c`. Introduce `q`. Rewrite using `[finsum_classes _ ((h4 (Quotient.out q)).subset fun γ hγ => left_ne_zero_of_mul hγ)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[hD, mul_finsum]`. Use `finsum_congr fun δ => ?_` and prove the remaining obligations. Establish `: ψ (Quotient.out δ * c.rep * (Quotient.out δ)⁻¹) = ψ c.rep`. Simplify using `using hψ c.rep (Quotient.out δ)⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, mul_comm]`. Establish `hsupp : ∀ q : DoubleCoset.Quotient (Γ : Set G) (K : Set G), (Function.support fun c : TwCl (MonoidHom.id H) => ψ c.rep * D q c).Finite`. Introduce `q`. Use `((h4 (Quotient.out q)).image (fun γ => (Quot.mk _ γ : TwCl (MonoidHom.id H)))).subset ?_` and prove the remaining obligations. Introduce `(c : TwCl (MonoidHom.id H)) hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc' : D q c ≠ 0` using `right_ne_zero_of_mul hc`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ⟩ : ∃ δ : H ⧸ twCent (MonoidHom.id H) c.rep, Φ ((Quotient.out q)⁻¹ * ι (Quotient.out δ * c.rep * (Quotient.out δ)⁻¹) * Quotient.out q) ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Conclude with `hc' (by rw [hD]; simp only; rw [finsum_congr hn]; simp)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, hδ, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Quot.mk _ (Quotient.out δ * c.rep * (Quotient.out δ)⁻¹) = c`. Conclude with `(Quot.sound ⟨Quotient.out δ, by simp [mul_assoc]; rfl⟩).trans (Quot.out_eq c)`. Repeatedly rewrite using `[s1]`. Rewrite using `[finsum_eq_sum_of_fintype]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Repeatedly rewrite using `[mul_finsum]`. Rewrite using `[← finsum_sum_comm]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Establish `e2` using `unfold ι hι Γ hΓ (twCent (MonoidHom.id H) c.rep) (Γ ⊓ twCent (MonoidHom.id G) (ι c.rep)) (fun g => by`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `⟨hg, hc⟩`. Take `⟨h, rfl⟩` from `(hΓ g).1 hg`. Use `⟨h, hι ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ι h * ι c.rep = ι c.rep * ι h at hc`. Express the relevant statement in the definitionally equal form `ι (h * c.rep) = ι (c.rep * h)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, hc]`. Introduce and unpack `⟨t, ht, rfl⟩`. Use `⟨(hΓ _).2 ⟨t, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ι t * ι c.rep = ι c.rep * ι t`. Establish `ht' : t * c.rep = c.rep * t` using `ht`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ht', map_mul])`. Use `K (fun g => Φ (g⁻¹ * ι c.rep * g))`. Use the proof step `(fun t ht k hk g => by`. Establish `ht' : t * c.rep = c.rep * t` using `ht`. Simplify using `only [_root_.mul_inv_rev]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (k⁻¹ * (g⁻¹ * (ι t)⁻¹) * ι c.rep * (ι t * g * k)) = k⁻¹ * (g⁻¹ * ι c.rep * g) * k`. Establish `: (ι t)⁻¹ * ι c.rep * ι t = ι c.rep`. Rewrite using `[← map_inv, ← map_mul, ← map_mul, mul_assoc, ← ht', inv_mul_cancel_left]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, hΦ k hk])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1 h2 (fun x => support_conj_finite ι Φ x (h4 x) c.rep)`. Rewrite using `[← mul_finsum, ← e2, finsum_eq_sum_of_fintype, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hD]`. Simplify using `only`.
-
-Rewrite using `[mul_left_comm]`. Use `congr 2`. Use `finsum_congr fun δ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [map_mul, map_inv, _root_.mul_inv_rev, inv_inv]`.
-
-Use `group`. Introduce `q _`. Conclude with `(hsupp q).subset fun c hc => right_ne_zero_of_mul hc`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem regroup_abstract {G H : Type} [Group G] [Group H] (ι : H →* G) (hι : Function.Injective ι) (Γ : Subgroup G)
     (hΓ : ∀ g, g ∈ Γ ↔ ∃ h, ι h = g) (K : Subgroup G) (Φ : G → ℂ) (ψ : H → ℂ)
@@ -220,11 +216,11 @@ namespace GlobalTheory.BCT.Regroup
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Unfold `toSub`. Distinguish the cases in `hy : y ∈ U`. Rewrite using `[dif_pos hy, dif_pos (mul_mem (mul_mem (inv_mem k.2) hy) k.2)]`. Use `ext`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_neg hy, dif_neg]`. Simplify using the standard rewrite rules. Introduce `h`. Apply `hy` to reduce the goal to its premises. Use `mul_mem (mul_mem k.2 h) (inv_mem k.2)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify `this` using `[mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toSub_conj {G : Type} [Group G] (U : Subgroup G) (k : U) (y : G) :
     toSub U ((k : G)⁻¹ * y * k) = k⁻¹ * toSub U y * k := by
@@ -241,11 +237,11 @@ theorem toSub_conj {G : Type} [Group G] (U : Subgroup G) (k : U) (y : G) :
       simpa [mul_assoc] using this
 
 /- English proof (translation)
-Unfold `globFn`. Use `finprod_mem_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `hkw : cLoc w k.1 ∈ (K' w).map (UL n w).subtype`. Establish `h1` using `Subgroup.mem_iInf.1 hk w`. Conclude with `Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 h1 hw)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k', hk', e⟩` from `Subgroup.mem_map.1 hkw`. Establish `e2 : cLoc w (k⁻¹ * g * k).1 = ((k' : UL n w) : GLw n w)⁻¹ * cLoc w g.1 * (k' : GLw n w)`. Establish `e' : (k' : GLw n w) = cLoc w k.1` using `e`. Rewrite using `[e']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, toSub_conj, ((hf w).2 k' hk' _).2, ((hf w).2 k'⁻¹ (inv_mem hk') _).1]`.
+A detailed English derivation is pending.
 -/
 theorem globFn_conj (S : Set (Pl E)) (K' : ∀ w : Pl E, Subgroup (UL n w)) (f : ∀ w : Pl E, UL n w → ℂ)
     (hf : ∀ w, IsHecke (K' w) (f w)) (k : finU E n) (hk : k ∈ globLev S K') (g : finU E n) :
@@ -263,9 +259,9 @@ theorem globFn_conj (S : Set (Pl E)) (K' : ∀ w : Pl E, Subgroup (UL n w)) (f :
   rw [e2, toSub_conj, ((hf w).2 k' hk' _).2, ((hf w).2 k'⁻¹ (inv_mem hk') _).1]
 
 /- English proof (translation)
-Use `congr 1`. Establish `: (b⁻¹ * a * b).1.val = (b.1.val)⁻¹ * a.1.val * b.1.val`. Simplify using `[Matrix.coe_units_inv]`. Rewrite using `[this]`. Establish `h` using `Matrix.charpoly_units_conj (b.1)⁻¹ a.1.val`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `h` using `[Matrix.coe_units_inv]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem chW_conj (lam : InfinitePlace E → DomWeight n) (a b : UE E n) :
     chW lam (b⁻¹ * a * b).1.val.charpoly = chW lam a.1.val.charpoly := by
@@ -277,11 +273,11 @@ theorem chW_conj (lam : InfinitePlace E → DomWeight n) (a b : UE E n) :
   simpa [Matrix.coe_units_inv] using h
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n hn S hS lam K' hK f hf hreg`. Take `⟨hmul, hinj, hmem⟩` from `finPt_props E n`. Set `ι : UE E n →* finU E n` to `MonoidHom.mk' finPt hmul`. Establish `key : ∑ᶠ q : DoubleCoset.Quotient (ratFinU E n : Set (finU E n)) (globLev S K' : Set (finU E n)), ((Nat.card (ratFinU E n ⊓ (globLev S K').map (MulAut.conj (Quotient.out q)).toMonoidHom : Subgroup (finU E n)) : ℂ))⁻¹ * ∑ᶠ γ : UE E n, globFn S f ((Quotient.out q)⁻¹ * finPt γ * Quo …` using `regroup_abstract ι hinj (ratFinU E n) hmem (globLev S K') (globFn S f) (fun γ => chW lam γ.1.val.charpoly) (globFn_conj S K' f hf.1) (chW_conj lam) (finite_classes E hU n hn S hS K' hK) (finite_stab E hU n hn S hS K' hK) (finite_supp E hU n hn S hS K' hK f hf)`. Take `⟨w, hw, hsep⟩` from `hreg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Unfold `kernSum`. Rewrite using `[key, mul_finsum]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Use `split_ifs with hc`. Rewrite using `[clsSum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h0 : ∀ q : DoubleCoset.Quotient ((ratFinU E n ⊓ twCent (MonoidHom.id _) (finPt c.rep) : Subgroup (finU E n)) : Set (finU E n)) (globLev S K' : Set (finU E n)), globFn S f ((Quotient.out q)⁻¹ * finPt c.rep * Quotient.out q) = 0` using `fun q => by`. Assume the negation of the conclusion as `h`. Conclude with `hc (separable_of_globFn_ne_zero E n S K' f hf w hw hsep _ _ h)`. Simplify using `[h0]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kernSum_eq_finsum_classes : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ (lam : InfinitePlace E → DomWeight n) (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → ∀ f : ∀ w : Pl E, UL n w → ℂ, IsTest (KL n) K' f → (∃ w ∈ S, ∀ y, f w y ≠ 0 → y.1.val.charpoly.Separable) → kernSum S lam K' f = ∑ᶠ c : TwCl (MonoidHom.id (UE E n)), if c.rep.1.val.charpoly.Separable then chW lam c.rep.1.val.charpoly * clsSum S K' f c.rep else 0 := by
   intro E _ _ _ hU n hn S hS lam K' hK f hf hreg

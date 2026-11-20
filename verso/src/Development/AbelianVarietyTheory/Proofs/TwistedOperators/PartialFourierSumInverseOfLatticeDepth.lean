@@ -20,7 +20,7 @@ namespace GlobalTheory.FlipMatch.FourierInv
 open ValuativeRel
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_eq_fintype_card]`. Establish `hne : IsLocalRing.maximalIdeal 𝒪[k] ≠ ⊥` using `IsDiscreteValuationRing.not_a_field _`. Establish `hq` using `cardQuot_pow_of_prime (P := IsLocalRing.maximalIdeal 𝒪[k]) hne (i := e)`. Rewrite `hq` using `[Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `hq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_res_pow (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (e : ℕ) : Fintype.card (Res k e) = resCard k ^ e := by
@@ -31,23 +31,21 @@ theorem card_res_pow (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] 
   exact hq
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A _ _ C _ _ ψ ϖ n P hϖ hψ Ξ hΞ`. Use function extensionality and compare the values at `Y`. Rewrite using `[fourierSum_apply]`. Use `split_ifs with hY`. Set `r : A → P → 𝒪[k]` to `fun i j => ⟨((ϖ ^ n : kˣ) : k) * Y i j, hY i j j.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `S₀ : A → P → Res k n` to `fun i j => Ideal.Quotient.mk _ (r i j)`. Use `set M : Matrix A P k := (ϖ ^ n)⁻¹ • liftRes S₀ with hM`. Establish `h0 : 0 < valuation k ((ϖ ^ n : kˣ) : k)` using `zero_lt_iff.2 (by simp)`. Establish `hdiff : ∀ i (j : P), Y i j - M i j ∈ 𝒪[k]` using `fun i j => by`. Establish `h1 : ((Quotient.out (S₀ i j) : 𝒪[k]) - r i j) ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ n` using `Ideal.Quotient.eq.1 (Ideal.Quotient.mk_out _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[GlobalTheory.SplitFlip.Model.val_le_iff_mem hϖ]`. Establish `e1 : Y i j - M i j = -((((ϖ ^ n)⁻¹ : kˣ) : k) * (((Quotient.out (S₀ i j) : 𝒪[k]) - r i j : 𝒪[k]) : k))`. Simplify using `only [hM, Matrix.smul_apply, Units.smul_def, smul_eq_mul, liftRes, Matrix.of_apply, r]`. Use `push_cast`. Rewrite using `[mul_sub, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ ϖ.ne_zero), one_mul]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, Valuation.mem_integer_iff, Valuation.map_neg, map_mul, Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `inv_mul_le_one_of_le₀ h1 h0.le`. Establish `triv : ∀ y : k, y ∈ 𝒪[k] → ψ y = 1` using `fun y hy => (hψ 1).2 le_rfl y (by simpa using (Valuation.mem_integer_iff _ _).1 hy)`. Establish `hpair : ∀ T : A → P → Res k n, ψ (pairCols P Y (liftRes T)) = ψ (pairCols P (setCols P Y M) (liftRes T))` using `fun T => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : pairCols P Y (liftRes T) = pairCols P (setCols P Y M) (liftRes T) + ∑ i, ∑ j : P, liftRes T i j * (Y i j - M i j)`. Simplify using `only [pairCols, setCols, Matrix.of_apply, Finset.coe_mem, dif_pos, Subtype.coe_eta, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, AddChar.map_add_eq_mul, triv _ (Subring.sum_mem _ fun i _ => Subring.sum_mem _ fun j _ => mul_mem (liftRes_mem T i j) (hdiff i j)), mul_one]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hinv : Ξ (setCols P Y M) = Ξ Y`. Establish `e3 : setCols P Y M = Y + Matrix.of fun i j => if h : j ∈ P then M i ⟨j, h⟩ - Y i j else 0`. Apply the tactic sequence `ext i j; by_cases h : j ∈ P <;> simp [setCols, h]`. Rewrite using `[e3]`. Use `hΞ.2 Y _ (GlobalTheory.SplitFlip.FourierDepth.mem_matLat_smul_blockLat.2 ⟨fun i j hj => ?_, fun i j hj => ?_⟩)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Matrix.of_apply, dif_pos hj]`. Use `neg_mem (hdiff i ⟨j, hj⟩)` as an intermediate fact. Simplify using `using this`. Simplify using `[hj]`. Repeatedly rewrite using `[hpair]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.SplitFlip.Model.sum_invFourierSum hϖ hψ n P Ξ Y S₀]`. Establish `hq : (resCard k : ℂ) ≠ 0` using `by show ((Nat.card 𝓀[k] : ℕ) : ℂ) ≠ 0`. Conclude with `(Nat.card_pos (α := IsLocalRing.ResidueField 𝒪[k])).ne'` after adjusting the coercions. Establish `hc : ((resCard k : ℂ) ^ (n * Fintype.card A * P.card))⁻¹ * ((resCard k : ℂ) ^ n) ^ (Fintype.card A * P.card) = 1`. Rewrite using `[← pow_mul, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hq)]`.
-
-Rewrite using `[← hM, hinv, card_res_pow, Nat.cast_pow, ← mul_assoc, hc, one_mul]`. Use `symm`. Use `hΞ.1 Y fun h => hY ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.SplitFlip.FourierDepth.mem_matLat_blockLat.1 h).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fourierSum_invFourierSum : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (A : Type) [Fintype A] [DecidableEq A] (C : Type) [Fintype C] [DecidableEq C] (ψ : AddChar k Circle) (ϖ : kˣ) (n : ℕ) (P : Finset C), IsUnif ϖ → HasConductor ψ 1 →
     ∀ Ξ : Matrix A C k → ℂ, HasDepth ϖ n (blockLat ϖ n P) Ξ → fourierSum ψ ϖ n P (invFourierSum ψ ϖ n P Ξ) = Ξ := by

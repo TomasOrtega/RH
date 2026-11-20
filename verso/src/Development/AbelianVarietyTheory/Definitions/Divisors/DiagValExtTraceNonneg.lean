@@ -27,7 +27,7 @@ variable {m l n n' : Type} [Fintype m] [Fintype l] [Fintype n] [Fintype n'] [Dec
 omit [Fintype n'] in
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [chg, mul_apply, submatrix_apply, transpose_apply, conjTranspose_apply]`. Rewrite using `[← e.sum_comp]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [← e.sum_comp]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chg_submatrix {m' : Type} [Fintype m'] (A : Matrix n n' ℂ) (H : Matrix n n ℂ) (e : m' ≃ n)
     {l' : Type} (f : l' → n') :
@@ -42,7 +42,7 @@ variable (A₁ : Matrix m m ℂ) (B : Matrix m l ℂ) (A₂ : Matrix l l ℂ) (H
 omit [DecidableEq m] [DecidableEq l] in
 
 /- English proof (translation)
-Use `conv_lhs => rw [← fromBlocks_toBlocks H]`. Simplify using `[chg, fromBlocks_transpose, fromBlocks_conjTranspose, fromBlocks_multiply, Matrix.mul_add, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chg_fromBlocks : chg (fromBlocks A₁ B 0 A₂) H = fromBlocks (chg A₁ H.toBlocks₁₁)
     (A₁ᵀ * (H.toBlocks₁₁ * Bᴴᵀ + H.toBlocks₁₂ * A₂ᴴᵀ)) ((Bᵀ * H.toBlocks₁₁ + A₂ᵀ * H.toBlocks₂₁) * A₁ᴴᵀ)
@@ -54,7 +54,7 @@ theorem chg_fromBlocks : chg (fromBlocks A₁ B 0 A₂) H = fromBlocks (chg A₁
 omit [DecidableEq m] [DecidableEq l] in
 
 /- English proof (translation)
-Rewrite using `[chg_fromBlocks]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem subGram_chg : subGram (chg (fromBlocks A₁ B 0 A₂) H) = chg A₁ (subGram H) := by
   rw [chg_fromBlocks]; rfl
@@ -63,7 +63,7 @@ omit [DecidableEq l] in
 variable {A₁ H} in
 
 /- English proof (translation)
-Establish `h₁ : IsUnit A₁ᵀ.det` using `by rwa [det_transpose]`. Establish `h₂ : IsUnit A₁ᴴᵀ.det` using `by rw [det_transpose, det_conjTranspose]; exact hA.star`. Establish `h₃ : IsUnit H.toBlocks₁₁.det` using `hH`. Rewrite using `[chg_fromBlocks]`. Simplify using `only [quotGram, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, chg, Matrix.mul_inv_rev, Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ h₂, nonsing_inv_mul_cancel_left _ _ h₁, Matrix.mul_add, Matrix.add_mul, nonsing_inv_mul_cancel_le …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -83,7 +83,7 @@ theorem quotGram_chg (hA : IsUnit A₁.det) (hH : IsUnit (subGram H).det) :
 open scoped MatrixOrder in
 
 /- English proof (translation)
-Take `⟨R, rfl⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.1 hQ.transpose.posSemidef.nonneg |>.imp fun R (h : Qᵀ = star R * R) => (transpose_transpose Q).symm.trans (congrArg transpose h)`. Use `(hS.transpose.inv.posSemidef.mul_mul_conjTranspose_same (R * b)).trace_nonneg` as an intermediate fact. Rewrite using `[adj, transpose_transpose, ← Matrix.mul_assoc, ← Matrix.mul_assoc, trace_mul_comm]`. Simplify `this` using `only [conjTranspose_mul, Matrix.mul_assoc, star_eq_conjTranspose]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem trace_mul_adj_nonneg {S : Matrix m m ℂ} {Q : Matrix l l ℂ} (hS : S.PosDef) (hQ : Q.PosDef)
     (b : Matrix l m ℂ) : 0 ≤ (b * adj S Q b).trace := by
@@ -94,7 +94,7 @@ theorem trace_mul_adj_nonneg {S : Matrix m m ℂ} {Q : Matrix l l ℂ} (hS : S.P
   simpa only [conjTranspose_mul, Matrix.mul_assoc, star_eq_conjTranspose] using this
 
 /- English proof (translation)
-Establish `h₃ : IsUnit A₁ᴴ.det` using `by rw [det_conjTranspose]; exact h₁.star`. Establish `h₄ : IsUnit A₂ᴴ.det` using `by rw [det_conjTranspose]; exact h₂.star`. Simplify using `only [adj, chg, transpose_mul, transpose_transpose, Matrix.mul_inv_rev, conjTranspose_mul, conjTranspose_nonsing_inv, Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ h₁, nonsing_inv_mul_cancel_left _ _ h₃, nonsing_inv_mul_cancel_left _ _ h₄]`. Rewrite using `[trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc, mul_nonsing_inv _ h₂, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_mul_adj_chg {A₁ : Matrix m m ℂ} {A₂ : Matrix l l ℂ} (h₁ : IsUnit A₁.det)
     (h₂ : IsUnit A₂.det) (S : Matrix m m ℂ) (Q : Matrix l l ℂ) (b b' : Matrix l m ℂ) :
@@ -111,7 +111,7 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ
   [IsScalarTower ℝ ℂ E] {K : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : E}
 
 /- English proof (translation)
-Establish `hh` using `hp.mono fun x hx => hx.isHermitian`. Establish `hu` using `hp.self_of_nhds.det_pos.ne'.isUnit`. Establish `hs` using `(posDef_subGram hp.self_of_nhds).det_pos.ne'.isUnit`. Rewrite using `[extTrace, extFormAdj_eq_neg_secondForm h hh hu hs, extForm_eq_neg_secondFormAdj h hh hu hs, Matrix.neg_mul, Matrix.mul_neg, neg_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem extTrace_eq (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x).PosDef) (ξ η : E) :
     extTrace K z ξ η = kappa * (secondForm K z ξ * secondFormAdj K z η).trace := by
@@ -122,9 +122,9 @@ theorem extTrace_eq (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x).PosD
     Matrix.neg_mul, Matrix.mul_neg, neg_neg]
 
 /- English proof (translation)
-Use `trace_mul_adj_nonneg (posDef_subGram hp.self_of_nhds) (posDef_quotGram hp.self_of_nhds) (secondForm K z ξ)` as an intermediate fact. Establish `e : -Complex.I * kappa = ((1 / (2 * Real.pi) : ℝ) : ℂ)`. Rewrite using `[kappa, ← mul_div_assoc, neg_mul, Complex.I_mul_I]`. Simplify using the standard rewrite rules. Rewrite using `[diagVal, extTrace_eq h hp, ← mul_assoc, e, Complex.re_ofReal_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_nonneg (by positivity) (Complex.nonneg_iff.1 this).1`.
+A detailed English derivation is pending.
 -/
 theorem diagVal_extTrace_nonneg (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x).PosDef) (ξ : E) :
     0 ≤ diagVal (extTrace K z) ξ := by
@@ -136,7 +136,7 @@ theorem diagVal_extTrace_nonneg (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z
   exact mul_nonneg (by positivity) (Complex.nonneg_iff.1 this).1
 
 /- English proof (translation)
-Establish `e (η : E) : extForm K z η = extForm K' z η`. Rewrite using `[extForm, extForm, h.eq_of_nhds, mdbar_congr (A := fun x => orthLift (K x)) (B := fun x => orthLift (K' x)) (h.fun_comp orthLift)]`. Use function extensionality and compare the values at `ξ η`. Simplify using `only [extTrace, extFormAdj, e, h.eq_of_nhds]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem extTrace_congr {K' : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} (h : K =ᶠ[𝓝 z] K') :
     extTrace K z = extTrace K' z := by
@@ -147,13 +147,13 @@ theorem extTrace_congr {K' : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} (h : K =ᶠ[�
   simp only [extTrace, extFormAdj, e, h.eq_of_nhds]
 
 /- English proof (translation)
-Establish `eA : A z = fromBlocks (A z).toBlocks₁₁ (A z).toBlocks₁₂ 0 (A z).toBlocks₂₂`. Rewrite using `[← ht.self_of_nhds, fromBlocks_toBlocks]`. Establish `hd` using `hu`. Rewrite `hd` using `[eA, det_fromBlocks_zero₂₁, IsUnit.mul_iff]`. Establish `hK` using `hp.self_of_nhds`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb (ξ : E) : secondForm (fun x => chg (A x) (K x)) z ξ = (A z).toBlocks₂₂⁻¹ * secondForm K z ξ * (A z).toBlocks₁₁`. Establish `e` using `congrArg (A z * ·) (conn_changeFrame h hK.det_pos.ne'.isUnit hA hu hA0 ξ)`. Simplify using `only [mul_nonsing_inv_cancel_left _ _ hu] at e`. Establish `e₀ : (mdel A z ξ).toBlocks₂₁ = 0`. Rewrite using `[← mdel_const (0 : Matrix l m ℂ) z ξ, ← mdel_congr ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e₁` using `congrArg toBlocks₂₁ e`. Rewrite `e₁` using `[← fromBlocks_toBlocks (conn _ z ξ), ← fromBlocks_toBlocks (conn K z ξ), ← fromBlocks_toBlocks (mdel A z ξ), e₀, eA]`. Simplify using `only [fromBlocks_multiply, fromBlocks_add, toBlocks_fromBlocks₂₁, Matrix.zero_mul, Matrix.mul_zero, zero_add, add_zero] at e₁`. Rewrite using `[secondForm_eq, secondForm_eq, Matrix.mul_assoc, ← e₁, nonsing_inv_mul_cancel_left _ _ hd.2]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hp' : ∀ᶠ x in 𝓝 z, (chg (A x) (K x)).PosDef` using `by filter_upwards [hp, hA.eventually_isUnit hu] with x h₁ h₂`. Conclude with `posDef_chg ((isUnit_iff_isUnit_det _).2 h₂) h₁`. Use function extensionality and compare the values at `ξ η`. Rewrite using `[extTrace_eq (K := fun x => chg (A x) (K x)) ((hA.transpose.mul h).mul hA.conjTranspose.transpose) hp', extTrace_eq h hp, secondFormAdj, secondFormAdj, hb, hb, ← trace_mul_adj_chg hd.1 hd.2 (subGram (K z)), ← subGram_chg _ (A z).toBlocks₁₂ (A z).toBlocks₂₂, ← quotGram_chg (A z).t …`.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extTrace_chg {A : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} (h : MContDiffAt 1 K z)
     (hp : ∀ᶠ x in 𝓝 z, (K x).PosDef) (hA : MContDiffAt 1 A z) (hu : IsUnit (A z).det)
@@ -188,7 +188,7 @@ theorem extTrace_chg {A : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} (h : MContDiffAt
     ← quotGram_chg (A z).toBlocks₁₂ _ hd.1 (posDef_subGram hK).det_pos.ne'.isUnit, ← eA]
 
 /- English proof (translation)
-Establish `hd` using `hφ.differentiableAt one_ne_zero`. Rewrite using `[extTrace_eq (K := fun x => K (φ x)) (fun a b => (h a b).comp w (hφ.restrict_scalars ℝ)) (hφ.continuousAt.eventually hp), extTrace_eq h hp]`. Simplify using `only [secondFormAdj, secondForm, conn_comp_holo h hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem extTrace_comp_holo {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℂ E'] [NormedSpace ℝ E']
     [IsScalarTower ℝ ℂ E'] {φ : E' → E} {w : E'} (h : MContDiffAt 1 K (φ w))
@@ -200,9 +200,9 @@ theorem extTrace_comp_holo {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℂ
   simp only [secondFormAdj, secondForm, conn_comp_holo h hd]
 
 /- English proof (translation)
-Establish `e : secondForm K z (c • ξ) = c • secondForm K z ξ`. Rewrite using `[secondForm_eq, secondForm_eq, conn_smul_vec]`. Both sides reduce to the same expression. Rewrite using `[diagVal, diagVal, extTrace_eq h hp, extTrace_eq h hp, ← Complex.re_ofReal_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [secondFormAdj, adj, e, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, trace_smul, smul_eq_mul, Complex.star_def, ← Complex.normSq_eq_norm_sq, Complex.normSq_eq_conj_mul_self]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diagVal_extTrace_smul (h : MContDiffAt 1 K z) (hp : ∀ᶠ x in 𝓝 z, (K x).PosDef) (c : ℂ)
     (ξ : E) : diagVal (extTrace K z) (c • ξ) = ‖c‖ ^ 2 * diagVal (extTrace K z) ξ := by
@@ -225,7 +225,7 @@ variable {E F : X.Modules} {r s : ℕ} (c₀ : Chart E r) (c : Chart F s) {U : X
   {y : CxPts p σ}
 
 /- English proof (translation)
-Establish `hW` using `mem_ptsIn_inf.2 ⟨hy, h⟩`. Rewrite using `[← c₀.crd_resM _ inf_le_left hW, ← app_resM, ← (c.isFrame.basis inf_le_right).sum_repr (resM F _ t), map_sum, crd_sum]`. Use function extensionality and compare the values at `a`. Simplify using `only [Scheme.Modules.Hom.app_smul, crd_smul, IsFrame.basis_apply, app_resM, c₀.crd_resM _ _ hW, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mulVec, dotProduct, of_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem crd_app (φ : F ⟶ E) (t : Γ(F, U)) (hy : y ∈ ptsIn p σ U) (h : y ∈ ptsIn p σ c.U) :
     c₀.crd p σ (φ.app U t) y =
@@ -239,7 +239,7 @@ theorem crd_app (φ : F ⟶ E) (t : Γ(F, U)) (hy : y ∈ ptsIn p σ U) (h : y �
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-The claim follows from `funext fun _ => ev_of_notMem (fun h => hy (mem_ptsIn_inf.1 h).1) _`.
+A detailed English derivation is pending.
 -/
 theorem crd_of_notMem (t : Γ(E, U)) (hy : y ∉ ptsIn p σ U) : c₀.crd p σ t y = 0 :=
   funext fun _ => ev_of_notMem (fun h => hy (mem_ptsIn_inf.1 h).1) _
@@ -253,7 +253,7 @@ variable {E F : X.Modules} {r s : ℕ} (h : Met p σ E r) {U : X.Opens} {y : CxP
 def gram (t : ι → Γ(E, U)) (y : CxPts p σ) : Matrix ι ι ℂ := Matrix.of fun a b => h.form (t a) (t b) y
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[chg_apply, gram, of_apply, h.form_eq c hc _ _ hy]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gram_eq [Fintype ι] (c : Chart E r) (hc : y ∈ ptsIn p σ c.U) (t : ι → Γ(E, U))
     (hy : y ∈ ptsIn p σ U) :
@@ -263,9 +263,9 @@ theorem gram_eq [Fintype ι] (c : Chart E r) (hc : y ∈ ptsIn p σ c.U) (t : ι
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `hc' : y ∈ ptsIn p σ c'.U`. Establish `h₀` using `h.isVB.mem_pick y`. Rewrite using `[h.gram_eq _ h₀ _ hc, h.gram_eq _ h₀ _ hc', chg_chg]`. Use `congr 1`. Use extensionality with `a b`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `congrFun (Chart.crd_app _ c φ (c'.e b) hc' hc) a`. Rewrite using `[Chart.tr_of_notMem _ _ hc', chg_zero]`. Use extensionality with `a b`. Simplify using `[gram, form, Chart.crd_of_notMem _ _ hc', HermFrame.form]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_app_trans (φ : F ⟶ E) (c c' : Chart F s) (hc : y ∈ ptsIn p σ c.U) :
     h.gram (fun a => φ.app c'.U (c'.e a)) y =
@@ -281,7 +281,7 @@ theorem gram_app_trans (φ : F ⟶ E) (c c' : Chart F s) (hc : y ∈ ptsIn p σ 
     simp [gram, form, Chart.crd_of_notMem _ _ hc', HermFrame.form]
 
 /- English proof (translation)
-Establish `h₀` using `h.isVB.mem_pick y`. Use `(MInfAt.chg (A := fun z => Matrix.of fun a b => (h.isVB.pick y).crd p σ (t b) z a) (fun a b => Chart.vInfAt_crd _ _ hy h₀ a) (H _ y h₀)).congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn _).mem_nhds h₀, (isOpen_ptsIn _).mem_nhds hy] with z h₁ h₂`. Conclude with `h.gram_eq _ h₁ t h₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsCInf.gram {h : Met p σ E r} (H : h.IsCInf) [Fintype ι] (t : ι → Γ(E, U))
     (hy : y ∈ ptsIn p σ U) : MInfAt (h.gram t) y := by
@@ -292,7 +292,7 @@ theorem IsCInf.gram {h : Met p σ E r} (H : h.IsCInf) [Fintype ι] (t : ι → �
   exact h.gram_eq _ h₁ t h₂
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `H.form_eq _ _ e hy`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem IsConj.gram {h : Met p σ E r} {h' : Met p σ' E r} (H : h.IsConj h') (t : ι → Γ(E, U))
     {y' : CxPts p σ'} (e : y'.1 = spMap (starRingEnd ℂ) ≫ y.1) (hy : y ∈ ptsIn p σ U) :
@@ -318,7 +318,7 @@ def mid : Chart S.X₂ (r + s) :=
     (isFrame_sumElim hS a.he a.ht).comp_equiv finSumFinEquiv.symm⟩
 
 /- English proof (translation)
-Use `congrFun ((a.mid hS).crd_frame hy (finSumFinEquiv j)) (finSumFinEquiv i)` as an intermediate fact. Simplify `this` using `[mid, Pi.single_apply, one_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem crd_frame (hy : y ∈ ptsIn p σ a.U) (i j : Fin r ⊕ Fin s) :
     (a.mid hS).crd p σ (a.frame j) y (finSumFinEquiv i) = (1 : Matrix _ _ ℂ) i j := by
@@ -331,22 +331,20 @@ def tr (y : CxPts p σ) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ :=
   ((a.mid hS).tr p σ (a'.mid hS) y).submatrix finSumFinEquiv finSumFinEquiv
 
 /- English proof (translation)
-Simplify using `[tr, Chart.tr, mid]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tr_apply (i j : Fin r ⊕ Fin s) :
     a.tr p σ hS a' y i j = (a.mid hS).crd p σ (a'.frame j) y (finSumFinEquiv i) := by
   simp [tr, Chart.tr, mid]
 
 /- English proof (translation)
-Establish `h₁ (i) (j : Fin r) : a.tr p σ hS a' y i (.inl j) = Sum.elim (fun i => a.sub.tr p σ a'.sub y i j) 0 i`. Rewrite using `[tr_apply]`. Use `(congrFun ((a.mid hS).crd_app a.sub S.f (a'.e j) hy' hy) _).trans ?_` and prove the remaining obligations. Establish `e (b : Fin r)` using `a.crd_frame hS hy i (.inl b)`. Simplify using `only [mulVec, dotProduct, of_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(Finset.sum_congr rfl fun b _ => congrArg (· * _) (e b)).trans ?_` and prove the remaining obligations. Apply the tactic sequence `rcases i with i | i <;> simp [one_apply, Chart.tr, sub]`. Establish `h₂ (i j : Fin s) : a.tr p σ hS a' y (.inr i) (.inr j) = a.quot.tr p σ a'.quot y i j`. Rewrite using `[tr_apply]`. Use `Eq.symm ((congrFun (a.quot.crd_app (a.mid hS) S.g (a'.t j) hy' hy) _).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₁ (b : Fin r) : a.quot.crd p σ (S.g.app a.U (a.frame (.inl b))) y = 0`. Rewrite using `[show S.g.app a.U (a.frame (.inl b)) = 0 from congr(($(S.zero)).app a.U (a.e b)), Chart.crd_zero]`. Establish `e₂ (b : Fin s) : a.quot.crd p σ (S.g.app a.U (a.frame (.inr b))) y = Pi.single b 1` using `a.quot.crd_frame hy b`. Simplify using `only [mulVec, dotProduct, of_apply]`. Establish `e₃ (b) : (a.mid hS).e (finSumFinEquiv b) = a.frame b` using `by simp [mid]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Use `(congrArg₂ (· + ·) (Finset.sum_eq_zero fun b _ => ?_) (Finset.sum_congr rfl fun b _ => congrArg (· * _) (congrFun ((congrArg (fun t => a.quot.crd p σ (S.g.app a.U t) y) (e₃ _)).trans (e₂ b)) i))).trans ?_` and prove the remaining obligations. Conclude with `mul_eq_zero_of_left (congrFun ((congrArg (fun t => a.quot.crd p σ (S.g.app a.U t) y) (e₃ _)).trans (e₁ b)) i) _`. Simplify using `[Pi.single_apply, frame]`. Use extensionality with `(i | i) (j | j)`.
-
-Use `exacts [h₁ _ j, rfl, h₁ _ j, h₂ i j]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem tr_eq (hy : y ∈ ptsIn p σ a.U) (hy' : y ∈ ptsIn p σ a'.U) :
     a.tr p σ hS a' y = fromBlocks (a.sub.tr p σ a'.sub y) (a.tr p σ hS a' y).toBlocks₁₂ 0
@@ -389,7 +387,7 @@ variable {S : ShortComplex X.Modules} {r s : ℕ} (h : Met p σ S.X₂ (r + s)) 
 include hS in
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[submatrix_apply, ← h.form_frame _ hy]`. Simplify using `[gram, AdaptedChart.mid]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_frame (hy : y ∈ ptsIn p σ a.U) :
     h.gram a.frame y = (h.G (a.mid hS) y).submatrix finSumFinEquiv finSumFinEquiv := by
@@ -400,14 +398,14 @@ theorem gram_frame (hy : y ∈ ptsIn p σ a.U) :
 include hS in
 
 /- English proof (translation)
-Rewrite using `[h.gram_frame hS a hy]`. Conclude with `(h.posDef _ y hy).submatrix finSumFinEquiv.injective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posDef_gram_frame (hy : y ∈ ptsIn p σ a.U) : (h.gram a.frame y).PosDef := by
   rw [h.gram_frame hS a hy]
   exact (h.posDef _ y hy).submatrix finSumFinEquiv.injective
 
 /- English proof (translation)
-Rewrite using `[h.gram_frame hS a hy, h.gram_frame hS a' hy', AdaptedChart.tr, chg_submatrix, ← h.trans _ _ y hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_frame_trans (hy : y ∈ ptsIn p σ a.U) (hy' : y ∈ ptsIn p σ a'.U) :
     h.gram a'.frame y = chg (a.tr p σ hS a' y) (h.gram a.frame y) := by
@@ -417,7 +415,7 @@ theorem gram_frame_trans (hy : y ∈ ptsIn p σ a.U) (hy' : y ∈ ptsIn p σ a'.
 include hS h₁ h₃ in
 
 /- English proof (translation)
-The claim follows from `(VBExt.exists_adaptedChart hS h₁ h₃ _).imp fun _ => mem_ptsIn.2`.
+A detailed English derivation is pending.
 -/
 theorem exists_adapted (y : CxPts p σ) : ∃ a : AdaptedChart S r s, y ∈ ptsIn p σ a.U :=
   (VBExt.exists_adaptedChart hS h₁ h₃ _).imp fun _ => mem_ptsIn.2
@@ -427,7 +425,7 @@ def quot : Met p σ S.X₃ s :=
     fun a _ hy => posDef_quotGram (h.posDef_gram_frame hS a hy)
 
 /- English proof (translation)
-The claim follows from `ofCover_G (c := AdaptedChart.quot) (fun a a' y hy hy' => by rw [h.gram_frame_trans hS a a' hy hy', a.tr_eq hS a' hy hy', quotGram_chg _ _ ((isUnit_iff_isUnit_det _).1 (a.sub.isUnit_tr a'.sub hy hy')) (posDef_subGram (h.posDef_gram_frame hS a hy)).det_pos.ne'.isUnit]) hy`.
+A detailed English derivation is pending.
 -/
 theorem quot_G (hy : y ∈ ptsIn p σ a.U) :
     (h.quot hS h₁ h₃).G a.quot y = quotGram (h.gram a.frame y) :=
@@ -439,7 +437,7 @@ theorem quot_G (hy : y ∈ ptsIn p σ a.U) :
 variable {h}
 
 /- English proof (translation)
-The claim follows from `isCInf_of_exists fun y => by obtain ⟨a, hy⟩ := exists_adapted hS h₁ h₃ y refine ⟨a.quot, hy, MInfAt.congr (A := fun z => quotGram (h.gram a.frame z)) (fun i j => ?_) ?_⟩ · exact (H.gram a.frame hy).comp (Ψ := fun M => quotGram (of M) i j) (T := {M | IsUnit (subGram (of M)).det}) …`.
+A detailed English derivation is pending.
 -/
 theorem IsCInf.quot (H : h.IsCInf) : (h.quot hS h₁ h₃).IsCInf := isCInf_of_exists fun y => by
   obtain ⟨a, hy⟩ := exists_adapted hS h₁ h₃ y
@@ -452,7 +450,7 @@ theorem IsCInf.quot (H : h.IsCInf) : (h.quot hS h₁ h₃).IsCInf := isCInf_of_e
   · filter_upwards [(isOpen_ptsIn _).mem_nhds hy] with z hz using h.quot_G hS h₁ h₃ a hz
 
 /- English proof (translation)
-The claim follows from `isConj_of_exists fun y y' e => by obtain ⟨a, hy⟩ := exists_adapted hS h₁ h₃ y refine ⟨a.quot, hy, ?_⟩ rw [h.quot_G hS h₁ h₃ a hy, h'.quot_G hS h₁ h₃ a ((mem_ptsIn_iff_of_conj e).2 hy), H.gram _ e hy] generalize h.gram a.frame y = M have e₁ : (M.map star).toBlocks₁₁⁻¹ = M.toBlocks …`.
+A detailed English derivation is pending.
 -/
 theorem IsConj.quot {h' : Met p σ' S.X₂ (r + s)} (H : h.IsConj h') :
     (h.quot hS h₁ h₃).IsConj (h'.quot hS h₁ h₃) := isConj_of_exists fun y y' e => by
@@ -489,7 +487,7 @@ def restrict (hi : IsSubbundle i) (hF : IsVB F s) : Met p σ F s where
   trans c c' y hy := h.gram_app_trans i c c' hy
 
 /- English proof (translation)
-Establish `h₀` using `h.isVB.mem_pick y`. Establish `h₁` using `hF.mem_pick y`. Rewrite using `[(h.restrict hi hF).form_eq _ h₁ _ _ hy, h.form_eq _ h₀ _ _ hy, Chart.crd_app _ _ i t hy h₁, Chart.crd_app _ _ i t' hy h₁, ← form_chg, ← h.gram_eq _ h₀ _ h₁]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem form_restrict (hi : IsSubbundle i) (hF : IsVB F s) {U : X.Opens} (t t' : Γ(F, U))
     {y : CxPts p σ} (hy : y ∈ ptsIn p σ U) :
@@ -503,13 +501,13 @@ theorem form_restrict (hi : IsSubbundle i) (hF : IsVB F s) {U : X.Opens} (t t' :
 variable {h}
 
 /- English proof (translation)
-Introduce `_ _ hy` and use `H.gram _ hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsCInf.restrict (H : h.IsCInf) (hi : IsSubbundle i) (hF : IsVB F s) :
     (h.restrict hi hF).IsCInf := fun _ _ hy => H.gram _ hy
 
 /- English proof (translation)
-The claim follows from `isConj_of_exists fun y _ e => ⟨_, hF.mem_pick y, H.gram _ e (hF.mem_pick y)⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsConj.restrict {h' : Met p σ' E r} (H : h.IsConj h') (hi : IsSubbundle i) (hF : IsVB F s) :
     (h.restrict hi hF).IsConj (h'.restrict hi hF) := isConj_of_exists fun y _ e =>
@@ -529,7 +527,7 @@ def bcForm (y : CxPts p σ) : V D → V D → ℂ :=
 include hS in
 
 /- English proof (translation)
-The claim follows from `eventually_of_mem ((ChartGlue.isOpen_over c.e (isOpen_ptsIn a.U)).mem_nhds (ChartGlue.mem_over c.e hy ha)) fun _ hv => h.posDef_gram_frame hS a hv.2`.
+A detailed English derivation is pending.
 -/
 theorem eventually_posDef (hy : y ∈ c.e.source) (ha : y ∈ ptsIn p σ a.U) :
     ∀ᶠ v in 𝓝 (c.e y), (h.gram a.frame (c.e.symm v)).PosDef :=
@@ -541,9 +539,9 @@ variable {h}
 include hS in
 
 /- English proof (translation)
-Establish `hm` using `(ChartGlue.isOpen_over c.e (isOpen_ptsIn (a.U ⊓ a'.U))).mem_nhds (ChartGlue.mem_over c.e hy (mem_ptsIn_inf.2 ⟨ha, ha'⟩))`. Establish `hA : MInfAt (a.tr p σ hS a') y` using `fun i j => (a.mid hS).vInfAt_crd _ ha' ha _`. Rewrite using `[bcForm, extTrace_congr (K' := fun v => chg (a.tr p σ hS a' (c.e.symm v)) (h.gram a.frame (c.e.symm v))) (eventually_of_mem hm fun v hv => h.gram_frame_trans hS a a' (mem_ptsIn_inf.1 hv.2).1 (mem_ptsIn_inf.1 hv.2).2)]`. Use `extTrace_chg (((H.gram _ ha).mContDiffAt c hy).of_le (by norm_cast)) (h.eventually_posDef hS a c hy ha) ((hA.mContDiffAt c hy).of_le (by norm_cast)) ?_ (fun η => Matrix.ext fun i j => ?_) (eventually_of_mem hm fun v hv => ?_)` and prove the remaining obligations. Rewrite using `[c.e.left_inv hy, AdaptedChart.tr, det_submatrix_equiv_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isUnit_iff_isUnit_det _).1 ((a.mid hS).isUnit_tr _ ha ha')`. Conclude with `congr($(dbar_eq_zero (c.differentiableAt_ev _ hy (mem_ptsIn_inf.2 ⟨ha', ha⟩))) η)`. Rewrite using `[a.tr_eq hS a' (mem_ptsIn_inf.1 hv.2).1 (mem_ptsIn_inf.1 hv.2).2, toBlocks_fromBlocks₂₁]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcForm_eq (H : h.IsCInf) (hy : y ∈ c.e.source) (ha : y ∈ ptsIn p σ a.U)
     (ha' : y ∈ ptsIn p σ a'.U) : h.bcForm a' c y = h.bcForm a c y := by
@@ -572,14 +570,14 @@ def bcMeas : Measure (CxPts p σ) :=
 variable {h}
 
 /- English proof (translation)
-Rewrite using `[bcDens, bcForm_eq hS a _ c H hy ha (exists_adapted hS h₁ h₃ y).choose_spec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bcDens_eq (H : h.IsCInf) (hy : y ∈ c.e.source) (ha : y ∈ ptsIn p σ a.U) :
     h.bcDens hS h₁ h₃ c y = 2 * diagVal (h.bcForm a c y) (EuclideanSpace.single 0 1) := by
   rw [bcDens, bcForm_eq hS a _ c H hy ha (exists_adapted hS h₁ h₃ y).choose_spec]
 
 /- English proof (translation)
-The claim follows from `have ha := (exists_adapted hS h₁ h₃ y).choose_spec mul_nonneg zero_le_two (diagVal_extTrace_nonneg (((H.gram _ ha).mContDiffAt c hy).of_le (by norm_cast)) (h.eventually_posDef hS _ c hy ha) _)`.
+A detailed English derivation is pending.
 -/
 theorem bcDens_nonneg (H : h.IsCInf) (hy : y ∈ c.e.source) : 0 ≤ h.bcDens hS h₁ h₃ c y :=
   have ha := (exists_adapted hS h₁ h₃ y).choose_spec
@@ -587,11 +585,11 @@ theorem bcDens_nonneg (H : h.IsCInf) (hy : y ∈ c.e.source) : 0 ≤ h.bcDens hS
     (((H.gram _ ha).mContDiffAt c hy).of_le (by norm_cast)) (h.eventually_posDef hS _ c hy ha) _)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_adapted hS h₁ h₃ y`. Establish `ho` using `ChartGlue.isOpen_over c.e c'.e.open_source`. Establish `hm` using `ho.mem_nhds (ChartGlue.mem_over c.e hy hy')`. Establish `e₂ : (c'.e ∘ c.e.symm) (c.e y) = c'.e y` using `congrArg c'.e (c.e.left_inv hy)`. Establish `hd` using `((H.gram a.frame ha).mContDiffAt c' hy').of_le (j := 1) (by norm_cast)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `h.eventually_posDef hS _ c' hy' ha`. Establish `hl (L : V 1 →L[ℂ] V 1) : L (EuclideanSpace.single 0 1) = L.det • EuclideanSpace.single 0 1`. Rewrite using `[ContinuousLinearMap.det, ← LinearMap.det_toMatrix (EuclideanSpace.basisFun (Fin 1) ℂ).toBasis, det_unique]`. Use extensionality with `i`. Simplify using `[LinearMap.toMatrix_apply, Subsingleton.elim i 0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[bcDens_eq hS h₁ h₃ a c H hy ha, bcDens_eq hS h₁ h₃ a c' H hy' ha, bcForm, bcForm, extTrace_congr (K' := fun v => h.gram a.frame (c'.e.symm ((c'.e ∘ c.e.symm) v))) (eventually_of_mem hm fun v hv => by`. Simplify using `only [Function.comp_apply, c'.e.left_inv hv.2]), ChartGlue.transDet, mul_left_comm,`. Use the proof step `← diagVal_extTrace_smul hd hp, ← hl, diagVal, diagVal,`. Use `extTrace_comp_holo (K := fun v => h.gram a.frame (c'.e.symm v)) (e₂ ▸ hd) (e₂ ▸ hp) (contDiffAt_euclidean.2 fun i => ((ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn 1 _ _ ho (differentiableOn_euclidean.1 (c.holo_trans c') i)).contDiffAt hm).of_le (by norm_cast) …`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bcDens_trans (H : h.IsCInf) (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source) :
     h.bcDens hS h₁ h₃ c y = ‖ChartGlue.transDet c.e c'.e y‖ ^ 2 * h.bcDens hS h₁ h₃ c' y := by
@@ -616,7 +614,7 @@ theorem bcDens_trans (H : h.IsCInf) (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.so
         (differentiableOn_euclidean.1 (c.holo_trans c') i)).contDiffAt hm).of_le (by norm_cast)), e₂]
 
 /- English proof (translation)
-Rewrite using `[bcMeas, ChartGlue.glueMeas_apply _ _ (fun c c' => c.holo_trans c') (fun c c' y hy hy' => by`. Rewrite using `[bcDens_trans hS h₁ h₃ c c' H hy hy', ENNReal.ofReal_mul (sq_nonneg _)]) c hT hc,`. Use the proof step `ChartGlue.chartMeas_apply_of_subset _ _ hT hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcMeas_apply [SecondCountableTopology (CxPts p σ)] (H : h.IsCInf) {T : Set (CxPts p σ)}
     (hT : MeasurableSet T) (hc : T ⊆ c.e.source) : h.bcMeas hS h₁ h₃ T =
@@ -626,7 +624,7 @@ theorem bcMeas_apply [SecondCountableTopology (CxPts p σ)] (H : h.IsCInf) {T : 
     ChartGlue.chartMeas_apply_of_subset _ _ hT hc]
 
 /- English proof (translation)
-Use `le_antisymm (iSup_le fun c => le_of_eq (Measure.measure_univ_eq_zero.1 ?_)) bot_le` and prove the remaining obligations. Rewrite using `[ChartGlue.chartMeas_apply _ _ MeasurableSet.univ, inter_univ, c.e.image_source_eq_target]`. Use `setLIntegral_eq_zero c.e.open_target.measurableSet fun v hv => ?_` and prove the remaining obligations. Simplify using `[H c _ (c.e.map_target hv)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem bcMeas_eq_zero (H : ∀ (c : AlgChart p σ 1), ∀ y ∈ c.e.source, h.bcDens hS h₁ h₃ c y = 0) :
     h.bcMeas hS h₁ h₃ = 0 := by
@@ -636,7 +634,7 @@ theorem bcMeas_eq_zero (H : ∀ (c : AlgChart p σ 1), ∀ y ∈ c.e.source, h.b
   simp [H c _ (c.e.map_target hv)]
 
 /- English proof (translation)
-The claim follows from `bcMeas_eq_zero hS h₁ h₃ fun c y _ => by simp [bcDens, bcForm, diagVal, extTrace, Matrix.mul_apply, trace]`.
+A detailed English derivation is pending.
 -/
 theorem bcMeas_rank_zero {h : Met p σ S.X₂ (0 + s)} (h₁ : IsVB S.X₁ 0) : h.bcMeas hS h₁ h₃ = 0 :=
   bcMeas_eq_zero hS h₁ h₃ fun c y _ => by
@@ -661,7 +659,7 @@ def bcInt : ℝ := ∑ᶠ σ, ((h.met σ).bcMeas hS h₁ h₃ univ).toReal
 variable {h} in
 
 /- English proof (translation)
-Introduce `σ` and use `(H σ).quot hS h₁ h₃`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsCInf.quot (H : h.IsCInf) : (h.quot hS h₁ h₃).IsCInf := fun σ => (H σ).quot hS h₁ h₃
 
@@ -675,7 +673,7 @@ def restrict {i : F ⟶ E} (hi : IsSubbundle i) (hF : IsVB F s) : VMetric p F s 
 variable {h} in
 
 /- English proof (translation)
-Introduce `σ` and use `(H σ).restrict hi hF`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsCInf.restrict (H : h.IsCInf) {i : F ⟶ E} (hi : IsSubbundle i) (hF : IsVB F s) :
     (h.restrict hi hF).IsCInf := fun σ => (H σ).restrict hi hF
@@ -685,7 +683,7 @@ variable (fl : Vert.Flag E r) (i : Fin r)
 abbrev stepSeq : ShortComplex X.Modules := .mk (fl.step i) (fl.π i) (Limits.cokernel.condition _)
 
 /- English proof (translation)
-The claim follows from `{ exact := ShortComplex.exact_cokernel _ }`.
+A detailed English derivation is pending.
 -/
 theorem stepSeq_shortExact : (stepSeq fl i).ShortExact :=
   { exact := ShortComplex.exact_cokernel _ }
@@ -705,7 +703,7 @@ def flagBc : ℝ :=
 variable {h}
 
 /- English proof (translation)
-The claim follows from `IsCInf.quot (h := h.stepMet fl i) _ _ _ (H.restrict _ _)`.
+A detailed English derivation is pending.
 -/
 theorem IsCInf.grMet (H : h.IsCInf) : (h.grMet fl i).IsCInf :=
   IsCInf.quot (h := h.stepMet fl i) _ _ _ (H.restrict _ _)
@@ -713,7 +711,7 @@ theorem IsCInf.grMet (H : h.IsCInf) : (h.grMet fl i).IsCInf :=
 def grLB (H : h.IsCInf) : HermLB p := det (H.grMet fl i)
 
 /- English proof (translation)
-Establish `e (σ) : ((h.stepMet fl 0).met σ).bcMeas (stepSeq_shortExact fl 0) (fl.isVB (Fin.castSucc 0)) (fl.isVB_gr 0) = 0` using `Met.bcMeas_rank_zero _ _ _`. Use `⟨fun i σ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i 0, e]`. Simplify using the standard rewrite rules. Simplify using `only [flagBc, bcInt, Fin.sum_univ_one, e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -728,15 +726,15 @@ theorem flagBc_rank_one (h : VMetric p E 1) (fl : Vert.Flag E 1) :
 end VMetric
 
 /- English proof (translation)
-Establish `hc : ContDiff ℝ 1 fun z : ℂ => starRingEnd ℂ z` using `Complex.conjCLE.contDiff`. Establish `h : MContDiffAt 1 tautPairGram 0`. Introduce and unpack `(_ | _) (_ | _)`. Use `exacts [contDiffAt_const.add (contDiffAt_id.mul hc.contDiffAt), contDiffAt_id, hc.contDiffAt, contDiffAt_const]`. Establish `hp : ∀ᶠ x in 𝓝 (0 : ℂ), (tautPairGram x).PosDef` using `.of_forall fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `posDef_chg (A := fromBlocks (1 : Matrix Unit Unit ℂ) 0 (of fun _ _ => x) (1 : Matrix Unit Unit ℂ)) (H := 1) ((isUnit_iff_isUnit_det _).2 (by rw [det_fromBlocks_zero₁₂]; simp)) PosDef.one` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext (_ | _) (_ | _) <;> simp [chg, tautPairGram, mul_apply]`. Establish `h0 : tautPairGram 0 = 1`. Apply the tactic sequence `ext (_ | _) (_ | _) <;> simp [tautPairGram]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hb : secondForm tautPairGram 0 1 = 1`. Use `ext`. Rewrite using `[secondForm_eq, conn, h0, transpose_one, inv_one, Matrix.one_mul]`. Express the relevant statement in the definitionally equal form `del (fun z : ℂ => z) 0 1 = _`. Rewrite using `[del_eq_fderiv differentiableAt_fun_id]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `e : -Complex.I * kappa = ((1 / (2 * Real.pi) : ℝ) : ℂ)`. Rewrite using `[kappa, ← mul_div_assoc, neg_mul, Complex.I_mul_I]`. Simplify using the standard rewrite rules. Establish `hs : subGram (1 : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ) = 1` using `by ext; simp [subGram, toBlocks₁₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : quotGram (1 : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ) = 1` using `by ext; simp [quotGram, toBlocks₂₁, toBlocks₂₂, mul_apply]`. Rewrite using `[diagVal, extTrace_eq h hp, ← mul_assoc, e, Complex.re_ofReal_mul, secondFormAdj, hb, h0, hs, hq]`. Simplify using `[adj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 example : 2 * diagVal (extTrace tautPairGram 0) 1 = 1 / Real.pi := by
   have hc : ContDiff ℝ 1 fun z : ℂ => starRingEnd ℂ z := Complex.conjCLE.contDiff

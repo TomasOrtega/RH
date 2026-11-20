@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.Core.Rk.RowRead
 
 /- English proof (translation)
-Establish `hz : z ∈ Submodule.span K (Set.range φ)` using `h ▸ Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Consider the case `zero => rw [map_zero]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx => rw [LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_mem_span_range {K L M N J : Type*} [Semiring K] [Semiring L] [AddCommMonoid M] [AddCommMonoid N] [Module K M]
     [Module L N] {σ : K →+* L} (f : M →ₛₗ[σ] N) {φ : J → M} (h : Submodule.span K (Set.range φ) = ⊤) (z : M) :
@@ -43,7 +43,7 @@ def valMtP : MtP W Ch sel mu P σ →ₗ[ℂ] ((stepX Ch sel mu P).D () → Pol 
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Introduce `G G' h`. Use `Subtype.ext (funext fun d => ?_)` and prove the remaining obligations. Take `⟨p, rfl⟩` from `toRow_surjective sel mu d`. Conclude with `congrFun h (trivPt X _ _ _ _ p)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem valMtP_injective : Function.Injective (valMtP W Ch sel mu P σ) := by
   intro G G' h
@@ -52,7 +52,7 @@ theorem valMtP_injective : Function.Injective (valMtP W Ch sel mu P σ) := by
   exact congrFun h (trivPt X _ _ _ _ p)
 
 /- English proof (translation)
-The claim follows from `LinearIndependent.of_comp (valMt W Ch sel mu P b0 til ext tz σ H) ((toMtilde_linearIndependent W Ch sel mu P σ h).map' (valMtP W Ch sel mu P σ) (LinearMap.ker_eq_bot.2 (valMtP_injective W Ch sel mu P σ)))`.
+A detailed English derivation is pending.
 -/
 theorem rowEmb_linearIndependent (H : ∀ b, Subgroup ((stepX Ch sel mu P).G b)) {J : Type} {φ : J → MtildeV W Ch sel mu P}
     (h : LinearIndependent X.K φ) :
@@ -62,7 +62,7 @@ theorem rowEmb_linearIndependent (H : ∀ b, Subgroup ((stepX Ch sel mu P).G b))
       (LinearMap.ker_eq_bot.2 (valMtP_injective W Ch sel mu P σ)))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PerQ.RowIntModel.eq_top_of_rowEmb_mem W Ch sel mu P b0 til ext tz hd σ hX _ fun z _ => map_mem_span_range (rowEmb W Ch sel mu P b0 til ext tz (fun _ => ⊤) hd σ) h z`.
+A detailed English derivation is pending.
 -/
 theorem rowEmb_span (hX : X.Ok) {J : Type} {φ : J → MtildeV W Ch sel mu P} (h : Submodule.span X.K (Set.range φ) = ⊤) :
     Submodule.span ℂ (Set.range fun a => rowEmb W Ch sel mu P b0 til ext tz (fun _ => ⊤) hd σ (φ a)) = ⊤ :=
@@ -74,7 +74,7 @@ end G
 variable {B : Base} {X : PreX B.toPre} (I : TC B X)
 
 /- English proof (translation)
-The claim follows from `Finset.disjoint_of_subset_right (ColIn.Q_subset_SQ I I.mu0) (GlobalTheory.Mem.LevTwist.levOk_twists B X I h).2.1`.
+A detailed English derivation is pending.
 -/
 theorem disjoint_reference_twist_primes (h : I.Ok) :
     Disjoint (B.primes X).vGs (QE I.sel (I.tup I.mu0 : Chr B.fields.F B.fields.E B.fields.K)) :=

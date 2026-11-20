@@ -19,7 +19,7 @@ namespace GlobalTheory.DownLift.GenSplit
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `h`. Use `AddChar.map_add_eq_mul ψ a (-a)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul]`. Conclude with `one_ne_zero this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_ne_zero' (ψ : AddChar (AF D.host.F) ℂ) (a : AF D.host.F) : ψ a ≠ 0 := by
   intro h
@@ -28,7 +28,7 @@ theorem psi_ne_zero' (ψ : AddChar (AF D.host.F) ℂ) (a : AF D.host.F) : ψ a �
   exact one_ne_zero this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `congrFun h (x - w)` as an intermediate fact. Simplify using `only [heisO, sub_add_cancel] at this`. Conclude with `mul_left_cancel₀ (psi_ne_zero' ψ _) this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heisO_injective (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w : WO S T) {f g : WO S T → ℂ}
     (h : heisO ψ S T w f = heisO ψ S T w g) : f = g := by
@@ -38,7 +38,7 @@ theorem heisO_injective (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w : WO S
   exact mul_left_cancel₀ (psi_ne_zero' ψ _) this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[heisO]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heisO_fun_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w : WO S T) :
     heisO ψ S T w (0 : WO S T → ℂ) = 0 := by
@@ -46,7 +46,7 @@ theorem heisO_fun_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w : WO S 
   simp [heisO]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.linearCombination_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comb_eq_linearCombination (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (c : WO S T →₀ ℂ)
     (X : WO S T → ℂ) : comb ψ S T c X = Finsupp.linearCombination ℂ (fun u => heisO ψ S T u X) c := by
@@ -54,7 +54,7 @@ theorem comb_eq_linearCombination (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D)
   rfl
 
 /- English proof (translation)
-Rewrite using `[comb_eq_linearCombination, map_sum]`. Simplify using `only [Finsupp.linearCombination_single]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem comb_sum_single (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {ι : Type} (s : Finset ι) (r : ι → WO S T)
     (z : ι → ℂ) (X : WO S T → ℂ) :
@@ -63,7 +63,7 @@ theorem comb_sum_single (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {ι : Typ
   simp only [Finsupp.linearCombination_single]
 
 /- English proof (translation)
-Unfold `comb Finsupp.sum`. Conclude with `Finset.sum_eq_zero fun u _ => by show c u • heisO ψ S T u 0 = 0`. Rewrite using `[heisO_fun_zero, smul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_fun_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (c : WO S T →₀ ℂ) :
     comb ψ S T c (0 : WO S T → ℂ) = 0 := by
@@ -73,11 +73,11 @@ theorem comb_fun_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (c : WO S T
     rw [heisO_fun_zero, smul_zero]
 
 /- English proof (translation)
-Use `set c' : WO S T →₀ ℂ := ∑ u ∈ s, Finsupp.single (r u) (a u * e u) with hc'`. Establish `key : ∀ X : WO S T → ℂ, (∀ u ∈ s, heisO ψ S T u X = e u • heisO ψ S T w (heisO ψ S T (r u) X)) → ∑ u ∈ s, a u • heisO ψ S T u X = heisO ψ S T w (comb ψ S T c' X)`. Introduce `X hX`. Rewrite using `[hc', comb_sum_single, GlobalTheory.SplitScalar.heisO_sum]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX u hu, GlobalTheory.SplitScalar.heisO_smul, smul_smul]`. Establish `hsupp : ∀ u ∈ c'.support, OffPl Sb u`. Introduce `u hu`. Take `⟨x, hx, hx'⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finset_sum hu)`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hx')]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hr x hx`. Establish `hp0 : comb ψ S T c' p = 0`. Apply `heisO_injective ψ S T w` to reduce the goal to its premises. Rewrite using `[← key p hp, h0, heisO_fun_zero]`. Rewrite using `[key f hf, hR c' hsupp hp0, heisO_fun_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relOff_factor {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {Sb : Finset (FinPl D)} {p f : WO S T → ℂ}
     (hR : RelOff ψ S T Sb p f) (w : WO S T) (s : Finset (WO S T)) (a e : WO S T → ℂ) (r : WO S T → WO S T)
@@ -104,13 +104,13 @@ theorem relOff_factor {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {Sb : Finse
   rw [key f hf, hR c' hsupp hp0, heisO_fun_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by ext i j; simp, fun _ _ _ _ _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem offPl_zero (Sb : Finset (FinPl D)) (S T : HSp D) : OffPl Sb (0 : WO S T) :=
   ⟨by ext i j; simp, fun _ _ _ _ _ _ => by simp⟩
 
 /- English proof (translation)
-Unfold `comb`. Conclude with `Finsupp.sum_single_index (zero_smul _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem comb_single (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (u : WO S T) (z : ℂ) (X : WO S T → ℂ) :
     comb ψ S T (Finsupp.single u z) X = z • heisO ψ S T u X := by
@@ -118,7 +118,7 @@ theorem comb_single (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (u : WO S T) 
   exact Finsupp.sum_single_index (zero_smul _ _)
 
 /- English proof (translation)
-Introduce `i j`. Use `show (1 - b) * (u i j - b * u i j) = u i j - b * u i j`. Rewrite using `[mul_sub, sub_mul, sub_mul, one_mul, one_mul, ← mul_assoc, hb2, sub_self, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHalf_one_sub {S T : HSp D} {b : AE D} (hb2 : b * b = b) (u : WO S T) : IsHalf (1 - b) (u - b • u) := by
   intro i j
@@ -126,9 +126,9 @@ theorem isHalf_one_sub {S T : HSp D} {b : AE D} (hb2 : b * b = b) (u : WO S T) :
   rw [mul_sub, sub_mul, sub_mul, one_mul, one_mul, ← mul_assoc, hb2, sub_self, sub_zero]
 
 /- English proof (translation)
-Establish `hab : cA D (1 - b) * b = 0` using `by rw [map_sub, map_one, hcb, sub_mul, one_mul, hb2, sub_self]`. Establish `horth0 : symplO S T (u - b • u) (b • u - b • u0) = 0` using `GlobalTheory.SplitScalar.symplO_eq_zero S T hab (isHalf_one_sub hb2 u) (GlobalTheory.SplitScalar.isHalf_sub (GlobalTheory.SplitScalar.isHalf_smul hb2 u) (GlobalTheory.SplitScalar.isHalf_smul hb2 u0))`. Establish `h1 : heisO ψ S T (b • u0) (heisO ψ S T (u - b • u) (heisO ψ S T (b • u - b • u0) X)) = ψ (symplOH S T (b • u0) (u - b • u0)) • heisO ψ S T u X`. Rewrite using `[← GlobalTheory.SplitScalar.heisO_add_of_orth ψ S T horth0, GlobalTheory.SplitScalar.heisO_heisO, sub_add_sub_cancel, add_sub_cancel]`. Rewrite `h1` using `[hX, GlobalTheory.SplitScalar.heisO_smul, GlobalTheory.SplitScalar.heisO_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_smul, h1, smul_smul, inv_mul_cancel₀ (psi_ne_zero' ψ _), one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_decomp (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {b : AE D} (hb2 : b * b = b) (hcb : cA D b = b)
     (u u0 : WO S T) (X : WO S T → ℂ) (z : ℂ) (hX : heisO ψ S T (b • u - b • u0) X = z • X) :
@@ -146,11 +146,11 @@ theorem heisO_decomp (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {b : AE D} (
   rw [mul_smul, h1, smul_smul, inv_mul_cancel₀ (psi_ne_zero' ψ _), one_smul]
 
 /- English proof (translation)
-Take `⟨hidem, horth, -, hfin, -⟩` from `GlobalTheory.PlaceTensor.idem_spec D`. Use `⟨Matrix.ext fun i j => ?_, fun q hq ε hε i j => ?_⟩` and prove the remaining obligations. Establish `h : infPart D (u i j) = 0` using `congrFun (congrFun hu.1 i) j show infPart D (u i j - idem D (.inl v) * u i j) = 0`. Rewrite using `[map_sub, map_mul, (hfin v).1, h, zero_mul, sub_zero]`. Rewrite using `[placeIdem_eq hε] show idem D (.inl q) * (u i j - idem D (.inl v) * u i j) = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Distinguish the cases in `hqv : q = v`. Rewrite using `[hqv, mul_sub, ← mul_assoc, hidem, sub_self]`. Establish `hq' : q ∈ dropPl Sb v` using `by unfold dropPl; exact Finset.mem_erase.2 ⟨hqv, hq⟩`. Establish `h1` using `hu.2 q hq' _ ((hfin q).2.2) i j`. Rewrite `h1` using `[placeIdem_eq ((hfin q).2.2)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_sub, h1, ← mul_assoc, horth (.inl q) (.inl v) (fun h => hqv (Sum.inl.inj h)), zero_mul, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem offPl_sub_idem {S T : HSp D} {Sb : Finset (FinPl D)} {v : FinPl D} {u : WO S T}
     (hu : OffPl (dropPl Sb v) u) : OffPl Sb (u - idem D (.inl v) • u) := by
@@ -170,31 +170,27 @@ theorem offPl_sub_idem {S T : HSp D} {Sb : Finset (FinPl D)} {v : FinPl D} {u : 
       rw [mul_sub, h1, ← mul_assoc, horth (.inl q) (.inl v) (fun h => hqv (Sum.inl.inj h)), zero_mul, sub_zero]
 
 /- English proof (translation)
-Introduce `D ψ S T Sb v _ p f hH hR c hc hcp`. Establish `hrest : ∀ u : WO S T, OffPl (dropPl Sb v) u → OffPl Sb (u - idem D (.inl v) • u)` using `fun u hu => offPl_sub_idem hu`. Take `⟨hidem, -, hconj, -, -⟩` from `GlobalTheory.PlaceTensor.idem_spec D`. Take `⟨b, hb⟩ : ∃ b, b = idem D (.inl v)` from `⟨_, rfl⟩`. Rewrite `hH`, `hrest` using `[← hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb2 : b * b = b` using `by rw [hb]; exact hidem _`. Establish `hcb : cA D b = b` using `by rw [hb]; exact hconj _`. Distinguish the cases in `hp0 : p = 0`. Establish `hf0 : f = 0`. Establish `h1` using `hR (Finsupp.single 0 1) (fun u hu => by`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hu)]; exact offPl_zero Sb S T) (by`. Rewrite using `[comb_single, GlobalTheory.SplitScalar.heisO_zero, one_smul, hp0])`. Rewrite `h1` using `[comb_single, GlobalTheory.SplitScalar.heisO_zero, one_smul]`. Then use the resulting hypothesis. Rewrite using `[hf0, comb_fun_zero]`. Establish `hcl : ∀ l : {l : WO S T // IsHalf b l ∧ CoEig ψ S T p f l}, ∃ z : ℂ, z ≠ 0 ∧ heisO ψ S T l.1 p = z • p ∧ heisO ψ S T l.1 f = z • f`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨l, -, z, h1, h2⟩`. Use `⟨z, fun hz => hp0 ?_, h1, h2⟩` and prove the remaining obligations. Apply `heisO_injective ψ S T l` to reduce the goal to its premises. Rewrite using `[h1, hz, zero_smul, heisO_fun_zero]`. Use `choose cl hcl0 hclp _ using hcl`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨χ, hχ⟩ : ∃ χ : WO S T → {l : WO S T // IsHalf b l ∧ CoEig ψ S T p f l} → ℂ, ∀ u l, χ u l = ψ (symplO S T l.1 u)` from `⟨_, fun _ _ => rfl⟩`. Take `⟨V, hV⟩ : ∃ V : (WO S T → ℂ) → ({l : WO S T // IsHalf b l ∧ CoEig ψ S T p f l} → ℂ) → (WO S T → ℂ), ∀ X k, V X k = ∑ u ∈ c.support with χ u = k, c u • heisO ψ S T u X` from `⟨_, fun _ _ => rfl⟩`. Establish `hcomb : ∀ X, ∑ k ∈ c.support.image χ, V X k = comb ψ S T c X`. Introduce `X`. Simplify using `only [hV]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Finset.sum_fiberwise_of_maps_to (fun u hu => Finset.mem_image_of_mem χ hu) _`. Establish `heig : ∀ k ∈ c.support.image χ, ∀ l, GlobalTheory.SplitScalar.heisL ψ S T l.1 (V p k) = (k l * cl l) • V p k`. Introduce `k _ l`. Rewrite using `[GlobalTheory.SplitScalar.heisL_apply, hV, GlobalTheory.SplitScalar.heisO_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← (Finset.mem_filter.1 hu).2, hχ, GlobalTheory.SplitScalar.heisO_smul, GlobalTheory.SplitScalar.heisO_comm, hclp, GlobalTheory.SplitScalar.heisO_smul, smul_smul, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hVp : ∀ k ∈ c.support.image χ, V p k = 0` using `GlobalTheory.joint_eigenvectors_eq_zero_of_sum_eq_zero _ _ _ (fun l => GlobalTheory.SplitScalar.heisL ψ S T l.1) (fun k l => k l * cl l) (V p) _ heig (fun k1 _ k2 _ h => funext fun l => mul_right_cancel₀ (hcl0 l) (congrFun h l)) (by rw [hcomb]; exact hcp)`. Establish `hVf : ∀ k ∈ c.support.image χ, V f k = 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `k hk`. Take `⟨u0, _, hu0k⟩` from `Finset.mem_image.1 hk`. Establish `hCo : ∀ u ∈ c.support.filter (fun u => χ u = k), ∃ z : ℂ, heisO ψ S T (b • u - b • u0) p = z • p ∧ heisO ψ S T (b • u - b • u0) f = z • f`. Introduce `u hu`. Establish `hχu` using `(Finset.mem_filter.1 hu).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Break down `hH _ (GlobalTheory.SplitScalar.isHalf_sub (GlobalTheory.SplitScalar.isHalf_smul hb2 u) (GlobalTheory.SplitScalar.isHalf_smul hb2 u0)) with h | ⟨l, hl, hlco, hne⟩` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Establish `e1 : ψ (symplO S T l u) = ψ (symplO S T l u0)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `congrFun (hχu.trans hu0k.symm) ⟨l, hl, hlco⟩` as an intermediate fact. Rewrite `this` using `[hχ, hχ]`. Then use the resulting hypothesis. Establish `hbl : ∀ x, symplO S T l (b • x) = symplO S T l x` using `fun x => by conv_lhs => rw [← hcb]`. Rewrite using `[← GlobalTheory.SplitScalar.symplO_smul, (GlobalTheory.SplitScalar.isHalf_iff _ l).1 hl]`. Establish `e2 : symplO S T l (b • u - b • u0) + symplO S T l (b • u0) = symplO S T l (b • u)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.LatVac.symplO_add_right, sub_add_cancel]`. Rewrite `e2` using `[hbl, hbl]`. Establish `e3` using `congrArg ψ e2`. Rewrite `e3` using `[AddChar.map_add_eq_mul, e1]`. Conclude with `mul_right_cancel₀ (psi_ne_zero' ψ _) (e3.trans (one_mul _).symm)`.
-
-Use `choose! eco hecp hecf using hCo`. Establish `key` using `relOff_factor hR (b • u0) (c.support.filter fun u => χ u = k) c (fun u => (ψ (symplOH S T (b • u0) (u - b • u0)))⁻¹ * eco u) (fun u => u - b • u) (fun u hu => hrest u (hc u (Finset.mem_filter.1 hu).1)) (fun u hu => heisO_decomp ψ S T hb2 hcb u u0 p _ (hecp u hu)) (fun u hu => hei …`. Rewrite using `[hV]`. Conclude with `key`. Rewrite using `[← hcomb f]`.
-
-Conclude with `Finset.sum_eq_zero hVf`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relOff_dropPl_of_coEig : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Sb : Finset (FinPl D))
     (v : FinPl D), v ∈ Sb → ∀ (p f : WO S T → ℂ), (∀ u, IsHalf (idem D (.inl v)) u → CoEig ψ S T p f u ∨

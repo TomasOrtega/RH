@@ -2,17 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open MeasureTheory PositivityTheory.Rg.Tf.Loc in
 /- English proof (translation)
-Introduce `hI G _ _ _ _ _ _ _ _ μG hμG H μ hs hinv c hc F hF hFH`. Establish `hc0 : (c : ENNReal) ≠ 0` using `ENNReal.coe_ne_zero.mpr hc`. Establish `hct : (c : ENNReal) ≠ ⊤` using `ENNReal.coe_ne_top`. Establish `hsm : (c • μ : Measure H) = (c : ENNReal) • μ` using `rfl`. Distinguish the cases in `hex : ∃ ρ, IsQuotNormaliser H μ ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨ρ, hρ⟩` from `hex`. Establish `hρ' : IsQuotNormaliser H (c • μ) (fun g => (c : ENNReal)⁻¹ * ρ g)`. Use `⟨hρ.1.const_mul _, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hsm, lintegral_smul_measure, lintegral_const_mul' _ _ (ENNReal.inv_ne_top.mpr hc0), hρ.2 g, mul_one, smul_eq_mul, ENNReal.mul_inv_cancel hc0 hct]`. Establish `hs' : SFinite (c • μ)` using `by rw [hsm]; infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv' : (c • μ).IsInvInvariant`. Prove the components needed by the constructor for the conclusion. Establish `h1 : μ.inv = μ` using `Measure.inv_eq_self μ`. Rewrite `h1`, the goal using `[Measure.inv]`. Rewrite using `[hsm, Measure.map_smul, h1]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI G μG hμG H μ hs hinv F hF hFH ρ hρ, hI G μG hμG H (c • μ) hs' hinv' F hF hFH _ hρ', ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [ENNReal.toReal_mul, ENNReal.toReal_inv, ENNReal.coe_toReal]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hex' : ¬ ∃ ρ, IsQuotNormaliser H (c • μ) ρ`. Introduce and unpack `⟨ρ, hρ⟩`. Use `hex ⟨fun g => (c : ENNReal) * ρ g, hρ.1.const_mul _, fun g => ?_⟩` and prove the remaining obligations. Establish `h2` using `hρ.2 g`. Rewrite `h2` using `[hsm, lintegral_smul_measure, smul_eq_mul]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[lintegral_const_mul' _ _ hct, h2]`. Simplify using `only [quotIntegral, dif_neg hex, dif_neg hex', mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.Z.Tf.Orb.quotScale :
     UpperTheory.V.Z.Tf.Orb.QuotIndep → UpperTheory.V.Z.Tf.Orb.QuotScale := by

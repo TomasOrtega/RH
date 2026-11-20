@@ -12,29 +12,27 @@ open scoped Formalism.Per NNReal
 noncomputable section
 
 /- English proof (translation)
-Introduce `l _ K bk N d ρ F m k n β γ hβ hm hnk hd`. Establish `hT` using `GlobalTheory.T.eisensteinImage_pow_ideal_ainf_properties l K bk`. Establish `strip : ∀ (r n : ℕ) (a : Ainf l), bk.ev bk.E ^ r ∣ (l : Ainf l) ^ n * a → bk.ev bk.E ^ r ∣ a`. Introduce `r n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro a h`. Simplify using `using h`. Consider the case `succ n ih`. Introduce `a h`. Use `ih a ((hT r).1 _ ?_)` and prove the remaining obligations.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[pow_succ', mul_assoc]`. Conclude with `h`. Establish `hk : (l : bk.S) ^ k = (l : bk.S) ^ n * (l : bk.S) ^ (k - n)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hnk]`. Use `⟨fun i j => ?_, fun g i j => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hβ.1 i j`. Establish `h2 : bk.E ∣ (β - (l : bk.S) ^ n • γ) i j` using `(dvd_pow_self _ (by omega : m ≠ 0)).trans (hd i j)`. Establish `h3 : bk.E ∣ (l : bk.S) ^ n * (γ - (l : bk.S) ^ (k - n) • (1 : Matrix (Fin d) (Fin d) bk.S)) i j`. Establish `: (l : bk.S) ^ n * (γ - (l : bk.S) ^ (k - n) • (1 : Matrix (Fin d) (Fin d) bk.S)) i j = (β - (l : bk.S) ^ k • (1 : Matrix (Fin d) (Fin d) bk.S)) i j - (β - (l : bk.S) ^ n • γ) i j`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `dvd_sub h1 h2`. Take `⟨c, hc⟩` from `h3`. Establish `h4 : bk.ev bk.E ^ 1 ∣ (l : Ainf l) ^ n * bk.ev ((γ - (l : bk.S) ^ (k - n) • (1 : Matrix (Fin d) (Fin d) bk.S)) i j)` using `⟨bk.ev c, by rw [pow_one, ← map_mul, ← hc, map_mul, map_pow, map_natCast]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using (hT 1).2.1 _ (strip 1 n _ h4)`. Use `set Φ := (F.ε g).map WittVector.frobenius with hΦ set σ := Per.σA (g : GQ l) with hσ set δ := β - (l : bk.S) ^ n • γ with hδ`. Establish `hev : ∀ p q, bk.ev bk.E ^ m ∣ (δ.map bk.ev) p q` using `fun p q => by`. Take `⟨c, hc⟩` from `hd p q`. Conclude with `⟨bk.ev c, by rw [Matrix.map_apply, hc, map_mul, map_pow]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hσE : bk.ev bk.E ∣ σ (bk.ev bk.E)`. Use `GlobalTheory.BKLim.BetaBd.dvd_σA_ev_sub bk g bk.E` as an intermediate fact. Simplify using `using dvd_add this (dvd_refl (bk.ev bk.E))`. Establish `hevσ : ∀ p q, bk.ev bk.E ^ m ∣ ((δ.map bk.ev).map σ) p q` using `fun p q => by`. Take `⟨c, hc⟩` from `hd p q`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_apply, Matrix.map_apply, hc, map_mul, map_mul, map_pow, map_pow]`. Conclude with `Dvd.dvd.mul_right (pow_dvd_pow_of_dvd hσE m) _`. Establish `hβeq : β = (l : bk.S) ^ n • γ + δ` using `by rw [hδ]; abel`. Establish `hmap : (β.map bk.ev) = (l : Ainf l) ^ n • γ.map bk.ev + δ.map bk.ev`. Rewrite using `[hβeq]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `p q`. Simplify using the standard rewrite rules. Establish `hmapσ : (β.map bk.ev).map σ = (l : Ainf l) ^ n • (γ.map bk.ev).map σ + (δ.map bk.ev).map σ`. Rewrite using `[hmap]`. Use extensionality with `p q`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hD` using `hβ.2 g i j`. Rewrite `hD` using `[hmapσ, hmap]`. Establish `hsplit : (Φ * ((l : Ainf l) ^ n • (γ.map bk.ev).map σ + (δ.map bk.ev).map σ) - ((l : Ainf l) ^ n • γ.map bk.ev + δ.map bk.ev)) i j = (l : Ainf l) ^ n * (Φ * (γ.map bk.ev).map σ - γ.map bk.ev) i j + ((Φ * (δ.map bk.ev).map σ) i j - (δ.map bk.ev) i j)`. Simplify using `only [Matrix.mul_add, Matrix.mul_smul, Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hD` using `[hsplit]`. Establish `hrest : bk.ev bk.E ^ m ∣ (Φ * (δ.map bk.ev).map σ) i j - (δ.map bk.ev) i j`. Use `dvd_sub ?_ (hev i j)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
-
-Conclude with `Finset.dvd_sum fun k _ => Dvd.dvd.mul_left (hevσ k j) _`. Conclude with `strip m n _ ((dvd_add_left hrest).1 hD)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BKLim.BetaDiv.isBeta_div : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (N d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (F : Frame bk N d ρ) (m k n : ℕ) (β γ : Matrix (Fin d) (Fin d) bk.S), F.IsBeta m k β → 1 ≤ m → n ≤ k → (∀ p q, bk.E ^ m ∣ (β - (l : bk.S) ^ n • γ) p q) → F.IsBeta m (k - n) γ := by
   intro l _ K bk N d ρ F m k n β γ hβ hm hnk hd

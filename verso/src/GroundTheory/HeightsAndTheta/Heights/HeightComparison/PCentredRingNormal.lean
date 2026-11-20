@@ -14,7 +14,7 @@ variable {L : Type} [Field L] [NumberField L]
 omit [NumberField L] in
 
 /- English proof (translation)
-Take `⟨p, hp, hpx⟩` from `hx`. Conclude with `⟨p.map f, hp.map f, by rw [Polynomial.eval₂_map, hf]; exact hpx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isIntegral_of_comp {R R' : Type*} [CommRing R] [CommRing R'] [Algebra R L] [Algebra R' L]
     (f : R →+* R') (hf : (algebraMap R' L).comp f = algebraMap R L) {x : L}
@@ -23,7 +23,7 @@ theorem isIntegral_of_comp {R R' : Type*} [CommRing R] [CommRing R'] [Algebra R 
   exact ⟨p.map f, hp.map f, by rw [Polynomial.eval₂_map, hf]; exact hpx⟩
 
 /- English proof (translation)
-Rewrite using `[Valuation.mem_valuationSubring_iff, FinitePlace.mk_apply, FinitePlace.norm_embedding', NNReal.coe_le_one, ← map_one (WithZeroMulInt.toNNReal (NumberField.HeightOneSpectrum.absNorm_ne_zero v)), (WithZeroMulInt.toNNReal_strictMono (NumberField.HeightOneSpectrum.one_lt_absNorm_nnre …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_valuationSubring_iff_place (v : HeightOneSpectrum (𝓞 L)) (x : L) :
     x ∈ (v.valuation L).valuationSubring ↔ FinitePlace.mk v x ≤ 1 := by
@@ -34,19 +34,17 @@ theorem mem_valuationSubring_iff_place (v : HeightOneSpectrum (𝓞 L)) (x : L) 
       (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v)).le_iff_le]
 
 /- English proof (translation)
-Establish `hint : ∀ a : 𝓞 L, algebraMap (𝓞 L) L a ∈ V` using `fun a ↦ by`. Establish `h : IsIntegral V (algebraMap (𝓞 L) L a)` using `isIntegral_of_comp (Int.castRingHom V) (RingHom.ext_int _ _) (RingOfIntegers.isIntegral_coe a)`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `φ : 𝓞 L →+* V` to `(algebraMap (𝓞 L) L).codRestrict V hint`. Set `P : Ideal (𝓞 L)` to `(IsLocalRing.maximalIdeal V).comap φ`. Establish `hinv : ∀ s : 𝓞 L, s ∉ P → (algebraMap (𝓞 L) L s)⁻¹ ∈ V` using `fun s hs ↦ by`. Establish `h1 : V.valuation (φ s : L) = 1`. Break down `V.valuation_lt_one_or_eq_one (φ s) with h | h` into its components or cases.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd ((V.valuation_lt_one_iff (φ s)).mpr h) hs`. Conclude with `h`. Rewrite using `[← V.valuation_le_one_iff, map_inv₀]`. Express the relevant statement in the definitionally equal form `(V.valuation (φ s : L))⁻¹ ≤ 1`. Rewrite using `[h1, inv_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hPne : P ≠ ⊥`. Introduce `hP`. Apply `hV` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `only [ValuationSubring.mem_top, iff_true]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 L) x`. Establish `hbP : b ∉ P`. Rewrite using `[hP, Ideal.mem_bot]`. Conclude with `nonZeroDivisors.ne_zero hb`. Rewrite using `[div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_mem (hint a) (hinv b hbP)`. Set `v : HeightOneSpectrum (𝓞 L)` to `⟨P, Ideal.comap_isPrime _ _, hPne⟩`. Establish `hle : HeightOneSpectrum.valuationSubringAtPrime L v ≤ V`. Introduce and unpack `x ⟨a, s, hs, rfl⟩`. Conclude with `mul_mem (hint a) (hinv s hs)`.
-
-Use `⟨FinitePlace.mk v, fun x ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← mem_valuationSubring_iff_place, ← HeightOneSpectrum.valuationSubringAtPrime_eq_valuationSubring (K := L) v, ValuationSubring.eq_of_le_of_ne_top _ hle hV]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_place_of_valuationSubring (V : ValuationSubring L) (hV : V ≠ ⊤) :
     ∃ w : FinitePlace L, ∀ x : L, x ∈ V ↔ w x ≤ 1 := by
@@ -87,23 +85,19 @@ theorem exists_place_of_valuationSubring (V : ValuationSubring L) (hV : V ≠ �
     ValuationSubring.eq_of_le_of_ne_top _ hle hV]
 
 /- English proof (translation)
-Establish `hO : ∀ u : O, w u ≤ 1` using `fun u ↦ hA _ (Subalgebra.algebraMap_mem _ u)`. Set `q : Ideal O` to `{ carrier := {u | w u < 1} zero_mem' := by simp add_mem' := fun {a b} ha hb ↦ by`. Express the relevant statement in the definitionally equal form `w ((a : L) + b) < 1`. Conclude with `(FinitePlace.add_le w _ _).trans_lt (max_lt ha hb)`. Use the proof step `smul_mem' := fun c a ha ↦ by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `w ((c : L) * a) < 1`. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left (apply_nonneg w _) (hO c)).trans_lt ha }`. Establish `hmem : ∀ u : O, u ∈ q ↔ w u < 1` using `fun _ ↦ Iff.rfl`. Establish `hq_prime : q.IsPrime`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun h ↦ ?_, fun {a b} hab ↦ ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : O) ∈ q` using `h ▸ Submodule.mem_top`. Rewrite `h1` using `[hmem]`. Simplify using `at h1`. Assume the negation of the conclusion as `hne`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hne` using `[not_or, hmem, hmem, not_lt, not_lt]`. Rewrite `hab` using `[hmem]`. Express the relevant statement in the definitionally equal form `w ((a : L) * b) < 1 at hab`. Rewrite `hab` using `[map_mul, le_antisymm (hO a) hne.1, le_antisymm (hO b) hne.2, one_mul]`. Conclude with `lt_irrefl _ hab`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq_ne : q ≠ ⊥`. Introduce `hq`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := O) x`. Establish `hb1 : w (algebraMap O L b) = 1`. Use `le_antisymm (hO b) (not_lt.mp fun h ↦ nonZeroDivisors.ne_zero hb ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.mem_bot, ← hq]`. Conclude with `h`. Rewrite `hx` using `[map_div₀, hb1, div_one]`. Conclude with `absurd (hO a) (not_le.mpr hx)`. Establish `hq_max : q.IsMaximal` using `SubringPrimeMaximal.proof L O q hq_prime hq_ne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqm : q ≤ m` using `fun u hu ↦ by`. Assume the negation of the conclusion as `hum`. Establish `hu0 : (u : L) ≠ 0` using `fun h ↦ hum (by rw [show u = 0 from Subtype.ext h]; exact m.zero_mem)`. Establish `hinv : w (u : L)⁻¹ ≤ 1` using `hA _ ⟨1, u, hum, by rw [map_one, one_mul]; rfl⟩`. Establish `hprod : w (u : L) * w (u : L)⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel₀ hu0, map_one]`.
-
-Establish `hu' : w u < 1` using `hu`. Use polynomial arithmetic with `[apply_nonneg w (u : L), apply_nonneg w (u : L)⁻¹]`. Establish `hqe : q = m` using `hq_max.eq_of_le (Ideal.IsMaximal.ne_top ‹_›) hqm`. Use `⟨hO, fun u ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← hqe]`.
-
-Conclude with `(hmem u).symm`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absCentredAt_of_le_one (O : Subalgebra ℤ L) [IsFractionRing O L] (m : Ideal O) [m.IsMaximal]
     (w : FinitePlace L)
@@ -156,19 +150,17 @@ theorem absCentredAt_of_le_one (O : Subalgebra ℤ L) [IsFractionRing O L] (m : 
   exact (hmem u).symm
 
 /- English proof (translation)
-Introduce `L _ _ O _ _ m _`. Use `set A := Localization.subalgebra.ofField L m.primeCompl m.primeCompl_le_nonZeroDivisors with hAdef`. Establish `hcent : ∀ w : FinitePlace L, AbsCentredAt O m (fun t ↦ w t) → ∀ y ∈ A, w y ≤ 1`. Introduce and unpack `w ⟨hO, hm⟩ y ⟨a, s, hs, rfl⟩`. Establish `hs1 : w (algebraMap O L s) = 1` using `le_antisymm (hO s) (not_lt.mp fun h ↦ hs ((hm s).mp h))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv₀, hs1, inv_one, mul_one]`. Conclude with `hO a`. Use extensionality with `x`. Rewrite using `[mem_placesRing, Subalgebra.mem_toSubring, mem_integralClosure_iff]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hx`. Establish `hall : x ∈ ⨅ V : {V : ValuationSubring L // (A : Set L) ⊆ V.toSubring}, V.1.toSubring`. Use `Subring.mem_iInf.mpr fun ⟨V, hAV⟩ ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hV : V = ⊤`. Establish `h : x ∈ V` using `hV ▸ ValuationSubring.mem_top x`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h`. Take `⟨w, hw⟩` from `exists_place_of_valuationSubring V hV`. Assume the negation of the conclusion as `hxV`. Establish `hwx : 1 < w x` using `not_le.mp fun h ↦ hxV ((hw x).mpr h)`. Establish `hc` using `absCentredAt_of_le_one O m w (fun y hy ↦ (hw y).mp (hAV hy)) x hwx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hxV ((hw x).mpr (hx w hc))`. Rewrite `hall` using `[iInf_valuationSubring_superset, Subalgebra.mem_toSubring, mem_integralClosure_iff]`. Use `isIntegral_of_comp ((algebraMap (Subring.closure (A : Set L)) L).codRestrict A fun y ↦ ?_) (RingHom.ext fun _ ↦ rfl) hall` and prove the remaining obligations. Conclude with `(Subring.closure_le (t := A.toSubring)).mpr (fun z hz ↦ hz) y.2`. Introduce `hx w hw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `v` to `FinitePlace.maximalIdeal w`. Establish `hAV : ∀ y ∈ A, y ∈ (v.valuation L).valuationSubring` using `fun y hy ↦ by`. Rewrite using `[mem_valuationSubring_iff_place, FinitePlace.mk_maximalIdeal]`. Conclude with `hcent w hw y hy`. Establish `hxV : IsIntegral (v.valuation L).valuationSubring x` using `isIntegral_of_comp ((algebraMap A L).codRestrict _ fun y ↦ hAV y y.2) (RingHom.ext fun _ ↦ rfl) hx`.
-
-Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hxV`. Establish `h` using `(mem_valuationSubring_iff_place v x).mp (hy ▸ y.2)`. Rewrite `h` using `[FinitePlace.mk_maximalIdeal]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem proof : CentredRingNormal.Statement := by
   intro L _ _ O _ _ m _

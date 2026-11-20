@@ -8,19 +8,19 @@ namespace GroundTheory.Heights₂.Heights.Model
 open CategoryTheory AlgebraicGeometry TopologicalSpace Opposite
 
 /- English proof (translation)
-Introduce `X _ E hE U hU`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `s hs`. Use `TopCat.Presheaf.section_ext ⟨E.presheaf, E.isSheaf⟩ U s 0 fun x hx => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `E.presheaf.germ U x hx s = E.presheaf.germ U x hx 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_zero]`. Take `⟨Ux, -, hxUx, n, b, hb⟩` from `hE x`. Set `V : X.Opens` to `U ⊓ Ux`. Establish `hxV : x ∈ V` using `⟨hx, hxUx⟩`. Establish `hηV : genericPoint X ∈ V` using `((genericPoint_spec X).mem_open_set_iff V.isOpen).mpr ⟨x, trivial, hxV⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `iVU : V ⟶ U` to `homOfLE inf_le_left`. Set `sV` to `E.presheaf.map iVU.op s`. Take `⟨r, hr⟩` from `(hb V inf_le_right).2 sV`. Establish `hr0 : ∀ i, r i = 0`. Establish `h1 : E.presheaf.germ V (genericPoint X) hηV sV = E.presheaf.germ U (genericPoint X) hU 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[TopCat.Presheaf.germ_res_apply, hs, map_zero]`. Take `⟨W, hηW, iWV, iWU, e⟩` from `E.presheaf.germ_eq (genericPoint X) hηV hU sV 0 h1`. Establish `hWUx : W ≤ Ux` using `iWV.le.trans inf_le_right`. Establish `key : (fun i => X.presheaf.map iWV.op (r i)) = 0`. Apply `(hb W hWUx).1` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Pi.zero_apply, zero_smul, Finset.sum_const_zero]`. Rewrite `e` using `[map_zero]`. Rewrite using `[← e, ← hr, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.map_smul, ← ConcreteCategory.comp_apply, ← Functor.map_comp]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `i`. Apply `germ_injective_of_isIntegral X (U := V) (genericPoint X) hηV` to reduce the goal to its premises. Rewrite using `[map_zero, ← X.presheaf.germ_res_apply iWV (genericPoint X) hηW, congrFun key i, Pi.zero_apply, map_zero]`. Establish `hsV : sV = 0`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hr]`. Simplify using `[hr0]`. Rewrite using `[← TopCat.Presheaf.germ_res_apply E.presheaf iVU x hxV s]`. Express the relevant statement in the definitionally equal form `E.presheaf.germ V x hxV sV = 0`. Rewrite using `[hsV, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem GenericGermInjective.proof : GenericGermInjective.Statement := by
   intro X _ E hE U hU

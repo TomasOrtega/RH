@@ -20,7 +20,7 @@ namespace GlobalTheory.HSShort.SysHyp
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Simplify using `only [Geo.mulW_apply]`. Use `tw_ext (isLB_tens G.K.isLB G.isLBA) G.isLB fun i c y hy hi hc => ?_` and prove the remaining obligations. Rewrite using `[germ_mulSec _ _ _ _ _ _ _ _ _ hi hc, germ_mulSec _ _ _ _ _ _ _ _ _ hi hc, germ_mulSec _ _ _ _ _ _ _ _ _ hi hc, germ_mulSec _ _ _ _ _ _ _ _ _ hi hc]`. Conclude with `mul_left_comm _ _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulW_comm (G : Geo F) (j : ℕ) (u v : Fin G.N → F) (m : G.Sec j) :
     G.mulW (j + 1) u (G.mulW j v m) = G.mulW (j + 1) v (G.mulW j u m) := by
@@ -31,9 +31,9 @@ theorem mulW_comm (G : Geo F) (j : ℕ) (u v : Fin G.N → F) (m : G.Sec j) :
   exact mul_left_comm _ _ _
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun j => ?_` and prove the remaining obligations. Break down `j with _ | _ | j` into its components or cases. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `G.mulW 0 u 0 = G.mulW 0 v 0`. Rewrite using `[map_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mulW_comm G j u v (x j)`.
+A detailed English derivation is pending.
 -/
 theorem shift_comm (G : Geo F) (u v : Fin G.N → F) : shift G u * shift G v = shift G v * shift G u := by
   refine LinearMap.ext fun x => funext fun j => ?_
@@ -44,9 +44,9 @@ theorem shift_comm (G : Geo F) (u v : Fin G.N → F) : shift G u * shift G v = s
   · exact mulW_comm G j u v (x j)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Break down `l with _ | l` into its components or cases. Rewrite using `[Pi.single_eq_of_ne (Nat.succ_ne_zero j).symm]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `G.mulW l u ((Pi.single j m : Tot G) l) = _`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Distinguish the cases in `h : l = j`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.single_eq_same]`. Rewrite using `[Pi.single_eq_of_ne h, Pi.single_eq_of_ne (fun e => h (Nat.succ_injective e)), map_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem shift_single (G : Geo F) (j : ℕ) (u : Fin G.N → F) (m : G.Sec j) :
     shift G u (Pi.single j m) = Pi.single (j + 1) (G.mulW j u m) := by
@@ -69,14 +69,14 @@ theorem coe_inclEquiv (j : ℕ) (x : X.V j) :
     (inclEquiv X j x : Tot X.toGeo) = Pi.single j (x : X.Sec j) := rfl
 
 /- English proof (translation)
-Rewrite using `[← coe_inclEquiv, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_eq_single (j : ℕ) (x : LinearMap.range (incl X j)) :
     (x : Tot X.toGeo) = Pi.single j ((inclEquiv X j).symm x : X.Sec j) := by
   rw [← coe_inclEquiv, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use `⟨(X.full j).fg.map _, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.span F ((inclEquiv X j).toLinearMap '' (X.M j : Set (X.V j))) = ⊤`. Rewrite using `[← Submodule.map_span, (X.full j).span, Submodule.map_top, LinearEquiv.range]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isFull (Λ₀ : ℝ) (j : ℕ) : IsFull ((sysOf X Λ₀).M j) := by
   refine ⟨(X.full j).fg.map _, ?_⟩
@@ -84,9 +84,9 @@ theorem isFull (Λ₀ : ℝ) (j : ℕ) : IsFull ((sysOf X Λ₀).M j) := by
   rw [← Submodule.map_span, (X.full j).span, Submodule.map_top, LinearEquiv.range]
 
 /- English proof (translation)
-Take `⟨v, hm, hi, hn⟩` from `h`. Establish `hs : ⊤ ≤ Submodule.span F (Set.range v)` using `(hi.span_eq_top_of_card_eq_finrank' (by rw [Fintype.card_fin, X.latRank_M])).ge`. Use `⟨_, (Module.Basis.mk hi hs).map (inclEquiv X j), fun i => ?_⟩` and prove the remaining obligations. Establish `e : (Module.Basis.mk hi hs).map (inclEquiv X j) i = inclEquiv X j (v i)`. Rewrite using `[Module.Basis.map_apply, Module.Basis.mk_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `e ▸ ⟨⟨v i, hm i, rfl⟩, fun σ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(X.nm j).nrm σ ((inclEquiv X j).symm (inclEquiv X j (v i))) ≤ Λ`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Conclude with `hn i σ`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem short (Λ₀ : ℝ) {j : ℕ} {Λ : ℝ} (h : X.ShortFamily j Λ) : (sysOf X Λ₀).Short j Λ := by
   obtain ⟨v, hm, hi, hn⟩ := h
@@ -107,11 +107,11 @@ namespace GlobalTheory.HSShort
 open SysHyp
 
 /- English proof (translation)
-Introduce `F _ _ X Λ₀ h`. Use `h.totallyComplex` as an intermediate fact. Use `⟨X.geom.alg.variety.one_le, X.le_T, ⟨?_, X.geom.alg.spans, X.herm, fun k σ => h.normsLe k σ, h.one_le_Lam⟩, shift_comm X.toGeo, fun j _ => isFull X Λ₀ j, ?_, ?_, X.one_le_beta, h.hermSysHyp_one_le_lambdaZero, X.one_le_LamD, X.one_le_LamT, short X Λ₀ h.short0, short X Λ₀ h.shortD, …` and prove the remaining obligations. Take `⟨j, -⟩` from `TopologicalSpace.Opens.mem_iSup.1 (X.geom.alg.bpf.ge (Set.mem_univ (genericPoint X.Y)))`. Conclude with `j.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `j hj k _ ⟨f, hf, rfl⟩`. Take `⟨g, hg, e⟩` from `h.mulStable j hj (X.w.col k) (Submodule.subset_span ⟨k, rfl⟩) f hf`. Use `⟨inclEquiv X (j + 1) g, ⟨g, hg, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `((shift_single X.toGeo j _ f).trans (congrArg (Pi.single (M := fun l => X.Sec l) (j + 1)) e.symm)).symm`. Introduce `σ j hj u m c f g e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h.mulBound.mulBoundAt σ j hj u m c (fun i => (inclEquiv X j).symm (f i)) (fun t => (inclEquiv X (j + 1)).symm (g t)) fun k i => ?_` and prove the remaining obligations. Establish `e₁` using `(coe_eq_single X (j + 1) (g (k, i))).symm.trans ((e k i).trans ((congrArg (shift X.toGeo (Pi.single k 1)) (coe_eq_single X j (f i))).trans (shift_single X.toGeo j _ _)))`. Conclude with `Pi.single_injective (M := fun l => X.Sec l) (j + 1) e₁`.
+A detailed English derivation is pending.
 -/
 theorem GeoHyp.sysOf_hyp : ∀ (F : Type) [Field F] [NumberField F] (X : Data F) (Λ₀ : ℝ),
     GeoHyp X Λ₀ → (sysOf X Λ₀).Hyp := by

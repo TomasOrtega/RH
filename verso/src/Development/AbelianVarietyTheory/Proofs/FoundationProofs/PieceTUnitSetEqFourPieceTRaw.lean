@@ -13,7 +13,7 @@ namespace GlobalTheory.TameSmoothing
 variable {K : Type*} [Field K] [CharZero K]
 
 /- English proof (translation)
-Establish `h : ((e * (y.val : ℤ) : ℤ) : ZMod q) = (((((e : ZMod q) * y).val : ℕ) : ℤ) : ZMod q)`. Rewrite using `[Int.cast_mul, Int.cast_natCast, Int.cast_natCast, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`. Take `⟨w, hw⟩` from `(ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).mp h`. Rewrite using `[Int.modEq_iff_dvd]`. Conclude with `⟨w, by push_cast; linear_combination (N : ℤ) * hw⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem modEq_scale_tame {N q : ℕ} [NeZero q] (e : ℤ) (y : ZMod q) (s : ℤ) :
     e * ((N : ℤ) * y.val + (q : ℤ) * s) ≡ (N : ℤ) * ((e : ZMod q) * y).val + (q : ℤ) * (e * s)
@@ -25,9 +25,9 @@ theorem modEq_scale_tame {N q : ℕ} [NeZero q] (e : ℤ) (y : ZMod q) (s : ℤ)
   exact ⟨w, by push_cast; linear_combination (N : ℤ) * hw⟩
 
 /- English proof (translation)
-Establish `hM : 0 < N * p ^ n` using `Nat.mul_pos hN (Nat.pos_of_ne_zero (NeZero.ne _))`. Use `eisF_congr_mod hM hζ ?_ ?_` and prove the remaining obligations. Use `modEq_scale_tame (N := N) e ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) i 0) w.1` as an intermediate fact. Simplify `this` using `only [rowT, h, Nat.cast_pow]`. Use `modEq_scale_tame (N := N) e ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) i 1) w.2` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `only [rowT, h, Nat.cast_pow]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eisF_scale_tame {j N p n : ℕ} [NeZero p] (hN : 0 < N) {ζ : K} (hζ : ζ ^ (N * p ^ n) = 1) (e : ℤ)
     (γ δ : GL (Fin 2) (ZMod (p ^ n))) (i : Fin 2) (w : ℤ × ℤ)
@@ -43,19 +43,17 @@ theorem eisF_scale_tame {j N p n : ℕ} [NeZero p] (hN : 0 < N) {ζ : K} (hζ : 
     simpa only [rowT, h, Nat.cast_pow] using this
 
 /- English proof (translation)
-Establish `hn : 0 < n` using `lt_of_lt_of_le hm hmn`. Establish `huc : IsUnit (c : ZMod (p ^ n))` using `isUnit_intCast_of_not_dvd hpc`. Establish `hud : IsUnit (d : ZMod (p ^ n))` using `isUnit_intCast_of_not_dvd hpd`. Establish `hψ : ∀ e : ℤ, ¬ (p : ℤ) ∣ e → ψ⁻¹ (e : ZMod (p ^ m)) * ψ (e : ZMod (p ^ m)) = 1`. Introduce `e he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← MulChar.mul_apply, inv_mul_cancel, MulChar.one_apply (isUnit_intCast_of_not_dvd he)]`. Establish `hcast : ∀ y : ZMod (p ^ n), ((y.val : ℕ) : ZMod (p ^ m)) = ZMod.castHom (pow_dvd_pow p hmn) (ZMod (p ^ m)) y`. Introduce `y`. Rewrite using `[ZMod.castHom_apply, ZMod.cast_eq_val]`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_nbij' (fun γ => diagGL huc.unit hud.unit * γ) (fun γ => (diagGL huc.unit hud.unit)⁻¹ * γ) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `γ hγ`. Conclude with `(diagGL_mul_mem hn _ _ γ).mpr hγ`. Introduce `γ hγ`. Use `(diagGL_mul_mem hn huc.unit hud.unit _).mp ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[mul_inv_cancel_left]` and apply the resulting hypothesis. Introduce `γ _`. Conclude with `inv_mul_cancel_left _ _`. Introduce `γ _`. Conclude with `mul_inv_cancel_left _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `γ _`. Rewrite using `[eisF_scale_tame hN hζ.pow_eq_one c γ (diagGL huc.unit hud.unit * γ) 0 w (fun l => diagGL_mul_zero _ _ _ l), eisF_scale_tame hN hζ.pow_eq_one d γ (diagGL huc.unit hud.unit * γ) 1 w' (fun l => diagGL_mul_one _ _ _ l), diagGL_mul_det, hcast, hcast, IsUnit.unit_spec, IsUnit.unit_spe …`. Establish `h1` using `hψ c hpc`. Establish `h2` using `hψ d hpd`. Generalize the expression as in `ψ⁻¹ (c : ZMod (p ^ m)) = A at h1 ⊢`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `ψ⁻¹ (d : ZMod (p ^ m)) = B at h2 ⊢`. Generalize the expression as in `ψ (c : ZMod (p ^ m)) = A' at h1 ⊢`. Generalize the expression as in `ψ (d : ZMod (p ^ m)) = B' at h2 ⊢`. Generalize the expression as in `cmul (K := K) _ _ r = T`. Generalize the expression as in `ψ (ZMod.castHom _ _ _) = S`.
-
-Take the linear combination `(-(S * T)) * h1 - (A * A' * S * T) * h2`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_scaled_tame (p : ℕ) [hp : Fact p.Prime] (N n m k : ℕ) (ψ : DirichletCharacter K (p ^ m))
     (c d : ℤ) (w w' : ℤ × ℤ) (ζ : K) (hζ : IsPrimitiveRoot ζ (N * p ^ n)) (hN : 0 < N) (hm : 1 ≤ m) (hmn : m ≤ n)
@@ -111,11 +109,11 @@ theorem sum_scaled_tame (p : ℕ) [hp : Fact p.Prime] (N n m k : ℕ) (ψ : Diri
     linear_combination (-(S * T)) * h1 - (A * A' * S * T) * h2
 
 /- English proof (translation)
-Introduce `p hp N n m k K _ _ ψ c d w w' ζ hζ hN _ hm hmn hk hpc hpd r`. Establish `hp1 : ¬ (p : ℤ) ∣ 1` using `(Nat.prime_iff_prime_int.mp hp.out).not_dvd_one`. Establish `h2` using `sum_scaled_tame p N n m k ψ 1 d w w' ζ hζ hN hm hmn hp1 hpd r`. Establish `h3` using `sum_scaled_tame p N n m k ψ c 1 w w' ζ hζ hN hm hmn hpc hp1 r`. Establish `h4` using `sum_scaled_tame p N n m k ψ c d w w' ζ hζ hN hm hmn hpc hpd r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [one_mul, Int.cast_one, map_one, mul_one, Prod.mk.eta] at h2 h3`. Establish `e1 : (2 : ℤ) - ((k - 1 : ℕ) : ℤ) = 3 - k` using `by omega`. Establish `e2 : (2 : ℤ) - ((1 : ℕ) : ℤ) = 1` using `by norm_num`. Establish `hs : ∀ (e : ℤ) (j M : ℕ) (a b : ℤ), smF e j M ζ a b = fun i => (e : K) ^ 2 * eisF j M ζ a b i - (e : K) ^ ((2 : ℤ) - j) * eisF j M ζ (e * a) (e * b) i` using `fun _ _ _ _ _ => rfl`. Unfold `pieceT pieceTRaw`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [hs, cmul_expand, e1, e2, zpow_one, mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Simplify using `only [mul_left_comm (ψ _), ← Finset.mul_sum]`. Rewrite using `[h2, h3, h4]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pieceT_unitSet_eq_four_pieceTRaw :
     ∀ (p : ℕ) [Fact p.Prime] (N n m k : ℕ) (K : Type) [Field K] [CharZero K] (ψ : DirichletCharacter K (p ^ m)) (c d : ℤ) (w w' : ℤ × ℤ) (ζ : K), IsPrimitiveRoot ζ (N * p ^ n) → 0 < N → ¬ p ∣ N → 1 ≤ m → m ≤ n → 3 ≤ k → ¬ (p : ℤ) ∣ c → ¬ (p : ℤ) ∣ d → ∀ r : ℕ, pieceT N p n m k ψ c d w w' ζ (unitSet p n) r = (c : K) ^ 2 * (d : K) ^ 2 * pieceTRaw N p n m k ψ w w' ζ (unitSet p n) r - (c : K) ^ ((3 : ℤ) - k) * ψ⁻¹ (c : ZMod (p ^ m)) * (d : K) ^ 2 * pieceTRaw N p n m k ψ (c * w.1, c * w.2) w' ζ (unitSet p n) r - (c : K) ^ 2 * (d : K) * ψ⁻¹ (d : ZMod (p ^ m)) * pieceTRaw N p n m k ψ w (d * w'.1, d * w'.2) ζ (unitSet p n) r + (c : K) ^ ((3 : ℤ) - k) * ψ⁻¹ (c : ZMod (p ^ m)) * (d : K) * ψ⁻¹ (d : ZMod (p ^ m)) * pieceTRaw N p n m k ψ (c * w.1, c * w.2) (d * w'.1, d * w'.2) ζ (unitSet p n) r := by

@@ -6,11 +6,9 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.OrbitalCount
 
 /- English proof (translation)
-Introduce `H _ _ _ K L hL hK hLK`. Establish `hKL : L.relIndex K ≠ 0` using `by haveI := isCompact_iff_compactSpace.mp hK haveI : Finite (K ⧸ L.subgroupOf K) := Subgroup.quotient_finite_of_isOpen _ (hL.preimage continuous_subtype_val)`. Conclude with `Subgroup.index_ne_zero_of_finite`. Use `⟨hKL, fun T C x hC => ?_⟩` and prove the remaining obligations. Establish `hf : Function.Injective (MulAut.conj x).toMonoidHom` using `(MulAut.conj x).injective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (L.map (MulAut.conj x).toMonoidHom).relIndex (K.map (MulAut.conj x).toMonoidHom) ≠ 0`. Rewrite using `[Subgroup.relIndex_map_map_of_injective L K hf]` and apply the resulting hypothesis. Establish `h2 : (L.map (MulAut.conj x).toMonoidHom).relIndex (T ⊓ K.map (MulAut.conj x).toMonoidHom) ≠ 0` using `fun h => h1 (Subgroup.relIndex_eq_zero_of_le_right inf_le_right h)`. Establish `h3 : T.relIndex (T ⊓ K.map (MulAut.conj x).toMonoidHom) ≠ 0`. Rewrite using `[Subgroup.relIndex_eq_one.mpr inf_le_left]`.
-
-Conclude with `one_ne_zero`. Conclude with `Subgroup.relIndex_ne_zero_trans (Subgroup.relIndex_inf_ne_zero h3 h2) hC`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_open_compact_and_twisted :
     ∀ (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (K L : Subgroup H),

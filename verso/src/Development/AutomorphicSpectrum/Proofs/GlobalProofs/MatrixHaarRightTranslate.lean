@@ -50,9 +50,7 @@ def colLat (O : Subring F) (ϖ : F) (n : ℕ) {m : ℕ} (j : Fin m) : Set (Matri
   {x | ∀ i b, x i b * (if b = j then ϖ else 1) ∈ O}
 
 /- English proof (translation)
-Establish `hx' : ∀ i j, x i j ∈ O` using `hx`. Establish `hg' : ∀ i j, g i j ∈ O` using `hg`. Use `show ∀ i j, (x * g) i j ∈ O`. Introduce `i j`. Rewrite using `[Matrix.mul_apply]`.
-
-Conclude with `Subring.sum_mem O fun k _ => O.mul_mem (hx' i k) (hg' k j)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intMat_mul {n m : ℕ} {x : Matrix (Fin n) (Fin m) F} {g : Matrix (Fin m) (Fin m) F}
     (hx : x ∈ intMat O n m) (hg : IsInt O g) : x * g ∈ intMat O n m := by
@@ -64,9 +62,7 @@ theorem intMat_mul {n m : ℕ} {x : Matrix (Fin n) (Fin m) F} {g : Matrix (Fin m
   exact Subring.sum_mem O fun k _ => O.mul_mem (hx' i k) (hg' k j)
 
 /- English proof (translation)
-Establish `hx' : ∀ i j, x i j ∈ O` using `hx`. Establish `hg' : ∀ i j, g i j ∈ O` using `hg`. Use `show ∀ i j, (g * x) i j ∈ O`. Introduce `i j`. Rewrite using `[Matrix.mul_apply]`.
-
-Conclude with `Subring.sum_mem O fun k _ => O.mul_mem (hg' i k) (hx' k j)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_intMat {n m : ℕ} {x : Matrix (Fin n) (Fin m) F} {g : Matrix (Fin n) (Fin n) F}
     (hg : IsInt O g) (hx : x ∈ intMat O n m) : g * x ∈ intMat O n m := by
@@ -78,7 +74,7 @@ theorem mul_intMat {n m : ℕ} {x : Matrix (Fin n) (Fin m) F} {g : Matrix (Fin n
   exact Subring.sum_mem O fun k _ => O.mul_mem (hg' i k) (hx' k j)
 
 /- English proof (translation)
-Establish `h` using `(hLF.lt_one ϖ).2 ⟨1, O.one_mem, (mul_one ϖ).symm⟩`. Rewrite using `[hLF.O_eq]`. Conclude with `(Valuation.mem_integer_iff _ _).2 h.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_mem (hLF : LF O ϖ nrm q) : ϖ ∈ O := by
   have h := (hLF.lt_one ϖ).2 ⟨1, O.one_mem, (mul_one ϖ).symm⟩
@@ -86,7 +82,7 @@ theorem pi_mem (hLF : LF O ϖ nrm q) : ϖ ∈ O := by
   exact (Valuation.mem_integer_iff _ _).2 h.le
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one]`. Conclude with `hLF.lt_one a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_zero (hLF : LF 𝒪[F] ϖ nrm q) (a : 𝒪[F]) :
     IsLocalRing.residue 𝒪[F] a = 0 ↔ ∃ o ∈ 𝒪[F], (a : F) = ϖ * o := by
@@ -95,7 +91,7 @@ theorem res_zero (hLF : LF 𝒪[F] ϖ nrm q) (a : 𝒪[F]) :
   exact hLF.lt_one a
 
 /- English proof (translation)
-Introduce `h`. Apply `hLF.ne` to reduce the goal to its premises. Establish `h2 : nrm ϖ = 0` using `by rw [hLF.nrm_pi, h, Nat.cast_zero, _root_.inv_zero]`. Conclude with `(AbsoluteValue.eq_zero (abv := nrm)).1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem q_ne_zero (hLF : LF O ϖ nrm q) : q ≠ 0 := by
   intro h
@@ -108,21 +104,17 @@ section Measure
 variable [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Take `⟨hB, hopen, hcomp, -, hHaar, huniq⟩` from `GlobalTheory.T.matrix_additive_haar_normalized hLF n m`. Use `haveI := hB`. Use `haveI := hinv`. Use `haveI := hHaar dx hinv h1`. Establish `hφc : Continuous φ` using `φ.continuous`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφm : Measurable φ` using `hφc.measurable`. Establish `h0 : (0 : Matrix (Fin n) (Fin m) F) ∈ φ ⁻¹' intMat O n m` using `by show φ 0 ∈ intMat O n m`. Rewrite using `[map_zero]`. Use `show ∀ i j, (0 : Matrix (Fin n) (Fin m) F) i j ∈ O`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `O.zero_mem`. Establish `hc0 : dx (φ ⁻¹' intMat O n m) ≠ 0` using `(hopen.preimage hφc).measure_ne_zero dx ⟨0, h0⟩`. Establish `hK : IsCompact (φ ⁻¹' intMat O n m)`. Establish `hset : φ ⁻¹' intMat O n m = φ.symm '' intMat O n m`. Use extensionality with `x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨φ x, hx, φ.symm_apply_apply x⟩`. Introduce and unpack `⟨y, hy, rfl⟩ show φ (φ.symm y) ∈ intMat O n m`. Rewrite using `[φ.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hy`. Rewrite using `[hset]`. Conclude with `hcomp.image φ.symm.continuous`. Establish `hctop : dx (φ ⁻¹' intMat O n m) ≠ ⊤` using `hK.measure_lt_top.ne`. Use `haveI hinvm : (Measure.map φ dx).IsAddLeftInvariant := by`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_map (measurable_const_add g) hφm]`. Establish `hfun : ((g + ·) ∘ φ) = φ ∘ (φ.symm g + ·)`. Use function extensionality and compare the values at `x`. Simplify using `[map_add]`.
-
-Rewrite using `[hfun, ← Measure.map_map hφm (measurable_const_add _), map_add_left_eq_self]`. Establish `hν : ((dx (φ ⁻¹' intMat O n m))⁻¹ • Measure.map φ dx) (intMat O n m) = 1`. Rewrite using `[Measure.smul_apply, Measure.map_apply hφm hopen.measurableSet, smul_eq_mul, ENNReal.inv_mul_cancel hc0 hctop]`. Establish `heq` using `huniq dx hinv h1 ((dx (φ ⁻¹' intMat O n m))⁻¹ • Measure.map φ dx) inferInstance hν`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[smul_smul, ENNReal.mul_inv_cancel hc0 hctop, one_smul]`. Use `_ = dx (φ ⁻¹' intMat O n m) • dx := by rw [← heq]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_smul (hLF : LF O ϖ nrm q) {n m : ℕ} {dx : Measure (Matrix (Fin n) (Fin m) F)}
     (hinv : dx.IsAddLeftInvariant) (h1 : dx (intMat O n m) = 1)
@@ -171,11 +163,9 @@ theorem map_eq_smul (hLF : LF O ϖ nrm q) {n m : ℕ} {dx : Measure (Matrix (Fin
     _ = dx (φ ⁻¹' intMat O n m) • dx := by rw [← heq]
 
 /- English proof (translation)
-Take `⟨o, ho, heq⟩` from `(res_zero hLF (⟨y * ϖ, hy⟩ - s)).1 (by rw [map_sub, hs, sub_self])`. Establish `hne` using `hLF.ne`. Establish `heq' : y * ϖ - (s : F) = ϖ * o` using `by simpa using heq`. Establish `hval : -(ϖ⁻¹ * (s : F)) + y = o`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mul_sub, mul_comm y ϖ, ← mul_assoc, inv_mul_cancel₀ hne, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ϖ⁻¹ * (ϖ * o) := by rw [heq']`. Use `_ = o := by rw [← mul_assoc, inv_mul_cancel₀ hne, one_mul]`. Rewrite using `[hval]`.
-
-Conclude with `ho`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem neg_inv_mul_add_mem_of_residue_eq (hLF : LF 𝒪[F] ϖ nrm q) (y : F) (hy : y * ϖ ∈ 𝒪[F]) (s : 𝒪[F])
     (hs : IsLocalRing.residue 𝒪[F] s = IsLocalRing.residue 𝒪[F] ⟨y * ϖ, hy⟩) :
@@ -192,9 +182,9 @@ private theorem neg_inv_mul_add_mem_of_residue_eq (hLF : LF 𝒪[F] ϖ nrm q) (y
   exact ho
 
 /- English proof (translation)
-Establish `hw : ϖ⁻¹ * ((s : F) - t) ∈ 𝒪[F]`. Establish `h` using `sub_mem ht hs`. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : IsLocalRing.residue 𝒪[F] (s - t) = 0` using `(res_zero hLF (s - t)).2 ⟨_, hw, by push_cast; rw [← mul_assoc, mul_inv_cancel₀ hLF.ne, one_mul]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `h0` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem residue_eq_of_neg_inv_mul_add_mem (hLF : LF 𝒪[F] ϖ nrm q) (y : F) (s t : 𝒪[F])
     (hs : -(ϖ⁻¹ * (s : F)) + y ∈ 𝒪[F]) (ht : -(ϖ⁻¹ * (t : F)) + y ∈ 𝒪[F]) :
@@ -208,7 +198,7 @@ private theorem residue_eq_of_neg_inv_mul_add_mem (hLF : LF 𝒪[F] ϖ nrm q) (y
   rwa [map_sub, sub_eq_zero] at h0
 
 /- English proof (translation)
-Establish `hne` using `hLF.ne`. Establish `h` using `add_mem (mul_mem hs (pi_mem hLF)) s.2`. Use `h using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `field_simp <;> ring`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem mul_mem_of_neg_inv_mul_add_mem (hLF : LF 𝒪[F] ϖ nrm q) (y : F) (s : 𝒪[F])
     (hs : -(ϖ⁻¹ * (s : F)) + y ∈ 𝒪[F]) : y * ϖ ∈ 𝒪[F] := by
@@ -218,25 +208,23 @@ private theorem mul_mem_of_neg_inv_mul_add_mem (hLF : LF 𝒪[F] ϖ nrm q) (y : 
   field_simp <;> ring
 
 /- English proof (translation)
-Take `⟨hB, hopen, -, -, -, -⟩` from `GlobalTheory.T.matrix_additive_haar_normalized hLF n m`. Use `haveI := hB`. Use `haveI := hinv`. Take `rfl : O = 𝒪[F]` from `hLF.O_eq`. Use `haveI : Finite 𝓀[F] := Nat.finite_of_card_ne_zero (by rw [← hLF.card]; exact q_ne_zero hLF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Fintype 𝓀[F] := Fintype.ofFinite _`. Take `⟨s, hs⟩ : ∃ s : 𝓀[F] → 𝒪[F], ∀ r, IsLocalRing.residue 𝒪[F] (s r) = r` from `⟨_, Function.surjInv_eq IsLocalRing.residue_surjective⟩`. Set `E : (Fin n → 𝓀[F]) → Matrix (Fin n) (Fin m) F` to `fun r i b => if b = j then ϖ⁻¹ * (s (r i) : F) else 0`. Set `T : (Fin n → 𝓀[F]) → Set (Matrix (Fin n) (Fin m) F)` to `fun r => (fun x => -E r + x) ⁻¹' intMat 𝒪[F] n m`. Establish `hmemT : ∀ r x, x ∈ T r ↔ ∀ i b, -(if b = j then ϖ⁻¹ * (s (r i) : F) else 0) + x i b ∈ 𝒪[F]` using `fun _ _ => Iff.rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∀ r, dx (T r) = 1` using `fun r => by show dx ((fun x => -E r + x) ⁻¹' intMat 𝒪[F] n m) = 1`. Rewrite using `[measure_preimage_add, h1]`. Establish `hTm : ∀ r, MeasurableSet (T r)` using `fun r => (hopen.preimage (continuous_const.add continuous_id)).measurableSet`. Establish `hcol : colLat 𝒪[F] ϖ n j = ⋃ r, T r`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Set.mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : ∀ i b, x i b * (if b = j then ϖ else 1) ∈ 𝒪[F]` using `hx`. Establish `hxj : ∀ i, x i j * ϖ ∈ 𝒪[F]` using `fun i => by simpa using hx' i j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i => IsLocalRing.residue 𝒪[F] ⟨x i j * ϖ, hxj i⟩, (hmemT _ x).2 fun i b => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : b = j`. Rewrite using `[hb, if_pos rfl]`. Conclude with `neg_inv_mul_add_mem_of_residue_eq hLF (x i j) (hxj i) _ (hs _)`. Rewrite using `[if_neg hb, neg_zero, zero_add]`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify `hx' i b` using `[hb]`. Introduce and unpack `⟨r, hr⟩`. Establish `hr'` using `(hmemT r x).1 hr`. Use `show ∀ i b, x i b * (if b = j then ϖ else 1) ∈ 𝒪[F]`. Introduce `i b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hb : b = j`. Rewrite using `[hb, if_pos rfl]`. Establish `h3` using `hr' i j`. Rewrite `h3` using `[if_pos rfl]`. Conclude with `mul_mem_of_neg_inv_mul_add_mem hLF (x i j) (s (r i)) h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3` using `hr' i b`. Rewrite `h3` using `[if_neg hb, neg_zero, zero_add]`. Rewrite using `[if_neg hb, mul_one]`. Conclude with `h3`. Establish `hdisj : Pairwise (Function.onFun Disjoint T)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `r r' hrr'`. Use `Set.disjoint_left.2 fun x h h' => hrr' (funext fun i => ?_)` and prove the remaining obligations. Establish `h1'` using `(hmemT r x).1 h i j`. Establish `h2'` using `(hmemT r' x).1 h' i j`. Rewrite `h1'`, `h2'` using `[if_pos rfl]`.
-
-Rewrite using `[← hs (r i), ← hs (r' i)]`. Conclude with `residue_eq_of_neg_inv_mul_add_mem hLF (x i j) _ _ h1' h2'`. Rewrite using `[hcol, measure_iUnion hdisj hTm]`. Simplify using `only [hT, tsum_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fun, Fintype.card_fin, nsmul_eq_mul, mul_one, Nat.cast_pow, ← Nat.card_eq_fintype_card, ← hLF.card]`. Rewrite using `[Nat.card_fun, Nat.card_eq_fintype_card (α := Fin n), Fintype.card_fin, ← hLF.card, Nat.cast_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vol_colLat (hLF : LF O ϖ nrm q) {n m : ℕ} {dx : Measure (Matrix (Fin n) (Fin m) F)}
     (hinv : dx.IsAddLeftInvariant) (h1 : dx (intMat O n m) = 1) (j : Fin m) :
@@ -304,14 +292,14 @@ def scale (nrm : AbsoluteValue F ℝ) (n : ℕ) {m : ℕ} (g : GL (Fin m) F) : �
   ENNReal.ofReal ((nrm (g : Matrix (Fin m) (Fin m) F).det)⁻¹ ^ n)
 
 /- English proof (translation)
-Conclude with `AbsoluteValue.pos (abv := nrm) (Matrix.isUnits_det_units g).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem det_pos (nrm : AbsoluteValue F ℝ) {m : ℕ} (g : GL (Fin m) F) :
     0 < nrm (g : Matrix (Fin m) (Fin m) F).det := by
   exact AbsoluteValue.pos (abv := nrm) (Matrix.isUnits_det_units g).ne_zero
 
 /- English proof (translation)
-Simplify using `only [scale, Units.val_mul, Matrix.det_mul, map_mul, mul_inv, mul_pow]`. Conclude with `ENNReal.ofReal_mul (pow_nonneg (inv_nonneg.2 (AbsoluteValue.nonneg nrm _)) _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scale_mul (nrm : AbsoluteValue F ℝ) (n : ℕ) {m : ℕ} (g h : GL (Fin m) F) :
     scale nrm n (g * h) = scale nrm n g * scale nrm n h := by
@@ -319,7 +307,7 @@ theorem scale_mul (nrm : AbsoluteValue F ℝ) (n : ℕ) {m : ℕ} (g h : GL (Fin
   exact ENNReal.ofReal_mul (pow_nonneg (inv_nonneg.2 (AbsoluteValue.nonneg nrm _)) _)
 
 /- English proof (translation)
-Rewrite using `[scale, Ne, ENNReal.ofReal_eq_zero, not_le]`. Conclude with `pow_pos (inv_pos.2 (det_pos nrm g)) n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_ne_zero (nrm : AbsoluteValue F ℝ) (n : ℕ) {m : ℕ} (g : GL (Fin m) F) :
     scale nrm n g ≠ 0 := by
@@ -327,15 +315,15 @@ theorem scale_ne_zero (nrm : AbsoluteValue F ℝ) (n : ℕ) {m : ℕ} (g : GL (F
   exact pow_pos (inv_pos.2 (det_pos nrm g)) n
 
 /- English proof (translation)
-The claim follows from `ENNReal.ofReal_ne_top`.
+A detailed English derivation is pending.
 -/
 theorem scale_ne_top (nrm : AbsoluteValue F ℝ) (n : ℕ) {m : ℕ} (g : GL (Fin m) F) :
     scale nrm n g ≠ ⊤ := ENNReal.ofReal_ne_top
 
 /- English proof (translation)
-Establish `hd` using `det_pos nrm g`. Establish `h1 : nrm ((g⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F).det * nrm (g : Matrix (Fin m) (Fin m) F).det = 1`. Rewrite using `[← map_mul, ← Matrix.det_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.det_one, AbsoluteValue.map_one]`. Unfold `scale`. Rewrite using `[eq_inv_of_mul_eq_one_left h1, ← ENNReal.ofReal_inv_of_pos (pow_pos (inv_pos.2 hd) n)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `inv_pow _ _`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem scale_inv (nrm : AbsoluteValue F ℝ) (n : ℕ) {m : ℕ} (g : GL (Fin m) F) :
     scale nrm n g⁻¹ = (scale nrm n g)⁻¹ := by
@@ -350,7 +338,7 @@ theorem scale_inv (nrm : AbsoluteValue F ℝ) (n : ℕ) {m : ℕ} (g : GL (Fin m
   exact inv_pow _ _
 
 /- English proof (translation)
-Conclude with `(continuous_id.matrix_mul continuous_const).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_rightMul {m : ℕ} (n : ℕ) [BorelSpace (Matrix (Fin n) (Fin m) F)]
     (g : GL (Fin m) F) : Measurable (rightMul n g : Matrix (Fin n) (Fin m) F → _) := by
@@ -385,18 +373,18 @@ def stab (nrm : AbsoluteValue F ℝ) {n m : ℕ} [BorelSpace (Matrix (Fin n) (Fi
     rw [smul_smul, ENNReal.inv_mul_cancel (scale_ne_zero nrm n g) (scale_ne_top nrm n g), one_smul]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_stab {n m : ℕ} [BorelSpace (Matrix (Fin n) (Fin m) F)]
     {dx : Measure (Matrix (Fin n) (Fin m) F)} {g : GL (Fin m) F} :
     g ∈ stab nrm dx ↔ Measure.map (rightMul n g) dx = scale nrm n g • dx := Iff.rfl
 
 /- English proof (translation)
-Establish `hk' : IsInt O (k : Matrix (Fin m) (Fin m) F) ∧ IsInt O ((k⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F)` using `hk`. Establish `hdet : nrm (k : Matrix (Fin m) (Fin m) F).det = 1` using `((GlobalTheory.T.mem_integralGL_iff_integral_unit_det hLF m k).1 hk).2`. Rewrite using `[mem_stab, map_eq_smul hLF hinv h1 (rightMul n k)]`. Establish `hpre : (rightMul n k : Matrix (Fin n) (Fin m) F → _) ⁻¹' intMat O n m = intMat O n m`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `x * (k : Matrix (Fin m) (Fin m) F) ∈ intMat O n m ↔ x ∈ intMat O n m`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h2` using `intMat_mul hx hk'.2`. Rewrite `h2` using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Then use the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `hx`. Conclude with `intMat_mul hx hk'.1`. Rewrite using `[hpre, h1, scale, hdet, inv_one, one_pow, ENNReal.ofReal_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glint_mem_stab (hLF : LF O ϖ nrm q) {n m : ℕ} [BorelSpace (Matrix (Fin n) (Fin m) F)]
     {dx : Measure (Matrix (Fin n) (Fin m) F)}
@@ -418,13 +406,13 @@ theorem glint_mem_stab (hLF : LF O ϖ nrm q) {n m : ℕ} [BorelSpace (Matrix (Fi
   rw [hpre, h1, scale, hdet, inv_one, one_pow, ENNReal.ofReal_one]
 
 /- English proof (translation)
-Establish `hval : ((dg (Pi.mulSingle j (Units.mk0 ϖ hLF.ne)) : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) = Matrix.diagonal fun b => if b = j then ϖ else 1`. Express the relevant statement in the definitionally equal form `Matrix.diagonal (fun i => (((Pi.mulSingle j (Units.mk0 ϖ hLF.ne) : Fin m → Fˣ) i : Fˣ) : F)) = _`. Use `congr 1`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = j`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hb]`. Simplify using the standard rewrite rules. Simplify using `[hb]`. Rewrite using `[mem_stab, map_eq_smul hLF hinv h1]`. Establish `hpre : (rightMul n (dg (Pi.mulSingle j (Units.mk0 ϖ hLF.ne))) : Matrix (Fin n) (Fin m) F → _) ⁻¹' intMat O n m = colLat O ϖ n j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `x * ((dg (Pi.mulSingle j (Units.mk0 ϖ hLF.ne)) : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) ∈ intMat O n m ↔ _`. Rewrite using `[hval]`. Use `show (∀ i b, (x * Matrix.diagonal fun b => if b = j then ϖ else 1) i b ∈ O) ↔ ∀ i b, x i b * (if b = j then ϖ else 1) ∈ O`. Simplify using `only [Matrix.mul_diagonal]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpre, vol_colLat hLF hinv h1 j, scale, hval, Matrix.det_diagonal, Finset.prod_ite_eq', if_pos (Finset.mem_univ j), hLF.nrm_pi, inv_inv, ENNReal.ofReal_pow (Nat.cast_nonneg _), ENNReal.ofReal_natCast]`.
+A detailed English derivation is pending.
 -/
 theorem single_mem_stab (hLF : LF O ϖ nrm q) {n m : ℕ} [BorelSpace (Matrix (Fin n) (Fin m) F)]
     {dx : Measure (Matrix (Fin n) (Fin m) F)}
@@ -453,9 +441,7 @@ theorem single_mem_stab (hLF : LF O ϖ nrm q) {n m : ℕ} [BorelSpace (Matrix (F
     ENNReal.ofReal_natCast]
 
 /- English proof (translation)
-Use `show (fun i => (Units.mk0 ϖ hLF.ne) ^ e i) ∈ (stab nrm dx).comap dg`. Rewrite using `[← Finset.univ_prod_mulSingle (fun i => (Units.mk0 ϖ hLF.ne) ^ e i)]`. Use `Subgroup.prod_mem _ fun j _ => ?_` and prove the remaining obligations. Establish `h2 : (Pi.mulSingle j ((Units.mk0 ϖ hLF.ne : Fˣ) ^ e j) : Fin m → Fˣ) = (Pi.mulSingle j (Units.mk0 ϖ hLF.ne : Fˣ) : Fin m → Fˣ) ^ e j` using `map_zpow (MonoidHom.mulSingle (fun _ : Fin m => Fˣ) j) (Units.mk0 ϖ hLF.ne) (e j)`. Rewrite using `[h2]`.
-
-Conclude with `Subgroup.zpow_mem _ (Subgroup.mem_comap.2 (single_mem_stab hLF hinv h1 j)) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_mem_stab (hLF : LF O ϖ nrm q) {n m : ℕ} [BorelSpace (Matrix (Fin n) (Fin m) F)]
     {dx : Measure (Matrix (Fin n) (Fin m) F)}
@@ -471,17 +457,15 @@ theorem diag_mem_stab (hLF : LF O ϖ nrm q) {n m : ℕ} [BorelSpace (Matrix (Fin
   exact Subgroup.zpow_mem _ (Subgroup.mem_comap.2 (single_mem_stab hLF hinv h1 j)) _
 
 /- English proof (translation)
-Use `haveI : BorelSpace (Matrix (Fin n) (Fin m) F) := (GlobalTheory.T.matrix_additive_haar_normalized hLF n m).1`. Use `⟨fun g => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Take `⟨k₁, hk₁, k₂, hk₂, e, d, hd, rfl⟩` from `GlobalTheory.T.cartan_decomposition_generalLinear hLF m g`. Establish `hdd : d = dg (fun i => (Units.mk0 ϖ hLF.ne) ^ e i)`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd]`. Express the relevant statement in the definitionally equal form `_ = Matrix.diagonal fun i => ((((Units.mk0 ϖ hLF.ne) ^ e i : Fˣ)) : F)`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmem : k₁ * d * k₂ ∈ stab nrm dx`. Use `Subgroup.mul_mem _ (Subgroup.mul_mem _ (glint_mem_stab hLF hinv h1 hk₁) ?_) (glint_mem_stab hLF hinv h1 hk₂)` and prove the remaining obligations. Rewrite using `[hdd]`. Conclude with `diag_mem_stab hLF hinv h1 e`. Conclude with `mem_stab.1 hmem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk' : IsInt O (k : Matrix (Fin n) (Fin n) F) ∧ IsInt O ((k⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)` using `hk`. Establish `h` using `map_eq_smul hLF hinv h1 (leftMul m k)`. Establish `hpre : (leftMul m k : Matrix (Fin n) (Fin m) F → _) ⁻¹' intMat O n m = intMat O n m`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(k : Matrix (Fin n) (Fin n) F) * x ∈ intMat O n m ↔ x ∈ intMat O n m`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h2` using `mul_intMat hk'.2 hx`. Rewrite `h2` using `[← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Then use the resulting hypothesis. Introduce `hx`.
-
-Conclude with `mul_intMat hk'.1 hx`. Rewrite `h` using `[hpre, h1, one_smul]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mul_eq (hLF : LF O ϖ nrm q) (n m : ℕ) (dx : Measure (Matrix (Fin n) (Fin m) F))
     (hinv : dx.IsAddLeftInvariant) (h1 : dx (intMat O n m) = 1) :
@@ -524,7 +508,7 @@ theorem map_mul_eq (hLF : LF O ϖ nrm q) (n m : ℕ) (dx : Measure (Matrix (Fin 
 end Measure
 
 /- English proof (translation)
-Introduce `hLF n m dx hinv h1` and use `map_mul_eq hLF n m dx hinv h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem haar_mat_scale : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}, LF O ϖ nrm q → ∀ n m : ℕ, ∀ (dx : Measure (Matrix (Fin n) (Fin m) F)), dx.IsAddLeftInvariant → dx (intMat O n m) = 1 → (∀ g : GL (Fin m) F, Measure.map (fun x : Matrix (Fin n) (Fin m) F => x * (g : Matrix (Fin m) (Fin m) F)) dx = ENNReal.ofReal ((nrm (g : Matrix (Fin m) (Fin m) F).det)⁻¹ ^ n) • dx) ∧ (∀ k ∈ GLint O n, Measure.map (fun x : Matrix (Fin n) (Fin m) F => (k : Matrix (Fin n) (Fin n) F) * x) dx = dx) :=
   fun hLF n m dx hinv h1 => map_mul_eq hLF n m dx hinv h1

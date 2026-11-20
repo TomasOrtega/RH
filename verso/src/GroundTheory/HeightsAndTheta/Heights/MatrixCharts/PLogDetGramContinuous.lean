@@ -15,9 +15,9 @@ noncomputable section
 namespace MCPsh
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hdet : (Y x).det ≠ 0` using `(hpd x hx).det_pos.ne'`. Establish `hinvR : ContinuousAt (Ring.inverse : ℝ → ℝ) (Y x).det`. Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinvAt : ContinuousAt (Inv.inv : Matrix (Fin g) (Fin g) ℝ → Matrix (Fin g) (Fin g) ℝ) (Y x)` using `continuousAt_matrix_inv _ hinvR`. Conclude with `hinvAt.comp_continuousWithinAt (hY x hx)`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_inv_of_posDef {X : Type} [TopologicalSpace X] {s : Set X} {g : ℕ}
     {Y : X → Matrix (Fin g) (Fin g) ℝ} (hY : ContinuousOn Y s) (hpd : ∀ x ∈ s, (Y x).PosDef) :
@@ -32,7 +32,7 @@ theorem continuousOn_inv_of_posDef {X : Type} [TopologicalSpace X] {s : Set X} {
   exact hinvAt.comp_continuousWithinAt (hY x hx)
 
 /- English proof (translation)
-Establish `hinj : Function.Injective F.mulVec` using `mulVec_injective_of_rank (by rw [hF, Fintype.card_fin])`. Use `(cx_posDef hY).inv.conjTranspose_mul_mul_same hinj` as an intermediate fact. Rewrite `this` using `[cx_inv ((Matrix.isUnit_iff_isUnit_det _).mp hY.isUnit)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gram_posDef {g rk : ℕ} {Y : Matrix (Fin g) (Fin g) ℝ} {F : Matrix (Fin g) (Fin rk) ℂ}
     (hY : Y.PosDef) (hF : F.rank = rk) :
@@ -42,7 +42,7 @@ theorem gram_posDef {g rk : ℕ} {Y : Matrix (Fin g) (Fin g) ℝ} {F : Matrix (F
   rwa [cx_inv ((Matrix.isUnit_iff_isUnit_det _).mp hY.isUnit)] at this
 
 /- English proof (translation)
-Establish `h1 : Continuous (fun p : Matrix (Fin g) (Fin rk) ℂ × Matrix (Fin g) (Fin g) ℝ => p.1)` using `continuous_fst`. Establish `h2 : Continuous (fun p : Matrix (Fin g) (Fin rk) ℂ × Matrix (Fin g) (Fin g) ℝ => p.2.map (fun x : ℝ => (x : ℂ)))` using `continuous_snd.matrix_map Complex.continuous_ofReal`. Conclude with `(h1.matrix_conjTranspose.matrix_mul h2).matrix_mul h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_gram (g rk : ℕ) :
     Continuous (fun p : Matrix (Fin g) (Fin rk) ℂ × Matrix (Fin g) (Fin g) ℝ =>
@@ -56,9 +56,9 @@ theorem continuous_gram (g rk : ℕ) :
 end MCPsh
 
 /- English proof (translation)
-Introduce `X _ s g rk Y F hY hF hpd hr`. Establish `hYinv` using `continuousOn_inv_of_posDef hY hpd`. Establish `hΦ : Continuous (fun p : Matrix (Fin g) (Fin rk) ℂ × Matrix (Fin g) (Fin g) ℝ => (p.1ᴴ * p.2.map (fun x : ℝ => (x : ℂ)) * p.1).det.re)` using `Complex.continuous_re.comp (continuous_gram g rk).matrix_det`. Establish `hG` using `hΦ.comp_continuousOn (hF.prodMk hYinv)`. Simplify using `only [Function.comp_def] at hG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show ContinuousOn (fun x => Real.log ((F x)ᴴ * ((Y x)⁻¹).map (fun x : ℝ => (x : ℂ)) * F x).det.re) s`. Use `hG.log fun x hx => ?_` and prove the remaining obligations. Establish `h` using `MCDet.re_det_pos (gram_posDef (hpd x hx) (hr x hx))`. Rewrite `h` using `[RCLike.re_to_complex]`. Conclude with `h.ne'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LogDetGramContinuous.proof : LogDetGramContinuous.Statement := by
   intro X _ s g rk Y F hY hF hpd hr

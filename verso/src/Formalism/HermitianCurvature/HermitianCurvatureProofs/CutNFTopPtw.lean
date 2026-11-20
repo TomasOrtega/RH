@@ -17,11 +17,11 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Unfold `D.vecV`. Distinguish the cases in `hq' : D.IsLocPt q (r + 1) ∧ 0 < D.ptG (Tz k r Bs.z * Tz k r Bs.z') r q`. Simplify using `only [dif_pos hq']`. Establish `hδ : δ < D.ptG (Tz k r Bs.z * Tz k r Bs.z') r q` using `hq.resolve_left (not_not.2 hq'.2)`. Distinguish the cases in `h' : ∃ γ ∈ B.GV k r, Zhat k r Bs.z Bs.z' γ = D.ptMatN q (r + 1) ∧ D.IsDFrame Bs ν' m₀ γ`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [dif_pos h']`. Establish `hγ` using `h'.choose_spec.1`. Establish `hGq` using `Formalism.FourierDecayAlt.P.ptG_spec k r Bs.z Bs.z' q h'.choose hq'.1 h'.choose_spec.2.1`. Establish `hpos : δ < Gf k r Bs.z Bs.z' h'.choose` using `hGq ▸ hδ`. Establish `e` using `Formalism.FourierDecayAlt.P.JCx1.needs.orbJ_smul_of_ae Bs h'.choose (D.muR Bs h'.choose (hq'.1.2 ▸ D.ptPerm q)) H₁ H₂ 1 (by filter_upwards [Formalism.FourierDecayAlt.P.B5.ae_inSS Bs] with p hp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [D.orbIntegrand, B.rho, one_smul]`. Rewrite using `[h _ (Formalism.FourierDecayAlt.P.B7.sgs_mem Bs hp hγ) (by rw [Formalism.FourierDecayAlt.P.JCx1.needs.gf_sgs Bs hp]; exact hpos)])`. Rewrite using `[e, one_smul]`. Simplify using `only [dif_neg h']`. Simplify using `only [dif_neg hq']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem vecV_congr_gt (Bs : B.RealPlaceData k r Wp Wq) (ν' : Fin (2 * r + k + 1) → ℂ) (m₀ : B.Mat k r) (q : C.LPt)
     {H₁ H₂ : B.Mat k r → (Wq →L[ℂ] Wp)} (δ : ℝ)
@@ -54,13 +54,13 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Introduce `g hg hgε`. Take `⟨nf, fib, o, κ, Dop, -, hIn, -, -, hΘ⟩` from `hCb w hw e`. Establish `hdom : g ∈ C6.domL p.T.base ∅` using `⟨hg, lt_trans hε hgε, fun l hl => by simp at hl⟩`. Rewrite using `[hΘ _ g hdom, hΘ _ g hdom]`. Establish `hlen : ∀ T ∈ Dop, T.word.length ≤ o`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `T hT`. Take `⟨_, _, _, _, _, _, _, hl, _⟩` from `hIn.2.2 T hT`. Use linear arithmetic over natural numbers and integers. Establish `hc : B.CkOn ⊤ (B.GV P.k P.r) (D.cutF p.T.base χ F ε)` using `Formalism.FourierDecayAlt.P.JCTx6.Link2.ckOn_cutF p.T.base hχ hF ε`. Establish `hsub` using `Formalism.FourierDecayAlt.P.PBE.opApply_subGV Dop hlen (Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top hc) (Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top hF) g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGc : Continuous (fun g : B.Mat P.k P.r => Gf P.k P.r p.T.base.z p.T.base.z' g)` using `(Formalism.FourierDecayAlt.P.JCx1.contDiff_Gf p.T.base.z p.T.base.z').continuous`. Establish `hU : IsOpen {x : B.Mat P.k P.r | ε < Gf P.k P.r p.T.base.z p.T.base.z' x}` using `isOpen_lt continuous_const hGc`. Establish `h0` using `Formalism.FourierDecayAlt.P.PBE.opApply_zero_near Dop (F := D.cutF p.T.base χ F ε - F) hU (by`. Introduce `x _ hx`. Use `replace hx : ε < Gf P.k P.r p.T.base.z p.T.base.z' x := hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : 1 ≤ Gf P.k P.r p.T.base.z p.T.base.z' x / ε` using `by rw [le_div_iff₀ hε]; linarith`. Simplify using `only [Pi.sub_apply, D.cutF, hχ.2.2 _ h1, Complex.ofReal_one, one_smul, sub_self]) g hg hgε`. Rewrite `h0` using `[hsub]`. Conclude with `sub_eq_zero.1 h0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_cutF_gt (p : KB.Pl P Wp Wq) {Cb : ℝ} (hCb : KB.InDDplus2 P p.l0 p.T.base Cb p.Θ) {χ : ℝ → ℝ}
     (hχ : C6.IsCut0 χ) {F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} (hF : B.CkOn ⊤ (B.GV P.k P.r) F) {ε : ℝ} (hε : 0 < ε)
@@ -97,11 +97,11 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `hV : ∀ H₁ H₂ : B.Mat P.k P.r → (Wq →L[ℂ] Wp), (∀ g ∈ B.GV P.k P.r, ε < Gf P.k P.r p.T.base.z p.T.base.z' g → H₁ g = H₂ g) → D.vecV p.T.base p.ν' p.m₀ H₁ γ = D.vecV p.T.base p.ν' p.m₀ H₂ γ` using `fun H₁ H₂ h => vecV_congr_gt p.T.base p.ν' p.m₀ γ ε h hγ`. Establish `hcut : ∀ g ∈ B.GV P.k P.r, ε < Gf P.k P.r p.T.base.z p.T.base.z' g → D.cutF p.T.base χ F ε g = F g`. Introduce `g _ hg`. Establish `h1 : 1 ≤ Gf P.k P.r p.T.base.z p.T.base.z' g / ε` using `by rw [le_div_iff₀ hε]; linarith`. Simplify using `only [D.cutF, hχ.2.2 _ h1, Complex.ofReal_one, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `KB.Pl.RR D.RRplace`. Distinguish the cases in `h1 : D.IsLocPt γ (P.r + 1) ∧ D.IsLocPt γ (P.r + 1)`. Rewrite using `[dif_pos h1, dif_pos h1, dif_neg (by omega), dif_neg (by omega), if_pos rfl, if_pos rfl]`. Distinguish the cases in `h3 : w = []`. Rewrite using `[if_pos h3, if_pos h3, hV _ _ hcut]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h3, if_neg h3]`. Unfold `Top.topOf`. Use `Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[hV _ _ (theta_cutF_gt p hCb hχ hF hε hw e)]`. Rewrite using `[dif_neg h1, dif_neg h1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rrTop_cutF_eq (p : KB.Pl P Wp Wq) {Cb : ℝ} (hCb : KB.InDDplus2 P p.l0 p.T.base Cb p.Θ) {χ : ℝ → ℝ}
     (hχ : C6.IsCut0 χ) {F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} (hF : B.CkOn ⊤ (B.GV P.k P.r) F) {ε : ℝ} (hε : 0 < ε)
@@ -129,11 +129,9 @@ theorem rrTop_cutF_eq (p : KB.Pl P Wp Wq) {Cb : ℝ} (hCb : KB.InDDplus2 P p.l0 
   · rw [dif_neg h1, dif_neg h1]
 
 /- English proof (translation)
-Introduce `c`. Use `set γ := TBB.bigPt P.r c`. Use `set Gγ := D.ptG (Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z') P.r γ with hGγ`. Establish `hev : ∀ᶠ ε in 𝓝[>] (0 : ℝ), 0 < ε ∧ (¬ (0 < Gγ) ∨ ε < Gγ)`. Distinguish the cases in `hG : 0 < Gγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `filter_upwards [Ioo_mem_nhdsGT hG] with ε hε`. Conclude with `⟨hε.1, Or.inr hε.2⟩`. Use `filter_upwards [self_mem_nhdsWithin] with ε hε`. Conclude with `⟨hε, Or.inl hG⟩`. Use `filter_upwards [hev] with ε hε`.
-
-Unfold `topD TBB.Ew TBB.NP`. Rewrite using `[rrTop_cutF_eq p hCb hχ hF hε.1 hw γ hε.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nFTopPtw_of (p : KB.Pl P Wp Wq) {Cb : ℝ} (hCb : KB.InDDplus2 P p.l0 p.T.base Cb p.Θ) {χ : ℝ → ℝ}
     (hχ : C6.IsCut0 χ) {F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} (hF : B.CkOn ⊤ (B.GV P.k P.r) F)
@@ -155,9 +153,9 @@ theorem nFTopPtw_of (p : KB.Pl P Wp Wq) {Cb : ℝ} (hCb : KB.InDDplus2 P p.l0 p.
 end place
 
 /- English proof (translation)
-Introduce `Cb`. Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f A₀ p₀ χ Y N hH w hw _`. Take `⟨hχ, hCb, hf, -, -, -⟩` from `hH`. Establish `hF : B.CkOn ⊤ (B.GV P.k P.r) (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀)` using `ckOn_fpm p p₀ hf (Formalism.FourierDecayAlt.P.CutMP.ER.ckOn_const' _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Filter.Eventually.of_forall fun c => nFTopPtw_of p hCb hχ hF hw.1 c`.
+A detailed English derivation is pending.
 -/
 theorem top_pointwise_all_levels_holds : NFTopPtwAll := by
   intro Cb

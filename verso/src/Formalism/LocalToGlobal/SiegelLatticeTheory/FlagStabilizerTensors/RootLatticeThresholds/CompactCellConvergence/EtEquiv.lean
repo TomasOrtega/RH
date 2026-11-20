@@ -12,11 +12,11 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.FourierDeca
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hγu : IsUnit γ.det` using `uh_isUnit hpos.1`. Rewrite using `[(Formalism.FourierDecayAlt.P.stabilizer_split k r z z' γ hstd hpos).2.1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, n, hn, rfl⟩`. Use `⟨hg, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: γ⁻¹ * (γ * n * γ⁻¹) * γ = n`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hγu, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hγu, Matrix.one_mul]`. Rewrite using `[this]`. Conclude with `hn`. Introduce and unpack `⟨hg, hg'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hg, _, hg', ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hγu, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hγu, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rst_iff {z z' : Fin (2 * r + k + 1) → ℂ} {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hstd : Std k r z z') (hpos : PosPt k r z z' γ)
@@ -36,23 +36,21 @@ theorem rst_iff {z z' : Fin (2 * r + k + 1) → ℂ} {γ : Matrix (Fin (2 * r + 
       Matrix.mul_nonsing_inv _ hγu, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hSD` using `Formalism.FourierDecayAlt.P.c2_section_decomp k r L.z L.z' γ hstd hpos hmono`. Establish `hRg` using `Formalism.FourierDecayAlt.P.Dx2.OrbJ.closedR (k := k) (r := r) (uh_isUnit hpos.1)`. Set `ρh : Mt k r → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ` to `fun n => if h : Matrix.of n ∈ Sset k r L.z then (hSD (Matrix.of n) h).exists.choose.1 else 1`. Use `⟨ρh, fun n hn => ?_⟩` and prove the remaining obligations. Establish `hnS : Matrix.of n ∈ Sset k r L.z` using `n_in_sset L.z hn`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hspec` using `(hSD (Matrix.of n) hnS).exists.choose_spec`. Establish `hρdef : ρh n = (hSD (Matrix.of n) hnS).exists.choose.1` using `dif_pos hnS`. Use `set ρ0 := (hSD (Matrix.of n) hnS).exists.choose.1 with hρ0`. Use `set σ0 := (hSD (Matrix.of n) hnS).exists.choose.2 with hσ0`. Establish `hρ0R : ρ0 ∈ RStab k r γ` using `(rst_iff hstd hpos ρ0).1 hspec.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ0 : σ0 ∈ Sg k r L.z L.z' γ` using `hspec.2.1`. Establish `hn0 : Matrix.of n = ρ0 * σ0` using `hspec.2.2`. Rewrite using `[hρdef]`. Use `⟨hρ0R, fun a ha => ?_⟩` and prove the remaining obligations. Establish `haU : IsUnit (Matrix.of a).det` using `uh_isUnit ha.1.1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρU : IsUnit ρ0.det` using `uh_isUnit hρ0R.1.1`. Establish `haρ : Matrix.of a * ρ0 ∈ RStab k r γ` using `hRg.mul_mem _ ha _ hρ0R`. Establish `hanS : Matrix.of a * Matrix.of n ∈ Sset k r L.z` using `n_in_sset L.z (WeylGroupFacts.mem_n_mul ha.1 hn)`. Establish `hsg` using `sg_eq (k := k) (r := r) L.z L.z' hstd.2.1 γ`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨y, hy, hΦ⟩`. Establish `hyU : Matrix.of y ∈ UH (Hpk k r)` using `hy.1.1.1`. Rewrite `hΦ` using `[uh_inv_eq hyU]`. Establish `hΦ' : (Matrix.of y)⁻¹ * (Matrix.of a * Matrix.of n) ∈ Sg k r L.z L.z' γ` using `by rw [hsg]; exact hΦ`. Establish `hyu : IsUnit (Matrix.of y).det` using `uh_isUnit hyU`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : Matrix.of a * Matrix.of n = Matrix.of y * ((Matrix.of y)⁻¹ * (Matrix.of a * Matrix.of n))`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hyu, Matrix.one_mul]`. Establish `e2 : Matrix.of a * Matrix.of n = (Matrix.of a * ρ0) * σ0` using `by rw [hn0, Matrix.mul_assoc]`. Establish `huniq` using `(hSD _ hanS).unique (y₁ := (Matrix.of y, (Matrix.of y)⁻¹ * (Matrix.of a * Matrix.of n))) (y₂ := (Matrix.of a * ρ0, σ0)) ⟨(rst_iff hstd hpos _).2 hy.1, hΦ', e1⟩ ⟨(rst_iff hstd hpos _).2 haρ, hσ0, e2⟩`. Establish `hyeq : Matrix.of y = Matrix.of a * ρ0` using `congrArg Prod.fst huniq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Formalism.FourierDecayAlt.B.rmulF ρ0 a = y` using `by show (Matrix.of a * ρ0 : Matrix _ _ ℂ) = Matrix.of y`. Rewrite using `[hyeq]`. Rewrite using `[this]`. Conclude with `hy`. Introduce `hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, hy, ?_⟩` and prove the remaining obligations. Establish `hyM : Matrix.of (Formalism.FourierDecayAlt.B.rmulF ρ0 a) = Matrix.of a * ρ0` using `rfl`. Rewrite using `[hyM, uh_inv_eq haρ.1.1, ← hsg, Matrix.mul_inv_rev]`. Use `show ρ0⁻¹ * (Matrix.of a)⁻¹ * (Matrix.of a * Matrix.of n) ∈ Sg k r L.z L.z' γ`. Establish `: ρ0⁻¹ * (Matrix.of a)⁻¹ * (Matrix.of a * Matrix.of n) = σ0`.
-
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (Matrix.of a)⁻¹, Matrix.nonsing_inv_mul _ haU, Matrix.one_mul, hn0, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hρU, Matrix.one_mul]`. Rewrite using `[this]`. Conclude with `hσ0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem et_equiv (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hstd : Std k r L.z L.z') (hpos : PosPt k r L.z L.z' γ) (hmono : IsMonomial (Formalism.QuantumDeterminants.Zhat k r L.z L.z' γ)) (T : ℝ) :
@@ -111,11 +109,9 @@ theorem et_equiv (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 
     rw [this]; exact hσ0
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hU : μR {x : Mt k r | Matrix.of x ∈ RStab k r γ} = 0`. Use `measure_mono_null (fun y hy => ?_) (measure_iUnion_null hcon)` and prove the remaining obligations. Take `⟨T, hT⟩` from `exists_nat_ge (Formalism.FourierDecayAlt.B.gN (Matrix.of y))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Set.mem_iUnion.2 ⟨T, hy, hT⟩`. Establish `: μR Set.univ = 0`. Use `measure_mono_null (fun y _ => ?_) (measure_union_null hU hRc)` and prove the remaining obligations. Distinguish the cases in `h : Matrix.of y ∈ RStab k r γ`. Conclude with `Or.inl h`.
-
-Conclude with `Or.inr h`. Conclude with `hR0 (Measure.measure_univ_eq_zero.mp this)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem at_pos {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} {μR : Measure (Mt k r)}
     (hR0 : μR ≠ 0) (hRc : μR {x | Matrix.of x ∉ RStab k r γ} = 0) : ∃ T : ℕ, μR (AT (k := k) (r := r) γ T) ≠ 0 := by

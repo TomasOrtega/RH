@@ -13,9 +13,9 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 namespace GlobalTheory.FlipRun
 /- English proof (translation)
-Introduce `hLC hP`. Establish `hS` using `_root_.GlobalTheory.T.cuspidal_lift_smooth_at_cusps hLC hP`. Use `(GlobalTheory.RowClaim.Big.and (_root_.GlobalTheory.T.cusp_transition_rightward hS hP) (_root_.GlobalTheory.T.flipRun_descending_cusp_transition hS hP)).imp fun CF0 h ε CF hC => ?_` and prove the remaining obligations. Take `⟨x₀, h⟩` from `h ε CF hC`. Use `⟨x₀, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch hsc t M hM a ha e' he φ f hf Q F' hF => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `H` using `h D large₂ e hx Γ Pl0 T A Ks R F s ch hch hsc`. Break down `ha with ⟨i, j, hi, hj, rfl⟩ | ⟨i, j, hi, hj, rfl⟩` into its components or cases. Conclude with `H.1 t M hM _ (Or.inl ⟨i, j, hi, hj, rfl⟩) ⟨i, j, rfl⟩ e' he φ f hf Q F' hF`. Conclude with `H.2 t M hM _ (Or.inr ⟨i, j, hi, hj, rfl⟩) ⟨i, j, rfl⟩ e' he φ f hf Q F' hF`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem cuspStep_of_large_flipRun : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.RowClaim.Big fun {_} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (M : Vol ch.G), M.Is t → GlobalTheory.FlipRun.CuspStep ch.W M ch.rm t := by
   intro hLC hP
@@ -37,7 +37,7 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.FlipRun.cuspStep_of_large_flipRun | exact _root_.GlobalTheory.FlipRun.cuspStep_of_large_flipRun | (intros; apply _root_.GlobalTheory.FlipRun.cuspStep_of_large_flipRun <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.flipRun_cusp_transition : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.RowClaim.Big fun {_} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (M : Vol ch.G), M.Is t → GlobalTheory.FlipRun.CuspStep ch.W M ch.rm t := by
   first | exact @_root_.GlobalTheory.FlipRun.cuspStep_of_large_flipRun | exact _root_.GlobalTheory.FlipRun.cuspStep_of_large_flipRun | (intros; apply _root_.GlobalTheory.FlipRun.cuspStep_of_large_flipRun <;> assumption)

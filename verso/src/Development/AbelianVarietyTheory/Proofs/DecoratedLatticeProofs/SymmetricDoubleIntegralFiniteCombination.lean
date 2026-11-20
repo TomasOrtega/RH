@@ -18,19 +18,15 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Introduce and unpack `⟨F, hF, h1, h2⟩ ⟨F', hF', h1', h2'⟩`. Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Take `⟨bX, lX, sX, -⟩` from `GlobalTheory.SplitWeil.volGL_haar k n ν`. Take `⟨bG, lG, sG, -⟩` from `GlobalTheory.SplitWeil.volGL_haar k (n ⊕ Fin c) ν`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI := QuotLinear.finiteOnCompacts_volN (n := n) (c := c) (p := ρ + 1) ν`. Use `haveI : LocallyCompactSpace (N k n c (ρ + 1)) := (QuotLinear.isClosed_N (k := k) (n := n) (c := c) (p := ρ + 1)).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (N k n c (ρ + 1)) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : IsLocallyFiniteMeasure (volN ν n c (ρ + 1)) := isLocallyFiniteMeasure_of_isFiniteMeasureOnCompacts`. Use `haveI : SigmaFinite (volN ν n c (ρ + 1)) := sigmaFinite_of_locallyFinite`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `m : Measure (n → k)` to `Measure.pi fun _ => ν`. Set `ι : GL n k × N k n c (ρ + 1) × (n → k) → GL (n ⊕ Fin c) k` to `fun z => embX c z.1 * (z.2.1 : GL (n ⊕ Fin c) k) * colE c (ρ + 1) z.2.2`. Set `M : Measure (GL n k × N k n c (ρ + 1) × (n → k))` to `μX.prod ((volN ν n c (ρ + 1)).prod m)`. Establish `hm : Continuous ι` using `((QuotLinear.continuous_embX.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd.fst)).mul (ExchangeSupport.continuous_colE.comp continuous_snd.snd)`. Establish `hint : ∀ φ ∈ SB (GL (n ⊕ Fin c) k), ∀ h, Integrable (fun z => φ (ι z * h)) M`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ hφ h`. Take `⟨D, hD, hD'⟩` from `GlobalTheory.RootEx.ProperTriple.proper_triple k n c ρ hp hpc _ (hφ.2.isCompact.image (continuous_mul_right h⁻¹))`. Use `(hφ.1.continuous.comp (hm.mul continuous_const)).integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Use `HasCompactSupport.intro hD fun z hz => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hz (hD' z ⟨_, subset_tsupport _ h0, by simp [ι]⟩)`. Establish `hprod : ∀ φ ∈ SB (GL (n ⊕ Fin c) k), ∀ h, (∫ g, (∫ u : N k n c (ρ + 1), (∫ β : n → k, φ (embX c g * (u : GL (n ⊕ Fin c) k) * colE c (ρ + 1) β * h) ∂m) ∂(volN ν n c (ρ + 1))) ∂μX) = ∫ z, φ (ι z * h) ∂M`. Introduce `φ hφ h`. Rewrite using `[integral_prod _ (hint φ hφ h)]`. Conclude with `integral_congr_ae ((hint φ hφ h).prod_right_ae.mono fun x hx => (integral_prod _ hx).symm)`.
-
-Establish `hs : a • F + F' ∈ SB (GL (n ⊕ Fin c) k)` using `add_mem (Submodule.smul_mem _ a hF) hF'`. Use `⟨a • F + F', hs, fun h => ?_, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hprod _ hs, h1, h1', hprod _ hF, hprod _ hF', ← integral_const_mul, ← integral_add ((hint _ hF h).const_mul a) (hint _ hF' h)]`. Both sides reduce to the same expression.
-
-Establish `i : Integrable F μG` using `hF.1.continuous.integrable_of_hasCompactSupport hF.2`. Establish `j : Integrable F' μG` using `hF'.1.continuous.integrable_of_hasCompactSupport hF'.2`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_add (i.const_mul a) j, integral_const_mul, h2, h2']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isQuotIntFJ_linear {n : Type} [Fintype n] [DecidableEq n] {c ρ : ℕ} (hp : 1 ≤ ρ) (hpc : ρ < c)
     (ν : Measure k) [ν.IsAddHaarMeasure] (μX : Measure (GL n k)) [μX.IsHaarMeasure]
@@ -82,7 +78,7 @@ theorem isQuotIntFJ_linear {n : Type} [Fintype n] [DecidableEq n] {c ρ : ℕ} (
     rw [integral_add (i.const_mul a) j, integral_const_mul, h2, h2']
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h0`. Consider the case `insert j s hj ih`. Simplify using `only [Finset.sum_insert hj]`. Conclude with `hl _ _ _ _ _ (h j (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rel_sum {G ι : Type} (Q : (G → ℂ) → ℂ → Prop) (h0 : Q (fun _ => 0) 0)
     (hl : ∀ (a : ℂ) f f' z z', Q f z → Q f' z' → Q (fun h => a * f h + f' h) (a * z + z'))
@@ -96,21 +92,19 @@ theorem rel_sum {G ι : Type} (Q : (G → ℂ) → ℂ → Prop) (h0 : Q (fun _ 
     exact hl _ _ _ _ _ (h j (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Use `haveI := hν.1`. Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Establish `hk : IsOpen (((1 : kˣ →* ℂˣ).ker : Subgroup kˣ) : Set kˣ)` using `by simp`. Take `⟨⟨r, hr⟩, hsm⟩` from `GlobalTheory.PosOne.isSrc_exists_isSmoothRep k (n₁ ⊕ Fin (c + 1)) (n₂ ⊕ Fin c) 1 hk`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hav` using `(GlobalTheory.PosOne.avg_self_and_props k n₂ n₁ c ρ h1 h2 ψ hψ hψ1 ν hν 1 hk Φ).2`. Set `C : (n₁ → k) → SB (Matrix n₁ n₀ k) →ₗ[ℂ] ℂ` to `fun u => (T.flip (opL hψ ν ρ (r (rowE (c + 1) ρ u) Φ))).flip F`. Establish `hC : IsLocallyConstant C` using `((orbit_locallyConstant (hsm r hr) Φ).comp_continuous ExchangeSupport.continuous_rowE).comp fun v => (T.flip (opL hψ ν ρ v)).flip F`. Establish `key : ∀ Ψ (Φ₀ : SB (n₁ → k)), app (T Ψ) (opEFJ ψ ν ρ Φ₀.1 Φ.1) F = ∫ u, GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.hat ψ ν Φ₀.1 u * C u Ψ ∂(Measure.pi fun _ => ν)`. Introduce `Ψ Φ₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hmem, hE, hL⟩` from `hav Φ₀`. Establish `e` using `hE 1`. Rewrite `e` using `[om_one, om_one]`. Establish `l` using `hL r hr (((T Ψ).flip F).comp (opL hψ ν ρ))`. Rewrite `l` using `[GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app_coe _ ⟨_, hmem⟩]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Conclude with `(congrArg (fun t : A →ₗ[ℂ] ℂ => t F) (GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app_coe (T Ψ) (opL hψ ν ρ ⟨_, hmem⟩))).trans l`. Establish `hh` using `(GlobalTheory.T.schwartzFourierTransformPi_surjective_schwartzBruhat k n₁ ψ hψ hψ1 ν hν).1`. Establish `int1 : ∀ Ψ (Φ₀ : SB (n₁ → k)), Integrable (fun u => GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.hat ψ ν Φ₀.1 u * C u Ψ) (Measure.pi fun _ => ν)` using `fun Ψ Φ₀ => FourierJacobi.sb_int ⟨(hh Φ₀).1.mul (hC.comp fun l => l Ψ), (hh Φ₀).2.mul_right⟩`. Establish `int2 : ∀ (Φ₀ : SB (n₁ → k)) (u : n₁ → k), Integrable (fun β => Φ₀.1 β * (ψ (u ⬝ᵥ β) : ℂ)) (Measure.pi fun _ => ν)` using `fun Φ₀ u => (Φ₀.2.1.continuous.mul ((continuous_induced_dom.comp hψ).comp (continuous_const.dotProduct continuous_id))).integrable_of_hasCompactSupport Φ₀.2.2.mul_right`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `val : ∀ (m : ℕ) (Ψ : Fin m → SB (Matrix n₁ n₀ k)) (Φ₀ : Fin m → SB (n₁ → k)), (∀ x y, Θ x y = ∑ i, (Ψ i).1 x * (Φ₀ i).1 y) → ∑ i, app (T (Ψ i)) (opEFJ ψ ν ρ (Φ₀ i).1 Φ.1) F = ∫ u, app (C u) (fun x => GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.hat ψ ν (Θ x) u) ∂( …`. Introduce `m Ψ Φ₀ hd`. Simplify using `only [key]`. Rewrite using `[← integral_finset_sum _ fun i _ => int1 _ _]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `u`. Establish `: (fun x => GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.hat ψ ν (Θ x) u) = (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.hat ψ ν (Φ₀ i).1 u • Ψ i : SB (Matrix n₁ n₀ k)).1`. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.hat, hd, Finset.sum_mul, mul_assoc]`. Rewrite using `[integral_finset_sum _ fun i _ => (int2 _ u).const_mul _]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[integral_const_mul, mul_comm]`. Rewrite using `[this, GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app_coe]`. Simplify using the standard rewrite rules. Take `⟨m, Ψ, Φ₀, hd, rfl⟩` from `hz`. Take `⟨m', Ψ', Φ₀', hd', rfl⟩` from `hz'`.
-
-Conclude with `(val m Ψ Φ₀ hd).trans (val m' Ψ' Φ₀' hd').symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tensorVal_unique {n₀ n₁ n₂ : Type} [Fintype n₀] [DecidableEq n₀] [Fintype n₁] [DecidableEq n₁] [Fintype n₂]
     [DecidableEq n₂] {c ρ : ℕ} (h1 : 1 ≤ ρ) (h2 : ρ ≤ c) {ψ : AddChar k Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
@@ -183,15 +177,13 @@ section
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasMat
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n₀ n₁ n₂ _ _ _ _ _ _ c ρ hc ψ hψ hψ1 ν hν μ₁ μ₂ m₁ G₁ m₂ G₂ i₁ j₁ i₂ j₂ A _ _ τ _ T _ F P₁ P₂ e z v hz hv`. Use `haveI := hν.1`. Establish `h1 : 1 ≤ ρ` using `by omega`. Establish `h2 : ρ ≤ c` using `by omega`. Establish `q0 : IsQuotInt ν m₂ G₂ ρ (fun _ => 0) 0` using `⟨0, zero_mem _, fun _ => by simp, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ql` using `fun (a : ℂ) f f' z z' => QuotLinear.isQuotInt_linear k n₂ c ρ h1 h2 ν m₂ G₂ f f' a z z'`. Establish `step : ∀ a, ∃ f : GL (n₁ ⊕ Fin (c + 1)) k → ℂ, a ∈ e.support → (∀ x, IsQuotInt ν m₂ G₂ ρ (fun y => v a x y) (f x)) ∧ IsQuotIntFJ ν m₁ G₁ ρ f (z a)`. Introduce `a`. Distinguish the cases in `ha : a ∈ e.support`. Use `swap`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, fun h => absurd h ha⟩`. Take `⟨w, hw, f, hf, hq⟩` from `hz a ha`. Use `⟨f, fun _ => ⟨fun x => ?_, hq⟩⟩` and prove the remaining obligations. Take `⟨m, Ψ, Φ₀, hd, hfx⟩` from `hf x`. Rewrite `hd` using `[← om_mul, one_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `s` using `rel_sum _ q0 ql Finset.univ (fun _ => 1) _ _ fun i _ => hw x (Ψ i) (Φ₀ i)`. Simplify using `only [one_mul] at s`. Rewrite using `[hfx]`. Use `s using 2 with y` and compare the differences between its conclusion and the goal. Conclude with `tensorVal_unique h1 h2 hψ hψ1 hν T (τ y F) ⟨_, om_mem_SB μ₂ x y P₂.2⟩ _ (hv a ha x y) ⟨m, Ψ, Φ₀, hd, rfl⟩`.
-
-Use `choose f hf using step`. Use `⟨fun x => ∑ a ∈ e.support, e a * f a x, fun x => ?_, ?_⟩` and prove the remaining obligations. Conclude with `rel_sum _ q0 ql e.support e _ _ fun a ha => (hf a ha).1 x`. Conclude with `rel_sum (IsQuotIntFJ ν m₁ G₁ ρ) ⟨0, zero_mem _, fun _ => by simp, by simp⟩ (fun a _ _ _ _ => isQuotIntFJ_linear h1 (by omega) ν m₁ G₁ a) e.support e f z fun a ha => (hf a ha).2`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem symmetricDoubleIntegral_combination_of_pointValues : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (n₀ n₁ n₂ : Type) [Fintype n₀] [DecidableEq n₀] [Fintype n₁] [DecidableEq n₁] [Fintype n₂] [DecidableEq n₂] (c ρ : ℕ),
@@ -240,7 +232,7 @@ theorem symmetricDoubleIntegral_combination_of_pointValues : ∀ (k : Type) [Fie
 end
 
 /- English proof (translation)
-The claim follows from `symmetricDoubleIntegral_combination_of_pointValues`.
+A detailed English derivation is pending.
 -/
 theorem symDbl_comb : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (n₀ n₁ n₂ : Type) [Fintype n₀] [DecidableEq n₀] [Fintype n₁] [DecidableEq n₁] [Fintype n₂] [DecidableEq n₂] (c ρ : ℕ),

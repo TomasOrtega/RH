@@ -3,9 +3,9 @@ import Mathlib
 namespace Bl.general_b_fact_upper_ter_form
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hC`. Consider the case `insert a t ha ih`. Rewrite using `[Finset.sum_insert ha]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h a (Finset.mem_insert_self a t)`. Conclude with `ih (fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+A detailed English derivation is pending.
 -/
 private lemma aux {p : Nat} [Fact (Nat.Prime p)] {ι : Type} (s : Finset ι) (g : ι → PadicAlgCl p) {C : Real}
     (hC : 0 ≤ C) (h : ∀ j ∈ s, ‖g j‖ ≤ C) : ‖∑ j ∈ s, g j‖ ≤ C := by
@@ -19,7 +19,7 @@ private lemma aux {p : Nat} [Fact (Nat.Prime p)] {ι : Type} (s : Finset ι) (g 
     · exact ih (fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Introduce `p _ ι s g C hC h`. Conclude with `aux s g hC h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {p : Nat} [inst : Fact (Nat.Prime p)] {ι : Type} (s : Finset.{0} ι) (g : ι → PadicAlgCl p) {C : Real},

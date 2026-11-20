@@ -7,13 +7,13 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 namespace LateralTheory.EtaleTrace.Cov
 
 /- English proof (translation)
-The claim follows from `((genericPoint_spec X).mem_open_set_iff U.isOpen).mpr ⟨x, trivial, hx⟩`.
+A detailed English derivation is pending.
 -/
 lemma genUse_generic_mem {X : Scheme.{0}} [IsIntegral X] (U : X.Opens) (x : X) (hx : x ∈ U) : genericPoint X ∈ U :=
   ((genericPoint_spec X).mem_open_set_iff U.isOpen).mpr ⟨x, trivial, hx⟩
 
 /- English proof (translation)
-The claim follows from `((hG n hn f ((mem_homogeneousSubmodule _ _).mpr hf)).1).mp (genUse_generic_mem _ x hx)`.
+A detailed English derivation is pending.
 -/
 lemma genUse_ne {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S k) {N : ℕ} (ι : X ⟶ PN k N)
     (v : Fin (N + 1) → X.functionField) (hG : Gen p ι v) (n : ℕ) (hn : 0 < n) (f : MvPolynomial (Fin (N + 1)) k)
@@ -42,11 +42,11 @@ def GenUseRangeOf : Prop := ∀ (k : Type) [Field k] {X : Scheme.{0}} [IsIntegra
   eval₂ (kHom p) v g / eval₂ (kHom p) v f ∈ (ι.stalkMap (genericPoint X)).hom.range
 
 /- English proof (translation)
-Introduce `k _ X _ p N ι v hG n hn f hf x hx g hg`. Establish `hne` using `genUse_ne p ι v hG n hn f hf x hx`. Establish `hη` using `genUse_generic_mem _ x hx`. Establish `hg' : g ∈ homogeneousSubmodule (Fin (N + 1)) k (1 • n)`. Rewrite using `[one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_homogeneousSubmodule _ _).mpr hg`. Establish `key` using `(hG n hn f ((mem_homogeneousSubmodule _ _).mpr hf)).2 1 g hg' hη`. Establish `: Nonempty (ι ⁻¹ᵁ Proj.basicOpen _ f)` using `⟨⟨x, hx⟩⟩`. Use `⟨X.presheaf.germ _ x hx (ι.app _ (Proj.awayToSection _ f (HomogeneousLocalization.Away.mk _ ((mem_homogeneousSubmodule _ _).mpr hf) 1 g hg'))), ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.algebraMap_germ_eq_germToFunctionField, eq_div_iff hne]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[pow_one]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem genUseLoc : GenUseLoc := by
   intro k _ X _ p N ι v hG n hn f hf x hx g hg
@@ -62,9 +62,9 @@ theorem genUseLoc : GenUseLoc := by
   exact key
 
 /- English proof (translation)
-Establish `hη` using `((hG n hn f ((mem_homogeneousSubmodule _ _).mpr hf)).1).mpr hne`. Establish `hg' : g ∈ homogeneousSubmodule (Fin (N + 1)) k (1 • n)`. Rewrite using `[one_smul]`. Conclude with `(mem_homogeneousSubmodule _ _).mpr hg`. Establish `key` using `(hG n hn f ((mem_homogeneousSubmodule _ _).mpr hf)).2 1 g hg' hη`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[pow_one]`. Use `⟨(PN k N).presheaf.germ _ (ι (genericPoint X)) hη (Proj.awayToSection _ f (HomogeneousLocalization.Away.mk _ ((mem_homogeneousSubmodule _ _).mpr hf) 1 g hg')), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_div_iff hne, ← key]`. Use `erw [Scheme.Hom.germ_stalkMap_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genUseRangeOf_pos {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S k) (N : ℕ) (ι : X ⟶ PN k N)
     (v : Fin (N + 1) → X.functionField) (hG : Gen p ι v) (n : ℕ) (hn : 0 < n) (f g : MvPolynomial (Fin (N + 1)) k)
@@ -83,13 +83,13 @@ def GenUseNZ : Prop := ∀ (k : Type) [Field k] {X : Scheme.{0}} [IsIntegral X] 
   (v : Fin (N + 1) → X.functionField), Gen p ι v → ∃ i, v i ≠ 0
 
 /- English proof (translation)
-Introduce `k _ X _ p N ι v hG`. Establish `hcov : ⨆ i, Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) (MvPolynomial.X i) = ⊤`. Apply `Proj.iSup_basicOpen_eq_top'` to reduce the goal to its premises. Conclude with `fun i => ⟨1, (mem_homogeneousSubmodule _ _).mpr (isHomogeneous_X k i)⟩`. Rewrite using `[eq_top_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `a -`. Proceed by induction on `a using MvPolynomial.induction_on with`. Consider the case `C c`. Establish `: (C c : MvPolynomial (Fin (N + 1)) k) ∈ homogeneousSubmodule (Fin (N + 1)) k 0` using `(mem_homogeneousSubmodule _ _).mpr (isHomogeneous_C _ c)`. Conclude with `Subalgebra.algebraMap_mem _ (⟨_, this⟩ : homogeneousSubmodule (Fin (N + 1)) k 0)`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `add a b ha hb => exact Subalgebra.add_mem _ ha hb`. Consider the case `mul_X a i ha => exact Subalgebra.mul_mem _ ha (Algebra.subset_adjoin ⟨i, rfl⟩)`. Establish `hm : ι (genericPoint X) ∈ (⊤ : (PN k N).Opens)` using `trivial`. Rewrite `hm` using `[← hcov, TopologicalSpace.Opens.mem_iSup]`. Take `⟨i, hi⟩` from `hm`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i, ?_⟩` and prove the remaining obligations. Use `((hG 1 one_pos (MvPolynomial.X i) ((mem_homogeneousSubmodule _ _).mpr (isHomogeneous_X k i))).1).mp hi` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem genUseNZ : GenUseNZ := by
   intro k _ X _ p N ι v hG
@@ -113,9 +113,9 @@ theorem genUseNZ : GenUseNZ := by
   simpa using this
 
 /- English proof (translation)
-Introduce `k _ X _ p N ι v hG n f g hf hg hne`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Take `⟨i, hi⟩` from `hZ k p N ι v hG`. Establish `h1 : (MvPolynomial.X i * f).IsHomogeneous 1` using `by simpa using (isHomogeneous_X k i).mul hf`. Establish `h2 : (MvPolynomial.X i * g).IsHomogeneous 1` using `by simpa using (isHomogeneous_X k i).mul hg`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne' : eval₂ (kHom p) v (MvPolynomial.X i * f) ≠ 0` using `by simp [hi, hne]`. Use `genUseRangeOf_pos p N ι v hG 1 one_pos _ _ h1 h2 hne'` as an intermediate fact. Simplify `this` using `[eval₂_mul, eval₂_X, mul_div_mul_left _ _ hi]`. Conclude with `genUseRangeOf_pos p N ι v hG n hn f g hf hg hne`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem genUseRangeOf_of (hZ : GenUseNZ) : GenUseRangeOf := by
   intro k _ X _ p N ι v hG n f g hf hg hne
@@ -129,21 +129,17 @@ theorem genUseRangeOf_of (hZ : GenUseNZ) : GenUseRangeOf := by
   · exact genUseRangeOf_pos p N ι v hG n hn f g hf hg hne
 
 /- English proof (translation)
-Introduce `k _ X _ p N ι v hG z hz`. Take `⟨t, rfl⟩` from `hz`. Take `⟨U, hU, s, rfl⟩` from `(PN k N).presheaf.exists_germ_eq t`. Take `⟨_, ⟨h, rfl⟩, hhη, hhU⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp (Proj.isBasis_basicOpen _)) hU`. Establish `hle : ∀ j, Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) (GradedRing.proj _ j h) ≤ Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) h` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Proj.basicOpen_eq_iSup_proj _ h]`. Conclude with `le_iSup (fun i => Proj.basicOpen _ (GradedRing.proj _ i h)) j`. Rewrite `hhη` using `[Proj.basicOpen_eq_iSup_proj, TopologicalSpace.Opens.mem_iSup]`. Take `⟨j, hj⟩` from `hhη`. Take `⟨i, hi⟩` from `genUseNZ k p N ι v hG`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hXi : ι (genericPoint X) ∈ Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) (MvPolynomial.X i)` using `((hG 1 one_pos _ ((mem_homogeneousSubmodule _ _).mpr (isHomogeneous_X k i))).1).mpr (by simpa using hi)`. Establish `hpj : GradedRing.proj (homogeneousSubmodule (Fin (N + 1)) k) j h ∈ homogeneousSubmodule (Fin (N + 1)) k j`. Rewrite using `[GradedRing.proj_apply]`. Conclude with `SetLike.coe_mem _`. Establish `hfm : MvPolynomial.X i * GradedRing.proj (homogeneousSubmodule (Fin (N + 1)) k) j h ∈ homogeneousSubmodule (Fin (N + 1)) k (j + 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(isHomogeneous_X k i).mul ((mem_homogeneousSubmodule _ _).mp hpj)` as an intermediate fact. Conclude with `(mem_homogeneousSubmodule _ _).mpr (by rwa [Nat.add_comm 1 j] at this)`. Use `set f := MvPolynomial.X i * GradedRing.proj (homogeneousSubmodule (Fin (N + 1)) k) j h with hfdef`. Establish `hfη : ι (genericPoint X) ∈ Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) f`. Rewrite using `[hfdef, Proj.basicOpen_mul]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨hXi, hj⟩`. Establish `hfU : Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) f ≤ U`. Rewrite using `[hfdef, Proj.basicOpen_mul]`. Conclude with `inf_le_right.trans ((hle j).trans hhU)`. Establish `hfne` using `((hG (j + 1) (Nat.succ_pos j) f hfm).1).mp hfη`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← (PN k N).presheaf.germ_res_apply (homOfLE hfU) _ hfη s]`. Take `⟨a, ha⟩ : ∃ a, Proj.awayToSection _ f a = (PN k N).presheaf.map (homOfLE hfU).op s` from `⟨(Proj.basicOpenIsoAway _ f hfm (Nat.succ_pos j)).inv ((PN k N).presheaf.map (homOfLE hfU).op s), by`. Rewrite using `[← Proj.basicOpenIsoAway_hom _ f hfm (Nat.succ_pos j)]`. Use the proof step `simp⟩`. Take `⟨m, g, hg, rfl⟩` from `HomogeneousLocalization.Away.mk_surjective _ hfm a`.
-
-Establish `key` using `(hG (j + 1) (Nat.succ_pos j) f hfm).2 m g hg hfη`. Use `⟨m • (j + 1), f ^ m, g, ?_, (mem_homogeneousSubmodule _ _).mp hg, by rw [eval₂_pow]; exact pow_ne_zero _ hfne, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_comm]`. Conclude with `((mem_homogeneousSubmodule _ _).mp hfm).pow m`. Rewrite using `[← ha]`.
-
-Use `erw [Scheme.Hom.germ_stalkMap_apply]`. Rewrite using `[eval₂_pow, eq_div_iff (pow_ne_zero _ hfne)]`. Conclude with `key`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genUseRangeTo : GenUseRangeTo := by
   intro k _ X _ p N ι v hG z hz
@@ -184,9 +180,9 @@ theorem genUseRangeTo : GenUseRangeTo := by
   exact key
 
 /- English proof (translation)
-Establish `hT` using `genUseRangeTo`. Establish `hL` using `genUseLoc`. Establish `hO` using `genUseRangeOf_of genUseNZ`. Introduce `k _ X _ p N ι v hG`. Use `⟨fun n hn f hf x => ⟨fun hx => ⟨genUse_ne p ι v hG n hn f hf x hx, hL k p N ι v hG n hn f hf x hx⟩, fun h => hB k p N ι v hG n hn f hf x h.1 h.2⟩, fun z => ⟨hT k p N ι v hG z, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨n, f, g, hf, hg, hne, rfl⟩`. Conclude with `hO k p N ι v hG n f g hf hg hne`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem GenUse_of (hB : GenUseBack) : GenUse := by
   have hT := genUseRangeTo

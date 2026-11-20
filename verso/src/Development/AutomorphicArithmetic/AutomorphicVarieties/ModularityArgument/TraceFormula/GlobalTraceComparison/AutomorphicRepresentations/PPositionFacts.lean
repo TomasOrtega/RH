@@ -18,18 +18,18 @@ section SlopeTestRemainingChoices
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.EulerTwU.cPl_cPl w`.
+A detailed English derivation is pending.
 -/
 private theorem cc (w : Pl E) : GlobalTheory.EulerTw.cPl E (GlobalTheory.EulerTw.cPl E w) = w := GlobalTheory.EulerTwU.cPl_cPl w
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThetaPull.continuous_thetaGL _ (continuous_conjFin _)`.
+A detailed English derivation is pending.
 -/
 private theorem cont_thF : Continuous (thF E n) :=
   GlobalTheory.ThetaPull.continuous_thetaGL _ (continuous_conjFin _)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.EulerTwU.pc_thF]`. Conclude with `GlobalTheory.EulerTwSplit.theta_mem _ (conjLoc_spec _ v).2.2 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem twist_int (v : Pl E) (x : GL (Fin n) (Af E))
     (h : GeneralLinearGroup.map (pLoc E (GlobalTheory.EulerTw.cPl E v)) x ∈ KGL (GlobalTheory.EulerTw.cPl E v) n) :
@@ -38,9 +38,9 @@ private theorem twist_int (v : Pl E) (x : GL (Fin n) (Af E))
   exact GlobalTheory.EulerTwSplit.theta_mem _ (conjLoc_spec _ v).2.2 h
 
 /- English proof (translation)
-Use `⟨fun h => ?_, twist_int v x⟩` and prove the remaining obligations. Establish `h1 : GeneralLinearGroup.map (pLoc E (GlobalTheory.EulerTw.cPl E (GlobalTheory.EulerTw.cPl E v))) (thF E n x) ∈ KGL (GlobalTheory.EulerTw.cPl E (GlobalTheory.EulerTw.cPl E v)) n`. Rewrite using `[cc]`. Conclude with `h`. Establish `h2` using `twist_int (GlobalTheory.EulerTw.cPl E v) (thF E n x) h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[GlobalTheory.EulerTwU.thF_thF]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem twist_int_iff (v : Pl E) (x : GL (Fin n) (Af E)) :
     GeneralLinearGroup.map (pLoc E v) (thF E n x) ∈ KGL v n ↔
@@ -53,7 +53,7 @@ private theorem twist_int_iff (v : Pl E) (x : GL (Fin n) (Af E)) :
   rwa [GlobalTheory.EulerTwU.thF_thF] at h2
 
 /- English proof (translation)
-Establish `e : GeneralLinearGroup.map (n` using `Fin n) (conjLoc (IsCMField.complexConj E).toRingEquiv v) 1 = 1 := map_one _`. Rewrite using `[GlobalTheory.EulerTwU.pc_thF, pLoc_locGL_of_ne h]`. Conclude with `(congrArg (thetaGL n (RingHom.id _)) e).trans (map_one _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem twist_away {u v : Pl E} (h : GlobalTheory.EulerTw.cPl E v ≠ u) (a : GLw n u) :
     GeneralLinearGroup.map (pLoc E v) (thF E n (locGL E n u a)) = 1 := by
@@ -62,9 +62,9 @@ private theorem twist_away {u v : Pl E} (h : GlobalTheory.EulerTw.cPl E v ≠ u)
   exact (congrArg (thetaGL n (RingHom.id _)) e).trans (map_one _)
 
 /- English proof (translation)
-Establish `h1 : ∀ x : Af E, ∀ᶠ v : Pl E in cofinite, pLoc E v x ∈ v.adicCompletionIntegers E` using `fun x => x.2.mono fun _ h => h`. Establish `h2` using `eventually_all.2 fun i => eventually_all.2 fun j => h1 (g.1 i j)`. Establish `h3` using `eventually_all.2 fun i => eventually_all.2 fun j => h1 ((g⁻¹).1 i j)`. Establish `h4 : ∀ᶠ v : Pl E in cofinite, GeneralLinearGroup.map (pLoc E v) g ∈ KGL v n` using `by filter_upwards [h2, h3] with v a b`. Rewrite using `[GlobalTheory.EulerTwRestr.mem_KGL_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun i j => a i j, fun i j => by rw [GlobalTheory.EulerTwRestr.loc_inv_val]; exact b i j⟩`. Conclude with `eventually_cofinite.1 h4`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem bad_finite (g : GL (Fin n) (Af E)) :
     {v : Pl E | GeneralLinearGroup.map (pLoc E v) g ∉ KGL v n}.Finite := by
@@ -79,9 +79,9 @@ private theorem bad_finite (g : GL (Fin n) (Af E)) :
   exact eventually_cofinite.1 h4
 
 /- English proof (translation)
-Use `show locGL E n w a * c = c * locGL E n w a`. Use `GlobalTheory.EulerTwU.gl_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, mul_one, one_mul]`. Rewrite using `[pLoc_locGL_of_ne hv, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comm_loc (w : Pl E) (a : GLw n w) (c : GL (Fin n) (Af E))
     (h : GeneralLinearGroup.map (pLoc E w) c = 1) : Commute (locGL E n w a) c := by
@@ -94,7 +94,7 @@ private theorem comm_loc (w : Pl E) (a : GLw n w) (c : GL (Fin n) (Af E))
   · rw [pLoc_locGL_of_ne hv, one_mul, mul_one]
 
 /- English proof (translation)
-Consider the cases of `b`. Conclude with `pLoc_locGL _ _`. Use `show GeneralLinearGroup.map (pLoc E w) (thF E n (thF E n (locGL E n w a))) = a`. Rewrite using `[GlobalTheory.EulerTwU.thF_thF]`. Conclude with `pLoc_locGL _ _`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem qj (w : Pl E) (b : Bool) (a : GLw n w) : qw n w b (jw n w b a) = a := by
   cases b
@@ -104,7 +104,7 @@ private theorem qj (w : Pl E) (b : Bool) (a : GLw n w) : qw n w b (jw n w b a) =
     exact pLoc_locGL _ _
 
 /- English proof (translation)
-Consider the cases of `b`. Conclude with `comm_loc w a c h`. Establish `h1` using `(comm_loc w a (thF E n c) h).map (thF E n)`. Rewrite `h1` using `[GlobalTheory.EulerTwU.thF_thF]`. Then use the resulting hypothesis.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem comm_mapFactor_of_absIrr (w : Pl E) (b : Bool) (a : GLw n w) (c : GL (Fin n) (Af E))
     (h : qw n w b c = 1) : Commute (jw n w b a) c := by
@@ -114,7 +114,7 @@ private theorem comm_mapFactor_of_absIrr (w : Pl E) (b : Bool) (a : GLw n w) (c 
     rwa [GlobalTheory.EulerTwU.thF_thF] at h1
 
 /- English proof (translation)
-Consider the cases of `b`. Conclude with `GlobalTheory.CuspRep.CuspSub.continuous_locGL w`. Conclude with `cont_thF.comp (GlobalTheory.CuspRep.CuspSub.continuous_locGL w)`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 private theorem cont_j (w : Pl E) (b : Bool) : Continuous (jw n w b) := by
   cases b
@@ -122,7 +122,7 @@ private theorem cont_j (w : Pl E) (b : Bool) : Continuous (jw n w b) := by
   · exact cont_thF.comp (GlobalTheory.CuspRep.CuspSub.continuous_locGL w)
 
 /- English proof (translation)
-Consider the cases of `b`. Conclude with `GlobalTheory.BCT.LocCpt.continuous_mapLoc w`. Conclude with `(GlobalTheory.BCT.LocCpt.continuous_mapLoc w).comp cont_thF`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 private theorem cont_q (w : Pl E) (b : Bool) : Continuous (qw (E := E) n w b) := by
   cases b
@@ -132,29 +132,25 @@ private theorem cont_q (w : Pl E) (b : Bool) : Continuous (qw (E := E) n w b) :=
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `hP E _ _ _ n S hS`. Take `⟨-, hc, -, hs⟩` from `hP E`. Establish `hsplit : ∀ w : Pl E, IsSplitAt w ↔ GlobalTheory.EulerTw.cPl E w ≠ w` using `fun w => (hc w).2`. Establish `hsec : ∀ w : Pl E, w ∈ S → GlobalTheory.EulerTw.cPl E w ∈ S → GlobalTheory.EulerTw.cPl E w = w` using `fun w => (hs S hS w).2`. Establish `hor : ∀ w : Pl E, w ∈ S ∨ GlobalTheory.EulerTw.cPl E w ∈ S` using `fun w => (hs S hS w).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨GlobalTheory.EulerTwU.thF_thF, cont_thF, fun w b => ⟨cont_j w b, cont_q w b, qj w b, comm_mapFactor_of_absIrr w b⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨i, bi⟩ ⟨k, bk⟩ ⟨hi, hi'⟩ ⟨hk, hk'⟩ hne a`. Establish `hik : bi = bk → i ≠ k` using `fun e e' => hne (by rw [e, e'])`. Apply the tactic sequence `cases bi <;> cases bk`. Conclude with `pLoc_locGL_of_ne (hik rfl).symm a`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `twist_away (fun e => ?_) a` and prove the remaining obligations. Establish `e0 : GlobalTheory.EulerTw.cPl E k = i` using `e`. Establish `hi0 : i ∈ S` using `hi`. Establish `hk0 : k ∈ S` using `hk`. Conclude with `(hsplit k).1 (hk' rfl) (hsec k hk0 (e0 ▸ hi0))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `twist_away (fun e => ?_) a` and prove the remaining obligations. Establish `e0 : GlobalTheory.EulerTw.cPl E k = i` using `e`. Establish `hi0 : i ∈ S` using `hi`. Establish `hk0 : k ∈ S` using `hk`. Establish `e' : GlobalTheory.EulerTw.cPl E i = k` using `by rw [← e0, cc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hsplit i).1 (hi' rfl) (hsec i hi0 (e' ▸ hk0))`. Use `show GeneralLinearGroup.map (pLoc E k) (thF E n (thF E n (locGL E n i a))) = 1`. Rewrite using `[GlobalTheory.EulerTwU.thF_thF]`. Conclude with `pLoc_locGL_of_ne (hik rfl).symm a`. Introduce `g`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Prove the first alternative. Prove the second alternative.
 
-Use `(((bad_finite g).prod (Set.finite_singleton false)).union ((bad_finite (thF E n g)).prod (Set.finite_singleton true))).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨w, b⟩ h`. Consider the cases of `b`. Conclude with `Or.inl ⟨h, rfl⟩`. Conclude with `Or.inr ⟨h, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `w hw g`. Establish `hcw : GlobalTheory.EulerTw.cPl E w = w`. Assume the negation of the conclusion as `h`. Conclude with `hw ((hsplit w).2 h)`. Establish `h1` using `twist_int_iff w g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hcw]`. Conclude with `h1`. Introduce `g`. Establish `hL : g ∈ Lev S (fun w : Pl E => KGL w n) ↔ ∀ i : Pl E × Bool, Sl S i → qw n i.1 i.2 g ∈ KGL i.1 n`. Simplify using `only [Lev, Subgroup.mem_iInf, Subgroup.mem_comap, Subtype.forall]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hK : g ∈ Kf E n ↔ ∀ w : Pl E, GeneralLinearGroup.map (pLoc E w) g ∈ KGL w n`. Simplify using `only [Kf, Subgroup.mem_iInf, Subgroup.mem_comap]`. Rewrite using `[hL, hK]`. Prove the components needed by the constructor for the conclusion. Introduce `h w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Distinguish the cases in `hw : w ∈ S`. Conclude with `h (w, false) ⟨hw, by simp⟩`. Establish `hw' : GlobalTheory.EulerTw.cPl E w ∈ S` using `(hor w).resolve_left hw`. Establish `hne : GlobalTheory.EulerTw.cPl E (GlobalTheory.EulerTw.cPl E w) ≠ GlobalTheory.EulerTw.cPl E w`. Rewrite using `[cc]`.
-
-Conclude with `fun e => hw (e ▸ hw')`. Establish `h1` using `(twist_int_iff (n := n) (GlobalTheory.EulerTw.cPl E w) g).1 (h (GlobalTheory.EulerTw.cPl E w, true) ⟨hw', fun _ => (hsplit _).2 hne⟩)`. Rewrite `h1` using `[cc]`. Then use the resulting hypothesis. Introduce and unpack `h ⟨w, b⟩ -`. Consider the cases of `b`.
-
-Conclude with `h w`. Conclude with `twist_int w g (h _)`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem slotFacts_pf : UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.Places → SlotBasic := by
   intro hP E _ _ _ n S hS

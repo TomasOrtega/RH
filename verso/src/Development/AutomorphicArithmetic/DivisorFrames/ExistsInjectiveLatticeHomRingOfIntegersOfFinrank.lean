@@ -2,9 +2,9 @@ import Mathlib
 open NumberField
 
 /- English proof (translation)
-Establish `h1` using `Real.finrank_eq_int_finrank_of_discrete (E := Fin g → ℂ) (s := (Λ : Set (Fin g → ℂ))) (by rw [Submodule.span_eq]; exact h)`. Establish `h2 : Set.finrank ℤ (Λ : Set (Fin g → ℂ)) = Module.finrank ℤ Λ`. Unfold `Set.finrank`. Rewrite using `[Submodule.span_eq]`. Establish `h3 : Set.finrank ℝ (Λ : Set (Fin g → ℂ)) ≤ Module.finrank ℝ (Fin g → ℂ)` using `Submodule.finrank_le _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : Module.finrank ℝ (Fin g → ℂ) = 2 * g`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[mul_comm]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 private lemma rk (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) [h : DiscreteTopology Λ] : Module.finrank ℤ Λ ≤ 2 * g := by
   have h1 := Real.finrank_eq_int_finrank_of_discrete (E := Fin g → ℂ) (s := (Λ : Set (Fin g → ℂ))) (by rw [Submodule.span_eq]; exact h)
@@ -16,27 +16,21 @@ private lemma rk (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) [h : DiscreteTop
   omega
 
 /- English proof (translation)
-Introduce `E _ _ g Λ α hg hd hs`. Distinguish the cases in `h0 : ∀ x : Λ, x = 0`. Use `⟨0, fun a b _ => by rw [h0 a, h0 b], fun s x => by simp⟩` and prove the remaining obligations. Use `push Not at h0`. Take `⟨x0, hx0⟩` from `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `ψ' : 𝓞 E →+ Λ` to `{ toFun := fun s => ⟨α s x0, hs s x0 x0.2⟩ map_zero' := by ext1; simp map_add' := fun a b => by ext1; simp }`. Set `ψ : 𝓞 E →ₗ[ℤ] Λ` to `ψ'.toIntLinearMap`. Establish `hψ : ∀ s, (ψ s : Fin g → ℂ) = α s x0` using `fun s => rfl`. Establish `hinj : Function.Injective ψ`. Rewrite using `[injective_iff_map_eq_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs0`. Assume the negation of the conclusion as `hne`. Establish `hz : α s x0 = 0` using `by rw [← hψ, hs0]; rfl`. Establish `hm` using `Ideal.absNorm_mem (Ideal.span {s})`. Establish `hn : Ideal.absNorm (Ideal.span {s}) ≠ 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hne`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 hm`. Establish `: α (t * s) x0 = 0` using `by rw [map_mul, Module.End.mul_apply, hz, map_zero]`. Rewrite `this` using `[ht, map_natCast, Module.End.natCast_apply, ← Nat.cast_smul_eq_nsmul ℂ, smul_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `this with h | h` into its components or cases. Conclude with `hn (by exact_mod_cast h)`. Conclude with `hx0 (Subtype.ext h)`. Establish `hr : Module.finrank ℤ (LinearMap.range ψ) = Module.finrank ℤ Λ`. Apply `le_antisymm (Submodule.finrank_le _)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.finrank_range_of_inj hinj, RingOfIntegers.rank]`. Conclude with `(rk g Λ).trans hg`. Establish `hfin : Finite (Λ ⧸ LinearMap.range ψ)` using `Submodule.finiteQuotientOfFreeOfRankEq _ hr`. Use `set d := Nat.card (Λ ⧸ LinearMap.range ψ) with hdd`. Establish `hd0 : d ≠ 0` using `Nat.card_pos.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : ∀ x : Λ, ∃ t, ψ t = d • x`. Introduce `x`. Establish `: (LinearMap.range ψ).mkQ (d • x) = 0`. Rewrite using `[map_nsmul]`. Conclude with `card_nsmul_eq_zero'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `this`. Use `choose f hf using hmem`. Use `⟨AddMonoidHom.mk' f (fun a b => hinj ?_), fun a b hab => ?_, fun s x => hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hf, hf, hf, smul_add]`.
-
-Establish `h1 : f a = f b` using `hab`. Establish `h2 : d • a = d • b` using `by rw [← hf, ← hf, h1]`. Establish `h3 : (d : ℂ) • (a : Fin g → ℂ) = (d : ℂ) • (b : Fin g → ℂ)`. Simplify using `only [Nat.cast_smul_eq_nsmul]`. Conclude with `congrArg Subtype.val h2`.
-
-Conclude with `Subtype.ext (smul_right_injective _ (by exact_mod_cast hd0) h3)`. Express the relevant statement in the definitionally equal form `ψ (f _) = ψ (s * f x)`. Rewrite using `[hf]`. Use `ext1`. Rewrite using `[hψ, map_mul, Module.End.mul_apply, ← hψ, hf]`.
-
-Conclude with `(map_nsmul (α s) d (x : Fin g → ℂ)).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_injective_lattice_hom_ringOfIntegers_of_finrank_ge :
     ∀ (E : Type) [Field E] [NumberField E] (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ))

@@ -4,27 +4,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.StmtFields
 open NumberField Formalism.HC UpperTheory.Top UpperTheory.V
 
 /- English proof (translation)
-Introduce `C o`. Use `⟨3 + |C| * ∑ l ∈ o.primeFactors.erase 2, (l : ℝ) ^ 3, by positivity, ?_⟩` and prove the remaining obligations. Introduce `n N t W hN ht hn hW`. Unfold `minusBound`. Establish `hN1 : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `ht1 : (1 : ℝ) ≤ t` using `by exact_mod_cast ht`. Establish `hn' : (n : ℝ) ≤ N` using `by exact_mod_cast hn`. Establish `hX1 : (1 : ℝ) ≤ (N : ℝ) * t` using `one_le_mul_of_one_le_of_one_le hN1 ht1`. Establish `hXpos : 0 < (N : ℝ) * t` using `by linarith`. Establish `hXe : (N : ℝ) * t ≤ Real.exp (2 * W)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.exp_log hXpos]`. Conclude with `Real.exp_le_exp.mpr hW`. Establish `hX4 : ((N : ℝ) * t) ^ 4 ≤ Real.exp (8 * W)`. Establish `e : Real.exp (8 * W) = Real.exp (2 * W) ^ 4`. Rewrite using `[← Real.exp_nat_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `pow_le_pow_left₀ hXpos.le hXe 4`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnt : (n : ℝ) * t ≤ (N : ℝ) * t` using `mul_le_mul_of_nonneg_right hn' (by positivity)`. Establish `htX : (t : ℝ) ≤ (N : ℝ) * t` using `by nlinarith`. Establish `hlog : Real.log ((t : ℝ) * N) ≤ (N : ℝ) * t`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < t * N by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog0 : 0 ≤ Real.log ((t : ℝ) * N)` using `Real.log_nonneg (by linarith)`. Establish `h1 : 3 * (n : ℝ) * t ^ 2 * Real.log (t * N) ≤ 3 * ((N : ℝ) * t) ^ 4`. Establish `h3 : (n : ℝ) * t * t * Real.log (t * N) ≤ ((N : ℝ) * t) ^ 3`. Combine the equalities or inequalities in the displayed calculation. Establish `h34 : ((N : ℝ) * t) ^ 3 ≤ ((N : ℝ) * t) ^ 4` using `pow_le_pow_right₀ hX1 (by norm_num)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : 3 * (n : ℝ) * t ^ 2 * Real.log (t * N) = 3 * ((n : ℝ) * t * t * Real.log (t * N))` using `by ring`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ∑ l ∈ o.primeFactors.erase 2, (l : ℝ) * n ^ 2 * t ^ 2 * Real.log (t * l * N) ^ 2 ≤ (∑ l ∈ o.primeFactors.erase 2, (l : ℝ) ^ 3) * ((N : ℝ) * t) ^ 4`. Rewrite using `[Finset.sum_mul]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `l hl`. Establish `hl1 : (1 : ℝ) ≤ l`. Use `Nat.prime_of_mem_primeFactors (Finset.mem_of_mem_erase hl)` as an intermediate fact. Conclude with `this.one_lt.le` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hge : (1 : ℝ) ≤ t * l * N` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ht1 hl1) hN1`. Establish `hlg : Real.log ((t : ℝ) * l * N) ≤ l * ((N : ℝ) * t)`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < t * l * N by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlg0 : 0 ≤ Real.log ((t : ℝ) * l * N)` using `Real.log_nonneg hge`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hsq : Real.log ((t : ℝ) * l * N) ^ 2 ≤ (l * ((N : ℝ) * t)) ^ 2` using `pow_le_pow_left₀ hlg0 hlg 2`. Establish `hnt2 : ((n : ℝ) * t) ^ 2 ≤ ((N : ℝ) * t) ^ 2` using `pow_le_pow_left₀ (by positivity) hnt 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hS0 : 0 ≤ ∑ l ∈ o.primeFactors.erase 2, (l : ℝ) * n ^ 2 * t ^ 2 * Real.log (t * l * N) ^ 2` using `Finset.sum_nonneg (fun l _ => by positivity)`. Establish `hK0 : 0 ≤ 3 + |C| * ∑ l ∈ o.primeFactors.erase 2, (l : ℝ) ^ 3` using `by positivity`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.minusBound_le_exp_of_log_le :
     ∀ (C : ℝ) (o : ℕ), ∃ K : ℝ, 0 ≤ K ∧ ∀ (n N t : ℕ) (W : ℝ), 1 ≤ N → 1 ≤ t → n ≤ N → Real.log ((N : ℝ) * t) ≤ 2 * W →

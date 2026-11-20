@@ -15,7 +15,7 @@ section Newton
 open Polynomial
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qh19.trace_pow_eq_zero_of_le_dim .. | (apply UpperTheory.Reformulated.B.Qh19.trace_pow_eq_zero_of_le_dim <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qh19.trace_pow_eq_zero_of_le_dim <;> assumption) | (apply @UpperTheory.Ref …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem trace_pow_eq_zero_of_le_dim {K : Type*} [Field K] (r : ℕ)
     (N : Matrix (Fin r) (Fin r) K) (h : ∀ k, 1 ≤ k → k ≤ r → (N ^ k).trace = 0) :
@@ -23,9 +23,9 @@ private theorem trace_pow_eq_zero_of_le_dim {K : Type*} [Field K] (r : ℕ)
   first | exact UpperTheory.Reformulated.B.Qh19.trace_pow_eq_zero_of_le_dim .. | (apply UpperTheory.Reformulated.B.Qh19.trace_pow_eq_zero_of_le_dim <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qh19.trace_pow_eq_zero_of_le_dim <;> assumption) | (apply @UpperTheory.Reformulated.B.Qh19.trace_pow_eq_zero_of_le_dim <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qh19.trace_pow_eq_zero_of_le_dim <;> assumption) | (apply @UpperTheory.Reformulated.B.Qh19.trace_pow_eq_zero_of_le_dim <;> first | assumption | infer_instance)
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [mul_add, map_add, Matrix.trace_add, hp, hq, add_zero]`. Consider the case `monomial n a`. Rewrite using `[show (X * monomial n a : K[X]) = monomial (n + 1) a by`. Rewrite using `[← C_mul_X_pow_eq_monomial, ← C_mul_X_pow_eq_monomial]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `ring]`. Rewrite using `[aeval_monomial, ← Algebra.smul_def, Matrix.trace_smul, h, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trace_aeval_X_mul {K : Type*} [Field K] {n : ℕ} (N : Matrix (Fin n) (Fin n) K)
     (h : ∀ k : ℕ, (N ^ (k + 1)).trace = 0) (p : K[X]) :
@@ -38,19 +38,17 @@ private theorem trace_aeval_X_mul {K : Type*} [Field K] {n : ℕ} (N : Matrix (F
     rw [aeval_monomial, ← Algebra.smul_def, Matrix.trace_smul, h, smul_zero]
 
 /- English proof (translation)
-Establish `hint : IsIntegral K N` using `Algebra.IsIntegral.isIntegral N`. Establish `hμ : minpoly K N ≠ 0` using `minpoly.ne_zero hint`. Take `⟨q, hq, hnd⟩` from `exists_eq_pow_rootMultiplicity_mul_and_not_dvd (minpoly K N) hμ 0`. Use `set m := (minpoly K N).rootMultiplicity 0`. Simplify using `only [map_zero, sub_zero] at hq hnd`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcop : IsCoprime (X ^ (m + 1)) q` using `((Polynomial.irreducible_X).coprime_iff_not_dvd.mpr hnd).pow_left`. Take `⟨u, v, huv⟩` from `hcop`. Establish `hXq : aeval N (X ^ (m + 1) * q) = 0`. Rewrite using `[show (X ^ (m + 1) * q : K[X]) = X * minpoly K N by rw [hq]; ring, map_mul, minpoly.aeval, mul_zero]`. Establish `h1 : aeval N (u * X ^ (m + 1)) + aeval N (v * q) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_add, huv, map_one]`. Establish `hprod : aeval N (u * X ^ (m + 1)) * aeval N (v * q) = 0`. Rewrite using `[← map_mul, show (u * X ^ (m + 1) * (v * q) : K[X]) = u * v * (X ^ (m + 1) * q) by ring, map_mul, hXq, mul_zero]`. Use `set e := aeval N (u * X ^ (m + 1)) with he_def`. Establish `he : IsIdempotentElem e`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: aeval N (v * q) = 1 - e` using `by rw [← h1]; abel`. Rewrite `hprod` using `[this, mul_sub, mul_one, sub_eq_zero]`. Conclude with `hprod.symm`. Establish `hτ : e.trace = 0`. Rewrite using `[he_def, show (u * X ^ (m + 1) : K[X]) = X * (u * X ^ m) by ring]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `trace_aeval_X_mul N h _`. Establish `hle : IsIdempotentElem (Matrix.toLin' e)`. Establish `h3` using `Matrix.toLin'_mul e e`. Rewrite `h3` using `[he.eq]`. Conclude with `h3.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hl0` using `LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero hle (by rw [Matrix.trace_toLin'_eq, hτ])`. Establish `he0 : e = 0` using `Matrix.toLin'.map_eq_zero_iff.mp hl0`. Establish `hvq : aeval N (v * q) = 1` using `by rw [← h1, he0, zero_add]`. Use `⟨m + 1, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[show (v * (X ^ (m + 1) * q) : K[X]) = X ^ (m + 1) * (v * q) by ring, map_mul (aeval N) (X ^ (m + 1)), map_pow, aeval_X]`. Use `_ = 0 := by rw [map_mul, hXq, mul_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isNilpotent_of_trace_pow_succ {K : Type*} [Field K] [CharZero K] {n : ℕ}
     (N : Matrix (Fin n) (Fin n) K) (h : ∀ k : ℕ, (N ^ (k + 1)).trace = 0) : IsNilpotent N := by
@@ -96,7 +94,7 @@ private theorem isNilpotent_of_trace_pow_succ {K : Type*} [Field K] [CharZero K]
 end Newton
 
 /- English proof (translation)
-The claim follows from `isNilpotent_of_trace_pow_succ N fun k => trace_pow_eq_zero_of_le_dim r N h (k + 1) (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem isNilpotent_of_trace_pow {K : Type*} [Field K] [CharZero K] (r : ℕ)
     (N : Matrix (Fin r) (Fin r) K) (h : ∀ k, 1 ≤ k → k ≤ r → (N ^ k).trace = 0) :

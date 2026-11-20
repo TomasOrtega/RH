@@ -22,14 +22,14 @@ section Ring
 variable {O : Type} [CommRing O] {x : Sp O ⟶ X}
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, Guard.sp_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem base_eq (x : Sp O ⟶ X) (I : Ideal O) : spMap (algebraMap O (DualNumber (O ⧸ I))) ≫ x =
     spMap (algebraMap (O ⧸ I) (DualNumber (O ⧸ I))) ≫ spMap (Ideal.Quotient.mk I) ≫ x := by
   rw [← Category.assoc, Guard.sp_comp]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Over.homMk (spMap (dualMap (Ideal.Quotient.mk I)) ≫ v) ((GlobalTheory.FactorDepth.isTanAtG_map t (Ideal.Quotient.mk I) hv).1.trans (base_eq x I).symm), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem red_ex (I : Ideal O) {v : Sp (DualNumber O) ⟶ t.G.left} (hv : IsTanAtG t x v) :
     ∃ w : Over.mk (spMap (algebraMap O (DualNumber (O ⧸ I))) ≫ x) ⟶ t.G,
@@ -38,11 +38,11 @@ theorem red_ex (I : Ideal O) {v : Sp (DualNumber O) ⟶ t.G.left} (hv : IsTanAtG
     ((GlobalTheory.FactorDepth.isTanAtG_map t (Ideal.Quotient.mk I) hv).1.trans (base_eq x I).symm), rfl⟩
 
 /- English proof (translation)
-Establish `hv'` using `GlobalTheory.FactorDepth.isTanAtG_map t (Ideal.Quotient.mk I) hv`. Establish `h0` using `smT_zero_ovT hv'`. Establish `key : ∀ n : ℕ, smT _ (n : O ⧸ I) (ovT hv') = ovT hv' ^ n` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, pow_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `h0`. Consider the case `succ n ih => rw [Nat.cast_succ, smT_add _ _ h0, ih, smT_unit, pow_succ]`. Establish `hq0 : (q : O ⧸ I) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk I)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hq`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h1 : ovT hv' ^ q = 1` using `by rw [← key, hq0, h0]`. Set `δ : Over.mk (spMap (algebraMap O (DualNumber (O ⧸ I))) ≫ x) ⟶ tEpsG (spMap (Ideal.Quotient.mk I) ≫ x)` to `Over.homMk (𝟙 _) ((Category.id_comp _).trans (base_eq x I).symm)`. Establish `h2 : w = Formalism.L2.Pj.preHom δ (ovT hv')` using `Over.OverMorphism.ext (hw.trans (Category.id_comp _).symm)`. Rewrite using `[h2, ← map_pow, h1, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_tors (I : Ideal O) {q : ℕ} (hq : (q : O) ∈ I) {v : Sp (DualNumber O) ⟶ t.G.left} (hv : IsTanAtG t x v)
     (w : Over.mk (spMap (algebraMap O (DualNumber (O ⧸ I))) ≫ x) ⟶ t.G)
@@ -72,11 +72,11 @@ def res {q q' : ℕ} (h : q ∣ q') (c : TorsChar t x q') : TorsChar t x q where
     exact c.nat B B' φ g g' (by rw [pow_mul, hg, one_pow]) hg'
 
 /- English proof (translation)
-Introduce `a v hav w hw`. Establish `hv` using `Guard.comb_tan he hav`. Take `⟨w', hw'⟩` from `red_ex (Ideal.span {(p : O) ^ n}) hv`. Establish `hle : Ideal.span {(p : O) ^ n} ≤ Ideal.span {(p : O) ^ k}` using `Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ hk)`. Set `φ : DualNumber (O ⧸ Ideal.span {(p : O) ^ n}) →ₐ[O] DualNumber (O ⧸ Ideal.span {(p : O) ^ k})` to `{ dualMap (Ideal.Quotient.factor hle) with commutes' := fun r => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl'] }`. Establish `h1` using `c.nat _ _ φ w' w (red_tors _ (by rw [Nat.cast_pow]; exact Ideal.mem_span_singleton_self _) hv w' hw') (by`. Rewrite using `[hw, hw', ← Category.assoc, Guard.sp_comp]`. Use `congr 2`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `ext <;> simp [dualMap, φ])`. Rewrite using `[← hc _ w (red_tors _ (by rw [Nat.cast_pow]; exact Ideal.mem_span_singleton_self _) hv w hw), h1]`. Establish `h2` using `hD a v hav w' hw'`. Establish `h3 : ∀ z, (φ z).snd = Ideal.Quotient.factor hle z.snd` using `fun z => by simp [φ, dualMap]`. Rewrite using `[h3, h2, Ideal.Quotient.factor_mk]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dlog_down {p k n : ℕ} (hk : k ≤ n) (c : TorsChar t x (p ^ n)) (c₁ : TorsChar t x (p ^ k))
     (hc : ∀ (B : Type) [CommRing B] [Algebra O B] [Module.Finite O B]
@@ -107,11 +107,11 @@ end Ring
 variable {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] {x : Sp ↥(intO C) ⟶ X}
 
 /- English proof (translation)
-Establish `h1 : spMap (RingHom.id ↥(intO C)) = 𝟙 _` using `Spec.map_id _`. Establish `h2 : dualMap (RingHom.id ↥(intO C)) = RingHom.id _`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`. Establish `h3 : spMap (dualMap (RingHom.id ↥(intO C))) = 𝟙 _` using `by rw [h2]; exact Spec.map_id _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h` using `he.2 _ (RingHom.id ↥(intO C)) vO`. Simplify using `only [h1, h3, Category.id_comp] at h`. Take `⟨b, hb, -⟩` from `h hv`. Establish `heC` using `fun j => GlobalTheory.FactorDepth.isTanAtG_map t (intO C).subtype (he.1 j)`. Establish `h4` using `Guard.comb_smul heC hw s`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[← hs]`. Conclude with `⟨b, hb, congrFun ((he.2 C _ _ (GlobalTheory.FactorDepth.isTanAtG_map t (intO C).subtype hv)).unique (GlobalTheory.LatDRFree.comb_map t (intO C).subtype hb) h4)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem coords {g : ℕ} {e : Fin g → (Sp (DualNumber ↥(intO C)) ⟶ t.G.left)} (he : IsTanBasis t x e) {a : Fin g → C}
     {w : Sp (DualNumber C) ⟶ t.G.left}
@@ -134,37 +134,33 @@ theorem coords {g : ℕ} {e : Fin g → (Sp (DualNumber ↥(intO C)) ⟶ t.G.lef
     (GlobalTheory.LatDRFree.comb_map t (intO C).subtype hb) h4)⟩
 
 /- English proof (translation)
-Introduce `hB E _ _ _ H X _ t p hp C _ _ _ _ _ hn x hx g e he n h hc hj a w hw`. Establish `hp0 : (p : C) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`. Prove the components needed by the constructor for the conclusion. Introduce `hL`. Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.out.two_le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpa : ∀ i, ‖(p : C) * a i‖ ≤ 1`. Take `⟨x', hx', vO, hv, hs⟩` from `hB E H X t p C hn x hx w hL p (by`. Rewrite using `[hn, ← Real.rpow_neg_one]`. Use `Real.rpow_le_rpow_of_exponent_le (by linarith) (neg_le_neg ?_)` and prove the remaining obligations. Rewrite using `[div_le_one (by linarith)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `linarith)`. Take `rfl` from `hx x' hx'`. Take `⟨b, -, hb⟩` from `coords he hw _ hv hs`. Conclude with `fun i => hb i ▸ (b i).2`. Use `⟨fun j => ?_, hpa⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx', m, vO, hv, hs, hd⟩` from `hL`. Take `rfl` from `hx x' hx'`. Take `⟨b, hbv, hb⟩` from `coords he hw _ hv hs`. Use `show _ ∈ intO C`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Subring.sum_mem _ fun i _ => Subring.mul_mem _ (h j i).2 ?_` and prove the remaining obligations. Use `(b i).2` as an intermediate fact. Rewrite `this` using `[hb, pow_zero, _root_.one_mul]`. Then use the resulting hypothesis. Take `⟨c, hcj⟩` from `hj j`. Take `⟨c', hc'⟩` from `GlobalTheory.T.torsionChar_extends_divisible_level E H X t C x' (p ^ 1) (p ^ m) (pow_ne_zero _ hp.out.ne_zero) (pow_dvd_pow _ hm) c`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨D, hD⟩, -⟩` from `GlobalTheory.T.exists_dlog_unique_modulo_p E H X t _ x' p m c' g e he.1`. Establish `hδ` using `(GlobalTheory.T.exists_dlog_unique_modulo_p E H X t _ x' p 1 c g e he.1).2 D (h j) (dlog_down hm c' c hc' he.1 hD) hcj`. Use `choose δ hδ using fun i => Ideal.mem_span_singleton'.1 (hδ i)`. Take `⟨w', hw'⟩` from `red_ex (Ideal.span {(p : ↥(intO C)) ^ m}) hv`. Establish `h1` using `hd m c' w' hw'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (p : ↥(intO C) ⧸ Ideal.span {(p : ↥(intO C)) ^ m}) ^ m = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk _), ← map_pow]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`. Rewrite `h1` using `[hD b vO hbv w' hw', h2, Ideal.span_singleton_zero, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : ∑ i, (D i : C) * a i = r`. Apply `mul_right_cancel₀ (pow_ne_zero m hp0)` to reduce the goal to its premises. Use `congrArg (intO C).subtype hr` as an intermediate fact. Simplify using `only [map_mul, map_pow, map_natCast, map_sum, Subring.subtype_apply, hb] at this`. Rewrite using `[this, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `h4 : ∑ i, (h j i : C) * a i = r - ∑ i, (δ i : C) * ((p : C) * a i)`. Rewrite using `[← h3, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congrArg (intO C).subtype (hδ i)` as an intermediate fact.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Simplify using `only [map_mul, map_pow, map_natCast, map_sub, Subring.subtype_apply] at this`. Take the linear combination `(a i) * this`. Rewrite using `[h4]`. Conclude with `Subring.sub_mem _ r.2 (Subring.sum_mem _ fun i _ => Subring.mul_mem _ (δ i).2 (hpa i))`. Introduce and unpack `⟨h1, h2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Set `b : Fin g → ↥(intO C)` to `fun i => ⟨(p : C) * a i, h2 i⟩`. Take `⟨vO, hv, hbv⟩` from `Guard.exists_comb he.1 b`. Establish `heC` using `fun j => GlobalTheory.FactorDepth.isTanAtG_map t (intO C).subtype (he.1 j)`. Use `⟨x, rfl, 1, vO, hv, ?_, fun k c w' hw' => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Guard.comb_unique heC (GlobalTheory.LatDRFree.comb_map t (intO C).subtype hbv) (Guard.comb_smul heC hw p)`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Establish `: Subsingleton (↥(intO C) ⧸ Ideal.span {(p : ↥(intO C)) ^ 0})`. Rewrite using `[Ideal.Quotient.subsingleton_iff, pow_zero, Ideal.span_singleton_one]`. Rewrite using `[Subsingleton.elim (TrivSqZeroExt.snd _) 0]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `Ideal.zero_mem _`. Take `⟨⟨D, hD⟩, -⟩` from `GlobalTheory.T.exists_dlog_unique_modulo_p E H X t _ x p k c g e he.1`. Take `⟨j, hcj⟩` from `hc (res (pow_dvd_pow p hk) c)`. Establish `hδ` using `(GlobalTheory.T.exists_dlog_unique_modulo_p E H X t _ x p 1 _ g e he.1).2 D (h j) (dlog_down hk c _ (fun _ _ _ _ _ _ => rfl) he.1 hD) hcj`. Use `choose δ hδ using fun i => Ideal.mem_span_singleton'.1 (hδ i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Set `s : ↥(intO C)` to `⟨∑ i, (h j i : C) * a i, h1 j⟩`. Establish `h3 : ∑ i, D i * b i = (s + ∑ i, δ i * b i) * (p : ↥(intO C)) ^ 1`. Apply `(intO C).subtype_injective` to reduce the goal to its premises. Simplify using `only [map_mul, map_pow, map_natCast, map_sum, map_add, Subring.subtype_apply, s, b]`. Rewrite using `[← Finset.sum_add_distrib, Finset.sum_mul]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congrArg (intO C).subtype (hδ i)` as an intermediate fact. Simplify using `only [map_mul, map_pow, map_natCast, map_sub, Subring.subtype_apply] at this`. Take the linear combination `(-(p : C) * a i) * this`. Rewrite using `[hD b vO hbv w' hw', h3, map_mul, map_pow, map_natCast]`.
-
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latHT_iff : HTBoundSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X) (p : ℕ) [Fact p.Prime] (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [IsAlgClosed C] [CharZero C] [CompleteSpace C], ‖(p : C)‖ = (p : ℝ)⁻¹ → ∀ (x : Sp ↥(intO C) ⟶ X), (∀ x' : Sp ↥(intO C) ⟶ X, spMap (intO C).subtype ≫ x' = spMap (intO C).subtype ≫ x → x' = x) → ∀ (g : ℕ) (e : Fin g → (Sp (DualNumber ↥(intO C)) ⟶ t.G.left)), IsTanBasis t x e → ∀ (n : ℕ) (h : Fin n → Fin g → ↥(intO C)), (∀ c : TorsChar t x (p ^ 1), ∃ j, DlogIs t p 1 c e (h j)) → (∀ j, ∃ c : TorsChar t x (p ^ 1), DlogIs t p 1 c e (h j)) → ∀ (a : Fin g → C) (w : Sp (DualNumber C) ⟶ t.G.left), IsCombAtG t (spMap (intO C).subtype ≫ x) (fun i => spMap (dualMap (intO C).subtype) ≫ e i) a w → (w ∈ latHT t p (spMap (intO C).subtype ≫ x) ↔ (∀ j, ‖∑ i, (h j i : C) * a i‖ ≤ 1) ∧ ∀ i, ‖(p : C) * a i‖ ≤ 1) := by
   intro hB E _ _ _ H X _ t p hp C _ _ _ _ _ hn x hx g e he n h hc hj a w hw

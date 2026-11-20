@@ -20,7 +20,7 @@ def blockLat (Λ₁ : GenLat E n₁) (Λ₂ : GenLat E n₂) : GenLat E (n₁ + 
     Λ₂.La.comap (LinearMap.funLeft (𝓞 E) E (Fin.natAdd n₁))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_blockLat (Λ₁ : GenLat E n₁) (Λ₂ : GenLat E n₂) (v : Fin (n₁ + n₂) → E) :
     v ∈ (blockLat Λ₁ Λ₂).La ↔

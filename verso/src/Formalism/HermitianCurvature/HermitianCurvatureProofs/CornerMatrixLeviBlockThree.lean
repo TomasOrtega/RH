@@ -11,7 +11,7 @@ namespace Formalism.FourierDecayAlt.P.PBQ
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 
 /- English proof (translation)
-The claim follows from `(Formalism.FourierDecayAlt.P.slice_membership k p ρ).2.1 q (isUnit_iff_ne_zero.mp hq)`.
+A detailed English derivation is pending.
 -/
 theorem leviElement_mem_GV {k p ρ : ℕ} (q : Matrix (Fin p) (Fin p) ℂ) (hq : IsUnit q.det) : U.muP k p ρ q ∈ B.GV k (p + ρ) :=
   (Formalism.FourierDecayAlt.P.slice_membership k p ρ).2.1 q (isUnit_iff_ne_zero.mp hq)
@@ -26,9 +26,9 @@ section zhat
 variable {k p ρ : ℕ}
 
 /- English proof (translation)
-Unfold `U.muP`. Rewrite using `[Ux3.block3_mul, Ux3.z_hat_of_block3 z z' hz hz']`. Establish `hw : ∀ M : Matrix (Fin p) (Fin p) ℂ, G.wMat p * (G.wMat p * M * G.wMat p) = M * G.wMat p`. Introduce `M`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Ux3.wMat_mul_self, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `congr 2 <;> simp only [Matrix.zero_mul, Matrix.one_mul, zero_add, add_zero, Matrix.mul_zero]`. Rewrite using `[← Matrix.mul_assoc, hw, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (G.wMat p), hw]`. Simplify using `only [Matrix.mul_assoc]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem corner_matrix_levi_block_three (z z' : Fin (2 * (p + ρ) + k + 1) → ℂ) (hz : inWb k (p + ρ) z) (hz' : inWb k (p + ρ) z')
     (q : Matrix (Fin p) (Fin p) ℂ)
@@ -50,7 +50,7 @@ theorem corner_matrix_levi_block_three (z z' : Fin (2 * (p + ρ) + k + 1) → �
   · rw [← Matrix.mul_assoc (G.wMat p), hw]; simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `Ux3.z_hat_of_block3 z z' hz hz' _ _ _ _ _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem zhat_eq_blk (z z' : Fin (2 * (p + ρ) + k + 1) → ℂ) (hz : inWb k (p + ρ) z) (hz' : inWb k (p + ρ) z')
     (product_first_partition : Matrix (Fin p) (Fin p) ℂ) (sizeConstantAtParamsWeight : Matrix (Fin p) (Fin (2 * ρ + k + 1)) ℂ) (flipOneThree : Matrix (Fin p) (Fin p) ℂ)
@@ -64,7 +64,7 @@ theorem zhat_eq_blk (z z' : Fin (2 * (p + ρ) + k + 1) → ℂ) (hz : inWb k (p 
   Ux3.z_hat_of_block3 z z' hz hz' _ _ _ _ _ _ _ _ _
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `refine Fin.addCases (fun a => ?_) (fun a => ?_) a <;> refine Fin.addCases (fun b => ?_) (fun b => ?_) b <;>`. Simplify using `[Matrix.reindex_apply, Ux3.eC_symm_castAdd h, Ux3.eC_symm_natAdd h hl]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem minor_gen {m : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (Bm : Matrix (Fin p) (Fin (ρ + 1)) ℂ)
     (Cm : Matrix (Fin (ρ + 1)) (Fin p) ℂ) (Dm : Matrix (Fin (ρ + 1)) (Fin (ρ + 1)) ℂ)
@@ -77,9 +77,9 @@ theorem minor_gen {m : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (Bm : Matrix (Fin p
     simp [Matrix.reindex_apply, Ux3.eC_symm_castAdd h, Ux3.eC_symm_natAdd h hl]
 
 /- English proof (translation)
-Establish `e : ∀ a : Fin m, (Ux3.eC p ρ).symm (Fin.castLE h a) = Sum.inl (Fin.castLE hmp a)`. Introduce `a`. Rewrite using `[Equiv.symm_apply_eq]`. Use `ext`. Simplify using `[Ux3.column_index_first_val]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `a b`. Simplify using `[Matrix.reindex_apply, e]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem minor_low {m : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (Bm : Matrix (Fin p) (Fin (ρ + 1)) ℂ)
     (Cm : Matrix (Fin (ρ + 1)) (Fin p) ℂ) (Dm : Matrix (Fin (ρ + 1)) (Fin (ρ + 1)) ℂ)
@@ -92,7 +92,7 @@ theorem minor_low {m : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (Bm : Matrix (Fin p
   simp [Matrix.reindex_apply, e]
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Ux3.wMat_mul_apply]`. Simplify using `only [Matrix.submatrix_apply, U.Zh]`. Use `congr 1`. Apply the tactic sequence `all_goals (ext; first | (rw [Ux3.block_index_last_val]; simp [Fin.val_rev]; omega) | (rw [Ux3.block_index_first_val]))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem zh_eq_blk (y : B.Mat k (p + ρ)) :
     G.wMat p * y.submatrix (fun a => U.eB k p ρ (Sum.inr a)) (fun b => U.eB k p ρ (Sum.inl (Sum.inl b))) =
@@ -104,11 +104,11 @@ theorem zh_eq_blk (y : B.Mat k (p + ρ)) :
   all_goals (ext; first | (rw [Ux3.block_index_last_val]; simp [Fin.val_rev]; omega) | (rw [Ux3.block_index_first_val]))
 
 /- English proof (translation)
-Establish `hg` using `Ux3.block3_eta g`. Unfold `Dmin`. Rewrite using `[hg, corner_matrix_levi_block_three z z' hz hz', zhat_eq_blk z z' hz hz']`. Use `show ((Matrix.reindex _ _ _).submatrix (Fin.castLE (show p + m ≤ p + ρ + 1 by omega)) (Fin.castLE (show p + m ≤ p + ρ + 1 by omega))).det = _ * ((Matrix.reindex _ _ _).submatrix (Fin.castLE (show p + m ≤ p + ρ + 1 by omega)) (Fin.castLE (show p + m ≤ p + ρ + 1 by omega))).det`. Rewrite using `[minor_gen _ _ _ _ hm, minor_gen _ _ _ _ hm, Matrix.det_reindex_self, Matrix.det_reindex_self]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Q := (qᴴ)⁻¹`. Establish `e : ∀ (A : Matrix (Fin p) (Fin p) ℂ) (Bm : Matrix (Fin p) (Fin m) ℂ) (Cm : Matrix (Fin m) (Fin p) ℂ) (Dm : Matrix (Fin m) (Fin m) ℂ), Matrix.fromBlocks (Q * A) (Q * Bm) Cm Dm = Matrix.fromBlocks Q 0 0 1 * Matrix.fromBlocks A Bm Cm Dm`. Introduce `A Bm Cm Dm`. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub : ∀ (Bm : Matrix (Fin p) (Fin (ρ + 1)) ℂ), (Q * Bm).submatrix id (Fin.castLE hm) = Q * Bm.submatrix id (Fin.castLE hm)`. Introduce `Bm`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[hsub, e, Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_leviElement_mul_high (z z' : Fin (2 * (p + ρ) + k + 1) → ℂ) (hz : inWb k (p + ρ) z) (hz' : inWb k (p + ρ) z')
     (q : Matrix (Fin p) (Fin p) ℂ) (g : B.Mat k (p + ρ)) (m : ℕ) (hm : m ≤ ρ + 1) :
@@ -134,9 +134,9 @@ theorem minor_leviElement_mul_high (z z' : Fin (2 * (p + ρ) + k + 1) → ℂ) (
   rw [hsub, e, Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]
 
 /- English proof (translation)
-Establish `hg` using `Ux3.block3_eta y`. Unfold `Dmin`. Use `conv_lhs => rw [hg]`. Rewrite using `[corner_matrix_levi_block_three z z' hz hz', ← hg]`. Use `show ((Matrix.reindex _ _ _).submatrix (Fin.castLE (show m ≤ p + ρ + 1 by omega)) (Fin.castLE (show m ≤ p + ρ + 1 by omega))).det = 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[minor_low _ _ _ _ hmp, zh_eq_blk, Matrix.conjTranspose_conjTranspose, Matrix.nonsing_inv_mul _ hA]`. Establish `: (1 : Matrix (Fin p) (Fin p) ℂ).submatrix (Fin.castLE hmp) (Fin.castLE hmp) = 1`. Use extensionality with `a b`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`. Rewrite using `[this, Matrix.det_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_leviElement_mul_low (z z' : Fin (2 * (p + ρ) + k + 1) → ℂ) (hz : inWb k (p + ρ) z) (hz' : inWb k (p + ρ) z')
     (y : B.Mat k (p + ρ)) (hA : IsUnit (U.Zh k p ρ y).det) (m : ℕ) (hmp : m ≤ p) :
@@ -159,7 +159,7 @@ section main
 variable {k p ρ : ℕ}
 
 /- English proof (translation)
-Establish `e1 : Fin.last (p + ρ + 1) = (⟨p + (ρ + 1), by omega⟩ : Fin (p + ρ + 2))` using `Fin.ext rfl`. Establish `e0 : (⟨p + ρ, by omega⟩ : Fin (p + ρ + 2)) = ⟨p + ρ, by omega⟩` using `rfl`. Unfold `Gf`. Rewrite using `[e1, minor_leviElement_mul_high z z' hz hz' q g (ρ + 1) le_rfl, minor_leviElement_mul_high z z' hz hz' q g ρ (by omega), Complex.normSq_mul, Complex.normSq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gf_muP (z z' : Fin (2 * (p + ρ) + k + 1) → ℂ) (hz : inWb k (p + ρ) z) (hz' : inWb k (p + ρ) z')
     (q : Matrix (Fin p) (Fin p) ℂ) (g : B.Mat k (p + ρ)) :
@@ -172,18 +172,18 @@ theorem gf_muP (z z' : Fin (2 * (p + ρ) + k + 1) → ℂ) (hz : inWb k (p + ρ)
   ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_conjTranspose, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `inv_ne_zero hAd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_Q_ne {A : Matrix (Fin p) (Fin p) ℂ} (hAd : A.det ≠ 0) : (((Aᴴ)ᴴ)⁻¹).det ≠ 0 := by
   rw [Matrix.conjTranspose_conjTranspose, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']
   exact inv_ne_zero hAd
 
 /- English proof (translation)
-Establish `hQ` using `det_Q_ne hAd`. Use `⟨fun l hl => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hlp : l.val ≤ p`. Establish `e : l = ⟨l.val, by omega⟩` using `Fin.ext rfl`. Rewrite using `[e, minor_leviElement_mul_low z z' hz hz' y (isUnit_iff_ne_zero.mpr hAd) l.val hlp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_ne_zero`. Establish `e : l = ⟨p + (l.val - p), by omega⟩` using `Fin.ext (by simp only; omega)`. Establish `hyl` using `hy.1 l (by omega) hl`. Rewrite `hyl`, the goal using `[e]`. Rewrite using `[minor_leviElement_mul_high z z' hz hz' _ y (l.val - p) (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero hQ hyl`. Rewrite using `[gf_muP z z' hz hz']`. Conclude with `mul_pos (Complex.normSq_pos.mpr hQ) hy.2`.
+A detailed English derivation is pending.
 -/
 theorem omPlus_muP (z z' : Fin (2 * (p + ρ) + k + 1) → ℂ) (hz : inWb k (p + ρ) z) (hz' : inWb k (p + ρ) z')
     (y : B.Mat k (p + ρ)) (hy : y ∈ domP k (p + ρ) p z z') (hAd : (U.Zh k p ρ y).det ≠ 0) :
@@ -205,27 +205,27 @@ theorem omPlus_muP (z z' : Fin (2 * (p + ρ) + k + 1) → ℂ) (hz : inWb k (p +
 end main
 
 /- English proof (translation)
-The claim follows from `hVO hg`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_sub_pre {k n : ℕ} {S : Set (B.Mat k n)} {f : B.Mat k n → B.Mat k n} {V : Set (B.Mat k n)}
     (hVO : V ⊆ {g | f g ∈ S}) {g : B.Mat k n} (hg : g ∈ V) : f g ∈ S := hVO hg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1, h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_Om_of {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {x : B.Mat k r} (h1 : x ∈ B.GV k r)
     (h2 : x ∈ Q.OmPlus k r z z') : x ∈ JF.Om k r z z' := ⟨h1, h2⟩
 
 /- English proof (translation)
-Introduce `k p ρ z z' hz hz' y hy hyG`. Establish `hDp : Dmin k (p + ρ) z z' y ⟨p, by omega⟩ ≠ 0` using `hy.1 ⟨p, by omega⟩ (le_refl p) (by simp)`. Establish `hAd : (U.Zh k p ρ y).det ≠ 0`. Establish `h` using `Formalism.FourierDecayAlt.P.Ux3.zhDmin k p ρ z z' y`. Unfold `U.DjU at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← h]`. Conclude with `hDp`. Establish `hqu : IsUnit ((U.Zh k p ρ y)ᴴ).det`. Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `isUnit_iff_ne_zero.mpr (star_ne_zero.mpr hAd)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy1` using `omPlus_muP z z' hz hz' y hy hAd`. Establish `hO : IsOpen {g : B.Mat k (p + ρ) | U.muP k p ρ (U.Zh k p ρ y)ᴴ * g ∈ Q.OmPlus k (p + ρ) z z'}` using `(Formalism.FourierDecayAlt.P.SmoothnessOnGoodSet.isOpen_OmPlus z z').preimage (continuous_const.matrix_mul continuous_id)`. Establish `hy1' : y ∈ {g : B.Mat k (p + ρ) | U.muP k p ρ (U.Zh k p ρ y)ᴴ * g ∈ Q.OmPlus k (p + ρ) z z'}` using `hy1`. Establish `hmem` using `hO.mem_nhds hy1'`. Establish `hLC : LocallyCompactSpace (B.Mat k (p + ρ))` using `inferInstanceAs (LocallyCompactSpace (Fin (2 * (p + ρ) + k + 1) → Fin (2 * (p + ρ) + k + 1) → ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨V, hV, hVO, hVc⟩` from `local_compact_nhds hmem`. Use `⟨(U.Zh k p ρ y)ᴴ, hqu, ?_⟩` and prove the remaining obligations. Use `⟨V, hV, hVc, ?_⟩` and prove the remaining obligations. Introduce `g hg hgG`. Establish `h1 : U.muP k p ρ (U.Zh k p ρ y)ᴴ * g ∈ B.GV k (p + ρ)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `leviElement_mem_GV (k := k) (ρ := ρ) (U.Zh k p ρ y)ᴴ hqu`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul hm hgG`. Establish `h2 : U.muP k p ρ (U.Zh k p ρ y)ᴴ * g ∈ Q.OmPlus k (p + ρ) z z'` using `mem_of_sub_pre (f := fun g => U.muP k p ρ (U.Zh k p ρ y)ᴴ * g) hVO hg`. Conclude with `mem_Om_of h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem levi_move_into_big_cell : MuPToOm := by
   intro k p ρ z z' hz hz' y hy hyG

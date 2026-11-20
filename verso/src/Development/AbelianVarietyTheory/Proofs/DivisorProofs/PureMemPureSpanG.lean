@@ -29,7 +29,7 @@ abbrev DG (B : Base F E) (M : Model σ Y W) (Gd : (∀ v : Pl F, (Fin n × Fin d
   pureSpanG M Gd (M.Pol B.ψ B.emb)
 
 /- English proof (translation)
-Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨f, hf, φ, h1, rfl⟩`. Conclude with `⟨f, h hf, φ, h1, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem pureSpanG_mono (M : Model σ Y W) (Gd : (∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) → Prop)
     {P Q : Submodule ℂ (SInf F (Fin n × Fin d))} (h : P ≤ Q) : pureSpanG M Gd P ≤ pureSpanG M Gd Q := by
@@ -42,17 +42,17 @@ section Gen
 variable (M : Model σ Y W) (Gd : (∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) → Prop)
 
 /- English proof (translation)
-Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨f, hf, φ, h1, rfl⟩` from `hy`. Take `⟨f₁, hf₁, hact⟩` from `hP f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨pure f₁ φ, Submodule.subset_span ⟨f₁, hf₁, φ, h1, rfl⟩, hasDerivAt_pure' φ (hGd φ h1).1 (good_std hstd (hGd φ h1)) hact⟩`. Consider the case `zero => exact ⟨0, zero_mem _, fun x => by simpa using hasDerivAt_const (0 : ℝ) (0 : ℂ)⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨y₁, hy₁, hyd⟩` from `hy`. Take `⟨z₁, hz₁, hzd⟩` from `hz`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨y₁ + z₁, add_mem hy₁ hz₁, fun x => ?_⟩` and prove the remaining obligations. Establish `h2` using `(hyd x).add (hzd x)`. Establish `e : ((fun t => T t y x) + fun t => T t z x) = fun t => T t (y + z) x`. Use function extensionality and compare the values at `t`. Simplify using `[map_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[e]`. Simplify using `using h2`. Consider the case `smul c y _ hy`. Take `⟨y₁, hy₁, hyd⟩` from `hy`. Use `⟨c • y₁, Submodule.smul_mem _ c hy₁, fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `(hyd x).const_mul c`. Establish `e : (fun t => c * T t y x) = fun t => T t (c • y) x`. Use function extensionality and compare the values at `t`. Simplify using `[map_smul]`. Rewrite `h2` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pureSpanG_deriv (P : Submodule ℂ (SInf F (Fin n × Fin d))) (T : ℝ → Module.End ℂ (Fn F n d))
     (hstd : ∀ᶠ v in Filter.cofinite, M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
@@ -86,11 +86,9 @@ theorem pureSpanG_deriv (P : Submodule ℂ (SInf F (Fin n × Fin d))) (T : ℝ �
     simpa using h2
 
 /- English proof (translation)
-Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨f, hf, φ, h1, rfl⟩` from `hy`. Take `⟨f₁, hf₁, hact⟩` from `hP f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[acts_pure' φ (hGd φ h1).1 (good_std hstd (hGd φ h1)) hact]`. Conclude with `Submodule.subset_span ⟨f₁, hf₁, φ, h1, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
-
-Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pureSpanG_acts (P : Submodule ℂ (SInf F (Fin n × Fin d))) (T : Module.End ℂ (Fn F n d))
     (hstd : ∀ᶠ v in Filter.cofinite, M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
@@ -126,7 +124,7 @@ abbrev AlgG (B : Base F E) (M : Model σ Y W) (om : Rep σ Y W)
   Algebra.adjoin ℂ (ops B om (DG B M Gd))
 
 /- English proof (translation)
-Introduce and unpack `A (⟨γ, hγ, hex, rfl⟩ | ⟨k, hk, hk', rfl⟩) x hx`. Conclude with `hN.lie γ hγ x.1 hx _ (derivOp _ _ hex x).2 (derivOp_spec hex x)`. Conclude with `hN.cpt k hk x.1 hx`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem nrG_stable (B : Base F E) (M : Model σ Y W) (om : Rep σ Y W)
     (Gd : (∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) → Prop) (N : Submodule ℂ (Fn F n d))
@@ -191,7 +189,7 @@ theorem iotaG_apply (B : Base F E) (M : Model σ Y W) (om : Rep σ Y W)
   rfl
 
 /- English proof (translation)
-Rewrite using `[iotaG_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iotaG_eq_zero (B : Base F E) (M : Model σ Y W) (om : Rep σ Y W)
     (Gd : (∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) → Prop) (N : Submodule ℂ (Fn F n d))
@@ -214,7 +212,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 set_option synthInstance.maxHeartbeats 400000
 
 /- English proof (translation)
-The claim follows from `pureSpanG_mono M Gd hP`.
+A detailed English derivation is pending.
 -/
 theorem pureSpanG_le (M : Model σ Y W) (B : Base F E) (Gd : (∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) → Prop)
     (P : Submodule ℂ (SInf F (Fin n × Fin d))) (hP : P ≤ M.Pol B.ψ B.emb) : pureSpanG M Gd P ≤ DG B M Gd :=
@@ -227,14 +225,14 @@ variable (B : Base F E) (M : Model σ Y W) (om : Rep σ Y W)
   (hN : GlobalTheory.ThetaFac.WStable B om (DG B M Gd) N)
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem smul_mk (A : Module.End ℂ (DG B M Gd)) (hA : A ∈ ops B om (DG B M Gd)) (x : DG B M Gd) :
     (⟨A, Algebra.subset_adjoin hA⟩ : AlgG B M om Gd) • (NrG B M om Gd N hN).mkQ x = (NrG B M om Gd N hN).mkQ (A x) := by
   rw [← LinearMap.map_smul]; rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y.2, hy⟩`. Introduce and unpack `⟨hf, h⟩`. Conclude with `⟨⟨f, hf⟩, h, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_pre (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) (hφ : Gd φ)
     (T : Submodule (AlgG B M om Gd) (DG B M Gd ⧸ NrG B M om Gd N hN)) (f : SInf F (Fin n × Fin d)) :
@@ -249,11 +247,11 @@ theorem mem_pre (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) (hφ : 
 variable {B M om Gd N hN}
 
 /- English proof (translation)
-Establish `hs` using `good_std hstd (hGd φ hφ)`. Rewrite using `[iotaG_apply, smul_mk B M om Gd N hN A hA]`. Break down `hA with ⟨γ, hγ, hex, rfl⟩ | ⟨k, hk, hk', rfl⟩` into its components or cases. Take `⟨f₁, hf₁, hact, -⟩` from `hP3 γ hγ f.1 f.2`. Use `⟨⟨f₁, hf₁⟩, ?_, fun P hP hfP => hP.2.2.2.1 γ hγ f.1 hfP f₁ hact⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[iotaG_apply]`. Use `congr 1`. Conclude with `Subtype.ext (derivOp_eq hex _ _ (hasDerivAt_pure' φ (hGd φ hφ).1 hs hact))`. Take `⟨f₁, hf₁, hact, -⟩` from `hP4 k hk f.1 f.2`. Use `⟨⟨f₁, hf₁⟩, ?_, fun P hP hfP => hP.2.2.2.2 k hk f.1 hfP f₁ hact⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iotaG_apply]`. Use `congr 1`. Conclude with `Subtype.ext (acts_pure' φ (hGd φ hφ).1 hs hact)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ops_iota
     (hstd : ∀ᶠ v in Filter.cofinite, M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
@@ -283,11 +281,11 @@ theorem ops_iota
     exact Subtype.ext (acts_pure' φ (hGd φ hφ).1 hs hact)
 
 /- English proof (translation)
-Use `⟨quotSub _ (NrG B M om Gd N hN) ((P.comap (M.Pol B.ψ B.emb).subtype).map (iotaG B M om Gd N hN φ hφ)) ?_, fun q => ?_⟩` and prove the remaining obligations. Introduce `A hA x hx`. Take `⟨f, hfP, hfx⟩` from `hx`. Take `⟨f₁, he, hP'⟩` from `ops_iota hstd hGd hP3 hP4 hφ A hA f`. Use `⟨f₁, hP' P hP hfP, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← smul_mk B M om Gd N hN A hA x, ← hfx, he]`. Rewrite using `[mem_quotSub]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨f, hf, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨f, hf, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_img
     (hstd : ∀ᶠ v in Filter.cofinite, M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
@@ -314,7 +312,7 @@ theorem exists_img
     · rintro ⟨f, hf, rfl⟩; exact ⟨f, hf, rfl⟩
 
 /- English proof (translation)
-Establish `hs` using `good_std hstd (hGd φ hφ)`. Establish `h₁` using `hP1 γ hγ f hf f₁ h`. Conclude with `⟨h₁, hNc.lie γ hγ _ (Submodule.subset_span ⟨f, hf, φ, hφ, rfl⟩) _ (Submodule.subset_span ⟨f₁, h₁, φ, hφ, rfl⟩) (hasDerivAt_pure' φ (hGd φ hφ).1 hs h)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem coinv_lie
     (hstd : ∀ᶠ v in Filter.cofinite, M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
@@ -332,9 +330,9 @@ theorem coinv_lie
     (Submodule.subset_span ⟨f₁, h₁, φ, hφ, rfl⟩) (hasDerivAt_pure' φ (hGd φ hφ).1 hs h)⟩
 
 /- English proof (translation)
-Establish `hs` using `good_std hstd (hGd φ hφ)`. Use `⟨hP2 k hk f hf f₁ h, ?_⟩` and prove the remaining obligations. Establish `e : pure (f₁ - f) φ = om (k, 1) (pure f φ) - pure f φ`. Rewrite using `[acts_pure' φ (hGd φ hφ).1 hs h, ← GlobalTheory.ThetaFacInf.pureL_apply, ← GlobalTheory.ThetaFacInf.pureL_apply, ← GlobalTheory.ThetaFacInf.pureL_apply, map_sub]`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hNc.cpt k hk _ (Submodule.subset_span ⟨f, hf, φ, hφ, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem coinv_cpt
     (hstd : ∀ᶠ v in Filter.cofinite, M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
@@ -355,21 +353,19 @@ theorem coinv_cpt
   exact hNc.cpt k hk _ (Submodule.subset_span ⟨f, hf, φ, hφ, rfl⟩)
 
 /- English proof (translation)
-Establish `hs` using `good_std hstd (hGd φ hφ)`. Use `⟨inf_le_left.trans hP₀.1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ f hf f₁ h`. Take `⟨h1, h2⟩` from `coinv_lie hstd hGd hP1 hNc hφ γ hγ f hf f₁ h`. Use `⟨hP₀.2.1 γ hγ f hf f₁ h, (mem_pre B M om Gd N hN φ hφ T f₁).2 ⟨h1, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(iotaG_eq_zero B M om Gd N hN φ hφ ⟨f₁, h1⟩).2 h2]`. Conclude with `zero_mem _`. Introduce `k hk f hf f₁ h`. Take `⟨h1, h2⟩` from `coinv_cpt hstd hGd hP2 hNc hφ k hk f hf f₁ h`. Use `⟨hP₀.2.2.1 k hk f hf f₁ h, (mem_pre B M om Gd N hN φ hφ T (f₁ - f)).2 ⟨sub_mem h1 hf, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(iotaG_eq_zero B M om Gd N hN φ hφ ⟨f₁ - f, sub_mem h1 hf⟩).2 h2]`. Conclude with `zero_mem _`. Introduce `γ hγ f hf f₁ h`. Take `⟨hfP₀, hfpre⟩` from `hf`. Take `⟨hfPol, hfT⟩` from `(mem_pre B M om Gd N hN φ hφ T f).1 hfpre`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf₁P₀` using `hP₀.2.2.2.1 γ hγ f hfP₀ f₁ h`. Establish `hf₁Pol` using `hP₀.1 hf₁P₀`. Use `⟨hf₁P₀, (mem_pre B M om Gd N hN φ hφ T f₁).2 ⟨hf₁Pol, ?_⟩⟩` and prove the remaining obligations. Establish `hA : derivOp (DG B M Gd) (fun t => om (1, γ (Multiplicative.ofAdd t))) (hexD γ hγ) ∈ ops B om (DG B M Gd)` using `Or.inl ⟨γ, hγ, hexD γ hγ, rfl⟩`. Establish `e : iotaG B M om Gd N hN φ hφ ⟨f₁, hf₁Pol⟩ = (⟨_, Algebra.subset_adjoin hA⟩ : AlgG B M om Gd) • iotaG B M om Gd N hN φ hφ ⟨f, hfPol⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[iotaG_apply, iotaG_apply, smul_mk B M om Gd N hN _ hA]`. Use `congr 1`. Conclude with `Subtype.ext (derivOp_eq (hexD γ hγ) _ _ (hasDerivAt_pure' φ (hGd φ hφ).1 hs h)).symm`. Rewrite using `[e]`. Conclude with `T.smul_mem _ hfT`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `k hk f hf f₁ h`. Take `⟨hfP₀, hfpre⟩` from `hf`. Take `⟨hfPol, hfT⟩` from `(mem_pre B M om Gd N hN φ hφ T f).1 hfpre`. Establish `hf₁P₀` using `hP₀.2.2.2.2 k hk f hfP₀ f₁ h`. Establish `hf₁Pol` using `hP₀.1 hf₁P₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hf₁P₀, (mem_pre B M om Gd N hN φ hφ T f₁).2 ⟨hf₁Pol, ?_⟩⟩` and prove the remaining obligations. Establish `hA : (om (1, k)).restrict (hkD k hk) ∈ ops B om (DG B M Gd)` using `Or.inr ⟨k, hk, hkD k hk, rfl⟩`. Establish `e : iotaG B M om Gd N hN φ hφ ⟨f₁, hf₁Pol⟩ = (⟨_, Algebra.subset_adjoin hA⟩ : AlgG B M om Gd) • iotaG B M om Gd N hN φ hφ ⟨f, hfPol⟩`. Rewrite using `[iotaG_apply, iotaG_apply, smul_mk B M om Gd N hN _ hA]`. Use `congr 1`.
-
-Conclude with `Subtype.ext (acts_pure' φ (hGd φ hφ).1 hs h).symm`. Rewrite using `[e]`. Conclude with `T.smul_mem _ hfT`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaSub_pre
     (hstd : ∀ᶠ v in Filter.cofinite, M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
@@ -430,17 +426,17 @@ theorem thetaSub_pre
     exact T.smul_mem _ hfT
 
 /- English proof (translation)
-Establish `hPl : P ≤ M.Pol B.ψ B.emb` using `hP.1`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v h hh Φ hΦ`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hΦ`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem_sup (hNm.stab.fin v h hh a ha) (hfin v h hh b hb)`. Introduce `γ hγ Φ hΦ Φ₁ _ hder`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hΦ`. Take `⟨a₁, ha₁D, ha₁⟩` from `pureSpanG_deriv M Gd (M.Pol B.ψ B.emb) (fun t => om (1, γ (Multiplicative.ofAdd t))) hstd hGd (fun f hf => by obtain ⟨f₁, hf₁, hact, -⟩ := hP3 γ hγ f hf; exact ⟨f₁, hf₁, hact⟩) a (hNm.le ha)`. Establish `ha₁N` using `hNm.stab.lie γ hγ a ha a₁ ha₁D ha₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b₁, hb₁, hb₁d⟩` from `pureSpanG_deriv M Gd P (fun t => om (1, γ (Multiplicative.ofAdd t))) hstd hGd (fun f hf => by`. Take `⟨f₁, -, hact, -⟩` from `hP3 γ hγ f (hPl hf)`. Conclude with `⟨f₁, hP.2.2.2.1 γ hγ f hf f₁ hact, hact⟩) b hb`. Establish `e : Φ₁ = a₁ + b₁`. Use function extensionality and compare the values at `x`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h2` using `(ha₁ x).add (hb₁d x)`. Establish `e2 : ((fun t => om (1, γ (Multiplicative.ofAdd t)) a x) + fun t => om (1, γ (Multiplicative.ofAdd t)) b x) = fun t => om (1, γ (Multiplicative.ofAdd t)) (a + b) x`. Use function extensionality and compare the values at `t`. Simplify using `[map_add]`. Rewrite `h2` using `[e2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hder x).unique h2`. Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup ha₁N hb₁`. Introduce `k hk Φ hΦ`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_add]`. Use `Submodule.add_mem_sup (hNm.stab.cpt k hk a ha) (pureSpanG_acts M Gd P (om (1, k)) hstd hGd (fun f hf => ?_) b hb)` and prove the remaining obligations. Take `⟨f₁, -, hact, -⟩` from `hP4 k hk f (hPl hf)`. Conclude with `⟨f₁, hP.2.2.2.2 k hk f hf f₁ hact, hact⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sup_wstable
     (hstd : ∀ᶠ v in Filter.cofinite, M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
@@ -487,19 +483,15 @@ theorem sup_wstable
     exact ⟨f₁, hP.2.2.2.2 k hk f hf f₁ hact, hact⟩
 
 /- English proof (translation)
-Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H x`. Establish `hx : x.1 ∈ N ⊔ pureSpanG M Gd P` using `by rw [hS]; exact x.2`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 hx`. Establish `hbD : b ∈ DG B M Gd` using `pureSpanG_le M B Gd P hPl hb`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (Submodule.Quotient.mk x : DG B M Gd ⧸ NrG B M om Gd N hN) = Submodule.Quotient.mk ⟨b, hbD⟩`. Rewrite using `[Submodule.Quotient.eq]`. Use `show x.1 - b ∈ N`. Rewrite using `[← hab, add_sub_cancel_right]`. Conclude with `ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Rewrite using `[e]`. Use `clear e hab ha hx`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨f, hf, φ, h1, rfl⟩` from `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨φ, h1, ⟨f, hPl hf⟩, hf, rfl⟩`. Consider the case `zero`. Establish `: (⟨0, hbD⟩ : DG B M Gd) = 0` using `rfl`. Rewrite using `[this, Submodule.Quotient.mk_zero]`. Conclude with `zero_mem _`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add y z hy hz ihy ihz`. Establish `hyD` using `pureSpanG_le M B Gd P hPl hy`. Establish `hzD` using `pureSpanG_le M B Gd P hPl hz`. Establish `: (⟨y + z, hbD⟩ : DG B M Gd) = ⟨y, hyD⟩ + ⟨z, hzD⟩` using `rfl`. Rewrite using `[this, Submodule.Quotient.mk_add]`.
-
-Conclude with `add_mem (ihy hyD) (ihz hzD)`. Consider the case `smul c y hy ihy`. Establish `hyD` using `pureSpanG_le M B Gd P hPl hy`. Establish `: (⟨c • y, hbD⟩ : DG B M Gd) = c • ⟨y, hyD⟩` using `rfl`. Rewrite using `[this, Submodule.Quotient.mk_smul]`.
-
-Conclude with `Submodule.smul_of_tower_mem _ c (ihy hyD)`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_top (P : Submodule ℂ (SInf F (Fin n × Fin d))) (hPl : P ≤ M.Pol B.ψ B.emb)
     (hS : N ⊔ pureSpanG M Gd P = DG B M Gd) (q : DG B M Gd ⧸ NrG B M om Gd N hN) :
@@ -538,43 +530,37 @@ theorem span_top (P : Submodule ℂ (SInf F (Fin n × Fin d))) (hPl : P ≤ M.Po
     exact Submodule.smul_of_tower_mem _ c (ihy hyD)
 
 /- English proof (translation)
-Use `set hN := hNm.stab`. Establish `hexD : ∀ γ ∈ Lines σ W, ∀ Φ ∈ DG B M Gd, ∃ Φ₁ ∈ DG B M Gd, ∀ x, HasDerivAt (fun t => om (1, γ (Multiplicative.ofAdd t)) Φ x) (Φ₁ x) 0` using `fun γ hγ => pureSpanG_deriv M Gd (M.Pol B.ψ B.emb) (fun t => om (1, γ (Multiplicative.ofAdd t))) hstd hGd (fun f hf => by obtain ⟨f₁, hf₁, hact, -⟩ := hP3 γ hγ f hf; exact ⟨f₁, hf₁, hact⟩)`. Establish `hkD : ∀ k ∈ KInf σ W B.emb, ∀ Φ ∈ DG B M Gd, om (1, k) Φ ∈ DG B M Gd` using `fun k hk => pureSpanG_acts M Gd (M.Pol B.ψ B.emb) (om (1, k)) hstd hGd (fun f hf => by obtain ⟨f₁, hf₁, hact, -⟩ := hP4 k hk f hf; exact ⟨f₁, hf₁, hact⟩)`. Establish `hPolT : GlobalTheory.Published.ThetaSubInf M B.ψ B.emb om (M.Pol B.ψ B.emb)`. Use `⟨le_rfl, fun γ hγ f hf f₁ h => hP1 γ hγ f hf f₁ h, fun k hk f hf f₁ h => sub_mem (hP2 k hk f hf f₁ h) hf, fun γ hγ f hf f₁ h => ?_, fun k hk f hf f₁ h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨f₂, hf₂, -, hu⟩` from `hP3 γ hγ f hf`. Rewrite using `[hu f₁ h]`. Conclude with `hf₂`. Take `⟨f₂, hf₂, -, hu⟩` from `hP4 k hk f hf`. Rewrite using `[hu f₁ h]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hf₂`. Establish `dich : ∀ P' : Submodule ℂ (SInf F (Fin n × Fin d)), GlobalTheory.Published.ThetaSubInf M B.ψ B.emb om P' → N ⊔ pureSpanG M Gd P' = N ∨ N ⊔ pureSpanG M Gd P' = DG B M Gd` using `fun P' hP' => hNm.max _ le_sup_left (sup_le hNm.le (pureSpanG_le M B Gd P' hP'.1)) (sup_wstable hstd hGd hP3 hP4 P' hP' (hfin P') hNm)`. Take `⟨L, hL⟩` from `hchain`. Take `⟨Pm, ⟨hPmT, hPmS⟩, hPmin⟩` from `exists_minimal_of_chain (GlobalTheory.Published.ThetaSubInf M B.ψ B.emb om) L hL {P' | GlobalTheory.Published.ThetaSubInf M B.ψ B.emb om P' ∧ N ⊔ pureSpanG M Gd P' = DG B M Gd} (fun _ hx => hx.1) (M.Pol B.ψ B.emb) ⟨hPolT, le_antisymm (sup_le hNm.le le_rfl) le_sup_right⟩`. Establish `hatom : ∀ (φ' : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) (hφ' : Gd φ') (T : Submodule (AlgG B M om Gd) (DG B M Gd ⧸ NrG B M om Gd N hN)), (∀ q, q ∈ T ↔ ∃ f : M.Pol B.ψ B.emb, f.1 ∈ Pm ∧ iotaG B M om Gd N hN φ' hφ' f = q) → T = ⊥ ∨ IsAtom T`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Introduce `φ' hφ' T hT`. Distinguish the cases in `hT0 : T = ⊥`. Conclude with `Or.inl hT0`. Use `right`. Use `⟨hT0, fun T' hT' => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hpreT` using `thetaSub_pre (hN := hN) hstd hGd hP1 hP2 hNm.coinv hexD hkD hφ' Pm hPmT T'`. Use `set pre := Pm ⊓ ((T'.restrictScalars ℂ).comap (iotaG B M om Gd N hN φ' hφ')).map (M.Pol B.ψ B.emb).subtype with hpre`. Establish `hpre_ne : pre ≠ Pm`. Introduce `he`. Apply `(lt_iff_le_and_ne.1 hT').2` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `le_antisymm hT'.le fun q hq => ?_` and prove the remaining obligations. Take `⟨f, hfPm, rfl⟩` from `(hT q).1 hq`. Establish `hf : f.1 ∈ pre` using `by rw [he]; exact hfPm`. Take `⟨hf', hfT'⟩` from `(mem_pre B M om Gd N hN φ' hφ' T' f.1).1 hf.2`. Conclude with `hfT'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlt : pre < Pm` using `lt_of_le_of_ne inf_le_left hpre_ne`. Establish `hSpre : N ⊔ pureSpanG M Gd pre = N` using `(dich pre hpreT).resolve_right fun h => hPmin pre ⟨hpreT, h⟩ hlt`. Rewrite using `[eq_bot_iff]`. Introduce `q hq`. Take `⟨f, hfPm, rfl⟩` from `(hT q).1 (hT'.le hq)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hfpre : f.1 ∈ pre` using `⟨hfPm, (mem_pre B M om Gd N hN φ' hφ' T' f.1).2 ⟨f.2, hq⟩⟩`. Establish `hfN : pure f.1 φ' ∈ N`. Rewrite using `[← hSpre]`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨f.1, hfpre, φ', hφ', rfl⟩)`. Rewrite using `[Submodule.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `(iotaG_eq_zero B M om Gd N hN φ' hφ' f).2 hfN`. Establish `hss : IsSemisimpleModule (AlgG B M om Gd) (DG B M Gd ⧸ NrG B M om Gd N hN)`. Apply `IsSemisimpleModule.of_sSup_simples_eq_top` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`. Introduce `q _`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `(Submodule.span_le.2 ?_) (span_top (hN := hN) Pm hPmT.1 hPmS q)` and prove the remaining obligations. Introduce and unpack `_ ⟨φ', hφ', f, hfPm, rfl⟩`. Take `⟨T, hT⟩` from `exists_img (hN := hN) hstd hGd hP3 hP4 hφ' Pm hPmT`. Establish `hmem : iotaG B M om Gd N hN φ' hφ' f ∈ T` using `(hT _).2 ⟨f, hfPm, rfl⟩`. Break down `hatom φ' hφ' T hT with h0 | ha` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hmem` using `[h0, Submodule.mem_bot]`. Rewrite using `[SetLike.mem_coe, hmem]`. Conclude with `zero_mem _`. Conclude with `Submodule.mem_sSup_of_mem (isSimpleModule_iff_isAtom.2 ha) hmem`. Assume the negation of the conclusion as `hPK`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f, hfP, hfN⟩` from `SetLike.not_le_iff_exists.1 hPK`. Take `⟨TP, hTP⟩` from `exists_img (hN := hN) hstd hGd hP3 hP4 hφ P hP`. Establish `hTP0 : TP ≠ ⊥`. Introduce `h0`. Apply `hfN` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `(hTP _).2 ⟨⟨f, hP.1 hfP⟩, hfP, rfl⟩`. Rewrite `h1` using `[h0, Submodule.mem_bot]`. Conclude with `(iotaG_eq_zero B M om Gd N hN φ hφ ⟨f, hP.1 hfP⟩).1 h1`. Take `⟨C, hC⟩` from `exists_isCompl TP`. Establish `hP'T` using `thetaSub_pre (hN := hN) hstd hGd hP1 hP2 hNm.coinv hexD hkD hφ (M.Pol B.ψ B.emb) hPolT C`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set P' := M.Pol B.ψ B.emb ⊓ ((C.restrictScalars ℂ).comap (iotaG B M om Gd N hN φ hφ)).map (M.Pol B.ψ B.emb).subtype with hP'`. Establish `hP'ne : P' ≠ M.Pol B.ψ B.emb`. Introduce `he`. Apply `hTP0` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q hq`. Take `⟨g, hgP, rfl⟩` from `(hTP q).1 hq`. Establish `hg : g.1 ∈ P'` using `by rw [he]; exact g.2`. Take `⟨_, hgC⟩` from `(mem_pre B M om Gd N hN φ hφ C g.1).1 hg.2`. Rewrite using `[Submodule.mem_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.disjoint_def.1 hC.disjoint _ hq hgC`. Establish `hsup : P ⊔ P' = M.Pol B.ψ B.emb`. Use `le_antisymm (sup_le hP.1 hP'T.1) fun g hg => ?_` and prove the remaining obligations. Establish `htop : iotaG B M om Gd N hN φ hφ ⟨g, hg⟩ ∈ TP ⊔ C` using `by rw [hC.sup_eq_top]; trivial`. Take `⟨a, ha, c, hc, hac⟩` from `Submodule.mem_sup.1 htop`.
-
-Take `⟨p, hpP, rfl⟩` from `(hTP a).1 ha`. Establish `hgp : g - p.1 ∈ P'`. Use `⟨sub_mem hg p.2, (mem_pre B M om Gd N hN φ hφ C (g - p.1)).2 ⟨sub_mem hg p.2, ?_⟩⟩` and prove the remaining obligations. Establish `e : iotaG B M om Gd N hN φ hφ ⟨g - p.1, sub_mem hg p.2⟩ = iotaG B M om Gd N hN φ hφ ⟨g, hg⟩ - iotaG B M om Gd N hN φ hφ p`. Rewrite using `[← map_sub]`.
-
-Both sides reduce to the same expression. Rewrite using `[e, ← hac, add_sub_cancel_left]`. Conclude with `hc`. Establish `e2 : g = p.1 + (g - p.1)` using `by abel`. Rewrite using `[e2]`.
-
-Conclude with `Submodule.add_mem_sup hpP hgp`. Conclude with `hsum P P' hP hP'T hne hP'ne hsup`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core
     (hstd : ∀ᶠ v in Filter.cofinite, M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)

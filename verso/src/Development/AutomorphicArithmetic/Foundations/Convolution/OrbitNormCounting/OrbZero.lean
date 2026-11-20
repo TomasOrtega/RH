@@ -5,7 +5,7 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 open scoped Classical TensorProduct
 
 /- English proof (translation)
-Unfold `GlobalTheory.BCT.avg`. Rewrite using `[finsum_eq_zero_of_forall_eq_zero fun q => hu _, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.ConvolutionTheory.G3.orbZero_avg {H : Type} [Group H] (u : H → ℂ) (hu : ∀ x, u x = 0) :
     GlobalTheory.BCT.avg u = 0 := by
@@ -13,7 +13,7 @@ private theorem UpperTheory.ConvolutionTheory.G3.orbZero_avg {H : Type} [Group H
   rw [finsum_eq_zero_of_forall_eq_zero fun q => hu _, mul_zero]
 
 /- English proof (translation)
-Introduce `G _ _ θ K δ f hf`. Unfold `GlobalTheory.BCT.twOrb`. Use `finsum_eq_zero_of_forall_eq_zero fun q => ?_` and prove the remaining obligations. Rewrite using `[UpperTheory.ConvolutionTheory.G3.orbZero_avg _ fun k => hf _ ⟨_, rfl⟩, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.ConvolutionTheory.G3.orbZero :
     UpperTheory.ConvolutionTheory.G3.OrbZero := by

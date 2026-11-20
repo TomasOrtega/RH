@@ -9,9 +9,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.PSer
 
 /- English proof (translation)
-Introduce `l _`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_tiltIntegersCpEquiv_compatible_untilt l`. Use `⟨fun x hx => ?_, fun x y hxy => ?_⟩` and prove the remaining obligations. Establish `h0 : e x = 0` using `GroundTheory.PAdicHodge.untilt_eq_zero_iff.1 (by rw [he]; exact hx)`. Conclude with `e.injective (by rw [h0, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : e y ∣ e x`. Rewrite using `[GroundTheory.PAdicHodge.preTilt_dvd_iff_norm_le, GroundTheory.PAdicHodge.preTilt_norm_def, GroundTheory.PAdicHodge.preTilt_norm_def, he, he]`. Conclude with `hxy`. Take `⟨c, hc⟩` from `hd`. Conclude with `⟨e.symm c, e.injective (by rw [map_mul, e.apply_symm_apply, hc])⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem untilt_injective_zero_and_dvd_of_norm_sh_le :
     ∀ (l : ℕ) [Fact l.Prime], (∀ x : Fl l, sh x = 0 → x = 0) ∧

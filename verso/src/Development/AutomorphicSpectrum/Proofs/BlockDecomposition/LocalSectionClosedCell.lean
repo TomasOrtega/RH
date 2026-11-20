@@ -9,31 +9,27 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.BZRes
 
 /- English proof (translation)
-Use `set e := GlobalTheory.SmGL.two (GlobalTheory.SmGL.stdSum h) with he`. Take `⟨b, hbc, hb1, hbw⟩` from `GlobalTheory.CompanionTheory.BZRes.exists_rowSec (k := k) (Fin.last (i + t))`. Take `⟨W, hW⟩ : ∃ W : GL (Fin (i + t + 1)) k → Fin (i + t + 1) → k, ∀ u, W u = (↑u⁻¹ : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k) (Fin.last (i + t))` from `⟨fun u : GL (Fin (i + t + 1)) k => (↑u⁻¹ : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k) (Fin.last (i + t)), fun _ => rfl⟩`. Establish `hWc : Continuous W`. Establish `hWeq : W = fun u : GL (Fin (i + t + 1)) k => (↑u⁻¹ : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k) (Fin.last (i + t))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `hW`. Rewrite using `[hWeq]`. Conclude with `continuous_pi fun j => (Units.continuous_coe_inv (M := Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k)).matrix_elem (Fin.last (i + t)) j`. Establish `hone : (1 : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k) (Fin.last (i + t)) = GlobalTheory.BZMir.eLast k (i + t)`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hj : j = Fin.last (i + t)`. Substitute `hj` using the available equality. Simplify using `[GlobalTheory.BZMir.eLast]`. Simplify using `[GlobalTheory.BZMir.eLast, Matrix.one_apply, Pi.single_apply, hj, Ne.symm hj]`. Establish `hrow : ∀ q p : GL (Fin (i + t + 1)) k, p ∈ GlobalTheory.BZMir.Mir k (i + t) → (↑(q * p)⁻¹ : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k) (Fin.last (i + t)) = (↑q⁻¹ : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k) (Fin.last (i + t))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `q p hp`. Establish `hp'` using `(GlobalTheory.BZMir.mem_Mir_iff k p⁻¹).1 (Subgroup.inv_mem _ hp)`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, Matrix.mul_apply_eq_vecMul, hp']`. Simplify using `only [GlobalTheory.BZMir.eLast, Matrix.single_one_vecMul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hW1 : W 1 = Pi.single (Fin.last (i + t)) 1`. Rewrite using `[hW, inv_one, Units.val_one, hone]`. Both sides reduce to the same expression. Establish `hbW : ContinuousAt (fun u => b (W u)) 1`. Use `ContinuousAt.comp (f := W) (g := b) ?_ hWc.continuousAt` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hW1]`. Conclude with `hbc`. Establish `hbW1 : b (W 1) = 1` using `by rw [hW1, hb1]`. Unfold `GlobalTheory.CompanionTheory.BZRes.LocSec`. Introduce `OQ hOQ OP hOP`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (fun u => (b (W u))⁻¹) ⁻¹' OQ ∈ 𝓝 (1 : GL (Fin (i + t + 1)) k)` using `hbW.inv.preimage_mem_nhds (by show OQ ∈ 𝓝 (b (W 1))⁻¹`. Rewrite using `[hbW1, inv_one]`. Conclude with `hOQ)`. Establish `h2 : (fun u => b (W u) * u) ⁻¹' OP ∈ 𝓝 (1 : GL (Fin (i + t + 1)) k)` using `(hbW.mul continuousAt_id).preimage_mem_nhds (by show OP ∈ 𝓝 (b (W 1) * 1)`. Rewrite using `[hbW1, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions.
 
-Conclude with `hOP)`. Establish `h3 : (fun u => W u (Fin.last (i + t))) ⁻¹' {x | x ≠ 0} ∈ 𝓝 (1 : GL (Fin (i + t + 1)) k)` using `((continuous_apply _).comp hWc).continuousAt.preimage_mem_nhds (isOpen_ne.mem_nhds (by simp [hW1]))`. Use `⟨_, Filter.inter_mem h1 (Filter.inter_mem h2 h3), ?_⟩` and prove the remaining obligations. Introduce and unpack `u ⟨hu1, hu2, hu3⟩ hu`. Unfold `GlobalTheory.CompanionTheory.BZRes.dcos at hu`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q, hq, p, hp, hqp⟩` from `hu`. Simplify using `only [one_mul, mul_one] at hqp`. Establish `hbw'` using `hbw (W u) hu3`. Establish `hWu : W u = (↑q⁻¹ : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k) (Fin.last (i + t))`. Rewrite using `[hW, hqp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `hrow q p hp`. Establish `hbQ : b (W u) ∈ GlobalTheory.SmGL.parab k e`. Rewrite using `[GlobalTheory.SmGL.mem_parab_iff]`. Introduce and unpack `(_ | _) (_ | _) r c hlt`. Apply the tactic sequence `all_goals first | exact absurd hlt (by decide) | skip`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbw']`. Distinguish the cases in `hr : e ⟨true, r⟩ = Fin.last (i + t)`. Rewrite using `[hr, Matrix.updateRow_self, hWu, ← hr]`. Conclude with `(GlobalTheory.SmGL.mem_parab_iff.1 (Subgroup.inv_mem _ hq)) true false r c hlt`. Rewrite using `[Matrix.updateRow_ne hr, Matrix.one_apply_ne]`.
-
-Introduce `hrc`. Conclude with `absurd (e.injective hrc) (by simp)`. Establish `hpP : b (W u) * u ∈ GlobalTheory.BZMir.Mir k (i + t)`. Rewrite using `[GlobalTheory.BZMir.mem_Mir_iff, Units.val_mul, Matrix.mul_apply_eq_vecMul, hbw', Matrix.updateRow_self, hW, ← Matrix.mul_apply_eq_vecMul, Units.inv_mul, hone]`. Use `⟨(b (W u))⁻¹, Subgroup.inv_mem _ hbQ, hu1, b (W u) * u, hpP, hu2, ?_⟩` and prove the remaining obligations.
-
-Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locSec_parab_mir_one (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {i t : ℕ} (h : (i + 1) + t = i + t + 1) (ht : 0 < t) :

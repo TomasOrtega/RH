@@ -16,7 +16,7 @@ def FinOrb (K K' : Subgroup G) (x : G) : Prop := (MulAction.orbit K (x : G ⧸ K
 def HeckePair (I : Subgroup G) : Prop := ∀ x : G, FinOrb I I x
 
 /- English proof (translation)
-Introduce `_` and use `have : Subsingleton (G ⧸ (⊤ : Subgroup G)) := QuotientGroup.subsingleton_quotient_top Set.toFinite _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem heckePair_top : HeckePair (⊤ : Subgroup G) := fun _ =>
   have : Subsingleton (G ⧸ (⊤ : Subgroup G)) := QuotientGroup.subsingleton_quotient_top
@@ -30,7 +30,7 @@ def hk2 (ρ : Representation A G M) (K K' : Subgroup G) (x : G) : fixd ρ K' →
 def hk (ρ : Representation A G M) (I : Subgroup G) (x : G) : Module.End A (fixd ρ I) := hk2 ρ I I x
 
 /- English proof (translation)
-Introduce `_ hv u hu` and use `hv u (h hu)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fixd_anti (ρ : Representation A G M) {I K : Subgroup G} (h : I ≤ K) : fixd ρ K ≤ fixd ρ I :=
   fun _ hv u hu => hv u (h hu)
@@ -93,7 +93,7 @@ def pm (R : Type) [CommRing R] (n : ℕ) : Equiv.Perm (Fin n) →* GL (Fin n) R 
   (Matrix.permMatrixHom (n := Fin n) (R := R)).toHomUnits
 
 /- English proof (translation)
-Simplify using `only [pm, MonoidHom.coe_toHomUnits, Matrix.permMatrixHom_apply, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq]`. Use `congr 1`. Conclude with `propext Equiv.Perm.inv_eq_iff_eq`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pm_apply (R : Type) [CommRing R] (w : Equiv.Perm (Fin n)) (i j : Fin n) :
     (pm R n w : Matrix (Fin n) (Fin n) R) i j = if i = w j then 1 else 0 := by
@@ -125,7 +125,7 @@ def IsUnif (x : kˣ) : Prop := ∃ p : 𝒪[k], Irreducible p ∧ algebraMap �
 def Dom (t : Fin n → kˣ) : Prop := ∀ i j, i ≤ j → valuation k (t i : k) ≤ valuation k (t j : k)
 
 /- English proof (translation)
-Introduce `_ _ _` and use `le_rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dom_one : Dom (1 : Fin n → kˣ) := fun _ _ _ => le_rfl
 
@@ -134,7 +134,7 @@ def pw (x : kˣ) (a : Fin n → ℤ) : GL (Fin n) k := diagT k (Fin n) fun i => 
 def fund (n m : ℕ) : Fin n → ℤ := fun i => if (i : ℕ) < m then 1 else 0
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[k]`. Establish `: algebraMap 𝒪[k] k p ≠ 0` using `fun h => hp.ne_zero (Subtype.ext h)`. Conclude with `⟨Units.mk0 _ this, p, hp, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_isUnif : ∃ x : kˣ, IsUnif x := by
   obtain ⟨p, hp⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[k]

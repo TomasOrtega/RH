@@ -4,14 +4,14 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.Face
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC LateralTheory.CohomologicalPurity LateralTheory.CohomologicalPurity.TubeCut UpperTheory.Et.Prd
 
 /- English proof (translation)
-Rewrite using `[Units.smul_def, Units.smul_def, map_zsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_us {G H : Type*} [AddCommGroup G] [AddCommGroup H] (f : G →+ H) (e : ℤˣ) (x : G) :
     f (e • x) = e • f x := by
   rw [Units.smul_def, Units.smul_def, map_zsmul]
 
 /- English proof (translation)
-Take `rfl : s = t - 1` from `by omega`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private theorem D_zero (C : DC) (n : ℤ) (x : C.Tot) (s t : ℤ) (h : s + 1 = t) :
     C.D n x 0 t = C.d 0 s t (x 0 s) := by
@@ -19,7 +19,7 @@ private theorem D_zero (C : DC) (n : ℤ) (x : C.Tot) (s t : ℤ) (h : s + 1 = t
   rfl
 
 /- English proof (translation)
-Take `rfl : s = t - 1` from `by omega`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private theorem D_succ (C : DC) (n : ℤ) (x : C.Tot) (p : ℕ) (s t : ℤ) (h : s + 1 = t) :
     C.D n x (p + 1) t = C.d (p + 1) s t (x (p + 1) s) + (n + 1).negOnePow • C.δ p t (x p t) := by
@@ -27,7 +27,7 @@ private theorem D_succ (C : DC) (n : ℤ) (x : C.Tot) (p : ℕ) (s t : ℤ) (h :
   rfl
 
 /- English proof (translation)
-Substitute `e2` using the available equality. Substitute `e3` using the available equality. Take `rfl : r = s - 1` from `by omega`. Conclude with `h s a y ha hy`.
+Substitute using the available equality. Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem col {C C' : DC} {Φ : C.Hom C'} {p : ℕ} (h : Φ.ColEx p) (r s t u : ℤ) (e1 : r + 1 = s)
     (e2 : s + 1 = t) (e3 : t + 1 = u) (a : C.A p t) (y : C'.A p s) (ha : C.d p t u a = 0)
@@ -52,15 +52,15 @@ private structure Sv {C C' : DC} (Φ : C.Hom C') (n : ℤ) (p : ℕ) (b : ∀ s,
   yv : ∀ r s, r + 1 = s → z s = Φ p s (u s) + C'.d p r s (v r)
 
 /- English proof (translation)
-Take `⟨s0, hs0⟩ : ∃ s0 : ℤ, s0 = n - p` from `⟨_, rfl⟩`. Take `⟨a', y', ha', hy'⟩` from `col hcol (s0 - 1) s0 (s0 + 1) (s0 + 1 + 1) (by ring) rfl rfl (b (s0 + 1)) (z s0) (h.db _ _ rfl) (h.pz _ _ rfl)`. Use `⟨Function.update (fun _ => 0) s0 a', Function.update (fun _ => 0) (s0 - 1) y', ⟨?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `s hs`. Rewrite using `[Function.update_of_ne (by omega)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Rewrite using `[Function.update_of_ne (by omega)]`. Introduce `s t hst`. Distinguish the cases in `hs : s = s0`. Substitute `hst` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hs` using the available equality. Rewrite using `[Function.update_self, ha']`. Simplify using `[Function.update_of_ne hs, h.sb t (by omega)]`. Introduce `r s hrs`. Distinguish the cases in `hs : s = s0`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hr : r = s - 1` using `by omega`. Substitute `hr` using the available equality. Substitute `hs` using the available equality. Rewrite using `[Function.update_self, Function.update_self, hy']`. Establish `hr : r ≠ s0 - 1` using `by omega`.
+Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Function.update_of_ne hs, Function.update_of_ne hr, h.sz s (by omega)]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem solve {C C' : DC} {Φ : C.Hom C'} {n : ℤ} {p : ℕ} (hcol : Φ.ColEx p)
     {b : ∀ s, C.A p s} {z : ∀ s, C'.A p s} (h : Cl Φ n p b z) : ∃ u v, Sv Φ n p b z u v := by
@@ -99,9 +99,9 @@ private structure St {C C' : DC} (Φ : C.Hom C') (n : ℤ) (a : C.Tot) (y : C'.T
   hz : ∀ s, C'.δ p s (y p s) = C'.δ p s (z s)
 
 /- English proof (translation)
-Use `⟨fun s hs => ha 0 s hs, fun s hs => hy 0 s hs, ?_, ?_⟩` and prove the remaining obligations. Introduce `s t e`. Establish `h1` using `congrFun (congrFun hD 0) t`. Rewrite `h1` using `[D_zero C (n + 1) a s t e]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s t e`. Establish `h1` using `congrFun (congrFun hP 0) t`. Rewrite `h1` using `[D_zero C' n y s t e]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cl_zero {C C' : DC} {Φ : C.Hom C'} {n : ℤ} {a : C.Tot} {y : C'.Tot}
     (ha : C.Deg (n + 1) a) (hy : C'.Deg n y) (hD : C.D (n + 1) a = 0) (hP : Φ.tot a = C'.D n y) :
@@ -117,15 +117,15 @@ private theorem cl_zero {C C' : DC} {Φ : C.Hom C'} {n : ℤ} {a : C.Tot} {y : C
     exact h1
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Simplify using `only [ha (p + 1) s hs, x.sv.su s (by omega), map_zero, smul_zero, sub_zero]`. Introduce `s hs`. Simplify using `only [hy (p + 1) s hs, x.sv.sv s (by omega), map_zero, smul_zero, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `s t e`. Establish `h1` using `congrFun (congrFun hD (p + 1)) t`. Rewrite `h1` using `[D_succ C (n + 1) a p s t e, Int.negOnePow_succ, Units.neg_smul, x.hb t]`. Simplify using `only [Pi.zero_apply] at h1`. Establish `h2 : C.d (p + 1) s t (C.δ p s (x.u s)) = C.δ p t (x.b t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hC.comm, x.sv.du s t e]`. Simplify using `only [map_sub, map_us, h2]`. Rewrite `h1` using `[← sub_eq_add_neg]`. Then use the resulting hypothesis. Introduce `s t e`. Establish `h1` using `congrFun (congrFun hP (p + 1)) t`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[D_succ C' n y p s t e]`. Express the relevant statement in the definitionally equal form `Φ (p + 1) t (a (p + 1) t) = _ at h1`. Establish `h3 : C'.δ p t (y p t) = C'.δ p t (Φ p t (x.u t)) + C'.d (p + 1) s t (C'.δ p s (x.v s))`. Rewrite using `[x.hz t, x.sv.yv s t e, map_add, hC'.comm]`. Establish `h4 : Φ (p + 1) t (C.δ p t (x.u t)) = C'.δ p t (Φ p t (x.u t))` using `hΦ.2 p t (x.u t)`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_sub, map_add, map_us, h4]`. Rewrite using `[h1, h3, smul_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem cl_next {C C' : DC} {Φ : C.Hom C'} {n : ℤ} {a : C.Tot} {y : C'.Tot} {p : ℕ}
     (hC : C.Ok) (hC' : C'.Ok) (hΦ : Φ.Ok)
@@ -159,19 +159,17 @@ private theorem cl_next {C C' : DC} {Φ : C.Hom C'} {n : ℤ} {a : C.Tot} {y : C
     abel
 
 /- English proof (translation)
-Introduce `C C' Φ hC hC' hΦ hcol n a y ha hy hD hP`. Establish `hcl0` using `cl_zero (Φ := Φ) ha hy hD hP`. Establish `hs0` using `solve (hcol 0) hcl0`. Set `S0 : St Φ n a y 0` to `⟨a 0, y 0, hs0.choose, hs0.choose_spec.choose, hcl0, hs0.choose_spec.choose_spec, fun _ => rfl, fun _ => rfl⟩`. Set `step : ∀ p, St Φ n a y p → St Φ n a y (p + 1)` to `fun p x => { b := fun s => a (p + 1) s - (n + 1).negOnePow • C.δ p s (x.u s) z := fun s => y (p + 1) s + (n + 1).negOnePow • C'.δ p s (x.v s) u := (solve (hcol (p + 1)) (cl_next hC hC' hΦ ha hy hD hP x)).choose v := (solve (hcol (p + 1)) (cl_next hC hC' hΦ ha hy hD hP x)).choose_ …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `S : ∀ p, St Φ n a y p` to `fun p => Nat.rec (motive := fun p => St Φ n a y p) S0 step p`. Use `⟨fun p s => (S p).u s, fun p s => (S p).v s, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p s hps`. Conclude with `(S p).sv.su s hps`. Introduce `p s hps`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(S p).sv.sv s hps`. Use function extensionality and compare the values at `p t`. Break down `p with _ | p` into its components or cases. Rewrite using `[D_zero C n _ (t - 1) t (by ring)]`. Conclude with `(S 0).sv.du (t - 1) t (by ring)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[D_succ C n _ p (t - 1) t (by ring)]`. Establish `h1` using `(S (p + 1)).sv.du (t - 1) t (by ring)`. Express the relevant statement in the definitionally equal form `C.d (p + 1) (t - 1) t ((S (p + 1)).u (t - 1)) = a (p + 1) t - (n + 1).negOnePow • C.δ p t ((S p).u t) at h1`. Use `beta_reduce`. Rewrite using `[h1, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `p t`. Break down `p with _ | p` into its components or cases. Use `show y 0 t = Φ 0 t ((S 0).u t) + C'.D (n - 1) (fun p s => (S p).v s) 0 t`. Rewrite using `[D_zero C' (n - 1) _ (t - 1) t (by ring)]`. Conclude with `(S 0).sv.yv (t - 1) t (by ring)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show y (p + 1) t = Φ (p + 1) t ((S (p + 1)).u t) + C'.D (n - 1) (fun p s => (S p).v s) (p + 1) t`. Rewrite using `[D_succ C' (n - 1) _ p (t - 1) t (by ring)]`. Establish `h1` using `(S (p + 1)).sv.yv (t - 1) t (by ring)`. Express the relevant statement in the definitionally equal form `y (p + 1) t + (n + 1).negOnePow • C'.δ p t ((S p).v t) = Φ (p + 1) t ((S (p + 1)).u t) + C'.d (p + 1) (t - 1) t ((S (p + 1)).v (t - 1)) at h1`. Establish `e : (n - 1 + 1).negOnePow = -(n + 1).negOnePow`.
-
-Rewrite using `[sub_add_cancel, Int.negOnePow_succ, neg_neg]`. Use `beta_reduce`. Rewrite using `[e, Units.neg_smul, eq_sub_of_add_eq h1]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem UpperTheory.totalExact_of_columnExact :
     ∀ (C C' : DC) (Φ : C.Hom C'), C.Ok → C'.Ok → Φ.Ok → (∀ p, Φ.ColEx p) → Φ.TotEx := by

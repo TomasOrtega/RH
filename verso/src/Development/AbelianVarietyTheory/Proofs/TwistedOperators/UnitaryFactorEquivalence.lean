@@ -21,11 +21,11 @@ noncomputable section
 namespace GlobalTheory.UnitaryFromModules
 
 /- English proof (translation)
-Introduce `hHC n ε H _ _ _ ρ V _ _ _ π hρ hρU hπ hπU Z hF`. Take `⟨-, hY, -, T, hmap, -, hK, hL⟩` from `hF`. Use `haveI : Nontrivial V := hπ.1`. Take `⟨w, hwK, hw0⟩` from `GlobalTheory.T.exists_nonzero_k_finite n ε V π hπU`. Establish `hw : w ∈ (kFinVec ε ρ).map T` using `hmap ▸ hwK`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y₀, hy₀, rfl⟩` from `hw`. Establish `hTK : ∀ y, IsKFin ε ρ y → IsKFin ε π (T y)` using `fun y hy => (hmap ▸ Submodule.mem_map_of_mem (f := T) (show y ∈ kFinVec ε ρ from hy) : T y ∈ kFinVec ε π)`. Take `⟨a₀, ha₀, hrz⟩` from `(GlobalTheory.T.intertwiner_of_k_finite_vectors n ε H ρ V π hρ.2.1 hπ.2.1 T hmap (fun k hk y hy => hK k hk y hy)).2 (T y₀) hwK`. Establish `hsm` using `(GlobalTheory.T.irreducible_K_stable_finite_subspace n ε V π hπU hπ.2.2).2`. Establish `hco` using `GlobalTheory.T.smooth_intertwiner_extension hHC n ε H ρ V π hρ.2.1 hπ.2.1 hY hsm T hTK (fun k hk y hy => hK k hk y hy) (fun X hX y hy => hL X hX y hy) a₀ (T y₀) ha₀ hwK hrz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB0, hB⟩` from `GlobalTheory.T.intertwiner_nonzero_on_generating_set n ε H ρ V π hρU hρ.2.2 hπU T {y | IsKFin ε ρ y} y₀ a₀ hy₀ hw0 hco`. Conclude with `GlobalTheory.T.bounded_intertwiner_schur n ε H ρ V π hρU hρ.2.2 hπU hπ.2.2 B hB0 hB`.
+A detailed English derivation is pending.
 -/
 theorem uEquiv_of_isFactor : GlobalTheory.Published.HarishChandraAnalyticity → ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V] (π : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)), IsIrrAdm ε ρ → IsURepOn (UJset ε) ρ → IsIrrAdm ε π → IsURepOn (UJset ε) π → ∀ Z, IsFactor ε ρ Z (kFinVec ε ρ) π → UEquiv ε π ρ := by
   intro hHC n ε H _ _ _ ρ V _ _ _ π hρ hρU hπ hπU Z hF

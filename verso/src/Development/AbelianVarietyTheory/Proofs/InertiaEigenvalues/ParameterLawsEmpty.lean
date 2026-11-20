@@ -35,20 +35,20 @@ open GlobalTheory.RowTie GlobalTheory.NPin Polynomial
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun π => (cs.e1 π).1, fun _ _ h => cs.e1.injective (Subtype.ext h), cs.unr_iff, cs.frob⟩`.
+Supply the required witnesses or components.
 -/
 theorem heckeCharTie_of_side {D : D7} {cf : CharFrame D} (cs : CharSide D cf) :
     GlobalTheory.HeckeSplitRow.HeckeCharTie D.nd D.naut :=
   ⟨fun π => (cs.e1 π).1, fun _ _ h => cs.e1.injective (Subtype.ext h), cs.unr_iff, cs.frob⟩
 
 /- English proof (translation)
-Introduce `ν ν' hw` and use `GlobalTheory.HeckeSplitRow.heckeSplitOne_of_tie D.nd D.naut (heckeCharTie_of_side cs) ν ν' hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem heckeSplitOne_of_side {D : D7} {cf : CharFrame D} (cs : CharSide D cf) : GlobalTheory.RowCopy.HeckeSplitOne D :=
   fun ν ν' hw => GlobalTheory.HeckeSplitRow.heckeSplitOne_of_tie D.nd D.naut (heckeCharTie_of_side cs) ν ν' hw
 
 /- English proof (translation)
-Introduce `w a b c h`. Apply `(T.e w).injective` to reduce the goal to its premises. Use `GlobalTheory.WeilDeligne.WD.lpSum_cancel_right _ _ _ _ _ _ _ (T.e w c) ?_` and prove the remaining obligations. Rewrite using `[← T.sum, ← T.sum, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cancel_of_tie {D : D7} (T : WDTie D.nd D.naut) :
     ∀ w (a b c : D.naut.LP w), D.naut.lpSum a c = D.naut.lpSum b c → a = b := by
@@ -60,17 +60,15 @@ theorem cancel_of_tie {D : D7} (T : WDTie D.nd D.naut) :
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.SplitWeil in
 
 /- English proof (translation)
-Use `haveI := host_isCMField D.host`. Use `set χ' := (CGu.equivChar D.host.E (cg.e 1 π)).1 with hχ'`. Use `set χ := (cs.e1 π).1 with hχ`. Establish `hloc : ∀ v, T.e v (D.naut.locG π v) = GlobalTheory.CuspRep.ParLaws.locPar hL (CG.ofChar χ') (D.nd.plOm.2 v)` using `fun v => by`. Rewrite using `[cg.loc, hχ', CGu.ofChar_equivChar]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `unr' : ∀ v, D.naut.unr (D.naut.locG π v) ↔ χ'.UnrAt v` using `fun v => by`. Rewrite using `[T.unr, hloc v]`. Conclude with `GlobalTheory.RankOneComp.locPar_ofChar_unr_iff hL χ' _`. Establish `hchar : χ' = χ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_inv_eq_one]`. Apply `GlobalTheory.HeckeSplitRow.eq_one_of_split D.host` to reduce the goal to its premises. Use `filter_upwards [D.naut.locG_unr_ae π] with v hv _`. Establish `u1` using `(cs.unr_iff π v).1 hv`. Establish `u2` using `(unr' v).1 hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[HChar.loc_mul, HChar.loc_inv, u1 x hx, u2 x hx, inv_one, mul_one]`. Establish `hf` using `cs.frob π v u1`. Establish `hf' : D.naut.frobEig (D.naut.locG π v) = {(((χ'.val v)⁻¹ : ℂˣ) : ℂ)}`. Rewrite using `[T.frobEig _ _ hv, hloc v]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.RankOneComp.locPar_ofChar_frob hL χ' _ u2`. Rewrite `hf` using `[hf', Multiset.singleton_inj, Units.val_inj, inv_inj]`. Rewrite using `[HChar.val_mul, HChar.val_inv, hf, mul_inv_cancel]`. Establish `hcomp : IsComp χ w (χ.loc w)` using `⟨GlobalTheory.CuspRep.ParLaws.isSmoothChar_loc χ w, fun x => rfl⟩`. Take `⟨ξ₀, -, huniq, -⟩` from `GlobalTheory.T.heckeChar_localComponent_exists_unique_unitary D.host.E χ w`.
-
-Establish `hξ : ξ = χ.loc w` using `(huniq _ h).trans (huniq _ hcomp).symm`. Substitute `hξ` using the available equality. Rewrite using `[hloc, GlobalTheory.CuspRep.ParLaws.locPar_ofChar, rcAt]`. Rewrite using `[hchar]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem locG_rankOne_eq_rcAt {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {cf : CharFrame D} (T : WDTie D.nd D.naut)
     (cg : CGTrue hL D T) (cs : CharSide D cf) (π : D.naut.CG 1) (w : PlE D.host)
@@ -107,9 +105,9 @@ theorem locG_rankOne_eq_rcAt {hL : GlobalTheory.Published.LocalLanglandsGL} {D :
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.SplitWeil in
 
 /- English proof (translation)
-Introduce `π w σ _ α hα`. Take `⟨ξ, hξ, -, hξu⟩` from `GlobalTheory.HeckeComp.main D.host.E (cs.e1 π).1 w`. Establish `he` using `locG_rankOne_eq_rcAt T cg cs π w ξ hξ`. Rewrite `hα` using `[WDTie.eig, he]`. Unfold `WD.inePol at hα`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `split_ifs at hα with hσ`. Conclude with `GlobalTheory.LocLanglands.IsRec.recUnit (GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 w)) ξ (GlobalTheory.SplitRead.Irr.ofDet 1 ξ hξ.1) (hξu (cs.e1 π).2) ⟨Representation.Equiv.refl _⟩ ⟨σ, hσ⟩ α hα`. Simplify using `at hα`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rankOneUnitary {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {cf : CharFrame D} (T : WDTie D.nd D.naut)
     (cg : CGTrue hL D T) (cs : CharSide D cf) : RankOneUnitary T := by
@@ -126,13 +124,13 @@ theorem rankOneUnitary {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.LocGL in
 
 /- English proof (translation)
-Use `host_isCMField D.host` as an intermediate fact. Establish `ha1 : 1 ≤ a` using `by omega`. Take `⟨π₀, hπ₀⟩` from `Quotient.exists_rep (cg.e a π).1`. Establish `hmk : CG.mk π₀ = (cg.e a π).1` using `hπ₀`. Establish `hc₀ : π₀.IsCsd`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(cg.csd a π).1 hc`. Rewrite `h1` using `[CGu.IsCsd, ← hmk]`. Conclude with `h1`. Establish `hinf : ∀ τ, D.naut.infG π τ = (CG.mk π₀).infChar τ` using `fun τ => by`. Rewrite using `[cg.inf, CGu.infChar, ← hmk]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hr₀ : (CG.mk π₀).IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Use `(D.naut.ralg_def π).1 hr τ` as an intermediate fact. Rewrite `this` using `[hinf]`. Then use the resulting hypothesis. Establish `hcoh` using `(hRP D.host.E a ha1 π₀ hr₀).2`. Take `⟨σ₀, hσ₀, -⟩` from `LocEx.exists_isLocComp hAF D.host.E a π₀ w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htG` using `hT D.host.E a ha π₀ hc₀ hcoh w σ₀ hσ₀`. Rewrite using `[T.tempered, cg.loc]`. Use `show (GlobalTheory.CuspRep.ParLaws.locPar hL (cg.e a π).1 (D.nd.plOm.2 w)).tempered`. Rewrite using `[← hmk, GlobalTheory.CuspRep.ParLaws.locPar_mk hL hσ₀ (D.nd.plOm.2 w)]`. Conclude with `GlobalTheory.T.tempered_rep_tempered_parameter D.host.E D.nd.Om _ w (D.nd.plOm.2 w) _ (GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 w)) a (GlobalTheory.CuspRep.ParLaws.toRep σ₀) htG`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rankTwo (hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hT : GlobalTheory.Published.CohomologicalCsdTempered)
     (hRP : GlobalTheory.Published.RegularAlgebraicPurity) {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (T : WDTie D.nd D.naut)
@@ -161,19 +159,19 @@ theorem rankTwo (hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hT : Gl
     (GlobalTheory.CuspRep.ParLaws.toRep σ₀) htG
 
 /- English proof (translation)
-Establish `hcsd : IsCSD D.host cf.eta` using `GlobalTheory.EtaSelfDual.isCSD_of_isEtaT _ _ _ cf.isEta`. Establish `hE1 : (cs.e1 D.naut.etaT).1.HasInfQ (embPsi D.host) (fun _ => (1 / 2 : ℚ))` using `⟨fun _ => 1, fun _ => by norm_num, by rw [cs.etaT]; exact cf.isEta.inf⟩`. Establish `hE' : (cs.e1 D.naut.etaTinv).1.HasInfQ (embPsi D.host) (fun _ => (-(1 / 2) : ℚ))` using `⟨fun _ => -1, fun _ => by norm_num, by rw [cs.etaTinv]; exact GlobalTheory.AutomorphismSplitting.hasInf_inv cf.isEta.inf⟩`. Use `⟨⟨?_, ?_⟩, fun τ => ?_, fun w => ?_, fun i _ => isEmptyElim i⟩` and prove the remaining obligations. Rewrite using `[cs.csd, cs.etaT]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcsd`. Rewrite using `[cs.csd, cs.etaTinv]`. Conclude with `GlobalTheory.AutomorphismSplitting.isCSD_inv' hcsd`. Take `⟨ρ, hρ⟩` from `(GlobalTheory.VolRatioCheck.place_bijective D).2 (InfinitePlace.mk τ)`. Break down `InfinitePlace.mk_eq_iff.1 hρ with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : τ = embPsi D.host (D.eTau ρ)` using `h.symm`. Rewrite using `[ht, (cs.infG _ _ hE1 (D.eTau ρ)).1, (cs.infG _ _ hE' (D.eTau ρ)).1]`. Use `⟨Or.inl (by push_cast; rfl), ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.map_singleton]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `ht : τ = (starRingEnd ℂ).comp (embPsi D.host (D.eTau ρ))`. Rewrite using `[← h]`. Use extensionality with `x`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ht, (cs.infG _ _ hE1 (D.eTau ρ)).2, (cs.infG _ _ hE' (D.eTau ρ)).2]`. Use `⟨Or.inr (by push_cast; rfl), ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.map_singleton]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : D.naut.unr (D.naut.locG D.naut.etaT w)` using `D.naut.etaT_unr w`. Rewrite using `[D.naut.tempered_unr _ hu, cs.frob _ w ((cs.unr_iff _ w).1 hu)]`. Introduce `α hα`. Rewrite `hα` using `[Multiset.mem_singleton]`. Substitute `hα` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ‖(((cs.e1 D.naut.etaT).1.val w : ℂˣ) : ℂ)‖ = 1` using `(cs.e1 D.naut.etaT).2 _`. Rewrite using `[Units.val_inv_eq_inv_val, norm_inv, h1, inv_one]`.
+A detailed English derivation is pending.
 -/
 theorem tieAut_of_side {D : D7} {cf : CharFrame D} (cs : CharSide D cf) (hE : IsEmpty D.nd.Loc) :
     Formalism.MainNotions.SumRepresentations.At.TieAut D.nd D.naut := by
@@ -205,15 +203,15 @@ theorem tieAut_of_side {D : D7} {cf : CharFrame D} (cs : CharSide D cf) (hE : Is
     rw [Units.val_inv_eq_inv_val, norm_inv, h1, inv_one]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => isEmptyElim i, fun i => isEmptyElim i, fun i => isEmptyElim i, fun i => isEmptyElim i⟩`.
+Supply the required witnesses or components.
 -/
 theorem tieGal_bare {D : D7} (hE : IsEmpty D.nd.Loc) : Formalism.MainNotions.SumRepresentations.At.TieGal D.nd D.naut :=
   ⟨fun i => isEmptyElim i, fun i => isEmptyElim i, fun i => isEmptyElim i, fun i => isEmptyElim i⟩
 
 /- English proof (translation)
-Set `γ : Fin 2 → PlE D.host → Formalism.ConjugateSelfDual.G D.host.E D.nd.Om` to `fun k => Function.extend (D.naut.plGw k) (D.ntypes.tg k) (fun _ => 1)`. Establish `hγ : ∀ k v, γ k (D.naut.plGw k v) = D.ntypes.tg k v` using `fun k v => (D.naut.plGw_inj k).extend_apply _ _ v`. Establish `hT : GlobalTheory.LabLaws.LabTie T D.ntypes.teichC γ`. Introduce `k v`. Rewrite using `[hγ k v]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨D.ntypes.teichC_inj k, D.ntypes.tg_gen k v, lab k v⟩`. Conclude with `GlobalTheory.LabLaws.tieLab_of_labTie hT`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tieLab_of_lab {D : D7} (T : WDTie D.nd D.naut) (lab : LabTrue D T) : Formalism.MainNotions.SumRepresentations.tieLab D := by
   let γ : Fin 2 → PlE D.host → Formalism.ConjugateSelfDual.G D.host.E D.nd.Om :=
@@ -226,11 +224,11 @@ theorem tieLab_of_lab {D : D7} (T : WDTie D.nd D.naut) (lab : LabTrue D T) : For
   exact GlobalTheory.LabLaws.tieLab_of_labTie hT
 
 /- English proof (translation)
-Introduce `hP hL D cf rep Rw hE X`. Establish `hrig : IsobaricRigid D.nd D.naut`. Use `GlobalTheory.CuspRep.host_isCMField D.host` as an intermediate fact. Conclude with `GlobalTheory.RowPar.isobaricRigid_of_jacquetShalika hP.what₂.js.1 (GlobalTheory.HeightCounting.Blocks.readsCusp hP.what₂.fin X.cg)`. Establish `han1` using `GlobalTheory.RowClose.isobaricCuspidalMultiplicityOne_of_twisted _ _ _ D.nd D.naut hrig`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `han2` using `GlobalTheory.SpehRigid.isobaricDiscreteSelfDualMultOne_of_isobaricSumMultOne _ _ _ D.nd D.naut hrig`. Establish `hcheb` using `GlobalTheory.ChebSplitDense.chebSplit_nd hP.what₂.cheb D`. Establish `ha5 : Formalism.MainNotions.SumRepresentations.adm5 D` using `(Formalism.MainNotions.SumRepresentations.condition_iff_additive_maps D).2 ⟨han1, han2, fun Sg hSg => by`. Establish `hd` using `(hcheb hSg.toFinset).closure_eq`. Use `hd using 4 with σ` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.Finite.mem_toFinset]⟩`. Establish `htie0 : Formalism.MainNotions.SumRepresentations.tie0 D` using `⟨GlobalTheory.RowTieLP.main D X.T, tieAut_of_side X.chr hE, tieGal_bare hE⟩`. Establish `ha7 : Formalism.MainNotions.SumRepresentations.adm7 D` using `GlobalTheory.RowTie.admissible_of_rank_one_unitary D X.T (rankOneUnitary X.T X.cg X.chr) (fun a π ha hc hr w => rankTwo hP.what₂.fin hP.what₂.temp hP.what₂.clo X.T X.cg a π ha hc hr w)`. Conclude with `⟨htie0, ha5, ha7, tieLab_of_lab X.T X.lab, heckeSplitOne_of_side X.chr, cancel_of_tie X.T, fun k v => GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D k v⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, ∀ (D : D7) (cf : CharFrame D) rep Rw,
     IsEmpty D.nd.Loc → ParIn hL D cf rep Rw → ParLaws D := by

@@ -17,13 +17,13 @@ namespace GlobalTheory.IwLevel
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
 
 /- English proof (translation)
-Establish `w : m.φ ≫ o₃.A.hom = (o₁.A.hom ≫ f) ≫ g` using `by rw [m.cart.1.w, Category.assoc]`. Use `set φ := m₂.cart.1.lift m.φ (o₁.A.hom ≫ f) w`. Establish `hφ : φ ≫ m₂.φ = m.φ` using `m₂.cart.1.lift_fst _ _ _`. Establish `hφ' : φ ≫ o₂.A.hom = o₁.A.hom ≫ f` using `m₂.cart.1.lift_snd _ _ _`. Establish `n : IsGrpPullback o₁.A o₃.A (f ≫ g) (φ ≫ m₂.φ)` using `by rw [hφ]; exact m.cart`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φ₂, sq⟩` from `exists_isSquare hφ'`. Establish `e : m.φ₂ = φ₂ ≫ m₂.φ₂` using `isSquare_unique m.sq (hφ ▸ isSquare_comp sq m₂.sq)`. Establish `hact : ∀ c, (o₁.act.act c).left ≫ φ = φ ≫ (o₂.act.act c).left`. Introduce `c`. Apply `m₂.cart.1.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hφ, m.act, Category.assoc, m₂.act, ← Category.assoc, hφ]`. Rewrite using `[Category.assoc, hφ', ← Category.assoc, Over.w, Category.assoc, Over.w, hφ']`. Establish `heta : ∀ y, (o₁.eta y).left ≫ φ = f ≫ (o₂.eta y).left`. Introduce `y`. Apply `m₂.cart.1.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hφ, m.eta, Category.assoc, Category.assoc, m₂.eta]`. Rewrite using `[Category.assoc, hφ', ← Category.assoc, Over.w, Category.assoc, Over.w] show 𝟙 _ ≫ f = f ≫ 𝟙 _`. Rewrite using `[Category.id_comp, Category.comp_id]`. Conclude with `⟨{ φ := φ φ₂ := φ₂ cart := m₂.cart.cancel n hφ' sq := sq act := hact pol := LBIso.trans o₁.isLB (pull_isLB o₃.isLB _) (pull_isLB o₂.isLB _) m.pol (LBIso.symm (lbIso_pull_comp m₂.pol φ₂ e)) eta := heta }, hφ⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_objMap_cancel {S₁ S₂ S₃ : Scheme.{0}} {s₁ : S₁ ⟶ Sp R} {s₂ : S₂ ⟶ Sp R} {s₃ : S₃ ⟶ Sp R}
     {o₁ : Obj b N s₁} {o₂ : Obj b N s₂} {o₃ : Obj b N s₃} {f : S₁ ⟶ S₂} {g : S₂ ⟶ S₃}

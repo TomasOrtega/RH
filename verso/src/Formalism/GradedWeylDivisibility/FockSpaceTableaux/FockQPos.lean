@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `_ f g` and use `⟨lfockq_symm f g, fun hf => lfockq_self_pos f hf⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem fischerInnerRatPos : FockQPos :=
   fun _ f g => ⟨lfockq_symm f g, fun hf => lfockq_self_pos f hf⟩

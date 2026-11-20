@@ -12,17 +12,15 @@ open scoped Pointwise Classical
 namespace GlobalTheory.HL.PrimeToOrbit
 
 /- English proof (translation)
-Establish `ha : S.a = 0` using `by simp [GlobalTheory.HL.Frames.a, GlobalTheory.HL.Frames.vth, hgg, hvG]`. Take `⟨-, -, hall⟩` from `GlobalTheory.HL.GoodClass.one_class L r k S hgg hDu`. Establish `hint : ∀ d Λ, S.IsTerm d Λ → S.IsIntCls (S.Fr d Λ)` using `fun d Λ h => (GlobalTheory.HL.TermBasic.term_basic L r k S d Λ h).2.2.2.2.2.2.1`. Establish `hdd : ∀ d d' Λ, S.IsTerm d Λ → S.IsTerm d' Λ → d' = d` using `fun d d' Λ h h' => (GlobalTheory.HL.TermBasic.term_basic L r k S d Λ h).2.2.2.2.2.2.2 d' h'`. Establish `hact` using `GlobalTheory.FrameAct.stabiliser_acts_on_terms L r k S`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcom` using `GlobalTheory.HL.ComplAct.main L r k S`. Establish `hcls` using `GlobalTheory.HL.FrameClass.frame_classes L r k S`. Take `⟨s, hs, e⟩` from `hall _ (hint _ _ hT)`. Take `⟨s', hs', e'⟩` from `hall _ (hint _ _ hT')`. Establish `h1` using `hact δ _ hT _ (S.St.inv_mem hs)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1'` using `hact δ' _ hT' _ (S.St.inv_mem hs')`. Establish `hFr₁ : S.Fr δ (s⁻¹ • Λ) = S.frameCls S.f S.f'`. Rewrite using `[h1.2.2.2.2.1, e, smul_smul, inv_mul_cancel, one_smul]`. Establish `hFr₁' : S.Fr δ' (s'⁻¹ • Λ') = S.frameCls S.f S.f'`. Rewrite using `[h1'.2.2.2.2.1, e', smul_smul, inv_mul_cancel, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : S.M δ (s⁻¹ • Λ) = S.M δ' (s'⁻¹ • Λ')`. Establish `h3 : (S.fr δ (s⁻¹ • Λ), S.fr' δ (s⁻¹ • Λ)) ∈ S.Fr δ' (s'⁻¹ • Λ')`. Rewrite using `[hFr₁', ← hFr₁]`. Conclude with `(hcls _ _).1`. Conclude with `((hcls _ _).2.1 _ h3).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h, hh, e₁⟩` from `GlobalTheory.HL.StdPlace.term_orbit L r k S ha h1.1 h1'.1 hM`. Establish `h4` using `(hcom δ' _ h1'.1 h hh).1`. Rewrite `h4` using `[e₁]`. Use `⟨h⁻¹, S.H0.inv_mem hh, ?_⟩` and prove the remaining obligations. Establish `h5 : h • δ' = δ` using `hdd _ _ _ h1.1 h4`.
-
-Rewrite using `[← h5, smul_smul, inv_mul_cancel, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_one_orbit {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) (r k : ℕ)
@@ -59,17 +57,17 @@ theorem coord_one_orbit {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace 
   rw [← h5, smul_smul, inv_mul_cancel, one_smul]
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H r k P hdim hrel hpt d d' t t' ht ht'`. Use `hM.loc` as an intermediate fact. Use `hM.char0` as an intermediate fact. Take `⟨S, ⟨c⟩⟩` from `GlobalTheory.HL.CoordExist.exists_coord M hM H r k P hdim hrel`. Choose the witnesses or unpack the hypotheses as in `⟨-, -, hgg, hvG, -⟩ : _ ∧ _ ∧ (S.gg = false ∧ vE M.L S.ϖ S.G = 0 ∧ True) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, a2, a3⟩` from `GlobalTheory.HL.CoordHeight.height_eq M hM H r k P S c`. Take `⟨b1, b2, -⟩` from `a3 hpt`. Conclude with `⟨a1, a2, b1, b2, trivial⟩`. Take `⟨-, -, -, -, hD, -⟩` from `GlobalTheory.FrameBasic.main M.L r k S`. Establish `hDu : ∀ l, S.D l ≠ 0 → S.D l ∈ M.L.O ∧ ∃ y ∈ M.L.O, S.D l * y = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `l hl`. Distinguish the cases in `h0 : l = 0`. Establish `e : S.D l = 1`. Substitute `h0` using the available equality. Unfold `GlobalTheory.HL.Frames.D GlobalTheory.HL.lead`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Replace the relevant objects with their definitions.
 
-Conclude with `Matrix.det_isEmpty (n := Fin 0)`. Rewrite using `[e]`. Conclude with `⟨M.L.O.one_mem, 1, M.L.O.one_mem, mul_one 1⟩`. Establish `hmem : (l : ℕ) ∈ P.ends`. Unfold `LocNG.FPair.ends`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Rewrite using `[GlobalTheory.HL.CoordHeight.Dm_eq c]`. Conclude with `⟨l.2, Nat.one_le_iff_ne_zero.mpr fun h => h0 (Fin.ext h), hD l hl⟩`. Use `hpt.2.2 _ hmem` as an intermediate fact. Rewrite `this` using `[GlobalTheory.HL.CoordHeight.Dm_eq c]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hT` using `((GlobalTheory.HL.CoordTermWt.terms_correspond M hM H r k P S c).1 d t ht).1`. Establish `hT'` using `((GlobalTheory.HL.CoordTermWt.terms_correspond M hM H r k P S c).1 d' t' ht').1`. Conclude with `((GlobalTheory.HL.CoordDatum.transport M hM H r k P S c).2.2.1 d d').2 (coord_one_orbit M.L r k S hgg hvG hDu hT hT')`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r : ℕ), ∀ (k : ℕ) (P : FPair H r), Module.finrank E V = k + 2 * r + 1 → P.RelG (theta M) → P.PrimeTo → ∀ (d d' : Datum P) (t t' : Term V M r), IsTermOver P d t → IsTermOver P d' t' → Datum.Rel d d' := by
   intro F _ _ _ E _ _ _ _ M hM V _ _ H r k P hdim hrel hpt d d' t t' ht ht'

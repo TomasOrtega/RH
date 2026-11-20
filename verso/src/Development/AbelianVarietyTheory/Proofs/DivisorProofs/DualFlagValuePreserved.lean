@@ -33,11 +33,11 @@ section Flags
 variable {T : Scheme.{0}} {P : T.Modules} {N : ℕ}
 
 /- English proof (translation)
-Set `c : cokernel (a.ι i) ⟶ cokernel (b.ι i)` to `cokernel.desc _ (cokernel.π _) (by rw [← ht]; simp)`. Establish `hc : cokernel.π _ ≫ c = cokernel.π _` using `cokernel.π_desc _ _ _`. Establish `: Epi c` using `epi_of_epi_fac hc`. Use `isIso_of_epi_of_isVB c _ (a.isVB_cokernel i) (b.isVB_cokernel i)` as an intermediate fact. Establish `h0 : b.ι i ≫ cokernel.π (a.ι i) = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← cancel_mono c, Category.assoc, hc, cokernel.condition, zero_comp]`. Set `s : b.F i ⟶ a.F i` to `Abelian.monoLift (a.ι i) (b.ι i) h0`. Establish `hs : s ≫ a.ι i = b.ι i` using `Abelian.monoLift_comp _ _ _`. Use `⟨⟨t, s, ?_, ?_⟩, ht⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (a.ι i), Category.assoc, hs, ht, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono (b.ι i), Category.assoc, ht, hs, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sameStep_of_le (a b : Vert.Flag P N) (i : Fin (N + 1)) (t : a.F i ⟶ b.F i) (ht : t ≫ b.ι i = a.ι i) :
     a.SameStep b i := by
@@ -54,7 +54,7 @@ theorem sameStep_of_le (a b : Vert.Flag P N) (i : Fin (N + 1)) (t : a.F i ⟶ b.
   · rw [← cancel_mono (b.ι i), Category.assoc, ht, hs, Category.id_comp]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[toBidual_naturality_dualSheafTranspose, Category.assoc, ← dualMap_comp, h, dualMap_zero, comp_zero]`. Introduce `h`. Rewrite using `[← Category.comp_id b, ← LieVB.toBidual_dual_comp_dualMap, ← Category.assoc b, toBidual_naturality_dualSheafTranspose, Category.assoc, Category.assoc, ← dualMap_comp, ← dualMap_comp, h, dualMap_zero, comp_zero]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_dualMap_eq_zero_iff {A B : T.Modules} (a : A ⟶ P) (b : B ⟶ VB.dual P) :
     b ≫ dualMap a = 0 ↔ (a ≫ cartierDualToBidual P) ≫ dualMap b = 0 := by
@@ -68,19 +68,19 @@ theorem comp_dualMap_eq_zero_iff {A B : T.Modules} (a : A ⟶ P) (b : B ⟶ VB.d
 def Orth (n : Vert.Flag P N) (m : Vert.Flag (VB.dual P) N) : Prop := ∀ i, m.ι i ≫ dualMap (n.ι i.rev) = 0
 
 /- English proof (translation)
-The claim follows from `sameStep_of_le m (dualFlag n) i (kernel.lift _ (m.ι i) (h i)) (kernel.lift_ι _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem Orth.sameStep {n : Vert.Flag P N} {m : Vert.Flag (VB.dual P) N} (h : Orth n m) (i : Fin (N + 1)) :
     m.SameStep (dualFlag n) i :=
   sameStep_of_le m (dualFlag n) i (kernel.lift _ (m.ι i) (h i)) (kernel.lift_ι _ _ _)
 
 /- English proof (translation)
-Introduce `_` and use `kernel.condition _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem orth_dualFlag (n : Vert.Flag P N) : Orth n (dualFlag n) := fun _ => kernel.condition _
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h.sameStep i`. Take `⟨e', he'⟩` from `(h'.sameStep i).symm`. Conclude with `⟨e ≪≫ e', by rw [Iso.trans_hom, Category.assoc, he', he]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Orth.right_unique {n : Vert.Flag P N} {m m' : Vert.Flag (VB.dual P) N} (h : Orth n m) (h' : Orth n m')
     (i : Fin (N + 1)) : m.SameStep m' i := by
@@ -89,9 +89,9 @@ theorem Orth.right_unique {n : Vert.Flag P N} {m m' : Vert.Flag (VB.dual P) N} (
   exact ⟨e ≪≫ e', by rw [Iso.trans_hom, Category.assoc, he', he]⟩
 
 /- English proof (translation)
-Use `⟨fun h i => ?_, fun h i => ?_⟩` and prove the remaining obligations. Use `(comp_dualMap_eq_zero_iff _ _).1 (h i.rev)` as an intermediate fact. Rewrite `this` using `[Fin.rev_rev]`. Then use the resulting hypothesis. Use `h i.rev` as an intermediate fact. Rewrite `this` using `[Fin.rev_rev]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(comp_dualMap_eq_zero_iff _ _).2 this`.
+A detailed English derivation is pending.
 -/
 theorem Orth.flip {n : Vert.Flag P N} {m : Vert.Flag (VB.dual P) N} [IsIso (cartierDualToBidual P)] :
     Orth n m ↔ Orth m (n.ofIso (asIso (cartierDualToBidual P))) := by
@@ -103,7 +103,7 @@ theorem Orth.flip {n : Vert.Flag P N} {m : Vert.Flag (VB.dual P) N} [IsIso (cart
     exact (comp_dualMap_eq_zero_iff _ _).2 this
 
 /- English proof (translation)
-Use `n.isVB_self.isIso_toBidual_of_local_frames` as an intermediate fact. Take `⟨e, he⟩` from `(Orth.flip.1 h).right_unique (Orth.flip.1 h') i`. Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (cartierDualToBidual P), Category.assoc]`. Conclude with `he`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Orth.left_unique {n n' : Vert.Flag P N} {m : Vert.Flag (VB.dual P) N} (h : Orth n m) (h' : Orth n' m)
     (i : Fin (N + 1)) : n.SameStep n' i := by
@@ -114,7 +114,7 @@ theorem Orth.left_unique {n n' : Vert.Flag P N} {m : Vert.Flag (VB.dual P) N} (h
   exact he
 
 /- English proof (translation)
-Use `hP.isIso_toBidual_of_local_frames` as an intermediate fact. Use `⟨(dualFlag m).ofIso (asIso (cartierDualToBidual P)).symm, Orth.flip.2 fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((dualFlag m).ι i ≫ inv (cartierDualToBidual P)) ≫ cartierDualToBidual P) ≫ _ = 0`. Rewrite using `[Category.assoc _ _ (cartierDualToBidual P), IsIso.inv_hom_id, Category.comp_id]`. Conclude with `orth_dualFlag m i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_orth (hP : IsVB P N) (m : Vert.Flag (VB.dual P) N) : ∃ n : Vert.Flag P N, Orth n m := by
   have := hP.isIso_toBidual_of_local_frames
@@ -124,7 +124,7 @@ theorem exists_orth (hP : IsVB P N) (m : Vert.Flag (VB.dual P) N) : ∃ n : Vert
   exact orth_dualFlag m i
 
 /- English proof (translation)
-Introduce `i` and use `by obtain ⟨e, he⟩ := hn i.rev obtain ⟨e', he'⟩ := hm i rw [← he, ← he', dualMap_comp, Category.assoc, reassoc_of% (h i), zero_comp, comp_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Orth.congr {n n' : Vert.Flag P N} {m m' : Vert.Flag (VB.dual P) N} (h : Orth n m) (hn : ∀ i, n'.SameStep n i)
     (hm : ∀ i, m'.SameStep m i) : Orth n' m' := fun i => by
@@ -135,9 +135,7 @@ theorem Orth.congr {n n' : Vert.Flag P N} {m m' : Vert.Flag (VB.dual P) N} (h : 
 end Flags
 
 /- English proof (translation)
-Use `pull_ext (g ≫ π) fun V l => dual_pull_ext (g ≫ π) le_rfl fun W h S hS e s => ?_` and prove the remaining obligations. Rewrite using `[dualApp_theta (g ≫ π) _ h, ← QCoh.app_app, ← QCoh.app_app, ← QCoh.app_app, dualApp_dualMap, Vert.DivPull.pullbackComp_inv_app g π _ (le_refl (π ⁻¹ᵁ V)) (T := (g ≫ π) ⁻¹ᵁ V) le_rfl, Vert.DivPull.pullbackComp_inv_app g π _ (le_refl (π ⁻¹ᵁ W)) e]`. Use `erw [QCoh.pullback_map_app_pullbackSections]`. Use `(dualApp_theta g _ (π.preimage_mono h) _ hS e _).trans ?_` and prove the remaining obligations. Rewrite using `[dualApp_theta π _ h]`.
-
-Conclude with `congr($(Scheme.Hom.appLE_comp_appLE g π W _ S le_rfl e) _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_pullbackComp {B Y T : Scheme.{0}} (π : Y ⟶ B) (g : T ⟶ Y) (E : B.Modules) :
     (Scheme.Modules.pullbackComp g π).inv.app (VB.dual E) ≫ (Scheme.Modules.pullback g).map (theta π E) ≫
@@ -165,11 +163,11 @@ def annFlag (π : Y ⟶ B) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 
   (dualFlag fl).ofIso (thetaIso hE π).symm
 
 /- English proof (translation)
-Substitute `w` using the available equality. Introduce `i`. Express the relevant statement in the definitionally equal form `((((Scheme.Modules.pullback g').map ((dualFlag fl).ι i ≫ (thetaIso hE π).inv)) ≫ (Scheme.Modules.pullbackComp g' π).hom.app _ ≫ 𝟙 _) ≫ theta (g' ≫ π) E) ≫ dualMap ((Scheme.Modules.pullback g').map (fl.ι i.rev) ≫ (Scheme.Modules.pullbackComp g' π).hom.app _ ≫ 𝟙 _) = 0`. Establish `e₁ : (Scheme.Modules.pullback g').map (thetaIso hE π).inv ≫ (Scheme.Modules.pullback g').map (theta π E) = 𝟙 _`. Rewrite using `[← Functor.map_comp, ← CategoryTheory.Functor.map_id]`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (thetaIso hE π).inv_hom_id`. Establish `e₂ : dualMap ((Scheme.Modules.pullbackComp g' π).inv.app E) ≫ dualMap ((Scheme.Modules.pullbackComp g' π).hom.app E) = 𝟙 _`. Rewrite using `[← dualMap_comp, Iso.hom_inv_id_app]`. Both sides reduce to the same expression. Rewrite using `[← theta_pullbackComp, Category.comp_id, Category.comp_id, dualMap_comp, Functor.map_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, Iso.hom_inv_id_app_assoc]`. Rewrite using `[reassoc_of% e₁, reassoc_of% e₂, ← theta_naturality, ← Functor.map_comp_assoc, orth_dualFlag fl i, Functor.map_zero, zero_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orth_carried (π : Y ⟶ B) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) r) (g' : T ⟶ Y) (g : T ⟶ B)
     (w : g' ≫ π = g) :
@@ -194,11 +192,11 @@ theorem orth_carried (π : Y ⟶ B) (fl : Vert.Flag ((Scheme.Modules.pullback π
     Functor.map_zero, zero_comp]
 
 /- English proof (translation)
-Introduce `T g m`. Take `⟨n, hn⟩` from `exists_orth (hE.pullback g) ((m ()).ofIso (thetaIso hE g))`. Use `(existsUnique_congr fun g' => exists_congr fun w => ?_).1 (H T g fun _ => n)` and prove the remaining obligations. Establish `hc` using `orth_carried hE π fl g' g w`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h _ i`. Take `⟨e, he⟩` from `(hc.congr (n' := n) (fun i => Vert.Flag.SameStep.symm (h () i)) fun i => ⟨Iso.refl _, Category.id_comp _⟩).right_unique hn i`. Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (thetaIso hE g).hom, Category.assoc]`. Conclude with `he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h _ i`. Use `(hc.congr (m' := (m ()).ofIso (thetaIso hE g)) (fun i => ⟨Iso.refl _, Category.id_comp _⟩) fun j => ?_).left_unique hn i` and prove the remaining obligations. Take `⟨e, he⟩` from `h () j`. Use `Vert.Flag.SameStep.symm ⟨e, ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ (thetaIso hE g).hom) he)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isFlagBundle_annFlag (π : Y ⟶ B) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) r)
     (H : IsFlagBundle π (fun _ : Unit => E) (fun _ => r) fun _ => fl) :
@@ -224,11 +222,11 @@ theorem isFlagBundle_annFlag (π : Y ⟶ B) (fl : Vert.Flag ((Scheme.Modules.pul
 end Universal
 
 /- English proof (translation)
-Establish `hE` using `h.isVB`. Use `hE.isQuasicoherent` as an intermediate fact. Use `VMetric.isIsometry_iff _ |>.2 (VMetric.ext (funext fun σ => Met.ext_of_exists fun z => ?_))` and prove the remaining obligations. Establish `hc` using `hE.mem_pick (Points.PtsOver.map f hf _ z)`. Use `set c := hE.pick (Points.PtsOver.map f hf _ z)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hch : (c.pull hE f).dual = (c.dual.pull hE.dual f).map (thetaIso hE f)`. Establish `H : (c.pull hE f).dual.e = ((c.dual.pull hE.dual f).map (thetaIso hE f)).e` using `funext fun i => (DualPullMet.theta_coord f c.isFrame i).symm`. Conclude with `congr(VB.Chart.mk _ $H _)`. Use `⟨(c.pull hE f).dual, hc, ?_⟩` and prove the remaining obligations. Establish `e₁ : ((h.met σ).pull f hf).dual.G (c.pull hE f).dual z = HermFrame.dualGram ((h.met σ).G c (Points.PtsOver.map f hf _ z))` using `(Met.dual_G (y := z) _ (c.pull hE f) hc).trans (congrArg _ (Met.pull_G _ f hf c hc))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₂ : (((h.met σ).dual.pull f hf).map (thetaIso hE f)).G ((c.dual.pull hE.dual f).map (thetaIso hE f)) z = HermFrame.dualGram ((h.met σ).G c (Points.PtsOver.map f hf _ z))` using `(Met.map_G (y := z) _ _ (c.dual.pull hE.dual f) hc).trans ((Met.pull_G _ f hf c.dual hc).trans (Met.dual_G _ c hc))`. Rewrite `e₂` using `[← hch]`. Conclude with `e₁.trans e₂.symm`.
+A detailed English derivation is pending.
 -/
 theorem isIsometry_thetaIso {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {E : X.Modules}
     {r : ℕ} (h : VMetric p E r) (f : Y ⟶ X) (hf : f ≫ p = q) :
@@ -254,11 +252,11 @@ theorem isIsometry_thetaIso {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X �
   exact e₁.trans e₂.symm
 
 /- English proof (translation)
-Simplify using `only [vdmPol, map_mul, map_sum, map_prod, map_pow, map_sub, aeval_X, aeval_C, Option.elim, neg_sq, algebraMap_eq]`. Use `congr 2`. Use `congr 1`. Conclude with `Fintype.sum_equiv Fin.revPerm _ _ fun i => rfl`. Rewrite using `[Finset.prod_sigma', Finset.prod_sigma']`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_nbij' (fun z => ⟨z.2.rev, z.1.rev⟩) (fun z => ⟨z.2.rev, z.1.rev⟩) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z _`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem aeval_vdmPol (r e : ℕ) :
     aeval (fun o : Option (Fin r) => (o.elim (X none) fun i => -X (some i.rev) : MvPolynomial (Option (Fin r)) ℝ))
@@ -280,7 +278,7 @@ def dualSp {X : Scheme.{0}} {E : X.Modules} {r : ℕ} (hE : IsVB E r) (F : FlagS
   ⟨F.Y, F.π, annFlag hE F.π F.fl, isFlagBundle_annFlag hE F.π F.fl F.univ⟩
 
 /- English proof (translation)
-Rewrite using `[← HermLB.icls_dual, annFlag, VMetric.grLB_ofIso (IsometryPullback.isIsometry_symm (isIsometry_thetaIso h π rfl)) (H.pull π rfl).dual]`. Conclude with `HermLB.icls_eq_iff.2 (T.dual_flag_graded_isometric k Y _ _ r _ (H.pull π rfl) fl i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem icls_grLB_annFlag {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {E : X.Modules} {r : ℕ}
     {h : VMetric p E r} (H : h.IsCInf) (π : Y ⟶ X) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) r) (i : Fin r) :
@@ -290,9 +288,9 @@ theorem icls_grLB_annFlag {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ 
   exact HermLB.icls_eq_iff.2 (T.dual_flag_graded_isometric k Y _ _ r _ (H.pull π rfl) fl i)
 
 /- English proof (translation)
-Take `⟨Φ', hΦ'⟩` from `((hC.arExists k Y _ _ hY).2 _ L').1`. Use `⟨Φ', hΦ', ?_⟩` and prove the remaining obligations. Rewrite using `[← apply_aeval hC.arIso hY hΦ hΦ' (fun o : Option (Fin r) => (o.elim (X none) fun i => -X (some i.rev) : MvPolynomial (Option (Fin r)) ℝ)) ?_, aeval_vdmPol]`. Introduce and unpack `(_ | i)`. Conclude with `⟨Pi.single none 1, by simp [lin, Pi.single_apply, apply_ite], by simp [Pi.single_apply, h₀]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨Pi.single (some i.rev) (-1), by simp [lin, Pi.single_apply, apply_ite, ite_smul], by simp [Pi.single_apply, h₁]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isArFun_vdmPol (hC : ArCalc) {k : Type} [CommRing k] {Y : Scheme.{0}} [IsIntegral Y] {q : Y ⟶ Sp k} {D : ℕ}
     (hY : IsArithVar q D) {r : ℕ} {L L' : Option (Fin r) → HermLB q} (h₀ : L none = L' none)
@@ -309,9 +307,9 @@ theorem exists_isArFun_vdmPol (hC : ArCalc) {k : Type} [CommRing k] {Y : Scheme.
       by simp [Pi.single_apply, h₁]⟩
 
 /- English proof (translation)
-Use `hX.isLocallyNoetherian` as an intermediate fact. Take `⟨y', hy', hcl, -⟩` from `((FlagTop.main k X p _ hX E r hE).2 F).2.2 (genericPoint X)`. Rewrite `hcl` using `[genericPoint_closure, Set.preimage_univ]`. Establish `e' : y' = genericPoint F.Y` using `(show IsGenericPoint y' Set.univ from hcl).eq (genericPoint_spec F.Y)`. Use `hy.2 y' hy'.1` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e']`. Conclude with `(this.antisymm (genericPoint_specializes y)).eq`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_genericPoint {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {d : ℕ}
     (hX : IsArithVar p d) {E : X.Modules} {r : ℕ} (hE : IsVB E r) (F : FlagSp E r) [IsIntegral F.Y] {y : F.Y}
@@ -332,19 +330,19 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {E : X.Module
 def famDual : Option (Fin r) → HermLB (F.π ≫ p) := (dualSp h.isVB F).fam H.dual N
 
 /- English proof (translation)
-The claim follows from `(show F.fam H N none = N.pull F.π rfl from rfl).trans (show famDual H F N none = N.pull F.π rfl from rfl).symm`.
+A detailed English derivation is pending.
 -/
 theorem famDual_none : F.fam H N none = famDual H F N none :=
   (show F.fam H N none = N.pull F.π rfl from rfl).trans (show famDual H F N none = N.pull F.π rfl from rfl).symm
 
 /- English proof (translation)
-The claim follows from `icls_grLB_annFlag H F.π F.fl i`.
+A detailed English derivation is pending.
 -/
 theorem famDual_some (i : Fin r) : -(F.fam H N (some i.rev)).icls = (famDual H F N (some i)).icls :=
   icls_grLB_annFlag H F.π F.fl i
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨y, Φ, hy, hΦ, ha⟩`.
+Supply the required witnesses or components.
 -/
 theorem isVal_dualSp {z : X} {y : F.Y} (hy : F.IsTop z y) {e : ℕ} {Φ : MvPolynomial (Option (Fin r)) ℝ →ₗ[ℝ] ℝ} {a : ℝ}
     (hΦ : IsHtFun (famDual H F N) y (e + 2 + r.choose 2) Φ) (ha : Φ (vdmPol r e) = a) :
@@ -354,11 +352,11 @@ theorem isVal_dualSp {z : X} {y : F.Y} (hy : F.IsTop z y) {e : ℕ} {Φ : MvPoly
 end Families
 
 /- English proof (translation)
-Introduce `hC k _ X _ p d hX E r h H F`. Use `⟨dualSp h.isVB F, fun N e a hd ⟨y, Φ, hy, hΦ, ha⟩ => ?_⟩` and prove the remaining obligations. Use `hX.isLocallyNoetherian` as an intermediate fact. Establish `hY` using `((FlagTop.main k X p _ hX E r h.isVB).2 F).1`. Use `hY.isIntegral` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `eq_genericPoint hX h.isVB F hy`. Establish `hD : e + 2 + r.choose 2 = d + r.choose 2 + 1` using `by omega`. Rewrite `hΦ` using `[hD, hg, isHtFun_generic_iff]`. Take `⟨Φ', hΦ', hv⟩` from `exists_isArFun_vdmPol hC hY (famDual_none H F N) (famDual_some H F N) hΦ e`. Rewrite `hΦ'` using `[← isHtFun_generic_iff, ← hg, ← hD]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isVal_dualSp H F N hy hΦ' (hv.trans ha)`.
+A detailed English derivation is pending.
 -/
 theorem exists_isVal_dual : ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (d : ℕ), IsArithVar p d → ∀ (E : X.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) (F : FlagSp E r), ∃ F' : FlagSp (VB.dual E) r, ∀ (N : HermLB p) (e : ℕ) (a : ℝ), d = e + 1 → F.IsVal H N (genericPoint X) e a → F'.IsVal H.dual N (genericPoint X) e a := by
   intro hC k _ X _ p d hX E r h H F

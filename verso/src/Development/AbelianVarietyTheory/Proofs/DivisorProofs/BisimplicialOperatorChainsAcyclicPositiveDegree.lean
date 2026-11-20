@@ -44,7 +44,7 @@ def H2 {a b p q : ℕ} : (bo a b ⟶ bo p q) →+ (bo a b ⟶ bo 0 (q + 1)) :=
   Finsupp.mapDomain.addMonoidHom (c2 (a := a) (b := b) (p := p) (q := q))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Finsupp.mapDomain c1 (Finsupp.single ((α.op, β.op) : Ix a b p q) (1 : ℤ)) = Finsupp.single (((cone α).op, β.op) : Ix a b (p + 1) q) (1 : ℤ)`. Rewrite using `[Finsupp.mapDomain_single]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bisimplicialChainConeFirstIndex_operatorOfSimplexMaps {a b p q : ℕ} (α : SimplexCategory.mk p ⟶ SimplexCategory.mk a)
     (β : SimplexCategory.mk q ⟶ SimplexCategory.mk b) : H1 (bop α β) = bop (cone α) β := by
@@ -54,7 +54,7 @@ theorem bisimplicialChainConeFirstIndex_operatorOfSimplexMaps {a b p q : ℕ} (�
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Finsupp.mapDomain c2 (Finsupp.single ((α.op, β.op) : Ix a b p q) (1 : ℤ)) = Finsupp.single (((idc a 0).op, (cone β).op) : Ix a b 0 (q + 1)) (1 : ℤ)`. Rewrite using `[Finsupp.mapDomain_single]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bisimplicialChainConeSecondIndex_operatorOfSimplexMaps {a b p q : ℕ} (α : SimplexCategory.mk p ⟶ SimplexCategory.mk a)
     (β : SimplexCategory.mk q ⟶ SimplexCategory.mk b) : H2 (bop α β) = bop (idc a 0) (cone β) := by
@@ -64,9 +64,9 @@ theorem bisimplicialChainConeSecondIndex_operatorOfSimplexMaps {a b p q : ℕ} (
   rfl
 
 /- English proof (translation)
-Proceed by induction on `f using Finsupp.induction_linear with`. Consider the case `zero => exact h0`. Consider the case `add f g hf hg => exact hadd _ _ hf hg`. Consider the case `single g r`. Establish `e : (Finsupp.single g r : bo a b ⟶ bo p q) = r • bop g.1.unop g.2.unop`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Finsupp.single g r = r • Finsupp.single (g : Ix a b p q) (1 : ℤ)`. Rewrite using `[Finsupp.smul_single_one]`. Rewrite using `[e]`. Conclude with `hsm _ _ (hb _ _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_induct {a b p q : ℕ} (P : (bo a b ⟶ bo p q) → Prop) (h0 : P 0)
     (hadd : ∀ f g, P f → P g → P (f + g)) (hsm : ∀ (r : ℤ) f, P f → P (r • f))
@@ -82,7 +82,7 @@ theorem hom_induct {a b p q : ℕ} (P : (bo a b ⟶ bo p q) → Prop) (h0 : P 0)
     exact hsm _ _ (hb _ _)
 
 /- English proof (translation)
-Apply `hom_ext'` to reduce the goal to its premises. Introduce `j`. Establish `hj` using `j.isLt`. Rewrite using `[idc_apply]`. Express the relevant statement in the definitionally equal form `min n (j : ℕ) = j`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -91,15 +91,15 @@ theorem idc_self' (n : ℕ) : idc n n = 𝟙 _ := by
   rw [idc_apply]; change min n (j : ℕ) = j; omega
 
 /- English proof (translation)
-Apply the tactic sequence `unfold faceFun; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem faceFun_succ (i j : ℕ) : faceFun (i + 1) (j + 1) = faceFun i j + 1 := by
   unfold faceFun; split_ifs <;> omega
 
 /- English proof (translation)
-Apply `hom_ext'` to reduce the goal to its premises. Introduce `j`. Rewrite using `[comp_apply']`. Establish `: (fc (p + 1) p 0).toOrderHom j = j.succ`. Apply `Fin.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[fc_apply, faceFun_ge (Nat.zero_le _)]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, cone_succ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem simplexClampedFaceHom_zero_comp_simplexConeMap {a p : ℕ} (α : SimplexCategory.mk p ⟶ SimplexCategory.mk a) :
     fc (p + 1) p 0 ≫ cone α = α := by
@@ -110,13 +110,13 @@ theorem simplexClampedFaceHom_zero_comp_simplexConeMap {a p : ℕ} (α : Simplex
   rw [this, cone_succ]
 
 /- English proof (translation)
-Apply `hom_ext'` to reduce the goal to its premises. Introduce `j`. Rewrite using `[comp_apply']`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Establish `: (fc (p + 1 + 1) (p + 1) (i + 1)).toOrderHom 0 = 0`. Apply `Fin.ext; rw [fc_apply, faceFun_lt (by simp)]; simp` to reduce the goal to its premises. Rewrite using `[this, cone_zero, cone_zero]`. Consider the case `succ j`. Establish `hj` using `j.isLt`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `: (fc (p + 1 + 1) (p + 1) (i + 1)).toOrderHom j.succ = ((fc (p + 1) p i).toOrderHom j).succ`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[Fin.val_succ, fc_apply, fc_apply, Fin.val_succ, faceFun_succ]`. Apply the tactic sequence `have : faceFun i j ≤ j + 1 := by unfold faceFun; split_ifs <;> omega`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[this, cone_succ, cone_succ, comp_apply']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem faceSucc_cone {a p : ℕ} (α : SimplexCategory.mk (p + 1) ⟶ SimplexCategory.mk a) (i : ℕ) :
     fc (p + 1 + 1) (p + 1) (i + 1) ≫ cone α = cone (fc (p + 1) p i ≫ α) := by
@@ -137,9 +137,9 @@ theorem faceSucc_cone {a p : ℕ} (α : SimplexCategory.mk (p + 1) ⟶ SimplexCa
     rw [this, cone_succ, cone_succ, comp_apply']
 
 /- English proof (translation)
-Apply `hom_ext'` to reduce the goal to its premises. Introduce `j`. Establish `hj : (j : ℕ) = 0` using `by have := j.isLt; omega`. Establish `e : j = 0` using `Fin.ext hj`. Substitute `e` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[comp_apply']`. Establish `: (fc 1 0 1).toOrderHom 0 = 0`. Apply `Fin.ext; rw [fc_apply, faceFun_lt (by simp)]; simp` to reduce the goal to its premises. Rewrite using `[this, cone_zero, idc_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem simplexClampedFaceHom_one_comp_simplexConeMap_zero {a : ℕ} (α : SimplexCategory.mk 0 ⟶ SimplexCategory.mk a) :
     fc 1 0 1 ≫ cone α = idc a 0 := by
@@ -153,23 +153,23 @@ theorem simplexClampedFaceHom_one_comp_simplexConeMap_zero {a : ℕ} (α : Simpl
   rw [this, cone_zero, idc_apply]; simp
 
 /- English proof (translation)
-The claim follows from `simplexClampedFaceHom_zero_comp_simplexConeMap (p := 0) α`.
+A detailed English derivation is pending.
 -/
 theorem face_zero_cone_identity {a : ℕ} (α : SimplexCategory.mk 0 ⟶ SimplexCategory.mk a) : fc 1 0 0 ≫ cone α = α :=
   simplexClampedFaceHom_zero_comp_simplexConeMap (p := 0) α
 
 /- English proof (translation)
-The claim follows from `dT_h 0 q`.
+A detailed English derivation is pending.
 -/
 theorem bisimplicialTotalDifferentialOperator_one_zero_eq_sum (q : ℕ) : dT 1 q 0 q = ∑ i ∈ Finset.range (0 + 1 + 1), ((-1 : ℤ) ^ i) • bop (fc 1 0 i) (idc q q) :=
   dT_h 0 q
 
 /- English proof (translation)
-Use `hom_induct (fun f => H1 f ≫ dT (p + 1 + 1) q (p + 1) q = f - H1 (f ≫ dT (p + 1) q p q)) ?_ ?_ ?_ ?_ f` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `f g hf hg`. Simplify using `only [map_add, Preadditive.add_comp, Preadditive.add_comp, hf, hg]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Introduce `r f hf`. Simplify using `only [map_zsmul, Preadditive.zsmul_comp, hf, smul_sub]`. Introduce `α β`. Rewrite using `[bisimplicialChainConeFirstIndex_operatorOfSimplexMaps, dT_h (p + 1) q, dT_h p q]`. Simplify using `only [Preadditive.comp_sum, Preadditive.comp_zsmul, bop_comp, map_sum, map_zsmul, bisimplicialChainConeFirstIndex_operatorOfSimplexMaps]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_range_succ' _ (p + 1 + 1)]`. Simplify using `only [simplexClampedFaceHom_zero_comp_simplexConeMap, faceSucc_cone, pow_succ, mul_neg_one, neg_smul, Finset.sum_neg_distrib, pow_zero, one_smul, idc_self', Category.id_comp]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem idA {a b p q : ℕ} (f : bo a b ⟶ bo (p + 1) q) :
     H1 f ≫ dT (p + 1 + 1) q (p + 1) q = f - H1 (f ≫ dT (p + 1) q p q) := by
@@ -186,9 +186,9 @@ theorem idA {a b p q : ℕ} (f : bo a b ⟶ bo (p + 1) q) :
     abel
 
 /- English proof (translation)
-Use `hom_induct (fun f => H1 f ≫ dT (p + 1) (q + 1) (p + 1) q = -H1 (f ≫ dT p (q + 1) p q)) ?_ ?_ ?_ ?_ f` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `f g hf hg`. Simplify using `only [map_add, Preadditive.add_comp, hf, hg, neg_add]`. Introduce `r f hf`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_zsmul, Preadditive.zsmul_comp, hf, smul_neg]`. Introduce `α β`. Rewrite using `[bisimplicialChainConeFirstIndex_operatorOfSimplexMaps, dT_v (p + 1) q, dT_v p q]`. Simplify using `only [Preadditive.comp_sum, Preadditive.comp_zsmul, Preadditive.comp_neg, bop_comp, map_sum, map_zsmul, bisimplicialChainConeFirstIndex_operatorOfSimplexMaps, idc_self', Category.id_comp, pow_succ, mul_neg_one, neg_smul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem idB {a b p q : ℕ} (f : bo a b ⟶ bo p (q + 1)) :
     H1 f ≫ dT (p + 1) (q + 1) (p + 1) q = -H1 (f ≫ dT p (q + 1) p q) := by
@@ -202,11 +202,11 @@ theorem idB {a b p q : ℕ} (f : bo a b ⟶ bo p (q + 1)) :
       bisimplicialChainConeFirstIndex_operatorOfSimplexMaps, idc_self', Category.id_comp, pow_succ, mul_neg_one, neg_smul]
 
 /- English proof (translation)
-Use `hom_induct (fun f => H1 f ≫ dT 1 (q + 1) 0 (q + 1) + H2 f ≫ dT 0 (q + 1 + 1) 0 (q + 1) = f - H2 (f ≫ dT 0 (q + 1) 0 q)) ?_ ?_ ?_ ?_ f` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `f g hf hg`. Simplify using `only [map_add, Preadditive.add_comp] at hf hg ⊢`. Rewrite using `[show H1 f ≫ dT 1 (q + 1) 0 (q + 1) + H1 g ≫ dT 1 (q + 1) 0 (q + 1) + (H2 f ≫ dT 0 (q + 1 + 1) 0 (q + 1) + H2 g ≫ dT 0 (q + 1 + 1) 0 (q + 1)) = (H1 f ≫ dT 1 (q + 1) 0 (q + 1) + H2 f ≫ dT 0 (q + 1 + 1) 0 (q + 1)) + (H1 g ≫ dT 1 (q + 1) 0 (q + 1) + H2 g ≫ dT 0 (q + 1 + 1) 0 (q + 1) …`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Introduce `r f hf`. Simplify using `only [map_zsmul, Preadditive.zsmul_comp, ← smul_add, hf, smul_sub]`. Introduce `α β`. Rewrite using `[bisimplicialChainConeFirstIndex_operatorOfSimplexMaps, bisimplicialChainConeSecondIndex_operatorOfSimplexMaps, bisimplicialTotalDifferentialOperator_one_zero_eq_sum, dT_v 0 (q + 1), dT_v 0 q]`.
+Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Preadditive.comp_sum, Preadditive.comp_zsmul, bop_comp, map_sum, map_zsmul, bisimplicialChainConeSecondIndex_operatorOfSimplexMaps]`. Rewrite using `[Finset.sum_range_succ' _ (q + 1 + 1)]`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add, face_zero_cone_identity, simplexClampedFaceHom_one_comp_simplexConeMap_zero, simplexClampedFaceHom_zero_comp_simplexConeMap, faceSucc_cone, pow_succ, mul_neg_one, neg_smul, Finset.sum_neg_distrib, pow_zero, one_smul, i …`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem idC {a b q : ℕ} (f : bo a b ⟶ bo 0 (q + 1)) :
     H1 f ≫ dT 1 (q + 1) 0 (q + 1) + H2 f ≫ dT 0 (q + 1 + 1) 0 (q + 1) = f - H2 (f ≫ dT 0 (q + 1) 0 q) := by
@@ -232,9 +232,9 @@ theorem idC {a b q : ℕ} (f : bo a b ⟶ bo 0 (q + 1)) :
     abel
 
 /- English proof (translation)
-Use `hom_induct (fun f => H2 (f ≫ dT 1 q 0 q) = 0) ?_ ?_ ?_ ?_ f` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `f g hf hg`. Simplify using `only [map_add, Preadditive.add_comp, hf, hg, add_zero]`. Introduce `r f hf`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_zsmul, Preadditive.zsmul_comp, hf, smul_zero]`. Introduce `α β`. Rewrite using `[bisimplicialTotalDifferentialOperator_one_zero_eq_sum]`. Simplify using `[Preadditive.comp_sum, Preadditive.comp_zsmul, bop_comp, map_sum, map_zsmul, bisimplicialChainConeSecondIndex_operatorOfSimplexMaps, Finset.sum_range_succ]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem idD {a b q : ℕ} (f : bo a b ⟶ bo 1 q) : H2 (f ≫ dT 1 q 0 q) = 0 := by
   refine hom_induct (fun f => H2 (f ≫ dT 1 q 0 q) = 0) ?_ ?_ ?_ ?_ f
@@ -247,9 +247,9 @@ theorem idD {a b q : ℕ} (f : bo a b ⟶ bo 1 q) : H2 (f ≫ dT 1 q 0 q) = 0 :=
       Finset.sum_range_succ]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_add (c + 1, d) (c, d + 1) (by simp)]`. Introduce and unpack `x hx ⟨h1, h2⟩`. Rewrite using `[dT_zero, Limits.comp_zero]`. Introduce and unpack `⟨e1, e2⟩`. Conclude with `h1 (Prod.ext e1 e2)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨e1, e2⟩`. Conclude with `h2 (Prod.ext e1 e2)`. Introduce `h; exact absurd (by rw [Finset.HasAntidiagonal.mem_antidiagonal]; omega) h`. Introduce `h; exact absurd (by rw [Finset.HasAntidiagonal.mem_antidiagonal]; omega) h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_dT {a b : ℕ} (u : ∀ a' b' : ℕ, bo a b ⟶ bo a' b') (c d : ℕ) :
     ∑ x ∈ Finset.HasAntidiagonal.antidiagonal (c + d + 1), u x.1 x.2 ≫ dT x.1 x.2 c d =
@@ -273,15 +273,15 @@ namespace GlobalTheory.EZ
 open GlobalTheory.EZ.Acyc
 
 /- English proof (translation)
-Introduce `a b k hk z hz`. Use `⟨wfill z, fun c d hcd => ?_⟩` and prove the remaining obligations. Substitute `hcd` using the available equality. Rewrite using `[sum_dT]`. Establish `cyc : ∀ c' d', c' + d' + 1 = c + d → z (c' + 1) d' ≫ dT (c' + 1) d' c' d' + z c' (d' + 1) ≫ dT c' (d' + 1) c' d' = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c' d' h`. Use `hz c' d' h` as an intermediate fact. Rewrite `this` using `[← h, sum_dT]`. Conclude with `this`. Consider the cases of `c with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ p => show H1 (z (p + 1) d) ≫ dT (p + 1 + 1) d (p + 1) d + H1 (z p (d + 1)) ≫ dT (p + 1) (d + 1) (p + 1) d = _`. Establish `h2 : H1 (z (p + 1) d ≫ dT (p + 1) d p d) + H1 (z p (d + 1) ≫ dT p (d + 1) p d) = 0`. Rewrite using `[← map_add, cyc p d (by omega), map_zero]`. Rewrite using `[idA, idB, ← sub_eq_add_neg, sub_sub, h2, sub_zero]`. Consider the case `zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨q, rfl⟩ : ∃ q, d = q + 1` from `⟨d - 1, by omega⟩`. Use `show H1 (z 0 (q + 1)) ≫ dT 1 (q + 1) 0 (q + 1) + H2 (z 0 (q + 1)) ≫ dT 0 (q + 1 + 1) 0 (q + 1) = _`. Rewrite using `[idC]`. Establish `h3 : z 0 (q + 1) ≫ dT 0 (q + 1) 0 q = -(z 1 q ≫ dT 1 q 0 q)`. Use `cyc 0 q (by omega)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`. Conclude with `this`. Rewrite using `[h3, map_neg, idD, neg_zero, sub_zero]`.
+A detailed English derivation is pending.
 -/
 theorem totChains_acyclic : ∀ a b k : ℕ, 1 ≤ k → ∀ z : ∀ a' b' : ℕ, bo a b ⟶ bo a' b',
     (∀ c d : ℕ, c + d + 1 = k → ∑ x ∈ Finset.HasAntidiagonal.antidiagonal k, z x.1 x.2 ≫ dT x.1 x.2 c d = 0) →

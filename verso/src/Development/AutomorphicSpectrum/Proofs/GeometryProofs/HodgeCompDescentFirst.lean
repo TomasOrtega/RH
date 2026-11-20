@@ -22,11 +22,11 @@ namespace GlobalTheory.CompanionTheory.Ar.ChgLie
 section Modules
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `(Submodule.mem_iSup_iff_exists_finsupp N e).1 he`. Establish `hsum : (f.sum fun _ x => x) - f s₀ = ∑ i ∈ f.support.erase s₀, f i`. Distinguish the cases in `h0 : s₀ ∈ f.support`. Rewrite using `[Finsupp.sum, ← Finset.add_sum_erase _ _ h0]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[Finsupp.sum, Finset.erase_eq_of_notMem h0, Finsupp.notMem_support_iff.1 h0, sub_zero]`. Establish `h1 : (f.sum fun _ x => x) - f s₀ ∈ W s₀` using `sub_mem hs (hN _ _ (hf s₀))`. Establish `h2 : (f.sum fun _ x => x) - f s₀ ∈ ⨆ (k) (_ : k ≠ s₀), W k`. Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun k hk => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.mem_iSup_of_mem k (Submodule.mem_iSup_of_mem (Finset.ne_of_mem_erase hk) (hN _ _ (hf k)))`. Establish `h3` using `(Submodule.disjoint_def.1 (hW s₀)) _ h1 h2`. Rewrite using `[sub_eq_zero.1 h3]`. Conclude with `hf s₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_iSup {Ω E I : Type} [Field Ω] [AddCommGroup E] [Module Ω E] (A : Subring Ω)
     (W : I → Submodule Ω E) (hW : iSupIndep W) (N : I → Submodule A E) (hN : ∀ s, ∀ x ∈ N s, x ∈ W s)
@@ -48,7 +48,7 @@ theorem mem_of_mem_iSup {Ω E I : Type} [Field Ω] [AddCommGroup E] [Module Ω E
   exact hf s₀
 
 /- English proof (translation)
-Simplify using `[eigSp, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eigSp_iff {R E O : Type} [CommRing R] [AddCommGroup E] [Module R E] [CommRing O]
     (ρ : O →+* Module.End R E) (σ : O →+* R) (e : E) : e ∈ eigSp ρ σ ↔ ∀ a, ρ a e = σ a • e := by
@@ -61,11 +61,11 @@ section Points
 variable {X X₀ : Scheme.{0}} {Ω Ω₀ : Type} [Field Ω] [Field Ω₀]
 
 /- English proof (translation)
-Introduce `hf`. Apply `hf` to reduce the goal to its premises. Take `⟨h0, -, s, hs⟩ : unitAt ξ q (r : Ω)` from `not_not.1 hq`. Establish `hmul : (r : X.presheaf.stalk q.1) * s = 1` using `hξ.inj q (by`. Rewrite using `[map_mul, map_one, map_natCast, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_inv_cancel₀ h0)`. Establish `hu : IsUnit (r : X.presheaf.stalk q.1)` using `IsUnit.of_mul_eq_one _ hmul`. Establish `hu₀ : IsUnit (r : X₀.presheaf.stalk (h q.1))` using `isUnit_of_map_unit (h.stalkMap q.1).hom _ (by rwa [map_natCast])`. Establish `h0' : (r : Ω₀) ≠ 0` using `fun e => h0 (by rw [← map_natCast i, e, map_zero])`. Use `⟨h0', ⟨_, map_natCast (genMap ξ₀ (pushCpt hd q)) r⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu'⟩` from `hu₀`. Use `⟨(u⁻¹ : (X₀.presheaf.stalk (h q.1))ˣ).val, ?_⟩` and prove the remaining obligations. Establish `e1 : genMap ξ₀ (pushCpt hd q) u.val = (r : Ω₀)` using `(congrArg _ hu').trans (map_natCast _ r)`. Conclude with `(map_units_inv (genMap ξ₀ (pushCpt hd q)) u).trans (congrArg Inv.inv e1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_inFibre_push {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ₀ : Spec (CommRingCat.of Ω₀) ⟶ X₀} {h : X ⟶ X₀}
     {i : Ω₀ →+* Ω} (hξ : IsCptGen ξ) (hd : GlobalTheory.CompanionTheory.Ar.Dominates ξ ξ₀ h i) (q : Cpt ξ) {r : ℕ}
@@ -89,7 +89,7 @@ theorem not_inFibre_push {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ₀ : Spec (Co
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-The claim follows from `M.inj (Over.OverMorphism.ext (hG.1.hom_ext h ((Over.w _).trans (Over.w _).symm)))`.
+A detailed English derivation is pending.
 -/
 theorem pt_inj_of_pull {S' S : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [GrpObj G] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (hG : IsGrpPullback G' G f φ) {ξ : Spec (CommRingCat.of Ω) ⟶ S'} {V : Type}
@@ -98,13 +98,13 @@ theorem pt_inj_of_pull {S' S : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G
   M.inj (Over.OverMorphism.ext (hG.1.hom_ext h ((Over.w _).trans (Over.w _).symm)))
 
 /- English proof (translation)
-Take `⟨h₀, w, hw, hwz⟩` from `hv`. Establish `hp : genPt ξ₀ ⤳ f (centre z)` using `h₀`. Establish `hρ : Spec.map (CommRingCat.ofHom (f.stalkMap (centre z)).hom) ≫ X₀.fromSpecStalk (f (centre z)) = X.fromSpecStalk (centre z) ≫ f` using `Scheme.SpecMap_stalkMap_fromSpecStalk f`. Establish `hρ' : (genMap ξ ⟨centre z, hall _⟩).comp (f.stalkMap (centre z)).hom = i.comp (genMap ξ₀ ⟨f (centre z), hp⟩)` using `RingHom.ext (RegAtDom.genMap_stalkMap hd _ (hall _) hp)`. Establish `hx'` using `LieCarrier.genMap_fromSpecStalk (ξ := ξ) ⟨centre z, hall _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, hu, huφ⟩` from `LiePull.ext_up (A := X₀.presheaf.stalk (f (centre z))) (A' := X.presheaf.stalk (centre z)) (g := genMap ξ₀ ⟨f (centre z), hp⟩) (g' := genMap ξ ⟨centre z, hall _⟩) (ρ := (f.stalkMap (centre z)).hom) (x := X₀.fromSpecStalk (f (centre z))) (x' := X.fromSpecStalk (centre z)) (M := M) …`. Establish `hc : Spec.map (CommRingCat.ofHom (Scheme.stalkClosedPointTo z).hom) ≫ X.fromSpecStalk (centre z) = z` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk z`. Use `⟨LieCarrier.epsHom _ _ z hc ≫ u, ⟨hall _, u, hu, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : (LieCarrier.epsHom _ _ z hc ≫ u).left = Spec.map (CommRingCat.ofHom (dualMap (Scheme.stalkClosedPointTo z).hom)) ≫ u.left` using `rfl`. Establish `e2 : (Scheme.stalkClosedPointTo (z ≫ f)).hom = (Scheme.stalkClosedPointTo z).hom.comp (f.stalkMap (centre z)).hom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Both sides reduce to the same expression. Establish `e4 : spMap (dualMap (Scheme.stalkClosedPointTo (z ≫ f)).hom) = spMap (dualMap (Scheme.stalkClosedPointTo z).hom) ≫ spMap (dualMap (f.stalkMap (centre z)).hom)`. Rewrite using `[e2]`. Conclude with `(congrArg spMap (LiePull.dualMap_comp (f.stalkMap (centre z)).hom (Scheme.stalkClosedPointTo z).hom).symm).trans (spMap_comp' _ _)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : (LieCarrier.epsHom _ _ z hc ≫ u).left ≫ m.φ = spMap (dualMap (Scheme.stalkClosedPointTo z).hom) ≫ spMap (dualMap (f.stalkMap (centre z)).hom) ≫ w.left` using `(congrArg (· ≫ m.φ) e1).trans ((Category.assoc _ _ _).trans (congrArg (spMap (dualMap (Scheme.stalkClosedPointTo z).hom) ≫ ·) huφ))`. Conclude with `hwz.trans (((congrArg (· ≫ w.left) e4).trans (Category.assoc _ _ _)).trans e3.symm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_value_up {t : SAB H X₀} {t' : SAB H X} {f : X ⟶ X₀} (m : SABMap t' t f)
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ₀ : Spec (CommRingCat.of Ω₀) ⟶ X₀} {i : Ω₀ →+* Ω}
@@ -149,27 +149,25 @@ end Points
 section Main
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y S₀ S Ω₀ Ω _ _ K₀ K _ _ J₀ J _ _ y₀ y 𝔐₀ 𝔐 i h hd Fl₀ Fl hβ hcov hfl`. Take `⟨-, hf, hcst⟩` from `hcov`. Take `⟨m₀, hφ⟩` from `exists_sabMap 𝔐₀ 𝔐 h hf`. Take `⟨j, hpt, hsemi, hind, -, hpull⟩` from `GlobalTheory.T.lie_model_dominant_hodge E H 𝔐₀.X 𝔐₀.t 𝔐.X 𝔐.t h m₀ Ω₀ Ω 𝔐₀.ξ 𝔐.ξ i 𝔐₀.Li 𝔐.Li 𝔐₀.M 𝔐.M 𝔐₀.tie.gen 𝔐.tie.gen hd`. Establish `hact : ∀ a e, 𝔐.ρ a (j e) = j (𝔐₀.ρ a e)` using `fun a e => pt_inj_of_pull m₀.cart 𝔐.M (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1` using `congrArg CommaMorphism.left (𝔐.act a (j e))`. Establish `e2` using `congrArg CommaMorphism.left (𝔐₀.act a e)`. Establish `e3` using `m₀.act a`. Rewrite using `[hpt]`. Use `(congrArg (· ≫ m₀.φ) e1).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans (Category.assoc _ _ _) ?_` and prove the remaining obligations. Use `(congrArg (_ ≫ ·) e3).trans ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (· ≫ (𝔐₀.t.act.act a).left) (hpt e)).trans ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (spMap (dualMap i) ≫ ·) e2.symm)`. Establish `hemb : ∀ s, 𝔐.emb s = i.comp (𝔐₀.emb s)` using `fun s => by`. Simplify using `only [HodgeCpt.emb, hcst, RingHom.comp_assoc]`. Establish `heig : ∀ s e, e ∈ 𝔐₀.Vgen s → j e ∈ 𝔐.Vgen s` using `fun s e he => by`. Use `(mem_eigSp_iff _ _ _).2 fun a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hact, (mem_eigSp_iff _ _ _).1 he a, hsemi, hemb]`. Both sides reduce to the same expression. Use `⟨j, hsemi, hind, fun s a => ?_, fun q hq s => ?_, fun z r b Γ hΓ => ?_⟩` and prove the remaining obligations. Use `pt_inj_of_pull 𝔐.m.cart 𝔐.M ?_` and prove the remaining obligations. Establish `e1 : (𝔐.M.pt (j (Fl₀.b s a))).left ≫ 𝔐.m.φ = spMap (dualMap i) ≫ (𝔐₀.M.pt (Fl₀.b s a)).left ≫ 𝔐₀.m.φ`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, ← Category.assoc, hpt, Category.assoc]`. Conclude with `e1.trans (hfl s a).symm`. Establish `hq₀ : ∀ r : ℕ, r.Prime → ¬ InFibre 𝔐₀.ξ r (pushCpt hd q)` using `fun r hr => not_inFibre_push 𝔐.tie.gen hd q (hq r hr)`. Take `⟨hV, -, -⟩` from `GlobalTheory.T.hodge_cpt_away_from_primes E H D l Xo c O β Y S Ω K J y 𝔐 hβ q hq`. Take `⟨hV₀, -, hlat₀⟩` from `GlobalTheory.T.hodge_cpt_away_from_primes E H D l Xo c O β Y S₀ Ω₀ K₀ J₀ y₀ 𝔐₀ hβ (pushCpt hd q) hq₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, -, -, -, -, -, hindep, -⟩` from `GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c O β Y S Ω K J y 𝔐 hβ`. Rewrite using `[hV s, hV₀ s]`. Set `N : (CMType H ⊕ CMType H) → Submodule (regAt 𝔐.ξ q) 𝔐.Li` to `fun s' => Submodule.span (regAt 𝔐.ξ q) (j '' (𝔐₀.dR s' (pushCpt hd q) : Set 𝔐₀.Li))`. Establish `hle : ∀ s', N s' ≤ 𝔐.dR s' q` using `fun s' => by`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨e, he, rfl⟩`. Use `⟨?_, heig s' e he.2⟩` and prove the remaining obligations. Rewrite using `[hpull]`. Conclude with `Submodule.subset_span ⟨hd.specializes q, e, he.1, rfl⟩`. Establish `htop : 𝔐.M.lat q ≤ ⨆ s', N s'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hpull]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h', e, he, rfl⟩`. Establish `he' : e ∈ ⨆ s', 𝔐₀.dR s' (pushCpt hd q)` using `hlat₀ ▸ he`. Use `Submodule.iSup_induction _ (motive := fun x => j x ∈ ⨆ s', N s') he' (fun s' x hx => ?_) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_iSup_of_mem s' (Submodule.subset_span ⟨x, hx, rfl⟩)`. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `x x' hx hx'`. Rewrite using `[map_add]`.
-
-Conclude with `Submodule.add_mem _ hx hx'`. Use `le_antisymm (fun e he => ?_) (hle s)` and prove the remaining obligations. Conclude with `mem_of_mem_iSup _ 𝔐.Vgen hindep N (fun s' x hx => (hle s' hx).2) s (htop he.1) he.2`. Take `⟨v₀, hv₀, hIP⟩` from `hΓ choose v hv hvφ using fun k => exists_value_up m₀ 𝔐.all hd hpt z (hv₀ k)`. Conclude with `⟨v, hv, fun p q => (GlobalTheory.T.hodge_inner_product_map_iff E H 𝔐₀.X 𝔐₀.t 𝔐.X 𝔐.t h m₀ z (v p) (v q) (v₀ p) (v₀ q) (Γ p q) (hvφ p) (hvφ q)).2 (hIP p q)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lie_of_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S₀ S : Finset ℕ) (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] (K₀ K : Type) [Fintype K₀] [Fintype K] (J₀ : K₀ → Type) (J : K → Type) [∀ k, Fintype (J₀ k)] [∀ k, Fintype (J k)] (y₀ : (Σ k, J₀ k) → Ω₀) (y : (Σ k, J k) → Ω) (𝔐₀ : HodgeCpt Y S₀ y₀) (𝔐 : HodgeCpt Y S y) (i : Ω₀ →+* Ω) (h : 𝔐.X ⟶ 𝔐₀.X) (hd : GlobalTheory.CompanionTheory.Ar.Dominates 𝔐.ξ 𝔐₀.ξ h i) (Fl₀ : 𝔐₀.Flag) (Fl : 𝔐.Flag), Function.Injective β → IsCovOf 𝔐₀ 𝔐 i h → FlagsOver Fl₀ Fl i → ∃ j : 𝔐₀.Li →+ 𝔐.Li, (∀ (a : Ω₀) e, j (a • e) = i a • j e) ∧ (∀ (n : ℕ) (b : Fin n → 𝔐₀.Li), LinearIndependent Ω₀ b → LinearIndependent Ω fun k => j (b k)) ∧ (∀ s a, j (Fl₀.b s a) = Fl.b s a) ∧ (∀ q : Cpt 𝔐.ξ, (∀ r : ℕ, r.Prime → ¬ InFibre 𝔐.ξ r q) → ∀ s, 𝔐.V s q = Submodule.span (regAt 𝔐.ξ q) (j '' (𝔐₀.V s (pushCpt hd q) : Set 𝔐₀.Li))) ∧ ∀ (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) (r : ℕ) (b : Fin r → 𝔐₀.Li) (Γ : Matrix (Fin r) (Fin r) ℂ), 𝔐₀.M.GramAt 𝔐₀.t.PP.L (z ≫ h) b Γ → 𝔐.M.GramAt 𝔐.t.PP.L z (fun k => j (b k)) Γ := by
   intro E _ _ _ H D l Xo c O _ β Y S₀ S Ω₀ Ω _ _ K₀ K _ _ J₀ J _ _ y₀ y 𝔐₀ 𝔐 i h hd Fl₀ Fl hβ hcov hfl

@@ -7,9 +7,9 @@ namespace PositivityTheory.KB.SplitAffineSpectral.NormTraceLemmas
 variable {P Q : Type} [Group P] [Group Q]
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrFun h x) ![1, z 0]`. Simplify using `[dv, dc, Fin.sum_univ_two] at h1`. Establish `e1 : (fun _ : Fin 1 => z 0) = z`. Use function extensionality and compare the values at `j`. Rewrite using `[Subsingleton.elim j 0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (fun j : Fin 1 => (![1, z 0] : Fin 2 → P) (Fin.succAbove 1 j)) = fun _ => 1`. Use function extensionality and compare the values at `j`. Rewrite using `[Subsingleton.elim j 0]`. Both sides reduce to the same expression. Rewrite `h1` using `[e1, e2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -28,13 +28,11 @@ private theorem bi_apply_eq_apply_const_one_of_dv_eq_zero {a : ℕ} (F : Bi P Q 
   linarith
 
 /- English proof (translation)
-Establish `hc` using `bi_apply_eq_apply_const_one_of_dv_eq_zero F hv`. Unfold `PInv at hF`. Establish `hdc : dc (fun x => F x (fun _ => 1)) = 0`. Use function extensionality and compare the values at `x`. Conclude with `congrFun (congrFun hh x) (fun _ => 1)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x => F x (fun _ => 1), ?_, ?_⟩` and prove the remaining obligations. Unfold `QC`. Use `⟨?_, hdc⟩` and prove the remaining obligations. Introduce `g x`. Use `show F (fun i => g * x i) (fun _ => 1) = F x (fun _ => 1)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hF (s g) x (fun _ => 1)`. Simplify using `only [hs, mul_one] at h1`. Rewrite using `[← h1]`. Conclude with `(hc _ _).symm`. Rewrite using `[hB P Q pr N _ hdc, smul_smul, ← mul_pow]`.
-
-Simplify using `only [neg_one_mul, neg_neg, one_pow, one_smul]`. Use function extensionality and compare the values at `x z`. Conclude with `hc x z`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem exists_quasiCocycle_eq_dh_zz_of_pInv_dv_dh_zero (hB : SplitB) (pr : P →* Q) (s : Q →* P) (hs : ∀ g, pr (s g) = g) {N : ℕ}
     (F : Bi P Q (N + 2) 1) (hF : PInv pr F) (hv : dv F = 0) (hh : dh F = 0) :
@@ -59,23 +57,23 @@ private theorem exists_quasiCocycle_eq_dh_zz_of_pInv_dv_dh_zero (hB : SplitB) (p
     exact hc x z
 
 /- English proof (translation)
-Introduce `q`. Proceed by induction on `q with`. Consider the case `zero`. Introduce `hq p x hx hv hh`. Take `⟨w, e, hw, hwv, he, rfl⟩` from `hE P Q pr s hs u hu m hm p 0 hq x hx hv hh`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hyv : dv (dh e) = 0`. Rewrite using `[← dh_dv]`. Rewrite `hh` using `[dh_add, dh_dh]`. Simplify using `using hh`. Take `⟨b, hb, hyb⟩` from `exists_quasiCocycle_eq_dh_zz_of_pInv_dv_dh_zero hB pr s hs (dh e) (PInv.dh pr he) hyv (dh_dh e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hb' : QC b` using `hb`. Unfold `QC at hb`. Establish `h2 : dh (zz pr b (p + 1) (0 + 2)) = (-1 : ℝ) ^ (p + 1) • dv (zz pr b (p + 1 + 1) 1)` using `hS P Q pr p 0 b hb.2`. Establish `hr : (-1 : ℝ) * (-1) ^ (p + 1) = (-1) ^ (p + 1 + 1)` using `by ring`. Unfold `GoodS`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨p + 0 + 2, rfl, (-1 : ℝ) • b, hb'.smul _, w, e - (-1 : ℝ) ^ (p + 1 + 1) • zz pr b (p + 1 + 1) 1, hw, hwv, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `PInv.sub pr he (PInv.smul pr _ (hZ P Q pr _ _ _ b (by omega) hb.1))`. Rewrite using `[dh_sub, dh_smul, ← hyb, sub_self]`. Rewrite using `[zz_smul, dh_smul, h2, smul_smul, hr, dv_sub, dv_smul]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Consider the case `succ q ih`. Introduce `hq p x hx hv hh`. Take `⟨w, e, hw, hwv, he, rfl⟩` from `hE P Q pr s hs u hu m hm p (q + 1) hq x hx hv hh`. Establish `hyv : dv (dh e) = 0`. Rewrite using `[← dh_dv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hh` using `[dh_add, dh_dh]`. Simplify using `using hh`. Establish `hg` using `ih (by omega) (p + 1) (dh e) (PInv.dh pr he) hyv (dh_dh e)`. Unfold `GoodS at hg`. Take `⟨n, hn, b, hb, w', e', hw', hwv', he', hhe', hy⟩` from `hg`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : n = p + (q + 1) + 2` from `by omega`. Take `⟨f, hf, hef⟩` from `row_exact pr e' he' hhe'`. Establish `hb' : QC b` using `hb`. Unfold `QC at hb`. Establish `h2 : dh (zz pr b (p + 1) (q + 1 + 2)) = (-1 : ℝ) ^ (p + 1) • dv (zz pr b (p + 1 + 1) (q + 2))` using `hS P Q pr p (q + 1) b hb.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `GoodS`. Use `⟨p + (q + 1) + 2, rfl, (-1 : ℝ) ^ (p + 1) • b, hb'.smul _, w, e - zz pr b (p + 1 + 1) (q + 2) - w' - dv f, hw, hwv, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `PInv.sub pr (PInv.sub pr (PInv.sub pr he (hZ P Q pr _ _ _ b (by omega) hb.1)) hw') (PInv.dv pr hf)`. Rewrite using `[dh_sub, dh_sub, dh_sub, hy, dh_dv f, ← hef]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[zz_smul, dh_smul, h2, smul_smul, ← mul_pow, dv_sub, dv_sub, dv_sub, hwv', dv_dv]`. Simplify using `only [neg_one_mul, neg_neg, one_pow, one_smul]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem claimS (hB : SplitB) (hS : SplitS) (hZ : ZInv) (hE : E2VanishingOtherColumns) (pr : P →* Q) (s : Q →* P)
     (hs : ∀ g, pr (s g) = g) (u : Q) (hu : ∀ g, g * u = u * g) (m : ℕ) (hm : ColPoly pr s u m) :
@@ -131,19 +129,17 @@ theorem claimS (hB : SplitB) (hS : SplitS) (hZ : ZInv) (hE : E2VanishingOtherCol
       abel
 
 /- English proof (translation)
-Take `⟨e, he, rfl⟩` from `hEz P Q pr s hs u hu m hm q hq x hx hv hh`. Establish `hyv : dv (dh e) = 0`. Rewrite using `[← dh_dv]`. Conclude with `hh`. Unfold `GoodT`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `q with`. Consider the case `zero`. Take `⟨b, hb, hyb⟩` from `exists_quasiCocycle_eq_dh_zz_of_pInv_dv_dh_zero hB pr s hs (dh e) (PInv.dh pr he) hyv (dh_dh e)`. Establish `hb' : QC b` using `hb`. Unfold `QC at hb`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h2 : Wtop pr b = dv (zz pr b (0 + 1) 1)` using `hA P Q pr 0 b hb.2`. Use `⟨(-1 : ℝ) ^ (0 + 1) • b, hb'.smul _, e - (-1 : ℝ) ^ (0 + 1) • zz pr b (0 + 1) 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `PInv.sub pr he (PInv.smul pr _ (hZ P Q pr _ _ _ b (by omega) hb.1))`. Rewrite using `[dh_sub, dh_smul, ← hyb, sub_self]`. Rewrite using `[Wtop_smul, h2, dv_sub, dv_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Normalize the expressions using the abelian group laws. Consider the case `succ q`. Establish `hg` using `claimS hB hS hZ hEs pr s hs u hu m hm q (by omega) 0 (dh e) (PInv.dh pr he) hyv (dh_dh e)`. Unfold `GoodS at hg`. Take `⟨n, hn, b, hb, w', e', hw', hwv', he', hhe', hy⟩` from `hg`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : n = q + 1 + 1` from `by omega`. Take `⟨f, hf, hef⟩` from `row_exact pr e' he' hhe'`. Establish `hb' : QC b` using `hb`. Unfold `QC at hb`. Establish `h2 : Wtop pr b = dv (zz pr b (0 + 1) (q + 2))` using `hA P Q pr (q + 1) b hb.2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨b, hb', e - zz pr b (0 + 1) (q + 2) - w' - dv f, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `PInv.sub pr (PInv.sub pr (PInv.sub pr he (hZ P Q pr _ _ _ b (by omega) hb.1)) hw') (PInv.dv pr hf)`. Rewrite using `[dh_sub, dh_sub, dh_sub, hy, dh_dv f, ← hef]`. Normalize the expressions using the abelian group laws. Rewrite using `[h2, dv_sub, dv_sub, dv_sub, hwv', dv_dv]`.
-
-Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem claimT (hB : SplitB) (hA : SplitA) (hS : SplitS) (hZ : ZInv) (hEz : E2VanishingFirstColumn) (hEs : E2VanishingOtherColumns)
     (pr : P →* Q) (s : Q →* P) (hs : ∀ g, pr (s g) = g) (u : Q) (hu : ∀ g, g * u = u * g) (m : ℕ)
@@ -183,9 +179,9 @@ theorem claimT (hB : SplitB) (hA : SplitA) (hS : SplitS) (hZ : ZInv) (hEz : E2Va
       abel
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrFun h ![1, x 0]) y`. Simplify using `[dh, dc, Fin.sum_univ_two] at h1`. Establish `e1 : (fun _ : Fin 1 => x 0) = x`. Use function extensionality and compare the values at `j`. Rewrite using `[Subsingleton.elim j 0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (fun j : Fin 1 => (![1, x 0] : Fin 2 → Q) (Fin.succAbove 1 j)) = fun _ => 1`. Use function extensionality and compare the values at `j`. Rewrite using `[Subsingleton.elim j 0]`. Both sides reduce to the same expression. Rewrite `h1` using `[e1, e2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -204,21 +200,21 @@ private theorem bi_fin_one_apply_eq_apply_one_of_dh_eq_zero {k : ℕ} (F : Bi P 
   linarith
 
 /- English proof (translation)
-Unfold `Core`. Introduce `P Q _ _ pr s hs u hu m hm j hj c hc hdc hvan`. Unfold `InvS at hc`. Establish `hP : PInv pr (fun (_ : Fin 1 → Q) (y : Fin (j + 2) → P) => c y : Bi P Q 1 (j + 2))`. Unfold `PInv`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `g a y`. Conclude with `hc g (Set.mem_univ g) y`. Establish `hV : dv (fun (_ : Fin 1 → Q) (y : Fin (j + 2) → P) => c y : Bi P Q 1 (j + 2)) = 0`. Use function extensionality and compare the values at `a y`. Conclude with `congrFun hdc y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hH : dh (fun (_ : Fin 1 → Q) (y : Fin (j + 2) → P) => c y : Bi P Q 1 (j + 2)) = 0`. Use function extensionality and compare the values at `a y`. Simplify using `[dh, dc, Fin.sum_univ_two]`. Establish `hT` using `claimT hB hA hS hZ hEz hEs pr s hs u hu m hm j hj _ hP hV hH`. Unfold `GoodT at hT`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Take `⟨b, hb, e, he, hhe, hxe⟩` from `hT`. Unfold `PInv at he`. Use `set e' : (Fin (j + 1) → P) → ℝ := fun z => e (fun _ => 1) z with he'`. Establish `hinv : ∀ (g : P) (y : Fin (j + 1) → P), e' (fun i => g * y i) = e' y`. Introduce `g y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(bi_fin_one_apply_eq_apply_one_of_dh_eq_zero e hhe _ _).symm.trans (he g (fun _ => 1) y)`. Establish `hpt : ∀ y, c y = b (fun i => pr (y i)) + dc e' y` using `fun y => congrFun (congrFun hxe (fun _ => 1)) y`. Establish `hbv : ∀ y : Fin (j + 2) → Q, b y = - dc (fun z => e' (fun i => s (z i))) y`. Introduce `y`. Establish `h` using `hpt (fun i => s (y i))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h` using `[hvan y]`. Simplify using `only [hs] at h`. Establish `h3 : dc (fun z => e' (fun i => s (z i))) y = dc e' (fun i => s (y i))` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨e' - fun z => e' (fun i => s (pr (z i))), ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `InvS`. Introduce `g _ y`. Simplify using `only [Pi.sub_apply, map_mul]`. Rewrite using `[hinv g y]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `hinv (s (pr g)) (fun i => s (pr (y i)))`. Use function extensionality and compare the values at `y`. Rewrite using `[dc_sub, Pi.sub_apply, hpt y, hbv (fun i => pr (y i))]`. Establish `h3 : dc (fun z => e' (fun i => s (z i))) (fun i => pr (y i)) = dc (fun z => e' (fun i => s (pr (z i)))) y` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem core_of (hA : SplitA) (hS : SplitS) (hB : SplitB) (hZ : ZInv) (hEz : E2VanishingFirstColumn) (hEs : E2VanishingOtherColumns) : Core := by
   unfold Core

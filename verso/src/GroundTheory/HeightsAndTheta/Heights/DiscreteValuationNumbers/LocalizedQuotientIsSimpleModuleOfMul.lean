@@ -65,7 +65,7 @@ variable {A : Type*} [CommRing A]
 end Simple
 
 /- English proof (translation)
-Unfold `divCycle at h`. Use `split_ifs at h with hW`. Conclude with `hW.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self x))`. Conclude with `absurd rfl h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem form_mem_of_divCycle_ne_zero {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R]
     {P : Ideal (MRing ι R)} {x : MRing ι R} {W : Ideal (MRing ι R)} (h : divCycle P x W ≠ 0) : x ∈ W := by
@@ -81,7 +81,7 @@ set_option linter.unusedSectionVars false
 variable {K : Type} {ι : K → Type} {J : Type} {O : Type*} [CommRing O] [IsDomain O]
 
 /- English proof (translation)
-The claim follows from `(liftForm (J := J) (ι := ι) (R := O)).commutes a`.
+A detailed English derivation is pending.
 -/
 theorem liftForm_const (a : O) : liftForm (J := J) (C a : MRing ι O) = C a :=
   (liftForm (J := J) (ι := ι) (R := O)).commutes a

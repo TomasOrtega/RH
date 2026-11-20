@@ -9,7 +9,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.SmGL
 
 /- English proof (translation)
-Introduce `U hU`. Take `⟨J, hJo, hJU, hJK, -⟩` from `exists_open_normalised_subgroup_subset k (Fin n) U hU`. Conclude with `⟨J, hJo, (GlobalTheory.SplitFlip.isCompact_KO (k := k) (n := Fin n)).of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hJo) hJK, hJU⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_compact_open_subgroup_subset (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) :

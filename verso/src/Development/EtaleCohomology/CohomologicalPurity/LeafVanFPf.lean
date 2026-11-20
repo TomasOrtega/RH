@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite
 namespace LateralTheory.CohomologicalPurity.Cl
 
 /- English proof (translation)
-Establish `h` using `range_comap_of_surjective (f := Ideal.Quotient.mk F.I) (hf := Ideal.Quotient.mk_surjective)`. Rewrite `h` using `[Ideal.mk_ker]`. Express the relevant statement in the definitionally equal form `(PrimeSpectrum.zeroLocus (F.I : Set F.B))ᶜ = _`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem range_frame_ι {d : ℕ} {P : SP d} (F : Frame P) :
     ((off F.B F.I : (Spec (CommRingCat.of F.B)).Opens) : Set (Spec (CommRingCat.of F.B))) =
@@ -42,7 +42,7 @@ def Frame.sp {d : ℕ} {P : SP d} (F : Frame P) (hw : Etale F.w) : SP d where
   hU := range_frame_ι F
 
 /- English proof (translation)
-Introduce `hH d q _ P hq F hw i`. Use `hV hH d q (F.sp hw) ?_ i` and prove the remaining obligations. Establish `h` using `hq.map F.w.appTop.hom`. Rewrite `h` using `[map_natCast]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafVanF_of (hV : LeafVan) : LeafVanF := by
   intro hH d q _ P hq F hw i

@@ -15,21 +15,19 @@ noncomputable section
 namespace GlobalTheory.ArchLineModulus
 
 /- English proof (translation)
-Use `borelize G`. Establish `hK : IsClosed ((r.ker : Subgroup G) : Set G)` using `isClosed_eq hr continuous_const`. Use `haveI : LocallyCompactSpace r.ker := hK.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology r.ker := TopologicalSpace.Subtype.secondCountableTopology _`. Establish `hmem : ∀ g, (j (r g))⁻¹ * g ∈ r.ker` using `fun g => by simp [MonoidHom.mem_ker, hrj]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `e : (A × r.ker) ≃ₜ* G` to `{ toFun := fun p => j p.1 * p.2 invFun := fun g => (r g, ⟨(j (r g))⁻¹ * g, hmem g⟩) left_inv := fun p => by`. Establish `h : r (p.2 : G) = 1` using `p.2.2`. Apply the tactic sequence `refine Prod.ext ?_ (Subtype.ext ?_) <;> simp [hrj, h]`. Use `right_inv := fun g => by simp`. Use the proof step `map_mul' := fun p q => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h` using `(hc q.1 p.2 p.2.2).eq`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, map_mul, Subgroup.coe_mul]`. Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc (j q.1), h, mul_assoc]`. Use `continuous_toFun := (hj.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)`. Use `continuous_invFun := hr.prodMk (Continuous.subtype_mk (show Continuous fun g => (j (r g))⁻¹ * g from (hj.comp hr).inv.mul continuous_id) hmem) }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `κ : Measure r.ker` to `Measure.haar`. Set `ν : Measure G` to `(μ.prod κ).map e`. Use `haveI : (μ.prod κ).IsHaarMeasure := Measure.prod.instIsHaarMeasure μ κ`. Use `haveI : ν.IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map _ e`. Establish `hem : Measurable e` using `e.continuous.measurable`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : μ.map (· * a) = Measure.modularCharacterFun a • μ` using `Measure.map_right_mul_eq_modularCharacterFun_smul μ a`. Establish `h2 : ν.map (· * j a) = Measure.modularCharacterFun (j a) • ν` using `Measure.map_right_mul_eq_modularCharacterFun_smul ν (j a)`. Establish `h3 : ν.map (· * j a) = Measure.modularCharacterFun a • ν`. Establish `hcomp : (· * j a) ∘ e = e ∘ Prod.map (· * a) id`. Use function extensionality and compare the values at `p`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: e (a, 1) = j a` using `by show j a * ((1 : r.ker) : G) = j a; simp`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← this, ← map_mul]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ν]`. Rewrite using `[Measure.map_map (measurable_mul_const _) hem, hcomp, ← Measure.map_map hem ((measurable_mul_const a).prodMap measurable_id), ← Measure.map_prod_map _ _ (measurable_mul_const a) measurable_id, h1, Measure.map_id, ENNReal.smul_def, Measure.prod_smul_left, Measure.map_smul, ENNReal …`. Take `⟨C, hC, hC1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hpos : ν C ≠ 0` using `(Measure.measure_pos_of_mem_nhds ν hC1).ne'`. Establish `hfin : ν C ≠ ⊤` using `hC.measure_lt_top.ne`.
-
-Establish `h4` using `congrArg (fun m : Measure G => m C) (h2.symm.trans h3)`. Simplify using `only [Measure.coe_nnreal_smul_apply] at h4`. Establish `h5 : Measure.modularCharacterFun (j a) = Measure.modularCharacterFun a`. Conclude with `(ENNReal.mul_left_inj hpos hfin).1 h4` after adjusting the coercions. Rewrite using `[h1, h5]`.
+A detailed English derivation is pending.
 -/
 theorem map_mul_right_of_retract {G A : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
@@ -91,7 +89,7 @@ open GlobalTheory.ThK.ConeEuler
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
 
 /- English proof (translation)
-Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Establish `h : (1 - eInf F) • (mat g - 1) = 0` using `hg _ (by rw [eInf, GlobalTheory.ArchUniq.evI_eq_evIHom, map_sub, map_one, ← GlobalTheory.ArchUniq.evI_eq_evIHom, evI_realAd_one, sub_self])`. Express the relevant statement in the definitionally equal form `eInf F • mat g + (1 - eInf F) • 1 = mat g`. Rewrite `h` using `[smul_sub, sub_eq_zero]`. Rewrite using `[← h, ← add_smul, add_sub_cancel, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem compArch_of_mem {X : Spc F E n} {g : UA σ X.J} (hg : g ∈ UAt σ X (evI F)) : compArch σ X.J g = g := by
   refine Subtype.ext (Units.ext ?_)
@@ -102,9 +100,9 @@ theorem compArch_of_mem {X : Spc F E n} {g : UA σ X.J} (hg : g ∈ UAt σ X (ev
   rw [← h, ← add_smul, add_sub_cancel, one_smul]
 
 /- English proof (translation)
-Establish `hε` using `eInf_idem (F := F)`. Establish `h1` using `idem_mul_one_sub hε`. Establish `h2` using `one_sub_idem hε`. Establish `e : mat ((compArch σ J x)⁻¹ * x) = eInf F • 1 + (1 - eInf F) • mat x`. Rewrite using `[← map_inv, GlobalTheory.StabHaar.mat_mul, mat_compArch, Matrix.add_mul, Matrix.smul_mul, Matrix.smul_mul, GlobalTheory.StabHaar.mat_inv_mul, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[hx, inv_one, one_mul]`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mat (compArch σ J y) * mat x = mat x * mat (compArch σ J y)`. Rewrite using `[e, mat_compArch]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, smul_add, smul_smul, hε, h1, h2, mul_comm (1 - eInf F) (eInf F), zero_smul, add_zero, zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem commute_compArch {J : Matrix (Fin n) (Fin n) E} (x y : UA σ J) (hx : compArch σ J x = 1) :
     Commute (compArch σ J y) x := by
@@ -122,7 +120,7 @@ theorem commute_compArch {J : Matrix (Fin n) (Fin n) E} (x y : UA σ J) (hx : co
     smul_smul, hε, h1, h2, mul_comm (1 - eInf F) (eInf F), zero_smul, add_zero, zero_add]
 
 /- English proof (translation)
-Rewrite using `[mat_compArch, Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, h]`. Use `show _ = (eInf F • (a : AE F E) + (1 - eInf F) • (1 : AE F E)) • incV F x`. Rewrite using `[add_smul, smul_assoc, smul_assoc, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compArch_line {J : Matrix (Fin n) (Fin n) E} {x : Fin n → E} {q : UA σ J} {a : (AE F E)ˣ}
     (h : mat q *ᵥ incV F x = (a : AE F E) • incV F x) :
@@ -134,15 +132,13 @@ theorem compArch_line {J : Matrix (Fin n) (Fin n) E} {x : Fin n → E} {q : UA �
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n₁ X X₁ H i₀ i₁ r s hB hX hH μP hμ p t ht`. Establish `hX₁` using `GlobalTheory.isHerm_plane_complement F E σ B hB _ _ X X₁ H i₀ i₁ r s hX hH`. Take `⟨t1, t2, t3, t4⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ _ X.J`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Take `⟨m, hm⟩` from `GlobalTheory.IwKInt.levi_section hB hX hX₁ hH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, hQc, -, -, -⟩` from `GlobalTheory.LeviSec.leviSection_props F E σ B _ _ X X₁ r s _ _ i₀ i₁ H hB hX hX₁ hH m hm`. Use `haveI : LocallyCompactSpace (GlobalTheory.IwLine.lineStab σ X.J H.x) := hQc.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (GlobalTheory.IwLine.lineStab σ X.J H.x) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : LocallyCompactSpace (UAtSub σ X (evI F)) := (isClosed_UAtSub X (evI F)).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (UAtSub σ X (evI F)) := TopologicalSpace.Subtype.secondCountableTopology _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPc : IsClosed ((lineStab σ X H.x : Subgroup _) : Set (UAtSub σ X (evI F)))` using `hQc.preimage continuous_subtype_val`. Use `haveI : LocallyCompactSpace (lineStab σ X H.x) := hPc.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (lineStab σ X H.x) := TopologicalSpace.Subtype.secondCountableTopology _`. Set `j : lineStab σ X H.x →* GlobalTheory.IwLine.lineStab σ X.J H.x` to `{ toFun := fun q => ⟨q.1.1, q.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl }`. Set `ρ : GlobalTheory.IwLine.lineStab σ X.J H.x →* lineStab σ X H.x` to `{ toFun := fun q => ⟨⟨compArch σ X.J q.1, compArch_mem q.1⟩, ⟨_, compArch_line q.2.choose_spec⟩⟩ map_one' := Subtype.ext (Subtype.ext (map_one (compArch σ X.J))) map_mul' := fun a b => Subtype.ext (Subtype.ext (map_mul (compArch σ X.J) a.1 b.1)) }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hj : Continuous j` using `(continuous_subtype_val.comp continuous_subtype_val).subtype_mk _`. Establish `hρ : Continuous ρ` using `(((continuous_components F E σ _ X.J).2.comp continuous_subtype_val).subtype_mk _).subtype_mk _`. Establish `hρj : ∀ a, ρ (j a) = a` using `fun a => Subtype.ext (Subtype.ext (compArch_of_mem a.1.2))`. Establish `hc : ∀ a k, ρ k = 1 → Commute (j a) k` using `fun a k hk => by`. Establish `hk' : compArch σ X.J k.1 = 1` using `congrArg (fun z : lineStab σ X H.x => z.1.1) hk`.
-
-Establish `h` using `commute_compArch k.1 a.1.1 hk'`. Rewrite `h` using `[compArch_of_mem a.1.2]`. Conclude with `Subtype.ext h.eq`. Rewrite using `[map_mul_right_of_retract j ρ hj hρ hρj hc μP p, GlobalTheory.IwKInt.modular_lineStab hB hX hX₁ hH (j p) ht]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mul_right_lineStab : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n₁ : ℕ) (X : Spc F E (n₁ + 2)) (X₁ : Spc F E n₁) (H : Plane E (n₁ + 2) n₁) (i₀ i₁ r s : ℕ),

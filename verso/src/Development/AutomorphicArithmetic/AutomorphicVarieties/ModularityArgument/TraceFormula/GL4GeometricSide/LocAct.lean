@@ -22,12 +22,12 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `((UpperTheory.RealTr.basic n).2.1 y.val).2 y.isUnit`.
+A detailed English derivation is pending.
 -/
 private theorem val_mem (y : G n) : y.val ∈ GLs n := ((UpperTheory.RealTr.basic n).2.1 y.val).2 y.isUnit
 
 /- English proof (translation)
-Use `show (x * y).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_mem {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) : x * y ∈ GLs n := by
   show (x * y).det ≠ 0
@@ -50,16 +50,16 @@ variable [MeasurableSpace (Un n)] [BorelSpace (Un n)] (ν : Measure (Un n)) [ν.
   {ι : Type} [Fintype ι] {c : ι → Un n → ℂ} {F : ι → Mat n → ℂ} {F0 : Mat n → ℂ}
 
 /- English proof (translation)
-Use `haveI : CompactSpace (Un n) := GlobalTheory.compactSpace_unitaryGroup (Fin n) ℂ`. Conclude with `((hc j).smul M.cont).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+A detailed English derivation is pending.
 -/
 private theorem integrable_c (hc : ∀ j, Continuous (c j)) (j : ι) : Integrable (fun κ => c j κ • M.ρ κ) ν := by
   haveI : CompactSpace (Un n) := GlobalTheory.compactSpace_unitaryGroup (Fin n) ℂ
   exact ((hc j).smul M.cont).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
 
 /- English proof (translation)
-Establish `h1 : ∀ κ : Un n, F0 (y * κ.1) • M.ρ κ = ∑ j, F j y • (c j κ • M.ρ κ)`. Introduce `κ`. Rewrite using `[hF y hy κ, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [smul_smul, mul_comm]`. Simplify using `only [h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_finset_sum (f := fun j κ => F j y • (c j κ • M.ρ κ)) _ fun j _ => (integrable_c ν M hc j).smul (F j y)]`. Simplify using `only [integral_smul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sec_eq (hc : ∀ j, Continuous (c j))
     (hF : ∀ y ∈ GLs n, ∀ κ : Un n, F0 (y * κ.1) = ∑ j, c j κ * F j y) {y : Mat n} (hy : y ∈ GLs n) :
@@ -73,11 +73,11 @@ private theorem sec_eq (hc : ∀ j, Continuous (c j))
   simp only [integral_smul]
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ M.V`. Establish `ha : a.1 ∈ GLs n` using `val_mem (Unitary.toUnits a)`. Rewrite using `[sec_eq ν M hc hF (mul_mem hy ha), sec_eq ν M hc hF hy]`. Establish `hint : Integrable (fun κ : Un n => F0 (y * κ.1) • M.ρ κ) ν`. Establish `h1 : (fun κ : Un n => F0 (y * κ.1) • M.ρ κ) = fun κ => ∑ j, F j y • (c j κ • M.ρ κ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `κ`. Rewrite using `[hF y hy κ, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [smul_smul, mul_comm]`. Rewrite using `[h1]`. Conclude with `integrable_finset_sum _ fun j _ => (integrable_c ν M hc j).smul (F j y)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h2` using `(ContinuousLinearMap.mul ℂ (M.V →L[ℂ] M.V) (M.ρ a⁻¹)).integral_comp_comm hint`. Simplify using `only [ContinuousLinearMap.mul_apply'] at h2`. Rewrite using `[← h2, ← integral_mul_left_eq_self (fun κ : Un n => M.ρ a⁻¹ * (F0 (y * κ.1) • M.ρ κ)) a]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun κ => ?_)` and prove the remaining obligations. Simplify using `only [mul_smul_comm, ← map_mul, inv_mul_cancel_left, Submonoid.coe_mul, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sec_equiv (hc : ∀ j, Continuous (c j))
     (hF : ∀ y ∈ GLs n, ∀ κ : Un n, F0 (y * κ.1) = ∑ j, c j κ * F j y) {y : Mat n} (hy : y ∈ GLs n) (a : Un n) :
@@ -103,7 +103,7 @@ variable [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsH
 
 omit [MeasurableSpace (Un n)] [BorelSpace (Un n)] in
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `UpperTheory.RealTr.kerReg n μ M k val T' hk`. Establish `h3 : Continuous fun y : G n => f y.val` using `hf.comp_continuous Units.continuous_val val_mem`. Conclude with `(h3.smul h1).integrable_of_hasCompactSupport (h2.mono fun y hy h0 => hy (by simp [h0]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem integrable_k (hk : IsMult μ M k val T') {f : Mat n → ℂ} (hf : ContinuousOn f (GLs n)) :
     Integrable (fun y : G n => f y.val • k y.val) μ := by
@@ -112,15 +112,13 @@ private theorem integrable_k (hk : IsMult μ M k val T') {f : Mat n → ℂ} (hf
   exact (h3.smul h1).integrable_of_hasCompactSupport (h2.mono fun y hy h0 => hy (by simp [h0]))
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ M.V`. Use `haveI := GlobalTheory.CompanionTheory.QuotVan.isMulRightInvariant_GL n μ`. Establish `he` using `(UpperTheory.RealTr.kerReg n μ M k val T' hk).2.2`. Establish `h1 : ∀ κ : Un n, ∫ y : G n, F0 y.val • k y.val ∂μ = ∑ j, (∫ y : G n, F j y.val • k y.val ∂μ) * (c j κ • M.ρ κ)`. Introduce `κ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← integral_mul_right_eq_self (fun y : G n => F0 y.val • k y.val) (Unitary.toUnits κ)]`. Establish `h2 : ∀ y : G n, F0 (y * Unitary.toUnits κ : G n).val • k (y * Unitary.toUnits κ : G n).val = ∑ j, (F j y.val • k y.val) * (c j κ • M.ρ κ)`. Introduce `y`. Establish `h3` using `he y.val (val_mem y) 1 κ`. Simplify using `only [OneMemClass.coe_one, one_mul, map_one] at h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show F0 (y.val * κ.1) • k (y.val * κ.1) = _`. Rewrite using `[hF _ (val_mem y) κ, h3, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [smul_mul_smul_comm, mul_comm (c j κ)]`. Simplify using `only [h2]`. Establish `h4` using `fun j => ((ContinuousLinearMap.mul ℂ (M.V →L[ℂ] M.V)).flip (c j κ • M.ρ κ)).integral_comp_comm (integrable_k M μ hk (hs j))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.flip_apply, ContinuousLinearMap.mul_apply'] at h4`. Rewrite using `[integral_finset_sum _ fun j _ => (integrable_k M μ hk (hs j)).mul_const _]`. Conclude with `Finset.sum_congr rfl fun j _ => h4 j`. Establish `h5 : ∫ y : G n, F0 y.val • k y.val ∂μ = ∫ _κ : Un n, (∫ y : G n, F0 y.val • k y.val ∂μ) ∂ν`. Simplify using `[Measure.real, hν]`.
-
-Rewrite using `[h5, integral_congr_ae (Filter.Eventually.of_forall h1), integral_finset_sum _ fun j _ => (integrable_c ν M hc j).const_mul _]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h6` using `(ContinuousLinearMap.mul ℂ (M.V →L[ℂ] M.V) (∫ y : G n, F j y.val • k y.val ∂μ)).integral_comp_comm (integrable_c ν M hc j)`. Simplify `h6` using `only [ContinuousLinearMap.mul_apply']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem ker_avg (hν : ν Set.univ = 1) (hk : IsMult μ M k val T') (hc : ∀ j, Continuous (c j))
     (hs : ∀ j, ContinuousOn (F j) (GLs n))
@@ -157,13 +155,11 @@ private theorem ker_avg (hν : ν Set.univ = 1) (hk : IsMult μ M k val T') (hc 
   simpa only [ContinuousLinearMap.mul_apply'] using h6
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ M.V`. Use extensionality with `e`. Use `set B : ι → (M.V →L[ℂ] M.V) := fun j => ∫ κ, c j κ • M.ρ κ ∂ν with hB`. Establish `hCE : (fun x => ∑ j, F j x • B j e) ∈ CE M`. Use `⟨ContDiffOn.sum fun j _ => (hs j).smul contDiffOn_const, fun y hy a => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `congrArg (fun X : M.V →L[ℂ] M.V => X e) (sec_equiv ν M hc hF hy a)`. Simplify `h` using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.mul_apply]`. Establish `h` using `UpperTheory.RealTr.actEig n μ M k val T' hk χ _ hCE (PositivityTheory.Rg.BcB.CG.isEig_sum χ F (fun j => B j e) hs he) 1 (val_mem 1)`. Establish `hI` using `fun j => integrable_k M μ hk (hs j).continuousOn`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h]`. Simplify using `only [act, one_mul, map_sum, map_smul]`. Rewrite using `[integral_finset_sum (f := fun j (y : PositivityTheory.RgTw.G n) => F j y.val • k y.val (B j e)) _ fun j _ => (hI j).apply_continuousLinearMap (B j e)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.integral_apply (hI j)]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem ker_val (hk : IsMult μ M k val T') (hc : ∀ j, Continuous (c j)) (χ : Inf n)
     (hs : ∀ j, ContDiffOn ℝ ∞ (F j) (GLs n)) (he : ∀ j, IsEig χ (F j))
@@ -190,11 +186,11 @@ private theorem ker_val (hk : IsMult μ M k val T') (hc : ∀ j, Continuous (c j
   rfl
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ M.V`. Establish `h1` using `(trR M T).integral_comp_comm (integrable_k M μ hk h0)`. Rewrite `h1` using `[ker_avg ν M μ hν hk hc (fun j => (hs j).continuousOn) hF, ker_val ν M μ hk hc χ hs he hF]`. Establish `h2 : ∀ y : G n, phiOf M T k y * F0 y.val = trR M T (F0 y.val • k y.val)`. Introduce `y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression. Simplify using `only [h2]`. Rewrite using `[h1, map_smul, map_sum, smul_eq_mul]`. Use `congr 1`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm, ← (trR M T).integral_comp_comm (integrable_c ν M hc j)]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun κ => ?_)` and prove the remaining obligations. Simplify using `only [map_smul, smul_eq_mul, trR_apply, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem abs_act (hν : ν Set.univ = 1) (hk : IsMult μ M k val T') (T : M.V →L[ℂ] M.V)
     (hc : ∀ j, Continuous (c j)) (χ : Inf n) (h0 : ContinuousOn F0 (GLs n))
@@ -221,7 +217,7 @@ private theorem abs_act (hν : ν Set.univ = 1) (hk : IsMult μ M k val T') (T :
 end Abs
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `((UpperTheory.RealTr.basic n).2.1 y).1 hy`. Establish `e1 : t.val * κ.1 = (t * Unitary.toUnits κ : G n).val` using `rfl`. Establish `e2 : κ.1 = (Unitary.toUnits κ : G n).val` using `rfl`. Rewrite using `[e1, PositivityTheory.Rg.BcB.CG.along_val, PositivityTheory.Rg.BcB.CG.along_val, h, e2, PositivityTheory.Rg.BcB.CG.along_val, Pi.mulSingle_mul, PositivityTheory.Rg.BcB.CG.infinitePart_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem along_right {E : Type} [Field E] [NumberField E] [IsCMField E] (w : InfinitePlace E)
     (g : GlobalTheory.CuspRep.GA E n) (φ ψ : GlobalTheory.CuspRep.GA E n → ℂ) (κ : Un n) (h : ∀ x, ψ x = along w x φ κ.1) {y : Mat n}
@@ -240,15 +236,15 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 open MeasureTheory PositivityTheory.RgBcC.Bridge in
 open scoped InnerProductSpace in
 /- English proof (translation)
-Introduce `E _ _ _ n hn π hθ K hKo hKc hKθ _ _ μf _ D w lam hch _ _ ν _ hν _ _ μC _ M T P hP k val T' hk u g`. Establish `hK` using `(rlK E n hn π hθ K hKo hKc hKθ μf D w).1`. Take `⟨S, hfd, hu, hS⟩` from `hK.fin u`. Set `b` to `stdOrthonormalBasis ℂ S`. Establish `hexp : ∀ x ∈ S, x = ∑ j, ⟪((b j : S) : D.U), x⟫_ℂ • ((b j : S) : D.U)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `h` using `congrArg Subtype.val (b.sum_repr' (⟨x, hx⟩ : S))`. Simplify `h.symm` using `[Submodule.coe_sum, Submodule.coe_inner]`. Establish `hPu : P u ∈ S`. Rewrite using `[← S.orthogonal_orthogonal, Submodule.mem_orthogonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Rewrite using `[hP u v]`. Establish `h0 : ∀ κ, ⟪v, D.σ w κ u⟫_ℂ = 0` using `fun κ => (Submodule.mem_orthogonal' _ _).1 hv _ (hS κ u hu)`. Simplify using `[h0]`. Establish `hev : ∀ x ∈ S, (D.i x).1.1 = ∑ j, ⟪((b j : S) : D.U), x⟫_ℂ • (D.i (b j : S)).1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x hx`. Use `conv_lhs => rw [hexp x hx]`. Simplify using `only [map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul]`. Establish `heig` using `(bridge E n π.V w (infOf lam)).2 hch`. Establish `h` using `abs_act ν M μC (c := fun j κ => ⟪((b j : S) : D.U), D.σ w κ u⟫_ℂ) (F := fun j => along w g (D.i (b j : S)).1.1) (F0 := along w g (D.i u).1.1) hν hk T (fun j => hK.cont _ _) (infOf lam) (PositivityTheory.Rg.BcB.CG.contDiffOn_along w g (D.i u).1.2).continuousOn (fun j => Positivity …`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[along_right w g _ _ κ (D.hσ w κ u) hy, hev _ (hS κ u hu), along_sum, Finset.sum_apply]`. Simplify using `only [along_smul, Pi.smul_apply, smul_eq_mul])`. Rewrite using `[h, hev _ hPu, Finset.sum_apply]`. Simplify using `only [along_one, Pi.smul_apply, smul_eq_mul, hP u]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.GSp4Splitting.locAct :
     LocAct := by

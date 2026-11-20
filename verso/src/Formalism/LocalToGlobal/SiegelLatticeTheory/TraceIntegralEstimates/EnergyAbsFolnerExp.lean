@@ -19,7 +19,7 @@ section General
 variable {α β : Type} [MeasurableSpace α] [MeasurableSpace β]
 
 /- English proof (translation)
-Establish `h2 : ‖a‖ ^ 2 = ‖b‖ ^ 2`. Establish `h'` using `h`. Rewrite `h'` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Conclude with `h'` after adjusting the coercions. Use polynomial arithmetic with `[norm_nonneg a, norm_nonneg b]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem norm_eq_of_inner_self_eq_inner_self_lemma {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     {a b : E} (h : ⟪a, a⟫_ℂ = ⟪b, b⟫_ℂ) : ‖a‖ = ‖b‖ := by
@@ -46,14 +46,14 @@ def Fk (σ : G → (HH →L[ℂ] HH)) (w : HH) (W : G → V) (z z' q : G) : ℂ 
   ⟪W (q * z'), W z⟫_ℂ * ⟪σ z w, σ (q * z') w⟫_ℂ
 
 /- English proof (translation)
-Take `⟨-, -, hin, -⟩` from `id hσ`. Conclude with `norm_eq_of_inner_self_eq_inner_self_lemma (hin x a a)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fol_rep_norm {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (x : G) (a : HH) : ‖σ x a‖ = ‖a‖ := by
   obtain ⟨-, -, hin, -⟩ := id hσ
   exact norm_eq_of_inner_self_eq_inner_self_lemma (hin x a a)
 
 /- English proof (translation)
-Take `⟨-, hmul, -, -⟩` from `id hσ`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 -/
 theorem fol_rep_mul {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (x y : G) (a : HH) :
     σ (x * y) a = σ x (σ y a) := by
@@ -62,7 +62,7 @@ theorem fol_rep_mul {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (x y : G
     _ = σ x (σ y a) := rfl
 
 /- English proof (translation)
-Rewrite using `[hWeq s hs x, hWeq s hs y, hτu s hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem W_inner_trans {S : Set G} {τ : G → (V →L[ℂ] V)} {W : G → V}
     (hWeq : ∀ s ∈ S, ∀ x, W (s * x) = τ s (W x)) (hτu : ∀ s ∈ S, ∀ a b, ⟪τ s a, τ s b⟫_ℂ = ⟪a, b⟫_ℂ)
@@ -70,7 +70,7 @@ theorem W_inner_trans {S : Set G} {τ : G → (V →L[ℂ] V)} {W : G → V}
   rw [hWeq s hs x, hWeq s hs y, hτu s hs]
 
 /- English proof (translation)
-The claim follows from `norm_eq_of_inner_self_eq_inner_self_lemma (W_inner_trans hWeq hτu hs x x)`.
+A detailed English derivation is pending.
 -/
 theorem W_norm_trans {S : Set G} {τ : G → (V →L[ℂ] V)} {W : G → V}
     (hWeq : ∀ s ∈ S, ∀ x, W (s * x) = τ s (W x)) (hτu : ∀ s ∈ S, ∀ a b, ⟪τ s a, τ s b⟫_ℂ = ⟪a, b⟫_ℂ)
@@ -78,7 +78,7 @@ theorem W_norm_trans {S : Set G} {τ : G → (V →L[ℂ] V)} {W : G → V}
   norm_eq_of_inner_self_eq_inner_self_lemma (W_inner_trans hWeq hτu hs x x)
 
 /- English proof (translation)
-Take `⟨-, -, -, hσc⟩` from `id hσ`. Establish `hi : ∀ i : Fin (Module.finrank ℂ V), Continuous fun x => ⟪W x, stdOrthonormalBasis ℂ V i⟫_ℂ • σ x w` using `fun i => (hWc.inner continuous_const).smul (hσc w)`. Use `show Continuous fun x => (WithLp.toLp 2 (fun i => ⟪W x, stdOrthonormalBasis ℂ V i⟫_ℂ • σ x w) : PiLp 2 (fun _ : Fin (Module.finrank ℂ V) => HH))`. Conclude with `(PiLp.continuous_toLp 2 _).comp (continuous_pi hi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gvec_continuous {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH) {W : G → V} (hWc : Continuous W) :
     Continuous (gvec σ w W) := by
@@ -92,9 +92,9 @@ theorem gvec_continuous {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w :
   exact (PiLp.continuous_toLp 2 _).comp (continuous_pi hi)
 
 /- English proof (translation)
-Establish `hn : ‖σ x w‖ = 1` using `by rw [(fol_rep_norm hσ), hw]`. Establish `key : ∑ i, ‖⟪W x, stdOrthonormalBasis ℂ V i⟫_ℂ‖ ^ 2 = ‖W x‖ ^ 2`. Conclude with `(stdOrthonormalBasis ℂ V).sum_sq_norm_inner_left (W x)`. Establish `hs : ‖gvec σ w W x‖ ^ 2 = ‖W x‖ ^ 2`. Rewrite using `[← key]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PiLp.norm_sq_eq_of_L2]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp [gvec, norm_smul, hn]`. Use polynomial arithmetic with `[norm_nonneg (gvec σ w W x), norm_nonneg (W x)]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem gvec_norm {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {w : HH} (hw : ‖w‖ = 1) (W : G → V) (x : G) :
     ‖gvec σ w W x‖ = ‖W x‖ := by
@@ -108,9 +108,9 @@ theorem gvec_norm {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {w : HH} (
   nlinarith [norm_nonneg (gvec σ w W x), norm_nonneg (W x)]
 
 /- English proof (translation)
-Establish `hb : ∑ i, ⟪W y, stdOrthonormalBasis ℂ V i⟫_ℂ * ⟪stdOrthonormalBasis ℂ V i, W x⟫_ℂ = ⟪W y, W x⟫_ℂ`. Conclude with `(stdOrthonormalBasis ℂ V).sum_inner_mul_inner (W y) (W x)`. Rewrite using `[← hb, Finset.sum_mul]`. Rewrite using `[PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [gvec, PiLp.toLp_apply, inner_smul_left, inner_smul_right, inner_conj_symm]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gvec_inner (σ : G → (HH →L[ℂ] HH)) (w : HH) (W : G → V) (x y : G) :
     ⟪gvec σ w W x, gvec σ w W y⟫_ℂ = ⟪W y, W x⟫_ℂ * ⟪σ x w, σ y w⟫_ℂ := by
@@ -123,9 +123,9 @@ theorem gvec_inner (σ : G → (HH →L[ℂ] HH)) (w : HH) (W : G → V) (x y : 
   ring
 
 /- English proof (translation)
-Take `⟨-, -, -, hσc⟩` from `id hσ`. Establish `hcb : Continuous fun x => c x * b x` using `hc.mul hb`. Establish `h1 : Continuous fun x => W (c x * b x)` using `hWc.comp hcb`. Establish `h2 : Continuous fun x => W (a x)` using `hWc.comp ha`. Establish `h3 : Continuous fun x => σ (a x) w` using `(hσc w).comp ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : Continuous fun x => σ (c x * b x) w` using `(hσc w).comp hcb`. Use `show Continuous fun x => ⟪W (c x * b x), W (a x)⟫_ℂ * ⟪σ (a x) w, σ (c x * b x) w⟫_ℂ`. Conclude with `(h1.inner h2).mul (h3.inner h4)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Fk_continuous {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH) {W : G → V} (hWc : Continuous W)
     {X : Type} [TopologicalSpace X] {a b c : X → G} (ha : Continuous a) (hb : Continuous b) (hc : Continuous c) :
@@ -140,9 +140,9 @@ theorem Fk_continuous {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : H
   exact (h1.inner h2).mul (h3.inner h4)
 
 /- English proof (translation)
-Establish `h1 : ‖⟪W (q * z'), W z⟫_ℂ‖ ≤ ‖W z‖ * ‖W z'‖`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖⟪σ z w, σ (q * z') w⟫_ℂ‖ ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Use `show ‖⟪W (q * z'), W z⟫_ℂ * ⟪σ z w, σ (q * z') w⟫_ℂ‖ ≤ ‖W z‖ * ‖W z'‖`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem Fk_bound {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {w : HH} (hw : ‖w‖ = 1) {S : Set G}
     {τ : G → (V →L[ℂ] V)} {W : G → V}
@@ -161,9 +161,9 @@ theorem Fk_bound {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {w : HH} (h
     _ = ‖W z‖ * ‖W z'‖ := mul_one _
 
 /- English proof (translation)
-Take `⟨-, -, hin, -⟩` from `id hσ`. Establish `e1 : ⟪W (t⁻¹ * z'), W (s⁻¹ * z)⟫_ℂ = ⟪W (s * t⁻¹ * z'), W z⟫_ℂ`. Rewrite using `[← W_inner_trans hWeq hτu hs (t⁻¹ * z') (s⁻¹ * z), mul_assoc, mul_inv_cancel_left]`. Establish `e2 : ⟪σ (s⁻¹ * z) w, σ (t⁻¹ * z') w⟫_ℂ = ⟪σ z w, σ (s * t⁻¹ * z') w⟫_ℂ`. Rewrite using `[← hin s (σ (s⁻¹ * z) w) (σ (t⁻¹ * z') w), ← (fol_rep_mul hσ), ← (fol_rep_mul hσ), mul_inv_cancel_left, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kF {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH) {S : Set G} {τ : G → (V →L[ℂ] V)} {W : G → V}
     (hSinv : ∀ a ∈ S, a⁻¹ ∈ S)

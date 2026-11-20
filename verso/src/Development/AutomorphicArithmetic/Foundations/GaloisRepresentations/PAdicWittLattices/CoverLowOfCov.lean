@@ -48,14 +48,14 @@ def LowCov : Prop :=
     (∀ x : Ow w, ‖(τK (x : E) : Qbar l)‖ ≤ 1) → HasGoodCovers (bcAlong (low D) τK) id
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ H θ hN` and use `by obtain ⟨d, ρ, -, -, ρ₀, h₀, -⟩ := h E Ω l H θ hN exact ⟨d, ρ₀, h₀⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem matEx_of (h : RepEx) : MatEx := fun E Ω _ _ _ _ _ l _ H θ hN => by
   obtain ⟨d, ρ, -, -, ρ₀, h₀, -⟩ := h E Ω l H θ hN
   exact ⟨d, ρ₀, h₀⟩
 
 /- English proof (translation)
-Introduce `hG E _ _ l _ H θ w C D K τK hτ n` and use `hC hG l K (bcAlong (low D) τK) id (hL E l H θ w C D K τK hτ) n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coverLow_of_cov (hC : CoverOf) (hL : LowCov) : CoverLow := fun hG E _ _ l _ H θ w C D K τK hτ n =>
   hC hG l K (bcAlong (low D) τK) id (hL E l H θ w C D K τK hτ) n

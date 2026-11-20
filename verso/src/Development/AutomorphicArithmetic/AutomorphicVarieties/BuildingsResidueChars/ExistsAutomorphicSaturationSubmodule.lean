@@ -6,7 +6,7 @@ open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Rewrite using `[mul_assoc g u, ← mul_assoc u, ← h]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem grp1 {G : Type*} [Group G] (g a b u : G) (h : a * u = u * a) :
     g * u * (a * b) = g * (a * b) * (b⁻¹ * u * b) := by
@@ -14,7 +14,7 @@ private theorem grp1 {G : Type*} [Group G] (g a b u : G) (h : a * u = u * a) :
   group
 
 /- English proof (translation)
-Rewrite using `[mul_assoc g b, ← h]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem grp2 {G : Type*} [Group G] (g a b u : G) (h : u * a * b = b * (u * a)) :
     g * u * (a * b) = g * b * (u * a) := by
@@ -25,7 +25,7 @@ section
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `grp1 g _ (finEmb K n (finPart k)) _ (infEmb_mul_finEmb_comm (archPart k) u)`. Rewrite `h` using `[infEmb_archPart_mul_finEmb_finPart]`. Rewrite using `[map_mul, map_mul, map_inv]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem id1 (g k : AdelicGLn.AdelicGL K n) (u : AdelicGLn.FiniteAdelicGL K n) :
     g * finEmb K n u * k = g * k * finEmb K n ((finPart k)⁻¹ * u * finPart k) := by
@@ -35,9 +35,9 @@ private theorem id1 (g k : AdelicGLn.AdelicGL K n) (u : AdelicGLn.FiniteAdelicGL
   exact h
 
 /- English proof (translation)
-Establish `h0` using `infEmb_mul_finEmb_comm (u * archPart k) (finPart k)`. Rewrite `h0` using `[map_mul]`. Establish `h` using `grp2 g _ _ _ h0`. Rewrite `h` using `[infEmb_archPart_mul_finEmb_finPart]`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private theorem id2 (g k : AdelicGLn.AdelicGL K n) (u : archGroup K n) :
     g * infEmb K n u * k = g * finEmb K n (finPart k) * infEmb K n (u * archPart k) := by
@@ -49,13 +49,13 @@ private theorem id2 (g k : AdelicGLn.AdelicGL K n) (u : archGroup K n) :
   exact h
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun x => by rw [rt_apply, rt_apply, rt_apply, mul_assoc])`.
+A detailed English derivation is pending.
 -/
 private theorem hmul (a b : AdelicGLn.AdelicGL K n) (φ : archSmooth K n) : rt a (rt b φ) = rt (a * b) φ :=
   Subtype.ext (funext fun x => by rw [rt_apply, rt_apply, rt_apply, mul_assoc])
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun x => by rw [rt_apply, mul_one])`.
+A detailed English derivation is pending.
 -/
 private theorem hone (φ : archSmooth K n) : rt (1 : AdelicGLn.AdelicGL K n) φ = φ :=
   Subtype.ext (funext fun x => by rw [rt_apply, mul_one])
@@ -64,9 +64,9 @@ private noncomputable def sat (S : Submodule ℂ (archSmooth K n)) : Submodule �
   Submodule.span ℂ {ψ | ∃ k ∈ Reduction.maxCompact (K := K) (n := n), ∃ φ ∈ S, ψ = rt k φ}
 
 /- English proof (translation)
-Introduce `ψ hψ`. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, hk, φ, hφ, rfl⟩` from `hx`. Conclude with `hg k hk φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => exact h0`. Consider the case `add x y _ _ hx hy => exact ha x y hx hy`. Consider the case `smul c x _ hx => exact hs c x hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem ind (S : Submodule ℂ (archSmooth K n)) (P : archSmooth K n → Prop) (h0 : P 0)
     (ha : ∀ x y, P x → P y → P (x + y)) (hs : ∀ (c : ℂ) x, P x → P (c • x))
@@ -85,7 +85,7 @@ section
 variable {K : Type} [Field K] [NumberField K] {n : ℕ} {S : Submodule ℂ (archSmooth K n)}
 
 /- English proof (translation)
-Use `ind S (fun φ => IsLeftInvariant φ.1) isLeftInvariant_zero (fun x y hx hy γ g => congrArg₂ (· + ·) (hx γ g) (hy γ g)) (fun c x hx γ g => congrArg (c • ·) (hx γ g)) ?_` and prove the remaining obligations. Introduce `k _ φ hφ γ g`. Rewrite using `[rt_apply, rt_apply, mul_assoc]`. Conclude with `hS.left φ hφ γ _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sat_left (hS : Bdd S) : ∀ φ ∈ sat S, IsLeftInvariant φ.1 := by
   refine ind S (fun φ => IsLeftInvariant φ.1) isLeftInvariant_zero
@@ -96,9 +96,9 @@ private theorem sat_left (hS : Bdd S) : ∀ φ ∈ sat S, IsLeftInvariant φ.1 :
   exact hS.left φ hφ γ _
 
 /- English proof (translation)
-Use `ind S (fun φ => HasModerateGrowth φ.1) hasModerateGrowth_zero (fun x y hx hy => hx.add hy) (fun c x hx => hx.smul c) ?_` and prove the remaining obligations. Introduce `k _ φ hφ`. Establish `h` using `(hS.growth φ hφ).translate k`. Establish `e : (rt k φ).1 = rightTranslate k φ.1` using `funext fun x => rt_apply k φ x`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private theorem sat_growth (hS : Bdd S) : Growth (sat S) := by
   refine ind S (fun φ => HasModerateGrowth φ.1) hasModerateGrowth_zero
@@ -110,9 +110,9 @@ private theorem sat_growth (hS : Bdd S) : Growth (sat S) := by
   exact h
 
 /- English proof (translation)
-Take `⟨L, hL, hinv⟩` from `hS.level`. Take `⟨L', hL', hle, hconj, -⟩` from `UpperTheory.exists_open_level_normalized_by_integralFiniteGL K n L hL`. Use `⟨L', hL', ?_⟩` and prove the remaining obligations. Use `ind S (fun φ => ∀ u ∈ L', ∀ g, φ.1 (g * finEmb K n u) = φ.1 g) (fun _ _ _ => rfl) (fun x y hx hy u hu g => congrArg₂ (· + ·) (hx u hu g) (hy u hu g)) (fun c x hx u hu g => congrArg (c • ·) (hx u hu g)) ?_` and prove the remaining obligations. Introduce `k hk φ hφ u hu g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[rt_apply, rt_apply, id1]`. Conclude with `hinv φ hφ _ (hle (hconj _ (finPart_mem_integralFiniteGL hk) u hu)) (g * k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sat_level (hS : Bdd S) : Level (sat S) := by
   obtain ⟨L, hL, hinv⟩ := hS.level
@@ -126,9 +126,9 @@ private theorem sat_level (hS : Bdd S) : Level (sat S) := by
   exact hinv φ hφ _ (hle (hconj _ (finPart_mem_integralFiniteGL hk) u hu)) (g * k)
 
 /- English proof (translation)
-Take `⟨V, hV, hst, hmem⟩` from `hS.types`. Use `⟨V, hV, hst, ?_⟩` and prove the remaining obligations. Use `ind S (fun φ => ∀ g, (fun k : archCompact K n => φ.1 (g * infEmb K n k.1)) ∈ V) (fun _ => V.zero_mem) (fun x y hx hy g => V.add_mem (hx g) (hy g)) (fun c x hx g => V.smul_mem c (hx g)) ?_` and prove the remaining obligations. Introduce `k hk φ hφ g`. Establish `h` using `hst _ (hmem φ hφ (g * finEmb K n (finPart k))) ⟨archPart k, archPart_mem_archCompact hk⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (fun k' : archCompact K n => (rt k φ).1 (g * infEmb K n k'.1)) = fun k' : archCompact K n => φ.1 (g * finEmb K n (finPart k) * infEmb K n (k'.1 * archPart k))`. Use function extensionality and compare the values at `fun k' => by rw [rt_apply, id2]`. Rewrite using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sat_types (hS : Bdd S) : Types (sat S) := by
   obtain ⟨V, hV, hst, hmem⟩ := hS.types
@@ -145,9 +145,9 @@ private theorem sat_types (hS : Bdd S) : Types (sat S) := by
   exact h
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨p, hp, h⟩` from `hS.centre z hz`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Use `ind S (fun φ => Polynomial.aeval (uAction z) p φ ∈ (⊥ : Submodule ℂ (archSmooth K n))) (by rw [map_zero]; exact Submodule.zero_mem _) (fun x y hx hy => by rw [map_add]; exact Submodule.add_mem _ hx hy) (fun c x hx => by rw [map_smul]; exact Submodule.smul_mem _ c hx) ?_` and prove the remaining obligations. Introduce `k _ φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : Commute (rt (K` using `K) (n := n) k) (Polynomial.aeval (uAction z) p) := Algebra.commute_of_mem_adjoin_of_forall_mem_commute (Polynomial.aeval_mem_adjoin_singleton ℂ _) (by rintro _ rfl; exact (UpperTheory.centerU_action_commute_rightTranslation K n z hz k).symm)`. Establish `e` using `LinearMap.congr_fun hc.eq φ`. Rewrite `e` using `[Module.End.mul_apply, Module.End.mul_apply]`. Rewrite using `[← e, (Submodule.mem_bot ℂ).1 (h φ hφ), map_zero]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sat_centre (hS : Bdd S) : Centre (sat S) := by
   intro z hz
@@ -167,7 +167,7 @@ private theorem sat_centre (hS : Bdd S) : Centre (sat S) := by
   exact Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce `k hk`. Use `ind S (fun φ => rt k φ ∈ sat S) (by rw [map_zero]; exact Submodule.zero_mem _) (fun x y hx hy => by rw [map_add]; exact Submodule.add_mem _ hx hy) (fun c x hx => by rw [map_smul]; exact Submodule.smul_mem _ c hx) ?_` and prove the remaining obligations. Introduce `k' hk' φ hφ`. Conclude with `Submodule.subset_span ⟨k * k', mul_mem hk hk', φ, hφ, hmul _ _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem sat_sat : Sat (sat S) := by
   intro k hk
@@ -180,7 +180,7 @@ private theorem sat_sat : Sat (sat S) := by
 end
 
 /- English proof (translation)
-Introduce `K _ _ n S hS`. Conclude with `⟨sat S, fun φ hφ => Submodule.subset_span ⟨1, one_mem _, φ, hφ, (hone φ).symm⟩, ⟨sat_left hS, sat_growth hS, sat_level hS, sat_types hS, sat_centre hS⟩, sat_sat⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.exists_automorphic_saturation_submodule :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (S : Submodule ℂ (archSmooth K n)), Bdd S → ∃ S' : Submodule ℂ (archSmooth K n), S ≤ S' ∧ Bdd S' ∧ Sat S' := by

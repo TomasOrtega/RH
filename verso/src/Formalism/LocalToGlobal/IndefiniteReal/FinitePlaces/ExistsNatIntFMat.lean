@@ -17,23 +17,23 @@ variable {D : D7}
 section Vi
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.Theta.mt, map_mul, Units.val_mul]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mt_mul' (V : HSp D) (a b : GA D V) : mt V (a * b) = mt V a * mt V b := by
   simp only [Formalism.L2.Theta.mt, map_mul, Units.val_mul]
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.Theta.mt, map_one, Units.val_one]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mt_one' (V : HSp D) : mt V 1 = 1 := by
   simp only [Formalism.L2.Theta.mt, map_one, Units.val_one]
 
 /- English proof (translation)
-Take `⟨-, -, v, ε, hε, hsum⟩` from `h`. Unfold `Formalism.L2.Theta.IsPlaceIdem at hε`. Take `⟨α, rfl, -, -⟩` from `hε`. Rewrite using `[hsum]`. Unfold `fI`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← map_mul]`. Use `congr 1`. Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `(simp only [pairA]; exact Prod.ext (mul_zero _) (mul_one _))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp only [pairA]; ext <;> simp)`.
+A detailed English derivation is pending.
 -/
 lemma splitIdem_eps {e' : AE D} (h : IsSplitIdem D e') : (e' + cA D e') * fI D = e' + cA D e' := by
   obtain ⟨-, -, v, ε, hε, hsum⟩ := h
@@ -49,7 +49,7 @@ lemma splitIdem_eps {e' : AE D} (h : IsSplitIdem D e') : (e' + cA D e') * fI D =
     | (simp only [pairA]; ext <;> simp)
 
 /- English proof (translation)
-Unfold `SuppAt at hg`. Use `conv_lhs => rw [← hg i j]`. Rewrite using `[mul_right_comm, splitIdem_eps he, hg i j]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma supp_fin {e' : AE D} (he : IsSplitIdem D e') {V : HSp D} {g : GA D V} (hg : SuppAt e' V g) (i j : Fin V.rank) :
     (mt V g - 1) i j * fI D = (mt V g - 1) i j := by
@@ -58,9 +58,9 @@ lemma supp_fin {e' : AE D} (he : IsSplitIdem D e') {V : HSp D} {g : GA D V} (hg 
   rw [mul_right_comm, splitIdem_eps he, hg i j]
 
 /- English proof (translation)
-Unfold `SuppAt at hg ⊢`. Introduce `i j`. Establish `hinv : Formalism.L2.Theta.mt V g⁻¹ - 1 = -(Formalism.L2.Theta.mt V g⁻¹ * (Formalism.L2.Theta.mt V g - 1))`. Rewrite using `[Matrix.mul_sub, ← mt_mul', inv_mul_cancel, mt_one', Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hinv, Matrix.neg_apply, Matrix.mul_apply, mul_neg, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, hg k j]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma supp_inv {e' : AE D} {V : HSp D} {g : GA D V} (hg : SuppAt e' V g) : SuppAt e' V g⁻¹ := by
   unfold SuppAt at hg ⊢
@@ -74,7 +74,7 @@ lemma supp_inv {e' : AE D} {V : HSp D} {g : GA D V} (hg : SuppAt e' V g) : SuppA
   rw [mul_left_comm, hg k j]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `intF_sum _ _ fun k _ => intF_mul (hA i k) (hB k j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma intF_matMul {m n p : ℕ} {A : Matrix (Fin m) (Fin n) (AE D)} {B : Matrix (Fin n) (Fin p) (AE D)}
     (hA : ∀ i j, IntF (A i j)) (hB : ∀ i j, IntF (B i j)) (i : Fin m) (j : Fin p) : IntF ((A * B) i j) := by
@@ -82,7 +82,7 @@ lemma intF_matMul {m n p : ℕ} {A : Matrix (Fin m) (Fin n) (AE D)} {B : Matrix 
   exact intF_sum _ _ fun k _ => intF_mul (hA i k) (hB k j)
 
 /- English proof (translation)
-Use `choose k hk0 hk using fun (i : Fin m) (j : Fin n) => exists_nat_intF (hA i j)`. Use `⟨∏ i, ∏ j, k i j, Finset.prod_pos fun i _ => Finset.prod_pos fun j _ => hk0 i j, fun i j => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩ : k i j ∣ ∏ i, ∏ j, k i j` from `(Finset.dvd_prod_of_mem (fun j => k i j) (Finset.mem_univ j)).trans (Finset.dvd_prod_of_mem (fun i => ∏ j, k i j) (Finset.mem_univ i))`. Rewrite using `[Matrix.smul_apply, hr, mul_comm (k i j) r, mul_smul]`. Conclude with `intF_nsmul (hk i j) r`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_nat_intF_mat {m n : ℕ} {A : Matrix (Fin m) (Fin n) (AE D)} (hA : ∀ i j, A i j * fI D = A i j) :
     ∃ k : ℕ, 0 < k ∧ ∀ i j, IntF ((k • A) i j) := by
@@ -95,7 +95,7 @@ lemma exists_nat_intF_mat {m n : ℕ} {A : Matrix (Fin m) (Fin n) (AE D)} (hA : 
   exact intF_nsmul (hk i j) r
 
 /- English proof (translation)
-Unfold `actO`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 lemma actO_expand {S T : HSp D} (g : GA D S) (h : GA D T) (t : WO S T) :
     actO S T g h t = t + (mt T h - 1) * t + t * (mt S g⁻¹ - 1) + (mt T h - 1) * t * (mt S g⁻¹ - 1) := by
@@ -104,14 +104,14 @@ lemma actO_expand {S T : HSp D} (g : GA D S) (h : GA D T) (t : WO S T) :
   abel
 
 /- English proof (translation)
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma nsmul_mul_nsmul {R : Type*} [CommRing R] {m n p : Type*} [Fintype n] (a b : ℕ) (A : Matrix m n R)
     (B : Matrix n p R) : (a • A) * (b • B) = (a * b) • (A * B) := by
   rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul]
 
 /- English proof (translation)
-Rewrite using `[nsmul_mul_nsmul, nsmul_mul_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma nsmul_mul_three {R : Type*} [CommRing R] {m n p q : Type*} [Fintype n] [Fintype p] (a b d : ℕ) (A : Matrix m n R)
     (B : Matrix n p R) (C : Matrix p q R) : (a • A) * (b • B) * (d • C) = (a * b * d) • (A * B * C) := by
@@ -119,15 +119,15 @@ lemma nsmul_mul_three {R : Type*} [CommRing R] {m n p q : Type*} [Fintype n] [Fi
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Establish `hZ1 : ∀ i j, IntF (((kH • H) * (c' • t)) i j)` using `intF_matMul hH hc't`. Establish `hZ2 : ∀ i j, IntF (((c' • t) * (kG • G')) i j)` using `intF_matMul hc't hG`. Establish `hZ3 : ∀ i j, IntF (((kH • H) * (c' • t) * (kG • G')) i j)` using `intF_matMul hZ1 hG`. Rewrite `hZ1`, `hZ2` using `[nsmul_mul_nsmul]`. Rewrite `hZ3` using `[nsmul_mul_three]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `m1` using `hlow _ hZ1`. Establish `m2` using `hlow _ hZ2`. Establish `m3` using `hlow _ hZ3`. Rewrite `m1`, `m2`, `m3` using `[smul_smul]`. Simplify using `only [smul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `add_mem (add_mem (add_mem ?_ ?_) ?_) ?_` and prove the remaining obligations. Conclude with `nsmul_mem ht _`. Establish `h1` using `nsmul_mem m1 kG`. Rewrite `h1` using `[smul_smul]`. Establish `e : c * c' * kH * kG = kG * (c * (kH * c'))` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h1`. Establish `h2` using `nsmul_mem m2 kH`. Rewrite `h2` using `[smul_smul]`. Establish `e : c * c' * kH * kG = kH * (c * (c' * kG))` using `by ring`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `h2`. Establish `e : c * c' * kH * kG = c * (kH * c' * kG)` using `by ring`. Rewrite using `[e]`. Conclude with `m3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma four_terms {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} {c c' kH kG : ℕ}
@@ -163,9 +163,9 @@ lemma four_terms {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → 
     exact m3
 
 /- English proof (translation)
-Introduce `ψ _ S T ΛS ΛT hS hT e' he' g h hg hh`. Take `⟨c, hc, hlow⟩` from `lower hS hT`. Take `⟨c', hc', hup⟩` from `upper hS hT`. Take `⟨kH, hkH, hH⟩` from `exists_nat_intF_mat (supp_fin he' hh)`. Take `⟨kG, hkG, hG⟩` from `exists_nat_intF_mat (supp_fin he' (supp_inv hg))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c * c' * kH * kG, Nat.mul_pos (Nat.mul_pos (Nat.mul_pos hc hc') hkH) hkG, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[actO_expand]`. Conclude with `four_terms hlow hH hG ht (hup t ht)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placeLatDualVi (D : D7) : PlaceLatDualVi D := by
   intro ψ _ S T ΛS ΛT hS hT e' he' g h hg hh

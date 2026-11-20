@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondi
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_point_algClosure_residueField_of_isIntegralHom` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPointAlgClosureResidueFieldOfIntegralSurje.lean&line=31#L31)
 -/

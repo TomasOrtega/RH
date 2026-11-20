@@ -15,7 +15,7 @@ attribute [local instance] Matrix.frobeniusSeminormedAddCommGroup Matrix.frobeni
 end Frob
 
 /- English proof (translation)
-Unfold `B.gN`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma gN_cont (k r : ℕ) : Continuous (fun g : B.Mat k r => B.gN g) := by
   unfold B.gN

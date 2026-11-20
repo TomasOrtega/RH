@@ -10,7 +10,7 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 open Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Use `⟨1600, 1, by norm_num, le_rfl, fun n m z hn hz hz1 => ?_⟩` and prove the remaining obligations. Take `⟨k, h1, h2, h3⟩` from `T2.turan2Main n m z hn hz hz1`. Conclude with `⟨k, h1, by simpa using h2, by simpa using h3⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem turan_power_sum_bound : DHTuran2 := by
   refine ⟨1600, 1, by norm_num, le_rfl, fun n m z hn hz hz1 => ?_⟩

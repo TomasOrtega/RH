@@ -11,41 +11,37 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 
 open TLC in
 /- English proof (translation)
-Introduce `Wq _ _ _ k r z' π' B0 ν ν' h hk hz hT hπ hB0 hν hh hνν' w`. Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`. Take `⟨he, hez, hee⟩` from `cap_vec hB0 hν`. Use `set e := ∑ j, ν j • B0 j with hedef`. Use `set g := h⁻¹ with hgdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : g ∈ UWset (n + 1) r z'` using `LieBracketMultiplication.uw_inv hh`. Establish `hgU : g ∈ UH (Hpk (n + 1) r)` using `hg.1`. Establish `hgL : g ∈ Glev (n + 1) r (Fin.last r)` using `Qx8.uw_glev _ hg`. Establish `hν' : C6.sq2 ν' = 1`. Establish `h1 : herm (Hpk (n + 1) r) (∑ j, ν' j • B0 j) (∑ j, ν' j • B0 j) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hνν', Qx2.herm_uh hgU, hee]`. Rewrite `h1` using `[HermitianFormSums.herm_comb hB0]`. Establish `: ∀ a, ν' a * star (ν' a) = ((Complex.normSq (ν' a) : ℝ) : ℂ)` using `fun a => Complex.mul_conj (ν' a)`. Simplify using `only [this] at h1`. Rewrite `h1` using `[← Complex.ofReal_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h1` after adjusting the coercions. Take `⟨Bs, hBs⟩` from `exists_frame_two n r z' e hz hT he hez hee`. Use `set Bs' : Fin n → Fin (2 * r + (n + 1) + 1) → ℂ := fun a => g *ᵥ Bs a with hBs'def`. Establish `hBs' : IsFrameOf (n + 1) r [z', ∑ j, ν' j • B0 j] Bs'`. Use `⟨fun a => Qx8.inWb_mulVec hgL (hBs.1 a), fun a b => ?_, fun a v hv => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[hBs'def, Qx2.herm_uh hgU]`. Conclude with `hBs.2.1 a b`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`. Break down `hv with rfl | rfl` into its components or cases. Establish `e1` using `Qx2.herm_uh hgU (Bs a) v`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[hg.2.2]`. Rewrite using `[e1]; exact hBs.2.2 a _ (by simp)`. Rewrite using `[hνν', Qx2.herm_uh hgU]; exact hBs.2.2 a _ (by simp)`. Establish `hF` using `capelli_vector_frame Wq (n + 1) r z' π' B0 Bs ν (by omega) hz hT hπ hB0 hν hBs w`. Establish `hF'` using `capelli_vector_frame Wq (n + 1) r z' π' B0 Bs' ν' (by omega) hz hT hπ hB0 hν' hBs' w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBs1` using `HermitianFormSums.frame_sub hBs`. Establish `hBs1'` using `HermitianFormSums.frame_sub hBs'`. Establish `hq` using `(frame_general_linear Wq (n + 1) r n z' π' Bs hπ hBs1).2 w`. Establish `hq'` using `(frame_general_linear Wq (n + 1) r n z' π' Bs' hπ hBs1').2 w`. Establish `hgi : g⁻¹ = h` using `Matrix.nonsing_inv_nonsing_inv _ (WeylGroupFacts.isUnit_of_uh hh.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hgh : g * h = 1` using `LeftDerivativeCurves.uh_inv_mul hh.1`. Establish `hhg : h * g = 1` using `LeftDerivativeCurves.uh_mul_inv hh.1`. Establish `hUUi : (π' g).comp (π' h) = ContinuousLinearMap.id ℂ Wq`. Rewrite using `[← hπ.1.2 _ hg _ hh, hgh, hπ.1.1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hUiU : (π' h).comp (π' g) = ContinuousLinearMap.id ℂ Wq`. Rewrite using `[← hπ.1.2 _ hh _ hg, hhg, hπ.1.1]`. Both sides reduce to the same expression. Use `set U : Module.End ℂ Wq := (π' g : Wq →ₗ[ℂ] Wq) with hU`. Use `set Ui : Module.End ℂ Wq := (π' h : Wq →ₗ[ℂ] Wq) with hUi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hUUi' : U * Ui = 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Use `congrArg (fun T : Wq →L[ℂ] Wq => T v) hUUi` as an intermediate fact. Simplify `this` using `[hU, hUi]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hUiU' : Ui * U = 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Use `congrArg (fun T : Wq →L[ℂ] Wq => T v) hUiU` as an intermediate fact. Simplify `this` using `[hU, hUi]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Establish `hEB : ∀ a b, U * EB π' Bs a b * Ui = EB π' Bs' a b`. Introduce `a b`. Take `⟨hX1, hX2⟩` from `QrD.frame_lie hBs1 a b`. Take `⟨-, -, e1⟩` from `differential_operator_adjoint Wq (n + 1) r z' π' hπ _ hX1 g hg`. Take `⟨-, -, e2⟩` from `differential_operator_adjoint Wq (n + 1) r z' π' hπ _ hX2 g hg`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Take `⟨c1, c2⟩` from `Qx8.hpart_conj Bs a b hgU`. Unfold `EB QrD.ecOp`. Rewrite using `[c1, c2, e1, e2, hgi]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hU, hUi]`. Set `f : Module.End ℂ Wq →+* Module.End ℂ Wq` to `{ toFun := fun T => U * T * Ui map_one' := by simp only [mul_one, hUUi'] map_mul' := fun S T => by show U * (S * T) * Ui = U * S * Ui * (U * T * Ui)`. Combine the equalities or inequalities in the displayed calculation. Use the proof step `map_zero' := by simp only [mul_zero, zero_mul]`. Use the proof step `map_add' := fun S T => by noncomm_ring }`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hf : ∀ v, f (algebraMap ℂ (Module.End ℂ Wq) v) = algebraMap ℂ (Module.End ℂ Wq) v`. Introduce `v`. Use `show U * algebraMap ℂ (Module.End ℂ Wq) v * Ui = _`. Rewrite using `[← Algebra.commutes, mul_assoc, hUUi', mul_one]`. Establish `hqd` using `QuantumMinorExpansion.map_qminor (EB π' Bs') f hf (EB π' Bs) (fun a b => hEB a b) id id w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `ContinuousLinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[hF', hF, hq', hq]`. Unfold `qdet`.
-
-Rewrite using `[← hqd]`. Use `show U (qminor (EB π' Bs) id id w (Ui (π' h⁻¹ v))) = π' h⁻¹ (qminor (EB π' Bs) id id w v)`. Establish `: Ui (π' h⁻¹ v) = v`. Rewrite using `[← hgdef]`. Use `congrArg (fun T : Wq →L[ℂ] Wq => T v) hUiU` as an intermediate fact.
-
-Simplify `this` using `[hUi]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem capelli_vector_equivariance : TL.CapVEquiv := by
   intro Wq _ _ _ k r z' π' B0 ν ν' h hk hz hT hπ hB0 hν hh hνν' w

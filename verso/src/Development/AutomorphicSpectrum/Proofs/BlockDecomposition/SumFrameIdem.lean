@@ -31,7 +31,7 @@ def frameLev (s : Fin r) : FrameIx r → ℕ
   | none => 1
 
 /- English proof (translation)
-Establish `key : ∀ (A : Matrix (Fin n) (Fin r) E) (B : Matrix (Fin r) (Fin n) E), ∑ i : Fin r, (A * (Matrix.single i i (1 : E) : Matrix (Fin r) (Fin r) E) * B : Matrix (Fin n) (Fin n) E) = A * B` using `fun A B => by`. Rewrite using `[← Matrix.sum_mul, ← Matrix.mul_sum, Matrix.sum_single_one, Matrix.mul_one]`. Rewrite using `[Fintype.sum_option, Fintype.sum_sum_type]`. Simplify using `only [frameIdem]`. Rewrite using `[key, key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -46,7 +46,7 @@ theorem sum_frameIdem (S : E →+* E) (J : Matrix (Fin n) (Fin n) E) (X Y : Matr
   abel
 
 /- English proof (translation)
-Break down `α with _ | i | i` into its components or cases. Conclude with `one_pos`. Conclude with `ht i`. Conclude with `inv_pos.2 (ht i)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem frameWt_pos {t : Fin r → ℝ} (ht : ∀ i, 0 < t i) (α : FrameIx r) : 0 < frameWt t α := by
   rcases α with _ | i | i

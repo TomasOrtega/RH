@@ -61,7 +61,7 @@ section Rep
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.UG GlobalTheory.PRep GlobalTheory.AdelicU
 
 /- English proof (translation)
-Take `⟨-, -, ⟨Z, hZ⟩, h4⟩` from `h F E S r t c _ (val μ) (val χ) ⟨hS, ht, fun w hw => ⟨(hc w hw).1, (hc w hw).2, norm_val μ w, norm_val χ w, hπ w hw⟩⟩`. Conclude with `⟨_, (h4 Z hZ).1, (h4 Z hZ).2.2.1, (h4 Z hZ).2.2.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SimplePole.rep (h : SimplePole) (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (L : Submodule (𝓞 E) (Fin n → E)) {Vl : HeightOneSpectrum (𝓞 F) → Type} [∀ v, AddCommGroup (Vl v)]
@@ -81,22 +81,22 @@ theorem SimplePole.rep (h : SimplePole) (σ : E →ₐ[F] E) {n : ℕ} (J : Matr
 end Rep
 
 /- English proof (translation)
-Rewrite using `[liftFam, twist_add, twist_twist, twist_segFam, inv_mul_cancel_left, inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twist_liftFam (c : Fam E) (m x : HeightOneSpectrum (𝓞 E) → ℂˣ) (t : ℕ) :
     twist (liftFam c m x t) x⁻¹ = twist c m⁻¹ + segFam 1 t := by
   rw [liftFam, twist_add, twist_twist, twist_segFam, inv_mul_cancel_left, inv_mul_cancel]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Set.finite_empty, by norm_num, fun w _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 example : Hyp (F := F) (E := E) ∅ 1 7 (fun _ => {1}) (liftFam (fun _ => {1}) 1 1 7) 1 1 :=
   ⟨Set.finite_empty, by norm_num, fun w _ => by simp⟩
 
 /- English proof (translation)
-Use `⟨(MeromorphicAt.id 0).inv, ?_, 1, one_ne_zero, ?_⟩` and prove the remaining obligations. Establish `h : meromorphicOrderAt (id⁻¹ : ℂ → ℂ) 0 = -meromorphicOrderAt (id : ℂ → ℂ) 0` using `meromorphicOrderAt_inv`. Rewrite `h` using `[meromorphicOrderAt_id]`. Conclude with `h`. Use `tendsto_const_nhds.congr' ?_ filter_upwards [self_mem_nhdsWithin] with s hs` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_zero, mul_inv_cancel₀ hs]`.
+A detailed English derivation is pending.
 -/
 example : HasSimplePole (fun s => s⁻¹) 0 := by
   refine ⟨(MeromorphicAt.id 0).inv, ?_, 1, one_ne_zero, ?_⟩

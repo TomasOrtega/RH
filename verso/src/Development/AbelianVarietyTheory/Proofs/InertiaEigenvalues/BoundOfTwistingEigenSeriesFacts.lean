@@ -18,9 +18,9 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.NormFromFacts
 
 /- English proof (translation)
-Introduce `hP`. Use `⟨40, ?_⟩` and prove the remaining obligations. Introduce `D nch hf h`. Take `⟨hchi, hQ, hine, hser⟩` from `h`. Take `⟨HW, F, ⟨Cm⟩⟩` from `GlobalTheory.T.exists_wachFunctor_comparison_of_bhattScholze hP.bs D`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hA` using `hf.adm.1.1`. Conclude with `GlobalTheory.T.conclusion41_of_pAdicHodge hP.artin hP.bs hP.font hP.bk hP.tate hP.euler D HW F Cm _ 40 le_rfl le_rfl hQ hA.1 hA.2.2.1 hA.2.2.2.1 hA.2.2.2.2.2.2 hf.Conclusion1.1 hf.Conclusion2.1 hf.Conclusion2.2.1 hf.rhoBar hser hf.duties.2.2.2 hine hchi`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : Hypotheses₂ → ∃ CT : ℕ, ∀ (D : D7) (nch : NChoice D), GlobalTheory.NFacts.Facts D nch → (PairedCharacterCondition.tieChi (D := D) ∧ (∃ Q : PairedCharacterCondition.Pend (D), PairedCharacterCondition.admDZ Q ∧ GlobalTheory.Pass.EigSpan Q) ∧ GlobalTheory.Pass.TieInePoly (D) ∧ GlobalTheory.TypeLeaf.SerLoc (D)) → PairedCharacterCondition.aux₃ (D := D) (8 * (CT : ℝ)) CT := by
   intro hP

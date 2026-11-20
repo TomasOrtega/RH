@@ -11,11 +11,11 @@ open Neutral.B1 ReciprocityTheory.Neutral.Bridge.HCFR
 namespace GlobalTheory.HeckeLocDec
 
 /- English proof (translation)
-Use `⟨?_, fun w' => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Conclude with `(localIdele_isSupportedAt L w _).1 v`. Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PI.AlgValsFin.W.evF_val, PI.AlgValsFin.W.evF_localIdele_self]`. Establish `h1 : Valued.v ((atFin w' (unif w') : (w'.adicCompletion L)ˣ) : w'.adicCompletion L) = WithZero.exp (-1)` using `unif_spec w'`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, h1, ha, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using the standard rewrite rules. Rewrite using `[← PI.AlgValsFin.W.evF_val, PI.AlgValsFin.W.evF_localIdele_ne w' w h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem localIdele_unitPart_mem (L : Type) [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L))
     (x : (w.adicCompletion L)ˣ) (a : ℤ) (ha : Valued.v (x : w.adicCompletion L) = WithZero.exp (-a)) :
@@ -35,9 +35,9 @@ theorem localIdele_unitPart_mem (L : Type) [Field L] [NumberField L] (w : Height
       simp
 
 /- English proof (translation)
-Take `⟨N, hN, hT⟩` from `PI.AlgValsFin.W.torsUnits L χ`. Use `⟨N, hN, fun w x => ?_⟩` and prove the remaining obligations. Establish `hx0 : Valued.v (x : w.adicCompletion L) ≠ 0` using `by simp`. Take `⟨a, ha⟩ : ∃ a : ℤ, Valued.v (x : w.adicCompletion L) = WithZero.exp (-a)` from `⟨-WithZero.log (Valued.v (x : w.adicCompletion L)), by rw [neg_neg, WithZero.exp_log hx0]⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem` using `localIdele_unitPart_mem L w x a ha`. Establish `h` using `hT _ hmem`. Establish `e : χ.loc w x / χ.val w ^ a = χ.1 (localIdele L w (x * (atFin w (unif w)) ^ (-a)))` using `by show χ.loc w x / χ.loc w (atFin w (unif w)) ^ a = χ.loc w (x * (atFin w (unif w)) ^ (-a))`. Rewrite using `[map_mul, map_zpow, zpow_neg, div_eq_mul_inv]`. Rewrite using `[e, ← Units.val_pow_eq_pow_val, h, Units.val_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem loc_div_val_pow (L : Type) [Field L] [NumberField L] (χ : HChar L) :
     ∃ N : ℕ, 0 < N ∧ ∀ (w : HeightOneSpectrum (𝓞 L)) (x : (w.adicCompletion L)ˣ),

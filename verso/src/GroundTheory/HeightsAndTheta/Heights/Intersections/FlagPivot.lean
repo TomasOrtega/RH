@@ -21,9 +21,9 @@ def pivotMatrix {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R)
   Matrix.of fun r b => if h : (r : ℕ) < n - 1 then pivotMinor M ⟨r, h⟩ b else 0
 
 /- English proof (translation)
-Introduce `c d hcd`. Establish `hcd' : (c : ℕ) < d` using `hcd`. Simplify using `only [pivotCols]`. Use `split_ifs with h1 h2 h2`. Conclude with `Fin.mk_lt_mk.mpr hcd'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `Fin.mk_lt_mk.mpr (by omega)`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem pivotCols_strictMono {n : ℕ} (a : Fin (n - 1)) (b : Fin n) (hab : (a : ℕ) ≤ b) :
     StrictMono (pivotCols a b) := by
@@ -37,14 +37,14 @@ theorem pivotCols_strictMono {n : ℕ} (a : Fin (n - 1)) (b : Fin n) (hab : (a :
   · omega
 
 /- English proof (translation)
-Rewrite using `[Finset.card_image_of_injective _ (pivotCols_strictMono a b hab).injective, Finset.card_univ, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_image_pivotCols {n : ℕ} (a : Fin (n - 1)) (b : Fin n) (hab : (a : ℕ) ≤ b) :
     (Finset.univ.image (pivotCols a b)).card = a + 1 := by
   rw [Finset.card_image_of_injective _ (pivotCols_strictMono a b hab).injective, Finset.card_univ, Fintype.card_fin]
 
 /- English proof (translation)
-Unfold `pivotMinor flagMinor`. Use `congr 2`. Conclude with `(Finset.orderEmbOfFin_unique (card_image_pivotCols a b hab) (fun c => Finset.mem_image_of_mem _ (Finset.mem_univ c)) (pivotCols_strictMono a b hab))`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pivotMinor_eq_flagMinor {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R) (a : Fin (n - 1))
     (b : Fin n) (hab : (a : ℕ) ≤ b) :
@@ -55,9 +55,9 @@ theorem pivotMinor_eq_flagMinor {R : Type} [CommRing R] {n : ℕ} (M : Matrix (F
     (pivotCols_strictMono a b hab))
 
 /- English proof (translation)
-Unfold `pivotMinor`. Use `Matrix.det_zero_of_column_eq (i := ⟨b, by omega⟩) (j := Fin.last a) (fun h => by` and prove the remaining obligations. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use the proof step `omega) fun k => ?_`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[pivotCols, hba]`.
+A detailed English derivation is pending.
 -/
 theorem pivotMinor_eq_zero {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R) (a : Fin (n - 1))
     (b : Fin n) (hba : (b : ℕ) < a) : pivotMinor M a b = 0 := by

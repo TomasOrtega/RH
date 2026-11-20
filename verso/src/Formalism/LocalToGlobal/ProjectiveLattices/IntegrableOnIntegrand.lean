@@ -28,21 +28,21 @@ def coefFn (act : (Fin N → ℝ) → Ω → Ω) (ph : Fin N → ℝ) (P : Ω �
   ∫ t in cube N, integrand act ph P x t
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `[integrand, add_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem integrand_add (act : (Fin N → ℝ) → Ω → Ω) (ph : Fin N → ℝ) (P Q : Ω → ℂ) (x : Ω) :
     integrand act ph (P + Q) x = fun t => integrand act ph P x t + integrand act ph Q x t := by
   funext t; simp [integrand, add_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `[integrand, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem integrand_smul (act : (Fin N → ℝ) → Ω → Ω) (ph : Fin N → ℝ) (a : ℂ) (P : Ω → ℂ) (x : Ω) :
     integrand act ph (a • P) x = fun t => a * integrand act ph P x t := by
   funext t; simp [integrand, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `[integrand]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem integrand_zero (act : (Fin N → ℝ) → Ω → Ω) (ph : Fin N → ℝ) (x : Ω) :
     integrand act ph (0 : Ω → ℂ) x = fun _ => 0 := by
@@ -84,14 +84,14 @@ def coefL (act : (Fin N → ℝ) → Ω → Ω) (S : Set Ω) (ph : Fin N → ℝ
     · simp [hx]
 
 /- English proof (translation)
-Simplify using `[coefL, hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coefL_apply (act : (Fin N → ℝ) → Ω → Ω) (S : Set Ω) (ph : Fin N → ℝ) (P : OrbInt act S)
     {x : Ω} (hx : x ∈ S) : coefL act S ph P x = coefFn act ph P x := by
   simp [coefL, hx]
 
 /- English proof (translation)
-Establish `h1 : ContinuousOn (fun t => P (act t x)) (cube N)` using `hP.comp hact.continuousOn (fun t ht => hT t ht)`. Establish `h2 : Continuous (chr ph)`. Unfold `chr`. Use `fun_prop`. Conclude with `(h1.mul h2.continuousOn).integrableOn_compact isCompact_Icc`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem integrableOn_integrand [TopologicalSpace Ω] {act : (Fin N → ℝ) → Ω → Ω} {ph : Fin N → ℝ}
     {P : Ω → ℂ} {x : Ω} {T : Set Ω} (hP : ContinuousOn P T) (hact : Continuous fun t => act t x)
@@ -140,7 +140,7 @@ def coefVia {N : ℕ} {C : Type} [AddCommGroup C] [Module K C] (act : (Fin N →
     rfl
 
 /- English proof (translation)
-The claim follows from `coefL_apply act S ph _ hx`.
+A detailed English derivation is pending.
 -/
 theorem coefVia_apply {N : ℕ} {C : Type} [AddCommGroup C] [Module K C]
     (act : (Fin N → ℝ) → Ω → Ω) (S : Set Ω) (ph : Fin N → ℝ) (rd : C →ₛₗ[σ] (Ω → ℂ))
@@ -235,7 +235,7 @@ def sgF (X : Comp → Data E r) (rd : C →ₛₗ[σ] (∀ c, Frame (X c).Ψ r �
     ((LinearMap.proj (φ := fun c => Frame (X c).Ψ r → ℂ) cu.1).comp rd) (fun f => h f cu)
 
 /- English proof (translation)
-The claim follows from `coefVia_apply _ _ _ _ _ f hx`.
+A detailed English derivation is pending.
 -/
 theorem sgF_apply (X : Comp → Data E r) (rd : C →ₛₗ[σ] (∀ c, Frame (X c).Ψ r → ℂ))
     (h : RdOrbInt σ X ρ rd) (cu : CuF X ρ) (χ : Matrix (Fin ρ) (Fin ρ) E) (f : C)
@@ -248,7 +248,7 @@ def OrbDom (X : Comp → Data E r) (ρ : ℕ) : Prop :=
   ∀ (cu : CuF X ρ) t, ∀ x ∈ (X cu.1).dom, zAct (X cu.1) cu.2 t x ∈ (X cu.1).dom
 
 /- English proof (translation)
-Unfold `zAct zMatC`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_zAct (X : Data E r) (cu : CuspFD X ρ) (x : Frame X.Ψ r) :
     Continuous fun t => zAct X cu t x := by
@@ -256,7 +256,7 @@ theorem continuous_zAct (X : Data E r) (cu : CuspFD X ρ) (x : Frame X.Ψ r) :
   fun_prop
 
 /- English proof (translation)
-Introduce `f cu ph x hx`. Conclude with `integrableOn_integrand (hc f cu.1) (continuous_zAct _ _ x) (fun t _ => hd cu t x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rdOrbInt_of (X : Comp → Data E r) (rd : C →ₛₗ[σ] (∀ c, Frame (X c).Ψ r → ℂ))
     (hc : ∀ f c, ContinuousOn (rd f c) (X c).dom) (hd : OrbDom X ρ) : RdOrbInt σ X ρ rd := by

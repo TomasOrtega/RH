@@ -94,7 +94,7 @@ def QuadLift : Prop :=
     ∃ P : CuspSub M a, IsLift π P
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, trivial⟩`.
+Supply the required witnesses or components.
 -/
 theorem InScope.all {s : Level} {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} (h : InScope s l π χ) : InScope .all l π χ :=
   ⟨h.1, h.2.1, trivial⟩

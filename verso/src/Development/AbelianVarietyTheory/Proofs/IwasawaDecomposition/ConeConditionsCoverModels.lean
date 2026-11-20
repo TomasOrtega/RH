@@ -9,9 +9,7 @@ namespace GlobalTheory.TorRef
 open IsLocalRing in
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨RingHom.Flat.comp (RingHom.Flat.of_bijective he) h1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.map_map, IsLocalRing.map_maximalIdeal_of_surjective e he.2]`. Conclude with `h2`. Rewrite using `[← RingHom.comp_assoc]`.
-
-Conclude with `RingHom.Finite.comp h3 (RingHom.Finite.of_surjective e he.2)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEtaleCompletion_comp_bij {B A R : Type} [CommRing B] [IsLocalRing B] [CommRing A] [IsLocalRing A]
     [CommRing R] [IsLocalRing R] (e : B →+* A) (he : Function.Bijective e) (φ : A →+* R)
@@ -28,17 +26,13 @@ end GlobalTheory.TorRef
 namespace GlobalTheory.TorRef
 
 /- English proof (translation)
-Introduce `z`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, a i ∉ (Z.s z).asIdeal := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hle : Ideal.span (Set.range a) ≤ (Z.s z).asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hne j`. Rewrite `hle` using `[hcov.2.2]`. Conclude with `(Z.s z).isPrime.ne_top (top_le_iff.mp hle)`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hoi, -, hrange, -, ⟨mu⟩⟩` from `hch i`. Establish `hz : z ∈ Set.range (u i)`. Rewrite using `[hrange]`. Conclude with `hi`. Take `⟨z', rfl⟩` from `hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Rl, _, _, _, ξ, t, m, P, k, γ, hcn, hpt, het, hfu, htor, hcone, hin⟩` from `hC i z'`. Take `⟨n, -⟩` from `ObjMaps.exists_sab_comp mu m`. Establish `hb : Function.Bijective ((u i).stalkMap (ξ (IsLocalRing.closedPoint (CommRingCat.of Rl)))).hom` using `ConcreteCategory.bijective_of_isIso _`. Use `⟨Rl, inferInstance, inferInstance, inferInstance, ξ ≫ u i, t, n, P, k, γ, hcn, ?_, ?_, ?_, htor, hcone, hin⟩` and prove the remaining obligations. Use `show (u i) (ξ _) = _`.
-
-Rewrite using `[hpt]`. Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Conclude with `isEtaleCompletion_comp_bij _ hb _ het`. Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Establish `h2` using `RingHom.FormallyUnramified.comp (RingHom.FormallyUnramified.of_surjective hb.2) hfu`.
-
-Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasCones_of_charts {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} {I : Type} [Finite I] {R : I → Type} [∀ i, CommRing (R i)] {a : I → 𝓞 c.F}

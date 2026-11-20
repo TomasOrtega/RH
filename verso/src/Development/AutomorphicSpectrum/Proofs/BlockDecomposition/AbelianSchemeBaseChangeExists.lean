@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.Axis
 
 /- English proof (translation)
-Introduce `R R' _ _ _ A _ g hA hg`. Conclude with `⟨(Over.pullback (spMap (algebraMap R R'))).obj A, Functor.grpObjObj, Limits.pullback.fst A.hom (spMap (algebraMap R R')), GlobalTheory.AbLaw.CubeGen.isAb_baseChange hA _, (smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback _ _) hg, IsPul …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_abelianScheme_baseChange_ringHom :
     ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (A : Over (Sp R)) [GrpObj A] (g : ℕ),

@@ -31,19 +31,19 @@ Both sides reduce to the same expression.
 lemma coe_apply (g : G) : π g = (π.toHom g : H →L[ℂ] H) := rfl
 
 /- English proof (translation)
-The claim follows from `π.continuous_orbit' v`.
+A detailed English derivation is pending.
 -/
 lemma continuous_orbit (v : H) : Continuous fun g => π g v := π.continuous_orbit' v
 
 /- English proof (translation)
-Use `show ((π.toHom 1 : unitary (H →L[ℂ] H)) : H →L[ℂ] H) = 1`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 @[simp] lemma map_one : π 1 = 1 := by
   show ((π.toHom 1 : unitary (H →L[ℂ] H)) : H →L[ℂ] H) = 1
   simp
 
 /- English proof (translation)
-Use `show ((π.toHom (g * h) : unitary (H →L[ℂ] H)) : H →L[ℂ] H) = (π.toHom g : H →L[ℂ] H) * (π.toHom h : H →L[ℂ] H)`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 @[simp] lemma map_mul (g h : G) : π (g * h) = π g * π h := by
   show ((π.toHom (g * h) : unitary (H →L[ℂ] H)) : H →L[ℂ] H) =
@@ -51,34 +51,34 @@ Use `show ((π.toHom (g * h) : unitary (H →L[ℂ] H)) : H →L[ℂ] H) = (π.t
   simp
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma map_mul_apply (g h : G) (v : H) : π (g * h) v = π g (π h v) := by
   rw [map_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 @[simp] lemma map_one_apply (v : H) : π 1 v = v := by rw [map_one]; rfl
 
 /- English proof (translation)
-The claim follows from `Unitary.norm_map _ v`.
+A detailed English derivation is pending.
 -/
 @[simp] lemma norm_map (g : G) (v : H) : ‖π g v‖ = ‖v‖ := Unitary.norm_map _ v
 
 /- English proof (translation)
-The claim follows from `Unitary.inner_map_map _ v w`.
+A detailed English derivation is pending.
 -/
 @[simp] lemma inner_map_map (g : G) (v w : H) : ⟪π g v, π g w⟫_ℂ = ⟪v, w⟫_ℂ :=
   Unitary.inner_map_map _ v w
 
 /- English proof (translation)
-The claim follows from `(π.toHom g).2`.
+A detailed English derivation is pending.
 -/
 lemma mem_unitary (g : G) : π g ∈ unitary (H →L[ℂ] H) := (π.toHom g).2
 
 /- English proof (translation)
-Use `show star ((π.toHom g : unitary (H →L[ℂ] H)) : H →L[ℂ] H) = ((π.toHom g⁻¹ : unitary (H →L[ℂ] H)) : H →L[ℂ] H)`. Rewrite using `[MonoidHom.map_inv, ← Unitary.star_eq_inv, Unitary.coe_star]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] lemma star_map (g : G) : star (π g) = π g⁻¹ := by
   show star ((π.toHom g : unitary (H →L[ℂ] H)) : H →L[ℂ] H) =
@@ -86,43 +86,43 @@ Use `show star ((π.toHom g : unitary (H →L[ℂ] H)) : H →L[ℂ] H) = ((π.t
   rw [MonoidHom.map_inv, ← Unitary.star_eq_inv, Unitary.coe_star]
 
 /- English proof (translation)
-Rewrite using `[← star_eq_adjoint, star_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] lemma adjoint_map (g : G) : adjoint (π g) = π g⁻¹ := by
   rw [← star_eq_adjoint, star_map]
 
 /- English proof (translation)
-Rewrite using `[← map_mul_apply, inv_mul_cancel, map_one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] lemma map_inv_apply_map (g : G) (v : H) : π g⁻¹ (π g v) = v := by
   rw [← map_mul_apply, inv_mul_cancel, map_one_apply]
 
 /- English proof (translation)
-Rewrite using `[← map_mul_apply, mul_inv_cancel, map_one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] lemma map_apply_map_inv (g : G) (v : H) : π g (π g⁻¹ v) = v := by
   rw [← map_mul_apply, mul_inv_cancel, map_one_apply]
 
 /- English proof (translation)
-Rewrite using `[← adjoint_map, adjoint_inner_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma inner_map_left (g : G) (v w : H) : ⟪π g v, w⟫_ℂ = ⟪v, π g⁻¹ w⟫_ℂ := by
   rw [← adjoint_map, adjoint_inner_right]
 
 /- English proof (translation)
-Rewrite using `[← adjoint_map, adjoint_inner_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma inner_map_right (g : G) (v w : H) : ⟪v, π g w⟫_ℂ = ⟪π g⁻¹ v, w⟫_ℂ := by
   rw [← adjoint_map, adjoint_inner_left]
 
 /- English proof (translation)
-The claim follows from `opNorm_le_bound _ zero_le_one fun v => by simp`.
+A detailed English derivation is pending.
 -/
 lemma norm_map_le (g : G) : ‖π g‖ ≤ 1 :=
   opNorm_le_bound _ zero_le_one fun v => by simp
 
 /- English proof (translation)
-Introduce `v w h` and use `by have := congrArg (π g⁻¹) h rwa [map_inv_apply_map, map_inv_apply_map] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma map_injective (g : G) : Function.Injective (π g) := fun v w h => by
   have := congrArg (π g⁻¹) h
@@ -141,11 +141,11 @@ Both sides reduce to the same expression.
     ofLinearIsometryEquiv ρ hρ g v = ρ g v := rfl
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `h`. Rewrite using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Use `set w := (ρ h : H →L[ℂ] H) v`. Establish `hsq : ∀ g, ‖(ρ g : H →L[ℂ] H) v - w‖ = Real.sqrt (2 * ‖v‖ ^ 2 - 2 * RCLike.re ⟪(ρ g : H →L[ℂ] H) v, w⟫_ℂ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[← Real.sqrt_sq (norm_nonneg _), @norm_sub_sq ℂ, Unitary.norm_map, Unitary.norm_map]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : Continuous fun g => Real.sqrt (2 * ‖v‖ ^ 2 - 2 * RCLike.re ⟪(ρ g : H →L[ℂ] H) v, w⟫_ℂ)` using `(continuous_const.sub (continuous_const.mul (RCLike.continuous_re.comp (hρ v w)))).sqrt`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Real.sqrt (2 * ‖v‖ ^ 2 - 2 * RCLike.re ⟪(ρ h : H →L[ℂ] H) v, w⟫_ℂ) = 0`. Rewrite using `[← hsq, sub_self, norm_zero]`. Repeatedly rewrite using `[hsq]`. Rewrite using `[← h0]`. Conclude with `hc.continuousAt`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_weak (ρ : G →* unitary (H →L[ℂ] H))
     (hρ : ∀ v w : H, Continuous fun g => ⟪(ρ g : H →L[ℂ] H) v, w⟫_ℂ) (v : H) :
@@ -170,13 +170,13 @@ theorem continuous_of_weak (ρ : G →* unitary (H →L[ℂ] H))
   exact hc.continuousAt
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `h`. Rewrite using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Establish `key : ∀ g, ‖(ρ g : H →L[ℂ] H) v - (ρ h : H →L[ℂ] H) v‖ = ‖(ρ (h⁻¹ * g) : H →L[ℂ] H) v - v‖`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ρ g = ρ h * ρ (h⁻¹ * g)` using `by rw [← MonoidHom.map_mul, mul_inv_cancel_left]`. Establish `: (ρ g : H →L[ℂ] H) v - (ρ h : H →L[ℂ] H) v = (ρ h : H →L[ℂ] H) ((ρ (h⁻¹ * g) : H →L[ℂ] H) v - v)`. Rewrite using `[map_sub, e]`. Both sides reduce to the same expression. Rewrite using `[this, Unitary.norm_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[key]`. Establish `ht : Tendsto (fun g => h⁻¹ * g) (𝓝 h) (𝓝 1)`. Use `(continuous_const_mul h⁻¹).tendsto h` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel]`. Then use the resulting hypothesis. Establish `h1` using `Filter.Tendsto.comp (hρ v) ht`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1` using `[tendsto_iff_norm_sub_tendsto_zero]`. Simplify `h1` using `[Function.comp_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_of_continuousAt_one [IsTopologicalGroup G] (ρ : G →* unitary (H →L[ℂ] H))
     (hρ : ∀ v : H, ContinuousAt (fun g => (ρ g : H →L[ℂ] H) v) 1) (v : H) :
@@ -202,13 +202,13 @@ theorem continuous_of_continuousAt_one [IsTopologicalGroup G] (ρ : G →* unita
   simpa [Function.comp_def] using h1
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce and unpack `⟨h, w⟩`. Rewrite using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Establish `hle : ∀ p : G × H, ‖π p.1 p.2 - π h w‖ ≤ ‖p.2 - w‖ + ‖π p.1 w - π h w‖`. Introduce `p`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sub]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Use `_ ≤ ‖π p.1 (p.2 - w)‖ + ‖π p.1 w - π h w‖ := norm_add_le _ _`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = ‖p.2 - w‖ + ‖π p.1 w - π h w‖ := by rw [norm_map]`. Use `squeeze_zero (fun _ => norm_nonneg _) hle ?_` and prove the remaining obligations. Rewrite using `[← add_zero (0 : ℝ)]`. Use `Tendsto.add ?_ ?_` and prove the remaining obligations. Establish `: Tendsto (fun p : G × H => p.2) (𝓝 (h, w)) (𝓝 w)` using `continuous_snd.tendsto _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[tendsto_iff_norm_sub_tendsto_zero]`. Conclude with `this`. Establish `: Tendsto (fun p : G × H => π p.1 w) (𝓝 (h, w)) (𝓝 (π h w))` using `((π.continuous_orbit w).comp continuous_fst).tendsto _`. Rewrite `this` using `[tendsto_iff_norm_sub_tendsto_zero]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_action : Continuous fun p : G × H => π p.1 p.2 := by
   rw [continuous_iff_continuousAt]
@@ -232,7 +232,7 @@ theorem continuous_action : Continuous fun p : G × H => π p.1 p.2 := by
     exact this
 
 /- English proof (translation)
-The claim follows from `(π.continuous_orbit v).inner continuous_const`.
+A detailed English derivation is pending.
 -/
 lemma continuous_inner_orbit (v w : H) : Continuous fun g => ⟪π g v, w⟫_ℂ :=
   (π.continuous_orbit v).inner continuous_const
@@ -242,18 +242,18 @@ def IsInvariant (V : Submodule ℂ H) : Prop := ∀ (g : G) (v : H), v ∈ V →
 variable {π}
 
 /- English proof (translation)
-Introduce `g v hv` and use `by rw [Submodule.mem_bot] at hv ⊢; simp [hv]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma isInvariant_bot : π.IsInvariant ⊥ := fun g v hv => by
   rw [Submodule.mem_bot] at hv ⊢; simp [hv]
 
 /- English proof (translation)
-Introduce `_ _ _` and use `Submodule.mem_top`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma isInvariant_top : π.IsInvariant ⊤ := fun _ _ _ => Submodule.mem_top
 
 /- English proof (translation)
-Introduce `g v hv w hw`. Rewrite using `[inner_map_right]`. Conclude with `hv _ (hV _ _ hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsInvariant.orthogonal {V : Submodule ℂ H} (hV : π.IsInvariant V) :
     π.IsInvariant Vᗮ := by
@@ -262,9 +262,9 @@ theorem IsInvariant.orthogonal {V : Submodule ℂ H} (hV : π.IsInvariant V) :
   exact hv _ (hV _ _ hw)
 
 /- English proof (translation)
-Introduce `g v hv`. Establish `hsub : Set.MapsTo (π g) (V : Set H) (V.topologicalClosure : Set H)` using `fun x hx => V.le_topologicalClosure (hV g x hx)`. Establish `hv' : v ∈ closure (V : Set H)`. Rewrite using `[← Submodule.topologicalClosure_coe]` and apply the resulting hypothesis. Use `hsub.closure (π g).continuous hv'` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[V.isClosed_topologicalClosure.closure_eq]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsInvariant.topologicalClosure {V : Submodule ℂ H} (hV : π.IsInvariant V) :
     π.IsInvariant V.topologicalClosure := by
@@ -277,11 +277,11 @@ theorem IsInvariant.topologicalClosure {V : Submodule ℂ H} (hV : π.IsInvarian
   rwa [V.isClosed_topologicalClosure.closure_eq] at this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hV g`. Use extensionality with `v`. Establish `hdec : v = V.starProjection v + (v - V.starProjection v)` using `by abel`. Establish `hq : v - V.starProjection v ∈ Vᗮ` using `V.sub_starProjection_mem_orthogonal v`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : V.starProjection v ∈ V` using `V.starProjection_apply_mem v`. Establish `e1 : V.starProjection (π g v) = π g (V.starProjection v)` using `by conv_lhs => rw [hdec, map_add, map_add, Submodule.starProjection_eq_self_iff.mpr (hV g _ hp), (V.starProjection_apply_eq_zero_iff).mpr (hV.orthogonal g _ hq), add_zero]`. Conclude with `e1.symm`. Introduce `h g v hv`. Rewrite `hv`, the goal using `[← Submodule.starProjection_eq_self_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: π g (V.starProjection v) = V.starProjection (π g v)` using `congrArg (fun T : H →L[ℂ] H => T v) (h g)`. Rewrite using `[← this, hv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInvariant_iff_commute_starProjection (V : Submodule ℂ H) [V.HasOrthogonalProjection] :
     π.IsInvariant V ↔ ∀ g, Commute (π g) V.starProjection := by
@@ -313,38 +313,38 @@ def intertwiners (σ : UnitaryRep G K) : Submodule ℂ (H →L[ℂ] K) where
 variable {σ : UnitaryRep G K} {τ : UnitaryRep G L}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_intertwiners {T : H →L[ℂ] K} :
     T ∈ π.intertwiners σ ↔ ∀ (g : G) (v : H), T (π g v) = σ g (T v) := Iff.rfl
 
 /- English proof (translation)
-Simplify using `only [mem_intertwiners, ContinuousLinearMap.ext_iff, ContinuousLinearMap.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_intertwiners_iff_comp {T : H →L[ℂ] K} :
     T ∈ π.intertwiners σ ↔ ∀ g : G, T ∘L π g = σ g ∘L T := by
   simp only [mem_intertwiners, ContinuousLinearMap.ext_iff, ContinuousLinearMap.comp_apply]
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 lemma one_mem_intertwiners : (1 : H →L[ℂ] H) ∈ π.intertwiners π := fun _ _ => rfl
 
 /- English proof (translation)
-Introduce `g v` and use `by simp [hT g v, hS g (T v)]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma comp_mem_intertwiners {S : K →L[ℂ] L} {T : H →L[ℂ] K} (hS : S ∈ σ.intertwiners τ)
     (hT : T ∈ π.intertwiners σ) : S ∘L T ∈ π.intertwiners τ := fun g v => by
   simp [hT g v, hS g (T v)]
 
 /- English proof (translation)
-The claim follows from `comp_mem_intertwiners hS hT`.
+A detailed English derivation is pending.
 -/
 lemma mul_mem_intertwiners {S T : H →L[ℂ] H} (hS : S ∈ π.intertwiners π)
     (hT : T ∈ π.intertwiners π) : S * T ∈ π.intertwiners π := comp_mem_intertwiners hS hT
 
 /- English proof (translation)
-Introduce `g w`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `v`. Rewrite using `[adjoint_inner_right, inner_map_right π, adjoint_inner_right, hT, inner_map_left σ, inv_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjoint_mem_intertwiners {T : H →L[ℂ] K} (hT : T ∈ π.intertwiners σ) :
     adjoint T ∈ σ.intertwiners π := by
@@ -354,21 +354,21 @@ theorem adjoint_mem_intertwiners {T : H →L[ℂ] K} (hT : T ∈ π.intertwiners
   rw [adjoint_inner_right, inner_map_right π, adjoint_inner_right, hT, inner_map_left σ, inv_inv]
 
 /- English proof (translation)
-Rewrite using `[star_eq_adjoint]`. Conclude with `adjoint_mem_intertwiners hT`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma star_mem_intertwiners {T : H →L[ℂ] H} (hT : T ∈ π.intertwiners π) :
     star T ∈ π.intertwiners π := by
   rw [star_eq_adjoint]; exact adjoint_mem_intertwiners hT
 
 /- English proof (translation)
-Use extensionality with `v`. Conclude with `hT g v`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 lemma commute_of_mem_intertwiners {T : H →L[ℂ] H} (hT : T ∈ π.intertwiners π) (g : G) :
     Commute T (π g) := by
   ext v; exact hT g v
 
 /- English proof (translation)
-Use `⟨commute_of_mem_intertwiners, fun h g v => ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun S : H →L[ℂ] H => S v) (h g)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma mem_intertwiners_self_iff {T : H →L[ℂ] H} :
     T ∈ π.intertwiners π ↔ ∀ g, Commute T (π g) := by
@@ -376,7 +376,7 @@ lemma mem_intertwiners_self_iff {T : H →L[ℂ] H} :
   exact congrArg (fun S : H →L[ℂ] H => S v) (h g)
 
 /- English proof (translation)
-Introduce and unpack `g _ ⟨v, rfl⟩`. Conclude with `⟨π g v, hT g v⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma isInvariant_range {T : H →L[ℂ] K} (hT : T ∈ π.intertwiners σ) :
     σ.IsInvariant (LinearMap.range (T : H →ₗ[ℂ] K)) := by
@@ -384,7 +384,7 @@ lemma isInvariant_range {T : H →L[ℂ] K} (hT : T ∈ π.intertwiners σ) :
   exact ⟨π g v, hT g v⟩
 
 /- English proof (translation)
-Introduce `g v hv`. Simplify using `only [LinearMap.mem_ker, ContinuousLinearMap.coe_coe] at hv ⊢`. Rewrite using `[hT, hv, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma isInvariant_ker {T : H →L[ℂ] K} (hT : T ∈ π.intertwiners σ) :
     π.IsInvariant (LinearMap.ker (T : H →ₗ[ℂ] K)) := by
@@ -419,7 +419,7 @@ def trans (e : π.Equiv σ) (f : σ.Equiv τ) : π.Equiv τ where
   map_apply' g v := by simp [e.map_apply', f.map_apply']
 
 /- English proof (translation)
-The claim follows from `e.map_apply'`.
+A detailed English derivation is pending.
 -/
 lemma mem_intertwiners (e : π.Equiv σ) :
     (e.toLinearIsometryEquiv : H →L[ℂ] K) ∈ π.intertwiners σ := e.map_apply'
@@ -427,17 +427,17 @@ lemma mem_intertwiners (e : π.Equiv σ) :
 end Equiv
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Equiv.refl π⟩`.
+Supply the required witnesses or components.
 -/
 lemma IsEquivalent.refl (π : UnitaryRep G H) : π.IsEquivalent π := ⟨Equiv.refl π⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.some.symm⟩`.
+Supply the required witnesses or components.
 -/
 lemma IsEquivalent.symm (h : π.IsEquivalent σ) : σ.IsEquivalent π := ⟨h.some.symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.some.trans h'.some⟩`.
+Supply the required witnesses or components.
 -/
 lemma IsEquivalent.trans (h : π.IsEquivalent σ) (h' : σ.IsEquivalent τ) : π.IsEquivalent τ :=
   ⟨h.some.trans h'.some⟩
@@ -448,15 +448,15 @@ def IsIrreducible : Prop :=
   Nontrivial H ∧ ∀ V : Submodule ℂ H, IsClosed (V : Set H) → π.IsInvariant V → V = ⊥ ∨ V = ⊤
 
 /- English proof (translation)
-Take `⟨hnt, hπ⟩` from `hπ`. Use `⟨e.toLinearIsometryEquiv.toEquiv.nontrivial_congr.mp hnt, fun W hW hWinv => ?_⟩` and prove the remaining obligations. Set `E : H →L[ℂ] K` to `e.toLinearIsometryEquiv`. Establish `hcl : IsClosed ((W.comap (E : H →ₗ[ℂ] K) : Submodule ℂ H) : Set H)` using `hW.preimage E.continuous`. Establish `hinv : π.IsInvariant (W.comap (E : H →ₗ[ℂ] K))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g v hv`. Simplify using `only [Submodule.mem_comap, ContinuousLinearMap.coe_coe] at hv ⊢`. Rewrite using `[show E (π g v) = σ g (E v) from e.map_apply' g v]`. Conclude with `hWinv g _ hv`. Establish `hsurj : Function.Surjective E` using `e.toLinearIsometryEquiv.surjective`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hπ _ hcl hinv with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `w hw`. Take `⟨v, rfl⟩` from `hsurj w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: v ∈ W.comap (E : H →ₗ[ℂ] K)` using `hw`. Rewrite `this` using `[h, Submodule.mem_bot]`. Simplify using `[this]`. Use `right`. Rewrite using `[eq_top_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w _`. Take `⟨v, rfl⟩` from `hsurj w`. Establish `: v ∈ W.comap (E : H →ₗ[ℂ] K)` using `by rw [h]; exact Submodule.mem_top`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem IsIrreducible.of_equiv (hπ : π.IsIrreducible) (e : π.Equiv σ) : σ.IsIrreducible := by
   obtain ⟨hnt, hπ⟩ := hπ
@@ -486,7 +486,7 @@ theorem IsIrreducible.of_equiv (hπ : π.IsIrreducible) (e : π.Equiv σ) : σ.I
     exact this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun hπ => hπ.of_equiv h.some, fun hσ => hσ.of_equiv h.some.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsEquivalent.isIrreducible_iff (h : π.IsEquivalent σ) :
     π.IsIrreducible ↔ σ.IsIrreducible :=
@@ -520,7 +520,7 @@ Both sides reduce to the same expression.
     ((π.restrict V hV g v : V) : H) = π g v := rfl
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 lemma subtypeL_mem_intertwiners : V.subtypeL ∈ (π.restrict V hV).intertwiners π :=
   fun _ _ => rfl

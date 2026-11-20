@@ -24,7 +24,7 @@ private noncomputable def onSub (ρ : Representation ℂ G V) (Z : Submodule ℂ
   map_mul' g h := by ext v; simp
 
 /- English proof (translation)
-Use `haveI := QuotientGroup.discreteTopology ho`. Establish `h : IsCompact ((fun u : G => (QuotientGroup.mk (u * t) : G ⧸ I)) '' (I : Set G))` using `hc.image (QuotientGroup.continuous_mk.comp (continuous_id.mul continuous_const))`. Use `h.finite_of_discrete.subset ?_` and prove the remaining obligations. Introduce and unpack `c ⟨u, hu, rfl⟩`. Conclude with `⟨u, hu, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem cosets_finite [TopologicalSpace G] [IsTopologicalGroup G] (I : Subgroup G)
     (hc : IsCompact (I : Set G)) (ho : IsOpen (I : Set G)) (t : G) :
@@ -37,15 +37,15 @@ private theorem cosets_finite [TopologicalSpace G] [IsTopologicalGroup G] (I : S
   exact ⟨u, hu, rfl⟩
 
 /- English proof (translation)
-Establish `key : ∀ c ∈ T, π c.out v - π t v ∈ twKer π N 1`. Introduce `c hc`. Take `⟨u, hu, rfl⟩` from `(hT c).1 hc`. Take `⟨x, hx, b, hb, e⟩` from `hfac u hu`. Take `⟨i, hi⟩` from `QuotientGroup.mk_out_eq_mul I (u * t)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : π (QuotientGroup.mk (u * t) : G ⧸ I).out v = π x (π t v)`. Rewrite using `[hi, e, map_mul, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, Module.End.mul_apply, hv _ i.2, hv _ hb]`. Rewrite using `[h1]`. Conclude with `GlobalTheory.IwahoriInj.sub_mem_twKer hx _`. Establish `h2 : ∑ c ∈ T, (π c.out v - π t v) ∈ twKer π N 1` using `Submodule.sum_mem _ key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Finset.sum_sub_distrib, hsum, zero_sub, neg_mem_iff, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ]`. Establish `hne : (T.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 ⟨_, (hT _).2 ⟨1, one_mem _, by rw [one_mul]⟩⟩)`. Establish `h3 : π t v ∈ twKer π N 1` using `(Submodule.smul_mem_iff _ hne).1 h2`. Establish `h4 : twKer π N 1 ≤ (twKer π N 1).comap (π t⁻¹)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨h, w, rfl⟩`. Establish `e : π t⁻¹ (π (h : G) w - w) = π (t⁻¹ * h * t) (π t⁻¹ w) - π t⁻¹ w`. Rewrite using `[map_sub, ← Module.End.mul_apply (π (t⁻¹ * h * t)), ← map_mul, ← Module.End.mul_apply (π t⁻¹) (π (h : G)), ← map_mul]`. Use `congr 3`. Use `group`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `GlobalTheory.IwahoriInj.sub_mem_twKer (π := π) (hnorm h h.2) (π t⁻¹ w)` using `[e]`. Establish `h5` using `h4 h3`. Rewrite `h5` using `[Submodule.mem_comap, ← Module.End.mul_apply, ← map_mul]`. Simplify using `using h5`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem mem_twKer_of_sum (π : Representation ℂ G V) (I N : Subgroup G) (t : G) (v : V)
     (hv : ∀ u ∈ I, π u v = v) (T : Finset (G ⧸ I))
@@ -93,7 +93,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {n : ℕ}
 
 /- English proof (translation)
-Establish `h0 : ((GLnLocal.uniformizer F : 𝒪[F]) : F) ≠ 0` using `Cartan.uniformizer_ne_zero F`. Establish `e : (((Cartan.diagPow F n ν)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = diagonal fun i => ((GLnLocal.uniformizer F : 𝒪[F]) : F) ^ (-ν i)` using `rfl`. Rewrite using `[Units.val_mul, Units.val_mul, e, Cartan.coe_diagPow, mul_diagonal, diagonal_mul, sub_eq_add_neg, add_comm, zpow_add₀ h0]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem conj_apply (ν : Fin n → ℤ) (g : GL (Fin n) F) (i j : Fin n) :
     (((Cartan.diagPow F n ν)⁻¹ * g * Cartan.diagPow F n ν : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j =
@@ -106,11 +106,11 @@ private theorem conj_apply (ν : Fin n → ℤ) (g : GL (Fin n) F) (i j : Fin n)
   ring
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `(GLnLocal.mem_iwahori_iff F n).1 hb`. Establish `hle : ∀ i j, j ≤ i → valuation F (((GLnLocal.uniformizer F : 𝒪[F]) : F) ^ (ν j - ν i) * (b : Matrix (Fin n) (Fin n) F) i j) ≤ valuation F ((b : Matrix (Fin n) (Fin n) F) i j)` using `fun i j hij => by`. Use `Parabolic.valuation_zpow_mul_le_pow_mul (F := F) (x := (b : Matrix (Fin n) (Fin n) F) i j) (e := 0) (z := ν j - ν i) (by have := hν hij; simp only [Nat.cast_zero]; omega)` as an intermediate fact. Simplify using `using this`. Use `(GLnLocal.mem_iwahori_iff F n).2 ⟨fun i j => ?_, fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[conj_apply]`. Break down `lt_or_ge i j with h | h` into its components or cases. Rewrite using `[hl i j h, mul_zero, map_zero]`. Conclude with `zero_le'`. Conclude with `(hle i j h).trans (h1 i j)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conj_apply]`. Conclude with `(hle i j hij.le).trans_lt (h2 i j hij)`. Rewrite using `[conj_apply, sub_self, zpow_zero, one_mul]`. Conclude with `h3 i`.
+A detailed English derivation is pending.
 -/
 private theorem conj_mem_iwahori {ν : Fin n → ℤ} (hν : Antitone ν) {b : GL (Fin n) F}
     (hb : b ∈ GLnLocal.iwahori F n)
@@ -136,7 +136,7 @@ private theorem conj_mem_iwahori {ν : Fin n → ℤ} (hν : Antitone ν) {b : G
     exact h3 i
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(mem_unipB F).1 hx`. Use `(mem_unipB F).2 ⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[conj_apply, h1 i j hij, mul_zero]`. Rewrite using `[conj_apply, h2 i, sub_self, zpow_zero, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem conj_mem_unipB (ν : Fin n → ℤ) {x : GL (Fin n) F} (hx : x ∈ unipB F (Fin n)) :
     (Cartan.diagPow F n ν)⁻¹ * x * Cartan.diagPow F n ν ∈ unipB F (Fin n) := by
@@ -146,9 +146,9 @@ private theorem conj_mem_unipB (ν : Fin n → ℤ) {x : GL (Fin n) F} (hx : x �
   · rw [conj_apply, h2 i, sub_self, zpow_zero, one_mul]
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `hg`. Use `⟨u, ?_, ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_comap.2 ((GroundTheory.Automorphic.mem_borel_iff _).2 fun i j hij => ?_)` and prove the remaining obligations. Rewrite using `[GLnLocal.residueReduction_apply]`. Conclude with `(GlobalTheory.SmGL.mem_borel _).1 hu i j hij`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem iwahori_le (g : GL (Fin n) F) (hg : g ∈ iwahori F (Fin n)) :
     g ∈ GLnLocal.iwahori F n := by
@@ -162,9 +162,9 @@ private theorem iwahori_le (g : GL (Fin n) F) (hg : g ∈ iwahori F (Fin n)) :
     rfl
 
 /- English proof (translation)
-Take `⟨x, hx, y, hy, z, hz, rfl⟩` from `Parabolic.iwahori_iwahoriFactorization' (β := (id : Fin n → Fin n)) monotone_id u hu`. Take `⟨hxP, hx1⟩` from `Parabolic.mem_unipotentRadical.1 hx.2`. Establish `hyL` using `Parabolic.mem_levi.1 hy.2`. Take `⟨hz0, -⟩` from `Parabolic.mem_oppositeUnipotentRadical.1 hz.2`. Use `⟨x, (mem_unipB F).2 ⟨fun i j hij => hxP hij, fun i => ?_⟩, _, mul_mem (conj_mem_iwahori hν hy.1 fun i j h => hyL i j h.ne) (conj_mem_iwahori hν hz.1 fun i j h => hz0 i j h), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hx1 i i rfl`. Use `group`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem factor {ν : Fin n → ℤ} (hν : Antitone ν) (u : GL (Fin n) F)
     (hu : u ∈ GLnLocal.iwahori F n) :
@@ -182,13 +182,11 @@ private theorem factor {ν : Fin n → ℤ} (hν : Antitone ν) (u : GL (Fin n) 
   · group
 
 /- English proof (translation)
-Establish `hS` using `cosets_finite (GLnLocal.iwahori F n) (GLnLocal.isCompact_iwahori F n) (GLnLocal.isOpen_iwahori F n) (Cartan.diagPow F n ν)`. Establish `h1 : ∑ c ∈ hS.toFinset, ρ c.out v = 0`. Rewrite using `[← finsum_mem_eq_finite_toFinset_sum _ hS]`. Conclude with `h0`. Set `π` to `onSub ρ Z hZ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hπ : ∀ (g : GL (Fin n) F) (a : Z), ((π g a : Z) : V) = ρ g a` using `fun _ _ => rfl`. Establish `hsmooth : GlobalTheory.PRep.IsSmooth π` using `fun a => by`. Establish `: {g : GL (Fin n) F | π g a = a} = {g | ρ g a = a}`. Use extensionality with `g`. Conclude with `Subtype.ext_iff`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hsm a a.2`. Establish `hker : (⟨v, hvZ⟩ : Z) ∈ twKer π (unipB F (Fin n)) 1`. Use `mem_twKer_of_sum π (GLnLocal.iwahori F n) _ (Cartan.diagPow F n ν) _ (fun u hu => Subtype.ext (hv u hu)) hS.toFinset (fun c => by simp) (factor hν) (fun x hx => conj_mem_unipB ν hx) (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum]`.
-
-Conclude with `h1`. Establish `hfix : (⟨v, hvZ⟩ : Z) ∈ fixed π (iwahori F (Fin n))` using `GlobalTheory.IwahoriInj.mem_fixed.2 fun h hh => Subtype.ext (hv h (iwahori_le h hh))`. Establish `h2` using `(injective_iff_map_eq_zero _).1 (GlobalTheory.IwahoriInj.iwahoriProj_injective F (Fin n) Z π hsmooth) ⟨_, hfix⟩ (Subtype.ext ((Submodule.Quotient.mk_eq_zero _).2 hker))`. Conclude with `congrArg (fun a : fixed π (iwahori F (Fin n)) => ((a : Z) : V)) h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem local_inj {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin n) F) V) (Z : Submodule ℂ V) (hZ : ∀ g, ∀ v ∈ Z, ρ g v ∈ Z)
@@ -226,7 +224,7 @@ end Local
 end UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.IwahoriInjection
 
 /- English proof (translation)
-Introduce `K _ _ n w V _ _ ρ Z hZ hsm ν hν v hvZ hv h0`. Conclude with `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.IwahoriInjection.local_inj ρ Z hZ hsm ν hν v hvZ hv h0`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.iwInj :
     ∀ {K : Type} [Field K] [NumberField K] (n : ℕ) (w : Pl K) {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (Gw n w) V) (Z : Submodule ℂ V), (∀ g, ∀ v ∈ Z, ρ g v ∈ Z) →

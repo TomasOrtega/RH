@@ -20,7 +20,7 @@ set_option autoImplicit false
 namespace GlobalTheory.BirOrd
 
 /- English proof (translation)
-Introduce `X Y _ _ p _ n _ s _ hbij E E' hO`. Conclude with `⟨DivOver.Over.ord_fnPull_of_bijective ℂ X Y p s hbij E' E hO, fun η hη => formOrd_ratPull_of_over ℂ X Y p s hbij E' E hO n η hη⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ord_and_formOrd_of_over : ∀ {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] (n : ℕ),
     topologicalKrullDim X = n → ∀ (s : Y ⟶ X) [IsDominant s], Function.Bijective (functionFieldMap s) →

@@ -14,7 +14,7 @@ open GlobalTheory.Mom.LowVec
 variable {k r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [mEmb]`. Conclude with `dif_neg h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma mEmb_apply_of_not_mem_block (m : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (i j : Fin (2 * r + k + 1))
     (h : ¬((r ≤ i.val ∧ i.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k))) :
@@ -23,7 +23,7 @@ private lemma mEmb_apply_of_not_mem_block (m : Matrix (Fin (k + 1)) (Fin (k + 1)
   exact dif_neg h
 
 /- English proof (translation)
-Simplify using `only [mEmb]`. Conclude with `dif_pos h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma mEmb_apply_of_mem_block (m : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (i j : Fin (2 * r + k + 1))
     (h : (r ≤ i.val ∧ i.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k)) :
@@ -32,11 +32,11 @@ private lemma mEmb_apply_of_mem_block (m : Matrix (Fin (k + 1)) (Fin (k + 1)) �
   exact dif_pos h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single i]`. Distinguish the cases in `hi : r ≤ i.val`. Rewrite using `[hv i hi, mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mEmb_apply_of_not_mem_block m i i (fun h => hi h.1.1), if_pos rfl, one_mul]`. Introduce `j _ hji`. Distinguish the cases in `hj : r ≤ j.val`. Rewrite using `[hv j hj, mul_zero]`. Rewrite using `[mEmb_apply_of_not_mem_block m i j (fun h => hj h.2.1), if_neg (Ne.symm hji), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mEmb_mulVec_of_supp (m : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) {v : Fin (2 * r + k + 1) → ℂ}
     (hv : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → v i = 0) : mEmb k r m *ᵥ v = v := by
@@ -54,21 +54,19 @@ theorem mEmb_mulVec_of_supp (m : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) {v : Fi
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`. Distinguish the cases in `hj : r ≤ j.val ∧ j.val ≤ r + k`. Rewrite using `[mEmb_apply_of_mem_block (m * n) i j ⟨hi, hj⟩, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Set `e : Fin (k + 1) ↪ Fin (2 * r + k + 1)` to `⟨fun t => ⟨r + t.val, by omega⟩, fun s t h => by`. Establish `h'` using `congrArg Fin.val h`. Conclude with `Fin.ext (by simp only at h'; omega)⟩`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.map e)), Finset.sum_map]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t _`. Establish `ht : (e t).val = r + t.val` using `rfl`. Establish `h' : (⟨(e t).val - r, by rw [ht]; omega⟩ : Fin (k + 1)) = t` using `Fin.ext (by show (e t).val - r = t.val; rw [ht]; omega)`. Rewrite using `[mEmb_apply_of_mem_block m i (e t) ⟨hi, by rw [ht]; omega, by rw [ht]; omega⟩, mEmb_apply_of_mem_block n (e t) j ⟨⟨by rw [ht]; omega, by rw [ht]; omega⟩, hj⟩, h']`. Introduce `l _ hl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hl' : ¬(r ≤ l.val ∧ l.val ≤ r + k)`. Introduce and unpack `⟨h1, h2⟩`. Apply `hl` to reduce the goal to its premises. Conclude with `Finset.mem_map.2 ⟨⟨l.val - r, by omega⟩, Finset.mem_univ _, Fin.ext (by show r + (l.val - r) = l.val; omega)⟩`. Rewrite using `[mEmb_apply_of_not_mem_block m i l (fun h => hl' h.2), if_neg (by rintro rfl; exact hl' hi), zero_mul]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mEmb_apply_of_not_mem_block (m * n) i j (fun h => hj h.2)]`. Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[mEmb_apply_of_not_mem_block n j j (fun h => hj h.1), if_pos rfl, mul_one]`. Conclude with `mEmb_apply_of_not_mem_block m i j (fun h => hj h.2)`. Introduce `l _ hlj`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[mEmb_apply_of_not_mem_block n l j (fun h => hj h.2), if_neg hlj, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Rewrite using `[mEmb_apply_of_not_mem_block (m * n) i j (fun h => hi h.1)]`. Rewrite using `[Finset.sum_eq_single i]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mEmb_apply_of_not_mem_block m i i (fun h => hi h.1), if_pos rfl, one_mul]`. Conclude with `mEmb_apply_of_not_mem_block n i j (fun h => hi h.1)`. Introduce `l _ hli`. Rewrite using `[mEmb_apply_of_not_mem_block m i l (fun h => hi h.1), if_neg (Ne.symm hli), zero_mul]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ i) h`.
+A detailed English derivation is pending.
 -/
 private lemma mEmb_mul' (m n : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
     mEmb k r m * mEmb k r n = mEmb k r (m * n) := by
@@ -113,11 +111,11 @@ private lemma mEmb_mul' (m n : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
       exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : (r ≤ i.val ∧ i.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k)`. Rewrite using `[mEmb_apply_of_mem_block 1 i j h, Matrix.one_apply, Matrix.one_apply]`. Take `⟨⟨h1, h2⟩, h3, h4⟩` from `h`. Distinguish the cases in `hij : i = j`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hij, if_neg]`. Introduce `h'`. Apply `hij` to reduce the goal to its premises.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h'' : i.val - r = j.val - r` using `congrArg Fin.val h'`. Conclude with `Fin.ext (by omega)`. Rewrite using `[mEmb_apply_of_not_mem_block 1 i j h, Matrix.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mEmb_one' : mEmb k r (1 : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) = 1 := by
   ext i j
@@ -135,7 +133,7 @@ private lemma mEmb_one' : mEmb k r (1 : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) 
   · rw [mEmb_apply_of_not_mem_block 1 i j h, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `h1 : m * m⁻¹ = 1` using `Matrix.mul_nonsing_inv m hm`. Establish `h2 : (mEmb k r m).det * (mEmb k r m⁻¹).det = 1`. Rewrite using `[← Matrix.det_mul, mEmb_mul', h1, mEmb_one', Matrix.det_one]`. Conclude with `isUnit_iff_ne_zero.2 (left_ne_zero_of_mul_eq_one h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_mEmb {m : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hm : IsUnit m.det) :
     IsUnit (mEmb k r m).det := by
@@ -145,25 +143,23 @@ theorem isUnit_det_mEmb {m : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hm : IsUni
   exact isUnit_iff_ne_zero.2 (left_ne_zero_of_mul_eq_one h2)
 
 /- English proof (translation)
-Establish `hinv : (Matrix.diagonal a)⁻¹ = Matrix.diagonal fun b => (a b)⁻¹`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Establish `: (fun b => a b * (a b)⁻¹) = fun _ => (1 : ℂ)` using `funext fun b => mul_inv_cancel₀ (ha b)`. Rewrite using `[this, Matrix.diagonal_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i => if h : i.val < r then a ⟨i.val, h⟩ else if h' : r + k < i.val then star ((a ⟨2 * r + k - i.val, by omega⟩)⁻¹) else 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [uEmb]`. Rewrite using `[hinv]`. Distinguish the cases in `h1 : i.val < r ∧ j.val < r`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos h1]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq, dif_pos h1.1]`. Rewrite using `[Matrix.diagonal_apply_ne _ hij, Matrix.diagonal_apply_ne]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `h2` using `congrArg Fin.val h`. Conclude with `hij (Fin.ext h2)`. Rewrite using `[dif_neg h1]`. Distinguish the cases in `h2 : r + k < i.val ∧ r + k < j.val`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos h2]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq, dif_neg (show ¬ i.val < r from fun h => h1 ⟨h, h⟩), dif_pos h2.1]`. Establish `hne : (2 * r + k - j.val) ≠ (2 * r + k - i.val)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hij` to reduce the goal to its premises. Conclude with `Fin.ext (by omega)`. Rewrite using `[Matrix.diagonal_apply_ne _ hij, Matrix.diagonal_apply_ne, star_zero]`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrArg Fin.val h`. Conclude with `hne h2`. Rewrite using `[dif_neg h2]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_pos rfl, Matrix.diagonal_apply_eq, dif_neg (show ¬ i.val < r from fun h => h1 ⟨h, h⟩), dif_neg (show ¬ r + k < i.val from fun h => h2 ⟨h, h⟩)]`. Rewrite using `[if_neg hij, Matrix.diagonal_apply_ne _ hij]`. Introduce `i dsimp only split_ifs`. Conclude with `ha _`. Rewrite using `[Ne, star_eq_zero, inv_eq_zero]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Conclude with `ha _`. Conclude with `one_ne_zero`. Introduce `b dsimp only`. Establish `hb : (eI k r b).val = b.val` using `rfl`. Rewrite using `[dif_pos (show (eI k r b).val < r by rw [hb]; exact b.isLt)]`.
-
-Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem uEmb_diagonal (a : Fin r → ℂ) (ha : ∀ b, a b ≠ 0) :
     ∃ d : Fin (2 * r + k + 1) → ℂ, uEmb k r (Matrix.diagonal a) = Matrix.diagonal d ∧ (∀ i, d i ≠ 0) ∧
@@ -222,7 +218,7 @@ theorem uEmb_diagonal (a : Fin r → ℂ) (ha : ∀ b, a b ≠ 0) :
     congr 1
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.eucl`. Rewrite using `[show ‖v i‖ = Real.sqrt (Complex.normSq (v i)) by`. Rewrite using `[Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg _)]]`. Conclude with `Real.sqrt_le_sqrt (Finset.single_le_sum (fun j _ => Complex.normSq_nonneg (v j)) (Finset.mem_univ i))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_eucl {N : ℕ} (v : Fin N → ℂ) (i : Fin N) : ‖v i‖ ≤ eucl v := by
   unfold Formalism.MainNotions.S.eucl
@@ -231,9 +227,9 @@ theorem norm_le_eucl {N : ℕ} (v : Fin N → ℂ) (i : Fin N) : ‖v i‖ ≤ e
   exact Real.sqrt_le_sqrt (Finset.single_le_sum (fun j _ => Complex.normSq_nonneg (v j)) (Finset.mem_univ i))
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.eucl`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[Pi.single_eq_same, Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg _)]`. Introduce `j _ hj`. Rewrite using `[Pi.single_eq_of_ne hj, Complex.normSq_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eucl_single {N : ℕ} (i : Fin N) (c : ℂ) : eucl (Pi.single i c : Fin N → ℂ) = ‖c‖ := by
   unfold Formalism.MainNotions.S.eucl
@@ -245,27 +241,27 @@ theorem eucl_single {N : ℕ} (i : Fin N) (c : ℂ) : eucl (Pi.single i c : Fin 
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Use `set g := uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m with hg`. Take `⟨d, hd, hd0, hda⟩` from `uEmb_diagonal (k := k) (fun b => (a b : ℂ)) (fun b => Complex.ofReal_ne_zero.2 (ha b).ne')`. Establish `hgu : IsUnit g.det`. Rewrite using `[hg, Matrix.det_mul, hd, Matrix.det_diagonal]`. Conclude with `(isUnit_iff_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun i _ => hd0 i)).mul (isUnit_det_mEmb hm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ w : Fin (2 * r + k + 1) → ℂ, (∀ i : Fin (2 * r + k + 1), r ≤ i.val → w i = 0) → g⁻¹ *ᵥ w = fun i => w i / d i`. Introduce `w hw`. Establish `hu : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → (fun i => w i / d i) i = 0`. Introduce `i hi`. Simplify using `[hw i hi]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgw : g *ᵥ (fun i => w i / d i) = w`. Rewrite using `[hg, ← Matrix.mulVec_mulVec, mEmb_mulVec_of_supp m hu, hd]`. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_diagonal]`. Use `show d i * (w i / d i) = w i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[mul_div_assoc', mul_div_cancel_left₀ _ (hd0 i)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hbi : (Formalism.QuantumDeterminants.eI k r b).val = b.val` using `rfl`. Establish `hf : Formalism.QuantumDeterminants.fvec k r z b.castSucc = Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r b)`. Unfold `Formalism.QuantumDeterminants.fvec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[dif_pos (show (Fin.castSucc b).val < r from b.isLt)]`. Apply the tactic sequence `try rfl`. Establish `hsupp : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r b) i = 0`. Introduce `i hi`. Rewrite using `[Formalism.QuantumDeterminants.bvec, Pi.single_eq_of_ne]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Introduce `h`. Rewrite `hi` using `[h]`. Use linear arithmetic over natural numbers and integers. Unfold `Formalism.MainNotions.S.lA`. Simplify using `only [hf]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `IsLeast.csInf_eq` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Rewrite using `[Set.mem_setOf_eq]`. Use `⟨0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_zero, key _ hsupp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hs : (fun i => Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r b) i / d i) = Pi.single (Formalism.QuantumDeterminants.eI k r b) ((a b : ℂ)⁻¹)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = Formalism.QuantumDeterminants.eI k r b`. Substitute `hi` using the available equality. Rewrite using `[Formalism.QuantumDeterminants.bvec, Pi.single_eq_same, Pi.single_eq_same, hda, one_div]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Formalism.QuantumDeterminants.bvec, Pi.single_eq_of_ne hi, Pi.single_eq_of_ne hi, zero_div]`. Rewrite using `[hs, eucl_single, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (ha b)]`. Introduce `t ht`. Rewrite `ht` using `[Set.mem_setOf_eq]`. Take `⟨y, hy, rfl⟩` from `ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hy'` using `(GlobalTheory.Mom.LowVec.mem_flagSpan).1 hy`. Establish `hw : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → (Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r b) - y) i = 0`. Introduce `i hi`. Rewrite using `[Pi.sub_apply, hy' i (by rw [Fin.coe_castSucc]; omega), hsupp i hi, sub_zero]`. Rewrite using `[key _ hw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r b) - y) (Formalism.QuantumDeterminants.eI k r b) = 1`. Rewrite using `[Pi.sub_apply, hy' _ (by rw [Fin.coe_castSucc]; exact le_of_eq hbi.symm), Formalism.QuantumDeterminants.bvec, Pi.single_eq_same, sub_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, hda, one_div, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (ha b)]`. Use `_ ≤ _ := norm_le_eucl (fun i => (Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r b) - y) i / d i) (Formalism.QuantumDeterminants.eI k r b)`.
+A detailed English derivation is pending.
 -/
 theorem lA_torus (z : Fin (2 * r + k + 1) → ℂ) (a : Fin r → ℝ) (ha : ∀ b, 0 < a b)
     {m : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hm : IsUnit m.det) (b : Fin r) :
@@ -333,7 +329,7 @@ theorem lA_torus (z : Fin (2 * r + k + 1) → ℂ) (a : Fin r → ℝ) (ha : ∀
       _ ≤ _ := norm_le_eucl (fun i => (Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r b) - y) i / d i) (Formalism.QuantumDeterminants.eI k r b)
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.lA`. Apply `Real.sInf_nonneg` to reduce the goal to its premises. Introduce and unpack `t ⟨y, _, rfl⟩`. Conclude with `Real.sqrt_nonneg _`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lA_nonneg (z : Fin (2 * r + k + 1) → ℂ) (x : Mat k r) (a : Fin (r + 1)) : 0 ≤ lA k r z x a := by
   unfold Formalism.MainNotions.S.lA
@@ -342,19 +338,19 @@ theorem lA_nonneg (z : Fin (2 * r + k + 1) → ℂ) (x : Mat k r) (a : Fin (r + 
   exact Real.sqrt_nonneg _
 
 /- English proof (translation)
-Introduce `k r z hz`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x _ s hs κ hκ`. Establish `hl : ∀ a, lA k r z (s * x * κ) a = lA k r z x a` using `fun a => by`. Rewrite using `[GlobalTheory.Mom.LowVec.lA_right z (s * x) hκ.2 a, GlobalTheory.Mom.LowVec.lA_left hz hs x a]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨hl, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.Amp.Sg`. Simplify using `only [hl]`. Introduce `a ha m hm b`. Use `lA_torus z a ha ?_ b` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hH : (Formalism.QuantumDeterminants.Hb k).det ≠ 0`. Unfold `Formalism.QuantumDeterminants.Hb`. Rewrite using `[Matrix.det_diagonal]`. Apply the tactic sequence `exact Finset.prod_ne_zero_iff.2 fun j _ => by split_ifs <;> norm_num`. Establish `hm' : mᴴ * Formalism.QuantumDeterminants.Hb k * m = Formalism.QuantumDeterminants.Hb k` using `hm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Apply `hH` to reduce the goal to its premises. Rewrite using `[← hm', Matrix.det_mul, h0, mul_zero]`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : ∀ a, lA k r z x a ≤ Sg k r z x` using `fun a => by`. Unfold `GlobalTheory.Amp.Sg`. Conclude with `(Finset.le_fold_max _).2 (Or.inr ⟨a, Finset.mem_univ _, le_rfl⟩)`. Establish `h1 : 1 ≤ Sg k r z x`. Unfold `GlobalTheory.Amp.Sg`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Finset.le_fold_max _).2 (Or.inl le_rfl)`. Use `⟨h1, fun a => ⟨lA_nonneg z x a, hle a⟩, ?_⟩` and prove the remaining obligations. Establish `h2 : Sg k r z x ≤ 1 ∨ ∃ a ∈ (Finset.univ : Finset (Fin (r + 1))), Sg k r z x ≤ lA k r z x a`. Establish `h3 : Sg k r z x ≤ Sg k r z x` using `le_rfl`. Unfold `GlobalTheory.Amp.Sg at h3 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `(Finset.le_fold_max _).1 h3`. Break down `h2 with h | ⟨a, _, h⟩` into its components or cases. Conclude with `Or.inl (le_antisymm h h1)`. Conclude with `Or.inr ⟨a, le_antisymm h (hle a)⟩`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem lengths_basic : ∀ (k r : ℕ) (z : (Fin (2 * r + k + 1) → ℂ)), inWb k r z → (∀ x ∈ GG k r, ∀ s ∈ Sset k r z, ∀ κ ∈ (GG k r ∩ (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set (Mat k r))), (∀ a, lA k r z (s * x * κ) a = lA k r z x a) ∧ Sg k r z (s * x * κ) = Sg k r z x) ∧ (∀ (a : Fin r → ℝ), (∀ b, 0 < a b) → ∀ m ∈ UH (Hb k), ∀ b : Fin r, lA k r z (uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m) b.castSucc = (a b)⁻¹) ∧ (∀ x, 1 ≤ Sg k r z x ∧ (∀ a, 0 ≤ lA k r z x a ∧ lA k r z x a ≤ Sg k r z x) ∧ (Sg k r z x = 1 ∨ ∃ a, Sg k r z x = lA k r z x a)) := by
   intro k r z hz

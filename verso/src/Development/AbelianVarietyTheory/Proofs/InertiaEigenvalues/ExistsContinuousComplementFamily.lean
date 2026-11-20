@@ -7,9 +7,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.PtCore
 
 /- English proof (translation)
-Establish `key : ∀ π : D.nd.X i, ∃ ρ : Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.r) (D.nd.O i), Continuous (fun g => ((ρ g : GL (Fin D.R.r) (D.nd.O i)) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i))) ∧ (π ∈ D.nd.Z i → GlobalTheory.IndefiniteRowSideFullHecke.BlockRepresentationsSemisimple …`. Introduce `π`. Distinguish the cases in `hπ : π ∈ D.nd.Z i`. Take `⟨ρ, hρ⟩` from `h i π hπ (r π) (hr π)`. Conclude with `⟨ρ, hρ.cont, fun _ => hρ⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨1, continuous_const, fun h' => absurd h' hπ⟩`. Use `choose ρ h1 h2 using key`. Conclude with `⟨ρ, h1, h2⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_continuous_complementFamily {D : D7} (h : GlobalTheory.IndefiniteRowSideFullHecke.BlockRepresentationsSemisimple.Complement_at D) (i : D.nd.Loc)
     (r : D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (hr : GoodR D.nd i r) :
@@ -29,7 +29,7 @@ theorem exists_continuous_complementFamily {D : D7} (h : GlobalTheory.Indefinite
   exact ⟨ρ, h1, h2⟩
 
 /- English proof (translation)
-Introduce `hC D hG hr`. Use `choose r hr using hr`. Use `choose ρ h1 h2 using fun i => exists_continuous_complementFamily (GlobalTheory.BlockComplement.complement_at hC D hG) i (r i) (hr i)`. Conclude with `⟨r, ρ, hr, h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ptFam : GlobalTheory.TwSys.Cheb → ∀ (D : D7), GlobalTheory.BlockComplement.GaloisRepsCusp D →
     (∀ i, ∃ r, GoodR D.nd i r) → ∃ r ρ, PtFam D r ρ := by

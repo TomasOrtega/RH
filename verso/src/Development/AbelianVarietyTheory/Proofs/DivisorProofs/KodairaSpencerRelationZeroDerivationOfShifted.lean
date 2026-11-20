@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.Heat.ZeroKS
 
 /- English proof (translation)
-Rewrite using `[WtAlg.valR_eq' ξ V h, WtAlg.valR_eq' ξ U (h.trans (ξ.preimage_mono e))]`. Use `congr 1`. Rewrite using `[resG, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_res' {F : Type} [CommRing F] {Z : Scheme.{0}} (ξ : Sp F ⟶ Z) {U V : Z.Opens} (e : V ≤ U)
     (h : ⊤ ≤ ξ ⁻¹ᵁ V) (a : Γ(Z, U)) : valR ξ V (resG Z e a) = valR ξ U a := by
@@ -32,14 +32,14 @@ theorem valR_res' {F : Type} [CommRing F] {Z : Scheme.{0}} (ξ : Sp F ⟶ Z) {U 
   rw [resG, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Simplify using `only [WtAlg.valR_eq' _ _ h, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valR_sum' {F : Type} [CommRing F] {Z : Scheme.{0}} (ξ : Sp F ⟶ Z) {O : Z.Opens} (h : ⊤ ≤ ξ ⁻¹ᵁ O)
     {β : Type} (s : Finset β) (f : β → Γ(Z, O)) : valR ξ O (∑ i ∈ s, f i) = ∑ i ∈ s, valR ξ O (f i) := by
   simp only [WtAlg.valR_eq' _ _ h, map_sum]
 
 /- English proof (translation)
-Establish `e : valR ξ O (u : Γ(Z, O)) * valR ξ O (↑u⁻¹ : Γ(Z, O)) = 1`. Rewrite using `[← WtAlg.valR_mul'' _ _ h, Units.mul_inv, WtAlg.valR_eq' _ _ h, map_one, map_one]`. Conclude with `eq_inv_of_mul_eq_one_right e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_inv' {F : Type} [Field F] {Z : Scheme.{0}} (ξ : Sp F ⟶ Z) {O : Z.Opens} (h : ⊤ ≤ ξ ⁻¹ᵁ O)
     (u : Γ(Z, O)ˣ) : valR ξ O (↑u⁻¹ : Γ(Z, O)) = (valR ξ O (u : Γ(Z, O)))⁻¹ := by
@@ -48,7 +48,7 @@ theorem valR_inv' {F : Type} [Field F] {Z : Scheme.{0}} (ξ : Sp F ⟶ Z) {O : Z
   exact eq_inv_of_mul_eq_one_right e
 
 /- English proof (translation)
-Introduce `h0`. Establish `e : valR ξ O (u : Γ(Z, O)) * valR ξ O (↑u⁻¹ : Γ(Z, O)) = 1`. Rewrite using `[← WtAlg.valR_mul'' _ _ h, Units.mul_inv, WtAlg.valR_eq' _ _ h, map_one, map_one]`. Rewrite `e` using `[h0, zero_mul]`. Conclude with `zero_ne_one e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_unit_ne {F : Type} [Field F] {Z : Scheme.{0}} (ξ : Sp F ⟶ Z) {O : Z.Opens} (h : ⊤ ≤ ξ ⁻¹ᵁ O)
     (u : Γ(Z, O)ˣ) : valR ξ O (u : Γ(Z, O)) ≠ 0 := by
@@ -59,15 +59,15 @@ theorem valR_unit_ne {F : Type} [Field F] {Z : Scheme.{0}} (ξ : Sp F ⟶ Z) {O 
   exact zero_ne_one e
 
 /- English proof (translation)
-Establish `hl : ∀ a, δ a (G ^ k * S) / (G ^ k * S) = k * (δ a G / G) + δ a S / S`. Introduce `a`. Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by`. Break down `Nat.eq_zero_or_pos k with h0 | h0` into its components or cases. Conclude with `absurd (by rw [h0]; simp) hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `omega⟩`. Rewrite using `[Derivation.leibniz, Derivation.leibniz_pow]`. Simplify using `only [smul_eq_mul, nsmul_eq_mul, Nat.add_sub_cancel]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : ∑ e, ((k : F)⁻¹ * ∑ a, lam' a e * δ a S * S⁻¹) * δ e x = (k : F)⁻¹ * ∑ a, ∑ e, lam' a e * (δ a S / S) * δ e x`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key : ∑ a, ∑ e, lam' a e * ((k : F) * (δ a G / G) + δ a S / S) * δ e x = (k : F) * ∑ a, ∑ e, lam' a e * (δ a G / G) * δ e x + ∑ a, ∑ e, lam' a e * (δ a S / S) * δ e x`. Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3]`. Simplify using `only [hl]`. Rewrite using `[key, mul_add, ← _root_.mul_assoc, inv_mul_cancel₀ hk, _root_.one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem alg_val {F : Type} [Field F] {n : ℕ} (δ : Fin n → Derivation ℤ F F) (lam' : Fin n → Fin n → F) (k : ℕ)
     (hk : (k : F) ≠ 0) (G S : F) (hG : G ≠ 0) (hS : S ≠ 0) (y0 x : F) :
@@ -101,11 +101,11 @@ theorem alg_val {F : Type} [Field F] {n : ℕ} (δ : Fin n → Derivation ℤ F 
   ring
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hl : ∀ a, δ a (G * H) / (G * H) = δ a G / G + δ a H / H`. Introduce `a`. Rewrite using `[Derivation.leibniz]`. Simplify using `only [smul_eq_mul]`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hl]`. Rewrite using `[Finset.sum_comm (f := fun a b => lam' a b * (δ b H * H⁻¹) * δ a x)]`. Rewrite using `[sub_sub_sub_cancel_left, ← Finset.sum_sub_distrib]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [div_eq_mul_inv]`. Rewrite using `[hsym a b]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -134,61 +134,55 @@ end GlobalTheory.Heat.ZeroKS
 namespace GlobalTheory.Heat.ZeroKS
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun W hW => h.1 W (hW.trans hVU), fun W hW => h.2.1 W (hW.trans hVU), fun W W' h' hW => h.2.2 W W' h' (hW.trans hVU)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isField_mono {Z : Scheme.{0}} {U V : Z.Opens} {d : Fld Z} (h : IsField U d) (hVU : V ≤ U) : IsField V d :=
   ⟨fun W hW => h.1 W (hW.trans hVU), fun W hW => h.2.1 W (hW.trans hVU), fun W W' h' hW => h.2.2 W W' h' (hW.trans hVU)⟩
 
 /- English proof (translation)
-Introduce `K _ _ P₀ n v dd hinv F _ ψ ξ hξ hinj δ hδ j₀ hj₀ δ₀ lam hlam hδ₀ k hk I s hcov haff hξs hf'`. Establish `hk0 : (k : F) ≠ 0`. Rewrite using `[← map_natCast ψ]`. Conclude with `(map_ne_zero ψ).2 (Nat.cast_ne_zero.2 (by omega))`. Establish `heq : ∀ O (h : ⊤ ≤ ξ ⁻¹ᵁ O) (f g : Γ(P₀.A.left, O)), valR ξ O f = valR ξ O g → f = g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `O h f g e`. Conclude with `sub_eq_zero.1 (hinj O _ h (by rw [WtAlg.valR_sub' _ _ h, e, sub_self]))`. Establish `hsub : ∀ O : P₀.A.left.Opens, ¬ ⊤ ≤ ξ ⁻¹ᵁ O → Subsingleton Γ(P₀.A.left, O)`. Introduce `O hO`. Establish `hb : O = ⊥`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Use `hO (GlobalTheory.T.top_le_preimage_nonempty_open_of_pointValue_injective K P₀ F ψ ξ hξ hinj O ?_)` and prove the remaining obligations. Rewrite using `[Set.nonempty_iff_ne_empty]`. Introduce `he`. Conclude with `hne (TopologicalSpace.Opens.ext (by simpa using he))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `CommRingCat.subsingleton_of_isTerminal (P₀.A.left.sheaf.isTerminalOfEqEmpty hb)`. Establish `hδψ : ∀ a r, δ a (ψ r) = 0`. Introduce `a r`. Establish `h1` using `hδ a ⊤ (constFn P₀.A.hom ⊤ r) (fun _ _ => trivial)`. Rewrite `h1` using `[Adjust.inv_constFn P₀.A (v a) (dd a) (hinv a), WtAlg.valR_zero', Adjust.valR_const P₀.A.hom ψ ξ hξ ⊤ (fun _ _ => trivial) r]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `h1.symm`. Set `S0 : I → F` to `fun i => valR ξ _ ((s i).f fun _ => j₀)`. Set `Tm : I → F → F` to `fun i x => ∑ a, ∑ e, ψ (lam a e) * (δ a (S0 i) / S0 i) * δ e x`. Set `Dv : I → F → F` to `fun i x => δ₀ x - (k : F)⁻¹ * Tm i x`. Establish `Tm_add : ∀ i x y, Tm i (x + y) = Tm i x + Tm i y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i x y`. Simplify using `only [Tm, map_add, mul_add, Finset.sum_add_distrib]`. Establish `Tm_mul : ∀ i x y, Tm i (x * y) = x * Tm i y + y * Tm i x`. Introduce `i x y`. Simplify using `only [Tm, Derivation.leibniz, smul_eq_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun e _ => by ring`. Establish `Dv_add : ∀ i x y, Dv i (x + y) = Dv i x + Dv i y`. Introduce `i x y`. Simplify using `only [Dv, map_add, Tm_add]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `Dv_mul : ∀ i x y, Dv i (x * y) = x * Dv i y + y * Dv i x`. Introduce `i x y`. Simplify using `only [Dv, Derivation.leibniz, smul_eq_mul, Tm_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : ∀ i, ∃ d : Fld P₀.A.left, IsField (Out.nonzeroLocus (s i)) d ∧ ∀ O, O ≤ Out.nonzeroLocus (s i) → ⊤ ≤ ξ ⁻¹ᵁ O → ∀ h, valR ξ O (d O h) = Dv i (valR ξ O h)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i`. Establish `hξi` using `hξs i`. Use `choose f' hf'' using hf' i`. Set `δf : Γ(P₀.A.left, Out.nonzeroLocus (s i)) → Γ(P₀.A.left, Out.nonzeroLocus (s i))` to `fun f => constFn P₀.A.hom _ ((k : K)⁻¹) * f' f`. Establish `hval : ∀ f, valR ξ _ (δf f) = Dv i (valR ξ _ f)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `f`. Simplify using `only [δf]`. Rewrite using `[WtAlg.valR_mul'' _ _ hξi, Adjust.valR_const P₀.A.hom ψ ξ hξ _ hξi, hf'' f, map_inv₀, map_natCast]`. Simplify using `only [Dv, Tm]`. Rewrite using `[mul_sub, ← _root_.mul_assoc, inv_mul_cancel₀ hk0, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨d, hdF, hdU⟩` from `GlobalTheory.DerFieldExt.exists_field P₀.A.left _ (haff i) δf (fun a b => heq _ hξi _ _ (by`. Rewrite using `[hval, WtAlg.valR_add' ξ _ hξi (δf a) (δf b), hval, hval, WtAlg.valR_add' ξ _ hξi a b, Dv_add]))`. Use the proof step `(fun a b => heq _ hξi _ _ (by`. Rewrite using `[hval, WtAlg.valR_add' ξ _ hξi, WtAlg.valR_mul'' ξ _ hξi a (δf b), WtAlg.valR_mul'' ξ _ hξi b (δf a), hval, hval, WtAlg.valR_mul'' ξ _ hξi a b, Dv_mul]))`. Use `⟨d, hdF, GlobalTheory.T.vectorField_follows_derivation_on_smaller_open_at_fieldPoint P₀.A.left _ (haff i) F ξ hξi d hdF (Dv i) (Dv_add i) (Dv_mul i) (fun f => ?_)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hdU]`. Conclude with `hval f`. Use `choose d hdF hdv using hd`. Set `Wo : I × P₀.L.ι → P₀.A.left.Opens` to `fun p => P₀.A.left.basicOpen ((s p.1).f fun _ => p.2)`. Establish `hWD : ∀ p, Wo p ≤ Out.nonzeroLocus (s p.1)` using `fun p => le_iSup (fun κ => P₀.A.left.basicOpen ((s p.1).f κ)) (fun _ => p.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hWU : ∀ p, Wo p ≤ 𝟙 P₀.A.left ⁻¹ᵁ P₀.L.U p.2` using `fun p => (P₀.A.left.basicOpen_le _).trans (LB.wchart_le P₀.L (fun _ : Fin 1 => 𝟙 P₀.A.left) (fun _ => p.2) 0)`. Set `u : ∀ p, Γ(P₀.A.left, Wo p)ˣ` to `fun p => (P₀.A.left.toRingedSpace.isUnit_res_basicOpen ((s p.1).f fun _ => p.2)).unit`. Set `y : ∀ p, Fin n → Γ(P₀.A.left, Wo p)` to `fun p e => constFn P₀.A.hom _ ((k : K)⁻¹) * ∑ a, constFn P₀.A.hom _ (lam a e) * dd a (Wo p) (u p).val * ((u p)⁻¹).val`. Set `dk : I × P₀.L.ι → Fld P₀.A.left` to `fun p O f => d p.1 O f + ∑ e, rsT (y p e) O * dd e O f`. Set `Gv : P₀.L.ι → F` to `fun j => valR ξ (P₀.L.U j₀ ⊓ P₀.L.U j) (P₀.L.g j₀ j).val`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hUj : ∀ p O, O ≤ Wo p → ⊤ ≤ ξ ⁻¹ᵁ O → ⊤ ≤ ξ ⁻¹ᵁ P₀.L.U p.2` using `fun p O hOW hO q hq => hWU p (hOW (hO hq))`. Establish `hGv : ∀ j, ⊤ ≤ ξ ⁻¹ᵁ P₀.L.U j → Gv j ≠ 0` using `fun j hj => valR_unit_ne ξ (O := P₀.L.U j₀ ⊓ P₀.L.U j) (fun q hq => ⟨hj₀ hq, hj hq⟩) (P₀.L.g j₀ j)`. Establish `hval : ∀ p O, O ≤ Wo p → ∀ (hO : ⊤ ≤ ξ ⁻¹ᵁ O) f, valR ξ O (dk p O f) = δ₀ (valR ξ O f) - ∑ a, ∑ e, ψ (lam a e) * (δ a (Gv p.2) / Gv p.2) * δ e (valR ξ O f)`. Introduce `p O hOW hO f`. Establish `hW : ⊤ ≤ ξ ⁻¹ᵁ Wo p` using `fun q hq => hOW (hO hq)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : valR ξ (Wo p) (u p : Γ(P₀.A.left, Wo p)) = valR ξ _ ((s p.1).f fun _ => p.2)` using `valR_res' ξ _ hW _`. Establish `hy : ∀ e, valR ξ (Wo p) (y p e) = (k : F)⁻¹ * ∑ a, ψ (lam a e) * δ a (valR ξ _ ((s p.1).f fun _ => p.2)) * (valR ξ _ ((s p.1).f fun _ => p.2))⁻¹`. Introduce `e`. Simplify using `only [y]`. Rewrite using `[WtAlg.valR_mul'' _ _ hW, Adjust.valR_const P₀.A.hom ψ ξ hξ _ hW, map_inv₀, map_natCast, valR_sum' ξ hW]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[WtAlg.valR_mul'' _ _ hW, WtAlg.valR_mul'' _ _ hW, Adjust.valR_const P₀.A.hom ψ ξ hξ _ hW, hδ a _ _ hW, valR_inv' ξ hW, hS]`. Establish `hSne : valR ξ _ ((s p.1).f fun _ => p.2) ≠ 0` using `hS ▸ valR_unit_ne ξ hW (u p)`. Establish `hE : S0 p.1 = Gv p.2 ^ k * valR ξ _ ((s p.1).f fun _ => p.2)` using `GlobalTheory.T.sectionPowerValue_chart_change_by_transition_pow P₀.A.left P₀.L k (s p.1) F ξ j₀ p.2 hj₀ (hUj p O hOW hO)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [dk]`. Rewrite using `[WtAlg.valR_add' _ _ hO, hdv p.1 O (hOW.trans (hWD p)) hO f, valR_sum' ξ hO]`. Rewrite using `[Finset.sum_congr rfl (fun e _ => by`. Rewrite using `[WtAlg.valR_mul'' _ _ hO, GlobalTheory.LogKSBal.valR_rsT ξ hOW hO, hy e, hδ e O f hO])]`. Simplify using `only [Dv, Tm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hE]`. Conclude with `alg_val δ (fun a e => ψ (lam a e)) k hk0 (Gv p.2) _ (hGv _ (hUj p O hOW hO)) hSne _ _`. Use `⟨I × P₀.L.ι, Wo, fun p => p.2, dk, ?_, hWU, fun p => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hx : x ∈ ⨆ i, Out.nonzeroLocus (s i)` using `by rw [hcov]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Take `⟨κ, hκ⟩` from `TopologicalSpace.Opens.mem_iSup.1 hi`. Take `⟨j, rfl⟩ : ∃ j, κ = fun _ => j` from `⟨κ 0, funext fun t => by rw [Subsingleton.elim t 0]⟩`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(i, j), hκ⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Adjust.isField_add_comb (d p.1) dd (y p) (isField_mono (hdF p.1) (hWD p)) (fun a => (hinv a).1)`. Introduce `O hO r`. Distinguish the cases in `hξO : ⊤ ≤ ξ ⁻¹ᵁ O`. Apply `heq O hξO` to reduce the goal to its premises. Rewrite using `[hval p O hO hξO, Adjust.valR_const P₀.A.hom ψ ξ hξ _ hξO, Adjust.valR_const P₀.A.hom ψ ξ hξ _ hξO]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hδ₀, hδψ]`. Conclude with `(hsub O hξO).elim _ _`. Introduce `p p' O hO f`. Distinguish the cases in `hξO : ⊤ ≤ ξ ⁻¹ᵁ O`. Apply `heq O hξO` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hO1 : O ≤ Wo p` using `hO.trans inf_le_left`. Establish `hO2 : O ≤ Wo p'` using `hO.trans inf_le_right`. Establish `hU1` using `hUj p O hO1 hξO`. Establish `hU2` using `hUj p' O hO2 hξO`. Establish `hU12 : ⊤ ≤ ξ ⁻¹ᵁ (P₀.L.U p.2 ⊓ P₀.L.U p'.2)` using `fun q hq => ⟨hU1 hq, hU2 hq⟩`.
-
-Establish `hOg : O ≤ 𝟙 P₀.A.left ⁻¹ᵁ (P₀.L.U p.2 ⊓ P₀.L.U p'.2)` using `fun q hq => ⟨hWU p (hO1 hq), hWU p' (hO2 hq)⟩`. Establish `hsym : ∀ a b, ψ (lam a b) = ψ (lam b a)` using `fun a b => by`. Rewrite using `[← congrFun (congrFun hlam a) b, Matrix.transpose_apply]`. Establish `hR : valR ξ O (∑ a, ∑ b, constFn P₀.A.hom O (lam a b) * dlg P₀.A (𝟙 P₀.A.left) P₀.L (dd b) p.2 p'.2 O * dd a O f) = ∑ a, ∑ b, ψ (lam a b) * (δ b (valR ξ (P₀.L.U p.2 ⊓ P₀.L.U p'.2) (P₀.L.g p.2 p'.2).val) * (valR ξ (P₀.L.U p.2 ⊓ P₀.L.U p'.2) (P₀.L.g p.2 p'.2).val)⁻¹) * δ a (valR ξ …`. Rewrite using `[valR_sum' ξ hξO]`.
-
-Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[valR_sum' ξ hξO]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[WtAlg.valR_mul'' _ _ hξO, WtAlg.valR_mul'' _ _ hξO, Adjust.valR_const P₀.A.hom ψ ξ hξ _ hξO, hδ a O f hξO, dlg, WtAlg.valR_mul'' _ _ hξO, hδ b O _ hξO, GlobalTheory.LogKSBal.valR_pbT ξ _ hOg hξO, GlobalTheory.LogKSBal.valR_pbT ξ _ hOg hξO, Category.comp_id, valR_inv' ξ hU12]`. Rewrite using `[WtAlg.valR_sub' _ _ hξO, hval p O hO1 hξO f, hval p' O hO2 hξO f, hR]`.
-
-Conclude with `alg_diff δ (fun a e => ψ (lam a e)) hsym (Gv p.2) (Gv p'.2) _ (hGv _ hU1) (valR_unit_ne ξ hU12 _) (GlobalTheory.T.transitionUnit_pointValue_cocycle P₀.A.left P₀.L P₀.isLB F ξ j₀ p.2 p'.2 hj₀ hU1 hU2) _ _`. Conclude with `(hsub O hξO).elim _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ksRel_zero : ∀ (K : Type) [Field K] [CharZero K] (P₀ : Out.PolAV (Sp K)) (n : ℕ) (v : Module.Basis (Fin n) K (TanM (𝟙 (Sp K)) P₀.A)) (dd : Fin n → Fld P₀.A.left), (∀ a, IsInv P₀.A (v a) (dd a)) → ∀ (F : Type) [Field F] (ψ : K →+* F) (ξ : Sp F ⟶ P₀.A.left), ξ ≫ P₀.A.hom = spMap ψ → (∀ O (f : Γ(P₀.A.left, O)), ⊤ ≤ ξ ⁻¹ᵁ O → valR ξ O f = 0 → f = 0) → ∀ (δ : Fin n → Derivation ℤ F F), (∀ a O f, ⊤ ≤ ξ ⁻¹ᵁ O → valR ξ O (dd a O f) = δ a (valR ξ O f)) → ∀ (j₀ : P₀.L.ι), ⊤ ≤ ξ ⁻¹ᵁ P₀.L.U j₀ → ∀ (δ₀ : Derivation ℤ F F) (lam : Matrix (Fin n) (Fin n) K), lamᵀ = lam → (∀ r, δ₀ (ψ r) = 0) → ∀ (k : ℕ), 1 ≤ k → ∀ (I : Type) (s : I → SecM (𝟙 P₀.A.left) P₀.L k), ⨆ i, Out.nonzeroLocus (s i) = ⊤ → (∀ i, IsAffineOpen (Out.nonzeroLocus (s i))) → (∀ i, ⊤ ≤ ξ ⁻¹ᵁ Out.nonzeroLocus (s i)) → (∀ i, (∀ f : Γ(P₀.A.left, (Out.nonzeroLocus (s i))), ∃ f' : Γ(P₀.A.left, (Out.nonzeroLocus (s i))), valR ξ _ f' = (k : F) * δ₀ (valR ξ _ f) - ∑ a, ∑ e, ψ (lam a e) * (δ a (valR ξ _ ((s i).f fun _ => j₀)) / valR ξ _ ((s i).f fun _ => j₀)) * δ e (valR ξ _ f))) → KSRel P₀.A (𝟙 P₀.A.left) P₀.L dd (fun _ => 0) lam := by
   intro K _ _ P₀ n v dd hinv F _ ψ ξ hξ hinj δ hδ j₀ hj₀ δ₀ lam hlam hδ₀ k hk I s hcov haff hξs hf'

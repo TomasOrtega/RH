@@ -13,11 +13,11 @@ private theorem adeleMap_eq (K L : Type) [Field K] [NumberField K] [Field L] [Nu
 
 open scoped GroundTheory.Global.AdeleBaseChange in
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Take `⟨z, hz⟩` from `(GlobalTheory.UnitaryHeckeBaseChange.adeleEquiv (isCMExt_real E)).surjective (x : AdeleRing (𝓞 E) E)`. Establish `h : adeleNorm E (GlobalTheory.UnitaryHeckeBaseChange.adeleEquiv (isCMExt_real E) z) = Algebra.norm _ z` using `congrArg (Algebra.norm _) ((GlobalTheory.UnitaryHeckeBaseChange.adeleEquiv (isCMExt_real E)).symm_apply_apply z)`. Establish `h2 : ∀ z, GlobalTheory.UnitaryHeckeBaseChange.toAdele (maximalRealSubfield E) E z = GroundTheory.Global.AdeleBaseChange.adeleTensorAlgEquivLeft (maximalRealSubfield E) E z`. Introduce `z`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a l`. Rewrite using `[GlobalTheory.UnitaryHeckeBaseChange.toAdele_tmul, GroundTheory.Global.AdeleBaseChange.adeleTensorAlgEquivLeft_tmul, adeleMap_eq, mul_comm]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `adeleNorm E (x : AdeleRing (𝓞 E) E) = _`. Rewrite using `[GroundTheory.Global.coe_ideleNorm, ← hz, h]`. Establish `h3 : GlobalTheory.UnitaryHeckeBaseChange.adeleEquiv (isCMExt_real E) z = _` using `h2 z`. Rewrite using `[h3]`. Conclude with `(Algebra.norm_eq_of_algEquiv _ _).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ideleNorm_eq (E : Type) [Field E] [NumberField E] [IsCMField E] (x : (AdeleRing (𝓞 E) E)ˣ) :
     ideleNorm E x = GroundTheory.Global.ideleNorm (maximalRealSubfield E) E x := by
@@ -41,9 +41,9 @@ private theorem ideleNorm_eq (E : Type) [Field E] [NumberField E] [IsCMField E] 
   exact (Algebra.norm_eq_of_algEquiv _ _).symm
 
 /- English proof (translation)
-Establish `hf' : Ideal.absNorm w.asIdeal = Ideal.absNorm v.asIdeal ^ f` using `hf`. Establish `hy : Valued.v (y : v.adicCompletion K) ≠ 0` using `(Valuation.ne_zero_iff _).2 y.ne_zero`. Establish `hx : Valued.v (x : w.adicCompletion L) ≠ 0` using `(Valuation.ne_zero_iff _).2 x.ne_zero`. Rewrite `h` using `[FinitePlace.norm_def, FinitePlace.norm_def]`. Rewrite `h` using `[WithZeroMulInt.toNNReal_neg_apply _ hy, WithZeroMulInt.toNNReal_neg_apply _ hx, NNReal.coe_inj, hf', Nat.cast_pow, ← zpow_natCast, ← zpow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `HeightOneSpectrum.one_lt_absNorm_nnreal v`. Establish `h2` using `zpow_right_injective₀ (zero_lt_one.trans h1) h1.ne' h`. Rewrite using `[← WithZero.coe_unzero hy, ← WithZero.coe_unzero hx, ← WithZero.coe_pow]`. Use `congrArg _ (Multiplicative.toAdd.injective ?_)` and prove the remaining obligations. Rewrite using `[h2, toAdd_pow, nsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem val_of_norm {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L]
     (v : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 L)) (y : (v.adicCompletion K)ˣ) (x : (w.adicCompletion L)ˣ)
@@ -62,9 +62,9 @@ private theorem val_of_norm {K L : Type} [Field K] [NumberField K] [Field L] [Nu
   rw [h2, toAdd_pow, nsmul_eq_mul]
 
 /- English proof (translation)
-Introduce `E _ _ _ w x`. Establish `h` using `GroundTheory.Global.ideleNorm_finiteEmbedding (K := maximalRealSubfield E) w x`. Establish `hm` using `GroundTheory.Automorphic.EllipticTorus.ideleModule_ideleNorm (K := maximalRealSubfield E) (GroundTheory.Global.IdeleGroup.finiteEmbedding w x)`. Rewrite `hm` using `[h]`. Establish `hm'` using `congrArg Subtype.val hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm'` using `[GroundTheory.Global.IdeleGroup.ideleModule_finiteEmbedding, GroundTheory.Global.IdeleGroup.ideleModule_finiteEmbedding]`. Use `⟨_, ?_, val_of_norm _ w _ x hm'⟩` and prove the remaining obligations. Rewrite using `[ideleNorm_eq]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ideleNorm_local_compatibility :
     UpperTheory.V.Af.Bc.NormLoc := by

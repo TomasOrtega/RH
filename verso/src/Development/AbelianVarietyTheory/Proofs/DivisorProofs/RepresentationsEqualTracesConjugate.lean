@@ -10,13 +10,13 @@ def piMatUnit {I : Type} [DecidableEq I] (m : ℕ) (τ : I) (i j : Fin m) :
   Pi.single τ (Matrix.single i j 1)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ρ`. Simplify using `only [piMatUnit, Pi.mul_apply]`. Distinguish the cases in `h1 : τ = τ'`. Substitute `h1` using the available equality. Distinguish the cases in `h2 : j = k`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `h2` using the available equality. Distinguish the cases in `h3 : ρ = τ`. Substitute `h3` using the available equality. Simplify using `[Matrix.single_mul_single_same]`. Simplify using `[Pi.single_apply, h3]`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h3 : ρ = τ`. Substitute `h3` using the available equality. Simplify using `[Matrix.single_mul_single_of_ne, h2]`. Simplify using `[Pi.single_apply, h3, h2]`. Distinguish the cases in `h3 : ρ = τ`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h3` using the available equality. Establish `: ρ ≠ τ'` using `h1`. Simplify using `[Pi.single_apply, this, h1]`. Simplify using `[Pi.single_apply, h3, h1]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma piMatUnit_mul {I : Type} [DecidableEq I] (m : ℕ) (τ τ' : I) (i j k l : Fin m) :
     piMatUnit m τ i j * piMatUnit m τ' k l =
@@ -40,7 +40,7 @@ lemma piMatUnit_mul {I : Type} [DecidableEq I] (m : ℕ) (τ τ' : I) (i j k l :
     · simp [Pi.single_apply, h3, h1]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ρ`. Use extensionality with `a b`. Simplify using `only [Finset.sum_apply, Matrix.sum_apply, Pi.smul_apply, Matrix.smul_apply, piMatUnit, Pi.single_apply]`. Apply the tactic sequence `simp only [show ∀ (c : Prop) [Decidable c] (M : Matrix (Fin m) (Fin m) ℂ), (if c then M else 0) a b = if c then M a b else 0 from fun c _ M => by split_ifs <;> rfl]`. Simplify using `[Matrix.zero_apply, Matrix.single_apply, mul_ite, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 lemma piMatUnit_decomp {I : Type} [Fintype I] [DecidableEq I] (m : ℕ)
     (x : I → Matrix (Fin m) (Fin m) ℂ) :
@@ -55,9 +55,9 @@ lemma piMatUnit_decomp {I : Type} [Fintype I] [DecidableEq I] (m : ℕ)
     Finset.sum_ite_eq']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ρ`. Use extensionality with `a b`. Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality. Simplify using `only [piMatUnit, Finset.sum_apply, Matrix.sum_apply, Pi.single_eq_same, Matrix.single_apply, Matrix.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Break down `eq_or_ne a b with rfl | hab` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[hab]`. Simplify using `[piMatUnit, Finset.sum_apply, Matrix.sum_apply, Pi.single_apply, h]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma sum_piMatUnit_diag {I : Type} [Fintype I] [DecidableEq I] (m : ℕ) (τ : I) :
     ∑ i, piMatUnit m τ i i = Pi.single τ 1 := by
@@ -73,9 +73,9 @@ lemma sum_piMatUnit_diag {I : Type} [Fintype I] [DecidableEq I] (m : ℕ) (τ : 
   · simp [piMatUnit, Finset.sum_apply, Matrix.sum_apply, Pi.single_apply, h]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.TraceEqualFinrank.exists_mul_mul_eq_of_trace_eq`. Consider the case `exact _root_.GlobalTheory.TraceEqualFinrank.exists_mul_mul_eq_of_trace_eq`. Consider the case `(apply _root_.GlobalTheory.TraceEqualFinrank.exists_mul_mul_eq_of_trace_eq <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.TraceEqualFinrank.exists_mul_mul_eq_of_trace_eq <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.TraceEqualFinrank.exists_mul_mul_eq_of_trace_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.TraceEqualFinrank.exists_mul_mul_eq_of_trace_eq ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma exists_mul_idem_mul_eq_of_trace_eq {g : ℕ} (P P' : Matrix (Fin g) (Fin g) ℂ)
     (hP : IsIdempotentElem P) (hP' : IsIdempotentElem P') (ht : P.trace = P'.trace) :
@@ -89,37 +89,33 @@ lemma exists_mul_idem_mul_eq_of_trace_eq {g : ℕ} (P P' : Matrix (Fin g) (Fin g
   | (intros; exact _root_.GlobalTheory.TraceEqualFinrank.exists_mul_mul_eq_of_trace_eq ..)
 
 /- English proof (translation)
-Introduce `I _ _ m g hm σ σ' htr`. Use `set z : Fin m := ⟨0, hm⟩`. Establish `hdiag : ∀ (ρ : (I → Matrix (Fin m) (Fin m) ℂ) →ₐ[ℂ] Matrix (Fin g) (Fin g) ℂ) (τ : I), (ρ (Pi.single τ 1)).trace = (m : ℂ) * (ρ (piMatUnit m τ z z)).trace`. Introduce `ρ τ`. Establish `hi : ∀ i, (ρ (piMatUnit m τ i i)).trace = (ρ (piMatUnit m τ z z)).trace`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `e1 : piMatUnit m τ i i = piMatUnit m τ i z * piMatUnit m τ z i`. Rewrite using `[piMatUnit_mul]`. Simplify using the standard rewrite rules. Establish `e2 : piMatUnit m τ z z = piMatUnit m τ z i * piMatUnit m τ i z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[piMatUnit_mul]`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2, map_mul, map_mul, Matrix.trace_mul_comm]`. Rewrite using `[← sum_piMatUnit_diag, map_sum, Matrix.trace_sum, Finset.sum_congr rfl (fun i _ => hi i), Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `hidem : ∀ (ρ : (I → Matrix (Fin m) (Fin m) ℂ) →ₐ[ℂ] Matrix (Fin g) (Fin g) ℂ) (τ : I), IsIdempotentElem (ρ (piMatUnit m τ z z))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ρ τ`. Unfold `IsIdempotentElem`. Rewrite using `[← map_mul, piMatUnit_mul]`. Simplify using the standard rewrite rules. Establish `hm' : (m : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hm.ne'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htr' : ∀ τ, (σ (piMatUnit m τ z z)).trace = (σ' (piMatUnit m τ z z)).trace`. Introduce `τ`. Use `htr τ` as an intermediate fact. Rewrite `this` using `[hdiag σ, hdiag σ']`. Conclude with `mul_left_cancel₀ hm' this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose X Y hYX using fun τ => exists_mul_idem_mul_eq_of_trace_eq _ _ (hidem σ τ) (hidem σ' τ) (htr' τ)`. Use `set h : Matrix (Fin g) (Fin g) ℂ := ∑ τ, ∑ i, σ' (piMatUnit m τ i z) * X τ * σ (piMatUnit m τ z i) with hh`. Use `set h' : Matrix (Fin g) (Fin g) ℂ := ∑ τ, ∑ i, σ (piMatUnit m τ i z) * Y τ * σ' (piMatUnit m τ z i) with hh'`. Establish `hE : ∀ τ k l, σ' (piMatUnit m τ k l) * h = h * σ (piMatUnit m τ k l)`. Introduce `τ k l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Establish `hL : ∀ τ' i, σ' (piMatUnit m τ k l) * (σ' (piMatUnit m τ' i z) * X τ' * σ (piMatUnit m τ' z i)) = if τ = τ' ∧ l = i then σ' (piMatUnit m τ k z) * X τ * σ (piMatUnit m τ z l) else 0`. Introduce `τ' i`. Rewrite using `[← mul_assoc, ← mul_assoc, ← map_mul, piMatUnit_mul]`. Use `split_ifs with hc`. Take `⟨rfl, rfl⟩` from `hc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish `hR : ∀ τ' i, σ' (piMatUnit m τ' i z) * X τ' * σ (piMatUnit m τ' z i) * σ (piMatUnit m τ k l) = if τ = τ' ∧ k = i then σ' (piMatUnit m τ k z) * X τ * σ (piMatUnit m τ z l) else 0`. Introduce `τ' i`. Rewrite using `[mul_assoc _ (σ _), ← map_mul, piMatUnit_mul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hc : τ' = τ ∧ i = k`. Take `⟨rfl, rfl⟩` from `hc`. Simplify using the standard rewrite rules. Establish `hc' : ¬ (τ = τ' ∧ k = i)` using `fun h => hc ⟨h.1.symm, h.2.symm⟩`. Simplify using `[hc, hc']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh, Finset.mul_sum, Finset.sum_mul]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, hL, hR]`. Simplify using `[ite_and, Finset.sum_ite_eq]`. Establish `hint : ∀ x, σ' x * h = h * σ x`. Introduce `x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[piMatUnit_decomp m x]`. Simplify using `only [map_sum, map_smul, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, hE]`. Establish `hprod : ∀ τ i τ' j, σ (piMatUnit m τ i z) * Y τ * σ' (piMatUnit m τ z i) * (σ' (piMatUnit m τ' j z) * X τ' * σ (piMatUnit m τ' z j)) = if τ = τ' ∧ i = j then σ (piMatUnit m τ i i) else 0`. Introduce `τ i τ' j`. Establish `e : σ (piMatUnit m τ i z) * Y τ * σ' (piMatUnit m τ z i) * (σ' (piMatUnit m τ' j z) * X τ' * σ (piMatUnit m τ' z j)) = σ (piMatUnit m τ i z) * Y τ * σ' (piMatUnit m τ z i * piMatUnit m τ' j z) * X τ' * σ (piMatUnit m τ' z j)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[e, piMatUnit_mul]`. Use `split_ifs with hc`. Take `⟨rfl, rfl⟩` from `hc`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show σ (piMatUnit m τ i z) * Y τ * σ' (piMatUnit m τ z z) * X τ * σ (piMatUnit m τ z i) = σ (piMatUnit m τ i z) * (Y τ * σ' (piMatUnit m τ z z) * X τ) * σ (piMatUnit m τ z i) by`. Simplify using `only [mul_assoc], hYX τ, ← map_mul, ← map_mul]`. Simplify using `[piMatUnit_mul]`. Simplify using the standard rewrite rules. Establish `hrow : ∀ τ i, σ (piMatUnit m τ i z) * Y τ * σ' (piMatUnit m τ z i) * h = σ (piMatUnit m τ i i)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `τ i`. Rewrite using `[hh]`. Simplify using `only [Finset.mul_sum, hprod]`. Simplify using `[ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Establish `hinv : h' * h = 1`.
-
-Rewrite using `[hh', Finset.sum_mul]`. Simplify using `only [Finset.sum_mul, hrow]`. Rewrite using `[← map_one σ, ← Finset.univ_sum_single (1 : I → Matrix (Fin m) (Fin m) ℂ), map_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.one_apply, ← sum_piMatUnit_diag, map_sum]`.
-
-Conclude with `⟨h, (Matrix.isUnit_iff_isUnit_det h).mpr (Matrix.isUnit_det_of_left_inverse hinv), hint⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem conj_of_trace_central_idem_eq :
     ∀ (I : Type) [Fintype I] [DecidableEq I] (m g : ℕ), 0 < m →

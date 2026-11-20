@@ -13,13 +13,13 @@ open Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations
 namespace GlobalTheory.PstModel
 
 /- English proof (translation)
-Introduce `D i w hw m r h`. Take `⟨LL', r', ⟨hL, hmod⟩, hpst, hwd⟩` from `GlobalTheory.Pst.wdAt_of_isPstAt (P := D.loc (D.nd.l i)) (D.naut.iotaQC i) (D.nbr i w hw) (D.nd.plOm.2 w) (D.nbr_ind i w hw) h`. Establish `key : r' = GlobalTheory.PstLine.upRep hL m (mapRep (D.nbr i w hw).toLL (r.comp (decS D.nd w)))`. Use extensionality with `g a b`. Establish `h1` using `congrArg (fun f => ((f g : GL (Fin m) (Om (D.nd.l i))) : Matrix (Fin m) (Fin m) (Om (D.nd.l i))) a b) hmod`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h2` using `(D.loc_tie i w hw).1 (((r g : GL (Fin m) (D.nd.O i)) : Matrix (Fin m) (Fin m) (D.nd.O i)) a b)`. Simplify using `only [mapRep, GlobalTheory.Pst.resDec, GlobalTheory.PstLine.upRep] at h1 ⊢`. Simplify using `at h1 ⊢`. Conclude with `h1.trans h2`. Use `⟨LL', hL, key ▸ hpst, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ hσ p hp`. Rewrite using `[← key, ← hwd, ← GlobalTheory.WeilDeligne.WD.inePol_of_mem_Ine, ← hp, Polynomial.map_map, Polynomial.map_map]`. Use `congr 1`. Use extensionality with `x`. Establish `h2` using `(D.loc_tie i w hw).1 x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [iotaO, iotaOQ] at h2 ⊢`. Simplify using `at h2 ⊢`. Conclude with `h2.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem charPol_upRep_of_isPstAt : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (m : ℕ) (r : GE D.nd →* GL (Fin m) (D.nd.O i)), GlobalTheory.Pst.IsPstAt (D.loc (D.nd.l i)) (D.nbr i w hw) (GlobalTheory.Pst.resDec D.nd.plOm.1 (mapRep (iotaOQ D.nd D.naut i) r) w) → ∃ (LL' : FinExt (D.nd.l i)) (hL : (D.nbr i w hw).LL.1 ≤ LL'.1), GlobalTheory.Pst.IsPst (D.loc (D.nd.l i)) ((D.nbr i w hw).repE LL' (GlobalTheory.PstLine.upRep hL m (mapRep (D.nbr i w hw).toLL (r.comp (decS D.nd w))))) ∧ ∀ (σ : Gw D.nd w) (hσ : (σ : GE D.nd) ∈ Ine (F := D.host.E) (D.nd.plOm.1 w)) (p : (D.nd.O i)[X]), p.map (iotaO D.nd D.naut i) = (GlobalTheory.Pst.wdAt (D.loc (D.nd.l i)) (D.naut.iotaQC i) (D.nbr i w hw) (D.nd.plOm.2 w) (D.nbr_ind i w hw) (GlobalTheory.Pst.resDec D.nd.plOm.1 (mapRep (iotaOQ D.nd D.naut i) r) w)).inePol (σ : GE D.nd) → ((p.map (D.nbr i w hw).toLL).map (IntermediateField.inclusion hL).toRingHom).map ((D.naut.iotaQC i).toRingHom.comp (algebraMap ↥LL'.1 (Om (D.nd.l i)))) = (GlobalTheory.Pst.wdPst (D.loc (D.nd.l i)) (D.naut.iotaQC i) (D.nbr i w hw) (D.nd.plOm.2 w) (D.nbr_ind i w hw) ((D.nbr i w hw).repE LL' (GlobalTheory.PstLine.upRep hL m (mapRep (D.nbr i w hw).toLL (r.comp (decS D.nd w)))))).charPol (GlobalTheory.WeilDeligne.ineIncl (D.nd.plOm.2 w) ⟨(σ : GE D.nd), hσ⟩) := by
   intro D i w hw m r h

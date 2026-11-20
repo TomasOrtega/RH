@@ -26,7 +26,7 @@ section Grp
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {G₁ G₂ : Over S} {G₁' G₂' : Over S'}
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated G.hom ((Over.w a).trans (Over.w b).symm) q h)`.
+A detailed English derivation is pending.
 -/
 theorem over_ext {T G : Over S} [IsReduced T.left] [IsSeparated G.hom] {a b : T ⟶ G} {W : Scheme.{0}}
     (q : W ⟶ T.left) [Surjective q] (h : q ≫ a.left = q ≫ b.left) : a = b :=
@@ -35,13 +35,13 @@ theorem over_ext {T G : Over S} [IsReduced T.left] [IsSeparated G.hom] {a b : T 
 variable [GrpObj G₁] [GrpObj G₂] [GrpObj G₁'] [GrpObj G₂'] {φ₁ : G₁'.left ⟶ G₁.left} {φ₂ : G₂'.left ⟶ G₂.left}
 
 /- English proof (translation)
-Establish `H` using `IsPullback.of_hasPullback T.hom f`. Set `q` to `pullback.fst T.hom f`. Set `W : Over S'` to `Over.mk (pullback.snd T.hom f)`. Set `l : (T ⟶ G₁) → (W ⟶ G₁')` to `fun z => Over.homMk (h₁.1.lift (q ≫ z.left) (pullback.snd T.hom f) (by rw [Category.assoc, Over.w z]; exact H.w)) (h₁.1.lift_snd _ _ _)`. Establish `hl : ∀ z, (l z).left ≫ φ₁ = q ≫ z.left` using `fun z => h₁.1.lift_fst _ _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `q' : Over.mk (W.hom ≫ f) ⟶ T` to `Over.homMk q H.w`. Establish `hl' : ∀ z, (q' ≫ z ≫ ψ).left = (l z ≫ ψ').left ≫ φ₂` using `fun z => by show q ≫ z.left ≫ ψ.left = ((l z).left ≫ ψ'.left) ≫ φ₂`. Rewrite using `[Category.assoc, hψ, ← Category.assoc (l z).left, hl, Category.assoc]`. Establish `e₁` using `h₁.2 W (l x) (l y) (q' ≫ x) (q' ≫ y) (hl x).symm (hl y).symm`. Establish `e₂` using `h₂.2 W (l x ≫ ψ') (l y ≫ ψ') (q' ≫ x ≫ ψ) (q' ≫ y ≫ ψ) (hl' x) (hl' y)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e₁`, `e₂` using `[← MonObj.comp_mul]`. Rewrite `e₂` using `[← MonObj.mul_comp (l x) (l y) ψ']`. Use `replace e₂ : _ = (l x * l y).left ≫ ψ'.left ≫ φ₂ := e₂.trans (Category.assoc _ _ _)`. Rewrite `e₂` using `[hψ, ← Category.assoc, ← e₁]`. Use `over_ext q ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ e₂.symm` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem mul_comp [Surjective f] [IsSeparated G₂.hom] (h₁ : IsGrpPullback G₁' G₁ f φ₁)
     (h₂ : IsGrpPullback G₂' G₂ f φ₂) (ψ : G₁ ⟶ G₂) (ψ' : G₁' ⟶ G₂') [IsMonHom ψ']
@@ -69,11 +69,11 @@ theorem mul_comp [Surjective f] [IsSeparated G₂.hom] (h₁ : IsGrpPullback G�
   exact (Category.assoc _ _ _).symm
 
 /- English proof (translation)
-Establish `: IsReduced (𝟙_ (Over S)).left` using `‹IsReduced S›`. Establish `: Smooth (G₁ ⊗ G₁).hom` using `inferInstanceAs (Smooth (pullback.fst G₁.hom G₁.hom ≫ G₁.hom))`. Establish `: IsReduced (G₁ ⊗ G₁).left` using `GlobalTheory.isReduced_of_smooth_of_isReduced (G₁ ⊗ G₁).hom`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `mul_comp h₁ h₂ ψ ψ' hψ (𝟙_ _) 1 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[_root_.mul_one]`. Establish `h' : (1 : 𝟙_ (Over S) ⟶ G₁) ≫ ψ = 1` using `mul_eq_left.1 h.symm`. Simplify `h'` using `[Hom.one_def]`. Establish `h` using `mul_comp h₁ h₂ ψ ψ' hψ (G₁ ⊗ G₁) (fst _ _) (snd _ _)`. Rewrite `h` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem isMonHom [IsReduced S] [Surjective f] [Smooth G₁.hom] [IsSeparated G₂.hom] (h₁ : IsGrpPullback G₁' G₁ f φ₁)
     (h₂ : IsGrpPullback G₂' G₂ f φ₂) (ψ : G₁ ⟶ G₂) (ψ' : G₁' ⟶ G₂') [IsMonHom ψ']
@@ -91,17 +91,17 @@ theorem isMonHom [IsReduced S] [Surjective f] [Smooth G₁.hom] [IsSeparated G�
     rw [h]; congr 1
 
 /- English proof (translation)
-Introduce `k _ _ x z`. Take `⟨w, -⟩` from `(pullback.fst x f).surjective (default : PrimeSpectrum k)`. Set `k'` to `AlgebraicClosure ((pullback x f).residueField w)`. Set `u : Sp k' ⟶ pullback x f` to `Spec.map (CommRingCat.ofHom (algebraMap ((pullback x f).residueField w) k')) ≫ (pullback x f).fromSpecResidueField w`. Set `j : Sp k' ⟶ Sp k` to `u ≫ pullback.fst x f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `x' : Sp k' ⟶ S'` to `u ≫ pullback.snd x f`. Establish `hj : j ≫ x = x' ≫ f` using `by simp only [j, x', Category.assoc, pullback.condition]`. Establish `: Surjective j` using `⟨fun a => ⟨(default : PrimeSpectrum k'), Subsingleton.elim (α := PrimeSpectrum k) _ _⟩⟩`. Set `z' : Over.mk x' ⟶ G₁'` to `Over.homMk (h₁.lift (j ≫ z.left) x' (by rw [Category.assoc, Over.w z]; exact hj)) (h₁.lift_snd _ _ _)`. Establish `hz : z'.left ≫ φ₁ = j ≫ z.left` using `h₁.lift_fst _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `a₁ : (z' ≫ ψ').left ≫ φ₂ = j ≫ (z ≫ ψ).left`. Rewrite using `[Over.comp_left, Category.assoc, hψ, ← Category.assoc, hz, Category.assoc]`. Both sides reduce to the same expression. Establish `a₂ : (1 : Over.mk x' ⟶ G₂').left ≫ φ₂ = j ≫ (1 : Over.mk x ⟶ G₂).left` using `by show (x' ≫ η[G₂'].left) ≫ φ₂ = j ≫ x ≫ η[G₂].left`. Rewrite using `[Category.assoc, he, ← Category.assoc, ← hj, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsReduced (Over.mk x).left` using `inferInstanceAs (IsReduced (Spec (CommRingCat.of k)))`. Establish `b₁ : z ≫ ψ = 1 ↔ z' ≫ ψ' = 1` using `⟨fun h => Over.OverMorphism.ext (h₂.hom_ext (by rw [a₁, a₂, h]) ((Over.w _).trans (Over.w _).symm)), fun h => over_ext (T := Over.mk x) j (by rw [← a₁, ← a₂, h])⟩`. Establish `pt : ∀ a, φ₁ (z'.left a) = z.left (j a)` using `fun a => congrArg (fun q => q a) hz`. Rewrite using `[b₁, hK k' x' z']`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `h _ ⟨a, rfl⟩`. Take `⟨a', rfl⟩` from `j.surjective a`. Rewrite using `[← pt]`. Conclude with `h ⟨a', rfl⟩`. Introduce and unpack `h _ ⟨a, rfl⟩ show φ₁ (z'.left a) ∈ K`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pt]`. Conclude with `h ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem kerSet [Surjective f] [IsSeparated G₂.hom] (h₁ : IsPullback φ₁ G₁'.hom G₁.hom f)
     (h₂ : IsPullback φ₂ G₂'.hom G₂.hom f) (he : η[G₂'].left ≫ φ₂ = f ≫ η[G₂].left) (ψ : G₁ ⟶ G₂) (ψ' : G₁' ⟶ G₂')
@@ -145,7 +145,7 @@ end Grp
 section Bundle
 
 /- English proof (translation)
-Use `⟨⟨fun j => (t.s j) ^ n⟩, fun i j => ?_⟩` and prove the remaining obligations. Use `(map_zpow _ _ _).trans ((congrArg (· ^ n) (ht i j)).trans ((mul_zpow _ _ _).trans (congrArg₂ (· * ·) ?_ (map_zpow _ _ _).symm)))` and prove the remaining obligations. Simplify using `only [LB.pull, LB.LinComb, Fintype.prod_unique, zpow_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem exists_gen_pow {X Y : Scheme.{0}} (L : LB X) (e : Y ⟶ X) (n : ℤ) (t : (L.pull e).Gen) (ht : t.IsGen) :
     ∃ c : (LB.LinComb L (K := PUnit) (fun _ => e) (fun _ => n)).Gen, c.IsGen := by
@@ -156,9 +156,9 @@ theorem exists_gen_pow {X Y : Scheme.{0}} (L : LB X) (e : Y ⟶ X) (n : ℤ) (t 
   rfl
 
 /- English proof (translation)
-Use `GlobalTheory.seesaw_reduced_of_dense GlobalTheory.globalFns_holds S A M hA hM ha S A.left (𝟙 S) (𝟙 _) A.hom (LB.div Q P) (IsPullback.id_horiz _) (LB.isLB_div hQ hP) ?_ (eSec A) (Over.w η[A]) ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `hi`. Take `⟨c, hc⟩` from `gen_chartPull (GlobalTheory.SabMapDescent.chartPullDivPull P Q φ) w hw`. Use `dense_univ.mono fun p _ => ?_` and prove the remaining obligations. Take `⟨p', rfl⟩` from `f.surjective p`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `x' : Sp (S'.residueField p') ⟶ S'` to `S'.fromSpecResidueField p'`. Use `⟨S'.residueField p', inferInstance, x' ≫ f, pullback g x', pullback.fst g x' ≫ φ, pullback.snd g x', ⟨(default : PrimeSpectrum (S'.residueField p')), congrArg f (Scheme.fromSpecResidueField_apply p' _)⟩, (IsPullback.of_hasPullback g x').paste_horiz h, ?_⟩` and prove the remaining obligations. Conclude with `gen_chartPull (chartPullSame (LB.div Q P) (K := PUnit) _ (fun _ => φ) (fun _ => 1) (pullback.fst g x') fun _ => rfl) c hc`. Take `⟨w, hw⟩` from `GlobalTheory.SabMapDescent.lbIso_of_gen_of_gen s hs t ht`. Conclude with `gen_chartPull (GlobalTheory.SabMapDescent.chartPullDivPull P Q _) w hw`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lbIso_of_surjective {S S' X' : Scheme.{0}} [IsReduced S] (A : Over S) [GrpObj A] [IsCommMonObj A]
     (M : LB A.left) (hA : IsAbelianScheme A) (hM : M.IsLB) (ha : Out.RelAmple A M) {f : S' ⟶ S} [Surjective f]
@@ -187,17 +187,17 @@ end GlobalTheory.IsogDescent
 open GlobalTheory.IsogDescent in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l p S S' _ s s' f o₁ o₂ o₁' o₂' n₁ n₂ ψ ψ' hf hψ ⟨⟨hm, _, _, hsurj, hact, hL⟩, hlev⟩ hfin het`. Use `o₁.t.semi.smooth` as an intermediate fact. Use `o₂.proper` as an intermediate fact. Establish `: IsReduced o₁.t.G.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced o₁.t.G.hom`. Establish `: IsReduced (𝟙_ (Over S)).left` using `‹IsReduced S›`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Surjective n₁.cm.F` using `MorphismProperty.of_isPullback (P := @Surjective) n₁.cart.1.flip hf`. Establish `: Surjective n₂.cm.F` using `MorphismProperty.of_isPullback (P := @Surjective) n₂.cart.1.flip hf`. Establish `hψ : ψ'.left ≫ n₂.cm.F = n₁.cm.F ≫ ψ.left` using `hψ`. Establish `hmon : IsMonHom ψ` using `isMonHom n₁.cart n₂.cart ψ ψ' hψ`. Establish `sec : ∀ {a : 𝟙_ (Over S) ⟶ o₁.t.G} {b : 𝟙_ (Over S) ⟶ o₂.t.G} {a' : 𝟙_ (Over S') ⟶ o₁'.t.G} {b' : 𝟙_ (Over S') ⟶ o₂'.t.G}, a'.left ≫ n₁.cm.F = f ≫ a.left → b'.left ≫ n₂.cm.F = f ≫ b.left → a' ≫ ψ' = b' → a ≫ ψ = b` using `fun {a b a' b'} ha hb h => over_ext (T := 𝟙_ (Over S)) f (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hb, ← h, Over.comp_left, Over.comp_left, Category.assoc, hψ, ← Category.assoc, ← Category.assoc, ha])`. Use `⟨⟨⟨hmon, hfin, het, ?_, fun a => over_ext n₁.cm.F ?_, ?_⟩, fun p' hp a => ⟨sec (n₁.eta _) (n₂.eta _) (hlev p' hp a).1, sec (n₁.etaA _) (n₂.etaA _) (hlev p' hp a).2⟩⟩, fun K hK => kerSet n₁.cart.1 n₂.cart.1 (n₂.cm.e_comm.trans (by rw [n₂.base]; rfl)) ψ ψ' hψ K hK⟩` and prove the remaining obligations. Establish `: Surjective (n₁.cm.F ≫ ψ.left)` using `by rw [← hψ]; infer_instance`. Conclude with `Surjective.of_comp n₁.cm.F _`. Establish `e` using `congrArg (fun q => q.left) (hact a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.comp_left] at e ⊢`. Rewrite using `[← Category.assoc, ← n₁.act, Category.assoc, ← hψ, ← Category.assoc, e, Category.assoc, n₂.act, ← Category.assoc, hψ, Category.assoc]`. Establish `hP : (lbPow o₁.t.PP.L (p ^ 2)).IsLB` using `LB.isLB_linComb o₁.t.PP.isLB _ _`. Establish `hP' : (lbPow o₁'.t.PP.L (p ^ 2)).IsLB` using `LB.isLB_linComb o₁'.t.PP.isLB _ _`. Establish `hQ` using `pull_isLB o₂.t.PP.isLB ψ.left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `exists_gen_pow o₁.t.PP.L _ ((p ^ 2 : ℕ) : ℤ) o₁.t.PP.rig o₁.t.PP.rigGen`. Take `⟨c₁, hc₁⟩` from `gen_chartPull (chartPullOut o₁.t.PP.L (K := PUnit) (fun _ => 𝟙 _) (fun _ => ((p ^ 2 : ℕ) : ℤ)) (eSec o₁.t.G) (fun _ => eSec o₁.t.G) fun _ => (Category.comp_id _).symm) c hc`. Take `⟨c₂, hc₂⟩` from `gen_chartPull (chartPullOut o₂.t.PP.L (K := PUnit) (fun _ => ψ.left) (fun _ => 1) (eSec o₁.t.G) (fun _ => eSec o₂.t.G) fun _ => (congrArg (fun q => q.left) hmon.one_hom).symm) o₂.t.PP.rig o₂.t.PP.rigGen`. Use `lbIso_of_surjective o₁.t.G o₁.t.PP.L (GlobalTheory.ObjDim.isAbelianScheme o₁) o₁.t.PP.isLB o₁.ample n₁.cart.1 hP hQ ?_ c₁ hc₁ c₂ hc₂` and prove the remaining obligations. Take `⟨w₁, hw₁, -⟩` from `n₁.lin`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w₂, hw₂, -⟩` from `n₂.lin`. Establish `i₁ : LBIso (lbPow o₁'.t.PP.L (p ^ 2)) ((lbPow o₁.t.PP.L (p ^ 2)).pull n₁.cm.F)` using `LBIso.chartPull (chartPullId _) (chartPullOut o₁.t.PP.L (K := PUnit) (fun _ => 𝟙 _) _ n₁.cm.F _ fun _ => (Category.id_comp _).trans (Category.comp_id _).symm) (iso_linComb ((isGen_iff w₁).1 hw₁) (K := PUnit) (fun _ => 𝟙 _) (fun _ => ((p ^ 2 : ℕ) : ℤ)))`. Establish `i₂ : LBIso (o₂'.t.PP.L.pull ψ'.left) ((o₂.t.PP.L.pull ψ.left).pull n₁.cm.F)` using `LBIso.chartPull (chartPullId _) (chartPullOut o₂.t.PP.L (K := PUnit) (fun _ => ψ.left) _ n₁.cm.F _ fun _ => hψ) (iso_linComb ((isGen_iff w₂).1 hw₂) (K := PUnit) (fun _ => ψ'.left) (fun _ => 1))`. Conclude with `LBIso.trans (pull_isLB hP _) hP' (pull_isLB hQ _) i₁.symm (LBIso.trans hP' (pull_isLB o₂'.t.PP.isLB _) (pull_isLB hQ _) hL i₂)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.isIsog_of_surjective_baseChange :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (p : ℕ) (S S' : Scheme.{0}) [IsReduced S] (s : S ⟶ Sp (KA l)) (s' : S' ⟶ Sp (KA l)) (f : S' ⟶ S) (o₁ o₂ : Ob D l s) (o₁' o₂' : Ob D l s') (n₁ : ObjMap o₁' o₁ f) (n₂ : ObjMap o₂' o₂ f) (ψ : o₁.t.G ⟶ o₂.t.G) (ψ' : o₁'.t.G ⟶ o₂'.t.G), Surjective f → ψ'.left ≫ n₂.toSABMap.φ = n₁.toSABMap.φ ≫ ψ.left → IsIsog o₁' o₂' p ψ' → IsFinite ψ.left → Etale ψ.left → IsIsog o₁ o₂ p ψ ∧ ∀ K, KerSet ψ' (n₁.toSABMap.φ ⁻¹' K) → KerSet ψ K := by

@@ -8,23 +8,21 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hcm c hc N hN`. Take `⟨a, hac, hQ, hp⟩` from `GlobalTheory.T.exists_mem_fractionalIdeal_primitive_local_generator' F E hcm.deg2 c hc N hN`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Take `⟨p, hpm⟩` from `Ideal.exists_maximal (𝓞 F)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `hp p hpm (Submodule.zero_mem _)`. Establish `hle : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) a * c⁻¹ ≤ 1`. Rewrite using `[← mul_inv_cancel₀ hc]`. Conclude with `mul_le_mul' (FractionalIdeal.spanSingleton_le_iff_mem.mpr hac) le_rfl`. Take `⟨P, hP⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.mp hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPc : (P : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) * c = FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) a`. Rewrite using `[hP, mul_assoc, inv_mul_cancel₀ hc, mul_one]`. Establish `key : ∀ Q : Ideal (𝓞 E), P ≤ Q → a ∈ (Q : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) * c`. Introduce `Q hPQ`. Rewrite using `[← FractionalIdeal.spanSingleton_le_iff_mem, ← hPc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_le_mul' ((FractionalIdeal.coeIdeal_le_coeIdeal E).mpr hPQ) le_rfl`. Establish `hσσ : ∀ x : 𝓞 E, RingOfIntegers.mapRingHom (starRingEnd E) (RingOfIntegers.mapRingHom (starRingEnd E) x) = x`. Introduce `x`. Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨P, ?_, ?_, ?_, a, hPc⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Apply `ha` to reduce the goal to its premises. Rewrite `hPc` using `[FractionalIdeal.coeIdeal_bot, zero_mul, eq_comm, FractionalIdeal.spanSingleton_eq_zero_iff]`. Conclude with `hPc`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `htop`. Take `⟨Q, hQm, hPQ⟩` from `Ideal.exists_le_maximal _ htop`. Establish `h1 : P ≤ Q` using `le_sup_left.trans hPQ`. Establish `h2 : P ≤ Q.comap (RingOfIntegers.mapRingHom (starRingEnd E))`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hPQ (Ideal.mem_sup_right _)` to reduce the goal to its premises. Use `show RingOfIntegers.mapRingHom (starRingEnd E) (RingOfIntegers.mapRingHom (starRingEnd E) x) ∈ P`. Rewrite using `[hσσ]`. Conclude with `hx`. Establish `h3` using `GlobalTheory.T.le_map_comap_of_le_conj_maximal_cmData F E hcm P Q hQm h1 h2`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpm : (Q.comap (algebraMap (𝓞 F) (𝓞 E))).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal Q`. Conclude with `hp _ hpm (key _ h3)`. Establish `htop : P ⊔ Ideal.span {N} = ⊤`. Assume the negation of the conclusion as `htop`. Take `⟨Q, hQm, hPQ⟩` from `Ideal.exists_le_maximal _ htop`.
-
-Conclude with `hQ Q hQm (hPQ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self N))) (key Q (le_sup_left.trans hPQ))`. Establish `h1 : (1 : 𝓞 E) ∈ P ⊔ Ideal.span {N}` using `htop ▸ Submodule.mem_top`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp h1`. Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton'.mp hz`. Conclude with `⟨t, y, hy, by rw [add_comm]; exact hyz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ideal_coprime_conj_mul_eq_spanSingleton :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E],

@@ -9,11 +9,11 @@ namespace Formalism.MainNotions.Gaps.EtaleWeightGaps
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
 /- English proof (translation)
-Establish `hb` using `h (V'.comap (WL X ka la).subtype)`. Establish `hrk : finrank (X.Kl la) ↥(V'.comap (WL X ka la).subtype) = finrank (X.Kl la) V'` using `(Submodule.comapSubtypeEquivOfLe hV').finrank_eq`. Establish `hq` using `qlen_eq_inW X ka la (X.loc la (X.Msup ka)) (X.loc la (X.Theta S ka wL wF T)) V' hV'`. Establish `hle : ThW X S ka wL wF T la ≤ MW X ka la` using `Submodule.comap_mono (Submodule.span_mono (Set.image_mono hΘM))`. Establish `h0` using `qlen_eq_zero_of_le (MW X ka la ⊓ (V'.comap (WL X ka la).subtype).restrictScalars (X.Ol la)) (ThW X S ka wL wF T la ⊓ (V'.comap (WL X ka la).subtype).restrictScalars (X.Ol la)) (inf_le_inf_right _ hle)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `qlen_inf_ne_top (X.Ol la) (X.Kl la) ↥(WL X ka la) (MW X ka la) (ThW X S ka wL wF T la) hLat.1 hLat.2 ((V'.comap (WL X ka la).subtype).restrictScalars (X.Ol la))`. Rewrite using `[← hq]`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Rewrite `hb` using `[hrk]`. Unfold `Formalism.LatticeIndexTer.idx at hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `hb` using `[h0]`. Establish `hb'` using `hb`. Simplify using `only [ENat.toNat_zero, Nat.cast_zero, sub_zero, Int.cast_natCast] at hb'`. Conclude with `hb'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qlen_of_idx (X : PJ D B P j) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) (T : ℕ) (la : HeightOneSpectrum (𝓞 B.KO))
     (hLat : InLat X ka la S wL wF T) (hΘM : X.Theta S ka wL wF T ≤ X.Msup ka) (e r : ℝ)
@@ -46,7 +46,7 @@ theorem qlen_of_idx (X : PJ D B P j) (S : Scal B) (ka wL wF : WeightFamilies.Wt 
   exact hb'
 
 /- English proof (translation)
-The claim follows from `qlen_of_idx X S ka wL wF T la hLat (theta_le_msup_of_hyp X S hH) e r h V' hV'`.
+A detailed English derivation is pending.
 -/
 theorem qlen_of_idx_of_hyp {large₂ : SizeData₂ D} (X : PJ D B P j) {H : KHyp} {C2 A2 CR Bx CT : ℝ} (S : Scal B)
     {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
@@ -62,13 +62,13 @@ theorem qlen_of_idx_of_hyp {large₂ : SizeData₂ D} (X : PJ D B P j) {H : KHyp
   qlen_of_idx X S ka wL wF T la hLat (theta_le_msup_of_hyp X S hH) e r h V' hV'
 
 /- English proof (translation)
-The claim follows from `h j h1 h2 ka`.
+A detailed English derivation is pending.
 -/
 theorem isLattice_of_admissible (h : WeightAlgebra.adm1 B) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (ka : WeightFamilies.Wt D j) :
     Submodule.IsLattice B.KO (B.Mlat j ka) := h j h1 h2 ka
 
 /- English proof (translation)
-Take `⟨Sh, h1, h2, -⟩` from `h`. Conclude with `top_le_iff.1 (h2 ▸ Submodule.span_mono h1)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_shortG {X : PJ D B P j} {w : WeightFamilies.Wt D j} {N : Submodule (𝓞 B.KO) (B.Cusp j w)} {β : ℝ}
     (h : ShortG X w N β) : Submodule.span B.KO (N : Set (B.Cusp j w)) = ⊤ := by
@@ -76,7 +76,7 @@ theorem span_eq_top_of_shortG {X : PJ D B P j} {w : WeightFamilies.Wt D j} {N : 
   exact top_le_iff.1 (h2 ▸ Submodule.span_mono h1)
 
 /- English proof (translation)
-Take `⟨-, -, ⟨-, -, -, -, -, po, -, -, PLam, -, -, hF, h0', hK⟩, -⟩` from `hH`. Conclude with `⟨span_eq_top_of_shortG hF, span_eq_top_of_shortG h0', span_eq_top_of_shortG hK⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem span_Thc_of_hyp {large₂ : SizeData₂ D} {X : PJ D B P j} {H : KHyp} {C2 A2 CR Bx CT : ℝ} {S : Scal B}
     {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}

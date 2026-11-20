@@ -10,19 +10,17 @@ open UpperTheory.Gal.CertificateRingHomMap (Plc)
 namespace UpperTheory.Gal.Spc.EntrywiseClass
 
 /- English proof (translation)
-Establish `hnm : 0 < nm` using `by nlinarith [sq_nonneg tr]`. Use `set c : ℕ := (b + tr.natAbs + 1).factorial with hc`. Establish `hcge : b + tr.natAbs + 1 ≤ c` using `Nat.self_le_factorial _`. Establish `hcZ : (tr.natAbs : ℤ) + 1 ≤ (c : ℤ)` using `by omega`. Establish `htr : tr ≤ tr.natAbs` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g : ℤ := nm * (c : ℤ) ^ 2 - tr * c + 1 with hg`. Establish `hcpos : (0 : ℤ) < c` using `by omega`. Establish `hg1 : 1 < g`. Establish `h1 : (c : ℤ) ≤ nm * c` using `by nlinarith`. Establish `h2 : 0 < nm * c - tr` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: 0 < (c : ℤ) * (nm * c - tr)` using `mul_pos hcpos h2`. Rewrite using `[hg]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hne : g.natAbs ≠ 1` using `by omega`. Use `⟨g.natAbs.minFac, Nat.minFac_prime hne, ?_, nm * c, ?_⟩` and prove the remaining obligations.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hle`. Establish `hq` using `Nat.minFac_prime hne`. Establish `hqc : g.natAbs.minFac ∣ c` using `(hq.dvd_factorial).2 (by omega)`. Establish `hqg : (g.natAbs.minFac : ℤ) ∣ g` using `Int.natCast_dvd.2 (Nat.minFac_dvd _)`. Establish `hqc' : (g.natAbs.minFac : ℤ) ∣ (c : ℤ)` using `by exact_mod_cast hqc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (g.natAbs.minFac : ℤ) ∣ 1`. Establish `e : (1 : ℤ) = g - c * (nm * c - tr)` using `by rw [hg]; ring`. Rewrite using `[e]`. Conclude with `dvd_sub hqg (Dvd.dvd.mul_right hqc' _)`. Use `Int.eq_one_of_dvd_one (by omega) h1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h2` using `hq.one_lt`. Use linear arithmetic over natural numbers and integers. Establish `hqg : (g.natAbs.minFac : ℤ) ∣ g` using `Int.natCast_dvd.2 (Nat.minFac_dvd _)`. Establish `e : (nm * c) ^ 2 - tr * (nm * c) + nm = nm * g` using `by rw [hg]; ring`. Rewrite using `[e]`.
-
-Conclude with `Dvd.dvd.mul_left hqg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_root (tr nm : ℤ) (h : tr ^ 2 - 4 * nm < 0) (b : ℕ) :
     ∃ q : ℕ, q.Prime ∧ b < q ∧ ∃ r : ℤ, (q : ℤ) ∣ r ^ 2 - tr * r + nm := by
@@ -58,9 +56,7 @@ private theorem exists_root (tr nm : ℤ) (h : tr ^ 2 - 4 * nm < 0) (b : ℕ) :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Take `⟨s, t, hst⟩` from `Nat.isCoprime_iff_coprime.2 h`. Establish `e : (1 : 𝓞 E) = (s : 𝓞 E) * (a : 𝓞 E) + (t : 𝓞 E) * (b : 𝓞 E)`. Conclude with `(congrArg (Int.cast : ℤ → 𝓞 E) hst).symm` after adjusting the coercions. Use `u.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Rewrite using `[e]`.
-
-Conclude with `u.asIdeal.add_mem (u.asIdeal.mul_mem_left _ ha) (u.asIdeal.mul_mem_left _ hb)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem not_both (u : Plc E) {a b : ℕ} (h : a.Coprime b) (ha : (a : 𝓞 E) ∈ u.asIdeal) (hb : (b : 𝓞 E) ∈ u.asIdeal) : False := by
   obtain ⟨s, t, hst⟩ := Nat.isCoprime_iff_coprime.2 h
@@ -71,13 +67,13 @@ private theorem not_both (u : Plc E) {a b : ℕ} (h : a.Coprime b) (ha : (a : �
   exact u.asIdeal.add_mem (u.asIdeal.mul_mem_left _ ha) (u.asIdeal.mul_mem_left _ hb)
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ExistsPlace.exists_place q hq`.
+A detailed English derivation is pending.
 -/
 private theorem exists_place (q : ℕ) (hq : q.Prime) : ∃ w : Plc E, (q : 𝓞 E) ∈ w.asIdeal :=
   _root_.UpperTheory.Reformulated.B.ExistsPlace.exists_place q hq
 
 /- English proof (translation)
-Establish `hq0 : (q : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.2 hq.ne_zero`. Use `(Ideal.finite_factors (I := Ideal.span {(q : 𝓞 E)}) (by simpa using hq0)).subset fun w hw => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hw)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem finite_above (q : ℕ) (hq : q.Prime) : {w : Plc E | (q : 𝓞 E) ∈ w.asIdeal}.Finite := by
   have hq0 : (q : 𝓞 E) ≠ 0 := Nat.cast_ne_zero.2 hq.ne_zero
@@ -85,7 +81,7 @@ private theorem finite_above (q : ℕ) (hq : q.Prime) : {w : Plc E | (q : 𝓞 E
   exact Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hw)
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[UpperTheory.Gal.G1.pCjMem E A, UpperTheory.Gal.G1.pCjMem E A, A.bar_bar]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cj_cj (A : Arith E) (u : Plc E) : CertificateRingHomMap.cj (CertificateRingHomMap.cj u) = u := by
   apply HeightOneSpectrum.ext
@@ -93,13 +89,13 @@ private theorem cj_cj (A : Arith E) (u : Plc E) : CertificateRingHomMap.cj (Cert
   rw [UpperTheory.Gal.G1.pCjMem E A, UpperTheory.Gal.G1.pCjMem E A, A.bar_bar]
 
 /- English proof (translation)
-Establish `hsub : (u.asIdeal : Set (𝓞 E)) ⊆ (w.asIdeal : Set (𝓞 E)) ∪ ((CertificateRingHomMap.cj w).asIdeal : Set (𝓞 E))`. Introduce `y hy`. Establish `hy' : y ∈ u.asIdeal` using `hy`. Establish `ht : IsCMField.complexConj E ((y * A.bar y : 𝓞 E) : E) = ((y * A.bar y : 𝓞 E) : E)`. Rewrite using `[← A.bar_eq, map_mul, A.bar_bar, mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ((y * A.bar y : 𝓞 E) : E) ∈ maximalRealSubfield E` using `(IsCMField.complexConj_eq_self_iff E _).1 ht`. Establish `hint : IsIntegral ℤ (⟨_, hmem⟩ : maximalRealSubfield E)` using `(isIntegral_algebraMap_iff (A := maximalRealSubfield E) (B := E) (algebraMap (maximalRealSubfield E) E).injective).1 (RingOfIntegers.isIntegral_coe (y * A.bar y))`. Set `z : 𝓞 (maximalRealSubfield E)` to `⟨⟨_, hmem⟩, hint⟩`. Establish `hz : algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) z = y * A.bar y` using `RingOfIntegers.ext rfl`. Establish `h1 : z ∈ (u.under (𝓞 (maximalRealSubfield E))).asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, hz]`. Conclude with `u.asIdeal.mul_mem_right _ hy'`. Rewrite `h1` using `[← h, HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, hz]`. Break down `w.isPrime.mem_or_mem h1 with h2 | h2` into its components or cases. Conclude with `Or.inl h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inr ((UpperTheory.Gal.G1.pCjMem E A w y).2 h2)`. Break down `Ideal.subset_union.1 hsub with h1 | h1` into its components or cases. Conclude with `Or.inl (HeightOneSpectrum.ext (u.isMaximal.eq_of_le w.isPrime.ne_top h1))`. Conclude with `Or.inr (HeightOneSpectrum.ext (u.isMaximal.eq_of_le (CertificateRingHomMap.cj w).isPrime.ne_top h1))`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 private theorem eq_or_cj (A : Arith E) (w u : Plc E)
     (h : w.under (𝓞 (maximalRealSubfield E)) = u.under (𝓞 (maximalRealSubfield E))) : u = w ∨ u = CertificateRingHomMap.cj w := by
@@ -128,23 +124,23 @@ private theorem eq_or_cj (A : Arith E) (w u : Plc E)
 end UpperTheory.Gal.Spc.EntrywiseClass
 
 /- English proof (translation)
-Introduce `E _ _ _ A n p _ S x U w₀ Up V hG X`. Take `⟨e, he, hperf⟩` from `pPerfCof E A`. Take `⟨q, hq, hb, r, hr⟩` from `UpperTheory.Gal.Spc.EntrywiseClass.exists_root A.tr A.nm A.disc_neg (X.sup id + p + e + (A.tr ^ 2 - 4 * A.nm).natAbs + V.S.sup fun u => Ideal.absNorm u.asIdeal)`. Establish `hX : q ∉ X` using `fun h => by`. Establish `h1` using `Finset.le_sup (f := id) h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [id] at h1`. Use linear arithmetic over natural numbers and integers. Establish `hqp : q ≠ p` using `by omega`. Establish `hcop : ∀ a : ℕ, 0 < a → a < q → a.Coprime q` using `fun a h0 h1 => ((Nat.Prime.coprime_iff_not_dvd hq).2 fun h => absurd (Nat.le_of_dvd h0 h) (by omega)).symm`. Establish `hD : ¬ (q : ℤ) ∣ A.tr ^ 2 - 4 * A.nm` using `fun h => by`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : q ∣ (A.tr ^ 2 - 4 * A.nm).natAbs` using `Int.natCast_dvd.1 h`. Establish `h2 : 0 < (A.tr ^ 2 - 4 * A.nm).natAbs` using `by have := A.disc_neg; omega`. Use `Nat.le_of_dvd h2 h1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hs : A.SplitK q` using `⟨hD, r, hr⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hgood : A.Good q` using `⟨hs, hperf q (hcop e he (by omega))⟩`. Establish `hoff : ∀ u ∈ V.S, (q : 𝓞 E) ∉ u.asIdeal` using `fun u hu h => by`. Establish `h1 : Ideal.absNorm u.asIdeal ≤ V.S.sup fun u => Ideal.absNorm u.asIdeal` using `Finset.le_sup (f := fun u : Plc E => Ideal.absNorm u.asIdeal) hu`. Establish `h2 : 0 < Ideal.absNorm u.asIdeal` using `Nat.pos_of_ne_zero fun h0 => u.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Conclude with `UpperTheory.Gal.Spc.EntrywiseClass.not_both u (hcop _ h2 (by omega)).symm h (Ideal.absNorm_mem u.asIdeal)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w₁, hw₁⟩` from `UpperTheory.Gal.Spc.EntrywiseClass.exists_place (E := E) q hq`. Establish `SD` using `fun (w : Plc E) (hw : (q : 𝓞 E) ∈ w.asIdeal) => Pl.sides_holds E A x hG q hq hs w hw`. Take `⟨ρ, -, hρ⟩` from `(SD w₁ hw₁).2.2.2.2.2.1`. Establish `hiff` using `(SD w₁ hw₁).2.2.2.2.2.2 ρ hρ`. Establish `hpo : ∀ u : Plc E, (q : 𝓞 E) ∈ u.asIdeal → (p : 𝓞 E) ∉ u.asIdeal` using `fun u hu hp => UpperTheory.Gal.Spc.EntrywiseClass.not_both u ((Nat.coprime_primes hq (Fact.out : p.Prime)).2 hqp) hu hp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : {w : UpperTheory.Gal.Spc.Spl E p | (q : 𝓞 E) ∈ w.1.asIdeal ∧ A.ω - (ρ : 𝓞 E) ∈ w.1.asIdeal}.Finite` using `((UpperTheory.Gal.Spc.EntrywiseClass.finite_above (E := E) q hq).preimage (f := fun w : UpperTheory.Gal.Spc.Spl E p => w.1) (fun _ _ _ _ h => Subtype.ext h)).subset fun w hw => hw.1`. Establish `hmk : ∀ u : Plc E, (q : 𝓞 E) ∈ u.asIdeal → A.ω - (ρ : 𝓞 E) ∈ u.asIdeal → ∃ w ∈ hT.toFinset, w.1 = u` using `fun u h1 h2 => ⟨⟨u, (SD u h1).2.1, hpo u h1⟩, hT.mem_toFinset.2 ⟨h1, h2⟩, rfl⟩`. Use `⟨q, hT.toFinset, hX, hq, hqp, hgood, hoff, ⟨fun w hw => (hT.mem_toFinset.1 hw).1, fun u hu => ?_, fun w hw w' hw' hne heq => ?_⟩, ?_⟩` and prove the remaining obligations. Break down `(SD w₁ hw₁).2.2.1 u hu with h | h` into its components or cases. Take `⟨h1, h2⟩` from `(hiff u).1 h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, e⟩` from `hmk u h1 h2`. Conclude with `⟨w, hw, Or.inl e⟩`. Take `⟨h1, h2⟩` from `(hiff _).1 h`. Take `⟨w, hw, e⟩` from `hmk _ h1 h2`. Conclude with `⟨w, hw, Or.inr (by rw [e]; exact UpperTheory.Gal.Spc.EntrywiseClass.cj_cj A u)⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `m` using `hT.mem_toFinset.1 hw`. Establish `m'` using `hT.mem_toFinset.1 hw'`. Break down `UpperTheory.Gal.Spc.EntrywiseClass.eq_or_cj A w.1 w'.1 heq with h | h` into its components or cases. Conclude with `hne (Subtype.ext h.symm)`. Use `(SD w.1 m.1).1 (((SD w.1 m.1).2.2.2.2.2.2 ρ m.2 _).2 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← h]`. Conclude with `m'`. Take `⟨w, hw, -⟩` from `hmk w₁ hw₁ hρ`. Conclude with `⟨w, hw⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Spc.auxiliary_prime_holds :
     UpperTheory.Gal.Spc.AuxiliaryInertOddPrime := by

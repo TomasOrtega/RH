@@ -30,17 +30,15 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
   {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Take `⟨i₀⟩` from `hne`. Use `⟨(D.ntw.S0 i₀).filter (fun P => ∀ i, P ∈ D.ntw.S0 i), fun P hP => Finset.mem_filter.2 ⟨hSb i₀ hP, fun i => hSb i hP⟩, fun i P hP => (Finset.mem_filter.1 hP).2 i, ?_, ?_⟩` and prove the remaining obligations. Introduce `P hP`. Establish `hall : ∀ i, P ∈ D.ntw.S0 i`. Introduce `i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hP` using `[Nat.cast_mul, Nat.cast_mul]`. Break down `P.isPrime.mem_or_mem hP with h | h` into its components or cases. Conclude with `hS02 i h`. Break down `P.isPrime.mem_or_mem h with h | h` into its components or cases. Conclude with `D.ntw.placesOver_subset_exceptional i 0 h`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `D.ntw.placesOver_subset_exceptional i 1 h`. Conclude with `Finset.mem_filter.2 ⟨hall i₀, hall⟩`. Introduce `j k P α Rr h1 h2 hd x`. Establish `hi' : ∃ i', P ∉ D.ntw.S0 i'`. Assume the negation of the conclusion as `hc`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `push_neg at hc`. Conclude with `hd.offS (Finset.mem_filter.2 ⟨hc i₀, hc⟩)`. Take `⟨i', hi'⟩` from `hi'`. Take `⟨-, -, -, -, hso, -, -, -⟩` from `GlobalTheory.ConjPlaceOff.exists_conj_off D (D.ntw.S0 i') Rl.Sb P (hS0c i') (hS02 i') (hS0b i') hd.split hi'`. Establish `hj : (idxOf D j : ℕ) + 1 = j` using `by simp only [idxOf]; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Set `y : (ratDatR Rl cG kKs hk).WL ((idxOf D j : ℕ) + 1)` to `(YS.fi (idxOf D j)).e.symm x`. Establish `hy : (YS.fi (idxOf D j)).e y = x` using `LinearEquiv.apply_symm_apply _ _`. Establish `key : ∀ n (hn : n = j) (z : (ratDatR Rl cG kKs hk).WL n), HEq z x → HEq (H.hL n k P z) (H.hL j k P x)`. Introduce `n hn z hz`. Substitute `hn` using the available equality.
-
-Rewrite using `[eq_of_heq hz]`. Establish `h3 : HEq ((YS.fi (idxOf D j)).e (H.hL ((idxOf D j : ℕ) + 1) k P y)) (H.hL j k P x)` using `(hfi _ _).trans (key _ hj y ((hy ▸ hfi _ y).symm))`. Establish `ht` using `hX.tie (idxOf D j) k P hd.split hso ⟨i', hi'⟩ hd.odd hd.le α Rr hd.elt hd.reps y rfl`. Rewrite `ht` using `[eq_of_heq h3, hy]`. Conclude with `ht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sb_raw (Rl : RealDat3 D A3 Ks) (cG : G0 Rl.Pg D.R.r ≃* G0g D.nd) (kKs : Ks →+* ↥D.LL0)
     (hk : ∀ x : Ks, ((kKs x : ↥D.LL0) : D.what₂.LL) = algebraMap Ks D.what₂.LL x)
@@ -95,11 +93,11 @@ end GlobalTheory.HeckeSbLayer
 namespace GlobalTheory.HeckeSbLayer
 
 /- English proof (translation)
-Introduce `_ _ hL`. Use `⟨1, one_pos, fun eps C8 C5 c6 Cb _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C _ _ _ => ⟨0, fun cD _ => ⟨0, fun ch _ => ⟨0, fun K _ _ _ _ _ _ => ?_⟩⟩⟩⟩⟩` and prove the remaining obligations. Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, fun B f T _ _ _ _ => ?_⟩` and prove the remaining obligations. Introduce `_ w Z Wt p0 t nch n xd c ⟨e⟩ _ _`. Establish `hS0b : ∀ i, ∀ Q ∈ t.r.z.R.Sb, Q ∈ (w.st Z).toD7.ntw.S0 i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i P hP`. Establish `hA : t.r.z.R.Sb = t.r.z.R.Pg` using `t.r.z.pins.char.allPl`. Take `⟨k, hk⟩` from `e.ser.ex.good.Pg i ⟨0, lt_of_lt_of_le two_pos B.R.two_le_m⟩ true P (by rw [e.ser.ex.pin.Pg]; exact hA ▸ hP)`. Conclude with `(w.st Z).toD7.ntw.placesOver_subset_exceptional i k hk`. Establish `hne : Nonempty (w.st Z).toD7.ntw.Tw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 (w.st Z).toD7.what₂.LL)`. Conclude with `⟨nch.twI ((w.st Z).toD7.plEq.symm ⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField _)⟩)⟩`. Conclude with `exists_sb_raw (D := (w.st Z).toD7) t.r.z.R t.r.z.cG c.row.kKs c.row.hk c.row.nexp c.row.hecke e.hecke e.fi hne (fun i P P' hP hc => e.ser.ex.good.goodSetup_badPlaces_conj i P hP P' hc) (fun i => e.ser.ex.good.goodSetup_placesOverTwo_subset i) hS0b`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sb_layer : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t _ _ c =>
     ∀ Sb : Finset (PlE (w.D Z).host), (∀ i, Sb ⊆ (w.D Z).ntw.S0 i) → ∃ Sb' : Finset (PlE (w.D Z).host), Sb ⊆ Sb' ∧

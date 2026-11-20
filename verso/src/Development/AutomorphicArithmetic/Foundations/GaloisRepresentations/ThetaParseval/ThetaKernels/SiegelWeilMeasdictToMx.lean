@@ -15,9 +15,9 @@ namespace PositivityTheory.SiegelWeilFormula.MeasD
 open PositivityTheory.SiegelWeilFormula PositivityTheory.SiegelWeilFormula.KWhit PositivityTheory.SiegelWeilFormula.kfour
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Establish `hemb : MeasurableEmbedding (toMx (F` using `F) (E := E) (m := d.m) (n := d.n)) := (colM d.m d.n).measurableEmbedding`. Use `⟨hemb, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(colE (F := F) (E := E) d.m d.n).toAddEquiv.isAddHaarMeasure_map μ (colE d.m d.n).continuous (colE d.m d.n).symm.continuous`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.kfour.ratM_eq_k]`. Use `hF.image_of_equiv (colM d.m d.n).toEquiv ?_ (ratEq d.m d.n) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((colM d.m d.n).measurePreserving_symm μ).quasiMeasurePreserving`. Introduce `g x`. Both sides reduce to the same expression. Rewrite using `[hemb.map_apply, Set.preimage_image_eq _ hemb.injective, h1]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem meas_toMx_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (μ : Measure (Fin d.n → Fin d.m → AF F ⊗[F] E)) (𝓕 : Set (Fin d.n → Fin d.m → AF F ⊗[F] E))
     (hμ : μ.IsAddHaarMeasure) (hF : IsAddFundamentalDomain (MeasP.ratTupA F E d.n d.m) 𝓕 μ) (h1 : μ 𝓕 = 1) :

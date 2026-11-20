@@ -17,7 +17,7 @@ Both sides reduce to the same expression.
 theorem uOf_val' (hW : W₁ ≤ W₂) (X : nilrad W₁ W₂) : (uOf hW X).val = 1 + X.1 := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem uOf_eq (hW : W₁ ≤ W₂) (X : nilrad W₁ W₂) : uOf hW X = GlobalTheory.CompanionTheory.LocVan.uOf X := Units.ext rfl
 
@@ -46,19 +46,19 @@ def uniRad (hW : W₁ ≤ W₂) : Subgroup (GL (Fin n) ℂ) where
     exact (nilrad W₁ W₂).add_mem ((nilrad W₁ W₂).neg_mem ha) (GlobalTheory.CompanionTheory.LocVan.nil_mul_mem hW ha ha)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_uniRad (hW : W₁ ≤ W₂) (g : GL (Fin n) ℂ) : g ∈ uniRad hW ↔ g.val - 1 ∈ nilrad W₁ W₂ := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_uniRad, uOf_val']`. Simplify using `using X.2`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem uOf_mem (hW : W₁ ≤ W₂) (X : nilrad W₁ W₂) : uOf hW X ∈ uniRad hW := by
   rw [mem_uniRad, uOf_val']
   simpa using X.2
 
 /- English proof (translation)
-Establish `e : ∀ y, g.val *ᵥ y = y + (g.val - 1) *ᵥ y` using `fun y => by`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Conclude with `⟨fun y hy => by rw [e, hg.2.2 y hy, add_zero]; exact hy, fun y hy => by rw [e]; exact W₂.add_mem hy (hg.1 y)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Supply the required witnesses or components.
 -/
 theorem mulVec_mem_uniRad (hW : W₁ ≤ W₂) {g : GL (Fin n) ℂ} (hg : g ∈ uniRad hW) :
     (∀ y ∈ W₁, g.val *ᵥ y ∈ W₁) ∧ ∀ y ∈ W₂, g.val *ᵥ y ∈ W₂ := by
@@ -68,7 +68,7 @@ theorem mulVec_mem_uniRad (hW : W₁ ≤ W₂) {g : GL (Fin n) ℂ} (hg : g ∈ 
     fun y hy => by rw [e]; exact W₂.add_mem hy (hg.1 y)⟩
 
 /- English proof (translation)
-Introduce `g hg` and use `⟨img_eq_of_mapsTo g W₁ (mulVec_mem_uniRad hW hg).1 (mulVec_mem_uniRad hW ((uniRad hW).inv_mem hg)).1, img_eq_of_mapsTo g W₂ (mulVec_mem_uniRad hW hg).2 (mulVec_mem_uniRad hW ((uniRad hW).inv_mem hg)).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem uniRad_le (hW : W₁ ≤ W₂) : uniRad hW ≤ flagStab W₁ W₂ := fun g hg =>
   ⟨img_eq_of_mapsTo g W₁ (mulVec_mem_uniRad hW hg).1 (mulVec_mem_uniRad hW ((uniRad hW).inv_mem hg)).1,
@@ -88,9 +88,9 @@ instance uniRad_normal (hW : W₁ ≤ W₂) : ((uniRad hW).subgroupOf (flagStab 
   exact h⟩
 
 /- English proof (translation)
-Establish `hA : IsClosed (A : Set (Fin n → ℂ))` using `Submodule.closed_of_finiteDimensional A`. Establish `e : {g : GL (Fin n) ℂ | img g A = A} = (⋂ y ∈ A, (fun g : GL (Fin n) ℂ => g.val *ᵥ y) ⁻¹' (A : Set (Fin n → ℂ))) ∩ ⋂ y ∈ A, (fun g : GL (Fin n) ℂ => (g⁻¹ : GL (Fin n) ℂ).val *ᵥ y) ⁻¹' (A : Set (Fin n → ℂ))`. Use extensionality with `g`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Conclude with `⟨fun h => ⟨fun y hy => mulVec_mem_of_img g h hy, fun y hy => inv_mulVec_mem_of_img g h hy⟩, fun h => img_eq_of_mapsTo g A h.1 h.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[e]`. Use `IsClosed.inter (isClosed_biInter fun y _ => hA.preimage ?_) (isClosed_biInter fun y _ => hA.preimage ?_)` and prove the remaining obligations. Conclude with `Units.continuous_val.matrix_mulVec continuous_const`. Conclude with `(Units.continuous_val.comp continuous_inv).matrix_mulVec continuous_const`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_stab (A : Submodule ℂ (Fin n → ℂ)) : IsClosed {g : GL (Fin n) ℂ | img g A = A} := by
   have hA : IsClosed (A : Set (Fin n → ℂ)) := Submodule.closed_of_finiteDimensional A
@@ -107,14 +107,14 @@ theorem isClosed_stab (A : Submodule ℂ (Fin n → ℂ)) : IsClosed {g : GL (Fi
   · exact (Units.continuous_val.comp continuous_inv).matrix_mulVec continuous_const
 
 /- English proof (translation)
-The claim follows from `(isClosed_stab A).inter (isClosed_stab B)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_flagStab (A B : Submodule ℂ (Fin n → ℂ)) :
     IsClosed (flagStab A B : Set (GL (Fin n) ℂ)) :=
   (isClosed_stab A).inter (isClosed_stab B)
 
 /- English proof (translation)
-Establish `h : Continuous fun q : flagStab W₁ W₂ => (q : GL (Fin n) ℂ).val - 1` using `(Units.continuous_val.comp continuous_subtype_val).sub continuous_const`. Conclude with `(GlobalTheory.CompanionTheory.LocVan.isClosed_nilrad W₁ W₂).preimage h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_radQ (hW : W₁ ≤ W₂) :
     IsClosed (((uniRad hW).subgroupOf (flagStab W₁ W₂) : Subgroup (flagStab W₁ W₂)) : Set (flagStab W₁ W₂)) := by
@@ -142,11 +142,11 @@ theorem radHomeo_coe (hW : W₁ ≤ W₂) (X : nilrad W₁ W₂) :
     (((radHomeo hW X : (uniRad hW).subgroupOf (flagStab W₁ W₂)) : flagStab W₁ W₂) : GL (Fin n) ℂ) = uOf hW X := rfl
 
 /- English proof (translation)
-Set `P : nilrad W₁ W₂ → nilrad W₁ W₂` to `fun X => ⟨A.1 * X.1, GlobalTheory.CompanionTheory.LocVan.nil_mul_mem hW A.2 X.2⟩`. Establish `hPc : Continuous P` using `Continuous.subtype_mk (continuous_const.matrix_mul continuous_subtype_val) _`. Establish `hsh : Measure.map (fun X => X + P X) ν = ν` using `GlobalTheory.CompanionTheory.NilChangeVar.map_shear ν (GlobalTheory.CompanionTheory.NilChangeVar.nilrad2 W₁ W₂) P hPc (fun X => GlobalTheory.CompanionTheory.NilChangeVar.nil_mul_mem A.2 X.2) (fun X Y hY => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `A.1 * (X.1 + Y.1) = A.1 * X.1`. Rewrite using `[mul_add, GlobalTheory.CompanionTheory.NilChangeVar.nil_mul_two A.2 hY.1, add_zero]))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : GlobalTheory.CompanionTheory.LocVan.nmul hW A = (fun X => X + A) ∘ fun X => X + P X`. Use function extensionality and compare the values at `X`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A.1 + X.1 + A.1 * X.1 = X.1 + A.1 * X.1 + A.1`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Normalize the expressions using the abelian group laws.
 
-Establish `hm : Measurable fun X : nilrad W₁ W₂ => X + P X` using `(continuous_id.add hPc).measurable`. Rewrite using `[hf, ← Measure.map_map (measurable_add_const A) hm, hsh]`. Conclude with `map_add_right_eq_self ν A`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_nmul [MeasurableSpace (nilrad W₁ W₂)] [BorelSpace (nilrad W₁ W₂)]
     (hW : W₁ ≤ W₂) (ν : Measure (nilrad W₁ W₂)) [ν.IsAddHaarMeasure] (A : nilrad W₁ W₂) :
@@ -170,7 +170,7 @@ theorem map_nmul [MeasurableSpace (nilrad W₁ W₂)] [BorelSpace (nilrad W₁ W
   exact map_add_right_eq_self ν A
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Subtype.ext (Units.ext (by change 1 + (A.1 + X.1 + A.1 * X.1) = (1 + A.1) * (1 + X.1) noncomm_ring)))`.
+A detailed English derivation is pending.
 -/
 theorem radHomeo_nmul (hW : W₁ ≤ W₂) (A X : nilrad W₁ W₂) :
     radHomeo hW (GlobalTheory.CompanionTheory.LocVan.nmul hW A X) = radHomeo hW A * radHomeo hW X :=
@@ -179,11 +179,9 @@ theorem radHomeo_nmul (hW : W₁ ≤ W₂) (A X : nilrad W₁ W₂) :
     noncomm_ring)))
 
 /- English proof (translation)
-Establish `hm` using `(radHomeo hW).measurable`. Use `haveI : IsFiniteMeasureOnCompacts (ν.map (radHomeo hW)) := ⟨fun K hK => by`. Rewrite using `[(radHomeo hW).measurableEmbedding.map_apply]`. Conclude with `((radHomeo hW).isCompact_preimage.2 hK).measure_lt_top⟩`. Use `haveI : (ν.map (radHomeo hW)).IsOpenPosMeasure := (radHomeo hW).continuous.isOpenPosMeasure_map (radHomeo hW).surjective`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `haveI : (ν.map (radHomeo hW)).IsMulLeftInvariant := ⟨fun a => by`. Take `⟨A, rfl⟩` from `(radHomeo hW).surjective a`. Establish `hc : (fun x => radHomeo hW A * x) ∘ (radHomeo hW) = (radHomeo hW) ∘ GlobalTheory.CompanionTheory.LocVan.nmul hW A`. Use function extensionality and compare the values at `fun X => (radHomeo_nmul hW A X).symm`. Establish `hnm : Measurable (GlobalTheory.CompanionTheory.LocVan.nmul hW A)`.
-
-Establish `: Continuous (GlobalTheory.CompanionTheory.LocVan.nmul hW A)` using `Continuous.subtype_mk ((continuous_const.add continuous_subtype_val).add (continuous_const.matrix_mul continuous_subtype_val)) _`. Conclude with `this.measurable`. Rewrite using `[Measure.map_map (measurable_const_mul _) hm, hc, ← Measure.map_map hm hnm, map_nmul hW ν A]⟩`. Conclude with `⟨⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isHaar_radHomeo [MeasurableSpace (GL (Fin n) ℂ)] [BorelSpace (GL (Fin n) ℂ)]
     [MeasurableSpace (nilrad W₁ W₂)] [BorelSpace (nilrad W₁ W₂)]
@@ -219,19 +217,17 @@ open Matrix MeasureTheory PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.D4 Pos
 namespace GlobalTheory.CompanionTheory.QuotVan
 
 /- English proof (translation)
-Introduce `n _ _ μ _ d μT _ W₁ W₂ hW _ _ ν _ F hs h₁ h₂ hF hFT hFK h0`. Use `haveI := GlobalTheory.CompanionTheory.LocVan.locallyCompact_GL n`. Use `haveI := GlobalTheory.CompanionTheory.LocVan.secondCountable_GL n`. Use `haveI := isMulRightInvariant_GL n μ`. Use `haveI : SigmaFinite μT := GlobalTheory.CompanionTheory.LocVan.sigmaFinite_twCent d μT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : μT.IsInvInvariant := GlobalTheory.CompanionTheory.LocVan.invInvariant_twCent d μT fun a ha b hb => twCent_comm hs ha hb`. Establish `hσ : ∀ x : ℂ, starRingEnd ℂ (starRingEnd ℂ x) = x` using `fun x => by simp`. Establish `g₁ : img (d * thetaR (starRingEnd ℂ) n d) W₁ = W₁`. Rewrite using `[← GlobalTheory.CompanionTheory.FlagCent.perpD_perpD _ hσ, h₁, h₂]`. Establish `g₂ : img (d * thetaR (starRingEnd ℂ) n d) W₂ = W₂`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← GlobalTheory.CompanionTheory.FlagCent.perpD_perpD _ hσ, h₂, h₁]`. Take `⟨V₂, V₃, c₁, d₁, c₂, d₂, s₂, s₃⟩` from `exists_levi_spaces _ hs hW g₁ g₂`. Use `haveI := isHaar_radHomeo hW ν`. Use `absVanish μ (flagStab W₁ W₂) (uK n) (isClosed_flagStab W₁ W₂) (isCompact_uK n) ?_ ((uniRad hW).subgroupOf (flagStab W₁ W₂)) ((flagStab V₂ V₃).subgroupOf (flagStab W₁ W₂)) (isClosed_radQ hW) ((isClosed_flagStab V₂ V₃).preimage continuous_subtype_val) ?_ ?_ (ν.map (radHomeo hW)) (t …` and prove the remaining obligations. Introduce `g`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q, hq, k, hk, e⟩` from `GlobalTheory.CompanionTheory.IwaDecomp.iwaFlag n W₁ W₂ hW g`. Conclude with `⟨q, hq, k, hk, e⟩`. Introduce `q`. Take `⟨u, m, e, hu, m₁, m₂, m₃, m₄⟩` from `levi_decomp c₁ d₁ c₂ d₂ q.1 q.2.1 q.2.2`. Conclude with `⟨⟨u, uniRad_le hW hu⟩, Subgroup.mem_subgroupOf.2 hu, ⟨m, m₁, m₂⟩, Subgroup.mem_subgroupOf.2 ⟨m₃, m₄⟩, Subtype.ext e⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations. Establish `hN` using `Subgroup.mem_subgroupOf.1 hx.1`. Establish `hM` using `Subgroup.mem_subgroupOf.1 hx.2`. Conclude with `Subgroup.mem_bot.2 (Subtype.ext (levi_inf c₁ d₁ c₂ d₂ x.1 hN hM.1 hM.2))`. Introduce `t ht`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `GlobalTheory.CompanionTheory.FlagCent.commute_norm (starRingEnd ℂ) hσ ht`. Take `⟨t₁, t₂⟩` from `GlobalTheory.CompanionTheory.FlagCent.twCent_preserves_flag (starRingEnd ℂ) hσ d hs W₁ W₂ h₁ h₂ ht`. Conclude with `⟨⟨t₁, t₂⟩, Subgroup.mem_subgroupOf.2 ⟨GlobalTheory.CompanionTheory.FlagCent.img_eq_of_commute _ t hs hc V₂ s₂, GlobalTheory.CompanionTheory.FlagCent.img_eq_of_commute _ t hs hc V₃ s₃⟩⟩`. Introduce `x`. Take `⟨q, hq, k, hk, rfl⟩` from `GlobalTheory.CompanionTheory.IwaDecomp.iwaFlag n W₁ W₂ hW x`.
-
-Rewrite using `[(radHomeo hW).measurableEmbedding.integral_map]`. Establish `e : ∀ X, F ((((radHomeo hW X : (uniRad hW).subgroupOf (flagStab W₁ W₂)) : flagStab W₁ W₂) : GL (Fin n) ℂ) * (q * k)) = F (uOf hW X * q)` using `fun X => by`. Rewrite using `[radHomeo_coe, ← mul_assoc, hFK _ k hk]`. Simplify using `only [e]`. Conclude with `h0 q hq`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quotVanish : QuotVanish := by
   intro n _ _ μ _ d μT _ W₁ W₂ hW _ _ ν _ F hs h₁ h₂ hF hFT hFK h0

@@ -11,9 +11,9 @@ open GlobalTheory GlobalTheory.ArInt
 namespace GlobalTheory.DenseHt
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Apply `hs` to reduce the goal to its premises. Establish `h0 : ∀ i, s.f i = 0` using `fun i => by`. Use `(basicOpen_eq_bot_iff (s.f i)).1 ?_` and prove the remaining obligations. Use `le_bot_iff.1 fun y hy => hne ⟨y, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(le_iSup (fun k => X.basicOpen (s.f k)) i) hy`. Take `⟨f, hf⟩` from `s`. Take `rfl : f = fun _ => 0` from `funext h0`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_nonempty {X : Scheme.{0}} [IsIntegral X] {M : LB X} (s : M.Sec) (hs : s ≠ 0) :
     (Out.nonzeroLocus s : Set X).Nonempty := by
@@ -28,9 +28,9 @@ theorem nonzeroLocus_nonempty {X : Scheme.{0}} [IsIntegral X] {M : LB X} (s : M.
   rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `absurd h (not_lt.2 ?_)` and prove the remaining obligations. Use `limsup_le_of_le (by isBoundedDefault) ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop 1] with m hm`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (L.pow m).smallSec = {0}` using `Set.eq_singleton_iff_unique_mem.2 ⟨(L.pow m).zero_mem_smallSec, hne m hm⟩`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_small_of_pos {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} (L : HermLB p) (D : ℕ)
     (h : 0 < arVol L D) : ∃ m : ℕ, 1 ≤ m ∧ ∃ s ∈ (L.pow m).smallSec, s ≠ 0 := by
@@ -45,13 +45,11 @@ theorem exists_small_of_pos {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ 
   simp
 
 /- English proof (translation)
-Introduce `hV hC k _ X _ p D hp L a e hS hN ha hd`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hec⟩ : ∃ c : ℝ, ((D : ℝ) + 1) * c * gdeg L D < a ∧ e < c := by`. Establish `hcont : Continuous fun c : ℝ => ((D : ℝ) + 1) * c * gdeg L D` using `by fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ᶠ c in 𝓝[>] e, ((D : ℝ) + 1) * c * gdeg L D < a` using `nhdsWithin_le_nhds (hcont.continuousAt.eventually_lt continuousAt_const hlt)`. Conclude with `(h1.and self_mem_nhdsWithin).exists`. Establish `h1` using `hC.arShift k X p D hp L a (-c) ha`. Establish `h2` using `hV k X p D hp (L.shift (fun _ => -c) fun _ => rfl) _ hN (hS.shift _ _) h1`. Establish `h3 : 0 < arVol (L.shift (fun _ => -c) fun _ => rfl) D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `lt_of_lt_of_le ?_ h2` and prove the remaining obligations. Conclude with `(by linarith : 0 < a + ((D : ℝ) + 1) * (-c) * gdeg L D)` after adjusting the coercions. Take `⟨m, hm, s, hs, hs0⟩` from `exists_small_of_pos _ D h3`. Take `⟨x, hx, hx1, b, hb, hbe⟩` from `hd.inter_open_nonempty _ (Out.nonzeroLocus s).isOpen (nonzeroLocus_nonempty s hs0)`. Use `GlobalTheory.T.small_section_height_lower_bound k X p D hp L m c b x s hm hs hx hx1 hb` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem selfInter_le_of_dense : GlobalTheory.Published.VolGe → GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (L : HermLB p) (a e : ℝ), L.SemiPos D → NefFib L → L.IsSelfInter a → Dense {x : X | IsAlgPt x ∧ ∃ b, IsPtHt L x b ∧ b ≤ e} → a ≤ ((D : ℝ) + 1) * e * gdeg L D := by
   intro hV hC k _ X _ p D hp L a e hS hN ha hd

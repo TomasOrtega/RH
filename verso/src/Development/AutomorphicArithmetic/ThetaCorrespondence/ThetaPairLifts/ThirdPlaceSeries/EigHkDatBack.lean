@@ -23,19 +23,19 @@ end Gen
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
   {x : St P} (L : LocAll (lay0 (Dof x)))
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(h.split), (h.offS), (h.odd), (h.le), (h.elt), (h.reps)⟩`.
+Supply the required witnesses or components.
 -/
 theorem hkDat_of_hkDat_datL (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x) {i k Q α Rr} (h : HkDat (datL x L).R (_root_.GlobalTheory.HeightCounting.Fin3.smallPlaceSet L l) i k Q α Rr) :
     HkDat x.m.z.R l.rat.In.Sb ((i)) k ((Q)) ((α)) ((Rr)) :=
   ⟨(h.split), (h.offS), (h.odd), (h.le), (h.elt), (h.reps)⟩
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (eigAd_iff_eigVec x.r.Y l.rat.In.Sb l.rat.In.eig).mp l.rat.rat.eig i σ k Q α Rr hd hσ y hy)`.
+A detailed English derivation is pending.
 -/
 theorem eigVec_eW_of_hkDat_good_index (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x) (i σ k Q α Rr) (hd : HkDat x.m.z.R l.rat.In.Sb i k Q α Rr) (hσ : (Dof x).nd.goodRow σ) (y)
     (hy : y ∈ (Dof x).what₂.isot (i.1 + 1) σ) : EigVec x.m.z.R i k Q Rr (l.rat.In.eig (i.1 + 1) σ k Q) (x.r.Y.mj.eW i y) :=
   (by with_unfolding_all exact (eigAd_iff_eigVec x.r.Y l.rat.In.Sb l.rat.In.eig).mp l.rat.rat.eig i σ k Q α Rr hd hσ y hy)
 /- English proof (translation)
-The claim follows from `(eigAd_iff_eigVec _ _ _).2 fun i σ k Q α Rr hd hσ y hy => (by with_unfolding_all exact ((EigVec.congr (v' := ((Y.mj.eW i y))) (eigVec_loc L (_root_.GlobalTheory.HeightCounting.Fin3.eigVec_eW_of_hkDat_good_index l ((i)) ((σ)) k ((Q)) ((α)) ((Rr)) (((_root_.GlobalTheory.HeightCount …`.
+A detailed English derivation is pending.
 -/
 theorem eigAd_smallPlaceSet_of_yRel (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x) {p0 : BaseLevelRowSide (w.D (oL x L).Z)} (Y : YT x L p0) (hY : YRel L Y) :
     EigAd Y (_root_.GlobalTheory.HeightCounting.Fin3.smallPlaceSet L l) (_root_.GlobalTheory.HeightCounting.Fin3.localEigenvalueDegree L l) :=

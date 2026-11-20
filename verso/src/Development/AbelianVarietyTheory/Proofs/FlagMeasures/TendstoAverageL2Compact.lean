@@ -10,7 +10,7 @@ namespace GlobalTheory.SgInf.Mollify
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `h1 : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mat k r))` using `continuous_fst`. Establish `h2 : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.2 : Mat k r))` using `continuous_snd`. Conclude with `h1.matrix_mul h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_mulPair : Continuous (fun p : Mt k r × Mt k r => rmulM (Matrix.of p.2) p.1) := by
   have h1 : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mat k r)) := continuous_fst
@@ -18,7 +18,7 @@ theorem continuous_mulPair : Continuous (fun p : Mt k r × Mt k r => rmulM (Matr
   exact h1.matrix_mul h2
 
 /- English proof (translation)
-Apply `Metric.closedBall_subset_closedBall` to reduce the goal to its premises. Establish `: (1:ℝ) ≤ (j:ℝ) + 1` using `by linarith [(Nat.cast_nonneg j : (0:ℝ) ≤ j)]`. Simplify using `using (div_le_one (by positivity)).2 this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nbd_subset_zero (j : ℕ) : nbd k r j ⊆ nbd k r 0 := by
   apply Metric.closedBall_subset_closedBall
@@ -26,19 +26,17 @@ theorem nbd_subset_zero (j : ℕ) : nbd k r j ⊆ nbd k r 0 := by
   simpa using (div_le_one (by positivity)).2 this
 
 /- English proof (translation)
-Rewrite using `[← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem sq_rpow_half (a : ℝ≥0∞) : (a ^ (1/2 : ℝ)) ^ 2 = a := by
   rw [← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]; norm_num
 
 /- English proof (translation)
-Distinguish the cases in `hf : AEStronglyMeasurable f (μ.restrict S)`. Establish `hA : ‖∫ y in S, f y ∂μ‖ₑ ≤ ∫⁻ y in S, ‖f y‖ₑ ∂μ` using `enorm_integral_le_lintegral_enorm _`. Establish `hC` using `eLpNorm_le_eLpNorm_mul_rpow_measure_univ (p := 1) (q := 2) (μ := μ.restrict S) (by norm_num) hf`. Rewrite `hC` using `[eLpNorm_one_eq_lintegral_enorm, eLpNorm_eq_lintegral_rpow_enorm_toReal two_ne_zero ENNReal.ofNat_ne_top, Measure.restrict_apply_univ]`. Evaluate the numerical expressions using `at hC`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hsmul : ‖(μ S).toReal⁻¹ • ∫ y in S, f y ∂μ‖ₑ = (μ S)⁻¹ * ‖∫ y in S, f y ∂μ‖ₑ`. Rewrite using `[enorm_smul, Real.enorm_eq_ofReal (by positivity), ENNReal.ofReal_inv_of_pos (ENNReal.toReal_pos h0 htop), ENNReal.ofReal_toReal htop]`. Rewrite using `[hsmul, mul_pow]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hA.trans (by simpa using hC)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (μ S)⁻¹ * ∫⁻ y in S, ‖f y‖ₑ ^ 2 ∂μ := by`. Rewrite using `[mul_pow, sq_rpow_half, sq_rpow_half]`. Repeatedly rewrite using `[ENNReal.rpow_two]`. Rewrite using `[sq, mul_comm (∫⁻ y in S, ‖f y‖ₑ ^ 2 ∂μ), ← mul_assoc, mul_assoc _ (μ S)⁻¹, ENNReal.inv_mul_cancel h0 htop, mul_one]`. Rewrite using `[integral_non_aestronglyMeasurable hf]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem enorm_avg_sq_le {Wp : Type*} [NormedAddCommGroup Wp] [NormedSpace ℝ Wp]
     (μ : Measure (Mt k r)) (S : Set (Mt k r)) (h0 : μ S ≠ 0) (htop : μ S ≠ ⊤) (f : Mt k r → Wp) :
@@ -66,17 +64,13 @@ theorem enorm_avg_sq_le {Wp : Type*} [NormedAddCommGroup Wp] [NormedSpace ℝ Wp
   · rw [integral_non_aestronglyMeasurable hf]; simp
 
 /- English proof (translation)
-Use `haveI : SigmaFinite μ := hμ.1`. Use `set B := nbd k r j with hBdef`. Establish `h0 : μ B ≠ 0` using `(nbd_pos hμ j).ne'`. Establish `htop : μ B ≠ ⊤` using `(haar_compact_lt_top hμ (isCompact_nbd j)).ne`. Use `set F : Mt k r → ℝ≥0∞ := fun z => ‖h z‖ₑ ^ 2 with hFdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hF : Measurable F` using `hh.enorm.pow_const 2`. Establish `hG : ∀ᵐ y ∂(μ.restrict B), Matrix.of y ∈ GG k r` using `ae_restrict_of_ae (ae_iff.2 hμ.2.2.1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_const_mul' _ _ (ENNReal.inv_ne_top.2 h0)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `lintegral_lintegral_swap ((hF.comp (continuous_mulPair.comp continuous_swap).measurable).aemeasurable)`. Use `_ ≤ (μ B)⁻¹ * ∫⁻ y in B, ∫⁻ x in K', F x ∂μ ∂μ := by gcongr _ * ?_`. Apply `lintegral_mono_ae` to reduce the goal to its premises. Use `filter_upwards [hG, ae_restrict_mem (isCompact_nbd (k := k) (r := r) j).measurableSet] with y hy hyB`. Establish `hl : Continuous (lmulM (Matrix.of y : Mat k r) : Mt k r → Mt k r)` using `continuous_mulPair.comp (continuous_const.prodMk continuous_id)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_mono_ae` to reduce the goal to its premises. Use `filter_upwards [ae_restrict_mem hK] with x hx`. Establish `hm : lmulM (Matrix.of y) x ∈ K'` using `hsub y (nbd_subset_zero j hyB) x hx`. Rewrite using `[Set.indicator_of_mem hm]`.
-
-Both sides reduce to the same expression. Use `_ ≤ ∫⁻ x, K'.indicator F (lmulM (Matrix.of y) x) ∂μ := setLIntegral_le_lintegral _ _`. Use `_ = ∫⁻ z, K'.indicator F z ∂(μ.map (lmulM (Matrix.of y))) := (lintegral_map (hF.indicator hK') hl.measurable).symm`. Use `_ = ∫⁻ x in K', F x ∂μ := by rw [hμ.2.2.2 _ hy, lintegral_indicator hK']`. Use `_ = ∫⁻ x in K', F x ∂μ := by`.
-
-Rewrite using `[setLIntegral_const, mul_comm _ (μ B), ← mul_assoc, ENNReal.inv_mul_cancel h0 htop, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem lint_avg_le {Wp : Type*} [NormedAddCommGroup Wp] [NormedSpace ℝ Wp] (μ : Measure (Mt k r))
     (hμ : IsHaarOn (GG k r) μ) {K K' : Set (Mt k r)} (hK : MeasurableSet K) (hK' : MeasurableSet K')
@@ -120,23 +114,21 @@ theorem lint_avg_le {Wp : Type*} [NormedAddCommGroup Wp] [NormedSpace ℝ Wp] (�
         rw [setLIntegral_const, mul_comm _ (μ B), ← mul_assoc, ENNReal.inv_mul_cancel h0 htop, one_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem of_oneM : (Matrix.of (oneM k r) : Mat k r) = 1 := by ext i j; rfl
 
 /- English proof (translation)
-Use `show (Matrix.of (oneM k r) : Mat k r) * Matrix.of x = x`. Rewrite using `[of_oneM, Matrix.one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rmulM_oneM (x : Mt k r) : rmulM (Matrix.of x) (oneM k r) = x := by
   show (Matrix.of (oneM k r) : Mat k r) * Matrix.of x = x
   rw [of_oneM, Matrix.one_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[ENNReal.tendsto_nhds_zero]`. Introduce `e he`. Establish `hT : Filter.Tendsto (fun ε : ℝ => M * ENNReal.ofReal ε) (𝓝[>] 0) (𝓝 0)`. Establish `h1 : Filter.Tendsto (fun ε : ℝ => ENNReal.ofReal ε) (𝓝[>] 0) (𝓝 0)`. Use `(ENNReal.tendsto_ofReal ((Filter.tendsto_id (x := 𝓝 (0:ℝ))).mono_left (nhdsWithin_le_nhds (s := Set.Ioi 0))))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Use `ENNReal.Tendsto.const_mul h1 (Or.inr hM)` as an intermediate fact. Simplify using `using this`. Take `⟨ε, hεe, hε0⟩` from `((hT.eventually (gt_mem_nhds he)).and self_mem_nhdsWithin).exists`. Use `filter_upwards [h ε hε0] with j hj`.
-
-Conclude with `hj.trans hεe.le`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tendsto_zero_of_eventually_le {u : ℕ → ℝ≥0∞} {M : ℝ≥0∞} (hM : M ≠ ⊤)
     (h : ∀ ε : ℝ, 0 < ε → ∀ᶠ j in Filter.atTop, u j ≤ M * ENNReal.ofReal ε) :
@@ -155,19 +147,17 @@ theorem tendsto_zero_of_eventually_le {u : ℕ → ℝ≥0∞} {M : ℝ≥0∞} 
   exact hj.trans hεe.le
 
 /- English proof (translation)
-Establish `hKfin : μ K < ⊤` using `haar_compact_lt_top hμ hK`. Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨fun C hC => haar_compact_lt_top hμ hC⟩`. Apply `tendsto_zero_of_eventually_le (M := μ K ^ (2:ℝ≥0∞).toReal⁻¹) (ENNReal.rpow_ne_top_of_nonneg (by norm_num) hKfin.ne)` to reduce the goal to its premises. Introduce `ε hε`. Establish `hf : Continuous (fun p : Mt k r × Mt k r => c (rmulM (Matrix.of p.2) p.1))` using `hc.comp continuous_mulPair`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huc` using `((isCompact_nbd (k := k) (r := r) 0).prod hK).uniformContinuousOn_of_continuous hf.continuousOn`. Take `⟨δ, hδ, hδε⟩` from `Metric.uniformContinuousOn_iff.1 huc ε hε`. Take `⟨N, hN⟩` from `exists_nat_one_div_lt hδ`. Use `filter_upwards [Filter.eventually_ge_atTop N] with j hj`. Use `set B := nbd k r j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : μ B ≠ 0` using `(nbd_pos hμ j).ne'`. Establish `htop : μ B ≠ ⊤` using `(haar_compact_lt_top hμ (isCompact_nbd j)).ne`. Establish `hpt : ∀ x ∈ K, ‖avgR μ j c x - c x‖ ≤ ε`. Introduce `x hx`. Establish `hint : IntegrableOn (fun y => c (rmulM (Matrix.of x) y)) B μ` using `((hf.comp (continuous_id.prodMk continuous_const)).continuousOn).integrableOn_compact (isCompact_nbd j) (μ := μ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `heq : avgR μ j c x - c x = (μ B).toReal⁻¹ • ∫ y in B, (c (rmulM (Matrix.of x) y) - c x) ∂μ`. Rewrite using `[integral_sub hint (integrableOn_const (hs := htop)), setIntegral_const, smul_sub, smul_smul, measureReal_def, inv_mul_cancel₀ (ENNReal.toReal_pos h0 htop).ne', one_smul]`. Both sides reduce to the same expression. Rewrite using `[heq, norm_smul, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Establish `hb : ‖∫ y in B, (c (rmulM (Matrix.of x) y) - c x) ∂μ‖ ≤ ε * (μ B).toReal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `norm_setIntegral_le_of_norm_le_const (lt_top_iff_ne_top.2 htop)` to reduce the goal to its premises. Introduce `y hy`. Rewrite using `[← dist_eq_norm]`. Establish `hy0 : y ∈ nbd k r 0` using `nbd_subset_zero j hy`. Establish `h1` using `hδε (y, x) ⟨hy0, hx⟩ (oneM k r, x) ⟨oneM_mem_nbd 0, hx⟩ (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[Prod.dist_eq, dist_self, max_eq_left dist_nonneg]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [rmulM_oneM] at h1`. Conclude with `h1.le`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `eLpNorm_le_of_ae_bound (p := 2) (μ := μ.restrict K) (C := ε) (f := fun x => avgR μ j c x - c x) ((ae_restrict_iff' hK.measurableSet).2 (Filter.Eventually.of_forall hpt))` as an intermediate fact. Simplify `this` using `[Measure.restrict_apply_univ]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendsto_avg_cont {Wp : Type*} [NormedAddCommGroup Wp] [NormedSpace ℝ Wp] [CompleteSpace Wp] (μ : Measure (Mt k r))
     (hμ : IsHaarOn (GG k r) μ) {K : Set (Mt k r)} (hK : IsCompact K) (c : Mt k r → Wp)
@@ -220,7 +210,7 @@ theorem tendsto_avg_cont {Wp : Type*} [NormedAddCommGroup Wp] [NormedSpace ℝ W
   simpa [Measure.restrict_apply_univ] using this
 
 /- English proof (translation)
-Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm_toReal two_ne_zero ENNReal.ofNat_ne_top]`. Simplify using `only [ENNReal.toReal_ofNat, ENNReal.rpow_two]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eLp2_eq {Wp : Type*} [NormedAddCommGroup Wp] (ν : Measure (Mt k r)) (f : Mt k r → Wp) :
     eLpNorm f 2 ν = (∫⁻ x, ‖f x‖ₑ ^ 2 ∂ν) ^ (1/2 : ℝ) := by
@@ -228,7 +218,7 @@ theorem eLp2_eq {Wp : Type*} [NormedAddCommGroup Wp] (ν : Measure (Mt k r)) (f 
   simp only [ENNReal.toReal_ofNat, ENNReal.rpow_two]
 
 /- English proof (translation)
-Establish `h2 : StronglyMeasurable (fun p : Mt k r × Mt k r => h (rmulM (Matrix.of p.1) p.2))` using `hh.comp_measurable (continuous_mulPair.comp continuous_swap).measurable`. Conclude with `(h2.integral_prod_right' (ν := μ.restrict (nbd k r j))).const_smul _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stronglyMeasurable_avgR {Wp : Type*} [NormedAddCommGroup Wp] [NormedSpace ℝ Wp]
     (μ : Measure (Mt k r)) [SFinite μ] (j : ℕ) {h : Mt k r → Wp} (hh : StronglyMeasurable h) :
@@ -238,7 +228,7 @@ theorem stronglyMeasurable_avgR {Wp : Type*} [NormedAddCommGroup Wp] [NormedSpac
   exact (h2.integral_prod_right' (ν := μ.restrict (nbd k r j))).const_smul _
 
 /- English proof (translation)
-Establish `hf : Measurable (rmulM (k` using `k) (r := r) (Matrix.of x)) := (continuous_rmulM _).measurable`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem map_restrict_le (μ : Measure (Mt k r)) (hU : IsUnimod (GG k r) μ) {x : Mt k r}
     (hx : Matrix.of x ∈ GG k r) {S K' : Set (Mt k r)} (hK' : MeasurableSet K')
@@ -255,33 +245,27 @@ end GlobalTheory.SgInf.Mollify
 open GlobalTheory.SgInf.Mollify in
 
 /- English proof (translation)
-Introduce `k r μ hμ Wp _ _ _ g hg K hK`. Use `haveI : CompleteSpace Wp := FiniteDimensional.complete ℂ Wp`. Use `haveI : SigmaFinite μ := hμ.1`. Establish `hU` using `GlobalTheory.SgInf.isUnimod_GG k r μ hμ`. Use `set K' := (fun p : Mt k r × Mt k r => rmulM (Matrix.of p.2) p.1) '' (nbd k r 0 ×ˢ K) with hK'def`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK'c : IsCompact K'` using `((isCompact_nbd 0).prod hK).image continuous_mulPair`. Establish `hK'm : MeasurableSet K'` using `hK'c.measurableSet`. Establish `hsub : ∀ y ∈ nbd k r 0, ∀ x ∈ K, rmulM (Matrix.of x) y ∈ K'` using `fun y hy x hx => ⟨(y, x), ⟨hy, hx⟩, rfl⟩`. Establish `hKK' : K ⊆ K'` using `fun x hx => by simpa [rmulM_oneM] using hsub _ (oneM_mem_nbd 0) x hx`. Establish `hle : μ.restrict K ≤ μ.restrict K'` using `Measure.restrict_mono hKK' le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hgm, hgI⟩` from `hg K' hK'c`. Use `set ν := μ.restrict K' with hνdef`. Use `haveI : IsFiniteMeasure ν := ⟨by rw [Measure.restrict_apply_univ]; exact haar_compact_lt_top hμ hK'c⟩`. Use `set g' := hgm.mk g`. Establish `hg'm : StronglyMeasurable g'` using `hgm.stronglyMeasurable_mk`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-Establish `hgg' : g =ᵐ[ν] g'` using `hgm.ae_eq_mk`. Establish `hmemg : MemLp g 2 ν`. Use `⟨hgm, ?_⟩` and prove the remaining obligations. Rewrite using `[eLp2_eq]`. Conclude with `ENNReal.rpow_lt_top_of_nonneg (by norm_num) hgI.ne`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hmem : MemLp g' 2 ν` using `hmemg.ae_eq hgg'`. It suffices to establish `H : Filter.Tendsto (fun j : ℕ => eLpNorm (fun x => avgR μ j g x - g x) 2 (μ.restrict K)) Filter.atTop (nhds 0) by`. Use `ENNReal.Tendsto.pow (n := 2) H` as an intermediate fact. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow] at this`. Use `this.congr fun j => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[eLp2_eq, sq_rpow_half]`. Both sides reduce to the same expression. Apply `tendsto_zero_of_eventually_le (M := 3) (by norm_num)` to reduce the goal to its premises. Introduce `ε hε`. Use `set δ := ENNReal.ofReal ε`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hδ0 : δ ≠ 0` using `by simpa [δ] using hε`. Take `⟨c, hcδ, hcmem⟩` from `hmem.exists_boundedContinuous_eLpNorm_sub_le ENNReal.ofNat_ne_top hδ0`. Use `set h : Mt k r → Wp := g' - (c : Mt k r → Wp) with hhdef`. Establish `hhm : StronglyMeasurable h` using `hg'm.sub c.continuous.stronglyMeasurable`. Establish `hA : ∀ j, eLpNorm (avgR μ j h) 2 (μ.restrict K) ≤ δ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Use `le_trans ?_ hcδ` and prove the remaining obligations. Rewrite using `[eLp2_eq, eLp2_eq]`. Conclude with `ENNReal.rpow_le_rpow (lint_avg_le μ hμ hK.measurableSet hK'm hsub h hhm j) (by norm_num)`. Establish `hC : eLpNorm (fun x => c x - g' x) 2 (μ.restrict K) ≤ δ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans (eLpNorm_mono_measure _ hle) ?_` and prove the remaining obligations. Rewrite using `[show (fun x => c x - g' x) = (c : Mt k r → Wp) - g' from rfl, eLpNorm_sub_comm]`. Conclude with `hcδ`. Establish `hB` using `(tendsto_avg_cont μ hμ hK c c.continuous).eventually (Iic_mem_nhds (show (0:ℝ≥0∞) < δ from pos_iff_ne_zero.2 hδ0))`. Use `filter_upwards [hB] with j hj`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hid : (fun x => avgR μ j g x - g x) =ᵐ[μ.restrict K] (fun x => (avgR μ j h x + (avgR μ j c x - c x)) + (c x - g' x))` using `by filter_upwards [ae_restrict_of_ae (ae_iff.2 hμ.2.2.1), ae_restrict_mem hK.measurableSet, (Measure.absolutelyContinuous_of_le hle).ae_le hgg'] with x hxG hxK hxg`. Establish `hmap` using `map_restrict_le μ hU hxG (S := nbd k r j) hK'm (fun y hy => hsub y (nbd_subset_zero j hy) x hxK)`. Establish `hf : Measurable (rmulM (k` using `k) (r := r) (Matrix.of x)) := (continuous_rmulM _).measurable`. Establish `hae : ∀ᵐ y ∂(μ.restrict (nbd k r j)), g (rmulM (Matrix.of x) y) = g' (rmulM (Matrix.of x) y)` using `ae_of_ae_map hf.aemeasurable ((Measure.absolutelyContinuous_of_le hmap).ae_le hgg')`. Establish `hi1 : Integrable (fun y => g' (rmulM (Matrix.of x) y)) (μ.restrict (nbd k r j))` using `((hmem.integrable one_le_two).mono_measure hmap).comp_measurable hf`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi2 : Integrable (fun y => c (rmulM (Matrix.of x) y)) (μ.restrict (nbd k r j))` using `((hcmem.integrable one_le_two).mono_measure hmap).comp_measurable hf`. Establish `e1 : avgR μ j g x = avgR μ j g' x`. Unfold `avgR`. Rewrite using `[integral_congr_ae hae]`. Establish `e2 : avgR μ j h x = avgR μ j g' x - avgR μ j c x`.
-
-Unfold `avgR`. Rewrite using `[← smul_sub, ← integral_sub hi1 hi2]`. Both sides reduce to the same expression. Rewrite using `[e1, e2, hxg]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[eLpNorm_congr_ae hid]`. Establish `m1 : AEStronglyMeasurable (avgR μ j h) (μ.restrict K)` using `(stronglyMeasurable_avgR μ j hhm).aestronglyMeasurable`. Establish `m2 : AEStronglyMeasurable (fun x => avgR μ j c x - c x) (μ.restrict K)` using `((stronglyMeasurable_avgR μ j c.continuous.stronglyMeasurable).sub c.continuous.stronglyMeasurable).aestronglyMeasurable`. Establish `m3 : AEStronglyMeasurable (fun x => c x - g' x) (μ.restrict K)` using `(c.continuous.stronglyMeasurable.sub hg'm).aestronglyMeasurable`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `eLpNorm_add_le m1 m2 one_le_two`. Use `_ ≤ (δ + δ) + δ := by gcongr; exact hA j`. Use `_ = 3 * ENNReal.ofReal ε := by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SgInf.tendsto_average_L2 : ∀ (k r : ℕ) (μ : Measure (Mt k r)), IsHaarOn (GG k r) μ → ∀ {Wp : Type}
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] (g : Mt k r → Wp),
@@ -380,6 +364,6 @@ theorem GlobalTheory.SgInf.tendsto_average_L2 : ∀ (k r : ℕ) (μ : Measure (M
     _ = 3 * ENNReal.ofReal ε := by ring
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SgInf.tendsto_average_L2`.
+A detailed English derivation is pending.
 -/
 example : ∀ (k r : ℕ) (μ : Measure (Mt k r)), IsHaarOn (GG k r) μ → ∀ {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] (g : Mt k r → Wp), (∀ K : Set (Mt k r), IsCompact K → AEStronglyMeasurable g (μ.restrict K) ∧ ∫⁻ x in K, (‖g x‖₊ : ENNReal) ^ 2 ∂μ < ⊤) → ∀ K : Set (Mt k r), IsCompact K → Filter.Tendsto (fun j : ℕ => ∫⁻ x in K, (‖avgR μ j g x - g x‖₊ : ENNReal) ^ 2 ∂μ) Filter.atTop (nhds 0) := GlobalTheory.SgInf.tendsto_average_L2

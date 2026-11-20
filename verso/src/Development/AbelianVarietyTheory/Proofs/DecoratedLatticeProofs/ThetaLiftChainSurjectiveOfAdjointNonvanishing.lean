@@ -12,15 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ChainOnto
 
 /- English proof (translation)
-Introduce `D hFin hMet hEig hInd hUp hGap c hc s₀ hs₀ k hk s Θ hR`. Take `⟨hs, hadj⟩` from `hUp hGap c hc s₀ hs₀ k hk s Θ hR`. Take `⟨ipD₀, ip₀, hm₀⟩` from `hMet c hc 0 (Nat.zero_le _) s₀ hs₀`. Take `⟨ipD, ip, hm⟩` from `hMet c hc k hk s hs`. Use `haveI : FiniteDimensional ℂ (s₀.CC c) := hFin c hc 0 (Nat.zero_le _) s₀ hs₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `Sab` to `GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))`. Set `R : GlobalTheory.LFun.Fam D.host.E → GlobalTheory.LFun.Fam D.host.E → Prop` to `fun B B' => ∀ w ∉ Sab, B w = B' w`. Establish `hRe : Equivalence R` using `⟨fun _ _ _ => rfl, fun h w hw => (h w hw).symm, fun h h' w hw => (h w hw).trans (h' w hw)⟩`. Establish `hlin₀` using `GlobalTheory.T.thetaChainHeckeParam_add_smul_of_agree_off_set D c s₀`. Use `GlobalTheory.T.surjective_of_adjoint_separates_labelled_parts (s₀.CC c) (s.CC c) (GlobalTheory.LFun.Fam D.host.E) (GlobalTheory.LFun.Fam D.host.E) ip₀ ip Θ (fun u B => IsPar u B) (fun x B => IsPar x B) R R (fun B => chainPar c B k) hm₀.herm hm₀.pos hm.pos hRe (hEig c hc 0 (Nat.ze …` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `B B' h w hw`. Conclude with `GlobalTheory.T.thetaLiftChainHeckeParameter_injective_placewise D c k B B' w (h w hw)`. Introduce `ι x B hx hne`. Use `hInd c hc k hk s hs ι x B hx ?_` and prove the remaining obligations. Introduce `i i' hii'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hne i i' hii'` as an intermediate fact. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `this hcon`. Introduce `u B hu`.
-
-Conclude with `hadj ipD₀ ip₀ ipD ip hm₀ hm u B hu`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ontoAll_of_chainUp : ∀ D : D7, FinDim D → MetEx D → EigSpan D → ParIndep D → ChainUp D → OntoAll D := by
   intro D hFin hMet hEig hInd hUp hGap c hc s₀ hs₀ k hk s Θ hR

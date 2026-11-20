@@ -8,7 +8,7 @@ namespace CompanionTheory.RgDs.Hilb
 open ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Introduce `n ε lam T Ψ hP`. Establish `hv₀ : T.w ≠ 0` using `HW.KType.w_ne_zero T`. Establish `hσ` using `rreg_isURepOn ε`. Establish `hV` using `datumV_isKIrrHW hP hv₀`. Conclude with `closure_genSub_stable hσ (isDerivedOn_smE hσ) hV.1 hV.2.1 (datumV_casimir hP T.w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hilbert_stable_holds : StepStable := by
   intro n ε lam T Ψ hP
@@ -18,9 +18,9 @@ theorem hilbert_stable_holds : StepStable := by
   exact closure_genSub_stable hσ (isDerivedOn_smE hσ) hV.1 hV.2.1 (datumV_casimir hP T.w)
 
 /- English proof (translation)
-Introduce `n ε lam T Ψ hP`. Establish `hv₀ : T.w ≠ 0` using `HW.KType.w_ne_zero T`. Establish `hσ` using `rreg_isURepOn ε`. Establish `hD` using `isDerivedOn_smE hσ`. Establish `hV` using `datumV_isKIrrHW hP hv₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isKTypeOf_of_isKIrrHW hσ hD hV (datumV_kStable hP T.w) (fun μ x hx hx0 hμ => weights_le_of_irr_hw hD.glRep (isInfUnitary_of_isDerivedOn hσ hD) hV hx hx0 hμ)`.
+A detailed English derivation is pending.
 -/
 theorem hilbert_datum_holds : StepDatum := by
   intro n ε lam T Ψ hP

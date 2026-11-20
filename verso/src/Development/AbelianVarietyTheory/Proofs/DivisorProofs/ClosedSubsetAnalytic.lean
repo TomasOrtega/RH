@@ -27,7 +27,7 @@ section Mat
 variable {κ : Type} [Fintype κ] (bl : κ → ℕ) {g : ℕ}
 
 /- English proof (translation)
-Unfold `minor`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem minor_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (w : κ ≃ Fin g) (k : ℕ)
     (P : Matrix (Fin g) κ R) : minor bl w k (P.map f) = f (minor bl w k P) := by
@@ -36,7 +36,7 @@ theorem minor_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (w : κ
   rfl
 
 /- English proof (translation)
-Unfold `minor`. Establish `e : (P.submatrix w id).toSquareBlockProp (fun z => bl z < k) = (P.submatrix w id).submatrix (Equiv.subtypeUnivEquiv hk) (Equiv.subtypeUnivEquiv hk)`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.det_submatrix_equiv_self]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem minor_eq_det {R : Type} [CommRing R] (w : κ ≃ Fin g) (k : ℕ) (hk : ∀ z, bl z < k)
     (P : Matrix (Fin g) κ R) : minor bl w k P = (P.submatrix w id).det := by
@@ -49,13 +49,13 @@ theorem minor_eq_det {R : Type} [CommRing R] (w : κ ≃ Fin g) (k : ℕ) (hk : 
 end Mat
 
 /- English proof (translation)
-Establish `h` using `ioOf_le_one_iff (resP v) (residueCharacteristic_mem v) ε`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Establish `ha0 : (a : AlgebraicClosure F) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ha` using `[h0, map_zero, norm_zero]`. Conclude with `zero_ne_one ha`. Establish `hi : (a : AlgebraicClosure F)⁻¹ ∈ ε.O`. Rewrite using `[← h, map_inv₀, norm_inv, ha, inv_one]`. Conclude with `IsUnit.of_mul_eq_one (b := (⟨_, hi⟩ : ε.O)) (Subtype.ext (mul_inv_cancel₀ ha0))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨u, rfl⟩`. Establish `h1` using `(h _).2 u.1.2`. Establish `h2` using `(h _).2 (u⁻¹ : ε.Oˣ).1.2`. Establish `hm : ‖ioOf (resP v) ε ((u : ε.O) : AlgebraicClosure F)‖ * ‖ioOf (resP v) ε (((u⁻¹ : ε.Oˣ) : ε.O) : AlgebraicClosure F)‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, ← Subring.coe_mul, Units.mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `n1` using `norm_nonneg (ioOf (resP v) ε ((u : ε.O) : AlgebraicClosure F))`. Establish `n2` using `norm_nonneg (ioOf (resP v) ε (((u⁻¹ : ε.Oˣ) : ε.O) : AlgebraicClosure F))`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_io_eq_one_iff {F : Type} [Field F] [NumberField F] {v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)}
     (ε : TrueGeo.Ext v) [Fact (resP v).Prime] (a : ε.O) :
@@ -83,7 +83,7 @@ section Pts
 variable {F : Type} [Field F] [NumberField F] {X W : Scheme.{0}} {jB : W ⟶ X}
 
 /- English proof (translation)
-Establish `hx' : ⊤ ≤ (xg ≫ jB) ⁻¹ᵁ V` using `fun p _ => by`. Express the relevant statement in the definitionally equal form `(xg ≫ jB) p ∈ V`. Rewrite using `[← hc]`. Conclude with `ht (x := spMap ε.O.subtype p) trivial`. Conclude with `fun p hp => hx' hp`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem top_le_of_int {v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)} (ε : TrueGeo.Ext v)
     (xg : Sp (AlgebraicClosure F) ⟶ W) (xt : Sp ε.O ⟶ X) (hc : spMap ε.O.subtype ≫ xt = xg ≫ jB)
@@ -95,9 +95,9 @@ theorem top_le_of_int {v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)} (ε : Tr
   exact fun p hp => hx' hp
 
 /- English proof (translation)
-Establish `hx' : ⊤ ≤ (xg ≫ jB) ⁻¹ᵁ V` using `fun p hp => hx hp`. Establish `e0 : TangentOrigin.evalPt (xg ≫ jB) V hx' f = TangentOrigin.evalPt xg (jB ⁻¹ᵁ V) hx (jB.app V f)`. Unfold `TangentOrigin.evalPt`. Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← e0]`. Establish `key : ∀ (y : Sp (AlgebraicClosure F) ⟶ X) (hy : ⊤ ≤ y ⁻¹ᵁ V), spMap ε.O.subtype ≫ xt = y → TangentOrigin.evalPt y V hy f = (TangentOrigin.evalPt xt V ht f : AlgebraicClosure F)`. Introduce and unpack `y hy rfl`. Conclude with `TangentOrigin.evalPt_spMap_comp ε.O.subtype xt V ht hy f`. Conclude with `key _ hx' hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem evalPt_int {v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)} (ε : TrueGeo.Ext v)
     (xg : Sp (AlgebraicClosure F) ⟶ W) (xt : Sp ε.O ⟶ X) (hc : spMap ε.O.subtype ≫ xt = xg ≫ jB)
@@ -124,47 +124,39 @@ namespace GlobalTheory.LieFilt
 open LocRegPf in
 
 /- English proof (translation)
-Introduce `F _ _ X W q s jB d hq hn pb κ _ bl g V hV x₀ hx₀ A hA`. Establish `hint` using `IntCritPf.intCrit F X W q s jB d hq hn pb`. Take `⟨v₀, ε₀, xg₀, xt₀, ht₀, hs₀, hc₀, hcen⟩` from `GlobalTheory.T.exists_good_reduction_point_affine_open hq pb V hV x₀ hx₀`. Establish `hx0` using `top_le_of_int ε₀ xg₀ xt₀ hc₀ V ht₀`. Use `haveI : Fact (resP v₀).Prime := ⟨residueCharacteristic_prime v₀⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, w, hw⟩` from `GlobalTheory.T.integral_adapted_minor_norms bl _ (hA v₀ (residueCharacteristic_prime v₀) ε₀ xg₀ xt₀ hs₀ hc₀ ht₀ hx0)`. Establish `hm : ∀ k, ∃ Δ : Γ(X, V), jB.app V Δ = minor bl w k A`. Introduce `k`. Use `hint V hV _ fun v ε xg xt hs hc ht hx => ?_` and prove the remaining obligations. Use `haveI : Fact (resP v).Prime := ⟨residueCharacteristic_prime v⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(GlobalTheory.T.integral_adapted_minor_norms bl _ (hA v (residueCharacteristic_prime v) ε xg xt hs hc ht hx)).1 w k`. Rewrite `h1` using `[minor_map, RingHom.comp_apply]`. Conclude with `(ioOf_le_one_iff (resP v) (residueCharacteristic_mem v) ε _).1 h1`. Use `choose Δ' hΔ' using hm`. Use `set K₀ := Finset.univ.sup bl + 1 with hK₀`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hbig : ∀ z, bl z < K₀` using `fun z => Nat.lt_succ_of_le (Finset.le_sup (f := bl) (Finset.mem_univ z))`. Establish `hmin : ∀ {R : Type} [CommRing R] (P : Matrix (Fin g) κ R) (k : ℕ), minor bl w (min k K₀) P = minor bl w k P`. Introduce `R _ P k`. Break down `le_total k K₀ with h | h` into its components or cases. Rewrite using `[min_eq_left h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[min_eq_right h, minor_eq_det bl w K₀ hbig, minor_eq_det bl w k fun z => (hbig z).trans_le h]`. Use `set Δ : ℕ → Γ(X, V) := fun k => Δ' (min k K₀) with hΔdef`. Establish `hΔ : ∀ k, jB.app V (Δ k) = minor bl w k A` using `fun k => by`. Rewrite using `[hΔdef]`. Simplify using `only`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hΔ', hmin]`. Establish `hcu : ∀ k, IsUnit (TangentOrigin.evalPt xt₀ V ht₀ (Δ k))`. Introduce `k`. Rewrite using `[← norm_io_eq_one_iff ε₀, ← evalPt_int ε₀ xg₀ xt₀ hc₀ V ht₀ hx0, hΔ, ← RingHom.comp_apply, ← minor_map]`. Conclude with `hw k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Pr₀ : Γ(X, V) := ∏ k ∈ Finset.range (K₀ + 1), Δ k with hPr₀`. Use `set V' := X.basicOpen Pr₀ with hV'def`. Establish `hV'le : V' ≤ V` using `X.basicOpen_le Pr₀`. Establish `hV'aff : IsAffineOpen V'` using `hV.basicOpen Pr₀`. Establish `hx₀' : x₀ ∈ V'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hcen Pr₀ ?_` and prove the remaining obligations. Rewrite using `[hPr₀, map_prod]`. Conclude with `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one fun k _ => hcu k`. Establish `hunit : ∀ k, IsUnit (resG X hV'le (Δ k))`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk : Δ k = Δ (min k K₀)` using `by simp only [hΔdef, min_assoc, min_self]`. Establish `hmem : min k K₀ ∈ Finset.range (K₀ + 1)` using `Finset.mem_range.2 (Nat.lt_succ_of_le (min_le_right _ _))`. Establish `hu : IsUnit (resG X hV'le Pr₀)` using `X.toRingedSpace.isUnit_res_basicOpen Pr₀`. Rewrite using `[hk]`. Conclude with `isUnit_of_dvd_unit (map_dvd _ (Finset.dvd_prod_of_mem _ hmem)) hu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A' := A.map (resG W (jB.preimage_mono hV'le)) with hA'`. Establish `hA'm : ∀ k, minor bl w k A' = jB.app V' (resG X hV'le (Δ k))`. Introduce `k`. Rewrite using `[hA', minor_map, ← hΔ, GlobalTheory.GenericFibreInt.app_resG']`. Take `⟨Q, hQ, hdet, htri⟩` from `GlobalTheory.T.exists_block_unipotent_triangularizing bl A' w fun k => (hA'm k) ▸ (hunit k).map _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hC : ∀ b z, ∃ c : Γ(X, V'), jB.app V' c = (A' * Q) b z`. Introduce `b z`. Use `hint V' hV'aff _ fun v ε xg xt hs hc ht' hx' => ?_` and prove the remaining obligations. Use `haveI : Fact (resP v).Prime := ⟨residueCharacteristic_prime v⟩`. Establish `ht : ⊤ ≤ xt ⁻¹ᵁ V` using `ht'.trans (xt.preimage_mono hV'le)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hx` using `top_le_of_int ε xg xt hc V ht`. Use `set φ' := (ioOf (resP v) ε).comp (TangentOrigin.evalPt xg (jB ⁻¹ᵁ V') hx') with hφ'`. Establish `hAd` using `hA v (residueCharacteristic_prime v) ε xg xt hs hc ht hx`. Establish `hP : A.map ((ioOf (resP v) ε).comp (TangentOrigin.evalPt xg (jB ⁻¹ᵁ V) hx)) = A'.map φ'`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hA', Matrix.map_apply, hφ', RingHom.comp_apply]`. Rewrite using `[TangentOrigin.evalPt_res xg (jB.preimage_mono hV'le) hx hx']`. Rewrite `hAd` using `[hP]`. Establish `hnm : ∀ k, ‖minor bl w k (A'.map φ')‖ = 1`. Introduce `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[minor_map, hA'm, hφ', RingHom.comp_apply, evalPt_int ε xg xt hc V' ht' hx']`. Conclude with `(norm_io_eq_one_iff ε _).2 ((hunit k).map _)`. Establish `hQ' : BlockUni bl (Q.map φ')`. Introduce `z z' h`. Rewrite using `[Matrix.map_apply, hQ z z' h, ← Matrix.map_apply (f := φ'), Matrix.map_one _ (map_zero φ') (map_one φ')]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `htri' : ∀ z z', bl z < bl z' → (A'.map φ' * Q.map φ') (w z) z' = 0`. Introduce `z z' h`. Rewrite using `[← Matrix.map_mul, Matrix.map_apply, htri z z' h, map_zero]`. Establish `h1` using `GlobalTheory.T.integral_adapted_triangular_bounded bl (A'.map φ') w hAd hnm (Q.map φ') hQ' htri' b z`. Rewrite `h1` using `[← Matrix.map_mul, Matrix.map_apply, hφ', RingHom.comp_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(ioOf_le_one_iff (resP v) (residueCharacteristic_mem v) ε _).1 h1`. Take `⟨C, hCe⟩ : ∃ C : Matrix (Fin g) κ Γ(X, V'), ∀ b z, jB.app V' (C b z) = (A' * Q) b z` from `⟨Matrix.of fun b z => (hC b z).choose, fun b z => (hC b z).choose_spec⟩`. Establish `hinj` using `GlobalTheory.T.injective_generic_fibre_section_restriction hq pb V' hV'aff`. Use `set D := C.submatrix w id with hD`. Establish `hdetD : D.det = resG X hV'le (Δ K₀)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[RingHom.map_det, ← hA'm, minor_eq_det bl w K₀ hbig]`. Establish `: (jB.app V').hom.mapMatrix D = (A' * Q).submatrix w id`. Use extensionality with `i j`. Conclude with `hCe _ _`.
-
-Rewrite using `[this]`. Establish `e2 : (A' * Q).submatrix w id = A'.submatrix w id * Q`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[e2, Matrix.det_mul, hdet, mul_one]`.
-
-Establish `hDu : IsUnit D.det` using `hdetD ▸ hunit K₀`. Use `⟨V', hV'le, hx₀', hinj, C, (D⁻¹).submatrix id w.symm, Q, ?_, ?_, hQ, ?_⟩` and prove the remaining obligations. Establish `eC : C = D.submatrix w.symm id` using `by ext i j; simp [hD]`. Rewrite using `[eC]`. Use `(Matrix.submatrix_mul D D⁻¹ w.symm id w.symm Function.bijective_id).symm.trans ?_` and prove the remaining obligations.
-
-Rewrite using `[Matrix.mul_nonsing_inv _ hDu]`. Conclude with `Matrix.submatrix_one_equiv _`. Establish `eC : C = D.submatrix w.symm id` using `by ext i j; simp [hD]`. Rewrite using `[eC]`. Use `(Matrix.submatrix_mul D⁻¹ D id w.symm id w.symm.bijective).symm.trans ?_` and prove the remaining obligations.
-
-Rewrite using `[Matrix.nonsing_inv_mul _ hDu]`. Conclude with `Matrix.submatrix_id_id _`. Use extensionality with `b z`. Conclude with `hCe b z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_regular_blockUni_change : ∀ {F : Type} [Field F] [NumberField F] {X W : Scheme.{0}} {q : X ⟶ Sp (𝓞 F)} {s : W ⟶ Sp F} {jB : W ⟶ X} {d : ℕ},
     IsArithVar q d → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → IsPullback jB s q (spMap (algebraMap (𝓞 F) F)) →

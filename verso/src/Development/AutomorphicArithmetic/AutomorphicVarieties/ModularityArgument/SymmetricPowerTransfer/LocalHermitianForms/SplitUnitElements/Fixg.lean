@@ -3,71 +3,61 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra Matrix UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ hL c d m δ ι P hM g hg`. Set `M : Matrix (Fin 3) (Fin 3) (Lsq K Δ)` to `((g⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ))`. Set `G : Matrix (Fin 3) (Fin 3) (Lsq K Δ)` to `((g : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ))`. Establish `hMG : M * G = 1`. Establish `h : ((g⁻¹ * g : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Conclude with `h`. Establish `hGM : G * M = 1`. Establish `h : ((g * g⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression. Conclude with `h`. Establish `hIsum : ∀ (f : Fin 3 → Lsq K Δ), (∀ i, IsInt O (f i)) → IsInt O (∑ i, f i)`. Introduce `f hf`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsIntegral.sum _ fun i _ => hf i`. Establish `hImul : ∀ a b : Lsq K Δ, IsInt O a → IsInt O b → IsInt O (a * b)` using `fun a b ha hb => ha.mul hb`. Establish `hIstar : ∀ a : Lsq K Δ, IsInt O a ↔ IsInt O (star a)`. Introduce `a`. Use `⟨fun h => OE.int_star hL h, fun h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using OE.int_star hL h`. Establish `hU : ∀ (h : U3 Δ) (a b : Fin 3 → Lsq K Δ), ((h : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) *ᵥ a) ⬝ᵥ star ((h : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) *ᵥ b) = a ⬝ᵥ star b`. Introduce `h a b`. Establish `hu : (h : Matrix (Fin 3) (Fin 3) (Lsq K Δ))ᴴ * (h : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = 1` using `Matrix.mem_unitaryGroup_iff'.mp h.2`. Rewrite using `[Matrix.star_mulVec, dotProduct_comm, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hu, Matrix.one_mulVec, dotProduct_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsv : ∀ (N : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) (v : Fin 3 → Lsq K Δ), star (N *ᵥ v) = N.map star *ᵥ star v`. Introduce `N v`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum, star_mul']`. Establish `hIvec : ∀ (N : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) (v : Fin 3 → Lsq K Δ), (∀ i j, IsInt O (N i j)) → (∀ j, IsInt O (v j)) → ∀ i, IsInt O ((N *ᵥ v) i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N v hN hv i`. Conclude with `hIsum _ fun j => hImul _ _ (hN i j) (hv j)`. Establish `hsingle : ∀ (j : Fin 3) (u : Lsq K Δ), IsInt O u → ∀ i, IsInt O ((Pi.single j u : Fin 3 → Lsq K Δ) i)`. Introduce `j u hu i`. Distinguish the cases in `hij : i = j`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Substitute `hij` using the available equality. Simplify using `using hu`. Simplify `(isIntegral_zero : IsIntegral O (0 : Lsq K Δ))` using `[hij]`. Set `Q : Sp Δ τ → Fin 3 → Lsq K Δ` to `fun x => M *ᵥ P x`. Establish `hPQ : ∀ x, G *ᵥ Q x = P x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use `show G *ᵥ (M *ᵥ P x) = P x`. Rewrite using `[Matrix.mulVec_mulVec, hGM, Matrix.one_mulVec]`. Establish `hQS : ∀ v, Q (P.symm (G *ᵥ v)) = v`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `show M *ᵥ P (P.symm (G *ᵥ v)) = v`. Rewrite using `[P.apply_symm_apply, Matrix.mulVec_mulVec, hMG, Matrix.one_mulVec]`. Establish `hform : ∀ x y, herm c m x y = Q x ⬝ᵥ star (Q y)`. Introduce `x y`. Rewrite using `[hM.form]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hU g⁻¹ (P x) (P y)).symm`. Set `kU : U3 Δ` to `g⁻¹ * δ * theta Δ g`. Set `k : Matrix (Fin 3) (Fin 3) (Lsq K Δ)` to `(kU : Matrix (Fin 3) (Fin 3) (Lsq K Δ))`. Set `ki : Matrix (Fin 3) (Fin 3) (Lsq K Δ)` to `((kU⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ))`. Establish `hkki : k * ki = 1`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : ((kU * kU⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = 1`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression. Conclude with `h`. Establish `hk : ∀ i j, IsInt O (k i j)` using `fun i j => (hg i j).1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hki : ∀ i j, IsInt O (ki i j)` using `fun i j => ((KU O Δ).inv_mem hg i j).1`. Establish `hsemi : ∀ x, Q (semi d x) = k *ᵥ star (Q x)`. Introduce `x`. Use `show M *ᵥ P (semi d x) = k *ᵥ star (Q x)`. Rewrite using `[hM.semi, ← hPQ x, hsv, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨u, s0, hs0, hΔ⟩` from `hL.even`. Establish `hs : Δ * s0⁻¹ ^ 2 = algebraMap O K (u : O)`. Rewrite using `[hΔ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Clear the denominators using the available nonvanishing facts. Establish `hdesc` using `descent O K Δ hL s0⁻¹ u hs`. Set `w : Lsq K Δ` to `⟨0, s0⁻¹⟩`. Establish `hw : IsInt O w`. Use `(hdesc w).1.mpr ⟨⟨0, map_zero _⟩, 1, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `show s0⁻¹ = s0⁻¹ * algebraMap O K 1`. Rewrite using `[map_one, mul_one]`. Establish `hdec : ∀ z : Lsq K Δ, IsInt O z → ∃ a b : O, z = algebraMap O (Lsq K Δ) a + algebraMap O (Lsq K Δ) b * w`. Introduce `z hz`. Take `⟨⟨a, ha⟩, b, hb⟩` from `(hdesc z).1.mp hz`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨a, b, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [w, ← ha, hb, IsScalarTower.algebraMap_apply O K (Lsq K Δ)] <;> ring`. Set `R : Fin 3 → Lsq K Δ → Sp Δ τ` to `fun i v => P.symm (G *ᵥ Pi.single i v)`. Set `S : Finset (Sp Δ τ)` to `Finset.univ.image (fun i => R i 1) ∪ Finset.univ.image (fun i => R i w)`. Use `⟨S, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : ∀ i, IsInt O (Q x i)` using `hx`. Establish `hxe : x = ∑ i, R i (Q x i)` using `by show x = ∑ i, P.symm (G *ᵥ Pi.single i (Q x i))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← map_sum, ← Matrix.mulVec_sum, Finset.univ_sum_single, hPQ, P.symm_apply_apply]`. Rewrite using `[hxe]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨a, b, hab⟩` from `hdec _ (hx' i)`. Establish `h1S : R i 1 ∈ (S : Set (Sp Δ τ))` using `Finset.mem_coe.mpr (Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hwS : R i w ∈ (S : Set (Sp Δ τ))` using `Finset.mem_coe.mpr (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))`. Establish `hsp : (Pi.single i (Q x i) : Fin 3 → Lsq K Δ) = algebraMap O (Lsq K Δ) a • Pi.single i 1 + algebraMap O (Lsq K Δ) b • Pi.single i w`. Rewrite using `[hab]`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hij : j = i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Substitute `hij` using the available equality. Rewrite using `[Pi.add_apply, Pi.smul_apply, Pi.smul_apply, Pi.single_eq_same, Pi.single_eq_same, Pi.single_eq_same, smul_eq_mul, smul_eq_mul, mul_one]`. Simplify using `[hij]`. Establish `hR : R i (Q x i) = a • R i 1 + b • R i w` using `by show P.symm (G *ᵥ Pi.single i (Q x i)) = a • R i 1 + b • R i w`. Rewrite using `[hsp, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, map_add, map_smul, map_smul, ← algebra_compatible_smul, ← algebra_compatible_smul]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR]`. Conclude with `add_mem (Submodule.smul_mem _ _ (Submodule.subset_span h1S)) (Submodule.smul_mem _ _ (Submodule.subset_span hwS))`. Introduce `hx`. Establish `hQR : ∀ i v, Q (R i v) = Pi.single i v` using `fun i v => hQS _`. Use `show ∀ i, IsInt O (Q x i)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Break down `Finset.mem_union.mp (Finset.mem_coe.mp hz) with hz | hz` into its components or cases. Take `⟨j, -, rfl⟩` from `Finset.mem_image.mp hz`. Rewrite using `[hQR]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hsingle j 1 isIntegral_one`. Take `⟨j, -, rfl⟩` from `Finset.mem_image.mp hz`. Rewrite using `[hQR]`. Conclude with `hsingle j w hw`. Consider the case `zero`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Use `show IsInt O ((M *ᵥ P 0) i)`. Rewrite using `[map_zero, Matrix.mulVec_zero]`. Conclude with `isIntegral_zero`. Consider the case `add z v _ _ hz hv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i`. Use `show IsInt O ((M *ᵥ P (z + v)) i)`. Rewrite using `[map_add, Matrix.mulVec_add]`. Conclude with `(hz i).add (hv i)`. Consider the case `smul a z _ hz`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `show IsInt O ((M *ᵥ P (a • z)) i)`. Rewrite using `[algebra_compatible_smul (Lsq K Δ) a z, map_smul, Matrix.mulVec_smul]`. Conclude with `isIntegral_algebraMap.mul (hz i)`. Introduce `y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Rewrite using `[hform]`. Conclude with `hIsum _ fun i => hImul _ _ (hx i) ((hIstar _).mp (hy i))`. Introduce `h i`.
-
-Establish `he : P.symm (G *ᵥ Pi.single i 1) ∈ {x : Sp Δ τ | ∀ i, IsInt O ((((g⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) *ᵥ P x) i)}`. Introduce `j`. Use `show IsInt O (Q (P.symm (G *ᵥ Pi.single i 1)) j)`. Rewrite using `[hQS]`. Conclude with `hsingle i 1 isIntegral_one j`.
-
-Establish `h2` using `h _ he`. Rewrite `h2` using `[hform, hQS]`. Simplify using `only [dotProduct, Pi.single_apply, Pi.star_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h2`. Conclude with `(hIstar _).mpr h2`. Use extensionality with `y`.
-
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ i show IsInt O (Q (semi d x) i)`. Rewrite using `[hsemi]`. Conclude with `hIvec k _ hk (fun j => (hIstar _).mp (hx j)) i`. Introduce `hy`.
-
-Use `⟨P.symm (G *ᵥ star (ki *ᵥ Q y)), ?_, ?_⟩` and prove the remaining obligations. Introduce `i show IsInt O (Q (P.symm (G *ᵥ star (ki *ᵥ Q y))) i)`. Rewrite using `[hQS]`. Conclude with `(hIstar _).mp (hIvec ki _ hki hy i)`. Apply `P.injective` to reduce the goal to its premises.
-
-Rewrite using `[← hPQ, ← hPQ, hsemi, hQS, star_star]`. Rewrite using `[show k *ᵥ (ki *ᵥ Q y) = Q y by rw [Matrix.mulVec_mulVec, hkki, Matrix.one_mulVec]]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.One.fixg :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ τ : K), IsLoc O Δ →

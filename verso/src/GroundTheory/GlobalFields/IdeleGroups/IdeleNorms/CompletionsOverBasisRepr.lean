@@ -48,7 +48,7 @@ theorem completionsOverBasis_repr (v : HeightOneSpectrum (𝓞 K)) (z : Completi
   rfl
 
 /- English proof (translation)
-Use `(norm_map_of_repr (finiteEval K v) (finiteRestrict L v) (adeleBasis (Module.finBasis K L)) (completionsOverBasis (Module.finBasis K L) v) (fun y i ↦ ?_) y).symm` and prove the remaining obligations. Rewrite using `[completionsOverBasis_repr, adeleBasis_repr]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finiteEval_norm (v : HeightOneSpectrum (𝓞 K)) (y : 𝔸[L]) :
     finiteEval K v (Algebra.norm 𝔸[K] y) =
@@ -60,7 +60,7 @@ theorem finiteEval_norm (v : HeightOneSpectrum (𝓞 K)) (y : 𝔸[L]) :
   rfl
 
 /- English proof (translation)
-The claim follows from `(finiteEval_norm v y).trans (norm_pi _)`.
+A detailed English derivation is pending.
 -/
 theorem norm_adeleRing_snd (v : HeightOneSpectrum (𝓞 K)) (y : 𝔸[L]) :
     (Algebra.norm 𝔸[K] y).2 v =
@@ -100,7 +100,7 @@ theorem piPlacesOverBasis_repr (v : InfinitePlace K)
   rfl
 
 /- English proof (translation)
-Use `(norm_map_of_repr (infiniteEval K v) (infiniteRestrict L v) (adeleBasis (Module.finBasis K L)) (piPlacesOverBasis (Module.finBasis K L) v) (fun y i ↦ ?_) y).symm` and prove the remaining obligations. Rewrite using `[piPlacesOverBasis_repr, adeleBasis_repr]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infiniteEval_norm (v : InfinitePlace K) (y : 𝔸[L]) :
     infiniteEval K v (Algebra.norm 𝔸[K] y) =
@@ -115,7 +115,7 @@ theorem infiniteEval_norm (v : InfinitePlace K) (y : 𝔸[L]) :
 open scoped Classical in
 
 /- English proof (translation)
-The claim follows from `(infiniteEval_norm v y).trans (GroundTheory.Global.Algebra.norm_pi _)`.
+A detailed English derivation is pending.
 -/
 theorem norm_adeleRing_fst (v : InfinitePlace K) (y : 𝔸[L]) :
     (Algebra.norm 𝔸[K] y).1 v =
@@ -129,7 +129,7 @@ open AdeleBaseChange SemiLocal
 variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
 
 /- English proof (translation)
-The claim follows from `norm_adeleRing_snd (K := K) v (x : 𝔸[L])`.
+A detailed English derivation is pending.
 -/
 theorem ideleNorm_snd (x : IdeleGroup L) (v : HeightOneSpectrum (𝓞 K)) :
     ((ideleNorm K L x : IdeleGroup K) : 𝔸[K]).2 v =
@@ -139,7 +139,7 @@ theorem ideleNorm_snd (x : IdeleGroup L) (v : HeightOneSpectrum (𝓞 K)) :
 open scoped Classical in
 
 /- English proof (translation)
-The claim follows from `norm_adeleRing_fst (K := K) v (x : 𝔸[L])`.
+A detailed English derivation is pending.
 -/
 theorem ideleNorm_fst (x : IdeleGroup L) (v : InfinitePlace K) :
     ((ideleNorm K L x : IdeleGroup K) : 𝔸[K]).1 v =

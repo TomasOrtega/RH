@@ -19,9 +19,9 @@ open UpperTheory.Zero.ConvolutionTheory.EB PositivityTheory.Rg.BcB.F.RS
 attribute [local instance] borelG borelF borelA borelH
 
 /- English proof (translation)
-Introduce `E _ _ _ a b l₁ l₂ D A S Z L hS hZ f hf _ hL _ w hw hwZ hs t ht`. Establish `h` using `hkAct E a b l₁ l₂ D A S Z L hS hZ f hL w hw hwZ`. Take `⟨B₁, B₂, h1, h2, h3, h4⟩` from `sat2Ex E a b w _ _ (pairRtT a b w) f t hf (fun i => ((h 0 i).2 hs).1) fun p i => (((h p i).2 hs).2).symm.trans (congrFun (ht p) i)`. Establish `hi : ∀ B, inv (inv B) = B` using `fun B => by simp [UpperTheory.V.Z.Tf.GlobalTraceComparison.inv, Multiset.map_map]`. Use `⟨inv B₁, inv B₂, by simpa [UpperTheory.V.Z.Tf.GlobalTraceComparison.inv] using h1, by simpa [UpperTheory.V.Z.Tf.GlobalTraceComparison.inv] using h2, by simpa only [hi] using h3, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `φ ⟨i, m, e⟩`. Conclude with `(sat2Slice E a b _ _ _ _ (sat2Back E a b w _ _ _ hs (h4 i))).1 φ m e`. Introduce and unpack `φ ⟨i, m, e⟩`. Conclude with `(sat2Slice E a b _ _ _ _ (sat2Back E a b w _ _ _ hs (h4 i))).2 φ m e`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Zero.ConvolutionTheory.EB.satRead₂ :
     UpperTheory.Zero.ConvolutionTheory.EB.SatRead₂ := by

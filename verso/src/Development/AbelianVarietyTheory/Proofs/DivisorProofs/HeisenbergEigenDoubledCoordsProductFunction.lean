@@ -19,7 +19,7 @@ variable {R : Type} [CommRing R] {E : Type} [CommRing E] [Algebra R E] (c : E �
 omit [DecidableEq α] in
 
 /- English proof (translation)
-Unfold `symp`. Rewrite using `[← map_sub, ← mul_sub]`. Use `congr 2`. Simplify using `only [hTens, dbl, Fintype.sum_sum_type, Matrix.toCols₁_apply, Matrix.toCols₂_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, mul_zero, zero_mul, Finset.sum_const_zero, add_zero …`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem symp_dbl_toCols (ξ : E) (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α (β ⊕ β) E) :
     symp (R := R) c ξ JA (dbl JB) x y =
@@ -33,7 +33,7 @@ theorem symp_dbl_toCols (ξ : E) (JA : Matrix α α E) (JB : Matrix β β E) (x 
     Finset.sum_neg_distrib, Finset.sum_add_distrib, sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, hψ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem star_apply_eq_neg (ψ : AddChar R ℂ) (hψ : ∀ t, ‖ψ t‖ = 1) (t : R) : star (ψ t) = ψ (-t) := by
   rw [AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, hψ]
@@ -42,9 +42,9 @@ theorem star_apply_eq_neg (ψ : AddChar R ℂ) (hψ : ∀ t, ‖ψ t‖ = 1) (t 
 variable [Invertible (2 : R)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `e : x = Sum.elim (x ∘ Sum.inl) (x ∘ Sum.inr)` using `(Sum.elim_comp_inl_inr x).symm`. Establish `e1 : (x + Sum.elim w₁.1 w₂.1) ∘ Sum.inl = x ∘ Sum.inl + w₁.1` using `rfl`. Establish `e2 : (x + Sum.elim w₁.1 w₂.1) ∘ Sum.inr = x ∘ Sum.inr + w₂.1` using `rfl`. Establish `e3 : x ⬝ᵥ Sum.elim w₁.2 (-w₂.2) = (x ∘ Sum.inl) ⬝ᵥ w₁.2 - (x ∘ Sum.inr) ⬝ᵥ w₂.2` using `by conv_lhs => rw [e]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sumElim_dotProduct_sumElim, dotProduct_neg, sub_eq_add_neg]`. Simplify using `only [schr, boxFun, e1, e2, e3, sumElim_dotProduct_sumElim, dotProduct_neg, star_mul', star_apply_eq_neg ψ hψ]`. Rewrite using `[mul_mul_mul_comm, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schr_boxFun (ψ : AddChar R ℂ) (hψ : ∀ t, ‖ψ t‖ = 1) {κ : Type} [Fintype κ] (w₁ w₂ : (κ → R) × (κ → R))
     (φ₁ φ₂ : (κ → R) → ℂ) :
@@ -65,11 +65,11 @@ theorem schr_boxFun (ψ : AddChar R ℂ) (hψ : ∀ t, ‖ψ t‖ = 1) {κ : Typ
 end Alg
 
 /- English proof (translation)
-Introduce `R _ _ E _ _ c α β _ _ _ _ ξ ξ' JA JB κ _ d dd hD ψ hψ Λ f hf z h₁ h₂`. Establish `hz : Matrix.fromCols z.toCols₁ z.toCols₂ = z` using `Matrix.fromCols_toCols z`. Establish `he` using `hD z.toCols₁ z.toCols₂`. Rewrite `he` using `[hz]`. Establish `e₁` using `hf _ h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e₂` using `hf _ h₂`. Simplify using `only [Darboux.rho] at e₁ e₂`. Rewrite using `[Darboux.rho, he, schr_boxFun ψ hψ, e₁, e₂, symp_dbl_toCols]`. Use function extensionality and compare the values at `x`. Simplify using `only [boxFun, Pi.smul_apply, smul_eq_mul, star_mul', star_apply_eq_neg ψ hψ, mul_sub]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[sub_eq_add_neg, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem boxrho : ∀ {R : Type} [CommRing R] [Invertible (2 : R)] {E : Type} [CommRing E] [Algebra R E] (c : E →ₐ[R] E)
     {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] (ξ ξ' : E) (JA : Matrix α α E) (JB : Matrix β β E)

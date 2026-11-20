@@ -13,35 +13,35 @@ noncomputable section
 namespace SphereMean
 
 /- English proof (translation)
-Simplify using `[sqNorm, Fin.sum_univ_succ, Fin.tail]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sqNorm_succ {m : ℕ} (x : Fin (m + 1) → ℂ) :
     sqNorm x = ‖x 0‖ ^ 2 + sqNorm (Fin.tail x) := by
   simp [sqNorm, Fin.sum_univ_succ, Fin.tail]
 
 /- English proof (translation)
-Simplify using `[MeasurableEquiv.piFinSuccAbove_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piFinSuccAbove_zero_apply {m : ℕ} (x : Fin (m + 1) → ℂ) :
     MeasurableEquiv.piFinSuccAbove (fun _ : Fin (m + 1) => ℂ) 0 x = (x 0, Fin.tail x) := by
   simp [MeasurableEquiv.piFinSuccAbove_apply]
 
 /- English proof (translation)
-Establish `he` using `volume_preserving_piFinSuccAbove (fun _ : Fin (m + 1) => ℂ) 0`. Use `set e := MeasurableEquiv.piFinSuccAbove (fun _ : Fin (m + 1) => ℂ) 0 with he_def`. Use `set A : Set (ℂ × (Fin m → ℂ)) := {p | ‖p.1‖ ^ 2 + sqNorm p.2 < 1} with hA_def`. Establish `hA : MeasurableSet A` using `measurableSet_lt ((continuous_norm.comp continuous_fst).pow 2 |>.add ((continuous_sqNorm m).comp continuous_snd)).measurable measurable_const`. Use `set F : ℂ × (Fin m → ℂ) → ENNReal := A.indicator (fun p => φ p.1) with hF_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hFm : Measurable F` using `(hφ.comp measurable_fst).indicator hA`. Establish `hF : ∀ x, (ballSet (m + 1) 1).indicator (fun x => φ (x 0)) x = F (e x)`. Introduce `x`. Rewrite using `[he_def, piFinSuccAbove_zero_apply]`. Simplify using `only [hF_def, hA_def, indicator, ballSet, mem_ofPred_eq, sqNorm_succ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lintegral_indicator (measurableSet_ballSet _ _)]`. Repeatedly rewrite using `[hF]`. Rewrite using `[he.lintegral_comp_emb e.measurableEmbedding F, Measure.volume_eq_prod, lintegral_prod _ hFm.aemeasurable]`. Establish `hm : Measurable (fun z : ℂ => (Iio (1 : ℝ)).indicator (fun r => ENNReal.ofReal ((1 - r ^ 2) ^ m)) ‖z‖ * φ z)` using `(((ENNReal.measurable_ofReal.comp (by fun_prop : Measurable fun r : ℝ => (1 - r ^ 2) ^ m)).indicator measurableSet_Iio).comp measurable_norm).mul hφ`. Rewrite using `[← lintegral_mul_const _ hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `z`. Establish `h1 : (fun w => F (z, w)) = (ballSet m (1 - ‖z‖ ^ 2)).indicator (fun _ => φ z)`. Use function extensionality and compare the values at `w`. Simplify using `only [hF_def, hA_def, indicator, ballSet, mem_ofPred_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `congr 1`. Apply `propext` to reduce the goal to its premises. Apply the tactic sequence `constructor <;> intro h <;> linarith`. Establish `h2 : ∫⁻ w, F (z, w) = φ z * volume (ballSet m (1 - ‖z‖ ^ 2))`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `lintegral_indicator_const (measurableSet_ballSet m _) _`. Rewrite using `[h2]`. Distinguish the cases in `hz : ‖z‖ < 1`. Establish `hs : 0 < 1 - ‖z‖ ^ 2` using `by nlinarith [norm_nonneg z]`. Rewrite using `[volume_ballSet hs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [indicator, mem_Iio, hz, ite_true]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : ballSet m (1 - ‖z‖ ^ 2) = ∅`. Use extensionality with `w`. Simplify using `only [ballSet, mem_ofPred_eq, mem_empty_iff_false, iff_false, not_lt]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `sqNorm_nonneg w` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg z]`. Rewrite using `[hs]`. Simplify using `[indicator, hz]`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_ballSet_fst (m : ℕ) (φ : ℂ → ENNReal) (hφ : Measurable φ) :
     ∫⁻ x in ballSet (m + 1) 1, φ (x 0) =
@@ -94,18 +94,18 @@ theorem lintegral_ballSet_fst (m : ℕ) (φ : ℂ → ENNReal) (hφ : Measurable
       simp [indicator, hz]
 
 /- English proof (translation)
-Rewrite using `[← Submodule.bot_coe (R := ℝ)]`. Conclude with `addHaar_submodule _ _ bot_ne_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volume_singleton_zero (m : ℕ) : volume ({0} : Set (Fin (m + 1) → ℂ)) = 0 := by
   rw [← Submodule.bot_coe (R := ℝ)]
   exact addHaar_submodule _ _ bot_ne_top
 
 /- English proof (translation)
-Establish `h` using `lintegral_ballSet_fst m (fun _ => 1) measurable_const`. Simplify using `only [setLIntegral_one, mul_one] at h`. Rewrite using `[h]`. Use `congr 1`. Establish `hp : ∀ z : ℂ, (Iio (1 : ℝ)).indicator (fun r => ENNReal.ofReal ((1 - r ^ 2) ^ m)) ‖z‖ = ENNReal.ofReal ((Iio (1 : ℝ)).indicator (fun r => (1 - r ^ 2) ^ m) ‖z‖)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `z`. Apply the tactic sequence `by_cases hz : ‖z‖ < 1 <;> simp [indicator, hz]`. Repeatedly rewrite using `[hp]`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (integrable_disc_pow m), integral_disc_pow]`. Use `Filter.Eventually.of_forall fun z => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hz : ‖z‖ < 1`. Simplify using `only [indicator, mem_Iio, hz, ite_true, Pi.zero_apply]`. Establish `: ‖z‖ ^ 2 < 1` using `by nlinarith [norm_nonneg z]`. Conclude with `pow_nonneg (by linarith) m`. Simplify using `[indicator, hz]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem volume_ballSet_succ (m : ℕ) :
     volume (ballSet (m + 1) 1) = ENNReal.ofReal (π / (m + 1)) * volume (ballSet m 1) := by
@@ -127,13 +127,13 @@ theorem volume_ballSet_succ (m : ℕ) :
   · simp [indicator, hz]
 
 /- English proof (translation)
-Rewrite using `[lintegral_ballSet_fst m (fun z => ENNReal.ofReal (-log ‖z‖)) (ENNReal.measurable_ofReal.comp (measurable_norm.log.neg))]`. Use `congr 1`. Establish `hp : ∀ z : ℂ, (Iio (1 : ℝ)).indicator (fun r => ENNReal.ofReal ((1 - r ^ 2) ^ m)) ‖z‖ * ENNReal.ofReal (-log ‖z‖) = ENNReal.ofReal ((Iio (1 : ℝ)).indicator (fun r => -log r * (1 - r ^ 2) ^ m) ‖z‖)`. Introduce `z`. Distinguish the cases in `hz : ‖z‖ < 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [indicator, mem_Iio, hz, ite_true]`. Rewrite using `[ENNReal.ofReal_mul (by linarith [log_nonpos (norm_nonneg z) hz.le]), mul_comm]`. Simplify using `[indicator, hz]`. Repeatedly rewrite using `[hp]`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (integrable_disc_log_pow m), integral_disc_log_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Filter.Eventually.of_forall fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : ‖z‖ < 1`. Simplify using `only [indicator, mem_Iio, hz, ite_true, Pi.zero_apply]`. Establish `: ‖z‖ ^ 2 < 1` using `by nlinarith [norm_nonneg z]`. Conclude with `mul_nonneg (by linarith [log_nonpos (norm_nonneg z) hz.le]) (pow_nonneg (by linarith) m)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[indicator, hz]`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_ballSet_neg_log_fst (m : ℕ) :
     ∫⁻ x in ballSet (m + 1) 1, ENNReal.ofReal (-log ‖x 0‖) =
@@ -159,9 +159,9 @@ theorem lintegral_ballSet_neg_log_fst (m : ℕ) :
   · simp [indicator, hz]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, x j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hx (funext h)`. Establish `h1 : ‖x j‖ ^ 2 ≤ sqNorm x` using `Finset.single_le_sum (f := fun j => ‖x j‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ j)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2 : 0 < ‖x j‖ ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem sqNorm_pos_of_ne_zero {n : ℕ} {x : Fin n → ℂ} (hx : x ≠ 0) : 0 < sqNorm x := by
   obtain ⟨j, hj⟩ : ∃ j, x j ≠ 0 := by
@@ -174,29 +174,27 @@ theorem sqNorm_pos_of_ne_zero {n : ℕ} {x : Fin n → ℂ} (hx : x ≠ 0) : 0 <
   linarith
 
 /- English proof (translation)
-Use `set B := ballSet (m + 1) 1 with hB`. Establish `hmeas : Measurable fun x : Fin (m + 1) → ℂ => -log (sqNorm x)` using `(measurable_sqNorm _).log.neg`. Establish `hnn : 0 ≤ᵐ[volume.restrict B] fun x => -log (sqNorm x)`. Use `(ae_restrict_iff' (measurableSet_ballSet _ _)).mpr (Filter.Eventually.of_forall ?_)` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.zero_apply]`. Rewrite using `[neg_nonneg]`. Conclude with `log_nonpos (sqNorm_nonneg x) (le_of_lt hx)`. Rewrite using `[lintegral_eq_lintegral_meas_lt _ hnn hmeas.aemeasurable]`. Establish `hlev : ∀ t ∈ Ioi (0 : ℝ), (volume.restrict B) {x | t < -log (sqNorm x)} = ENNReal.ofReal (exp (-((m + 1 : ℕ) : ℝ) * t)) * volume B`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t ht`. Establish `ht' : (0 : ℝ) < t` using `ht`. Rewrite using `[Measure.restrict_apply (measurableSet_lt measurable_const hmeas)]`. Establish `he : exp (-t) < 1`. Use `exp_lt_exp.mpr (show -t < 0 by linarith)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[exp_zero]`. Then use the resulting hypothesis. Establish `hsub1 : {x | t < -log (sqNorm x)} ∩ B ⊆ ballSet (m + 1) (exp (-t))`. Introduce `x ⟨hx1, _⟩`. Simplify using `only [mem_ofPred_eq] at hx1`. Establish `hs : 0 < sqNorm x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `(sqNorm_nonneg x).lt_or_eq with h | h` into its components or cases. Conclude with `h`. Rewrite `hx1` using `[← h, log_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [ballSet, mem_ofPred_eq]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← log_lt_iff_lt_exp hs]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsub2 : ballSet (m + 1) (exp (-t)) ⊆ ({x | t < -log (sqNorm x)} ∩ B) ∪ {0}`. Introduce `x hx`. Distinguish the cases in `h0 : x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the second alternative. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Or.inr h0`. Use `left`. Establish `hs` using `sqNorm_pos_of_ne_zero h0`. Simplify using `only [ballSet, mem_ofPred_eq] at hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [mem_ofPred_eq]`. Use `(log_lt_iff_lt_exp hs).mpr hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [hB, ballSet, mem_ofPred_eq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : volume ({x | t < -log (sqNorm x)} ∩ B) = volume (ballSet (m + 1) (exp (-t)))`. Use `le_antisymm (measure_mono hsub1) ?_` and prove the remaining obligations. Use `(measure_mono hsub2).trans ((measure_union_le _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[volume_singleton_zero, add_zero]`. Rewrite using `[heq, volume_ballSet (exp_pos _), ← exp_nat_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: ((m + 1 : ℕ) : ℝ) * -t = -((m + 1 : ℕ) : ℝ) * t` using `by ring`. Rewrite using `[this]`. Rewrite using `[setLIntegral_congr_fun measurableSet_Ioi hlev, lintegral_mul_const _ (Measurable.ennreal_ofReal (by fun_prop))]`. Use `congr 1`. Establish `hpos : (0 : ℝ) < ((m + 1 : ℕ) : ℝ)` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (exp_neg_integrableOn_Ioi 0 hpos) (Filter.Eventually.of_forall fun t => (exp_pos _).le)]`. Use `integral_exp_mul_Ioi (a := -((m + 1 : ℕ) : ℝ)) (by linarith) 0` as an intermediate fact. Simplify using `only [mul_zero, exp_zero] at this`. Rewrite using `[this]`. Use `congr 1`.
-
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem lintegral_ballSet_neg_log_sqNorm (m : ℕ) :
     ∫⁻ x in ballSet (m + 1) 1, ENNReal.ofReal (-log (sqNorm x)) =
@@ -263,7 +261,7 @@ theorem lintegral_ballSet_neg_log_sqNorm (m : ℕ) :
   field_simp
 
 /- English proof (translation)
-Establish `hnn' : 0 ≤ᵐ[volume.restrict B] f` using `(ae_restrict_iff' hB).mpr (Filter.Eventually.of_forall hnn)`. Use `⟨⟨hf.aestronglyMeasurable, (hasFiniteIntegral_iff_ofReal hnn').mpr ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hBt.lt_top`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae hnn' hf.aestronglyMeasurable, h, ENNReal.toReal_mul, ENNReal.toReal_ofReal hc, measureReal_def]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_and_integral_of_lintegral {n : ℕ} {B : Set (Fin n → ℂ)}
     (hB : MeasurableSet B) (hBt : volume B ≠ ⊤) {f : (Fin n → ℂ) → ℝ} (hf : Measurable f)
@@ -279,7 +277,7 @@ theorem integrableOn_and_integral_of_lintegral {n : ℕ} {B : Set (Fin n → ℂ
       ENNReal.toReal_ofReal hc, measureReal_def]
 
 /- English proof (translation)
-Simplify using `only [ballSet, mem_ofPred_eq, sqNorm_succ] at hx`. Use `sqNorm_nonneg (Fin.tail x)` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg (x 0)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_fst_le_one {m : ℕ} {x : Fin (m + 1) → ℂ} (hx : x ∈ ballSet (m + 1) 1) : ‖x 0‖ ≤ 1 := by
   simp only [ballSet, mem_ofPred_eq, sqNorm_succ] at hx
@@ -287,9 +285,9 @@ theorem norm_fst_le_one {m : ℕ} {x : Fin (m + 1) → ℂ} (hx : x ∈ ballSet 
   nlinarith [norm_nonneg (x 0)]
 
 /- English proof (translation)
-Apply `integrableOn_and_integral_of_lintegral (measurableSet_ballSet _ _) (volume_ballSet_one_ne_top _) (f := fun x : Fin (m + 1) → ℂ => -log ‖x 0‖) ((measurable_pi_apply 0).norm.log.neg)` to reduce the goal to its premises. Introduce `x hx`. Rewrite using `[neg_nonneg]`. Conclude with `log_nonpos (norm_nonneg _) (norm_fst_le_one hx)`. Conclude with `div_nonneg (by exact_mod_cast (harmonic_pos (Nat.succ_ne_zero m)).le) (by norm_num)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[lintegral_ballSet_neg_log_fst, volume_ballSet_succ, ← mul_assoc, ← ENNReal.ofReal_mul (div_nonneg (by exact_mod_cast (harmonic_pos (Nat.succ_ne_zero m)).le) (by norm_num))]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem integral_ballSet_neg_log_fst (m : ℕ) :
     IntegrableOn (fun x : Fin (m + 1) → ℂ => -log ‖x 0‖) (ballSet (m + 1) 1) ∧
@@ -307,7 +305,7 @@ theorem integral_ballSet_neg_log_fst (m : ℕ) :
     field_simp
 
 /- English proof (translation)
-The claim follows from `integrableOn_and_integral_of_lintegral (measurableSet_ballSet _ _) (volume_ballSet_one_ne_top _) (f := fun x : Fin (m + 1) → ℂ => -log (sqNorm x)) ((measurable_sqNorm _).log.neg) (fun x hx => by rw [neg_nonneg] exact log_nonpos (sqNorm_nonneg x) (le_of_lt hx)) (by positivity) (li …`.
+A detailed English derivation is pending.
 -/
 theorem integral_ballSet_neg_log_sqNorm (m : ℕ) :
     IntegrableOn (fun x : Fin (m + 1) → ℂ => -log (sqNorm x)) (ballSet (m + 1) 1) ∧

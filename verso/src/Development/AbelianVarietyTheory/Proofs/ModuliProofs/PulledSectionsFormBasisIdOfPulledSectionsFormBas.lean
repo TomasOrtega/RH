@@ -16,11 +16,11 @@ open GlobalTheory.Models GlobalTheory.ModelSum
 namespace GlobalTheory.ModelSum
 
 /- English proof (translation)
-Establish `hu : (LB.oneGen L (Y` using `(T' ⊗ G).left)).IsGen := by`. Introduce `(i : PEmpty → L.ι) (j : PEmpty → L.ι)`. Simplify using `[LB.oneGen, LB.LinComb, res]`. Use `ext`. Use `erw [Units.val_mul, Units.coe_map, Units.coe_map, Units.val_one, _root_.one_mul, map_one, map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hf : FormEq (Sum.elim (fun _ : Fin 1 => (h ▷ G).left ≫ (snd T G).left) (PEmpty.elim : PEmpty → ((T' ⊗ G).left ⟶ G.left))) (Sum.elim (fun _ => (N : ℤ)) PEmpty.elim) (fun _ : Fin 1 => (snd T' G).left) (fun _ => (N : ℤ))`. Introduce `U _ f`. Simplify using `[Fintype.prod_sum_type]`. Take `⟨b', hb'⟩` from `exists_sec hL hf (pullMulSec (L := L) (φ := fun _ : Fin 1 => (snd T G).left) (ε := fun _ => (N : ℤ)) b (h ▷ G).left (LB.oneGen L (Y := (T' ⊗ G).left)) hu)`. Use `⟨b', fun Y r z J hJ => (hb' Y r z J hJ).trans ((sval_pullMulSec _ _ _ hu r z hJ).trans ?_)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[val_one, Units.val_one, _root_.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_pull_LPow_sec {Z : Scheme.{0}} (G : Over Z) (L : LB G.left) (hL : L.IsLB) (N : ℕ) {T T' : Over Z}
     (h : T' ⟶ T) (b : LB.Sec (Out.LPow G L (N : ℤ) T)) :
@@ -44,11 +44,11 @@ theorem exists_pull_LPow_sec {Z : Scheme.{0}} (G : Over Z) (L : LB G.left) (hL :
   rw [val_one, Units.val_one, _root_.mul_one]
 
 /- English proof (translation)
-Introduce `Z G L N n T T' h b hL hB`. Use `choose b' hb' using fun i => exists_pull_LPow_sec G L hL N h (b i)`. Establish `key : ∀ s c, GlobalTheory.LN.Lin G L N (𝟙 T') b' c s ↔ GlobalTheory.LN.Lin G L N h b c s`. Introduce `s c`. Establish `e : ∀ i (z : (T' ⊗ G).left) J, Good L z J → sval (L` using `L) (φ := fun _ : Fin 1 => (snd T' G).left) (ε := fun _ => (N : ℤ)) (b' i) ((𝟙 T') ▷ G).left z J = sval (L := L) (φ := fun _ : Fin 1 => (snd T G).left) (ε := fun _ => (N : ℤ)) (b i) (h ▷ G).left z J := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i z J hJ`. Rewrite using `[hb' i _ _ z J hJ]`. Simplify using the standard rewrite rules. Unfold `GlobalTheory.LN.Lin`. Use `forall_congr' fun z => forall_congr' fun J => imp_congr_right fun hJ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [e _ z J hJ]`. Unfold `GlobalTheory.LN.BasisAlong at hB ⊢`. Use `⟨b', fun s => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hu⟩` from `hB s`. Conclude with `⟨c, (key s c).2 hc, fun c' hc' => hu c' ((key s c').1 hc')⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem basisAlong_id_of_basisAlong : ∀ (Z : Scheme.{0}) (G : Over Z) (L : LB G.left) (N n : ℕ) (T T' : Over Z) (h : T' ⟶ T) (b : Fin n → LB.Sec (Out.LPow G L (N : ℤ) T)), L.IsLB → GlobalTheory.LN.BasisAlong G L N h b → ∃ b' : Fin n → LB.Sec (Out.LPow G L (N : ℤ) T'), GlobalTheory.LN.BasisAlong G L N (𝟙 T') b' := by
   intro Z G L N n T T' h b hL hB

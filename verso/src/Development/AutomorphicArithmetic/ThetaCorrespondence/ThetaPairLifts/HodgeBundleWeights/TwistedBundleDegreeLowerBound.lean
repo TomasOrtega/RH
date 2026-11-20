@@ -17,23 +17,23 @@ open scoped TensorProduct
 namespace GlobalTheory.TwistDeg
 open GlobalTheory.FlatTw GlobalTheory.FlatLine GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects
 /- English proof (translation)
-Introduce `hP`. Use `⟨120, by norm_num, fun D T hT j hp hq _ hj Y e o hY Lb hL hM hE _ _ c₁ hc hc₁ la w Z hw hG => ?_⟩` and prove the remaining obligations. Establish `hn : 1 ≤ D.R.n` using `D.R.toFrame.ord_pos`. Establish `h1` using `D.R.two_le_m`. Establish `hf : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast (by unfold Ranks.f; omega : 1 ≤ D.R.f)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast (by unfold Ranks.r; omega : 1 ≤ D.R.r)`. Establish `hrk : (0 : ℝ) ≤ Y.rkC la Z` using `Nat.cast_nonneg _`. Break down `isEmpty_or_nonempty (Psi T.Q.H) with h0 | ⟨⟨τ₀⟩⟩` into its components or cases. Rewrite using `[show la + parWt (T.Q.Dw j) w = la from funext fun τ => h0.elim τ]`. Conclude with `sub_le_self _ (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hpq, -, -, -, -, g, ee, F, -⟩` from `hY.unf Y.d.c₂.F.val.toRingHom rfl`. Establish `hK` using `GlobalTheory.KeyCover.nonempty_keySec_of_family _ _ _ _ _ _ Y.d.c₂.F.val.toRingHom rfl ee F (by omega) hY.geo`. Take `⟨t, ht, -, hd⟩` from `(GlobalTheory.FlatTwisting.twSec_of_flat _ _ _ _ _ _ _ Y.U (xiR D) _ hK hY.unf (by omega) (_root_.GlobalTheory.T.unramified_points_of_deep_cover hP D T j Y e o hT hj hY)).2 ⟨c₁, hc⟩ Z w (hc Z τ₀).1.some.hasPts`. Establish `key` using `GlobalTheory.FlatTw.degOn_add_rank_mul_degLo_le _ _ _ _ _ _ _ Y.U (xiR D) D (fun _ => D.sp.W j) Y.dict Z _ t _ _ hY.unf (AllWt.even_wtOf la 0) badPrimes_prime ht hG`. Rewrite `key` using `[← wtOf_add']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ key` and prove the remaining obligations. Rewrite using `[sub_eq_add_neg, ← mul_neg]`. Use `add_le_add le_rfl (mul_le_mul_of_nonneg_left (le_trans ?_ (sub_le_sub_right hd _)) hrk)` and prove the remaining obligations. Establish `hdeg : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.finrank_cmField]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Ranks.f Ranks.n`. Expand and normalize the polynomial expressions, which then agree. Establish `hd2` using `abs_le.1 (GlobalTheory.abs_lrd_sub_log_d_le_lrd _ T.Q.H)`. Establish `hcard : (Fintype.card (Psi T.Q.H) : ℝ) ≤ 2 * D.R.f`. Use `Fintype.card_subtype_le fun τ : D.host.E →+* ℂ => τ (T.Q.H.rt : D.host.E) = T.Q.H.rt0` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Embeddings.card, hdeg]`. Conclude with `(Fintype.card_congr (Equiv.refl _)).le.trans this` after adjusting the coercions. Use `numeric hf hr hL (by exact_mod_cast (by omega : (T.Q.Dw j).q ≤ D.R.r)) (by linarith [hd2.1, hd2.2]) (by rw [lrd_eq]; exact (log_rd_le_fieldSz _).trans hE) (Finset.sum_nonneg fun _ _ => abs_nonneg _) ?_ ?_ ?_` and prove the remaining obligations. Use `(Finset.sum_le_card_nsmul _ _ (3 * (D.R.r : ℝ)) fun τ _ => by exact_mod_cast hw τ).trans ?_` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul, Finset.card_univ]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules.
 
-Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [hc.c1_eq ⟨Z⟩]`. Rewrite using `[← Finset.sum_mul, abs_mul, mul_comm]`. Conclude with `mul_le_mul hc₁ (Finset.abs_sum_le_sum_abs _ _) (abs_nonneg _) (by positivity)`. Use `(logSum_bad_le _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l2 : Real.log 2 ≤ 1` using `by linarith [Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num)]`. Establish `hM' : Y.d.l₂.M' = Y.d.l₂.M` using `by rw [Level.M', hY.lev.2, Nat.lcm_one_right]`. Establish `hD : Real.log |(discr D.host.E : ℝ)| = 2 * D.R.f * lrd D.host.E`. Rewrite using `[lrd_eq, hdeg]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hM', hD]`. Combine the linear relations using `[hd2.1]`.
+A detailed English derivation is pending.
 -/
 theorem degree_twist_ge : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ Lb : ℝ, 1 ≤ Lb → Real.log Y.d.l₂.M ≤ 30 * Lb → fieldSz D.host.E ≤ 3 * Lb → Real.log (D.R.f * D.R.r) ≤ Lb → o ≤ 391 * (D.R.f * D.R.r * Lb) ^ 2 → ∀ c₁ : ℝ, GlobalTheory.FlatLine.FlatExistsAt Y.U (xiR D) c₁ → |c₁| ≤ 9 * D.R.r * Lb → ∀ (la : AllWt.Weight (T.Q.Dw j)) (w : Psi T.Q.H → ℤ) Z, (∀ τ, |w τ| ≤ 3 * (D.R.r : ℤ)) → GoodOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) la 0) → Y.degC la Z - Y.rkC la Z * (C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 2) ≤ Y.degC (la + GlobalTheory.FlatLine.parWt (T.Q.Dw j) w) Z := by
   intro hP
@@ -95,7 +95,7 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.TwistDeg.degree_twist_ge | exact _root_.GlobalTheory.TwistDeg.degree_twist_ge | (intros; apply _root_.GlobalTheory.TwistDeg.degree_twist_ge <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twisted_bundle_degree_lower_bound : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ Lb : ℝ, 1 ≤ Lb → Real.log Y.d.l₂.M ≤ 30 * Lb → fieldSz D.host.E ≤ 3 * Lb → Real.log (D.R.f * D.R.r) ≤ Lb → o ≤ 391 * (D.R.f * D.R.r * Lb) ^ 2 → ∀ c₁ : ℝ, GlobalTheory.FlatLine.FlatExistsAt Y.U (xiR D) c₁ → |c₁| ≤ 9 * D.R.r * Lb → ∀ (la : AllWt.Weight (T.Q.Dw j)) (w : Psi T.Q.H → ℤ) Z, (∀ τ, |w τ| ≤ 3 * (D.R.r : ℤ)) → GoodOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) la 0) → Y.degC la Z - Y.rkC la Z * (C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 2) ≤ Y.degC (la + GlobalTheory.FlatLine.parWt (T.Q.Dw j) w) Z := by
   first | exact @_root_.GlobalTheory.TwistDeg.degree_twist_ge | exact _root_.GlobalTheory.TwistDeg.degree_twist_ge | (intros; apply _root_.GlobalTheory.TwistDeg.degree_twist_ge <;> assumption)

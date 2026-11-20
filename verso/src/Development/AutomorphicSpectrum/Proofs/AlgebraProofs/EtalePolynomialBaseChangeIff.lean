@@ -15,7 +15,7 @@ open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier Gl
 namespace GlobalTheory.CompanionTheory.Ar.EtaleCoord
 
 /- English proof (translation)
-Use `algebraize [f, g, g.comp f]`. Conclude with `Algebra.Etale.of_restrictScalars R S T`.
+A detailed English derivation is pending.
 -/
 theorem etale_of_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S)
     (g : S →+* T) (hf : f.Etale) (h : (g.comp f).Etale) : g.Etale := by
@@ -23,17 +23,17 @@ theorem etale_of_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f :
   exact Algebra.Etale.of_restrictScalars R S T
 
 /- English proof (translation)
-Introduce `k A _ _ N hN φ hu D x`. Set `ι : k →+* Localization.Away (N : k)` to `algebraMap k _`. Establish `hφN : IsUnit (φ (N : k))` using `by simpa using hu`. Set `ψ : Localization.Away (N : k) →+* A` to `IsLocalization.Away.lift (N : k) hφN`. Establish `hψ : ψ.comp ι = φ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `a`. Simplify using `[ψ, ι]`. Establish `hι : ι.Etale`. Rewrite using `[RingHom.etale_algebraMap]`. Conclude with `Algebra.Etale.of_isLocalizationAway (N : k)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : (MvPolynomial.map (σ` using `Fin D) ι).Etale := etale_mvPolynomial_map_of_etale ι hι`. Establish `hb : (MvPolynomial.map (σ` using `Fin D) (Int.castRingHom (Localization.Away (N : k)))).Etale := etale_mvPolynomial_map_of_etale _ hN`. Set `Θ` to `MvPolynomial.eval₂Hom ψ x`. Establish `e1 : MvPolynomial.eval₂Hom φ x = Θ.comp (MvPolynomial.map ι)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Simplify using `[Θ, ← hψ]`. Introduce `j`. Simplify using `[Θ]`. Establish `e2 : MvPolynomial.eval₂Hom (Int.castRingHom A) x = Θ.comp (MvPolynomial.map (Int.castRingHom (Localization.Away (N : k))))`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[Θ]`. Introduce `j`. Simplify using `[Θ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Conclude with `⟨fun h => RingHom.Etale.stableUnderComposition _ _ hb (etale_of_comp _ _ ha h), fun h => RingHom.Etale.stableUnderComposition _ _ ha (etale_of_comp _ _ hb h)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem etale_eval₂Hom_iff_int : ∀ (k A : Type) [CommRing k] [CommRing A] (N : ℕ), (Int.castRingHom (Localization.Away (N : k))).Etale → ∀ (φ : k →+* A), IsUnit (N : A) → ∀ (D : ℕ) (x : Fin D → A), (MvPolynomial.eval₂Hom φ x).Etale ↔ (MvPolynomial.eval₂Hom (Int.castRingHom A) x).Etale := by
   intro k A _ _ N hN φ hu D x

@@ -19,11 +19,11 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.CanonicalSurjection
 
 /- English proof (translation)
-Introduce `D Pl w N nu ν hfit Q hQ M`. Use `haveI : Infinite D.what₂.LL := Infinite.of_injective (Nat.cast : ℕ → D.what₂.LL) Nat.cast_injective`. Establish `h` using `GlobalTheory.T.weightPolynomial_frames_mem_span_bideterminantProducts D.what₂.LL (Cw D w) (Pl.iL w) D.what₂.Tau N ν M Q hQ`. Establish `e : atBas Pl w M Q = fun y : D.what₂.Tau → Matrix (Fin N) (Fin N) (Cw D w) => MvPolynomial.eval (fun k : D.what₂.Tau × Fin N × Fin N => (M k.1 * y k.1) k.2.1 k.2.2) (MvPolynomial.map (Pl.iL w) Q)` using `rfl`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.2 ?_ h` and prove the remaining obligations. Introduce and unpack `F ⟨g, hg, rfl⟩`. Take `⟨J, hJ⟩` from `GlobalTheory.T.prod_bideterminants_eq_columnChoice_minorProduct D (Cw D w) N nu ν hfit g hg`. Take `⟨ph, hph⟩` from `GlobalTheory.T.exists_functional_frameMinorPolynomials_eq_minorProduct D (Cw D w) N nu J`. Use `⟨ph, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[hJ y]`. Conclude with `hph _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem canOnto_all : ∀ (D : D7) (Pl : Examples₂.EntPl D), CanOnto Pl := by
   intro D Pl w N nu ν hfit Q hQ M

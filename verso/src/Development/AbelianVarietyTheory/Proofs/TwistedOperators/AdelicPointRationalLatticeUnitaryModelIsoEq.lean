@@ -13,7 +13,7 @@ namespace GlobalTheory.LatDict
 open Formalism.IndefR.Eqv.UI
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.hatL Formalism.UG.latS Formalism.MainNotions.S.AutInst.Lf Formalism.MainNotions.S.lamAf`. Rewrite using `[Set.image_eq_range]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_hatL_iff (D : D7) (V : HSp D) (fr : Frames D V)
     (w : Fin V.rank → D.host.E ⊗[D.host.F] Formalism.L2.Herm.Af D.host.F) :
@@ -23,11 +23,11 @@ theorem mem_hatL_iff (D : D7) (V : HSp D) (fr : Frames D V)
   rfl
 
 /- English proof (translation)
-Establish `hring : ∀ z : AF D.host.F ⊗[D.host.F] D.host.E, Lev.swapAE D (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) z) = Formalism.L2.SG.AdBridge.tauF (instV fr) z`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ((Lev.swapAE D).congr_arg (map_zero _)).trans ((map_zero _).trans (map_zero _).symm)`. Consider the case `tmul a b => exact (Formalism.L2.SG.AdBridge.tauF_tmul (instV fr) a b).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb`. Establish `e1` using `_root_.map_add (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)) a b`. Rewrite using `[e1, RingHom.map_add, ha, hb]`. Conclude with `(RingHom.map_add _ _ _).symm`. Rewrite using `[((brg_isBridge fr) x).2]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `only [Lev.finE, finHom, matHom, Formalism.UG.bc, Formalism.L2.SG.AdBridge.hmat, Formalism.L2.SG.AdBridge.ofHAFin, MonoidHom.comp_apply, Units.coe_map, Matrix.map_apply]`. Conclude with `hring _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finE_brg (D : D7) (V : HSp D) (fr : Frames D V) (x : (instV fr).GA) :
     (Lev.finE V (brg fr x)).1 = (instV fr).fmat x.2 := by
@@ -49,9 +49,9 @@ theorem finE_brg (D : D7) (V : HSp D) (fr : Frames D V) (x : (instV fr).GA) :
   exact hring _
 
 /- English proof (translation)
-Introduce `D V fr x`. Unfold `GlobalTheory.SepPer.latAt GlobalTheory.Count.lamX`. Use `congr 1`. Use extensionality with `y`. Rewrite using `[← map_inv (brg fr) x, finE_brg D V fr x⁻¹]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_hatL_iff D V fr _`.
+A detailed English derivation is pending.
 -/
 theorem latAt_brg : ∀ (D : D7) (V : HSp D) (fr : Formalism.IndefR.Eqv.UI.Frames D V) (x : (Formalism.IndefR.Eqv.UI.instV fr).GA), latAt fr.Λ (Formalism.IndefR.Eqv.UI.brg fr x) = GlobalTheory.Count.lamX (Formalism.IndefR.Eqv.UI.instV fr) x := by
   intro D V fr x

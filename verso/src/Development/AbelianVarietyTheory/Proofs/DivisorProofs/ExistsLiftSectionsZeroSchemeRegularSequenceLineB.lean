@@ -26,7 +26,7 @@ def LocSpan (F : Y.Modules) {d : ℕ} (t : Fin d → L.Sec) {l m : ℤ} (h : l +
     (twistZ F L m).presheaf.map (homOfLE hV).op x = ∑ i, (mulSecOfEq F (zofSec (t i)) h).app V (c i)
 
 /- English proof (translation)
-Rewrite using `[← ConcreteCategory.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res (G : Y.Modules) {U V W : Y.Opens} (h₁ : W ≤ V) (h₂ : V ≤ U) (x : Γ(G, U)) :
     G.presheaf.map (homOfLE h₁).op (G.presheaf.map (homOfLE h₂).op x) =
@@ -35,7 +35,7 @@ theorem res_res (G : Y.Modules) {U V W : Y.Opens} (h₁ : W ≤ V) (h₂ : V ≤
   rfl
 
 /- English proof (translation)
-The claim follows from `section_eq_zero_of_germ x fun y hy => by obtain ⟨V, hV, hyV, c, e⟩ := hx y hy rw [← TopCat.Presheaf.germ_res_apply _ (homOfLE hV) y hyV, e, Finset.univ_eq_empty, Finset.sum_empty, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_locSpan (F : Y.Modules) (t : Fin 0 → L.Sec) {l m : ℤ} (h : l + 1 = m) {O : Y.Opens}
     (x : Γ(twistZ F L m, O)) (hx : LocSpan F t h x) : x = 0 :=
@@ -46,7 +46,7 @@ theorem eq_zero_of_locSpan (F : Y.Modules) (t : Fin 0 → L.Sec) {l m : ℤ} (h 
 variable (hL : L.IsLB)
 
 /- English proof (translation)
-Rewrite using `[app_app, app_app, mulSecOfEq_naturality]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem π_mul (F : Y.Modules) (s a : L.Sec) {l m : ℤ} (h : l + 1 = m) (V : Y.Opens) (u : Γ(twistZ F L l, V)) :
     (Twist.map (lbZPow L m) (cutπ F hL s)).app V ((mulSecOfEq F (zofSec a) h).app V u) =
@@ -54,7 +54,7 @@ theorem π_mul (F : Y.Modules) (s a : L.Sec) {l m : ℤ} (h : l + 1 = m) (V : Y.
   rw [app_app, app_app, mulSecOfEq_naturality]
 
 /- English proof (translation)
-Introduce `y hy` and use `by obtain ⟨V, hV, hyV, c, e⟩ := hx y hy refine ⟨V, hV, hyV, fun i => (Twist.map (lbZPow L l) (cutπ F hL (t 0))).app V (c i.succ), ?_⟩ have := (RegSeqKer.shortExact_twistComplex hL F (t 0) h).mono_f have hex : Function.Exact ((mulSecOfEq F (zofSec (t 0)) h).app V) ((Twist.map (lbZ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem map_locSpan (F : Y.Modules) {d : ℕ} (t : Fin (d + 1) → L.Sec) [Mono (cutHom F hL (t 0))] {l m : ℤ}
     (h : l + 1 = m) {O : Y.Opens} {x : Γ(twistZ F L m, O)} (hx : LocSpan F t h x) :
@@ -70,21 +70,21 @@ theorem map_locSpan (F : Y.Modules) {d : ℕ} (t : Fin (d + 1) → L.Sec) [Mono 
     exact Finset.sum_congr rfl fun i _ => π_mul hL F _ _ h V _
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero`. Introduce `t F _ j₀ l m h _ _ _ W b hW hb`. Establish `hc : ∀ y z, (twistZ F L m).presheaf.map (homOfLE (inf_le_left : W y ⊓ W z ≤ W y)).op (b y) = (twistZ F L m).presheaf.map (homOfLE (inf_le_right : W y ⊓ W z ≤ W z)).op (b z)` using `fun y z => sub_eq_zero.1 (eq_zero_of_locSpan F t h _ (hb y z))`. Take `⟨σ, hσ, -⟩` from `TopCat.Sheaf.existsUnique_gluing' ⟨(twistZ F L m).presheaf, (twistZ F L m).isSheaf⟩ W ⊤ (fun y => homOfLE le_top) (fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hW y⟩) b (fun y z => hc y z)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨σ, fun y z hz => ⟨W y, le_rfl, hz, fun i => i.elim0, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hσ y, sub_self, map_zero, Finset.univ_eq_empty, Finset.sum_empty]`. Consider the case `succ d ih`. Introduce `t F _ j₀ l m h hr hv hj W b hW hb`. Rewrite `hr` using `[List.ofFn_succ, regSeq_cons]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hm0, hr⟩` from `hr`. Establish `hS` using `RegSeqKer.shortExact_twistComplex hL F (t 0) h`. Use `hS.mono_f` as an intermediate fact. Establish `hex : ∀ V : Y.Opens, Function.Exact ((mulSecOfEq F (zofSec (t 0)) h).app V) ((Twist.map (lbZPow L m) (cutπ F hL (t 0))).app V)` using `fun V => exact_app_of_exact_of_mono hS.exact V`. Take `⟨σ', hσ'⟩` from `ih (fun i => t i.succ) (cut F hL (t 0)) (j₀ + 1) l m h hr (RegSeqKer.vanishFrom_cut hL F (t 0) hv) (by push_cast at hj; omega) W (fun y => (Twist.map (lbZPow L m) (cutπ F hL (t 0))).app (W y) (b y)) hW fun y z => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `map_locSpan hL F t h (hb y z)` as an intermediate fact. Rewrite `this` using `[map_sub, app_res, app_res]`. Then use the resulting hypothesis. Take `⟨σ, hσ⟩` from `cohOn.app_surjective hS ⊤ (hv l (by push_cast at hj; omega) 1 one_pos) σ'`. Express the relevant statement in the definitionally equal form `(Twist.map (lbZPow L m) (cutπ F hL (t 0))).app ⊤ σ = σ' at hσ`. Establish `hEpi : Epi (Twist.map (lbZPow L l) (cutπ F hL (t 0)))` using `(RegSeqKer.shortExact_twistComplex hL F (t 0) (l := l - 1) (m := l) (by omega)).epi_g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `isQuasicoherent_twist (F := F) (isLB_lbZPow hL l)` as an intermediate fact. Use `isQuasicoherent_twist (F := cut F hL (t 0)) (isLB_lbZPow hL l)` as an intermediate fact. Use `⟨σ, fun y z hz => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, hzV, c', e⟩` from `hσ' y z hz`. Take `⟨A, hzA, hAV⟩` from `exists_affine hzV`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hlift : ∀ i, ∃ u : Γ(twistZ F L l, A.1), (Twist.map (lbZPow L l) (cutπ F hL (t 0))).app A.1 u = (twistZ (cut F hL (t 0)) L l).presheaf.map (homOfLE hAV).op (c' i)` using `fun i => surjective_app_of_epi _ A.2 _`. Use `choose u hu using hlift`. Take `⟨v, hv'⟩` from `(hex A.1 ((twistZ F L m).presheaf.map (homOfLE (hAV.trans hV)).op ((twistZ F L m).presheaf.map (homOfLE le_top).op σ - b y) - ∑ i, (mulSecOfEq F (zofSec (t i.succ)) h).app A.1 (u i))).1 (by`. Rewrite using `[map_sub, map_sum, sub_eq_zero]`. Use `erw [app_res, map_sub, app_res, hσ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← res_res _ hAV hV]`. Use `erw [e]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[π_mul, hu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(app_res _ _ _).symm)`. Use `⟨A.1, hAV.trans hV, hzA, Fin.cons v u, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[hv', sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_glue (d : ℕ) : ∀ (t : Fin d → L.Sec) (F : Y.Modules) [F.IsQuasicoherent] (j₀ l m : ℤ)
     (h : l + 1 = m), RegSeq hL F (List.ofFn t) → VanishFrom L F j₀ → j₀ + d ≤ m →
@@ -156,7 +156,7 @@ variable {k : Type} [CommRing k] {Y : Scheme.{0}} (p : Y ⟶ Sp k) {M L : LB Y} 
 include hM hL in
 
 /- English proof (translation)
-The claim follows from `tw_ext hM hL fun i j y hy hi hj => by rw [H0.germ_restr, germ_of_global_section p _ i j y _ hi hj, germ_of_global_section p _ i j y _ hi hj] erw [Twist.zcoord_resM] rw [HSKerRes.coord_resM, ger_resG]`.
+A detailed English derivation is pending.
 -/
 theorem toH0_res {n : ℤ} {O O' : Y.Opens} (h : O' ≤ O) (s : Γ(twistZ (LB.toMod M) L n, O)) :
     toH0 p ((twistZ (LB.toMod M) L n).presheaf.map (homOfLE h).op s) = H0.restr h (toH0 p s) :=
@@ -168,7 +168,7 @@ theorem toH0_res {n : ℤ} {O O' : Y.Opens} (h : O' ≤ O) (s : Γ(twistZ (LB.to
 include hM in
 
 /- English proof (translation)
-The claim follows from `vanishesTo_of_exists fun y _ hy => by obtain ⟨i, hi⟩ := exists_chart hM y obtain ⟨j, hj⟩ := exists_chart hL y refine ⟨twIdx l i j, mem_tw_U.2 ⟨hi, hj⟩, ?_⟩ rw [germ_mulSec _ _ _ _ _ _ _ _ _ hi hj, pow_one, stalkId_cutIdeal hL t j y hj] exact Ideal.mul_mem_right _ _ (Ideal.subset_ …`.
+A detailed English derivation is pending.
 -/
 theorem vanishesTo_mulSec {d : ℕ} (t : Fin d → L.Sec) (a : Fin d) {n l : ℤ} (h : n + 1 = l) {O : Y.Opens}
     (f : Vanishing.H0 p (tw M L n) O) : VanishesTo (cutIdeal hL t) 1 (mulSec hM hL (t a) h f) :=
@@ -182,7 +182,7 @@ theorem vanishesTo_mulSec {d : ℕ} (t : Fin d → L.Sec) (a : Fin d) {n l : ℤ
 include hM in
 
 /- English proof (translation)
-Introduce `y hs hy i hi` and use `by obtain ⟨V, hV, hyV, c, e⟩ := hx y hy have hv : VanishesTo (cutIdeal hL t) 1 (H0.restr hV (toH0 p x)) := by rw [← toH0_res p hM hL, e, map_sum] show _ ∈ filTop p _ V (cutIdeal hL t) 1 refine Submodule.sum_mem _ fun a _ => ?_ rw [mem_filTop, global_section_mul p hM hL (t a) h] e …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vanishesTo_of_locSpan {d : ℕ} (t : Fin d → L.Sec) {l m : ℤ} (h : l + 1 = m) {O : Y.Opens}
     (x : Γ(twistZ (LB.toMod M) L m, O)) (hx : LocSpan (LB.toMod M) t h x) :
@@ -200,7 +200,7 @@ theorem vanishesTo_of_locSpan {d : ℕ} (t : Fin d → L.Sec) {l m : ℤ} (h : l
 include hM in
 
 /- English proof (translation)
-Introduce `y hy` and use `by obtain ⟨i, hi⟩ := exists_chart hM y obtain ⟨j, hj⟩ := exists_chart hL y obtain ⟨V, hV, e⟩ := exists_affine (memInf (memInf hy hi) hj) have hVO : V.1 ≤ O := e.trans (inf_le_left.trans inf_le_left) have hVi : V.1 ≤ M.U i := e.trans (inf_le_left.trans inf_le_right) have hVj : V.1 …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locSpan_of_vanishesTo {d : ℕ} (t : Fin d → L.Sec) {l m : ℤ} (h : l + 1 = m) {O : Y.Opens}
     (s : Γ(twistZ (LB.toMod M) L m, O)) (hs : VanishesTo (cutIdeal hL t) 1 (toH0 p s)) :
@@ -228,11 +228,9 @@ theorem locSpan_of_vanishesTo {d : ℕ} (t : Fin d → L.Sec) {l m : ℤ} (h : l
 end GlobalTheory.HSCore.RegSeqGlue
 
 /- English proof (translation)
-Introduce `k _ Y _ _ p M L hM hL d t l hreg hvan hd W b hW hb`. Establish `hl : l - 1 + 1 = l` using `by omega`. Use `(VB.isVB_toMod hM).isFiniteQC` as an intermediate fact. Establish `hs : ∀ y, ∃ β : Γ(twistZ (LB.toMod M) L l, W y), HSKerRes.toH0 p β = b y` using `fun y => HSKerRes.surjective_ofTwist hM (Twist.isLB_lbZPow hL _) (b y)`. Use `choose β hβ using hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ⟩` from `RegSeqGlue.exists_glue hL d t (LB.toMod M) 0 (l - 1) l hl hreg hvan (by omega) W β hW fun y z => RegSeqGlue.locSpan_of_vanishesTo p hM hL t hl _ (by`. Rewrite using `[map_sub, RegSeqGlue.toH0_res p hM hL, RegSeqGlue.toH0_res p hM hL, hβ, hβ]`. Conclude with `hb y z)`. Use `⟨HSKerRes.toH0 p σ, fun y => ?_⟩` and prove the remaining obligations. Use `RegSeqGlue.vanishesTo_of_locSpan p hM hL t hl _ (hσ y)` as an intermediate fact.
-
-Rewrite `this` using `[map_sub, RegSeqGlue.toH0_res p hM hL, hβ]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HSCore.exists_glue_mod_regSeq : ∀ (k : Type) [Field k] (Y : Scheme.{0}) [Algebra k Γ(Y, ⊤)], IsProjOver (GlobalTheory.strHom k Y) → ∀ (p : Y ⟶ Sp k) (M L : LB Y), M.IsLB → ∀ (hL : L.IsLB) (d : ℕ) (t : Fin d → L.Sec) (l : ℤ), RegSeq hL (GlobalTheory.LB.toMod M) (List.ofFn t) → VanishFrom L (GlobalTheory.LB.toMod M) 0 → (d : ℤ) ≤ l → ∀ (W : Y → Y.Opens) (b : ∀ y, Vanishing.H0 p (tw M L l) (W y)), (∀ y, y ∈ W y) → (∀ y z, VanishesTo (cutIdeal hL t) 1 (Vanishing.H0.restr inf_le_left (b y) - Vanishing.H0.restr inf_le_right (b z) : Vanishing.H0 p (tw M L l) (W y ⊓ W z))) → ∃ σ : Vanishing.H0 p (tw M L l) ⊤, ∀ y, VanishesTo (cutIdeal hL t) 1 (Vanishing.H0.restr le_top σ - b y) := by
   intro k _ Y _ _ p M L hM hL d t l hreg hvan hd W b hW hb

@@ -26,7 +26,7 @@ open GlobalTheory.SatInd
 namespace GlobalTheory.InertConvMul
 
 /- English proof (translation)
-Establish `hc` using `QuotientGroup.eq.1 hab`. Use `hH a ⟨a⁻¹ * b, hc⟩` as an intermediate fact. Express the relevant statement in the definitionally equal form `H (a * (a⁻¹ * b)) = H a at this`. Rewrite `this` using `[mul_inv_cancel_left]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_coset {G : Type} [Group G] {K : Subgroup G} {k : Type} {H : G → k}
     (hH : ∀ (a : G) (c : K), H (a * c) = H a) {a b : G} (hab : (a : G ⧸ K) = b) : H a = H b := by
@@ -37,7 +37,7 @@ theorem eq_of_coset {G : Type} [Group G] {K : Subgroup G} {k : Type} {H : G → 
   exact this.symm
 
 /- English proof (translation)
-Rewrite using `[← finsum_mem_range he, ← finsum_mem_inter_support, Set.inter_eq_right.2 hs, finsum_mem_support]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finsum_eq_of_support_subset_range {α β M : Type} [AddCommMonoid M] {F : α → M} {e : β → α}
     (he : Function.Injective e) (hs : Function.support F ⊆ Set.range e) :
@@ -50,59 +50,51 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Use `set K := KU Dv.σw n with hKdef`. Set `lam : GAf L n →* GU Dv.σw n` to `MonoidHom.codRestrict (GlobalTheory.SatInd.CosetFin.locHom Dv) _ hA`. Establish `hlam : ∀ x, ((lam x : GU Dv.σw n) : GL (Fin n) (w.adicCompletion L)) = Dv.loc x` using `fun _ => rfl`. Establish `hK1 : ∀ u ∈ Umax L n, lam u ∈ K` using `hK`. Establish `hR : ∀ x x' : GAf L n, TrivOutside {v} x → TrivOutside {v} x' → ((x : GAf L n ⧸ U) = x' ↔ ((lam x : GU Dv.σw n ⧸ K) = lam x'))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x x' hx hx'`. Establish `ht : TrivOutside {v} (x⁻¹ * x')` using `GlobalTheory.SatInd.CosetFin.trivOutside_mul (GlobalTheory.SatInd.CosetFin.trivOutside_inv hx) hx'`. Rewrite using `[QuotientGroup.eq, QuotientGroup.eq, ← map_inv, ← map_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hK1 _ ((hU _ ht).1 hu)`. Introduce `hk`. Conclude with `(hU _ ht).2 (GlobalTheory.InertUmax.mem_Umax_of_trivOutside_of_loc_integral L n v w Dv _ ht fun i j => GlobalTheory.SatInd.CosetFin.entries_int hk i j)`. Establish `hCs : ∀ d : GU Dv.σw n ⧸ K, ∃ x : GAf L n, TrivOutside {v} x ∧ lam x = d.out` using `fun d => by`. Take `⟨x, hx, e⟩` from `hC _ d.out.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨x, hx, Subtype.ext e⟩`. Use `choose s hs1 hs2 using hCs`. Establish `heT : ∀ d : GU Dv.σw n ⧸ K, ∃ x : GAf L n, (x : GAf L n ⧸ U) = (s d : GAf L n ⧸ U) ∧ TrivOutside {v} x` using `fun d => ⟨s d, rfl, hs1 d⟩`. Establish `hρ1 : ∀ d, TrivOutside {v} (heT d).choose` using `fun d => (heT d).choose_spec.2`. Establish `hρ2 : ∀ d, ((lam (heT d).choose : GU Dv.σw n) : GU Dv.σw n ⧸ K) = d` using `fun d => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[(hR _ _ (hρ1 d) (hs1 d)).1 (heT d).choose_spec.1, hs2 d, QuotientGroup.out_eq']`. Establish `he : Function.Injective (fun d : GU Dv.σw n ⧸ K => ((s d : GAf L n) : GAf L n ⧸ U))`. Introduce `d d' hdd`. Use `(hR _ _ (hs1 d) (hs1 d')).1 hdd` as an intermediate fact. Rewrite `this` using `[hs2, hs2, QuotientGroup.out_eq', QuotientGroup.out_eq']`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `step2 : ∀ (H : GU Dv.σw n → ℂ), (∀ (a : GU Dv.σw n) (c : K), H (a * c) = H a) → ∀ (F : GAf L n → W) (g : GAf L n), heckeFunI L n U Dv H F g = ∑ᶠ d : GU Dv.σw n ⧸ K, H d.out • F (g * (heT d).choose)`. Introduce `H hH F g`. Use `show (∑ᶠ c : GAf L n ⧸ U, _) = _`. Rewrite using `[finsum_eq_of_support_subset_range he]`. Use `finsum_congr fun d => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[dif_pos (heT d)]`. Establish `hv : Dv.hval H (Dv.loc (heT d).choose) = H d.out`. Rewrite using `[InertDatum.hval, dif_pos (hA _)]`. Conclude with `eq_of_coset hH (by rw [QuotientGroup.out_eq']; exact hρ2 d)`. Rewrite using `[hv]`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Rewrite `hc` using `[Function.mem_support]`. Distinguish the cases in `hT : ∃ x : GAf L n, (x : GAf L n ⧸ U) = c ∧ TrivOutside {v} x`. Take `⟨x, hxc, hx⟩` from `hT`. Use `⟨(lam x : GU Dv.σw n ⧸ K), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ((s _ : GAf L n) : GAf L n ⧸ U) = c`. Rewrite using `[← hxc]`. Use `(hR _ _ (hs1 _) hx).2 ?_` and prove the remaining obligations. Rewrite using `[hs2, QuotientGroup.out_eq']`. Rewrite `hc` using `[dif_neg hT]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd rfl hc`. Establish `hRi : ∀ (H : GU Dv.σw n → ℂ), H ∈ Hecke ℂ K → ∀ (a : GU Dv.σw n) (c : K), H (a * c) = H a` using `fun H hH a c => by simpa using hH.1 1 c a`. Establish `hLi : ∀ (H : GU Dv.σw n → ℂ), H ∈ Hecke ℂ K → ∀ (c : K) (a : GU Dv.σw n), H (c * a) = H a` using `fun H hH c a => by simpa using hH.1 c 1 a`. Establish `hconvR : ∀ (a : GU Dv.σw n) (c : K), conv K h h' (a * c) = conv K h h' a`. Introduce `a c`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Formalism.UG.conv]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, hRi h' hh']`. Establish `hfin : ∀ H ∈ Hecke ℂ K, Set.Finite {d : GU Dv.σw n ⧸ K | H d.out ≠ 0}`. Introduce and unpack `H ⟨-, S, hS⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(S.finite_toSet.biUnion fun t _ => GlobalTheory.SatInd.DCoset.finite_dcoset Dv.ϖ Dv.σw _ n Dv.unram t).subset ?_` and prove the remaining obligations. Introduce `d hd`. Take `⟨t, ht, a, b, hab⟩` from `hS _ hd`. Use `Set.mem_biUnion ht ⟨(a : GU Dv.σw n), a.2, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← QuotientGroup.out_eq' d]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hab]`. Conclude with `(QuotientGroup.mk_mul_of_mem _ b.2).symm`. Establish `hfU : ∀ a b : GAf L n, (a : GAf L n ⧸ U) = b → ∀ g, f (g * a) = f (g * b)`. Introduce `a b hab g`. Establish `hu` using `QuotientGroup.eq.1 hab`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: f (g * a * (a⁻¹ * b)) = f (g * a)` using `congrFun (hf _ hu) (g * a)`. Rewrite using `[← this, mul_assoc, mul_inv_cancel_left]`. Use function extensionality and compare the values at `g`. Rewrite using `[step2 _ hconvR f g, step2 h (hRi h hh) _ g]`. Establish `inner : ∀ d : GU Dv.σw n ⧸ K, heckeFunI L n U Dv h' f (g * (heT d).choose) = ∑ᶠ e : GU Dv.σw n ⧸ K, h' (d.out⁻¹ * e.out) • f (g * (heT e).choose)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `d`. Rewrite using `[step2 h' (hRi h' hh') f]`. Use `set x := lam (heT d).choose with hx`. Establish `hk : x⁻¹ * d.out ∈ K` using `QuotientGroup.eq.1 (by rw [QuotientGroup.out_eq']; exact hρ2 d)`. Establish `hL : ∀ y, h' (d.out⁻¹ * y) = h' (x⁻¹ * y)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Use `hLi h' hh' ⟨(x⁻¹ * d.out)⁻¹, inv_mem hk⟩ (x⁻¹ * y)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Use `show _ = (x⁻¹ * d.out)⁻¹ * (x⁻¹ * y)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `group`. Use `Eq.trans ?_ (finsum_comp_equiv (MulAction.toPerm x : Equiv.Perm (GU Dv.σw n ⧸ K)))` and prove the remaining obligations. Use `finsum_congr fun e => ?_` and prove the remaining obligations. Simplify using `only [MulAction.toPerm_apply]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hL]`. Use `eq_of_coset (hRi h' hh') ?_` and prove the remaining obligations. Rewrite using `[QuotientGroup.out_eq', ← smul_eq_mul, ← MulAction.Quotient.smul_mk, QuotientGroup.out_eq', inv_smul_smul]`. Rewrite using `[mul_assoc]`. Use `hfU _ _ ((hR _ _ (GlobalTheory.SatInd.CosetFin.trivOutside_mul (hρ1 d) (hρ1 e)) (hρ1 _)).2 ?_) g` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, hρ2, ← hx, ← smul_eq_mul, ← MulAction.Quotient.smul_mk, hρ2]`. Rewrite using `[finsum_congr fun d => congrArg (h d.out • ·) (inner d)]`. Establish `hSe : Set.Finite (⋃ (d : GU Dv.σw n ⧸ K) (_ : d ∈ {d : GU Dv.σw n ⧸ K | h d.out ≠ 0}), (fun c : GU Dv.σw n ⧸ K => (d.out • c : GU Dv.σw n ⧸ K)) '' {c : GU Dv.σw n ⧸ K | h' c.out ≠ 0})` using `(hfin h hh).biUnion fun d _ => (hfin h' hh').image _`. Establish `hmem : ∀ d e : GU Dv.σw n ⧸ K, h d.out ≠ 0 → h' (d.out⁻¹ * e.out) ≠ 0 → e ∈ hSe.toFinset`. Introduce `d e hd he'`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.Finite.mem_toFinset]`. Use `Set.mem_biUnion hd ⟨d.out⁻¹ • e, ?_, smul_inv_smul d.out e⟩` and prove the remaining obligations. Establish `hc : (((d.out⁻¹ • e).out : GU Dv.σw n) : GU Dv.σw n ⧸ K) = ↑(d.out⁻¹ * e.out)`. Rewrite using `[QuotientGroup.out_eq', ← smul_eq_mul, ← MulAction.Quotient.smul_mk, QuotientGroup.out_eq']`. Use `show h' (d.out⁻¹ • e).out ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[eq_of_coset (hRi h' hh') hc]`. Conclude with `he'`. Establish `hL1 : (∑ᶠ e : GU Dv.σw n ⧸ K, conv K h h' e.out • f (g * (heT e).choose)) = ∑ e ∈ hSe.toFinset, (∑ d ∈ (hfin h hh).toFinset, h d.out * h' (d.out⁻¹ * e.out)) • f (g * (heT e).choose)`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := hSe.toFinset) ?_]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `show (∑ᶠ d : GU Dv.σw n ⧸ K, h d.out * h' (d.out⁻¹ * e.out)) = _`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `d hd`. Rewrite `hd` using `[Function.mem_support]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `left_ne_zero_of_mul hd`. Introduce `e he`. Rewrite `he` using `[Function.mem_support]`. Establish `h1 : conv K h h' e.out ≠ 0` using `fun h0 => he (by rw [h0, zero_smul])`.
-
-Choose the witnesses or unpack the hypotheses as in `⟨d, hd⟩ : ∃ d : GU Dv.σw n ⧸ K, h d.out * h' (d.out⁻¹ * e.out) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `h1 (finsum_eq_zero_of_forall_eq_zero hcon)`. Conclude with `hmem d e (left_ne_zero_of_mul hd) (right_ne_zero_of_mul hd)`.
-
-Establish `hR1 : (∑ᶠ d : GU Dv.σw n ⧸ K, h d.out • ∑ᶠ e : GU Dv.σw n ⧸ K, h' (d.out⁻¹ * e.out) • f (g * (heT e).choose)) = ∑ d ∈ (hfin h hh).toFinset, ∑ e ∈ hSe.toFinset, (h d.out * h' (d.out⁻¹ * e.out)) • f (g * (heT e).choose)`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := (hfin h hh).toFinset) ?_]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Rewrite `hd` using `[Set.Finite.mem_toFinset]`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := hSe.toFinset) ?_, Finset.smul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun e _ => by rw [mul_smul]`. Introduce `e he`. Rewrite `he` using `[Function.mem_support]`. Conclude with `hmem d e hd (fun h0 => he (by rw [h0, zero_smul]))`. Introduce `d hd`.
-
-Rewrite `hd` using `[Function.mem_support]`. Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `fun h0 => hd (by rw [h0, zero_smul])`. Rewrite using `[hL1, hR1, Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun e _ => by rw [Finset.sum_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_of (Dv : InertDatum L n v w) (U : Subgroup (GAf L n))
     (hU : ∀ κ, TrivOutside {v} κ → (κ ∈ U ↔ κ ∈ Umax L n))
@@ -272,7 +264,7 @@ theorem conv_of (Dv : InertDatum L n v w) (U : Subgroup (GAf L n))
   exact Finset.sum_congr rfl fun e _ => by rw [Finset.sum_smul]
 
 /- English proof (translation)
-Introduce `L _ _ _ n v w Dv U hU W _ _ h₁ h₂ hh₁ hh₂ f hf`. Conclude with `conv_of Dv U hU (GlobalTheory.T.inertLocal_mem_unitaryGroup_antidiagonalForm L n v w Dv) (fun u hu => GlobalTheory.T.inertLocal_mem_integralPoints_of_latticeStabilizer L n v w Dv u hu _) (GlobalTheory.T.inertLocal_surjective_from_trivOutside L n v w Dv) W h₁ hh₁ h₂ hh₂ f hf`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem heckeFunI_conv_mul : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w) (U : Subgroup (GAf L n)), (∀ κ, TrivOutside {v} κ → (κ ∈ U ↔ κ ∈ Umax L n)) → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (h₁ h₂ : Formalism.UG.GU Dv.σw n → ℂ), h₁ ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw n) → h₂ ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw n) → ∀ f : GAf L n → W, (∀ κ ∈ U, NG.rt L n κ f = f) → heckeFunI L n U Dv (Formalism.UG.conv (Formalism.UG.KU Dv.σw n) h₁ h₂) f = heckeFunI L n U Dv h₁ (heckeFunI L n U Dv h₂ f) := by
   intro L _ _ _ n v w Dv U hU W _ _ h₁ h₂ hh₁ hh₂ f hf

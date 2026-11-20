@@ -15,11 +15,11 @@ set_option maxHeartbeats 1000000
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pass GlobalTheory.Cut GlobalTheory.UseLoc Module TensorProduct GlobalTheory.UseLoc.Cases
 
 /- English proof (translation)
-Substitute `hχ` using the available equality. Take `⟨iW, hW1, hW2⟩` from `hW`. Take `⟨e, he1, he2⟩` from `he`. Take `⟨x₀, hx⟩` from `UpperTheory.KN.exists_cyclic_generator_lam_power_quotient LL hinj lam a (fun h0 => hlam (hinj (h0.trans (map_zero _).symm)))`. Establish `h3 : UpperTheory.KN.HasPres LL N (fun g => tableLineDegreeTwo.actTw (stdLatG hinj (twistM M χ)) ↥(Xq LL lam a) χ g) z` using `UpperTheory.KN.hasPres_of_injective_equivariant _ _ _ (iotaW LL lam a k) z f (LiftW.iotaW_injective LL lam a k) (fun g u => LiftW.iotaW_actTw hinj lam a M χ g u) hz hpres`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨0, fun b _ hb => ?_⟩` and prove the remaining obligations. Use `UpperTheory.KN.exists_admissible_extension_latticeTensor PD emb lam jT cT N χ χ p (stdLatG hinj (twistM M χ)) ↥(Xq LL lam a) z iW e x₀ rfl hlam hfull h3 hW1 (fun g v => ?_) he1 (fun g => ?_) hx b hb` and prove the remaining obligations. Use `(congrArg _ (matRep_twistM_apply M χ g v)).trans ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul_of_tower]`. Conclude with `congrArg _ (hW2 g v)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he2 g, hψ g, Units.val_one, one_smul]`.
+A detailed English derivation is pending.
 -/
 private theorem period_ring_generic_hodge {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
@@ -59,7 +59,7 @@ private theorem period_ring_generic_hodge {G : Type} [Group G] [TopologicalSpace
   · rw [he2 g, hψ g, Units.val_one, one_smul]
 
 /- English proof (translation)
-Simplify using `[chiOC]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem chi_mul_inv_eq_one {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (g : Br.G D.nbr i w hw) :
@@ -68,9 +68,9 @@ private theorem chi_mul_inv_eq_one {D : D7} {i : D.nd.Loc} {w : HeightOneSpectru
 
 attribute [-instance] GlobalTheory.AdmLoc.modFun in
 /- English proof (translation)
-Introduce `D HW i r ρ π w hw C hA lam hlam θ h w' η typ U hSet _ _ hDec _ z hz a z' _ hz'`. Establish `hG` using `GlobalTheory.Pass.goodO_ringOfIntegers (D.nd.l i) C.LL`. Establish `hdom : IsDomain ↥(OL C.LL)` using `hG.1.1`. Establish `hdvr : @IsDiscreteValuationRing ↥(OL C.LL) _ hdom` using `hG.1.2.1`. Establish `hE` using `UpperTheory.KN.exists_embedding_and_eigenvectors_of_admissible_decomposition D i r ρ π w hw C hDec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `period_ring_generic_hodge (Br.PD D.loc D.nbr i w hw) hdom hdvr.toIsPrincipalIdealRing hG.1.2.2 (embC HW C hA) lam _ _ Subtype.val_injective (fun x => locOC C (rTwO D.nd i r x)) (locOC C (WpO D.nd i ρ π)) θ (chiT C θ 1) π a z' (fun g => liftQ C.le D.R.r (z g)) (LiftW.chiT_one C θ) …`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.cocycleExtension_twistedWeilCoefficients_admissible : ∀ (D : D7) (HW : HWOf D.loc) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i)))

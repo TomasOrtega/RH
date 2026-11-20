@@ -12,16 +12,16 @@ namespace PositivityTheory.ThKW
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sig_sig (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   exact τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span E (L : Set (Fin n → E))` using `by rw [h.span_eq_top]; trivial`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 E)) E _ v hv`. Rewrite `ht` using `[Submodule.span_eq]`. Establish `ht0 : (t : 𝓞 E) ≠ 0` using `nonZeroDivisors.ne_zero t.2`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {(t : 𝓞 E)}))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Ideal.absNorm (Ideal.span {(t : 𝓞 E)}), Nat.pos_of_ne_zero fun h0 => ht0 ?_, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.span_singleton_eq_bot.1 (Ideal.absNorm_eq_zero_iff.1 h0)`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E), ← hc, mul_smul]`. Conclude with `L.smul_mem c ht`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem {n : ℕ} {L : Submodule (𝓞 E) (Fin n → E)} (h : L.IsLattice E) (v : Fin n → E) :
     ∃ N : ℕ, 0 < N ∧ N • v ∈ L := by
@@ -36,7 +36,7 @@ theorem exists_nsmul_mem {n : ℕ} {L : Submodule (𝓞 E) (Fin n → E)} (h : L
     exact L.smul_mem c ht
 
 /- English proof (translation)
-Rewrite using `[IsIntegrallyClosed.isIntegral_iff]`. Conclude with `⟨fun ⟨n, h⟩ => ⟨n, h.symm⟩, fun ⟨n, h⟩ => ⟨n, h.symm⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem trace_int_iff (z : E) : (∃ n : ℤ, Algebra.trace ℚ E z = n) ↔ IsIntegral ℤ (Algebra.trace ℚ E z) := by
   rw [IsIntegrallyClosed.isIntegral_iff]
@@ -66,7 +66,7 @@ def ten (t : Fin n → E) : (Fin d → E) →ₗ[𝓞 E] Matrix (Fin n) (Fin d) 
     simp [Algebra.smul_def, mul_left_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [ctr, ten, form, LinearMap.coe_mk, AddHom.coe_mk, Matrix.of_apply, Pi.smul_apply, smul_eq_mul, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ctr_ten (J : Matrix (Fin n) (Fin n) E) (t t' : Fin n → E) (s : Fin d → E) :
     ctr σ J t' (ten t s) = form σ J t t' • s := by
@@ -76,9 +76,9 @@ theorem ctr_ten (J : Matrix (Fin n) (Fin n) E) (t t' : Fin n → E) (s : Fin d �
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Establish `e : ∀ a b, ξ₀ * JS⁻¹ a b = -JW a b` using `fun a b => congrFun (congrFun h a) b`. Simplify using `only [hRatF, ctr, ten, form, LinearMap.coe_mk, AddHom.coe_mk, Matrix.of_apply, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum, Matrix.transpose_apply, map_mul, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `(σ (t k) * σ (s b) * JX j k * M j a) * e a b`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hRat_ten (JX : Matrix (Fin n) (Fin n) E) (JW JS : Matrix (Fin d) (Fin d) E) (ξ₀ : E) (h : ξ₀ • JS⁻¹ = -JW)
     (M : Matrix (Fin n) (Fin d) E) (t : Fin n → E) (s : Fin d → E) :
@@ -92,7 +92,7 @@ theorem hRat_ten (JX : Matrix (Fin n) (Fin n) E) (JW JS : Matrix (Fin d) (Fin d)
   linear_combination (σ (t k) * σ (s b) * JX j k * M j a) * e a b
 
 /- English proof (translation)
-Proceed by induction on `(Finset.univ : Finset ι) using Finset.induction_on with`. Consider the case `empty => simp [hRatF]`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, ← ih]`. Simplify using `only [hRatF, Matrix.add_apply, map_add, mul_add, add_mul, Finset.sum_add_distrib]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hRat_sum {ι : Type} [Fintype ι] (JT : Matrix (Fin n) (Fin n) E) (JS : Matrix (Fin d) (Fin d) E)
     (M : Matrix (Fin n) (Fin d) E) (N : ι → Matrix (Fin n) (Fin d) E) :
@@ -105,31 +105,27 @@ theorem hRat_sum {ι : Type} [Fintype ι] (JT : Matrix (Fin n) (Fin n) E) (JS : 
     simp only [hRatF, Matrix.add_apply, map_add, mul_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `e1 : (-ξ₀ • W.J⁻¹)⁻¹ = (-ξ₀)⁻¹ • W.J` using `Matrix.inv_eq_left_inv (by`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_nonsing_inv _ hWu, inv_mul_cancel₀ (neg_ne_zero.2 hξ), one_smul])`. Establish `e2 : ξ₀ • (-ξ₀ • W.J⁻¹)⁻¹ = -W.J`. Rewrite using `[e1, smul_smul, inv_neg, mul_neg, mul_inv_cancel₀ hξ, neg_one_smul]`. Use `letI : StarRing E := { star := σ star_involutive := sig_sig hcm star_mul := fun a b => by show σ (a * b) = σ b * σ a; rw [map_mul, mul_comm] star_add := fun a b => map_add σ a b }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Take `⟨m, u, u', hu, hd⟩` from `GlobalTheory.LatVacDual.exists_dual_family X.Jᵀ (fun i j => hX.herm i j) (by rwa [Matrix.det_transpose]) X.L hX.lat.fg hX.lat.span_eq_top (fun y hy => (hX.dual y).2 fun x hx => by`. Take `⟨b, hb⟩` from `hy x hx`. Establish `: form σ X.J y x = b`. Rewrite using `[hb, Finset.sum_comm]`. Simplify using `only [form, dotProduct, Matrix.mulVec, Finset.mul_sum, Matrix.transpose_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Use `show _ = σ _ * _ * _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `b.2)`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `key : ∀ M : Matrix (Fin n) (Fin d) E, M = ∑ i, ten (u i) (ctr σ X.J (u' i) M)` using `fun M => by`. Use extensionality with `j a`. Establish `: ∀ l, ∑ i, u i j * ∑ k, σ (u' i k) * X.J l k = if j = l then 1 else 0` using `fun l => hd j l`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.sum_apply]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [ten, ctr, LinearMap.coe_mk, AddHom.coe_mk, Matrix.of_apply]`. Simplify using `only [Finset.mul_sum (s := (Finset.univ : Finset (Fin m)))]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => mul_left_comm _ _ _`. Set `Λ : Submodule (𝓞 E) (Matrix (Fin n) (Fin d) E)` to `⨅ t ∈ X.L, W.L.comap (ctr σ X.J t)`. Establish `hΛ : ∀ M, M ∈ Λ ↔ ∀ t ∈ X.L, ctr σ X.J t M ∈ W.L` using `fun M => by simp [Λ, Submodule.mem_iInf]`. Establish `hten : ∀ t ∈ X.L, ∀ s ∈ W.L, ten t s ∈ Λ` using `fun t ht s hs => (hΛ _).2 fun t' ht' => by`. Rewrite using `[ctr_ten]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W.L.smul_mem (⟨_, (hX.dual t).1 ht t' ht'⟩ : 𝓞 E) hs`. Use `⟨Λ, ⟨?_, fun M => ?_⟩, fun M => ⟨fun hM M' hM' => ?_, fun H => (hΛ _).2 fun t ht => (hW.dual _).2 fun x hx o => ?_⟩⟩` and prove the remaining obligations. Establish `: Λ = ⨆ i, W.L.map (ten (u i))` using `le_antisymm (fun M hM => by`. Rewrite using `[key M]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i ⟨_, (hΛ M).1 hM _ (hu i).2, rfl⟩)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(iSup_le fun i => by`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hten _ (hu i).1 x hx)`. Rewrite using `[this]`. Conclude with `Submodule.fg_iSup _ fun i => hW.lat.fg.map _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose N hN hN' using fun i => exists_nsmul_mem hW.lat (ctr σ X.J (u' i) M)`. Use `⟨∏ i, N i, Finset.prod_pos fun i _ => hN i, ?_⟩` and prove the remaining obligations. Rewrite using `[key M, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem N (Finset.mem_univ i)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← map_nsmul, hc, mul_comm, mul_smul]`. Conclude with `hten _ (hu i).1 _ (nsmul_mem (hN' i) c)`. Rewrite using `[trace_int_iff, key M', hRat_sum, Finset.mul_sum, map_sum]`. Use `IsIntegral.sum _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hRat_ten X.J W.J _ ξ₀ e2, map_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(hW.dual _).1 ((hΛ M).1 hM _ (hu i).1) _ ((hΛ M').1 hM' _ (hu i).2) 1` as an intermediate fact. Simplify using `using this.neg`. Set `o' : 𝓞 E` to `RingOfIntegers.mapRingHom (σ : E →+* E) o`. Establish `h1` using `(trace_int_iff _).1 (H _ (hten t ht _ (W.L.smul_mem o' hx)))`. Rewrite `h1` using `[hRat_ten X.J W.J _ ξ₀ e2, map_neg]`.
-
-Establish `h2 : form σ W.J (ctr σ X.J t M) (o' • x) = o * form σ W.J (ctr σ X.J t M) x`. Establish `: ∀ i, σ ((o' • x) i) = o * σ (x i)` using `fun i => by show σ (σ o * x i) = _`. Rewrite using `[map_mul, sig_sig hcm]`. Simplify using `only [form, this, dotProduct, Matrix.mulVec, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
-
-Rewrite `h1` using `[h2]`. Simplify using `using h1.neg`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem latH_of {B : Base F E} (hcm : IsCMExt F E σ) {X : Spc F E n} {W : Spc F E d} {r s r' s' : ℕ} {ξ₀ : E}
     (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s') (hXu : IsUnit X.J.det) (hWu : IsUnit W.J.det) (hξ : ξ₀ ≠ 0) :
@@ -237,7 +233,7 @@ theorem stackL_apply (p : Matrix (Fin nT) (Fin nS) E × Matrix (Fin nT) (Fin nS)
     stackL p i j = Fin.append (fun k => p.1 k j) (fun k => p.2 k j) i := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[rowsL_apply, stackL_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rows_stack_left (p : Matrix (Fin nT) (Fin nS) E × Matrix (Fin nT) (Fin nS) E) :
     rowsL (Fin.castAdd nT) (stackL p) = p.1 := by
@@ -245,7 +241,7 @@ theorem rows_stack_left (p : Matrix (Fin nT) (Fin nS) E × Matrix (Fin nT) (Fin 
   simp [rowsL_apply, stackL_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[rowsL_apply, stackL_apply, -Fin.natAdd_eq_addNat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rows_stack_right (p : Matrix (Fin nT) (Fin nS) E × Matrix (Fin nT) (Fin nS) E) :
     rowsL (Fin.natAdd nT) (stackL p) = p.2 := by
@@ -253,7 +249,7 @@ theorem rows_stack_right (p : Matrix (Fin nT) (Fin nS) E × Matrix (Fin nT) (Fin
   simp [rowsL_apply, stackL_apply, -Fin.natAdd_eq_addNat]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `refine Fin.addCases (fun k => ?_) (fun k => ?_) i <;> simp [rowsL_apply, stackL_apply, -Fin.natAdd_eq_addNat]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem stack_rows (M : Matrix (Fin (nT + nT)) (Fin nS) E) :
     stackL (rowsL (Fin.castAdd nT) M, rowsL (Fin.natAdd nT) M) = M := by
@@ -261,7 +257,7 @@ theorem stack_rows (M : Matrix (Fin (nT + nT)) (Fin nS) E) :
   refine Fin.addCases (fun k => ?_) (fun k => ?_) i <;> simp [rowsL_apply, stackL_apply, -Fin.natAdd_eq_addNat]
 
 /- English proof (translation)
-Simplify using `[hRatF, rowsL_apply, GlobalTheory.WeilSchrodinger.DblTargetF.dblG, dbl, Fin.sum_univ_add, sub_eq_add_neg, Finset.sum_add_distrib, -Fin.natAdd_eq_addNat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hRat_dbl (x y : Matrix (Fin (nT + nT)) (Fin nS) E) :
     hRatF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) x y =
@@ -271,20 +267,20 @@ theorem hRat_dbl (x y : Matrix (Fin (nT + nT)) (Fin nS) E) :
     -Fin.natAdd_eq_addNat]
 
 /- English proof (translation)
-Simplify using `[hRatF]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hRat_zero_right (x : Matrix (Fin nT) (Fin nS) E) : hRatF σ JS JT x 0 = 0 := by simp [hRatF]
 
 /- English proof (translation)
-Take `⟨Λ, ⟨h1, h2⟩, h3⟩` from `h`. Establish `hm : ∀ M, M ∈ (Λ.prod Λ).map stackL ↔ rowsL (Fin.castAdd nT) M ∈ Λ ∧ rowsL (Fin.natAdd nT) M ∈ Λ` using `fun M => ⟨by`. Introduce and unpack `⟨p, hp, rfl⟩`. Rewrite using `[rows_stack_left, rows_stack_right]`. Conclude with `hp, fun H => ⟨(_, _), H, stack_rows M⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(Λ.prod Λ).map stackL, ⟨(h1.prod h1).map _, fun M => ?_⟩, fun M => ⟨fun hM M' hM' => ?_, fun H => (hm _).2 ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨N, hN, a⟩` from `h2 (rowsL (Fin.castAdd nT) M)`. Take `⟨N', hN', b⟩` from `h2 (rowsL (Fin.natAdd nT) M)`. Use `⟨N * N', Nat.mul_pos hN hN', (hm _).2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_nsmul, mul_comm, mul_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nsmul_mem a _`. Rewrite using `[map_nsmul, mul_smul]`. Conclude with `nsmul_mem b _`. Take `⟨a, ha⟩` from `(h3 _).1 ((hm _).1 hM).1 _ ((hm _).1 hM').1`. Take `⟨b, hb⟩` from `(h3 _).1 ((hm _).1 hM).2 _ ((hm _).1 hM').2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a - b, by rw [hRat_dbl, mul_sub, map_sub, ha, hb, Int.cast_sub]⟩`. Use `(h3 _).2 fun M' hM' => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `H (stackL (M', 0)) ⟨_, ⟨hM', Λ.zero_mem⟩, rfl⟩`. Rewrite `ha` using `[hRat_dbl, rows_stack_left, rows_stack_right, hRat_zero_right, sub_zero]`. Conclude with `⟨a, ha⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(h3 _).2 fun M' hM' => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `H (stackL (0, M')) ⟨_, ⟨Λ.zero_mem, hM'⟩, rfl⟩`. Rewrite `ha` using `[hRat_dbl, rows_stack_left, rows_stack_right, hRat_zero_right, zero_sub, mul_neg, map_neg]`. Conclude with `⟨-a, by rw [Int.cast_neg, ← ha, neg_neg]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem LatH.dblT (h : LatH σ JS JT ξ₀) : LatH σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ := by
   obtain ⟨Λ, ⟨h1, h2⟩, h3⟩ := h

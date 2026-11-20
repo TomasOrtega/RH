@@ -4,7 +4,7 @@ import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.TwistedGramM
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `PositivityTheory.UnitarySelfGeneration.twisted_gram_matrices_match` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FHomogeneousNonvanishing%2FTwistedGramMatricesMatch.lean&line=178#L178)
 -/

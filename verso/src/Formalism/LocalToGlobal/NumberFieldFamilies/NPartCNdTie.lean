@@ -17,7 +17,7 @@ def bjC (hI : OsInt B) (i : LocT B) (g : (what₂.MjLat (jOf B i)).gen) : BjC B 
   (bjRel B hI i).mkQ (Pi.basisFun (OOf B i) _ g)
 
 /- English proof (translation)
-Establish `e : ∑ g, c g • Pi.basisFun (OOf B i) _ g = c`. Simplify using `using (Pi.basisFun (OOf B i) ((what₂.MjLat (jOf B i)).gen)).sum_repr c`. Simplify using `only [bjC, ← map_smul, ← map_sum, e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem bjC_sum (hI : OsInt B) (i : LocT B) (c : (what₂.MjLat (jOf B i)).gen → OOf B i) :
     ∑ g, c g • bjC B hI i g = Submodule.Quotient.mk c := by
@@ -27,9 +27,9 @@ theorem bjC_sum (hI : OsInt B) (i : LocT B) (c : (what₂.MjLat (jOf B i)).gen �
   rfl
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H c`. Rewrite using `[← bjC_sum]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ (fun g _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem bjC_span (hI : OsInt B) (i : LocT B) :
     Submodule.span (OOf B i) (Set.range (bjC B hI i)) = ⊤ := by
@@ -41,7 +41,7 @@ theorem bjC_span (hI : OsInt B) (i : LocT B) :
     exact Submodule.sum_mem _ (fun g _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, rfl⟩))
 
 /- English proof (translation)
-Rewrite using `[bjC_sum, Submodule.Quotient.mk_eq_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bjC_rel (hI : OsInt B) (i : LocT B) (c : (what₂.MjLat (jOf B i)).gen → OOf B i) :
     ∑ g, c g • bjC B hI i g = 0 ↔
@@ -58,24 +58,24 @@ def mxC (j : ℕ) (w : what₂.places.Pl) (i : LocT B) : Ideal (heckeAlg0 B j w)
   exact if h : i.1 = (j, w) then idealAt B i.1 h i.2.1 else ⊥
 
 /- English proof (translation)
-Unfold `mxC`. Conclude with `(dif_pos (rfl : i.1 = (jOf B i, wOf B i))).trans rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mxC_self (i : LocT B) : mxC B (jOf B i) (wOf B i) i = i.2.1 := by
   unfold mxC
   exact (dif_pos (rfl : i.1 = (jOf B i, wOf B i))).trans rfl
 
 /- English proof (translation)
-Rewrite using `[mxC_self]`. Conclude with `i.2.2.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mxC_max (i : LocT B) : (mxC B (jOf B i) (wOf B i) i).IsMaximal := by
   rw [mxC_self]; exact i.2.2.1
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨j1, w1⟩, I1⟩ h1 ⟨⟨j2, w2⟩, I2⟩ h2 he`. Establish `h1'` using `(locsC_mem B hF j w _).1 (Finset.mem_coe.1 h1)`. Establish `h2'` using `(locsC_mem B hF j w _).1 (Finset.mem_coe.1 h2)`. Simplify using `only [jOf, wOf] at h1' h2'`. Take `⟨rfl, rfl⟩` from `h1'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, rfl⟩` from `h2'`. Establish `e1` using `mxC_self B ⟨(_, _), I1⟩`. Establish `e2` using `mxC_self B ⟨(_, _), I2⟩`. Simplify using `only [jOf, wOf] at e1 e2 he`. Rewrite `he` using `[e1, e2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Sigma.ext rfl (heq_of_eq (Subtype.ext he))`.
+A detailed English derivation is pending.
 -/
 theorem mxC_inj (hF : LocsFin B) (j : ℕ) (w : what₂.places.Pl) : Set.InjOn (mxC B j w) (locsC B hF j w) := by
   rintro ⟨⟨j1, w1⟩, I1⟩ h1 ⟨⟨j2, w2⟩, I2⟩ h2 he
@@ -91,7 +91,7 @@ theorem mxC_inj (hF : LocsFin B) (j : ℕ) (w : what₂.places.Pl) : Set.InjOn (
   exact Sigma.ext rfl (heq_of_eq (Subtype.ext he))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨(j, w), ⟨I, hI, h1, h2, hw⟩⟩, (locsC_mem B hF j w _).2 ⟨rfl, rfl⟩, mxC_self B ⟨(j, w), ⟨I, hI, h1, h2, hw⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mxC_all (hF : LocsFin B) (j : ℕ) (w : what₂.places.Pl) (h1 : 1 ≤ j) (h2 : j ≤ R.m) (hw : what₂.muAt w ≠ what₂.mu0)
     (I : Ideal (heckeAlg0 B j w)) (hI : I.IsMaximal) : ∃ i ∈ locsC B hF j w, mxC B j w i = I :=
@@ -102,13 +102,13 @@ def PsiC (hC : PartCompl B) (hL : MtLoc B hC) (i : LocT B) :
   (partOf B i).subtype.comp (mtEquiv B hC hL i).toLinearMap
 
 /- English proof (translation)
-The claim follows from `(Submodule.injective_subtype _).comp (mtEquiv B hC hL i).injective`.
+A detailed English derivation is pending.
 -/
 theorem PsiC_inj (hC : PartCompl B) (hL : MtLoc B hC) (i : LocT B) : Function.Injective (PsiC B hC hL i) :=
   (Submodule.injective_subtype _).comp (mtEquiv B hC hL i).injective
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨(mtEquiv B hC hL i).symm ⟨y, hy⟩, by simp [PsiC]⟩`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `((mtEquiv B hC hL i) z).2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem PsiC_range (hC : PartCompl B) (hL : MtLoc B hC) (i : LocT B) (y : B.V (jOf B i) (wOf B i)) :
     y ∈ NCov.part (hAlg B i) i.2.1 ↔ ∃ z, PsiC B hC hL i z = y := by
@@ -119,9 +119,9 @@ theorem PsiC_range (hC : PartCompl B) (hL : MtLoc B hC) (i : LocT B) (y : B.V (j
     exact ((mtEquiv B hC hL i) z).2
 
 /- English proof (translation)
-Establish `e : PsiC B hC hL i (prMtC B hC hL i x) = (projOf B hC i (B.iV (jOf B i) (wOf B i) x) : B.V (jOf B i) (wOf B i))`. Simplify using `[PsiC, prMtC]`. Rewrite using `[e]`. Use `show _ ∈ offOf B i`. Rewrite using `[← Submodule.linearProjOfIsCompl_ker (hC i), LinearMap.mem_ker, map_sub]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [projOf, Submodule.linearProjOfIsCompl_apply_left]`. Conclude with `sub_eq_zero.2 rfl`.
+A detailed English derivation is pending.
 -/
 theorem PsiC_pr (hC : PartCompl B) (hL : MtLoc B hC) (i : LocT B) (x : what₂.MtL (what₂.muTw (wOf B i)) (jOf B i)) :
     PsiC B hC hL i (prMtC B hC hL i x) - B.iV (jOf B i) (wOf B i) x ∈ NCov.off (hAlg B i) i.2.1 := by
@@ -134,7 +134,7 @@ theorem PsiC_pr (hC : PartCompl B) (hL : MtLoc B hC) (i : LocT B) (x : what₂.M
   exact sub_eq_zero.2 rfl
 
 /- English proof (translation)
-Simplify using `[hTOf, hTfun, dif_pos hvk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ptX_val (i : LocT B) (v : HeightOneSpectrum (𝓞 H.E)) (k : ℕ) (hvk : GenAt0 H (lOf B i) (B.Qw (wOf B i)) v k)
     (x : XOf B i) : (hTOf B i v k : XOf B i → OOf B i) x = x.1 ⟨B.hK (jOf B i) (wOf B i) v k, Algebra.subset_adjoin ⟨v, k, hvk, rfl⟩⟩ := by

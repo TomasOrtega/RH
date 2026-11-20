@@ -18,15 +18,15 @@ variable {n r : ℕ} {R : Type} [CommRing R] {s : R →+* R} {Jm : Matrix (Fin n
   {Xm Ym : Matrix (Fin n) (Fin r) R}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hF.ss, hF.herm, hF.yy, hF.xx, hF.yx⟩`.
+Supply the required witnesses or components.
 -/
 theorem pfr_swap (hF : PFr s Jm Xm Ym) : PFr s Jm Ym Xm :=
   ⟨hF.ss, hF.herm, hF.yy, hF.xx, hF.yx⟩
 
 /- English proof (translation)
-Establish `h` using `hF.inv_coef hg e`. Rewrite `h` using `[e', ← Matrix.mul_assoc, hF.xy, Matrix.one_mul]`. Establish `h2 : cT s (diagonal d') = diagonal (fun i => s (d' i))` using `Matrix.ext fun a b => by`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[cT]`. Simplify using `[cT, Matrix.diagonal_apply_ne _ hab, Matrix.diagonal_apply_ne _ (Ne.symm hab)]`. Rewrite `h` using `[h2, diagonal_mul_diagonal]`. Simplify using `using congrFun (congrFun h i) i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coef_mul_eq_one (hF : PFr s Jm Xm Ym) {g : Matrix (Fin n) (Fin n) R} (hg : cT s g * Jm * g = Jm)
     {d d' : Fin r → R} (e : g * Xm = Xm * diagonal d) (e' : g * Ym = Ym * diagonal d') (i : Fin r) :
@@ -42,9 +42,9 @@ theorem coef_mul_eq_one (hF : PFr s Jm Xm Ym) {g : Matrix (Fin n) (Fin n) R} (hg
   simpa using congrFun (congrFun h i) i
 
 /- English proof (translation)
-Establish `h1 : diagonal d * diagonal e = (1 : Matrix (Fin r) (Fin r) R)`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[mul_comm, he i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc Xm, ← h]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Xm * diagonal e := by rw [hg, Matrix.one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_act {g g' : Matrix (Fin n) (Fin n) R} (hg : g' * g = 1) {d e : Fin r → R}
     (he : ∀ i, e i * d i = 1) (h : g * Xm = Xm * diagonal d) : g' * Xm = Xm * diagonal e := by
@@ -65,15 +65,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n r : ℕ} {J : Matrix (Fin n) (Fin n) E} {X Y : Matrix (Fin n) (Fin r) E}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Matrix.blockTriangular_one, by simp, fun i => ⟨1, by simp, map_one _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_minParOne : (1 : GAd σ J) ∈ minParOne σ J X :=
   ⟨1, Matrix.blockTriangular_one, by simp, fun i => ⟨1, by simp, map_one _⟩⟩
 
 /- English proof (translation)
-Take `⟨d₁, d₁', e₁, e₁'⟩` from `ha`. Take `⟨d₂, d₂', e₂, e₂'⟩` from `hb`. Use `⟨d₁ * d₂, d₁' * d₂', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, e₂, ← Matrix.mul_assoc, e₁, Matrix.mul_assoc, diagonal_mul_diagonal]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, e₂', ← Matrix.mul_assoc, e₁', Matrix.mul_assoc, diagonal_mul_diagonal]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mul_mem_levi {a b : GAd σ J} (ha : a ∈ leviMin σ J X Y) (hb : b ∈ leviMin σ J X Y) :
     a * b ∈ leviMin σ J X Y := by
@@ -88,13 +88,13 @@ theorem mul_mem_levi {a b : GAd σ J} (ha : a ∈ leviMin σ J X Y) (hb : b ∈ 
     rfl
 
 /- English proof (translation)
-Establish `hF` using `pfrA h hJ hW`. Take `⟨d, d', e, e'⟩` from `hm`. Establish `hu` using `unitaryA_matHom m`. Establish `h1` using `coef_mul_eq_one hF hu e e'`. Establish `hss` using `hF.ss`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : (matHom _ σ J m⁻¹).1 * (matHom _ σ J m).1 = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Establish `h2 : ∀ i, d i * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ (d' i) = 1` using `fun i => by rw [mul_comm, h1 i]`. Establish `h3 : ∀ i, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ (d i) * d' i = 1` using `coef_mul_eq_one (pfr_swap hF) hu e' e`. Establish `f` using `inv_act hinv h1 e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f'` using `inv_act hinv h3 e'`. Use `⟨⟨_, _, f, f'⟩, ?_⟩` and prove the remaining obligations. Take `⟨B, -, eB, hB⟩` from `hm1`. Establish `hBd : B = diagonal d` using `by rw [← Bm_eq hF eB, Bm_eq hF e]`. Use `⟨_, Matrix.blockTriangular_diagonal _, f, fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu1, hu2⟩` from `hB i`. Use `⟨u⁻¹, ?_, by rw [map_inv, hu2, inv_one]⟩` and prove the remaining obligations. Establish `hd : d i = u` using `by rw [← hu1, hBd, Matrix.diagonal_apply_eq]`. Rewrite using `[Matrix.diagonal_apply_eq]`. Conclude with `(Units.inv_eq_of_mul_eq_one_left (by rw [← hd]; exact h1 i)).symm ▸ rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {m : GAd σ J}
     (hm : m ∈ leviMin σ J X Y) (hm1 : m ∈ minParOne σ J X) :
@@ -121,9 +121,9 @@ theorem inv_mem (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J
   exact (Units.inv_eq_of_mul_eq_one_left (by rw [← hd]; exact h1 i)).symm ▸ rfl
 
 /- English proof (translation)
-Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, d', e, e'⟩`. Establish `a1 : (fun i => Bm σ J X Y m i i) = d` using `funext fun i => by`. Rewrite using `[Bm_eq hF e, Matrix.diagonal_apply_eq]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a2 : (fun i => Bm σ J Y X m i i) = d'` using `funext fun i => by`. Rewrite using `[Bm_eq (pfr_swap hF) e', Matrix.diagonal_apply_eq]`. Conclude with `⟨by simpa only [Set.mem_setOf_eq, a1] using e, by simpa only [Set.mem_setOf_eq, a2] using e'⟩`. Introduce and unpack `⟨e, e'⟩`. Conclude with `⟨_, _, e, e'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem leviMin_eq (hF : PFr (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (AF F) J) (adMat F X) (adMat F Y)) :
     leviMin σ J X Y = {m | (matHom _ σ J m).1 * adMat F X = adMat F X * diagonal (fun i => Bm σ J X Y m i i)} ∩
@@ -140,11 +140,9 @@ theorem leviMin_eq (hF : PFr (Formalism.MainNotions.GlobalTheoryTheory.GenusMass
     exact ⟨_, _, e, e'⟩
 
 /- English proof (translation)
-Establish `hF` using `pfrA h hJ hW`. Use `GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)` as an intermediate fact. Use `haveI : T2Space (AF F) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : T2Space (AF F ⊗[F] E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension`. Establish `hc : ∀ {X' Y' : Matrix (Fin n) (Fin r) E}, Continuous fun m : GAd σ J => adMat F X' * diagonal (fun i => Bm σ J X' Y' m i i)` using `fun {X' Y'} => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hd : Continuous fun m : GAd σ J => diagonal (fun i => Bm σ J X' Y' m i i)` using `continuous_matrix fun a b => by`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `using (continuous_Bm (σ := σ) (J := J) (X := X') (Y := Y')).matrix_elem a a`. Simplify `continuous_const` using `[Matrix.diagonal_apply_ne _ hab]`.
-
-Conclude with `continuous_const.matrix_mul hd`. Rewrite using `[leviMin_eq hF]`. Conclude with `(isClosed_eq ((continuous_matHom_val (σ := σ) (J := J)).matrix_mul continuous_const) hc).inter (isClosed_eq ((continuous_matHom_val (σ := σ) (J := J)).matrix_mul continuous_const) hc)`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_leviMin (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) :
     IsClosed (leviMin σ J X Y) := by
@@ -170,7 +168,7 @@ end GlobalTheory.CompanionTheory.ParCocompact.LeviOne
 open GlobalTheory.CompanionTheory.ParCocompact.LeviOne in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ r X Y hW`. Use `⟨{ carrier := leviMin σ J X Y ∩ minParOne σ J X mul_mem' := fun {a b} ha hb => ⟨mul_mem_levi ha.1 hb.1, (minParOne_props h hJ hW).2 a ha.2 b hb.2⟩ one_mem' := ⟨one_mem_leviMin σ J X Y, one_mem_minParOne⟩ inv_mem' := fun {a} ha => inv_mem h hJ hW ha.1 ha.2 }, rfl, ?_⟩` and prove the remaining obligations. Conclude with `(isClosed_leviMin h hJ hW).inter (minParOne_props h hJ hW).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.ParCocompact.exists_leviOne_subgroup : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∃ L : Subgroup (GAd σ J), (L : Set (GAd σ J)) = leviMin σ J X Y ∩ minParOne σ J X ∧ IsClosed (L : Set (GAd σ J)) := by
   intro F E _ _ _ _ _ σ h n J hJ r X Y hW

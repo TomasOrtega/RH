@@ -18,7 +18,7 @@ section SlopeTestRemainingChoices
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.Th1.H.interReps V H hH Λ₁ Λ₂ α hS F hF S hSr z]`. Establish `h3 : ((Real.sqrt (relIdx Λ₁ Λ₂) : ℝ) : ℂ) ≠ 0`. Rewrite using `[Ne, Complex.ofReal_eq_zero]`. Conclude with `(Real.sqrt_pos.2 (Nat.cast_pos.2 (Nat.pos_of_ne_zero hidx))).ne'`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem sumU_eq_inter {H : Sesq V} {α : V → ℂ} {Λ₁ Λ₂ : AddSubgroup V} {F : V → ℂ} {S : Finset V} (hH : IsHerm H)
     (hS : IsSemiChar H Λ₂ α) (hF : F ∈ fixedBy H α Λ₁) (hSr : IsReps Λ₁ Λ₂ S) (hidx : relIdx Λ₁ Λ₂ ≠ 0) (z : V) :
@@ -36,15 +36,15 @@ variable {X : Fields} (A : Amb X) {a b : ℕ} (S : Finset (HeightOneSpectrum (�
   (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos a with ha | ha` into its components or cases. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `hv : v = 0` using `funext fun i => (Fin.cast ha i).elim0`. Rewrite using `[hv, map_zero, LinearMap.zero_apply]`. Break down `Nat.eq_zero_or_pos b with hb | hb` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `LinearMap.ext fun v => funext fun i => (Fin.cast hb i).elim0`. It suffices to derive a contradiction. Establish `hsd` using `((hLa.2.2.2.2.2 N N' hN hN').2).1`. Take `⟨τ⟩` from `hLa.2.1`. Establish `hL : LamC (X.embC A.σ₀) A.δ A.AA N N' = ⊥`.
+It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `LamC laV`. Rewrite using `[h, perO_bot]`. Simplify using the standard rewrite rules. Rewrite `hsd` using `[hL]`. Establish `hv : (show VCx X.Tau a b from fun _ _ _ => (1 : ℂ)) ∈ dualLat (HV A.sc) (⊥ : AddSubgroup (VCx X.Tau a b))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Rewrite `hy` using `[AddSubgroup.mem_bot]`. Conclude with `⟨0, by simp [hy, altE]⟩`. Unfold `IsSelfDual at hsd`. Rewrite `hv` using `[hsd, AddSubgroup.mem_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun (congrFun (congrFun hv τ) ⟨0, hb⟩) ⟨0, ha⟩` as an intermediate fact. Simplify using `at this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem homE_zero_of_aa_bot (hLa : A.LaHyp a b S) (hN : IsSdLat N) (hN' : IsSdLat N') (h : A.AA = ⊥) (f : HomE X.E a b) : f = 0 := by
   rcases Nat.eq_zero_or_pos a with ha | ha
@@ -69,9 +69,9 @@ theorem homE_zero_of_aa_bot (hLa : A.LaHyp a b S) (hN : IsSdLat N) (hN' : IsSdLa
   simp at this
 
 /- English proof (translation)
-Distinguish the cases in `hAA0 : A.AA = ⊥`. Use `⟨0, ⟨⟨1, one_pos, zero_mem _⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[homE_zero_of_aa_bot A S N N' hLa hN hN' hAA0 x, sub_zero]`. Conclude with `zero_mem _`. Take `⟨s, hs⟩` from `lf_exists_liftS A S hLa.2.2.2.1 hAA0 N N' hN hN' hD hx`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨s, lf_isLift_of_liftS A S hLa.2.2.2.1 N N' hD hcD hs⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isLift (hLa : A.LaHyp a b S) (hN : IsSdLat N) (hN' : IsSdLat N') {c D : ℕ} (hD : 0 < D) (hcD : c ∣ D) {x : HomE X.E a b}
     (hx : x ∈ divLat D (homAt S N N')) : ∃ s, A.IsLift S N N' c x s := by
@@ -85,25 +85,23 @@ theorem exists_isLift (hLa : A.LaHyp a b S) (hN : IsSdLat N) (hN' : IsSdLat N') 
 end Lift
 
 /- English proof (translation)
-Introduce `X A a b Sall D hst hD hLa hEq`. Unfold `Amb.ThIndEq`. Introduce `γ γ' N N' c x hR z`. Take `⟨hN, hN', hc, hcD, hx⟩` from `hR`. Take `⟨w, rfl⟩` from `(TI.RV A γ γ').surjective z`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hgN : IsSdLat (gmap γ.1 N)` using `isSdLat_gmap hN γ`. Establish `hgN' : IsSdLat (gmap γ'.1 N')` using `isSdLat_gmap hN' γ'`. Establish `hpull : ∀ v, A.pullV a b γ.1 γ'.1 ((TI.RV A γ γ') v) = v` using `fun v => by`. Rewrite using `[← TI.RV_symm_apply, LinearEquiv.symm_apply_apply]`. Establish `hx' : γ'.1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap ∈ divLat D (homAt Sall (gmap γ.1 N) (gmap γ'.1 N'))` using `by show ((D : 𝓞 X.E) • (LinearMap.id : HomE X.E a b →ₗ[𝓞 X.E] HomE X.E a b)) (TI.conjH γ.1 γ'.1 x) ∈ homAt Sall (gmap γ.1 N) (gmap γ'.1 N')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[TI.mem_homAt_gmap, LinearMap.smul_apply, LinearMap.id_apply, TI.equiv_osmulW, LinearEquiv.symm_apply_apply]`. Conclude with `hx`. Take `⟨s', hs'⟩` from `exists_isLift A Sall (gmap γ.1 N) (gmap γ'.1 N') hLa hgN hgN' hD hcD hx'`. Establish `hs : A.IsLift Sall N N' c x ((TI.conjH γ.1 γ'.1).symm s')` using `TI.isLift_conj A Sall γ.1 γ'.1 N N' c x s' hs'`. Establish `hemb : embH (X.embC A.σ₀) A.δ s' = (TI.RV A γ γ') (embH (X.embC A.σ₀) A.δ ((TI.conjH γ.1 γ'.1).symm s'))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TI.RV_embH]`. Use `congr 1`. Conclude with `((TI.conjH γ.1 γ'.1).apply_symm_apply s').symm`. Rewrite using `[thInd_eq_lift' A Sall (gmap γ.1 N) (gmap γ'.1 N') hLa hgN hgN' c hc _ s' hs' _, thInd_eq_lift' A Sall N N' hLa hN hN' c hc x _ hs _, hpull]`. Establish `hL : LamC (X.embC A.σ₀) A.δ A.AA (gmap γ.1 N) (gmap γ'.1 N') = imgLat ((TI.RV A γ γ' : VCx X.Tau a b ≃ₗ[ℂ] VCx X.Tau a b) : VCx X.Tau a b →ₗ[ℂ] VCx X.Tau a b) (LamC (X.embC A.σ₀) A.δ A.AA N N')` using `(TI.imgLat_laV A γ γ' _ _ fun y => TI.mem_perO_gmap A.AA γ.1 γ'.1 N N' y).symm`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAc : AC (X.embC A.σ₀) A.δ A.AA Sall (gmap γ.1 N) (gmap γ'.1 N') c = imgLat ((TI.RV A γ γ' : VCx X.Tau a b ≃ₗ[ℂ] VCx X.Tau a b) : VCx X.Tau a b →ₗ[ℂ] VCx X.Tau a b) (AC (X.embC A.σ₀) A.δ A.AA Sall N N' c)` using `(TI.imgLat_laV A γ γ' _ _ fun y => TI.mem_halfAO_equiv (TI.conjH γ.1 γ'.1) (TI.mem_perO_gmap A.AA γ.1 γ'.1 N N') Sall c y).symm`. Establish `hBc : BC (X.embC A.σ₀) A.δ A.AA Sall (gmap γ.1 N) (gmap γ'.1 N') c = imgLat ((TI.RV A γ γ' : VCx X.Tau a b ≃ₗ[ℂ] VCx X.Tau a b) : VCx X.Tau a b →ₗ[ℂ] VCx X.Tau a b) (BC (X.embC A.σ₀) A.δ A.AA Sall N N' c)` using `(TI.imgLat_laV A γ γ' _ _ fun y => TI.mem_halfBO_equiv (TI.conjH γ.1 γ'.1) (TI.mem_perO_gmap A.AA γ.1 γ'.1 N N') Sall c y).symm`. Establish `hI : imgLat ((TI.RV A γ γ' : VCx X.Tau a b ≃ₗ[ℂ] VCx X.Tau a b) : VCx X.Tau a b →ₗ[ℂ] VCx X.Tau a b) ((LamC (X.embC A.σ₀) A.δ A.AA N N') ⊓ (AC (X.embC A.σ₀) A.δ A.AA Sall N N' c)) = imgLat ((TI.RV A γ γ' : VCx X.Tau a b ≃ₗ[ℂ] VCx X.Tau a b) : VCx X.Tau a b →ₗ[ℂ] VCx X.Tau a b) (L …`. Use extensionality with `y`. Rewrite using `[AddSubgroup.mem_inf, KS.MM.mem_imgLat, KS.MM.mem_imgLat, KS.MM.mem_imgLat, AddSubgroup.mem_inf]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hL, hAc, hBc]`. Take `⟨hθ, hlev⟩` from `(heisHyp_of A a b Sall hLa).2.2.2.2 N N' hN hN'`. Take `⟨hSc, hr1, hr2, -⟩` from `hlev c hc`. Establish `hIso : IsIsom (HV A.sc) (HV A.sc) ((TI.RV A γ γ' : VCx X.Tau a b ≃ₗ[ℂ] VCx X.Tau a b) : VCx X.Tau a b →ₗ[ℂ] VCx X.Tau a b)` using `TI.isIsom_RV A hst γ γ'`. Establish `hα : ∀ v, alV A.d A.sc ((TI.RV A γ γ') v) = alV A.d A.sc v` using `TI.alV_RV A hst γ γ'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : (repsOf (imgLat ((TI.RV A γ γ' : VCx X.Tau a b ≃ₗ[ℂ] VCx X.Tau a b) : VCx X.Tau a b →ₗ[ℂ] VCx X.Tau a b) (BC (X.embC A.σ₀) A.δ A.AA Sall N N' c)) (imgLat ((TI.RV A γ γ' : VCx X.Tau a b ≃ₗ[ℂ] VCx X.Tau a b) : VCx X.Tau a b →ₗ[ℂ] VCx X.Tau a b) (LamC (X.embC A.σ₀) A.δ A.AA …`. Establish `hr1' : relIdx (imgLat ((TI.RV A γ γ' : VCx X.Tau a b ≃ₗ[ℂ] VCx X.Tau a b) : VCx X.Tau a b →ₗ[ℂ] VCx X.Tau a b) (BC (X.embC A.σ₀) A.δ A.AA Sall N N' c)) (imgLat ((TI.RV A γ γ' : VCx X.Tau a b ≃ₗ[ℂ] VCx X.Tau a b) : VCx X.Tau a b →ₗ[ℂ] VCx X.Tau a b) (LamC (X.embC A.σ₀) A.δ A.AA N …`. Rewrite using `[← hI, KS.MM.relIdx_map]`. Conclude with `hr1`. Rewrite using `[Formalism.L2.Th1.H.Tri.card_reps (repsOf_spec _ _ hr1'), Formalism.L2.Th1.H.Tri.card_reps (repsOf_spec _ _ hr1), ← hI]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `KS.MM.relIdx_map _ _ _`. Establish `he : ∀ v, A.e a b (gmap γ.1 N) (gmap γ'.1 N') ((TI.RV A γ γ') v) = A.e a b N N' v` using `fun v => by`. Rewrite using `[hEq γ γ' N N' hN hN' ((TI.RV A γ γ') v), hpull]`. Establish `hsum : ∀ v, sumU (HV A.sc) (alV A.d A.sc) (repsOf (imgLat ((TI.RV A γ γ' : VCx X.Tau a b ≃ₗ[ℂ] VCx X.Tau a b) : VCx X.Tau a b →ₗ[ℂ] VCx X.Tau a b) (LamC (X.embC A.σ₀) A.δ A.AA N N')) (imgLat ((TI.RV A γ γ' : VCx X.Tau a b ≃ₗ[ℂ] VCx X.Tau a b) : VCx X.Tau a b →ₗ[ℂ] VCx X.Tau a b) …`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr2' : relIdx (imgLat ((TI.RV A γ γ' : VCx X.Tau a b ≃ₗ[ℂ] VCx X.Tau a b) : VCx X.Tau a b →ₗ[ℂ] VCx X.Tau a b) (LamC (X.embC A.σ₀) A.δ A.AA N N')) (imgLat ((TI.RV A γ γ' : VCx X.Tau a b ≃ₗ[ℂ] VCx X.Tau a b) : VCx X.Tau a b →ₗ[ℂ] VCx X.Tau a b) (BC (X.embC A.σ₀) A.δ A.AA Sall N N' …`. Rewrite using `[KS.MM.relIdx_map]`. Conclude with `hr2`. Establish `hSB'` using `KS.MM.semiChar_map (HV A.sc) (HV A.sc) (TI.RV A γ γ') hIso (BC (X.embC A.σ₀) A.δ A.AA Sall N N' c) (alV A.d A.sc) (alV A.d A.sc) hα hSc.2.2.1`. Establish `hfix'` using `KS.MM.fixedBy_map (HV A.sc) (HV A.sc) (TI.RV A γ γ') hIso (LamC (X.embC A.σ₀) A.δ A.AA N N') (alV A.d A.sc) (alV A.d A.sc) hα (A.e a b N N') (A.e a b (gmap γ.1 N) (gmap γ'.1 N')) he hθ`.
-
-Rewrite using `[sumU_eq_inter hSc.1 hSB' hfix' (repsOf_spec _ _ hr2') hr2' ((TI.RV A γ γ') v), sumU_eq_inter hSc.1 hSc.2.2.1 hθ (repsOf_spec _ _ hr2) hr2 v, KS.MM.inter_map (HV A.sc) (HV A.sc) hSc.1 hSc.1 (TI.RV A γ γ') hIso (LamC (X.embC A.σ₀) A.δ A.AA N N') (BC (X.embC A.σ₀) A.δ A.AA Sall N N …`. Rewrite using `[hcard, hemb, hα, ← map_neg (TI.RV A γ γ'), KS.MM.opU_map (HV A.sc) (HV A.sc) (TI.RV A γ γ') hIso _ _ hsum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_coset_indicator_natural : ThIndOfEq := by
   intro X A a b Sall D hst hD hLa hEq

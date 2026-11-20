@@ -7,7 +7,7 @@ open MvPolynomial Filter Topology GlobalTheory.CompanionTheory.Ar.Top
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-The claim follows from `@RootFieldNumerics.decomposition_power_sums_top_degree`.
+A detailed English derivation is pending.
 -/
 theorem form_top_succ_eq_sum_pk : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (F : RP Ψ N), 2 ≤ N → F.IsHomogeneous (dimFl Ψ N + 1) → ∃ Q : Ψ → ℕ → RP Ψ N, (∀ τ k, 1 ≤ k → k ≤ N → (Q τ k).IsHomogeneous (dimFl Ψ N + 1 - k)) ∧ F = ∑ τ, ∑ k ∈ Finset.Icc 1 N, pk τ k * Q τ k :=
   @RootFieldNumerics.decomposition_power_sums_top_degree

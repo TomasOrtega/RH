@@ -5,13 +5,13 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `B B' _ _ ρ ι J _ _ I _ a v`. Establish `hf : ∀ c : ι → B, Polynomial.map (MvPolynomial.map ρ) (form c) = form (fun k => ρ (c k))`. Introduce `c`. Simplify using `[form, Polynomial.map_sub, Polynomial.map_sum, Polynomial.map_mul, Polynomial.map_C]`. Establish `key : ∀ (m : J → Multiset (ι → B')) (s : Finset J), (Multiset.map form (∑ j ∈ s, a j • m j)).prod = ∏ j ∈ s, (Multiset.map form (m j)).prod ^ a j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `m s`. Use `Finset.induction_on s (by simp) ?_` and prove the remaining obligations. Introduce `j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.prod_insert hj, Multiset.map_add, Multiset.prod_add, ih, Multiset.map_nsmul, Multiset.prod_nsmul]`. Simplify using `only [pts, mapP]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[key, Polynomial.map_prod]`. Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Polynomial.map_pow, Polynomial.map_prod, Multiset.map_map]`. Use `congr 1`. Rewrite using `[Finset.prod_eq_multiset_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Function.comp_def, hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Gal.crystallineComparison.ptsProd_of :
     PtsProd := by

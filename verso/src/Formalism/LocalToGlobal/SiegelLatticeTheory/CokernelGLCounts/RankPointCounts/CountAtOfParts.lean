@@ -21,11 +21,11 @@ variable (hA : Agree δ M p) (L U : Formalism.L2.SG.PairVal.MatR D) (hL : IsLoUn
   (hD : CountAb.Data a.mat (MulAction.stabilizer (UP p) a.mat) πa.ker (KU M p) πa)
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Establish `hU'` using `H_le_UP M _ hh`. Establish `hy` using `(mem_H_iff M δ u u' w hA L U hL hU a hB ⟨h, hU'⟩).1 hh`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨tauU p (πa (tauU p ⟨h, hU'⟩)), ⟨πa (tauU p ⟨h, hU'⟩), ⟨_, hy, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `(piG_of p πa ⟨h, hU'⟩).symm`. Introduce and unpack `⟨_, ⟨_, ⟨y, hy, rfl⟩, rfl⟩, rfl⟩`. Use `⟨((tauU p y : UP p) : GG p), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(mem_H_iff M δ u u' w hA L U hL hU a hB (tauU p y)).2 (by rw [tauU_tauU]; exact hy)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show piG p πa ((tauU p y : UP p) : GG p) = _`. Rewrite using `[piG_of]`. Simplify using `only [piU, MonoidHom.comp_apply, tauU_tauU]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem img_eq :
     img (retr_of M δ u u' w p a πa hD hB) (KP M p ⊓ StabX p (XP M δ u u' (p := p) w L U)) (H_le_UP M _) =
@@ -47,11 +47,9 @@ theorem img_eq :
 
 include hB in
 /- English proof (translation)
-Use extensionality with `z`. Rewrite using `[mem_Ag_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hS, hK⟩`. Take `⟨hzU, hzY⟩` from `(mem_StP_iff M δ u u' w p z).1 hS`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hfix` using `(fixes_base_iff M δ u u' w p a hB ⟨z, hzU⟩).1 hzY`. Use `⟨⟨z, hzU⟩, ⟨tauU p ⟨z, hzU⟩, ⟨?_, ?_⟩, tauU_tauU p _⟩, rfl⟩` and prove the remaining obligations. Use `show ((tauU p ⟨z, hzU⟩ : UP p) : GG p) ∈ KP M p`. Conclude with `tau_mem_KP M p hK`. Conclude with `hfix`.
-
-Introduce and unpack `⟨_, ⟨y, ⟨hyK, hyS⟩, rfl⟩, rfl⟩`. Use `⟨(mem_StP_iff M δ u u' w p _).2 ⟨(tauU p y).2, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(fixes_base_iff M δ u u' w p a hB (tauU p y)).2 (by rw [tauU_tauU]; exact hyS)`. Conclude with `tau_mem_KP M p hyK`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Ag_eq :
     Ag M δ u u' (p := p) w =
@@ -74,11 +72,11 @@ theorem Ag_eq :
 include hD in
 
 /- English proof (translation)
-Establish `hcard` using `CountAb.card_cells' (a.mat) (MulAction.stabilizer (UP p) a.mat) πa.ker (KU M p) πa (gU M δ u u' w hA L U hL hU a hB) hD`. Establish `hidx : (img (retr_of M δ u u' w p a πa hD hB) (KP M p ⊓ StabX p (XP M δ u u' (p` using `p) w L U)) (H_le_UP M _)).relIndex (Ag M δ u u' (p := p) w) = ((CountAb.Hs a.mat (KU M p) (gU M δ u u' w hA L U hL hU a hB)).map πa).relIndex ((KU M p) ⊓ MulAction.stabilizer (UP p) a.mat) := by`. Rewrite using `[img_eq M δ u u' w hA L U hL hU a hB πa hD, Ag_eq M δ u u' w a hB, Subgroup.relIndex_map_map_of_injective _ _ Subtype.val_injective, Subgroup.relIndex_map_map_of_injective _ _ (tauU_inj (p := p))]`. Use `⟨UP p, piG p πa, retr_of M δ u u' w p a πa hD hB, H_le_UP M _, conjugator_mem_unipotent M δ hA L U hL hU, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[img_eq M δ u u' w hA L U hL hU a hB πa hD, Ag_eq M δ u u' w a hB]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Subgroup.map_mono` to reduce the goal to its premises. Apply `Subgroup.map_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨hD.kπ z hz.1, hD.mem z⟩`. Rewrite using `[hidx, ← hcard]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpos`. Rewrite using `[hidx, ← hcard, hv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countAt_of_parts (v : ℝ)
     (hv : (Nat.card (Quotient (CountAb.cellRel a.mat πa.ker (KU M p) (gU M δ u u' w hA L U hL hU a hB))) : ℝ) = v)

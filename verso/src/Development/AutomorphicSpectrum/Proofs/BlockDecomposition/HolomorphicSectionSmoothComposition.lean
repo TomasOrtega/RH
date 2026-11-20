@@ -15,9 +15,9 @@ open GlobalTheory
 namespace GlobalTheory.CompanionTheory.CxSmooth
 
 /- English proof (translation)
-Take `⟨r, hr, hrU⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 (hU.mem_nhds hc)`. Establish `hd : ∀ ζ ∈ Metric.closedBall c r, DifferentiableAt ℂ h ζ` using `fun ζ hζ => hh.differentiableAt (hU.mem_nhds (hrU hζ))`. Establish `hA : AnalyticAt ℂ (fun w => ((2 * (Real.pi : ℂ) * Complex.I) ^ n)⁻¹ * ReciprocityTheory.AnForm.Osgood.fctlCLM c hr h hd (ReciprocityTheory.AnForm.Osgood.kern c r w)) c` using `analyticAt_const.mul (((ReciprocityTheory.AnForm.Osgood.fctlCLM c hr h hd).analyticAt _).comp (ReciprocityTheory.AnForm.Osgood.kern_analyticAt c hr))`. Establish `h2 : (2 * (Real.pi : ℂ) * Complex.I) ^ n ≠ 0` using `pow_ne_zero _ (mul_ne_zero (mul_ne_zero two_ne_zero (Complex.ofReal_ne_zero.2 Real.pi_ne_zero)) Complex.I_ne_zero)`. Use `hA.congr ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [Metric.ball_mem_nhds c hr] with w hw`. Rewrite using `[ReciprocityTheory.AnForm.Osgood.fctlCLM_kern hr hd hw]`. Conclude with `inv_mul_cancel_left₀ h2 (h w)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem analyticAt_of_differentiableOn_open {n : ℕ} {U : Set (Fin n → ℂ)} (hU : IsOpen U)
     {h : (Fin n → ℂ) → ℂ} (hh : DifferentiableOn ℂ h U) {c : Fin n → ℂ} (hc : c ∈ U) :
@@ -39,11 +39,11 @@ private theorem analyticAt_of_differentiableOn_open {n : ℕ} {U : Set (Fin n �
   exact inv_mul_cancel_left₀ h2 (h w)
 
 /- English proof (translation)
-Set `e` to `Fintype.equivFin ι`. Set `φ : (Fin (Fintype.card ι) → ℂ) →L[ℂ] (ι → ℂ)` to `LinearMap.toContinuousLinearMap (LinearMap.funLeft ℂ ℂ e)`. Set `ψ : (ι → ℂ) →L[ℂ] (Fin (Fintype.card ι) → ℂ)` to `LinearMap.toContinuousLinearMap (LinearMap.funLeft ℂ ℂ e.symm)`. Establish `hφψ : ∀ w, φ (ψ w) = w` using `fun w => funext fun i => by simp [φ, ψ]`. Establish `hmem : ψ z ∈ φ ⁻¹' U`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.mem_preimage, hφψ]`. Conclude with `hz`. Establish `hA` using `analyticAt_of_differentiableOn_open (hU.preimage φ.continuous) (hf.comp φ.differentiableOn (Set.mapsTo_preimage φ U)) hmem`. Establish `hB` using `hA.comp (ψ.analyticAt z)`. Establish `heq : (f ∘ ⇑φ) ∘ ⇑ψ = f` using `funext fun w => by simp only [Function.comp_apply, hφψ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hB` using `[heq]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_of_differentiableOn {ι : Type} [Fintype ι] {U : Set (ι → ℂ)} (hU : IsOpen U)
     {f : (ι → ℂ) → ℂ} (hf : DifferentiableOn ℂ f U) {z : ι → ℂ} (hz : z ∈ U) :
@@ -65,9 +65,9 @@ theorem analyticAt_of_differentiableOn {ι : Type} [Fintype ι] {U : Set (ι →
   rwa [heq] at hB
 
 /- English proof (translation)
-Introduce `k _ Y p σ ι _ T s f z₀ hT hs hd hz h`. Take `⟨W, ι', _, g, F, O, hyW, hO, hmem, hF, hev⟩` from `h`. Establish `hN : IsOpen (T ∩ s ⁻¹' ptsIn p σ W)` using `hs.isOpen_inter_preimage hT (isOpen_ptsIn W)`. Establish `hzN : z₀ ∈ T ∩ s ⁻¹' ptsIn p σ W` using `⟨hz, hyW⟩`. Establish `hG : AnalyticAt ℂ (fun z a => ev p σ W (g a) (s z)) z₀` using `analyticAt_pi_iff.2 fun a => analyticAt_of_differentiableOn hN (hd W (g a)) hzN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ContinuousAt s z₀` using `hs.continuousAt (hT.mem_nhds hz)`. Establish `h1 : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (F ∘ fun z a => ev p σ W (g a) (s z)) z₀` using `(hF.contDiffAt (hO.mem_nhds hmem)).comp z₀ (hG.contDiffAt.restrict_scalars ℝ)`. Conclude with `h1.congr_of_eventuallyEq (hev.comp_tendsto hcont)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_comp_of_cInfAt : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {ι : Type} [Fintype ι]
   {T : Set (ι → ℂ)} {s : (ι → ℂ) → CxPts p σ} {f : CxPts p σ → ℝ} {z₀ : ι → ℂ}, IsOpen T → ContinuousOn s T →

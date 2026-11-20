@@ -14,7 +14,7 @@ section Gen
 variable {LL Kf : Type} [Field LL] [Field Kf] (e : LL →+* Kf)
 
 /- English proof (translation)
-Use `letI : Module LL Kf := e.toModule`. Establish `hne : ¬ ∀ φ : Module.Dual LL Kf, φ c = 0` using `fun h => hc ((Module.forall_dual_apply_eq_zero_iff LL c).1 h)`. Use `push_neg at hne`. Take `⟨φ, hφ⟩` from `hne`. Conclude with `⟨φ.toAddMonoidHom, fun a x => φ.map_smul a x, hφ⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fun_ne {c : Kf} (hc : c ≠ 0) : ∃ π : Kf →+ LL, (∀ a x, π (e a * x) = a * π x) ∧ π c ≠ 0 := by
   letI : Module LL Kf := e.toModule
@@ -24,9 +24,9 @@ theorem exists_fun_ne {c : Kf} (hc : c ≠ 0) : ∃ π : Kf →+ LL, (∀ a x, �
   exact ⟨φ.toAddMonoidHom, fun a x => φ.map_smul a x, hφ⟩
 
 /- English proof (translation)
-Take `⟨π, hπ, h1⟩` from `exists_fun_ne e (one_ne_zero : (1 : Kf) ≠ 0)`. Use `⟨(AddMonoidHom.mulLeft (π 1)⁻¹).comp π, fun a x => ?_, fun a => ?_⟩` and prove the remaining obligations. Use `show (π 1)⁻¹ * π (e a * x) = a * ((π 1)⁻¹ * π x)`. Rewrite using `[hπ]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `show (π 1)⁻¹ * π (e a) = a`. Establish `h2` using `hπ a 1`. Rewrite `h2` using `[mul_one]`. Rewrite using `[h2, mul_left_comm, inv_mul_cancel₀ h1, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_retr : ∃ π : Kf →+ LL, (∀ a x, π (e a * x) = a * π x) ∧ ∀ a, π (e a) = a := by
   obtain ⟨π, hπ, h1⟩ := exists_fun_ne e (one_ne_zero : (1 : Kf) ≠ 0)
@@ -45,7 +45,7 @@ variable {V W T : Type} [AddCommGroup V] [Module LL V] [AddCommGroup W] [Module 
 def IsRat (F : W) : Prop := ∀ t, ev t F ∈ Set.range e
 
 /- English proof (translation)
-Simplify using `only [Finsupp.sum, map_sum, hsm, map_smul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `hval x t`. Rewrite using `[← hr, mul_comm (c x), hπ, map_mul, mul_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_pi (hsm : ∀ (a : LL) x, cmp (a • x) = e a • cmp x) (hval : ∀ x, IsRat e ev (cmp x))
     (π : Kf →+ LL) (hπ : ∀ a x, π (e a * x) = a * π x) (c : V →₀ Kf) (t : T) :
@@ -56,9 +56,9 @@ theorem ev_pi (hsm : ∀ (a : LL) x, cmp (a • x) = e a • cmp x) (hval : ∀ 
   rw [← hr, mul_comm (c x), hπ, map_mul, mul_comm]
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hF`. Take `⟨π, hπ, hπe⟩` from `exists_retr e`. Use `⟨c.sum fun x a => π a • x, sub_eq_zero.1 (hsep _ fun t => ?_)⟩` and prove the remaining obligations. Rewrite using `[map_sub, ev_pi e ev cmp hsm hval π hπ c t, sub_eq_zero]`. Take `⟨r, hr⟩` from `hr t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hr, hπe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rat_mem (hsep : ∀ F : W, (∀ t, ev t F = 0) → F = 0)
     (hsm : ∀ (a : LL) x, cmp (a • x) = e a • cmp x) (hval : ∀ x, IsRat e ev (cmp x))
@@ -71,13 +71,13 @@ theorem rat_mem (hsep : ∀ F : W, (∀ t, ev t F = 0) → F = 0)
   rw [← hr, hπe]
 
 /- English proof (translation)
-Rewrite `hb`, the goal using `[linearIndependent_iff']`. Introduce `s g hg i hi`. Assume the negation of the conclusion as `hgi`. Take `⟨π, hπ, hπi⟩` from `exists_fun_ne e hgi`. Use `hπi (hb s (fun j => π (g j)) ?_ i hi)` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `hsep` to reduce the goal to its premises. Introduce `t`. Establish `key : ∀ j, e (π (g j)) * ev t (cmp (b j)) = e (π (g j * ev t (cmp (b j))))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j`. Take `⟨r, hr⟩` from `hval (b j) t`. Rewrite using `[← hr, mul_comm (g j), hπ, map_mul, mul_comm]`. Establish `h0` using `congrArg (fun F => e (π (ev t F))) hg`. Simplify using `only [map_sum, map_smul, smul_eq_mul, map_zero] at h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, hsm, map_smul, smul_eq_mul, key]`. Conclude with `h0`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem li_of_rat (hsep : ∀ F : W, (∀ t, ev t F = 0) → F = 0)
     (hsm : ∀ (a : LL) x, cmp (a • x) = e a • cmp x) (hval : ∀ x, IsRat e ev (cmp x))
@@ -117,7 +117,7 @@ def descOp (hsm : ∀ (a : LL) x, cmp (a • x) = e a • cmp x) (hinj : Functio
     rw [RingHom.id_apply, hsm a (Classical.choose (h x)), h1, h2, hsm, map_smul]
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (h x)`.
+A detailed English derivation is pending.
 -/
 theorem descOp_spec (hsm : ∀ (a : LL) x, cmp (a • x) = e a • cmp x) (hinj : Function.Injective cmp) (Tp : W →ₗ[Kf] W)
     (h : ∀ x, ∃ y, cmp y = Tp (cmp x)) (x : V) : cmp (descOp e cmp hsm hinj Tp h x) = Tp (cmp x) := Classical.choose_spec (h x)
@@ -141,7 +141,7 @@ Both sides reduce to the same expression.
 theorem localComponent_apply₂ (i : α) (L : P.Tup) (m) (F : FnP P α) : evP P α (i, L, m) F = coeff m (F i L) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i L`. Use `MvPolynomial.ext _ _ fun m => ?_` and prove the remaining obligations. Establish `h1` using `h (i, L, m)`. Rewrite `h1` using `[localComponent_apply₂]`. Simplify using `using h1`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_forall_evalCoeff_eq_zero (F : FnP P α) (h : ∀ t, evP P α t F = 0) : F = 0 := by
   funext i L
@@ -153,11 +153,11 @@ theorem eq_zero_of_forall_evalCoeff_eq_zero (F : FnP P α) (h : ∀ t, evP P α 
 def RatFnP (F : FnP P α) : Prop := ∀ i L, ∃ Q : MvPolynomial _ LL, MvPolynomial.map e Q = F i L
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `h ⟨i, L, m⟩`. Take `⟨Q, hQ⟩` from `h i L`. Rewrite using `[localComponent_apply₂, ← hQ, MvPolynomial.coeff_map]`. Conclude with `⟨_, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `h i L`. Take `⟨π, -, hπe⟩` from `exists_retr e`. Establish `hc : ∀ n, e (π (coeff n (F i L))) = coeff n (F i L)` using `fun n => by`. Take `⟨r, hr⟩` from `h (i, L, n)`. Rewrite `hr` using `[localComponent_apply₂]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hr, hπe]`. Use `⟨∑ n ∈ (F i L).support, MvPolynomial.monomial n (π (coeff n (F i L))), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [MvPolynomial.map_monomial, hc]`. Conclude with `(MvPolynomial.as_sum (F i L)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isRational_iff (F : FnP P α) : RatFnP P α e F ↔ IsRat e (evP P α) F := by
   constructor
@@ -190,14 +190,14 @@ Both sides reduce to the same expression.
 theorem evG_apply (i : G.comp) (L : G.P.Tup) (m) (F : G.Fn) : evG G (i, L, m) F = coeff m (F i L) := rfl
 
 /- English proof (translation)
-The claim follows from `eq_zero_of_forall_evalCoeff_eq_zero G.P G.comp F h`.
+A detailed English derivation is pending.
 -/
 theorem evG_sep (F : G.Fn) (h : ∀ t, evG G t F = 0) : F = 0 := eq_zero_of_forall_evalCoeff_eq_zero G.P G.comp F h
 
 abbrev RatFn (F : G.Fn) : Prop := RatFnP G.P G.comp e F
 
 /- English proof (translation)
-The claim follows from `isRational_iff G.P G.comp e F`.
+A detailed English derivation is pending.
 -/
 theorem ratFn_iff (F : G.Fn) : RatFn G e F ↔ IsRat e (evG G) F := isRational_iff G.P G.comp e F
 
@@ -218,9 +218,9 @@ Both sides reduce to the same expression.
 @[simp] theorem yK_apply (v : Fin G.P.nV) (F : G.Fn) : yK G v F = G.yv v F := rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨i, L, m⟩`. Establish `hF : ∀ L', coeff m (F i L') ∈ e.range` using `fun L' => by`. Take `⟨r, hr⟩` from `h (i, L', m)`. Conclude with `RingHom.mem_range.2 ⟨r, hr.trans (evG_apply G i L' m F)⟩`. Establish `hp : ((p : G.Kf) ^ G.P.ArV v) ∈ e.range` using `RingHom.mem_range.2 ⟨(p : LL) ^ G.P.ArV v, by simp⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show coeff m (Level.yv (P := G.P) v (F i) L) ∈ Set.range e`. Rewrite using `[LatticeSystems.ef_yv_eq, MvPolynomial.coeff_smul, MvPolynomial.coeff_sum, smul_eq_mul]`. Conclude with `RingHom.mem_range.1 (Subring.mul_mem _ hp (Subring.sum_mem _ fun L'' _ => hF _))`.
+A detailed English derivation is pending.
 -/
 theorem yv_rat (v : Fin G.P.nV) (F : G.Fn) (h : IsRat e (evG G) F) : IsRat e (evG G) (G.yv v F) := by
   rintro ⟨i, L, m⟩
@@ -233,11 +233,11 @@ theorem yv_rat (v : Fin G.P.nV) (F : G.Fn) (h : IsRat e (evG G) F) : IsRat e (ev
   exact RingHom.mem_range.1 (Subring.mul_mem _ hp (Subring.sum_mem _ fun L'' _ => hF _))
 
 /- English proof (translation)
-Establish `key : ∀ F' ∈ (G.M : Set G.Fn), F' i L = 0`. Introduce `F' hF'`. Establish `h0 : F' ∈ Submodule.pi Set.univ (fun j => (G.lev j).funMod G.P.HtupW)` using `hF'`. Establish `h1` using `(Submodule.mem_pi.1 h0) i (Set.mem_univ i)`. Establish `h2` using `(Submodule.mem_inf.1 (Submodule.mem_inf.1 h1).1).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(Submodule.mem_iInf _).1 h2 L`. Establish `h4` using `(Submodule.mem_iInf _).1 h3 hL`. Conclude with `LinearMap.mem_ker.1 h4`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx => exact key x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul a x _ hx => simp [hx]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_M_zero (F : G.Fn) (hF : F ∈ Submodule.span G.Kf (G.M : Set G.Fn)) (i : G.comp) (L : G.P.Tup)
     (hL : ¬ G.P.IsLatTup L) : F i L = 0 := by
@@ -267,9 +267,9 @@ def ValRat : Prop :=
     ∃ Q : MvPolynomial _ D.what₂.LL, MvPolynomial.map (c.embW u w hg) Q = c.cmp u w hg x i L
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero (c.cmp u w hg)).2 fun x hx => ?_` and prove the remaining obligations. Establish `hli` using `c.cmp_li u w hg`. Rewrite `hli` using `[linearIndependent_iff']`. Establish `hsum : ∑ a, (fun a => c.embW u w hg (((D.fm u).lat 0).b.repr x a)) a • c.cmp u w hg (((D.fm u).lat 0).b a) = 0`. Establish `h1` using `congrArg (c.cmp u w hg) (((D.fm u).lat 0).b.sum_repr x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_sum, hx]`. Simplify `h1` using `only [c.cmp_smul]`. Establish `hz : ∀ a, ((D.fm u).lat 0).b.repr x a = 0` using `fun a => (c.embW u w hg).injective ((hli Finset.univ _ hsum a (Finset.mem_univ a)).trans (map_zero _).symm)`. Conclude with `((D.fm u).lat 0).b.ext_elem fun a => by simp [hz a]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cmp_inj u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
     Function.Injective (c.cmp u w hg) := by
@@ -286,11 +286,11 @@ theorem cmp_inj u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.w
   exact ((D.fm u).lat 0).b.ext_elem fun a => by simp [hz a]
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span D.what₂.LL (((D.fm u).lat 0).L : Set ((D.fm u).lat 0).V)`. Rewrite using `[((D.fm u).lat_good 0).2.2]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Rewrite using `[← c.cmp_M u w hg]`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ h1 h2 => rw [map_add]`. Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul a y _ h1 => rw [c.cmp_smul]`. Conclude with `Submodule.smul_mem _ _ h1`.
+A detailed English derivation is pending.
 -/
 theorem cmp_mem_span u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
     (x : ((D.fm u).lat 0).V) :
@@ -307,7 +307,7 @@ theorem cmp_mem_span u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T
   | smul a y _ h1 => rw [c.cmp_smul]; exact Submodule.smul_mem _ _ h1
 
 /- English proof (translation)
-Introduce `i L`. Distinguish the cases in `hL : (D.gat u w hg).P.IsLatTup L`. Conclude with `h u w hg x i L hL`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, span_M_zero (D.gat u w hg) _ (cmp_mem_span c u w hg x) i L hL]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ValRat.all (h : ValRat c) u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
     (x : ((D.fm u).lat 0).V) : RatFn (D.gat u w hg) (c.embW u w hg) (c.cmp u w hg x) := by
@@ -318,7 +318,7 @@ theorem ValRat.all (h : ValRat c) u (w : D.what₂.places.Pl) (hg : GIdx D.host 
     rw [map_zero, span_M_zero (D.gat u w hg) _ (cmp_mem_span c u w hg x) i L hL]
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_le]`. Introduce `F hF`. Rewrite `hF` using `[← c.cmp_M u w hg]`. Conclude with `Submodule.span_le_restrictScalars (D.gat u w hg).O (D.gat u w hg).Kf _ (Submodule.span_mono (Set.image_subset_range _ _) hF)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_M_le u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
     Submodule.span (D.gat u w hg).Kf ((D.gat u w hg).M : Set (D.gat u w hg).Fn) ≤
@@ -330,7 +330,7 @@ theorem span_M_le u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D
     (Submodule.span_mono (Set.image_subset_range _ _) hF)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨cmp_mem_span c u w hg x, ValRat.all c h u w hg x⟩`. Introduce and unpack `⟨hF, hr⟩`. Conclude with `rat_mem (c.embW u w hg) (evG (D.gat u w hg)) (c.cmp u w hg) (evG_sep _) (c.cmp_smul u w hg) (fun x => (ratFn_iff _ _ _).1 (ValRat.all c h u w hg x)) (span_M_le c u w hg hF) ((ratFn_iff _ _ _).1 hr)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem range_cmp (h : ValRat c) u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
     (F : (D.gat u w hg).Fn) :
@@ -345,9 +345,9 @@ theorem range_cmp (h : ValRat c) u (w : D.what₂.places.Pl) (hg : GIdx D.host (
       (fun x => (ratFn_iff _ _ _).1 (ValRat.all c h u w hg x)) (span_M_le c u w hg hF) ((ratFn_iff _ _ _).1 hr)
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ((Model.operators_preserve_lattices D' G).2 v y hy)`. Consider the case `zero => rw [← yK_apply, map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ h1 h2 => rw [← yK_apply, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul a y _ h1 => rw [← yK_apply, map_smul]`. Conclude with `Submodule.smul_mem _ _ h1`.
+A detailed English derivation is pending.
 -/
 theorem yv_span {p : ℕ} (G : GAtP p) (v : Fin G.P.nV) (F : G.Fn)
     (hF : F ∈ Submodule.span G.Kf (G.M : Set G.Fn)) (D' : D7) : G.yv v F ∈ Submodule.span G.Kf (G.M : Set G.Fn) := by
@@ -358,9 +358,9 @@ theorem yv_span {p : ℕ} (G : GAtP p) (v : Fin G.P.nV) (F : G.Fn)
   | smul a y _ h1 => rw [← yK_apply, map_smul]; exact Submodule.smul_mem _ _ h1
 
 /- English proof (translation)
-Establish `hex : ∀ x, ∃ y, c.cmp u w hg y = yK (D.gat u w hg) v (c.cmp u w hg x)`. Introduce `x`. Rewrite using `[yK_apply]`. Use `(range_cmp c h u w hg _).2 ⟨yv_span (D.gat u w hg) v _ (cmp_mem_span c u w hg x) D, ?_⟩` and prove the remaining obligations. Conclude with `(ratFn_iff _ _ _).2 (yv_rat _ _ v _ ((ratFn_iff _ _ _).1 (ValRat.all c h u w hg x)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨descOp (c.embW u w hg) (c.cmp u w hg) (c.cmp_smul u w hg) (cmp_inj c u w hg) (yK (D.gat u w hg) v) hex, fun x => by rw [descOp_spec, yK_apply]⟩`.
+A detailed English derivation is pending.
 -/
 theorem yvRat_of_valRat (h : ValRat c) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (v : Fin (D.gat u w hg).P.nV) :

@@ -7,7 +7,7 @@ open GroundTheory.Global.AdeleBaseChange (finiteAdeleMap)
 open UpperTheory.Gal.CertificateRingHomMap UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.UnipotentFundamentalDomain.val_two K hK P Q hne h`.
+A detailed English derivation is pending.
 -/
 private theorem val_two (K : Type) [Field K] [NumberField K] (hK : Module.finrank ℚ K ≤ 2)
     (P Q : HeightOneSpectrum (𝓞 K)) (hne : P ≠ Q) (h : P.asIdeal.under ℤ = Q.asIdeal.under ℤ) :
@@ -15,9 +15,9 @@ private theorem val_two (K : Type) [Field K] [NumberField K] (hK : Module.finran
   _root_.UpperTheory.Reformulated.B.UnipotentFundamentalDomain.val_two K hK P Q hne h
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ x` using `Algebra.IsIntegral.isIntegral x`. Establish `e : Module.finrank ℚ (Kx x) = (minpoly ℚ x).natDegree` using `IntermediateField.adjoin.finrank hi`. Rewrite using `[e]`. Establish `hm : (Polynomial.X ^ 2 + Polynomial.C (d : ℚ)).Monic` using `Polynomial.monic_X_pow_add_C _ two_ne_zero`. Establish `hz : Polynomial.aeval x (Polynomial.X ^ 2 + Polynomial.C (d : ℚ)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hx]`. Establish `hd` using `minpoly.min ℚ x hm hz`. Use `Polynomial.natDegree_le_natDegree hd` as an intermediate fact. Rewrite `this` using `[Polynomial.natDegree_X_pow_add_C]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem finrank_Kx_le {E : Type} [Field E] [NumberField E] (d : ℕ) (x : E)
     (hx : x ^ 2 = -(d : E)) : Module.finrank ℚ (Kx x) ≤ 2 := by
@@ -33,11 +33,11 @@ private theorem finrank_Kx_le {E : Type} [Field E] [NumberField E] (d : ℕ) (x 
   rwa [Polynomial.natDegree_X_pow_add_C] at this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `HeightOneSpectrum.ext (Ideal.ext fun a => ?_)` and prove the remaining obligations. Conclude with `h (algebraMap (𝓞 (Kx x)) (𝓞 E) a) ((a : Kx x)).2`. Introduce `h y hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hk : IsIntegral ℤ (⟨y, hy⟩ : Kx x)`. Establish `h1 : IsIntegral ℤ (algebraMap (Kx x) E ⟨y, hy⟩)` using `y.isIntegral_coe`. Conclude with `(isIntegral_algebraMap_iff (algebraMap (Kx x) E).injective).1 h1`. Take `⟨a, ha⟩ : ∃ a : 𝓞 (Kx x), algebraMap (𝓞 (Kx x)) (𝓞 E) a = y` from `⟨⟨⟨y, hy⟩, hk⟩, RingOfIntegers.ext rfl⟩`. Establish `hm : ∀ u : Plc E, a ∈ (u.under (𝓞 (Kx x))).asIdeal ↔ y ∈ u.asIdeal`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `u`. Rewrite using `[← ha]`. Both sides reduce to the same expression. Rewrite using `[← hm w, ← hm w', h]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sameK_iff {E : Type} [Field E] [NumberField E] (x : E) (w w' : Plc E) :
     SameK x w w' ↔ w.under (𝓞 (Kx x)) = w'.under (𝓞 (Kx x)) := by
@@ -58,9 +58,9 @@ private theorem sameK_iff {E : Type} [Field E] [NumberField E] (x : E) (w w' : P
     rw [← hm w, ← hm w', h]
 
 /- English proof (translation)
-Establish `key : (cj w).asIdeal = Ideal.comap (RingOfIntegers.mapRingEquiv (conjE E)) w.asIdeal` using `(GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (GlobalTheory.CuspRep.conjPl_conjSrc (conjE E) w)`. Establish `hm : ∀ (u : Plc E) (n : ℤ), n ∈ (u.under (𝓞 K)).asIdeal.under ℤ ↔ (n : 𝓞 E) ∈ u.asIdeal`. Introduce `u n`. Establish `e : algebraMap (𝓞 K) (𝓞 E) (algebraMap ℤ (𝓞 K) n) = (n : 𝓞 E)` using `by simp`. Rewrite using `[← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `Ideal.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[hm, hm, key, Ideal.mem_comap, map_intCast]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem under_int_cj {E : Type} [Field E] [NumberField E] [IsCMField E] (K : Type) [Field K]
     [NumberField K] [Algebra K E] (w : Plc E) :
@@ -76,7 +76,7 @@ private theorem under_int_cj {E : Type} [Field E] [NumberField E] [IsCMField E] 
   rw [hm, hm, key, Ideal.mem_comap, map_intCast]
 
 /- English proof (translation)
-Introduce `E _ _ _ d x _ hx`. Use `⟨sameK_iff x, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[sameK_iff]`. Conclude with `val_two (Kx x) (finrank_Kx_le d x hx) _ _ (Ne.symm hw) (under_int_cj (Kx x) w)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.kPlace :
     UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.KPlace := by

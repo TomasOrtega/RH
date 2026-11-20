@@ -11,7 +11,7 @@ variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 omit [NumberField K] in
 /- English proof (translation)
-Unfold `coord`. Use `split_ifs`. Conclude with `Or.inl fun _ => rfl`. Conclude with `Or.inr fun _ => rfl`.
+Replace the relevant objects with their definitions. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 private theorem coord_cases (τ : K →+* ℂ) :
     (∀ z : Cinf K, coord τ z = z (InfinitePlace.mk τ)) ∨
@@ -22,7 +22,7 @@ private theorem coord_cases (τ : K →+* ℂ) :
   · exact Or.inr fun _ => rfl
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det _).1 hx`. Establish `h` using `congrFun u.mul_inv w`. Rewrite `h` using `[hu]`. Conclude with `left_ne_zero_of_mul_eq_one h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem det_ne_zero {x : Lie K n} (hx : x ∈ invSet K n) (w : InfinitePlace K) :
     (Matrix.of x).det w ≠ 0 := by
@@ -32,7 +32,7 @@ private theorem det_ne_zero {x : Lie K n} (hx : x ∈ invSet K n) (w : InfiniteP
   exact left_ne_zero_of_mul_eq_one h
 
 /- English proof (translation)
-Break down `coord_cases τ with h | h` into its components or cases. Rewrite using `[detAt, h]`. Conclude with `det_ne_zero hx _`. Rewrite using `[detAt, h]`. Conclude with `(_root_.map_ne_zero _).2 (det_ne_zero hx _)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem detAt_ne_zero {x : Lie K n} (hx : x ∈ invSet K n) (τ : K →+* ℂ) : detAt τ x ≠ 0 := by
   rcases coord_cases τ with h | h
@@ -40,7 +40,7 @@ private theorem detAt_ne_zero {x : Lie K n} (hx : x ∈ invSet K n) (τ : K →+
   · rw [detAt, h]; exact (_root_.map_ne_zero _).2 (det_ne_zero hx _)
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply', Finset.sum_apply, Pi.mul_apply, Finset.prod_apply, Matrix.of_apply]`. Use `ContDiff.sum fun p _ => contDiff_const.mul (contDiff_prod fun i _ => ?_)` and prove the remaining obligations. Use `fun_prop`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem contDiff_det_at (w : InfinitePlace K) :
     ContDiff ℝ ∞ (fun x : Lie K n => (Matrix.of x).det w) := by
@@ -49,7 +49,7 @@ private theorem contDiff_det_at (w : InfinitePlace K) :
   fun_prop
 
 /- English proof (translation)
-Break down `coord_cases τ with h | h` into its components or cases. Simplify using `only [detAt, h]`. Conclude with `contDiff_det_at _`. Simplify using `only [detAt, h]`. Conclude with `Complex.conjCLE.contDiff.comp (contDiff_det_at _)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem contDiff_detAt (τ : K →+* ℂ) : ContDiff ℝ ∞ (fun x : Lie K n => detAt τ x) := by
   rcases coord_cases τ with h | h
@@ -57,19 +57,19 @@ private theorem contDiff_detAt (τ : K →+* ℂ) : ContDiff ℝ ∞ (fun x : Li
   · simp only [detAt, h]; exact Complex.conjCLE.contDiff.comp (contDiff_det_at _)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun w _ => pow_pos (norm_pos_iff.2 (det_ne_zero hx w)) _`.
+A detailed English derivation is pending.
 -/
 private theorem nrm_pos {x : Lie K n} (hx : x ∈ invSet K n) : 0 < nrm x :=
   Finset.prod_pos fun w _ => pow_pos (norm_pos_iff.2 (det_ne_zero hx w)) _
 
 /- English proof (translation)
-The claim follows from `contDiff_prod fun w _ => (contDiff_det_at w).norm_sq ℂ`.
+A detailed English derivation is pending.
 -/
 private theorem contDiff_nrm : ContDiff ℝ ∞ (fun x : Lie K n => nrm x) :=
   contDiff_prod fun w _ => (contDiff_det_at w).norm_sq ℂ
 
 /- English proof (translation)
-Establish `h0 : ContDiffOn ℝ ∞ (fun x : Lie K n => Real.log (nrm x)) (invSet K n)` using `Real.contDiffOn_log.comp contDiff_nrm.contDiffOn (fun x hx => (nrm_pos hx).ne')`. Establish `h1 : ContDiffOn ℝ ∞ (fun x : Lie K n => Complex.exp ((Real.log (nrm x) : ℂ) * u)) (invSet K n)` using `((Complex.ofRealCLM.contDiff.comp_contDiffOn h0).mul contDiffOn_const).cexp`. Establish `h2 : ContDiffOn ℝ ∞ (fun x : Lie K n => ((nrm x : ℝ) : ℂ) ^ u) (invSet K n)` using `h1.congr fun x hx => by`. Rewrite using `[Complex.cpow_def_of_ne_zero (by exact_mod_cast (nrm_pos hx).ne'), ← Complex.ofReal_log (nrm_pos hx).le]`. Conclude with `h2.mul (contDiffOn_prod fun σ _ => ((contDiff_detAt σ).contDiffOn.inv fun x hx => detAt_ne_zero hx σ).pow _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem contDiffOn_wt (u : ℂ) (e : (K →+* ℂ) → ℕ) : ContDiffOn ℝ ∞ (wt (n := n) u e) (invSet K n) := by
   have h0 : ContDiffOn ℝ ∞ (fun x : Lie K n => Real.log (nrm x)) (invSet K n) :=
@@ -83,15 +83,15 @@ private theorem contDiffOn_wt (u : ℂ) (e : (K →+* ℂ) → ℕ) : ContDiffOn
     ((contDiff_detAt σ).contDiffOn.inv fun x hx => detAt_ne_zero hx σ).pow _)
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_fiberwise Finset.univ InfinitePlace.mk, Complex.ofReal_prod]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hne : w.embedding ≠ ComplexEmbedding.conjugate w.embedding` using `fun h => InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w) (InfinitePlace.isReal_iff.2 (ComplexEmbedding.isReal_iff.2 h.symm))`. Establish `hf : (Finset.univ.filter fun σ : K →+* ℂ => InfinitePlace.mk σ = w) = {w.embedding, ComplexEmbedding.conjugate w.embedding}`. Use extensionality with `σ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Break down `InfinitePlace.mk_eq_iff.1 (w.mk_embedding.trans h.symm) with h | h` into its components or cases. Conclude with `Or.inl h.symm`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr h.symm`. Introduce and unpack `(rfl | rfl)`. Conclude with `w.mk_embedding`. Rewrite using `[InfinitePlace.mk_conjugate_eq, w.mk_embedding]`. Establish `h1 : coord w.embedding z = z w`.
+Prove the second alternative. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `coord`. Rewrite using `[InfinitePlace.mk_embedding, if_pos rfl]`. Both sides reduce to the same expression. Establish `h2 : coord (ComplexEmbedding.conjugate w.embedding) z = starRingEnd ℂ (z w)`. Unfold `coord`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding, if_neg hne]`. Both sides reduce to the same expression. Rewrite using `[hf, Finset.prod_pair hne, h1, h2, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prod_coord [IsTotallyComplex K] (z : Cinf K) :
     ∏ σ : K →+* ℂ, coord σ z = ((∏ w, ‖z w‖ ^ 2 : ℝ) : ℂ) := by
@@ -124,7 +124,7 @@ private theorem prod_coord [IsTotallyComplex K] (z : Cinf K) :
   rw [hf, Finset.prod_pair hne, h1, h2, Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ invSet K n`. Simplify using `only [h x hx]`. Simplify using `only [image_eq_zero_of_notMem_tsupport (fun h' => hx (hΨ h')), zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem integral_congr_inv {Ψ : Lie K n → ℂ} (hΨ : tsupport Ψ ⊆ invSet K n) {F G : Lie K n → ℂ}
     (h : ∀ x ∈ invSet K n, F x = G x) : ∫ x, Ψ x * F x = ∫ x, Ψ x * G x := by
@@ -134,7 +134,7 @@ private theorem integral_congr_inv {Ψ : Lie K n → ℂ} (hΨ : tsupport Ψ ⊆
   · simp only [image_eq_zero_of_notMem_tsupport (fun h' => hx (hΨ h')), zero_mul]
 
 /- English proof (translation)
-Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem integral_mul_const_in (Ψ F : Lie K n → ℂ) (c : ℂ) :
     ∫ x, Ψ x * (c * F x) = c * ∫ x, Ψ x * F x := by
@@ -143,7 +143,7 @@ private theorem integral_mul_const_in (Ψ F : Lie K n → ℂ) (c : ℂ) :
 attribute [local instance] Classical.propDecidable
 
 /- English proof (translation)
-Simplify using `only [wt, Pi.add_apply, pow_add, Finset.prod_mul_distrib, mul_assoc]`. Use `congr 2`. Rewrite using `[Finset.prod_eq_single τ (fun σ _ h => by simp [Pi.single_eq_of_ne h]) (by simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem wt_succ (u : ℂ) (e : (K →+* ℂ) → ℕ) (τ : K →+* ℂ) (x : Lie K n) :
     wt u (e + Pi.single τ 1) x = wt u e x * (detAt τ x)⁻¹ := by
@@ -153,15 +153,15 @@ private theorem wt_succ (u : ℂ) (e : (K →+* ℂ) → ℕ) (τ : K →+* ℂ)
   simp
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ e Ψ hΨ`. Conclude with `⟨hΨ, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `cons τ l ih`. Introduce `hl e Ψ hΨ`. Establish `hτ : τ ∉ l` using `(List.nodup_cons.1 hl).1`. Take `⟨hT, hJ⟩` from `ih (List.nodup_cons.1 hl).2 (e + Pi.single τ 1) Ψ hΨ`. Take `⟨hT', hp⟩` from `hI K n τ _ hT`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨hT', ?_⟩` and prove the remaining obligations. Establish `hlow : (fun σ => (e + Pi.single τ 1 : (K →+* ℂ) → ℕ) σ + if σ ∈ l then 1 else 0) = fun σ => e σ + if σ ∈ τ :: l then 1 else 0`. Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hτ]`. Simplify using `[h]`. Establish `hmap : (l.map fun σ => ((m σ).map (u - ((e + Pi.single τ 1 : (K →+* ℂ) → ℕ) σ : ℕ) + ((n : ℂ) - 1) / 2 + ·)).prod) = l.map fun σ => ((m σ).map (u - e σ + ((n : ℂ) - 1) / 2 + ·)).prod` using `List.map_congr_left fun σ hσ => by`. Rewrite using `[Pi.add_apply, Pi.single_eq_of_ne (fun h : σ = τ => hτ (h ▸ hσ)), add_zero]`. Establish `hpt : ∀ x ∈ invSet K n, detD τ (fun y => chart φ.1 g y * wt u e y) x = ((m τ).map (u - e τ + ((n : ℂ) - 1) / 2 + ·)).prod * (chart φ.1 g x * wt u (e + Pi.single τ 1) x)` using `fun x hx => by rw [hP K n τ φ (m τ) (hm τ) g u e x hx, wt_succ, mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[List.foldr_cons, hp _ ((φ.2 g).mul (contDiffOn_wt u e)), integral_congr_inv hT.2.2 hpt, integral_mul_const_in, hJ, hlow, hmap, List.map_cons, List.prod_cons, List.length_cons]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem list_shift [IsTotallyComplex K] (hP : Ptw) (hI : Parts) (φ : Sm K n)
     (m : (K →+* ℂ) → Multiset ℂ) (hm : ∀ τ u, cap τ u φ = ((m τ).map (u + ·)).prod • φ) (g : GA K n) (u : ℂ) :
@@ -200,7 +200,7 @@ private theorem list_shift [IsTotallyComplex K] (hP : Ptw) (hI : Parts) (φ : Sm
     ring
 
 /- English proof (translation)
-Use `Finset.induction_on s (by simp [linPoly]) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, ← ih]`. Simplify using `[linPoly, Multiset.map_add, Multiset.prod_add]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem linPoly_sum {ι : Type} (s : Finset ι) (m : ι → Multiset ℂ) :
     linPoly (∑ i ∈ s, m i) = ∏ i ∈ s, linPoly (m i) := by
@@ -210,7 +210,7 @@ private theorem linPoly_sum {ι : Type} (s : Finset ι) (m : ι → Multiset ℂ
   simp [linPoly, Multiset.map_add, Multiset.prod_add]
 
 /- English proof (translation)
-Establish `h : ∏ σ, detAt σ x = ((nrm x : ℝ) : ℂ)` using `prod_coord _`. Rewrite using `[Complex.cpow_sub _ _ (by exact_mod_cast (nrm_pos hx).ne'), Complex.cpow_one, wt, div_eq_mul_inv, ← h, ← Finset.prod_inv_distrib]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem wt_one [IsTotallyComplex K] (u : ℂ) {x : Lie K n} (hx : x ∈ invSet K n) :
     wt u (fun _ => 1) x = ((nrm x : ℝ) : ℂ) ^ (u - 1) := by
@@ -223,15 +223,15 @@ end UpperTheory.V.Z.Inf
 
 open UpperTheory.V.Z.Inf in
 /- English proof (translation)
-Introduce `hP hI K _ _ _ n`. Use `⟨((-1) ^ n) ^ (Finset.univ : Finset (K →+* ℂ)).toList.length, by simp, fun φ m hm Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hnd : (Finset.univ : Finset (K →+* ℂ)).toList.Nodup` using `Finset.nodup_toList _`. Use `⟨(list_shift hP hI φ m hm 1 0 _ hnd 0 Φ hΦ).1, fun g s => ?_⟩` and prove the remaining obligations. Take `⟨_, h⟩` from `list_shift hP hI φ m hm g (s + 1 + ((n : ℂ) - 1) / 2 - n) _ hnd 0 Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hone : (fun σ : K →+* ℂ => (0 : (K →+* ℂ) → ℕ) σ + if σ ∈ (Finset.univ : Finset (K →+* ℂ)).toList then 1 else 0) = fun _ => 1`. Use function extensionality and compare the values at `σ`. Simplify using the standard rewrite rules. Establish `hR : ∀ x ∈ invSet K n, chart φ.1 g x * wt (s + 1 + ((n : ℂ) - 1) / 2 - n) (fun _ => 1) x = chart φ.1 g x * ((nrm x : ℝ) : ℂ) ^ (s + ((n : ℂ) - 1) / 2 - n)` using `fun x hx => by`. Rewrite using `[wt_one _ hx]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hL : ∀ x : Lie K n, wt (s + 1 + ((n : ℂ) - 1) / 2 - n) 0 x = ((nrm x : ℝ) : ℂ) ^ (s + 1 + ((n : ℂ) - 1) / 2 - n)` using `fun x => by simp [wt]`. Simplify using `only [hL] at h`. Rewrite `h` using `[hone, integral_congr_inv hΦ.2.2 hR, Finset.prod_map_toList]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [mul_assoc (_ : ℂ) (chart φ.1 g _)]`. Rewrite using `[detAll, h, linPoly_sum, Polynomial.eval_prod]`. Use `congr 2`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[linPoly, Polynomial.eval_multiset_prod, Multiset.map_map]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, eval_add, eval_X, eval_C, Pi.zero_apply, Nat.cast_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.V.Z.Inf.shiftOf :
     UpperTheory.V.Z.Inf.ShiftOf := by

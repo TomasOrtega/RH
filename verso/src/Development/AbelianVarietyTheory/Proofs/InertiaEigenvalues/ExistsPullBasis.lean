@@ -13,7 +13,7 @@ variable {k : Type} [Field k] {l : ℕ} [hl : Fact l.Prime] [CharP k l]
 include hι
 
 /- English proof (translation)
-Establish `h` using `((isCyclotomic_iff R ι).1 hι).1`. Establish `: y ∈ Set.range ι ↔ FrobeniusBinomialReduction.DeltaInv k l y` using `by rw [h]; rfl`. Simplify `this` using `only [FrobeniusBinomialReduction.DeltaInv, delPi_eq, Set.mem_range]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem range_iff (y : k⸨X⸩) : (∃ x, ι x = y) ↔ ∀ t : ℤ_[l]ˣ, t ^ (l - 1) = 1 → delPi k t y = y := by
   have h := ((isCyclotomic_iff R ι).1 hι).1
@@ -21,29 +21,29 @@ theorem range_iff (y : k⸨X⸩) : (∃ x, ι x = y) ↔ ∀ t : ℤ_[l]ˣ, t ^ 
   simpa only [FrobeniusBinomialReduction.DeltaInv, delPi_eq, Set.mem_range] using this
 
 /- English proof (translation)
-Rewrite using `[← gamPi_eq']`. Conclude with `((isCyclotomic_iff R ι).1 hι).2.2.2.2 x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_gam (x : k⸨X⸩) : ι (R.γ x) = gamPi k l (ι x) := by
   rw [← gamPi_eq']; exact ((isCyclotomic_iff R ι).1 hι).2.2.2.2 x
 
 /- English proof (translation)
-Use `map_mem (σ := (ι : k⸨X⸩ →+* k⸨X⸩)) hι.2.1 hι.1 hx` as an intermediate fact. Rewrite `this` using `[Nat.cast_sub hl.out.one_le, Nat.cast_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem iota_mem {a : ℤ} {x : k⸨X⸩} (hx : x ∈ Dp k a) : ι x ∈ Dp k ((l - 1) * a) := by
   have := map_mem (σ := (ι : k⸨X⸩ →+* k⸨X⸩)) hι.2.1 hι.1 hx
   rwa [Nat.cast_sub hl.out.one_le, Nat.cast_one] at this
 
 /- English proof (translation)
-The claim follows from `mem_of_map_mem (σ := (ι : k⸨X⸩ →+* k⸨X⸩)) hι.2.1 hι.1 (by rwa [Nat.cast_sub hl.out.one_le, Nat.cast_one]) hx`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_iota_mem {a s : ℤ} (hs : (l - 1) * (a - 1) < s) {x : k⸨X⸩} (hx : ι x ∈ Dp k s) : x ∈ Dp k a :=
   mem_of_map_mem (σ := (ι : k⸨X⸩ →+* k⸨X⸩)) hι.2.1 hι.1
     (by rwa [Nat.cast_sub hl.out.one_le, Nat.cast_one]) hx
 
 /- English proof (translation)
-Establish `: ∀ x, ∃ y, ι y = psiPi k l (ι x)` using `fun x => (range_iff hι _).2 fun t ht => by`. Rewrite using `[← psi_del, (range_iff hι _).1 ⟨x, rfl⟩ t ht]`. Use `choose ψ hψ using this`. Use `⟨⟨⟨ψ, fun x y => ι.injective ?_⟩, fun c x => ι.injective ?_⟩, hψ⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ι _ = ι _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, hψ]`. Express the relevant statement in the definitionally equal form `lin ι (ψ (c • x)) = lin ι (c • ψ x)`. Rewrite using `[map_smul, lin_apply, lin_apply, hψ, hψ, ← map_smul, ← lin_apply ι, map_smul, lin_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_psi : ∃ ψ : k⸨X⸩ →ₗ[k] k⸨X⸩, ∀ x, ι (ψ x) = psiPi k l (ι x) := by
   have : ∀ x, ∃ y, ι y = psiPi k l (ι x) := fun x => (range_iff hι _).2 fun t ht => by
@@ -59,7 +59,7 @@ variable {ψ : k⸨X⸩ →ₗ[k] k⸨X⸩} (hψ : ∀ x, ι (ψ x) = psiPi k l 
 include hψ
 
 /- English proof (translation)
-Apply `ι.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ι _ = ι _`. Rewrite using `[hψ, map_mul ι, map_mul ι, hι.2.2.2.1, psi_phi_mul, hψ]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiK_phi_mul (a x : k⸨X⸩) : ψ (R.φ a * x) = a * ψ x := by
   apply ι.injective
@@ -67,7 +67,7 @@ theorem psiK_phi_mul (a x : k⸨X⸩) : ψ (R.φ a * x) = a * ψ x := by
   rw [hψ, map_mul ι, map_mul ι, hι.2.2.2.1, psi_phi_mul, hψ]
 
 /- English proof (translation)
-Establish `h2 : (2 : ℤ) ≤ l` using `by exact_mod_cast hl.out.two_le`. Use `mem_of_iota_mem hι (s := 2 - l) (by linarith) ?_` and prove the remaining obligations. Rewrite using `[hψ]`. Conclude with `psi_mem k l (by nlinarith) (iota_mem hι hx)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiK_mem {a : ℤ} (ha : 2 - (l : ℤ) ≤ a) {x : k⸨X⸩} (hx : x ∈ Dp k a) : ψ x ∈ Dp k 0 := by
   have h2 : (2 : ℤ) ≤ l := by exact_mod_cast hl.out.two_le
@@ -76,15 +76,13 @@ theorem psiK_mem {a : ℤ} (ha : 2 - (l : ℤ) ≤ a) {x : k⸨X⸩} (hx : x ∈
   exact psi_mem k l (by nlinarith) (iota_mem hι hx)
 
 /- English proof (translation)
-Establish `h2 : (2 : ℤ) ≤ l` using `by exact_mod_cast hl.out.two_le`. Establish `hv : vv k ∈ Dp k 1` using `by simpa using zpow_mem (k := k) 1`. Take `⟨c, hc⟩` from `mem_Dp_zero.1 (psiK_mem hι hψ (by omega) hv)`. Establish `hu : IsUnit c`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Take `⟨e, he⟩` from `PowerSeries.X_dvd_iff.2 h0`. Establish `h3 : ψ (vv k) ∈ Dp k 1` using `mem_Dp.2 ⟨e, by rw [hc, he, map_mul, zpow_one, vv_eq]⟩`. Establish `h4` using `mem_Dp_coeff.1 (iota_mem hι h3) 0 (by omega)`. Establish `h5 : ι (vv k) ∈ Dp k (l - 1)` using `by simpa using iota_mem hι hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[hψ, psi_coeff_zero k l h5, zsmul_eq_mul, mul_eq_zero]`. Establish `h6` using `h4.resolve_left (by simp)`. Establish `h7 : ι (vv k) ∈ Dp k l` using `mem_Dp_coeff.2 fun m hm => by`. Break down `eq_or_ne m (l - 1) with rfl | hne` into its components or cases. Conclude with `h6`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `mem_Dp_coeff.1 h5 m (by omega)`. Establish `h8` using `Dp_mul (mem_of_iota_mem hι (a := 2) (by linarith) h7) (zpow_mem (-1)) (u := 1) (by norm_num)`. Rewrite `h8` using `[zpow_neg_one, mul_inv_cancel₀ vv_ne]`. Conclude with `one_not_mem h8`. Take `⟨d, hd⟩` from `hu.exists_left_inv`.
-
-Conclude with `⟨d, by rw [hc, ← map_mul, hd, map_one]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem psiK_vv : ∃ d : k⟦X⟧, (d : k⸨X⸩) * ψ (vv k) = 1 := by
   have h2 : (2 : ℤ) ≤ l := by exact_mod_cast hl.out.two_le
@@ -110,13 +108,13 @@ theorem psiK_vv : ∃ d : k⟦X⟧, (d : k⸨X⸩) * ψ (vv k) = 1 := by
   exact ⟨d, by rw [hc, ← map_mul, hd, map_one]⟩
 
 /- English proof (translation)
-Use `⟨psiK_phi_mul hι hψ, fun a => ι.injective ?_, fun x => ι.injective ?_, fun a h1 h2 => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ι _ = ι _`. Rewrite using `[hψ, hι.2.2.2.1]`. Simplify using `using psi_pow_mul k l hl.out.pos (ι a)`. Express the relevant statement in the definitionally equal form `ι _ = ι _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hψ, iota_gam hι, iota_gam hι, psi_gam, hψ]`. Use extensionality with `y`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq, ← mem_Dp, ← mem_Dp_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `psiK_mem hι hψ h1 hx`. Introduce `hy`. Take `⟨b, rfl⟩` from `mem_Dp_zero.1 hy`. Take `⟨d, hd⟩` from `psiK_vv hι hψ`. Take `⟨e, he⟩` from `R.φ_int (b * d)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨R.φ (b * d : k⟦X⟧) * vv k, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Simplify using `using Dp_mul (coe_mem e) (zpow_mem 1) (u := a) (by omega)`. Rewrite using `[psiK_phi_mul hι hψ, map_mul, mul_assoc, hd, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiRing : PsiRing R ψ := by
   refine ⟨psiK_phi_mul hι hψ, fun a => ι.injective ?_, fun x => ι.injective ?_, fun a h1 h2 => ?_⟩
@@ -140,7 +138,7 @@ theorem psiRing : PsiRing R ψ := by
       · rw [psiK_phi_mul hι hψ, map_mul, mul_assoc, hd, mul_one]
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => mem_of_iota_mem hι (by linarith) h⟩` and prove the remaining obligations. Break down `h2.eq_or_lt with rfl | h3` into its components or cases. Rewrite using `[mul_one]`. Conclude with `mem_of_psi_eq_zero k l (by simpa using iota_mem hι h) (by rw [← hψ, hx, map_zero])`. Conclude with `Dp_mono (by linarith) (iota_mem hι h)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_mem_iff {a : ℤ} (h1 : 2 - (l : ℤ) ≤ a) (h2 : a ≤ 1) {x : k⸨X⸩} (hx : ψ x = 0) :
     x ∈ Dp k a ↔ ι x ∈ Dp k (l * a) := by
@@ -152,7 +150,7 @@ theorem ker_mem_iff {a : ℤ} (h1 : 2 - (l : ℤ) ≤ a) (h2 : a ≤ 1) {x : k�
 
 omit hι in
 /- English proof (translation)
-Rewrite using `[← hψ, map_eq_zero ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_iff {x : k⸨X⸩} : ψ x = 0 ↔ psiPi k l (ι x) = 0 := by
   rw [← hψ, map_eq_zero ι]
@@ -162,7 +160,7 @@ include h5 hG
 
 omit hψ in
 /- English proof (translation)
-Establish `: (G.map ι - 1) i m = ι ((G - 1) i m)`. Simplify using `[Matrix.one_apply, apply_ite ι]`. Rewrite using `[this]`. Conclude with `Dp_mono (by omega) (iota_mem hι (hG i m))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_sub_one (i m : Fin n) : (G.map ι - 1) i m ∈ Dp k 2 := by
   have : (G.map ι - 1) i m = ι ((G - 1) i m) := by
@@ -172,14 +170,14 @@ theorem map_sub_one (i m : Fin n) : (G.map ι - 1) i m ∈ Dp k 2 := by
 
 omit hψ h5 hG in
 /- English proof (translation)
-Simplify using `only [map_sub, map_sum, map_mul, hι.2.2.2.1, iota_gam hι, Matrix.map_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iota_op (x : Fin n → k⸨X⸩) (i : Fin n) : ι (∑ m, R.φ (G i m) * R.γ (x m) - x i) =
     ∑ m, phiPi k l (G.map ι i m) * gamPi k l (ι (x m)) - ι (x i) := by
   simp only [map_sub, map_sum, map_mul, hι.2.2.2.1, iota_gam hι, Matrix.map_apply]
 
 /- English proof (translation)
-Use `core_maps h5 _ (map_sub_one hι h5 G hG) (fun i => ι (x i)) (fun i => (ker_iff hψ).1 (hx i)) (fun i => (ker_mem_iff hι hψ h1 (by omega) (hx i)).1 (hs i)) i` as an intermediate fact. Rewrite `this` using `[← iota_op hι, ← ker_iff hψ]`. Conclude with `(ker_mem_iff hι hψ (by omega) (by omega) this.1).2 this.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_maps {a : ℤ} (h1 : 2 - (l : ℤ) ≤ a) (h2 : a ≤ 0) (x : Fin n → k⸨X⸩) (hx : ∀ i, ψ (x i) = 0)
     (hs : ∀ i, x i ∈ Dp k a) (i : Fin n) : ∑ m, R.φ (G i m) * R.γ (x m) - x i ∈ Dp k (a + 1) := by
@@ -189,13 +187,13 @@ theorem coord_maps {a : ℤ} (h1 : 2 - (l : ℤ) ≤ a) (h2 : a ≤ 0) (x : Fin 
   exact (ker_mem_iff hι hψ (by omega) (by omega) this.1).2 this.2
 
 /- English proof (translation)
-Take `⟨y, y1, y2, y3⟩` from `core_surj h5 _ (map_sub_one hι h5 G hG) (fun i => ι (z i)) (fun i => (ker_iff hψ).1 (hz i)) (fun i => (ker_mem_iff hι hψ (by omega) (by omega) (hz i)).1 (hs i))`. Establish `: ∀ i, ∃ x, ι x = y i`. Introduce `i`. Use `(range_iff hι _).2 fun t ht => ?_` and prove the remaining obligations. Establish `hd : ∀ x, delPi k t (ι x) = ι x` using `fun x => (range_iff hι _).1 ⟨x, rfl⟩ t ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `core_inj h5 _ (map_sub_one hι h5 G hG) (fun i => delPi k t (y i) - y i) (fun i => by rw [map_sub, psi_del, y1, map_zero, sub_zero]) (fun i => by` as an intermediate fact. Establish `h3` using `congrArg (delPi k t) (y3 i)`. Establish `h4` using `y3 i`. Simplify using `only [map_sub, map_sum, map_mul, del_phi, del_gam, Matrix.map_apply, hd, mul_sub, Finset.sum_sub_distrib] at h3 h4 ⊢`. Take the linear combination `h3 - h4)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `sub_eq_zero.1 (congrFun this i)`. Use `choose x hx using this`. Establish `hk : ∀ i, ψ (x i) = 0` using `fun i => by rw [ker_iff hψ, hx, y1]`. Use `⟨x, hk, fun i => (ker_mem_iff hι hψ h1 (by omega) (hk i)).2 (hx i ▸ y2 i), fun i => ι.injective ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ι _ = ι _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[iota_op hι, ← y3]`. Simplify using `only [hx]`.
+A detailed English derivation is pending.
 -/
 theorem coord_surj {a : ℤ} (h1 : 2 - (l : ℤ) ≤ a) (h2 : a ≤ 0) (z : Fin n → k⸨X⸩) (hz : ∀ i, ψ (z i) = 0)
     (hs : ∀ i, z i ∈ Dp k (a + 1)) : ∃ x : Fin n → k⸨X⸩, (∀ i, ψ (x i) = 0) ∧ (∀ i, x i ∈ Dp k a) ∧
@@ -229,9 +227,9 @@ variable {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [M
 
 omit [Module k⟦X⟧ V] [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] in
 /- English proof (translation)
-Establish `h : ⊤ ≤ Submodule.span k⸨X⸩ (Set.range fun j => f (b j))`. Rewrite using `[← ht]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← b.sum_repr x, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hf]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Conclude with `⟨Module.Basis.mk (linearIndependent_of_top_le_span_of_card_eq_finrank h (Module.finrank_eq_card_basis b).symm) h, fun i => Module.Basis.mk_apply _ _ i⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pull_basis {σ : k⸨X⸩ →ₐ[k] k⸨X⸩} {f : V →ₗ[k] V} (hf : Semi σ f)
     (ht : Submodule.span k⸨X⸩ (Set.range f) = ⊤) {n : ℕ} (b : Module.Basis (Fin n) k⸨X⸩ V) :
@@ -249,11 +247,11 @@ theorem exists_pull_basis {σ : k⸨X⸩ →ₐ[k] k⸨X⸩} {f : V →ₗ[k] V}
 
 omit [Module k⟦X⟧ V] [IsScalarTower k⟦X⟧ k⸨X⸩ V] in
 /- English proof (translation)
-Set `b` to `Module.finBasis k⸨X⸩ V`. Take `⟨c, hc⟩` from `exists_pull_basis hf ht b`. Use `⟨⟨⟨fun x => ∑ i, ψ (c.repr x i) • b i, fun x y => ?_⟩, fun r x => ?_⟩, fun a x => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Finsupp.add_apply, add_smul, Finset.sum_add_distrib]`. Simplify using `only [RingHom.id_apply, Finset.smul_sum]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_one_smul k⸨X⸩ r x, map_smul, Finsupp.smul_apply, smul_assoc, one_smul, map_smul, smul_assoc]`. Express the relevant statement in the definitionally equal form `∑ i, ψ (c.repr (a • f x) i) • b i = _`. Establish `h1 : a • f x = ∑ i, (σ (b.repr x i) * a) • c i` using `by conv_lhs => rw [← b.sum_repr x, map_sum, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hf, hc, smul_smul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_rhs => rw [← b.sum_repr x, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h1, c.repr_sum_self, hψ, smul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_Psi [FiniteDimensional k⸨X⸩ V] {σ : k⸨X⸩ →ₐ[k] k⸨X⸩} {f : V →ₗ[k] V} (hf : Semi σ f)
     (ht : Submodule.span k⸨X⸩ (Set.range f) = ⊤) (ψ : k⸨X⸩ →ₗ[k] k⸨X⸩) (hψ : ∀ a x, ψ (σ a * x) = a * ψ x) :
@@ -275,7 +273,7 @@ theorem exists_Psi [FiniteDimensional k⸨X⸩ V] {σ : k⸨X⸩ →ₐ[k] k⸨X
 
 omit [Module k V] [IsScalarTower k k⸨X⸩ V] in
 /- English proof (translation)
-Rewrite using `[mem_sh_iff_smul_mem, b.mem_span_iff_repr_mem k⟦X⟧]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[Dp, mem_sh_iff_smul_mem, mem_stdLat, map_smul, Finsupp.smul_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_sh_span {n : ℕ} (b : Module.Basis (Fin n) k⸨X⸩ V) (s : ℤ) (x : V) :
     x ∈ sh s (Submodule.span k⟦X⟧ (Set.range b)) ↔ ∀ i, b.repr x i ∈ Dp k s := by
@@ -286,9 +284,9 @@ theorem mem_sh_span {n : ℕ} (b : Module.Basis (Fin n) k⸨X⸩ V) (s : ℤ) (x
 
 omit [Module k V] [IsScalarTower k k⸨X⸩ V] in
 /- English proof (translation)
-Establish `: Submodule.IsLattice k⸨X⸩ M` using `⟨hM.1, hM.2⟩`. Set `e` to `Module.finBasis k⟦X⟧ M`. Use `⟨_, e.extendOfIsLattice k⸨X⸩, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (Submodule.map M.subtype) e.span_eq`. Rewrite `h` using `[Submodule.map_span, Submodule.map_subtype_top, ← Set.range_comp]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h.symm.trans ?_` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem exists_lat_basis {M : Submodule k⟦X⟧ V} (hM : IsLat M) :
     ∃ (n : ℕ) (b : Module.Basis (Fin n) k⸨X⸩ V), M = Submodule.span k⟦X⟧ (Set.range b) := by
@@ -304,13 +302,11 @@ theorem exists_lat_basis {M : Submodule k⟦X⟧ V} (hM : IsLat M) :
 
 omit [IsScalarTower k k⸨X⸩ V] in
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨j, rfl⟩ := hy`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Conclude with `Submodule.subset_span ⟨j, hc j⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul a y _ hy`. Take `⟨e, he⟩` from `hσ a`. Rewrite using `[← algebraMap_smul k⸨X⸩ a y, hf]`. Conclude with `(he ▸ TwistShift.coe_smul_mem e hy :)`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨b j, Submodule.subset_span ⟨j, rfl⟩, (hc j).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pull_span {σ : k⸨X⸩ →ₐ[k] k⸨X⸩} (hσ : ∀ a : k⟦X⟧, ∃ b : k⟦X⟧, σ (a : k⸨X⸩) = (b : k⸨X⸩))
     {f : V →ₗ[k] V} (hf : Semi σ f) {n : ℕ} (b c : Fin n → V) (hc : ∀ i, c i = f (b i)) :
@@ -333,27 +329,27 @@ theorem pull_span {σ : k⸨X⸩ →ₐ[k] k⸨X⸩} (hσ : ∀ a : k⟦X⟧, �
 end Mod
 
 /- English proof (translation)
-Introduce `l hl k _ _ h5 R ι hι`. Take `⟨ψ, hψ⟩` from `exists_psi hι`. Establish `hR` using `psiRing hι hψ`. Use `⟨assemble_bijective k l, ψ, fun x y h => by rw [hψ, h, psi_assemble], hR, ?_⟩` and prove the remaining obligations. Introduce `V _ _ _ _ _ _ _ _ f g₀ g hf ht hg₀ hg hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Ψ, hΨ⟩` from `exists_Psi hf ht ψ hR.1`. Establish `hcomm : ∀ x, Ψ (g x) = g₀ (Ψ x)`. Introduce `x`. Take `⟨c, hc'⟩` from `exists_pull_basis hf ht (Module.finBasis k⸨X⸩ V)`. Rewrite using `[← c.sum_repr x]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hc', hg, ← hc, hΨ, hΨ, hg₀, hR.2.2.1]`. Use `⟨Ψ, (psiMod_iff R ψ ((psiRing_iff R ψ).1 hR) f g₀ g Ψ).2 ⟨hΨ, hcomm, ?_⟩⟩` and prove the remaining obligations. Introduce `M hM hC a h1 h2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨n, b, rfl⟩` from `exists_lat_basis hM`. Take `⟨c, hcb⟩` from `exists_pull_basis hf ht b`. Rewrite using `[pull_span R.φ_int hf b c hcb]`. Set `G : Matrix (Fin n) (Fin n) k⸨X⸩` to `Matrix.of fun i m => b.repr (g₀ (b m)) i`. Establish `hG : ∀ i m, (G - 1) i m ∈ Dp k 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i m`. Use `(mem_sh_span b 1 _).1 (hC (b m) (Submodule.subset_span ⟨m, rfl⟩)) i` as an intermediate fact. Simplify `this` using `[G, Matrix.one_apply, Finsupp.single_apply, eq_comm]`. Establish `hker : ∀ x, Ψ x = 0 ↔ ∀ i, ψ (c.repr x i) = 0`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: Ψ x = ∑ i, ψ (c.repr x i) • b i` using `by conv_lhs => rw [← c.sum_repr x, map_sum]`. Simplify using `only [hcb, hΨ]`. Rewrite using `[this]`. Conclude with `⟨Fintype.linearIndependent_iff.1 b.linearIndependent _, fun h => by simp [h]⟩`. Establish `hop : ∀ x i, c.repr (g x - x) i = ∑ m, R.φ (G i m) * R.γ (c.repr x m) - c.repr x i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `x i`. Establish `h3 : ∀ m, c.repr (g (c m)) i = R.φ (G i m)`. Introduce `m`. Rewrite using `[hcb, ← hc, ← b.sum_repr (g₀ (b m)), map_sum]`. Simplify using `only [hf _, ← hcb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[c.repr_sum_self]`. Both sides reduce to the same expression. Rewrite using `[map_sub, Finsupp.sub_apply]`. Use `congr 1`. Use `conv_lhs => rw [← c.sum_repr x, map_sum, map_sum, Finsupp.finset_sum_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[hg, map_smul, Finsupp.smul_apply, h3, smul_eq_mul, mul_comm]`. Use extensionality with `z`. Simplify using `only [FrobeniusBinomialReduction.kerPsi, Set.mem_image, Set.mem_setOf_eq, mem_sh_span]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, ⟨hx1, hx2⟩, rfl⟩`. Use `⟨fun i => ?_, by rw [map_sub, hcomm, hx2, map_zero, sub_zero]⟩` and prove the remaining obligations. Rewrite using `[hop]`. Conclude with `coord_maps hι hψ h5 G hG h1 h2 _ ((hker x).1 hx2) hx1 i`. Introduce and unpack `⟨hz1, hz2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, x1, x2, x3⟩` from `coord_surj hι hψ h5 G hG h1 h2 _ ((hker z).1 hz2) hz1`. Use `⟨∑ i, x i • c i, ⟨by simpa only [c.repr_sum_self] using x2, (hker _).2 (by simpa only [c.repr_sum_self] using x1)⟩, c.ext_elem fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hop, c.repr_sum_self, x3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lemmaPsi : GlobalTheory.IndefiniteRowSideFullHecke.OnePlusPowerCharacters.LemmaPsi := by
   intro l hl k _ _ h5 R ι hι

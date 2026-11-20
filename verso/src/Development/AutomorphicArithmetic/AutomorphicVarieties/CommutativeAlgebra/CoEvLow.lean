@@ -3,21 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Use `Fintype.ofFinite σ` as an intermediate fact. Establish `hex : ∀ d : σ →₀ ℕ, ∃ o : Option σ, d ≠ 0 → ∃ s, o = some s ∧ d s ≠ 0`. Introduce `d`. Distinguish the cases in `hd : d = 0`. Conclude with `⟨none, fun h => (h hd).elim⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, d s ≠ 0 := by`. Assume the negation of the conclusion as `H`. Use `push_neg at H`. Conclude with `hd (Finsupp.ext H)`. Conclude with `⟨some s, fun _ => ⟨s, rfl, hs⟩⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose sel hsel using hex`. Set `g : σ → MvPowerSeries σ R` to `fun s e => if sel (e + Finsupp.single s 1) = some s then MvPowerSeries.coeff (e + Finsupp.single s 1) h else 0`. Establish `key : h = ∑ s, MvPowerSeries.X s * g s`. Use extensionality with `d`. Rewrite using `[map_sum]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Repeatedly rewrite using `[MvPowerSeries.X_def, MvPowerSeries.coeff_monomial_mul, one_mul]`. Distinguish the cases in `hd : d = 0`. Substitute `hd` using the available equality. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h0]`. Use `(Finset.sum_eq_zero fun s _ => ?_).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_neg]`. Simplify using `[Finsupp.single_le_iff]`. Take `⟨s0, hs0, hds0⟩` from `hsel d hd`. Establish `hle0 : Finsupp.single s0 1 ≤ d` using `Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr hds0)`. Rewrite using `[Finset.sum_eq_single s0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_pos hle0] show _ = (if sel (d - Finsupp.single s0 1 + Finsupp.single s0 1) = some s0 then MvPowerSeries.coeff (d - Finsupp.single s0 1 + Finsupp.single s0 1) h else 0)`. Rewrite using `[tsub_add_cancel_of_le hle0, if_pos hs0]`. Introduce `s _ hs split_ifs with hle`. Use `show (if sel (d - Finsupp.single s 1 + Finsupp.single s 1) = some s then MvPowerSeries.coeff (d - Finsupp.single s 1 + Finsupp.single s 1) h else 0) = 0`. Rewrite using `[tsub_add_cancel_of_le hle, hs0, if_neg]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h'`. Conclude with `hs (Option.some_injective _ h').symm`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite using `[key]`.
-
-Conclude with `Ideal.sum_mem _ fun s _ => Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨s, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem mvPowerSeries_mem_span_X_of_constantCoeff_zero {σ R : Type} [Finite σ] [CommRing R] (h : MvPowerSeries σ R)
     (h0 : MvPowerSeries.constantCoeff h = 0) :
@@ -67,13 +65,11 @@ private theorem mvPowerSeries_mem_span_X_of_constantCoeff_zero {σ R : Type} [Fi
   exact Ideal.sum_mem _ fun s _ => Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨s, rfl⟩)
 
 /- English proof (translation)
-Use `Fintype.ofFinite σ` as an intermediate fact. Proceed by induction on `n generalizing g with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ n ih`. Establish `h1 : g - MvPowerSeries.C (MvPowerSeries.constantCoeff g) ∈ Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ R))` using `mvPowerSeries_mem_span_X_of_constantCoeff_zero _ (by simp)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (MvPowerSeries σ R)).mp h1`. Use `choose p hp using fun s => ih (c s)`. Use `⟨MvPolynomial.C (MvPowerSeries.constantCoeff g) + ∑ s, p s * MvPolynomial.X s, ?_⟩` and prove the remaining obligations. Establish `hsum : ((∑ s, p s * MvPolynomial.X s : MvPolynomial σ R) : MvPowerSeries σ R) = ∑ s, (p s : MvPowerSeries σ R) * MvPowerSeries.X s`. Rewrite using `[← MvPolynomial.coeToMvPowerSeries.ringHom_apply, map_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[MvPolynomial.coeToMvPowerSeries.ringHom_apply]`. Establish `e : g - ((MvPolynomial.C (MvPowerSeries.constantCoeff g) + ∑ s, p s * MvPolynomial.X s : MvPolynomial σ R) : MvPowerSeries σ R) = ∑ s, (c s - (p s : MvPowerSeries σ R)) * MvPowerSeries.X s`. Rewrite using `[MvPolynomial.coe_add, hsum, MvPolynomial.coe_C, ← sub_sub, ← hc]`. Simplify using `[sub_mul, smul_eq_mul, Finset.sum_sub_distrib]`. Rewrite using `[e, pow_succ]`.
-
-Conclude with `Ideal.sum_mem _ fun s _ => Ideal.mul_mem_mul (hp s) (Ideal.subset_span ⟨s, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mvPowerSeries_exists_polynomial_sub_mem_span_X_pow {σ R : Type} [Finite σ] [CommRing R] (n : ℕ) (g : MvPowerSeries σ R) :
     ∃ p : MvPolynomial σ R, g - (p : MvPowerSeries σ R) ∈
@@ -102,23 +98,23 @@ private theorem mvPowerSeries_exists_polynomial_sub_mem_span_X_pow {σ R : Type}
     exact Ideal.sum_mem _ fun s _ => Ideal.mul_mem_mul (hp s) (Ideal.subset_span ⟨s, rfl⟩)
 
 /- English proof (translation)
-Introduce `O _ _ R _ _ _ R' _ _ _ σ _ f a ha`. Use `letI : WithIdeal R' := ⟨maximalIdeal R'⟩`. Establish `hcs : CompleteSpace R' ∧ T2Space R'` using `(IsAdic.isAdicComplete_iff (R := R') (I := maximalIdeal R') rfl).mp (IsCO.complete (O := O))`. Use `haveI := hcs.1`. Use `haveI := hcs.2`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hE : MvPowerSeries.HasEval a` using `⟨fun s => WithIdeal.isTopologicallyNilpotent_of_mem (ha s), by simp [Filter.cofinite_eq_bot]⟩`. Set `E : MvPowerSeries σ R →+* R'` to `(MvPowerSeries.aeval hE).toRingHom.comp (MvPowerSeries.map f.toRingHom)`. Establish `hEC : ∀ x, E (C x) = f x`. Introduce `x`. Simplify using `[E, MvPowerSeries.coe_aeval, MvPowerSeries.eval₂_C, MvPowerSeries.map_C]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hEX : ∀ s, E (X s) = a s`. Introduce `s`. Simplify using `[E, MvPowerSeries.coe_aeval, MvPowerSeries.eval₂_X, MvPowerSeries.map_X]`. Set `F : MvPowerSeries σ R →ₐ[O] R'` to `{ E with commutes' := fun r => by`. Express the relevant statement in the definitionally equal form `E (algebraMap O (MvPowerSeries σ R) r) = _`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[MvPowerSeries.algebraMap_apply, hEC]`. Simplify using `}`. Use `⟨F, ⟨hEC, hEX⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `G ⟨hGC, hGX⟩`. Establish `hpoly : ∀ (H : MvPowerSeries σ R →ₐ[O] R'), (∀ x, H (C x) = f x) → (∀ s, H (X s) = a s) → ∀ p : MvPolynomial σ R, H (p : MvPowerSeries σ R) = MvPolynomial.eval₂ f.toRingHom a p`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `H hC hX p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c => simp [MvPolynomial.coe_C, hC]`. Consider the case `add p q hp hq => simp [MvPolynomial.coe_add, hp, hq]`. Consider the case `mul_X p s hp => simp [MvPolynomial.coe_mul, MvPolynomial.coe_X, hp, hX]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJ : ∀ (H : MvPowerSeries σ R →ₐ[O] R'), (∀ s, H (X s) = a s) → ∀ n, ∀ y ∈ (Ideal.span (Set.range (X : σ → MvPowerSeries σ R))) ^ n, H y ∈ maximalIdeal R' ^ n`. Introduce `H hX n y hy`. Establish `h1 : Ideal.map H (Ideal.span (Set.range (X : σ → MvPowerSeries σ R))) ≤ maximalIdeal R'`. Rewrite using `[Ideal.map_span, Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨s, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hX]`. Conclude with `ha s`. Establish `h2` using `Ideal.mem_map_of_mem H hy`. Rewrite `h2` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 n h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hH : IsHausdorff (maximalIdeal R') R'` using `(IsCO.complete (O := O)).toIsHausdorff`. Use extensionality with `g`. Rewrite using `[← sub_eq_zero]`. Use `hH.haus _ fun n => ?_` and prove the remaining obligations. Take `⟨p, hp⟩` from `mvPowerSeries_exists_polynomial_sub_mem_span_X_pow n g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : G g - F g = G (g - p) - F (g - p)`. Rewrite using `[map_sub, map_sub, hpoly G hGC hGX, hpoly F (fun x => hEC x) (fun s => hEX s)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, e1]`. Conclude with `Ideal.sub_mem _ (hJ G hGX n _ hp) (hJ F (fun s => hEX s) n _ hp)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.co_ev :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (σ : Type) [Finite σ] (f : R →ₐ[O] R') (a : σ → R'), (∀ s, a s ∈ maximalIdeal R') →

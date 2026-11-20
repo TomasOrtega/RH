@@ -29,7 +29,7 @@ variable (hsurj : Function.Surjective (algebraMap P S))
 
 omit [IsLocalRing P] in
 /- English proof (translation)
-Establish `h` using `(residueAlgEquivOfSurjective hres).apply_symm_apply (algebraMap S (ResidueField S) (algebraMap P S x))`. Rewrite using `[IsScalarTower.algebraMap_apply P S (ResidueField S)]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma algebraMap_valueAt (x : P) :
     algebraMap k (ResidueField S) (valueAt hres x) = algebraMap P (ResidueField S) x := by
@@ -41,7 +41,7 @@ lemma algebraMap_valueAt (x : P) :
 include hsurj in
 omit [Algebra k P] [Algebra k S] [IsScalarTower k P S] in
 /- English proof (translation)
-The claim follows from `eq_maximalIdeal (Ideal.comap_isMaximal_of_surjective _ hsurj)`.
+A detailed English derivation is pending.
 -/
 lemma comap_maximalIdeal_eq : (maximalIdeal S).comap (algebraMap P S) = maximalIdeal P :=
   eq_maximalIdeal (Ideal.comap_isMaximal_of_surjective _ hsurj)
@@ -49,7 +49,7 @@ lemma comap_maximalIdeal_eq : (maximalIdeal S).comap (algebraMap P S) = maximalI
 include hsurj in
 omit [Algebra k P] [Algebra k S] [IsScalarTower k P S] in
 /- English proof (translation)
-Rewrite using `[← comap_maximalIdeal_eq hsurj, Ideal.mem_comap, IsScalarTower.algebraMap_apply P S (ResidueField S), ResidueField.algebraMap_eq, residue_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mem_maximalIdeal_iff (x : P) :
     x ∈ maximalIdeal P ↔ algebraMap P (ResidueField S) x = 0 := by
@@ -58,7 +58,7 @@ lemma mem_maximalIdeal_iff (x : P) :
 
 include hsurj in
 /- English proof (translation)
-Rewrite using `[mem_maximalIdeal_iff hsurj, map_sub, ← IsScalarTower.algebraMap_apply k P (ResidueField S), algebraMap_valueAt, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma sub_valueAt_mem (x : P) : x - algebraMap k P (valueAt hres x) ∈ maximalIdeal P := by
   rw [mem_maximalIdeal_iff hsurj, map_sub, ← IsScalarTower.algebraMap_apply k P (ResidueField S),
@@ -87,7 +87,7 @@ def cotD : P →ₗ[k] (maximalIdeal P).Cotangent where
 omit [Algebra k P] [Algebra k S] [IsScalarTower k P S] in
 include hsurj in
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[← comap_maximalIdeal_eq hsurj, Ideal.mem_comap, RingHom.mem_ker.1 hx]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ker_le_maximalIdeal : RingHom.ker (algebraMap P S) ≤ maximalIdeal P := by
   intro x hx
@@ -100,23 +100,21 @@ omit [Algebra k P] [Algebra k S] [IsScalarTower k P S] in
 include hsurj in
 
 /- English proof (translation)
-Establish `: IsNoetherianRing S` using `isNoetherianRing_of_surjective P S _ hsurj`. Take `⟨G, hGc, hGs⟩` from `Submodule.FG.exists_span_set_encard_eq_spanFinrank (Ideal.fg_of_isNoetherianRing (maximalIdeal S))`. Establish `hGfin : G.Finite` using `Set.finite_of_encard_eq_coe hGc`. Use `set σ := Function.surjInv hsurj`. Establish `hσ : ∀ s, algebraMap P S (σ s) = s` using `Function.surjInv_eq hsurj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomap : (maximalIdeal (P ⧸ J)).comap (Ideal.Quotient.mk J) = maximalIdeal P` using `eq_maximalIdeal (Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective)`. Establish `hmap : Ideal.map (Ideal.Quotient.mk J) (maximalIdeal P) ≤ maximalIdeal (P ⧸ J)` using `Ideal.map_le_iff_le_comap.2 hcomap.ge`. Establish `hσm : ∀ g ∈ G, σ g ∈ maximalIdeal P`. Introduce `g hg`. Rewrite using `[← comap_maximalIdeal_eq hsurj, Ideal.mem_comap, hσ, ← hGs]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.subset_span hg`. Establish `hnsub : maximalIdeal P ≤ Ideal.span (σ '' G) ⊔ RingHom.ker (algebraMap P S)`. Introduce `x hx`. Establish `hx' : algebraMap P S x ∈ Ideal.map (algebraMap P S) (Ideal.span (σ '' G))`. Rewrite using `[Ideal.map_span, Set.image_image]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: (fun g => algebraMap P S (σ g)) '' G = G`. Simplify using `only [hσ, Set.image_id']`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `algebraMap P S x ∈ Submodule.span S G`. Rewrite using `[hGs, ← Ideal.mem_comap, comap_maximalIdeal_eq hsurj]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hx`. Take `⟨y, hy, hyx⟩` from `(Ideal.mem_map_iff_of_surjective _ hsurj).1 hx'`. Use `Submodule.mem_sup.2 ⟨y, hy, x - y, ?_, by ring⟩` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, map_sub, hyx, sub_self]`. Use `set T : Set (P ⧸ J) := Ideal.Quotient.mk J '' (σ '' G)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hTm : T ⊆ maximalIdeal (P ⧸ J)`. Introduce and unpack `_ ⟨_, ⟨g, hg, rfl⟩, rfl⟩`. Conclude with `hmap (Ideal.mem_map_of_mem _ (hσm g hg))`. Establish `hle : maximalIdeal (P ⧸ J) ≤ Ideal.span T`. Apply `Submodule.le_of_le_smul_of_le_jacobson_bot (IsNoetherian.noetherian _) (maximalIdeal_le_jacobson ⊥)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Establish `hx : x ∈ maximalIdeal P` using `by rw [← hcomap]; exact hz`. Establish `hx2 : x ∈ Ideal.span (σ '' G) ⊔ (J ⊔ maximalIdeal P ^ 2)` using `sup_le_sup_left hcov _ (hnsub hx)`. Establish `h3` using `Ideal.mem_map_of_mem (Ideal.Quotient.mk J) hx2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[Ideal.map_sup, Ideal.map_sup, Ideal.map_span, Ideal.map_quotient_self, bot_sup_eq, Ideal.map_pow]`. Establish `H : Ideal.map (Ideal.Quotient.mk J) (maximalIdeal P) ^ 2 ≤ maximalIdeal (P ⧸ J) • maximalIdeal (P ⧸ J)`. Rewrite using `[pow_two, Ideal.smul_eq_mul]`. Conclude with `Ideal.mul_mono hmap hmap`. Conclude with `sup_le_sup_left H _ h3`.
-
-Establish `heq : maximalIdeal (P ⧸ J) = Ideal.span T` using `le_antisymm hle (Ideal.span_le.2 hTm)`. Rewrite using `[heq]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma spanFinrank_quotient_le (J : Ideal P) [IsLocalRing (P ⧸ J)]
     (hcov : RingHom.ker (algebraMap P S) ≤ J ⊔ maximalIdeal P ^ 2) :
@@ -181,21 +179,21 @@ omit [Algebra k P] [Algebra k S] [IsScalarTower k P S] in
 include hsurj in
 
 /- English proof (translation)
-Use `set J := Ideal.span (Set.range f)`. Establish `hJI : J ≤ RingHom.ker (algebraMap P S)` using `Ideal.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hfI i)`. Establish `hJtop : J ≠ ⊤` using `ne_top_of_le_ne_top (maximalIdeal.isMaximal P).ne_top (hJI.trans (ker_le_maximalIdeal hsurj))`. Establish `: Nontrivial (P ⧸ J)` using `Ideal.Quotient.nontrivial_iff.2 hJtop`. Establish `: IsLocalRing (P ⧸ J)` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ψ : P ⧸ J →+* S` to `Ideal.Quotient.lift J (algebraMap P S) (fun x hx => hJI hx)`. Establish `hψ : Function.Surjective ψ`. Introduce `s`. Take `⟨x, rfl⟩` from `hsurj s`. Conclude with `⟨Ideal.Quotient.mk J x, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hspan` using `spanFinrank_quotient_le hsurj J hcov`. Establish `h1 : ringKrullDim S ≤ ringKrullDim (P ⧸ J)` using `ringKrullDim_le_of_surjective ψ hψ`. Establish `h2 : ringKrullDim (P ⧸ J) ≤ (maximalIdeal (P ⧸ J)).spanFinrank` using `ringKrullDim_le_spanFinrank_maximalIdeal _`. Establish `h3 : ((maximalIdeal (P ⧸ J)).spanFinrank : WithBot ℕ∞) ≤ d`. Conclude with `hspan.trans hμ` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsRegularLocalRing (P ⧸ J)` using `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le _ (h3.trans (hdim.trans h1))`. Establish `: IsDomain (P ⧸ J)` using `GroundTheory.Arith.SchemeCoh.IsRegularLocalRing.isDomain`. Establish `hinj : Function.Injective ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hz0`. Establish `h5` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor (mem_nonZeroDivisors_of_ne_zero hz0)`. Set `ψ' : (P ⧸ J) ⧸ Ideal.span {z} →+* S` to `Ideal.Quotient.lift (Ideal.span {z}) ψ (by`. Introduce `w hw`. Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton'.1 hw`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, hz, mul_zero])`. Establish `hψ' : Function.Surjective ψ'`. Introduce `s`. Take `⟨w, hw⟩` from `hψ s`. Conclude with `⟨Ideal.Quotient.mk _ w, hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `ringKrullDim_le_of_surjective ψ' hψ'`. Establish `h7 : (d : WithBot ℕ∞) + 1 ≤ d`. Combine the equalities or inequalities in the displayed calculation. Establish `h8 : ((d + 1 : ℕ) : WithBot ℕ∞) ≤ (d : ℕ)` using `by exact_mod_cast h7`. Establish `h9 : d + 1 ≤ d` using `by exact_mod_cast h8`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `x hx`. Establish `hx' : ψ (Ideal.Quotient.mk J x) = 0` using `RingHom.mem_ker.1 hx`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (hinj (hx'.trans (map_zero ψ).symm))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma ker_le_span_of_spanFinrank_le {κ : Type} [Fintype κ] (f : κ → P)
     (hfI : ∀ i, f i ∈ RingHom.ker (algebraMap P S))

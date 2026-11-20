@@ -11,15 +11,13 @@ namespace GlobalTheory
 open Filter Topology
 
 /- English proof (translation)
-Introduce `k _ X _ p D d a L A m hAHS hX hL hA hd ha hm`. Establish `hmul : Tendsto (fun j : ℕ => a * j) atTop atTop` using `tendsto_atTop_mono (fun j => Nat.le_mul_of_pos_left j ha) tendsto_id`. Establish `h1` using `((hAHS.tendsto_of_triv hX hL hA).comp hmul).div_const ((d : ℝ) * ((D : ℝ) + 1))`. Establish `h2` using `ENNReal.tendsto_ofReal h1`. Use `(limsup_le_limsup ?_).trans_eq h2.limsup_eq` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hmul.eventually (hAHS.of_triv hX hL hA).1, eventually_ge_atTop 1] with j hfin hj`. Establish `hx : 0 ≤ Real.log (((L.pow (a * j)).smallSec.ncard : ℕ) : ℝ)` using `Real.log_natCast_nonneg _`. Establish `hN : (0 : ℝ) < ((a * j : ℕ) : ℝ)` using `Nat.cast_pos.2 (Nat.mul_pos ha hj)`. Establish `hd' : (0 : ℝ) < (d : ℝ)` using `Nat.cast_pos.2 hd`. Establish `hlog : logCard (m (a * j)) ≤ ENNReal.ofReal (Real.log (((L.pow (a * j)).smallSec.ncard : ℕ) : ℝ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← logCard_coe, hfin.cast_ncard_eq]`. Conclude with `EReal.toENNReal_le_toENNReal (ENNReal.log_monotone (ENat.toENNReal_le.2 (hm j hj)))`. Establish `hden : (d : ℝ≥0∞) * ((a * j : ℕ) : ℝ≥0∞) ^ (D + 1) = ENNReal.ofReal ((d : ℝ) * ((a * j : ℕ) : ℝ) ^ (D + 1))`. Rewrite using `[ENNReal.ofReal_mul hd'.le, ENNReal.ofReal_pow hN.le, ENNReal.ofReal_natCast, ENNReal.ofReal_natCast]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hden, ← ENNReal.ofReal_natCast (D.factorial), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_div_of_pos (by positivity)]`. Simplify using `only [Function.comp]`. Use `congr 1`. Rewrite using `[Nat.factorial_succ]`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem countVol_le_selfInter : ∀ (k : Type) [CommRing k] (X : AlgebraicGeometry.Scheme.{0}) [AlgebraicGeometry.IsIntegral X] (p : X ⟶ Sp k) (D d a : ℕ) (L : GlobalTheory.HermLB p) (A : ℝ) (m : ℕ → ℕ∞), GlobalTheory.Published.ArithHilbertSamuel → GlobalTheory.IsArithVar p D → L.IsNef D → L.IsSelfInter A → 0 < d → 0 < a → (∀ i : ℕ, 1 ≤ i → m (a * i) ≤ (L.pow (a * i)).smallSec.encard) → countVol D d a m ≤ ENNReal.ofReal (A / ((d : ℝ) * ((D : ℝ) + 1))) := by
   intro k _ X _ p D d a L A m hAHS hX hL hA hd ha hm

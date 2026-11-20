@@ -22,9 +22,9 @@ def ind (w g : UA σ J₂) (𝓓 : Set (unipN σ J₂)) (y : UA σ J₂) : ℂ :
 omit [NumberField E] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Distinguish the cases in `h : x ∈ 𝓓`. Rewrite using `[Set.indicator_of_mem h, ind, if_pos ⟨x, h, rfl⟩]`. Rewrite using `[Set.indicator_of_notMem h, ind, if_neg]`. Introduce and unpack `⟨y, hy, e⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `h ((Subtype.ext (mul_left_cancel (mul_right_cancel e)) : x = y) ▸ hy)`.
+A detailed English derivation is pending.
 -/
 theorem ind_apply (w g : UA σ J₂) (𝓓 : Set (unipN σ J₂)) :
     (fun x : unipN σ J₂ => ind w g 𝓓 (w * x * g)) = 𝓓.indicator fun _ => 1 := by
@@ -38,7 +38,7 @@ theorem ind_apply (w g : UA σ J₂) (𝓓 : Set (unipN σ J₂)) :
 omit [NumberField E] in
 
 /- English proof (translation)
-Take `⟨-, 𝓓, h1, h2⟩` from `h`. Use `⟨ind w g 𝓓, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IntConv, ind_apply]`. Conclude with `(integrableOn_const (by rw [h2]; exact ENNReal.one_ne_top) : IntegrableOn (fun _ => (1 : ℂ)) 𝓓 νN).integrable_indicator₀ h1.nullMeasurableSet`. Rewrite using `[intM, ind_apply, integral_indicator₀ h1.nullMeasurableSet, setIntegral_const, Measure.real, h2, ENNReal.toReal_one, one_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intM_eq_one {νN : Measure (unipN σ J₂)} (h : IsNormN σ νN) (w g : UA σ J₂) :
     ∃ f, IntConv νN w f g ∧ intM νN w f g = 1 := by
@@ -53,13 +53,13 @@ theorem exists_intM_eq_one {νN : Measure (unipN σ J₂)} (h : IsNormN σ νN) 
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `hm : ∀ g s, MeromorphicAt (fun s : ℂ => s⁻¹ * intM νN w f g) s` using `fun g s => (MeromorphicAt.id s).inv.mul (.const _ _)`. Establish `he : ∀ g, (fun s : ℂ => intM νN w (s⁻¹ • f) g) = fun s => s⁻¹ * intM νN w f g` using `fun g =>`. Use function extensionality and compare the values at `fun s => intM_smul _ _ _`. Establish `hx : ∀ g, Cont.IsMerExt (fun s : ℂ => s⁻¹ * intM νN w f g) Set.univ fun s => s⁻¹ * intM νN w f g` using `fun g => Cont.isMerExt_self Cont.isRightDomain_univ fun s _ => hm g s`. Use `⟨⟨⟨0, fun s _ g => (hf g).smul _⟩, fun g => ?_⟩, fun g => ?_, fun g => ?_, fun g => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he]`. Conclude with `⟨_, hx g⟩`. Rewrite using `[coefM, he]`. Use `Cont.CoeffAt.laurent_eq (((hx g).isExtAt trivial).coeffAt_of_tendsto (k := 1) ?_)` and prove the remaining obligations. Use `tendsto_const_nhds.congr' (eventually_nhdsWithin_of_forall fun s hs => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: s ≠ 0` using `hs`. Simplify using `only [sub_zero, pow_one]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[contM, he]`. Use `Cont.ValueAt.cont_eq ⟨_, (hx g).isExtAt trivial, Polynomial.C (intM νN w f g) * Polynomial.X, by simp, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tendsto_const_nhds.congr fun s => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X, sub_zero, mul_comm, sub_self]`. Rewrite using `[contM, he]`. Use `Cont.ValueAt.cont_eq (Cont.HolValueAt.valueAt ⟨_, (hx g).isExtAt trivial, ?_, by simp⟩)` and prove the remaining obligations. Conclude with `(analyticAt_id.inv (by simp)).mul analyticAt_const`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coefM_pole {νN : Measure (unipN σ J₂)} {w : UA σ J₂} {f : UA σ J₂ → ℂ} (hf : ∀ g, IntConv νN w f g) :
     HasIntCont νN w (fun s => s⁻¹ • f) ∧ (∀ g, coefM νN w (fun s => s⁻¹ • f) 0 (-1) g = intM νN w f g) ∧
@@ -89,27 +89,25 @@ theorem coefM_pole {νN : Measure (unipN σ J₂)} {w : UA σ J₂} {f : UA σ J
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `hG` using `WittModel.gram_of_isWittBasis hσ hl hJ h`. Rewrite `hG` using `[← h₂]`. Establish `hm : (blk 1 (c • 1) 0 1 : Matrix (Fin (n + n)) (Fin (n + n)) E) * blk 1 (-(c • 1)) 0 1 = 1`. Rewrite using `[WittModel.blk_mul, ← WittModel.blk_one]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `w₀ : GL (Fin (n + n)) E` to `⟨_, _, hm, mul_eq_one_comm.1 hm⟩`. Establish `mp : ∀ {S : Type} [CommRing S] (f : E →+* S), (blk 1 (c • 1) 0 1 : Matrix (Fin (n + n)) (Fin (n + n)) E).map f = blk 1 (c • 1) 0 1` using `fun f => by`. Establish `: (c • (1 : Matrix (Fin n) (Fin n) E)).map f = c • 1`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, map_nsmul, Matrix.one_apply, apply_ite f, map_one, map_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [blk, ← Matrix.submatrix_map, Matrix.fromBlocks_map, Matrix.map_one _ (map_zero f) (map_one f), this, Matrix.map_zero _ (map_zero f)]`. Establish `hw : w₀.1ᵀ * blk 0 1 (-1) 0 * w₀.1.map σ = blk 0 1 (-1) 0`. Establish `e : w₀.1ᵀ = blk 1 0 (c • 1) 1`. Simplify using `only [w₀, blk, Matrix.transpose_submatrix, Matrix.fromBlocks_transpose, Matrix.transpose_one, Matrix.transpose_smul, Matrix.transpose_zero]`. Establish `e' : w₀.1.map σ = blk 1 (c • 1) 0 1` using `mp (σ : E →+* E)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e, e', WittModel.blk_mul, WittModel.blk_mul]`. Simplify using the standard rewrite rules. Establish `hT : T.1ᵀ * J₂ * T.1.map σ = l • blk 0 1 (-1) 0`. Rewrite using `[← hG, Matrix.mul_smul, Matrix.smul_mul, smul_smul, mul_inv_cancel₀ hl, one_smul]`. Establish `i1 : (T⁻¹).1ᵀ * T.1ᵀ = 1` using `by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `i2 : T.1.map σ * (T⁻¹).1.map σ = 1`. Rewrite using `[← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero σ) (map_one σ)]`. Establish `key : (T * w₀ * T⁻¹).1ᵀ * J₂ * (T * w₀ * T⁻¹).1.map σ = J₂`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, Matrix.transpose_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = (T⁻¹).1ᵀ * (T.1ᵀ * J₂ * T.1.map σ) * (T⁻¹).1.map σ := by`. Rewrite using `[hT, Matrix.mul_smul, Matrix.smul_mul, hw]`. Use `_ = ((T⁻¹).1ᵀ * T.1ᵀ) * J₂ * (T.1.map σ * (T⁻¹).1.map σ) := by simp only [Matrix.mul_assoc]`. Use `_ = J₂ := by rw [i1, i2, Matrix.one_mul, Matrix.mul_one]`. Establish `hU : Matrix.GeneralLinearGroup.map (inclR (AF F)) (T * w₀ * T⁻¹) ∈ UG (cA σ) (incM F J₂)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun X => incM F X) key` as an intermediate fact. Simplify using `only [incM, Matrix.map_mul, Matrix.transpose_map] at this`. Use `Eq.trans ?_ this` and prove the remaining obligations. Use `congr 1`. Set `u : UA σ J₂` to `⟨_, hU⟩`.
+Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hu : inBasis σ T u = blk 1 (c • 1) 0 1`. Express the relevant statement in the definitionally equal form `incM F (T⁻¹).1 * incM F (T * w₀ * T⁻¹).1 * incM F T.1 = _`. Rewrite using `[incM, incM, incM, ← Matrix.map_mul, ← Matrix.map_mul, ← Units.val_mul, ← Units.val_mul, show T⁻¹ * (T * w₀ * T⁻¹) * T = w₀ by group]`. Conclude with `mp _`. Establish `hN : u ∈ unipN σ J₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨Z, -, hZ⟩` from `h`. Establish `hT' : incM F T.1 = blk 1 (incM F Z) 1 (-incM F Z)`. Simplify using `only [hZ, incM, blk, ← Matrix.submatrix_map, Matrix.fromBlocks_map, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_neg _ (map_neg (inclR (F := F) (E := E) (AF F)))]`. Establish `hc : ∀ a b c d x y : Matrix (Fin n) (Fin n) (AE F E), blk a b c d * blockColumnMatrix x y = blockColumnMatrix (a * x + b * y) (c * x + d * y)` using `fun a b c d x y => by`. Rewrite using `[blk, blockColumnMatrix, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_mul_fromRows, blockColumnMatrix]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : blockColumnMatrix (1 : Matrix (Fin n) (Fin n) (AE F E)) 1 = incM F T.1 * blockColumnMatrix 1 0` using `by rw [hT']; erw [hc]; simp`. Establish `e2 : mat u * incM F T.1 = incM F T.1 * blk 1 (c • 1) 0 1`. Rewrite using `[← hu, inBasis, ← Matrix.mul_assoc, ← Matrix.mul_assoc, incM_mul_inv, Matrix.one_mul]`. Rewrite using `[mem_unipN_iff, Matrix.sub_mul, Matrix.one_mul, sub_eq_zero, e1]`. Use `erw [← Matrix.mul_assoc, e2, Matrix.mul_assoc, hc]`.
-
-Simplify using `only [Matrix.mul_one, Matrix.mul_zero, add_zero]`. Both sides reduce to the same expression. Conclude with `⟨⟨⟨u, hN⟩, ⟨_, rfl⟩⟩, hu⟩`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ratN (hσ : ∀ x, σ (σ x) = x) {J : Matrix (Fin n) (Fin n) E} {l : E} (hl : l ≠ 0)
     (hJ : ∀ i j, σ ((l⁻¹ • J) j i) = -(l⁻¹ • J) i j) (h₂ : J₂ = dblGram finSumFinEquiv J) {T : GL (Fin (n + n)) E}
@@ -177,9 +175,9 @@ theorem exists_ratN (hσ : ∀ x, σ (σ x) = x) {J : Matrix (Fin n) (Fin n) E} 
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `choose u hu using exists_ratN hσ hl hJ h₂ h`. Use `Infinite.of_injective u fun a b e => ?_` and prove the remaining obligations. Establish `h1` using `(hu a).symm.trans ((congrArg (fun x : ratN σ J₂ => inBasis σ T ((x : unipN σ J₂) : UA σ J₂)) e).trans (hu b))`. Establish `h2` using `congrFun (congrFun h1 (finSumFinEquiv (.inl ⟨0, hn⟩))) (finSumFinEquiv (.inr ⟨0, hn⟩))`. Simplify using `only [blk, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₂, Matrix.smul_apply, Matrix.one_apply_eq] at h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[nsmul_eq_mul, nsmul_eq_mul, mul_one, mul_one]`. Use `haveI : Nontrivial (AF F) := (AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial`. Use `haveI : Nontrivial (AE F E) := inferInstanceAs (Nontrivial (AF F ⊗[F] E))`. Use `haveI : CharZero (AE F E) := charZero_of_injective_algebraMap (algebraMap F (AE F E)).injective`. Conclude with `h2` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem infinite_ratN (hσ : ∀ x, σ (σ x) = x) {J : Matrix (Fin n) (Fin n) E} {l : E} (hl : l ≠ 0)
     (hJ : ∀ i j, σ ((l⁻¹ • J) j i) = -(l⁻¹ • J) i j) (h₂ : J₂ = dblGram finSumFinEquiv J) {T : GL (Fin (n + n)) E}
@@ -197,11 +195,9 @@ theorem infinite_ratN (hσ : ∀ x, σ (σ x) = x) {J : Matrix (Fin n) (Fin n) E
   exact_mod_cast h2
 
 /- English proof (translation)
-Take `⟨h0, 𝓓, h1, h2⟩` from `hν`. Use `haveI := infinite_ratN (GlobalTheory.SiegelSet.sigma_sigma hcm) hl hJ h₂ h hn`. Take `⟨hTG, -, hSC, hT2⟩` from `GlobalTheory.UnipMass.topUA σ J₂`. Use `haveI : BorelSpace (UA σ J₂) := ⟨rfl⟩`. Use `haveI : Countable (ratN σ J₂) := GlobalTheory.UnipMass.countable_ratU' σ J₂ (unipN σ J₂)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `haveI : MeasurableConstSMul (ratN σ J₂) (unipN σ J₂) := ⟨fun γ => (continuous_const.mul continuous_id : Continuous fun x : unipN σ J₂ => (γ : unipN σ J₂) * x).measurable⟩`. Use `haveI : SMulInvariantMeasure (ratN σ J₂) (unipN σ J₂) νN := ⟨fun γ A _ => measure_preimage_mul νN (γ : unipN σ J₂) A⟩`. Introduce `hc`. Establish `h3` using `h1.measure_eq_tsum Set.univ`. Simplify using `only [Set.smul_set_univ, Set.univ_inter, h2, ENNReal.tsum_const_eq_top_of_ne_zero one_ne_zero] at h3`.
-
-Break down `integrable_const_iff.1 hc with h4 | h4` into its components or cases. Conclude with `one_ne_zero h4`. Conclude with `measure_ne_top νN _ h3`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem not_intConv_one (hcm : IsCMExt F E σ) {J : Matrix (Fin n) (Fin n) E} {l : E} (hl : l ≠ 0)
     (hJ : ∀ i j, σ ((l⁻¹ • J) j i) = -(l⁻¹ • J) i j) (h₂ : J₂ = dblGram finSumFinEquiv J) {T : GL (Fin (n + n)) E}
@@ -225,9 +221,9 @@ theorem not_intConv_one (hcm : IsCMExt F E σ) {J : Matrix (Fin n) (Fin n) E} {l
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `haveI : Subsingleton (UA σ J₂) := ⟨fun a b => Subtype.ext (Units.ext (Matrix.ext fun i => i.elim0))⟩`. Take `⟨-, 𝓓, -, h2⟩` from `hν`. Establish `hu : νN Set.univ = 1`. Break down `Set.eq_empty_or_nonempty 𝓓 with e | e` into its components or cases. Rewrite `h2` using `[e, measure_empty]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd h2 zero_ne_one`. Rewrite using `[← h2, Subsingleton.eq_univ_of_nonempty e]`. Rewrite using `[intM, show (fun x : unipN σ J₂ => f (w * x * g)) = fun _ => f g from funext fun _ => congrArg f (Subsingleton.elim _ _), integral_const, Measure.real, hu, ENNReal.toReal_one, one_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intM_rank_zero {J₂ : Matrix (Fin (0 + 0)) (Fin (0 + 0)) E} {νN : Measure (unipN σ J₂)} (hν : IsNormN σ νN)
     (w g : UA σ J₂) (f : UA σ J₂ → ℂ) : intM νN w f g = f g := by
@@ -243,9 +239,9 @@ theorem intM_rank_zero {J₂ : Matrix (Fin (0 + 0)) (Fin (0 + 0)) E} {νN : Meas
 omit [NumberField E] in
 
 /- English proof (translation)
-Take `⟨φ, h, h0⟩` from `GlobalTheory.SchANonzero.exists_mem_schA_ne_zero F κ`. Use `(Submodule.ne_bot_iff _).2 ⟨_, mem_secSpace.2 ⟨φ, h, (kFin_iff om ⊥ φ).2 ⟨ℂ ∙ φ, inferInstance, fun k hk => ?_⟩, rfl⟩, fun e => h0 ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_bot.1 hk, Prod.mk_one_one, map_one]`. Conclude with `Submodule.mem_span_singleton_self φ`. Use `congrFun e 1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Prod.mk_one_one, map_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem secSpace_bot_ne_bot {JV : Matrix (Fin m) (Fin m) E} {κ : Type} [Fintype κ]
     (om : UA σ JV × UA σ J₂ →* Module.End ℂ ((κ → AF F) → ℂ)) : secSpace om ⊥ ≠ ⊥ := by
@@ -257,7 +253,7 @@ theorem secSpace_bot_ne_bot {JV : Matrix (Fin m) (Fin m) E} {κ : Type} [Fintype
     rwa [Prod.mk_one_one, map_one] at this
 
 /- English proof (translation)
-Take `⟨F, E, _, _, _, _, _, σ, h⟩` from `exists_complMet`. Take `⟨hcm, -, ψ, -, l, JV, J, J₂, hl, -, -, hJ, h₂, T, hT, χ, -, -, K, -, -, ⟨w, hw⟩, ⟨ν, hν⟩, -⟩` from `h 1 1`. Conclude with `⟨F, E, _, _, _, _, _, σ, J₂, T, w, ν, h 1 1, hw, hν, hw.not_mem_siegelOf hT (by norm_num), exists_intM_eq_one hν w 1, not_intConv_one hcm hl hJ h₂ hT (by norm_num) hν w 1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_case : ∃ (F E : Type) (_ : Field F) (_ : NumberField F) (_ : Field E) (_ : NumberField E) (_ : Algebra F E)
     (σ : E →ₐ[F] E) (J₂ : Matrix (Fin (2 + 2)) (Fin (2 + 2)) E) (T : GL (Fin (2 + 2)) E) (w : UA σ J₂)

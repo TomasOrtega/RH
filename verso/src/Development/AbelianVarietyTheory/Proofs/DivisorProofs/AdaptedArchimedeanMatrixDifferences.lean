@@ -34,7 +34,7 @@ def goodSub (M : Model σ Y W) (om : GlobalTheory.IndefiniteRowSideFullHecke.Wei
       rw [e]; exact (hΦ.2 h).const_mul c⟩
 
 /- English proof (translation)
-The claim follows from `funext fun h => by show (∫ g in M.dom, theta om (c • Φ) g h ∂M.μ) = c * ∫ g in M.dom, theta om Φ g h ∂M.μ rw [← MeasureTheory.integral_const_mul] refine MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun g => ?_) show thetaSum F (om (g, h) (c • Φ)) = c * thetaSum F …`.
+A detailed English derivation is pending.
 -/
 theorem I_smul (M : Model σ Y W) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Y W) (c : ℂ) (Φ : Fn F n d) :
     M.I om (c • Φ) = c • M.I om Φ := funext fun h => by
@@ -45,7 +45,7 @@ theorem I_smul (M : Model σ Y W) (om : GlobalTheory.IndefiniteRowSideFullHecke.
   rw [map_smul, thetaSum_smul]
 
 /- English proof (translation)
-The claim follows from `funext fun h => by show (∫ g in M.dom, theta om (Φ + Ψ) g h ∂M.μ) = (∫ g in M.dom, theta om Φ g h ∂M.μ) + ∫ g in M.dom, theta om Ψ g h ∂M.μ rw [← MeasureTheory.integral_add (hΦ.2 h) (hΨ.2 h)] refine MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun g => ?_) show th …`.
+A detailed English derivation is pending.
 -/
 theorem I_add (M : Model σ Y W) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Y W) {Φ Ψ : Fn F n d} (hΦ : Φ ∈ goodSub M om)
     (hΨ : Ψ ∈ goodSub M om) : M.I om (Φ + Ψ) = M.I om Φ + M.I om Ψ := funext fun h => by
@@ -57,7 +57,7 @@ theorem I_add (M : Model σ Y W) (om : GlobalTheory.IndefiniteRowSideFullHecke.W
   rw [map_add, thetaSum_add F (hΦ.1 _) (hΨ.1 _)]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ Ψ, I_add M om hΦ (Submodule.smul_mem _ _ hΨ), I_smul, neg_one_smul, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem I_sub (M : Model σ Y W) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Y W) {Φ Ψ : Fn F n d} (hΦ : Φ ∈ goodSub M om)
     (hΨ : Ψ ∈ goodSub M om) : M.I om (Φ - Ψ) = M.I om Φ - M.I om Ψ := by
@@ -71,21 +71,21 @@ section Pure
 variable {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_add (f g : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f + g) φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ + GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ := by
   funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_smul (c : ℂ) (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c • f) φ = c • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ := by
   funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, sub_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_sub (f g : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f - g) φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ - GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ := by
@@ -113,13 +113,13 @@ def Dat.T {M : Model σ Y W} (X : Chars F E) (φ : Dat M) : Finset (Pl F) :=
 
 open Classical in
 /- English proof (translation)
-The claim follows from `Finset.subset_union_left`.
+A detailed English derivation is pending.
 -/
 theorem Dat.chars_T_subset_dat_T {M : Model σ Y W} (X : Chars F E) (φ : Dat M) : X.T ⊆ φ.T X := Finset.subset_union_left
 
 open Classical in
 /- English proof (translation)
-Introduce `v hv` and use `by by_contra h exact hv (Finset.mem_union_right _ ((Set.Finite.mem_toFinset _).2 h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Dat.eq_vac {M : Model σ Y W} (X : Chars F E) (φ : Dat M) : ∀ v ∉ φ.T X, φ.1 v = M.vac v := fun v hv => by
   by_contra h
@@ -131,14 +131,14 @@ variable {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Glo
   {om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W} {R : RealMaps F a a'} {Rf : FinMaps F a a'}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X.T, le_rfl, 0, 0, Fin.elim0, fun i => i.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, by simp, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem polMatch_zero : PolMatch B G X R Rf 0 0 :=
   ⟨X.T, le_rfl, 0, 0, Fin.elim0, fun i => i.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0,
     by simp, by simp, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨φ.T X, φ.chars_T_subset_dat_T X, 1, 0, fun _ => f, fun _ => φ.1, Fin.elim0, fun i => i.elim0, fun _ => ⟨hf, φ.2.1, φ.eq_vac X⟩, fun i => i.elim0, by simp, by simp, by simp [hp]⟩`.
+Supply the required witnesses or components.
 -/
 theorem polMatch_pure_zero {f : SInf F (Fin a × Fin (a + a'))} (hf : f ∈ G.M.Pol B.ψ B.emb) (hp : R.p f = 0)
     (φ : Dat G.M) : PolMatch B G X R Rf (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ.1) 0 :=
@@ -146,7 +146,7 @@ theorem polMatch_pure_zero {f : SInf F (Fin a × Fin (a + a'))} (hf : f ∈ G.M.
     fun _ => ⟨hf, φ.2.1, φ.eq_vac X⟩, fun i => i.elim0, by simp, by simp, by simp [hp]⟩
 
 /- English proof (translation)
-Use `GlobalTheory.PolMatchLin.polMatch_smul_add F E σ B a a' G X om om' R Rf hM _ _ _ _ (-1) hΨ hΦ` as an intermediate fact. Establish `e1 : (-1 : ℂ) • Ψ + Φ = 0` using `by rw [e]; module`. Establish `e2 : (-1 : ℂ) • Ψ' + Φ' = Φ' - Ψ'` using `by module`. Rewrite `this` using `[e1, e2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem polMatch_zero_sub (hM : IsMatched B G X om om' R Rf) {Φ Ψ : Fn F a (a + a')} {Φ' Ψ' : Fn F a' (a + a')}
     (hΦ : PolMatch B G X R Rf Φ Φ') (hΨ : PolMatch B G X R Rf Ψ Ψ') (e : Φ = Ψ) :
@@ -179,14 +179,14 @@ variable (hy : Hyp B G X om om' R Rf) (c : ℂ) (φ : Dat G.M)
 include hy
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨f, hf, φ.1, φ.2.1, φ.2.2, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem pure_mem_polData {f : SInf F (Fin a × Fin (a + a'))} (hf : f ∈ G.M.Pol B.ψ B.emb) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ.1 ∈ PolData B G.M :=
   Submodule.subset_span ⟨f, hf, φ.1, φ.2.1, φ.2.2, rfl⟩
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 (hy.m.real.quot.onto ▸ Submodule.mem_top : π ∈ (G.M.Pol B.ψ B.emb).map R.p)`. Take `⟨Φ', hΦ', hm⟩` from `hy.part _ (pure_mem_polData hy φ hf)`. Conclude with `⟨_, f, hf, rfl, Φ', hΦ', hm, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem val_exists (π : R.Pi) : ∃ g, Val B G X om om' R Rf c φ π g := by
   obtain ⟨f, hf, rfl⟩ := Submodule.mem_map.1 (hy.m.real.quot.onto ▸ Submodule.mem_top : π ∈ (G.M.Pol B.ψ B.emb).map R.p)
@@ -194,13 +194,11 @@ theorem val_exists (π : R.Pi) : ∃ g, Val B G X om om' R Rf c φ π g := by
   exact ⟨_, f, hf, rfl, Φ', hΦ', hm, rfl⟩
 
 /- English proof (translation)
-Take `⟨f₁, hf₁, e₁, Φ₁, hΦ₁, m₁, rfl⟩` from `h₁`. Take `⟨f₂, hf₂, e₂, Φ₂, hΦ₂, m₂, rfl⟩` from `h₂`. Establish `h0 : PolMatch B G X R Rf (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f₁ - f₂) φ.1) 0` using `polMatch_pure_zero (sub_mem hf₁ hf₂) (by rw [map_sub, e₁, e₂, sub_self]) φ`. Establish `hI : G.M.I om (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₁ φ.1) = G.M.I om (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₂ φ.1)`. Use `hy.f1 _ h0` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[pure_sub, I_sub _ _ (hy.gP _ hf₁ φ) (hy.gP _ hf₂ φ), sub_eq_zero]`. Conclude with `this`. Establish `hm : PolMatch B G X R Rf 0 (Φ₁ - Φ₂)`. Establish `h3` using `GlobalTheory.PolMatchLin.polMatch_smul_add F E σ B a a' G X om om' R Rf hy.m _ _ _ _ 1 m₂ h0`. Establish `e3 : (1 : ℂ) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₂ φ.1 + GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f₁ - f₂) φ.1 = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₁ φ.1` using `by rw [pure_sub]; module`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[e3, one_smul, add_zero]`. Conclude with `polMatch_zero_sub hy.m m₁ h3 rfl`. Establish `hI' : G.M'.I om' Φ₁ = G.M'.I om' Φ₂`. Use `hy.f2 _ (sub_mem hΦ₁ hΦ₂) hm` as an intermediate fact. Rewrite `this` using `[I_sub _ _ (hy.gV' _ _ hΦ₁ m₁) (hy.gV' _ _ hΦ₂ m₂), sub_eq_zero]`. Then use the resulting hypothesis.
-
-Rewrite using `[hI, hI']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_unique {π : R.Pi} {g₁ g₂ : UA σ G.W.J → ℂ} (h₁ : Val B G X om om' R Rf c φ π g₁)
     (h₂ : Val B G X om om' R Rf c φ π g₂) : g₁ = g₂ := by
@@ -224,9 +222,9 @@ theorem val_unique {π : R.Pi} {g₁ g₂ : UA σ G.W.J → ℂ} (h₁ : Val B G
   rw [hI, hI']
 
 /- English proof (translation)
-Take `⟨f₁, hf₁, rfl, Φ₁, hΦ₁, m₁, rfl⟩` from `h₁`. Take `⟨f₂, hf₂, rfl, Φ₂, hΦ₂, m₂, rfl⟩` from `h₂`. Establish `h3` using `GlobalTheory.PolMatchLin.polMatch_smul_add F E σ B a a' G X om om' R Rf hy.m _ _ _ _ 1 m₁ m₂`. Rewrite `h3` using `[one_smul, one_smul, ← pure_add]`. Use `⟨f₁ + f₂, add_mem hf₁ hf₂, map_add _ _ _, Φ₁ + Φ₂, add_mem hΦ₁ hΦ₂, h3, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pure_add, I_add _ _ (hy.gP _ hf₁ φ) (hy.gP _ hf₂ φ), I_add _ _ (hy.gV' _ _ hΦ₁ m₁) (hy.gV' _ _ hΦ₂ m₂)]`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_add {π₁ π₂ : R.Pi} {g₁ g₂ : UA σ G.W.J → ℂ} (h₁ : Val B G X om om' R Rf c φ π₁ g₁)
     (h₂ : Val B G X om om' R Rf c φ π₂ g₂) : Val B G X om om' R Rf c φ (π₁ + π₂) (g₁ + g₂) := by
@@ -239,9 +237,9 @@ theorem val_add {π₁ π₂ : R.Pi} {g₁ g₂ : UA σ G.W.J → ℂ} (h₁ : V
   module
 
 /- English proof (translation)
-Take `⟨f, hf, rfl, Φ', hΦ', m, rfl⟩` from `h`. Establish `h3` using `GlobalTheory.PolMatchLin.polMatch_smul_add F E σ B a a' G X om om' R Rf hy.m _ _ _ _ s m polMatch_zero`. Rewrite `h3` using `[add_zero, add_zero, ← pure_smul]`. Use `⟨s • f, Submodule.smul_mem _ s hf, map_smul _ _ _, s • Φ', Submodule.smul_mem _ s hΦ', h3, ?_⟩` and prove the remaining obligations. Rewrite using `[pure_smul, I_smul, I_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem val_smul (s : ℂ) {π : R.Pi} {g : UA σ G.W.J → ℂ} (h : Val B G X om om' R Rf c φ π g) :
     Val B G X om om' R Rf c φ (s • π) (s • g) := by

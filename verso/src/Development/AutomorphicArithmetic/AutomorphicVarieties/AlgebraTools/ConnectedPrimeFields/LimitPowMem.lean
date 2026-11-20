@@ -7,9 +7,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `hx`. Use `⟨n * (M + M), fun K hK => ?_⟩` and prove the remaining obligations. Establish `h1 : x ^ (n * (M + M)) ∈ b ^ M ⊔ c ^ M`. Rewrite using `[pow_mul]`. Conclude with `Ideal.sup_pow_add_le_pow_sup_pow (Ideal.pow_mem_pow hn _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hK`. Rewrite using `[pow_add]`. Conclude with `Ideal.mul_mem_right _ _ h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.Conn.limit_pow_mem {R : Type} [CommRing R] (b c : Ideal R) (x : R)
     (hx : x ∈ (b ⊔ c).radical) (M : ℕ) : ∃ K₀, ∀ K, K₀ ≤ K → x ^ K ∈ b ^ M ⊔ c ^ M := by
@@ -23,52 +23,46 @@ private theorem UpperTheory.V.AlgebraTools.Conn.limit_pow_mem {R : Type} [CommRi
   exact Ideal.mul_mem_right _ _ h1
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem smodEq_ideal_pow_iff_sub_mem {A : Type} [CommRing A] (I : Ideal A) (n : ℕ) (x y : A) :
     x ≡ y [SMOD (I ^ n • ⊤ : Submodule A A)] ↔ x - y ∈ I ^ n := by
   rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]
 
 /- English proof (translation)
-Introduce `A R _ _ _ I _ J u v b c hJ hJI hreg hIJ hbc hb hc hu hv`. Set `P : ℕ → ℕ → Module.Dual A R → A → Prop` to `fun m N l a => ∀ (y : A) (β γ : R), β ∈ b ^ N → γ ∈ c ^ N → algebraMap A R y = β + γ → l β - y * a ∈ J m`. Establish `weak : ∀ m m' N N' l a, m ≤ m' → N ≤ N' → P m' N l a → P m N' l a`. Introduce `m m' N N' l a hm hN h y β γ hβ hγ hy`. Conclude with `hJ hm (h y β γ (Ideal.pow_le_pow_right hN hβ) (Ideal.pow_le_pow_right hN hγ) hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `uniq : ∀ m N l a a', P m N l a → P m N l a' → a - a' ∈ J m`. Introduce `m N l a a' h h'`. Take `⟨K, hK⟩` from `limit_pow_mem b c (algebraMap A R u) hu N`. Establish `hmem` using `hK K le_rfl`. Rewrite `hmem` using `[← map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ, γ, hγ, hsum⟩` from `Submodule.mem_sup.mp hmem`. Establish `e1` using `h (u ^ K) β γ hβ hγ hsum.symm`. Establish `e2` using `h' (u ^ K) β γ hβ hγ hsum.symm`. Apply `(hreg m K).1` to reduce the goal to its premises. Establish `e3` using `Ideal.sub_mem _ e2 e1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `e3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `exist : ∀ m, ∃ N, m ≤ N ∧ ∀ l, ∃ a, P m N l a`. Introduce `m`. Take `⟨N₁, hN₁⟩` from `hIJ m`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P₀, hP₀⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hbc (Submodule.FG.mul hb hc)`. Use `⟨max m (P₀ * N₁), le_max_left _ _, fun l => ?_⟩` and prove the remaining obligations. Take `⟨Ku, hKu⟩` from `limit_pow_mem b c (algebraMap A R u) hu (max m (P₀ * N₁))`. Take `⟨Kv, hKv⟩` from `limit_pow_mem b c (algebraMap A R v) hv (max m (P₀ * N₁))`. Establish `hprod : b ^ (max m (P₀ * N₁)) * c ^ (max m (P₀ * N₁)) ≤ Ideal.map (algebraMap A R) (J m)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hu' : algebraMap A R (u ^ (max Ku Kv)) ∈ b ^ (max m (P₀ * N₁)) ⊔ c ^ (max m (P₀ * N₁))`. Rewrite using `[map_pow]`. Conclude with `hKu _ (le_max_left _ _)`. Establish `hv' : algebraMap A R (v ^ (max Ku Kv)) ∈ b ^ (max m (P₀ * N₁)) ⊔ c ^ (max m (P₀ * N₁))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_pow]`. Conclude with `hKv _ (le_max_right _ _)`. Take `⟨a, ha⟩` from `level (J m) (u ^ (max Ku Kv)) (v ^ (max Ku Kv)) _ _ (hreg m _) hprod hu' hv' l`. Conclude with `⟨a, ha⟩`. Use `choose N hNm hN using exist`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `choose a ha using hN`. Establish `hcauchy : ∀ l m n, m ≤ n → a m l - a n l ∈ J m`. Introduce `l m n hmn`. Apply `uniq m (max (N m) (N n)) l` to reduce the goal to its premises. Conclude with `weak m m (N m) _ l _ le_rfl (le_max_left _ _) (ha m l)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `weak m n (N n) _ l _ hmn (le_max_right _ _) (ha n l)`. Establish `hlim : ∀ l, ∃ L : A, ∀ n, a n l - L ∈ I ^ n`. Introduce `l`. Take `⟨L, hL⟩` from `IsPrecomplete.prec (I := I) (M := A) inferInstance (f := fun n => a n l) (fun {m n} hmn => by`. Rewrite using `[smodEq_ideal_pow_iff_sub_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hJI m (hcauchy l m n hmn))`. Conclude with `⟨L, fun n => (smodEq_ideal_pow_iff_sub_mem I n _ _).mp (hL n)⟩`. Use `choose L hL using hlim`. Establish `haus : ∀ x : A, (∀ n, x ∈ I ^ n) → x = 0`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Apply `IsHausdorff.haus (I := I) inferInstance x` to reduce the goal to its premises. Introduce `n`. Rewrite using `[smodEq_ideal_pow_iff_sub_mem, sub_zero]`. Conclude with `hx n`. Establish `hadd : ∀ m l l', a m (l + l') - a m l - a m l' ∈ J m`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `m l l'`. Establish `h3 : P m (N m) (l + l') (a m l + a m l')`. Introduce `y β γ hβ hγ hy`. Establish `e` using `Ideal.add_mem _ (ha m l y β γ hβ hγ hy) (ha m l' y β γ hβ hγ hy)`. Use `e using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `e` using `uniq m (N m) (l + l') _ _ (ha m (l + l')) h3`. Use `e using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsmul : ∀ m (r : A) l, a m (r • l) - r * a m l ∈ J m`. Introduce `m r l`. Establish `h3 : P m (N m) (r • l) (r * a m l)`. Introduce `y β γ hβ hγ hy`. Establish `e` using `Ideal.mul_mem_left _ r (ha m l y β γ hβ hγ hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `e using 1` and compare the differences between its conclusion and the goal. Simplify using `only [LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `uniq m (N m) (r • l) _ _ (ha m (r • l)) h3`. Set `Φ : Module.Dual A (Module.Dual A R)` to `{ toFun := L map_add' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `l l'`. Establish `h0` using `haus (L (l + l') - (L l + L l')) (fun n => by`. Establish `e` using `Ideal.sub_mem _ (Ideal.sub_mem _ (hL (l + l') n) (hL l n)) (hL l' n)`. Establish `e2` using `hJI n (hadd n l l')`. Establish `e3` using `Ideal.sub_mem _ e2 e`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `e3 using 1` and compare the differences between its conclusion and the goal. Use the proof step `ring)`. Conclude with `sub_eq_zero.mp h0`. Use the proof step `map_smul' := by`. Introduce `r l`.
-
-Establish `h0` using `haus (L (r • l) - r * L l) (fun n => by`. Establish `e` using `Ideal.sub_mem _ (hL (r • l) n) (Ideal.mul_mem_left _ r (hL l n))`. Establish `e2` using `hJI n (hsmul n r l)`. Establish `e3` using `Ideal.sub_mem _ e2 e`. Use `e3 using 1` and compare the differences between its conclusion and the goal.
-
-Use the proof step `ring)`. Rewrite `h0` using `[sub_eq_zero]`. Simplify using `using h0 }`. Use `⟨Φ, fun m => ⟨N m, hNm m, fun y β γ hβ hγ hy l => ?_⟩⟩` and prove the remaining obligations. Establish `e1` using `hJI m (ha m l y β γ hβ hγ hy)`.
-
-Establish `e2` using `Ideal.mul_mem_left _ y (hL l m)`. Establish `e3` using `Ideal.add_mem _ e1 e2`. Use `show l β - y * L l ∈ I ^ m`. Use `e3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Conn.limit :
     ∀ {A R : Type} [CommRing A] [CommRing R] [Algebra A R] (I : Ideal A) [IsAdicComplete I A] (J : ℕ → Ideal A) (u v : A) (b c : Ideal R),

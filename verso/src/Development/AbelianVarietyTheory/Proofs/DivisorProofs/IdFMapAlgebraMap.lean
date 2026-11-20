@@ -27,9 +27,9 @@ def ratT (c : L →ₐ[ℚ] L) : Subgroup (simTA L c) :=
   ((simT ℚ c).map (ratId ℚ L)).subgroupOf (simTA L c)
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `ha`. Use `⟨Units.map (algebraMap ℚ (FiniteAdeleRing (𝓞 ℚ) ℚ)).toMonoidHom t, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, ratId, conjId, idF, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, RingHom.coe_coe, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Simplify using `only [inclE, sigR, Algebra.TensorProduct.includeLeftRingHom_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, Algebra.TensorProduct.includeRight_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[ht, Algebra.algebraMap_eq_smul_one (A := L), Algebra.algebraMap_eq_smul_one (A := FiniteAdeleRing (𝓞 ℚ) ℚ), TensorProduct.smul_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ratId_mem_simTA (c : L →ₐ[ℚ] L) {a : Lˣ} (ha : a ∈ simT ℚ c) : ratId ℚ L a ∈ simTA L c := by
   obtain ⟨t, ht⟩ := ha
@@ -44,7 +44,7 @@ theorem ratId_mem_simTA (c : L →ₐ[ℚ] L) {a : Lˣ} (ha : a ∈ simT ℚ c) 
     TensorProduct.smul_tmul]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `[conjId, ratId, sigR, inclE]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem conjId_ratId (c : L →ₐ[ℚ] L) (a : Lˣ) :
     conjId c (ratId ℚ L a) = ratId ℚ L (Units.map (c : L →+* L).toMonoidHom a) := by
@@ -52,7 +52,7 @@ theorem conjId_ratId (c : L →ₐ[ℚ] L) (a : Lˣ) :
   simp [conjId, ratId, sigR, inclE]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [idF, ratId, inclE, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, RingHom.coe_coe, AlgHom.toRingHom_eq_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.includeLeftRingHom_apply]`. Rewrite using `[Algebra.algebraMap_eq_smul_one (A := L), Algebra.algebraMap_eq_smul_one (A := FiniteAdeleRing (𝓞 ℚ) ℚ), TensorProduct.smul_tmul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem idF_map_algebraMap (r : ℚˣ) :
     idF ℚ L (Units.map (algebraMap ℚ (FiniteAdeleRing (𝓞 ℚ) ℚ)).toMonoidHom r) =
@@ -64,9 +64,9 @@ theorem idF_map_algebraMap (r : ℚˣ) :
     TensorProduct.smul_tmul]
 
 /- English proof (translation)
-Establish `hle : RInt ℚ L ≤ (RInt ℚ L).comap (sigR c (FiniteAdeleRing (𝓞 ℚ) ℚ))`. Use `(Subring.closure_le).2 ?_` and prove the remaining obligations. Introduce and unpack `g (⟨⟨e, ⟨b, rfl⟩⟩, rfl⟩ | ⟨d, rfl⟩)`. Use `Subring.subset_closure (Or.inl ⟨⟨c (algebraMap (𝓞 L) L b), ⟨RingOfIntegers.mapRingHom (c : L →+* L) b, ?_⟩⟩, ?_⟩)` and prove the remaining obligations. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Simplify using `[sigR]`. Use `Subring.subset_closure (Or.inr ⟨d, ?_⟩)` and prove the remaining obligations. Simplify using `[sigR]`. Conclude with `hle hy`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sigR_mem_RInt (c : L →ₐ[ℚ] L) {y : AfE ℚ L} (hy : y ∈ RInt ℚ L) :
     sigR c (FiniteAdeleRing (𝓞 ℚ) ℚ) y ∈ RInt ℚ L := by
@@ -81,7 +81,7 @@ theorem sigR_mem_RInt (c : L →ₐ[ℚ] L) {y : AfE ℚ L} (hy : y ∈ RInt ℚ
   exact hle hy
 
 /- English proof (translation)
-Rewrite `hk`, the goal using `[intU, Submonoid.mem_units_iff]`. Use `⟨sigR_mem_RInt L c hk.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `sigR_mem_RInt L c hk.2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjId_mem_intU (c : L →ₐ[ℚ] L) {k : (AfE ℚ L)ˣ} (hk : k ∈ intU ℚ L) : conjId c k ∈ intU ℚ L := by
   rw [intU, Submonoid.mem_units_iff] at hk ⊢
@@ -90,7 +90,7 @@ theorem conjId_mem_intU (c : L →ₐ[ℚ] L) {k : (AfE ℚ L)ˣ} (hk : k ∈ in
   exact sigR_mem_RInt L c hk.2
 
 /- English proof (translation)
-Rewrite using `[intU, Submonoid.mem_units_iff]`. Use `⟨Subring.subset_closure (Or.inr ⟨⟨_, hu⟩, rfl⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨_, hu'⟩, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idF_mem_intU {u : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ} (hu : (u : FiniteAdeleRing (𝓞 ℚ) ℚ) ∈ intAd ℚ)
     (hu' : ((u⁻¹ : (FiniteAdeleRing (𝓞 ℚ) ℚ)ˣ) : FiniteAdeleRing (𝓞 ℚ) ℚ) ∈ intAd ℚ) : idF ℚ L u ∈ intU ℚ L := by

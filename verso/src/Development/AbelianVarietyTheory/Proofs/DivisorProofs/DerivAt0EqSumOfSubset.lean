@@ -8,7 +8,7 @@ open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.FGDepth
 
 /- English proof (translation)
-Unfold `derivAt0`. Use `Finset.sum_subset hs fun α _ hα => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.notMem_support_iff.mp hα]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem derivAt0_eq_sum_of_subset {C : Type} [Field C] {σ : Type} (P : MvPolynomial σ C)
     (g : MvPowerSeries σ C) {s : Finset (σ →₀ ℕ)} (hs : P.support ⊆ s) :
@@ -19,15 +19,15 @@ theorem derivAt0_eq_sum_of_subset {C : Type} [Field C] {σ : Type} (P : MvPolyno
   simp
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `derivAt0`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, mul_add]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `derivAt0`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[derivAt0_eq_sum_of_subset (P + Q) g (MvPolynomial.support_add (p := P) (q := Q)), derivAt0_eq_sum_of_subset P g (Finset.subset_union_left (s₂ := Q.support)), derivAt0_eq_sum_of_subset Q g (Finset.subset_union_right (s₁ := P.support)), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[derivAt0_eq_sum_of_subset (a • P) g (MvPolynomial.support_smul (a := a) (f := P)), derivAt0, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h`. Unfold `derivAt0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Conclude with `Finset.sum_congr rfl fun α hα => by rw [h α hα]`.
+A detailed English derivation is pending.
 -/
 theorem derivAt0_linear (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ))
     (σ : Type) (P Q : MvPolynomial σ C) (g g' : MvPowerSeries σ C) (a : C) :

@@ -21,13 +21,11 @@ open ReciprocityTheory.ChartRestriction.G.Semi
 namespace GlobalTheory.TorsSpec
 
 /- English proof (translation)
-Establish `key : ∀ (u : T ⟶ S) (e₁ : t₁ ≫ f₁ = u) (e₂ : t₂ ≫ f₂ = u), (A₁ * B₁).left ≫ ψ₁ = (A₂ * B₂).left ≫ ψ₂`. Introduce `u e₁ e₂`. Establish `wA : (A₁.left ≫ ψ₁) ≫ G.hom = u`. Rewrite using `[Category.assoc, h₁.1.w, ← Category.assoc, Over.w A₁]`. Conclude with `e₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `wB : (B₁.left ≫ ψ₁) ≫ G.hom = u`. Rewrite using `[Category.assoc, h₁.1.w, ← Category.assoc, Over.w B₁]`. Conclude with `e₁`. Set `a : Over.mk u ⟶ G` to `Over.homMk (A₁.left ≫ ψ₁) wA`. Set `b : Over.mk u ⟶ G` to `Over.homMk (B₁.left ≫ ψ₁) wB`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `p₁ : (a * b).left = (A₁ * B₁).left ≫ ψ₁`. Substitute `e₁` using the available equality. Conclude with `h₁.2 (Over.mk t₁) A₁ B₁ a b rfl rfl`. Establish `p₂ : (a * b).left = (A₂ * B₂).left ≫ ψ₂`. Substitute `e₂` using the available equality.
-
-Conclude with `h₂.2 (Over.mk t₂) A₂ B₂ a b hA hB`. Conclude with `p₁.symm.trans p₂`. Conclude with `key _ ht rfl`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mul_comp_eq_of_isGrpPullback {S S₁ S₂ : Scheme.{0}} {G : Over S} [GrpObj G]
     {G₁ : Over S₁} [GrpObj G₁] {G₂ : Over S₂} [GrpObj G₂] {f₁ : S₁ ⟶ S} {f₂ : S₂ ⟶ S}
@@ -56,13 +54,13 @@ theorem mul_comp_eq_of_isGrpPullback {S S₁ S₂ : Scheme.{0}} {G : Over S} [Gr
   exact key _ ht rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF Z X' φ ℓ hℓ Ω _ _ x a b A B C hA hB hC`. Take `⟨a', rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨b', rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Rewrite `hC` using `[← Submodule.Quotient.mk_add]`. Set `y : Sp Ω ⟶ Xo.XF c` to `x ≫ i₀ TF.Y Z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `u : Over.mk y ⟶ 𝟙_ (Over (Xo.XF c))` to `Over.homMk y (Category.comp_id y)`. Establish `hψ : ∀ (d : Dw.La) (D : Over.mk (x ≫ ℓ) ⟶ GlobalTheory.EqvAct.pullG TF Z φ), D.left = x ≫ etaSecL TF Z φ ℓ hℓ (Submodule.Quotient.mk d) → D.left ≫ GlobalTheory.EqvAct.pullψ TF Z φ = (u ≫ TF.Y.oF.eta d).left ≫ TF.Y.m.φ`. Introduce `d D hD`. Rewrite using `[hD, Category.assoc, etaSecL_ψ]`. Express the relevant statement in the definitionally equal form `_ = ((x ≫ i₀ TF.Y Z) ≫ (TF.Y.oF.eta d).left) ≫ TF.Y.m.φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Category.assoc]`. Establish `ht : (x ≫ ℓ) ≫ φ ≫ (barComp TF.Y Z).ι = y ≫ TF.Y.j`. Express the relevant statement in the definitionally equal form `_ = (x ≫ (TF.Y.j ⁻¹ᵁ barComp TF.Y Z).ι) ≫ TF.Y.j`. Rewrite using `[Category.assoc, Category.assoc, ← Category.assoc ℓ, hℓ, morphismRestrict_ι]`. Establish `hmul` using `mul_comp_eq_of_isGrpPullback (GlobalTheory.EqvAct.isGrpPullback_pullψ TF Z φ) TF.Y.m.cart ht A B (u ≫ TF.Y.oF.eta a') (u ≫ TF.Y.oF.eta b') (hψ _ _ hA) (hψ _ _ hB)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hC'` using `hψ _ _ hC`. Rewrite `hC'` using `[TF.Y.oF.eta_add a' b', MonObj.comp_mul]`. Use `ext1`. Use `(GlobalTheory.EqvAct.isGrpPullback_pullψ TF Z φ).1.hom_ext (hC'.trans hmul.symm) ?_` and prove the remaining obligations. Rewrite using `[Over.w C, Over.w (A * B)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etaSecL_add_geom : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}}

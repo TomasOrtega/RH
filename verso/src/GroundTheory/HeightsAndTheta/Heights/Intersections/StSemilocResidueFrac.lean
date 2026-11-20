@@ -9,11 +9,11 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4 IndefiniteRowSideFullHecke.Inter
 
 /- English proof (translation)
-Establish `hc : (c : E) ∈ Subfield.closure (∅ : Set E)`. Rewrite using `[Subfield.closure_empty]`. Conclude with `c.2`. Take `⟨y, hy, z, hz, h⟩` from `Subfield.mem_closure_iff.1 hc`. Rewrite `hy`, `hz` using `[Subring.closure_empty, Subring.mem_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hy`. Take `⟨b, rfl⟩` from `hz`. Distinguish the cases in `hb : (b : E) = 0`. Use `⟨0, 1, by simp, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[← h, hb]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, b, fun h0 => hb ?_, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `using congrArg Subtype.val h0`. Simplify using `[← h]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem primeSubfield_exists_div {E : Type*} [Field E] (c : (⊥ : Subfield E)) :
     ∃ a b : ℤ, (b : (⊥ : Subfield E)) ≠ 0 ∧ c = a / b := by

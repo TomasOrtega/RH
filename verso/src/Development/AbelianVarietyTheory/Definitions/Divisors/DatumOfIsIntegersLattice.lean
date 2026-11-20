@@ -45,20 +45,20 @@ structure Datum (p : ℕ) (F : IntermediateField ℚ ℂ) (L : PeriodPair) (t : 
   ker : GlobalTheory.Published.sqrtNegNat p * t ∈ L.lattice
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨Equiv.refl _, fun i => i.elim⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem stable_empty (L : PeriodPair) (F : IntermediateField ℚ ℂ) (T : Empty → ℂ) : Stable L F T :=
   fun _ _ => ⟨Equiv.refl _, fun i => i.elim⟩
 
 /- English proof (translation)
-Introduce `_ hσ` and use `⟨Equiv.refl _, fun i => (h i).isConj hσ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem stable_of_isRat {L : PeriodPair} {F : IntermediateField ℚ ℂ} {ι : Type} {T : ι → ℂ}
     (h : ∀ i, GlobalTheory.ConjPoint.IsRat L F (T i)) : Stable L F T :=
   fun _ hσ => ⟨Equiv.refl _, fun i => (h i).isConj hσ⟩
 
 /- English proof (translation)
-The claim follows from `stable_of_isRat fun _ => .inr ⟨IntermediateField.subset_adjoin _ _ (by simp), IntermediateField.subset_adjoin _ _ (by simp)⟩`.
+A detailed English derivation is pending.
 -/
 theorem stable_single (L : PeriodPair) (t : ℂ) :
     Stable L ℚ⟮L.weierstrassP t, L.derivWeierstrassP t⟯ (fun _ : Unit => t) :=
@@ -66,7 +66,7 @@ theorem stable_single (L : PeriodPair) (t : ℂ) :
     .inr ⟨IntermediateField.subset_adjoin _ _ (by simp), IntermediateField.subset_adjoin _ _ (by simp)⟩
 
 /- English proof (translation)
-Establish `h : ∀ k : Fin 7, (((k : ℕ) : ZMod 7) ≠ 0 ∧ IsSquare ((k : ℕ) : ZMod 7)) ↔ k = 1 ∨ k = 2 ∨ k = 4`. Evaluate the decidable proposition. Rewrite using `[Fintype.card_congr (Equiv.subtypeEquivRight h)]`. Evaluate the decidable proposition.
+Establish an intermediate fact. Evaluate the decidable proposition. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 -/
 example : Fintype.card (Sq 7) = 3 := by
   have h : ∀ k : Fin 7, (((k : ℕ) : ZMod 7) ≠ 0 ∧ IsSquare ((k : ℕ) : ZMod 7)) ↔ k = 1 ∨ k = 2 ∨ k = 4 := by
@@ -74,7 +74,7 @@ example : Fintype.card (Sq 7) = 3 := by
   rw [Fintype.card_congr (Equiv.subtypeEquivRight h)]; decide
 
 /- English proof (translation)
-Simplify using `[shortTwist, GlobalTheory.latticeCurve]`.
+Simplify using the standard rewrite rules.
 -/
 example (L : PeriodPair) : shortTwist 1 (-L.g₂ / 4) (-L.g₃ / 4) = GlobalTheory.latticeCurve L := by
   simp [shortTwist, GlobalTheory.latticeCurve]

@@ -12,9 +12,9 @@ variable {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] [Fact ¬IsUnit (p : R)
   [IsAlgClosed (FractionRing R)]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `AcrisZero.exists_p_pow_mul_eq n (Acris.toRange p R n y)`. Use `⟨b, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg Subtype.val hb`. Simplify using `only [Subring.coe_mul, Subring.coe_pow, Subring.coe_natCast, RingHom.coe_rangeRestrict] at h1`. Simplify using `only [map_mul, map_pow, map_natCast, Acris.eval_toBdRPlus, pow_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm ((p : AinfInv p R ⧸ AinfInv.kerTheta p R ^ n) ^ n), mul_assoc, h1]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem toBdRPlus_mem_nhd (n k : ℕ) (y : Acris p R) :
     Acris.toBdRPlus p R ((p : Acris p R) ^ (n + k) * y) ∈ BdRPlus.nhd p R (n, k) := by
@@ -27,9 +27,9 @@ theorem toBdRPlus_mem_nhd (n k : ℕ) (y : Acris p R) :
   congr 1
 
 /- English proof (translation)
-Apply `continuous_of_continuousAt_zero` to reduce the goal to its premises. Rewrite using `[ContinuousAt, map_zero, (Ideal.hasBasis_nhds_zero_adic (span {(p : Acris p R)})).tendsto_iff (BdRPlus.hasBasis_nhds_zero p R)]`. Introduce `i _`. Use `⟨i.1 + i.2, trivial, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[SetLike.mem_coe, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, rfl⟩` from `hx`. Conclude with `toBdRPlus_mem_nhd i.1 i.2 y`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem continuous_toBdRPlus : Continuous (Acris.toBdRPlus p R) := by
   apply continuous_of_continuousAt_zero

@@ -16,7 +16,7 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.prod_fintype _ _ (fun _ ↦ pow_zero _)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_X_pow_eq_monomial_fintype {D : Type*} [CommRing D] (d : ι → ℕ) :
     ∏ k, (X k : MvPolynomial ι D) ^ d k = monomial (Finsupp.equivFunOnFinite.symm d) 1 := by
@@ -26,7 +26,7 @@ theorem prod_X_pow_eq_monomial_fintype {D : Type*} [CommRing D] (d : ι → ℕ)
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Simplify using `only [prod_X_pow_eq_monomial_fintype, coeff_sum, coeff_C_mul, coeff_monomial, EmbeddingLike.apply_eq_iff_eq, mul_ite, mul_one, mul_zero]`. Simplify using `[hd]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coeff_sum_C_mul_prod_X_pow {D : Type*} [CommRing D] (S : Finset (ι → ℕ))
     (a : (ι → ℕ) → D) {d : ι → ℕ} (hd : d ∈ S) :
@@ -58,7 +58,7 @@ omit [IsDomain O] in
 abbrev locB (ι : Type) (m : Ideal O) [m.IsPrime] := Localization.AtPrime (fibO ι m)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.injective (locB ι m) (Ideal.primeCompl_le_nonZeroDivisors (fibO ι m))`.
+A detailed English derivation is pending.
 -/
 theorem locB_injective (ι : Type) (m : Ideal O) [m.IsPrime] :
     Function.Injective (algebraMap (MvPolynomial ι O) (locB ι m)) :=
@@ -67,9 +67,7 @@ theorem locB_injective (ι : Type) (m : Ideal O) [m.IsPrime] :
 omit [IsDomain O] in
 
 /- English proof (translation)
-Establish `hnot : (∏ k, X k ^ a k : MvPolynomial ι O) ∉ fibO ι m`. Introduce `h`. Establish `h'` using `MvPolynomial.mem_map_C_iff.mp h (Finsupp.equivFunOnFinite.symm a)`. Rewrite `h'` using `[prod_X_pow_eq_monomial_fintype, coeff_monomial, if_pos rfl]`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one _).mpr h')`.
-
-Conclude with `IsLocalization.map_units (locB ι m) (⟨∏ k, X k ^ a k, hnot⟩ : (fibO ι m).primeCompl)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_prod_X_pow (m : Ideal O) [hm : m.IsPrime] (a : ι → ℕ) :
     IsUnit (algebraMap (MvPolynomial ι O) (locB ι m) (∏ k, X k ^ a k)) := by
@@ -83,7 +81,7 @@ theorem isUnit_prod_X_pow (m : Ideal O) [hm : m.IsPrime] (a : ι → ℕ) :
 omit [Fintype ι] [DecidableEq ι] [IsDomain O] in
 
 /- English proof (translation)
-Establish `hnot : (C (u : O) : MvPolynomial ι O) ∉ fibO ι m` using `fun h ↦ u.2 (by`. Establish `h'` using `MvPolynomial.mem_map_C_iff.mp h 0`. Rewrite using `[coeff_C, if_pos rfl] at h')` and apply the resulting hypothesis. Conclude with `IsLocalization.map_units (locB ι m) (⟨C (u : O), hnot⟩ : (fibO ι m).primeCompl)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isUnit_C_locB (m : Ideal O) [m.IsPrime] (u : m.primeCompl) :
     IsUnit (((algebraMap (MvPolynomial ι O) (locB ι m)).comp C) (u : O)) := by
@@ -109,7 +107,7 @@ variable {Fε : Type*} [FunLike Fε (MvPolynomial (Coord n) ℤ) O]
 include hγ in
 omit [IsDomain O] [RingHomClass Fε (MvPolynomial (Coord n) ℤ) O] in
 /- English proof (translation)
-Rewrite using `[betaB, RingHom.comp_apply, hγ (isWeightedHomogeneous_X ℤ (coordDeg n) p)]`. Use `congr 2`. Simplify using `[coordDeg, Pi.single_apply, pow_ite]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem betaB_X (p : Coord n) :
     betaB γ (V.map ε) (X p) = algebraMap (MvPolynomial ι O) (locB ι (V.map ε))
@@ -121,7 +119,7 @@ theorem betaB_X (p : Coord n) :
 omit [Fintype ι] [DecidableEq ι] [RingHomClass Fε (MvPolynomial (Coord n) ℤ) O] in
 
 /- English proof (translation)
-Rewrite using `[betaB, RingHom.comp_apply, map_eq_zero_iff _ (locB_injective ι _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem betaB_eq_zero_iff (F : MvPolynomial (Coord n) ℤ) :
     betaB γ (V.map ε) F = 0 ↔ γ F = 0 := by
@@ -131,11 +129,11 @@ include hγ in
 omit [IsDomain O] [RingHomClass Fε (MvPolynomial (Coord n) ℤ) O] in
 
 /- English proof (translation)
-Establish `hfin` using `weightedHomogeneousComponent_finsupp (w := coordDeg n) F`. Establish `hsum : F = ∑ e ∈ hfin.toFinset, weightedHomogeneousComponent (coordDeg n) e F` using `by conv_lhs => rw [← sum_weightedHomogeneousComponent (w := coordDeg n) F, finsum_eq_sum _ hfin]`. Establish `hcone : γ F = ∑ e ∈ hfin.toFinset, C (ε (weightedHomogeneousComponent (coordDeg n) e F)) * ∏ k, X k ^ e k` using `by conv_lhs => rw [hsum]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun e _ ↦ hγ (weightedHomogeneousComponent_isWeightedHomogeneous e F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[betaB, RingHom.comp_apply, IsLocalization.AtPrime.to_map_mem_maximal_iff (locB ι (V.map ε)) (fibO ι (V.map ε)), hcone]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[hsum]`. Use `V.sum_mem fun e he ↦ ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h'` using `MvPolynomial.mem_map_C_iff.mp h (Finsupp.equivFunOnFinite.symm e)`. Rewrite `h'` using `[coeff_sum_C_mul_prod_X_pow _ _ he]`. Conclude with `hD (weightedHomogeneousComponent_isWeightedHomogeneous e F) h'`. Introduce `h`. Conclude with `Ideal.sum_mem _ fun e _ ↦ Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ (hV F h e)))`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem betaB_mem_maximalIdeal_iff
     (hV : ∀ v ∈ V, ∀ e, weightedHomogeneousComponent (coordDeg n) e v ∈ V)
@@ -168,33 +166,27 @@ include hγ in
 omit [IsDomain O] in
 
 /- English proof (translation)
-Establish `h1 : (1 : MvPolynomial (Coord n) ℤ) ∉ V` using `(Ideal.ne_top_iff_one V).mp hVp.ne_top`. Set `S : Subring (locB ι (V.map ε))` to `{ carrier := {b | ∃ F t, t ∉ V ∧ betaB γ (V.map ε) t * b = betaB γ (V.map ε) F} mul_mem' := by`. Introduce and unpack `_ _ ⟨F₁, t₁, h₁, e₁⟩ ⟨F₂, t₂, h₂, e₂⟩`. Use `⟨F₁ * F₂, t₁ * t₂, fun h ↦ (hVp.mem_or_mem h).elim h₁ h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← e₁, ← e₂]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use the proof step `one_mem' := ⟨1, 1, h1, by simp⟩`. Use the proof step `add_mem' := by`. Introduce and unpack `_ _ ⟨F₁, t₁, h₁, e₁⟩ ⟨F₂, t₂, h₂, e₂⟩`. Use `⟨F₁ * t₂ + F₂ * t₁, t₁ * t₂, fun h ↦ (hVp.mem_or_mem h).elim h₁ h₂, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_add, map_mul, map_mul, map_mul, ← e₁, ← e₂]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `zero_mem' := ⟨0, 1, h1, by simp⟩`. Use the proof step `neg_mem' := by`. Introduce and unpack `_ ⟨F, t, h, e⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨-F, t, h, by rw [map_neg, ← e]; ring⟩ }`. Establish `hβ : ∀ F, betaB γ (V.map ε) F ∈ S` using `fun F ↦ ⟨F, 1, h1, by simp⟩`. Establish `hinv : ∀ (b : locB ι (V.map ε)) (hb : IsUnit b), b ∈ S → (↑hb.unit⁻¹ : locB ι (V.map ε)) ∈ S`. Introduce and unpack `b hb ⟨F, t, ht, e⟩`. Establish `htu : IsUnit (betaB γ (V.map ε) t)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Conclude with `ht ((hmax t).mp ((mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr h)))`. Establish `hF : F ∉ V` using `fun hF ↦ mem_nonunits_iff.mp ((mem_maximalIdeal _).mp ((hmax F).mpr hF)) (e ▸ htu.mul hb)`. Use `⟨t, F, hF, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, mul_assoc, IsUnit.mul_val_inv, mul_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `ρ : O →+* locB ι (V.map ε)` to `(algebraMap (MvPolynomial ι O) (locB ι (V.map ε))).comp C`. Establish `hρX : ∀ p : Coord n, betaB γ (V.map ε) (X ⟨p.1, c p.1⟩) * ρ (ε (X p)) = betaB γ (V.map ε) (X p)` using `fun p ↦ by`. Rewrite using `[betaB_X ε γ hγ V, betaB_X ε γ hγ V, hXc]`. Simplify using `only [ρ, RingHom.comp_apply, map_one, one_mul]`. Rewrite using `[← map_mul, mul_comm (X p.1)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hρ : ∀ F, ρ (ε F) ∈ S`. Introduce `F`. Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C z`. Rewrite using `[eq_intCast C z, map_intCast, map_intCast]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `intCast_mem S z`. Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add]`. Conclude with `S.add_mem hp hq`. Consider the case `mul_X p q hp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Rewrite using `[map_mul, map_mul]`. Conclude with `S.mul_mem hp ⟨X q, X ⟨q.1, c q.1⟩, hXV q.1, hρX q⟩`. Establish `hP : ∀ p : MvPolynomial ι O, algebraMap _ (locB ι (V.map ε)) p ∈ S`. Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `C o`. Take `⟨F, rfl⟩` from `hε o`. Conclude with `hρ F`. Consider the case `add p q hp hq`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `S.add_mem hp hq`. Consider the case `mul_X p k hp`. Rewrite using `[map_mul]`. Use `S.mul_mem hp ?_` and prove the remaining obligations. Establish `e : algebraMap (MvPolynomial ι O) (locB ι (V.map ε)) (X k) = betaB γ (V.map ε) (X ⟨k, c k⟩)`.
-
-Rewrite using `[betaB_X ε γ hγ V, hXc]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `hβ _`. Take `⟨p, q, rfl⟩` from `IsLocalization.exists_mk'_eq (fibO ι (V.map ε)).primeCompl b`.
-
-Establish `hq : IsUnit (algebraMap _ (locB ι (V.map ε)) (q : MvPolynomial ι O))` using `IsLocalization.map_units _ q`. Establish `e : IsLocalization.mk' (locB ι (V.map ε)) p q = algebraMap _ _ p * ↑hq.unit⁻¹`. Rewrite using `[← IsLocalization.mk'_spec (locB ι (V.map ε)) p q, mul_assoc, IsUnit.mul_val_inv, mul_one]`. Establish `hmem : IsLocalization.mk' (locB ι (V.map ε)) p q ∈ S`. Rewrite using `[e]`.
-
-Conclude with `S.mul_mem (hP p) (hinv _ hq (hP q))`. Conclude with `hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_betaB_mul_eq [hVp : V.IsPrime] (hε : Function.Surjective ε)
     (c : (k : ι) → Fin (n k + 1)) (hXc : ∀ k, ε (X ⟨k, c k⟩) = 1)
@@ -284,31 +276,29 @@ section Abstract
 variable {R B : Type*} [CommRing R] [CommRing B]
 
 /- English proof (translation)
-Set `algV : Algebra (Localization.AtPrime V) B` to `(IsLocalization.lift (M := V.primeCompl) (S := Localization.AtPrime V) hunit).toAlgebra`. Set `algR : Algebra R B` to `β.toAlgebra`. Establish `: IsScalarTower R (Localization.AtPrime V) B` using `IsScalarTower.of_algebraMap_eq' (IsLocalization.lift_comp hunit).symm`. Establish `hsurj : Function.Surjective (algebraMap (Localization.AtPrime V) B)`. Introduce `b`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨F, t, ht, e⟩` from `hgood b`. Use `⟨IsLocalization.mk' _ F (⟨t, ht⟩ : V.primeCompl), ?_⟩` and prove the remaining obligations. Use `show IsLocalization.lift hunit (IsLocalization.mk' _ F (⟨t, ht⟩ : V.primeCompl)) = b`. Rewrite using `[IsLocalization.lift_mk'_spec]`. Conclude with `e.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `I : Ideal B` to `Ideal.span {β s}`. Set `J : Ideal R` to `W ⊔ Ideal.span {s}`. Set `f : R →ₗ[R] B ⧸ I` to `((Ideal.Quotient.mkₐ R I).comp (Algebra.ofId R B)).toLinearMap`. Establish `hf : ∀ F, f F = Ideal.Quotient.mk I (β F)` using `fun F ↦ rfl`. Establish `hJ : J ≤ LinearMap.ker f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sup_le (fun F hF ↦ ?_) (Ideal.span_le.mpr fun F hF ↦ ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, hf, (hker F).mpr hF, map_zero]`. Rewrite `hF` using `[Set.mem_singleton_iff]`. Substitute `hF` using the available equality. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, hf, Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Ideal.subset_span rfl`. Set `g : (R ⧸ J) →ₗ[R] B ⧸ I` to `Submodule.liftQ J f hJ`. Establish `hg : ∀ F, g (Ideal.Quotient.mk J F) = Ideal.Quotient.mk I (β F)` using `fun F ↦ rfl`. Establish `hsmul : ∀ (r : R) (y : B ⧸ I), r • y = β r • y` using `fun r y ↦ (algebraMap_smul _ r y).symm`. Establish `hloc : IsLocalizedModule V.primeCompl g`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `t`. Rewrite using `[Module.End.isUnit_iff]`. Take `⟨u, hu⟩` from `hunit t`. Establish `hsm : ∀ y : B ⧸ I, (algebraMap R (Module.End R (B ⧸ I)) t) y = (u : B) • y` using `fun y ↦ by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Module.algebraMap_end_apply, hsmul, hu]`. Prove the components needed by the constructor for the conclusion. Introduce `y z h`. Rewrite `h` using `[hsm, hsm]`. Use `congrArg (fun w ↦ (↑u⁻¹ : B) • w) h` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[smul_smul]`. Introduce `y`. Use `⟨(↑u⁻¹ : B) • y, ?_⟩` and prove the remaining obligations. Rewrite using `[hsm, smul_smul, Units.mul_inv, one_smul]`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨F, t, ht, e⟩` from `hgood b`. Use `⟨(Ideal.Quotient.mk J F, ⟨t, ht⟩), ?_⟩` and prove the remaining obligations. Use `show (t : R) • Ideal.Quotient.mk I b = g (Ideal.Quotient.mk J F)`. Rewrite using `[hsmul, hg, ← e]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Introduce `y₁ y₂ h`. Take `⟨F₁, rfl⟩` from `Ideal.Quotient.mk_surjective y₁`. Take `⟨F₂, rfl⟩` from `Ideal.Quotient.mk_surjective y₂`. Rewrite `h` using `[hg, hg, Ideal.Quotient.eq, ← map_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.mp h`. Take `⟨G, t, ht, e⟩` from `hgood b`. Use `⟨⟨t, ht⟩, ?_⟩` and prove the remaining obligations. Establish `hmem : t * (F₁ - F₂) - G * s ∈ W`. Rewrite using `[← hker, map_sub, map_mul, map_mul, ← hb, ← e]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `show Ideal.Quotient.mk J (t * F₁) = Ideal.Quotient.mk J (t * F₂)`. Rewrite using `[Ideal.Quotient.eq]`. Establish `e2 : t * F₁ - t * F₂ = (t * (F₁ - F₂) - G * s) + G * s` using `by ring`. Rewrite using `[e2]`.
-
-Conclude with `J.add_mem (Ideal.mem_sup_left hmem) (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.subset_span rfl)))`. Set `eV` to `(IsLocalizedModule.iso V.primeCompl g).extendScalarsOfIsLocalization V.primeCompl (Localization.AtPrime V)`. Rewrite using `[eV.length_eq, Module.length_eq_of_surjective hsurj]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_localizedModule_quot_eq (β : R →+* B) (V W : Ideal R) [hVp : V.IsPrime] (s : R)
     (hker : ∀ F, β F = 0 ↔ F ∈ W) (hunit : ∀ t : V.primeCompl, IsUnit (β t))
@@ -385,7 +375,7 @@ theorem length_localizedModule_quot_eq (β : R →+* B) (V W : Ideal R) [hVp : V
   rw [eV.length_eq, Module.length_eq_of_surjective hsurj]
 
 /- English proof (translation)
-Establish `h1 : Module.length B (B ⧸ maximalIdeal B) = 1`. Establish `: IsSimpleModule B (B ⧸ maximalIdeal B)` using `isSimpleModule_iff_isCoatom.mpr (Ideal.isMaximal_def.mp (maximalIdeal.isMaximal _))`. Conclude with `Module.length_eq_one _ _`. Rewrite using `[(Algebra.TensorProduct.quotIdealMapEquivTensorQuot B I).toLinearEquiv.length_eq, IsLocalRing.length_baseChange, h, h1, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quot_map_eq {A : Type*} [CommRing A] [IsLocalRing A] [IsLocalRing B] [Algebra A B]
     [IsLocalHom (algebraMap A B)] [Module.Flat A B]
@@ -413,15 +403,15 @@ variable {O : Type*} [CommRing O] [IsDomain O]
 include hγ in
 
 /- English proof (translation)
-Establish `hmax` using `betaB_mem_maximalIdeal_iff ε γ hγ V hV hD`. Establish `hgood` using `exists_betaB_mul_eq ε γ hγ V hε c hXc hXV hmax`. Establish `hker : ∀ F, betaB γ (V.map ε) F = 0 ↔ F ∈ W` using `fun F ↦ (betaB_eq_zero_iff ε γ V F).trans (hW F)`. Establish `hunit : ∀ t : V.primeCompl, IsUnit (betaB γ (V.map ε) t)` using `fun t ↦ by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `t.2 ((hmax t).mp ((mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr h)))`. Set `algAB : Algebra (Localization.AtPrime (V.map ε)) (locB ι (V.map ε))` to `(IsLocalization.lift (M := (V.map ε).primeCompl) (S := Localization.AtPrime (V.map ε)) (isUnit_C_locB (ι := ι) (V.map ε))).toAlgebra`. Establish `: IsScalarTower O (Localization.AtPrime (V.map ε)) (locB ι (V.map ε))` using `IsScalarTower.of_algebraMap_eq' (by`. Rewrite using `[IsScalarTower.algebraMap_eq O (MvPolynomial ι O) (locB ι (V.map ε)), algebraMap_eq]`. Conclude with `(IsLocalization.lift_comp (isUnit_C_locB (ι := ι) (V.map ε))).symm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Flat (Localization.AtPrime (V.map ε)) (locB ι (V.map ε))` using `(Module.flat_iff_of_isLocalization (Localization.AtPrime (V.map ε)) (V.map ε).primeCompl (locB ι (V.map ε))).mpr inferInstance`. Establish `hmaxA : (maximalIdeal (Localization.AtPrime (V.map ε))).map (algebraMap (Localization.AtPrime (V.map ε)) (locB ι (V.map ε))) = maximalIdeal (locB ι (V.map ε))`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map, ← IsScalarTower.algebraMap_eq, IsScalarTower.algebraMap_eq O (MvPolynomial ι O), ← Ideal.map_map, algebraMap_eq]`. Conclude with `Localization.AtPrime.map_eq_maximalIdeal`. Establish `: IsLocalHom (algebraMap (Localization.AtPrime (V.map ε)) (locB ι (V.map ε)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `⟨fun a ha ↦ ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hna`. Establish `h2 : algebraMap (Localization.AtPrime (V.map ε)) (locB ι (V.map ε)) a ∈ maximalIdeal (locB ι (V.map ε))`. Rewrite using `[← hmaxA]`. Conclude with `Ideal.mem_map_of_mem _ ((mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr hna))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `mem_nonunits_iff.mp ((mem_maximalIdeal _).mp h2) ha`. Establish `hI : Ideal.span {betaB γ (V.map ε) s} = (Ideal.span {algebraMap O (Localization.AtPrime (V.map ε)) (ε s)}).map (algebraMap (Localization.AtPrime (V.map ε)) (locB ι (V.map ε)))`. Rewrite using `[Ideal.map_span, Set.image_singleton, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply O (MvPolynomial ι O) (locB ι (V.map ε)), algebraMap_eq, betaB, RingHom.comp_apply, hγ hs, map_mul, Ideal.span_singleton_mul_right_unit (isUnit_prod_X_pow _ a)]`. Rewrite using `[Geo.multAt, dif_pos hVp, length_localizedModule_quot_eq (betaB γ (V.map ε)) V W s hker hunit hgood, hI, length_quot_map_eq hmaxA]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem multAt_eq_localQuotLength_of [hVp : V.IsPrime] (hε : Function.Surjective ε)
     (W : Ideal (MvPolynomial (Coord n) ℤ)) (hW : ∀ F, γ F = 0 ↔ F ∈ W)
@@ -482,11 +472,11 @@ end General2
 end OrbitChartMult
 
 /- English proof (translation)
-Introduce `ι _ _ _ n A x s _hx hs V hV c hXV hm`. Establish `hVmin : V ∈ (orbitIdeal x ⊔ Ideal.span {s}).minimalPrimes` using `hV.1`. Establish `hVp : V.IsPrime` using `hVmin.1.1`. Establish `hWV : orbitIdeal x ≤ V` using `le_sup_left.trans hVmin.1.2`. Take `⟨a, -, hsa, -⟩` from `hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hVh : Geo.IsMultiHomogIdeal (ι` using `blockIdx n) V := Geo.isMultiHomogIdeal_of_mem_minimalPrimes (OrbitCurve.isMultiHomogIdeal_orbitIdeal x) hsa hVmin`. Establish `hc : ∀ k, x k (c k) ≠ 0` using `fun k h ↦ hXV k (hWV (by`. Rewrite using `[orbitIdeal, Geo.mCoordIdeal, RingHom.mem_ker, Geo.mConeMap, aeval_X]`. Simplify using `[flatCone, h]))`. Establish `hcomp : ∀ v ∈ V, ∀ e, weightedHomogeneousComponent (coordDeg n) e v ∈ V` using `fun v hv e ↦ weightedHomogeneousComponent_mem_of_isMultiHomogIdeal hVh hv e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (Ideal.map (chartEval x c) V).IsPrime` using `hm`. Conclude with `multAt_eq_localQuotLength_of (chartEval x c) (chartCone x c (chartRing x c)) (fun hF ↦ by rw [chartCone_of_isWeightedHomogeneous x c _ hF, Algebra.algebraMap_self_apply]) V (chartEval_surjective x c) (orbitIdeal x) (chartCone_eq_zero_iff x c hc) hcomp (fun hF hm' ↦ mem_of_chartEv …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem OrbitChartMult.proof : OrbitChartMult.Statement := by
   intro ι _ _ _ n A x s _hx hs V hV c hXV hm

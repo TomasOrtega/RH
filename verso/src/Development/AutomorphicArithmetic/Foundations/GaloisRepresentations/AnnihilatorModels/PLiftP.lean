@@ -5,11 +5,11 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `R T ι _ _ f N' h`. Establish `hl : N' ∈ Polynomial.lifts (MvPolynomial.map (σ` using `ι) f) := by`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `a`. Rewrite using `[MvPolynomial.mem_range_map_iff_coeffs_subset]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Take `⟨m, -, rfl⟩` from `MvPolynomial.mem_coeffs_iff.mp hc`. Conclude with `h a m`. Rewrite `hl` using `[Polynomial.lifts_iff_set_range]`. Take `⟨N, hN⟩` from `hl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨N, hN⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.liftingProperty :
     LiftP := by

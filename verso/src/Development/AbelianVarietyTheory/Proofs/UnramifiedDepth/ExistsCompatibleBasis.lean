@@ -32,13 +32,11 @@ noncomputable section
 namespace GlobalTheory.PeriodDatum
 
 /- English proof (translation)
-Use `haveI : Finite V := Nat.finite_of_card_ne_zero (by rw [hcV]; exact pow_ne_zero _ hp.out.ne_zero)`. Use `haveI : Module.Finite (ZMod p) V := Module.Finite.of_finite`. Establish `hrk : Module.finrank (ZMod p) V = Fintype.card (Ix g)`. Establish `h` using `Module.natCard_eq_pow_finrank (K := ZMod p) (V := V)`. Rewrite `h` using `[hcV, Nat.card_zmod]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `Nat.pow_right_injective hp.out.two_le h`. Rewrite using `[← h2, Fintype.card_sum, Fintype.card_fin, two_mul]`. Set `b : Module.Basis (Ix g) (ZMod p) V` to `(Module.finBasisOfFinrankEq (ZMod p) V hrk).reindex (Fintype.equivFin (Ix g)).symm`. Establish `hsm : ∀ (t : ZMod p) (y : V), t.val • y = t • y` using `fun t y => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod p), ZMod.natCast_zmod_val]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨b, fun x => ⟨b.equivFun x, ?_, fun t ht => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [hsm]`. Rewrite using `[← b.equivFun_symm_apply, LinearEquiv.symm_apply_apply]`. Simplify using `only [hsm] at ht`. Rewrite `ht` using `[← b.equivFun_symm_apply]`.
-
-Rewrite using `[ht, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis_of_card (p : ℕ) [hp : Fact p.Prime] (g : ℕ) (V : Type) [AddCommGroup V]
     [Module (ZMod p) V] (hcV : Nat.card V = p ^ (2 * g)) :
@@ -62,13 +60,13 @@ theorem exists_basis_of_card (p : ℕ) [hp : Fact p.Prime] (g : ℕ) (V : Type) 
     rw [ht, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Take `⟨V, hV⟩ : ∃ V : AddSubgroup Γ, ∀ x : Γ, x ∈ V ↔ p • x = 0` from `⟨(nsmulAddMonoidHom p : Γ →+ Γ).ker, fun x => Iff.rfl⟩`. Establish `hcV : Nat.card V = p ^ (2 * g)` using `(Nat.card_congr (Equiv.subtypeEquivRight hV)).trans hcard`. Take `⟨b, hb⟩` from `@exists_basis_of_card p _ g V _ (AddCommGroup.zmodModule (fun x => Subtype.ext ((hV _).1 x.2))) hcV`. Use `choose d hd using hdiv`. Set `τ : Ix g → ℕ → Γ` to `fun i n => d^[n] (b i : Γ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτp : ∀ i n, τ i n = p • τ i (n + 1)` using `fun i n => by`. Simplify using `only [τ, Function.iterate_succ_apply', hd]`. Establish `hsum : ∀ t : Ix g → ZMod p, ((∑ j, (t j).val • b j : V) : Γ) = ∑ j, (t j).val • τ j 0` using `fun t => by`. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨τ, fun i n => ?_, hτp, fun x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `n with`. Consider the case `zero => rw [zero_add, pow_one]`. Conclude with `(hV _).1 (b i).2`. Consider the case `succ n ih => rw [pow_succ, mul_smul, ← hτp i n, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht, hu⟩` from `hb ⟨x, (hV x).2 hx⟩`. Use `⟨t, ?_, fun t' ht' => hu t' (Subtype.ext ?_)⟩` and prove the remaining obligations. Conclude with `(congrArg Subtype.val ht).trans (hsum t)`. Conclude with `ht'.trans (hsum t').symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_compatible_basis (p : ℕ) [hp : Fact p.Prime] (g : ℕ) (Γ : Type) [AddCommGroup Γ]
     (hdiv : ∀ x : Γ, ∃ y, p • y = x) (hcard : Nat.card {x : Γ // p • x = 0} = p ^ (2 * g)) :
@@ -98,13 +96,11 @@ theorem exists_compatible_basis (p : ℕ) [hp : Fact p.Prime] (g : ℕ) (Γ : Ty
     · exact ht'.trans (hsum t').symm
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε g G _ _ B e hbij hadd hnat hsm hfin hflat hdiv hcard hperf _ O₀ _ cj Ad hab hcj hAd`. Use `haveI : IsLocalRing (Ainf.R0 p O ε) := WdAinf.ainf_thetaQuotRing_isLocalRing p O hv ε hε`. Use `haveI : IsDomain ((Ainf.ainfTowerL p O hv ε hε).O : Type) := Ainf.ainfTower_isDomain p O hv ε hε`. Establish `hsm' : Smooth G.hom` using `SmoothOfRelativeDimension.smooth g G.hom`. Take `⟨K, wd, hnil, hK, hKl⟩` from `GlobalTheory.wData_ainfTower_exists GlobalTheory.WittQuot.teichmuller_quot p O hv ε hε`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ch⟩` from `GlobalTheory.FormalChartOf.exists_formalChart GlobalTheory.NilCoord.nilpotent_coordinates (GlobalTheory.ChLaw.groupLaw_powerSeries GlobalTheory.nEval_basic (GlobalTheory.exists_series_of_natural_on_nilpotent GlobalTheory.nEval_basic)) G g B e hbij hadd hnat hsm K hK hKl`. Establish `sm` using `GlobalTheory.SmoothNilLift.main G B e hbij hadd hnat hsm' K wd.W wd.ρW hnil`. Take `⟨fin⟩` from `@GlobalTheory.FinOf.main GlobalTheory.finRep_kernel_mul_finite_free GlobalTheory.finite_algebra_split_local GlobalTheory.finEtale_main _ _ G _ _ (Ainf.ainfTowerL p O hv ε hε).O p B e hbij hadd hnat hfin hflat hsm' C _ _ _ v (inferInstanceAs (Algebra O C)) hv (Fact.out : p.Prime). …`. Take `⟨Dt⟩` from `GlobalTheory.exists_dualTower (Ainf.ainfTowerL p O hv ε hε)`. Take `⟨τ, hτ, hτp, hbas⟩` from `exists_compatible_basis p g _ hdiv hcard`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨dL, hdL⟩` from `GlobalTheory.exists_endDifferential_ringHom B _ ch.gb O₀ (fun a => (Ad a).a) hAd`. Take `⟨A, H, L, hP, hPL, hL, hρL, hρ⟩` from `GlobalTheory.exists_tateMatrices_link GlobalTheory.tate_basis_matrix GlobalTheory.tateBasis_gram GlobalTheory.PadicOrderAction.main B (Ainf.ainfTowerL p O hv ε hε) Dt ch.gb O₀ cj Ad dL (WdAinf.thetaBar_surj p O hv ε hε) hab hcj hAd hdL (fun n => Ideal.mk_ker (I := Ideal.span {(p …`. Use `⟨Dt, { K := K ρO := wd.ρ1.comp ((Ainf.ainfTowerL p O hv ε hε).q 0) ch := ch wd := wd ρO_eq := rfl sm := sm fin := fin A := A H := H L := L tower_zero_surjective := surjective_ainfTower_zero p O hv ε hε tower_zero_ker := ker_ainfTower_zero p O hv ε hε zeta0 := ainf_zeta0 p O hv ε …` and prove the remaining obligations. Introduce `a R S s π hπ l i m hm`. Conclude with `hdL a s π hπ l i m (fun k => by rw [hm k]; exact congrArg (fun M => s.1 (M k l) * (i : (R : Type))) (hρL a))`.
-
-Introduce `a j n`. Substitute `hL` using the available equality. Conclude with `hρ a j n`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem main :
   (∀ (p : ℕ) [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero C] {v : Valuation C NNReal} (O : Type) [CommRing O] [Algebra O C]

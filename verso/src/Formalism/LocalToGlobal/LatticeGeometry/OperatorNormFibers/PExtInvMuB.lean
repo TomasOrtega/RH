@@ -15,13 +15,13 @@ variable (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Al
 open Classical in
 
 /- English proof (translation)
-Establish `h` using `InfinitePlace.unramifedPlacesOver_ncard_add_eq_finrank K' v`. Establish `h0 : InfinitePlace.ramifiedPlacesOver K' v = ∅`. Use extensionality with `w`. Simplify using `only [InfinitePlace.ramifiedPlacesOver, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨_, hw⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex _) (InfinitePlace.isRamified_iff.1 hw).2`. Establish `h1 : InfinitePlace.unramifiedPlacesOver K' v = ((Finset.univ.filter fun v' : InfinitePlace K' => v'.comap (algebraMap K K') = v : Finset (InfinitePlace K')) : Set (InfinitePlace K'))`. Use extensionality with `w`. Simplify using `only [InfinitePlace.unramifiedPlacesOver, Set.mem_ofPred_eq, Finset.coe_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hw, _⟩`. Conclude with `InfinitePlace.LiesOver.comap_eq w v`. Introduce and unpack `rfl`. Use `⟨⟨?_⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction.
 
-Both sides reduce to the same expression. Assume the negation of the conclusion as `hr`. Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex _) (InfinitePlace.isRamified_iff.1 hr).2`. Rewrite `h` using `[h0, h1, Set.ncard_empty, mul_zero, add_zero, Set.ncard_coe_finset]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_fiber [IsTotallyComplex K] (v : InfinitePlace K) :
     (Finset.univ.filter fun v' : InfinitePlace K' => v'.comap (algebraMap K K') = v).card =
@@ -55,7 +55,7 @@ theorem card_fiber [IsTotallyComplex K] (v : InfinitePlace K) :
   exact h
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_fiberwise Finset.univ (fun v' : InfinitePlace K' => v'.comap (algebraMap K K')) (fun v' => g (v'.comap (algebraMap K K'))), ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl (fun v' hv' => congrArg g (Finset.mem_filter.1 hv').2), Finset.prod_const]`. Use `congr 1`. Use `card_fiber K K' v` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem prod_comap [IsTotallyComplex K] (g : InfinitePlace K → ℝ) :
     ∏ v' : InfinitePlace K', g (v'.comap (algebraMap K K')) = (∏ v, g v) ^ finrank K K' := by
@@ -69,7 +69,7 @@ theorem prod_comap [IsTotallyComplex K] (g : InfinitePlace K → ℝ) :
   convert card_fiber K K' v
 
 /- English proof (translation)
-Establish `h1` using `sizeMu_finrank_eq K`. Establish `h2` using `sizeMu_finrank_eq K'`. Establish `h3` using `Module.finrank_mul_finrank ℚ K K'`. Rewrite `h3` using `[h1, h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nPl_ext [IsTotallyComplex K] [IsTotallyComplex K'] : nPl K' = finrank K K' * nPl K := by
   have h1 := sizeMu_finrank_eq K

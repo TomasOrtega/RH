@@ -6,11 +6,11 @@ namespace GlobalTheory.CommSemisimpleChars
 open Classical in
 
 /- English proof (translation)
-Set `F : Finset (H →* ℂ)` to `insert ψ (Finset.univ.image a ∪ Finset.univ.image c)`. Establish `li` using `linearIndependent_iff'.1 (linearIndependent_monoidHom H ℂ) F (fun φ => ((Finset.univ.filter fun j => a j = φ).card : ℂ) - (Finset.univ.filter fun i => c i = φ).card)`. Establish `key : ∀ {τ : Type} [Fintype τ] (e : τ → (H →* ℂ)), (∀ t, e t ∈ F) → ∑ φ ∈ F, ((Finset.univ.filter fun t => e t = φ).card : ℂ) • (φ : H → ℂ) = ∑ t, (e t : H → ℂ)`. Introduce `τ _ e he`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := Finset.univ) (t := F) (g := e) (fun t _ => he t)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun φ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (fun t ht => by rw [(Finset.mem_filter.1 ht).2]), Finset.sum_const, Nat.cast_smul_eq_nsmul]`. Establish `hz : ∑ φ ∈ F, (((Finset.univ.filter fun j => a j = φ).card : ℂ) - (Finset.univ.filter fun i => c i = φ).card) • (φ : H → ℂ) = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[key a (fun j => by simp [F]), key c (fun i => by simp [F]), sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [Finset.sum_apply]`. Conclude with `h g`. Use `li hz ψ (Finset.mem_insert_self _ _)` as an intermediate fact. Conclude with `sub_eq_zero.1 this` after adjusting the coercions.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_eq_of_sum_eq {H ι κ : Type} [Monoid H] [Fintype ι] [Fintype κ]
     (a : ι → (H →* ℂ)) (c : κ → (H →* ℂ)) (h : ∀ g, ∑ j, a j g = ∑ i, c i g) (ψ : H →* ℂ) :

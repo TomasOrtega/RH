@@ -13,7 +13,7 @@ open CategoryTheory AlgebraicGeometry CategoryTheory.Limits
 namespace FunctorialResolution.Blowup
 
 /- English proof (translation)
-The claim follows from `Scheme.IdealSheafData.ext_of_isAffine (by simp)`.
+A detailed English derivation is pending.
 -/
 private theorem ofIdealTop_ideal_top_eq_self {X : Scheme.{u}} [IsAffine X] (I : X.IdealSheafData) :
     AlgebraicGeometry.Scheme.IdealSheafData.ofIdealTop
@@ -21,16 +21,16 @@ private theorem ofIdealTop_ideal_top_eq_self {X : Scheme.{u}} [IsAffine X] (I : 
   Scheme.IdealSheafData.ext_of_isAffine (by simp)
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_map, ← CommRingCat.hom_comp, e.hom_inv_id, CommRingCat.hom_id, Ideal.map_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_inv_map_hom_eq_self {A B : CommRingCat.{u}} (e : A ≅ B) (K : Ideal ↑A) :
     Ideal.map (CommRingCat.Hom.hom e.inv) (Ideal.map (CommRingCat.Hom.hom e.hom) K) = K := by
   rw [Ideal.map_map, ← CommRingCat.hom_comp, e.hom_inv_id, CommRingCat.hom_id, Ideal.map_id]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨J, hJ⟩ : ∃ J : Ideal A, FunctorialResolution.Blowup.specIdealSheaf J = I := by`. Use `⟨Ideal.map (CommRingCat.Hom.hom (Scheme.ΓSpecIso (CommRingCat.of A)).hom) (I.ideal ⟨⊤, isAffineOpen_top (Spec (CommRingCat.of A))⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[FunctorialResolution.Blowup.specIdealSheaf_eq_ofIdealTop, map_inv_map_hom_eq_self (Scheme.ΓSpecIso (CommRingCat.of A))]`. Conclude with `ofIdealTop_ideal_top_eq_self I`. Use `⟨FunctorialResolution.Blowup.affineBlowup J, FunctorialResolution.Blowup.AffineBlowup.toSpec J, ?_, FunctorialResolution.Blowup.isProper_affineBlowup_toSpec J⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hJ]`. Conclude with `FunctorialResolution.Blowup.isBlowupAlongIdealSheaf_affineBlowup_toSpec J`.
+A detailed English derivation is pending.
 -/
 private theorem exists_isBlowupAlongIdealSheaf_isProper_spec_of_isNoetherianRing (A : Type u) [CommRing A]
     [IsNoetherianRing A] (I : (Spec (CommRingCat.of A)).IdealSheafData) :
@@ -47,7 +47,7 @@ private theorem exists_isBlowupAlongIdealSheaf_isProper_spec_of_isNoetherianRing
   exact FunctorialResolution.Blowup.isBlowupAlongIdealSheaf_affineBlowup_toSpec J
 
 /- English proof (translation)
-The claim follows from `exists_isBlowupAlongIdealSheaf_isProper_spec_of_isNoetherianRing (↑R) I`.
+A detailed English derivation is pending.
 -/
 theorem exists_isBlowupAlongIdealSheaf_isProper_spec (R : CommRingCat.{u}) [IsNoetherianRing ↑R]
     (I : (Spec R).IdealSheafData) :
@@ -55,13 +55,13 @@ theorem exists_isBlowupAlongIdealSheaf_isProper_spec (R : CommRingCat.{u}) [IsNo
   exists_isBlowupAlongIdealSheaf_isProper_spec_of_isNoetherianRing (↑R) I
 
 /- English proof (translation)
-Take `⟨Y', π, hπ, hproper⟩` from `exists_isBlowupAlongIdealSheaf_isProper_spec Γ(Y, ⊤) (J.comap Y.isoSpec.inv)`. Establish `hq : IsBlowupAlongIdealSheaf (p ≫ Y.isoSpec.hom) (J.comap Y.isoSpec.inv)` using `h.comp_iso_hom Y.isoSpec`. Take `⟨b, hb⟩` from `hπ.exists_lift (p ≫ Y.isoSpec.hom) hq.1`. Take `⟨a, ha⟩` from `hq.exists_lift π hπ.1`. Establish `hab : a ≫ b = 𝟙 Y'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hπ.hom_ext hπ.1 ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hb, ha]`. Rewrite using `[Category.id_comp]`. Establish `hba : b ≫ a = 𝟙 B`. Use `hq.hom_ext hq.1 ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, ha, hb]`. Rewrite using `[Category.id_comp]`. Establish `: IsIso b` using `⟨a, hba, hab⟩`. Establish `: AlgebraicGeometry.IsProper π` using `hproper`. Establish `hp : b ≫ π ≫ Y.isoSpec.inv = p`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, hb, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Rewrite using `[← hp]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProper_of_isBlowupAlongIdealSheaf_of_isAffine {Y B : Scheme.{u}} [IsAffine Y]
     [IsNoetherianRing Γ(Y, ⊤)] (J : Y.IdealSheafData) {p : B ⟶ Y} (h : IsBlowupAlongIdealSheaf p J) :
@@ -87,9 +87,7 @@ theorem isProper_of_isBlowupAlongIdealSheaf_of_isAffine {Y B : Scheme.{u}} [IsAf
   infer_instance
 
 /- English proof (translation)
-Establish `key : (AlgebraicGeometry.pullbackRestrictIsoRestrict f U).hom ≫ AlgebraicGeometry.morphismRestrict f U = pullback.snd f U.ι`. Simplify using `[AlgebraicGeometry.morphismRestrict]`. Establish `h2 : AlgebraicGeometry.IsProper ((AlgebraicGeometry.pullbackRestrictIsoRestrict f U).hom ≫ AlgebraicGeometry.morphismRestrict f U)`. Rewrite using `[key]`. Conclude with `h`.
-
-Conclude with `(MorphismProperty.cancel_left_of_respectsIso (P := @AlgebraicGeometry.IsProper) (AlgebraicGeometry.pullbackRestrictIsoRestrict f U).hom (AlgebraicGeometry.morphismRestrict f U)).mp h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isProper_morphismRestrict_of_isProper_pullbackSnd {X X' : Scheme.{u}} (f : X' ⟶ X)
     (U : X.Opens) (h : AlgebraicGeometry.IsProper (pullback.snd f U.ι)) :
@@ -106,7 +104,7 @@ private theorem isProper_morphismRestrict_of_isProper_pullbackSnd {X X' : Scheme
     (AlgebraicGeometry.morphismRestrict f U)).mp h2
 
 /- English proof (translation)
-Establish `: IsNoetherianRing Γ(X, (U : X.Opens))` using `AlgebraicGeometry.IsLocallyNoetherian.component_noetherian U`. Conclude with `isNoetherianRing_of_ringEquiv _ (CategoryTheory.Iso.commRingCatIsoToRingEquiv ((U : X.Opens).topIso)).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isNoetherianRing_sections_top_of_affineOpen {X : Scheme.{u}}
     [AlgebraicGeometry.IsLocallyNoetherian X] (U : X.affineOpens) :
@@ -117,9 +115,9 @@ private theorem isNoetherianRing_sections_top_of_affineOpen {X : Scheme.{u}}
     (CategoryTheory.Iso.commRingCatIsoToRingEquiv ((U : X.Opens).topIso)).symm
 
 /- English proof (translation)
-Introduce `X X' hX π Z hZ`. Use `hX` as an intermediate fact. Use `IsZariskiLocalAtTarget.of_iSup_eq_top (P := @AlgebraicGeometry.IsProper) (fun U : X.affineOpens => (U : X.Opens)) (AlgebraicGeometry.iSup_affineOpens_eq_top X) ?_` and prove the remaining obligations. Introduce `U`. Establish `: AlgebraicGeometry.IsAffine (U : X.Opens).toScheme` using `U.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: IsNoetherianRing Γ((U : X.Opens).toScheme, ⊤)` using `isNoetherianRing_sections_top_of_affineOpen U`. Conclude with `isProper_morphismRestrict_of_isProper_pullbackSnd π (U : X.Opens) (isProper_of_isBlowupAlongIdealSheaf_of_isAffine (Z.comap (U : X.Opens).ι) (hZ.pullback_snd_of_isOpenImmersion (U : X.Opens).ι))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem blowupIsProper : BlowupIsProper.{u} := by
   intro X X' hX π Z hZ
@@ -134,7 +132,7 @@ theorem blowupIsProper : BlowupIsProper.{u} := by
       (hZ.pullback_snd_of_isOpenImmersion (U : X.Opens).ι))
 
 /- English proof (translation)
-The claim follows from `blowupIsProper X X' π I h`.
+A detailed English derivation is pending.
 -/
 theorem isProper_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}}
     [AlgebraicGeometry.IsLocallyNoetherian X] {π : X' ⟶ X} {I : X.IdealSheafData}
@@ -142,7 +140,7 @@ theorem isProper_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}}
   blowupIsProper X X' π I h
 
 /- English proof (translation)
-Use `isProper_of_isBlowupAlongIdealSheaf h` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locallyOfFiniteType_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}}
     [AlgebraicGeometry.IsLocallyNoetherian X] {π : X' ⟶ X} {I : X.IdealSheafData}
@@ -151,7 +149,7 @@ theorem locallyOfFiniteType_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}}
   infer_instance
 
 /- English proof (translation)
-Use `isProper_of_isBlowupAlongIdealSheaf h` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem quasiCompact_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}}
     [AlgebraicGeometry.IsLocallyNoetherian X] {π : X' ⟶ X} {I : X.IdealSheafData}

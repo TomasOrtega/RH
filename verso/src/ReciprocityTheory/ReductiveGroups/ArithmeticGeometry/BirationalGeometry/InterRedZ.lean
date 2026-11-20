@@ -10,20 +10,20 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.PLLocalStatement
 namespace ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-The claim follows from `poincareLelong_of_resolution_atlas hE hB hPL ReciprocityTheory.AnForm.M.sncInducedAtlas hPush`.
+A detailed English derivation is pending.
 -/
 theorem poincareLelong_of_resolution (hE : ResExistsStatement) (hB : ResBridgeStatement)
     (hPL : ReciprocityTheory.AnForm.M.PoincareLelongStatement) (hPush : ResDivPushStatement) : ArithmeticPoincareLelongFormula :=
   poincareLelong_of_resolution_atlas hE hB hPL ReciprocityTheory.AnForm.M.sncInducedAtlas hPush
 
 /- English proof (translation)
-The claim follows from `stokes_of'' hE hB ReciprocityTheory.AnForm.M.byPartsSymm`.
+A detailed English derivation is pending.
 -/
 theorem stokes_of_resolution (hE : ResExistsStatement) (hB : ResBridgeStatement) : StokesStatement :=
   stokes_of'' hE hB ReciprocityTheory.AnForm.M.byPartsSymm
 
 /- English proof (translation)
-The claim follows from `poincareLelong_of_resolution hE hB ReciprocityTheory.AnForm.M.poincareLelong hPush`.
+A detailed English derivation is pending.
 -/
 theorem poincareLelong_of_resolution_pushforward (hE : ResExistsStatement) (hB : ResBridgeStatement) (hPush : ResDivPushStatement) :
     ArithmeticPoincareLelongFormula :=

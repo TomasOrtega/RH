@@ -27,15 +27,15 @@ namespace GlobalTheory.SmGL.Exponents
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hS : (Finset.univ.filter fun j => c j = 1).card = r`. Rewrite using `[← h, Finset.card_filter]`. Apply the tactic sequence `exact Finset.sum_congr rfl fun j _ => by have := hc j; split_ifs <;> omega`. Set `φ : Fin r → Σ j, Fin (c j)` to `fun i => ⟨Finset.orderEmbOfFin _ hS i, 0, by`. Use `(Finset.mem_filter.1 (Finset.orderEmbOfFin_mem _ hS i)).2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use the proof step `omega⟩`. Establish `hφ : Function.Bijective φ`. Use `⟨fun i j e => (Finset.orderEmbOfFin _ hS).injective (congrArg Sigma.fst e), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨j, x⟩`. Establish `hj : j ∈ Set.range (Finset.orderEmbOfFin _ hS)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.range_orderEmbOfFin]`. Use `hc j` as an intermediate fact. Use `x.2` as an intermediate fact. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `hj`. Use `⟨i, congrArg (Sigma.mk _) (Fin.ext ?_)⟩` and prove the remaining obligations. Use `hc (Finset.orderEmbOfFin _ hS i)` as an intermediate fact. Use `x.2` as an intermediate fact. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `⟨(Equiv.ofBijective φ hφ).symm, (Finset.orderEmbOfFin _ hS).strictMono⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_strictMono_blk {n : ℕ} (c : Fin n → ℕ) (hc : ∀ j, c j ≤ 1) {r : ℕ} (h : ∑ j, c j = r) :
     ∃ f : (Σ j, Fin (c j)) ≃ Fin r, StrictMono (blk f) := by
@@ -63,9 +63,9 @@ theorem exists_strictMono_blk {n : ℕ} (c : Fin n → ℕ) (hc : ∀ j, c j ≤
   exact ⟨(Equiv.ofBijective φ hφ).symm, (Finset.orderEmbOfFin _ hS).strictMono⟩
 
 /- English proof (translation)
-Use `List.Pairwise.eq_of_mem_iff (r := (· < ·)) (List.pairwise_ofFn.2 fun i j h => hf h) ((List.pairwise_lt_finRange n).filter _) fun j => ?_` and prove the remaining obligations. Simplify using `only [List.mem_ofFn, List.mem_filter, List.mem_finRange, true_and, hp]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(f.symm i).2.pos.ne'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Conclude with `fun h => ⟨f ⟨j, 0, Nat.pos_of_ne_zero h⟩, blk_apply _ _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem ofFn_blk {n r : ℕ} {c : Fin n → ℕ} (f : (Σ j, Fin (c j)) ≃ Fin r) (hf : StrictMono (blk f))
     (p : Fin n → Bool) (hp : ∀ j, p j = true ↔ c j ≠ 0) :
@@ -79,7 +79,7 @@ theorem ofFn_blk {n r : ℕ} {c : Fin n → ℕ} (f : (Σ j, Fin (c j)) ≃ Fin 
   · exact fun h => ⟨f ⟨j, 0, Nat.pos_of_ne_zero h⟩, blk_apply _ _ _⟩
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_def]`. Proceed by induction on `List.finRange n with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => by_cases h : p a = true <;> simp [h, ih, add_comm]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem length_filter_finRange {n : ℕ} (p : Fin n → Bool) :
     ((List.finRange n).filter p).length = ∑ j, if p j = true then 1 else 0 := by
@@ -89,23 +89,19 @@ theorem length_filter_finRange {n : ℕ} (p : Fin n → Bool) :
   | cons a l ih => by_cases h : p a = true <;> simp [h, ih, add_comm]
 
 /- English proof (translation)
-Set `B` to `SizeMatrix (Two (Fin r) (Fin t)) fun _ : Fin (r + t) => Unit`. Use `letI : Fintype B := Fintype.ofFinite _`. Establish `hcol : ∀ (b : B) j, b.1 true j + b.1 false j = 1` using `fun b j => by simpa using b.2.2 j`. Establish `hf : ∀ b : B, ∃ f : (Σ j, Fin (b.1 false j)) ≃ Fin r, StrictMono (blk f)` using `fun b => exists_strictMono_blk _ (fun j => by have := hcol b j; omega) ((b.2.1 false).trans (Fintype.card_fin r))`. Establish `ht : ∀ b : B, ∃ f : (Σ j, Fin (b.1 true j)) ≃ Fin t, StrictMono (blk f)` using `fun b => exists_strictMono_blk _ (fun j => by have := hcol b j; omega) ((b.2.1 true).trans (Fintype.card_fin t))`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose f₁ hf₁ using hf`. Use `choose f₂ hf₂ using ht`. Set `f : ∀ (b : B) i, (Σ j, Fin (b.1 i j)) ≃ Two (Fin r) (Fin t) i` to `fun b i => match i with`. Consider the case `false => f₁ b`. Consider the case `true => f₂ b`.
+Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hs : ∀ i, IsSmooth (twoRep π₁ π₂ i)`. Introduce and unpack `(_ | _)`. Use `exacts [s₁, s₂]`. Establish `hl : ∀ i, HasFiniteLength (twoRep π₁ π₂ i)`. Introduce and unpack `(_ | _)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `exacts [h₁, h₂]`. Take `⟨φ⟩` from `T.parabolicProductTwoReps_equiv_two_block_induction k r t V W π₁ π₂`. Establish `e1` using `T.jordanHolderMultiplicity_jacquet_eq_borelJacquet_of_small k (Fin (r + t)) (Fin (r + t)) (fun _ => Unit) (points _) (fun _ _ h => h) _ (prod₂ π₁ π₂) fun j => unrChar k (w j)`. Rewrite using `[wordMult_ofFn]`. Use `e1.symm.trans ((jhMult_congr_right _ (jacEquiv _ φ)).trans ((hG.jhMult_eq _ _ (isSmooth_piTensor hs) f (fun b => b.nonempty_cols.some) (isIrreducible_ofChar _)).trans ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Fintype.sum_of_injective (fun (b : B) j => decide (b.1 true j = 1)) ?_ _ _ ?_ fun b => ?_` and prove the remaining obligations. Introduce `b b' e`. Use `Subtype.ext (funext fun i => funext fun j => ?_)` and prove the remaining obligations. Establish `h1` using `hcol b j`. Establish `h2` using `hcol b' j`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h3 : b.1 true j = 1 ↔ b'.1 true j = 1` using `by simpa using congrFun e j`. Apply the tactic sequence `cases i <;> omega`. Introduce `ε hε`. Assume the negation of the conclusion as `h0`. Establish `h1` using `left_ne_zero_of_mul h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h2` using `right_ne_zero_of_mul h0`. Use `replace h1 := not_not.1 fun h => h1 (wordMult_of_ne _ h)`. Use `replace h2 := not_not.1 fun h => h2 (wordMult_of_ne _ h)`. Rewrite `h1`, `h2` using `[List.length_map, length_filter_finRange]`. Use `hε ⟨⟨fun i j => if ε j = i then 1 else 0, ?_, fun j => ?_⟩, ?_⟩` and prove the remaining obligations.
-
-Introduce and unpack `(_ | _)`. Conclude with `Eq.trans (by simp) (h1.trans (Fintype.card_fin r).symm)`. Conclude with `h2.trans (Fintype.card_fin t).symm`. Apply the tactic sequence `cases ε j <;> simp`. Use function extensionality and compare the values at `j`.
-
-Simplify using the standard rewrite rules. Rewrite using `[T.jordanHolderMultiplicity_leviChar_geometricLemmaCell k hC Bool (Fin (r + t)) _ (fun i j => Fin (b.1 i j)) (f b) _ _ _ hs hl _ fun j => isSmoothChar_of_isUnram (isUnram_unrChar k _), Fintype.prod_bool, mul_comm, ← ofFn_blk (f₁ b) (hf₁ b) _ fun j => by have := hcol b j; simp; om …`. Conclude with `congrArg₂ (· * ·) (T.jordanHolderMultiplicity_jacquet_eq_borelJacquet_of_small k _ _ _ (f₁ b) (hf₁ b) _ π₁ _) (T.jordanHolderMultiplicity_jacquet_eq_borelJacquet_of_small k _ _ _ (f₂ b) (hf₂ b) _ π₂ _)`.
+Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wordMult_prod₂ (hG : JacquetOfInducedFiltration k) (hC : CellSemisimplification k) {r t : ℕ}
     {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
@@ -180,11 +176,11 @@ namespace GlobalTheory.SmGL.Exponents
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `⟨.mk (Submodule.quotEquivOfEqBot _ (twKer_detRep (points (Fin N)) ψ)) fun t => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `h : jacB (detRep (Fin N) ψ) t x = (detLevi (points (Fin N)) ψ (leviTorus k (Fin N) t) : ℂ) • x` using `Model.jac_detRep (points (Fin N)) ψ _ x`. Establish `hd : ∀ i, Matrix.GeneralLinearGroup.det (leviTorus k (Fin N) t i) = t i` using `congrFun ((leviTorus k (Fin N)).left_inv t)`. Simplify using `only [LinearMap.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, map_smul, ofChar_apply, detLevi_apply, torusChar_apply, smul_eq_mul]`. Use `congr 2`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hd, modExp_fin _ (fun _ => by simp)]`. Use `congr 3`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nonempty_jacB_detRep (N : ℕ) (ψ : kˣ →* ℂˣ) :
     Nonempty ((jacB (detRep (Fin N) ψ)).Equiv (ofChar (torusChar fun i : Fin N =>
@@ -208,7 +204,7 @@ theorem nonempty_jacB_detRep (N : ℕ) (ψ : kˣ →* ℂˣ) :
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Rewrite using `[torusChar_apply, Finset.prod_eq_single i, Pi.mulSingle_eq_same]`. Introduce `j _ hj`. Rewrite using `[Pi.mulSingle_eq_of_ne hj, map_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem torusChar_mulSingle {n : Type} [Fintype n] [DecidableEq n] (χ : n → kˣ →* ℂˣ) (i : n)
     (x : kˣ) : torusChar χ (Pi.mulSingle i x) = χ i x := by
@@ -220,11 +216,9 @@ theorem torusChar_mulSingle {n : Type} [Fintype n] [DecidableEq n] (χ : n → k
 open Classical in
 
 /- English proof (translation)
-Take `⟨φ⟩` from `nonempty_jacB_detRep N ψ`. Distinguish the cases in `hw : w.length = N`. Use `swap`. Rewrite using `[wordMult_of_ne _ hw, if_neg fun h => hw h.1]`. Rewrite using `[wordMult, if_pos hw, jhMult_congr_right _ φ]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Rewrite using `[show (fun i : Fin N => unrChar k (w.getD i 1)) = _ from funext fun i => h.2 i i.2]`. Conclude with `jhMult_self (isIrreducible_ofChar _)`. Use `Model.jhMult_ofChar_ne fun h' => h ⟨hw, fun i hi => MonoidHom.ext fun x => ?_⟩` and prove the remaining obligations. Use `DFunLike.congr_fun h' (Pi.mulSingle ⟨i, hi⟩ x)` as an intermediate fact.
-
-Rewrite `this` using `[torusChar_mulSingle, torusChar_mulSingle]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem wordMult_detRep (N : ℕ) (ψ : kˣ →* ℂˣ) (w : List ℂˣ) :
     wordMult (detRep (Fin N) ψ) w = if w.length = N ∧ ∀ i < N, unrChar k (w.getD i 1) =
@@ -244,7 +238,7 @@ theorem wordMult_detRep (N : ℕ) (ψ : kˣ →* ℂˣ) (w : List ℂˣ) :
 def segWord (q z : ℂˣ) (l : ℕ) : List ℂˣ := (List.range l).map fun a => z * q ^ a
 
 /- English proof (translation)
-Take `rfl : l = l'` from `by simpa [segWord] using congrArg List.length h`. Conclude with `⟨by simpa using List.map_inj_left.1 h 0 (by simpa using hl), rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem segWord_inj {q z z' : ℂˣ} {l l' : ℕ} (hl : 0 < l) (h : segWord q z l = segWord q z' l') :
     z = z' ∧ l = l' := by
@@ -252,27 +246,25 @@ theorem segWord_inj {q z z' : ℂˣ} {l l' : ℕ} (hl : 0 < l) (h : segWord q z 
   exact ⟨by simpa using List.map_inj_left.1 h 0 (by simpa using hl), rfl⟩
 
 /- English proof (translation)
-Take `⟨d, hd, _, ⟨σ, rfl, hσ⟩, l, hl⟩` from `Δ`. Break down `(show 1 < d ∨ d = 1 by omega) with h1 | rfl` into its components or cases. Use `Or.inr fun w => ?_` and prove the remaining obligations. Use `T.subsingleton_borelJacquet_of_cuspidal_segment_jacquet k l d hl h1 _ _ σ.ρ (Z ⟨d, hd, _, ⟨σ, rfl, hσ⟩, l, hl⟩).rep.ρ hσ fun e => (hZ ⟨d, hd, _, ⟨σ, rfl, hσ⟩, l, hl⟩ σ rfl e _).2.1 (IrrCl.cl_rep _)` as an intermediate fact. Unfold `wordMult`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Conclude with `jhMult_of_subsingleton (isIrreducible_ofChar _) _`. Both sides reduce to the same expression. Take `⟨χ, hχ, ⟨φ⟩⟩` from `T.exists_equiv_detCharacter_of_irreducible_rank_le_one k (Fin 1) _ σ.ρ σ.smooth σ.irr`. Establish `e : (⟨1, hd, _, ⟨σ, rfl, hσ⟩, l, hl⟩ : Segment k) = Segment.ofChar χ hχ l hl`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `: σ.cl = (IrrRep.det (Fin 1) χ hχ).cl` using `IrrRep.cl_eq_iff.2 ⟨φ⟩`. Unfold `Segment.ofChar`. Use `congr 1`. Rewrite using `[e]`. Establish `key : ∀ w, wordMult (Z (Segment.ofChar χ hχ l hl)).rep.ρ w = open Classical in if w.length = l ∧ ∀ i < l, unrChar k (w.getD i 1) = χ * absPow k (i : ℂ) then 1 else 0` using `fun w => by`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hZ.ofChar hχ hl]`. Use `(wordMult_congr (IrrRep.nonempty_equiv_rep _).some w).trans ((wordMult_detRep (l * 1) _ w).trans ?_)` and prove the remaining obligations. Establish `: ∀ i : ℕ, χ * absPow k (((l : ℂ) - 1) / 2) * absPow k ((i : ℂ) - ((l : ℂ) - 1) / 2) = χ * absPow k (i : ℂ)` using `fun i => by`. Rewrite using `[mul_assoc, ← absPow_add]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `@if_congr _ _ _ (_) (_) _ _ _ _ ?_ rfl rfl` and prove the remaining obligations. Rewrite using `[mul_one]`. Simplify using `only [this]`. Distinguish the cases in `hu : IsUnram χ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `swap`. Use `Or.inr fun w => (key w).trans (if_neg fun h => hu ?_)` and prove the remaining obligations. Use `h.2 0 hl` as an intermediate fact. Rewrite `this` using `[Nat.cast_zero, absPow_zero, mul_one]`. Conclude with `this ▸ isUnram_unrChar k _`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Or.inl ⟨χ ϖ, l, hl, by congr 1; exact eq_unrChar hu hϖ, fun w => (key w).trans ?_⟩` and prove the remaining obligations. Establish `hp : ∀ i : ℕ, χ * absPow k (i : ℂ) = unrChar k (χ ϖ * absPow k 1 ϖ ^ i)` using `fun i => by`. Establish `h1 : IsUnram (χ * absPow k (i : ℂ))` using `fun x hx => by`. Rewrite using `[MonoidHom.mul_apply, hu x hx, isUnram_absPow k _ x hx, one_mul]`. Rewrite using `[eq_unrChar h1 hϖ, MonoidHom.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 2`. Use `ext`. Simplify using `[val_absPow]`. Establish `hi : ∀ a b : ℂˣ, unrChar k a = unrChar k b ↔ a = b` using `fun a b => ⟨fun h => by rw [← unrChar_uniformizer k a hϖ, h, unrChar_uniformizer k b hϖ], congrArg _⟩`. Simplify using `only [hp, hi, Multiset.count_singleton]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (w.length = l ∧ ∀ i < l, w.getD i 1 = χ ϖ * absPow k 1 ϖ ^ i) ↔ w = segWord (absPow k 1 ϖ) (χ ϖ) l`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl, h⟩`. Use `List.ext_getElem (by simp [segWord]) fun i h1 h2 => ?_` and prove the remaining obligations. Use `h i h1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite `this` using `[List.getD_eq_getElem _ _ h1]`. Simplify using `[segWord, this]`. Introduce and unpack `rfl`. Conclude with `⟨by simp [segWord], fun i hi => by simp [segWord, hi]⟩`. Distinguish the cases in `h : w = segWord (absPow k 1 ϖ) (χ ϖ) l`.
-
-Rewrite using `[if_pos (this.2 h), if_pos h, Nat.cast_one]`. Rewrite using `[if_neg fun h' => h (this.1 h'), if_neg h, Nat.cast_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wordMult_segment {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k)
     {Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * Δ.d)) k)} (hZ : IsSegmentClass k Z)
@@ -349,7 +341,7 @@ def Realised [DecidableEq ℂˣ] (Ψ : GrothGL k ≃+ MvPolynomial (Segment k) �
 variable [DecidableEq ℂˣ] {Ψ : GrothGL k ≃+ MvPolynomial (Segment k) ℤ}
 
 /- English proof (translation)
-Set `σ : IrrRep (GL (Fin 0) k)` to `IrrRep.det (Fin 0) 1 isSmoothChar_one`. Use `⟨0, _, _, _, σ.ρ, σ.hasFiniteLength, σ.smooth, by rw [clsGL_irr]; exact hΨ.1, {[]}, fun w => (wordMult_detRep 0 1 w).trans ?_, by simp [ShuffleAlgebra.word_nil]⟩` and prove the remaining obligations. Apply the tactic sequence `cases w <;> simp`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Realised.one (hΨ : IsProductIso k Ψ) : Realised Ψ 1 1 := by
   let σ : IrrRep (GL (Fin 0) k) := IrrRep.det (Fin 0) 1 isSmoothChar_one
@@ -358,15 +350,13 @@ theorem Realised.one (hΨ : IsProductIso k Ψ) : Realised Ψ 1 1 := by
   cases w <;> simp
 
 /- English proof (translation)
-Take `⟨r, V, _, _, π₁, h₁, s₁, rfl, a, ha, rfl⟩` from `hP`. Take `⟨t, W, _, _, π₂, h₂, s₂, rfl, b, hb, rfl⟩` from `hQ`. Take `⟨h, e⟩` from `hΨ.2 r t V W π₁ π₂ h₁ h₂ s₁ s₂`. Use `⟨r + t, _, _, _, prod₂ π₁ π₂, h, isSmooth_prod₂ _ _, e, a.bind fun u => b.bind fun v => Shuffle.shuffle u v, fun w => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w.length = r + t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨z, rfl⟩ : ∃ z : Fin (r + t) → ℂˣ, w = List.ofFn z` from `⟨fun i => w.get (i.cast hw.symm), List.ext_getElem (by simp [hw]) fun i h1 h2 => by simp⟩`. Rewrite using `[wordMult_prod₂ hG hC s₁ s₂ h₁ h₂, T.count_bind_wordShuffle_by_positions]`. Simplify using `[ha, hb]`. Rewrite using `[wordMult_of_ne _ hw, Multiset.count_eq_zero.2, Nat.cast_zero]`. Simplify using `only [Multiset.mem_bind]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨u, hu, v, hv, h⟩`. Establish `hu' : u.length = r`. Assume the negation of the conclusion as `hn`. Use `(ha u).symm.trans (wordMult_of_ne _ hn)` as an intermediate fact. Conclude with `Multiset.count_eq_zero.1 (Nat.cast_eq_zero.1 this) hu`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' : v.length = t`. Assume the negation of the conclusion as `hn`. Use `(hb v).symm.trans (wordMult_of_ne _ hn)` as an intermediate fact. Conclude with `Multiset.count_eq_zero.1 (Nat.cast_eq_zero.1 this) hv`. Conclude with `hw (by simpa [hu', hv'] using (Shuffle.perm_of_mem_shuffle u v w h).length_eq)`.
-
-Simplify using `only [Multiset.map_bind, Multiset.sum_bind, ← ShuffleAlgebra.word_mul_word, Multiset.sum_map_mul_left, Multiset.sum_map_mul_right]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Realised.mul (hG : JacquetOfInducedFiltration k) (hC : CellSemisimplification k)
     (hΨ : IsProductIso k Ψ) {P Q : MvPolynomial (Segment k) ℤ} {x y : ShuffleAlgebra ℚ ℂˣ}
@@ -397,11 +387,11 @@ theorem Realised.mul (hG : JacquetOfInducedFiltration k) (hC : CellSemisimplific
       Multiset.sum_map_mul_left, Multiset.sum_map_mul_right]
 
 /- English proof (translation)
-Establish `hp : ∀ Δ e, Realised Ψ (MvPolynomial.X Δ ^ e) (φ Δ ^ e)` using `fun Δ e => by`. Proceed by induction on `e with`. Consider the case `zero => simpa using Realised.one hΨ`. Consider the case `succ e ih => rw [pow_succ, pow_succ]`. Conclude with `ih.mul hG hC hΨ (hX Δ)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `m using Finsupp.induction_linear with`. Consider the case `zero => simpa using Realised.one hΨ`. Consider the case `add a b ha hb`. Rewrite using `[Finsupp.prod_add_index' (fun _ => pow_zero _) fun _ _ _ => pow_add _ _ _]`. Simplify using `using ha.mul hG hC hΨ hb`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `single Δ e`. Rewrite using `[Finsupp.prod_single_index (h := fun Δ e => φ Δ ^ e) (pow_zero _), ← MvPolynomial.X_pow_eq_monomial]`. Conclude with `hp Δ e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Realised.monomial (hG : JacquetOfInducedFiltration k) (hC : CellSemisimplification k)
     (hΨ : IsProductIso k Ψ) {φ : Segment k → ShuffleAlgebra ℚ ℂˣ}
@@ -421,9 +411,9 @@ theorem Realised.monomial (hG : JacquetOfInducedFiltration k) (hC : CellSemisimp
     exact hp Δ e
 
 /- English proof (translation)
-Take `⟨n, V, _, _, π, h, hs, rfl, s, h1, h2⟩` from `h`. Rewrite using `[Ψ.symm_apply_apply]`. Use `⟨Finsupp.mapDomain_nonneg fun c => ?_, s, fun w => ?_, h2⟩` and prove the remaining obligations. Rewrite using `[cls_apply]`. Conclude with `Int.natCast_nonneg _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[clsGL, Finsupp.sum_mapDomain_index_inj sigma_mk_injective, ← h1, T.jacquetWordMultiplicity_additive_jordanHolder k n V π h hs w]`.
+A detailed English derivation is pending.
 -/
 theorem Realised.effective {P : MvPolynomial (Segment k) ℤ} {y : ShuffleAlgebra ℚ ℂˣ}
     (h : Realised Ψ P y) : 0 ≤ Ψ.symm P ∧ ∃ s : Multiset (List ℂˣ),
@@ -447,9 +437,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
     exact Units.ext (Complex.ext_norm_arg (neg_injective h'.1) h'.2)
 
 /- English proof (translation)
-Use `letI := modArgOrder`. Use `isLyndon_of_pairwise_lt (by simp [segWord, hl.ne']) ?_` and prove the remaining obligations. Rewrite using `[segWord, List.pairwise_map]`. Use `List.pairwise_lt_range.imp fun {a b} hab => ?_` and prove the remaining obligations. Use `Prod.Lex.toLex_lt_toLex.2 (Or.inl (neg_lt_neg ?_))` and prove the remaining obligations.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, norm_mul, norm_pow]`. Conclude with `mul_lt_mul_of_pos_left (pow_lt_pow_right_of_lt_one₀ (by simp) hq hab) (by simp)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLyndon_segWord {q : ℂˣ} (hq : ‖(q : ℂ)‖ < 1) (z : ℂˣ) {l : ℕ} (hl : 0 < l) :
     @IsLyndon _ modArgOrder (segWord q z l) := by
@@ -462,9 +452,9 @@ theorem isLyndon_segWord {q : ℂˣ} (hq : ‖(q : ℂ)‖ < 1) (z : ℂˣ) {l :
   exact mul_lt_mul_of_pos_left (pow_lt_pow_right_of_lt_one₀ (by simp) hq hab) (by simp)
 
 /- English proof (translation)
-Use `borelize k`. Establish `h1 : nabs k ϖ ≤ 1` using `SplitWeil.Model.nabs_le_one ϖ (hϖ ▸ uniformizer_lt_one.le)`. Rewrite using `[val_absPow, Complex.cpow_one, Complex.norm_real, Real.norm_of_nonneg (nabs_pos' k ϖ).le]`. Use `lt_of_le_of_ne h1 fun h => ?_` and prove the remaining obligations. Establish `h2 : absPow k ((1 : ℝ) : ℂ) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_unrChar (isUnram_absPow k _) hϖ, show absPow k ((1 : ℝ) : ℂ) ϖ = 1 from by ext; simp [val_absPow, h]]`. Use extensionality with `x`. Simplify using `[unrChar_apply]`. Conclude with `one_ne_zero (LocGL.absPow_ofReal_eq_one.1 h2)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_absPow_one_lt {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) :
     ‖(absPow k 1 ϖ : ℂ)‖ < 1 := by
@@ -479,9 +469,9 @@ theorem norm_absPow_one_lt {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer 
   exact one_ne_zero (LocGL.absPow_ofReal_eq_one.1 h2)
 
 /- English proof (translation)
-Use `⟨fun i => θ (Pi.mulSingle i ϖ), MonoidHom.pi_ext fun i x => ?_⟩` and prove the remaining obligations. Rewrite using `[torusChar_mulSingle]`. Establish `: IsUnram (θ.comp (MonoidHom.mulSingle (fun _ => kˣ) i))` using `fun x hx => h _ fun j => by`. Break down `eq_or_ne j i with rfl | hj` into its components or cases. Simplify using `using hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[Pi.mulSingle_eq_of_ne hj]`. Conclude with `DFunLike.congr_fun (eq_unrChar this hϖ) x`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_eq_torusChar {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) {n : ℕ}
     {θ : (Fin n → kˣ) →* ℂˣ} (h : ∀ t ∈ torusO k (Fin n), θ t = 1) :
@@ -495,27 +485,25 @@ theorem exists_eq_torusChar {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer
   exact DFunLike.congr_fun (eq_unrChar this hϖ) x
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ϖ hϖ r n V _ _ π hi ha hne hI E hE c hc`. Take `⟨Z, Ψ, hZ, hΨ, hX⟩` from `hZ k`. Set `δ` to `(deltaHalf k fun _ : Fin r => Unit).comp (leviTorus k (Fin r)).toMonoidHom`. Establish `hδ : ∀ t ∈ torusO k (Fin r), δ t = 1` using `fun t ht => by show deltaHalf k _ (leviTorus k (Fin r) t) = 1`. Rewrite using `[deltaHalf_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun i _ => isUnram_absPow k _ _ ?_` and prove the remaining obligations. Rewrite using `[show Matrix.GeneralLinearGroup.det (leviTorus k (Fin r) t i) = t i from congrFun ((leviTorus k (Fin r)).left_inv t) i]`. Conclude with `ht i`. Set `σ : Fin n → IrrRep (GL (Fin r) k)` to `fun i => ⟨V i, π i, (ha i).1, hi i⟩`. Establish `hM : ∀ i (z : Fin r → ℂˣ), wordMult (σ i).cl.rep.ρ (List.ofFn z) = ((E i).count ((torusChar fun j => unrChar k (z j)) * δ) : ℕ∞)` using `fun i z => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wordMult_congr (σ i).nonempty_equiv_rep.some, wordMult_ofFn, T.jordanHolderMultiplicity_normalizedBorelJacquet_unramified k r _ _ (σ i).smooth _ fun t ht => by`. Rewrite using `[torusChar_apply]`. Conclude with `Finset.prod_eq_one fun j _ => isUnram_unrChar k _ _ (ht j)]`. Conclude with `hE i _`. Set `U : Set (Segment k)` to `{Δ | ∃ (z : ℂˣ) (l : ℕ) (hl : 0 < l), Δ = Segment.ofChar (unrChar k z) (isSmoothChar_of_isUnram (isUnram_unrChar k z)) l hl ∧ ∀ w, wordMult (Z Δ).rep.ρ w = (({segWord (absPow k 1 ϖ) z l} : Multiset (List ℂˣ)).count w : ℕ∞)}`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hU : ∀ Δ, ∃ w : List ℂˣ, Δ ∈ U → ∃ (z : ℂˣ) (l : ℕ) (hl : 0 < l), Δ = Segment.ofChar (unrChar k z) (isSmoothChar_of_isUnram (isUnram_unrChar k z)) l hl ∧ w = segWord (absPow k 1 ϖ) z l ∧ ∀ v, wordMult (Z Δ).rep.ρ v = (({w} : Multiset (List ℂˣ)).count v : ℕ∞)` using `fun Δ => by`. Distinguish the cases in `h : Δ ∈ U`. Take `⟨z, l, hl, h1, h2⟩` from `h`. Conclude with `⟨_, fun _ => ⟨z, l, hl, h1, rfl, h2⟩⟩`. Conclude with `⟨[], fun h' => absurd h' h⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose ℓ hℓ using hU`. Set `φ : Segment k → ShuffleAlgebra ℚ ℂˣ` to `fun Δ => if Δ ∈ U then ShuffleAlgebra.word ℚ (ℓ Δ) else 0`. Establish `hR : ∀ Δ, Realised Ψ (MvPolynomial.X Δ) (φ Δ)` using `fun Δ => by`. Use `⟨_, _, _, _, (Z Δ).rep.ρ, (Z Δ).rep.hasFiniteLength, (Z Δ).rep.smooth, by rw [clsGL_irr, IrrCl.cl_rep, hX], ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : Δ ∈ U`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, l, hl, -, -, h2⟩` from `hℓ Δ h`. Conclude with `⟨{ℓ Δ}, h2, by simp [φ, h]⟩`. Conclude with `⟨0, by simpa using (wordMult_segment hϖ hZ Δ).resolve_left h, by simp [φ, h]⟩`. Use `@T.shuffle_count_linearIndependent_classes _ _ ℂˣ _ modArgOrder Ψ (fun x w => wordMult x.2.rep.ρ w) U ℓ φ ?_ ?_ (fun Δ h => if_neg h) (fun m => (Realised.monomial (hG k).1 (hG k).2 hΨ hR m).effective) n (fun i => ⟨r, (σ i).cl⟩) c ?_ ?_ ?_` and prove the remaining obligations. Introduce `Δ h Δ' h' e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, l, hl, h1, h2, -⟩` from `hℓ Δ h`. Take `⟨z', l', hl', h1', h2', -⟩` from `hℓ Δ' h'`. Take `⟨rfl, rfl⟩` from `segWord_inj hl (h2.symm.trans (e.trans h2'))`. Conclude with `h1.trans h1'.symm`. Introduce `Δ h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, l, hl, -, h2, -⟩` from `hℓ Δ h`. Conclude with `⟨h2 ▸ isLyndon_segWord (norm_absPow_one_lt hϖ) z hl, if_pos h⟩`. Introduce `i j h`. Assume the negation of the conclusion as `hij`. Conclude with `(hne i j hij).false (IrrRep.cl_eq_iff.1 (sigma_mk_injective (β := fun n => IrrCl (GL (Fin n) k)) h)).some`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Introduce `i`. Take `⟨χ, hχ⟩` from `T.exists_exponent_of_iwahori_fixed_vector k r _ (π i) (ha i) (hI i)`. Rewrite `hχ` using `[hE i]`. Establish `hm : χ ∈ E i` using `Multiset.count_ne_zero.1 (Nat.cast_ne_zero.1 hχ)`. Take `⟨z, hz⟩` from `exists_eq_torusChar hϖ (θ := χ * δ⁻¹) fun t ht => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Simplify using `[(hE i).unramified hm ht, hδ t ht]`. Use `⟨List.ofFn z, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hM, ← hz, inv_mul_cancel_right]` and apply the resulting hypothesis. Introduce `w`.
-
-Distinguish the cases in `hw : w.length = r`. Take `⟨z, rfl⟩ : ∃ z : Fin r → ℂˣ, w = List.ofFn z` from `⟨fun i => w.get (i.cast hw.symm), List.ext_getElem (by simp [hw]) fun i h1 h2 => by simp⟩`. Simplify using `only [hM, ENat.toNat_coe]`. Conclude with `T.unramified_char_sums_strict_cone_vanish_each k ϖ hϖ r n E c (fun i χ hχ t ht => (hE i).unramified hχ ht) hc _`. Simplify using `[wordMult_of_ne _ hw]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exponentsSeparate (hG : Published.GeometricLemma) (hZ : Published.ZelevinskyPolynomialRing) :
     IndefiniteRowSideFullHecke.ExponentSeparationTwistedDiscreteSeries.ExponentsSeparate := by

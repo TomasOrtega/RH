@@ -17,7 +17,7 @@ def lenQ {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] (X Y : Submodu
   (Module.length R (↥X ⧸ Y.comap X.subtype)).toNat
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.locLen`. Rewrite using `[hA, hC]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem locLen_congr {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] (p : Ideal R) [p.IsPrime]
     {A A' C C' : Submodule R W} (hA : localization₂ p A = localization₂ p A') (hC : localization₂ p C = localization₂ p C') :
@@ -26,16 +26,16 @@ theorem locLen_congr {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] (p
   rw [hA, hC]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_localization_iff_exists_smul_mem {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] (p : Ideal R)
     [p.IsPrime] (L : Submodule R W) (x : W) :
     x ∈ Formalism.HermitianLatticesTheory.localization₂ p L ↔ ∃ s ∈ p.primeCompl, s • x ∈ L := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_localization_iff_exists_smul_mem, mem_localization_iff_exists_smul_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h⟩`. Rewrite `h` using `[mem_localization_iff_exists_smul_mem]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, ht, h⟩` from `h`. Conclude with `⟨t * s, p.primeCompl.mul_mem ht hs, by rw [mul_smul]; exact h⟩`. Introduce `hx`. Conclude with `⟨1, p.primeCompl.one_mem, by rw [one_smul, mem_localization_iff_exists_smul_mem]; exact hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem locP_locP' {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] (p : Ideal R)
     [p.IsPrime] (A : Submodule R W) :
@@ -51,11 +51,11 @@ private theorem locP_locP' {R W : Type*} [CommRing R] [AddCommGroup W] [Module R
     exact ⟨1, p.primeCompl.one_mem, by rw [one_smul, mem_localization_iff_exists_smul_mem]; exact hx⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Submodule.mem_inf, mem_localization_iff_exists_smul_mem, mem_localization_iff_exists_smul_mem, mem_localization_iff_exists_smul_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h⟩`. Rewrite `h` using `[Submodule.mem_inf]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨⟨s, hs, h.1⟩, ⟨s, hs, h.2⟩⟩`. Introduce and unpack `⟨⟨s, hs, h1⟩, ⟨t, ht, h2⟩⟩`. Use `⟨t * s, p.primeCompl.mul_mem ht hs, Submodule.mem_inf.mpr ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `A.smul_mem t h1`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `B.smul_mem s h2`.
+A detailed English derivation is pending.
 -/
 private theorem locP_inf' {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] (p : Ideal R)
     [p.IsPrime] (A B : Submodule R W) :
@@ -74,9 +74,9 @@ private theorem locP_inf' {R W : Type*} [CommRing R] [AddCommGroup W] [Module R 
       exact B.smul_mem s h2
 
 /- English proof (translation)
-Establish `e1` using `locP_locP' p A`. Establish `e3` using `locP_locP' p B`. Establish `e2 : Formalism.HermitianLatticesTheory.localization₂ p (Formalism.HermitianLatticesTheory.localization₂ p A ⊓ Formalism.HermitianLatticesTheory.localization₂ p B) = Formalism.HermitianLatticesTheory.localization₂ p (A ⊓ B)`. Rewrite using `[locP_inf', locP_locP', locP_locP', locP_inf']`. Unfold `Formalism.HermitianLatticesTheory.lidx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[locLen_congr p e1.symm e2.symm, locLen_congr p e3.symm e2.symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lidx_locP {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] (p : Ideal R) [p.IsPrime]
     (A B : Submodule R W) : lidx p A B = lidx p (localization₂ p A) (localization₂ p B) := by
@@ -90,7 +90,7 @@ theorem lidx_locP {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] (p : 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Unfold `lix`. Conclude with `lidx_locP _ A B`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lix_locP {Z : Type} [AddCommGroup Z] [Module K Z] [Module (𝓞 K) Z] (w : HeightOneSpectrum (𝓞 K))
     (A B : Submodule (𝓞 K) Z) :
@@ -99,7 +99,7 @@ theorem lix_locP {Z : Type} [AddCommGroup Z] [Module K Z] [Module (𝓞 K) Z] (w
   exact lidx_locP _ A B
 
 /- English proof (translation)
-Rewrite using `[lix_locP w A (X₃ ⊓ X₄), lix_locP w A X₃, locP_inf', inf_eq_left.mpr h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locP {Z : Type} [AddCommGroup Z] [Module K Z] [Module (𝓞 K) Z]
     (w : HeightOneSpectrum (𝓞 K)) (A X₃ X₄ : Submodule (𝓞 K) Z)
@@ -110,7 +110,7 @@ theorem locP {Z : Type} [AddCommGroup Z] [Module K Z] [Module (𝓞 K) Z]
 end Gen
 
 /- English proof (translation)
-Introduce `K _ _ _ Z _ _ _ _ _ w P _ _ ρ U ψ hMk V₀ e he hr M Th1 Th ThK Th0 ThJ X₃ hM hTh1 hTh hThK h1le hle hFG hEig hMs hTs σ hσ hsc hdata a E r ha hE hT0 h0 hJ h0J h3 X _ _ _ _ θ' eX pr Mt hc hpr h4 h34 ε hTW d φ hinj hrng Mj Tj hMj hTj`. Conclude with `local_conditions_weighted K Z w P ρ U ψ hMk V₀ e he hr M Th1 Th ThK Th0 ThJ (X₃ ⊓ (Mt.map (θ'.restrictScalars (𝓞 K))).map (e.restrictScalars (𝓞 K))) hM hTh1 hTh hThK h1le hle hFG hEig hMs hTs σ hσ hsc hdata a E r ha hE hT0 h0 hJ h0J (idxRules_inf_lat h3 h4) X θ' eX pr Mt hc hpr h …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem local_conditions_weighted_at_place : LocalConditionsWeightedAtPlace := by
   intro K _ _ _ Z _ _ _ _ _ w P _ _ ρ U ψ hMk V₀ e he hr M Th1 Th ThK Th0 ThJ X₃ hM hTh1 hTh hThK h1le hle hFG hEig

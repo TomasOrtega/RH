@@ -4,7 +4,7 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.resLE_preimage, Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Conclude with `inf_eq_right.mpr (fun x hx => V.ι_image_le W hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma resLE_self_preimage_image_eq {Z Z₁ : Scheme.{0}} (e₁ : Z₁ ⟶ Z) (V : Z.Opens)
     (W : V.toScheme.Opens) :
@@ -14,9 +14,9 @@ lemma resLE_self_preimage_image_eq {Z Z₁ : Scheme.{0}} (e₁ : Z₁ ⟶ Z) (V 
   exact inf_eq_right.mpr (fun x hx => V.ι_image_le W hx)
 
 /- English proof (translation)
-Rewrite `h` using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.resLE_appLE]`. Establish `hS` using `resLE_self_preimage_image_eq e₁ V W`. Establish `key` using `Scheme.Hom.appLE_map' (f := e₁) (U := V.ι ''ᵁ W) (e := le_refl (e₁ ⁻¹ᵁ (V.ι ''ᵁ W))) (i := hS.symm)`. Rewrite `key` using `[Scheme.Hom.appLE_eq_app]`. Rewrite using `[← key]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `erw [ConcreteCategory.comp_apply, ConcreteCategory.comp_apply]`. Conclude with `congrArg _ h`.
+A detailed English derivation is pending.
 -/
 lemma resLE_self_app_eq {Z Z₁ : Scheme.{0}} (e₁ : Z₁ ⟶ Z) (V : Z.Opens) (W : V.toScheme.Opens)
     (a b : Γ(V.toScheme, W))
@@ -32,9 +32,9 @@ lemma resLE_self_app_eq {Z Z₁ : Scheme.{0}} (e₁ : Z₁ ⟶ Z) (V : Z.Opens) 
   exact congrArg _ h
 
 /- English proof (translation)
-Introduce `Z Z₁ Z₂ e₁ e₂ hcov hinj V`. Use `⟨fun z => ?_, fun W a b h₁ h₂ => hinj _ a b (resLE_self_app_eq e₁ V W a b h₁) (resLE_self_app_eq e₂ V W a b h₂)⟩` and prove the remaining obligations. Break down `hcov z.1 with ⟨z₁, hz⟩ | ⟨z₂, hz⟩` into its components or cases. Use `Or.inl ⟨⟨z₁, show e₁ z₁ ∈ V from hz ▸ z.2⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.coe_resLE_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz`. Use `Or.inr ⟨⟨z₂, show e₂ z₂ ∈ V from hz ▸ z.2⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.coe_resLE_apply]`. Conclude with `hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cover_and_joint_inj_restrict : ∀ (Z Z₁ Z₂ : Scheme.{0}) (e₁ : Z₁ ⟶ Z) (e₂ : Z₂ ⟶ Z),
     (∀ z : Z, (∃ z₁, e₁ z₁ = z) ∨ ∃ z₂, e₂ z₂ = z) →

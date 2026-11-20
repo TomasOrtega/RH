@@ -21,9 +21,7 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj in
 
 /- English proof (translation)
-Rewrite using `[GeometricallyConnected.iff_geometricallyConnected_fiber]`. Introduce `s`. Use `haveI : ConnectedSpace (f ⁻¹' {s}) := isConnected_iff_connectedSpace.mp (h s)`. Use `haveI : ConnectedSpace (f.fiber s) := (f.fiberHomeo s).symm.surjective.connectedSpace (f.fiberHomeo s).symm.continuous`. Use `haveI : LocallyOfFiniteType (f.fiberToSpecResidueField s) := instLocallyOfFiniteTypeSndScheme f (S.fromSpecResidueField s)`.
-
-Conclude with `_root_.GlobalTheory.RatPointConn.of_section (k := S.residueField s) (f.fiberToSpecResidueField s) (pullback.lift (S.fromSpecResidueField s ≫ e) (𝟙 _) (by simp [he])) (pullback.lift_snd _ _ _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SS.NeutralPart.geometricallyConnected_of_section {X S : Scheme.{0}} (f : X ⟶ S) [LocallyOfFiniteType f]
     [QuasiCompact f] (e : S ⟶ X) (he : e ≫ f = 𝟙 S)

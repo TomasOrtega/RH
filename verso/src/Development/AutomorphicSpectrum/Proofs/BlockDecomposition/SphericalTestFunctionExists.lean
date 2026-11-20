@@ -21,11 +21,11 @@ def q₀ (u : mixedSpace k) : ℝ := ∑ w : InfinitePlace k, normAtPlace w u ^ 
 def qI {ι : Type} [Fintype ι] (u : ι → mixedSpace k) : ℝ := ∑ i, q₀ (u i)
 
 /- English proof (translation)
-Distinguish the cases in `hw : w.IsReal`. Establish `h : (fun u : mixedSpace k => normAtPlace w u ^ 2) = fun u => ‖u.1 ⟨w, hw⟩‖ ^ 2`. Use function extensionality and compare the values at `u`. Rewrite using `[normAtPlace_apply_of_isReal hw]`. Rewrite using `[h]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(contDiff_norm_sq ℝ).comp ((contDiff_apply ℝ ℝ (⟨w, hw⟩ : {w : InfinitePlace k // w.IsReal})).comp contDiff_fst)`. Establish `hc : w.IsComplex` using `InfinitePlace.not_isReal_iff_isComplex.mp hw`. Establish `h : (fun u : mixedSpace k => normAtPlace w u ^ 2) = fun u => ‖u.2 ⟨w, hc⟩‖ ^ 2`. Use function extensionality and compare the values at `u`. Rewrite using `[normAtPlace_apply_of_isComplex hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `(contDiff_norm_sq ℝ).comp ((contDiff_apply ℝ ℂ (⟨w, hc⟩ : {w : InfinitePlace k // w.IsComplex})).comp contDiff_snd)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_normAtPlace_sq (w : InfinitePlace k) :
     ContDiff ℝ (∞) fun u : mixedSpace k => normAtPlace w u ^ 2 := by
@@ -45,7 +45,7 @@ theorem contDiff_normAtPlace_sq (w : InfinitePlace k) :
       ((contDiff_apply ℝ ℂ (⟨w, hc⟩ : {w : InfinitePlace k // w.IsComplex})).comp contDiff_snd)
 
 /- English proof (translation)
-Unfold `q₀`. Conclude with `ContDiff.sum (f := fun w u => normAtPlace w u ^ 2) (s := Finset.univ) fun w _ => contDiff_normAtPlace_sq w`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiff_q₀ : ContDiff ℝ (∞) (q₀ (k := k)) := by
   unfold q₀
@@ -53,7 +53,7 @@ theorem contDiff_q₀ : ContDiff ℝ (∞) (q₀ (k := k)) := by
     fun w _ => contDiff_normAtPlace_sq w
 
 /- English proof (translation)
-Unfold `qI`. Apply `ContDiff.sum` to reduce the goal to its premises. Introduce `i _`. Establish `hi : ContDiff ℝ (∞) fun u : ι → mixedSpace k => u i` using `contDiff_apply ℝ (mixedSpace k) i`. Conclude with `(contDiff_q₀ (k := k)).comp hi`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_qI {ι : Type} [Fintype ι] : ContDiff ℝ (∞) (qI (k := k) (ι := ι)) := by
   unfold qI
@@ -63,14 +63,14 @@ theorem contDiff_qI {ι : Type} [Fintype ι] : ContDiff ℝ (∞) (qI (k := k) (
   exact (contDiff_q₀ (k := k)).comp hi
 
 /- English proof (translation)
-Unfold `q₀`. Conclude with `Finset.sum_nonneg fun w _ => sq_nonneg _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem q₀_nonneg (u : mixedSpace k) : 0 ≤ q₀ u := by
   unfold q₀
   exact Finset.sum_nonneg fun w _ => sq_nonneg _
 
 /- English proof (translation)
-Rewrite using `[norm_eq_sup'_normAtPlace]`. Use `Finset.sup'_le _ _ fun w _ => ?_` and prove the remaining obligations. Use `(le_abs_self _).trans (Real.abs_le_sqrt ?_)` and prove the remaining obligations. Unfold `q₀`. Conclude with `Finset.single_le_sum (f := fun w => normAtPlace w u ^ 2) (fun w _ => sq_nonneg _) (Finset.mem_univ w)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem norm_le_sqrt_q₀ (u : mixedSpace k) : ‖u‖ ≤ Real.sqrt (q₀ u) := by
   rw [norm_eq_sup'_normAtPlace]
@@ -81,7 +81,7 @@ theorem norm_le_sqrt_q₀ (u : mixedSpace k) : ‖u‖ ≤ Real.sqrt (q₀ u) :=
     (Finset.mem_univ w)
 
 /- English proof (translation)
-Use `(Metric.isBounded_closedBall (x := (0 : mixedSpace k)) (r := Real.sqrt c)).subset ?_` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `(norm_le_sqrt_q₀ u).trans (Real.sqrt_le_sqrt hu)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBounded_q₀ (c : ℝ) : Bornology.IsBounded {u : mixedSpace k | q₀ u ≤ c} := by
   refine (Metric.isBounded_closedBall (x := (0 : mixedSpace k)) (r := Real.sqrt c)).subset ?_
@@ -90,9 +90,9 @@ theorem isBounded_q₀ (c : ℝ) : Bornology.IsBounded {u : mixedSpace k | q₀ 
   exact (norm_le_sqrt_q₀ u).trans (Real.sqrt_le_sqrt hu)
 
 /- English proof (translation)
-Use `(Metric.isBounded_closedBall (x := (0 : ι → mixedSpace k)) (r := Real.sqrt c)).subset ?_` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[Metric.mem_closedBall, dist_zero_right, pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg c)]`. Introduce `i`. Use `(norm_le_sqrt_q₀ (u i)).trans (Real.sqrt_le_sqrt ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu' : qI u ≤ c` using `hu`. Unfold `qI at hu'`. Conclude with `le_trans (Finset.single_le_sum (f := fun i => q₀ (u i)) (fun i _ => q₀_nonneg (u i)) (Finset.mem_univ i)) hu'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isBounded_qI {ι : Type} [Fintype ι] (c : ℝ) :
     Bornology.IsBounded {u : ι → mixedSpace k | qI u ≤ c} := by
@@ -107,9 +107,9 @@ theorem isBounded_qI {ι : Type} [Fintype ι] (c : ℝ) :
     (Finset.mem_univ i)) hu'
 
 /- English proof (translation)
-Establish `hf : ContDiff ℝ (∞) (fun x => ((Real.smoothTransition (c - q x) : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp (Real.smoothTransition.contDiff.comp (contDiff_const.sub hq))`. Establish `hs : HasCompactSupport (fun x => ((Real.smoothTransition (c - q x) : ℝ) : ℂ))`. Use `HasCompactSupport.intro (hb c).isCompact_closure fun x hx => ?_` and prove the remaining obligations. Establish `hx' : c < q x`. Assume the negation of the conclusion as `hle`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hx (subset_closure (not_lt.mp hle))`. Rewrite using `[Real.smoothTransition.zero_of_nonpos (by linarith), Complex.ofReal_zero]`. Conclude with `⟨hs.toSchwartzMap hf, fun x => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_bump {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [ProperSpace E]
     (q : E → ℝ) (hq : ContDiff ℝ (∞) q) (hb : ∀ c, Bornology.IsBounded {x | q x ≤ c}) (c : ℝ) :
@@ -127,7 +127,7 @@ theorem exists_bump {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [Prope
 def IntF (y : 𝔸ᶠ[k]) : Prop := ∀ v : HeightOneSpectrum (𝓞 k), y v ∈ v.adicCompletionIntegers k
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ v : HeightOneSpectrum (𝓞 k), Valued.v (y v) ≤ WithZero.exp (-FractionalIdeal.count k v ((1 : (FractionalIdeal (𝓞 k)⁰ k)ˣ) : FractionalIdeal (𝓞 k)⁰ k))) ↔ IntF y`. Simplify using `only [Units.val_one, FractionalIdeal.count_one, neg_zero, WithZero.exp_zero, IntF, HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem mem_one_iff (y : 𝔸ᶠ[k]) : y ∈ idealFiniteAdeles (1 : (FractionalIdeal (𝓞 k)⁰ k)ˣ) ↔ IntF y := by
   change (∀ v : HeightOneSpectrum (𝓞 k), Valued.v (y v) ≤
@@ -138,7 +138,7 @@ theorem mem_one_iff (y : 𝔸ᶠ[k]) : y ∈ idealFiniteAdeles (1 : (FractionalI
 
 open Classical in
 /- English proof (translation)
-Use `delta GroundTheory.Global.cosetIndicator`. Simplify using `only [Set.indicator_apply, Set.mem_vadd_set, vadd_eq_add, zero_add, exists_eq_right, SetLike.mem_coe, mem_one_iff, Pi.one_apply]`. Apply the tactic sequence `all_goals (by_cases h : IntF y <;> simp [h])`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ind_apply (y : 𝔸ᶠ[k]) :
     cosetIndicator (1 : (FractionalIdeal (𝓞 k)⁰ k)ˣ) 0 y = if IntF y then 1 else 0 := by
@@ -148,17 +148,15 @@ theorem ind_apply (y : 𝔸ᶠ[k]) :
   all_goals (by_cases h : IntF y <;> simp [h])
 
 /- English proof (translation)
-Conclude with `Subring.mem_iInf.trans (forall_congr' fun v => Iff.rfl)`.
+A detailed English derivation is pending.
 -/
 theorem mem_intAd_iff (a : 𝔸[k]) : a ∈ intAd k ↔ IntF a.2 := by
   exact Subring.mem_iInf.trans (forall_congr' fun v => Iff.rfl)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `ht : t = ∑ i, m i * (t * v i)`. Rewrite using `[show ∑ i, m i * (t * v i) = t * ∑ i, m i * v i by`. Rewrite using `[Finset.mul_sum]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring, h1, mul_one]`. Establish `htm : t ∈ intAd k`. Rewrite using `[ht]`. Conclude with `Subring.sum_mem _ fun i _ => Subring.mul_mem _ (hm i) ((mem_intAd_iff _).mpr (h i))`. Conclude with `(mem_intAd_iff t).mp htm`.
-
-Introduce `h i`. Conclude with `(mem_intAd_iff _).mp (Subring.mul_mem _ ((mem_intAd_iff t).mpr h) (hv i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem intF_line {ι : Type} [Fintype ι] (v m : ι → 𝔸[k]) (hv : ∀ i, v i ∈ intAd k)
     (hm : ∀ i, m i ∈ intAd k) (h1 : ∑ i, m i * v i = 1) (t : 𝔸[k]) :
@@ -177,7 +175,7 @@ theorem intF_line {ι : Type} [Fintype ι] (v m : ι → 𝔸[k]) (hv : ∀ i, v
     exact (mem_intAd_iff _).mp (Subring.mul_mem _ ((mem_intAd_iff t).mpr h) (hv i))
 
 /- English proof (translation)
-Unfold `q₀`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[GroundTheory.Global.normAtPlace_homeomorphMixedSpace]`. Use `show ‖a.1 w‖ ^ 2 = ‖(InfinitePlace.Completion.extensionEmbedding w) (a.1 w)‖ ^ 2`. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _)]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q₀_inf (a : 𝔸[k]) : q₀ (homeomorphMixedSpace k a.1) =
     ∑ w : InfinitePlace k, ‖(adStd k).φ w a‖ ^ 2 := by
@@ -188,9 +186,9 @@ theorem q₀_inf (a : 𝔸[k]) : q₀ (homeomorphMixedSpace k a.1) =
   rw [(InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _)]
 
 /- English proof (translation)
-Unfold `qI`. Establish `e1 : ∀ i, q₀ (infPartPi (t • v) i) = ∑ w : InfinitePlace k, ‖(adStd k).φ w t‖ ^ 2 * ‖(adStd k).φ w (v i)‖ ^ 2`. Introduce `i`. Rewrite using `[show infPartPi (t • v) i = homeomorphMixedSpace k (t * v i).1 from rfl, q₀_inf]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, norm_mul, mul_pow]`. Simplify using `only [e1]`. Rewrite using `[Finset.sum_comm, q₀_inf]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, hv w, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem qI_line {ι : Type} [Fintype ι] (v : ι → 𝔸[k])
     (hv : ∀ w, ∑ i, ‖(adStd k).φ w (v i)‖ ^ 2 = 1) (t : 𝔸[k]) :
@@ -208,9 +206,9 @@ theorem qI_line {ι : Type} [Fintype ι] (v : ι → 𝔸[k])
   rw [← Finset.mul_sum, hv w, mul_one]
 
 /- English proof (translation)
-Establish `hmem : (κ.1⁻¹ : GL ι 𝔸[k]) ∈ (adStd k).kGL ι` using `inv_mem κ.2`. Take `⟨-, hU⟩` from `hmem`. Establish `h1` using `congrFun (congrFun (Matrix.mem_unitaryGroup_iff'.mp (hU w)) i₀) i₀`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply_eq]`. Establish `h2 : ∀ z : ℂ, star z * z = ((‖z‖ ^ 2 : ℝ) : ℂ)` using `fun z => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression. Simplify using `only [Matrix.star_apply, Matrix.map_apply, h2] at h1`. Conclude with `h1` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem col_norm {ι : Type} [Fintype ι] [DecidableEq ι] (κ : (adStd k).kGL ι) (i₀ : ι)
     (w : InfinitePlace k) :
@@ -230,7 +228,7 @@ def Hr (c : ℝ) (t : 𝔸[k]) : ℝ :=
   Real.smoothTransition (c - q₀ (homeomorphMixedSpace k t.1)) * if IntF t.2 then 1 else 0
 
 /- English proof (translation)
-Unfold `Hr`. Use `mul_nonneg (Real.smoothTransition.nonneg _) ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hr_nonneg (c : ℝ) (t : 𝔸[k]) : 0 ≤ Hr c t := by
   unfold Hr
@@ -238,9 +236,9 @@ theorem Hr_nonneg (c : ℝ) (t : 𝔸[k]) : 0 ≤ Hr c t := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Use `show φ (infPartPi x) * ∏ i, cosetIndicator (1 : (FractionalIdeal (𝓞 k)⁰ k)ˣ) 0 (x i).2 = _`. Rewrite using `[hφ]`. Simplify using `only [ind_apply]`. Use `congr 1`. Rewrite using `[Finset.prod_boole]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_univ, true_implies]`.
+A detailed English derivation is pending.
 -/
 theorem tensor_apply {ι : Type} [Fintype ι] (c : ℝ) (φ : 𝓢(ι → mixedSpace k, ℂ))
     (hφ : ∀ u, φ u = (Real.smoothTransition (c - qI u) : ℂ)) (x : ι → 𝔸[k]) :
@@ -255,9 +253,9 @@ theorem tensor_apply {ι : Type} [Fintype ι] (c : ℝ) (φ : 𝓢(ι → mixedS
   simp only [Finset.mem_univ, true_implies]
 
 /- English proof (translation)
-Establish `hq : qI (infPartPi (fun _ : Unit => t)) = q₀ (homeomorphMixedSpace k t.1)`. Unfold `qI`. Conclude with `Fintype.sum_unique _`. Rewrite using `[tensor_apply c φ hφ (fun _ => t), hq]`. Distinguish the cases in `h : IntF t.2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Hr]`. Simplify using `[h, Hr]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tensor_unit (c : ℝ) (φ : 𝓢(Unit → mixedSpace k, ℂ))
     (hφ : ∀ u, φ u = (Real.smoothTransition (c - qI u) : ℂ)) (t : 𝔸[k]) :
@@ -273,13 +271,13 @@ theorem tensor_unit (c : ℝ) (φ : 𝓢(Unit → mixedSpace k, ℂ))
   · simp [h, Hr]
 
 /- English proof (translation)
-Establish `hcol : ((κ.1⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ Pi.single i₀ 1 = fun i => ((κ.1⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) i i₀`. Rewrite using `[Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Establish `hinv : (κ.1⁻¹ : GL ι 𝔸[k]) ∈ (adStd k).kGL ι` using `inv_mem κ.2`. Take `⟨hO, -⟩` from `hinv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hκ : κ.1 ∈ (adStd k).kGL ι` using `κ.2`. Take `⟨hO', -⟩` from `hκ`. Establish `hone : (κ.1 : Matrix ι ι 𝔸[k]) * ((κ.1⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h1` using `congrFun (congrFun hone i₀) i₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply_eq]`. Establish `hI` using `intF_line (fun i => ((κ.1⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) i i₀) (fun i => (κ.1 : Matrix ι ι 𝔸[k]) i₀ i) (fun i => (hO i i₀).1) (fun i => (hO' i₀ i).1) h1 t`. Establish `hq` using `qI_line (fun i => ((κ.1⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) i i₀) (col_norm κ i₀) t`. Rewrite using `[hcol, tensor_apply c φ hφ, hq]`. Establish `hI' : (∀ i, IntF ((t • fun i => ((κ.1⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) i i₀) i).2) ↔ IntF t.2` using `hI`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `h : IntF t.2`. Rewrite using `[if_pos (hI'.mpr h)]`. Simplify using `[Hr, h]`. Rewrite using `[if_neg (fun h' => h (hI'.mp h'))]`. Simplify using `[Hr, h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tensor_line {ι : Type} [Fintype ι] [DecidableEq ι] (c : ℝ) (φ : 𝓢(ι → mixedSpace k, ℂ))
     (hφ : ∀ u, φ u = (Real.smoothTransition (c - qI u) : ℂ)) (i₀ : ι) (κ : (adStd k).kGL ι)
@@ -311,21 +309,21 @@ theorem tensor_line {ι : Type} [Fintype ι] [DecidableEq ι] (c : ℝ) (φ : �
     simp [Hr, h]
 
 /- English proof (translation)
-Establish `hF : (fun t : 𝔸[k] => (Hr c t : ℂ)) = GroundTheory.Global.schwartzBruhatTensor φ (cosetIndicator (1 : (FractionalIdeal (𝓞 k)⁰ k)ˣ) 0)`. Use function extensionality and compare the values at `t`. Use `show _ = φ (homeomorphMixedSpace k t.1) * cosetIndicator (1 : (FractionalIdeal (𝓞 k)⁰ k)ˣ) 0 t.2`. Rewrite using `[hφ, ind_apply]`. Apply the tactic sequence `by_cases h : IntF t.2 <;> simp [Hr, h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hmem : (fun t : 𝔸[k] => (Hr c t : ℂ)) ∈ GroundTheory.Global.schwartzBruhat k`. Rewrite using `[hF]`. Conclude with `GroundTheory.Global.schwartzBruhatTensor_mem φ (GroundTheory.Global.cosetIndicator_mem_finiteSchwartzBruhat _ _)`. Establish `hint` using `GroundTheory.Global.integrable_globalZetaIntegrand hmem 1 (s := (x : ℂ)) (by simpa using hx)`. Establish `hcont` using `GroundTheory.Global.continuous_zetaIntegrand (GroundTheory.Global.continuous_of_mem_schwartzBruhat hmem) 1 (x : ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hval : ∀ y : GroundTheory.Global.IdeleGroup k, RCLike.re ((fun t : 𝔸[k] => (Hr c t : ℂ)) (y : 𝔸[k]) * (((1 : GroundTheory.Global.HeckeCharacter k).toIdele y : Circle) : ℂ) * (((GroundTheory.Global.IdeleGroup.ideleModule k y : ℝ) : ℂ)) ^ (x : ℂ)) = Hr c (y : 𝔸[k]) * (GroundTheory. …`. Introduce `y`. Establish `h1 : (1 : GroundTheory.Global.HeckeCharacter k).toIdele y = 1` using `rfl`. Rewrite using `[h1, ← Complex.ofReal_cpow (le_of_lt (GroundTheory.Global.IdeleGroup.ideleModule k y).2)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnn : ∀ y : GroundTheory.Global.IdeleGroup k, 0 ≤ RCLike.re ((fun t : 𝔸[k] => (Hr c t : ℂ)) (y : 𝔸[k]) * (((1 : GroundTheory.Global.HeckeCharacter k).toIdele y : Circle) : ℂ) * (((GroundTheory.Global.IdeleGroup.ideleModule k y : ℝ) : ℂ)) ^ (x : ℂ))` using `fun y => by`. Rewrite using `[hval]`. Conclude with `mul_nonneg (Hr_nonneg c _) (Real.rpow_nonneg (le_of_lt (GroundTheory.Global.IdeleGroup.ideleModule k y).2) x)`. Establish `hq1 : q₀ (homeomorphMixedSpace k (1 : 𝔸[k]).1) = Fintype.card (InfinitePlace k)`. Rewrite using `[q₀_inf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hI1 : IntF (1 : 𝔸[k]).2` using `(mem_intAd_iff 1).mp (Subring.one_mem _)`. Establish `hs1 : Real.smoothTransition (c - q₀ (homeomorphMixedSpace k (1 : 𝔸[k]).1)) = 1` using `Real.smoothTransition.one_of_one_le (by rw [hq1]; linarith)`. Establish `h1pos : 0 < RCLike.re ((fun t : 𝔸[k] => (Hr c t : ℂ)) ((1 : GroundTheory.Global.IdeleGroup k) : 𝔸[k]) * (((1 : GroundTheory.Global.HeckeCharacter k).toIdele 1 : Circle) : ℂ) * (((GroundTheory.Global.IdeleGroup.ideleModule k 1 : ℝ) : ℂ)) ^ (x : ℂ))`. Rewrite using `[hval]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : ((1 : GroundTheory.Global.IdeleGroup k) : 𝔸[k]) = 1` using `rfl`. Establish `hm : (GroundTheory.Global.IdeleGroup.ideleModule k 1 : ℝ) = 1`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Rewrite using `[hu, hm, Real.one_rpow, mul_one]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Unfold `Hr`. Rewrite using `[hs1, if_pos hI1]`. Evaluate the numerical expressions. Establish `hpos` using `(MeasureTheory.integral_pos_iff_support_of_nonneg (fun y => hnn y) hint.re).mpr ((Complex.continuous_re.comp hcont).isOpen_support.measure_pos _ ⟨1, h1pos.ne'⟩)`. Rewrite `hpos` using `[integral_re hint]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Use `delta GroundTheory.Global.globalZeta at h0`. Rewrite `hpos` using `[h0]`. Simplify using `at hpos`.
+A detailed English derivation is pending.
 -/
 theorem zeta_ne (c : ℝ) (hc : (Fintype.card (InfinitePlace k) : ℝ) + 1 ≤ c)
     (φ : 𝓢(mixedSpace k, ℂ)) (hφ : ∀ u, φ u = (Real.smoothTransition (c - q₀ u) : ℂ))
@@ -384,15 +382,15 @@ theorem zeta_ne (c : ℝ) (hc : (Fintype.card (InfinitePlace k) : ℝ) + 1 ≤ c
   simp at hpos
 
 /- English proof (translation)
-Introduce `k _ _ ι _ _ i₀`. Use `set c : ℝ := (Fintype.card (InfinitePlace k) : ℝ) + 1 with hcdef`. Establish `hc1 : (1 : ℝ) ≤ c`. Use `(Nat.cast_nonneg (Fintype.card (InfinitePlace k)) : (0 : ℝ) ≤ _)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩` from `exists_bump (E := ι → mixedSpace k) (qI (k := k) (ι := ι)) contDiff_qI isBounded_qI c`. Take `⟨φ₁, hφ₁⟩` from `exists_bump (E := Unit → mixedSpace k) (qI (k := k) (ι := Unit)) contDiff_qI isBounded_qI c`. Take `⟨φ₀, hφ₀⟩` from `exists_bump (E := mixedSpace k) (q₀ (k := k)) contDiff_q₀ isBounded_q₀ c`. Establish `hg : ∀ (κ : Type) [Fintype κ], finiteTensor (fun _ : κ => cosetIndicator (1 : (FractionalIdeal (𝓞 k)⁰ k)ˣ) 0) ∈ finiteSchwartzBruhatPi k` using `fun κ _ => finiteTensor_mem fun _ => GroundTheory.Global.cosetIndicator_mem_finiteSchwartzBruhat _ _`. Use `⟨schwartzBruhatTensorPi φ (finiteTensor fun _ => cosetIndicator (1 : (FractionalIdeal (𝓞 k)⁰ k)ˣ) 0), schwartzBruhatTensorPi φ₁ (finiteTensor fun _ => cosetIndicator (1 : (FractionalIdeal (𝓞 k)⁰ k)ˣ) 0), schwartzBruhatTensorPi_mem φ (hg ι), schwartzBruhatTensorPi_mem φ₁ (hg Unit) …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tensor_apply c φ hφ]`. Establish `hq : qI (infPartPi (0 : ι → 𝔸[k])) = 0`. Unfold `qI`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show infPartPi (0 : ι → 𝔸[k]) i = homeomorphMixedSpace k (0 : 𝔸[k]).1 from rfl, q₀_inf]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hI : ∀ i, IntF ((0 : ι → 𝔸[k]) i).2` using `fun i => (mem_intAd_iff 0).mp (Subring.zero_mem _)`. Rewrite using `[hq, if_pos hI, sub_zero, Real.smoothTransition.one_of_one_le hc1]`. Simplify using the standard rewrite rules. Introduce `t κ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tensor_line c φ hφ i₀ κ t, tensor_unit c φ₁ hφ₁ t]`. Introduce `x hx`. Establish `hfun : (fun t : 𝔸[k] => schwartzBruhatTensorPi φ₁ (finiteTensor fun _ => cosetIndicator (1 : (FractionalIdeal (𝓞 k)⁰ k)ˣ) 0) (fun _ => t)) = fun t => (Hr c t : ℂ)` using `funext fun t => tensor_unit c φ₁ hφ₁ t`. Rewrite using `[hfun]`. Conclude with `zeta_ne c hcdef.symm.le φ₀ hφ₀ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem testSph : TestSph := by
   intro k _ _ ι _ _ i₀

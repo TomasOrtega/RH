@@ -10,15 +10,15 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP.CoordEx
 
 /- English proof (translation)
-Set `v : M →ₛₗ[f] (Fin d → B)` to `{ toFun := fun x i => f (e.repr x i) map_add' := fun x y => by ext i; simp map_smul' := fun a x => by ext i; simp }`. Take `⟨S, hS, -⟩` from `h _ v`. Set `Q : (Fin d → B) →ₗ[B] N` to `Fintype.linearCombination B fun i => u (e i)`. Establish `hQ : Q.comp S = LinearMap.id` using `h.hom_ext fun x => by`. Rewrite using `[LinearMap.comp_apply, hS, LinearMap.id_apply, Fintype.linearCombination_apply]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← e.sum_repr x, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (u.map_smulₛₗ _ _).symm`. Establish `hv : ∀ i, S (u (e i)) = Pi.single i 1` using `fun i => by`. Rewrite using `[hS]`. Use extensionality with `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Express the relevant statement in the definitionally equal form `f (e.repr (e i) j) = _`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij, Ne.symm hij]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hQ1 : ∀ i, Q (Pi.single i 1) = u (e i)` using `fun i => by`. Simplify using `[Q, Fintype.linearCombination_apply_single]`. Establish `hS' : S.comp Q = LinearMap.id`. Use `(Pi.basisFun B (Fin d)).ext fun i => ?_` and prove the remaining obligations. Rewrite using `[Pi.basisFun_apply, LinearMap.comp_apply, hQ1, hv, LinearMap.id_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(Pi.basisFun B (Fin d)).map (LinearEquiv.ofLinear Q S hQ hS'), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.map_apply, Pi.basisFun_apply, LinearEquiv.ofLinear_apply, hQ1]`.
+A detailed English derivation is pending.
 -/
 theorem exists_basis {A B M N : Type} [CommRing A] [CommRing B] [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module B N] {f : A →+* B} {u : M →ₛₗ[f] N} (h : SemiBC u) {d : ℕ}
@@ -49,20 +49,20 @@ theorem exists_basis {A B M N : Type} [CommRing A] [CommRing B] [AddCommGroup M]
   rw [Module.Basis.map_apply, Pi.basisFun_apply, LinearEquiv.ofLinear_apply, hQ1]
 
 /- English proof (translation)
-Rewrite using `[h, ← b.equivFun_symm_apply, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem equivFun_eq {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] {d : ℕ}
     (b : Module.Basis (Fin d) A M) (y : M) (c : Fin d → A) (h : y = ∑ i, c i • b i) : b.equivFun y = c := by
   rw [h, ← b.equivFun_symm_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `l _ K bk d S M e hF B`. Establish `hb : ∀ (Q : Obj l ↥(OL K)) (g : Hom bk.prism Q), ∃ b : Module.Basis (Fin d) Q.A (M.M Q), ∀ i, b i = M.tr g (e i)` using `fun Q g => exists_basis (M.tr_bc g) e`. Use `choose b hb using hb`. Establish `hs : ∀ (Q : Obj l ↥(OL K)) (g : Hom bk.prism Q) (y : M.M Q), y = ∑ i, (b Q g).equivFun y i • M.tr g (e i)` using `fun Q g y => by conv_lhs => rw [← (b Q g).sum_equivFun y]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨{ fin := M.fin B proj := M.proj B v := fun {Q} a g => (b Q g).equivFun.toLinearMap.comp (M.tr a) bc := fun {Q} a g => (M.tr_bc a).comp_equiv _ v_ε := fun {Q} a g g' x => ?_ v_nat := fun {Q Q'} c a g x i => ?_ }, fun {Q} a g x => hs Q g _⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(b Q g).equivFun (M.tr a x) = (S.ε g g').mulVec ((b Q g').equivFun (M.tr a x))`. Use `equivFun_eq _ _ _ ?_` and prove the remaining obligations. Use `(hs Q g' (M.tr a x)).trans ?_` and prove the remaining obligations. Generalize the expression as in `(b Q g').equivFun (M.tr a x) = c`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hF.tr g g', Finset.smul_sum, smul_smul, hb, Matrix.mulVec, dotProduct, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (c j)]`. Express the relevant statement in the definitionally equal form `(b Q' (c.comp g)).equivFun (M.tr (c.comp a) x) i = c.f ((b Q g).equivFun (M.tr a x) i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun (equivFun_eq _ _ (fun i => c.f ((b Q g).equivFun (M.tr a x) i)) ?_) i` and prove the remaining obligations. Use `(M.tr_comp c a x).trans ((congrArg (M.tr c) (hs Q g (M.tr a x))).trans ?_)` and prove the remaining obligations. Use `(map_sum (M.tr c) _ _).trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Conclude with `((M.tr c).map_smulₛₗ _ _).trans (congrArg (c.f _ • ·) ((hb Q' (c.comp g) j).trans (M.tr_comp c g (e j))).symm)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (S : Strat bk d) (M : FCrys l ↥(OL K))
     (e : Module.Basis (Fin d) bk.prism.A (M.M bk.prism)), Framed S M e →

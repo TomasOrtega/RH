@@ -24,9 +24,9 @@ namespace GlobalTheory.LogCanonicalReflexive
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k}
 
 /- English proof (translation)
-Use `sub_eq_zero.1 (eq_zero_of_basicOpen_eq_bot _ ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨z, hz, hzO⟩` from `hO.inter_open_nonempty (Y.basicOpen (a - b)) (Y.basicOpen (a - b)).isOpen ((Opens.ne_bot_iff_nonempty _).1 hne)`. Establish `hzW : z ∈ W` using `Y.basicOpen_le _ hz`. Establish `hu : IsUnit (ger z hzW (a - b))` using `(Y.mem_basicOpen _ z hzW).1 hz`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hu` using `[map_sub, h z hzW hzO, sub_self]`. Conclude with `not_isUnit_zero hu`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fun_ext_ger_of_dense [IsReduced Y] {O W : Y.Opens} (hO : Dense (O : Set Y)) {a b : Γ(Y, W)}
     (h : ∀ z (hz : z ∈ W), z ∈ O → ger z hz a = ger z hz b) : a = b := by
@@ -40,11 +40,9 @@ theorem fun_ext_ger_of_dense [IsReduced Y] {O W : Y.Opens} (hO : Dense (O : Set 
   exact not_isUnit_zero hu
 
 /- English proof (translation)
-Use `choose W hW c hc w hw using h`. Take `⟨G, hG⟩` from `H0.exists_of_germs (p := p) (O := ⊤) hN W c (fun _ => le_top) hc (fun y _ => ⟨y, hW y⟩) w fun y t t' hy hy' => by`. Establish `e : resG Y (inf_le_left : W t ⊓ W t' ≤ W t) (w t) = resG Y (inf_le_inf (hc t) (hc t')) (N.g (c t) (c t')).val * resG Y (inf_le_right : W t ⊓ W t' ≤ W t') (w t')` using `fun_ext_ger_of_dense hO fun z hz ho => by`. Rewrite using `[map_mul, ger_resG, ger_resG, ger_resG, hw t z hz.1 ho, hw t' z hz.2 ho, H0.germ_change (c t) (c t') z ho _ (hc t' hz.2), val_tr N z (memInf (hc t hz.1) (hc t' hz.2))]`. Establish `e'` using `congrArg (ger y (memInf hy hy')) e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e'` using `[map_mul, ger_resG, ger_resG, ger_resG]`. Rewrite using `[val_tr N y (memInf (hc t hy) (hc t' hy'))]`. Conclude with `e'`. Use `⟨G, H0.ext_germ fun y hy => ⟨c y, hc y (hW y), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[H0.germ_restr, ← hw y y (hW y) hy]`.
-
-Conclude with `hG y y (hW y)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extend_of_dense [IsReduced Y] {O : Y.Opens} (hO : Dense (O : Set Y)) {N : LB Y} (hN : N.IsLB)
     (f : H0 p N O) (h : ∀ y, ∃ (W : Y.Opens) (_ : y ∈ W) (i : N.ι) (hi : W ≤ N.U i) (w : Γ(Y, W)),
@@ -68,15 +66,15 @@ theorem exists_extend_of_dense [IsReduced Y] {O : Y.Opens} (hO : Dense (O : Set 
   exact hG y y (hW y)
 
 /- English proof (translation)
-Introduce `k _ Y p _ O hO P B N C ω hω g hg`. Use `exists_extend_of_dense hO C.isLB₃ _ fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ O`. Take `⟨t, -, -, hc⟩` from `C.cover y`. Conclude with `⟨O ⊓ N.U (C.c t), ⟨hy, hc⟩, C.c t, inf_le_right, H0.loc _ _, fun z hz ho => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨V, hyV, τ, ha, hb, hc, t, u, -, -, hdiv, htu⟩` from `hω y hy`. Set `gl : Γ(Y, V)` to `resG Y (le_inf le_top hb) (g.loc (C.b τ))`. Establish `hgl (z) (hz : z ∈ V) : ger z hz gl = H0.germ (C.b τ) z (memTop z) (hb hz) g` using `ger_resG _ _ _ _`. Use `clear_value gl`. Take `⟨h, hh⟩` from `hdiv V le_rfl gl (fun z hz ho => hgl z hz ▸ hg z ho _ _) y hyV`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W₁, hy₁, h₁, rfl⟩` from `Y.presheaf.exists_germ_eq h`. Establish `e : ger y (memInf hyV hy₁) (resG Y inf_le_left gl) = ger y (memInf hyV hy₁) (resG Y inf_le_left t * resG Y inf_le_right h₁)`. Rewrite using `[map_mul, ger_resG, ger_resG, ger_resG]`. Conclude with `hh`. Take `⟨W, hyW, i₁, i₂, e'⟩` from `Y.presheaf.germ_eq y _ _ _ _ e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWV : W ≤ V` using `i₁.le.trans inf_le_left`. Establish `hW₁ : W ≤ W₁` using `i₁.le.trans inf_le_right`. Use `⟨W, hyW, C.c τ, hWV.trans hc, resG Y hWV u * resG Y hW₁ h₁, fun z hz ho => ?_⟩` and prove the remaining obligations. Establish `e₂ : ger z hz (resG Y i₁.le (resG Y inf_le_left gl)) = ger z hz (resG Y i₂.le (resG Y inf_le_left t * resG Y inf_le_right h₁))` using `congrArg (ger z hz) e'`. Rewrite `e₂` using `[ger_resG, ger_resG, ger_resG, map_mul, ger_resG, ger_resG, hgl]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[C.germ_mul _ _ τ z ho (ha (hWV hz)) (hb (hWV hz)), H0.germ_restr, map_mul, ger_resG, ger_resG, ← htu z (hWV hz) ho]`. Use `Eq.trans ?_ (congrArg (_ * ·) e₂.symm)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_extend_mul_of_simplePole : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} [IsReduced Y] {O : Y.Opens}, Dense (O : Set Y) → ∀ {P B N : LB Y} (C : ProdChart P B N) (ω : H0 p P O), GlobalTheory.LogCanonicalReflexive.SimplePoleAlong O C ω → ∀ g : H0 p B ⊤, (∀ y, y ∉ O → ∀ i hi, H0.germ i y (memTop y) hi g ∈ IsLocalRing.maximalIdeal (Y.presheaf.stalk y)) → ∃ G : H0 p N ⊤, H0.restr le_top G = C.mul ω (H0.restr le_top g) := by
   intro k _ Y p _ O hO P B N C ω hω g hg

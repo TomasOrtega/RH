@@ -8,13 +8,13 @@ namespace GlobalTheory.CharpolyPow
 variable {k : Type} [Field k] [IsAlgClosed k] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[IsAlgClosed.card_roots_eq_natDegree, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma card_roots_charpoly (M : Matrix (Fin n) (Fin n) k) : Multiset.card M.charpoly.roots = n := by
   rw [IsAlgClosed.card_roots_eq_natDegree, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]
 
 /- English proof (translation)
-Establish `hroots : Multiset.card M.charpoly.roots = M.charpoly.natDegree`. Rewrite using `[card_roots_charpoly, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Rewrite using `[← Matrix.eval_charpoly, ← prod_multiset_X_sub_C_of_monic_of_roots_card_eq (Matrix.charpoly_monic M) hroots, eval_multiset_prod, Multiset.map_map]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma det_scalar_sub (M : Matrix (Fin n) (Fin n) k) (t : k) :
     (Matrix.scalar (Fin n) t - M).det = (M.charpoly.roots.map (fun z => t - z)).prod := by
@@ -26,11 +26,11 @@ lemma det_scalar_sub (M : Matrix (Fin n) (Fin n) k) (t : k) :
   simp
 
 /- English proof (translation)
-Establish `key : ∀ a : k, (aeval M (C a - X)).det = (M.charpoly.roots.map (fun z => a - z)).prod`. Introduce `a`. Rewrite using `[← det_scalar_sub]`. Use `congr 1`. Simplify using `[Matrix.scalar, Algebra.algebraMap_eq_smul_one, Matrix.smul_one_eq_diagonal]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, map_mul, Matrix.det_mul, key, ih, ← Multiset.prod_map_mul]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `z _`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma det_aeval_prod (M : Matrix (Fin n) (Fin n) k) (s : Multiset k) :
     (aeval M (s.map (fun a => C a - X)).prod).det
@@ -51,13 +51,13 @@ lemma det_aeval_prod (M : Matrix (Fin n) (Fin n) k) (s : Multiset k) :
     simp
 
 /- English proof (translation)
-Use `set m := Multiset.card q.roots`. Use `set c := q.leadingCoeff * (-1) ^ m`. Establish `hq : q = C c * (q.roots.map (fun a => C a - X)).prod`. Establish `hsplit` using `C_leadingCoeff_mul_prod_multiset_X_sub_C (p := q) IsAlgClosed.card_roots_eq_natDegree`. Establish `hneg : (q.roots.map (fun a => C a - X)).prod = (-1) ^ m * (q.roots.map (fun a => X - C a)).prod`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: (fun a : k => C a - X) = fun a => (-1) * (X - C a)`. Use function extensionality and compare the values at `a`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Multiset.prod_map_mul, Multiset.map_const', Multiset.prod_replicate]`. Rewrite using `[hneg, C_mul, C_pow, C_neg, C_1]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, mul_assoc (C q.leadingCoeff), ← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Establish `hcard : Multiset.card M.charpoly.roots = n` using `card_roots_charpoly M`. Use `conv_lhs => rw [hq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [hq]`. Rewrite using `[map_mul, aeval_C, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, Matrix.det_smul, Fintype.card_fin, det_aeval_prod]`. Simplify using `only [eval_mul, eval_C]`. Rewrite using `[Multiset.prod_map_mul, Multiset.map_const', Multiset.prod_replicate, hcard]`.
+A detailed English derivation is pending.
 -/
 lemma det_aeval (M : Matrix (Fin n) (Fin n) k) (q : k[X]) :
     (aeval M q).det = (M.charpoly.roots.map (fun z => eval z q)).prod := by
@@ -84,11 +84,11 @@ lemma det_aeval (M : Matrix (Fin n) (Fin n) k) (q : k[X]) :
   rw [Multiset.prod_map_mul, Multiset.map_const', Multiset.prod_replicate, hcard]
 
 /- English proof (translation)
-Establish `hinf : Infinite k` using `IsAlgClosed.instInfinite`. Establish `hcard : Multiset.card (Matrix.charpoly (M ^ r)).roots = (Matrix.charpoly (M ^ r)).natDegree`. Conclude with `IsAlgClosed.card_roots_eq_natDegree`. Establish `hfac` using `prod_multiset_X_sub_C_of_monic_of_roots_card_eq (Matrix.charpoly_monic (M ^ r)) hcard`. It suffices to establish `h : Matrix.charpoly (M ^ r) = (((Matrix.charpoly M).roots.map (· ^ r)).map fun a => X - C a).prod by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, roots_multiset_prod_X_sub_C]`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `t`. Rewrite using `[Matrix.eval_charpoly, eval_multiset_prod, Multiset.map_map, Multiset.map_map]`. Establish `h1 : Matrix.scalar (Fin n) t - M ^ r = aeval M (C t - X ^ r)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.scalar, Algebra.algebraMap_eq_smul_one, Matrix.smul_one_eq_diagonal]`. Rewrite using `[h1, GlobalTheory.CharpolyPow.det_aeval]`. Simplify using `[Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem roots_charpoly_pow (k : Type) [Field k] [IsAlgClosed k] (n r : ℕ)
     (M : Matrix (Fin n) (Fin n) k) :

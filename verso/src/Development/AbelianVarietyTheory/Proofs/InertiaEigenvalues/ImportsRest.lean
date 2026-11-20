@@ -5,15 +5,13 @@ universe u_1 u_2
 namespace GlobalTheory.PermutationExistence
 
 /- English proof (translation)
-Establish `key : ∀ s ∈ S, ∃ s' : G, s' ∈ S ∧ s'⁻¹ * (h * s) ∈ V` using `fun s hs => (hT (h * s) (H.mul_mem hh (hS s hs))).exists`. Use `choose! σ hσS hσV using key`. Use `⟨σ, fun s hs => ⟨hσS s hs, hσV s hs⟩, fun f => ?_⟩` and prove the remaining obligations. Establish `hinj : Set.InjOn σ S`. Introduce `s₁ hs₁ s₂ hs₂ heq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hσV s₁ hs₁`. Rewrite `h1` using `[heq]`. Establish `h12 : s₁⁻¹ * s₂ ∈ V`. Establish `e : ((σ s₂)⁻¹ * (h * s₁))⁻¹ * ((σ s₂)⁻¹ * (h * s₂)) = s₁⁻¹ * s₂` using `by group`. Rewrite using `[← e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `V.mul_mem (V.inv_mem h1) (hσV s₂ hs₂)`. Take `⟨u, _, hu⟩` from `hT s₂ (hS s₂ hs₂)`. Establish `e1 : s₁ = u` using `hu s₁ ⟨hs₁, h12⟩`. Establish `e2 : s₂ = u` using `hu s₂ ⟨hs₂, by rw [inv_mul_cancel]; exact V.one_mem⟩`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `himg : S.image σ = S`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `x hx`. Take `⟨s, hs, rfl⟩` from `Finset.mem_image.mp hx`. Conclude with `hσS s hs`.
-
-Rewrite using `[Finset.card_image_of_injOn hinj]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_perm {G : Type u_1} {C : Type u_2} [Group G] [AddCommMonoid C]
     (H V : Subgroup G) (S : Finset G) (hS : ∀ s ∈ S, s ∈ H)
@@ -48,23 +46,23 @@ theorem exists_perm {G : Type u_1} {C : Type u_2} [Group G] [AddCommMonoid C]
     _ = ∑ s ∈ S, f s := by rw [himg]
 
 /- English proof (translation)
-Use `⟨-∑ s ∈ S, act s b * c s, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_neg]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg ht` to reduce the goal to its premises. Introduce `s hs`. Rewrite using `[norm_mul, hn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `h hh`. Take `⟨σ, hσ, hsum⟩` from `exists_perm (C := C) H V S hS hT h hh`. Establish `hmul : ∀ (g k : G) (y : C), act (g * k) y = act g (act k y)`. Introduce `g k y`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul]`. Both sides reduce to the same expression. Establish `hterm : ∀ s ∈ S, act h (act s b * c s) = act (σ s) b * c (σ s) + act (σ s) (b * c ((σ s)⁻¹ * (h * s))) - act (σ s) b * c h`. Introduce `s hs`. Establish `hsH` using `hS s hs`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hσH` using `hS (σ s) (hσ s hs).1`. Establish `hvV` using `(hσ s hs).2`. Establish `hhs : h * s = σ s * ((σ s)⁻¹ * (h * s))` using `(mul_inv_cancel_left _ _).symm`. Establish `hvH : (σ s)⁻¹ * (h * s) ∈ H` using `H.mul_mem (H.inv_mem hσH) (H.mul_mem hh hsH)`. Establish `h1 : act h (act s b) = act (σ s) b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hmul, hhs, hmul, hV _ hvV]`. Establish `h2 : act h (c s) = c (σ s) + act (σ s) (c ((σ s)⁻¹ * (h * s))) - c h`. Establish `e1` using `hc h hh s hsH`. Establish `e2` using `hc (σ s) hσH _ hvH`. Rewrite `e2` using `[← hhs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `e2 - e1`. Rewrite using `[map_mul, h1, h2, map_mul (act (σ s)) b (c ((σ s)⁻¹ * (h * s)))]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsumA : ∑ s ∈ S, act (σ s) b = a`. Rewrite using `[← ha]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hsum (fun g => act g b)`. Establish `hsumT : ∑ s ∈ S, act (σ s) b * c (σ s) = ∑ s ∈ S, act s b * c s` using `hsum (fun g => act g b * c g)`. Establish `hact : act h (-∑ s ∈ S, act s b * c s) = -(∑ s ∈ S, act s b * c s + ∑ s ∈ S, act (σ s) (b * c ((σ s)⁻¹ * (h * s))) - a * c h)`. Rewrite using `[map_neg, map_sum, Finset.sum_congr rfl hterm, Finset.sum_sub_distrib, Finset.sum_add_distrib, hsumT, ← Finset.sum_mul, hsumA]`. Rewrite using `[hact]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hE : a * c h - (-(∑ s ∈ S, act s b * c s + ∑ s ∈ S, act (σ s) (b * c ((σ s)⁻¹ * (h * s))) - a * c h) - -∑ s ∈ S, act s b * c s) = ∑ s ∈ S, act (σ s) (b * c ((σ s)⁻¹ * (h * s)))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hE]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hε` to reduce the goal to its premises. Introduce `s hs`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn, norm_mul]`. Establish `hvH : (σ s)⁻¹ * (h * s) ∈ H` using `H.mul_mem (H.inv_mem (hS _ (hσ s hs).1)) (H.mul_mem hh (hS s hs))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem main {G : Type u_1} {C : Type u_2} [Group G] [NormedField C] [IsUltrametricDist C]
     (act : G →* C ≃+* C) (hn : ∀ (g : G) (y : C), ‖act g y‖ = ‖y‖)

@@ -13,9 +13,9 @@ section General
 variable {E M ι : Type} [Field E] [StarRing E] [AddCommGroup M] [Module E M] [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr x, ← b.sum_repr y]`. Rewrite using `[map_sum h, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_eq_single i]`. Rewrite using `[LinearMap.map_smulₛₗ h, LinearMap.smul_apply, map_smul, smul_eq_mul, smul_eq_mul, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `j _ hj`. Rewrite using `[LinearMap.map_smulₛₗ h, LinearMap.smul_apply, map_smul, hb i j hj.symm]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_eq_sum (h : M →ₗ⋆[E] M →ₗ[E] E) (b : Module.Basis ι E M) (hb : ∀ i j, i ≠ j → h (b i) (b j) = 0)
     (x y : M) : h x y = ∑ i, star (b.repr x i) * b.repr y i * h (b i) (b i) := by
@@ -29,7 +29,7 @@ theorem form_eq_sum (h : M →ₗ⋆[E] M →ₗ[E] E) (b : Module.Basis ι E M)
   · simp
 
 /- English proof (translation)
-Rewrite using `[form_eq_sum h b hb, map_sum, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ht, ← Complex.normSq_eq_conj_mul_self, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem re_form_eq_sum (h : M →ₗ⋆[E] M →ₗ[E] E) (b : Module.Basis ι E M) (hb : ∀ i j, i ≠ j → h (b i) (b j) = 0)
     (t : E →+* ℂ) (ht : ∀ a, t (star a) = starRingEnd ℂ (t a)) (x : M) :
@@ -39,11 +39,11 @@ theorem re_form_eq_sum (h : M →ₗ⋆[E] M →ₗ[E] E) (b : Module.Basis ι E
   rw [map_mul, map_mul, ht, ← Complex.normSq_eq_conj_mul_self, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1 : starRingEnd ℂ (t (h (b i) (b i))) = t (h (b i) (b i))`. Rewrite using `[← ht]`. Conclude with `congrArg t (hs.eq _ _)`. Establish `h2` using `Complex.conj_eq_iff_im.1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : h (b i) (b i) = 0` using `t.injective (by rw [map_zero]; exact Complex.ext h0 h2)`. Use `b.ne_zero i (hn.1 _ fun y => ?_)` and prove the remaining obligations. Rewrite using `[form_eq_sum h b hb]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : i = j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hj, h3, mul_zero]`. Simplify using `[Finsupp.single_apply, hj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem re_ne_zero (h : M →ₗ⋆[E] M →ₗ[E] E) (hs : h.IsSymm) (hn : h.Nondegenerate) (b : Module.Basis ι E M)
     (hb : ∀ i j, i ≠ j → h (b i) (b j) = 0)
@@ -67,13 +67,13 @@ def coordSub (b : Module.Basis ι E M) (p : ι → Prop) : Submodule E M where
   smul_mem' := fun c x hx i hi => by simp [hx i hi]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx'`. Use `b.ext_elem fun i => ?_` and prove the remaining obligations. Rewrite using `[map_zero, Finsupp.zero_apply]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : p i`. Conclude with `hx' i (not_not.2 hi)`. Conclude with `hx i hi`. Rewrite using `[codisjoint_iff, eq_top_iff, ← b.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hi : p i`. Use `Submodule.mem_sup_left (S := coordSub b p) fun j hj => ?_` and prove the remaining obligations. Establish `: i ≠ j` using `fun e => hj (e ▸ hi)`. Simplify using `[Finsupp.single_apply, this]`. Use `Submodule.mem_sup_right (T := coordSub b fun i => ¬ p i) fun j hj => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: i ≠ j` using `fun e => hj (e ▸ hi)`. Simplify using `[Finsupp.single_apply, this]`.
+A detailed English derivation is pending.
 -/
 theorem isCompl_coordSub (b : Module.Basis ι E M) (p : ι → Prop) :
     IsCompl (coordSub b p) (coordSub b fun i => ¬ p i) := by
@@ -96,11 +96,9 @@ theorem isCompl_coordSub (b : Module.Basis ι E M) (p : ι → Prop) :
       simp [Finsupp.single_apply, this]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, b.repr x j ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h0 (b.ext_elem fun i => by simp [hc i])`. Use `Finset.sum_pos' (fun i _ => ?_) ⟨j, Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : p i`. Conclude with `mul_nonneg (Complex.normSq_nonneg _) (hd i hi).le`. Rewrite using `[hx i hi]`. Simplify using the standard rewrite rules. Use `mul_pos (Complex.normSq_pos.2 ((map_ne_zero t).2 hj)) (hd j ?_)` and prove the remaining obligations.
-
-Assume the negation of the conclusion as `hc`. Conclude with `hj (hx j hc)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem sum_pos_of_coord (b : Module.Basis ι E M) (t : E →+* ℂ) (p : ι → Prop) (d : ι → ℝ) (hd : ∀ i, p i → 0 < d i)
     (x : M) (hx : x ∈ coordSub b p) (h0 : x ≠ 0) : 0 < ∑ i, Complex.normSq (t (b.repr x i)) * d i := by
@@ -117,9 +115,9 @@ theorem sum_pos_of_coord (b : Module.Basis ι E M) (t : E →+* ℂ) (p : ι →
     exact hj (hx j hc)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr x]`. Use `conv_rhs => rw [← b.sum_repr x]`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : p i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, hs i hi, smul_comm]`. Rewrite using `[hx i hi]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem apply_eq_smul (b : Module.Basis ι E M) (p : ι → Prop) (s : Module.End E M) (c : E)
     (hs : ∀ i, p i → s (b i) = c • b i) (x : M) (hx : x ∈ coordSub b p) : s x = c • x := by
@@ -133,7 +131,7 @@ theorem apply_eq_smul (b : Module.Basis ι E M) (p : ι → Prop) (s : Module.En
 
 omit [StarRing E] in
 /- English proof (translation)
-Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 (hc.sup_eq_top ▸ Submodule.mem_top : x ∈ P ⊔ N)`. Rewrite `hx` using `[map_add, hP y hy, hN z hz, add_right_inj]`. Establish `: (2 : E) • z = 0` using `by rw [two_smul]; nth_rewrite 1 [← hx]; exact neg_add_cancel z`. Rewrite using `[(smul_eq_zero.1 this).resolve_left two_ne_zero, add_zero]`. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_fixed [CharZero E] {P N : Submodule E M} (hc : IsCompl P N) (s : Module.End E M)
     (hP : ∀ x ∈ P, s x = x) (hN : ∀ x ∈ N, s x = -x) (x : M) (hx : s x = x) : x ∈ P := by
@@ -146,17 +144,17 @@ theorem mem_of_fixed [CharZero E] {P N : Submodule E M} (hc : IsCompl P N) (s : 
 end General
 
 /- English proof (translation)
-Introduce `D V b hb τ s`. Establish `ht` using `tauE_star (D := D) τ`. Establish `hne` using `re_ne_zero V.hT V.herm V.nondeg b hb (tauE D τ) ht`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨P, N, hd, hP, hN⟩, hs⟩ i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Break down `hs i with h | h` into its components or cases. Rewrite using `[if_pos (hd.pos _ (mem_of_fixed hd.compl s hP hN _ h) (b.ne_zero i)), h]`. Establish `: b i ∈ N` using `mem_of_fixed hd.compl.symm (-s) (fun x hx => by rw [LinearMap.neg_apply, hN x hx, neg_neg]) (fun x hx => by rw [LinearMap.neg_apply, hP x hx]) _ (by rw [LinearMap.neg_apply, h, neg_neg])`. Rewrite using `[if_neg (hd.neg _ this (b.ne_zero i)).not_gt, h]`. Introduce `hs`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨coordSub b fun i => 0 < (tauE D τ (V.hT (b i) (b i))).re, coordSub b fun i => ¬ 0 < (tauE D τ (V.hT (b i) (b i))).re, ⟨isCompl_coordSub b _, fun x hx y hy => ?_, fun x hx h0 => ?_, fun x hx h0 => ?_⟩, fun x hx => ?_, fun x hx => ?_⟩, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[form_eq_sum V.hT b hb]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : 0 < (tauE D τ (V.hT (b i) (b i))).re`. Rewrite using `[hy i (not_not.2 hi), mul_zero, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx i hi, star_zero, zero_mul, zero_mul]`. Rewrite using `[re_form_eq_sum V.hT b hb _ ht]`. Conclude with `sum_pos_of_coord b _ _ _ (fun i hi => hi) x hx h0`. Rewrite using `[re_form_eq_sum V.hT b hb _ ht]`. Use `sum_pos_of_coord b (tauE D τ) _ (fun i => -(tauE D τ (V.hT (b i) (b i))).re) (fun i hi => neg_pos.2 (lt_of_le_of_ne (not_lt.1 hi) (hne i))) x hx h0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_neg, Finset.sum_neg_distrib] at this`. Conclude with `neg_pos.1 this`. Use `apply_eq_smul b _ s 1 (fun i hi => by rw [hs i, if_pos hi, one_smul]) x hx` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Use `apply_eq_smul b _ s (-1) (fun i hi => by rw [hs i, if_neg hi, neg_one_smul]) x hx` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[neg_one_smul]`. Then use the resulting hypothesis. Rewrite using `[hs i] split_ifs`. Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem signInv_diag_iff : ∀ (D : D7) (V : HSp D) (b : Module.Basis (Fin V.rank) D.host.E V.V), (∀ i j, i ≠ j → V.hT (b i) (b j) = 0) → ∀ (τ : D.what₂.Tau) (s : Module.End D.host.E V.V), (IsSignInv V τ s ∧ ∀ i, s (b i) = b i ∨ s (b i) = -b i) ↔ ∀ i, s (b i) = if 0 < (tauE D τ (V.hT (b i) (b i))).re then b i else -b i := by
   intro D V b hb τ s

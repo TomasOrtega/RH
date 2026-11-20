@@ -18,9 +18,9 @@ open GlobalTheory.UU
 namespace GlobalTheory.CubicalPackage
 
 /- English proof (translation)
-Introduce `a`. Take `⟨b, hb⟩` from `hq (d.appTop.hom a)`. Establish `c : ∀ {A B C : Scheme.{0}} (g : A ⟶ B) (h : B ⟶ C) (x : Γ(C, ⊤)), g.appTop.hom (h.appTop.hom x) = (g ≫ h).appTop.hom x` using `fun g h x => by`. Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨e.appTop.hom a, hd ?_⟩` and prove the remaining obligations. Rewrite using `[c, w, ← c, c f e, ← hee, ← c, ← hb, c e' q, he', Scheme.Hom.id_appTop]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem surjective_appTop_of_injective {X S P S' : Scheme.{0}} {p : X ⟶ S} {q : P ⟶ S'} {d : P ⟶ X} {f : S' ⟶ S}
     (w : d ≫ p = q ≫ f) {e : S ⟶ X} {e' : S' ⟶ P} (he' : e' ≫ q = 𝟙 _) (hee : e' ≫ d = f ≫ e)
@@ -40,15 +40,15 @@ variable {V K : Type} [CommRing V] [IsDomain V] [Field K] [Algebra V K]
   {A : Over (Spec (CommRingCat.of K))} [GrpObj A] [IsCommMonObj A] {F : A.left ⟶ G.left}
 
 /- English proof (translation)
-Establish `hp` using `gp.1`. Establish `: Flat (G3 G).hom` using `by show Flat (pullback.fst G.hom (pullback.fst G.hom G.hom ≫ G.hom) ≫ G.hom) infer_instance`. Set `P : Over (Spec (CommRingCat.of K))` to `Over.mk (pullback.snd (G3 G).hom (etaK V K))`. Set `x : Fin 3 → (P ⟶ A)` to `fun i => Over.homMk (hp.lift (pullback.fst _ _ ≫ (x3 G i).left) P.hom (by`. Rewrite using `[Category.assoc, Over.w]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pullback.condition)) (hp.lift_snd _ _ _)`. Establish `hx : ∀ i, (x i).left ≫ F = pullback.fst _ _ ≫ (x3 G i).left` using `fun i => hp.lift_fst _ _ _`. Set `l : P ⟶ G3 A` to `lift (x 0) (lift (x 1) (x 2))`. Apply the tactic sequence `have lx : ∀ i, l ≫ x3 A i = x i := fun i => by fin_cases i <;> simp [l, x3]`. Establish `f3 : ∀ i, (cubeMapOf gp).F3 ≫ (x3 G i).left = (x3 A i).left ≫ F` using `cubeMap_comp_proj_three (cubeMapOf gp)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : l.left ≫ (cubeMapOf gp).F3 = pullback.fst (G3 G).hom (etaK V K)` using `hom_ext_triple _ fun i => by`. Rewrite using `[Category.assoc, f3, ← Category.assoc, ← Over.comp_left, lx, hx]`. Establish `inj : Function.Injective (l.left ≫ (cubeMapOf gp).F3).appTop.hom`. Rewrite using `[hl]`. Conclude with `Exist.CubicalExtension.app_injective_generic (IsPullback.of_hasPullback _ _) ⊤`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `surjective_appTop_of_injective (d := (cubeMapOf gp).F3) (f := etaK V K) (Over.w (lift (pushPt hp.w (x3 A 0)) (lift (pushPt hp.w (x3 A 1)) (pushPt hp.w (x3 A 2))))) (e := eSec (G3 G)) (e' := eSec (G3 A)) (Over.w η[G3 A]) ?_ ?_ h` and prove the remaining obligations. Rewrite using `[CubeExtension.eSec_three, CubeExtension.eSec_three]`. Use `hom_ext_triple _ fun i => ?_` and prove the remaining obligations. Establish `a : ∀ {S : Scheme.{0}} (B : Over S) [GrpObj B] [IsCommMonObj B], (lift (1 : 𝟙_ (Over S) ⟶ B) (lift (1 : 𝟙_ (Over S) ⟶ B) (1 : 𝟙_ (Over S) ⟶ B))).left ≫ (x3 B i).left = eSec B` using `fun B _ _ => by`. Rewrite using `[← Over.comp_left, eSec]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `fin_cases i <;> simp [x3, Hom.one_def]`. Rewrite using `[Category.assoc, f3, ← Category.assoc, a, Category.assoc, a]`. Conclude with `(cubeMapOf gp).e_comm`. Rewrite `inj` using `[Scheme.Hom.comp_appTop]`. Conclude with `Function.Injective.of_comp (f := l.left.appTop.hom) inj`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_cube_of_generic [Flat G.hom] (gp : IsGrpPullback A G (etaK V K) F)
     (h : Function.Surjective (G3 A).hom.appTop.hom) : Function.Surjective (G3 G).hom.appTop.hom := by
@@ -85,13 +85,13 @@ theorem surjective_cube_of_generic [Flat G.hom] (gp : IsGrpPullback A G (etaK V 
     exact Function.Injective.of_comp (f := l.left.appTop.hom) inj
 
 /- English proof (translation)
-Introduce `laws V _ _ _ hV A G _ _ hG eA hA L h₁`. Use `hV.1` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hG.geomConnected` as an intermediate fact. Use `A.isAb.comm` as an intermediate fact. Establish `: IsMonHom eA.symm.hom` using `inferInstanceAs (IsMonHom eA.inv)`. Establish `gp : IsGrpPullback A.A G (jK V) (eA.inv.left ≫ pullback.fst G.hom (jK V))` using `((isGrpPullback_of_iso eA.symm).comp (isGrpPullback_pullback G (jK V))).congr (Category.id_comp _) rfl`. Establish `hi : eA.inv.left ≫ eA.hom.left = 𝟙 _` using `by rw [← Over.comp_left, eA.inv_hom_id, Over.id_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `A.rigid`. Take `⟨w, hw⟩ : LBIso A.L (L.L.pull (eA.inv.left ≫ pullback.fst G.hom (jK V)))` from `LBIso.chartPull (chartPullSec A.L _ eA.inv.left hi) (chartPullSame L.L _ _ _ eA.inv.left fun _ => rfl) h₁`. Take `⟨c⟩` from `(laws.cube _ A ⟨A.L, r, A.isLB, hr⟩ rfl).1`. Take `⟨c'⟩` from `PolExtension.nonempty_cubical laws.cubicalExtends gp L c w hw`. Apply the tactic sequence `obtain ⟨s, hs, hs'⟩ := PolExtension.exists_symmetry gp L.isLB A.isLB A.sym w hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨CP.ofSurjective (surjective_cube_of_generic gp (surjective_cube laws.globalFns A.isAb)) L c' s hs hs', rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_package : Laws → (∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDVR V → ∀ (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (gen : (Over.pullback (jK V)).obj G ≅ A.A), IsMonHom gen.hom → ∀ (L : RigLB G), LBIso (A.L.pull gen.hom.left) (L.L.pull (pullback.fst G.hom (jK V))) → ∃ P : CP G, P.L = L) := by
   intro laws V _ _ _ hV A G _ _ hG eA hA L h₁

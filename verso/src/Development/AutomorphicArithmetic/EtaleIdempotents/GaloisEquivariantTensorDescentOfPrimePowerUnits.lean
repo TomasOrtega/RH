@@ -4,11 +4,11 @@ open TensorProduct
 universe u₁ u₂ u₃ u₄ u₅ u₆
 
 /- English proof (translation)
-Establish `hbc` using `TensorProduct.isBaseChange A (A ⊗[W] L) C`. Establish `hl` using `(isLocalizedModule_iff_isBaseChange (Submonoid.powers t) C _).2 hbc`. Establish `key : ∀ p : A ⊗[W] L, AlgebraTensorModule.cancelBaseChange W A C C L ((TensorProduct.mk A C (A ⊗[W] L) 1) p) = LinearMap.rTensor L (IsScalarTower.toAlgHom W A C).toLinearMap p`. Introduce `p`. Proceed by induction on `p with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `tmul a y => simp [Algebra.algebraMap_eq_smul_one]`. Establish `h0 : (TensorProduct.mk A C (A ⊗[W] L) 1) x = 0`. Apply `(AlgebraTensorModule.cancelBaseChange W A C C L).injective` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_zero, key, hx]`. Take `⟨⟨_, b, rfl⟩, hb⟩` from `(IsLocalizedModule.eq_zero_iff (Submonoid.powers t) _).1 h0`. Conclude with `⟨b, hb⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma loc_ker {W A C L : Type*} [CommRing W] [CommRing A] [CommRing C] [Algebra W A]
     [Algebra A C] [Algebra W C] [IsScalarTower W A C] [AddCommGroup L] [Module W L] (t : A)
@@ -32,7 +32,7 @@ private lemma loc_ker {W A C L : Type*} [CommRing W] [CommRing A] [CommRing C] [
   exact ⟨b, hb⟩
 
 /- English proof (translation)
-Set `b` to `Module.Basis.ofVectorSpace K (K ⊗[W] L)`. Use `⟨_, b, (AlgebraTensorModule.cancelBaseChange W K C C L).symm.trans (Algebra.TensorProduct.basis C b).repr, ?_⟩` and prove the remaining obligations. Introduce `x y`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private lemma coords (W : Type u₁) (K : Type u₂) (C : Type u₃) (L : Type u₄) [CommRing W] [Field K]
     [Algebra W K] [CommRing C] [Algebra W C] [Algebra K C] [IsScalarTower W K C] [AddCommGroup L]
@@ -47,43 +47,41 @@ private lemma coords (W : Type u₁) (K : Type u₂) (C : Type u₃) (L : Type u
   simp [Algebra.TensorProduct.basis_repr_tmul]
 
 /- English proof (translation)
-Take `⟨I, b, e, he⟩` from `coords W K C L`. Take `⟨R, hR⟩ : ∃ R : A ⊗[W] L →ₗ[W] C ⊗[W] L, R = LinearMap.rTensor L (IsScalarTower.toAlgHom W A C).toLinearMap` from `⟨_, rfl⟩`. Establish `hRt : ∀ (a : A) (y : L), R (a ⊗ₜ y) = algebraMap A C a ⊗ₜ y` using `fun a y => by simp [hR]`. Take `⟨Φ, hΦ⟩ : ∃ Φ : A ⊗[W] L → (I →₀ C), ∀ x, Φ x = e (R x)` from `⟨_, fun _ => rfl⟩`. Establish `hΦ0 : Φ 0 = 0` using `by simp [hΦ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hΦadd : ∀ p q, Φ (p + q) = Φ p + Φ q` using `fun p q => by simp [hΦ]`. Establish `hΦsub : ∀ p q, Φ (p - q) = Φ p - Φ q` using `fun p q => by simp [hΦ]`. Establish `hΦt : ∀ a y i, Φ (a ⊗ₜ y) i = algebraMap A C a * algebraMap K C (b.repr (1 ⊗ₜ y) i)`. Introduce `a y i`. Rewrite using `[hΦ, hRt, he, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hΦs : ∀ (a : A) x i, Φ (a • x) i = algebraMap A C a * Φ x i`. Introduce `a x i`. Proceed by induction on `x with`. Consider the case `zero => simp [hΦ0]`. Consider the case `add p q hp hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[smul_add, hΦadd, hΦadd, Finsupp.add_apply, Finsupp.add_apply, hp, hq, mul_add]`. Consider the case `tmul a' y => rw [TensorProduct.smul_tmul', hΦt, hΦt, smul_eq_mul, map_mul, mul_assoc]`. Establish `hσK : ∀ g (k : K), σC g (algebraMap K C k) = algebraMap K C k`. Introduce `g k`. Establish `h : (σC g).comp (algebraMap K C) = algebraMap K C`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `IsLocalization.ringHom_ext (nonZeroDivisors W)` to reduce the goal to its premises. Use extensionality with `w`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply W K C, IsScalarTower.algebraMap_apply W A C, hσ, hσW]`. Conclude with `RingHom.congr_fun h k`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΦT : ∀ g x i, Φ (T g x) i = σC g (Φ x i)`. Introduce `g x i`. Proceed by induction on `x with`. Consider the case `zero => simp [hΦ0]`. Consider the case `add p q hp hq`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, hΦadd, hΦadd, Finsupp.add_apply, Finsupp.add_apply, hp, hq, map_add]`. Consider the case `tmul a y => rw [hT, hΦt, hΦt, map_mul, hσ, hσK]`. Establish `hct : IsUnit (algebraMap A C t)` using `IsLocalization.map_units C (⟨t, Submonoid.mem_powers t⟩ : Submonoid.powers t)`. Take `⟨u, hu⟩ : ∃ u : C, algebraMap A C t ^ s * u = 1` from `(hct.pow s).exists_right_inv`. Establish `hy : ∀ i g, σC g (u * Φ z i) = u * Φ z i`.
+Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i g`. Take `⟨a, b', h⟩` from `hz g`. Establish `h1 : Φ (((l : A) ^ a * t ^ b') • T g z) i = Φ (((l : A) ^ a * t ^ b' * χ g ^ s) • z) i`. Rewrite using `[h]`. Rewrite `h1` using `[hΦs, hΦs]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hunit : IsUnit (algebraMap A C ((l : A) ^ a * t ^ b'))`. Rewrite using `[map_mul, map_pow, map_pow, map_natCast]`. Conclude with `(hl.pow a).mul (hct.pow b')`. Establish `h2 : σC g (Φ z i) = algebraMap A C (χ g) ^ s * Φ z i`. Rewrite using `[← hΦT]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hunit.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[h1, map_mul _ _ (χ g ^ s), map_pow, mul_assoc]`. Establish `h3 : σC g (algebraMap A C t ^ s) = algebraMap A C (χ g) ^ s * algebraMap A C t ^ s`. Rewrite using `[map_pow, hσ, hσt, map_mul, mul_pow]`. Establish `h4 : σC g (algebraMap A C t ^ s) * σC g u = 1` using `by rw [← map_mul, hu, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_mul, h2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hu, one_mul]`. Use `_ = (σC g (algebraMap A C t ^ s) * σC g u) * (u * Φ z i) := by rw [h3]; ring`. Use `_ = u * Φ z i := by rw [h4, one_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose a₀ w₀ hw₀ using fun i => hfix (u * Φ z i) (hy i)`. Take `⟨S, hS⟩ : ∃ S, S = (Φ z).support` from `⟨_, rfl⟩`. Take `⟨N, hN⟩ : ∃ N, N = S.sup a₀` from `⟨_, rfl⟩`. Set `f : I →₀ K` to `Finsupp.onFinset S (fun i => if i ∈ S then algebraMap W K ((l : W) ^ (N - a₀ i) * w₀ i) else 0) (by intro i hi; by_contra h; simp [h] at hi)`. Establish `hf : ∀ i, algebraMap K C (f i) = (l : C) ^ N * (u * Φ z i)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Distinguish the cases in `hi : i ∈ S`. Establish `hle : a₀ i ≤ N` using `hN ▸ Finset.le_sup hi`. Simplify using `only [f, Finsupp.onFinset_apply, if_pos hi]`. Rewrite using `[← IsScalarTower.algebraMap_apply W K C, map_mul, map_pow, map_natCast, ← hw₀ i, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h0 : Φ z i = 0` using `by simpa [hS] using hi`. Simplify using `[f, hi, h0]`. Establish `hloc : IsLocalizedModule (nonZeroDivisors W) (TensorProduct.mk W K L 1)` using `(isLocalizedModule_iff_isBaseChange (nonZeroDivisors W) K _).2 (TensorProduct.isBaseChange W L K)`. Take `⟨⟨y₀, d⟩, hd⟩` from `IsLocalizedModule.surj (nonZeroDivisors W) (TensorProduct.mk W K L 1) (b.repr.symm f)`. Take `⟨m, β, hdβ, hβ⟩` from `hW d (nonZeroDivisors.ne_zero d.2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨β', hβ'⟩` from `hβ.exists_left_inv`. Take `⟨y₁, hy₁d⟩ : ∃ y₁, y₁ = β' • y₀` from `⟨_, rfl⟩`. Establish `hy₁ : (1 : K) ⊗ₜ[W] y₁ = ((l : W) ^ m) • b.repr.symm f`. Establish `h5 : (d : W) • b.repr.symm f = (1 : K) ⊗ₜ[W] y₀` using `hd`. Rewrite using `[hy₁d, TensorProduct.tmul_smul, ← h5, smul_smul, hdβ]`.
+Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hrep : ∀ i, algebraMap K C (b.repr (1 ⊗ₜ y₁) i) = (l : C) ^ m * ((l : C) ^ N * (u * Φ z i))`. Introduce `i`. Rewrite using `[hy₁, ← algebraMap_smul K, map_smul, LinearEquiv.apply_symm_apply, Finsupp.smul_apply, smul_eq_mul, map_mul, hf, ← IsScalarTower.algebraMap_apply, map_pow, map_natCast]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hΦx : Φ ((l : A) ^ (m + N) • z - t ^ s • ((1 : A) ⊗ₜ[W] y₁)) = 0`. Use extensionality with `i`. Rewrite using `[hΦsub, Finsupp.sub_apply, hΦs, hΦs, hΦt, hrep]`. Simplify using `only [map_pow, map_natCast, map_one, one_mul, Finsupp.coe_zero, Pi.zero_apply]`. Establish `h6 : algebraMap A C t ^ s * ((l : C) ^ m * ((l : C) ^ N * (u * Φ z i))) = (l : C) ^ m * (l : C) ^ N * ((algebraMap A C t ^ s * u) * Φ z i)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h6, hu, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hRx : R ((l : A) ^ (m + N) • z - t ^ s • ((1 : A) ⊗ₜ[W] y₁)) = 0`. Rewrite `hΦx` using `[hΦ]`. Conclude with `e.map_eq_zero_iff.1 hΦx`.
-
-Take `⟨b', hb'⟩` from `loc_ker t _ (hR ▸ hRx)`. Use `⟨m + N, b', y₁, ?_⟩` and prove the remaining obligations. Rewrite `hb'` using `[smul_sub, sub_eq_zero, smul_smul, smul_smul]`. Rewrite using `[mul_comm, hb', pow_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma aux {W : Type u₁} {K : Type u₂} {A : Type u₅} {C : Type u₃} {Γ : Type u₆} {L : Type u₄}
     (l : ℕ) [CommRing W] [IsDomain W] [Field K] [Algebra W K] [IsFractionRing W K]
@@ -211,17 +209,13 @@ private lemma aux {W : Type u₁} {K : Type u₂} {A : Type u₅} {C : Type u₃
   rw [mul_comm, hb', pow_add]
 
 /- English proof (translation)
-Introduce `l W A C Γ L _ _ _ _ _ _ _ c t σA σC χ T z s hW hl hct hlocC hker hσ hσW hσt hT hfix hz`. Use `letI : Algebra A C := c.toAlgebra`. Use `letI : Algebra W C := (c.comp (algebraMap W A)).toAlgebra`. Use `haveI : IsScalarTower W A C := IsScalarTower.of_algebraMap_eq' rfl`. Establish `hunit : ∀ y : nonZeroDivisors W, IsUnit (algebraMap W C y)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Take `⟨m, β, h, hβ⟩` from `hW y (nonZeroDivisors.ne_zero y.2)`. Rewrite using `[h, map_mul, map_pow, map_natCast]`. Conclude with `(hl.pow m).mul (hβ.map _)`. Use `letI : Algebra (FractionRing W) C := (IsLocalization.lift hunit).toAlgebra`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsScalarTower W (FractionRing W) C := IsScalarTower.of_algebraMap_eq (fun w => (IsLocalization.lift_eq hunit w).symm)`. Use `haveI : IsLocalization (Submonoid.powers t) C := { map_units := by`. Introduce and unpack `⟨_, n, rfl⟩`. Conclude with `(map_pow c t n).symm ▸ hct.pow n`. Use `surj := by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨r, a, h⟩` from `hlocC x`. Use `⟨(a, ⟨t ^ r, r, rfl⟩), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x * c (t ^ r) = c a`. Rewrite using `[map_pow, mul_comm, h]`.
-
-Use `exists_of_eq := by`. Introduce `x y h`. Take `⟨r, hr⟩` from `hker (x - y) (by`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `h)`.
-
-Use `⟨⟨t ^ r, r, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite `hr` using `[mul_sub, sub_eq_zero]`. Conclude with `hr }`. Conclude with `aux (K := FractionRing W) l t σA σC χ T z s hW hl hσ hσW hσt hT hfix hz`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.galois_equivariant_tensor_descent_of_prime_power_units :
     ∀ (l : ℕ) {W A C Γ : Type} {L : Type 1} [CommRing W] [IsDomain W] [CommRing A] [Algebra W A] [CommRing C]

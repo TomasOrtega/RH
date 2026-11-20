@@ -14,7 +14,7 @@ attribute [-instance] GlobalTheory.CompHt.fintypePsi
 namespace GlobalTheory.CompanionTheory.Ar.Plug
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ Y hc` and use `GlobalTheory.CompanionTheory.Ar.SplitEx.splitComps_of_fnAlgClosed Y hc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem splitComps_of_fnAlgClosed_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l)

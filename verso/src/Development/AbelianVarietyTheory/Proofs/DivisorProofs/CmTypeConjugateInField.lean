@@ -15,7 +15,7 @@ open TensorProduct
 namespace GlobalTheory.CMTypeThroughField
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar, RingHom.coe_comp, Function.comp_apply]`. Conclude with `IsCMField.complexEmbedding_complexConj E (j.comp ψ) x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comp_bar {E : Type} [Field E] [NumberField E] [IsCMField E] {K : Type} [Field K] (j : K →+* ℂ)
     (ψ : E →+* K) : j.comp (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar ψ) = ComplexEmbedding.conjugate (j.comp ψ) := by
@@ -24,7 +24,7 @@ theorem comp_bar {E : Type} [Field E] [NumberField E] [IsCMField E] {K : Type} [
   exact IsCMField.complexEmbedding_complexConj E (j.comp ψ) x
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bar_bar {E : Type} [Field E] [NumberField E] [IsCMField E] {K : Type} [Field K]
     (ψ : E →+* K) : GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar ψ) = ψ := by
@@ -32,13 +32,13 @@ theorem bar_bar {E : Type} [Field E] [NumberField E] [IsCMField E] {K : Type} [F
   simp [GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar]
 
 /- English proof (translation)
-Introduce `E _ _ _ K _ j I φ φK hφ hcm σ`. Establish `hinj : Function.Injective (fun ψ : E →+* K => j.comp ψ)`. Introduce `a b h`. Use extensionality with `x`. Conclude with `j.injective (DFunLike.congr_fun h x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `key : ∀ i, (σ = GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φK i) ∨ σ = GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φK i))) ↔ (j.comp σ = φ i ∨ j. …`. Introduce `i`. Rewrite using `[bar_bar, or_comm]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Conclude with `Or.inl (by rw [h, hφ])`. Conclude with `Or.inr (by rw [h, comp_bar, hφ])`. Introduce and unpack `(h | h)`. Conclude with `Or.inl (hinj (by simp only; rw [h, hφ]))`. Conclude with `Or.inr (hinj (by simp only; rw [h, comp_bar, hφ]))`.
+Prove the second alternative. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, hu⟩` from `hcm (j.comp σ)`. Conclude with `⟨i, (key i).2 hi, fun i' hi' => hu i' ((key i').1 hi')⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCMTypeIn_bar : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (K : Type) [Field K] (j : K →+* ℂ) (I : Type)
     (φ : I → E →+* ℂ) (φK : I → E →+* K), (∀ i, j.comp (φK i) = φ i) → IsCMType φ →

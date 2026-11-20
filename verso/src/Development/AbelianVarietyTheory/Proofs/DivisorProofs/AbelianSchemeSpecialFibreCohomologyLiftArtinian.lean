@@ -22,21 +22,19 @@ noncomputable section
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Introduce `R _ _ _ A _ g hA hsm k _ σ hσ X₀ s₀ ψ w`. Establish `FF` using `GlobalTheory.T.abelian_over_field_axes_wedge`. Establish `key : ∀ n : ℕ, ∀ (R : Type) [CommRing R] [IsArtinianRing R] [IsLocalRing R], Module.length R R ≤ n → ∀ (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → (∀ (k : Type) [Field k] (σ : R →+* k), Function.Surjective σ → ∀ (X₀ : Scheme.{0}) …`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `_ n ih`. Introduce `R _ _ _ hlen A _ g hA hsm`. Distinguish the cases in `hF : IsField R`. Use `⟨?_, GlobalTheory.T.primitive_of_axes_vanishing R A (FF R hF A g hA hsm).1⟩` and prove the remaining obligations. Introduce `k _ σ hσ X₀ s₀ ψ w`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI := hF.toField`. Conclude with `GlobalTheory.T.pull_h1_surjective_bijective_fibre R k σ ⟨σ.injective, hσ⟩ _ _ X₀ s₀ ψ w`. Take `⟨t, ht0, htm, hlt⟩` from `(GlobalTheory.T.isArtinianLocal_length_finite_and_exists_socle_elem R).2 hF`. Take `⟨n0, hn0⟩` from `(GlobalTheory.T.isArtinianLocal_length_finite_and_exists_socle_elem R).1`. Establish `htop : Ideal.span {t} ≠ ⊤`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hu : IsUnit t` using `by simpa [Ideal.span_singleton_eq_top] using h`. Apply `hF` to reduce the goal to its premises. Establish `hm : IsLocalRing.maximalIdeal R = ⊥`. Rewrite using `[eq_bot_iff]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Use `htm a ha` as an intermediate fact. Simplify `this` using `[hu.mul_left_eq_zero]`. Conclude with `(IsLocalRing.isField_iff_maximalIdeal_eq).2 hm`. Use `haveI : Nontrivial (R ⧸ Ideal.span {t}) := Ideal.Quotient.nontrivial_iff.2 htop`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : IsLocalRing (R ⧸ Ideal.span {t}) := IsLocalRing.of_surjective' _ Ideal.Quotient.mk_surjective`. Take `⟨n1, hn1⟩` from `(GlobalTheory.T.isArtinianLocal_length_finite_and_exists_socle_elem (R ⧸ Ideal.span {t})).1`. Establish `hlt' : n1 < n`. Rewrite `hlt` using `[hn0, hn1]`. Rewrite `hlen` using `[hn0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `lt_of_lt_of_le (by exact_mod_cast hlt) (by exact_mod_cast hlen)`. Establish `IH` using `ih n1 hlt' (R ⧸ Ideal.span {t}) (le_of_eq hn1)`. Conclude with `⟨GlobalTheory.T.artinian_lift_axes_wedge R t _ (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective (Ideal.mk_ker) ht0 htm FF (fun B _ g hB hs ↦ IH B g hB hs) A g hA hsm, GlobalTheory.T.artinian_lift_axes_wedge_local R t _ (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective (Ideal.m …`. Take `⟨n, hn⟩` from `(GlobalTheory.T.isArtinianLocal_length_finite_and_exists_socle_elem R).1`. Establish `h1` using `(key n R (le_of_eq hn) A g hA hsm).1 k σ hσ X₀ s₀ ψ w`.
-
-Conclude with `⟨h1, GlobalTheory.T.surjective_pullHO2_of_pullHO1 _ _ _ _ _ _ _ _ w.w h1 (GlobalTheory.T.closed_fibre_pull_h1_abelian FF R A g hA hsm k σ X₀ s₀ ψ w)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem artinian_pullHO_surjective : ∀ (R : Type) [CommRing R] [IsArtinianRing R] [IsLocalRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (k : Type) [Field k] (σ : R →+* k), Function.Surjective σ → ∀ (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp k) (ψ : X₀ ⟶ A.left) (w : IsPullback ψ s₀ A.hom (spMap σ)), Function.Surjective (pullHO1 w.w) ∧ Function.Surjective (pullHO2 w.w) := by
   intro R _ _ _ A _ g hA hsm k _ σ hσ X₀ s₀ ψ w

@@ -18,16 +18,16 @@ namespace GlobalTheory.AcrisDisc
 variable {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} (bk : BK K)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RingIface.ev_alg l n x`.
+A detailed English derivation is pending.
 -/
 theorem ev_alg (n : ℕ) (x : Per.AinfP l) :
     Per.ev l n (algebraMap (Per.AinfP l) (Per.BdRp l) x) = Ideal.Quotient.mk _ x :=
   GlobalTheory.RingIface.ev_alg l n x
 
 /- English proof (translation)
-Establish `hl0 : (0 : ℝ) < l` using `Nat.cast_pos.2 hl.out.pos`. Establish `e : ((l : ℕ) : bk.DA bk.ρ₀) = ofPre l (bk.ev X) bk.ρ₀ (algebraMap (Ainf l) (PreDisc l (bk.ev X) bk.ρ₀) (((l : ℕ) : Ainf l) ^ 1 * (bk.ev X) ^ 0) * IsLocalization.Away.invSelf ((l : ℕ) : Ainf l) ^ 0)`. Simplify using `[map_natCast]`. Rewrite using `[e, norm_ofPre]`. Conclude with `gauge_le l (bk.ev X) bk.ρ₀ (inv_pos.2 hl0) (Submodule.subset_span ⟨1, 0, 0, by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_zero, pow_zero, pow_one, inv_mul_cancel₀ hl0.ne', mul_one], rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem norm_l_le : ‖((l : ℕ) : bk.DA bk.ρ₀)‖ ≤ (l : ℝ)⁻¹ := by
   have hl0 : (0 : ℝ) < l := Nat.cast_pos.2 hl.out.pos
@@ -40,7 +40,7 @@ theorem norm_l_le : ‖((l : ℕ) : bk.DA bk.ρ₀)‖ ≤ (l : ℝ)⁻¹ := by
     rw [pow_zero, pow_zero, pow_one, inv_mul_cancel₀ hl0.ne', mul_one], rfl⟩)
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simpa using norm_toDisc_le (l := l) (u := bk.ev X) (ρ := bk.ρ₀) (1 : Ainf l)`. Consider the case `succ r ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul ih (norm_l_le bk) (norm_nonneg _) (by positivity))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_l_pow_le (r : ℕ) : ‖((l : ℕ) : bk.DA bk.ρ₀) ^ r‖ ≤ ((l : ℝ)⁻¹) ^ r := by
   induction r with
@@ -54,17 +54,17 @@ def psi : Per.AinfP l →+* bk.DA bk.ρ₀ :=
     (by rw [map_natCast]; exact isUnit_l_disc l (bk.ev X) bk.ρ₀)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_eq _ _ a`.
+A detailed English derivation is pending.
 -/
 theorem psi_alg_pt (a : Per.Ainf l) : psi bk (algebraMap (Per.Ainf l) (Per.AinfP l) a) = bk.iA a :=
   IsLocalization.Away.lift_eq _ _ a
 
 /- English proof (translation)
-Use `set ψ : Per.AinfP l →+* bk.DA bk.ρ₀ := psi bk with hψ`. Establish `hψa : ∀ a : Ainf l, ψ (algebraMap (Ainf l) (Per.AinfP l) a) = bk.iA a` using `psi_alg_pt bk`. Take `⟨n, a, h⟩` from `IsLocalization.Away.surj ((l : ℕ) : Per.Ainf l) (s : Per.AinfP l)`. Establish `hs : s * ((l : ℕ) : Per.Acris0 l) ^ n = algebraMap (Per.Ainf l) (Per.Acris0 l) a`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show (s : Per.AinfP l) * ((l : ℕ) : Per.AinfP l) ^ n = algebraMap (Per.Ainf l) (Per.AinfP l) a`. Rewrite using `[← h, map_natCast]`. Establish `hu : IsUnit (((l : ℕ) : bk.DA bk.ρ₀) ^ n)` using `(isUnit_l_disc l (bk.ev X) bk.ρ₀).pow n`. Use `hu.mul_left_injective ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun t => γ (algebraMap (Per.Acris0 l) (Per.Acris l) t)) hs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_pow, map_natCast] at h1`. Establish `h2` using `congrArg ψ h`. Simplify using `only [map_mul, map_pow, map_natCast] at h2`. Rewrite `h1` using `[← GlobalTheory.RingIface.tower l a]`. Conclude with `h1.trans ((hγ a).trans ((hψa a).symm.trans h2.symm))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamma_acris0 (γ : Per.Acris l →+* bk.DA bk.ρ₀)
     (hγ : ∀ a : Ainf l, γ (algebraMap (Ainf l) (Per.Acris l) a) = bk.iA a) (s : Per.Acris0 l) :
@@ -91,15 +91,13 @@ end GlobalTheory.AcrisDisc
 namespace GlobalTheory.AcrisDisc
 
 /- English proof (translation)
-Take `⟨ι, ⟨TB⟩⟩` from `GlobalTheory.T.ainf_adicTopologicalBasis_over_breuilKisin l K bk`. Establish `hρ0 : 0 < bk.ρ₀` using `NNReal.rpow_pos (Nat.cast_pos.2 hl.out.pos)`. Establish `hρ1 : bk.ρ₀ < 1` using `NNReal.rpow_lt_one_of_one_lt_of_neg (Nat.one_lt_cast.2 hl.out.one_lt) (neg_neg_of_pos (one_div_pos.2 (Nat.cast_pos.2 bk.deg_pos)))`. Establish `hnorm` using `norm_E_mul_of_topBasis l K bk (Ainf l) bk.ev ι TB bk.ρ₀ le_rfl hρ1`. Use `set c : ℝ := (bk.ρ₀ : ℝ) ^ bk.Ep.natDegree with hc_def`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : 0 < c` using `pow_pos (by exact_mod_cast hρ0) _`. Establish `hpow : ∀ (k : ℕ) (v : bk.DA bk.ρ₀), c ^ k * ‖v‖ ≤ ‖bk.iS bk.E ^ k * v‖`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `v`. Establish `e` using `hnorm (bk.iS bk.E ^ k * v)`. Express the relevant statement in the definitionally equal form `‖bk.iS bk.E * (bk.iS bk.E ^ k * v)‖ = c * ‖bk.iS bk.E ^ k * v‖ at e`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `e2 : bk.iS bk.E ^ (k + 1) * v = bk.iS bk.E * (bk.iS bk.E ^ k * v)` using `by rw [pow_succ', mul_assoc]`. Rewrite using `[e2, e, pow_succ', mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (ih v) hc.le`. Use `set f := AddMonoidHom.mulLeft (bk.iS bk.E ^ m) with hf`. Establish `hcm : 0 < c ^ m` using `pow_pos hc m`.
-
-Establish `hb : ∀ v, ‖v‖ ≤ ((Real.toNNReal (c ^ m)⁻¹ : ℝ≥0) : ℝ) * ‖f v‖` using `fun v => by`. Rewrite using `[Real.coe_toNNReal _ (inv_nonneg.2 hcm.le), hf, AddMonoidHom.coe_mulLeft, inv_mul_eq_div, le_div_iff₀ hcm, mul_comm]`. Conclude with `hpow m v`. Conclude with `(AddMonoidHomClass.antilipschitz_of_bound f hb).isClosed_range (AddMonoidHomClass.uniformContinuous_of_bound f ‖bk.iS bk.E ^ m‖ fun v => norm_mul_le _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_range_E_pow {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} (bk : BK K) (m : ℕ) :
     IsClosed (Set.range fun v : bk.DA bk.ρ₀ => bk.iS bk.E ^ m * v) := by
@@ -131,11 +129,9 @@ theorem isClosed_range_E_pow {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} (bk : 
     (AddMonoidHomClass.uniformContinuous_of_bound f ‖bk.iS bk.E ^ m‖ fun v => norm_mul_le _ _)
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `hmemF : C.j (((l : ℕ) : Per.Acris l) ^ N * (algebraMap (Per.Acris0 l) (Per.Acris l) s + ((l : ℕ) : Per.Acris l) ^ r * z)) ∈ Per.FilP l m`. Rewrite using `[map_mul]`. Conclude with `Ideal.mul_mem_left _ _ hy`. Establish `h0 : Per.ev l m (C.j (((l : ℕ) : Per.Acris l) ^ N * (algebraMap (Per.Acris0 l) (Per.Acris l) s + ((l : ℕ) : Per.Acris l) ^ r * z))) = 0` using `(GlobalTheory.RingIface.mem_filtration_iff_mem_kerTheta_pow l m _).1 hmemF`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : C.j (((l : ℕ) : Per.Acris l) ^ N * (algebraMap (Per.Acris0 l) (Per.Acris l) s + ((l : ℕ) : Per.Acris l) ^ r * z)) = ((l : ℕ) : Per.BdRp l) ^ N * algebraMap (Per.AinfP l) (Per.BdRp l) (s : Per.AinfP l) + ((l : ℕ) : Per.BdRp l) ^ r * (((l : ℕ) : Per.BdRp l) ^ N * C.j z)`. Rewrite using `[map_mul, map_add, map_mul, map_pow, map_pow, map_natCast, C.j_cris.on0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h0` using `[e, map_add, map_mul, map_mul, ha, map_pow, map_pow, map_natCast, ev_alg]`. Rewrite using `[map_add, map_mul, map_mul, map_pow, map_pow, map_natCast]`.
-
-Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_kerTheta_pow_of_mem_filtration {l : ℕ} [hl : Fact l.Prime] (C : Core l) (m N r : ℕ) (s : Per.Acris0 l) (z : Per.Acris l)
     (a : Per.Ainf l)
@@ -162,7 +158,7 @@ theorem mem_kerTheta_pow_of_mem_filtration {l : ℕ} [hl : Fact l.Prime] (C : Co
   exact h0
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.AdicMaps.exists_acris_completion l`. Take `⟨s, z, h⟩` from `GlobalTheory.PerfectCompletion.dense ((l : ℕ) : Per.Acris0 l) (e y) r`. Use `⟨s, e.symm z, e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_pow, map_natCast, he, e.apply_symm_apply, ← map_natCast (algebraMap (Per.Acris0 l) (AdicCompletion (Ideal.span {((l : ℕ) : Per.Acris0 l)}) (Per.Acris0 l)))]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acris_dense {l : ℕ} [Fact l.Prime] (y : Per.Acris l) (r : ℕ) :
     ∃ (s : Per.Acris0 l) (z : Per.Acris l),
@@ -175,11 +171,11 @@ theorem acris_dense {l : ℕ} [Fact l.Prime] (y : Per.Acris l) (r : ℕ) :
   exact h
 
 /- English proof (translation)
-Use `set ψ : Per.AinfP l →+* bk.DA bk.ρ₀ := psi bk with hψ`. Establish `hE : ψ (algebraMap (Per.Ainf l) (Per.AinfP l) (bk.ev bk.E)) = bk.iS bk.E` using `psi_alg_pt bk _`. Establish `ha : ψ (algebraMap (Per.Ainf l) (Per.AinfP l) a) = bk.iA a` using `psi_alg_pt bk _`. Establish `hx` using `congrArg ψ hw`. Rewrite `hx` using `[map_add, map_mul, map_mul, map_pow, map_pow, map_natCast, ha, map_mul, map_pow, hE]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdiff : ((l : ℕ) : bk.DA bk.ρ₀) ^ N * γ (algebraMap (Per.Acris0 l) (Per.Acris l) s + ((l : ℕ) : Per.Acris l) ^ r * z) - bk.iS bk.E ^ m * ψ w = ((l : ℕ) : bk.DA bk.ρ₀) ^ r * (γ (((l : ℕ) : Per.Acris l) ^ N * z) - bk.iA a)`. Rewrite using `[← hx, map_add, gamma_acris0 bk γ hγ s, map_mul, map_mul, map_pow, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdiff]`. Use `(norm_mul_le _ _).trans (mul_le_mul (norm_l_pow_le bk r) ?_ (norm_nonneg _) (by positivity))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Use `norm_toDisc_le (l := l) (u := bk.ev X) (ρ := bk.ρ₀) a` as an intermediate fact. Use `h1 (((l : ℕ) : Per.Acris l) ^ N * z)` as an intermediate fact. Express the relevant statement in the definitionally equal form `‖bk.iA a‖ ≤ 1 at *`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem approx {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} (bk : BK K) (γ : Per.Acris l →+* bk.DA bk.ρ₀)
     (hγ : ∀ a : Ainf l, γ (algebraMap (Ainf l) (Per.Acris l) a) = bk.iA a) (h1 : ∀ x, ‖γ x‖ ≤ 1)
@@ -208,15 +204,15 @@ theorem approx {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} (bk : BK K) (γ : Pe
   linarith
 
 /- English proof (translation)
-Introduce `l hl K bk C γ hγ h1 m y hy`. Establish `hker : Per.kerP l ^ m = Ideal.span {algebraMap (Per.Ainf l) (Per.AinfP l) (bk.ev bk.E) ^ m}`. Rewrite using `[ker_localizedTheta_eq_span_of_dvd l (bk.ev bk.E) fun a => by`. Rewrite using `[← RingHom.mem_ker, ← bk.span_ev, Ideal.mem_span_singleton], Ideal.span_singleton_pow]`. Take `⟨N, hN⟩` from `C.j_cris.bdd m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ((l : ℕ) : bk.DA bk.ρ₀) ^ N * γ y ∈ closure (Set.range fun v : bk.DA bk.ρ₀ => bk.iS bk.E ^ m * v)`. Rewrite using `[Metric.mem_closure_iff]`. Introduce `ε hε`. Establish `hlt : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (Nat.one_lt_cast.2 hl.out.one_lt)`. Take `⟨r, hr⟩` from `exists_pow_lt_of_lt_one (half_pos hε) hlt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, z, hyz⟩` from `acris_dense y r`. Take `⟨a, ha⟩` from `hN z`. Establish `hx` using `mem_kerTheta_pow_of_mem_filtration C m N r s z a ha (hyz ▸ hy)`. Rewrite `hx` using `[hker, Ideal.mem_span_singleton]`. Take `⟨w, hw⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨bk.iS bk.E ^ m * psi bk w, ⟨psi bk w, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[dist_eq_norm, hyz]`. Use `approx bk γ hγ h1 m N r s z a w hw` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hmem` using `[(isClosed_range_E_pow bk m).closure_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨v, hv⟩` from `hmem`. Establish `hu : IsUnit (((l : ℕ) : bk.DA bk.ρ₀) ^ N)` using `(isUnit_l_disc l (bk.ev X) bk.ρ₀).pow N`. Rewrite using `[← hu.dvd_mul_left]`. Conclude with `⟨v, hv.symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (C : Core l) (γ : Per.Acris l →+* bk.DA bk.ρ₀),
     (∀ a : Ainf l, γ (algebraMap (Ainf l) (Per.Acris l) a) = bk.iA a) → (∀ x, ‖γ x‖ ≤ 1) →

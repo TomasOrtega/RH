@@ -23,28 +23,28 @@ def reesMul (r : reesAlgebra I) : reesPush I F ⟶ reesPush I F :=
     (smulHom (reesSheaf I F) (algebraMap (reesAlgebra I) Γ(reesScheme I X, ⊤) r))
 
 /- English proof (translation)
-Rewrite using `[reesMul, map_one, ← smulRingHom_apply, map_one]`. Conclude with `(Scheme.Modules.pushforward (reesPr I X)).map_id _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma reesMul_one : reesMul I F 1 = 𝟙 _ := by
   rw [reesMul, map_one, ← smulRingHom_apply, map_one]
   exact (Scheme.Modules.pushforward (reesPr I X)).map_id _
 
 /- English proof (translation)
-Rewrite using `[reesMul, reesMul, reesMul, map_mul, ← smulRingHom_apply, map_mul, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma reesMul_mul (r s : reesAlgebra I) : reesMul I F (r * s) = reesMul I F s ≫ reesMul I F r := by
   rw [reesMul, reesMul, reesMul, map_mul, ← smulRingHom_apply, map_mul, ← Functor.map_comp]
   rfl
 
 /- English proof (translation)
-Rewrite using `[reesMul, map_zero, ← smulRingHom_apply, map_zero]`. Conclude with `(Scheme.Modules.pushforward (reesPr I X)).map_zero _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma reesMul_zero : reesMul I F 0 = 0 := by
   rw [reesMul, map_zero, ← smulRingHom_apply, map_zero]
   exact (Scheme.Modules.pushforward (reesPr I X)).map_zero _ _
 
 /- English proof (translation)
-Rewrite using `[reesMul, reesMul, reesMul, map_add, ← smulRingHom_apply, map_add]`. Conclude with `(Scheme.Modules.pushforward (reesPr I X)).map_add`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma reesMul_add (r s : reesAlgebra I) : reesMul I F (r + s) = reesMul I F r + reesMul I F s := by
   rw [reesMul, reesMul, reesMul, map_add, ← smulRingHom_apply, map_add]
@@ -91,11 +91,11 @@ omit [IsNoetherianRing A] [IsProper (X ↘ Spec (.of A))] in
 include hF hU hUaff in
 
 /- English proof (translation)
-Establish `: (reesSheaf I F).IsQuasicoherent` using `(isCoherent_reesSheaf hF).1`. Use `set pr := reesPr I X`. Establish `hUr : ⨆ k, pr ⁻¹ᵁ 𝔘 k = ⊤`. Rewrite using `[← Scheme.Hom.preimage_iSup, hU]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hUraff : ∀ (m : ℕ) (t : Fin (m + 1) → ι), IsAffineOpen (⨅ a, pr ⁻¹ᵁ 𝔘 (t a))` using `fun m t => by`. Establish `h` using `preimage_inter pr 𝔘 t`. Rewrite using `[← inter_eq_iInf (fun k => pr ⁻¹ᵁ 𝔘 k) t, ← h, inter_eq_iInf]`. Conclude with `(hUaff m t).preimage pr`. Use `⟨(cechHPushforwardEquiv pr (reesSheaf I F) 𝔘 p).trans (cechHAddEquivH (fun k => pr ⁻¹ᵁ 𝔘 k) hUr hUraff (reesSheaf I F) p), fun r x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AddEquiv.trans_apply]`. Rewrite using `[cechHPushforwardEquiv_naturality pr (reesSheaf I F) 𝔘 p _ (modulesAbMap (smulHom (reesSheaf I F) (algebraMap (reesAlgebra I) Γ(reesScheme I X, ⊤) r))).hom (fun W y => rfl) x, cechHAddEquivH_naturality]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_reesCech_addEquiv :
     ∃ e : cechH (reesPre I F) 𝔘 p ≃+ Sheaf.H.{u} (modulesAb (reesSheaf I F)) p,
@@ -121,7 +121,7 @@ theorem exists_reesCech_addEquiv :
 include hF hU hUaff in
 
 /- English proof (translation)
-Set `` to `reesCechModule I F 𝔘 p`. Take `⟨e, he⟩` from `exists_reesCech_addEquiv I 𝔘 p hF hU hUaff`. Use `finite_H_of_isProper (A := reesAlgebra I) (reesSheaf I F) (isCoherent_reesSheaf hF) p` as an intermediate fact. Conclude with `Module.Finite.equiv (e.toLinearEquiv fun r x => he r x).symm`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_reesCech :
     @Module.Finite (reesAlgebra I) (cechH (reesPre I F) 𝔘 p) _ _ (reesCechModule I F 𝔘 p) := by

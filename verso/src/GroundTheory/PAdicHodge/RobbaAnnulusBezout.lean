@@ -19,15 +19,15 @@ set_option linter.unusedSectionVars false
 variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
 
 /- English proof (translation)
-Establish `h' : ∀ x : R, ∃ p, Ideal.span {x} = Ideal.span {φ p}` using `fun x => by`. Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, by rw [hx, map_zero]⟩`. Take `⟨u, p, hu, rfl⟩` from `h x hx`. Conclude with `⟨p, Ideal.span_singleton_mul_left_unit hu _⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Take `⟨p, hp⟩` from `h' y`. Rewrite using `[show ({0, y} : Set R) = insert 0 {y} from rfl, Ideal.span_insert_zero]`. Conclude with `⟨p, hp⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Take `⟨p, hp⟩` from `h' x`. Rewrite using `[Set.pair_comm, show ({0, x} : Set R) = insert 0 {x} from rfl, Ideal.span_insert_zero]`. Conclude with `⟨p, hp⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨u, p, hu, rfl⟩` from `h x hx`. Take `⟨v, p', hv, rfl⟩` from `h y hy`. Take `⟨g, hg⟩` from `(IsPrincipalIdealRing.principal (Ideal.span ({p, p'} : Set K[X]))).principal`. Use `⟨g, ?_⟩` and prove the remaining obligations. Establish `e1 : Ideal.span ({u * φ p, v * φ p'} : Set R) = Ideal.map φ (Ideal.span {p, p'})`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Ideal.map_span, Set.image_pair, Ideal.span_insert, Ideal.span_insert, Ideal.span_singleton_mul_left_unit hu, Ideal.span_singleton_mul_left_unit hv]`. Rewrite using `[e1, hg]`. Express the relevant statement in the definitionally equal form `Ideal.map φ (Ideal.span {g}) = Ideal.span {φ g}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_span_pair_eq_map {R : Type*} [CommRing R] (φ : K[X] →+* R)
     (h : ∀ x : R, x ≠ 0 → ∃ u p, IsUnit u ∧ x = u * φ p) (x y : R) :
@@ -65,9 +65,9 @@ variable {I : Set ℝ} [Fact (∃ ρ ∈ I, 0 < ρ)]
 def Tinv : AnnulusRing K I := ⟨Pi.single (-1) 1, fun ρ _ _ => convergesAt_single (-1) 1 ρ⟩
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [coeff_mul, T, Tinv, cmul_single_left, coeff_one, Pi.single_apply, one_mul]`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hn, show n - 1 ≠ -1 by omega]`.
+Simplify using the standard rewrite rules.
 -/
 theorem T_mul_Tinv : (T : AnnulusRing K I) * Tinv = 1 := by
   ext n
@@ -79,9 +79,9 @@ theorem T_mul_Tinv : (T : AnnulusRing K I) * Tinv = 1 := by
 def unitT : (AnnulusRing K I)ˣ := ⟨T, Tinv, T_mul_Tinv, by rw [mul_comm]; exact T_mul_Tinv⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[pow_succ, coeff_mul, ih, cmul_comm, show (T : AnnulusRing K I).coeff = Pi.single 1 1 from rfl, cmul_single_left]`. Use function extensionality and compare the values at `m`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.single_apply, one_mul]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> first | rfl | (exfalso; push_cast at *; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_T_pow (n : ℕ) : ((T : AnnulusRing K I) ^ n).coeff = Pi.single (n : ℤ) 1 := by
   induction n with
@@ -94,13 +94,13 @@ theorem coeff_T_pow (n : ℕ) : ((T : AnnulusRing K I) ^ n).coeff = Pi.single (n
     split_ifs with h1 h2 h2 <;> first | rfl | (exfalso; push_cast at *; omega)
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, (((unitT : (AnnulusRing K I)ˣ) ^ (n : ℤ) : (AnnulusRing K I)ˣ) : AnnulusRing K I).coeff = Pi.single (n : ℤ) 1` using `fun n => by`. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val]`. Conclude with `coeff_T_pow n`. Establish `keyinv : ∀ n : ℕ, (((unitT⁻¹ : (AnnulusRing K I)ˣ) ^ n : (AnnulusRing K I)ˣ) : AnnulusRing K I).coeff = Pi.single (-(n : ℤ)) 1`. Introduce `n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[pow_succ, Units.val_mul, coeff_mul, ih]`. Express the relevant statement in the definitionally equal form `cmul (Pi.single (-(n : ℤ)) 1) (Pi.single (-1) 1) = _`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cmul_single_left]`. Use function extensionality and compare the values at `m`. Simplify using `only [Pi.single_apply, one_mul]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> first | rfl | (exfalso; push_cast at *; omega)`. Break down `Int.eq_nat_or_neg L with ⟨n, rfl | rfl⟩` into its components or cases.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key n`. Rewrite using `[zpow_neg, ← inv_zpow, zpow_natCast]`. Conclude with `keyinv n`.
+A detailed English derivation is pending.
 -/
 theorem coeff_unitT_zpow (L : ℤ) :
     (((unitT : (AnnulusRing K I)ˣ) ^ L : (AnnulusRing K I)ˣ) : AnnulusRing K I).coeff =
@@ -128,11 +128,11 @@ def _root_.GroundTheory.PAdicHodge.Laurent.polySeq (p : K[X]) : ℤ → K :=
   fun n => if 0 ≤ n then p.coeff n.toNat else 0
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Rewrite using `[map_add, coeff_add, hp, hq]`. Apply the tactic sequence `funext n; simp only [Pi.add_apply, polySeq, coeff_add]; split_ifs <;> simp`. Consider the case `monomial n c`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Rewrite using `[aeval_monomial, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, coeff_smul, coeff_T_pow]`. Use function extensionality and compare the values at `m`. Simplify using `only [Pi.smul_apply, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, polySeq, coeff_monomial]`. Distinguish the cases in `hm : m = (n : ℤ)`. Substitute `hm` using the available equality.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Distinguish the cases in `h0 : 0 ≤ m`. Simplify using `[hm, h0, show n ≠ m.toNat by omega]`. Simplify using `[hm, h0]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coeff_aeval_alt (p : K[X]) : (aeval (T : AnnulusRing K I) p).coeff = polySeq p := by
   induction p using Polynomial.induction_on' with
@@ -152,11 +152,11 @@ theorem coeff_aeval_alt (p : K[X]) : (aeval (T : AnnulusRing K I) p).coeff = pol
       · simp [hm, h0]
 
 /- English proof (translation)
-Use `⟨∑ i ∈ Finset.range (H - L + 1).toNat, monomial i (P.coeff (L + i)), ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Rewrite using `[coeff_mul, coeff_unitT_zpow, coeff_aeval_alt, cmul_single_left]`. Simplify using `only [one_mul, polySeq, finsetSum_coeff, coeff_monomial, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_range]`. Distinguish the cases in `h1 : 0 ≤ n - L`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h1]`. Distinguish the cases in `h2 : (n - L).toNat < (H - L + 1).toNat`. Rewrite using `[if_pos h2]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[if_neg h2]; exact hsupp n (Or.inr (by omega))`. Rewrite using `[if_neg h1]; exact hsupp n (Or.inl (by omega))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zpow_mul_aeval (P : AnnulusRing K I) {L H : ℤ}
     (hsupp : ∀ n, (n < L ∨ H < n) → P.coeff n = 0) :
@@ -177,11 +177,11 @@ section Closed
 variable {α β : ℝ} [Fact (∃ ρ ∈ Set.Icc α β, 0 < ρ)]
 
 /- English proof (translation)
-Take `⟨ρ₀, hρ₀, -⟩` from `(Fact.out : ∃ ρ ∈ Set.Icc α β, 0 < ρ)`. Establish `hαβ : α ≤ β` using `hρ₀.1.trans hρ₀.2`. Establish `hβ : 0 < β` using `hα.trans_le hαβ`. Establish `hf0 : f.coeff ≠ 0` using `fun e => hf (AnnulusRing.ext e)`. Take `⟨P, u, hPs, hu1, hu2, hb1, hb2, hfe⟩` from `weierstrass_preparation hα hαβ (f.convergesAt ⟨le_rfl, hαβ⟩ hα) (f.convergesAt ⟨hαβ, le_rfl⟩ hβ) hf0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `Pe : AnnulusRing K (Set.Icc α β)` to `⟨P, fun ρ _ _ => convergesAt_of_support hPs ρ⟩`. Set `Ue : AnnulusRing K (Set.Icc α β)` to `⟨u, fun ρ hρ _ => hu1.of_le_of_le hu2 hα hρ.1 hρ.2⟩`. Establish `hfPU : f = Pe * Ue` using `AnnulusRing.ext hfe`. Take `⟨hUne, hUl, -⟩` from `dominant_zero_of_gaussNorm_sub_one_lt hα hu1 hb1`. Take `⟨-, -, hUh⟩` from `dominant_zero_of_gaussNorm_sub_one_lt hβ hu2 hb2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hU : IsUnit Ue` using `isUnit_of_lowIndex_eq_highIndex hα Ue (fun e => hUne (congrArg AnnulusRing.coeff e)) (hUl.trans hUh.symm)`. Take `⟨p, hp⟩` from `eq_zpow_mul_aeval Pe hPs`. Use `⟨((unitT ^ lowIndex f.coeff α : (AnnulusRing K (Set.Icc α β))ˣ) : AnnulusRing K (Set.Icc α β)) * Ue, p, (Units.isUnit _).mul hU, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [hfPU, hp]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_isUnit_mul_aeval (hα : 0 < α) (f : AnnulusRing K (Set.Icc α β)) (hf : f ≠ 0) :
     ∃ u : AnnulusRing K (Set.Icc α β), ∃ p : K[X], IsUnit u ∧ f = u * aeval T p := by
@@ -205,7 +205,7 @@ theorem exists_isUnit_mul_aeval (hα : 0 < α) (f : AnnulusRing K (Set.Icc α β
   ring
 
 /- English proof (translation)
-The claim follows from `exists_span_pair_eq_map (aeval (T : AnnulusRing K (Set.Icc α β))).toRingHom (fun x hx => exists_isUnit_mul_aeval hα x hx) f g`.
+A detailed English derivation is pending.
 -/
 theorem exists_span_eq_aeval (hα : 0 < α) (f g : AnnulusRing K (Set.Icc α β)) :
     ∃ d : K[X], Ideal.span ({f, g} : Set (AnnulusRing K (Set.Icc α β))) =

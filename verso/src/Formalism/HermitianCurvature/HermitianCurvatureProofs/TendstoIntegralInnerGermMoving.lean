@@ -12,15 +12,15 @@ section L2m
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Establish `h2t : 0 < 2 * t` using `by positivity`. Establish `hGa : nF * nG ≤ nF * |g| + nF * |e|`. Establish `: nG ≤ |g| + |e|` using `hG.trans (add_le_add (le_abs_self g) (le_abs_self e))`. Use the polynomial consequences of the given equalities and inequalities. Establish `hA : ∀ y : ℝ, nF * |y| ≤ t * nF ^ 2 / 2 + y ^ 2 / (2 * t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Introduce `y`. Apply the tactic sequence `rw [show t * nF ^ 2 / 2 + y ^ 2 / (2 * t) = (t ^ 2 * nF ^ 2 + y ^ 2) / (2 * t) by field_simp <;> ring, le_div_iff₀ h2t]`. Use polynomial arithmetic with `[sq_nonneg (t * nF - |y|), sq_abs y]`. Establish `hg1 : |g| ≤ (1 + g ^ 2) / 2` using `by nlinarith [sq_nonneg (|g| - 1), sq_abs g]`. Use `⟨fun hK => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : nF * |g| ≤ δ * |g|` using `mul_le_mul_of_nonneg_right hK (abs_nonneg g)`. Establish `h2 : δ * |g| ≤ δ / 2 * (1 + g ^ 2)` using `by nlinarith`. Establish `h3` using `hA e`. Establish `h4 : t * nF ^ 2 / 2 ≤ t * nF ^ 2` using `by nlinarith [sq_nonneg nF]`. Establish `h5 : (0 + e ^ 2) / (2 * t) = e ^ 2 / (2 * t)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h5]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `hA e`. Establish `h4` using `hA g`. Establish `h5 : (g ^ 2 + e ^ 2) / (2 * t) = g ^ 2 / (2 * t) + e ^ 2 / (2 * t)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : 0 ≤ δ / 2 * (0 + g ^ 2)` using `by positivity`. Rewrite using `[h5]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma mul_le_young_bounds_of_le_add {nF nG g e t δ : ℝ} (ht : 0 < t) (hδ : 0 ≤ δ) (hnF : 0 ≤ nF)
     (hG : nG ≤ g + e) :
@@ -53,19 +53,17 @@ private lemma mul_le_young_bounds_of_le_add {nF nG g e t δ : ℝ} (ht : 0 < t) 
     linarith
 
 /- English proof (translation)
-Set `Kn : ℕ → Set ℂ` to `fun n => Metric.closedBall (0 : ℂ) (n + 1) \ Metric.ball 0 (1 / (n + 1))`. Establish `hKc : ∀ n, IsCompact (Kn n)` using `fun n => (isCompact_closedBall 0 _).diff Metric.isOpen_ball`. Establish `h0K : ∀ n, (0 : ℂ) ∉ Kn n`. Introduce `n h`. Conclude with `h.2 (Metric.mem_ball_self (by positivity))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hlim : Tendsto (fun n : ℕ => ∫ D, (Kn n)ᶜ.indicator (fun D => g D ^ 2) D ∂μ) atTop (𝓝 0)`. Establish `h` using `tendsto_integral_of_dominated_convergence (μ := μ) (fun D => g D ^ 2) (F := fun n D => (Kn n)ᶜ.indicator (fun D => g D ^ 2) D) (f := fun _ => (0 : ℝ)) (fun n => (hg2.indicator (hKc n).isClosed.measurableSet.compl).aestronglyMeasurable) hg2 (fun n => Filter.Eventually.of_forall fu …`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (Set.indicator_nonneg (fun _ _ => sq_nonneg _) _)]`. Conclude with `Set.indicator_le_self' (fun _ _ => sq_nonneg _) D)`. Use the proof step `(by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0 : ∀ᵐ D ∂μ, D ≠ (0 : ℂ)` using `compl_mem_ae_iff.2 (measure_singleton 0)`. Use `filter_upwards [h0] with D hD`. Establish `hpos : 0 < ‖D‖` using `norm_pos_iff.2 hD`. Take `⟨N, hN⟩` from `exists_nat_gt (max (1 / ‖D‖) ‖D‖)`. Apply `tendsto_const_nhds.congr'` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [eventually_ge_atTop N] with n hn`. Establish `hn' : (N : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `ha : 1 / ‖D‖ < n + 1` using `by linarith [le_max_left (1 / ‖D‖) ‖D‖]`. Establish `hb : ‖D‖ < n + 1` using `by linarith [le_max_right (1 / ‖D‖) ‖D‖]`. Establish `hmem : D ∈ Kn n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `hb.le`. Rewrite using `[Metric.mem_ball, dist_zero_right, not_lt]`. Rewrite using `[div_le_iff₀ (by positivity)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `ha` using `[div_lt_iff₀ hpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[Set.indicator_apply, hmem])`. Simplify using `using h`. Take `⟨n, hn⟩` from `(hlim.eventually (gt_mem_nhds hη)).exists`.
-
-Conclude with `⟨Kn n, hKc n, h0K n, hn⟩`.
+A detailed English derivation is pending.
 -/
 private lemma exists_isCompact_integral_compl_sq_lt (μ : Measure ℂ) [NullSingletonClass μ] {g : ℂ → ℝ}
     (hg2 : Integrable (fun D => g D ^ 2) μ) {η : ℝ} (hη : 0 < η) :
@@ -106,29 +104,27 @@ private lemma exists_isCompact_integral_compl_sq_lt (μ : Measure ℂ) [NullSing
   exact ⟨Kn n, hKc n, h0K n, hn⟩
 
 /- English proof (translation)
-Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Use `set B' : ℝ := max B 0 + 1 with hB'`. Establish `hB'pos : 0 < B'` using `by positivity`. Use `set t : ℝ := ε / (4 * B') with ht_def`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : 0 < t` using `by positivity`. Establish `hg2 : Integrable (fun D => g D ^ 2) μ` using `hg.integrable_sq`. Take `⟨K, hKc, h0K, hKint⟩` from `exists_isCompact_integral_compl_sq_lt μ hg2 (η := ε * t / 2) (by positivity)`. Establish `hKmeas : MeasurableSet K` using `hKc.isClosed.measurableSet`. Establish `hKfin : μ K < ⊤` using `hKc.measure_lt_top`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI1 : Integrable (K.indicator (fun _ => (1 : ℝ))) μ` using `(integrable_indicator_iff hKmeas).2 (integrableOn_const hKfin.ne)`. Use `set M : ℝ := ∫ D, K.indicator (fun _ => (1 : ℝ)) D ∂μ + ∫ D, g D ^ 2 ∂μ + 1 with hM_def`. Establish `hM : 0 < M`. Establish `h1 : 0 ≤ ∫ D, K.indicator (fun _ => (1 : ℝ)) D ∂μ` using `integral_nonneg fun D => Set.indicator_nonneg (fun _ _ => zero_le_one) D`. Establish `h2 : 0 ≤ ∫ D, g D ^ 2 ∂μ` using `integral_nonneg fun D => sq_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set δ : ℝ := ε / (4 * M) with hδ_def`. Establish `hδ : 0 < δ` using `by positivity`. Establish `he' : ∀ᶠ x in l, ∫ D, e x D ^ 2 ∂μ < ε * t / 2` using `he0.eventually (gt_mem_nhds (by positivity))`. Use `filter_upwards [hF, he, he', hG, hloc K hKc h0K δ hδ] with x hFx hex he2 hGx hlx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hFx, hFB⟩` from `hFx`. Rewrite using `[dist_zero_right]`. Establish `hF2 : Integrable (fun D => ‖F x D‖ ^ 2) μ` using `(memLp_two_iff_integrable_sq_norm hFx.1).1 hFx`. Establish `he2i : Integrable (fun D => e x D ^ 2) μ` using `hex.integrable_sq`. Establish `hIc : Integrable (Kᶜ.indicator (fun D => g D ^ 2)) μ` using `hg2.indicator hKmeas.compl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i1 : Integrable (fun D => t * ‖F x D‖ ^ 2) μ` using `hF2.const_mul t`. Establish `i2 : Integrable (fun D => (Kᶜ.indicator (fun D => g D ^ 2) D + e x D ^ 2) / (2 * t)) μ` using `(hIc.add he2i).div_const _`. Establish `i3 : Integrable (fun D => δ / 2 * (K.indicator (fun _ => (1 : ℝ)) D + g D ^ 2)) μ` using `(hI1.add hg2).const_mul _`. Establish `i12 : Integrable (fun D => t * ‖F x D‖ ^ 2 + (Kᶜ.indicator (fun D => g D ^ 2) D + e x D ^ 2) / (2 * t)) μ` using `i1.add i2`. Establish `hbnd : ∀ᵐ D ∂μ, ‖⟪F x D, G x D⟫_ℂ‖ ≤ t * ‖F x D‖ ^ 2 + (Kᶜ.indicator (fun D => g D ^ 2) D + e x D ^ 2) / (2 * t) + δ / 2 * (K.indicator (fun _ => (1 : ℝ)) D + g D ^ 2)` using `by filter_upwards [hGx, hlx] with D hGD hlD`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖⟪F x D, G x D⟫_ℂ‖ ≤ ‖F x D‖ * ‖G x D‖` using `norm_inner_le_norm _ _`. Establish `hP` using `mul_le_young_bounds_of_le_add ht hδ.le (norm_nonneg (F x D)) hGD`. Distinguish the cases in `hD : D ∈ K`. Establish `hi1 : K.indicator (fun _ => (1 : ℝ)) D = 1` using `by simp [Set.indicator_apply, hD]`. Establish `hi2 : Kᶜ.indicator (fun D => g D ^ 2) D = 0` using `by simp [Set.indicator_apply, hD]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hi1, hi2]`. Conclude with `h1.trans (hP.1 (hlD hD))`. Establish `hi1 : K.indicator (fun _ => (1 : ℝ)) D = 0` using `by simp [Set.indicator_apply, hD]`. Establish `hi2 : Kᶜ.indicator (fun D => g D ^ 2) D = g D ^ 2` using `by simp [Set.indicator_apply, hD]`. Rewrite using `[hi1, hi2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.trans hP.2`. Establish `hsplit : ∫ D, (t * ‖F x D‖ ^ 2 + (Kᶜ.indicator (fun D => g D ^ 2) D + e x D ^ 2) / (2 * t) + δ / 2 * (K.indicator (fun _ => (1 : ℝ)) D + g D ^ 2)) ∂μ = t * ∫ D, ‖F x D‖ ^ 2 ∂μ + (∫ D, Kᶜ.indicator (fun D => g D ^ 2) D ∂μ + ∫ D, e x D ^ 2 ∂μ) / (2 * t) + δ / 2 * (M - 1)`. Rewrite using `[integral_add i12 i3, integral_add i1 i2, integral_const_mul, integral_div, integral_add hIc he2i, integral_const_mul, integral_add hI1 hg2]`. Simplify using `only [hM_def]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hle : ‖∫ D, ⟪F x D, G x D⟫_ℂ ∂μ‖ ≤ t * ∫ D, ‖F x D‖ ^ 2 ∂μ + (∫ D, Kᶜ.indicator (fun D => g D ^ 2) D ∂μ + ∫ D, e x D ^ 2 ∂μ) / (2 * t) + δ / 2 * (M - 1)`. Rewrite using `[← hsplit]`. Conclude with `(norm_integral_le_integral_norm _).trans (integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => norm_nonneg _) (i12.add i3) hbnd)`. Establish `hb1 : t * ∫ D, ‖F x D‖ ^ 2 ∂μ ≤ ε / 4`. Establish `hFB' : ∫ D, ‖F x D‖ ^ 2 ∂μ ≤ B'` using `by linarith [le_max_left B 0]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Use the polynomial consequences of the given equalities and inequalities.
 
-Apply the tactic sequence `have : t * B' = ε / 4 := by rw [ht_def]; field_simp <;> ring`. Use the polynomial consequences of the given equalities and inequalities. Establish `hb2 : (∫ D, Kᶜ.indicator (fun D => g D ^ 2) D ∂μ + ∫ D, e x D ^ 2 ∂μ) / (2 * t) ≤ ε / 2`. Rewrite using `[div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish `hb3 : δ / 2 * (M - 1) ≤ ε / 8`. Apply the tactic sequence `have : δ * M = ε / 4 := by rw [hδ_def]; field_simp <;> ring`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tendsto_integral_inner_germ_moving {α : Type} {l : Filter α} (μ : Measure ℂ) [IsFiniteMeasureOnCompacts μ]
     [NullSingletonClass μ] (F G : α → ℂ → H) (g : ℂ → ℝ) (e : α → ℂ → ℝ) (hg : MemLp g 2 μ) (B : ℝ)

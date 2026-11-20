@@ -10,9 +10,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory Ca
 namespace GlobalTheory.CompanionTheory.HopfC
 
 /- English proof (translation)
-Establish `e0 : bv F ((sI (0 : Fin 1)).comp (dl 0)) ((Fin.predAboveOrderHom (0 : Fin 1)).comp (dl 0)) v = bv F ((dl (0 : Fin 2)).comp (cst 0 0)) OrderHom.id v` using `bv_congr (fun i ↦ by fin_cases i rfl) (fun i ↦ Subsingleton.elim (α := Fin 1) _ _) v`. Establish `e1 : bv F ((sI (0 : Fin 1)).comp (dl 1)) ((Fin.predAboveOrderHom (0 : Fin 1)).comp (dl 1)) v = bv F ((dl (1 : Fin 2)).comp (cst 0 0)) OrderHom.id v` using `bv_congr (fun i ↦ by fin_cases i rfl) (fun i ↦ Subsingleton.elim (α := Fin 1) _ _) v`. Establish `hS : Sh F 0 = (bv F (sI (0 : Fin 1)) (Fin.predAboveOrderHom (0 : Fin 1))).toLinearMap` using `(Fin.sum_univ_one (M := Cn (box F) 1 →ₗ[R] Bi F 1 0) fun i : Fin 1 ↦ ((-1 : R) ^ (i : ℕ)) • (bv F (sI i) (Fin.predAboveOrderHom i)).toLinearMap).trans (by simp)`. Establish `hd : dn (box F) 0 v = pr (box F) (dl 0) v - pr (box F) (dl 1) v`. Rewrite using `[dn_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Fin.sum_univ_two (M := Cn (box F) 1) fun i : Fin 2 ↦ ((-1 : R) ^ (i : ℕ)) • pr (box F) (dl i) v).trans ?_` and prove the remaining obligations. Simplify using `[sub_eq_add_neg]`. Simplify using `only [S0, prA_bv]`. Rewrite using `[← e0, ← e1, hS, hd, AlgHom.toLinearMap_apply, map_sub, bv_pr, bv_pr]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Sh_dn_zero {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
     (v : Cn (box F) 0) :

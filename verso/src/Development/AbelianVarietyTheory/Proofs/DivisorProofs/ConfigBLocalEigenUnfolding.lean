@@ -13,13 +13,11 @@ open scoped Classical
 namespace GlobalTheory.ThK.InfB
 
 /- English proof (translation)
-Establish `hi : ∀ φ, Integrable (Φ φ) μ` using `fun φ => Integrable.mono' (hh.const_mul (C * (s.sup (schwartzSeminormFamily ℂ D ℂ)) φ)) (hm φ) (Eventually.of_forall fun y => hb φ y)`. Use `set p := s.sup (schwartzSeminormFamily ℂ D ℂ) with hp`. Establish `hpc : Continuous fun φ => p φ`. Conclude with `Seminorm.continuous_finsetSup fun i _ => (schwartz_withSeminorms ℂ D ℂ).continuous_seminorm i`. Establish `key : ∀ φ ψ, ‖(∫ y, Φ φ y ∂μ) - ∫ y, Φ ψ y ∂μ‖ ≤ (C * ∫ y, h y ∂μ) * p (φ - ψ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `φ ψ`. Rewrite using `[← integral_sub (hi φ) (hi ψ)]`. Establish `e : (fun y => Φ φ y - Φ ψ y) = Φ (φ - ψ)` using `funext fun y => (hlin φ ψ y).symm`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `continuous_iff_continuousAt.2 fun φ₀ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Establish `ht : Tendsto (fun φ => (C * ∫ y, h y ∂μ) * p (φ - φ₀)) (𝓝 φ₀) (𝓝 0)`. Establish `: Tendsto (fun φ => p (φ - φ₀)) (𝓝 φ₀) (𝓝 (p (φ₀ - φ₀)))` using `(hpc.comp (continuous_id.sub continuous_const)).tendsto φ₀`. Rewrite `this` using `[sub_self, map_zero]`.
-
-Simplify using `using this.const_mul (C * ∫ y, h y ∂μ)`. Conclude with `squeeze_zero (fun _ => norm_nonneg _) (fun φ => key φ φ₀) ht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_integral_of_bound {D : Type} [NormedAddCommGroup D] [NormedSpace ℝ D] {Y : Type} [MeasurableSpace Y]
     {μ : Measure Y} (Φ : SchwartzMap D ℂ → Y → ℂ) (hlin : ∀ φ ψ y, Φ (φ - ψ) y = Φ φ y - Φ ψ y)
@@ -50,9 +48,9 @@ theorem continuous_integral_of_bound {D : Type} [NormedAddCommGroup D] [NormedSp
   exact squeeze_zero (fun _ => norm_nonneg _) (fun φ => key φ φ₀) ht
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he' ei' ev' hloc X om om' om₁ om₁' hT hT₁ μ hμ l f`. Take `⟨s, C, h, hh, hm, hb⟩` from `GlobalTheory.T.config_B_local_part_triple hP F E σ B a b G G₁ H H' hC e' he' ei' ev' hloc X om om' om₁ om₁' hT hT₁ μ hμ l`. Establish `hψ` using `hT.base.std`. Establish `hlin : ∀ (φ ψ : SInf F (Fin (b + 2) × Fin (a + (b + 2)))) (y : idelesAt E (evI F)), l (((X.ν y.1 : ℂ) * ((absE F E y.1 : ℝ) : ℂ) ^ ((a - (b + 2)) / 2 + 1)) • ei' (locOpInf (G.M'.co.rho B.ψ (partInf F (shiftB σ H H' y.1))) (φ - ψ))) = l (((X.ν y.1 : ℂ) * ((absE F E y.1 : ℝ) : ℂ) ^ …`. Introduce `φ ψ y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR : IsLinearMap ℂ (G.M'.co.rho B.ψ (partInf F (shiftB σ H H' y.1)))` using `⟨fun f g => funext fun x => mul_add _ _ _, fun c f => funext fun x => mul_left_comm _ _ _⟩`. Establish `e1 : φ - ψ = (1 : ℂ) • φ + (-1 : ℂ) • ψ` using `by rw [one_smul, neg_one_smul, sub_eq_add_neg]`. Rewrite using `[e1, locOpInf_lin hR (fun g => ⟨_, (locOpInf_rho G.M'.co hψ (shiftB σ H H' y.1) g).1⟩), one_smul, neg_one_smul, ← sub_eq_add_neg, map_sub, smul_sub, map_sub]`. Establish `hΨ` using `continuous_integral_of_bound _ hlin s C h hh hm hb`. Conclude with `hΨ.comp_continuousOn (GlobalTheory.T.local_weil_operator_continuous hP F E σ B a (b + 2) G X om om' hT f)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coneFun_continuousOn : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

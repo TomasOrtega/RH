@@ -17,11 +17,11 @@ open Formalism.REAL (GlRel)
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨s, p⟩` from `i`. Take `⟨t, q⟩` from `j`. Establish `hp` using `GlobalTheory.CompanionTheory.RealMult.BdSqProof.key_lt p`. Establish `hq` using `GlobalTheory.CompanionTheory.RealMult.BdSqProof.key_lt q`. Establish `hk : key p = key q → p = q` using `fun e => CompanionTheory.D.LK.Car.key_inj e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : n * n < (n + 1) * (n + 1)` using `by nlinarith`. Apply the tactic sequence `cases s <;> cases t <;> simp only [keyL, Bool.false_eq_true, if_false, if_true] at h`. Rewrite using `[hk (by omega)]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hk (by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem keyL_inj {i j : Lt n} (h : keyL i = keyL j) : i = j := by
   obtain ⟨s, p⟩ := i
@@ -63,18 +63,18 @@ section Car
 def tw (i j : Lt n) : ℂ := if keyL j < keyL i then -1 else 1
 
 /- English proof (translation)
-Simplify using `[tw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tw_self (i : Lt n) : tw i i = 1 := by simp [tw]
 
 /- English proof (translation)
-Apply the tactic sequence `unfold tw; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tw_mul_self (i j : Lt n) : tw i j * tw i j = 1 := by
   unfold tw; split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hk : keyL i ≠ keyL j` using `fun e => h (keyL_inj e)`. Unfold `tw`. Break down `lt_or_gt_of_ne hk with h1 | h1` into its components or cases. Simplify using `[h1, h1.not_gt]`. Simplify using `[h1, h1.not_gt]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tw_swap {i j : Lt n} (h : i ≠ j) : tw j i = -tw i j := by
   have hk : keyL i ≠ keyL j := fun e => h (keyL_inj e)
@@ -84,16 +84,16 @@ theorem tw_swap {i j : Lt n} (h : i ≠ j) : tw j i = -tw i j := by
   · simp [h1, h1.not_gt]
 
 /- English proof (translation)
-Unfold `sgL`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sg_mul_self (i : Lt n) (A : Finset (Lt n)) : sgL i A * sgL i A = 1 := by
   unfold sgL
   rw [← mul_pow]; simp
 
 /- English proof (translation)
-Unfold `sgL tw`. Rewrite using `[Finset.filter_insert]`. Use `split_ifs with hk`. Rewrite using `[Finset.card_insert_of_notMem (fun hm => h (Finset.mem_filter.1 hm).1), pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem sg_insert (i : Lt n) {j : Lt n} {A : Finset (Lt n)} (h : j ∉ A) :
     sgL i (insert j A) = tw i j * sgL i A := by
@@ -104,7 +104,7 @@ theorem sg_insert (i : Lt n) {j : Lt n} {A : Finset (Lt n)} (h : j ∉ A) :
   · simp
 
 /- English proof (translation)
-Establish `h1` using `sg_insert i (Finset.notMem_erase j A)`. Rewrite `h1` using `[Finset.insert_erase h]`. Rewrite using `[h1, ← mul_assoc, tw_mul_self, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sg_erase (i : Lt n) {j : Lt n} {A : Finset (Lt n)} (h : j ∈ A) :
     sgL i (A.erase j) = tw i j * sgL i A := by
@@ -115,11 +115,11 @@ theorem sg_erase (i : Lt n) {j : Lt n} {A : Finset (Lt n)} (h : j ∈ A) :
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, LinearMap.zero_apply, Pi.zero_apply, ann_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hji : j ≠ i` using `fun e => hij e.symm`. Distinguish the cases in `hi : i ∈ A`. Simplify using `[hi]`. Distinguish the cases in `hj : j ∈ A`. Simplify using `[hj]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [hi, hj, Finset.mem_insert, hij, hji, or_self, if_false]`. Rewrite using `[sg_insert j hi, sg_insert i hj, tw_swap hij, Finset.insert_comm j i, smul_smul, smul_smul, ← add_smul]`. Establish `: sgL i A * (-tw i j * sgL j A) + sgL j A * (tw i j * sgL i A) = 0` using `by ring`. Rewrite using `[this, zero_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ann_ann (i j : Lt n) : (annq i * annq j + annq j * annq i : Module.End ℂ (Cq n V)) = 0 := by
   refine LinearMap.ext fun x => funext fun A => ?_
@@ -139,13 +139,11 @@ theorem ann_ann (i j : Lt n) : (annq i * annq j + annq j * annq i : Module.End �
   rw [this, zero_smul]
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, LinearMap.zero_apply, Pi.zero_apply, cre_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hji : j ≠ i` using `fun e => hij e.symm`. Distinguish the cases in `hi : i ∈ A`. Use `swap`. Simplify using `[hi]`. Distinguish the cases in `hj : j ∈ A`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `swap`. Simplify using `[hj]`. Simplify using `only [hi, hj, Finset.mem_erase, ne_eq, hij, hji, not_false_eq_true, and_self, if_true]`. Rewrite using `[sg_erase j hi, sg_erase i hj, tw_swap hij, Finset.erase_right_comm (a := j) (b := i), smul_smul, smul_smul, ← add_smul]`. Establish `: sgL i A * (-tw i j * sgL j A) + sgL j A * (tw i j * sgL i A) = 0` using `by ring`.
-
-Rewrite using `[this, zero_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cre_cre (i j : Lt n) : (creq i * creq j + creq j * creq i : Module.End ℂ (Cq n V)) = 0 := by
   refine LinearMap.ext fun x => funext fun A => ?_
@@ -168,13 +166,13 @@ theorem cre_cre (i j : Lt n) : (creq i * creq j + creq j * creq i : Module.End �
   rw [this, zero_smul]
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, ann_apply, cre_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Distinguish the cases in `hi : i ∈ A`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hi, sg_erase i hi, tw_self, smul_smul, sg_mul_self, Finset.insert_erase hi]`. Simplify using `[hi, sg_insert i hi, tw_self, smul_smul, sg_mul_self, Finset.erase_insert hi]`. Establish `hji : j ≠ i` using `fun e => hij e.symm`. Rewrite using `[if_neg hij, LinearMap.zero_apply, Pi.zero_apply]`. Distinguish the cases in `hi : i ∈ A`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hi, hij]`. Distinguish the cases in `hj : j ∈ A`. Use `swap`. Simplify using `[hj, hji]`. Simplify using `only [hi, hj, Finset.mem_insert, Finset.mem_erase, or_true, and_false, if_true, if_false]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sg_insert j hi, sg_erase i hj, tw_swap hij, Finset.erase_insert_of_ne hij, smul_smul, smul_smul, ← add_smul]`. Establish `: sgL i A * (-tw i j * sgL j A) + sgL j A * (tw i j * sgL i A) = 0` using `by ring`. Rewrite using `[this, zero_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ann_cre (i j : Lt n) :
     (annq i * creq j + creq j * annq i : Module.End ℂ (Cq n V)) = if i = j then 1 else 0 := by
@@ -199,7 +197,7 @@ theorem ann_cre (i j : Lt n) :
   rw [this, zero_smul]
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, lift_apply, ann_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_ann (T : Module.End ℂ V) (i : Lt n) :
     Commute (liftq n T : Module.End ℂ (Cq n V)) (annq i) := by
@@ -208,7 +206,7 @@ theorem lift_ann (T : Module.End ℂ V) (i : Lt n) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, lift_apply, cre_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_cre (T : Module.End ℂ V) (i : Lt n) :
     Commute (liftq n T : Module.End ℂ (Cq n V)) (creq i) := by
@@ -223,7 +221,7 @@ section Constants
 def cq (i j k : Lt n) : ℂ := if k.1 = (i.1 == j.1) then cp i.2 j.2 k.2 else 0
 
 /- English proof (translation)
-Apply the tactic sequence `have e : (j.1 == i.1) = (i.1 == j.1) := by cases i.1 <;> cases j.1 <;> rfl`. Simplify using `only [cq, cp, e]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cq_anti (i j k : Lt n) : cq i j k = -cq j i k := by
   have e : (j.1 == i.1) = (i.1 == j.1) := by cases i.1 <;> cases j.1 <;> rfl
@@ -231,9 +229,9 @@ theorem cq_anti (i j k : Lt n) : cq i j k = -cq j i k := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨s, p⟩` from `p`. Take `⟨t, q⟩` from `q`. Take `⟨u, r⟩` from `r`. Take `⟨w, k⟩` from `k`. Rewrite using `[Fintype.sum_prod_type]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `cases s <;> cases t <;> cases u <;> cases w <;> simp [cq]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_cq (p q r k : Lt n) : ∑ i, cq p q i * cq i r k =
     if k.1 = ((p.1 == q.1) == r.1) then ∑ m, cp p.2 q.2 m * cp m r.2 k.2 else 0 := by
@@ -245,9 +243,9 @@ theorem sum_cq (p q r k : Lt n) : ∑ i, cq p q i * cq i r k =
   cases s <;> cases t <;> cases u <;> cases w <;> simp [cq]
 
 /- English proof (translation)
-Rewrite using `[sum_cq, sum_cq, sum_cq]`. Apply the tactic sequence `have h1 : ((q.1 == r.1) == p.1) = ((p.1 == q.1) == r.1) := by cases p.1 <;> cases q.1 <;> cases r.1 <;> rfl`. Apply the tactic sequence `have h2 : ((r.1 == p.1) == q.1) = ((p.1 == q.1) == r.1) := by cases p.1 <;> cases q.1 <;> cases r.1 <;> rfl`. Rewrite using `[h1, h2]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `cp_jacobi _ _ _ _`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem cq_jacobi (p q r k : Lt n) :
     ∑ i, cq p q i * cq i r k + ∑ i, cq q r i * cq i p k + ∑ i, cq r p i * cq i q k = 0 := by
@@ -260,13 +258,11 @@ theorem cq_jacobi (p q r k : Lt n) :
   · simp
 
 /- English proof (translation)
-Take `⟨s, p⟩` from `i`. Take `⟨t, q⟩` from `j`. Take `⟨u, r⟩` from `k`. Establish `hu : u = (s == t)`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hc (if_neg hne)`. Substitute `hu` using the available equality. Establish `hcp : cp p q r ≠ 0`. Introduce `h0`. Conclude with `hc (by simp [cq, h0])`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : p.1.2 = q.1.1 ∧ r.1 = (p.1.1, q.1.2)`. Conclude with `h.2 s t p q r h1.1 (by rw [h1.2]) (by rw [h1.2]) hi hj`. Distinguish the cases in `h2 : q.1.2 = p.1.1 ∧ r.1 = (q.1.1, p.1.2)`. Apply the tactic sequence `have e : (t == s) = (s == t) := by cases s <;> cases t <;> rfl`. Use `h.2 t s q p r h2.1 (by rw [h2.2]) (by rw [h2.2]) hj hi` as an intermediate fact.
-
-Rewrite `this` using `[e]`. Then use the resulting hypothesis. Conclude with `absurd (by simp [cp, h1, h2]) hcp`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cq_closed {lev : Fin n → ℕ} {S : Lt n → Prop} (h : IsSubL lev S) (i j k : Lt n) (hi : S i) (hj : S j)
     (hc : cq i j k ≠ 0) : S k := by
@@ -289,9 +285,9 @@ theorem cq_closed {lev : Fin n → ℕ} {S : Lt n → Prop} (h : IsSubL lev S) (
     · exact absurd (by simp [cp, h1, h2]) hcp
 
 /- English proof (translation)
-Use `⟨fun _ h => h, fun s t i j k h1 h2 h3 hi hj => ?_⟩` and prove the remaining obligations. Use `show lev k.1.1 < lev k.1.2`. Establish `hi' : lev i.1.1 < lev i.1.2` using `hi`. Establish `hj' : lev j.1.1 < lev j.1.2` using `hj`. Rewrite using `[h2, h3]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi'` using `[h1]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem inUL_sub (lev : Fin n → ℕ) : IsSubL lev (inUL lev) := by
   refine ⟨fun _ h => h, fun s t i j k h1 h2 h3 hi hj => ?_⟩
@@ -309,15 +305,15 @@ section Bd
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Establish `h1` using `h.1 a b c d`. Establish `h2` using `h.2.1 a b c d`. Establish `c1 : E1 a b * E2 c d = E2 c d * E1 a b` using `(h.2.2 a b c d).eq`. Establish `c2 : E1 c d * E2 a b = E2 a b * E1 c d` using `(h.2.2 c d a b).eq`. Establish `e1 : (E1 a b + E2 a b) * (E1 c d + E2 c d) - (E1 c d + E2 c d) * (E1 a b + E2 a b) = (E1 a b * E1 c d - E1 c d * E1 a b) + (E2 a b * E2 c d - E2 c d * E2 a b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [add_mul, mul_add, c1, c2]`. Normalize the expressions using the abelian group laws. Establish `e2 : (E1 a b + E2 a b) * (E1 c d - E2 c d) - (E1 c d - E2 c d) * (E1 a b + E2 a b) = (E1 a b * E1 c d - E1 c d * E1 a b) - (E2 a b * E2 c d - E2 c d * E2 a b)`. Simplify using `only [add_mul, mul_add, sub_mul, mul_sub, c1, c2]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `e3 : (E1 a b - E2 a b) * (E1 c d + E2 c d) - (E1 c d + E2 c d) * (E1 a b - E2 a b) = (E1 a b * E1 c d - E1 c d * E1 a b) - (E2 a b * E2 c d - E2 c d * E2 a b)`. Simplify using `only [add_mul, mul_add, sub_mul, mul_sub, c1, c2]`. Normalize the expressions using the abelian group laws. Establish `e4 : (E1 a b - E2 a b) * (E1 c d - E2 c d) - (E1 c d - E2 c d) * (E1 a b - E2 a b) = (E1 a b * E1 c d - E1 c d * E1 a b) + (E2 a b * E2 c d - E2 c d * E2 a b)`. Simplify using `only [sub_mul, mul_sub, c1, c2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Establish `b1 : (false == true) = false` using `rfl`. Establish `b2 : (true == false) = false` using `rfl`. Establish `b3 : (false == false) = true` using `rfl`. Establish `b4 : (true == true) = true` using `rfl`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `cases s <;> cases t <;> simp only [Ts, Bool.false_eq_true, if_false, if_true, e1, e2, e3, e4, h1, h2, b1, b2, b3, b4] <;> split_ifs <;> first | abel | (simp; done) | (simp; abel)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Ts_comm {E1 E2 : Fin n → Fin n → Module.End ℂ V} (h : PairRel E1 E2) (s t : Bool) (a b c d : Fin n) :
     Ts E1 E2 s a b * Ts E1 E2 t c d - Ts E1 E2 t c d * Ts E1 E2 s a b =
@@ -346,9 +342,9 @@ theorem Ts_comm {E1 E2 : Fin n → Fin n → Module.End ℂ V} (h : PairRel E1 E
     split_ifs <;> first | abel | (simp; done) | (simp; abel)
 
 /- English proof (translation)
-Take `⟨s, p⟩` from `i`. Take `⟨t, q⟩` from `j`. Establish `e : ∑ k, cq (s, p) (t, q) k • Tl E1 E2 k = ∑ r : Pos n, cp p q r • Tl E1 E2 (s == t, r)`. Rewrite using `[Fintype.sum_prod_type]`. Apply the tactic sequence `cases s <;> cases t <;> simp [cq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e]`. Conclude with `(Ts_comm h s t _ _ _ _).trans (sum_cp (fun a b => Ts E1 E2 (s == t) a b) p q).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tl_comm {E1 E2 : Fin n → Fin n → Module.End ℂ V} (h : PairRel E1 E2) (i j : Lt n) :
     Tl E1 E2 i * Tl E1 E2 j - Tl E1 E2 j * Tl E1 E2 i = ∑ k, cq i j k • Tl E1 E2 k := by
@@ -364,7 +360,7 @@ def tq (i j k : Lt n) : ℂ :=
   if k.1 = (i.1 == j.1) ∧ i.2.1.2 = j.2.1.1 ∧ k.2.1 = (i.2.1.1, j.2.1.2) then 1 else 0
 
 /- English proof (translation)
-Apply the tactic sequence `have e : (j.1 == i.1) = (i.1 == j.1) := by cases i.1 <;> cases j.1 <;> rfl`. Distinguish the cases in `h : k.1 = (i.1 == j.1)`. Simplify using `[cq, tq, cp, e, h]`. Simplify using `[cq, tq, e, h]`.
+Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cq_eq (i j k : Lt n) : cq i j k = tq i j k - tq j i k := by
   have e : (j.1 == i.1) = (i.1 == j.1) := by cases i.1 <;> cases j.1 <;> rfl
@@ -373,19 +369,19 @@ theorem cq_eq (i j k : Lt n) : cq i j k = tq i j k - tq j i k := by
   · simp [cq, tq, e, h]
 
 /- English proof (translation)
-Use `set X : Lt n → Lt n → Lt n → Module.End ℂ (Cq n V) := fun i j k => creq k * annq j * annq i with hX`. Establish `hanti : ∀ i j k, X j i k = - X i j k`. Introduce `i j k`. Use `ann_ann (V := V) i j` as an intermediate fact. Simplify using `only [hX]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, mul_assoc, ← mul_neg, eq_neg_of_add_eq_zero_left this]`. Establish `hU : (∑ s : Bool, ∑ t : Bool, ∑ i : Pos n, ∑ j : Pos n, ∑ k : Pos n, if i.1.2 = j.1.1 ∧ k.1.1 = i.1.1 ∧ k.1.2 = j.1.2 then (creq ((s == t), k) * annq (t, j) * annq (s, i) : Module.End ℂ (Cq n V)) else 0) = ∑ i : Lt n, ∑ j : Lt n, ∑ k : Lt n, tq i j k • X i j k`. Simplify using `only [Fintype.sum_prod_type (f := fun i : Lt n => _)]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (s == i) (fun u _ hu => Finset.sum_eq_zero fun y _ => by simp [tq, hu]) (by simp)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : t.1.2 = j.1.1 ∧ k.1.1 = t.1.1 ∧ k.1.2 = j.1.2`. Rewrite using `[if_pos h, tq, if_pos ⟨rfl, h.1, Prod.ext h.2.1 h.2.2⟩, one_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(if_neg h).trans ?_` and prove the remaining obligations. Rewrite using `[tq, if_neg, zero_smul]`. Introduce `h'`. Establish `h2 : k.1 = (t.1.1, j.1.2)` using `h'.2.2`. Conclude with `h ⟨h'.2.1, by rw [h2], by rw [h2]⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hV : ∑ i : Lt n, ∑ j : Lt n, ∑ k : Lt n, tq j i k • X i j k = - ∑ i : Lt n, ∑ j : Lt n, ∑ k : Lt n, tq i j k • X i j k`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hanti, smul_neg]`. Use `show _ = (1 / 2 : ℂ) • ∑ i : Lt n, ∑ j : Lt n, ∑ k : Lt n, cq i j k • X i j k`. Rewrite using `[hU]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Simplify using `only [cq_eq, sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[hV, sub_neg_eq_add, ← two_smul ℂ, smul_smul]`. Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 theorem bracket_eq :
     (∑ s : Bool, ∑ t : Bool, ∑ i : Pos n, ∑ j : Pos n, ∑ k : Pos n,
@@ -430,7 +426,7 @@ theorem bracket_eq :
   norm_num
 
 /- English proof (translation)
-Rewrite using `[bdq, bracket_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bdq_eq (E1 E2 : Fin n → Fin n → Module.End ℂ V) :
     bdq E1 E2 = (∑ i : Lt n, (liftq n (Tl E1 E2 i) : Module.End ℂ (Cq n V)) * annq i) +
@@ -438,9 +434,9 @@ theorem bdq_eq (E1 E2 : Fin n → Fin n → Module.End ℂ V) :
   rw [bdq, bracket_eq]
 
 /- English proof (translation)
-Establish `hL : ∀ i j : Lt n, (liftq n (Tl E1 E2 i) : Module.End ℂ (Cq n V)) * liftq n (Tl E1 E2 j) - liftq n (Tl E1 E2 j) * liftq n (Tl E1 E2 i) = ∑ k, cq i j k • (liftq n (Tl E1 E2 k) : Module.End ℂ (Cq n V))`. Introduce `i j`. Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun (Tl_comm h i j) (x A)` as an intermediate fact. Simplify `this` using `[lift_apply, LinearMap.sum_apply, Finset.sum_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[bdq_eq]`. Conclude with `d_sq cq (fun i => (liftq n (Tl E1 E2 i) : Module.End ℂ (Cq n V))) annq creq hL (fun i j => lift_ann _ j) (fun i j => lift_cre _ j) cq_anti cq_jacobi ann_ann cre_cre ann_cre`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdq_sq {E1 E2 : Fin n → Fin n → Module.End ℂ V} (h : PairRel E1 E2) : bdq E1 E2 * bdq E1 E2 = 0 := by
   have hL : ∀ i j : Lt n, (liftq n (Tl E1 E2 i) : Module.End ℂ (Cq n V)) * liftq n (Tl E1 E2 j) -
@@ -460,7 +456,7 @@ section Supp
 variable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Apply the tactic sequence `by_cases h : i ∈ A <;> simp [ann_apply, lift_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_ann' (T : V →ₗ[ℂ] W) (i : Lt n) (x : Cq n V) :
     liftq n T (annq i x) = annq i (liftq n T x) := by
@@ -468,7 +464,7 @@ theorem lift_ann' (T : V →ₗ[ℂ] W) (i : Lt n) (x : Cq n V) :
   by_cases h : i ∈ A <;> simp [ann_apply, lift_apply, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Apply the tactic sequence `by_cases h : i ∈ A <;> simp [cre_apply, lift_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_cre' (T : V →ₗ[ℂ] W) (i : Lt n) (x : Cq n V) :
     liftq n T (creq i x) = creq i (liftq n T x) := by
@@ -476,7 +472,7 @@ theorem lift_cre' (T : V →ₗ[ℂ] W) (i : Lt n) (x : Cq n V) :
   by_cases h : i ∈ A <;> simp [cre_apply, lift_apply, h]
 
 /- English proof (translation)
-Rewrite using `[bdq_eq]`. Simplify using `[Module.End.mul_apply, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bd_apply (E1 E2 : Fin n → Fin n → Module.End ℂ V) (x : Cq n V) :
     bdq E1 E2 x = ∑ i : Lt n, liftq n (Tl E1 E2 i) (annq i x) +
@@ -500,7 +496,7 @@ def supSub (V : Type) [AddCommGroup V] [Module ℂ V] (P : Finset (Lt n) → Pro
     exact h (by simp [h1])
 
 /- English proof (translation)
-Introduce `A hA`. Use `hx A fun h => hA ?_` and prove the remaining obligations. Simplify using `[lift_apply, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lift_mem {P : Finset (Lt n) → Prop} (T : V →ₗ[ℂ] W) {x : Cq n V} (hx : x ∈ supSub V P) :
     liftq n T x ∈ supSub W P := by
@@ -509,7 +505,7 @@ theorem lift_mem {P : Finset (Lt n) → Prop} (T : V →ₗ[ℂ] W) {x : Cq n V}
   simp [lift_apply, h]
 
 /- English proof (translation)
-Distinguish the cases in `hi : i ∈ A`. Conclude with `absurd (by rw [ann_apply, if_pos hi]) h`. Use `⟨hi, fun h0 => h ?_⟩` and prove the remaining obligations. Rewrite using `[ann_apply, if_neg hi, h0, smul_zero]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ann_ne {i : Lt n} {x : Cq n V} {A : Finset (Lt n)} (h : annq i x A ≠ 0) :
     i ∉ A ∧ x (insert i A) ≠ 0 := by
@@ -519,7 +515,7 @@ theorem ann_ne {i : Lt n} {x : Cq n V} {A : Finset (Lt n)} (h : annq i x A ≠ 0
     rw [ann_apply, if_neg hi, h0, smul_zero]
 
 /- English proof (translation)
-Distinguish the cases in `hi : i ∈ A`. Use `⟨hi, fun h0 => h ?_⟩` and prove the remaining obligations. Rewrite using `[cre_apply, if_pos hi, h0, smul_zero]`. Conclude with `absurd (by rw [cre_apply, if_neg hi]) h`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cre_ne {i : Lt n} {x : Cq n V} {A : Finset (Lt n)} (h : creq i x A ≠ 0) :
     i ∈ A ∧ x (A.erase i) ≠ 0 := by
@@ -529,7 +525,7 @@ theorem cre_ne {i : Lt n} {x : Cq n V} {A : Finset (Lt n)} (h : creq i x A ≠ 0
   · exact absurd (by rw [cre_apply, if_neg hi]) h
 
 /- English proof (translation)
-Introduce `A hA`. Take `⟨h1, h2⟩` from `ann_ne hA`. Use `hx _ h2` as an intermediate fact. Rewrite `this` using `[card_insert_of_notMem h1]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ann_deg {m : ℕ} (i : Lt n) {x : Cq n V} (hx : DegQ (m + 1) x) : DegQ m (annq i x) := by
   intro A hA
@@ -539,7 +535,7 @@ theorem ann_deg {m : ℕ} (i : Lt n) {x : Cq n V} (hx : DegQ (m + 1) x) : DegQ m
   omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Assume the negation of the conclusion as `hA`. Take `⟨h1, h2⟩` from `ann_ne hA`. Use `hx _ h2` as an intermediate fact. Rewrite `this` using `[card_insert_of_notMem h1]`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -552,7 +548,7 @@ theorem ann_eq_zero_of_degree_zero (i : Lt n) {x : Cq n V} (hx : DegQ 0 x) : ann
   omega
 
 /- English proof (translation)
-Introduce `A hA`. Take `⟨h1, h2⟩` from `cre_ne hA`. Use `hx _ h2` as an intermediate fact. Rewrite `this` using `[card_erase_of_mem h1]`. Use `card_pos.mpr ⟨i, h1⟩` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -565,19 +561,19 @@ theorem cre_deg {m : ℕ} (i : Lt n) {x : Cq n V} (hx : DegQ m x) : DegQ (m + 1)
   omega
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem deg_iff {m : ℕ} {x : Cq n V} : DegQ m x ↔ x ∈ supSub V (fun A => A.card = m) := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem supp_iff {S : Lt n → Prop} {x : Cq n V} : SuppQ S x ↔ x ∈ supSub V (fun A => ∀ i ∈ A, S i) := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[bd_apply, deg_iff]`. Use `Submodule.add_mem _ (Submodule.sum_mem _ fun i _ => lift_mem _ (ann_deg i hx)) ?_` and prove the remaining obligations. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Consider the cases of `m with`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Rewrite using `[ann_eq_zero_of_degree_zero j (ann_deg i hx), map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ m => exact cre_deg k (ann_deg j (ann_deg i hx))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bd_deg (E1 E2 : Fin n → Fin n → Module.End ℂ V) {m : ℕ} {x : Cq n V} (hx : DegQ (m + 1) x) :
     DegQ m (bdq E1 E2 x) := by
@@ -592,7 +588,7 @@ theorem bd_deg (E1 E2 : Fin n → Fin n → Module.End ℂ V) {m : ℕ} {x : Cq 
   | succ m => exact cre_deg k (ann_deg j (ann_deg i hx))
 
 /- English proof (translation)
-Introduce `A hA l hl`. Take `⟨_, h2⟩` from `ann_ne hA`. Conclude with `hx _ h2 l (mem_insert_of_mem hl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ann_supp {S : Lt n → Prop} (i : Lt n) {x : Cq n V} (hx : SuppQ S x) : SuppQ S (annq i x) := by
   intro A hA l hl
@@ -600,7 +596,7 @@ theorem ann_supp {S : Lt n → Prop} (i : Lt n) {x : Cq n V} (hx : SuppQ S x) : 
   exact hx _ h2 l (mem_insert_of_mem hl)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Assume the negation of the conclusion as `hA`. Take `⟨_, h2⟩` from `ann_ne hA`. Conclude with `hi (hx _ h2 i (mem_insert_self _ _))`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ann_zero {S : Lt n → Prop} {i : Lt n} {x : Cq n V} (hx : SuppQ S x) (hi : ¬ S i) : annq i x = 0 := by
   funext A
@@ -609,7 +605,7 @@ theorem ann_zero {S : Lt n → Prop} {i : Lt n} {x : Cq n V} (hx : SuppQ S x) (h
   exact hi (hx _ h2 i (mem_insert_self _ _))
 
 /- English proof (translation)
-Introduce `A hA l hl`. Take `⟨_, h2⟩` from `cre_ne hA`. Distinguish the cases in `hlk : l = k`. Conclude with `hlk ▸ hk`. Conclude with `hx _ h2 l (mem_erase.mpr ⟨hlk, hl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem cre_supp {S : Lt n → Prop} {k : Lt n} (hk : S k) {x : Cq n V} (hx : SuppQ S x) : SuppQ S (creq k x) := by
   intro A hA l hl
@@ -619,11 +615,9 @@ theorem cre_supp {S : Lt n → Prop} {k : Lt n} (hk : S k) {x : Cq n V} (hx : Su
   · exact hx _ h2 l (mem_erase.mpr ⟨hlk, hl⟩)
 
 /- English proof (translation)
-Rewrite using `[bd_apply, supp_iff]`. Use `Submodule.add_mem _ (Submodule.sum_mem _ fun i _ => lift_mem _ (ann_supp i hx)) ?_` and prove the remaining obligations. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => Submodule.sum_mem _ fun k _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hc : cq i j k = 0`. Rewrite using `[hc, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Distinguish the cases in `hi : S i`. Distinguish the cases in `hj : S j`. Conclude with `Submodule.smul_mem _ _ (cre_supp (hS i j k hi hj hc) (ann_supp j (ann_supp i hx)))`. Rewrite using `[ann_zero (ann_supp i hx) hj, map_zero, smul_zero]`.
-
-Conclude with `Submodule.zero_mem _`. Rewrite using `[ann_zero hx hi, map_zero, map_zero, smul_zero]`. Conclude with `Submodule.zero_mem _`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bd_supp (E1 E2 : Fin n → Fin n → Module.End ℂ V) {S : Lt n → Prop}
     (hS : ∀ i j k, S i → S j → cq i j k ≠ 0 → S k) {x : Cq n V} (hx : SuppQ S x) :

@@ -5,15 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D hD X T hT`. Take `⟨hpq, -, hxi, -, -⟩` from `away D hD`. Take `⟨-, -, -, -, -, hrb, -, -, -⟩` from `barFacts D hD`. Establish `hH : ∀ g : G T.F Ω, resQ T.F g ∈ X.H` using `fun g => hT.1 ▸ resQ_mem T.F g`. Use `⟨fun A g hg => ?_, fun A hA g hg h => ?_, ?_, fun A hA g hg => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg'` using `(resQ_Ine T.F A g).1 hg`. Express the relevant statement in the definitionally equal form `resQ T.F g ∈ T.K.fixingSubgroup`. Rewrite using `[hT.2]`. Distinguish the cases in `hp : A.valuation (X.p : Ω) < 1`. Establish `hp' : ¬ A.valuation (X.p' : Ω) < 1` using `fun h => X.hη'.nm (hpq A _ _ X.hη.prime X.hη'.prime hp h ▸ Finset.mem_insert_self _ _)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `(X.mem_H.1 (hH g)).2.1.trans (X.hη'.unr A hp' hg')`. Conclude with `X.hη.unr A hp hg'`. Conclude with `X.kap.kb A hA _ ((resQ_Ine T.F A g).1 hg) ((hrb _).1 h).2 (X.mem_H.1 (hH g)).2.2`. Take `⟨m, hm, h⟩` from `X.kap.kc`. Conclude with `⟨m, hm, fun g hg => h _ ((resQ_cyc T.F g).trans hg) (X.mem_H.1 (hH g)).2.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg'` using `(resQ_Ine T.F A g).1 hg`. Establish `h3 : ¬ A.valuation (X.p₃ : Ω) < 1` using `fun h => X.hφ.nm (hpq A _ _ hl.out X.hφ.prime hA h ▸ hD.l_mem)`. Establish `h1 : D.ξ (resQ T.F g) = 1` using `hxi A hA hg'`. Establish `h2 : X.φ (resQ T.F g) = 1` using `X.hφ.unr A h3 hg'`. Use `(hrb _).2 ⟨?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Raw.bar, h1, Units.val_one, map_one]`. Rewrite using `[(X.mem_H.1 (hH g)).1, h2, Units.val_one, Int.cast_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.ok2B :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (X : Set2 D) (T : Tower D), X.On T → (∀ A : ValuationSubring Ω, Ine (F := T.F) A ≤ T.GalL) ∧ (∀ A : ValuationSubring Ω, Raw.Away {l} A → ∀ g ∈ Ine (F := T.F) A, D.rbar (resQ T.F g) = 1 → D.ψ (resQ T.F g) = 1) ∧ (∃ m : ℕ, l.Coprime m ∧ ∀ g : G T.F Ω, cycZ T.F Ω l g = 1 → D.ψ (resQ T.F g) ^ m = 1) ∧ ∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → ∀ g ∈ Ine (F := T.F) A, D.rbar (resQ T.F g) = 1 := by

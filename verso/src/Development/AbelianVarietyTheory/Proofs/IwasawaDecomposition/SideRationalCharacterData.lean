@@ -17,9 +17,9 @@ section General
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `e : x ^ (k + 1) - y ^ (k + 1) = (x ^ k - y ^ k) * x + (x - y) * y ^ k` using `by ring`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_add_lt _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hx) ih`. Rewrite using `[map_mul, map_pow]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (pow_le_one' hy k)) h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_pow_sub_pow_lt (A : ValuationSubring Ω) {x y : Ω} (hx : A.valuation x ≤ 1) (hy : A.valuation y ≤ 1)
     (h : A.valuation (x - y) < 1) (k : ℕ) : A.valuation (x ^ k - y ^ k) < 1 := by
@@ -35,9 +35,9 @@ theorem val_pow_sub_pow_lt (A : ValuationSubring Ω) {x y : Ω} (hx : A.valuatio
       exact lt_of_le_of_lt (mul_le_of_le_one_right' (pow_le_one' hy k)) h
 
 /- English proof (translation)
-Establish `hζ1 : A.valuation ζ = 1` using `GlobalTheory.val_eq_one_of_pow_eq_one A hm0 hζ`. Establish `hζ0 : ζ ≠ 0` using `by intro h; rw [h, zero_pow hm0] at hζ; exact zero_ne_one hζ`. Establish `hclose : A.valuation (ρ ζ - ζ) < 1` using `hρ.2 ζ hζ1.le`. Establish `hξ : ρ ζ * ζ⁻¹ = 1`. Use `GlobalTheory.eq_one_of_pow_eq_one_of_val_sub_lt A hm ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_pow, ← map_pow, inv_pow, hζ, map_one, inv_one, one_mul]`. Establish `e : ρ ζ * ζ⁻¹ - 1 = (ρ ζ - ζ) * ζ⁻¹` using `by field_simp`. Rewrite using `[e, Valuation.map_mul, map_inv₀, hζ1, inv_one, mul_one]`. Conclude with `hclose`. Conclude with `(mul_inv_eq_one₀ hζ0).1 hξ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ine_fix_root {A : ValuationSubring Ω} {m : ℕ} (hm : A.valuation (m : Ω) = 1) (hm0 : m ≠ 0) {ζ : Ω}
     (hζ : ζ ^ m = 1) {ρ : G E Ω} (hρ : ρ ∈ Ine (F := E) A) : ρ ζ = ζ := by
@@ -52,17 +52,17 @@ theorem ine_fix_root {A : ValuationSubring Ω} {m : ℕ} (hm : A.valuation (m : 
   exact (mul_inv_eq_one₀ hζ0).1 hξ
 
 /- English proof (translation)
-Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hm (by simp)`. Assume the negation of the conclusion as `hne`. Establish `hd : orderOf (r τ) ∣ m` using `orderOf_dvd_of_pow_eq_one (hI τ (GlobalTheory.TameGenPowers.wild_mem_Ine hτ))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne1 : orderOf (r τ) ≠ 1` using `by rwa [Ne, orderOf_eq_one_iff]`. Take `⟨l, hl, k, hk⟩` from `Nat.exists_prime_and_dvd hne1`. Establish `hlv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal`. Introduce `h`. Apply `hm` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hd`. Rewrite using `[hc, hk]`. Use `push_cast`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ h)`. Establish `h1 : r (τ ^ k) = 1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.TameGenPowers.eq_one_of_wild_prime E Ω v A hA K r hr l hl hlv _ (GlobalTheory.WildInertiaChar.wild_pow A τ hτ k) ?_` and prove the remaining obligations. Rewrite using `[map_pow, ← pow_mul, mul_comm, ← hk, pow_orderOf_eq_one]`. Rewrite `h1` using `[map_pow]`. Establish `h2` using `orderOf_dvd_of_pow_eq_one h1`. Establish `ho : orderOf (r τ) ≠ 0` using `fun h => hm0 (by simpa [h] using hd)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Conclude with `ho (by simpa using hk)`. Establish `h3` using `Nat.le_of_dvd (Nat.pos_of_ne_zero hk0) h2`. Rewrite `h3` using `[hk]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `hl.two_le` as an intermediate fact. Use `Nat.pos_of_ne_zero hk0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_wild [IsAlgClosure E Ω] {v : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
     (hA : IsPlaceOver A v) {K : Type} [Field K] [TopologicalSpace K] [T2Space K] (r : G E Ω →* Kˣ)
@@ -99,25 +99,23 @@ theorem eq_one_of_wild [IsAlgClosure E Ω] {v : HeightOneSpectrum (𝓞 E)} {A :
   nlinarith
 
 /- English proof (translation)
-Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hm (by simp)`. Establish `hmA : A.valuation (m : Ω) = 1`. Use `le_antisymm ((A.valuation_le_one_iff _).mpr (natCast_mem A m)) (not_lt.mp fun h => hm ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hA]`. Simplify using `using h`. Establish `hroot : ∀ σ : G E Ω, (σ π / π) ^ m = 1` using `fun σ => by`. Rewrite using `[div_pow, ← map_pow, hπ, σ.commutes, ← hπ, div_self (pow_ne_zero _ hπ0)]`. Use `set ζ := γ π / π with hζ`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hζm : ζ ^ m = 1` using `hroot γ`. Take `⟨m', rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hm0`. Establish `hK : ∀ σ ∈ Subgroup.closure (insert γ {σ : G E Ω | ∀ y : Ω, y ≠ 0 → A.valuation (σ y / y - 1) < 1}), σ ∈ Ine (F` using `E) A ∧ ∃ n : ℕ, σ π = ζ ^ n * π ∧ r σ = r γ ^ n := by`. Introduce `σ hσ`. Proceed by induction on `hσ using Subgroup.closure_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Consider the case `mem τ hτ`. Break down `hτ with rfl | hτ` into its components or cases. Conclude with `⟨hγ.1, 1, by rw [pow_one, hζ, div_mul_cancel₀ _ hπ0], (pow_one _).symm⟩`. Use `⟨GlobalTheory.TameGenPowers.wild_mem_Ine hτ, 0, ?_, by rw [pow_zero, eq_one_of_wild hA r hr hm hI τ hτ]⟩` and prove the remaining obligations. Use `GlobalTheory.eq_one_of_pow_eq_one_of_val_sub_lt A hmA (hroot τ) (hτ π hπ0)` as an intermediate fact.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[pow_zero, one_mul]`. Conclude with `(div_eq_one_iff_eq hπ0).1 this`. Consider the case `one => exact ⟨one_mem _, 0, by simp, by simp⟩`. Consider the case `mul σ τ _ _ h1 h2`. Take `⟨i1, a, a1, a2⟩` from `h1`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i2, b, b1, b2⟩` from `h2`. Use `⟨mul_mem i1 i2, a + b, ?_, by rw [map_mul, a2, b2, pow_add]⟩` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, b1, map_mul, map_pow, ine_fix_root hmA hm0 hζm i1, a1]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `inv σ _ h1`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨i1, a, a1, a2⟩` from `h1`. Use `⟨inv_mem i1, a * m', ?_, ?_⟩` and prove the remaining obligations. Apply `σ.injective` to reduce the goal to its premises. Rewrite using `[mul_inv_apply, map_mul, map_pow, ine_fix_root hmA hm0 hζm i1, a1, ← mul_assoc, ← pow_add, show a * m' + a = (m' + 1) * a by ring, pow_mul, hζm, one_pow, one_mul]`. Rewrite using `[map_inv, a2, inv_eq_iff_mul_eq_one, ← pow_add, show a + a * m' = (m' + 1) * a by ring, pow_mul, hI γ hγ.1, one_pow]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsGalois E Ω := IsAlgClosure.isGalois E Ω`. Establish `hfin : ({u : Kˣ | u ^ (m' + 1) = 1} \ {r ρ}).Finite` using `(GlobalTheory.TameGenPowers.finite_roots K _ hm0).diff`. Establish `ho1 : IsOpen (r ⁻¹' ({u : Kˣ | u ^ (m' + 1) = 1} \ {r ρ})ᶜ)` using `hfin.isClosed.isOpen_compl.preimage hr`. Establish `ho2` using `(stabilizer_isOpen_of_isIntegral (K := E) π).preimage (continuous_const_mul ρ⁻¹)`. Take `⟨σ, ⟨h1, h2⟩, h3⟩` from `mem_closure_iff.1 (hγ.2 hρ) _ (ho1.inter ho2) ⟨by simp, by simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i1, n, n1, n2⟩` from `hK σ h3`. Use `⟨n, ?_, ?_⟩` and prove the remaining obligations. Establish `h4 : (ρ⁻¹ * σ) π = π` using `h2`. Rewrite using `[← n1]`. Use `conv_lhs => rw [← h4]`.
-
-Rewrite using `[AlgEquiv.mul_apply, mul_inv_apply]`. Rewrite using `[← n2]`. Assume the negation of the conclusion as `hne`. Conclude with `h1 ⟨hI σ i1, fun h => hne (Eq.symm h)⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_pow_pair [IsAlgClosure E Ω] {v : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
     (hA : IsPlaceOver A v) {γ : G E Ω} (hγ : TameGenAt A γ) {K : Type} [Field K] [TopologicalSpace K] [T2Space K]
@@ -178,39 +176,35 @@ theorem exists_pow_pair [IsAlgClosure E Ω] {v : HeightOneSpectrum (𝓞 E)} {A 
     exact h1 ⟨hI σ i1, fun h => hne (Eq.symm h)⟩
 
 /- English proof (translation)
-Use `haveI : Fact g.Prime := ⟨hg⟩`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`. Establish `hg2` using `hg.two_le`. Establish `hm : 0 < g - 1` using `by omega`. Establish `hg1 : ((g - 1 : ℕ) : 𝓞 E) ∉ v.asIdeal` using `fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `v.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Use `v.asIdeal.sub_mem hgv h` as an intermediate fact. Rewrite `this` using `[Nat.cast_sub hg.one_le, Nat.cast_one, sub_sub_cancel]`. Then use the resulting hypothesis. Take `⟨π, hπ⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap E Ω (((g : ℕ) : 𝓞 E) : E)) hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgE : (((g : ℕ) : 𝓞 E) : E) ≠ 0` using `by simpa using hg.ne_zero`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[zero_pow hm.ne', eq_comm, map_eq_zero]`. Conclude with `hgE hπ`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `IsCyclic.exists_ofOrder_eq_natCard (α := (ZMod g)ˣ)`. Rewrite `hb` using `[Nat.card_eq_fintype_card, ZMod.card_units]`. Use `set a : ℕ := (b : ZMod g).val with hadef`. Establish `hac : a.Coprime g` using `ZMod.val_coe_unit_coprime b`. Establish `ha0 : ((a : 𝓞 E) : E) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: a ≠ 0`. Introduce `h`. Rewrite `hac` using `[h, Nat.coprime_zero_left]`. Conclude with `hg.ne_one hac`. Simplify using `using this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx` using `hunit a hac (Units.mk0 _ ha0) (by simp)`. Take `⟨σ, hσ, eσ, vσ⟩` from `GlobalTheory.TameRecip.exists_ine_of_unit hP E Ω art ha v A hA g hgv hgv2 π (by rw [hN]; exact hπ) _ (a : 𝓞 E) hx (by show Valued.v (algebraMap E (v.adicCompletion E) ((a : 𝓞 E) : E) - _) < 1`. Rewrite using `[sub_self, map_zero]`. Conclude with `zero_lt_one)`. Take `⟨n, n1, n2⟩` from `exists_pow_pair hA hγ r hr hg1 hI hπ0 hπ hσ`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set ζ := γ π / π with hζ`. Establish `hζm : ζ ^ (g - 1) = 1`. Rewrite using `[hζ, div_pow, ← map_pow, hπ, γ.commutes, ← hπ, div_self (pow_ne_zero _ hπ0)]`. Rewrite `vσ` using `[n1, mul_div_cancel_right₀ _ hπ0]`. Establish `hζ1 : A.valuation (ζ ^ n) ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_pow, GlobalTheory.val_eq_one_of_pow_eq_one A hm.ne' hζm, one_pow]`. Establish `haA : A.valuation (algebraMap E Ω ((a : 𝓞 E) : E)) ≤ 1`. Establish `: algebraMap E Ω ((a : 𝓞 E) : E) = (a : Ω)` using `by simp`. Rewrite using `[this]`. Conclude with `(A.valuation_le_one_iff _).mpr (natCast_mem A a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpow` using `val_pow_sub_pow_lt A hζ1 haA vσ`. Establish `hcop : n.Coprime (g - 1)`. Take `⟨e, he⟩` from `Nat.gcd_dvd_right n (g - 1)`. Take `⟨n', hn'⟩` from `Nat.gcd_dvd_left n (g - 1)`. Establish `h1 : (ζ ^ n) ^ e = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[← pow_mul, show n * e = (g - 1) * n' by rw [he]; nth_rewrite 1 [hn']; ring, pow_mul, hζm, one_pow]`. Establish `h2` using `hpow e`. Rewrite `h2` using `[h1]`. Establish `h3 : ((1 - (a : ℤ) ^ e : ℤ) : 𝓞 E) ∈ v.asIdeal`. Rewrite using `[← hA]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h2`. Establish `h4 : (g : ℤ) ∣ 1 - (a : ℤ) ^ e`. Assume the negation of the conclusion as `hnd`. Take `⟨s, t, hst⟩` from `((Nat.prime_iff_prime_int.1 hg).irreducible.coprime_iff_not_dvd.2 hnd).map (Int.castRingHom (𝓞 E))`. Apply `v.isPrime.ne_top` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.eq_top_iff_one, ← hst]`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ (by simpa using hgv)) (v.asIdeal.mul_mem_left _ h3)`. Establish `h5 : b ^ e = 1`. Use `(ZMod.intCast_zmod_eq_zero_iff_dvd _ g).2 h4` as an intermediate fact. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Move the coercions through the operations in `at this`. Rewrite `this` using `[hadef, ZMod.natCast_zmod_val, sub_eq_zero]`. Rewrite using `[Units.val_pow_eq_pow_val, ← this, Units.val_one]`. Establish `h6` using `orderOf_dvd_of_pow_eq_one h5`. Rewrite `h6` using `[hb]`.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `he0 : 0 < e` using `Nat.pos_of_ne_zero (by rintro rfl; omega)`. Establish `h7` using `Nat.le_of_dvd he0 h6`. Establish `h8 : 0 < Nat.gcd n (g - 1)` using `Nat.gcd_pos_of_pos_right _ hm`. Use `show Nat.gcd n (g - 1) = 1`. Generalize the expression as in `Nat.gcd n (g - 1) = d at *`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨k, hk⟩ : ∃ k, n * k ≡ 1 [MOD g - 1]` from `⟨n ^ (Nat.totient (g - 1) - 1), by`. Rewrite using `[← pow_succ', Nat.sub_add_cancel (Nat.totient_pos.2 hm)]`. Conclude with `Nat.ModEq.pow_totient hcop⟩`. Establish `hu : (((a : 𝓞 E) ^ k : 𝓞 E) : E) ≠ 0`.
-
-Use `push_cast`. Conclude with `pow_ne_zero _ (by simpa using ha0)`. Establish `hmk : Units.mk0 _ hu = Units.mk0 _ ha0 ^ k` using `Units.ext (by simp)`. Use `⟨(a : 𝓞 E) ^ k, hu, ⟨A, hA, hγ.1, g, π, hgv, hgv2, by rw [hN]; exact hπ, ?_⟩, hunit (a ^ k) (hac.pow_left k) _ (by simp), σ ^ k, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hpow k`.
-
-Rewrite `h1` using `[← pow_mul, pow_eq_pow_of_modEq hk hζm, pow_one, ← map_pow]`. Simplify using `using h1`. Rewrite using `[hmk, map_pow, map_pow, map_pow, map_pow, eσ]`. Rewrite using `[map_pow, n2, ← pow_mul, pow_eq_pow_of_modEq hk (hI γ hγ.1), pow_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tameRep (hP : GlobalTheory.Published.GlobalArtinReciprocity) [IsTotallyComplex E] [IsAlgClosure E Ω]
     {art : Ideles E →* Gab E Ω} (ha : IsGlobalArtin art) {v : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
@@ -314,7 +308,7 @@ theorem exists_tameRep (hP : GlobalTheory.Published.GlobalArtinReciprocity) [IsT
 end General
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨D.host.g_prime k⟩; ∃ u : (ZMod (D.host.g k))ˣ, (u = D.nd.chiT k v ⟨X.nd.j i - 1, by have := X.nd.j_range i; omega⟩ ∨ u = (D.nd.chiT k v ⟨X.nd.j i - 1, by have := X.nd.j_range i; omega⟩)⁻¹) ∧ iotaO X.nd Y.naut i ((X.nd.chi i 1 (D.ntypes.tg k v) : (X.nd.O i)ˣ) : X.nd.O i) = D.ntyp …`.
+Supply the required witnesses or components.
 -/
 theorem chi_one_tameGen : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf A.row low Pq S hL eig θ) (M : MtFam D) (C : NChoice D) (tp : TupTied D cf C), ChoiceSide D cf M Bs.exp C tp → MtInput D M tp.tup C.Q → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) → (∀ j g, ∃ z : ℤ, eExp D j g = z) → (∀ v, v ∈ placesOver D.host.E D.host.pde ∨ v ∈ placesOver D.host.E D.host.pde' → IsSplitPl D.host v) → GlobalTheory.RowTie.ChebSplit D.nd → ∀ (big : D.what₂.places.Pl → Finset ℂ) (X : LocNd (lay0 D)) (T : LocTw X) (Sp : NdSpec A.pl M C big X T), ∀ (Y : LocAut X) (Cb : LocBC Y), AutSpec A M tp.tup Sp.iq Y Cb → ∀ (i : X.nd.Loc) k v, X.nd.l i ≠ D.host.g k → haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩; ∃ u : (ZMod (D.host.g k))ˣ, (u = D.nd.chiT k v ⟨X.nd.j i - 1, by have := X.nd.j_range i; omega⟩ ∨ u = (D.nd.chiT k v ⟨X.nd.j i - 1, by have := X.nd.j_range i; omega⟩)⁻¹) ∧ iotaO X.nd Y.naut i ((X.nd.chi i 1 (D.ntypes.tg k v) : (X.nd.O i)ˣ) : X.nd.O i) = D.ntypes.teichC k (algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) (u : ZMod (D.host.g k))) := by
   intro hP D cf jE A low Pq S hL eig θ Bs M C tp h1 h2 h3 he h5 h6 big X T Sp Y Cb hAu i k v hl

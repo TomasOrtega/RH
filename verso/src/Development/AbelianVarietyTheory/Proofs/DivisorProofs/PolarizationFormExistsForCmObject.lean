@@ -22,21 +22,19 @@ noncomputable section
 namespace GlobalTheory.PolPairing
 
 /- English proof (translation)
-Introduce `H F _ _ 𝔠 R _ X c`. Establish `hAB` using `AbelianSchemeGerms.isAbelianScheme_tensor X.A X.A X.ab X.ab`. Establish `gAB` using `smooth_prod X.dim X.dim`. Establish `C` using `cupSquare_of_free H.1 hAB gAB`. Establish `hP` using `X.isLB c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ, hφ⟩` from `exists_isCorrForm C hP (X.rig₁ c) (X.rig₂ c)`. Establish `anti : ∀ x y, φ y x = -φ x y`. Take `⟨n, a, b, hc, hφe⟩` from `id hφ`. Set `s : X.A ⊗ X.A ⟶ X.A ⊗ X.A` to `lift (snd X.A X.A) (fst X.A X.A)`. Establish `m : IsMor (dp0 R) ((X.A ⊗ X.A).hom ≫ 𝟙 _) (dp0 R) ((X.A ⊗ X.A).hom ≫ 𝟙 _) (RingHom.id R) s.left` using `IsMor.of_over _ (by rw [← Category.assoc, Over.w])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₁ : ∀ z, m.pull1 (pullOver (dp0 R) (𝟙 _) (fst X.A X.A) z) = pullOver (dp0 R) (𝟙 _) (snd X.A X.A) z` using `fun z ↦ (pullOver_pullOver _ _ s (fst X.A X.A) z).trans (by rw [lift_fst])`. Establish `e₂ : ∀ z, m.pull1 (pullOver (dp0 R) (𝟙 _) (snd X.A X.A) z) = pullOver (dp0 R) (𝟙 _) (fst X.A X.A) z` using `fun z ↦ (pullOver_pullOver _ _ s (snd X.A X.A) z).trans (by rw [lift_snd])`. Establish `hs` using `isChern_pull m hc`. Rewrite `hs` using `[map_sum]`. Simplify using `only [IsMor.pullCohomologyTwo_cup, e₁, e₂] at hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hs'` using `(isChern_existsUnique_and_iso R _ (dp0 R) _ _).2 _ _ (pull_isLB hP _) hP (LBIso.symm (X.symm c)) _ hs`. Establish `H' : IsCorrForm (dp0 R) (𝟙 _) X.A X.A (X.P c) (-φ.flip)`. Use `⟨n, fun k ↦ -b k, a, ?_, fun x y ↦ ?_⟩` and prove the remaining obligations. Use `hs' using 1` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.coe_neg, map_neg, map_neg, LinearMap.neg_apply]`. Conclude with `neg_eq_of_add_eq_zero_right (cup_add_cup _ _ _)`. Simplify using `only [LinearMap.neg_apply, LinearMap.flip_apply, hφe, map_neg, neg_mul, Finset.sum_neg_distrib]`. Conclude with `congrArg Neg.neg (Finset.sum_congr rfl fun k _ ↦ mul_comm _ _)`. Establish `hu` using `hφ.unique C hP H'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x y`. Use `LinearMap.congr_fun₂ hu y x` as an intermediate fact. Simplify using `using this`. Use `⟨φ, hφ, ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ, e⟩` from `hφ.isPolForm`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ψ', hψ', e'⟩` from `hψ.pull (homMor (dp0 R) (𝟙 _) (lift (𝟙 X.A) (𝟙 X.A)))`. Establish `h2 : (2 : R) • φ = ψ'`. Use `LinearMap.ext₂ fun x y ↦ ?_` and prove the remaining obligations. Rewrite using `[e' (push _ _ (lift (𝟙 X.A) (𝟙 X.A)) x) x (push _ _ (lift (𝟙 X.A) (𝟙 X.A)) y) y (fun _ ↦ rfl) (fun _ ↦ rfl), RingHom.id_apply, e, push_push _ _ _ (lift_fst _ _), push_push _ _ _ (lift_snd _ _), push_push _ _ _ (lift_fst _ _), push_push _ _ _ (lift_snd _ _), push_id, LinearMap.id_ …`. Simplify using `only [LinearMap.add_apply, sub_neg_eq_add]`.
-
-Rewrite using `[h2]`. Conclude with `hψ'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isCorrForm_diag : GlobalTheory.Published.AbelianDeRham → ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (R : Type) [CommRing R]
     (X : Obj F 𝔠 (Sp R)) (c : 𝔠.elt), ∃ ψ : LinearMap.BilinForm R (HdR X.A),

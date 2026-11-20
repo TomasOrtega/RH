@@ -10,9 +10,9 @@ open GlobalTheory GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.CM Global
 namespace GlobalTheory.EigBasisExist
 
 /- English proof (translation)
-Take `⟨b⟩` from `(Serre.Lie.lieMult_id_iff act χ n).1 h`. Establish `hm : ∀ v : Serre.Lie act, v ∈ Serre.Lie.eig act χ ↔ EigenvectorLieDegree.IsEigVec act χ v.hom` using `fun v => ⟨fun hv => ⟨v.isTangent, fun a => congrArg (fun z : Serre.Lie act => z.hom.left) (hv a)⟩, fun hv a => Serre.Lie.ext (Over.OverMorphism.ext (hv.2 a))⟩`. Use `⟨fun i => (b i : Serre.Lie act).hom, fun i => (hm _).1 (b i).2, fun w hw => ?_⟩` and prove the remaining obligations. Set `z : Serre.Lie.eig act χ` to `⟨Serre.Lie.mk act w hw.1, (hm _).2 hw⟩`. Establish `key : ∀ c : Fin n → k, IsLieComb c (fun i => (b i : Serre.Lie act).hom) w ↔ b.equivFun z = c` using `fun c => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Serre.Lie.isLieComb_iff c (fun i => (b i : Serre.Lie act)) w, ← LinearEquiv.eq_symm_apply, Module.Basis.equivFun_symm_apply, Subtype.ext_iff]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Conclude with `⟨fun e => Serre.Lie.ext e, fun e => congrArg Serre.Lie.hom e⟩`. Conclude with `(existsUnique_congr key).2 existsUnique_eq'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eigBasis_of_lieMult {k O : Type} [Field k] [CommRing O] {G : Over (Sp k)} [GrpObj G] [IsCommMonObj G]
     (act : OAct O G) (χ : O →+* k) {n : ℕ} (h : LieMult act (𝟙 (Sp k)) χ n) :
@@ -31,11 +31,11 @@ theorem exists_eigBasis_of_lieMult {k O : Type} [Field k] [CommRing O] {G : Over
   exact (existsUnique_congr key).2 existsUnique_eq'
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l c k _ _ j o τ hτ`. Set `φ : k →+* AlgebraicClosure k` to `algebraMap k _`. Use `o.t.semi.smooth` as an intermediate fact. Establish `d` using `(o.geom (AlgebraicClosure k) (spMap φ) (φ.comp (j.comp (IntermediateField.inclusion c.le).toRingHom)) (by rw [spMap_comp_spMap, spMap_comp_spMap])).1`. Establish `iff : ∀ σ : E →+* ℂ, (φ.comp ((EigenvectorLieDegree.embIn c j σ).comp (algebraMap (𝓞 E) E))) H.rt = (φ.comp (j.comp (IntermediateField.inclusion c.le).toRingHom)) (baseKA l).ρ ↔ σ (H.rt : E) = H.rt0` using `fun σ => (φ.injective.eq_iff.trans j.injective.eq_iff).trans Subtype.ext_iff`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ne : conjEmb τ (H.rt : E) ≠ H.rt0` using `fun e => by`. Establish `e' : (starRingEnd ℂ) H.rt0 = H.rt0` using `by rw [← hτ]; exact e.trans hτ.symm`. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 e'`. Establish `h` using `H.sqrt_neg_disc_sq`. Rewrite `h` using `[hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h' : r ^ 2 = -(H.d : ℝ)` using `by exact_mod_cast h`. Establish `: (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[sq_nonneg r]`. Conclude with `⟨exists_eigBasis_of_lieMult _ _ ((LieExt.lieMult_extend_iff φ _ _ _ _).1 ((d _).1 ((iff τ).2 hτ))), exists_eigBasis_of_lieMult _ _ ((LieExt.lieMult_extend_iff φ _ _ _ _).1 ((d _).2 fun e => ne ((iff _).1 e)))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Supply the required witnesses or components.
 -/
 theorem exists_eigBases : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (c : Coeff l) (k : Type) [Field k] [NumberField k] (j : c.F →+* k) (o : Obj D l (baseKA l) (spMap j ≫ spMap (IntermediateField.inclusion c.le).toRingHom)) (τ : E →+* ℂ), τ (H.rt : E) = H.rt0 → (∃ x : Fin D.p → (epsR k ⟶ o.t.G), EigenvectorLieDegree.IsEigBasis o.t.act ((EigenvectorLieDegree.embIn c j τ).comp (algebraMap (𝓞 E) E)) x) ∧ ∃ x : Fin D.q → (epsR k ⟶ o.t.G), EigenvectorLieDegree.IsEigBasis o.t.act ((EigenvectorLieDegree.embIn c j (conjEmb τ)).comp (algebraMap (𝓞 E) E)) x := by
   intro E _ _ _ H D l c k _ _ j o τ hτ

@@ -17,7 +17,7 @@ variable {L : Type} [Field L] [NumberField L] {b : L} {d : ℕ}
 def bK (b : L) : Kd b := ⟨b, mem_adjoin_simple_self ℚ b⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Subtype.ext (by simp [bK, hb])`. Consider the case `(apply Subtype.ext; simp [bK, hb])`. Consider the case `(apply Subtype.ext; push_cast [bK]; exact hb)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bK_sq (hb : b ^ 2 = -(d : L)) : bK b ^ 2 = -(d : Kd b) := by
   first
@@ -26,9 +26,9 @@ theorem bK_sq (hb : b ^ 2 = -(d : L)) : bK b ^ 2 = -(d : Kd b) := by
   | (apply Subtype.ext; push_cast [bK]; exact hb)
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[IntermediateField.mem_bot]`. Take `⟨q, hq⟩` from `h`. Establish `key : (algebraMap ℚ L) (q ^ 2) = (algebraMap ℚ L) (-(d : ℚ))`. Rewrite using `[map_pow, hq, hb, map_neg, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : q ^ 2 = -(d : ℚ)` using `(algebraMap ℚ L).injective key`. Establish `h3 : (0 : ℚ) < d` using `by exact_mod_cast hd`. Use polynomial arithmetic with `[sq_nonneg q]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem b_not_rat (hd : 0 < d) (hb : b ^ 2 = -(d : L)) : b ∉ (⊥ : IntermediateField ℚ L) := by
   intro h
@@ -41,7 +41,7 @@ theorem b_not_rat (hd : 0 < d) (hb : b ^ 2 = -(d : L)) : b ∉ (⊥ : Intermedia
   nlinarith [sq_nonneg q]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact IsIntegral.of_finite ℚ b`. Consider the case `exact Algebra.IsIntegral.isIntegral b`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem isIntegral_b : IsIntegral ℚ b := by
   first
@@ -49,7 +49,7 @@ private theorem isIntegral_b : IsIntegral ℚ b := by
   | exact Algebra.IsIntegral.isIntegral b
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [hb]`. Consider the case `(rw [map_add, map_pow, Polynomial.aeval_X, Polynomial.aeval_C, hb]; simp)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem aeval_X_sq_add_C_eq_zero_of_sq_eq_neg (hb : b ^ 2 = -(d : L)) :
     Polynomial.aeval b (Polynomial.X ^ 2 + Polynomial.C (d : ℚ)) = 0 := by
@@ -58,13 +58,11 @@ private theorem aeval_X_sq_add_C_eq_zero_of_sq_eq_neg (hb : b ^ 2 = -(d : L)) :
   | (rw [map_add, map_pow, Polynomial.aeval_X, Polynomial.aeval_C, hb]; simp)
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ b` using `isIntegral_b`. Establish `hmon : (Polynomial.X ^ 2 + Polynomial.C (d : ℚ)).Monic` using `by first`. Consider the case `exact Polynomial.monic_X_pow_add_C _ two_ne_zero`. Consider the case `monicity!`. Establish `hle : (minpoly ℚ b).natDegree ≤ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1` using `Polynomial.natDegree_le_of_dvd (minpoly.dvd ℚ b (aeval_X_sq_add_C_eq_zero_of_sq_eq_neg hb)) hmon.ne_zero`. Use `first`. Consider the case `rwa [Polynomial.natDegree_X_pow_add_C] at h1`. Consider the case `exact h1.trans (by compute_degree)`. Establish `hne1 : (minpoly ℚ b).natDegree ≠ 1`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Use `first`. Consider the case `(rw [minpoly.natDegree_eq_one_iff] at h1; obtain ⟨q, hq⟩ := h1; exact b_not_rat hd hb (IntermediateField.mem_bot.mpr ⟨q, hq⟩))`. Consider the case `(have h2 : Module.finrank ℚ ℚ⟮b⟯ = 1 := by rw [IntermediateField.adjoin.finrank hint, h1]`. Conclude with `b_not_rat hd hb (IntermediateField.adjoin_simple_eq_bot_iff.mp (IntermediateField.finrank_eq_one_iff.mp h2)))`.
-
-Establish `hpos` using `minpoly.natDegree_pos hint`. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem minpoly_natDegree_eq_two_of_sq_eq_neg (hd : 0 < d) (hb : b ^ 2 = -(d : L)) :
     (minpoly ℚ b).natDegree = 2 := by
@@ -88,14 +86,14 @@ private theorem minpoly_natDegree_eq_two_of_sq_eq_neg (hd : 0 < d) (hb : b ^ 2 =
   omega
 
 /- English proof (translation)
-Use `show Module.finrank ℚ ℚ⟮b⟯ = 2`. Rewrite using `[IntermediateField.adjoin.finrank isIntegral_b, minpoly_natDegree_eq_two_of_sq_eq_neg hd hb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_K (hd : 0 < d) (hb : b ^ 2 = -(d : L)) : Module.finrank ℚ (Kd b) = 2 := by
   show Module.finrank ℚ ℚ⟮b⟯ = 2
   rw [IntermediateField.adjoin.finrank isIntegral_b, minpoly_natDegree_eq_two_of_sq_eq_neg hd hb]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact ⟨finrank_K hd hb⟩`. Consider the case `exact { finrank_eq_two' := finrank_K hd hb }`. Consider the case `exact { toFree := inferInstance, finrank_eq_two' := finrank_K hd hb }`. Consider the case `(constructor <;> first | exact finrank_K hd hb | exact inferInstance)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem quad_K (hd : 0 < d) (hb : b ^ 2 = -(d : L)) : Algebra.IsQuadraticExtension ℚ (Kd b) := by
   first
@@ -105,9 +103,9 @@ theorem quad_K (hd : 0 < d) (hb : b ^ 2 = -(d : L)) : Algebra.IsQuadraticExtensi
   | (constructor <;> first | exact finrank_K hd hb | exact inferInstance)
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ b` using `isIntegral_b`. Establish `key : (σ : Kd b →ₐ[ℚ] Kd b) = (τ : Kd b →ₐ[ℚ] Kd b)`. Apply `(IntermediateField.adjoin.powerBasis hint).algHom_ext` to reduce the goal to its premises. Use `first`. Consider the case `exact h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [IntermediateField.adjoin.powerBasis_gen]; exact h)`. Consider the case `(simp only [IntermediateField.adjoin.powerBasis_gen, AlgEquiv.coe_algHom]; exact h)`. Conclude with `AlgEquiv.ext fun x => AlgHom.congr_fun key x`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem Kd_algEquiv_ext_of_apply_bK_eq (σ τ : Kd b ≃ₐ[ℚ] Kd b) (h : σ (bK b) = τ (bK b)) : σ = τ := by
   have hint : IsIntegral ℚ b := isIntegral_b
@@ -120,7 +118,7 @@ private theorem Kd_algEquiv_ext_of_apply_bK_eq (σ τ : Kd b ≃ₐ[ℚ] Kd b) (
   exact AlgEquiv.ext fun x => AlgHom.congr_fun key x
 
 /- English proof (translation)
-Apply `Kd_algEquiv_ext_of_apply_bK_eq σ 1` to reduce the goal to its premises. Use `first`. Consider the case `(rw [h]; rfl)`. Consider the case `simpa using h`. Consider the case `(rw [AlgEquiv.one_apply]; exact h)`.
+Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gal_eq_one_of_fix (σ : Kd b ≃ₐ[ℚ] Kd b) (h : σ (bK b) = bK b) : σ = 1 := by
   apply Kd_algEquiv_ext_of_apply_bK_eq σ 1
@@ -130,9 +128,9 @@ theorem gal_eq_one_of_fix (σ : Kd b ≃ₐ[ℚ] Kd b) (h : σ (bK b) = bK b) : 
   | (rw [AlgEquiv.one_apply]; exact h)
 
 /- English proof (translation)
-Establish `h1 : σ (bK b) ^ 2 = bK b ^ 2` using `by first`. Consider the case `rw [← map_pow, bK_sq hb, map_neg, map_natCast]`. Consider the case `(rw [← map_pow, bK_sq hb]; simp)`. Establish `h2 : (σ (bK b) - bK b) * (σ (bK b) + bK b) = 0` using `by linear_combination h1`. Break down `mul_eq_zero.mp h2 with h | h` into its components or cases.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `left`. Take the linear combination `h`. Use `right`. Take the linear combination `h`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem Kd_algEquiv_bK_eq_or_eq_neg (hb : b ^ 2 = -(d : L)) (σ : Kd b ≃ₐ[ℚ] Kd b) :
     σ (bK b) = bK b ∨ σ (bK b) = -bK b := by
@@ -148,13 +146,13 @@ private theorem Kd_algEquiv_bK_eq_or_eq_neg (hb : b ^ 2 = -(d : L)) (σ : Kd b �
     linear_combination h
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ b` using `isIntegral_b`. Establish `hmon : (Polynomial.X ^ 2 + Polynomial.C (d : ℚ)).Monic` using `by first`. Consider the case `exact Polynomial.monic_X_pow_add_C _ two_ne_zero`. Consider the case `monicity!`. Take `⟨r, hr⟩` from `minpoly.dvd ℚ b (aeval_X_sq_add_C_eq_zero_of_sq_eq_neg hb)`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Rewrite `hr` using `[mul_zero]`. Conclude with `hmon.ne_zero hr`. Establish `hdeg` using `congrArg Polynomial.natDegree hr`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdeg` using `[(minpoly.monic hint).natDegree_mul' hr0, Polynomial.natDegree_X_pow_add_C, minpoly_natDegree_eq_two_of_sq_eq_neg hd hb]`. Establish `hrm : r.Monic` using `(minpoly.monic hint).of_mul_monic_left (hr ▸ hmon)`. Establish `hr0d : r.natDegree = 0` using `by omega`. Establish `hr1 : r = 1` using `by first`. Consider the case `exact (Polynomial.Monic.natDegree_eq_zero hrm).mp hr0d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Polynomial.eq_one_of_monic_natDegree_zero hrm hr0d`. Consider the case `(rw [Polynomial.eq_C_of_natDegree_eq_zero hr0d]; have h5 := hrm.leadingCoeff; rw [Polynomial.leadingCoeff, hr0d] at h5; rw [h5, map_one])`. Rewrite using `[hr, hr1, mul_one]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem minpoly_eq_X_sq_add_C_of_sq_eq_neg (hd : 0 < d) (hb : b ^ 2 = -(d : L)) :
     minpoly ℚ b = Polynomial.X ^ 2 + Polynomial.C (d : ℚ) := by
@@ -181,17 +179,15 @@ private theorem minpoly_eq_X_sq_add_C_of_sq_eq_neg (hd : 0 < d) (hb : b ^ 2 = -(
   rw [hr, hr1, mul_one]
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ b` using `isIntegral_b`. Use `set pb : PowerBasis ℚ (Kd b) := IntermediateField.adjoin.powerBasis hint with hpb`. Establish `hgen : pb.gen = bK b` using `by first`. Consider the case `rfl`. Consider the case `(rw [hpb, IntermediateField.adjoin.powerBasis_gen]; rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hmin : minpoly ℚ pb.gen = minpoly ℚ b` using `by first`. Consider the case `exact (minpoly.algebraMap_eq (algebraMap (Kd b) L).injective pb.gen).symm`. Consider the case `exact IntermediateField.minpoly_eq pb.gen`. Consider the case `(rw [hpb, IntermediateField.adjoin.powerBasis_gen]; exact IntermediateField.minpoly_gen b)`. Consider the case `(rw [hpb, IntermediateField.adjoin.powerBasis_gen]; exact IntermediateField.minpoly_gen ℚ b)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hroot : Polynomial.aeval (-pb.gen) (minpoly ℚ pb.gen) = 0`. Rewrite using `[hmin, minpoly_eq_X_sq_add_C_of_sq_eq_neg hd hb, hgen]`. Use `first`. Consider the case `(simp only [map_add, map_pow, Polynomial.aeval_X, Polynomial.aeval_C, map_natCast]; linear_combination bK_sq hb)`. Consider the case `(simp; linear_combination bK_sq hb)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp; rw [neg_sq, bK_sq hb]; ring)`. Consider the case `(simp only [map_add, map_pow, Polynomial.aeval_X, Polynomial.aeval_C]; rw [neg_sq, bK_sq hb]; simp)`. Establish `hbij : Function.Bijective (pb.lift (-pb.gen) hroot)` using `by first`. Consider the case `exact AlgHom.bijective _`. Consider the case `exact ⟨(pb.lift (-pb.gen) hroot).toRingHom.injective, LinearMap.injective_iff_surjective.mp (pb.lift (-pb.gen) hroot).toRingHom.injective⟩`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨AlgEquiv.ofBijective _ hbij, ?_⟩` and prove the remaining obligations. Establish `hl : pb.lift (-pb.gen) hroot (bK b) = -bK b`. Rewrite using `[← hgen]`. Conclude with `pb.lift_gen _ hroot`. Use `first`.
-
-Consider the case `exact hl`. Consider the case `(rw [AlgEquiv.ofBijective_apply]; exact hl)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem Kd_exists_algEquiv_bK_eq_neg (hd : 0 < d) (hb : b ^ 2 = -(d : L)) :
     ∃ σ : Kd b ≃ₐ[ℚ] Kd b, σ (bK b) = -bK b := by
@@ -228,11 +224,11 @@ private theorem Kd_exists_algEquiv_bK_eq_neg (hd : 0 < d) (hb : b ^ 2 = -(d : L)
   | (rw [AlgEquiv.ofBijective_apply]; exact hl)
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : b = -b` using `by first`. Consider the case `exact congrArg Subtype.val h`. Consider the case `simpa [bK] using congrArg Subtype.val h`. Establish `h3 : b = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h4 : (2 : L) * b = 0` using `by linear_combination h2`. Break down `mul_eq_zero.mp h4 with h5 | h5` into its components or cases. Evaluate the numerical expressions using `at h5`. Conclude with `h5`. Rewrite `hb` using `[h3]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h6 : (d : L) = 0` using `by linear_combination hb`. Establish `h7 : d = 0` using `by exact_mod_cast h6`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem bK_ne_neg_bK_of_sq_eq_neg (hd : 0 < d) (hb : b ^ 2 = -(d : L)) : bK b ≠ -bK b := by
   intro h
@@ -251,13 +247,11 @@ private theorem bK_ne_neg_bK_of_sq_eq_neg (hd : 0 < d) (hb : b ^ 2 = -(d : L)) :
   omega
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `Kd_exists_algEquiv_bK_eq_neg hd hb`. Establish `hne` using `bK_ne_neg_bK_of_sq_eq_neg hd hb`. Apply the tactic sequence `let f : (Kd b ≃ₐ[ℚ] Kd b) → ({bK b, -bK b} : Set (Kd b)) := fun σ => ⟨σ (bK b), by rcases Kd_algEquiv_bK_eq_or_eq_neg hb σ with h | h <;> simp [h]⟩`. Establish `hinj : Function.Injective f` using `fun σ σ' h => Kd_algEquiv_ext_of_apply_bK_eq σ σ' (congrArg Subtype.val h)`. Use `haveI : Finite (Kd b ≃ₐ[ℚ] Kd b) := Finite.of_injective f hinj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ1 : τ ≠ 1`. Introduce `h1`. Apply `hne` to reduce the goal to its premises. Rewrite `hτ` using `[h1]`. Apply the tactic sequence `first | exact hτ | simpa using hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Use `haveI : Nontrivial (Kd b ≃ₐ[ℚ] Kd b) := ⟨⟨τ, 1, hτ1⟩⟩`. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Consider the case `rw [Nat.card_coe_set_eq, Set.ncard_pair hne]`. Consider the case `(rw [← Set.ncard_pair hne]; rfl)`.
-
-Consider the case `(rw [← Set.ncard_pair hne, Set.ncard_def]; simp)`. Consider the case `(rw [← Set.ncard_pair hne]; exact (Set.ncard_eq_toFinset_card' _).symm.trans (by simp))`. Conclude with `Finite.one_lt_card`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem card_gal (hd : 0 < d) (hb : b ^ 2 = -(d : L)) : Nat.card (Kd b ≃ₐ[ℚ] Kd b) = 2 := by
   obtain ⟨τ, hτ⟩ := Kd_exists_algEquiv_bK_eq_neg hd hb
@@ -284,7 +278,7 @@ theorem card_gal (hd : 0 < d) (hb : b ^ 2 = -(d : L)) : Nat.card (Kd b ≃ₐ[�
   · exact Finite.one_lt_card
 
 /- English proof (translation)
-Rewrite using `[bK_sq hb]`. Use `first`. Consider the case `simp`. Consider the case `(push_cast; rfl)`. Consider the case `norm_num`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bK_sq_int (hb : b ^ 2 = -(d : L)) : bK b ^ 2 = ((-(d : ℤ) : ℤ) : Kd b) := by
   rw [bK_sq hb]
@@ -294,7 +288,7 @@ theorem bK_sq_int (hb : b ^ 2 = -(d : L)) : bK b ^ 2 = ((-(d : ℤ) : ℤ) : Kd 
   | norm_num
 
 /- English proof (translation)
-Introduce `h`. Apply `bK_ne_neg_bK_of_sq_eq_neg hd0 hb` to reduce the goal to its premises. Rewrite using `[h, neg_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem bK_ne_zero (hd0 : 0 < d) (hb : b ^ 2 = -(d : L)) : bK b ≠ 0 := by
   intro h
@@ -302,7 +296,7 @@ theorem bK_ne_zero (hd0 : 0 < d) (hb : b ^ 2 = -(d : L)) : bK b ≠ 0 := by
   rw [h, neg_zero]
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `Kd_exists_algEquiv_bK_eq_neg hd0 hb`. Use `⟨τ, fun h1 => bK_ne_neg_bK_of_sq_eq_neg hd0 hb ?_⟩` and prove the remaining obligations. Rewrite `hτ` using `[h1]`. Apply the tactic sequence `first | exact hτ | simpa using hτ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_one (hd0 : 0 < d) (hb : b ^ 2 = -(d : L)) : ∃ ι : Kd b ≃ₐ[ℚ] Kd b, ι ≠ 1 := by
   obtain ⟨τ, hτ⟩ := Kd_exists_algEquiv_bK_eq_neg hd0 hb
@@ -311,7 +305,7 @@ theorem exists_ne_one (hd0 : 0 < d) (hb : b ^ 2 = -(d : L)) : ∃ ι : Kd b ≃�
   first | exact hτ | simpa using hτ
 
 /- English proof (translation)
-Break down `Kd_algEquiv_bK_eq_or_eq_neg hb ι with h | h` into its components or cases. Conclude with `absurd (gal_eq_one_of_fix ι h) hι`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem apply_bK_of_ne (hd0 : 0 < d) (hb : b ^ 2 = -(d : L)) (ι : Kd b ≃ₐ[ℚ] Kd b) (hι : ι ≠ 1) :
     ι (bK b) = -bK b := by
@@ -320,7 +314,7 @@ theorem apply_bK_of_ne (hd0 : 0 < d) (hb : b ^ 2 = -(d : L)) (ι : Kd b ≃ₐ[�
   · exact h
 
 /- English proof (translation)
-Apply `Kd_algEquiv_ext_of_apply_bK_eq` to reduce the goal to its premises. Rewrite using `[apply_bK_of_ne hd0 hb σ hσ, apply_bK_of_ne hd0 hb τ hτ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_ne_one (hd0 : 0 < d) (hb : b ^ 2 = -(d : L)) (σ τ : Kd b ≃ₐ[ℚ] Kd b) (hσ : σ ≠ 1)
     (hτ : τ ≠ 1) : σ = τ := by
@@ -328,7 +322,7 @@ theorem eq_of_ne_one (hd0 : 0 < d) (hb : b ^ 2 = -(d : L)) (σ τ : Kd b ≃ₐ[
   rw [apply_bK_of_ne hd0 hb σ hσ, apply_bK_of_ne hd0 hb τ hτ]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (Ideal.span_singleton_prime (by exact_mod_cast hp.out.ne_zero)).mpr (Nat.prime_iff_prime_int.mp hp.out)`. Consider the case `exact (Int.ideal_span_isMaximal_of_prime p).isPrime`. Consider the case `exact inferInstance`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_prime (p : ℕ) [hp : Fact p.Prime] : (span {(p : ℤ)}).IsPrime := by
   first
@@ -337,7 +331,7 @@ theorem span_prime (p : ℕ) [hp : Fact p.Prime] : (span {(p : ℤ)}).IsPrime :=
   | exact inferInstance
 
 /- English proof (translation)
-Use `first`. Consider the case `exact IsGalois.of_card_aut_eq_finrank (by rw [card_gal hd hb, finrank_K hd hb])`. Consider the case `exact IsGalois.of_card_aut_eq_finrank ℚ (Kd b) (by rw [card_gal hd hb, finrank_K hd hb])`. Consider the case `(haveI := quad_K hd hb; exact inferInstance)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem Kd_isGalois_of_sq_eq_neg (hd : 0 < d) (hb : b ^ 2 = -(d : L)) : IsGalois ℚ (Kd b) := by
   first
@@ -346,9 +340,9 @@ private theorem Kd_isGalois_of_sq_eq_neg (hd : 0 < d) (hb : b ^ 2 = -(d : L)) : 
   | (haveI := quad_K hd hb; exact inferInstance)
 
 /- English proof (translation)
-Use `haveI : NumberField (Kd b) := by first`. Consider the case `exact inferInstance`. Consider the case `exact NumberField.mk`. Consider the case `exact ⟨⟩`. Use `haveI : IsGalois ℚ (Kd b) := Kd_isGalois_of_sq_eq_neg hd0 hb`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : Finite (Kd b ≃ₐ[ℚ] Kd b) := Nat.finite_of_card_ne_zero (by rw [card_gal hd0 hb]; norm_num)`. Use `haveI := span_prime p`. Establish `h` using `Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn (span {(p : ℤ)}) (𝓞 (Kd b)) (Kd b ≃ₐ[ℚ] Kd b)`. Rewrite `h` using `[Ideal.ramificationIdxIn_eq_ramificationIdx (span {(p : ℤ)}) P (Kd b ≃ₐ[ℚ] Kd b), Ideal.inertiaDegIn_eq_inertiaDeg (span {(p : ℤ)}) P (Kd b ≃ₐ[ℚ] Kd b), card_gal hd0 hb]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem fund (hd0 : 0 < d) (hb : b ^ 2 = -(d : L)) (p : ℕ) [Fact p.Prime]
     (P : Ideal (𝓞 (Kd b))) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})] :
@@ -368,13 +362,11 @@ theorem fund (hd0 : 0 < d) (hb : b ^ 2 = -(d : L)) (p : ℕ) [Fact p.Prime]
   exact h
 
 /- English proof (translation)
-Use `haveI : NumberField (Kd b) := by first`. Consider the case `exact inferInstance`. Consider the case `exact NumberField.mk`. Consider the case `exact ⟨⟩`. Use `haveI : IsGalois ℚ (Kd b) := Kd_isGalois_of_sq_eq_neg hd0 hb`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Use `haveI : Finite (Kd b ≃ₐ[ℚ] Kd b) := Nat.finite_of_card_ne_zero (by rw [card_gal hd0 hb]; norm_num)`. Use `haveI := span_prime p`. Establish `hP : P ∈ primesOver (span {(p : ℤ)}) (𝓞 (Kd b))` using `by first`. Consider the case `exact ⟨inferInstance, inferInstance⟩`. Consider the case `exact ⟨‹_›, ‹_›⟩`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `(simp only [Ideal.primesOver, Set.mem_setOf_eq]; exact ⟨inferInstance, inferInstance⟩)`. Rewrite using `[Set.ncard_eq_one]`. Use `⟨P, Set.eq_singleton_iff_unique_mem.mpr ⟨hP, fun Q hQ => ?_⟩⟩` and prove the remaining obligations. Establish `hex : ∃ σ : Kd b ≃ₐ[ℚ] Kd b, σ • P = Q` using `by first`. Consider the case `(obtain ⟨σ, hσ⟩ := MulAction.exists_smul_eq (Kd b ≃ₐ[ℚ] Kd b) (⟨P, hP⟩ : primesOver (span {(p : ℤ)}) (𝓞 (Kd b))) ⟨Q, hQ⟩; exact ⟨σ, congrArg Subtype.val hσ⟩)`.
-
-Consider the case `(haveI := hQ.1; haveI := hQ.2; exact Ideal.exists_smul_eq_of_isGaloisGroup (span {(p : ℤ)}) P Q (Kd b ≃ₐ[ℚ] Kd b))`. Take `⟨σ, h1⟩` from `hex`. Rewrite using `[← h1, h σ]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ncard_one (hd0 : 0 < d) (hb : b ^ 2 = -(d : L)) (p : ℕ) [Fact p.Prime]
     (P : Ideal (𝓞 (Kd b))) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})]
@@ -403,17 +395,15 @@ theorem ncard_one (hd0 : 0 < d) (hb : b ^ 2 = -(d : L)) (p : ℕ) [Fact p.Prime]
   rw [← h1, h σ]
 
 /- English proof (translation)
-Establish `hf` using `fund hd0 hb p P`. Use `haveI : NumberField (Kd b) := by first`. Consider the case `exact inferInstance`. Consider the case `exact NumberField.mk`. Consider the case `exact ⟨⟩`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `haveI : IsGalois ℚ (Kd b) := Kd_isGalois_of_sq_eq_neg hd0 hb`. Use `haveI : Finite (Kd b ≃ₐ[ℚ] Kd b) := Nat.finite_of_card_ne_zero (by rw [card_gal hd0 hb]; norm_num)`. Use `haveI := span_prime p`. Establish `hP : P ∈ primesOver (span {(p : ℤ)}) (𝓞 (Kd b))` using `by first`. Consider the case `exact ⟨inferInstance, inferInstance⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact ⟨‹_›, ‹_›⟩`. Consider the case `(simp only [Ideal.primesOver, Set.mem_setOf_eq]; exact ⟨inferInstance, inferInstance⟩)`. Establish `hσP : σ • P ∈ primesOver (span {(p : ℤ)}) (𝓞 (Kd b))` using `by first`. Consider the case `exact (σ • (⟨P, hP⟩ : primesOver (span {(p : ℤ)}) (𝓞 (Kd b)))).2`. Consider the case `exact ⟨inferInstance, inferInstance⟩`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdvd : (primesOver (span {(p : ℤ)}) (𝓞 (Kd b))).ncard ∣ 2` using `Dvd.intro _ hf`. Establish `hle : (primesOver (span {(p : ℤ)}) (𝓞 (Kd b))).ncard ≤ 2` using `Nat.le_of_dvd two_pos hdvd`. Establish `hne1 : (primesOver (span {(p : ℤ)}) (𝓞 (Kd b))).ncard ≠ 1`. Introduce `h1`. Take `⟨Q, hQ⟩` from `Set.ncard_eq_one.mp h1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hP`, `hσP` using `[hQ, Set.mem_singleton_iff]`. Conclude with `h (hσP.trans hP.symm)`. Establish `hne0 : (primesOver (span {(p : ℤ)}) (𝓞 (Kd b))).ncard ≠ 0`. Introduce `h0`. Rewrite `hf` using `[h0, zero_mul]`.
-
-Conclude with `absurd hf (by norm_num)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ncard_two (hd0 : 0 < d) (hb : b ^ 2 = -(d : L)) (p : ℕ) [Fact p.Prime]
     (P : Ideal (𝓞 (Kd b))) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})]
@@ -451,7 +441,7 @@ theorem ncard_two (hd0 : 0 < d) (hb : b ^ 2 = -(d : L)) (p : ℕ) [Fact p.Prime]
   omega
 
 /- English proof (translation)
-Use `first`. Consider the case `(have h1 := Ideal.smul_mem_pointwise_smul σ y P hy; rwa [h] at h1)`. Consider the case `(rw [← h]; exact Ideal.smul_mem_pointwise_smul σ y P hy)`. Consider the case `(rw [← h]; exact Ideal.mem_map_of_mem _ hy)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_of_eq (σ : Kd b ≃ₐ[ℚ] Kd b) (P : Ideal (𝓞 (Kd b))) (h : σ • P = P)
     (y : 𝓞 (Kd b)) (hy : y ∈ P) : σ • y ∈ P := by
@@ -461,7 +451,7 @@ theorem smul_mem_of_eq (σ : Kd b ≃ₐ[ℚ] Kd b) (P : Ideal (𝓞 (Kd b))) (h
   | (rw [← h]; exact Ideal.mem_map_of_mem _ hy)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact map_intCast (MulSemiringAction.toRingHom (Kd b ≃ₐ[ℚ] Kd b) (𝓞 (Kd b)) σ) n`. Consider the case `simp`. Consider the case `(rw [← MulSemiringAction.toRingHom_apply, map_intCast])`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_intCast (σ : Kd b ≃ₐ[ℚ] Kd b) (n : ℤ) : σ • (n : 𝓞 (Kd b)) = n := by
   first
@@ -470,11 +460,11 @@ theorem smul_intCast (σ : Kd b ≃ₐ[ℚ] Kd b) (n : ℤ) : σ • (n : 𝓞 (
   | (rw [← MulSemiringAction.toRingHom_apply, map_intCast])
 
 /- English proof (translation)
-Take `⟨ι, hι⟩` from `exists_ne_one hd0 hb`. Apply `ncard_two hd0 hb p P ι` to reduce the goal to its premises. Introduce `heq`. Establish `: P.LiesOver (span {(2 : ℤ)})`. Substitute `hp2` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using `using (inferInstance : P.LiesOver (span {((2 : ℕ) : ℤ)}))`. Take `⟨c, hc⟩ : ∃ c : ℤ, -(d : ℤ) = 4 * (2 * c) + 1` from `⟨(-(d : ℤ) - 1) / 8, by omega⟩`. Establish `hx : bK b ^ 2 = ((4 * (2 * c) + 1 : ℤ) : Kd b)` using `by rw [← hc, bK_sq_int hb]`. Establish `hfix` using `stab_fix (bK b) c hx P ι (MulAction.mem_stabilizer_iff.mpr heq)`. Rewrite `hfix` using `[apply_bK_of_ne hd0 hb ι hι]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `bK_ne_zero hd0 hb` to reduce the goal to its premises. Establish `h2 : (2 : Kd b) * bK b = 0` using `by linear_combination -hfix`. Simplify using `using h2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem two_case (hd0 : 0 < d) (hd7 : d % 8 = 7) (hb : b ^ 2 = -(d : L)) (p : ℕ) [Fact p.Prime]
     (hp2 : p = 2) (P : Ideal (𝓞 (Kd b))) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})] :
@@ -494,21 +484,17 @@ theorem two_case (hd0 : 0 < d) (hd7 : d % 8 = 7) (hb : b ^ 2 = -(d : L)) (p : �
   simpa using h2
 
 /- English proof (translation)
-Substitute `hpd` using the available equality. Establish `hd0 : 0 < p` using `hd.pos`. Take `⟨B, hB, hB2⟩` from `odd_lift (bK b) (-(p : ℤ)) (bK_sq_int hb)`. Establish `hdP : ((p : ℤ) : 𝓞 (Kd b)) ∈ P` using `(odd_intCast_mem_iff p P _).mpr dvd_rfl`. Establish `hBP : B ∈ P`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hP.mem_of_pow_mem 2` to reduce the goal to its premises. Rewrite using `[hB2, Int.cast_neg]`. Conclude with `P.neg_mem hdP`. Establish `hmap : map (algebraMap ℤ (𝓞 (Kd b))) (span {(p : ℤ)}) = span {((p : ℤ) : 𝓞 (Kd b))}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hle : span {((p : ℤ) : 𝓞 (Kd b))} ≤ P ^ 2`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Establish `: ((p : ℤ) : 𝓞 (Kd b)) = -(B ^ 2)`. Rewrite using `[hB2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(P ^ 2).neg_mem (Ideal.pow_mem_pow hBP 2)`. Establish `hne : map (algebraMap ℤ (𝓞 (Kd b))) (span {(p : ℤ)}) ≠ ⊥`. Rewrite using `[hmap, Ne, Ideal.span_singleton_eq_bot]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd.ne_zero` after adjusting the coercions. Establish `he : 2 ≤ P.ramificationIdx ℤ`. Rewrite using `[IsDedekindDomain.ramificationIdx_eq_multiplicity (span {(p : ℤ)}) P hne]`. Apply `FiniteMultiplicity.le_multiplicity_of_pow_dvd` to reduce the goal to its premises. Conclude with `FiniteMultiplicity.of_not_isUnit (Ideal.isUnit_iff.not.mpr hP.ne_top) hne`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.dvd_iff_le, hmap]`. Conclude with `hle`. Establish `hf` using `P.inertiaDeg_pos ℤ`. Establish `hm` using `fund hd0 hb p P`. Use `set g := (primesOver (span {(p : ℤ)}) (𝓞 (Kd b))).ncard`.
-
-Use `set e := P.ramificationIdx ℤ`. Use `set f := P.inertiaDeg ℤ`. Establish `hef : 2 ≤ e * f` using `by nlinarith`. Break down `Nat.lt_or_ge g 2 with hg | hg` into its components or cases. Use `interval_cases g`.
-
-Simplify using `at hm`. Both sides reduce to the same expression. Use the polynomial consequences of the given equalities and inequalities.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem ram_case (hd : d.Prime) (hb : b ^ 2 = -(d : L)) (p : ℕ) [Fact p.Prime] (hpd : p = d)
     (P : Ideal (𝓞 (Kd b))) [hP : P.IsPrime] [P.LiesOver (span {(p : ℤ)})] :
@@ -553,39 +539,35 @@ theorem ram_case (hd : d.Prime) (hb : b ^ 2 = -(d : L)) (p : ℕ) [Fact p.Prime]
   · nlinarith
 
 /- English proof (translation)
-Establish `hd0` using `hd.pos`. Use `quad_K hd0 hb` as an intermediate fact. Establish `hpb : span {(p : ℤ)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.out.ne_zero` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Finite (𝓞 (Kd b) ⧸ P)` using `Ring.HasFiniteQuotients.finiteQuotient (Ideal.ne_bot_of_liesOver_of_ne_bot hpb P)`. Take `⟨τ, hτ⟩` from `IsArithFrobAt.exists_of_isInvariant ℤ (Kd b ≃ₐ[ℚ] Kd b) P`. Establish `hnd : ¬ (p : ℤ) ∣ -(d : ℤ)`. Rewrite using `[dvd_neg]`. Introduce `h'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hpd ((Nat.prime_dvd_prime_iff_eq hp.out hd).mp (by exact_mod_cast h'))`. Establish `hsgn` using `odd_frob_sgn p hp2 P τ hτ (bK b) _ (bK_sq_int hb) hnd`. Establish `hcop : Int.gcd (-(d : ℤ)) p = 1`. Rewrite using `[Int.neg_gcd, Int.gcd_natCast_natCast]`. Conclude with `(Nat.coprime_primes hd hp.out).mpr (Ne.symm hpd)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Break down `jacobiSym.eq_one_or_neg_one hcop with hj | hj` into its components or cases. Simplify using `only [hj, iff_true]`. Take `⟨ι, hι⟩` from `exists_ne_one hd0 hb`. Apply `ncard_two hd0 hb p P ι` to reduce the goal to its premises. Introduce `heq`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hleg : legendreSym p (-(d : ℤ)) = 1`. Rewrite using `[jacobiSym.legendreSym.to_jacobiSym]`. Conclude with `hj`. Establish `h0 : ((-(d : ℤ) : ℤ) : ZMod p) ≠ 0`. Rewrite using `[Ne, ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `hnd`. Take `⟨r, hr⟩` from `(legendreSym.eq_one_iff p h0).mp hleg`. Use `set t : ℤ := (r.val : ℤ) with ht`. Establish `htd : (p : ℤ) ∣ t ^ 2 + d`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[ht, Int.cast_natCast, ZMod.natCast_zmod_val]`. Move the coercions through the operations in `at hr`. Take the linear combination `-hr`. Take `⟨B, hB, hB2⟩` from `odd_lift (bK b) (-(d : ℤ)) (bK_sq_int hb)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hιB : ι • B = -B`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `show ((ι • B : 𝓞 (Kd b)) : Kd b) = ((-B : 𝓞 (Kd b)) : Kd b)`. Rewrite using `[odd_coe_smul, hB, apply_bK_of_ne hd0 hb ι hι]`. Simplify using `[hB]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hprod : (B - (t : 𝓞 (Kd b))) * (B + (t : 𝓞 (Kd b))) ∈ P`. Establish `he : (B - (t : 𝓞 (Kd b))) * (B + (t : 𝓞 (Kd b))) = -((t ^ 2 + d : ℤ) : 𝓞 (Kd b))`. Rewrite using `[show (B - (t : 𝓞 (Kd b))) * (B + (t : 𝓞 (Kd b))) = B ^ 2 - (t : 𝓞 (Kd b)) ^ 2 by ring, hB2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[he]`. Conclude with `P.neg_mem ((odd_intCast_mem_iff p P _).mpr htd)`. Establish `h2t : ((2 * t : ℤ) : 𝓞 (Kd b)) ∈ P`. Break down `hP.mem_or_mem hprod with h | h` into its components or cases. Establish `h'` using `smul_mem_of_eq ι P heq _ h`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h'` using `[smul_sub, hιB, smul_intCast]`. Use `P.neg_mem (P.add_mem h h')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h'` using `smul_mem_of_eq ι P heq _ h`. Rewrite `h'` using `[smul_add, hιB, smul_intCast]`. Use `P.add_mem h h'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h2t` using `[odd_intCast_mem_iff p P]`. Establish `hpt : (p : ℤ) ∣ t`. Break down `(Nat.prime_iff_prime_int.mp hp.out).dvd_or_dvd h2t with h | h` into its components or cases. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: p ∣ 2` using `by exact_mod_cast h`. Conclude with `hp2 ((Nat.prime_dvd_prime_iff_eq hp.out Nat.prime_two).mp this)`. Conclude with `h`. Apply `hnd` to reduce the goal to its premises. Establish `h1 : (p : ℤ) ∣ t ^ 2` using `dvd_pow hpt two_ne_zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_neg.mpr ((dvd_add_right h1).mp htd)`. Rewrite using `[hj]`. Establish `hne : τ ≠ 1`. Introduce `h1`. Rewrite `hsgn` using `[h1, hj]`.
-
-Simplify using `[sgn] at hsgn`. Establish `hall : ∀ σ : Kd b ≃ₐ[ℚ] Kd b, σ • P = P`. Introduce `σ`. Distinguish the cases in `hσ : σ = 1`. Rewrite using `[hσ]`.
-
-Conclude with `one_smul _ _`. Rewrite using `[eq_of_ne_one hd0 hb σ τ hσ hne]`. Conclude with `MulAction.mem_stabilizer_iff.mp (IsArithFrobAt.mem_stabilizer hτ)`. Rewrite using `[ncard_one hd0 hb p P hall]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem odd_case (hd : d.Prime) (hb : b ^ 2 = -(d : L)) (p : ℕ) [hp : Fact p.Prime] (hp2 : p ≠ 2)
     (hpd : p ≠ d) (P : Ideal (𝓞 (Kd b))) [hP : P.IsPrime] [P.LiesOver (span {(p : ℤ)})] :
@@ -679,9 +661,9 @@ theorem odd_case (hd : d.Prime) (hb : b ^ 2 = -(d : L)) (p : ℕ) [hp : Fact p.P
     norm_num
 
 /- English proof (translation)
-Use `haveI hmax : (span {(p : ℤ)}).IsMaximal := by first`. Consider the case `exact Int.ideal_span_isMaximal_of_prime p`. Consider the case `exact (span_prime p).isMaximal (by simp [hp.out.ne_zero])`. Consider the case `exact Ideal.IsPrime.isMaximal (span_prime p) (by simp [hp.out.ne_zero])`. Use `first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(obtain ⟨P, hP⟩ := Ideal.nonempty_primesOver (S := 𝓞 (Kd b)) (span {(p : ℤ)}); exact ⟨P, hP.1, hP.2⟩)`. Consider the case `(obtain ⟨P, hP, hPl⟩ := Ideal.exists_ideal_liesOver_maximal_of_isIntegral (span {(p : ℤ)}) (𝓞 (Kd b)); exact ⟨P, hP.isPrime, hPl⟩)`. Consider the case `(obtain ⟨Q, hQ, hQc⟩ := Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 (Kd b)) (span {(p : ℤ)}) (by rw [(RingHom.injective_iff_ker_eq_bot _).mp (algebraMap ℤ (𝓞 (Kd b))).injective_int]; exact bot_le); exact ⟨Q, hQ.isPrime, ⟨hQc.symm⟩⟩)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem Kd_exists_isPrime_liesOver (p : ℕ) [hp : Fact p.Prime] :
     ∃ P : Ideal (𝓞 (Kd b)), P.IsPrime ∧ P.LiesOver (span {(p : ℤ)}) := by
@@ -696,15 +678,13 @@ private theorem Kd_exists_isPrime_liesOver (p : ℕ) [hp : Fact p.Prime] :
   | (obtain ⟨Q, hQ, hQc⟩ := Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 (Kd b)) (span {(p : ℤ)}) (by rw [(RingHom.injective_iff_ker_eq_bot _).mp (algebraMap ℤ (𝓞 (Kd b))).injective_int]; exact bot_le); exact ⟨Q, hQ.isPrime, ⟨hQc.symm⟩⟩)
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨P, hP1, hP2⟩` from `Kd_exists_isPrime_liesOver (b := b) p`. Use `haveI := hP1`. Use `haveI := hP2`. Distinguish the cases in `h2 : p = 2`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Establish `h3` using `two_case hd.pos hd7 hb p h2 P`. Conclude with `⟨fun _ => Or.inl h2, fun _ => h3⟩`. Distinguish the cases in `hpd : p = d`. Establish `h3` using `ram_case hd hb p hpd P`. Establish `hJ : jacobiSym (-(d : ℤ)) p = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Treat this case separately. Treat this case separately.
 
-Substitute `hpd` using the available equality. Use `first`. Consider the case `(rw [jacobiSym.mod_left, Int.emod_eq_zero_of_dvd (by simp), jacobiSym.zero_left hp.one_lt])`. Consider the case `(rw [jacobiSym.eq_zero_iff_not_coprime]; simp [Int.gcd_neg, Int.gcd_self]; exact hp.one_lt.ne')`. Rewrite using `[h3, hJ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h2]`. Establish `h3` using `odd_case hd hb p h2 hpd P`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Or.inr ⟨h2, h3.mp h⟩`.
-
-Introduce and unpack `(h | ⟨-, h⟩)`. Conclude with `absurd h h2`. Conclude with `h3.mpr h`.
+Prove the second alternative. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem clause (hd : d.Prime) (hd7 : d % 8 = 7) (hb : b ^ 2 = -(d : L)) (p : ℕ) (hp : p.Prime) :
     (primesOver (span {(p : ℤ)}) (𝓞 (Kd b))).ncard = 2 ↔
@@ -734,7 +714,7 @@ theorem clause (hd : d.Prime) (hd7 : d % 8 = 7) (hb : b ^ 2 = -(d : L)) (p : ℕ
         · exact h3.mpr h
 
 /- English proof (translation)
-Use `haveI : Fact d.Prime := ⟨hd⟩`. Take `⟨P, hP1, hP2⟩` from `Kd_exists_isPrime_liesOver (b := b) d`. Use `haveI := hP1`. Use `haveI := hP2`. Conclude with `ram_case hd hb d rfl P`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ram_ncard (hd : d.Prime) (hb : b ^ 2 = -(d : L)) :
     (primesOver (span {(d : ℤ)}) (𝓞 (Kd b))).ncard = 1 := by
@@ -749,19 +729,17 @@ end Formalism.FrobeniusOrbits.SplitK
 namespace Formalism.FrobeniusOrbits
 
 /- English proof (translation)
-Introduce `e q d hH L _ _ ζ a b hL`. Take `⟨hq, hd, hq8, hd16, hJq⟩` from `hH`. Establish `hb : b ^ 2 = -(d : L)` using `hL.2.2.1`. Establish `hd7 : d % 8 = 7` using `by omega`. Establish `hq2 : q ≠ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Evaluate the numerical expressions using `at hq8`. Establish `hd2 : d ≠ 2`. Introduce and unpack `rfl`. Evaluate the numerical expressions using `at hd16`.
+Assume the hypotheses and unpack their components. Evaluate the numerical expressions. Establish an intermediate fact. Assume the hypotheses and unpack their components. Evaluate the numerical expressions.
 
-Establish `hqd : q ≠ d`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Use `⟨fun p hp => SplitK.clause hd hd7 hb p hp, SplitK.ram_ncard hd hb, (SplitK.clause hd hd7 hb q hq).mpr (Or.inr ⟨hq2, hJq⟩), ?_⟩` and prove the remaining obligations. Introduce `p hfp hp2 hpq hpd P _ _ σ hσ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hF` using `((hFrob e q d ⟨hq, hd, hqd, hq2, hd2⟩ L ζ a b hL p hp2 hpq hpd P).2.1 σ).mp hσ`. Establish `h2` using `hF.2.1`. Rewrite using `[SplitK.clause hd hd7 hb p hfp.out]`. Use `show galE e ζ a b σ ∈ (chD e).ker ↔ _`. Rewrite using `[MonoidHom.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `show (galE e ζ a b σ).1.2 = 1 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `Or.inr ⟨hp2, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `first | rfl | simp`. Introduce and unpack `(h | ⟨-, h⟩)`. Conclude with `absurd h hp2`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[h2, h]`.
-
-Apply the tactic sequence `first | rfl | simp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hostSplitK_of (hFrob : HostFrob) : HostSplitK := by
   intro e q d hH L _ _ ζ a b hL

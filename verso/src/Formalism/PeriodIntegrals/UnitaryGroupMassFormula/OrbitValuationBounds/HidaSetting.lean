@@ -19,22 +19,20 @@ def eOrb (E : Ent D) (p : ℕ) (u : D.what₂.Word) (i : ℕ) (z : Pl D) (s : ZM
   else E.size u i (orbMap D p z s) - ((D.R.k : ℝ) - 1) * wOrb D p i z s
 
 /- English proof (translation)
-Establish `h` using `D.R.m_add_three_le_k`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem three_le_k (D : D7) : 3 ≤ D.R.k := by
   have h := D.R.m_add_three_le_k
   omega
 
 /- English proof (translation)
-Establish `hxa` using `hS.xa`. Establish `ha1 : 1 < L.sc.a` using `hxa.2`. Establish `hp5 : (5 : ℝ) ≤ (p : ℝ)` using `by exact_mod_cast h.five`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (p : ℝ) ≤ L.sc.a ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[hxa.1]`. Introduce `s`. Conclude with `hS.sizeA u i hi _`. Use `show 2 * Real.logb p (L.sc.a ^ 2) + 2 ≤ ((D.R.N i : ℕ) : ℝ) - 1`. Establish `hk` using `hS.rankA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hx : 1 ≤ L.sc.a ^ 2` using `by nlinarith`. Establish `hlog : Real.logb p (L.sc.a ^ 2) ≤ Real.logb 5 (L.sc.a ^ 2)`. Unfold `Real.logb`. Establish `hl5 : 0 < Real.log 5` using `Real.log_pos (by norm_num)`. Establish `hlp : Real.log 5 ≤ Real.log p` using `Real.log_le_log (by norm_num) hp5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hx0 : 0 ≤ Real.log (L.sc.a ^ 2)` using `Real.log_nonneg hx`. Rewrite using `[div_le_div_iff₀ (by linarith) hl5]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hN : (D.R.k : ℝ) ≤ (D.R.N i : ℝ)`. Establish `: D.R.k ≤ D.R.N i`.
-
-Unfold `Formalism.BasicNotions.Ranks.N`. Conclude with `Nat.le_add_right _ _`. Conclude with `this` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem setting_sq {X : Inst D L} {E : Ent D} (hS : Shape D L X E) {p : ℕ} [Fact p.Prime] (h : OrbOK D p)
     (hp : (p : ℝ) ≤ L.sc.X'' D.R.n) (u : D.what₂.Word) {i : ℕ} (hi : i < D.R.m) (z : Pl D)
@@ -66,7 +64,7 @@ theorem setting_sq {X : Inst D L} {E : Ent D} (hS : Shape D L X E) {p : ℕ} [Fa
     linarith
 
 /- English proof (translation)
-Unfold `wOrb`. Conclude with `hS.wpos i hi _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wOrb_pos {X : Inst D L} {E : Ent D} (hS : Shape D L X E) (p : ℕ) {i : ℕ} (hi : i < D.R.m) (z : Pl D)
     (s : ZMod (nP D p)) : 0 < wOrb D p i z s := by
@@ -74,7 +72,7 @@ theorem wOrb_pos {X : Inst D L} {E : Ent D} (hS : Shape D L X E) (p : ℕ) {i : 
   exact hS.wpos i hi _
 
 /- English proof (translation)
-Unfold `eOrb wOrb`. Use `split_ifs with ht`. Conclude with `hS.top u i hi _ ht`. Conclude with `hS.low u i hi _ ht`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem eOrb_bounds {X : Inst D L} {E : Ent D} (hS : Shape D L X E) (p : ℕ) (u : D.what₂.Word) {i : ℕ}
     (hi : i < D.R.m) (z : Pl D) (s : ZMod (nP D p)) :
@@ -85,11 +83,11 @@ theorem eOrb_bounds {X : Inst D L} {E : Ent D} (hS : Shape D L X E) (p : ℕ) (u
   · exact hS.low u i hi _ ht
 
 /- English proof (translation)
-Establish `ht : ¬ IsTopPl D (orbMap D p z s)` using `fun ht => hs (Finset.mem_filter.2 ⟨Finset.mem_univ _, ht⟩)`. Establish `hsz : ((orbLoc E p h u i z Th).Dl s : ℝ) = E.size u i (orbMap D p z s)`. Establish `h1 : (orbLoc E p h u i z Th).Dl s = (E.nu u i (orbMap D p z s)).cells.card`. Unfold `Formalism.MainNotions.product_zeroth_first_parts.Loc.Dl`. Use `split_ifs with hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Conclude with `absurd hh hs`. Both sides reduce to the same expression. Rewrite using `[h1]`. Both sides reduce to the same expression. Rewrite using `[hsz]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `eOrb`. Rewrite using `[if_neg ht]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dl_off {E : Ent D} {p : ℕ} [Fact p.Prime] (h : OrbOK D p) (u : D.what₂.Word) (i : ℕ) (z : Pl D)
     (Th : MvPowerSeries (ZMod (nP D p) × Fin (D.R.N i) × Fin (D.R.N (i + 1))) ℂ_[p])
@@ -110,13 +108,13 @@ theorem dl_off {E : Ent D} {p : ℕ} [Fact p.Prime] (h : OrbOK D p) (u : D.what�
   ring
 
 /- English proof (translation)
-Establish `ht : IsTopPl D (orbMap D p z s)` using `(Finset.mem_filter.1 hs).2`. Establish `hA : (E.nu u i (orbMap D p z s)).rowLen 0 ≤ (E.nu u i (orbMap D p z s)).cells.card`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_map, Finset.mem_range, Function.Embedding.coeFn_mk] at hx`. Take `⟨j, hj, rfl⟩` from `hx`. Conclude with `YoungDiagram.mem_iff_lt_rowLen.2 hj`. Establish `hsz : ((orbLoc E p h u i z Th).Dl s : ℝ) = E.size u i (orbMap D p z s) - E.row u i (orbMap D p z s) 0`. Establish `h1 : (orbLoc E p h u i z Th).Dl s = (E.nu u i (orbMap D p z s)).cells.card - (E.nu u i (orbMap D p z s)).rowLen 0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.MainNotions.product_zeroth_first_parts.Loc.Dl`. Use `split_ifs with hh`. Both sides reduce to the same expression. Conclude with `absurd hs hh`. Rewrite using `[h1, Nat.cast_sub hA]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Both sides reduce to the same expression. Rewrite using `[hsz]`. Unfold `eOrb`. Rewrite using `[if_pos ht]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dl_on {E : Ent D} {p : ℕ} [Fact p.Prime] (h : OrbOK D p) (u : D.what₂.Word) (i : ℕ) (z : Pl D)
     (Th : MvPowerSeries (ZMod (nP D p) × Fin (D.R.N i) × Fin (D.R.N (i + 1))) ℂ_[p])

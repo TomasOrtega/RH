@@ -19,15 +19,15 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.Ldexb
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d n h Y b j hn hs hb hJ`. Establish `hB` using `d.ok.good`. Establish `hσ : ∀ z, σ (σ z) = z` using `UnitA.sig_sig hB.cm`. Use `⟨fun x => ?_, _root_.PositivityTheory.SiegelWeilFormula.Ldexb.val_pull_k h hJ hb⟩` and prove the remaining obligations. Take `⟨Y₀, b₀, K₀, a₀, hb₀, he₀, hK₀, ha₀⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Ldexb.exists_standard_hermitian_space hB hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, he⟩` from `hb.1`. Establish `hK : IsStdK (σ` using `σ) (Y := Y) d.B b (d.K.comap j) := _root_.PositivityTheory.SiegelWeilFormula.Ald.kStd_k F E σ d n h Y b j hb hJ`. Break down `hs with ⟨-, hY⟩ | ⟨-, hY⟩` into its components or cases. Establish `hε : ε = -1` using `eps_neg_unit (eps_neg hn hσ hY he)`. Substitute `hε` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨r, hr, hrf, hri⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Ldexb.exists_skewUnit_k hB`. Use `iwa_transport (B := d.B) hσ hb hb₀ he he₀ r ?_ hrf hri hK₀ ha₀.iwa hK x` and prove the remaining obligations. Rewrite using `[hr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hε : ε = 1` using `eps_unit (eps_one hn hσ hY he)`. Substitute `hε` using the available equality. Use `iwa_transport (B := d.B) hσ hb hb₀ he he₀ 1 ?_ (fun v => ?_) (fun w => ?_) hK₀ ha₀.iwa hK x` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `only [Units.val_one, inv_one, map_one]`.
+Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `⟨one_mem _, one_mem _⟩`. Simplify using the standard rewrite rules.
+Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem hgtPull_k : _root_.PositivityTheory.SiegelWeilFormula.Ald.HgtPull_k := by
   intro F E _ _ _ _ _ σ d n h Y b j hn hs hb hJ

@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.DeltaGal
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Establish `hm : (fun x => g⁻¹ * x) ⁻¹' (f.ker : Set Gp) ∈ nhds g` using `((continuous_const.mul continuous_id).isOpen_preimage _ h).mem_nhds (by simp)`. Use `(continuousAt_const (y := u (f g))).congr ?_` and prove the remaining obligations. Use `filter_upwards [hm] with x hx`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, MonoidHom.mem_ker, map_mul, map_inv] at hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_mul_eq_one.1 hx]`.
+A detailed English derivation is pending.
 -/
 theorem continuous_comp_of_isOpen_ker {Gp M Y : Type*} [Group Gp] [TopologicalSpace Gp] [IsTopologicalGroup Gp]
     [Group M] [TopologicalSpace Y] (f : Gp →* M) (h : IsOpen (f.ker : Set Gp)) (u : M → Y) :
@@ -33,17 +33,17 @@ theorem continuous_comp_of_isOpen_ker {Gp M Y : Type*} [Group Gp] [TopologicalSp
   rw [inv_mul_eq_one.1 hx]
 
 /- English proof (translation)
-Introduce `_ D cf b0 b1 Sx T Sp art hart i κ ι hι`. Use `set χ := cf.delAt (T.l i) with hχ`. Establish `hfin : ∃ n, 0 < n ∧ χ.OrderDvd n`. Rewrite using `[hχ]`. Unfold `CharFrame.delAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Use `split_ifs`. Use `exacts [cf.isDel'.fin, cf.isDel.fin]`. Take `⟨n, hn, hord⟩` from `hfin`. Establish `hpos : IsAlgPos χ 0` using `fun k _ => by`. Rewrite using `[HChar.inf_eq_one_of_order hn hord k]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Use `⟨hpos, continuous_comp_of_isOpen_ker (T.delta i) (T.delta_open i) (fun u => (u : T.O0 i)), ?_⟩` and prove the remaining obligations. Take `⟨r', hr'c, hr'⟩` from `hart.exists_isLAdicOf ι hpos`. It suffices to establish `h : inQ κ (T.delta i) = r' by rw [h]; exact hr'`. Establish `hc : Continuous (inQ κ (T.delta i))` using `continuous_comp_of_isOpen_ker (T.delta i) (T.delta_open i) (Units.map (toQ κ : T.O0 i →* Qbar (T.l i)))`.
+Reduce the argument to an intermediate assertion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : Ideal.span {((T.l i : ℕ) : 𝓞 D.host.E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(T.lPrime i).out.ne_zero` after adjusting the coercions. Establish `hl : ∀ᶠ v : HeightOneSpectrum (𝓞 D.host.E) in Filter.cofinite, ((T.l i : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal` using `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`. Establish `hS` using `Filter.eventually_cofinite.1 (hl.and (GlobalTheory.Mem.UnrAe.unr_ae_and_level _ χ).1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `mul_inv_eq_one.1 (GlobalTheory.FrobDense.eq_one_of_frob _ _ art hart _ (inQ κ (T.delta i) * r'⁻¹) (hc.mul hr'c.inv) hS.toFinset fun v hv A hA σ hσ => ?_)` and prove the remaining obligations. Rewrite `hv` using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not]`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, mul_inv_eq_one]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hr'.frob_unr hart (Or.inr rfl) hv.2 hA hσ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx1, hx2⟩` from `Sp.deltaRead i v hv.1 hv.2 A σ hA hσ`. Use `show κ (algebraMap _ _ ((T.delta i σ : T.O0 i))) = _`. Rewrite using `[hx2]`. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[hι, hx1, map_inv₀, RingEquiv.apply_symm_apply, Units.val_inv_eq_inv_val]`.
+A detailed English derivation is pending.
 -/
 theorem delta_isGal : GlobalTheory.Published.ChebotarevDegreeOne → ∀ {D : D7} {cf : CharFrame D} {b0 b1 : Big D} {Sx : Finset (PlE D.host)} {T : TwR D.LL0 D.nd} (Sp : RingSpec D cf b0 b1 Sx T) {art : Ideles D.host.E →* Gab D.host.E D.nd.Om}, IsGlobalArtin art → ∀ (i : T.Tw) (κ : FractionRing (T.O0 i) →+* Qbar (T.l i)) (ι : Qbar (T.l i) ≃+* ℂ), (∀ x : D.LL0, ι (κ (T.emb0 i x)) = D.what₂.embLL (x : D.what₂.LL)) → IsGal art κ ι (cf.delAt (T.l i)) 0 (T.delta i) := by
   intro _ D cf b0 b1 Sx T Sp art hart i κ ι hι

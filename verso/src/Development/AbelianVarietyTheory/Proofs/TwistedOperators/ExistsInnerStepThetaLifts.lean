@@ -19,9 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Chain.ExIoY
 
 /- English proof (translation)
-Introduce `hDS hHC hCR hCW D G _ _ Pl0 T A Ks _ _ _ R hL hF hM hH hW`. Establish `hθ : IsInfFam R.θ` using `hM.inf`. Establish `hE : R.ex_ItY` using `GlobalTheory.T.exists_innerStepIntertwiners_thetaChain hDS hHC D G Pl0 T A Ks R hL hF hM hH hW`. Establish `hI : R.chain_ItY` using `fun t k hk => (hW.ItY k hk).1 (hE k hk) t`. Establish `hS : GlobalTheory.Chain.StepsOK R` using `GlobalTheory.Chain.StepVac.stepsOK D G Pl0 T A Ks R hL hθ hW.ωY hW.ωX hW.vY hW.vX`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLw : GlobalTheory.Chain.LawsOK R` using `GlobalTheory.T.chainSteps_levelCharacter_conditions_hold D G Pl0 T A Ks R hL hθ hW.ωY hW.ωX hW.vY hW.vX`. Establish `hY` using `GlobalTheory.Chain.ioYSt_of_ioPair D G Pl0 T A Ks R (GlobalTheory.T.exists_thetaLift_multiplicitySpaces_of_hypotheses hDS hHC hCR hCW D) (GlobalTheory.Chain.ParOfNodeGap.chainPar_of_nodeGap D hH.nodeGap) hθ hS hLw hM.νY hM.νY' hI`. Conclude with `fun t k hk => hY t k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ex_ioY_holds : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay →
     GlobalTheory.Published.CasselmanWallach → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type)

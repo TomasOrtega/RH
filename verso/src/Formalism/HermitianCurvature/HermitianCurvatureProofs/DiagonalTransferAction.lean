@@ -21,7 +21,7 @@ variable {k r : ℕ} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
   {z : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (W →L[ℂ] W)}
 
 /- English proof (translation)
-Set `Li : W →ₗᵢ[ℂ] W` to `⟨(π h : W →ₗ[ℂ] W), hu h hh⟩`. Conclude with `Li.inner_map_map v w`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem inner_pres (hu : ∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v‖) {h : Mx k r} (hh : h ∈ UWset k r z)
     (v w : W) : ⟪π h v, π h w⟫_ℂ = ⟪v, w⟫_ℂ := by
@@ -29,11 +29,11 @@ theorem inner_pres (hu : ∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v‖) {
   exact Li.inner_map_map v w
 
 /- English proof (translation)
-Establish `hd` using `dOp_hasDeriv hπ hc hX`. Establish `h1 : HasDerivAt (fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • X)) v) (dOp π X v) 0` using `((ContinuousLinearMap.apply ℂ W v).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd`. Establish `h2 : HasDerivAt (fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • X)) w) (dOp π X w) 0` using `((ContinuousLinearMap.apply ℂ W w).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd`. Establish `hI` using `h1.inner ℂ h2`. Establish `hconst : (fun t : ℝ => ⟪π (NormedSpace.exp ((t : ℂ) • X)) v, π (NormedSpace.exp ((t : ℂ) • X)) w⟫_ℂ) = fun _ => ⟪v, w⟫_ℂ` using `funext fun t => inner_pres hu (exp_uw hX t) v w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hI` using `[hconst]`. Establish `h0` using `hI.unique (hasDerivAt_const (0 : ℝ) ⟪v, w⟫_ℂ)`. Establish `hone : π (NormedSpace.exp (((0 : ℝ) : ℂ) • X)) = 1`. Simplify using `[NormedSpace.exp_zero, hπ.1]`. Rewrite `h0` using `[hone]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [ContinuousLinearMap.one_apply] at h0`. Take the linear combination `h0`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dOp_skew (hπ : IsCRepOn (UWset k r z) π) (hc : ContinuousOn π (UWset k r z))
     (hu : ∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v‖) {X : Mx k r} (hX : InLieW k r z X) (v w : W) :
@@ -55,11 +55,11 @@ theorem dOp_skew (hπ : IsCRepOn (UWset k r z) π) (hc : ContinuousOn π (UWset 
   linear_combination h0
 
 /- English proof (translation)
-Take `⟨l1, l2⟩` from `frame_lie hB a b`. Establish `hR : IsRepW k r z π` using `⟨hπ, hc⟩`. Establish `e1 : hpart1 (Hpk k r) (unitB (Hpk k r) Bs b a) = (((-1 : ℝ) : ℂ)) • hpart1 (Hpk k r) (unitB (Hpk k r) Bs a b)`. Rewrite using `[Qx8.hpart1_unitB, Qx8.hpart1_unitB]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `module`. Establish `e2 : hpart2 (Hpk k r) (unitB (Hpk k r) Bs b a) = hpart2 (Hpk k r) (unitB (Hpk k r) Bs a b)`. Rewrite using `[Qx8.hpart2_unitB, Qx8.hpart2_unitB, add_comm (unitB (Hpk k r) Bs b a)]`. Establish `hlin` using `(differential_operator_linear W k r z π hR _ _ l1 l1).2 (-1)`. Use `show ⟪ecOp π (unitB (Hpk k r) Bs a b) v, w⟫_ℂ = ⟪v, ecOp π (unitB (Hpk k r) Bs b a) w⟫_ℂ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `ecOp`. Rewrite using `[e1, e2, hlin]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, dOp_skew hπ hc hu l1, dOp_skew hπ hc hu l2]`. Simplify using `only [Complex.conj_I, neg_smul, one_smul, ContinuousLinearMap.neg_apply, inner_neg_right]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem EB_adj (hπ : IsCRepOn (UWset k r z) π) (hc : ContinuousOn π (UWset k r z))
     (hu : ∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v‖) {m : ℕ} {Bs : Fin m → Fin (2 * r + k + 1) → ℂ}
@@ -91,11 +91,11 @@ variable {k r : ℕ} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
   {z : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (W →L[ℂ] W)}
 
 /- English proof (translation)
-Rewrite using `[LinearMap.isSymmetric_iff_isSelfAdjoint]`. Establish `hgl` using `(frame_general_linear W k r m z π Bs ⟨hπ, hc⟩ hB).1`. Establish `hst : ∀ a b, star (EB π Bs a b) = (((((fun _ => (1 : ℤˣ)) : Fin m → ℤˣ) a * ((fun _ => (1 : ℤˣ)) : Fin m → ℤˣ) b : ℤˣ) : ℤ) : Module.End ℂ W) * EB π Bs b a`. Introduce `a b`. Simplify using `only [mul_one, Units.val_one, Int.cast_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearMap.star_eq_adjoint]`. Use `symm`. Rewrite using `[LinearMap.eq_adjoint_iff]`. Introduce `x y`. Conclude with `EB_adj hπ hc hu hB b a x y`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `star_quantum_minor (Module.End ℂ W) m m (EB π Bs) (fun _ => 1) hgl hst id id (w : ℂ)`. Simplify using `only [Finset.prod_const_one, mul_one, Units.val_one, Int.cast_one, one_mul, Complex.star_def, Complex.conj_ofReal] at h`. Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qdet_symm (hπ : IsCRepOn (UWset k r z) π) (hc : ContinuousOn π (UWset k r z))
     (hu : ∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v‖) {m : ℕ} {Bs : Fin m → Fin (2 * r + k + 1) → ℂ}
@@ -122,13 +122,11 @@ end SelfAdj
 section Pos
 
 /- English proof (translation)
-Use `set T : Module.End ℂ Wq := (Φ.toLinearMap.adjoint ∘ₗ Φ.toLinearMap) * Polynomial.aeval C p with hT`. Establish `hsum : ∀ {ι : Type} [Fintype ι] (b : OrthonormalBasis ι ℂ Wq), ∑ i, ⟪Φ (b i), A (b i)⟫_ℂ = LinearMap.trace ℂ Wq T`. Introduce `ι _ b`. Rewrite using `[LinearMap.trace_eq_sum_inner T b]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA, hT, Module.End.mul_apply, LinearMap.comp_apply, LinearMap.adjoint_inner_right]`. Both sides reduce to the same expression. Establish `h1 : B.hsInner A Φ = ∑ i, ⟪Φ (stdOrthonormalBasis ℂ Wq i), A (stdOrthonormalBasis ℂ Wq i)⟫_ℂ`. Simplify using `only [B.hsInner, B.hsVec, PiLp.inner_apply]`. Rewrite using `[h1, hsum, ← hsum (hC.eigenvectorBasis rfl)]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_nonneg fun i _ => ?_` and prove the remaining obligations. Establish `hev` using `hC.hasEigenvector_eigenvectorBasis rfl i`. Rewrite using `[hA, Module.End.aeval_apply_of_hasEigenvector hev, map_smul, inner_smul_right, inner_self_eq_norm_sq_to_K]`. Use `mul_nonneg (hp _ (Module.End.hasEigenvalue_of_hasEigenvector hev)).le ?_` and prove the remaining obligations. Rewrite using `[← RCLike.ofReal_pow]`.
-
-Conclude with `RCLike.ofReal_nonneg.mpr (by positivity)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hs_pos {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (Φ A : Wq →L[ℂ] Wp)
@@ -168,9 +166,9 @@ def fstAlg (V : Type) [AddCommGroup V] [Module ℂ V] : Pr V →ₐ[ℂ] Module.
   commutes' _ := rfl
 
 /- English proof (translation)
-Establish `hf : f = Polynomial.aeval (fun ρ => M.xC P ρ Y) p`. Use function extensionality and compare the values at `ρ`. Rewrite using `[← hp ρ, ← Polynomial.coe_aeval_eq_eval]`. Conclude with `Polynomial.aeval_algHom_apply (Pi.evalAlgHom ℂ (fun _ : M.Ty P => ℂ) ρ) (fun ρ => M.xC P ρ Y) p`. Rewrite using `[hf, ← Polynomial.aeval_algHom_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem kappa_aeval {P : M.Par} {𝒜 : Type} [Ring 𝒜] [StarRing 𝒜] [Algebra ℂ 𝒜] (d : NFData P 𝒜) (Y : ℂ)
     (p : Polynomial ℂ) (f : M.Ty P → ℂ) (hp : ∀ ρ, p.eval (M.xC P ρ Y) = f ρ) :
@@ -183,13 +181,13 @@ theorem kappa_aeval {P : M.Par} {𝒜 : Type} [Ring 𝒜] [StarRing 𝒜] [Algeb
   rfl
 
 /- English proof (translation)
-Establish `gP : ∀ i ∈ Icc 1 (P.k - 1), P.lo i ≤ P.hi i` using `hP.gap`. Establish `hne : ∀ σ σ' : M.Ty P, σ ≠ σ' → LieAlgebraWeightVectors.cb_xPoly P σ - LieAlgebraWeightVectors.cb_xPoly P σ' ≠ 0`. Introduce `σ σ' hss h0`. Apply `hss` to reduce the goal to its premises. Establish `hx : ∀ Y, M.xC P σ Y = M.xC P σ' Y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `Y`. Rewrite using `[← LieAlgebraWeightVectors.cb_eval_xPoly, ← LieAlgebraWeightVectors.cb_eval_xPoly, sub_eq_zero.mp h0]`. Establish `e` using `LieAlgebraWeightVectors.cb_eq_of_prod_eq (n := P.k - 1) (LieAlgebraWeightVectors.cb_rho_anti _ gP σ) (LieAlgebraWeightVectors.cb_rho_anti _ gP σ') hx`. Conclude with `LieAlgebraWeightVectors.cb_ty_ext _ (fun j => e _ (Finset.mem_Icc.mpr ⟨by omega, by have := j.2; omega⟩))`. Take `⟨Y₀, hY⟩` from `Infinite.exists_notMem_finset (((Finset.univ : Finset (M.Ty P × M.Ty P)).biUnion (fun q => if q.1 = q.2 then ∅ else (LieAlgebraWeightVectors.cb_xPoly P q.1 - LieAlgebraWeightVectors.cb_xPoly P q.2).roots.toFinset)).image Complex.re)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Y₀, fun σ σ' h => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hss`. Apply `hY` to reduce the goal to its premises. Rewrite using `[Finset.mem_image]`. Use `⟨(Y₀ : ℂ), ?_, Complex.ofReal_re Y₀⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_biUnion, Finset.mem_univ, true_and]`. Use `⟨(σ, σ'), ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg hss, Multiset.mem_toFinset, Polynomial.mem_roots (hne σ σ' hss), Polynomial.IsRoot.def, Polynomial.eval_sub, LieAlgebraWeightVectors.cb_eval_xPoly, LieAlgebraWeightVectors.cb_eval_xPoly, sub_eq_zero]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sep_real {P : M.Par} (hP : P.OK) :
     ∃ Y₀ : ℝ, Function.Injective (fun ρ : M.Ty P => M.xC P ρ (Y₀ : ℂ)) := by
@@ -219,13 +217,11 @@ theorem sep_real {P : M.Par} (hP : P.OK) :
   exact h
 
 /- English proof (translation)
-Set `s : Finset ℂ` to `Finset.univ.image node ∪ E`. Set `val : ℂ → ℂ` to `fun μ => if h : ∃ i, node i = μ then f h.choose else 1`. Use `⟨Lagrange.interpolate s id val, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Establish `hi : node i ∈ s` using `Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show Polynomial.eval (id (node i)) (Lagrange.interpolate s id val) = f i`. Rewrite using `[Lagrange.eval_interpolate_at_node val (Set.injOn_id _) hi]`. Establish `hex : ∃ j, node j = node i` using `⟨i, rfl⟩`. Simplify using `only [val, id, dif_pos hex]`. Rewrite using `[hinj hex.choose_spec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `μ hμ show 0 < Polynomial.eval (id μ) (Lagrange.interpolate s id val)`. Rewrite using `[Lagrange.eval_interpolate_at_node val (Set.injOn_id _) (Finset.mem_union_right _ hμ)]`. Simplify using `only [val]`. Use `split_ifs with h`. Conclude with `hf _`.
-
-Conclude with `one_pos`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem interp_exists {ι : Type} [Fintype ι] (node : ι → ℂ) (hinj : Function.Injective node) (f : ι → ℂ)
     (hf : ∀ i, 0 < f i) (E : Finset ℂ) :
@@ -258,11 +254,11 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Establish `hpow : ∀ (m : ℕ) (Ψ : RadSp k r z z' π π') (v : Wq), (((T ^ m) Ψ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c g v = (Ψ : Fn k r (Wq →L[ℂ] Wp)) c g ((C ^ m) v)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro Ψ v`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ m ih`. Introduce `Ψ v`. Rewrite using `[pow_succ, Module.End.mul_apply, ih, hT, pow_succ', Module.End.mul_apply]`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Introduce `Ψ v`. Rewrite using `[map_add, LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, Pi.add_apply, ContinuousLinearMap.add_apply, hp, hq, map_add, LinearMap.add_apply, map_add]`. Consider the case `monomial m a`. Introduce `Ψ v`. Rewrite using `[Polynomial.aeval_monomial, Polynomial.aeval_monomial, Module.End.mul_apply, Module.End.mul_apply, Module.algebraMap_end_apply, Module.algebraMap_end_apply, Submodule.coe_smul, Pi.smul_apply, Pi.smul_apply, ContinuousLinearMap.smul_apply, hpow, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_act (T : Module.End ℂ (RadSp k r z z' π π')) (C : Module.End ℂ Wq) {c : Fin r → ℂ} {g : Mx k r}
     (hT : ∀ (Ψ : RadSp k r z z' π π') (v : Wq),
@@ -293,11 +289,11 @@ theorem aeval_act (T : Module.End ℂ (RadSp k r z z' π π')) (C : Module.End �
 variable [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Take `⟨hc, hg, hG⟩` from `hx`. Establish `hGG : GGl k r z z' g ≠ 0` using `hG.ne'`. Rewrite using `[Module.End.mul_apply, X.fn_apply 5 _ (c, g) ⟨hc, hg, hG⟩, X.t_apply Y 1 1 Ψ (c, g) ⟨hc, hg, hG⟩]`. Establish `hF` using `Qx5.slice_FF hz hz' Ψ.2 hc`. Establish `h` using `LieAlgebraWeightVectors.top_level_pointwise_identity capelli_two_by_two right_type_action hz hz' (Qx5.Dp_dom k r z z') hπ'r hπ'c hF ⟨hg, hG⟩ hGG Bs hBs Y v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `(frame_general_linear Wq k r (k - 1) z' π' Bs ⟨hπ'r, hπ'c⟩ (LieAlgebraWeightVectors.frame_sub hBs (by simp))).2`. Rewrite using `[ContinuousLinearMap.smul_apply]`. Use `erw [h]`. Rewrite using `[← hq, smul_smul]`. Establish `: (fnVal k r z z' 5 g) * (GGl k r z z' g : ℂ) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [fnVal]`. Conclude with `inv_mul_cancel₀ (by exact_mod_cast hGG)`. Rewrite using `[this, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagonal_transfer_action (X : ActualOps k r z z' π π') (hz : inWb k r z) (hz' : inWb k r z')
     (hπ'r : IsCRepOn (UWset k r z') π') (hπ'c : ContinuousOn π' (UWset k r z'))
@@ -330,25 +326,23 @@ namespace Formalism.FourierDecayAlt.P5
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Qr Formalism.FourierDecayAlt.P Formalism.FourierDecayAlt.P.QrD Formalism.FourierDecayAlt.P5.Kfp
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' hPl X d hL hS hR hQ f hf Φ c g`. Take `⟨hP, hz, hz', hTz, hTz', hπ, hπ'⟩` from `hPl`. Distinguish the cases in `hx : (c, g) ∈ DomR P.k P.r z z'`. Use `swap`. Establish `h1 : (Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g = 0` using `Φ.2.1 (c, g) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (((d.κ f).1 Φ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) c g = 0` using `((d.κ f).1 Φ).2.1 (c, g) hx`. Rewrite using `[h1, h2]`. Simplify using `[B.hsInner, B.hsVec]`. Establish `hx'` using `hx`. Take `⟨hc, hg, hG⟩` from `hx'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hT : 0 < Tz P.k P.r z` using `by rw [hTz]; exact hP.T_pos`. Establish `hT' : 0 < Tz P.k P.r z'` using `by rw [hTz']; exact hP.T'_pos`. Take `⟨Bs, e', e, hB1, -, -, -, -, -, -, -, -⟩` from `LieAlgebraWeightVectors.geom_package hz hz' hT hT' hg hG.ne'`. Establish `hBz' : IsFrameOf P.k P.r [z'] Bs` using `LieAlgebraWeightVectors.frame_sub hB1 (by simp)`. Establish `hπ'r` using `hπ'.2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ'c` using `hπ'.2.2.1`. Establish `hu` using `hπ'.2.2.2.1`. Take `⟨Y₀, hY₀⟩` from `sep_real hP`. Use `set w0 : ℝ := Y₀ + ((P.k : ℝ) - 2) / 2 with hw0`. Use `set C : Module.End ℂ Wq := qdet (EB π' Bs) (w0 : ℂ) with hCdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC : C.IsSymmetric` using `qdet_symm hπ'r hπ'c hu hBz' w0`. Take `⟨p, hpn, hpE⟩` from `interp_exists (fun ρ => M.xC P ρ (Y₀ : ℂ)) hY₀ f hf (minpoly ℂ C).roots.toFinset`. Establish `hκ : d.κ f = Polynomial.aeval (d.x (Y₀ : ℂ)) p` using `kappa_aeval d (Y₀ : ℂ) p f hpn`. Establish `hx1 : fstAlg _ (d.x (Y₀ : ℂ)) = X.fn 5 * X.t (Y₀ : ℂ) 1 1`. Establish `h : d.x (Y₀ : ℂ) = d.L.GGi * X.QQ (Y₀ : ℂ) 1 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ]`. Simplify using `only [NFData.QQ, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_fin_one, Matrix.empty_val', Matrix.cons_val_zero]`. Rewrite using `[← mul_assoc, d.L.GGi_GG, one_mul]`. Rewrite using `[h, hL.2.2.2.2.2.2.2.2.2.2.2.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hfst : (d.κ f).1 = Polynomial.aeval (X.fn 5 * X.t (Y₀ : ℂ) 1 1) p`. Rewrite using `[← hx1, Polynomial.aeval_algHom_apply, hκ]`. Both sides reduce to the same expression. Establish `hact : ∀ (Ψ : RadSp P.k P.r z z' π π') (v : Wq), (((X.fn 5 * X.t (Y₀ : ℂ) 1 1) Ψ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) c g v = (Ψ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g (C v)`. Introduce `Ψ v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[diagonal_transfer_action X hz hz' hπ'r hπ'c hx Bs hB1 (Y₀ : ℂ) Ψ v, hCdef, hw0]`. Use `push_cast`. Both sides reduce to the same expression. Use `hs_pos ((Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g) ((((d.κ f).1 Φ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) c g) C hC p ?_ ?_` and prove the remaining obligations. Introduce `μ hμ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hpE` to reduce the goal to its premises. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots (minpoly.ne_zero (Algebra.IsIntegral.isIntegral C))]`. Conclude with `Module.End.isRoot_of_hasEigenvalue hμ`. Introduce `v`. Rewrite using `[hfst]`.
-
-Conclude with `aeval_act _ C hact p Φ v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kappaFibrePos : KappaFibrePos := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' hPl X d hL hS hR hQ f hf Φ c g

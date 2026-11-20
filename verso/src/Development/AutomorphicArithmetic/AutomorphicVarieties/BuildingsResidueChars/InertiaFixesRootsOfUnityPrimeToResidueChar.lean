@@ -8,29 +8,27 @@ open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL Globa
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ w A hA M hM s hs ζ hζ`. Establish `hM0 : M ≠ 0`. Introduce and unpack `rfl`. Conclude with `hM (by simpa using w.asIdeal.zero_mem)`. Establish `hvM : A.valuation (M : Ω) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hA (M : 𝓞 F)).not.mpr hM`. Establish `h2 : (algebraMap F Ω) ((M : 𝓞 F) : F) = (M : Ω)` using `by simp`. Rewrite `h1` using `[h2]`. Use `le_antisymm ?_ (not_lt.mp h1)` and prove the remaining obligations. Simplify using `using A.valuation_le_one (M : A)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hvz : A.valuation ζ = 1`. Establish `hp : A.valuation ζ ^ M = 1` using `by rw [← map_pow, hζ, map_one]`. Break down `lt_trichotomy (A.valuation ζ) 1 with h | h | h` into its components or cases. Conclude with `absurd hp (pow_lt_one₀ zero_le' h hM0).ne`. Conclude with `h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd hp (one_lt_pow₀ h hM0).ne'`. Establish `hI : s ∈ Inertia A` using `hs`. Unfold `Inertia at hI`. Take `⟨-, hI⟩` from `hI`. Establish `hd : A.valuation (s ζ - ζ) < 1` using `hI ζ hvz.le`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hvz`. Use `set η := s ζ / ζ with hηdef`. Establish `hsz : s ζ = η * ζ` using `(div_mul_cancel₀ _ hζ0).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hη : η ^ M = 1`. Rewrite using `[hηdef, div_pow, ← map_pow, hζ, map_one, div_one]`. Establish `hη1 : A.valuation (η - 1) < 1`. Establish `e : s ζ - ζ = (η - 1) * ζ` using `by rw [hsz]; ring`. Rewrite `hd` using `[e, map_mul, hvz, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hd`. Establish `hvη : A.valuation η = 1`. Establish `e : η = 1 + (η - 1)` using `by ring`. Rewrite using `[e]`. Conclude with `Valuation.map_one_add_of_lt _ hη1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hne' : η ≠ 1`. Introduce `h1`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hsz, h1, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsum : ∑ i ∈ Finset.range M, η ^ i = 0`. Establish `e` using `mul_geom_sum η M`. Rewrite `e` using `[hη, sub_self]`. Conclude with `(mul_eq_zero.mp e).resolve_left (sub_ne_zero.mpr hne')`. Establish `hMsum : (M : Ω) = ∑ i ∈ Finset.range M, (1 - η ^ i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_sub_distrib, hsum, sub_zero]`. Simplify using the standard rewrite rules. Establish `hlt : A.valuation (M : Ω) < 1`. Rewrite using `[hMsum]`. Use `Valuation.map_sum_lt _ one_ne_zero ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `i _`. Establish `e` using `mul_geom_sum η i`. Establish `hS : A.valuation (∑ j ∈ Finset.range i, η ^ j) ≤ 1`. Use `Valuation.map_sum_le _ ?_` and prove the remaining obligations. Introduce `j _`.
-
-Rewrite using `[map_pow, hvη, one_pow]`. Rewrite using `[Valuation.map_sub_swap, ← e, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hlt` using `[hvM]`. Conclude with `lt_irrefl _ hlt`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.inertia_fixes_roots_of_unity_prime_to_residue_char :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (w : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω),

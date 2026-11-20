@@ -12,17 +12,15 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.DegVol.StabQuot
 
 /- English proof (translation)
-Take `⟨f, hf0, hfm, hfi⟩` from `exists_pos_lintegral_lt_of_sigmaFinite μG (ε := 1) one_ne_zero`. Establish `hm : Measurable fun x => (f x : ℝ≥0∞)` using `hfm.coe_nnreal_ennreal`. Establish `hact : Measurable fun p : Mt k r × Mt k r => lmulM (Matrix.of p.1) p.2` using `(GlobalTheory.Amp.CutQuot.continuous_act k r).measurable`. Establish `hm2 : Measurable fun p : Mt k r × Mt k r => (f (lmulM (Matrix.of p.2) p.1) : ℝ≥0∞)` using `hm.comp (hact.comp measurable_swap)`. Use `set F : Mt k r → ℝ≥0∞ := fun x => ∫⁻ s, (f (lmulM (Matrix.of s) x) : ℝ≥0∞) ∂μS with hF`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFm : Measurable F` using `hm2.lintegral_prod_right'`. Establish `hFi : ∫⁻ x, F x ∂ν < 1` using `(hq _ hm).symm.trans_lt hfi`. Establish `hFpos : ∀ x, 0 < F x` using `fun x => by`. Establish `hx : Measurable fun s => (f (lmulM (Matrix.of s) x) : ℝ≥0∞)` using `hm.comp (continuous_rmulM (k := k) (r := r) (Matrix.of x)).measurable`. Rewrite using `[hF, lintegral_pos_iff_support hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Function.support (fun s => (f (lmulM (Matrix.of s) x) : ℝ≥0∞)) = Set.univ`. Use extensionality with `s`. Simplify using `[(hf0 _).ne']`. Rewrite using `[this]`. Conclude with `Measure.measure_univ_pos.mpr hS`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Measure.sigmaFinite_of_countable (S := Set.range fun n : ℕ => {x | ((n : ℝ≥0∞))⁻¹ ≤ F x}) (Set.countable_range _) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `e : {x | (((0 : ℕ) : ℝ≥0∞))⁻¹ ≤ F x} = {x | F x = ∞}` using `by ext x; simp show ν {x | (((0 : ℕ) : ℝ≥0∞))⁻¹ ≤ F x} < ∞`. Rewrite using `[e, measure_eq_top_of_lintegral_ne_top hFm.aemeasurable (hFi.trans ENNReal.one_lt_top).ne]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `(meas_ge_le_lintegral_div hFm.aemeasurable (by simp) (by simpa using hn.ne')).trans_lt (ENNReal.div_lt_top (hFi.trans ENNReal.one_lt_top).ne (by simp))`. Rewrite using `[Set.sUnion_range, Set.eq_univ_iff_forall]`. Introduce `x`. Take `⟨n, hn⟩` from `ENNReal.exists_inv_nat_lt (hFpos x).ne'`.
-
-Conclude with `Set.mem_iUnion.mpr ⟨n, hn.le⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sigmaFinite_quot {k r : ℕ} {μG μS ν : Measure (Mt k r)} [SigmaFinite μG] [SFinite μS]
     (hS : μS ≠ 0) (hq : IsQuotMeas μG μS ν) : SigmaFinite ν := by
@@ -59,9 +57,9 @@ theorem sigmaFinite_quot {k r : ℕ} {μG μS ν : Measure (Mt k r)} [SigmaFinit
     exact Set.mem_iUnion.mpr ⟨n, hn.le⟩
 
 /- English proof (translation)
-Introduce `k r j hj z z' γ μG μ hG hN hγ`. Take `⟨-, -, a3, -, a5, -⟩` from `GlobalTheory.Amp.StabMeas.stabilizer_measure_normalisation k r j hj z' z γ⁻¹ 1 μ one_pos hN`. Rewrite `a5` using `[Matrix.nonsing_inv_nonsing_inv _ (isUnit_det_of_mem_GG hγ)]`. Take `⟨-, b2, b3, b4, -⟩` from `GlobalTheory.Amp.StabMeas.stabilizer_measure_normalisation k r j hj z z' γ 1 _ one_pos a5`. Take `⟨ν, hν⟩` from `GlobalTheory.SgQuot.exists_isQuotMeas k r _ μG _ b2 hG b3 b4`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hG.1`. Use `haveI := b3.1`. Conclude with `⟨a3.1, a3, a5, ν, sigmaFinite_quot b3.2.1 hν, (GlobalTheory.Amp.CutQuot.cut_quotient k r _ μG _ ν b2 hG b3 b4 hν).1, hν⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sigmaFinite_quot : ∀ (k r j : ℕ) (hj : j ≤ r) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : Mat k r) (μG μ : Measure (Mt k r)), IsHaarOn (UH (Hpk k r)) μG → IsNormalFormStabilizerMeasure k r hj z' z γ⁻¹ 1 μ → γ ∈ UH (Hpk k r) → SigmaFinite μ ∧ IsHaarOn (Rset k r γ⁻¹) μ ∧ IsNormalFormStabilizerMeasure k r hj z z' γ 1 (μ.map (conjM γ⁻¹)) ∧ ∃ ν : Measure (Mt k r), SigmaFinite ν ∧ ν {x | Matrix.of x ∉ UH (Hpk k r)} = 0 ∧ IsQuotMeas μG (μ.map (conjM γ⁻¹)) ν := by
   intro k r j hj z z' γ μG μ hG hN hγ

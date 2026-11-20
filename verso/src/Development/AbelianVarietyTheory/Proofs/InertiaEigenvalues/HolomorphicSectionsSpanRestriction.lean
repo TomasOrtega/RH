@@ -13,23 +13,21 @@ noncomputable section
 namespace GlobalTheory.CoverFormDesc
 
 /- English proof (translation)
-Use `(Submodule.mem_span_range_iff_exists_fun K).mp ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hno`. Use `set G := Submodule.span K (Set.range g) with hG`. Use `haveI : FiniteDimensional K G := FiniteDimensional.span_of_finite _ (Set.finite_range g)`. Set `b` to `Module.finBasis K G`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `v : Fin (Module.finrank K G) → M` to `fun i => (b i : M)`. Establish `hvsp : Submodule.span K (Set.range v) = G`. Establish `: Set.range v = G.subtype '' Set.range b`. Use extensionality with `x`. Simplify using `[v]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Submodule.span_image, b.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hli : LinearIndependent K (Fin.cons f₂ v : Fin (Module.finrank K G + 1) → M)`. Rewrite using `[linearIndependent_fin_cons]`. Conclude with `⟨b.linearIndependent.map' G.subtype (Submodule.ker_subtype G), by rwa [hvsp]⟩`. Establish `hsecG : G ≤ S`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hG, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hg i`. Establish `hin : ∀ i, (Fin.cons f₂ v : Fin (Module.finrank K G + 1) → M) i ∈ S`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using hf`. Simplify using `using hsecG (b i).2`. Establish `hC` using `hinj _ _ hin hli`. Establish `hfun : (fun i => R ((Fin.cons f₂ v : Fin (Module.finrank K G + 1) → M) i)) = Fin.cons (R f₂) (fun i => R (v i))`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> simp`. Rewrite `hC` using `[hfun, linearIndependent_fin_cons]`. Apply `hC.2` to reduce the goal to its premises. Establish `hG' : ∀ x ∈ G, R x ∈ Submodule.span ℂ (Set.range fun i => R (v i))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Introduce `x hx`. Rewrite `hx` using `[← hvsp]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul c x _ hx => rw [map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`. Use `Submodule.span_le.mpr ?_ hφ` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hG' _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_span_of_image_mem_span {K : Type} [Field K] {M : Type} [AddCommGroup M] [Module K M] {W : Type}
     [AddCommGroup W] [Module ℂ W] (σ : K →+* ℂ) (R : M →ₛₗ[σ] W) (S : Submodule K M)
@@ -91,13 +89,13 @@ theorem rd_eq {D : D7} {T : CoreJ D} {j : ℕ} {σ : T.Q.c.F →+* ℂ} (C : Cov
     (f : Rul C.d.Xo₂ C.d.c₂) : C.rd a f = rdL C a f := rfl
 
 /- English proof (translation)
-Introduce `D T hL j hj σ hσ C hU a n hD hP hspan hmu φ hφ hφK`. Establish `hsp : φ ∈ Submodule.span ℂ (baseForms T j σ a n)` using `GlobalTheory.T.coverForm_levelInvariant_mem_span_baseForms D T hL j hj σ hσ C hU a n hD hP hspan hmu φ hφ hφK`. Take `⟨f₂, ⟨hf₂s, -⟩, rfl⟩` from `hφ`. Take `⟨m, z, ψ, hψ⟩` from `Submodule.mem_span_set'.mp hsp`. Establish `hup` using `(GlobalTheory.T.coreRationalForms_subset_coverForms D T hL j hj σ hσ C hU a n hD hP).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose g hg hgψ using fun i => hup (ψ i).2`. Establish `hinj : ∀ (m : ℕ) (f : Fin m → Rul C.d.Xo₂ C.d.c₂), (∀ i, f i ∈ sec C.d.Xo₂ C.d.c₂ a n) → LinearIndependent C.d.c₂.F f → LinearIndependent ℂ (fun i => rdL C a (f i))` using `fun m f hf hli => GlobalTheory.T.coverSections_linearIndependent_adelicReadings D T hL j hj σ hσ C hU hP.1 a n hD m f hf hli`. Establish `hmem : rdL C a f₂ ∈ Submodule.span ℂ (Set.range fun i => rdL C a (g i))`. Rewrite using `[← rd_eq, ← hψ]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hgψ i, rd_eq]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Take `⟨c, hc⟩` from `mem_span_of_image_mem_span C.σ₂ (rdL C a) (sec C.d.Xo₂ C.d.c₂ a n) hinj g (fun i => (hg i).1) f₂ hf₂s hmem`. Use `⟨m, c, fun i => (ψ i : GA D (T.V j σ) → ℂ), fun i => (ψ i).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, rd_eq, map_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, ← rd_eq, hgψ i]`.
+A detailed English derivation is pending.
 -/
 theorem cover_form_desc : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∀ C : Cover T j σ, C.IsUnif → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → C.IsPinned a n → holSub0 (T.U j σ).X (laU (T.U j σ) a n) ≤ Submodule.span ℂ (rdU (T.U j σ) '' {f | f ∈ sec (T.Q.Xo j) T.Q.c a n ∧ rdU (T.U j σ) f ∈ holSub0 (T.U j σ).X (laU (T.U j σ) a n)}) → (∀ k ∈ T.Kf j σ, ∀ h, T.mu j σ (h * k) = T.mu j σ h) → ∀ φ ∈ C.ratForms a n, (∀ k ∈ T.Kf j σ, ∀ h, φ (h * k) = φ h) → ∃ (m : ℕ) (x : Fin m → C.d.c₂.F) (ψ : Fin m → (GA D (T.V j σ) → ℂ)), (∀ i, ψ i ∈ baseForms T j σ a n) ∧ φ = ∑ i, C.σ₂ (x i) • ψ i := by
   intro D T hL j hj σ hσ C hU a n hD hP hspan hmu φ hφ hφK

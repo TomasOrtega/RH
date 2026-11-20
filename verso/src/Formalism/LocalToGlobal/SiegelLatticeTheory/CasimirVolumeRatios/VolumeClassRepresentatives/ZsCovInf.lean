@@ -14,7 +14,7 @@ section Grp
 variable {n : ℕ} (ε : Fin n → Bool)
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Matrix.det (Formalism.REAL.Jm_mul_self ε)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Jm_det : (Formalism.REAL.Jm ε).det ≠ 0 := by
   intro h
@@ -23,7 +23,7 @@ theorem Jm_det : (Formalism.REAL.Jm ε).det ≠ 0 := by
   exact zero_ne_one this
 
 /- English proof (translation)
-Introduce `h0`. Use `congrArg Matrix.det h` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`. Conclude with `Jm_det ε this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_of_inUJ {C : Matrix (Fin n) (Fin n) ℂ} (h : Cᴴ * Formalism.REAL.Jm ε * C = Formalism.REAL.Jm ε) : C.det ≠ 0 := by
   intro h0
@@ -47,13 +47,13 @@ theorem umat_mul (g h : Formalism.REAL.UJ ε) :
     PI.CdHaarScale.umat (g * h) = PI.CdHaarScale.umat g * PI.CdHaarScale.umat h := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext e)`.
+A detailed English derivation is pending.
 -/
 theorem umat_ext {g h : Formalism.REAL.UJ ε} (e : PI.CdHaarScale.umat g = PI.CdHaarScale.umat h) : g = h :=
   Subtype.ext (Units.ext e)
 
 /- English proof (translation)
-Establish `: (Formalism.REAL.muG ε).IsMulRightInvariant` using `Formalism.IndefR.Eqv.uJ_rightInv ε _ inferInstance`. Establish `h1 : (fun g : Formalism.REAL.UJ ε => c * g * c⁻¹) = (fun g => g * c⁻¹) ∘ (fun g => c * g)` using `rfl`. Establish `hm1 : Measurable (fun g : Formalism.REAL.UJ ε => c * g)` using `measurable_const_mul c`. Establish `hm2 : Measurable (fun g : Formalism.REAL.UJ ε => g * c⁻¹)` using `measurable_mul_const c⁻¹`. Rewrite using `[h1, ← Measure.map_map hm2 hm1, map_mul_left_eq_self, map_mul_right_eq_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_conj_muG (c : Formalism.REAL.UJ ε) : (Formalism.REAL.muG ε).map (fun g => c * g * c⁻¹) = Formalism.REAL.muG ε := by
   have : (Formalism.REAL.muG ε).IsMulRightInvariant := Formalism.IndefR.Eqv.uJ_rightInv ε _ inferInstance
@@ -71,7 +71,7 @@ variable {P Q n : ℕ} {ε : Fin n → Bool} (e : Fin P ⊕ Fin Q ≃ Fin n)
 
 include h1 h2 in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Take `⟨s, rfl⟩` from `e.surjective i`. Break down `s with s | s` into its components or cases. Simplify using `[h1]`. Simplify using `[h2]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem signs_eq : (fun i => (e.symm i).isLeft) = ε := by
   funext i
@@ -83,7 +83,7 @@ theorem signs_eq : (fun i => (e.symm i).isLeft) = ε := by
 include h1 h2 in
 
 /- English proof (translation)
-Use `Formalism.IndefR.Eqv.MF.sq_gram e.symm C` as an intermediate fact. Rewrite `this` using `[signs_eq e h1 h2]`. Rewrite using `[this, hC]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sq_inUJ {C : Matrix (Fin P ⊕ Fin Q) (Fin n) ℂ} (hC : Cᴴ * Formalism.UG.Jpq P Q * C = Formalism.REAL.Jm ε) :
     (C.submatrix e.symm id)ᴴ * Formalism.REAL.Jm ε * C.submatrix e.symm id = Formalism.REAL.Jm ε := by
@@ -92,7 +92,7 @@ theorem sq_inUJ {C : Matrix (Fin P ⊕ Fin Q) (Fin n) ℂ} (hC : Cᴴ * Formalis
   rw [this, hC]
 
 /- English proof (translation)
-Use `congrArg (fun Z : Matrix (Fin n) m ℂ => Z.submatrix e id) h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem submatrix_inj {m : Type} {X Y : Matrix (Fin P ⊕ Fin Q) m ℂ}
     (h : X.submatrix e.symm id = Y.submatrix e.symm id) : X = Y := by
@@ -106,7 +106,7 @@ section Cond
 variable {D : D7} {V : HSp D} (fr : Formalism.IndefR.Eqv.UI.Frames D V) {P Q : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_mul]`. Establish `h` using `fr.spec v`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (fr.ε v) := by rw [hA]; exact h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_C (v : InfinitePlace D.host.F) {A : Matrix (Fin P ⊕ Fin Q) (Fin V.rank) ℂ}
     (hA : Aᴴ * Formalism.UG.Jpq P Q * A = V.gram.map (embOf D ((Formalism.L2.Host.tauPl D).symm v))) :
@@ -124,25 +124,21 @@ def cEl (v : InfinitePlace D.host.F) {A : Matrix (Fin P ⊕ Fin Q) (Fin V.rank) 
   ofInUJ (fr.ε v) (sq_inUJ e h1 h2 (frame_C fr v hA))
 
 /- English proof (translation)
-Use `set c := cEl fr v hA e h1 h2 with hc`. Use `set xv : Formalism.REAL.UJ (fr.ε v) := x.1 v with hxv`. Establish `hX : infMat D.sp.cm.sig V.gram (Formalism.IndefR.Eqv.thetaC D ((Formalism.L2.Host.tauPl D).symm v)) (Formalism.IndefR.Eqv.UI.brg fr x) = fr.P v * Formalism.IndefR.Eqv.uM fr x v * (fr.P v)⁻¹`. Establish `h` using `Formalism.IndefR.Eqv.infMat_brg fr x ((Formalism.L2.Host.tauPl D).symm v)`. Rewrite `h` using `[Equiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hu` using `Formalism.IndefR.Eqv.P_isUnit_det fr v`. Use `set u := Formalism.IndefR.Eqv.uM fr x v with hudef`. Use `set C := A * fr.P v with hCdef`. Establish `step1 : ∀ b : UpqT P Q, UpqT.mat b * A = A * (fr.P v * u * (fr.P v)⁻¹) ↔ UpqT.mat b * C = C * u`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[hCdef, ← Matrix.mul_assoc, h, Matrix.mul_assoc A, Matrix.mul_assoc (fr.P v * u), Matrix.nonsing_inv_mul _ hu, Matrix.mul_one, ← Matrix.mul_assoc]`. Introduce `h`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hCdef, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`. Use `_ = C * u * (fr.P v)⁻¹ := by rw [h]`. Use `_ = A * (fr.P v * u * (fr.P v)⁻¹) := by rw [hCdef]; simp only [Matrix.mul_assoc]`. Establish `hcm : PI.CdHaarScale.umat c = C.submatrix e.symm id` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxm : PI.CdHaarScale.umat xv = u` using `rfl`. Establish `step2 : ∀ b : UpqT P Q, UpqT.mat b * C = C * u ↔ PI.UnitaryGroupMassFormula.CdHaarScale.Main.phi e h1 h2 b * c = c * xv`. Introduce `b`. Establish `hs1 : (UpqT.mat b * C).submatrix e.symm id = PI.CdHaarScale.umat (PI.UnitaryGroupMassFormula.CdHaarScale.Main.phi e h1 h2 b * c)`. Rewrite using `[umat_mul, PI.UnitaryGroupMassFormula.CdHaarScale.Main.umat_phi, hcm, Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hs2 : (C * u).submatrix e.symm id = PI.CdHaarScale.umat (c * xv)`. Rewrite using `[umat_mul, hcm, hxm]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `umat_ext` to reduce the goal to its premises. Rewrite using `[← hs1, ← hs2, h]`. Introduce `h`. Apply `submatrix_inj e` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs1, hs2, h]`. Rewrite using `[hX]`. Use `show _ ↔ c * xv * c⁻¹ ∈ PI.UnitaryGroupMassFormula.CdHaarScale.Main.phi e h1 h2 '' B`. Rewrite using `[Set.mem_image]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨b, hb, hbA⟩`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_mul_inv_iff_mul_eq]`. Conclude with `(step2 b).1 ((step1 b).1 hbA)`. Introduce and unpack `⟨b, hb, hbx⟩`.
-
-Use `⟨b, hb, (step1 b).2 ((step2 b).2 ?_)⟩` and prove the remaining obligations. Rewrite using `[hbx, inv_mul_cancel_right]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infCond (v : InfinitePlace D.host.F) {A : Matrix (Fin P ⊕ Fin Q) (Fin V.rank) ℂ}
     (hA : Aᴴ * Formalism.UG.Jpq P Q * A = V.gram.map (embOf D ((Formalism.L2.Host.tauPl D).symm v)))
@@ -204,9 +200,9 @@ theorem infCond (v : InfinitePlace D.host.F) {A : Matrix (Fin P ⊕ Fin Q) (Fin 
     rw [hbx, inv_mul_cancel_right]
 
 /- English proof (translation)
-Establish `hS : MeasurableSet (PI.UnitaryGroupMassFormula.CdHaarScale.Main.phi e h1 h2 '' B)` using `(PI.UnitaryGroupMassFormula.CdHaarScale.Main.phi e h1 h2).toHomeomorph.measurableEmbedding.measurableSet_image.2 hB`. Establish `hcm : Measurable (fun g : Formalism.REAL.UJ ε => c * g * c⁻¹)` using `(measurable_const_mul c).mul_const c⁻¹`. Rewrite using `[Measure.smul_apply, ← Measure.map_apply hcm hS, map_conj_muG, ← Measure.smul_apply]`. Rewrite using `[hcd n ε P Q e h1 h2 _ hS]`. Establish `ht` using `PI.UnitaryGroupMassFormula.CdHaarScale.Main.tie_set e h1 h2 (PI.UnitaryGroupMassFormula.CdHaarScale.Main.phi e h1 h2 '' B)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ht` using `[Set.preimage_image_eq _ (PI.UnitaryGroupMassFormula.CdHaarScale.Main.phi e h1 h2).injective]`. Conclude with `congrArg (D.cd.cd P Q) ht`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measAt (hcd : cdScaleTie D) {n : ℕ} {ε : Fin n → Bool} (e : Fin P ⊕ Fin Q ≃ Fin n)
     (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e (Sum.inr j)) = false) (c : Formalism.REAL.UJ ε)

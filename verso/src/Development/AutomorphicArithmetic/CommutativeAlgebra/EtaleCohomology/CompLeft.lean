@@ -22,7 +22,7 @@ def preL {K K' : Cx (ZMod q)} (f : K' ⟶ K) (I : Cx (ZMod q)) (n : ℤ) :
   map_smul' _ _ := Cochain.comp_smul _ _ _ _
 
 /- English proof (translation)
-Simplify using `[preL, Cochain.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem preL_comp {K K' K'' : Cx (ZMod q)} (g : K'' ⟶ K') (f : K' ⟶ K) (I : Cx (ZMod q)) (n : ℤ) (α : Cochain K I n) :
     preL (g ≫ f) I n α = preL g I n (preL f I n α) := by

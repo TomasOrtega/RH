@@ -13,9 +13,9 @@ namespace GlobalTheory.CompanionTheory.CapKC
 variable {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a x hx`. Conclude with `capO_le U i a (h hx)`. Introduce `h x hx`. Set `W : X.Opens` to `⟨⋂ a, (U (i a) : Set X), isOpen_iInter_of_finite fun a => (U (i a)).isOpen⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hW : W ≤ capO U i` using `le_iInf fun a y hy => Set.mem_iInter.1 hy a`. Conclude with `hW (Set.mem_iInter.2 fun a => h a hx)`.
+A detailed English derivation is pending.
 -/
 theorem inU_capO {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ}
     {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} {ι : Type} (U : ι → X.Opens) {n : ℕ}
@@ -52,7 +52,7 @@ def capAdj : toCap q U a n i ⊣ ofCap q U a n i := Adjunction.mkOfHomEquiv
     homEquiv_naturality_right := fun _ _ => rfl }
 
 /- English proof (translation)
-Introduce `K _ X q U a n i r`. Establish `hb` using `CrystallineSemistableComparison.P.adj ((capT (Vk q U a) i).ι ⋙ Fk q U a) (toCap q U a n i) (ofCap q U a n i) (capAdj q U a n i) r`. Conclude with `⟨(LinearEquiv.ofBijective _ hb).toAddEquiv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem cap_kc : ∀ {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (U : Cov q) (a n : ℕ)
     (i : Fin (n + 1) → U.ι) (r : ℕ), Nonempty (HU (Fk q U a) (capT (Vk q U a) i) r ≃+ HQ (KS q (a + 1) {capO U.U i}) (a : ℤ) ((a : ℤ) + 1) r) := by

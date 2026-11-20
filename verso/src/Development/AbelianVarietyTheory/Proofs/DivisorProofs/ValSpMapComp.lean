@@ -11,9 +11,7 @@ noncomputable section
 namespace GlobalTheory.ExpCoord
 
 /- English proof (translation)
-Establish `e : (spMap φ ≫ y).appLE U ⊤ h' = y.appLE U ⊤ h ≫ (spMap φ).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE (spMap φ) y U ⊤ ⊤ h le_rfl).symm`. Establish `e2` using `congrArg (fun k => k.hom ((y.appLE U ⊤ h).hom f)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ))`. Rewrite using `[e]`.
-
-Conclude with `e2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_spMap_comp {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S') {X : Scheme.{0}} (y : Sp S ⟶ X)
     (U : X.Opens) (h : ⊤ ≤ y ⁻¹ᵁ U) (h' : ⊤ ≤ (spMap φ ≫ y) ⁻¹ᵁ U) (f : Γ(X, U)) :
@@ -28,9 +26,9 @@ theorem val_spMap_comp {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S'
   exact e2
 
 /- English proof (translation)
-Unfold `valAt'`. Distinguish the cases in `h : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U`. Establish `h1 : ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ U)` using `h`. Rewrite using `[dif_pos h, dif_pos h1]`. Unfold `valAt`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Scheme.Hom.appLE_comp_appLE x φ U (φ ⁻¹ᵁ U) ⊤ le_rfl h1]`. Both sides reduce to the same expression. Establish `h1 : ¬ ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ U)` using `h`. Rewrite using `[dif_neg h, dif_neg h1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt'_comp {X Y : Scheme.{0}} (x : Sp ℂ ⟶ X) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)) :
     valAt' (x ≫ φ) U f = valAt' x (φ ⁻¹ᵁ U) ((φ.appLE U (φ ⁻¹ᵁ U) le_rfl).hom f) := by
@@ -45,13 +43,11 @@ theorem valAt'_comp {X Y : Scheme.{0}} (x : Sp ℂ ⟶ X) (φ : X ⟶ Y) (U : Y.
     rw [dif_neg h, dif_neg h1]
 
 /- English proof (translation)
-Establish `hsub : Subsingleton (PrimeSpectrum (DualNumber ℂ))` using `GlobalTheory.UnifDifferential.subsingleton_primeSpectrum ℂ ℂ`. Use `⟨?_, fun U h' f => ?_⟩` and prove the remaining obligations. Establish `hc : (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom.comp (epsScaleR s) = (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Use `show (TrivSqZeroExt.map _ x).fst = x.fst`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `TrivSqZeroExt.fst_map _ _`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hc]`. Conclude with `h.1`. Establish `hv : ⊤ ≤ v ⁻¹ᵁ U`. Introduce `x _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `h' (Set.mem_univ x)` as an intermediate fact. Establish `hx : (spMap (epsScaleR s)) x = x` using `Subsingleton.elim (α := PrimeSpectrum (DualNumber ℂ)) _ _`. Express the relevant statement in the definitionally equal form `v ((spMap (epsScaleR s)) x) ∈ U at this`. Rewrite `this` using `[hx]`. Then use the resulting hypothesis. Rewrite using `[val_spMap_comp (epsScaleR s) v U hv h' f, map_smul, ← h.2 U hv f]`.
-
-Simplify using `[epsScaleR]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deriv_scale {g : ℕ} {X : Scheme.{0}} (e : (Fin g → ℂ) → (Sp ℂ ⟶ X)) {v : Sp (DualNumber ℂ) ⟶ X}
     {w : Fin g → ℂ} (h : IsDerivAt0 e w v) (s : ℂ) : IsDerivAt0 e (s • w) (spMap (epsScaleR s) ≫ v) := by
@@ -73,15 +69,15 @@ theorem deriv_scale {g : ℕ} {X : Scheme.{0}} (e : (Fin g → ℂ) → (Sp ℂ 
     simp [epsScaleR]
 
 /- English proof (translation)
-Establish `h0 : e' 0 = spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v ≫ φ`. Rewrite using `[← Category.assoc, h.1, ← hc, Matrix.mulVec_zero]`. Use `⟨h0.symm, fun U hU f => ?_⟩` and prove the remaining obligations. Establish `h1 : ⊤ ≤ v ⁻¹ᵁ (φ ⁻¹ᵁ U)` using `hU`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE v φ U (φ ⁻¹ᵁ U) ⊤ le_rfl h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(h.2 (φ ⁻¹ᵁ U) h1 ((φ.appLE U (φ ⁻¹ᵁ U) le_rfl).hom f)).trans ?_` and prove the remaining obligations. Use `set G : (Fin g → ℂ) → ℂ := fun z => valAt' (e' z) U f with hG`. Establish `hfun : (fun z => valAt' (e z) (φ ⁻¹ᵁ U) ((φ.appLE U (φ ⁻¹ᵁ U) le_rfl).hom f)) = fun z => G (Rho *ᵥ z)`. Use function extensionality and compare the values at `z`. Rewrite using `[hG]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Simplify using `only`. Rewrite using `[hc, valAt'_comp]`. Rewrite using `[hfun]`. Establish `hmem : (0 : Fin g → ℂ) ∈ {b ∈ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ e' b ⁻¹ᵁ U}`. Use `⟨Set.mem_univ _, fun x _ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `hU (Set.mem_univ _)`. Establish `hd : DifferentiableAt ℂ G 0` using `((hol U f).2 0 hmem).differentiableAt ((hol U f).1.mem_nhds hmem)`. Set `L : (Fin g → ℂ) →L[ℂ] (Fin g → ℂ)` to `LinearMap.toContinuousLinearMap (Matrix.mulVecLin Rho)`. Establish `hL0 : L 0 = 0` using `map_zero L`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG' : HasFDerivAt G (fderiv ℂ G 0) (L 0)` using `by rw [hL0]; exact hd.hasFDerivAt`. Use `hG'.comp (0 : Fin g → ℂ) L.hasFDerivAt` as an intermediate fact. Use `show (fderiv ℂ (G ∘ ⇑L) 0) w = _`. Rewrite using `[this.fderiv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem deriv_comp {g : ℕ} {X Y : Scheme.{0}} (e : (Fin g → ℂ) → (Sp ℂ ⟶ X)) (e' : (Fin g → ℂ) → (Sp ℂ ⟶ Y))
     (φ : X ⟶ Y) (Rho : Matrix (Fin g) (Fin g) ℂ) (hol : IsHolTo Set.univ e') (hc : ∀ z, e' (Rho *ᵥ z) = e z ≫ φ)
@@ -117,7 +113,7 @@ def toSp {A : Over (Sp ℂ)} (v : epsPt (𝟙 (Sp ℂ)) ⟶ A) : Chart.sp (R₀ 
   Over.homMk v.left (by simpa using Over.w v)
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `[toSp]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem toSp_eq {A : Over (Sp ℂ)} (v : epsPt (𝟙 (Sp ℂ)) ⟶ A) :
     toSp v = (Over.homMk (𝟙 _) (by simp) : Chart.sp (R₀ := ℂ) (DualNumber ℂ) ⟶ epsPt (𝟙 (Sp ℂ))) ≫ v := by
@@ -125,14 +121,14 @@ theorem toSp_eq {A : Over (Sp ℂ)} (v : epsPt (𝟙 (Sp ℂ)) ⟶ A) :
   simp [toSp]
 
 /- English proof (translation)
-Rewrite using `[toSp_eq, toSp_eq, toSp_eq, MonObj.comp_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toSp_mul {A : Over (Sp ℂ)} [GrpObj A] (v v' : epsPt (𝟙 (Sp ℂ)) ⟶ A) :
     toSp (v * v') = toSp v * toSp v' := by
   rw [toSp_eq, toSp_eq, toSp_eq, MonObj.comp_mul]
 
 /- English proof (translation)
-Establish `h1 : (1 : Over.mk (𝟙 (Sp ℂ)) ⟶ A) = toUnit _ ≫ η[A]` using `rfl`. Establish `h2 : (toUnit (Over.mk (𝟙 (Sp ℂ))) : Over.mk (𝟙 (Sp ℂ)) ⟶ 𝟙_ (Over (Sp ℂ))) = 𝟙 (Over.mk (𝟙 (Sp ℂ)))` using `toUnit_unique _ _`. Rewrite using `[h1, h2, Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_left {A : Over (Sp ℂ)} [GrpObj A] : (1 : Over.mk (𝟙 (Sp ℂ)) ⟶ A).left = η[A].left := by
   have h1 : (1 : Over.mk (𝟙 (Sp ℂ)) ⟶ A) = toUnit _ ≫ η[A] := rfl
@@ -140,7 +136,7 @@ theorem one_left {A : Over (Sp ℂ)} [GrpObj A] : (1 : Over.mk (𝟙 (Sp ℂ)) �
   rw [h1, h2, Category.id_comp]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pullFn_congr {A : Over (Sp ℂ)} {y y' : Chart.sp (R₀ := ℂ) (DualNumber ℂ) ⟶ A} (e : y = y') (U : A.left.Opens)
     (h : ⊤ ≤ y.left ⁻¹ᵁ U) (h' : ⊤ ≤ y'.left ⁻¹ᵁ U) (f : Γ(A.left, U)) :
@@ -148,13 +144,11 @@ theorem pullFn_congr {A : Over (Sp ℂ)} {y y' : Chart.sp (R₀ := ℂ) (DualNum
   subst e; rfl
 
 /- English proof (translation)
-Establish `ht : ∀ {x : epsPt (𝟙 (Sp ℂ)) ⟶ A}, spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ x.left = (e 0).left → Chart.IsTan (toSp x)`. Introduce `x hx`. Rewrite using `[Chart.isTan_iff]`. Use `show spMap _ ≫ x.left = η[A].left`. Rewrite using `[hx, he, one_left]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv` using `ht h.1`. Establish `hv'` using `ht h'.1`. Establish `hm : Chart.IsTan (toSp (v * v'))` using `by rw [toSp_mul]; exact Chart.isTan_mul hv hv'`. Use `⟨?_, fun U hU f => ?_⟩` and prove the remaining obligations. Use `(Chart.isTan_iff _).1 hm show spMap _ ≫ (v * v').left = (e 0).left` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, one_left]`. Conclude with `this`. Establish `hU' : ⊤ ≤ (toSp v * toSp v').left ⁻¹ᵁ U` using `by rw [← toSp_mul]; exact hU`. Take `⟨h₁, h₂, hs⟩` from `GlobalTheory.UnifDifferential.snd_pullFn_mul hv hv' U hU'`. Use `show (GlobalTheory.UnifDifferential.pullFn (toSp (v * v')) U hU f).snd = _`.
-
-Rewrite using `[pullFn_congr (toSp_mul v v') U hU hU' f, hs, map_add]`. Conclude with `congrArg₂ (· + ·) (h.2 U h₁ f) (h'.2 U h₂ f)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deriv_mul {g : ℕ} {A : Over (Sp ℂ)} [GrpObj A] (e : (Fin g → ℂ) → (Over.mk (𝟙 (Sp ℂ)) ⟶ A))
     (he : e 0 = 1) {v v' : epsPt (𝟙 (Sp ℂ)) ⟶ A} {w w' : Fin g → ℂ}
@@ -181,25 +175,21 @@ theorem deriv_mul {g : ℕ} {A : Over (Sp ℂ)} [GrpObj A] (e : (Fin g → ℂ) 
     exact congrArg₂ (· + ·) (h.2 U h₁ f) (h'.2 U h₂ f)
 
 /- English proof (translation)
-Introduce `g n A _ _ e x T hx hE hT hR hM hS`. Substitute `hx` using the available equality. Take `⟨hadd, -, hhol, hd, hu⟩` from `hE`. Establish `he0 : e 0 = 1`. Establish `h` using `hadd 0 0`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.mp h`. Use `choose Φ hΦ hΦu using hd`. Establish `tanΦ : ∀ w, spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ (Φ w).left = (1 : Over.mk (𝟙 (Sp ℂ)) ⟶ A).left`. Introduce `w`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hΦ w).1]`. Use `show (e 0).left = _`. Rewrite using `[he0]`. Use `choose Ψ hΨ using fun w => (hR (Φ w)).1 (tanΦ w)`. Establish `key : ∀ w c, IsDerivAt0 (fun z => (e z).left) w (T c).left → Ψ w = c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `w c h`. Apply `hT` to reduce the goal to its premises. Rewrite using `[hΨ w]`. Conclude with `(hΦu w (T c) h).symm`. Establish `inj : Function.Injective Ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w w' h`. Establish `e1 : Φ w = Φ w'` using `by rw [← hΨ w, ← hΨ w', h]`. Establish `ht : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ (Φ w).left = (e 0).left` using `(hΦ w).1`. Take `⟨w'', -, hw''⟩` from `hu (Φ w) ht`. Establish `a1` using `hw'' w (hΦ w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `a2` using `hw'' w' (by rw [e1]; exact hΦ w')`. Rewrite using `[a1, a2]`. Establish `surj : Function.Surjective Ψ`. Introduce `c`. Establish `ht : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ (T c).left = (e 0).left`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he0]`. Conclude with `(hR (T c)).2 ⟨c, rfl⟩`. Take `⟨w, hw, -⟩` from `hu (T c) ht`. Conclude with `⟨w, key w c hw⟩`. Set `Lin : (Fin g → ℂ) →ₗ[ℂ] (Fin n → ℂ)` to `{ toFun := Ψ map_add' := fun w w' => key (w + w') (Ψ w + Ψ w') (by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM, hΨ, hΨ]`. Conclude with `deriv_mul e he0 (hΦ w) (hΦ w'))`. Use the proof step `map_smul' := fun s w => key (s • w) (s • Ψ w) (by`. Rewrite using `[hS, hΨ]`. Conclude with `deriv_scale _ (hΦ w) s) }`.
-
-Use `⟨LinearEquiv.ofBijective Lin ⟨inj, surj⟩, ?_⟩` and prove the remaining obligations. Introduce `u _ Mu Rho hTu hRho w`. Use `show Ψ (Rho *ᵥ w) = Mu *ᵥ Ψ w`. Apply `key` to reduce the goal to its premises. Rewrite using `[← hTu, Over.comp_left, hΨ]`.
-
-Conclude with `deriv_comp _ _ u.left Rho hhol (fun z => by rw [hRho, Over.comp_left]) (hΦ w)`.
+A detailed English derivation is pending.
 -/
 theorem expCoord : ∀ (g n : ℕ) (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (e : (Fin g → ℂ) → (Over.mk (𝟙 (Sp ℂ)) ⟶ A)) (x : Sp ℂ ⟶ Sp ℂ) (T : (Fin n → ℂ) → (epsPtR x ⟶ A)), x = 𝟙 _ → IsExp (𝟙 (Sp ℂ)) e → Function.Injective T → (∀ v : epsPtR x ⟶ A, spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (1 : Over.mk x ⟶ A).left ↔ v ∈ Set.range T) → (∀ c c', T (c + c') = T c * T c') → (∀ (s : ℂ) c, (T (s • c)).left = spMap (epsScaleR s) ≫ (T c).left) → ∃ L : (Fin g → ℂ) ≃ₗ[ℂ] (Fin n → ℂ), ∀ (u : A ⟶ A), IsMonHom u → ∀ (Mu : Matrix (Fin n) (Fin n) ℂ) (Rho : Matrix (Fin g) (Fin g) ℂ), (∀ c, T c ≫ u = T (Mu *ᵥ c)) → (∀ z, e (Rho *ᵥ z) = e z ≫ u) → ∀ w, L (Rho *ᵥ w) = Mu *ᵥ L w := by
   intro g n A _ _ e x T hx hE hT hR hM hS

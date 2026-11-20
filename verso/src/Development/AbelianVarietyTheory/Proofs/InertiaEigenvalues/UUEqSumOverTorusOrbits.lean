@@ -13,9 +13,9 @@ namespace InvAlg
 variable {K : UQ} (B : InvAlg K)
 
 /- English proof (translation)
-Unfold `mulLat`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Simplify `hz` using `[LinearMap.mulLeft_apply, ← mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Conclude with `⟨_, h, by simp [LinearMap.mulLeft_apply, ← mul_assoc]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem torusOrb_mem_mulLat_unit (u : B.Aˣ) (L : Submodule K.O B.A) (y : B.A) :
     y ∈ mulLat K.O (u : B.A) L ↔ ((u⁻¹ : B.Aˣ) : B.A) * y ∈ L := by
@@ -28,13 +28,13 @@ theorem torusOrb_mem_mulLat_unit (u : B.Aˣ) (L : Submodule K.O B.A) (y : B.A) :
     exact ⟨_, h, by simp [LinearMap.mulLeft_apply, ← mul_assoc]⟩
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `using torusOrb_mem_mulLat_unit B 1 L y`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem torusOrb_mulLat_one (L : Submodule K.O B.A) : mulLat K.O (1 : B.A) L = L := by
   ext y; simpa using torusOrb_mem_mulLat_unit B 1 L y
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[torusOrb_mem_mulLat_unit, torusOrb_mem_mulLat_unit, torusOrb_mem_mulLat_unit, mul_inv_rev, Units.val_mul, mul_assoc]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem torusOrb_mulLat_mul (s t : B.Aˣ) (L : Submodule K.O B.A) :
     mulLat K.O ((s : B.A)) (mulLat K.O (t : B.A) L) = mulLat K.O ((s * t : B.Aˣ) : B.A) L := by
@@ -42,14 +42,14 @@ theorem torusOrb_mulLat_mul (s t : B.Aˣ) (L : Submodule K.O B.A) :
   rw [torusOrb_mem_mulLat_unit, torusOrb_mem_mulLat_unit, torusOrb_mem_mulLat_unit, mul_inv_rev, Units.val_mul, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[torusOrb_mulLat_mul, inv_mul_cancel, Units.val_one, torusOrb_mulLat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem torusOrb_mulLat_inv (t : B.Aˣ) (L : Submodule K.O B.A) :
     mulLat K.O ((t⁻¹ : B.Aˣ) : B.A) (mulLat K.O (t : B.A) L) = L := by
   rw [torusOrb_mulLat_mul, inv_mul_cancel, Units.val_one, torusOrb_mulLat_one]
 
 /- English proof (translation)
-Establish `h1 : ((t⁻¹ : B.Aˣ) : B.A) = B.σ (t : B.A)` using `Units.inv_eq_of_mul_eq_one_right ht`. Unfold `herm`. Rewrite using `[show B.σ ((t : B.A) * z) = B.σ (t : B.A) * B.σ z from map_mul B.σ _ _, ← h1]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_torus_mul_right_eq_inv_mul_middle (x y : B.A) (t : B.Aˣ) (ht : t ∈ B.T) (z : B.A) :
     B.herm x y ((t : B.A) * z) = B.herm x (((t⁻¹ : B.Aˣ) : B.A) * y) z := by
@@ -60,19 +60,19 @@ theorem herm_torus_mul_right_eq_inv_mul_middle (x y : B.A) (t : B.Aˣ) (ht : t �
   ring
 
 /- English proof (translation)
-Take `⟨⟨hfg, hsp⟩, hg, hsd⟩` from `hL`. Use `⟨⟨hfg.map _, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `a _`. Establish `hmem : ((t⁻¹ : B.Aˣ) : B.A) * a ∈ Submodule.span K.E (L : Set B.A)` using `by rw [hsp]; trivial`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `Submodule.mem_map_of_mem (f := LinearMap.mulLeft K.E (t : B.A)) hmem`. Rewrite `h2` using `[Submodule.map_span]`. Establish `h3 : (LinearMap.mulLeft K.E (t : B.A)) ((((t⁻¹ : B.Aˣ) : B.A) * a)) = a`. Simplify using `[LinearMap.mulLeft_apply, ← mul_assoc]`. Rewrite `h2` using `[h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : ((mulLat K.O (t : B.A) L : Submodule K.O B.A) : Set B.A) = (LinearMap.mulLeft K.E (t : B.A)) '' (L : Set B.A)` using `by show ((L.map (LinearMap.mulLeft K.O (t : B.A)) : Submodule K.O B.A) : Set B.A) = _`. Rewrite using `[Submodule.map_coe]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Rewrite `hy`, the goal using `[torusOrb_mem_mulLat_unit]`. Rewrite using `[mul_left_comm]`. Conclude with `hg _ hy`. Introduce `y`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[torusOrb_mem_mulLat_unit, hsd]`. Prove the components needed by the constructor for the conclusion. Introduce `h z hz`. Rewrite `hz` using `[torusOrb_mem_mulLat_unit]`. Use `h _ hz` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[← herm_torus_mul_right_eq_inv_mul_middle B x y t ht]`. Simplify `this` using `[← mul_assoc]`. Introduce `h z hz`. Rewrite using `[← herm_torus_mul_right_eq_inv_mul_middle B x y t ht]`. Apply `h` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[torusOrb_mem_mulLat_unit]`. Simplify `hz` using `[← mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem torusOrb_mulLat_mem_X (x : B.A) (t : B.Aˣ) (ht : t ∈ B.T) (L : Submodule K.O B.A) (hL : L ∈ B.X x) :
     mulLat K.O (t : B.A) L ∈ B.X x := by
@@ -115,7 +115,7 @@ def torusOrbRel (x : B.A) (L M : B.X x) : Prop :=
   ∃ t ∈ B.T, (M : Submodule K.O B.A) = mulLat K.O (t : B.A) (L : Submodule K.O B.A)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, B.T.one_mem, by rw [Units.val_one, torusOrb_mulLat_one]⟩ symm := by rintro L M ⟨t, ht, h⟩ refine ⟨t⁻¹, B.T.inv_mem ht, ?_⟩ rw [h, torusOrb_mulLat_inv] trans := by rintro L M N ⟨s, hs, h1⟩ ⟨t, ht, h2⟩ refine ⟨t * s, B.T.mul_mem ht hs, ?_⟩ rw [h2, h1, torusOrb_mulLat_mul]`.
+Supply the required witnesses or components.
 -/
 theorem torusOrb_orbRel_equivalence (x : B.A) : Equivalence (B.torusOrbRel x) where
   refl L := ⟨1, B.T.one_mem, by rw [Units.val_one, torusOrb_mulLat_one]⟩
@@ -129,7 +129,7 @@ theorem torusOrb_orbRel_equivalence (x : B.A) : Equivalence (B.torusOrbRel x) wh
     rw [h2, h1, torusOrb_mulLat_mul]
 
 /- English proof (translation)
-The claim follows from `(Equivalence.eqvGen_iff (B.torusOrb_orbRel_equivalence x)).1 (Quot.eqvGen_exact h)`.
+A detailed English derivation is pending.
 -/
 theorem torusOrb_orb_mk_eq (x : B.A) {L M : B.X x}
     (h : (Quot.mk (B.torusOrbRel x) L : Orb K.O B.T (B.X x)) = Quot.mk (B.torusOrbRel x) M) : B.torusOrbRel x L M :=
@@ -155,7 +155,7 @@ def torusOrb_orbSplit (x w : B.A) : {L : B.X x // w ∈ (L : Submodule K.O B.A)}
     exact h.1
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite (Orb K.O B.T (B.X x))`. Unfold `UU`. Rewrite using `[Nat.card_congr (B.torusOrb_orbSplit x w), Nat.card_sigma, finsum_eq_sum_of_fintype]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusOrb_UU_eq_finsum (x w : B.A) (hfin : Finite (Orb K.O B.T (B.X x)))
     (hfib : ∀ o : Orb K.O B.T (B.X x), Finite {M : Submodule K.O B.A //
@@ -169,7 +169,7 @@ theorem torusOrb_UU_eq_finsum (x w : B.A) (hfin : Finite (Orb K.O B.T (B.X x)))
 end InvAlg
 
 /- English proof (translation)
-Introduce `_ B x w h1 h2` and use `B.torusOrb_UU_eq_finsum x w h1 h2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UU_eq_sum_orbits : ∀ (K : UQ) (B : InvAlg K) (x w : B.A), Finite (Orb K.O B.T (B.X x)) →
     (∀ o : Orb K.O B.T (B.X x), Finite {M : Submodule K.O B.A //

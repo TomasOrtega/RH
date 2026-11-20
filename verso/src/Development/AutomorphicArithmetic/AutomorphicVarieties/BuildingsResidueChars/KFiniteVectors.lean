@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.M
 open NumberField Matrix GlobalTheory.CuspRep GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm UpperTheory.V UpperTheory.V.Fb
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `(AdelicGLn.isCompact_integralFiniteGL K n).elim_finite_subcover (fun x : AdelicGLn.FiniteAdelicGL K n => (fun y => x⁻¹ * y) ⁻¹' {k : AdelicGLn.FiniteAdelicGL K n | rightTranslate (finEmb K n k) φ = φ}) (fun x => hS.preimage (continuous_const.mul continuous_id)) fun k _ => Set.mem …`. Unfold `IsKFinite`. Use `Submodule.finiteDimensional_of_le (S₂ := ⨆ x : T, W.map (rightTranslateL (finEmb K n x))) ?_` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨x, hx, hu⟩` from `Set.mem_iUnion₂.1 (hT (finPart_mem_integralFiniteGL k.2))`. Use `Submodule.mem_iSup_of_mem ⟨x, hx⟩ ⟨_, hW _ (archPart_mem_archCompact k.2), funext fun g => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun hu (g * finEmb K n x * infEmb K n (archPart (k : AdelicGLn.AdelicGL K n)))`. Express the relevant statement in the definitionally equal form `φ (g * finEmb K n x * infEmb K n (archPart (k : AdelicGLn.AdelicGL K n))) = φ (g * k)`. Rewrite using `[← h]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `φ (_ * _) = _`. Use `congr 1`. Use `conv_rhs => rw [← infEmb_archPart_mul_finEmb_finPart (k : AdelicGLn.AdelicGL K n)]`. Rewrite using `[mul_assoc g, ← infEmb_mul_finEmb_comm, mul_assoc g, mul_assoc, ← map_mul, mul_inv_cancel_left]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem kfinite_of_level {K : Type} [Field K] [NumberField K] {n : ℕ} (φ : AdelicGLn.AdelicGL K n → ℂ)
     (hS : IsOpen {k : AdelicGLn.FiniteAdelicGL K n | rightTranslate (finEmb K n k) φ = φ})
@@ -34,11 +34,11 @@ private theorem kfinite_of_level {K : Type} [Field K] [NumberField K] {n : ℕ} 
   rw [mul_assoc g, ← infEmb_mul_finEmb_comm, mul_assoc g, mul_assoc, ← map_mul, mul_inv_cancel_left]
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ hl hk`. Use `kfinite_of_level φ.1 ?_ ((Submodule.span ℂ (Set.range fun k => TR.cptRep E a k φ)).map (TR.Sm E a).subtype) fun y hy => ?_` and prove the remaining obligations. Rewrite using `[finEmb_eq]`. Use `hl using 1` and compare the differences between its conclusion and the goal. Conclude with `Set.ext fun k => ⟨fun h => Subtype.ext h, fun h => congrArg Subtype.val h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `(grpEq E a).surjective y`. Use `⟨_, Submodule.subset_span ⟨⟨z.val, (UpperTheory.mem_archMaxCompact_iff_orthogonal_at_infinitePlaces E a z).1 hy⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e : Unitary.toUnits (⟨z.val, (UpperTheory.mem_archMaxCompact_iff_orthogonal_at_infinitePlaces E a z).1 hy⟩ : TR.Kinf E a) = z` using `Units.ext rfl`. Rewrite using `[infEmb_grpEq]`. Use function extensionality and compare the values at `g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `φ.1 (g * TR.infGL E a (Unitary.toUnits _)) = φ.1 (g * _)`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.k_finite_vectors :
     UpperTheory.V.Fb.KFinTo := by

@@ -31,9 +31,9 @@ namespace GlobalTheory.CountId
 open GlobalTheory.JR GlobalTheory.UnitLemma GlobalTheory.UnitLemma.Basic
 
 /- English proof (translation)
-Take `⟨F, nF, nE, hE, nA, st, hU, h1, h2⟩` from `GlobalTheory.UnitLemma.UQ.exists_unram K`. Use `⟨F, K.E, nF, nE, nA, st, hU, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (f₁ f₂ : Field K.E), f₁ = f₂ → ∃ φ : @RingEquiv K.E K.E f₂.toMul f₁.toMul f₂.toAdd f₁.toAdd, ∀ y, φ y = y`. Introduce and unpack `f₁ f₂ rfl`. Conclude with `⟨@RingEquiv.refl K.E f₁.toMul f₁.toAdd, fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨φ, hφ⟩` from `key nE.toField K.fE hE`. Use `⟨φ, fun y => ?_, fun y => ?_⟩` and prove the remaining obligations. Conclude with `(hφ _).trans ((h1 y).symm.trans (congrArg _ (hφ y).symm))`. Conclude with `(iff_of_eq (congrArg (fun t => nE.norm t ≤ 1) (hφ y))).trans (h2 y)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_normed (K : UQ) : ∃ (F E : Type) (_ : NontriviallyNormedField F) (_ : NontriviallyNormedField E)
     (_ : NormedAlgebra F E) (_ : StarRing E) (_ : Unram F E) (φ : K.E ≃+* E),
@@ -52,7 +52,7 @@ theorem exists_normed (K : UQ) : ∃ (F E : Type) (_ : NontriviallyNormedField F
 variable {K : UQ} (B : InvAlg K)
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `h`. Take `⟨b, hb⟩` from `K.c_int a`. Conclude with `⟨b, hb.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem c_mem {a : K.E} (h : a ∈ (algebraMap K.O K.E).range) : K.c a ∈ (algebraMap K.O K.E).range := by
   obtain ⟨a, rfl⟩ := h
@@ -60,13 +60,13 @@ theorem c_mem {a : K.E} (h : a ∈ (algebraMap K.O K.E).range) : K.c a ∈ (alge
   exact ⟨b, hb.symm⟩
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul, B.σ_alg, ← Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_smul (a : K.E) (y : B.A) : B.σ (a • y) = K.c a • B.σ y := by
   rw [Algebra.smul_def, map_mul, B.σ_alg, ← Algebra.smul_def]
 
 /- English proof (translation)
-Establish `: B.σ y = ∑ j, K.c (e.repr y j) • e j` using `by conv_lhs => rw [← e.sum_repr y]`. Simplify using `only [map_sum, sigma_smul, he]`. Rewrite using `[this]`. Simplify using `[Finsupp.single_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem repr_sigma {n : ℕ} (e : Basis (Fin n) K.E B.A) (he : ∀ i, B.σ (e i) = e i) (y : B.A) (i : Fin n) :
     e.repr (B.σ y) i = K.c (e.repr y i) := by
@@ -76,7 +76,7 @@ theorem repr_sigma {n : ℕ} (e : Basis (Fin n) K.E B.A) (he : ∀ i, B.σ (e i)
   rw [this]; simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Simplify using `[UQ.eta, norm_zpow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_eta (a : K.E) : ‖((K.eta a : ℚ) : ℂ)‖ = 1 := by
   simp [UQ.eta, norm_zpow]
@@ -93,7 +93,7 @@ Both sides reduce to the same expression.
 theorem iota_apply (φ : K.E ≃+* E) (x : F) : iota F φ x = φ.symm (algebraMap F E x) := rfl
 
 /- English proof (translation)
-Rewrite using `[← hi, iota_apply, RingEquiv.apply_symm_apply, norm_algebraMap']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iota_mem {φ : K.E ≃+* E} (hi : ∀ y : K.E, ‖φ y‖ ≤ 1 ↔ y ∈ (algebraMap K.O K.E).range) (x : F) :
     iota F φ x ∈ (algebraMap K.O K.E).range ↔ ‖x‖ ≤ 1 := by
@@ -102,14 +102,14 @@ theorem iota_mem {φ : K.E ≃+* E} (hi : ∀ y : K.E, ‖φ y‖ ≤ 1 ↔ y �
 variable [Unram F E]
 
 /- English proof (translation)
-Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[hs, iota_apply, RingEquiv.apply_symm_apply, Unram.star_fix]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem c_iota {φ : K.E ≃+* E} (hs : ∀ y, φ (K.c y) = star (φ y)) (x : F) : K.c (iota F φ x) = iota F φ x := by
   apply φ.injective
   rw [hs, iota_apply, RingEquiv.apply_symm_apply, Unram.star_fix]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `GlobalTheory.T.mem_range_algebraMap_of_star_eq F E (φ a) (by rw [← hs, h])`. Conclude with `⟨x, by rw [iota_apply, hx, RingEquiv.symm_apply_apply]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_iota {φ : K.E ≃+* E} (hs : ∀ y, φ (K.c y) = star (φ y)) {a : K.E} (h : K.c a = a) :
     ∃ x : F, iota F φ x = a := by
@@ -123,13 +123,13 @@ def wG (u : B.A) (L : Submodule K.O B.A) : ℂ :=
   then ((B.sgnLat L : ℚ) : ℂ) else 0
 
 /- English proof (translation)
-Establish `hom : omega Y = ((B.sgnLat (lat K.O e) : ℚ) : ℂ)`. Establish `h1 : omega Y = eta (Cm Y).det`. Unfold `omega eta`. Rewrite using `[(GlobalTheory.JR.transfer_factor_lemma F _).1 Y, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Rewrite using `[h1, GlobalTheory.EtaCompare.eta_eq_uq_eta K F E φ hi, lat, GlobalTheory.UnitLemma.SgnBasis.sgnLat_span_basis K B e, ← iota_apply, RingHom.map_det, RingHom.mapMatrix_apply, ← Cm_mapGl, hY, Cm_Yb]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.pow_mulLeft, LinearMap.mulLeft_apply]`. Establish `h1` using `lat_stable_iff K.O e (LinearMap.mulLeft K.E B.g)`. Establish `h2` using `mem_lat K.O e u`. Establish `h3` using `lat_fun_iff K.O e (Algebra.trace K.E B.A)`. Simplify using `only [mapGl, Yb, Prod.mk.injEq] at hY`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨y1, y2, y3, y4⟩` from `hY`. Establish `y4' : Y.2.2.2 = 0` using `(map_eq_zero _).1 y4`. Simplify using `only [← y1, Matrix.map_apply, iota_mem hi, LinearMap.mulLeft_apply] at h1`. Simplify using `only [← fun i => congrFun y2 i, iota_mem hi] at h2`. Simplify using `only [← fun i => congrFun y3 i, iota_mem hi] at h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Unfold `wG unitG`. Rewrite using `[h1, h2, h3, hom]`. Simplify using `only [Set.indicator, Set.mem_setOf_eq, y4', norm_zero, zero_le_one, and_true, Pi.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem integrandG {φ : K.E ≃+* E} (hi : ∀ y : K.E, ‖φ y‖ ≤ 1 ↔ y ∈ (algebraMap K.O K.E).range) (u : B.A)
     (e : Basis (Fin (finrank K.E B.A)) K.E B.A) (Y : Gl (finrank K.E B.A) F)
@@ -157,7 +157,7 @@ theorem integrandG {φ : K.E ≃+* E} (hi : ∀ y : K.E, ‖φ y‖ ≤ 1 ↔ y 
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[tw_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sigma_smul, he, ← map_inv, Matrix.GeneralLinearGroup.map_apply, c_iota hs]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_fixed {n : ℕ} {φ : K.E ≃+* E} (hs : ∀ y, φ (K.c y) = star (φ y))
     (e : Basis (Fin n) K.E B.A) (he : ∀ i, B.σ (e i) = e i) (γ : GL (Fin n) F) (j : Fin n) :
@@ -168,15 +168,15 @@ theorem tw_fixed {n : ℕ} {φ : K.E ≃+* E} (hs : ∀ y, φ (K.c y) = star (φ
   rw [sigma_smul, he, ← map_inv, Matrix.GeneralLinearGroup.map_apply, c_iota hs]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, rfl⟩`. Use `⟨⟨lat_fg _ _, span_lat _ _⟩, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hf` using `tw_fixed B hs e he γ`. Rewrite `hy`, the goal using `[mem_lat]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[repr_sigma B _ hf]`. Conclude with `c_mem (hy i)`. Introduce and unpack `⟨hL, hσ⟩`. Take `⟨e', h1, h2⟩` from `GlobalTheory.GaloisDescentLattice.exists_fixed_basis K B L hL hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, rfl⟩` from `exists_tw e e'`. Establish `a1 : ∀ i j, ∃ x : F, iota F φ x = γ.val i j` using `fun i j => by`. Use `exists_iota hs ?_` and prove the remaining obligations. Rewrite using `[← toMatrix_tw_left e γ, Basis.toMatrix_apply, ← repr_sigma B _ h2, he]`. Establish `a2 : ∀ i j, ∃ x : F, iota F φ x = (γ⁻¹).val i j` using `fun i j => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_iota hs ?_` and prove the remaining obligations. Rewrite using `[← toMatrix_tw_right e γ, Basis.toMatrix_apply, ← repr_sigma B _ he, h2]`. Use `choose P hP using a1`. Use `choose Q hQ using a2`. Establish `hP' : (Matrix.of P).map (iota F φ) = γ.val` using `by ext i j; exact hP i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hQ' : (Matrix.of Q).map (iota F φ) = (γ⁻¹).val` using `by ext i j; exact hQ i j`. Establish `hinj : Function.Injective fun A : Matrix (Fin (finrank K.E B.A)) (Fin (finrank K.E B.A)) F => A.map (iota F φ)` using `Matrix.map_injective (iota F φ).injective`. Set `δ : GL (Fin (finrank K.E B.A)) F` to `⟨Matrix.of P, Matrix.of Q, hinj (by simp only [Matrix.map_mul, hP', hQ']; simp), hinj (by simp only [Matrix.map_mul, hP', hQ']; simp)⟩`. Establish `hδ : Matrix.GeneralLinearGroup.map (iota F φ) δ = γ` using `Units.ext hP'`. Conclude with `⟨δ, by simp only [hδ]; exact h1⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_piG {φ : K.E ≃+* E} (hs : ∀ y, φ (K.c y) = star (φ y))
     (e : Basis (Fin (finrank K.E B.A)) K.E B.A) (he : ∀ i, B.σ (e i) = e i) (L : Submodule K.O B.A) :
@@ -211,13 +211,11 @@ theorem range_piG {φ : K.E ≃+* E} (hs : ∀ y, φ (K.c y) = star (φ y))
     exact ⟨δ, by simp only [hδ]; exact h1⟩
 
 /- English proof (translation)
-Use `letI := M.mG`. Use `haveI := M.bG`. Use `haveI := GlobalTheory.JR.gl_unimodular F E _ M`. Use `haveI : IsUltrametricDist F := Unram.ultraF E`. Establish `h` using `GlobalTheory.integral_rightCoset_fun_eq_finsum (GL (Fin (finrank K.E B.A)) F) (Submodule K.O B.A) M.μG (glO _ F) (MeasExist.isOpen_glO _ F) M.volG (fun γ => lat K.O (tw e (Matrix.GeneralLinearGroup.map (iota F φ) γ))) (fun g g' => by`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[lat_tw_eq_iff, ← map_inv, ← map_mul, ← map_inv]`. Simplify using `only [Matrix.GeneralLinearGroup.map_apply, iota_mem hi]`. Use the proof step `rfl)`. Use the proof step `(wG B u) (fun l => by`. Unfold `wG`.
+Prove the second alternative. Prove the first alternative. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `split_ifs`. Conclude with `Or.inr (norm_eta _)`. Conclude with `Or.inl rfl)`. Unfold `orbG`. Rewrite using `[show (fun g => unitG _ F (act g Y) * omega (act g Y)) = fun γ => wG B u (lat K.O (tw e (Matrix.GeneralLinearGroup.map (iota F φ) γ))) from`.
-
-Use function extensionality and compare the values at `fun γ => integrandG B hi u _ _ (by rw [mapGl_act, hY, Yb_tw]), h, InvAlg.GG]`. Use `Eq.trans ?_ ((Rat.castHom ℂ).toAddMonoidHom.map_finsum_of_injective Rat.cast_injective _).symm` and prove the remaining obligations. Use `finsum_congr fun L => ?_` and prove the remaining obligations. Simplify using `only [range_piG B hs e he L, finsum_eq_if, wG, InvAlg.Lin, Set.mem_setOf_eq]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem orbG_eq {φ : K.E ≃+* E} (hs : ∀ y, φ (K.c y) = star (φ y))
     (hi : ∀ y : K.E, ‖φ y‖ ≤ 1 ↔ y ∈ (algebraMap K.O K.E).range) (M : Meas (finrank K.E B.A) F E) (u : B.A)
@@ -255,7 +253,7 @@ def toGLU {n : ℕ} (φ : K.E ≃+* E) : Matrix.unitaryGroup (Fin n) E →* GL (
 
 omit [Unram F E] in
 /- English proof (translation)
-Unfold `actU Hn.toGl act`. Use `Prod.ext rfl (Prod.ext rfl (Prod.ext ?_ rfl))` and prove the remaining obligations. Conclude with `Matrix.star_mulVec γ.1 X.2.1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem toGl_actU {n : ℕ} (γ : Matrix.unitaryGroup (Fin n) E) (X : Hn n F E) :
     (actU γ X).toGl = act (Unitary.toUnits γ) X.toGl := by
@@ -264,7 +262,7 @@ theorem toGl_actU {n : ℕ} (γ : Matrix.unitaryGroup (Fin n) E) (X : Hn n F E) 
   exact Matrix.star_mulVec γ.1 X.2.1
 
 /- English proof (translation)
-Establish `h1 : star (P.map φ) = ((P.map K.c)ᵀ).map φ`. Use extensionality with `i j`. Simplify using `[hs]`. Rewrite using `[h1, ← Matrix.map_mul, ← Matrix.map_one φ (map_zero φ) (map_one φ)]`. Conclude with `(Matrix.map_injective φ.injective).eq_iff.symm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_iff {n : ℕ} {φ : K.E ≃+* E} (hs : ∀ y, φ (K.c y) = star (φ y)) (P : Matrix (Fin n) (Fin n) K.E) :
     (P.map K.c)ᵀ * P = 1 ↔ star (P.map φ) * P.map φ = 1 := by
@@ -280,11 +278,11 @@ def wU (w : B.A) (L : Submodule K.O B.A) : ℂ :=
 
 omit [Unram F E] in
 /- English proof (translation)
-Establish `h1` using `lat_stable_iff K.O e (LinearMap.mulLeft K.E B.g)`. Establish `h2` using `mem_lat K.O e w`. Simplify using `only [mapGl, Yb, Hn.toGl, Prod.mk.injEq] at hX`. Take `⟨y1, y2, -, y4⟩` from `hX`. Establish `y4' : X.2.2 = 0` using `(map_eq_zero _).1 ((map_eq_zero _).1 y4)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [← y1, Matrix.map_apply, ← hi, LinearMap.mulLeft_apply] at h1`. Simplify using `only [← fun i => congrFun y2 i, ← hi] at h2`. Simplify using `only [RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, RingEquiv.apply_symm_apply] at h1 h2`. Unfold `wU unitU`. Rewrite using `[h1, h2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.indicator, Set.mem_setOf_eq, y4', norm_zero, zero_le_one, and_true, Pi.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem integrandU {n : ℕ} {φ : K.E ≃+* E} (hi : ∀ y : K.E, ‖φ y‖ ≤ 1 ↔ y ∈ (algebraMap K.O K.E).range) (w : B.A)
     (l : B.A →ₗ[K.E] K.E) (e : Basis (Fin n) K.E B.A) (X : Hn n F E)
@@ -304,13 +302,13 @@ theorem integrandU {n : ℕ} {φ : K.E ≃+* E} (hi : ∀ y : K.E, ‖φ y‖ �
   split_ifs <;> rfl
 
 /- English proof (translation)
-Simplify using `[InvAlg.herm, mul_add, add_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_add_left (x a b c : B.A) : B.herm x (a + b) c = B.herm x a c + B.herm x b c := by
   simp [InvAlg.herm, mul_add, add_mul]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.self_dual_hermitian_lattice_basis_exists K B.A (B.herm x) (herm_add_left B x) (fun c y z => herm_smul_left B x y z c) (herm_symm B x hx) L hL.1 hL.2 hd`.
+A detailed English derivation is pending.
 -/
 theorem exists_orth {x : B.A} (hx : B.σ x = x) (L : Submodule K.O B.A) (hL : IsLat K.O K.E L)
     (hd : ∀ y, y ∈ L ↔ ∀ z ∈ L, B.herm x y z ∈ (algebraMap K.O K.E).range) :
@@ -320,13 +318,13 @@ theorem exists_orth {x : B.A} (hx : B.σ x = x) (L : Submodule K.O B.A) (hL : Is
     (herm_symm B x hx) L hL.1 hL.2 hd
 
 /- English proof (translation)
-Establish `hm : ∀ γ : Matrix.unitaryGroup (Fin (finrank K.E B.A)) E, (toGLU φ γ).val.map φ = γ.1`. Introduce `γ`. Use extensionality with `i j`. Conclude with `φ.apply_symm_apply _`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨γ, rfl⟩`. Use `⟨⟨lat_fg _ _, span_lat _ _⟩, GlobalTheory.UnitLemma.OrthoSelfDual.span_selfDual K B x _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.UnitLemma.BaseChange.orthonormal_iff_unitary K B x _ e _ he, toMatrix_tw_right, unit_iff hs, ← map_inv, hm]`. Conclude with `(γ⁻¹).2.1`. Introduce and unpack `⟨hL, hd⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, h1, h2⟩` from `exists_orth B hx L hL hd`. Take `⟨γ, rfl⟩` from `exists_tw e b`. Rewrite `h2` using `[GlobalTheory.UnitLemma.BaseChange.orthonormal_iff_unitary K B x _ e _ he, toMatrix_tw_right, unit_iff hs]`. Use `⟨(⟨_, Matrix.mem_unitaryGroup_iff'.2 h2⟩ : Matrix.unitaryGroup _ E)⁻¹, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← h1, map_inv]`. Use `congr 2`. Rewrite using `[inv_eq_iff_eq_inv]`. Use extensionality with `i j`. Conclude with `φ.symm_apply_apply _`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem range_piU {φ : K.E ≃+* E} (hs : ∀ y, φ (K.c y) = star (φ y)) {x : B.A} (hx : B.σ x = x)
     (e : Basis (Fin (finrank K.E B.A)) K.E B.A) (he : ∀ i j, B.herm x (e i) (e j) = if i = j then 1 else 0)
@@ -353,19 +351,15 @@ theorem range_piU {φ : K.E ≃+* E} (hs : ∀ y, φ (K.c y) = star (φ y)) {x :
     exact φ.symm_apply_apply _
 
 /- English proof (translation)
-Use `letI := M.mU`. Use `haveI := M.bU`. Use `haveI := (GlobalTheory.T.unitaryGroup_positiveCharacter_trivial_and_unimodular F E _).2 M`. Use `haveI : IsUltrametricDist E := Unram.ultraE F`. Establish `hm : ∀ (γ : Matrix.unitaryGroup (Fin (finrank K.E B.A)) E) i j, φ ((toGLU φ γ).val i j) = γ.1 i j` using `fun γ i j => φ.apply_symm_apply _`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h` using `GlobalTheory.integral_rightCoset_fun_eq_finsum (Matrix.unitaryGroup (Fin (finrank K.E B.A)) E) (Submodule K.O B.A) M.μU (uO _ E) (MeasExist.isOpen_uO _ E) M.volU (fun γ => lat K.O (tw e (toGLU φ γ))) (fun g g' => by`. Rewrite using `[lat_tw_eq_iff, ← map_inv, ← map_mul, ← map_inv]`. Simplify using `only [← hi, hm]`. Use `⟨fun H i j => (H i j).1, fun H i j => ⟨H i j, ?_⟩⟩` and prove the remaining obligations. Conclude with `(Unram.norm_star (F := F) _).trans_le (H j i))`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Prove the second alternative. Prove the first alternative. Replace the relevant objects with their definitions.
 
-Use the proof step `(wU B w) (fun l => by`. Unfold `wU`. Use `split_ifs`. Conclude with `Or.inr norm_one`. Conclude with `Or.inl rfl)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `orbU`. Rewrite using `[show (fun g => unitU _ F E (actU g X)) = fun γ => wU B w (lat K.O (tw e (toGLU φ γ))) from`. Use function extensionality and compare the values at `fun γ => integrandU B hi w l _ _ (by rw [toGl_actU, mapGl_act, hX, Yb_tw]; rfl), h]`. Establish `hc : B.UU x w = ∑ᶠ L ∈ {L | L ∈ B.X x ∧ w ∈ L}, 1`. Rewrite using `[finsum_one, InvAlg.UU, ← Nat.card_coe_set_eq]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Nat.card_congr (Equiv.subtypeSubtypeEquivSubtypeInter (· ∈ B.X x) (w ∈ ·))`. Rewrite using `[hc]`. Use `Eq.trans ?_ ((Nat.castAddMonoidHom ℂ).map_finsum_of_injective Nat.cast_injective _).symm` and prove the remaining obligations. Use `finsum_congr fun L => ?_` and prove the remaining obligations. Simplify using `only [range_piU B hs hx e he L, finsum_eq_if, wU, InvAlg.X, Set.mem_setOf_eq]`.
-
-Use `split_ifs with h1 h2 h3 h4 h5`. Simplify using the standard rewrite rules. Conclude with `absurd ⟨⟨h1.1, h2.1, h1.2⟩, h2.2⟩ h3`. Conclude with `absurd ⟨h4.1.2.1, h4.2⟩ h2`. Simplify using the standard rewrite rules.
-
-Conclude with `absurd ⟨h5.1.1, h5.1.2.2⟩ h1`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orbU_eq {φ : K.E ≃+* E} (hs : ∀ y, φ (K.c y) = star (φ y))
     (hi : ∀ y : K.E, ‖φ y‖ ≤ 1 ↔ y ∈ (algebraMap K.O K.E).range) (M : Meas (finrank K.E B.A) F E)
@@ -415,9 +409,9 @@ theorem orbU_eq {φ : K.E ≃+* E} (hs : ∀ y, φ (K.c y) = star (φ y))
 end Normed
 
 /- English proof (translation)
-Establish `: ∀ z, B.herm x z (b i) = (Algebra.trace K.E B.A ∘ₗ LinearMap.mulLeft K.E (x * B.σ (b i))) z`. Introduce `z`. Simplify using `only [InvAlg.herm, LinearMap.comp_apply, LinearMap.mulLeft_apply]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : ∀ j, (Algebra.trace K.E B.A ∘ₗ LinearMap.mulLeft K.E (x * B.σ (b i))) (b j) = if j = i then 1 else 0` using `fun j => by rw [← this, hb]`. Rewrite using `[this]`. Use `conv_rhs => rw [← b.sum_repr y, map_sum]`. Simplify using `only [map_smul, h2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_orth {n : ℕ} {x : B.A} (b : Basis (Fin n) K.E B.A)
     (hb : ∀ i j, B.herm x (b i) (b j) = if i = j then 1 else 0) (y : B.A) (i : Fin n) :
@@ -432,51 +426,47 @@ theorem repr_orth {n : ℕ} {x : B.A} (b : Basis (Fin n) K.E B.A)
   simp
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.JR.normalForm_invariants k n).2.2.1 Y]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Delta_inv {n : ℕ} {k : Type} [Field k] (Y : Gl n k) : Delta (JR.inv Y) = (Cm Y * Bm Y).det := by
   rw [(GlobalTheory.JR.normalForm_invariants k n).2.2.1 Y]; rfl
 
 /- English proof (translation)
-Introduce `K B hreg x w hx hw`. Take `⟨F, E, _, _, _, _, _, φ, hs, hi⟩` from `exists_normed K`. Take `⟨M⟩` from `MeasExist.nonempty_meas (finrank K.E B.A) F E`. Take `⟨e, he⟩` from `GlobalTheory.UnitLemma.exists_basis_pow_of_separable K B hreg.2`. Establish `heσ : ∀ i, B.σ (e i) = e i` using `fun i => by rw [he, map_pow, hreg.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hspan : Submodule.span K.E (Set.range fun l : ℕ => B.g ^ l) = ⊤`. Rewrite using `[eq_top_iff, ← e.span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨i, (he i).symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `set u := x * (w * B.σ w) with hu`. Establish `huσ : B.σ u = u` using `by rw [hu, map_mul, map_mul, hx.2, B.σ_σ, mul_comm w]`. Establish `huu : IsUnit u` using `hx.1.mul (hw.mul (hw.map B.σ))`. Use `set T := LinearMap.mulLeft K.E B.g with hT`. Use `set lw : B.A →ₗ[K.E] K.E := Algebra.trace K.E B.A ∘ₗ LinearMap.mulLeft K.E (x * B.σ w) with hlw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hlw' : ∀ y, lw y = B.herm x y w`. Introduce `y`. Simplify using `only [hlw, InvAlg.herm, LinearMap.comp_apply, LinearMap.mulLeft_apply]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨Y, hY⟩ : ∃ Y : Gl (finrank K.E B.A) F, mapGl (iota F φ) Y = Yb e T u (Algebra.trace K.E B.A) := by`. Establish `a1 : ∀ i j, ∃ t : F, iota F φ t = LinearMap.toMatrix e e T i j` using `fun i j => by`. Use `exists_iota hs ?_` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix_apply, ← repr_sigma B e heσ, hT, LinearMap.mulLeft_apply, map_mul, hreg.1, heσ]`. Establish `a2 : ∀ i, ∃ t : F, iota F φ t = e.repr u i` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `exists_iota hs ?_` and prove the remaining obligations. Rewrite using `[← repr_sigma B e heσ, huσ]`. Establish `a3 : ∀ i, ∃ t : F, iota F φ t = Algebra.trace K.E B.A (e i)` using `fun i => by`. Use `exists_iota hs ?_` and prove the remaining obligations. Rewrite using `[← trace_sigma, heσ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose P hP using a1`. Use `choose b hb using a2`. Use `choose c hc using a3`. Conclude with `⟨(Matrix.of P, b, c, 0), Prod.ext (Matrix.ext hP) (Prod.ext (funext hb) (Prod.ext (funext hc) (map_zero _)))⟩`. Establish `hinv : ∀ b : Basis (Fin (finrank K.E B.A)) K.E B.A, JR.inv (Yb b T w lw) = (JR.inv Y).map (iota F φ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `b`. Rewrite using `[← inv_mapGl, hY, inv_Yb, inv_Yb]`. Use `Prod.ext rfl (Prod.ext (funext fun i => ?_) rfl)` and prove the remaining obligations. Simplify using `only [hlw, hT, hu, LinearMap.pow_mulLeft, LinearMap.comp_apply, LinearMap.mulLeft_apply]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hΔE : Delta ((JR.inv Y).map (iota F φ)) ≠ 0`. Rewrite using `[← inv_mapGl, hY, Delta_inv, Cm_mul_Bm]`. Simplify using `only [mom_Yb, hT, LinearMap.pow_mulLeft, LinearMap.mulLeft_apply]`. Conclude with `GlobalTheory.T.det_trace_pow_add_mul_unit_ne_zero K B hreg.2 u huu`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hΔ : Delta (JR.inv Y) ≠ 0`. Introduce `h0`. Apply `hΔE` to reduce the goal to its premises. Rewrite using `[← inv_mapGl, Delta_inv, Cm_mapGl, Bm_mapGl, ← Matrix.map_mul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, ← Delta_inv, h0, map_zero]`. Establish `hG : orbG M (unitG _ F) (sec (JR.inv Y)) = ((B.GG u : ℚ) : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γ, ⟨hγ, -⟩, -⟩` from `(GlobalTheory.JR.normalForm_invariants F _).2.2.2.2 Y (sec (JR.inv Y)) hΔ ((GlobalTheory.JR.normalForm_invariants F _).2.1 _)`. Conclude with `orbG_eq B hs hi M u _ (tw_fixed B hs e heσ γ) _ (by rw [← hγ, mapGl_act, hY, Yb_tw])`. Take `⟨m1, m2⟩` from `hUM _ F E M (JR.inv Y) hΔ`. Rewrite `m2` using `[hG]`. Distinguish the cases in `hex : ∃ X : Hn (finrank K.E B.A) F E, HasInv X (JR.inv Y)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨X, hX⟩` from `hex`. Establish `h1 : JR.inv (mapGl φ.symm.toRingHom X.toGl) = JR.inv (Yb e T w lw)`. Rewrite using `[inv_mapGl, hX, hinv]`. Both sides reduce to the same expression. Take `⟨γ, ⟨hγ, -⟩, -⟩` from `(GlobalTheory.JR.normalForm_invariants K.E _).2.2.2.2 _ _ (by rw [hinv]; exact hΔE) h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hγ` using `[← Yb_tw]`. Establish `hγ'` using `hγ`. Simplify using `only [mapGl, Yb, Hn.toGl, Prod.mk.injEq] at hγ'`. Take `⟨y1, y2, y3, -⟩` from `hγ'`. Establish `hcs : ∀ t : E, K.c (φ.symm t) = φ.symm (star t)` using `fun t => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[hs]`. Simplify using the standard rewrite rules. Establish `horth` using `GlobalTheory.UnitLemma.herm_basis_orthonormal K B x w hreg.1 hw hspan _ (tw e γ) (fun i j => by`. Establish `e1` using `congrFun (congrFun y1 i) j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `congrFun (congrFun y1 j) i`. Rewrite `e1`, `e2` using `[LinearMap.toMatrix_apply, hT, LinearMap.mulLeft_apply]`. Rewrite using `[e1, e2]`. Conclude with `(hcs _).trans (congrArg φ.symm (congrFun (congrFun X.1.2 j) i))) (fun j => by`. Rewrite using `[← hlw', congrFun y3 j, congrFun y2 j]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(hcs _).symm)`. Establish `h2` using `m1 X hX`. Rewrite `h2` using `[hG, orbU_eq B hs hi M hx.2 w lw _ horth X hγ.symm]`. Conclude with `h2` after adjusting the coercions. Establish `h0 : B.GG u = 0` using `by exact_mod_cast m2 hex`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h0]`. Assume the negation of the conclusion as `hne`. Establish `hne' : B.UU x w ≠ 0` using `fun h => hne (by rw [h]; rfl)`. Take `⟨⟨⟨L, hL⟩, -⟩⟩` from `(Nat.card_ne_zero.1 hne').1`. Take `⟨b, -, hb⟩` from `exists_orth B hx.2 L hL.1 hL.2.2`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hex` to reduce the goal to its premises. Establish `hsa : IsSelfAdjoint ((LinearMap.toMatrix b b T).map φ)`. Use extensionality with `i j`. Simplify using `only [Matrix.star_apply, Matrix.map_apply, LinearMap.toMatrix_apply, ← hs, repr_orth B b hb, hT, LinearMap.mulLeft_apply]`. Rewrite using `[← herm_symm B x hx.2, herm_mul_left B x B.g (b j), hreg.1]`.
-
-Use `⟨(⟨_, hsa⟩, fun i => φ (b.repr w i), 0), ?_⟩` and prove the remaining obligations. Apply `Inv_map_injective φ.symm.toRingHom φ.symm.injective` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[← inv_mapGl, Inv_map_map]`. Use `Eq.trans (congrArg JR.inv ?_) (hinv b)` and prove the remaining obligations.
-
-Use `Prod.ext (Matrix.ext fun i j => φ.symm_apply_apply _) (Prod.ext (funext fun i => φ.symm_apply_apply _) (Prod.ext (funext fun j => ?_) ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.symm (star (φ (b.repr w j))) = lw (b j)`. Rewrite using `[← hs, RingEquiv.symm_apply_apply, hlw', repr_orth B b hb, ← herm_symm B x hx.2]`. Simplify using `[mapGl, Hn.toGl, Yb]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem countIdentity_of_unitMatch (hUM : ∀ r : ℕ, GlobalTheory.JR.UnitMatch r) : CountIdentity := by
   intro K B hreg x w hx hw

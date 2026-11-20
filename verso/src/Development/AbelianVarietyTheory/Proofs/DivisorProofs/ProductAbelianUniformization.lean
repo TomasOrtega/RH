@@ -27,18 +27,18 @@ Both sides reduce to the same expression.
 theorem halfR_apply (v : Fin (g + g) → ℂ) : halfR g v = fun k => v (Fin.natAdd g k) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[halfL_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem halfL_append (x y : Fin g → ℂ) : halfL g (Fin.append x y) = x := by
   funext k; simp [halfL_apply]
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Conclude with `Fin.append_right x y k`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem halfR_append (x y : Fin g → ℂ) : halfR g (Fin.append x y) = y := by
   funext k; exact Fin.append_right x y k
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Use `Fin.addCases (fun k => ?_) (fun k => ?_) q` and prove the remaining obligations. Rewrite using `[Fin.append_left, halfL_apply]`. Rewrite using `[Fin.append_right, halfR_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem append_halves (v : Fin (g + g) → ℂ) : Fin.append (halfL g v) (halfR g v) = v := by
   funext q
@@ -50,15 +50,15 @@ def sqLat (Λ : Submodule ℤ (Fin g → ℂ)) : Submodule ℤ (Fin (g + g) → 
   Λ.comap ((halfL g).toLinearMap.restrictScalars ℤ) ⊓ Λ.comap ((halfR g).toLinearMap.restrictScalars ℤ)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_sqLat (Λ : Submodule ℤ (Fin g → ℂ)) (v : Fin (g + g) → ℂ) :
     v ∈ sqLat Λ ↔ halfL g v ∈ Λ ∧ halfR g v ∈ Λ := Iff.rfl
 
 /- English proof (translation)
-Use `DiscreteTopology.of_continuous_injective (β := Λ × Λ) (f := fun z => (⟨halfL g z.1, z.2.1⟩, ⟨halfR g z.1, z.2.2⟩)) (Continuous.prodMk (((halfL g).continuous.comp continuous_subtype_val).subtype_mk _) (((halfR g).continuous.comp continuous_subtype_val).subtype_mk _)) fun z z' h => …` and prove the remaining obligations. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[← append_halves z.1, ← append_halves z'.1]`. Simplify using `only [Prod.mk.injEq] at h`. Establish `h1 : halfL g z.1 = halfL g z'.1` using `congrArg Subtype.val h.1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : halfR g z.1 = halfR g z'.1` using `congrArg Subtype.val h.2`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sqLat_discrete (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ] : DiscreteTopology (sqLat Λ) := by
   refine DiscreteTopology.of_continuous_injective (β := Λ × Λ)
@@ -99,19 +99,17 @@ def appendR (g : ℕ) : (Fin g → ℂ) →ₗ[ℝ] (Fin (g + g) → ℂ) where
         smul_zero, RingHom.id_apply]
 
 /- English proof (translation)
-Establish `hL : Set.range (appendL g) ⊆ Submodule.span ℝ (sqLat Λ : Set (Fin (g + g) → ℂ))`. Establish `: (Submodule.span ℝ (Λ : Set (Fin g → ℂ))).map (appendL g) ≤ Submodule.span ℝ (sqLat Λ : Set _)`. Rewrite using `[Submodule.map_span]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `halfL g (Fin.append x 0) ∈ Λ`. Rewrite using `[halfL_append]`. Conclude with `hx`. Express the relevant statement in the definitionally equal form `halfR g (Fin.append x 0) ∈ Λ`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[halfR_append]`. Conclude with `Λ.zero_mem`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `this ⟨x, by rw [h]; trivial, rfl⟩`. Establish `hR : Set.range (appendR g) ⊆ Submodule.span ℝ (sqLat Λ : Set (Fin (g + g) → ℂ))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (Submodule.span ℝ (Λ : Set (Fin g → ℂ))).map (appendR g) ≤ Submodule.span ℝ (sqLat Λ : Set _)`. Rewrite using `[Submodule.map_span]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `halfL g (Fin.append 0 x) ∈ Λ`. Rewrite using `[halfL_append]`. Conclude with `Λ.zero_mem`. Express the relevant statement in the definitionally equal form `halfR g (Fin.append 0 x) ∈ Λ`. Rewrite using `[halfR_append]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hx`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `this ⟨x, by rw [h]; trivial, rfl⟩`. Use `eq_top_iff.2 fun v _ => ?_` and prove the remaining obligations. Establish `hv : v = appendL g (halfL g v) + appendR g (halfR g v)` using `by conv_lhs => rw [← append_halves v]`.
-
-Use function extensionality and compare the values at `q`. Apply the tactic sequence `refine Fin.addCases (fun k => ?_) (fun k => ?_) q <;>`. Simplify using `only [appendL, appendR, LinearMap.coe_mk, AddHom.coe_mk, Pi.add_apply, Fin.append_left, Fin.append_right, Pi.zero_apply, add_zero, zero_add]`. Rewrite using `[hv]`. Conclude with `Submodule.add_mem _ (hL ⟨_, rfl⟩) (hR ⟨_, rfl⟩)`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqLat_full (Λ : Submodule ℤ (Fin g → ℂ)) (h : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) :
     Submodule.span ℝ (sqLat Λ : Set (Fin (g + g) → ℂ)) = ⊤ := by
@@ -198,7 +196,7 @@ def sqUnif {L : LB A.left} (u : HolUnif A L g) : HolUnif (A ⊗ A) (trivLB (A �
     rw [Units.val_one, valAt'_one _ h, _root_.one_mul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `lift (u.ex (halfL g (Fin.append x y))) (u.ex (halfR g (Fin.append x y))) = _`. Rewrite using `[halfL_append, halfR_append]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sqUnif_ex_append {L : LB A.left} (u : HolUnif A L g) (x y : Fin g → ℂ) :
     (sqUnif A u).ex (Fin.append x y) = lift (u.ex x) (u.ex y) := by
@@ -210,7 +208,7 @@ end GlobalTheory.ProdUnifSq
 open GlobalTheory.ProdUnifSq in
 
 /- English proof (translation)
-Introduce `A _ _ _ L g u`. Conclude with `⟨sqUnif A u, sqUnif_ex_append A u⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.exists_holUnif_tensor_self : ∀ (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (L : LB A.left) (g : ℕ) (u : HolUnif A L g),
     ∃ U : HolUnif (A ⊗ A) (⟨PUnit, fun _ => ⊤, fun _ _ => 1⟩ : LB (A ⊗ A).left) (g + g),

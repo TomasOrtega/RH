@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Use `haveI : RingHomInvPair (f : R →+* R') (f.symm : R' →+* R) := RingHomInvPair.of_ringEquiv f`. Use `haveI : RingHomInvPair (f.symm : R' →+* R) (f : R →+* R') := RingHomInvPair.symm _ _`. Apply `WithBot.coe_injective` to reduce the goal to its premises. Rewrite using `[Module.coe_length, Module.coe_length]`. Conclude with `Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComap f.toSemilinearEquiv)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem length_self_eq_of_ringEquiv {R R' : Type*} [CommRing R] [CommRing R'] (f : R ≃+* R') :
     Module.length R R = Module.length R' R' := by
@@ -15,7 +15,7 @@ private theorem length_self_eq_of_ringEquiv {R R' : Type*} [CommRing R] [CommRin
   exact Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComap f.toSemilinearEquiv)
 
 /- English proof (translation)
-Conclude with `(length_self_eq_of_ringEquiv (asIso (e.stalkMap x)).commRingCatIsoToRingEquiv).symm`.
+A detailed English derivation is pending.
 -/
 private theorem length_stalk_eq {X Y : Scheme.{0}} (e : X ⟶ Y) [IsOpenImmersion e] (x : X) :
     Module.length (X.presheaf.stalk x) (X.presheaf.stalk x) =
@@ -23,13 +23,13 @@ private theorem length_stalk_eq {X Y : Scheme.{0}} (e : X ⟶ Y) [IsOpenImmersio
   exact (length_self_eq_of_ringEquiv (asIso (e.stalkMap x)).commRingCatIsoToRingEquiv).symm
 
 /- English proof (translation)
-Introduce `W Z S j _ p`. Use function extensionality and compare the values at `Ω _ _ z`. Establish `e1 : (j ≫ p) ≫ 𝟙 S = j ≫ p` using `by simp`. Establish `e2 : (z ≫ j ≫ p) ≫ 𝟙 S = 𝟙 (gp Ω) ≫ (z ≫ j) ≫ p` using `by simp`. Set `m` to `pullback.map (j ≫ p) (z ≫ j ≫ p) p ((z ≫ j) ≫ p) j (𝟙 _) (𝟙 S) e1 e2`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hm : IsOpenImmersion m` using `by infer_instance`. Establish `hx : pullback.lift z (𝟙 (gp Ω)) (by simp) ≫ m = pullback.lift (z ≫ j) (𝟙 (gp Ω)) (by simp)`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc (pullback.lift z (𝟙 (gp Ω)) _)]`. Simplify using `only [m, pullback.map, pullback.lift_fst, pullback.lift_fst_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Category.assoc (pullback.lift z (𝟙 (gp Ω)) _)]`. Simplify using `only [m, pullback.map, pullback.lift_snd, pullback.lift_snd_assoc, Category.comp_id]`. Establish `hl` using `length_stalk_eq m (pt (pullback.lift z (𝟙 (gp Ω)) (by simp)))`. Rewrite `hl` using `[← pt_comp, hx]`. Simplify using `only [mult, Wt.comap]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.multOpen_of :
     MultOpen := by

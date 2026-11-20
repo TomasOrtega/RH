@@ -17,7 +17,7 @@ namespace Asm
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Unfold `Simeq at *`. Rewrite using `[← e]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem simeq_congr {σ : Type} {f g f' g' : MvPowerSeries σ ℂ_[p]} (e : f - g = f' - g')
     (h : Simeq f g) : Simeq f' g' := by
@@ -26,7 +26,7 @@ theorem simeq_congr {σ : Type} {f g f' g' : MvPowerSeries σ ℂ_[p]} (e : f - 
   exact h
 
 /- English proof (translation)
-Introduce `n`. Simplify using `only [IsIntP, Xv, MvPowerSeries.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem intX {σ : Type} (i : σ) : IntegralMv (Xv i : MvPowerSeries σ ℂ_[p]) := by
   intro n
@@ -34,14 +34,14 @@ theorem intX {σ : Type} (i : σ) : IntegralMv (Xv i : MvPowerSeries σ ℂ_[p])
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `n`. Simplify using `[IsIntP]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem int0 {σ : Type} : IntegralMv (0 : MvPowerSeries σ ℂ_[p]) := by
   intro n
   simp [IsIntP]
 
 /- English proof (translation)
-Simplify using `[Xv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ccX {σ : Type} (i : σ) : MvPowerSeries.constantCoeff (Xv i : MvPowerSeries σ ℂ_[p]) = 0 := by
   simp [Xv]
@@ -51,51 +51,49 @@ end Asm
 open Asm
 
 /- English proof (translation)
-Introduce `p _ l ex ph S hex hlex hswap hint hgrp hz hphi hconj hbi`. Take `⟨hl0, hI⟩` from `h3 p l ex hex hlex`. Establish `rfl' : ∀ {σ : Type} (f : MvPowerSeries σ ℂ_[p]), Simeq f f` using `fun f => (h0 p _ f f f f f).1`. Establish `symm' : ∀ {σ : Type} {f g : MvPowerSeries σ ℂ_[p]}, Simeq f g → Simeq g f` using `fun {σ} {f g} h => (h0 p σ f g g g g).2.1 h`. Establish `trans' : ∀ {σ : Type} {f g k : MvPowerSeries σ ℂ_[p]}, Simeq f g → Simeq g k → Simeq f k` using `fun {σ} {f g k} a b => (h0 p σ f g k f f).2.2.1 a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `add' : ∀ {σ : Type} {f g f' g' : MvPowerSeries σ ℂ_[p]}, Simeq f g → Simeq f' g' → Simeq (f + f') (g + g')` using `fun {σ} {f g f' g'} a b => (h0 p σ f g f f' g').2.2.2 a b`. Establish `cA : ∀ {σ : Type} (a b : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff b = 0 → MvPowerSeries.constantCoeff (add l ex a b) = 0` using `fun a b ha hb => (hI _ a b ha hb).1`. Establish `cM : ∀ {σ : Type} (c : ℂ_[p]) (a : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff (mulBy l ex c a) = 0` using `fun c a ha => (hI _ a a ha ha).2.1 c`. Establish `comm : ∀ {σ : Type} (a b : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff b = 0 → add l ex a b = add l ex b a` using `fun a b ha hb => (hI _ a b ha hb).2.2.1`. Establish `add2 : ∀ {σ : Type} (a : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → add l ex a a = mulBy l ex 2 a` using `fun a ha => (hI _ a a ha ha).2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `addM : ∀ {σ : Type} (a : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → ∀ c d, add l ex (mulBy l ex c a) (mulBy l ex d a) = mulBy l ex (c + d) a` using `fun a ha => (hI _ a a ha ha).2.2.2.2.1`. Establish `addS : ∀ {σ : Type} (a : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → ∀ c, add l ex (mulBy l ex c a) a = mulBy l ex (c + 1) a` using `fun a ha => (hI _ a a ha ha).2.2.2.2.2.1`. Establish `mul1 : ∀ {σ : Type} (a : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → mulBy l ex 1 a = a` using `fun a ha => (hI _ a a ha ha).2.2.2.2.2.2.1`. Establish `mul0 : ∀ {σ : Type} (a : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → mulBy l ex 0 a = 0` using `fun a ha => (hI _ a a ha ha).2.2.2.2.2.2.2`. Establish `bsym : ∀ {σ : Type} (a b : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff b = 0 → be l ex ph a b = be l ex ph b a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ a b ha hb`. Simplify using `only [be]`. Rewrite using `[comm a b ha hb]`. Normalize the expressions using the abelian group laws. Establish `addZ : ∀ {σ : Type} (a : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → add l ex a 0 = a`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Introduce `σ a ha`. Establish `e` using `addM a ha 1 0`. Rewrite `e` using `[mul1 a ha, mul0 a ha, add_zero, mul1 a ha]`. Conclude with `e`. Establish `ccU : MvPowerSeries.constantCoeff (Xv () : MvPowerSeries Unit ℂ_[p]) = 0` using `ccX ()`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `K1 : ∀ α ∈ S, Simeq (be l ex ph (mulBy l ex α.1 (Xv ())) (Xv ()) : MvPowerSeries Unit ℂ_[p]) (be l ex ph (Xv ()) (mulBy l ex α.2 (Xv ())))`. Introduce `α hα`. Establish `H` using `h1 p (Fin 2) Unit _ _ (fun _ => (Xv () : MvPowerSeries Unit ℂ_[p])) (fun _ => ccU) (fun _ => intX ()) (hconj α hα)`. Take `⟨hsX, -, -, hr⟩` from `h2 p l ex ph hex hl0 (Fin 2) Unit (fun _ => (Xv () : MvPowerSeries Unit ℂ_[p])) (fun _ => ccU)`. Establish `e1` using `(hr _ _ (cM α.1 _ (ccX (0 : Fin 2))) (ccX (1 : Fin 2))).2.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `(hr _ _ (ccX (0 : Fin 2)) (cM α.2 _ (ccX (1 : Fin 2)))).2.2.2.2`. Establish `e3` using `(hr _ _ (ccX (0 : Fin 2)) (ccX (0 : Fin 2))).2.2.1 α.1`. Establish `e4` using `(hr _ _ (ccX (1 : Fin 2)) (ccX (1 : Fin 2))).2.2.1 α.2`. Simplify using `only [e1, e2, e3, e4, hsX] at H`. Conclude with `H`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `K2 : ∀ a b c : MvPowerSeries Unit ℂ_[p], MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff b = 0 → MvPowerSeries.constantCoeff c = 0 → IntegralMv a → IntegralMv b → IntegralMv c → Simeq (be l ex ph (add l ex a b) c) (be l ex ph a c + be l ex ph b c)`. Introduce `a b c ha hb hc ia ib ic`. Establish `hs : ∀ i, MvPowerSeries.constantCoeff (![a, b, c] i) = 0`. Apply the tactic sequence `intro i; fin_cases i <;> simpa`. Establish `is : ∀ i, IntegralMv (![a, b, c] i)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `intro i; fin_cases i <;> simpa`. Establish `H` using `h1 p (Fin 3) Unit _ _ ![a, b, c] hs is hbi`. Take `⟨hsX, -, hsA, hr⟩` from `h2 p l ex ph hex hl0 (Fin 3) Unit ![a, b, c] hs`. Establish `e1` using `(hr _ _ (cA _ _ (ccX (0 : Fin 3)) (ccX (1 : Fin 3))) (ccX (2 : Fin 3))).2.2.2.2`. Establish `e2` using `(hr _ _ (ccX (0 : Fin 3)) (ccX (1 : Fin 3))).2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `(hr _ _ (ccX (0 : Fin 3)) (ccX (2 : Fin 3))).2.2.2.2`. Establish `e4` using `(hr _ _ (ccX (1 : Fin 3)) (ccX (2 : Fin 3))).2.2.2.2`. Simplify using `only [hsA, e1, e2, e3, e4, hsX] at H`. Simplify using `using H`. Establish `K0 : Simeq (be l ex ph (Xv ()) (mulBy l ex ((0 : ℕ) : ℂ_[p]) (Xv ())) : MvPowerSeries Unit ℂ_[p]) (MvPowerSeries.C ((0 : ℕ) : ℂ_[p]) * be l ex ph (Xv ()) (Xv ()))`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H` using `symm' (K2 0 0 0 (map_zero _) (map_zero _) (map_zero _) int0 int0 int0)`. Establish `z00 : add l ex (0 : MvPowerSeries Unit ℂ_[p]) 0 = 0` using `addZ 0 (map_zero _)`. Use `simeq_congr ?_ H` and prove the remaining obligations. Rewrite using `[Nat.cast_zero, mul0 _ ccU, map_zero, zero_mul, sub_zero]`. Simplify using `only [be, z00, addZ _ ccU]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `K3 : ∀ n : ℕ, IntegralMv (mulBy l ex (n : ℂ_[p]) (Xv ()) : MvPowerSeries Unit ℂ_[p]) ∧ Simeq (be l ex ph (Xv ()) (mulBy l ex (n : ℂ_[p]) (Xv ())) : MvPowerSeries Unit ℂ_[p]) (MvPowerSeries.C (n : ℂ_[p]) * be l ex ph (Xv ()) (Xv ()))`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, K0⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_zero, mul0 _ ccU]`. Conclude with `int0`. Consider the case `succ n ih`. Take `⟨iN, hN⟩` from `ih`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `cN` using `cM (n : ℂ_[p]) _ ccU`. Establish `eS : mulBy l ex ((n + 1 : ℕ) : ℂ_[p]) (Xv ()) = add l ex (mulBy l ex (n : ℂ_[p]) (Xv ())) (Xv () : MvPowerSeries Unit ℂ_[p])`. Rewrite using `[addS _ ccU, Nat.cast_succ]`. Rewrite using `[eS]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hs : ∀ i, MvPowerSeries.constantCoeff (![mulBy l ex (n : ℂ_[p]) (Xv ()), (Xv () : MvPowerSeries Unit ℂ_[p])] i) = 0`. Apply the tactic sequence `intro i; fin_cases i <;> simpa`. Establish `is : ∀ i, IntegralMv (![mulBy l ex (n : ℂ_[p]) (Xv ()), (Xv () : MvPowerSeries Unit ℂ_[p])] i)`. Introduce `i`. Use `fin_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `using iN`. Simplify using `using (intX () : IntegralMv (Xv () : MvPowerSeries Unit ℂ_[p]))`. Establish `H` using `h5 p (Fin 2) Unit _ _ hs is hgrp`. Take `⟨hsX, -, -, hr⟩` from `h2 p l ex ph hex hl0 (Fin 2) Unit _ hs`. Rewrite `H` using `[(hr _ _ (ccX (0 : Fin 2)) (ccX (1 : Fin 2))).2.1, hsX, hsX]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using H`. Rewrite using `[bsym _ _ ccU (cA _ _ cN ccU)]`. Establish `H` using `K2 _ _ _ cN ccU ccU iN (intX ()) (intX ())`. Rewrite `H` using `[bsym _ _ cN ccU]`. Establish `H2` using `trans' H (add' hN (rfl' (be l ex ph (Xv ()) (Xv ()))))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : MvPowerSeries.C (n : ℂ_[p]) * be l ex ph (Xv ()) (Xv ()) + be l ex ph (Xv ()) (Xv ()) = (MvPowerSeries.C ((n + 1 : ℕ) : ℂ_[p]) * be l ex ph (Xv ()) (Xv ()) : MvPowerSeries Unit ℂ_[p])`. Rewrite using `[Nat.cast_succ, map_add, map_one, add_mul, one_mul]`. Rewrite `H2` using `[e]`. Conclude with `H2`. Establish `K4` using `h4 p l ex ph hex hl0 (fun n => (K3 n).2)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ`. Take `⟨n, hn⟩` from `hz γ hγ`. Establish `ia : IntegralMv (mulBy l ex γ.1 (Xv ()) : MvPowerSeries Unit ℂ_[p])` using `hint γ hγ`. Establish `ib : IntegralMv (mulBy l ex γ.2 (Xv ()) : MvPowerSeries Unit ℂ_[p])` using `hint γ.swap (hswap γ hγ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ca` using `cM γ.1 _ ccU`. Establish `cb` using `cM γ.2 _ ccU`. Establish `C1` using `K1 γ.swap (hswap γ hγ)`. Simplify using `only [Prod.fst_swap, Prod.snd_swap] at C1`. Rewrite `C1` using `[bsym _ _ cb ccU]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `H` using `K2 _ _ _ ca cb ccU ia ib (intX ())`. Rewrite `H` using `[addM _ ccU, hn, bsym _ _ (cM _ _ ccU) ccU, bsym _ _ ca ccU, bsym _ _ cb ccU]`. Establish `A` using `add' (rfl' (be l ex ph (Xv ()) (mulBy l ex γ.1 (Xv ())))) (symm' C1)`. Establish `B` using `trans' (trans' A (symm' H)) (K4 n)`. Rewrite `B` using `[← hn]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[two_mul]`. Conclude with `B`. Use `simeq_congr ?_ hphi` and prove the remaining obligations. Simplify using `only [be, add2 _ ccU]`. Rewrite using `[map_mul, map_ofNat]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem beDiagZp_of (h0 : S0) (h1 : S1) (h2 : SubstOps) (h3 : Ident) (h4 : Cont) (h5 : IntSubst) :
     Target := by

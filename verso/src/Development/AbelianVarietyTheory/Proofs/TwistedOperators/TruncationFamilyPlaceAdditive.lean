@@ -28,9 +28,9 @@ variable {G : Type} [Group G] {P : Subgroup G} {δ : P →* ℝ≥0} {K : Subgro
 include h hP hK hc
 
 /- English proof (translation)
-Take `⟨p, k, hk, rfl⟩` from `h.1 g`. Set `q : P` to `⟨e p, hP _ p.2⟩`. Establish `e1 : e (p * k) = (q : G) * e k` using `map_mul _ _ _`. Establish `e2 : (e (p * k))⁻¹ * (p * k) = ((q⁻¹ * p : P) : G) * ((e k)⁻¹ * k)`. Use `(hc k p).inv_left.eq` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = (e p)⁻¹ * p * ((e k)⁻¹ * k)`. Rewrite using `[← mul_assoc _ (e k)⁻¹, ← this, map_mul]`. Use `group`. Rewrite using `[e2, e1, h.iwAbs_mul _ hk, h.iwAbs_mul _ (hK _ hk), h.iwAbs_mul _ (mul_mem (inv_mem (hK _ hk)) hk), ← map_mul, mul_inv_cancel_left]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwAbs_eq_mul (g : G) :
     Doubling.iwAbs δ K g = Doubling.iwAbs δ K (e g) * Doubling.iwAbs δ K ((e g)⁻¹ * g) := by
@@ -46,9 +46,9 @@ theorem iwAbs_eq_mul (g : G) :
     mul_inv_cancel_left]
 
 /- English proof (translation)
-Establish `c : y⁻¹ * ((e w)⁻¹ * w) = (e w)⁻¹ * w * y⁻¹`. Use `(hc y w).inv_left.eq` as an intermediate fact. Rewrite `this` using `[hy]`. Then use the resulting hypothesis. Establish `a1 : e (w * (y * z)) = e (w * y)` using `by simp [hz]`. Establish `a2 : e (w * z) = e w` using `by simp [hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b2 : (e (w * y))⁻¹ * (w * y) = (e w)⁻¹ * w`. Rewrite using `[map_mul, hy, mul_inv_rev, mul_assoc, ← mul_assoc (e w)⁻¹, ← mul_assoc, c, inv_mul_cancel_right]`. Establish `b1 : (e (w * y))⁻¹ * (w * (y * z)) = (e w)⁻¹ * (w * z)`. Rewrite using `[← mul_assoc w, ← mul_assoc, b2, mul_assoc]`. Rewrite using `[iwAbs_eq_mul h e hP hK hc (w * (y * z)), iwAbs_eq_mul h e hP hK hc w, iwAbs_eq_mul h e hP hK hc (w * y), iwAbs_eq_mul h e hP hK hc (w * z), a1, a2, b1, b2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -74,7 +74,7 @@ variable {D : D7} {V : HSp D} {Φ : WittFrame V} {L : Submodule (𝓞 D.host.E) 
   {a : GL (Fin V.rank) (TensorProduct D.host.F (AF D.host.F) D.host.E)}
 
 /- English proof (translation)
-Use `Doubling.t2Space_adeleRing' (F := D.host.F)` as an intermediate fact. Conclude with `Doubling.isIwasawa_of_isCompact (Φ.flag0.isClosed_par _ _) (continuous_absChi i) hg.isCompact (GlobalTheory.T.iwasawa_decomposition_adelic D V Φ L a hg)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIwasawa (hg : Φ.IsGood D.sp.cm L a) (i : Fin (wittIndex V)) :
     Doubling.IsIwasawa (absChi Φ i) (levelAll D.sp.cm.sig V.gram L a) := by
@@ -83,7 +83,7 @@ theorem isIwasawa (hg : Φ.IsGood D.sp.cm L a) (i : Fin (wittIndex V)) :
     (GlobalTheory.T.iwasawa_decomposition_adelic D V Φ L a hg)
 
 /- English proof (translation)
-Use `Doubling.t2Space_adeleRing' (F := D.host.F)` as an intermediate fact. Use `(PiLp.continuous_toLp 2 _).comp (continuous_pi fun i => ?_)` and prove the remaining obligations. Conclude with `(NNReal.continuous_coe.comp ((isIwasawa hg i).continuous_iwAbs (Φ.flag0.isClosed_par _ _) (continuous_absChi i) hg.isCompact)).log fun x => NNReal.coe_ne_zero.2 (Doubling.iwAbs_pos _ _ x).ne'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_H0 (hg : Φ.IsGood D.sp.cm L a) : Continuous (H0 Φ (levelAll D.sp.cm.sig V.gram L a)) := by
   have := Doubling.t2Space_adeleRing' (F := D.host.F)
@@ -92,15 +92,11 @@ theorem continuous_H0 (hg : Φ.IsGood D.sp.cm L a) : Continuous (H0 Φ (levelAll
     (continuous_absChi i) hg.isCompact)).log fun x => NNReal.coe_ne_zero.2 (Doubling.iwAbs_pos _ _ x).ne'
 
 /- English proof (translation)
-Set `e : GA D V →* GA D V` to `(embAt D.sp.cm.sig V.gram S).comp (projAt D.sp.cm.sig V.gram S)`. Establish `hm : ∀ g, e g ∈ atPts D.sp.cm.sig V.gram S` using `fun g => embAt_mem _ _ S _`. Establish `hA : ∀ g u, projArch D.sp.cm.sig V.gram u (e g) = 1` using `fun g => mem_finPts_iff_forall.1 (mem_atPts.1 (hm g)).1`. Establish `hF : ∀ g v, proj D.sp.cm.sig V.gram v (e g) = proj D.sp.cm.sig V.gram v g ∨ proj D.sp.cm.sig V.gram v (e g) = 1` using `fun g v => by`. Distinguish the cases in `hv : v ∈ S`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `.inl (proj_embAt _ _ S _ ⟨v, hv⟩)`. Conclude with `.inr ((mem_atPts.1 (hm g)).2 v hv)`. Establish `key` using `iwAbs_four (isIwasawa hg i) e (fun p hp => IsoFlag.mem_par_adelic.2 ⟨fun u => by rw [hA]; exact one_mem _, fun v => by`. Apply the tactic sequence `rcases hF p v with h | h <;> rw [h]`. Use `exacts [(IsoFlag.mem_par_adelic.1 hp).2 v, one_mem _]⟩)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `(fun k hk => mem_levelAll.2 ⟨fun v => by`. Apply the tactic sequence `rcases hF k v with h | h <;> rw [h]`. Use `exacts [(mem_levelAll.1 hk).1 v, one_mem _], fun u => by rw [hA]; exact one_mem _⟩)`. Use the proof step `(fun b c => commute_atPts_awayPts _ _ (hm b) (partAway D.sp.cm.sig V.gram S c).2) w (y := y) (z := z)`. Use the proof step `(by`.
-
-Take `⟨x, rfl⟩` from `(range_embAt D.sp.cm.sig V.gram S).ge hy`. Conclude with `congrArg (embAt D.sp.cm.sig V.gram S) (projAt_embAt _ _ S x))`. Use the proof step `(by`. Establish `: projAt D.sp.cm.sig V.gram S z = 1` using `funext fun v => mem_awayPts.1 hz v v.2`. Conclude with `(congrArg (embAt D.sp.cm.sig V.gram S) this).trans (map_one _))`.
-
-Establish `n : ∀ x, ((Doubling.iwAbs (absChi Φ i) (levelAll D.sp.cm.sig V.gram L a) x : ℝ≥0) : ℝ) ≠ 0` using `fun x => NNReal.coe_ne_zero.2 (Doubling.iwAbs_pos _ _ x).ne'`. Express the relevant statement in the definitionally equal form `Real.log _ + Real.log _ = Real.log _ + Real.log _`. Rewrite using `[← Real.log_mul (n _) (n _), ← Real.log_mul (n _) (n _), ← NNReal.coe_mul, ← NNReal.coe_mul, key]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem H0_mul_mul_add_eq_add (hg : Φ.IsGood D.sp.cm L a) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (w : GA D V) {y z : GA D V}
     (hy : y ∈ atPts D.sp.cm.sig V.gram S) (hz : z ∈ awayPts D.sp.cm.sig V.gram S) (i : Fin (wittIndex V)) :
@@ -141,11 +137,11 @@ namespace GlobalTheory.TruncKer
 open PlaceAdd in
 
 /- English proof (translation)
-Introduce `D V Φ L a hg Q hQ`. Take `⟨π, ε, w, -, -, hY⟩` from `exists_Yfam_eq (Φ := Φ) (K := levelAll D.sp.cm.sig V.gram L a) hQ`. Use `⟨fun Tr => ?_, fun S y hy z hz Tr => ?_⟩` and prove the remaining obligations. Simplify using `only [hY]`. Use `(pr Q).continuous.comp ((PiLp.continuous_toLp 2 _).comp (continuous_pi fun i => ?_))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `continuous_const.mul ((PiLp.continuous_apply 2 _ (π i)).comp (continuous_const.sub ((continuous_H0 hg).comp (continuous_const.mul continuous_id))))`. Rewrite using `[hY, hY, hY, hY, ← map_sub, ← map_add]`. Use `congr 1`. Use extensionality with `i`. Use `H0_mul_mul_add_eq_add hg S (rat V w) hy hz (π i)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Ys, inverseChamberMap, PiLp.add_apply, PiLp.sub_apply, PiLp.zero_apply, mul_one]`. Take the linear combination `(-((ε i : SignType) : ℝ)) * this`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem yfam_continuous_add : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : _) (a : _), Φ.IsGood D.sp.cm L a → ∀ Q, IsPar Q → (∀ Tr, Continuous fun x => Yfam Φ (levelAll D.sp.cm.sig V.gram L a) x Tr Q) ∧ ∀ S, ∀ y ∈ atPts D.sp.cm.sig V.gram S, ∀ z ∈ awayPts D.sp.cm.sig V.gram S, ∀ Tr, Yfam Φ (levelAll D.sp.cm.sig V.gram L a) (y * z) Tr Q = (Yfam Φ (levelAll D.sp.cm.sig V.gram L a) y 0 Q - Yfam Φ (levelAll D.sp.cm.sig V.gram L a) 1 0 Q) + Yfam Φ (levelAll D.sp.cm.sig V.gram L a) z Tr Q := by
   intro D V Φ L a hg Q hQ

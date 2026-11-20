@@ -13,9 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace PositivityTheory.Rg.Rsw.Kplug.FormalGroupLawNegation
 
 /- English proof (translation)
-Establish `h1 : Tendsto F (𝓝[≠] w) (𝓝 (F w))` using `((hF.continuousAt (hW.mem_nhds hw)).tendsto).mono_left nhdsWithin_le_nhds`. Establish `h2 : ∀ᶠ u in 𝓝[≠] w, u ≠ c`. Break down `eq_or_ne w c with rfl | h` into its components or cases. Conclude with `self_mem_nhdsWithin`. Conclude with `eventually_nhdsWithin_of_eventually_nhds (eventually_ne_nhds h)`.
-
-Establish `h3 : F =ᶠ[𝓝[≠] w] f` using `by filter_upwards [h2, mem_nhdsWithin_of_mem_nhds (hW.mem_nhds hw)] with u hu hu'`. Conclude with `(he u hu' hu).symm`. Conclude with `(h1.congr' h3).limUnder_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lim_eq {f F : ℂ → ℂ} {W : Set ℂ} {c w : ℂ} (hW : IsOpen W) (hw : w ∈ W) (hF : ContinuousOn F W)
     (he : ∀ u ∈ W, u ≠ c → f u = F u) : limUnder (𝓝[≠] w) f = F w := by
@@ -42,7 +40,7 @@ def LocRep (z : ℂ) : Prop :=
 variable {V Φ d}
 
 /- English proof (translation)
-Take `⟨W, F, c, hW, hz, hd, hc, he⟩` from `h`. Conclude with `⟨W, F, hW, hz, hd, hc, fun u hu g => lim_eq (f := fun u => d.eval u * eisCont V Φ u g) (F := fun u => F u g) (c := c) hW hu (hd g).continuousOn fun u' hu' hne => (he u' hu' hne g).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LocRep.eq {z : ℂ} (h : LocRep V Φ d z) : ∃ (W : Set ℂ) (F : ℂ → GA D (dblSp V) → ℂ), IsOpen W ∧ z ∈ W ∧
     (∀ g, DifferentiableOn ℂ (F · g) W) ∧ ContinuousOn (fun y : ℂ × GA D (dblSp V) => F y.1 y.2) (W ×ˢ univ) ∧
@@ -52,7 +50,7 @@ theorem LocRep.eq {z : ℂ} (h : LocRep V Φ d z) : ∃ (W : Set ℂ) (F : ℂ �
     (c := c) hW hu (hd g).continuousOn fun u' hu' hne => (he u' hu' hne g).symm⟩
 
 /- English proof (translation)
-Take `⟨W, F, hW, hz, hd, -, e⟩` from `h.eq`. Conclude with `((hd g).differentiableAt (hW.mem_nhds hz)).congr_of_eventuallyEq (Filter.eventually_of_mem (hW.mem_nhds hz) fun u hu => e u hu g)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem LocRep.diff {z : ℂ} (h : LocRep V Φ d z) (g : GA D (dblSp V)) : DifferentiableAt ℂ (Ek V Φ d · g) z := by
   obtain ⟨W, F, hW, hz, hd, -, e⟩ := h.eq
@@ -60,7 +58,7 @@ theorem LocRep.diff {z : ℂ} (h : LocRep V Φ d z) (g : GA D (dblSp V)) : Diffe
     (Filter.eventually_of_mem (hW.mem_nhds hz) fun u hu => e u hu g)
 
 /- English proof (translation)
-Take `⟨W, F, hW, hz, -, hc, e⟩` from `h.eq`. Establish `hN : W ×ˢ (univ : Set (GA D (dblSp V))) ∈ 𝓝 (z, g)` using `(hW.prod isOpen_univ).mem_nhds ⟨hz, trivial⟩`. Conclude with `(hc.continuousAt hN).congr (Filter.eventually_of_mem hN fun y hy => (e y.1 hy.1 y.2).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LocRep.cont {z : ℂ} (h : LocRep V Φ d z) (g : GA D (dblSp V)) :
     ContinuousAt (fun y : ℂ × GA D (dblSp V) => Ek V Φ d y.1 y.2) (z, g) := by
@@ -75,39 +73,33 @@ namespace PositivityTheory.Rg.Rsw.Kplug
 open FormalGroupLawNegation
 
 /- English proof (translation)
-Introduce `D V Φ hE hReg ha s₀`. Establish `ha' : ∀ g, AnalyticOnNhd ℂ (eisSer V Φ g) (rightOf ((V.rank : ℝ) / 2))` using `ha`. Use `set a : ℝ := (V.rank : ℝ) / 2 with ha_def`. Use `choose k hk using hReg`. Establish `hk' : ∀ s, ∃ (r : ℝ) (H : ℂ → GA D (dblSp V) → ℂ), 0 < r ∧ (∀ s' ∈ ball s r, s' ≠ s → ∀ g, H s' g = (s' - s) ^ k s * eisCont V Φ s' g) ∧ (∀ g, DifferentiableOn ℂ (H · g) (ball s r)) ∧ ContinuousOn (fun x : ℂ × GA D (dblSp V) => H x.1 x.2) (ball s r ×ˢ univ)` using `fun s => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨r, H, h1, h2, h3, h4, -⟩` from `hk s`. Conclude with `⟨r, H, h1, h2, h3, h4⟩`. Use `choose r H hr hH hHd hHc using hk'`. Use `set T : ℝ := |a - s₀.re| + 2 with hT_def`. Use `set K : Set ℂ := (fun t : ℝ => s₀ + t) '' Icc 0 T with hK_def`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hK : IsCompact K` using `isCompact_Icc.image (by fun_prop)`. Take `⟨t, -, hKt⟩` from `hK.elim_nhds_subcover (fun x => ball x (r x)) fun x _ => ball_mem_nhds x (hr x)`. Use `set B : Set ℂ := ⋃ x ∈ t, ball x (r x) with hB_def`. Establish `hB : IsOpen B` using `isOpen_biUnion fun x _ => isOpen_ball`. Take `⟨δ, hδ, hδK⟩` from `hK.exists_thickening_subset_open hB hKt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `set W₀ : Set ℂ := B ∪ rightOf a with hW₀_def`. Use `set A : Set ℂ := {z | ∀ τ : ℝ, 0 ≤ τ → z + τ ∈ W₀} with hA_def`. Use `set U : Set ℂ := interior A with hU_def`. Use `set d : Polynomial ℂ := ∏ x ∈ t, (Polynomial.X - Polynomial.C x) ^ k x with hd_def`. Establish `hUW : U ⊆ W₀` using `fun z hz => by simpa using interior_subset hz 0 le_rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs₀ : s₀ ∈ U`. Use `mem_interior.2 ⟨ball s₀ (min δ 1), fun z hz τ hτ => ?_, isOpen_ball, mem_ball_self (lt_min hδ one_pos)⟩` and prove the remaining obligations. Establish `hz' : dist z s₀ < min δ 1` using `hz`. Break down `le_or_gt τ T with hτT | hτT` into its components or cases. Use `mem_union_left _ (hδK ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[Metric.mem_thickening_iff]`. Use `⟨s₀ + τ, ⟨τ, ⟨hτ, hτT⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[dist_add_right]`. Conclude with `hz'.trans_le (min_le_left _ _)`. Use `mem_union_right _ ?_ show a < (z + τ).re` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1 : |(z - s₀).re| ≤ ‖z - s₀‖` using `Complex.abs_re_le_norm _`. Establish `h2 : ‖z - s₀‖ < 1` using `by rw [← dist_eq_norm]; exact hz'.trans_le (min_le_right _ _)`. Establish `h3 : a - s₀.re ≤ |a - s₀.re|` using `le_abs_self _`. Establish `h4` using `neg_abs_le (z - s₀).re`. Simplify using `only [Complex.add_re, Complex.ofReal_re, Complex.sub_re] at h1 h4 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hRD : IsRightDomain U`. Use `⟨⟨a, interior_maximal (fun z hz τ hτ => mem_union_right _ ?_) (isOpen_rightOf a)⟩, fun z hz τ hτ => ?_⟩` and prove the remaining obligations. Use `show a < (z + τ).re`. Establish `: a < z.re` using `hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Complex.add_re, Complex.ofReal_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hopen : IsOpen ((fun w : ℂ => w - τ) ⁻¹' U)` using `isOpen_interior.preimage (by fun_prop)`. Establish `hsub : (fun w : ℂ => w - τ) ⁻¹' U ⊆ A` using `fun w hw τ' hτ' => by`. Establish `h1` using `interior_subset hw (τ + τ') (by positivity)`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e : w - (τ : ℂ) + ((τ + τ' : ℝ) : ℂ) = w + τ'` using `by push_cast; ring`. Rewrite `h1` using `[e]`. Conclude with `h1`. Use `interior_maximal hsub hopen ?_` and prove the remaining obligations. Use `show z + (τ : ℂ) - τ ∈ U`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[add_sub_cancel_right]`. Conclude with `hz`. Establish `hd0 : d ≠ 0` using `Finset.prod_ne_zero_iff.2 fun x _ => pow_ne_zero _ (Polynomial.X_sub_C_ne_zero x)`. Establish `hloc : ∀ z ∈ U, LocRep V Φ d z`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hUW hz with hzB | hzR` into its components or cases. Take `⟨x, hxt, hzx⟩` from `mem_iUnion₂.1 hzB set q : Polynomial ℂ := ∏ y ∈ t.erase x, (Polynomial.X - Polynomial.C y) ^ k y with hq_def`. Establish `hdq : d = (Polynomial.X - Polynomial.C x) ^ k x * q` using `(Finset.mul_prod_erase t _ hxt).symm`. Use `⟨ball x (r x), fun u g => q.eval u * H x u g, x, isOpen_ball, hzx, fun g => q.differentiable.differentiableOn.mul (hHd x g), (q.continuous.comp continuous_fst).continuousOn.mul (hHc x), fun u hu hne g => ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hH x u hu hne g, hdq, Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`. Expand and normalize the polynomial expressions, which then agree. Establish `hv` using `hE.1.eisValueAt ha' hzR`. Take `⟨r', hr', hd', hc', -⟩` from `(hk z).of_eisValueAt hv`. Conclude with `⟨ball z r', fun u g => d.eval u * eisCont V Φ u g, z, isOpen_ball, mem_ball_self hr', fun g => d.differentiable.differentiableOn.mul (hd' g), (d.continuous.comp continuous_fst).continuousOn.mul hc', fun u _ _ g => rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hZ : {z : ℂ | d.IsRoot z}.Finite` using `Polynomial.finite_setOfPred_isRoot hd0`. Establish `hO : IsOpen (U ∩ ({z : ℂ | d.IsRoot z} \ {s₀})ᶜ)` using `isOpen_interior.inter (hZ.subset fun x hx => hx.1).isClosed.isOpen_compl`. Take `⟨ε₁, hε₁, hball⟩` from `Metric.isOpen_iff.1 hO s₀ ⟨hs₀, fun h => h.2 rfl⟩`. Establish `hcb : closedBall s₀ (ε₁ / 2) ⊆ ball s₀ ε₁` using `closedBall_subset_ball (half_lt_self hε₁)`. Use `⟨U, d, Ek V Φ d, ε₁ / 2, isOpen_interior, hRD, hs₀, hd0, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
-
-Conclude with `fun g z hz => ((hloc z hz).diff g).differentiableWithinAt`. Conclude with `fun y hy => ((hloc y.1 hy.1).cont y.2).continuousWithinAt`. Introduce `z _ γ hγ g`. Unfold `Ek`. Use `congr 1`.
-
-Use function extensionality and compare the values at `u`. Use `congr 1`. Conclude with `hE.1.leftInv_eisLaurent u 0 γ hγ g`. Introduce `z hz g`. Conclude with `lim_eq (f := fun u => d.eval u * eisCont V Φ u g) (F := fun u => d.eval u * eisSer V Φ g u) (c := z) (isOpen_rightOf a) hz (d.continuous.continuousOn.mul (ha' g).continuousOn) fun u hu _ => by show d.eval u * cont (eisSer V Φ g) u = d.eval u * eisSer V Φ g u`.
-
-Rewrite using `[eqOn_cont (ha' g) hu]`. Conclude with `⟨half_pos hε₁, fun z hz => (hball (hcb hz)).1, fun z hz hne h0 => (hball (hcb hz)).2 ⟨h0, hne⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem local_representation_smoothness : PositivityTheory.Rg.Rsw.Kplug.K1 := by
   intro D V Φ hE hReg ha s₀

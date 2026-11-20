@@ -14,11 +14,11 @@ open scoped GlobalTheory.CuspRep.CuspidalL2GL
 namespace GlobalTheory.CompanionTheory.FinDiscOrth
 
 /- English proof (translation)
-Set `K : Subgroup (GL (Fin N) (Af E))` to `GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E N`. Establish `hKo : IsOpen (K : Set (GL (Fin N) (Af E)))` using `GroundTheory.Automorphic.AdelicGLn.isOpen_integralFiniteGL E N`. Establish `hKc : IsCompact (K : Set (GL (Fin N) (Af E)))` using `GroundTheory.Automorphic.AdelicGLn.isCompact_integralFiniteGL E N`. Establish `hSc : IsClosed (S : Set (GL (Fin N) (Af E)))` using `Subgroup.isClosed_of_isOpen S hS`. Use `⟨S ⊓ K, inf_le_left, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hS.inter hKo`. Establish `: ((S ⊓ K : Subgroup _) : Set (GL (Fin N) (Af E))) = (K : Set (GL (Fin N) (Af E))) ∩ (S : Set (GL (Fin N) (Af E)))`. Use extensionality with `x`. Simplify using `[and_comm]`. Rewrite using `[this]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hKc.inter_right hSc`.
+A detailed English derivation is pending.
 -/
 theorem exists_compact_open_level_le (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ)
     (S : Subgroup (GL (Fin N) (Af E))) (hS : IsOpen (S : Set (GL (Fin N) (Af E)))) :

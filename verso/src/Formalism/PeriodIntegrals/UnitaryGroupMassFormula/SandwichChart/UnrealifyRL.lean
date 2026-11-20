@@ -18,9 +18,9 @@ attribute [local instance] Matrix.frobeniusNormedAddCommGroup Matrix.frobeniusNo
 variable {k r : ℕ}
 
 /- English proof (translation)
-Introduce `k r X`. Rewrite using `[EuclideanSpace.norm_eq, Matrix.frobenius_norm_def, ← Real.sqrt_eq_rpow]`. Use `congr 1`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool, Real.rpow_two, Complex.sq_norm, Complex.normSq_apply]`. Simplify using `[RL, realifyFun]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem normRL : NormRL := by
   intro k r X
@@ -35,7 +35,7 @@ theorem normRL : NormRL := by
   ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify, RL, realifyFun]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unrealify_RL (X : Mat k r) : unrealify (RL X) = X := by
   ext i j
@@ -45,7 +45,7 @@ def sgI (k r : ℕ) (i : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
   if r ≤ i.val ∧ i.val ≤ r + k then i else ⟨2 * r + k - i.val, by omega⟩
 
 /- English proof (translation)
-Break down `i with ⟨i, hi⟩` into its components or cases. Break down `j with ⟨j, hj⟩` into its components or cases. Unfold `Hpk sgI`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff, Fin.val_mk] at *) <;> first | rfl | (exfalso; omega)`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Log_Hpk_eq (i j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j = sgI k r i then (if i.val = r + k then -1 else 1) else 0 := by
@@ -55,25 +55,25 @@ theorem Log_Hpk_eq (i j : Fin (2 * r + k + 1)) :
   split_ifs <;> (try simp only [Fin.ext_iff, Fin.val_mk] at *) <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Unfold `sgI`. Apply the tactic sequence `split_ifs <;> simp_all [Fin.ext_iff] <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Log_sgI_sgI (i : Fin (2 * r + k + 1)) : sgI k r (sgI k r i) = i := by
   unfold sgI
   split_ifs <;> simp_all [Fin.ext_iff] <;> omega
 
 /- English proof (translation)
-Unfold `sgI`. Apply the tactic sequence `split_ifs <;> simp_all <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Log_sgI_val (i : Fin (2 * r + k + 1)) : ((sgI k r i).val = r + k ↔ i.val = r + k) := by
   unfold sgI
   split_ifs <;> simp_all <;> omega
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (sgI k r i)]`. Rewrite using `[Log_Hpk_eq, Log_Hpk_eq, if_pos rfl, Log_sgI_sgI, Matrix.one_apply]`. Establish `hv` using `(Log_sgI_val (k := k) (r := r) i)`. Distinguish the cases in `h : j = i`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Distinguish the cases in `h2 : j.val = r + k`. Rewrite using `[if_pos h2, if_pos rfl, if_pos (hv.2 h2), if_pos rfl]`. Evaluate the numerical expressions. Rewrite using `[if_neg h2, if_pos rfl, if_neg (fun h' => h2 (hv.1 h')), if_pos rfl]`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[if_neg h, if_neg (Ne.symm h), mul_zero]`. Introduce `l _ hl`. Rewrite using `[Log_Hpk_eq, if_neg hl, zero_mul]`. Simplify using the standard rewrite rules.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
   ext i j
@@ -90,19 +90,19 @@ theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
   · simp
 
 /- English proof (translation)
-Introduce `k r`. Establish `hE : HasStrictFDerivAt (NormedSpace.exp : Mat k r → Mat k r) ((ContinuousLinearEquiv.refl ℝ (Mat k r) : Mat k r →L[ℝ] Mat k r)) 0`. Rewrite using `[ContinuousLinearEquiv.coe_refl]`. Conclude with `hasStrictFDerivAt_exp_zero`. Take `⟨ε, hε, hleft⟩` from `Metric.eventually_nhds_iff.1 hE.eventually_left_inverse`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set H := Hpk k r`. Establish `hHH : H * H = 1` using `hpk_sq`. Establish `hHu : IsUnit H` using `(Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_right_inverse hHH)`. Establish `hHi : H⁻¹ = H` using `Matrix.inv_eq_right_inv hHH`. Use `set C := ‖H‖ * ‖H‖ + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hC : 0 < C` using `by positivity`. Use `⟨min ε (ε / C), lt_min hε (div_pos hε hC), fun L hL hG => ?_⟩` and prove the remaining obligations. Establish `hLε : ‖L‖ < ε` using `lt_of_lt_of_le hL (min_le_left _ _)`. Establish `hLC : ‖L‖ < ε / C` using `lt_of_lt_of_le hL (min_le_right _ _)`. Establish `hadj : ‖adjH L‖ < ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : ‖adjH L‖ ≤ ‖H‖ * ‖H‖ * ‖L‖`. Unfold `adjH`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖H‖ * ‖H‖ * ‖L‖ < ε`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexp : NormedSpace.exp (adjH L) = NormedSpace.exp (-L)`. Establish `hG' : (NormedSpace.exp L)ᴴ * H * NormedSpace.exp L = H` using `hG`. Establish `h1 : NormedSpace.exp (adjH L) = H * (NormedSpace.exp L)ᴴ * H`. Use `Matrix.exp_conj H Lᴴ hHu` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `this` using `[hHi, Matrix.exp_conjTranspose]`. Conclude with `this`. Establish `h2 : (H * (NormedSpace.exp L)ᴴ * H) * NormedSpace.exp L = 1`. Rewrite using `[Matrix.mul_assoc (H * _), show H * (NormedSpace.exp L)ᴴ * (H * NormedSpace.exp L) = H * ((NormedSpace.exp L)ᴴ * H * NormedSpace.exp L) by simp only [Matrix.mul_assoc], hG', hHH]`. Rewrite using `[h1, Matrix.exp_neg, Matrix.inv_eq_left_inv h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `hleft (y := adjH L) (by simpa using hadj)`. Establish `e2` using `hleft (y := -L) (by simpa using hLε)`. Rewrite `e1` using `[hexp]`. Use `show adjH L + L = 0`. Rewrite using `[← e1, e2, neg_add_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem logG : LogG := by
   intro k r

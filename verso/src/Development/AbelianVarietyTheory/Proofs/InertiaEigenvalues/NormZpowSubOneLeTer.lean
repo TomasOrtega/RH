@@ -15,7 +15,7 @@ section Abstract
 variable {C : Type} [NormedField C]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `X.sum_mem fun b _ => hB a b _ (hv b)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_mem {r : ℕ} (X : AddSubgroup C) (B : Matrix (Fin r) (Fin r) C)
     (hB : ∀ a b, ∀ x ∈ X, B a b * x ∈ X) (v : Fin r → C) (hv : ∀ a, v a ∈ X) (a : Fin r) :
@@ -24,15 +24,15 @@ theorem mulVec_mem {r : ℕ} (X : AddSubgroup C) (B : Matrix (Fin r) (Fin r) C)
   exact X.sum_mem fun b _ => hB a b _ (hv b)
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ∀ y : Fin r → C, (∀ a, y a ∈ X) → (∀ a, g (y a) - y a + p * q * B.mulVec (fun b => g (y b)) a = 0) → ∀ a, ‖y a‖ ≤ ‖q‖ ^ n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y hy _ a`. Simplify using `using hX1 _ (hy a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ n ih`. Introduce `y hy h a`. Establish `hm : ∀ a, -B.mulVec (fun b => g (y b)) a ∈ X` using `fun a => X.neg_mem (mulVec_mem X B hBX _ (fun b => hgX _ (hy b)) a)`. Set `z : Fin r → C` to `fun a => S (-B.mulVec (fun b => g (y b)) a)`. Establish `hyz : ∀ a, y a = q * z a` using `fun a => by`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ hp` to reduce the goal to its premises. Rewrite using `[← (hS _ (hy a)).2, eq_neg_of_add_eq_zero_left (h a), ← mul_neg, hlin _ (hm a), mul_assoc]`. Use `ih z (fun a => (hS _ (hm a)).1) (fun a => by` as an intermediate fact. Apply `mul_left_cancel₀ hq` to reduce the goal to its premises. Establish `h1` using `h a`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e : (fun b => g (y b)) = q • fun b => g (z b)`. Use function extensionality and compare the values at `b`. Rewrite using `[hyz b, map_mul, hgq]`. Both sides reduce to the same expression. Rewrite `h1` using `[e, Matrix.mulVec_smul, hyz a, map_mul, hgq, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `h1) a`. Rewrite using `[hyz a, norm_mul, pow_succ']`. Conclude with `mul_le_mul_of_nonneg_left this (norm_nonneg _)`. Use function extensionality and compare the values at `a`. Conclude with `norm_le_zero_iff.1 (ge_of_tendsto' (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg q) hq1) fun n => key n y hy h a)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem inj_of_small {r : ℕ} (X : AddSubgroup C) (hX1 : ∀ x ∈ X, ‖x‖ ≤ 1) (g : C ≃+* C)
     (hgX : ∀ x ∈ X, g x ∈ X) (p q : C) (hp : p ≠ 0) (hq : q ≠ 0) (hq1 : ‖q‖ < 1) (hgq : g q = q)
@@ -68,25 +68,23 @@ theorem inj_of_small {r : ℕ} (X : AddSubgroup C) (hX1 : ∀ x ∈ X, ‖x‖ �
     (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg q) hq1) fun n => key n y hy h a)
 
 /- English proof (translation)
-Set `T : (Fin r → C) → (Fin r → C)` to `fun v a => -B.mulVec (fun b => g (S (v b))) a`. Set `v : ℕ → Fin r → C` to `fun n => T^[n] w`. Establish `hvs : ∀ n, v (n + 1) = T (v n)` using `fun n => Function.iterate_succ_apply' T n w`. Establish `hv : ∀ n a, v n a ∈ X`. Introduce `n`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => exact hw`. Consider the case `succ n ih`. Introduce `a`. Rewrite using `[hvs]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `X.neg_mem (mulVec_mem X B hBX _ (fun b => hgX _ (hS _ (ih b)).1) a)`. Establish `hqn : ∀ n : ℕ, ∀ x ∈ X, q ^ n * x ∈ X`. Introduce `n x hx`. Proceed by induction on `n with`. Consider the case `zero => simpa using hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n ih => rw [pow_succ', mul_assoc]`. Conclude with `hqX _ ih`. Establish `hbd : ∀ n : ℕ, ∀ x ∈ X, ‖q ^ n * x‖ ≤ ‖q‖ ^ n` using `fun n x hx => by`. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (by positivity) (hX1 x hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hsum : ∀ a, Summable fun n => q ^ n * S (v n a)` using `fun a => Summable.of_norm_bounded (summable_geometric_of_lt_one (norm_nonneg q) hq1) fun n => hbd n _ (hS _ (hv n a)).1`. Set `y : Fin r → C` to `fun a => ∑' n, q ^ n * S (v n a)`. Set `Y : ℕ → Fin r → C` to `fun N a => ∑ n ∈ Finset.range N, q ^ n * S (v n a)`. Establish `hY : ∀ a, Filter.Tendsto (fun N => Y N a) Filter.atTop (nhds (y a))` using `fun a => (hsum a).hasSum.tendsto_sum_nat`. Use `⟨y, fun a => hX.mem_of_tendsto (hY a) (Filter.Eventually.of_forall fun N => X.sum_mem fun n _ => hqn n _ (hS _ (hv n a)).1), fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hN : ∀ N, g (Y N a) - Y N a + p * q * B.mulVec (fun b => g (Y N b)) a = p * w a - p * (q ^ N * v N a)`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => simp [Y, v, Matrix.mulVec, dotProduct]`. Consider the case `succ N ih`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : ∀ b, Y (N + 1) b = Y N b + q ^ N * S (v N b)` using `fun b => Finset.sum_range_succ _ _`. Establish `e2 : (fun b => g (Y (N + 1) b)) = (fun b => g (Y N b)) + q ^ N • fun b => g (S (v N b))`. Use function extensionality and compare the values at `b`. Rewrite using `[e, map_add, map_mul, map_pow, hgq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[e2, e, map_add, map_mul, map_pow, hgq, Matrix.mulVec_add, Matrix.mulVec_smul, hvs]`. Simplify using `only [T, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `ih + q ^ N * (hS _ (hv N a)).2`. Establish `t1 : Filter.Tendsto (fun N => g (Y N a) - Y N a + p * q * B.mulVec (fun b => g (Y N b)) a) Filter.atTop (nhds (g (y a) - y a + p * q * B.mulVec (fun b => g (y b)) a))`. Use `(((hg.tendsto _).comp (hY a)).sub (hY a)).add (Filter.Tendsto.const_mul _ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `tendsto_finset_sum _ fun b _ => ((hg.tendsto _).comp (hY b)).const_mul _`. Establish `t0 : Filter.Tendsto (fun N => q ^ N * v N a) Filter.atTop (nhds 0)` using `squeeze_zero_norm (fun N => hbd N _ (hv N a)) (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg q) hq1)`. Establish `t2 : Filter.Tendsto (fun N => p * w a - p * (q ^ N * v N a)) Filter.atTop (nhds (p * w a - p * 0))` using `tendsto_const_nhds.sub (t0.const_mul p)`. Rewrite `t2` using `[mul_zero, sub_zero]`.
-
-Simplify using `only [hN] at t1`. Conclude with `tendsto_nhds_unique t1 t2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem surj_of_small [CompleteSpace C] {r : ℕ} (X : AddSubgroup C) (hX : IsClosed (X : Set C))
     (hX1 : ∀ x ∈ X, ‖x‖ ≤ 1) (g : C ≃+* C) (hg : Continuous g) (hgX : ∀ x ∈ X, g x ∈ X)
@@ -154,9 +152,9 @@ theorem surj_of_small [CompleteSpace C] {r : ℕ} (X : AddSubgroup C) (hX : IsCl
 variable [IsUltrametricDist C]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.CloseToUnitNorm.norm_zpow_sub_one_le`. Consider the case `exact _root_.GlobalTheory.CloseToUnitNorm.norm_zpow_sub_one_le`. Consider the case `(apply _root_.GlobalTheory.CloseToUnitNorm.norm_zpow_sub_one_le <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CloseToUnitNorm.norm_zpow_sub_one_le <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.CloseToUnitNorm.norm_zpow_sub_one_le <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CloseToUnitNorm.norm_zpow_sub_one_le ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_zpow_sub_one_le (u : C) (hu : ‖u - 1‖ < 1) (i : ℤ) : ‖u ^ i - 1‖ ≤ ‖u - 1‖ := by
   first
@@ -172,11 +170,11 @@ end Abstract
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Establish `h2 : 2 ≤ l` using `hl.1.two_le`. Establish `h1 : (1 : ℝ) < l` using `by exact_mod_cast hl.1.one_lt`. Rewrite using `[rho1, ← Real.rpow_intCast]`. Apply `Real.rpow_lt_rpow_of_exponent_lt h1` to reduce the goal to its premises. Rewrite using `[lt_div_iff₀ (by linarith)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Establish `hj1 : (1 : ℝ) ≤ j` using `by exact_mod_cast hj.1`. Break down `h2.eq_or_lt with h | h` into its components or cases. Establish `hj2 : (2 : ℝ) ≤ j` using `by exact_mod_cast hj.2 h.symm`. Establish `: (l : ℝ) = 2` using `by exact_mod_cast h.symm`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (3 : ℝ) ≤ l` using `by exact_mod_cast h`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem pow_lt_rho {j : ℕ} (hj : Lev l j) : (l : ℝ) ^ (-(j : ℤ)) < rho1 l := by
   have h2 : 2 ≤ l := hl.1.two_le
@@ -194,7 +192,7 @@ theorem pow_lt_rho {j : ℕ} (hj : Lev l j) : (l : ℝ) ^ (-(j : ℤ)) < rho1 l 
     nlinarith
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) < l` using `by exact_mod_cast hl.1.one_lt`. Rewrite using `[rho1]`. Apply `Real.rpow_lt_one_of_one_lt_of_neg h1` to reduce the goal to its premises. Conclude with `div_neg_of_neg_of_pos (by norm_num) (by linarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem rho_lt_one : rho1 l < 1 := by
   have h1 : (1 : ℝ) < l := by exact_mod_cast hl.1.one_lt
@@ -203,23 +201,23 @@ theorem rho_lt_one : rho1 l < 1 := by
   exact div_neg_of_neg_of_pos (by norm_num) (by linarith)
 
 /- English proof (translation)
-Use `GlobalTheory.Cyc.norm_primitiveRoot_sub_one l 1 le_rfl ζ (by rwa [pow_one])` as an intermediate fact. Simplify `this` using `[rho1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_root_sub_one {ζ : PadicComplex l} (h : IsPrimitiveRoot ζ l) : ‖ζ - 1‖ = rho1 l := by
   have := GlobalTheory.Cyc.norm_primitiveRoot_sub_one l 1 le_rfl ζ (by rwa [pow_one])
   simpa [rho1] using this
 
 /- English proof (translation)
-Simplify using `[inC, PadicComplex.coe_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_inC_iff (F : IntermediateField ℚ_[l] (Om l)) (y : PadicComplex l) :
     y ∈ inC F ↔ y ∈ F.toSubfield.map (algebraMap (Om l) (PadicComplex l)) := by
   simp [inC, PadicComplex.coe_eq]
 
 /- English proof (translation)
-Use `haveI : NeZero l := ⟨hl.1.ne_zero⟩`. Take `⟨η, hη⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (Om l) l`. Establish `hη'` using `hη.map_of_injective (algebraMap (Om l) (PadicComplex l)).injective`. Take `⟨k, -, hk⟩` from `hη'.eq_pow_of_pow_eq_one h.pow_eq_one`. Use `⟨η ^ k, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `pow_mem (?_ : η ∈ Ks K j) k` and prove the remaining obligations. Use `(le_sup_right : _ ≤ Ks K j) (IntermediateField.subset_adjoin _ _ ?_)` and prove the remaining obligations. Conclude with `(hη.pow_eq_one_iff_dvd _).2 (dvd_pow_self l (by omega))`. Simplify using `only [PadicComplex.coe_eq, map_pow]`. Conclude with `hk`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem root_mem_inC (K : FinExt l) {j : ℕ} (hj : 1 ≤ j) {ζ : PadicComplex l}
     (h : IsPrimitiveRoot ζ l) : ζ ∈ inC (Ks K j) := by
@@ -235,16 +233,16 @@ theorem root_mem_inC (K : FinExt l) {j : ℕ} (hj : 1 ≤ j) {ζ : PadicComplex 
     exact hk
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨algebraMap ℚ_[l] (Om l) _, F.algebraMap_mem _, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem chiC_mem_inC (χ : GQ l →* ℚ_[l]ˣ) (i : ℤ) (g : GQ l)
     (F : IntermediateField ℚ_[l] (Om l)) : chiC χ i g ∈ inC F :=
   ⟨algebraMap ℚ_[l] (Om l) _, F.algebraMap_mem _, rfl⟩
 
 /- English proof (translation)
-Establish `h1 : ‖(χ g : ℚ_[l]) - 1‖ < rho1 l` using `hg.2 ▸ pow_lt_rho hj`. Establish `h2` using `norm_zpow_sub_one_le _ (h1.trans rho_lt_one) i`. Establish `e : chiC χ i g - 1 = algebraMap ℚ_[l] (PadicComplex l) ((χ g : ℚ_[l]) ^ i - 1)`. Simplify using `[chiC]`. Rewrite using `[e, norm_algebraMap']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.trans_lt h1`.
+A detailed English derivation is pending.
 -/
 theorem norm_chiC_sub_one {χ : GQ l →* ℚ_[l]ˣ} {K : FinExt l} {j : ℕ} (hj : Lev l j) {g : GQ l}
     (hg : IsGen χ K j g) (i : ℤ) : ‖chiC χ i g - 1‖ < rho1 l := by
@@ -256,19 +254,17 @@ theorem norm_chiC_sub_one {χ : GQ l →* ℚ_[l]ˣ} {K : FinExt l} {j : ℕ} (h
   exact h2.trans_lt h1
 
 /- English proof (translation)
-Establish `hz` using `norm_root_sub_one h`. Establish `hz0 : ζ - 1 ≠ 0` using `sub_ne_zero.2 (h.ne_one hl.1.one_lt)`. Establish `hzp : 0 < ‖ζ - 1‖` using `norm_pos_iff.2 hz0`. Establish `hc` using `norm_chiC_sub_one hj hg i`. Establish `hc1 : ‖chiC χ i g‖ ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsUltrametricDist.norm_add_le_max (chiC χ i g - 1) 1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, norm_one]`. Conclude with `this.trans (max_le (hc.trans rho_lt_one).le le_rfl)`. Set `B : Matrix (Fin r) (Fin r) (PadicComplex l)` to `(ζ - 1)⁻¹ • (chiC χ i g • U - 1)`. Establish `hB : ∀ a b, ‖B a b‖ < 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Establish `e : B a b = (ζ - 1)⁻¹ * (chiC χ i g * (U - 1) a b + (chiC χ i g - 1) * (1 : Matrix (Fin r) (Fin r) (PadicComplex l)) a b)`. Simplify using `only [B, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, norm_inv, inv_mul_lt_iff₀ hzp, mul_one, hz]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hc1).trans_lt (hU1 a b)`. Rewrite using `[norm_mul]`. Use `(mul_le_of_le_one_right (norm_nonneg _) ?_).trans_lt hc` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`. Use `⟨B, hB, fun a b => ⟨?_, (hB a b).le⟩, ?_⟩` and prove the remaining obligations. Establish `m1` using `(mem_inC_iff _ _).1 (root_mem_inC K hj.1 h)`. Establish `m2` using `(mem_inC_iff _ _).1 (chiC_mem_inC χ i g (Ks K j))`. Establish `m3` using `(mem_inC_iff _ _).1 (hU a b).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mem_inC_iff]`. Simplify using `only [B, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Use `mul_mem (inv_mem (sub_mem m1 (one_mem _))) (sub_mem (mul_mem m2 m3) ?_)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
-
-Conclude with `one_mem _`. Conclude with `zero_mem _`. Simplify using `only [B, smul_smul, mul_inv_cancel₀ hz0, one_smul]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_quot {χ : GQ l →* ℚ_[l]ˣ} {K : FinExt l} {j : ℕ} (hj : Lev l j) {g : GQ l}
     (hg : IsGen χ K j g) {r : ℕ} (U : Matrix (Fin r) (Fin r) (PadicComplex l))
@@ -311,7 +307,7 @@ theorem exists_quot {χ : GQ l →* ℚ_[l]ˣ} {K : FinExt l} {j : ℕ} (hj : Le
   · simp only [B, smul_smul, mul_inv_cancel₀ hz0, one_smul]; abel
 
 /- English proof (translation)
-Rewrite using `[twAct, ← Matrix.smul_mulVec, h, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec]`. Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem twAct_sub {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} {χ : GQ l →* ℚ_[l]ˣ} {i : ℤ}
     {r : ℕ} {U : GQ l → Matrix (Fin r) (Fin r) (PadicComplex l)} {g : GQ l} {p : PadicComplex l}
@@ -324,7 +320,7 @@ theorem twAct_sub {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} {χ : 
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(mem_inC_iff _ _).2 (mul_mem ((mem_inC_iff _ _).1 hx.1) ((mem_inC_iff _ _).1 hy.1)), by rw [norm_mul]; exact mul_le_one₀ hx.2 (norm_nonneg _) hy.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mul_mem_intC {F : IntermediateField ℚ_[l] (Om l)} {x y : PadicComplex l} (hx : x ∈ intC F)
     (hy : y ∈ intC F) : x * y ∈ intC F :=
@@ -332,13 +328,11 @@ theorem mul_mem_intC {F : IntermediateField ℚ_[l] (Om l)} {x y : PadicComplex 
     by rw [norm_mul]; exact mul_le_one₀ hx.2 (norm_nonneg _) hy.2⟩
 
 /- English proof (translation)
-Establish `hq : ∃ q : PadicComplex l, q ≠ 0 ∧ ‖q‖ < 1 ∧ q ∈ inC F ∧ ∀ a b, ‖B a b‖ ≤ ‖q‖`. Distinguish the cases in `h0 : B = 0`. Use `⟨l, Nat.cast_ne_zero.2 hl.1.ne_zero, ?_, (mem_inC_iff _ _).2 (natCast_mem _ _), fun a b => by simp [h0]⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicComplex l)), norm_algebraMap', Padic.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast hl.1.one_lt)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨a0, b0, hab⟩ : ∃ a b, B a b ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h0 (Matrix.ext hc)`. Take `⟨s, -, hs⟩` from `Finset.exists_max_image (Finset.univ : Finset (Fin r × Fin r)) (fun s => ‖B s.1 s.2‖) ⟨(a0, b0), Finset.mem_univ _⟩`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B s.1 s.2, ?_, h1 _ _, (hB _ _).1, fun a b => hs (a, b) (Finset.mem_univ _)⟩` and prove the remaining obligations. Conclude with `norm_pos_iff.1 ((norm_pos_iff.2 hab).trans_le (hs (a0, b0) (Finset.mem_univ _)))`. Take `⟨q, hq0, hq1, hqF, hq⟩` from `hq`. Use `⟨q, q⁻¹ • B, hq0, hq1, ⟨hqF, hq1.le⟩, fun a b => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(mem_inC_iff _ _).2 (mul_mem (inv_mem ((mem_inC_iff _ _).1 hqF)) ((mem_inC_iff _ _).1 (hB a b).1))`.
-
-Rewrite using `[Matrix.smul_apply, smul_eq_mul, norm_mul, norm_inv, inv_mul_le_iff₀ (norm_pos_iff.2 hq0), mul_one]`. Conclude with `hq a b`. Rewrite using `[smul_smul, mul_inv_cancel₀ hq0, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor {F : IntermediateField ℚ_[l] (Om l)} {r : ℕ}
     (B : Matrix (Fin r) (Fin r) (PadicComplex l)) (h1 : ∀ a b, ‖B a b‖ < 1)
@@ -369,21 +363,21 @@ theorem exists_factor {F : IntermediateField ℚ_[l] (Om l)} {r : ℕ}
   · rw [smul_smul, mul_inv_cancel₀ hq0, one_smul]
 
 /- English proof (translation)
-The claim follows from `closure_minimal (fun _ hy => hy.2) (isClosed_le continuous_norm continuous_const) hx`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_Ohat (K : FinExt l) {x : PadicComplex l} (hx : x ∈ Ohat K) : ‖x‖ ≤ 1 :=
   closure_minimal (fun _ hy => hy.2) (isClosed_le continuous_norm continuous_const) hx
 
 /- English proof (translation)
-Introduce `l hl act χ hact hχ K j hj g hg r U hU hU1 i`. Take `⟨-, -, hXO, hmul, hstab, -⟩` from `GlobalTheory.T.tate_decomposition_completed_cyclotomic_integers l act χ hact hχ K j hj.1`. Establish `hX1 : ∀ x ∈ Xj K j, ‖x‖ ≤ 1` using `fun x hx => norm_le_one_of_Ohat K (hXO x hx)`. Establish `hg0 : g ∈ (K0 K).fixingSubgroup` using `IntermediateField.fixingSubgroup_antitone (le_sup_left : K0 K ≤ Ks K j) hg.1`. Establish `hgX` using `hstab g hg0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `y hy hfix`. Establish `: NeZero l` using `⟨hl.1.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (PadicComplex l) l`. Take `⟨S, hS, -, hlin⟩` from `GlobalTheory.Cyc.exists_tate_operator l act χ hact hχ K j hj g hg ζ hζ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB, hBO, hBe⟩` from `exists_quot hj hg (U g) hU hU1 i hζ`. Take `⟨q, B', hq0, hq1, hqO, hB', rfl⟩` from `exists_factor B hB hBO`. Rewrite `hBe` using `[smul_smul]`. Use `inj_of_small (Xj K j) hX1 (act g) hgX (ζ - 1) q (sub_ne_zero.2 (hζ.ne_one hl.1.one_lt)) hq0 hq1 (TateS.act_fix hact K hg.1 hqO.1) S (fun x hx => ⟨(hS x hx).1, (hS x hx).2.2⟩) (hlin _ (mul_mem_intC (TateS.zeta_sub_one_mem K hj.1 hζ) hqO)) B' (fun a b => hmul _ (hB' a b)) y hy fun …` and prove the remaining obligations. Rewrite using `[← twAct_sub hBe, hfix, sub_self, Pi.zero_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `ζ hζ w hw`. Take `⟨S, hS, -, -⟩` from `GlobalTheory.Cyc.exists_tate_operator l act χ hact hχ K j hj g hg ζ hζ`. Take `⟨B, hB, hBO, hBe⟩` from `exists_quot hj hg (U g) hU hU1 i hζ`. Take `⟨q, B', hq0, hq1, hqO, hB', rfl⟩` from `exists_factor B hB hBO`. Rewrite `hBe` using `[smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, hy, he⟩` from `surj_of_small (Xj K j) (AddSubgroup.isClosed_topologicalClosure _) hX1 (act g) (AddMonoidHomClass.isometry_of_norm (act g) (hact.2 g)).continuous hgX (ζ - 1) q hq1 (TateS.act_fix hact K hg.1 hqO.1) (hmul _ hqO) S (fun x hx => ⟨(hS x hx).1, (hS x hx).2.1⟩) B' (fun a b => hmul _ (h …`. Use `⟨y, hy, funext fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[twAct_sub hBe, he, Pi.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem perturbation : ∀ (l : ℕ) [Fact l.Prime] (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)) (χ : GQ l →* ℚ_[l]ˣ), IsActC act → IsCyc χ → ∀ (K : FinExt l), ∀ j : ℕ, Lev l j → ∀ g, IsGen χ K j g → ∀ (r : ℕ) (U : GQ l → Matrix (Fin r) (Fin r) (PadicComplex l)), (∀ a b, U g a b ∈ intC (Ks K j)) → (∀ a b, ‖(U g - 1) a b‖ < rho1 l) → ∀ i : ℤ, (∀ y : Fin r → PadicComplex l, (∀ a, y a ∈ Xj K j) → twAct act χ i U g y = y → y = 0) ∧ ∀ ζ : PadicComplex l, IsPrimitiveRoot ζ l → ∀ w : Fin r → PadicComplex l, (∀ a, w a ∈ Xj K j) → ∃ y : Fin r → PadicComplex l, (∀ a, y a ∈ Xj K j) ∧ twAct act χ i U g y - y = (ζ - 1) • w := by
   intro l hl act χ hact hχ K j hj g hg r U hU hU1 i

@@ -12,19 +12,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 namespace GlobalTheory.HeightCounting.CuspOfParam
 
 /- English proof (translation)
-Introduce `D Rw hLoc hW hG j hj1 hj2 σ hσ hgood`. Take `⟨i⟩` from `hLoc`. Take `⟨π, hcsd, hralg, hsplit, -, -, -⟩` from `hG j hj1 hj2 σ hσ hgood`. Establish `hr : 1 ≤ D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `hiso : ∀ w, Formalism.MainNotions.N.isoLoc D.nd D.naut [(⟨D.R.r, π, 1⟩ : Part D.naut.CG)] w = D.naut.locG π w`. Introduce `w`. Simplify using `[Formalism.MainNotions.N.isoLoc, Formalism.MainNotions.N.spehLoc, D.naut.lpSum_zero, D.naut.lpTw_zero]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hpar : Formalism.MainNotions.N.HasParamW D.nd D.naut i σ [(⟨D.R.r, π, 1⟩ : Part D.naut.CG)]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [List.mem_singleton] at hp`. Substitute `hp` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Conclude with `⟨hr, le_refl 1⟩`. Simplify using `[Formalism.MainNotions.N.rankIso]`. Introduce `w hw`. Rewrite using `[hiso w, hsplit w hw, hW i σ w]`. Establish `h` using `D.bc_tie i σ _ hpar (by`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p hp`. Simplify using `only [List.mem_singleton] at hp`. Substitute `hp` using the available equality. Conclude with `hcsd)`. Use the proof step `(by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `p hp τ`. Simplify using `only [List.mem_singleton] at hp`. Substitute `hp` using the available equality. Take `⟨hnd, hz⟩` from `(D.naut.ralg_def π).1 hralg τ`. Use `⟨hnd, fun z hz' => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨n, hn⟩` from `hz z hz'`. Conclude with `⟨n, by rw [hn]; simp⟩)`. Use `show D.ntypes.bc σ = {(D.R.r, 1)}`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem goodRow_cuspidal : ∀ (D : D7) (Rw : RowSide D), Nonempty D.nd.Loc → (∀ i σ w, D.naut.locW i σ w = Rw.locR σ w) → GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.GoodRowCuspParam D Rw → ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ σ, D.what₂.isot j σ ≠ ⊥ → D.nd.goodRow σ → D.ntypes.cuspidal σ := by
   intro D Rw hLoc hW hG j hj1 hj2 σ hσ hgood

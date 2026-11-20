@@ -9,9 +9,9 @@ variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Fie
   [Algebra O K] [IsFractionRing O K] {r : ℕ}
 
 /- English proof (translation)
-Unfold `nb`. Rewrite using `[Submodule.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, z, hz, rfl⟩`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hz`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m, hm, a, rfl⟩`. Introduce and unpack `⟨m, hm, a, rfl⟩`. Conclude with `⟨m, hm, a • v, Submodule.mem_span_singleton.2 ⟨a, rfl⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_nb {cK : K ≃+* K} {J : Matrix (Fin r) (Fin r) K} {L : Submodule O (Fin r → K)}
     {v x : Fin r → K} : x ∈ nb cK J L v ↔ ∃ m ∈ perp cK J L v, ∃ a : O, x = m + a • v := by
@@ -25,7 +25,7 @@ theorem mem_nb {cK : K ≃+* K} {J : Matrix (Fin r) (Fin r) K} {L : Submodule O 
     exact ⟨m, hm, a • v, Submodule.mem_span_singleton.2 ⟨a, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hy`. Conclude with `⟨c a, (hcK a).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem conj_mem_range (c : O ≃+* O) (cK : K ≃+* K)
     (hcK : ∀ x, cK (algebraMap O K x) = algebraMap O K (c x)) {y : K}
@@ -34,9 +34,9 @@ theorem conj_mem_range (c : O ≃+* O) (cK : K ≃+* K)
   exact ⟨c a, (hcK a).symm⟩
 
 /- English proof (translation)
-Take `⟨m, hm, a, rfl⟩` from `mem_nb.1 hx`. Take `⟨m', hm', a', rfl⟩` from `mem_nb.1 hy`. Rewrite `hm`, `hm'` using `[mem_perp]`. Establish `h1 : hf cK J m m' ∈ (algebraMap O K).range` using `(hSD m).1 hm.1 m' hm'.1`. Establish `h2 : hf cK J m v ∈ (algebraMap O K).range`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hf_conj cK hc2 J hJ]`. Conclude with `conj_mem_range c cK hcK hm.2`. Rewrite using `[hf_add_left, hf_add_right, hf_add_right, hf_algSmul_right, hf_algSmul_left, hf_algSmul_left, hf_algSmul_right, hcK]`. Use `add_mem (add_mem h1 (mul_mem ⟨_, rfl⟩ h2)) (add_mem (mul_mem ⟨_, rfl⟩ hm'.2) ?_)` and prove the remaining obligations. Conclude with `mul_mem ⟨_, rfl⟩ (mul_mem ⟨_, rfl⟩ hvv)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nb_int (c : O ≃+* O) (cK : K ≃+* K)
     (hcK : ∀ x, cK (algebraMap O K x) = algebraMap O K (c x)) (hc2 : ∀ x, cK (cK x) = x)
@@ -57,23 +57,19 @@ theorem nb_int (c : O ≃+* O) (cK : K ≃+* K)
   exact mul_mem ⟨_, rfl⟩ (mul_mem ⟨_, rfl⟩ hvv)
 
 /- English proof (translation)
-Take `⟨hv, hw, hvv⟩` from `hstep`. Introduce `x`. Use `⟨fun hx y hy => nb_int c cK hcK hc2 hJ hϖ hSD hvv hx hy, fun hx => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨l0, hl0, hβ⟩ : ∃ l0 ∈ L, hf cK J v l0 ∉ (algebraMap O K).range := by`. Assume the negation of the conclusion as `hcon`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hcon`. Conclude with `hv ((hSD v).2 hcon)`. Establish `hβ' : algebraMap O K ϖ * hf cK J v l0 ∈ (algebraMap O K).range` using `mul_pair_mem c cK hcK hϖ hSD hw hl0`. Establish `hvnb : v ∈ nb cK J L v` using `mem_nb.2 ⟨0, (perp cK J L v).zero_mem, 1, by simp⟩`. Establish `hperp_nb : ∀ m ∈ perp cK J L v, m ∈ nb cK J L v` using `fun m hm => mem_nb.2 ⟨m, hm, 0, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl0p : ϖ • l0 ∈ perp cK J L v`. Use `mem_perp.2 ⟨L.smul_mem ϖ hl0, ?_⟩` and prove the remaining obligations. Rewrite using `[hf_algSmul_right]`. Conclude with `hβ'`. Establish `hxl0 : algebraMap O K ϖ * hf cK J x l0 ∈ (algebraMap O K).range`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `hx _ (hperp_nb _ hl0p)` as an intermediate fact. Rewrite `this` using `[hf_algSmul_right]`. Then use the resulting hypothesis. Take `⟨e, he⟩` from `exists_ratio hϖ hβ hβ' hxl0`. Use `set b := c.symm e with hb`. Establish `hcb : cK (algebraMap O K b) = algebraMap O K e` using `by rw [hcK, hb, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set x' := x - b • v with hx'`. Establish `hx'l0 : hf cK J x' l0 = 0`. Rewrite using `[hx', hf_sub_left, hf_algSmul_left, hcb, he, sub_self]`. Establish `hx'm : ∀ m ∈ perp cK J L v, hf cK J x' m ∈ (algebraMap O K).range`. Introduce `m hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hx', hf_sub_left, hf_algSmul_left]`. Conclude with `sub_mem (hx m (hperp_nb m hm)) (mul_mem (conj_mem_range c cK hcK ⟨_, rfl⟩) (mem_perp.1 hm).2)`. Establish `hx'L : x' ∈ L`. Use `(hSD x').2 fun l hl => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_ratio hϖ hβ hβ' (mul_pair_mem c cK hcK hϖ hSD hw hl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : l - a • l0 ∈ perp cK J L v`. Use `mem_perp.2 ⟨L.sub_mem hl (L.smul_mem a hl0), ?_⟩` and prove the remaining obligations. Rewrite using `[hf_sub_right, hf_algSmul_right, ha, sub_self]`. Conclude with `zero_mem _`. Establish `: l = (l - a • l0) + a • l0` using `by abel`.
-
-Rewrite using `[this, hf_add_right, hf_algSmul_right, hx'l0, mul_zero, add_zero]`. Conclude with `hx'm _ hm`. Establish `hx'p : x' ∈ perp cK J L v`. Use `mem_perp.2 ⟨hx'L, ?_⟩` and prove the remaining obligations. Rewrite using `[hf_conj cK hc2 J hJ]`.
-
-Apply `conj_mem_range c cK hcK` to reduce the goal to its premises. Rewrite using `[hx', hf_sub_left, hf_algSmul_left]`. Conclude with `sub_mem (hx v hvnb) (mul_mem (conj_mem_range c cK hcK ⟨_, rfl⟩) hvv)`. Conclude with `mem_nb.2 ⟨x', hx'p, b, by rw [hx']; abel⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_sd (c : O ≃+* O) (cK : K ≃+* K)
     (hcK : ∀ x, cK (algebraMap O K x) = algebraMap O K (c x)) (hc2 : ∀ x, cK (cK x) = x)
@@ -127,17 +123,15 @@ theorem nb_sd (c : O ≃+* O) (cK : K ≃+* K)
   exact mem_nb.2 ⟨x', hx'p, b, by rw [hx']; abel⟩
 
 /- English proof (translation)
-Establish `hSDn` using `nb_sd c cK hcK hc2 hJ hϖ hSD hstep`. Take `⟨hv, hw, hvv⟩` from `hstep`. Establish `hvnb : v ∈ nb cK J L v` using `mem_nb.2 ⟨0, (perp cK J L v).zero_mem, 1, by simp⟩`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Use `mem_perp.2 ⟨mem_nb.2 ⟨x, hx, 0, by simp⟩, (hSD l0).1 hl0 x (mem_perp.1 hx).1⟩` and prove the remaining obligations. Introduce `hx`. Take `⟨hxn, hxl⟩` from `mem_perp.1 hx`. Take `⟨m, hm, a, rfl⟩` from `mem_nb.1 hxn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hm'` using `mem_perp.1 hm`. Establish `h1 : algebraMap O K a * hf cK J l0 v ∈ (algebraMap O K).range`. Rewrite `hxl` using `[hf_add_right, hf_algSmul_right]`. Use `sub_mem hxl ((hSD l0).1 hl0 m hm'.1)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hγ : hf cK J l0 v ∉ (algebraMap O K).range`. Introduce `h`. Apply `hβ` to reduce the goal to its premises. Rewrite using `[hf_conj cK hc2 J hJ l0 v]`. Conclude with `conj_mem_range c cK hcK h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hγ' : algebraMap O K ϖ * hf cK J l0 v ∈ (algebraMap O K).range`. Rewrite using `[← hf_algSmul_right]`. Conclude with `(hSD l0).1 hl0 _ hw`. Take `⟨e, rfl⟩` from `(ratio_mem_iff hϖ hγ hγ' a).1 h1`. Use `mem_perp.2 ⟨?_, (hSDn v).1 hvnb _ hxn⟩` and prove the remaining obligations.
-
-Rewrite using `[mul_comm ϖ e, mul_smul]`. Conclude with `L.add_mem hm'.1 (L.smul_mem e hw)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perp_eq_perp_nb (c : O ≃+* O) (cK : K ≃+* K)
     (hcK : ∀ x, cK (algebraMap O K x) = algebraMap O K (c x)) (hc2 : ∀ x, cK (cK x) = x)
@@ -174,19 +168,17 @@ theorem perp_eq_perp_nb (c : O ≃+* O) (cK : K ≃+* K)
     exact L.add_mem hm'.1 (L.smul_mem e hw)
 
 /- English proof (translation)
-Take `⟨hSD, habs, hidx⟩` from `hL`. Establish `hSDn` using `nb_sd c cK hcK hc2 hJ hϖ hSD hstep`. Take `⟨hv, hw, hvv⟩` from `hstep`. Choose the witnesses or unpack the hypotheses as in `⟨l0, hl0, hβ⟩ : ∃ l0 ∈ L, hf cK J v l0 ∉ (algebraMap O K).range := by`. Assume the negation of the conclusion as `hcon`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hcon`. Conclude with `hv ((hSD v).2 hcon)`. Establish `hβ' : algebraMap O K ϖ * hf cK J v l0 ∈ (algebraMap O K).range` using `mul_pair_mem c cK hcK hϖ hSD hw hl0`. Establish `hQ : Nat.card (IsLocalRing.ResidueField O) ≠ 0` using `Nat.card_pos.ne'`. Establish `hpL : perp cK J L v ≤ L` using `fun x hx => (mem_perp.1 hx).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpn : perp cK J L v ≤ nb cK J L v` using `fun x hx => mem_nb.2 ⟨x, hx, 0, by simp⟩`. Establish `i1` using `perp_relIndex c cK hcK hϖ hSD hv hw`. Establish `hl0n : l0 ∉ nb cK J L v`. Introduce `h`. Establish `hvnb : v ∈ nb cK J L v` using `mem_nb.2 ⟨0, (perp cK J L v).zero_mem, 1, by simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hβ ((hSDn v).1 hvnb l0 h)`. Establish `hwl0 : ϖ • l0 ∈ nb cK J L v`. Use `hpn (mem_perp.2 ⟨L.smul_mem ϖ hl0, ?_⟩)` and prove the remaining obligations. Rewrite using `[hf_algSmul_right]`. Conclude with `hβ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `i2` using `perp_relIndex c cK hcK hϖ hSDn hl0n hwl0`. Rewrite `i2` using `[← perp_eq_perp_nb c cK hcK hc2 hJ hϖ hSD ⟨hv, hw, hvv⟩ hl0 hβ]`. Use `⟨hSDn, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Take `⟨k, hk⟩` from `habs x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k + 1, hpn (mem_perp.2 ⟨?_, ?_⟩)⟩` and prove the remaining obligations. Rewrite using `[pow_succ', mul_smul]`. Conclude with `L.smul_mem ϖ hk`. Rewrite using `[pow_succ', mul_smul, hf_algSmul_right]`. Conclude with `mul_pair_mem c cK hcK hϖ hSD hw hk`.
-
-Rewrite using `[← idx_eq_of_le hϖ hpn (by rw [i2]; exact hQ), idx_eq_of_le hϖ hpL (by rw [i1]; exact hQ), hidx]`.
+A detailed English derivation is pending.
 -/
 theorem good_nb (c : O ≃+* O) (cK : K ≃+* K)
     (hcK : ∀ x, cK (algebraMap O K x) = algebraMap O K (c x)) (hc2 : ∀ x, cK (cK x) = x)

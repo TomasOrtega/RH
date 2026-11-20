@@ -14,27 +14,27 @@ open Formalism.UG GlobalTheory.Hk3.IntWitt GlobalTheory.Hk3.IntWittBase
 variable {L : Type} [Field L]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_smul' (σ : L →+* L) {n : ℕ} (s : L) (A : Matrix (Fin n) (Fin n) L) :
     cT σ (s • A) = σ s • cT σ A := by ext i j; simp [cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_add' (σ : L →+* L) {n : ℕ} (A B : Matrix (Fin n) (Fin n) L) :
     cT σ (A + B) = cT σ A + cT σ B := by ext i j; simp [cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_cT' {σ : L →+* L} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (A : Matrix (Fin n) (Fin n) L) :
     cT σ (cT σ A) = A := by ext i j; simp [cT, hσ]
 
 /- English proof (translation)
-Establish `e : (Gc + s • (Xc * Gc)) * J * (g + s • (g * X)) = Gc * J * g + s • (Gc * J * g * X) + s • (Xc * (Gc * J * g)) + (s * s) • (Xc * (Gc * J * g) * X)`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc, smul_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `nth_rewrite 1 [h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `nth_rewrite 1 [h1]`. Use `nth_rewrite 1 [h1]`. Rewrite using `[Matrix.add_mul, Matrix.mul_add, h2, h3, Matrix.smul_mul, Matrix.mul_smul]`. Establish `hE : (c + c) • E = (1 : L) • E` using `by rw [hc]`. Take the linear combination `(norm := module) (-s) • hE`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem newton_identity {n : ℕ} (s c : L) (hc : c + c = 1) (Gc g J X Xc E : Matrix (Fin n) (Fin n) L)
     (h1 : Gc * J * g = J + s • E) (h2 : J * X = -(c • E)) (h3 : Xc * J = -(c • E)) :
@@ -59,39 +59,33 @@ namespace GlobalTheory.Hk3.UnitaryNewton
 open Formalism.UG GlobalTheory.Hk3.IntWitt GlobalTheory.Hk3.IntWittBase
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q hU hq n J hJ hJh k g hg hD`. Establish `h2 : Valued.v (2 : L) = 1` using `GlobalTheory.Hk3.Inh.v_two hU hq`. Take `⟨hσσ, hσv, hσϖ, hϖv, -⟩` from `hU`. Use `set Jm : Matrix (Fin n) (Fin n) L := (J : Matrix (Fin n) (Fin n) L) with hJm`. Use `set Ji : Matrix (Fin n) (Fin n) L := ((J⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hJidef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJi : Ji * Jm = 1` using `by rw [hJm, hJidef, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hJi' : Jm * Ji = 1` using `by rw [hJm, hJidef, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Take `⟨g0, hg0⟩` from `hJ`. Establish `hJI : ∀ i j, Jm i j ∈ intL L`. Introduce `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hJm, ← hg0]`. Conclude with `((g0 : Matrix (Fin n) (Fin n) (intL L)) i j).2`. Establish `hJiI : ∀ i j, Ji i j ∈ intL L`. Introduce `i j`. Rewrite using `[hJidef, ← hg0, ← map_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(((g0⁻¹ : GL (Fin n) (intL L)) : Matrix (Fin n) (Fin n) (intL L)) i j).2`. Establish `hJc : cT σ Jm = Jm` using `by ext i j; rw [cT_apply]; exact hJh j i`. Establish `hJic : cT σ Ji = Ji`. Establish `h : cT σ Ji * Jm = 1` using `by rw [← hJc, ← cT_mul, hJi', cT_one]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `DvdPow at hD`. Use `choose E hE hEeq using hD`. Use `set s : L := ϖ ^ (k + 1) with hs`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hϖv` using `[h0, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖv`. Establish `hϖI : ϖ ∈ intL L` using `by show Valued.v ϖ ≤ 1`. Rewrite using `[hϖv]; exact_mod_cast (show (Multiplicative.ofAdd (-1 : ℤ)) ≤ 1 from by decide)`. Establish `hs0 : s ≠ 0` using `pow_ne_zero _ hϖ0`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hσs : σ s = s` using `by rw [hs, map_pow, hσϖ]`. Establish `hsI : s ∈ intL L` using `(intL L).pow_mem hϖI _`. Use `set Em : Matrix (Fin n) (Fin n) L := Matrix.of E with hEm`. Establish `hEmI : ∀ i j, Em i j ∈ intL L` using `hE`. Establish `hDE : cT σ g * Jm * g = Jm + s • Em`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `i j`. Use `hEeq i j` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply]`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, hEm, Matrix.of_apply, ← this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hEh : cT σ Em = Em`. Establish `h` using `congrArg (cT σ) hDE`. Rewrite `h` using `[cT_mul, cT_mul, cT_cT' hσσ, hJc, cT_add', cT_smul', hσs, hJc, ← Matrix.mul_assoc, hDE]`. Conclude with `(smul_right_injective _ hs0 (add_left_cancel h)).symm`. Establish `h20 : (2 : L) ≠ 0` using `by intro h0; rw [h0, map_zero] at h2; exact zero_ne_one h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set c : L := (2 : L)⁻¹ with hcdef`. Establish `hc : c + c = 1` using `by rw [← two_mul, hcdef, mul_inv_cancel₀ h20]`. Establish `hσc : σ c = c` using `by rw [hcdef, map_inv₀, map_ofNat]`. Establish `hcI : c ∈ intL L` using `by show Valued.v c ≤ 1`. Rewrite using `[hcdef, map_inv₀, h2, inv_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set X : Matrix (Fin n) (Fin n) L := (-c) • (Ji * Em) with hX`. Establish `hXI : ∀ i j, X i j ∈ intL L`. Introduce `i j`. Rewrite using `[hX, Matrix.smul_apply, smul_eq_mul]`. Conclude with `mul_mem (neg_mem hcI) (int_mul hJiI hEmI i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hXc : cT σ X = (-c) • (Em * Ji)`. Rewrite using `[hX, cT_smul', cT_mul, hEh, hJic, map_neg, hσc]`. Establish `hJX : Jm * X = -(c • Em)`. Rewrite using `[hX, Matrix.mul_smul, ← Matrix.mul_assoc, hJi', Matrix.one_mul, neg_smul]`. Establish `hXJ : cT σ X * Jm = -(c • Em)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hXc, Matrix.smul_mul, Matrix.mul_assoc, hJi, Matrix.mul_one, neg_smul]`. Use `⟨g + s • (g * X), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `add_mem (hg i j) (mul_mem hsI (int_mul hg hXI i j))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Use `⟨(g * X) i j, int_mul hg hXI i j, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hg'c : cT σ (g + s • (g * X)) = cT σ g + s • (cT σ X * cT σ g)`.
-
-Rewrite using `[cT_add', cT_smul', hσs, cT_mul]`. Establish `key` using `newton_identity s c hc (cT σ g) g Jm X (cT σ X) Em hDE hJX hXJ`. Rewrite using `[hg'c, key]`. Establish `hgc : ∀ i j, cT σ g i j ∈ intL L` using `int_cT hσv hg`. Establish `hXcI : ∀ i j, cT σ X i j ∈ intL L` using `int_cT hσv hXI`.
-
-Establish `hR : ∀ i j, (Em * X + cT σ X * Em + cT σ X * (cT σ g * Jm * g) * X) i j ∈ intL L`. Introduce `i j`. Rewrite using `[Matrix.add_apply, Matrix.add_apply]`. Conclude with `add_mem (add_mem (int_mul hEmI hXI i j) (int_mul hXcI hEmI i j)) (int_mul (int_mul hXcI (int_mul (int_mul hgc hJI) hg)) hXI i j)`. Introduce `i j`.
-
-Use `⟨ϖ ^ k * (Em * X + cT σ X * Em + cT σ X * (cT σ g * Jm * g) * X) i j, mul_mem ((intL L).pow_mem hϖI _) (hR i j), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, hs]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem newton_step : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ),
     Formalism.UG.IsUnramInv ϖ σ q → Odd q → ∀ (n : ℕ) (J : GL (Fin n) L), J ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L) →

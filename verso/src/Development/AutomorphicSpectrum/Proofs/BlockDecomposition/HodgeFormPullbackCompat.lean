@@ -21,7 +21,7 @@ open CrystallineSemistableComparison CrystallineSemistableComparison.Pb Crystall
 universe v u
 
 /- English proof (translation)
-Take `⟨f, hf, e, hz⟩` from `h`. Take `⟨f', hf', e', hz'⟩` from `h'`. Establish `hff : f = f'` using `funext fun s => Subtype.ext ((hz s).trans (hz' s).symm)`. Substitute `hff` using the available equality. Conclude with `e.trans e'.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem rep_unique {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {A : C ⥤ CommAlgCat.{0} R} {a b : IdF A} {j : ℕ}
     {z : ∀ s : ComposableArrows C j, A.obj (s.obj (Fin.last j))} {c c' : CH.H (sq a b) j}
@@ -37,15 +37,13 @@ section Span
 variable (K A : Type) [CommRing K] [CommRing A] [Algebra K A]
 
 /- English proof (translation)
-Establish `key : ∀ (t : Finset (Fin a)) (v : Fin a → M), (∀ k, k ∉ t → v k ∈ s) → f v ∈ S`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => exact fun v hv => h v fun k => hv k (by simp)`. Consider the case `insert i t hi ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `v hv`. Establish `hvi : v i ∈ Submodule.span A s` using `hs ▸ Submodule.mem_top`. Establish `: ∀ x ∈ Submodule.span A s, f (Function.update v i x) ∈ S`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hxs`. Use `ih _ fun k hk => ?_` and prove the remaining obligations. Distinguish the cases in `e : k = i`. Rewrite using `[e, Function.update_self]`. Conclude with `hxs`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne e]`. Conclude with `hv k (by simp [e, hk])`. Consider the case `zero => rw [f.map_update_zero]`. Conclude with `S.zero_mem`. Consider the case `add x y _ _ hx hy => rw [f.map_update_add]`.
-
-Conclude with `S.add_mem hx hy`. Consider the case `smul c x _ hx => rw [f.map_update_smul]`. Conclude with `S.smul_mem _ hx`. Simplify using `using this _ hvi`. Conclude with `key Finset.univ v fun k hk => (hk (Finset.mem_univ k)).elim`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem multi_mem {M N : Type} [AddCommGroup M] [Module A M] [AddCommGroup N] [Module A N] {a : ℕ}
     (f : MultilinearMap A (fun _ : Fin a => M) N) (s : Set M) (hs : Submodule.span A s = ⊤) (S : Submodule A N)
@@ -74,17 +72,15 @@ theorem multi_mem {M N : Type} [AddCommGroup M] [Module A M] [AddCommGroup N] [M
   exact key Finset.univ v fun k hk => (hk (Finset.mem_univ k)).elim
 
 /- English proof (translation)
-Use `set S := Submodule.span K {ω : ⋀[A]^a Ω[A⁄K] | ∃ (g₀ : A) (g : Fin a → A), ω = CrystallineSemistableComparison.Onto.form K g₀ g} with hS`. Establish `hsm : ∀ (c : A) x, x ∈ S → c • x ∈ S`. Introduce `c x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨g₀, g, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨c * g₀, g, ?_⟩` and prove the remaining obligations. Simplify using `only [CrystallineSemistableComparison.Onto.form, mul_smul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `S.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `S.add_mem hx hy`. Consider the case `smul r x _ hx`. Rewrite using `[← algebraMap_smul A r x, smul_comm, algebraMap_smul]`. Conclude with `S.smul_mem r hx`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `S' : Submodule A (⋀[A]^a Ω[A⁄K])` to `{ carrier := S add_mem' := S.add_mem zero_mem' := S.zero_mem smul_mem' := hsm }`. Establish `hι : ∀ v : Fin a → Ω[A⁄K], exteriorPower.ιMulti A a v ∈ S'` using `fun v => multi_mem A (exteriorPower.ιMulti A a (M := Ω[A⁄K])).toMultilinearMap (Set.range (KaehlerDifferential.D K A)) (KaehlerDifferential.span_range_derivation K A) S' (fun v hv => by choose g hg using hv`. Use `Submodule.subset_span ⟨1, g, ?_⟩` and prove the remaining obligations. Establish `e : v = fun k => KaehlerDifferential.D K A (g k)` using `(funext hg).symm`. Simplify using `only [CrystallineSemistableComparison.Onto.form, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Use the proof step `rfl) v`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span A (Set.range (exteriorPower.ιMulti A a (M` using `Ω[A⁄K]))) := by`. Rewrite using `[exteriorPower.ιMulti_span]`.
-
-Discharge the goal by the elementary cases of `trivial`. Establish `: Submodule.span A (Set.range (exteriorPower.ιMulti A a (M` using `Ω[A⁄K]))) ≤ S' := Submodule.span_le.2 (by rintro _ ⟨v, rfl⟩; exact hι v)`. Conclude with `this hx`.
+Check the elementary cases of the proposition. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem span_form (a : ℕ) : Submodule.span K {ω : ⋀[A]^a Ω[A⁄K] | ∃ (g₀ : A) (g : Fin a → A), ω = CrystallineSemistableComparison.Onto.form K g₀ g} = ⊤ := by
   set S := Submodule.span K {ω : ⋀[A]^a Ω[A⁄K] | ∃ (g₀ : A) (g : Fin a → A), ω = CrystallineSemistableComparison.Onto.form K g₀ g} with hS
@@ -129,9 +125,9 @@ variable {R R' B B' : Type} [CommRing R] [CommRing B] [Algebra R B] [CommRing R'
   {σ : R →+* R'} {α : B →+* B'}
 
 /- English proof (translation)
-Unfold `CrystallineSemistableComparison.Onto.form`. Rewrite using `[h.mOm_smul]`. Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[SemiHom.coe_mOm, exteriorPower.ιMulti_apply_coe, exteriorPower.ιMulti_apply_coe, ExteriorAlgebra.ιMulti_apply, ExteriorAlgebra.ιMulti_apply, map_list_prod, List.map_ofFn]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mOm_form (h : SemiHom σ α) {a : ℕ} (g₀ : B) (g : Fin a → B) :
     h.mOm a (CrystallineSemistableComparison.Onto.form R g₀ g) = CrystallineSemistableComparison.Onto.form R' (α g₀) fun k => α (g k) := by
@@ -160,7 +156,7 @@ variable {q : X ⟶ Spec (CommRingCat.of K)} {p : Y ⟶ Spec (CommRingCat.of K)}
 def uS (u : X ⟶ Y) : Γ(Y, ⊤) →+* Γ(X, ⊤) := (u.appLE ⊤ ⊤ (by simp)).hom
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of (T.B ⧸ T.J))).hom.hom (((pt (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) T ≫ u).appLE ⊤ ⊤ _).hom g) = (Scheme.ΓSpecIso (CommRingCat.of (T.B ⧸ T.J))).hom.hom (((pt (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Qu …`. Use `congr 1`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE _ _ ⊤ ⊤ ⊤ (by simp) (by simp)]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_pull (u : X ⟶ Y) (hu : u ≫ p = q) (T : Thick (smFun X q)) (g : Γ(Y, ⊤)) :
     ev (γ := dividedPowersBot K) (p := 0) (q := p) (κ := Ideal.Quotient.mk ⊥) ((smS u hu).G.obj T) (inTop p _) g =
@@ -172,14 +168,14 @@ theorem ev_pull (u : X ⟶ Y) (hu : u ≫ p = q) (T : Thick (smFun X q)) (g : Γ
   rfl
 
 /- English proof (translation)
-The claim follows from `congrArg Quotient.out (ev_pull u hu T g)`.
+A detailed English derivation is pending.
 -/
 theorem out_pull (u : X ⟶ Y) (hu : u ≫ p = q) (T : Thick (smFun X q)) (g : Γ(Y, ⊤)) :
     (outL p).v ((smS u hu).G.obj T) g = (outL q).v T (uS u g) :=
   congrArg Quotient.out (ev_pull u hu T g)
 
 /- English proof (translation)
-Unfold `LiftsT.form`. Use `congrArg₂ (· * ·) (out_pull u hu _ g₀).symm (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (· - ·) (congrArg _ (out_pull u hu _ (g k)).symm) (congrArg _ (out_pull u hu _ (g k)).symm)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem form_pull (u : X ⟶ Y) (hu : u ≫ p = q) {a : ℕ} (g₀ : Γ(Y, ⊤)) (g : Fin a → Γ(Y, ⊤))
     (s : ComposableArrows (Thick (smFun X q)) a) :
@@ -189,11 +185,9 @@ theorem form_pull (u : X ⟶ Y) (hu : u ≫ p = q) {a : ℕ} (g₀ : Γ(Y, ⊤))
   exact congrArg₂ (· - ·) (congrArg _ (out_pull u hu _ (g k)).symm) (congrArg _ (out_pull u hu _ (g k)).symm)
 
 /- English proof (translation)
-Take `⟨f, hf, e, hfz⟩` from `h`. Set `m : CH.Mor (grT (smFun Y p) a) (grT (smFun X q) a) (RingHom.id K)` to `(smS u hu).sq (a := thFil _ (a : ℤ)) (b := thFil _ ((a : ℤ) + 1)) (a' := thFil _ (a : ℤ)) (b' := thFil _ ((a : ℤ) + 1)) (fun _ _ hx => hx) fun _ _ hx => hx`. Establish `hd : CH.d (grT (smFun X q) a) a (m.pullC a f) = 0`. Rewrite using `[m.d_pullC, hf, map_zero]`. Use `⟨m.pullC a f, hd, ?_, fun s => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `m.pull a c = _`. Establish `: c = (CH.cx (grT (smFun Y p) a)).cls f hf` using `e`. Rewrite using `[this]`. Conclude with `CrystallineSemistableComparison.P.mapH_cls m.hom a f hf hd`. Rewrite using `[hz s]`.
-
-Conclude with `congrArg (Ideal.quotientMap _ ((smS u hu).ρ _) _) (hfz (s ⋙ (smS u hu).G))`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_pull (u : X ⟶ Y) (hu : u ≫ p = q) {a : ℕ}
     {z : ∀ s : ComposableArrows (Thick (smFun Y p)) a, (s.obj (Fin.last a)).B}
@@ -223,7 +217,7 @@ section Main
 variable {K : Type} [CommRing K] {X Y : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)} {p : Y ⟶ Spec (CommRingCat.of K)}
 
 /- English proof (translation)
-Establish `e1 : formPull hu ⊤ a (gForm p g₀ g) = CrystallineSemistableComparison.Onto.form K (A` using `Sec q (u ⁻¹ᵁ ⊤)) (appSec p q u ⊤ g₀) fun k => appSec p q u ⊤ (g k) := mOm_form (semiHom_appSec hu ⊤) g₀ g`. Rewrite using `[e1]`. Conclude with `mOm_form (SemiHom.of_algHom (Sec.res q (show (⊤ : X.Opens) ≤ u ⁻¹ᵁ ⊤ by simp))) _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_pull_form (u : X ⟶ Y) (hu : u ≫ p = q) {a : ℕ} (g₀ : Γ(Y, ⊤)) (g : Fin a → Γ(Y, ⊤)) :
     formRes q (show (⊤ : X.Opens) ≤ u ⁻¹ᵁ ⊤ by simp) a (formPull hu ⊤ a (gForm p g₀ g)) =
@@ -236,15 +230,15 @@ theorem res_pull_form (u : X ⟶ Y) (hu : u ≫ p = q) {a : ℕ} (g₀ : Γ(Y, �
 end Main
 
 /- English proof (translation)
-Introduce `K _ X Y q p u hu a e e' he he' x`. Establish `key : ∀ ω : OmU p ⊤ a, e (pullH u hu a a (e'.symm ω)) = formRes q (show (⊤ : X.Opens) ≤ u ⁻¹ᵁ ⊤ by simp) a (formPull hu ⊤ a ω)`. Introduce `ω`. Establish `hω : ω ∈ Submodule.span K {ω : ⋀[Sec p ⊤]^a Ω[Sec p ⊤⁄K] | ∃ (g₀ : Sec p ⊤) (g : Fin a → Sec p ⊤), ω = CrystallineSemistableComparison.Onto.form K g₀ g}`. Rewrite using `[span_form]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hω using Submodule.span_induction with`. Consider the case `mem ω hω`. Take `⟨g₀, g, rfl⟩` from `hω`. Establish `h1` using `he' g₀ g (outL p)`.
+Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `he (uS u g₀) (fun k => uS u (g k)) (outL q)`. Establish `h3` using `rep_pull u hu (fun s => form_pull u hu g₀ g s) h1`. Establish `h4 : pullH u hu a a (e'.symm (gForm p g₀ g)) = e.symm (gForm q (uS u g₀) fun k => uS u (g k))` using `rep_unique h3 h2`. Use `Eq.trans ?_ (res_pull_form u hu g₀ g).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e (pullH u hu a a (e'.symm (gForm p g₀ g))) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h4, LinearEquiv.apply_symm_apply]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp only [map_add, hx, hy]`. Consider the case `smul r x _ hx`. Simplify using `only [map_smul, hx]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `using key (e' x)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pull_nat : ∀ {K : Type} [CommRing K] {X Y : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (p : Y ⟶ Spec (CommRingCat.of K))
     (u : X ⟶ Y) (hu : u ≫ p = q) (a : ℕ) (e : CrystallineSemistableComparison.HT.Hdg q a a ≃ₗ[K] OmU q ⊤ a) (e' : CrystallineSemistableComparison.HT.Hdg p a a ≃ₗ[K] OmU p ⊤ a),

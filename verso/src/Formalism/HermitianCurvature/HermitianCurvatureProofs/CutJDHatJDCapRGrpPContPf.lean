@@ -26,7 +26,7 @@ def Sep : Prop :=
 variable {a c d}
 
 /- English proof (translation)
-The claim follows from `| 0, lo => by simp only [K, mul_one, Nat.add_zero] rw [(h lo (lo + 1) (by omega)).1.eq] | 1, lo => by have e1 : K a c d lo 3 = a (lo + 2) * (a (lo + 1) * a lo - c (lo + 1) * d lo) - c (lo + 2) * d (lo + 1) * a lo := by show a (lo + 1 + 1) * K a c d lo 2 - c (lo + 1 + 1) * d (lo + …`.
+A detailed English derivation is pending.
 -/
 theorem cp_K_both (h : Sep a c d) : ∀ n lo, K a c d lo (n + 2) =
     a lo * K a c d (lo + 1) (n + 1) - c (lo + 1) * d lo * K a c d (lo + 2) n
@@ -119,7 +119,7 @@ def td (r : ℕ) : ℕ → Fin 2 → R
 variable {a c d}
 
 /- English proof (translation)
-The claim follows from `| 0 => ⟨rfl, by simp [bu, K]⟩ | 1 => ⟨by simp [bu, K], by simp [bu, K]⟩ | i + 2 => by obtain ⟨h1, h1'⟩ := cp_bu (i + 1) obtain ⟨-, h0'⟩ := cp_bu i have e : (bu a c d (i + 2)).1 = K a c d 0 (i + 2) := by show a (i + 1) * (bu a c d (i + 1)).1 - c (i + 1) * (bu a c d (i + 1)).2 = _ …`.
+A detailed English derivation is pending.
 -/
 theorem cp_bu : ∀ i, (bu a c d i).1 = K a c d 0 i ∧ (bu a c d (i + 1)).2 = d i * K a c d 0 i
   | 0 => ⟨rfl, by simp [bu, K]⟩
@@ -137,7 +137,7 @@ theorem cp_bu : ∀ i, (bu a c d i).1 = K a c d 0 i ∧ (bu a c d (i + 1)).2 = d
     rw [e]
 
 /- English proof (translation)
-The claim follows from `| 0, _ => by refine ⟨by simp [td, K], ?_⟩ simp only [td, zero_add] split_ifs <;> simp_all [K] | 1, hm => by refine ⟨by simp [td, K, hm], ?_⟩ by_cases h2 : 2 ≤ r · simp only [td, show 0 + 2 ≤ r from h2, if_true, h2, show (1 : ℕ) ≤ r by omega, one_ne_zero, if_false] simp only [show …`.
+A detailed English derivation is pending.
 -/
 theorem cp_td (h : Sep a c d) (r : ℕ) : ∀ m, m ≤ r →
     td a c d r m 0 = K a c d (r - m) m ∧ td a c d r (m + 1) 1 = (if m + 1 ≤ r then d (r - 1) * K a c d (r - (m + 1)) m else 0)
@@ -183,7 +183,7 @@ theorem cp_td (h : Sep a c d) (r : ℕ) : ∀ m, m ≤ r →
 end chains
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(cp_td h r r le_rfl).1, (cp_bu r).1, Nat.sub_self]`. Break down `r with _ | s` into its components or cases. Simplify using `[td, bu]`. Rewrite using `[(cp_td h (s + 1) s (by omega)).2, if_pos le_rfl, (cp_bu s).2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -206,7 +206,7 @@ def opE (l : Fin r) (i : Fin 6) : Module.End ℂ (WSm r X) where
   map_smul' s f := Subtype.ext (Formalism.FourierDecayAlt.P.PBN.MC.opL_smul l i f.2 s)
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => Subtype.ext ?_` and prove the remaining obligations. Conclude with `Formalism.QuantumDeterminants.commuting_functional_holds r X l k p q f f.2 (Or.inl hlk)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem opE_comm (l k : Fin r) (hlk : l ≠ k) (p q : Fin 6) : Commute (opE (X := X) l p) (opE k q) := by
   refine LinearMap.ext fun f => Subtype.ext ?_
@@ -217,9 +217,7 @@ variable (X) in
 def eS (i : ℕ) (p : Fin 6) : Module.End ℂ (WSm r X) := if h : i < r then opE ⟨i, h⟩ p else 0
 
 /- English proof (translation)
-Unfold `eS`. Use `split_ifs with hi hj hj`. Conclude with `opE_comm _ _ (fun e => hij (congrArg Fin.val e)) p q`. Conclude with `Commute.zero_right _`. Conclude with `Commute.zero_left _`.
-
-Conclude with `Commute.zero_left _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem eS_comm (i j : ℕ) (hij : i ≠ j) (p q : Fin 6) : Commute (eS (r := r) X i p) (eS X j q) := by
   unfold eS
@@ -233,7 +231,7 @@ variable (X) in
 def aS (Y : ℂ) (i : ℕ) : Module.End ℂ (WSm r X) := algebraMap ℂ _ Y + eS X i 0
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `hA : ∀ z : Module.End ℂ (WSm r X), Commute (eS X i 0) z → Commute (aS X Y i) z` using `fun z hz => (Algebra.commute_algebraMap_left Y z).add_left hz`. Establish `hA' : ∀ z : Module.End ℂ (WSm r X), Commute (eS X j 0) z → Commute z (aS X Y j)` using `fun z hz => ((Algebra.commute_algebraMap_left Y z).add_left hz).symm`. Use `⟨hA _ (hA' _ (eS_comm i j hij 0 0).symm), hA _ (eS_comm i j hij 0 1), hA _ (eS_comm i j hij 0 2), eS_comm i j hij 1 1, eS_comm i j hij 1 2, eS_comm i j hij 2 2⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem cp_sep (Y : ℂ) : Sep (aS (r := r) X Y) (eS X · 1) (eS X · 2) := by
   intro i j hij
@@ -245,7 +243,7 @@ theorem cp_sep (Y : ℂ) : Sep (aS (r := r) X Y) (eS X · 1) (eS X · 2) := by
     eS_comm i j hij 1 1, eS_comm i j hij 1 2, eS_comm i j hij 2 2⟩
 
 /- English proof (translation)
-The claim follows from `| 0, _, f => ⟨rfl, rfl⟩ | i + 1, hi, f => by obtain ⟨h1, h2⟩ := cp_vAB Y i (by omega) f have hir : i < r := by omega simp only [Q.vAB, dif_pos hir, bu, aS, eS, dif_pos hir] refine ⟨?_, ?_⟩ · rw [h1, h2] rfl · rw [h1] rfl`.
+A detailed English derivation is pending.
 -/
 theorem cp_vAB (Y : ℂ) : ∀ i, i ≤ r → ∀ f : WSm r X,
     (Q.vAB r Y i).1 (f : (Fin r → ℂ) → X) = (((bu (aS X Y) (eS X · 1) (eS X · 2) i).1 f : WSm r X) : (Fin r → ℂ) → X) ∧
@@ -262,7 +260,7 @@ theorem cp_vAB (Y : ℂ) : ∀ i, i ≤ r → ∀ f : WSm r X,
       rfl
 
 /- English proof (translation)
-The claim follows from `| 0, f => by fin_cases b <;> simp [tdU, td] | 1, f => by by_cases h1 : 1 ≤ r · have hr : r - 1 < r := by omega fin_cases b · simp only [tdU, td, dif_pos h1, if_pos h1, Fin.zero_eta, if_true, aS, eS, dif_pos hr] rfl · simp only [tdU, td, dif_pos h1, if_pos h1, Fin.mk_one, one_ne_z …`.
+A detailed English derivation is pending.
 -/
 theorem cp_tdU (Y : ℂ) (b : Fin 2) : ∀ m, ∀ f : WSm r X,
     tdU r Y m b (f : (Fin r → ℂ) → X) = ((td (aS X Y) (eS X · 1) (eS X · 2) r m b f : WSm r X) : (Fin r → ℂ) → X)
@@ -301,17 +299,17 @@ def Loc (T : ((Fin r → ℂ) → X) → (Fin r → ℂ) → X) : Prop :=
   ∀ f₁ f₂ x, f₁ =ᶠ[nhds x] f₂ → T f₁ =ᶠ[nhds x] T f₂
 
 /- English proof (translation)
-Introduce `_ _ _ h` and use `h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem loc_id : Loc (r := r) (X := X) id := fun _ _ _ h => h
 
 /- English proof (translation)
-Introduce `_ _ _ _` and use `Filter.EventuallyEq.rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem loc_zero : Loc (r := r) (X := X) (fun _ => 0) := fun _ _ _ _ => Filter.EventuallyEq.rfl
 
 /- English proof (translation)
-Introduce `f₁ f₂ x h`. Use `filter_upwards [h.eventuallyEq_nhds] with y hy`. Simplify using `only [pOp, wirt, hy.fderiv_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_pOp (l : Fin r) : Loc (X := X) (pOp l) := by
   intro f₁ f₂ x h
@@ -319,7 +317,7 @@ theorem loc_pOp (l : Fin r) : Loc (X := X) (pOp l) := by
   simp only [pOp, wirt, hy.fderiv_eq]
 
 /- English proof (translation)
-Introduce `f₁ f₂ x h`. Use `filter_upwards [h] with y hy`. Simplify using `only [cOp, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_cOp (l : Fin r) : Loc (X := X) (cOp l) := by
   intro f₁ f₂ x h
@@ -327,7 +325,7 @@ theorem loc_cOp (l : Fin r) : Loc (X := X) (cOp l) := by
   simp only [cOp, hy]
 
 /- English proof (translation)
-Introduce `f₁ f₂ x h`. Use `filter_upwards [h] with y hy`. Simplify using `only [ciOp, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_ciOp (l : Fin r) : Loc (X := X) (ciOp l) := by
   intro f₁ f₂ x h
@@ -335,13 +333,13 @@ theorem loc_ciOp (l : Fin r) : Loc (X := X) (ciOp l) := by
   simp only [ciOp, hy]
 
 /- English proof (translation)
-Introduce `_ _ x h` and use `hS _ _ x (hT _ _ x h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem loc_comp {S T : ((Fin r → ℂ) → X) → (Fin r → ℂ) → X} (hS : Loc S) (hT : Loc T) :
     Loc (fun f => S (T f)) := fun _ _ x h => hS _ _ x (hT _ _ x h)
 
 /- English proof (translation)
-Introduce `f₁ f₂ x h`. Use `filter_upwards [hS _ _ x h, hT _ _ x h] with y h1 h2`. Simplify using `only [Pi.add_apply, h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_add {S T : ((Fin r → ℂ) → X) → (Fin r → ℂ) → X} (hS : Loc S) (hT : Loc T) :
     Loc (fun f => S f + T f) := by
@@ -350,7 +348,7 @@ theorem loc_add {S T : ((Fin r → ℂ) → X) → (Fin r → ℂ) → X} (hS : 
   simp only [Pi.add_apply, h1, h2]
 
 /- English proof (translation)
-Introduce `f₁ f₂ x h`. Use `filter_upwards [hS _ _ x h, hT _ _ x h] with y h1 h2`. Simplify using `only [Pi.sub_apply, h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_sub {S T : ((Fin r → ℂ) → X) → (Fin r → ℂ) → X} (hS : Loc S) (hT : Loc T) :
     Loc (fun f => S f - T f) := by
@@ -359,7 +357,7 @@ theorem loc_sub {S T : ((Fin r → ℂ) → X) → (Fin r → ℂ) → X} (hS : 
   simp only [Pi.sub_apply, h1, h2]
 
 /- English proof (translation)
-Introduce `f₁ f₂ x h`. Use `filter_upwards [hS _ _ x h] with y h1`. Simplify using `only [Pi.smul_apply, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_smul (Y : ℂ) {S : ((Fin r → ℂ) → X) → (Fin r → ℂ) → X} (hS : Loc S) : Loc (fun f => Y • S f) := by
   intro f₁ f₂ x h
@@ -367,7 +365,7 @@ theorem loc_smul (Y : ℂ) {S : ((Fin r → ℂ) → X) → (Fin r → ℂ) → 
   simp only [Pi.smul_apply, h1]
 
 /- English proof (translation)
-The claim follows from `| 0 => by unfold tdU split_ifs · exact loc_id · exact loc_zero | 1 => by unfold tdU split_ifs · exact loc_add (loc_smul Y loc_id) (loc_pOp _) · exact loc_ciOp _ · exact loc_zero | m + 2 => by have ih1 := loc_tdU Y b (m + 1) have ih0 := loc_tdU Y b m unfold tdU split_ifs · exact l …`.
+A detailed English derivation is pending.
 -/
 theorem loc_tdU (Y : ℂ) (b : Fin 2) : ∀ m, Loc (tdU (X := X) r Y m b)
   | 0 => by
@@ -390,7 +388,7 @@ theorem loc_tdU (Y : ℂ) (b : Fin 2) : ∀ m, Loc (tdU (X := X) r Y m b)
     · exact loc_zero
 
 /- English proof (translation)
-The claim follows from `| 0 => ⟨loc_id, loc_zero⟩ | i + 1 => by obtain ⟨h1, h2⟩ := loc_vAB Y i by_cases hi : i < r · simp only [Q.vAB, dif_pos hi] exact ⟨loc_sub (loc_add (loc_smul Y h1) (loc_comp (loc_pOp _) h1)) (loc_comp (loc_cOp _) h2), loc_comp (loc_ciOp _) h1⟩ · simp only [Q.vAB, dif_neg hi] exact …`.
+A detailed English derivation is pending.
 -/
 theorem loc_vAB (Y : ℂ) : ∀ i, Loc (X := X) (Q.vAB r Y i).1 ∧ Loc (X := X) (Q.vAB r Y i).2
   | 0 => ⟨loc_id, loc_zero⟩
@@ -404,17 +402,15 @@ theorem loc_vAB (Y : ℂ) : ∀ i, Loc (X := X) (Q.vAB r Y i).1 ∧ Loc (X := X)
       exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hO c hc`. Set `φ : ContDiffBump c` to `⟨ε / 4, ε / 2, by positivity, by linarith⟩`. Establish `hts : tsupport φ ⊆ O`. Rewrite using `[φ.tsupport_eq]`. Conclude with `(Metric.closedBall_subset_ball (by show ε / 2 < ε; linarith)).trans hball`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x => ((φ x : ℝ) : ℂ) • f x, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `ContDiff.contDiffOn` to reduce the goal to its premises. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `x`. Distinguish the cases in `hx : x ∈ O`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h1 : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x => ((φ x : ℝ) : ℂ)) x` using `(Complex.ofRealCLM.contDiff.comp φ.contDiff).contDiffAt`. Conclude with `h1.smul (hf.contDiffAt (hO.mem_nhds hx))`. Establish `hn : x ∉ tsupport φ` using `fun h => hx (hts h)`. Establish `hz : (φ : (Fin r → ℂ) → ℝ) =ᶠ[nhds x] 0` using `by first`. Consider the case `exact not_mem_tsupport_iff_eventuallyEq.1 hn`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `exact notMem_tsupport_iff_eventuallyEq.1 hn`. Apply `(contDiffAt_const (c := (0 : X))).congr_of_eventuallyEq` to reduce the goal to its premises. Use `filter_upwards [hz] with y hy`. Simplify using `[hy]`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Establish `hxO : x ∉ O` using `fun h => hx (hOm h)`. Establish `h0 : φ x = 0` using `by first`. Consider the case `exact image_eq_zero_of_nmem_tsupport (fun h => hxO (hts h))`. Consider the case `exact image_eq_zero_of_notMem_tsupport (fun h => hxO (hts h))`. Simplify using `[h0]`.
-
-Use `filter_upwards [Metric.ball_mem_nhds c φ.rIn_pos] with y hy`. Rewrite using `[φ.one_of_mem_closedBall (Metric.ball_subset_closedBall hy)]`. Simplify using the standard rewrite rules.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cp_cutoff (O : Set (Fin r → ℂ)) (hO : IsOpen O) (hOm : O ⊆ OmX r) (f : (Fin r → ℂ) → X)
     (hf : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) f O) (c : Fin r → ℂ) (hc : c ∈ O) :
@@ -457,13 +453,13 @@ end ContPf
 
 open ContPf in
 /- English proof (translation)
-Introduce `X _ _ r Y O hO hOm f hf c hc b`. Take `⟨f', hf'm, hf'e⟩` from `cp_cutoff O hO hOm f hf c hc`. Establish `e1 : tdU r Y r b f c = tdU r Y r b f' c` using `((loc_tdU Y b r) f f' c hf'e.symm).eq_of_nhds`. Establish `ev` using `loc_vAB (X := X) (r := r) Y r`. Establish `h3` using `cp_tdU Y b r ⟨f', hf'm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `cp_vAB Y r le_rfl ⟨f', hf'm⟩`. Establish `h5` using `cp_td_bu (cp_sep (X := X) (r := r) Y) r`. Apply the tactic sequence `have hb : b = 0 ∨ b = 1 := by fin_cases b <;> simp`. Break down `hb with rfl | rfl` into its components or cases. Establish `e2 : (Q.vAB r Y r).1 f c = (Q.vAB r Y r).1 f' c` using `(ev.1 f f' c hf'e.symm).eq_of_nhds`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `only [Q.cmp, if_true]`. Rewrite using `[e1, e2]`. Express the relevant statement in the definitionally equal form `tdU r Y r 0 ((⟨f', hf'm⟩ : WSm r X) : (Fin r → ℂ) → X) c = (Q.vAB r Y r).1 ((⟨f', hf'm⟩ : WSm r X) : (Fin r → ℂ) → X) c`. Rewrite using `[h3, h4.1, h5.1]`. Establish `e2 : (Q.vAB r Y r).2 f c = (Q.vAB r Y r).2 f' c` using `(ev.2 f f' c hf'e.symm).eq_of_nhds`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Q.cmp, show ¬ ((1 : Fin 2) = 0) by decide, if_false]`. Rewrite using `[e1, e2]`. Express the relevant statement in the definitionally equal form `tdU r Y r 1 ((⟨f', hf'm⟩ : WSm r X) : (Fin r → ℂ) → X) c = (Q.vAB r Y r).2 ((⟨f', hf'm⟩ : WSm r X) : (Fin r → ℂ) → X) c`. Rewrite using `[h3, h4.2, h5.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem residue_continuity_holds : JDRCont := by
   intro X _ _ r Y O hO hOm f hf c hc b

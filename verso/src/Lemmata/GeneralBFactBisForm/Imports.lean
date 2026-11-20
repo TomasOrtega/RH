@@ -5,21 +5,19 @@ universe u_1
 namespace Bl.general_b_fact_bis_form
 
 /- English proof (translation)
-Introduce `F _ _ U hU G hG y R C hR hsub hC`. Establish `hyU : y ∈ U` using `hsub (Metric.mem_closedBall_self hR.le)`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC y (Metric.mem_closedBall_self hR.le))`. Use `ContinuousLinearMap.opNorm_le_bound _ (div_nonneg hC0 hR.le) ?_` and prove the remaining obligations. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hv : v = 0`. Simplify using `[hv]`. Establish `hv' : ‖v‖ ≠ 0` using `norm_ne_zero_iff.mpr hv`. Establish `hvpos : 0 < ‖v‖` using `norm_pos_iff.mpr hv`. Use `set r : ℝ := R / ‖v‖ with hr_def`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : 0 < r` using `div_pos hR hvpos`. Establish `key : ∀ t : ℂ, ‖t‖ ≤ r → y + t • v ∈ Metric.closedBall y R`. Introduce `t ht`. Rewrite using `[Metric.mem_closedBall, dist_eq_norm, add_sub_cancel_left, norm_smul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `set g : ℂ → ℂ := G ∘ (fun t : ℂ => y + t • v) with hg_def`. Establish `hl : ∀ t : ℂ, HasDerivAt (fun s : ℂ => y + s • v) v t`. Introduce `t`. Simplify using `using ((hasDerivAt_id t).smul_const v).const_add y`. Establish `hgd : DifferentiableOn ℂ g (Metric.closedBall (0 : ℂ) r)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t ht`. Establish `hmem : y + t • v ∈ U` using `hsub (key t (by simpa using ht))`. Establish `hGt : DifferentiableAt ℂ G (y + t • v)` using `hG.differentiableAt (hU.mem_nhds hmem)`. Conclude with `(hGt.comp t (hl t).differentiableAt).differentiableWithinAt`. Establish `hdc : DiffContOnCl ℂ g (Metric.ball (0 : ℂ) r)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises. Rewrite using `[closure_ball (0 : ℂ) hr.ne']`. Conclude with `hgd`. Establish `hbd : ∀ z ∈ Metric.sphere (0 : ℂ) r, ‖g z‖ ≤ C`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : ‖z‖ = r` using `by simpa using hz`. Conclude with `hC _ (key z hz'.le)`. Establish `hest` using `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hr hdc hbd`. Establish `hGy : HasFDerivAt G (fderiv ℂ G y) y` using `(hG.differentiableAt (hU.mem_nhds hyU)).hasFDerivAt`. Establish `hder : HasDerivAt g (fderiv ℂ G y v) 0` using `hGy.comp_hasDerivAt_of_eq (0 : ℂ) (hl 0) (by simp)`.
-
-Rewrite `hest` using `[hder.deriv]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {F : Type u_1} [inst : NormedAddCommGroup.{u_1} F] [inst_1 : NormedSpace.{0, u_1} Complex F] {U : Set.{u_1} F},

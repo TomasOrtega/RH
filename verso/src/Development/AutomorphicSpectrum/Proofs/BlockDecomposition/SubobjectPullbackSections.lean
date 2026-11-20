@@ -10,11 +10,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE
 
 /- English proof (translation)
-Set `G : X.Modules ⥤ Type` to `Scheme.Modules.toPresheaf X ⋙ (evaluation _ _).obj (Opposite.op V) ⋙ forget Ab`. Use `haveI : PreservesLimitsOfSize.{0, 0} ((evaluation (TopologicalSpace.Opens X)ᵒᵖ Ab).obj (Opposite.op V)) := ⟨fun {J} _ => evaluation_preservesLimitsOfShape _⟩`. Use `haveI : PreservesLimitsOfShape WalkingCospan (Scheme.Modules.toPresheaf X) := inferInstance`. Use `haveI : PreservesLimitsOfShape WalkingCospan (forget Ab.{0}) := inferInstance`. Use `haveI : PreservesLimitsOfShape WalkingCospan G := inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hp` using `(Subobject.isPullback D.arrow S).map G`. Use extensionality with `d`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, rfl⟩`. Use `⟨(Subobject.pullbackπ D.arrow S).app V p, ?_⟩` and prove the remaining obligations.
-
-Conclude with `congr($(hp.w) p)`. Introduce and unpack `⟨s, hs⟩`. Take `⟨p, h₁, h₂⟩` from `Types.exists_of_isPullback hp s d hs`. Conclude with `⟨p, h₂⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem secs_pullback_arrow {X : Scheme.{0}} {E : X.Modules} (D S : Subobject E) (V : X.Opens) :
     secs ((Subobject.pullback D.arrow).obj S) V = (D.arrow.app V) ⁻¹' secs S V := by

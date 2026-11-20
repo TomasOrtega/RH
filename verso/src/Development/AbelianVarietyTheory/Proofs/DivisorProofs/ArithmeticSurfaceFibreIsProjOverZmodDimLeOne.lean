@@ -11,7 +11,7 @@ open GlobalTheory.VB (degOfRank)
 namespace GlobalTheory.FibreDim
 
 /- English proof (translation)
-Establish `hg : Function.Injective (X.presheaf.germ ⊤ (genericPoint X) trivial)` using `germ_injective_of_isIntegral X _ _`. Establish `hr : Function.Injective (X.residue (genericPoint X))` using `(X.residue (genericPoint X)).hom.injective`. Conclude with `charZero_of_injective_ringHom (f := (X.presheaf.germ ⊤ (genericPoint X) trivial ≫ X.residue _).hom) (by simpa using hr.comp hg)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem charZero_residueField_genericPoint' (X : Scheme.{0}) [IsIntegral X] (hc : CharZero Γ(X, ⊤)) :
     CharZero (X.residueField (genericPoint X)) := by
@@ -22,7 +22,7 @@ theorem charZero_residueField_genericPoint' (X : Scheme.{0}) [IsIntegral X] (hc 
     (by simpa using hr.comp hg)
 
 /- English proof (translation)
-Introduce `hc`. Set `φ : ZMod p →+* Z.residueField z` to `((Scheme.ΓSpecIso (CommRingCat.of (ZMod p))).inv ≫ s.appTop ≫ Z.Γevaluation z).hom`. Establish `h0 : ((p : ZMod p) : ZMod p) = 0` using `ZMod.natCast_self p`. Establish `: (p : Z.residueField z) = 0` using `by rw [← map_natCast φ p, h0, map_zero]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero) this`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_charZero_residueField {Z : Scheme.{0}} (p : ℕ) [Fact p.Prime] (s : Z ⟶ Sp (ZMod p)) (z : Z) :
     ¬ CharZero (Z.residueField z) := by
@@ -38,19 +38,17 @@ end GlobalTheory.FibreDim
 namespace GlobalTheory.FibreDim
 
 /- English proof (translation)
-Introduce `k _ W q hq p _`. Use `haveI hgc : IsClosedImmersion (spMap (Int.castRingHom (ZMod p))) := IsClosedImmersion.spec_of_surjective _ (ZMod.ringHom_surjective _)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `letI := GlobalTheory.algebraΓOfHom (pullback.snd (q ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom (ZMod p))))`. Conclude with `VertProj.isProjOver_strHom_zmod k W q 1 hq _ (pullback.fst (q ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom (ZMod p)))) p`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f := q ≫ spMap (Int.castRingHom k) set g := spMap (Int.castRingHom (ZMod p))`. Use `hq.isIntegral` as an intermediate fact. Establish `hemb` using `(pullback.fst f g).isClosedEmbedding`. Establish `hs : IsClosed (Set.range (pullback.fst f g))` using `hemb.isClosed_range`. Establish `hne : ∀ z, (pullback.fst f g) z ≠ genericPoint W`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `z hz`. Establish `h1` using `charZero_residueField_genericPoint' W hq.charZero`. Rewrite `h1` using `[← hz]`. Conclude with `not_charZero_residueField p (pullback.snd f g) z (charZero_of_injective_ringHom ((pullback.fst f g).residueFieldMap z).hom.injective)`. Establish `key` using `topologicalKrullDim_add_one_le hs isClosed_univ (T := W) fun x hx => ⟨genericPoint W, trivial, fun ⟨z, hz⟩ => hne z hz, genericPoint_specializes x⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hW : topologicalKrullDim (Set.univ : Set W) ≤ 2`. Use `topologicalKrullDim_subspace_le W Set.univ` as an intermediate fact. Rewrite `this` using `[hq.dim_eq]`. Conclude with `this`. Establish `heq : topologicalKrullDim (Set.range (pullback.fst f g)) = topologicalKrullDim ↥(pullback (C` using `Scheme.{0}) f g) := GlobalTheory.topologicalKrullDim_eq_of_isEmbedding hemb.isEmbedding rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Rewrite using `[← heq]`. Establish `h2` using `key.trans hW`. Generalize the expression as in `topologicalKrullDim (Set.range (pullback.fst f g)) = d at h2 ⊢`. Proceed by induction on `d with`. Consider the case `bot => exact bot_le`.
+Treat this case separately. Put the expressions in a common number system so they can be compared. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `coe n`. Normalize the coercions in `at h2 ⊢`. Proceed by induction on `n with`. Consider the case `top => exact absurd h2 (by decide)`. Consider the case `coe m`.
-
-Normalize the coercions in `at h2 ⊢`. Establish `h3 : m + 1 ≤ 2` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers.
+Put the expressions in a common number system so they can be compared. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem fibre_isProjOver_and_dim_le : ∀ (k : Type) [CommRing k] (W : Scheme.{0}) (q : W ⟶ Sp k), IsArithVar q 1 → ∀ (p : ℕ) [Fact p.Prime], (letI := GlobalTheory.algebraΓOfHom (pullback.snd (q ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom (ZMod p)))); IsProjOver (strHom (ZMod p) (pullback (q ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom (ZMod p)))))) ∧ topologicalKrullDim ↥(pullback (C := Scheme.{0}) (q ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom (ZMod p)))) ≤ 1 := by
   intro k _ W q hq p _

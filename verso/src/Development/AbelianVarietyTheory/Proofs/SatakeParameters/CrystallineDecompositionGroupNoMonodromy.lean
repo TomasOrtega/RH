@@ -25,7 +25,7 @@ open GlobalTheory GlobalTheory.IwaPkg GlobalTheory.TheRec GlobalTheory.Cong Glob
 namespace GlobalTheory.CrysNoMono
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ ι a P w A h O _ _ _ Bw hj ρ hc`. Distinguish the cases in `hr : IsPstAt P Bw ρ`. Conclude with `(GlobalTheory.PstLaws.wdParameterAt_monodromy_zero_iff_potCrystalline Bw h hj P ι ρ hr).2 hc.isPotCrysAt`. Rewrite using `[wdAt_of_not_isPstAt ι Bw h hj hr, trivWD]`. Conclude with `WD.unr_mono0 _ ((WD.unr_mk _).2 (WDRep.unr_diag _))`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crystalline_decompositionGroup_no_monodromy : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (P : LocPrime l) (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω)

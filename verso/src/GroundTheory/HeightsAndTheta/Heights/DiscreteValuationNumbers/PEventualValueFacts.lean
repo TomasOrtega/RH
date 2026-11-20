@@ -5,11 +5,11 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.NumbersDVR
 
 /- English proof (translation)
-Introduce `K f c s`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `hex : ∃ c, ∀ᶠ m in Filter.atTop, f m = c` using `⟨c, h⟩`. Rewrite using `[eventualValue, dif_pos hex]`. Take `⟨m, hm1, hm2⟩` from `(hex.choose_spec.and h).exists`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hm1.symm.trans hm2`. Establish `ht : Filter.Tendsto (fun m : K → ℤ => m - s) Filter.atTop Filter.atTop`. Rewrite using `[Filter.tendsto_atTop_atTop]`. Introduce `b`. Use `⟨b + s, fun a ha => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using sub_le_sub_right ha s`. Conclude with `ht.eventually h`.
+A detailed English derivation is pending.
 -/
 theorem EventualValueFacts.proof : EventualValueFacts.Statement := by
   intro K f c s

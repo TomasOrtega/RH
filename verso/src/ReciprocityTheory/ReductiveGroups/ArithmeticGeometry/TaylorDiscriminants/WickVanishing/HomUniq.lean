@@ -26,7 +26,7 @@ open ReciprocityTheory.ChartRestriction.G.TB.LogPf Formalism.FG.SolveVAux
 variable {k : Type} [CommRing k] {d : ℕ}
 
 /- English proof (translation)
-Introduce `j i`. Use `fin_cases j`. Conclude with `ha i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cz1 {n : ℕ} (a : Pt k n d) (ha : ∀ i, constantCoeff (a i) = 0) : CZ (![a] : Fin 1 → Pt k n d) := by
   intro j i
@@ -34,18 +34,18 @@ theorem cz1 {n : ℕ} (a : Pt k n d) (ha : ∀ i, constantCoeff (a i) = 0) : CZ 
   exact ha i
 
 /- English proof (translation)
-Introduce `i` and use `by unfold pt exact MvPowerSeries.constantCoeff_X _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cz_pt {n : ℕ} (j : Fin n) : ∀ i, constantCoeff (pt k (n := n) d j i) = 0 := fun i => by
   unfold pt
   exact MvPowerSeries.constantCoeff_X _
 
 /- English proof (translation)
-Unfold `ev`. Establish `hs : MvPowerSeries.HasSubst (fun p : Fin m × Fin d => a p.1 p.2)` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => ha p.1 p.2)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun p => by rw [ha p.1 p.2]; exact IsNilpotent.zero)`. Rewrite using `[MvPowerSeries.constantCoeff_subst hs, finsum_eq_single _ 0]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `e he`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs'⟩ : ∃ s, e s ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he (Finsupp.ext h)`. Rewrite using `[Finsupp.prod, map_prod, Finset.prod_eq_zero (i := s) (Finsupp.mem_support_iff.mpr hs'), smul_zero]`. Rewrite using `[map_pow, ha s.1 s.2, zero_pow hs']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cc_ev_lemma {m n : ℕ} {a : Fin m → Pt k n d} (ha : CZ a) (f : PS k m d) :
     constantCoeff (ev a f) = constantCoeff f := by
@@ -67,7 +67,7 @@ private theorem cc_ev_lemma {m n : ℕ} {a : Fin m → Pt k n d} (ha : CZ a) (f 
     rw [map_pow, ha s.1 s.2, zero_pow hs']
 
 /- English proof (translation)
-Unfold `comp1`. Introduce `i`. Rewrite using `[cc_ev_lemma (cz1 a ha), hφ i]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem cz_comp1 {n : ℕ} (φ : Pt k 1 d) (hφ : ∀ i, constantCoeff (φ i) = 0) (a : Pt k n d)
     (ha : ∀ i, constantCoeff (a i) = 0) : ∀ i, constantCoeff (comp1 φ a i) = 0 := by

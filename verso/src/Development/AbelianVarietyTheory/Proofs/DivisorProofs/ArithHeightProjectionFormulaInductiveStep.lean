@@ -22,7 +22,7 @@ open GlobalTheory.TwistTop
 namespace GlobalTheory.ProjStep
 
 /- English proof (translation)
-Unfold `HermLB.archInt`. Rewrite using `[h.div hr]`. Use `finsum_congr fun σ => ?_` and prove the remaining obligations. Rewrite using `[h.chernInt]`. Conclude with `Weight.chernInt_congr (isOpen_offSupp _).measurableSet fun y hy => h.logNorm hr hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archInt_refines {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
     {N L : HermLB p} {ρ : N.B.ι → L.B.ι} (h : Refines N L ρ 0) {r : L.B.ι → X.functionFieldˣ}
@@ -39,37 +39,35 @@ end GlobalTheory.ProjStep
 namespace GlobalTheory.ProjStep
 
 /- English proof (translation)
-Introduce `k _ X Y p q D E hX hY π hπ L h h' H H' y e hc hy hrec`. Establish `hAX : IsAmb p` using `isAmb_of_isArithVar hX`. Establish `hAY : IsAmb q` using `isAmb_of_isArithVar hY`. Use `hX.isNoetherian` as an intermediate fact. Use `hY.isNoetherian` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hbdX, -, -, -, hsubX, hgenX⟩` from `GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k X p hAX`. Take `⟨-, -, -, -, hsubY, hgenY⟩` from `GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k Y q hAY`. Take `⟨g, hgc, hgη, hgdeg⟩` from `GlobalTheory.T.exists_dominant_restriction_pointClosures X Y π y`. Establish `hdW : topologicalKrullDim (clo y) = ((e + 1 + 1 : ℕ) : WithBot ℕ∞)`. Use `(hgenY (clo y) (e + 1 + 1)).1 ((hsubY (clo y) (cloι y) _ _).1 ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cloι_genericPoint]`. Conclude with `hy`. Establish `hcZ : CharZero Γ(clo (π y), ⊤)` using `g.appTop.hom.charZero`. Establish `hg1 : g ≫ cloι (π y) ≫ p = cloι y ≫ q`. Rewrite using `[← Category.assoc, hgc, Category.assoc, hπ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hC : (g ≫ cloι (π y)) ≫ p = cloι y ≫ q` using `by rw [Category.assoc]; exact hg1`. Establish `hη' : g (genericPoint (clo y)) ⤳ genericPoint (clo (π y))` using `hgη ▸ specializes_rfl`. Establish `happ (w : clo y) : π (cloι y w) = cloι (π y) (g w)`. Use `congrArg (fun f : clo y ⟶ X => f w) hgc` as an intermediate fact. Simplify using `using this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hδ : g.residueDegree (genericPoint (clo y)) = π.residueDegree y`. Rewrite using `[hgdeg, cloι_genericPoint]`. Take `⟨r, hr⟩` from `exists_isRatSec (L.restr (cloι (π y))).isLB`. Establish `hr1` using `MultPull.isRatSec_pull_map g hη' hr`. Establish `ref1` using `L.refines_pull_comp (cloι (π y)) rfl g hg1 hC`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrC` using `ref1.isRatSec hr1`. Choose the witnesses or unpack the hypotheses as in `⟨ρ, ref2⟩ : ∃ ρ, Refines ((L.pull π hπ).restr (cloι y)) (L.pull (g ≫ cloι (π y)) hC) ρ 0 := by`. Establish `key : ∀ (f : clo y ⟶ X) (hf : f ≫ p = cloι y ≫ q), f = cloι y ≫ π → ∃ ρ, Refines ((L.pull π hπ).restr (cloι y)) (L.pull f hf) ρ 0`. Introduce and unpack `f hf rfl`. Conclude with `⟨_, L.refines_pull_pull π hπ (cloι y) rfl hf⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `key _ hC hgc`. Establish `hrA` using `ref2.isRatSec hrC`. Take `⟨-, hrecW⟩` from `H'.recursion_one (cloι y) hc (by omega : 1 ≤ e + 1) hdW hrA`. Rewrite `hrecW` using `[cloι_genericPoint]`. Establish `ediv : ((L.pull π hπ).restr (cloι y)).div hrA = (((L.restr (cloι (π y))).pull g hg1)).div hr1` using `(ref2.div hrC).trans (ref1.div hr1)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `earch : ((L.pull π hπ).restr (cloι y)).archInt ((L.pull π hπ).restr (cloι y)) (e + 1) hrA = ((L.restr (cloι (π y))).pull g hg1).archInt ((L.restr (cloι (π y))).pull g hg1) (e + 1) hr1` using `(archInt_refines ref2 hrC (e + 1)).trans (archInt_refines ref1 hr1 (e + 1))`. Establish `hsum : ∑ᶠ w, ((((L.pull π hπ).restr (cloι y)).div hrA).mult w : ℝ) * h' (cloι y w) = (π.residueDegree y : ℝ) * ∑ᶠ z, (((L.restr (cloι (π y))).div hr).mult z : ℝ) * h (cloι (π y) z)`. Rewrite using `[ediv, ← hδ]`. Use `Eq.trans (finsum_congr fun w => ?_) (GlobalTheory.T.finsum_mult_pullback_rationalSection_pushforward k (clo (π y)) (clo y) (cloι (π y) ≫ p) (cloι y ≫ q) (hAX.sub _) (hAY.sub _) g hg1 hgη (L.restr (cloι (π y))).B (L.restr (cloι (π y))).isLB r hr (fun z => h (cloι (π y) z)))` and prove the remaining obligations. Distinguish the cases in `hm : ((((L.restr (cloι (π y))).pull g hg1)).div hr1).mult w = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm' : ((((L.restr (cloι (π y))).pull g hg1)).div hr1).mult w = 0` using `hm`. Rewrite using `[hm, Int.cast_zero, zero_mul]`. Conclude with `(mul_eq_zero_of_left (Int.cast_eq_zero.2 hm) _).symm`. Establish `hco` using `CartierDiv.coheight_eq_one_of_mult_ne_zero hm`. Establish `hd1` using `((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k (clo y) (cloι y ≫ q) (hAY.sub _) (e + 1) hdW).1 w).1 hco`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hd2` using `(hsubY (clo y) (cloι y) w (e + 1)).2 hd1`. Rewrite using `[hrec _ hd2, happ, hgdeg]`. Both sides reduce to the same expression. Take `⟨m, hm⟩` from `hbdX`. Take `⟨d', -, hd'⟩` from `hm (π y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hle, hiff⟩` from `GlobalTheory.T.pointClosureDim_le_and_residueDegree_ne_zero_iff k X Y p q hAX hAY π hπ y (e + 1 + 1) d' hy hd'`. Establish `hdZ : topologicalKrullDim (clo (π y)) = (d' : WithBot ℕ∞)`. Use `(hgenX (clo (π y)) d').1 ((hsubX (clo (π y)) (cloι (π y)) _ _).1 ?_)` and prove the remaining obligations. Rewrite using `[cloι_genericPoint]`. Conclude with `hd'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hWv` using `hY.of_isClosedImmersion (cloι y) hc hdW`. Rewrite `hrecW` using `[hsum, earch]`. Distinguish the cases in `h0 : π.residueDegree y = 0`. Establish `hlt : d' < e + 1 + 1` using `lt_of_le_of_ne hle fun h1 => hiff.2 h1.symm h0`. Establish `hd0 : d' ≠ 0` using `fun h2 => hX.dim_ne_zero (cloι (π y)) hcZ (by rw [hdZ, h2]; rfl)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e0, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hd0`. Establish `hZv0` using `hX.of_isClosedImmersion (cloι (π y)) hcZ (e := e0) hdZ`. Establish `hzero (σ : k →+* ℂ) (ε : ℤˣ) : (((L.restr (cloι (π y))).pull g hg1).φ σ).chernPart (e + 1) ε = 0` using `GlobalTheory.T.chernForm_topPower_pullback_smaller_dim_eq_zero k (clo (π y)) (clo y) (cloι (π y) ≫ p) (cloι y ≫ q) e0 (e + 1) hZv0 hWv (by omega) g hg1 hgη (L.restr (cloι (π y))) σ ε`. Establish `harch0 : ((L.restr (cloι (π y))).pull g hg1).archInt ((L.restr (cloι (π y))).pull g hg1) (e + 1) hr1 = 0`. Unfold `HermLB.archInt Weight.chernInt`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hzero]`. Rewrite `hrecW` using `[harch0, h0]`. Rewrite using `[hrecW, h0]`. Simplify using the standard rewrite rules. Establish `hde : d' = e + 1 + 1` using `(hiff.1 h0).symm`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hde` using the available equality. Establish `hZv` using `hX.of_isClosedImmersion (cloι (π y)) hcZ hdZ`. Take `⟨-, hrecZ⟩` from `H.recursion_one (cloι (π y)) hcZ (by omega : 1 ≤ e + 1) hdZ hr`. Rewrite `hrecZ` using `[cloι_genericPoint]`. Establish `hpa` using `GlobalTheory.T.archimedeanIntegral_pull_mul_degree k (clo (π y)) (clo y) (cloι (π y) ≫ p) (cloι y ≫ q) (e + 1) hZv hWv g hg1 hgη (hδ ▸ h0) (L.restr (cloι (π y))) (L.restr (cloι (π y))) r hr`.
-
-Rewrite `hpa` using `[hδ]`. Rewrite using `[hrecW, hpa, hrecZ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (D E : ℕ), IsArithVar p D → IsArithVar q E → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q) (L : HermLB p) (h : X → ℝ) (h' : Y → ℝ), L.IsArithHeight h → (L.pull π hπ).IsArithHeight h' → ∀ (y : Y) (e : ℕ), CharZero Γ(clo y, ⊤) → HasDim y (e + 1 + 1) → (∀ w : Y, HasDim w (e + 1) → h' w = (π.residueDegree w : ℝ) * h (π w)) → h' y = (π.residueDegree y : ℝ) * h (π y) := by
   intro k _ X Y p q D E hX hY π hπ L h h' H H' y e hc hy hrec

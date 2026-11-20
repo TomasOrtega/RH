@@ -15,9 +15,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ} {i : Fin (r + 1)}
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.Q.inLieLev at hX ⊢`. Take `⟨h1, h2⟩` from `hX`. Establish `hs : ∀ v : Fin (2 * r + k + 1) → ℂ, (x • X) *ᵥ v = x • (X *ᵥ v)` using `fun v => by`. Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct, Finset.smul_sum, smul_mul_assoc, mul_assoc]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨?_, fun a ha => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h1, smul_zero]`. Rewrite using `[hs, (h2 a ha).1, smul_zero]`. Rewrite using `[hs, (h2 a ha).2, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lie_rsmul {X : Q.Mx k r} (hX : Q.inLieLev k r i X) (x : ℝ) : Q.inLieLev k r i (x • X) := by
   unfold Formalism.FourierDecayAlt.Q.inLieLev at hX ⊢
@@ -31,7 +31,7 @@ theorem lie_rsmul {X : Q.Mx k r} (hX : Q.inLieLev k r i X) (x : ℝ) : Q.inLieLe
   · rw [hs, (h2 a ha).2, smul_zero]
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.Q.inLieLev at hX hY ⊢`. Use `⟨?_, fun a ha => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add, show Xᴴ * Hpk k r + Yᴴ * Hpk k r + (Hpk k r * X + Hpk k r * Y) = (Xᴴ * Hpk k r + Hpk k r * X) + (Yᴴ * Hpk k r + Hpk k r * Y) by abel, hX.1, hY.1, add_zero]`. Rewrite using `[Matrix.add_mulVec, (hX.2 a ha).1, (hY.2 a ha).1, add_zero]`. Rewrite using `[Matrix.add_mulVec, (hX.2 a ha).2, (hY.2 a ha).2, add_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem inLieLev_add {X Y : Q.Mx k r} (hX : Q.inLieLev k r i X) (hY : Q.inLieLev k r i Y) :
     Q.inLieLev k r i (X + Y) := by
@@ -44,17 +44,17 @@ private theorem inLieLev_add {X Y : Q.Mx k r} (hX : Q.inLieLev k r i X) (hY : Q.
   · rw [Matrix.add_mulVec, (hX.2 a ha).2, (hY.2 a ha).2, add_zero]
 
 /- English proof (translation)
-Unfold `GLc at *`. Take `⟨h1, h2⟩` from `hZ`. Take `⟨h1', h2'⟩` from `hZ'`. Establish `hI : (1 / (2 * Complex.I) : ℂ) = -Complex.I / 2`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Put the polynomial expressions in normal form. Simplify using `only [Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsa : star a = (a.re : ℂ) - (a.im : ℂ) * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `ha : a = (a.re : ℂ) + (a.im : ℂ) * Complex.I` using `(Complex.re_add_im a).symm`. Establish `e1 : hpart1 (Hpk k r) (a • Z + Z') = a.re • hpart1 (Hpk k r) Z + (-a.im) • hpart2 (Hpk k r) Z + hpart1 (Hpk k r) Z'`. Unfold `Formalism.QuantumDeterminants.hpart1 Formalism.QuantumDeterminants.hpart2`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul, hsa, hI, show a • Z = ((a.re : ℂ) + (a.im : ℂ) * Complex.I) • Z by rw [← ha]]`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, Complex.real_smul]`. Use `push_cast`. Apply the tactic sequence `first | ring | (ring_nf; simp only [Complex.I_sq]; ring)`. Establish `e2 : hpart2 (Hpk k r) (a • Z + Z') = a.im • hpart1 (Hpk k r) Z + a.re • hpart2 (Hpk k r) Z + hpart2 (Hpk k r) Z'`. Unfold `Formalism.QuantumDeterminants.hpart1 Formalism.QuantumDeterminants.hpart2`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul, hsa, hI, show a • Z = ((a.re : ℂ) + (a.im : ℂ) * Complex.I) • Z by rw [← ha]]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, Complex.real_smul]`. Use `push_cast`. Take the linear combination `(-(a.im : ℂ) * Z i j / 2 + (a.im : ℂ) * ((Hpk k r)⁻¹ * Zᴴ * Hpk k r) i j / 2) * Complex.I_sq`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Conclude with `⟨inLieLev_add (inLieLev_add (lie_rsmul h1 _) (lie_rsmul h2 _)) h1', inLieLev_add (inLieLev_add (lie_rsmul h1 _) (lie_rsmul h2 _)) h2'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem glc_lin {Z Z' : Q.Mx k r} (hZ : GLc k r Z) (hZ' : GLc k r Z') (a : ℂ) : GLc k r (a • Z + Z') := by
   unfold GLc at *
@@ -93,15 +93,15 @@ theorem glc_lin {Z Z' : Q.Mx k r} (hZ : GLc k r Z) (hZ' : GLc k r Z') (a : ℂ) 
     inLieLev_add (inLieLev_add (lie_rsmul h1 _) (lie_rsmul h2 _)) h2'⟩
 
 /- English proof (translation)
-Establish `hI : (1 / (2 * Complex.I) : ℂ) = -Complex.I / 2`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Simplify using `only [Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hsa : star a = (a.re : ℂ) - (a.im : ℂ) * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp`. Establish `ha : a = (a.re : ℂ) + (a.im : ℂ) * Complex.I` using `(Complex.re_add_im a).symm`. Prove the components needed by the constructor for the conclusion. Unfold `Formalism.QuantumDeterminants.hpart1 Formalism.QuantumDeterminants.hpart2`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul, hsa, hI, show a • Z = ((a.re : ℂ) + (a.im : ℂ) * Complex.I) • Z by rw [← ha]]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, Complex.real_smul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `Formalism.QuantumDeterminants.hpart1 Formalism.QuantumDeterminants.hpart2`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul, hsa, hI, show a • Z = ((a.re : ℂ) + (a.im : ℂ) * Complex.I) • Z by rw [← ha]]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, Complex.real_smul]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `(-(a.im : ℂ) * Z i j / 2 + (a.im : ℂ) * ((Hpk k r)⁻¹ * Zᴴ * Hpk k r) i j / 2) * Complex.I_sq`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem hermitian_halves_smul_add (Z Z' : Q.Mx k r) (a : ℂ) :
     hpart1 (Hpk k r) (a • Z + Z') =
@@ -135,9 +135,9 @@ private theorem hermitian_halves_smul_add (Z Z' : Q.Mx k r) (a : ℂ) :
     linear_combination (-(a.im : ℂ) * Z i j / 2 + (a.im : ℂ) * ((Hpk k r)⁻¹ * Zᴴ * Hpk k r) i j / 2) * Complex.I_sq
 
 /- English proof (translation)
-Establish `hx : ∀ t : ℝ, (t : ℂ) • (s • X) = ((s * t : ℝ) : ℂ) • X` using `fun t => by`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Complex.real_smul, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `Formalism.REAL.RdV`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Simplify using `only [hx]`. Establish `key` using `deriv_comp_mul_left s (fun u : ℝ => f (g * NormedSpace.exp ((u : ℂ) • X))) 0`. Simplify using `only [mul_zero] at key`. Rewrite using `[key, Complex.coe_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rdV_real_smul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (f : Q.Mx k r → E)
     (X g : Q.Mx k r) (s : ℝ) : RdV (s • X) f g = (s : ℂ) • RdV X f g := by
@@ -152,14 +152,14 @@ private theorem rdV_real_smul {E : Type*} [NormedAddCommGroup E] [NormedSpace �
   rw [key, Complex.coe_smul]
 
 /- English proof (translation)
-Unfold `GLc Formalism.QuantumDeterminants.hpart1 Formalism.QuantumDeterminants.hpart2 Formalism.FourierDecayAlt.Q.inLieLev`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem gLc_zero : GLc k r (0 : Q.Mx k r) := by
   unfold GLc Formalism.QuantumDeterminants.hpart1 Formalism.QuantumDeterminants.hpart2 Formalism.FourierDecayAlt.Q.inLieLev
   simp
 
 /- English proof (translation)
-Unfold `Rc Formalism.REAL.RdV Formalism.QuantumDeterminants.hpart1 Formalism.QuantumDeterminants.hpart2`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem rc_zero_left {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (f : Q.Mx k r → E) (g : Q.Mx k r) :
     Rc (0 : Q.Mx k r) f g = 0 := by
@@ -167,11 +167,11 @@ private theorem rc_zero_left {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ
   simp
 
 /- English proof (translation)
-Take `⟨e1, e2⟩` from `hermitian_halves_smul_add Z Z' a`. Establish `hz` using `hZ`. Establish `hz'` using `hZ'`. Unfold `GLc at hz hz'`. Take `⟨h1, h2⟩` from `hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨h1', h2'⟩` from `hz'`. Unfold `Rc`. Rewrite using `[e1, e2, Formalism.FourierDecayAlt.P.Qx5.rd_addX hf hg (inLieLev_add (lie_rsmul h1 _) (lie_rsmul h2 _)) h1', Formalism.FourierDecayAlt.P.Qx5.rd_addX hf hg (lie_rsmul h1 _) (lie_rsmul h2 _), Formalism.FourierDecayAlt.P.Qx5.rd_addX hf hg (inLieLev_add (lie_rsmul h1 _) (lie_rsmul h2 …`. Simplify using `only [rdV_real_smul, Complex.ofReal_neg]`. Establish `haI : a * Complex.I = (a.re : ℂ) * Complex.I - a.im`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `apply Complex.ext <;> simp`. Rewrite using `[smul_add a, smul_smul a Complex.I, haI, show a • RdV (hpart1 (Hpk k r) Z) f g = ((a.re : ℂ) + (a.im : ℂ) * Complex.I) • RdV (hpart1 (Hpk k r) Z) f g by`. Rewrite using `[Complex.re_add_im]]`. Use `module`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rc_smul_add_of_smoothLev_of_gLc {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {D : Set (Q.Mx k r)}
     {f : Q.Mx k r → E} (hf : Q.SmoothLev k r (Fin.last r) D f) {g : Q.Mx k r}
@@ -198,7 +198,7 @@ private theorem rc_smul_add_of_smoothLev_of_gLc {E : Type*} [NormedAddCommGroup 
   module
 
 /- English proof (translation)
-Set `S : Submodule ℂ (Q.Mx k r)` to `{ carrier := {Z | GLc k r Z} add_mem' := fun {Z Z'} hZ hZ' => by simpa using glc_lin hZ hZ' 1 zero_mem' := gLc_zero smul_mem' := fun c Z hZ => by simpa using glc_lin hZ gLc_zero c }`. Set `f0 : S →ₗ[ℂ] E` to `{ toFun := fun Z => Rc (Z : Q.Mx k r) f g map_add' := fun Z Z' => by simpa using rc_smul_add_of_smoothLev_of_gLc hf hg Z.2 Z'.2 1 map_smul' := fun c Z => by simpa [rc_zero_left] using rc_smul_add_of_smoothLev_of_gLc hf hg Z.2 gLc_zero c }`. Take `⟨L, hL⟩` from `LinearMap.exists_extend f0`. Conclude with `⟨L, fun Z hZ => (LinearMap.congr_fun hL ⟨Z, hZ⟩).symm⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rc_linear {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {D : Set (Q.Mx k r)} {f : Q.Mx k r → E}
     (hf : Q.SmoothLev k r (Fin.last r) D f) {g : Q.Mx k r} (hg : g ∈ Q.Glev k r (Fin.last r) ∩ D) :
@@ -216,7 +216,7 @@ theorem rc_linear {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {D : Se
   exact ⟨L, fun Z hZ => (LinearMap.congr_fun hL ⟨Z, hZ⟩).symm⟩
 
 /- English proof (translation)
-Unfold `RcLin`. Introduce `k r E _ _ D f _ hf g hg a Z Z' hZ hZ'`. Take `⟨L, hL⟩` from `rc_linear hf hg`. Rewrite using `[hL _ (glc_lin hZ hZ' a), hL Z hZ, hL Z' hZ', map_add, map_smul]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem radial_coefficient_linearity : RcLin := by
   unfold RcLin

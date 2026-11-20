@@ -13,9 +13,9 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FNCongLift
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Establish `key : ∀ x y : ZMod N, x = y → ZMod.castHom hMN (ZMod M) x = ZMod.castHom hMN (ZMod M) y` using `fun x y hxy => by rw [hxy]`. Establish `k1` using `key _ _ h1`. Establish `k2` using `key _ _ h2`. Establish `k3` using `key _ _ h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k4` using `key _ _ h4`. Simplify using `only [map_mul, map_intCast] at k1 k2 k3 k4`. Conclude with `⟨k1, k2, k3, k4⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem cong_of_dvd {M N : ℕ} (hMN : M ∣ N) {d : ℤ} {γ γ' : SL(2, ℤ)} (h : Cong N d γ γ') : Cong M d γ γ' := by
   obtain ⟨h1, h2, h3, h4⟩ := h
@@ -29,7 +29,7 @@ theorem cong_of_dvd {M N : ℕ} (hMN : M ∣ N) {d : ℤ} {γ γ' : SL(2, ℤ)} 
   exact ⟨k1, k2, k3, k4⟩
 
 /- English proof (translation)
-Unfold `Cong at hc ⊢`. Rewrite using `[← h]`. Conclude with `hc`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_congr_d {M : ℕ} {d d' : ℤ} (h : (d : ZMod M) = d') {γ γ' : SL(2, ℤ)} (hc : Cong M d γ γ') :
     Cong M d' γ γ' := by
@@ -38,11 +38,11 @@ theorem cong_congr_d {M : ℕ} {d d' : ℤ} (h : (d : ZMod M) = d') {γ γ' : SL
   exact hc
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4⟩` from `h'`. Take `⟨b1, b2, b3, b4⟩` from `h''`. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify using `only [Fin.zero_eta, Fin.isValue]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[a1, b1]`. Simplify using `only [Fin.zero_eta, Fin.isValue, Fin.mk_one]`. Rewrite using `[a2, b2]`. Simplify using `only [Fin.zero_eta, Fin.isValue, Fin.mk_one]`. Conclude with `hd.mul_left_cancel (a3.trans b3.symm)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.isValue, Fin.mk_one]`. Rewrite using `[a4, b4]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem en_eq_of_cong {M : ℕ} {d : ℤ} (hd : IsUnit (d : ZMod M)) {γ γ' γ'' : SL(2, ℤ)}
     (h' : Cong M d γ γ') (h'' : Cong M d γ γ'') :
@@ -58,7 +58,7 @@ theorem en_eq_of_cong {M : ℕ} {d : ℤ} (hd : IsUnit (d : ZMod M)) {γ γ' γ'
   · simp only [Fin.isValue, Fin.mk_one]; rw [a4, b4]
 
 /- English proof (translation)
-Rewrite using `[CongruenceSubgroup.Gamma_mem]`. Simplify using `[en]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_Gamma_iff_en {M : ℕ} (γ : SL(2, ℤ)) :
     γ ∈ CongruenceSubgroup.Gamma M ↔
@@ -67,7 +67,7 @@ theorem mem_Gamma_iff_en {M : ℕ} (γ : SL(2, ℤ)) :
   simp [en]
 
 /- English proof (translation)
-Rewrite using `[CongruenceSubgroup.Gamma_mem']`. Establish `: Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) γ' = Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) γ''`. Use extensionality with `i j`. Simplify `h i j` using `[en]`. Rewrite using `[map_mul, map_inv, this, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_inv_mem_Gamma {M : ℕ} {γ' γ'' : SL(2, ℤ)} (h : ∀ i j, (en γ' i j : ZMod M) = en γ'' i j) :
     γ' * γ''⁻¹ ∈ CongruenceSubgroup.Gamma M := by
@@ -78,17 +78,15 @@ theorem mul_inv_mem_Gamma {M : ℕ} {γ' γ'' : SL(2, ℤ)} (h : ∀ i j, (en γ
   rw [map_mul, map_inv, this, mul_inv_cancel]
 
 /- English proof (translation)
-Introduce `M N d d' hN hMN hdd' hu`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Establish `hdM : IsUnit (d : ZMod M)`. Use `(hu.map (ZMod.castHom hMN (ZMod M)))` as an intermediate fact. Rewrite using `[hdd']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hdM' : (d' : ZMod M) = d` using `hdd'.symm`. Take `⟨u, hu'⟩` from `hu`. Take `⟨ex1, ex2⟩` from `GlobalTheory.T.diagOneUnit_conj_lifts_sl2IntReductionMod N u`. Use `⟨fun γ γ' hγ => ?_, fun δ' hδ' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨γ'', hγ''⟩` from `ex1 γ`. Establish `hc : Cong N d' γ γ''` using `(GlobalTheory.T.slTwoDiagConjCongruence_iff_diagOneUnit_matrix_eq N d' u hu' γ γ'').2 hγ''`. Use `⟨γ'', hc, mul_inv_mem_Gamma (en_eq_of_cong hdM hγ ?_)⟩` and prove the remaining obligations. Conclude with `cong_congr_d hdM' (cong_of_dvd hMN hc)`. Take `⟨δ, hδ⟩` from `ex2 δ'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : Cong N d' δ δ'` using `(GlobalTheory.T.slTwoDiagConjCongruence_iff_diagOneUnit_matrix_eq N d' u hu' δ δ').2 hδ`. Use `⟨δ, ?_, hc⟩` and prove the remaining obligations. Establish `hcM` using `cong_congr_d hdM' (cong_of_dvd hMN hc)`. Take `⟨c1, c2, c3, c4⟩` from `hcM`. Take `⟨g1, g2, g3, g4⟩` from `(mem_Gamma_iff_en δ').1 hδ'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_Gamma_iff_en]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← c1, g1]`. Establish `: (d : ZMod M) * en δ 0 1 = d * 0` using `by rw [← c2, g2, mul_zero]`. Conclude with `hdM.mul_left_cancel this`.
-
-Rewrite using `[← c3, g3, mul_zero]`. Rewrite using `[← c4, g4]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_lift : ∀ (M N : ℕ) (d d' : ℤ), 0 < N → M ∣ N → (d : ZMod M) = d' → IsUnit (d' : ZMod N) → (∀ γ γ' : SL(2, ℤ), Cong M d γ γ' → ∃ γ'' : SL(2, ℤ), Cong N d' γ γ'' ∧ γ' * γ''⁻¹ ∈ CongruenceSubgroup.Gamma M) ∧ ∀ δ' ∈ CongruenceSubgroup.Gamma M, ∃ δ ∈ CongruenceSubgroup.Gamma M, Cong N d' δ δ' := by
   intro M N d d' hN hMN hdd' hu

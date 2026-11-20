@@ -35,22 +35,22 @@ theorem ratA_val (γ : UJ (sp.cm.sig : E →+* E) sp.gram0) :
       bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (γ : GL (Fin R.k) E) := rfl
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_subgroupOf.2 ⟨γ, γ.2, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ratA_mem (γ : UJ (sp.cm.sig : E →+* E) sp.gram0) : ratA sp γ ∈ HA sp :=
   Subgroup.mem_subgroupOf.2 ⟨γ, γ.2, rfl⟩
 
 /- English proof (translation)
-Take `⟨γ, hγ, e⟩` from `Subgroup.mem_subgroupOf.1 hx`. Conclude with `⟨⟨γ, hγ⟩, Subtype.ext e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ratA (x : GA sp) (hx : x ∈ HA sp) : ∃ γ, ratA sp γ = x := by
   obtain ⟨γ, hγ, e⟩ := Subgroup.mem_subgroupOf.1 hx
   exact ⟨⟨γ, hγ⟩, Subtype.ext e⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Establish `: y⁻¹ * (MulAut.conj y).toMonoidHom u * y = u`. Simplify using `[MulAut.conj_apply, mul_assoc]`. Rewrite using `[this]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu`. Introduce `h`. Conclude with `⟨_, h, by simp [MulAut.conj_apply, mul_assoc]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_map_conj {G0 : Type} [Group G0] (S : Subgroup G0) (y g : G0) :
     g ∈ S.map (MulAut.conj y).toMonoidHom ↔ y⁻¹ * g * y ∈ S := by
@@ -64,14 +64,14 @@ theorem mem_map_conj {G0 : Type} [Group G0] (S : Subgroup G0) (y g : G0) :
     exact ⟨_, h, by simp [MulAut.conj_apply, mul_assoc]⟩
 
 /- English proof (translation)
-The claim follows from `mem_map_conj (Formalism.L2.Herm.awayFrom₂ L p) (y : GL (Fin R.k) _) (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (γ : GL (Fin R.k) E))`.
+A detailed English derivation is pending.
 -/
 theorem mem_gamC_iff (y : GA sp) (γ : UJ (sp.cm.sig : E →+* E) sp.gram0) :
     γ ∈ gamC sp.cm.sig sp.gram0 (Formalism.L2.Herm.awayFrom₂ L p) (y : GL (Fin R.k) _) ↔ y⁻¹ * ratA sp γ * y ∈ KA' L p :=
   mem_map_conj (Formalism.L2.Herm.awayFrom₂ L p) (y : GL (Fin R.k) _) (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (γ : GL (Fin R.k) E))
 
 /- English proof (translation)
-Rewrite using `[prP_apply, toF_symm]`. Use `congr 1`. Rewrite using `[map_mul, map_mul, map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prP_ratA (I : LocId L p nV W Qq) {m : ℕ} (hk : m + 1 = R.k) (γ : UJ (sp.cm.sig : E →+* E) sp.gram0) (v : Fin nV) :
     prP I hk (ratA sp γ) v = (castGL hk Qq).symm ((I.frQ v)⁻¹ * bc (I.iw v) (γ : GL (Fin R.k) E) * I.frQ v) := by

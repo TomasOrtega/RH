@@ -17,29 +17,29 @@ open Ad3 Ad3.R
 namespace GlobalTheory.CompanionTheory.HeckePartial
 
 /- English proof (translation)
-Use extensionality with `a`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem localChar_inv' (c : HeckeCharacter ℚ) (v : Pl) : localChar c⁻¹ v = (localChar c v)⁻¹ := by
   ext a
   rfl
 
 /- English proof (translation)
-The claim follows from `IsTotallyReal.isReal w`.
+A detailed English derivation is pending.
 -/
 theorem isReal_all (w : InfinitePlace ℚ) : w.IsReal := IsTotallyReal.isReal w
 
 /- English proof (translation)
-Establish `hw : w.IsReal` using `isReal_all w`. Assume the negation of the conclusion as `hτ`. Establish `hx : 0 < Real.exp (Real.pi / c.infiniteTau w)` using `Real.exp_pos _`. Establish `h1` using `c.realComponent_eq_one_of_isOfFinOrder hc hw (x := Units.mk0 _ hx.ne') hx`. Establish `h2` using `c.infiniteComponent_eq w (realUnitsHom hw (Units.mk0 _ hx.ne'))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hι : extensionEmbedding w ((realUnitsHom hw (Units.mk0 _ hx.ne') : (w.Completion)ˣ) : w.Completion) = ((Real.exp (Real.pi / c.infiniteTau w) : ℝ) : ℂ)`. Rewrite using `[← extensionEmbeddingOfIsReal_apply hw, extensionEmbeddingOfIsReal_realUnitsHom]`. Both sides reduce to the same expression. Establish `hn : ‖((realUnitsHom hw (Units.mk0 _ hx.ne') : (w.Completion)ˣ) : w.Completion)‖ = Real.exp (Real.pi / c.infiniteTau w)`. Use `(isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) ((realUnitsHom hw (Units.mk0 _ hx.ne') : (w.Completion)ˣ) : w.Completion)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[extensionEmbeddingOfIsReal_realUnitsHom]`. Rewrite using `[← this]`. Simplify using `[abs_of_pos hx]`. Establish `h3 : ((c.infiniteComponent w (realUnitsHom hw (Units.mk0 _ hx.ne')) : Circle) : ℂ) = 1`. Establish `: c.infiniteComponent w (realUnitsHom hw (Units.mk0 _ hx.ne')) = 1` using `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[h3, hι, hn, InfinitePlace.mult, if_pos hw, pow_one]`. Establish `h0 : ((Real.exp (Real.pi / c.infiniteTau w) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hx.ne'`. Rewrite `h2` using `[div_self h0, one_zpow, one_mul, Complex.cpow_def_of_ne_zero h0, ← Complex.ofReal_log hx.le, Real.log_exp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : ((Real.pi / c.infiniteTau w : ℝ) : ℂ) * (((c.infiniteTau w : ℝ) : ℂ) * Complex.I) = Real.pi * Complex.I`. Establish `: ((c.infiniteTau w : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hτ`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite `h2` using `[h4, Complex.exp_pi_mul_I]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at h2`.
+Evaluate the numerical expressions.
 -/
 theorem tau_zero (c : HeckeCharacter ℚ) (hc : IsOfFinOrder c) (w : InfinitePlace ℚ) :
     c.infiniteTau w = 0 := by
@@ -73,11 +73,11 @@ theorem tau_zero (c : HeckeCharacter ℚ) (hc : IsOfFinOrder c) (w : InfinitePla
   norm_num at h2
 
 /- English proof (translation)
-Establish `hw : w.IsReal` using `isReal_all w`. Establish `h2` using `c.infiniteComponent_eq w (-1)`. Take `⟨h0, h1⟩` from `c.infiniteWeight_of_isReal hw`. Rewrite `h2` using `[hs w]`. Establish `e1 : extensionEmbedding w (((-1 : (w.Completion)ˣ)) : w.Completion) = -1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `e2 : ‖(((-1 : (w.Completion)ˣ)) : w.Completion)‖ = 1`. Simplify using the standard rewrite rules. Rewrite `h2` using `[e1, e2]`. Establish `hm : c.infiniteWeight w = 0 ∨ c.infiniteWeight w = 1` using `by omega`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases hm with hm | hm <;> cases δ <;> simp [hm] at h2 ⊢`. Evaluate the numerical expressions using `at h2`. Evaluate the numerical expressions using `at h2`.
+Apply the first step, then apply the next step to every resulting obligation. Evaluate the numerical expressions. Evaluate the numerical expressions.
 -/
 theorem weight_eq (c : HeckeCharacter ℚ) (δ : Bool)
     (hs : ∀ w : InfinitePlace ℚ, (c.infiniteComponent w (-1) : ℂ) = if δ then -1 else 1) (w : InfinitePlace ℚ) :
@@ -97,7 +97,7 @@ theorem weight_eq (c : HeckeCharacter ℚ) (δ : Bool)
   · norm_num at h2
 
 /- English proof (translation)
-Rewrite using `[HeckeCharacter.gammaFactor, Fintype.prod_subsingleton _ Rat.infinitePlace, HeckeCharacter.infiniteGamma, if_pos (isReal_all _), tau_zero c hc, weight_eq c δ hs]`. Apply the tactic sequence `cases δ <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gammaFactor_eq (c : HeckeCharacter ℚ) (hc : IsOfFinOrder c) (δ : Bool)
     (hs : ∀ w : InfinitePlace ℚ, (c.infiniteComponent w (-1) : ℂ) = if δ then -1 else 1) (s : ℂ) :
@@ -107,7 +107,7 @@ theorem gammaFactor_eq (c : HeckeCharacter ℚ) (hc : IsOfFinOrder c) (δ : Bool
   cases δ <;> simp
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_subsingleton _ Rat.infinitePlace, weight_eq c δ hs]`. Apply the tactic sequence `cases δ <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weight_prod (c : HeckeCharacter ℚ) (δ : Bool)
     (hs : ∀ w : InfinitePlace ℚ, (c.infiniteComponent w (-1) : ℂ) = if δ then -1 else 1) :
@@ -116,14 +116,14 @@ theorem weight_prod (c : HeckeCharacter ℚ) (δ : Bool)
   cases δ <;> simp
 
 /- English proof (translation)
-Rewrite using `[HeckeCharacter.discrNormConductor, Rat.numberField_discr]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem discrNorm_eq (c : HeckeCharacter ℚ) : c.discrNormConductor = (Ideal.absNorm c.conductor : ℝ) := by
   rw [HeckeCharacter.discrNormConductor, Rat.numberField_discr]
   simp
 
 /- English proof (translation)
-Unfold `quasiCharExponent`. Rewrite using `[hμ.2]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exp_zero_of_unit {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {μ : Fˣ →* ℂˣ} (hμ : IsUnit1 μ) : quasiCharExponent μ = 0 := by
@@ -132,7 +132,7 @@ theorem exp_zero_of_unit {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace
   simp
 
 /- English proof (translation)
-The claim follows from `localLFactor_ne_zero hμ.1 (by rw [exp_zero_of_unit hμ]; simpa using hs)`.
+A detailed English derivation is pending.
 -/
 theorem lf_ne_zero {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {μ : Fˣ →* ℂˣ} (hμ : IsUnit1 μ) {s : ℂ} (hs : 0 < s.re) :
@@ -140,11 +140,11 @@ theorem lf_ne_zero {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   localLFactor_ne_zero hμ.1 (by rw [exp_zero_of_unit hμ]; simpa using hs)
 
 /- English proof (translation)
-Distinguish the cases in `h : IsUnramifiedChar μ`. Establish `hq : (residueCard F : ℂ) ≠ 0`. Conclude with `Nat.cast_ne_zero.2 (by have := one_lt_residueCard (K := F); omega)`. Establish `: (fun s => (localLFactor μ s)⁻¹) = fun s : ℂ => 1 - ((μ (unifUnit F) : ℂˣ) : ℂ) * (residueCard F : ℂ) ^ (-s)`. Use function extensionality and compare the values at `s`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[localLFactor_of_isUnramified h, inv_inv]`. Rewrite using `[this]`. Conclude with `(differentiable_const _).sub ((differentiable_const _).mul (differentiable_id.neg.const_cpow (Or.inl hq)))`. Establish `: (fun s => (localLFactor μ s)⁻¹) = fun _ : ℂ => (1 : ℂ)`. Use function extensionality and compare the values at `s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[localLFactor_of_not_isUnramified h, inv_one]`. Rewrite using `[this]`. Conclude with `differentiable_const _`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_lf_inv {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (μ : Fˣ →* ℂˣ) :
@@ -166,13 +166,11 @@ theorem differentiable_lf_inv {F : Type} [Field F] [ValuativeRel F] [Topological
     exact differentiable_const _
 
 /- English proof (translation)
-Use `(GroundTheory.Automorphic.GodementSection.hasSum_partialLFunction c _ hs).unique ?_` and prove the remaining obligations. Use `c.hasSum_LFunction hs using 2 with I` and compare the differences between its conclusion and the goal. Use `split_ifs with h`. Both sides reduce to the same expression. Use `push Not at h`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv, hd⟩` from `h`. Rewrite using `[c.coeff_of_not, zero_mul]`. Introduce and unpack `⟨-, hco⟩`. Establish `hd'` using `c.mem_conductorPrimes.1 hv`. Establish `h1 : v.asIdeal ∣ 1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hco` using `[Ideal.isCoprime_iff_sup_eq]`. Use `Ideal.dvd_iff_le.1 hd` as an intermediate fact. Establish `h2` using `Ideal.dvd_iff_le.1 hd'`. Rewrite using `[Ideal.one_eq_top, ← hco, Ideal.dvd_iff_le]`. Conclude with `sup_le this h2`.
-
-Conclude with `v.isPrime.ne_top (by`. Rewrite `h1` using `[Ideal.one_eq_top, Ideal.dvd_iff_le, top_le_iff]`. Conclude with `h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partial_conductor (c : HeckeCharacter ℚ) {s : ℂ} (hs : 1 < s.re) :
     partialLFunction c c.conductorPrimes s = c.LFunction s := by
@@ -196,19 +194,17 @@ theorem partial_conductor (c : HeckeCharacter ℚ) {s : ℂ} (hs : 1 < s.re) :
       exact h1)
 
 /- English proof (translation)
-Use `set L : Pl → ℂ := fun v => localLFactor (localChar c v) s with hL`. Establish `hS₀ : ∀ v ∉ c.conductorPrimes, IsUnramifiedChar (localChar c v)` using `fun v hv => (c.isUnramifiedChar_localChar_iff v).2 fun h => hv (c.mem_conductorPrimes.2 h)`. Establish `h0` using `((hE c.conductorPrimes s hs).1 c hS₀).2`. Establish `h1` using `((hE S s hs).1 c hS).2`. Rewrite `h0` using `[partial_conductor c hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hLp : Lp c S s = partialLFunction c S s` using `h1.tprod_eq`. Establish `h0' : HasProd L (c.LFunction s)`. Establish `e : (({v | v ∉ c.conductorPrimes} : Set Pl).mulIndicator L) = L`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v ∈ c.conductorPrimes`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hr : ¬ IsUnramifiedChar (localChar c v)`. Rewrite using `[c.isUnramifiedChar_localChar_iff v, not_not]`. Conclude with `c.mem_conductorPrimes.1 hv`. Rewrite using `[Set.mulIndicator_of_notMem (by simpa using hv)]`. Conclude with `(localLFactor_of_not_isUnramified hr s).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.mulIndicator_of_mem (by simpa using hv) _`. Rewrite using `[← e]`. Conclude with `hasProd_subtype_iff_mulIndicator.1 h0`. Establish `h1' : HasProd (({v | v ∉ S} : Set Pl).mulIndicator L) (Lp c S s)`. Rewrite using `[hLp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hasProd_subtype_iff_mulIndicator.1 h1`. Establish `h2 : HasProd ((S : Set Pl).mulIndicator L) (∏ v ∈ S, L v)`. Establish `h` using `hasProd_prod_of_ne_finset_one (L := SummationFilter.unconditional Pl) (f := (S : Set Pl).mulIndicator L) (s := S) (fun v hv => Set.mulIndicator_of_notMem (by simpa using hv) _)`. Rewrite `h` using `[Finset.prod_congr rfl fun v hv => Set.mulIndicator_of_mem (by simpa using hv) _]`. Then use the resulting hypothesis. Establish `h3` using `h1'.mul h2`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (fun v => ({v | v ∉ S} : Set Pl).mulIndicator L v * (S : Set Pl).mulIndicator L v) = L`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[Set.mulIndicator_of_notMem (by simpa using hv), Set.mulIndicator_of_mem (by simpa using hv), one_mul]`. Rewrite using `[Set.mulIndicator_of_mem (by simpa using hv), Set.mulIndicator_of_notMem (by simpa using hv), mul_one]`.
-
-Rewrite `h3` using `[e]`. Conclude with `h0'.unique h3`.
+A detailed English derivation is pending.
 -/
 theorem euler (hE : E2) (c : HeckeCharacter ℚ) (S : Finset Pl)
     (hS : ∀ v ∉ S, IsUnramifiedChar (localChar c v)) {s : ℂ} (hs : 1 < s.re) :
@@ -251,15 +247,15 @@ theorem euler (hE : E2) (c : HeckeCharacter ℚ) (S : Finset Pl)
   exact h0'.unique h3
 
 /- English proof (translation)
-Establish `hcond : addCharConductor (localAdelicChar ℚ v) = 0` using `hψ.2.2`. Distinguish the cases in `h : IsUnramifiedChar (localChar c v)`. Establish `hf : multiplicity v.asIdeal c.conductor = 0` using `multiplicity_eq_zero.2 ((c.isUnramifiedChar_localChar_iff v).1 h)`. Rewrite using `[localEpsilon_of_isUnramified h, localEpsilon_of_isUnramified h, hcond, hf]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[localEpsilon_of_not_isUnramified_eq h, localEpsilon_of_not_isUnramified_eq h, hcond, c.quasiCharConductor_localChar v, residueCard_adicCompletion] set f := multiplicity v.asIdeal c.conductor set q := Ideal.absNorm v.asIdeal`. Establish `hq : (q : ℂ) ≠ 0`. Rewrite using `[Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Establish `e : (((q ^ f : ℕ) : ℝ) : ℂ) ^ (1 / 2 - s) = (q : ℂ) ^ ((f : ℂ) * (1 / 2 - s))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.natCast_cpow_natCast_mul]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e]`. Establish `e2 : (q : ℂ) ^ (((0 - (f : ℤ) : ℤ) : ℂ) * s) = (q : ℂ) ^ (((0 - (f : ℤ) : ℤ) : ℂ) * (1 / 2)) * (q : ℂ) ^ ((f : ℂ) * (1 / 2 - s))`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.cpow_add _ _ hq]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem eps_shift (c : HeckeCharacter ℚ) (v : Pl) (hψ : IsStd (localAdelicChar ℚ v)) (s : ℂ) :
     localEpsilon (localChar c v) (localAdelicChar ℚ v) s =
@@ -293,7 +289,7 @@ theorem eps_shift (c : HeckeCharacter ℚ) (v : Pl) (hψ : IsStd (localAdelicCha
     ring
 
 /- English proof (translation)
-Rewrite using `[localEpsilon_of_isUnramified h, hψ.2.2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eps_half_unr (c : HeckeCharacter ℚ) (v : Pl) (hψ : IsStd (localAdelicChar ℚ v))
     (h : IsUnramifiedChar (localChar c v)) :
@@ -302,7 +298,7 @@ theorem eps_half_unr (c : HeckeCharacter ℚ) (v : Pl) (hψ : IsStd (localAdelic
   simp
 
 /- English proof (translation)
-Rewrite using `[HeckeCharacter.rootNumber, HeckeCharacter.fourierConst, ← c.finiteFourier_mul_eq_finprod_localEpsilon c.toFractionalIdeal_conductorDifferentIdele]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rootNumber_eq (c : HeckeCharacter ℚ) :
     c.rootNumber = (∏ w, (-Complex.I) ^ (c.infiniteWeight w).natAbs) *
@@ -312,11 +308,11 @@ theorem rootNumber_eq (c : HeckeCharacter ℚ) :
   ring
 
 /- English proof (translation)
-Establish `h1 : (∏ᶠ v, localEpsilon (localChar c v) (localAdelicChar ℚ v) (1 / 2)) = ∏ v ∈ S, localEpsilon (localChar c v) (localAdelicChar ℚ v) (1 / 2)` using `finprod_eq_prod_of_mulSupport_subset _ fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (eps_half_unr c v (hψ v) (hS v h))`. Establish `hsub : c.conductorPrimes ⊆ S` using `fun v hv => by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `(c.isUnramifiedChar_localChar_iff v).1 (hS v h) (c.mem_conductorPrimes.1 hv)`. Establish `h2 : (Ideal.absNorm c.conductor : ℝ) = ∏ v ∈ S, ((Ideal.absNorm v.asIdeal ^ multiplicity v.asIdeal c.conductor : ℕ) : ℝ)`. Rewrite using `[c.absNorm_conductor, Nat.cast_prod]`. Use `Finset.prod_subset hsub fun v _ hv => ?_` and prove the remaining obligations. Establish `: multiplicity v.asIdeal c.conductor = 0` using `multiplicity_eq_zero.2 fun hd => hv (c.mem_conductorPrimes.2 hd)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[this]`. Rewrite using `[h1, discrNorm_eq, h2, GroundTheory.Automorphic.GodementSection.ofReal_prod_cpow _ _ (fun _ => by positivity), ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun v _ => eps_shift c v (hψ v) s`.
+A detailed English derivation is pending.
 -/
 theorem prod_eps (c : HeckeCharacter ℚ) (S : Finset Pl) (hψ : ∀ v, IsStd (localAdelicChar ℚ v))
     (hS : ∀ v ∉ S, IsUnramifiedChar (localChar c v)) (s : ℂ) :
@@ -344,11 +340,11 @@ theorem prod_eps (c : HeckeCharacter ℚ) (S : Finset Pl) (hψ : ∀ v, IsStd (l
   exact Finset.prod_congr rfl fun v _ => eps_shift c v (hψ v) s
 
 /- English proof (translation)
-Introduce and unpack `⟨τ, hτ⟩`. Establish `h0 : τ = 0`. Rewrite using `[← HeckeCharacter.infiniteTau_of_forall hτ Rat.infinitePlace]`. Conclude with `tau_zero c hc _`. Substitute `h0` using the available equality.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h1` to reduce the goal to its premises. Use `DFunLike.ext _ _ fun x => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective x`. Use `Circle.ext ?_` and prove the remaining obligations. Establish `h` using `hτ y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.ofReal_zero, zero_mul, Complex.cpow_zero] at h`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem not_cpow_of_ne (c : HeckeCharacter ℚ) (hc : IsOfFinOrder c) (h1 : c ≠ 1) :
     ¬ ∃ τ : ℝ, ∀ x : IdeleGroup ℚ,
@@ -367,14 +363,14 @@ theorem not_cpow_of_ne (c : HeckeCharacter ℚ) (hc : IsOfFinOrder c) (h1 : c �
   exact h
 
 /- English proof (translation)
-Simplify using `[HeckeCharacter.toIdele_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_cpow (x : IdeleGroup ℚ) :
     ((1 : HeckeCharacter ℚ).toIdele x : ℂ) = ((ideleModule ℚ x : ℝ) : ℂ) ^ (((0 : ℝ) : ℂ) * Complex.I) := by
   simp [HeckeCharacter.toIdele_apply]
 
 /- English proof (translation)
-Use `(Set.Countable.isPathConnected_compl_of_one_lt_rank ?_ ?_).isConnected.isPreconnected` and prove the remaining obligations. Rewrite using `[Complex.rank_real_complex]`. Evaluate the numerical expressions. Conclude with `(Set.toFinite _).countable`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem isPreconnected_U : IsPreconnected (({0, 1} : Set ℂ)ᶜ) := by
   refine (Set.Countable.isPathConnected_compl_of_one_lt_rank ?_ ?_).isConnected.isPreconnected
@@ -383,23 +379,21 @@ theorem isPreconnected_U : IsPreconnected (({0, 1} : Set ℂ)ᶜ) := by
   · exact (Set.toFinite _).countable
 
 /- English proof (translation)
-Use `set χ : HeckeCharacter ℚ := 1 with hχ`. Take `⟨g, hgd, hgL, r, hr, hlim⟩` from `χ.exists_LFunction_continuation_of_forall (τ := 0) one_cpow`. Establish `e1 : (1 : ℂ) - ((0 : ℝ) : ℂ) * Complex.I = 1` using `by simp`. Rewrite `hgd`, `hlim` using `[e1]`. Use `set h : ℂ → ℂ := fun s => (χ.discrNormConductor : ℂ) ^ (-(s / 2)) * (χ.gammaFactor s)⁻¹ with hh`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhd : Differentiable ℂ h` using `χ.differentiable_cpow_mul_gammaFactor_inv`. Establish `hUo : IsOpen (({0, 1} : Set ℂ)ᶜ)` using `(Set.toFinite _).isClosed.isOpen_compl`. Establish `hsubU : (({0, 1} : Set ℂ)ᶜ) ⊆ {1}ᶜ` using `fun s hs h1 => hs (Or.inr h1)`. Establish `hΛ : DifferentiableOn ℂ χ.completedLFunction (({0, 1} : Set ℂ)ᶜ)` using `fun s hs => (HeckeCharacter.differentiableAt_completedLFunction_of_forall (τ := 0) one_cpow (by simpa using fun h0 => hs (Or.inl h0)) (by simpa using fun h0 => hs (Or.inr h0))).differentiableWithinAt`. Establish `hid : Set.EqOn g (fun s => h s * χ.completedLFunction s) (({0, 1} : Set ℂ)ᶜ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : AnalyticOnNhd ℂ g (({0, 1} : Set ℂ)ᶜ)` using `(hgd.mono hsubU).analyticOnNhd hUo`. Establish `a2 : AnalyticOnNhd ℂ (fun s => h s * χ.completedLFunction s) (({0, 1} : Set ℂ)ᶜ)` using `(hhd.differentiableOn.mul hΛ).analyticOnNhd hUo`. Use `a1.eqOn_of_preconnected_of_eventuallyEq a2 isPreconnected_U (z₀ := 2) (by norm_num) ?_` and prove the remaining obligations. Establish `hop : IsOpen {s : ℂ | 1 < s.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Use `filter_upwards [hop.mem_nhds (show (2 : ℂ) ∈ {s : ℂ | 1 < s.re} by norm_num)] with s hs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hgL s hs]`. Conclude with `χ.LFunction_eq_mul_completedLFunction hs`. Use `set G : ℂ → ℂ := Function.update (fun s => (s - 1) * g s) 1 r with hG`. Establish `hGne : ∀ s, s ≠ 1 → G s = (s - 1) * g s` using `fun s hs => Function.update_of_ne hs _ _`. Use `⟨G, ?_, fun s hs => ?_, fun s hs => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← differentiableOn_univ]`. Use `(Complex.differentiableOn_compl_singleton_and_continuousAt_iff (c := 1) Filter.univ_mem).1 ⟨?_, ?_⟩` and prove the remaining obligations. Use `DifferentiableOn.congr (f := fun s => (s - 1) * g s) ?_ fun z hz => hGne z hz.2` and prove the remaining obligations. Conclude with `((differentiable_id.sub_const 1).differentiableOn).mul (hgd.mono fun z hz => hz.2)`. Rewrite using `[hG, continuousAt_update_same]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using hlim`. Establish `h1 : s ≠ 1` using `fun h0 => by simp [h0] at hs`. Rewrite using `[hGne s h1, hgL s hs]`. Establish `h1 : s ≠ 1` using `fun h0 => by`. Use `hs.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h0] at this`. Establish `h0 : s ≠ 0` using `fun h0 => by`. Use `hs.1` as an intermediate fact. Simplify using `[h0] at this`. Establish `hU : s ∈ (({0, 1} : Set ℂ)ᶜ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h0, h1]`. Establish `hA : (χ.discrNormConductor : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 χ.discrNormConductor_pos.ne'`. Establish `hg0` using `χ.gammaFactor_ne_zero hs.1`. Rewrite using `[hGne s h1, hid hU]`. Simplify using `only [hh]`.
-
-Rewrite using `[Complex.cpow_neg]`. Establish `hX' : (χ.discrNormConductor : ℂ) ^ (s / 2) ≠ 0` using `χ.discrNormConductor_cpow_ne_zero _`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hG, Function.update_self]`. Conclude with `hr`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_one :
     ∃ G : ℂ → ℂ, Differentiable ℂ G ∧ (∀ s : ℂ, 1 < s.re → G s = (s - 1) * (1 : HeckeCharacter ℚ).LFunction s) ∧
@@ -456,11 +450,11 @@ theorem cont_one :
     exact hr
 
 /- English proof (translation)
-Establish `hn` using `not_cpow_of_ne c hc h1`. Use `set g : ℂ → ℂ := fun s => (c.discrNormConductor : ℂ) ^ (-(s / 2)) * (c.gammaFactor s)⁻¹ * c.completedLFunction s with hg`. Establish `hgd : Differentiable ℂ g` using `c.differentiable_cpow_mul_gammaFactor_inv.mul (c.differentiable_completedLFunction hn)`. Establish `hgL : ∀ s : ℂ, 1 < s.re → g s = c.LFunction s` using `fun s hs => (c.LFunction_eq_mul_completedLFunction hs).symm`. Establish `hd : HasDerivAt (fun s => (s - 1) * g s) (1 * g 1 + (1 - 1) * deriv g 1) 1` using `((hasDerivAt_id' (1 : ℂ)).sub_const 1).fun_mul (hgd 1).hasDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun s => (s - 1) * g s, (differentiable_id.sub_const 1).mul hgd, fun s hs => by simp only [hgL s hs], fun s hs => ?_, by simp, ?_⟩` and prove the remaining obligations. Establish `hg0` using `c.gammaFactor_ne_zero hs.1`. Establish `hX' : (c.discrNormConductor : ℂ) ^ (s / 2) ≠ 0` using `c.discrNormConductor_cpow_ne_zero _`. Simplify using `only [hg]`. Rewrite using `[Complex.cpow_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hd.deriv, sub_self, zero_mul, add_zero, one_mul]`. Conclude with `c.continuation_ne_zero_of_one_le_re hn hgd hgL (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_ne (c : HeckeCharacter ℚ) (hc : IsOfFinOrder c) (h1 : c ≠ 1) :
     ∃ G : ℂ → ℂ, Differentiable ℂ G ∧ (∀ s : ℂ, 1 < s.re → G s = (s - 1) * c.LFunction s) ∧
@@ -482,9 +476,9 @@ theorem cont_ne (c : HeckeCharacter ℚ) (hc : IsOfFinOrder c) (h1 : c ≠ 1) :
     exact c.continuation_ne_zero_of_one_le_re hn hgd hgL (by simp)
 
 /- English proof (translation)
-Distinguish the cases in `h1 : c = 1`. Substitute `h1` using the available equality. Take `⟨G, a, b, d, e⟩` from `cont_one`. Conclude with `⟨G, a, b, d, fun _ => e, fun h => absurd rfl h⟩`. Take `⟨G, a, b, d, e⟩` from `cont_ne c hc h1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨G, a, b, d, fun h => absurd h h1, fun _ => e⟩`.
+Supply the required witnesses or components.
 -/
 theorem cont (c : HeckeCharacter ℚ) (hc : IsOfFinOrder c) :
     ∃ G : ℂ → ℂ, Differentiable ℂ G ∧ (∀ s : ℂ, 1 < s.re → G s = (s - 1) * c.LFunction s) ∧
@@ -498,7 +492,7 @@ theorem cont (c : HeckeCharacter ℚ) (hc : IsOfFinOrder c) :
     exact ⟨G, a, b, d, fun h => absurd h h1, fun _ => e⟩
 
 /- English proof (translation)
-Rewrite using `[euler hE c S hS hs, mul_assoc, ← Finset.prod_mul_distrib, Finset.prod_eq_one fun v _ => mul_inv_cancel₀ (lf_ne_zero (hU c v) (by linarith)), mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem half (hE : E2) (hU : ∀ (c : HeckeCharacter ℚ) (v : Pl), IsUnit1 (localChar c v)) (c : HeckeCharacter ℚ) (S : Finset Pl)
     (hS : ∀ v ∉ S, IsUnramifiedChar (localChar c v)) {s : ℂ} (hs : 1 < s.re) :
@@ -507,19 +501,17 @@ theorem half (hE : E2) (hU : ∀ (c : HeckeCharacter ℚ) (v : Pl), IsUnit1 (loc
     Finset.prod_eq_one fun v _ => mul_inv_cancel₀ (lf_ne_zero (hU c v) (by linarith)), mul_one]
 
 /- English proof (translation)
-Establish `hs' : Strip (1 - s)` using `⟨by simpa using hs.2, by simpa using hs.1⟩`. Establish `h1` using `hG s hs`. Establish `h2` using `hG' (1 - s) hs'`. Establish `hfe : c.completedLFunction s = c.rootNumber * c⁻¹.completedLFunction (1 - s)`. Use `c.completedLFunction_eq_rootNumber_mul fun τ hτ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : τ = 0`. Rewrite using `[← HeckeCharacter.infiniteTau_of_forall hτ Rat.infinitePlace]`. Conclude with `tau_zero c hc _`. Substitute `h0` using the available equality. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `hs.1` as an intermediate fact. Simplify using `[h] at this`. Introduce `h`. Use `hs.2` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h] at this`. Rewrite `h2` using `[HeckeCharacter.discrNormConductor_inv, gammaFactor_eq c⁻¹ hc.inv δ hsgn']`. Rewrite `h1` using `[gammaFactor_eq c hc δ hsgn]`. Rewrite `hfe` using `[rootNumber_eq, weight_prod c δ hsgn]`. Rewrite using `[prod_eps c S hψ hS s]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set A : ℂ := (c.discrNormConductor : ℂ) with hA`. Establish `hA0 : A ≠ 0` using `Complex.ofReal_ne_zero.2 c.discrNormConductor_pos.ne'`. Establish `hX : A ^ (s / 2) ≠ 0` using `c.discrNormConductor_cpow_ne_zero _`. Establish `hY : A ^ ((1 - s) / 2) = A ^ (s / 2) * A ^ (1 / 2 - s)`. Rewrite using `[← Complex.cpow_add _ _ hA0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[hY]`. Rewrite `h1` using `[hfe]`. Use `mul_left_cancel₀ hX ?_` and prove the remaining obligations.
-
-Use `set Pf := ∏ᶠ v, localEpsilon (localChar c v) (localAdelicChar ℚ v) (1 / 2)`. Use `set D : ℂ := if δ then -Complex.I else 1`. Use `set γ := Complex.Gammaℝ (s + if δ then 1 else 0)`. Use `set γ' := Complex.Gammaℝ (1 - s + if δ then 1 else 0)`. Take the linear combination `(-s) * h1 - (s - 1) * D * Pf * h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem fe_core (hψ : ∀ v, IsStd (localAdelicChar ℚ v)) (c : HeckeCharacter ℚ) (δ : Bool) (S : Finset Pl)
     (hc : IsOfFinOrder c) (hsgn : ∀ w : InfinitePlace ℚ, (c.infiniteComponent w (-1) : ℂ) = if δ then -1 else 1)
@@ -568,27 +560,23 @@ theorem fe_core (hψ : ∀ v, IsStd (localAdelicChar ℚ v)) (c : HeckeCharacter
   linear_combination (-s) * h1 - (s - 1) * D * Pf * h2
 
 /- English proof (translation)
-Introduce `hB hE c δ S hc hsgn hS`. Establish `hψ : ∀ v, IsStd (localAdelicChar ℚ v)` using `fun v => (hB.1 v).1`. Establish `hU : ∀ (c : HeckeCharacter ℚ) (v : Pl), IsUnit1 (localChar c v)` using `fun c v => (hB.1 v).2.2.2.2.2.2 c`. Establish `hsgn' : ∀ w : InfinitePlace ℚ, (c⁻¹.infiniteComponent w (-1) : ℂ) = if δ then -1 else 1` using `fun w => by`. Establish `e : (((c⁻¹).infiniteComponent w (-1) : Circle) : ℂ) = (((c.infiniteComponent w (-1))⁻¹ : Circle) : ℂ)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, Circle.coe_inv, hsgn w]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hS' : ∀ v ∉ S, IsUnramifiedChar (localChar c⁻¹ v)` using `fun v hv => by`. Rewrite using `[localChar_inv']`. Conclude with `isUnramifiedChar_inv_iff.2 (hS v hv)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hGd, hGL, hGS, hG1, hG2⟩` from `cont c hc`. Take `⟨G', hGd', hGL', hGS', -, -⟩` from `cont c⁻¹ hc.inv`. Establish `hEd : ∀ c : HeckeCharacter ℚ, Differentiable ℂ fun s => ∏ v ∈ S, (localLFactor (localChar c v) s)⁻¹` using `fun c => Differentiable.fun_finset_prod fun v _ => differentiable_lf_inv _`. Establish `hE1 : ∏ v ∈ S, (localLFactor (localChar c v) 1)⁻¹ ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => inv_ne_zero (lf_ne_zero (hU c v) (by norm_num))`. Use `⟨fun s => G s * ∏ v ∈ S, (localLFactor (localChar c v) s)⁻¹, fun s => G' s * ∏ v ∈ S, (localLFactor (localChar c⁻¹ v) s)⁻¹, hGd.mul (hEd c), hGd'.mul (hEd c⁻¹), fun s hs => ⟨?_, ?_, ?_⟩, fun s hs => ?_, fun h => ?_, fun h => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[hGL s hs, mul_assoc, half hE hU c S hS hs]`. Simplify using `only`. Rewrite using `[hGL' s hs, mul_assoc, half hE hU c⁻¹ S hS' hs]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hGL' s hs, mul_assoc, half hE hU c⁻¹ S hS' hs]`. Establish `h1 : s - 1 ≠ 0` using `fun h0 => by`. Establish `: s = 1` using `sub_eq_zero.1 h0`. Simplify using `[this] at hs`. Use `mul_ne_zero h1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← half hE hU c⁻¹ S hS' hs]`. Conclude with `mul_ne_zero (c⁻¹.LFunction_ne_zero hs) (Finset.prod_ne_zero_iff.2 fun v _ => inv_ne_zero (lf_ne_zero (hU c⁻¹ v) (by linarith)))`. Establish `hs' : Strip (1 - s)` using `⟨by simpa using hs.2, by simpa using hs.1⟩`. Establish `hcore` using `fe_core hψ c δ S hc hsgn hsgn' hS hGS hGS' hs`. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : ∀ v ∈ S, gam (localAdelicChar ℚ v) (localChar c v) s = localEpsilon (localChar c v) (localAdelicChar ℚ v) s * localLFactor (localChar c⁻¹ v) (1 - s) * (localLFactor (localChar c v) s)⁻¹` using `fun v _ => by`. Rewrite using `[gam, div_eq_mul_inv, localChar_inv']`. Rewrite using `[Finset.prod_congr rfl hg, Finset.prod_mul_distrib, Finset.prod_mul_distrib]`. Establish `hQ : (∏ v ∈ S, localLFactor (localChar c⁻¹ v) (1 - s)) * ∏ v ∈ S, (localLFactor (localChar c⁻¹ v) (1 - s))⁻¹ = 1`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.prod_eq_one fun v _ => mul_inv_cancel₀ (lf_ne_zero (hU c⁻¹ v) hs'.1)`. Use `set P := ∏ v ∈ S, localEpsilon (localChar c v) (localAdelicChar ℚ v) s`. Use `set Q := ∏ v ∈ S, localLFactor (localChar c⁻¹ v) (1 - s)`. Use `set Q' := ∏ v ∈ S, (localLFactor (localChar c⁻¹ v) (1 - s))⁻¹`. Use `set E := ∏ v ∈ S, (localLFactor (localChar c v) s)⁻¹`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D : ℂ := (if δ then -Complex.I else 1) * Complex.Gammaℝ (1 - s + if δ then 1 else 0)`. Take the linear combination `E * hcore - (s - 1) * D * P * E * G' (1 - s) * hQ`. Simplify using `only`. Conclude with `mul_ne_zero (hG1 h) hE1`. Take `⟨h0, hd⟩` from `hG2 h`.
-
-Simplify using `only`. Use `⟨by rw [h0, zero_mul], ?_⟩` and prove the remaining obligations. Establish `e : deriv (fun s => G s * ∏ v ∈ S, (localLFactor (localChar c v) s)⁻¹) 1 = deriv G 1 * ∏ v ∈ S, (localLFactor (localChar c v) 1)⁻¹`. Use `((hGd 1).hasDerivAt.fun_mul ((hEd c) 1).hasDerivAt).deriv` as an intermediate fact. Rewrite using `[this, h0, zero_mul, add_zero]`.
-
-Rewrite using `[e]`. Conclude with `mul_ne_zero hd hE1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partial_functional_equation : B0 → E2 → H1 := by
   intro hB hE c δ S hc hsgn hS

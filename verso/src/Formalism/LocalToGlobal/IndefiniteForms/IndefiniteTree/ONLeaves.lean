@@ -16,7 +16,7 @@ open Formalism.DivisionValues Formalism.EigenvalueLevelCeiling Formalism.L2.Inde
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-The claim follows from `(unipVal K w).2 g1 g2 a h1 h2 h12`.
+A detailed English derivation is pending.
 -/
 theorem vw_level (w : HeightOneSpectrum (𝓞 K)) {g1 g2 : ℕ} (h1 : g1.Prime) (h2 : g2.Prime) (h12 : g1 ≠ g2) (a : ℕ) :
     (vw w (((g1 ^ a * g2 ^ a : ℕ)) : K) : ℝ) =
@@ -70,7 +70,7 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {kf : ι → Type} [∀ v, Fi
 variable {Pm : ∀ v, Subgroup (GL (Fin (n + 1)) (kf v))} {Uv : ∀ v, Subgroup (Pm v)}
 
 /- English proof (translation)
-The claim follows from `Nat.card_congr { toFun := fun h => ⟨((h : Pm v) : GL (Fin (n + 1)) (kf v)), (hG.2 v h).1 h.2⟩ invFun := fun u => ⟨⟨u.1, (hG.1 v u.1).2 (isMirab_of_isUniU _ u.2)⟩, (hG.2 v _).2 u.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+A detailed English derivation is pending.
 -/
 theorem card_Uv_uni (hG : IsLevelGroups kf n Pm Uv) (v : ι) :
     Nat.card (Uv v) =
@@ -82,14 +82,14 @@ theorem card_Uv_uni (hG : IsLevelGroups kf n Pm Uv) (v : ι) :
       right_inv := fun _ => rfl }
 
 /- English proof (translation)
-Rewrite using `[card_Uv_uni hG v, PI.MirabolicIndex₂.card_uni]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_Uv (hG : IsLevelGroups kf n Pm Uv) (v : ι) :
     Nat.card (Uv v) = Fintype.card (kf v) ^ ((n + 1) * n / 2) := by
   rw [card_Uv_uni hG v, PI.MirabolicIndex₂.card_uni]
 
 /- English proof (translation)
-Rewrite using `[card_Uv_uni hG v, ← mirabolic_index (kf v) n]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight (hG.1 v))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_Pm (hG : IsLevelGroups kf n Pm Uv) (v : ι) :
     Nat.card (Pm v) = Nat.card (Uv v) * ∏ i ∈ Finset.Ico 1 (n + 1), (Fintype.card (kf v) ^ i - 1) := by
@@ -97,7 +97,7 @@ theorem card_Pm (hG : IsLevelGroups kf n Pm Uv) (v : ι) :
   exact Nat.card_congr (Equiv.subtypeEquivRight (hG.1 v))
 
 /- English proof (translation)
-Establish `h1` using `Subgroup.card_mul_index (Uv v)`. Rewrite `h1` using `[card_Pm hG v]`. Conclude with `Nat.eq_of_mul_eq_mul_left Nat.card_pos h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_Uv (hG : IsLevelGroups kf n Pm Uv) (v : ι) :
     (Uv v).index = ∏ i ∈ Finset.Ico 1 (n + 1), (Fintype.card (kf v) ^ i - 1) := by
@@ -106,7 +106,7 @@ theorem index_Uv (hG : IsLevelGroups kf n Pm Uv) (v : ι) :
   exact Nat.eq_of_mul_eq_mul_left Nat.card_pos h1
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_pi]`. Conclude with `Nat.card_congr { toFun := fun x v => ⟨x.1 v, (Subgroup.mem_pi _).mp x.2 v (Set.mem_univ v)⟩ invFun := fun y => ⟨fun v => (y v).1, (Subgroup.mem_pi _).mpr fun v _ => (y v).2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_piU : Nat.card (Subgroup.pi Set.univ Uv) = ∏ v, Nat.card (Uv v) := by
   rw [← Nat.card_pi]
@@ -117,7 +117,7 @@ theorem card_piU : Nat.card (Subgroup.pi Set.univ Uv) = ∏ v, Nat.card (Uv v) :
       right_inv := fun _ => rfl }
 
 /- English proof (translation)
-Establish `h1` using `Subgroup.card_mul_index (Subgroup.pi Set.univ Uv)`. Rewrite `h1` using `[Nat.card_pi]`. Simplify using `only [card_Pm hG] at h1`. Rewrite `h1` using `[Finset.prod_mul_distrib, ← card_piU]`. Conclude with `Nat.eq_of_mul_eq_mul_left Nat.card_pos h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_piU (hG : IsLevelGroups kf n Pm Uv) :
     (Subgroup.pi Set.univ Uv).index = ∏ v, ∏ i ∈ Finset.Ico 1 (n + 1), (Fintype.card (kf v) ^ i - 1) := by
@@ -128,7 +128,7 @@ theorem index_piU (hG : IsLevelGroups kf n Pm Uv) :
   exact Nat.eq_of_mul_eq_mul_left Nat.card_pos h1
 
 /- English proof (translation)
-Rewrite using `[card_piU]`. Conclude with `Finset.prod_congr rfl fun v _ => card_Uv hG v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_piU_eq (hG : IsLevelGroups kf n Pm Uv) :
     Nat.card (Subgroup.pi Set.univ Uv) = ∏ v, Fintype.card (kf v) ^ ((n + 1) * n / 2) := by
@@ -144,7 +144,7 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {kf : ι → Type} [∀ v, Fi
 variable {Pm : ∀ v, Subgroup (GL (Fin (n + 1)) (kf v))} {Uv : ∀ v, Subgroup (Pm v)}
 
 /- English proof (translation)
-Unfold `LeafMackey`. Rewrite using `[hU, hψ]`. Conclude with `isMackey_pi_upper_unipotent_prod_character K ι kf n χ hχ Pm Uv hG.1 hG.2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leafMackey_of (O : OnObj S (∀ v, Pm v) c) (χ : ∀ v, AddChar (kf v) (𝓞 K))
     (hG : IsLevelGroups kf n Pm Uv) (hχ : IsGenericChar kf χ) (hU : TieU O Uv) (hψ : TiePsi O χ) : LeafMackey O := by
@@ -153,17 +153,15 @@ theorem leafMackey_of (O : OnObj S (∀ v, Pm v) c) (χ : ∀ v, AddChar (kf v) 
   exact isMackey_pi_upper_unipotent_prod_character K ι kf n χ hχ Pm Uv hG.1 hG.2
 
 /- English proof (translation)
-Take `⟨hp1, hp2, h12, hor, hc1, hc2⟩` from `hSq`. Establish `hY2 : (2 : ℝ) ≤ ((min O.g1 O.g2 : ℕ) : ℝ)`. Establish `: 2 ≤ min O.g1 O.g2` using `le_min hp1.two_le hp2.two_le`. Conclude with `this` after adjusting the coercions. Establish `hle : ∀ v, 1 / ((Fintype.card (kf v) : ℝ) - 1) ≤ 1 / (((min O.g1 O.g2 : ℕ) : ℝ) - 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Establish `hYv : ((min O.g1 O.g2 : ℕ) : ℝ) ≤ (Fintype.card (kf v) : ℝ)`. Establish `: min O.g1 O.g2 ≤ Fintype.card (kf v)`. Apply the tactic sequence `rcases hor v with h | h <;> rw [h]`. Conclude with `min_le_left _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `min_le_right _ _`. Conclude with `this` after adjusting the coercions. Conclude with `one_div_le_one_div_of_le (by linarith) (by linarith)`. Establish `hcard : (Finset.univ : Finset ι).card = 2 * fN`. Establish `hsplit` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset ι)) (fun v => Fintype.card (kf v) = O.g1)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfilt : (Finset.univ.filter fun v => ¬ Fintype.card (kf v) = O.g1) = (Finset.univ.filter fun v => Fintype.card (kf v) = O.g2)`. Use extensionality with `v`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hor v).resolve_left h`. Introduce `h h'`. Conclude with `h12 (h'.symm.trans h)`. Rewrite `hsplit` using `[hfilt, hc1, hc2]`. Use linear arithmetic over natural numbers and integers.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, nsmul_eq_mul, hcard, hf]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ O.y := hY`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_inv_le_y {P : Type} [Group P] [Finite P] (O : OnObj S P c) (fN : ℕ) (hSq : LeafLevelSq O kf fN)
     (hf : O.f = (fN : ℝ)) (hY : LeafYBound O) :
@@ -203,13 +201,13 @@ theorem sum_inv_le_y {P : Type} [Group P] [Finite P] (O : OnObj S P c) (fN : ℕ
     _ ≤ O.y := hY
 
 /- English proof (translation)
-Unfold `LeafIndexU`. Rewrite using `[hU, index_piU hG, card_piU_eq hG]`. Establish `hsum` using `sum_inv_le_y O fN hSq hN.1 hY`. Establish `hB` using `product_lowerBound ι Finset.univ (fun v => Fintype.card (kf v)) (n + 1) O.y (fun v _ => Fintype.one_lt_card) hsum`. Simplify using `only [Nat.add_sub_cancel] at hB`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcast : ((∏ v, ∏ i ∈ Finset.Ico 1 (n + 1), (Fintype.card (kf v) ^ i - 1) : ℕ) : ℝ) = ∏ v, ∏ i ∈ Finset.Ico 1 (n + 1), ((Fintype.card (kf v) : ℝ) ^ i - 1)`. Rewrite using `[Nat.cast_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ Fintype.card_pos)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hcast]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `hB`.
+A detailed English derivation is pending.
 -/
 theorem leafIndexU_of (O : OnObj S (∀ v, Pm v) c) (fN : ℕ) (hG : IsLevelGroups kf n Pm Uv)
     (hSq : LeafLevelSq O kf fN) (hY : LeafYBound O) (hU : TieU O Uv) (hN : TieLevelNum O n fN) : LeafIndexU O := by
@@ -233,11 +231,11 @@ theorem leafIndexU_of (O : OnObj S (∀ v, Pm v) c) (fN : ℕ) (hG : IsLevelGrou
   exact hB
 
 /- English proof (translation)
-Rewrite using `[card_piU_eq hG, ← Finset.prod_filter_mul_prod_filter_not Finset.univ (fun v => Fintype.card (kf v) = g1)]`. Establish `hfilt : (Finset.univ.filter fun v => ¬ Fintype.card (kf v) = g1) = (Finset.univ.filter fun v => Fintype.card (kf v) = g2)`. Use extensionality with `v`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Conclude with `(hor v).resolve_left h`. Introduce `h h'`. Conclude with `h12 (h'.symm.trans h)`. Rewrite using `[hfilt]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∏ v ∈ Finset.univ.filter (fun v => Fintype.card (kf v) = g1), Fintype.card (kf v) ^ ((n + 1) * n / 2) = ∏ _v ∈ Finset.univ.filter (fun v => Fintype.card (kf v) = g1), g1 ^ ((n + 1) * n / 2)` using `Finset.prod_congr rfl fun v hv => by rw [(Finset.mem_filter.mp hv).2]`. Establish `e2 : ∏ v ∈ Finset.univ.filter (fun v => Fintype.card (kf v) = g2), Fintype.card (kf v) ^ ((n + 1) * n / 2) = ∏ _v ∈ Finset.univ.filter (fun v => Fintype.card (kf v) = g2), g2 ^ ((n + 1) * n / 2)` using `Finset.prod_congr rfl fun v hv => by rw [(Finset.mem_filter.mp hv).2]`. Rewrite using `[e1, e2, Finset.prod_const, Finset.prod_const, hc1, hc2, ← pow_mul, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_piU_level (hG : IsLevelGroups kf n Pm Uv) (g1 g2 fN : ℕ) (h12 : g1 ≠ g2)
     (hor : ∀ v, Fintype.card (kf v) = g1 ∨ Fintype.card (kf v) = g2)
@@ -263,13 +261,13 @@ theorem card_piU_level (hG : IsLevelGroups kf n Pm Uv) (g1 g2 fN : ℕ) (h12 : g
   rw [e1, e2, Finset.prod_const, Finset.prod_const, hc1, hc2, ← pow_mul, ← pow_mul]
 
 /- English proof (translation)
-Take `⟨hp1, hp2, h12, hor, hc1, hc2⟩` from `hSq`. Take `⟨hf, hr⟩` from `hN`. Use `⟨by rw [hr]; linarith [(n.cast_nonneg : (0 : ℝ) ≤ n)], fun w _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hU, card_piU_level hG O.g1 O.g2 fN h12 hor hc1 hc2, vw_level w hp1 hp2 h12, hf, hr]`. Establish `hev : 2 ∣ (n + 1) * n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Nat.even_mul_succ_self n` as an intermediate fact. Rewrite `this` using `[mul_comm]`. Conclude with `even_iff_two_dvd.mp this`. Establish `hT : (((n + 1) * n / 2 : ℕ) : ℝ) = ((n : ℝ) + 1) * n / 2`. Rewrite using `[Nat.cast_div hev (by norm_num)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `congr 1`. Use `split_ifs`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hT]`. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem leafUnip_of (O : OnObj S (∀ v, Pm v) c) (fN : ℕ) (hG : IsLevelGroups kf n Pm Uv)
     (hSq : LeafLevelSq O kf fN) (hU : TieU O Uv) (hN : TieLevelNum O n fN) : LeafUnip O := by
@@ -389,11 +387,11 @@ def mirabSub (k : Type) [Field k] [Fintype k] (n : ℕ) : Subgroup (GL (Fin (n +
     rwa [one_mul] at this
 
 /- English proof (translation)
-Establish `hta : a.BlockTriangular id` using `fun i j hij => ha.2 i j hij`. Establish `htb : b.BlockTriangular id` using `fun i j hij => hb.2 i j hij`. Use `⟨fun i => ?_, fun i j hij => (hta.mul htb) hij⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[ha.1 i, hb.1 i, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `m _ hm`. Break down `lt_or_gt_of_ne hm with h | h` into its components or cases. Rewrite using `[ha.2 i m h, zero_mul]`. Rewrite using `[hb.2 m i h, mul_zero]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ i) h`.
+A detailed English derivation is pending.
 -/
 theorem isUniU_mul {k : Type} [Field k] {n : ℕ} {a b : Matrix (Fin (n + 1)) (Fin (n + 1)) k}
     (ha : IsUniU a) (hb : IsUniU b) : IsUniU (a * b) := by
@@ -410,7 +408,7 @@ theorem isUniU_mul {k : Type} [Field k] {n : ℕ} {a b : Matrix (Fin (n + 1)) (F
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => Matrix.one_apply_eq i, fun _ _ hij => Matrix.one_apply_ne (ne_of_gt hij)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUniU_one {k : Type} [Field k] {n : ℕ} : IsUniU (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k) :=
   ⟨fun i => Matrix.one_apply_eq i, fun _ _ hij => Matrix.one_apply_ne (ne_of_gt hij)⟩
@@ -445,7 +443,7 @@ def uniSub (k : Type) [Field k] [Fintype k] (n : ℕ) : Subgroup (mirabSub k n) 
     exact hpow _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => Iff.rfl, fun _ _ => Iff.rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mirab_levelGroups {ι : Type} (kf : ι → Type) [∀ v, Field (kf v)] [∀ v, Fintype (kf v)] (n : ℕ) :
     IsLevelGroups kf n (fun v => mirabSub (kf v) n) (fun v => uniSub (kf v) n) :=
@@ -468,14 +466,14 @@ abbrev KC : Type := CyclotomicField 143 ℚ
 @[instance_reducible] noncomputable def starKC : StarRing KC := starRingOfComm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by norm_num⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_hundred_forty_three_ne_zero : NeZero ((143 : ℕ) : ℚ) := ⟨by norm_num⟩
 
 attribute [local instance] starKC one_hundred_forty_three_ne_zero
 
 /- English proof (translation)
-The claim follows from `CyclotomicField.isCyclotomicExtension 143 ℚ`.
+A detailed English derivation is pending.
 -/
 theorem cycKC : IsCyclotomicExtension {143} ℚ KC := CyclotomicField.isCyclotomicExtension 143 ℚ
 
@@ -484,12 +482,12 @@ attribute [local instance] cycKC
 noncomputable def zC : 𝓞 KC := (IsCyclotomicExtension.zeta_spec 143 ℚ KC).toInteger
 
 /- English proof (translation)
-The claim follows from `(IsCyclotomicExtension.zeta_spec 143 ℚ KC).toInteger_isPrimitiveRoot`.
+A detailed English derivation is pending.
 -/
 theorem zC_prim : IsPrimitiveRoot zC 143 := (IsCyclotomicExtension.zeta_spec 143 ℚ KC).toInteger_isPrimitiveRoot
 
 /- English proof (translation)
-The claim follows from `zC_prim.pow (by norm_num) (by fin_cases v <;> norm_num [toyG])`.
+A detailed English derivation is pending.
 -/
 theorem toyRoot_prim (v : Fin 2) : IsPrimitiveRoot (zC ^ (143 / toyG v)) (toyG v) :=
   zC_prim.pow (by norm_num) (by fin_cases v <;> norm_num [toyG])

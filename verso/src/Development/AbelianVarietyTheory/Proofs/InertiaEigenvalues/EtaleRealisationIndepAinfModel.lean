@@ -17,15 +17,15 @@ instance instModuleVia {B C : Type} [CommRing B] [CommRing C] (g : B →+* C) (Q
     [Module C Q] : Module B (Via g Q) := Module.compHom Q g
 
 /- English proof (translation)
-Introduce `Q _ _ q`. Set `q₁ : M →ₛₗ[f] Via g Q` to `{ toFun := fun x => (q x : Q) map_add' := fun x y => map_add q x y map_smul' := fun a x => by`. Express the relevant statement in the definitionally equal form `q (a • x) = g (f a) • (q x : Q)`. Rewrite using `[q.map_smulₛₗ, hfg] }`. Take `⟨w₁, hw₁, hu₁⟩` from `hu (Via g Q) q₁`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `w₂ : N →ₛₗ[g] Q` to `{ toFun := fun y => (w₁ y : Q) map_add' := fun y z => map_add w₁ y z map_smul' := fun b y => w₁.map_smul b y }`. Take `⟨w₃, hw₃, hu₃⟩` from `hv Q w₂`. Use `⟨w₃, fun x => ?_, fun w' hw' => ?_⟩` and prove the remaining obligations. Rewrite using `[hw, hw₃]`. Conclude with `hw₁ x`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `w'' : N →ₗ[B] Via g Q` to `{ toFun := fun y => (w' (v y) : Q) map_add' := fun y z => by`. Express the relevant statement in the definitionally equal form `w' (v (y + z)) = w' (v y) + w' (v z)`. Rewrite using `[map_add, map_add]`. Use the proof step `map_smul' := fun b y => by`. Express the relevant statement in the definitionally equal form `w' (v (b • y)) = g b • w' (v y)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[v.map_smulₛₗ, w'.map_smul] }`. Establish `h1 : w'' = w₁` using `hu₁ w'' fun x => by`. Express the relevant statement in the definitionally equal form `w' (v (u x)) = q x`. Rewrite using `[← hw x]`. Conclude with `hw' x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hu₃ w' fun y => by`. Express the relevant statement in the definitionally equal form `w' (v y) = (w₁ y : Q)`. Rewrite using `[← h1]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem semiBC_comp {A B C M N P : Type} [CommRing A] [CommRing B] [CommRing C]
     [AddCommGroup M] [Module A M] [AddCommGroup N] [Module B N] [AddCommGroup P] [Module C P]
@@ -65,7 +65,7 @@ theorem semiBC_comp {A B C M N P : Type} [CommRing A] [CommRing B] [CommRing C]
 variable {l : ℕ} [Fact l.Prime] {K : FinExt l}
 
 /- English proof (translation)
-The claim follows from `e.injective (by rw [map_zero]; apply ainf_torsionFree; rw [← map_natCast e, ← map_mul, h, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem torsionFree_of_equiv {P : Obj l ↥(OL K)} (e : P.A ≃+* Ainf l) (x : P.A) (h : (l : P.A) * x = 0) :
     x = 0 :=
@@ -88,14 +88,14 @@ def ofAinf {P : Obj l ↥(OL K)} {e : P.A ≃+* Ainf l} (H : IsAinf K P e) : Hom
       ((congrArg (Per.θ l) (e.apply_symm_apply (a : Ainf l))).trans (((isAinf_ainfObj K).mk_eq_str_iff r a).1 h))
 
 /- English proof (translation)
-The claim follows from `Hom.ext' (RingHom.ext fun a => e.symm_apply_apply a)`.
+A detailed English derivation is pending.
 -/
 theorem ofAinf_comp_toAinf {P : Obj l ↥(OL K)} {e : P.A ≃+* Ainf l} (H : IsAinf K P e) :
     (ofAinf H).comp (toAinf H) = Hom.id P :=
   Hom.ext' (RingHom.ext fun a => e.symm_apply_apply a)
 
 /- English proof (translation)
-The claim follows from `Hom.ext' (RingHom.ext fun a => e.apply_symm_apply a)`.
+A detailed English derivation is pending.
 -/
 theorem toAinf_comp_ofAinf {P : Obj l ↥(OL K)} {e : P.A ≃+* Ainf l} (H : IsAinf K P e) :
     (toAinf H).comp (ofAinf H) = Hom.id (ainfObj K) :=
@@ -115,17 +115,15 @@ def jOfModel {M : FCrys l ↥(OL K)} {P P' : Obj l ↥(OL K)} {e : P.A ≃+* Ain
     rw [hc]
 
 /- English proof (translation)
-Establish `H'` using `hj.ainf`. Take `⟨d₀, hd, hd0⟩` from `H.exists_generator`. Use `Realises.of_generator H ?_ d₀ hd ?_ ?_` and prove the remaining obligations. Conclude with `semiBC_comp (f := c.f) (g := (inclW l).comp e'.toRingHom) (h := (inclW l).comp e.toRingHom) (u := M.tr c) (v := j') (w := jOfModel c hc j') (fun a => congrArg (inclW l) (hc a)) (fun _ => rfl) (M.tr_bc c) hj.bc`. Introduce `x m k h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: IsDomain P'.A` using `e'.toMulEquiv.isDomain`. Use `M.proj P'` as an intermediate fact. Set `d' : ↥P'.I` to `⟨c.f d₀, c.f_I _ d₀.2⟩`. Establish `hd'e : e' (d' : P'.A) = e d₀` using `hc _`. Establish `hd'0 : (d' : P'.A) ≠ 0` using `fun h0 => hd0 (e.injective (by rw [← hd'e, h0, map_zero, map_zero]))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, i, hn⟩` from `exists_isFrac (d' : P'.A) (M.Φ P' d' (M.tr c x))`. Take `⟨r, hr⟩` from `M.Φ_nat c d₀ d' x m k n i h hn`. Establish `heq : (d' : P'.A) ^ i • M.tr c m = (d' : P'.A) ^ k • n` using `sub_eq_zero.1 ((smul_eq_zero.1 hr).resolve_left (pow_ne_zero _ (mul_ne_zero hd'0 hd'0)))`. Establish `hu : IsUnit (((inclW l).comp e'.toRingHom) (d' : P'.A))`. Express the relevant statement in the definitionally equal form `IsUnit (inclW l (e' (d' : P'.A)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd'e]`. Conclude with `H.isUnit_inclW hd`. Establish `key` using `smul_eq_of_isUnit j' hu heq (hj.j_φ d' hd'0 (M.tr c x) n i hn)`. Express the relevant statement in the definitionally equal form `inclW l (e d₀) ^ k • _ = j' (M.tr c m)`. Rewrite using `[← hd'e]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `key`. Introduce `g x`. Establish `hcg : c.comp (H.galHom g) = (H'.galHom g).comp c` using `Hom.ext' (RingHom.ext fun a => e'.injective (by`. Express the relevant statement in the definitionally equal form `e' (c.f ((H.galHom g).f a)) = e' ((H'.galHom g).f (c.f a))`. Rewrite using `[hc, H.e_galHom, H'.e_galHom, hc]))`.
-
-Establish `e0 : M.tr c (M.tr (H.galHom g) x) = M.tr (H'.galHom g) (M.tr c x)` using `(M.tr_comp _ _ x).symm.trans ((congrArg (fun f => M.tr f x) hcg).trans (M.tr_comp _ _ x))`. Conclude with `(congrArg j' e0).trans (hj.j_act g (M.tr c x))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem realises_of {M : FCrys l ↥(OL K)} {P P' : Obj l ↥(OL K)} {e : P.A ≃+* Ainf l}
     {e' : P'.A ≃+* Ainf l} {ρ : ↥(GK K) → (T →ₗ[ℤ_[l]] T)} (H : IsAinf K P e) (c : Hom P P')
@@ -165,9 +163,9 @@ end GlobalTheory.Prism.ModelChange
 open GlobalTheory.Prism.ModelChange in
 
 /- English proof (translation)
-Introduce `l _ K P₀ e₀ H`. Use `⟨toAinf H, fun M => ⟨?_, fun T _ _ ρ => ⟨fun j₀ hj₀ => ⟨_, realises_of H (toAinf H) (fun _ => rfl) hj₀⟩, fun j hj => ⟨_, realises_of (isAinf_ainfObj K) (ofAinf H) (fun a => by exact e₀.apply_symm_apply a) hj, fun x => ?_⟩⟩⟩⟩` and prove the remaining obligations. Use `Function.bijective_iff_has_inverse.2 ⟨M.tr (ofAinf H), fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← M.tr_comp, ofAinf_comp_toAinf, M.tr_id]`. Rewrite using `[← M.tr_comp, toAinf_comp_ofAinf, M.tr_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `j (M.tr (ofAinf H) (M.tr (toAinf H) x)) = j x`. Rewrite using `[← M.tr_comp, ofAinf_comp_toAinf, M.tr_id]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.Prism.realisation_indep_model : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (P₀ : Obj l ↥(OL K)) (e₀ : P₀.A ≃+* Ainf l), IsAinf K P₀ e₀ → ∃ a : Hom P₀ (ainfObj K), ∀ (M : FCrys l ↥(OL K)), Function.Bijective (M.tr a) ∧ ∀ (T : Type) [AddCommGroup T] [Module ℤ_[l] T] (ρ : ↥(GK K) → (T →ₗ[ℤ_[l]] T)), (∀ j₀ : M.M (ainfObj K) →ₛₗ[(inclW l).comp (ainfId K).toRingHom] (WCb l ⊗[ℤ_[l]] T), Realises K M (ainfObj K) (ainfId K) T ρ j₀ → ∃ j : M.M P₀ →ₛₗ[(inclW l).comp e₀.toRingHom] (WCb l ⊗[ℤ_[l]] T), Realises K M P₀ e₀ T ρ j) ∧ (∀ j : M.M P₀ →ₛₗ[(inclW l).comp e₀.toRingHom] (WCb l ⊗[ℤ_[l]] T), Realises K M P₀ e₀ T ρ j → ∃ j₀ : M.M (ainfObj K) →ₛₗ[(inclW l).comp (ainfId K).toRingHom] (WCb l ⊗[ℤ_[l]] T), Realises K M (ainfObj K) (ainfId K) T ρ j₀ ∧ ∀ x, j₀ (M.tr a x) = j x) := by
   intro l _ K P₀ e₀ H

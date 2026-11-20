@@ -20,9 +20,9 @@ def PullCubDescentSt : Prop :=
       m.φ ≫ ψ.left = m'.φ → (CubeMap.ofHom ψ).IsPullCubical t.cub t'.cub
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ _ hc t t' tK hK m m'`. Take `⟨ψ, hψm, hψ, hact⟩` from `extV_grp hHom t t' tK m m'`. Use `hψm` as an intermediate fact. Use `⟨{ cm := CubeMap.ofHom ψ.hom cart := isGrpPullback_of_iso ψ base := rfl act := fun a => by show (t.act.act a).left ≫ ψ.hom.left = ψ.hom.left ≫ (t'.act.act a).left` and prove the remaining obligations. Rewrite using `[← Over.comp_left, hact a, Over.comp_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `lin := hD E H V hc t t' tK hK m m' ψ.hom hψ }, hψ⟩`.
+A detailed English derivation is pending.
 -/
 theorem extV_of (hHom : HomExtDvrSt) (hD : PullCubDescentSt) : ExtVStatement := by
   intro E _ _ _ H V _ _ _ hc t t' tK hK m m'

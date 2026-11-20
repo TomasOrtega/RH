@@ -13,11 +13,11 @@ open Topology Filter
 variable {F : Type} [Field F] [NumberField F] {v : Pl F}
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Use `set p : Fv F v := (π : v.adicCompletion F) with hp`. Establish `hpv : Valued.v p = WithZero.exp (-1)`. Rewrite using `[hp, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hπ]`. Establish `hrv : Valued.v (p ^ N) = WithZero.exp (-(N : ℤ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, hpv, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `hr : Valued.v (p ^ N) ≠ 0` using `by rw [hrv]; exact WithZero.exp_ne_zero`. Rewrite using `[Valued.mem_nhds_zero]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).restrict (p ^ N) ≠ 0` using `by simpa using hr`. Use `⟨Units.mk0 _ h', fun y hy => ?_⟩` and prove the remaining obligations. Use `(Valuation.restrict_lt_iff _).1 hy` as an intermediate fact. Rewrite `this` using `[hrv]`. Conclude with `le_of_lt this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ball_mem_nhds_zero (v : Pl F) (N : ℕ) :
     {y : Fv F v | Valued.v y ≤ WithZero.exp (-(N : ℤ))} ∈ 𝓝 (0 : Fv F v) := by
@@ -36,11 +36,9 @@ theorem ball_mem_nhds_zero (v : Pl F) (N : ℕ) :
   exact le_of_lt this
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `Valued.mem_nhds_zero.1 hs`. Use `set g : WithZero (Multiplicative ℤ) := MonoidWithZeroHom.ValueGroup₀.embedding γ.1 with hg`. Establish `hg0 : g ≠ 0`. Rewrite using `[hg]`. Conclude with `(map_ne_zero _).2 γ.ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(-(WithZero.log g)).toNat + 1, fun y hy => hγ ?_⟩` and prove the remaining obligations. Use `show (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).restrict y < γ.1`. Rewrite using `[Valuation.restrict_lt_iff_lt_embedding]`. Use `lt_of_le_of_lt hy ?_` and prove the remaining obligations. Establish `hlt : WithZero.exp (-((((-(WithZero.log g)).toNat + 1 : ℕ)) : ℤ)) < WithZero.exp (WithZero.log g)` using `WithZero.exp_lt_exp.2 (by omega)`.
-
-Rewrite `hlt` using `[WithZero.exp_log hg0]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_ball_subset (v : Pl F) {s : Set (Fv F v)} (hs : s ∈ 𝓝 (0 : Fv F v)) :
     ∃ N : ℕ, {y : Fv F v | Valued.v y ≤ WithZero.exp (-(N : ℤ))} ⊆ s := by
@@ -60,38 +58,38 @@ def B (v : Pl F) (κ : Type) (N : ℕ) : Set (κ → Fv F v) :=
   {x | ∀ i, Valued.v (x i) ≤ WithZero.exp (-(N : ℤ))}
 
 /- English proof (translation)
-Introduce `x hx i` and use `(hx i).trans (WithZero.exp_le_exp.2 (by omega))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem B_anti {κ : Type} {N M : ℕ} (h : N ≤ M) : B v κ M ⊆ B v κ N := fun x hx i =>
   (hx i).trans (WithZero.exp_le_exp.2 (by omega))
 
 /- English proof (translation)
-Introduce `i` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zero_mem_B (κ : Type) (N : ℕ) : (0 : κ → Fv F v) ∈ B v κ N := fun i => by simp
 
 /- English proof (translation)
-Introduce `i` and use `(Valuation.map_sub _ _ _).trans (max_le (hx i) (hy i))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sub_mem_B {κ : Type} {N : ℕ} {x y : κ → Fv F v} (hx : x ∈ B v κ N) (hy : y ∈ B v κ N) :
     x - y ∈ B v κ N := fun i =>
   (Valuation.map_sub _ _ _).trans (max_le (hx i) (hy i))
 
 /- English proof (translation)
-Introduce `i` and use `(Valuation.map_add _ _ _).trans (max_le (hx i) (hy i))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem add_mem_B {κ : Type} {N : ℕ} {x y : κ → Fv F v} (hx : x ∈ B v κ N) (hy : y ∈ B v κ N) :
     x + y ∈ B v κ N := fun i =>
   (Valuation.map_add _ _ _).trans (max_le (hx i) (hy i))
 
 /- English proof (translation)
-Introduce `i` and use `by simpa using hx i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem neg_mem_B {κ : Type} {N : ℕ} {x : κ → Fv F v} (hx : x ∈ B v κ N) : -x ∈ B v κ N := fun i => by
   simpa using hx i
 
 /- English proof (translation)
-Establish `: B v κ N = Set.pi Set.univ fun _ => {y : Fv F v | Valued.v y ≤ WithZero.exp (-(N : ℤ))}`. Use extensionality with `x`. Simplify using `[B]`. Rewrite using `[this]`. Conclude with `set_pi_mem_nhds Set.finite_univ fun i _ => ball_mem_nhds_zero v N`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem B_mem_nhds (κ : Type) [Fintype κ] (N : ℕ) : B v κ N ∈ 𝓝 (0 : κ → Fv F v) := by
   have : B v κ N = Set.pi Set.univ fun _ => {y : Fv F v | Valued.v y ≤ WithZero.exp (-(N : ℤ))} := by
@@ -100,9 +98,7 @@ theorem B_mem_nhds (κ : Type) [Fintype κ] (N : ℕ) : B v κ N ∈ 𝓝 (0 : �
   exact set_pi_mem_nhds Set.finite_univ fun i _ => ball_mem_nhds_zero v N
 
 /- English proof (translation)
-Rewrite `hs` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hts⟩` from `hs`. Use `choose Nf hNf using fun i => exists_ball_subset v (ht i)`. Use `⟨Finset.univ.sup Nf, fun x hx => hts fun i _ => hNf i ?_⟩` and prove the remaining obligations. Conclude with `(hx i).trans (WithZero.exp_le_exp.2 (by`.
-
-Use `Finset.le_sup (f := Nf) (Finset.mem_univ i)` as an intermediate fact. Use the proof step `omega))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_B_subset (κ : Type) [Fintype κ] {s : Set (κ → Fv F v)} (hs : s ∈ 𝓝 (0 : κ → Fv F v)) :
     ∃ N : ℕ, B v κ N ⊆ s := by
@@ -114,9 +110,9 @@ theorem exists_B_subset (κ : Type) [Fintype κ] {s : Set (κ → Fv F v)} (hs :
     have := Finset.le_sup (f := Nf) (Finset.mem_univ i); omega))
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Establish `ht : Tendsto (fun y : κ → Fv F v => y - x) (𝓝 x) (𝓝 0)`. Simplify using `using (continuous_sub_right x).tendsto x`. Use `Filter.mem_of_superset (ht (B_mem_nhds κ N)) fun y hy => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: y - c = (y - x) + (x - c)` using `by abel`. Use `show y - c ∈ B v κ N`. Rewrite using `[this]`. Conclude with `add_mem_B hy hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_box (κ : Type) [Fintype κ] (N : ℕ) (c : κ → Fv F v) :
     IsOpen {x : κ → Fv F v | x - c ∈ B v κ N} := by
@@ -130,17 +126,17 @@ theorem isOpen_box (κ : Type) [Fintype κ] (N : ℕ) (c : κ → Fv F v) :
   rw [this]; exact add_mem_B hy hx
 
 /- English proof (translation)
-Establish `hloc : ∀ x : κ → Fv F v, ∃ N : ℕ, ∀ u ∈ B v κ N, φ (x + u) = φ x`. Introduce `x`. Establish `hlc : IsLocallyConstant fun u : κ → Fv F v => φ (x + u)` using `hφ.1.comp_continuous (continuous_const_add x)`. Establish `hO : {u : κ → Fv F v | φ (x + u) = φ x} ∈ 𝓝 (0 : κ → Fv F v)` using `(hlc.isOpen_fiber (φ x)).mem_nhds (by simp)`. Take `⟨N, hN⟩` from `exists_B_subset κ hO`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N, fun u hu => hN hu⟩`. Use `choose Nx hNx using hloc`. Establish `hK : IsCompact (tsupport φ)` using `hφ.2`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun x => {y : κ → Fv F v | y - x ∈ B v κ (Nx x)}) (fun x => isOpen_box κ (Nx x) x) (fun y _ => Set.mem_iUnion.2 ⟨y, by simpa using zero_mem_B κ (Nx y)⟩)`. Use `⟨t.sup Nx, fun N hN y u hu => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsub : ∀ x ∈ t, u ∈ B v κ (Nx x)` using `fun x hx => B_anti ((Finset.le_sup (f := Nx) hx).trans hN) hu`. Distinguish the cases in `hy : ∃ x ∈ t, y - x ∈ B v κ (Nx x)`. Take `⟨x, hx, hyx⟩` from `hy`. Establish `h1 : φ (y + u) = φ x`. Use `hNx x ((y - x) + u) (add_mem_B hyx (hsub x hx))` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[show x + ((y - x) + u) = y + u by abel]`. Then use the resulting hypothesis. Establish `h2 : φ y = φ x`. Use `hNx x (y - x) hyx` as an intermediate fact. Rewrite `this` using `[show x + (y - x) = y by abel]`. Then use the resulting hypothesis. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_neg at hy`. Establish `hyK : y ∉ tsupport φ` using `fun hyK => by`. Take `⟨x, hx, hyx⟩` from `Set.mem_iUnion₂.1 (ht hyK)`. Conclude with `hy x hx hyx`. Establish `hyuK : y + u ∉ tsupport φ` using `fun hyK => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨x, hx, hyx⟩` from `Set.mem_iUnion₂.1 (ht hyK)`. Use `hy x hx ?_` and prove the remaining obligations. Use `sub_mem_B hyx (hsub x hx)` as an intermediate fact. Rewrite `this` using `[show y + u - x - u = y - x by abel]`. Then use the resulting hypothesis. Rewrite using `[image_eq_zero_of_notMem_tsupport hyK, image_eq_zero_of_notMem_tsupport hyuK]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invariant {κ : Type} [Fintype κ] {φ : (κ → Fv F v) → ℂ} (hφ : φ ∈ SB (κ → Fv F v)) :
     ∃ N₀ : ℕ, ∀ N ≥ N₀, ∀ y u, u ∈ B v κ N → φ (y + u) = φ y := by
@@ -186,9 +182,9 @@ def BG (v : Pl F) (κ : Type) (N : ℕ) : AddSubgroup (κ → Fv F v) where
   neg_mem' := neg_mem_B
 
 /- English proof (translation)
-Rewrite using `[QuotientAddGroup.eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `neg_mem_B h` as an intermediate fact. Rewrite `this` using `[show -(-x + c) = x - c by abel]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h`. Use `neg_mem_B h` as an intermediate fact. Rewrite `this` using `[show -(x - c) = -x + c by abel]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mk_eq_iff {κ : Type} {N : ℕ} {x c : κ → Fv F v} :
     (x : (κ → Fv F v) ⧸ BG v κ N) = c ↔ x - c ∈ B v κ N := by
@@ -202,19 +198,17 @@ theorem mk_eq_iff {κ : Type} {N : ℕ} {x c : κ → Fv F v} :
     rwa [show -(x - c) = -x + c by abel] at this
 
 /- English proof (translation)
-Introduce `hφ`. Take `⟨N₀, hN₀⟩` from `exists_invariant hφ`. Use `⟨N₀, fun N hN => ?_⟩` and prove the remaining obligations. Establish `hK : IsCompact (tsupport φ)` using `hφ.2`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun c => {y : κ → Fv F v | y - c ∈ B v κ N}) (fun c => isOpen_box κ N c) (fun y _ => Set.mem_iUnion.2 ⟨y, by simpa using zero_mem_B κ N⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set Q : Finset ((κ → Fv F v) ⧸ BG v κ N) := t.image (QuotientAddGroup.mk (s := BG v κ N)) with hQ`. Establish `heq : φ = ∑ q ∈ Q, φ q.out • Set.indicator {x : κ → Fv F v | ∀ i, Valued.v (x i - q.out i) ≤ WithZero.exp (-(N : ℤ))} (1 : (κ → Fv F v) → ℂ)`. Use function extensionality and compare the values at `x`. Establish `hterm : ∀ q : (κ → Fv F v) ⧸ BG v κ N, (φ q.out • Set.indicator {x : κ → Fv F v | ∀ i, Valued.v (x i - q.out i) ≤ WithZero.exp (-(N : ℤ))} (1 : (κ → Fv F v) → ℂ)) x = if (x : (κ → Fv F v) ⧸ BG v κ N) = q then φ q.out else 0`. Introduce `q`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : (x ∈ {x : κ → Fv F v | ∀ i, Valued.v (x i - q.out i) ≤ WithZero.exp (-(N : ℤ))}) ↔ (x : (κ → Fv F v) ⧸ BG v κ N) = q`. Rewrite using `[← QuotientAddGroup.out_eq' q, mk_eq_iff, QuotientAddGroup.out_eq']`. Both sides reduce to the same expression. Rewrite using `[Pi.smul_apply, Set.indicator_apply]`. Distinguish the cases in `h : (x : (κ → Fv F v) ⧸ BG v κ N) = q`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (hm.2 h), if_pos h, Pi.one_apply, smul_eq_mul, mul_one]`. Rewrite using `[if_neg (fun h' => h (hm.1 h')), if_neg h, smul_zero]`. Rewrite using `[Finset.sum_apply]`. Repeatedly rewrite using `[hterm]`. Rewrite using `[Finset.sum_ite_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs with hx`. Use `set q : (κ → Fv F v) ⧸ BG v κ N := (x : (κ → Fv F v) ⧸ BG v κ N)`. Establish `hqx : q.out - x ∈ B v κ N` using `mk_eq_iff.1 (QuotientAddGroup.out_eq' q)`. Use `hN₀ N hN x (q.out - x) hqx` as an intermediate fact. Rewrite `this` using `[show x + (q.out - x) = q.out by abel]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this.symm`. Establish `hxK : x ∉ tsupport φ` using `fun hxK => by`. Take `⟨c, hc, hxc⟩` from `Set.mem_iUnion₂.1 (ht hxK)`. Establish `hcQ : (c : (κ → Fv F v) ⧸ BG v κ N) ∈ Q` using `Finset.mem_image_of_mem (QuotientAddGroup.mk (s := BG v κ N)) hc`. Rewrite `hcQ` using `[← mk_eq_iff.2 hxc]`.
-
-Conclude with `hx hcQ`. Conclude with `image_eq_zero_of_notMem_tsupport hxK`. Rewrite using `[heq]`. Conclude with `Submodule.sum_mem _ fun q _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨q.out, rfl⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_boxes (F : Type) [Field F] [NumberField F] (v : Pl F) (κ : Type) [Fintype κ]
     (φ : (κ → Fv F v) → ℂ) : φ ∈ SB (κ → Fv F v) → ∃ N₀ : ℕ, ∀ N ≥ N₀, φ ∈ Submodule.span ℂ

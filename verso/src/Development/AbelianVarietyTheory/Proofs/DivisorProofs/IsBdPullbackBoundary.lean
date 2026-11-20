@@ -20,11 +20,9 @@ def sumPot {m : ℕ} (Q : Fin m → LocPot Y) : LocPot Y where
   φ y z := ∑ i, (Q i).φ y z
 
 /- English proof (translation)
-Use `⟨fun x j => ?_, fun x x' y hy => ?_⟩` and prove the remaining obligations. Use `show ContDiffOn ℝ ∞ (fun t => ∑ i, ((Q i).φ x ∘ (B.chart j).symm) t) _`. Conclude with `ContDiffOn.sum fun i _ => ((hQ i).1 x j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono (Set.iInter_subset _ i)))`. Establish `hy' : ∀ i, y ∈ (Q i).U x ∩ (Q i).U x'` using `fun i => ⟨Set.mem_iInter.1 hy.1 i, Set.mem_iInter.1 hy.2 i⟩ choose W hWo hyW G hG hEq using fun i => (hQ i).2 x x' y (hy' i)`. Use `⟨⋂ i, W i, isOpen_iInter_of_finite hWo, Set.mem_iInter.2 hyW, fun z => ∑ i, G i z, fun j => ?_, fun z hz => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h : ∀ i ∈ (Finset.univ : Finset (Fin m)), AnalyticOnNhd ℂ (G i ∘ (B.chart j).symm) ((B.chart j).target ∩ (B.chart j).symm ⁻¹' ⋂ i, W i)` using `fun i _ => (hG i j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono (Set.iInter_subset _ i)))`. Use `Finset.analyticOnNhd_sum Finset.univ h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `t`. Simplify using `[Finset.sum_apply]`. Take `⟨⟨hzW, hzU⟩, hzU'⟩` from `hz show ∑ i, (Q i).φ x z - ∑ i, (Q i).φ x' z = (∑ i, G i z).re`.
-
-Rewrite using `[Complex.re_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => hEq i z ⟨⟨Set.mem_iInter.1 hzW i, Set.mem_iInter.1 hzU i⟩, Set.mem_iInter.1 hzU' i⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPotential_sumPot (B : FinHolAtlas n Y) {m : ℕ} (Q : Fin m → LocPot Y)
     (hQ : ∀ i, IsPotential B (Q i)) : IsPotential B (sumPot Q) := by
@@ -50,9 +48,9 @@ theorem isPotential_sumPot (B : FinHolAtlas n Y) {m : ℕ} (Q : Fin m → LocPot
         ⟨⟨Set.mem_iInter.1 hzW i, Set.mem_iInter.1 hzU i⟩, Set.mem_iInter.1 hzU' i⟩
 
 /- English proof (translation)
-Use `⟨fun x j => ?_, fun x x' y hy => ?_⟩` and prove the remaining obligations. Establish `h : ∀ i ∈ (Finset.univ : Finset (Fin m)), AnalyticOnNhd ℂ (τ i x ∘ (B.chart j).symm) ((B.chart j).target ∩ (B.chart j).symm ⁻¹' (sumPot Q).U x)` using `fun i _ => ((hτ i).1 x j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono (Set.iInter_subset (fun i => (Q i).U x) i)))`. Conclude with `Finset.analyticOnNhd_fun_prod Finset.univ h`. Establish `key : ∀ x'' : Y, ‖∏ i, τ i x'' y‖ * Real.exp (-(sumPot Q).φ x'' y) = ∏ i, (‖τ i x'' y‖ * Real.exp (-(Q i).φ x'' y))`. Introduce `x''`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [sumPot, norm_prod, ← Finset.sum_neg_distrib, Real.exp_sum, Finset.prod_mul_distrib]`. Use `show ‖∏ i, τ i x y‖ * Real.exp (-(sumPot Q).φ x y) = ‖∏ i, τ i x' y‖ * Real.exp (-(sumPot Q).φ x' y)`. Rewrite using `[key x, key x']`. Conclude with `Finset.prod_congr rfl fun i _ => (hτ i).2 x x' y ⟨Set.mem_iInter.1 hy.1 i, Set.mem_iInter.1 hy.2 i⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSection_sumPot (B : FinHolAtlas n Y) {m : ℕ} (Q : Fin m → LocPot Y)
     (τ : Fin m → Y → Y → ℂ) (hτ : ∀ i, IsSection B (Q i) (τ i)) :
@@ -78,19 +76,19 @@ namespace GlobalTheory
 open GlobalTheory.ProdSecPot
 
 /- English proof (translation)
-Introduce `d X _ A m Λ σ hΛ n Y _ _ _ B μ hμ hint Om hO hPos`. Set `Q : Fin m → LocPot Y` to `fun i => (Λ i).pullback μ hμ.1`. Set `τ : Fin m → Y → Y → ℂ` to `fun i y z => σ i (μ y) (μ z)`. Establish `hQp : ∀ i, IsPotential B (Q i)` using `fun i => isPotentialPullback A B μ hμ (Λ i) (hΛ i).1`. Establish `hτ : ∀ i, IsSection B (Q i) (τ i)` using `fun i => isSection_pullback_holoMap d n X Y A B μ hμ (Λ i) (σ i) (hΛ i).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `L` to `sumPot Q`. Set `t : Y → Y → ℂ` to `fun y z => ∏ i, τ i y z`. Establish `hL : IsPotential B L` using `isPotential_sumPot B Q hQp`. Establish `hS : IsSection B L t` using `isSection_sumPot B Q τ hτ`. Establish `hZ : μ ⁻¹' boundary σ = ReciprocityTheory.AnForm.P.bdry t`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `y`. Simplify using `[boundary, ReciprocityTheory.AnForm.P.bdry, t, τ, Finset.prod_eq_zero_iff]`. Establish `hle : ∀ i x, logNormSec (Λ i) (σ i) x ≤ 0` using `fun i x => Real.log_nonpos (mul_nonneg (norm_nonneg _) (Real.exp_pos _).le) ((hΛ i).2.2 x)`. Establish `hr : ∀ y, y ∉ ReciprocityTheory.AnForm.P.bdry t → (fun y => Real.exp 1 - 2 * ∑ i, logNormSec (Λ i) (σ i) (μ y)) y = ReciprocityTheory.AnForm.P.rW L t y`. Introduce `y hy`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy' : ∀ i, σ i (μ y) (μ y) ≠ 0`. Introduce `i h`. Conclude with `hy (Finset.prod_eq_zero (Finset.mem_univ i) h)`. Use `show _ = Real.exp 1 - 2 * Real.log (‖∏ i, σ i (μ y) (μ y)‖ * Real.exp (-∑ i, (Λ i).φ (μ y) (μ y)))`. Rewrite using `[norm_prod, ← Finset.sum_neg_distrib, Real.exp_sum, ← Finset.prod_mul_distrib, Real.log_prod (fun i _ => mul_ne_zero (norm_ne_zero_iff.2 (hy' i)) (Real.exp_pos _).ne')]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hi : interior (ReciprocityTheory.AnForm.P.bdry t) = ∅`. Rewrite using `[interior_eq_empty_iff_dense_compl]`. Establish `hc : (ReciprocityTheory.AnForm.P.bdry t)ᶜ = ⋂ i, {y | σ i (μ y) (μ y) = 0}ᶜ`. Use extensionality with `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ReciprocityTheory.AnForm.P.bdry, t, τ, Finset.prod_eq_zero_iff]`. Rewrite using `[hc]`. Use `dense_iInter_of_isOpen (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Conclude with `(ReciprocityTheory.AnForm.P.LeviFormBoundaryTopology.isClosed_bdry (hτ i)).isOpen_compl`. Conclude with `interior_eq_empty_iff_dense_compl.1 (hint i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `he : ∀ y, Real.exp 1 ≤ Real.exp 1 - 2 * ∑ i, logNormSec (Λ i) (σ i) (μ y)` using `fun y => by`. Use `Finset.sum_nonpos fun i (_ : i ∈ Finset.univ) => hle i (μ y)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hZ]`. Conclude with `⟨ReciprocityTheory.AnForm.P.LeviFormBoundaryTopology.isClosed_bdry hS, GlobalTheory.Mean4O.BdSec.bdry_null_chart hS hi, hO, hPos, GlobalTheory.Mean4O.BdSec.smoothOn hL hS hr, fun y _ => he y, GlobalTheory.Mean4O.BdSec.toBot hL hS hr, GlobalTheory.Mean4O.BdSec.mIntegrable hL hS hr …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isBd_pullback_boundary : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas d X) (m : ℕ) (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ), (∀ i, IsPotential A (Λ i) ∧ IsSection A (Λ i) (σ i) ∧ ∀ y, normSec (Λ i) (σ i) y ≤ 1) → ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [CompactSpace Y] [T2Space Y] (B : FinHolAtlas n Y) (μ : Y → X), HoloMap B A μ → (∀ i, interior {y | σ i (μ y) (μ y) = 0} = ∅) → ∀ Om : LocPot Y, IsPotential B Om → IsPosPot B Om → GlobalTheory.Mean4O.IsBd B (μ ⁻¹' boundary σ) (fun y => Real.exp 1 - 2 * ∑ i, logNormSec (Λ i) (σ i) (μ y)) Om := by
   intro d X _ A m Λ σ hΛ n Y _ _ _ B μ hμ hint Om hO hPos

@@ -4,21 +4,21 @@ open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hre : ∀ n : ℕ, (∑ j ∈ Finset.range (n + 1), w ^ j).re = 1 + ∑ j ∈ Finset.Icc 1 n, (w ^ j).re`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_range_succ, Complex.add_re, ih, Finset.sum_Icc_succ_top (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Proceed by induction on `J with`. Consider the case `zero => simp`. Consider the case `succ J ih`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1 : ∑ j ∈ Finset.range (J + 1 + 1), w ^ j = w * (∑ j ∈ Finset.range (J + 1), w ^ j) + 1`. Rewrite using `[Finset.sum_range_succ', Finset.mul_sum]`. Simplify using `[pow_succ']`. Establish `h2 : ∑ j ∈ Finset.Icc 1 (J + 1), (((J + 1 : ℕ) : ℝ) + 1 - j) * (w ^ j).re = ∑ j ∈ Finset.Icc 1 J, ((J : ℝ) + 1 - j) * (w ^ j).re + ∑ j ∈ Finset.Icc 1 (J + 1), (w ^ j).re`. Rewrite using `[Finset.sum_Icc_succ_top (by omega), Finset.sum_Icc_succ_top (by omega), ← add_assoc, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_ push_cast` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h3` using `hre (J + 1)`. Establish `hw2 : Complex.normSq w ≤ 1`. Rewrite using `[Complex.normSq_eq_norm_sq]`. Use `norm_nonneg w` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[h2]`. Use `set S := ∑ j ∈ Finset.range (J + 1), w ^ j`. Rewrite `h3`, the goal using `[h1]`. Establish `h4 : Complex.normSq (w * S + 1) = Complex.normSq w * Complex.normSq S + 2 * (w * S + 1).re - 1`. Rewrite using `[Complex.normSq_add, map_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `h5` using `Complex.normSq_nonneg S`. Rewrite using `[h4, h3]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem normSq_geomSum_le_fejer (w : ℂ) (hw : ‖w‖ ≤ 1) (J : ℕ) :
     Complex.normSq (∑ j ∈ Finset.range (J + 1), w ^ j) ≤
@@ -66,9 +66,9 @@ theorem normSq_geomSum_le_fejer (w : ℂ) (hw : ‖w‖ ≤ 1) (J : ℕ) :
     nlinarith
 
 /- English proof (translation)
-Establish `h` using `normSq_geomSum_le_fejer w hw J`. Establish `h0` using `Complex.normSq_nonneg (∑ j ∈ Finset.range (J + 1), w ^ j)`. Establish `hJ : (0 : ℝ) < J + 1` using `by positivity`. Establish `h1 : ∑ j ∈ Finset.Icc 1 J, (1 - (j : ℝ) / (J + 1)) * (w ^ j).re = (∑ j ∈ Finset.Icc 1 J, ((J : ℝ) + 1 - j) * (w ^ j).re) / (J + 1)`. Rewrite using `[Finset.sum_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Rewrite using `[h1, le_div_iff₀ hJ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem fejer_re_ge (w : ℂ) (hw : ‖w‖ ≤ 1) (J : ℕ) :
     -(1 / 2) ≤ ∑ j ∈ Finset.Icc 1 J, (1 - (j : ℝ) / (J + 1)) * (w ^ j).re := by
@@ -84,9 +84,9 @@ theorem fejer_re_ge (w : ℂ) (hw : ‖w‖ ≤ 1) (J : ℕ) :
   linarith
 
 /- English proof (translation)
-Establish `h : ∀ n : ℕ, ∑ j ∈ Finset.Icc 1 n, (j : ℝ) = n * (n + 1) / 2`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_Icc_succ_top (by omega), ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hJ : (0 : ℝ) < J + 1` using `by positivity`. Rewrite using `[Finset.sum_sub_distrib, ← Finset.sum_div, h]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -106,11 +106,11 @@ theorem sum_fejer_weights (J : ℕ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_div, Finset.sum_div, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e1 : Complex.exp (θ * I) ^ j = Complex.exp (((j * θ : ℝ) : ℂ) * I)`. Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : Complex.exp (-(θ * I)) ^ j = Complex.exp (((-(j * θ) : ℝ) : ℂ) * I)`. Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_pow, mul_pow, e1, e2, Complex.mul_re, Complex.mul_re, Complex.exp_ofReal_mul_I_re, Complex.exp_ofReal_mul_I_re, Complex.exp_ofReal_mul_I_im, Complex.exp_ofReal_mul_I_im, Real.cos_neg, Real.sin_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weighted_fejer_split (J : ℕ) (θ : ℝ) (w : ℂ) :
     ∑ j ∈ Finset.Icc 1 J, (1 - (j : ℝ) / (J + 1)) * (1 + Real.cos (j * θ)) * (w ^ j).re
@@ -131,13 +131,13 @@ theorem weighted_fejer_split (J : ℕ) (θ : ℝ) (w : ℂ) :
   ring
 
 /- English proof (translation)
-Introduce `J θ`. Establish `n1 : ‖Complex.exp (θ * I)‖ = 1` using `Complex.norm_exp_ofReal_mul_I θ`. Establish `n2 : ‖Complex.exp (-(θ * I))‖ = 1`. Rewrite using `[Complex.exp_neg, norm_inv, n1, inv_one]`. Use `⟨fun w hw => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[weighted_fejer_split]`. Establish `a` using `fejer_re_ge w hw J`. Establish `b` using `fejer_re_ge (w * Complex.exp (θ * I)) (by rw [norm_mul, n1, mul_one]; exact hw) J`. Establish `c` using `fejer_re_ge (w * Complex.exp (-(θ * I))) (by rw [norm_mul, n2, mul_one]; exact hw) J`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[weighted_fejer_split]`. Establish `a` using `fejer_re_ge (Complex.exp (θ * I)) n1.le J`. Establish `b` using `fejer_re_ge (Complex.exp (θ * I) * Complex.exp (θ * I)) (by rw [norm_mul, n1, mul_one]) J`. Establish `c : Complex.exp (θ * I) * Complex.exp (-(θ * I)) = 1`. Rewrite using `[← Complex.exp_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[c]`. Simplify using `only [one_pow, Complex.one_re, mul_one]`. Rewrite using `[sum_fejer_weights]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem weighted_fejer_positivity : ∀ (J : ℕ) (θ : ℝ), (∀ w : ℂ, ‖w‖ ≤ 1 → -1 ≤ ∑ j ∈ Finset.Icc 1 J, (1 - (j : ℝ) / (J + 1)) * (1 + Real.cos (j * θ)) * (w ^ j).re) ∧ (J : ℝ) / 4 - 3 / 4 ≤ ∑ j ∈ Finset.Icc 1 J, (1 - (j : ℝ) / (J + 1)) * (1 + Real.cos (j * θ)) * (Complex.exp (θ * I) ^ j).re := by
   intro J θ

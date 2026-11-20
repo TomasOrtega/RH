@@ -5,9 +5,7 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h1 : c ≤ (P : FractionalIdeal (nonZeroDivisors R) K) * c` using `fun b hb => h b hb`. Establish `h2 : c * c⁻¹ ≤ (P : FractionalIdeal (nonZeroDivisors R) K) * c * c⁻¹` using `by gcongr`. Rewrite `h2` using `[mul_assoc, mul_inv_cancel₀ hc, mul_one, ← FractionalIdeal.coeIdeal_top, FractionalIdeal.coeIdeal_le_coeIdeal]`.
-
-Conclude with `hP (top_le_iff.mp h2)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_notMem_coeIdeal_mul {R K : Type} [CommRing R] [IsDedekindDomain R] [Field K]
     [Algebra R K] [IsFractionRing R K] (c : FractionalIdeal (nonZeroDivisors R) K) (hc : c ≠ 0)
@@ -23,19 +21,15 @@ theorem exists_mem_notMem_coeIdeal_mul {R K : Type} [CommRing R] [IsDedekindDoma
   exact hP (top_le_iff.mp h2)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨0, c.zero_mem, by simp⟩`. Consider the case `insert P S hPS ih`. Take `⟨a, ha, haS⟩` from `ih (fun Q hQ => hS Q (Finset.mem_insert_of_mem hQ))`. Establish `hP : P.IsMaximal` using `hS P (Finset.mem_insert_self _ _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `haP : a ∈ (P : FractionalIdeal (nonZeroDivisors R) K) * c`. Use `swap`. Use `⟨a, ha, fun Q hQ => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hQ with rfl | hQ` into its components or cases. Conclude with `haP`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `haS Q hQ`. Take `⟨b, hb, hbP⟩` from `exists_mem_notMem_coeIdeal_mul c hc P hP.ne_top`. Establish `hnle : ¬ S.inf id ≤ P`. Rewrite using `[hP.isPrime.inf_le']`. Introduce and unpack `⟨Q, hQ, hQP⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Q = P` using `(hS Q (Finset.mem_insert_of_mem hQ)).eq_of_le hP.ne_top hQP`. Conclude with `hPS (this ▸ hQ)`. Take `⟨e, heS, heP⟩` from `SetLike.not_le_iff_exists.mp hnle`. Establish `key : ∀ (Q : Ideal R) (x : R), x ∈ Q → x • b ∈ (Q : FractionalIdeal (nonZeroDivisors R) K) * c`. Introduce `Q x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Algebra.smul_def]`. Conclude with `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_coeIdeal_of_mem _ hx) hb`. Use `⟨a + e • b, (c : Submodule R K).add_mem ha ((c : Submodule R K).smul_mem e hb), fun Q hQ h => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hQ with rfl | hQ` into its components or cases. Take `⟨y, p, hp, hy⟩` from `hP.exists_inv heP set J : Submodule R K := (((Q : FractionalIdeal (nonZeroDivisors R) K) * c : FractionalIdeal (nonZeroDivisors R) K) : Submodule R K) with hJ`.
-
-Establish `h1 : e • b ∈ J` using `(J.add_mem_iff_right haP).mp h`. Establish `h2 : y • (e • b) + p • b ∈ J` using `J.add_mem (J.smul_mem y h1) (key Q p hp)`. Rewrite `h2` using `[smul_smul, ← add_smul, hy, one_smul]`. Conclude with `hbP h2`. Establish `heQ : e ∈ Q` using `(Finset.inf_le (f := id) hQ) heS set J : Submodule R K := (((Q : FractionalIdeal (nonZeroDivisors R) K) * c : FractionalIdeal (nonZeroDivisors R) K) : Submodule R K) with hJ`.
-
-Conclude with `haS Q hQ ((J.add_mem_iff_left (key Q e heQ)).mp h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_mem_forall_notMem_coeIdeal_mul {R K : Type} [CommRing R] [IsDedekindDomain R]
     [Field K] [Algebra R K] [IsFractionRing R K] (c : FractionalIdeal (nonZeroDivisors R) K)
@@ -81,11 +75,11 @@ theorem exists_mem_forall_notMem_coeIdeal_mul {R K : Type} [CommRing R] [IsDedek
       exact haS Q hQ ((J.add_mem_iff_left (key Q e heQ)).mp h)
 
 /- English proof (translation)
-Introduce `E _ _ c hc N hN`. Establish `hN' : Ideal.span {N} ≠ (0 : Ideal (𝓞 E))`. Simplify using `using hN`. Establish `hfin : {Q : Ideal (𝓞 E) | Q.IsMaximal ∧ N ∈ Q}.Finite`. Use `((Ideal.finite_factors hN').image (fun v => v.asIdeal)).subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `Q ⟨hQ, hNQ⟩`. Establish `h0 : Q ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hN (by simpa using hNQ)`. Use `⟨⟨Q, hQ.isPrime, h0⟩, ?_, rfl⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hNQ` using `[Ideal.dvd_iff_le]`. Take `⟨a, ha, h⟩` from `exists_mem_forall_notMem_coeIdeal_mul c hc hfin.toFinset (fun Q hQ => (hfin.mem_toFinset.mp hQ).1)`. Conclude with `⟨a, ha, fun Q hQ hNQ => h Q (hfin.mem_toFinset.mpr ⟨hQ, hNQ⟩)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_fractionalIdeal_generator_at_primes_over :
     ∀ (E : Type) [Field E] [NumberField E] (c : FractionalIdeal (nonZeroDivisors (𝓞 E)) E),

@@ -12,13 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SepRows
 
 /- English proof (translation)
-Introduce `hmod hstep D q hs T L μ0 hL sc hc G W M hM M₀ h₀ n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `h`. Use `⟨parB (Ptw D) 0, M₀, (parRow_zero D sc.cGap).symm, h₀, fun _ w => w, fun t ht Φ => ⟨t, ht, fun ρ w => ⟨trivial, rfl⟩⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `succ n ih`. Introduce `h`. Take `⟨S, MA, hS, hA, vec, hvec⟩` from `ih (Nat.le_of_succ_le h)`. Take `⟨MB, hB⟩` from `hmod D q hs T L μ0 hL sc hc G W M hM (n + 1) h`. Take `⟨It, hIt⟩` from `hstep D q hs T L μ0 hL sc hc G W M hM n h S _ MA MB hS rfl hA hB`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨_, MB, rfl, hB, fun ρ w => It (ρ ⟨n, h⟩) (vec ρ w), fun t ht Φ => ?_⟩` and prove the remaining obligations. Take `⟨F, hF, hF'⟩` from `hvec t ht Φ`. Take `⟨F', hF1, hF2⟩` from `hIt F hF (Φ ⟨n, h⟩)`. Use `⟨F', hF1, fun ρ w => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hF' ρ w`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h3, h4⟩` from `hF2 (ρ ⟨n, h⟩) (vec ρ w)`. Rewrite `h3`, `h4` using `[← h2]`. Conclude with `⟨⟨h1, h3⟩, h4⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem rowTower_of_step : RowModels → RowStep → RowTower := by
   intro hmod hstep D q hs T L μ0 hL sc hc G W M hM M₀ h₀ n

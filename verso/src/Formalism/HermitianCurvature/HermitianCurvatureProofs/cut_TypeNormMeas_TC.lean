@@ -13,17 +13,15 @@ variable {k r : ℕ} {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [Fini
   {z : Fin (2 * r + k + 1) → ℂ} {π : B.Mat k r → (W →L[ℂ] W)}
 
 /- English proof (translation)
-Establish `hiU` using `WeylGroupFacts.uh_inv hg.1`. Establish `ug` using `WeylGroupFacts.isUnit_of_uh hg.1`. Establish `key : ∀ t : ℝ, (π (NormedSpace.exp ((t : ℂ) • (g * X * g⁻¹)))).comp (π g) = (π g).comp (π (NormedSpace.exp ((t : ℂ) • X)))`. Introduce `t`. Establish `hE` using `P.QrD.exp_uw hX t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hE'` using `P.QrD.exp_uw hY t`. Establish `hconj : NormedSpace.exp ((t : ℂ) • (g * X * g⁻¹)) * g = g * NormedSpace.exp ((t : ℂ) • X)`. Establish `h` using `P.LeftDerivativeCurves.exp_swap hiU X t`. Rewrite `h` using `[Matrix.nonsing_inv_nonsing_inv _ ug]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Matrix.mul_assoc g, Matrix.mul_nonsing_inv _ ug, Matrix.one_mul]`. Use `_ = g * (NormedSpace.exp ((t : ℂ) • X) * g⁻¹) * g := by rw [h]`. Use `_ = g * NormedSpace.exp ((t : ℂ) • X) := by`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ ug, Matrix.mul_one]`. Rewrite using `[← hπ.2 _ hE' _ hg, ← hπ.2 _ hg _ hE, hconj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd1` using `P.QrD.dOp_hasDeriv hπ hc hX`. Establish `hd2` using `P.QrD.dOp_hasDeriv hπ hc hY`. Set `L1 : (W →L[ℂ] W) →L[ℂ] (W →L[ℂ] W)` to `ContinuousLinearMap.compL ℂ W W W (π g)`. Set `L2 : (W →L[ℂ] W) →L[ℂ] (W →L[ℂ] W)` to `(ContinuousLinearMap.compL ℂ W W W).flip (π g)`. Establish `h1` using `(L1.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(L2.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd2`. Establish `hfun : ((L2.restrictScalars ℝ) ∘ fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • (g * X * g⁻¹)))) = ((L1.restrictScalars ℝ) ∘ fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • X)))`. Use function extensionality and compare the values at `t`. Conclude with `key t`. Rewrite `h2` using `[hfun]`.
-
-Conclude with `h2.unique h1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tc_dOp_conj (hπ : IsCRepOn (UWset k r z) π) (hc : ContinuousOn π (UWset k r z)) {g : B.Mat k r}
     (hg : g ∈ UWset k r z) {X : B.Mat k r} (hX : P.QrD.InLieW k r z X)
@@ -60,7 +58,7 @@ theorem tc_dOp_conj (hπ : IsCRepOn (UWset k r z) π) (hc : ContinuousOn π (UWs
   exact h2.unique h1
 
 /- English proof (translation)
-Take `⟨hU, hme, hms, -⟩` from `P.Dx2.VV.uw_parts hg`. Conclude with `P.Dx2.DF.m0_mulVec_mem_orthogonal g hU hme hms hw`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tc_inWb {g : B.Mat k r} (hg : g ∈ UWset k r z) {w : Fin (2 * r + k + 1) → ℂ} (hw : inWb k r w) :
     inWb k r (g *ᵥ w) := by
@@ -68,9 +66,9 @@ theorem tc_inWb {g : B.Mat k r} (hg : g ∈ UWset k r z) {w : Fin (2 * r + k + 1
   exact P.Dx2.DF.m0_mulVec_mem_orthogonal g hU hme hms hw
 
 /- English proof (translation)
-Establish `ug` using `WeylGroupFacts.isUnit_of_uh hg.1`. Establish `hgB : Q.IsFrameOf k r [z] (fun a => g *ᵥ Bs a)` using `P.Topx1.vecw_frame_map hg.1 (fun w hw => tc_inWb hg hw) (fun v hv => by`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`. Conclude with `⟨1, z, by simp, by rw [hv, one_smul, hg.2.2]⟩) hB`. Take `⟨e1, e2, e3⟩` from `P.Topx1.vecw_conj_eq hg.1 ug Bs a b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `lY` using `P.QrD.frame_lie hgB a b`. Establish `lX` using `P.QrD.frame_lie hB a b`. Rewrite `lY` using `[e1, e2, e3]`. Unfold `P.QrD.ecOp`. Rewrite using `[e1, e2, e3, ContinuousLinearMap.add_comp, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_add, ContinuousLinearMap.comp_smul, tc_dOp_conj hπ hc hg lX.1 lY.1, tc_dOp_conj hπ hc hg lX.2 lY.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tc_ecOp_conj (hπ : IsCRepOn (UWset k r z) π) (hc : ContinuousOn π (UWset k r z)) {g : B.Mat k r}
     (hg : g ∈ UWset k r z) {m : ℕ} {Bs : Fin m → Fin (2 * r + k + 1) → ℂ} (hB : Q.IsFrameOf k r [z] Bs)
@@ -91,11 +89,11 @@ theorem tc_ecOp_conj (hπ : IsCRepOn (UWset k r z) π) (hc : ContinuousOn π (UW
     ContinuousLinearMap.comp_smul, tc_dOp_conj hπ hc hg lX.1 lY.1, tc_dOp_conj hπ hc hg lX.2 lY.2]
 
 /- English proof (translation)
-Establish `hgB : Q.IsFrameOf k r [z] (fun a => g *ᵥ Bs a)` using `P.Topx1.vecw_frame_map hg.1 (fun w hw => tc_inWb hg hw) (fun v hv => by`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`. Conclude with `⟨1, z, by simp, by rw [hv, one_smul, hg.2.2]⟩) hB`. Unfold `Q.capRep`. Use `P.Topx1.vecw_qmF (π g).toLinearMap _ _ (fun i j y => ?_) id id w v` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `lY` using `P.QrD.frame_lie hgB i j`. Establish `lX` using `P.QrD.frame_lie hB i j`. Simplify using `only [ContinuousLinearMap.coe_coe]`. Rewrite using `[P.QrD.ecRep_eq hπ hc lY.1 lY.2, P.QrD.ecRep_eq hπ hc lX.1 lX.2]`. Establish `h` using `congrArg (fun L : W →L[ℂ] W => L y) (tc_ecOp_conj hπ hc hg hB i j)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tc_capRep_conj (hπ : IsCRepOn (UWset k r z) π) (hc : ContinuousOn π (UWset k r z)) {g : B.Mat k r}
     (hg : g ∈ UWset k r z) {m : ℕ} {Bs : Fin m → Fin (2 * r + k + 1) → ℂ} (hB : Q.IsFrameOf k r [z] Bs)
@@ -117,27 +115,25 @@ theorem tc_capRep_conj (hπ : IsCRepOn (UWset k r z) π) (hc : ContinuousOn π (
 end cov
 
 /- English proof (translation)
-Introduce `PP Wp _ _ _ π z e TP hπ hc hu hk hz hTz he hez hee g hg l hl ρ`. Establish `ug` using `WeylGroupFacts.isUnit_of_uh hg.1`. Establish `hgi : g⁻¹ ∈ UWset PP.k PP.r z` using `WeylGroupFacts.uw_inv hg`. Establish `hl0 : l ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hl` using `[h0, zero_smul]`. Establish `: e = 0`. Rewrite using `[← Matrix.one_mulVec e, ← Matrix.nonsing_inv_mul _ ug, ← Matrix.mulVec_mulVec, hl, Matrix.mulVec_zero]`. Rewrite `hee` using `[this]`. Simplify using `[herm] at hee`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hli : g⁻¹ *ᵥ e = l⁻¹ • e`. Combine the equalities or inequalities in the displayed calculation. Take `⟨Bs₀, hB₀⟩` from `Formalism.FourierDecayAlt.P.Topx1.typ_frame_exists PP.k PP.r hk z e hz hTz he hez hee`. Establish `hB₀z : Q.IsFrameOf PP.k PP.r [z] Bs₀` using `Formalism.FourierDecayAlt.P.Topx1.vecw_frame_sub (fun v hv => by simp at hv; simp [hv]) hB₀`. Establish `keep : ∀ h ∈ UWset PP.k PP.r z, ∀ c : ℂ, c ≠ 0 → h *ᵥ e = c • e → ∀ v, TP.E ρ (π h (TP.E ρ v)) = π h (TP.E ρ v)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h hh c hc0 hce v`. Establish `hB1 : Q.IsFrameOf PP.k PP.r [z, e] (fun a => h *ᵥ Bs₀ a)` using `Formalism.FourierDecayAlt.P.Topx1.vecw_frame_map hh.1 (fun w hw => tc_inWb hh hw) (fun v hv => by`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`. Break down `hv with rfl | rfl` into its components or cases. Conclude with `⟨1, v, by simp, by rw [one_smul, hh.2.2]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨c⁻¹, v, by simp, by rw [hce, smul_smul, inv_mul_cancel₀ hc0, one_smul]⟩) hB₀`. Use `TP.full _ hB1 ρ _ fun w => ?_` and prove the remaining obligations. Rewrite using `[tc_capRep_conj hπ hc hh hB₀z w, TP.eigen Bs₀ hB₀ ρ w v, map_smul]`. Establish `kg` using `keep g hg l hl0 hl`. Establish `kgi` using `keep g⁻¹ hgi l⁻¹ (inv_ne_zero hl0) hli`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `large₂ : Wp →ₗᵢ[ℂ] Wp` to `{ toLinearMap := (π g : Wp →ₗ[ℂ] Wp), norm_map' := hu g hg }`. Establish `hinn : ∀ x y, inner ℂ (π g x) (π g y) = inner ℂ x y` using `fun x y => large₂.inner_map_map x y`. Establish `hgg : ∀ y, π g (π g⁻¹ y) = y`. Introduce `y`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hπ.2 _ hg _ hgi, Matrix.mul_nonsing_inv _ ug, hπ.1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `set E := TP.E ρ with hE`. Establish `hEE : ∀ x, E (E x) = x - (x - E x)`. Introduce `x`. Simplify using `only [sub_sub_cancel]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `congrArg (fun L : Wp →L[ℂ] Wp => L x) (TP.idem ρ)`. Establish `hker : ∀ y, E y = 0 → E (π g y) = 0`. Introduce `y hy`. Establish `horth : ∀ u, inner ℂ (π g y) (E u) = 0`. Introduce `u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hidem : E (E (π g y)) = E (π g y)` using `congrArg (fun L : Wp →L[ℂ] Wp => L (π g y)) (TP.idem ρ)`. Establish `h0 : inner ℂ (E (π g y)) (E (π g y)) = 0`. Rewrite using `[TP.selfAdj ρ, hidem, horth]`. Conclude with `inner_self_eq_zero.1 h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Establish `hidem : E (E x) = E x` using `congrArg (fun L : Wp →L[ℂ] Wp => L x) (TP.idem ρ)`. Establish `hsplit : x = E x + (x - E x)` using `by abel`. Establish `hy : E (x - E x) = 0` using `by rw [map_sub, hidem, sub_self]`.
-
-Use `conv_lhs => rw [hsplit, map_add, map_add, hker _ hy, add_zero, kg x]`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem type_commutation_holds : TypeComm := by
   intro PP Wp _ _ _ π z e TP hπ hc hu hk hz hTz he hez hee g hg l hl ρ

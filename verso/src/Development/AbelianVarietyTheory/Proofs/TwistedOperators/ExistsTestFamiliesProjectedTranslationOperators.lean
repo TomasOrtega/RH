@@ -23,7 +23,7 @@ section Local
 variable {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] {μ : Measure G} [μ.IsMulLeftInvariant]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.AutomorphicL2Unitary.conv]`. Rewrite using `[← integral_mul_left_eq_self _ c⁻¹]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem conv_translate_left (f f' : G → ℂ) (c y : G) :
     GlobalTheory.AutomorphicL2Unitary.conv μ (fun x => f (c * x)) f' y = GlobalTheory.AutomorphicL2Unitary.conv μ f f' (c * y) := by
@@ -34,7 +34,7 @@ theorem conv_translate_left (f f' : G → ℂ) (c y : G) :
   simp [mul_assoc]
 
 /- English proof (translation)
-Use `conv_translate_left (μ := μ) f f' k x` as an intermediate fact. Rewrite using `[← this]`. Simplify using `only [hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conv_mul_left {f f' : G → ℂ} {k : G} (hf : ∀ y, f (k * y) = f y) (x : G) :
     GlobalTheory.AutomorphicL2Unitary.conv μ f f' (k * x) = GlobalTheory.AutomorphicL2Unitary.conv μ f f' x := by
@@ -45,7 +45,7 @@ theorem conv_mul_left {f f' : G → ℂ} {k : G} (hf : ∀ y, f (k * y) = f y) (
 omit [MeasurableMul G] [μ.IsMulLeftInvariant] in
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.AutomorphicL2Unitary.conv, ← mul_assoc, hf']`.
+Simplify using the standard rewrite rules.
 -/
 theorem conv_mul_right {f f' : G → ℂ} {k : G} (hf' : ∀ y, f' (y * k) = f' y) (x : G) :
     GlobalTheory.AutomorphicL2Unitary.conv μ f f' (x * k) = GlobalTheory.AutomorphicL2Unitary.conv μ f f' x := by
@@ -54,29 +54,27 @@ theorem conv_mul_right {f f' : G → ℂ} {k : G} (hf' : ∀ y, f' (y * k) = f' 
 end Local
 
 /- English proof (translation)
-Introduce `D V T U hu μf hμf h1 ν hν`. Take `⟨e, heF, heS, hee, heI, heSph, heNZ⟩` from `GlobalTheory.T.exists_typeIwahoriMaximalCompact_idempotentFamily D V T U hu μf hμf h1 ν hν`. Take `⟨-, hconv, hSB⟩` from `GlobalTheory.T.convolution_finiteAdelicPureTensor_eq_localConvolutions D V μf hμf h1 ν hν e e heF heF`. Establish `hfe : GlobalTheory.AutomorphicL2Unitary.conv ν (finFn V e) (finFn V e) = finFn V e`. Rewrite using `[← hconv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `v`. Conclude with `hee v`. Use `⟨e, heF, ?_, ?_⟩` and prove the remaining obligations. Introduce `W _ _ σ hσ P hP haveI := hν.1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `(GlobalTheory.T.heckeOperator_convolution_and_leftTranslate (GfC V) ν W σ hσ (finFn V e) hSB (finFn V e) hSB P P hP hP).1`. Rewrite `h` using `[hfe]`. Conclude with `⟨h.unique hP, fun ht => heNZ W σ hσ ht P hP⟩`. Introduce `g haveI := hν.1 set c : ∀ v, GLoc D.sp.cm.sig V.gram v := fun v => (proj D.sp.cm.sig V.gram v (g : GA D V))⁻¹ with hc set b : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ := fun v x => e v (c v * x) with hb`. Establish `hbF : IsFinFamily D.sp.cm.sig V.gram (frameLat V) b`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun v => comp_mem_SB (heF.1 v) (Homeomorph.mulLeft (c v)), ?_⟩` and prove the remaining obligations. Use `filter_upwards [heF.2, eventually_proj_mem_stabLoc D.sp.cm.sig V.gram (frameLat V) (g : GA D V)] with v he hg`. Use function extensionality and compare the values at `x`. Establish `hcv : c v ∈ stabLoc D.sp.cm.sig V.gram (frameLat V) v` using `inv_mem hg`. Simplify using `only [hb, he, unitLoc, Set.indicator, SetLike.mem_coe, Subgroup.mul_mem_cancel_left _ hcv, Pi.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hbfin : finFn V b = fun x => finFn V e (g⁻¹ * x)`. Use function extensionality and compare the values at `x`. Simplify using `[finFn, hb, hc, map_mul, map_inv]`. Take `⟨hffF, hffeq, -⟩` from `GlobalTheory.T.convolution_finiteAdelicPureTensor_eq_localConvolutions D V μf hμf h1 ν hν e b heF hbF`. Take `⟨-, -, hbSB⟩` from `GlobalTheory.T.convolution_finiteAdelicPureTensor_eq_localConvolutions D V μf hμf h1 ν hν b b hbF hbF`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hcb : ∀ v, GlobalTheory.AutomorphicL2Unitary.conv (μf v) (b v) (e v) = b v` using `fun v => by haveI := hμf v`. Use function extensionality and compare the values at `y`. Rewrite using `[hb]`. Simplify using `only`. Rewrite using `[conv_translate_left, hee v]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun v => GlobalTheory.AutomorphicL2Unitary.conv (μf v) (e v) (b v), hffF, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk x haveI := hμf U.u`. Conclude with `conv_mul_left (heI k hk) x`. Introduce `t ht`. Establish `hne : ∀ v ∈ T.S, v ≠ U.u` using `fun v hv h => hu (h ▸ hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨hu, fun v => ⟨b v, hbF.1 v, ?_⟩, ⟨t, ht, Function.update_self ..⟩, fun v _ hv' => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `haveI := hμf v`. Establish `hcont : ∀ f ∈ GlobalTheory.SplitWeil.SB (GLoc D.sp.cm.sig V.gram v), Continuous f ∧ HasCompactSupport f` using `fun f hf => ⟨hf.1.continuous, hf.2⟩`. Rewrite using `[Function.update_of_ne (hne v v.2), ← heS v, GlobalTheory.Orb.conv_assoc (hcont _ (heF.1 v)).1 (hcont _ (heF.1 v)).2 (hcont _ (hbF.1 v)).1 (hcont _ (hbF.1 v)).2 (hcont _ (heF.1 v)).1, hcb]`. Rewrite using `[Function.update_of_ne hv']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hffF.1 v`. Use `filter_upwards [hffF.2, eventually_cofinite_ne U.u] with v hv hv'`. Rewrite using `[Function.update_of_ne hv']`. Conclude with `hv`. Introduce `v hv hvu k hk k' hk' x haveI := hμf v`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Function.update_of_ne hvu]`. Rewrite using `[conv_mul_right, conv_mul_left]`. Introduce `y`. Simplify using `using heSph v hv hvu k hk 1 (one_mem _) y`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [hb]`. Simplify `heSph v hv hvu 1 (one_mem _) k' hk' (c v * y)` using `[mul_assoc]`. Introduce `W _ _ σ hσ P hP`. Establish `h2` using `(GlobalTheory.T.heckeOperator_convolution_and_leftTranslate (GfC V) ν W σ hσ (finFn V e) hSB (finFn V e) hSB P P hP hP).2 g`. Rewrite `h2` using `[← hbfin]`.
-
-Establish `h3` using `(GlobalTheory.T.heckeOperator_convolution_and_leftTranslate (GfC V) ν W σ hσ (finFn V e) hSB (finFn V b) hbSB P _ hP h2).1`. Rewrite `h3` using `[← hffeq]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem test_families : ∀ (D : D7) (V : HSp D) (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V), U.u ∉ T.S → ∀ (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)), (∀ v, (μf v).IsHaarMeasure) → (∀ᶠ v in cofinite, μf v (Kv V v) = 1) → ∀ ν, IsFinMeas V μf ν → ∃ e, IsFinFamily D.sp.cm.sig V.gram (frameLat V) e ∧ (∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GfC V) W), GlobalTheory.PRep.IsSmooth σ → ∀ P, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IsIntegralOp ν σ (finFn V e) P → P ∘ₗ P = P ∧ (HasTypeVec T σ → P ≠ 0)) ∧ ∀ g : GfC V, ∃ ff, IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff ∧ (∀ k ∈ U.frame.iwahori, ∀ x, ff U.u (k * x) = ff U.u x) ∧ (∀ t ∈ strictTorus V.rank U.ϖ, IsTestFin T U μf (Function.update ff U.u (U.frame.cosetFn t)) ∧ SphRest T U (Function.update ff U.u (U.frame.cosetFn t))) ∧ ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GfC V) W), GlobalTheory.PRep.IsSmooth σ → ∀ P, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IsIntegralOp ν σ (finFn V e) P → GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IsIntegralOp ν σ (finFn V ff) (P ∘ₗ σ g ∘ₗ P) := by
   intro D V T U hu μf hμf h1 ν hν

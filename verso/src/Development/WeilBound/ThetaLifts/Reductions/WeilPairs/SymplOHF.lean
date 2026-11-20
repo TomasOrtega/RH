@@ -19,17 +19,15 @@ open PositivityTheory.ThKW.ModulusFactorDefinition PositivityTheory.ThKW.Modulus
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hCy : e (dC (AF F ⊗[F] E) nT * y) = (0, β y)`. Establish `h` using `hCe y 0`. Rewrite `h` using `[Matrix.mul_zero, add_zero, map_zero]`. Conclude with `h`. Establish `h2 : (⅟(2 : AF F)) = algebraMap F (AF F) (1 / 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `invOf_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[← map_ofNat (algebraMap F (AF F)) 2, ← map_mul]`. Evaluate the numerical expressions. Use function extensionality and compare the values at `w`. Simplify using `only [Function.comp_apply, heisOF, thV, GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.schr]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, hCy]`. Establish `hph : symplOHF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ w (dC (AF F ⊗[F] E) nT * y) = ⅟(2 : AF F) * ((e w).1 ⬝ᵥ β y)`. Rewrite using `[symplOHF, he, hCy, h2]`. Simplify using `[symV]`. Rewrite using `[hph, ← tsum_mul_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Use `set x₁ := (e w).1`. Use `set y₁ := (e w).2`. Use `set b := β y`. Use `set r : Fin N → AF F := fun i => algebraMap F (AF F) (ξ i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hw : e w = (x₁, y₁)` using `rfl`. Simplify using `only [hw, Prod.mk_add_mk, add_zero]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Establish `h22 : (⅟(2 : AF F)) + ⅟2 = 1` using `invOf_two_add_invOf_two`.
-
-Simplify using `only [dotProduct_add, add_dotProduct]`. Take the linear combination `(x₁ ⬝ᵥ b) * h22`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem heis_C {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E)
     (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (N : ℕ)

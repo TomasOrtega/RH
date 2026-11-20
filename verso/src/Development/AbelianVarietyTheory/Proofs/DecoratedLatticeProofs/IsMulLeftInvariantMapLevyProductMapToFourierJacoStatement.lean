@@ -14,7 +14,7 @@ open GlobalTheory.HaarR
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HaarR.LeftFJ.isMulLeftInvariant_map_prodRFJ` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIsMulLeftInvariantMapLevyProductMapToFourierJaco.lean&line=152#L152)
 -/

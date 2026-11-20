@@ -11,11 +11,11 @@ namespace AdmissibleUnits
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Use `⟨?_, rfl⟩` and prove the remaining obligations. Simplify using `using h`. It suffices to derive a contradiction.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. It suffices to derive a contradiction.
 
-Establish `hxq : x = ((-a / b : ℚ) : K)`. Establish `hb' : (b : K) ≠ 0` using `by exact_mod_cast hb`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `hx` using `[hxq]`. Establish `h2 : ((-a / b) ^ 2 : ℚ) = -(d : ℚ)` using `by exact_mod_cast hx`. Establish `hd' : (0 : ℚ) < d` using `by exact_mod_cast hd`. Use polynomial arithmetic with `[sq_nonneg (-a / b)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma indep (d : ℕ) (hd : 0 < d) (x : K) (hx : x ^ 2 = -(d : K)) (a b : ℚ)
     (h : (a : K) + (b : K) * x = 0) : a = 0 ∧ b = 0 := by
@@ -35,11 +35,11 @@ lemma indep (d : ℕ) (hd : 0 < d) (x : K) (hx : x ^ 2 = -(d : K)) (a b : ℚ)
     nlinarith [sq_nonneg (-a / b)]
 
 /- English proof (translation)
-Establish `hli : LinearIndependent ℚ ![(1 : K), x]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Apply `indep d hd x hx s t` to reduce the goal to its premises. Simplify `hst` using `[Algebra.smul_def, eq_ratCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Set `B` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp [hK])`. Use `⟨B.repr y 0, B.repr y 1, ?_⟩` and prove the remaining obligations. Use `B.sum_repr y` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_two]`. Simplify using `only [B, coe_basisOfLinearIndependentOfCardEqFinrank, Matrix.cons_val_zero, Matrix.cons_val_one] at this`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [← this]`. Simplify using `[Algebra.smul_def, eq_ratCast, B]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma span (d : ℕ) (hd : 0 < d) (x : K) (hx : x ^ 2 = -(d : K)) (hK : Module.finrank ℚ K = 2)
     (y : K) : ∃ a b : ℚ, y = (a : K) + (b : K) * x := by
@@ -64,9 +64,9 @@ namespace AdmissibleUnits
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[Complex.conj_eq_iff_re]`. Establish `h2 : (φ x) ^ 2 = -(d : ℂ)` using `by simpa using congrArg φ hx`. Rewrite `h2` using `[← h]`. Establish `h3 : ((φ x).re ^ 2 : ℝ) = -(d : ℝ)` using `by exact_mod_cast h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) < d` using `by exact_mod_cast hd`. Use polynomial arithmetic with `[sq_nonneg (φ x).re]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma conj_ne (d : ℕ) (hd : 0 < d) (x : K) (hx : x ^ 2 = -(d : K)) (φ : K →+* ℂ) :
     starRingEnd ℂ (φ x) ≠ φ x := by
@@ -79,13 +79,11 @@ lemma conj_ne (d : ℕ) (hd : 0 < d) (x : K) (hx : x ^ 2 = -(d : K)) (φ : K →
   nlinarith [sq_nonneg (φ x).re]
 
 /- English proof (translation)
-Use `set ψ : K →ₐ[ℚ] ℂ := φ.toRatAlgHom`. Use `set ψ' : K →ₐ[ℚ] ℂ := ((starRingEnd ℂ).comp φ).toRatAlgHom`. Establish `hne : ψ ≠ ψ'`. Introduce `h`. Use `congrArg (fun f : K →ₐ[ℚ] ℂ => f x) h` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [ψ, ψ', RingHom.toRatAlgHom_apply, RingHom.comp_apply] at this`. Conclude with `conj_ne d hd x hx φ this.symm`. Establish `hcard : Fintype.card (K →ₐ[ℚ] ℂ) = 2` using `by rw [AlgHom.card, hK]`. Establish `huniv : (Finset.univ : Finset (K →ₐ[ℚ] ℂ)) = {ψ, ψ'}` using `by symm; apply Finset.eq_univ_of_card`. Rewrite using `[Finset.card_pair hne, hcard]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h` using `Algebra.norm_eq_prod_embeddings ℚ ℂ α`. Rewrite `h` using `[huniv, Finset.prod_pair hne]`. Simplify using `only [ψ, ψ', RingHom.toRatAlgHom_apply, RingHom.comp_apply] at h`. Rewrite `h` using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `h' : (((Algebra.norm ℚ α : ℚ) : ℝ) : ℂ) = ((‖φ α‖ ^ 2 : ℝ) : ℂ)`.
-
-Rewrite using `[← h]`. Simplify using the standard rewrite rules. Conclude with `h'` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma norm_eq (d : ℕ) (hd : 0 < d) (x : K) (hx : x ^ 2 = -(d : K)) (hK : Module.finrank ℚ K = 2)
     (φ : K →+* ℂ) (α : K) : ((Algebra.norm ℚ α : ℚ) : ℝ) = ‖φ α‖ ^ 2 := by

@@ -18,9 +18,9 @@ private def chartE (k : Type) [Field k] (N : ℕ) (i : Fin (N + 1)) :
   (chartEquiv k i).trans (MvPolynomial.renameEquiv k (finSuccAboveEquiv i).symm).toRingEquiv
 
 /- English proof (translation)
-Establish `h : HomogeneousLocalization.fromZeroRingHom (grading k N) _ (algebraMap k (grading k N 0) a) = polyToChart k i (MvPolynomial.C a)`. Simplify using `[polyToChart]`. Rewrite using `[h]`. Establish `h2 : chartToPoly k i (polyToChart k i (MvPolynomial.C a)) = MvPolynomial.C a`. Rewrite using `[← RingHom.comp_apply, chartToPoly_polyToChart]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [chartE, RingEquiv.trans_apply]`. Express the relevant statement in the definitionally equal form `(MvPolynomial.renameEquiv k (finSuccAboveEquiv i).symm) (chartToPoly k i (polyToChart k i (MvPolynomial.C a))) = _`. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem chartE_C (k : Type) [Field k] (N : ℕ) (i : Fin (N + 1)) (a : k) :
     chartE k N i (HomogeneousLocalization.fromZeroRingHom (grading k N) _
@@ -39,11 +39,11 @@ private theorem chartE_C (k : Type) [Field k] (N : ℕ) (i : Fin (N + 1)) (a : k
   simp
 
 /- English proof (translation)
-Introduce `k _ N i`. Set `e` to `chartE k N i`. Set `ι` to `Proj.awayι (grading k N) (MvPolynomial.X i) (X_mem i) one_pos`. Establish `hiso : IsIso (Spec.map (CommRingCat.ofHom e.toRingHom))`. Establish `: IsIso (CommRingCat.ofHom e.toRingHom)` using `(RingEquiv.toCommRingCatIso e).isIso_hom`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Use `⟨Spec.map (CommRingCat.ofHom e.toRingHom) ≫ ι, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [PNto, Category.assoc]`. Rewrite using `[Proj.awayι_toSpecZero_assoc, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Conclude with `congrArg (MvPolynomial.coeff _) (chartE_C k N i a)`. Establish `h` using `Scheme.Hom.opensRange_comp_of_isIso (Spec.map (CommRingCat.ofHom e.toRingHom)) ι`. Rewrite `h` using `[Proj.opensRange_awayι]`. Conclude with `congrArg (fun U : (PN k N).Opens => (U : Set (PN k N))) h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chart_holds : LPdCut.LChart := by
   intro k _ N i
@@ -64,11 +64,11 @@ private theorem chart_holds : LPdCut.LChart := by
     exact congrArg (fun U : (PN k N).Opens => (U : Set (PN k N))) h
 
 /- English proof (translation)
-Introduce `s`. Establish `hs : s ∈ (⊤ : (PN k d).Opens)` using `trivial`. Rewrite `hs` using `[← LSmoothPf.Dp_cover k d]`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.mp hs`. Take `⟨j, hj, -, hr⟩` from `chart_holds k d i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hj`. Establish `hU : j.opensRange = LPdCut.Dp k d i` using `TopologicalSpace.Opens.ext hr`. Use `⟨j.opensRange, isAffineOpen_opensRange j, hU ▸ hi, ?_⟩` and prove the remaining obligations. Establish `e1` using `j.appIso ⊤`. Rewrite `e1` using `[Scheme.Hom.image_top_eq_opensRange]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `(e1 ≪≫ Scheme.ΓSpecIso _).commRingCatIsoToRingEquiv`. Conclude with `⟨MulEquiv.isDomain _ e.toMulEquiv, IsIntegrallyClosed.of_equiv e.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem locNml (k : Type) [Field k] (d : ℕ) : TranscendenceTraces.LocNml (PN k d) := by
   intro s
@@ -85,13 +85,11 @@ private theorem locNml (k : Type) [Field k] (d : ℕ) : TranscendenceTraces.LocN
   exact ⟨MulEquiv.isDomain _ e.toMulEquiv, IsIntegrallyClosed.of_equiv e.symm⟩
 
 /- English proof (translation)
-Take `⟨j, hj, hc, hr⟩` from `chart_holds k 0 0`. Establish `htop : LPdCut.Dp k 0 0 = ⊤`. Use `LSmoothPf.Dp_cover k 0` as an intermediate fact. Simplify using `using this`. Establish `hjiso : IsIso j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(isIso_iff_isOpenImmersion_and_surjective j).2 ⟨hj, ⟨fun x => ?_⟩⟩` and prove the remaining obligations. Establish `: x ∈ Set.range j`. Rewrite using `[hr, htop]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact.
 
-Establish `hCiso : IsIso (CommRingCat.ofHom (MvPolynomial.C : k →+* MvPolynomial (Fin 0) k))`. Establish `hb : Function.Bijective (MvPolynomial.C : k →+* MvPolynomial (Fin 0) k)` using `⟨MvPolynomial.C_injective _ _, MvPolynomial.C_surjective _⟩`. Conclude with `(RingEquiv.toCommRingCatIso (RingEquiv.ofBijective _ hb)).isIso_hom`. Establish `hP : PNto k 0 = inv j ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.C : k →+* MvPolynomial (Fin 0) k))`. Rewrite using `[← hc, IsIso.inv_hom_id_assoc]`.
-
-Rewrite using `[hP]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem iso0 (k : Type) [Field k] : IsIso (PNto k 0) := by
   obtain ⟨j, hj, hc, hr⟩ := chart_holds k 0 0
@@ -116,7 +114,7 @@ private theorem iso0 (k : Type) [Field k] : IsIso (PNto k 0) := by
 end UpperTheory.Gal.KunnethLefschetz.PnF
 
 /- English proof (translation)
-Unfold `UpperTheory.Gal.KunnethLefschetz.PnFacts`. Introduce `k _ d`. Conclude with `⟨⟨LProperPf.LProper_of k d, LSmoothPf.LSmooth_of PnF.chart_holds k d⟩, Cov.PNIntegral_of k d, PnF.locNml k d, PnF.iso0 k⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.pnFacts_holds :
     UpperTheory.Gal.KunnethLefschetz.PnFacts := by

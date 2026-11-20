@@ -17,13 +17,13 @@ def D (n : ℕ) (a : ℕ → ℕ) : ℕ :=
 def F (n : ℕ) (a : ℕ → ℕ) : ℕ := ∏ i ∈ range n, (a i + n - 1 - i).factorial
 
 /- English proof (translation)
-Simplify using `[K, Finset.range_add_one, Finset.filter_insert, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem K_succ_of_zero (m : ℕ) (a : ℕ → ℕ) (h : a m = 0) (c : ℕ) : K (m + 1) a c = K m a c := by
   simp [K, Finset.range_add_one, Finset.filter_insert, h]
 
 /- English proof (translation)
-Unfold `K`. Rewrite using `[Finset.filter_true_of_mem, Finset.card_range]`. Introduce `l hl`. Use `h1 l (Finset.mem_range.mp hl)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem K_zero (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i) : K n a 0 = n := by
   unfold K
@@ -33,9 +33,9 @@ theorem K_zero (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i) : K n a 0
   omega
 
 /- English proof (translation)
-Unfold `K`. Use `congr 1`. Apply `Finset.filter_congr` to reduce the goal to its premises. Introduce `l hl`. Use `h1 l (Finset.mem_range.mp hl)` as an intermediate fact.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show c + 1 < a l ↔ c < a l - 1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem K_shift (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i) (c : ℕ) :
     K n a (c + 1) = K n (fun i => a i - 1) c := by
@@ -48,7 +48,7 @@ theorem K_shift (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i) (c : ℕ
   omega
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Rewrite using `[Finset.prod_range_succ', mul_comm, Nat.add_sub_cancel]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_range_pos (m : ℕ) (hm : 1 ≤ m) (f : ℕ → ℕ) :
     ∏ c ∈ range m, f c = f 0 * ∏ c ∈ range (m - 1), f (c + 1) := by
@@ -56,7 +56,7 @@ theorem prod_range_pos (m : ℕ) (hm : 1 ≤ m) (f : ℕ → ℕ) :
   rw [Finset.prod_range_succ', mul_comm, Nat.add_sub_cancel]
 
 /- English proof (translation)
-Unfold `E`. Rewrite using `[Finset.prod_range_succ, h, Finset.range_zero, Finset.prod_empty, mul_one]`. Use `Finset.prod_congr rfl (fun i _ => Finset.prod_congr rfl (fun c _ => ?_))` and prove the remaining obligations. Rewrite using `[K_succ_of_zero m a h c]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem E_succ_zero (m : ℕ) (a : ℕ → ℕ) (h : a m = 0) : E (m + 1) a = E m a := by
   unfold E
@@ -65,11 +65,11 @@ theorem E_succ_zero (m : ℕ) (a : ℕ → ℕ) (h : a m = 0) : E (m + 1) a = E 
   rw [K_succ_of_zero m a h c]
 
 /- English proof (translation)
-Unfold `D`. Rewrite using `[Finset.prod_range_succ]`. Establish `h0 : Ioo m (m + 1) = ∅`. Use extensionality with `x`. Simplify using `only [Finset.mem_Ioo]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Apply the tactic sequence `try omega`. Rewrite using `[h0, Finset.prod_empty, mul_one, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Establish `hi' : i < m` using `Finset.mem_range.mp hi`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Ioo i (m + 1) = insert m (Ioo i m)`. Use extensionality with `x`. Simplify using `only [Finset.mem_Ioo, Finset.mem_insert]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1, Finset.prod_insert (by simp)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem D_succ (m : ℕ) (a : ℕ → ℕ) :
     D (m + 1) a = (∏ i ∈ range m, (a i + m - a m - i)) * D m a := by
@@ -90,9 +90,9 @@ theorem D_succ (m : ℕ) (a : ℕ → ℕ) :
   rw [h1, Finset.prod_insert (by simp)]
 
 /- English proof (translation)
-Unfold `F`. Rewrite using `[Finset.prod_range_succ, ← Finset.prod_mul_distrib]`. Establish `hl : a m + (m + 1) - 1 - m = 0` using `by omega`. Rewrite using `[hl, Nat.factorial_zero, mul_one]`. Use `Finset.prod_congr rfl (fun i hi => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi' : i < m` using `Finset.mem_range.mp hi`. Establish `e1 : a i + (m + 1) - 1 - i = (a i + m - 1 - i) + 1` using `by omega`. Establish `e2 : a i + m - a m - i = (a i + m - 1 - i) + 1` using `by omega`. Rewrite using `[e1, e2, Nat.factorial_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem F_succ_zero (m : ℕ) (a : ℕ → ℕ) (h : a m = 0) :
     F (m + 1) a = (∏ i ∈ range m, (a i + m - a m - i)) * F m a := by
@@ -107,11 +107,11 @@ theorem F_succ_zero (m : ℕ) (a : ℕ → ℕ) (h : a m = 0) :
   rw [e1, e2, Nat.factorial_succ]
 
 /- English proof (translation)
-Simplify using `only [E]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Establish `hi' : i < n` using `Finset.mem_range.mp hi`. Establish `hai` using `h1 i hi'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[prod_range_pos (a i) hai]`. Use `congr 1`. Rewrite using `[K_zero n a h1]`. Use linear arithmetic over natural numbers and integers. Use `Finset.prod_congr rfl (fun c _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[K_shift n a h1 c]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem E_shift (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i) :
     E n a = (∏ i ∈ range n, (a i + n - 1 - i)) * E n (fun i => a i - 1) := by
@@ -129,9 +129,9 @@ theorem E_shift (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i) :
     omega
 
 /- English proof (translation)
-Simplify using `only [D]`. Use `Finset.prod_congr rfl (fun i hi => Finset.prod_congr rfl (fun l hl => ?_))` and prove the remaining obligations. Establish `hi' : i < n` using `Finset.mem_range.mp hi`. Establish `hl' : l < n` using `(Finset.mem_Ioo.mp hl).2`. Use `h1 i hi'` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1 l hl'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem D_shift (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i) :
     D n a = D n (fun i => a i - 1) := by
@@ -144,9 +144,9 @@ theorem D_shift (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i) :
   omega
 
 /- English proof (translation)
-Simplify using `only [F]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Establish `hi' : i < n` using `Finset.mem_range.mp hi`. Use `h1 i hi'` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : a i + n - 1 - i = (a i - 1 + n - 1 - i) + 1` using `by omega`. Rewrite using `[e, Nat.factorial_succ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem F_shift (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i) :
     F n a = (∏ i ∈ range n, (a i + n - 1 - i)) * F n (fun i => a i - 1) := by
@@ -159,17 +159,15 @@ theorem F_shift (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i) :
   rw [e, Nat.factorial_succ]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro a _`. Simplify using `[E, D, F]`. Consider the case `succ m ih`. It suffices to establish `H : ∀ k (a : ℕ → ℕ), a m = k → (∀ i l, i < l → l < m + 1 → a l ≤ a i) → E (m + 1) a * D (m + 1) a = F (m + 1) a from fun a h => H _ a rfl h`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Reduce the argument to an intermediate assertion.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `a ha hmono`. Rewrite using `[E_succ_zero m a ha, D_succ, F_succ_zero m a ha, ← ih a (fun i l hil hl => hmono i l hil (by omega))]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `succ k ihk`. Introduce `a ha hmono`. Establish `h1 : ∀ i < m + 1, 1 ≤ a i`. Introduce `i hi`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Nat.lt_or_ge i m with h | h` into its components or cases. Use `hmono i m h (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e : i = m` using `by omega`. Rewrite using `[e, ha]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[E_shift (m + 1) a h1, D_shift (m + 1) a h1, F_shift (m + 1) a h1, ← ihk (fun i => a i - 1) (by show a m - 1 = k; omega) (fun i l hil hl => by`. Use `hmono i l hil hl` as an intermediate fact. Use `show a l - 1 ≤ a i - 1`. Use the proof step `omega)]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem E_mul_D (n : ℕ) :
     ∀ a : ℕ → ℕ, (∀ i l, i < l → l < n → a l ≤ a i) → E n a * D n a = F n a := by
@@ -204,17 +202,17 @@ theorem E_mul_D (n : ℕ) :
       ring
 
 /- English proof (translation)
-Substitute `hwe` using the available equality. Use `set μ := YoungDiagram.ofRowLens ((List.range n).map a) hw with hμ`. Establish `hmem : ∀ i j, (i, j) ∈ μ ↔ i < n ∧ j < a i`. Introduce `i j`. Rewrite using `[hμ, YoungDiagram.mem_ofRowLens]`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hrow : ∀ i < n, μ.rowLen i = a i`. Introduce `i hi`. Apply `eq_of_forall_lt_iff` to reduce the goal to its premises. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← YoungDiagram.mem_iff_lt_rowLen, hmem]`. Simplify using `[hi]`. Establish `hcol : ∀ c, μ.colLen c = K n a c`. Introduce `c`. Establish `e : (range n).filter (fun l => c < a l) = range (μ.colLen c)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Rewrite using `[Finset.mem_filter, Finset.mem_range, Finset.mem_range, ← YoungDiagram.mem_iff_lt_colLen, hmem]`. Unfold `K`. Rewrite using `[e, Finset.card_range]`. Unfold `Formalism.LatticeIndexTer.hookProd E`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_finset_product μ.cells (range n) (fun i => range (a i))]`. Use `Finset.prod_congr rfl (fun i hi => Finset.prod_congr rfl (fun c _ => ?_))` and prove the remaining obligations. Rewrite using `[hrow i (Finset.mem_range.mp hi), hcol c]`. Introduce and unpack `⟨i, j⟩`. Rewrite using `[YoungDiagram.mem_cells, hmem]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem hookProd_eq_E (n : ℕ) (a : ℕ → ℕ) (w : List ℕ) (hw : w.SortedGE)
     (hwe : w = (List.range n).map a) : Formalism.LatticeIndexTer.hookProd (YoungDiagram.ofRowLens w hw) = E n a := by
@@ -250,9 +248,9 @@ end HookLengthProduct
 
 open HookLengthProduct in
 /- English proof (translation)
-Establish `hsorted : ((List.range n).map a).insertionSort (· ≥ ·) = (List.range n).map a`. Apply `List.Pairwise.insertionSort_eq` to reduce the goal to its premises. Rewrite using `[List.pairwise_iff_getElem]`. Introduce `i j hi hj hij`. Simplify using `only [List.length_map, List.length_range] at hi hj`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.getElem_map, List.getElem_range]`. Conclude with `hmono i j hij hj`. Rewrite using `[hookProd_eq_E n a _ List.sortedGE_insertionSort hsorted]`. Conclude with `E_mul_D n a hmono`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hookProd_mul_prod (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i)
     (hmono : ∀ i l, i < l → l < n → a l ≤ a i) :

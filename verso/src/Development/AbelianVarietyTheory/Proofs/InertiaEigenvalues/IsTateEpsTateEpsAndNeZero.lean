@@ -11,9 +11,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.DelEps
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ hψ h1 χ hχ`. Take `⟨⟨e, he, -⟩, hne⟩` from `existsUnique_isTateEps ψ hψ h1 χ hχ`. Establish `hx : ∃ e, IsTateEps ψ χ e` using `⟨e, he⟩`. Establish `hs : IsTateEps ψ χ (tateEps ψ χ)`. Unfold `tateEps`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hx]`. Conclude with `hx.choose_spec`. Conclude with `⟨hs, hne _ hs⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isTateEps_tateEps_and_ne_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (χ : kˣ →* ℂˣ), IsSmoothChar χ →

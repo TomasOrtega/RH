@@ -14,20 +14,20 @@ variable {n : ℕ}
 def sg (ε : Fin n → Bool) (j : Fin n) : ℂ := if ε j then 1 else -1
 
 /- English proof (translation)
-Apply the tactic sequence `unfold sg; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_sg (ε : Fin n → Bool) (j : Fin n) : star (sg ε j) = sg ε j := by
   unfold sg; split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `[hJ, Formalism.REAL.Jm, dotProduct, mulVec_diagonal, sg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hJ_eq_sum (ε : Fin n → Bool) (x y : Fin n → ℂ) :
     hJ ε x y = ∑ j, star (x j) * (sg ε j * y j) := by
   simp [hJ, Formalism.REAL.Jm, dotProduct, mulVec_diagonal, sg]
 
 /- English proof (translation)
-Rewrite using `[hJ_eq_sum, hJ_eq_sum, star_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul', star_mul', star_star, star_sg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hJ_conj (ε : Fin n → Bool) (x y : Fin n → ℂ) : hJ ε y x = star (hJ ε x y) := by
   rw [hJ_eq_sum, hJ_eq_sum, star_sum]
@@ -35,21 +35,21 @@ theorem hJ_conj (ε : Fin n → Bool) (x y : Fin n → ℂ) : hJ ε y x = star (
   rw [star_mul', star_mul', star_star, star_sg]; ring
 
 /- English proof (translation)
-Simplify using `only [hJ_eq_sum, Pi.sub_apply, star_sub, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hJ_sub_left (ε : Fin n → Bool) (x x' y : Fin n → ℂ) :
     hJ ε (x - x') y = hJ ε x y - hJ ε x' y := by
   simp only [hJ_eq_sum, Pi.sub_apply, star_sub, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [hJ_eq_sum, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hJ_sub_right (ε : Fin n → Bool) (x y y' : Fin n → ℂ) :
     hJ ε x (y - y') = hJ ε x y - hJ ε x y' := by
   simp only [hJ_eq_sum, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [hJ_eq_sum, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hJ_smul_left (ε : Fin n → Bool) (c : ℂ) (x y : Fin n → ℂ) :
     hJ ε (c • x) y = star c * hJ ε x y := by
@@ -57,7 +57,7 @@ theorem hJ_smul_left (ε : Fin n → Bool) (c : ℂ) (x y : Fin n → ℂ) :
   exact Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hJ_eq_sum, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hJ_smul_right (ε : Fin n → Bool) (c : ℂ) (x y : Fin n → ℂ) :
     hJ ε x (c • y) = c * hJ ε x y := by
@@ -65,7 +65,7 @@ theorem hJ_smul_right (ε : Fin n → Bool) (c : ℂ) (x y : Fin n → ℂ) :
   exact Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hJ_eq_sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hJ_sum_smul_right (ε : Fin n → Bool) {ι : Type*} [Fintype ι] (g : ι → ℂ)
     (m : ι → Fin n → ℂ) (x : Fin n → ℂ) :
@@ -75,7 +75,7 @@ theorem hJ_sum_smul_right (ε : Fin n → Bool) {ι : Type*} [Fintype ι] (g : �
   exact Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hJ_eq_sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, star_sum, star_mul', Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hJ_sum_smul_left (ε : Fin n → Bool) {ι : Type*} [Fintype ι] (g : ι → ℂ)
     (m : ι → Fin n → ℂ) (y : Fin n → ℂ) :
@@ -86,7 +86,7 @@ theorem hJ_sum_smul_left (ε : Fin n → Bool) {ι : Type*} [Fintype ι] (g : ι
   exact Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Rewrite using `[hJ_eq_sum, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_mul, Complex.normSq_eq_conj_mul_self]`. Unfold `sg`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hJ_self (ε : Fin n → Bool) (x : Fin n → ℂ) :
     hJ ε x x = ((∑ j, (if ε j then (1 : ℝ) else -1) * Complex.normSq (x j) : ℝ) : ℂ) := by
@@ -97,14 +97,14 @@ theorem hJ_self (ε : Fin n → Bool) (x : Fin n → ℂ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[hJ_self]`. Conclude with `Complex.ofReal_re _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hJ_self_re (ε : Fin n → Bool) (x : Fin n → ℂ) :
     (hJ ε x x).re = ∑ j, (if ε j then (1 : ℝ) else -1) * Complex.normSq (x j) := by
   rw [hJ_self]; exact Complex.ofReal_re _
 
 /- English proof (translation)
-Apply `Fintype.not_linearIndependent_iff.mp` to reduce the goal to its premises. Introduce `hli`. Use `hli.fintype_card_le_finrank` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_rel {ι κ : Type*} [Fintype ι] [Fintype κ] (v : κ → ι → ℂ)
     (h : Fintype.card ι < Fintype.card κ) : ∃ g : κ → ℂ, ∑ j, g j • v j = 0 ∧ ∃ j, g j ≠ 0 := by
@@ -115,9 +115,9 @@ theorem exists_rel {ι κ : Type*} [Fintype ι] [Fintype κ] (v : κ → ι → 
   omega
 
 /- English proof (translation)
-Take `⟨g, hg, j, hj⟩` from `exists_rel (fun (j : Fin n) (i : ι) => star (u i j) * sg ε j) (by simpa using h)`. Use `⟨g, fun h0 => hj (congrFun h0 j), fun i => ?_⟩` and prove the remaining obligations. Use `congrFun hg i` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Rewrite using `[hJ_eq_sum, ← this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem exists_perp (ε : Fin n → Bool) {ι : Type*} [Fintype ι] (u : ι → Fin n → ℂ)
     (h : Fintype.card ι < n) : ∃ y : Fin n → ℂ, y ≠ 0 ∧ ∀ i, hJ ε (u i) y = 0 := by
@@ -130,7 +130,7 @@ theorem exists_perp (ε : Fin n → Bool) {ι : Type*} [Fintype ι] (u : ι → 
   exact Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `[Complex.mul_re, Complex.mul_im, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem re_star_mul_mul (a b : ℂ) : (star a * (a * b)).re = Complex.normSq a * b.re := by
   simp [Complex.mul_re, Complex.mul_im, Complex.normSq_apply]; ring

@@ -13,7 +13,7 @@ variable {X : Scheme.{0}}
 
 @[simp]
 /- English proof (translation)
-Use `ext1`. Simplify using `[pullbackIsoAlong]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma pullbackIsoAlong_refl {T Y Z : Scheme.{0}} {g : T ⟶ Y} {h : Y ⟶ Z} {k : T ⟶ Z}
     (e : g ≫ h = k) (F : Z.Modules) :

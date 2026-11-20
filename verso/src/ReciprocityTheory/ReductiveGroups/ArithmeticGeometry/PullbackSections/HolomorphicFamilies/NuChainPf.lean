@@ -17,7 +17,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `hs`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem secScal_cast {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {Y : Scheme.{0}} (h : Y ⟶ G.left)
     (k : ℕ) {L1 L2 : RigLB G} (e : L1 = L2)
@@ -29,11 +29,9 @@ theorem secScal_cast {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {
   subst e; exact hs
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ _ _ _ t P _ ϖ hϖ Q hQ vK hvK tK m w _ k hk F hF`. Take `⟨s, Ex, htie, hexp, hnu⟩` from `hF`. Use `haveI := t.semi.smooth`. Use `haveI := t.semi.separated`. Use `haveI := t.semi.quasiCompact`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨σ', hσ'⟩` from `nuExt V ϖ hϖ P.D Q hQ vK hvK P.A t.G P.U k hk s Ex hexp hnu`. Establish `hsc` using `secScal_cast (pullback.fst t.G.hom (Out.jK V)) k P.bundle s σ' hσ'`. Use `⟨P.bundle ▸ σ', fun Z r zp hzp z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Establish `e1` using `ReciprocityTheory.ChartRestriction.G.DVR.SectionScalarValuation.secScal_sval hsc (r ≫ iotaK m) z hJ`. Rewrite `e1` using `[Category.assoc, iotaK, pullback.lift_fst]`.
-
-Conclude with `e1.trans (htie Z r zp hzp z J J' hJ hJ')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nuReg : NuRegSt := by
   intro E _ _ _ H V _ _ _ _ _ t P _ ϖ hϖ Q hQ vK hvK tK m w _ k hk F hF
@@ -49,7 +47,7 @@ theorem nuReg : NuRegSt := by
   exact e1.trans (htie Z r zp hzp z J J' hJ hJ')
 
 /- English proof (translation)
-Substitute `h` using the available equality. Substitute `h'` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem zCast_trans {S : Scheme.{0}} (A : Over S) {L : LB A.left} {T : Over S} {k₁ k₂ k₃ : ℤ} (h : k₁ = k₂) (h' : k₂ = k₃)
     (F : LB.Sec (LPow A L k₁ T)) : zCast A h' (zCast A h F) = zCast A (h.trans h') F := by
@@ -62,13 +60,11 @@ theorem zCast_self {S : Scheme.{0}} (A : Over S) {L : LB A.left} {T : Over S} {k
     (F : LB.Sec (LPow A L k T)) : zCast A h F = F := rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ _ _ _ t P hTor θ _ M hMu tK m w hrig θK hθK t₀ F hVt`. Take `⟨ϖ, Q, vK, hϖ, hQ, hvK⟩` from `hN E H V t P`. Take `⟨t', α₀, α, s₁, U, hok1, hok2, hα₀, hnorm, hαc, htw, hsym, hact⟩` from `hVt`. Establish `hM1 : 1 ≤ M`. Break down `Nat.eq_zero_or_pos M with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `h` using the available equality. Simplify using `at hMu`. Conclude with `h`. Establish `n0` using `hT E H V t P hTor ϖ hϖ Q hQ vK hvK tK m w hrig θ θK hθK`. Establish `n0' : NuK P Q vK m w 1 (zCast tK.G Nat.cast_one.symm (zCast tK.G Nat.cast_one θK))`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zCast_trans, zCast_self]`. Conclude with `n0`. Establish `n1` using `hM E H V t P hTor ϖ hϖ Q hQ vK hvK tK m w hrig M hM1 (zCast tK.G Nat.cast_one θK) α₀ α s₁ n0' hα₀ hnorm hαc htw`. Establish `hk : 0 < M ^ 2` using `pow_pos hM1 2`. Apply the tactic sequence `have n2 := hF E H V t P hTor ϖ hϖ Q hQ vK hvK tK m w hrig ((M : ℤ) ^ 2) (M ^ 2) (natCast_sq M) hk s₁ F t' U n1 (by first | exact hok1 | exact hok2) hsym hact`.
-
-Conclude with `nuReg E H V t P hTor ϖ hϖ Q hQ vK hvK tK m w hrig (M ^ 2) hk (zCast tK.G (natCast_sq M) F) n2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem regUnif_of (hN : NuDataSt) (hT : ThetaNuSt) (hM : MulNuSt) (hF : FinNuSt) : RegUnifSt := by
   intro E _ _ _ H V _ _ _ _ _ t P hTor θ _ M hMu tK m w hrig θK hθK t₀ F hVt
@@ -89,7 +85,7 @@ theorem regUnif_of (hN : NuDataSt) (hT : ThetaNuSt) (hM : MulNuSt) (hF : FinNuSt
   exact nuReg E H V t P hTor ϖ hϖ Q hQ vK hvK tK m w hrig (M ^ 2) hk (zCast tK.G (natCast_sq M) F) n2
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ _ _ _ t P`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Use `choose Q hQ using fun χ => QForm.exists_QVal hϖ P.D χ`. Conclude with `⟨ϖ, Q, TG.vK hϖ, hϖ, hQ, TG.valOver_vK hϖ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nuData : NuDataSt := by
   intro E _ _ _ H V _ _ _ _ _ t P
@@ -98,7 +94,7 @@ theorem nuData : NuDataSt := by
   exact ⟨ϖ, Q, TG.vK hϖ, hϖ, hQ, TG.valOver_vK hϖ⟩
 
 /- English proof (translation)
-The claim follows from `regUnif_of nuData hT hM hF`.
+A detailed English derivation is pending.
 -/
 theorem regUnif_of' (hT : ThetaNuSt) (hM : MulNuSt) (hF : FinNuSt) : RegUnifSt := regUnif_of nuData hT hM hF
 

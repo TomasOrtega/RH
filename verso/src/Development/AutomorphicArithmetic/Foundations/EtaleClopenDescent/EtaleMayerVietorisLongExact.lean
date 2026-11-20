@@ -11,11 +11,11 @@ namespace UpperTheory.Cb.EtaleMayerVietoris
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `hl : biprod.lift a (-b) = a ≫ biprod.inl + (-b) ≫ biprod.inr`. Apply the tactic sequence `apply biprod.hom_ext <;> simp`. Establish `h0 : ∀ {P Q : Cx R} (x : CohomologyClass Q I n), cpull (0 : P ⟶ Q) I n x = 0`. Introduce `P Q x`. Establish `h` using `cpull_add (0 : P ⟶ Q) 0 I n x`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[add_zero]`. Simplify using `using h`. Establish `hn : ∀ {P Q : Cx R} (f : P ⟶ Q) (x : CohomologyClass Q I n), cpull (-f) I n x = -cpull f I n x`. Introduce `P Q f x`. Establish `h` using `cpull_add f (-f) I n x`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[add_neg_cancel, h0]`. Conclude with `eq_neg_of_add_eq_zero_right h.symm`. Rewrite using `[hl, cpull_add, ← cpull_cpull, ← cpull_cpull, hn, sub_eq_add_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cpull_lift_neg {N K L : Cx R} (a : N ⟶ K) (b : N ⟶ L) (I : Cx R) (n : ℤ)
     (y : CohomologyClass (K ⊞ L) I n) :
@@ -37,7 +37,7 @@ private theorem cpull_lift_neg {N K L : Cx R} (a : N ⟶ K) (b : N ⟶ L) (I : C
   rw [hl, cpull_add, ← cpull_cpull, ← cpull_cpull, hn, sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[cpull_cpull, biprod.inl_desc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem cpull_inl_desc {K L M : Cx R} (c : K ⟶ M) (e : L ⟶ M) (I : Cx R) (n : ℤ)
     (z : CohomologyClass M I n) :
@@ -45,7 +45,7 @@ private theorem cpull_inl_desc {K L M : Cx R} (c : K ⟶ M) (e : L ⟶ M) (I : C
   rw [cpull_cpull, biprod.inl_desc]
 
 /- English proof (translation)
-Rewrite using `[cpull_cpull, biprod.inr_desc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem cpull_inr_desc {K L M : Cx R} (c : K ⟶ M) (e : L ⟶ M) (I : Cx R) (n : ℤ)
     (z : CohomologyClass M I n) :
@@ -57,33 +57,33 @@ end UpperTheory.Cb.EtaleMayerVietoris
 set_option maxHeartbeats 800000 in
 open UpperTheory.Cb.EtaleMayerVietoris in
 /- English proof (translation)
-Introduce `R _ F`. Take `⟨d0, hex, hnat⟩` from `GlobalTheory.T.hypercohomology_longExact_first_of_injective R (res R F) (GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R F).2.1`. Use `⟨fun a b c e w hS n => d0 _ hS n, ?_, ?_⟩` and prove the remaining obligations. Introduce `N K L M a b c e w hS n`. Establish `hE` using `hex _ hS n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨hinj, hsurj⟩` from `cpull_biprod_bijective R K L (res R F) n`. Establish `back : ∀ (z : CohomologyClass M (res R F) n) (u : CohomologyClass (K ⊞ L) (res R F) n), cpull biprod.inl (res R F) n u = cpull c (res R F) n z → cpull biprod.inr (res R F) n u = cpull e (res R F) n z → cpull (biprod.desc c e) (res R F) n z = u`. Introduce `z u h1 h2`. Use `hinj (Prod.ext ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cpull biprod.inl _ n (cpull (biprod.desc c e) _ n z) = cpull biprod.inl _ n u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[cpull_inl_desc, h1]`. Express the relevant statement in the definitionally equal form `cpull biprod.inr _ n (cpull (biprod.desc c e) _ n z) = cpull biprod.inr _ n u`. Rewrite using `[cpull_inr_desc, h2]`. Use `⟨fun x y => ?_, fun t => ?_, fun z => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `hsurj (x, y)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Prod.mk.injEq] at hu`. Take `⟨hx, hy⟩` from `hu`. Establish `key : HK.pull R a F n x = HK.pull R b F n y ↔ cpull (biprod.lift a (-b)) (res R F) n u = 0`. Rewrite using `[cpull_lift_neg, hx, hy, sub_eq_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `key.trans ((hE.1 u).trans ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Establish `hz' : cpull (biprod.desc c e) (res R F) n z = u` using `hz`. Use `⟨z, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `cpull c (res R F) n z = x`. Rewrite using `[← hx, ← hz', cpull_inl_desc]`. Express the relevant statement in the definitionally equal form `cpull e (res R F) n z = y`. Rewrite using `[← hy, ← hz', cpull_inr_desc]`. Introduce and unpack `⟨z, hzx, hzy⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨z, back z u (hx.trans hzx.symm) (hy.trans hzy.symm)⟩`. Use `(hE.2.1 t).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩`. Establish `hu' : cpull (biprod.lift a (-b)) (res R F) n u = t` using `hu`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨cpull biprod.inl (res R F) n u, cpull biprod.inr (res R F) n u, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu', cpull_lift_neg]`. Both sides reduce to the same expression. Introduce and unpack `⟨x, y, rfl⟩`. Take `⟨u, hu⟩` from `hsurj (x, y)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Prod.mk.injEq] at hu`. Take `⟨hx, hy⟩` from `hu`. Use `⟨u, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cpull (biprod.lift a (-b)) (res R F) n u = _`. Rewrite using `[cpull_lift_neg, hx, hy]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨hinj1, -⟩` from `cpull_biprod_bijective R K L (res R F) (n + 1)`. Use `Iff.trans ?_ (hE.2.2 z)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ cpull (biprod.desc c e) (res R F) (n + 1) z = 0`. Prove the components needed by the constructor for the conclusion.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `hinj1 (Prod.ext ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cpull biprod.inl _ _ (cpull (biprod.desc c e) _ _ z) = cpull biprod.inl _ _ 0`. Rewrite using `[cpull_inl_desc, map_zero]`. Conclude with `h1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `cpull biprod.inr _ _ (cpull (biprod.desc c e) _ _ z) = cpull biprod.inr _ _ 0`. Rewrite using `[cpull_inr_desc, map_zero]`. Conclude with `h2`. Introduce `h`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `cpull c (res R F) (n + 1) z = 0`. Rewrite using `[← cpull_inl_desc c e, h, map_zero]`. Express the relevant statement in the definitionally equal form `cpull e (res R F) (n + 1) z = 0`. Rewrite using `[← cpull_inr_desc c e, h, map_zero]`. Introduce `N K L M N' K' L' M' a b c e a' b' c' e' w w' hS hS' φN φK φL φM h1 h2 h3 h4 n t`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `φ : ShortComplex.mk (biprod.lift a (-b)) (biprod.desc c e) w ⟶ ShortComplex.mk (biprod.lift a' (-b')) (biprod.desc c' e') w'` to `{ τ₁ := φN τ₂ := biprod.map φK φL τ₃ := φM comm₁₂ := by`. Apply the tactic sequence `apply biprod.hom_ext <;> simp [h1, h2]`. Use `comm₂₃ := by`. Apply the tactic sequence `apply biprod.hom_ext' <;> simp [h3, h4] }`. Conclude with `hnat _ _ hS hS' φ n t`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.etale_mayer_vietoris_long_exact :
     LateralTheory.E.MayerVietorisSequence.LES := by

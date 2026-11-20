@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-The claim follows from `fun R R' _ _ σ X X' s s' φ h hσ ↦ pullHO1_surjective_of_bijective R R' σ hσ X s X' s' φ h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pullHO1_surjective_of_bijective_base : ∀ (R R' : Type) [CommRing R] [CommRing R'] (σ : R →+* R') (X X' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (φ : X' ⟶ X) (h : IsPullback φ s' s (spMap σ)), Function.Bijective σ → Function.Surjective (pullHO1 h.w) :=
   fun R R' _ _ σ X X' s s' φ h hσ ↦ pullHO1_surjective_of_bijective R R' σ hσ X s X' s' φ h

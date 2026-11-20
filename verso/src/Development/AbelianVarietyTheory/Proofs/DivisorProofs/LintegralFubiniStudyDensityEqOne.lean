@@ -13,13 +13,13 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n`. Establish `hc : (0 : ℝ) ≤ n.factorial / Real.pi ^ n` using `by positivity`. Establish `hmeas : Measurable fun v : ReciprocityTheory.L2DbarEstimates.V n => ENNReal.ofReal (((1 + ‖v‖ ^ 2) ^ (n + 1))⁻¹)` using `by fun_prop`. Establish `hsplit : ∀ v : ReciprocityTheory.L2DbarEstimates.V n, ENNReal.ofReal (n.factorial / Real.pi ^ n * ((1 + ‖v‖ ^ 2) ^ (n + 1))⁻¹) = ENNReal.ofReal (n.factorial / Real.pi ^ n) * ENNReal.ofReal (((1 + ‖v‖ ^ 2) ^ (n + 1))⁻¹)` using `fun v => ENNReal.ofReal_mul hc`. Repeatedly rewrite using `[hsplit]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[lintegral_const_mul _ hmeas]`. Establish `hV : ∫⁻ v : ReciprocityTheory.L2DbarEstimates.V n, ENNReal.ofReal (((1 + ‖v‖ ^ 2) ^ (n + 1))⁻¹) = ∫⁻ z : Fin n → ℂ, ENNReal.ofReal (((1 + ∑ i, ‖z i‖ ^ 2) ^ (n + 0 + 1))⁻¹)`. Rewrite using `[← (FinChart.measurePreserving_toV (D := n)).lintegral_comp hmeas]`. Use `congr 1`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[EuclideanSpace.norm_sq_eq]`. Both sides reduce to the same expression. Rewrite using `[hV, GlobalTheory.T.lintegral_inv_pow_add_normSq_complexSpace n 0 1 one_pos, ← ENNReal.ofReal_mul hc]`. Establish `hpi : Real.pi ^ n ≠ 0` using `pow_ne_zero _ Real.pi_ne_zero`. Establish `hf : (n.factorial : ℝ) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos n).ne'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show (n.factorial : ℝ) / Real.pi ^ n * (Real.pi ^ n * (Nat.factorial 0 : ℝ) / (((n + 0).factorial : ℝ) * 1 ^ (0 + 1))) = 1 by`. Simplify using `only [Nat.factorial_zero, Nat.cast_one, add_zero, one_pow, mul_one]`. Use the proof step `field_simp]`. Conclude with `ENNReal.ofReal_one`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_fubiniStudy_density_eq_one : ∀ n : ℕ, ∫⁻ v : ReciprocityTheory.L2DbarEstimates.V n,
     ENNReal.ofReal (n.factorial / Real.pi ^ n * ((1 + ‖v‖ ^ 2) ^ (n + 1))⁻¹) = 1 := by

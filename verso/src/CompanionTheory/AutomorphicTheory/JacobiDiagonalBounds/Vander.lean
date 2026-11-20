@@ -3,13 +3,13 @@ import Mathlib
 namespace Formalism.FourierDecayAlt.P.NormalFormRelations
 
 /- English proof (translation)
-Take `⟨V, hV⟩ : ∃ V : Matrix (Fin (Q + 1)) (Fin (Q + 1)) ℂ, V = Matrix.vandermonde fun s => ((s : ℕ) : ℂ)` from `⟨_, rfl⟩`. Establish `hdet : IsUnit V.det`. Rewrite using `[isUnit_iff_ne_zero, hV, Matrix.det_vandermonde_ne_zero_iff]`. Introduce `i j hij`. Simplify `hij` using `[Fin.ext_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hinv : V⁻¹ * V = 1` using `Matrix.nonsing_inv_mul V hdet`. Use `⟨fun q s => (V⁻¹ : Matrix (Fin (Q + 1)) (Fin (Q + 1)) ℂ) q s, fun E _ _ a q => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Establish `hrow : ∀ j : Fin (Q + 1), ∑ s : Fin (Q + 1), V⁻¹ q s * ((s : ℕ) : ℂ) ^ (j : ℕ) = (1 : Matrix (Fin (Q + 1)) (Fin (Q + 1)) ℂ) q j`. Introduce `j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hinv, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[hV, Matrix.vandermonde_apply]`. Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, hrow, Matrix.one_apply, ite_smul, one_smul, zero_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vander' (Q : ℕ) : ∃ lam : Fin (Q + 1) → Fin (Q + 1) → ℂ, ∀ (E : Type) [AddCommGroup E] [Module ℂ E]
     (a : Fin (Q + 1) → E) (q : Fin (Q + 1)),

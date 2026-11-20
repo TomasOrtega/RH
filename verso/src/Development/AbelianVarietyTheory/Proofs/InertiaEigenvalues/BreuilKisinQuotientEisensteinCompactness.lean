@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.BKLim.Cpt
 
 /- English proof (translation)
-Introduce `n k x`. Proceed by induction on `k with`. Consider the case `zero => exact id`. Consider the case `succ k ih => exact fun h => ih (hmono _ _ (by rwa [← add_assoc] at h))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem of_add {R : Type} (Q : ℕ → R → Prop) (hmono : ∀ n x, Q (n + 1) x → Q n x) :
     ∀ n k x, Q (n + k) x → Q n x := by
@@ -28,23 +28,21 @@ def Good {R : Type} [CommRing R] {ι : Type} (I : ℕ → Ideal R) (Q : ℕ → 
   ∀ k, n ≤ k → ∃ x, Q k x ∧ ∀ i, x i - y i ∈ I n
 
 /- English proof (translation)
-Establish `step : ∀ n y, Good I Q n y → ∃ y', Good I Q (n + 1) y' ∧ ∀ i, y' i - y i ∈ I n`. Introduce `n y hy`. Assume the negation of the conclusion as `hne`. Use `haveI : Finite (ι → R ⧸ I (n + 1)) := by haveI := hfin (n + 1); infer_instance`. Set `rep : (ι → R ⧸ I (n + 1)) → ι → R` to `fun t i => Classical.choose (Ideal.Quotient.mk_surjective (t i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hrep : ∀ t i, Ideal.Quotient.mk (I (n + 1)) (rep t i) = t i` using `fun t i => Classical.choose_spec (Ideal.Quotient.mk_surjective (t i))`. Set `P : (ι → R ⧸ I (n + 1)) → Prop` to `fun t => ∃ k, n + 1 ≤ k ∧ ¬ ∃ x, Q k x ∧ ∀ i, x i - rep t i ∈ I (n + 1)`. Set `kf : (ι → R ⧸ I (n + 1)) → ℕ` to `fun t => if h : P t then h.choose else 0`. Establish `hkf : ∀ t (h : P t), kf t = h.choose` using `fun t h => dif_pos h`. Take `⟨t0, ht0⟩` from `Finite.exists_max kf`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hxy⟩` from `hy (n + kf t0) (Nat.le_add_right _ _)`. Set `t : ι → R ⧸ I (n + 1)` to `fun i => Ideal.Quotient.mk _ (x i)`. Establish `hxt : ∀ i, x i - rep t i ∈ I (n + 1)` using `fun i => Ideal.Quotient.eq.1 (hrep t i).symm`. Establish `hty : ∀ i, rep t i - y i ∈ I n` using `fun i => by`. Establish `: rep t i - y i = (x i - y i) - (x i - rep t i)` using `by ring`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `sub_mem (hxy i) (hI n (hxt i))`. Establish `hng : ¬ Good I Q (n + 1) (rep t)` using `fun hg => hne ⟨rep t, hg, hty⟩`. Establish `hP : P t`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hng fun k hk => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hk'`. Conclude with `hc ⟨k, hk, hk'⟩`. Establish `hs` using `hP.choose_spec`. Rewrite `hs` using `[← hkf t hP]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hs.2 ⟨x, ?_, hxt⟩` and prove the remaining obligations. Establish `hle : kf t ≤ n + kf t0` using `(ht0 t).trans (Nat.le_add_left _ _)`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le hle`. Conclude with `of_add Q hmono (kf t) d x (hd ▸ hx)`. Use `choose! f hf1 hf2 using step`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Set `seq : ℕ → ι → R` to `fun n => Nat.rec (motive := fun _ => ι → R) 0 (fun n y => f n y) n`. Establish `hgood : ∀ n, Good I Q n (seq n)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k _`. Take `⟨x, hx⟩` from `hex k`. Conclude with `⟨x, hx, fun i => by rw [hI0]; exact Submodule.mem_top⟩`. Consider the case `succ n ih => exact hf1 n (seq n) ih`. Use `⟨seq, fun n => ?_, fun n i => hf2 n (seq n) (hgood n) i⟩` and prove the remaining obligations.
-
-Take `⟨x, hx, hxs⟩` from `hgood n n le_rfl`. Conclude with `hcong n x (seq n) hx hxs`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_seq {R : Type} [CommRing R] (I : ℕ → Ideal R) (hI : ∀ n, I (n + 1) ≤ I n) (hI0 : I 0 = ⊤)
     (hfin : ∀ n, Finite (R ⧸ I n)) (ι : Type) [Finite ι] (Q : ℕ → (ι → R) → Prop)
@@ -101,9 +99,7 @@ theorem exists_seq {R : Type} [CommRing R] (I : ℕ → Ideal R) (hI : ∀ n, I 
 variable {l : ℕ} [hl : Fact l.Prime] {K : FinExt l}
 
 /- English proof (translation)
-Establish `h1 : (X : bk.S) ^ (bk.Ep.natDegree * (n + m)) ∈ (Ideal.span {(l : bk.S)} ⊔ Ideal.span {bk.E}) ^ (n + m)`. Rewrite using `[pow_mul]`. Conclude with `Ideal.pow_mem_pow (BK.X_pow_natDegree_mem bk) _`. Establish `h2` using `Ideal.sup_pow_add_le_pow_sup_pow (I := Ideal.span {(l : bk.S)}) (J := Ideal.span {bk.E}) (n := n) (m := m)`. Rewrite `h2` using `[Ideal.span_singleton_pow, Ideal.span_singleton_pow]`.
-
-Conclude with `h2 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_pow_mem (bk : BK K) (n m : ℕ) :
     (X : bk.S) ^ (bk.Ep.natDegree * (n + m)) ∈ Ideal.span {(l : bk.S) ^ n} ⊔ Ideal.span {bk.E ^ m} := by
@@ -116,7 +112,7 @@ theorem X_pow_mem (bk : BK K) (n m : ℕ) :
   exact h2 h1
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.T.finite_breuilKisin_quotient_prime_pow_X_pow l K bk n (bk.Ep.natDegree * (n + m))`. Establish `H : Ideal.span {(l : bk.S) ^ n} ⊔ Ideal.span {(X : bk.S) ^ (bk.Ep.natDegree * (n + m))} ≤ Ideal.span {(l : bk.S) ^ n} ⊔ Ideal.span {bk.E ^ m}` using `sup_le le_sup_left ((Ideal.span_singleton_le_iff_mem _).2 (X_pow_mem bk n m))`. Use `Finite.of_surjective (Ideal.Quotient.factor H) fun y => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨Ideal.Quotient.mk _ x, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_quot (bk : BK K) (n m : ℕ) :
     Finite (bk.S ⧸ (Ideal.span {(l : bk.S) ^ n} ⊔ Ideal.span {bk.E ^ m})) := by
@@ -129,21 +125,19 @@ theorem finite_quot (bk : BK K) (n m : ℕ) :
   exact ⟨Ideal.Quotient.mk _ x, rfl⟩
 
 /- English proof (translation)
-Establish `hd : ∀ n, ∃ a b : bk.S, s (n + 1) - s n = (l : bk.S) ^ n * a + bk.E ^ m * b`. Introduce `n`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 (hs n)`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, b, by rw [← hyz]; ring⟩`. Use `choose a b hab using hd`. Set `z : ℕ → bk.S` to `fun n => s n - bk.E ^ m * ∑ k ∈ Finset.range n, b k`. Establish `hz1 : ∀ n, z (n + 1) - z n = (l : bk.S) ^ n * a n`. Introduce `n`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [z, Finset.sum_range_succ]`. Take the linear combination `hab n`. Establish `hcau : ∀ n N, n ≤ N → z N - z n ∈ Ideal.span {(l : bk.S) ^ n}`. Introduce `n N hN`. Proceed by induction on `N, hN using Nat.le_induction with`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `base => simp`. Consider the case `succ N hN ih`. Establish `: z (N + 1) - z n = (z (N + 1) - z N) + (z N - z n)` using `by ring`. Rewrite using `[this, hz1]`. Conclude with `add_mem (Ideal.mem_span_singleton.2 (dvd_mul_of_dvd_left (pow_dvd_pow _ hN) _)) ih`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ : ∀ n, Ideal.span {(l : bk.S) ^ n} ≤ bk.J ^ n` using `fun n => by`. Rewrite using `[← Ideal.span_singleton_pow]`. Conclude with `Ideal.pow_right_mono le_sup_left n`. Take `⟨L, hL⟩` from `bk.complete.toIsPrecomplete.prec (f := z) (fun {p q} hpq => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← neg_sub]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `neg_mem (hJ p (hcau p q hpq)))`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Establish `h1` using `hL (n + m)`. Rewrite `h1` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Establish `h2` using `Ideal.sup_pow_add_le_pow_sup_pow (I := Ideal.span {(l : bk.S)}) (J := Ideal.span {bk.E}) (n := n) (m := m)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h2` using `[Ideal.span_singleton_pow, Ideal.span_singleton_pow]`. Establish `: s (n + m) - L = (z (n + m) - L) + bk.E ^ m * ∑ k ∈ Finset.range (n + m), b k`. Simplify using `only [z]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
-
-Conclude with `add_mem (h2 h1) (Ideal.mem_sup_right (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lim (bk : BK K) (m : ℕ) (s : ℕ → bk.S)
     (hs : ∀ n, s (n + 1) - s n ∈ Ideal.span {(l : bk.S) ^ n} ⊔ Ideal.span {bk.E ^ m}) :
@@ -185,7 +179,7 @@ theorem exists_lim (bk : BK K) (m : ℕ) (s : ℕ → bk.S)
   exact add_mem (h2 h1) (Ideal.mem_sup_right (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)))
 
 /- English proof (translation)
-Introduce `l _ K bk ι _ m Q hmono hcong hex`. Take `⟨y, hQ, hy⟩` from `exists_seq (fun n => Ideal.span {(l : bk.S) ^ n} ⊔ Ideal.span {bk.E ^ m}) (fun n => sup_le_sup_right (Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ (Nat.le_succ n))) _) (by simp) (fun n => finite_quot bk n m) ι Q hmono hcong hex`. Use `choose L hL using fun i => exists_lim bk m (fun n => y n i) (fun n => hy n i)`. Conclude with `⟨L, fun n => hcong n _ _ (of_add Q hmono n m _ (hQ (n + m))) (fun i => hL i n)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem compact : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (ι : Type) [Finite ι] (m : ℕ)
     (Q : ℕ → (ι → bk.S) → Prop), (∀ n x, Q (n + 1) x → Q n x) →

@@ -18,11 +18,11 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Establish `hΦm : (Φ : Fn k r (Wq →L[ℂ] Wp)) ∈ RadSp k r z z' π π'` using `Φ.2`. Take `⟨h0, hs, he⟩` from `hΦm`. Use `(show _ ∧ _ ∧ _ from ⟨fun x hx => ?_, fun x₀ hx₀ => ?_, fun x hx h hh h' hh' => ?_⟩)` and prove the remaining obligations. Use `show m (x.1, x.2) • (Φ : Fn k r (Wq →L[ℂ] Wp)) x.1 x.2 = 0`. Rewrite using `[h0 x hx, smul_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨U, F, hU, hxU, hF, hΦ⟩` from `hs x₀ hx₀`. Use `⟨U, fun x => m x • F x, hU, hxU, hm.contDiffOn.smul hF, fun x hx hg => ?_⟩` and prove the remaining obligations. Use `show m (x.1, x.2) • (Φ : Fn k r (Wq →L[ℂ] Wp)) x.1 x.2 = m x • F x`. Rewrite using `[hΦ x hx hg]`. Use `show m (x.1, h * x.2 * h') • (Φ : Fn k r (Wq →L[ℂ] Wp)) x.1 (h * x.2 * h') = (π h).comp ((m (x.1, x.2) • (Φ : Fn k r (Wq →L[ℂ] Wp)) x.1 x.2).comp (π' h'))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hinv x hx h hh h' hh', he x hx h hh h' hh']`. Use extensionality with `v`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 lemma mul_mem (m : (Fin r → ℂ) × Mx k r → ℂ) (hm : ContDiff ℝ ∞ m)
     (hinv : ∀ x ∈ DomR k r z z', ∀ h ∈ UWset k r z, ∀ h' ∈ UWset k r z', m (x.1, h * x.2 * h') = m x)
@@ -55,7 +55,7 @@ def mulOp (m : (Fin r → ℂ) × Mx k r → ℂ) (hm : ContDiff ℝ ∞ m)
     simp [smul_smul, mul_comm]
 
 /- English proof (translation)
-Introduce `_ _ _`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 lemma mulOp_isMulOp (m : (Fin r → ℂ) × Mx k r → ℂ) (hm : ContDiff ℝ ∞ m)
     (hinv : ∀ x ∈ DomR k r z z', ∀ h ∈ UWset k r z, ∀ h' ∈ UWset k r z', m (x.1, h * x.2 * h') = m x) :
@@ -64,7 +64,7 @@ lemma mulOp_isMulOp (m : (Fin r → ℂ) × Mx k r → ℂ) (hm : ContDiff ℝ �
   rfl
 
 /- English proof (translation)
-Establish `hL : ContDiff ℝ ∞ (fun t : ℂ => s * t - conj s * conj t)` using `(contDiff_const.mul contDiff_id).sub (contDiff_const.mul Complex.conjCLE.contDiff)`. Conclude with `Complex.contDiff_exp.comp hL`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma contDiff_fsv (s : ℂ) : ContDiff ℝ ∞ (fsv s) := by
   have hL : ContDiff ℝ ∞ (fun t : ℂ => s * t - conj s * conj t) :=
@@ -72,7 +72,7 @@ lemma contDiff_fsv (s : ℂ) : ContDiff ℝ ∞ (fsv s) := by
   exact Complex.contDiff_exp.comp hL
 
 /- English proof (translation)
-The claim follows from `(contDiff_fsv s).comp (by fun_prop : ContDiff ℝ ∞ (fun x : (Fin r → ℂ) × Mx k r => x.1 l))`.
+A detailed English derivation is pending.
 -/
 lemma contDiff_fsv_coord (l : Fin r) (s : ℂ) :
     ContDiff ℝ ∞ (fun x : (Fin r → ℂ) × Mx k r => fsv s (x.1 l)) :=
@@ -84,7 +84,7 @@ def hermLin (H : Mx k r) (v w : Fin (2 * r + k + 1) → ℂ) : Mx k r →ₗ[ℂ
   map_smul' a g := by simp [herm, Matrix.smul_mulVec, Matrix.mulVec_smul, dotProduct_smul]
 
 /- English proof (translation)
-Unfold `zeta zetaL`. Set `Lc : Mx k r →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap (hermLin (Hpk k r) (fvec k r z' (Fin.last r)) (fvec k r z (Fin.last r)))`. Establish `h1 : ContDiff ℝ ∞ (fun g : Mx k r => Lc g)` using `(Lc.restrictScalars ℝ).contDiff`. Conclude with `h1.comp contDiff_snd`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma contDiff_zeta : ContDiff ℝ ∞ (fun x : (Fin r → ℂ) × Mx k r => zeta k r z z' x.2) := by
   unfold zeta zetaL
@@ -94,7 +94,7 @@ lemma contDiff_zeta : ContDiff ℝ ∞ (fun x : (Fin r → ℂ) × Mx k r => zet
   exact h1.comp contDiff_snd
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hh]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma herm_mulVec_mulVec (H h : Mx k r) (hh : hᴴ * H * h = H) (v w : Fin (2 * r + k + 1) → ℂ) :
     herm H (h *ᵥ v) (h *ᵥ w) = herm H v w := by
@@ -102,13 +102,11 @@ lemma herm_mulVec_mulVec (H h : Mx k r) (hh : hᴴ * H * h = H) (v w : Fin (2 * 
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hh]
 
 /- English proof (translation)
-Simplify using `only [UWset, Set.mem_setOf_eq] at hh hh'`. Take `⟨hU, hb, hz⟩` from `hh`. Take `⟨hU', hb', hz'⟩` from `hh'`. Simplify using `only [UH, Set.mem_setOf_eq] at hU`. Establish `hf' : h' *ᵥ fvec k r z' (Fin.last r) = fvec k r z' (Fin.last r)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `fvec`. Rewrite using `[dif_neg (by simp)]`. Conclude with `hz'`. Establish `hf : h *ᵥ fvec k r z (Fin.last r) = fvec k r z (Fin.last r)`. Unfold `fvec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg (by simp)]`. Conclude with `hz`. Unfold `zeta zetaL`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hf']`. Use `conv_lhs => rw [← hf]`.
-
-Conclude with `herm_mulVec_mulVec _ _ hU _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma zeta_inv (g : Mx k r) (h h' : Mx k r) (hh : h ∈ UWset k r z) (hh' : h' ∈ UWset k r z') :
     zeta k r z z' (h * g * h') = zeta k r z z' g := by
@@ -132,7 +130,7 @@ lemma zeta_inv (g : Mx k r) (h h' : Mx k r) (hh : h ∈ UWset k r z) (hh' : h' �
 end Wave
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ k r z z' π π' l s`. Conclude with `⟨mulOp (π := π) (π' := π') (fun x => fsv s (x.1 l)) (contDiff_fsv_coord l s) (fun _ _ _ _ _ _ => rfl), mulOp_isMulOp _ _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem waveCExists : WaveCExists := by
   intro Wp Wq _ _ _ _ k r z z' π π' l s
@@ -140,7 +138,7 @@ theorem waveCExists : WaveCExists := by
     (fun _ _ _ _ _ _ => rfl), mulOp_isMulOp _ _ _⟩
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ k r z z' π π' s`. Conclude with `⟨mulOp (π := π) (π' := π') (fun x => fsv s (zeta k r z z' x.2)) ((contDiff_fsv s).comp (contDiff_zeta (k := k) (r := r) (z := z) (z' := z'))) (fun x _ h hh h' hh' => by show fsv s (zeta k r z z' (h * x.2 * h')) = fsv s (zeta k r z z' x.2)`. Rewrite using `[zeta_inv _ _ _ hh hh']), mulOp_isMulOp _ _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem waveZExists : WaveZExists := by
   intro Wp Wq _ _ _ _ k r z z' π π' s

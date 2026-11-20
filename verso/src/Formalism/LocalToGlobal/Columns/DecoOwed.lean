@@ -14,11 +14,11 @@ open Formalism.HermitianLatticesTheory
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨s0, hs0, h0⟩` from `(mem_locP _ _ _).1 hx`. Use `P.isMaximal` as an intermediate fact. Take `⟨b, hb⟩` from `Ideal.Quotient.exists_inv (mk_ne_zero hs0)`. Use `⟨b * f0 ⟨s0 • x, h0⟩, fun s _ h => ?_⟩` and prove the remaining obligations. Establish `e1 : Ideal.Quotient.mk P.asIdeal s * f0 ⟨s0 • x, h0⟩ = Ideal.Quotient.mk P.asIdeal s0 * f0 ⟨s • x, h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a1 : f0 (s • ⟨s0 • x, h0⟩) = s • f0 ⟨s0 • x, h0⟩` using `map_smul _ _ _`. Establish `a2 : f0 (s0 • ⟨s • x, h⟩) = s0 • f0 ⟨s • x, h⟩` using `map_smul _ _ _`. Establish `a3 : (s • (⟨s0 • x, h0⟩ : N)) = s0 • ⟨s • x, h⟩` using `Subtype.ext (smul_comm _ _ _)`. Rewrite `a1` using `[a3, a2]`. Rewrite `a1` using `[Algebra.smul_def, Algebra.smul_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `a1.symm`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem localization_linear_extension_exists (N : Submodule (𝓞 E) (Sp E n)) (P : HeightOneSpectrum (𝓞 E))
     (f0 : N →ₗ[𝓞 E] (𝓞 E ⧸ P.asIdeal)) (x : Sp E n) (hx : x ∈ localization₂ P.asIdeal N) :
@@ -40,19 +40,19 @@ theorem localization_linear_extension_exists (N : Submodule (𝓞 E) (Sp E n)) (
     _ = _ := by rw [hb, one_mul]
 
 /- English proof (translation)
-Set `F : Sp E n → 𝓞 E ⧸ P.asIdeal` to `fun x => if h : x ∈ localization₂ P.asIdeal N then (localization_linear_extension_exists N P f0 x h).choose else 0`. Establish `hF : ∀ x (_ : x ∈ localization₂ P.asIdeal N) (s : 𝓞 E) (_ : s ∉ P.asIdeal) (h : s • x ∈ N), Ideal.Quotient.mk P.asIdeal s * F x = f0 ⟨s • x, h⟩`. Introduce `x hx s hs h`. Simplify using `only [F, dif_pos hx]`. Conclude with `(localization_linear_extension_exists N P f0 x hx).choose_spec s hs h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨F, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy`. Take `⟨s, hs, h⟩` from `(mem_locP _ _ _).1 hx`. Take `⟨t, ht, h'⟩` from `(mem_locP _ _ _).1 hy`. Establish `hst : s * t ∉ P.asIdeal` using `fun h' => (P.isPrime.mem_or_mem h').elim hs ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m1 : (s * t) • x ∈ N` using `by rw [mul_comm, mul_smul]; exact N.smul_mem _ h`. Establish `m2 : (s * t) • y ∈ N` using `by rw [mul_smul]; exact N.smul_mem _ h'`. Establish `m3 : (s * t) • (x + y) ∈ N` using `by rw [smul_add]; exact N.add_mem m1 m2`. Apply `mul_left_cancel₀ (mk_ne_zero hst)` to reduce the goal to its premises. Rewrite using `[mul_add, hF _ hx _ hst m1, hF _ hy _ hst m2, hF _ (Submodule.add_mem _ hx hy) _ hst m3, ← map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Subtype.ext (smul_add _ _ _)`. Introduce `a x hx`. Take `⟨s, hs, h⟩` from `(mem_locP _ _ _).1 hx`. Establish `m1 : s • (a • x) ∈ N` using `by rw [smul_comm]; exact N.smul_mem _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_left_cancel₀ (mk_ne_zero hs)` to reduce the goal to its premises. Rewrite using `[hF _ (Submodule.smul_mem _ a hx) _ hs m1, mul_left_comm, hF _ hx _ hs h]`. Establish `: (⟨s • a • x, m1⟩ : N) = a • ⟨s • x, h⟩` using `Subtype.ext (smul_comm _ _ _)`. Rewrite using `[this, map_smul, Algebra.smul_def]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x hx`. Simplify using `only [F, dif_neg hx]`. Introduce `x hx`. Use `hF x (le_locP _ _ hx) 1 (one_notMem P) (by simpa using hx)` as an intermediate fact. Rewrite `this` using `[map_one, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[this]`. Use `congr 1`. Conclude with `Subtype.ext (one_smul _ _)`.
+A detailed English derivation is pending.
 -/
 theorem FunAt.exists_ext (N : Submodule (𝓞 E) (Sp E n)) (P : HeightOneSpectrum (𝓞 E))
     (f0 : N →ₗ[𝓞 E] (𝓞 E ⧸ P.asIdeal)) : ∃ F : Sp E n → 𝓞 E ⧸ P.asIdeal,

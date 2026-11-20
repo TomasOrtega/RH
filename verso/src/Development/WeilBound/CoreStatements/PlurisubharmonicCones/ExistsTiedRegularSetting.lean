@@ -32,9 +32,9 @@ noncomputable def logRat (M : CxModel P d) (A R : HermLine J) (x : M.Xc) : ℝ :
   Real.log (A.h (M.surj x).choose) - Real.log (R.h (M.surj x).choose)
 
 /- English proof (translation)
-Take `⟨hw, he⟩` from `(M.surj (M.proj z)).choose_spec`. Take `⟨c, hc, hcz⟩` from `(M.fibre z hz _ hw).1 he.symm`. Establish `hp` using `(prod_norm_zpow_pos hc A.a).ne'`. Unfold `logRat`. Rewrite using `[hcz]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Real.log (A.h fun p => c p.1 * z p) - Real.log (R.h fun p => c p.1 * z p) = _`. Rewrite using `[A.smul c z hc, R.smul c z hc, h, Real.log_mul hp (A.pos z hz.1).ne', Real.log_mul hp (R.pos z hz.1).ne']`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem logRat_proj (M : CxModel P d) {A R : HermLine J} (h : R.a = A.a) {z : (Σ k, J k) → ℂ}
     (hz : z ∈ mcPts P) : logRat M A R (M.proj z) = Real.log (A.h z) - Real.log (R.h z) := by
@@ -48,7 +48,7 @@ theorem logRat_proj (M : CxModel P d) {A R : HermLine J} (h : R.a = A.a) {z : (�
   ring
 
 /- English proof (translation)
-Establish `hsub : closedBall (0 : Fin n → ℂ) (3 / 4) ⊆ ball 0 1` using `closedBall_subset_ball (by norm_num)`. Establish `h1 : ContinuousOn (fun s => R.h (χ.γ s)) (closedBall (0 : Fin n → ℂ) (3 / 4))` using `hR.continuousOn.comp (χ.analytic.continuousOn.mono hsub) fun s hs => (χ.mem s (hsub hs)).1`. Take `⟨Q, hQ⟩` from `(isCompact_closedBall (0 : Fin n → ℂ) (3 / 4)).exists_bound_of_continuousOn (h1.log fun s hs => (R.pos _ (χ.mem s (hsub hs)).1).ne')`. Conclude with `⟨Q, fun s hs => hQ s (mem_closedBall_zero_iff.2 hs)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_bound_log {n : ℕ} {Bd : Set ((Σ k, J k) → ℂ)} (χ : SncChart P n Bd) {R : HermLine J}
     (hR : IsSmoothHerm R) : ∃ Q : ℝ, ∀ s : Fin n → ℂ, ‖s‖ ≤ 3 / 4 → |Real.log (R.h (χ.γ s))| ≤ Q := by
@@ -62,9 +62,7 @@ theorem exists_bound_log {n : ℕ} {Bd : Set ((Σ k, J k) → ℂ)} (χ : SncCha
 end Ratio
 
 /- English proof (translation)
-Establish `h : ∀ᶠ r in 𝓝[>] (0 : ℝ), ∀ i, t₀ i ≠ 0 → r ≤ ‖t₀ i‖` using `eventually_all.2 fun i => by`. Distinguish the cases in `hi : t₀ i = 0`. Conclude with `Eventually.of_forall fun _ h => absurd hi h`. Use `filter_upwards [Ioc_mem_nhdsGT (norm_pos_iff.2 hi)] with r hr _ using hr.2`. Take `⟨r, hr⟩` from `(h.and (Ioc_mem_nhdsGT he)).exists`.
-
-Conclude with `⟨r, hr.2.1, hr.2.2, hr.1⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_radius {n : ℕ} (t₀ : Fin n → ℂ) {e : ℝ} (he : 0 < e) :
     ∃ r > (0 : ℝ), r ≤ e ∧ ∀ i, t₀ i ≠ 0 → r ≤ ‖t₀ i‖ := by
@@ -79,7 +77,7 @@ noncomputable def starL (n : ℕ) : (Fin n → ℂ) →L[ℝ] Fin n → ℂ :=
   ContinuousLinearMap.pi fun i => Complex.conjCLE.toContinuousLinearMap.comp (ContinuousLinearMap.proj i)
 
 /- English proof (translation)
-Establish `h0 : Tendsto (fun t : ℝ => t) (𝓝[>] 0) (𝓝 0)` using `tendsto_id.mono_left nhdsWithin_le_nhds`. Establish `h1 : Tendsto (fun t : ℝ => Real.log (Real.log t⁻¹) / Real.log t⁻¹) (𝓝[>] 0) (𝓝 0)` using `Real.isLittleO_log_id_atTop.tendsto_div_nhds_zero.comp (Real.tendsto_log_atTop.comp tendsto_inv_nhdsGT_zero)`. Establish `h2` using `h0.max ((h1.const_mul C).add (h0.const_mul C))`. Simplify `h2` using `[mul_div_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem margin_tendsto (C : ℝ) :
     Tendsto (fun t : ℝ => max t (C * Real.log (Real.log t⁻¹) / Real.log t⁻¹ + C * t)) (𝓝[>] 0) (𝓝 0) := by
@@ -94,9 +92,9 @@ variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {II : In
   {D : ComponentData II Ψ K J Ω W}
 
 /- English proof (translation)
-Take `⟨ρ⟩` from `ReciprocityTheory.AnForm.A.mollifierInhabit_thm D.n`. Take `⟨cut, Cc, hcut⟩` from `CutoffsExist.proof M.Xc D.n M.atlas R.toPotentialCharts`. Take `⟨C, t₀, ht₀, hcmp⟩` from `ChartComparison.proof MollifiedLowerBound.closed PolyMaxOscillation.proof_closed PolyMaxLowerBound.proof TruncPsh.proof TruncTransfer.proof M.Xc D.n M.atlas R ρ`. Establish `hll : Tendsto (fun t : ℝ => Real.log (Real.log t⁻¹)) (𝓝[>] 0) atTop` using `Real.tendsto_log_atTop.comp (Real.tendsto_log_atTop.comp tendsto_inv_nhdsGT_zero)`. Use `⟨{ ref := ref, ref_deg := hra, ref_smooth := hrs, R := R, th_ref := hth, Yo_sub := hY, ph_eq := hph, ρ := ρ, η := cut, Cη := Cc, cutoff := hcut, K := fun t => (|C| + |R.Clog| + 1) * Real.log (Real.log t⁻¹), e1 := fun t => max t (C * Real.log (Real.log t⁻¹) / Real.log t⁻¹ + C * t) …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hll.eventually_ge_atTop 0] with t ht`. Conclude with `mul_le_mul_of_nonneg_right (by linarith [le_abs_self R.Clog, abs_nonneg C]) ht`. Use `filter_upwards [hll.eventually_ge_atTop 0, Ioo_mem_nhdsGT ht₀] with t h0 ht j k x hx`. Conclude with `(hcmp t ht.1 ht.2 _ (mul_le_mul_of_nonneg_right (by linarith [le_abs_self C, abs_nonneg R.Clog]) h0) j k x hx).trans (le_max_right _ _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_tied {M : XModel D} {A ref : HermLine J} (hra : ref.a = A.a) (hrs : IsSmoothHerm ref)
     (R : RegChartData M.atlas) (hth : ThRef M ref R.th)
@@ -123,7 +121,7 @@ theorem exists_tied {M : XModel D} {A ref : HermLine J} (hra : ref.a = A.a) (hrs
       (by linarith [le_abs_self C, abs_nonneg R.Clog]) h0) j k x hx).trans (le_max_right _ _)
 
 /- English proof (translation)
-Use `⟨?_, fun h => ⟨z, ⟨hz, h⟩, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨z', hz', e⟩ hB`. Take `⟨c, hc, rfl⟩` from `(M.fibre z hz z' hz'.1).1 e.symm`. Conclude with `hz'.2 (D.bd_torus z hB c hc)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_Yo {M : XModel D} {z : (Σ k, J k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal D.y)) :
     (∃ z' ∈ D.Xo, M.proj z' = M.proj z) ↔ z ∉ D.Bd := by
@@ -133,45 +131,39 @@ theorem mem_Yo {M : XModel D} {z : (Σ k, J k) → ℂ} (hz : z ∈ mcPts (mCoor
   exact hz'.2 (D.bd_torus z hB c hc)
 
 /- English proof (translation)
-Take `⟨ref, hra, hrs, hrc⟩` from `GlobalTheory.T.exists_smooth_conj_invariant_metric K J Hd.aMu`. Take `⟨hsm, hbd⟩` from `GlobalTheory.T.hodge_potential_smooth_off_boundary K J II Ψ Ω W D Hd`. Take `⟨-, -, -, hO⟩` from `GlobalTheory.T.hodge_metric_frame_properties K J II Ψ Ω W D Hd`. Establish `hrad : ∀ (a : Fin D.nCharts) (t₀ : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ), ∃ r > (0 : ℝ), (∀ i, t₀ i ≠ 0 → r ≤ ‖t₀ i‖) ∧ (‖t₀‖ ≤ 1 / 2 → ∃ C > (0 : ℝ), ∀ t ∈ offBd D a, ‖t - t₀‖ < r → -(C * Real.log ((D.chart a).logR t)) ≤ phMu Hd ((D.chart a).γ t) ∧ phMu Hd ((D.chart a).γ …`. Introduce `a t₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : ‖t₀‖ ≤ 1 / 2`. Take `⟨e, he, C, hC, hb⟩` from `hbd a t₀ h`. Take `⟨r, hr, hre, hri⟩` from `exists_radius t₀ he`. Conclude with `⟨r, hr, hri, fun _ => ⟨C, hC, fun t ht h' => hb t ht (h'.trans_le hre)⟩⟩`. Take `⟨r, hr, -, hri⟩` from `exists_radius t₀ one_pos`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨r, hr, hri, fun h' => absurd h' h⟩`. Use `choose r hr hri hrb using hrad`. Take `⟨P, S, -, hth, had, hsnc, -, hpc⟩` from `GlobalTheory.T.exists_potential_charts_with_radii K J II Ψ Ω W D M ref r hrs hrc hr`. Take `⟨rf, f, Bf, hr1, hf, hrf⟩` from `GlobalTheory.T.exists_potential_from_snc_charts K J II Ψ Ω W D M P S had hsnc`. Set `ph : M.Xc → ℝ` to `logRat M (muLine Hd) ref`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hph : ∀ z ∈ mcPts (mCoordIdeal D.y), ph (M.proj z) = phMu Hd z - Real.log (ref.h z)` using `fun z hz => logRat_proj M hra hz`. Establish `hT : ∀ j, (P.chart j).target = ball 0 1` using `fun j => (hsnc j).1`. Establish `key : ∀ j, ContDiffOn ℝ ∞ (fun y => P.q j y + ph ((P.chart j).symm y)) (ball 0 1 \ coordDiv (S j)) ∧ IsPsh (ball 0 1 \ coordDiv (S j)) (fun y => P.q j y + ph ((P.chart j).symm y)) ∧ ∃ C' c : ℝ, 0 < C' ∧ ∀ t ∈ ball (0 : Fin D.n → ℂ) 1 \ coordDiv (S j), ∀ ρ : ℝ, Real.exp 1 + c + ∑ …`. Introduce `j`. Take `⟨a, t₀, ε, h₀, hε, hεr, hε', hγ⟩` from `hpc j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsep : ∀ i, t₀ i ≠ 0 → 2 * ε ≤ ‖t₀ i‖` using `fun i hi => hεr.trans (hri a t₀ i hi)`. Establish `hS` using `had.mem_iff_of_piece (hT j) h₀ hε hε' (fun i _ => hsep i) (hγ.imp (fun h t ht => (h t ht).1) fun h t ht => (h t ht).1)`. Take `⟨C, hC, hb⟩` from `hrb a t₀ h₀`. Take `⟨Q, hQ⟩` from `exists_bound_log (n := D.n) (D.chart a) hrs`. Establish `hn : ∀ t : Fin D.n → ℂ, ‖t‖ < 1 → ‖t₀ + (ε : ℂ) • t‖ ≤ 3 / 4` using `fun t ht => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg hε.le]`. Use polynomial arithmetic with `[norm_nonneg t]`. Establish `hm : ∀ t : Fin D.n → ℂ, ‖t‖ < 1 → (D.chart a).γ (t₀ + (ε : ℂ) • t) ∈ mcPts (mCoordIdeal D.y)` using `fun t ht => (D.chart a).mem _ (SncPiece.add_smul_mem_ball h₀ hε hε' (ht.trans one_lt_two))`. Rewrite `hγ` using `[hT j]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hγ with hγ | hγ` into its components or cases. Use `piece (n := D.n) (D.chart a) (SncPiece.isOpen_offBd D a) (hsm a) (hP a) h₀ hε hε' hsep hC (fun t ht h' => hb t ht (h'.trans_le hεr)) (ContinuousLinearMap.id ℝ _) (fun _ _ => rfl) (fun _ _ h => h) hS (Q := Q) (fun t ht => ?_) (fun t ht _ => ?_)` and prove the remaining obligations. Rewrite using `[(hγ t ht).2]`. Conclude with `hQ _ (hn t (mem_ball_zero_iff.1 ht))`. Rewrite using `[(hγ t ht).1, (hγ t ht).2, hph _ (hm t (mem_ball_zero_iff.1 ht))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_sub_cancel _ _`. Use `piece (n := D.n) (D.chart a) (SncPiece.isOpen_offBd D a) (hsm a) (hP a) h₀ hε hε' hsep hC (fun t ht h' => hb t ht (h'.trans_le hεr)) (starL _) (fun _ _ => norm_star _) (fun _ _ h => isPsh_star h) hS (Q := Q) (fun t ht => ?_) (fun t ht hB => ?_)` and prove the remaining obligations. Rewrite using `[(hγ t ht).2]`. Conclude with `hQ _ (hn _ (by rw [norm_star]; exact mem_ball_zero_iff.1 ht))`. Establish `hz` using `hm (star t) (by rw [norm_star]; exact mem_ball_zero_iff.1 ht)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ref.h (conjVec ((D.chart a).γ (t₀ + (ε : ℂ) • star t))) = _` using `hrc _`. Rewrite using `[(hγ t ht).1, (hγ t ht).2, hph _ (SncPiece.conj_mem hz), hO _ ⟨hz, hB⟩, e1]`. Conclude with `add_sub_cancel _ _`. Use `choose hks hkp C' c hC' hk using key`. Use `set Cs : ℝ := ∑ j, C' j with hCs`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `set cs : ℝ := |Bf| + ∑ j, |c j| with hcs`. Establish `hCle : ∀ j, C' j ≤ Cs` using `fun j => Finset.single_le_sum (fun i _ => (hC' i).le) (Finset.mem_univ j)`. Establish `hcle : ∀ j, |c j| ≤ ∑ j, |c j|` using `fun j => Finset.single_le_sum (f := fun j => |c j|) (fun i _ => abs_nonneg _) (Finset.mem_univ j)`. Establish `hcs0 : 0 ≤ cs` using `by positivity`. Set `Yo : Set M.Xc` to `{x | ∃ z ∈ D.Xo, M.proj z = x}`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hYo : ∀ j, ∀ x ∈ (P.chart j).source, x ∈ Yo ↔ P.chart j x ∉ coordDiv (S j)`. Introduce `j x hx`. Take `⟨z, hz, rfl⟩` from `M.surj x`. Conclude with `(mem_Yo hz).trans (had j z hz hx).not`. Establish `hr1' : ∀ x ∈ Yo, 1 ≤ rf x + cs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Combine the linear relations using `[hr1 z hz]`. Establish `hk' : ∀ j, ∀ t ∈ (P.chart j).target \ coordDiv (S j), ph ((P.chart j).symm t) ≤ Cs ∧ -Cs * Real.log (rf ((P.chart j).symm t) + cs) ≤ ph ((P.chart j).symm t) ∧ ‖fderiv ℝ (fun y => P.q j y + ph ((P.chart j).symm y)) t‖ ≤ Cs * (rf ((P.chart j).symm t) + cs) ^ Cs * Real.exp ((rf ((P. …`. Introduce `j t ht`. Establish `h1` using `hr1' _ ((hYo j _ ((P.chart j).map_target ht.1)).2 (by rw [(P.chart j).right_inv ht.1]; exact ht.2))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨b1, b2, b3⟩` from `hk j t (hT j ▸ ht) (rf ((P.chart j).symm t) + cs) (by`. Rewrite using `[hrf j t ht]`. Combine the linear relations using `[(abs_le.1 ((hf j).2 t ht.1)).1, le_abs_self Bf, le_abs_self (c j), hcle j])`. Use `⟨b1.trans (hCle j), le_trans ?_ b2, b3.trans ?_⟩` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (neg_le_neg (hCle j)) (Real.log_nonneg h1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul (hCle j) (Real.rpow_le_rpow_of_exponent_le h1 (hCle j)) (Real.rpow_nonneg (by linarith) _) ((hC' j).le.trans (hCle j))) (Real.exp_pos _).le`. Establish `hpt : ∀ x ∈ Yo, ∃ j, x ∈ (P.chart j).source ∧ P.chart j x ∈ (P.chart j).target \ coordDiv (S j)`. Introduce `x hx`. Take `⟨j, hj⟩` from `P.cover x`. Establish `hs` using `P.mid_subset_source j (P.inner_subset_mid j hj)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨j, hs, (P.chart j).map_source hs, (hYo j x hs).1 hx⟩`. Establish `hsmooth : M.atlas.SmoothOn Yo ph`. Introduce `k y hy`. Take `⟨j, hs, ht⟩` from `hpt _ hy.2`. Establish `hV : IsOpen ((P.chart j).target \ coordDiv (S j))` using `(P.chart j).open_target.sdiff (ReciprocityTheory.AnForm.A.PlurisubharmonicExtension.coordDiv_closed _)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1 : ContDiffOn ℝ ∞ (fun y => ph ((P.chart j).symm y)) ((P.chart j).target \ coordDiv (S j))`. Establish `h2` using `hks j`. Rewrite `h2` using `[← hT j]`. Conclude with `(h2.sub ((P.q_smooth j).mono Set.diff_subset)).congr fun y _ => by simp`. Establish `h3 : ContDiffAt ℝ ∞ (P.chart j ∘ (M.atlas.chart k).symm) y` using `(((P.compat j k).1 y ⟨hy.1, hs⟩).restrictScalars (𝕜 := ℝ)).contDiffAt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h4 : ∀ᶠ y' in 𝓝 y, (M.atlas.chart k).symm y' ∈ (P.chart j).source` using `((M.atlas.chart k).continuousAt_symm hy.1).preimage_mem_nhds ((P.chart j).open_source.mem_nhds hs)`. Use `(((h1.contDiffAt (hV.mem_nhds ht)).comp y h3).congr_of_eventuallyEq ?_).contDiffWithinAt` and prove the remaining obligations. Use `filter_upwards [h4] with y' hy'`. Simplify using `[(P.chart j).left_inv hy']`. Set `R : RegChartData M.atlas` to `{ toPotentialCharts := P, S := S, Yo := Yo, mem_Yo := hYo, ph := ph, ph_smooth := hsmooth, u_psh := fun j => by rw [hT j]; exact hkp j r := fun x => rf x + cs one_le_r := hr1' f := fun j y => f j y + cs f_smooth := fun j => (hf j).1.add contDiffOn_const f_bdd := ⟨Bf + cs, fun j y …`.
-
-Take `⟨j, hs, ht⟩` from `hpt x hx`. Use `(hk' j _ ht).1` as an intermediate fact. Rewrite `this` using `[(P.chart j).left_inv hs]`. Then use the resulting hypothesis. Use `ph_ge := fun x hx => by`. Take `⟨j, hs, ht⟩` from `hpt x hx`.
-
-Use `(hk' j _ ht).2.1` as an intermediate fact. Rewrite `this` using `[(P.chart j).left_inv hs]`. Then use the resulting hypothesis. Use `Cgrad := Cs`. Use `grad_le := fun j y hy => (hk' j y hy).2.2 }`. Use `exists_tied (A := muLine Hd) hra hrs R hth ?_ fun z hz _ => hph z hz.2` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨z, ⟨hz, hz.1⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main (Hd : HodgeData D) (M : XModel D) (hP : ChartPsh D (phMu Hd)) :
     ∃ S : LogLogRegularisationSetting M D.Xo (muLine Hd), S.IsTied := by
@@ -318,7 +310,7 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 open ReciprocityTheory.AnForm (levi)
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ Hd M hP` and use `LevelTowerAlt.Reg.main Hd M hP`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LevelTowerAlt.exists_tied_regular_setting : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W) (Hd : HodgeData D) (M : XModel D), ChartPsh D (phMu Hd) → ∃ S : LogLogRegularisationSetting M D.Xo (muLine Hd), S.IsTied :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ Hd M hP => LevelTowerAlt.Reg.main Hd M hP

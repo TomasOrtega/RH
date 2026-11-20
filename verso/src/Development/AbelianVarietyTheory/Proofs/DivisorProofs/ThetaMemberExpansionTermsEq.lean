@@ -23,11 +23,11 @@ open GlobalTheory.UT.CoefBasic
 namespace GlobalTheory.GSep.ExpUnique
 
 /- English proof (translation)
-Take `⟨σ, hσ, hG⟩` from `h`. Take `⟨σ₂, hσ₂, hG₂⟩` from `h₂`. Establish `hf : ∀ j, σ.f j = σ₂.f j`. Use `ReciprocityTheory.ChartRestriction.G.Geo.Tor.sec_ext_val U.LG.isLB (fun y J hJ => ?_)` and prove the remaining obligations. Use `choose J₁ hJ₁ using fun χ : _ ⟶ A.A.left => exists_chart A.isLB (χ y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₁` using `GlobalTheory.Jets.sval_of_isoRelM hσ (𝟙 _) y hJ hJ₁`. Establish `e₂` using `GlobalTheory.Jets.sval_of_isoRelM hσ₂ (𝟙 _) y hJ hJ₁`. Conclude with `e₁.trans e₂.symm`. Choose the witnesses or unpack the hypotheses as in `rfl : σ = σ₂ := by`. Break down `σ with ⟨a, _⟩` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `σ₂ with ⟨b, _⟩` into its components or cases. Take `rfl : a = b` from `funext hf`. Both sides reduce to the same expression. Conclude with `GlobalTheory.expandsG_unique R I hR D A G U k F σ s s₂ hG hG₂`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem expandsF_unique {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} (hR : AdmBase R I) {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
@@ -52,7 +52,7 @@ theorem expandsF_unique {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} (hR :
 end GlobalTheory.GSep.ExpUnique
 
 /- English proof (translation)
-Introduce `I X₁ z₁ act V _ _ _ ev Y _ t δ 𝔪 w₀ k th s s₂ _ _ hs hs₂ g w _ χ`. Rewrite using `[GlobalTheory.GSep.ExpUnique.expandsF_unique (GlobalTheory.TorRef.admissibleBase_of_completeNormalLocalCharZero 𝔪.cn) 𝔪.U.toUnifPre (FractionRing V) k w₀ th s s₂ hs hs₂]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.GSep.ExpUnique.coef_eq_of_expandsF : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (Y : Type) [AddCommGroup Y] (t : Y → V) (δ : I → Y → Y) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev Y t δ) (w₀ : W0 𝔪.U.toUnifPre) (k : ℕ) (th : SecA 𝔪.A (FractionRing V) k) (s s₂ : Fam 𝔪.D.toPre (FractionRing V) k),
   w₀.IsGen → 1 ≤ k → 𝔪.U.ExpandsF (FractionRing V) k w₀ th s → 𝔪.U.ExpandsF (FractionRing V) k w₀ th s₂ →

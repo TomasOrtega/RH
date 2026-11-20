@@ -13,19 +13,17 @@ noncomputable section
 namespace GlobalTheory.Poinc.Tors
 
 /- English proof (translation)
-Introduce `hL R _ _ hR hIC P N hN x hx`. Establish `hfin : IsFinite (mulA P.A N).left` using `(hL.mulN _ P N hN).1`. Establish `hj : jFK (R` using `R) (FractionRing R) = 𝟙 _ := by`. Simplify using `[jFK]`. Establish `hTF : (TF (R` using `R) (FractionRing R)).hom = jK R := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[TF, hj]`. Establish `e1 : x ≫ mulA P.A N = toUnit _ ≫ η[P.A]`. Rewrite using `[mulA, MonObj.comp_pow, Category.comp_id, hx]`. Both sides reduce to the same expression. Establish `h : x.left ≫ (mulA P.A N).left = jK R ≫ η[P.A].left`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `congrArg CommaMorphism.left e1` as an intermediate fact. Simplify using `only [Over.comp_left] at this`. Rewrite using `[this]`. Use `congr 1`. Take `⟨l, hl1, hl2⟩` from `GlobalTheory.FiniteLift.exists_lift (mulA P.A N).left η[P.A].left x.left h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Establish `hl3 : l ≫ P.A.hom = 𝟙 _`. Rewrite using `[← Over.w (mulA P.A N), ← Category.assoc, hl1, Over.w η[P.A]]`. Simplify using the standard rewrite rules. Set `b : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ P.A` to `Over.homMk l (by simpa using hl3)`. Use `⟨b, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : b ^ N = b ≫ mulA P.A N` using `by rw [mulA, MonObj.comp_pow, Category.comp_id]`. Rewrite using `[e2]`. Use `ext1`. Simplify using `only [Over.comp_left, b, Over.homMk_left, hl1]`. Use `show _ = (toUnit _ ≫ η[P.A]).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[toUnit_unit, Category.id_comp]`. Use `ext1`. Simplify using `only [Over.comp_left, b, Over.homMk_left]`. Establish `w` using `Over.w (toUnit (TF (R := R) (FractionRing R)))`. Establish `w' : (toUnit (TF (R` using `R) (FractionRing R))).left = jK R := by`.
-
-Rewrite using `[← hTF, ← w]`. Apply the tactic sequence `first | rfl | simp | (erw [Category.comp_id])`. Rewrite using `[w', hl2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_extend : Laws → ∀ (R : Type) [CommRing R] [IsDomain R], IsNoetherianRing R → IsIntegrallyClosed R → ∀ (P : PolAV (Spec (CommRingCat.of R))) (N : ℕ), 1 ≤ N → ∀ x : TF (R := R) (FractionRing R) ⟶ P.A, x ^ N = 1 → ∃ b : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ P.A, b ^ N = 1 ∧ x = toUnit _ ≫ b := by
   intro hL R _ _ hR hIC P N hN x hx

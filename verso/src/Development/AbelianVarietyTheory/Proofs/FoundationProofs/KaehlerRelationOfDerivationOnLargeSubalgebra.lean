@@ -8,11 +8,11 @@ namespace GlobalTheory.AlmostEt
 open Finsupp
 
 /- English proof (translation)
-Break down `hg with (⟨⟨u, w⟩, rfl⟩ | ⟨⟨u, w⟩, rfl⟩) | ⟨a, rfl⟩` into its components or cases. Use `⟨{u, w}, fun C hC M _ _ D hD => ?_⟩` and prove the remaining obligations. Establish `hu : u ∈ C` using `hC (by simp)`. Establish `hw : w ∈ C` using `hC (by simp)`. Simplify using `[hD.add u hu w hw]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨{u, w}, fun C hC M _ _ D hD => ?_⟩` and prove the remaining obligations. Establish `hu : u ∈ C` using `hC (by simp)`. Establish `hw : w ∈ C` using `hC (by simp)`. Simplify using `[hD.mul u hu w hw, add_comm]`. Use `⟨∅, fun C _ M _ _ D hD => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hD.alg a]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kerTotal_gen_local {A S : Type} [CommRing A] [CommRing S] [Algebra A S]
     (g : S →₀ S)
@@ -36,13 +36,13 @@ theorem kerTotal_gen_local {A S : Type} [CommRing A] [CommRing S] [Algebra A S]
     simp [hD.alg a]
 
 /- English proof (translation)
-Introduce `A S _ _ _ n x y h`. Use `set v : S →₀ S := ∑ i, single (y i) (x i) with hv`. Establish `hlc : ∀ (M : Type) [AddCommGroup M] [Module S M] (D : S → M), Finsupp.linearCombination S D v = ∑ i, x i • D (y i)`. Introduce `M _ _ D`. Simplify using `[hv, map_sum, Finsupp.linearCombination_single]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmem : v ∈ KaehlerDifferential.kerTotal A S`. Rewrite using `[← KaehlerDifferential.kerTotal_eq, LinearMap.mem_ker, hlc, h]`. Take `⟨G, hGs, hvG⟩` from `Submodule.mem_span_finite_of_mem_span hmem`. Establish `key` using `fun g (hg : g ∈ G) => kerTotal_gen_local (A := A) g (hGs hg)`. Use `choose F hF using key`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨G.attach.biUnion (fun g => F g.1 g.2), ?_⟩` and prove the remaining obligations. Introduce `C hC _ M _ _ D hD`. Rewrite using `[← hlc]`. Establish `hle : Submodule.span S (↑G : Set (S →₀ S)) ≤ LinearMap.ker (Finsupp.linearCombination S D)`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hg`. Use `hF g hg C (fun z hz => hC ?_) M D hD` and prove the remaining obligations. Simplify using `only [Finset.coe_biUnion, Finset.coe_attach, Set.mem_univ, Set.iUnion_true, Set.mem_iUnion]`. Conclude with `⟨⟨g, hg⟩, hz⟩`. Conclude with `hle hvG`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kaehler_rel_local : ∀ (A S : Type) [CommRing A] [CommRing S] [Algebra A S] (n : ℕ)
     (x y : Fin n → S), ∑ i, x i • KaehlerDifferential.D A S (y i) = 0 →

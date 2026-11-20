@@ -18,9 +18,9 @@ variable {F L : Type u} [Field F] [NumberField F] [Field L] [NumberField L] [Alg
   {v : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Use `set w := placeOfAlgHom j`. Establish `h : w.1 = τ • (τ⁻¹ • w).1`. Rewrite using `[coe_smul_placesOver, smul_inv_smul]`. Set `c : (τ⁻¹ • w).1.adicCompletion L →ₐ[v.adicCompletion F] AlgebraicClosure (v.adicCompletion F)` to `(completionEmbeddingOfAlgHom j).comp (galEquiv v τ (τ⁻¹ • w).1 w.1 h).toAlgHom`. Use `(eq_placeOfAlgHom (j.comp (τ : L →ₐ[F] L)) c fun x => ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `completionEmbeddingOfAlgHom j (galEquiv v τ (τ⁻¹ • w).1 w.1 h (algebraMap L _ x)) = j (τ x)`. Rewrite using `[galEquiv_algebraMap, completionEmbeddingOfAlgHom_algebraMap]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placeOfAlgHom_comp_algEquiv (j : L →ₐ[F] AlgebraicClosure (v.adicCompletion F))
     (τ : L ≃ₐ[F] L) :
@@ -46,7 +46,7 @@ variable {F L Ω : Type u} [Field F] [NumberField F] [Field L] [NumberField L] [
   (ιs : ∀ v : S, Ω →ₐ[F] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 F)).adicCompletion F))
 
 /- English proof (translation)
-Use extensionality with `l`. Express the relevant statement in the definitionally equal form `ιs v ((((σ * x)⁻¹ : galUnramifiedOutside F Ω S) (gsEmbedding hL l) : maxUnramifiedOutside F Ω S) : Ω) = ιs v ((((x⁻¹ : galUnramifiedOutside F Ω S) (gsEmbedding hL ((gsRestrictGal hL σ)⁻¹ l))) : maxUnramifiedOutside F Ω S) : Ω)`. Rewrite using `[← map_inv, gsEmbedding_gsRestrictGal, mul_inv_rev, AlgEquiv.mul_apply]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem gsLocalEmbedding_mul_left (v : S) (σ x : galUnramifiedOutside F Ω S) :
     gsLocalEmbedding hL ιs v (σ * x) =
@@ -58,7 +58,7 @@ theorem gsLocalEmbedding_mul_left (v : S) (σ x : galUnramifiedOutside F Ω S) :
   rw [← map_inv, gsEmbedding_gsRestrictGal, mul_inv_rev, AlgEquiv.mul_apply]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ = placeOfAlgHom (gsLocalEmbedding hL ιs v (σ * x))`. Rewrite using `[gsLocalEmbedding_mul_left, placeOfAlgHom_comp_algEquiv, inv_inv]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem gsRestrictGal_smul_gsLocalPlace (v : S) (σ x : galUnramifiedOutside F Ω S) :
     gsRestrictGal hL σ • gsLocalPlace hL ιs v x = gsLocalPlace hL ιs v (σ * x) := by
@@ -66,13 +66,13 @@ theorem gsRestrictGal_smul_gsLocalPlace (v : S) (σ x : galUnramifiedOutside F �
   rw [gsLocalEmbedding_mul_left, placeOfAlgHom_comp_algEquiv, inv_inv]
 
 /- English proof (translation)
-Rewrite using `[mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hτ`. Take `⟨σ, rfl⟩` from `gsRestrictGal_surjective hL τ`. Rewrite `hτ` using `[gsRestrictGal_smul_gsLocalPlace, mul_one]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨g, hg⟩` from `exists_algEquiv_of_placeOfAlgHom_eq _ _ hτ`. Use `⟨g, (gsRestrictGal_eq_iff hL _ _).2 fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[gsEmbedding_gsRestrictGal]`. Establish `h1` using `hg (gsRestrictGal hL σ l)`. Rewrite `h1` using `[gsLocalEmbedding_apply, gsLocalEmbedding_apply, inv_one, AlgEquiv.one_apply, gsEmbedding_gsRestrictGal, ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply, ← gsFinFamily_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Subtype.ext ((ιs v).injective h1)).symm`. Introduce and unpack `⟨g, rfl⟩`. Express the relevant statement in the definitionally equal form `gsRestrictGal hL (gsFinFamily S ιs v g) • _ = _`. Rewrite using `[gsRestrictGal_smul_gsLocalPlace]`. Establish `h` using `gsLocalPlace_mul hL ιs v 1 (one_mem _) g`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[mul_one, one_mul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mem_stabilizer_gsLocalPlace_iff (v : S) (τ : L ≃ₐ[F] L) :
     τ ∈ MulAction.stabilizer (L ≃ₐ[F] L) (gsLocalPlace hL ιs v 1) ↔ τ ∈ gsDecompGroup hL ιs v := by
@@ -96,7 +96,7 @@ theorem mem_stabilizer_gsLocalPlace_iff (v : S) (τ : L ≃ₐ[F] L) :
     rwa [mul_one, one_mul] at h
 
 /- English proof (translation)
-The claim follows from `Subgroup.ext fun τ => mem_stabilizer_gsLocalPlace_iff hL ιs v τ`.
+A detailed English derivation is pending.
 -/
 theorem stabilizer_gsLocalPlace (v : S) :
     MulAction.stabilizer (L ≃ₐ[F] L) (gsLocalPlace hL ιs v 1) = gsDecompGroup hL ιs v :=
@@ -105,7 +105,7 @@ theorem stabilizer_gsLocalPlace (v : S) :
 omit [NumberField F] [NumberField L] [IsGalois F L] in
 
 /- English proof (translation)
-Take `⟨v, hv, hlies⟩` from `hw`. Conclude with `⟨v, hv, (τ • (⟨w, hlies⟩ : PlacesOver L v)).2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem galSmul_mem_placesOver (τ : L ≃ₐ[F] L) {w : HeightOneSpectrum (𝓞 L)}
     (hw : w ∈ placesOver S) : τ • w ∈ placesOver S := by
@@ -121,7 +121,7 @@ def gsPlaceAbove (v : S) : (placesOver S : Set (HeightOneSpectrum (𝓞 L))) :=
   ⟨(gsLocalPlace hL ιs v 1).1, v.1, v.2, (gsLocalPlace hL ιs v 1).2⟩
 
 /- English proof (translation)
-Set `_` to `placesOverAction (L := L) S`. Rewrite using `[← stabilizer_gsLocalPlace hL ιs v]`. Use extensionality with `τ`. Rewrite using `[mem_stabilizer_iff, mem_stabilizer_iff, Subtype.ext_iff, Subtype.ext_iff]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem stabilizer_gsPlaceAbove (v : S) :
     let _ := placesOverAction (L := L) S
@@ -135,7 +135,7 @@ theorem stabilizer_gsPlaceAbove (v : S) :
 omit [IsGalois F L] in
 
 /- English proof (translation)
-Use `Finite.of_surjective (fun p : Σ v : S, PlacesOver L (v : HeightOneSpectrum (𝓞 F)) => (⟨p.2.1, p.1.1, p.1.2, p.2.2⟩ : (placesOver S : Set (HeightOneSpectrum (𝓞 L))))) ?_` and prove the remaining obligations. Introduce and unpack `⟨w, v, hv, hw⟩`. Conclude with `⟨⟨⟨v, hv⟩, ⟨w, hw⟩⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem finite_placesOver [Finite S] :
     Finite (placesOver S : Set (HeightOneSpectrum (𝓞 L))) := by
@@ -145,15 +145,15 @@ theorem finite_placesOver [Finite S] :
   exact ⟨⟨⟨v, hv⟩, ⟨w, hw⟩⟩, rfl⟩
 
 /- English proof (translation)
-Set `_` to `placesOverAction (L := L) S`. Prove the components needed by the constructor for the conclusion. Introduce `v v' h`. Take `⟨τ, hτ⟩` from `Quotient.exact h`. Establish `hτ' : τ • (gsPlaceAbove hL ιs v').1 = (gsPlaceAbove hL ιs v).1` using `congrArg Subtype.val hτ`.
+Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1` using `eq_placeBelow_of_liesOver (K := F) (gsLocalPlace hL ιs v 1).2`. Establish `e2` using `eq_placeBelow_of_liesOver (K := F) (gsLocalPlace hL ιs v' 1).2`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[e1, e2]`. Express the relevant statement in the definitionally equal form `placeBelow (gsPlaceAbove hL ιs v).1 = placeBelow (gsPlaceAbove hL ιs v').1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hτ', placeBelow_smul]`. Introduce `ω`. Proceed by induction on `ω using Quotient.inductionOn with`. Consider the case `h w`. Take `⟨v0, hv0, hw⟩` from `w.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Set `v : S` to `⟨v0, hv0⟩`. Take `⟨τ, hτ⟩` from `MulAction.exists_smul_eq (L ≃ₐ[F] L) (gsLocalPlace hL ιs v 1) (⟨w.1, hw⟩ : PlacesOver L v0)`. Use `⟨v, Quotient.sound ⟨τ⁻¹, ?_⟩⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `τ⁻¹ • w.1 = (gsLocalPlace hL ιs v 1).1`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congrArg Subtype.val hτ` as an intermediate fact. Express the relevant statement in the definitionally equal form `τ • (gsLocalPlace hL ιs v 1).1 = w.1 at this`. Rewrite using `[← this, inv_smul_smul]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem bijective_mk_gsPlaceAbove :
     let _ := placesOverAction (L := L) S
@@ -189,9 +189,9 @@ variable {k N : Type*} [Field k] [AddCommGroup N] [Module k N] [FiniteDimensiona
   (σN : Representation k (L ≃ₐ[F] L) N)
 
 /- English proof (translation)
-Introduce `_`. Use `finite_placesOver (L := L) (S := S)` as an intermediate fact. Set `_` to `Fintype.ofFinite (placesOver S : Set (HeightOneSpectrum (𝓞 L)))`. Set `_` to `Fintype.ofFinite (orbitRel.Quotient (L ≃ₐ[F] L) (placesOver S : Set (HeightOneSpectrum (𝓞 L))))`. Rewrite using `[finrank_invariants_funPermRep_tprod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `(Fintype.sum_bijective _ (bijective_mk_gsPlaceAbove hL ιs) _ _ fun v => ?_).symm` and prove the remaining obligations. Establish `h1` using `orbitMover_smul (Γ := L ≃ₐ[F] L) (gsPlaceAbove hL ιs v)`. Rewrite using `[← stabilizer_gsPlaceAbove hL ιs v]`. Use `conv_lhs => rw [← h1]`. Rewrite using `[finrank_invariants_stabilizer_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_invariants_funPermRep_placesOver [Fintype S] :
     let _ := placesOverAction (L := L) S

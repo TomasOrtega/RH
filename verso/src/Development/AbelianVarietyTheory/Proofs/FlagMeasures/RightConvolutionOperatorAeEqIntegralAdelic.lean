@@ -15,19 +15,17 @@ section General
 variable {X Y : Type} [MeasurableSpace X] [MeasurableSpace Y] {ν : Measure X} {μ : Measure Y}
 
 /- English proof (translation)
-Establish `hK' : AEStronglyMeasurable (fun p : X × Y => K p.1 p.2) ((ν.restrict s).prod μ)` using `hK.mono_ac (Measure.AbsolutelyContinuous.prod (Measure.absolutelyContinuous_of_le Measure.restrict_le_self) Measure.AbsolutelyContinuous.rfl)`. Establish `hm : AEStronglyMeasurable (fun p : X × Y => φ p.2 * K p.1 p.2) ((ν.restrict s).prod μ)` using `(hφ.1.comp_quasiMeasurePreserving Measure.quasiMeasurePreserving_snd).mul hK'`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Use `set M : ENNReal := ENNReal.ofReal C * (ν s) ^ (1 / (1 : ENNReal).toReal - 1 / (2 : ENNReal).toReal) with hM`. Establish `hMfin : M ≠ ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ENNReal.mul_ne_top ENNReal.ofReal_ne_top ?_` and prove the remaining obligations. Use `ENNReal.rpow_ne_top_of_nonneg ?_ hs.ne` and prove the remaining obligations. Evaluate the numerical expressions. Establish `hb : ∀ g, ∫⁻ x, ‖K x g‖ₑ ∂(ν.restrict s) ≤ M`. Introduce `g`.
+Reduce the conclusion to the remaining proof obligations. Evaluate the numerical expressions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : ∫⁻ x, ‖K x g‖ₑ ∂(ν.restrict s) = eLpNorm (r g : X → ℂ) 1 (ν.restrict s)`. Rewrite using `[eLpNorm_one_eq_lintegral_enorm]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_of_ae (s := s) (hr g)] with x hx`. Rewrite using `[hx]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `eLpNorm_le_eLpNorm_mul_rpow_measure_univ (μ := ν.restrict s) (p := 1) (q := 2) (f := (r g : X → ℂ)) (by norm_num) (Lp.aestronglyMeasurable (r g)).restrict`. Rewrite `e2` using `[Measure.restrict_apply_univ]`. Rewrite using `[e1]`. Use `e2.trans ?_` and prove the remaining obligations. Use `mul_le_mul' ?_ le_rfl` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(eLpNorm_mono_measure _ Measure.restrict_le_self).trans ?_` and prove the remaining obligations. Establish `h3` using `hC g`. Rewrite `h3` using `[Lp.norm_def]`. Rewrite using `[← ENNReal.ofReal_toReal (Lp.eLpNorm_ne_top (r g))]`. Conclude with `ENNReal.ofReal_le_ofReal h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hasFiniteIntegral_iff_enorm, lintegral_prod_symm _ hm.enorm]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun g => ?_` and prove the remaining obligations. Simplify using `only [enorm_mul]`. Rewrite using `[lintegral_const_mul' _ _ enorm_ne_top]`.
-
-Conclude with `mul_le_mul' le_rfl (hb g)`. Use `_ = (∫⁻ g, ‖φ g‖ₑ ∂μ) * M := lintegral_mul_const' _ _ hMfin`. Use `_ < ⊤ := ENNReal.mul_lt_top hφ.2 hMfin.lt_top`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_prod_restrict [SFinite ν] [SFinite μ] (K : X → Y → ℂ)
     (hK : AEStronglyMeasurable (fun p : X × Y => K p.1 p.2) (ν.prod μ))
@@ -74,11 +72,11 @@ theorem integrable_prod_restrict [SFinite ν] [SFinite μ] (K : X → Y → ℂ)
     _ < ⊤ := ENNReal.mul_lt_top hφ.2 hMfin.lt_top
 
 /- English proof (translation)
-Establish `hI` using `integrable_prod_restrict K hK r hr C hC φ hφ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `ae_of_forall_measure_lt_top_ae_restrict _ fun s _ hs => ?_` and prove the remaining obligations. Conclude with `(hI s hs).prod_right_ae`. Use `ae_eq_of_forall_setIntegral_eq_of_sigmaFinite (fun s _ hs => ?_) (fun s _ hs => ?_) (fun s hsm hs => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `integrableOn_Lp_of_measure_ne_top t (by norm_num) hs.ne`. Conclude with `(hI s hs).integral_prod_left`. Establish `h` using `ht (indicatorConstLp 2 hsm hs.ne (1 : ℂ))`. Simplify using `only [L2.inner_indicatorConstLp_one] at h`. Rewrite using `[h, integral_integral_swap (f := fun x g => φ g * K x g) (hI s hs)]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[integral_const_mul]`. Use `congr 1`. Conclude with `integral_congr_ae (ae_restrict_of_ae (hr g))`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem weak_integral_ae_eq [SigmaFinite ν] [SFinite μ] (K : X → Y → ℂ)
     (hK : AEStronglyMeasurable (fun p : X × Y => K p.1 p.2) (ν.prod μ))
@@ -107,11 +105,9 @@ theorem weak_integral_ae_eq [SigmaFinite ν] [SFinite μ] (K : X → Y → ℂ)
 end General
 
 /- English proof (translation)
-Introduce `B φ T hT y`. Take `⟨hT2, hL, hS, -⟩` from `GlobalTheory.CongTop.adelic_topology B.I`. Take `⟨hl, -⟩` from `GlobalTheory.T.adelicUnitaryHaar_bi_invariant B.I B.μf`. Take `⟨-, -, hn, -, hext⟩` from `GlobalTheory.T.rightRegularRep_unitary_stronglyContinuous B`. Establish `: BorelSpace B.I.GA` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (B.I.muA B.μf).IsMulLeftInvariant` using `⟨hl⟩`. Establish `: SigmaFinite (B.I.muA B.μf)`. Unfold `AutInst.muA`. Use `infer_instance`. Establish `hq : Measure.QuasiMeasurePreserving (fun p : B.I.GA × B.I.GA => p.1 * p.2) (((B.I.muA B.μf).restrict B.fund).prod (B.I.muA B.μf)) (B.I.muA B.μf)` using `Measure.quasiMeasurePreserving_snd.comp (measurePreserving_prod_mul ((B.I.muA B.μf).restrict B.fund) (B.I.muA B.μf)).quasiMeasurePreserving`.
-
-Conclude with `weak_integral_ae_eq (fun x g => B.I.ext y (x * g)) ((hext y).2.comp_quasiMeasurePreserving hq) (fun g => B.R g y) (fun g => B.R_spec g y) ‖y‖ (fun g => (hn g y).le) φ hT.1 (T y) (fun u => hT.2 u y)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rconv_eq_integral : ∀ (B : RowsAut) (φ : B.I.GA → ℂ) (T : B.I.L2 B.μf B.fund →L[ℂ] B.I.L2 B.μf B.fund), B.I.IsRConv B.μf B.fund B.R φ T → ∀ y : B.I.L2 B.μf B.fund, (∀ᵐ x ∂((B.I.muA B.μf).restrict B.fund), Integrable (fun g => φ g * B.I.ext y (x * g)) (B.I.muA B.μf)) ∧ (T y : B.I.GA → ℂ) =ᵐ[(B.I.muA B.μf).restrict B.fund] fun x => ∫ g, φ g * B.I.ext y (x * g) ∂(B.I.muA B.μf) := by
   intro B φ T hT y

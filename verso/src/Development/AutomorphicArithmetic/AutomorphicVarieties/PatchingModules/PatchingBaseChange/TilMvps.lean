@@ -13,7 +13,7 @@ private def swF (f : PowerSeries (MvPowerSeries σ A)) : MvPowerSeries σ (Power
   fun n => PowerSeries.mk fun k => MvPowerSeries.coeff n (PowerSeries.coeff k f)
 
 /- English proof (translation)
-The claim follows from `PowerSeries.coeff_mk k (fun k => MvPowerSeries.coeff n (PowerSeries.coeff k f))`.
+A detailed English derivation is pending.
 -/
 private theorem coeff_swF (f : PowerSeries (MvPowerSeries σ A)) (n : σ →₀ ℕ) (k : ℕ) :
     PowerSeries.coeff k (MvPowerSeries.coeff n (swF A σ f)) = MvPowerSeries.coeff n (PowerSeries.coeff k f) :=
@@ -47,9 +47,9 @@ private def sw : PowerSeries (MvPowerSeries σ A) →ₐ[K] MvPowerSeries σ (Po
       simp [PowerSeries.coeff_C, MvPowerSeries.coeff_C, hn, hk]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `f g h`. Use extensionality with `k n`. Use `congrArg (fun x => PowerSeries.coeff k (MvPowerSeries.coeff n x)) h` as an intermediate fact. Simplify `this` using `only [sw, AlgHom.coe_mk, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, coeff_swF]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `g`. Use `⟨PowerSeries.mk fun k => (fun n => PowerSeries.coeff k (MvPowerSeries.coeff n g) : MvPowerSeries σ A), ?_⟩` and prove the remaining obligations. Use extensionality with `n k`. Use `(coeff_swF A σ (PowerSeries.mk fun k => (fun n => PowerSeries.coeff k (MvPowerSeries.coeff n g) : MvPowerSeries σ A)) n k).trans ?_` and prove the remaining obligations. Conclude with `congrArg (MvPowerSeries.coeff n) (PowerSeries.coeff_mk (R := MvPowerSeries σ A) k (fun k => (fun n => PowerSeries.coeff k (MvPowerSeries.coeff n g) : MvPowerSeries σ A)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem sw_bij : Function.Bijective (sw K A σ) := by
   constructor
@@ -84,9 +84,9 @@ private theorem cf_tmul (n : σ →₀ ℕ) (o : O') (f : MvPowerSeries σ R) :
     cf O O' R σ n (o ⊗ₜ f) = o ⊗ₜ MvPowerSeries.coeff n f := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp [hx, hy]`. Consider the case `tmul o f`. Rewrite using `[cf_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ph, Algebra.ofId_apply, MvPowerSeries.algebraMap_apply, MvPowerSeries.coeff_C_mul, MvPowerSeries.mapAlgHom]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem coeff_ph (n : σ →₀ ℕ) (x : O' ⊗[O] MvPowerSeries σ R) :
     MvPowerSeries.coeff n (ph O O' R σ x) = cf O O' R σ n x := by
@@ -98,15 +98,15 @@ private theorem coeff_ph (n : σ →₀ ℕ) (x : O' ⊗[O] MvPowerSeries σ R) 
     simp [ph, Algebra.ofId_apply, MvPowerSeries.algebraMap_apply, MvPowerSeries.coeff_C_mul, MvPowerSeries.mapAlgHom]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis O O'`. Establish `key : ∀ (n : σ →₀ ℕ) (x : O' ⊗[O] MvPowerSeries σ R) i, TensorProduct.equivFinsuppOfBasisLeft b (cf O O' R σ n x) i = MvPowerSeries.coeff n (TensorProduct.equivFinsuppOfBasisLeft b x i)`. Introduce `n x i`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => simp [hx, hy]`. Consider the case `tmul o f`. Rewrite using `[cf_tmul]`. Simplify using `only [TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]`. Both sides reduce to the same expression.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Apply `(TensorProduct.equivFinsuppOfBasisLeft b).injective` to reduce the goal to its premises. Use extensionality with `i n`. Rewrite using `[← key, ← key, ← coeff_ph, ← coeff_ph, h]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Use `⟨(TensorProduct.equivFinsuppOfBasisLeft b).symm (Finsupp.equivFunOnFinite.symm fun i => (fun n => TensorProduct.equivFinsuppOfBasisLeft b (MvPowerSeries.coeff n g) i : MvPowerSeries σ R)), ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Apply `(TensorProduct.equivFinsuppOfBasisLeft b).injective` to reduce the goal to its premises. Use extensionality with `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[coeff_ph, key, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ph_bij [Module.Finite O O'] [Module.Free O O'] : Function.Bijective (ph O O' R σ) := by
   classical
@@ -140,7 +140,7 @@ private def tau0 : Til O O' (MvPowerSeries σ R) →ₐ[O'] MvPowerSeries σ (Ti
   (sw O' (O' ⊗[O] R) σ).comp (PowerSeries.mapAlgHom (ph O O' R σ))
 
 /- English proof (translation)
-Rewrite using `[← coeff_ph]`. Conclude with `coeff_swF (O' ⊗[O] R) σ (PowerSeries.mapAlgHom (ph O O' R σ) a) n k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_power_series_restriction (a : Til O O' (MvPowerSeries σ R)) (n : σ →₀ ℕ) (k : ℕ) :
     Til.coeff O O' R k (MvPowerSeries.coeff n (tau0 O O' R σ a)) = cf O O' R σ n (Til.coeff O O' _ k a) := by
@@ -148,13 +148,13 @@ private theorem coeff_power_series_restriction (a : Til O O' (MvPowerSeries σ R
   exact coeff_swF (O' ⊗[O] R) σ (PowerSeries.mapAlgHom (ph O O' R σ) a) n k
 
 /- English proof (translation)
-The claim follows from `PowerSeries.ext h`.
+A detailed English derivation is pending.
 -/
 private theorem til_ext {a b : Til O O' R} (h : ∀ k, Til.coeff O O' R k a = Til.coeff O O' R k b) : a = b :=
   PowerSeries.ext h
 
 /- English proof (translation)
-Use `(sw_bij O' (O' ⊗[O] R) σ).comp (f := PowerSeries.map (ph O O' R σ).toRingHom) ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `PowerSeries.map_injective _ (ph_bij O O' R σ).1`. Conclude with `PowerSeries.map_surjective _ (ph_bij O O' R σ).2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem power_series_restriction_bijective [Module.Finite O O'] [Module.Free O O'] : Function.Bijective (tau0 O O' R σ) := by
   refine (sw_bij O' (O' ⊗[O] R) σ).comp (f := PowerSeries.map (ph O O' R σ).toRingHom) ⟨?_, ?_⟩
@@ -162,21 +162,21 @@ private theorem power_series_restriction_bijective [Module.Finite O O'] [Module.
   · exact PowerSeries.map_surjective _ (ph_bij O O' R σ).2
 
 /- English proof (translation)
-The claim follows from `PowerSeries.coeff_C _ _`.
+A detailed English derivation is pending.
 -/
 private theorem coeff_ι (a : R) (k : ℕ) :
     Til.coeff O O' R k (Til.ι O O' R a) = if k = 0 then (1 : O') ⊗ₜ[O] a else 0 :=
   PowerSeries.coeff_C _ _
 
 /- English proof (translation)
-The claim follows from `PowerSeries.coeff_X _`.
+A detailed English derivation is pending.
 -/
 private theorem coeff_alt (k : ℕ) :
     Til.coeff O O' R k (Til.s O O' R) = if k = 1 then 1 else 0 :=
   PowerSeries.coeff_X _
 
 /- English proof (translation)
-The claim follows from `map_zero (PowerSeries.coeff k : PowerSeries (O' ⊗[O] R) →ₗ[O' ⊗[O] R] _)`.
+A detailed English derivation is pending.
 -/
 private theorem coeff_zero' (k : ℕ) : Til.coeff O O' R k 0 = 0 :=
   map_zero (PowerSeries.coeff k : PowerSeries (O' ⊗[O] R) →ₗ[O' ⊗[O] R] _)
@@ -193,23 +193,21 @@ end UpperTheory.V.Pa.BC
 
 open UpperTheory.V.Pa.BC in
 /- English proof (translation)
-Introduce `O O' _ _ _ _ _ R _ _ σ _`. Use `⟨AlgEquiv.ofBijective (tau0 O O' R σ) (power_series_restriction_bijective O O' R σ), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Use `MvPowerSeries.ext fun n => til_ext O O' R fun k => ?_` and prove the remaining obligations. Rewrite using `[AlgEquiv.ofBijective_apply, coeff_power_series_restriction, MvPowerSeries.coeff_map, coeff_ι, coeff_ι]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Both sides reduce to the same expression. Conclude with `map_zero _`. Use `MvPowerSeries.ext fun n => til_ext O O' R fun k => ?_` and prove the remaining obligations. Rewrite using `[AlgEquiv.ofBijective_apply, coeff_power_series_restriction, MvPowerSeries.coeff_C, coeff_alt]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hn : n = 0`. Rewrite using `[if_pos hn, coeff_alt] split_ifs`. Rewrite using `[Algebra.TensorProduct.one_def, cf_tmul, hn, MvPowerSeries.coeff_zero_one]`. Both sides reduce to the same expression. Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg hn, coeff_zero'] split_ifs`. Rewrite using `[Algebra.TensorProduct.one_def, cf_tmul, MvPowerSeries.coeff_one, if_neg hn, TensorProduct.tmul_zero]`. Conclude with `map_zero _`. Introduce `a`. Use `MvPowerSeries.ext fun n => til_ext O O' R fun k => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[AlgEquiv.ofBijective_apply, coeff_power_series_restriction, MvPowerSeries.coeff_C, coeff_map']`. Establish `h : ∀ x : O' ⊗[O] R, cf O O' R σ n (Algebra.TensorProduct.map (AlgHom.id O' O') (IsScalarTower.toAlgHom O R (MvPowerSeries σ R)) x) = if n = 0 then x else 0`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]; split_ifs <;> simp`. Consider the case `tmul o r`. Rewrite using `[Algebra.TensorProduct.map_tmul, cf_tmul]`. Apply the tactic sequence `split_ifs with hn <;> simp [MvPowerSeries.algebraMap_apply, MvPowerSeries.coeff_C, hn]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Both sides reduce to the same expression. Conclude with `(coeff_zero' O O' R k).symm`. Introduce `c hc a`. Use `til_ext O O' R fun k => ?_` and prove the remaining obligations.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[AlgEquiv.ofBijective_apply, ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_power_series_restriction, coeff_map']`. Generalize the expression as in `Til.coeff O O' _ k a = x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
-
-Consider the case `tmul o r`. Rewrite using `[Algebra.TensorProduct.map_tmul, cf_tmul, hc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.BC.til_mvps :
     ∀ (O O' : Type) [CommRing O] [CommRing O'] [Algebra O O'] [Module.Finite O O'] [Module.Free O O'] (R : Type) [CommRing R] [Algebra O R] (σ : Type) [Finite σ], ∃ τ : Til O O' (MvPowerSeries σ R) ≃ₐ[O'] MvPowerSeries σ (Til O O' R), (∀ a, τ (Til.ι O O' _ a) = MvPowerSeries.map (Til.ι O O' R) a) ∧ τ (Til.s O O' _) = MvPowerSeries.C (Til.s O O' R) ∧ (∀ a, τ (Til.map O' (IsScalarTower.toAlgHom O R (MvPowerSeries σ R)) a) = MvPowerSeries.C a) ∧ ∀ (c : MvPowerSeries σ R →ₐ[O] R), (∀ z, c z = MvPowerSeries.constantCoeff z) → ∀ a, MvPowerSeries.constantCoeff (τ a) = Til.map O' c a := by

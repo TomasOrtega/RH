@@ -13,17 +13,17 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hA hW hD K Ω _ _ _ _ _ _ l _ ι n R hR art κ m μ hart hκ hμ hL w A h O _ _ _ Bw hj hP hP' σ rc hrc H`. Take `⟨T⟩` from `Loc.tiedP l`. Establish `hdet : Matrix.GeneralLinearGroup.det.comp ((GlobalTheory.TripleGal.rk1 μ).comp (Dec (F` using `K) A).subtype) = μ.comp (Dec (F := K) A).subtype := by`. Use extensionality with `g`. Simplify using `[GlobalTheory.TripleGal.rk1, Matrix.det_unique]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `htw : (tw R μ).comp (Dec (F` using `K) A).subtype = Formalism.MainNotions.SumRepresentations.At.twGL (R.comp (Dec (F := K) A).subtype) (Matrix.GeneralLinearGroup.det.comp ((GlobalTheory.TripleGal.rk1 μ).comp (Dec (F := K) A).subtype)) := by`. Rewrite using `[hdet]`. Use extensionality with `g i j`. Simplify using `[Formalism.MainNotions.SumRepresentations.At.twGL, tw_val, Algebra.algebraMap_eq_smul_one, Matrix.smul_apply]`. Establish `hcR : Continuous fun g : ↥(Dec (F` using `K) A) => ((R.comp (Dec (F := K) A).subtype g : GL (Fin n) (Loc.Om l)) : Matrix (Fin n) (Fin n) (Loc.Om l)) := Units.continuous_val.comp (hR.comp continuous_subtype_val)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcμ : Continuous fun g : ↥(Dec (F` using `K) A) => (((GlobalTheory.TripleGal.rk1 μ).comp (Dec (F := K) A).subtype g : GL (Fin 1) (Loc.Om l)) : Matrix (Fin 1) (Fin 1) (Loc.Om l)) := by`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `fin_cases i`. Use `fin_cases j`. Use `Units.continuous_val.comp (hμ.comp (continuous_subtype_val (p := fun x => x ∈ Dec (F := K) A)))` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[GlobalTheory.TripleGal.rk1, Function.comp_def]`. Establish `hdR` using `(GlobalTheory.Published.heckeLAdicCharacterAbove_iff.1 hA K Ω l _ _ ⟨T⟩ ι art hart κ m μ hκ hμ hL w A h O Bw hj).1`. Establish `hPμ` using `GlobalTheory.Published.DeRhamPotSemistable.isPstAt hD T Bw _ hcμ hdR`. Establish `hc` using `GlobalTheory.Published.ParamAboveModel.isComp_loc (w := w) κ`. Rewrite `H`, `hP'` using `[htw]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `H` using `[GlobalTheory.T.fontaineParameter_twist_potentiallySemistable l _ _ ⟨T⟩ ι K Ω A w h O Bw hj n _ _ hcR hcμ hP hPμ hP', rec_algNorm hrc]`. Rewrite using `[rec_algNorm hrc]`. Take `⟨a, ha, ε, -, HL⟩` from `hrc`. Rewrite `H` using `[hW K Ω l _ _ ⟨T⟩ ι art hart κ m μ hκ hμ hL w A h O Bw hj _ hc a ha, ← HL.one _ hc.1]`. Establish `e : rc (IrrGL.of (σ.twist (CuspSub.locDet n κ w) (CuspSub.isOpen_ker_locDet κ w)).ρ (σ.twist (CuspSub.locDet n κ w) (CuspSub.isOpen_ker_locDet κ w)).smooth (σ.twist (CuspSub.locDet n κ w) (CuspSub.isOpen_ker_locDet κ w)).irred) = (rc (IrrGL.of σ.ρ σ.smooth σ.irred)).lpChar (rc (. …`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← HL.twist]`. Conclude with `congrArg _ (GlobalTheory.LocGL.IrrGL.tw_of σ.ρ σ.smooth σ.irred _ hc.1).symm`. Rewrite `H` using `[e, ← GlobalTheory.NuShift.lpChar_lpTw]`. Conclude with `((Lev.ssCalc K Ω A w h).2.2 _ _ _ (HL.dim _)).1 H`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lev.untwistS :
     GlobalTheory.Published.HeckeLAdicCharacterAbove → GlobalTheory.Published.AlgebraicCharacterWD → GlobalTheory.Published.DeRhamPotSemistable →

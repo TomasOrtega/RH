@@ -23,13 +23,13 @@ variable {ε : PreTilt (normInteger ℂ_[p]) p} (hε : PreTilt.untilt ε = 1)
 include hζ in
 
 /- English proof (translation)
-Establish `ht : Irreducible (fontaineT ε hε)` using `IsDiscreteValuationRing.irreducible_iff_uniformizer _ |>.2 (maximalIdeal_eq_span_fontaineT hε hζ)`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝔹) y`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hy` using `[map_zero, zero_div]`. Conclude with `hy rfl`. Take `⟨m, u₁, ha⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha0 ht`. Take `⟨n, u₂, hb'⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 ht`. Use `⟨(m : ℤ) - n, u₁ * u₂⁻¹, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hT : algebraMap 𝔹 𝔹dR (fontaineT ε hε) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective 𝔹 𝔹dR)).2 ht.ne_zero`. Establish `hu₂ : algebraMap 𝔹 𝔹dR (u₂ : 𝔹) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective 𝔹 𝔹dR)).2 u₂.ne_zero`. Establish `hinv : algebraMap 𝔹 𝔹dR ((u₂⁻¹ : 𝔹ˣ) : 𝔹) = (algebraMap 𝔹 𝔹dR (u₂ : 𝔹))⁻¹` using `eq_inv_of_mul_eq_one_left (by rw [← map_mul, Units.inv_mul, map_one])`. Rewrite using `[ha, hb', Units.val_mul]`. Simplify using `only [map_mul, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinv, zpow_sub₀ hT, zpow_natCast, zpow_natCast]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_eq_zpow_mul_unit {y : 𝔹dR} (hy : y ≠ 0) :
     ∃ (i : ℤ) (u : 𝔹ˣ), y = algebraMap 𝔹 𝔹dR (fontaineT ε hε) ^ i * algebraMap 𝔹 𝔹dR (u : 𝔹) := by
@@ -58,15 +58,15 @@ theorem exists_eq_zpow_mul_unit {y : 𝔹dR} (hy : y ≠ 0) :
 variable {L : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 /- English proof (translation)
-Use `set χ : ℚ_[p] := ((cycloChar L σ : ℤ_[p]) : ℚ_[p])`. Establish `hχ : χ ≠ 0`. Introduce `h0`. Use `(cycloChar L σ).isUnit.map (PadicInt.Coe.ringHom (p := p))` as an intermediate fact. Conclude with `this.ne_zero h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨q * χ⁻¹ ^ i, IsFractionRing.injective 𝔹 𝔹dR ?_⟩` and prove the remaining obligations. Use `set A := algebraMap 𝔹 𝔹dR`. Establish `hσT : σ • A (fontaineT ε hε) = A (algebraMap ℚ_[p] 𝔹 χ) * A (fontaineT ε hε)`. Rewrite using `[gal_smul_algebraMap_bDeRham, gal_smul_fontaineT, map_mul]`. Establish `hAχ : A (algebraMap ℚ_[p] 𝔹 χ) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective 𝔹 𝔹dR)).2 ((map_ne_zero_iff _ (algebraMap ℚ_[p] 𝔹).injective).2 hχ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[gal_smul_bDeRham_def, map_mul, map_zpow₀, ← gal_smul_bDeRham_def, ← gal_smul_bDeRham_def, hσT, gal_smul_algebraMap_bDeRham]`. Use `set Aq : ℚ_[p] →+* 𝔹dR := A.comp (algebraMap ℚ_[p] 𝔹) with hAq`. Establish `eAq : ∀ r : ℚ_[p], A (algebraMap ℚ_[p] 𝔹 r) = Aq r` using `fun r => rfl`. Rewrite using `[map_mul, eAq, map_mul, map_zpow₀, map_inv₀]`. Rewrite `h` using `[eAq, eAq]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hAχ` using `[eAq]`. Establish `hTi : A (fontaineT ε hε) ^ i ≠ 0` using `zpow_ne_zero _ hT`. Establish `hχi : Aq χ ^ i ≠ 0` using `zpow_ne_zero _ hAχ`. Rewrite `h` using `[mul_zpow]`. Establish `h2 : A (fontaineT ε hε) ^ i * (Aq χ ^ i * A (σ • u)) = A (fontaineT ε hε) ^ i * (Aq q * A u)`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Take the linear combination `h`. Establish `h3` using `mul_left_cancel₀ hTi h2`. Rewrite using `[inv_zpow', zpow_neg]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h3`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_gal_smul_unit (σ : Gal(PadicAlgCl p/L)) {i : ℤ} {u : 𝔹} {q : ℚ_[p]}
     (h : σ • (algebraMap 𝔹 𝔹dR (fontaineT ε hε) ^ i * algebraMap 𝔹 𝔹dR u) =
@@ -113,13 +113,13 @@ def SenTateCharacters : Prop :=
       (η '' {σ | ∀ u ∈ unramifiedClosure p, σ u = u}).Finite
 
 /- English proof (translation)
-Take `⟨E, hE, hEψ⟩` from `exists_fixingSubgroup_of_finite_image ψ hψc _ hfin`. Establish `: IsScalarTower ℚ_[p] K E` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hE' : FiniteDimensional ℚ_[p] E` using `Module.Finite.trans K E`. Take `⟨L, hL⟩ : ∃ L : IntermediateField ℚ_[p] (PadicAlgCl p), L = E.restrictScalars ℚ_[p]` from `⟨_, rfl⟩`. Establish `hLE : ∀ y, y ∈ L ↔ y ∈ E` using `fun y => by rw [hL]; exact IntermediateField.mem_restrictScalars _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hKL : K ≤ L` using `fun k hk => (hLE _).2 (E.algebraMap_mem ⟨k, hk⟩)`. Establish `: FiniteDimensional ℚ_[p] L` using `by subst hL; exact hE'`. Establish `hres : ∀ σ : Gal(PadicAlgCl p/L), galRes hKL σ ∈ E.fixingSubgroup` using `fun σ => (IntermediateField.mem_fixingSubgroup_iff _ _).2 fun e he => σ.commutes ⟨e, (hLE e).2 he⟩`. Take `⟨ψL, -, hψLx⟩` from `exists_eigenChar (K := L) hx0 (fun σ => ⟨_, hψx (galRes hKL σ)⟩)`. Establish `hψL : ∀ σ, ψL σ = ψ (galRes hKL σ)` using `fun σ => Units.ext (eq_of_mul_eq hx0 ((hψLx σ).symm.trans (hψx (galRes hKL σ))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f, hf, c, hc⟩` from `exists_twist_of_unramified hx0 ψL hψLx (fun σ hσ => by`. Establish `h3` using `mem_inertia_of_degree hσ`. Rewrite using `[hψL]`. Use `hEψ _ (hres σ) fun u hu => ?_` and prove the remaining obligations. Rewrite using `[galRes_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3 u hu)`. Use `⟨L, hKL, this, f, c, hf, fun σ => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hzc⟩` from `hc σ`. Conclude with `⟨z, by rw [hz, hψL], hzc⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_twist_of_finite_image {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
     [FiniteDimensional ℚ_[p] K] {x : ℂ_[p]} (hx0 : x ≠ 0) (ψ : Gal(PadicAlgCl p/K) →* ℚ_[p]ˣ)
@@ -157,13 +157,13 @@ include hζ in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨i, u, hyu⟩` from `exists_eq_zpow_mul_unit hε hζ hy0`. Establish `hT : algebraMap 𝔹 𝔹dR (fontaineT ε hε) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective 𝔹 𝔹dR)).2 (fontaineT_ne_zero hε hζ)`. Establish `huσ : ∀ σ : Gal(PadicAlgCl p/K), ∃ q : ℚ_[p], σ • (u : 𝔹) = algebraMap ℚ_[p] 𝔹 q * u` using `fun σ => by`. Take `⟨q, hq⟩` from `hyσ σ`. Conclude with `exists_gal_smul_unit hε σ (by rw [← hyu]; exact hq) hT`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx0 : thetaAlgHom p (u : 𝔹) ≠ 0` using `(u.isUnit.map (thetaAlgHom p)).ne_zero`. Establish `hθ : ∀ {L : IntermediateField ℚ_[p] (PadicAlgCl p)} (σ : Gal(PadicAlgCl p/L)) (q : ℚ_[p]), σ • (u : 𝔹) = algebraMap ℚ_[p] 𝔹 q * u → σ • thetaAlgHom p (u : 𝔹) = algebraMap ℚ_[p] ℂ_[p] q * thetaAlgHom p (u : 𝔹)`. Introduce `L σ q h`. Rewrite using `[thetaAlgHom_apply, ← thetaBDeRhamPlusField_gal_smul, h, ← thetaAlgHom_apply, map_mul, AlgHom.commutes]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψc, hψx⟩` from `exists_eigenChar hx0 fun σ => (huσ σ).imp fun q h => hθ σ q h`. Take `⟨L, hKL, hL, f, c, hf, hc⟩` from `exists_twist_of_finite_image hx0 ψ hψc hψx (hST K ψ hψc _ hx0 hψx)`. Use `⟨i, u, hyu, L, hKL, hL, f, c, fun σ => ψ (galRes hKL σ), hf, fun σ => ?_, hc⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `huσ (galRes hKL σ)`. Establish `hq' : σ • (u : 𝔹) = algebraMap ℚ_[p] 𝔹 q * u` using `hq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : q = ψ (galRes hKL σ)` using `eq_of_mul_eq hx0 ((hθ σ q hq').symm.trans (hψx (galRes hKL σ)))`. Rewrite using `[hq', h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unramified_twist (hST : SenTateCharacters p)
     {K : IntermediateField ℚ_[p] (PadicAlgCl p)} [FiniteDimensional ℚ_[p] K] {y : 𝔹dR}
@@ -201,13 +201,13 @@ theorem exists_unramified_twist (hST : SenTateCharacters p)
   rw [hq', h2]
 
 /- English proof (translation)
-Use `set B := b ^ f * ↑c⁻¹ * ↑(T ^ n) with hB`. Establish `hgT : g ↑(T ^ n) = g ↑T ^ n`. Establish `h` using `congrArg Units.val (map_zpow (Units.map (g : R →* F)) T n)`. Rewrite `h` using `[Units.val_zpow_eq_zpow_val]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgB : g B = g b ^ f * (g ↑c)⁻¹ * g ↑T ^ n`. Rewrite using `[hB, map_mul, map_mul, map_pow, map_units_inv, hgT]`. Establish `hB0 : B ≠ 0` using `mul_ne_zero (mul_ne_zero (pow_ne_zero _ hb0) (Units.ne_zero _)) (Units.ne_zero _)`. Establish `hBu : IsUnit B` using `hunit B hB0 fun σ => hg (by rw [hequiv, hgB, hfix])`. Establish `hbf : b ^ f = B * ↑c * ↑(T ^ (-n))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hB]`. Establish `e1 : (↑c⁻¹ : R) * ↑c = 1` using `Units.inv_mul c`. Establish `e2 : (↑(T ^ n) : R) * ↑(T ^ (-n)) = 1`. Rewrite using `[← Units.val_mul, ← zpow_add, add_neg_cancel, zpow_zero, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbfu : IsUnit (b ^ f)`. Rewrite using `[hbf]`. Conclude with `(hBu.mul c.isUnit).mul (Units.isUnit _)`. Conclude with `(isUnit_pow_iff hf.ne').1 hbfu`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_fixed_twist {R F G : Type*} [CommRing R] [IsDomain R] [Field F] [Group G]
     [MulSemiringAction G F] (g : R →+* F) (hg : Function.Injective g) (act : G → R → R)
@@ -241,15 +241,15 @@ include hζ in
 set_option maxHeartbeats 3200000 in
 
 /- English proof (translation)
-Use `isDomain_bCris hε hζ` as an intermediate fact. Establish `hT : algebraMap 𝔹 𝔹dR (fontaineT ε hε) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective 𝔹 𝔹dR)).2 (fontaineT_ne_zero hε hζ)`. Take `⟨C, hCdef⟩ : ∃ C : 𝔹dR, C = algebraMap 𝔹 𝔹dR (wittToBDeRhamPlus (normInteger ℂ_[p]) p (c : AInf ℂ_[p] p))` from `⟨_, rfl⟩`. Establish `hC0 : C ≠ 0`. Rewrite using `[hCdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective 𝔹 𝔹dR)).2 ((c.isUnit.map (wittToBDeRhamPlus (normInteger ℂ_[p]) p)).ne_zero)`. Establish `hCσ : ∀ σ : Gal(PadicAlgCl p/L), σ • C = algebraMap 𝔹 𝔹dR (algebraMap ℚ_[p] 𝔹 (ψ σ)) ^ f * C` using `fun σ => by`. Take `⟨z, hz, hzc⟩` from `hc σ`. Rewrite using `[hCdef, gal_smul_algebraMap_bDeRham, gal_smul_wittToBDeRhamPlus, hzc, map_mul, map_mul, ← IsPerfectoidField.algebraMap_padic_coe, hz, map_pow, map_pow]`. Take `⟨cB, hcBdef⟩ : ∃ cB : BCris hε, cB = aInfToBCris hε (c : AInf ℂ_[p] p)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcB : IsUnit cB` using `by rw [hcBdef]; exact c.isUnit.map _`. Establish `hιc : iotaB hε hζ ↑hcB.unit = C` using `by rw [IsUnit.unit_spec, hcBdef, hCdef, iotaB_aInfToBCris]`. Establish `hιT : iotaB hε hζ ↑(isUnit_periodTCris hε).unit = algebraMap 𝔹 𝔹dR (fontaineT ε hε)`. Rewrite using `[IsUnit.unit_spec, iotaB_periodTCris_eq]`. Use `isUnit_of_fixed_twist (G := Gal(PadicAlgCl p/L)) (iotaB hε hζ) (iotaB_injective hε hζ) (fun σ y => galB hε σ y) (fun σ y => iotaB_galB (K := L) hε hζ σ y) (fun B hB0 hB => isUnit_of_galB_fixed hε hζ (L := L) hB0 hB) hb0 hf hcB.unit (isUnit_periodTCris hε).unit (-(i * f)) fun σ => …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hιc, hιT, hyu]`. Establish `hψ0 : algebraMap 𝔹 𝔹dR (algebraMap ℚ_[p] 𝔹 (ψ σ)) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective 𝔹 𝔹dR)).2 ((map_ne_zero_iff _ (algebraMap ℚ_[p] 𝔹).injective).2 (Units.ne_zero _))`. Establish `hsimp : (algebraMap 𝔹 𝔹dR (fontaineT ε hε) ^ i * algebraMap 𝔹 𝔹dR (u : 𝔹)) ^ f * C⁻¹ * algebraMap 𝔹 𝔹dR (fontaineT ε hε) ^ (-(i * f)) = algebraMap 𝔹 𝔹dR (u : 𝔹) ^ f * C⁻¹`. Rewrite using `[mul_pow, ← zpow_natCast (_ ^ i), ← zpow_mul, zpow_neg]`. Establish `hTz : algebraMap 𝔹 𝔹dR (fontaineT ε hε) ^ (i * (f : ℤ)) ≠ 0` using `zpow_ne_zero _ hT`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hsimp, gal_smul_bDeRham_def, map_mul, map_pow, map_inv₀, ← gal_smul_bDeRham_def, ← gal_smul_bDeRham_def, gal_smul_algebraMap_bDeRham, huL σ, hCσ σ, map_mul, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem isUnit_of_twist {L : IntermediateField ℚ_[p] (PadicAlgCl p)} [FiniteDimensional ℚ_[p] L]
     {b : BCris hε} (hb0 : b ≠ 0) {i : ℤ} {u : 𝔹ˣ}
@@ -299,9 +299,9 @@ include hζ in
 set_option maxHeartbeats 3200000 in
 
 /- English proof (translation)
-Establish `hy0 : iotaB hε hζ b ≠ 0` using `(map_ne_zero_iff _ (iotaB_injective hε hζ)).2 hb0`. Take `⟨i, u, hyu, L, -, hL, f, c, ψ, hf, huL, hc⟩` from `exists_unramified_twist hε hζ hST hy0 (fun σ => by`. Take `⟨q, hq⟩` from `hb σ`. Use `⟨q, ?_⟩` and prove the remaining obligations. Rewrite using `[← iotaB_galB (K := K) hε hζ σ b, hq, map_mul, iotaB_algebraMap_padic_bdRPlus])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isUnit_of_twist hε hζ (L := L) hb0 hyu hf huL hc`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_forall_galB_eq_mul (hST : SenTateCharacters p)
     {K : IntermediateField ℚ_[p] (PadicAlgCl p)} [FiniteDimensional ℚ_[p] K] {b : BCris hε}
@@ -321,7 +321,7 @@ set_option maxHeartbeats 3200000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-The claim follows from `smulCommClass_galBAction (K := K) hε IsRegular Gal(PadicAlgCl p/K) ℚ_[p] (BCris hε) := letI := isDomain_bCris hε hζ letI := galBAction (K := K) hε haveI := smulCommClass_galBAction (K := K) hε { image_fixedPoints := image_fixedPoints_fractionRing (K := K) hε hζ isUnit_of_mem_span …`.
+A detailed English derivation is pending.
 -/
 theorem isRegular_bCris (hST : SenTateCharacters p) {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
     [FiniteDimensional ℚ_[p] K] :

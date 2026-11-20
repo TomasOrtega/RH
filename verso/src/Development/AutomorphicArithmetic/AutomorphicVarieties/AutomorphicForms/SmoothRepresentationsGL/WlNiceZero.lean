@@ -13,7 +13,7 @@ section SlopeTestRemainingChoices
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `continuous_zero bdd := ⟨0, fun g => by simp⟩ left := fun _ _ => rfl cusp := fun _ _ _ g => constantTerm_zero g level := ⟨⊤, fun _ _ _ => rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem wl_nice_zero : Nice (0 : GA E n → ℂ) where
   cont := continuous_zero
@@ -23,7 +23,7 @@ private theorem wl_nice_zero : Nice (0 : GA E n → ℂ) where
   level := ⟨⊤, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-The claim follows from `h.cont.add h'.cont bdd := by obtain ⟨C, hC⟩ := h.bdd obtain ⟨C', hC'⟩ := h'.bdd exact ⟨C + C', fun g => (norm_add_le _ _).trans (add_le_add (hC g) (hC' g))⟩ left := IsLeftInvariant.add h.left h'.left cusp := fun r a b g => by have e := constantTerm_add (r := r) h.cont h'.cont g r …`.
+A detailed English derivation is pending.
 -/
 private theorem wl_nice_add {f f' : GA E n → ℂ} (h : Nice f) (h' : Nice f') : Nice (f + f') where
   cont := h.cont.add h'.cont
@@ -44,7 +44,7 @@ private theorem wl_nice_add {f f' : GA E n → ℂ} (h : Nice f) (h' : Nice f') 
     rw [Pi.add_apply, Pi.add_apply, hV g v hv.1, hV' g v hv.2]
 
 /- English proof (translation)
-The claim follows from `h.cont.const_smul z bdd := by obtain ⟨C, hC⟩ := h.bdd refine ⟨‖z‖ * C, fun g => ?_⟩ rw [Pi.smul_apply, norm_smul] exact mul_le_mul_of_nonneg_left (hC g) (norm_nonneg _) left := IsLeftInvariant.smul z h.left cusp := fun r a b g => by have e := constantTerm_smul (r := r) z f g rw [ …`.
+A detailed English derivation is pending.
 -/
 private theorem wl_nice_smul {f : GA E n → ℂ} (h : Nice f) (z : ℂ) : Nice (z • f) where
   cont := h.cont.const_smul z
@@ -63,7 +63,7 @@ private theorem wl_nice_smul {f : GA E n → ℂ} (h : Nice f) (z : ℂ) : Nice 
     exact ⟨V, fun g v hv => by rw [Pi.smul_apply, Pi.smul_apply, hV g v hv]⟩
 
 /- English proof (translation)
-The claim follows from `h.cont.comp (continuous_id.mul continuous_const) bdd := h.bdd.imp fun _ hC _ => hC _ left := fun γ g => by have e := h.left γ (g * finGL E n x) rw [← mul_assoc] at e exact e cusp := fun r a b g => (constantTerm_rightTranslate (r := r) f (finGL E n x) g).trans (h.cusp r a b _) lev …`.
+A detailed English derivation is pending.
 -/
 private theorem wl_nice_tr {f : GA E n → ℂ} (h : Nice f) (x : GL (Fin n) (Af E)) :
     Nice (fun g => f (g * finGL E n x)) where
@@ -87,9 +87,9 @@ private theorem wl_nice_tr {f : GA E n → ℂ} (h : Nice f) (x : GL (Fin n) (Af
       exact e
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Take `⟨C, hC, hD⟩` from `FourierWhittaker.exists_isCompact_superset_vecDomain (K := E) (ι := FourierWhittaker.Pos n)`. Establish `i : ∀ {φ : GA E n → ℂ}, Continuous φ → IntegrableOn (FourierWhittaker.wInt 0 φ g) (FourierWhittaker.vecDomain E (FourierWhittaker.Pos n)) (FourierWhittaker.vecMeasure E (FourierWhittaker.Pos n))` using `fun hφ => ((FourierWhittaker.continuous_wInt 0 hφ g).continuousOn.integrableOn_compact hC).mono_set hD`. Establish `e` using `integral_add (i h) (i h')`. Simplify using `only [FourierWhittaker.wInt] at e`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [whittaker, Pi.add_apply, add_mul]`. Conclude with `e`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem wl_add {f f' : GA E n → ℂ} (h : Continuous f) (h' : Continuous f') :
     whittaker (f + f') = whittaker f + whittaker f' := by
@@ -106,7 +106,7 @@ private theorem wl_add {f f' : GA E n → ℂ} (h : Continuous f) (h' : Continuo
   exact e
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [whittaker, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem wl_smul (f : GA E n → ℂ) (z : ℂ) : whittaker (z • f) = z • whittaker f := by
   funext g
@@ -114,7 +114,7 @@ private theorem wl_smul (f : GA E n → ℂ) (z : ℂ) : whittaker (z • f) = z
   exact integral_const_mul _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [whittaker, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem wl_tr (f : GA E n → ℂ) (y : GA E n) :
     whittaker (fun g => f (g * y)) = fun g => whittaker f (g * y) := by
@@ -122,9 +122,9 @@ private theorem wl_tr (f : GA E n → ℂ) (y : GA E n) :
   simp only [whittaker, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Use `⟨wl_nice_zero, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[whittaker]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Establish `k` using `wl_nice_smul (wl_nice_tr h a) (c a)`. Conclude with `⟨wl_nice_add k ih.1, by rw [wl_add k.cont ih.1.cont, ih.2, wl_smul, wl_tr]⟩`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem wl_sum {f : GA E n → ℂ} (h : Nice f) (c : GL (Fin n) (Af E) → ℂ) (s : Finset (GL (Fin n) (Af E))) :
     Nice (∑ x ∈ s, c x • fun g => f (g * finGL E n x)) ∧
@@ -143,7 +143,7 @@ private theorem wl_sum {f : GA E n → ℂ} (h : Nice f) (c : GL (Fin n) (Af E) 
     exact ⟨wl_nice_add k ih.1, by rw [wl_add k.cont ih.1.cont, ih.2, wl_smul, wl_tr]⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[fop, Finsupp.sum, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem wl_fop (c : GL (Fin n) (Af E) →₀ ℂ) (f : GA E n → ℂ) :
     fop c f = ∑ x ∈ c.support, c x • fun g => f (g * finGL E n x) := by
@@ -153,9 +153,9 @@ private theorem wl_fop (c : GL (Fin n) (Af E) →₀ ℂ) (f : GA E n → ℂ) :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ n f hf`. Use `⟨fun c => ?_, fun f' hf' => ?_⟩` and prove the remaining obligations. Rewrite using `[wl_fop, wl_fop]`. Conclude with `wl_sum hf c c.support`. Establish `e : f - f' = f + (-1 : ℂ) • f'` using `by rw [neg_one_smul, sub_eq_add_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k` using `wl_nice_smul hf' (-1)`. Rewrite using `[e]`. Conclude with `⟨wl_nice_add hf k, by rw [wl_add hf.cont k.cont, wl_smul, neg_one_smul, sub_eq_add_neg]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Smo.whLin :
     UpperTheory.V.Af.Smo.WhLin := by

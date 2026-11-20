@@ -18,9 +18,9 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 section Inducing
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_unipotentCompactG_of_isCompact (γ := δ') (isCompact_singleton (x := (u : GL (Fin n) F))) (by simpa using hu)`. Establish `ht : rankTorus F n δ' e ∈ leviPar F n γ δ'` using `⟨diagGL_mem_levi _, rankTorus_mem_blockUpper e⟩`. Establish `hk : rankTorus F n δ' e * u * (rankTorus F n δ' e)⁻¹ ∈ integralGL F n` using `(mem_unipotentCompactG.1 (he rfl)).2`. Establish `hkL : rankTorus F n δ' e * u * (rankTorus F n δ' e)⁻¹ ∈ leviPar F n γ δ'` using `(leviPar F n γ δ').mul_mem ((leviPar F n γ δ').mul_mem ht u.2) ((leviPar F n γ δ').inv_mem ht)`. Establish `h1` using `normLeviParSqrtModular_eq_one (l := ⟨_, hkL⟩) hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: u = ⟨_, ht⟩⁻¹ * ⟨_, hkL⟩ * ⟨_, ht⟩` using `Subtype.ext (by`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Use the proof step `group)`. Rewrite using `[this, map_mul, map_mul, h1, mul_one, ← map_mul, inv_mul_cancel, map_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normLeviParSqrtModular_eq_one_of_mem_unipotentRadical {γ δ' : Fin n → ℕ}
     (u : leviPar F n γ δ') (hu : (u : GL (Fin n) F) ∈ unipotentRadical F n δ') :
@@ -43,7 +43,7 @@ variable {β δ : Fin n → ℕ} {W : Type*} [AddCommGroup W] [Module ℂ W]
   (σ : Representation ℂ (levi F n β) W) {w : Equiv.Perm (Fin n)}
 
 /- English proof (translation)
-Establish `h` using `(conj_permGL_mem_unipotentRadical_iff (γ := β ∘ w) w).2 hg`. Establish `e : (β ∘ w) ∘ ⇑w⁻¹ = β`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem conj_mem_unipotentRadical_of_mem {g : GL (Fin n) F}
     (hg : g ∈ unipotentRadical F n (β ∘ w)) :
@@ -55,11 +55,11 @@ theorem conj_mem_unipotentRadical_of_mem {g : GL (Fin n) F}
   rwa [e] at h
 
 /- English proof (translation)
-Establish `hinner : cellInnerHom β δ w (cellLeviSubIncl F β δ w b) = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((leviProj F n β (permConj F β w (Subgroup.inclusion cellLeviParabolic_le_blockUpper (cellLeviSubIncl F β δ w b))) : levi F n β) : GL (Fin n) F) = 1`. Rewrite using `[(mem_unipotentRadical_iff_leviProj).1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_permConj]`. Conclude with `conj_mem_unipotentRadical_of_mem hb`. Establish `hchar : normLeviParSqrtModular F δ (β ∘ w) (cellLeviSubIncl F β δ w b) = 1` using `normLeviParSqrtModular_eq_one_of_mem_unipotentRadical _ hb`. Establish `hchar' : ((normLeviParSqrtModular F δ (β ∘ ⇑w)).comp (cellLeviSubIncl F β δ w)) b = 1` using `hchar`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show ((normLeviParSqrtModular F δ (β ∘ ⇑w)).comp (cellLeviSubIncl F β δ w)) b • (innerJacquetRep β σ (δ ∘ ⇑w⁻¹)) (cellInnerHom β δ w (cellLeviSubIncl F β δ w b)) v = v`. Rewrite using `[hchar', hinner, map_one, one_smul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem normInducing_eq_one_of_mem_unipotentRadical (b : cellLeviSub F β δ w)
     (hb : ((b : levi F n δ) : GL (Fin n) F) ∈ unipotentRadical F n (β ∘ w)) :
@@ -83,7 +83,7 @@ theorem normInducing_eq_one_of_mem_unipotentRadical (b : cellLeviSub F β δ w)
   rfl
 
 /- English proof (translation)
-Use `Subgroup.mem_subgroupOf.2 ⟨x.2, ?_⟩` and prove the remaining obligations. Use `show ((x : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).BlockTriangular (β ∘ w)`. Rewrite using `[hx]`. Conclude with `blockTriangular_diagonal _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_cellLeviSub_of_diagonal (x : levi F n δ) (d : Fin n → F)
     (hx : ((x : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = diagonal d) :
@@ -94,17 +94,15 @@ theorem mem_cellLeviSub_of_diagonal (x : levi F n δ) (d : Fin n → F)
   exact blockTriangular_diagonal _
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Matrix.GeneralLinearGroup.mem_center_iff_val_mem_range_scalar.1 hz`. Establish `hz'` using `coe_blockEmb_apply_of_scalar (F := F) (a := a) (z := z) (s := s) hs.symm`. Use `set d : Fin n → F := fun i => if blockOf δ i = a then s else 1 with hd_def`. Use `set b : cellLeviSub F β δ w := ⟨blockEmb F δ a z, hmem⟩`. Use `set x : levi F n β := leviInfIncl β (δ ∘ ⇑w⁻¹) (cellInnerHom β δ w (cellLeviSubIncl F β δ w b))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : ((x : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = diagonal fun r => d (w⁻¹ r)`. Use extensionality with `r c`. Use `show ((leviProj F n β _ : levi F n β) : GL (Fin n) F) r c = _`. Rewrite using `[leviProj_apply]`. Use `split_ifs with hrc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show ((permGL F w * ((blockEmb F δ a z : levi F n δ) : GL (Fin n) F) * (permGL F w)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) r c = _`. Rewrite using `[permGL_conj_apply, hz', diagonal_apply, diagonal_apply]`. Simplify using `only [EmbeddingLike.apply_eq_iff_eq]`. Establish `hne : r ≠ c` using `fun h => hrc (h ▸ rfl)`. Rewrite using `[diagonal_apply_ne _ hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hdc : ∀ r c, β r = β c → d (w⁻¹ r) = d (w⁻¹ c)`. Introduce `r c hrc`. Establish `h1 : δ (w⁻¹ r) = δ (w⁻¹ c)` using `hinc _ _ (by simpa using hrc)`. Establish `h2 : blockOf δ (w⁻¹ r) = blockOf δ (w⁻¹ c)` using `Subtype.ext h1`. Simplify using `only [hd_def, h2]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨cσ, hcσ⟩` from `exists_central_character hσ (mem_center_levi_of_diagonal x _ hx hdc)`. Use `⟨normLeviParSqrtModular F δ (β ∘ w) (cellLeviSubIncl F β δ w b) * (normLeviParInvSqrtModular F β (δ ∘ ⇑w⁻¹) (cellInnerHom β δ w (cellLeviSubIncl F β δ w b)) * cσ), fun v => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `Representation.Coinvariants.mk_surjective _ v`. Simplify using `only [normInducing, innerJacquetRep, twist_apply, MonoidHom.coe_comp, Function.comp_apply, levJacquetAction_mk]`. Rewrite using `[show σ (leviInfIncl β (δ ∘ ⇑w⁻¹) (cellInnerHom β δ w (cellLeviSubIncl F β δ w b))) u = cσ • u from hcσ u, map_smul, smul_smul, smul_smul]`.
-
-Simplify using `only [mul_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_normInducing_blockEmb_center [σ.IsIrreducible] (hσ : IsSmooth σ)
     (hinc : ∀ a b, β (w a) = β (w b) → δ a = δ b) {a : Set.range δ}
@@ -153,7 +151,7 @@ variable {β δ : Fin n → ℕ} {W : Type*} [AddCommGroup W] [Module ℂ W]
   (σ : Representation ℂ (levi F n β) W) {w : Equiv.Perm (Fin n)}
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_subgroupOf.2 ⟨(blockEmb F δ a y).2, unipotentRadical_le_blockUpper (blockEmb_mem_unipotentRadical (β ∘ w) hy)⟩`.
+A detailed English derivation is pending.
 -/
 theorem blockEmb_mem_cellLeviSub {a : Set.range δ} {y : GL (Fin (blockSize δ a)) F}
     (hy : y ∈ unipotentRadical F (blockSize δ a) (restrictFun δ (β ∘ w) a)) :
@@ -164,19 +162,17 @@ theorem blockEmb_mem_cellLeviSub {a : Set.range δ} {y : GL (Fin (blockSize δ a
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hφ : ∀ y v, φ (π₀ y v) = indRep (cellLeviSub F β δ w) (normInducing σ δ w) (blockEmb F δ a y) (φ v)` using `fun y v => Representation.IntertwiningMap.isIntertwining _ _ φ y v`. Establish `hL : ∀ m' : levi F n δ, leviEquivPi F δ m' a = 1 → ∀ v, (φ v).1 m' = 0`. Introduce `m' hm' v`. Set `L : V₀ →ₗ[ℂ] innerJacquetSpace β δ w σ` to `{ toFun := fun v => (φ v).1 m' map_add' := fun x y => by show (φ (x + y)).1 m' = (φ x).1 m' + (φ y).1 m'`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use the proof step `map_smul' := fun c x => by show (φ (c • x)).1 m' = c • (φ x).1 m'`. Rewrite using `[map_smul]`. Use `rfl }`. Establish `hLapp : ∀ v, L v = (φ v).1 m'` using `fun _ => rfl`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : Representation.Coinvariants.ker (π₀.comp (unipotentRadical F (blockSize δ a) (restrictFun δ (β ∘ w) a)).subtype) ≤ LinearMap.ker L`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨y, x⟩, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, map_sub, sub_eq_zero, hLapp, hLapp]`. Establish `hy : (y : GL (Fin (blockSize δ a)) F) ∈ unipotentRadical F (blockSize δ a) (restrictFun δ (β ∘ w) a)` using `y.2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : m' * blockEmb F δ a y = blockEmb F δ a y * m'` using `(blockEmb_commute a (y : GL (Fin (blockSize δ a)) F) m' hm').symm`. Establish `h1 : (φ (π₀ y x)).1 m' = (φ x).1 (m' * blockEmb F δ a y)` using `congrArg (fun f => f.1 m') (hφ y x)`. Establish `h2 : (φ x).1 (blockEmb F δ a y * m') = normInducing σ δ w ⟨blockEmb F δ a y, blockEmb_mem_cellLeviSub hy⟩ ((φ x).1 m')` using `(φ x).2.1 ⟨blockEmb F δ a y, blockEmb_mem_cellLeviSub hy⟩ m'`. Establish `h3` using `normInducing_eq_one_of_mem_unipotentRadical σ ⟨blockEmb F δ a y, blockEmb_mem_cellLeviSub hy⟩ (blockEmb_mem_unipotentRadical (β ∘ w) hy)`. Establish `h4 : normInducing σ δ w ⟨blockEmb F δ a y, blockEmb_mem_cellLeviSub hy⟩ ((φ x).1 m') = (1 : Module.End ℂ (innerJacquetSpace β δ w σ)) ((φ x).1 m')` using `congrArg (fun T : Module.End ℂ (innerJacquetSpace β δ w σ) => T ((φ x).1 m')) h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.trans ((congrArg (φ x).1 hc).trans (h2.trans (h4.trans rfl)))`. Establish `hv : v ∈ Representation.Coinvariants.ker (π₀.comp (unipotentRadical F (blockSize δ a) (restrictFun δ (β ∘ w) a)).subtype)` using `(Representation.Coinvariants.mk_eq_zero _).1 (Subsingleton.elim _ _)`. Conclude with `(hLapp v).symm.trans (LinearMap.mem_ker.1 (hker hv))`. Establish `hall : ∀ v x, (φ v).1 x = 0`. Introduce `v x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : blockEmb F δ a (leviEquivPi F δ x a) * blockRest F δ a x = x` using `blockEmb_mul_blockRest a x`. Establish `h2 : blockEmb F δ a (leviEquivPi F δ x a) * blockRest F δ a x = blockRest F δ a x * blockEmb F δ a (leviEquivPi F δ x a)` using `blockEmb_commute a _ _ (leviEquivPi_blockRest_self a x)`. Establish `h3 : (φ (π₀ (leviEquivPi F δ x a) v)).1 (blockRest F δ a x) = (φ v).1 (blockRest F δ a x * blockEmb F δ a (leviEquivPi F δ x a))` using `congrArg (fun f => f.1 (blockRest F δ a x)) (hφ _ v)`. Conclude with `(congrArg (φ v).1 (h1.symm.trans h2)).trans (h3.symm.trans (hL _ (leviEquivPi_blockRest_self a x) _))`. Use `Representation.IntertwiningMap.ext (LinearMap.ext fun v => ?_)` and prove the remaining obligations.
-
-Rewrite using `[Representation.IntertwiningMap.zero_toLinearMap, LinearMap.zero_apply]`. Conclude with `(Submodule.coe_eq_zero).1 (funext fun x => hall v x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intertwiningMap_blockEmb_eq_zero {a : Set.range δ} {V₀ : Type*} [AddCommGroup V₀]
     [Module ℂ V₀] {π₀ : Representation ℂ (GL (Fin (blockSize δ a)) F) V₀}
@@ -248,11 +244,11 @@ section CuspidalBlock
 variable {δ : Fin n → ℕ}
 
 /- English proof (translation)
-Establish `h` using `hτc (blockExtend δ a ε) (exists_split_blockExtend hε)`. Establish `hker : Representation.Coinvariants.ker (τ.comp (leviUnipotent F n δ (blockExtend δ a ε)).subtype) ≤ Representation.Coinvariants.ker ((τ.comp (blockEmb F δ a)).comp (unipotentRadical F (blockSize δ a) ε).subtype)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨u, x⟩, rfl⟩`. Take `⟨y, hy, hyu⟩` from `exists_blockEmb_of_mem_unipotentRadical (u : levi F n δ) (Subgroup.mem_subgroupOf.1 u.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `Representation.Coinvariants.sub_mem_ker (ρ := (τ.comp (blockEmb F δ a)).comp (unipotentRadical F (blockSize δ a) ε).subtype) ⟨y, hy⟩ x` as an intermediate fact. Simplify `this` using `[hyu]`. Establish `hzero : ∀ x : U, Representation.Coinvariants.mk ((τ.comp (blockEmb F δ a)).comp (unipotentRadical F (blockSize δ a) ε).subtype) x = 0` using `fun x => (Representation.Coinvariants.mk_eq_zero _).2 (hker ((Representation.Coinvariants.mk_eq_zero _).1 (Subsingleton.elim _ _)))`. Use `⟨fun p q => ?_⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `Representation.Coinvariants.mk_surjective _ p`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨q, rfl⟩` from `Representation.Coinvariants.mk_surjective _ q`. Rewrite using `[hzero p, hzero q]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem subsingleton_jacquetModule_comp_blockEmb {U : Type*} [AddCommGroup U] [Module ℂ U]
     {τ : Representation ℂ (levi F n δ) U} (hτc : IsCuspidal τ) {a : Set.range δ}
@@ -285,7 +281,7 @@ end CuspidalBlock
 section Generic
 
 /- English proof (translation)
-Introduce `y`. Use `Subgroup.isOpen_mono (fun g hg => ?_) (hρ (y : V))` and prove the remaining obligations. Rewrite `hg`, the goal using `[mem_stabilizerOf]`. Conclude with `Subtype.ext hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmooth_toRepresentation_of_isSmooth {G : Type*} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] {V : Type*} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
@@ -298,17 +294,17 @@ theorem isSmooth_toRepresentation_of_isSmooth {G : Type*} [Group G] [Topological
 variable {m : ℕ}
 
 /- English proof (translation)
-Set `A : Subrepresentation τ` to `⟨Submodule.span ℂ (Set.range fun g => τ g u₀), fun g x hx => (Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨h, rfl⟩`. Conclude with `Submodule.subset_span ⟨g * h, by simp [map_mul, Module.End.mul_apply]⟩) :`. Use the proof step `Submodule.span ℂ (Set.range fun g => τ g u₀) ≤ (Submodule.span ℂ (Set.range fun g => τ g u₀)).comap (τ g)) hx⟩`. Establish `hu₀A : u₀ ∈ A.toSubmodule` using `Submodule.subset_span ⟨1, by simp⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `u₀' : A.toSubmodule` to `⟨u₀, hu₀A⟩`. Establish `: Nontrivial A.toSubmodule` using `⟨⟨u₀', 0, fun h => hu₀ (congrArg Subtype.val h)⟩⟩`. Establish `hspan : Submodule.span ℂ {x | ∃ g, ∃ s ∈ ({u₀'} : Finset A.toSubmodule), x = A.toRepresentation g s} = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨x, hx⟩ -`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨g, u₀', Finset.mem_singleton_self _, rfl⟩`. Consider the case `zero => exact Submodule.zero_mem _`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add y z hy hz ihy ihz => exact Submodule.add_mem _ ihy ihz`. Consider the case `smul c y hy ih => exact Submodule.smul_mem _ c ih`. Take `⟨Y, hY, hirr⟩` from `exists_irreducible_quotient (τ := A.toRepresentation) {u₀'} hspan`. Establish `hA : IsSmooth A.toRepresentation` using `isSmooth_toRepresentation hτ A`. Use `⟨A, Y, hY, hirr, isSmooth_quotient hA Y hY, fun ε hε => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hτc ε hε`. Establish `hex` using `exact_jacquetMap (β := ε) hA hτ (0 : Representation.IntertwiningMap A.toRepresentation A.toRepresentation) (subrepIncl A) (fun y => ⟨fun hy => ⟨0, (Subtype.ext hy).symm⟩, by rintro ⟨y', rfl⟩; rfl⟩)`. Establish `hz : ∀ y : JacquetModule F m ε A.toRepresentation, y = 0`. Introduce `y`. Take `⟨y', hy'⟩` from `(hex y).1 (Subsingleton.elim _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy']`. Take `⟨v, rfl⟩` from `Representation.Coinvariants.mk_surjective _ y'`. Rewrite using `[jacquetMap_mk]`. Conclude with `map_zero _`. Conclude with `subsingleton_coinvariants_of_surjective (quotientMk Y hY) (quotientMk_surjective Y hY) ⟨fun y y' => (hz y).trans (hz y').symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isSupercuspidal_quotient {U : Type*} [AddCommGroup U] [Module ℂ U]
     {τ : Representation ℂ (GL (Fin m) F) U} (hτ : IsSmooth τ)
@@ -359,9 +355,9 @@ theorem exists_isSupercuspidal_quotient {U : Type*} [AddCommGroup U] [Module ℂ
     ⟨fun y y' => (hz y).trans (hz y').symm⟩
 
 /- English proof (translation)
-Set `D : Subrepresentation ρ₁` to `⟨A.toSubmodule.comap p.toLinearMap, fun g x hx => by show p (ρ₁ g x) ∈ A.toSubmodule`. Rewrite using `[Representation.IntertwiningMap.isIntertwining _ _ p]`. Conclude with `A.apply_mem_toSubmodule g hx⟩`. Use `⟨D, ⟨p.toLinearMap.restrict (p := D.toSubmodule) (q := A.toSubmodule) (fun _ hx => hx), fun g => LinearMap.ext fun x => Subtype.ext (Representation.IntertwiningMap.isIntertwining _ _ p g x)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hp x`. Establish `hcA : p c ∈ A.toSubmodule`. Rewrite using `[hc]`. Conclude with `hx`. Conclude with `⟨⟨c, hcA⟩, Subtype.ext hc⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_subrep_surjective {G : Type*} [Group G] {V₁ V₂ : Type*} [AddCommGroup V₁]
     [Module ℂ V₁] [AddCommGroup V₂] [Module ℂ V₂] {ρ₁ : Representation ℂ G V₁}
@@ -385,11 +381,11 @@ theorem exists_subrep_surjective {G : Type*} [Group G] {V₁ V₂ : Type*} [AddC
   exact ⟨⟨c, hcA⟩, Subtype.ext hc⟩
 
 /- English proof (translation)
-Introduce `hq`. Establish `hωπ₀ : HasCentralChar π₀ ω`. Introduce `z hz x`. Take `⟨d, rfl⟩` from `hq x`. Rewrite using `[← Representation.IntertwiningMap.isIntertwining, (hωρ.toRepresentation D) z hz d, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hpart : isotypicPart π₀ ρ = ⊥`. Rewrite using `[isotypicPart, eq_bot_iff]`. Use `iSup_le fun φ => ?_` and prove the remaining obligations. Rewrite using `[hzero φ, Representation.IntertwiningMap.zero_toLinearMap, LinearMap.range_zero]`. Establish `hker_top : isotypicKernel π₀ ρ = ⊤`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `(isCompl_isotypicPart_isotypicKernel hπ₀ hsc hωπ₀ hρ hωρ).sup_eq_top`. Rewrite `h` using `[hpart, bot_sup_eq]`. Then use the resulting hypothesis. Conclude with `not_surjective_of_le_isotypicKernel hπ₀ hsc hωπ₀ hρ hωρ D (by rw [hker_top]; exact le_top) q hq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem not_surjective_of_forall_eq_zero {U V₀ : Type*} [AddCommGroup U] [Module ℂ U]
     [AddCommGroup V₀] [Module ℂ V₀] {ρ : Representation ℂ (GL (Fin m) F) U}
@@ -419,7 +415,7 @@ end Generic
 section Main
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show f.1 (x * z) = c • f.1 x`. Rewrite using `[hz x, f.2.1 ⟨z, hzH⟩ x]`. Conclude with `hc _`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indRep_eq_smul_of_central {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {H : Subgroup G} {W' : Type*} [AddCommGroup W'] [Module ℂ W'] {ρ : Representation ℂ H W'}
@@ -434,13 +430,13 @@ theorem indRep_eq_smul_of_central {G : Type*} [Group G] [TopologicalSpace G] [Is
 universe u
 
 /- English proof (translation)
-Introduce `hp`. Take `⟨u₀, hu₀⟩` from `exists_ne_zero_of_isIrreducible (ρ := τ)`. Take `⟨A, Y, hY, hirr, hπ₀, hsc⟩` from `exists_isSupercuspidal_quotient (isSmooth_comp_of_continuous hτ _ (continuous_blockEmb a)) (fun ε hε => subsingleton_jacquetModule_comp_blockEmb hτc hε) hu₀`. Set `ω : GL (Fin (blockSize δ a)) F → ℂ` to `fun z => if hz : z ∈ Subgroup.center (GL (Fin (blockSize δ a)) F) then (hcent z hz).choose else 0`. Establish `hωρ : HasCentralChar (C.toRepresentation.comp (blockEmb F δ a)) ω`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `z hz f`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show P (blockEmb F δ a z) f.1 = ω z • f.1`. Rewrite using `[show ω z = (hcent z hz).choose from dif_pos hz]`. Conclude with `(hcent z hz).choose_spec f.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ : IsSmooth (C.toRepresentation.comp (blockEmb F δ a))` using `isSmooth_comp_of_continuous (isSmooth_toRepresentation_of_isSmooth hP C) _ (continuous_blockEmb a)`. Establish `hzeroC : ∀ φ : Representation.IntertwiningMap (Representation.quotient A.toRepresentation Y hY) (C.toRepresentation.comp (blockEmb F δ a)), φ = 0`. Introduce `φ`. Set `incl : Representation.IntertwiningMap (C.toRepresentation.comp (blockEmb F δ a)) (P.comp (blockEmb F δ a))` to `⟨C.toSubmodule.subtype, fun _ => rfl⟩`. Establish `h` using `hzero _ _ (hsc ε hε) (incl.comp φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Representation.IntertwiningMap.ext (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Rewrite using `[Representation.IntertwiningMap.zero_toLinearMap, LinearMap.zero_apply]`. Conclude with `Subtype.ext (congrArg (fun ψ : Representation.IntertwiningMap (Representation.quotient A.toRepresentation Y hY) (P.comp (blockEmb F δ a)) => ψ v) h)`. Take `⟨D, r, hr⟩` from `exists_subrep_surjective (ρ₁ := C.toRepresentation.comp (blockEmb F δ a)) (ρ₂ := τ.comp (blockEmb F δ a)) ⟨p.toLinearMap, fun g => p.isIntertwining' (blockEmb F δ a g)⟩ hp A`. Conclude with `not_surjective_of_forall_eq_zero hρ hωρ hπ₀ hsc hzeroC D ((quotientMk Y hY).comp r) ((quotientMk_surjective Y hY).comp hr)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_surjective_of_blockEmb {δ : Fin n → ℕ} {X : Type*} [AddCommGroup X] [Module ℂ X]
     {U : Type u} [AddCommGroup U] [Module ℂ U] {P : Representation ℂ (levi F n δ) X}
@@ -495,7 +491,7 @@ variable {β δ : Fin n → ℕ} {W : Type*} [AddCommGroup W] [Module ℂ W]
   {σ : Representation ℂ (levi F n β) W} {w : Equiv.Perm (Fin n)}
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Matrix.GeneralLinearGroup.mem_center_iff_val_mem_range_scalar.1 hz`. Establish `hmem : blockEmb F δ a z ∈ cellLeviSub F β δ w` using `mem_cellLeviSub_of_diagonal _ _ (coe_blockEmb_apply_of_scalar hs.symm)`. Take `⟨c, hc⟩` from `exists_normInducing_blockEmb_center σ hσ hinc hz hmem`. Conclude with `⟨c, indRep_eq_smul_of_central (fun x => Subgroup.mem_center_iff.1 (blockEmb_mem_center hz) x) hmem hc⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_indRep_blockEmb_center [σ.IsIrreducible] (hσ : IsSmooth σ)
     (hinc : ∀ a b, β (w a) = β (w b) → δ a = δ b) {a : Set.range δ}
@@ -509,9 +505,9 @@ theorem exists_indRep_blockEmb_center [σ.IsIrreducible] (hσ : IsSmooth σ)
     hmem hc⟩
 
 /- English proof (translation)
-Take `⟨i₀, j₀, hδij, hβij⟩` from `hprop`. Take `⟨a, hi₀⟩ : ∃ a : Set.range δ, blockOf δ i₀ = a` from `⟨_, rfl⟩`. Establish `hj₀ : blockOf δ j₀ = a` using `(Subtype.ext hδij.symm).trans hi₀`. Establish `hε : ∃ k l, restrictFun δ (β ∘ w) a k ≠ restrictFun δ (β ∘ w) a l`. Use `⟨(fiberFin δ a).symm ⟨i₀, hi₀⟩, (fiberFin δ a).symm ⟨j₀, hj₀⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [restrictFun, Equiv.apply_symm_apply, Function.comp_apply]`. Conclude with `hβij`. Conclude with `not_surjective_of_blockEmb (isSmooth_indRep _ _) hε (fun z hz => exists_indRep_blockEmb_center hσ hinc hz) (fun V₀ _ _ π₀ hsc φ => intertwiningMap_blockEmb_eq_zero σ hsc φ) hτ hτc C p`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_surjective_of_isCuspidal_piece [σ.IsIrreducible] (hσ : IsSmooth σ)
     (hinc : ∀ a b, β (w a) = β (w b) → δ a = δ b)

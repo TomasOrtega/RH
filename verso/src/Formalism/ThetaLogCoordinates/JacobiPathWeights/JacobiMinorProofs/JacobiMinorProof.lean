@@ -21,7 +21,7 @@ def epsN (J : Finset (Fin n)) : ℕ := ∑ j ∈ J, (n + 1 + j.val)
 def star (A : Form R n) : Form R n := fun J => (-1) ^ epsN J * A Jᶜ
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Rewrite using `[neg_one_pow_eq_pow_mod_two (n := a), neg_one_pow_eq_pow_mod_two (n := b)]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 lemma neg_one_pow_eq_of {a b : ℕ} (h : Even (a + b)) : (-1 : R) ^ a = (-1) ^ b := by
   obtain ⟨c, hc⟩ := h
@@ -30,11 +30,11 @@ lemma neg_one_pow_eq_of {a b : ℕ} (h : Even (a + b)) : (-1 : R) ^ a = (-1) ^ b
   omega
 
 /- English proof (translation)
-Unfold `sg`. Rewrite using `[← pow_add]`. Establish `h1 : (Jᶜ.filter fun j => m < j).card + (J.filter fun j => m < j).card = n - 1 - m.val`. Rewrite using `[Finset.card_filter, Finset.card_filter, Finset.sum_compl_add_sum, ← Finset.card_filter, ← Fin.card_Ioi]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Apply `neg_one_pow_eq_of` to reduce the goal to its premises. Use `m.2` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `⟨n, by omega⟩`.
+Supply the required witnesses or components.
 -/
 lemma sg_compl (J : Finset (Fin n)) (m : Fin n) : sg Jᶜ m * sg J m = (-1) ^ (n + 1 + m.val) := by
   unfold sg
@@ -50,23 +50,23 @@ lemma sg_compl (J : Finset (Fin n)) (m : Fin n) : sg Jᶜ m * sg J m = (-1) ^ (n
   exact ⟨n, by omega⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Simplify using `[star, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma star_add (A B : Form R n) : star (A + B) = star A + star B := by
   funext J; simp [star, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Simplify using `[star]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma star_smul (c : R) (A : Form R n) : star (c • A) = c • star A := by
   funext J; simp [star]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Simplify using `only [star, wedgeF, contrF]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hm' : m ∉ J` using `by simpa using hm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : epsN (insert m J) = (n + 1 + m.val) + epsN J`. Unfold `epsN`. Rewrite using `[Finset.sum_insert hm']`. Establish `e2 : ((-1 : R)) ^ (n + 1 + m.val) = ((sg Jᶜ m : ℤ) : R) * ((sg J m : ℤ) : R)`. Rewrite using `[← Int.cast_mul, sg_compl]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `e3` using `sgR_mul_self (R := R) J m`. Rewrite using `[Finset.compl_insert, e1, pow_add, e2]`. Take the linear combination `(-(((-1 : R)) ^ epsN J * ((sg Jᶜ m : ℤ) : R) * A (Jᶜ.erase m) * Y m)) * e3`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma star_wedge (A : Form R n) (Y : Fin n → R) : star (wedgeF A Y) = contrF (star A) Y := by
   funext J
@@ -83,18 +83,18 @@ lemma star_wedge (A : Form R n) (Y : Fin n → R) : star (wedgeF A Y) = contrF (
   linear_combination (-(((-1 : R)) ^ epsN J * ((sg Jᶜ m : ℤ) : R) * A (Jᶜ.erase m) * Y m)) * e3
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Simplify using `[actF, basisF]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma actF_basisF (I : Finset (Fin n)) (m : Matrix (Fin n) (Fin n) R) :
     actF (basisF I) m = fun J => minorF m I J := by
   funext J; simp [actF, basisF]
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Establish `hc : (univ : Finset (Fin n)).card = n` using `by simp`. Rewrite using `[minorF_eq m hc hc]`. Establish `: (id : Fin n → Fin n) = (univ : Finset (Fin n)).orderEmbOfFin hc`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.orderEmbOfFin_unique` to reduce the goal to its premises. Introduce `x`. Simplify using the standard rewrite rules. Conclude with `strictMono_id`. Rewrite using `[← this, Matrix.submatrix_id_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `minorF_ne` to reduce the goal to its premises. Introduce `hc`. Conclude with `h ((Finset.card_eq_iff_eq_univ J).1 (by rw [hc, Finset.card_univ]))`.
+A detailed English derivation is pending.
 -/
 lemma minorF_univ (m : Matrix (Fin n) (Fin n) R) (J : Finset (Fin n)) :
     minorF m univ J = if J = univ then m.det else 0 := by
@@ -112,9 +112,9 @@ lemma minorF_univ (m : Matrix (Fin n) (Fin n) R) (J : Finset (Fin n)) :
     exact h ((Finset.card_eq_iff_eq_univ J).1 (by rw [hc, Finset.card_univ]))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Simplify using `only [star, basisF, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `h : J = Iᶜ`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: ¬ Jᶜ = I` using `fun h' => h (by rw [← h', compl_compl])`. Simplify using `[h, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma star_basisF (I : Finset (Fin n)) :
     star (basisF I : Form R n) = ((-1 : R) ^ epsN Iᶜ) • basisF Iᶜ := by
@@ -126,11 +126,11 @@ lemma star_basisF (I : Finset (Fin n)) :
     simp [h, this]
 
 /- English proof (translation)
-Use `form_induction (P := fun A => actF (star A) (↑m : Matrix (Fin n) (Fin n) R) = (↑m : Matrix (Fin n) (Fin n) R).det • star (actF A (↑m⁻¹ : Matrix (Fin n) (Fin n) R).transpose)) ?_ ?_ ?_ ?_ A` and prove the remaining obligations. Rewrite using `[actF_oneF, ← basisF_empty, star_basisF, actF_smul, actF_basisF]`. Use function extensionality and compare the values at `J`. Simplify using `only [Pi.smul_apply, smul_eq_mul, compl_empty, minorF_univ, basisF]`. Apply the tactic sequence `split_ifs <;> ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `K K' h h'`. Rewrite using `[star_add, actF_add, h, h', actF_add, star_add, smul_add]`. Introduce `c K h`. Rewrite using `[star_smul, actF_smul, h, actF_smul, star_smul, smul_comm]`. Introduce `K X h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[star_wedge, actFormContract R n _ X m, h, contrF_smul, actFormWedge R n K X, star_wedge]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma star_act (m : (Matrix (Fin n) (Fin n) R)ˣ) (A : Form R n) :
     actF (star A) (↑m : Matrix (Fin n) (Fin n) R) =
@@ -151,9 +151,9 @@ lemma star_act (m : (Matrix (Fin n) (Fin n) R)ˣ) (A : Form R n) :
     rw [star_wedge, actFormContract R n _ X m, h, contrF_smul, actFormWedge R n K X, star_wedge]
 
 /- English proof (translation)
-Establish `h` using `congrFun (star_act m (basisF I)) Jᶜ`. Rewrite `h` using `[star_basisF, actF_smul, actF_basisF, actF_basisF]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, star, compl_compl] at h`. Establish `e : ((-1 : R) ^ epsN Jᶜ) * ((-1 : R) ^ epsN Jᶜ) = 1`. Rewrite using `[← mul_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[pow_add]`. Take the linear combination `((-1 : R) ^ epsN Jᶜ) * (-h) - ((↑m : Matrix (Fin n) (Fin n) R).det * minorF (↑m⁻¹ : Matrix (Fin n) (Fin n) R).transpose I J) * e`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma jacobi_gen (m : (Matrix (Fin n) (Fin n) R)ˣ) (I J : Finset (Fin n)) :
     (↑m : Matrix (Fin n) (Fin n) R).det * minorF (↑m⁻¹ : Matrix (Fin n) (Fin n) R).transpose I J =
@@ -167,7 +167,7 @@ lemma jacobi_gen (m : (Matrix (Fin n) (Fin n) R)ˣ) (I J : Finset (Fin n)) :
   linear_combination ((-1 : R) ^ epsN Jᶜ) * (-h) - ((↑m : Matrix (Fin n) (Fin n) R).det * minorF (↑m⁻¹ : Matrix (Fin n) (Fin n) R).transpose I J) * e
 
 /- English proof (translation)
-Unfold `epsN`. Rewrite using `[Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma epsN_eq (I : Finset (Fin n)) : epsN I = I.card * (n + 1) + ∑ a ∈ I, a.val := by
   unfold epsN
@@ -175,7 +175,7 @@ lemma epsN_eq (I : Finset (Fin n)) : epsN I = I.card * (n + 1) + ∑ a ∈ I, a.
   simp
 
 /- English proof (translation)
-Unfold `epsN`. Conclude with `Finset.sum_compl_add_sum I _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma epsN_compl (I : Finset (Fin n)) : epsN Iᶜ + epsN I = epsN (univ : Finset (Fin n)) := by
   unfold epsN
@@ -186,9 +186,9 @@ end SignTwistStarLemmas
 open SignTwistStarLemmas
 
 /- English proof (translation)
-Introduce `R _ n m I J hIJ`. Rewrite using `[jacobi_gen]`. Use `congr 1`. Apply `neg_one_pow_eq_of` to reduce the goal to its premises. Establish `h1` using `epsN_compl I`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2` using `epsN_compl J`. Rewrite `h1` using `[epsN_eq I]`. Rewrite `h2` using `[epsN_eq J, ← hIJ]`. Use `⟨epsN Iᶜ + ∑ a ∈ I, a.val, ?_⟩` and prove the remaining obligations. Generalize the expression as in `I.card * (n + 1) = w at h1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -213,7 +213,7 @@ def genU (k : Type) [Field k] (n : ℕ) : (Matrix (Fin n) (Fin n) (GenField k n)
   ⟨genMat k n, (genMat k n)⁻¹, genMat_mul_inv k n, genMat_inv_mul k n⟩
 
 /- English proof (translation)
-The claim follows from `(minorMap _ _ (algebraMap (MvPolynomial (Fin n × Fin n) k) (GenField k n)) n (genX k n) A B).symm`.
+A detailed English derivation is pending.
 -/
 lemma minorF_genMat (A B : Finset (Fin n)) :
     minorF (genMat k n) A B =
@@ -224,7 +224,7 @@ def colT (lo : ℤ) (C : ℕ) (I : ℤ → Finset (Fin n)) : Fin C → Finset (F
   fun t => hatIdx I (lo + 1 + (t.val : ℤ))
 
 /- English proof (translation)
-Establish `h : ∀ m, |μ m| ≤ ∑ m, |μ m|` using `fun m => Finset.single_le_sum (f := fun m => |μ m|) (fun i _ => abs_nonneg _) (mem_univ m)`. Establish `h0 : 0 ≤ ∑ m, |μ m|` using `Finset.sum_nonneg fun i _ => abs_nonneg _`. Conclude with `⟨-∑ m, |μ m|, ∑ m, |μ m|, by omega, h0, fun m => abs_le.1 (h m)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 lemma exists_bounds (μ : Fin n → ℤ) : ∃ lo hi : ℤ, lo ≤ 0 ∧ 0 ≤ hi ∧ ∀ m, lo ≤ μ m ∧ μ m ≤ hi := by
   have h : ∀ m, |μ m| ≤ ∑ m, |μ m| := fun m =>
@@ -233,7 +233,7 @@ lemma exists_bounds (μ : Fin n → ℤ) : ∃ lo hi : ℤ, lo ≤ 0 ∧ 0 ≤ h
   exact ⟨-∑ m, |μ m|, ∑ m, |μ m|, by omega, h0, fun m => abs_le.1 (h m)⟩
 
 /- English proof (translation)
-Unfold `colHeight`. Rewrite using `[Finset.filter_true_of_mem (fun m _ => hc.trans (h m))]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma colHeight_lo {μ : Fin n → ℤ} {lo c : ℤ} (h : ∀ m, lo ≤ μ m) (hc : c ≤ lo) : colHeight μ c = n := by
   unfold colHeight
@@ -241,7 +241,7 @@ lemma colHeight_lo {μ : Fin n → ℤ} {lo c : ℤ} (h : ∀ m, lo ≤ μ m) (h
   simp
 
 /- English proof (translation)
-Unfold `colHeight`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce `m _ hm`. Use `h m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma colHeight_hi {μ : Fin n → ℤ} {hi c : ℤ} (h : ∀ m, μ m ≤ hi) (hc : hi < c) : colHeight μ c = 0 := by
   unfold colHeight
@@ -251,7 +251,7 @@ lemma colHeight_hi {μ : Fin n → ℤ} {hi c : ℤ} (h : ∀ m, μ m ≤ hi) (h
   omega
 
 /- English proof (translation)
-Rewrite using `[← Finset.card_eq_zero, hI c]`. Rewrite `hc` using `[Finset.mem_Ioc, not_and_or, not_lt, not_le]`. Break down `hc with hc | hc` into its components or cases. Rewrite using `[if_neg (by omega), colHeight_lo (fun m => (hb m).1) hc]; simp`. Rewrite using `[if_pos (by omega), colHeight_hi (fun m => (hb m).2) hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma idx_out {μ : Fin n → ℤ} {lo hi : ℤ} (hlo : lo ≤ 0) (hhi : 0 ≤ hi) (hb : ∀ m, lo ≤ μ m ∧ μ m ≤ hi)
     {I : ℤ → Finset (Fin n)} (hI : IsIndex μ I) {c : ℤ} (hc : c ∉ Finset.Ioc lo hi) : I c = ∅ := by
@@ -262,11 +262,11 @@ lemma idx_out {μ : Fin n → ℤ} {lo hi : ℤ} (hlo : lo ≤ 0) (hhi : 0 ≤ h
   · rw [if_pos (by omega), colHeight_hi (fun m => (hb m).2) hc]
 
 /- English proof (translation)
-Introduce `c`. Establish `hle` using `Paths.colHeight_le μ c`. Establish `h1 : (univ.filter fun m : Fin n => m.val < colHeight μ c).card = colHeight μ c`. Rewrite using `[Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Unfold `canIdx`. Use `split_ifs with hc`. Conclude with `h1`. Establish `h2 : (univ.filter fun m : Fin n => colHeight μ c ≤ m.val) = (univ.filter fun m : Fin n => m.val < colHeight μ c)ᶜ`. Use extensionality with `m`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h2, Finset.card_compl, h1, Fintype.card_fin]`.
+A detailed English derivation is pending.
 -/
 lemma canIdx_isIndex (μ : Fin n → ℤ) : IsIndex μ (canIdx μ) := by
   intro c
@@ -282,7 +282,7 @@ lemma canIdx_isIndex (μ : Fin n → ℤ) : IsIndex μ (canIdx μ) := by
     rw [h2, Finset.card_compl, h1, Fintype.card_fin]
 
 /- English proof (translation)
-Unfold `canIdx initSeg`. Rewrite using `[if_neg hc]`. Use extensionality with `m`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma canIdx_compl (μ : Fin n → ℤ) {c : ℤ} (hc : ¬ 1 ≤ c) : (canIdx μ c)ᶜ = initSeg n (colHeight μ c) := by
   unfold canIdx initSeg
@@ -291,7 +291,7 @@ lemma canIdx_compl (μ : Fin n → ℤ) {c : ℤ} (hc : ¬ 1 ≤ c) : (canIdx μ
   simp
 
 /- English proof (translation)
-Simplify using `[minorF]`.
+Simplify using the standard rewrite rules.
 -/
 lemma minorF_empty {R : Type} [CommRing R] (m : Matrix (Fin n) (Fin n) R) : minorF m ∅ ∅ = 1 := by
   simp [minorF]
@@ -300,13 +300,13 @@ def sgnU (k : Type) [Field k] (μ : Fin n → ℤ) (I : ℤ → Finset (Fin n)) 
   if 1 ≤ c then 1 else (-1) ^ (epsN (canIdx μ c)ᶜ + epsN (I c)ᶜ)
 
 /- English proof (translation)
-Establish `hIc` using `hI c`. Distinguish the cases in `hc : 1 ≤ c`. Simplify using `only [if_pos hc, sgnU, hatIdx] at hIc ⊢`. Rewrite using `[minorF_genMat, hIc]`. Simplify using `[canIdx, initSeg, hc]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_neg hc, sgnU, hatIdx] at hIc ⊢`. Establish `hle` using `Paths.colHeight_le μ c`. Establish `hcard : (I c)ᶜ.card = colHeight μ c`. Rewrite using `[Finset.card_compl, hIc, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `j` using `jacobi_gen (genU k n) (canIdx μ c) (I c)`. Express the relevant statement in the definitionally equal form `(genMat k n).det * minorF ((genMat k n)⁻¹).transpose _ _ = _ * minorF (genMat k n) _ _ at j`. Establish `hd` using `genMat_det_ne k n`. Apply `mul_left_cancel₀ hd` to reduce the goal to its premises. Rewrite using `[j, canIdx_compl μ hc, hcard, minorF_genMat]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e : algebraMap k (GenField k n) (((-1 : kˣ) ^ (epsN (initSeg n (colHeight μ c)) + epsN (I c)ᶜ) : kˣ) : k) = (-1) ^ (epsN (initSeg n (colHeight μ c)) + epsN (I c)ᶜ)` using `by simp`. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 lemma factor (μ : Fin n → ℤ) {I : ℤ → Finset (Fin n)} (hI : IsIndex μ I) (c : ℤ) :
     minorF (if 1 ≤ c then genMat k n else ((genMat k n)⁻¹).transpose) (canIdx μ c) (I c) =
@@ -335,11 +335,11 @@ lemma factor (μ : Fin n → ℤ) {I : ℤ → Finset (Fin n)} (hI : IsIndex μ 
     field_simp
 
 /- English proof (translation)
-Use `symm`. Use `Finset.prod_bij (fun t _ => lo + 1 + (t.val : ℤ)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `t _`. Use `t.2` as an intermediate fact. Rewrite using `[Finset.mem_Ioc]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Introduce `t _ t' _ h`. Apply `Fin.ext` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Introduce `c hc`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc` using `[Finset.mem_Ioc]`. Conclude with `⟨⟨(c - lo - 1).toNat, by omega⟩, mem_univ _, by simp only []; omega⟩`. Introduce `t _`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 lemma prod_Ioc_eq {M : Type*} [CommMonoid M] (lo hi : ℤ) (f : ℤ → M) :
     ∏ c ∈ Finset.Ioc lo hi, f c = ∏ t : Fin (hi - lo).toNat, f (lo + 1 + (t.val : ℤ)) := by
@@ -356,9 +356,9 @@ lemma prod_Ioc_eq {M : Type*} [CommMonoid M] (lo hi : ℤ) (f : ℤ → M) :
   · intro t _; rfl
 
 /- English proof (translation)
-Unfold `brk`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := Finset.Ioc lo hi)]`. Rewrite using `[Finset.prod_congr rfl (fun c _ => factor (k := k) μ hI c), Finset.prod_mul_distrib, Finset.prod_mul_distrib, ← map_prod, ← map_prod, ← Units.coe_prod, Units.smul_def, Algebra.smul_def, mul_assoc, prod_Ioc_eq lo hi (fun c => minorF (genX k n) (initSeg n (hatIdx I c).card) (hatIdx …`. Both sides reduce to the same expression. Introduce `c hc`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hcn`. Apply `hc` to reduce the goal to its premises. Establish `hcn' : c ∉ Finset.Ioc lo hi` using `hcn`. Use `show minorF _ (canIdx μ c) (I c) = 1`. Rewrite using `[idx_out hlo hhi hb hI hcn', idx_out hlo hhi hb (canIdx_isIndex μ) hcn', minorF_empty]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma brk_eq {μ : Fin n → ℤ} {lo hi : ℤ} (hlo : lo ≤ 0) (hhi : 0 ≤ hi) (hb : ∀ m, lo ≤ μ m ∧ μ m ≤ hi)
     {I : ℤ → Finset (Fin n)} (hI : IsIndex μ I) :
@@ -381,7 +381,7 @@ lemma brk_eq {μ : Fin n → ℤ} {lo hi : ℤ} (hlo : lo ≤ 0) (hhi : 0 ≤ hi
     rw [idx_out hlo hhi hb hI hcn', idx_out hlo hhi hb (canIdx_isIndex μ) hcn', minorF_empty]
 
 /- English proof (translation)
-Introduce `c c' hcc a ha`. Establish `e : lo + 1 + (c'.val : ℤ) = (lo + 1 + (c.val : ℤ)) + 1` using `by rw [← hcc]; push_cast; ring`. Unfold `colT at ha ⊢`. Rewrite `ha`, the goal using `[e]`. Conclude with `h.2 _ a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma semi_colT {μ : Fin n → ℤ} {I : ℤ → Finset (Fin n)} (h : IsStd μ I) (lo : ℤ) (C : ℕ) :
     SemiStd (colT lo C I) := by
@@ -392,9 +392,9 @@ lemma semi_colT {μ : Fin n → ℤ} {I : ℤ → Finset (Fin n)} (h : IsStd μ 
   exact h.2 _ a ha
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c ∈ Finset.Ioc lo hi`. Rewrite `hc` using `[Finset.mem_Ioc]`. Establish `h1` using `congrFun h ⟨(c - lo - 1).toNat, by omega⟩`. Establish `e : lo + 1 + (((c - lo - 1).toNat : ℕ) : ℤ) = c` using `by omega`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [colT, e, hatIdx] at h1`. Use `split_ifs at h1`. Conclude with `h1`. Conclude with `compl_injective h1`. Rewrite using `[idx_out hlo hhi hb hI hc, idx_out hlo hhi hb hI' hc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma colT_inj {μ : Fin n → ℤ} {lo hi : ℤ} (hlo : lo ≤ 0) (hhi : 0 ≤ hi) (hb : ∀ m, lo ≤ μ m ∧ μ m ≤ hi)
     {I I' : ℤ → Finset (Fin n)} (hI : IsIndex μ I) (hI' : IsIndex μ I')
@@ -413,17 +413,13 @@ lemma colT_inj {μ : Fin n → ℤ} {lo hi : ℤ} (hlo : lo ≤ 0) (hhi : 0 ≤ 
 end SignTwistStarLemmas
 
 /- English proof (translation)
-Introduce `k _ n μ _`. Take `⟨lo, hi, hlo, hhi, hb⟩` from `exists_bounds μ`. Establish `hA` using `path_basis_lemma k n (hi - lo).toNat`. Set `e : {I : ℤ → Finset (Fin n) // IsStd μ I} → {T : Fin (hi - lo).toNat → Finset (Fin n) // SemiStd T}` to `fun I => ⟨colT lo (hi - lo).toNat I.1, semi_colT I.2 lo _⟩`. Establish `he : Function.Injective e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `I I' h`. Conclude with `Subtype.ext (colT_inj hlo hhi hb I.2.1 I'.2.1 (congrArg Subtype.val h))`. Establish `h1` using `hA.comp e he`. Set `φ : MvPolynomial (Fin n × Fin n) k →ₗ[k] GenField k n` to `(IsScalarTower.toAlgHom k (MvPolynomial (Fin n × Fin n) k) (GenField k n)).toLinearMap`. Establish `hφ : LinearMap.ker φ = ⊥` using `LinearMap.ker_eq_bot.2 (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b h`. Conclude with `IsFractionRing.injective (MvPolynomial (Fin n × Fin n) k) (GenField k n) h)`. Establish `h2` using `h1.map' φ hφ`. Use `set D : GenField k n := ∏ c ∈ Finset.Ioc lo hi, if 1 ≤ c then (1 : GenField k n) else ((genMat k n).det)⁻¹ with hD`. Establish `hD0 : D ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hD, Finset.prod_ne_zero_iff]`. Introduce `c _`. Use `split_ifs`. Conclude with `one_ne_zero`. Conclude with `inv_ne_zero (genMat_det_ne k n)`.
-
-Establish `h3` using `h2.map' (LinearMap.mulLeft k D) (LinearMap.ker_eq_bot.2 (fun a b h => mul_left_cancel₀ hD0 h))`. Establish `h4` using `h3.units_smul (fun I => ∏ c ∈ Finset.Ioc lo hi, sgnU k μ I.1 c)`. Establish `h5 : (fun I : {I : ℤ → Finset (Fin n) // IsStd μ I} => brk (genMat k n) (genMat k n)⁻¹ μ I.1) = (fun I : {I : ℤ → Finset (Fin n) // IsStd μ I} => ∏ c ∈ Finset.Ioc lo hi, sgnU k μ I.1 c) • (⇑(LinearMap.mulLeft k D) ∘ ⇑φ ∘ (fun T : {T : Fin (hi - lo).toNat → Finset (Fin n) // SemiS …`. Use function extensionality and compare the values at `I`. Conclude with `brk_eq hlo hhi hb I.2.1`.
-
-Rewrite using `[h5]`. Conclude with `h4`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fact_break : FactBrk := by
   intro k _ n μ _

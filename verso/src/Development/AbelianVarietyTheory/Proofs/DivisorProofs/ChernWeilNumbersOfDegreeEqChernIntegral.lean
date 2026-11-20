@@ -19,13 +19,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open scoped Matrix ContDiff ComplexOrder
 
 /- English proof (translation)
-Introduce `h F _ σ X Y ι _ m E E' φ f gr hR hG H hH R`. Establish `hD : GlobalTheory.Published.ChernDegree` using `GlobalTheory.T.degreeEqChernFormIntegral_of_complex_case h`. Establish `hf : f ≫ X.str = Y.str` using `hR.hom.inducedModelMorphism_comp_structureMap`. Establish `hform` using `GlobalTheory.T.isForm_evalRealPoly_chernForms_flaggedMetric F σ X ι m 0 E H (isMetricFr_of_isMetricOn hH) R`. Establish `hM` using `GlobalTheory.T.isFlaggedBundleMetric_pullGram_refinement F σ X Y ι m E E' φ f hf hR H hH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ptsIn X.str σ ⊤ = Set.univ` using `Set.eq_univ_of_forall fun _ => mem_ptsIn_top`. Use `choose L r ψ h1 h2 h3 using GlobalTheory.T.flag_graded_metrics_weights_on_line_bundles F σ Y ι m E' _ gr hG hM`. Establish `e : grF E' (pullGram E H φ f hf) = fun x => c1W (ψ x)` using `funext fun x => (h3 x).symm`. Unfold `HasChernIntegral`. Rewrite using `[hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.T.chernTopFormSignedMeasure_eq_atlas_part F σ X ι m E H R]`. Use `⟨fun ε => ?_, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.T.holAtlas_topFormIntegral_finite_additive_homogeneous _ _ (atlas X σ)).1 _ hform ε` as an intermediate fact. Conclude with `measure_ne_top _ _`. Use `(GlobalTheory.T.flagBundle_fibreIntegral_pullback_mul_fibreClass F σ X Y ι m E E' φ f hf hR H hH _ hform).symm.trans ?_` and prove the remaining obligations.
-
-Rewrite using `[GlobalTheory.T.pullback_real_polynomial_even_form_fields _ _ _ _ _ _ _ _ _ _ (GlobalTheory.T.chernForms_pullback_metric_flag_refinement F σ X Y ι m E E' φ f hf hR H hH) R, GlobalTheory.T.integral_chernForms_eq_esymm_gradedForms_flag F σ Y ι m E' _ hM, e]`. Conclude with `GlobalTheory.T.integral_chernFormPoly_eq_intersectionNumber hD F σ Y _ gr L r ψ (fun a => ⟨h1 a, h2 a⟩) _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ChernCalc.chernWeilNumbers_of_chernDegreeComplex :
     GlobalTheory.Published.ChernDegreeComplex → GlobalTheory.Published.ChernWeilNumbers := by

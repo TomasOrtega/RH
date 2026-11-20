@@ -13,17 +13,17 @@ section
 open Formalism.L2.Host Matrix
 
 /- English proof (translation)
-Use `⟨Submodule.nontrivial_iff_ne_bot.2 π.ne_bot, ?_⟩` and prove the remaining obligations. Take `⟨f, h0, hf⟩` from `hσ`. Express the relevant statement in the definitionally equal form `⨆ f : {f : σ.V →ₗ[ℂ] π.V // ∀ g v, f (σ.ρ g v) = π.locRep w g (f v)}, LinearMap.range f.1 = ⊤`. Establish `hi` using `Submodule.map_injective_of_injective π.V.injective_subtype`. Establish `hop : ∀ (o : Op E a) (x : π.V), x ∈ (⨆ f : {f : σ.V →ₗ[ℂ] π.V // ∀ g v, f (σ.ρ g v) = π.locRep w g (f v)}, LinearMap.range f.1) → π.op o x ∈ ⨆ f : {f : σ.V →ₗ[ℂ] π.V // ∀ g v, f (σ.ρ g v) = π.locRep w g (f v)}, LinearMap.range f.1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `o x hx`. Consider the cases of `o with`. Consider the case `fin k`. Establish `h1` using `iso_act σ.ρ (π.locRep w) (GeneralLinearGroup.map (pLoc E w) k) (iso_comm σ.ρ (π.locRep w) (π.finPart ((locGL E a w (GeneralLinearGroup.map (pLoc E w) k))⁻¹ * k)) (fun g' y => by`. Simplify using `only [CuspSub.locRep, MonoidHom.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, LocUniq.comm_locGL w (LocEx.map_pLoc_inv_mul w k)]) hx)`. Establish `e : π.locRep w (GeneralLinearGroup.map (pLoc E w) k) (π.finPart ((locGL E a w (GeneralLinearGroup.map (pLoc E w) k))⁻¹ * k) x) = π.op (.fin k) x`. Rewrite using `[CuspSub.locRep, MonoidHom.comp_apply, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Both sides reduce to the same expression. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Consider the case `cpt k`. Use `iso_comm _ _ _ (fun g y => Subtype.ext ?_) hx` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(rt E a (infGL E a (Unitary.toUnits k)) * rt E a (finGL E a (locGL E a w g))) y.1 = (rt E a (finGL E a (locGL E a w g)) * rt E a (infGL E a (Unitary.toUnits k))) y.1`. Rewrite using `[← map_mul, ← map_mul, infGL_comm]`. Consider the case `lie X`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `iso_comm _ _ _ (fun g y => Subtype.ext ?_) hx` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (lie_rt_fin X (locGL E a w g)) y.1`. Break down `π.irred (Submodule.map π.V.subtype _) (Submodule.map_subtype_le _ _) (by` into its components or cases. Introduce and unpack `o _ ⟨x, hx, rfl⟩`. Conclude with `⟨_, hop o x hx, rfl⟩) with h1 | h1`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h2` using `hi (h1.trans (Submodule.map_bot _).symm)`. Conclude with `absurd (LinearMap.range_eq_bot.1 (le_bot_iff.1 (h2 ▸ le_iSup (fun f : {f : σ.V →ₗ[ℂ] π.V // ∀ g v, f (σ.ρ g v) = π.locRep w g (f v)} => LinearMap.range f.1) ⟨f, hf⟩))) h0`. Conclude with `hi (h1.trans (Submodule.map_subtype_top _).symm)`.
+A detailed English derivation is pending.
 -/
 private theorem isotypic {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (π : CuspSub E a)
     (w : HeightOneSpectrum (𝓞 E)) (σ : SmIrr (GL (Fin a) (w.adicCompletion E))) (hσ : π.IsLocComp w σ) :
@@ -67,7 +67,7 @@ private theorem isotypic {E : Type} [Field E] [NumberField E] [IsTotallyComplex 
 end
 
 /- English proof (translation)
-Substitute `e` using the available equality. Substitute `he` using the available equality. Take `⟨f, h0, hm, hf⟩` from `h`. Use `(satLocFree E _ w σ).2 _ π.finPart (isotypic π w σ ⟨f.codRestrict _ hm, fun e => h0 ?_, fun g v => Subtype.ext (hf g v)⟩) B` and prove the remaining obligations. Conclude with `LinearMap.ext fun v => congrArg Subtype.val (LinearMap.congr_fun e v)`.
+Substitute using the available equality. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem sat_part {E : Type} [Field E] [NumberField E] [IsCMField E] {n N : ℕ} (e : N = n)
     (V : Submodule ℂ (Sm E N)) (π : CuspSub E n) (he : e ▸ V = π.V) (w : HeightOneSpectrum (𝓞 E))
@@ -81,11 +81,11 @@ private theorem sat_part {E : Type} [Field E] [NumberField E] [IsCMField E] {n N
   exact LinearMap.ext fun v => congrArg Subtype.val (LinearMap.congr_fun e v)
 
 /- English proof (translation)
-Introduce `E _ _ _ n _ π D hD w B`. Take `⟨c, N, h, V, σ, m, pos, disc, loc, inf⟩` from `D`. Take `⟨hc, hV⟩` from `hD`. Take `rfl : c = 1` from `hc`. Take `⟨e, he⟩` from `hV 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key` using `sat_part e (V 0) π he w (σ 0 w) (loc 0 w) B`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Establish `h1` using `key.1 hs`. Use `⟨fun _ => B, fun i => ?_, by simp⟩` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : i = 0` from `Subsingleton.elim _ _`. Conclude with `⟨h1.1, h1⟩`. Introduce and unpack `⟨b, hb, rfl⟩`. Establish `h1` using `(hb 0).2`. Simplify using `using (sat_part e (V 0) π he w (σ 0 w) (loc 0 w) (b 0)).2 h1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.V.Z.Tf.GOne.oneSat :
     OneSat := by

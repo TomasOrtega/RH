@@ -12,31 +12,29 @@ namespace GlobalTheory.QDom
 open scoped Pointwise
 
 /- English proof (translation)
-Set `Q' : Subgroup Γ` to `(Γ ⊓ S).subgroupOf Γ`. Use `haveI : Countable (Γ ⧸ Q') := Function.Surjective.countable QuotientGroup.mk_surjective`. Set `rep : Γ ⧸ Q' → Γ` to `fun c => (Quotient.out c)⁻¹`. Establish `hmp : ∀ g : G, MeasurePreserving (g * ·) μ μ` using `fun g => ⟨hm g, hinv g⟩`. Establish `himg : ∀ (g : G) (s : Set G), g • s = (g⁻¹ * ·) ⁻¹' s`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g s`. Use extensionality with `x`. Simplify using `[Set.mem_smul_set_iff_inv_smul_mem, smul_eq_mul]`. Establish `hnm : ∀ g : G, NullMeasurableSet (g • D) μ` using `fun g => by`. Rewrite using `[himg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hD.nullMeasurableSet.preimage (hmp g⁻¹).quasiMeasurePreserving`. Use `⟨⋃ c, ((rep c : Γ) : G) • D, ?_⟩` and prove the remaining obligations. Use `IsFundamentalDomain.mk'' ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `NullMeasurableSet.iUnion fun c => hnm _`. Use `filter_upwards [hD.ae_covers] with x hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hγ⟩` from `hx`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul Q' γ`. Establish `hQ : ((h : Γ) : G) ∈ Γ ⊓ S` using `(Subgroup.mem_subgroupOf).1 h.2`. Use `⟨⟨((h : Γ) : G)⁻¹, inv_mem hQ⟩, Set.mem_iUnion.2 ⟨(γ : Γ ⧸ Q'), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[himg, Set.mem_preimage]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e1 : ((rep (γ : Γ ⧸ Q') : Γ) : G)⁻¹ = (γ : G) * ((h : Γ) : G)`. Simplify using `only [rep, inv_inv]`. Use `congrArg (fun y : Γ => (y : G)) hh` as an intermediate fact. Simplify using `using this`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: (γ : G) * ((h : Γ) : G) * ((⟨((h : Γ) : G)⁻¹, inv_mem hQ⟩ : ↥(Γ ⊓ S)) • x) = γ • x`. Rewrite using `[Subgroup.smul_def, Subgroup.smul_def]`. Simplify using `[smul_eq_mul, mul_assoc]`. Rewrite using `[this]`. Conclude with `hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg`. Establish `hsm : g • ⋃ c, ((rep c : Γ) : G) • D = ⋃ c, ((g : G) * ((rep c : Γ) : G)) • D`. Rewrite using `[Set.smul_set_iUnion]`. Use `Set.iUnion_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[← smul_smul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Rewrite using `[hsm, AEDisjoint.iUnion_left_iff]`. Introduce `c`. Rewrite using `[AEDisjoint.iUnion_right_iff]`. Introduce `c'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hgΓ : (g : G) ∈ Γ` using `(Subgroup.mem_inf.1 g.2).1`. Set `γ₁ : Γ` to `⟨g, hgΓ⟩ * rep c`. Establish `hne : γ₁ ≠ rep c'`. Introduce `heq`. Establish `hmem : (Quotient.out c)⁻¹ * Quotient.out c' ∈ Q'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_subgroupOf]`. Establish `: (Quotient.out c')⁻¹ = ⟨g, hgΓ⟩ * (Quotient.out c)⁻¹`. Simplify `heq.symm` using `[γ₁, rep]`. Establish `h2 : (Quotient.out c)⁻¹ * Quotient.out c' = (⟨g, hgΓ⟩ : Γ)⁻¹`. Rewrite using `[← inv_inj, mul_inv_rev, inv_inv, this, inv_inv, mul_assoc, inv_mul_cancel, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[h2]`. Simplify using `using inv_mem g.2`. Establish `hcc : c = c'`. Rewrite using `[← QuotientGroup.out_eq' c, ← QuotientGroup.out_eq' c']`. Conclude with `(QuotientGroup.eq).2 hmem`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hcc` using the available equality. Apply `hg` to reduce the goal to its premises. Establish `: (⟨g, hgΓ⟩ : Γ) = 1` using `by simpa [γ₁] using heq`. Use `ext`. Simplify using `using congrArg Subtype.val this`.
-
-Conclude with `hD.aedisjoint hne`. Introduce `g`. Conclude with `(hmp (g : G)).quasiMeasurePreserving`.
+A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_inf {G : Type} [Group G] [MeasurableSpace G] {μ : Measure G}
     (hm : ∀ g : G, Measurable (g * ·)) (hinv : ∀ g : G, μ.map (g * ·) = μ)
@@ -108,17 +106,17 @@ namespace GlobalTheory.QDom
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.toEquiv.symm`.
+A detailed English derivation is pending.
 -/
 theorem countable_numberField : Countable E :=
   Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.toEquiv.symm
 
 /- English proof (translation)
-Use `haveI := countable_numberField (E := E)`. Use `haveI : Countable (Matrix (Fin n) (Fin n) E) := inferInstanceAs (Countable (Fin n → Fin n → E))`. Establish `hmat : Countable (GL (Fin n) E)` using `Function.Injective.countable (f := fun A : GL (Fin n) E => (A : Matrix (Fin n) (Fin n) E)) Units.val_injective`. Establish `hpre : ∀ x : ratU σ J, ∃ A : GL (Fin n) E, Matrix.GeneralLinearGroup.map (inclR (AF F)) A = ((x : UA σ J) : GL (Fin n) (AE F E))`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `x.2` as an intermediate fact. Unfold `ratU at this`. Rewrite `this` using `[Subgroup.mem_subgroupOf, MonoidHom.mem_range]`. Conclude with `this`. Use `choose f hf using hpre`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Function.Injective.countable (f := f) ?_` and prove the remaining obligations. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hf x, ← hf y, hxy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countable_ratU (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : Countable (ratU σ J) := by
   classical
@@ -139,11 +137,9 @@ theorem countable_ratU (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`. Apply `Continuous.measurable` to reduce the goal to its premises. Apply `Continuous.subtype_mk` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Simplify using `only [Function.comp_def, Subgroup.coe_mul, Units.val_mul]`. Conclude with `continuous_const.matrix_mul (Units.continuous_val.comp continuous_subtype_val)`. Simplify using `only [Subgroup.coe_mul, mul_inv_rev, Units.val_mul]`.
-
-Conclude with `(Units.continuous_coe_inv.comp continuous_subtype_val).matrix_mul continuous_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_mul_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (g : UA σ J) :
     Measurable (g * ·) := by
@@ -164,7 +160,7 @@ end GlobalTheory.QDom
 namespace GlobalTheory.QDom
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' _ X om om' hT`. Use `haveI := countable_ratU σ G.V.J`. Establish `hgood` using `hT.geo.hM`. Use `haveI := hgood.haar`. Conclude with `isFundamentalDomain_inf (measurable_mul_left σ G.V.J) (fun g => map_mul_left_eq_self G.M.μ g) hgood.dom _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_fundamentalDomain_ratStab : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

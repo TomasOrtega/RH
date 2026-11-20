@@ -9,37 +9,37 @@ section SlopeTestRemainingChoices
 variable {k : Type*} [Field k] [Fintype k] [DecidableEq k] {r : ℕ} {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Unfold `pair`. Conclude with `Finset.sum_congr rfl (fun i _ => mul_comm _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma pair_comm (f x : Fin r → k) : pair f x = pair x f := by
   unfold pair; exact Finset.sum_congr rfl (fun i _ => mul_comm _ _)
 
 /- English proof (translation)
-Unfold `pair`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun i _ => by simp [mul_assoc])`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pair_smul_left (c : k) (f x : Fin r → k) : pair (c • f) x = c * pair f x := by
   unfold pair; rw [Finset.mul_sum]
   exact Finset.sum_congr rfl (fun i _ => by simp [mul_assoc])
 
 /- English proof (translation)
-Rewrite using `[pair_comm, pair_smul_left, pair_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma pair_smul_right (c : k) (f x : Fin r → k) : pair f (c • x) = c * pair f x := by
   rw [pair_comm, pair_smul_left, pair_comm]
 
 /- English proof (translation)
-Simplify using `[pair]`.
+Simplify using the standard rewrite rules.
 -/
 lemma pair_zero_right (f : Fin r → k) : pair f 0 = 0 := by simp [pair]
 
 /- English proof (translation)
-Simplify using `[pair, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma pair_add_left (f g x : Fin r → k) : pair (f + g) x = pair f x + pair g x := by
   simp [pair, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `pair`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_apply, hj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -52,15 +52,15 @@ lemma pair_single_left (i : Fin r) (t : k) (x : Fin r → k) :
   · simp
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Rewrite `h` using `[pair_zero_right]`. Conclude with `zero_ne_one h`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ne_zero_of_pair_eq_one {f x : Fin r → k} (h : pair f x = 1) : x ≠ 0 := by
   rintro rfl; rw [pair_zero_right] at h; exact zero_ne_one h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `f`. Unfold `opU opD`. Use `Finset.sum_congr ?_ (fun _ _ => rfl)` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[pair_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma opU_eq_opD (ψ : (Fin r → k) → R) : opU ψ = opD ψ := by
   funext f
@@ -71,7 +71,7 @@ lemma opU_eq_opD (ψ : (Fin r → k) → R) : opU ψ = opD ψ := by
   rw [pair_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `f`. Unfold `nmP nmV diaP diaV`. Conclude with `(Fintype.sum_equiv (Equiv.inv kˣ) (fun c => φ (((c⁻¹ : kˣ) : k) • f)) (fun c => φ ((c : k) • f)) (fun c => rfl)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma nmP_eq_nmV (φ : (Fin r → k) → R) : nmP φ = nmV φ := by
   funext f
@@ -80,13 +80,13 @@ lemma nmP_eq_nmV (φ : (Fin r → k) → R) : nmP φ = nmV φ := by
     (fun c => φ ((c : k) • f)) (fun c => rfl)).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `f`. Unfold `opU diaV diaP`. Use `Finset.sum_nbij' (fun x => ((c⁻¹ : kˣ) : k) • x) (fun y => (c : k) • y) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[pair_smul_left, pair_smul_right, hx, mul_one]`. Conclude with `c.mul_inv`. Introduce `y hy`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hy ⊢`. Rewrite using `[pair_smul_right, ← pair_smul_left]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hy`. Introduce `x _`. Simplify using `only [smul_smul, c.mul_inv, one_smul]`. Introduce `y _`. Simplify using `only [smul_smul, c.inv_mul, one_smul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `x _`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 lemma comm_U (c : kˣ) (ψ : (Fin r → k) → R) : opU (diaV c ψ) = diaP c (opU ψ) := by
   funext f
@@ -103,13 +103,13 @@ lemma comm_U (c : kˣ) (ψ : (Fin r → k) → R) : opU (diaV c ψ) = diaP c (op
   · intro x _; rfl
 
 /- English proof (translation)
-The claim follows from `congrFun (comm_U c ψ) f`.
+A detailed English derivation is pending.
 -/
 lemma comm_U_apply (c : kˣ) (ψ : (Fin r → k) → R) (f : Fin r → k) :
     opU (diaV c ψ) f = diaP c (opU ψ) f := congrFun (comm_U c ψ) f
 
 /- English proof (translation)
-Unfold `nmP`. Simplify using `only [← comm_U_apply]`. Unfold `opU nmV`. Conclude with `Finset.sum_comm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma nmP_opU (ψ : (Fin r → k) → R) (f : Fin r → k) :
     nmP (opU ψ) f = ∑ x ∈ univ.filter (fun x => pair f x = 1), nmV ψ x := by
@@ -119,7 +119,7 @@ lemma nmP_opU (ψ : (Fin r → k) → R) (f : Fin r → k) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx (funext h)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 lemma exists_coord_ne_zero {x : Fin r → k} (hx : x ≠ 0) : ∃ i, x i ≠ 0 := by
   by_contra h
@@ -127,9 +127,9 @@ lemma exists_coord_ne_zero {x : Fin r → k} (hx : x ≠ 0) : ∃ i, x i ≠ 0 :
   exact hx (funext h)
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `exists_coord_ne_zero hx`. Unfold `nmV diaV`. Rewrite using `[Finset.sum_image]`. Introduce `c _ d _ h`. Establish `h'` using `congrFun h i`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul] at h'`. Establish `h'' : ((c⁻¹ : kˣ) : k) = ((d⁻¹ : kˣ) : k)` using `mul_right_cancel₀ hi h'`. Conclude with `inv_inj.1 (Units.ext h'')`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma nmV_eq_image (ψ : (Fin r → k) → R) {x : Fin r → k} (hx : x ≠ 0) :
     nmV ψ x = ∑ y ∈ univ.image (fun c : kˣ => ((c⁻¹ : kˣ) : k) • x), ψ y := by
@@ -143,7 +143,7 @@ lemma nmV_eq_image (ψ : (Fin r → k) → R) {x : Fin r → k} (hx : x ≠ 0) :
   exact inv_inj.1 (Units.ext h'')
 
 /- English proof (translation)
-Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩; exact ⟨c⁻¹, by rw [Units.smul_def]⟩`. Introduce and unpack `⟨u, rfl⟩; exact ⟨u⁻¹, by rw [inv_inv, Units.smul_def]⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 -/
 lemma mem_image_orbit {x : Fin r → k} (y : Fin r → k) :
     y ∈ univ.image (fun c : kˣ => ((c⁻¹ : kˣ) : k) • x) ↔ ∃ u : kˣ, u • x = y := by
@@ -153,11 +153,11 @@ lemma mem_image_orbit {x : Fin r → k} (y : Fin r → k) :
   · rintro ⟨u, rfl⟩; exact ⟨u⁻¹, by rw [inv_inv, Units.smul_def]⟩
 
 /- English proof (translation)
-Rewrite using `[mem_image_orbit]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Use `⟨?_, ⟨(u : k), Units.smul_def u x⟩⟩` and prove the remaining obligations. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hx` to reduce the goal to its premises. Establish `h1` using `congrArg (fun z => ((u⁻¹ : kˣ) : k) • z) h0`. Simplify using `only [smul_zero] at h1`. Rewrite `h1` using `[Units.smul_def, smul_smul, u.inv_mul, one_smul]`. Conclude with `h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hy, c, rfl⟩`. Establish `hc : c ≠ 0` using `by rintro rfl; exact hy (zero_smul _ _)`. Conclude with `⟨Units.mk0 c hc, by rw [Units.smul_def, Units.val_mk0]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma mem_image_line {x : Fin r → k} (hx : x ≠ 0) (y : Fin r → k) :
     y ∈ univ.image (fun c : kˣ => ((c⁻¹ : kˣ) : k) • x) ↔ y ≠ 0 ∧ ∃ c : k, y = c • x := by
@@ -176,15 +176,13 @@ lemma mem_image_line {x : Fin r → k} (hx : x ≠ 0) (y : Fin r → k) :
     exact ⟨Units.mk0 c hc, by rw [Units.smul_def, Units.val_mk0]⟩
 
 /- English proof (translation)
-Set `π : (Fin r → k) → Quotient (MulAction.orbitRel kˣ (Fin r → k))` to `Quotient.mk _`. Unfold `trV`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := π) (t := (univ.filter (fun x : Fin r → k => x ≠ 0)).image π) (fun x hx => Finset.mem_image_of_mem π hx)]`. Use `Finset.sum_eq_zero (fun j hj => ?_)` and prove the remaining obligations. Take `⟨x0, hx0, rfl⟩` from `Finset.mem_image.1 hj`.
+Introduce a local definition for the expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx0`. Establish `hfib : (univ.filter (fun x : Fin r → k => x ≠ 0)).filter (fun x => π x = π x0) = univ.image (fun c : kˣ => ((c⁻¹ : kˣ) : k) • x0)`. Use extensionality with `y`. Rewrite using `[mem_image_orbit]`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, π, Quotient.eq, MulAction.orbitRel_apply, MulAction.mem_orbit_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, hu⟩`. Conclude with `hu`. Introduce and unpack `⟨u, rfl⟩`. Use `⟨?_, ⟨u, rfl⟩⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hx0` to reduce the goal to its premises. Establish `h1` using `congrArg (fun z => u⁻¹ • z) h0`. Simplify using `only [smul_zero, smul_smul, inv_mul_cancel, one_smul] at h1`. Conclude with `h1`.
-
-Rewrite using `[hfib, ← nmV_eq_image ψ hx0]`. Conclude with `h x0 hx0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma trV_eq_zero (ψ : (Fin r → k) → R) (h : ∀ y, y ≠ 0 → nmV ψ y = 0) : trV ψ = 0 := by
   classical
@@ -216,13 +214,13 @@ lemma trV_eq_zero (ψ : (Fin r → k) → R) (h : ∀ y, y ≠ 0 → nmV ψ y = 
   exact h x0 hx0
 
 /- English proof (translation)
-Establish `hfib : ∀ w, (univ.filter (fun f => L f = w)).card = (univ.filter (fun f => L f = 0)).card`. Introduce `w`. Take `⟨f0, hf0⟩` from `hL w`. Use `Finset.card_nbij' (fun f => f - f0) (fun f => f + f0) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `f hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_univ, true_and] at hf ⊢`. Rewrite using `[map_sub, hf, hf0, sub_self]`. Introduce `f hf`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_univ, true_and] at hf ⊢`. Rewrite using `[map_add, hf, hf0, zero_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `f _`. Simplify using the standard rewrite rules. Introduce `f _`. Simplify using the standard rewrite rules. Establish `htot` using `Finset.card_eq_sum_card_fiberwise (f := L) (s := (univ : Finset (Fin r → k))) (t := univ) (fun _ _ => Finset.mem_univ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `htot` using `[Finset.sum_congr rfl (fun b _ => hfib b), Finset.sum_const, smul_eq_mul]`. Establish `hcard : Fintype.card (Fin r → k) = Fintype.card k ^ r` using `by simp`. Rewrite `htot` using `[Finset.card_univ, Finset.card_univ]`. Rewrite using `[hfib w, ← hcard, htot, Nat.mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma card_fiber_mul (W : Type*) [AddCommGroup W] [Fintype W] [DecidableEq W]
     (L : (Fin r → k) →+ W) (hL : Function.Surjective L) (w : W) :
@@ -268,9 +266,9 @@ Both sides reduce to the same expression.
 lemma pairTwoLinear_apply (x y f : Fin r → k) : pairTwoLinear x y f = (pair f x, pair f y) := rfl
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `exists_coord_ne_zero hx`. Establish `hL : Function.Surjective (pairL x)` using `fun a => ⟨Pi.single i (a / x i), by rw [pairL_apply, pair_single_left, div_mul_cancel₀ _ hi]⟩`. Establish `h` using `card_fiber_mul k (pairL x) hL a`. Establish `hq : 0 < Fintype.card k` using `Fintype.card_pos`. Establish `hr : r - 1 + 1 = r` using `by have := i.pos; omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Nat.eq_of_mul_eq_mul_right hq` to reduce the goal to its premises. Rewrite using `[← pow_succ, hr]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma count1 {x : Fin r → k} (hx : x ≠ 0) (a : k) :
     (univ.filter (fun f : Fin r → k => pair f x = a)).card = Fintype.card k ^ (r - 1) := by
@@ -285,19 +283,19 @@ lemma count1 {x : Fin r → k} (hx : x ≠ 0) (a : k) :
   exact h
 
 /- English proof (translation)
-Establish `hminor : ∃ i j, x i * y j - x j * y i ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨i, hi⟩` from `exists_coord_ne_zero hx`. Apply `hy (y i / x i)` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Use `hcon i j` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hi]`. Take the linear combination `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨i, j, hD⟩` from `hminor`. Establish `hL : Function.Surjective (pairTwoLinear x y)`. Introduce and unpack `⟨a, b⟩`. Use `⟨Pi.single i ((a * y j - b * x j) / (x i * y j - x j * y i)) + Pi.single j ((b * x i - a * y i) / (x i * y j - x j * y i)), ?_⟩` and prove the remaining obligations. Rewrite using `[pairTwoLinear_apply, pair_add_left, pair_add_left, pair_single_left, pair_single_left, pair_single_left, pair_single_left]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[div_mul_eq_mul_div, div_mul_eq_mul_div, ← add_div, div_eq_iff hD]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_mul_eq_mul_div, div_mul_eq_mul_div, ← add_div, div_eq_iff hD]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `card_fiber_mul (k × k) (pairTwoLinear x y) hL (a, b)`. Establish `hfil : univ.filter (fun f : Fin r → k => pair f x = a ∧ pair f y = b) = univ.filter (fun f => pairTwoLinear x y f = (a, b))`. Use extensionality with `f`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[pairTwoLinear_apply]`. Rewrite using `[hfil]`. Establish `hq : 0 < Fintype.card k * Fintype.card k` using `Nat.mul_pos Fintype.card_pos Fintype.card_pos`. Apply `Nat.eq_of_mul_eq_mul_right hq` to reduce the goal to its premises. Rewrite `h` using `[Fintype.card_prod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, ← mul_assoc, ← pow_succ, ← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma count2 (hr : 2 ≤ r) {x y : Fin r → k} (hx : x ≠ 0) (hy : ∀ c : k, y ≠ c • x) (a b : k) :
     (univ.filter (fun f : Fin r → k => pair f x = a ∧ pair f y = b)).card =
@@ -336,25 +334,25 @@ lemma count2 (hr : 2 ≤ r) {x y : Fin r → k} (hx : x ≠ 0) (hy : ∀ c : k, 
   congr 1; omega
 
 /- English proof (translation)
-Establish `h1 : opD (opU ψ) x = ∑ y, ((univ.filter (fun f : Fin r → k => pair f x = 1 ∧ pair f y = 1)).card : R) * ψ y`. Unfold `opD opU`. Rewrite using `[Finset.sum_comm' (t' := univ) (s' := fun y => univ.filter (fun f : Fin r → k => pair f x = 1 ∧ pair f y = 1))]`. Use `Finset.sum_congr rfl (fun y _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `f y`. Simplify using the standard rewrite rules. Establish `h2 : ∀ y, ((univ.filter (fun f : Fin r → k => pair f x = 1 ∧ pair f y = 1)).card : R) * ψ y = (if y = x then ((Fintype.card k : R)) ^ (r - 1) * ψ y else 0) + (if ∀ c : k, y ≠ c • x then ((Fintype.card k : R)) ^ (r - 2) * ψ y else 0)`. Introduce `y`. Distinguish the cases in `hyx : y = x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hyx]`. Establish `hne : ¬ ∀ c : k, x ≠ c • x` using `fun h => h 1 (one_smul _ _).symm`. Rewrite using `[if_pos rfl, if_neg hne, add_zero]`. Establish `: univ.filter (fun f : Fin r → k => pair f x = 1 ∧ pair f x = 1) = univ.filter (fun f => pair f x = 1)`. Use extensionality with `f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, count1 hx 1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hyx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hl : ∀ c : k, y ≠ c • x`. Rewrite using `[if_pos hl, zero_add, count2 hr hx hl 1 1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hl` using `[if_neg hl] push_neg`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, rfl⟩` from `hl`. Establish `hc : c ≠ 1` using `by rintro rfl; exact hyx (one_smul _ _)`. Rewrite using `[Finset.card_eq_zero.2 (Finset.filter_eq_empty_iff.2 (fun f _ h => hc (by rw [← h.2, pair_smul_right, h.1, mul_one])))]`. Simplify using the standard rewrite rules. Establish `htr : trV ψ = nmV ψ x + ∑ y ∈ univ.filter (fun y => ∀ c : k, y ≠ c • x), ψ y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `trV`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not (univ.filter (fun y : Fin r → k => y ≠ 0)) (fun y => ∃ c : k, y = c • x)]`. Use `congr 1`. Rewrite using `[nmV_eq_image ψ hx]`. Use `Finset.sum_congr ?_ (fun _ _ => rfl)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `y`. Rewrite using `[mem_image_line hx]`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use `Finset.sum_congr ?_ (fun _ _ => rfl)` and prove the remaining obligations. Use extensionality with `y`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, not_exists, ne_eq]`. Conclude with `⟨fun h => h.2, fun h => ⟨fun h0 => h 0 (by simp [h0]), h⟩⟩`. Rewrite using `[h1, Finset.sum_congr rfl (fun y _ => h2 y), Finset.sum_add_distrib, Finset.sum_ite_eq', if_pos (Finset.mem_univ _), htr]`. Establish `h3 : ∑ y, (if ∀ c : k, y ≠ c • x then ((Fintype.card k : R)) ^ (r - 2) * ψ y else 0) = ((Fintype.card k : R)) ^ (r - 2) * ∑ y ∈ univ.filter (fun y => ∀ c : k, y ≠ c • x), ψ y`. Rewrite using `[Finset.mul_sum, Finset.sum_filter]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma DU_formula (hr : 2 ≤ r) (ψ : (Fin r → k) → R) (x : Fin r → k) (hx : x ≠ 0) :
     opD (opU ψ) x = ((Fintype.card k : R)) ^ (r - 1) * ψ x
@@ -413,9 +411,9 @@ lemma DU_formula (hr : 2 ≤ r) (ψ : (Fin r → k) → R) (x : Fin r → k) (hx
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `k _ _ _ r R _ ψ φ`. Unfold `opU opD`. Simplify using `only [Finset.sum_filter, Finset.sum_mul, Finset.mul_sum]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun x _ => Finset.sum_congr rfl (fun f _ => ?_))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> ring`.
+A detailed English derivation is pending.
 -/
 theorem up_down_operators_adjoint : AdjointReformulated := by
   intro k _ _ _ r R _ ψ φ
@@ -426,13 +424,13 @@ theorem up_down_operators_adjoint : AdjointReformulated := by
   split_ifs <;> ring
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ hr ψ x hx` and use `DU_formula hr ψ x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem down_up_composition_formula : DualCompositionReformulated :=
   fun _ _ _ _ _ _ _ hr ψ x hx => DU_formula hr ψ x hx
 
 /- English proof (translation)
-Introduce `k _ _ _ r R _ hr φ f hf`. Rewrite using `[← opU_eq_opD φ, opU_eq_opD (opU φ), nmP_eq_nmV]`. Conclude with `DU_formula hr φ f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_down_composition_formula : CompositionWithDual := by
   intro k _ _ _ r R _ hr φ f hf
@@ -440,9 +438,9 @@ theorem up_down_composition_formula : CompositionWithDual := by
   exact DU_formula hr φ f hf
 
 /- English proof (translation)
-Establish `htr` using `trV_eq_zero ψ h`. Use `⟨fun f => ?_, htr, fun hr x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[nmP_opU]`. Conclude with `Finset.sum_eq_zero (fun x hx => h x (ne_zero_of_pair_eq_one (by simpa using hx)))`. Rewrite using `[DU_formula hr ψ x hx, h x hx, htr]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma ram_V {k : Type*} [Field k] [Fintype k] [DecidableEq k] {r : ℕ} {R : Type*} [CommRing R]
     (ψ : (Fin r → k) → R) (h : ∀ y, y ≠ 0 → nmV ψ y = 0) :
@@ -456,9 +454,9 @@ lemma ram_V {k : Type*} [Field k] [Fintype k] [DecidableEq k] {r : ℕ} {R : Typ
   · rw [DU_formula hr ψ x hx, h x hx, htr]; ring
 
 /- English proof (translation)
-Introduce `k _ _ _ r R _`. Use `⟨fun ψ h => ram_V ψ h, fun φ h => ?_⟩` and prove the remaining obligations. Establish `h' : ∀ y, y ≠ 0 → nmV φ y = 0` using `fun y hy => by rw [← nmP_eq_nmV]; exact h y hy`. Take `⟨h1, h2, h3⟩` from `ram_V φ h'`. Use `⟨fun x => ?_, h2, fun hr f hf => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← nmP_eq_nmV, ← opU_eq_opD]`. Conclude with `h1 x`. Rewrite using `[← opU_eq_opD φ, opU_eq_opD (opU φ)]`. Conclude with `h3 hr f hf`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramified_lattice_operator_identity : UnitsSumZero := by
   intro k _ _ _ r R _

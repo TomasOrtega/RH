@@ -13,7 +13,7 @@ section ctw
 variable {d : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `l₁ with`. Consider the case `nil => rfl`. Consider the case `cons i l ih => simp only [List.cons_append, pdc, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ctw_pdc_append (l₁ l₂ : List (Fin d)) (f : (Fin d → ℝ) → ℂ) :
     pdc (l₁ ++ l₂) f = pdc l₁ (pdc l₂ f) := by
@@ -22,7 +22,7 @@ theorem ctw_pdc_append (l₁ l₂ : List (Fin d)) (f : (Fin d → ℝ) → ℂ) 
   | cons i l ih => simp only [List.cons_append, pdc, ih]
 
 /- English proof (translation)
-The claim follows from `| [], m, n, f, hf, hl => hf.of_le (by simp only [List.length_nil, zero_add] at hl; exact_mod_cast hl) | i :: l, m, n, f, hf, hl => by have ih := ctw_contDiffOn_pdc hU l (m + 1) n f hf (by simp only [List.length_cons] at hl; omega) simp only [pdc] exact (ih.fderiv_of_isOpen hU (by …`.
+A detailed English derivation is pending.
 -/
 theorem ctw_contDiffOn_pdc {U : Set (Fin d → ℝ)} (hU : IsOpen U) :
     ∀ (l : List (Fin d)) (m n : ℕ) (f : (Fin d → ℝ) → ℂ), ContDiffOn ℝ n f U → l.length + m ≤ n →
@@ -34,7 +34,7 @@ theorem ctw_contDiffOn_pdc {U : Set (Fin d → ℝ)} (hU : IsOpen U) :
       exact (ih.fderiv_of_isOpen hU (by push_cast; exact le_rfl)).clm_apply contDiffOn_const
 
 /- English proof (translation)
-The claim follows from `| [], _, _, h => h | i :: l, f, g, h => by intro x hx have ih := ctw_pdc_congr hU l f g h simp only [pdc] rw [Filter.EventuallyEq.fderiv_eq (Filter.eventuallyEq_of_mem (hU.mem_nhds hx) ih)]`.
+A detailed English derivation is pending.
 -/
 theorem ctw_pdc_congr {U : Set (Fin d → ℝ)} (hU : IsOpen U) :
     ∀ (l : List (Fin d)) (f g : (Fin d → ℝ) → ℂ), Set.EqOn f g U → Set.EqOn (pdc l f) (pdc l g) U
@@ -46,7 +46,7 @@ theorem ctw_pdc_congr {U : Set (Fin d → ℝ)} (hU : IsOpen U) :
       rw [Filter.EventuallyEq.fderiv_eq (Filter.eventuallyEq_of_mem (hU.mem_nhds hx) ih)]
 
 /- English proof (translation)
-Establish `hga : ContDiffAt ℝ 2 g x` using `hg.contDiffAt (hU.mem_nhds hx)`. Establish `hd : DifferentiableAt ℝ (fderiv ℝ g) x` using `(hga.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`. Establish `hs` using `hga.isSymmSndFDerivAt (by simp)`. Rewrite using `[fderiv_clm_apply hd (differentiableAt_const v), fderiv_clm_apply hd (differentiableAt_const w)]`. Simplify using `[hs w v]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ctw_swap {U : Set (Fin d → ℝ)} (hU : IsOpen U) {g : (Fin d → ℝ) → ℂ} (hg : ContDiffOn ℝ 2 g U)
     {x : Fin d → ℝ} (hx : x ∈ U) (v w : Fin d → ℝ) :
@@ -59,13 +59,13 @@ theorem ctw_swap {U : Set (Fin d → ℝ)} (hU : IsOpen U) {g : (Fin d → ℝ) 
   simp [hs w v]
 
 /- English proof (translation)
-Proceed by induction on `hp with`. Consider the case `nil => intro n f _ _`. Conclude with `Set.eqOn_refl _ _`. Consider the case `@cons a m₁ m₂ hp ih`. Introduce `n f hf hl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `ih n f hf (by simp only [List.length_cons] at hl; omega)`. Establish `e1` using `ctw_pdc_append [a] m₁ f`. Establish `e2` using `ctw_pdc_append [a] m₂ f`. Simplify using `only [List.singleton_append] at e1 e2`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `ctw_pdc_congr hU [a] _ _ h`. Consider the case `swap a b l`. Introduce `n f hf hl x hx`. Establish `hg : ContDiffOn ℝ 2 (pdc l f) U` using `ctw_contDiffOn_pdc hU l 2 n f hf (by simp only [List.length_cons] at hl; omega)`. Simplify using `only [pdc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ctw_swap hU hg hx _ _`. Consider the case `trans h₁ _ ih₁ ih₂`. Introduce `n f hf hl`. Conclude with `(ih₁ n f hf hl).trans (ih₂ n f hf (h₁.length_eq ▸ hl))`.
+A detailed English derivation is pending.
 -/
 theorem ctw_pdc_perm {U : Set (Fin d → ℝ)} (hU : IsOpen U) {l₁ l₂ : List (Fin d)} (hp : l₁.Perm l₂) :
     ∀ (n : ℕ) (f : (Fin d → ℝ) → ℂ), ContDiffOn ℝ n f U → l₁.length ≤ n →
@@ -91,9 +91,9 @@ theorem ctw_pdc_perm {U : Set (Fin d → ℝ)} (hU : IsOpen U) {l₁ l₂ : List
       exact (ih₁ n f hf hl).trans (ih₂ n f hf (h₁.length_eq ▸ hl))
 
 /- English proof (translation)
-Establish `hc : Continuous (fun x => F x * G x)`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Distinguish the cases in `hx : x ∈ U`. Conclude with `(hF.continuousAt (hU.mem_nhds hx)).mul hG.continuousAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h0 : G =ᶠ[nhds x] 0` using `notMem_tsupport_iff_eventuallyEq.1 (fun h => hx (hGU h))`. Establish `h1 : (fun x => F x * G x) =ᶠ[nhds x] fun _ => 0` using `h0.mono fun y hy => by simp [hy]`. Conclude with `continuousAt_const.congr h1.symm`. Establish `hcs : HasCompactSupport (F * G)` using `hGc.mul_left`. Conclude with `hc.integrable_of_hasCompactSupport hcs`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ctw_integrable {U : Set (Fin d → ℝ)} (hU : IsOpen U) {F G : (Fin d → ℝ) → ℂ}
     (hF : ContinuousOn F U) (hG : Continuous G) (hGc : HasCompactSupport G) (hGU : tsupport G ⊆ U) :
@@ -110,9 +110,9 @@ theorem ctw_integrable {U : Set (Fin d → ℝ)} (hU : IsOpen U) {F G : (Fin d �
   exact hc.integrable_of_hasCompactSupport hcs
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact subset_rfl`. Consider the case `cons i l ih`. Use `subset_trans ?_ ((tsupport_fderiv_subset ℝ).trans ih)` and prove the remaining obligations. Use `closure_mono ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Simplify using `only [Function.mem_support] at hx ⊢`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Simplify using `only [pdc, h, zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem ctw_tsupport_pdc (l : List (Fin d)) (ψ : (Fin d → ℝ) → ℂ) : tsupport (pdc l ψ) ⊆ tsupport ψ := by
   induction l with
@@ -127,7 +127,7 @@ theorem ctw_tsupport_pdc (l : List (Fin d)) (ψ : (Fin d → ℝ) → ℂ) : tsu
       simp only [pdc, h, zero_apply]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact hψ`. Consider the case `cons i l ih`. Simplify using `only [pdc]`. Conclude with `contDiff_infty.2 fun n => ((contDiff_infty.1 ih (n + 1)).fderiv_right (by push_cast; exact le_rfl)).clm_apply contDiff_const`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ctw_contDiff_pdc (l : List (Fin d)) {ψ : (Fin d → ℝ) → ℂ} (hψ : ContDiff ℝ ∞ ψ) :
     ContDiff ℝ ∞ (pdc l ψ) := by
@@ -139,13 +139,13 @@ theorem ctw_contDiff_pdc (l : List (Fin d)) {ψ : (Fin d → ℝ) → ℂ} (hψ 
         ((contDiff_infty.1 ih (n + 1)).fderiv_right (by push_cast; exact le_rfl)).clm_apply contDiff_const
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => intro n f ψ _ _ _ _ _`. Simplify using `[pdc]`. Consider the case `cons i l ih`. Introduce `n f ψ hf hl hψ hψc hψU`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl' : l.length + 1 ≤ n` using `by simpa using hl`. Establish `hgs : ContDiff ℝ ∞ (pdc l ψ)` using `ctw_contDiff_pdc l hψ`. Establish `hgt : tsupport (pdc l ψ) ⊆ tsupport ψ` using `ctw_tsupport_pdc l ψ`. Establish `hgc : HasCompactSupport (pdc l ψ)` using `hψc.mono' ((subset_tsupport _).trans hgt)`. Establish `hg's : ContDiff ℝ ∞ (pdc (i :: l) ψ)` using `ctw_contDiff_pdc (i :: l) hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg't : tsupport (pdc (i :: l) ψ) ⊆ tsupport ψ` using `ctw_tsupport_pdc (i :: l) ψ`. Establish `hg'c : HasCompactSupport (pdc (i :: l) ψ)` using `hψc.mono' ((subset_tsupport _).trans hg't)`. Establish `hf1 : ContDiffOn ℝ ((n - 1 : ℕ)) (pdc [i] f) U` using `ctw_contDiffOn_pdc hU [i] (n - 1) n f hf (by simp only [List.length_cons, List.length_nil]; omega)`. Establish `hf0 : ContinuousOn (pdc [i] f) U` using `(ctw_contDiffOn_pdc hU [i] 0 n f hf (by simp only [List.length_cons, List.length_nil]; omega)).continuousOn`. Establish `hstep : ∫ x, f x * pdc (i :: l) ψ x = -∫ x, pdc [i] f x * pdc l ψ x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable (μ := volume) (f := f) (g := pdc l ψ) (v := (Pi.single i 1 : Fin d → ℝ)) (ctw_integrable hU hf0 hgs.continuous hgc (hgt.trans hψU)) (ctw_integrable hU hf.continuousOn hg's.continuous hg'c (hg't.trans hψU)) (ctw_integrable hU hf. …`. Conclude with `h`. Rewrite using `[hstep, ih (n - 1) (pdc [i] f) ψ hf1 (by omega) hψ hψc hψU, List.reverse_cons, ctw_pdc_append, List.length_cons, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ctw_ibp {U : Set (Fin d → ℝ)} (hU : IsOpen U) (l : List (Fin d)) :
     ∀ (n : ℕ) (f ψ : (Fin d → ℝ) → ℂ), ContDiffOn ℝ n f U → l.length ≤ n → ContDiff ℝ ∞ ψ →
@@ -181,9 +181,9 @@ theorem ctw_ibp {U : Set (Fin d → ℝ)} (hU : IsOpen U) (l : List (Fin d)) :
       ring
 
 /- English proof (translation)
-Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `x`. Distinguish the cases in `hx : x ∈ U`. Conclude with `(ha.contDiffAt (hU.mem_nhds hx)).mul hφ.contDiffAt`. Establish `h0 : φ =ᶠ[nhds x] 0` using `notMem_tsupport_iff_eventuallyEq.1 (fun h => hx (hφU h))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (fun y => a y * φ y) =ᶠ[nhds x] fun _ => 0` using `h0.mono fun y hy => by simp [hy]`. Conclude with `contDiffAt_const.congr_of_eventuallyEq h1`.
+A detailed English derivation is pending.
 -/
 theorem ctw_smooth_mul {U : Set (Fin d → ℝ)} (hU : IsOpen U) {a φ : (Fin d → ℝ) → ℂ}
     (ha : ContDiffOn ℝ ∞ a U) (hφ : ContDiff ℝ ∞ φ) (hφU : tsupport φ ⊆ U) :
@@ -199,23 +199,23 @@ theorem ctw_smooth_mul {U : Set (Fin d → ℝ)} (hU : IsOpen U) {a φ : (Fin d 
 end ctw
 
 /- English proof (translation)
-Introduce `d N P U u hU ha hord hu hPu φ hφ hφc hφU`. Establish `hφ0 : ∀ x, x ∉ U → φ x = 0` using `fun x hx => image_eq_zero_of_notMem_tsupport (fun h => hx (hφU h))`. Establish `hψ : ∀ (k : Fin (P.ord + 1)) (w : Fin k → Fin d), ContDiff ℝ ∞ (fun y => P.a k w y * φ y) ∧ HasCompactSupport (fun y => P.a k w y * φ y) ∧ tsupport (fun y => P.a k w y * φ y) ⊆ U` using `fun k w => ⟨ctw_smooth_mul hU (ha k w) hφ hφU, hφc.mul_left, tsupport_mul_subset_right.trans hφU⟩`. Establish `hk : ∀ (k : Fin (P.ord + 1)) (w : Fin k → Fin d), (List.ofFn w).length ≤ N` using `fun k w => by`. Rewrite using `[List.length_ofFn]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `k.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hint : ∀ (k : Fin (P.ord + 1)) (w : Fin k → Fin d), Integrable (fun x => u x * ((-1 : ℂ) ^ (k : ℕ) * pdc (List.ofFn w) (fun y => P.a k w y * φ y) x))` using `fun k w => by`. Take `⟨h1, h2, h3⟩` from `hψ k w`. Use `ctw_integrable hU hu.continuousOn (continuous_const.mul (ctw_contDiff_pdc _ h1).continuous) ((h2.mono' ((subset_tsupport _).trans (ctw_tsupport_pdc _ _))).mul_left) (tsupport_mul_subset_right.trans ((ctw_tsupport_pdc _ _).trans h3))` and prove the remaining obligations.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint2 : ∀ (k : Fin (P.ord + 1)) (w : Fin k → Fin d), Integrable (fun x => P.a k w x * pdc (List.ofFn w) u x * φ x)` using `fun k w => ctw_integrable hU (((ha k w).continuousOn).mul (ctw_contDiffOn_pdc hU (List.ofFn w) 0 N u hu (by simpa using hk k w)).continuousOn) hφ.continuous hφc hφU`. Establish `hterm : ∀ (k : Fin (P.ord + 1)) (w : Fin k → Fin d), ∫ x, u x * ((-1 : ℂ) ^ (k : ℕ) * pdc (List.ofFn w) (fun y => P.a k w y * φ y) x) = ∫ x, P.a k w x * pdc (List.ofFn w) u x * φ x`. Introduce `k w`. Take `⟨h1, h2, h3⟩` from `hψ k w`. Establish `hI` using `ctw_ibp hU (List.ofFn w) N u _ hu (hk k w) h1 h2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hperm` using `ctw_pdc_perm hU (List.reverse_perm (List.ofFn w)) N u hu (by rw [List.length_reverse]; exact hk k w)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ x, pdc (List.ofFn w).reverse u x * (P.a k w x * φ x) := by`. Rewrite using `[hI, List.length_ofFn, ← mul_assoc, ← pow_add, Even.neg_one_pow ⟨_, rfl⟩, one_mul]`. Use `_ = ∫ x, P.a k w x * pdc (List.ofFn w) u x * φ x := by`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ U`. Rewrite using `[hperm hx]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hφ0 x hx]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsplit : (fun x => u x * P.tr φ x) = fun x => ∑ k : Fin (P.ord + 1), ∑ w : Fin k → Fin d, u x * ((-1 : ℂ) ^ (k : ℕ) * pdc (List.ofFn w) (fun y => P.a k w y * φ y) x)`. Use function extensionality and compare the values at `x`. Simplify using `only [SOp.tr, Finset.mul_sum]`. Establish `hinner : ∀ k : Fin (P.ord + 1), ∫ x, ∑ w : Fin k → Fin d, u x * ((-1 : ℂ) ^ (k : ℕ) * pdc (List.ofFn w) (fun y => P.a k w y * φ y) x) = ∫ x, ∑ w : Fin k → Fin d, P.a k w x * pdc (List.ofFn w) u x * φ x` using `fun k => by`. Rewrite using `[integral_finsetSum _ (fun w _ => hint k w), integral_finsetSum _ (fun w _ => hint2 k w)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl (fun w _ => hterm k w)`. Rewrite using `[hsplit, integral_finsetSum _ (fun k _ => integrable_finsetSum _ (fun w _ => hint k w)), Finset.sum_congr rfl (fun k _ => hinner k), ← integral_finsetSum _ (fun k _ => integrable_finsetSum _ (fun w _ => hint2 k w))]`. Establish `h0 : (fun x => ∑ k : Fin (P.ord + 1), ∑ w : Fin k → Fin d, P.a k w x * pdc (List.ofFn w) u x * φ x) = fun _ => (0 : ℂ)`. Use function extensionality and compare the values at `x`. Establish `e : ∑ k : Fin (P.ord + 1), ∑ w : Fin k → Fin d, P.a k w x * pdc (List.ofFn w) u x * φ x = P.app u x * φ x` using `by simp only [SOp.app, Finset.sum_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Distinguish the cases in `hx : x ∈ U`. Rewrite using `[hPu x hx, zero_mul]`. Rewrite using `[hφ0 x hx, mul_zero]`. Rewrite using `[h0, integral_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classical_to_weak_solution : ClassToWeak := by
   intro d N P U u hU ha hord hu hPu φ hφ hφc hφU

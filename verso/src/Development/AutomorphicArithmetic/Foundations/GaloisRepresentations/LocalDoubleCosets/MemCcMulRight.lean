@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Local
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL ValuativeRel Matrix MeasureTheory UpperTheory.ConvolutionTheory.Loc MulAction UpperTheory.Gal.LocD
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[GroundTheory.Automorphic.mem_locallyConstantCompactSupport]`. Use `⟨hf.1.comp_continuous (continuous_mul_right u), ?_⟩` and prove the remaining obligations. Conclude with `hf.2.comp_homeomorph (Homeomorph.mulRight u)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem mem_Cc_mul_right {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {f : G → ℂ} (hf : f ∈ Cc G) (u : G) : (fun x => f (x * u)) ∈ Cc G := by
@@ -24,9 +24,9 @@ private theorem mem_Cc_mul_right {G : Type} [Group G] [TopologicalSpace G] [IsTo
     group
 
 /- English proof (translation)
-Use `letI := act B N`. Use `show orbit (B × N) w = cell B N w`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨b, u⟩, rfl⟩`.
+Equip the data with the indicated structure. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨b, b.2, (u : G)⁻¹, N.inv_mem u.2, rfl⟩`. Introduce and unpack `⟨b, hb, u, hu, rfl⟩`. Use `⟨(⟨b, hb⟩, ⟨u, hu⟩⁻¹), ?_⟩` and prove the remaining obligations. Use `show b * w * (((⟨u, hu⟩⁻¹ : N) : G))⁻¹ = b * w * u`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem orbit_act {G : Type} [Group G] (B N : Subgroup G) (w : G) :
     letI := act B N; orbit (B × N) w = cell B N w := by
@@ -42,27 +42,23 @@ private theorem orbit_act {G : Type} [Group G] (B N : Subgroup G) (w : G) :
     simp
 
 /- English proof (translation)
-Introduce `hD G _ _ _ _ _ _ _ B N hB hN s p hp hs hsp hsB hsN hC η θ hη hθ hηs hθs D hDB hDN f hf`. Take `⟨L, hLo, hL⟩` from `hη`. Take `⟨k, w, hw1, hw2, hw3⟩` from `hC`. Use `letI := act B N`. Use `haveI : LocallyCompactSpace B := hB.locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : LocallyCompactSpace N := hN.locallyCompactSpace`. Use `haveI : SecondCountableTopology B := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SigmaCompactSpace (B × N) := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `haveI : ContinuousSMul (B × N) G := ⟨by show Continuous fun q : (B × N) × G => (q.1.1 : G) * q.2 * (q.1.2 : G)⁻¹`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((continuous_subtype_val.comp (continuous_fst.comp continuous_fst)).mul continuous_snd).mul (continuous_subtype_val.comp (continuous_snd.comp continuous_fst)).inv⟩`. Set `sB : B →* B` to `(s.comp B.subtype).codRestrict B (fun b => hsB b b.2)`. Set `sN : N →* N` to `(s.comp N.subtype).codRestrict N (fun u => hsN u u.2)`. Set `τ : B × N →* B × N` to `sB.prodMap sN`. Establish `hτc : Continuous τ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[MonoidHom.coe_prodMap]`. Conclude with `(Continuous.subtype_mk (hs.comp continuous_subtype_val) _).prodMap (Continuous.subtype_mk (hs.comp continuous_subtype_val) _)`. Establish `hit : ∀ n (h : B × N), ((τ^[n] h).1 : G) = s^[n] h.1 ∧ ((τ^[n] h).2 : G) = s^[n] h.2`. Introduce `n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Consider the case `zero => intro h`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `h`. Simplify using `only [Function.iterate_succ_apply']`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `⟨by rw [← (ih h).1]; rfl, by rw [← (ih h).2]; rfl⟩`. Set `χ : B × N →* ℂ` to `(η.comp (MonoidHom.fst B N)) * ((Units.coeHom ℂ).comp (θ.comp (MonoidHom.snd B N)))`. Establish `hχ : ∀ h : B × N, χ h = η h.1 * (θ h.2 : ℂ)` using `fun h => rfl`. Use `hD G (B × N) s τ p hp hs hτc hsp ?_ ?_ χ ?_ ?_ k w hw1 ?_ ?_ D ?_ f hf` and prove the remaining obligations. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hit p h` as an intermediate fact. Conclude with `Prod.ext (Subtype.ext (this.1.trans (hsp _))) (Subtype.ext (this.2.trans (hsp _)))`. Introduce `h x show s ((h.1 : G) * x * (h.2 : G)⁻¹) = s h.1 * s x * (s h.2)⁻¹`. Simplify using `[map_mul, map_inv]`. Use `⟨(L.comap B.subtype).prod θ.ker, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Subgroup.coe_prod]`. Conclude with `(hLo.preimage continuous_subtype_val).prod hθ`. Introduce `l hl`. Rewrite `hl` using `[Subgroup.mem_prod]`. Rewrite using `[hχ, hL l.1 hl.1, MonoidHom.mem_ker.1 hl.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Introduce `h`. Rewrite using `[hχ, hχ, hηs h.1 (τ h).1 rfl, hθs h.2 (τ h).2 rfl]`. Introduce `y`. Simplify `hw2 y` using `only [orbit_act]`.
-
-Introduce `j`. Simplify `hw3 j` using `only [orbit_act]`. Introduce `h g hg`. Establish `hg' : (fun x => g (x * (h.2 : G))) ∈ Cc G` using `mem_Cc_mul_right hg _`. Establish `e : GroundTheory.Automorphic.Whittaker.transl h g = fun x => (fun y => g (y * (h.2 : G))) ((h.1 : G)⁻¹ * x)`.
-
-Use function extensionality and compare the values at `x`. Use `show g (((h⁻¹).1 : G) * x * ((h⁻¹).2 : G)⁻¹) = g ((h.1 : G)⁻¹ * x * h.2)`. Simplify using the standard rewrite rules. Rewrite using `[e, hDB h.1 _ hg', hDN h.2 g hg, hχ, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.LocD.biInv :
     DistInv → BiInv := by

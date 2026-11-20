@@ -16,7 +16,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ExpCancel
 
 /- English proof (translation)
-The claim follows from `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by simp only [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_one] exact IsLocalRing.isUnit_or_isUnit_one_sub_self _`.
+A detailed English derivation is pending.
 -/
 theorem isLocalRing_tsze {S : Type} [Field S] (M : Type) [AddCommGroup M] [Module S M] [Module Sᵐᵒᵖ M]
     [IsCentralScalar S M] : IsLocalRing (TrivSqZeroExt S M) :=
@@ -25,13 +25,11 @@ theorem isLocalRing_tsze {S : Type} [Field S] (M : Type) [AddCommGroup M] [Modul
     exact IsLocalRing.isUnit_or_isUnit_one_sub_self _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst]`. Assume the negation of the conclusion as `h0`. Establish `hf : x.fst = 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Conclude with `h0 (isUnit_iff_ne_zero.mpr hne)`. Establish `e : (incl (S` using `S) J hJ).toRingHom x = (x.snd : A) := by show incl (S := S) J hJ x = _`. Rewrite using `[incl_apply, hf, map_zero, zero_add]`. Rewrite `hx` using `[e]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (x.snd : A) * (x.snd : A) = 0` using `mul_coe_eq_zero J hJ x.snd x.snd`. Take `⟨w, hw⟩` from `hx.exists_left_inv`. Establish `: (1 : A) = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (w * w) * ((x.snd : A) * (x.snd : A)) = (w * (x.snd : A)) * (w * (x.snd : A)) by ring, hw, _root_.one_mul]`.
-
-Use `_ = 0 := by rw [h2, mul_zero]`. Conclude with `one_ne_zero this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalHom_incl {S : Type} [Field S] {A : Type} [CommRing A] [Algebra S A] [IsLocalRing A]
     (J : Ideal A) [Module Sᵐᵒᵖ J] [IsCentralScalar S J] (hJ : J ^ 2 = ⊥) :
@@ -55,11 +53,11 @@ theorem isLocalHom_incl {S : Type} [Field S] {A : Type} [CommRing A] [Algebra S 
   exact one_ne_zero this
 
 /- English proof (translation)
-Take `⟨⟨x, f, hf⟩, rfl⟩` from `(SpecToEquivOfLocalRing X (CommRingCat.of B)).symm.surjective a`. Take `⟨⟨y, g, hg⟩, rfl⟩` from `(SpecToEquivOfLocalRing X (CommRingCat.of B)).symm.surjective b`. Establish `l1 : ∀ (z : X) (φ : X.presheaf.stalk z ⟶ CommRingCat.of B), IsLocalHom φ.hom → IsLocalHom (φ ≫ CommRingCat.ofHom d).hom`. Introduce `z φ _`. Rewrite using `[CommRingCat.hom_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.isLocalHom_comp d φ.hom`. Establish `k1 : (⟨x, f ≫ CommRingCat.ofHom d, l1 x f hf⟩ : Σ z : X, {φ : X.presheaf.stalk z ⟶ CommRingCat.of C // IsLocalHom φ.hom}) = ⟨y, g ≫ CommRingCat.ofHom d, l1 y g hg⟩`. Apply `(SpecToEquivOfLocalRing X (CommRingCat.of C)).symm.injective` to reduce the goal to its premises. Simplify `h1` using `[SpecToEquivOfLocalRing]`. Take `rfl : x = y` from `congrArg Sigma.fst k1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h5 : f ≫ CommRingCat.ofHom d = g ≫ CommRingCat.ofHom d` using `congrArg Subtype.val (eq_of_heq (Sigma.mk.inj k1).2)`. Choose the witnesses or unpack the hypotheses as in `rfl : f = g := by`. Use extensionality with `s`. Conclude with `hd (congrArg (fun k => k.hom s) h5)`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ext_of_local {B C : Type} [CommRing B] [CommRing C] [IsLocalRing B] [IsLocalRing C]
     (d : B →+* C) [IsLocalHom d] (hd : Function.Injective d)
@@ -86,9 +84,7 @@ theorem ext_of_local {B C : Type} [CommRing B] [CommRing C] [IsLocalRing B] [IsL
 end GlobalTheory.ExpCancel
 
 /- English proof (translation)
-Introduce `X G S _ x0 A _ _ _ J _ _ hJ hinj u v h`. Use `letI := GlobalTheory.ExpCancel.isLocalRing_tsze (S := S) J`. Use `haveI := GlobalTheory.ExpCancel.isLocalHom_incl (S := S) J hJ`. Use `ext1`. Establish `h'` using `congrArg CommaMorphism.left h`.
-
-Simplify using `only [Over.comp_left] at h'`. Conclude with `GlobalTheory.ExpCancel.ext_of_local (incl (S := S) J hJ).toRingHom hinj u.left v.left h'`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ExpCancel.cancel_incl : ∀ {X : Scheme.{0}} {G : Over X} {S : Type} [Field S] (x0 : Sp S ⟶ X)
     {A : Type} [CommRing A] [Algebra S A] [IsLocalRing A] (J : Ideal A) [Module Sᵐᵒᵖ J] [IsCentralScalar S J]

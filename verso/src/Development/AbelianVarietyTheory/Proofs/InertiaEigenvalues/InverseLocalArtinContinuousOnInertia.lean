@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.ArtinInvCont
 
 /- English proof (translation)
-Unfold `GlobalTheory.HeckeGal.Gab TopologicalAbelianization`. Use `haveI : IsClosed (((commutator (G E Ω)).topologicalClosure : Subgroup (G E Ω)) : Set (G E Ω)) := Subgroup.isClosed_topologicalClosure _`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem absoluteGaloisAbelianization_t2Space (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] :
     T2Space (GlobalTheory.HeckeGal.Gab E Ω) := by
@@ -25,11 +25,11 @@ theorem absoluteGaloisAbelianization_t2Space (E Ω : Type) [Field E] [NumberFiel
   infer_instance
 
 /- English proof (translation)
-Establish `hle : (Filter.cofinite : Filter (HeightOneSpectrum (𝓞 E))) ≤ Filter.principal ({v}ᶜ : Set _)`. Rewrite using `[Filter.le_principal_iff]`. Conclude with `(Set.finite_singleton v).compl_mem_cofinite`. Set `f : v.adicCompletion E → RestrictedProduct (fun w : HeightOneSpectrum (𝓞 E) => w.adicCompletion E) (fun w => (w.adicCompletionIntegers E : Set (w.adicCompletion E))) (Filter.principal ({v}ᶜ : Set _))` to `fun x => ⟨Pi.mulSingle v x, by`. Rewrite using `[Filter.eventually_principal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Establish `h' : w ≠ v` using `hw`. Rewrite using `[Pi.mulSingle_eq_of_ne h']`. Conclude with `one_mem _⟩`. Establish `hf : Continuous f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RestrictedProduct.continuous_rng_of_principal]`. Conclude with `continuous_mulSingle (A := fun w : HeightOneSpectrum (𝓞 E) => w.adicCompletion E) v`. Establish `hs : Continuous (Neutral.B1.finiteSingle E v)` using `(RestrictedProduct.continuous_inclusion hle).comp hf`. Apply `Continuous.units_map` to reduce the goal to its premises. Conclude with `Continuous.prodMk continuous_const hs`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem continuous_localIdele' (E : Type) [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 E)) :
     Continuous (Neutral.B1.localIdele E v) := by
@@ -53,21 +53,19 @@ theorem continuous_localIdele' (E : Type) [Field E] [NumberField E] (v : HeightO
   exact Continuous.prodMk continuous_const hs
 
 /- English proof (translation)
-Rewrite using `[Units.isEmbedding_val₀.isInducing.isCompact_iff]`. Establish `e : (Units.val '' {x : (w.adicCompletion E)ˣ | Valued.v (x : w.adicCompletion E) = 1}) = {y : w.adicCompletion E | Valued.v y = 1}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `hx`. Introduce `hy`. Establish `h0 : y ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨Units.mk0 y h0, hy, rfl⟩`. Rewrite using `[e]`. Establish `hK : IsCompact (w.adicCompletionIntegers E : Set (w.adicCompletion E))` using `isCompact_iff_compactSpace.2 (GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers E w)`. Use `hK.of_isClosed_subset ?_ ?_` and prove the remaining obligations. Establish `h1 : IsClosed {y : w.adicCompletion E | Valued.v y ≤ 1}`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: {y : w.adicCompletion E | Valued.v y ≤ 1} = (w.adicCompletionIntegers E : Set (w.adicCompletion E))`. Use extensionality with `y`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).symm`. Rewrite using `[this]`. Conclude with `hK.isClosed`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : IsOpen {y : w.adicCompletion E | Valued.v y < 1}`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `y hy`. Rewrite using `[Valued.mem_nhds]`. Use `⟨1, fun z hz => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz' : Valued.v (z - y) < 1` using `by simpa using hz`. Establish `: z = (z - y) + y` using `by ring`. Use `show Valued.v z < 1`. Rewrite using `[this]`. Conclude with `Valuation.map_add_lt _ hz' hy`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : {y : w.adicCompletion E | Valued.v y = 1} = {y : w.adicCompletion E | Valued.v y ≤ 1} ∩ {y : w.adicCompletion E | Valued.v y < 1}ᶜ`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_compl_iff, not_lt]`. Conclude with `⟨fun h => ⟨h.le, h.ge⟩, fun h => le_antisymm h.1 h.2⟩`. Rewrite using `[e2]`.
-
-Conclude with `h1.inter h2.isClosed_compl`. Introduce `y hy`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).2 (le_of_eq hy)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isCompact_valOne (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) :
     IsCompact {x : (w.adicCompletion E)ˣ | Valued.v (x : w.adicCompletion E) = 1} := by
@@ -114,15 +112,15 @@ theorem isCompact_valOne (E : Type) [Field E] [NumberField E] (w : HeightOneSpec
     exact (HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).2 (le_of_eq hy)
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h art a ha hord hart`. Use `haveI := absoluteGaloisAbelianization_t2Space E Ω`. Set `K : Set (w.adicCompletion E)ˣ` to `{x | Valued.v (x : w.adicCompletion E) = 1}`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp (isCompact_valOne E w)`. Set `f : K → GlobalTheory.HeckeGal.Gab E Ω` to `fun x => art (Neutral.B1.localIdele E w x.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : Continuous f` using `(ha.quot.continuous.comp (continuous_localIdele' E w)).comp continuous_subtype_val`. Establish `hinj : Function.Injective f` using `fun x y hxy => Subtype.ext (GlobalTheory.ArtinLocalInj.artin_localIdele_injective GlobalTheory.Published.chevalleyUnits' E Ω art ha w hxy)`. Establish `hemb` using `hf.isClosedEmbedding hinj`. Establish `hmem : ∀ σ : Ine (F` using `E) A, a (ineIncl h σ) ∈ K := by`. Introduce `σ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : deg (ineIncl h σ) = 0`. Rewrite using `[deg_eq (a := 0) (b := 0) (actsAs_zero_iff.mpr σ.2)]`. Simplify using the standard rewrite rules. Establish `ho` using `hord (ineIncl h σ)`. Rewrite `ho` using `[hd, neg_zero, GlobalTheory.SmGL.SphCompletion.ord_completion, neg_eq_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `show Valued.v ((a (ineIncl h σ) : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 1`. Rewrite using `[← WithZero.exp_log (by simp : Valued.v ((a (ineIncl h σ) : (w.adicCompletion E)ˣ) : w.adicCompletion E) ≠ 0), ho, WithZero.exp_zero]`. Set `g : Ine (F` to `E) A → K := fun σ => ⟨a (ineIncl h σ), hmem σ⟩`. Establish `hg : Continuous g`. Rewrite using `[hemb.isInducing.continuous_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `e : f ∘ g = fun σ : Ine (F` using `E) A => GlobalTheory.HeckeGal.toAb E Ω (σ : G E Ω) :=`. Use function extensionality and compare the values at `fun σ => hart (ineIncl h σ)`. Rewrite using `[e]`. Conclude with `continuous_quot_mk.comp continuous_subtype_val`. Conclude with `continuous_subtype_val.comp hg`.
+A detailed English derivation is pending.
 -/
 theorem continuous_inv_on_ine : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (art : Neutral.B1.Ideles E →* GlobalTheory.HeckeGal.Gab E Ω) (a : Weil h →* (w.adicCompletion E)ˣ), GlobalTheory.HeckeGal.IsGlobalArtin art → (∀ σ, ord (w.adicCompletion E) (a σ) = -deg σ) → (∀ σ : Weil h, art (Neutral.B1.localIdele E w (a σ)) = GlobalTheory.HeckeGal.toAb E Ω σ) → Continuous fun σ : Ine (F := E) A => a (ineIncl h σ) := by
   intro E Ω _ _ _ _ _ A w h art a ha hord hart

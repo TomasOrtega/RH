@@ -30,9 +30,9 @@ private noncomputable def cmp (P : C ⥤ Type) (F : C ⥤ ModuleCat.{0} R) :
   nat _ _ := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Use function extensionality and compare the values at `s`. Conclude with `ULift.down_injective (congrFun hab s)`. Introduce `b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨fun s => ULift.up (b s), rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem cmp_bij (P : C ⥤ Type) (F : C ⥤ ModuleCat.{0} R) (n : ℕ) :
     Function.Bijective ((cmp P F).hom.f n) := by
@@ -44,7 +44,7 @@ private theorem cmp_bij (P : C ⥤ Type) (F : C ⥤ ModuleCat.{0} R) (n : ℕ) :
     exact ⟨fun s => ULift.up (b s), rfl⟩
 
 /- English proof (translation)
-The claim follows from `CrystallineSemistableComparison.P.mapH_bij _ (cmp_bij P F) j`.
+A detailed English derivation is pending.
 -/
 private theorem cmpH_bij (P : C ⥤ Type) (F : C ⥤ ModuleCat.{0} R) (j : ℕ) :
     Function.Bijective ((cmp P F).hom.mapH j) :=
@@ -55,7 +55,7 @@ private noncomputable def cmpE (P : C ⥤ Type) (F : C ⥤ ModuleCat.{0} R) (j :
   AddEquiv.ofBijective ((cmp P F).hom.mapH j).toAddMonoidHom (cmpH_bij P F j)
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx (elF P (zm (ulF F)))) j).1 y`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private theorem cmp_pull {Q P : C ⥤ Type} (u : Q ⟶ P) (F : C ⥤ ModuleCat.{0} R) (j : ℕ)
     (y : TH P (ulF F) j) :
@@ -67,11 +67,11 @@ end UpperTheory.CmpR
 
 open UpperTheory.CmpR in
 /- English proof (translation)
-Introduce `C _ R _ F`. Use `⟨ulF F, fun A => AddEquiv.ulift.symm, fun P j => (cmpE P F j).symm, fun φ x => rfl, ?_⟩` and prove the remaining obligations. Introduce `Q P u m h hτ j x`. Take `⟨G, τ, nat⟩` from `m`. Simplify using `only at h hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Substitute `h` using the available equality. Establish `hτ' : τ = (elMor u F).τ`. Use function extensionality and compare the values at `T`. Use extensionality with `x`. Conclude with `eq_of_heq (hτ T x)`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Substitute using the available equality.
 
-Substitute `hτ'` using the available equality. Apply `(cmpE Q F j).symm.symm.injective` to reduce the goal to its premises. Take `⟨y, rfl⟩` from `(cmpE P F j).surjective x`. Simplify using `only [AddEquiv.symm_symm, AddEquiv.apply_symm_apply, AddEquiv.symm_apply_apply]`. Conclude with `cmp_pull u F j y`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_coefficient_equiv_cohomology_of_elements :
     ∀ (C : Type 1) [Category.{0} C] (R : Type) [CommRing R] (F : C ⥤ ModuleCat.{0} R),

@@ -12,7 +12,7 @@ namespace GlobalTheory.EtC.PsiModel
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Unfold `Sx.map Sx.res`. Conclude with `NatTrans.naturality_apply (f.app (op (SimplexCategory.mk p))) g.op x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem map_sres {E E' : Spc} (f : E ⟶ E') {p : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E p U) :
     Sx.map f (Sx.res g x) = Sx.res g (Sx.map f x) := by
@@ -20,9 +20,9 @@ theorem map_sres {E E' : Spc} (f : E ⟶ E') {p : ℕ} {V U : Scheme.{0}} (g : V
   exact NatTrans.naturality_apply (f.app (op (SimplexCategory.mk p))) g.op x
 
 /- English proof (translation)
-Unfold `Sx.map Sx.face`. Establish `h1` using `NatTrans.congr_app (f.naturality (SimplexCategory.δ i).op) (op U)`. Simplify using `only [NatTrans.comp_app] at h1`. Establish `h2` using `ConcreteCategory.congr_hom h1 x`. Simplify using `only [ConcreteCategory.comp_apply] at h2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem map_face {E E' : Spc} (f : E ⟶ E') {p : ℕ} {U : Scheme.{0}} (x : Sx E (p + 1) U) (i : Fin (p + 2)) :
     Sx.map f (Sx.face x i) = Sx.face (Sx.map f x) i := by
@@ -40,14 +40,14 @@ theorem map_map {E E' E'' : Spc} (f : E ⟶ E') (f' : E' ⟶ E'') {p : ℕ} {U :
     Sx.map f' (Sx.map f x) = Sx.map (f ≫ f') x := rfl
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_res {F : Shv R} {W V U : Scheme.{0}} (g : W ⟶ V) (f : V ⟶ U) (a : Sec F U) :
     Sec.res g (Sec.res f a) = Sec.res (g ≫ f) a := by
   simp [Sec.res]
 
 /- English proof (translation)
-Rewrite using `[ev_def, ev_def, Cochain.smul_v, Linear.comp_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_smul {E : Spc} {I : Cx R} {n : ℤ} (r : ULift.{1} R) (α : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ)
     (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) : ev (r • α) p s h U x = r • ev α p s h U x := by
@@ -60,7 +60,7 @@ def fstH {U V : Scheme.{0}} {p : ℕ} (y : Sx (sch.obj U ⨯ fibQ q N) p V) : V 
   Sx.map (prod.fst : sch.obj U ⨯ fibQ q N ⟶ _) y
 
 /- English proof (translation)
-Unfold `fstH`. Rewrite using `[map_sres]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fstH_res {U V' V : Scheme.{0}} {p : ℕ} (g : V' ⟶ V) (y : Sx (sch.obj U ⨯ fibQ q N) p V) :
     fstH (Sx.res g y) = g ≫ fstH y := by
@@ -69,7 +69,7 @@ theorem fstH_res {U V' V : Scheme.{0}} {p : ℕ} (g : V' ⟶ V) (y : Sx (sch.obj
   rfl
 
 /- English proof (translation)
-Unfold `fstH`. Rewrite using `[map_face]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fstH_face {U V : Scheme.{0}} {p : ℕ} (y : Sx (sch.obj U ⨯ fibQ q N) (p + 1) V) (i : Fin (p + 2)) :
     fstH (Sx.face y i) = fstH y := by
@@ -78,7 +78,7 @@ theorem fstH_face {U V : Scheme.{0}} {p : ℕ} (y : Sx (sch.obj U ⨯ fibQ q N) 
   rfl
 
 /- English proof (translation)
-Unfold `fstH`. Rewrite using `[map_map, prod.map_fst]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fstH_map {U U' V : Scheme.{0}} {p : ℕ} (g : U' ⟶ U) (y : Sx (sch.obj U' ⨯ fibQ q N) p V) :
     fstH (Sx.map (prod.map (sch.map g) (𝟙 (fibQ q N))) y) = fstH y ≫ g := by
@@ -87,7 +87,7 @@ theorem fstH_map {U U' V : Scheme.{0}} {p : ℕ} (g : U' ⟶ U) (y : Sx (sch.obj
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_map, prod.map_snd, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem snd_map {U U' V : Scheme.{0}} {p : ℕ} (g : U' ⟶ U) (y : Sx (sch.obj U' ⨯ fibQ q N) p V) :
     Sx.map (prod.snd : sch.obj U ⨯ fibQ q N ⟶ _) (Sx.map (prod.map (sch.map g) (𝟙 (fibQ q N))) y) = Sx.map prod.snd y := by
@@ -100,7 +100,7 @@ def pval {U : Scheme.{0}} {m w : ℤ} (hw : m + n = w) (a : Sec (I₁.X m) U) (p
   μ.mul V m (-(p : ℤ) + n) s (by omega) (Sec.res (fstH y) a) (ev z p (-(p : ℤ) + n) rfl V (Sx.map prod.snd y))
 
 /- English proof (translation)
-Unfold `pval`. Rewrite using `[μ.nat, res_res, ev_res, map_sres, fstH_res]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pval_res {U : Scheme.{0}} {m w : ℤ} (hw : m + n = w) (a : Sec (I₁.X m) U) (p : ℕ) (s : ℤ) (hs : -(p : ℤ) + w = s)
     {V' V : Scheme.{0}} (g : V' ⟶ V) (y : Sx (sch.obj U ⨯ fibQ q N) p V) :
@@ -113,14 +113,14 @@ def cval {U : Scheme.{0}} {m w : ℤ} (hw : m + n = w) (a : Sec (I₁.X m) U) :
   (ev_exists (pval μ z hw a) (fun p s hs V' V g y => pval_res μ z hw a p s hs g y)).choose
 
 /- English proof (translation)
-The claim follows from `(ev_exists (pval μ z hw a) (fun p s hs V' V g y => pval_res μ z hw a p s hs g y)).choose_spec p s hs V y`.
+A detailed English derivation is pending.
 -/
 theorem cval_ev {U : Scheme.{0}} {m w : ℤ} (hw : m + n = w) (a : Sec (I₁.X m) U) (p : ℕ) (s : ℤ) (hs : -(p : ℤ) + w = s)
     (V : Scheme.{0}) (y : Sx (sch.obj U ⨯ fibQ q N) p V) : ev (cval μ z hw a) p s hs V y = pval μ z hw a p s hs V y :=
   (ev_exists (pval μ z hw a) (fun p s hs V' V g y => pval_res μ z hw a p s hs g y)).choose_spec p s hs V y
 
 /- English proof (translation)
-Use `ev_ext _ _ fun p s hs V y => ?_` and prove the remaining obligations. Rewrite using `[ev_add, cval_ev, cval_ev, cval_ev]`. Unfold `pval`. Rewrite using `[show Sec.res (fstH y) (a + b) = Sec.res (fstH y) a + Sec.res (fstH y) b from map_add _ _ _, LinearMap.map_add₂]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cval_add {U : Scheme.{0}} {m w : ℤ} (hw : m + n = w) (a b : Sec (I₁.X m) U) :
     cval μ z hw (a + b) = cval μ z hw a + cval μ z hw b := by
@@ -130,7 +130,7 @@ theorem cval_add {U : Scheme.{0}} {m w : ℤ} (hw : m + n = w) (a b : Sec (I₁.
   rw [show Sec.res (fstH y) (a + b) = Sec.res (fstH y) a + Sec.res (fstH y) b from map_add _ _ _, LinearMap.map_add₂]
 
 /- English proof (translation)
-Use `ev_ext _ _ fun p s hs V y => ?_` and prove the remaining obligations. Rewrite using `[ev_smul, cval_ev, cval_ev]`. Unfold `pval`. Rewrite using `[show Sec.res (fstH y) (r • a) = r • Sec.res (fstH y) a from map_smul _ _ _, LinearMap.map_smul₂]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cval_smul {U : Scheme.{0}} {m w : ℤ} (hw : m + n = w) (r : ULift.{1} R) (a : Sec (I₁.X m) U) :
     cval μ z hw (r • a) = r • cval μ z hw a := by
@@ -140,7 +140,7 @@ theorem cval_smul {U : Scheme.{0}} {m w : ℤ} (hw : m + n = w) (r : ULift.{1} R
   rw [show Sec.res (fstH y) (r • a) = r • Sec.res (fstH y) a from map_smul _ _ _, LinearMap.map_smul₂]
 
 /- English proof (translation)
-Use `ev_ext _ _ fun p s hs V y => ?_` and prove the remaining obligations. Rewrite using `[ev_pull, cval_ev, cval_ev]`. Unfold `pval`. Rewrite using `[fstH_map, snd_map, res_res]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cval_nat {U U' : Scheme.{0}} {m w : ℤ} (hw : m + n = w) (g : U' ⟶ U) (a : Sec (I₁.X m) U) :
     cval μ z hw (Sec.res g a) =
@@ -165,18 +165,18 @@ def smor {m w : ℤ} (hw : m + n = w) : I₁.X m ⟶ (Jcx R q N K).X w :=
 def psiC : Cochain I₁ (Jcx R q N K) n := Cochain.mk fun m w hw => smor μ z hw
 
 /- English proof (translation)
-The claim follows from `Cochain.mk_v _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem psiC_v {m w : ℤ} (hw : m + n = w) : (psiC μ z).v m w hw = smor μ z hw := Cochain.mk_v _ _ _ _
 
 /- English proof (translation)
-Simplify using `[Jcx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Jcx_d (w : ℤ) : (Jcx R q N K).d w (w + 1) = (presheafToSheaf Scheme.etaleTopology.{0} _).map (cotD R q N K w) := by
   simp [Jcx]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem mul_d_congr {V : Scheme.{0}} {m T t1 t2 w : ℤ} (e : t1 = t2) (h1 : m + t1 = w) (h2 : m + t2 = w)
     (A : Sec (I₁.X m) V) (B : Sec (I₂.X T) V) :
@@ -185,17 +185,17 @@ theorem mul_d_congr {V : Scheme.{0}} {m T t1 t2 w : ℤ} (e : t1 = t2) (h1 : m +
   rfl
 
 /- English proof (translation)
-Establish `hww : w + 1 = w'` using `by omega`. Use `ev_ext _ _ fun k t ht V y => ?_` and prove the remaining obligations. Break down `k with _ | k` into its components or cases. Rewrite using `[ev_δ_zero hww _ V w t (by simp) ht y, cval_ev, cval_ev]`. Unfold `pval`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Take `rfl : t = w + 1` from `by simp at ht; omega`. Rewrite using `[μ.leibniz]`. Establish `hz0 : Sec.map (I₂.d (-((0 : ℕ) : ℤ) + n) (-((0 : ℕ) : ℤ) + n + 1)) (ev z 0 (-((0 : ℕ) : ℤ) + n) rfl V (Sx.map prod.snd y)) = 0`. Rewrite using `[← ev_δ_zero (n := n) (m := n + 1) rfl z V _ _ rfl (by omega), hz, ev_zero]`. Rewrite using `[hz0, map_zero, smul_zero, add_zero, map_res]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ev_δ_succ hww _ V k (-((k + 1 : ℕ) : ℤ) + w) t rfl ht y, cval_ev]`. Take `rfl : t = -((k + 1 : ℕ) : ℤ) + w + 1` from `by omega`. Establish `e2 : ∑ i : Fin (k + 2), (-1 : ℤ) ^ (i : ℕ) • ev (cval μ z hw a) k (-((k + 1 : ℕ) : ℤ) + w + 1) (by omega) V (y.face i) = ∑ i : Fin (k + 2), (-1 : ℤ) ^ (i : ℕ) • μ.mul V m (-(k : ℤ) + n) (-((k + 1 : ℕ) : ℤ) + w + 1) (by omega) (Sec.res (fstH y) a) (ev z k (-(k : ℤ) + n) rfl V ((Sx …`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[cval_ev]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `pval`. Rewrite using `[fstH_face, map_face]`. Rewrite using `[e2, cval_ev]`. Unfold `pval`. Rewrite using `[μ.leibniz, mul_d_congr μ (t2 := -(k : ℤ) + n) (by push_cast; omega) _ (by push_cast; omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hzS` using `ev_δ_succ (n := n) (m := n + 1) rfl z V k (-((k + 1 : ℕ) : ℤ) + n) (-(k : ℤ) + n) rfl (by push_cast; omega) (Sx.map prod.snd y)`. Rewrite `hzS` using `[hz, ev_zero, Int.negOnePow_succ, Int.negOnePow_even n hn, Units.neg_smul, one_smul, eq_comm, add_neg_eq_zero]`. Rewrite using `[hzS, map_sum, ← map_res]`. Establish `hs : w'.negOnePow = -m.negOnePow`. Rewrite using `[← hw', Int.negOnePow_add, Int.negOnePow_succ, Int.negOnePow_even n hn, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_zsmul]`. Rewrite using `[hs, Units.neg_smul]`. Conclude with `add_neg_cancel_right _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cval_δ (hn : Even n) (hz : δ n (n + 1) z = 0) {U : Scheme.{0}} {m w w' : ℤ} (hw : m + n = w)
     (hw' : m + 1 + n = w') (a : Sec (I₁.X m) U) :
@@ -235,11 +235,11 @@ theorem cval_δ (hn : Even n) (hz : δ n (n + 1) z = 0) {U : Scheme.{0}} {m w w'
     exact add_neg_cancel_right _ _
 
 /- English proof (translation)
-Use `Cochain.ext _ _ fun p q' hpq => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩ : ∃ w, q' = w + 1` from `⟨q' - 1, by omega⟩`. Rewrite using `[δ_v n (n + 1) rfl _ p (w + 1) hpq w (p + 1) (by omega) rfl, psiC_v, psiC_v, Jcx_d, Int.negOnePow_succ, Int.negOnePow_even n hn, Cochain.zero_v, Units.neg_smul, one_smul, add_neg_eq_zero]`. Apply `Sheaf.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `pmor μ z _ ≫ toSheafify _ _ ≫ sheafifyMap _ (cotD R q N K w) = (I₁.d p (p + 1)).hom ≫ pmor μ z _ ≫ toSheafify _ _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← toSheafify_naturality, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Use extensionality with `U : 2`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a`. Conclude with `cval_δ μ z hn hz _ _ a`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem psiC_δ (hn : Even n) (hz : δ n (n + 1) z = 0) : δ n (n + 1) (psiC μ z) = 0 := by
   refine Cochain.ext _ _ fun p q' hpq => ?_
@@ -262,9 +262,9 @@ end GlobalTheory.EtC.PsiModel
 namespace GlobalTheory.EtC.PsiModel
 
 /- English proof (translation)
-Introduce `q N i₁ i₂ i h d z`. Substitute `h` using the available equality. Use `⟨Cocycle.mk (psiC (twPair q i₁ i₂) z.1) (2 * (d : ℤ) + 1) rfl (psiC_δ _ _ (even_two_mul _) (z.δ_eq_zero _)), fun m w hw U a => ⟨cval (twPair q i₁ i₂) z.1 hw a, ?_, fun k s hs V y => ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sec.map ((psiC (twPair q i₁ i₂) z.1).v m w hw) a = _`. Rewrite using `[psiC_v]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[cval_ev]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem psi_exists : ∀ (q N : ℕ) (i₁ i₂ i : ℤ) (h : i₁ + i₂ = i) (d : ℕ) (z : Cocycle ((chains (ZMod q)).obj (fibQ q N)) (res (ZMod q) (tw q i₂)) (2 * (d : ℤ))), ∃ ψ : Cocycle (res (ZMod q) (tw q i₁)) (Jcx (ZMod q) q N (res (ZMod q) (tw q i))) (2 * (d : ℤ)), ∀ (m w : ℤ) (hw : m + 2 * (d : ℤ) = w) (U : Scheme.{0}) (a : Sec ((res (ZMod q) (tw q i₁)).X m) U), ∃ c : Cochain ((chains (ZMod q)).obj (sch.obj U ⨯ fibQ q N)) (res (ZMod q) (tw q i)) w, Sec.map (ψ.1.v m w hw) a = Jsec c ∧ ∀ (k : ℕ) (s : ℤ) (hs : -(k : ℤ) + w = s) (V : Scheme.{0}) (y : Sx (sch.obj U ⨯ fibQ q N) k V), ev c k s hs V y = twCast h ((twPair q i₁ i₂).mul V m (-(k : ℤ) + 2 * (d : ℤ)) s (by omega) (Sec.res (Sx.map (prod.fst : sch.obj U ⨯ fibQ q N ⟶ _) y : V ⟶ U) a) (ev z.1 k (-(k : ℤ) + 2 * (d : ℤ)) rfl V (Sx.map prod.snd y))) := by
   intro q N i₁ i₂ i h d z

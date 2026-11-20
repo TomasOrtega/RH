@@ -27,17 +27,17 @@ def iota : TrivSqZeroExt R V →+* DualNumber (TrivSqZeroExt R V) where
     · refine TrivSqZeroExt.ext ?_ ?_ <;> simp [add_comm, mul_comm]
 
 /- English proof (translation)
-Simplify using `[iota]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iota_fst (a : TrivSqZeroExt R V) : (iota a).fst = TrivSqZeroExt.inl a.fst := by simp [iota]
 
 /- English proof (translation)
-Simplify using `[iota]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iota_snd (a : TrivSqZeroExt R V) : (iota a).snd = TrivSqZeroExt.inr a.snd := by simp [iota]
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h₁` using `congrArg (fun c => (TrivSqZeroExt.fst c).fst) h`. Establish `h₂` using `congrArg (fun c => (TrivSqZeroExt.snd c).snd) h`. Simplify using `only [iota_fst, iota_snd, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inr] at h₁ h₂`. Conclude with `TrivSqZeroExt.ext h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iota_injective : Function.Injective (iota : TrivSqZeroExt R V →+* _) := by
   intro a b h
@@ -47,13 +47,13 @@ theorem iota_injective : Function.Injective (iota : TrivSqZeroExt R V →+* _) :
   exact TrivSqZeroExt.ext h₁ h₂
 
 /- English proof (translation)
-Introduce `p`. Set `q : PrimeSpectrum (DualNumber (TrivSqZeroExt R V))` to `PrimeSpectrum.comap (TrivSqZeroExt.fstHom (TrivSqZeroExt R V) (TrivSqZeroExt R V) (TrivSqZeroExt R V)).toRingHom p`. Use `⟨q, PrimeSpectrum.ext (Ideal.ext fun a => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(iota a).fst ∈ p.asIdeal ↔ a ∈ p.asIdeal`. Rewrite using `[iota_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `set b : TrivSqZeroExt R V := TrivSqZeroExt.inl a.fst with hb`. Establish `h0 : (b - a).fst = 0` using `by simp [hb]`. Establish `hm : b - a ∈ p.asIdeal`. Use `p.isPrime.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Establish `: (b - a) ^ 2 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_two]`. Apply the tactic sequence `ext1 <;> simp [h0]`. Rewrite using `[this]`. Conclude with `zero_mem _`. Prove the components needed by the constructor for the conclusion.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Simplify using `using p.asIdeal.sub_mem h hm`. Introduce `h`. Simplify using `using p.asIdeal.add_mem hm h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem iota_surjective_spec :
     Function.Surjective (Spec.map (CommRingCat.ofHom (iota : TrivSqZeroExt R V →+* _))) := by
@@ -76,35 +76,35 @@ theorem iota_surjective_spec :
   · intro h; simpa using p.asIdeal.add_mem hm h
 
 /- English proof (translation)
-Simplify using `[epsMul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem epsMul_fst {A : Type} [CommRing A] (c : A) (a : DualNumber A) : (epsMul c a).fst = a.fst := by
   simp [epsMul]
 
 /- English proof (translation)
-Simplify using `[epsMul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem epsMul_snd {A : Type} [CommRing A] (c : A) (a : DualNumber A) : (epsMul c a).snd = c * a.snd := by
   simp [epsMul]
 
 /- English proof (translation)
-Simplify using `[dualMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualMap_fst {A A' : Type} [CommRing A] [CommRing A'] (f : A →+* A') (a : DualNumber A) :
     (dualMap f a).fst = f a.fst := by
   simp [dualMap]
 
 /- English proof (translation)
-Simplify using `[dualMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualMap_snd {A A' : Type} [CommRing A] [CommRing A'] (f : A →+* A') (a : DualNumber A) :
     (dualMap f a).snd = f a.snd := by
   simp [dualMap]
 
 /- English proof (translation)
-Use `RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[iota_fst, epsMul_fst, dualMap_fst, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `only [RingHom.comp_apply, iota_snd, epsMul_snd, dualMap_snd]`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iota_comp_map (q : V) :
     iota.comp (TrivSqZeroExt.map (LinearMap.toSpanSingleton R V q)).toRingHom =
@@ -117,7 +117,7 @@ theorem iota_comp_map (q : V) :
     · simp [TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => by simp [iota_fst, TrivSqZeroExt.algebraMap_eq_inl]`.
+A detailed English derivation is pending.
 -/
 theorem fst_comp_iota :
     (TrivSqZeroExt.fstHom (TrivSqZeroExt R V) (TrivSqZeroExt R V) (TrivSqZeroExt R V)).toRingHom.comp iota =
@@ -125,7 +125,7 @@ theorem fst_comp_iota :
   RingHom.ext fun a => by simp [iota_fst, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Use `RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[iota_fst, dualMap_fst]`. Simplify using `[iota_snd, dualMap_snd]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dualMap_fst_comp_iota :
     (dualMap (TrivSqZeroExt.fstHom R R V).toRingHom).comp iota =
@@ -135,7 +135,7 @@ theorem dualMap_fst_comp_iota :
   · simp [iota_snd, dualMap_snd]
 
 /- English proof (translation)
-Use `RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[epsMul_fst, dualMap_fst, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[epsMul_snd, dualMap_snd, TrivSqZeroExt.algebraMap_eq_inl]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem reduce_epsMul (b : TrivSqZeroExt R V) :
     ((dualMap (TrivSqZeroExt.fstHom R R V).toRingHom).comp (epsMul b)).comp (dualMap (algebraMap R (TrivSqZeroExt R V))) =
@@ -175,9 +175,7 @@ def dMor : epsAt x ⟶ epsAt (xB x V) :=
     · simp [dualMap_snd, TrivSqZeroExt.algebraMap_eq_inl])
 
 /- English proof (translation)
-Use `ext1`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use `ext1`.
-
-Conclude with `dualMap_fst_comp_iota`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem dMor_cMor : dMor x V ≫ cMor x V = hom x (0 : V →ₗ[R] R) := by
   ext1
@@ -188,7 +186,7 @@ theorem dMor_cMor : dMor x V ≫ cMor x V = hom x (0 : V →ₗ[R] R) := by
   exact dualMap_fst_comp_iota
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use `ext1`. Conclude with `iota_comp_map q`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem cMor_hom (q : V) : (cMor x V ≫ hom x (LinearMap.toSpanSingleton R V q)).left =
     Spec.map (CommRingCat.ofHom (epsMul (TrivSqZeroExt.inr q : TrivSqZeroExt R V))) ≫
@@ -200,9 +198,7 @@ theorem cMor_hom (q : V) : (cMor x V ≫ hom x (LinearMap.toSpanSingleton R V q)
   exact iota_comp_map q
 
 /- English proof (translation)
-Use `ext1`. Establish `h₀ : (cMor x V).left ≫ f.left = (cMor x V).left ≫ g.left` using `congrArg CommaMorphism.left h`. Establish `h₁ : Function.Surjective (cMor x V).left` using `iota_surjective_spec`. Establish `h₂ : IsSchemeTheoreticallyDominant (cMor x V).left` using `std_of_inj (CommRingCat.ofHom (iota : TrivSqZeroExt R V →+* _)) iota_injective`. Establish `h₃ : QuasiCompact (cMor x V).left` using `inferInstanceAs (QuasiCompact (Spec.map (CommRingCat.ofHom (iota : TrivSqZeroExt R V →+* _))))`.
-
-Conclude with `epi_of_surj (cMor x V).left h₁ f.left g.left h₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cMor_cancel {Z : Over S} (f g : ob x V ⟶ Z) (h : cMor x V ≫ f = cMor x V ≫ g) : f = g := by
   ext1
@@ -226,18 +222,18 @@ def extForm (hβ : IsBaseChange B β) (f : Module.Dual R L) : L' →ₗ[B] B :=
   hβ.lift (Algebra.linearMap R B ∘ₗ f)
 
 /- English proof (translation)
-The claim follows from `hβ.lift_eq _ y`.
+A detailed English derivation is pending.
 -/
 theorem extForm_apply (hβ : IsBaseChange B β) (f : Module.Dual R L) (y : L) :
     extForm hβ f (β y) = algebraMap R B (f y) :=
   hβ.lift_eq _ y
 
 /- English proof (translation)
-Use `hβ.inductionOn l (fun l => l = ∑ k, extForm hβ (w k) l • β (e k)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `y`. Simplify using `only [extForm_apply, algebraMap_smul]`. Use `conv_lhs => rw [← he y]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_smul]`. Introduce `s n h`. Simplify using `only [map_smul, smul_eq_mul, mul_smul, ← Finset.smul_sum]`. Rewrite using `[← h]`. Introduce `a b ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, add_smul, Finset.sum_add_distrib]`. Rewrite using `[← ha, ← hb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expand (hβ : IsBaseChange B β) (he : ∀ y, ∑ k, w k y • e k = y) (l : L') :
     l = ∑ k, extForm hβ (w k) l • β (e k) := by
@@ -255,7 +251,7 @@ theorem expand (hβ : IsBaseChange B β) (he : ∀ y, ∑ k, w k y • e k = y) 
     rw [← ha, ← hb]
 
 /- English proof (translation)
-Use extensionality with `y`. Use `conv_rhs => rw [← he y]`. Simplify using `[mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dual_expand (he : ∀ y, ∑ k, w k y • e k = y) (f : Module.Dual R L) : ∑ k, f (e k) • w k = f := by
   ext y
@@ -263,7 +259,7 @@ theorem dual_expand (he : ∀ y, ∑ k, w k y • e k = y) (f : Module.Dual R L)
   simp [mul_comm]
 
 /- English proof (translation)
-Simplify using `[extForm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extForm_sum (hβ : IsBaseChange B β) (f : Module.Dual R L) (b : J → B) :
     extForm hβ f (∑ k, b k • β (e k)) = ∑ k, b k * algebraMap R B (f (e k)) := by
@@ -279,16 +275,16 @@ variable {R : Type} [CommRing R] {V : Type} [AddCommGroup V] [Module R V] [Modul
   {β : L →ₗ[R] L'} {J : Type} [Fintype J] {e : J → L} {w : J → Module.Dual R L}
 
 /- English proof (translation)
-The claim follows from `map_sum (TrivSqZeroExt.inrHom R V) s _`.
+A detailed English derivation is pending.
 -/
 theorem inr_sum (s : J → V) :
     (TrivSqZeroExt.inr (∑ j, s j) : TrivSqZeroExt R V) = ∑ j, TrivSqZeroExt.inr (s j) :=
   map_sum (TrivSqZeroExt.inrHom R V) s _
 
 /- English proof (translation)
-Establish `h1 : ∀ j, ∑ k, (TrivSqZeroExt.inr (w k (e j) • q j) : TrivSqZeroExt R V) • β (e k) = (TrivSqZeroExt.inr (q j) : TrivSqZeroExt R V) • β (e j)`. Introduce `j`. Use `conv_rhs => rw [← he (e j)]`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, TrivSqZeroExt.inr_smul, smul_assoc, smul_comm]`. Simplify using `only [inr_sum, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => h1 j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resum (he : ∀ y, ∑ k, w k y • e k = y) (q : J → V) :
     ∑ k, (TrivSqZeroExt.inr (∑ j, w k (e j) • q j) : TrivSqZeroExt R V) • β (e k) =
@@ -305,7 +301,7 @@ theorem resum (he : ∀ y, ∑ k, w k y • e k = y) (q : J → V) :
   exact Finset.sum_congr rfl fun j _ => h1 j
 
 /- English proof (translation)
-Rewrite using `[extForm_sum]`. Use `conv_rhs => rw [← dual_expand he f]`. Rewrite using `[map_sum, inr_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, TrivSqZeroExt.inr_smul, Algebra.smul_def, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extForm_inr (hβ : IsBaseChange (TrivSqZeroExt R V) β) (he : ∀ y, ∑ k, w k y • e k = y)
     (φ : Module.Dual R L →ₗ[R] V) (f : Module.Dual R L) :
@@ -318,9 +314,9 @@ theorem extForm_inr (hβ : IsBaseChange (TrivSqZeroExt R V) β) (he : ∀ y, ∑
   rw [map_smul, TrivSqZeroExt.inr_smul, Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Establish `h₁` using `congrArg (extForm hβ (w k)) (expand hβ he l)`. Rewrite `h₁` using `[extForm_sum]`. Establish `h₂` using `congrArg TrivSqZeroExt.fst h₁`. Establish `h₃` using `congrArg (w k) h`. Simplify using `only [map_sum, map_smul, map_zero, smul_eq_mul] at h₃`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h₂, ← h₃]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fst_extForm (hβ : IsBaseChange (TrivSqZeroExt R V) β) (he : ∀ y, ∑ k, w k y • e k = y) (l : L')
     (h : ∑ k, (extForm hβ (w k) l).fst • e k = 0) (k : J) : (extForm hβ (w k) l).fst = 0 := by
@@ -340,7 +336,7 @@ variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {R : Type} [C
   {x : Spec (CommRingCat.of R) ⟶ S} {L : Type} [AddCommGroup L] [Module R L]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, MonObj.comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_prod {T T' : Over S} (f : T' ⟶ T) {I : Type} (s : Finset I) (g : I → (T ⟶ G)) :
     f ≫ ∏ l ∈ s, g l = ∏ l ∈ s, f ≫ g l := by
@@ -350,7 +346,7 @@ theorem comp_prod {T T' : Over S} (f : T' ⟶ T) {I : Type} (s : Finset I) (g : 
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, MonObj.comp_mul, ih]
 
 /- English proof (translation)
-Establish `h` using `M.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.mp h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_zero (M : LieModel G x L) : M.pt 0 = 1 := by
   have h := M.add 0 0
@@ -358,7 +354,7 @@ theorem pt_zero (M : LieModel G x L) : M.pt 0 = 1 := by
   exact left_eq_mul.mp h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using pt_zero M`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, M.add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pt_sum (M : LieModel G x L) {I : Type} (s : Finset I) (f : I → L) :
     M.pt (∑ l ∈ s, f l) = ∏ l ∈ s, M.pt (f l) := by
@@ -368,9 +364,9 @@ theorem pt_sum (M : LieModel G x L) {I : Type} (s : Finset I) (f : I → L) :
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, M.add, ih]
 
 /- English proof (translation)
-Establish `h : LinearMap.toSpanSingleton R R c = c • LinearMap.id`. Use `ext`. Simplify using the standard rewrite rules. Use `ext1`. Rewrite using `[M.smul, h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem hom_scalar_pt (M : LieModel G x L) (c : R) (y : L) :
     hom x (LinearMap.toSpanSingleton R R c) ≫ M.pt y = M.pt (c • y) := by
@@ -387,7 +383,7 @@ def univ (M : LieModel G x L) (e : J → L) (w : J → Module.Dual R L) : ob x (
   ∏ k, hom x (LinearMap.toSpanSingleton R (Module.Dual R L) (w k)) ≫ M.pt (e k)
 
 /- English proof (translation)
-Rewrite using `[univ, comp_prod]`. Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, zsec_hom]`. Conclude with `(isTanAt_iff x G _).1 (M.tan (e k))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zsec_univ (M : LieModel G x L) (e : J → L) (w : J → Module.Dual R L) : zsec x ≫ univ M e w = 1 := by
   rw [univ, comp_prod]
@@ -398,7 +394,7 @@ theorem zsec_univ (M : LieModel G x L) (e : J → L) (w : J → Module.Dual R L)
 variable {V : Type} [AddCommGroup V] [Module R V] [Module Rᵐᵒᵖ V] [IsCentralScalar R V]
 
 /- English proof (translation)
-Rewrite using `[univ, comp_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, LieEx.hom_comp]`. Use `congr 2`. Use `ext`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -412,7 +408,7 @@ theorem hom_univ (M : LieModel G x L) (e : J → L) (w : J → Module.Dual R L) 
   simp
 
 /- English proof (translation)
-Rewrite using `[hom_univ]`. Use `conv_rhs => rw [← he y, pt_sum]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `hom_scalar_pt M _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eval_univ (M : LieModel G x L) {e : J → L} {w : J → Module.Dual R L}
     (he : ∀ y, ∑ k, w k y • e k = y) (y : L) :
@@ -426,7 +422,7 @@ variable {L' : Type} [AddCommGroup L'] [Module (TrivSqZeroExt R V) L'] [Module R
   [IsScalarTower R (TrivSqZeroExt R V) L'] {β : L →ₗ[R] L'}
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[M'.smul, hj, ← Category.assoc (cMor x V), Over.comp_left, cMor_hom, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cMor_pt (M : LieModel G x L) (M' : LieModel G (xB x V) L')
     (hj : ∀ y, (M'.pt (β y)).left =
@@ -438,7 +434,7 @@ theorem cMor_pt (M : LieModel G x L) (M' : LieModel G (xB x V) L')
   rw [M'.smul, hj, ← Category.assoc (cMor x V), Over.comp_left, cMor_hom, Category.assoc]
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[M.smul, Over.comp_left, M'.smul, hj, ← reduce_epsMul b]`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ _ ≫ _ ≫ _ = _`. Simplify using `only [CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dMor_pt (M : LieModel G x L) (M' : LieModel G (xB x V) L')
     (hj : ∀ y, (M'.pt (β y)).left =
@@ -451,7 +447,7 @@ theorem dMor_pt (M : LieModel G x L) (M' : LieModel G (xB x V) L')
   simp only [CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]
 
 /- English proof (translation)
-Rewrite using `[hom_univ, comp_prod, pt_sum]`. Conclude with `Finset.prod_congr rfl fun k _ => cMor_pt M M' hj _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cMor_hom_univ (M : LieModel G x L) (M' : LieModel G (xB x V) L')
     (hj : ∀ y, (M'.pt (β y)).left =
@@ -463,9 +459,9 @@ theorem cMor_hom_univ (M : LieModel G x L) (M' : LieModel G (xB x V) L')
   exact Finset.prod_congr rfl fun k _ => cMor_pt M M' hj _ _
 
 /- English proof (translation)
-Rewrite using `[isTanAt_iff]`. Establish `h : zsec (xB x V) ≫ cMor x V = (Over.homMk (Spec.map (CommRingCat.ofHom (algebraMap R (TrivSqZeroExt R V)))) rfl : Over.mk (xB x V) ⟶ Over.mk x) ≫ zsec x` using `by ext1`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext1`. Conclude with `fst_comp_iota`. Rewrite using `[← Category.assoc, h, Category.assoc, hv, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cMor_tan {v : ob x V ⟶ G} (hv : zsec x ≫ v = 1) : IsTanAt G (xB x V) (cMor x V ≫ v) := by
   rw [isTanAt_iff]
@@ -479,19 +475,19 @@ theorem cMor_tan {v : ob x V ⟶ G} (hv : zsec x ≫ v = 1) : IsTanAt G (xB x V)
   rw [← Category.assoc, h, Category.assoc, hv, MonObj.comp_one]
 
 /- English proof (translation)
-Rewrite using `[hom_zero, Category.assoc, hv, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_zero_tan {v : ob x V ⟶ G} (hv : zsec x ≫ v = 1) : hom x (0 : V →ₗ[R] R) ≫ v = 1 := by
   rw [hom_zero, Category.assoc, hv, MonObj.comp_one]
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `M'.onto _ (cMor_tan hv)`. Establish `hexp` using `expand hβ he l`. Establish `h1 : M.pt (∑ k, (extForm hβ (w k) l).fst • e k) = 1`. Rewrite using `[pt_sum]`. Establish `h2 : dMor x V ≫ M'.pt l = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hl, ← Category.assoc, dMor_cMor]`. Conclude with `hom_zero_tan hv`. Rewrite `h2` using `[hexp, pt_sum, comp_prod]`. Rewrite using `[← h2]`. Conclude with `Finset.prod_congr rfl fun k _ => (dMor_pt M M' hj _ _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `fst_extForm hβ he l (M.inj (h1.trans (pt_zero M).symm))`. Establish `hb : ∀ k, extForm hβ (w k) l = TrivSqZeroExt.inr (extForm hβ (w k) l).snd` using `fun k => TrivSqZeroExt.ext (by simpa using h3 k) (by simp)`. Use `⟨∑ k, (Module.Dual.eval R L (e k)).smulRight (extForm hβ (w k) l).snd, ?_⟩` and prove the remaining obligations. Apply `cMor_cancel` to reduce the goal to its premises. Rewrite using `[cMor_hom_univ M M' hj, ← hl]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `conv_rhs => rw [hexp]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smulRight_apply, Module.Dual.eval_apply]`. Rewrite using `[resum he]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [← hb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form (M : LieModel G x L) (M' : LieModel G (xB x V) L')
     (hj : ∀ y, (M'.pt (β y)).left =
@@ -522,9 +518,9 @@ theorem exists_form (M : LieModel G x L) (M' : LieModel G (xB x V) L')
   exact Finset.sum_congr rfl fun k _ => by rw [← hb]
 
 /- English proof (translation)
-Establish `h1` using `congrArg (cMor x V ≫ ·) h`. Simplify using `only [cMor_hom_univ M M' hj] at h1`. Establish `h2` using `M'.inj h1`. Use extensionality with `f`. Establish `h3` using `congrArg (extForm hβ f) h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `h3` using `[extForm_inr hβ he, extForm_inr hβ he]`. Conclude with `TrivSqZeroExt.inr_injective h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_unique (M : LieModel G x L) (M' : LieModel G (xB x V) L')
     (hj : ∀ y, (M'.pt (β y)).left =
@@ -543,15 +539,15 @@ theorem form_unique (M : LieModel G x L) (M' : LieModel G (xB x V) L')
 end Grp
 
 /- English proof (translation)
-Take `⟨hfin, hproj, hbc⟩` from `GlobalTheory.T.lie_model_finite_base_change S G R x L M`. Take `⟨n, f, g, -, -, hfg⟩` from `Module.Finite.exists_comp_eq_id_of_projective R L`. Set `e : Fin n → L` to `fun k => f (Pi.single k 1)`. Set `w : Fin n → Module.Dual R L` to `fun k => LinearMap.proj k ∘ₗ g`. Establish `he : ∀ y, ∑ k, w k y • e k = y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y`. Establish `h` using `LinearMap.congr_fun hfg y`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h`. Use `conv_rhs => rw [← h, ← Finset.univ_sum_single (g y)]`. Rewrite using `[map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `: Pi.single k (g y k) = g y k • (Pi.single k 1 : Fin n → R)`. Rewrite using `[← Pi.single_smul, smul_eq_mul, _root_.mul_one]`. Rewrite using `[this, map_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨univ M e w, zsec_univ M e w, eval_univ M he, ?_⟩` and prove the remaining obligations. Introduce `V _ _ _ _ v hv`. Take `⟨L', _, _, ⟨M'⟩⟩` from `lieModel_exists S G (TrivSqZeroExt R V) (xB x V)`. Take `⟨j, hj1, hj2, -⟩` from `GlobalTheory.T.lie_model_base_change_map S G R (TrivSqZeroExt R V) x L L' M M'`. Use `letI : Module R L' := Module.compHom L' (algebraMap R (TrivSqZeroExt R V))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : IsScalarTower R (TrivSqZeroExt R V) L' := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Set `β : L →ₗ[R] L'` to `{ toFun := j, map_add' := j.map_add, map_smul' := hj2 }`. Establish `hB : IsBaseChange (TrivSqZeroExt R V) β` using `hbc (TrivSqZeroExt R V) L' M' β hj1`. Take `⟨φ, hφ⟩` from `exists_form M M' hj1 hB he hv`. Conclude with `⟨φ, hφ, fun φ' h => form_unique M M' hj1 hB he (h.trans hφ.symm)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tangent_universal (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (R : Type) [CommRing R]
     (x : Spec (CommRingCat.of R) ⟶ S) (L : Type) [AddCommGroup L] [Module R L] (M : LieModel G x L) :

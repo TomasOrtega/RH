@@ -23,15 +23,13 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hT` using `GlobalTheory.RationalFormsAction.isTranslate_act_V R hr hj i t g x`. Establish `hk : ∃ κ, IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) (R.eG g) κ`. Take `⟨κ, h1, -⟩` from `GlobalTheory.LiftEquivariance.exists_adelic_lift hT`. Conclude with `⟨κ, h1⟩`. Use function extensionality and compare the values at `h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(GlobalTheory.SecLift.actL_apply hk _ h).trans ?_` and prove the remaining obligations. Establish `hs` using `hk.choose_spec`. Establish `e1` using `finE_eq (Vc D i) hk.choose`. Establish `hq : (finHom (Vc D i)).rangeRestrict hk.choose ∈ (levEnv (Vc D i) (R.βV i) (R.datVt i t)).Q` using `by show Formalism.UG.bc (swapAE D) (finHom (Vc D i) hk.choose) ∈ lev _ _ _ _`. Rewrite using `[← e1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hs.2.1, Subgroup.mem_top _⟩`. Establish `hl : GlobalTheory.IndefiniteRowSideFullHecke.TranslateRepresentations.LiftsTo (Vc D i) (R.βV i) (R.datVt i t) ⟨(finHom (Vc D i)).rangeRestrict hk.choose, hq⟩ (R.eG g)` using `by show rTup (R.βV i) (R.datVt i t) (Formalism.UG.bc (swapAE D) (finHom (Vc D i) hk.choose)) = R.eG g`. Rewrite using `[← e1]`. Conclude with `hs.2.2`. Establish `hT2 : ∀ u, (R.HV i t).e ((R.jV i t) (((A.fam.L i t).r g) x)) u = ((((levEnv (Vc D i) (R.βV i) (R.datVt i t)).ch ⟨(finHom (Vc D i)).rangeRestrict hk.choose, hq⟩)⁻¹ : ℂˣ) : ℂ) • (R.HV i t).e ((R.jV i t) x) (u * (finHom (Vc D i)).rangeRestrict hk.choose)` using `hT.2 _ hl`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.SecLift.coord_translate (R.cV i) hc hs.1 _ hT2 ℓ h`. Establish `ec` using `GlobalTheory.LiftEquivariance.ch_eq (V := Vc D i) (β := R.βV i) (L := R.datVt i t) ⟨(finHom (Vc D i)).rangeRestrict hk.choose, hq⟩`. Establish `e2 : levFn (R.βV i) (flagL (R.datVt i t)) (Formalism.UG.bc (swapAE D) ((finHom (Vc D i)) hk.choose)) = levFn (R.βV i) (flagL (R.datVt i t)) (finE (Vc D i) hk.choose)` using `by rw [e1]`. Establish `hc' : ((((levEnv (Vc D i) (R.βV i) (R.datVt i t)).ch ⟨(finHom (Vc D i)).rangeRestrict hk.choose, hq⟩ : ℂˣ)) : ℂ) = levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) hk.choose` using `congrArg Units.val (ec.trans e2)`. Rewrite `h2` using `[Units.val_inv_eq_inv_val, hc']`.
-
-Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actL_coord (R : RealDat D A Ks) (hr : R.grp_red_L) (hj : R.models_jV) (i : Fin D.R.m) (hc : (R.cV i).Is) (t : T0)
     (g : G) (x : (A.fam.L i t).S.Forms) (ℓ : (R.cV i).W →ₗ[ℂ] ℂ) :
@@ -67,9 +65,9 @@ theorem actL_coord (R : RealDat D A Ks) (hr : R.grp_red_L) (hj : R.models_jV) (i
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `ℓ`. Set `Φ : (R.HV i A.μ0).H →ₗ[ℂ] (GA D (Vc D i) → ℂ)` to `ℓ.compLeft (GA D (Vc D i)) ∘ₗ R.extV i A.μ0`. Establish `hΦ : ∀ y, Φ y = fun h => ℓ (R.extV i A.μ0 y h)` using `fun _ => rfl`. Establish `key : ∀ g, Φ (R.jV i A.μ0 ((A.fam.L i A.μ0).r g x)) = actL (Vc D i) (R.βV i) (R.datVt i A.μ0) (R.eG g) (Φ (R.jV i A.μ0 x))` using `fun g => (actL_coord R hr hj i hc A.μ0 g x ℓ).symm`. Establish `hs : ∀ a, RealDat.eC (A` using `A) (sg0 D A) a = D.what₂.embLL ((idemOf A.X).coeff a) := fun a => by show sg0 D A _ = _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sg0, sgAt_mk D.what₂.embLL R.hv0]`. Establish `e1 : Φ (R.jV i A.μ0 (opF (A.fam.L i A.μ0).r (idemOf A.X) x)) = gaL (Vc D i) (R.βV i) (R.datVt i A.μ0) R.eG (RealDat.eC (A` using `A) (sg0 D A)) (Φ (R.jV i A.μ0 x)) := by`. Simplify using `only [opF, gaL, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, LinearMap.map_smulₛₗ, key, hs, RingHom.id_apply]`. Both sides reduce to the same expression. Rewrite using `[← hΦ, ← e1, hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem goodV_of_fix (R : RealDat D A Ks) (hr : R.grp_red_L) (hj : R.models_jV) (i : Fin D.R.m) (hc : (R.cV i).Is)
     (x : (A.fam.L i A.μ0).S.Forms) (hx : opF (A.fam.L i A.μ0).r (idemOf A.X) x = x) :
@@ -95,7 +93,7 @@ noncomputable def goodSub (R : RealDat D A Ks) (i : Fin D.R.m) : Submodule ℂ (
       ℓ.compLeft (GA D (Vc D i)) ∘ₗ R.extV i A.μ0)
 
 /- English proof (translation)
-Simplify using `only [goodSub, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_goodSub (R : RealDat D A Ks) (i : Fin D.R.m) (y : (R.HV i A.μ0).H) :
     y ∈ goodSub R i ↔ GlobalTheory.LiftRows.GoodV R i y := by
@@ -108,15 +106,13 @@ open GlobalTheory.GoodModelVec in
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hok hC _ _ _ j y hy`. Establish `hM` using `hC.base.models`. Establish `hr` using `hC.base.grp.red_L`. Establish `hfix : ∀ x ∈ BlockGood.goodR (A3.fam3.F.L j A3.A.fam.μ0) (A3.fam3.F.lvlA F.P0 F.ψ0), opF (A3.A.fam.L j A3.A.fam.μ0).r (idemOf A3.A.X) x = x`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[goodR_eq]`. Take `⟨z, rfl⟩` from `hx`. Establish `hid` using `opF_goodAt_idem (A3.A.fam.L j A3.A.fam.μ0).r A3.A.X hok.ok2.irr ⊥ 1`. Rewrite `hid` using `[goodAt_bot]`. Use `show opF _ (idemOf A3.A.X) (opF _ (idemOf A3.A.X * lvlIdem F.P0 F.ψ0⁻¹) z) = opF _ (idemOf A3.A.X * lvlIdem F.P0 F.ψ0⁻¹) z`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[opF_mul, LinearMap.comp_apply]`. Conclude with `LinearMap.congr_fun hid _`. Establish `hy' : y ∈ Submodule.span ℂ ((R.toCx3 F).jL j A3.A.fam.μ0 '' (BlockGood.goodR (A3.fam3.F.L j A3.A.fam.μ0) (A3.fam3.F.lvlA F.P0 F.ψ0) : Set _))` using `hy`. Rewrite using `[← mem_goodSub]`. Use `clear hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`. Conclude with `(mem_goodSub _ _ _).2 (goodV_of_fix R.toRealDat hr hM.jV j (hM.cV j) x (hfix x hx))`. Consider the case `zero => exact Submodule.zero_mem _`.
-
-Consider the case `add a b _ _ ha hb => exact Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => exact Submodule.smul_mem _ (Links.cj (twAt D.what₂.embLL A3.A.v0) c) ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.goodV_of_goodL : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → (∀ j t, (A3.A.fam.L j t).OkH ∧ (A3.liftI j t).InertRationalAdjoint) → R.PGEquiv F → ∀ (j : Fin D.R.m) (y : (R.toCx3 F).FLC j A3.A.fam.μ0), y ∈ U2.goodL A3 (R.toCx3 F) F.P0 F.ψ0 F.P1 F.ψ1 j → GoodV R.toRealDat j (Tw.out (s := twAt D.what₂.embLL A3.A.v0) y) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hok hC _ _ _ j y hy

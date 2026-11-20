@@ -13,7 +13,7 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [FD.gram, FD.hermC, FD.col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma gram_eq_lemma (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) :
     gram τ G x = xᵀ * G.map τ * x.map (starRingEnd ℂ) := by
@@ -23,7 +23,7 @@ private lemma gram_eq_lemma (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Rewrite using `[gram_eq_lemma, gram_eq_lemma, Matrix.transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma gram_mul_lemma_2 (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (P Q : Matrix (Fin r) (Fin r) ℂ) :
     gram τ G (P * Q) = Qᵀ * gram τ G P * Q.map (starRingEnd ℂ) := by
@@ -31,13 +31,13 @@ private lemma gram_mul_lemma_2 (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[X.mem_dom_iff]`. Introduce `τ`. Establish `hN` using `FrameDegreeData.upper_of_bor (X := X) hb τ`. Establish `hbd` using `(hb τ).1`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (mat x τ * mat b τ).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero (hx τ).1 hbd`. Establish `hd` using `(hx τ).2 i`. Establish `hdiag : ∀ j, mat b τ j j ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `j`. Rewrite `hbd` using `[Matrix.det_of_upperTriangular hN]`. Conclude with `Finset.prod_ne_zero_iff.1 hbd j (Finset.mem_univ j)`. Establish `hP0 : (∏ j : Fin i, mat b τ (Fin.castLE (Nat.le_of_lt_succ i.isLt) j) (Fin.castLE (Nat.le_of_lt_succ i.isLt) j)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => hdiag _`. Establish `heq : dmin X.Gm (rmul x b) τ i = dmin X.Gm x τ i * (Complex.normSq (∏ j : Fin i, mat b τ (Fin.castLE (Nat.le_of_lt_succ i.isLt) j) (Fin.castLE (Nat.le_of_lt_succ i.isLt) j)) : ℂ)` using `by show lminor (gram τ.1 X.Gm (mat x τ * mat b τ)) i = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gram_mul_lemma_2, FrameDegreeData.lminor_conj hN, show ∀ z w : ℂ, z * w * conj z = w * (z * conj z) from fun z w => by ring, Complex.mul_conj]`. Both sides reduce to the same expression. Rewrite using `[heq, Complex.re_mul_ofReal, ← mul_assoc]`. Conclude with `mul_pos hd (Complex.normSq_pos.2 hP0)`.
+A detailed English derivation is pending.
 -/
 theorem dom_rmul {x b : Frame X.Ψ r} (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ r) : rmul x b ∈ X.dom := by
   rw [X.mem_dom_iff] at hx ⊢
@@ -67,9 +67,9 @@ theorem dom_rmul {x b : Frame X.Ψ r} (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ r)
     exact mul_pos hd (Complex.normSq_pos.2 hP0)
 
 /- English proof (translation)
-Establish `hst` using `(X.Γ_stab γ hγ).1`. Use extensionality with `i j`. Establish `h` using `hst (Pi.single i 1) (Pi.single j 1)`. Establish `hR : herm X.Gm (Pi.single i (1 : E)) (Pi.single j 1) = X.Gm i j`. Simplify using `[herm, Pi.single_apply, cc, apply_ite]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hL : herm X.Gm ((γ : Matrix (Fin r) (Fin r) E) *ᵥ Pi.single i 1) ((γ : Matrix (Fin r) (Fin r) E) *ᵥ Pi.single j 1) = ((γ : Matrix (Fin r) (Fin r) E)ᵀ * X.Gm * (γ : Matrix (Fin r) (Fin r) E).map cc) i j`. Simplify using `only [herm, Matrix.mulVec_single_one, Matrix.col_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[← hL, h, hR]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem stab_mat {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) :
     (γ : Matrix (Fin r) (Fin r) E)ᵀ * X.Gm * (γ : Matrix (Fin r) (Fin r) E).map cc = X.Gm := by
@@ -87,7 +87,7 @@ theorem stab_mat {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) :
   rw [← hL, h, hR]
 
 /- English proof (translation)
-Establish `h` using `stab_mat X hγ`. Rewrite using `[gram_eq_lemma]`. Use `conv_rhs => rw [← h]`. Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, emb_cc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_gam {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (τ : X.Ψ) :
     gram τ.1 X.Gm ((γ : Matrix (Fin r) (Fin r) E).map τ.1) = X.Gm.map τ.1 := by
@@ -98,7 +98,7 @@ theorem gram_gam {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (τ : X.Ψ) :
   simp only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, emb_cc]
 
 /- English proof (translation)
-Use `show gram τ.1 X.Gm ((γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ) = _`. Rewrite using `[gram_mul_lemma_2, gram_gam X hγ τ, gram_eq_lemma]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_lact {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (x : Frame X.Ψ r) (τ : X.Ψ) :
     gram τ.1 X.Gm (mat (lact γ x) τ) = gram τ.1 X.Gm (mat x τ) := by
@@ -106,11 +106,11 @@ theorem gram_lact {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (x : Frame X.Ψ r) (τ
   rw [gram_mul_lemma_2, gram_gam X hγ τ, gram_eq_lemma]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[X.mem_dom_iff]`. Introduce `τ`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Use `show ((γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ).det ≠ 0`. Rewrite using `[Matrix.det_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_ne_zero ?_ (hx τ).1` and prove the remaining obligations. Establish `h1 : ((γ : Matrix (Fin r) (Fin r) E).map τ.1).det = τ.1 (γ : Matrix (Fin r) (Fin r) E).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(map_ne_zero τ.1).2 (Matrix.isUnits_det_units γ).ne_zero`. Use `(hx τ).2 i` as an intermediate fact. Simplify `this` using `only [dmin, gram_lact X hγ x τ]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem dom_lact {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     lact γ x ∈ X.dom := by

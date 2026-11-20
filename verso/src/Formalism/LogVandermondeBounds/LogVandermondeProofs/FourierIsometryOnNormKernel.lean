@@ -9,31 +9,31 @@ section Helpers
 variable {k : Type*} [Field k] [Fintype k] [DecidableEq k] {r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [pair, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pair_smul_left (a : k) (f x : Fin r → k) : pair (a • f) x = a * pair f x := by
   simp only [pair, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [pair, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pair_add_right (f x y : Fin r → k) : pair f (x + y) = pair f x + pair f y := by
   simp only [pair, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [pair, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pair_sub_left (f g x : Fin r → k) : pair (g - f) x = pair g x - pair f x := by
   simp only [pair, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[pair]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pair_zero_left (x : Fin r → k) : pair (0 : Fin r → k) x = 0 := by
   simp [pair]
 
 /- English proof (translation)
-Simplify using `[pair, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pair_single (f : Fin r → k) (i : Fin r) (a : k) : pair f (Pi.single i a) = f i * a := by
   simp [pair, Pi.single_apply]
@@ -50,14 +50,14 @@ Both sides reduce to the same expression.
 private lemma smulEquiv_apply (c : kˣ) (f : Fin r → k) : smulEquiv c f = (c : k) • f := rfl
 
 /- English proof (translation)
-Establish `hR : 0 < ringChar k` using `Nat.pos_of_ne_zero (CharP.ringChar_ne_zero_of_finite k)`. Rewrite using `[AddChar.starComp_apply hR, AddChar.inv_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma conj_char (ψ : AddChar k ℂ) (a : k) : (starRingEnd ℂ) (ψ a) = ψ (-a) := by
   have hR : 0 < ringChar k := Nat.pos_of_ne_zero (CharP.ringChar_ne_zero_of_finite k)
   rw [AddChar.starComp_apply hR, AddChar.inv_apply]
 
 /- English proof (translation)
-Use `eq_zero_of_mul_eq_self_left hb ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Fintype.sum_equiv (Equiv.addLeft y) _ _ (fun x => (h x).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_eq_zero_of_shift {G : Type*} [AddCommGroup G] [Fintype G] (F : G → ℂ) (y : G) (b : ℂ)
     (hb : b ≠ 1) (h : ∀ x, F (y + x) = b * F x) : ∑ x, F x = 0 := by
@@ -66,7 +66,7 @@ private lemma sum_eq_zero_of_shift {G : Type*} [AddCommGroup G] [Fintype G] (F :
   exact Fintype.sum_equiv (Equiv.addLeft y) _ _ (fun x => (h x).symm)
 
 /- English proof (translation)
-Use `split_ifs with ha`. Simplify using `[ha]`. Take `⟨x, hx⟩` from `AddChar.ne_one_iff.1 hψ`. Use `sum_eq_zero_of_shift (fun t => ψ (a * t)) (a⁻¹ * x) (ψ x) hx (fun t => ?_)` and prove the remaining obligations. Rewrite using `[mul_add, ← mul_assoc, mul_inv_cancel₀ ha, one_mul, AddChar.map_add_eq_mul]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_char_mul (ψ : AddChar k ℂ) (hψ : ψ ≠ 1) (a : k) :
     ∑ t, ψ (a * t) = if a = 0 then (Fintype.card k : ℂ) else 0 := by
@@ -77,11 +77,11 @@ private lemma sum_char_mul (ψ : AddChar k ℂ) (hψ : ψ ≠ 1) (a : k) :
   rw [mul_add, ← mul_assoc, mul_inv_cancel₀ ha, one_mul, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_erase_add _ _ (Finset.mem_univ (0 : k)), add_sub_cancel_right]`. Use `Finset.sum_bij' (fun c _ => (c : k)) (fun t ht => if h : t = 0 then 1 else Units.mk0 t h) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `c _`. Simplify using `[Units.ne_zero]`. Introduce `t _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `c _`. Simplify using `[Units.ne_zero]`. Introduce `t ht`. Establish `: t ≠ 0` using `Finset.ne_of_mem_erase ht`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[this]`. Introduce `c _`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 private lemma sum_units (F : k → ℂ) : ∑ c : kˣ, F (c : k) = ∑ t, F t - F 0 := by
   rw [← Finset.sum_erase_add _ _ (Finset.mem_univ (0 : k)), add_sub_cancel_right]
@@ -96,11 +96,11 @@ private lemma sum_units (F : k → ℂ) : ∑ c : kˣ, F (c : k) = ∑ t, F t - 
   · intro c _; rfl
 
 /- English proof (translation)
-Establish `hc : ((Fintype.card kˣ : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `key : ∑ _c : kˣ, ∑ g ∈ univ.filter P, φ g = 0`. Establish `step : ∀ c : kˣ, ∑ g ∈ univ.filter P, φ g = ∑ g ∈ univ.filter P, φ ((c : k) • g)`. Introduce `c`. Rewrite using `[Finset.sum_filter, Finset.sum_filter]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(Fintype.sum_equiv (smulEquiv c) _ _ (fun g => ?_)).symm` and prove the remaining obligations. Simplify using `only [smulEquiv_apply, hP]`. Rewrite using `[Finset.sum_congr rfl (fun c _ => step c), Finset.sum_comm]`. Use `Finset.sum_eq_zero (fun g hg => ?_)` and prove the remaining obligations. Use `hφ g (hP0 g (Finset.mem_filter.1 hg).2)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[nmP, diaP]`. Rewrite `key` using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Conclude with `(mul_eq_zero.1 key).resolve_left hc`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_orbit_eq_zero (φ : (Fin r → k) → ℂ) (hφ : ∀ f, f ≠ 0 → nmP φ f = 0)
     (P : (Fin r → k) → Prop) [DecidablePred P] (hP : ∀ (c : kˣ) g, P ((c : k) • g) ↔ P g)
@@ -123,15 +123,15 @@ private lemma sum_orbit_eq_zero (φ : (Fin r → k) → ℂ) (hφ : ∀ f, f ≠
 end Helpers
 
 /- English proof (translation)
-Introduce `k _ _ _ r ψ hψ φ f`. Establish `h1 : opGs ψ (opGsStar ψ φ) f = ∑ d : kˣ, ∑ u : kˣ, ψ ((u : k) * d) * ψ (-(d : k)) * φ ((u : k) • f)`. Simplify using `only [opGs, opGsStar, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fintype.sum_equiv (Equiv.mulRight d⁻¹) _ _ (fun c => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, Units.val_mul, conj_char, smul_smul, Units.val_inv_eq_inv_val]`. Rewrite using `[inv_mul_cancel_right₀ (Units.ne_zero d), mul_comm ((d : k)⁻¹) (c : k), mul_assoc]`. Establish `h2 : ∀ u : kˣ, ∑ d : kˣ, ψ ((u : k) * d) * ψ (-(d : k)) = (if (u : k) - 1 = 0 then (Fintype.card k : ℂ) else 0) - 1`. Introduce `u`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `sum_units (fun t => ψ (((u : k) - 1) * t))` as an intermediate fact. Simplify using `only [mul_zero, AddChar.map_zero_eq_one] at this`. Rewrite using `[← sum_char_mul ψ hψ, ← this]`. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations. Rewrite using `[← AddChar.map_add_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, Finset.sum_comm]`. Establish `h3 : ∀ u : kˣ, ∑ d : kˣ, ψ ((u : k) * d) * ψ (-(d : k)) * φ ((u : k) • f) = φ ((u : k) • f) * ((if (u : k) - 1 = 0 then (Fintype.card k : ℂ) else 0) - 1)`. Introduce `u`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h2 u, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun d _ => by ring)`. Rewrite using `[Finset.sum_congr rfl (fun u _ => h3 u)]`. Simplify using `only [mul_sub, mul_one, Finset.sum_sub_distrib, sub_eq_zero, Units.val_eq_one, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Units.val_one, one_smul]`. Simplify using `[nmP, diaP, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gauss_operator_mul_adjoint_eq : GaussOperatorProductFormula := by
   intro k _ _ _ r ψ hψ φ f
@@ -165,17 +165,17 @@ theorem gauss_operator_mul_adjoint_eq : GaussOperatorProductFormula := by
   simp [nmP, diaP, mul_comm]
 
 /- English proof (translation)
-Introduce `k _ _ _ r ψ φ hφ x`. Establish `hA : opD (opGs ψ φ) x = ∑ g, (if pair g x ≠ 0 then ψ (pair g x) * φ g else 0)`. Simplify using `only [opD, opGs]`. Rewrite using `[Finset.sum_comm]`. Establish `step : ∀ c : kˣ, ∑ f ∈ univ.filter (fun f => pair f x = 1), ψ (c : k) * φ ((c : k) • f) = ∑ g, (if pair g x = (c : k) then ψ (pair g x) * φ g else 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c`. Rewrite using `[Finset.sum_filter]`. Use `Fintype.sum_equiv (smulEquiv c) _ _ (fun f => ?_)` and prove the remaining obligations. Simplify using `only [smulEquiv_apply, pair_smul_left]`. Distinguish the cases in `h : pair f x = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h]`. Establish `h' : ¬ (c : k) * pair f x = c` using `fun h' => h (mul_left_cancel₀ c.ne_zero (h'.trans (mul_one _).symm))`. Simplify using `[h, h']`. Rewrite using `[Finset.sum_congr rfl (fun c _ => step c), Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun g _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sum_units (fun t => if pair g x = t then ψ (pair g x) * φ g else 0)]`. Distinguish the cases in `h : pair g x = 0`. Simplify using `[h]`. Simplify using `[h]`. Establish `hB : opFF ψ φ x = ∑ g, (if pair g x ≠ 0 then ψ (pair g x) * φ g else 0) + ∑ g ∈ univ.filter (fun g => g ≠ 0 ∧ pair g x = 0), φ g`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [opFF, Finset.sum_filter]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun g _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h1 : g = 0`. Simplify using `[h1, pair_zero_left]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : pair g x = 0`. Simplify using `[h1, h2]`. Simplify using `[h1, h2]`. Establish `hC : ∑ g ∈ univ.filter (fun g => g ≠ 0 ∧ pair g x = 0), φ g = 0` using `sum_orbit_eq_zero φ hφ (fun g => g ≠ 0 ∧ pair g x = 0) (fun c g => by simp [pair_smul_left, Units.ne_zero]) (fun g h => h.1)`. Rewrite using `[hB, hC, add_zero, hA]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fourier_eq_down_comp_gauss : FourierEqDownGauss := by
   intro k _ _ _ r ψ φ hφ x

@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.AbsIrrConstituents
 
 /- English proof (translation)
-Use extensionality with `x i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem mapRep_comp {Γ A B C : Type} [Group Γ] [CommRing A] [CommRing B] [CommRing C] {a : ℕ}
     (f : A →+* B) (g : B →+* C) (ρ : Γ →* GL (Fin a) A) :
@@ -19,9 +19,9 @@ theorem mapRep_comp {Γ A B C : Type} [Group Γ] [CommRing A] [CommRing B] [Comm
   rfl
 
 /- English proof (translation)
-Establish `h1` using `D.naut.locAut_hodgeTateWeightsLevelZero_def i τ`. Rewrite `h1` using `[D.nbc.embAV_inf i P]`. Establish `h2` using `(D.nbc.infW_alg _ (D.nbc.wtAU _ (D.nbc.embAV i P)) ((D.naut.iotaQC i).toRingHom.comp τ)).1`. Establish `h3` using `h2.map (f := fun z : ℂ => -z + ((D.R.nV : ℂ) - 1) / 2) (fun a b hab => by simpa using hab)`. Rewrite `h3` using `[← h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3.of_map _`.
+A detailed English derivation is pending.
 -/
 theorem fixedJumps_nodup (D : D7) (i : D.nd.Loc) (P : D.naut.AV i) (τ : D.host.E →+* Qbar (D.nd.l i)) :
     (D.naut.locAutHodgeTateWeightsLevelZero i τ).Nodup := by
@@ -37,7 +37,7 @@ end GlobalTheory.AbsIrrConstituents
 namespace GlobalTheory.AbsIrrConstituents
 
 /- English proof (translation)
-Apply `(h _).mp` to reduce the goal to its premises. Establish `e : τ (((l : ℕ) : 𝓞 E) : E) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])`. Simplify using `only [map_natCast]`. Rewrite using `[e, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_induces' (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime]
     (τ : E →+* PadicAlgCl l) (w : HeightOneSpectrum (𝓞 E))
@@ -65,7 +65,7 @@ theorem coe_mapRep {k L Γ : Type} [CommRing k] [CommRing L] [Group Γ] {a : ℕ
     ((mapRep f ρ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L) = (ρ g : Matrix (Fin a) (Fin a) k).map f := rfl
 
 /- English proof (translation)
-Use extensionality with `g i j`. Rewrite using `[coe_mapRep, sumRep_coe, sumRep_coe, coe_mapRep, coe_mapRep]`. Simplify using `only [Matrix.reindex_apply, Matrix.map_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mapRep_sumRep {k L Γ : Type} [CommRing k] [CommRing L] [Group Γ] {a b : ℕ} (f : k →+* L)
     (ρ : Γ →* GL (Fin a) k) (ρ' : Γ →* GL (Fin b) k) :
@@ -76,7 +76,7 @@ theorem mapRep_sumRep {k L Γ : Type} [CommRing k] [CommRing L] [Group Γ] {a b 
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp
 
 /- English proof (translation)
-Unfold `SumRepresentations.At.ContQ at *`. Simplify using `only [sumRep_coe, Matrix.reindex_apply]`. Conclude with `(Continuous.matrix_fromBlocks h continuous_const continuous_const h').matrix_submatrix _ _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contQ_sumRep (D : D7) (i : D.nd.Loc) {a b : ℕ}
     (ρ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin a) (Qbar (D.nd.l i)))
@@ -91,9 +91,9 @@ end GlobalTheory.AbsIrrConstituents
 namespace GlobalTheory.AbsIrrConstituents
 
 /- English proof (translation)
-Substitute `h` using the available equality. Introduce `g`. Establish `e1 : (Units.map (f.mapMatrix : Matrix (Fin (d + d + u)) (Fin (d + d + u)) k →+* _).toMonoidHom Pm)⁻¹ * mapRep f ρ g * Units.map (f.mapMatrix : Matrix (Fin (d + d + u)) (Fin (d + d + u)) k →+* _).toMonoidHom Pm = Units.map (f.mapMatrix : Matrix (Fin (d + d + u)) (Fin (d + d + u)) …`. Simplify using `only [map_mul, map_inv]`. Both sides reduce to the same expression.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[e1]`. Use `show ((Pm⁻¹ * ρ g * Pm : GL (Fin (d + d + u)) k) : Matrix (Fin (d + d + u)) (Fin (d + d + u)) k).map f = _`. Rewrite using `[hrel g]`. Simplify using `only [finCongr_refl, Matrix.reindex_refl_refl]`. Rewrite using `[← mapRep_sumRep, ← mapRep_sumRep, coe_mapRep]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_map' {k L Γ : Type} [Field k] [Field L] [Group Γ] (f : k →+* L) {a d u : ℕ} (h : d + d + u = a)
     (ρ : Γ →* GL (Fin a) k) (σ : Γ →* GL (Fin d) k) (υ : Γ →* GL (Fin u) k) (Pm : GL (Fin a) k)
@@ -120,15 +120,15 @@ theorem rel_map' {k L Γ : Type} [Field k] [Field L] [Group Γ] (f : k →+* L) 
   rw [← mapRep_sumRep, ← mapRep_sumRep, coe_mapRep]
 
 /- English proof (translation)
-Introduce `hnd`. Substitute `h` using the available equality. Take `⟨-, -, hJC, hG⟩` from `ht.2.2`. Take `⟨-, hconj, hsum, -⟩` from `hG i`. Establish `hPm : ∀ g, SumRepresentations.At.sumRep (SumRepresentations.At.sumRep σ σ) υ g = Pm⁻¹ * ρ g * Pm`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `g`. Use `ext1`. Rewrite using `[hrel g]`. Simplify using `only [finCongr_refl, Matrix.reindex_refl_refl]`. Establish `hcA` using `contQ_sumRep D i σ σ hcσ hcσ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hdRc, -, hJc⟩` from `hconj _ ρ _ hc Pm hPm`. Take `⟨hdRs, -, hJs⟩` from `hsum _ _ _ υ hcA hcυ`. Take `⟨hdRσ, -, hJσ⟩` from `hsum _ _ σ σ hcσ hcσ`. Establish `hdR' : ∀ w', InducesW D.nd i τ w' → D.naut.IsdRW i (SumRepresentations.At.sumRep (SumRepresentations.At.sumRep σ σ) υ) w'` using `fun w' hw' => (hdRc w' (hpl w' hw')).2 (hdR w' hw')`. Establish `hdRA : ∀ w', InducesW D.nd i τ w' → D.naut.IsdRW i (SumRepresentations.At.sumRep σ σ) w' ∧ D.naut.IsdRW i υ w'` using `fun w' hw' => (hdRs w' (hpl w' hw')).1 (hdR' w' hw')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdRσ' : ∀ w', InducesW D.nd i τ w' → D.naut.IsdRW i σ w' ∧ D.naut.IsdRW i σ w'` using `fun w' hw' => (hdRσ w' (hpl w' hw')).1 (hdRA w' hw').1`. Establish `e : D.naut.jumpsW i ρ τ = D.naut.jumpsW i σ τ + D.naut.jumpsW i σ τ + D.naut.jumpsW i υ τ`. Rewrite using `[← hJc τ hdR, hJs τ hdRA, hJσ τ hdRσ']`. Establish `hcard` using `hJC i _ σ w τ hw hτ (hdRσ' w hτ).1`. Rewrite `hnd` using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(Multiset.nodup_add.1 (Multiset.nodup_add.1 hnd).1).2.2`. Take `⟨j, hj⟩` from `Multiset.card_pos_iff_exists_mem.1 (hcard ▸ hd)`. Conclude with `Multiset.disjoint_left.1 h2 hj hj`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem jumps_not_nodup' (D : D7) (ht : SumRepresentations.tie0 D) (i : D.nd.Loc) (τ : D.host.E →+* Qbar (D.nd.l i))
     (w : PlE D.host) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (hτ : InducesW D.nd i τ w)
@@ -172,15 +172,13 @@ end GlobalTheory.AbsIrrConstituents
 namespace GlobalTheory.AbsIrrConstituents
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hM : Continuous fun g => ((SumRepresentations.At.sumRep ρ₁ ρ₂ g : GL (Fin (b + c)) k) : Matrix (Fin (b + c)) (Fin (b + c)) k)`. Establish `e : (fun g => ((SumRepresentations.At.sumRep ρ₁ ρ₂ g : GL (Fin (b + c)) k) : Matrix (Fin (b + c)) (Fin (b + c)) k)) = fun g => ((Pm⁻¹ : GL (Fin (b + c)) k) : Matrix (Fin (b + c)) (Fin (b + c)) k) * (ρ g : Matrix _ _ k) * (Pm : Matrix _ _ k)`. Use function extensionality and compare the values at `g`. Rewrite using `[← Units.val_mul, ← Units.val_mul, hrel g]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [finCongr_refl, Matrix.reindex_refl_refl]`. Rewrite using `[e]`. Conclude with `(continuous_const.matrix_mul hc).matrix_mul continuous_const`. Prove the components needed by the constructor for the conclusion. Establish `e : (fun g => ((ρ₁ g : GL (Fin b) k) : Matrix (Fin b) (Fin b) k)) = fun g => (((SumRepresentations.At.sumRep ρ₁ ρ₂ g : GL (Fin (b + c)) k) : Matrix (Fin (b + c)) (Fin (b + c)) k)).submatrix (finSumFinEquiv ∘ Sum.inl) (finSumFinEquiv ∘ Sum.inl)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Use extensionality with `i j`. Simplify using `[sumRep_coe]`. Rewrite using `[e]`. Conclude with `hM.matrix_submatrix _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun g => ((ρ₂ g : GL (Fin c) k) : Matrix (Fin c) (Fin c) k)) = fun g => (((SumRepresentations.At.sumRep ρ₁ ρ₂ g : GL (Fin (b + c)) k) : Matrix (Fin (b + c)) (Fin (b + c)) k)).submatrix (finSumFinEquiv ∘ Sum.inr) (finSumFinEquiv ∘ Sum.inr)`. Use function extensionality and compare the values at `g`. Use extensionality with `i j`. Simplify using `[sumRep_coe]`. Rewrite using `[e]`.
-
-Conclude with `hM.matrix_submatrix _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_blocks' {k Γ : Type} [Field k] [TopologicalSpace k] [IsTopologicalRing k] [Group Γ]
     [TopologicalSpace Γ] {a b c : ℕ} (ρ : Γ →* GL (Fin a) k) (ρ₁ : Γ →* GL (Fin b) k)
@@ -216,25 +214,23 @@ end GlobalTheory.AbsIrrConstituents
 namespace GlobalTheory.AbsIrrConstituents
 
 /- English proof (translation)
-Introduce `D ht hadm hH i r hr`. Use `letI alg : Algebra (Kf D.nd i) (Qbar (D.nd.l i)) := (D.naut.iotaQ i).toAlgebra`. Establish `hss : ∀ x, IsSSRep (mapRep (algebraMap (Kf D.nd i) (AlgebraicClosure (Kf D.nd i))) (mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) (r x)))`. Introduce `x`. Set `f : AlgebraicClosure (Kf D.nd i) →ₐ[Kf D.nd i] Qbar (D.nd.l i)` to `IsAlgClosed.lift`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `letI : Algebra (AlgebraicClosure (Kf D.nd i)) (Qbar (D.nd.l i)) := f.toRingHom.toAlgebra`. Apply `SumRepresentations.isSSRep_descent (L := Qbar (D.nd.l i))` to reduce the goal to its premises. Establish `e : ((algebraMap (AlgebraicClosure (Kf D.nd i)) (Qbar (D.nd.l i))).comp (algebraMap (Kf D.nd i) (AlgebraicClosure (Kf D.nd i)))).comp (algebraMap (D.nd.O i) (Kf D.nd i)) = iotaOQ D.nd D.naut i`. Use extensionality with `z`. Use `show f (algebraMap (Kf D.nd i) _ (algebraMap _ (Kf D.nd i) z)) = D.naut.iotaQ i (algebraMap _ _ z)`.
+Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[f.commutes]`. Both sides reduce to the same expression. Rewrite using `[← mapRep_comp, ← mapRep_comp, e]`. Conclude with `(hr x).2.1`. Take `⟨K', hF, hA, hFD, hsplit⟩` from `GlobalTheory.T.exists_finiteDimensional_ext_irrSub_absIrr (fun x => mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) (r x)) hss`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨K', hF, hA, hFD, fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mapRep_comp]`. Conclude with `hsplit x`. Introduce `W₁ W₂ h1 h2 hdis hiso`. Set `f' : K' →ₐ[Kf D.nd i] Qbar (D.nd.l i)` to `IsAlgClosed.lift`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `e' : (f'.toRingHom).comp ((algebraMap (Kf D.nd i) K').comp (algebraMap (D.nd.O i) (Kf D.nd i))) = iotaOQ D.nd D.naut i`. Use extensionality with `z`. Use `show f' (algebraMap (Kf D.nd i) K' (algebraMap _ (Kf D.nd i) z)) = D.naut.iotaQ i (algebraMap _ _ z)`. Rewrite using `[f'.commutes]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hQ : mapRep f'.toRingHom (mapRep ((algebraMap (Kf D.nd i) K').comp (algebraMap (D.nd.O i) (Kf D.nd i))) (r x)) = mapRep (iotaOQ D.nd D.naut i) (r x)`. Rewrite using `[← mapRep_comp, e']`. Establish `hssK : IsSSRep (mapRep ((algebraMap (Kf D.nd i) K').comp (algebraMap (D.nd.O i) (Kf D.nd i))) (r x))`. Use `letI : Algebra K' (Qbar (D.nd.l i)) := f'.toRingHom.toAlgebra`. Apply `SumRepresentations.isSSRep_descent (L := Qbar (D.nd.l i))` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show IsSSRep (mapRep f'.toRingHom _)`. Rewrite using `[hQ]`. Conclude with `(hr x).2.1`. Take `⟨d, u, σ, υ, h, Pm, hd, hrel⟩` from `GlobalTheory.T.exists_conj_double_block_of_iso_subspaces _ W₁ W₂ hssK h1.2.1 h2.2.1 h1.1 hdis hiso`. Establish `hrelQ` using `rel_map' f'.toRingHom h _ σ υ Pm hrel`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hrelQ` using `[hQ]`. Establish `hcQ : SumRepresentations.At.ContQ D.nd i (mapRep (iotaOQ D.nd D.naut i) (r x))` using `(hr x).1`. Take `⟨hcA, hcυ⟩` from `continuous_blocks' _ _ _ h _ hrelQ hcQ`. Establish `hcσ : SumRepresentations.At.ContQ D.nd i (mapRep f'.toRingHom σ)` using `(continuous_blocks' (SumRepresentations.At.sumRep (mapRep f'.toRingHom σ) (mapRep f'.toRingHom σ)) (mapRep f'.toRingHom σ) (mapRep f'.toRingHom σ) rfl 1 (fun g => by simp) hcA).1`. Take `⟨P, hP⟩` from `D.naut.pt_surj i x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Pa, hPa⟩` from `hadm i P`. Take `⟨-, hon⟩` from `hH i x P Pa hP hPa _ (hr x)`. Take `⟨τ, w, hτw⟩` from `GlobalTheory.T.exists_padicAlgCl_embedding_and_place_norm_lt_one D.host.E (D.nd.l i)`. Establish `hpl : ∀ w', InducesW D.nd i τ w' → w' ∈ placesOver D.host.E (D.nd.l i)` using `fun w' hw' => mem_of_induces' D.host.E (D.nd.l i) τ w' hw'`. Establish `hτ : InducesW D.nd i τ w` using `hτw`.
-
-Establish `hJ` using `(hon w (hpl w hτ)).2.2 τ hτ`. Use `jumps_not_nodup' D ht i τ w (hpl w hτ) hτ hpl h _ _ _ _ hd hcQ hcσ hcυ hrelQ (fun w' hw' => (hon w' (hpl w' hw')).1) ?_` and prove the remaining obligations. Rewrite using `[hJ]`. Conclude with `fixedJumps_nodup D i P τ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absIrr_and_distinct_constituents : ∀ D : D7, SumRepresentations.tie0 D → SumRepresentations.adm1 D → (∀ (i : D.nd.Loc) (x : D.nd.X i) (P : D.naut.AV i) (Pa : List (Part D.naut.CG)), D.naut.ptV i P = some x → IsBCV D.nd D.naut i P Pa → ∀ ρ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin D.R.nV) (Qbar (D.nd.l i)), SumRepresentations.At.IsHeckeGaloisQ D.nd D.naut i x ρ → (∀ w, w ∉ placesOver D.host.E (D.nd.l i) → D.naut.wdOf i ρ w = D.naut.lpTw (isoLoc D.nd D.naut Pa w) ((1 - (D.R.nV : ℝ)) / 2)) ∧ ∀ w ∈ placesOver D.host.E (D.nd.l i), D.naut.IsdRW i ρ w ∧ D.naut.wdOf i ρ w = D.naut.lpTw (isoLoc D.nd D.naut Pa w) ((1 - (D.R.nV : ℝ)) / 2) ∧ ∀ τ, InducesW D.nd i τ w → D.naut.jumpsW i ρ τ = D.naut.locAutHodgeTateWeightsLevelZero i τ) → ∀ (i : D.nd.Loc) (r : D.nd.X i → (Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin D.R.nV) (D.nd.O i))), (∀ x, SumRepresentations.At.IsHeckeGaloisQ D.nd D.naut i x (mapRep (iotaOQ D.nd D.naut i) (r x))) → SumRepresentations.At.G3a D.nd i r := by
   intro D ht hadm hH i r hr

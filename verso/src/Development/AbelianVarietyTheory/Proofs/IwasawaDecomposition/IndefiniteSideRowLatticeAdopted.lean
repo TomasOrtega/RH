@@ -16,15 +16,13 @@ open scoped Matrix
 namespace GlobalTheory.CompanionTheory.MemQ
 
 /- English proof (translation)
-Establish `hQV : X.Qsp μ ≤ X.V0 μ` using `inf_le_left`. Establish `hQU : X.Qsp μ ≤ (X.Usp μ)ᗮ` using `inf_le_right`. Establish `hUV : X.Usp μ ≤ X.V0 μ` using `inf_le_left`. Establish `hUker : X.Usp μ ≤ LinearMap.ker (X.iota μ)` using `inf_le_right`. Establish `hUQ : X.Usp μ ≤ (X.Qsp μ)ᗮ` using `(Submodule.le_orthogonal_orthogonal _).trans (Submodule.orthogonal_le hQU)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y := x - (X.Qsp μ).starProjection x with hy`. Establish `hyV : y ∈ X.V0 μ` using `(X.V0 μ).sub_mem hx (hQV ((X.Qsp μ).starProjection_apply_mem x))`. Establish `hyQ : y ∈ (X.Qsp μ)ᗮ` using `(X.Qsp μ).sub_starProjection_mem_orthogonal x`. Use `set z := y - (X.Usp μ).starProjection y with hz`. Establish `hzQ : z ∈ X.Qsp μ` using `⟨(X.V0 μ).sub_mem hyV (hUV ((X.Usp μ).starProjection_apply_mem y)), (X.Usp μ).sub_starProjection_mem_orthogonal y⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzQ' : z ∈ (X.Qsp μ)ᗮ` using `(X.Qsp μ)ᗮ.sub_mem hyQ (hUQ ((X.Usp μ).starProjection_apply_mem y))`. Establish `hz0 : z = 0`. Use `Submodule.inf_orthogonal_eq_bot (X.Qsp μ)` as an intermediate fact. Establish `hmem : z ∈ X.Qsp μ ⊓ (X.Qsp μ)ᗮ` using `⟨hzQ, hzQ'⟩`. Rewrite `hmem` using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Submodule.mem_bot ℂ).mp hmem`. Establish `hyU : y ∈ X.Usp μ`. Establish `: y = (X.Usp μ).starProjection y` using `sub_eq_zero.mp hz0`. Rewrite using `[this]`. Conclude with `(X.Usp μ).starProjection_apply_mem y`.
-
-Establish `hiy : X.iota μ y = 0` using `hUker hyU`. Establish `hsplit : x = (X.Qsp μ).starProjection x + y` using `by rw [hy]; abel`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem iota_starProjection_Qsp {D : D7} {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE]
     [FiniteDimensional ℂ EE] (X : RowSide D EE) (μ : D.what₂.Tup) {x : X.Amb μ} (hx : x ∈ X.V0 μ) :
@@ -61,9 +59,9 @@ theorem iota_starProjection_Qsp {D : D7} {EE : Type} [NormedAddCommGroup EE] [In
     _ = X.iota μ x := by rw [← map_add, ← hsplit]
 
 /- English proof (translation)
-Introduce `D EE _ _ _ X μ`. Unfold `RowSide.RRset RowSide.LamSet`. Rewrite using `[Set.image_image]`. Use `Set.image_congr ?_` and prove the remaining obligations. Introduce and unpack `x ⟨-, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `iota_starProjection_Qsp X μ hx`.
+A detailed English derivation is pending.
 -/
 theorem RRset_eq_iota_image : ∀ (D : D7) (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE]
     [FiniteDimensional ℂ EE] (X : RowSide D EE) (μ : D.what₂.Tup),
@@ -84,9 +82,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.DivisionValue
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D EE _ _ _ X μ`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨x, hx, (GlobalTheory.CompanionTheory.MemQ.iota_starProjection_Qsp X μ hx.2).symm⟩`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, ⟨x, hx, rfl⟩, GlobalTheory.CompanionTheory.MemQ.iota_starProjection_Qsp X μ hx.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.T.real_row_set_eq_image : ∀ (D : D7) (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE) (μ : D.what₂.Tup), X.RRset μ = X.iota μ '' ((X.Mtilde μ).carrier ∩ (X.V0 μ : Set (X.Amb μ))) := by
   intro D EE _ _ _ X μ
@@ -185,7 +183,7 @@ def iota : A →ₗ[ℂ] B :=
 end Chain
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[jFrame, EuclideanSpace.basisFun_apply, Pi.single_apply, Matrix.one_mulVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem jFrame_one_single {n : ℕ} (σ : K →+* ℂ) (i : Fin n) :
     jFrame σ (1 : Matrix (Fin n) (Fin n) ℂ) (Pi.single i 1) = EuclideanSpace.basisFun (Fin n) ℂ i := by
@@ -193,9 +191,7 @@ theorem jFrame_one_single {n : ℕ} (σ : K →+* ℂ) (i : Fin n) :
   simp [jFrame, EuclideanSpace.basisFun_apply, Pi.single_apply, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `h : (fun i => jFrame σ (1 : Matrix (Fin n) (Fin n) ℂ) (Pi.single i 1)) = fun i => EuclideanSpace.basisFun (Fin n) ℂ i` using `funext (jFrame_one_single σ)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `(EuclideanSpace.basisFun (Fin n) ℂ).orthonormal.linearIndependent`. Rewrite using `[h]`.
-
-Conclude with `(EuclideanSpace.basisFun (Fin n) ℂ).toBasis.span_eq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCxBasis_jFrame_one {n : ℕ} (σ : K →+* ℂ) : IsCxBasis σ (jFrame σ (1 : Matrix (Fin n) (Fin n) ℂ)) := by
   have h : (fun i => jFrame σ (1 : Matrix (Fin n) (Fin n) ℂ) (Pi.single i 1)) =
@@ -206,9 +202,9 @@ theorem isCxBasis_jFrame_one {n : ℕ} (σ : K →+* ℂ) : IsCxBasis σ (jFrame
     exact (EuclideanSpace.basisFun (Fin n) ℂ).toBasis.span_eq
 
 /- English proof (translation)
-Introduce `x y`. Simplify using `only [jFrame, Formalism.DivisionValues.hform, Matrix.toLinearMapₛₗ₂'_apply]`. Simplify using `[Matrix.one_mulVec, EuclideanSpace.inner_eq_star_dotProduct, dotProduct, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [Matrix.one_apply_ne (Ne.symm hj)]; simp) (by simp)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_eq, map_one, mul_one, mul_comm]`. Use `congr 1`. Conclude with `(hσ (x i)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isGramOf_jFrame_one [NumberField K] [StarRing K] {n : ℕ} (σ : K →+* ℂ)
     (hσ : ∀ a, σ (star a) = starRingEnd ℂ (σ a)) :
@@ -230,7 +226,7 @@ def Chain.ofMap (f : EuclideanSpace ℂ (Fin 2) →ₗ[ℂ] EuclideanSpace ℂ (
   io := fun j => if j = 0 then f else LinearMap.id
 
 /- English proof (translation)
-Conclude with `LinearMap.ext fun x => rfl`.
+A detailed English derivation is pending.
 -/
 theorem Chain.iota_ofMap (f : EuclideanSpace ℂ (Fin 2) →ₗ[ℂ] EuclideanSpace ℂ (Fin 2)) :
     (Chain.ofMap f).iota = f := by
@@ -249,9 +245,9 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory.CompanionTheory.Mem
 
 /- English proof (translation)
-Establish `hx : x = ∑ i, x i • (Pi.single i 1 : Fin n → K)`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hx]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smulₛₗ]`.
+A detailed English derivation is pending.
 -/
 theorem semilinear_eq_sum_single {K : Type} [Field K] {σ : K →+* ℂ} {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
     (j : (Fin n → K) →ₛₗ[σ] W) (x : Fin n → K) : j x = ∑ i, σ (x i) • j (Pi.single i 1) := by
@@ -262,11 +258,11 @@ theorem semilinear_eq_sum_single {K : Type} [Field K] {σ : K →+* ℂ} {n : �
   simp only [map_smulₛₗ]
 
 /- English proof (translation)
-Introduce `K _ _ _ σ n W _ _ _ j hj`. Establish `hco : ∀ x, j x = ∑ i, σ (x i) • j (Pi.single i 1)` using `fun x => semilinear_eq_sum_single j x`. Use `⟨hco, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[hco x]`. Establish `h0` using `Fintype.linearIndependent_iff.mp hj.li (fun i => σ (x i)) hx`. Use function extensionality and compare the values at `i`. Conclude with `(map_eq_zero σ).mp (h0 i)`. Rewrite using `[Module.finrank_eq_card_basis (Module.Basis.mk hj.li hj.span.ge)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem isCxBasis_coord : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (σ : K →+* ℂ) (n : ℕ) (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] (j : (Fin n → K) →ₛₗ[σ] W), IsCxBasis σ j → (∀ x, j x = ∑ i, σ (x i) • j (Pi.single i 1)) ∧ Function.Injective j ∧ Module.finrank ℂ W = n := by
   intro K _ _ _ σ n W _ _ _ j hj
@@ -293,9 +289,9 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory.CompanionTheory.Mem
 
 /- English proof (translation)
-Establish `hLE : L * E = E` using `by rw [← hEP, Matrix.mul_assoc, hPE, Matrix.mul_one]`. Establish `hALE0 : A * L * E0 = E0` using `by rw [← hE0, Matrix.mul_assoc, hP0, Matrix.mul_one]`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hE0, Matrix.mul_assoc, hLE]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem rv0_projection_identities {K : Type} [Field K] {n d d0 : ℕ} (A L : Matrix (Fin n) (Fin n) K)
     (E : Matrix (Fin n) (Fin d) K) (Pr : Matrix (Fin d) (Fin n) K)
@@ -323,11 +319,11 @@ private theorem rv0_projection_identities {K : Type} [Field K] {n d d0 : ℕ} (A
       _ = Pr * A * E := by rw [hLE]
 
 /- English proof (translation)
-Establish `hLAL : E * Pr * (A * (E * Pr)) = A * (E * Pr)`. Combine the equalities or inequalities in the displayed calculation. Take `⟨hM1, hM2, -, -, hM5⟩` from `rv0_projection_identities A (E * Pr) E Pr E0 Pr0 h1 rfl h0 hp hLAL`. Use `⟨hM2, ?_, ?_, hM1⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hM2, h0]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVecLin_mul]`. Conclude with `LinearMap.range_comp_le_range _ _`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVecLin_mul]`. Conclude with `LinearMap.range_comp_le_range _ _`.
+A detailed English derivation is pending.
 -/
 theorem projection_matrix_idempotent_commute {K : Type} [Field K] {n d d0 : ℕ} (A : Matrix (Fin n) (Fin n) K)
     (E : Matrix (Fin n) (Fin d) K) (Pr : Matrix (Fin d) (Fin n) K)
@@ -355,7 +351,7 @@ theorem projection_matrix_idempotent_commute {K : Type} [Field K] {n d d0 : ℕ}
           rw [Matrix.mulVecLin_mul]; exact LinearMap.range_comp_le_range _ _
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = E0ᴴ * H * E0 := by rw [h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem conjTranspose_form_pullback_eq_of_mul_eq {K : Type} [Field K] [StarRing K] {n d d0 : ℕ} (H : Matrix (Fin n) (Fin n) K)
     (E : Matrix (Fin n) (Fin d) K) (Pr : Matrix (Fin d) (Fin n) K) (E0 : Matrix (Fin n) (Fin d0) K) (c : K)
@@ -368,7 +364,7 @@ private theorem conjTranspose_form_pullback_eq_of_mul_eq {K : Type} [Field K] [S
     _ = E0ᴴ * H * E0 := by rw [h]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [cutLat, Submodule.mem_comap, LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem cutLat_cutLat_eq_of_mul_eq {K : Type} [Field K] [NumberField K] {n d d0 : ℕ} (E : Matrix (Fin n) (Fin d) K)
     (M : Matrix (Fin d) (Fin d0) K) (E0 : Matrix (Fin n) (Fin d0) K) (N : Submodule (𝓞 K) (Fin n → K))
@@ -378,13 +374,13 @@ private theorem cutLat_cutLat_eq_of_mul_eq {K : Type} [Field K] [NumberField K] 
     Matrix.mulVec_mulVec, h]
 
 /- English proof (translation)
-Introduce `hImE hSubE hGaHom hGaAdj hLvlIdem hIdemOf hGood hCut hLvlPart hV0 hLvlOp hOrth`. Introduce `K _ _ _ v0 hv0 S hpos G _ _ r hact X hX P ψ`. Take `⟨hlvl, -⟩` from `hLvlIdem K v0 hv0 G P ψ`. Establish `hgood` using `hGood K v0 hv0 G X hX P ψ`. Take `⟨hidem, hcent⟩` from `hIdemOf K v0 hv0 G X hX`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨h1, -⟩, hEP⟩` from `hCut K v0 hv0 S hpos G r hact (lvlIdem P ψ) hlvl.idem hlvl.selfAdj`. Take `⟨⟨h0, -⟩, hE0P0⟩` from `hCut K v0 hv0 S hpos G r hact (goodAt X P ψ) hgood.idem hgood.selfAdj`. Take `⟨-, hmul⟩` from `hGaHom K S G r`. Establish `hAA : S.gaMat r (idemOf X) * S.gaMat r (idemOf X) = S.gaMat r (idemOf X)`. Rewrite using `[← hmul, hidem.idem]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : S.cutE r (lvlIdem P ψ) * S.cutPr r (lvlIdem P ψ) * S.gaMat r (idemOf X) = S.gaMat r (idemOf X) * (S.cutE r (lvlIdem P ψ) * S.cutPr r (lvlIdem P ψ))`. Rewrite using `[hEP, ← hmul, hcent, hmul]`. Establish `hp : S.cutE r (goodAt X P ψ) * S.cutPr r (goodAt X P ψ) = S.gaMat r (idemOf X) * (S.cutE r (lvlIdem P ψ) * S.cutPr r (lvlIdem P ψ))`. Rewrite using `[hE0P0, hEP]`. Conclude with `hmul _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m1, m2, m3, m4⟩` from `projection_matrix_idempotent_commute (S.gaMat r (idemOf X)) (S.cutE r (lvlIdem P ψ)) (S.cutPr r (lvlIdem P ψ)) (S.cutE r (goodAt X P ψ)) (S.cutPr r (goodAt X P ψ)) h1 h0 hAA hc hp`. Conclude with `⟨m1, m2, m3, m4, conjTranspose_form_pullback_eq_of_mul_eq S.H (S.cutE r (lvlIdem P ψ)) (S.cutPr r (lvlIdem P ψ)) (S.cutE r (goodAt X P ψ)) ((Nat.card P : K)⁻¹) m1, cutLat_cutLat_eq_of_mul_eq (S.cutE r (lvlIdem P ψ)) (S.cutPr r (lvlIdem P ψ) * S.cutE r (goodAt X P ψ)) (S.cutE r (g …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem positive_definite_irreducible_character : ImESpec → SubESpec → GaMatHom → GaMatAdj → LvlIdemSpec → IdemOfSpec → GoodAtSpec → CutOrthProj → LvlPartSpec → GoodPartSpec → LvlOpSpec → OrthProjExists → ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (v0 : InfinitePlace K), IsConjAt v0 → ∀ (S : CSD K), (S.H.map v0.embedding).PosDef → ∀ (G : Type) [Group G] [Fintype G] (r : Representation K G S.Forms), S.ActGood r → ∀ (X : Finset (G → K)), (∀ χ ∈ X, IsAbsIrrChar χ) → ∀ (P : Subgroup G) (ψ : P →* Kˣ), S.lvlE r P ψ * (S.lvlPr r P ψ * S.V0E r X P ψ) = S.V0E r X P ψ ∧ (S.goodPartProjection r X P ψ * S.lvlE r P ψ) * (S.lvlPr r P ψ * S.V0E r X P ψ) = 1 ∧ LinearMap.range (S.lvlPr r P ψ * S.V0E r X P ψ).mulVecLin = LinearMap.range (S.lvlOp r P ψ (idemOf X)).mulVecLin ∧ S.lvlOp r P ψ (idemOf X) * (S.lvlPr r P ψ * S.V0E r X P ψ) = S.lvlPr r P ψ * S.V0E r X P ψ ∧ (S.lvlPr r P ψ * S.V0E r X P ψ)ᴴ * S.lvlH r P ψ * (S.lvlPr r P ψ * S.V0E r X P ψ) = S.goodPartHermitianForm r X P ψ ∧ cutLat (S.lvlPr r P ψ * S.V0E r X P ψ) (S.lvlNab r P ψ) = S.Mt r X P ψ := by
   intro hImE hSubE hGaHom hGaAdj hLvlIdem hIdemOf hGood hCut hLvlPart hV0 hLvlOp hOrth
@@ -424,7 +420,7 @@ open scoped Matrix
 namespace GlobalTheory.CompanionTheory.MemQ
 
 /- English proof (translation)
-Rewrite using `[CSD.gaMat_eq_toMatrix, CSD.gaMat_eq_toMatrix, CSD.gaMat_eq_toMatrix, ← LinearMap.toMatrix_mul]`. Use `congr 1`. Conclude with `LinearMap.ext fun φ => BlockDat.gaOp_mul B a b φ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem gaMat_mul {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G]
     {Pl0 : Type} (B : BlockDat K G Pl0) (a b : MonoidAlgebra K G) :
@@ -434,21 +430,19 @@ private theorem gaMat_mul {K : Type} [Field K] [NumberField K] [StarRing K] {G :
   exact LinearMap.ext fun φ => BlockDat.gaOp_mul B a b φ
 
 /- English proof (translation)
-Take `⟨⟨hPE, -⟩, hEP⟩` from `BlockDat.lf_lvl_proj hB`. Take `⟨⟨hP0E0, -⟩, hE0P0⟩` from `BlockDat.lf_v_proj hB`. Establish `hE0 : B.vE ℓ * B.vPr ℓ = B.S.gaMat B.r (idemOf ℓ.X) * B.S.gaMat B.r (lvlIdem ℓ.P ℓ.ψ)` using `hE0P0.trans (gaMat_mul B _ _)`. Establish `hLAL : B.S.gaMat B.r (lvlIdem ℓ.P ℓ.ψ) * (B.S.gaMat B.r (idemOf ℓ.X) * B.S.gaMat B.r (lvlIdem ℓ.P ℓ.ψ)) = B.S.gaMat B.r (idemOf ℓ.X) * B.S.gaMat B.r (lvlIdem ℓ.P ℓ.ψ)`. Rewrite using `[← gaMat_mul, ← gaMat_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (B.S.gaMat B.r) (BlockDat.lf_lvl_mul_good hB)`. Take `⟨hM1, hM2, hM3, hM4, hM5⟩` from `GlobalTheory.CompanionTheory.Mem.rv0_projection_identities _ _ _ _ _ _ hPE hEP hP0E0 hE0 hLAL`. Establish `hM1' : B.S.lvlOp B.r ℓ.P ℓ.ψ (idemOf ℓ.X) * (B.S.lvlPr B.r ℓ.P ℓ.ψ * B.vE ℓ) = B.S.lvlPr B.r ℓ.P ℓ.ψ * B.vE ℓ` using `hM1`. Establish `hM3' : B.S.lvlE B.r ℓ.P ℓ.ψ * B.S.lvlOp B.r ℓ.P ℓ.ψ (idemOf ℓ.X) = B.S.gaMat B.r (idemOf ℓ.X) * B.S.lvlE B.r ℓ.P ℓ.ψ` using `hM3`. Establish `hM5' : B.S.lvlPr B.r ℓ.P ℓ.ψ * B.vE ℓ * (B.vPr ℓ * B.S.lvlE B.r ℓ.P ℓ.ψ) = B.S.lvlOp B.r ℓ.P ℓ.ψ (idemOf ℓ.X)` using `hM5`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective j` using `(GlobalTheory.CompanionTheory.Mem.isCxBasis_coord K σ _ W j ⟨hF.li, hF.span⟩).2.1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨c, hc⟩, z, hz⟩`. Establish `hgen : ∀ v ∈ M.gen, ∃ y, j y = v` using `hM.1`. Use `choose! pre hpre using hgen`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hjy : j (∑ v ∈ M.gen, (c v : K) • pre v) = x`. Rewrite using `[map_sum, hc]`. Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, hpre v hv]`. Use `set y := ∑ v ∈ M.gen, (c v : K) • pre v with hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hyN : (B.S.lvlE B.r ℓ.P ℓ.ψ).mulVec y ∈ B.S.nabLat` using `(hM.2 y).2 ⟨c, by rw [hjy, hc]⟩`. Establish `hfix : (B.S.lvlOp B.r ℓ.P ℓ.ψ (idemOf ℓ.X)).mulVec y = y`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hF.op_eq, hjy, ← hz]`. Conclude with `LinearMap.congr_fun hop z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hAE : (B.S.gaMat B.r (idemOf ℓ.X) * B.S.lvlE B.r ℓ.P ℓ.ψ).mulVec y = (B.S.lvlE B.r ℓ.P ℓ.ψ).mulVec y` using `by conv_rhs => rw [← hfix]`. Rewrite using `[Matrix.mulVec_mulVec, hM3']`. Use `⟨(B.vPr ℓ * B.S.lvlE B.r ℓ.P ℓ.ψ).mulVec y, ?_, ?_⟩` and prove the remaining obligations. Use `show (B.vE ℓ).mulVec ((B.vPr ℓ * B.S.lvlE B.r ℓ.P ℓ.ψ).mulVec y) ∈ B.S.nabLat`. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hM4, hAE]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hyN`. Rewrite using `[Matrix.mulVec_mulVec, hM5', hfix, hjy]`. Introduce and unpack `⟨F, hF0, rfl⟩`. Establish `hyN : (B.S.lvlPr B.r ℓ.P ℓ.ψ * B.vE ℓ).mulVec F ∈ B.S.lvlNab B.r ℓ.P ℓ.ψ` using `by show (B.S.lvlE B.r ℓ.P ℓ.ψ).mulVec ((B.S.lvlPr B.r ℓ.P ℓ.ψ * B.vE ℓ).mulVec F) ∈ B.S.nabLat`. Rewrite using `[Matrix.mulVec_mulVec, hM2]`.
-
-Conclude with `hF0`. Use `⟨(hM.2 _).1 hyN, j ((B.S.lvlPr B.r ℓ.P ℓ.ψ * B.vE ℓ).mulVec F), ?_⟩` and prove the remaining obligations. Rewrite using `[hF.op_eq, Matrix.mulVec_mulVec, hM1']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem v0_int_lemma_5 {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G]
     {Pl0 : Type} (B : BlockDat K G Pl0) (ℓ : Lvl K G) (v0 : InfinitePlace K) (s : ℕ) (hB : BlockHyp B ℓ v0 s)
@@ -513,7 +507,7 @@ private theorem v0_int_lemma_5 {K : Type} [Field K] [NumberField K] [StarRing K]
     rw [hF.op_eq, Matrix.mulVec_mulVec, hM1']
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA s hOk hX t x`. Conclude with `v0_int_lemma_5 (A.fam.R t) (A.fam.lvl P ψ) A.fam.v0 s ⟨hOk.conj, hOk.irr, hOk.what₂ t⟩ D.what₂.embLL (jA t) (X.eOp (tup t)) (X.eOp_idem (tup t)) (X.Mtilde (tup t)) _ (hX.forms t) (hX.Mtilde t) x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem integral_iff_matrix_indefinite_side : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m) (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (S : IndefData (A.side P ψ Zs)) (tup : T → D.what₂.Tup) (eRR : (Fin S.D → D.what₂.LL) ≃ₗ[D.what₂.LL] X.RR.V) (jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t)) (s : ℕ), A.fam.Ok s → RowSideDef3 D A X P ψ Zs S tup eRR jA → ∀ (t : T) (x : X.Amb (tup t)), ((∃ c : X.Amb (tup t) → 𝓞 D.what₂.LL, x = ∑ v ∈ (X.Mtilde (tup t)).gen, D.what₂.embLL (c v : D.what₂.LL) • v) ∧ x ∈ X.V0 (tup t)) ↔ ∃ F ∈ (A.side P ψ Zs).Mt t, x = jA t ((rV0 D A P ψ t).mulVec F) := by
   intro D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA s hOk hX t x
@@ -529,7 +523,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.DivisionValue
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA s hOk hX t x`. Conclude with `GlobalTheory.CompanionTheory.MemQ.v0_int_lemma_5 (A.fam.R t) (A.fam.lvl P ψ) A.fam.v0 s ⟨hOk.conj, hOk.irr, hOk.what₂ t⟩ D.what₂.embLL (jA t) (X.eOp (tup t)) (X.eOp_idem (tup t)) (X.Mtilde (tup t)) _ (hX.forms t) (hX.Mtilde t) x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.indefinite_side_row_lattice_one : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m) (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (S : IndefData (A.side P ψ Zs)) (tup : T → D.what₂.Tup) (eRR : (Fin S.D → D.what₂.LL) ≃ₗ[D.what₂.LL] X.RR.V) (jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t)) (s : ℕ), A.fam.Ok s → RowSideDef3 D A X P ψ Zs S tup eRR jA → ∀ (t : T) (x : X.Amb (tup t)), ((∃ c : X.Amb (tup t) → 𝓞 D.what₂.LL, x = ∑ v ∈ (X.Mtilde (tup t)).gen, D.what₂.embLL (c v : D.what₂.LL) • v) ∧ x ∈ X.V0 (tup t)) ↔ ∃ F ∈ (A.side P ψ Zs).Mt t, x = jA t ((rV0 D A P ψ t).mulVec F) := by
   intro D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA s hOk hX t x
@@ -546,9 +540,9 @@ open scoped Matrix
 namespace GlobalTheory.CompanionTheory.MemQ
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Establish `hsum : y = ∑ i, X.RR.b.repr y i • X.RR.b i` using `(X.RR.b.sum_repr y).symm`. Rewrite `hy` using `[hsum, map_sum]`. Simplify using `only [map_smulₛₗ] at hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0` using `Fintype.linearIndependent_iff.mp X.jEE_basis.1 _ hy`. Rewrite using `[hsum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(map_eq_zero D.what₂.embLL).mp (h0 i), zero_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem jEE_injective' {D : D7} {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE]
     [FiniteDimensional ℂ EE] (X : RowSide D EE) : Function.Injective X.jEE := by
@@ -563,9 +557,9 @@ private theorem jEE_injective' {D : D7} {EE : Type} [NormedAddCommGroup EE] [Inn
   rw [(map_eq_zero D.what₂.embLL).mp (h0 i), zero_smul]
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Express the relevant statement in the definitionally equal form `X.jEE y ∈ X.RRset (tup t) at hy`. Rewrite `hy` using `[RRset_eq_iota_image]`. Take `⟨u, ⟨⟨c, hc⟩, hu⟩, hiu⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF, rfl⟩` from `(integral_iff_matrix_indefinite_side D G Pl0 T m A EE X P ψ Zs S tup eRR jA s hOk hX t u).1 ⟨⟨fun v => ⟨D.what₂.OtoLL (c v), D.O_int (c v)⟩, hc⟩, hu⟩`. Rewrite `hiu` using `[hX.iota t F]`. Conclude with `Submodule.mem_map.mpr ⟨_, ⟨_, ⟨F, hF, rfl⟩, rfl⟩, jEE_injective' X hiu⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem span_le_lemma_8 (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m)
     (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE)
@@ -588,15 +582,15 @@ private theorem span_le_lemma_8 (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T
   exact Submodule.mem_map.mpr ⟨_, ⟨_, ⟨F, hF, rfl⟩, rfl⟩, jEE_injective' X hiu⟩
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨w, ⟨q, ⟨F, hF, rfl⟩, rfl⟩, rfl⟩` from `hy`. Establish `hx` using `(integral_iff_matrix_indefinite_side D G Pl0 T m A EE X P ψ Zs S tup eRR jA s hOk hX t (jA t ((rV0 D A P ψ t).mulVec F))).2 ⟨F, hF, rfl⟩`. Take `⟨s', c, hs', hxs⟩` from `hint _ hx`. Establish `hpt : ∀ u ∈ s', ∃ z : X.RR.V, X.jEE z = X.iota (tup t) u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `u hu`. Take `⟨⟨c', hc'⟩, hu0⟩` from `hs' hu`. Take `⟨F', -, rfl⟩` from `(integral_iff_matrix_indefinite_side D G Pl0 T m A EE X P ψ Zs S tup eRR jA s hOk hX t u).1 ⟨⟨fun v => ⟨D.what₂.OtoLL (c' v), D.O_int (c' v)⟩, hc'⟩, hu0⟩`. Conclude with `⟨_, (hX.iota t F').symm⟩`. Use `choose! z hz using hpt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `key : eRR ((S.ι t).mulVec (((A.side P ψ Zs).Pq t).mulVec F)) = ∑ u ∈ s', (c u : D.what₂.LL) • z u`. Apply `jEE_injective' X` to reduce the goal to its premises. Rewrite using `[← hX.iota t F, hxs, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, map_smulₛₗ, hz u hu]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsm : ∀ (a : 𝓞 D.what₂.LL) (v : X.RR.V), (a : D.what₂.LL) • v = a • v` using `fun a v => by`. Rewrite using `[← smul_one_smul D.what₂.LL a v, Algebra.smul_def, mul_one]`. Use `show eRR ((S.ι t).mulVec (((A.side P ψ Zs).Pq t).mulVec F)) ∈ _`. Rewrite using `[key]`. Use `Submodule.sum_mem _ fun u hu => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsm]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Use `show X.jEE (z u) ∈ X.RRset (tup t)`. Rewrite using `[hz u hu, RRset_eq_iota_image]`. Conclude with `⟨u, hs' hu, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem le_span_lemma_9 (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m)
     (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE)
@@ -643,7 +637,7 @@ private theorem le_span_lemma_9 (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T
   exact ⟨u, hs' hu, rfl⟩
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA s hOk hX t hint`. Conclude with `le_antisymm (span_le_lemma_8 D G Pl0 T m A EE X P ψ Zs S tup eRR jA s hOk hX t) (le_span_lemma_9 D G Pl0 T m A EE X P ψ Zs S tup eRR jA s hOk hX t hint)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem span_ratPoints_eq_matLat : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m) (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (S : IndefData (A.side P ψ Zs)) (tup : T → D.what₂.Tup) (eRR : (Fin S.D → D.what₂.LL) ≃ₗ[D.what₂.LL] X.RR.V) (jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t)) (s : ℕ), A.fam.Ok s → RowSideDef3 D A X P ψ Zs S tup eRR jA → ∀ (t : T), (∀ x : X.Amb (tup t), ((∃ c : X.Amb (tup t) → 𝓞 D.what₂.LL, x = ∑ v ∈ (X.Mtilde (tup t)).gen, D.what₂.embLL (c v : D.what₂.LL) • v) ∧ x ∈ X.V0 (tup t)) → ∃ (s : Finset (X.Amb (tup t))) (c : X.Amb (tup t) → 𝓞 D.what₂.LL), (s : Set (X.Amb (tup t))) ⊆ (X.Mtilde (tup t)).carrier ∩ (X.V0 (tup t) : Set (X.Amb (tup t))) ∧ x = ∑ y ∈ s, D.what₂.embLL (c y : D.what₂.LL) • y) → Submodule.span (𝓞 D.what₂.LL) {y : X.RR.V | X.jEE y ∈ X.RRset (tup t)} = (matLat (S.ι t) ((A.side P ψ Zs).abelian₂ t)).map ((eRR : (Fin S.D → D.what₂.LL) →ₗ[D.what₂.LL] X.RR.V).restrictScalars (𝓞 D.what₂.LL)) := by
   intro D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA s hOk hX t hint
@@ -659,7 +653,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.DivisionValue
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA s hOk hX t hint`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `GlobalTheory.CompanionTheory.MemQ.span_le_lemma_8 D G Pl0 T m A EE X P ψ Zs S tup eRR jA s hOk hX t`. Conclude with `GlobalTheory.CompanionTheory.MemQ.le_span_lemma_9 D G Pl0 T m A EE X P ψ Zs S tup eRR jA s hOk hX t hint`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.indefinite_side_row_lattice_two : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m) (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (S : IndefData (A.side P ψ Zs)) (tup : T → D.what₂.Tup) (eRR : (Fin S.D → D.what₂.LL) ≃ₗ[D.what₂.LL] X.RR.V) (jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t)) (s : ℕ), A.fam.Ok s → RowSideDef3 D A X P ψ Zs S tup eRR jA → ∀ (t : T), (∀ x : X.Amb (tup t), ((∃ c : X.Amb (tup t) → 𝓞 D.what₂.LL, x = ∑ v ∈ (X.Mtilde (tup t)).gen, D.what₂.embLL (c v : D.what₂.LL) • v) ∧ x ∈ X.V0 (tup t)) → ∃ (s : Finset (X.Amb (tup t))) (c : X.Amb (tup t) → 𝓞 D.what₂.LL), (s : Set (X.Amb (tup t))) ⊆ (X.Mtilde (tup t)).carrier ∩ (X.V0 (tup t) : Set (X.Amb (tup t))) ∧ x = ∑ y ∈ s, D.what₂.embLL (c y : D.what₂.LL) • y) → Submodule.span (𝓞 D.what₂.LL) {y : X.RR.V | X.jEE y ∈ X.RRset (tup t)} = (matLat (S.ι t) ((A.side P ψ Zs).abelian₂ t)).map ((eRR : (Fin S.D → D.what₂.LL) →ₗ[D.what₂.LL] X.RR.V).restrictScalars (𝓞 D.what₂.LL)) := by
   intro D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA s hOk hX t hint
@@ -676,15 +670,15 @@ open scoped Matrix
 namespace GlobalTheory.CompanionTheory.MemQ
 
 /- English proof (translation)
-Establish `hsm : ∀ (a : 𝓞 D.what₂.LL) (v : X.RR.V), (a : D.what₂.LL) • v = a • v` using `fun a v => by`. Rewrite using `[← smul_one_smul D.what₂.LL a v, Algebra.smul_def, mul_one]`. Establish `hsym : ∀ (a : 𝓞 D.what₂.LL) (v : X.RR.V), eRR.symm (a • v) = a • eRR.symm v` using `fun a v => by`. Rewrite using `[← hsm, LinearEquiv.map_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hmap : ∀ (L : Submodule (𝓞 D.what₂.LL) (Fin S.D → D.what₂.LL)) (v : X.RR.V), v ∈ L.map ((eRR : (Fin S.D → D.what₂.LL) →ₗ[D.what₂.LL] X.RR.V).restrictScalars (𝓞 D.what₂.LL)) ↔ eRR.symm v ∈ L`. Introduce `L v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Simplify using `using hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Conclude with `⟨_, h, by simp⟩`. Establish `hloc : ∀ w : D.what₂.places.Pl, Submodule.span (𝓞 D.what₂.LL) {y : X.RR.V | X.jEE y ∈ X.RRset (D.what₂.muAt w)} = (matLat (S.ι (S.μ (D.plEq w))) ((A.side P ψ Zs).abelian₂ (S.μ (D.plEq w)))).map ((eRR : (Fin S.D → D.what₂.LL) →ₗ[D.what₂.LL] X.RR.V).restrictScalars (𝓞 D.what₂.LL))` using `fun w => by`. Rewrite using `[hmu w]`. Conclude with `hspan _ ⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmap]`. Simplify using `only [hloc, hmap, hsym]`. Simplify using `only [IndefData.RR, glueLat, Submodule.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce `h w'`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, hdx⟩` from `h (D.plEq.symm w')`. Rewrite `hd`, `hdx` using `[Equiv.apply_symm_apply]`. Conclude with `⟨d, hd, hdx⟩`. Introduce `h w`. Conclude with `h (D.plEq w)`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem mem_glued_lemma_10 (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m)
     (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE)
@@ -732,11 +726,9 @@ private theorem mem_glued_lemma_10 (D : D7) (G : Type) [Group G] [Fintype G] (Pl
     exact h (D.plEq w)
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA hmu hspan`. Establish `key` using `GlobalTheory.CompanionTheory.MemQ.mem_glued_lemma_10 D G Pl0 T m A EE X P ψ Zs S tup eRR hmu hspan`. Unfold `RowSide.RRDef`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Rewrite using `[← key x]`. Conclude with `h x`. Introduce `h x`. Rewrite using `[h]`.
-
-Conclude with `(key x).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rrDef_iff_glued : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m) (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (S : IndefData (A.side P ψ Zs)) (tup : T → D.what₂.Tup) (eRR : (Fin S.D → D.what₂.LL) ≃ₗ[D.what₂.LL] X.RR.V) (jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t)), (∀ w, D.what₂.muAt w = tup (S.μ (D.plEq w))) → (∀ t : T, (∃ w, t = S.μ w) → Submodule.span (𝓞 D.what₂.LL) {y : X.RR.V | X.jEE y ∈ X.RRset (tup t)} = (matLat (S.ι t) ((A.side P ψ Zs).abelian₂ t)).map ((eRR : (Fin S.D → D.what₂.LL) →ₗ[D.what₂.LL] X.RR.V).restrictScalars (𝓞 D.what₂.LL))) → (X.RRDef ↔ X.RR.L = S.RR.map ((eRR : (Fin S.D → D.what₂.LL) →ₗ[D.what₂.LL] X.RR.V).restrictScalars (𝓞 D.what₂.LL))) := by
   intro D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA hmu hspan
@@ -760,11 +752,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.DivisionValue
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA hmu hspan`. Establish `key` using `GlobalTheory.CompanionTheory.MemQ.mem_glued_lemma_10 D G Pl0 T m A EE X P ψ Zs S tup eRR hmu hspan`. Unfold `RowSide.RRDef`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Rewrite using `[← key x]`. Conclude with `h x`. Introduce `h x`. Rewrite using `[h]`.
-
-Conclude with `(key x).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.indefinite_side_row_lattice_three : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m) (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (S : IndefData (A.side P ψ Zs)) (tup : T → D.what₂.Tup) (eRR : (Fin S.D → D.what₂.LL) ≃ₗ[D.what₂.LL] X.RR.V) (jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t)), (∀ w, D.what₂.muAt w = tup (S.μ (D.plEq w))) → (∀ t : T, (∃ w, t = S.μ w) → Submodule.span (𝓞 D.what₂.LL) {y : X.RR.V | X.jEE y ∈ X.RRset (tup t)} = (matLat (S.ι t) ((A.side P ψ Zs).abelian₂ t)).map ((eRR : (Fin S.D → D.what₂.LL) →ₗ[D.what₂.LL] X.RR.V).restrictScalars (𝓞 D.what₂.LL))) → (X.RRDef ↔ X.RR.L = S.RR.map ((eRR : (Fin S.D → D.what₂.LL) →ₗ[D.what₂.LL] X.RR.V).restrictScalars (𝓞 D.what₂.LL))) := by
   intro D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA hmu hspan
@@ -788,9 +778,9 @@ open scoped Matrix
 namespace GlobalTheory.CompanionTheory.MemQ
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA s hOk hX hmu hint`. Use `rrDef_iff_glued D G Pl0 T m A EE X P ψ Zs S tup eRR jA hmu ?_` and prove the remaining obligations. Introduce and unpack `t ⟨w', rfl⟩`. Apply `span_ratPoints_eq_matLat D G Pl0 T m A EE X P ψ Zs S tup eRR jA s hOk hX` to reduce the goal to its premises. Establish `h` using `hint (D.plEq.symm w')`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `h` using `[hmu, Equiv.apply_symm_apply]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rr_lat_of_rowSide : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m) (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (S : IndefData (A.side P ψ Zs)) (tup : T → D.what₂.Tup) (eRR : (Fin S.D → D.what₂.LL) ≃ₗ[D.what₂.LL] X.RR.V) (jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t)) (s : ℕ), A.fam.Ok s → RowSideDef3 D A X P ψ Zs S tup eRR jA → (∀ w, D.what₂.muAt w = tup (S.μ (D.plEq w))) → (∀ w, (∀ x : X.Amb (D.what₂.muAt w), ((∃ c : X.Amb (D.what₂.muAt w) → 𝓞 D.what₂.LL, x = ∑ v ∈ (X.Mtilde (D.what₂.muAt w)).gen, D.what₂.embLL (c v : D.what₂.LL) • v) ∧ x ∈ X.V0 (D.what₂.muAt w)) → ∃ (s : Finset (X.Amb (D.what₂.muAt w))) (c : X.Amb (D.what₂.muAt w) → 𝓞 D.what₂.LL), (s : Set (X.Amb (D.what₂.muAt w))) ⊆ (X.Mtilde (D.what₂.muAt w)).carrier ∩ (X.V0 (D.what₂.muAt w) : Set (X.Amb (D.what₂.muAt w))) ∧ x = ∑ y ∈ s, D.what₂.embLL (c y : D.what₂.LL) • y)) → (X.RRDef ↔ X.RR.L = S.RR.map ((eRR : (Fin S.D → D.what₂.LL) →ₗ[D.what₂.LL] X.RR.V).restrictScalars (𝓞 D.what₂.LL))) := by
   intro D G _ _ Pl0 T m A EE _ _ _ X P ψ Zs S tup eRR jA s hOk hX hmu hint
@@ -813,7 +803,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.Twist
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `hx`. Take `⟨d, rfl⟩` from `hy`. Use `⟨c + d, ?_⟩` and prove the remaining obligations. Simplify using `[add_smul, Finset.sum_add_distrib]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem oLat_add_mem {O : Type} [CommRing O] {φ : O →+* ℂ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (L : Formalism.BasicNotions.Rows.OLat O φ V) {x y : V} (hx : x ∈ L.carrier) (hy : y ∈ L.carrier) :
@@ -824,14 +814,14 @@ theorem oLat_add_mem {O : Type} [CommRing O] {φ : O →+* ℂ} {V : Type} [AddC
   simp [add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Conclude with `⟨0, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem oLat_zero_mem {O : Type} [CommRing O] {φ : O →+* ℂ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (L : Formalism.BasicNotions.Rows.OLat O φ V) : (0 : V) ∈ L.carrier := by
   exact ⟨0, by simp⟩
 
 /- English proof (translation)
-Use `⟨fun w => if w = v then 1 else 0, ?_⟩` and prove the remaining obligations. Simplify using `[hv]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem oLat_gen_mem {O : Type} [CommRing O] {φ : O →+* ℂ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (L : Formalism.BasicNotions.Rows.OLat O φ V) {v : V} (hv : v ∈ L.gen) : v ∈ L.carrier := by
@@ -840,9 +830,9 @@ theorem oLat_gen_mem {O : Type} [CommRing O] {φ : O →+* ℂ} {V : Type} [AddC
   simp [hv]
 
 /- English proof (translation)
-Take `⟨⟨c, hc⟩, hx0⟩` from `hx`. Establish `hxM : x ∈ (X.Mtilde μ).carrier`. Rewrite using `[hc]`. Conclude with `Finset.sum_induction _ (· ∈ (X.Mtilde μ).carrier) (fun a b ha hb => oLat_add_mem _ ha hb) (oLat_zero_mem _) fun v hv => hstab μ (c v) v (oLat_gen_mem _ hv)`. Use `⟨{x}, fun _ => 1, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Rewrite `hy` using `[Finset.coe_singleton, Set.mem_singleton_iff]`. Substitute `hy` using the available equality. Conclude with `⟨hxM, hx0⟩`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_finset_sum_of_mem_V0_Mtilde {D : D7} {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE]
     [FiniteDimensional ℂ EE] (X : RowSide D EE)
@@ -869,7 +859,7 @@ private theorem exists_finset_sum_of_mem_V0_Mtilde {D : D7} {EE : Type} [NormedA
   · simp
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T m A s EE _ _ _ X P ψ Zs S tup eRR jA hOk hX hRR hmu hstab`. Use `(GlobalTheory.CompanionTheory.MemQ.rr_lat_of_rowSide D G Pl0 T m A EE X P ψ Zs S tup eRR jA s hOk hX hmu ?_).mp hRR` and prove the remaining obligations. Introduce `w x hx`. Conclude with `GlobalTheory.CompanionTheory.Twist.exists_finset_sum_of_mem_V0_Mtilde X hstab _ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rr_lat_of_stable : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m) (s : ℕ)
     (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE)
@@ -893,7 +883,7 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Matrix Formalism.L2.DIV
 open scoped InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T m A s EE _ _ _ X P ψ Zs S tup eRR jA hOk hX hRR hmu hstab`. Use `(GlobalTheory.CompanionTheory.MemQ.rr_lat_of_rowSide D G Pl0 T m A EE X P ψ Zs S tup eRR jA s hOk hX hmu ?_).mp hRR` and prove the remaining obligations. Introduce `w x hx`. Conclude with `GlobalTheory.CompanionTheory.Twist.exists_finset_sum_of_mem_V0_Mtilde X hstab _ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Adopt.indefinite_side_row_lattice_adopted : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m) (s : ℕ)
     (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE)

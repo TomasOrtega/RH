@@ -13,9 +13,9 @@ section SlopeTestRemainingChoices
 variable {l : ℕ} [Fact l.Prime] {L : Loc} {G G0 : Glob l L}
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `CharP.exists K`. Establish `hpp : p.Prime` using `CharP.char_is_prime K p`. Distinguish the cases in `e : p = l`. Substitute `e` using the available equality. Conclude with `CharP.cast_eq_zero K p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hc : l.Coprime p` using `(Nat.coprime_primes Fact.out hpp).2 (Ne.symm e)`. Use `(PadicInt.isUnit_iff.2 (PadicInt.norm_natCast_eq_one_iff.2 hc)).map (algebraMap ℤ_[l] K)` as an intermediate fact. Rewrite `this` using `[map_natCast, CharP.cast_eq_zero]`. Conclude with `absurd this not_isUnit_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem char_K (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [Finite K] [Algebra ℤ_[l] K] : (l : K) = 0 := by
   obtain ⟨p, hp⟩ := CharP.exists K
@@ -28,7 +28,7 @@ private theorem char_K (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [Finite K] 
     exact absurd this not_isUnit_zero
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `(Fact.out : l.Prime).odd_of_ne_two hl`. Use `IsUnit.of_mul_eq_one (-(s : A)) ?_` and prove the remaining obligations. Rewrite `h` using `[hs]`. Move the coercions through the operations in `at h`. Take the linear combination `-h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem two_unit {A : Type} [CommRing A] (hl : l ≠ 2) (h : (l : A) = 0) : IsUnit (2 : A) := by
   obtain ⟨s, hs⟩ := (Fact.out : l.Prime).odd_of_ne_two hl
@@ -38,7 +38,7 @@ private theorem two_unit {A : Type} [CommRing A] (hl : l ≠ 2) (h : (l : A) = 0
   linear_combination -h
 
 /- English proof (translation)
-Distinguish the cases in `h : γ ∈ G.η.ker`. Conclude with `⟨⟨γ, h⟩, Or.inl rfl⟩`. Use `⟨⟨γ * G.c, ?_⟩, Or.inr (by simp only [mul_assoc, G.c_sq, mul_one])⟩` and prove the remaining obligations. Rewrite `h`, the goal using `[MonoidHom.mem_ker]`. Rewrite using `[map_mul, G.η_c, (Int.units_eq_one_or (G.η γ)).resolve_left h]`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -51,11 +51,9 @@ private theorem cases_G (γ : G.Γ) : ∃ g : G.G₀, γ = g ∨ γ = g * G.c :=
     simp
 
 /- English proof (translation)
-Establish `e3 : Filter.map (Subtype.val : G.G₀ → G.Γ) (nhds 1) = nhds 1` using `G.η_open.isOpenEmbedding_subtypeVal.map_nhds_eq 1`. Establish `hk' : ∀ᶠ g : G.Γ in nhds 1, ∀ m, ρ g m = m` using `by rw [← e3, eventually_map]; exact hk`. Use `continuous_prod_of_discrete_right.2 fun m => ?_` and prove the remaining obligations. Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_eventually_eq _).2 fun g0 => ?_)` and prove the remaining obligations. Establish `hc : Tendsto (fun g => g0⁻¹ * g) (nhds g0) (nhds 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: Continuous fun g : G.Γ => g0⁻¹ * g` using `by fun_prop`. Simplify using `using this.tendsto g0`. Use `filter_upwards [hc.eventually hk'] with g hg`. Establish `: g = g0 * (g0⁻¹ * g)` using `by simp`. Use `show ρ g m = ρ g0 m`.
-
-Rewrite using `[this, map_mul, Module.End.mul_apply, hg]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cont_rep {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] [TopologicalSpace M]
     [DiscreteTopology M] (ρ : Representation A G.Γ M) (hk : ∀ᶠ g : G.G₀ in nhds 1, ∀ m, ρ g m = m) :
@@ -74,7 +72,7 @@ private theorem cont_rep {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
   rw [this, map_mul, Module.End.mul_apply, hg]
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g0`. Use `filter_upwards [Filter.eventually_all.2 fun i => (h i).eventually_eq g0] with g hg`. Conclude with `funext hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem lc_pi {Γ R ι : Type} [TopologicalSpace Γ] [Finite ι] (f : Γ → ι → R)
     (h : ∀ i, IsLocallyConstant fun g => f g i) : IsLocallyConstant f := by
@@ -98,13 +96,13 @@ private theorem iota_val (o : IsOd h x X D) (m) :
     (iota k o m : Matrix (Fin n) (Fin n) (DD X k.g)) = mk2 (fun _ => 0) (o.e m) := rfl
 
 /- English proof (translation)
-Introduce `_ _ e` and use `o.e.injective (Subtype.ext (epsPrimeEtaMatrix_injective_pair (congrArg Subtype.val e)).2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem iota_inj (o : IsOd h x X D) : Function.Injective (iota k o) := fun _ _ e =>
   o.e.injective (Subtype.ext (epsPrimeEtaMatrix_injective_pair (congrArg Subtype.val e)).2)
 
 /- English proof (translation)
-Take `⟨P, Z', -, hZ, e'⟩` from `exists_evenOddBlock_decomposition_of_mem M.2`. Use `⟨o.e.symm ⟨Z', hZ⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[iota_val, LinearEquiv.apply_symm_apply, e, (epsPrimeEtaMatrix_injective_pair (e.symm.trans e')).2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem iota_range (o : IsOd h x X D) (M : W2 n x.A X k.g x.a) (Z)
     (e : (M : Matrix (Fin n) (Fin n) (DD X k.g)) = mk2 (fun _ => 0) Z) : M ∈ LinearMap.range (iota k o) := by
@@ -128,16 +126,16 @@ private def triN (v : L.Vl) : Submodule x.A (W2 n x.A X k.g x.a) where
     simp only [Submodule.coe_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, e1, smul_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h _ _ e => h e, fun h i j e => h i j e⟩`.
+Supply the required witnesses or components.
 -/
 private theorem triN_iff (v : L.Vl) (M : W2 n x.A X k.g x.a) :
     M ∈ triN k v ↔ ∀ i j, j < i → (k.wi1 X v * (M : Matrix (Fin n) (Fin n) (DD X k.g)) * k.w1 X v) i j = 0 :=
   ⟨fun h _ _ e => h e, fun h i j e => h i j e⟩
 
 /- English proof (translation)
-Use `show (k.wi1 X v * (M' : Matrix (Fin n) (Fin n) (DD X k.g)) * k.w1 X v).BlockTriangular id`. Establish `t : ∀ g : L.Gv v, (k.wi1 X v * k.ρ1 X (G0.φ v g) * k.w1 X v).BlockTriangular id` using `fun g i j e => ((tri l G0.frame n x k X v).1 g).1 i j e`. Establish `e2 : ∀ P Q Z : Matrix (Fin n) (Fin n) (DD X k.g), k.wi1 X v * (P * Z * Q) * k.w1 X v = (k.wi1 X v * P * k.w1 X v) * (k.wi1 X v * Z * k.w1 X v) * (k.wi1 X v * Q * k.w1 X v)`. Introduce `P Q Z`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Matrix.mul_assoc (k.w1 X v) (k.wi1 X v), ((rho1 l G0.frame n x k X).2.2.2.1 v).2, Matrix.one_mul]`. Rewrite using `[e, e2]`. Conclude with `((t g).mul hM).mul (t g⁻¹)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem triN_conj (v : L.Vl) (g : L.Gv v) (M M' : W2 n x.A X k.g x.a) (hM : M ∈ triN k v)
     (e : (M' : Matrix (Fin n) (Fin n) (DD X k.g)) = k.ρ1 X (G0.φ v g) * M * k.ρ1 X (G0.φ v g⁻¹)) : M' ∈ triN k v := by
@@ -153,7 +151,7 @@ private theorem triN_conj (v : L.Vl) (g : L.Gv v) (M M' : W2 n x.A X k.g x.a) (h
   exact ((t g).mul hM).mul (t g⁻¹)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact Matrix.ext fun _ _ => rfl`. Consider the case `insert i s hi ih => simp only [Finset.sum_insert hi]`. Rewrite using `[ih, epsPrimeEtaMatrix_smul, epsPrimeEtaMatrix_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_smul_block_matrix {ι : Type} (s : Finset ι) (c : ι → x.A) (P : ι → Fin k.g → Matrix (Fin n) (Fin n) X)
     (Z : ι → Matrix (Fin n) (Fin n) X) :
@@ -164,7 +162,7 @@ private theorem sum_smul_block_matrix {ι : Type} (s : Finset ι) (c : ι → x.
   | insert i s hi ih => simp only [Finset.sum_insert hi]; rw [ih, epsPrimeEtaMatrix_smul, epsPrimeEtaMatrix_add]
 
 /- English proof (translation)
-Take `⟨P', Z', hP', hZ, e5⟩` from `exists_evenOddBlock_decomposition_of_mem E.2`. Take `⟨rfl, rfl⟩` from `epsPrimeEtaMatrix_injective_pair (e5.symm.trans e)`. Rewrite using `[e5, weyl_conj_block_matrix, epsPrimeEtaMatrix_apply_eq_zero_iff]`. Conclude with `⟨hP, od_diag (x := x) X v (add_mem hZ (cmm_mem k X v hP')) i⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem diag0 (v : L.Vl) (E : W2 n x.A X k.g x.a) {P Z} (i : Fin n)
     (e : (E : Matrix (Fin n) (Fin n) (DD X k.g)) = mk2 P Z) (hP : ∀ j, (x.wiX X v * P j * x.wX X v) i i = 0) :
@@ -175,9 +173,9 @@ private theorem diag0 (v : L.Vl) (E : W2 n x.A X k.g x.a) {P Z} (i : Fin n)
   exact ⟨hP, od_diag (x := x) X v (add_mem hZ (cmm_mem k X v hP')) i⟩
 
 /- English proof (translation)
-Take `⟨P', Z', hP', hZ, e5⟩` from `exists_evenOddBlock_decomposition_of_mem E.2`. Take `⟨rfl, rfl⟩` from `epsPrimeEtaMatrix_injective_pair (e5.symm.trans e)`. Use `⟨o.e.symm ⟨Z' + cmm k X v P', add_mem hZ (cmm_mem k X v hP')⟩, (triN_iff k v _).2 fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.coe_sub, iota_val, LinearEquiv.apply_symm_apply, e5, epsPrimeEtaMatrix_sub, weyl_conj_block_matrix, epsPrimeEtaMatrix_apply_eq_zero_iff]`. Simplify using `only [sub_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun j => hP j a b hab, by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem fixV (o : IsOd h x X D) (v : L.Vl) (E : W2 n x.A X k.g x.a) {P Z}
     (e : (E : Matrix (Fin n) (Fin n) (DD X k.g)) = mk2 P Z)
@@ -190,7 +188,7 @@ private theorem fixV (o : IsOd h x X D) (v : L.Vl) (E : W2 n x.A X k.g x.a) {P Z
   exact ⟨fun j => hP j a b hab, by simp⟩
 
 /- English proof (translation)
-Use `(o.kerV v m').trans (Iff.trans ?_ (triN_iff k v _).symm)` and prove the remaining obligations. Simplify using `only [iota_val, weyl_conj_block_matrix, epsPrimeEtaMatrix_apply_eq_zero_iff, cmm, mul_zero, zero_mul, sub_self, Finset.sum_const_zero, add_zero, Matrix.zero_apply, implies_true, true_and]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem kerV' (o : IsOd h x X D) (v : L.Vl) (m') : D.π (.inl v) m' = 0 ↔ iota k o m' ∈ triN k v := by
   refine (o.kerV v m').trans (Iff.trans ?_ (triN_iff k v _).symm)
@@ -198,7 +196,7 @@ private theorem kerV' (o : IsOd h x X D) (v : L.Vl) (m') : D.π (.inl v) m' = 0 
     add_zero, Matrix.zero_apply, implies_true, true_and]
 
 /- English proof (translation)
-Simplify using `only [add_zero, Matrix.mul_sum, Matrix.sum_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.sum_apply, Matrix.smul_apply, h, smul_zero, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sum_diag {A X ι : Type} [CommRing A] [CommRing X] [Algebra A X] [Fintype ι] {n : ℕ} (c : ι → A)
     (a b : Matrix (Fin n) (Fin n) X) (P : ι → Matrix (Fin n) (Fin n) X) (i : Fin n)
@@ -210,71 +208,61 @@ end SlopeTestRemainingChoices
 
 set_option maxHeartbeats 300000 in
 /- English proof (translation)
-Introduce and unpack `l _ L G G0 h n x k X _ _ _ D e z hl ⟨m, hm⟩ o hur hz`. Establish `hA : (l : x.A) = 0` using `by rw [← map_natCast (algebraMap x.K x.A), char_K l x.K, map_zero]`. Take `⟨rep, had⟩` from `adEx l G.frame x.A _ n _ _ _ (ok1 l L G G0 h n x k X 1).2.2`. Take `⟨repE, hadE⟩` from `adEx l G.frame x.A X n _ _ _ (okX l L G G0 h n x X 1).1`. Establish `ha : ∀ (g : G.G₀) (Z : W2 n x.A X k.g x.a), (rep g Z : Matrix (Fin n) (Fin n) (DD X k.g)) = k.ρ1 X (h.p₀ g) * Z * k.ρ1 X (h.p₀ g⁻¹)` using `fun g Z => by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify `had.1 g Z` using `only [MonoidHom.one_apply, map_one, one_smul]`. Establish `hc : ∀ Z : W2 n x.A X k.g x.a, (rep G.c Z : Matrix (Fin n) (Fin n) (DD X k.g)) = -(Z : Matrix (Fin n) (Fin n) (DD X k.g))ᵀ` using `fun Z => by`. Simplify `had.2 Z` using `only [MonoidHom.one_apply, map_one, one_smul]`. Establish `haE : ∀ (g : G.G₀) (Z : Ev x.A X n x.a), (repE g Z : Matrix (Fin n) (Fin n) X) = x.ρX X (h.p₀ g) * Z * x.ρX X (h.p₀ g⁻¹)` using `fun g Z => by`. Simplify `hadE.1 g Z` using `only [MonoidHom.one_apply, map_one, one_smul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcE : ∀ Z : Ev x.A X n x.a, (repE G.c Z : Matrix (Fin n) (Fin n) X) = -(Z : Matrix (Fin n) (Fin n) X)ᵀ` using `fun Z => by simpa only [MonoidHom.one_apply, map_one, one_smul] using hadE.2 Z`. Establish `hp : Continuous h.p₀` using `(h.cont.comp continuous_subtype_val).subtype_mk _`. Establish `hφ : ∀ v g, h.p₀ (G.φ v g) = G0.φ v g` using `fun v g => Subtype.ext (h.φ v g)`. Establish `hφu : ∀ v g, h.p₀ (G.φu v g) = G0.φu v g` using `fun v g => Subtype.ext (h.φu v g)`. Take `⟨r1, -, -, -, r5⟩` from `rho1 l G0.frame n x k X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `letI : TopologicalSpace (W2 n x.A X k.g x.a) := ⊥`. Use `haveI : DiscreteTopology (W2 n x.A X k.g x.a) := ⟨rfl⟩`. Use `haveI : Finite (DD X k.g) := Finite.of_equiv _ DD.equiv.symm`. Establish `hcont : ContAction rep`. Use `cont_rep rep ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [((isLocallyConstant_rho1_of_algebraMap_pow_eq_zero k X m hm).comp_continuous hp).eventually_eq 1, ((isLocallyConstant_rho1_of_algebraMap_pow_eq_zero k X m hm).comp_continuous (hp.comp continuous_inv)).eventually_eq 1] with g h1 h2 Z`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Function.comp, inv_one, map_one, r1] at h1 h2`. Rewrite using `[ha, h1, h2, one_mul, mul_one]`. Set `M : FRep x.A G.Γ` to `{ X := W2 n x.A X k.g x.a, ρ := rep, cont := hcont }`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ∀ γ m, iota k o (D.M.ρ γ m) = rep γ (iota k o m)`. Establish `e1 : ∀ (g : G.G₀) m, iota k o (D.M.ρ g m) = rep g (iota k o m)` using `fun g m => Subtype.ext (by rw [ha, iota_val, iota_val, o.act, rho1_conj_block_zero])`. Establish `e2 : ∀ m, iota k o (D.M.ρ G.c m) = rep G.c (iota k o m)` using `fun m => Subtype.ext (by rw [hc, iota_val, iota_val, o.actc, neg_transpose_epsPrimeEtaMatrix]; simp)`. Introduce `γ m`. Take `⟨g, rfl | rfl⟩` from `cases_G γ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e1 g m`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, e1, e2]`. Establish `eqv : ∀ γ (Mx : W2 n x.A X k.g x.a) (P : Fin k.g → Ev x.A X n x.a) Z, (Mx : Matrix (Fin n) (Fin n) (DD X k.g)) = mk2 (fun j => P j) Z → ∃ Z', (rep γ Mx : Matrix (Fin n) (Fin n) (DD X k.g)) = mk2 (fun j => repE γ (P j)) Z'`. Establish `e1 : ∀ (γ : G.G₀) (Mx : W2 n x.A X k.g x.a) (P : Fin k.g → Ev x.A X n x.a) Z, (Mx : Matrix (Fin n) (Fin n) (DD X k.g)) = mk2 (fun j => P j) Z → ∃ Z', (rep γ Mx : Matrix (Fin n) (Fin n) (DD X k.g)) = mk2 (fun j => repE γ (P j)) Z'`. Introduce `γ Mx P Z e`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [ha, haE, e]`. Conclude with `rho1_conj_block_matrix k X _ _ _ _`. Introduce `γ Mx P Z e`. Take `⟨g, rfl | rfl⟩` from `cases_G γ`. Conclude with `e1 g Mx P Z e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Simplify using `only [map_mul, Module.End.mul_apply]`. Conclude with `e1 g _ (fun j => repE G.c (P j)) _ (by simp only [hc, hcE, e, neg_transpose_epsPrimeEtaMatrix]; rfl)`. Establish `hy : ∀ i j, ∃ y ∈ Zl repE, y G.c = 0 ∧ ∀ g : G.G₀, (y g : Matrix (Fin n) (Fin n) X) = z i j g`. Introduce `i j`. Take `⟨a1, a2, a3, a4, -, -⟩` from `hz i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `(polZ l G.frame x.A X n _ _ _ repE hadE).1 (z i j) a1 (lc_pi _ fun a => lc_pi _ fun b => (adicLC _ _ _ m _ (by rw [← map_pow, hm])).1 (a2 a b)) (fun g g' => by simpa only [MonoidHom.one_apply, map_one, one_smul] using a3 g g') (fun g => by simpa only [MonoidHom.one_apply, map_one …` and prove the remaining obligations. Use `choose y hy1 hy2 hy3 using hy`. Use `choose Y hY1 hY2 using fun i j v => (hz i j).2.2.2.2.2 v`. Set `sec : (Fin k.g → Ev x.A X n x.a) → W2 n x.A X k.g x.a` to `fun P => ⟨mk2 (fun j => P j) 0, evenOddBlockMatrix_mem_adjointDeformSubspace (fun j => (P j).2) (zero_mem _)⟩`. Set `xs : Fin e → G.Γ → W2 n x.A X k.g x.a` to `fun i γ => sec fun j => y i j γ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hxs : ∀ i, Continuous (xs i)` using `fun i => ((lc_pi (fun γ j => y i j γ) fun j => (hy1 i j).1).comp sec).continuous`. Establish `hd : ∀ i s, d1 M.ρ (xs i) s ∈ LinearMap.range (iota k o)`. Introduce and unpack `i ⟨g, g'⟩`. Take `⟨Z', e⟩` from `eqv g (xs i g') _ _ rfl`. Use `iota_range k o _ (Z' - 0 + 0) ?_` and prove the remaining obligations.
+Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show ((rep g (xs i g') : Matrix (Fin n) (Fin n) (DD X k.g)) - mk2 (fun j => y i j (g * g')) 0 + mk2 (fun j => y i j g) 0) = _`. Rewrite using `[e, epsPrimeEtaMatrix_sub, epsPrimeEtaMatrix_add]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[(hy1 i j).2, Submodule.coe_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Normalize the expressions using the abelian group laws. Set `Ys : Fin e → L.Vl → W2 n x.A X k.g x.a` to `fun i v => sec fun j => ⟨Y i j v, hY1 i j v⟩`. Establish `hJ : ∀ u, ∀ g ∈ L.Ju u, ∀ Z, rep (G.φu u g) Z = Z` using `fun u g hg Z => Subtype.ext (by`. Rewrite using `[ha, ← map_inv, hφu, hφu, r5 u _ ⟨g, hg, rfl⟩, r5 u _ ⟨g⁻¹, inv_mem hg, rfl⟩, one_mul, mul_one])`. Establish `hU : ∀ i u, ∃ b : L.Gu u → W2 n x.A X k.g x.a, (Continuous b ∧ ∀ g g', b (g * g') = b g + rep (G.φu u g) (b g')) ∧ (∀ g ∈ L.Ju u, b g = 0) ∧ ∀ g, xs i (G.φu u g) - b g ∈ LinearMap.range (iota k o)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i u`. Establish `cφ : Continuous fun g => (G.φu u g : G.Γ)` using `continuous_subtype_val.comp (G.φu_cont u)`. Use `urLift (hur u) { X := W2 n x.A X k.g x.a, ρ := rep.comp (G.η.ker.subtype.comp (G.φu u)) cont := hcont.comp (cφ.prodMap continuous_id) } (fun m => by rw [← Nat.cast_smul_eq_nsmul x.A, hA, zero_smul]) (hJ u) (LinearMap.range (iota k o)) ?_ (fun g => xs i (G.φu u g)) ((hxs i).comp c …` and prove the remaining obligations. Introduce and unpack `g _ ⟨m, rfl⟩`. Conclude with `⟨_, he _ m⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨g, g'⟩`. Use `hd i (G.φu u g, G.φu u g')` as an intermediate fact. Rewrite `this` using `[d1_apply, ← Subgroup.coe_mul, ← map_mul]`. Conclude with `this`. Use `show mk2 (fun j => (y i j (G.φu u g) : Matrix (Fin n) (Fin n) X)) 0 = _`.
+Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Treat this case separately.
 
-Simplify using `only [hy3, fun j => (hz i j).2.2.2.2.1 u _ ⟨g, hg, rfl⟩]`. Use `choose bU hb1 hb2 hb3 using hU`. Establish `hV : ∀ i v (g : L.Gv v), ∃ Z, ((xs i (G.φ v g) - (rep (G.φ v g) (Ys i v) - Ys i v) : W2 n x.A X k.g x.a) : Matrix (Fin n) (Fin n) (DD X k.g)) = mk2 (fun j => z i j (G.φ v g) - dY G.frame (fun g => x.ρX X (h.p₀ g)) (Y i j v) (G.φ v g)) Z`. Introduce `i v g`. Take `⟨Z', e⟩` from `eqv (G.φ v g) (Ys i v) _ _ rfl`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨0 - (Z' - 0), ?_⟩` and prove the remaining obligations. Use `show mk2 (fun j => y i j (G.φ v g)) 0 - ((rep (G.φ v g) (Ys i v) : Matrix (Fin n) (Fin n) (DD X k.g)) - mk2 (fun j => Y i j v) 0) = _`. Rewrite using `[e, epsPrimeEtaMatrix_sub, epsPrimeEtaMatrix_sub]`. Simplify using `only [hy3, haE, dY]`. Set `N : (plOf G).ι → Submodule x.A M.X` to `fun w => match w with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `.inl v => triN k v`. Consider the case `.inr _ => ⊥`. Set `b : Fin e → ∀ w, (plOf G).G w → M.X` to `fun i w => match w with`. Consider the case `.inl v => fun g : L.Gv v => rep (G.φ v g) (Ys i v) - Ys i v`. Consider the case `.inr u => bU i u`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(translGen D M (iota k o) (iota_inj k o) he N ?_ ?_ G.c G.c_sq (two_unit hl hA) xs hxs hd (fun i => iota_range k o _ 0 (by show mk2 (fun j => (y i j G.c : Matrix (Fin n) (Fin n) X)) 0 = _` and prove the remaining obligations. Simplify using `only [hy2, ZeroMemClass.coe_zero])) b ?_ ?_ ?_).imp fun ξ hξ c hB => ?main`. Use `case main =>`. Take `⟨Ψ, h1, h2, h3, h4⟩` from `hξ c hB`. Establish `lcΨ : IsLocallyConstant Ψ` using `(IsLocallyConstant.iff_continuous _).2 h1.1`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Establish `h5 : ∀ g : G.G₀, ∃ Z, ((Ψ g : W2 n x.A X k.g x.a) : Matrix (Fin n) (Fin n) (DD X k.g)) = mk2 (fun j => ∑ i, c i • z i j g) Z`. Introduce `g`. Take `⟨m', hm'⟩` from `h3 g`. Establish `e1 : (Ψ g : W2 n x.A X k.g x.a) = ∑ i, c i • xs i g + iota k o m'`. Rewrite using `[hm']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(add_sub_cancel _ _).symm`. Rewrite using `[e1, Submodule.coe_add, Submodule.coe_sum, iota_val]`. Simplify using `only [Submodule.coe_smul, xs, sec, hy3]`. Rewrite using `[sum_smul_block_matrix, epsPrimeEtaMatrix_add]`. Simplify using `only [add_zero]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `⟨_, rfl⟩`. Use `⟨fun g => (Ψ g : W2 n x.A X k.g x.a), ⟨fun g => (Ψ g).2, fun a b => ?_, fun g g' => ?_, fun g => ?_, ?_, fun v => ?_⟩, fun j γ a b => ?_⟩` and prove the remaining obligations. Conclude with `fun s => (lcΨ.comp_continuous continuous_subtype_val).comp fun Z : W2 n x.A X k.g x.a => Ideal.Quotient.mk _ ((Z : Matrix (Fin n) (Fin n) (DD X k.g)) a b)`. Conclude with `(congrArg Subtype.val (h1.2 g g')).trans (congrArg (_ + ·) (ha g _))`. Simplify `((polZ l G.frame x.A _ n _ _ _ rep had).2 Ψ ⟨lcΨ, h1.2⟩ h2).1 g` using `only [MonoidHom.one_apply, map_one, one_smul]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `u _ ⟨g, hg, rfl⟩`. Take `⟨m', hm'⟩` from `h4 (.inr u)`. Establish `e1 : (Ψ (G.φu u g) : W2 n x.A X k.g x.a) - ∑ i, c i • bU i u g - (rep (G.φu u g) (iota k o m') - iota k o m') = 0` using `hm' g hg`. Simplify using `only [hJ u g hg, fun i => hb2 i u g hg, smul_zero, Finset.sum_const_zero, sub_self, sub_zero] at e1`. Conclude with `congrArg Subtype.val e1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m', hm'⟩` from `h4 (.inl v)`. Use `⟨(∑ i, c i • Ys i v + iota k o m' : W2 n x.A X k.g x.a), Subtype.prop _, fun g => ?_⟩` and prove the remaining obligations. Establish `e1 : (Ψ (G.φ v g) : W2 n x.A X k.g x.a) - ∑ i, c i • (rep (G.φ v g) (Ys i v) - Ys i v) - (rep (G.φ v g) (iota k o m') - iota k o m') ∈ triN k v` using `hm' g trivial`. Generalize the expression as in `hE : (Ψ (G.φ v g) : W2 n x.A X k.g x.a) - ∑ i, c i • (rep (G.φ v g) (Ys i v) - Ys i v) - (rep (G.φ v g) (iota k o m') - iota k o m') = E at e1`. Establish `e2 : ((Ψ (G.φ v g) : W2 n x.A X k.g x.a) : Matrix (Fin n) (Fin n) (DD X k.g)) - dY G.frame (fun g => k.ρ1 X (h.p₀ g)) (∑ i, c i • Ys i v + iota k o m' : W2 n x.A X k.g x.a) (G.φ v g) = E`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[dY, ← ha, ← Submodule.coe_sub, ← Submodule.coe_sub, ← hE]`. Use `congr 1`. Simplify using `only [map_add, map_sum, map_smul, smul_sub, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Use `show (∀ i j, j < i → (k.wi1 X v * (((Ψ (G.φ v g) : W2 n x.A X k.g x.a) : Matrix (Fin n) (Fin n) (DD X k.g)) - _) * k.w1 X v) i j = 0) ∧ (_ → ∀ i, (k.wi1 X v * (((Ψ (G.φ v g) : W2 n x.A X k.g x.a) : Matrix (Fin n) (Fin n) (DD X k.g)) - _) * k.w1 X v) i i = 0)`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `erw [e2]`. Use `⟨(triN_iff k v E).1 e1, fun hg i => ?_⟩` and prove the remaining obligations. Take `⟨m2, hm2⟩` from `h3 (G.φ v g)`. Establish `e3 : E = ∑ i, c i • (xs i (G.φ v g) - (rep (G.φ v g) (Ys i v) - Ys i v)) + iota k o (m2 - (D.M.ρ (G.φ v g) m' - m'))`. Rewrite using `[← hE, map_sub, map_sub, he, hm2]`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [smul_sub, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Use `choose Zv hZv using fun i => hV i v g`. Establish `e4` using `congrArg Subtype.val e3`. Rewrite `e4` using `[Submodule.coe_add, Submodule.coe_sum, iota_val]`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Submodule.coe_smul, hZv] at e4`. Rewrite `e4` using `[sum_smul_block_matrix, epsPrimeEtaMatrix_add]`. Conclude with `diag0 k v E i e4 fun j => sum_diag c _ _ _ i fun s => (hY2 s j v g).2 hg i`. Take `⟨Z, e1⟩` from `h5 γ beta_reduce`. Rewrite using `[e1]`.
-
-Both sides reduce to the same expression. Introduce and unpack `(v | u)`. Introduce `(g : L.Gv v) Z hZ`. Conclude with `triN_conj k v g Z _ hZ ((ha (G.φ v g) Z).trans (congrArg₂ (fun s t => k.ρ1 X s * (Z : W2 n x.A X k.g x.a).1 * k.ρ1 X t) (hφ v g) ((congrArg h.p₀ ((G.φ v).map_inv g).symm).trans (hφ v _))))`. Introduce `g Z hZ`.
-
-Rewrite using `[(Submodule.mem_bot _).1 hZ, map_zero]`. Conclude with `zero_mem _`. Introduce and unpack `(v | u) m'`. Conclude with `kerV' k o v m'`. Conclude with `(map_eq_zero_iff _ (o.kerU u)).trans ((map_eq_zero_iff _ (iota_inj k o)).symm.trans (Submodule.mem_bot _).symm)`.
-
-Introduce and unpack `i (v | u)`. Conclude with `(hcont.comp ((continuous_subtype_val.comp (G.φ_cont v)).prodMk continuous_const)).sub continuous_const`. Conclude with `(hb1 i u).1`. Introduce and unpack `i (v | u)`. Introduce `(g : L.Gv v) (g' : L.Gv v) show rep (G.φ v (g * g')) (Ys i v) - Ys i v = rep (G.φ v g) (Ys i v) - Ys i v + rep (G.φ v g) (rep (G.φ v g') (Ys i v) - Ys i v)`.
-
-Rewrite using `[map_mul, Subgroup.coe_mul, map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws. Conclude with `(hb1 i u).2`. Introduce and unpack `i (v | u)`. Introduce `(g : L.Gv v)`.
-
-Take `⟨Z, e1⟩` from `hV i v g`. Conclude with `fixV k o v _ e1 fun j => (hY2 i j v g).1`. Introduce `(g : L.Gu u)`. Take `⟨m', hm'⟩` from `hb3 i u g`. Conclude with `⟨m', (Submodule.mem_bot _).2 (sub_eq_zero.2 hm'.symm)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.B2.transl :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n) (k : Kap x) (X : Type) [CommRing X] [Algebra x.A X] [Finite X] (D : Dat x.A (plOf G)) (e : ℕ) (z : Fin e → Fin k.g → G.G₀ → Matrix (Fin n) (Fin n) X), l ≠ 2 → (∃ m : ℕ, algebraMap x.A X (x.t ^ m) = 0) → IsOd h x X D → (∀ u, UrAx l (L.Ju u)) → (∀ i j, z i j ∈ SelP h x X) → ∃ ξ : Fin e → D.selmerSecondCocycles, ∀ c : Fin e → x.A, ((∑ i, c i • ξ i : D.selmerSecondCocycles) : D.C2) ∈ D.selmerSecondCoboundaries → ∃ Ψ ∈ Sel2 h X k, ∀ j γ a b, (Ψ γ a b).ep' j = (∑ i, c i • z i j γ) a b := by

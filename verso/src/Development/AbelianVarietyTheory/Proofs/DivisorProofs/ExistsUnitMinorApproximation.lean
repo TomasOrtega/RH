@@ -16,7 +16,7 @@ namespace GlobalTheory.MinorBound
 variable {K : Type*} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun σ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp only [h, one_smul, Units.neg_smul, norm_neg] <;>`. Rewrite using `[norm_prod]`. Conclude with `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun i _ => hB _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_det_le_one {m : ℕ} (B : Matrix (Fin m) (Fin m) K) (hB : ∀ i j, ‖B i j‖ ≤ 1) :
     ‖B.det‖ ≤ 1 := by
@@ -26,11 +26,11 @@ theorem norm_det_le_one {m : ℕ} (B : Matrix (Fin m) (Fin m) K) (hB : ∀ i j, 
   · rw [norm_prod]; exact Finset.prod_le_one (fun _ _ => norm_nonneg _) fun i _ => hB _ _
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hε`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Establish `: x a * ∏ i ∈ s, x i - y a * ∏ i ∈ s, y i = x a * (∏ i ∈ s, x i - ∏ i ∈ s, y i) + (x a - y a) * ∏ i ∈ s, y i` using `by ring`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use polynomial arithmetic with `[hx a, ih, norm_nonneg (x a), norm_nonneg (∏ i ∈ s, x i - ∏ i ∈ s, y i)]`. Rewrite using `[norm_mul, norm_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∏ i ∈ s, ‖y i‖ ≤ 1` using `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun i _ => hy i`. Use polynomial arithmetic with `[hxy a, norm_nonneg (x a - y a), Finset.prod_nonneg fun i (_ : i ∈ s) => norm_nonneg (y i)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_prod_sub_prod_le {Idx : Type*} (s : Finset Idx) (x y : Idx → K) {ε : ℝ} (hε : 0 ≤ ε)
     (hx : ∀ i, ‖x i‖ ≤ 1) (hy : ∀ i, ‖y i‖ ≤ 1) (hxy : ∀ i, ‖x i - y i‖ ≤ ε) :
@@ -50,9 +50,9 @@ theorem norm_prod_sub_prod_le {Idx : Type*} (s : Finset Idx) (x y : Idx → K) {
       nlinarith [hxy a, norm_nonneg (x a - y a), Finset.prod_nonneg fun i (_ : i ∈ s) => norm_nonneg (y i)]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply, Matrix.det_apply, ← Finset.sum_sub_distrib]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hε fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_sub]`. Use `norm_prod_sub_prod_le Finset.univ (fun i => B (σ i) i) (fun i => C (σ i) i) hε (fun i => hB _ _) (fun i => hC _ _) (fun i => hBC _ _)` as an intermediate fact. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp only [h, one_smul, Units.neg_smul, norm_neg] <;>`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem norm_det_sub_det_le {m : ℕ} (B C : Matrix (Fin m) (Fin m) K) {ε : ℝ} (hε : 0 ≤ ε)
     (hB : ∀ i j, ‖B i j‖ ≤ 1) (hC : ∀ i j, ‖C i j‖ ≤ 1) (hBC : ∀ i j, ‖B i j - C i j‖ ≤ ε) :
@@ -66,9 +66,9 @@ theorem norm_det_sub_det_le {m : ℕ} (B C : Matrix (Fin m) (Fin m) K) {ε : ℝ
     exact this
 
 /- English proof (translation)
-Establish `h1 : (M * A) = fun i => ∑ k, M i k • A k`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Finset.sum_apply]`. Establish `h2` using `(Matrix.detRowAlternating : (Fin m → K) [⋀^Fin m]→ₗ[K] K).toMultilinearMap.map_sum (fun i k => M i k • A k)`. Simplify using `only [AlternatingMap.coe_multilinearMap] at h2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.det, h1, h2]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Establish `h3` using `(Matrix.detRowAlternating : (Fin m → K) [⋀^Fin m]→ₗ[K] K).toMultilinearMap.map_smul_univ (fun i => M i (f i)) (fun i => A (f i))`. Simplify using `only [AlternatingMap.coe_multilinearMap] at h3`. Rewrite using `[h3, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -89,19 +89,17 @@ theorem det_mul_expand {m g : ℕ} (M : Matrix (Fin m) (Fin g) K) (A : Matrix (F
   rfl
 
 /- English proof (translation)
-Establish `hε : 0 ≤ (p : ℝ)⁻¹ ^ n` using `by positivity`. Establish `hp1 : (1 : ℝ) ≤ p` using `by exact_mod_cast hp.out.one_lt.le`. Establish `hε1 : (p : ℝ)⁻¹ ^ n ≤ 1` using `pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ hp1)`. Establish `hA : ∀ k j, ‖A k j‖ ≤ 1` using `fun k j => by`. Establish `h : A k j = Cc k j + -(Cc k j - A k j)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hCc k j) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `(hCA k j).trans hε1`. Establish `hdet : d ^ m * G.det = (Matrix.of M * Matrix.of A).det`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : d • G = Matrix.of M * Matrix.of A`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, hrel]`. Rewrite using `[← h, Matrix.det_smul, Fintype.card_fin]`. Rewrite `hdet` using `[det_mul_expand]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hGne : G.det ≠ 0`. Introduce `h0`. Rewrite `hG` using `[h0, norm_zero]`. Conclude with `zero_ne_one hG`. Distinguish the cases in `hne : Nonempty (Fin m → Fin g)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨K0, hK0⟩` from `Finite.exists_max (fun κ : Fin m → Fin g => ‖(Matrix.of fun k j => A (κ k) j).det‖)`. Use `⟨K0, ?_, norm_det_le_one _ fun i j => hA _ _, norm_det_sub_det_le _ _ hε (fun i j => hCc _ _) (fun i j => hA _ _) (fun i j => hCA _ _)⟩` and prove the remaining obligations. Establish `h1 : ‖d‖ ^ m = ‖d ^ m * G.det‖` using `by rw [norm_mul, norm_pow, hG, _root_.mul_one]`. Rewrite using `[h1, hdet]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun κ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_prod]`. Establish `hP : ∏ i, ‖Matrix.of M i (κ i)‖ ≤ 1` using `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun i _ => hM _ _`. Combine the equalities or inequalities in the displayed calculation. Use `exfalso haveI : IsEmpty (Fin m → Fin g) := not_nonempty_iff.mp hne`. Rewrite `hdet` using `[Finset.univ_eq_empty, Finset.sum_empty]`.
-
-Conclude with `mul_ne_zero (pow_ne_zero _ hd) hGne hdet`.
+Chain the equalities or inequalities of the calculation. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_minor_ge (p : ℕ) [hp : Fact p.Prime] (n m g : ℕ) (d : ℂ_[p]) (A Cc : Fin g → Fin m → ℂ_[p])
     (G : Matrix (Fin m) (Fin m) ℂ_[p]) (M : Fin m → Fin g → ℂ_[p]) (hd : d ≠ 0)

@@ -6,11 +6,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.KerTie
 
 /- English proof (translation)
-Establish `: Fact q.Prime` using `⟨hq⟩`. Use `P.isPrime` as an intermediate fact. Establish `: Finite (𝓞 E ⧸ P.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot P.asIdeal P.ne_bot`. Rewrite `h` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' (G := 𝓞 E ⧸ P.asIdeal) q h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[addOrderOf_zero]`. Conclude with `hq.one_lt.ne hx`. Establish `h1 : q • x = 0` using `by rw [← hx]; exact addOrderOf_nsmul_eq_zero x`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[nsmul_eq_mul]`. Establish `h2 : ((q : ℕ) : 𝓞 E ⧸ P.asIdeal) = 0` using `(mul_eq_zero.1 h1).resolve_right hx0`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_of_prime_dvd_absNorm {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) {q : ℕ}
     (hq : q.Prime) (h : q ∣ Ideal.absNorm P.asIdeal) : (q : 𝓞 E) ∈ P.asIdeal := by
@@ -30,13 +30,13 @@ theorem natCast_mem_of_prime_dvd_absNorm {E : Type} [Field E] [NumberField E] (P
   exact h2
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl K Y cX ex t u μ P`. Use `⟨Nat.pos_of_ne_zero ?_, fun q hq hP => ?_⟩` and prove the remaining obligations. Unfold `Formalism.L2.Col.qOf`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `P.1.ne_bot`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[t.O_S]`. Use `Finset.mem_insert_of_mem ?_` and prove the remaining obligations. Break down `Finset.mem_union.1 P.2 with hG | hQ` into its components or cases. Use `Finset.mem_union_left _ ?_` and prove the remaining obligations. Break down `Finset.mem_union.1 hG with h0 | h0` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `e : Formalism.L2.Col.qOf P.1 = t.Pr.g 0` using `t.pr_ok.vG_norm 0 P.1 h0`. Rewrite `hP` using `[e]`. Rewrite using `[(Nat.prime_dvd_prime_iff_eq hq (t.pr_ok.g_prime 0)).1 hP, t.g_rec]`. Simplify using the standard rewrite rules. Establish `e : Formalism.L2.Col.qOf P.1 = t.Pr.g 1` using `t.pr_ok.vG_norm 1 P.1 h0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hP` using `[e]`. Rewrite using `[(Nat.prime_dvd_prime_iff_eq hq (t.pr_ok.g_prime 1)).1 hP, t.g_rec]`. Simplify using the standard rewrite rules. Conclude with `Finset.mem_union_right _ ((t.Q_rec μ q).2 ⟨hq, P.1, hQ, natCast_mem_of_prime_dvd_absNorm P.1 hq hP⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sNum_qOf_rowSG :
     ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC)

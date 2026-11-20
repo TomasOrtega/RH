@@ -19,13 +19,13 @@ namespace GlobalTheory.SymVeryAmple
 open GlobalTheory.CechPic in
 
 /- English proof (translation)
-Take `⟨L, hL, m, s, hs⟩` from `h`. Establish `: IsProper f` using `isProper_of_veryAmpleBy hs`. Establish `: IsIso σ` using `⟨σ, hσ, hσ⟩`. Establish `hA : IsAmpleLB L` using `isAmpleLB_of_veryAmpleBy hs`. Establish `hP : IsAmpleLB (L.pull σ)` using `hA.pull_of_isAffineHom σ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : (tens L (L.pull σ)).IsLB` using `isLB_tens hL hP.isLB`. Establish `hT : IsAmpleLB (tens L (L.pull σ))`. Use `hA.tensor hP hN ((cls_eq_zero_iff (LB.isLB_div (LB.isLB_div hN hL) hP.isLB)).1 ?_)` and prove the remaining obligations. Rewrite using `[cls_div (LB.isLB_div hN hL) hP.isLB, cls_div hN hL, cls_tens hL hP.isLB]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Take `⟨n, -, M, t, ht⟩` from `hT.exists_veryAmpleBy f`. Establish `hH` using `isLB_lbPow hN n`. Use `⟨_, M, t, hH, ht, (cls_eq_zero_iff (LB.isLB_linComb hH _ _)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[cls_linComb hH, Fin.sum_univ_two, cls_lbPow hN, cls_tens hL hP.isLB, cls_pull hL]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, pull_id, map_nsmul, map_add, ← pull_comp, hσ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_comm (pull σ (cls L hL)), one_zsmul, neg_one_zsmul, Category.id_comp, add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_of_involution {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of R))
     (σ : X ⟶ X) (hσ : σ ≫ σ = 𝟙 X) (h : IsProjBy f) :
@@ -49,7 +49,7 @@ theorem exists_of_involution {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶
   rw [add_comm (pull σ (cls L hL)), one_zsmul, neg_one_zsmul, Category.id_comp, add_neg_cancel]
 
 /- English proof (translation)
-Introduce `R _ B _ _ _ h`. Use `exists_of_involution B.hom _ ?_ h` and prove the remaining obligations. Rewrite using `[← Over.comp_left, GrpObj.inv_comp_inv, Over.id_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_symmetric_veryAmpleBy : ∀ (R : Type) [CommRing R] (B : Over (Spec (CommRingCat.of R))) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B → IsProjBy B.hom → ∃ (H : LB B.left) (n : ℕ) (s : Fin (n + 1) → LB.Sec H), H.IsLB ∧ VeryAmpleBy B.hom H s ∧ Triv (LB.LinComb H (K := Fin 2) ![(ι[B]).left, 𝟙 B.left] ![1, -1]) := by
   intro R _ B _ _ _ h

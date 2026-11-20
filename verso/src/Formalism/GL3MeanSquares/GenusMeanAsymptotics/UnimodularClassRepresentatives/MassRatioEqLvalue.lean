@@ -12,7 +12,7 @@ namespace Formalism.HermitianLattices.Ext.L3
 variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
 
 /- English proof (translation)
-Establish `hv` using `vInv_pos K`. Unfold `Formalism.HermitianLatticesTheory.massRatioRightSide`. Use `mul_pos (div_pos (pow_pos (mul_pos ?_ (pow_pos (div_pos hv Real.pi_pos) _)) _) ?_) (lValEta_pos hK M hM)` and prove the remaining obligations. Conclude with `Nat.factorial_pos _` after adjusting the coercions. Conclude with `Real.sqrt_pos.mpr (pow_pos (mul_pos two_pos hv) _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem massRatio_pos (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (M : ℕ) (hM : 2 ≤ M) :
     0 < Formalism.HermitianLatticesTheory.massRatioRightSide K M := by
@@ -24,7 +24,7 @@ theorem massRatio_pos (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (M : 
   · exact Real.sqrt_pos.mpr (pow_pos (mul_pos two_pos hv) _)
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.massRatioRightSide`. Rewrite using `[lValEta_eq_lValEtaF hK hF m hm, mul_comm (Formalism.HermitianLatticesTheory.fDeg K) m, pow_mul, ← mul_pow, div_pow]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem massRatio_eq_lvalue (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (m : ℕ) (hm : 2 ≤ m) :
     Formalism.HermitianLatticesTheory.massRatioRightSide K m =

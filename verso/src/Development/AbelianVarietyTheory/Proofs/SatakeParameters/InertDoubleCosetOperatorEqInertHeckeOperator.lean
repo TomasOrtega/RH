@@ -16,17 +16,17 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
   {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {w : HeightOneSpectrum (𝓞 L)}
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.SatInd.CosetFin.locHom Dv).map_mul x y`.
+A detailed English derivation is pending.
 -/
 theorem loc_mul (Dv : InertDatum L n v w) (x y : GAf L n) : Dv.loc (x * y) = Dv.loc x * Dv.loc y :=
   (GlobalTheory.SatInd.CosetFin.locHom Dv).map_mul x y
 
 /- English proof (translation)
-Rewrite using `[DoubleCoset.mem_doubleCoset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k₁, hk₁, k₂, hk₂, e⟩`. Take `⟨κ₁, t₁, e₁⟩` from `h3 k₁.1 k₁.2`. Take `⟨κ₂, t₂, e₂⟩` from `h3 k₂.1 k₂.2`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `u₁ : κ₁ ∈ Umax L n` using `GlobalTheory.InertUmax.mem_Umax_of_trivOutside_of_loc_integral L n v w Dv κ₁ t₁ (fun i j => by rw [e₁]; exact GlobalTheory.SatInd.CosetFin.entries_int hk₁ i j)`. Establish `u₂ : κ₂ ∈ Umax L n` using `GlobalTheory.InertUmax.mem_Umax_of_trivOutside_of_loc_integral L n v w Dv κ₂ t₂ (fun i j => by rw [e₂]; exact GlobalTheory.SatInd.CosetFin.entries_int hk₂ i j)`. Use `⟨κ₁, ⟨u₁, t₁⟩, κ₂, ⟨u₂, t₂⟩, h4 _ _ hx (GlobalTheory.SatInd.CosetFin.trivOutside_mul (GlobalTheory.SatInd.CosetFin.trivOutside_mul t₁ ha) t₂) ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨k₁, hk₁, k₂, hk₂, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨Dv.loc k₁, h1 k₁⟩, h2 k₁ hk₁.1 (h1 k₁), ⟨Dv.loc k₂, h1 k₂⟩, h2 k₂ hk₂.1 (h1 k₂), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Dv.loc (k₁ * a * k₂) = Dv.loc k₁ * Dv.loc a * Dv.loc k₂`. Rewrite using `[loc_mul, loc_mul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_dc_iff (Dv : InertDatum L n v w) (h1 : ∀ x : GAf L n, Dv.loc x ∈ Formalism.UG.GU Dv.σw n)
     (h2 : ∀ κ : GAf L n, κ ∈ Umax L n → ∀ hκ : Dv.loc κ ∈ Formalism.UG.GU Dv.σw n,
@@ -67,19 +67,19 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
   {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {w : HeightOneSpectrum (𝓞 L)}
 
 /- English proof (translation)
-Use `set K := InertSph.Kv L n v`. Set `p : GAf L n → Prop` to `fun x => ∃ k₁ ∈ K, ∃ k₂ ∈ K, x = k₁ * a * k₂`. Establish `tp : ∀ x, p x → TrivOutside {v} x`. Introduce and unpack `_ ⟨k₁, hk₁, k₂, hk₂, rfl⟩`. Conclude with `GlobalTheory.SatInd.CosetFin.trivOutside_mul (GlobalTheory.SatInd.CosetFin.trivOutside_mul hk₁.2 ha) hk₂.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin : Set.Finite {c : GAf L n ⧸ K | ∃ x : GAf L n, (x : GAf L n ⧸ K) = c ∧ p x}`. Use `GlobalTheory.SatInd.CosetFin.finite_cosets (GlobalTheory.SatInd.CosetFin.locHom Dv) (Formalism.UG.GU Dv.σw n) (Formalism.UG.KU Dv.σw n) K p _ (GlobalTheory.SatInd.DCoset.finite_dcoset Dv.ϖ Dv.σw _ n Dv.unram ⟨Dv.loc a, h1 a⟩) ?_ ?_` and prove the remaining obligations. Introduce and unpack `x ⟨k₁, hk₁, k₂, hk₂, rfl⟩`. Use `⟨h1 _, ⟨Dv.loc k₁, h1 k₁⟩, h2 k₁ hk₁.1 (h1 k₁), ?_⟩` and prove the remaining obligations. Establish `e : (⟨GlobalTheory.SatInd.CosetFin.locHom Dv (k₁ * a * k₂), h1 _⟩ : Formalism.UG.GU Dv.σw n) = (⟨Dv.loc k₁, h1 k₁⟩ * ⟨Dv.loc a, h1 a⟩ : Formalism.UG.GU Dv.σw n) * ⟨Dv.loc k₂, h1 k₂⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show Dv.loc (k₁ * a * k₂) = Dv.loc k₁ * Dv.loc a * Dv.loc k₂`. Rewrite using `[loc_mul, loc_mul]`. Rewrite using `[e]`. Conclude with `(QuotientGroup.mk_mul_of_mem _ (h2 k₂ hk₂.1 (h1 k₂))).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x y hx hy hz hk`. Establish `ht : TrivOutside {v} (x⁻¹ * y)` using `GlobalTheory.SatInd.CosetFin.trivOutside_mul (GlobalTheory.SatInd.CosetFin.trivOutside_inv (tp x hx)) (tp y hy)`. Conclude with `⟨GlobalTheory.InertUmax.mem_Umax_of_trivOutside_of_loc_integral L n v w Dv _ ht (fun i j => GlobalTheory.SatInd.CosetFin.entries_int hk i j), ht⟩`. Use `⟨hfin.toFinset.image (fun c => c.out), ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc, rfl⟩` from `Finset.mem_image.1 hγ`. Take `⟨x, hxc, k₁, hk₁, k₂, hk₂, rfl⟩` from `(Set.Finite.mem_toFinset hfin).1 hc`. Establish `hm : (k₁ * a * k₂)⁻¹ * c.out ∈ K`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq', hxc]`. Conclude with `⟨k₁, hk₁, k₂ * ((k₁ * a * k₂)⁻¹ * c.out), mul_mem hk₂ hm, by group⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `hc : (x : GAf L n ⧸ K) ∈ hfin.toFinset` using `(Set.Finite.mem_toFinset hfin).2 ⟨x, rfl, hx⟩`. Use `⟨(x : GAf L n ⧸ K).out, ⟨Finset.mem_image_of_mem _ hc, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Introduce and unpack `γ ⟨hγ, hγx⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hγ`. Establish `: c = (x : GAf L n ⧸ K)`. Rewrite using `[← QuotientGroup.out_eq' c]`. Conclude with `QuotientGroup.eq.2 hγx`. Rewrite using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem exists_reps (Dv : InertDatum L n v w) (h1 : ∀ x : GAf L n, Dv.loc x ∈ Formalism.UG.GU Dv.σw n)
     (h2 : ∀ κ : GAf L n, κ ∈ Umax L n → ∀ hκ : Dv.loc κ ∈ Formalism.UG.GU Dv.σw n,
@@ -133,29 +133,25 @@ end GlobalTheory.InertDCOp
 namespace GlobalTheory.InertDCOp
 
 /- English proof (translation)
-Introduce `L _ _ _ n v w Dv h1 h2 h3 h4 a ha`. Use `set K := InertSph.Kv L n v`. Take `⟨R, hR⟩` from `exists_reps Dv h1 h2 ha`. Establish `tR : ∀ γ ∈ R, TrivOutside {v} γ`. Introduce `γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k₁, hk₁, k₂, hk₂, rfl⟩` from `hR.1 γ hγ`. Conclude with `GlobalTheory.SatInd.CosetFin.trivOutside_mul (GlobalTheory.SatInd.CosetFin.trivOutside_mul hk₁.2 ha) hk₂.2`. Use `⟨R, Formalism.UG.dosetInd ℂ (Formalism.UG.KU Dv.σw n) ⟨Dv.loc a, h1 a⟩, hR, Formalism.UG.P.double_coset_indicator_mem _ _ _ _, fun W _ _ φ hφ => ?_⟩` and prove the remaining obligations. Establish `hv1 : ∀ x : GAf L n, TrivOutside {v} x → (∃ k₁ ∈ K, ∃ k₂ ∈ K, x = k₁ * a * k₂) → Dv.hval (Formalism.UG.dosetInd ℂ (Formalism.UG.KU Dv.σw n) ⟨Dv.loc a, h1 a⟩) (Dv.loc x) = 1`. Introduce `x hx hp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.AUTREP.InertDatum.hval`. Rewrite using `[dif_pos (h1 x)]`. Conclude with `Formalism.UG.P.dosetInd_of_mem ℂ _ _ _ ((mem_dc_iff Dv h1 h2 h3 h4 ha hx).2 hp)`. Establish `hv0 : ∀ x : GAf L n, TrivOutside {v} x → Dv.hval (Formalism.UG.dosetInd ℂ (Formalism.UG.KU Dv.σw n) ⟨Dv.loc a, h1 a⟩) (Dv.loc x) ≠ 0 → ∃ k₁ ∈ K, ∃ k₂ ∈ K, x = k₁ * a * k₂`. Introduce `x hx h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Formalism.AUTREP.InertDatum.hval at h0`. Rewrite `h0` using `[dif_pos (h1 x)]`. Use `(mem_dc_iff Dv h1 h2 h3 h4 ha hx).1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `h0 (Formalism.UG.P.dosetInd_of_not_mem ℂ _ _ _ hn)`.
+Assume the negation of the conclusion and derive a contradiction. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply]`. Unfold `heckeFunI`. Rewrite using `[finsum_eq_sum_of_support_subset (s := R.image (QuotientGroup.mk : GAf L n → GAf L n ⧸ Umax L n))]`. Rewrite using `[Finset.sum_image]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Establish `hc : ∃ x : GAf L n, (x : GAf L n ⧸ Umax L n) = (γ : GAf L n ⧸ Umax L n) ∧ TrivOutside {v} x` using `⟨γ, rfl, tR γ hγ⟩`. Rewrite using `[dif_pos hc]`. Take `⟨e, hxt⟩` from `hc.choose_spec`. Establish `hU : γ⁻¹ * hc.choose ∈ Umax L n` using `QuotientGroup.eq.1 e.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hT : TrivOutside {v} (γ⁻¹ * hc.choose)` using `GlobalTheory.SatInd.CosetFin.trivOutside_mul (GlobalTheory.SatInd.CosetFin.trivOutside_inv (tR γ hγ)) hxt`. Establish `hp : ∃ k₁ ∈ K, ∃ k₂ ∈ K, hc.choose = k₁ * a * k₂`. Take `⟨k₁, hk₁, k₂, hk₂, e'⟩` from `hR.1 γ hγ`. Conclude with `⟨k₁, hk₁, k₂ * (γ⁻¹ * hc.choose), mul_mem hk₂ ⟨hU, hT⟩, by rw [← mul_assoc, ← e']; group⟩`. Rewrite using `[hv1 _ hxt hp, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun (hφ _ hU hT) (g * γ)` as an intermediate fact. Use `show φ (g * γ) = φ (g * hc.choose)`. Rewrite using `[← this]`. Use `show φ (g * γ * (γ⁻¹ * hc.choose)) = φ (g * hc.choose)`. Use `group`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `γ hγ γ' hγ' e`. Establish `hU : γ⁻¹ * γ' ∈ Umax L n` using `QuotientGroup.eq.1 e`. Establish `hT : TrivOutside {v} (γ⁻¹ * γ')` using `GlobalTheory.SatInd.CosetFin.trivOutside_mul (GlobalTheory.SatInd.CosetFin.trivOutside_inv (tR γ hγ)) (tR γ' hγ')`. Conclude with `(hR.2 γ' (hR.1 γ' hγ')).unique ⟨hγ, hU, hT⟩ ⟨hγ', by rw [inv_mul_cancel]; exact one_mem _⟩`. Introduce `c hc0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hc0` using `[Function.mem_support]`. Distinguish the cases in `hc : ∃ x : GAf L n, (x : GAf L n ⧸ Umax L n) = c ∧ TrivOutside {v} x`. Rewrite `hc0` using `[dif_pos hc]`. Take `⟨e, hxt⟩` from `hc.choose_spec`. Establish `h0 : Dv.hval (Formalism.UG.dosetInd ℂ (Formalism.UG.KU Dv.σw n) ⟨Dv.loc a, h1 a⟩) (Dv.loc hc.choose) ≠ 0`.
-
-Introduce `h0`. Rewrite `hc0` using `[h0, zero_smul]`. Conclude with `hc0 rfl`. Take `⟨γ, ⟨hγ, hγx⟩, -⟩` from `hR.2 _ (hv0 _ hxt h0)`. Rewrite using `[Finset.coe_image]`.
-
-Use `⟨γ, hγ, ?_⟩` and prove the remaining obligations. Use `show (γ : GAf L n ⧸ Umax L n) = c`. Rewrite using `[← e]`. Conclude with `QuotientGroup.eq.2 hγx.1`. Conclude with `absurd (dif_neg hc) hc0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dcOp_eq_heckeFunI : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w), (∀ x : GAf L n, Dv.loc x ∈ Formalism.UG.GU Dv.σw n) → (∀ κ : GAf L n, κ ∈ Umax L n → ∀ hκ : Dv.loc κ ∈ Formalism.UG.GU Dv.σw n, (⟨Dv.loc κ, hκ⟩ : Formalism.UG.GU Dv.σw n) ∈ Formalism.UG.KU Dv.σw n) → (∀ k : GL (Fin n) (w.adicCompletion L), k ∈ Formalism.UG.GU Dv.σw n → ∃ x : GAf L n, TrivOutside {v} x ∧ Dv.loc x = k) → (∀ x y : GAf L n, TrivOutside {v} x → TrivOutside {v} y → Dv.loc x = Dv.loc y → x = y) → ∀ a : GAf L n, TrivOutside {v} a → ∃ (R : Finset (GAf L n)) (ha : Formalism.UG.GU Dv.σw n → ℂ), GlobalTheory.SphLabelOps.Reps (GlobalTheory.InertSph.Kv L n v) a R ∧ ha ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw n) ∧ ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (φ : GAf L n → W), (∀ κ ∈ Umax L n, TrivOutside {v} κ → NG.rt L n κ φ = φ) → ∑ γ ∈ R, NG.rt L n γ φ = heckeFunI L n (Umax L n) Dv ha φ := by
   intro L _ _ _ n v w Dv h1 h2 h3 h4 a ha

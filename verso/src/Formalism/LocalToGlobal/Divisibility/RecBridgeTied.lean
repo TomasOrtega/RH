@@ -141,7 +141,7 @@ structure DivisionPackageColumns {L : SizeData₂ D} (Rt : DivisionRowsColumns L
   h0 : ∀ u, FirstCols Rt.c.hE (hQ u)
 
 /- English proof (translation)
-The claim follows from `DivisionPackageFace.wordFacts P.toDivisionPackageFace h2 hcut hN u`.
+A detailed English derivation is pending.
 -/
 theorem DivisionPackageColumns.wordFacts {L : SizeData₂ D} {Rt : DivisionRowsColumns L} {C Cabs : ℝ} (P : DivisionPackageColumns Rt C Cabs)
     (h2 : Formalism.MainNotions.LocalQuadraticParts.adm2 D L) (hcut : ∀ μ, Formalism.BasicNotions.DV.Used D μ → Formalism.L2.G.ServJoint.CutUp D μ)
@@ -156,7 +156,7 @@ def DivisionPackageColumns.inputs {L : SizeData₂ D} {Rt : DivisionRowsColumns 
       (Formalism.L2.G.ServJoint.nu_into L hN u (P.eNu u) (P.NuC (P.wU u)) (P.Nu u) (P.hNu u).lat (P.shift u)) }
 
 /- English proof (translation)
-Conclude with `linkDIV_L2R3_rec (X := fieldsLL D Rt.X Rt.e) Rt.A3 Rt.hOk Rt.hsep Rt.P0 Rt.ψ0 Rt.P1 Rt.ψ1 Rt.c.hX Rt.c.Xg Rt.c.mu Rt.c.cst Rt.c.Li Rt.c.hL Rt.c.hP Rt.c.Mem Rt.c.wd Rt.c.b Rt.c.hY Rt.c.Am Rt.c.hK Rt.c.hF Rt.c.hE Rt.c.ev Rt.Sp Rt.Zsc P.cf P.Cp P.CHp P.Pk (P.R u) (P.wU u) (P.Nu u) ( …`.
+A detailed English derivation is pending.
 -/
 theorem DivisionPackageColumns.linkRec {L : SizeData₂ D} {Rt : DivisionRowsColumns L} {C Cabs : ℝ} (P : DivisionPackageColumns Rt C Cabs)
     (h2 : Formalism.MainNotions.LocalQuadraticParts.adm2 D L) (hcut : ∀ μ, Formalism.BasicNotions.DV.Used D μ → Formalism.L2.G.ServJoint.CutUp D μ)
@@ -198,7 +198,7 @@ abbrev rowsTtoF {eps : ℝ} {Fm : FamP eps} (Rt : Σ' x0 : ℝ, ∀ x, Fm.x1 < x
   ⟨Rt.1, fun x hx h i => (Rt.2 x hx h i).toF⟩
 
 /- English proof (translation)
-Introduce `hN` and use `by obtain ⟨C, x0, h⟩ := B.pkg hN exact ⟨C, x0, fun x hx0 hx h' i => (h x hx0 hx h' i).map DivisionPackageColumns.toDivisionPackageFace⟩ adm2 := B.adm2 cut := B.cut c3 := B.c3 hh := B.hh c2 := B.c2 c5 := B.c5 bu := B.bu rr := B.rr la := B.la`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem BridgeRowsT.toF {eps : ℝ} {Fm : FamP eps} {Rt : Σ' x0 : ℝ, ∀ x, Fm.x1 < x → x0 ≤ x → ∀ i : Fm.Ix x, DivisionRowsColumns (Fm.L x i)}
     {Cabs CH : ℝ} (B : BridgeRowsT Fm Rt Cabs CH) : BridgeRowsF Fm (rowsTtoF Rt) Cabs CH where
@@ -216,7 +216,7 @@ theorem BridgeRowsT.toF {eps : ℝ} {Fm : FamP eps} {Rt : Σ' x0 : ℝ, ∀ x, F
   la := B.la
 
 /- English proof (translation)
-The claim follows from `linkDIVt_of_rowsF Fm (rowsTtoF Rt) Cabs CH B.toF`.
+A detailed English derivation is pending.
 -/
 theorem linkDIVt_of_rowsT {eps : ℝ} (Fm : FamP eps)
     (Rt : Σ' x0 : ℝ, ∀ x, Fm.x1 < x → x0 ≤ x → ∀ i : Fm.Ix x, DivisionRowsColumns (Fm.L x i)) (Cabs CH : ℝ)
@@ -224,7 +224,7 @@ theorem linkDIVt_of_rowsT {eps : ℝ} (Fm : FamP eps)
   linkDIVt_of_rowsF Fm (rowsTtoF Rt) Cabs CH B.toF
 
 /- English proof (translation)
-Use `linkDIVt_closedF 𝒟 Cabs (fun Fm hc => rowsTtoF (Rt Fm hc)) ?_` and prove the remaining obligations. Take `⟨ε1, hε1, hK⟩` from `h`. Use `⟨ε1, hε1, fun eps he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK'⟩` from `hK eps he hle`. Conclude with `⟨K, fun Fm CH hD hL hc hT hG => (hK' Fm CH hD hL hc hT hG).toF⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem linkDIVt_closedT (𝒟 : FamClass) (Cabs : ℝ)
     (Rt : ∀ {eps : ℝ} (Fm : FamP eps), 𝒟 Fm → Σ' x0 : ℝ, ∀ x, Fm.x1 < x → x0 ≤ x → ∀ i : Fm.Ix x, DivisionRowsColumns (Fm.L x i))
@@ -283,7 +283,7 @@ theorem DivisionRowsColumns.of_tied_subspaces_eq (P : RowSideFamily ex) (hr : Ro
     (Zsc : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3) : (DivisionRowsColumns.split_model_to_place_model (L := L) P hr X e c Sp Zsc).toF.Zs = P.Zs := rfl
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec hr.rows0`.
+A detailed English derivation is pending.
 -/
 theorem DivisionRowsColumns.of_tied_rows_eq (P : RowSideFamily ex) (hr : RowsHold0_3 P) (X : Formalism.L2.Col.Fields) (e : X.Tau → (X.E →+* D.what₂.LL))
     (c : ColRec3 (fieldsLL D X e) P.A3 P.Ps P.ψs) (Sp : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (c.face Zs))
@@ -292,7 +292,7 @@ theorem DivisionRowsColumns.of_tied_rows_eq (P : RowSideFamily ex) (hr : RowsHol
   Classical.choose_spec hr.rows0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem DivisionRowsColumns.of_tied_columns_eq (P : RowSideFamily ex) (hr : RowsHold0_3 P) (X : Formalism.L2.Col.Fields) (e : X.Tau → (X.E →+* D.what₂.LL))
     (c : ColRec3 (fieldsLL D X e) P.A3 P.Ps P.ψs) (Sp : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (c.face Zs))
@@ -310,7 +310,7 @@ def EvTie3 (P : RowSideFamily ex) (hr : RowsHold0_3 P) (X : Formalism.L2.Col.Fie
       HEq (Pt.eV t F) (P.I.jA t ((rV0 D P.A3.A P.Ps P.ψs t).mulVec F))
 
 /- English proof (translation)
-Establish `key : ∀ (a b : D.what₂.Tup) (hab : a = b) (va : D.what₂.Amb a) (vb : D.what₂.Amb b), HEq va vb → D.what₂.perCol u a (D.jN u (Pt.eNu u x)) va = D.what₂.perCol u b (D.jN u (Pt.eNu u x)) vb`. Introduce `a b hab va vb hv`. Substitute `hab` using the available equality. Rewrite using `[eq_of_heq hv]`. Conclude with `(Pt.brTied.dcPt u t x F).trans (key _ _ (h.1 t) _ _ (h.2 t F))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EvTie3.pin {P : RowSideFamily ex} {hr : RowsHold0_3 P} {X : Formalism.L2.Col.Fields} {e : X.Tau → (X.E →+* D.what₂.LL)}
     {c : ColRec3 (fieldsLL D X e) P.A3 P.Ps P.ψs} {Sp : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (c.face Zs)}

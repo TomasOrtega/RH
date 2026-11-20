@@ -10,7 +10,7 @@ namespace ReciprocityTheory.ChartRestriction.DS.TRGap
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h1 : {f : EntIdx n →₀ ℕ | ∀ a, f a ≤ d}.Finite` using `(Set.Finite.pi' fun _ ↦ Set.finite_le_nat _).preimage DFunLike.coe_injective.injOn`. Conclude with `h1.subset fun m hm i ↦ (eq_or_ne (m i) 0).elim (fun h ↦ h.trans_le d.zero_le) fun h ↦ (Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) <| Finsupp.mem_support_iff.mpr h).trans hm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_monomials_of_degree_le (d : ℕ) : {m : EntIdx n →₀ ℕ | (m.sum fun _ e => e) ≤ d}.Finite := by
   have h1 : {f : EntIdx n →₀ ℕ | ∀ a, f a ≤ d}.Finite :=
@@ -20,37 +20,33 @@ theorem finite_monomials_of_degree_le (d : ℕ) : {m : EntIdx n →₀ ℕ | (m.
       (Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) <| Finsupp.mem_support_iff.mpr h).trans hm
 
 /- English proof (translation)
-Establish `hE` using `hD.glRep`. Establish `hU : IsInfUnitary ε E` using `isInfUnitary_of_isDerivedOn hσ hD`. Establish `hinUJ : ∀ g, φ g ∈ UJset ε` using `fun g => smd_inUJ_of_Kset (hφK g)`. Establish `horb : ∀ u : H, Continuous fun k => σ (φ k) u` using `fun u => (hσ.2.2 u).comp_continuous hφc hinUJ`. Establish `hentc : Continuous fun k => entVar (φ k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Break down `i with x | x` into its components or cases. Conclude with `(continuous_apply x.2).comp ((continuous_apply x.1).comp hφc)`. Conclude with `continuous_star.comp ((continuous_apply x.2).comp ((continuous_apply x.1).comp hφc))`. Establish `hpolyc : ∀ Q : MvPolynomial (EntIdx n) ℂ, Continuous fun k => eval (entVar (φ k)) Q` using `fun Q => (MvPolynomial.continuous_eval Q).comp hentc`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hint : ∀ (Q : MvPolynomial (EntIdx n) ℂ) (u : H), Integrable (fun k => eval (entVar (φ k)) Q • σ (φ k) u) μK` using `fun Q u => ((hpolyc Q).smul (horb u)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Set `Xu : H → MvPolynomial (EntIdx n) ℂ →ₗ[ℂ] H` to `fun u => { toFun := fun Q => ∫ k, eval (entVar (φ k)) Q • σ (φ k) u ∂μK map_add' := fun Q R => by`. Simplify using `only [map_add, add_smul]`. Conclude with `integral_add (hint Q u) (hint R u)`. Use the proof step `map_smul' := fun c Q => by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [smul_eval, mul_smul, RingHom.id_apply]`. Conclude with `integral_smul c _ }`. Establish `hXu : ∀ u Q, Xu u Q = ∫ k, eval (entVar (φ k)) Q • σ (φ k) u ∂μK` using `fun _ _ => rfl`. Establish `htr : ∀ u Q g, σ (φ g) (Xu u Q) = Xu u (bind₁ (trF (φ g⁻¹)) Q)`. Introduce `u Q g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hXu, hXu, ← (σ (φ g)).integral_comp_comm (hint Q u)]`. Establish `e2 : ∫ k, σ (φ g) (eval (entVar (φ k)) Q • σ (φ k) u) ∂μK = ∫ k, eval (entVar (φ (g⁻¹ * (g * k)))) Q • σ (φ (g * k)) u ∂μK`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [map_smul, inv_mul_cancel_left]`. Rewrite using `[hφm g k, hσ.1.2 _ (hinUJ g) _ (hinUJ k)]`.
+Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[e2, integral_mul_left_eq_self (fun k => eval (entVar (φ (g⁻¹ * k))) Q • σ (φ k) u) g]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [hφm, eval_mul_eq_bind₁]`. Establish `hmono : ∀ (u : H) (m : EntIdx n →₀ ℕ), Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ (wtM m) (Xu u (monomial m 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u m θ hθ`. Rewrite `hθ` using `[mir_Kset_eq]`. Take `⟨g, hg⟩` from `hφs _ hθ`. Establish `hginv : φ g⁻¹ = star (φ g)`. Establish `h1 : φ g * star (φ g) = 1` using `Unitary.mul_star_self_of_mem (hφK g).1`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hg, htr, hXu, hXu, ← integral_smul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← eval_mul_eq_bind₁, hginv, hg, show Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) = dTor θ from rfl, eval_monomial_tor, mul_smul]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set d := P.totalDegree`. Use `set Wm : Set (Fin n → ℝ) := wtM '' {m : EntIdx n →₀ ℕ | (m.sum fun _ e => e) ≤ d}`. Establish `hWfin : Wm.Finite` using `(finite_monomials_of_degree_le d).image _`. Set `Sd : H → Submodule ℂ H` to `fun u => (restrictTotalDegree (EntIdx n) ℂ d).map (Xu u)`. Establish `hSdfd : ∀ u, FiniteDimensional ℂ (Sd u)` using `fun u => Module.Finite.map _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hSK : ∀ u, ∀ k ∈ Kset ε, ∀ x ∈ Sd u, σ k x ∈ Sd u`. Introduce `u k hk x hx`. Take `⟨g, rfl⟩` from `hφs k hk`. Take `⟨Q, hQ, rfl⟩` from `hx`. Rewrite using `[htr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.mem_map_of_mem ?_` and prove the remaining obligations. Rewrite `hQ` using `[SetLike.mem_coe, mem_restrictTotalDegree]`. Rewrite using `[mem_restrictTotalDegree]`. Conclude with `(totalDegree_bind_le_of_linear _ (trF_totalDegree _) Q).trans hQ`. Establish `hWS : ∀ u μ, (∃ s ∈ Sd u, s ≠ 0 ∧ Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ μ s) → μ ∈ Wm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `u μ ⟨s, ⟨Q, hQ, rfl⟩, hs0, hsw⟩`. Assume the negation of the conclusion as `hμ`. Rewrite `hQ` using `[SetLike.mem_coe, mem_restrictTotalDegree]`. Establish `hsum : Xu u Q = ∑ m ∈ Q.support, coeff m Q • Xu u (monomial m 1)` using `by conv_lhs => rw [Q.as_sum]`. Rewrite using `[map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul, smul_monomial, smul_eq_mul, mul_one]`. Establish `horth : ∀ m ∈ Q.support, inner ℂ (Xu u Q) (Xu u (monomial m 1)) = 0`. Introduce `m hm`. Use `kfin_wt_orth hσ hsw (hmono u m) fun h => hμ ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨m, (le_totalDegree hm).trans hQ, h.symm⟩`. Apply `hs0` to reduce the goal to its premises. Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hsum]`.
-
-Use `_ = 0 := by`. Rewrite using `[inner_sum]`. Conclude with `Finset.sum_eq_zero fun m hm => by rw [inner_smul_right, horth m hm, mul_zero]`. Use `choose kf hkf using fun μ => khw_mem_layer hE hU hV hc hstd μ`. Use `⟨hWfin.toFinset.sup kf, fun u => ?_⟩` and prove the remaining obligations.
-
-Use `hSdfd u` as an intermediate fact. Establish `hle` using `kfin_key hσ hD hV.1 hV.2.1 (Sd u) (by rw [hdense]; exact le_top) (hSK u) (hWfin.toFinset.sup kf) (fun μ w hw hwk hμS => layer_mono (Finset.le_sup ((hWfin.mem_toFinset).2 (hWS u μ hμS))) (hkf μ w hw hwk))`. Conclude with `hle (Submodule.mem_map_of_mem ((mem_restrictTotalDegree _ _ P).2 le_rfl))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem range_one_layer {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {ε : Fin n → Bool} {lam : Fin n → ℝ}

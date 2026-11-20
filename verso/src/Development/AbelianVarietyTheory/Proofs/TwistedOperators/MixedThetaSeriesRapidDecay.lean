@@ -27,7 +27,7 @@ noncomputable section
 namespace GlobalTheory.MixWeight
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.single_apply]`. Rewrite using `[Finset.sum_eq_single j (fun b _ hb => Finset.sum_eq_zero fun c' _ => by`. Rewrite using `[if_neg fun h => hb h.2.symm, mul_zero]) (by simp)]`. Rewrite using `[Finset.sum_eq_single i (fun b _ hb => by rw [if_neg fun h => hb h.1.symm, mul_zero]) (by simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_mul_single {m r : ℕ} (M : Matrix (Fin r) (Fin m) ℂ) (i : Fin m) (j : Fin r) (c : ℂ) :
     (M * Matrix.single i j c).trace = M j i * c := by
@@ -38,9 +38,9 @@ theorem trace_mul_single {m r : ℕ} (M : Matrix (Fin r) (Fin m) ℂ) (i : Fin m
   simp
 
 /- English proof (translation)
-Establish `hξn : 0 < ‖ξ‖` using `norm_pos_iff.2 hξ`. Rewrite using `[Fintype.sum_bool]`. Simplify using `only [Bool.false_eq_true, ite_true, ite_false, trace_mul_single, mul_one]`. Rewrite using `[le_inv_mul_iff₀ hξn, ← norm_mul]`. Establish `h1` using `Complex.norm_le_abs_re_add_abs_im (ξ * B j i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : |2 * (ξ * (B j i * Complex.I)).re| = 2 * |(ξ * B j i).im|`. Rewrite using `[← mul_assoc, Complex.mul_I_re, abs_mul, abs_neg, abs_two]`. Establish `e2 : |2 * (ξ * B j i).re| = 2 * |(ξ * B j i).re|` using `by rw [abs_mul, abs_two]`. Rewrite using `[e1, e2]`. Combine the linear relations using `[abs_nonneg (ξ * B j i).re, abs_nonneg (ξ * B j i).im]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_le_forms {m r : ℕ} (B : Matrix (Fin r) (Fin m) ℂ) (ξ : ℂ) (hξ : ξ ≠ 0) (i : Fin m) (j : Fin r) :
     ‖B j i‖ ≤ ‖ξ‖⁻¹ * ∑ b : Bool, |2 * (ξ * (B * Matrix.single i j (if b then Complex.I else 1)).trace).re| := by
@@ -56,7 +56,7 @@ theorem norm_le_forms {m r : ℕ} (B : Matrix (Fin r) (Fin m) ℂ) (ξ : ℂ) (h
   linarith [abs_nonneg (ξ * B j i).re, abs_nonneg (ξ * B j i).im]
 
 /- English proof (translation)
-The claim follows from `|2 * (ξ * (xᴴ * G * Matrix.single i j (if b then Complex.I else 1)).trace).re| := by have hg0 : 0 ≤ ∑ i, ∑ k, ‖G⁻¹ i k‖ := by positivity refine ⟨m * (∑ i, ∑ k, ‖G⁻¹ i k‖) * ‖ξ‖⁻¹, by positivity, fun x => ?_⟩ have hx : x = (xᴴ * G * G⁻¹)ᴴ := by rw [Matrix.mul_assoc, Matrix.mul_non …`.
+A detailed English derivation is pending.
 -/
 theorem sum_norm_le {m r : ℕ} (G : Matrix (Fin m) (Fin m) ℂ) (hG : IsUnit G.det) (ξ : ℂ) (hξ : ξ ≠ 0) :
     ∃ A : ℝ, 0 ≤ A ∧ ∀ x : Matrix (Fin m) (Fin r) ℂ,
@@ -104,9 +104,9 @@ open GlobalTheory.MixModel
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [HypDec.mixS, HypDec.integrandS_eq]`. Use `(enorm_integral_le_lintegral_enorm _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun a => ?_` and prove the remaining obligations. Rewrite using `[enorm_mul, ← ofReal_norm (ψ _), hψ.1.2.1, ENNReal.ofReal_one, one_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.HeisTaylor.enorm_le_supN φ _`. Use `_ = _ := by rw [setLIntegral_const, v.covol.2.2, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem enorm_mixS_le' {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {V V₀ W : HSp D} {ρ : ℕ}
     (d : HypDec V V₀ ρ) (v : GlobalTheory.Unf.VolM D W.rank ρ) (φ : WO V W → ℂ) (x : Mx D W.rank ρ) (w : WO V₀ W) :
@@ -121,9 +121,9 @@ theorem enorm_mixS_le' {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-
     _ = _ := by rw [setLIntegral_const, v.covol.2.2, mul_one]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.OneAddPowBoundTwistedOperators.one_add_pow_le`. Consider the case `exact _root_.GlobalTheory.OneAddPowBoundTwistedOperators.one_add_pow_le`. Consider the case `(apply _root_.GlobalTheory.OneAddPowBoundTwistedOperators.one_add_pow_le <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.OneAddPowBoundTwistedOperators.one_add_pow_le <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.OneAddPowBoundTwistedOperators.one_add_pow_le <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.OneAddPowBoundTwistedOperators.one_add_pow_le ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem one_add_pow_le {L : ℝ} (hL : 0 ≤ L) (N : ℕ) : (1 + L) ^ N ≤ 2 ^ N * (1 + L ^ N) := by
   first
@@ -135,33 +135,29 @@ theorem one_add_pow_le {L : ℝ} (hL : 0 ≤ L) (N : ℕ) : (1 + L) ^ N ≤ 2 ^ 
   | (intros; exact _root_.GlobalTheory.OneAddPowBoundTwistedOperators.one_add_pow_le ..)
 
 /- English proof (translation)
-Introduce `D ψ hψ θ hθ V X S₀ r d μ' 𝓕' hμ N`. Set `v : GlobalTheory.Unf.VolM D X.rank r` to `⟨μ', 𝓕', hμ⟩`. Set `zA : D.what₂.Tau × Fin X.rank × Fin r × Bool → Matrix (Fin X.rank) (Fin r) ℂ` to `fun a => Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1)`. Set `ℓ : D.what₂.Tau × Fin X.rank × Fin r × Bool → Mx D X.rank r → ℝ` to `fun a x => |2 * (tauE D a.1 D.host.xi0 * ((compAt θ a.1 x)ᴴ * gramAt D X a.1 * zA a).trace).re|`. Use `choose Z hZ using fun a : D.what₂.Tau × Fin X.rank × Fin r × Bool => GlobalTheory.Unf.norm_mixS_dRho_ge D ψ hψ θ hθ V S₀ X r d v a.1 (zA a)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `laws` using `GlobalTheory.Unf.SupFin.supSob_laws D ψ hψ θ hθ V X`. Use `choose C hC using fun a : D.what₂.Tau × Fin X.rank × Fin r × Bool => (laws.2.1 a.1 (Z a)).2`. Set `K : NNReal` to `∑ a, C a`. Establish `hL0 : ∀ x, 0 ≤ ∑ a, ℓ a x` using `fun x => Finset.sum_nonneg fun a _ => abs_nonneg _`. Establish `hpow : ∀ n : ℕ, ∀ f : WO V X → ℂ, IsThetaFunO ψ V X f → ∀ x, ENNReal.ofReal ((∑ a, ℓ a x) ^ n) * ‖d.mixS X ψ μ' 𝓕' f x 0‖ₑ ≤ ((K ^ n : NNReal) : ENNReal) * GlobalTheory.Unf.supSob ψ θ n f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `f hf x`. Rewrite using `[pow_zero, ENNReal.ofReal_one, one_mul, pow_zero, ENNReal.coe_one, one_mul]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(enorm_mixS_le' hψ d v f x 0).trans (GlobalTheory.Size.wordSum_zero _ _ _).ge`. Consider the case `succ n ih`. Introduce `f hf x`. Establish `step : ∀ a, ENNReal.ofReal ((∑ a, ℓ a x) ^ n) * (ENNReal.ofReal (ℓ a x) * ‖d.mixS X ψ μ' 𝓕' f x 0‖ₑ) ≤ ((K ^ n : NNReal) : ENNReal) * ((C a : ENNReal) * GlobalTheory.Unf.supSob ψ θ (n + 1) f)`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg` using `GlobalTheory.OrientedHeis.theta_dRho hθ hψ a.1 (Z a) hf`. Establish `h1 : ENNReal.ofReal (ℓ a x) * ‖d.mixS X ψ μ' 𝓕' f x 0‖ₑ ≤ ‖d.mixS X ψ μ' 𝓕' (dRho (heisO ψ V X) θ a.1 (Z a) f) x 0‖ₑ`. Rewrite using `[← ofReal_norm, ← ofReal_norm, ← ENNReal.ofReal_mul (abs_nonneg _)]`. Conclude with `ENNReal.ofReal_le_ofReal (hZ a f hf x 0)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_succ, ENNReal.ofReal_mul (pow_nonneg (hL0 x) n), ENNReal.ofReal_sum_of_nonneg (fun a _ => abs_nonneg _), Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∑ a, ((K ^ n : NNReal) : ENNReal) * ((C a : ENNReal) * GlobalTheory.Unf.supSob ψ θ (n + 1) f) := Finset.sum_le_sum fun a _ => step a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = ((K ^ (n + 1) : NNReal) : ENNReal) * GlobalTheory.Unf.supSob ψ θ (n + 1) f := by`. Rewrite using `[← Finset.mul_sum, ← Finset.sum_mul, pow_succ]`. Simplify using `only [K, ENNReal.coe_mul, ENNReal.ofNNReal_finsetSum]`. Expand and normalize the polynomial expressions, which then agree. Establish `hG : ∀ τ : D.what₂.Tau, IsUnit (gramAt D X τ).det` using `fun τ => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (gramAt D X τ).det = tauE D τ (HSpace.gram X).det` using `by rw [RingHom.map_det]; rfl`. Rewrite using `[isUnit_iff_ne_zero, e]`. Conclude with `(map_ne_zero_iff _ (tauE D τ).injective).2 (gram_det_ne X)`. Establish `hξ : ∀ τ : D.what₂.Tau, tauE D τ D.host.xi0 ≠ 0` using `fun τ => (map_ne_zero_iff _ (tauE D τ).injective).2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)`. Use `choose A hA0 hA using fun τ : D.what₂.Tau => sum_norm_le (r := r) (gramAt D X τ) (hG τ) _ (hξ τ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hAt : 0 ≤ ∑ τ, A τ` using `Finset.sum_nonneg fun τ _ => hA0 τ`. Establish `hrs : ∀ x : Mx D X.rank r, ∑ τ, ∑ i, ∑ j, ‖compAt θ τ x i j‖ ≤ (∑ τ, A τ) * ∑ a, ℓ a x`. Introduce `x`. Establish `e : ∑ a, ℓ a x = ∑ τ, ∑ i : Fin X.rank, ∑ j : Fin r, ∑ b : Bool, ℓ (τ, i, j, b) x`. Simplify using `only [Fintype.sum_prod_type]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[e, Finset.mul_sum]`. Use `Finset.sum_le_sum fun τ _ => (hA τ (compAt θ τ x)).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right (Finset.single_le_sum (f := A) (fun τ _ => hA0 τ) (Finset.mem_univ τ)) ?_` and prove the remaining obligations. Conclude with `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Use `⟨N, (1 + ∑ τ, A τ) ^ N * 2 ^ N * (1 + ((K ^ N : NNReal) : ℝ)), by positivity, fun Ψ hΨ x => ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `show _ ≤ _ * GlobalTheory.Unf.supSob ψ θ N Ψ`. Establish `hLn` using `hL0 x`. Establish `hb : (1 + ∑ τ, ∑ i, ∑ j, ‖compAt θ τ x i j‖) ^ N ≤ (1 + ∑ τ, A τ) ^ N * 2 ^ N * (1 + (∑ a, ℓ a x) ^ N)`. Establish `h1 : 1 + ∑ τ, ∑ i, ∑ j, ‖compAt θ τ x i j‖ ≤ (1 + ∑ τ, A τ) * (1 + ∑ a, ℓ a x)`. Use polynomial arithmetic with `[hrs x]`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h0` using `hpow 0 Ψ hΨ x`. Establish `hN` using `hpow N Ψ hΨ x`. Rewrite `h0` using `[pow_zero, ENNReal.ofReal_one, one_mul, pow_zero, ENNReal.coe_one, one_mul]`. Establish `hmono : GlobalTheory.Unf.supSob ψ θ 0 Ψ ≤ GlobalTheory.Unf.supSob ψ θ N Ψ` using `GlobalTheory.Size.wordSum_mono (Nat.zero_le N) Ψ`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul (p := (1 + ∑ τ, A τ) ^ N * 2 ^ N) (by positivity), ENNReal.ofReal_add zero_le_one (by positivity), ENNReal.ofReal_one]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ENNReal.ofReal ((1 + ∑ τ, A τ) ^ N * 2 ^ N) * (GlobalTheory.Unf.supSob ψ θ N Ψ + ((K ^ N : NNReal) : ENNReal) * GlobalTheory.Unf.supSob ψ θ N Ψ) := mul_le_mul_of_nonneg_left (add_le_add (h0.trans hmono) hN) zero_le`. Use `_ = ENNReal.ofReal ((1 + ∑ τ, A τ) ^ N * 2 ^ N * (1 + ((K ^ N : NNReal) : ℝ))) * GlobalTheory.Unf.supSob ψ θ N Ψ := by`.
-
-Rewrite using `[ENNReal.ofReal_mul (p := (1 + ∑ τ, A τ) ^ N * 2 ^ N) (by positivity), ENNReal.ofReal_add zero_le_one (by positivity), ENNReal.ofReal_one, ENNReal.ofReal_coe_nnreal]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem mixS_weight_le : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (θ : InfFam D), IsInfFam θ →
     ∀ (V X S₀ : HSp D) (r : ℕ) (d : GlobalTheory.MixModel.HypDec V S₀ r) (μ' : Measure (Mx D X.rank r))

@@ -8,15 +8,13 @@ namespace GlobalTheory.CompanionTheory.ArtinTower
 universe w
 
 /- English proof (translation)
-Establish `hanti : Antitone K` using `antitone_nat_of_succ_le hK`. Take `⟨m, hm⟩` from `IsArtinian.monotone_stabilizes (⟨fun k => OrderDual.toDual (K k), hanti.dual_right⟩ : ℕ →o (Submodule W M)ᵒᵈ)`. Establish `hdiff : ∀ k j, c (k + j) - c k ∈ K k`. Introduce `k j`. Proceed by induction on `j with`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ j ih`. Establish `h1 : c (k + j + 1) - c (k + j) ∈ K k` using `hanti (Nat.le_add_right k j) (hc (k + j))`. Establish `h2` using `add_mem h1 ih`. Rewrite `h2` using `[sub_add_sub_cancel]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`. Use `⟨c m, fun k => ?_⟩` and prove the remaining obligations. Break down `le_total k m with hkm | hmk` into its components or cases. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hkm`. Conclude with `hdiff k j`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hmk`. Establish `hKeq : K m = K (m + j)` using `hm (m + j) (Nat.le_add_right m j)`. Rewrite using `[← hKeq]`. Establish `h3` using `neg_mem (hdiff m j)`. Rewrite `h3` using `[neg_sub]`.
-
-Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coset_chain {W : Type} [CommRing W] {M : Type w} [AddCommGroup M] [Module W M]
     [IsArtinian W M] (K : ℕ → Submodule W M) (hK : ∀ k, K (k + 1) ≤ K k) (c : ℕ → M)
@@ -61,9 +59,9 @@ def stable (n : ℕ) : Set (S.M n) := {x | ∀ k, x - imgPt S y k n ∈ imgSub S
 variable {S N y}
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `n`. Use `show Submodule.map (S.r n) (N (n + 1)) ≤ N n`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Conclude with `Submodule.map_le_iff_le_comap.mpr (fun u hu => hN n u hu)`. Consider the case `succ k ih`. Introduce `n`. Use `show Submodule.map (S.r n) (imgSub S N (k + 1) (n + 1)) ≤ Submodule.map (S.r n) (imgSub S N k (n + 1))`. Conclude with `Submodule.map_mono (ih (n + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem imgSub_succ_le (hN : ∀ n x, x ∈ N (n + 1) → S.r n x ∈ N n) :
     ∀ k n, imgSub S N (k + 1) n ≤ imgSub S N k n := by
@@ -80,9 +78,9 @@ theorem imgSub_succ_le (hN : ∀ n x, x ∈ N (n + 1) → S.r n x ∈ N n) :
     exact Submodule.map_mono (ih (n + 1))
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro n`. Conclude with `hy n`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Use `show S.r n (imgPt S y (k + 1) (n + 1)) - S.r n (imgPt S y k (n + 1)) ∈ Submodule.map (S.r n) (imgSub S N k (n + 1))`. Rewrite using `[← map_sub]`. Conclude with `Submodule.mem_map_of_mem (ih (n + 1))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem imgPt_step (hy : ∀ n, S.r n (y (n + 1)) - y n ∈ N n) :
     ∀ k n, imgPt S y (k + 1) n - imgPt S y k n ∈ imgSub S N k n := by
@@ -97,7 +95,7 @@ theorem imgPt_step (hy : ∀ n, S.r n (y (n + 1)) - y n ∈ N n) :
     exact Submodule.mem_map_of_mem (ih (n + 1))
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `coset_chain (fun k => imgSub S N k n) (fun k => imgSub_succ_le hN k n) (fun k => imgPt S y k n) (fun k => imgPt_step hy k n)`. Conclude with `⟨x, hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stable_nonempty (hN : ∀ n x, x ∈ N (n + 1) → S.r n x ∈ N n)
     (hy : ∀ n, S.r n (y (n + 1)) - y n ∈ N n) (n : ℕ) [IsArtinian W (S.M n)] :
@@ -107,17 +105,15 @@ theorem stable_nonempty (hN : ∀ n x, x ∈ N (n + 1) → S.r n x ∈ N n)
   exact ⟨x, hx⟩
 
 /- English proof (translation)
-Establish `hxk : ∀ k, x - imgPt S y k n ∈ imgSub S N k n` using `hx`. Establish `hA : ∀ k, ∃ u : S.M (n + 1), S.r n u = x ∧ u - imgPt S y k (n + 1) ∈ imgSub S N k (n + 1)`. Introduce `k`. Establish `h1 : x - imgPt S y (k + 1) n ∈ Submodule.map (S.r n) (imgSub S N k (n + 1))` using `hxk (k + 1)`. Take `⟨v, hv, hve⟩` from `Submodule.mem_map.mp h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨v + imgPt S y k (n + 1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hve] show x - S.r n (imgPt S y k (n + 1)) + S.r n (imgPt S y k (n + 1)) = x`. Conclude with `sub_add_cancel _ _`. Rewrite using `[add_sub_cancel_right]`. Conclude with `hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose c hc1 hc2 using hA`. Establish `hKanti : ∀ k, LinearMap.ker (S.r n) ⊓ imgSub S N (k + 1) (n + 1) ≤ LinearMap.ker (S.r n) ⊓ imgSub S N k (n + 1)` using `fun k => inf_le_inf_left _ (imgSub_succ_le hN k (n + 1))`. Establish `hstep : ∀ k, c (k + 1) - c k ∈ LinearMap.ker (S.r n) ⊓ imgSub S N k (n + 1)`. Introduce `k`. Rewrite using `[Submodule.mem_inf]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, map_sub, hc1, hc1, sub_self]`. Establish `e : c (k + 1) - c k = (c (k + 1) - imgPt S y (k + 1) (n + 1)) + (imgPt S y (k + 1) (n + 1) - imgPt S y k (n + 1)) - (c k - imgPt S y k (n + 1))`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `sub_mem (add_mem (imgSub_succ_le hN k (n + 1) (hc2 (k + 1))) (imgPt_step hy k (n + 1))) (hc2 k)`. Take `⟨x', hx'⟩` from `coset_chain (fun k => LinearMap.ker (S.r n) ⊓ imgSub S N k (n + 1)) hKanti c hstep`. Use `⟨x', fun k => ?_, ?_⟩` and prove the remaining obligations. Establish `e : x' - imgPt S y k (n + 1) = (x' - c k) + (c k - imgPt S y k (n + 1))` using `by abel`. Rewrite using `[e]`.
-
-Conclude with `add_mem (Submodule.mem_inf.mp (hx' k)).2 (hc2 k)`. Establish `h0` using `(Submodule.mem_inf.mp (hx' 0)).1`. Rewrite `h0` using `[LinearMap.mem_ker, map_sub, hc1, sub_eq_zero]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stable_surj (hN : ∀ n x, x ∈ N (n + 1) → S.r n x ∈ N n)
     (hy : ∀ n, S.r n (y (n + 1)) - y n ∈ N n) {n : ℕ} [IsArtinian W (S.M (n + 1))]
@@ -164,9 +160,9 @@ theorem stable_surj (hN : ∀ n x, x ∈ N (n + 1) → S.r n x ∈ N n)
 end
 
 /- English proof (translation)
-Introduce `W _ S hA N y hN hy`. Establish `h0 : ∃ x, x ∈ stable S N y 0` using `by haveI := hA 0`. Conclude with `stable_nonempty hN hy 0`. Establish `hs : ∀ n (x : S.M n), x ∈ stable S N y n → ∃ x' ∈ stable S N y (n + 1), S.r n x' = x` using `fun n x hx => by haveI := hA (n + 1)`. Conclude with `stable_surj hN hy hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : ∀ n, {x : S.M n // x ∈ stable S N y n}` to `fun n => Nat.rec (motive := fun n => {x : S.M n // x ∈ stable S N y n}) ⟨h0.choose, h0.choose_spec⟩ (fun n p => ⟨(hs n p.1 p.2).choose, (hs n p.1 p.2).choose_spec.1⟩) n`. Establish `hf : ∀ n, S.r n (f (n + 1)).1 = (f n).1` using `fun n => (hs n (f n).1 (f n).2).choose_spec.2`. Use `⟨⟨fun n => (f n).1, ?_⟩, fun n => (f n).2 0⟩` and prove the remaining obligations. Unfold `CrystallineSemistableComparison.Sys.lim`. Conclude with `fun n => hf n`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_compatible : ∀ (W : Type) [CommRing W] (S : Sys.{1} W),
     (∀ n, IsArtinian W (S.M n)) → ∀ (N : ∀ n, Submodule W (S.M n)) (y : ∀ n, S.M n),

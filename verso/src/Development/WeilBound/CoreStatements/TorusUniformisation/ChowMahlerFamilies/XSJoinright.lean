@@ -22,7 +22,7 @@ namespace PositivityTheory.Xgn.A_s_joinright
 open GroundTheory.Heights₂.Heights.NumbersDVR
 
 /- English proof (translation)
-The claim follows from `FibreVarieties.proof GenericFibProps.full GenericDimBound.full GenericDimGe.proof SpecialIdealCorresp.full SpecialIdealMultiHomog.full SupSpanMultiHomog.full MinimalPrimeMultiHomog.full SpecialQuotDim.full ComponentDim.proof`.
+A detailed English derivation is pending.
 -/
 theorem fibreVarieties : FibreVarieties.Statement.{0} :=
   FibreVarieties.proof GenericFibProps.full GenericDimBound.full GenericDimGe.proof SpecialIdealCorresp.full
@@ -30,13 +30,13 @@ theorem fibreVarieties : FibreVarieties.Statement.{0} :=
     ComponentDim.proof
 
 /- English proof (translation)
-The claim follows from `PairNumberRelabelAlt.proof (VerticalComponentFibre.proof fibreVarieties)`.
+A detailed English derivation is pending.
 -/
 theorem pairNumRelabel : PairNumberRelabelAlt.Statement :=
   PairNumberRelabelAlt.proof (VerticalComponentFibre.proof fibreVarieties)
 
 /- English proof (translation)
-The claim follows from `FlagModelJoinRightAlt.proof JoinVerticalDivisor.proof (FlagPairJoinRight.proof JoinVerticalDivisorRight.proof) (PairNumberJoinRight.proof (PairNumberJoinLeft.proof h JoinVerticalDivisorLeft.proof BirationalJoin.proof) JoinVerticalDivisorRight.proof pairNumRelabel)`.
+A detailed English derivation is pending.
 -/
 theorem of_pullback (h : PairNumberPullback.Statement) : FlagModelJoinRightAlt.Statement :=
   FlagModelJoinRightAlt.proof JoinVerticalDivisor.proof (FlagPairJoinRight.proof JoinVerticalDivisorRight.proof)

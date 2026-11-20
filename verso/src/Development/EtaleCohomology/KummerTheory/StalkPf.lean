@@ -7,7 +7,7 @@ open scoped TensorProduct DirectSum
 namespace LateralTheory.KummerTheory
 
 /- English proof (translation)
-Establish `: Subsingleton (Ht q (sch.obj (pullback p (Spec.map s))) n i)` using `(h9 (ZMod q) (tw q i)).1 _ n hn`. Use `haveI : ∀ a : Fin (M + 1), Subsingleton (Ht q (sch.obj (Spec A)) (n - ((a : ℕ) : ℤ)) 0) := fun a => (h9 (ZMod q) (tw q 0)).1 _ _ (by omega)`. Use `⟨fun y _ => ?_, fun b => ⟨0, Subsingleton.elim _ _⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a t`. Conclude with `Subsingleton.elim _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem stalk_neg (h9 : A9) (q : ℕ) [NeZero q] {X : Scheme.{0}} {R : CommRingCat.{0}} (p : X ⟶ Spec R)
     (A : CommRingCat.{0}) (s : R ⟶ A) (i : ℤ) (r : ℕ → ℕ) (c : ∀ a : ℕ, Fin (r a) → Ht q (sch.obj X) a i) (M N : ℕ)
@@ -30,7 +30,7 @@ def StalkTop : Prop := DivisorNaturality → DivisorRingCompatibility → A9 →
   (∀ a ≤ M, IsoUpTo N (comb q (c a))) → ∀ n : ℤ, 0 ≤ n → n ≤ M → IsoUpTo N (lh q p (Spec.map s) i r c M n)
 
 /- English proof (translation)
-Introduce `U ⟨g⟩`. Establish `g' : U ⟶ X` using `g`. Simplify using `using hq.map g'.appTop.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inv_sch (q : ℕ) {X : Scheme.{0}} (hq : IsUnit (q : Γ(X, ⊤))) : Inv q (sch.obj X) := by
   intro U ⟨g⟩
@@ -38,63 +38,63 @@ theorem inv_sch (q : ℕ) {X : Scheme.{0}} (hq : IsUnit (q : Γ(X, ⊤))) : Inv 
   simpa using hq.map g'.appTop.hom
 
 /- English proof (translation)
-Simplify using `using hq.map (Scheme.ΓSpecIso A).inv.hom`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unit_spec (q : ℕ) {A : CommRingCat.{0}} (hq : IsUnit (q : A)) : IsUnit (q : Γ(Spec A, ⊤)) := by
   simpa using hq.map (Scheme.ΓSpecIso A).inv.hom
 
 /- English proof (translation)
-Rewrite using `[← ZMod.natCast_zmod_val t, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, map_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_zsmul {E E' : Spc} (f : E ⟶ E') (q : ℕ) [NeZero q] {n i : ℤ} (t : ZMod q) (x : Ht q E' n i) :
     pull _ f _ _ (t • x) = t • pull _ f _ _ x := by
   rw [← ZMod.natCast_zmod_val t, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, map_nsmul]
 
 /- English proof (translation)
-Substitute `h1 h2 h3 h4` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_cast' (q : ℕ) {E : Spc} {n i n' i' n'' i'' : ℤ} (h1 : n = n') (h2 : i = i') (h3 : n' = n'') (h4 : i' = i'')
     (x : Ht q E n i) : (x.cast h1 h2).cast h3 h4 = x.cast (h1.trans h3) (h2.trans h4) := by
   subst h1 h2 h3 h4; rfl
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pull_cast (q : ℕ) [NeZero q] {E E' : Spc} (f : E ⟶ E') {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i')
     (x : Ht q E' n i) : pull _ f _ _ (x.cast h1 h2) = Ht.cast h1 h2 (pull _ f _ _ x : Ht q E n i) := by
   subst h1 h2; rfl
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_smul' (q : ℕ) {E : Spc} {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') (t : ZMod q) (x : Ht q E n i) :
     (t • x).cast h1 h2 = t • x.cast h1 h2 := by
   subst h1 h2; rfl
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cup_cast_r (q : ℕ) {E : Spc} {n m i j m' j' : ℤ} (h1 : m = m') (h2 : j = j') (a : Ht q E n i)
     (y : Ht q E m j) : cup q a (y.cast h1 h2) = (cup q a y).cast (by rw [h1]) (by rw [h2]) := by
   subst h1 h2; rfl
 
 /- English proof (translation)
-Rewrite using `[← ZMod.natCast_zmod_val t, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, map_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cup_smul_r (q : ℕ) [NeZero q] {E : Spc} {n m i j : ℤ} (t : ZMod q) (a : Ht q E n i) (y : Ht q E m j) :
     cup q a (t • y) = t • cup q a y := by
   rw [← ZMod.natCast_zmod_val t, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, map_nsmul]
 
 /- English proof (translation)
-Simplify using `using hq.map f.appTop.hom`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unit_map (q : ℕ) {Y X : Scheme.{0}} (f : Y ⟶ X) (hq : IsUnit (q : Γ(X, ⊤))) : IsUnit (q : Γ(Y, ⊤)) := by
   simpa using hq.map f.appTop.hom
 
 /- English proof (translation)
-Introduce `h6n h6r q _ X R A p s hq a i x t`. Establish `hI` using `inv_sch q (unit_spec q hq)`. Establish `hP` using `inv_sch q (unit_map q (pullback.snd p (Spec.map s)) (unit_spec q hq))`. Unfold `ext`. Rewrite using `[pull_cast, pull_zsmul, (h6n q).2.1 _ hI, cup_cast_r, cup_smul_r, (h6r q _).2.2, (h6r q _).1 hP]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_zero, Int.negOnePow_zero, one_smul, cast_smul', cast_cast']`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem extOne_pf : ExtOne := by
   intro h6n h6r q _ X R A p s hq a i x t
@@ -106,46 +106,44 @@ theorem extOne_pf : ExtOne := by
   rfl
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_zero' (q : ℕ) {E : Spc} {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') :
     (0 : Ht q E n i).cast h1 h2 = 0 := by
   subst h1 h2; rfl
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_nsmul' (q : ℕ) {E : Spc} {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') (N : ℕ) (x : Ht q E n i) :
     (N • x).cast h1 h2 = N • x.cast h1 h2 := by
   subst h1 h2; rfl
 
 /- English proof (translation)
-Unfold `ext`. Rewrite using `[map_zero, map_zero, cast_zero']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_zero (q : ℕ) [NeZero q] {X Y S : Scheme.{0}} (pX : X ⟶ S) (pY : Y ⟶ S) (a n i : ℤ) (x : Ht q (sch.obj X) a i) :
     ext q pX pY a n i x 0 = 0 := by
   unfold ext; rw [map_zero, map_zero, cast_zero']
 
 /- English proof (translation)
-Introduce `h6n h6r h9 hb2 h0 hE q _ X R p A s hA hq i r c M N he hc n hn0 hnM`. Use `lift n to ℕ using hn0`. Establish `hnM' : n ≤ M` using `by exact_mod_cast hnM`. Establish `hqA : IsUnit (q : A)` using `by simpa using hq.map s.hom`. Set `a : Fin (M + 1)` to `⟨n, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsub : ∀ b : Fin (M + 1), b ≠ a → Subsingleton (Ht q (sch.obj (Spec A)) ((n : ℤ) - ((b : ℕ) : ℤ)) 0)`. Introduce `b hb`. Establish `hb' : (b : ℕ) ≠ n` using `fun h => hb (Fin.ext h)`. Break down `Nat.lt_or_gt_of_ne hb' with h | h` into its components or cases. Conclude with `hb2 (ZMod q) A hA (tw q 0) _ (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(h9 (ZMod q) (tw q 0)).1 _ _ (by omega)`. Establish `hH` using `h0 h9 q A hA hqA`. Establish `hex : ∀ z : Ht q (sch.obj (Spec A)) ((n : ℤ) - (n : ℤ)) 0, ∃ t : ZMod q, z = (t • one q (sch.obj (Spec A))).cast (by ring) rfl`. Introduce `z`. Take `⟨t, ht⟩` from `hH.2 (z.cast (by ring) rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[show t • one q (sch.obj (Spec A)) = _ from ht, cast_cast']`. Both sides reduce to the same expression. Establish `hform : ∀ (y : ∀ b : Fin (M + 1), Fin (r b) → Ht q (sch.obj (Spec A)) ((n : ℤ) - ((b : ℕ) : ℤ)) 0) (t : Fin (r n) → ZMod q), (∀ u, y a u = (t u • one q (sch.obj (Spec A))).cast (by ring) rfl) → lh q p (Spec.map s) i r c M n y = pull _ (sch.map (pullback.fst p (Spec.map s))) _ _ ( …`. Introduce `y t hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `lh comb`. Rewrite using `[Fintype.sum_eq_single a]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[hy u, pull_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hE h6n h6r q p s hqA n i (c n u) (t u)`. Introduce `b hb haveI := hsub b hb`. Use `Finset.sum_eq_zero fun u _ => ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (y b u) 0, ext_zero]`. Establish `hbij` using `he (n : ℤ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun y hy0 => ?_, fun b => ?_⟩` and prove the remaining obligations. Use `choose t ht using fun u => hex (y a u)`. Rewrite `hy0` using `[hform y t ht]`. Establish `hc0 : comb q (c n) t = 0` using `hbij.1 (by rw [hy0, map_zero])`. Establish `hNt` using `(hc n hnM').1 t hc0`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `b u`. Distinguish the cases in `hb : b = a`. Substitute `hb show N • y a u = 0` using the available equality. Rewrite using `[ht u]`. Establish `e1 : N • t u = 0` using `by simpa using congrFun hNt u`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cast_nsmul', ← smul_assoc, e1, zero_smul, cast_zero']`. Use `haveI := hsub b hb`. Conclude with `Subsingleton.elim _ _`. Take `⟨w, rfl⟩` from `hbij.2 b`. Take `⟨t, ht⟩` from `(hc n hnM').2 w`.
-
-Use `⟨Pi.single a (fun u => (t u • one q (sch.obj (Spec A))).cast (by ring) rfl), ?_⟩` and prove the remaining obligations. Rewrite using `[hform _ t (fun u => by rw [Pi.single_eq_same]), ht, map_nsmul]`.
+A detailed English derivation is pending.
 -/
 theorem stalkTop_pf : StalkTop := by
   intro h6n h6r h9 hb2 h0 hE q _ X R p A s hA hq i r c M N he hc n hn0 hnM
@@ -201,7 +199,7 @@ theorem stalkTop_pf : StalkTop := by
     rw [hform _ t (fun u => by rw [Pi.single_eq_same]), ht, map_nsmul]
 
 /- English proof (translation)
-Introduce `h6n h6r h9 hb2 q _ X R p A s hA hq i r c M N he hc n hn`. Distinguish the cases in `hneg : n < 0`. Conclude with `stalk_neg h9 q p A s i r c M N n hneg`. Conclude with `stalkTop_pf h6n h6r h9 hb2 h0 extOne_pf q p A s hA hq i r c M N he hc n (by omega) hn`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem Stalk_of (h0 : H0) : Stalk := by
   intro h6n h6r h9 hb2 q _ X R p A s hA hq i r c M N he hc n hn

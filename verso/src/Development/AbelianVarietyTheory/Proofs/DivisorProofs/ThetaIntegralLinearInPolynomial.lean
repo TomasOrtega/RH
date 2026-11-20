@@ -11,17 +11,15 @@ noncomputable section
 namespace GlobalTheory.ThK.LinMapV
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hKP hT`. Establish `hP` using `GlobalTheory.ThK.Inhab.pairV hT`. Establish `hcond : a + a' + 2 * min (a - G.p) G.p < 2 * a ∨ min (a - G.p) G.p = 0`. Establish `h1` using `hT.geo.eBig`. Establish `h2` using `hT.geo.lt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : min (a - G.p) G.p ≤ G.p` using `min_le_right _ _`. Use `left`. Use linear arithmetic over natural numbers and integers. Establish `hconv` using `(GlobalTheory.T.weil_convergence_of_kernel hKP F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hP hcond).1`. Establish `pres : ∀ x, ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a')), om x Φ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a'))` using `fun x Φ hΦ => (GlobalTheory.WeilM.IsUWeilPair.isUSplitting hT.weil).pres x Φ hΦ`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPol : GlobalTheory.ThK.PolData B G.M ≤ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a'))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, hSB, hev, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hT.geo.hM.std).mono fun v hv => hv.1.trans hv.2)`. Use `⟨{ toFun := fun Φ => G.M.I om Φ, map_add' := ?_, map_smul' := ?_ }, fun _ => rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨Φ, hΦ⟩ ⟨Ψ, hΨ⟩`. Establish `hΦS` using `hPol hΦ`. Establish `hΨS` using `hPol hΨ`. Use function extensionality and compare the values at `h`. Establish `e : ∀ g, theta om (Φ + Ψ) g h = theta om Φ g h + theta om Ψ g h` using `fun g => by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [theta, map_add]`. Conclude with `GlobalTheory.WeilM.thetaSum_add F (pres _ Φ hΦS) (pres _ Ψ hΨS)`. Use `show G.M.I om (Φ + Ψ) h = G.M.I om Φ h + G.M.I om Ψ h`. Simplify using `only [Model.I, e]`. Conclude with `integral_add ((hconv Φ hΦS).1 h) ((hconv Ψ hΨS).1 h)`.
-
-Introduce and unpack `c ⟨Φ, hΦ⟩`. Use function extensionality and compare the values at `h`. Use `show G.M.I om (c • Φ) h = c * G.M.I om Φ h`. Simplify using `only [Model.I, theta, map_smul, GlobalTheory.WeilM.thetaSum_smul]`. Conclude with `integral_const_mul _ _`.
+Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_linearMap : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

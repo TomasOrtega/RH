@@ -7,9 +7,9 @@ open CategoryTheory Limits AlgebraicGeometry TensorProduct
 open FunctorialResolution.Blowup FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Rewrite using `[opensRange_affineBlowupChart_eq_basicOpen, affineBlowupChart_eq_awayι]`. Use `(Proj.awayι_preimage_basicOpen (reesGrading I) (reesGenerator_mem_reesGrading I c) Nat.one_pos (reesGenerator_mem_reesGrading I a) Nat.one_pos).trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[chartFraction_eq_mk]`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[HomogeneousLocalization.Away.mk]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem chart_preimage_opensRange {R : Type} [CommRing R] (I : Ideal R) (c a : ↥I) :
     affineBlowupChart I c ⁻¹ᵁ (affineBlowupChart I a).opensRange
@@ -23,11 +23,11 @@ private theorem chart_preimage_opensRange {R : Type} [CommRing R] (I : Ideal R) 
   simp [HomogeneousLocalization.Away.mk]
 
 /- English proof (translation)
-Establish `hcomp` using `awayCoordGenEquivMvPolynomial_symm_comp_coordBlowupSubst A (Finset.univ : Finset (Fin D)) j (Finset.mem_univ j)`. Establish `hk` using `RingHom.congr_fun hcomp (MvPolynomial.X k)`. Establish `hj` using `RingHom.congr_fun hcomp (MvPolynomial.X j)`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, RingEquiv.toRingHom_eq_coe] at hk hj`. Rewrite `hk` using `[coordBlowupSubst_X_of_mem A _ j (Finset.mem_univ k) hkj, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[coordBlowupSubst_X_self]`. Establish `h3` using `chartRingHom_coe_eq_chartFraction_mul (coordIdeal A (Finset.univ : Finset (Fin D))) (coordIdealGen A Finset.univ j (Finset.mem_univ j)) (coordIdealGen A Finset.univ k (Finset.mem_univ k))`. Establish `hnz` using `chartRingHom_mem_nonZeroDivisors (coordIdeal A (Finset.univ : Finset (Fin D))) (coordIdealGen A Finset.univ j (Finset.mem_univ j))`. Rewrite `h3`, `hnz` using `[coe_coordIdealGen]`. Rewrite `h3` using `[coe_coordIdealGen]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hnz`, `h3` using `[← hj]`. Rewrite `h3` using `[← hk]`. Conclude with `(mul_cancel_right_mem_nonZeroDivisors hnz).mp h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem equiv_symm_X {A : Type} [CommRing A] {D : ℕ} (j k : Fin D) (hkj : k ≠ j) :
     (awayCoordGenEquivMvPolynomial A (Finset.univ : Finset (Fin D)) j (Finset.mem_univ j)).symm
@@ -54,17 +54,17 @@ private theorem equiv_symm_X {A : Type} [CommRing A] {D : ℕ} (j k : Fin D) (hk
   exact (mul_cancel_right_mem_nonZeroDivisors hnz).mp h3
 
 /- English proof (translation)
-Introduce `A _ D`. Set `I` to `coordIdeal A (Finset.univ : Finset (Fin D))`. Set `e : ∀ j : Fin D, _` to `fun j => awayCoordGenEquivMvPolynomial A (Finset.univ : Finset (Fin D)) j (Finset.mem_univ j)`. Use `⟨fun j => Spec.map (e j).toCommRingCatIso.hom ≫ affineBlowupChart I (coordIdealGen A Finset.univ j (Finset.mem_univ j)), fun j => inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Category.assoc, affineBlowupChart_comp_toSpec, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x : 1`. Establish `hcomp` using `awayCoordGenEquivMvPolynomial_symm_comp_coordBlowupSubst A (Finset.univ : Finset (Fin D)) j (Finset.mem_univ j)`. Rewrite using `[algebraMap_chart_eq_chartRingHom, ← hcomp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[e]`. Apply `top_unique` to reduce the goal to its premises. Rewrite using `[← iSup_opensRange_affineBlowupChart_coordIdealGen A (Finset.univ : Finset (Fin D))]`. Use `iSup_le fun i => le_iSup_of_le i.1 ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.opensRange_comp_of_isIso]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `j k`. Rewrite using `[Scheme.Hom.opensRange_comp_of_isIso, Scheme.Hom.comp_preimage, chart_preimage_opensRange, SpecMap_preimage_basicOpen]`. Use `split_ifs with hkj`. Substitute `hkj` using the available equality. Establish `h1 : chartFraction I (coordIdealGen A Finset.univ k (Finset.mem_univ k)) (coordIdealGen A Finset.univ k (Finset.mem_univ k)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chartFraction_eq_mk]`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using `[h1]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h2` using `equiv_symm_X (A := A) j k hkj`. Rewrite using `[← h2]`. Simplify using `[e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_affineBlowup_coordinate_chart_cover :
     ∀ (A : Type) [CommRing A] (D : ℕ),

@@ -12,7 +12,7 @@ open scoped TensorProduct ENNReal
 namespace GlobalTheory.CmHermitianRankFrames
 
 /- English proof (translation)
-Rewrite using `[X.n_eq]`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `h2` using `D.R.two_le_m`. Take `⟨j, hj⟩` from `D.R.m_even`. Simplify using `only [Formalism.BasicNotions.Ranks.r, Formalism.BasicNotions.Ranks.rS]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -27,7 +27,7 @@ theorem four_mul_add_five_le_rank (D : Formalism.BasicNotions.D7) (X : Formalism
   omega
 
 /- English proof (translation)
-Introduce `D X` and use `⟨MassDataVolumesW.stepCM X, MassDataVolumesW.stepHerm X, four_mul_add_five_le_rank D X, fun u => MassDataLevelSSteps.frameStd_holds X u⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem cm_herm_rank_frames : ∀ (D : Formalism.BasicNotions.D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D), IsCMExt X.B.I.F X.B.I.E X.B.I.cm.sig ∧ IsHermND X.B.I.cm.sig X.B.I.J ∧ 4 * D.R.rS + 5 ≤ X.B.I.n ∧ ∀ u, ∃ T : X.B.I.F, (Formalism.L2.SG.TypedSets.frameOf X u).IsStd X.B.I.cm.sig X.B.I.J T :=
   fun D X => ⟨MassDataVolumesW.stepCM X, MassDataVolumesW.stepHerm X, four_mul_add_five_le_rank D X,

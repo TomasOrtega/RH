@@ -6,17 +6,17 @@ open Polynomial
 namespace UpperTheory.Gal.Int.Div
 
 /- English proof (translation)
-Introduce `k _ a M Q hQm hQd hQ hsep`. Establish `key : M.charpoly ∣ Q`. Rewrite using `[← Polynomial.map_dvd_map (algebraMap k (AlgebraicClosure k)) (algebraMap k (AlgebraicClosure k)).injective M.charpoly_monic]`. Rewrite using `[← M.charpoly_map]`. Establish `hQ' : aeval (M.map (algebraMap k (AlgebraicClosure k))) Q = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : M.map (algebraMap k (AlgebraicClosure k)) = (Algebra.ofId k (AlgebraicClosure k)).mapMatrix M` using `rfl`. Rewrite using `[e, Polynomial.aeval_algHom_apply, hQ, map_zero]`. Establish `hf : aeval (Matrix.toLin' (M.map (algebraMap k (AlgebraicClosure k)))) Q = 0`. Establish `e : Matrix.toLin' (M.map (algebraMap k (AlgebraicClosure k))) = Matrix.toLinAlgEquiv' (M.map (algebraMap k (AlgebraicClosure k)))` using `rfl`. Rewrite using `[e, ← Polynomial.aeval_map_algebraMap (AlgebraicClosure k), Polynomial.aeval_algHom_apply, Polynomial.aeval_map_algebraMap, hQ', map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmon` using `(M.map (algebraMap k (AlgebraicClosure k))).charpoly_monic`. Use `dvd_trans ?_ (prod_multiset_X_sub_C_dvd (Q.map (algebraMap k (AlgebraicClosure k))))` and prove the remaining obligations. Rewrite using `[(IsAlgClosed.splits (M.map (algebraMap k (AlgebraicClosure k))).charpoly).eq_prod_roots_of_monic hmon]`. Apply `Multiset.prod_dvd_prod_of_le` to reduce the goal to its premises. Apply `Multiset.map_le_map` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hnd : (M.map (algebraMap k (AlgebraicClosure k))).charpoly.roots.Nodup`. Rewrite using `[M.charpoly_map]`. Conclude with `nodup_roots hsep.map`. Rewrite using `[Multiset.le_iff_subset hnd]`. Introduce `μ hμ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hroot : (M.map (algebraMap k (AlgebraicClosure k))).charpoly.IsRoot μ` using `(mem_roots hmon.ne_zero).mp hμ`. Rewrite `hroot` using `[← Matrix.charpoly_toLin']`. Establish `he` using `(Module.End.hasEigenvalue_iff_isRoot_charpoly _ μ).mpr hroot`. Take `⟨v, hv⟩` from `he.exists_hasEigenvector`. Establish `hv'` using `Module.End.aeval_apply_of_hasEigenvector (p := Q.map (algebraMap k (AlgebraicClosure k))) hv`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv'` using `[Polynomial.aeval_map_algebraMap, hf, LinearMap.zero_apply]`. Establish `h0 : (Q.map (algebraMap k (AlgebraicClosure k))).eval μ = 0` using `(smul_eq_zero.mp hv'.symm).resolve_right hv.2`. Rewrite using `[mem_roots (Polynomial.map_monic_ne_zero hQm)]`. Conclude with `h0`. Conclude with `(eq_of_monic_of_dvd_of_natDegree_le M.charpoly_monic hQm key (by rw [hQd, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin])).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sepPin_of : SepPin := by
   intro k _ a M Q hQm hQd hQ hsep

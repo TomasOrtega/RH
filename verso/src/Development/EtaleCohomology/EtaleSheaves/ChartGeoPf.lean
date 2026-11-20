@@ -6,9 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite
 namespace LateralTheory.E.ChartGeoPf
 
 /- English proof (translation)
-Introduce `X S p n _ x W hxW`. Take `⟨U, hU, V, hV, hxV, e, hf⟩` from `SmoothOfRelativeDimension.exists_isStandardSmoothOfRelativeDimension (n := n) (f := p) x`. Take `⟨g, hgW, hxg⟩` from `hV.exists_basicOpen_le ⟨x, hxW⟩ hxV`. Use `⟨U, hU, X.basicOpen g, hV.basicOpen g, (X.basicOpen_le g).trans e, hxg, hgW, ?_⟩` and prove the remaining obligations. Use `hV.isLocalization_basicOpen g` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : (algebraMap Γ(X, V) Γ(X, X.basicOpen g)).IsStandardSmoothOfRelativeDimension 0` using `RingHom.IsStandardSmoothOfRelativeDimension.algebraMap_isLocalizationAway g`. Establish `h3` using `h1.comp hf`. Rewrite `h3` using `[zero_add]`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← Scheme.Hom.appLE_map p e (homOfLE (X.basicOpen_le g)).op]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -28,11 +28,11 @@ theorem chartStdGeo_pf : ChartStdGeo := by
   rfl
 
 /- English proof (translation)
-Introduce `X Z ι _ V hV y`. Establish `hy : hV.fromSpec y ∈ V`. Establish `h` using `hV.range_fromSpec`. Conclude with `(show hV.fromSpec y ∈ (V : Set X) from h ▸ Set.mem_range_self y)`. Establish `hcl : closure (Set.range ι) = Set.range ι` using `ι.isClosedEmbedding.isClosed_range.closure_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ f : Γ(X, V), hV.fromSpec y ∈ X.basicOpen f ↔ f ∉ (show PrimeSpectrum Γ(X, V) from y).asIdeal`. Introduce `f`. Use `show y ∈ hV.fromSpec ⁻¹ᵁ X.basicOpen f ↔ _`. Rewrite using `[hV.fromSpec_preimage_basicOpen]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hcl, ← Scheme.Hom.support_ker, SetLike.mem_coe, Scheme.IdealSheafData.mem_support_iff_of_mem (U := ⟨V, hV⟩) hy, Scheme.Hom.ker_apply, Scheme.mem_zeroLocus_iff]`. Simplify using `only [key, not_not]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rangeKer_pf : RangeKer := by
   intro X Z ι _ V hV y
@@ -51,17 +51,15 @@ theorem rangeKer_pf : RangeKer := by
   rfl
 
 /- English proof (translation)
-Introduce `n A B T _ _ _ _ π hπ hloc P hP hI`. Take `⟨s, hs, H⟩` from `hloc`. Establish `hPb : (P.map π).IsPrime` using `Ideal.map_isPrime_of_surjective hπ (by simpa using hI)`. Take `⟨t, hts, htP⟩ : ∃ t ∈ s, t ∉ P.map π` from `by by_contra! hc`. Conclude with `hPb.ne_top (top_le_iff.1 (hs ▸ Ideal.span_le.2 hc))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `hπ t`. Establish `hg : g ∉ P` using `fun h => htP (Ideal.mem_map_of_mem π h)`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Use `set φ : Localization.Away g →+* Localization.Away (π g) := Localization.awayMap π g with hφ`. Establish `hsurj : Function.Surjective φ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hφ, Localization.awayMap_surjective_iff]`. Introduce `a`. Take `⟨b, rfl⟩` from `hπ a`. Conclude with `⟨b, 0, by simp⟩`. Establish `hker : RingHom.ker φ = (RingHom.ker π).map (algebraMap B (Localization.Away g))` using `IsLocalization.ker_map _ π (Submonoid.map_powers π g)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : (Localization.Away g ⧸ (RingHom.ker π).map (algebraMap B (Localization.Away g))) ≃+* Localization.Away (π g)` to `(Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective hsurj)`. Establish `he : (e.symm : Localization.Away (π g) →+* _).comp ((algebraMap T (Localization.Away (π g))).comp (π.comp (algebraMap A B))) = algebraMap A (Localization.Away g ⧸ (RingHom.ker π).map (algebraMap B (Localization.Away g)))`. Use extensionality with `a`. Apply `e.injective` to reduce the goal to its premises. Simplify using `only [RingHom.coe_comp, RingEquiv.coe_toRingHom, Function.comp_apply, RingEquiv.apply_symm_apply]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[IsScalarTower.algebraMap_apply A B]`. Use `show _ = e (Ideal.Quotient.mk _ (algebraMap B (Localization.Away g) (algebraMap A B a)))`. Simplify using `only [e, RingEquiv.trans_apply, Ideal.quotEquivOfEq_mk, RingHom.quotientKerEquivOfSurjective_apply_mk]`. Simplify using `[φ, Localization.awayMap, IsLocalization.Away.map, IsLocalization.map_eq]`. Rewrite using `[← RingHom.isStandardSmoothOfRelativeDimension_algebraMap, ← he]`.
-
-Conclude with `(RingHom.isStandardSmoothOfRelativeDimension_respectsIso (n := n)).1 _ e.symm (H _ hts)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotLoc_pf : QuotLoc := by
   intro n A B T _ _ _ _ π hπ hloc P hP hI
@@ -98,9 +96,9 @@ theorem quotLoc_pf : QuotLoc := by
   exact (RingHom.isStandardSmoothOfRelativeDimension_respectsIso (n := n)).1 _ e.symm (H _ hts)
 
 /- English proof (translation)
-Introduce `X Z S p ι _ d e _ _ x hx W hxW`. Take `⟨U, hU, V, hV, hUV, hxV, hVW, hstd⟩` from `h1 p (e + d) x W hxW`. Use `letI : Algebra Γ(S, U) Γ(X, V) := (p.appLE U V hUV).hom.toAlgebra`. Establish `h0` using `HasRingHomProperty.appLE (P := @SmoothOfRelativeDimension e) (ι ≫ p) inferInstance ⟨U, hU⟩ ⟨ι ⁻¹ᵁ V, hV.preimage ι⟩ ((le_refl (ι ⁻¹ᵁ V)).trans ((TopologicalSpace.Opens.map ι.base).map (homOfLE hUV)).le)`. Rewrite `h0` using `[← Scheme.Hom.appLE_comp_appLE ι p U V (ι ⁻¹ᵁ V) hUV le_rfl, ← Scheme.Hom.app_eq_appLE, CommRingCat.hom_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨Γ(S, U), Γ(X, V), inferInstance, inferInstance, inferInstance, RingHom.ker (ι.app V).hom, hstd, fun P hP hI => h3 e _ _ _ (ι.app V).hom (ι.app_surjective V hV) h0 P hP hI, hV.fromSpec, inferInstance, ?_, ?_, fun y => h2 ι V hV y⟩` and prove the remaining obligations. Rewrite using `[hV.range_fromSpec]`. Conclude with `hxV`. Rewrite using `[hV.range_fromSpec]`. Conclude with `hVW`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChartGeo_of_parts (h1 : ChartStdGeo) (h2 : RangeKer) (h3 : QuotLoc) : LateralTheory.E.LeafChartAffPf.ChartGeo := by
   intro X Z S p ι _ d e _ _ x hx W hxW

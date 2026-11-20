@@ -21,7 +21,7 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
   {s : Matrix (IxF F nS nT) (IxF F nS nT) ℂ}
 variable {η : (AEF F E)ˣ →* Circle} {ε : AEF F E} {of oi : GAF σ JS × GAF σ JT →* Module.End ℂ (WOF F E nS nT → ℂ)}
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.ThKW.fin_inf_comm_A_k C hO hof hi p q f hf`.
+A detailed English derivation is pending.
 -/
 theorem fin_inf_comm_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hO : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om)
     (hof : ∀ p, ∃ z : ℂ, ∀ f : thetaSubF σ JS JT ξ₀ B.ψ, of p f = z • (Om p f : WOF F E nS nT → ℂ))
@@ -29,7 +29,7 @@ theorem fin_inf_comm_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ 
     (hf : IsThetaFunOF σ JS JT ξ₀ B.ψ f) : of p (oi q f) = oi q (of p f) :=
   _root_.PositivityTheory.ThKW.fin_inf_comm_A_k C hO hof hi p q f hf
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.ThKW.datum_of_aut_A_k C hO h1 h2 hf hof hi haut`.
+A detailed English derivation is pending.
 -/
 theorem datum_of_aut_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hO : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om)
     (h1 : IsHeckeCharF η) (h2 : ResEtaF η 1) (hf : IsFinWeilF σ JS JT ξ₀ B.ψ (η ^ nS) (η ^ nT) of)

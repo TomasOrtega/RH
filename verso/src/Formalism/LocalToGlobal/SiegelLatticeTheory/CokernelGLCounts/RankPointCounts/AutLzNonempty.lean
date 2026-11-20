@@ -16,7 +16,7 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `h1 : (1 : (VS D).V ≃ₗ[D.host.E] (VS D).V) ∈ stabF D F0` using `⟨one_mem _, fun j => kmap_one _, rfl⟩`. Conclude with `⟨ind F0 h1, (autLz_iff F0 Λ _).2 ⟨1, h1, gmap_one' Λ, rfl⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem autLz_nonempty {D : D7} {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : Submodule (𝓞 D.host.E) (VS D).V) :
     (autLz D F0 Λ).Nonempty := by
@@ -24,9 +24,9 @@ theorem autLz_nonempty {D : D7} {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ 
   exact ⟨ind F0 h1, (autLz_iff F0 Λ _).2 ⟨1, h1, gmap_one' Λ, rfl⟩⟩
 
 /- English proof (translation)
-Establish `hne : (Y.what₂ u).Nonempty` using `⟨_, (cls_spec (Y.rowsOK u) (latRowLat X u) 1).1⟩`. Unfold `Formalism.MainNotions.S.Cnt.massRows`. Use `Finset.sum_pos (fun Λ hΛ => ?_) hne` and prove the remaining obligations. Use `haveI := Formalism.L2.SG.Pf.FibreCounting.autLz_finite (Y := Y) (Formalism.L2.SG.Closed.NeatKu_holds X u Y.hK) hΛ`. Establish `hpos : 0 < Nat.card ↥(autLz D (X.Fu u) Λ)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩` from `autLz_nonempty (X.Fu u) Λ`. Use `haveI : Nonempty ↥(autLz D (X.Fu u) Λ) := ⟨⟨φ, hφ⟩⟩`. Conclude with `Nat.card_pos`. Unfold `Formalism.MainNotions.S.wRow`. Conclude with `inv_pos.2 (Nat.cast_pos.2 hpos)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem massRows_pos {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u : D.what₂.Word) :
     0 < Formalism.MainNotions.S.Cnt.massRows D (X.Fu u) (Y.what₂ u) := by
@@ -48,7 +48,7 @@ namespace Formalism.L2.SG.MassDataConc
 open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge Formalism.L2.SG.Full MeasureTheory
 
 /- English proof (translation)
-The claim follows from `RhoTieC_holds X hb Y u u' X0 ψ sd C Th vR Q M δ i0 i0' νq (Formalism.L2.SG.Pf.latRowLat X u) (Formalism.L2.SG.Pf.latInj X u) (Formalism.L2.SG.Pf.latSurj X u)`.
+A detailed English derivation is pending.
 -/
 theorem RhoTieC_closed {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (Y : Full X) (u u' : D.what₂.Word)
     (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E) (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ)

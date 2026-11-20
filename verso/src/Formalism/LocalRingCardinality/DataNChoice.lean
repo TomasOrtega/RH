@@ -71,13 +71,13 @@ def fracEquiv (K V : Type) [CommRing K] [IsDomain K] [AddCommGroup V] [Module (F
   (IsLocalizedModule.isBaseChange (nonZeroDivisors K) (FractionRing K) (LinearMap.id : V →ₗ[K] V)).equiv
 
 /- English proof (translation)
-Simplify using `[fracEquiv, IsBaseChange.equiv_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fracEquiv_tmul (a : FractionRing K) (x : V) : fracEquiv K V (a ⊗ₜ x) = a • x := by
   simp [fracEquiv, IsBaseChange.equiv_tmul]
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.symm_apply_eq, fracEquiv_tmul, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fracEquiv_symm (x : V) : (fracEquiv K V).symm x = (1 : FractionRing K) ⊗ₜ x := by
   rw [LinearEquiv.symm_apply_eq, fracEquiv_tmul, one_smul]
@@ -93,9 +93,9 @@ theorem toFrac_apply {L W : Type} [Field L] [AddCommGroup W] [Module L W] {σ : 
     (f : W →ₛₗ[σ] V) (x : W) : toFrac f x = (fracEquiv K V).symm (f x) := rfl
 
 /- English proof (translation)
-Simplify using `only [toFrac_apply]`. Take `⟨h1, h2⟩` from `h`. Use `⟨h1.map' (fracEquiv K V).symm.toLinearMap (fracEquiv K V).symm.ker, ?_⟩` and prove the remaining obligations. Establish `h3 : (Set.range fun i => (fracEquiv K V).symm (f (v i))) = (fracEquiv K V).symm.toLinearMap '' Set.range fun i => f (v i)`. Rewrite using `[← Set.range_comp]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h3, Submodule.span_image, h2, Submodule.map_top]`. Conclude with `LinearEquiv.range _`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toFrac_basis {L W : Type} [Field L] [AddCommGroup W] [Module L W] {σ : L →+* FractionRing K}
     (f : W →ₛₗ[σ] V) {ι : Type} (v : ι → W)
@@ -113,7 +113,7 @@ theorem toFrac_basis {L W : Type} [Field L] [AddCommGroup W] [Module L W] {σ : 
   exact LinearEquiv.range _
 
 /- English proof (translation)
-Establish `h1 : toFrac f '' S = (TensorProduct.mk K (FractionRing K) V 1) '' (f '' S)`. Rewrite using `[Set.image_image]`. Conclude with `Set.image_congr fun x _ => fracEquiv_symm (f x)`. Rewrite using `[h1, Submodule.span_image, h, Submodule.span_image, Submodule.span_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toFrac_lat {L W : Type} [Field L] [AddCommGroup W] [Module L W] {σ : L →+* FractionRing K}
     (f : W →ₛₗ[σ] V) (S : Set W) (p : Submodule K V) (h : Submodule.span K (f '' S) = p) :

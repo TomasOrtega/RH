@@ -9,17 +9,15 @@ namespace Formalism.FourierDecayAlt.P5.HerC
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P5
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun l => by have := l.1.isLt; have := l.2; simp at *; omega⟩`.
+Supply the required witnesses or components.
 -/
 theorem cf_last_isEmpty (r : ℕ) : IsEmpty {l : Fin r // (Fin.last r).val ≤ l.val} :=
   ⟨fun l => by have := l.1.isLt; have := l.2; simp at *; omega⟩
 
 /- English proof (translation)
-Use `haveI := cf_last_isEmpty r`. Establish `hvol : (volume : Measure (Cf r (Fin.last r))) = Measure.dirac (fun l => isEmptyElim l)`. Rewrite using `[volume_pi, Measure.pi_of_empty]`. Use `haveI : IsFiniteMeasure (volume : Measure (Cf r (Fin.last r))) := by rw [hvol]; infer_instance`. Establish `hf : f = fun _ => f (fun l => isEmptyElim l)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `c'`. Use `congr 1`. Use function extensionality and compare the values at `l`. Conclude with `isEmptyElim l`. Rewrite using `[hf]`.
-
-Conclude with `integrable_const _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_cf_last {r : ℕ} (f : Cf r (Fin.last r) → ℂ) : Integrable f := by
   haveI := cf_last_isEmpty r

@@ -7,9 +7,9 @@ open TensorProduct Module
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `L Ω M M' ι _ _ _ _ _ _ _ _ _ J f f' hJ hf`. Establish `h1 : ⨅ i, LinearMap.ker (f' i) = Submodule.span Ω (J '' (⨅ i, LinearMap.ker (f i) : Submodule L M))`. Rewrite using `[GlobalTheory.GaloisDescent.span_image_iInf hJ]`. Conclude with `iInf_congr fun i => (GlobalTheory.GaloisDescent.span_image_ker hJ hJ (f i) (f' i) (fun v => hf i v)).symm`. Establish `h2 : Submodule.span Ω (J '' (⨅ i, LinearMap.ker (f i) : Submodule L M)) = ((⨅ i, LinearMap.ker (f i) : Submodule L M).baseChange Ω).map hJ.equiv.toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.baseChange_eq_span, Submodule.map_span, Submodule.map_coe, Set.image_image]`. Use `congr 2`. Use extensionality with `x`. Simplify using `[IsBaseChange.equiv_tmul]`. Rewrite using `[h1, h2, LinearEquiv.finrank_map_eq, GlobalTheory.finrank_baseChange]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_iInf_ker_of_isBaseChange : ∀ (L Ω M M' ι : Type) [Field L] [Field Ω] [Algebra L Ω]
     [AddCommGroup M] [Module L M] [AddCommGroup M'] [Module Ω M'] [Module L M']

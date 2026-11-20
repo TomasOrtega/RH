@@ -12,13 +12,13 @@ def lead (τ : E →+* ℂ) (i : ℕ) (hi : i ≤ Dw.mult τ) (hn : i ≤ n) (c 
   ⟨τ, i, hi, c, hc, Fin.castLE hn, Fin.castLE_injective hn⟩
 
 /- English proof (translation)
-Unfold `Bk.poly`. Use `pow_ne_zero _ ?_` and prove the remaining obligations. Introduce `h`. Set `v : LtN Dw n → K` to `fun l => if ∃ a : Fin B.i, l = ⟨B.τ, Fin.castLE B.hi a, B.col a⟩ then 1 else 0`. Establish `h2` using `congrArg (MvPolynomial.eval v) h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h2` using `[RingHom.map_det, map_zero]`. Establish `: (MvPolynomial.eval v).mapMatrix (Matrix.of fun a b : Fin B.i => MvPolynomial.X (⟨B.τ, Fin.castLE B.hi a, B.col b⟩ : LtN Dw n)) = 1`. Use extensionality with `a b`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, MvPolynomial.eval_X, v, Matrix.one_apply]`. Distinguish the cases in `hab : a = b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hab` using the available equality. Rewrite using `[if_pos ⟨a, rfl⟩, if_pos rfl]`. Rewrite using `[if_neg hab, if_neg]`. Introduce and unpack `⟨d, hd⟩`. Simplify using `only [Sigma.mk.injEq, heq_eq_eq, true_and, Prod.mk.injEq] at hd`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `h1 : a = d` using `Fin.castLE_injective _ hd.1`. Establish `h3 : b = d` using `B.col_inj hd.2`. Conclude with `hab (h1.trans h3.symm)`. Rewrite `h2` using `[this, Matrix.det_one]`. Conclude with `one_ne_zero h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poly_ne_zero (K : Type) [Field K] (B : Bk Dw n) : B.poly K ≠ 0 := by
   classical
@@ -43,7 +43,7 @@ theorem poly_ne_zero (K : Type) [Field K] (B : Bk Dw n) : B.poly K ≠ 0 := by
   exact one_ne_zero h2
 
 /- English proof (translation)
-Introduce and unpack `⟨nb, bs, -, h⟩`. Conclude with `Finset.prod_ne_zero_iff.2 (fun j _ => poly_ne_zero Dw n K (bs j)) h.symm`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem not_isBlockProd_zero (K : Type) [Field K] : ¬ IsBlockProd (0 : MvPolynomial (LtN Dw n) K) := by
   rintro ⟨nb, bs, -, h⟩

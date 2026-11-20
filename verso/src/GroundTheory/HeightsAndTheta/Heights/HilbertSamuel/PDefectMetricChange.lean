@@ -12,19 +12,19 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Establish `hB` using `tele_smooth_ratio hs₀ hs₁`. Establish `hsymm` using `(hI Unit (GlobalTheory κ)).1`. Establish `hadd` using `(hI Unit (GlobalTheory κ)).2.1`. Establish `htel` using `Finset.sum_range_sub (fun i => I Unit (GlobalTheory κ) (coordIdeal ℤ x) (D + 1) (tele_fam m₀ m₁ (D + 1) i)) (D + 1)`. Establish `hT0 : tele_fam m₀ m₁ (D + 1) 0 = fun _ => HermLine.ofCone m₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Simplify using `[tele_fam]`. Establish `hT1 : tele_fam m₀ m₁ (D + 1) (D + 1) = fun _ => HermLine.ofCone m₁`. Use function extensionality and compare the values at `j`. Simplify using `[tele_fam, j.isLt]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [hT0, hT1] at htel`. Unfold `top`. Rewrite using `[← htel]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : I Unit (GlobalTheory κ) (coordIdeal ℤ x) (D + 1) (tele_fam m₀ m₁ (D + 1) (i + 1)) = I Unit (GlobalTheory κ) (coordIdeal ℤ x) (D + 1) (Fin.snoc (tele_fam m₀ m₁ D i) (HermLine.ofCone m₁))`. Rewrite using `[← tele_fam_succAbove m₀ m₁ D i hi (i + 1) (Or.inr rfl)]`. Establish `: HermLine.ofCone m₁ = tele_fam m₀ m₁ (D + 1) (i + 1) ⟨i, hi⟩`. Simplify using `[tele_fam]`. Rewrite using `[this, ← tele_comp_perm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hsymm _ _ _ _ hP (tele_fam_smooth hs₀ hs₁ _ _)).symm`. Establish `e0 : I Unit (GlobalTheory κ) (coordIdeal ℤ x) (D + 1) (tele_fam m₀ m₁ (D + 1) i) = I Unit (GlobalTheory κ) (coordIdeal ℤ x) (D + 1) (Fin.snoc (tele_fam m₀ m₁ D i) (HermLine.ofCone m₀))`. Rewrite using `[← tele_fam_succAbove m₀ m₁ D i hi i (Or.inl rfl)]`. Establish `: HermLine.ofCone m₀ = tele_fam m₀ m₁ (D + 1) i ⟨i, hi⟩`. Simplify using `[tele_fam]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← tele_comp_perm]`. Conclude with `(hsymm _ _ _ _ hP (tele_fam_smooth hs₀ hs₁ _ _)).symm`. Rewrite using `[e1, e0, tele_ofCone_tensor m₀ m₁, hadd _ _ _ _ _ hP (tele_fam_smooth hs₀ hs₁ _ _) (tele_smooth_ofCone hs₀) hB, add_sub_cancel_left, fam_degZero I hI hP _ (tele_fam_smooth hs₀ hs₁ _ _) _ hB rfl]`. Establish `hpot : pot (tele_fam m₀ m₁ D i) = mixPot m₀ m₁ D i`. Use function extensionality and compare the values at `j z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [pot, mixPot, tele_fam]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[hpot]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem top_sub_top_mixPot (I : AllFam) (hI : I.IsFamily) {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type}
     [Fintype κ] {x : Ix κ → Ω} {m₀ m₁ : ConeMetric ℂ (Ix κ)}
@@ -76,11 +76,11 @@ theorem top_sub_top_mixPot (I : AllFam) (hI : I.IsFamily) {D : ℕ} {Ω : Type} 
   rfl
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ I d m₁ P0₁ hs hc hle hp e hI he`. Establish `h₁` using `hR D Ω κ (d.withMetric m₁ P0₁ hs hc hle hp) e he`. Establish `h₀` using `hR D Ω κ d e he`. Establish `hc₁` using `hC D Ω κ d m₁ P0₁ hs hc hle hp e he`. Establish `htop : top I d.x m₁ D = top I d.x d.m D + ((D : ℝ) + 1) * resMetricInt d m₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hM D Ω κ d m₁ hs, ← top_sub_top_mixPot I hI d.arith d.smooth hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlog` using `isLittleO_pow_mul_log D`. Use `(((h₁.trans_isLittleO hlog).sub (h₀.trans_isLittleO hlog)).add hc₁).congr_left fun n => ?_` and prove the remaining obligations. Simplify using `only [hsDefect, htop, Nat.factorial_succ]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem DefectMetricChange.proof (hR : RealGramComparison.Statement)
     (hC : ComplexGramMetricChange.Statement) (hM : ResolutionMixedIntegral.Statement) :

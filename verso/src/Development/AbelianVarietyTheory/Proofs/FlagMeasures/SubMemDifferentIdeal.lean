@@ -16,27 +16,25 @@ open scoped ENNReal in
 open Polynomial in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(t : E) = star (θ : E) at ht`. Establish `hst : star (t : E) = θ` using `by rw [ht, star_star]`. Distinguish the cases in `hθ : (θ : E) ∈ (algebraMap F E).range`. Establish `: t = θ` using `RingOfIntegers.coe_injective (by`. Express the relevant statement in the definitionally equal form `(t : E) = θ`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ht]`. Conclude with `(h.fixed _).2 hθ)`. Rewrite using `[this, sub_self]`. Conclude with `zero_mem _`. Establish `hF : ∀ x : 𝓞 E, star (x : E) = x → ∃ s : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) s = x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨a, ha⟩` from `(h.fixed _).1 hx`. Establish `hai : IsIntegral ℤ a` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ F E) (algebraMap F E).injective).1 (by rw [IsScalarTower.coe_toAlgHom', ha]; exact x.isIntegral_coe)`. Conclude with `⟨⟨a, hai⟩, RingOfIntegers.coe_injective ha⟩`. Take `⟨s, hs⟩` from `hF (θ + t) (by`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `star ((θ : E) + t) = (θ : E) + t`. Rewrite using `[star_add, hst, ht, add_comm])`. Take `⟨n, hn⟩` from `hF (θ * t) (by`. Express the relevant statement in the definitionally equal form `star ((θ : E) * t) = (θ : E) * t`. Rewrite using `[star_mul, hst, ht])`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set p : (𝓞 F)[X] := X ^ 2 - C s * X + C n with hp_def`. Establish `hpdeg : p.natDegree = 2` using `by rw [hp_def]; compute_degree!`. Establish `hpm : p.Monic` using `by rw [hp_def]; monicity!`. Establish `hroot : aeval θ p = 0`. Simplify using `only [hp_def, map_add, map_sub, map_mul, map_pow, aeval_X, aeval_C, hs, hn]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hint : IsIntegral (𝓞 F) θ` using `Algebra.IsIntegral.isIntegral θ`. Establish `hdvd` using `minpoly.isIntegrallyClosed_dvd hint hroot`. Establish `hmdeg : (minpoly (𝓞 F) θ).natDegree = 2`. Establish `hle : (minpoly (𝓞 F) θ).natDegree ≤ 2` using `hpdeg ▸ natDegree_le_of_dvd hdvd hpm.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hne1 : (minpoly (𝓞 F) θ).natDegree ≠ 1`. Introduce `h1`. Take `⟨s', hs'⟩` from `minpoly.natDegree_eq_one_iff.1 h1`. Conclude with `hθ ⟨(s' : F), by rw [← hs']; rfl⟩`. Establish `hpos` using `minpoly.natDegree_pos hint`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hmin : minpoly (𝓞 F) θ = p` using `(eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic hint) hpm hdvd (by omega)).symm`. Establish `hint' : IsIntegral (𝓞 F) (θ : E)` using `hint.algebraMap`. Establish `hFdeg : (minpoly F (θ : E)).natDegree = 2`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' F hint', minpoly.algebraMap_eq RingOfIntegers.coe_injective, natDegree_map_eq_of_injective (IsFractionRing.injective (𝓞 F) F), hmdeg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htop : IntermediateField.adjoin F {(θ : E)} = ⊤` using `IntermediateField.eq_of_le_of_finrank_eq le_top (by`. Rewrite using `[IntermediateField.finrank_top', IntermediateField.adjoin.finrank (Algebra.IsIntegral.isIntegral _), hFdeg, h.deg2])`. Establish `hgen : Algebra.adjoin F {algebraMap (𝓞 E) E θ} = ⊤`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic _)]`. Express the relevant statement in the definitionally equal form `(IntermediateField.adjoin F {(θ : E)}).toSubalgebra = ⊤`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[htop, IntermediateField.top_toSubalgebra]`. Establish `hd` using `aeval_derivative_mem_differentIdeal (𝓞 F) F E θ hgen`. Rewrite `hd` using `[hmin]`. Use `hd using 1` and compare the differences between its conclusion and the goal. Simplify using `[hp_def, hs]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma sub_mem_differentIdeal_of_eq_star (h : _root_.Formalism.BasicNotions.CMData F E) (θ t : 𝓞 E)
     (ht : algebraMap (𝓞 E) E t = star (algebraMap (𝓞 E) E θ)) :
@@ -106,7 +104,7 @@ open Polynomial in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] in
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨θ, t, ht, hθt⟩` from `h.cmUnram.2.2 P hP`. Conclude with `hθt (hle (sub_mem_differentIdeal_of_eq_star h θ t ht))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CMDiscrSq.differentIdeal_eq_top (h : _root_.Formalism.BasicNotions.CMData F E) : differentIdeal (𝓞 F) (𝓞 E) = ⊤ := by
   by_contra hne
@@ -120,11 +118,11 @@ open NumberField Module Matrix in
 open scoped ENNReal in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ h`. Establish `hd` using `_root_.GlobalTheory.CMDiscrSq.differentIdeal_eq_top h`. Establish `hE` using `natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow F (𝓞 F) E (𝓞 E)`. Rewrite `hE` using `[hd, Ideal.absNorm_top, one_mul, h.deg2]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Int.abs_eq_natAbs, hE]`. Use `push_cast`. Conclude with `sq_abs _`. Establish `hmul` using `differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 F) (𝓞 E)`. Rewrite `hmul` using `[hd, Ideal.top_mul]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmul, absNorm_differentIdeal E (𝓞 E), hE]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.cm_discr_sq : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
     [NumberField E] [StarRing E] [Algebra F E], _root_.Formalism.BasicNotions.CMData F E → |discr E| = discr F ^ 2 ∧

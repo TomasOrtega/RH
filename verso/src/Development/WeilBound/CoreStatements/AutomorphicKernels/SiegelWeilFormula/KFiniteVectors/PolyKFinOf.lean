@@ -30,23 +30,23 @@ def Tl (d : SD σ) : d.Fn →ₗ[ℂ] (Mx F E d.m d.n → ℂ) where
 def TK (d : SD σ) : Submodule ℂ (Mx F E d.m d.n → ℂ) := (kfS d).map (Tl d)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_TK {f : Mx F E d.m d.n → ℂ} : f ∈ TK d ↔ ∃ Φ ∈ kfS d, d.T Φ = f := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `D_kfS (fun c hc => by rw [← Matrix.smul_mul, hZ c hc, Matrix.zero_mul]) hΦ`.
+A detailed English derivation is pending.
 -/
 theorem D_dg_mem {Φ : d.Fn} (hΦ : Φ ∈ kfS d) {Z : Mx F E d.m d.n} (hZ : At (evI F) Z) :
     Box.D (d.dd.e (Z * (dg d)ᵀ)) Φ ∈ kfS d :=
   D_kfS (fun c hc => by rw [← Matrix.smul_mul, hZ c hc, Matrix.zero_mul]) hΦ
 
 /- English proof (translation)
-Take `⟨Φ, hΦ, rfl⟩` from `hf`. Take `⟨Z₁, Z₂, c₁, c₂, h1, h2, e⟩` from `var_span' R w k`. Establish `hc : (-(2 * Real.pi * Complex.I) : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Use `⟨(c₁ / (-(2 * Real.pi * Complex.I))) • Box.D (d.dd.e (Z₁ * (dg d)ᵀ)) Φ + (c₂ / (-(2 * Real.pi * Complex.I))) • Box.D (d.dd.e (Z₂ * (dg d)ᵀ)) Φ, add_mem (Submodule.smul_mem _ _ (D_dg_mem hΦ h1)) (Submodule.smul_mem _ _ (D_dg_mem hΦ h2)), funext fun X => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `t` using `congrFun ((Tl d).map_add ((c₁ / (-(2 * Real.pi * Complex.I))) • Box.D (d.dd.e (Z₁ * (dg d)ᵀ)) Φ) ((c₂ / (-(2 * Real.pi * Complex.I))) • Box.D (d.dd.e (Z₂ * (dg d)ᵀ)) Φ)) X`. Simplify using `only [map_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at t`. Express the relevant statement in the definitionally equal form `d.T _ X = _ at t`. Express the relevant statement in the definitionally equal form `d.T _ X = _ * d.T Φ X`. Rewrite using `[t]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ * d.T _ X + _ * d.T _ X = _`. Rewrite using `[T_D_dg (mem_sch hΦ) h1, T_D_dg (mem_sch hΦ) h2, e X]`. Clear the denominators using the available nonvanishing facts.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem mul_var (R : RD d) (w : InfinitePlace F) (k : Fin d.m × Fin d.n × Bool) {f : Mx F E d.m d.n → ℂ}
     (hf : f ∈ TK d) : (fun X => evX (MvPolynomial.X k) (R.loc w X) * f X) ∈ TK d := by
@@ -68,13 +68,11 @@ theorem mul_var (R : RD d) (w : InfinitePlace F) (k : Fin d.m × Fin d.n × Bool
   field_simp
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on generalizing f with`. Consider the case `C a`. Establish `: (fun X => evX (MvPolynomial.C a) (R.loc w X) * f X) = a • f` using `funext fun X => by`. Simplify using `[evX]`. Rewrite using `[this]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ hf`. Consider the case `add p q hp hq`. Establish `: (fun X => evX (p + q) (R.loc w X) * f X) = (fun X => evX p (R.loc w X) * f X) + fun X => evX q (R.loc w X) * f X`. Use function extensionality and compare the values at `fun X => by simp [evX, add_mul]`. Rewrite using `[this]`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `add_mem (hp hf) (hq hf)`. Consider the case `mul_X p k hp`. Establish `: (fun X => evX (p * MvPolynomial.X k) (R.loc w X) * f X) = fun X => evX (MvPolynomial.X k) (R.loc w X) * (evX p (R.loc w X) * f X)` using `funext fun X => by`. Simplify using `only [evX, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[this]`. Conclude with `mul_var R w k (hp hf)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_pol (R : RD d) (w : InfinitePlace F) (Q : PX d.m d.n) {f : Mx F E d.m d.n → ℂ} (hf : f ∈ TK d) :
     (fun X => evX Q (R.loc w X) * f X) ∈ TK d := by
@@ -94,9 +92,9 @@ theorem mul_pol (R : RD d) (w : InfinitePlace F) (Q : PX d.m d.n) {f : Mx F E d.
     rw [this]; exact mul_var R w k (hp hf)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hf`. Consider the case `insert w s hw ih`. Establish `: (fun X => (∏ w ∈ insert w s, evX (P w) (R.loc w X)) * f X) = fun X => evX (P w) (R.loc w X) * ((∏ w ∈ s, evX (P w) (R.loc w X)) * f X)` using `funext fun X => by`. Rewrite using `[Finset.prod_insert hw, mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `mul_pol R w (P w) ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_prod (R : RD d) (P : InfinitePlace F → PX d.m d.n) (s : Finset (InfinitePlace F)) {f : Mx F E d.m d.n → ℂ}
     (hf : f ∈ TK d) : (fun X => (∏ w ∈ s, evX (P w) (R.loc w X)) * f X) ∈ TK d := by
@@ -109,11 +107,11 @@ theorem mul_prod (R : RD d) (P : InfinitePlace F → PX d.m d.n) (s : Finset (In
     rw [this]; exact mul_pol R w (P w) ih
 
 /- English proof (translation)
-Establish `hgen : vacF R g ∈ R.fock` using `Submodule.subset_span ⟨fun _ => 1, g, hg, funext fun X => by`. Simplify using `[vacF, fP, evX]⟩`. Take `⟨Φ, hΦ, e⟩` from `(hT.1 F E σ d).2.1 _ ((hF F E σ d R).1 hgen)`. Use `⟨Φ, vac_kfS (thA R) (thB d R.ε) (fun k hk w => commute_thB R hk w) (fun _ => 1) hΦ fun u u' hu hu' hr => ?_, e⟩` and prove the remaining obligations. Establish `m1 : Box.D (d.dd.e u') Φ ∈ d.sch` using `Box.DP_mem hΦ _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `m2 : Box.D (d.dd.e u) Φ ∈ d.sch` using `Box.DP_mem hΦ _ _`. Use `sub_eq_zero.1 ((hT.1 F E σ d).2.2 _ (sub_mem m1 (Submodule.smul_mem _ _ m2)) (funext fun X => ?_))` and prove the remaining obligations. Establish `t` using `congrFun ((Tl d).map_sub (Box.D (d.dd.e u') Φ) (Complex.I • Box.D (d.dd.e u) Φ)) X`. Simplify using `only [map_smul, Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at t`. Express the relevant statement in the definitionally equal form `d.T _ X = d.T _ X - Complex.I * d.T _ X at t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[t, vac_rel R g hΦ e hu hu' hr X, sub_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem vac_mem (hT : TAll) (hF : FockMem) (R : RD d) {g : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ}
     (hg : g ∈ SB _) : vacF R g ∈ TK d := by
@@ -131,9 +129,9 @@ theorem vac_mem (hT : TAll) (hF : FockMem) (R : RD d) {g : (Fin d.m × Fin d.n �
   rfl
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨P, g, hg, rfl⟩`. Establish `e : (fun X => (∏ w ∈ Finset.univ, fP (P w) (R.loc w X)) * g fun k => (d.crd X k).2) = fun X => (∏ w ∈ Finset.univ, evX (P w) (R.loc w X)) * vacF R g X` using `funext fun X => by`. Simplify using `only [fP, vacF, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[SetLike.mem_coe, e]`. Conclude with `mul_prod R P _ (vac_mem hT hF R hg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_le (hT : TAll) (hF : FockMem) (R : RD d) : R.fock ≤ TK d := by
   refine Submodule.span_le.2 ?_
@@ -145,9 +143,9 @@ theorem fock_le (hT : TAll) (hF : FockMem) (R : RD d) : R.fock ≤ TK d := by
   exact mul_prod R P _ (vac_mem hT hF R hg)
 
 /- English proof (translation)
-Introduce `hT hF F E _ _ _ _ _ σ d R Φ hΦ hf`. Take `⟨Φ', h', e⟩` from `fock_le hT hF R hf`. Establish `: Φ = Φ'` using `(sub_eq_zero.1 ((hT.1 F E σ d).2.2 _ (sub_mem hΦ (mem_sch h')) (by`. Rewrite using `[show d.T (Φ - Φ') = Tl d (Φ - Φ') from rfl, map_sub]`. Conclude with `sub_eq_zero.2 e.symm))).symm ▸ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `kFin_of_mem h'`.
+A detailed English derivation is pending.
 -/
 theorem polyKFin_of : TAll → FockMem → PolyKFin := by
   intro hT hF F E _ _ _ _ _ σ d R Φ hΦ hf

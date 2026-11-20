@@ -10,11 +10,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo (HermLine IsSmoothHerm IsArithVar 
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
 /- English proof (translation)
-Take `⟨g, hg, hgf⟩` from `(Ideal.mem_map_iff_of_surjective _ (MvPolynomial.map_surjective _ IsLocalRing.residue_surjective)).1 hf`. Establish `hker : f - g ∈ W`. Apply `hW` to reduce the goal to its premises. Rewrite using `[MvPolynomial.mem_map_C_iff]`. Introduce `d`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← IsLocalRing.residue_eq_zero_iff]`. Establish `h` using `congrArg (MvPolynomial.coeff d) hgf`. Rewrite `h` using `[MvPolynomial.coeff_map, MvPolynomial.coeff_map]`. Rewrite using `[MvPolynomial.coeff_sub, map_sub, h, sub_self]`. Use `W.add_mem hker hg` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_of_residue_map_mem_specialIdeal {K : Type} [DecidableEq K] {ι : K → Type} {O : Type}
     [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {W : Ideal (MRing ι O)}
@@ -34,7 +34,7 @@ theorem mem_of_residue_map_mem_specialIdeal {K : Type} [DecidableEq K] {ι : K �
   simpa using this
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[pointIdeal, RingHom.mem_ker]`. Rewrite using `[← hf]`. Simplify using `only [pointConeMap]`. Conclude with `MvPolynomial.aeval_map_algebraMap _ _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_mem_pointIdeal {K : Type} {ι : K → Type} {Ω : Type} [Field Ω]
     {y : (Σ k, ι k) → Ω} {A O : Type} [CommRing A] [CommRing O] [Algebra A O] [Algebra A Ω]
@@ -46,7 +46,7 @@ theorem map_mem_pointIdeal {K : Type} {ι : K → Type} {Ω : Type} [Field Ω]
   exact MvPolynomial.aeval_map_algebraMap _ _ _
 
 /- English proof (translation)
-Introduce `d hd`. Apply `hG` to reduce the goal to its premises. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Rewrite using `[MvPolynomial.coeff_map, h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMultiHomog_map {K : Type} [DecidableEq K] {ι : K → Type} {R S : Type} [CommRing R]
     [CommRing S] (φ : R →+* S) {G : MRing ι R} {b : K → ℕ} (hG : IsMultiHomog G b) :
@@ -58,31 +58,27 @@ theorem isMultiHomog_map {K : Type} [DecidableEq K] {ι : K → Type} {R S : Typ
   rw [MvPolynomial.coeff_map, h0, map_zero]
 
 /- English proof (translation)
-Introduce `K _ _ ι _ Ω _ y A _ _ _ _ hconst p _ m _ O _ _ _ _ _ _ _ hpm fd hcard W' hWp hWh hpt hϖ l`. Establish `hmne : m ≠ ⊥`. Introduce `h`. Apply `IsDiscreteValuationRing.not_a_field O` to reduce the goal to its premises. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal m O, h, Ideal.map_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI hmax : m.IsMaximal := Ideal.IsPrime.isMaximal ‹_› hmne`. Set `e` to `IsLocalization.AtPrime.equivQuotMaximalIdeal m O`. Establish `hsurj : ∀ x : IsLocalRing.ResidueField O, ∃ a : A, IsLocalRing.residue O (algebraMap A O a) = x`. Introduce `x`. Take `⟨q, hq⟩` from `e.surjective x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← hq]`. Conclude with `(IsLocalization.AtPrime.equivQuotMaximalIdeal_apply_mk m O a).symm`. Establish `hcardκ : Nat.card (IsLocalRing.ResidueField O) = p ^ fd` using `(Nat.card_congr e.toEquiv).symm.trans hcard`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : ((p : ℕ) : IsLocalRing.ResidueField O) = 0`. Establish `h1 : algebraMap A O (p : A) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalization.AtPrime.to_map_mem_maximal_iff O m _).2 hpm`. Establish `h2` using `(IsLocalRing.residue_eq_zero_iff _).2 h1`. Simplify using `using h2`. Use `haveI hchar : CharP (IsLocalRing.ResidueField O) p := by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result.
 
-Break down `(Nat.dvd_prime (Fact.out : p.Prime)).1 (ringChar.dvd hp0) with h | h` into its components or cases. Conclude with `absurd h CharP.ringChar_ne_one`. Conclude with `h ▸ ringChar.charP _`. Use `letI : Algebra (ZMod p) (IsLocalRing.ResidueField O) := ZMod.algebra _ p`. Use `haveI hfin : Finite (IsLocalRing.ResidueField O) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[hcardκ]`. Conclude with `pow_ne_zero _ (Fact.out : p.Prime).ne_zero`. Use `haveI : FiniteDimensional (ZMod p) (IsLocalRing.ResidueField O) := Module.Finite.of_finite`. Establish `hfr : Module.finrank (ZMod p) (IsLocalRing.ResidueField O) = fd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Module.natCard_eq_pow_finrank (K := ZMod p) (V := IsLocalRing.ResidueField O)`. Rewrite `h` using `[hcardκ, Nat.card_zmod]`. Conclude with `(Nat.pow_right_injective (Fact.out : p.Prime).two_le h).symm`. Establish `hhom : (algebraMap (ZMod p) (IsLocalRing.ResidueField O)).comp (Int.castRingHom (ZMod p)) = (IsLocalRing.residue O).comp (Int.castRingHom O)` using `Subsingleton.elim _ _`. Establish `hmm : ∀ g : MRing ι ℤ, MvPolynomial.map (algebraMap (ZMod p) (IsLocalRing.ResidueField O)) (MvPolynomial.map (Int.castRingHom (ZMod p)) g) = MvPolynomial.map (IsLocalRing.residue O) (MvPolynomial.map (Int.castRingHom O) g)`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[MvPolynomial.map_map, MvPolynomial.map_map, hhom]`. Establish `hcomap : (specialIdeal W').comap (MvPolynomial.map (algebraMap (ZMod p) (IsLocalRing.ResidueField O))) = extTo (ZMod p) (W'.comap (MvPolynomial.map (Int.castRingHom O)))`. Establish `hs : Function.Surjective (MvPolynomial.map (σ` using `(Σ k, ι k)) (Int.castRingHom (ZMod p))) := MvPolynomial.map_surjective _ (ZMod.ringHom_surjective _)`. Use extensionality with `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g0, rfl⟩` from `hs g`. Rewrite using `[Ideal.mem_comap, hmm, extTo]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_comap.2 (mem_of_residue_map_mem_specialIdeal hϖ h))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Take `⟨g1, hg1, hg⟩` from `(Ideal.mem_map_iff_of_surjective _ hs).1 h`. Rewrite using `[← hmm, ← hg, hmm]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_comap.1 hg1)`. Establish `hsu : ∀ (c : ∀ k, ι k) (a : IsLocalRing.ResidueField O), ∃ (n : ℕ) (G : MRing ι (ZMod p)), IsMultiHomog G (fun _ => n) ∧ C a * (∏ k, X ⟨k, c k⟩) ^ n - MvPolynomial.map (algebraMap (ZMod p) (IsLocalRing.ResidueField O)) G ∈ specialIdeal W'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `c a`. Take `⟨a0, rfl⟩` from `hsurj a`. Take `⟨n, G, hG, hmem⟩` from `GlobalTheory.T.constants_monomial_approximation K ι Ω y A hconst c a0`. Use `⟨n, MvPolynomial.map (Int.castRingHom (ZMod p)) G, isMultiHomog_map _ hG, ?_⟩` and prove the remaining obligations. Establish `h1` using `hpt (map_mem_pointIdeal (O := O) hmem)`.
-
-Establish `h2 : MvPolynomial.map (IsLocalRing.residue O) _ ∈ specialIdeal W'` using `Ideal.mem_map_of_mem _ h1`. Rewrite using `[hmm]`. Establish `hG' : MvPolynomial.map (IsLocalRing.residue O) (MvPolynomial.map (algebraMap A O) (MvPolynomial.map (Int.castRingHom A) G)) = MvPolynomial.map (IsLocalRing.residue O) (MvPolynomial.map (Int.castRingHom O) G)`. Simplify using `only [MvPolynomial.map_map]`. Conclude with `congrArg (fun φ : ℤ →+* IsLocalRing.ResidueField O => MvPolynomial.map φ G) (Subsingleton.elim _ _)`.
-
-Simplify `h2` using `[hG']`. Establish `key` using `GlobalTheory.T.descent_intersection_number K ι (ZMod p) (IsLocalRing.ResidueField O) (specialIdeal W') (SpecialIdealMultiHomog.full O K ι W' hWh) hsu l`. Rewrite `key` using `[hcomap, hfr]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intNumL_zmod_eq_residueDegree_mul_vNumL : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (A : Type) [CommRing A] [Algebra A Ω] [IsDedekindDomain A] [Module.Finite ℤ A], HasConstants ℤ A y → ∀ (p : ℕ) [Fact p.Prime] (m : Ideal A) [m.IsPrime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω], (p : A) ∈ m → ∀ fd : ℕ, Nat.card (A ⧸ m) = p ^ fd → ∀ W' : Ideal (MRing ι O), W'.IsPrime → IsMultiHomogIdeal W' → pointIdeal O y ≤ W' → (IsLocalRing.maximalIdeal O).map (C : O →+* MRing ι O) ≤ W' → ∀ l : List (K → ℤ), intNumL (ZMod p) (extTo (ZMod p) (W'.comap (MvPolynomial.map (Int.castRingHom O)))) l = (fd : ℤ) * vNumL W' l := by
   intro K _ _ ι _ Ω _ y A _ _ _ _ hconst p _ m _ O _ _ _ _ _ _ _ hpm fd hcard W' hWp hWh hpt hϖ l

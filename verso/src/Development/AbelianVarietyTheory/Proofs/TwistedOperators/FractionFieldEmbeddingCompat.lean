@@ -9,7 +9,7 @@ namespace GlobalTheory.Proof.FractionFieldEmbeddingCompat
 open Formalism.BasicNotions GlobalTheory.IndefiniteRowSideFullHecke.FractionalBaseInclusion
 
 /- English proof (translation)
-Rewrite using `[← IsScalarTower.algebraMap_apply (D.ntw.O (c.twI w)) (D.ntw.Ok (c.twI w) (c.k' w)) (c.Oe w)]`. Simplify using `[fracExt, fracBase, IsFractionRing.map]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fracExt_fracBase_algebraMap {D : D7} (c : NChoice D) (w : D.what₂.places.Pl) (y : D.ntw.O0 (c.twI w)) :
     fracExt c w (fracBase D (c.twI w) (algebraMap _ (FractionRing (D.ntw.O0 (c.twI w))) y)) =
@@ -20,9 +20,9 @@ theorem fracExt_fracBase_algebraMap {D : D7} (c : NChoice D) (w : D.what₂.plac
   simp [fracExt, fracBase, IsFractionRing.map]
 
 /- English proof (translation)
-Take `⟨y, z, hz, hyz⟩` from `IsFractionRing.div_surjective (A := D.ntw.O0 (c.twI w)) (embSide D (c.twI w) (c.sd w) x)`. Establish `hz0 : z ≠ 0` using `nonZeroDivisors.ne_zero hz`. Establish `hz1 : algebraMap _ (FractionRing (D.ntw.O0 (c.twI w))) z ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 hz0`. Establish `hmul : embSide D (c.twI w) (c.sd w) x * algebraMap _ (FractionRing (D.ntw.O0 (c.twI w))) z = algebraMap _ (FractionRing (D.ntw.O0 (c.twI w))) y`. Rewrite using `[← hyz, div_mul_cancel₀ _ hz1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `h.embedding_baseField_condition w x y z hz0 hmul`. Rewrite `e` using `[← fracExt_fracBase_algebraMap, ← fracExt_fracBase_algebraMap, ← hmul, map_mul, map_mul]`. Conclude with `mul_right_cancel₀ ((map_ne_zero _).2 ((map_ne_zero _).2 hz1)) e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embW_eq_of_tie {D : D7} {c : NChoice D} (h : NChTie D c) (w : D.what₂.places.Pl) (x : D.LL0) :
     c.embW w (x : D.what₂.LL) = fracExt c w (fracBase D (c.twI w) (embSide D (c.twI w) (c.sd w) x)) := by
@@ -38,9 +38,9 @@ theorem embW_eq_of_tie {D : D7} {c : NChoice D} (h : NChTie D c) (w : D.what₂.
   exact mul_right_cancel₀ ((map_ne_zero _).2 ((map_ne_zero _).2 hz1)) e
 
 /- English proof (translation)
-Introduce `D c h K _ _ _ κ hκ w ιK hι`. Substitute `hι` using the available equality. Use extensionality with `x`. Establish `e` using `embW_eq_of_tie h w (κ x)`. Rewrite `e` using `[hκ x]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem embCompat : EmbCompat := by
   intro D c h K _ _ _ κ hκ w ιK hι

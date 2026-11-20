@@ -8,7 +8,7 @@ open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AV.AbVar.card_torsion_pt | exact GlobalTheory.AV.AbVar.card_torsion_pt | (intros; apply GlobalTheory.AV.AbVar.card_torsion_pt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.card_torsion_geometricPoints_eq_pow_two_dim : ∀ (K : Type) [Field K] (A : AbVar K) (n : ℕ), (n : K) ≠ 0 → Nat.card {x : A.Pt // x ^ n = 1} = n ^ (2 * A.dim) := by
   first | exact @GlobalTheory.AV.AbVar.card_torsion_pt | exact GlobalTheory.AV.AbVar.card_torsion_pt | (intros; apply GlobalTheory.AV.AbVar.card_torsion_pt <;> assumption)

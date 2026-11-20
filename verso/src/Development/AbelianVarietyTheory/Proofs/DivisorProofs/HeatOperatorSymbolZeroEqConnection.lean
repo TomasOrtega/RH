@@ -27,11 +27,11 @@ namespace GlobalTheory.HeatUConn
 open GlobalTheory.KS.DlogPol (gs_rsT gs_pbT gs_one gs_sub gs_constFn)
 
 /- English proof (translation)
-Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[zpow_add_one, Units.val_mul, ih, hE]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `((n : S) * a * a) * hee`. Consider the case `pred n ih`. Establish `hi : (E⁻¹).val = 1 - ee * a` using `Units.inv_eq_of_mul_eq_one_right (by rw [hE]; linear_combination (-(a * a)) * hee)`. Rewrite using `[zpow_sub_one, Units.val_mul, ih, hi]`. Use `push_cast`.
+Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `((n : S) * a * a) * hee`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem val_zpow_eps {S : Type} [CommRing S] (ee : S) (hee : ee * ee = 0) (E : Sˣ) (a : S) (hE : E.val = 1 + ee * a)
     (n : ℤ) : (E ^ n).val = 1 + (n : S) * ee * a := by
@@ -45,28 +45,28 @@ theorem val_zpow_eps {S : Type} [CommRing S] (ee : S) (hee : ee * ee = 0) (E : S
     rw [zpow_sub_one, Units.val_mul, ih, hi]; push_cast; linear_combination ((n : S) * a * a) * hee
 
 /- English proof (translation)
-Rewrite using `[gs_eq f z O hz, map_natCast, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_natCast {Z Y : Scheme.{0}} (f : Z ⟶ Y) (z : Z) (O : Y.Opens) (hz : f z ∈ O) (n : ℕ) :
     gs f z O (n : Γ(Y, O)) = n := by
   rw [gs_eq f z O hz, map_natCast, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[gs_eq f z O hz, map_ofNat, map_ofNat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_ofNat {Z Y : Scheme.{0}} (f : Z ⟶ Y) (z : Z) (O : Y.Opens) (hz : f z ∈ O) (n : ℕ) [n.AtLeastTwo] :
     gs f z O (OfNat.ofNat n : Γ(Y, O)) = OfNat.ofNat n := by
   rw [gs_eq f z O hz, map_ofNat, map_ofNat]
 
 /- English proof (translation)
-Rewrite using `[gs_eq f z O hz, map_intCast, map_intCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_intCast {Z Y : Scheme.{0}} (f : Z ⟶ Y) (z : Z) (O : Y.Opens) (hz : f z ∈ O) (n : ℤ) :
     gs f z O (n : Γ(Y, O)) = n := by
   rw [gs_eq f z O hz, map_intCast, map_intCast]
 
 /- English proof (translation)
-Simplify using `only [gs_eq f z O hz, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_sum {Z Y : Scheme.{0}} (f : Z ⟶ Y) (z : Z) (O : Y.Opens) (hz : f z ∈ O) {I : Type} (s : Finset I)
     (a : I → Γ(Y, O)) : gs f z O (∑ i ∈ s, a i) = ∑ i ∈ s, gs f z O (a i) := by
@@ -78,14 +78,14 @@ def cstD {k : Type} [Field k] {Z : Scheme.{0}} (p : Z ⟶ Sp (DualNumber k)) (z 
     (Scheme.ΓSpecIso (CommRingCat.of (DualNumber k))).inv.hom)
 
 /- English proof (translation)
-The claim follows from `gs_eq p z ⊤ trivial _`.
+A detailed English derivation is pending.
 -/
 theorem gs_cstD {k : Type} [Field k] {Z : Scheme.{0}} (p : Z ⟶ Sp (DualNumber k)) (z : Z) (a : DualNumber k) :
     gs p z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber k))).inv.hom a) = cstD p z a :=
   gs_eq p z ⊤ trivial _
 
 /- English proof (translation)
-Rewrite using `[← gs_pull p (spMap g) z ⊤ trivial]`. Use `congrArg (fun φ => φ.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom g))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gs_spMap {A' B'' : Type} [CommRing A'] [CommRing B''] {Z : Scheme.{0}} (p : Z ⟶ Sp B'') (g : A' →+* B'')
     (z : Z) (a : A') :
@@ -104,7 +104,7 @@ namespace GlobalTheory.HeatUConn
 open GlobalTheory.KS.DlogPol (gs_rsT gs_pbT gs_one gs_sub gs_constFn)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ih]`. Take the linear combination `(b a * ∑ j ∈ s, b j) * hee`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem prod_one_add_eps {S : Type} [CommRing S] (ee : S) (hee : ee * ee = 0) {I : Type} (s : Finset I) (b : I → S) :
     ∏ j ∈ s, (1 + ee * b j) = 1 + ee * ∑ j ∈ s, b j := by
@@ -116,7 +116,7 @@ theorem prod_one_add_eps {S : Type} [CommRing S] (ee : S) (hee : ee * ee = 0) {I
     linear_combination (b a * ∑ j ∈ s, b j) * hee
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert b s hb ih => rw [Finset.sum_insert hb, Finset.prod_insert hb, zpow_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zpow_sum_u {G I : Type} [CommGroup G] (a : G) (s : Finset I) (f : I → ℤ) :
     a ^ (∑ i ∈ s, f i) = ∏ i ∈ s, a ^ f i := by
@@ -126,14 +126,14 @@ theorem zpow_sum_u {G I : Type} [CommGroup G] (a : G) (s : Finset I) (f : I → 
   | insert b s hb ih => rw [Finset.sum_insert hb, Finset.prod_insert hb, zpow_add, ih]
 
 /- English proof (translation)
-Simplify using `only [mul_zpow, inv_zpow, Finset.prod_mul_distrib, Finset.prod_inv_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prod3 {G : Type} [CommGroup G] (f g h : Fin 4 → G) (n : Fin 4 → ℤ) :
     ∏ j, (f j * (g j)⁻¹ * h j) ^ n j = (∏ j, f j ^ n j) * (∏ j, g j ^ n j)⁻¹ * ∏ j, h j ^ n j := by
   simp only [mul_zpow, inv_zpow, Finset.prod_mul_distrib, Finset.prod_inv_distrib]
 
 /- English proof (translation)
-Take the linear combination `(T2 * K * (s + E * d) * (1 + E * Sg)) * hU + (-(T2 * K * E * (Sg * s + d + C * s))) * hH + (T2 * K * (d * Sg + 2 * e' * H * C * (d + s * Sg + s * C))) * hEE`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem final_alg {S : Type} [CommRing S] (T1 T1i T2 s d K Sg C H E e' : S) (hU : T1 * T1i = 1)
     (hH : H * (2 * e') = 1) (hEE : E * E = 0) :
@@ -143,7 +143,7 @@ theorem final_alg {S : Type} [CommRing S] (T1 T1i T2 s d K Sg C H E e' : S) (hU 
     (T2 * K * (d * Sg + 2 * e' * H * C * (d + s * Sg + s * C))) * hEE
 
 /- English proof (translation)
-Establish `hp : f y ∈ (L.pull F).U (fun _ => j) ⊓ (L.pull F).U (fun _ => j')` using `⟨mem_pull.2 hj, mem_pull.2 hj'⟩`. Use `show gm f y _ (∏ _k : PUnit, (res _ (pullU F _ (L.g j j'))) ^ (1 : ℤ)) = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Conclude with `(gm_res f y _ hp _).trans (gm_pull f F y (L.U j ⊓ L.U j') ⟨hj, hj'⟩ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_pull_g {X X' Y : Scheme.{0}} {L : LB X} (F : X' ⟶ X) (f : Y ⟶ X') (y : Y) (j j' : L.ι)
     (hj : F (f y) ∈ L.U j) (hj' : F (f y) ∈ L.U j') :
@@ -166,49 +166,41 @@ namespace GlobalTheory.HeatUConn
 open GlobalTheory.KS.DlogPol (gs_rsT gs_pbT gs_one gs_sub gs_constFn)
 
 /- English proof (translation)
-Establish `hpz : (x ≫ π₁) z = (x ≫ π₂) z` using `hpt (x z)`. Use `choose i hi using fun j : Fin 4 => TopologicalSpace.Opens.mem_iSup.1 (show ((x ≫ π₂) ≫ fam j) z ∈ ⨆ i, V i by rw [hV]; trivial)`. Use `set t : Fin 4 → L.ι := fun j => jj (i j) with ht`. Establish `hmem₂ : (x ≫ π₂) z ∈ LB.wchart L fam t` using `Set.mem_iInter.2 fun j => hVU (i j) (hi j)`. Establish `hmem₁ : (x ≫ π₁) z ∈ LB.wchart L fam t` using `by rw [hpz]; exact hmem₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sa : sval σ (x ≫ π₁) z J = (trF fam es (x ≫ π₁) z (fun k => J ((x ≫ π₁) ≫ fam k)) t).val * gs (x ≫ π₁) z (LB.wchart L fam t) (σ.f t)` using `sec_trans σ (x ≫ π₁) z (hJ.mem fam _) hmem₁`. Establish `sb : sval σ (x ≫ π₂) z J = (trF fam es (x ≫ π₂) z (fun k => J ((x ≫ π₂) ≫ fam k)) t).val * gs (x ≫ π₂) z (LB.wchart L fam t) (σ.f t)` using `sec_trans σ (x ≫ π₂) z (hJ.mem fam _) hmem₂`. Establish `sc : sval σ' (x ≫ π₂) z J = (trF fam es (x ≫ π₂) z (fun k => J ((x ≫ π₂) ≫ fam k)) t).val * gs (x ≫ π₂) z (LB.wchart L fam t) (σ'.f t)` using `sec_trans σ' (x ≫ π₂) z (hJ.mem fam _) hmem₂`. Use `set E : Z.presheaf.stalk z := cstD (x ≫ B'.hom) z DualNumber.eps with hE`. Establish `hEE : E * E = 0` using `by rw [hE, ← map_mul, DualNumber.eps_mul_eps, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `le12 : ∀ W : A.left.Opens, π₂ ⁻¹ᵁ W ≤ π₁ ⁻¹ᵁ W` using `fun W b hb => by show π₁ b ∈ W; rw [hpt]; exact hb`. Establish `le2p : ∀ W : A.left.Opens, π₂ ⁻¹ᵁ W ≤ pr ⁻¹ᵁ (m₀ ⁻¹ᵁ W)` using `fun W b hb => by show m₀ (pr b) ∈ W; rw [← Scheme.Hom.comp_apply, hpr]; exact hb`. Establish `hA' : gs (x ≫ π₁) z (LB.wchart L fam t) (σ.f t) = gs (x ≫ π₂) z (LB.wchart L fam t) (σ.f t) + E * gs (x ≫ pr) z (m₀ ⁻¹ᵁ LB.wchart L fam t) (ed _ (σ.f t))`. Establish `h` using `congrArg (gs x z (π₂ ⁻¹ᵁ LB.wchart L fam t)) (hA (LB.wchart L fam t) (σ.f t))`. Establish `hxz : x z ∈ π₂ ⁻¹ᵁ LB.wchart L fam t` using `hmem₂`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `erw [gs_pbT x π₁ z (le12 (LB.wchart L fam t)) hxz] at h`. Rewrite `h` using `[gs_add _ _ _ hxz, gs_mul _ _ _ hxz]`. Use `erw [gs_pbT x π₂ z le_rfl hxz, gs_pbT x pr z (le2p (LB.wchart L fam t)) hxz] at h`. Rewrite `h` using `[GlobalTheory.KS.DlogPol.gs_constFn _ _ _ _ hxz, gs_cstD]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPG` using `(isGen_iff w).1 hw`. Establish `p2 : ∀ j, (xs j ≫ π₂) z = ((x ≫ π₂) ≫ fam j) z` using `fun j => by rw [(hxs j).2.1]`. Establish `p1 : ∀ j, (xs j ≫ π₁) z = ((x ≫ π₂) ≫ fam j) z` using `fun j => by`. Rewrite using `[(hxs j).1]`. Use `show fam j ((x ≫ π₁) z) = fam j ((x ≫ π₂) z)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hpz]`. Establish `hgw : ∀ j, gm (xs j) z _ (w.s (fun _ => J (xs j ≫ π₂), fun _ => J (xs j ≫ π₁))) = gm (xs j ≫ π₂) z _ (L.g (J (xs j ≫ π₂)) (t j)) * (gm (xs j ≫ π₁) z _ (L.g (J (xs j ≫ π₁)) (t j)))⁻¹ * gw w (xs j) z (t j) (fun _ => t j)` using `fun j => by`. Establish `h4 : π₁ (xs j z) ∈ L.U (t j)` using `by show (xs j ≫ π₁) z ∈ L.U (t j); rw [p1]; exact hVU _ (hi j)`. Use `hPG Z (xs j) z (J (xs j ≫ π₂)) (t j) (fun _ => J (xs j ≫ π₁)) (fun _ => t j) (hJ _) (by show (xs j ≫ π₂) z ∈ L.U (t j); rw [p2]; exact hVU _ (hi j)) (mem_pull.2 (hJ _)) (mem_pull.2 h4)` as an intermediate fact. Rewrite `this` using `[gm_pull_g π₁ (xs j) z _ _ (hJ _) h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hK : ∀ j, (gw w (xs j) z (t j) (fun _ => t j)).val = cstD (x ≫ B'.hom) z κ.val * (1 + E * gs ((x ≫ pr) ≫ T j) z (m₀ ⁻¹ᵁ V (i j)) (pb (i j)))` using `fun j => by`. Establish `hx : xs j z ∈ π₂ ⁻¹ᵁ V (i j)` using `by show (xs j ≫ π₂) z ∈ V (i j); rw [p2]; exact hi j`. Establish `hle : π₂ ⁻¹ᵁ V (i j) ≤ (L.pull π₂).U (fun _ => t j) ⊓ (L.pull π₁).U (fun _ => t j)` using `fun b hb => ⟨mem_pull.2 (hVU (i j) (show π₂ b ∈ V (i j) from hb)), mem_pull.2 (show π₁ b ∈ L.U (t j) by rw [hpt]; exact hVU (i j) hb)⟩`. Establish `h` using `congrArg (gs (xs j) z (π₂ ⁻¹ᵁ V (i j))) (hκ (i j))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `erw [gs_rsT _ _ hle hx, gs_unit _ _ _ (hle hx)] at h`. Rewrite `h` using `[gs_mul _ _ _ hx, GlobalTheory.KS.DlogPol.gs_constFn _ _ _ _ hx, gs_add _ _ _ hx, gs_one _ _ _ hx, gs_mul _ _ _ hx, GlobalTheory.KS.DlogPol.gs_constFn _ _ _ _ hx]`. Use `erw [gs_pbT (xs j) pr z (le2p _) hx] at h`. Rewrite `h` using `[(hxs j).2.2, hxpr j, gs_cstD, gs_cstD]`. Conclude with `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set O : A₀.left.Opens := m₀ ⁻¹ᵁ LB.wchart L fam t ⊓ T 0 ⁻¹ᵁ (m₀ ⁻¹ᵁ V (i 0)) ⊓ T 1 ⁻¹ᵁ (m₀ ⁻¹ᵁ V (i 1)) ⊓ T 2 ⁻¹ᵁ (m₀ ⁻¹ᵁ V (i 2)) ⊓ T 3 ⁻¹ᵁ (m₀ ⁻¹ᵁ V (i 3)) with hO`. Establish `hO1 : O ≤ m₀ ⁻¹ᵁ LB.wchart L fam t` using `inf_le_left.trans (inf_le_left.trans (inf_le_left.trans inf_le_left))`. Establish `hO2 : ∀ j, O ≤ T j ⁻¹ᵁ (m₀ ⁻¹ᵁ V (i j))` using `fun j => by fin_cases j`. Conclude with `inf_le_left.trans (inf_le_left.trans (inf_le_left.trans inf_le_right))`. Conclude with `inf_le_left.trans (inf_le_left.trans inf_le_right)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inf_le_left.trans inf_le_right`. Conclude with `inf_le_right`. Establish `cpr : (x ≫ pr) ≫ m₀ = x ≫ π₂` using `by rw [Category.assoc, hpr]`. Establish `cT : ∀ j, ((x ≫ pr) ≫ T j) ≫ m₀ = (x ≫ π₂) ≫ fam j` using `fun j => by`. Rewrite using `[Category.assoc, hT j, ← Category.assoc, cpr]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `mT : ∀ j, ((x ≫ pr) ≫ T j) z ∈ m₀ ⁻¹ᵁ V (i j)` using `fun j => by show (((x ≫ pr) ≫ T j) ≫ m₀) z ∈ V (i j); rw [cT]; exact hi j`. Establish `hxO : (x ≫ pr) z ∈ O`. Use `⟨⟨⟨⟨?_, mT 0⟩, mT 1⟩, mT 2⟩, mT 3⟩` and prove the remaining obligations. Use `show ((x ≫ pr) ≫ m₀) z ∈ LB.wchart L fam t`. Rewrite using `[cpr]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hmem₂`. Use `set a : Fin 4 → Z.presheaf.stalk z := fun j => gs ((x ≫ pr) ≫ T j) z (m₀ ⁻¹ᵁ V (i j)) (pb (i j)) with ha`. Establish `hFz : gs (x ≫ π₂) z (LB.wchart L fam t) (σ'.f t) = 2 * (e : Z.presheaf.stalk z) * (gs (x ≫ pr) z (m₀ ⁻¹ᵁ LB.wchart L fam t) (ed _ (σ.f t)) + gs (x ≫ π₂) z (LB.wchart L fam t) (σ.f t) * (∑ j, (es j : Z.presheaf.stalk z) * a j + cstD (x ≫ B'.hom) z (algebraMap k (DualNumber k) c0)) …`. Establish `h` using `congrArg (gs (x ≫ pr) z O) (hF i O hO1 hO2)`. Rewrite `h` using `[← ht]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hterm : ∀ j, gs (x ≫ pr) z O (((es j : ℤ) : Γ(A₀.left, O)) * pbT (T j) (pb (i j)) O) = (es j : Z.presheaf.stalk z) * a j` using `fun j => by`. Rewrite using `[gs_mul _ _ _ hxO, gs_intCast _ _ _ hxO, gs_pbT _ _ z (hO2 j) hxO]`. Establish `hc : (x ≫ pr) ≫ A₀.hom = (x ≫ B'.hom) ≫ spMap (algebraMap k (DualNumber k))`. Rewrite using `[Category.assoc, hpr', Category.assoc]`. Establish `e1 : gs (x ≫ pr) z O (pbT m₀ (σ'.f t) O) = gs (x ≫ π₂) z (LB.wchart L fam t) (σ'.f t)` using `(gs_pbT (x ≫ pr) m₀ z hO1 hxO (σ'.f t)).trans (by rw [cpr])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e2 : gs (x ≫ pr) z O (pbT m₀ (σ.f t) O) = gs (x ≫ π₂) z (LB.wchart L fam t) (σ.f t)` using `(gs_pbT (x ≫ pr) m₀ z hO1 hxO (σ.f t)).trans (by rw [cpr])`. Establish `e3 : gs (x ≫ pr) z O (rsT (ed _ (σ.f t)) O) = gs (x ≫ pr) z (m₀ ⁻¹ᵁ LB.wchart L fam t) (ed _ (σ.f t))` using `gs_rsT _ _ hO1 hxO _`. Rewrite `h` using `[e1, gs_mul _ _ _ hxO, gs_mul _ _ _ hxO, gs_ofNat _ _ _ hxO, gs_natCast _ _ _ hxO, gs_add _ _ _ hxO, e3, gs_mul _ _ _ hxO, e2, gs_add _ _ _ hxO, gs_sum _ _ _ hxO, GlobalTheory.KS.DlogPol.gs_constFn _ _ _ _ hxO, hc, gs_spMap, gs_cstD]`. Simplify using `only [hterm] at h`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set φ := cstD (x ≫ B'.hom) z with hφ`. Establish `key : ∀ f g : Z ⟶ A.left, f = g → ∀ b : L.ι, gm f z (L.U (J f) ⊓ L.U b) (L.g (J f) b) = gm g z (L.U (J g) ⊓ L.U b) (L.g (J g) b)` using `by rintro f _ rfl b; rfl`. Establish `htr1 : ∏ j, (gm (xs j ≫ π₁) z _ (L.g (J (xs j ≫ π₁)) (t j))) ^ es j = trF fam es (x ≫ π₁) z (fun k => J ((x ≫ π₁) ≫ fam k)) t` using `Finset.prod_congr rfl fun j _ => by rw [key _ _ (hxs j).1]`. Establish `htr2 : ∏ j, (gm (xs j ≫ π₂) z _ (L.g (J (xs j ≫ π₂)) (t j))) ^ es j = trF fam es (x ≫ π₂) z (fun k => J ((x ≫ π₂) ≫ fam k)) t` using `Finset.prod_congr rfl fun j _ => by rw [key _ _ (hxs j).2.1]`. Set `κu : (Z.presheaf.stalk z)ˣ` to `Units.map φ.toMonoidHom κ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hκu : ∀ n : ℕ, (κu ^ n).val = φ (κ ^ n).val` using `fun n => by`. Rewrite using `[← map_pow]`. Both sides reduce to the same expression. Use `set Ej : Fin 4 → (Z.presheaf.stalk z)ˣ := fun j => κu⁻¹ * gw w (xs j) z (t j) (fun _ => t j) with hEjd`. Establish `hEj : ∀ j, (Ej j).val = 1 + E * a j` using `fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hEjd]`. Rewrite using `[Units.val_mul, hK j]`. Establish `h1 : (κu⁻¹).val * κu.val = 1` using `Units.inv_mul κu`. Establish `h2 : κu.val = φ κ.val` using `rfl`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(1 + E * a j) * h1`. Establish `hKprod : (∏ j, (gw w (xs j) z (t j) (fun _ => t j)) ^ es j).val = φ (κ ^ e).val * (1 + E * ∑ j, (es j : Z.presheaf.stalk z) * a j)`. Establish `hsplit : ∀ j, gw w (xs j) z (t j) (fun _ => t j) = κu * Ej j` using `fun j => (mul_inv_cancel_left κu _).symm`. Rewrite using `[Finset.prod_congr rfl fun j _ => by rw [hsplit j]]`. Simplify using `only [mul_zpow, Finset.prod_mul_distrib]`.
-
-Rewrite using `[← zpow_sum_u, hes, zpow_natCast, Units.val_mul, hκu, Units.coe_prod]`. Simplify using `only [fun j => val_zpow_eps E hEE _ (a j) (hEj j) (es j)]`. Rewrite using `[← prod_one_add_eps E hEE Finset.univ (fun j => (es j : Z.presheaf.stalk z) * a j)]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun j _ => by ring`.
-
-Establish `hinr : ∀ r : k, φ (TrivSqZeroExt.inr r) = φ (algebraMap k (DualNumber k) r) * E` using `fun r => by`. Rewrite using `[DualNumber.inr_eq_smul_eps, Algebra.smul_def, map_mul]`. Establish `h2e : (2 * (e : k)) ≠ 0`. Establish `: (e : k) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Conclude with `mul_ne_zero two_ne_zero this`.
-
-Establish `hH : φ (algebraMap k (DualNumber k) (2 * (e : k))⁻¹) * (2 * (e : Z.presheaf.stalk z)) = 1`. Establish `: φ (algebraMap k (DualNumber k) (2 * (e : k))) = 2 * (e : Z.presheaf.stalk z)`. Simplify using `[map_mul, map_natCast, map_ofNat]`. Rewrite using `[← this, ← map_mul, ← map_mul, inv_mul_cancel₀ h2e, map_one, map_one]`. Establish `hU : (trF fam es (x ≫ π₁) z (fun k => J ((x ≫ π₁) ≫ fam k)) t).val * ((trF fam es (x ≫ π₁) z (fun k => J ((x ≫ π₁) ≫ fam k)) t)⁻¹).val = 1` using `Units.mul_inv _`.
-
-Rewrite using `[gs_cstD, gs_cstD, sa, sb, sc, hA', hFz]`. Simplify using `only [hgw]`. Rewrite using `[prod3, htr1, htr2, Units.val_mul, Units.val_mul, hKprod, map_mul, map_add, map_one, hinr, hinr]`. Simplify using `only [map_neg]`. Conclude with `final_alg _ _ _ _ _ _ _ _ _ _ _ hU hH hEE`.
+A detailed English derivation is pending.
 -/
 theorem core {R : Type} [CommRing R] {k : Type} [Field k] [CharZero k] (A : Over (Sp R)) (L : LB A.left)
     (B' : Over (Sp (DualNumber k))) (π₁ π₂ : B'.left ⟶ A.left) (hpt : ∀ b : B'.left, π₁ b = π₂ b)
@@ -389,23 +381,23 @@ end GlobalTheory.HeatUConn
 namespace GlobalTheory.HeatUConn
 
 /- English proof (translation)
-Introduce `E _ _ _ H k _ _ m d t P gam hmon hlin hab`. Use `letI := H.starRing`. Introduce `Y n' v' dd hdd D q hq h hB hdef hΘ ρ hρ B' _ π₁ π₂ c' hπ₁ hπ₂ hcl hc' w hw`. Take `⟨A₀, _, m₀, hA₀⟩ : ∃ (A₀ : Over (Sp k)) (_ : GrpObj A₀) (m₀ : A₀.left ⟶ P.D.toPre.P.A.left), IsGrpPullback A₀ P.D.toPre.P.A (spMap ((TrivSqZeroExt.fstHom k k k).toRingHom.comp ρ)) m₀` from `⟨_, _, _, isGrpPullback_pullback _ _⟩`. Establish `hcs : spMap (constHom ρ) = spMap (algebraMap k (DualNumber k)) ≫ spMap ((TrivSqZeroExt.fstHom k k k).toRingHom.comp ρ)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `constHom`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Set `pr : B'.left ⟶ A₀.left` to `hA₀.1.lift π₂ (B'.hom ≫ spMap (algebraMap k (DualNumber k))) (by`. Rewrite using `[hπ₂.1.w, hcs, Category.assoc])`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hpr : pr ≫ m₀ = π₂` using `hA₀.1.lift_fst _ _ _`. Establish `hpr' : pr ≫ A₀.hom = B'.hom ≫ spMap (algebraMap k (DualNumber k))` using `hA₀.1.lift_snd _ _ _`. Establish `hpt : ∀ b : B'.left, π₁ b = π₂ b`. Establish `P0` using `IsPullback.of_hasPullback B'.hom (spMap (TrivSqZeroExt.fstHom k k k).toRingHom)`. Establish `hs : Surjective (pullback.fst B'.hom (spMap (TrivSqZeroExt.fstHom k k k).toRingHom))` using `MorphismProperty.of_isPullback (P := @Surjective) P0.flip GlobalTheory.ConstThickening.surjective_spMap_fst`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b`. Take `⟨b0, rfl⟩` from `hs.surj b`. Conclude with `congrArg (fun f => f b0) (hcl _ _ _ pullback.condition)`. Establish `key : ∀ e : ℕ, ∃ (κ : (DualNumber k)ˣ) (ℓ : P.D.toPre.X →+ k), 1 ≤ e → ∀ (α : P.D.toPre.X) (σ σ' : P.D.toPre.SecB e α), TActs Y h e α σ σ' → ∀ (Z : Scheme.{0}) (x : Z ⟶ B'.left) (xs : Fin 4 → (Z ⟶ B'.left)), (∀ j, xs j ≫ π₁ = (x ≫ π₁) ≫ P.D.toPre.famφB α j ∧ xs j ≫ π₂ = (x ≫ π₂) …`. Introduce `e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `he : 1 ≤ e`. Take `⟨V, ed, pb, hconn, -, hF⟩` from `GlobalTheory.T.heatOperator_connection_closedFibre E H k m d t P gam hmon hlin hab Y n' v' dd hdd D q hq h hB hdef hΘ ρ hρ e he A₀ m₀ hA₀`. Take `⟨hA, κ, hκ⟩` from `GlobalTheory.T.connection_closedFibre_eq_derivation_identification k (ChartRing k m d) P.D.toPre.P ρ B' π₁ π₂ hπ₁ hπ₂ hcl A₀ m₀ hA₀ pr hpr hpr' V h.j ed pb hconn w hw`. Take `⟨c, hc⟩` from `hF B' π₁ π₂ c' hπ₁ hπ₂ hcl hc' pr hpr hpr' hA`. Use `⟨κ ^ e, -c, fun _ α σ σ' hTA Z x xs hxs z J hJ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfam : ∀ j, P.D.toPre.famφB α j ≫ P.D.toPre.P.A.hom = P.D.toPre.P.A.hom`. Introduce `j`. Apply the tactic sequence `fin_cases j <;> simp [DegPre.famφB]`. Set `T : Fin 4 → (A₀.left ⟶ A₀.left)` to `fun j => hA₀.1.lift (m₀ ≫ P.D.toPre.famφB α j) A₀.hom (by`. Rewrite using `[Category.assoc, hfam, hA₀.1.w])`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT : ∀ j, T j ≫ m₀ = m₀ ≫ P.D.toPre.famφB α j` using `fun j => hA₀.1.lift_fst _ _ _`. Establish `hTh : ∀ j, T j ≫ A₀.hom = A₀.hom` using `fun j => hA₀.1.lift_snd _ _ _`. Establish `hxpr : ∀ j, xs j ≫ pr = (x ≫ pr) ≫ T j` using `fun j => hA₀.1.hom_ext (by`. Establish `hprA : ∀ {W : Scheme.{0}} (f : P.D.toPre.P.A.left ⟶ W), pr ≫ m₀ ≫ f = π₂ ≫ f` using `fun f => by`. Rewrite using `[← Category.assoc, hpr]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, hpr, hT, hprA, (hxs j).2.1])`. Use the proof step `(by rw [Category.assoc, hpr', ← Category.assoc, (hxs j).2.2, Category.assoc, Category.assoc, hTh, Category.assoc, hpr'])`. Establish `hes : ∑ j, DegPre.famε e j = (e : ℤ)`. Simplify using `[DegPre.famε, Fin.sum_univ_four]`. Use `core P.D.toPre.P.A P.D.toPre.P.L B' π₁ π₂ hpt A₀ m₀ pr hpr hpr' V h.j hconn.2.1 hconn.2.2.1 ed pb hA w hw κ hκ e he (P.D.toPre.famφB α) (DegPre.famε e) hes σ σ' T hT (c α) (fun i O h1 h2 => hc α σ σ' hTA i T hT hTh O h1 h2) Z x xs hxs hxpr z J hJ` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Simplify using `using this`. Conclude with `⟨1, 0, fun h' => absurd h' he⟩`. Use `choose κ ℓ hκℓ using key`. Conclude with `⟨κ, ℓ, fun e he α σ σ' hT Z x xs hxs z J hJ => hκℓ e he α σ σ' hT Z x xs hxs z J hJ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem uconn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (k : Type) [Field k] [CharZero k] (m d : ℕ) (t : SAB H (Sp (ChartRing k m d))) (P : PELUnif (maximalIdeal (ChartRing k m d)) t) (gam : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X), IsMonomial P.D.toPre (bdParam k m d) gam → LinearIndependent ℤ gam → (∀ p : Sp (ChartRing k m d), p ∈ abLocus t.G ↔ ∏ i, bdParam k m d i ∉ p.asIdeal) → letI := H.starRing; ∀ (Y : Ray P.oD) (n' : ℕ) (v' : Module.Basis (Fin n') (ChartRing k m d) (TanM (𝟙 (Sp (ChartRing k m d))) Y.H)) (dd : Fin n' → Fld Y.H.left), (∀ a, IsInv Y.H (v' a) (dd a)) → ∀ (D : Derivation ℤ (ChartRing k m d) (ChartRing k m d)) (q : Fin m → ChartRing k m d), (∀ i, D (bdParam k m d i) = q i * bdParam k m d i) → ∀ h : Heat Y.H Y.q.left P.D.toPre.P.L dd ⇑D, IsBasic Y h → HasDefect Y h (fun _ _ _ => 0) → (∀ a b, h.Θ a b ∈ maximalIdeal (ChartRing k m d)) → ∀ ρ : ChartRing k m d →+* DualNumber k, (∀ r, ρ r = TrivSqZeroExt.inl (MvPowerSeries.constantCoeff r) + TrivSqZeroExt.inr (MvPowerSeries.constantCoeff (D r))) → ∀ (B' : Over (Sp (DualNumber k))) [GrpObj B'] (π₁ π₂ : B'.left ⟶ P.D.toPre.P.A.left) (c' : P.D.toPre.X → (Sp (DualNumber k) ⟶ B'.left)), IsGrpPullback B' P.D.toPre.P.A (spMap ρ) π₁ → IsGrpPullback B' P.D.toPre.P.A (spMap (constHom ρ)) π₂ → (∀ (Z : Scheme.{0}) (x : Z ⟶ B'.left) (y : Z ⟶ Sp k), x ≫ B'.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ π₁ = x ≫ π₂) → (∀ y, c' y ≫ B'.hom = 𝟙 _ ∧ c' y ≫ π₁ = spMap ρ ≫ (P.D.toPre.c y).left ∧ c' y ≫ π₂ = spMap (constHom ρ) ≫ (P.D.toPre.c y).left) → ∀ w : LB.Iso (P.D.toPre.P.L.pull π₁) (P.D.toPre.P.L.pull π₂), w.IsGen → ∃ (κ : ℕ → (DualNumber k)ˣ) (ℓ : ℕ → P.D.toPre.X →+ k), ∀ (e : ℕ), 1 ≤ e → ∀ (α : P.D.toPre.X) (σ σ' : P.D.toPre.SecB e α), TActs Y h e α σ σ' → ∀ (Z : Scheme.{0}) (x : Z ⟶ B'.left) (xs : Fin 4 → (Z ⟶ B'.left)), (∀ j, xs j ≫ π₁ = (x ≫ π₁) ≫ P.D.toPre.famφB α j ∧ xs j ≫ π₂ = (x ≫ π₂) ≫ P.D.toPre.famφB α j ∧ xs j ≫ B'.hom = x ≫ B'.hom) → ∀ z J, Good P.D.toPre.P.L z J → sval σ (x ≫ π₁) z J * (∏ j, gm (xs j) z _ (w.s (fun _ => J (xs j ≫ π₂), fun _ => J (xs j ≫ π₁))) ^ DegPre.famε e j).val = gs (x ≫ B'.hom) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber k))).inv.hom ((κ e).val * (1 + TrivSqZeroExt.inr (ℓ e α)))) * (sval σ (x ≫ π₂) z J + gs (x ≫ B'.hom) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber k))).inv.hom (TrivSqZeroExt.inr ((2 * (e : k))⁻¹))) * sval σ' (x ≫ π₂) z J) := by
   intro E _ _ _ H k _ _ m d t P gam hmon hlin hab

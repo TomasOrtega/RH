@@ -12,29 +12,27 @@ open scoped LaurentSeries PowerSeries
 namespace GlobalTheory.CharSplit
 
 /- English proof (translation)
-Introduce `k G _ _ l n _ _ _ R F r Dt M h1 h2 h3 e he1 het z hz`. Take `⟨N, b, g, hmod, hrep, hzz⟩` from `GlobalTheory.T.exists_phiGammaModel_extension_cocycle_pair F M h1 h2 h3 _ z hz`. Establish `hN : N = M.Nχ e` using `GlobalTheory.T.twistedPhiGammaModel_character_eq_standard F M h1 h2 h3 e (by omega) het N hmod`. Substitute `hN` using the available equality. Apply `GlobalTheory.T.mem_coboundaries_of_herrPair_coboundary F _ z b g hrep` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hlat` using `fun i => M.χ_lat e (by omega) het i`. Use `set J : ZMod n → ℕ := fun i => if Dt.ty i = LType.G then (Dt.w i).toNat else (Dt.wst i - e).toNat with hJ`. Establish `hJG : ∀ i, Dt.ty i = LType.G → J i = (Dt.w i).toNat` using `fun i h => by simp [hJ, h]`. Establish `hJB : ∀ i, Dt.ty i = LType.Bd → J i = (Dt.wst i - e).toNat` using `fun i h => by simp [hJ, h]`. Establish `hsmall : ∀ i (j : ℕ), j ≤ J i → e + (j : ℤ) < l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hj`. Establish `hT` using `h1 i`. Establish `hw` using `GlobalTheory.WindowArith.windows (k := k) Dt h1 h2 h3 i`. Consider the cases of `hty : Dt.ty i with`. Consider the case `G`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hw1, hw2⟩` from `hw.2.2.1 hty`. Rewrite `hj` using `[hJG i hty]`. Use linear arithmetic over natural numbers and integers. Consider the case `Bd`. Take `⟨-, -, hb1, hb2⟩` from `hw.2.2.2 hty`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[hJB i hty]`. Use linear arithmetic over natural numbers and integers. Take `⟨m, -, hm⟩` from `GlobalTheory.PhiGam.cocycle_split_of_contracting R (F.D (chr (M.ω ^ (-e)))) (M.Nχ e) J (fun i => (hlat i).1) (fun i => (hlat i).2.1) (fun i => by rw [(hlat i).2.2.1]; exact sh_le_sh_of_le he1 _) (fun i j hj1 hjJ => by`. Rewrite using `[(hlat i).2.2.2]`. Unfold `resCount`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [Multiset.card_eq_zero, Multiset.filter_eq_nil, Multiset.mem_singleton, forall_eq]`. Introduce `hcast`. Establish `h0 : ((e + (j : ℤ) : ℤ) : k) = 0`. Move the coercions through the operations in `at hcast ⊢`. Take the linear combination `hcast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[CharP.intCast_eq_zero_iff k l]`. Establish `hle` using `Int.le_of_dvd (by omega) h0`. Use `hsmall i j hjJ` as an intermediate fact. Use the proof step `omega)`. Use `b g (fun i => (hzz i).1) (fun i => (hzz i).2.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Use the proof step `(fun i => by`. Establish `hw` using `GlobalTheory.WindowArith.windows (k := k) Dt h1 h2 h3 i`. Consider the cases of `hty : Dt.ty i with`. Consider the case `G`. Establish `hb` using `(hzz i).2.2.1 hty`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h` using `(hw.2.2.1 hty).2.2.1`. Establish `hJi : ((J i : ℕ) : ℤ) = Dt.w i`. Rewrite using `[hJG i hty]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hJi]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hb`. Consider the case `Bd`. Establish `hb` using `((hzz i).2.2.2 hty).1`. Establish `h` using `(hw.2.2.2 hty).2.2.1`. Rewrite `hb` using `[(hlat i).2.2.1, sh_sh_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hJi : -((J i : ℕ) : ℤ) = -Dt.wst i + e`. Rewrite using `[hJB i hty]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hJi]`. Conclude with `hb)`.
-
-Rewrite using `[herrB_eq_range]`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[herrD_apply]`. Conclude with `Prod.ext (funext fun i => ((hm i).1).symm) (funext fun i => ((hm i).2).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissibleCocycle_negCharPower_mem_coboundaries : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.Prime] [CharP k l] [NeZero n] {R : RingPG k l} (F : DFun R n G) {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt), Dt.T1 l → Dt.T2 l → Dt.T3 l → ∀ (e : ℤ), 1 ≤ e → e < Dt.t → ∀ z ∈ M.twistedModelAdmissibleCocycles (chr (M.ω ^ (-e))), z ∈ cob (chr (M.ω ^ (-e))) := by
   intro k G _ _ l n _ _ _ R F r Dt M h1 h2 h3 e he1 het z hz

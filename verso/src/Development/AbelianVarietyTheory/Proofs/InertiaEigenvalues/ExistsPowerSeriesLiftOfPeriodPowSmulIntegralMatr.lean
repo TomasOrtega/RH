@@ -13,11 +13,11 @@ open Matrix
 namespace GlobalTheory.BSP.KisinFF
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro a w h; exact ⟨a, by simp, by simpa using h⟩`. Consider the case `succ n ih`. Introduce `a w h`. Take `⟨a₁, ha₁⟩` from `GlobalTheory.HWL.TensorWitt.ainf_saturated_in_tiltWitt_prime a ((l : WCb l) ^ n * w) (by rw [h]; ring)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha', hw'⟩` from `ih a₁ w ha₁`. Use `⟨a', ?_, hw'⟩` and prove the remaining obligations. Establish `h1 : a = (l : Ainf l) * a₁`. Apply `GlobalTheory.HWL.TensorWitt.inclW_injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_natCast, ha₁, h]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, ha']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_of_inclW_eq_pow_mul {l : ℕ} [Fact l.Prime] (n : ℕ) : ∀ (a : Ainf l) (w : WCb l),
     inclW l a = (l : WCb l) ^ n * w → ∃ a', a = (l : Ainf l) ^ n * a' ∧ inclW l a' = w := by
@@ -34,21 +34,19 @@ theorem exists_of_inclW_eq_pow_mul {l : ℕ} [Fact l.Prime] (n : ℕ) : ∀ (a :
     rw [h1, ha']; ring
 
 /- English proof (translation)
-Take `⟨ι, ⟨TB⟩⟩` from `GlobalTheory.T.ainf_adicTopologicalBasis_over_breuilKisin l K bk`. Take `⟨r, hr⟩` from `GlobalTheory.T.exists_pow_mem_span_coeff_period_pow l K bk τ hτ ι TB M`. Take `⟨c, hc⟩` from `(Finsupp.mem_span_range_iff_exists_finsupp).1 hr`. Take `⟨v, -, hv⟩` from `(GlobalTheory.T.integral_elements_unit_factorization l K bk).2.1`. Take `⟨s₀, hs₀⟩ : ∃ s₀ : bk.S, s₀ = c.sum fun i μ => μ * TB.c i a` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hev : ∀ t : bk.S, inclW l (bk.ev t) = bk.evW t` using `fun t => rfl`. Establish `key : ∀ n : ℕ, (l : WCb l) ^ n ∣ bk.evW s₀ - (l : WCb l) ^ r * w`. Introduce `n`. Take `⟨m, s, y, h⟩` from `hw n`. Establish `hz : inclW l (bk.ev X ^ m * a - τ ^ M * bk.ev s) = (l : WCb l) ^ n * (inclW l τ ^ M * y)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_mul, map_mul, map_pow, map_pow, hev, hev, ha]`. Take the linear combination `(inclW l τ ^ M) * h`. Take `⟨z', hz', -⟩` from `exists_of_inclW_eq_pow_mul n _ _ hz`. Establish `hci : ∀ i, X ^ m * TB.c i a - s * TB.c i (τ ^ M) = (l : bk.S) ^ n * TB.c i z'`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (TB.c i) hz'` as an intermediate fact. Rewrite `this` using `[map_sub, show bk.ev X ^ m = bk.ev (X ^ m) from (map_pow _ _ _).symm, TB.c_mul, mul_comm (τ ^ M) (bk.ev s), TB.c_mul, show ((l : Ainf l) ^ n) = bk.ev ((l : bk.S) ^ n) by simp, TB.c_mul]`. Conclude with `this`. Take `⟨t, ht⟩ : ∃ t : bk.S, t = c.sum fun i μ => μ * TB.c i z'` from `⟨_, rfl⟩`. Establish `hS : X ^ m * s₀ - s * (l : bk.S) ^ r = (l : bk.S) ^ n * t`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc, hs₀, ht]`. Simplify using `only [Finsupp.sum, Finset.mul_sum, smul_eq_mul]`. Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by linear_combination c i * hci i`. Establish `hW` using `congrArg bk.evW hS`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_sub, map_mul, map_pow, map_natCast] at hW`. Establish `hv' : bk.evW X ^ m * v ^ m = 1` using `by rw [← mul_pow, hv, one_pow]`. Use `⟨v ^ m * (bk.evW t - (l : WCb l) ^ r * y), ?_⟩` and prove the remaining obligations. Take the linear combination `v ^ m * hW - (l : WCb l) ^ r * v ^ m * h - (bk.evW s₀ - (l : WCb l) ^ r * w) * hv'`. Establish `hd : bk.evW s₀ - (l : WCb l) ^ r * w = 0`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsHausdorff.haus' (I := Ideal.span {(l : WCb l)}) _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `key n`. Take `⟨a', -, ha'⟩` from `exists_of_inclW_eq_pow_mul r (bk.ev s₀) w (by rw [hev]; linear_combination hd)`. Take `⟨s', hs'⟩` from `GlobalTheory.T.integral_witt_element_of_evaluation l K bk w hw a' ha'.symm`.
-
-Conclude with `⟨s', by rw [← hev, ← hs', ha']⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem scalar {l : ℕ} [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l) (hτ : bk.IsPer τ) (M : ℕ)
     (w : WCb l) (hw : w ∈ bk.OE) (a : Ainf l) (ha : inclW l a = inclW l τ ^ M * w) :
@@ -93,9 +91,9 @@ theorem scalar {l : ℕ} [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l)
   exact ⟨s', by rw [← hev, ← hs', ha']⟩
 
 /- English proof (translation)
-Introduce `l _ K bk τ hτ d d' M X x hX hx`. Establish `he : ∀ i j, inclW l (x i j) = inclW l τ ^ M * X i j` using `fun i j => by`. Use `congrFun (congrFun hx i) j` as an intermediate fact. Simplify `this` using `[Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Use `choose Y hY using fun i j => scalar K bk τ hτ M (X i j) (hX i j) (x i j) (he i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Conclude with `⟨Y, Matrix.ext fun i j => hY i j⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (d d' M : ℕ) (X : Matrix (Fin d') (Fin d) (WCb l)) (x : Matrix (Fin d') (Fin d) (Ainf l)), (∀ i j, X i j ∈ bk.OE) → x.map (inclW l) = inclW l τ ^ M • X → ∃ Y : Matrix (Fin d') (Fin d) bk.S, Y.map bk.evW = X := by
   intro l _ K bk τ hτ d d' M X x hX hx

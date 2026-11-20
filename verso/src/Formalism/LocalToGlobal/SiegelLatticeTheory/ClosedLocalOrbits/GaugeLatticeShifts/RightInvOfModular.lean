@@ -15,13 +15,13 @@ open Formalism.L2.SG.HidaSetting Formalism.L2.SG.RealObj Formalism.L2.SG.RealObj
 variable {n r : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ)
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hle : spanLt e a ≤ (spanLt e a).comap (Matrix.mulVecLin g)`. Unfold `spanLt`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hb' : (b : ℕ) < a` using `hb`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, Matrix.mulVecLin_apply]`. Establish `e1 : g *ᵥ e b = e b + (g - 1) *ᵥ e b`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e1]`. Use `Submodule.add_mem _ (Submodule.subset_span ⟨b, hb', rfl⟩) ?_` and prove the remaining obligations. Use `Submodule.span_mono ?_ (hg.1 b)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `⟨c, lt_trans hc hb', rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `hle hy`.
+A detailed English derivation is pending.
 -/
 theorem inS_pres {g : Matrix (Fin n) (Fin n) ℂ} (hg : InS e z g) (a : ℕ) :
     ∀ y ∈ spanLt e a, g *ᵥ y ∈ spanLt e a := by
@@ -42,9 +42,9 @@ theorem inS_pres {g : Matrix (Fin n) (Fin n) ℂ} (hg : InS e z g) (a : ℕ) :
   exact hle hy
 
 /- English proof (translation)
-Establish `key : ∀ v : Fin n → ℂ, (g * h - 1) *ᵥ v = g *ᵥ ((h - 1) *ᵥ v) + (g - 1) *ᵥ v` using `fun v => by`. Simplify using `only [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec]`. Normalize the expressions using the abelian group laws. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ (inS_pres e z hg a.1 _ (hh.1 a)) (hg.1 a)`. Rewrite using `[key]`. Conclude with `Submodule.add_mem _ (inS_pres e z hg r _ hh.2) hg.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inS_mul {g h : Matrix (Fin n) (Fin n) ℂ} (hg : InS e z g) (hh : InS e z h) : InS e z (g * h) := by
   have key : ∀ v : Fin n → ℂ, (g * h - 1) *ᵥ v = g *ᵥ ((h - 1) *ᵥ v) + (g - 1) *ᵥ v := fun v => by
@@ -57,7 +57,7 @@ theorem inS_mul {g h : Matrix (Fin n) (Fin n) ℂ} (hg : InS e z g) (hh : InS e 
     exact Submodule.add_mem _ (inS_pres e z hg r _ hh.2) hg.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => by rw [sub_self, Matrix.zero_mulVec]; exact Submodule.zero_mem _, by rw [sub_self, Matrix.zero_mulVec]; exact Submodule.zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem inS_one : InS e z (1 : Matrix (Fin n) (Fin n) ℂ) :=
   ⟨fun a => by rw [sub_self, Matrix.zero_mulVec]; exact Submodule.zero_mem _,
@@ -76,15 +76,15 @@ Both sides reduce to the same expression.
 theorem coe_SG : (SG ε e z : Set (Formalism.REAL.UJ ε)) = SLoc ε e z := rfl
 
 /- English proof (translation)
-The claim follows from `((Formalism.REAL.uJEmb n ε).1).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_uMat : Continuous (fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.uMat g) :=
   ((Formalism.REAL.uJEmb n ε).1).continuous
 
 /- English proof (translation)
-Establish `hc : ∀ v : Fin n → ℂ, Continuous (fun g : Formalism.REAL.UJ ε => (Formalism.MainNotions.S.uMat g - 1) *ᵥ v)` using `fun v => ((continuous_uMat ε).sub continuous_const).matrix_mulVec continuous_const`. Establish `e1 : (SG ε e z : Set (Formalism.REAL.UJ ε)) = (⋂ a : Fin r, (fun g : Formalism.REAL.UJ ε => (Formalism.MainNotions.S.uMat g - 1) *ᵥ e a) ⁻¹' (spanLt e a.1 : Set (Fin n → ℂ))) ∩ (fun g : Formalism.REAL.UJ ε => (Formalism.MainNotions.S.uMat g - 1) *ᵥ z) ⁻¹' (spanLt e r : Set (Fin n …`. Use extensionality with `g`. Simplify using `only [coe_SG, SLoc, InS, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isClosed_iInter fun a => (Submodule.closed_of_finiteDimensional _).preimage (hc _)).inter ((Submodule.closed_of_finiteDimensional _).preimage (hc _))`.
+A detailed English derivation is pending.
 -/
 theorem SG_closed : IsClosed (SG ε e z : Set (Formalism.REAL.UJ ε)) := by
   have hc : ∀ v : Fin n → ℂ, Continuous (fun g : Formalism.REAL.UJ ε => (Formalism.MainNotions.S.uMat g - 1) *ᵥ v) := fun v =>
@@ -110,23 +110,21 @@ instance instLCSG : LocallyCompactSpace SS := (SG_closed ε e z).isClosedEmbeddi
 instance instSCSG : SecondCountableTopology SS := Topology.IsEmbedding.subtypeVal.secondCountableTopology
 
 /- English proof (translation)
-Introduce `s hs`. Take `⟨⟨hσ, hne, hcompl, hinv⟩, hfin⟩` from `hμ`. Establish `hSm : MeasurableSet (SG ε e z : Set (Formalism.REAL.UJ ε))` using `(SG_closed ε e z).measurableSet`. Establish `memb : MeasurableEmbedding (Subtype.val : SS → Formalism.REAL.UJ ε)` using `MeasurableEmbedding.subtype_coe hSm`. Use `set ν : Measure SS := μ.comap Subtype.val with hν`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrestr : μ.restrict (SG ε e z : Set (Formalism.REAL.UJ ε)) = μ`. Apply `Measure.restrict_eq_self_of_ae_mem` to reduce the goal to its premises. Rewrite using `[ae_iff]`. Conclude with `hcompl`. Establish `hmapν : ν.map Subtype.val = μ`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hν, memb.map_comap, Subtype.range_coe, hrestr]`. Establish `himg : ∀ (t : SS) (A : Set SS), Subtype.val '' ((fun x => t * x) ⁻¹' A) = (fun x => (t : Formalism.REAL.UJ ε) * x) ⁻¹' (Subtype.val '' A)`. Introduce `t A`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨t * y, hy, rfl⟩`. Introduce and unpack `⟨a, ha, hax⟩`. Establish `hxS : x ∈ SS`. Establish `: x = ((t⁻¹ * a : SS) : Formalism.REAL.UJ ε)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, hax]`. Use `group`. Rewrite using `[this]`. Conclude with `(t⁻¹ * a).2`. Use `⟨⟨x, hxS⟩, ?_, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show t * ⟨x, hxS⟩ ∈ A`. Establish `: t * ⟨x, hxS⟩ = a` using `Subtype.ext (by simpa using hax.symm)`. Rewrite using `[this]`. Conclude with `ha`. Establish `hνinv : ν.IsMulLeftInvariant`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun t => ?_⟩` and prove the remaining obligations. Use extensionality with `A hA`. Rewrite using `[Measure.map_apply (measurable_const_mul t) hA, hν, memb.comap_apply, memb.comap_apply, himg, ← Measure.map_apply (measurable_const_mul _) (memb.measurableSet_image.2 hA), hinv _ t.2]`. Establish `hνfin : IsFiniteMeasureOnCompacts ν`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hν, memb.comap_apply]`. Conclude with `(hK.image continuous_subtype_val).measure_lt_top`. Establish `hνeq : ν = ν.haarScalarFactor Measure.haar • Measure.haar` using `Measure.isMulLeftInvariant_eq_smul ν Measure.haar`. Establish `hνright : ν.map (· * ⟨s, hs⟩) = ν`. Rewrite using `[hνeq, Measure.map_smul, Formalism.L2.SG.RealObj.InfCut.UnitaryIsometries.Modular.map_right, hΔ, one_smul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.map_map (measurable_mul_const s) measurable_subtype_coe, Measure.map_map measurable_subtype_coe (measurable_mul_const _)]`. Both sides reduce to the same expression. Use `_ = μ := by rw [hνright, hmapν]`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rightInv_of_modular (hΔ : ∀ s : SS, Measure.modularCharacterFun s = 1)
     (μ : Measure (Formalism.REAL.UJ ε)) (hμ : IsHaarS (SLoc ε e z) μ) :

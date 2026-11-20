@@ -14,23 +14,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ChainNS
 
 /- English proof (translation)
-Introduce `D c hc S' hS' B hB hBi k hk`. Take `⟨p, hp, -, hpS, v, hv⟩` from `GlobalTheory.SplitChoice.exists_split_prime D (S' : Set (HeightOneSpectrum (𝓞 D.host.F))) 1 (Finset.finite_toSet _) one_ne_zero`. Establish `hvS : v ∉ S'` using `fun h => hpS v (Finset.mem_coe.2 h) hv`. Use `⟨v, hvS, GlobalTheory.SplitPlace.isSplit_of_splitsCompletely D p hp v hv, ?_⟩` and prove the remaining obligations. Introduce `w hw β hβ k' hk'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrt5 : D.R.r + 5 ≤ D.R.t` using `D.R.rank_add_five_le`. Establish `hrt : D.R.r + 2 ≤ D.R.t` using `by omega`. Establish `hwS : w ∉ GlobalTheory.LFun.above D.host.E (S' : Set (HeightOneSpectrum (𝓞 D.host.F)))`. Simplify using `[GlobalTheory.LFun.above, hw, hvS]`. Establish `hpw : ((p : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `hv`. Rewrite `h` using `[← hw, HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_natCast]`. Conclude with `h`. Establish `hwc : w.under (𝓞 D.host.F) ∉ c.S` using `fun h => hvS (hw ▸ hS' h)`. Use `set x := GlobalTheory.LFun.val (F := D.host.F) (c.chT (k + 1)) w with hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmem : x⁻¹ * β ∈ GlobalTheory.LFun.twist (chainPar c B k) (GlobalTheory.LFun.val (F` using `D.host.F) (c.chT (k + 1)))⁻¹ w := by`. Simplify using `only [GlobalTheory.LFun.twist, Pi.inv_apply]`. Conclude with `Multiset.mem_map_of_mem _ hβ`. Rewrite `hmem` using `[chainPar_twist_chT]`. Establish `key : ((x⁻¹ * β : ℂˣ) : ℂ) ≠ GlobalTheory.LFun.npow w ((k' : ℂ) / 2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hN` using `GlobalTheory.T.small_entries_and_strings_avoid_excluded_norm_powers D.host.E w D.R.r D.R.t hrt k' hk'`. Simplify using `only [Pi.add_apply, Finset.sum_apply, Multiset.mem_add, Multiset.mem_sum] at hmem`. Break down `hmem with h | ⟨i, hi, h⟩` into its components or cases. Simplify using `only [GlobalTheory.LFun.twist, Pi.inv_apply] at h`. Take `⟨b, hb, hb'⟩` from `Multiset.mem_map.1 h`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hb']`. Establish `hb1` using `(hB w hwS).2 b hb`. Establish `hb2` using `(hBi w hwS).2 b⁻¹ (Multiset.mem_map_of_mem _ hb)`. Establish `hu : ‖((GlobalTheory.LFun.val (F` using `D.host.F) (c.μ (k + 1)) w : ℂˣ) : ℂ)‖ = 1 := GlobalTheory.LFun.norm_val _ _`. Use `hN.1 _ (Units.ne_zero _) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Units.val_mul, norm_mul, Units.val_inv_eq_inv_val, norm_inv, hu, inv_one, one_mul]`. Conclude with `hb1`. Rewrite using `[Units.val_mul, mul_inv, norm_mul, Units.val_inv_eq_inv_val, inv_inv, hu, one_mul]`. Rewrite `hb2` using `[Units.val_inv_eq_inv_val]`. Conclude with `hb2`.
-
-Establish `hi'` using `Finset.mem_Icc.1 hi`. Conclude with `hN.2 _ (GlobalTheory.LFun.norm_val _ _) (GlobalTheory.T.heckeCharQuotient_ne_one_completelySplitPrime D c hc i (k + 1) hi'.1 (by omega) (by omega) p hp w hpw hwc) _ h`. Introduce `he`. Apply `key` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, mul_comm]`.
-
-Conclude with `he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chainNS_holds : ∀ D : D7, ChainNS D := by
   intro D c hc S' hS' B hB hBi k hk

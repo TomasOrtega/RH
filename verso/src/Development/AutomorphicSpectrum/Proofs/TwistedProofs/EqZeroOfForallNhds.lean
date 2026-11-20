@@ -5,13 +5,13 @@ open Filter Topology
 namespace GlobalTheory.CompanionTheory.Twist.FockLogDeriv
 
 /- English proof (translation)
-Apply `hT` to reduce the goal to its premises. Introduce `z`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.mp hU`. Establish `h0 : T y₀ b = 0` using `hb y₀ (hball (Metric.mem_ball_self hε))`. Establish `hz1 : 0 < ‖z‖ + 1` using `by positivity`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t : ℝ := ε / (2 * (‖z‖ + 1)) with ht`. Establish `htpos : 0 < t` using `by positivity`. Establish `htz : t * (‖z‖ + 1) = ε / 2`. Rewrite using `[ht]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hmem : y₀ + t • z ∈ U`. Apply `hball` to reduce the goal to its premises. Rewrite using `[Metric.mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul, Real.norm_of_nonneg htpos.le]`. Use polynomial arithmetic with `[norm_nonneg z]`. Establish `h1` using `hb _ hmem`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_add, LinearMap.add_apply, map_smul, LinearMap.smul_apply, h0, zero_add, smul_eq_mul]`. Conclude with `(mul_eq_zero.mp h1).resolve_left htpos.ne'`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_nhds {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (T : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (hT : ∀ b, (∀ y, T y b = 0) → b = 0)
@@ -34,37 +34,33 @@ theorem eq_zero_of_forall_nhds {V : Type} [NormedAddCommGroup V] [NormedSpace �
   exact (mul_eq_zero.mp h1).resolve_left htpos.ne'
 
 /- English proof (translation)
-Set `Φ : V × V →ₗ[ℝ] (V → ℂ)` to `{ toFun := fun p y => fderiv ℝ f₀ y p.1 + (-(2 * Real.pi * Complex.I)) * ((T y p.2 : ℝ) : ℂ) * f₀ y map_add' := by`. Introduce `p q`. Use function extensionality and compare the values at `y`. Simplify using `only [Prod.fst_add, Prod.snd_add, map_add, Complex.ofReal_add, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use the proof step `map_smul' := by`. Introduce `s p`. Use function extensionality and compare the values at `y`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, map_smul, smul_eq_mul, Complex.ofReal_mul, RingHom.id_apply, Pi.smul_apply, Complex.real_smul]`. Use `ring }`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hΦ : ∀ p y, Φ p y = fderiv ℝ f₀ y p.1 + (-(2 * Real.pi * Complex.I)) * ((T y p.2 : ℝ) : ℂ) * f₀ y` using `fun p y => rfl`. Establish `hEΦ : ∀ p y, Φ (Jm p) y = Complex.I * Φ p y` using `fun p y => by rw [hΦ, hΦ]; exact hE p y`. Establish `hΦ0 : ∀ w y, Φ (0, w) y = (-(2 * Real.pi * Complex.I)) * ((T y w : ℝ) : ℂ) * f₀ y`. Introduce `w y`. Rewrite using `[hΦ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_zero, zero_add]`. Set `Q : V × V →ₗ[ℝ] V × V` to `(LinearMap.inr ℝ V V) ∘ₗ (LinearMap.fst ℝ V V) + Jm ∘ₗ (LinearMap.inr ℝ V V) ∘ₗ (LinearMap.snd ℝ V V)`. Set `Θ : V × V →ₗ[ℝ] (V → ℂ)` to `Φ ∘ₗ Q`. Establish `hΘ : ∀ w₁ w₂ y, Θ (w₁, w₂) y = (-(2 * Real.pi * Complex.I)) * ((T y w₁ : ℝ) : ℂ) * f₀ y + Complex.I * ((-(2 * Real.pi * Complex.I)) * ((T y w₂ : ℝ) : ℂ) * f₀ y)`. Introduce `w₁ w₂ y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : Θ (w₁, w₂) = Φ (0, w₁) + Φ (Jm (0, w₂))` using `map_add Φ _ _`. Rewrite using `[e, Pi.add_apply, hEΦ, hΦ0, hΦ0]`. Choose the witnesses or unpack the hypotheses as in `⟨y₀, hy₀⟩ : ∃ y₀, f₀ y₀ ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hf (SchwartzMap.ext fun y => by simp [h y])`. Establish `hU : {y | f₀ y ≠ 0} ∈ 𝓝 y₀` using `(isOpen_compl_singleton.preimage f₀.continuous).mem_nhds hy₀`. Establish `hc : (-(2 * Real.pi * Complex.I) : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `hinj : Function.Injective Θ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨w₁, w₂⟩ h`. Establish `hsplit : ∀ y ∈ {y | f₀ y ≠ 0}, T y w₁ = 0 ∧ T y w₂ = 0`. Introduce `y hy`. Establish `h0 : Θ (w₁, w₂) y = 0` using `by rw [h]; rfl`. Rewrite `h0` using `[hΘ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ((T y w₁ : ℝ) : ℂ) + Complex.I * ((T y w₂ : ℝ) : ℂ) = 0`. Establish `h4 : (-(2 * Real.pi * Complex.I)) * f₀ y * (((T y w₁ : ℝ) : ℂ) + Complex.I * ((T y w₂ : ℝ) : ℂ)) = 0`. Rewrite using `[← h0]`. Expand and normalize the polynomial expressions, which then agree. Break down `mul_eq_zero.mp h4 with h5 | h5` into its components or cases.
+Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `mul_eq_zero.mp h5 with h6 | h6` into its components or cases. Conclude with `absurd h6 hc`. Conclude with `absurd h6 hy`. Conclude with `h5`. Establish `hre` using `congrArg Complex.re h3`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `him` using `congrArg Complex.im h3`. Simplify using `at hre him`. Conclude with `⟨hre, him⟩`. Establish `e1` using `eq_zero_of_forall_nhds T hT y₀ _ hU w₁ fun y hy => (hsplit y hy).1`. Establish `e2` using `eq_zero_of_forall_nhds T hT y₀ _ hU w₂ fun y hy => (hsplit y hy).2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Both sides reduce to the same expression. Establish `hle : LinearMap.range Θ ≤ LinearMap.range Φ` using `LinearMap.range_comp_le_range Q Φ`. Establish `hrange : LinearMap.range Θ = LinearMap.range Φ`. Apply `Submodule.eq_of_le_of_finrank_le hle` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.finrank_range_of_inj hinj]`. Conclude with `LinearMap.finrank_range_le Φ`. Establish `hmem : ∀ a, (Φ ∘ₗ LinearMap.inl ℝ V V) a ∈ LinearMap.range Θ` using `fun a => by`. Rewrite using `[hrange]`. Conclude with `LinearMap.mem_range_self Φ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `e` to `LinearEquiv.ofInjective Θ hinj`. Set `W : V →ₗ[ℝ] V × V` to `e.symm.toLinearMap ∘ₗ LinearMap.codRestrict (LinearMap.range Θ) (Φ ∘ₗ LinearMap.inl ℝ V V) hmem`. Establish `hW : ∀ a, Θ (W a) = Φ (a, 0)`. Introduce `a`. Establish `h` using `congrArg Subtype.val (e.apply_symm_apply ⟨Φ (a, 0), hmem a⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Set `m : V →ₗ[ℝ] V →ₗ[ℝ] ℂ` to `LinearMap.mk₂ ℝ (fun a y => (-(2 * Real.pi * Complex.I)) * ((T y (W a).1 : ℝ) : ℂ) + Complex.I * ((-(2 * Real.pi * Complex.I)) * ((T y (W a).2 : ℝ) : ℂ))) (by intro a₁ a₂ y; simp only [map_add, Prod.fst_add, Prod.snd_add, Complex.ofReal_add]; ring) (by intro s a y; simp only [map …`. Use `⟨m, fun a y => ?_⟩` and prove the remaining obligations. Establish `h1 : Φ (a, 0) y = fderiv ℝ f₀ y a`. Rewrite using `[hΦ]`.
-
-Simplify using `only [map_zero, Complex.ofReal_zero, mul_zero, zero_mul, add_zero]`. Establish `h2` using `hΘ (W a).1 (W a).2 y`. Rewrite `h2` using `[Prod.mk.eta, hW, h1]`. Rewrite using `[h2]`. Use `show _ = ((-(2 * Real.pi * Complex.I)) * ((T y (W a).1 : ℝ) : ℂ) + Complex.I * ((-(2 * Real.pi * Complex.I)) * ((T y (W a).2 : ℝ) : ℂ))) * f₀ y`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (T : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (hT : ∀ b, (∀ y, T y b = 0) → b = 0)

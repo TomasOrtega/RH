@@ -10,9 +10,9 @@ open scoped BigOperators
 namespace GlobalTheory.WeilTheta
 
 /- English proof (translation)
-Take `⟨Lt, hLt, -⟩` from `GlobalTheory.NormSum.exists_lattice_of_adelic_point D N`. Establish `: L = Lt g`. Use extensionality with `x`. Rewrite using `[h x, (hLt g).1 x]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hLt g).2`.
+A detailed English derivation is pending.
 -/
 theorem sd_of_moves (D : D7) {N : ℕ} (g : GA D N) (L : Lat D N) (h : Moves D (g : GL (Fin N) (AE D)) L) :
     SD D L := by
@@ -24,15 +24,15 @@ theorem sd_of_moves (D : D7) {N : ℕ} (g : GA D N) (L : Lat D N) (h : Moves D (
   exact (hLt g).2
 
 /- English proof (translation)
-Introduce `D cc δ hC N N' e0 W g h g' h' L₁ L₂ L₁' L₂' h1 h1' h2 h2' F hF`. Establish `hD` using `(GlobalTheory.InducedType.induced_type D).1`. Establish `s1` using `sd_of_moves D h L₁ h1`. Establish `s1'` using `sd_of_moves D h' L₁' h1'`. Establish `s2` using `sd_of_moves D _ L₂ h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2'` using `sd_of_moves D _ L₂' h2'`. Take `⟨hnice, -⟩` from `GlobalTheory.ThetaTriple.klat_triples D cc δ hC N N'`. Establish `n1` using `hnice _ (Or.inr ⟨L₁, L₁', s1, s1', rfl⟩)`. Establish `n2` using `hnice _ (Or.inr ⟨L₂, L₂', s2, s2', rfl⟩)`. Take `⟨hT, hW, -⟩` from `GlobalTheory.T.thetaFunctions_all_levels_closure D cc δ hC N N'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hFT` using `hT L₁ L₁' s1 s1' F hF`. Establish `hGT` using `W.maps g g' F hFT`. Establish `hfix` using `((n1.mem_ThSp F).1 hF).2`. Use `(n2.mem_ThSp _).2 ⟨hGT.1, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, -⟩` from `GlobalTheory.T.exists_rationalPoint_of_mem_movedThetaLattice D hD cc δ hC.1.1 N N' _ _ L₂ L₂' h2 h2' y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hWT : Wd D (tor0 D cc δ) y (W.Om g g' F) ∈ TT D (tor0 D cc δ) N N'`. Rewrite using `[hz]`. Conclude with `hW z _ hGT`. Take `⟨x, hx, he⟩` from `GlobalTheory.WeilEquiv.om_wd_moved D hD cc δ hC.1.1 N N' e0 W g⁻¹ (g * h) g'⁻¹ (g' * h') L₂ L₁ L₂' L₁' h2 h2' (by rwa [inv_mul_cancel_left]) (by rwa [inv_mul_cancel_left]) y hy _ hGT`. Rewrite `he` using `[← W.mul _ _ _ _ F hFT, inv_mul_cancel, inv_mul_cancel, W.one F hFT, hfix x hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (W.Om g g') he`. Rewrite `h3` using `[← W.mul _ _ _ _ _ hWT, mul_inv_cancel, mul_inv_cancel, W.one _ hWT]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem om_mem_Th_moved : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' : ℕ) (e0 : VC D N N' → ℂ) (W : WeilO D cc δ N N' e0) (g h : GA D N) (g' h' : GA D N') (L₁ L₂ : Lat D N) (L₁' L₂' : Lat D N'), Moves D (h : GL (Fin N) (AE D)) L₁ → Moves D (h' : GL (Fin N') (AE D)) L₁' → Moves D ((g * h : GA D N) : GL (Fin N) (AE D)) L₂ → Moves D ((g' * h' : GA D N') : GL (Fin N') (AE D)) L₂' → ∀ F ∈ Th D (tor0 D cc δ) L₁ L₁', W.Om g g' F ∈ Th D (tor0 D cc δ) L₂ L₂' := by
   intro D cc δ hC N N' e0 W g h g' h' L₁ L₂ L₁' L₂' h1 h1' h2 h2' F hF

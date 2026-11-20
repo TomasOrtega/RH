@@ -18,31 +18,29 @@ namespace GlobalTheory.FlagAmple.PlkLoc
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D A N j S κ s Φ k V hV φ g _hgen _hst hne B hB K _ a c hac`. Set `y : (Φ.C k).Y.X` to `(a ≫ ((Φ.C k).π ⁻¹ᵁ V).ι) (IsLocalRing.closedPoint K)`. Set `ψ : (Φ.C k).Y.X.presheaf.stalk y →+* K` to `(Scheme.stalkClosedPointTo (R := .of K) (a ≫ ((Φ.C k).π ⁻¹ᵁ V).ι)).hom`. Establish `hpt : spMap ψ ≫ stalkPt (Φ.C k).Y y = a ≫ ((Φ.C k).π ⁻¹ᵁ V).ι` using `GlobalTheory.FlagBundle.spMap_stalkClosedPointTo _`. Establish `hy : y ∈ (Φ.C k).π ⁻¹ᵁ V`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : y ∈ Set.range ((Φ.C k).π ⁻¹ᵁ V).ι` using `⟨a (IsLocalRing.closedPoint K), rfl⟩`. Rewrite `h0` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis. Set `ρ : Γ(gen s.T.Z, V) →+* (Φ.C k).Y.X.presheaf.stalk y` to `((Φ.C k).π.appLE V ((Φ.C k).π ⁻¹ᵁ V) le_rfl ≫ (Φ.C k).Y.X.presheaf.germ ((Φ.C k).π ⁻¹ᵁ V) y hy).hom`. Establish `h1 : baseFn (Φ.C k) V hne = (algebraMap ((Φ.C k).Y.X.presheaf.stalk y) (Φ.C k).Y.Fn).comp ρ`. Rewrite using `[baseFn, fnOf_eq_algebraMap_germ _ y hy hne]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : stalkPt (Φ.C k).Y y ≫ (Φ.C k).π = spMap ρ ≫ hV.fromSpec` using `fromSpecStalk_comp_eq (Φ.C k).π V hV y hy`. Use `clear_value ρ`. Take `⟨φy, fy, t, hT, hE⟩` from `(Φ.C k).gr_spec y`. Establish `hinj` using `IsFractionRing.injective ((Φ.C k).Y.X.presheaf.stalk y) (Φ.C k).Y.X.functionField`.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : φy = ρ.comp φ`. Use extensionality with `z`. Apply `hinj` to reduce the goal to its premises. Establish `e1` using `RingHom.congr_fun hT.2.1 z`. Establish `e2` using `RingHom.congr_fun hB.2.1 z`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[h1]`. Conclude with `e1.symm.trans e2`. Establish `hx : stalkPt (Φ.C k).Y y ≫ (Φ.C k).π ≫ genι s.T.Z = spMap ρ ≫ hV.fromSpec ≫ genι s.T.Z`. Rewrite using `[← Category.assoc, h2, Category.assoc]`. Take `⟨gy, hgy⟩` from `g.exists_isMap ρ h3 hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨gF, hgF⟩` from `gy.exists_isMap (algebraMap ((Φ.C k).Y.X.presheaf.stalk y) (Φ.C k).Y.X.functionField) hT.2.1 hT.1`. Take `⟨fF, hfF⟩` from `fy.exists_isMap (algebraMap ((Φ.C k).Y.X.presheaf.stalk y) (Φ.C k).Y.X.functionField) hT.2.1 hT.1`. Establish `hB' : ∀ τ, gF.co (Φ.C k).f0 τ = (B τ)ᵀ` using `fun τ => GlobalTheory.ShFam.EigFrame.co_eq fun i => by`. Establish `h` using `hB.2.2 τ i`. Establish `hv : gF.v τ = fun k' => spMap (dualMap (baseFn (Φ.C k) V hne)) ≫ g.v τ k'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k'`. Rewrite using `[hgF τ k', hgy τ k', h1]`. Conclude with `GradedPieces.dual_comp ρ _ _`. Rewrite using `[hv]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : c = ψ.comp ρ`. Use `EigLoc.spMap_inj ((cancel_mono hV.fromSpec).1 ?_)` and prove the remaining obligations. Establish `e1 : spMap (ψ.comp ρ) = spMap ψ ≫ spMap ρ` using `by rw [← Spec.map_comp]; rfl`. Rewrite using `[e1, Category.assoc, ← h2, ← Category.assoc, hpt, ← hac, ← IsAffineOpen.isoSpec_inv_ι, Category.assoc, Category.assoc, Iso.hom_inv_id_assoc, morphismRestrict_ι, Category.assoc]`. Establish `hcφ : c.comp φ = ψ.comp φy` using `by rw [hc, h3]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxK : (spMap c ≫ hV.fromSpec) ≫ genι s.T.Z = spMap ψ ≫ stalkPt (Φ.C k).Y y ≫ (Φ.C k).π ≫ genι s.T.Z`. Rewrite using `[hc, hx]`. Establish `e1 : spMap (ψ.comp ρ) = spMap ψ ≫ spMap ρ` using `by rw [← Spec.map_comp]; rfl`. Rewrite using `[e1]`. Simplify using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨h, hh⟩` from `fy.exists_isMap ψ hcφ hxK`. Take `⟨gK, hgK⟩` from `gy.exists_isMap ψ hcφ hxK`. Use `⟨y, ψ, fun τ => (gy.co fy τ)ᵀ, fun τ => (fF.co (Φ.C k).f0 τ)ᵀ, hpt.symm, ⟨h, ⟨y, ψ, φy, fy, t, 1, hpt.symm, hT, hh.tri hcφ hxK⟩, ⟨Category.assoc _ _ _, rfl, fun τ i => ?_⟩⟩, fun τ => ?_, ?_, fun τ i l hil => (hT.co τ hfF).1 l i hil, fun τ i => ⟨t τ i, (hT.co τ hfF).2 i, hE τ i⟩⟩` and prove the remaining obligations. Establish `hv : gK.v τ = fun k' => spMap (dualMap c) ≫ g.v τ k'`. Use function extensionality and compare the values at `k'`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgK τ k', hgy τ k', hc]`. Conclude with `GradedPieces.dual_comp ρ _ _`. Establish `e` using `gK.co_spec h τ i`. Rewrite `e` using `[hv, hgK.co τ hh hxK]`. Conclude with `e`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Matrix.det_transpose]`. Conclude with `gy.isUnit_det_co fy τ`. Use function extensionality and compare the values at `τ`. Establish `e` using `gF.co_mul fF (Φ.C k).f0 τ`. Rewrite `e` using `[hB' τ, hgF.co τ hfF hT.1]`.
-
-Rewrite using `[Pi.mul_apply, ← Matrix.transpose_transpose (B τ), ← e, Matrix.transpose_mul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_carried_frame_coord : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (V : (gen s.T.Z).Opens) (hV : IsAffineOpen V) (φ : κ.c.F →+* Γ(gen s.T.Z, V)) (g : EigFrame s.T.Z φ (hV.fromSpec ≫ genι s.T.Z)), hV.fromSpec ≫ genStr s.T.Z = spMap φ → g.Stable → ∀ (hne : genericPoint (Φ.C k).Y.X ∈ ((Φ.C k).π ⁻¹ᵁ V)) (B : GlobalTheory.FlagBundle.Mat S.Dw.mult (Φ.C k).Y.Fn), g.Coord (GlobalTheory.FlagAmple.PlkLoc.baseFn (Φ.C k) V hne) (Φ.C k).f0 B → ∀ (K : Type) [Field K] (a : Sp K ⟶ ((Φ.C k).π ⁻¹ᵁ V).toScheme) (c : Γ(gen s.T.Z, V) →+* K), a ≫ (((Φ.C k).π ∣_ V) ≫ hV.isoSpec.hom) = spMap c → ∃ (y : (Φ.C k).Y.X) (ψ : (Φ.C k).Y.X.presheaf.stalk y →+* K) (P : GlobalTheory.FlagBundle.Mat S.Dw.mult ((Φ.C k).Y.X.presheaf.stalk y)) (T : GlobalTheory.FlagBundle.Mat S.Dw.mult (Φ.C k).Y.Fn), a ≫ ((Φ.C k).π ⁻¹ᵁ V).ι = spMap ψ ≫ stalkPt (Φ.C k).Y y ∧ (∃ h : EigFrame s.T.Z (c.comp φ) ((spMap c ≫ hV.fromSpec) ≫ genι s.T.Z), (Φ.C k).Carries (a ≫ ((Φ.C k).π ⁻¹ᵁ V).ι) h ∧ g.Coord c h (P.map ψ)) ∧ (∀ τ, IsUnit (P τ).det) ∧ B = T * P.map (algebraMap ((Φ.C k).Y.X.presheaf.stalk y) (Φ.C k).Y.Fn) ∧ (∀ τ i l, i < l → T τ i l = 0) ∧ ∀ τ i, ∃ u : (Φ.C k).Y.Fnˣ, T τ i i = u ∧ ((Φ.C k).gr τ i).IsEqn y u := by
   intro D A N j S κ s Φ k V hV φ g _hgen _hst hne B hB K _ a c hac

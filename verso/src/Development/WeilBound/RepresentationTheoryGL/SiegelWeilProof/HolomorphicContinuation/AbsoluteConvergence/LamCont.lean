@@ -15,13 +15,11 @@ variable {m n : ℕ} {G : Type} [Group G] [TopologicalSpace G] {ε : Fin m → B
   {Ht : G → ℝ≥0} {sec I : PX m n →ₗ[ℂ] (G → ℂ)} {Λ : Set ((G → ℂ) → ℂ)}
 
 /- English proof (translation)
-Take `⟨C, hCc, hCb⟩` from `hG.Λbd l hl`. Take `⟨L, hL⟩` from `hFL G (invSub Γ) l C hCc (fun F hF => hF.1) (fun a F hF F' hF' => hG.Λadd l hl a F F' hF.1 hF'.1 hF.2 hF'.2) (fun F hF M hM => hCb F M hF.1 hF.2 hM)`. Use `haveI : CompactSpace C := isCompact_iff_compactSpace.mp hCc`. Establish `hFcont : ∀ z ∈ B, Continuous (F z)`. Introduce `z hzB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hFc.comp_continuous (continuous_const.prodMk continuous_id) (fun g => ⟨hzB, mem_univ g⟩)`. Take `⟨Φ, hΦd, hΦ⟩` from `hBH C B (fun z x => F z x) hB (hFc.comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd)).continuousOn (fun y hy => ⟨hy.1, mem_univ _⟩)) (fun x => hFh x)`. Establish `hfeq : ∀ z ∈ B, l (F z) = L (Φ z)`. Introduce `z hzB`. Establish `hmem : F z ∈ invSub Γ` using `⟨hFcont z hzB, hFi z hzB⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hL (F z) hmem (hFcont z hzB)]`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[hΦ z hzB x]`. Both sides reduce to the same expression.
-
-Establish `hd : DifferentiableOn ℂ (fun z => l (F z)) B` using `(L.differentiable.comp_differentiableOn hΦd).congr hfeq`. Conclude with `(hd.differentiableAt (hB.mem_nhds hw)).continuousAt`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lam_cont (hBH : BanachHol) (hFL : FactorL) (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ)
     (l : (G → ℂ) → ℂ) (hl : l ∈ Λ) {B : Set ℂ} (hB : IsOpen B) {w : ℂ} (hw : w ∈ B) (F : ℂ → G → ℂ)

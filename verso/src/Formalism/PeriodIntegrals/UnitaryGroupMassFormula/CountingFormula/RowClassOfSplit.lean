@@ -11,7 +11,7 @@ namespace PI.UnitaryGroupMassFormula.CntFormula.RowsMassW
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Rewrite using `[← (VS D).herm.eq y x, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_swap (D : D7) (x y : (VS D).V) : (VS D).hT x y = star ((VS D).hT y x) := by
   rw [← (VS D).herm.eq y x, starRingEnd_apply]
@@ -27,14 +27,14 @@ def xcL (f : Fin D.R.rS → (VS D).V) : (VS D).V →ₗ[D.host.E] (VS D).V :=
   ∑ a, ((VS D).hT (f a)).smulRight (F0.e a)
 
 /- English proof (translation)
-Simplify using `[ycL, LinearMap.sum_apply, LinearMap.smulRight_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ycL_apply (f : Fin D.R.rS → (VS D).V) (v : (VS D).V) :
     ycL F0 f v = ∑ b, (VS D).hT (F0.e b) v • f b := by
   simp [ycL, LinearMap.sum_apply, LinearMap.smulRight_apply]
 
 /- English proof (translation)
-Simplify using `[xcL, LinearMap.sum_apply, LinearMap.smulRight_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xcL_apply (f : Fin D.R.rS → (VS D).V) (v : (VS D).V) :
     xcL F0 f v = ∑ a, (VS D).hT (f a) v • F0.e a := by
@@ -44,14 +44,14 @@ def IsDualF (f : Fin D.R.rS → (VS D).V) : Prop :=
   (∀ a b, (VS D).hT (F0.e a) (f b) = if a = b then 1 else 0) ∧ ∀ a b, (VS D).hT (f a) (f b) = 0
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem e_mem_X (a : Fin D.R.rS) : F0.e a ∈ F0.X := Submodule.subset_span ⟨a, rfl⟩
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨a, rfl⟩` from `hw`. Conclude with `hy a`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add w w' _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c w _ h => simp [h]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_perp_of {y : (VS D).V} (hy : ∀ a, (VS D).hT (F0.e a) y = 0) : y ∈ perpS (VS D) F0.X := by
   intro x hx
@@ -64,9 +64,9 @@ theorem mem_perp_of {y : (VS D).V} (hy : ∀ a, (VS D).hT (F0.e a) y = 0) : y �
   | smul c w _ h => simp [h]
 
 /- English proof (translation)
-Introduce `y hy`. Apply `mem_perp_of F0` to reduce the goal to its premises. Introduce `a`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨b, rfl⟩` from `hw`. Conclude with `F0.e_iso a b`. Consider the case `zero => simp`. Consider the case `add w w' _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c w _ h => simp [h]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem X_le_perp : F0.X ≤ perpS (VS D) F0.X := by
   intro y hy
@@ -81,19 +81,19 @@ theorem X_le_perp : F0.X ≤ perpS (VS D) F0.X := by
   | smul c w _ h => simp [h]
 
 /- English proof (translation)
-The claim follows from `X_le_perp F0 hy x hx`.
+A detailed English derivation is pending.
 -/
 theorem hX_X {x y : (VS D).V} (hx : x ∈ F0.X) (hy : y ∈ F0.X) : (VS D).hT x y = 0 :=
   X_le_perp F0 hy x hx
 
 /- English proof (translation)
-The claim follows from `hy x hx`.
+A detailed English derivation is pending.
 -/
 theorem hX_perp {x y : (VS D).V} (hx : x ∈ F0.X) (hy : y ∈ perpS (VS D) F0.X) : (VS D).hT x y = 0 :=
   hy x hx
 
 /- English proof (translation)
-Rewrite using `[hT_swap D, show (VS D).hT y x = 0 from hx y hy, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hperp_X {x y : (VS D).V} (hx : x ∈ perpS (VS D) F0.X) (hy : y ∈ F0.X) : (VS D).hT x y = 0 := by
   rw [hT_swap D, show (VS D).hT y x = 0 from hx y hy, star_zero]
@@ -102,7 +102,7 @@ variable {F0}
 variable {f : Fin D.R.rS → (VS D).V}
 
 /- English proof (translation)
-Rewrite using `[hT_swap D, hf.1 b a]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hT_f_e (hf : IsDualF F0 f) (a b : Fin D.R.rS) :
     (VS D).hT (f a) (F0.e b) = if b = a then 1 else 0 := by
@@ -110,7 +110,7 @@ theorem hT_f_e (hf : IsDualF F0 f) (a b : Fin D.R.rS) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[ycL_apply, map_sum]`. Simplify using `[hf.1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hT_e_yc (hf : IsDualF F0 f) (a : Fin D.R.rS) (v : (VS D).V) :
     (VS D).hT (F0.e a) (ycL F0 f v) = (VS D).hT (F0.e a) v := by
@@ -118,7 +118,7 @@ theorem hT_e_yc (hf : IsDualF F0 f) (a : Fin D.R.rS) (v : (VS D).V) :
   simp [hf.1]
 
 /- English proof (translation)
-Rewrite using `[xcL_apply, map_sum]`. Simplify using `[hT_f_e hf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hT_f_xc (hf : IsDualF F0 f) (a : Fin D.R.rS) (v : (VS D).V) :
     (VS D).hT (f a) (xcL F0 f v) = (VS D).hT (f a) v := by
@@ -126,23 +126,23 @@ theorem hT_f_xc (hf : IsDualF F0 f) (a : Fin D.R.rS) (v : (VS D).V) :
   simp [hT_f_e hf]
 
 /- English proof (translation)
-Rewrite using `[xcL_apply]`. Conclude with `Submodule.sum_mem _ (fun a _ => Submodule.smul_mem _ _ (e_mem_X F0 a))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xc_mem_X (v : (VS D).V) : xcL F0 f v ∈ F0.X := by
   rw [xcL_apply]
   exact Submodule.sum_mem _ (fun a _ => Submodule.smul_mem _ _ (e_mem_X F0 a))
 
 /- English proof (translation)
-Rewrite using `[ycL_apply]`. Conclude with `Submodule.sum_mem _ (fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem yc_mem_span (v : (VS D).V) : ycL F0 f v ∈ Submodule.span D.host.E (Set.range f) := by
   rw [ycL_apply]
   exact Submodule.sum_mem _ (fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩))
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨c, rfl⟩` from `hw`. Rewrite using `[xcL_apply]`. Simplify using `[hT_f_e hf]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `zero => simp`. Consider the case `add w w' _ _ h1 h2 => rw [map_add, h1, h2]`. Consider the case `smul c w _ h => rw [map_smul, h]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem xc_of_X (hf : IsDualF F0 f) {x : (VS D).V} (hx : x ∈ F0.X) : xcL F0 f x = x := by
   induction hx using Submodule.span_induction with
@@ -155,9 +155,9 @@ theorem xc_of_X (hf : IsDualF F0 f) {x : (VS D).V} (hx : x ∈ F0.X) : xcL F0 f 
   | smul c w _ h => rw [map_smul, h]
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨c, rfl⟩` from `hw`. Rewrite using `[ycL_apply]`. Simplify using `[hf.1]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `zero => simp`. Consider the case `add w w' _ _ h1 h2 => rw [map_add, h1, h2]`. Consider the case `smul c w _ h => rw [map_smul, h]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem yc_of_span (hf : IsDualF F0 f) {y : (VS D).V} (hy : y ∈ Submodule.span D.host.E (Set.range f)) :
     ycL F0 f y = y := by
@@ -171,22 +171,22 @@ theorem yc_of_span (hf : IsDualF F0 f) {y : (VS D).V} (hy : y ∈ Submodule.span
   | smul c w _ h => rw [map_smul, h]
 
 /- English proof (translation)
-Simplify using `[xcL_apply, hu]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xc_of_perpf {u : (VS D).V} (hu : ∀ a, (VS D).hT (f a) u = 0) : xcL F0 f u = 0 := by
   simp [xcL_apply, hu]
 
 /- English proof (translation)
-Establish `: ∀ b, (VS D).hT (F0.e b) u = 0` using `fun b => hu _ (e_mem_X F0 b)`. Simplify using `[ycL_apply, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem yc_of_perp {u : (VS D).V} (hu : u ∈ perpS (VS D) F0.X) : ycL F0 f u = 0 := by
   have : ∀ b, (VS D).hT (F0.e b) u = 0 := fun b => hu _ (e_mem_X F0 b)
   simp [ycL_apply, this]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem w' hw`. Take `⟨a, rfl⟩` from `hw`. Conclude with `hT_e_yc hf a w`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add w₁ w₂ _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c w₁ _ h => simp [h]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hX_yc (hf : IsDualF F0 f) {x : (VS D).V} (hx : x ∈ F0.X) (w : (VS D).V) :
     (VS D).hT x (ycL F0 f w) = (VS D).hT x w := by
@@ -199,9 +199,9 @@ theorem hX_yc (hf : IsDualF F0 f) {x : (VS D).V} (hx : x ∈ F0.X) (w : (VS D).V
   | smul c w₁ _ h => simp [h]
 
 /- English proof (translation)
-Rewrite using `[hT_swap D]`. It suffices to establish `h : (VS D).hT y p = 0 by rw [h, star_zero]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨a, rfl⟩` from `hw`.
+Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `hp a`. Consider the case `zero => simp`. Consider the case `add w₁ w₂ _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c w₁ _ h => simp [h]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hperpf_span {p : (VS D).V} (hp : ∀ a, (VS D).hT (f a) p = 0) {y : (VS D).V}
     (hy : y ∈ Submodule.span D.host.E (Set.range f)) : (VS D).hT p y = 0 := by
@@ -216,9 +216,9 @@ theorem hperpf_span {p : (VS D).V} (hp : ∀ a, (VS D).hT (f a) p = 0) {y : (VS 
   | smul c w₁ _ h => simp [h]
 
 /- English proof (translation)
-Apply `hperpf_span _ hy'` to reduce the goal to its premises. Introduce `a`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨b, rfl⟩` from `hw`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `hf.2 a b`. Consider the case `zero => simp`. Consider the case `add w₁ w₂ _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c w₁ _ h => simp [h]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hspan_span (hf : IsDualF F0 f) {y y' : (VS D).V} (hy : y ∈ Submodule.span D.host.E (Set.range f))
     (hy' : y' ∈ Submodule.span D.host.E (Set.range f)) : (VS D).hT y y' = 0 := by
@@ -233,9 +233,9 @@ theorem hspan_span (hf : IsDualF F0 f) {y y' : (VS D).V} (hy : y ∈ Submodule.s
   | smul c w₁ _ h => simp [h]
 
 /- English proof (translation)
-Establish `hu : ∀ a, (VS D).hT (f a) (p - xcL F0 f p) = 0`. Introduce `a`. Rewrite using `[map_sub, hT_f_xc hf, sub_self]`. Establish `h1 : (VS D).hT (p - xcL F0 f p) (ycL F0 f w) = 0` using `hperpf_span hu (yc_mem_span w)`. Establish `h2 : (VS D).hT (xcL F0 f p) (ycL F0 f w) = (VS D).hT (xcL F0 f p) w` using `hX_yc hf (xc_mem_X p) w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`. Rewrite using `[h1, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_yc_right (hf : IsDualF F0 f) (p w : (VS D).V) :
     (VS D).hT p (ycL F0 f w) = (VS D).hT (xcL F0 f p) w := by
@@ -248,9 +248,9 @@ theorem hT_yc_right (hf : IsDualF F0 f) (p w : (VS D).V) :
   rw [h1, h2]
 
 /- English proof (translation)
-Establish `A1` using `hT_yc_right hf (v - ycL F0 f v) w`. Establish `A2 : (VS D).hT (ycL F0 f v) (w - ycL F0 f w) = star ((VS D).hT (xcL F0 f (w - ycL F0 f w)) v)`. Rewrite using `[hT_swap D, hT_yc_right hf]`. Establish `A3 : (VS D).hT (ycL F0 f v) (ycL F0 f w) = 0` using `hspan_span hf (yc_mem_span v) (yc_mem_span w)`. Establish `e : (VS D).hT v w = (VS D).hT ((v - ycL F0 f v) + ycL F0 f v) ((w - ycL F0 f w) + ycL F0 f w)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sub_add_cancel, sub_add_cancel]`. Rewrite using `[e, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, A1, A2, A3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hT_split (hf : IsDualF F0 f) (v w : (VS D).V) :
     (VS D).hT v w = (VS D).hT (v - ycL F0 f v) (w - ycL F0 f w) + (VS D).hT (xcL F0 f (v - ycL F0 f v)) w +
@@ -265,7 +265,7 @@ theorem hT_split (hf : IsDualF F0 f) (v w : (VS D).V) :
   ring
 
 /- English proof (translation)
-The claim follows from `mem_perp_of F0 (fun a => by rw [map_sub, hT_e_yc hf, sub_self])`.
+A detailed English derivation is pending.
 -/
 theorem sub_yc_perp (hf : IsDualF F0 f) (v : (VS D).V) : v - ycL F0 f v ∈ perpS (VS D) F0.X :=
   mem_perp_of F0 (fun a => by rw [map_sub, hT_e_yc hf, sub_self])
@@ -300,7 +300,7 @@ theorem iotaL_mk (hf' : IsDualF F0 f') (w : perpS (VS D) F0.X) :
     iotaL hf' (Submodule.Quotient.mk w) = w.1 - xcL F0 f' w.1 := rfl
 
 /- English proof (translation)
-Proceed by induction on `m using Submodule.Quotient.induction_on with | H w => ?_`. Rewrite using `[iotaL_mk]`. Conclude with `Submodule.sub_mem _ w.2 (X_le_perp F0 (xc_mem_X _))`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaL_perp (hf' : IsDualF F0 f') (m : WbQ D F0) : iotaL hf' m ∈ perpS (VS D) F0.X := by
   induction m using Submodule.Quotient.induction_on with | H w => ?_
@@ -308,16 +308,16 @@ theorem iotaL_perp (hf' : IsDualF F0 f') (m : WbQ D F0) : iotaL hf' m ∈ perpS 
   exact Submodule.sub_mem _ w.2 (X_le_perp F0 (xc_mem_X _))
 
 /- English proof (translation)
-Proceed by induction on `m using Submodule.Quotient.induction_on with | H w => ?_`. Rewrite using `[iotaL_mk, map_sub, hT_f_xc hf', sub_self]`.
+Proceed by induction. Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaL_f (hf' : IsDualF F0 f') (m : WbQ D F0) (a : Fin D.R.rS) : (VS D).hT (f' a) (iotaL hf' m) = 0 := by
   induction m using Submodule.Quotient.induction_on with | H w => ?_
   rw [iotaL_mk, map_sub, hT_f_xc hf', sub_self]
 
 /- English proof (translation)
-Proceed by induction on `m using Submodule.Quotient.induction_on with | H w => ?_`. Proceed by induction on `m' using Submodule.Quotient.induction_on with | H w' => ?_`. Rewrite using `[iotaL_mk, iotaL_mk, hWb_mk]`. Establish `h1 : (VS D).hT (xcL F0 f' w.1) w'.1 = 0` using `hX_perp F0 (xc_mem_X _) w'.2`. Establish `h2 : (VS D).hT w.1 (xcL F0 f' w'.1) = 0` using `hperp_X F0 w.2 (xc_mem_X _)`.
+Proceed by induction. Proceed by induction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (VS D).hT (xcL F0 f' w.1) (xcL F0 f' w'.1) = 0` using `hX_X F0 (xc_mem_X _) (xc_mem_X _)`. Rewrite using `[map_sub, map_sub, LinearMap.sub_apply, LinearMap.sub_apply, h1, h2, h3]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem iotaL_hT (hf' : IsDualF F0 f') (m m' : WbQ D F0) :
     (VS D).hT (iotaL hf' m) (iotaL hf' m') = hWb D F0 m m' := by
@@ -331,7 +331,7 @@ theorem iotaL_hT (hf' : IsDualF F0 f') (m m' : WbQ D F0) :
   ring
 
 /- English proof (translation)
-Rewrite using `[iotaL_mk, xc_of_perpf hw, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaL_of_perpf (hf' : IsDualF F0 f') (w : perpS (VS D) F0.X) (hw : ∀ a, (VS D).hT (f' a) w.1 = 0) :
     iotaL hf' (Submodule.Quotient.mk w) = w.1 := by
@@ -350,28 +350,28 @@ theorem gL_apply (σ : WbQ D F0 →ₗ[D.host.E] WbQ D F0) (hf : IsDualF F0 f) (
 variable (σ : WbQ D F0 →ₗ[D.host.E] WbQ D F0) (hf : IsDualF F0 f) (hf' : IsDualF F0 f')
 
 /- English proof (translation)
-Rewrite using `[gL_apply, map_add, map_add, yc_of_perp (X_le_perp F0 (xc_mem_X _)), yc_of_perp (iotaL_perp hf' _), yc_of_span hf' (yc_mem_span _), zero_add, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gL_yc (v : (VS D).V) : ycL F0 f' (gL σ hf hf' v) = ycL F0 f' v := by
   rw [gL_apply, map_add, map_add, yc_of_perp (X_le_perp F0 (xc_mem_X _)), yc_of_perp (iotaL_perp hf' _),
     yc_of_span hf' (yc_mem_span _), zero_add, zero_add]
 
 /- English proof (translation)
-Rewrite using `[gL_yc, gL_apply, add_sub_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gL_sub_yc (v : (VS D).V) :
     gL σ hf hf' v - ycL F0 f' (gL σ hf hf' v) = xcL F0 f (v - ycL F0 f v) + iotaL hf' (σ (pL hf v)) := by
   rw [gL_yc, gL_apply, add_sub_cancel_right]
 
 /- English proof (translation)
-Rewrite using `[map_add, xc_of_X hf' (xc_mem_X _), xc_of_perpf (iotaL_f hf' _), add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gL_xc (v : (VS D).V) :
     xcL F0 f' (xcL F0 f (v - ycL F0 f v) + iotaL hf' (σ (pL hf v))) = xcL F0 f (v - ycL F0 f v) := by
   rw [map_add, xc_of_X hf' (xc_mem_X _), xc_of_perpf (iotaL_f hf' _), add_zero]
 
 /- English proof (translation)
-Rewrite using `[gL_apply, map_add, map_add, hX_X F0 hx (xc_mem_X _), hX_perp F0 hx (iotaL_perp hf' _), hX_yc hf' hx, zero_add, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hX_gL {x : (VS D).V} (hx : x ∈ F0.X) (w : (VS D).V) :
     (VS D).hT x (gL σ hf hf' w) = (VS D).hT x w := by
@@ -379,9 +379,9 @@ theorem hX_gL {x : (VS D).V} (hx : x ∈ F0.X) (w : (VS D).V) :
     zero_add, zero_add]
 
 /- English proof (translation)
-Rewrite using `[hT_split hf' (gL σ hf hf' v) (gL σ hf hf' w), hT_split hf v w, gL_sub_yc, gL_sub_yc, gL_xc, gL_xc, hX_gL σ hf hf' (xc_mem_X _), hX_gL σ hf hf' (xc_mem_X _)]`. Use `congr 2`. Establish `h1` using `hX_X F0 (xc_mem_X (f := f) (v - ycL F0 f v)) (xc_mem_X (f := f) (w - ycL F0 f w))`. Establish `h2` using `hX_perp F0 (xc_mem_X (f := f) (v - ycL F0 f v)) (iotaL_perp hf' (σ (pL hf w)))`. Establish `h3` using `hperp_X F0 (iotaL_perp hf' (σ (pL hf v))) (xc_mem_X (f := f) (w - ycL F0 f w))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, h1, h2, h3, iotaL_hT, hσ, pL_apply, pL_apply, hWb_mk]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gL_isom (hσ : ∀ m m', hWb D F0 (σ m) (σ m') = hWb D F0 m m') (v w : (VS D).V) :
     (VS D).hT (gL σ hf hf' v) (gL σ hf hf' w) = (VS D).hT v w := by
@@ -396,7 +396,7 @@ theorem gL_isom (hσ : ∀ m m', hWb D F0 (σ m) (σ m') = hWb D F0 m m') (v w :
   ring
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `m hm`. Apply `(VS D).nondeg.2 m` to reduce the goal to its premises. Introduce `x`. Rewrite using `[← gL_isom σ hf hf' hσ x m, hm, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem gL_inj (hσ : ∀ m m', hWb D F0 (σ m) (σ m') = hWb D F0 m m') : Function.Injective (gL σ hf hf') := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -406,9 +406,7 @@ theorem gL_inj (hσ : ∀ m m', hWb D F0 (σ m) (σ m') = hWb D F0 m m') : Funct
   rw [← gL_isom σ hf hf' hσ x m, hm, map_zero]
 
 /- English proof (translation)
-Establish `hp : pL hf x = 0`. Rewrite using `[pL_apply, Submodule.Quotient.mk_eq_zero]`. Use `show x - ycL F0 f x ∈ F0.X`. Rewrite using `[yc_of_perp (X_le_perp F0 hx), sub_zero]`. Conclude with `hx`.
-
-Rewrite using `[gL_apply, hp, map_zero, map_zero, yc_of_perp (X_le_perp F0 hx), yc_of_perp (X_le_perp F0 hx), sub_zero, xc_of_X hf hx, add_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gL_X {x : (VS D).V} (hx : x ∈ F0.X) : gL σ hf hf' x = x := by
   have hp : pL hf x = 0 := by
@@ -420,9 +418,9 @@ theorem gL_X {x : (VS D).V} (hx : x ∈ F0.X) : gL σ hf hf' x = x := by
     xc_of_X hf hx, add_zero, add_zero]
 
 /- English proof (translation)
-Establish `hy : ycL F0 f u = 0` using `yc_of_perp (mem_perp_of F0 hue)`. Establish `hy' : ycL F0 f' u = 0` using `yc_of_perp (mem_perp_of F0 hue)`. Establish `hp : pL hf u = Submodule.Quotient.mk ⟨u, mem_perp_of F0 hue⟩`. Rewrite using `[pL_apply]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hy]`. Rewrite using `[gL_apply, hp, hy, hy', sub_zero, xc_of_perpf huf, zero_add, add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gL_perpf {u : (VS D).V} (hue : ∀ a, (VS D).hT (F0.e a) u = 0) (huf : ∀ a, (VS D).hT (f a) u = 0) :
     gL σ hf hf' u = iotaL hf' (σ (Submodule.Quotient.mk ⟨u, mem_perp_of F0 hue⟩)) := by
@@ -436,9 +434,9 @@ theorem gL_perpf {u : (VS D).V} (hue : ∀ a, (VS D).hT (F0.e a) u = 0) (huf : �
   rw [gL_apply, hp, hy, hy', sub_zero, xc_of_perpf huf, zero_add, add_zero]
 
 /- English proof (translation)
-Establish `hp : pL hf y = 0`. Rewrite using `[pL_apply, Submodule.Quotient.mk_eq_zero]`. Use `show y - ycL F0 f y ∈ F0.X`. Rewrite using `[yc_of_span hf hy, sub_self]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[gL_apply, hp, map_zero, map_zero, yc_of_span hf hy, sub_self, map_zero]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem gL_span {y : (VS D).V} (hy : y ∈ Submodule.span D.host.E (Set.range f)) :
     gL σ hf hf' y = ycL F0 f' y := by
@@ -462,14 +460,14 @@ def IsSplitF (Λ : Submodule (𝓞 D.host.E) (VS D).V) (f : Fin D.R.rS → (VS D
       (∀ a, (VS D).hT (f a) u = 0) ∧ y ∈ Λ ∧ y ∈ Submodule.span D.host.E (Set.range f) ∧ v = x + u + y
 
 /- English proof (translation)
-Simplify using `[Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_dual_iff {Λ : Submodule (𝓞 D.host.E) (VS D).V} {x : (VS D).V} :
     x ∈ Formalism.HermitianLatticesTheory.dual (VS D).hT Λ ↔ ∀ y ∈ Λ, (VS D).hT y x ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) := by
   simp [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf]
 
 /- English proof (translation)
-Establish `: y ∈ Formalism.HermitianLatticesTheory.dual (VS D).hT Λ`. Establish `h : Formalism.HermitianLatticesTheory.dual (VS D).hT Λ = Λ` using `hΛ`. Rewrite using `[h]`. Conclude with `hy`. Conclude with `mem_dual_iff.1 this x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_of_unimod {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ)
     {x y : (VS D).V} (hx : x ∈ Λ) (hy : y ∈ Λ) : (VS D).hT x y ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) := by
@@ -481,9 +479,9 @@ theorem int_of_unimod {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Formalism
 variable {F0}
 
 /- English proof (translation)
-Establish `h : Formalism.HermitianLatticesTheory.dual (VS D).hT Λ₂ = Λ₂` using `hu₂`. Rewrite using `[← h, mem_dual_iff]`. Introduce `l hl`. Take `⟨x, u, y, hxΛ, hxX, _, _, huf, _, hyS, rfl⟩` from `hs.2.2 l hl`. Rewrite using `[map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hX_yc hs.1 hxX, hperpf_span huf (yc_mem_span w), hspan_span hs.1 hyS (yc_mem_span w), add_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `int_of_unimod hu₁ (hX x hxΛ hxX) hw`.
+A detailed English derivation is pending.
 -/
 theorem yc_mem {Λ₁ Λ₂ : Submodule (𝓞 D.host.E) (VS D).V} {f₂ : Fin D.R.rS → (VS D).V}
     (hs : IsSplitF F0 Λ₂ f₂) (hu₁ : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ₁)
@@ -498,11 +496,11 @@ theorem yc_mem {Λ₁ Λ₂ : Submodule (𝓞 D.host.E) (VS D).V} {f₂ : Fin D.
   exact int_of_unimod hu₁ (hX x hxΛ hxX) hw
 
 /- English proof (translation)
-Take `⟨x, u, y, _, hxX, huΛ, hue, huf, _, hyS, rfl⟩` from `hs.2.2 w hw`. Establish `hup : u ∈ perpS (VS D) F0.X` using `mem_perp_of F0 hue`. Establish `hyp : y ∈ perpS (VS D) F0.X`. Establish `e : y = x + u + y - x - u` using `by abel`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sub_mem _ (Submodule.sub_mem _ hwp (X_le_perp F0 hxX)) hup`. Establish `hy0 : y = 0` using `by rw [← yc_of_span hs.1 hyS, yc_of_perp hyp]`. Substitute `hy0` using the available equality. Establish `e : x + u + 0 - xcL F0 f (x + u + 0) = u`. Rewrite using `[add_zero, map_add, xc_of_X hs.1 hxX, xc_of_perpf huf]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `⟨huΛ, hue, huf⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem perp_sub_xc {Λ : Submodule (𝓞 D.host.E) (VS D).V} {f : Fin D.R.rS → (VS D).V}
     (hs : IsSplitF F0 Λ f) {w : (VS D).V} (hw : w ∈ Λ) (hwp : w ∈ perpS (VS D) F0.X) :
@@ -533,19 +531,17 @@ section Main
 variable {D : D7} {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem XLam_mem_iff {Λ : Submodule (𝓞 D.host.E) (VS D).V} {x : (VS D).V} :
     x ∈ XLam Λ (lf D F0) ↔ x ∈ Λ ∧ x ∈ F0.X := Iff.rfl
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨x, u, y, hxΛ, hxX, huΛ, hue, huf, hyΛ, hyS, rfl⟩` from `hs.2.2 v hv`. Rewrite using `[map_add, map_add]`. Use `Submodule.add_mem _ (Submodule.add_mem _ ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[gL_X _ hs.1 hs'.1 hxX]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hX x hxX).1 hxΛ`. Rewrite using `[gL_perpf _ hs.1 hs'.1 hue huf]`. Establish `hm : (Submodule.Quotient.mk ⟨u, mem_perp_of F0 hue⟩ : WbQ D F0) ∈ Mof D F0 Λ` using `Submodule.mem_map.2 ⟨⟨u, mem_perp_of F0 hue⟩, huΛ, rfl⟩`. Establish `hm' : σ (Submodule.Quotient.mk ⟨u, mem_perp_of F0 hue⟩) ∈ Mof D F0 Λ'`. Rewrite using `[← hM]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_map.2 ⟨_, hm, rfl⟩`. Take `⟨w, hw, hwm⟩` from `Submodule.mem_map.1 hm'`. Establish `hw' : (w : (VS D).V) ∈ Λ'` using `hw`. Rewrite using `[LinearEquiv.coe_coe, ← hwm]`. Conclude with `(perp_sub_xc hs' hw' w.2).1`.
-
-Rewrite using `[gL_span _ hs.1 hs'.1 hyS]`. Conclude with `yc_mem hs' hu hu' (fun x hx hxX => (hX x hxX).2 hx) hyΛ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gL_maps {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} {f f' : Fin D.R.rS → (VS D).V}
     (hs : IsSplitF F0 Λ f) (hs' : IsSplitF F0 Λ' f')
@@ -573,17 +569,17 @@ theorem gL_maps {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} {f f' : Fin D.R.rS
     exact yc_mem hs' hu hu' (fun x hx hxX => (hX x hxX).2 hx) hyΛ
 
 /- English proof (translation)
-Introduce `v' hv'`. Take `⟨x, u, y, hxΛ, hxX, huΛ, hue, huf, hyΛ, hyS, rfl⟩` from `hs'.2.2 v' hv'`. Establish `gx : gL (σ : WbQ D F0 →ₗ[D.host.E] WbQ D F0) hs.1 hs'.1 x = x` using `gL_X _ hs.1 hs'.1 hxX`. Establish `hyc : ycL F0 f y ∈ Λ` using `yc_mem hs hu' hu (fun x hx hxX => (hX x hxX).1 hx) hyΛ`. Establish `gy : gL (σ : WbQ D F0 →ₗ[D.host.E] WbQ D F0) hs.1 hs'.1 (ycL F0 f y) = y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[gL_span _ hs.1 hs'.1 (yc_mem_span y)]`. Establish `: ycL F0 f' (ycL F0 f y) = ycL F0 f' y`. Rewrite using `[ycL_apply F0 f' (ycL F0 f y), ycL_apply F0 f' y]`. Conclude with `Finset.sum_congr rfl (fun b _ => by rw [hT_e_yc hs.1])`. Rewrite using `[this, yc_of_span hs'.1 hyS]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm' : (Submodule.Quotient.mk ⟨u, mem_perp_of F0 hue⟩ : WbQ D F0) ∈ Mof D F0 Λ'` using `Submodule.mem_map.2 ⟨⟨u, mem_perp_of F0 hue⟩, huΛ, rfl⟩`. Rewrite `hm'` using `[← hM]`. Take `⟨m, hm, hmσ⟩` from `Submodule.mem_map.1 hm'`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.1 hm`. Establish `hwΛ : (w : (VS D).V) ∈ Λ` using `hw`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hu0Λ, hu0e, hu0f⟩` from `perp_sub_xc hs hwΛ w.2`. Establish `hmk : ((nX D F0).mkQ.restrictScalars (𝓞 D.host.E)) w = (Submodule.Quotient.mk ⟨w.1 - xcL F0 f w.1, mem_perp_of F0 hu0e⟩ : WbQ D F0)` using `by show (Submodule.Quotient.mk w : WbQ D F0) = _`. Rewrite using `[Submodule.Quotient.eq]`. Use `show w.1 - (w.1 - xcL F0 f w.1) ∈ F0.X`. Rewrite using `[sub_sub_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `xc_mem_X _`. Establish `gu : gL (σ : WbQ D F0 →ₗ[D.host.E] WbQ D F0) hs.1 hs'.1 (w.1 - xcL F0 f w.1) = u`. Rewrite using `[gL_perpf _ hs.1 hs'.1 hu0e hu0f]`. Establish `h1 : (σ : WbQ D F0 →ₗ[D.host.E] WbQ D F0) (Submodule.Quotient.mk ⟨w.1 - xcL F0 f w.1, mem_perp_of F0 hu0e⟩) = Submodule.Quotient.mk ⟨u, mem_perp_of F0 hue⟩`. Rewrite using `[← hmk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hmσ`. Rewrite using `[h1, iotaL_of_perpf hs'.1 _ huf]`. Establish `hxΛ' : x ∈ Λ` using `(hX x hxX).2 hxΛ`. Use `⟨x + (w.1 - xcL F0 f w.1) + ycL F0 f y, Submodule.add_mem _ (Submodule.add_mem _ hxΛ' hu0Λ) hyc, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, gx, gu, gy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gL_onto {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} {f f' : Fin D.R.rS → (VS D).V}
     (hs : IsSplitF F0 Λ f) (hs' : IsSplitF F0 Λ' f')
@@ -634,25 +630,23 @@ theorem gL_onto {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} {f f' : Fin D.R.rS
 end Main
 
 /- English proof (translation)
-Introduce `D u F0 Λ Λ' hΛ hΛ' σ hσ hM`. Take `⟨f, hs⟩` from `hS D u F0 Λ hΛ`. Take `⟨f', hs'⟩` from `hS D u F0 Λ' hΛ'`. Establish `hu : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ` using `hΛ.2.1.2.1`. Establish `hu' : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ'` using `hΛ'.2.1.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : XLam Λ (lf D F0) = XLam Λ' (lf D F0)` using `hΛ.2.2.trans hΛ'.2.2.symm`. Establish `hX : ∀ x, x ∈ F0.X → (x ∈ Λ ↔ x ∈ Λ')`. Introduce `x hx`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : x ∈ XLam Λ (lf D F0)` using `XLam_mem_iff.2 ⟨h, hx⟩`. Rewrite `h1` using `[e]`. Conclude with `(XLam_mem_iff.1 h1).1`. Introduce `h`. Establish `h1 : x ∈ XLam Λ' (lf D F0)` using `XLam_mem_iff.2 ⟨h, hx⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← e]`. Conclude with `(XLam_mem_iff.1 h1).1`. Establish `hσi : ∀ m m', hWb D F0 ((σ : WbQ D F0 →ₗ[D.host.E] WbQ D F0) m) ((σ : WbQ D F0 →ₗ[D.host.E] WbQ D F0) m') = hWb D F0 m m'` using `fun m m' => hσ.1 m m'`. Establish `hinj` using `gL_inj (σ : WbQ D F0 →ₗ[D.host.E] WbQ D F0) hs.1 hs'.1 hσi`. Establish `hco : ⇑(LinearEquiv.ofInjectiveEndo _ hinj) = gL (σ : WbQ D F0 →ₗ[D.host.E] WbQ D F0) hs.1 hs'.1` using `LinearEquiv.coe_ofInjectiveEndo _ hinj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨LinearEquiv.ofInjectiveEndo _ hinj, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x y`. Rewrite using `[hco]`. Conclude with `gL_isom _ hs.1 hs'.1 hσi x y`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hge : ∀ i, ((LinearEquiv.ofInjectiveEndo _ hinj : (VS D).V ≃ₗ[D.host.E] (VS D).V) : (VS D).V →ₗ[D.host.E] (VS D).V) (F0.e i) = F0.e i`. Introduce `i`. Rewrite using `[LinearEquiv.coe_coe, hco]`. Conclude with `gL_X _ hs.1 hs'.1 (e_mem_X F0 i)`. Rewrite using `[FlagG.Xa, Submodule.map_span, Set.image_image]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `Set.image_congr (fun i _ => hge i)`. Rewrite using `[hco, gL_perpf _ hs.1 hs'.1 F0.z_orth hs.2.1]`. Establish `hz : (Submodule.Quotient.mk ⟨F0.z, mem_perp_of F0 F0.z_orth⟩ : WbQ D F0) = zbar D F0` using `rfl`. Establish `hσz : (σ : WbQ D F0 →ₗ[D.host.E] WbQ D F0) (zbar D F0) = zbar D F0` using `hσ.2`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hz, hσz, zbar, iotaL_of_perpf hs'.1 _ hs'.2.1]`. Use extensionality with `v'`. Rewrite using `[Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `gL_maps hs hs' hu hu' hX σ hM v hv` as an intermediate fact. Rewrite using `[LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, hco]`. Conclude with `this`. Introduce `hv'`. Take `⟨v, hv, hgv⟩` from `gL_onto hs hs' hu hu' hX σ hM v' hv'`.
-
-Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, hco]`. Conclude with `hgv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowClassBack_of (hS : RowSplitF) : RowClassBack := by
   intro D u F0 Λ Λ' hΛ hΛ' σ hσ hM
@@ -708,7 +702,7 @@ theorem rowClassBack_of (hS : RowSplitF) : RowClassBack := by
       exact hgv
 
 /- English proof (translation)
-The claim follows from `rowClass_of (rowClassBack_of hS)`.
+A detailed English derivation is pending.
 -/
 theorem rowClass_of_split (hS : RowSplitF) : RowClass := rowClass_of (rowClassBack_of hS)
 

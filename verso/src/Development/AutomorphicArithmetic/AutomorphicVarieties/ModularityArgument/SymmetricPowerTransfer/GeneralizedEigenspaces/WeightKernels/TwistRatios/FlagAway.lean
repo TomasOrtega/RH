@@ -17,7 +17,7 @@ variable {k : Type} [Field k]
 local notation "M2" => Matrix (Fin 2) (Fin 2) k
 
 /- English proof (translation)
-Establish `hd : (M : M2).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 M.isUnit).ne_zero`. Rewrite `hd` using `[Matrix.det_fin_two, h, mul_zero, sub_zero]`. Use `fin_cases j`. Conclude with `left_ne_zero_of_mul hd`. Conclude with `right_ne_zero_of_mul hd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tri_diag_ne (M : GL (Fin 2) k) (h : (M : M2) 1 0 = 0) (j : Fin 2) :
     (M : M2) j j ≠ 0 := by
@@ -28,9 +28,9 @@ private theorem tri_diag_ne (M : GL (Fin 2) k) (h : (M : M2) 1 0 = 0) (j : Fin 2
   · exact right_ne_zero_of_mul hd
 
 /- English proof (translation)
-Use `⟨fun i => { toFun := fun s => Units.mk0 _ (tri_diag_ne (ρ s) (hT s) i) map_one' := ?_ map_mul' := ?_ }, fun i s => rfl⟩` and prove the remaining obligations. Use `ext`. Simplify using the standard rewrite rules. Introduce `s t`. Use `ext`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [map_mul, Units.val_mul, Units.val_mk0, Matrix.mul_apply, Fin.sum_univ_two]`. Apply the tactic sequence `fin_cases i <;> simp [hT]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem tri_chars {W : Type} [Group W] (ρ : W →* GL (Fin 2) k)
     (hT : ∀ s, (ρ s : M2) 1 0 = 0) :
@@ -46,7 +46,7 @@ private theorem tri_chars {W : Type} [Group W] (ρ : W →* GL (Fin 2) k)
     fin_cases i <;> simp [hT]
 
 /- English proof (translation)
-Establish `hc : ((P * M * P⁻¹ : GL (Fin 2) k) : M2).charpoly = (M : M2).charpoly`. Simplify using `using Matrix.charpoly_units_conj P (M : M2)`. Rewrite using `[← hc, Matrix.charpoly_fin_two, Matrix.det_fin_two, Matrix.trace_fin_two, h, Fin.prod_univ_two]`. Simplify using `only [mul_zero, sub_zero, C_add, C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem tri_charpoly (P M : GL (Fin 2) k)
     (h : ((P * M * P⁻¹ : GL (Fin 2) k) : M2) 1 0 = 0) :
@@ -59,19 +59,19 @@ private theorem tri_charpoly (P M : GL (Fin 2) k)
   ring
 
 /- English proof (translation)
-Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue (Matrix.toLin' (M : M2))`. Take `⟨v, hv⟩` from `hμ.exists_hasEigenvector`. Establish `hMv : (M : M2).mulVec v = μ • v`. Simplify `hv.apply_eq_smul` using `[Matrix.toLin'_apply]`. Establish `hv0 : v ≠ 0` using `hv.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨R, hR⟩ : ∃ R : GL (Fin 2) k, ∀ i, (R : M2) i 0 = v i := by`. Distinguish the cases in `h0 : v 0 = 0`. Apply the tactic sequence `have h1 : v 1 ≠ 0 := fun h1 => hv0 (by ext i; fin_cases i <;> simp [h0, h1])`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![v 0, 1; v 1, 0] (by simp [Matrix.det_fin_two, h1]), ?_⟩` and prove the remaining obligations. Introduce `i`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `fin_cases i <;> simp [Matrix.GeneralLinearGroup.mkOfDetNeZero]`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![v 0, 0; v 1, 1] (by simp [Matrix.det_fin_two, h0]), ?_⟩` and prove the remaining obligations. Introduce `i`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.GeneralLinearGroup.mkOfDetNeZero]`. Use `⟨R⁻¹, ?_⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hRT : (R : M2) * ((R⁻¹ * M * R⁻¹⁻¹ : GL (Fin 2) k) : M2) = (M : M2) * (R : M2)`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Use `group`. Use `set T : M2 := ((R⁻¹ * M * R⁻¹⁻¹ : GL (Fin 2) k) : M2) with hTdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hcol : (R : M2).mulVec ![T 0 0 - μ, T 1 0] = 0`. Use extensionality with `i`. Establish `h1 : ((R : M2) * T) i 0 = ((M : M2) * (R : M2)) i 0` using `by rw [hRT]`. Establish `h2 : ((M : M2) * (R : M2)) i 0 = μ * v i`. Use `congrFun hMv i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Matrix.mul_apply, hR, Pi.smul_apply, smul_eq_mul] at this ⊢`. Simplify `this` using `[Matrix.mulVec, dotProduct]`. Rewrite `h1` using `[h2, Matrix.mul_apply, Fin.sum_univ_two, hR]`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_two, hR, Pi.zero_apply]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `h1`. Establish `hdet : (R : M2).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 R.isUnit).ne_zero`. Use `Matrix.eq_zero_of_mulVec_eq_zero hdet hcol` as an intermediate fact. Simplify using `using congrFun this 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem tri_exists [IsAlgClosed k] (M : GL (Fin 2) k) :
     ∃ Q : GL (Fin 2) k, ((Q * M * Q⁻¹ : GL (Fin 2) k) : M2) 1 0 = 0 := by
@@ -125,27 +125,25 @@ private def triSub : Subgroup (GL (Fin 2) k) where
     simp [Matrix.coe_units_inv, Matrix.inv_def, Matrix.adjugate_fin_two, ha]
 
 /- English proof (translation)
-Distinguish the cases in `hsep : ∃ i ∈ I, (τ 0 i : k) ≠ (τ 1 i : k)`. Take `⟨i, hi, hne⟩` from `hsep`. Use `⟨g, fun s => ?_, fun s hs j => by rw [hg s hs]; simp⟩` and prove the remaining obligations. Establish `hc` using `hg (s * i * s⁻¹) (hI.conj_mem i hi s)`. Establish `hτ : ∀ j, (τ j (s * i * s⁻¹) : k) = (τ j i : k)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Simplify using `[mul_comm]`. Establish `hcomm : (g * ρ s * g⁻¹) * (g * ρ i * g⁻¹) = (g * ρ (s * i * s⁻¹) * g⁻¹) * (g * ρ s * g⁻¹)`. Simplify using `only [map_mul, map_inv]`. Use `group`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hm` using `congrArg (fun x : GL (Fin 2) k => (x : M2) 1 0) hcomm`. Simplify using `only [Units.val_mul (g * ρ s * g⁻¹)] at hm`. Rewrite `hm` using `[Units.val_mul (g * ρ (s * i * s⁻¹) * g⁻¹), hg i hi, hc]`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, hτ] at hm`. Establish `: (((g * ρ s * g⁻¹ : GL (Fin 2) k) : M2) 1 0) * ((τ 0 i : k) - (τ 1 i : k)) = 0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hm`. Conclude with `(mul_eq_zero.1 this).resolve_right (sub_ne_zero.2 hne)`. Use `push_neg at hsep`. Take `⟨Q, hQ⟩` from `tri_exists (g * ρ φ * g⁻¹)`. Establish `hsc : ∀ s ∈ I, ((Q * g) * ρ s * (Q * g)⁻¹ : GL (Fin 2) k) = g * ρ s * g⁻¹`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Establish `hz : ((g * ρ s * g⁻¹ : GL (Fin 2) k) : M2) = (τ 0 s : k) • (1 : M2)`. Rewrite using `[hg s hs]`. Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [hsep s hs]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hcm : Q * (g * ρ s * g⁻¹) = (g * ρ s * g⁻¹) * Q`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul Q (g * ρ s * g⁻¹), Units.val_mul (g * ρ s * g⁻¹) Q, hz]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨Q * g, fun s => ?_, fun s hs j => ?_⟩` and prove the remaining obligations. Take `⟨n, i, hi, rfl⟩` from `hgen s`. Establish `hφ : (Q * g) * ρ φ * (Q * g)⁻¹ ∈ (triSub : Subgroup (GL (Fin 2) k))`. Express the relevant statement in the definitionally equal form `(((Q * g) * ρ φ * (Q * g)⁻¹ : GL (Fin 2) k) : M2) 1 0 = 0`. Establish `: ((Q * g) * ρ φ * (Q * g)⁻¹ : GL (Fin 2) k) = Q * (g * ρ φ * g⁻¹) * Q⁻¹` using `by group`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[this]`. Conclude with `hQ`. Establish `hi' : (Q * g) * ρ i * (Q * g)⁻¹ ∈ (triSub : Subgroup (GL (Fin 2) k))`. Express the relevant statement in the definitionally equal form `(((Q * g) * ρ i * (Q * g)⁻¹ : GL (Fin 2) k) : M2) 1 0 = 0`. Rewrite using `[hsc i hi, hg i hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hall : (Q * g) * ρ (φ ^ n * i) * (Q * g)⁻¹ = ((Q * g) * ρ φ * (Q * g)⁻¹) ^ n * ((Q * g) * ρ i * (Q * g)⁻¹)`. Rewrite using `[map_mul, map_zpow]`. Use `(MulAut.conj (Q * g)).toMonoidHom.map_zpow (ρ φ) n` as an intermediate fact. Simplify using `only [MulEquiv.toMonoidHom_eq_coe, MonoidHom.coe_coe, MulAut.conj_apply] at this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Use `group`. Establish `: (Q * g) * ρ (φ ^ n * i) * (Q * g)⁻¹ ∈ (triSub : Subgroup (GL (Fin 2) k))`. Rewrite using `[hall]`. Conclude with `mul_mem (zpow_mem hφ n) hi'`.
-
-Conclude with `this`. Rewrite using `[hsc s hs, hg s hs]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem tri_core [IsAlgClosed k] {W : Type} [Group W] (ρ : W →* GL (Fin 2) k)
     (τ : Fin 2 → W →* kˣ) (I : Subgroup W) (hI : I.Normal) (φ : W)
@@ -212,17 +210,17 @@ private theorem tri_core [IsAlgClosed k] {W : Type} [Group W] (ρ : W →* GL (F
 end Tri
 
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ l _ r _ τ w A h hD`. Take `⟨g, hg⟩` from `hD`. Establish `hdegc : ∀ (s : Weil h) (i : Ine (F` using `L) A), deg (s * ineIncl h i * s⁻¹) = 0 := by`. Introduce `s i`. Rewrite using `[deg_mul, deg_mul, deg_ineIncl, deg_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hN : (ineIncl h).range.Normal`. Use `⟨?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩ s`. Use `⟨inePart (deg_frob (h := h)) (s * ineIncl h i * s⁻¹), ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ineIncl_inePart, hdegc]`. Simplify using the standard rewrite rules. Establish `hgen : ∀ s : Weil h, ∃ n : ℤ, ∃ i ∈ (ineIncl h).range, s = frob h ^ n * i`. Introduce `s`. Use `⟨deg s, _, ⟨inePart (deg_frob (h := h)) s, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ineIncl_inePart, mul_inv_cancel_left]`. Take `⟨P, hP1, hP2⟩` from `tri_core (r.comp (Weil h).subtype) (fun i => (τ i).comp (Weil h).subtype) (ineIncl h).range hN (frob h) hgen g (by`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hg i i.2)`. Take `⟨η, hη⟩` from `tri_chars ((MulAut.conj P).toMonoidHom.comp (r.comp (Weil h).subtype)) hP1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨η, fun i s => ?_, fun s => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hη]`. Conclude with `hP2 _ ⟨s, rfl⟩ i`. Use `tri_charpoly P (r s) (hP1 s)` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using `only [hη]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Ga.flagAway :
     ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (r : G L Ω →* GL (Fin 2) (Qbar l)), Continuous r → ∀ τ : Fin 2 → G L Ω →* (Qbar l)ˣ, ∀ (w : Plc L) (A : ValuationSubring Ω) (h : IsPlaceOver A w), IsDiagOn r (Ine (F := L) A) τ → ∃ η : Fin 2 → Weil h →* (Qbar l)ˣ, (∀ i (s : Ine (F := L) A), η i (ineIncl h s) = τ i s) ∧ ∀ s : Weil h, (r s : Matrix (Fin 2) (Fin 2) (Qbar l)).charpoly = ∏ i, (X - C (η i s : Qbar l)) := by

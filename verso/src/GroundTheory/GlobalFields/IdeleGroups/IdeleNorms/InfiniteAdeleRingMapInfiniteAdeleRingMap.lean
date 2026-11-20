@@ -16,7 +16,7 @@ variable {K L M : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Fi
   [NumberField M] [Algebra K L] [Algebra L M] [Algebra K M] [IsScalarTower K L M]
 
 /- English proof (translation)
-Establish `h` using `(HeightOneSpectrum.denseRange_algebraMap K v).equalizer ((continuous_completionMap w u).comp (continuous_completionMap v w)) (continuous_completionMap v u) (funext fun k ↦ ?_)`. Conclude with `congrFun h a`. Simplify using `only [Function.comp_apply]`. Rewrite using `[completionMap_algebraMap, completionMap_algebraMap, IsScalarTower.algebraMap_apply K L (w.adicCompletion L), completionMap_algebraMap, IsScalarTower.algebraMap_apply L M (u.adicCompletion M), IsScalarTower.algebraMap_apply K M (u.adicCompletion M), ← IsScalarTower.algebraMap_app …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem completionMap_completionMap (v : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 L))
     (u : HeightOneSpectrum (𝓞 M)) [w.asIdeal.LiesOver v.asIdeal] [u.asIdeal.LiesOver w.asIdeal]
@@ -35,13 +35,13 @@ theorem completionMap_completionMap (v : HeightOneSpectrum (𝓞 K)) (w : Height
 omit [NumberField K] [NumberField L] [NumberField M] in
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext (Ideal.under_under (A := 𝓞 K) (B := 𝓞 L) u.asIdeal)`.
+A detailed English derivation is pending.
 -/
 theorem below_below (u : HeightOneSpectrum (𝓞 M)) : below K (below L u) = below K u :=
   HeightOneSpectrum.ext (Ideal.under_under (A := 𝓞 K) (B := 𝓞 L) u.asIdeal)
 
 /- English proof (translation)
-Use `FiniteAdeleRing.ext (K := M) fun u ↦ ?_` and prove the remaining obligations. Establish `hb` using `below_below (K := K) (L := L) u`. Establish `: u.asIdeal.LiesOver (below K (below L u)).asIdeal` using `by rw [hb]; infer_instance`. Rewrite using `[finiteAdeleMap_apply, finiteAdeleMap_apply, finiteAdeleMap_apply, completionMap_completionMap (below K (below L u)) (below L u) u]`. Conclude with `completionMap_congr hb u x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteAdeleMap_finiteAdeleMap (x : FiniteAdeleRing (𝓞 K) K) :
     finiteAdeleMap L M (finiteAdeleMap K L x) = finiteAdeleMap K M x := by
@@ -55,7 +55,7 @@ theorem finiteAdeleMap_finiteAdeleMap (x : FiniteAdeleRing (𝓞 K) K) :
 omit [NumberField K] [NumberField L] [NumberField M] in
 
 /- English proof (translation)
-Establish `h` using `(InfinitePlace.Completion.denseRange_coe v).equalizer ((continuous_algebraMap w.Completion u.Completion).comp (continuous_algebraMap v.Completion w.Completion)) (continuous_algebraMap v.Completion u.Completion) (funext fun y ↦ ?_)`. Conclude with `congrFun h a`. Express the relevant statement in the definitionally equal form `algebraMap w.Completion u.Completion (algebraMap v.Completion w.Completion (algebraMap K v.Completion y.ofAbs)) = algebraMap v.Completion u.Completion (algebraMap K v.Completion y.ofAbs)`. Rewrite using `[← IsScalarTower.algebraMap_apply K v.Completion w.Completion, ← IsScalarTower.algebraMap_apply K v.Completion u.Completion, IsScalarTower.algebraMap_apply K L w.Completion, ← IsScalarTower.algebraMap_apply L w.Completion u.Completion, IsScalarTower.algebraMap_apply L M u.Complet …`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_completion_algebraMap (v : InfinitePlace K) (w : InfinitePlace L)
     (u : InfinitePlace M) [w.LiesOver v] [u.LiesOver w] [u.LiesOver v] (a : v.Completion) :
@@ -78,7 +78,7 @@ theorem algebraMap_completion_algebraMap (v : InfinitePlace K) (w : InfinitePlac
 
 omit [NumberField K] [NumberField L] [NumberField M] [Algebra L M] [IsScalarTower K L M] in
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem algebraMap_completion_congr {v v' : InfinitePlace K} (h : v = v') (u : InfinitePlace M)
     [u.LiesOver v] [u.LiesOver v'] (x : InfiniteAdeleRing K) :
@@ -89,9 +89,9 @@ theorem algebraMap_completion_congr {v v' : InfinitePlace K} (h : v = v') (u : I
 omit [NumberField K] [NumberField L] [NumberField M] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Establish `hv : (u.comap (algebraMap L M)).comap (algebraMap K L) = u.comap (algebraMap K M)`. Rewrite using `[IsScalarTower.algebraMap_eq K L M]`. Both sides reduce to the same expression. Establish `: u.LiesOver ((u.comap (algebraMap L M)).comap (algebraMap K L))`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hv]`. Use `infer_instance`. Rewrite using `[GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap_apply, GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap_apply, GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap_apply, algebraMap_completion_algebraMap _ (u.comap (algebraMap L M)) u]`. Conclude with `algebraMap_completion_congr hv u x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infiniteAdeleRingMap_infiniteAdeleRingMap (x : InfiniteAdeleRing K) :
     GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := L) (L := M)
@@ -110,7 +110,7 @@ theorem infiniteAdeleRingMap_infiniteAdeleRingMap (x : InfiniteAdeleRing K) :
   exact algebraMap_completion_congr hv u x
 
 /- English proof (translation)
-The claim follows from `Prod.ext (infiniteAdeleRingMap_infiniteAdeleRingMap x.1) (finiteAdeleMap_finiteAdeleMap x.2)`.
+A detailed English derivation is pending.
 -/
 theorem adeleMap_adeleMap (x : 𝔸[K]) : adeleMap L M (adeleMap K L x) = adeleMap K M x :=
   Prod.ext (infiniteAdeleRingMap_infiniteAdeleRingMap x.1) (finiteAdeleMap_finiteAdeleMap x.2)
@@ -119,7 +119,7 @@ scoped instance isScalarTower_adeleRing : IsScalarTower 𝔸[K] 𝔸[L] 𝔸[M] 
   .of_algebraMap_eq fun x ↦ (adeleMap_adeleMap x).symm
 
 /- English proof (translation)
-The claim follows from `Algebra.norm_norm`.
+A detailed English derivation is pending.
 -/
 theorem norm_adeleRing_norm (y : 𝔸[M]) :
     Algebra.norm 𝔸[K] (Algebra.norm 𝔸[L] y) = Algebra.norm 𝔸[K] y :=
@@ -133,21 +133,21 @@ variable {K L M : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Fi
   [NumberField M] [Algebra K L] [Algebra L M] [Algebra K M] [IsScalarTower K L M]
 
 /- English proof (translation)
-The claim follows from `Units.ext (adeleMap_adeleMap (x : 𝔸[K]))`.
+A detailed English derivation is pending.
 -/
 theorem ideleEmbedding_ideleEmbedding (x : IdeleGroup K) :
     ideleEmbedding L M (ideleEmbedding K L x) = ideleEmbedding K M x :=
   Units.ext (adeleMap_adeleMap (x : 𝔸[K]))
 
 /- English proof (translation)
-The claim follows from `Units.ext (norm_adeleRing_norm (K := K) (L := L) (x : 𝔸[M]))`.
+A detailed English derivation is pending.
 -/
 theorem ideleNorm_ideleNorm (x : IdeleGroup M) :
     ideleNorm K L (ideleNorm L M x) = ideleNorm K M x :=
   Units.ext (norm_adeleRing_norm (K := K) (L := L) (x : 𝔸[M]))
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective K c`. Rewrite using `[ideleClassMap_mk, ideleClassMap_mk, ideleClassMap_mk, ideleEmbedding_ideleEmbedding]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ideleClassMap_ideleClassMap (c : IdeleClassGroup K) :
     ideleClassMap L M (ideleClassMap K L c) = ideleClassMap K M c := by
@@ -155,7 +155,7 @@ theorem ideleClassMap_ideleClassMap (c : IdeleClassGroup K) :
   rw [ideleClassMap_mk, ideleClassMap_mk, ideleClassMap_mk, ideleEmbedding_ideleEmbedding]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective M c`. Rewrite using `[ideleClassNorm_mk, ideleClassNorm_mk, ideleClassNorm_mk, ideleNorm_ideleNorm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ideleClassNorm_ideleClassNorm (c : IdeleClassGroup M) :
     ideleClassNorm K L (ideleClassNorm L M c) = ideleClassNorm K M c := by

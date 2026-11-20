@@ -21,7 +21,7 @@ private instance redT_fin (ρ : Representation ℤ_[l] G (Fin n → ℤ_[l])) (h
     Finite (redT ρ h m).V := finite_quot_lSub l n (m + 1)
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, rfl⟩` from `mem_lSub.mp hx`. Use `show (l : ℤ_[l]) ^ (m + 1) • y ∈ lSub l X m`. Conclude with `mem_lSub.mpr ⟨(l : ℤ_[l]) • y, by rw [pow_succ, mul_smul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem lSub_le {X : Type} [AddCommGroup X] [Module ℤ_[l] X] (m : ℕ) :
     lSub l X (m + 1) ≤ (lSub l X m).comap LinearMap.id := by
@@ -42,7 +42,7 @@ private theorem tauL_mk {X : Type} [AddCommGroup X] [Module ℤ_[l] X] (m : ℕ)
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[redRep_mk, tauL_mk, tauL_mk, redRep_mk]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tauL_equiv {X : Type} [AddCommGroup X] [Module ℤ_[l] X] (ρ : Representation ℤ_[l] G X) (m : ℕ)
     (g : G) (y : X ⧸ lSub l X (m + 1)) : tauL l X m (redRep ρ (m + 1) g y) = redRep ρ m g (tauL l X m y) := by
@@ -50,7 +50,7 @@ private theorem tauL_equiv {X : Type} [AddCommGroup X] [Module ℤ_[l] X] (ρ : 
   rw [redRep_mk, tauL_mk, tauL_mk, redRep_mk]
 
 /- English proof (translation)
-Introduce `y`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem tauL_surj {X : Type} [AddCommGroup X] [Module ℤ_[l] X] (m : ℕ) :
     Function.Surjective (tauL l X m) := by
@@ -69,9 +69,9 @@ private noncomputable def piT (ρ : Representation ℤ_[l] G (Fin n → ℤ_[l])
     (lSub l (Fin n → ℤ_[l]) (m + 1)).mkQ (continuous_mkQ _) (fun g x => (redRep_mk ρ (m + 1) g x).symm)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply `PadicInt.ext_of_toZModPow.mp` to reduce the goal to its premises. Introduce `k`. Rewrite using `[Pi.zero_apply, map_zero]`. Consider the cases of `k with`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => haveI : Subsingleton (ZMod (l ^ 0)) := ZMod.subsingleton_iff.mpr (pow_zero _)`. Conclude with `Subsingleton.elim _ _`. Consider the case `succ k => exact mem_lSub_pi.mp (hx k) i`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_lSub (x : Fin n → ℤ_[l]) (hx : ∀ m, x ∈ lSub l (Fin n → ℤ_[l]) (m + 1)) : x = 0 := by
   funext i
@@ -85,15 +85,15 @@ private theorem eq_zero_of_lSub (x : Fin n → ℤ_[l]) (hx : ∀ m, x ∈ lSub 
   | succ k => exact mem_lSub_pi.mp (hx k) i
 
 /- English proof (translation)
-Use `limRep_holds ℤ_[l] G (fun m => redT ρ h m) (tauT ρ h) _ (piT ρ h) (fun m => ⟨rfl, rfl, tauL_surj (m + 1), fun x => rfl⟩) ?_ ?_` and prove the remaining obligations. Establish `hc : Continuous fun (x : Fin n → ℤ_[l]) (m : ℕ) => (piT ρ h m).u x` using `continuous_pi fun m => (piT ρ h m).u_cont`. Use `(hc.isClosedEmbedding ?_).isEmbedding` and prove the remaining obligations. Introduce `x y hxy`. Rewrite using `[← sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `eq_zero_of_lSub` to reduce the goal to its premises. Introduce `m`. Use `congr_fun hxy m` as an intermediate fact. Conclude with `(Submodule.Quotient.eq _).mp this`. Introduce `y hy`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `S : ℕ → Set (Fin n → ℤ_[l])` to `fun m => (piT ρ h m).u ⁻¹' {y m}`. Establish `hS : (⋂ m, S m).Nonempty`. Apply `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed S` to reduce the goal to its premises. Introduce `m x hx show (piT ρ h m).u x = y m`. Establish `hx' : (piT ρ h (m + 1)).u x = y (m + 1)` using `hx`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy m, ← hx']`. Both sides reduce to the same expression. Introduce `m`. Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective _ (y m)`. Conclude with `⟨x, hx⟩`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isCompact_univ.of_isClosed_subset ((isClosed_singleton).preimage (piT ρ h 0).u_cont) (Set.subset_univ _)`. Introduce `m`. Conclude with `(isClosed_singleton).preimage (piT ρ h m).u_cont`. Take `⟨x, hx⟩` from `hS`. Conclude with `⟨x, fun m => Set.mem_iInter.mp hx m⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem towerLim (ρ : Representation ℤ_[l] G (Fin n → ℤ_[l])) (h : ContAction ρ) :
     Cx.IsTowerLim (fun m => (redT ρ h m).coch) (fun m => (tauT ρ h m).hom)
@@ -129,9 +129,9 @@ private theorem towerLim (ρ : Representation ℤ_[l] G (Fin n → ℤ_[l])) (h 
     exact ⟨x, fun m => Set.mem_iInter.mp hx m⟩
 
 /- English proof (translation)
-Establish `hc : (l : ℤ_[l]) ^ m ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero)`. Use `(Continuous.isClosedEmbedding (continuous_const_smul _) ?_).isEmbedding` and prove the remaining obligations. Introduce `x y hxy`. Use function extensionality and compare the values at `i`. Use `congr_fun hxy i` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`. Conclude with `mul_left_cancel₀ hc this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem smul_emb (m : ℕ) : IsEmbedding fun x : Fin n → ℤ_[l] => (l : ℤ_[l]) ^ m • x := by
   have hc : (l : ℤ_[l]) ^ m ≠ 0 :=
@@ -144,11 +144,9 @@ private theorem smul_emb (m : ℕ) : IsEmbedding fun x : Fin n → ℤ_[l] => (l
   exact mul_left_cancel₀ hc this
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, -, -⟩` from `hF M.V M.rho M.cont`. Take `⟨hN, ⟨e0, -⟩, ⟨e1, -⟩, ⟨e2, -⟩⟩` from `low_holds ℤ_[l] G M`. Use `⟨fun k => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Use `match k with`. Consider the case `0 => exact Finite.of_equiv _ e0.symm.toEquiv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `1 => exact Finite.of_equiv _ e1.symm.toEquiv`. Consider the case `2 => exact Finite.of_equiv _ e2.symm.toEquiv`. Consider the case `k + 3`. Take `⟨e, -⟩` from `hN (k + 3)`. Use `haveI := h3 (k + 3) (by omega)`.
-
-Conclude with `Finite.of_equiv _ e.symm.toEquiv`. Take `⟨e, -⟩` from `hN k haveI := h3 k (by omega)`. Conclude with `e.toEquiv.subsingleton`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem finH {χ : G →* ℤ_[l]ˣ} {d : ℕ} (hF : FinLevel l G χ d) (M : TRep ℤ_[l] G) [Finite M.V]
     [DiscreteTopology M.V] : (∀ k, Finite (M.H k)) ∧ ∀ k, 2 < k → Subsingleton (M.H k) := by
@@ -170,25 +168,21 @@ private theorem finH {χ : G →* ℤ_[l]ˣ} {d : ℕ} (hF : FinLevel l G χ d) 
 end
 
 /- English proof (translation)
-Introduce `l _ G _ _ _ χ d hF n ρ h`. Use `haveI : IsAdicComplete (Ideal.span {(l : ℤ_[l])}) ℤ_[l] := PadicInt.maximalIdeal_eq_span_p (p := l) ▸ inferInstance`. Establish `hl : (l : ℤ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero`. Establish `hT` using `towerLim ρ h`. Establish `htors : ∀ (k : ℕ) (x : (ReciprocityTheory.Coh.TRep.coch ({ V` using `Fin n → ℤ_[l], rho := ρ, cont := h } : ReciprocityTheory.Coh.TRep ℤ_[l] G)).X k), (l : ℤ_[l]) • x = 0 → x = 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k x hx`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `congr_arg (fun z : (ReciprocityTheory.Coh.TRep.coch ({ V := Fin n → ℤ_[l], rho := ρ, cont := h } : ReciprocityTheory.Coh.TRep ℤ_[l] G)).X k => z.1 g) hx` as an intermediate fact. Conclude with `(smul_eq_zero.mp this).resolve_left hl`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hker : ∀ (m k : ℕ) (x : (ReciprocityTheory.Coh.TRep.coch ({ V` using `Fin n → ℤ_[l], rho := ρ, cont := h } : ReciprocityTheory.Coh.TRep ℤ_[l] G)).X k), ((piT ρ h m).hom.f k) x = 0 ↔ ∃ y, x = (l : ℤ_[l]) ^ (m + 1) • y := by`. Introduce `m k x`. Establish `key : ((piT ρ h m).hom.f k) x = 0 ↔ ∀ g, x.1 g ∈ lSub l (Fin n → ℤ_[l]) (m + 1)`. Prove the components needed by the constructor for the conclusion. Introduce `hx g`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr_arg (fun z : (ReciprocityTheory.Coh.TRep.coch (redT ρ h m)).X k => z.1 g) hx` as an intermediate fact. Conclude with `(Submodule.Quotient.mk_eq_zero _).mp this`. Introduce `hx`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Submodule.Quotient.mk_eq_zero _).mpr (hx g)`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce `hx choose y hy using fun g => mem_lSub.mp (hx g)`. Establish `hyc : Continuous y`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `(smul_emb (n := n) (l := l) (m + 1)).continuous_iff.mpr` to reduce the goal to its premises. Establish `: (fun x : Fin n → ℤ_[l] => (l : ℤ_[l]) ^ (m + 1) • x) ∘ y = x.1` using `funext hy`. Rewrite using `[this]`. Conclude with `x.2`. Use `⟨⟨y, hyc⟩, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Conclude with `(hy g).symm`. Introduce and unpack `⟨y, rfl⟩ g`. Conclude with `mem_lSub.mpr ⟨y.1 g, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfin : ∀ m, (∀ k, Finite ((redT ρ h m).H k)) ∧ ∀ k, 2 < k → Subsingleton ((redT ρ h m).H k)` using `fun m => finH hF (redT ρ h m)`. Establish `hlen0 : ∀ k, IsFiniteLength ℤ_[l] ((redT ρ h 0).coch.H k)` using `fun k => by haveI := (hfin 0).1 k`. Conclude with `isFiniteLength_iff_isNoetherian_isArtinian.mpr ⟨inferInstance, inferInstance⟩`. Establish `res` using `ReciprocityTheory.Coh.finGen_holds ℤ_[l] (l : ℤ_[l]) _ _ _ _ hT htors hker hlen0`. Use `⟨fun k => (res k).1, fun k hk => ?_⟩` and prove the remaining obligations.
-
-Establish `ext` using `(ReciprocityTheory.Coh.tower_holds ℤ_[l] _ _ _ _ hT k).2 (fun j _ m => by haveI := (hfin m).1 j infer_instance)`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Establish `ha` using `ext a (fun m => by haveI := (hfin m).2 k hk`. Conclude with `Subsingleton.elim _ _)`. Establish `hb` using `ext b (fun m => by haveI := (hfin m).2 k hk`.
-
-Conclude with `Subsingleton.elim _ _)`. Rewrite using `[ha, hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.latticeCochains_finGen_of_finLevel :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {χ : G →* ℤ_[l]ˣ} {d : ℕ}, FinLevel l G χ d → ∀ {n : ℕ} (ρ : Representation ℤ_[l] G (Fin n → ℤ_[l])) (h : ContAction ρ), ReciprocityTheory.Coh.Cx.FinGen (ReciprocityTheory.Coh.TRep.coch ({ V := Fin n → ℤ_[l], rho := ρ, cont := h } : ReciprocityTheory.Coh.TRep ℤ_[l] G)) 2 := by

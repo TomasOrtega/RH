@@ -17,7 +17,7 @@ section Loc
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `R0.sum_mem fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Conclude with `zsmul_mem (R0.prod_mem fun i _ => h _ _) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_subring_of_entries_mem (R0 : Subring K) (A : Matrix (Fin n) (Fin n) K) (h : ∀ a b, A a b ∈ R0) : A.det ∈ R0 := by
   rw [Matrix.det_apply]
@@ -26,9 +26,7 @@ theorem det_mem_subring_of_entries_mem (R0 : Subring K) (A : Matrix (Fin n) (Fin
   exact zsmul_mem (R0.prod_mem fun i _ => h _ _) _
 
 /- English proof (translation)
-Break down `e with m | m` into its components or cases. Use `show u ^ ((m : ℕ) : ℤ) ∈ R0`. Rewrite using `[zpow_natCast]`. Conclude with `R0.pow_mem h1 m`. Rewrite using `[zpow_negSucc, ← inv_pow]`.
-
-Conclude with `R0.pow_mem h2 _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_mem_subring (R0 : Subring K) {u : K} (h1 : u ∈ R0) (h2 : u⁻¹ ∈ R0) (e : ℤ) : u ^ e ∈ R0 := by
   rcases e with m | m
@@ -39,9 +37,7 @@ theorem zpow_mem_subring (R0 : Subring K) {u : K} (h1 : u ∈ R0) (h2 : u⁻¹ �
     exact R0.pow_mem h2 _
 
 /- English proof (translation)
-Break down `e with m | m` into its components or cases. Use `show c ^ m * u ^ ((m : ℕ) : ℤ) ∈ R0`. Rewrite using `[zpow_natCast, ← mul_pow]`. Conclude with `R0.pow_mem h1 m`. Use `show c ^ (m + 1) * u ^ (Int.negSucc m) ∈ R0`.
-
-Rewrite using `[zpow_negSucc, ← inv_pow, ← mul_pow]`. Conclude with `R0.pow_mem h2 _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scaled_zpow_mem_subring (R0 : Subring K) {c u : K} (h1 : c * u ∈ R0) (h2 : c * u⁻¹ ∈ R0) (e : ℤ) : c ^ e.natAbs * u ^ e ∈ R0 := by
   rcases e with m | m
@@ -53,13 +49,13 @@ theorem scaled_zpow_mem_subring (R0 : Subring K) {c u : K} (h1 : c * u ∈ R0) (
     exact R0.pow_mem h2 _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_mem _, by rw [one_smul]; exact Submodule.mem_one.2 ⟨r, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem integer_mem_local_ring (w : HeightOneSpectrum (𝓞 K)) (r : 𝓞 K) : algebraMap (𝓞 K) K r ∈ locRing w :=
   ⟨1, one_mem _, by rw [one_smul]; exact Submodule.mem_one.2 ⟨r, rfl⟩⟩
 
 /- English proof (translation)
-The claim follows from `det_mem_subring_of_entries_mem _ _ fun a b => (mem_locRing w _).2 (lc_entries_same w hB hB' a b)`.
+A detailed English derivation is pending.
 -/
 theorem det_change_of_basis_mem_locRing (w : HeightOneSpectrum (𝓞 K)) {M : Submodule (𝓞 K) (Fin n → K)} {B B' : GL (Fin n) K}
     (hB : IsBasisAt w M B) (hB' : IsBasisAt w M B') :
@@ -72,9 +68,9 @@ Both sides reduce to the same expression.
 theorem standard_basis_at_place (w : HeightOneSpectrum (𝓞 K)) : IsBasisAt w (colLat (1 : GL (Fin n) K)) 1 := rfl
 
 /- English proof (translation)
-Take `⟨hE1, hE2⟩` from `Formalism.L2.DIV.nb_entries w M B hB d h1 h2`. Establish `key : ∀ A : Matrix (Fin n) (Fin n) K, (∀ a b, algebraMap (𝓞 K) K d * A a b ∈ locRing w) → algebraMap (𝓞 K) K (d ^ n) * A.det ∈ locRing w`. Introduce `A hA`. Establish `h3` using `det_mem_subring_of_entries_mem (locRing w) (algebraMap (𝓞 K) K d • A) (fun a b => by rw [Matrix.smul_apply, smul_eq_mul]; exact hA a b)`. Rewrite `h3` using `[Matrix.det_smul, Fintype.card_fin, ← map_pow]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨key _ (fun a b => hE1 a b), ?_⟩` and prove the remaining obligations. Establish `h4` using `key _ (fun a b => hE2 a b)`. Use `first`. Consider the case `rwa [Matrix.coe_units_inv, Matrix.det_nonsing_inv, Ring.inverse_eq_inv'] at h4`. Consider the case `simpa [Matrix.coe_units_inv, Matrix.det_nonsing_inv] using h4`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem det_bound_common_denominator (w : HeightOneSpectrum (𝓞 K)) {M : Submodule (𝓞 K) (Fin n → K)} {B : GL (Fin n) K} (hB : IsBasisAt w M B) (d : 𝓞 K)
     (h1 : ∀ x ∈ M, d • x ∈ colLat (1 : GL (Fin n) K)) (h2 : ∀ x ∈ colLat (1 : GL (Fin n) K), d • x ∈ M) :
@@ -96,7 +92,7 @@ theorem det_bound_common_denominator (w : HeightOneSpectrum (𝓞 K)) {M : Submo
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Simplify using `only [detTwK, detPow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Units.val_mul, ← mul_zpow, Pi.inv_apply, map_inv, inv_mul_cancel, one_zpow, Units.val_one]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_twist_inv_mul (lam : ι → DomWeight n) (B : ι → GL (Fin n) K) : detTwK lam B⁻¹ * detTwK lam B = 1 := by
   simp only [detTwK, detPow, ← Finset.prod_mul_distrib]
@@ -104,7 +100,7 @@ theorem det_twist_inv_mul (lam : ι → DomWeight n) (B : ι → GL (Fin n) K) :
   rw [← Units.val_mul, ← mul_zpow, Pi.inv_apply, map_inv, inv_mul_cancel, one_zpow, Units.val_one]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `det_twist_inv_mul lam B`. Rewrite `h1` using `[h, mul_zero]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_twist_ne_zero (lam : ι → DomWeight n) (B : ι → GL (Fin n) K) : detTwK lam B ≠ 0 := by
   intro h
@@ -113,9 +109,9 @@ theorem det_twist_ne_zero (lam : ι → DomWeight n) (B : ι → GL (Fin n) K) :
   exact zero_ne_one h1
 
 /- English proof (translation)
-Simplify using `only [detTwK, detPow, ← Finset.prod_mul_distrib]`. Use `Subring.prod_mem _ fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.inv_apply, ← Units.val_mul, ← mul_zpow, ← map_mul, Units.val_zpow_eq_zpow_val]`. Use `zpow_mem_subring _ ?_ ?_ _` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `det_change_of_basis_mem_locRing w (hB τ) (hB' τ)`. Rewrite using `[← Units.val_inv_eq_inv_val, ← map_inv, mul_inv_rev, inv_inv, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `det_change_of_basis_mem_locRing w (hB' τ) (hB τ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_twist_inv_mul_det_twist_mem_locRing (lam : ι → DomWeight n) (w : HeightOneSpectrum (𝓞 K)) {M : ι → Submodule (𝓞 K) (Fin n → K)}
     {B B' : ι → GL (Fin n) K} (hB : ∀ τ, IsBasisAt w (M τ) (B τ)) (hB' : ∀ τ, IsBasisAt w (M τ) (B' τ)) :
@@ -130,11 +126,11 @@ theorem det_twist_inv_mul_det_twist_mem_locRing (lam : ι → DomWeight n) (w : 
     exact det_change_of_basis_mem_locRing w (hB' τ) (hB τ)
 
 /- English proof (translation)
-Take `⟨d, hd, hdM⟩` from `Formalism.L2.DIV.nb_sandwich_fam M hM`. Use `⟨∏ τ, (d ^ n) ^ (lam τ).detShift.natAbs, ?_, fun w B hB => ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.2 fun τ _ => pow_ne_zero _ (pow_ne_zero _ hd)`. Establish `hb : ∀ τ, (algebraMap (𝓞 K) K d) ^ n * (B τ : Matrix (Fin n) (Fin n) K).det ∈ locRing w ∧ (algebraMap (𝓞 K) K d) ^ n * ((B τ : Matrix (Fin n) (Fin n) K).det)⁻¹ ∈ locRing w` using `fun τ => by`. Simplify `det_bound_common_denominator w (hB τ) d (hdM τ).1 (hdM τ).2` using `only [map_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `only [detTwK, detPow, map_prod, map_pow, ← Finset.prod_mul_distrib]`. Prove the components needed by the constructor for the conclusion. Use `Subring.prod_mem _ fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `scaled_zpow_mem_subring _ (hb τ).1 (hb τ).2 _`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Subring.prod_mem _ fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.inv_apply, map_inv, Units.val_zpow_eq_zpow_val, Units.val_inv_eq_inv_val, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `scaled_zpow_mem_subring _ (hb τ).2 (by rw [inv_inv]; exact (hb τ).1) _`.
+A detailed English derivation is pending.
 -/
 theorem det_twist_uniform_bound (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (hM : ∀ τ, Submodule.IsLattice K (M τ)) :
     ∃ dd : 𝓞 K, dd ≠ 0 ∧ ∀ (w : HeightOneSpectrum (𝓞 K)) (B : ι → GL (Fin n) K), (∀ τ, IsBasisAt w (M τ) (B τ)) →
@@ -165,7 +161,7 @@ Both sides reduce to the same expression.
 theorem twId_eq (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) : twId lam M = ⨅ w, twLoc lam M w := rfl
 
 /- English proof (translation)
-Simplify using `only [twLoc, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, LinearMap.mulLeft_apply]`. Conclude with `Iff.rfl`.
+Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_twLoc (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (w : HeightOneSpectrum (𝓞 K)) (a : K) :
     a ∈ twLoc lam M w ↔ ∀ B : ι → GL (Fin n) K, (∀ τ, IsBasisAt w (M τ) (B τ)) → detTwK lam B⁻¹ * a ∈ locRing w := by
@@ -173,11 +169,9 @@ theorem mem_twLoc (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin
   exact Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_twLoc]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h B hB`. Introduce `h B' hB'`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : detTwK lam B'⁻¹ * a = (detTwK lam B'⁻¹ * detTwK lam B) * (detTwK lam B⁻¹ * a)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[det_twist_inv_mul, mul_one]`. Use `_ = (detTwK lam B'⁻¹ * detTwK lam B) * (detTwK lam B⁻¹ * a) := by ring`. Rewrite using `[e]`.
-
-Conclude with `(locRing w).mul_mem (det_twist_inv_mul_det_twist_mem_locRing lam w hB hB') h`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_twLoc_iff (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (w : HeightOneSpectrum (𝓞 K))
     (B : ι → GL (Fin n) K) (hB : ∀ τ, IsBasisAt w (M τ) (B τ)) (a : K) :
@@ -195,17 +189,15 @@ theorem mem_twLoc_iff (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) 
     exact (locRing w).mul_mem (det_twist_inv_mul_det_twist_mem_locRing lam w hB hB') h
 
 /- English proof (translation)
-Take `⟨dd, hdd, hb⟩` from `det_twist_uniform_bound lam M hM`. Use `choose Bw hBw using fun (w : HeightOneSpectrum (𝓞 K)) (τ : ι) => basisAtEx K n (M τ) (hM τ) w`. Rewrite using `[twId_eq]`. Use `localized_iInf (twLoc lam M) (1 : Submodule (𝓞 K) K) dd hdd ?_ ?_ ?_ w` and prove the remaining obligations. Introduce `w`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm ?_ (lc_le_locP w _)` and prove the remaining obligations. Introduce and unpack `x ⟨s, hs, hx⟩`. Rewrite `hx`, the goal using `[mem_twLoc_iff lam M w (Bw w) (hBw w)]`. Rewrite `hx`, the goal using `[mem_locRing]`. Rewrite `hx` using `[Algebra.smul_def, mul_left_comm, ← Algebra.smul_def]`.
+Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(smul_mem_localized_iff w _ hs _).1 hx`. Introduce `w x hx`. Rewrite `hx` using `[mem_twLoc_iff lam M w (Bw w) (hBw w)]`. Rewrite using `[← mem_locRing]`. Establish `e : dd • x = (algebraMap (𝓞 K) K dd * detTwK lam (Bw w)) * (detTwK lam (Bw w)⁻¹ * x)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `det_twist_inv_mul lam (Bw w)` as an intermediate fact. Rewrite using `[Algebra.smul_def]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `mul_mem (hb w (Bw w) (hBw w)).1 hx`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `w x hx`. Rewrite using `[mem_twLoc_iff lam M w (Bw w) (hBw w)]`. Take `⟨r, rfl⟩` from `Submodule.mem_one.1 hx`. Establish `e : detTwK lam (Bw w)⁻¹ * dd • algebraMap (𝓞 K) K r = (algebraMap (𝓞 K) K dd * detTwK lam (Bw w)⁻¹) * algebraMap (𝓞 K) K r`. Rewrite using `[Algebra.smul_def]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_mem (hb w (Bw w) (hBw w)).2 (integer_mem_local_ring w r)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localisation_twisted_ideal (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (hM : ∀ τ, Submodule.IsLattice K (M τ))
     (w : HeightOneSpectrum (𝓞 K)) : localization₂ w.asIdeal (twId lam M) = twLoc lam M w := by
@@ -245,13 +237,11 @@ section Ideal
 variable {K : Type} [Field K] [NumberField K] {n : ℕ} {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Take `⟨dd, hdd, hb⟩` from `det_twist_uniform_bound lam M hM`. Use `⟨dd, hdd, fun w x hx => ?_, fun w x hx => ?_⟩` and prove the remaining obligations. Use `choose B hB using fun τ => Formalism.L2.DIV.basisAtEx K n (M τ) (hM τ) w`. Establish `h1` using `(mem_twLoc_iff lam M w B hB x).1 hx`. Establish `e : dd • x = (algebraMap (𝓞 K) K dd * detTwK lam B) * (detTwK lam B⁻¹ * x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def]`. Combine the equalities or inequalities in the displayed calculation. Use `show dd • x ∈ locRing w`. Rewrite using `[e]`. Conclude with `(locRing w).mul_mem (hb w B hB).1 h1`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose B hB using fun τ => Formalism.L2.DIV.basisAtEx K n (M τ) (hM τ) w`. Rewrite using `[mem_twLoc_iff lam M w B hB]`. Take `⟨r, rfl⟩` from `Submodule.mem_one.1 hx`. Establish `e : detTwK lam B⁻¹ * (dd • algebraMap (𝓞 K) K r) = (algebraMap (𝓞 K) K dd * detTwK lam B⁻¹) * algebraMap (𝓞 K) K r`. Rewrite using `[Algebra.smul_def]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(locRing w).mul_mem (hb w B hB).2 (integer_mem_local_ring w r)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twisted_localisation_comparable (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (hM : ∀ τ, Submodule.IsLattice K (M τ)) :
     ∃ dd : 𝓞 K, dd ≠ 0 ∧ (∀ w, ∀ x ∈ twLoc lam M w, dd • x ∈ localization₂ w.asIdeal (1 : Submodule (𝓞 K) K)) ∧
@@ -279,11 +269,11 @@ theorem twisted_localisation_comparable (lam : ι → DomWeight n) (M : ι → S
     exact (locRing w).mul_mem (hb w B hB).2 (integer_mem_local_ring w r)
 
 /- English proof (translation)
-Take `⟨dd, hdd, h1, -⟩` from `twisted_localisation_comparable lam M hM`. Use `⟨dd, mem_nonZeroDivisors_of_ne_zero hdd, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite `hb` using `[twId_eq, Submodule.mem_iInf]`. Establish `hw : ∀ w : HeightOneSpectrum (𝓞 K), w.valuation K (dd • b) ≤ 1`. Introduce `w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs, hx⟩` from `h1 w b (hb w)`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 hx`. Establish `hs1 : w.intValuation s = 1` using `le_antisymm (w.intValuation_le_one s) (not_lt.1 fun h => hs ((w.intValuation_lt_one_iff_mem s).1 h))`. Establish `e : w.valuation K (dd • b) = w.valuation K (algebraMap (𝓞 K) K r)`. Rewrite using `[hr, Algebra.smul_def s, map_mul, HeightOneSpectrum.valuation_of_algebraMap, hs1, one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `w.valuation_le_one r`. Take `⟨y, hy⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (K := K) (x := dd • b) hw`. Conclude with `⟨y, hy⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twisted_ideal_fractional (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (hM : ∀ τ, Submodule.IsLattice K (M τ)) :
     IsFractional (nonZeroDivisors (𝓞 K)) (twId lam M) := by
@@ -313,9 +303,9 @@ theorem twIdeal_coe (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (F
     (twIdeal lam M hM : Submodule (𝓞 K) K) = twId lam M := rfl
 
 /- English proof (translation)
-Introduce `h`. Take `⟨dd, hdd, -, h2⟩` from `twisted_localisation_comparable lam M hM`. Establish `hmem : dd • (1 : K) ∈ (twIdeal lam M hM : Submodule (𝓞 K) K)`. Rewrite using `[twIdeal_coe, twId_eq, Submodule.mem_iInf]`. Conclude with `fun w => h2 w 1 (Submodule.mem_one.2 ⟨1, map_one _⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite `hmem` using `[h]`. Establish `h0 : dd • (1 : K) = 0` using `(FractionalIdeal.mem_zero_iff _).1 hmem`. Rewrite `h0` using `[Algebra.smul_def, mul_one]`. Conclude with `hdd ((map_eq_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).1 h0)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twIdeal_ne_zero (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (hM : ∀ τ, Submodule.IsLattice K (M τ)) :
     twIdeal lam M hM ≠ 0 := by
@@ -330,9 +320,9 @@ theorem twIdeal_ne_zero (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K
   exact hdd ((map_eq_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).1 h0)
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `[vAdd]`. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ← ih]`. Establish `h1 : w.valuation K (f a) ≠ 0` using `(Valuation.ne_zero_iff _).2 (hf a)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : w.valuation K (∏ τ ∈ s, f τ) ≠ 0` using `(Valuation.ne_zero_iff _).2 (Finset.prod_ne_zero_iff.2 fun τ _ => hf τ)`. Simplify using `only [vAdd, map_mul, WithZero.log_mul h1 h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem valuation_finset_prod (w : HeightOneSpectrum (𝓞 K)) (f : ι → K) (hf : ∀ τ, f τ ≠ 0) (s : Finset ι) :
     vAdd w (∏ τ ∈ s, f τ) = ∑ τ ∈ s, vAdd w (f τ) := by
@@ -350,7 +340,7 @@ theorem valuation_finset_prod (w : HeightOneSpectrum (𝓞 K)) (f : ι → K) (h
 variable [StarRing K] [IsTotallyComplex K]
 
 /- English proof (translation)
-Unfold `detTwK`. Rewrite using `[valuation_finset_prod w (fun τ => detPow K n (B τ) (lam τ).detShift) (fun τ => Units.ne_zero _)]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [detPow, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, vAdd, map_zpow₀, WithZero.log_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem valuation_det_twist (lam : ι → DomWeight n) (w : HeightOneSpectrum (𝓞 K)) (B : ι → GL (Fin n) K) :
     vAdd w (detTwK lam B) = ∑ τ, (lam τ).detShift * vAdd w (B τ : Matrix (Fin n) (Fin n) K).det := by
@@ -362,13 +352,13 @@ theorem valuation_det_twist (lam : ι → DomWeight n) (w : HeightOneSpectrum (�
   ring
 
 /- English proof (translation)
-Establish `hA : Submodule.span (𝓞 K) (Set.range fun _ : Fin 1 => (1 : K)) = (1 : Submodule (𝓞 K) K)`. Rewrite using `[Set.range_const, Submodule.one_eq_span]`. Establish `hlat : Submodule.IsLattice K (Submodule.span (𝓞 K) (Set.range fun _ : Fin 1 => (1 : K)))` using `brp_span_lattice K _ (by rw [Set.range_const]; exact Ideal.span_singleton_one)`. Rewrite using `[bridge_lidx_det_holds K K w _ (twId lam M) (LinearEquiv.smulOfNeZero K K (detTwK lam B) (det_twist_ne_zero lam B)) hlat ?_]`. Establish `e : ((LinearEquiv.smulOfNeZero K K (detTwK lam B) (det_twist_ne_zero lam B) : K ≃ₗ[K] K) : K →ₗ[K] K) = detTwK lam B • LinearMap.id` using `by ext; simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, LinearMap.det_smul, Module.finrank_self, pow_one, LinearMap.det_id, mul_one]`. Rewrite using `[localization_map₃, localisation_twisted_ideal lam M hM, hA]`. Use extensionality with `x`. Rewrite using `[mem_twLoc_iff lam M w B hB, mem_locRing]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Establish `e : detTwK lam B⁻¹ * (detTwK lam B • y) = y`. Rewrite using `[smul_eq_mul, ← mul_assoc, det_twist_inv_mul, one_mul]`. Simplify using `only [LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, LinearEquiv.smulOfNeZero_apply]`. Rewrite using `[e]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Introduce `hx`. Use `⟨detTwK lam B⁻¹ * x, hx, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, LinearEquiv.smulOfNeZero_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, mul_comm (detTwK lam B), det_twist_inv_mul, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_index_twisted_ideal (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (hM : ∀ τ, Submodule.IsLattice K (M τ))
     (w : HeightOneSpectrum (𝓞 K)) (B : ι → GL (Fin n) K) (hB : ∀ τ, IsBasisAt w (M τ) (B τ)) :
@@ -404,11 +394,11 @@ section Norm
 variable (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] {n : ℕ} {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Establish `: Nontrivial (Fin n → K)` using `Pi.nontrivial_at ⟨0, hn⟩`. Use `set es : Fin n → (Fin n → K) := fun i => Pi.single i 1 with hesdef`. Establish `hesb : es = ⇑(Pi.basisFun K (Fin n))` using `by funext i; simp [hesdef]`. Establish `hes : LinearIndependent K es` using `by rw [hesb]; exact (Pi.basisFun K (Fin n)).linearIndependent`. Establish `hspS : Submodule.span K (Set.range es) = ⊤` using `by rw [hesb]; exact (Pi.basisFun K (Fin n)).span_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hrk2, -, -, hfin2, hmu2⟩` from `Formalism.LFunctionChainParameters.LLcv.log_covolume_slope_mu K (Fin n → K) (Fin n) (Pi.basisFun K (Fin n)) (fun _ => 1) (fun _ => by simp) n es M hes hM.fg (isLattice_ne_bot hM) (by rw [hM.span_eq_top, hspS])`. Use `⟨hfin2, ?_⟩` and prove the remaining obligations. Rewrite using `[brp_latK_mu K M hM.fg]`. Use `show (n : ℝ) * muDef (Pi.basisFun K (Fin n)) (fun _ => 1) M = _`. Rewrite using `[hmu2, hrk2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.LFunctionChainParameters.LLcv.lcv Formalism.LFunctionChainParameters.LLcv.lcvFin`. Rewrite using `[brp_lcvInf_std]`. Establish `hnpos : (0 : ℝ) < (n : ℝ)` using `by exact_mod_cast hn`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lattice_slope_degree_formula (hn : 0 < n) (M : Submodule (𝓞 K) (Fin n → K)) (hM : Submodule.IsLattice K M) :
     (Function.support fun p : {p : Ideal (𝓞 K) // p.IsMaximal} =>
@@ -435,27 +425,25 @@ theorem lattice_slope_degree_formula (hn : 0 < n) (M : Submodule (𝓞 K) (Fin n
   ring
 
 /- English proof (translation)
-Use `set e1 : Fin 1 → K := fun _ => 1 with he1`. Establish `hli : LinearIndependent K e1` using `LinearIndependent.of_subsingleton (0 : Fin 1) one_ne_zero`. Establish `hId` using `Formalism.LFunctionChainParameters.LLcv.covolume_ideal K K Unit (Basis.singleton Unit K) 1 e1 (twIdeal lam M hM) hli one_pos (twIdeal_ne_zero lam M hM)`. Establish `hsm : idealSmul (twIdeal lam M hM : Submodule (𝓞 K) K) (Submodule.span (𝓞 K) (Set.range e1)) = twId lam M`. Rewrite using `[twIdeal_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, x, hx, rfl⟩`. Rewrite `hx` using `[he1, Set.range_const, Submodule.mem_span_singleton]`. Take `⟨r, rfl⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: a • r • (1 : K) = r • a`. Rewrite using `[smul_eq_mul, Algebra.smul_def, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ r ha`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha`. Use `Submodule.subset_span ⟨a, ha, 1, Submodule.subset_span ⟨0, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_one]`. Rewrite `hId` using `[hsm]`. Unfold `Formalism.LFunctionChainParameters.LLcv.lcvFin at hId`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hterm : ∀ p : {p : Ideal (𝓞 K) // p.IsMaximal}, (haveI` using `p.2.isPrime; lidx p.1 (Submodule.span (𝓞 K) (Set.range e1)) (twId lam M)) = ∑ τ, (lam τ).detShift * (haveI := p.2.isPrime; lidx p.1 (Submodule.span (𝓞 K) (Set.range fun i : Fin n => (Pi.single i 1 : Fin n → K))) (M τ)) := by`. Introduce `p`. Use `p.2.isPrime` as an intermediate fact. Set `w : HeightOneSpectrum (𝓞 K)` to `⟨p.1, p.2.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField p.2 (RingOfIntegers.not_isField K)⟩`. Use `choose B hB using fun τ => basisAtEx K n (M τ) (hM τ) w`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : lidx p.1 (Submodule.span (𝓞 K) (Set.range e1)) (twId lam M) = vAdd w (detTwK lam B)` using `local_index_twisted_ideal lam M hM w B hB`. Establish `h2 : ∀ τ, lidx p.1 (Submodule.span (𝓞 K) (Set.range fun i : Fin n => (Pi.single i 1 : Fin n → K))) (M τ) = vAdd w (B τ : Matrix (Fin n) (Fin n) K).det` using `fun τ => by`. Rewrite using `[← brp_colLat_one_span]`. Conclude with `brp_lidx_colLat K (M τ) w (B τ) (hB τ)`. Use `show lidx p.1 _ _ = ∑ τ, _ * lidx p.1 _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h1, valuation_det_twist]`. Conclude with `Finset.sum_congr rfl fun τ _ => by rw [h2 τ]`. Establish `hfin` using `fun τ => (lattice_slope_degree_formula K hn (M τ) (hM τ)).1`. Establish `hdeg` using `fun τ => (lattice_slope_degree_formula K hn (M τ) (hM τ)).2`. Simplify using `only [hdeg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hsum : ∑ᶠ p : {p : Ideal (𝓞 K) // p.IsMaximal}, (Real.log (Ideal.absNorm p.1 : ℝ) / (Module.finrank ℚ K : ℝ)) * (haveI` using `p.2.isPrime; (lidx p.1 (Submodule.span (𝓞 K) (Set.range e1)) (twId lam M) : ℝ)) = ∑ τ, ((lam τ).detShift : ℝ) * ∑ᶠ p : {p : Ideal (𝓞 K) // p.IsMaximal}, (Real.log (Ideal.absNorm p.1 : ℝ) / (Module.finrank ℚ K : ℝ)) * (haveI := p.2.isPrime; (lidx p.1 (Submodule.span (𝓞 K) (Set.ran …`. Simplify using `only [mul_finsum]`. Rewrite using `[← finsum_sum_comm]`. Use `finsum_congr fun p => ?_` and prove the remaining obligations. Rewrite using `[hterm p]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_cast`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun τ _ => by ring`. Introduce `τ _`. Use `(hfin τ).subset fun p hp => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Function.mem_support] at hp ⊢`. Introduce `h'`. Apply `hp` to reduce the goal to its premises. Rewrite using `[h']`. Simplify using the standard rewrite rules.
-
-Rewrite `hId` using `[hsum]`. Establish `e : 2 * Real.log (FractionalIdeal.absNorm (twIdeal lam M hM) : ℝ) / (Module.finrank ℚ K : ℝ) = 2 * ((1 : ℕ) : ℝ) * Real.log (FractionalIdeal.absNorm (twIdeal lam M hM) : ℝ) / (Module.finrank ℚ K : ℝ)`. Rewrite using `[Nat.cast_one, mul_one]`. Rewrite using `[e, ← hId, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun τ _ => by ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twisted_ideal_norm_formula (hn : 0 < n) (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (hM : ∀ τ, Submodule.IsLattice K (M τ)) :
     -(2 * Real.log (FractionalIdeal.absNorm (twIdeal lam M hM) : ℝ) / (Module.finrank ℚ K : ℝ)) =

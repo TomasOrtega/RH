@@ -6,27 +6,23 @@ open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.G
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Establish `hae : ∀ b, ∀ᵐ x ∂(fib b), q x = b`. Introduce `b`. Use `measure_mono_null ?_ (h1 b)` and prove the remaining obligations. Introduce `x hx hx'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx hx'.1`. Use `⟨fun b => ?_, fun φ hφ => ?_, fun φ hc hcs _ => ?_⟩` and prove the remaining obligations. Use `measure_mono_null ?_ (h1 b)` and prove the remaining obligations. Introduce `x hx hx'`. Conclude with `hx ⟨hx'.1, trivial⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hμ : μ.restrict U = μ`. Apply `Measure.restrict_eq_self_of_ae_mem` to reduce the goal to its premises. Use `measure_mono_null ?_ h0` and prove the remaining obligations. Introduce `x hx`. Assume the negation of the conclusion as `hx'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hx (hU hx')`. Rewrite using `[← h2 φ hφ, hμ, Measure.restrict_univ]`. Establish `key : ∀ b0 : K, b0 ≠ 0 → ∃ D : Set K, D ∈ nhds b0 ∧ b0 ∈ D ∧ D ⊆ B ∧ (∀ b ∈ D, Integrable φ (fib b)) ∧ ContinuousOn (fun b => ∫ v, φ v ∂(fib b)) D`. Introduce `b0 hb0`. Establish `hr : 0 < ‖b0‖` using `norm_pos_iff.mpr hb0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hD : IsClopen (Metric.ball b0 ‖b0‖)` using `IsUltrametricDist.isClopen_ball b0 _`. Use `set D := Metric.ball b0 ‖b0‖ with hDdef`. Establish `hD0 : ∀ t ∈ D, t ≠ 0`. Introduce and unpack `t ht rfl`. Simplify using `[hDdef] at ht`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : IsClopen (q ⁻¹' D)` using `hD.preimage hq`. Set `ψ : V → ℝ` to `(q ⁻¹' D).indicator φ`. Establish `hψc : Continuous ψ` using `hE.continuous_indicator hc`. Establish `hψs : HasCompactSupport ψ`. Use `hcs.mono ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x hx hx'`. Apply `hx` to reduce the goal to its premises. Simplify using `[ψ, Set.indicator, hx']`. Establish `hψt : tsupport ψ ⊆ U`. Establish `: tsupport ψ ⊆ q ⁻¹' D` using `closure_minimal Set.support_indicator_subset hE.isClosed`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Conclude with `hU (hD0 _ (this hx))`. Take `⟨hi, hco⟩` from `h3 ψ hψc hψs hψt`. Establish `hDB : D ⊆ B` using `fun t ht => hB (hD0 t ht)`. Establish `heq : ∀ b ∈ D, ψ =ᵐ[fib b] φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `b hb`. Use `filter_upwards [hae b] with x hx`. Establish `: x ∈ q ⁻¹' D` using `by show q x ∈ D`. Rewrite using `[hx]`. Conclude with `hb`.
-
-Simplify using `[ψ, Set.indicator_of_mem this]`. Use `⟨D, Metric.ball_mem_nhds _ hr, Metric.mem_ball_self hr, hDB, fun b hb => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(integrable_congr (heq b hb)).mp (hi b (hDB hb))`. Use `(hco.mono hDB).congr fun b hb => ?_` and prove the remaining obligations. Conclude with `(integral_congr_ae (heq b hb)).symm`.
-
-Use `⟨fun b hb => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨D, -, hbD, -, hi, -⟩` from `key b hb`. Conclude with `hi b hbD`. Take `⟨D, hD, -, -, -, hco⟩` from `key b hb`. Conclude with `(hco.continuousAt hD).continuousWithinAt`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isFibreFamily_univ_of_null_cone (K V : Type) [NormedField K] [IsUltrametricDist K]
     [MeasurableSpace K] [BorelSpace K] [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]

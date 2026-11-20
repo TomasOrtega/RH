@@ -11,16 +11,16 @@ def Unram (π : W) (R : Subalgebra W Ω) : Prop :=
     ∀ x ∈ R, x ≠ 0 → ∃ (n : ℕ) (u : Ω), u ∈ R ∧ u⁻¹ ∈ R ∧ x = algebraMap W Ω π ^ n * u
 
 /- English proof (translation)
-The claim follows from `IsUnit.of_mul_eq_one ⟨u⁻¹, hu'⟩ (Subtype.ext (mul_inv_cancel₀ h0))`.
+A detailed English derivation is pending.
 -/
 theorem Unram.isUnit {R : Subalgebra W Ω} {u : Ω} (hu : u ∈ R) (hu' : u⁻¹ ∈ R) (h0 : u ≠ 0) :
     IsUnit (⟨u, hu⟩ : R) :=
   IsUnit.of_mul_eq_one ⟨u⁻¹, hu'⟩ (Subtype.ext (mul_inv_cancel₀ h0))
 
 /- English proof (translation)
-Establish `hx' : (x : Ω) ≠ 0` using `fun e => hx (Subtype.ext e)`. Take `⟨n, u, hu, hu', e⟩` from `h.2.2 x x.2 hx'`. Establish `h0 : u ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx' (by simpa using e)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, (Unram.isUnit hu hu' h0).unit, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[e]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Unram.factor {π : W} {R : Subalgebra W Ω} (h : Unram π R) (x : R) (hx : x ≠ 0) :
     ∃ (n : ℕ) (u : Rˣ), algebraMap W R π ^ n * u = x := by
@@ -33,17 +33,15 @@ theorem Unram.factor {π : W} {R : Subalgebra W Ω} (h : Unram π R) (x : R) (hx
   simp [e]
 
 /- English proof (translation)
-Establish `h0' : algebraMap W R π ≠ 0` using `fun e => h0 (congrArg Subtype.val e)`. Establish `hnu : ¬ IsUnit (algebraMap W R π)`. Introduce `hu`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `hv' : algebraMap W Ω π * (v : Ω) = 1` using `congrArg Subtype.val hv`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h.2.1 (eq_inv_of_mul_eq_one_right hv' ▸ v.2)`. Use `⟨hnu, fun a b hab => ?_⟩` and prove the remaining obligations. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `h0' (by simpa using hab)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hb : b ≠ 0`. Introduce and unpack `rfl`. Conclude with `h0' (by simpa using hab)`. Take `⟨n, u, rfl⟩` from `h.factor a ha`. Take `⟨m, v, rfl⟩` from `h.factor b hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `n with _ | n` into its components or cases. Use `left`. Simplify using the standard rewrite rules. Break down `m with _ | m` into its components or cases. Use `right`.
+Simplify using the standard rewrite rules. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. It suffices to derive a contradiction. Use `hnu (IsUnit.of_mul_eq_one (algebraMap W R π ^ (n + m) * u * v) ?_)` and prove the remaining obligations. Use `mul_left_cancel₀ h0' ?_` and prove the remaining obligations. Rewrite using `[mul_one]`.
-
-Use `conv_rhs => rw [hab]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Unram.irreducible {π : W} {R : Subalgebra W Ω} (h : Unram π R)
     (h0 : algebraMap W Ω π ≠ 0) : Irreducible (algebraMap W R π) := by
@@ -74,7 +72,7 @@ theorem Unram.irreducible {π : W} {R : Subalgebra W Ω} (h : Unram π R)
   ring
 
 /- English proof (translation)
-The claim follows from `IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨_, h.irreducible h0, fun {x} hx => h.factor x hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem Unram.dvr {π : W} {R : Subalgebra W Ω} (h : Unram π R)
     (h0 : algebraMap W Ω π ≠ 0) : IsDiscreteValuationRing R :=
@@ -84,13 +82,11 @@ theorem Unram.dvr {π : W} {R : Subalgebra W Ω} (h : Unram π R)
 open Polynomial IsLocalRing in
 variable {W Ω : Type} [CommRing W] [Field Ω] [Algebra W Ω] in
 /- English proof (translation)
-Take `⟨M, -, hM⟩` from `zorn_le_nonempty₀ {R : Subalgebra W Ω | _root_.GlobalTheory.ClosedResidueExt.Unram π R} (fun c hc hchain y hy => by`. Establish `hne : Nonempty c` using `⟨⟨y, hy⟩⟩`. Establish `hd : Directed (· ≤ ·) (fun R : c => (R : Subalgebra W Ω))` using `hchain.directed`. Establish `hmem : ∀ x ∈ ⨆ R : c, (R : Subalgebra W Ω), ∃ R : c, x ∈ (R : Subalgebra W Ω)` using `fun x hx => by`. Establish `: x ∈ (↑(⨆ R : c, (R : Subalgebra W Ω)) : Set Ω)` using `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Subalgebra.coe_iSup_of_directed hd, Set.mem_iUnion]`. Conclude with `this`. Use `⟨⨆ R : c, (R : Subalgebra W Ω), ⟨fun x hx => ?_, fun hx => ?_, fun x hx hx0 => ?_⟩, fun R hR => le_iSup (fun R : c => (R : Subalgebra W Ω)) ⟨R, hR⟩⟩` and prove the remaining obligations. Take `⟨R, hR⟩` from `hmem x hx`. Conclude with `(hc R.2).1 x hR`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hR⟩` from `hmem _ hx`. Conclude with `(hc R.2).2.1 hR`. Take `⟨R, hR⟩` from `hmem x hx`. Take `⟨n, u, hu, hu', e⟩` from `(hc R.2).2.2 x hR hx0`. Conclude with `⟨n, u, le_iSup (fun R : c => (R : Subalgebra W Ω)) R hu, le_iSup (fun R : c => (R : Subalgebra W Ω)) R hu', e⟩) ⊥ h0`.
-
-Conclude with `⟨M, hM.prop, fun N hN hle => (hM.eq_of_le hN hle).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma exists_maximal_unram_subalgebra (π : W) (h0 : _root_.GlobalTheory.ClosedResidueExt.Unram π (⊥ : Subalgebra W Ω)) :
     ∃ M : Subalgebra W Ω, _root_.GlobalTheory.ClosedResidueExt.Unram π M ∧
@@ -118,7 +114,7 @@ private lemma exists_maximal_unram_subalgebra (π : W) (h0 : _root_.GlobalTheory
 open Polynomial IsLocalRing in
 variable {W Ω : Type} [CommRing W] [Field Ω] [Algebra W Ω] in
 /- English proof (translation)
-The claim follows from `have h : a * ⟨_, ha⟩ = 1 := Subtype.ext (by simp [mul_inv_cancel₀ ha0]) ⟨⟨a, ⟨_, ha⟩, h, by rw [mul_comm]; exact h⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private lemma isUnit_of_inv_mem_of_ne_zero {M : Subalgebra W Ω}
     (a : M) (ha : (a : Ω)⁻¹ ∈ M) (ha0 : (a : Ω) ≠ 0) : IsUnit a :=
@@ -128,23 +124,21 @@ private lemma isUnit_of_inv_mem_of_ne_zero {M : Subalgebra W Ω}
 open Polynomial IsLocalRing in
 variable {W Ω : Type} [CommRing W] [Field Ω] [Algebra W Ω] in
 /- English proof (translation)
-Take `⟨-, hinv, hfac⟩` from `hM`. Establish `hp0 : algebraMap W Ω π ≠ 0`. Introduce `h`. Rewrite `hinv` using `[h, inv_zero]`. Conclude with `hinv M.zero_mem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcoe : ((algebraMap W M π : M) : Ω) = algebraMap W Ω π` using `rfl`. Establish `unit_of : ∀ (a : M) (u : Ω), u⁻¹ ∈ M → (a : Ω) = u → u ≠ 0 → IsUnit a` using `fun a u hu' e hu0 => isUnit_of_inv_mem_of_ne_zero a (e ▸ hu') (e ▸ hu0)`. Use `⟨⟨fun hu => ?_, fun a b hab => ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hu.exists_right_inv`. Establish `hy' : (y : Ω) = (algebraMap W Ω π)⁻¹`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Subtype.val hy` as an intermediate fact. Simplify using `only [MulMemClass.coe_mul, hcoe, OneMemClass.coe_one] at this`. Conclude with `eq_inv_of_mul_eq_one_left (by rw [mul_comm]; exact this)`. Conclude with `hinv (hy' ▸ y.2)`. Establish `hab' : algebraMap W Ω π = (a : Ω) * b`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg Subtype.val hab` as an intermediate fact. Simplify using `using this`. Establish `ha0 : (a : Ω) ≠ 0` using `fun h => hp0 (by rw [hab', h, zero_mul])`. Establish `hb0 : (b : Ω) ≠ 0` using `fun h => hp0 (by rw [hab', h, mul_zero])`. Take `⟨i, u, hu, hu', ea⟩` from `hfac a a.2 ha0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, v, hv, hv', eb⟩` from `hfac b b.2 hb0`. Establish `hu0 : u ≠ 0` using `fun h => ha0 (by rw [ea, h, mul_zero])`. Establish `hv0 : v ≠ 0` using `fun h => hb0 (by rw [eb, h, mul_zero])`. Break down `i with _ | i` into its components or cases. Conclude with `Or.inl (unit_of a u hu' (by rw [ea, pow_zero, one_mul]) hu0)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. It suffices to derive a contradiction.
 
-Break down `j with _ | j` into its components or cases. Conclude with `Or.inr (unit_of b v hv' (by rw [eb, pow_zero, one_mul]) hv0)`. It suffices to derive a contradiction. Apply `hinv` to reduce the goal to its premises. Establish `key : (algebraMap W Ω π)⁻¹ = algebraMap W Ω π ^ (i + j) * u * v`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Apply `mul_left_cancel₀ hp0` to reduce the goal to its premises. Rewrite using `[mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `M.mul_mem (M.mul_mem (M.pow_mem (M.algebraMap_mem π) _) hu) hv`. Establish `hx0 : (x : Ω) ≠ 0` using `fun h => hx (Subtype.ext h)`. Take `⟨n, u, hu, hu', e⟩` from `hfac x x.2 hx0`. Establish `hu0 : u ≠ 0` using `fun h => hx0 (by rw [e, h, mul_zero])`. Take `⟨U, hU⟩` from `unit_of ⟨u, hu⟩ u hu' rfl hu0`.
-
-Use `⟨n, ⟨U, Subtype.ext ?_⟩⟩` and prove the remaining obligations. Simplify using `[hU, e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma irreducible_and_associated_pow_of_unram {π : W}
     (M : Subalgebra W Ω) (hM : _root_.GlobalTheory.ClosedResidueExt.Unram π M) :
@@ -198,9 +192,9 @@ private lemma irreducible_and_associated_pow_of_unram {π : W}
 open Polynomial IsLocalRing in
 variable {W Ω : Type} [CommRing W] [Field Ω] [Algebra W Ω] in
 /- English proof (translation)
-Assume the negation of the conclusion as `hu`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {1 + algebraMap W N π * h}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Use `haveI : Algebra.IsIntegral W N := ⟨fun x => (isIntegral_algHom_iff N.val Subtype.val_injective).1 (hN x x.2)⟩`. Establish `hmax : (m.comap (algebraMap W N)).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal m`. Establish `hc : m.comap (algebraMap W N) = IsLocalRing.maximalIdeal W` using `IsLocalRing.eq_maximalIdeal hmax`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπm : algebraMap W N π ∈ m`. Rewrite using `[← Ideal.mem_comap, hc]`. Conclude with `hπ`. Establish `h1 : 1 + algebraMap W N π * h ∈ m` using `hle (Ideal.subset_span rfl)`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using m.sub_mem h1 (m.mul_mem_right h hπm)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma isUnit_one_add_algebraMap_mul_of_not_isUnit [IsLocalRing W] {π : W} (hπ : ¬ IsUnit π)
     (N : Subalgebra W Ω) (hN : ∀ x ∈ N, IsIntegral W x) (h : N) : IsUnit (1 + algebraMap W N π * h) := by
@@ -219,35 +213,31 @@ private lemma isUnit_one_add_algebraMap_mul_of_not_isUnit [IsLocalRing W] {π : 
 open Polynomial IsLocalRing in
 variable {W Ω : Type} [CommRing W] [Field Ω] [Algebra W Ω] in
 /- English proof (translation)
-Use `set N := (Algebra.adjoin M {α}).restrictScalars W with hNdef`. Establish `memN : ∀ g : M[X], aeval α g ∈ N` using `fun g => by show aeval α g ∈ Algebra.adjoin M {α}`. Rewrite using `[Algebra.adjoin_singleton_eq_range_aeval]`. Conclude with `⟨g, rfl⟩`. Introduce `x hx hx0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : x ∈ Algebra.adjoin M {α}` using `hx`. Rewrite `hx'` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨g0, rfl⟩` from `hx'`. Express the relevant statement in the definitionally equal form `aeval α g0 ≠ 0 at hx0`. Use `show ∃ (n : ℕ) (u : Ω), u ∈ N ∧ u⁻¹ ∈ N ∧ aeval α g0 = algebraMap W Ω π ^ n * u`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hf1 : f ≠ 1`. Introduce and unpack `rfl`. Conclude with `hirr.not_isUnit (by simp)`. Use `set g := g0 %ₘ f with hgdef`. Establish `hg : aeval α g = aeval α g0` using `by conv_rhs => rw [← modByMonic_add_div g0 f]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hgdef, hα]`. Establish `hgdeg : g.natDegree < f.natDegree` using `natDegree_modByMonic_lt g0 hf hf1`. Establish `hg0 : g ≠ 0`. Introduce `h`. Apply `hx0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg, h, map_zero]`. Establish `hπM : algebraMap W M π ∈ RingHom.ker φ` using `hker ▸ Ideal.subset_span rfl`. Establish `hπC : ¬ IsUnit (C (algebraMap W M π))`. Rewrite using `[Polynomial.isUnit_C]`. Introduce `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(RingHom.ker_ne_top φ) (Ideal.eq_top_of_isUnit_mem _ hπM hu)`. Take `⟨n, g1, hndvd, hgeq⟩` from `WfDvdMonoid.max_power_factor' hg0 hπC`. Establish `hmap1 : g1.map φ ≠ 0`. Introduce `h0`. Apply `hndvd` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: g1 ∈ RingHom.ker (mapRingHom φ)` using `h0`. Rewrite `this` using `[Polynomial.ker_mapRingHom, hker, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Conclude with `this`. Establish `hg1ne : g1 ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Conclude with `hg0 (by rw [hgeq, mul_zero])`. Establish `hpne : (C (algebraMap W M π)) ^ n ≠ 0`. Introduce `h`. Conclude with `hg0 (by rw [hgeq, h, zero_mul])`. Establish `hdeg1 : g1.natDegree ≤ g.natDegree`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hgeq, natDegree_mul hpne hg1ne]`. Use linear arithmetic over natural numbers and integers. Establish `hndvdp : ¬ f.map φ ∣ g1.map φ`. Introduce `hd`. Establish `h1` using `natDegree_le_of_dvd hd hmap1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hf.natDegree_map]`. Establish `h2` using `natDegree_map_le (f := φ) (p := g1)`. Use linear arithmetic over natural numbers and integers. Take `⟨a, b, hab⟩` from `(hirr.coprime_iff_not_dvd).2 hndvdp`. Take `⟨A, rfl⟩` from `Polynomial.map_surjective φ hφ a`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨B, rfl⟩` from `Polynomial.map_surjective φ hφ b`. Establish `hker2 : A * f + B * g1 - 1 ∈ RingHom.ker (mapRingHom φ)`. Rewrite using `[RingHom.mem_ker, coe_mapRingHom, Polynomial.map_sub, Polynomial.map_add, Polynomial.map_mul, Polynomial.map_mul, Polynomial.map_one, hab, sub_self]`. Rewrite `hker2` using `[Polynomial.ker_mapRingHom, hker, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Take `⟨H, hH⟩` from `hker2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hev : aeval α B * aeval α g1 = 1 + algebraMap W Ω π * aeval α H`. Establish `h` using `congrArg (aeval α) hH`. Simplify using `only [map_sub, map_add, map_mul, map_one, hα, mul_zero, zero_add, aeval_C] at h`. Rewrite using `[IsScalarTower.algebraMap_apply W M Ω]`. Take the linear combination `h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨v, hvN, hv⟩ : ∃ v ∈ N, v * (1 + algebraMap W Ω π * aeval α H) = 1 := by`. Take `⟨w, hw⟩` from `(isUnit_one_add_algebraMap_mul_of_not_isUnit hπ N hN ⟨aeval α H, memN H⟩).exists_left_inv`. Use `⟨w, w.2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hw` as an intermediate fact. Simplify using `using this`.
-
-Use `⟨n, aeval α g1, memN g1, ?_, ?_⟩` and prove the remaining obligations. Establish `hinv : (aeval α g1)⁻¹ = v * aeval α B`. Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Take the linear combination `v * hev + hv`. Rewrite using `[hinv]`.
-
-Conclude with `N.mul_mem hvN (memN B)`. Rewrite using `[← hg, hgeq, map_mul, map_pow, aeval_C, IsScalarTower.algebraMap_apply W M Ω]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eq_pow_mul_unit_of_mem_adjoin [IsLocalRing W] {π : W}
     (hπ : ¬ IsUnit π) (M : Subalgebra W Ω) [WfDvdMonoid M] {k : Type} [Field k] (φ : M →+* k)
@@ -337,33 +327,29 @@ open Polynomial IsLocalRing in
 variable {W Ω : Type} [CommRing W] [Field Ω] [Algebra W Ω] in
 
 /- English proof (translation)
-Set `Ω` to `AlgebraicClosure (FractionRing W)`. Establish `hinj : Function.Injective (algebraMap W Ω)`. Rewrite using `[IsScalarTower.algebraMap_eq W (FractionRing W) Ω]`. Conclude with `(algebraMap (FractionRing W) Ω).injective.comp (IsFractionRing.injective W (FractionRing W))`. Establish `hπu : ¬ IsUnit π` using `hπ.not_isUnit`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : _root_.GlobalTheory.ClosedResidueExt.Unram π (⊥ : Subalgebra W Ω)`. Use `⟨fun x hx => ?_, fun hx => ?_, fun x hx hx0 => ?_⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `Algebra.mem_bot.1 hx`. Conclude with `isIntegral_algebraMap`. Take `⟨w, hw⟩` from `Algebra.mem_bot.1 hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hπu` to reduce the goal to its premises. Establish `hp0 : algebraMap W Ω π ≠ 0` using `fun h => hπ.ne_zero (hinj (by rw [h, map_zero]))`. Establish `h1 : π * w = 1` using `hinj (by rw [map_mul, hw, map_one, mul_inv_cancel₀ hp0])`. Conclude with `⟨⟨π, w, h1, by rw [mul_comm]; exact h1⟩, rfl⟩`. Take `⟨w, rfl⟩` from `Algebra.mem_bot.1 hx`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw0 : w ≠ 0` using `fun h => hx0 (by rw [h, map_zero])`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hw0 hπ`. Establish `hinv : (algebraMap W Ω (u : W))⁻¹ = algebraMap W Ω ((u⁻¹ : Wˣ) : W)`. Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← map_mul, Units.mul_inv, map_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨n, algebraMap W Ω u, Subalgebra.algebraMap_mem _ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hinv]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Rewrite using `[hu, map_mul, map_pow, mul_comm]`. Take `⟨M, hM, hmax⟩` from `exists_maximal_unram_subalgebra π h0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hirrM, hfacM⟩` from `irreducible_and_associated_pow_of_unram M hM`. Use `haveI : IsDiscreteValuationRing M := IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨_, hirrM, fun {x} hx => hfacM x hx⟩`. Use `haveI hint : Algebra.IsIntegral W M := ⟨fun x => (isIntegral_algHom_iff M.val Subtype.val_injective).1 (hM.1 x x.2)⟩`. Use `⟨M, inferInstance, inferInstance, inferInstance, inferInstance, ?_, hint, hirrM, ?_⟩` and prove the remaining obligations. Introduce `a b hab`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hinj (congrArg Subtype.val hab)`. Use `IsAlgClosed.of_exists_root _ fun p hpm hpirr => ?_` and prove the remaining obligations. Take `⟨q, hq⟩` from `Polynomial.map_surjective (IsLocalRing.residue M) IsLocalRing.residue_surjective p`. Take `⟨f, hfp, hfnat, hfm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic ((Polynomial.mem_lifts p).2 ⟨q, hq⟩) hpm`. Establish `hfdeg : f.degree ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.degree_eq_natDegree hfm.ne_zero, hfnat]`. Conclude with `(Polynomial.natDegree_pos_iff_degree_pos.2 (Polynomial.degree_pos_of_irreducible hpirr)).ne'` after adjusting the coercions. Take `⟨α, hα⟩` from `IsAlgClosed.exists_aeval_eq_zero Ω f hfdeg`. Establish `hαi : IsIntegral M α` using `⟨f, hfm, hα⟩`. Establish `hNint : ∀ x ∈ (Algebra.adjoin M {α}).restrictScalars W, IsIntegral W x` using `fun x hx => isIntegral_trans x (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `adjoin_le_integralClosure hαi hx` as an intermediate fact. Conclude with `this)`. Establish `hker : RingHom.ker (IsLocalRing.residue M) = Ideal.span {algebraMap W M π}`. Rewrite using `[IsLocalRing.ker_residue]`. Conclude with `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).1 hirrM`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hirr' : Irreducible (f.map (IsLocalRing.residue M))` using `hfp ▸ hpirr`. Establish `hp0 : algebraMap W Ω π ≠ 0`. Introduce `h`. Apply `hM.2.1` to reduce the goal to its premises. Rewrite using `[h, inv_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `M.zero_mem`. Establish `hNU : _root_.GlobalTheory.ClosedResidueExt.Unram π ((Algebra.adjoin M {α}).restrictScalars W)`. Use `⟨hNint, fun hx => ?_, eq_pow_mul_unit_of_mem_adjoin hπu M (IsLocalRing.residue M) IsLocalRing.residue_surjective hker f hfm hirr' α hα hNint⟩` and prove the remaining obligations. Establish `hu` using `isUnit_one_add_algebraMap_mul_of_not_isUnit hπu _ hNint ⟨-(algebraMap W Ω π)⁻¹, Subalgebra.neg_mem _ hx⟩`. Establish `hz : (1 + algebraMap W ((Algebra.adjoin M {α}).restrictScalars W) π * ⟨-(algebraMap W Ω π)⁻¹, Subalgebra.neg_mem _ hx⟩ : (Algebra.adjoin M {α}).restrictScalars W) = 0` using `Subtype.ext (by show (1 : Ω) + algebraMap W Ω π * -(algebraMap W Ω π)⁻¹ = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_neg, mul_inv_cancel₀ hp0, add_neg_cancel])`. Rewrite `hu` using `[hz]`. Conclude with `not_isUnit_zero hu`. Establish `hle : M ≤ (Algebra.adjoin M {α}).restrictScalars W` using `fun x hx => Subalgebra.algebraMap_mem (Algebra.adjoin M {α}) (⟨x, hx⟩ : M)`. Establish `hNM` using `hmax _ hNU hle`.
-
-Establish `hαM : α ∈ M` using `hNM ▸ (Algebra.self_mem_adjoin_singleton M α : α ∈ Algebra.adjoin M {α})`. Use `⟨IsLocalRing.residue M ⟨α, hαM⟩, ?_⟩` and prove the remaining obligations. Establish `hev : Polynomial.eval (⟨α, hαM⟩ : M) f = 0`. Establish `h` using `hα`. Rewrite `h` using `[show α = algebraMap M Ω ⟨α, hαM⟩ from rfl, Polynomial.aeval_algebraMap_apply_eq_algebraMap_eval]`.
-
-Conclude with `Subtype.ext h`. Rewrite using `[← hfp, Polynomial.eval_map, Polynomial.eval₂_hom, hev, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ClosedResidueExt.exists_unramified_ext (W : Type) [CommRing W] [IsDomain W]
     [IsDiscreteValuationRing W] {π : W} (hπ : Irreducible π) :
@@ -451,7 +437,7 @@ open Polynomial IsLocalRing in
 variable {W Ω : Type} [CommRing W] [Field Ω] [Algebra W Ω] in
 
 /- English proof (translation)
-Introduce `W _ _ _ _ _`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Take `⟨R, i1, i2, i3, i4, h1, h2, _, h4⟩` from `_root_.GlobalTheory.ClosedResidueExt.exists_unramified_ext W hπ`. Conclude with `⟨R, i1, i2, i3, i4, h1, h2, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.ClosedResidueExt.exists_integral_ext_isAlgClosed_residueField : ∀ (W : Type) [CommRing W] [IsDomain W]
     [IsDiscreteValuationRing W] [IsAdicComplete (IsLocalRing.maximalIdeal W) W] [CharZero W],

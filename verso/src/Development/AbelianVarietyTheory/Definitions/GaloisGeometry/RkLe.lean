@@ -11,17 +11,17 @@ open Formalism.L2.G.Cmp Formalism.L2.Forms Formalism.L2.KerInert.SecondKernelPro
 variable {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau)
 
 /- English proof (translation)
-The claim follows from `(rankJ X j).trans hN.1.symm`.
+A detailed English derivation is pending.
 -/
 theorem rkS {j : ℕ} (hN : RankTie X D j) : (X.Pj j).m + 1 = D.R.N j := (rankJ X j).trans hN.1.symm
 
 /- English proof (translation)
-The claim follows from `(rankJ X (j + 1)).trans hN.2.symm`.
+A detailed English derivation is pending.
 -/
 theorem rkT {j : ℕ} (hN : RankTie X D j) : (X.Pj (j + 1)).m + 1 = D.R.N (j + 1) := (rankJ X (j + 1)).trans hN.2.symm
 
 /- English proof (translation)
-Rewrite using `[hN.1, hN.2]`. Conclude with `NN_le X j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rk_le {j : ℕ} (hN : RankTie X D j) : D.R.N j ≤ D.R.N (j + 1) := by
   rw [hN.1, hN.2]; exact NN_le X j

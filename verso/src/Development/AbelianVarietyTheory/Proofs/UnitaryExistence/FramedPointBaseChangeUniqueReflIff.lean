@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Frames
 
 /- English proof (translation)
-Unfold `scal ReciprocityTheory.ChartRestriction.G.Out.liftFun`. Simplify using `only [map_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem frMapUniq_scal_one {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (i : (PPx x).ι) :
@@ -18,9 +18,9 @@ theorem frMapUniq_scal_one {E : Type} [Field E] [NumberField E] [IsCMField E] {H
   simp only [map_one]
 
 /- English proof (translation)
-Introduce `p hp`. Establish `hp' : ∀ k, p ∈ (snd (Over.mk x') Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)` using `Set.mem_iInter.1 hp`. Establish `e` using `congrArg (fun f : Gx x' ⟶ Xo.univ.t.G.left => f.base p) hs`. Use `show pm.base p ∈ ⋂ k, (snd (Over.mk x) Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (pm ≫ (snd (Over.mk x) Xo.univ.t.G).left).base p ∈ (Xo.univ.t.PP.L.U (i k) : Set _)`. Rewrite using `[e]`. Conclude with `hp' k`.
+A detailed English derivation is pending.
 -/
 theorem frMapUniq_chart_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
@@ -38,11 +38,11 @@ theorem frMapUniq_chart_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H
   exact hp' k
 
 /- English proof (translation)
-Establish `eid : spMap (AlgHom.id c.F S).toRingHom = 𝟙 _` using `Spec.map_id _`. Establish `did : spMap (dualMap (AlgHom.id c.F S).toRingHom) = 𝟙 _`. Apply the tactic sequence `have hd : dualMap (RingHom.id S) = RingHom.id _ := RingHom.ext fun x => by ext <;> simp [dualMap]`. Use `show spMap (dualMap (RingHom.id S)) = _`. Rewrite using `[hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Spec.map_id _`. Use `⟨by rw [eid, Category.id_comp], fun τ i => by rw [did, Category.id_comp], 𝟙 _, by simp, by rw [eid]; simp, ?_⟩` and prove the remaining obligations. Introduce `i h`. Establish `e : Scheme.Hom.appLE (𝟙 (Gx y.x)) ((PPx y.x).U i) ((PPx y.x).U i) h = 𝟙 _`. Rewrite using `[Scheme.Hom.appLE, Scheme.Hom.id_app]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Category.id_comp _).trans ?_` and prove the remaining obligations. Rewrite using `[← (Gx y.x).presheaf.map_id]`. Both sides reduce to the same expression. Rewrite using `[e, CommRingCat.hom_id, RingHom.id_apply]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frMapUniq_refl {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) :
@@ -64,19 +64,17 @@ theorem frMapUniq_refl {E : Type} [Field E] [NumberField E] [IsCMField E] {H : H
   rw [e, CommRingCat.hom_id, RingHom.id_apply]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c S _ _ T _ _ φ y`. Use `⟨?_, frMapUniq_refl y, fun z => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, xo, u, t, e, b, s, g⟩ ⟨x', xo', u', t', e', b', s', g'⟩ ⟨hx, hu, pm, hs, hf, ha⟩ ⟨hx', hu', pm', hs', hf', ha'⟩ dsimp only at hx hu hx' hu' pm pm' hs hf ha hs' hf' ha'`. Establish `h1 : x = x'` using `hx.trans hx'.symm`. Substitute `h1` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Establish `h2 : u = u'`. Use function extensionality and compare the values at `τ i`. Conclude with `(hu τ i).trans (hu' τ i).symm`. Substitute `h2` using the available equality. Establish `h3 : pm = pm'`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. Establish an intermediate fact.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `hf.trans hf'.symm`. Conclude with `hs.trans hs'.symm`. Substitute `h3` using the available equality. Establish `h4 : s = s'`.
+Reduce the claim to the hypotheses of an applicable result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: s.f = s'.f`. Use function extensionality and compare the values at `i`. Establish `h` using `frMapUniq_chart_le pm hs i`. Conclude with `(ha i h).symm.trans (ha' i h)`. Consider the cases of `s`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments. Substitute using the available equality.
 
-Consider the cases of `s'`. Reduce the equality to equality of the corresponding arguments. Substitute `h4` using the available equality. Both sides reduce to the same expression. Establish `k : ∀ i : (PPx y.x).ι, scal y.x (1 : S) i * y.s.f i = y.s.f i` using `fun i => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[frMapUniq_scal_one, _root_.one_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hu, pm, hs, hf, ha⟩`. Conclude with `⟨hx, hu, pm, hs, hf, fun i h => (congrArg _ (k i)).trans (ha i h)⟩`. Introduce and unpack `⟨hx, hu, pm, hs, hf, ha⟩`.
-
-Conclude with `⟨hx, hu, pm, hs, hf, fun i h => (congrArg _ (k i)).symm.trans (ha i h)⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frMap_unique_refl_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (T : Type) [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (y : FrPt Xo c S), (∀ z z' : FrPt Xo c T, FrMap φ y z → FrMap φ y z' → z = z') ∧ FrMap (AlgHom.id c.F S) y y ∧ ∀ z : FrPt Xo c T, FrMap φ y z ↔ (z.x = spMap φ.toRingHom ≫ y.x ∧ (∀ τ i, z.u τ i = spMap (dualMap φ.toRingHom) ≫ y.u τ i) ∧ SecBC φ.toRingHom 1 y.x z.x y.s z.s) := by
   intro E _ _ _ H Dw l Xo c S _ _ T _ _ φ y

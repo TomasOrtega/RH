@@ -13,7 +13,7 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 namespace GlobalTheory.TraitOrder
 
 /- English proof (translation)
-Establish `hx : χ (closedPoint R) ∈ U.1` using `hle trivial`. Unfold `idlAlong`. Rewrite using `[ds_stalkId_eq_map J U _ hx, Ideal.map_map, ← CommRingCat.hom_comp, Scheme.germ_stalkClosedPointTo]`. Use `congr 2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem idlAlong_eq_map {X : Scheme.{0}} (J : X.IdealSheafData) {R : Type} [CommRing R] [IsLocalRing R] (χ : Sp R ⟶ X)
     (U : X.affineOpens) (hle : ⊤ ≤ χ ⁻¹ᵁ U.1) :
@@ -24,9 +24,9 @@ theorem idlAlong_eq_map {X : Scheme.{0}} (J : X.IdealSheafData) {R : Type} [Comm
   congr 2
 
 /- English proof (translation)
-Take `⟨U, hU, hx, -⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (show χ (closedPoint R) ∈ (⊤ : X.Opens) from trivial)`. Establish `hle : ⊤ ≤ χ ⁻¹ᵁ U` using `(Scheme.preimage_eq_top_of_closedPoint_mem χ hx).ge`. Establish `hle' : ⊤ ≤ (spMap f ≫ χ) ⁻¹ᵁ U` using `fun x _ => hle (show spMap f x ∈ (⊤ : (Sp R).Opens) from trivial)`. Rewrite using `[idlAlong_eq_map J χ ⟨U, hU⟩ hle, idlAlong_eq_map J _ ⟨U, hU⟩ hle', Ideal.map_map]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : (spMap f ≫ χ).appLE U ⊤ hle' = χ.appLE U ⊤ hle ≫ (spMap f).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm`. Rewrite using `[e, Category.assoc, Scheme.ΓSpecIso_naturality, ← Category.assoc, CommRingCat.hom_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem idlAlong_comp {X : Scheme.{0}} (J : X.IdealSheafData) {R S : Type} [CommRing R] [IsLocalRing R] [CommRing S]
     [IsLocalRing S] (χ : Sp R ⟶ X) (f : R →+* S) : idlAlong J (spMap f ≫ χ) = (idlAlong J χ).map f := by
@@ -43,9 +43,9 @@ theorem idlAlong_comp {X : Scheme.{0}} (J : X.IdealSheafData) {R S : Type} [Comm
   rfl
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Establish `: FaithfulSMul R S` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hf`. Establish `: IsLocalHom (algebraMap R S)` using `‹IsLocalHom f›`. Establish `: Module.Flat R S` using `inferInstance`. Establish `: Module.FaithfullyFlat R S` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.comap_map_eq_self_of_faithfullyFlat (B := S) I, ← Ideal.comap_map_eq_self_of_faithfullyFlat (B := S) J]`. Conclude with `congrArg _ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_injective {R S : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [CommRing S] [IsDomain S]
     [IsLocalRing S] (f : R →+* S) (hf : Function.Injective f) [IsLocalHom f] {I J : Ideal R}
@@ -96,11 +96,11 @@ def twistUnif (σ : 𝓞 E ≃+* 𝓞 E) (hσ : σ H.w0 = H.w0) {R : Type} [Comm
       exact this)
 
 /- English proof (translation)
-Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' (𝓞 E) X`. Unfold `InvFun.evalZ`. Rewrite using `[φ.eval_eq hr, ← hφ σ hσ]`. Set `g : (Fin n → 𝓞 E) →+ X` to `r.toAddMonoidHom.comp ⟨⟨fun a i => σ (a i), by ext; simp⟩, fun a b => by ext; simp⟩`. Establish `hg : ∀ (c : 𝓞 E) a, g (c • a) = σ c • g a` using `fun c a => by`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `r _ = σ c • r _`. Rewrite using `[← map_smul]`. Use `congr 1`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hs : Function.Surjective g` using `hr.comp fun a => ⟨fun i => σ.symm (a i), funext fun i => σ.apply_symm_apply _⟩`. Use `letI : Module (𝓞 E) X := Module.compHom _ σ.toRingHom`. Conclude with `φ.eval_eq (r := ⟨g.toAddHom, hg⟩) hs _`.
+Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem evalZ_twist {φ : InvFun (𝓞 E)} (hφ : IsTwInv H φ) (σ : 𝓞 E ≃+* 𝓞 E) (hσ : σ H.w0 = H.w0) {X : Type}
     [AddCommGroup X] [m : Module (𝓞 E) X] [hf : Module.Finite (𝓞 E) X]
@@ -122,21 +122,21 @@ theorem evalZ_twist {φ : InvFun (𝓞 E)} (hφ : IsTwInv H φ) (σ : 𝓞 E ≃
   exact φ.eval_eq (r := ⟨g.toAddHom, hg⟩) hs _
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, m, -⟩` from `sabPull CubePf.cubePull f t`. Conclude with `⟨_, ⟨m⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pull {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) : ∃ t' : SAB H S', Nonempty (SABMap t' t f) := by
   obtain ⟨_, _, _, _, _, m, -⟩ := sabPull CubePf.cubePull f t
   exact ⟨_, ⟨m⟩⟩
 
 /- English proof (translation)
-The claim follows from `e ▸ ⟨(sabComp pullCubComp E H _ _ _ _ _ _ _ _ m m').choose⟩`.
+A detailed English derivation is pending.
 -/
 theorem comp {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S} {g : S'' ⟶ S'}
     {h : S'' ⟶ S} (e : g ≫ f = h) (m : SABMap t' t f) (m' : SABMap t'' t' g) : Nonempty (SABMap t'' t h) :=
   e ▸ ⟨(sabComp pullCubComp E H _ _ _ _ _ _ _ _ m m').choose⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨(sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m n).choose⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem cancel {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S} {g : S'' ⟶ S'}
     {h : S'' ⟶ S} (e : g ≫ f = h) (m : SABMap t' t f) (n : SABMap t'' t h) : Nonempty (SABMap t'' t' g) := by
@@ -144,25 +144,25 @@ theorem cancel {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB 
   exact ⟨(sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m n).choose⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l l' Xo Xo' c c' O O' _ _ β β' Z Z' BD BD' φ σ r ν _ _ hφ hσ hd hd' W _ _ _ hW χ χ' y hy' hy`. Take `⟨h₁, h₂, h₃⟩` from `hW`. Set `T : CDVR` to `{ V := W }`. Take `⟨t', ⟨m'⟩⟩` from `exists_pull χ' Z'.t`. Take `⟨s, ⟨ms⟩⟩` from `exists_pull χ (FiniteStable.twist σ hσ Z.t)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨tK, ⟨mK⟩⟩` from `exists_pull y Z'.oF.t`. Set `ν' : SABMap Z'.oF.t (FiniteStable.twist σ hσ Z.oF.t) r` to `⟨ν.cm, ν.cart, ν.base, ν.act, ν.lin⟩`. Set `mZ : SABMap (FiniteStable.twist σ hσ Z.oF.t) (FiniteStable.twist σ hσ Z.t) Z.j` to `⟨Z.m.cm, Z.m.cart, Z.m.base, fun a => Z.m.act (σ a), Z.m.lin⟩`. Take `⟨a₁⟩` from `comp hy'.symm (show SABMap Z'.oF.t Z'.t Z'.j from Z'.m) mK`. Take `⟨a₂⟩` from `cancel rfl m' a₁`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b₀⟩` from `comp rfl mZ ν'`. Take `⟨b₁⟩` from `comp hy.symm b₀ mK`. Take `⟨b₂⟩` from `cancel rfl ms b₁`. Take `⟨ψ, -⟩` from `GlobalTheory.semiAbelian_model_determined_by_generic_fibre E H W h₂ t' s tK (MorphismProperty.of_isPullback (P := @IsProper) mK.cart.1 Z'.oF.proper) a₂ b₂`. Take `⟨n⟩` from `comp (Category.id_comp χ) ms ψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hp` using `GlobalTheory.GoodTrait.polAt_of_point Z' m' (jK W) y hy'.symm`. Take `⟨T', f, u, hi, hl, ⟨mu⟩, ⟨P⟩⟩` from `exists_unif_ext T t' hp`. Take `⟨n'⟩` from `comp rfl m' mu`. Take `⟨n₁⟩` from `comp rfl n mu`. Establish `hσ' : σ.symm H.w0 = H.w0` using `σ.symm_apply_eq.2 hσ.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `n₂ : SABMap (FiniteStable.twist σ.symm hσ' u) Z.t (spMap f ≫ χ)` to `⟨n₁.cm, n₁.cart, n₁.base, fun a => by`. Use `n₁.act (σ.symm a)` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ = _ ≫ (Z.t.act.act (σ (σ.symm a))).left at this`. Rewrite using `[σ.apply_symm_apply] at this, n₁.lin⟩` and apply the resulting hypothesis. Establish `j : Function.Injective ((algebraMap T'.V (FractionRing T'.V)).comp f)` using `(IsFractionRing.injective T'.V _).comp hi`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Set `g : FractionRing W →+* FractionRing T'.V` to `IsFractionRing.lift j`. Establish `e : jK T'.V ≫ spMap f = spMap g ≫ jK W` using `(GlobalTheory.Ex.UnifModel.spMap_comp fun _ => rfl).trans (GlobalTheory.Ex.UnifModel.spMap_comp (IsFractionRing.lift_algebraMap j)).symm`. Establish `hr' : Set.range (jK T'.V ≫ spMap f ≫ χ') ⊆ Set.range Z'.j`. Introduce and unpack `_ ⟨p, rfl⟩`. Use `⟨(spMap g ≫ y) p, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, ← hy', ← Category.assoc, ← e, Category.assoc]`. Establish `hr : Set.range (jK T'.V ≫ spMap f ≫ χ) ⊆ Set.range Z.j`. Introduce and unpack `_ ⟨p, rfl⟩`. Use `⟨(spMap g ≫ y ≫ r) p, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, Category.assoc, ← hy, ← Category.assoc, ← e, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hW' : CDvr T'.V` using `⟨T'.dvr, T'.cpl, T'.ch0⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T'.V`. Take `⟨be, hbe, hmon, -⟩` from `exists_periodForm P hϖ`. Take `⟨k', hk', hid'⟩` from `hd' T'.V hW' ϖ hϖ _ u n' P hr' be hbe hmon`. Take `⟨k, hk, hid⟩` from `hd T'.V hW' ϖ hϖ _ _ n₂ (twistUnif σ.symm hσ' P) hr be ⟨hbe.1, fun a x z => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hbe.2.1 (σ.symm a) x z` as an intermediate fact. Rewrite `this` using `[← aut_bar]`. Conclude with `this, hbe.2.2⟩ hmon`. Establish `hkk : (k : ℝ) = k'` using `hk.trans ((evalZ_twist hφ σ.symm hσ' _ be).trans hk'.symm)`. Take `rfl : k = k'` from `by exact_mod_cast hkk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `map_injective f hi ?_` and prove the remaining obligations. Rewrite using `[← idlAlong_comp, ← idlAlong_comp]`. Conclude with `hid'.trans hid.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idlAlong_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l l' : Level H) (Xo : Moduli D l)
     (Xo' : Moduli D l') (c : Coeff l) (c' : Coeff l') (O O' : Type) [CommRing O] [CommRing O'] (β : O →+* c.F)

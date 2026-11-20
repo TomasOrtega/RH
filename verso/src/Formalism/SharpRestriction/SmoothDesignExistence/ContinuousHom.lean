@@ -10,7 +10,7 @@ def FontAll (D : D7) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K LL : Loc.FinExt l), TruncatedSeriesCountingIdentities.FontaineAt ((D.loc l).PD K) ↥LL.1 ↥(Loc.OL LL)
 
 /- English proof (translation)
-Introduce `w hw C` and use `h (D.nd.l i) (D.nbr i w hw).Kw C.LL`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem font_of_all_places {D : D7} (h : FontAll D) (i : D.nd.Loc) : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i :=
   fun w hw C => h (D.nd.l i) (D.nbr i w hw).Kw C.LL

@@ -21,7 +21,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' (𝓞 E) X`. Rewrite using `[φ.eval_eq hr, φ.eval_eq hr]`. Conclude with `hφ n k _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_natMul (φ : InvFun (𝓞 E))
     (hφ : ∀ (n : ℕ) (k : ℕ) (B : (Fin n → 𝓞 E) → (Fin n → 𝓞 E) → ℝ), φ.toFun n (fun a b => k * B a b) = k * φ.toFun n B)
@@ -32,11 +32,11 @@ theorem eval_natMul (φ : InvFun (𝓞 E))
   exact hφ n k _
 
 /- English proof (translation)
-Use `hV.1` as an intermediate fact. Take `⟨tZ, ⟨mZ⟩⟩` from `GlobalTheory.TraitOrder.exists_pull χ Z.t`. Take `⟨u, ⟨n₀⟩⟩` from `GlobalTheory.TraitOrder.exists_pull y Z.oF.t`. Take `⟨a₁⟩` from `GlobalTheory.TraitOrder.comp hZ.symm (show SABMap Z.oF.t Z.t Z.j from Z.m) n₀`. Take `⟨a₂⟩` from `GlobalTheory.TraitOrder.cancel rfl mZ a₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n₁⟩` from `GlobalTheory.TraitOrder.comp rfl Z.m0.toSABMap n₀`. Take `⟨n₂⟩` from `GlobalTheory.TraitOrder.cancel rfl Y.m0.toSABMap n₁`. Take `⟨n₃⟩` from `GlobalTheory.TraitOrder.comp hY.symm (show SABMap Y.oF.t Y.t Y.j from Y.m) n₂`. Take `⟨b₂⟩` from `GlobalTheory.TraitOrder.cancel rfl m₁ n₃`. Take `⟨ψ, -⟩` from `GlobalTheory.semiAbelian_model_determined_by_generic_fibre E H V hV.2.1 t₁ tZ u (MorphismProperty.of_isPullback (P := @IsProper) n₀.cart.1 Z.oF.proper) b₂ a₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.TraitOrder.comp (Category.id_comp χ) mZ ψ`.
+A detailed English derivation is pending.
 -/
 theorem exists_sabMap_of_generic {O O₂ : Type} [CommRing O] [CommRing O₂] {β : O →+* c.F} {β₂ : O₂ →+* c.F}
     (Z : Model Xo c β) (Y : Model Xo c β₂) {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] (hV : CDvr V)
@@ -58,13 +58,13 @@ theorem exists_sabMap_of_generic {O O₂ : Type} [CommRing O] [CommRing O₂] {�
 open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.UT GlobalTheory.Ex GlobalTheory.OneBasis in
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hc, hG⟩` from `A.spec`. Set `F` to `AlgebraicClosure (FractionRing W)`. Set `g : W →+* F` to `(algebraMap (FractionRing W) F).comp (algebraMap W _)`. Establish `hg : Function.Injective g` using `(algebraMap (FractionRing W) F).injective.comp (IsFractionRing.injective _ _)`. Establish `hgf : Function.Injective (g.comp f)` using `hg.comp hfi`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `alg : Algebra (FractionRing O') F` to `(IsFractionRing.lift (K := FractionRing O') hgf).toAlgebra`. Establish `hF : ∀ x, @algebraMap (FractionRing O') F _ _ alg (algebraMap O' _ x) = algebraMap (FractionRing W) F (algebraMap W _ (f x))` using `fun x => IsFractionRing.lift_algebraMap hgf x`. Establish `z : Sp F` using `(default : PrimeSpectrum F)`. Take `⟨j, hj⟩` from `exists_chart A.P.D.toPre.P.isLB ((A.P.D.toPre.c (A.e y)).left (cpt W))`. Take `⟨v, hv⟩` from `GlobalTheory.ArcPsiVal.psi_value a f u A.P.D.toPre A.φ A.w y (A.e y) (hc y) F hF ((hG F _ hF rfl).1 y) z j hj`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, hd'⟩` from `GlobalTheory.ArcPsiVal.value_of_qVal A.P.D.toPre ϖ (A.e y) _ (hQ (A.e y)) F z j hj`. Establish `e1` using `(toStk z).injective (hd'.symm.trans hv)`. Rewrite `e1` using `[← map_zpow₀, ← map_mul]`. Establish `e2` using `(algebraMap (FractionRing W) F).injective e1`. Take `⟨s, hs⟩` from `hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hasVal_unique hϖ hd ⟨s ^ (a.be y y / 2) * v, ?_⟩` and prove the remaining obligations. Rewrite using `[e2, hs, mul_zpow, ← zpow_mul, Units.val_mul, map_mul, _root_.mul_assoc]`. Use `congr 2`. Conclude with `(map_zpow (((algebraMap W (FractionRing W)) : W →* FractionRing W).comp (Units.coeHom W)) s _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem q_eq {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {O' : Type} [CommRing O'] [IsDomain O'] {b : O →+* O'}
     {a : ArcIn D l β O' b} {W : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] {f : O' →+* W} {u : W}
@@ -97,25 +97,23 @@ theorem q_eq {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {O' 
 open ReciprocityTheory.ChartRestriction.G.DVR in
 
 /- English proof (translation)
-Use `letI := H.starRing`. Use `choose Q hQ using QForm.exists_QVal hϖ A.P.D`. Establish `hQ' : QForm.IsQ A.P.D.toPre ϖ Q` using `hQ`. Establish `hval : HasVal ϖ (algebraMap W (FractionRing W) u) k` using `⟨v, by`. Rewrite using `[hu]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[_root_.mul_comm]⟩`. Establish `hq` using `fun y => q_eq hfi A hϖ hQ' hval y`. Establish `hex : ∀ χ, ∃ r, PsiCoord A.P.D.toPre χ r` using `fun χ => ((GlobalTheory.PsiCoordLocal.main W A.P.D inferInstance χ).1).imp fun _ h => h.1`. Set `es : A.P.D.toPre.X →ₗ[ℤ] a.D₀.X` to `A.e.symm.toLinearMap.toAddMonoidHom.toIntLinearMap`. Set `be : LinearMap.BilinForm ℤ A.P.D.toPre.X` to `(k : ℤ) • a.be.compl₁₂ es es`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hbe : ∀ y z, be (A.e y) (A.e z) = k * a.be y z` using `fun y z => by simp [be, es]`. Establish `hs : ∀ y, ∃ y₀, A.e y₀ = y` using `A.e.surjective`. Use `⟨be, ⟨fun y z => ?_, fun x y z => ?_, fun y z => ?_⟩, fun y => ?_, hbe⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hs y`. Take `⟨z, rfl⟩` from `hs z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbe, hbe, a.be_symm]`. Take `⟨y, rfl⟩` from `hs y`. Take `⟨z, rfl⟩` from `hs z`. Rewrite using `[← map_smul, ← map_smul, hbe, hbe, a.be_adj]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨y₀, rfl⟩` from `hs y`. Take `⟨r, hr⟩` from `hex (A.e y₀)`. Establish `hv` using `GlobalTheory.ValForm.hasVal_coord (hQ (A.e y₀)) hr`. Establish `h0 : 0 ≤ a.be y₀ y₀`. Distinguish the cases in `h : y₀ = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Conclude with `(a.be_pos y₀ h).le`. Take `⟨d, hd⟩ : (2 : ℤ) ∣ a.be y₀ y₀` from `Dvd.dvd.trans (Dvd.intro _ rfl) (a.be_dvd y₀ y₀)`. Take `⟨n, hn⟩` from `Int.eq_ofNat_of_zero_le (show 0 ≤ d by omega)`. Establish `hQn : Q (A.e y₀) = ((k * n : ℕ) : ℤ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hq y₀, hd, hn]`. Use `push_cast`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite `hv` using `[hQn]`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, hw⟩` from `hv`. Rewrite `hw` using `[zpow_natCast, ← map_pow, ← map_mul]`. Establish `e : r = w * ϖ ^ (k * n)` using `(IsFractionRing.injective W (FractionRing W) hw).trans (_root_.mul_comm _ _)`. Use `⟨w, fun _ => k * n, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `: i = 0` using `Subsingleton.elim _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `this` using the available equality. Use `show be (A.e y₀) (A.e y₀) = _`. Rewrite using `[hbe, hd, hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify `hr` using `[e]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_form {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {O' : Type} [CommRing O'] [IsDomain O']
     {b : O →+* O'} {a : ArcIn D l β O' b} {W : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [CharZero W]
@@ -166,11 +164,11 @@ theorem exists_form {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c �
     · simpa [e] using hr
 
 /- English proof (translation)
-Use `hV.1` as an intermediate fact. Use `hV.2.2` as an intermediate fact. Take `⟨be, hbe, hmon, hform⟩` from `exists_form hfi A hϖ v k hu`. Take `⟨m⟩` from `exists_sabMap_of_generic Z Y hV y χ χ' hZ hY A.m`. Establish `hr : Set.range (jK V ≫ χ) ⊆ Set.range Z.j`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `⟨y p, by rw [hZ]; rfl⟩`. Take `⟨n, hn, hid⟩` from `hpol V hV ϖ hϖ χ A.t m A.P hr be hbe hmon`. Use `⟨n, hn.trans ?_, hid⟩` and prove the remaining obligations. Establish `e : φ.evalZ be = φ.eval a.D₀.X (fun p q => ((be (A.e p) (A.e q) : ℤ) : ℝ))` using `(φ.eval_equiv A.e _).symm`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Repeatedly rewrite using `[hform]`. Use `push_cast`. Conclude with `eval_natMul φ hφ k _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem order_of_arcWit {O O₂ : Type} [CommRing O] [CommRing O₂] {β : O →+* c.F} {β₂ : O₂ →+* c.F}
     (Z : Model Xo c β) (Y : Model Xo c β₂) (BD : EffCartierData Z.X) (φ : InvFun (𝓞 E))
@@ -198,15 +196,15 @@ theorem order_of_arcWit {O O₂ : Type} [CommRing O] [CommRing O₂] {β : O →
   exact eval_natMul φ hφ k _
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃⟩` from `hV`. Set `T : CDVR` to `{ V := V }`. Take `⟨t₁, ⟨m₁⟩⟩` from `GlobalTheory.TraitOrder.exists_pull χ Z.t`. Establish `hp` using `GlobalTheory.GoodTrait.polAt_of_point Z m₁ (jK V) y hZ.symm`. Take `⟨T', f, u, hi, hl, ⟨mu⟩, ⟨P⟩⟩` from `exists_unif_ext T t₁ hp`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n'⟩` from `GlobalTheory.TraitOrder.comp rfl m₁ mu`. Establish `hW' : CDvr T'.V` using `⟨T'.dvr, T'.cpl, T'.ch0⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T'.V`. Take `⟨be, hbe, hmon, -⟩` from `exists_periodForm P hϖ`. Establish `hs : Subsingleton P.D.toPre.X` using `(closed_mem_abLocus_iff T' P).1 ((abLocus_pullback abLocusOne Z.t.semi n'.cart.1 _).1 ((congrArg (· ∈ abLocus Z.t.G) (Scheme.Hom.comp_apply (spMap f) χ _)).mpr (hab _)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `j : Function.Injective ((algebraMap T'.V (FractionRing T'.V)).comp f)` using `(IsFractionRing.injective T'.V _).comp hi`. Set `g : FractionRing V →+* FractionRing T'.V` to `IsFractionRing.lift j`. Establish `e : jK T'.V ≫ spMap f = spMap g ≫ jK V` using `(GlobalTheory.Ex.UnifModel.spMap_comp fun _ => rfl).trans (GlobalTheory.Ex.UnifModel.spMap_comp (IsFractionRing.lift_algebraMap j)).symm`. Establish `hr : Set.range (jK T'.V ≫ spMap f ≫ χ) ⊆ Set.range Z.j`. Introduce and unpack `_ ⟨p, rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨(spMap g ≫ y) p, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, ← hZ, ← Category.assoc, ← e, Category.assoc]`. Take `⟨k, hk, hid⟩` from `hpol T'.V hW' ϖ hϖ _ u n' P hr be hbe hmon`. Establish `h0 : φ.evalZ be = 0` using `φ.eval_of_subsingleton _`. Choose the witnesses or unpack the hypotheses as in `rfl : k = 0 := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hk` using `[h0]`. Conclude with `hk` after adjusting the coercions. Rewrite `hid` using `[GlobalTheory.TraitOrder.idlAlong_comp, pow_zero, Ideal.span_singleton_one]`. Conclude with `GlobalTheory.TraitOrder.map_injective f hi (hid.trans (Ideal.map_top f).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idlAlong_eq_top_of_abelian {O : Type} [CommRing O] {β : O →+* c.F} (Z : Model Xo c β) (BD : EffCartierData Z.X)
     (φ : InvFun (𝓞 E)) (hpol : IsPhiDiv φ Z BD) {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] (hV : CDvr V)
@@ -242,33 +240,31 @@ theorem idlAlong_eq_top_of_abelian {O : Type} [CommRing O] {β : O →+* c.F} (Z
   exact GlobalTheory.TraitOrder.map_injective f hi (hid.trans (Ideal.map_top f).symm)
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c p W hp hW Z Y bV hbV f t m₁ m₂ h₁ h₂ h₃ φ m BD hφ hpol O' _ _ _ b' ϖ a χ₀ hbase hchart x₀ hx₀`. Take `⟨hL, hL₂, hL₃, hL₄, hL₅, hL₆⟩` from `GlobalTheory.allSixLaws`. Take `⟨W₀⟩` from `(Y.hasArcData_iff (GlobalTheory.PolArc.moveV bV hbV b' a) _ _ _ _).1 hchart.2.2.2`. Establish `hR : AdmBase (PowerSeries O') (Ideal.span {PowerSeries.X})`. Break down `hbase with ⟨hf, -⟩ | ⟨hd, -, -⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `letI := hf.toField`. Conclude with `GlobalTheory.ArcPull.admissibleBase_powerSeries_span_X O'`. Conclude with `GlobalTheory.ArcPull.admissibleBase_powerSeries_span_X O'`. Use `haveI : Module.Finite (𝓞 E) (GlobalTheory.PolArc.moveV bV hbV b' a).D₀.X := Module.Finite.equiv W₀.e.symm`. Take `⟨c₀, hc₀⟩ : ∃ c₀ : ℝ, c₀ = φ.eval (GlobalTheory.PolArc.moveV bV hbV b' a).D₀.X (fun p q => ((GlobalTheory.PolArc.moveV bV hbV b' a).be p q : ℝ))` from `⟨_, rfl⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `inj : ∀ (V : Type) [CommRing V] [IsDomain V] (ψ : PowerSeries O' →+* V) (gam : FractionRing (PowerSeries O') →+* FractionRing V), (∀ r, gam (algebraMap (PowerSeries O') _ r) = algebraMap V _ (ψ r)) → Function.Injective ψ` using `fun V _ _ ψ gam hg x y e => IsFractionRing.injective (PowerSeries O') (FractionRing (PowerSeries O')) (gam.injective (by rw [hg, hg, e]))`. Establish `hYc : ∀ (V : Type) [CommRing V] [IsDomain V] (ψ : PowerSeries O' →+* V) (gam : FractionRing (PowerSeries O') →+* FractionRing V), (∀ r, gam (algebraMap (PowerSeries O') _ r) = algebraMap V _ (ψ r)) → jK V ≫ spMap ψ ≫ χ₀ = (spMap gam ≫ x₀) ≫ Y.j` using `fun V _ _ ψ gam hg => by`. Rewrite using `[← Category.assoc, ← ArcExtends.spMap_jK hg, Category.assoc, Category.assoc, hx₀]`. Establish `key : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDvr V → ∀ (ψ : PowerSeries O' →+* V) (gam : FractionRing (PowerSeries O') →+* FractionRing V), (∀ r, gam (algebraMap (PowerSeries O') _ r) = algebraMap V _ (ψ r)) → ∀ χ : Sp V ⟶ Z.X, spMap gam ≫ x₀ ≫ Z.j = jK V ≫ χ → …`. Introduce `V _ _ _ hV ψ gam hg χ hχ ϖ' hϖ' v k hk hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hV.1` as an intermediate fact. Establish `hψ` using `inj V ψ gam hg`. Establish `hsub : (Ideal.span {(PowerSeries.X : PowerSeries O')}).map ψ ≤ maximalIdeal V`. Rewrite using `[Ideal.map_span, Set.image_singleton, Ideal.span_singleton_le_iff_mem, hu]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ ((mem_maximalIdeal _).2 hϖ'.not_isUnit) _ (Nat.pos_of_ne_zero hk))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A, -⟩` from `ArcWit.baseChange hL₃.cubePull hL.polBaseChange hL₄.unifBaseChange hL₅ (qkPullExists hL.globalFns) polOActPull hR (GlobalTheory.ArcPointDescent.admissibleBase_maximalIdeal_completeDVR hV) W₀ ψ hψ hsub`. Rewrite using `[hc₀]`. Conclude with `order_of_arcWit Z Y BD φ hφ hpol.1 hV (f := ψ.comp PowerSeries.C) (show Function.Injective (ψ.comp PowerSeries.C) from hψ.comp PowerSeries.C_injective) A (spMap gam ≫ x₀) χ (by rw [Category.assoc]; exact hχ.symm) (hYc V ψ gam hg) hϖ' v k hu`. Establish `hK : CharZero (FractionRing O')` using `IsFractionRing.charZero_of_isFractionRing O'`. Take `⟨ψ₁, hψ₁⟩ : ∃ ψ₁ : PowerSeries O' →+* PowerSeries (FractionRing O'), ψ₁ = PowerSeries.map (algebraMap O' (FractionRing O'))` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψi : Function.Injective ψ₁` using `hψ₁ ▸ PowerSeries.map_injective _ (IsFractionRing.injective O' _)`. Establish `j : Function.Injective ((algebraMap (PowerSeries (FractionRing O')) (FractionRing (PowerSeries (FractionRing O')))).comp ψ₁)` using `(IsFractionRing.injective _ _).comp hψi`. Take `⟨gam₁, hg₁⟩ : ∃ gam₁ : FractionRing (PowerSeries O') →+* FractionRing (PowerSeries (FractionRing O')), ∀ r, gam₁ (algebraMap (PowerSeries O') _ r) = algebraMap (PowerSeries (FractionRing O')) _ (ψ₁ r)` from `⟨IsFractionRing.lift j, fun r => IsFractionRing.lift_algebraMap j r⟩`. Establish `hV₁ : CDvr (PowerSeries (FractionRing O'))` using `GlobalTheory.ArcPointDescent.cDvr_powerSeries _`. Use `isProper_toroidalModel_structureMap Z` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hjZ : Z.j ≫ Z.s = pullback.snd _ _ ≫ spMap (algebraMap (𝓞 c.F) c.F)`. Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Z.jQ_over]`. Establish `hjY : Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap (c.V W).subtype`. Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]`. Establish `hb : spMap (algebraMap (𝓞 c.F) c.F) = spMap (c.V W).subtype ≫ spMap bV`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← spMap_comp]`. Conclude with `congrArg spMap (RingHom.ext fun x => (hbV x).symm)`. Establish `hjj : Z.j ≫ Z.s = Y.j ≫ Y.s ≫ spMap bV`. Rewrite using `[hjZ, hb, ← Category.assoc Y.j, hjY, Category.assoc]`. Establish `hs : x₀ ≫ Z.j ≫ Z.s = jK (PowerSeries O') ≫ spMap (PowerSeries.C (R` using `O')) ≫ spMap b' ≫ spMap bV := by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hjj, ← Category.assoc x₀, ← hx₀, Category.assoc, ← Category.assoc χ₀, hchart.1, Category.assoc]`. Take `⟨χ₁, hχ₁, -⟩` from `val_exists Z.s (spMap gam₁ ≫ x₀ ≫ Z.j) (spMap ψ₁ ≫ spMap (PowerSeries.C (R := O')) ≫ spMap b' ≫ spMap bV) (by`. Rewrite using `[Category.assoc, Category.assoc, hs, ← Category.assoc, ArcExtends.spMap_jK hg₁, Category.assoc])`. Take `⟨n, hn, -⟩` from `key _ hV₁ ψ₁ gam₁ hg₁ χ₁ hχ₁.symm PowerSeries.X PowerSeries.X_prime.irreducible 1 1 one_ne_zero (by simp [hψ₁])`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Introduce `V _ _ _ hV ψ gam hg χ hχ`. Use `hV.1` as an intermediate fact. Establish `hψ` using `inj V ψ gam hg`. Establish `hZc : jK V ≫ χ = (spMap gam ≫ x₀) ≫ Z.j` using `by rw [Category.assoc]; exact hχ.symm`. Distinguish the cases in `hU : IsUnit (ψ PowerSeries.X)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨t₁, ⟨n₁⟩⟩` from `GlobalTheory.TraitOrder.exists_pull (spMap ψ ≫ χ₀) Y.t`. Take `⟨mZ⟩` from `exists_sabMap_of_generic Z Y hV (spMap gam ≫ x₀) χ (spMap ψ ≫ χ₀) hZc (hYc V ψ gam hg) n₁`. Establish `hab : ∀ p, χ p ∈ abLocus Z.t.G` using `fun p => by`. Use `(abLocus_pullback abLocusOne Z.t.semi mZ.cart.1 p).2 ((abLocus_pullback abLocusOne Y.t.semi n₁.cart.1 p).1 ?_)` and prove the remaining obligations. Use `(congrArg (· ∈ abLocus Y.t.G) (Scheme.Hom.comp_apply (spMap ψ) χ₀ p)).mpr ((hchart.2.1 _).2 fun hX => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h' : ψ PowerSeries.X ∈ p.asIdeal` using `hX`. Conclude with `p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h' hU)`. Rewrite using `[idlAlong_eq_top_of_abelian Z BD φ hpol.1 hV (spMap gam ≫ x₀) χ hZc hab]`. Conclude with `(Ideal.span_singleton_eq_top.2 (hU.pow n)).symm`. Take `⟨ϖ', hϖ'⟩` from `IsDiscreteValuationRing.exists_irreducible V`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ψ PowerSeries.X ≠ 0` using `fun h => PowerSeries.X_ne_zero (hψ (h.trans (map_zero ψ).symm))`. Take `⟨k, v, hk⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hne hϖ'`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Conclude with `hU (by simp [hk])`.
-
-Take `⟨n₂, hn₂, hid⟩` from `key V hV ψ gam hg χ hχ ϖ' hϖ' v k hk0 hk`. Establish `e : n₂ = k * n`. Establish `: (n₂ : ℝ) = k * n` using `by rw [hn₂, hn]; simp`. Conclude with `this` after adjusting the coercions. Rewrite using `[hid, e, hk, mul_pow, pow_mul, Ideal.span_singleton_mul_left_unit (v.isUnit.pow n)]`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits →

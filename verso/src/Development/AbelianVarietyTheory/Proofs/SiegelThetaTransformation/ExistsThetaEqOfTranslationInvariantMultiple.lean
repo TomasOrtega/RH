@@ -19,9 +19,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : D
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
 
 /- English proof (translation)
-Establish `h1 (k) : hx X bas idx x (z k + p k) (z k + p k) = hx X bas idx x (z k) (z k) + hx X bas idx x (z k) (p k) + conj (hx X bas idx x (z k) (p k)) + hx X bas idx x (p k) (p k)`. Rewrite using `[← h]`. Simplify using `only [hx, mulVec_add, star_add, add_dotProduct, dotProduct_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 (k) : hx X bas idx x (z k + (1 / 2 : ℂ) • p k) (p k) = hx X bas idx x (z k) (p k) + 1 / 2 * hx X bas idx x (p k) (p k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [hx, mulVec_add, mulVec_smul, add_dotProduct, smul_dotProduct, smul_eq_mul]`. Simplify using `only [h1, h2, Finset.sum_add_distrib, ← Finset.mul_sum, ← map_sum]`. Establish `h3` using `Complex.sub_conj (∑ k, hx X bas idx x (z k) (p k))`. Move the coercions through the operations in `at h3`. Take the linear combination `(π / 2 : ℂ) * h3`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exponent_eq {x : Frame X.Ψ r}
     (h : ∀ z w, hx X bas idx x w z = conj (hx X bas idx x z w)) (z p : Fin n → Fin g → ℂ) :
@@ -44,23 +44,23 @@ theorem exponent_eq {x : Frame X.Ψ r}
   linear_combination (π / 2 : ℂ) * h3
 
 /- English proof (translation)
-Take `⟨c, hcd⟩ : ∃ c : (Fin n → Fin g → ℂ) → ℂ, c = fun ζ => cexp (π / 2 * ∑ k, ζ k ⬝ᵥ W *ᵥ ζ k)` from `⟨_, rfl⟩`. Take `⟨Θ, hΘd⟩ : ∃ Θ : (Fin n → Fin g → ℂ) → ℂ, Θ = fun ζ => (D * c ζ)⁻¹ * θ fun k => h⁻¹ *ᵥ ζ k` from `⟨_, rfl⟩`. Establish `hc (ζ) : D * c ζ ≠ 0` using `mul_ne_zero hD (hcd ▸ Complex.exp_ne_zero _)`. Establish `hΘ : Differentiable ℂ Θ`. Rewrite using `[hΘd]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Differentiable.mul (Differentiable.inv ?_ hc) (hθ.comp ?_)` and prove the remaining obligations. Simplify using `only [hcd, mulVec, dotProduct] fun_prop`. Use `differentiable_pi.2 fun k => differentiable_pi.2 fun i => ?_` and prove the remaining obligations. Simplify using `only [mulVec, dotProduct]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `main : ∀ (a b : Fin n → Fin g → ℤ) (ζ : Fin n → Fin g → ℂ), cexp (π * I * ∑ k, ((fun i => (N * b k i : ℂ)) ⬝ᵥ τ *ᵥ (fun i => (N * b k i : ℂ)) + 2 * ((fun i => (N * b k i : ℂ)) ⬝ᵥ ζ k) + (fun i => (N * a k i : ℂ)) ⬝ᵥ (fun i => (N * b k i : ℂ)))) * Θ (fun k => ζ k + ((fun i => (N * …`. Introduce `a b ζ`. Establish `hq (m : Fin g → ℤ) : qv (fun i => (N * m i : ℚ)) = fun i => (N * m i : ℂ)`. Use function extensionality and compare the values at `i`. Simplify using `[qv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, h1⟩` from `key a b`. Establish `h1` using `h1 fun k => h⁻¹ *ᵥ ζ k`. Establish `he` using `Finset.sum_congr (s₁ := Finset.univ) rfl fun (k : Fin n) _ => heis_exponent _ _ hτ.1 hW hY (fun i => (N * a k i : ℚ)) (fun i => (N * b k i : ℚ)) (ζ k)`. Rewrite `he` using `[Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_neg_distrib, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum]`. Establish `he'` using `congrArg cexp he`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he'` using `[Complex.exp_add, Complex.exp_add]`. Simplify using `only [hq] at he'`. Establish `h2 (k) : h⁻¹ *ᵥ (ζ k + ((fun i => (N * a k i : ℂ)) + τ *ᵥ fun i => (N * b k i : ℂ))) = h⁻¹ *ᵥ ζ k + p k`. Rewrite using `[← hp, mulVec_add, mulVec_mulVec, nonsing_inv_mul _ hu, one_mulVec]`. Simplify using `only [mulVec_add h, mulVec_smul h, hp, mulVec_mulVec, mul_nonsing_inv _ hu, one_mulVec] at h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hΘd, h2]`. Rewrite using `[← h1, ← mul_assoc, ← mul_assoc]`. Use `congr 1`. Establish `h3` using `hc ζ`. Establish `h4` using `hc fun k => ζ k + ((fun i => (N * a k i : ℂ)) + τ *ᵥ fun i => (N * b k i : ℂ))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_eq_iff_eq_mul₀ h4, mul_assoc (_ * c ζ)⁻¹, eq_inv_mul_iff_mul_eq₀ h3]`. Simplify using `only [hcd]`. Take the linear combination `D * he'`. Take `⟨φ, hφ, h5⟩` from `GlobalTheory.Ker.LevelTheta.exists_thS_eq n g τ hτ N hN Θ hΘ (fun a ζ => by`. Use `main a 0 ζ` as an intermediate fact.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.zero_apply, Int.cast_zero, mul_zero, ← Pi.zero_def, mulVec_zero, add_zero, dotProduct_zero, zero_dotProduct, Finset.sum_const_zero, Complex.exp_zero, one_mul] at this`. Conclude with `this) (fun b ζ => by`. Use `main 0 b ζ` as an intermediate fact. Simplify using `only [Pi.zero_apply, Int.cast_zero, mul_zero, ← Pi.zero_def, zero_add, add_zero, zero_dotProduct] at this`. Conclude with `this)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨φ, hφ, fun z => ?_⟩` and prove the remaining obligations. Establish `h6` using `hc fun k => h *ᵥ z k`. Rewrite using `[h5]`. Simplify using `only [hΘd, hcd, mulVec_mulVec, nonsing_inv_mul _ hu, one_mulVec] at h6 ⊢`. Conclude with `mul_inv_cancel_left₀ h6 (θ z)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_canonical (h τ W : Matrix (Fin g) (Fin g) ℂ) (hu : IsUnit h.det)
     (hτ : τ ∈ Siegel (Fin g)) (hW : W.IsSymm) (hY : W * τ.map (fun z => (z.im : ℂ)) = 1)
@@ -131,13 +131,13 @@ theorem exists_canonical (h τ W : Matrix (Fin g) (Fin g) ℂ) (hu : IsUnit h.de
   exact mul_inv_cancel_left₀ h6 (θ z)
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g q0 hr bas idx n hs hn x hx' N hN θ hθ hinv`. Take `⟨⟨L, hL⟩, him, -⟩` from `GlobalTheory.Ker.zR_laws E r X g q0 hr bas idx n hs hn x hx'`. Establish `hconj` using `(GlobalTheory.Dict.hx_laws E r X g bas idx n hs hn x hx').1`. Establish `hu` using `isUnit_det_hMat idx hs hx'`. Establish `key : ∀ y : Matrix (Fin n) (Fin r) E, (∀ k, y k ∈ X.Λ) → ∀ z : Fin n → Fin g → ℂ, cexp (-(π * ∑ k, hx X bas idx x (z k + (1 / 2 : ℂ) • (N • pv X idx x (y k))) (N • pv X idx x (y k)))) * θ (fun k => z k + N • pv X idx x (y k)) = θ z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy z`. Take `⟨v, rfl⟩` from `L.surjective z`. Establish `h1 : zR X idx x (N • embR X y) = fun k => N • pv X idx x (y k)`. Rewrite using `[← hL, map_nsmul, hL]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : zR X idx x (v + N • embR X y) = fun k => L v k + N • pv X idx x (y k)`. Rewrite using `[← hL, map_add, hL (N • _), h1]`. Both sides reduce to the same expression. Establish `h3` using `hinv y hy v`. Rewrite `h3` using `[← him, h1, h2, ← hL v, gaussR, gaussR, ← mul_assoc, ← Complex.exp_add, exponent_eq idx hconj (L v) fun k => N • pv X idx x (y k), Complex.exp_add, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_left_cancel₀ (Complex.exp_ne_zero _) h3`. Use `exists_canonical (hMat X bas idx x) (tauMat X bas idx x) (imInv X bas idx x) hu ⟨tauMat_isSymm idx hs hx', tauMat_im_posDef idx hs hx'⟩ (imInv_isSymm idx hs hx') (imInv_mul_im idx hs hx') (pow_ne_zero (n / 2) hu.ne_zero) hN hθ fun a b => ⟨fun k => N • pv X idx x (bas (Sum.elim (a …` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, mulVec_smul, pv, hMat_mulVec_per_bas idx hs hx', smul_add, ← mulVec_smul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_thA_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ x ∈ X.dom, ∀ (N : ℕ), 0 < N → ∀ θ : (Fin n → Fin g → ℂ) → ℂ, Differentiable ℂ θ → (∀ y : Matrix (Fin n) (Fin r) E, (∀ k, y k ∈ X.Λ) → ∀ v : WR X n, cexp (-(π * I * (EFR X v (N • embR X y) : ℝ))) * (gaussR X bas idx x (zR X idx x (v + N • embR X y)) * θ (zR X idx x (v + N • embR X y))) = gaussR X bas idx x (zR X idx x v) * θ (zR X idx x v)) → ∃ φ : TF n g, IsSB φ ∧ ∀ z, thA X bas idx φ x z = θ z := by
   intro E _ _ _ r X g q0 hr bas idx n hs hn x hx' N hN θ hθ hinv

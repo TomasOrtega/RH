@@ -7,19 +7,19 @@ open UpperTheory.V.Z.Tf UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z
 namespace UpperTheory.V.Z.Mult
 
 /- English proof (translation)
-Introduce `_ _ _ _ hE _ hn _ π _ hd D h1 h2 _ h4` and use `h1 (SR.has_of_split hE hn π hd D h2 h4)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem noData_free : NoData := fun _ _ _ _ hE _ hn _ π _ hd D h1 h2 _ h4 => h1 (SR.has_of_split hE hn π hd D h2 h4)
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n hn _ π _ hd σ hσ hun hae` and use `(UpperTheory.Gal.Desc.match_of UpperTheory.Gal.Desc.speh compUnique oneFactor PositivityTheory.JacquetShalikaLocal.jacquetShalikaBound PositivityTheory.jumpWindows.cuspidalMultiplicityOne SR.splitRigid GOne.thin hE hn π (GOne.unitOf E n hn π hd) σ hσ hun hae).3`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem compOf_free : CompOf := fun E _ _ _ hE n hn _ π _ hd σ hσ hun hae =>
   (UpperTheory.Gal.Desc.match_of UpperTheory.Gal.Desc.speh compUnique oneFactor PositivityTheory.JacquetShalikaLocal.jacquetShalikaBound
     PositivityTheory.jumpWindows.cuspidalMultiplicityOne SR.splitRigid GOne.thin hE hn π (GOne.unitOf E n hn π hd) σ hσ hun hae).3
 
 /- English proof (translation)
-The claim follows from `have hA := rCountAt compOf_free evalD cpUniq Asm.places rMult (rIdent noData_free hA geomTr UpperTheory.ConvolutionTheory.G2.g2s UpperTheory.ConvolutionTheory.G2.matchUnit UpperTheory.ConvolutionTheory.G2.matchSplit (endoS (enlarge Th.stUnit hecke_eigenvalues_unitary_one_factor u …`.
+A detailed English derivation is pending.
 -/
 theorem mult_free : Mult :=
   have hA := rCountAt compOf_free evalD cpUniq Asm.places

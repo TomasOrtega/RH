@@ -36,7 +36,7 @@ def Induces.hom (h : Induces emb v) : Ow v →+* O' :=
 
 omit [IsDomain O'] [IsDiscreteValuationRing O'] in
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val ((RingEquiv.ofBijective (algebraMap O' (FractionRing O')).rangeRestrict ⟨fun _ _ e => IsFractionRing.injective O' (FractionRing O') (congrArg Subtype.val e), RingHom.rangeRestrict_surjective _⟩).apply_symm_apply _)`.
+A detailed English derivation is pending.
 -/
 theorem Induces.hom_spec (h : Induces emb v) (r : Ow v) :
     algebraMap O' (FractionRing O') (h.hom r) = emb (algebraMap (Ow v) K r) :=
@@ -45,15 +45,15 @@ theorem Induces.hom_spec (h : Induces emb v) (r : Ow v) :
       RingHom.rangeRestrict_surjective _⟩).apply_symm_apply _)
 
 /- English proof (translation)
-Introduce `a b e` and use `algebraMap_ow_injective v (emb.injective (by rw [← h.hom_spec, ← h.hom_spec, e]))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Induces.hom_injective (h : Induces emb v) : Function.Injective h.hom := fun a b e =>
   algebraMap_ow_injective v (emb.injective (by rw [← h.hom_spec, ← h.hom_spec, e]))
 
 /- English proof (translation)
-Use `⟨fun r hr => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hr.exists_right_inv`. Establish `e : emb (algebraMap (Ow v) K r) * algebraMap O' (FractionRing O') s = 1`. Rewrite using `[← h.hom_spec, ← map_mul, hs, map_one]`. Establish `r0 : algebraMap (Ow v) K r ≠ 0` using `fun h0 => by simp [h0] at e`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `(mem_range_ow_iff v _).2 ((h (algebraMap (Ow v) K r)⁻¹).2 ⟨s, by rw [map_inv₀]; exact eq_inv_of_mul_eq_one_right e⟩)`. Use `IsUnit.of_mul_eq_one t (algebraMap_ow_injective v ?_)` and prove the remaining obligations. Rewrite using `[map_mul, ht, mul_inv_cancel₀ r0, map_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Induces.hom_local (h : Induces emb v) : IsLocalHom h.hom := by
   refine ⟨fun r hr => ?_⟩
@@ -72,29 +72,29 @@ variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarT
 omit [IsScalarTower (𝓞 K) K V] in
 
 /- English proof (translation)
-Set `_ : Algebra (Ow v) O'` to `h.hom.toAlgebra`. Establish `: IsLocalHom (algebraMap (Ow v) O')` using `h.hom_local`. Establish `: FaithfulSMul (Ow v) O'` using `(faithfulSMul_iff_algebraMap_injective _ _).2 h.hom_injective`. Set `_ : Module (Ow v) W` to `Module.compHom W h.hom`. Establish `: IsScalarTower (Ow v) O' W` using `⟨fun r s x => mul_smul (h.hom r) s x⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hr : ∀ (r : Ow v) (x : V), rd (r • x) = h.hom r • rd x` using `fun r x => by`. Rewrite using `[ow_smul_def, map_smulₛₗ, ← h.hom_spec, algebraMap_smul]`. Set `r : V →ₗ[Ow v] W` to `⟨rd.toAddHom, hr⟩`. Set `g : O' ⊗[Ow v] V →ₗ[O'] W` to `r.liftBaseChange O'`. Establish `hg : ∀ (s : O') (x : V), g (s ⊗ₜ x) = s • rd x` using `fun s x => LinearMap.liftBaseChange_tmul _ _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hnorm : ∀ t : O' ⊗[Ow v] V, ∃ c : Ow v, c ≠ 0 ∧ ∃ s : ι → O', c • t = ∑ a, s a ⊗ₜ b a`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => exact ⟨1, one_ne_zero, 0, by simp⟩`. Consider the case `tmul s x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨c, hc⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (Ow v)) (b.repr x)`. Use `choose y hy using hc`. Use `⟨c, nonZeroDivisors.coe_ne_zero c, fun a => y a • s, ?_⟩` and prove the remaining obligations. Rewrite using `[← TensorProduct.tmul_smul]`. Use `conv_lhs => rw [← b.sum_repr x, Finset.smul_sum, TensorProduct.tmul_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul, ← smul_assoc, ← hy a, algebraMap_smul]`. Consider the case `add x y hx hy`. Take `⟨c, hc, s, hs⟩` from `hx`. Take `⟨d, hd, u, hu⟩` from `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c * d, mul_ne_zero hc hd, d • s + c • u, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, mul_comm c d, mul_smul, hs, mul_comm d c, mul_smul, hu, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, TensorProduct.add_tmul, TensorProduct.smul_tmul']`. Establish `hinj : Function.Injective g`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Take `⟨c, hc, s, hs⟩` from `hnorm t`. Establish `h1 : ∑ a, algebraMap O' (FractionRing O') (s a) • rd (b a) = 0`. Use `congrArg g hs` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[← algebraMap_smul O' c, map_smul, ht, smul_zero, map_sum]`. Simplify `this.symm` using `only [hg, algebraMap_smul]`. Establish `h2 : ∀ a, s a = 0` using `fun a => (map_eq_zero_iff _ (IsFractionRing.injective O' (FractionRing O'))).1 (Fintype.linearIndependent_iff.1 hli _ h1 a)`. Establish `h3 : c • t = 0` using `by simp [hs, h2]`. Establish `cK : algebraMap (Ow v) K c ≠ 0` using `(map_ne_zero_iff _ (algebraMap_ow_injective v)).2 hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : V →ₗ[Ow v] V` to `(((algebraMap (Ow v) K c)⁻¹ • LinearMap.id : V →ₗ[K] V)).restrictScalars (Ow v)`. Establish `h4 : ∀ u : O' ⊗[Ow v] V, f.lTensor O' (c • u) = u`. Introduce `u`. Proceed by induction on `u with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `tmul s x`. Rewrite using `[← TensorProduct.tmul_smul, LinearMap.lTensor_tmul]`. Use `congr 1`. Conclude with `inv_smul_smul₀ cK x`. Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy]`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h4 t, h3, map_zero]`. Establish `hsp : ∀ A : Submodule (𝓞 K) V, Submodule.span O' (rd '' A) = ((atW v A).baseChange O').map g`. Introduce `A`. Rewrite using `[atW, Submodule.baseChange_span, Submodule.map_span, Set.image_image]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.image_congr fun x _ => by simp [hg]`. Use `⟨_, ramificationIdx_maximalIdeal_pos (Ow v) O', fun n => ?_, fun A B => ?_⟩` and prove the remaining obligations. Rewrite using `[← addVal_algebraMap O', map_natCast (algebraMap (Ow v) O')]`. Rewrite using `[hsp, hsp, relLength_map_of_injective g hinj]`. Conclude with `length_baseChange_subquotient_dvr (Ow v) O' _ _`.
+A detailed English derivation is pending.
 -/
 theorem relLength_read (h : Induces emb v) (rd : V →ₛₗ[emb] W) {ι : Type} [Fintype ι] (b : Module.Basis ι K V)
     (hli : LinearIndependent (FractionRing O') fun a => rd (b a)) :
@@ -169,7 +169,7 @@ omit [NumberField K] [IsDomain O'] [IsDiscreteValuationRing O'] [Module (𝓞 K)
   [IsScalarTower O' (FractionRing O') W] in
 
 /- English proof (translation)
-Use `⟨⟨⟨fun y => ∑ a, emb (b.repr y a) • x a, fun y z => ?_⟩, fun r y => ?_⟩, fun a => ?_⟩` and prove the remaining obligations. Simplify using `[add_smul, Finset.sum_add_distrib]`. Simplify using `[mul_smul, Finset.smul_sum]`. Simplify using `[Finsupp.single_apply, apply_ite emb]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_read {ι : Type} [Fintype ι] (b : Module.Basis ι K V) (x : ι → W) :
     ∃ rd : V →ₛₗ[emb] W, ∀ a, rd (b a) = x a := by
@@ -182,12 +182,12 @@ theorem exists_read {ι : Type} [Fintype ι] (b : Module.Basis ι K V) (x : ι �
 variable [StarRing K]
 
 /- English proof (translation)
-The claim follows from `eq_prW_of_mem v (plc_prime v) (plc_mem v)`.
+A detailed English derivation is pending.
 -/
 theorem plc_eq_prW (v : HeightOneSpectrum (𝓞 K)) : plc v = prW v := eq_prW_of_mem v (plc_prime v) (plc_mem v)
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible (Ow v)`. Take `⟨u, hu⟩` from `prW_eq_unit_mul_pow v hπ`. Rewrite using `[plc_eq_prW, IsDiscreteValuationRing.addVal_def _ u hπ _ hu, ENat.toNat_natCast]`. Conclude with `Formalism.L2.DIV.lf_eW_eq_ramw v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addVal_plc (v : HeightOneSpectrum (𝓞 K)) :
     (((IsDiscreteValuationRing.addVal (Ow v) ((plc v : ℕ) : Ow v)).toNat : ℕ) : ℤ) = ramw v := by
@@ -198,7 +198,7 @@ theorem addVal_plc (v : HeightOneSpectrum (𝓞 K)) :
 
 omit [StarRing K] in
 /- English proof (translation)
-Rewrite using `[lix, ← lidxW_eq_lidx, lidxW, lenW_inf, inf_comm, lenW_inf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lix_eq_signedLength (v : HeightOneSpectrum (𝓞 K)) (A B : Submodule (𝓞 K) V) :
     lix v A B = signedLength (atW v A) (atW v B) := by
@@ -206,19 +206,17 @@ theorem lix_eq_signedLength (v : HeightOneSpectrum (𝓞 K)) (A B : Submodule (�
   rfl
 
 /- English proof (translation)
-Take `⟨e, he, hv, hl⟩` from `relLength_read h rd b hli`. Establish `key : ∀ {A B : Submodule (𝓞 K) V}, IsLatIn Z A → IsLatIn Z B → relLength (atW v A) (atW v B) ≠ ⊤`. Introduce `A B hA hB`. Use `relLength_ne_top_of_isLatIn (V := atW v A ⊔ atW v B) ⟨atW_fg v hA.1, le_sup_left, fun x hx => ?_⟩ ⟨atW_fg v hB.1, le_sup_right, fun x hx => ?_⟩` and prove the remaining obligations. Use `all_goals`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx' : x ∈ Z`. Use `(sup_le ?_ ?_ : _ ≤ Z.restrictScalars (Ow v)) hx` and prove the remaining obligations. Conclude with `Submodule.span_le.2 fun y hy => hA.2.le (Submodule.subset_span hy)`. Conclude with `Submodule.span_le.2 fun y hy => hB.2.le (Submodule.subset_span hy)`. Rewrite `hx'` using `[← hA.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (Ow v)) K _ x hx'`. Conclude with `⟨c, nonZeroDivisors.coe_ne_zero c, hc⟩`. Rewrite `hx'` using `[← hB.2]`. Take `⟨c, hc⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (Ow v)) K _ x hx'`. Conclude with `⟨c, nonZeroDivisors.coe_ne_zero c, hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e0 : (e : ℕ∞) ≠ 0` using `by exact_mod_cast he.ne'`. Establish `hfin : ∀ {A B : Submodule (𝓞 K) V}, relLength (Submodule.span O' (rd '' A)) (Submodule.span O' (rd '' B)) ≠ ⊤ → relLength (atW v A) (atW v B) ≠ ⊤`. Introduce `A B h1 h2`. Rewrite `h1` using `[hl, show lenW v A B = ⊤ from h2, ENat.top_mul e0]`. Conclude with `h1 rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : LengthCommensurable (atW v M) (atW v Θ)` using `⟨key hM hΘ, key hΘ hM⟩`. Establish `c2 : LengthCommensurable (atW v Θ) (atW v X)` using `⟨hfin hc.1, hfin hc.2⟩`. Establish `hr : (0 : ℝ) < ramw v` using `by exact_mod_cast lt_of_lt_of_le zero_lt_one (one_le_ramw v)`. Establish `hp : (((IsDiscreteValuationRing.addVal (Ow v) ((plc v : ℕ) : Ow v)).toNat : ℕ) : ℝ) = ramw v`. Conclude with `addVal_plc v` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Establish `he' : (0 : ℝ) < e` using `by exact_mod_cast he`. Establish `h3 : signedLength (Submodule.span O' (rd '' Θ)) (Submodule.span O' (rd '' X)) = signedLength (atW v Θ) (atW v X) * e`. Rewrite using `[signedLength, hl, hl, ENat.toNat_mul, ENat.toNat_mul, ENat.toNat_natCast, signedLength, _root_.sub_mul]`. Use `push_cast`. Both sides reduce to the same expression.
-
-Rewrite `hs` using `[sIdx_eq_signedLength_div, h3, hv, ENat.toNat_mul, ENat.toNat_natCast, Nat.cast_mul, hp, Int.cast_mul, Int.cast_natCast, mul_div_mul_right _ _ he'.ne', div_le_iff₀ hr]`. Rewrite using `[lix_eq_signedLength, lix_eq_signedLength, c1.signedLength_eq_add c2]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lix_le_of_read (h : Induces emb v) (rd : V →ₛₗ[emb] W) {ι : Type} [Fintype ι] (b : Module.Basis ι K V)
     (hli : LinearIndependent (FractionRing O') fun a => rd (b a)) {Z : Submodule K V} {M Θ X : Submodule (𝓞 K) V}
@@ -293,9 +291,9 @@ variable {Y E i j b k Q φ O'}
 omit [IsDomain O'] [IsDiscreteValuationRing O'] [NumberField K] in
 
 /- English proof (translation)
-Take `⟨⟨n, β, hβ⟩, h2, h3, h4⟩` from `h`. Establish `him : ∀ L : Submodule (𝓞 K) V, (rd.comp f) '' (L.comap (f.restrictScalars (𝓞 K))) = rd '' L` using `fun L => by`. Rewrite using `[LinearMap.coe_comp, Set.image_comp]`. Conclude with `congrArg _ (Set.image_preimage_eq _ hf.2)`. Use `⟨⟨n, β.map (LinearEquiv.ofBijective f hf).symm, ?_⟩, fun x => ?_, by rw [him, h3], by rw [him, h4]⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hβ using 2 with a` and compare the differences between its conclusion and the goal. Conclude with `congrArg rd ((LinearEquiv.ofBijective f hf).apply_symm_apply _)`. Conclude with `(congrArg rd (LinearMap.congr_fun he x)).trans (h2 _)`.
+A detailed English derivation is pending.
 -/
 theorem Reads.comap {V' : Type} [AddCommGroup V'] [Module K V'] [Module (𝓞 K) V'] [IsScalarTower (𝓞 K) K V']
     {e : V →ₗ[K] V} {Θ Θψ : Submodule (𝓞 K) V} {rd : V →ₛₗ[emb] FmExt Y i j b O'}
@@ -312,17 +310,17 @@ theorem Reads.comap {V' : Type} [AddCommGroup V'] [Module K V'] [Module (𝓞 K)
   · exact (congrArg rd (LinearMap.congr_fun he x)).trans (h2 _)
 
 /- English proof (translation)
-Take `⟨⟨n, β, hβ⟩, g2, g3, g4⟩` from `h`. Establish `hi' : Function.Injective (algebraMap (X.O i) O')`. Rewrite using `[IsScalarTower.algebraMap_eq (X.O i) (X.Ok i k) O']`. Conclude with `hi.comp (X.Ok_inj i k)`. Establish `hmap : ∀ L : Submodule (𝓞 K) V, Submodule.span O' (rd '' (L.map (e.restrictScalars (𝓞 K)))) = (Submodule.span O' (rd '' L)).map (eExt Y i j b O')` using `fun L => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_span, Submodule.map_coe, Set.image_image, Set.image_image]`. Conclude with `congrArg _ (Set.image_congr fun x _ => g2 x)`. Establish `eΘ : Submodule.span O' (rd '' (Θ.map (e.restrictScalars (𝓞 K)))) = ((eTh Y i j b (SgJ Y E i j b)).baseChange O').map (toFrac _ _ O')`. Rewrite using `[hmap, g3, eTh, Th, Submodule.map_span, Submodule.map_span, Submodule.baseChange_span, Submodule.map_span]`. Simplify using `only [Set.image_image]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg _ (Set.image_congr fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[TensorProduct.mk_apply, toFrac_tmul, map_one]`. Both sides reduce to the same expression. Establish `eX : Submodule.span O' (rd '' (Θψ.map (e.restrictScalars (𝓞 K)))) = (ext Y i j b O' k (eThPsi Y i j b k Q φ (SgJ Y E i j b))).map (toFrac _ _ O')`. Rewrite using `[hmap, g4, span_incl_map]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `l0` using `isLatIn_baseChange O' hi' h0`. Establish `l1 : IsLatIn (ext Y i j b O' k (eThPsi Y i j b k Q φ (SgJ Y E i j b))) (((V0 Y i j b).restrictScalars (X.O i)).baseChange O')`. Rewrite using `[← ext_baseChange Y i j b O' k]`. Conclude with `isLatIn_span hi _ h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `lix_le_of_read hv rd β hβ hM hΘ ?_ ?_` and prove the remaining obligations. Rewrite using `[eΘ, eX]`. Use `lengthCommensurable_of_isLatIn l0 l1` as an intermediate fact. Unfold `LengthCommensurable at this ⊢`. Rewrite using `[relLength_map_of_injective _ (toFrac_injective _ _ _), relLength_map_of_injective _ (toFrac_injective _ _ _)]` and apply the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `h2 O' hi hf _ l0` as an intermediate fact. Rewrite `this` using `[← Set.image_congr fun y _ => up_eq Y i j b O' k y, sIdx_eq (X.l i) _ ((eTh Y i j b (SgJ Y E i j b)).baseChange O'), signedLength, sub_self, Int.cast_zero, zero_div, zero_add]`. Rewrite using `[eΘ, eX, sIdx_map _ (toFrac_injective _ _ _), ← hl]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem Reads.lix_le [StarRing K] {v : HeightOneSpectrum (𝓞 K)} {e : V →ₗ[K] V} {Θ Θψ : Submodule (𝓞 K) V}
     {rd : V →ₛₗ[emb] FmExt Y i j b O'} (h : Reads Y E i j b k Q φ O' e Θ Θψ rd) (hv : Induces emb v)
@@ -382,7 +380,7 @@ def GoodPartLattice (O : OnObj S P oc) : Prop := ∀ j, IsLatIn (O.Zg j) (cut (O
 def ThetaFullRank (O : OnObj S P oc) : Prop := AtPair S fun v => ∀ j, IsLatIn (O.Zg j) (O.eJ v j)
 
 /- English proof (translation)
-Introduce `j` and use `by obtain ⟨h1, h2⟩ := (h j).1 refine ⟨h1.of_le inf_le_left, le_antisymm (Submodule.span_le.2 fun x hx => hx.2) fun x hx => ?_⟩ obtain ⟨c, hc⟩ := multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 K)) K _ x (h2.ge Submodule.mem_top) rw [Submodule.span_eq] at hc have c0 …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem goodPartLattice_of_leafSup {O : OnObj S P oc} (h : LeafSup O) : GoodPartLattice O := fun j => by
   obtain ⟨h1, h2⟩ := (h j).1
@@ -395,7 +393,7 @@ theorem goodPartLattice_of_leafSup {O : OnObj S P oc} (h : LeafSup O) : GoodPart
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨hc, ((O.Zg j).restrictScalars (𝓞 K)).smul_mem _ hx⟩)
 
 /- English proof (translation)
-Use `⟨fun w hw => ⟨(h w hw).1.1, (h w hw).2.1⟩, fun w hw => ?_⟩` and prove the remaining obligations. Establish `h1` using `(h w hw).1.2`. Establish `h2` using `(h w hw).2.2`. Rewrite `h2` using `[plc_conjPl]`. Rewrite using `[Finset.sum_add_distrib, div_eq_mul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -411,7 +409,7 @@ theorem leafTW1_of_places {O : OnObj S P oc}
   linarith
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_image (s := Finset.univ) (g := fun j => (ι j : ℕ) + 1) (f := fun j => ε j b) fun x _ y _ e => hι (Fin.ext (Nat.succ_injective e))]`. Use `(Finset.sum_le_sum_of_subset_of_nonneg (fun n hn => ?_) fun n _ _ => h0 n b).trans (Finset.sum_le_sum fun n _ => Finset.single_le_sum (f := ε n) (fun b' _ => h0 n b') (Finset.mem_univ b))` and prove the remaining obligations. Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 hn`. Conclude with `Finset.mem_Icc.2 ⟨Nat.le_add_left _ _, (ι j).2⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sum_side_le {J : Type} [Fintype J] {m : ℕ} {ι : J → Fin m} (hι : Function.Injective ι) {ε : ℕ → Bool → ℝ}
     (h0 : ∀ j b, 0 ≤ ε j b) (b : Bool) : ∑ j, ε ((ι j : ℕ) + 1) b ≤ ∑ j ∈ Finset.Icc 1 m, ∑ b' : Bool, ε j b' := by
@@ -437,7 +435,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `x` and use `by rw [← c.embW_w] by_cases hx : x = 0 · subst hx simp · have h0 : (D.plEq w).valuation D.what₂.LL x ≠ 0 := (Valuation.ne_zero_iff _).2 hx rw [D.val_eq w x hx, vAdd, ← WithTop.coe_zero, WithTop.coe_le_coe, neg_nonneg, ← WithZero.log_one, WithZero.log_le_log h0 one_ne_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem induces_embW (c : NChoice D) (w : D.what₂.places.Pl) : Induces (c.embW w) (D.plEq w) := fun x => by
   rw [← c.embW_w]
@@ -449,7 +447,7 @@ theorem induces_embW (c : NChoice D) (w : D.what₂.places.Pl) : Induces (c.embW
       WithZero.log_le_log h0 one_ne_zero]
 
 /- English proof (translation)
-Rewrite using `[c.twI_l, ← Formalism.L2.Col.prW_D, Equiv.apply_symm_apply, plc_eq_prW]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem l_eq_plc (c : NChoice D) (v : HeightOneSpectrum (𝓞 D.what₂.LL)) :
     D.ntw.l (c.twI (D.plEq.symm v)) = Formalism.EigenvalueLevelCeiling.plc v := by
@@ -489,9 +487,9 @@ def TiedAt (c : NChoice D) (E : IntegralHeckeForms.XD D) (O : OnObj S P oc) (v :
 variable {A}
 
 /- English proof (translation)
-Take `⟨T, _, R, κ, v₀, h, fw, hinj, EX, p, wL, wF, nT, z, act, inc, ℓ, U, ψ, ph, y, t, rd, hrd⟩` from `t`. Establish `hr` using `hrd.comap (toForms h fw ι z) (toForms_bijective h fw ι z) t.e_eq`. Establish `hv : Induces (c.embW (D.plEq.symm v)) v`. Simplify using `using induces_embW c (D.plEq.symm v)`. Unfold `OnObj.eJ at hΘ ⊢`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Rewrite `hΘ`, the goal using `[t.ThJ_eq]`. Rewrite using `[t.X₃_eq]`. Conclude with `hr.lix_le hv (l_eq_plc c v) (c.Oe_inj _) (c.Oe_fin _) h0 h1.1 h1.2.1 hM hΘ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TiedAt.lix_le {c : NChoice D} {E : IntegralHeckeForms.XD D} {O : OnObj S P oc} {v : HeightOneSpectrum (𝓞 D.what₂.LL)} {i : Bs.J}
     {ι : Fin D.R.m} (t : TiedAt A c E O v i ι)
@@ -512,7 +510,7 @@ theorem TiedAt.lix_le {c : NChoice D} {E : IntegralHeckeForms.XD D} {O : OnObj S
   exact hr.lix_le hv (l_eq_plc c v) (c.Oe_inj _) (c.Oe_fin _) h0 h1.1 h1.2.1 hM hΘ
 
 /- English proof (translation)
-Use `GlobalTheory.ExportCompare.eTh_isLatIn D.nexp i j b _ ⟨?_, (h.1 j hj b).2.2⟩` and prove the remaining obligations. Use `(h.2 j hj b).2.2` as an intermediate fact. Unfold `TwIn.Sg at this`. Rewrite using `[← this]`. Conclude with `Submodule.fg_span ((I.S i j b).finite_toSet.image _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLatIn_eTh {I : TwIn D} {i : D.ntw.Tw} (h : I.Ok i) {j : ℕ} (hj : j ∈ Finset.Icc 1 D.R.m) (b : Bool) :
     IntegralHeckeForms.IsLatIn (IntegralHeckeForms.eTh D.nexp i j b (IntegralHeckeForms.SgJ D.nexp I.E i j b)) ((IntegralHeckeForms.V0 D.nexp i j b).restrictScalars _) := by
@@ -523,7 +521,7 @@ theorem isLatIn_eTh {I : TwIn D} {i : D.ntw.Tw} (h : I.Ok i) {j : ℕ} (hj : j �
   exact Submodule.fg_span ((I.S i j b).finite_toSet.image _)
 
 /- English proof (translation)
-The claim follows from `Finset.mem_Icc.2 ⟨Nat.le_add_left _ _, ι.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem succ_mem_Icc (ι : Fin D.R.m) : (ι : ℕ) + 1 ∈ Finset.Icc 1 D.R.m := Finset.mem_Icc.2 ⟨Nat.le_add_left _ _, ι.2⟩
 
@@ -546,13 +544,13 @@ def IsErrorFamily (E : IntegralHeckeForms.XD D) (i : D.ntw.Tw) (t : Twist i) (ε
           PartBAt D.nexp E i' j b' t.2.1 t.1 φ (ε j b)
 
 /- English proof (translation)
-Establish `loc : ∀ v, ∃ ε : Bs.J → ℝ, (∀ j, Formalism.EigenvalueLevelCeiling.IsLatIn (O.Zg j) (O.eJ v j)) → (TwistedAt D (D.plEq.symm v) ∧ ∀ j, TiedAt A c I.E O v j (ι j)) → (∀ j, 0 ≤ ε j ∧ (Formalism.EigenvalueLevelCeiling.lix v (Formalism.EigenvalueLevelCeiling.cut (O.Zg j) (O.Ms j)) (O.X …` using `fun v => by`. Distinguish the cases in `hv : TwistedAt D (D.plEq.symm v)`. Take `⟨hI, -, ⟨ε, h0, h1, h2⟩, h3, -⟩` from `hG _ hv`. Establish `hψ : BlochKatoReduction.Gen.psiAt (c.sd (D.plEq.symm v)) ((BlochKatoReduction.Gen.psiAt (c.sd (D.plEq.symm v)) (c.psi' (D.plEq.symm v))).comp (D.ntw.art (c.twI (D.plEq.symm v)) (c.Q (D.plEq.symm v)))) = chosenChar c (D.plEq.symm v)`. Consider the cases of `c.sd (D.plEq.symm v)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Use extensionality with `g`. Simplify using `[BlochKatoReduction.Gen.psiAt, chosenChar]`. Both sides reduce to the same expression. Use `⟨fun j => ε ((ι j : ℕ) + 1) (c.sd (D.plEq.symm v)), fun hΘ hT => ⟨fun j => ⟨h0 _ _, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Establish `g2` using `h2 _ (succ_mem_Icc (ι j)) (c.sd (D.plEq.symm v))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `g3` using `h3 _ (succ_mem_Icc (ι j)) (c.sd (D.plEq.symm v))`. Rewrite `g2`, `g3` using `[hψ]`. Conclude with `(hT.2 j).lix_le (hM j) (hΘ j) (isLatIn_eTh hI (succ_mem_Icc (ι j)) _) ⟨g3.1, g2, g3.2⟩`. Rewrite using `[← l_eq_plc c v]`. Conclude with `(sum_side_le hι h0 _).trans h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun _ hT => absurd hT.1 hv⟩`. Use `choose ε hε using loc`. Conclude with `⟨ε, leafTW1_of_places fun w hw => ⟨hε _ (hΘ w hw).1 (hT w hw).1, hε _ (hΘ w hw).2 (hT w hw).2⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_leafTW1_of_twGoodAt (A : FamIn D.what₂.LL Γ Pl0 T0 D.R.m) (c : NChoice D) (I : TwIn D) (hG : TwGoodAt D c I)
     (O : OnObj S P oc) (ι : Bs.J → Fin D.R.m) (hι : Function.Injective ι) (hM : GoodPartLattice O) (hΘ : ThetaFullRank O)

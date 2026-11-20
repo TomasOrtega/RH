@@ -20,13 +20,13 @@ def IsOver (ρ : A →+* ℂ) (w : Fin (N + 1) → ℂ) (x : ProjectiveSpectrum 
   ∀ d, ∀ f ∈ ProjSpace.grading A N d, f ∈ x.asHomogeneousIdeal ↔ evalAt ρ w f = 0
 
 /- English proof (translation)
-Introduce `_ _ hf` and use `mem_projPointOf ρ _ hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma isOver_projPoint (ρ : A →+* ℂ) (v : CP N) : IsOver ρ v.rep (projPoint ρ v) :=
   fun _ _ hf => mem_projPointOf ρ _ hf
 
 /- English proof (translation)
-Introduce `d f hf`. Rewrite using `[h d f hf, evalAt_smul ρ hf, mul_eq_zero, or_iff_right (pow_ne_zero _ hc)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma IsOver.smul {ρ : A →+* ℂ} {w : Fin (N + 1) → ℂ} {x : ProjectiveSpectrum (ProjSpace.grading A N)}
     (h : IsOver ρ w x) {c : ℂ} (hc : c ≠ 0) : IsOver ρ (c • w) x := by
@@ -34,7 +34,7 @@ lemma IsOver.smul {ρ : A →+* ℂ} {w : Fin (N + 1) → ℂ} {x : ProjectiveSp
   rw [h d f hf, evalAt_smul ρ hf, mul_eq_zero, or_iff_right (pow_ne_zero _ hc)]
 
 /- English proof (translation)
-Introduce `d f hf`. Rewrite using `[h d f hf, evalAt_conj, map_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma IsOver.conj {ρ : A →+* ℂ} {w : Fin (N + 1) → ℂ} {x : ProjectiveSpectrum (ProjSpace.grading A N)}
     (h : IsOver ρ w x) : IsOver ((starRingEnd ℂ).comp ρ) (CP.conjVec w) x := by
@@ -45,9 +45,9 @@ def evalLine (ρ : A →+* ℂ) (w : Fin (N + 1) → ℂ) : MvPolynomial (Fin (N
   eval₂Hom (Polynomial.C.comp ρ) (fun k => Polynomial.C (w k) * Polynomial.X)
 
 /- English proof (translation)
-Rewrite using `[evalLine, coe_eval₂Hom, eval₂_eq', evalAt, eval₂_eq', map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hd : ∑ k, m k = d`. Use `hf (mem_support_iff.mp hm)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum_fintype]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [RingHom.comp_apply, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd, map_mul, map_prod, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma evalLine_of_isHomogeneous (ρ : A →+* ℂ) (w : Fin (N + 1) → ℂ)
     {f : MvPolynomial (Fin (N + 1)) A} {d : ℕ} (hf : f.IsHomogeneous d) :
@@ -62,9 +62,9 @@ lemma evalLine_of_isHomogeneous (ρ : A →+* ℂ) (w : Fin (N + 1) → ℂ)
   ring
 
 /- English proof (translation)
-Use `conv_lhs => rw [← sum_homogeneousComponent f]`. Rewrite using `[map_sum, Polynomial.finsetSum_coeff]`. Repeatedly rewrite using `[evalLine_of_isHomogeneous ρ w (homogeneousComponent_isHomogeneous _ _), Polynomial.coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h` using `[Finset.mem_range, not_lt]`. Rewrite using `[homogeneousComponent_eq_zero _ _ (Nat.lt_of_succ_le h)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma coeff_evalLine (ρ : A →+* ℂ) (w : Fin (N + 1) → ℂ) (f : MvPolynomial (Fin (N + 1)) A)
     (d : ℕ) : (evalLine ρ w f).coeff d = evalAt ρ w (homogeneousComponent d f) := by
@@ -80,9 +80,9 @@ lemma coeff_evalLine (ρ : A →+* ℂ) (w : Fin (N + 1) → ℂ) (f : MvPolynom
     simp
 
 /- English proof (translation)
-Introduce `h0`. Apply `hf` to reduce the goal to its premises. Rewrite using `[← sum_homogeneousComponent f]`. Use `Ideal.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Use `(h d _ (homogeneousComponent_isHomogeneous d f)).2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← coeff_evalLine, h0, Polynomial.coeff_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma evalLine_ne_zero {ρ : A →+* ℂ} {w : Fin (N + 1) → ℂ} {x : ProjectiveSpectrum (ProjSpace.grading A N)}
     (h : IsOver ρ w x) {f : MvPolynomial (Fin (N + 1)) A} (hf : f ∉ x.asHomogeneousIdeal) :
@@ -110,9 +110,9 @@ def atPrimeToRatFunc (h : IsOver ρ w x) :
   (locToRatFunc h).comp (algebraMap _ _)
 
 /- English proof (translation)
-Establish `hden : evalAt ρ w (c.den : MvPolynomial (Fin (N + 1)) A) ≠ 0` using `fun h0 => c.den_mem ((h _ _ c.den.2).2 h0)`. Rewrite using `[atPrimeToRatFunc, RingHom.comp_apply, HomogeneousLocalization.algebraMap_apply, HomogeneousLocalization.val_mk, Localization.mk_eq_mk', locToRatFunc, IsLocalization.lift_mk'_spec]`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[evalLine_of_isHomogeneous ρ w (c.num.2), evalLine_of_isHomogeneous ρ w (c.den.2), IsScalarTower.algebraMap_apply ℂ (Polynomial ℂ) (RatFunc ℂ), ← map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Polynomial.algebraMap_eq, mul_comm (Polynomial.C (evalAt ρ w c.den) * _), ← mul_assoc, ← Polynomial.C_mul, div_mul_cancel₀ _ hden]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 lemma atPrimeToRatFunc_mk (h : IsOver ρ w x)
     (c : HomogeneousLocalization.NumDenSameDeg (ProjSpace.grading A N)
@@ -132,7 +132,7 @@ lemma atPrimeToRatFunc_mk (h : IsOver ρ w x)
     ← Polynomial.C_mul, div_mul_cancel₀ _ hden]
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `HomogeneousLocalization.mk_surjective y`. Rewrite using `[atPrimeToRatFunc_mk]`. Conclude with `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma atPrimeToRatFunc_mem_range (h : IsOver ρ w x)
     (y : HomogeneousLocalization.AtPrime (ProjSpace.grading A N) x.asHomogeneousIdeal.toIdeal) :
@@ -151,7 +151,7 @@ def evalAtPrime (h : IsOver ρ w x) :
   constEquiv.toRingHom.comp ((atPrimeToRatFunc h).codRestrict _ (atPrimeToRatFunc_mem_range h))
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `atPrimeToRatFunc_mem_range h y`. Establish `: evalAtPrime h y = c`. Rewrite using `[evalAtPrime, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, constEquiv, RingEquiv.symm_apply_eq]`. Conclude with `Subtype.ext hc.symm`. Rewrite using `[this, hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma algebraMap_evalAtPrime (h : IsOver ρ w x)
     (y : HomogeneousLocalization.AtPrime (ProjSpace.grading A N) x.asHomogeneousIdeal.toIdeal) :
@@ -164,7 +164,7 @@ lemma algebraMap_evalAtPrime (h : IsOver ρ w x)
   rw [this, hc]
 
 /- English proof (translation)
-Apply `(algebraMap ℂ (RatFunc ℂ)).injective` to reduce the goal to its premises. Rewrite using `[algebraMap_evalAtPrime, atPrimeToRatFunc_mk]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalAtPrime_mk (h : IsOver ρ w x)
     (c : HomogeneousLocalization.NumDenSameDeg (ProjSpace.grading A N)
@@ -174,9 +174,9 @@ theorem evalAtPrime_mk (h : IsOver ρ w x)
   rw [algebraMap_evalAtPrime, atPrimeToRatFunc_mk]
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `HomogeneousLocalization.mk_surjective y`. Rewrite `hy` using `[evalAtPrime_mk, div_ne_zero_iff]`. Establish `hnum : (c.num : MvPolynomial (Fin (N + 1)) A) ∈ x.asHomogeneousIdeal.toIdeal.primeCompl` using `fun hm => hy.1 ((h _ _ c.num.2).1 hm)`. Rewrite using `[← HomogeneousLocalization.isUnit_iff_isUnit_val, HomogeneousLocalization.val_mk, Localization.mk_eq_mk']`. Use `isUnit_of_mul_isUnit_left (y := algebraMap (MvPolynomial (Fin (N + 1)) A) (Localization.AtPrime x.asHomogeneousIdeal.toIdeal) (c.den : MvPolynomial (Fin (N + 1)) A)) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsLocalization.mk'_spec]`. Conclude with `IsLocalization.map_units _ ⟨_, hnum⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_evalAtPrime_ne_zero (h : IsOver ρ w x)
     {y : HomogeneousLocalization.AtPrime (ProjSpace.grading A N) x.asHomogeneousIdeal.toIdeal}
@@ -196,7 +196,7 @@ def evalStalkProj (h : IsOver ρ w x) : (projectiveSpace A N).presheaf.stalk x �
   (evalAtPrime h).comp (Proj.stalkIso (ProjSpace.grading A N) x).hom.hom
 
 /- English proof (translation)
-Establish `hu` using `isUnit_of_evalAtPrime_ne_zero h hy`. Conclude with `(isUnit_map_iff (Proj.stalkIso (ProjSpace.grading A N) x).commRingCatIsoToRingEquiv y).1 hu`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_of_evalStalkProj_ne_zero (h : IsOver ρ w x)
     {y : (projectiveSpace A N).presheaf.stalk x} (hy : evalStalkProj h y ≠ 0) : IsUnit y := by
@@ -204,7 +204,7 @@ theorem isUnit_of_evalStalkProj_ne_zero (h : IsOver ρ w x)
   exact (isUnit_map_iff (Proj.stalkIso (ProjSpace.grading A N) x).commRingCatIsoToRingEquiv y).1 hu
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `HomogeneousLocalization.mk_surjective y`. Rewrite using `[evalAtPrime_mk, evalAtPrime_mk, evalAt_smul ρ ((mem_homogeneousSubmodule _ _).1 z.num.2), evalAt_smul ρ ((mem_homogeneousSubmodule _ _).1 z.den.2), mul_div_mul_left _ _ (pow_ne_zero _ hc)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 lemma evalAtPrime_smul (h : IsOver ρ w x) {c : ℂ} (hc : c ≠ 0)
     (y : HomogeneousLocalization.AtPrime (ProjSpace.grading A N) x.asHomogeneousIdeal.toIdeal) :
@@ -215,7 +215,7 @@ lemma evalAtPrime_smul (h : IsOver ρ w x) {c : ℂ} (hc : c ≠ 0)
     mul_div_mul_left _ _ (pow_ne_zero _ hc)]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `HomogeneousLocalization.mk_surjective y`. Rewrite using `[evalAtPrime_mk, evalAtPrime_mk, evalAt_conj, evalAt_conj, map_div₀]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 lemma evalAtPrime_conj (h : IsOver ρ w x)
     (y : HomogeneousLocalization.AtPrime (ProjSpace.grading A N) x.asHomogeneousIdeal.toIdeal) :
@@ -224,7 +224,7 @@ lemma evalAtPrime_conj (h : IsOver ρ w x)
   rw [evalAtPrime_mk, evalAtPrime_mk, evalAt_conj, evalAt_conj, map_div₀]
 
 /- English proof (translation)
-The claim follows from `evalAtPrime_smul h hc _`.
+A detailed English derivation is pending.
 -/
 lemma evalStalkProj_smul (h : IsOver ρ w x) {c : ℂ} (hc : c ≠ 0)
     (y : (projectiveSpace A N).presheaf.stalk x) :
@@ -232,7 +232,7 @@ lemma evalStalkProj_smul (h : IsOver ρ w x) {c : ℂ} (hc : c ≠ 0)
   evalAtPrime_smul h hc _
 
 /- English proof (translation)
-The claim follows from `evalAtPrime_conj h _`.
+A detailed English derivation is pending.
 -/
 lemma evalStalkProj_conj (h : IsOver ρ w x) (y : (projectiveSpace A N).presheaf.stalk x) :
     evalStalkProj h.conj y = starRingEnd ℂ (evalStalkProj h y) :=
@@ -252,7 +252,7 @@ def evalStalk {p : X.X} (h : IsOver ρ w (X.ι.base p)) : X.X.presheaf.stalk p �
       exact zero_ne_one hu⟩
 
 /- English proof (translation)
-The claim follows from `RingHom.liftOfRightInverse_comp_apply _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem evalStalk_stalkMap {p : X.X} (h : IsOver ρ w (X.ι.base p))
     (y : (projectiveSpace A N).presheaf.stalk (X.ι.base p)) :
@@ -260,7 +260,7 @@ theorem evalStalk_stalkMap {p : X.X} (h : IsOver ρ w (X.ι.base p))
   RingHom.liftOfRightInverse_comp_apply _ _ _ _ _
 
 /- English proof (translation)
-Use extensionality with `y`. Take `⟨z, rfl⟩` from `X.ι.stalkMap_surjective p y`. Rewrite using `[evalStalk_stalkMap, evalStalk_stalkMap]`. Conclude with `evalStalkProj_smul h hc z`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalStalk_smul {p : X.X} (h : IsOver ρ w (X.ι.base p)) {c : ℂ} (hc : c ≠ 0) :
     X.evalStalk (h.smul hc) = X.evalStalk h := by
@@ -270,7 +270,7 @@ theorem evalStalk_smul {p : X.X} (h : IsOver ρ w (X.ι.base p)) {c : ℂ} (hc :
   exact evalStalkProj_smul h hc z
 
 /- English proof (translation)
-Use extensionality with `y`. Take `⟨z, rfl⟩` from `X.ι.stalkMap_surjective p y`. Rewrite using `[evalStalk_stalkMap, RingHom.comp_apply, evalStalk_stalkMap]`. Conclude with `evalStalkProj_conj h z`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalStalk_conj {p : X.X} (h : IsOver ρ w (X.ι.base p)) :
     X.evalStalk h.conj = (starRingEnd ℂ).comp (X.evalStalk h) := by

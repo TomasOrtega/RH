@@ -11,7 +11,7 @@ namespace GlobalTheory.JSW.MirCinf
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i l`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem mapMatrix_secMatInf (ρ : Fin n) (j : InfinitePlace E → Fin n) (v : Fin n → Cinf E) (w : InfinitePlace E) :
     (Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) w).mapMatrix (Matrix.of (secMatInf ρ j v)) =
@@ -19,9 +19,9 @@ theorem mapMatrix_secMatInf (ρ : Fin n) (j : InfinitePlace E → Fin n) (v : Fi
   ext i l; rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, Pi.isUnit_iff]`. Introduce `w`. Establish `h` using `RingHom.map_det (Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) w) (Matrix.of (secMatInf ρ j v))`. Rewrite `h` using `[mapMatrix_secMatInf]`. Establish `hu` using `isUnit_secMat ρ (j w) (hj w) (fun l => v l w) (hv w)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu` using `[Matrix.isUnit_iff_isUnit_det]`. Establish `h' : (Matrix.of (secMatInf ρ j v)).det w = (Matrix.of (secMat ρ (j w) (fun l => v l w))).det` using `h`. Rewrite using `[h']`. Conclude with `hu`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_secMatInf (ρ : Fin n) (j : InfinitePlace E → Fin n) (hj : ∀ w, j w ≤ ρ) (v : Fin n → Cinf E)
     (hv : ∀ w, v (j w) w ≠ 0) : IsUnit (Matrix.of (secMatInf ρ j v)) := by
@@ -36,9 +36,9 @@ theorem isUnit_secMatInf (ρ : Fin n) (j : InfinitePlace E → Fin n) (hj : ∀ 
   exact hu
 
 /- English proof (translation)
-Rewrite using `[mem_levSetInf, val_toGLInf (isUnit_secMatInf ρ j hj v hv)]`. Introduce `i hi`. Establish `hiρ : ρ < i` using `by rw [Fin.lt_def]; omega`. Use `⟨fun l hl => funext fun w => ?_, funext fun w => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `secMat ρ (j w) (fun l => v l w) i l = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[secMat_of_ne _ _ _ hiρ.ne', swap_of_lt' (hj w) hiρ, if_neg hl.ne]`. Express the relevant statement in the definitionally equal form `secMat ρ (j w) (fun l => v l w) i i = 1`. Rewrite using `[secMat_of_ne _ _ _ hiρ.ne', swap_of_lt' (hj w) hiρ, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem secMatInf_mem_lev (ρ : Fin n) (j : InfinitePlace E → Fin n) (hj : ∀ w, j w ≤ ρ) (v : Fin n → Cinf E)
     (hv : ∀ w, v (j w) w ≠ 0) : toGLInf (Matrix.of (secMatInf ρ j v)) ∈ levSetInf E n (ρ + 1) := by
@@ -52,7 +52,7 @@ theorem secMatInf_mem_lev (ρ : Fin n) (j : InfinitePlace E → Fin n) (hj : ∀
     rw [secMat_of_ne _ _ _ hiρ.ne', swap_of_lt' (hj w) hiρ, if_pos rfl]
 
 /- English proof (translation)
-Unfold `rowCutInf rowCut`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowCutInf_apply (ρ : Fin n) (g : GL (Fin n) (Cinf E)) (w : InfinitePlace E) (l : Fin n) :
     rowCutInf ρ (g : Matrix (Fin n) (Fin n) (Cinf E)) l w = rowCut ρ ((compGL w g : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) l := by
@@ -70,7 +70,7 @@ def secLinInf (ρ : Fin n) : (Fin n → Cinf E) →L[ℝ] (Fin n → Fin n → C
         by_cases h : i = ρ ∧ l ≤ ρ <;> simp [h] }
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i l w`. Distinguish the cases in `hi : i = ρ`. Substitute `hi` using the available equality. Apply the tactic sequence `by_cases hl : l ≤ i <;> simp [secMatInf, secMat, secLinInf, hl]`. Simplify using `[secMatInf, secMat, secLinInf, hi]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem secMatInf_eq_add (ρ : Fin n) (j : InfinitePlace E → Fin n) (v : Fin n → Cinf E) :
     secMatInf ρ j v = secMatInf ρ j 0 + secLinInf ρ v := by
@@ -81,13 +81,13 @@ theorem secMatInf_eq_add (ρ : Fin n) (j : InfinitePlace E → Fin n) (v : Fin n
   · simp [secMatInf, secMat, secLinInf, hi]
 
 /- English proof (translation)
-Introduce `E _ _ n ρ j hj`. Use `⟨fun v hv => ⟨isUnit_secMatInf ρ j hj v hv, secMatInf_mem_lev ρ j hj v hv⟩, ?_, secLinInf ρ, secMatInf_eq_add ρ j⟩` and prove the remaining obligations. Introduce `g hg hgj w`. Use `set v := rowCutInf ρ (g : Matrix (Fin n) (Fin n) (Cinf E)) with hvdef`. Establish `hS` using `isUnit_secMatInf ρ j hj v hgj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : rowCut ρ ((compGL w g : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) (j w) ≠ 0`. Rewrite using `[← rowCutInf_apply]`. Conclude with `hgj w`. Establish `hcomp : compGL w (toGLInf (Matrix.of (secMatInf ρ j v))) = toGL (Matrix.of (secMat ρ (j w) (rowCut ρ ((compGL w g : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ))))`. Establish `hu` using `isUnit_secMat ρ (j w) (hj w) _ hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_toGL hu]`. Use extensionality with `i l`. Rewrite using `[compGL_apply, val_toGLInf hS]`. Express the relevant statement in the definitionally equal form `secMat ρ (j w) (fun l => v l w) i l = _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `l`. Conclude with `rowCutInf_apply ρ g w l`. Rewrite using `[map_mul, map_inv, hcomp]`. Conclude with `(secMat_main n ρ (j w) (hj w)).2.1 (compGL w g) (hg w) hne`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secMatInf_main : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (ρ : Fin n) (j : InfinitePlace E → Fin n), (∀ w, j w ≤ ρ) → (∀ v : Fin n → Cinf E, (∀ w, v (j w) w ≠ 0) → IsUnit (Matrix.of (secMatInf ρ j v)) ∧ toGLInf (Matrix.of (secMatInf ρ j v)) ∈ levSetInf E n (ρ + 1)) ∧ (∀ g ∈ levSetInf E n (ρ + 1), (∀ w, rowCutInf ρ (g : Matrix (Fin n) (Fin n) (Cinf E)) (j w) w ≠ 0) → g * (toGLInf (Matrix.of (secMatInf ρ j (rowCutInf ρ (g : Matrix (Fin n) (Fin n) (Cinf E))))))⁻¹ ∈ levSetInf E n ρ) ∧ ∃ L : (Fin n → Cinf E) →L[ℝ] (Fin n → Fin n → Cinf E), ∀ v, secMatInf ρ j v = secMatInf ρ j 0 + L v := by
   intro E _ _ n ρ j hj

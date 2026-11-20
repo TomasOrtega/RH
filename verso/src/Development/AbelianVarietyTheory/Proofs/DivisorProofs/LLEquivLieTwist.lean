@@ -13,11 +13,11 @@ open scoped ChangeOfRings Pointwise
 namespace GlobalTheory.PerfdLat.LieTwist
 
 /- English proof (translation)
-Use `letI := ψ.toAlgebra`. Establish `hi : Function.Injective (w.baseChange R)`. Use `injective_of_comp_eq_smul (funext fun q => ?_) (u.baseChange R) _ ha fun x => ?_` and prove the remaining obligations. Use `haveI := (PrimeSpectrum.comap (algebraMap A R) q).nontrivial`. Rewrite using `[Module.rankAtStalk_baseChange, Module.rankAtStalk_baseChange, hr, Module.rankAtStalk_eq_finrank_of_free]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp, show w ∘ₗ u = a • LinearMap.id from LinearMap.ext hc, LinearMap.baseChange_smul, LinearMap.baseChange_id, LinearMap.smul_apply, LinearMap.id_apply, ← algebraMap_smul R a]`. Both sides reduce to the same expression. Establish `h1 : (1 : R) ⊗ₜ[A] m = 0` using `hi <| (TensorProduct.piScalarRight A R R (Fin h)).injective <| funext fun j => by`. Simplify using `[Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `congrFun hm j`. Set `e` to `(Ideal.quotientKerAlgEquivOfSurjective (f := Algebra.ofId A R) hψ).symm`. Establish `h2` using `congrArg (e.toLinearMap.rTensor M) h1`. Rewrite `h2` using `[LinearMap.rTensor_tmul, map_zero, AlgEquiv.toLinearMap_apply, map_one]`. Conclude with `(LinearMap.ker_tensorProductMk (I := RingHom.ker ψ) (Q := M)).le h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_ker_smul_top {A R M : Type} [CommRing A] [CommRing R] [AddCommGroup M] [Module A M]
     [Module.Finite A M] [Module.Projective A M] {h : ℕ} (hr : ∀ q, Module.rankAtStalk (R := A) M q = h)
@@ -43,19 +43,19 @@ theorem mem_ker_smul_top {A R M : Type} [CommRing A] [CommRing R] [AddCommGroup 
   exact (LinearMap.ker_tensorProductMk (I := RingHom.ker ψ) (Q := M)).le h2
 
 /- English proof (translation)
-Use `letI : Module R B := Module.compHom B s`. Establish `hsm : ∀ (a : A) (r : B) (m : M), (s (θ a) * r) ⊗ₜ[R] t m = r ⊗ₜ[R] t (a • m)` using `fun a r m => by`. Rewrite using `[map_smulₛₗ]`. Conclude with `TensorProduct.smul_tmul (θ a) r (t m)`. Set `F : B ⊗[R] L →+ Q` to `TensorProduct.liftAddHom ((smulAddHom B Q).flip.comp lam).flip fun b r y => by`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hθ b`. Take `⟨m, rfl⟩` from `ht y`. Express the relevant statement in the definitionally equal form `(s (θ a) * r) • lam (t m) = r • lam (θ a • t m)`. Rewrite using `[← map_smulₛₗ t, hl, hl, map_smulₛₗ π, hs, mul_comm, mul_smul, hQ]`. Establish `hF : ∀ (r : R) (y : L), F (q r ⊗ₜ[R] y) = r • lam y` using `fun r y => hQ r (lam y)`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ∀ z : B ⊗[R] L, ∃ m, z = (1 : B) ⊗ₜ[R] t m` using `fun z => by`. Proceed by induction on `z with`. Consider the case `zero => exact ⟨0, by rw [map_zero, tmul_zero]⟩`. Consider the case `tmul r y`. Take `⟨r, rfl⟩` from `hq r`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hψ r`. Take `⟨m, rfl⟩` from `ht y`. Conclude with `⟨a • m, by rw [← hsm, mul_one, hs]⟩`. Consider the case `add x y hx hy`. Take `⟨m, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m', rfl⟩` from `hy`. Conclude with `⟨m + m', by rw [map_add, tmul_add]⟩`. Establish `h1 : ∀ m, F ((1 : B) ⊗ₜ[R] t m) = π m` using `fun m => by rw [← map_one q, hF, one_smul, hl]`. Use `⟨AddEquiv.ofBijective F ⟨(injective_iff_map_eq_zero _).2 fun z h => ?_, fun x => ?_⟩, hF⟩` and prove the remaining obligations. Take `⟨m, rfl⟩` from `hz z`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hm⟩` from `hk m ((h1 m).symm.trans h)`. Rewrite using `[← sub_zero (t m), ← hf, ← map_sub]`. Use `Submodule.smul_induction_on (p := fun x => (1 : B) ⊗ₜ[R] t x = 0) hm (fun a ha m _ => ?_) fun x y hx hy => ?_` and prove the remaining obligations. Rewrite using `[← hsm, hs, show ψ a = 0 from ha, map_zero, zero_mul, zero_tmul]`. Rewrite using `[map_add, tmul_add, hx, hy, add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, rfl⟩` from `hπ x`. Conclude with `⟨_, h1 m⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_addEquiv {A R B M L Q : Type} [CommRing A] [CommRing R] [CommRing B] [AddCommGroup M] [Module A M]
     [AddCommGroup L] [Module R L] [AddCommGroup Q] [Module R Q] [Module B Q] {θ ψ : A →+* R}
@@ -107,9 +107,9 @@ abbrev red (n : ℕ) : D.Cov G →ₛₗ[thetaPhiInv S n] (Fin G.height → S.R)
   (piMap (thetaPhiInv S n) _).comp (coord D c)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Establish `h1` using `congrFun (coord_φ D c f) j`. Rewrite `h1` using `[h, map_smul, piMap_apply, Pi.smul_apply, smul_eq_mul]`. Establish `h2 : coord D c f j = xi S.ε * phiInv p S.R (coord D c m j)` using `Dieudonne.frobenius_injective (by`. Rewrite using `[map_mul, Dieudonne.frobenius_phiInv, h1])`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `thetaPhiInv S n (coord D c f j) = _ * thetaPhiInv S (n + 1) (coord D c m j)`. Rewrite using `[h2, map_mul, thetaPhiInv_apply, thetaPhiInv_apply, thetaPhiInv_apply, CycElem.phiInv_iterate_xi, Function.iterate_succ_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem red_of_φ_eq (n : ℕ) {f m : D.Cov G} (h : D.φ S G.dual f = frobenius (xi S.ε) • m) :
     red D c n f = fontaineTheta S.R p (xiN S n) • red D c (n + 1) m := by
@@ -123,7 +123,7 @@ theorem red_of_φ_eq (n : ℕ) {f m : D.Cov G} (h : D.φ S G.dual f = frobenius 
     Function.iterate_succ_apply]
 
 /- English proof (translation)
-Rewrite using `[H_eq_map_thetaK D c n hv, thetaK_eq_range]`. Conclude with `⟨fun ⟨_, ⟨m, rfl⟩, h⟩ => ⟨m, h⟩, fun ⟨m, h⟩ => ⟨_, ⟨m, rfl⟩, h⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_H_iff (n : ℕ) {v : S.R} (hv : zeta S.ε 1 - 1 = (zeta S.ε (n + 1) - 1) * v) (x : Fin G.height → S.R) :
     x ∈ H D c n ↔ ∃ m, v • red D c (n + 1) m = x := by
@@ -131,7 +131,7 @@ theorem mem_H_iff (n : ℕ) {v : S.R} (hv : zeta S.ε 1 - 1 = (zeta S.ε (n + 1)
   exact ⟨fun ⟨_, ⟨m, rfl⟩, h⟩ => ⟨m, h⟩, fun ⟨m, h⟩ => ⟨_, ⟨m, rfl⟩, h⟩⟩
 
 /- English proof (translation)
-Take `⟨k, hk, h⟩` from `(mem_H D c n x).1 hx`. Use `(mem_H D c _ _).2 ⟨k, K_le_succ D c _ hk, ?_⟩` and prove the remaining obligations. Rewrite using `[h, smul_smul, mul_comm, CycElem.theta_xiN_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_xiN_smul_mem (n : ℕ) (x : Fin G.height → S.R) (hx : x ∈ H D c n) :
     fontaineTheta S.R p (xiN S (n + 1)) • x ∈ H D c (n + 1) := by
@@ -140,21 +140,19 @@ theorem theta_xiN_smul_mem (n : ℕ) (x : Fin G.height → S.R) (hx : x ∈ H D 
   rw [h, smul_smul, mul_comm, CycElem.theta_xiN_mul]
 
 /- English proof (translation)
-Introduce `p _ D S G c n`. Use `⟨theta_xiN_smul_mem D c n, ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `zeta_sub_one_dvd S n`. Establish `hr : IsSMulRegular S.R v` using `IsSMulRegular.of_mul (a := zeta S.ε (n + 1) - 1) (hv ▸ isSMulRegular_zeta_sub_one S 0)`. Establish `hv' : zeta S.ε 1 - 1 = (zeta S.ε (n + 1 + 1) - 1) * (v * fontaineTheta S.R p (xiN S (n + 1)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hv, ← CycElem.theta_xiN_mul S (n + 1)]`. Expand and normalize the polynomial expressions, which then agree. Set `x : D.Cov G →ₛₗ[thetaPhiInv S (n + 1)] H D c n` to `((LinearMap.lsmul S.R _ v).comp (red D c (n + 1))).codRestrict _ fun m => (mem_H_iff D c n hv _).2 ⟨m, rfl⟩`. Set `π : D.Cov G →ₛₗ[thetaPhiInv S (n + 1)] LL D c n` to `(Submodule.mkQ _).comp x`. Establish `hπ0 : ∀ m, π m = 0 ↔ ∃ m', (v * fontaineTheta S.R p (xiN S (n + 1))) • red D c (n + 1 + 1) m' = v • red D c (n + 1) m` using `fun m => (Submodule.Quotient.mk_eq_zero _).trans (mem_H_iff D c (n + 1) hv' _)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle : (D.toLie G).toAddMonoidHom.ker ≤ π.toAddMonoidHom.ker` using `fun f hf => by`. Take `⟨m, hm⟩` from `(D.mem_Fil G f).1 hf`. Conclude with `(hπ0 f).2 ⟨m, by rw [red_of_φ_eq D c _ hm, mul_smul]⟩`. Set `lam` to `(D.toLie G).toAddMonoidHom.liftOfSurjective (D.toLie_surjective G) ⟨π.toAddMonoidHom, hle⟩`. Establish `hl : ∀ m, lam (D.toLie G m) = π m` using `fun m => AddMonoidHom.liftOfRightInverse_comp_apply (D.toLie G).toAddMonoidHom _ _ _ m`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : Module.IsTorsionBySet S.R (LL D c n) (Ideal.span {fontaineTheta S.R p (xiN S (n + 1))})`. Rewrite using `[Module.isTorsionBySet_span_singleton_iff]`. Introduce `q`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Conclude with `(Submodule.Quotient.mk_eq_zero _ (x := _ • y)).2 (theta_xiN_smul_mem D c n _ y.2)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI := hI.module`. Use `⟨lam, fun m y h => (hl m).trans (congrArg Submodule.Quotient.mk (Subtype.ext (funext fun j => ?_))), fun s hs => exists_addEquiv S.surj (thetaPhiInv S (n + 1)).surjective s _ Ideal.Quotient.mk_surjective (fun a => by rw [hs, thetaPhiInv_apply]) (fun _ _ => rfl) _ (D.toLie_surject …` and prove the remaining obligations. Use `isSMulRegular_zeta_sub_one S n (Eq.trans ?_ (congrFun h j))` and prove the remaining obligations. Rewrite using `[hv]`. Express the relevant statement in the definitionally equal form `_ * (v * thetaPhiInv S (n + 1) (coord D c m j)) = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[thetaPhiInv_apply, ← mul_assoc]`. Both sides reduce to the same expression. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨m, hm⟩` from `(mem_H_iff D c n hv _).1 y.2`. Conclude with `⟨m, congrArg Submodule.Quotient.mk (Subtype.ext hm)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m', h⟩` from `(hπ0 m).1 hm`. Take `⟨f, hf⟩` from `D.exists_φ_eq S G.dual m'`. Use `⟨f, (D.mem_Fil G f).2 ⟨m', hf⟩, mem_ker_smul_top (D.rank_eq S G.dual) (inj D c) (coord D c) _ (thetaPhiInv S (n + 1)).surjective (by rw [thetaPhiInv_mu]; exact isSMulRegular_zeta_sub_one S n) (coord_inj D c) _ ?_⟩` and prove the remaining obligations. Rewrite `h` using `[mul_smul, ← red_of_φ_eq D c _ hf]`. Express the relevant statement in the definitionally equal form `red D c (n + 1) (m - f) = 0`.
-
-Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `funext fun j => hr (congrFun h j).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LL_equiv_lie_twist : ∀ (p : ℕ) [Fact p.Prime] (D : PrismData p) (S : CycPerfd p) (G : PDivGroup p S.R)
     (c : ConstTate (eps S) G), ∀ n,

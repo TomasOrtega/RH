@@ -16,19 +16,19 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Use `SlopeTestRemainingChoices.nontrivial_E L` as an intermediate fact. Establish `hinj : Function.Injective (algebraMap F E)` using `(algebraMap F E).injective`. Establish `h2D : (2 * D : F) ≠ 0` using `mul_ne_zero two_ne_zero hD0`. Use `⟨⟨0, 1, zero_ne_one⟩, mul_comm, fun {x} hx => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `SlopeTestRemainingChoices.nm_ex L x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hn0 : n = 0`. It suffices to derive a contradiction. Take `⟨t, c, -, -, hdec⟩` from `SlopeTestRemainingChoices.decomp L θ hc D hD x`. Establish `hcjx : algebraMap F E (2 * D) * L.cj x = algebraMap F E (D * t) - algebraMap F E c * θ`. Establish `h` using `congrArg L.cj hdec`.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_mul, AlgEquiv.commutes, hc] at h`. Simplify using `only [map_mul]`. Take the linear combination `h`. Establish `hprod : (algebraMap F E (D * t)) ^ 2 - (algebraMap F E c) ^ 2 * algebraMap F E D = 0`. Establish `h0 : (algebraMap F E (2 * D) * x) * (algebraMap F E (2 * D) * L.cj x) = 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_mul_mul_comm, ← hn, hn0, map_zero, mul_zero]`. Rewrite `h0` using `[hdec, hcjx]`. Take the linear combination `h0 + (algebraMap F E c) ^ 2 * hD`. Establish `hF : (D * t) ^ 2 - c ^ 2 * D = 0`. Apply `hinj` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_zero, ← hprod]`. Simplify using `only [map_sub, map_pow, map_mul]`. Distinguish the cases in `hc0 : c = 0`. Rewrite `hF`, `hdec` using `[hc0]`. Establish `hsq : (D * t) ^ 2 = 0` using `by linear_combination hF`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hDt : D * t = 0` using `(pow_eq_zero_iff two_ne_zero).mp hsq`. Rewrite `hdec` using `[hDt, map_zero, zero_mul, add_zero]`. Establish `hu : IsUnit (algebraMap F E (2 * D))` using `(IsUnit.mk0 _ h2D).map _`. Conclude with `hx (hu.mul_right_eq_zero.mp hdec)`. Apply `hns` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨D * t / c, ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_div_comm, div_eq_iff (mul_ne_zero hc0 hc0)]`. Take the linear combination `hF`. Use `⟨L.cj x * algebraMap F E n⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← hn, ← map_mul, mul_inv_cancel₀ hn0, map_one]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isField_of_nonsq [CharZero F] (L : LocE F E) (θ : E) (hc : L.cj θ = -θ) (D : F)
     (hD0 : D ≠ 0) (hD : θ * θ = algebraMap F E D) (hns : ¬ ∃ s : F, s * s = D) : IsField E := by
@@ -71,25 +71,23 @@ theorem isField_of_nonsq [CharZero F] (L : LocE F E) (θ : E) (hc : L.cj θ = -�
 end Fld
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M hOK θ _ hθc D hD0 hθD hns W _ _ P hP`. Use `hOK.loc` as an intermediate fact. Use `hOK.char0` as an intermediate fact. Establish `hE : IsField E` using `isField_of_nonsq M.L θ hθc (D : F) hD0 hθD hns`. Set `_ : Field E` to `hE.toField`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `M.L.free` as an intermediate fact. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_eq_succ M.L.rank`. Establish `hO : (integralClosure 𝒪[F] E).toSubring = M.L.O`. Use extensionality with `x`. Rewrite using `[M.L.O_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `: IsDedekindDomain (integralClosure 𝒪[F] E)` using `integralClosure.isDedekindDomain 𝒪[F] F E`. Use `set C := integralClosure 𝒪[F] E with hC`. Establish `: Module.IsTorsionFree 𝒪[F] C` using `.of_smul_eq_zero fun r c h => by`. Distinguish the cases in `hr : r = 0`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inl hr`. Use `right`. Establish `h' : ((r • c : C) : E) = 0` using `by rw [h]; rfl`. Rewrite `h'` using `[Subalgebra.coe_smul, Algebra.smul_def, mul_eq_zero]`. Establish `hr' : algebraMap 𝒪[F] E r ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsScalarTower.algebraMap_apply 𝒪[F] F E]`. Use `(map_ne_zero _).mpr fun h0 => hr (Subtype.ext h0)` and prove the remaining obligations. Conclude with `Subtype.ext (h'.resolve_left hr')`. Establish `hfinP : {I : Ideal C | I.IsPrime}.Finite`. Establish `hm` using `IsDedekindDomain.primesOver_finite (IsLocalRing.maximalIdeal 𝒪[F]) C`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Use `(hm.insert ⊥).subset fun I hI => ?_` and prove the remaining obligations. Distinguish the cases in `hI0 : I = ⊥`. Conclude with `Or.inl hI0`. Use `right`. Establish `hI : I.IsPrime` using `hI`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hne : I.under 𝒪[F] ≠ ⊥` using `fun h => hI0 (Ideal.eq_bot_of_comap_eq_bot h)`. Establish `hmax : (I.under 𝒪[F]).IsMaximal` using `(Ideal.IsPrime.under 𝒪[F] I).isMaximal hne`. Use `⟨hI, ⟨(IsLocalRing.eq_maximalIdeal hmax).symm⟩⟩` and prove the remaining obligations. Establish `: IsPrincipalIdealRing C` using `IsPrincipalIdealRing.of_finite_primes hfinP`. Set `e : C ≃+* M.L.O` to `RingEquiv.subringCongr hO`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `: IsPrincipalIdealRing M.L.O` using `IsPrincipalIdealRing.of_surjective e.toRingHom e.surjective`. Establish `: Module.Finite M.L.O P` using `Module.Finite.iff_fg.mpr hP`. Establish `: Module.IsTorsionFree M.L.O P` using `.of_smul_eq_zero fun r p h => by`. Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`.
+Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `right`. Establish `h' : ((r : E) • (p : W)) = 0`. Establish `h2 : r • (p : W) = 0`. Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `using this`.
-
-Conclude with `h2`. Establish `hr' : (r : E) ≠ 0` using `fun h0 => hr (Subtype.ext h0)`. Conclude with `Subtype.ext ((smul_eq_zero.mp h').resolve_left hr')`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nonSqCase : NonSqCase := by
   intro F _ _ _ E _ _ _ _ M hOK θ _ hθc D hD0 hθD hns W _ _ P hP

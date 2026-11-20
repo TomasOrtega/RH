@@ -23,7 +23,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SqTop.BotConstPf
 
 /- English proof (translation)
-Take `⟨CF0, h1⟩` from `hP`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x0, h2⟩` from `h1 ε CF hCF`. Conclude with `⟨C0, x0, fun C hC D large₂ he hx hr T Lc μ₀ hμ G => h G μ₀ _ _ _ hμ (h2 C hC D large₂ he hx hr T Lc μ₀ hμ G)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gBig_imp {P R : GP} (hP : GBig P)
     (h : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ),
@@ -34,9 +34,9 @@ theorem gBig_imp {P R : GP} (hP : GBig P)
   exact ⟨C0, x0, fun C hC D large₂ he hx hr T Lc μ₀ hμ G => h G μ₀ _ _ _ hμ (h2 C hC D large₂ he hx hr T Lc μ₀ hμ G)⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.PrimeMembershipExistence.exists_prime_mem`. Consider the case `exact _root_.GlobalTheory.PrimeMembershipExistence.exists_prime_mem`. Consider the case `(apply _root_.GlobalTheory.PrimeMembershipExistence.exists_prime_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PrimeMembershipExistence.exists_prime_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.PrimeMembershipExistence.exists_prime_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PrimeMembershipExistence.exists_prime_mem ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_prime_under {K : Type} [Field K] [NumberField K] (w : Formalism.PairingDivisionLocalBalance.Pl K) :
     ∃ p : ℕ, p.Prime ∧ (p : 𝓞 K) ∈ w.asIdeal := by
@@ -49,9 +49,9 @@ theorem exists_prime_under {K : Type} [Field K] [NumberField K] (w : Formalism.P
   | (intros; exact _root_.GlobalTheory.PrimeMembershipExistence.exists_prime_mem ..)
 
 /- English proof (translation)
-Establish `h3 : u₁ / u₂ ∈ Qbar` using `div_mem h₁ h₂`. Use `⟨h3, fun lam => ?_⟩` and prove the remaining obligations. Establish `e : (⟨u₁ / u₂, h3⟩ : Qbar) = ⟨u₁, h₁⟩ / ⟨u₂, h₂⟩` using `rfl`. Establish `a` using `n₁ lam`. Establish `b` using `n₂ lam`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a` using `[lamC, dif_pos h₁]`. Rewrite `b` using `[lamC, dif_pos h₂]`. Rewrite using `[lamC, dif_pos h3, e, map_div₀, norm_div, a, b, div_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lamC_div_norm {p : ℕ} [Fact p.Prime] {u₁ u₂ : ℂ} (h₁ : u₁ ∈ Qbar) (h₂ : u₂ ∈ Qbar)
     (n₁ : ∀ lam : Qbar →+* ℂ_[p], ‖lamC lam u₁‖ = 1) (n₂ : ∀ lam : Qbar →+* ℂ_[p], ‖lamC lam u₂‖ = 1) :
@@ -72,19 +72,19 @@ namespace GlobalTheory.SqTop
 open BotConstPf
 
 /- English proof (translation)
-Introduce `hPr hK hM hInp hS hL`. Use `gBig_imp (Model.gBig_and (Model.gBig_and (GlobalTheory.T.bottom_triangle_constant_at hPr hK hM hInp hS hL) (GlobalTheory.T.bottom_triangle_constant_normalized hPr hK hM hInp hS)) hS) ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b hμ H`. Take `⟨⟨H1, H2⟩, hGood, htw, hSm⟩` from `H`. Introduce `W S hψ hN i j t A A' WW X c0 δ t0 P₀ P₀' P P' z z' C' dl hX hc hB₀ hB hz hz' hz0 hz'0 hI`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hct, hc0, γ, hγ⟩` from `H1 W S hψ hN i j t A A' WW X c0 hX hc`. Establish `hγ0 : γ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hγ` using `[map_zero, zero_mul]`. Conclude with `hct hγ.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨γ, hγ0, hc0, hγ, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨κ, hκ, H⟩` from `H2 W S hψ hN i j A A' WW X c0 δ t0 hX hc`. Take `⟨-, hQn1, hmod⟩` from `Model.base_tuple G hμ`. Take `⟨u₁, M, M', hu₁, hu₁q, hu₁n, hr₁⟩` from `H t _ P P' hB`. Take `⟨u₂, N₁, N₂, hu₂, hu₂q, hu₂n, hr₂⟩` from `H μ₀ _ P₀ P₀' (hmod ▸ hB₀)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S', del, hE, hCo, -, rfl⟩` from `hI`. Take `⟨p, hp, hpw⟩` from `exists_prime_under w`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hpQ : ¬ p ∣ Qn G t` using `fun hd => hw (by`. Take `⟨k, hk⟩` from `hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hk, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hpw)`. Establish `hp1 : ¬ p ∣ Qn G μ₀` using `by rw [hQn1]; exact hp.not_dvd_one`. Take `⟨hv, hvn⟩` from `lamC_div_norm hu₁q hu₂q (hu₁n p hpQ) (hu₂n p hp1)`. Establish `hlev : padicValNat p (levQ G.pl * Qn G t) ≤ padicValNat p (levQ G.pl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : levQ G.pl ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ (Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot)`. Rewrite using `[padicValNat.mul h0 (Model.Qn_ne_zero G t), padicValNat.eq_zero_of_not_dvd hpQ, add_zero]`. Establish `e1` using `hB.rank`. Establish `e2` using `hB₀.rank`. Establish `s1` using `hSm δ t0 _ P P' t i j _ hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `s2` using `hSm δ t0 _ P₀ P₀' μ₀ i j _ hB₀`. Use `GlobalTheory.T.valuation_proportionalityRatio_le_bottomPairs D (bigN D) (maxWt D sc.cGap) (levQ G.pl) S' del _ (hInp D) hE hCo D.what₂.LL D.what₂.embLL w p hpw δ t0 (levQ G.pl * Qn G t) (levQ G.pl) hlev le_rfl P P' P₀ P₀' s1.1 s1.2 s2.1 s2.2 e1.2.2.2 e2.2.2.2 (κ * u₁ * c0 t) (κ * …` and prove the remaining obligations. Rewrite using `[← hγ]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem botConst_of_inputs : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → BotSmall → LNe → BotConst := by

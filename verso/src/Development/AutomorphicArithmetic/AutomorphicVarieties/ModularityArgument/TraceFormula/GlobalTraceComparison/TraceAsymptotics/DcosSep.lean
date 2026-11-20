@@ -16,17 +16,17 @@ namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 open GlobalTheory.CompanionTheory.IwahoriContraction in
 
 /- English proof (translation)
-Establish `hd : ∃ a ∈ iwGL n w, ∃ b ∈ iwGL n w, δ = a * tdiag ϖ y * b`. Assume the negation of the conclusion as `h`. Conclude with `hδ (if_neg h)`. Take `⟨a, ha, b, hb, hab⟩` from `hd`. Take `⟨⟨U, hU⟩, -, hcpt, -⟩` from `GlobalTheory.CompanionTheory.TfLoc.Iw.iwahori_compact_open_galois.1 (w.adicCompletion E) n`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcomp : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `hequiv` using `ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) Valued.v`. Establish `h0 : (ϖ : w.adicCompletion E) ≠ 0` using `ϖ.ne_zero`. Establish `hid : ∀ g : GL (Fin n) (w.adicCompletion E), Matrix.GeneralLinearGroup.map ((RingEquiv.refl (w.adicCompletion E) : _ ≃+* _) : _ →+* _) g = g`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hlt : ValuativeRel.valuation (w.adicCompletion E) (ϖ : w.adicCompletion E) < 1` using `(GlobalTheory.CompanionTheory.IwEntries.rel_lt_one_iff w _).2 (v_lt_one_of_ordL_eq_one w h0 hϖ)`. Establish `hmax : ∀ x : w.adicCompletion E, ValuativeRel.valuation (w.adicCompletion E) x < 1 → ValuativeRel.valuation (w.adicCompletion E) x ≤ ValuativeRel.valuation (w.adicCompletion E) (ϖ : w.adicCompletion E)` using `fun x hx => (hequiv.le_iff_le).2 (v_le_of_ordL_eq_one w h0 hϖ ((GlobalTheory.CompanionTheory.IwEntries.rel_lt_one_iff w _).1 hx))`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : Fin n → w.adicCompletion E` to `fun i => ((ϖ ^ y i : (w.adicCompletion E)ˣ) : w.adicCompletion E)`. Establish `hgap : ∀ i l, i < l → ValuativeRel.valuation (w.adicCompletion E) (e i) ≤ ValuativeRel.valuation (w.adicCompletion E) (ϖ : w.adicCompletion E) * ValuativeRel.valuation (w.adicCompletion E) (e l)` using `fun i l h => by`. Take `⟨c, hc⟩` from `Int.eq_ofNat_of_zero_le (show 0 ≤ y i - y l - 1 by have := hy h; omega)`. Establish `hyi : y i = y l + ((c + 1 : ℕ) : ℤ)` using `by push_cast; omega`. Establish `hei : e i = e l * (ϖ : w.adicCompletion E) ^ (c + 1)` using `by show ((ϖ ^ y i : (w.adicCompletion E)ˣ) : w.adicCompletion E) = ((ϖ ^ y l : (w.adicCompletion E)ˣ) : w.adicCompletion E) * _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hyi, _root_.zpow_add, Units.val_mul, zpow_natCast, Units.val_pow_eq_pow_val]`. Rewrite using `[hei, map_mul, map_pow, mul_comm]`. Use `mul_le_mul' ?_ le_rfl` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hx : ((tdiag ϖ y : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = Matrix.diagonal e`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tdiag, GlobalTheory.SmGL.val_diagT]`. Establish `hmem : δ ∈ PositivityTheory.Rg.Tf.Loc.iwDouble (w.adicCompletion E) (tdiag ϖ y : GLw n w)` using `⟨a, (mem_iwGL_iff w n a).1 ha, b, (mem_iwGL_iff w n b).1 hb, hab⟩`. Take `⟨m, -, t, ht, h⟩` from `GlobalTheory.CompanionTheory.TwContraction.contraction U hU hcpt (RingEquiv.refl _) (fun _ => rfl) (fun g hg => by rw [hid]; exact hg) _ hlt hmax e (fun i => Units.ne_zero _) hgap _ hx δ hmem`. Rewrite `h` using `[hid]`. Conclude with `⟨m, t, torusO_subset_TO w n t ht, h⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem conj_diag {E : Type} [Field E] [NumberField E] [IsCMField E] (w : Pl E) (ϖ : (w.adicCompletion E)ˣ)
     (hϖ : ordL (ϖ : w.adicCompletion E) = 1) (n : ℕ) (y : Fin n → ℤ) (hy : StrictAnti y) (δ : GLw n w)
@@ -80,17 +80,15 @@ private theorem conj_diag {E : Type} [Field E] [NumberField E] [IsCMField E] (w 
   exact ⟨m, t, torusO_subset_TO w n t ht, h⟩
 
 /- English proof (translation)
-Take `⟨m, t, ⟨hoff, hdiag⟩, h⟩` from `conj_diag w ϖ hϖ n y hy δ hδ`. Set `d : Fin n → w.adicCompletion E` to `fun i => ((ϖ ^ y i : (w.adicCompletion E)ˣ) : w.adicCompletion E) * t.val i i`. Establish `ht0 : ∀ i, t.val i i ≠ 0` using `fun i h0 => by`. Use `hdiag i` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one this`. Establish `hord : ∀ i, ordL (d i) = y i` using `fun i => by`. Simplify using `only [d]`. Rewrite using `[GlobalTheory.CompanionTheory.UnitaryCorrection.ordL_mul_of_ne (Units.ne_zero _) (ht0 i), GlobalTheory.CompanionTheory.UnitaryContraction.ordL_zpow, hϖ, GlobalTheory.CompanionTheory.UnitaryCorrection.ordL_congr (b := (1 : w.adicCompletion E)) (by rw [hdiag i, map_one]), GlobalThe …`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective d` using `fun i j hij => hy.injective (by rw [← hord i, ← hord j, hij])`. Establish `hmat : (m⁻¹ * δ * m : GLw n w).val = Matrix.diagonal d`. Rewrite using `[h, Units.val_mul, tdiag, GlobalTheory.SmGL.val_diagT]`. Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[d]`. Simplify using `[hoff i j hij, hij]`. Establish `hcp : δ.val.charpoly = ∏ i, (X - C (d i))`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (m⁻¹ * δ * m : GLw n w).val.charpoly = δ.val.charpoly`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv]`. Conclude with `Matrix.charpoly_units_conj' m δ.val`. Rewrite using `[← h1, hmat, Matrix.charpoly_diagonal]`. Rewrite using `[hcp]`.
-
-Conclude with `separable_prod_X_sub_C_iff.2 hinj`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sep_of_dcos {E : Type} [Field E] [NumberField E] [IsCMField E] (w : Pl E) (ϖ : (w.adicCompletion E)ˣ)
     (hϖ : ordL (ϖ : w.adicCompletion E) = 1) (n : ℕ) (y : Fin n → ℤ) (hy : StrictAnti y) (δ : GLw n w)
@@ -129,7 +127,7 @@ end UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
 open UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm in
 /- English proof (citation)
-Apply `UpperTheory.Reformulated.B.DoubleCosetSeparation.dcosSep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FIntegralCasts%2FCapelliIdentities%2FDoubleCosetSeparation.lean&line=78#L78)
 -/

@@ -32,7 +32,7 @@ def mchart (c : ∀ k, Bk n k) : (MP ℤ m n).Opens :=
     isOpen_iInter_of_finite fun k => (blockChart n k (c k)).isOpen⟩
 
 /- English proof (translation)
-Introduce `_ hx` and use `Set.mem_iInter.1 hx k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mchart_le (c : ∀ k, Bk n k) (k : Fin (m + 1)) : mchart c ≤ blockChart n k (c k) :=
   fun _ hx => Set.mem_iInter.1 hx k
@@ -45,7 +45,7 @@ def ptChart (x : MP ℤ m n) (k : Fin (m + 1)) : Bk n k :=
   (exists_mem_chart ℤ (n k) (prB n k x)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_mem_chart ℤ (n k) (prB n k x)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mem_ptChart (x : MP ℤ m n) (k : Fin (m + 1)) : x ∈ blockChart n k (ptChart x k) :=
   (exists_mem_chart ℤ (n k) (prB n k x)).choose_spec
@@ -89,9 +89,9 @@ def sv (n' : ℕ) (n : Fin (m + 1) → ℕ) : (Σ k, Bk n k) → Σ k', Bk (cons
   fun p => ⟨p.1.succ, p.2⟩
 
 /- English proof (translation)
-Use `⟨Fin.succ_injective _, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, i⟩ ⟨k', j⟩ h`. Establish `hk : k.succ = k'.succ` using `congrArg Sigma.fst h`. Take `rfl : k = k'` from `Fin.succ_injective _ hk`. Establish `h' : (⟨k.succ, i⟩ : Σ k', Bk (consN n' n) k') = ⟨k.succ, j⟩` using `h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hij : i = j` using `sigma_mk_injective (β := Bk (consN n' n)) (i := k.succ) h'`. Rewrite using `[hij]`. Introduce and unpack `⟨k', j⟩ ⟨k, rfl⟩`. Conclude with `⟨⟨k, j⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isBlockMap_sv (n' : ℕ) (n : Fin (m + 1) → ℕ) :
     IsBlockMap (ι := Bk n) (ι' := Bk (consN n' n)) Fin.succ (sv n' n) := by
@@ -124,7 +124,7 @@ def pullLine (n' : ℕ) (A : Geo.HermLine (Bk n)) : Geo.HermLine (Bk (consN n' n
     simp only [hs]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPullHerm_pullLine (n' : ℕ) (A : Geo.HermLine (Bk n)) :
     IsPullHerm Fin.succ (sv n' n) A (pullLine n' A) :=

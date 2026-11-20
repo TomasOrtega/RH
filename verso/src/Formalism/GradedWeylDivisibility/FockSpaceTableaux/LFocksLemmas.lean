@@ -12,7 +12,7 @@ section general
 variable {σ : Type*}
 
 /- English proof (translation)
-Rewrite using `[C_mul', fischerInner_eq_sum_of_subset (c • f) g f.support support_smul, fockF, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma LFocks_C_mul_left (c : ℂ) (f g : MvPolynomial σ ℂ) :
     fockF (C c * f) g = c * fockF f g := by
@@ -22,7 +22,7 @@ lemma LFocks_C_mul_left (c : ℂ) (f g : MvPolynomial σ ℂ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [fockF, coeff_C_mul, star_mul', Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma LFocks_C_mul_right (c : ℂ) (f g : MvPolynomial σ ℂ) :
     fockF f (C c * g) = star c * fockF f g := by
@@ -30,7 +30,7 @@ lemma LFocks_C_mul_right (c : ℂ) (f g : MvPolynomial σ ℂ) :
   exact Finset.sum_congr rfl fun m _ => by ring
 
 /- English proof (translation)
-Rewrite using `[C_apply, fischerInner_monomial_left, Finsupp.support_zero, Finset.prod_empty, Nat.cast_one, mul_one, constantCoeff_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma LFocks_C_left (a : ℂ) (g : MvPolynomial σ ℂ) :
     fockF (C a) g = a * star (constantCoeff g) := by
@@ -42,7 +42,7 @@ end general
 variable {σ : Type*} [Fintype σ]
 
 /- English proof (translation)
-Unfold `sub`. Conclude with `aeval_X _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma LFocks_sub_X (U : Matrix σ σ ℂ) (i : σ) :
     sub U (X i) = ∑ j, C (U i j) * X j := by
@@ -50,7 +50,7 @@ lemma LFocks_sub_X (U : Matrix σ σ ℂ) (i : σ) :
   exact aeval_X _ _
 
 /- English proof (translation)
-Unfold `sub`. Rewrite using `[aeval_C, algebraMap_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma LFocks_sub_C (U : Matrix σ σ ℂ) (a : ℂ) :
     sub U (C a) = C a := by
@@ -58,9 +58,7 @@ lemma LFocks_sub_C (U : Matrix σ σ ℂ) (a : ℂ) :
   rw [aeval_C, algebraMap_eq]
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on`. Use `next a => rw [LFocks_sub_C]`. Use `next p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Use `next p i hp =>`. Rewrite using `[map_mul, map_mul, map_mul, LFocks_sub_X]`.
-
-Simplify using the standard rewrite rules.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma LFocks_constantCoeff_sub (U : Matrix σ σ ℂ) (g : MvPolynomial σ ℂ) :
     constantCoeff (sub U g) = constantCoeff g := by
@@ -72,7 +70,7 @@ lemma LFocks_constantCoeff_sub (U : Matrix σ σ ℂ) (g : MvPolynomial σ ℂ) 
     simp
 
 /- English proof (translation)
-Use `MvPolynomial.algHom_ext fun i => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, LFocks_sub_X, LFocks_sub_X, map_sum]`. Simplify using `only [map_mul, LFocks_sub_C, LFocks_sub_X, Finset.mul_sum, Matrix.mul_apply, map_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma LFocks_sub_comp (A B : Matrix σ σ ℂ) :
     (sub A).comp (sub B) = sub (B * A) := by
@@ -85,20 +83,20 @@ lemma LFocks_sub_comp (A B : Matrix σ σ ℂ) :
 variable [DecidableEq σ]
 
 /- English proof (translation)
-Use `MvPolynomial.algHom_ext fun i => ?_` and prove the remaining obligations. Simplify using `[LFocks_sub_X, Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma LFocks_sub_one : sub (1 : Matrix σ σ ℂ) = AlgHom.id ℂ (MvPolynomial σ ℂ) := by
   refine MvPolynomial.algHom_ext fun i => ?_
   simp [LFocks_sub_X, Matrix.one_apply]
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on`. Use `next a => simp`. Use `next p q hp hq => simp only [map_add, mul_add, Finset.sum_add_distrib, hp, hq]`. Use `next p k hp =>`. Establish `hS : pderiv i (sub V (X k)) = C (V k i)`.
+Proceed by induction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[LFocks_sub_X, map_sum]`. Simplify using `[pderiv_X, Pi.single_apply]`. Establish `hT : ∀ j, sub V (pderiv j (X k : MvPolynomial σ ℂ)) = if j = k then 1 else 0`. Introduce `j`. Rewrite using `[pderiv_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Rewrite using `[map_mul, pderiv_mul, hp, hS]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [pderiv_mul, map_add, map_mul, hT, mul_add, Finset.sum_add_distrib, Finset.sum_mul]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Simplify using `[mul_comm]`.
+A detailed English derivation is pending.
 -/
 lemma LFocks_pderiv_sub (V : Matrix σ σ ℂ) (i : σ) (g : MvPolynomial σ ℂ) :
     pderiv i (sub V g) = ∑ j, C (V j i) * sub V (pderiv j g) := by

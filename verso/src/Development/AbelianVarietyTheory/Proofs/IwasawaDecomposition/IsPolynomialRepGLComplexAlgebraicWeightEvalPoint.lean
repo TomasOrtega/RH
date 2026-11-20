@@ -12,7 +12,7 @@ namespace GlobalTheory.AlgWtHW
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `σ`. Simplify using `only [tauPt, inv_one, Units.val_one, Matrix.transpose_one]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tauPt_one (τ : L →+* ℂ) : tauPt τ (1 : GL (Fin n) ℂ) = fun _ => 1 := by
   funext σ
@@ -20,9 +20,9 @@ theorem tauPt_one (τ : L →+* ℂ) : tauPt τ (1 : GL (Fin n) ℂ) = fun _ => 
   split_ifs <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `σ`. Simplify using `only [tauPt]`. Use `split_ifs`. Simplify using the standard rewrite rules. Simplify using `[_root_.mul_inv_rev, Matrix.transpose_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem tauPt_mul (τ : L →+* ℂ) (A B : GL (Fin n) ℂ) :
     tauPt τ (A * B) = fun σ => tauPt τ A σ * tauPt τ B σ := by
@@ -42,9 +42,9 @@ def tauSubst (τ : L →+* ℂ) : (L →+* ℂ) × Fin n × Fin n →
   else MvPolynomial.C ((1 : Matrix (Fin n) (Fin n) ℂ) p.2.1 p.2.2)
 
 /- English proof (translation)
-Establish `e` using `MvPolynomial.eval₂Hom_bind₁ (RingHom.id ℂ) (Sum.elim (fun p => B.val p.1 p.2) (fun p => (B⁻¹).val p.1 p.2)) (tauSubst τ) Q`. Use `erw [e]`. Use `show MvPolynomial.eval _ Q = MvPolynomial.eval _ Q`. Use `congr 2`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [evPt, tauSubst]`. Apply the tactic sequence `split_ifs <;> simp [Matrix.one_apply, *]`.
+A detailed English derivation is pending.
 -/
 theorem eval_evPt (τ : L →+* ℂ) (Q : MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ) (B : GL (Fin n) ℂ) :
     MvPolynomial.eval (evPt τ B) Q =
@@ -60,11 +60,9 @@ theorem eval_evPt (τ : L →+* ℂ) (Q : MvPolynomial ((L →+* ℂ) × Fin n �
   split_ifs <;> simp [Matrix.one_apply, *]
 
 /- English proof (translation)
-Take `⟨h1, hm⟩` from `GlobalTheory.T.algebraicWeight_polyMatrix_multiplicative L n a ι b P h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show evM P (evPt τ 1) = 1`. Rewrite using `[evPt_eq_upt, tauPt_one]`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `A B show evM P (evPt τ (A * B)) = evM P (evPt τ A) * evM P (evPt τ B)`. Rewrite using `[evPt_eq_upt, evPt_eq_upt, evPt_eq_upt, tauPt_mul]`. Conclude with `hm _ _ (isUPt_tauPt τ A) (isUPt_tauPt τ B)`. Introduce `i j`. Use `⟨MvPolynomial.bind₁ (tauSubst τ) (P i j), fun B => ?_⟩` and prove the remaining obligations.
-
-Use `show MvPolynomial.eval (evPt τ B) (P i j) = _`. Conclude with `eval_evPt τ (P i j) B`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isPolyRep_evPt (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : AlgWt L n) (ι : Type)
     [Fintype ι] [DecidableEq ι] (b : Module.Basis ι ℂ a.W)

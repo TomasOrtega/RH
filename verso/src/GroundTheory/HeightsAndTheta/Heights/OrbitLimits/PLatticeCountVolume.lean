@@ -12,15 +12,15 @@ noncomputable section
 namespace LatticeCountVolume
 
 /- English proof (translation)
-Establish `: MeasurableVAdd La E` using `(inferInstance : MeasurableVAdd La.toAddSubgroup E)`. Establish `: VAddInvariantMeasure La E μ` using `(inferInstance : VAddInvariantMeasure La.toAddSubgroup E μ)`. Establish `: Countable La` using `inferInstance`. Use `set A := {x : E | x ∈ La ∧ x ∈ T} with hAdef`. Establish `key : ∀ y : E, ∑' g : La, S.indicator (1 : E → ℝ≥0∞) (g +ᵥ y) ≤ ((A.encard : ℕ∞) : ℝ≥0∞)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Use `set U : Set La := {g | (g : E) + y ∈ S} with hUdef`. Establish `h1 : ∑' g : La, S.indicator (1 : E → ℝ≥0∞) (g +ᵥ y) = ∑' g : La, U.indicator (1 : La → ℝ≥0∞) g`. Use `congr 1`. Rewrite using `[h1, ← tsum_subtype]`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.one_apply]`. Rewrite using `[ENNReal.tsum_set_one]`. Use `ENat.toENNReal_le.mpr ?_` and prove the remaining obligations. Break down `U.eq_empty_or_nonempty with hU | ⟨g₀, hg₀⟩` into its components or cases. Simplify using `[hU]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Set.encard_le_encard_of_injOn (f := fun g : La => (g : E) - g₀) ?_ ?_` and prove the remaining obligations. Introduce `g hg`. Use `⟨La.sub_mem g.2 g₀.2, ?_⟩` and prove the remaining obligations. Establish `hsub : (g : E) - g₀ = ((g : E) + y) - ((g₀ : E) + y)` using `by abel`. Use `show (g : E) - g₀ ∈ T`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hsub]`. Conclude with `hST _ hg _ hg₀`. Introduce `g _ g' _ h`. Conclude with `Subtype.ext (sub_left_injective h)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem measure_le_encard_mul {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] (μ : Measure E)
@@ -66,9 +66,9 @@ theorem measure_le_encard_mul {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ μ _ La _ _ S T hS hST`. Use `set b := Module.Free.chooseBasis ℤ La`. Establish `fund` using `ZLattice.isAddFundamentalDomain b μ`. Establish `hcov` using `ZLattice.covolume_eq_measure_fundamentalDomain La μ fund`. Establish `hFtop : μ (ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ)) ≠ ⊤` using `(ZSpan.fundamentalDomain_isBounded _).measure_lt_top.ne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcov, measureReal_def, ENNReal.ofReal_toReal hFtop]`. Conclude with `measure_le_encard_mul μ La S T hS hST fund`.
+A detailed English derivation is pending.
 -/
 theorem proof : LatticeCountVolume.Statement := by
   intro E _ _ _ _ _ μ _ La _ _ S T hS hST

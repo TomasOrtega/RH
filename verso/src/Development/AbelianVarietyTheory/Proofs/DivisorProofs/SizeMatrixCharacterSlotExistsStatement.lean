@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CellFunctorOfCharCe
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.LeviBlockExponent GlobalTheory.LeviBlockExponentLocal GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LeviBlockExponentLocal.norm_cellScalar_positionElt | exact GlobalTheory.LeviBlockExponentLocal.norm_cellScalar_positionElt | (intros; apply GlobalTheory.LeviBlockExponentLocal.norm_cellScalar_positionElt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_size_matrix_character : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (N i : ℕ) (b : Fin 2 → ℕ) (χ : Fin 2 → kˣ →* ℂˣ), (∀ j y, ‖((χ j y : ℂˣ) : ℂ)‖ = 1) → ∀ (ϖ : kˣ)

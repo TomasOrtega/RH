@@ -82,7 +82,7 @@ def RowPlainAt (R : RealDat D A Ks) : Prop :=
   R.toLevCh.Is A.μ0 → RealDat.models_vpos (D := D) → ∀ (i : Fin D.R.m) (t : T), RepsAt R.toLevCh i t 1
 
 /- English proof (translation)
-Introduce `hL hp i t` and use `h hL hp i t 1 Nat.one_pos`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem RowAt.plain {R : RealDat D A Ks} (h : RowAt R) : RowPlainAt R :=
   fun hL hp i t => h hL hp i t 1 Nat.one_pos
@@ -94,7 +94,7 @@ def Row : Prop :=
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), RowAt R
 
 /- English proof (translation)
-Take `⟨_, h2, _, rfl⟩` from `h`. Establish `h1 : (1 : ℝ) ≤ ((J'.relIndex J : ℕ) : ℝ)` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 h2`. Conclude with `⟨inv_pos.2 (by linarith), inv_le_one_of_one_le₀ h1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem IsSubLev.vol_pos {V : HSp D} {J J' : Subgroup (Bridge.Gf V)} {vol : ℝ} (h : IsSubLev V J J' vol) :
     0 < vol ∧ vol ≤ 1 := by
@@ -103,9 +103,7 @@ theorem IsSubLev.vol_pos {V : HSp D} {J J' : Subgroup (Bridge.Gf V)} {vol : ℝ}
   exact ⟨inv_pos.2 (by linarith), inv_le_one_of_one_le₀ h1⟩
 
 /- English proof (translation)
-Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Take `⟨hf, e⟩` from `H.2.2.2 a`. Rewrite using `[e]`. Conclude with `Nat.card_pos`. Take `⟨a, _⟩` from `H.1 1`.
-
-Conclude with `a.pos`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsAdReps.pos {V : HSp D} {Λ : Lat V} {J' : Subgroup (Bridge.Gf V)} {bad n : ℕ} {h : Fin n → Bridge.Gf V}
     {Lh : Fin n → Lat V} {gam : Fin n → ℕ} (H : IsAdReps V Λ J' bad h Lh gam) : (∀ a, 0 < gam a) ∧ 0 < n := by

@@ -24,12 +24,12 @@ def cst (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) : NNReal :=
     absFin D.host.F v ((1 : Fv D.host.F v) ⊗ₜ[D.host.F] (Module.finBasis D.host.F D.host.E k)))
 
 /- English proof (translation)
-The claim follows from `le_max_left _ _`.
+A detailed English derivation is pending.
 -/
 theorem one_le_cst (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) : 1 ≤ cst D v := le_max_left _ _
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x`. Simplify using `only [compFin, evFin, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.comp_apply, AlgHom.id_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem compFin_eq (v : HeightOneSpectrum (𝓞 D.host.F)) (y : AF D.host.F ⊗[D.host.F] D.host.E) :
     compFin D.host.F D.host.E v y =
@@ -43,7 +43,7 @@ theorem compFin_eq (v : HeightOneSpectrum (𝓞 D.host.F)) (y : AF D.host.F ⊗[
       AlgHom.comp_apply, AlgHom.id_apply]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← (Algebra.TensorProduct.basis (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) (Module.finBasis D.host.F D.host.E)).sum_repr y]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_finCoord (y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) :
     ∑ k, GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finCoord D y k ⊗ₜ[D.host.F] (Module.finBasis D.host.F D.host.E k) = y := by
@@ -54,11 +54,9 @@ theorem sum_finCoord (y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolu
   rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [← sum_finCoord y]`. Rewrite using `[map_sum]`. Use `absFin_sum_le _ v _ _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Establish `e1 : evalV D.host.F v (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finCoord D y k) ⊗ₜ[D.host.F] (Module.finBasis D.host.F D.host.E k) = (evalV D.host.F v (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finCoord D y k) ⊗ₜ[D.host.F] …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[e1]`. Use `(absFin_mul_le _ v _ _).trans ?_` and prove the remaining obligations. Rewrite using `[absFin_tmul_one, mul_comm]`. Use `mul_le_mul' ?_ ?_` and prove the remaining obligations.
-
-Conclude with `le_max_of_le_right (Finset.le_sup (f := fun k : Fin (Module.finrank D.host.F D.host.E) => absFin D.host.F v ((1 : Fv D.host.F v) ⊗ₜ[D.host.F] (Module.finBasis D.host.F D.host.E k))) (Finset.mem_univ k))`. Conclude with `Finset.le_sup (f := fun k => ‖evalV D.host.F v (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finCoord D y k)‖₊) (Finset.mem_univ k)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem absFin_map_le (v : HeightOneSpectrum (𝓞 D.host.F)) (y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) :
     absFin D.host.F v (Algebra.TensorProduct.map (evalV D.host.F v) (AlgHom.id D.host.F D.host.E) y) ≤
@@ -80,7 +78,7 @@ theorem absFin_map_le (v : HeightOneSpectrum (𝓞 D.host.F)) (y : Formalism.Mai
   · exact Finset.le_sup (f := fun k => ‖evalV D.host.F v (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finCoord D y k)‖₊) (Finset.mem_univ k)
 
 /- English proof (translation)
-Rewrite using `[compFin_eq]`. Conclude with `absFin_map_le v _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absFin_le (v : HeightOneSpectrum (𝓞 D.host.F)) (y : AF D.host.F ⊗[D.host.F] D.host.E) :
     absFin D.host.F v (compFin D.host.F D.host.E v y) ≤ cst D v * Finset.univ.sup fun k =>
@@ -98,7 +96,7 @@ open GlobalTheory.AdelicU
 variable {D : D7}
 
 /- English proof (translation)
-Use `Finset.le_sup (f := fun p : Fin X.rank × Fin X.rank × Fin (Module.finrank D.host.F D.host.E) => ‖evalV D.host.F v (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finCoord D (finMat D.sp.cm.sig X.gram h p.1 p.2.1) p.2.2)‖₊) (Finset.mem_univ (a, b, k))` as an intermediate fact. Simplify using `only at this`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finNorm`. Conclude with `this`.
+Establish an intermediate fact. Simplify by unfolding definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem coordNorm_le_finNorm (X : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (h : GA D X) (a b : Fin X.rank)
     (k : Fin (Module.finrank D.host.F D.host.E)) :
@@ -112,9 +110,9 @@ theorem coordNorm_le_finNorm (X : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F))
   exact this
 
 /- English proof (translation)
-Use `(normFin_le_iff D.host.F v).2 fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, reindex_apply, Matrix.submatrix_apply]`. Establish `hfm : Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) (Formalism.L2.Theta.mt X h (e.symm i) (e.symm j)) = finMat D.sp.cm.sig X.gram h (e.symm i) (e.symm j)` using `rfl`. Establish `h1` using `absFin_le v (Formalism.L2.Theta.mt X h (e.symm i) (e.symm j))`. Rewrite `h1` using `[hfm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `Finset.sup_le (s := Finset.univ) fun k _ => coordNorm_le_finNorm X v h (e.symm i) (e.symm j) k`. Conclude with `h1.trans (mul_le_mul' le_rfl h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem normFin_reindex_le (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) (v : HeightOneSpectrum (𝓞 D.host.F))
     (h : GA D X) :
@@ -130,7 +128,7 @@ theorem normFin_reindex_le (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) (v :
   exact h1.trans (mul_le_mul' le_rfl h2)
 
 /- English proof (translation)
-Use `show (Units.map _ (Formalism.L2.Theta.matHom X h))⁻¹ = Units.map _ (Formalism.L2.Theta.matHom X h⁻¹)`. Rewrite using `[map_inv, map_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapX_inv (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • reindex e e X.gramᵀ) (h : GA D X) : (kapX X e hJ h).1⁻¹ = (kapX X e hJ h⁻¹).1 := by
@@ -138,7 +136,7 @@ theorem kapX_inv (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (F
   rw [map_inv, map_inv]
 
 /- English proof (translation)
-Rewrite using `[← mat_kapX X e hJ h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_bc_kapX (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • reindex e e X.gramᵀ) (h : GA D X) (v : HeightOneSpectrum (𝓞 D.host.F)) :
@@ -148,9 +146,9 @@ theorem coe_bc_kapX (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix
   rfl
 
 /- English proof (translation)
-Establish `h1` using `normFin_reindex_le X e v h`. Establish `h2` using `normFin_reindex_le X e v h⁻¹`. Unfold `htFin htOf GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finHt`. Rewrite using `[← map_inv, kapX_inv, coe_bc_kapX, coe_bc_kapX]`. Use `max_le ?_ (max_le ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(one_le_cst D v).trans (le_mul_of_one_le_right' (le_max_left _ _))`. Conclude with `h1.trans (mul_le_mul' le_rfl (le_max_of_le_right (le_max_left _ _)))`. Conclude with `h2.trans (mul_le_mul' le_rfl (le_max_of_le_right (le_max_right _ _)))`.
+A detailed English derivation is pending.
 -/
 theorem htFin_kapX_le (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • reindex e e X.gramᵀ) (h : GA D X) (v : HeightOneSpectrum (𝓞 D.host.F)) :
@@ -166,9 +164,9 @@ theorem htFin_kapX_le (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matr
   · exact h2.trans (mul_le_mul' le_rfl (le_max_of_le_right (le_max_right _ _)))
 
 /- English proof (translation)
-Establish `h : ∀ k : Fin (Module.finrank D.host.F D.host.E), ∀ᶠ v in Filter.cofinite, absFin D.host.F v ((1 : Fv D.host.F v) ⊗ₜ[D.host.F] (Module.finBasis D.host.F D.host.E k)) ≤ 1`. Introduce `k`. Use `(eventually_absFin_le_one D.host.F ((1 : AF D.host.F) ⊗ₜ[D.host.F] (Module.finBasis D.host.F D.host.E k))).mono fun v hv => ?_` and prove the remaining obligations. Establish `e1 : compFin D.host.F D.host.E v ((1 : AF D.host.F) ⊗ₜ[D.host.F] (Module.finBasis D.host.F D.host.E k)) = (1 : Fv D.host.F v) ⊗ₜ[D.host.F] (Module.finBasis D.host.F D.host.E k)`. Simplify using `only [compFin, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hv` using `[e1]`. Then use the resulting hypothesis. Use `(Filter.eventually_cofinite.1 (Filter.eventually_all.2 h)).subset fun v hv hv' => hv ?_` and prove the remaining obligations. Conclude with `max_eq_left (Finset.sup_le fun k _ => hv' k)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cst_mulSupport_finite (D : D7) : Function.HasFiniteMulSupport (cst D) := by
   have h : ∀ k : Fin (Module.finrank D.host.F D.host.E), ∀ᶠ v in Filter.cofinite,
@@ -191,9 +189,9 @@ namespace GlobalTheory.SquareAgree
 open GlobalTheory.AdelicU GlobalTheory.SquareAgree.FinHeightBound
 
 /- English proof (translation)
-Introduce `D X d e J hJ`. Use `⟨∏ᶠ v, cst D v, fun h => ?_⟩` and prove the remaining obligations. Establish `hc` using `cst_mulSupport_finite D`. Establish `hf : Function.HasFiniteMulSupport fun v => GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finHt X v h` using `GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finHt_mulSupport_finite X h`. Rewrite using `[← finprod_mul_distrib hc hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `finprod_le_finprod (finite_mulSupport_htFin D.host.F (kapX X e hJ h).1) (fun _ => bot_le) ?_ (fun v => htFin_kapX_le X e hJ h v)` and prove the remaining obligations. Conclude with `(hc.union hf).subset (Function.mulSupport_mul _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finprod_htFin_kapX_le : ∀ (D : D7) (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d)
     {J : Matrix (Fin d) (Fin d) D.host.E} (hJ : J = D.host.xi0 • reindex e e X.gramᵀ), ∃ C : NNReal,

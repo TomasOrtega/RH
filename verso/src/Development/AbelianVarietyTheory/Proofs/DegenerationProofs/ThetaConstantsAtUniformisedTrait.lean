@@ -17,9 +17,9 @@ section Rig
 variable {S S' : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {A : Over S'} [GrpObj A] [IsCommMonObj A]
 
 /- English proof (translation)
-Establish `H` using `(maps_iff w _ (fun _ => eSec G) _ ρ₁ ρ₀ m.e _ (rigPull_le m.F m.e m.e_comm L₀) (fun _ => rfl)).1 h`. Introduce `Z r z J J' hJ hJ'`. Establish `e : (r ≫ m.e) ≫ eSec G = (r ≫ eSec A) ≫ m.F` using `by rw [Category.assoc, Category.assoc, m.e_comm]`. Use `(val_of (L := L₀) (φ := fun _ : PUnit => eSec G) (ε := fun _ => 1) ρ₀ (r ≫ m.e) z J (fun _ => J ((r ≫ eSec A) ≫ m.F)) (fun _ => congrArg J e)).trans ?_` and prove the remaining obligations. Use `(H Z r z (fun _ => J ((r ≫ eSec A) ≫ m.F)) (fun _ => J' (r ≫ eSec A)) (fun _ => hJ _) (fun _ => hJ' _)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.prod_unique, zpow_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rigidification_map_on_values (m : CubeMap A G) {L₀ : LB G.left} {L₁ : LB A.left} (w : LB.Iso L₁ (L₀.pull m.F))
     {ρ₀ : LB.Gen (L₀.pull (eSec G))} {ρ₁ : LB.Gen (L₁.pull (eSec A))}
@@ -43,9 +43,9 @@ variable {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {A : Over S'} [GrpObj A]
   {L₀ : LB G.left} {L₁ : LB A.left} {w : LB.Iso L₁ (L₀.pull φ)}
 
 /- English proof (translation)
-Establish `hz` using `hJ.mem (fun _ : Fin 1 => (snd T A).left) r`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Establish `hz' : r z ∈ (LPow A L₁ a T).U k` using `(T ⊗ A).left.basicOpen_le _ hk`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu` using `(MulFinite.isUnit_gs r z _ hz' _).2 hk`. Establish `e` using `sec_trans (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => a) s r z hz' hz`. Conclude with `isUnit_of_mul_isUnit_right (e ▸ hu :)`. Introduce `h`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨_, (MulFinite.isUnit_gs r z _ hz _).1 h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_iff_sv {a : ℤ} (s : LB.Sec (LPow A L₁ a T)) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z)
     {J} (hJ : Good L₁ z J) : r z ∈ nonzeroLocus s ↔ IsUnit (VVRank.sv A s r z J) := by
@@ -61,7 +61,7 @@ theorem mem_nonzeroLocus_iff_sv {a : ℤ} (s : LB.Sec (LPow A L₁ a T)) {Z : Sc
     exact TopologicalSpace.Opens.mem_iSup.2 ⟨_, (MulFinite.isUnit_gs r z _ hz _).1 h⟩
 
 /- English proof (translation)
-Take `⟨J, hJ⟩` from `exists_good' hL₀ y`. Take `⟨J', hJ'⟩` from `exists_good' hL₁ y`. Establish `q` using `(mem_nonzeroLocus_iff_sv s₀ (𝟙 _ ≫ psi hp τ hτ) y hJ).1 hy`. Rewrite `q` using `[h _ _ _ _ _ hJ hJ']`. Conclude with `(mem_nonzeroLocus_iff_sv s (𝟙 _) y hJ').2 (isUnit_of_mul_isUnit_right q)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SecRel.mem_nonzeroLocus (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) {a : ℤ} {s : LB.Sec (LPow A L₁ a T)}
     {s₀ : LB.Sec (LPow G L₀ a T₀)} (h : SecRel hp τ hτ w s s₀) (y : (T ⊗ A).left)
@@ -73,9 +73,9 @@ theorem SecRel.mem_nonzeroLocus (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) {a : ℤ
   exact (mem_nonzeroLocus_iff_sv s (𝟙 _) y hJ').2 (isUnit_of_mul_isUnit_right q)
 
 /- English proof (translation)
-Introduce `Z r z J J' hJ hJ'`. Establish `e' : psi hp τ' hτ' ≫ (ξ₀ ▷ G).left = (ξ ▷ A).left ≫ psi hp τ hτ`. Use `psi_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Over.comp_left, whiskerRight_fst, Over.comp_left, ← Category.assoc, psi_fst', Category.assoc, Category.assoc, psi_fst', e, ← Category.assoc, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, whiskerRight_fst]`. Rewrite using `[Category.assoc, VVRank.whisker_snd_left, psi_snd', Category.assoc, psi_snd', ← Category.assoc, VVRank.whisker_snd_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[VVRank.sv_pullS _ _ _ _ _ _ hJ, VVRank.sv_pullS _ _ _ _ _ _ hJ', Category.assoc, e', ← Category.assoc, h _ _ _ _ _ hJ hJ', Category.assoc, VVRank.whisker_snd_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem SecRel.pullS {a : ℤ} {s : LB.Sec (LPow A L₁ a T)} {s₀ : LB.Sec (LPow G L₀ a T₀)} (h : SecRel hp τ hτ w s s₀)
     {T' : Over S'} {T₀' : Over S} (τ' : T'.left ⟶ T₀'.left) (hτ' : τ' ≫ T₀'.hom = T'.hom ≫ f) (ξ : T' ⟶ T)
@@ -95,7 +95,7 @@ theorem SecRel.pullS {a : ℤ} {s : LB.Sec (LPow A L₁ a T)} {s₀ : LB.Sec (LP
 include hp hτ in
 
 /- English proof (translation)
-Establish `hc : (τ ≫ x₀.left) ≫ G.hom = T.hom ≫ f` using `by rw [Category.assoc, Over.w, hτ]`. Set `x : T ⟶ A` to `Over.homMk (hp.1.lift _ _ hc) (hp.1.lift_snd _ _ hc)`. Establish `hx : τ ≫ x₀.left = x.left ≫ φ` using `(hp.1.lift_fst _ _ hc).symm`. Use `⟨x, hx, Over.OverMorphism.ext (hp.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))⟩` and prove the remaining obligations. Rewrite using `[← over_pow hp τ hτ hx n, hn, over_one hp τ hτ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pt_down (x₀ : T₀ ⟶ G) {n : ℕ} (hn : x₀ ^ n = 1) :
     ∃ x : T ⟶ A, τ ≫ x₀.left = x.left ≫ φ ∧ x ^ n = 1 := by
@@ -108,7 +108,7 @@ theorem exists_pt_down (x₀ : T₀ ⟶ G) {n : ℕ} (hn : x₀ ^ n = 1) :
 include hp hτ in
 
 /- English proof (translation)
-Set `x₀ : T₀ ⟶ G` to `Over.homMk (inv τ ≫ x.left ≫ φ) (by`. Rewrite using `[Category.assoc, Category.assoc, hp.1.w, Over.w_assoc, ← hτ, IsIso.inv_hom_id_assoc])`. Establish `hx : τ ≫ x₀.left = x.left ≫ φ` using `IsIso.hom_inv_id_assoc _ _`. Use `⟨x₀, hx, Over.OverMorphism.ext ((cancel_epi τ).1 ?_)⟩` and prove the remaining obligations. Rewrite using `[over_pow hp τ hτ hx n, hn, over_one hp τ hτ]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pt_up [IsIso τ] (x : T ⟶ A) {n : ℕ} (hn : x ^ n = 1) :
     ∃ x₀ : T₀ ⟶ G, τ ≫ x₀.left = x.left ≫ φ ∧ x₀ ^ n = 1 := by
@@ -121,25 +121,21 @@ theorem exists_pt_up [IsIso τ] (x : T ⟶ A) {n : ℕ} (hn : x ^ n = 1) :
 end Move
 
 /- English proof (translation)
-Introduce `hV E _ _ _ H S t V _ _ _ hC χ t' m P σ hσ`. Take `⟨hD, hA, hZ⟩` from `hC`. Take `⟨w, hw, hr, -⟩` from `m.lin`. Establish `hR : IsRigidificationPullbackCompatibleIso w χ t'.PP.rig t.PP.rig`. Establish `q` using `rigidification_map_on_values m.cm w hr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `q` using `[m.base]`. Conclude with `q`. Establish `hp` using `m.cart`. Establish `hL₀` using `t.PP.isLB`. Establish `hL₁` using `t'.PP.isLB`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `τ : (Over.mk (𝟙 (Sp V))).left ⟶ (Over.mk χ).left` to `𝟙 (Sp V)`. Use `haveI : IsIso τ := inferInstanceAs (IsIso (𝟙 (Sp V)))`. Establish `hτ : τ ≫ (Over.mk χ).hom = (Over.mk (𝟙 (Sp V))).hom ≫ χ` using `rfl`. Take `⟨σ', hs⟩` from `exists_secRel hp τ hτ hw hL₀ hL₁ σ`. Establish `hσ' : NZ t'.G t'.PP.L (𝟙 (Sp V)) σ'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hg'⟩` from `hσ`. Take `⟨κ, -, h₂⟩` from `ThetaPtUp.exists_psi_inv' hp τ hτ`. Establish `e : psi hp τ hτ (κ g) = g` using `congrArg (fun q => q g) h₂`. Use `⟨κ g, ?_, SecRel.mem_nonzeroLocus hp τ hτ hL₀ hL₁ hs _ (e.symm ▸ hg')⟩` and prove the remaining obligations. Establish `e'` using `congrArg (fun q => q (κ g)) (psi_fst' hp τ hτ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `e'.symm.trans ((congrArg (fst (Over.mk χ) t.G).left e).trans hg)`. Establish `key : ∀ (ϖ : V), Irreducible ϖ → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ)), ValOver ϖ F v → IsGenSec t'.G t'.PP.L ((1 : ℕ) : ℤ) σ' ∧ ∀ n : ℕ, Odd n → IsUnit (n : V) → 3 ≤ n → ∀ (ξ : Over.mk (jFK (R` using `V) F ≫ jK V) ⟶ Over.mk (𝟙 (Sp V))), (∀ x (c : F), ThG t'.G t'.PP.L t'.PP.rig n (VVRank.pullS t'.G _ ξ σ') x (fnOf c) → 0 ≤ v c) ∧ ∃ x, ∃ c : F, ThG t'.G t'.PP.L t'.PP.rig n (VVRank.pullS t'.G _ ξ σ') x (fnOf c) ∧ v c = 0 := by`. Introduce `ϖ hϖ F _ _ _ v hv`. Use `choose Q hQ using QForm.exists_QVal hϖ P.D`. Establish `q` using `GlobalTheory.T.thetaConstants_integral_unit_of_closedFibre_nonvanishing hV V hA ϖ hϖ P.D Q hQ F v hv P.A t'.G t'.semi P.U`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `only at q`. Rewrite `q` using `[P.bundle]`. Conclude with `q σ' hσ'`. Use `⟨?_, fun ϖ hϖ F _ _ _ v hv n h₁ h₂ h₃ x' ξ hξ => ?_⟩` and prove the remaining obligations. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `GlobalTheory.adic_base_embeds_valuation_algebraic_closure.2 V ϖ hϖ`. Conclude with `ThetaPtUp.isGenSec_up hp τ hτ hw hL₀ hL₁ hs (key ϖ hϖ _ v hv).1`. Set `ξ' : Over.mk (jFK (R` to `V) F ≫ jK V) ⟶ Over.mk (𝟙 (Sp V)) := Over.homMk (jFK (R := V) F ≫ jK V) (Category.comp_id _)`. Take `⟨k₁, x, c, k₂, k₃⟩` from `(key ϖ hϖ F v hv).2 n h₁ h₂ h₃ ξ'`. Set `τ' : (Over.mk (jFK (R` to `V) F ≫ jK V)).left ⟶ (Over.mk x').left := 𝟙 (Sp F)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsIso τ' := inferInstanceAs (IsIso (𝟙 (Sp F)))`. Establish `hτ' : τ' ≫ (Over.mk x').hom = (Over.mk (jFK (R` using `V) F ≫ jK V)).hom ≫ χ := (Category.id_comp _).trans ((Over.w ξ).symm.trans (congrArg (· ≫ χ) hξ))`. Establish `hs'` using `SecRel.pullS hp τ hτ hs τ' hτ' ξ' ξ ((Category.id_comp _).trans (hξ.trans (Category.comp_id _).symm))`. Establish `hi : inv τ' = 𝟙 (Sp F)` using `IsIso.inv_eq_of_hom_inv_id (Category.id_comp _)`. Use `⟨fun y₀ d hd => ?_, ?_⟩` and prove the remaining obligations.
-
-Take `⟨y, hy, hn⟩` from `exists_pt_down hp τ' hτ' y₀ hd.1`. Conclude with `k₁ y d (ThG.move hp τ' hτ' hw hL₀ hL₁ hR hy hn hs' hd)`. Take `⟨x₀, hx, hn⟩` from `exists_pt_up hp τ' hτ' x k₂.1`. Establish `q` using `ThG.up hp τ' hτ' hw hL₀ hL₁ hR hx hn hs' k₂`. Rewrite `q` using `[hi]`.
-
-Conclude with `⟨x₀, c, q, k₃⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem theta_at_trait : HV → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ (χ : Sp V ⟶ S) (t' : SAB H (Sp V)) (_ : SABMap t' t χ) (_ : PELUnif (maximalIdeal V) t') (σ : LB.Sec (LPow t.G t.PP.L ((1 : ℕ) : ℤ) (Over.mk χ))), NZ t.G t.PP.L χ σ → IsGenSec t.G t.PP.L ((1 : ℕ) : ℤ) σ ∧ ∀ (ϖ : V), Irreducible ϖ → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ)), ValOver ϖ F v → ∀ m : ℕ, Odd m → IsUnit (m : V) → 3 ≤ m → ∀ (x' : Sp F ⟶ S) (ξ : Over.mk x' ⟶ Over.mk χ), ξ.left = jFK (R := V) F ≫ jK V → (∀ x (c : F), ThG t.G t.PP.L t.PP.rig m (VVRank.pullS t.G _ ξ σ) x (fnOf c) → 0 ≤ v c) ∧ ∃ x, ∃ c : F, ThG t.G t.PP.L t.PP.rig m (VVRank.pullS t.G _ ξ σ) x (fnOf c) ∧ v c = 0 := by
   intro hV E _ _ _ H S t V _ _ _ hC χ t' m P σ hσ

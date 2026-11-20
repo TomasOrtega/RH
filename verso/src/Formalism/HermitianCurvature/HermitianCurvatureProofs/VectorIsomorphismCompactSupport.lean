@@ -10,33 +10,29 @@ namespace Formalism.FourierDecayAlt.P.PBFV
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd Formalism.YangianSpanCharacter.T Formalism.FourierDecayAlt.P5
 
 /- English proof (translation)
-Introduce `hP Wp Wq _ _ _ _ _ _ P p j hj w hw s x x' hx hx'`. Take `⟨ε, hε, hεall⟩` from `Formalism.FourierDecayAlt.P.JCx2.exists_common_eps (fun (i : Bool × Wd.Ix (Fin w.length)) ε => JC.NiceCoef (p.T.bs j) ε (if i.1 then x i.2 else x' i.2)) (fun i ε ε' _ h hF => nice_mono h hF) (fun i => by`. Break down `i with ⟨b, e⟩` into its components or cases. Consider the cases of `b`. Conclude with `Formalism.FourierDecayAlt.P.TLB.nice_of_cpt (hx' e)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Conclude with `Formalism.FourierDecayAlt.P.TLB.nice_of_cpt (hx e))`. Establish `hxN : ∀ e, JC.NiceCoef (p.T.bs j) ε (x e)` using `fun e => by simpa using hεall (true, e)`. Establish `hx'N : ∀ e, JC.NiceCoef (p.T.bs j) ε (x' e)` using `fun e => by simpa using hεall (false, e)`. Take `⟨R, hR⟩` from `common_R (fun i : Bool × Wd.Ix (Fin w.length) => if i.1 then x i.2 else x' i.2) (fun i => by`. Break down `i with ⟨b, e⟩` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Consider the cases of `b`. Conclude with `(hx' e).2.1`. Conclude with `(hx e).2.1)`. Establish `hxR : ∀ e, ∀ g ∈ B.GV P.k (P.r - j), x e g ≠ 0 → B.gN g ≤ R` using `fun e => by simpa using hR (true, e)`. Establish `hx'R : ∀ e, ∀ g ∈ B.GV P.k (P.r - j), x' e g ≠ 0 → B.gN g ≤ R` using `fun e => by simpa using hR (false, e)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hwN` using `waveG_nice (p.T.bs j) ε s w x hxN`. Use `⟨fun e => ⟨(hwN e).1, ⟨R, waveG_bs (p.T.bs j) s w x R hxR e⟩, ε, hε, (hwN e).2.2⟩, ?_⟩` and prove the remaining obligations. Take `⟨hl1, hlk, -⟩` from `p.hl`. Set `jF : Fin (P.r + 1)` to `⟨j, by omega⟩`. Establish `hPl` using `Formalism.FourierDecayAlt.P.JCTx5.isPlace_lev P p.T jF p.hP`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨X⟩` from `Formalism.FourierDecayAlt.P.actual_operators_exist _ _ _ _ _ _ _ hPl`. Take `⟨L, st, h1, h2, h3, h4, h5, h6⟩` from `Formalism.FourierDecayAlt.P.level_start_actual _ _ _ _ _ _ _ hPl X p.l0`. Take `⟨μ0, hμ0⟩` from `Formalism.FourierDecayAlt.P.JCTx5.exists_haar_level_zero (Nat.sub_self P.r) (p.T.bs P.r)`. Establish `hD : IsData (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' X (μ0.map (Formalism.FourierDecayAlt.P.JCTx5.embL P.k (P.r - j))) L st p.l0` using `⟨hPl, Formalism.FourierDecayAlt.P.JCTx5.haar_glev μ0 hμ0, h1, h2, h3, h4, h5, h6⟩`. Use `set μ := μ0.map (Formalism.FourierDecayAlt.P.JCTx5.embL P.k (P.r - j)) with hμ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨K, hThm, -, -, hJc⟩` from `hP Wp Wq (Fin w.length) (JC.parLev P jF) _ _ _ _ X μ L st p.l0 (p.T.bs jF) _ _ hD hl1 hlk rfl rfl rfl rfl le_rfl le_rfl`. Establish `hJ : ∀ (F : B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp)), JC.NiceCoef (p.T.bs jF) ε F → (∃ R : ℝ, ∀ g ∈ B.GV P.k (P.r - j), F g ≠ 0 → B.gN g ≤ R) → ∃ Φ ∈ K 0, ∀ y ∈ DomR (JC.parLev P jF).k (JC.parLev P jF).r (p.T.bs jF).z (p.T.bs jF).z', (Φ : Fn (JC.parLev P jF).k (JC.parLev P jF).r (Wq …`. Introduce and unpack `F hF ⟨R', hR'⟩`. Conclude with `Formalism.FourierDecayAlt.P.PBF.pic_of_cptClause (p.T.bs jF) (K 0) hJc hε hF hR'`. Take `⟨Cst, hC, hform⟩` from `Formalism.FourierDecayAlt.P.radial_module_form Wp Wq P p.T jF X μ L st p.l0 hD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hwOK` using `Formalism.FourierDecayAlt.P.JCTx5.wordOK_of (JC.parLev P jF) _ _ _ _ st p.l0 hPl.1 hl1 hlk h3 h4 w hw.1 hw.2`. Use `choose Φ hΦK hΦ using fun a => hJ (x a) (hxN a) ⟨R, hxR a⟩`. Use `choose Φ' hΦ'K hΦ' using fun a => hJ (x' a) (hx'N a) ⟨R, hx'R a⟩`. Establish `hnx` using `waveG_nice (p.T.bs j) ε s w x hxN`. Establish `hnx'` using `waveG_nice (p.T.bs j) ε s w x' hx'N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `show D.formLev p.T (M.sgn P p.l0) jF w (KB.waveG (p.T.bs j) s w x) (KB.waveG (p.T.bs j) s w x') = D.formLev p.T (M.sgn P p.l0) jF w x x'`. Establish `hmem : ∀ (Wv Wv' : Module.End ℂ (RadSp (JC.parLev P jF).k (JC.parLev P jF).r (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π')) (Ψ' : Ix (Fin w.length) → RadSp (JC.parLev P jF).k (JC.parLev P jF).r (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π'), (∀ e, ∀ y ∈ D …`. Introduce `_ _ Ψ' hΨ' e`. Take `⟨Ψ0, hΨ0K, hΨ0⟩` from `hJ (KB.waveG (p.T.bs j) s w x' e) (hnx' e) ⟨R, waveG_bs (p.T.bs j) s w x' R hx'R e⟩`. Establish `: Ψ' e = Ψ0` using `radSp_ext (fun y hy => (hΨ' e y hy).trans (hΨ0 y hy).symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hΨ0K`. Distinguish the cases in `hr : 0 < P.r - j`. Take `⟨Wv, hW⟩` from `waveCExists Wp Wq P.k (P.r - j) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' ⟨0, hr⟩ s`. Take `⟨Wv', hW'⟩` from `waveCExists Wp Wq P.k (P.r - j) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' ⟨0, hr⟩ (-s)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hm : ∀ y ∈ DomR P.k (P.r - j) (p.T.bs jF).z (p.T.bs jF).z', (fun (c : Fin (P.r - j) → ℂ) (_ : Mx P.k (P.r - j)) => fsv s (c ⟨0, hr⟩)) y.1 y.2 = fsv s (Dmin P.k (P.r - j) (p.T.bs jF).z (p.T.bs jF).z' (wCell P.k (P.r - j) (Fin.last _) y.1 * y.2) ⟨1, by omega⟩)` using `fun y hy => by`. Simplify using `only []`. Rewrite using `[first_minor_cell_eq_coord (p.T.bs jF).z_mem (p.T.bs jF).z'_mem hr y.1 hy.2.1]`. Establish `hΨ` using `radPic_wave (p.T.bs jF) ε s w x hxN Φ hΦ _ (by omega) hm Wv Wv' hW`. Establish `hΨ'` using `radPic_wave (p.T.bs jF) ε s w x' hx'N Φ' hΦ' _ (by omega) hm Wv Wv' hW`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hform w _ _ _ _ ε hε hnx hnx' hΨ hΨ', hform w x x' Φ Φ' ε hε hxN hx'N hΦ hΦ']`. Use `congr 1`. Establish `key` using `rr_wave_A (JC.parLev P jF) _ _ _ _ X μ L st K p.l0 hD hThm (D.positionted w) hwOK hr s Wv Wv' hW hW' Φ Φ' hΦK hΦ'K (hmem Wv Wv' _ hΨ') (fun _ => 1) (fun _ => one_ne_zero)`. Unfold `RRform at key`. Conclude with `(JCx2.form_zero_indep μ _ _ 0 (fun _ => 1)).trans (key.trans (JCx2.form_zero_indep μ _ _ (fun _ => 1) 0))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hr0 : P.r - j = 0` using `by omega`. Take `⟨Wv, hW⟩` from `waveZExists Wp Wq P.k (P.r - j) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' s`. Take `⟨Wv', hW'⟩` from `waveZExists Wp Wq P.k (P.r - j) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' (-s)`. Establish `hm : ∀ y ∈ DomR P.k (P.r - j) (p.T.bs jF).z (p.T.bs jF).z', (fun (_ : Fin (P.r - j) → ℂ) (g : Mx P.k (P.r - j)) => fsv s (P5.zeta P.k (P.r - j) (p.T.bs jF).z (p.T.bs jF).z' g)) y.1 y.2 = fsv s (Dmin P.k (P.r - j) (p.T.bs jF).z (p.T.bs jF).z' (wCell P.k (P.r - j) (Fin.last _) y.1 …` using `fun y hy => by`. Simplify using `only []`.
-
-Rewrite using `[first_minor_top_eq_zeta hr0]`. Establish `hΨ` using `radPic_wave (p.T.bs jF) ε s w x hxN Φ hΦ _ (by omega) hm Wv Wv' hW`. Establish `hΨ'` using `radPic_wave (p.T.bs jF) ε s w x' hx'N Φ' hΦ' _ (by omega) hm Wv Wv' hW`. Rewrite using `[hform w _ _ _ _ ε hε hnx hnx' hΨ hΨ', hform w x x' Φ Φ' ε hε hxN hx'N hΦ hΦ']`. Use `congr 1`.
-
-Establish `key` using `rr_wave_B (JC.parLev P jF) _ _ _ _ X μ L st K p.l0 hD hThm (D.positionted w) hwOK hr0 s Wv Wv' hW hW' Φ Φ' hΦK hΦ'K (hmem Wv Wv' _ hΨ') (fun _ => 1) (fun _ => one_ne_zero)`. Unfold `RRform at key`. Conclude with `(JCx2.form_zero_indep μ _ _ 0 (fun _ => 1)).trans (key.trans (JCx2.form_zero_indep μ _ _ (fun _ => 1) 0))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vIsoCpt_main : Formalism.FourierDecayAlt.KB.VIsoCpt := by
   intro hP Wp Wq _ _ _ _ _ _ P p j hj w hw s x x' hx hx'
@@ -144,7 +140,7 @@ end Formalism.FourierDecayAlt.P.PBFV
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PBFV.vIsoCpt_main`.
+A detailed English derivation is pending.
 -/
 theorem vector_isomorphism_compact_support : Formalism.FourierDecayAlt.KB.VIsoCpt := Formalism.FourierDecayAlt.P.PBFV.vIsoCpt_main
 

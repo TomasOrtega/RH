@@ -8,9 +8,9 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open MvPolynomial
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hh` to reduce the goal to its premises. Establish `hv : h ∈ vanishingIdeal ℂ (zeroLocus ℂ W)`. Rewrite using `[mem_vanishingIdeal_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Simplify `hcon x hx` using `[coe_aeval_eq_eval]`. Rewrite `hv` using `[vanishingIdeal_zeroLocus_eq_radical (K := ℂ), hW.isRadical.radical]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem IrreducibleConnected.exists_ne_zero {σ : Type} [Fintype σ] {W : Ideal (MvPolynomial σ ℂ)}
     (hW : W.IsPrime) {h : MvPolynomial σ ℂ} (hh : h ∉ W) :
@@ -25,13 +25,13 @@ theorem IrreducibleConnected.exists_ne_zero {σ : Type} [Fintype σ] {W : Ideal 
   rwa [vanishingIdeal_zeroLocus_eq_radical (K := ℂ), hW.isRadical.radical] at hv
 
 /- English proof (translation)
-Introduce `σ _ W J hW`. Use `set D : MvPolynomial σ ℂ → Set (σ → ℂ) := fun g => zeroLocus ℂ W \ {x : σ → ℂ | eval x g = 0} with hD`. Establish `hU : zeroLocus ℂ W \ zeroLocus ℂ J = ⋃ g ∈ {g | g ∈ J ∧ g ∉ W}, D g`. Use extensionality with `x`. Simplify using `only [Set.mem_sdiff, Set.mem_iUnion, Set.mem_ofPred_eq, hD, mem_zeroLocus_iff, exists_prop]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxW, hxJ⟩ push Not at hxJ`. Take `⟨g, hgJ, hg⟩` from `hxJ`. Conclude with `⟨g, ⟨hgJ, fun hgW => hg (hxW g hgW)⟩, hxW, hg⟩`. Introduce and unpack `⟨g, ⟨hgJ, -⟩, hxW, hg⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨hxW, fun h => hg (h g hgJ)⟩`. Rewrite using `[hU]`. Use `IsPreconnected.biUnion_of_reflTransGen (fun g hg => hB σ W g hW hg.2) ?_` and prove the remaining obligations. Introduce `g hg g' hg'`. Use `Relation.ReflTransGen.single ⟨?_, hg⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hgg' : g * g' ∉ W` using `fun hm => (hW.mem_or_mem hm).elim hg.2 hg'.2`. Take `⟨x, hxW, hx⟩` from `IrreducibleConnected.exists_ne_zero hW hgg'`. Rewrite `hx` using `[map_mul]`. Conclude with `⟨x, ⟨hxW, left_ne_zero_of_mul hx⟩, ⟨hxW, right_ne_zero_of_mul hx⟩⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IrreducibleConnected.proof (hB : IrreducibleBasicOpenConnected.Statement) :
     IrreducibleConnected.Statement := by

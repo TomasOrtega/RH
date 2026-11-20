@@ -7,29 +7,27 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F _ _ _ δ O`. Establish `hF : ∀ φ : S4 F, (φ : V4 F → ℂ) ∈ Submodule.span ℂ {φ : V4 F → ℂ | ∃ p ∈ polyFn (F` using `F), ∃ g ∈ finiteSchwartzBruhatPi F (ι := Fin 4), φ = fun v => p v * gauss δ v * g (finPartPi v)} → φ ∈ Fock δ := fun _ h => h`. Establish `hx : ∀ w i, ∀ φ ∈ Fock δ, O.x w i φ ∈ Fock δ`. Introduce `w i φ hφ`. Establish `hc : (fun v : V4 F => cw w (v i)) ∈ polyFn (F` using `F) := Algebra.subset_adjoin ⟨i, w, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ f : V4 F → ℂ, f ∈ Submodule.span ℂ {φ : V4 F → ℂ | ∃ p ∈ polyFn (F` using `F), ∃ g ∈ finiteSchwartzBruhatPi F (ι := Fin 4), φ = fun v => p v * gauss δ v * g (finPartPi v)} → (fun v => cw w (v i) * f v) ∈ Submodule.span ℂ {φ : V4 F → ℂ | ∃ p ∈ polyFn (F := F), ∃ g ∈ finiteSchwartzBruhatPi F (ι := Fin 4), φ = fun v => p v * gauss δ v * g (finPartPi v)} := …`. Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨p, hp, g, hg, rfl⟩` from `hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `Submodule.subset_span ⟨(fun v : V4 F => cw w (v i)) * p, mul_mem hc hp, g, hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Simplify using `only [Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Establish `: (fun v : V4 F => cw w (v i) * (0 : V4 F → ℂ) v) = 0`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Establish `: (fun v : V4 F => cw w (v i) * (a + b) v) = (fun v => cw w (v i) * a v) + fun v => cw w (v i) * b v`. Use function extensionality and compare the values at `v`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha`. Establish `: (fun v : V4 F => cw w (v i) * (c • a) v) = c • fun v => cw w (v i) * a v`. Use function extensionality and compare the values at `v`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c ha`. Establish `hφ'` using `key φ.1 hφ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e : ((O.x w i φ : S4 F) : V4 F → ℂ) = fun v => cw w (v i) * φ.1 v`. Use function extensionality and compare the values at `v`. Conclude with `O.x_apply w i φ v`. Apply `hF` to reduce the goal to its premises. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hφ'`. Use `⟨hx, fun N hN m => ?_⟩` and prove the remaining obligations. Establish `hvac : Vac δ ≤ Fock δ`. Introduce `φ hφ`. Take `⟨g, hg, e⟩` from `vacForm F δ φ hφ`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply `hF` to reduce the goal to its premises. Use `Submodule.subset_span ⟨1, one_mem _, g, hg, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Proceed by induction on `m with`. Consider the case `zero => exact hN.trans hvac`. Consider the case `succ m ih`. Use `sup_le ih (iSup_le fun w => iSup_le fun i => ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`.
-
-Conclude with `hx w i φ (ih hφ)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.fkLe :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (δ : F) (O : Ops F), (∀ w i, ∀ φ ∈ Fock δ, O.x w i φ ∈ Fock δ) ∧ ∀ N ≤ Vac δ, ∀ m, O.Fk N m ≤ Fock δ := by

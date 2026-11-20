@@ -10,27 +10,27 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.Residue
 namespace Formalism.HermitianLatticeCounting.P
 
 /- English proof (translation)
-The claim follows from `dedekind_residue_bound`.
+A detailed English derivation is pending.
 -/
 theorem dedekindZeta_residue_bound : Formalism.HermitianLatticeCounting.S7.DedekindZetaResidueBound := dedekind_residue_bound
 
 /- English proof (translation)
-The claim follows from `transference_covering`.
+A detailed English derivation is pending.
 -/
 theorem transference_principle : Formalism.HermitianLatticeCounting.LatticeSumBounds.Transference := transference_covering
 
 /- English proof (translation)
-The claim follows from `transference_covering_divisor`.
+A detailed English derivation is pending.
 -/
 theorem covering_radius_bound₂ : Formalism.HermitianLatticeCounting.S7.CoveringRadius2 := transference_covering_divisor
 
 /- English proof (translation)
-The claim follows from `coveringO_of_transference transference_principle`.
+A detailed English derivation is pending.
 -/
 theorem covering_of_transference : Formalism.HermitianLatticeCounting.LatticeSumBounds.CoveringO := coveringO_of_transference transference_principle
 
 /- English proof (translation)
-The claim follows from `coveringO'_of_transference transference_principle`.
+A detailed English derivation is pending.
 -/
 theorem covering_of_transference_variant : Formalism.HermitianLatticeCounting.LatticeSumBounds.CoveringO' := coveringO'_of_transference transference_principle
 

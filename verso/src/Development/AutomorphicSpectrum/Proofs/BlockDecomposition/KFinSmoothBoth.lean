@@ -11,7 +11,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.CompanionTheory.KFinSmoothBoth
 
 /- English proof (translation)
-Introduce `n ε lam H _ _ σ _ hσ v hv`. Use `hσ.1` as an intermediate fact. Establish `h : Formalism.QuantumDeterminants.SmoothOnH (Formalism.REAL.Jm ε) fun g => σ g v` using `GlobalTheory.Published.KFiniteVectorsUnitary.smoothOnH GlobalTheory.CompanionTheory.Published.kFiniteVectors_irreducibleUnitary_unitaryGroupPQ hσ.2.2.1 hσ.2.2.2.1 hv`. Conclude with `⟨h, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem kFin_smooth_both : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), Formalism.QuantumDeterminants.IsHCParam lam →

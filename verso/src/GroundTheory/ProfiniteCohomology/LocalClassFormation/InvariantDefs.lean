@@ -19,7 +19,7 @@ noncomputable def unramifiedRoot (n : ℕ+) : Ω :=
   (exists_isPrimitiveRoot_card_pow_sub_one (K := F) (Ksep := Ω) n.ne_zero).choose
 
 /- English proof (translation)
-The claim follows from `haveI := IsSepClosure.sep_closed F (K := Ω) (exists_isPrimitiveRoot_card_pow_sub_one (K := F) (Ksep := Ω) n.ne_zero).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem isPrimitiveRoot_unramifiedRoot (n : ℕ+) :
     IsPrimitiveRoot (unramifiedRoot F Ω n) (Nat.card 𝓀[F] ^ (n : ℕ) - 1) :=
@@ -36,14 +36,14 @@ theorem unramifiedLevel_eq (n : ℕ+) : unramifiedLevel F Ω n = F⟮unramifiedR
   rfl
 
 /- English proof (translation)
-The claim follows from `(isUnramifiedSubextension_adjoin n.ne_zero (isPrimitiveRoot_unramifiedRoot F Ω n)).1`.
+A detailed English derivation is pending.
 -/
 theorem isUnramifiedSubextension_unramifiedLevel (n : ℕ+) :
     IsUnramifiedSubextension (unramifiedLevel F Ω n) :=
   (isUnramifiedSubextension_adjoin n.ne_zero (isPrimitiveRoot_unramifiedRoot F Ω n)).1
 
 /- English proof (translation)
-The claim follows from `(isUnramifiedSubextension_adjoin n.ne_zero (isPrimitiveRoot_unramifiedRoot F Ω n)).2`.
+A detailed English derivation is pending.
 -/
 theorem finrank_unramifiedLevel (n : ℕ+) : Module.finrank F (unramifiedLevel F Ω n) = n :=
   (isUnramifiedSubextension_adjoin n.ne_zero (isPrimitiveRoot_unramifiedRoot F Ω n)).2
@@ -56,7 +56,7 @@ instance isGalois_unramifiedLevel (n : ℕ+) : IsGalois F (unramifiedLevel F Ω 
   IsUnramifiedSubextension.isGalois (isUnramifiedSubextension_unramifiedLevel F Ω n)
 
 /- English proof (translation)
-The claim follows from `IsUnramifiedSubextension.eq_adjoin hE hn n.ne_zero (isPrimitiveRoot_unramifiedRoot F Ω n)`.
+A detailed English derivation is pending.
 -/
 theorem eq_unramifiedLevel_of_isUnramifiedSubextension {E : IntermediateField F Ω}
     (hE : IsUnramifiedSubextension E) {n : ℕ+} (hn : Module.finrank F E = n) :
@@ -64,7 +64,7 @@ theorem eq_unramifiedLevel_of_isUnramifiedSubextension {E : IntermediateField F 
   IsUnramifiedSubextension.eq_adjoin hE hn n.ne_zero (isPrimitiveRoot_unramifiedRoot F Ω n)
 
 /- English proof (translation)
-The claim follows from `haveI := IsSepClosure.sep_closed F (K := Ω) IsUnramifiedSubextension.le_adjoin (isUnramifiedSubextension_unramifiedLevel F Ω m) n.ne_zero ((finrank_unramifiedLevel F Ω m).symm ▸ h) (isPrimitiveRoot_unramifiedRoot F Ω n)`.
+A detailed English derivation is pending.
 -/
 theorem unramifiedLevel_le {m n : ℕ+} (h : (m : ℕ) ∣ n) :
     unramifiedLevel F Ω m ≤ unramifiedLevel F Ω n :=

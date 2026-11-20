@@ -27,13 +27,13 @@ namespace GlobalTheory.VacPairSchur
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `D S T u hu w hw`. Establish `hf : (Formalism.L2.Theta.mt T u).map (finPart D) = 1`. Establish `h` using `congrArg (fun g : GL (Fin T.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) => g.val) (MonoidHom.mem_ker.1 hu)`. Conclude with `h`. Establish `hm : Formalism.L2.Theta.mt S 1 = 1` using `by simp [Formalism.L2.Theta.mt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `actO`. Rewrite using `[inv_one, hm, Matrix.mul_one]`. Use extensionality with `i j`. Use `GlobalTheory.UnitarySplit.parts_inj D _ _ ?_ ?_` and prove the remaining obligations. Establish `h0 : ∀ k, infPart D (w k j) = 0` using `fun k => by`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun (congrFun hw k) j` as an intermediate fact. Simplify using `using this`. Rewrite using `[Matrix.mul_apply, map_sum]`. Simplify using `[h0]`. Establish `h1 : ∀ k, finPart D (Formalism.L2.Theta.mt T u i k) = if i = k then 1 else 0` using `fun k => by`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun (congrFun hf i) k` as an intermediate fact. Simplify `this` using `[Matrix.one_apply]`. Rewrite using `[Matrix.mul_apply, map_sum]`. Simplify using `[h1]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actO_fin : ∀ (D : D7) (S T : HSp D) (u : GA D T), u ∈ GinfC T → ∀ w : WO S T, w.map (infPart D) = 0 → actO S T 1 u w = w := by
   intro D S T u hu w hw
@@ -60,9 +60,9 @@ theorem actO_fin : ∀ (D : D7) (S T : HSp D) (u : GA D T), u ∈ GinfC T → �
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.OrientedHeis.pureTensorL_intertwine (fun _ => True) trivial (fun _ _ _ _ => trivial) (fun _ _ _ => trivial) (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT) (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT) (GlobalTheory.Hk3.FiniteHeis.h …`. Conclude with `h.symm`. Take `⟨τ, i, j⟩` from `k`. Simplify using `only [aPlusAll, aPlus, crea]`. Rewrite using `[map_smul, map_sub, map_smul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ • (heisO ψ S T w (Formalism.IndefR.Datum.dRho _ _ _ _ _) - _ • heisO ψ S T w (Formalism.IndefR.Datum.dRho _ _ _ _ _)) = _`. Rewrite using `[GlobalTheory.Hk3.FiniteHeis.heisO_dRho ψ hθ hw, GlobalTheory.Hk3.FiniteHeis.heisO_dRho ψ hθ hw]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pT_heisO (hθ : IsInfFam θ) (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
     (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (f : WO S T → ℂ) {w : WO S T}
@@ -81,7 +81,7 @@ theorem pT_heisO (hθ : IsInfFam θ) (sS BS : D.what₂.Tau → Matrix (Fin S.ra
     rfl
 
 /- English proof (translation)
-Unfold `thetaIP GlobalTheory.Ker.ipO`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem thetaIP_eq_ipO (μ : Measure (WO S T)) (𝓕 : Set (WO S T)) (f g : WO S T → ℂ) :
     thetaIP μ 𝓕 f g = GlobalTheory.Ker.ipO μ 𝓕 g f := by
@@ -92,7 +92,7 @@ theorem thetaIP_eq_ipO (μ : Measure (WO S T)) (𝓕 : Set (WO S T)) (f g : WO S
   rfl
 
 /- English proof (translation)
-Rewrite using `[thetaIP_eq_ipO, thetaIP_eq_ipO, GlobalTheory.Size.ipO_heisO hψ hcv.1 hcv.2.1 hb ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaInner_heisenberg (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hcv : IsCovolOne (ratL T S) μ 𝓕) {a b : WO S T → ℂ} (ha : IsThetaFunO ψ S T a) (hb : IsThetaFunO ψ S T b)
@@ -100,7 +100,7 @@ theorem thetaInner_heisenberg (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)
   rw [thetaIP_eq_ipO, thetaIP_eq_ipO, GlobalTheory.Size.ipO_heisO hψ hcv.1 hcv.2.1 hb ha]
 
 /- English proof (translation)
-Rewrite using `[hom.om_heis 1 u w f hf, actO_fin D S T u hu w hw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem om_heisO_fin {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (hom : IsWeilDatumO ψ S T χS χT om) {u : GA D T} (hu : u ∈ GinfC T) {w : WO S T} (hw : w.map (infPart D) = 0)
@@ -109,7 +109,7 @@ theorem om_heisO_fin {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →
   rw [hom.om_heis 1 u w f hf, actO_fin D S T u hu w hw]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.VacCoefAtPlace.pure_lin (P := IsThetaFunO ψ S T) (fun _ _ h => GlobalTheory.FockIndep.aPlus_theta hψ hθ _ _ _ h) (fun _ b _ _ h h' => by simp only [aPlusAll] rw [GlobalTheory.FockIndep.aPlus_add hψ hθ _ _ _ (GlobalTheory.OrientedHeis.theta_smul b h) h', GlobalTheory. …`.
+A detailed English derivation is pending.
 -/
 theorem pT_lin (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
     (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (a : ℂ) {f f' : WO S T → ℂ}
@@ -123,7 +123,7 @@ theorem pT_lin (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (sS BS : D.what�
         GlobalTheory.FockIndep.aPlus_smul hψ hθ _ _ _ b h]) a hf hf' P
 
 /- English proof (translation)
-Take `⟨ε, h1, h2, h3⟩` from `h`. Use `⟨ε, fun a => ?_, h2, h3⟩` and prove the remaining obligations. Break down `h1 a with ⟨e, ha⟩ | ⟨e, ha⟩` into its components or cases. Conclude with `Or.inl ⟨e, lt_min ha a.2⟩`. Conclude with `Or.inr ⟨e, (min_le_left _ _).trans ha⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem onb_min {k : ℕ} {G s B : Matrix (Fin k) (Fin k) ℂ} {p : ℕ} (h : IsONBasis G s B p) :
     IsONBasis G s B (min p k) := by
@@ -134,7 +134,7 @@ theorem onb_min {k : ℕ} {G s B : Matrix (Fin k) (Fin k) ℂ} {p : ℕ} (h : Is
   · exact Or.inr ⟨e, (min_le_left _ _).trans ha⟩
 
 /- English proof (translation)
-Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Establish `ii : ∀ {c : WO S T → ℂ}, IsThetaFunO ψ S T c → Integrable (fun x => star (c x) * c x) (μ.restrict 𝓕)` using `fun {c} hc => (GlobalTheory.Size.integrableOn_mul_conj hψ hcv.1 hcv.2.1 hc hc).congr (ae_of_all _ fun x => mul_comm _ _)`. Conclude with `GlobalTheory.norm_integral_star_mul_sq_le (μ.restrict 𝓕) a b ha.cont.aestronglyMeasurable hb.cont.aestronglyMeasurable (ii ha) (ii hb)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cs (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hcv : IsCovolOne (ratL T S) μ 𝓕) {a b : WO S T → ℂ} (ha : IsThetaFunO ψ S T a) (hb : IsThetaFunO ψ S T b) :
@@ -147,19 +147,17 @@ theorem cs (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)} {𝓕 : Set (WO S
     hb.cont.aestronglyMeasurable (ii ha) (ii hb)
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT om hom hθ sS BS sT BT pS pT hcS hcT hoS hoT μ 𝓕 hcv u hu P P'`. Establish `hψ` using `hom.std`. Establish `hμ` using `hcv.1`. Establish `h𝓕` using `hcv.2.1`. Establish `thp : ∀ f, IsThetaFunO ψ S T f → ∀ Q, IsThetaFunO ψ S T (pureTensorO ψ θ S T sS sT BS BT f Q)` using `fun f hf Q => GlobalTheory.Chain.InnerSteps.theta_pureTensorO hψ hθ sS BS sT BT hf Q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `thom : ∀ f, IsThetaFunO ψ S T f → ∀ Q, IsThetaFunO ψ S T (om (1, u) (pureTensorO ψ θ S T sS sT BS BT f Q))` using `fun f hf Q => hom.om_pres _ _ (thp f hf Q)`. Establish `key : ∀ f, IsThetaFunO ψ S T f → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f) → ∀ Q, thetaIP μ 𝓕 (pureTensorO ψ θ S T sS sT BS BT f Q) (pureTensorO ψ θ S T sS sT BS BT f Q) = GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.fockIp Q Q * (nrm2 μ 𝓕 …`. Introduce `f hf vf Q`. Rewrite using `[thetaIP_eq_ipO]`. Conclude with `GlobalTheory.FockIsometry.ipO_pureTensorO D ψ θ S T hψ hθ sS BS sT BT (fun τ => min (pS τ) S.rank) (fun τ => min (pT τ) T.rank) (fun τ => min_le_right _ _) (fun τ => min_le_right _ _) hcS hcT (fun τ => onb_min (hoS τ)) (fun τ => onb_min (hoT τ)) f hf vf μ 𝓕 hcv Q Q`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Φ : (WO S T → ℂ) → (WO S T → ℂ) → ℂ := fun f g => thetaIP μ 𝓕 (om (1, u) (pureTensorO ψ θ S T sS sT BS BT f P)) (pureTensorO ψ θ S T sS sT BS BT g P') with hΦ`. Establish `hl : ∀ (a : ℂ) (f f' g : WO S T → ℂ), IsThetaFunO ψ S T f → IsThetaFunO ψ S T f' → IsThetaFunO ψ S T g → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f) → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f') → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ …`. Introduce `a f f' g hf hf' hg _ _ _`. Simplify using `only [hΦ]`. Rewrite using `[pT_lin hψ hθ sS BS sT BT a hf hf' P, map_add, map_smul, thetaIP_eq_ipO, thetaIP_eq_ipO, thetaIP_eq_ipO, GlobalTheory.Size.ipO_add_right hψ hμ h𝓕 (thp g hg P') (GlobalTheory.OrientedHeis.theta_smul a (thom f hf P)) (thom f' hf' P), GlobalTheory.Size.ipO_smul_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hr : ∀ (a : ℂ) (f g g' : WO S T → ℂ), IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → IsThetaFunO ψ S T g' → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f) → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) g) → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) …`. Introduce `a f g g' hf hg hg' _ _ _`. Simplify using `only [hΦ]`. Rewrite using `[pT_lin hψ hθ sS BS sT BT a hg hg' P', thetaIP_eq_ipO, thetaIP_eq_ipO, thetaIP_eq_ipO, GlobalTheory.Size.ipO_add_left hψ hμ h𝓕 (GlobalTheory.OrientedHeis.theta_smul a (thp g hg P')) (thp g' hg' P') (thom f hf P), GlobalTheory.Size.ipO_smul_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb : ∃ C : ℝ, ∀ f g : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f) → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) g) → ‖Φ f g‖ ^ 2 ≤ C * (nrm2 μ 𝓕 f * nrm2 μ 𝓕 g)`. Use `⟨(GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.fockIp P P).re * (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.fockIp P' P').re, fun f g hf hg vf vg => ?_⟩` and prove the remaining obligations. Simplify using `only [hΦ]`. Establish `h1` using `cs hψ hcv (thom f hf P) (thp g hg P')`. Rewrite `h1` using `[GlobalTheory.WeilPairing.thetaInner_weilRep D ψ S T χS χT om μ 𝓕 hom hcv _ _ _ (thp f hf P) (thp f hf P), key f hf vf P, key g hg vg P', Complex.re_mul_ofReal, Complex.re_mul_ofReal]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hi : ∀ w : WO S T, w.map (infPart D) = 0 → ∀ f g : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f) → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) g) → Φ (heisO ψ S T w f) (heisO ψ S T w g) = Φ f g`. Introduce `w hw f g hf hg _ _`. Simplify using `only [hΦ]`. Rewrite using `[pT_heisO hθ sS BS sT BT f hw, pT_heisO hθ sS BS sT BT g hw, om_heisO_fin hom hu hw (thp f hf P), thetaInner_heisenberg hψ hcv (thom f hf P) (thp g hg P')]`.
-
-Conclude with `GlobalTheory.T.schur_finiteHeisenberg_fockVacuumThetaFunctions D ψ θ S T hψ hθ sS sT hcS hcT μ 𝓕 hcv Φ hl hr hb hi`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_eq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → IsInfFam θ → ∀ (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (pS pT : D.what₂.Tau → ℕ), (∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) → (∀ τ, IsCartanInv (gramAt D T τ) (sT τ)) → (∀ τ, IsONBasis (gramAt D S τ) (sS τ) (BS τ) (pS τ)) → (∀ τ, IsONBasis (gramAt D T τ) (sT τ) (BT τ) (pT τ)) → ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ u ∈ GinfC T, ∀ P P' : MvPolynomial (FVar D T.rank S.rank) ℂ, ∃ c : ℂ, ∀ f g : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f) → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) g) → thetaIP μ 𝓕 (om (1, u) (pureTensorO ψ θ S T sS sT BS BT f P)) (pureTensorO ψ θ S T sS sT BS BT g P') = c * thetaIP μ 𝓕 f g := by
   intro D ψ θ S T χS χT om hom hθ sS BS sT BT pS pT hcS hcT hoS hoT μ 𝓕 hcv u hu P P'

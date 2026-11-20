@@ -20,19 +20,19 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t z V _ _ M ⟨t', m, hP, hA⟩`. Establish `hab : IsAbelianScheme t'.G` using `AbelianSchemeGerms.isAbelianScheme_of_proper t'.G t'.semi`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim ℂ t'.G hab`. Take `⟨u₀, hc⟩` from `GlobalTheory.T.exists_exp_chart_coordinates t'.G t'.PP.L g hab hA hg`. Take `⟨u, Hm, χ, hex, hH, hχ, hlaw⟩` from `GlobalTheory.T.theta_multiplier_normal_form t'.G t'.PP t'.cub g u₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, J, Θ, hN, hd, hq, hne, hsep⟩` from `GlobalTheory.T.exists_theta_basis_of_factor t'.G t'.PP.L g u Hm χ t'.PP.isLB hab hA hlaw`. Establish `hpos` using `GlobalTheory.T.theta_functions_finite_dim g u.Λ u.discrete u.full Hm χ N J Θ hH hχ hN hd hq hne hsep`. Establish `hAH : u.IsAH Hm χ` using `⟨hH, hpos, hχ, hlaw⟩`. Take `⟨ht₁, ht₂⟩` from `@GlobalTheory.TangentOrigin.tangent_bijection_of_values @GlobalTheory.valAt'_rules t'.G _ t'.PP.L g u (by simpa only [hex] using hc)`. Take `⟨w₀, hw₀, -⟩` from `m.lin`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hL` using `t'.PP.isLB`. Establish `hM` using `pull_isLB t.PP.isLB m.φ`. Set `u₁ : HolUnif t'.G (t.PP.L.pull m.φ) g` to `GlobalTheory.ArchMetricCompare.carry u hL hM hw₀`. Establish `hAH₁ : u₁.IsAH Hm χ` using `GlobalTheory.ArchMetricCompare.carry_isAH hL hM hw₀ hAH`. Establish `ht₁' : ∀ v, IsTangent v → ∃! w, u₁.IsDiff w v` using `ht₁`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht₂' : ∀ w, ∃! v, IsTangent v ∧ u₁.IsDiff w v` using `ht₂`. Establish `hcart : IsGrpPullback t'.G t.G z m.φ` using `m.cart`. Take `⟨D, hD⟩` from `GlobalTheory.T.tangent_space_equiv_hol_unif X t.G z V M t'.G m.φ _ g u₁ hcart ht₁' ht₂'`. Use `choose x hxt hxφ hxd using hD`. Set `h : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun v w => (Real.pi : ℂ) * hermForm Hm (D w) (D v)) (fun v v' w => by simp [hermForm, Matrix.mulVec_add, dotProduct_add, mul_add]) (fun c v w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Simplify using `[hermForm, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`. Use the proof step `ring)`. Use the proof step `(fun v w w' => by simp [hermForm, add_dotProduct, mul_add])`. Use the proof step `(fun c v w => by simp [hermForm, smul_dotProduct, smul_eq_mul]; ring)`. Establish `hh : ∀ v w, h v w = (Real.pi : ℂ) * hermForm Hm (D w) (D v)` using `fun _ _ => rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h, fun v w c => ⟨?_, ?_⟩, fun v w => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨-, -, -, A, _, φ, g', u', Hm', χ', v', w', a, b, h1, h2, h3, h4, h5, h6, rfl⟩`. Use `GlobalTheory.T.hol_unif_compare_isogeny X t.G t.PP.L z t'.G A m.φ φ g g' u₁ u' Hm Hm' χ χ' t.PP.isLB hab hcart h1 ht₁' ht₂' hAH₁ h2 (x w) (x v) w' v' (D w) (D v) b a (hxt w) (hxt v) (h4.trans (hxφ w).symm) (h3.trans (hxφ v).symm) (hxd w) (hxd v) h6 h5` as an intermediate fact. Rewrite using `[hh, ← this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `⟨t.PP.isLB, M.tan v, M.tan w, t'.G, inferInstance, m.φ, g, u₁, Hm, χ, x v, x w, D v, D w, hcart, hAH₁, hxφ v, hxφ w, hxd v, hxd w, rfl⟩`. Rewrite using `[hh, hh, map_mul, Complex.conj_ofReal, GlobalTheory.CompanionTheory.Ar.conj_hermForm hH]`. Rewrite using `[hh, Complex.re_ofReal_mul]`. Conclude with `mul_pos Real.pi_pos (hpos _ (fun h0 => hv (D.map_eq_zero_iff.1 h0)))`.
+A detailed English derivation is pending.
 -/
 theorem exists_hodgeInnerProduct_form : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (z : Spec (CommRingCat.of ℂ) ⟶ X) (V : Type) [AddCommGroup V] [Module ℂ V] (M : LieModel t.G z V), (∃ (t' : SAB H (Sp ℂ)) (_ : SABMap t' t z), IsProper t'.G.hom ∧ Out.RelAmple t'.G t'.PP.L) → ∃ h : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ, (∀ v w c, HodgeIP t.G t.PP.L z (M.pt v) (M.pt w) c ↔ c = h v w) ∧ (∀ v w, h w v = starRingEnd ℂ (h v w)) ∧ ∀ v, v ≠ 0 → 0 < (h v v).re := by
   intro E _ _ _ H X t z V _ _ M ⟨t', m, hP, hA⟩

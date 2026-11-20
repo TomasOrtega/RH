@@ -6,7 +6,7 @@ namespace PI.PowBddIntWork
 open Matrix Polynomial
 
 /- English proof (translation)
-Establish `e : ψ.comp (algebraMap ℤ A) = algebraMap ℤ B` using `RingHom.ext_int _ _`. Rewrite using `[← e, ← Polynomial.hom_eval₂, h, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval₂_int_map_eq_zero {A B : Type*} [Ring A] [Ring B] (ψ : A →+* B) (p : ℤ[X]) (a : A)
     (h : p.eval₂ (algebraMap ℤ A) a = 0) : p.eval₂ (algebraMap ℤ B) (ψ a) = 0 := by
@@ -14,21 +14,19 @@ theorem eval₂_int_map_eq_zero {A B : Type*} [Ring A] [Ring B] (ψ : A →+* B)
   rw [← e, ← Polynomial.hom_eval₂, h, map_zero]
 
 /- English proof (translation)
-Introduce `E _ k γ hγ i`. Take `⟨p, hpm, hp⟩` from `hγ`. Set `F` to `AlgebraicClosure E`. Set `γ' : Matrix (Fin k) (Fin k) F` to `γ.map (algebraMap E F)`. Establish `hp' : p.eval₂ (algebraMap ℤ (Matrix (Fin k) (Fin k) F)) γ' = 0` using `eval₂_int_map_eq_zero (algebraMap E F).mapMatrix p γ hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hroot : ∀ μ ∈ γ'.charpoly.roots, IsIntegral ℤ μ`. Introduce `μ hμ`. Establish `hs : μ ∈ spectrum F γ'`. Rewrite using `[Matrix.mem_spectrum_iff_isRoot_charpoly]`. Conclude with `(Polynomial.mem_roots (Matrix.charpoly_monic γ').ne_zero).1 hμ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `spectrum.subset_polynomial_aeval γ' (p.map (algebraMap ℤ F)) ⟨μ, hs, rfl⟩`. Establish `h2 : Polynomial.aeval γ' (p.map (algebraMap ℤ F)) = 0`. Rewrite using `[Polynomial.aeval_map_algebraMap, Polynomial.aeval_def, hp']`. Rewrite `h1` using `[h2]`. Use `⟨p, hpm, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : (p.map (algebraMap ℤ F)).eval μ = p.eval₂ (algebraMap ℤ F) μ` using `Polynomial.eval_map _ _`. Rewrite using `[← h3]`. Assume the negation of the conclusion as `hne`. Rewrite `h1` using `[spectrum.mem_iff, sub_zero]`. Conclude with `h1 ((Ne.isUnit hne).map _)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcp : γ'.charpoly = γ.charpoly.map (algebraMap E F)` using `Matrix.charpoly_map γ _`. Establish `hinj : Function.Injective ((algebraMap E F).toIntAlgHom)` using `(algebraMap E F).injective`. Rewrite using `[← isIntegral_algHom_iff _ hinj]`. Use `show IsIntegral ℤ (algebraMap E F (γ.charpoly.coeff i))`. Rewrite using `[← Polynomial.coeff_map, ← hcp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hq : γ'.charpoly.Monic` using `Matrix.charpoly_monic _`. Establish `hcard : Multiset.card γ'.charpoly.roots = γ'.charpoly.natDegree` using `Polynomial.splits_iff_card_roots.1 (IsAlgClosed.splits _)`. Distinguish the cases in `hi : i ≤ γ'.charpoly.natDegree`. Rewrite using `[Polynomial.coeff_eq_esymm_roots_of_card hcard hi, hq.leadingCoeff, one_mul]`. Use `IsIntegral.mul (IsIntegral.pow (IsIntegral.neg isIntegral_one) _) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show _ ∈ integralClosure ℤ F`. Unfold `Multiset.esymm`. Use `Subalgebra.multiset_sum_mem _ ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨s, hs, rfl⟩` from `Multiset.mem_map.1 hy`.
-
-Use `Subalgebra.multiset_prod_mem _ ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `hroot x (Multiset.mem_of_le (Multiset.mem_powersetCard.1 hs).1 hx)`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (not_le.1 hi)]`. Conclude with `isIntegral_zero`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepB : StepB := by
   intro E _ k γ hγ i

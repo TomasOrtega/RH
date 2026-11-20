@@ -13,7 +13,7 @@ namespace GlobalTheory.LevelCover
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Substitute `he` using the available equality. Conclude with `sabComp pullCubComp E H S S' S'' t t' t'' f g m m'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sab_comp {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S} {g : S'' ⟶ S'}
     (m' : SABMap t'' t' g) (m : SABMap t' t f) {e : S'' ⟶ S} (he : g ≫ f = e) :
@@ -22,7 +22,7 @@ theorem sab_comp {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SA
   exact sabComp pullCubComp E H S S' S'' t t' t'' f g m m'
 
 /- English proof (translation)
-Substitute `he` using the available equality. Take `⟨m', h⟩` from `sabCancel pullCubCancel E H S S' S'' t t' t'' f g m n`. Conclude with `⟨m', h.symm⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sab_cancel {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S} {e : S'' ⟶ S}
     (m : SABMap t' t f) (n : SABMap t'' t e) (g : S'' ⟶ S') (he : g ≫ f = e) :
@@ -32,9 +32,9 @@ theorem sab_cancel {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : 
   exact ⟨m', h.symm⟩
 
 /- English proof (translation)
-Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Simplify `h` using `only [Category.assoc]`. Establish `a₁ : x.left ≫ t''.G.hom = 𝟙 _` using `Over.w x`. Establish `a₂ : y.left ≫ t'.G.hom = 𝟙 _` using `Over.w y`. Rewrite using `[Category.assoc, m'.cart.1.w, ← Category.assoc, a₁, Category.assoc, a₂]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`.
+A detailed English derivation is pending.
 -/
 theorem sec_cancel {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S} {g : S'' ⟶ S'}
     (m' : SABMap t'' t' g) (m : SABMap t' t f) (x : 𝟙_ (Over S'') ⟶ t''.G) (y : 𝟙_ (Over S') ⟶ t'.G)
@@ -47,7 +47,7 @@ theorem sec_cancel {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : 
     exact (Category.id_comp _).trans (Category.comp_id _).symm
 
 /- English proof (translation)
-Set `U : Over.mk ((𝟙_ (Over S')).hom ≫ f) ⟶ 𝟙_ (Over S)` to `Over.homMk f ((Category.comp_id _).trans (Category.id_comp _).symm)`. Establish `e : pushHom m.cart _ x = preHom U y` using `Over.OverMorphism.ext h`. Establish `e' : pushHom m.cart _ (x ^ k) = preHom U (y ^ k)` using `by rw [map_pow, map_pow, e]`. Conclude with `congrArg (fun z => z.left) e'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sec_pow {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S}
     (m : SABMap t' t f) (x : 𝟙_ (Over S') ⟶ t'.G) (y : 𝟙_ (Over S) ⟶ t.G)
@@ -59,9 +59,9 @@ theorem sec_pow {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S}
   exact congrArg (fun z => z.left) e'
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `h`. Establish `ha : a ≠ 0` using `by rintro rfl; simp at hb`. Establish `hk : k ≠ 0` using `by rintro rfl; simp at hb`. Rewrite using `[Nat.mul_div_cancel_left _ (Nat.pos_of_ne_zero ha), zeta, zeta, ← Complex.exp_nat_mul]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `ha' : (a : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr ha`. Establish `hk' : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hk`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem zeta_dvd {a b : ℕ} (hb : 0 < b) (h : a ∣ b) : zeta a = zeta b ^ (b / a) := by
   obtain ⟨k, rfl⟩ := h
@@ -82,12 +82,12 @@ noncomputable def baseOf (l : Level H) (F : IntermediateField ℚ ℂ) (h : KA l
   ζ_prim := (baseKA l).ζ_prim.map_of_injective (RingHom.injective _)
 
 /- English proof (translation)
-The claim follows from `Spec.map_id _`.
+A detailed English derivation is pending.
 -/
 theorem spMap_id' (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 (Sp R) := Spec.map_id _
 
 /- English proof (translation)
-Rewrite using `[← spMap_id']`. Conclude with `congrArg spMap (RingHom.ext fun x => Subtype.ext (IntermediateField.coe_inclusion h x))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_inclusion_self {F : IntermediateField ℚ ℂ} (h : F ≤ F) :
     spMap (IntermediateField.inclusion h).toRingHom = 𝟙 (Sp F) := by
@@ -95,20 +95,20 @@ theorem spMap_inclusion_self {F : IntermediateField ℚ ℂ} (h : F ≤ F) :
   exact congrArg spMap (RingHom.ext fun x => Subtype.ext (IntermediateField.coe_inclusion h x))
 
 /- English proof (translation)
-The claim follows from `IntermediateField.coe_inclusion h (baseKA l).ρ`.
+A detailed English derivation is pending.
 -/
 theorem baseOf_rho_coe (l : Level H) (F : IntermediateField ℚ ℂ) (h : KA l ≤ F) :
     (((baseOf l F h).ρ : F) : ℂ) = H.rt0 := IntermediateField.coe_inclusion h (baseKA l).ρ
 
 /- English proof (translation)
-The claim follows from `Subtype.ext ((baseOf_rho_coe l F h).trans (baseOf_rho_coe l₂ F h₂).symm)`.
+A detailed English derivation is pending.
 -/
 theorem baseOf_rho (l l₂ : Level H) (F : IntermediateField ℚ ℂ) (h : KA l ≤ F) (h₂ : KA l₂ ≤ F) :
     (baseOf l F h).ρ = (baseOf l₂ F h₂).ρ :=
   Subtype.ext ((baseOf_rho_coe l F h).trans (baseOf_rho_coe l₂ F h₂).symm)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by rw [IntermediateField.coe_pow] exact (IntermediateField.coe_inclusion h _).trans ((zeta_dvd l₂.A_pos hd).trans (congrArg (· ^ (l₂.A / l.A)) (IntermediateField.coe_inclusion h₂ (baseKA l₂).ζ).symm)))`.
+A detailed English derivation is pending.
 -/
 theorem baseOf_zeta (l l₂ : Level H) (F : IntermediateField ℚ ℂ) (h : KA l ≤ F) (h₂ : KA l₂ ≤ F) (hd : l.A ∣ l₂.A) :
     (baseOf l F h).ζ = (baseOf l₂ F h₂).ζ ^ (l₂.A / l.A) := Subtype.ext (by
@@ -126,11 +126,11 @@ def Represents {B : Type} [CommRing B] {b : Base l B} {X : Scheme.{0}} {s : X �
     ∃! f : S ⟶ X, f ≫ s = s' ∧ Nonempty (ObjMap o' o f)
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Introduce `S s' o' hS`. Take `⟨g, ⟨hg, ⟨u⟩⟩, huniq⟩` from `hR S s' o' hS`. Establish `hl : pullback.lift g s' hg ≫ pullback.fst _ _ = g` using `pullback.lift_fst _ _ _`. Use `⟨pullback.lift g s' hg, ⟨pullback.lift_snd _ _ _, ?_⟩, ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u', -⟩` from `((hC E H D l _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ o o').2 _ (pullback.lift g s' hg) mo).2 (hl.symm ▸ u)`. Conclude with `⟨u'⟩`. Introduce and unpack `f ⟨hf, ⟨v⟩⟩`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[hl]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v', -⟩` from `((hC E H D l _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ o o').2 _ f mo).1 v`. Conclude with `huniq _ ⟨by rw [Category.assoc, pullback.condition, ← Category.assoc, hf], ⟨v'⟩⟩`. Rewrite using `[hf, pullback.lift_snd]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem represents_pullback (hC : ObjCompSt) (Xo : Moduli D l) {B : Type} [CommRing B] {b : Base l B} (j : KA l →+* B)
     (hR : ∀ (S : Scheme.{0}) (s : S ⟶ Sp B) (o : Obj D l b s), IsReduced S →
@@ -153,17 +153,17 @@ theorem represents_pullback (hC : ObjCompSt) (Xo : Moduli D l) {B : Type} [CommR
     · rw [hf, pullback.lift_snd]
 
 /- English proof (translation)
-Take `⟨h, ⟨hh, u, hu⟩, -⟩` from `univ X₂ r o₂ m hm`. Take `⟨g, ⟨hg, ⟨w⟩⟩, -⟩` from `hX₂ Y (π ≫ s) oc rY`. Take `⟨v, hv⟩` from `sab_cancel mc n.toSABMap (𝟙 Y) (Category.id_comp _)`. Establish `v₁ : ∀ a, (o₁.eta a).left ≫ v.φ = (oc.eta a ^ k).left` using `fun a => (sec_cancel v mc _ _ (by rw [hv, hmc.1, Category.id_comp]; exact n.eta a)).trans (Category.id_comp _)`. Establish `v₂ : ∀ a, (o₁.etaA a).left ≫ v.φ = (oc.etaA a ^ k').left` using `fun a => (sec_cancel v mc _ _ (by rw [hv, hmc.2, Category.id_comp]; exact n.etaA a)).trans (Category.id_comp _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨vw, hvw⟩` from `sab_comp v w.toSABMap (Category.id_comp g)`. Establish `key : ∀ (e : Y ⟶ X) (he : g ≫ r = e), ∃ z : ObjMap o₁ o e, z.toSABMap.φ = v.φ ≫ w.toSABMap.φ ≫ m.φ`. Introduce `e he`. Take `⟨z, hz⟩` from `sab_comp vw m he`. Rewrite `hz` using `[hvw, Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨⟨z, fun a => ?_, fun a => ?_⟩, hz⟩` and prove the remaining obligations. Use `show _ ≫ z.φ = _`. Rewrite using `[hz, ← Category.assoc, v₁, ← Category.assoc, sec_pow w.toSABMap _ _ (w.eta a), Category.assoc, hm.1, ← Category.assoc, he]`. Use `show _ ≫ z.φ = _`. Rewrite using `[hz, ← Category.assoc, v₂, ← Category.assoc, sec_pow w.toSABMap _ _ (w.etaA a), Category.assoc, hm.2, ← Category.assoc, he]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgr : g ≫ r = π`. Take `⟨z, -⟩` from `key _ rfl`. Conclude with `(hX Y (π ≫ s) o₁ rY).unique ⟨by rw [Category.assoc, hg], ⟨z⟩⟩ ⟨rfl, ⟨n⟩⟩`. Take `⟨z, hz⟩` from `key _ hgr`. Establish `hzn : z.toSABMap.φ = n.toSABMap.φ` using `rig _ _ fun a => ⟨_, z.eta a, n.eta a⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsIso v.φ` using `v.cart.1.isIso_fst_of_isIso`. Establish `hwm : w.toSABMap.φ ≫ m.φ = mc.φ`. Rewrite using `[← cancel_epi v.φ, ← hz, hzn, hv]`. Use `⟨h, ⟨g, ?_, ?_⟩, hh⟩` and prove the remaining obligations. Take `⟨x, -⟩` from `((hC E H D l₂ _ _ _ _ _ _ _ _ _ _ _ _ o₂ oc o₂).2 g h w).1 u`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, -⟩` from `(hC E H D l₂ _ _ _ _ _ _ _ _ _ _ _ _ o₂ o₂ o₂).1`. Conclude with `(hX₂ X₂ (r ≫ s) o₂ rX₂).unique ⟨by rw [Category.assoc, hg, ← Category.assoc, hh], ⟨x⟩⟩ ⟨Category.id_comp _, ⟨y⟩⟩`. Take `⟨x, hx⟩` from `((hC E H D l₂ _ _ _ _ _ _ _ _ _ _ _ _ oc o₂ oc).2 h g u).1 w`. Take `⟨y, hy⟩` from `(hC E H D l₂ _ _ _ _ _ _ _ _ _ _ _ _ oc oc oc).1`. Conclude with `(univ Y π oc mc hmc).unique ⟨by rw [Category.assoc, hh, hgr], x, by rw [hx, Category.assoc, hu, hwm]⟩ ⟨Category.id_comp _, y, by rw [hy, Category.id_comp]⟩`.
+A detailed English derivation is pending.
 -/
 theorem iso_cover (hC : ObjCompSt) {B : Type} [CommRing B] {b : Base l B} {b₂ : Base l₂ B} (k k' : ℕ)
     {X X₂ Y : Scheme.{0}} {s : X ⟶ Sp B} {r : X₂ ⟶ X} {π : Y ⟶ X} (o : Obj D l b s) (o₂ : Obj D l₂ b₂ (r ≫ s))
@@ -219,15 +219,13 @@ theorem iso_cover (hC : ObjCompSt) {B : Type} [CommRing B] {b : Base l B} {b₂ 
       ⟨Category.id_comp _, y, by rw [hy, Category.id_comp]⟩
 
 /- English proof (translation)
-Take `⟨o, ⟨mo⟩⟩` from `hPull E H D l _ _ (baseKA l) b j _ _ Xo.s (pullback.snd Xo.s (spMap j)) (pullback.fst _ _) e₁ e₂ pullback.condition Xo.univ`. Take `⟨o₂, ⟨mo₂⟩⟩` from `hPull E H D l₂ _ _ (baseKA l₂) b₂ j₂ _ _ Xo₂.s (rF ≫ pullback.snd Xo.s (spMap j)) (pullback.fst _ _) e₃ e₄ (by rw [h₂]; exact pullback.condition) Xo₂.univ`. Take `⟨Y, π, oc, mc, hfin, het, hsur, hmc, univ⟩` from `hCov E H D l l₂ _ b b₂ _ _ o hpq hd hρ hζ`. Take `⟨o₁, ⟨n⟩⟩` from `hPull E H D l _ _ b b (RingHom.id _) _ _ _ (π ≫ pullback.snd Xo.s (spMap j)) π rfl rfl (by rw [spMap_id', Category.comp_id]) o`. Take `⟨x, hx⟩` from `sab_comp mo₂.toSABMap m h₁.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨mF, hmF⟩` from `sab_cancel mo.toSABMap x rF rfl`. Use `Xo.smooth` as an intermediate fact. Use `Xo₂.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim _`. Establish `: Smooth Xo₂.s` using `SmoothOfRelativeDimension.smooth D.dim _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `rY : IsReduced Y` using `(hSm F Y (π ≫ pullback.snd Xo.s (spMap j)) inferInstance).1`. Establish `rX₂` using `(hSm F _ (pullback.snd Xo₂.s (spMap j₂)) inferInstance).1`. Take `⟨h, hiso, hh⟩` from `iso_cover hC (l₂.M / l.M) (l₂.A / l.A) o o₂ oc o₁ n mF mc ⟨fun a => sec_cancel mF mo.toSABMap _ _ (by`. Rewrite using `[hmF, hx, ← Category.assoc, sec_pow mo₂.toSABMap _ _ (mo₂.eta a), Category.assoc, hm₁, ← Category.assoc, ← h₁, Category.assoc]`. Conclude with `congrArg _ (mo.eta a).symm),`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `fun a => sec_cancel mF mo.toSABMap _ _ (by`. Rewrite using `[hmF, hx, ← Category.assoc, sec_pow mo₂.toSABMap _ _ (mo₂.etaA a), Category.assoc, hm₂, ← Category.assoc, ← h₁, Category.assoc]`. Conclude with `congrArg _ (mo.etaA a).symm)⟩ hmc`. Use the proof step `(represents_pullback hC Xo _ (fun S s o hS => hRep E H D l Xo _ b _ S s o hS e₁ e₂) rfl o mo)`. Use the proof step `(represents_pullback hC Xo₂ _ (fun S s o hS => hRep E H D l₂ Xo₂ _ b₂ _ S s o hS e₃ e₄) h₂ o₂ mo₂)`.
-
-Use `rX₂ rY (hRig E H D l _ _ b b _ _ _ _ o o₁ π (Or.inl rY)) univ`. Rewrite using `[← hh]`. Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem levelMap_over_field
     (hSm : ∀ (k : Type) [Field k] (X : Scheme.{0}) (s : X ⟶ Sp k), Smooth s → IsReduced X ∧ IsNormalScheme X ∧ IsLocallyNoetherian X)
@@ -277,7 +275,7 @@ theorem levelMap_over_field
   exact ⟨inferInstance, inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Introduce `hSm hPull hC _ hRig hRep hCov E _ _ _ H D l l₂ Xo Xo₂ hpq hd r jK m ⟨_, _, hm₁, hm₂⟩ c c₂ hc rF h₁ h₂`. Take `⟨F, fin, conj, zm, le⟩` from `c`. Take `⟨F₂, fin₂, conj₂, zm₂, le₂⟩` from `c₂`. Take `rfl : F = F₂` from `hc`. Conclude with `levelMap_over_field hSm hPull hC hRig hRep hCov Xo Xo₂ hpq hd r m hm₁ hm₂ F (baseOf l F le) (baseOf l₂ F le₂) _ _ rfl rfl rfl rfl (baseOf_rho _ _ _ _ _) (baseOf_zeta _ _ _ _ _ hd.2.2) rF h₁ (h₂.trans ((congrArg _ (spMap_inclusion_self _)).trans (Category.comp_id _)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem levelMap_finite_etale_surjective : (∀ (k : Type) [Field k] (X : Scheme.{0}) (s
     : X ⟶ Sp k), Smooth s → IsReduced X ∧ IsNormalScheme X ∧ IsLocallyNoetherian X) → (∀ (E

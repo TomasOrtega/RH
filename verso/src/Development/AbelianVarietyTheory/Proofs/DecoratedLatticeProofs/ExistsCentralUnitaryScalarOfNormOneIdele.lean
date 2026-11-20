@@ -25,9 +25,9 @@ def scalGL (c c' : A) (h : c * c' = 1) : GL n A where
   inv_val := by rw [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, smul_smul, mul_comm, h, one_smul]
 
 /- English proof (translation)
-Use `show Formalism.UG.cT σ (c • (1 : Matrix n n A)) * J * (c • (1 : Matrix n n A)) = J`. Establish `hm : Formalism.UG.cT σ (c • (1 : Matrix n n A)) = σ c • (1 : Matrix n n A)`. Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Distinguish the cases in `h1 : j = i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h1` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h1, if_neg (Ne.symm h1)]`. Simplify using the standard rewrite rules. Rewrite using `[hm, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, h, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalGL_mem (σ : A →+* A) (J : Matrix n n A) (c : A) (h : c * σ c = 1) :
     scalGL (n := n) c (σ c) h ∈ Formalism.UG.UJ σ J := by
@@ -54,7 +54,7 @@ theorem mt_scalGA (S : HSp D) (c : AE D) (hc : c * cA D c = 1) :
     Formalism.L2.Theta.mt S (scalGA S c hc) = c • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) := rfl
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_center_iff]`. Introduce `g`. Apply `GlobalTheory.FinPlLoc.mt_inj` to reduce the goal to its premises. Rewrite using `[GlobalTheory.FinPlLoc.mt_mul, GlobalTheory.FinPlLoc.mt_mul, mt_scalGA, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem scalGA_mem_center (S : HSp D) (c : AE D) (hc : c * cA D c = 1) :
     scalGA S c hc ∈ Subgroup.center (GA D S) := by
@@ -65,7 +65,7 @@ theorem scalGA_mem_center (S : HSp D) (c : AE D) (hc : c * cA D c = 1) :
     Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `grpAt`. Rewrite using `[GlobalTheory.FinPlLoc.mem_congGrp]`. Introduce `i j`. Rewrite using `[mt_scalGA, Matrix.smul_apply, smul_eq_mul, ← sub_one_mul]`. Conclude with `Ideal.mul_mem_right _ _ hc.2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalGA_mem_grpAt (S : HSp D) (v : GlobalTheory.FinPl.Pl D) (c : AE D) (hc : NormOneAt v c) :
     scalGA S c hc.1 ∈ grpAt S (· = v) := by
@@ -76,7 +76,7 @@ theorem scalGA_mem_grpAt (S : HSp D) (v : GlobalTheory.FinPl.Pl D) (c : AE D) (h
   exact Ideal.mul_mem_right _ _ hc.2
 
 /- English proof (translation)
-Introduce `D S v c hc`. Conclude with `⟨scalGA S c hc.1, ⟨scalGA_mem_grpAt S v c hc, scalGA_mem_center S c hc.1⟩, mt_scalGA S c hc.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_cenAt_scalar : ∀ (D : D7) (S : HSp D) (v : GlobalTheory.FinPl.Pl D) (c : AE D), NormOneAt v c → ∃ z : GA D S, CenAt S v z ∧ Formalism.L2.Theta.mt S z = c • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) := by
   intro D S v c hc

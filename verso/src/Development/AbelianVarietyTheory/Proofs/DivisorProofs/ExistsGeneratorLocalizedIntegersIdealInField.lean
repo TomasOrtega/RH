@@ -12,7 +12,7 @@ variable (L : Type) [Field L] [NumberField L] (v : HeightOneSpectrum ℤ)
 abbrev locS : Submonoid (𝓞 L) := Algebra.algebraMapSubmonoid (𝓞 L) v.asIdeal.primeCompl
 
 /- English proof (translation)
-The claim follows from `algebraMapSubmonoid_le_nonZeroDivisors_of_faithfulSMul _ v.asIdeal.primeCompl_le_nonZeroDivisors`.
+A detailed English derivation is pending.
 -/
 theorem locS_le : locS L v ≤ nonZeroDivisors (𝓞 L) :=
   algebraMapSubmonoid_le_nonZeroDivisors_of_faithfulSMul _ v.asIdeal.primeCompl_le_nonZeroDivisors
@@ -26,7 +26,7 @@ instance : IsPrincipalIdealRing (locR L v) :=
   IsDedekindDomain.isPrincipalIdealRing_localization_over_prime (𝓞 L) v.asIdeal v.ne_bot
 
 /- English proof (translation)
-Introduce `h`. Apply `hs` to reduce the goal to its premises. Rewrite using `[show s = 0 by exact_mod_cast h]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intCast_ne_zero {s : ℤ} (hs : s ∉ v.asIdeal) : (s : L) ≠ 0 := by
   intro h
@@ -35,11 +35,11 @@ theorem intCast_ne_zero {s : ℤ} (hs : s ∉ v.asIdeal) : (s : L) ≠ 0 := by
   exact zero_mem _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, _, ⟨t, ht, rfl⟩, rfl⟩`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Establish `h0` using `intCast_ne_zero L v ht`. Establish `e : algebraMap (𝓞 L) L (algebraMap ℤ (𝓞 L) t) = (t : L)` using `by simp`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, mul_comm, mul_assoc, inv_mul_cancel₀ h0, mul_one]`. Conclude with `RingOfIntegers.isIntegral_coe a`. Introduce and unpack `⟨s, hs, hi⟩`. Establish `h0` using `intCast_ne_zero L v hs`. Use `⟨⟨(s : L) * c, hi⟩, algebraMap ℤ (𝓞 L) s, ⟨s, hs, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : algebraMap (𝓞 L) L (algebraMap ℤ (𝓞 L) s) = (s : L)` using `by simp`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `c = (s : L) * c * (s : L)⁻¹`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem mem_locR_iff (c : L) :
     c ∈ locR L v ↔ ∃ s : ℤ, s ∉ v.asIdeal ∧ IsIntegral ℤ ((s : L) * c) := by
@@ -63,11 +63,11 @@ end GlobalTheory.LocIntPrincipal
 open GlobalTheory.LocIntPrincipal in
 
 /- English proof (translation)
-Introduce `L _ _ v K h0 hadd hmul hint`. Set `J : Ideal (locR L v)` to `{ carrier := {a | (a : L) ∈ K} zero_mem' := h0 add_mem' := fun {a b} ha hb => hadd _ ha _ hb smul_mem' := fun c a ha => by`. Express the relevant statement in the definitionally equal form `(c : L) * (a : L) ∈ K`. Conclude with `hmul _ ((mem_locR_iff L v c).1 c.2) _ ha }`. Take `⟨g, hg⟩` from `(IsPrincipalIdealRing.principal J).principal`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgJ : g ∈ J` using `by rw [hg]; exact Submodule.mem_span_singleton_self g`. Use `⟨g, hgJ, fun a ha => ?_⟩` and prove the remaining obligations. Establish `haR : a ∈ locR L v` using `(mem_locR_iff L v a).2 (hint a ha)`. Establish `hJ : (⟨a, haR⟩ : locR L v) ∈ J` using `ha`. Rewrite `hJ` using `[hg, Submodule.mem_span_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hJ`. Use `⟨c, (mem_locR_iff L v c).1 c.2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hc` as an intermediate fact. Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LocIntPrincipal.exists_generator : ∀ (L : Type) [Field L] [NumberField L] (v : HeightOneSpectrum ℤ) (K : Set L), 0 ∈ K →
     (∀ a ∈ K, ∀ b ∈ K, a + b ∈ K) →

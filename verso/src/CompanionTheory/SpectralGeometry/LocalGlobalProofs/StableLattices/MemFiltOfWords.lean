@@ -15,13 +15,13 @@ section Ring
 variable {R : Type*} [Ring R] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `key : ∀ i j, A i * an i * (D j * cr j) + D j * cr j * (A i * an i) = (if i = j then A i * D i else 0) + (if i = j then cr i * an i else 0)`. Introduce `i j`. Establish `e1 : A i * an i * (D j * cr j) = A i * D j * (an i * cr j)`. Rewrite using `[mul_assoc, ← mul_assoc (an i), (h1 i j).eq, mul_assoc, mul_assoc]`. Establish `e2 : D j * cr j * (A i * an i) = D j * A i * (cr j * an i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← mul_assoc (cr j), (h2 j i).eq, mul_assoc, mul_assoc]`. Establish `e3 : D j * A i = A i * D j + if j = i then 1 else 0`. Rewrite using `[← h3 j i]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1, e2, e3, add_mul, ← add_assoc, ← mul_add, h4]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Rewrite using `[Finset.sum_mul_sum, Finset.sum_mul_sum, Finset.sum_comm (s := univ) (t := univ) (f := fun j i => D j * cr j * (A i * an i)), ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Simplify using `only [key, Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem homotopy_ring (A D an cr : ι → R)
     (h1 : ∀ i j, Commute (an i) (D j)) (h2 : ∀ i j, Commute (cr i) (A j))
@@ -52,11 +52,11 @@ theorem homotopy_ring (A D an cr : ι → R)
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Establish `key : ∀ i j, A i * an i * (A j * an j) + A j * an j * (A i * an i) = 0`. Introduce `i j`. Establish `e1 : A i * an i * (A j * an j) = A i * A j * (an i * an j)`. Rewrite using `[mul_assoc, ← mul_assoc (an i), (h1 i j).eq, mul_assoc, mul_assoc]`. Establish `e2 : A j * an j * (A i * an i) = A j * A i * (an j * an i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← mul_assoc (an j), (h1 j i).eq, mul_assoc, mul_assoc]`. Rewrite using `[e1, e2, (h2 j i).eq, ← mul_add, h4, mul_zero]`. Use `conv_lhs => congr`. Rewrite using `[Finset.sum_mul_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul_sum, Finset.sum_comm]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_eq_zero fun j _ => key i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_ring (A an : ι → R)
     (h1 : ∀ i j, Commute (an i) (A j)) (h2 : ∀ i j, Commute (A i) (A j))
@@ -76,11 +76,11 @@ theorem sq_ring (A an : ι → R)
   exact Finset.sum_eq_zero fun j _ => key i j
 
 /- English proof (translation)
-Establish `key : ∀ j, D i * (A j * D j) = A j * D j * D i + if i = j then D i else 0`. Introduce `j`. Establish `e3 : D i * A j = A j * D i + if i = j then 1 else 0`. Rewrite using `[← h3 i j]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← mul_assoc, e3, add_mul, mul_assoc, (h2 i j).eq, ← mul_assoc]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Simplify using `only [key, Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem euler_ring (A D : ι → R) (h2 : ∀ i j, Commute (D i) (D j))
     (h3 : ∀ i j, D i * A j - A j * D i = if i = j then 1 else 0) (i : ι) :
@@ -107,7 +107,7 @@ def filt (d : ι → Module.End ℂ Z) (m : ℕ) : Submodule ℂ Z :=
   Nat.rec (motive := fun _ => Submodule ℂ Z) ⊥ (fun _ S => ⨅ i, S.comap (d i)) m
 
 /- English proof (translation)
-Use `show z ∈ (⨅ i, (filt d m).comap (d i)) ↔ _`. Simplify using `[Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_filt_succ (d : ι → Module.End ℂ Z) (m : ℕ) (z : Z) :
     z ∈ filt d (m + 1) ↔ ∀ i, d i z ∈ filt d m := by
@@ -115,9 +115,9 @@ theorem mem_filt_succ (d : ι → Module.End ℂ Z) (m : ℕ) (z : Z) :
   simp [Submodule.mem_iInf]
 
 /- English proof (translation)
-Use `monotone_nat_of_le_succ fun m => ?_` and prove the remaining obligations. Proceed by induction on `m with`. Consider the case `zero => exact bot_le`. Consider the case `succ m ih`. Introduce `z hz`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hz`, the goal using `[mem_filt_succ]`. Conclude with `fun i => ih (hz i)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem filt_mono (d : ι → Module.End ℂ Z) : Monotone (filt d) := by
   refine monotone_nat_of_le_succ fun m => ?_
@@ -129,9 +129,9 @@ theorem filt_mono (d : ι → Module.End ℂ Z) : Monotone (filt d) := by
     exact fun i => ih (hz i)
 
 /- English proof (translation)
-Proceed by induction on `m generalizing z with`. Consider the case `zero => simpa [filt] using h [] rfl`. Consider the case `succ m ih`. Rewrite using `[mem_filt_succ]`. Introduce `i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ih _ fun l hl => ?_` and prove the remaining obligations. Use `h (l ++ [i]) (by simp [hl])` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_filt_of_words (d : ι → Module.End ℂ Z) (m : ℕ) (z : Z)
     (h : ∀ l : List ι, l.length = m → (l.map d).prod z = 0) : z ∈ filt d m := by
@@ -145,11 +145,11 @@ theorem mem_filt_of_words (d : ι → Module.End ℂ Z) (m : ℕ) (z : Z)
     simpa using this
 
 /- English proof (translation)
-Proceed by induction on `m generalizing z with`. Consider the case `zero`. Rewrite `hz` using `[mem_filt_succ]`. Establish `h0 : ∀ i, d i z = 0` using `fun i => by simpa [filt] using hz i`. Simplify using `[filt, LinearMap.sum_apply, h0]`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `succ m ih`. Rewrite `hz`, the goal using `[mem_filt_succ]`. Introduce `i`. Establish `e` using `congrArg (fun T : Module.End ℂ Z => T z) (euler_ring a d h2 h3 i)`. Simplify using `only [Module.End.mul_apply, LinearMap.add_apply] at e`.
+Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `ih _ (hz i)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub, e, map_smul]`. Use `push_cast`. Rewrite using `[add_smul, one_smul]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -184,7 +184,7 @@ theorem lift_mul (S T : Module.End ℂ Z) :
     (lift ε (S * T) : Module.End ℂ (Ch ε Z)) = lift ε S * lift ε T := rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i ∈ A <;> simp [ann, h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ann_lift (i : NC ε) (T : Module.End ℂ Z) :
     Commute (ann i : Module.End ℂ (Ch ε Z)) (lift ε T) := by
@@ -192,7 +192,7 @@ theorem ann_lift (i : NC ε) (T : Module.End ℂ Z) :
   by_cases h : i ∈ A <;> simp [ann, h]
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i ∈ A <;> simp [cre, h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cre_lift (i : NC ε) (T : Module.End ℂ Z) :
     Commute (cre i : Module.End ℂ (Ch ε Z)) (lift ε T) := by
@@ -200,13 +200,13 @@ theorem cre_lift (i : NC ε) (T : Module.End ℂ Z) :
   by_cases h : i ∈ A <;> simp [cre, h]
 
 /- English proof (translation)
-Distinguish the cases in `h : i ∈ A`. Establish `e : sg i (A.erase i) = sg i A`. Unfold `sg`. Use `congr 2`. Use extensionality with `j`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_erase]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, h1⟩, h2⟩`. Conclude with `⟨h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨fun hh => by rw [hh] at h2; exact lt_irrefl _ h2, h1⟩, h2⟩`. Establish `e2 : sg i A * sg i A = 1`. Unfold `sg`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[cre, ann, h, e, Finset.insert_erase h, smul_smul, e2]`. Simplify using `[cre, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cre_ann_apply (i : NC ε) (x : Ch ε Z) (A : Finset (NC ε)) :
     (cre i (ann i x)) A = if i ∈ A then x A else 0 := by
@@ -227,7 +227,7 @@ theorem cre_ann_apply (i : NC ε) (x : Ch ε Z) (A : Finset (NC ε)) :
   · simp [cre, h]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.sum_apply, Finset.sum_apply]`. Simplify using `only [Module.End.mul_apply, cre_ann_apply]`. Rewrite using `[← Finset.sum_filter]`. Simplify using `[Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem number_apply (x : Ch ε Z) (A : Finset (NC ε)) :
     ((∑ i : NC ε, (cre i * ann i : Module.End ℂ (Ch ε Z))) x) A = (A.card : ℂ) • x A := by
@@ -237,9 +237,9 @@ theorem number_apply (x : Ch ε Z) (A : Finset (NC ε)) :
   simp [Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Introduce `A hA`. Rewrite using `[LinearMap.sum_apply, Finset.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i ∈ A`. Establish `: x (A.erase i) = 0` using `hx _ (by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `Finset.card_erase_add_one h` as an intermediate fact. Use the proof step `omega)`. Simplify using `[cre, h, this]`. Simplify using `[cre, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deg_h (d : NC ε → Module.End ℂ Z) (j : ℕ) (x : Ch ε Z) (hx : Deg j x) :
     Deg (j + 1) ((∑ i : NC ε, ((lift ε (d i) : Module.End ℂ (Ch ε Z)) * cre i : Module.End ℂ (Ch ε Z))) x) := by
@@ -254,27 +254,25 @@ theorem deg_h (d : NC ε → Module.End ℂ Z) (j : ℕ) (x : Ch ε Z) (hx : Deg
   · simp [cre, h]
 
 /- English proof (translation)
-Introduce `hC n ε Z _ _ a d ha hd hda hnil j x hx hcyc`. Use `set H : Module.End ℂ (Ch ε Z) := ∑ i : NC ε, (lift ε (d i) : Module.End ℂ (Ch ε Z)) * cre i with hH`. Establish `hom : bdA a * H + H * bdA a = ∑ i, (lift ε (a i) : Module.End ℂ (Ch ε Z)) * lift ε (d i) + ∑ i, cre i * ann i`. Use `homotopy_ring (fun i => (lift ε (a i) : Module.End ℂ (Ch ε Z))) (fun i => lift ε (d i)) ann cre (fun i j => ann_lift _ _) (fun i j => cre_lift _ _) (fun i j => ?_) (fun i j => (hC n ε Z i j).2.2)` and prove the remaining obligations. Use `LinearMap.ext fun y => funext fun A => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun T : Module.End ℂ Z => T (y A)) (hda i j)`. Distinguish the cases in `h : i = j`. Simplify `e` using `[h]`. Simplify `e` using `[h]`. Establish `hsq : ∀ y : Ch ε Z, bdA a (bdA a y) = 0`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Establish `e : bdA a * bdA a + bdA a * bdA a = 0` using `sq_ring (fun i => (lift ε (a i) : Module.End ℂ (Ch ε Z))) ann (fun i j => ann_lift _ _) (fun i j => by show lift ε (a i) * lift ε (a j) = lift ε (a j) * lift ε (a i)`. Rewrite using `[← lift_mul, ← lift_mul, (ha i j).eq]) (fun i j => (hC n ε Z i j).1)`. Establish `e2` using `congrArg (fun T : Module.End ℂ (Ch ε Z) => T y) e`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, LinearMap.zero_apply] at e2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[← two_smul ℂ]`. Conclude with `(smul_eq_zero.mp e2).resolve_left two_ne_zero`. Establish `main : ∀ (m : ℕ) (y : Ch ε Z), (∀ A, y A ∈ filt d m) → Deg (j + 1) y → bdA a y = 0 → ∃ t : Ch ε Z, Deg (j + 2) t ∧ bdA a t = y`. Introduce `m`. Proceed by induction on `m with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero`. Introduce `y hy _ _`. Use `⟨0, fun _ _ => rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `A`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify `hy A` using `[filt, eq_comm]`. Consider the case `succ m ih`. Introduce `y hy hdeg hc`. Establish `hne : ((m : ℂ) + (j + 1 : ℕ)) ≠ 0`. Conclude with `(by omega : m + (j + 1) ≠ 0)` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hw : ∀ A, (bdA a (H y) - ((m : ℂ) + (j + 1 : ℕ)) • y) A = (∑ i, a i * d i) (y A) - (m : ℂ) • y A`. Introduce `A`. Establish `e` using `congrArg (fun T : Module.End ℂ (Ch ε Z) => T y A) hom`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, hc, map_zero, Pi.add_apply, Pi.zero_apply, add_zero, number_apply] at e`. Establish `e2 : (A.card : ℂ) • y A = ((j + 1 : ℕ) : ℂ) • y A`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : A.card = j + 1`. Rewrite using `[h]`. Rewrite using `[hdeg A h, smul_zero, smul_zero]`. Establish `e3 : ((∑ i, (lift ε (a i) : Module.End ℂ (Ch ε Z)) * lift ε (d i)) y) A = (∑ i, a i * d i) (y A)`. Rewrite using `[LinearMap.sum_apply, Finset.sum_apply, LinearMap.sum_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Both sides reduce to the same expression. Rewrite using `[Pi.sub_apply, e, e2, e3, Pi.smul_apply, add_smul]`. Normalize the expressions using the abelian group laws. Take `⟨t, ht, hbt⟩` from `ih (bdA a (H y) - ((m : ℂ) + (j + 1 : ℕ)) • y) (fun A => by rw [hw]; exact euler_filt a d hd hda m _ (hy A)) (fun A hA => by rw [hw, hdeg A hA]; simp) (by rw [map_sub, hsq, map_smul, hc]; simp)`. Use `⟨((m : ℂ) + (j + 1 : ℕ))⁻¹ • (H y - t), fun A hA => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `deg_h d (j + 1) y hdeg A hA` as an intermediate fact. Rewrite using `[Pi.smul_apply, Pi.sub_apply, ht A hA, this]`. Simplify using the standard rewrite rules. Rewrite using `[map_smul, map_sub, hbt, sub_sub_cancel, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Use `choose f hf using hnil`.
-
-Use `main (univ.sup fun A => f (x A)) x (fun A => ?_) hx hcyc` and prove the remaining obligations. Conclude with `filt_mono d (Finset.le_sup (f := fun A => f (x A)) (mem_univ A)) (mem_filt_of_words d _ _ (hf _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem koszul : CAR → Koszul := by
   intro hC n ε Z _ _ a d ha hd hda hnil j x hx hcyc

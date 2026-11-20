@@ -20,9 +20,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.RowTest
 
 /- English proof (translation)
-Introduce `D T L sc G W U S μ0 _ j hj`. Establish `hX : DefNode D.R.m (Node.top j)` using `hj`. Establish `hO` using `GlobalTheory.SeeSaw.ontoUni_inB D W.θ (G.V (.top j)) (S.N.frC _) W.θ_is (GlobalTheory.RealType.frC_on S.N hX)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : (fun (k : GinfC (G.V (.top j))) τ => ((realIn W.θ S.N.fr (.top j) (k : GA D (G.V (.top j))) τ : GL (Fin (G.V (.top j)).rank) ℂ) : Matrix (Fin (G.V (.top j)).rank) (Fin (G.V (.top j)).rank) ℂ)) = fun k : GinfC (G.V (.top j)) => GlobalTheory.SeeSaw.inB W.θ (G.V (.top j)) (S.N.f …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun k => funext fun τ => GlobalTheory.RowHoweAvg.realIn_coe W.θ S.N _ _ τ`. Rewrite using `[e]`. Conclude with `hO`. Introduce `κ κ' h1 h2 h3 h4 haveI : LocallyCompactSpace (GinfC (G.V (.top j))) := (GlobalTheory.AdelicSplit.isClosed_GinfC' _).locallyCompactSpace`. Conclude with `Measure.isHaarMeasure_eq_of_isProbabilityMeasure κ κ'`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem realPts_ontoUni_haar_unique : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) {μ0 : T}, L.Is μ0 → ∀ (j : ℕ), j ≤ D.R.m →

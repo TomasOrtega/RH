@@ -14,11 +14,11 @@ section Chains
 variable {N r : ℕ}
 
 /- English proof (translation)
-Unfold `Strip HStrip`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨h1, fun a h => h2 a ⟨a.1 + 1, h⟩ rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_sub_distrib]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3`. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨h1, fun i j hij => ?_, ?_⟩` and prove the remaining obligations. Establish `h : i.1 + 1 < r` using `hij ▸ j.2`. Establish `hj : j = ⟨i.1 + 1, h⟩` using `Fin.ext hij.symm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj]`. Conclude with `h2 i h`. Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strip_iff {nu mu : Fin r → ℤ} {g : ℕ} : Strip nu mu g ↔ HStrip mu nu g := by
   unfold Strip HStrip
@@ -34,11 +34,11 @@ theorem strip_iff {nu mu : Fin r → ℤ} {g : ℕ} : Strip nu mu g ↔ HStrip m
     · rw [← Finset.sum_sub_distrib]; exact h3
 
 /- English proof (translation)
-Establish `H : ∀ (d a : ℕ) (ha : a < r) (hb : a + d < r), f ⟨a + d, hb⟩ ≤ f ⟨a, ha⟩`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro a ha hb`. Conclude with `le_rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ d ih`. Introduce `a ha hb`. Conclude with `le_trans (h ⟨a + d, by omega⟩ hb) (ih a ha (by omega))`. Introduce `a b hab`. Establish `hab' : a.1 ≤ b.1` using `hab`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : b = ⟨a.1 + (b.1 - a.1), by have` using `b.2; omega⟩ := Fin.ext (by simp; omega)`. Rewrite using `[hb]`. Conclude with `H _ a.1 a.2 _`.
+A detailed English derivation is pending.
 -/
 theorem anti_of_step {f : Fin r → ℤ} (h : ∀ (a : Fin r) (ha : a.1 + 1 < r), f ⟨a.1 + 1, ha⟩ ≤ f a) : Antitone f := by
   have H : ∀ (d a : ℕ) (ha : a < r) (hb : a + d < r), f ⟨a + d, hb⟩ ≤ f ⟨a, ha⟩ := by
@@ -55,7 +55,7 @@ theorem anti_of_step {f : Fin r → ℤ} (h : ∀ (a : Fin r) (ha : a.1 + 1 < r)
   exact H _ a.1 a.2 _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨anti_of_step fun a ha => le_trans (h.1 _) (h.2.1 a ha), anti_of_step fun a ha => le_trans (h.2.1 a ha) (h.1 a)⟩`.
+Supply the required witnesses or components.
 -/
 theorem hstrip_anti {nu mu : Fin r → ℤ} {b : ℕ} (h : HStrip nu mu b) : Antitone nu ∧ Antitone mu :=
   ⟨anti_of_step fun a ha => le_trans (h.1 _) (h.2.1 a ha), anti_of_step fun a ha => le_trans (h.2.1 a ha) (h.1 a)⟩
@@ -81,9 +81,9 @@ def pathOf (LL : ChainLetters N) (ka : Fin (N + 1) → Fin r → ℤ) (h : IsCha
       rw [if_neg (show ¬ (⟨LL.vec⟩ : Letters (Fin N)).vec i = true from hv)]; exact strip_iff.1 h2
 
 /- English proof (translation)
-Use `⟨P.zero, fun i => ?_⟩` and prove the remaining obligations. Establish `h2` using `P.step i`. Distinguish the cases in `hv : LL.vec i = true`. Rewrite `h2` using `[if_pos (show (⟨LL.vec⟩ : Letters (Fin N)).vec i = true from hv)]`. Rewrite using `[if_pos hv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `strip_iff.2 h2`. Rewrite `h2` using `[if_neg (show ¬ (⟨LL.vec⟩ : Letters (Fin N)).vec i = true from hv)]`. Rewrite using `[if_neg hv]`. Conclude with `strip_iff.2 h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chain_of_path (LL : ChainLetters N) (P : PPath r N (⟨LL.vec⟩ : Letters (Fin N)) LL.deg) : IsChain LL P.mu := by
   refine ⟨P.zero, fun i => ?_⟩
@@ -95,7 +95,7 @@ theorem chain_of_path (LL : ChainLetters N) (P : PPath r N (⟨LL.vec⟩ : Lette
     rw [if_neg hv]; exact strip_iff.2 h2
 
 /- English proof (translation)
-Consider the cases of `P`. Consider the cases of `P'`. Simplify using `only at h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ppath_ext {Lt : Letters (Fin N)} {B : Fin N → ℕ} {P P' : PPath r N Lt B} (h : P.mu = P'.mu) : P = P' := by
   cases P; cases P'; simp only at h; subst h; rfl
@@ -107,9 +107,9 @@ section Span
 variable {R V ι : Type*} [CommRing R] [AddCommGroup V] [Module R V]
 
 /- English proof (translation)
-Rewrite `hG` using `[← Set.image_univ, Finsupp.mem_span_image_iff_linearCombination]`. Take `⟨l, -, hl⟩` from `hG`. Rewrite using `[Finsupp.mem_span_image_iff_linearCombination]`. Use `⟨l, ?_, hl⟩` and prove the remaining obligations. Rewrite using `[Finsupp.mem_supported]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx k`. Take `⟨lk, hlk, hk⟩` from `(Finsupp.mem_span_image_iff_linearCombination R).1 (h k)`. Establish `: lk = l` using `hli (hk.trans hl.symm)`. Substitute `this` using the available equality. Conclude with `(Finsupp.mem_supported R _).1 hlk hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mem_span_iInter {b : ι → V} (hli : LinearIndependent R b) {q : ℕ} (s : Fin q → Set ι) {G : V}
     (hG : G ∈ Submodule.span R (Set.range b)) (h : ∀ k, G ∈ Submodule.span R (b '' s k)) :
@@ -136,19 +136,19 @@ abbrev TIdx (r N : ℕ) (Lt : Letters (Fin N)) (B : Fin N → ℕ) :=
   {x : PPath r N Lt B × (ℤ → Finset (Fin r)) // IsSt x.1.mu x.2}
 
 /- English proof (translation)
-Establish `hall : ∀ i' : Fin N, (((-Bd : ℤ)) : WithTop ℤ) ≤ valS Lt {j | j ≤ i'} G ∧ lam1S Lt {j | j ≤ i'} G ≤ ((Bd : ℤ) : WithBot ℤ)`. Establish `h` using `hA3 (fun _ => -Bd) (fun _ => Bd)`. Unfold `Formalism.MainNotions.CovariantDegrees.A3at at h`. Establish `hmem : G ∈ (Submodule.span O {G | ∃ P : PPath r N Lt B, ∃ I : ℤ → Finset (Fin r), IsSt P.mu I ∧ (∀ i : Fin N, (fun _ => -Bd) i ≤ P.mu i.succ (lastIdx r) ∧ P.mu i.succ 0 ≤ (fun _ => Bd) i) ∧ G = Psi O P.mu I} : Set _)`. Rewrite `hG` using `[← hspan]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.span_mono ?_ hG` and prove the remaining obligations. Introduce and unpack `_ ⟨P, I, h1, rfl⟩`. Conclude with `⟨P, I, h1, fun i => ⟨(hBd P I h1 _ _).1, (hBd P I h1 _ _).2⟩, rfl⟩`. Rewrite `hmem` using `[← h]`. Conclude with `hmem.2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hA3 (fun _ => -Bd) (fun i' => if i' = i then Mz else Bd)`. Unfold `Formalism.MainNotions.CovariantDegrees.A3at at h`. Prove the components needed by the constructor for the conclusion. Introduce `hl`. Establish `h1 : G ∈ {G : MvPolynomial (Fin N × Fin r) O | G ∈ Pol O r B ∧ ∀ i' : Fin N, (((fun _ => -Bd) i' : ℤ) : WithTop ℤ) ≤ valS Lt {j | j ≤ i'} G ∧ lam1S Lt {j | j ≤ i'} G ≤ (((fun i' => if i' = i then Mz else Bd) i' : ℤ) : WithBot ℤ)}`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hG, fun i' => ⟨(hall i').1, ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hi : i' = i`. Substitute `hi` using the available equality. Simplify using `using hl`. Simplify `(hall i').2` using `[hi]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h]`. Use `Submodule.span_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨P, I, h1, h2, rfl⟩`. Conclude with `⟨⟨(P, I), h1⟩, by simpa using (h2 i).2, rfl⟩`. Introduce `hs`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : G ∈ (Submodule.span O {G | ∃ P : PPath r N Lt B, ∃ I : ℤ → Finset (Fin r), IsSt P.mu I ∧ (∀ i' : Fin N, (fun _ => -Bd) i' ≤ P.mu i'.succ (lastIdx r) ∧ P.mu i'.succ 0 ≤ (fun i' => if i' = i then Mz else Bd) i') ∧ G = Psi O P.mu I} : Set _)`. Use `Submodule.span_mono ?_ hs` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨x.1.1, x.1.2, x.2, fun i' => ⟨(hBd x.1.1 x.1.2 x.2 _ _).1, ?_⟩, rfl⟩` and prove the remaining obligations. Distinguish the cases in `hi : i' = i`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hi` using the available equality. Simplify using `using hx`. Simplify `(hBd x.1.1 x.1.2 x.2 i'.succ 0).2` using `[hi]`. Rewrite `h1` using `[← h]`. Simplify using `using (h1.2 i).2`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem single_cond
     (hspan : Submodule.span O {G | ∃ P : PPath r N Lt B, ∃ I : ℤ → Finset (Fin r), IsSt P.mu I ∧ G = Psi O P.mu I} =
@@ -200,11 +200,11 @@ theorem single_cond
     simpa using (h1.2 i).2
 
 /- English proof (translation)
-Take `⟨sd, hsd⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors O) (F.support.image fun m => F.coeff m)`. Establish `hc : ∀ m, ∃ y : O, m ∈ F.support → algebraMap O (KK O) y = (sd : O) • F.coeff m`. Introduce `m`. Distinguish the cases in `hm : m ∈ F.support`. Take `⟨y, hy⟩` from `hsd _ (Finset.mem_image_of_mem _ hm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, fun _ => hy⟩`. Conclude with `⟨0, fun h => absurd h hm⟩`. Use `choose g hg using hc`. Use `⟨sd, ∑ m ∈ F.support, monomial m (g m), nonZeroDivisors.coe_ne_zero sd, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [F.as_sum]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[map_monomial, smul_monomial, hg m hm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clear_den {σ : Type} (F : MvPolynomial σ (KK O)) :
     ∃ (d : O) (G : MvPolynomial σ O), d ≠ 0 ∧ MvPolynomial.map (algebraMap O (KK O)) G = d • F := by
@@ -231,16 +231,16 @@ section Zero
 variable {K : Type} [Field K] {N r : ℕ} [NeZero r]
 
 /- English proof (translation)
-Unfold `chWt`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem chWt_zero (LL : ChainLetters N) (c : Fin r) (m : Fin N × Fin r →₀ ℕ) : chWt LL 0 c m = 0 := by
   unfold chWt
   simp
 
 /- English proof (translation)
-Use `le_antisymm le_top (le_sSup ⟨?_, fun c d x _ => Submodule.mem_top⟩)` and prove the remaining obligations. Introduce `x _`. Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `m _`. Use `show ((chWt LL 0 0 m : ℤ) : WithTop ℤ) ≤ M`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chWt_zero]`. Conclude with `h` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem ycond_zero_top (LL : ChainLetters N) (M : WithTop ℤ) (h : (0 : WithTop ℤ) ≤ M) :
     YCond K (r := r) LL 0 M = ⊤ := by
@@ -253,9 +253,9 @@ theorem ycond_zero_top (LL : ChainLetters N) (M : WithTop ℤ) (h : (0 : WithTop
   exact_mod_cast h
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Use `sSup_le fun S hS => ?_` and prove the remaining obligations. Introduce `x hx`. Establish `h1` using `hS.1 hx`. Rewrite `h1` using `[MvPolynomial.mem_restrictSupport_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Submodule.mem_bot, ← MvPolynomial.support_eq_empty, Finset.eq_empty_iff_forall_notMem]`. Introduce `m hm`. Establish `h2 : ((chWt LL 0 0 m : ℤ) : WithTop ℤ) ≤ M` using `h1 (by exact_mod_cast hm)`. Rewrite `h2` using `[chWt_zero]`. Conclude with `h (by exact_mod_cast h2)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ycond_zero_bot (LL : ChainLetters N) (M : WithTop ℤ) (h : ¬ (0 : WithTop ℤ) ≤ M) :
     YCond K (r := r) LL 0 M = ⊥ := by
@@ -282,16 +282,16 @@ def psiR (R : Type) [CommRing R] (LL : ChainLetters N) (x : Tx r LL) : MvPolynom
   Psi R x.1.1.mu x.1.2
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.G.Joints.StandardMonomialSpace.Psi_map _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem psiR_map (LL : ChainLetters N) (x : Tx r LL) :
     MvPolynomial.map (algebraMap O (KK O)) (psiR O LL x) = psiR (KK O) LL x :=
   Formalism.MainNotions.G.Joints.StandardMonomialSpace.Psi_map _ _ _
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap O (KK O))` using `IsFractionRing.injective O (KK O)`. Set `φ : MvPolynomial (Fin N × Fin r) O →ₗ[O] MvPolynomial (Fin N × Fin r) (KK O)` to `(MvPolynomial.mapAlgHom (Algebra.ofId O (KK O))).toLinearMap`. Establish `h1 : LinearIndependent O (φ ∘ psiR (r` using `r) O LL) := hli.map' φ (LinearMap.ker_eq_bot.2 (MvPolynomial.map_injective _ hinj))`. Establish `h2 : (φ ∘ psiR (r` using `r) O LL) = psiR (KK O) LL := funext fun x => psiR_map LL x`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(LinearIndependent.iff_fractionRing O (KK O)).1 h1`.
+A detailed English derivation is pending.
 -/
 theorem psiK_li (LL : ChainLetters N) (hli : LinearIndependent O (psiR (r := r) O LL)) :
     LinearIndependent (KK O) (psiR (r := r) (KK O) LL) := by
@@ -305,7 +305,7 @@ theorem psiK_li (LL : ChainLetters N) (hli : LinearIndependent O (psiR (r := r) 
   exact (LinearIndependent.iff_fractionRing O (KK O)).1 h1
 
 /- English proof (translation)
-Establish `h1 : psiR O LL x ∈ Pol O r LL.deg` using `hrange ▸ Submodule.subset_span ⟨x, rfl⟩`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← psiR_map]`. Conclude with `(map_mem_Pol_iff _ (IsFractionRing.injective O (KK O)) _ _).2 h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiK_mem [CharZero (KK O)] (LL : ChainLetters N) (hrange : Submodule.span O (Set.range (psiR (r := r) O LL)) = Pol O r LL.deg)
     (x : Tx r LL) : psiR O LL x ∈ Pol O r LL.deg ∧ psiR (KK O) LL x ∈ Pol (KK O) r LL.deg := by
@@ -315,7 +315,7 @@ theorem psiK_mem [CharZero (KK O)] (LL : ChainLetters N) (hrange : Submodule.spa
   exact (map_mem_Pol_iff _ (IsFractionRing.injective O (KK O)) _ _).2 h1
 
 /- English proof (translation)
-Establish `hfd : FiniteDimensional (KK O) (Pol (KK O) r LL.deg)` using `homogeneous_multidegree_findim LL.deg`. Establish `hle : Submodule.span (KK O) (Set.range (psiR (r` using `r) (KK O) LL)) ≤ Pol (KK O) r LL.deg := Submodule.span_le.2 (by rintro _ ⟨x, rfl⟩; exact (psiK_mem LL hrange x).2)`. Establish `: FiniteDimensional (KK O) (Submodule.span (KK O) (Set.range (psiR (r` using `r) (KK O) LL))) := Submodule.finiteDimensional_of_le hle`. Conclude with `Module.Finite.finite_basis (Module.Basis.span (psiK_li LL hli))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tx_finite [CharZero (KK O)] (LL : ChainLetters N) (hli : LinearIndependent O (psiR (r := r) O LL))
     (hrange : Submodule.span O (Set.range (psiR (r := r) O LL)) = Pol O r LL.deg) : Finite (Tx r LL) := by
@@ -327,7 +327,7 @@ theorem tx_finite [CharZero (KK O)] (LL : ChainLetters N) (hli : LinearIndepende
   exact Module.Finite.finite_basis (Module.Basis.span (psiK_li LL hli))
 
 /- English proof (translation)
-Take `⟨Bd, hBd⟩` from `(Set.finite_range (fun y : TIdx r N Lt B × Fin (N + 1) × Fin r => |y.1.1.1.mu y.2.1 y.2.2|)).bddAbove`. Conclude with `⟨Bd, fun P I h i a => abs_le.1 (hBd ⟨((⟨(P, I), h⟩ : TIdx r N Lt B), i, a), rfl⟩)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_bound {Lt : Letters (Fin N)} {B : Fin N → ℕ} [Finite (TIdx r N Lt B)] :
     ∃ Bd : ℤ, ∀ (P : PPath r N Lt B) (I : ℤ → Finset (Fin r)), IsSt P.mu I →
@@ -340,23 +340,23 @@ def sK (LL : ChainLetters N) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTo
   {x | ((x.1.1.mu (finPos N (J k)) 0 : ℤ) : WithTop ℤ) ≤ M k}
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap O (KK O))` using `IsFractionRing.injective O (KK O)`. Consider the cases of `hM : M k with`. Consider the case `top`. Establish `hs : sK (r` using `r) LL J M k = Set.univ := by`. Use extensionality with `x`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [sK, Set.mem_ofPred_eq, hM, le_top, Set.mem_univ]`. Rewrite using `[ycond_top, hs, Set.image_univ, hrange]`. Conclude with `⟨fun _ => hG, fun _ => Submodule.mem_top⟩`. Consider the case `coe Mz`. Break down `Nat.eq_zero_or_pos (J k) with h0 | hpos` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hmu : ∀ x : Tx r LL, x.1.1.mu (finPos N (J k)) 0 = 0`. Introduce `x`. Establish `h00 : finPos N (J k) = 0` using `by rw [h0]; apply Fin.ext; simp [finPos]`. Rewrite using `[h00, x.1.1.zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h0]`. Distinguish the cases in `hz : (0 : WithTop ℤ) ≤ (Mz : WithTop ℤ)`. Establish `hs : sK (r` using `r) LL J M k = Set.univ := by`. Use extensionality with `x`. Simplify using `only [sK, Set.mem_ofPred_eq, hM, hmu x, Set.mem_univ, iff_true]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `hz` after adjusting the coercions. Rewrite using `[ycond_zero_top _ _ hz, hs, Set.image_univ, hrange]`. Conclude with `⟨fun _ => hG, fun _ => Submodule.mem_top⟩`. Establish `hs : sK (r` using `r) LL J M k = ∅ := by`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [sK, Set.mem_ofPred_eq, hM, hmu x, Set.mem_empty_iff_false, iff_false]`. Introduce `h; exact hz (by exact_mod_cast h)`. Rewrite using `[ycond_zero_bot _ _ hz, hs, Set.image_empty, Submodule.span_empty, Submodule.mem_bot, Submodule.mem_bot]`. Conclude with `map_eq_zero_iff _ (MvPolynomial.map_injective _ hinj)`. Take `⟨i, hi⟩ : ∃ i : Fin N, J k = i.val + 1` from `⟨⟨J k - 1, by have := hJ k; omega⟩, by simp only; omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hfp : finPos N (J k) = i.succ`. Apply `Fin.ext` to reduce the goal to its premises. Use `i.2` as an intermediate fact. Simplify using `only [finPos, hi, Fin.val_succ]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hS : {l : Fin N | (l : ℕ) < J k} = {j | j ≤ i}`. Use extensionality with `l`. Simplify using `only [Set.mem_ofPred_eq, hi, Fin.le_def]`. Use linear arithmetic over natural numbers and integers. Establish `hs : sK (r` using `r) LL J M k = {x | x.1.1.mu i.succ 0 ≤ Mz} := by`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [sK, Set.mem_ofPred_eq, hM, hfp]`. Conclude with `WithTop.coe_le_coe`. Rewrite using `[mem_ycond_iff D LL (J k) Mz, Formalism.MainNotions.G.Joints.StandardMonomialSpace.lowest_degree_map_of_injective _ hinj, hS, single_cond hspan hA3 Bd hBd i Mz G hG, hs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem one_cond [CharZero (KK O)] (D : Formalism.BasicNotions.D7) (LL : ChainLetters N)
     (hrange : Submodule.span O (Set.range (psiR (r := r) O LL)) = Pol O r LL.deg)
@@ -419,11 +419,9 @@ def sAll (LL : ChainLetters N) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → With
   {x | ∀ k, x ∈ sK LL J M k}
 
 /- English proof (translation)
-Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨y, hy, (psiR_map LL y).symm⟩`. Consider the case `zero => rw [map_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_span (LL : ChainLetters N) (s : Set (Tx r LL)) (G : MvPolynomial (Fin N × Fin r) O)
     (hG : G ∈ Submodule.span O (psiR O LL '' s)) :
@@ -439,13 +437,13 @@ theorem map_span (LL : ChainLetters N) (s : Set (Tx r LL)) (G : MvPolynomial (Fi
     exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap O (KK O))` using `IsFractionRing.injective O (KK O)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `show psiR (KK O) LL x ∈ Yjt (KK O) (r := r) LL J M`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Yjt, Submodule.mem_inf, Submodule.mem_iInf]`. Use `⟨(psiK_mem LL hrange x).2, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← psiR_map]`. Conclude with `(hC1 k _ (psiK_mem LL hrange x).1).2 (Submodule.subset_span ⟨x, hx k, rfl⟩)`. Introduce `F hF`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, G, hd, hG⟩` from `clear_den F`. Establish `hdF : d • F ∈ Yjt (KK O) (r` using `r) LL J M := by`. Rewrite using `[← algebraMap_smul (KK O) d F]`. Conclude with `Submodule.smul_mem _ _ hF`. Rewrite `hdF` using `[← hG, Yjt, Submodule.mem_inf, Submodule.mem_iInf]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGP : G ∈ Pol O r LL.deg` using `(map_mem_Pol_iff _ hinj _ G).1 hdF.1`. Establish `hGs : G ∈ Submodule.span O (psiR O LL '' sAll LL J M)` using `mem_span_iInter hli (sK LL J M) (hrange ▸ hGP) (fun k => (hC1 k G hGP).1 (hdF.2 k))`. Establish `h1` using `map_span LL _ G hGs`. Rewrite `h1` using `[hG, ← algebraMap_smul (KK O) d F]`. Conclude with `(Submodule.smul_mem_iff _ (fun h0 => hd (hinj (by rw [h0, map_zero])))).1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_eq_Yjt [CharZero (KK O)] (LL : ChainLetters N) (hli : LinearIndependent O (psiR (r := r) O LL))
     (hrange : Submodule.span O (Set.range (psiR (r := r) O LL)) = Pol O r LL.deg)
@@ -477,9 +475,9 @@ theorem span_eq_Yjt [CharZero (KK O)] (LL : ChainLetters N) (hli : LinearIndepen
 
 omit [NeZero r] in
 /- English proof (translation)
-Use `Nat.card_congr (Equiv.ofBijective (fun y => (⟨y.1.1.1.2, by have h := y.1.1.2; rw [y.2] at h; exact h⟩ : {I : ℤ → Finset (Fin r) // IsSt x0.1.1.1.mu I})) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `y y' h`. Establish `hI : y.1.1.1.2 = y'.1.1.1.2` using `congrArg Subtype.val h`. Establish `hP : y.1.1.1.1 = y'.1.1.1.1` using `ppath_ext (y.2.trans y'.2.symm)`. Conclude with `Subtype.ext (Subtype.ext (Subtype.ext (Prod.ext hP hI)))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨I, hI⟩`. Conclude with `⟨⟨⟨⟨(x0.1.1.1, I), hI⟩, hs x0.1 _ rfl x0.2⟩, rfl⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fiber_card (LL : ChainLetters N) (s : Set (Tx r LL)) (hs : ∀ x y : Tx r LL, x.1.1.mu = y.1.1.mu → x ∈ s → y ∈ s)
     (x0 : {x : Tx r LL // x ∈ s}) :
@@ -496,19 +494,19 @@ theorem fiber_card (LL : ChainLetters N) (s : Set (Tx r LL)) (hs : ∀ x y : Tx 
     exact ⟨⟨⟨⟨(x0.1.1.1, I), hI⟩, hs x0.1 _ rfl x0.2⟩, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Unfold `chainSum`. Establish `: Fintype {x : Tx r LL // x ∈ sAll LL J M}` using `Fintype.ofFinite _`. Set `π : {x : Tx r LL // x ∈ sAll LL J M} → (Fin (N + 1) → Fin r → ℤ)` to `fun x => x.1.1.1.mu`. Establish `hsupp : (Function.support fun ka : Fin (N + 1) → Fin r → ℤ => if IsChain LL ka ∧ ChainOK J M ka then wdim (ka (Fin.last N)) else 0) ⊆ ↑(Finset.univ.image π)`. Introduce `ka hka`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hka` using `[Function.mem_support]`. Distinguish the cases in `hC : IsChain LL ka ∧ ChainOK J M ka`. Rewrite `hka` using `[if_pos hC]`. Establish `hcard : (Nat.card {I : ℤ → Finset (Fin r) // IsSt ka I} : ℚ) = wdim (ka (Fin.last N))` using `hSt r N _ LL.deg (pathOf LL ka hC.1)`. Establish `hne : Nat.card {I : ℤ → Finset (Fin r) // IsSt ka I} ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hka` to reduce the goal to its premises. Rewrite using `[← hcard, h0, Nat.cast_zero]`. Take `⟨⟨I, hI⟩⟩` from `(Nat.card_ne_zero.1 hne).1`. Rewrite using `[Finset.coe_image, Finset.coe_univ, Set.image_univ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨⟨(pathOf LL ka hC.1, I), hI⟩, hC.2⟩, rfl⟩`. Rewrite `hka` using `[if_neg hC]`. Conclude with `absurd rfl hka`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp, Nat.card_eq_fintype_card, ← Finset.card_univ, Finset.card_eq_sum_card_image π Finset.univ]`. Use `push_cast`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun ka hka => ?_` and prove the remaining obligations. Take `⟨x0, -, rfl⟩` from `Finset.mem_image.1 hka`. Establish `hC : IsChain LL (π x0) ∧ ChainOK J M (π x0)` using `⟨chain_of_path LL x0.1.1.1, x0.2⟩`. Rewrite using `[if_pos hC]`. Establish `hcard : (Nat.card {I : ℤ → Finset (Fin r) // IsSt (π x0) I} : ℚ) = wdim (π x0 (Fin.last N))` using `hSt r N _ LL.deg x0.1.1.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcard]`. Use `congr 1`. Rewrite using `[← fiber_card LL (sAll LL J M) (fun x y hxy hx k => by`. Use `hx k` as an intermediate fact. Simplify using `only [sK, Set.mem_ofPred_eq] at this ⊢`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hxy]`. Conclude with `this) x0, Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+A detailed English derivation is pending.
 -/
 theorem card_eq_chainSum (hSt : StWeylAt) (LL : ChainLetters N) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ)
     [Finite (Tx r LL)] :
@@ -550,19 +548,17 @@ theorem card_eq_chainSum (hSt : StWeylAt) (LL : ChainLetters N) {q : ℕ} (J : F
     rw [← hxy]; exact this) x0, Nat.card_eq_fintype_card, Fintype.card_subtype]
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ S N r _ LL q J M hJ`. Establish `hp : p.Prime` using `Fact.out`. Establish `hKz : CharZero (KK O)` using `dvr_fraction_field_charZero S hp`. Take `⟨hli, hspan⟩` from `hA2 O N r (⟨LL.vec⟩ : Letters (Fin N)) LL.deg`. Establish `hli' : LinearIndependent O (psiR (r` using `r) O LL) := hli`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrange : Submodule.span O (Set.range (psiR (r` using `r) O LL)) = Pol O r LL.deg := by`. Rewrite using `[← hspan]`. Use `congr 1`. Use extensionality with `G`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x.1.1, x.1.2, x.2, rfl⟩`. Introduce and unpack `⟨P, I, h, rfl⟩`. Conclude with `⟨⟨(P, I), h⟩, rfl⟩`. Establish `hfin : Finite (Tx r LL)` using `tx_finite LL hli' hrange`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨Bd, hBd⟩` from `exists_bound (r := r) (Lt := (⟨LL.vec⟩ : Letters (Fin N))) (B := LL.deg)`. Establish `hC1` using `one_cond D LL hrange hspan (fun th M => (hA3 p O S N r _ LL.deg th M).1) Bd hBd J M hJ`. Establish `hY` using `span_eq_Yjt LL hli' hrange J M hC1`. Establish `hliC : LinearIndependent (KK O) (fun x : {x : Tx r LL // x ∈ sAll LL J M} => psiR (KK O) LL x.1)` using `(psiK_li LL hli').comp _ Subtype.val_injective`. Establish `hrangeC : Set.range (fun x : {x : Tx r LL // x ∈ sAll LL J M} => psiR (KK O) LL x.1) = psiR (KK O) LL '' sAll LL J M`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x.1, x.2, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨x, hx⟩, rfl⟩`. Establish `hfr : Module.finrank (KK O) (Yjt (KK O) (r` using `r) LL J M) = Nat.card {x : Tx r LL // x ∈ sAll LL J M} := by`. Rewrite using `[← hY, ← hrangeC]`. Conclude with `Module.finrank_eq_nat_card_basis (Module.Basis.span hliC)`. Rewrite using `[hfr]`.
-
-Conclude with `card_eq_chainSum hSt LL J M`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dimY_of {D : Formalism.BasicNotions.D7} (hA2 : Formalism.MainNotions.CovariantDegrees.HyperplaneRank D) (hA3 : Formalism.MainNotions.CovariantDegrees.DefiniteRankOne D) (hSt : StWeylAt) :
     DimYAt := by

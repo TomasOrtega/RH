@@ -18,9 +18,9 @@ namespace GlobalTheory.CompanionTheory.Jp
 open GlobalTheory.EmbChart (tensAt compFin_tensAt)
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `(evalV F u (singleFin v a)) ⊗ₜ[F] x = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[evalV_singleFin_ne h, TensorProduct.zero_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compFin_tensAt_ne_place {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     {u v : HeightOneSpectrum (𝓞 F)} (h : u ≠ v) (y : Fv F v ⊗[F] E) :
@@ -33,9 +33,9 @@ theorem compFin_tensAt_ne_place {F E : Type} [Field F] [NumberField F] [Field E]
     rw [evalV_singleFin_ne h, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `(evInf F w (GlobalTheory.EmbChart.atPlace v a)) ⊗ₜ[F] x = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[show evInf F w (GlobalTheory.EmbChart.atPlace v a) = 0 from map_zero (GlobalTheory.AutFunCompare.evW w), TensorProduct.zero_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compInf_tensAt_eq_zero {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (w : InfinitePlace F) (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v ⊗[F] E) :
@@ -48,7 +48,7 @@ theorem compInf_tensAt_eq_zero {F E : Type} [Field F] [NumberField F] [Field E] 
     rw [show evInf F w (GlobalTheory.EmbChart.atPlace v a) = 0 from map_zero (GlobalTheory.AutFunCompare.evW w), TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a e => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_tensAt (D : D7) (v : Pl D) (y : Fv D.host.F v ⊗[D.host.F] D.host.E) :
     cA D (tensAt D.host.E v y) = tensAt D.host.E v (sigR (Fv D.host.F v) D.sp.cm.sig y) := by
@@ -58,7 +58,7 @@ theorem cA_tensAt (D : D7) (v : Pl D) (y : Fv D.host.F v ⊗[D.host.F] D.host.E)
   | tmul a e => rfl
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a e => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem splitProj_sigR (D : D7) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
     (y : Fv D.host.F v ⊗[D.host.F] D.host.E) :
@@ -69,17 +69,17 @@ theorem splitProj_sigR (D : D7) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv D.
   | tmul a e => rfl
 
 /- English proof (translation)
-Establish `h` using `isCMExt_host D`. Use `set M := splitPairMat h τ X Xᵀ with hM`. Establish `p1 : ∀ i j, splitProj τ (M i j) = X i j` using `fun i j => by`. Use `congrArg Prod.fst ((splitAlgEquiv h τ).apply_symm_apply (X i j, Xᵀ i j))` as an intermediate fact. Rewrite `this` using `[splitAlgEquiv_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `p2 : ∀ i j, splitProj (τ.comp D.sp.cm.sig) (M i j) = X j i` using `fun i j => by`. Use `congrArg Prod.snd ((splitAlgEquiv h τ).apply_symm_apply (X i j, Xᵀ i j))` as an intermediate fact. Rewrite `this` using `[splitAlgEquiv_apply]`. Then use the resulting hypothesis. Establish `hs : ∀ i j, sigR (Fv D.host.F v) D.sp.cm.sig (M j i) = M i j` using `fun i j => by`. Apply `(splitAlgEquiv h τ).injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[splitAlgEquiv_apply, splitAlgEquiv_apply, splitProj_sigR, splitProj_comp_sigR h, p1, p2, p1, p2]`. Establish `hc : ∀ i j, cv D v (tensAt D.host.E v (M i j)) = M i j` using `fun i j => compFin_tensAt v _`. Use `⟨⟨Matrix.of fun i j => tensAt D.host.E v (M i j), ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `adj _ = _`. Use extensionality with `i j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `cA D (tensAt D.host.E v (M j i)) = tensAt D.host.E v (M i j)`. Rewrite using `[cA_tensAt, hs]`. Introduce `w i j`. Conclude with `compInf_tensAt_eq_zero w v _`. Introduce `v' hv i j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `compFin_tensAt_ne_place hv _`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `splitProj τ (cv D v (tensAt D.host.E v (M i j))) = X i j`. Rewrite using `[hc, p1]`. Introduce `hX i j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Express the relevant statement in the definitionally equal form `cv D v (tensAt D.host.E v (M i j)) ∈ _`. Rewrite using `[hc, mem_intLoc_iff_split h τ, p1, p2]`. Conclude with `⟨hX i j, hX j i⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_herm_at (D : D7) (n : ℕ) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
     (X : Matrix (Fin n) (Fin n) (Fv D.host.F v)) :

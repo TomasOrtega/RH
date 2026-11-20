@@ -13,37 +13,37 @@ namespace GroundTheory.Heights₂.Heights
 universe u v
 
 /- English proof (translation)
-The claim follows from `TorsionEquidistribution.proof`.
+A detailed English derivation is pending.
 -/
 theorem TorsionEquidistribution.full : TorsionEquidistribution.Statement :=
   TorsionEquidistribution.proof
 
 /- English proof (translation)
-The claim follows from `ThirdDifferenceConstant.proof`.
+A detailed English derivation is pending.
 -/
 theorem ThirdDifferenceConstant.full : ThirdDifferenceConstant.Statement.{u} :=
   ThirdDifferenceConstant.proof
 
 /- English proof (translation)
-The claim follows from `BoundedHomogeneousZero.proof`.
+A detailed English derivation is pending.
 -/
 theorem BoundedHomogeneousZero.full : BoundedHomogeneousZero.Statement.{u} :=
   BoundedHomogeneousZero.proof
 
 /- English proof (translation)
-The claim follows from `SupOfOrthonormalSum.proof`.
+A detailed English derivation is pending.
 -/
 theorem SupOfOrthonormalSum.full : SupOfOrthonormalSum.Statement.{u, v} :=
   SupOfOrthonormalSum.proof
 
 /- English proof (translation)
-The claim follows from `SlopeParameterChoice.proof`.
+A detailed English derivation is pending.
 -/
 theorem SlopeParameterChoice.full : SlopeParameterChoice.Statement :=
   SlopeParameterChoice.proof
 
 /- English proof (translation)
-The claim follows from `MonomialNormLowerBound.proof`.
+A detailed English derivation is pending.
 -/
 theorem MonomialNormLowerBound.full : MonomialNormLowerBound.Statement :=
   MonomialNormLowerBound.proof

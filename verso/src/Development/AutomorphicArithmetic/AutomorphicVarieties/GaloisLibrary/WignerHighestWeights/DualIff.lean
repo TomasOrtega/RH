@@ -8,7 +8,7 @@ open scoped TensorProduct
 namespace UpperTheory.V.AlgRepEndIrreducible.QuantumDeterminantDual
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.qdet, Formalism.REAL.qminor, Formalism.REAL.Tm, map_sum, map_mul, map_intCast, map_list_prod, List.map_ofFn, Function.comp_def, map_add, apply_ite f, AlgHom.commutes, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem map_qdet {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (f : A →ₐ[ℂ] B) {n : ℕ}
     (X : Fin n → Fin n → A) (u : ℂ) : f (Formalism.REAL.qdet X u) = Formalism.REAL.qdet (fun i j => f (X i j)) u := by
@@ -16,9 +16,9 @@ private theorem map_qdet {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra
     Function.comp_def, map_add, apply_ite f, AlgHom.commutes, map_zero]
 
 /- English proof (translation)
-Establish `h1` using `map_qdet (Matrix.transposeAlgEquiv (Fin d) ℂ ℂ).toAlgHom (fun i j => -(X i j)ᵀ) (u + ((n : ℂ) - 1) / 2)`. Establish `h2` using `(glNegOp _ n X h).2 (u + ((n : ℂ) - 1) / 2)`. Establish `e : (fun i j => (Matrix.transposeAlgEquiv (Fin d) ℂ ℂ).toAlgHom (-(X i j)ᵀ)) = fun i j => -MulOpposite.op (X i j)`. Use function extensionality and compare the values at `i j`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `e' : (n : ℂ) - 1 - (u + ((n : ℂ) - 1) / 2) = -u + ((n : ℂ) - 1) / 2` using `by ring`. Rewrite `h1` using `[e, h2, e']`. Establish `h3 : (Formalism.REAL.qdet (fun i j => -(X i j)ᵀ) (u + ((n : ℂ) - 1) / 2))ᵀ = (-1 : ℂ) ^ n • Formalism.REAL.qdet X (-u + ((n : ℂ) - 1) / 2)` using `MulOpposite.op_injective h1`. Rewrite using `[← Matrix.transpose_smul, ← h3, Matrix.transpose_transpose]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem qdet_negT {d n : ℕ} (X : Fin n → Fin n → Matrix (Fin d) (Fin d) ℂ) (h : Formalism.REAL.GlRel X) (u : ℂ) :
     Formalism.REAL.qdet (fun i j => -(X i j)ᵀ) (u + ((n : ℂ) - 1) / 2) =
@@ -36,7 +36,7 @@ private theorem qdet_negT {d n : ℕ} (X : Fin n → Fin n → Matrix (Fin d) (F
   rw [← Matrix.transpose_smul, ← h3, Matrix.transpose_transpose]
 
 /- English proof (translation)
-Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons x s ih`. Simplify using `only [Multiset.map_cons, Multiset.prod_cons, Multiset.card_cons, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem prod_neg (m : Multiset ℂ) (u : ℂ) :
     ((m.map Neg.neg).map (-u + ·)).prod = (-1) ^ Multiset.card m * (m.map (u + ·)).prod := by
@@ -49,13 +49,13 @@ private theorem prod_neg (m : Multiset ℂ) (u : ℂ) :
 end UpperTheory.V.AlgRepEndIrreducible.QuantumDeterminantDual
 
 /- English proof (translation)
-Introduce `E _ _ _ a Ξ τ m`. Establish `hR : Formalism.REAL.GlRel (eL Ξ.dmat τ)` using `(eLRel E a _ Ξ.dmat (GlobalTheory.AlgInfChar.dmat_bracket Ξ)).1 τ`. Establish `hd : GlobalTheory.WignerGL.dualE Ξ τ = fun i j => -(eL Ξ.dmat τ i j)ᵀ`. Use function extensionality and compare the values at `i j`. Conclude with `dualE_eq Ξ τ i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hs : (-1 : ℂ) ^ a * (-1 : ℂ) ^ a = 1` using `by rw [← mul_pow]; simp`. Express the relevant statement in the definitionally equal form `(Multiset.card (m.map Neg.neg) = a ∧ ∀ u : ℂ, Formalism.REAL.qdet (eL Ξ.dmat τ) (u + ((a : ℂ) - 1) / 2) = ((m.map Neg.neg).map (u + ·)).prod • (1 : Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ)) ↔ _`. Unfold `GlobalTheory.WignerGL.HasDualInfChar`. Rewrite using `[Multiset.card_map, hd]`. Use `and_congr_right fun hm => ⟨fun h u => ?_, fun h u => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QuantumDeterminantDual.qdet_negT _ hR, h, QuantumDeterminantDual.prod_neg, hm, Matrix.transpose_smul, Matrix.transpose_one, smul_smul, ← mul_assoc, hs, one_mul]`. Establish `h1` using `congrArg (fun M => (-1 : ℂ) ^ a • Mᵀ) (h (-u))`. Establish `h2` using `QuantumDeterminantDual.prod_neg m (-u)`. Simplify using `only [QuantumDeterminantDual.qdet_negT _ hR, Matrix.transpose_smul, Matrix.transpose_transpose, Matrix.transpose_one, smul_smul, hs, one_smul, neg_neg] at h1`. Rewrite `h2` using `[neg_neg, hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgRepEndIrreducible.dualIff :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (Ξ : AlgRep E a) (τ : E →+* ℂ) (m : Multiset ℂ),

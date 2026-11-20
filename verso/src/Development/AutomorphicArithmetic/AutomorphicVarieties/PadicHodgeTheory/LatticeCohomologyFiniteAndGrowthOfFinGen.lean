@@ -5,11 +5,11 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.Bas
 
 open ReciprocityTheory.Coh in
 /- English proof (translation)
-Set `L : TRep ℤ_[l] G` to `{ V := Fin n → ℤ_[l], rho := ρ, cont := h }`. Use `⟨(length ℤ_[l] (Submodule.torsion ℤ_[l] (L.H k))).toNat + (length ℤ_[l] (Submodule.torsion ℤ_[l] (L.H (k + 1)))).toNat, fun m => ?_⟩` and prove the remaining obligations. Set `C : TRep ℤ_[l] G` to `{ V := _, rho := redRep ρ m, cont := contAction_redRep h m }`. Establish `hc : Continuous (((l : ℤ_[l]) ^ m) • (LinearMap.id : (Fin n → ℤ_[l]) →ₗ[ℤ_[l]] (Fin n → ℤ_[l])))` using `continuous_const_smul ((l : ℤ_[l]) ^ m)`. Set `i : Pair L L` to `Pair.ofMap (((l : ℤ_[l]) ^ m) • (LinearMap.id : (Fin n → ℤ_[l]) →ₗ[ℤ_[l]] (Fin n → ℤ_[l]))) hc fun g x => (map_smul (ρ g) ((l : ℤ_[l]) ^ m) x).symm`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `p : Pair L C` to `Pair.ofMap (lSub l (Fin n → ℤ_[l]) m).mkQ (continuous_mkQ _) fun _ _ => rfl`. Establish `hl : (l : ℤ_[l]) ^ m ≠ 0` using `pow_ne_zero _ PadicInt.irreducible_p.ne_zero`. Establish `hA : admitted i p`. Use `⟨rfl, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(hc.isClosedEmbedding ?_).isEmbedding` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `smul_right_injective (Fin n → ℤ_[l]) hl`. Conclude with `LinearMap.exact_map_mkQ_range _`. Conclude with `⟨Function.surjInv (lSub l (Fin n → ℤ_[l]) m).mkQ_surjective, continuous_of_discreteTopology (α := (Fin n → ℤ_[l]) ⧸ lSub l (Fin n → ℤ_[l]) m), Function.surjInv_eq _⟩`. Establish `hR` using `(rankLen_holds ℤ_[l] (l : ℤ_[l]) PadicInt.irreducible_p L.coch C.coch i.hom p.hom m 2 (fun _ _ => rfl) (admissibility_holds _ _ _ _ _ i p hA) hF).2.2 k`. Conclude with `⟨hR.1.trans (add_assoc _ _ _).le, hR.2⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem latGrow_bound {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {n : ℕ}
     (ρ : Representation ℤ_[l] G (Fin n → ℤ_[l])) (h : ContAction ρ)
@@ -42,7 +42,7 @@ private theorem latGrow_bound {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [Top
   exact ⟨hR.1.trans (add_assoc _ _ _).le, hR.2⟩
 
 /- English proof (translation)
-Take `⟨k, hk, hc⟩` from `UpperTheory.V.Kum.lenOfCard l N`. Rewrite `h` using `[e.length_eq, hk, ENat.toNat_coe]`. Rewrite using `[hc]`. Establish `hp : 0 < l` using `(Fact.out : l.Prime).pos`. Conclude with `⟨Nat.pow_le_pow_right hp h.2, Nat.pow_le_pow_right hp h.1⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem latGrow_card {l : ℕ} [Fact l.Prime] {M N : Type} [AddCommGroup M] [Module ℤ_[l] M]
     [AddCommGroup N] [Module ℤ_[l] N] [Finite N] (e : M ≃ₗ[ℤ_[l]] N) {a b : ℕ}
@@ -56,15 +56,13 @@ private theorem latGrow_card {l : ℕ} [Fact l.Prime] {M N : Type} [AddCommGroup
 
 open ReciprocityTheory.Coh in
 /- English proof (translation)
-Introduce `l _ G _ _ _ n ρ h hF hfin`. Take `⟨-, ⟨e₀, -⟩, ⟨e₁, -⟩, e₂, -⟩` from `low_holds ℤ_[l] G ({ V := Fin n → ℤ_[l], rho := ρ, cont := h } : TRep ℤ_[l] G)`. Establish `hq` using `fun m => low_holds ℤ_[l] G ({ V := _, rho := redRep ρ m, cont := contAction_redRep h m } : TRep ℤ_[l] G)`. Use `haveI := hF.1 1`. Use `haveI := hF.1 2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨Module.Finite.equiv e₁, Module.Finite.equiv e₂, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `latGrow_bound ρ h hF 0`. Use `⟨C, fun m _ => ?_⟩` and prove the remaining obligations. Take `⟨-, ⟨q, -⟩, -⟩` from `hq m`. Rewrite `hC` using `[e₀.finrank_eq]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Finite (H0 (redRep ρ m)) := inferInstance`. Conclude with `latGrow_card (N := H0 (redRep ρ m)) q (hC m)`. Take `⟨C, hC⟩` from `latGrow_bound ρ h hF 1`. Use `⟨C, fun m _ => ?_⟩` and prove the remaining obligations. Take `⟨-, -, ⟨q, -⟩, -⟩` from `hq m`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hC` using `[e₁.finrank_eq]`. Use `haveI := (hfin m).1`. Conclude with `latGrow_card (N := H1 (redRep ρ m)) q (hC m)`. Take `⟨C, hC⟩` from `latGrow_bound ρ h hF 2`. Use `⟨C, fun m _ => ?_⟩` and prove the remaining obligations.
-
-Take `⟨-, -, -, q, -⟩` from `hq m`. Rewrite `hC` using `[e₂.finrank_eq]`. Use `haveI := (hfin m).2`. Conclude with `latGrow_card (N := H2 (redRep ρ m)) q (hC m)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.lattice_cohomology_finite_and_growth_of_finGen :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {n : ℕ} (ρ : Representation ℤ_[l] G (Fin n → ℤ_[l])) (h : ContAction ρ), ReciprocityTheory.Coh.Cx.FinGen (ReciprocityTheory.Coh.TRep.coch ({ V := Fin n → ℤ_[l], rho := ρ, cont := h } : ReciprocityTheory.Coh.TRep ℤ_[l] G)) 2 → (∀ m, Finite (H1 (redRep ρ m)) ∧ Finite (H2 (redRep ρ m))) → Module.Finite ℤ_[l] (H1 ρ) ∧ Module.Finite ℤ_[l] (H2 ρ) ∧ Grows l (fun m => Nat.card ↥(H0 (redRep ρ m))) (finrank ℤ_[l] ↥(H0 ρ)) ∧ Grows l (fun m => Nat.card (H1 (redRep ρ m))) (finrank ℤ_[l] (H1 ρ)) ∧ Grows l (fun m => Nat.card (H2 (redRep ρ m))) (finrank ℤ_[l] (H2 ρ)) := by

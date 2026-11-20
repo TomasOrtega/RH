@@ -20,16 +20,16 @@ def trunc (N : ℕ) : MvPolynomial σ k →ₗ[k] MvPolynomial σ k :=
   ∑ j ∈ range (N + 1), homogeneousComponent j
 
 /- English proof (translation)
-Rewrite using `[trunc, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trunc_apply (N : ℕ) (x : MvPolynomial σ k) :
     trunc N x = ∑ j ∈ range (N + 1), homogeneousComponent j x := by
   rw [trunc, LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[trunc_apply]`. Use `(totalDegree_finset_sum _ _).trans (Finset.sup_le fun j hj => ?_)` and prove the remaining obligations. Distinguish the cases in `h0 : homogeneousComponent j x = 0`. Rewrite using `[h0, totalDegree_zero]`. Conclude with `Nat.zero_le _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(homogeneousComponent_isHomogeneous j x).totalDegree h0]`. Conclude with `Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)`.
+A detailed English derivation is pending.
 -/
 theorem trunc_deg (N : ℕ) (x : MvPolynomial σ k) : (trunc N x).totalDegree ≤ N := by
   rw [trunc_apply]
@@ -41,9 +41,9 @@ theorem trunc_deg (N : ℕ) (x : MvPolynomial σ k) : (trunc N x).totalDegree �
     exact Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)
 
 /- English proof (translation)
-Rewrite using `[trunc_apply]`. Use `conv_rhs => rw [← sum_homogeneousComponent x]`. Use `symm`. Use `Finset.sum_subset (Finset.range_mono (Nat.succ_le_succ hx)) ?_` and prove the remaining obligations. Introduce `j hj hj'`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `homogeneousComponent_eq_zero` to reduce the goal to its premises. Simplify using `only [Finset.mem_range] at hj hj'`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem trunc_id (N : ℕ) (x : MvPolynomial σ k) (hx : x.totalDegree ≤ N) : trunc N x = x := by
   rw [trunc_apply]
@@ -56,7 +56,7 @@ theorem trunc_id (N : ℕ) (x : MvPolynomial σ k) (hx : x.totalDegree ≤ N) : 
   omega
 
 /- English proof (translation)
-Unfold `secondOrder`. Simplify using `only [map_add, add_mul, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem so_coef_add (c1 c2 : σ → σ → k) (P : MvPolynomial σ k) :
     secondOrder k (fun p q => c1 p q + c2 p q) P = secondOrder k c1 P + secondOrder k c2 P := by
@@ -64,7 +64,7 @@ theorem so_coef_add (c1 c2 : σ → σ → k) (P : MvPolynomial σ k) :
   simp only [map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-The claim follows from `| 0, _ => rfl | i + 1, y => by rw [Function.iterate_succ_apply, so_smul, so_iter_smul c r i, ← Function.iterate_succ_apply]`.
+A detailed English derivation is pending.
 -/
 theorem so_iter_smul (c : σ → σ → k) (r : k) :
     ∀ (i : ℕ) (y : MvPolynomial σ k), (secondOrder k c)^[i] (r • y) = r • (secondOrder k c)^[i] y
@@ -87,11 +87,11 @@ theorem opA_apply (c : σ → σ → k) (t : k) (N : ℕ) (x : MvPolynomial σ k
     opA c t N x = t • secondOrder k c (trunc N x) := rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [MvPolynomial.as_sum y]`. Rewrite using `[map_sum]`. Use `(totalDegree_finset_sum _ _).trans (Finset.sup_le fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[pderiv_monomial]`. Use `le_trans ?_ (le_totalDegree hs)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sup_le fun u hu => ?_` and prove the remaining obligations. Establish `hu'` using `MvPolynomial.support_monomial_subset hu`. Rewrite `hu'` using `[Finset.mem_singleton]`. Substitute `hu'` using the available equality. Establish `hts : s - Finsupp.single i 1 ≤ s` using `tsub_le_self`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem totalDegree_pderiv_le' (i : σ) (y : MvPolynomial σ k) :
     (pderiv i y).totalDegree ≤ y.totalDegree := by
@@ -114,9 +114,9 @@ private theorem totalDegree_pderiv_le' (i : σ) (y : MvPolynomial σ k) :
     _ = s.sum (fun _ e => e) := by rw [add_tsub_cancel_of_le hts]
 
 /- English proof (translation)
-Unfold `secondOrder`. Use `(totalDegree_finset_sum _ _).trans (Finset.sup_le fun l _ => ?_)` and prove the remaining obligations. Use `(totalDegree_finset_sum _ _).trans (Finset.sup_le fun l' _ => ?_)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((totalDegree_pderiv_le' _ _).trans (totalDegree_pderiv_le' _ _)).trans (trunc_deg N x)`.
+A detailed English derivation is pending.
 -/
 theorem deg_so_trunc (c : σ → σ → k) (N : ℕ) (x : MvPolynomial σ k) :
     (secondOrder k c (trunc N x)).totalDegree ≤ N := by
@@ -128,9 +128,9 @@ theorem deg_so_trunc (c : σ → σ → k) (N : ℕ) (x : MvPolynomial σ k) :
   exact ((totalDegree_pderiv_le' _ _).trans (totalDegree_pderiv_le' _ _)).trans (trunc_deg N x)
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro x hx`. Conclude with `hx`. Consider the case `succ i ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[Function.iterate_succ_apply']`. Establish `h` using `deg_so_trunc c M ((secondOrder k c)^[i] x)`. Rewrite `h` using `[trunc_id M _ (ih x hx)]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem totalDegree_iterate_secondOrder_le (c : σ → σ → k) (M : ℕ) :
     ∀ (i : ℕ) (x : MvPolynomial σ k), x.totalDegree ≤ M →
@@ -145,7 +145,7 @@ private theorem totalDegree_iterate_secondOrder_le (c : σ → σ → k) (M : �
     rwa [trunc_id M _ (ih x hx)] at h
 
 /- English proof (translation)
-The claim follows from `| 0, x, _ => by simp | i + 1, x, hx => by rw [pow_succ', Module.End.mul_apply, opA_pow_apply c t N i x hx, opA_apply, trunc_id] · rw [so_smul, smul_smul, ← pow_succ', ← Function.iterate_succ_apply' (f := secondOrder k c)] · exact (totalDegree_smul_le _ _).trans ((so_iter_deg_le c …`.
+A detailed English derivation is pending.
 -/
 theorem opA_pow_apply (c : σ → σ → k) (t : k) (N : ℕ) :
     ∀ (i : ℕ) (x : MvPolynomial σ k), x.totalDegree ≤ N →
@@ -157,7 +157,7 @@ theorem opA_pow_apply (c : σ → σ → k) (t : k) (N : ℕ) :
     · exact (totalDegree_smul_le _ _).trans ((so_iter_deg_le c i x).trans hx)
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `hy : (opA c t N x).totalDegree ≤ N`. Rewrite using `[opA_apply]`. Conclude with `(totalDegree_smul_le _ _).trans (deg_so_trunc c N x)`. Rewrite using `[pow_succ, Module.End.mul_apply, opA_pow_apply c t N N _ hy, opA_apply, so_iter_smul, ← Function.iterate_succ_apply, so_iter_eq_zero c (N + 1) (trunc N x) (Nat.lt_succ_of_le (trunc_deg N x)), smul_zero, smul_zero, LinearMap.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opA_pow_eq_zero (c : σ → σ → k) (t : k) (N : ℕ) : (opA c t N) ^ (N + 1) = 0 := by
   refine LinearMap.ext fun x => ?_
@@ -170,14 +170,14 @@ theorem opA_pow_eq_zero (c : σ → σ → k) (t : k) (N : ℕ) : (opA c t N) ^ 
     smul_zero, smul_zero, LinearMap.zero_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨N + 1, opA_pow_eq_zero c t N⟩`.
+Supply the required witnesses or components.
 -/
 theorem opA_nilp (c : σ → σ → k) (t : k) (N : ℕ) : IsNilpotent (opA c t N) := ⟨N + 1, opA_pow_eq_zero c t N⟩
 
 /- English proof (translation)
-Use `show opA c1 t N * opA c2 t N = opA c2 t N * opA c1 t N`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `d1 : (opA c1 t N x).totalDegree ≤ N`. Rewrite using `[opA_apply]`. Conclude with `(totalDegree_smul_le _ _).trans (deg_so_trunc c1 N x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `d2 : (opA c2 t N x).totalDegree ≤ N`. Rewrite using `[opA_apply]`. Conclude with `(totalDegree_smul_le _ _).trans (deg_so_trunc c2 N x)`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, opA_apply c1 t N (opA c2 t N x), trunc_id N _ d2, opA_apply c2 t N (opA c1 t N x), trunc_id N _ d1, opA_apply, opA_apply, so_smul, so_smul, so_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opA_comm (c1 c2 : σ → σ → k) (t : k) (N : ℕ) : Commute (opA c1 t N) (opA c2 t N) := by
   show opA c1 t N * opA c2 t N = opA c2 t N * opA c1 t N
@@ -193,7 +193,7 @@ theorem opA_comm (c1 c2 : σ → σ → k) (t : k) (N : ℕ) : Commute (opA c1 t
     so_comm]
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, opA_apply, so_coef_add, smul_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem opA_add (c1 c2 : σ → σ → k) (t : k) (N : ℕ) :
     opA (fun p q => c1 p q + c2 p q) t N = opA c1 t N + opA c2 t N := by
@@ -201,7 +201,7 @@ theorem opA_add (c1 c2 : σ → σ → k) (t : k) (N : ℕ) :
   simp only [LinearMap.add_apply, opA_apply, so_coef_add, smul_add]
 
 /- English proof (translation)
-Rewrite using `[IsNilpotent.exp_eq_sum (opA_pow_eq_zero c t N), LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, opA_pow_apply c t N i x hx, mul_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_opA_apply (c : σ → σ → k) (t : k) (N : ℕ) (x : MvPolynomial σ k) (hx : x.totalDegree ≤ N) :
     IsNilpotent.exp (opA c t N) x = ∑ i ∈ range (N + 1),
@@ -222,7 +222,7 @@ def E1 (c : ι → ι → k) (t : k) (N : ℕ) (y : MvPolynomial ι k) : MvPolyn
   ∑ i ∈ range (N + 1), (algebraMap ℚ k ((i.factorial : ℚ)⁻¹) * t ^ i) • (secondOrder k c)^[i] y
 
 /- English proof (translation)
-Unfold `E1`. Use `(totalDegree_finset_sum _ _).trans (Finset.sup_le fun i _ => ?_)` and prove the remaining obligations. Conclude with `(totalDegree_smul_le _ _).trans (totalDegree_iterate_secondOrder_le c _ i y le_rfl)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem totalDegree_second_exp_le (c : ι → ι → k) (t : k) (N : ℕ) (y : MvPolynomial ι k) :
     (E1 c t N y).totalDegree ≤ y.totalDegree := by
@@ -231,7 +231,7 @@ theorem totalDegree_second_exp_le (c : ι → ι → k) (t : k) (N : ℕ) (y : M
   exact (totalDegree_smul_le _ _).trans (totalDegree_iterate_secondOrder_le c _ i y le_rfl)
 
 /- English proof (translation)
-Unfold `prodQ`. Use `(totalDegree_finset_prod _ _).trans (Finset.sum_le_sum fun b _ => ?_)` and prove the remaining obligations. Unfold `colE`. Conclude with `totalDegree_rename_le _ _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem prodQ_deg (Q : Fin n → MvPolynomial ι k) : (prodQ Q).totalDegree ≤ ∑ b, (Q b).totalDegree := by
   unfold prodQ
@@ -240,7 +240,7 @@ theorem prodQ_deg (Q : Fin n → MvPolynomial ι k) : (prodQ Q).totalDegree ≤ 
   exact totalDegree_rename_le _ _
 
 /- English proof (translation)
-Unfold `prodQ`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ b0)]`. Use `congr 1`. Simplify using `[Function.update_apply]`. Conclude with `Finset.prod_congr rfl fun b hb => by simp [Function.update_apply, Finset.ne_of_mem_erase hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prodQ_update (Q : Fin n → MvPolynomial ι k) (b0 : Fin n) (y : MvPolynomial ι k) :
     prodQ (Function.update Q b0 y) = colE b0 y * ∏ b ∈ univ.erase b0, colE b (Q b) := by
@@ -251,7 +251,7 @@ theorem prodQ_update (Q : Fin n → MvPolynomial ι k) (b0 : Fin n) (y : MvPolyn
   · exact Finset.prod_congr rfl fun b hb => by simp [Function.update_apply, Finset.ne_of_mem_erase hb]
 
 /- English proof (translation)
-Unfold `prodQ`. Conclude with `(Finset.mul_prod_erase _ _ (Finset.mem_univ b0)).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem prodQ_eq (Q : Fin n → MvPolynomial ι k) (b0 : Fin n) :
     prodQ Q = colE b0 (Q b0) * ∏ b ∈ univ.erase b0, colE b (Q b) := by
@@ -259,9 +259,9 @@ theorem prodQ_eq (Q : Fin n → MvPolynomial ι k) (b0 : Fin n) :
   exact (Finset.mul_prod_erase _ _ (Finset.mem_univ b0)).symm
 
 /- English proof (translation)
-Rewrite using `[exp_opA_apply _ t N _ hdeg, prodQ_update, prodQ_eq Q b0]`. Establish `hR : ∀ l : ι, pderiv (l, b0) (∏ b ∈ univ.erase b0, colE b (Q b)) = 0` using `fun l => pderiv_prod_colE b0 _ (Finset.notMem_erase b0 _) Q l`. Unfold `E1`. Rewrite using `[map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[so_colB_iter c b0 _ hR i, map_smul, smul_mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_col (c : ι → ι → k) (t : k) (N : ℕ) (Q : Fin n → MvPolynomial ι k) (b0 : Fin n)
     (hdeg : (prodQ Q).totalDegree ≤ N) :
@@ -278,17 +278,15 @@ def cS (c : ι → ι → k) (S : Finset (Fin n)) : ι × Fin n → ι × Fin n 
   fun p q => ∑ b ∈ S, cB c b p q
 
 /- English proof (translation)
-Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `Q _`. Establish `h0 : opA (cS c (∅ : Finset (Fin n))) t N = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[opA_apply, so_def]`. Simplify using `[cS]`. Rewrite using `[h0, IsNilpotent.exp_zero]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `insert a S ha ih`. Introduce `Q hQ`. Establish `hcs : cS c (insert a S) = fun p q => cB c a p q + cS c S p q`. Use function extensionality and compare the values at `p q`. Simplify using `only [cS, Finset.sum_insert ha]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hdeg : (prodQ fun b => if b ∈ S then E1 c t N (Q b) else Q b).totalDegree ≤ N`. Use `(prodQ_deg _).trans (le_trans (Finset.sum_le_sum fun b _ => ?_) hD)` and prove the remaining obligations. Use `split_ifs`. Conclude with `(totalDegree_second_exp_le c t N (Q b)).trans (hQ b)`. Conclude with `hQ b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hcs, opA_add, IsNilpotent.exp_add_of_commute (opA_comm _ _ t N) (opA_nilp _ t N) (opA_nilp _ t N), Module.End.mul_apply, ih Q hQ, exp_col c t N _ a hdeg]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality.
-
-Simplify using `[ha]`. Simplify using `[hb, Finset.mem_insert]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exp_cols (c : ι → ι → k) (t : k) (N : ℕ) (D : Fin n → ℕ) (hD : ∑ b, D b ≤ N) :
     ∀ (S : Finset (Fin n)) (Q : Fin n → MvPolynomial ι k), (∀ b, (Q b).totalDegree ≤ D b) →
@@ -324,9 +322,9 @@ theorem exp_cols (c : ι → ι → k) (t : k) (N : ℕ) (D : Fin n → ℕ) (hD
     · simp [hb, Finset.mem_insert]
 
 /- English proof (translation)
-Unfold `cS cB`. Use function extensionality and compare the values at `p q`. Distinguish the cases in `h : p.2 = q.2`. Rewrite using `[if_pos h]`. Simplify using `only [← h, and_self, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h]`. Use `Finset.sum_eq_zero fun b _ => if_neg ?_` and prove the remaining obligations. Introduce and unpack `⟨h1, h2⟩`. Conclude with `h (h1.trans h2.symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem cS_univ (c : ι → ι → k) :
     cS c (univ : Finset (Fin n)) = fun p q => if p.2 = q.2 then c p.1 q.1 else 0 := by

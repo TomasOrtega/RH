@@ -11,14 +11,14 @@ section Conj
 variable {G : Type*} [Group G]
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, map_inv, mul_right_comm, mul_inv_cancel, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_conj_apply {M : Type*} [CommGroup M] (f : G →* M) (σ x : G) :
     f (σ * x * σ⁻¹) = f x := by
   rw [map_mul, map_mul, map_inv, mul_right_comm, mul_inv_cancel, one_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify `hy` using `[mul_assoc]`. Introduce `h`. Conclude with `⟨σ⁻¹ * x * σ, h, by simp [mul_assoc]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_map_conj {H : Subgroup G} {σ x : G} :
     x ∈ H.map (MulAut.conj σ).toMonoidHom ↔ σ⁻¹ * x * σ ∈ H := by
@@ -29,7 +29,7 @@ theorem mem_map_conj {H : Subgroup G} {σ x : G} :
     exact ⟨σ⁻¹ * x * σ, h, by simp [mul_assoc]⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `mem_map_conj`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem coe_map_conj (H : Subgroup G) (σ : G) :
     (H.map (MulAut.conj σ).toMonoidHom : Set G) = (fun x => σ⁻¹ * x * σ) ⁻¹' (H : Set G) := by
@@ -37,7 +37,7 @@ theorem coe_map_conj (H : Subgroup G) (σ : G) :
   exact mem_map_conj
 
 /- English proof (translation)
-Establish `h : d.comp (MulAut.conj σ).toMonoidHom = d` using `MonoidHom.ext fun x => map_conj_apply d σ x`. Rewrite using `[inertiaDegree, inertiaDegree, Subgroup.map_map, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inertiaDegree_map_conj (d : G →* Multiplicative ℤ̂) (K : Subgroup G) (σ : G) :
     inertiaDegree d (K.map (MulAut.conj σ).toMonoidHom) = inertiaDegree d K := by
@@ -47,7 +47,7 @@ theorem inertiaDegree_map_conj (d : G →* Multiplicative ℤ̂) (K : Subgroup G
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Rewrite using `[coe_map_conj]`. Conclude with `hH.preimage ((continuous_const.mul continuous_id).mul continuous_const)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_map_conj {H : Subgroup G} (hH : IsClosed (H : Set G)) (σ : G) :
     IsClosed (H.map (MulAut.conj σ).toMonoidHom : Set G) := by
@@ -55,13 +55,13 @@ theorem isClosed_map_conj {H : Subgroup G} (hH : IsClosed (H : Set G)) (σ : G) 
   exact hH.preimage ((continuous_const.mul continuous_id).mul continuous_const)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Subgroup.map_le_iff_le_comap]`. Use `frobeniusClosure_le ?_ ?_ ?_` and prove the remaining obligations. Conclude with `isClosed_frobeniusClosure.preimage ((continuous_const.mul continuous_id).mul continuous_const)`. Conclude with `mem_frobeniusClosure_self`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Take `⟨hyL, hyk⟩` from `Subgroup.mem_inf.1 hy`. Rewrite using `[Subgroup.mem_comap]`. Use `le_frobeniusClosure (Subgroup.mem_inf.2 ⟨⟨y, hyL, rfl⟩, ?_⟩)` and prove the remaining obligations. Rewrite `hyk`, the goal using `[MonoidHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Rewrite using `[map_conj_apply, hyk]`. Use `frobeniusClosure_le (isClosed_map_conj isClosed_frobeniusClosure ρ) ⟨x, mem_frobeniusClosure_self, rfl⟩ ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨hyL, hyk⟩` from `Subgroup.mem_inf.1 hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hyL`, the goal using `[mem_map_conj]`. Use `le_frobeniusClosure (Subgroup.mem_inf.2 ⟨hyL, ?_⟩)` and prove the remaining obligations. Rewrite `hyk`, the goal using `[MonoidHom.mem_ker]`. Establish `h : ρ⁻¹ * y * ρ = ρ⁻¹ * y * ρ⁻¹⁻¹` using `by rw [inv_inv]`. Rewrite using `[h, map_conj_apply, hyk]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_conj_frobeniusClosure (d : G →* Multiplicative ℤ̂) (L : Subgroup G) (x ρ : G) :
     (frobeniusClosure d L x).map (MulAut.conj ρ).toMonoidHom =
@@ -90,7 +90,7 @@ theorem map_conj_frobeniusClosure (d : G →* Multiplicative ℤ̂) (L : Subgrou
     rw [h, map_conj_apply, hyk]
 
 /- English proof (translation)
-The claim follows from `frobeniusClosure_le isClosed_frobeniusClosure mem_frobeniusClosure_self ((inf_le_inf_right _ h).trans le_frobeniusClosure)`.
+A detailed English derivation is pending.
 -/
 theorem frobeniusClosure_mono {d : G →* Multiplicative ℤ̂} {L L' : Subgroup G} (h : L' ≤ L) (x : G) :
     frobeniusClosure d L' x ≤ frobeniusClosure d L x :=
@@ -112,14 +112,14 @@ theorem coe_conjOpen (σ : G) (K : OpenSubgroup G) :
   rfl
 
 /- English proof (translation)
-The claim follows from `mem_map_conj`.
+A detailed English derivation is pending.
 -/
 theorem mem_conjOpen {σ x : G} {K : OpenSubgroup G} :
     x ∈ ((conjOpen σ K : OpenSubgroup G) : Subgroup G) ↔ σ⁻¹ * x * σ ∈ (K : Subgroup G) :=
   mem_map_conj
 
 /- English proof (translation)
-Introduce `_ hx` and use `Subgroup.map_mono (f := (MulAut.conj σ).toMonoidHom) h hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conjOpen_mono (σ : G) {K L : OpenSubgroup G} (h : L ≤ K) : conjOpen σ L ≤ conjOpen σ K :=
   fun _ hx => Subgroup.map_mono (f := (MulAut.conj σ).toMonoidHom) h hx
@@ -206,7 +206,7 @@ def conjFixed (σ : G) (K : OpenSubgroup G) :
   map_mul' a b := Subtype.ext (smul_mul' σ (a : A) b)
 
 /- English proof (translation)
-Establish `: (((L : Subgroup G).map (MulAut.conj σ).toMonoidHom).subgroupOf ((K : Subgroup G).map (MulAut.conj σ).toMonoidHom)).FiniteIndex` using `(inferInstance : (((conjOpen σ L : OpenSubgroup G) : Subgroup G).subgroupOf (conjOpen σ K)).FiniteIndex)`. Conclude with `smul_norm σ a`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smul_norm_conjOpen (σ : G) (K L : OpenSubgroup G) (a : fixedModule A (L : Subgroup G)) :
     σ • (norm A (K : Subgroup G) (L : Subgroup G) a : A) =
@@ -241,11 +241,11 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Comp
   {A : Type*} [CommGroup A] [MulDistribMulAction G A] {D : ClassFieldData G A}
 
 /- English proof (translation)
-Establish `hf : inertiaDegree D.deg (K' : Subgroup G) = inertiaDegree D.deg (K : Subgroup G)`. Rewrite using `[hK', inertiaDegree_map_conj]`. Rewrite using `[valuation_eq_iff, hf, valuation_pow D K a]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `htop : (⊤ : Subgroup G).map (MulAut.conj σ).toMonoidHom = ⊤` using `Subgroup.map_top_of_surjective _ (MulAut.conj σ).surjective`. Establish `: (((K : Subgroup G).map (MulAut.conj σ).toMonoidHom).subgroupOf ((⊤ : Subgroup G).map (MulAut.conj σ).toMonoidHom)).FiniteIndex`. Rewrite using `[← hK', htop]`. Use `infer_instance`. Establish `h1` using `smul_norm σ (K := ⊤) a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[(norm A ⊤ (K : Subgroup G) a).2 σ (Subgroup.mem_top σ), coe_norm_congr htop hK'.symm]`. Rewrite using `[h1]`. Conclude with `congrArg (fun x => (norm A ⊤ (K' : Subgroup G) x : A)) (Subtype.ext hb)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_conj (σ : G) {K K' : OpenSubgroup G}
     (hK' : (K' : Subgroup G) = (K : Subgroup G).map (MulAut.conj σ).toMonoidHom)
@@ -282,13 +282,11 @@ noncomputable def FrobeniusLift.toBase {K K' : OpenSubgroup G} (hK : K' ≤ K) (
       (L := (K' : Subgroup G)) hK, Nat.mul_assoc]
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `exists_frobeniusLift_mk (D := D) hL'K' q`. Use `set t := s.toBase hK with htdef`. Establish `ht : t.deg = s.deg * relInertiaDegree D.deg K K'` using `rfl`. Establish `hle : s.field L' hL'K' ≤ t.field L hLK` using `fun x hx => frobeniusClosure_mono hL s.elt hx`. Take `⟨π, hπ⟩` from `D.exists_prime (s.field L' hL'K')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrel : relInertiaDegree D.deg (t.field L hLK) (s.field L' hL'K') = 1`. Establish `h1` using `inertiaDegree_eq_mul D.surjective_deg (K := ((t.field L hLK : OpenSubgroup G) : Subgroup G)) (L := ((s.field L' hL'K' : OpenSubgroup G) : Subgroup G)) hle`. Rewrite `h1` using `[s.inertiaDegree_field hL'K', t.inertiaDegree_field hLK, ht, inertiaDegree_eq_mul D.surjective_deg (K := (K : Subgroup G)) (L := (K' : Subgroup G)) hK]`. Establish `hpos : 0 < s.deg * relInertiaDegree D.deg K K' * inertiaDegree D.deg K` using `Nat.mul_pos (Nat.mul_pos s.deg_pos (Nat.pos_of_ne_zero (D.relInertiaDegree_ne_zero hK))) (Nat.pos_of_ne_zero (D.inertiaDegree_ne_zero K))`. Use `Nat.eq_of_mul_eq_mul_right hpos ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul]`. Conclude with `h1.symm.trans (Nat.mul_assoc _ _ _).symm`. Use `set π0 := norm A ((t.field L hLK : OpenSubgroup G) : Subgroup G) ((s.field L' hL'K' : OpenSubgroup G) : Subgroup G) π with hπ0def`. Establish `hπ0 : D.valuation (t.field L hLK) π0 = Multiplicative.ofAdd 1`. Rewrite using `[hπ0def, D.valuation_norm hle, hrel, pow_one, hπ]`.
-
-Establish `e1 : galRestrict hK hL ((⟨s.elt, s.mem⟩ : (K' : Subgroup G)) : (K' : Subgroup G) ⧸ (L' : Subgroup G).subgroupOf K') = ((⟨t.elt, t.mem⟩ : (K : Subgroup G)) : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)` using `rfl`. Rewrite using `[e1, D.reciprocity_mk_eq_norm hLK hax t hπ0, D.reciprocity_mk_eq_norm hL'K' hax s hπ, normTateZero_mk, hπ0def, norm_norm (M := ((s.field L' hL'K' : OpenSubgroup G) : Subgroup G)) (s.field_le hL'K') hK, norm_norm (M := ((s.field L' hL'K' : OpenSubgroup G) : Subgroup G)) hle (t.fie …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reciprocity_galRestrict (hax : ClassFieldAxiom G A) [IsDiscreteModule G A]
     {K L K' L' : OpenSubgroup G} (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K).Normal]
@@ -339,7 +337,7 @@ def FrobeniusLift.conj (ρ : G) {K : OpenSubgroup G} (s : D.FrobeniusLift K) :
     rw [map_conj_apply, s.deg_eq, coe_conjOpen, inertiaDegree_map_conj]
 
 /- English proof (translation)
-The claim follows from `(map_conj_frobeniusClosure D.deg (L : Subgroup G) s.elt ρ).symm`.
+A detailed English derivation is pending.
 -/
 theorem FrobeniusLift.coe_field_conj (ρ : G) {K L : OpenSubgroup G} (hLK : L ≤ K)
     [((L : Subgroup G).subgroupOf K).Normal] (s : D.FrobeniusLift K) :
@@ -348,13 +346,11 @@ theorem FrobeniusLift.coe_field_conj (ρ : G) {K L : OpenSubgroup G} (hLK : L �
   (map_conj_frobeniusClosure D.deg (L : Subgroup G) s.elt ρ).symm
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `exists_frobeniusLift_mk (D := D) hLK q`. Use `set t := s.conj σ with htdef`. Establish `hfield` using `s.coe_field_conj σ hLK`. Take `⟨π, hπ⟩` from `D.exists_prime (s.field L hLK)`. Set `π' : fixedModule A (((t.field (conjOpen σ L) (conjOpen_mono σ hLK)) : OpenSubgroup G) : Subgroup G)` to `⟨σ • (π : A), hfield ▸ smul_mem_fixedModule π.2 σ⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hπ' : D.valuation (t.field (conjOpen σ L) (conjOpen_mono σ hLK)) π' = Multiplicative.ofAdd 1`. Rewrite using `[valuation_conj σ hfield π π' rfl, hπ]`. Establish `e1 : galConj σ K L ((⟨s.elt, s.mem⟩ : (K : Subgroup G)) : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) = ((⟨t.elt, t.mem⟩ : ((conjOpen σ K : OpenSubgroup G) : Subgroup G)) : _ ⧸ _)` using `rfl`. Rewrite using `[e1, D.reciprocity_mk_eq_norm (conjOpen_mono σ hLK) hax t hπ', D.reciprocity_mk_eq_norm hLK hax s hπ, tateZeroConj_mk]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show _ = σ • (norm A (K : Subgroup G) ((s.field L hLK : OpenSubgroup G) : Subgroup G) π : A)`. Rewrite using `[smul_norm_conjOpen σ K (s.field L hLK) π]`. Establish `: ((((s.field L hLK : OpenSubgroup G) : Subgroup G).map (MulAut.conj σ).toMonoidHom).subgroupOf ((conjOpen σ K : OpenSubgroup G) : Subgroup G)).FiniteIndex`. Rewrite using `[← hfield]`.
-
-Use `infer_instance`. Conclude with `coe_norm_congr rfl hfield _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reciprocity_galConj (hax : ClassFieldAxiom G A) [IsDiscreteModule G A] (σ : G)
     {K L : OpenSubgroup G} (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K).Normal]

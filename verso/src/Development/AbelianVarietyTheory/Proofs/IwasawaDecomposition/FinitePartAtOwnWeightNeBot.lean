@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.DefU
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _`. Simplify using the standard rewrite rules. Consider the case `cons a L ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hL`. Rewrite `hL` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, map_mul, Module.End.mul_apply, ih hL.2, hF]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hv : v = a`. Rewrite using `[hv, Function.update_self]`. Simplify using `[hL.1]`. Rewrite using `[Function.update_of_ne hv]`. Simplify using `[hv]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_list_apply_multilinear {ι G V : Type} [DecidableEq ι] [Group G] [AddCommGroup V] [Module ℂ V]
     {H : ι → Type} [∀ v, Group (H v)] {Wv : ι → Type} [∀ v, AddCommGroup (Wv v)] [∀ v, Module ℂ (Wv v)]
@@ -46,31 +46,27 @@ theorem prod_list_apply_multilinear {ι G V : Type} [DecidableEq ι] [Group G] [
       simp [hv]
 
 /- English proof (translation)
-Introduce `E _ _ _ n π`. Establish `hW' : ∀ v : InfinitePlace E, HasWeightAt π.V v.embedding ((AU.mk π).wt v)` using `fun v => by`. Take `⟨lam, hlam, -⟩` from `GlobalTheory.T.existsUnique_weight_definiteUnitary_at E n (AU.mk π) v.embedding`. Establish `h` using `hlam.wt`. Rewrite `h` using `[Wt.at_embedding]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(AU.hasWt_mk π _ _).1 h`. Generalize the expression as in `(AU.mk π).wt = W at hW' ⊢`. Establish `hW` using `hW'`. Use `clear hW'`. Set `s : ∀ v : InfinitePlace E, embU n v.embedding →* UA E n` to `fun v => (embU n v.embedding).subtype`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `σ : ∀ v : InfinitePlace E, Representation ℂ (embU n v.embedding) (nablaSq ℂ n (W v))` to `fun v => (GlobalTheory.Branching.sqRep ℂ n (W v)).comp ((cEmb v.embedding).comp (embU n v.embedding).subtype)`. Establish `hirr : ∀ v, (σ v).IsIrreducible` using `fun v => by`. Take `⟨e, he⟩` from `GlobalTheory.T.archimedeanUnitaryPoints_equiv_unitaryGroup E n v.embedding`. Take `⟨h1, h2⟩` from `(CuspRep.isIrreducible_iff _).1 (GlobalTheory.Branching.isIrreducible_smallRep_unitary n (W v))`. Use `(CuspRep.isIrreducible_iff _).2 ⟨h1, fun S hS => h2 S fun g w hw => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, rfl⟩` from `e.surjective g`. Use `hS x w hw` as an intermediate fact. Express the relevant statement in the definitionally equal form `GlobalTheory.Branching.sqRep ℂ n (W v) (cEmb v.embedding (x : UA E n)) w ∈ S at this`. Express the relevant statement in the definitionally equal form `GlobalTheory.Branching.sqRep ℂ n (W v) (GlobalTheory.Branching.unitaryIncl n (e x)) w ∈ S`. Rewrite using `[he]` and apply the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : ∀ u v, u ≠ v → ∀ a b, Commute (s u a) (s v b)` using `fun u v huv a b => GlobalTheory.T.commute_unitaryArchimedeanPoints_distinct_places E n u.embedding v.embedding (by rwa [InfinitePlace.mk_embedding, InfinitePlace.mk_embedding]) _ a.2 _ b.2`. Establish `hspan : ∀ v, (⨆ f : (σ v).IntertwiningMap (π.rep.comp (s v)), LinearMap.range f.toLinearMap) = ⊤` using `fun v => GlobalTheory.T.iSup_range_weightMaps_eq_top_definiteUnitary E n π v.embedding (W v) (hW v)`. Use `haveI : Nontrivial π.V := Submodule.nontrivial_iff_ne_bot.2 π.isAut.ne_bot`. Take `⟨F, hF0, hF⟩` from `GlobalTheory.T.exists_multilinearMap_of_isotypic_commuting_subgroups (InfinitePlace E) (UA E n) π.V (fun v => embU n v.embedding) (fun v => nablaSq ℂ n (W v)) π.rep s σ inferInstance hirr hcomm hspan`. Take `⟨f0, hf0, -⟩` from `GlobalTheory.T.dualWeylModule_tensor_coefficient_universal (InfinitePlace E) n W π.V F`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `f : W.Sp →ₗ[ℂ] (UA E n → ℂ)` to `π.V.subtype ∘ₗ f0`. Establish `hten : ∀ (g : InfinitePlace E → GL (Fin n) ℂ) (u : ∀ v, nablaSq ℂ n (W v)), Formalism.L2.DIV.rhoK W g (GlobalTheory.CoefIrred.tenMul (K` using `ℂ) W u) = GlobalTheory.CoefIrred.tenMul (K := ℂ) W fun v => GlobalTheory.Branching.sqRep ℂ n (W v) (g v) (u v) := fun g u => by`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Formalism.L2.DIV.rhoK_coe, GlobalTheory.CoefIrred.tenMul_coe, Formalism.L2.DIV.actTen, GlobalTheory.CoefIrred.tenMul_coe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hint : ∀ (x : infU E n) (w : W.Sp), f (W.rep x w) = RU E n x (f w)`. Introduce `x w`. Take `⟨y, hy, hyc, hprod⟩` from `GlobalTheory.T.definiteUnitaryInfinitePoint_eq_list_prod_placeParts E n x.1 x.2`. Set `y' : ∀ v : InfinitePlace E, embU n v.embedding` to `fun v => ⟨y v, hy v⟩`. Establish `key : ∀ u, f (W.rep x (GlobalTheory.CoefIrred.tenMul W u)) = RU E n x (f (GlobalTheory.CoefIrred.tenMul W u))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u`. Establish `h1` using `prod_list_apply_multilinear π.rep s σ F hF y' u Finset.univ.toList (Finset.nodup_toList _)`. Establish `h2 : (Finset.univ.toList.map fun v => s v (y' v)).prod = x.1` using `hprod`. Rewrite `h1` using `[h2]`. Establish `h3 : W.rep x (GlobalTheory.CoefIrred.tenMul W u) = GlobalTheory.CoefIrred.tenMul W fun v => σ v (y' v) (u v)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `Formalism.L2.DIV.rhoK W (cAll x.1) _ = _`. Rewrite using `[hten]`. Use `congrArg (GlobalTheory.CoefIrred.tenMul W) (funext fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = GlobalTheory.Branching.sqRep ℂ n (W v) (cEmb v.embedding (y v)) (u v)`. Rewrite using `[hyc v]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `show (f0 (W.rep x (GlobalTheory.CoefIrred.tenMul W u))).1 = RU E n x (f0 (GlobalTheory.CoefIrred.tenMul W u)).1`. Rewrite using `[h3, hf0, hf0, ← AutSub.rep_val, h1]`. Simplify using `only [Finset.mem_toList, Finset.mem_univ, if_true]`. Use `(GlobalTheory.T.dualWeylModule_tensor_coefficient_universal (InfinitePlace E) n W (UA E n → ℂ) ((f ∘ₗ W.rep x).compMultilinearMap (GlobalTheory.CoefIrred.tenMul W))).unique (y₁ := f ∘ₗ W.rep x) (y₂ := RU E n x ∘ₗ f) (fun u => (LinearMap.compMultilinearMap_apply _ _ _).symm) (fun …` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `LinearMap.congr_fun this w`. Establish `hmem : f ∈ algForms W` using `⟨fun w => π.le_autU (f0 w).2, hint⟩`. Establish `hfin : (⟨f, hmem⟩ : algForms W) ∈ π.finPart W` using `AutSub.mem_finPart.2 fun w => (f0 w).2`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u, F u ≠ 0 := by`. Assume the negation of the conclusion as `h`.
-
-Use `push_neg at h`. Conclude with `hF0 (MultilinearMap.ext h)`. Use `(Submodule.ne_bot_iff _).2 ⟨⟨f, hmem⟩, hfin, fun h => hu ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun (congrArg Subtype.val h) (GlobalTheory.CoefIrred.tenMul W u)` as an intermediate fact. Rewrite using `[← hf0]`.
-
-Conclude with `Subtype.ext this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AutSub.finPart_wt_ne_bot : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (π : AutSub E n),
     π.finPart (AU.mk π).wt ≠ ⊥ := by

@@ -14,18 +14,18 @@ open PowerSeries
 namespace GlobalTheory.FrobStickMap
 
 /- English proof (translation)
-The claim follows from `PowerSeries.HasSubst.of_constantCoeff_zero ha`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_of_cc {R : Type*} [CommRing R] (a : MvPowerSeries (Fin 3) R)
     (ha : MvPowerSeries.constantCoeff a = 0) : PowerSeries.HasSubst a :=
   PowerSeries.HasSubst.of_constantCoeff_zero ha
 
 /- English proof (translation)
-Establish `hs : ∀ (a : MvPowerSeries (Fin 3) R), MvPowerSeries.constantCoeff a = 0 → ∀ g : R⟦X⟧, MvPowerSeries.map h (subst a g) = subst (MvPowerSeries.map h a) (PowerSeries.map h g)` using `fun a ha g => PowerSeries.map_subst (hasSubst_of_cc a ha) g`. Unfold `GlobalTheory.FrobStick.defect`. Rewrite using `[map_sub, map_mul, map_mul, map_mul, map_mul, map_ofNat]`. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[hs _ (by simp) _]`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs _ (by simp), hs _ (by simp), hs _ (by simp), hs _ (by simp)]`. Simplify using `[map_add, map_sub]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_defect {R S : Type*} [CommRing R] [CommRing S] (h : R →+* S)
     (f : Fin 3 → R⟦X⟧) (s : R⟦X⟧) :
@@ -54,7 +54,7 @@ noncomputable def tq (F : ℂ → ℂ) : (↥Qbar)⟦X⟧ :=
   PowerSeries.mk (fun n => if h : coef1 F n ∈ Qbar then ⟨_, h⟩ else 0)
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [tq, GlobalTheory.FrobStick.tay, PowerSeries.coeff_map, PowerSeries.coeff_mk]`. Rewrite using `[dif_pos (hF.2 n)]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_tq_of_algEnt (F : ℂ → ℂ) (hF : AlgEnt F) :
     PowerSeries.map (algebraMap (↥Qbar) ℂ) (tq F) = GlobalTheory.FrobStick.tay F := by
@@ -64,7 +64,7 @@ theorem map_tq_of_algEnt (F : ℂ → ℂ) (hF : AlgEnt F) :
   rfl
 
 /- English proof (translation)
-Introduce `a b hab`. Use extensionality with `n`. Apply `hi` to reduce the goal to its premises. Use `congrArg (MvPowerSeries.coeff n) hab` as an intermediate fact. Simplify `this` using `[MvPowerSeries.coeff_map]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mvmap_injective {R S : Type*} [CommRing R] [CommRing S] (h : R →+* S)
     (hi : Function.Injective h) :
@@ -76,9 +76,9 @@ theorem mvmap_injective {R S : Type*} [CommRing R] [CommRing S] (h : R →+* S)
   simpa [MvPowerSeries.coeff_map] using this
 
 /- English proof (translation)
-Establish `hq : GlobalTheory.FrobStick.defect (fun j => tq (f j)) (tq s) = 0`. Apply `mvmap_injective (algebraMap (↥Qbar) ℂ) (FaithfulSMul.algebraMap_injective _ _)` to reduce the goal to its premises. Rewrite using `[map_defect, map_zero]`. Simplify using `only [map_tq_of_algEnt _ (hf _), map_tq_of_algEnt _ hs]`. Conclude with `h0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hser : ∀ F : ℂ → ℂ, AlgEnt F → GL3Theta.ser1 lam F = PowerSeries.map lam (tq F)` using `fun F hF => GlobalTheory.EvenTheta.Param.theta_series_map_coefficients lam F (tq F) (map_tq_of_algEnt F hF).symm`. Simplify using `only [hser _ (hf _), hser _ hs]`. Rewrite using `[← map_defect, hq, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem defect_ser1_eq_zero_of_defect_tay_eq_zero (p : ℕ) [Fact p.Prime] (lam : (↥Qbar) →+* ℂ_[p]) (f : Fin 3 → ℂ → ℂ)
     (s : ℂ → ℂ) (hf : ∀ j, AlgEnt (f j)) (hs : AlgEnt s)

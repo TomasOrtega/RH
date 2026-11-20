@@ -9,23 +9,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FlagTorus
 
 /- English proof (translation)
-Set `Φ : V →ₗ[E] (Fin r → E)` to `LinearMap.pi (fun a => h (e a))`. Establish `hΦ : ∀ y a, Φ y a = h (e a) y` using `fun y a => rfl`. Establish `hsurj : Function.Surjective Φ`. Rewrite using `[← LinearMap.range_eq_top]`. Assume the negation of the conclusion as `hne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨φ, hφ0, hφ⟩` from `Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.2 hne) inferInstance`. Apply `hφ0` to reduce the goal to its premises. Establish `hvan : ∀ y, ∑ a, φ (Pi.single a 1) * h (e a) y = 0`. Introduce `y`. Establish `hcomp : φ ∘ₗ Φ = 0`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.range_eq_bot, LinearMap.range_comp, hφ]`. Establish `h0 : φ (Φ y) = 0` using `LinearMap.congr_fun hcomp y`. Rewrite using `[← h0]`. Use `conv_rhs => rw [pi_eq_sum_univ (Φ y)]`. Simplify using `only [map_sum, map_smul, smul_eq_mul, hΦ, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `congr 2`. Use extensionality with `j`. Simplify using `[Pi.single_apply, eq_comm]`. Establish `hz : ∑ a, star (φ (Pi.single a 1)) • e a = 0` using `hnd _ (fun y => by`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, RingHom.id_apply, Finset.sum_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, star_star]`. Conclude with `hvan y)`. Establish `hc` using `Fintype.linearIndependent_iff.1 he _ hz`. Use extensionality with `a`. Use `hc a` as an intermediate fact.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Use `choose g hg using fun b : Fin r => hsurj (Pi.single b 1)`. Establish `hge : ∀ a b, h (e a) (g b) = if a = b then 1 else 0`. Introduce `a b`. Rewrite using `[← hΦ, hg b, Pi.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg'e : ∀ a b, h (g a) (e b) = if b = a then 1 else 0`. Apply the tactic sequence `intro a b; rw [← hsymm, hge b a]; split_ifs <;> simp`. Use `⟨fun b => g b - ∑ c, (h (g c) (g b) / 2) • e c, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`. Simplify using `only [map_sub, map_sum, map_smul, smul_eq_mul, hee, mul_zero, Finset.sum_const_zero, sub_zero, hge]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a b`. Simplify using `only [map_sub, map_sum, map_smulₛₗ, LinearMap.sub_apply, LinearMap.sum_apply, RingHom.id_apply, Finset.sum_apply, LinearMap.smul_apply, smul_eq_mul, hee, hge, hg'e, mul_zero, Finset.sum_const_zero, sub_zero, mul_ite, mul_one, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ …`. Establish `hM : star (h (g b) (g a)) = h (g a) (g b)` using `hsymm _ _`. Establish `h2 : star (2 : E) = 2` using `by simp`. Rewrite using `[star_div₀, hM, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: (2 : E) ≠ 0` using `two_ne_zero`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem witt_partners {E V : Type} [Field E] [CharZero E] [StarRing E] [AddCommGroup V] [Module E V]
     (h : V →ₗ⋆[E] V →ₗ[E] E) (hsymm : ∀ x y, star (h x y) = h y x)
@@ -80,31 +80,29 @@ theorem witt_partners {E V : Type} [Field E] [CharZero E] [StarRing E] [AddCommG
     ring
 
 /- English proof (translation)
-Use `set β : Fin r → E := fun a => (star (α a))⁻¹ with hβ`. Establish `hβ1 : ∀ a, star (β a) * α a = 1`. Introduce `a`. Simplify using `only [hβ, star_inv₀, star_star]`. Conclude with `inv_mul_cancel₀ (hα a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hβ2 : ∀ a, star (α a) * β a = 1`. Introduce `a`. Simplify using `only [hβ]`. Conclude with `mul_inv_cancel₀ (star_ne_zero.2 (hα a))`. Establish `hfe : ∀ a b, h (f a) (e b) = if a = b then 1 else 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `a b`. Rewrite using `[← hsymm, hef b a]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[hab, Ne.symm hab]`. Set `L : V →ₗ[E] V` to `LinearMap.id + ∑ a, (α a - 1) • (h (f a)).smulRight (e a) + ∑ a, (β a - 1) • (h (e a)).smulRight (f a)`. Establish `hL : ∀ x, L x = x + ∑ a, ((α a - 1) * h (f a) x) • e a + ∑ a, ((β a - 1) * h (e a) x) • f a`. Introduce `x`. Simplify using `[L, LinearMap.sum_apply, mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key_e : ∀ b y, h (e b) (L y) = β b * h (e b) y`. Introduce `b y`. Rewrite using `[hL]`. Simplify using `only [map_add, map_sum, map_smul, smul_eq_mul, hee, hef, mul_zero, Finset.sum_const_zero, add_zero, mul_ite, mul_one, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key_f : ∀ b y, h (f b) (L y) = α b * h (f b) y`. Introduce `b y`. Rewrite using `[hL]`. Simplify using `only [map_add, map_sum, map_smul, smul_eq_mul, hff, hfe, mul_zero, Finset.sum_const_zero, add_zero, mul_ite, mul_one, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key_x : ∀ x y, h x (L y) = h x y + ∑ a, ((α a - 1) * h (f a) y) * star (h (e a) x) + ∑ a, ((β a - 1) * h (e a) y) * star (h (f a) x)`. Introduce `x y`. Rewrite using `[hL]`. Simplify using `only [map_add, map_sum, map_smul, smul_eq_mul, hsymm]`. Establish `hiso : ∀ x y, h (L x) (L y) = h x y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x y`. Rewrite using `[hL x]`. Simplify using `only [map_add, LinearMap.add_apply, map_sum, Finset.sum_apply, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, key_e, key_f, key_x, RingHom.id_apply, starRingEnd_apply]`. Establish `: ∀ a, ((α a - 1) * h (f a) y) * star (h (e a) x) + ((β a - 1) * h (e a) y) * star (h (f a) x) + star ((α a - 1) * h (f a) x) * (β a * h (e a) y) + star ((β a - 1) * h (e a) x) * (α a * h (f a) y) = 0`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [star_mul', star_sub, star_one]`. Take the linear combination `(star (h (e a) x) * h (f a) y) * hβ1 a + (star (h (f a) x) * h (e a) y) * hβ2 a`. Establish `hsum` using `Finset.sum_eq_zero (s := Finset.univ) (fun a _ => this a)`. Simplify using `only [Finset.sum_add_distrib] at hsum`. Take the linear combination `hsum`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective L`. Introduce `x y hxy`. Establish `: x - y = 0` using `hnd _ (fun z => by`. Rewrite using `[← hiso, map_sub, hxy, sub_self, map_zero, LinearMap.zero_apply])`. Conclude with `sub_eq_zero.1 this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨LinearEquiv.ofInjectiveEndo L hinj, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Simplify using `using hiso x y`. Introduce `a`. Simplify using `only [LinearEquiv.coe_ofInjectiveEndo]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hL]`. Simplify using `only [hfe, hee, mul_zero, zero_smul, Finset.sum_const_zero, add_zero, mul_ite, mul_one, ite_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Introduce `x hx`.
-
-Simplify using `only [LinearEquiv.coe_ofInjectiveEndo]`. Rewrite using `[hL]`. Simplify using `only [hx, mul_zero, zero_smul, Finset.sum_const_zero, add_zero, add_sub_cancel_left]`. Conclude with `Submodule.sum_mem _ (fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diag_isometry {E V : Type} [Field E] [StarRing E] [AddCommGroup V] [Module E V]
     [FiniteDimensional E V] (h : V →ₗ⋆[E] V →ₗ[E] E) (hsymm : ∀ x y, star (h x y) = h y x)
@@ -178,33 +176,31 @@ theorem diag_isometry {E V : Type} [Field E] [StarRing E] [AddCommGroup V] [Modu
     exact Submodule.sum_mem _ (fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))
 
 /- English proof (translation)
-Take `⟨hγi, hγX, hγz⟩` from `hγ`. Establish `hsymm : ∀ x y, star ((VS D).hT x y) = (VS D).hT y x` using `fun x y => (VS D).herm.eq x y`. Establish `hnd : ∀ x, (∀ y, (VS D).hT x y = 0) → x = 0` using `fun x hx => (VS D).nondeg.1 x hx`. Take `⟨f, hef, hff⟩` from `witt_partners (VS D).hT hsymm hnd F0.e F0.e_indep F0.e_iso`. Establish `hXa_succ : ∀ i : Fin D.R.rS, F0.Xa ((i : ℕ) + 1) = F0.Xa i ⊔ Submodule.span D.host.E {F0.e i}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i`. Establish `: {j : Fin D.R.rS | (j : ℕ) < (i : ℕ) + 1} = {j : Fin D.R.rS | (j : ℕ) < i} ∪ ({i} : Set (Fin D.R.rS))`. Use extensionality with `j`. Simplify using `only [Set.mem_setOf_eq, Set.mem_union, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hj`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hj with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (Fin.ext h)`. Apply the tactic sequence `rintro (h | rfl) <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [FlagG.Xa, this, Set.image_union, Set.image_singleton, Submodule.span_union]`. Establish `hXa_top : F0.Xa D.R.rS = F0.X`. Establish `: {j : Fin D.R.rS | (j : ℕ) < D.R.rS} = Set.univ` using `by ext j; simp [j.2]`. Simplify using `only [FlagG.Xa, FlagG.X, this, Set.image_univ]`. Establish `he_mem : ∀ i : Fin D.R.rS, F0.e i ∈ F0.Xa ((i : ℕ) + 1)` using `fun i => Submodule.subset_span ⟨i, by simp, rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `he_not : ∀ i : Fin D.R.rS, F0.e i ∉ F0.Xa i` using `fun i => F0.e_indep.notMem_span_image (s := {j | (j : ℕ) < i}) (x := i) (by simp)`. Establish `hdiag : ∀ i : Fin D.R.rS, ∃ u : D.host.E, u ≠ 0 ∧ γ (F0.e i) - u • F0.e i ∈ F0.Xa i`. Introduce `i`. Establish `h1 : γ (F0.e i) ∈ F0.Xa ((i : ℕ) + 1)`. Rewrite using `[← hγX ((i : ℕ) + 1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_map_of_mem (he_mem i)`. Rewrite `h1` using `[hXa_succ i, Submodule.mem_sup]`. Take `⟨y, hy, w, hw, hyw⟩` from `h1`. Take `⟨u, rfl⟩` from `Submodule.mem_span_singleton.1 hw`. Use `⟨u, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Apply `he_not i` to reduce the goal to its premises. Establish `: γ (F0.e i) ∈ (F0.Xa i).map (γ : (VS D).V →ₗ[D.host.E] (VS D).V)`. Rewrite using `[hγX i, ← hyw]`. Simplify using `using hy`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hw', hw'e⟩` from `Submodule.mem_map.1 this`. Establish `: w' = F0.e i` using `γ.injective hw'e`. Conclude with `this ▸ hw'`. Rewrite using `[← hyw]`. Simplify using `using hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose u hu0 hu using hdiag`. Apply the tactic sequence `obtain ⟨t, ht_iso, ht_e, ht_perp⟩ := diag_isometry (VS D).hT hsymm hnd F0.e f F0.e_iso hef hff (fun i => (u i)⁻¹) (fun i => inv_ne_zero (hu0 i))`. Establish `ht_mem : t ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `fun x y => ht_iso x y`. Establish `ht_Xa : ∀ (j : ℕ), ∀ y ∈ F0.Xa j, t y ∈ F0.Xa j`. Introduce `j y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `: F0.Xa j ≤ (F0.Xa j).comap (t : (VS D).V →ₗ[D.host.E] (VS D).V)`. Rewrite using `[FlagG.Xa, Submodule.span_le]`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearEquiv.coe_coe, ht_e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, hk, rfl⟩)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this hy`. Establish `hperp : ∀ x ∈ perpS (VS D) F0.X, t x - x ∈ F0.X`. Introduce `x hx`. Conclude with `ht_perp x (fun a => hx (F0.e a) (Submodule.subset_span ⟨a, rfl⟩))`. Use `⟨t, ht_mem, hperp, Subgroup.mul_mem _ ht_mem hγi, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Simplify using `only [frame, lf, FlagG.fvec, Fin.snoc_last, Fin.val_last, LinearEquiv.mul_apply, hγz, Xflag]`. Rewrite using `[hXa_top]`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `hperp _ (fun x hx => by`. Use `Submodule.span_le (p := LinearMap.ker ((VS D).hT.flip F0.z)) |>.2 (by` as an intermediate fact. Introduce and unpack `_ ⟨a, rfl⟩`. Simplify using `using F0.z_orth a) hx`. Simplify using `using this)`.
-
-Consider the case `cast i`. Simplify using `only [frame, lf, FlagG.fvec, Fin.snoc_castSucc, Fin.coe_castSucc, LinearEquiv.mul_apply, Xflag]`. Establish `: γ (F0.e i) = (γ (F0.e i) - u i • F0.e i) + u i • F0.e i` using `by abel`. Rewrite using `[this, map_add, map_smul, ht_e, smul_smul, mul_inv_cancel₀ (hu0 i), one_smul, add_sub_cancel_right]`. Conclude with `ht_Xa _ _ (hu i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flag_torus (D : D7) (T : D.host.E) (F0 : FlagG (VS D) D.R.rS T) (γ : GV D) (hγ : γ ∈ stabF D F0) :
     ∃ t ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT, (∀ x ∈ perpS (VS D) F0.X, t x - x ∈ F0.X) ∧

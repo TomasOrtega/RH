@@ -6,19 +6,17 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 open MeasureTheory GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Introduce `hL hC E _ _ _ a w₀ hw K hK J hJ`. Take `⟨hlev, hmem, -, -, hsurj, -⟩` from `hL E a w₀ hw K hK (J 0) (hJ.isOpen 0) (hJ.compact 0)`. Establish `ho : IsOpen (((lev K w₀ (J 0)).subgroupOf (finU E a) : Subgroup (finU E a)) : Set (finU E a))`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Take `⟨N, hN, h1, hNC⟩` from `hlev.isOpen`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Filter.mem_of_superset ((hN.preimage continuous_subtype_val).mem_nhds h1) fun y hy => ?_` and prove the remaining obligations. Conclude with `Subgroup.mem_subgroupOf.2 (hNC ⟨hy, y.2⟩)`. Take `⟨S, hS⟩` from `GlobalTheory.DefU.ClassFin.classSet_finite E a _ ho`. Use `⟨S, fun n => ?_⟩` and prove the remaining obligations. Use `choose R hR using fun q : J 0 => (hsurj q.1)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun q => R q.out, fun q => ⟨(hR _).1, (hR _).2 ▸ q.out.2⟩, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, s, hs, x, hx, k, hk, rfl⟩` from `hS g`. Take `⟨k₀, hk₀, j, hj, hjJ, hkeq⟩` from `(hmem _).1 (Subgroup.mem_subgroupOf.1 hk)`. Establish `hcomm : j * k₀ = k₀ * j` using `hC E a w₀ j k₀ hj (hK.one k₀ hk₀)`. Set `q : J 0 ⧸ (J n).subgroupOf (J 0)` to `QuotientGroup.mk ⟨cLoc w₀ j, hjJ⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : (q.out)⁻¹ * ⟨cLoc w₀ j, hjJ⟩ ∈ (J n).subgroupOf (J 0)` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' q)`. Establish `hq' : (cLoc w₀ (R q.out))⁻¹ * cLoc w₀ j ∈ J n`. Use `Subgroup.mem_subgroupOf.1 hq` as an intermediate fact. Rewrite using `[(hR q.out).2]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr : R q.out ∈ locU a w₀` using `(hR _).1`. Use `⟨γ, hγ, (⟨s, hs⟩, q), x, hx, (R q.out)⁻¹ * j * k₀, ?_, ?_⟩` and prove the remaining obligations. Use `mul_mem (Subgroup.mem_sup_right (Subgroup.mem_inf.2 ⟨mul_mem (inv_mem hr) hj, ?_⟩)) (Subgroup.mem_sup_left hk₀)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cLoc w₀ ((R q.out)⁻¹ * j) ∈ J n`. Rewrite using `[map_mul, map_inv]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hxr : R q.out * x = x * R q.out` using `fin_mul_inf (hlev.fin (Subgroup.mem_sup_right (Subgroup.mem_inf.2 ⟨hr, by`. Express the relevant statement in the definitionally equal form `cLoc w₀ (R q.out) ∈ J 0`. Rewrite using `[(hR q.out).2]`. Conclude with `q.out.2⟩))) hx`. Use `show γ * s * x * (k : UA E a) = γ * (s * R q.out) * x * ((R q.out)⁻¹ * j * k₀)`.
-
-Rewrite using `[hkeq, ← hcomm]`. Establish `e : γ * (s * R q.out) * x * ((R q.out)⁻¹ * j * k₀) = γ * s * (R q.out * x) * ((R q.out)⁻¹ * j * k₀)` using `by group`. Rewrite using `[e, hxr]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.cover_pf :
     UpperTheory.Gal.Gen.LevFacts → UpperTheory.Gal.Gen.LocComm → UpperTheory.Gal.Gen.Cover := by

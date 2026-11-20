@@ -18,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-The claim follows from `(Formalism.L2.SG.Pf.card_frame X).symm k_pos := by have := D.R.m_add_three_le_k; omega sig := Formalism.L2.SG.PoincareInHH.Cut.card_eps_false X v e_li := by rw [Fintype.linearIndependent_iff] intro g hg j have h := congrArg (hJ (X.B.I.ε v) (rv X.B.I v (X.fR j))) hg rw [hJ_fsum_r] …`.
+A detailed English derivation is pending.
 -/
 theorem frameLoc_X (u u' : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     FrameLoc (X.B.I.ε v) D.R.k (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) (rv X.B.I v (X.zR u'))

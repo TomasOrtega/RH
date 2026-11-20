@@ -18,11 +18,11 @@ namespace GlobalTheory.ArInt
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ} {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Set `A : Option ι → Option (Option ι) → ℤ` to `fun j => j.elim (fun o => o.elim b fun o => o.elim a 0) fun i => Pi.single (some (some i)) 1`. Establish `h` using `((Published.arIso_holds k X p D hX).2 _ _ Ψ hΨ).2.2 (Option ι) (fun o : Option ι => o.elim N L) A (by`. Introduce and unpack `(_ | i)`. Conclude with `icls_eq_iff.1 (by simp [A, icls_comb, Fintype.sum_option, hN])`. Conclude with `isometric_comb_single _ (some (some i)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e₀ : (lin fun i => (A none i : ℝ)) = (b : ℝ) • MvPolynomial.X none + (a : ℝ) • MvPolynomial.X (some none)`. Simplify using `[A, lin, Fintype.sum_option, smul_eq_C_mul]`. Establish `e₁ (i : ι) : (lin fun j => (A (some i) j : ℝ)) = MvPolynomial.X (some (some i))` using `lin_single _`. Establish `e₂ : aeval (fun j => lin fun i => (A j i : ℝ)) (rename some (lin fun i => (n i : ℝ))) = rename (some ∘ some) (lin fun i => (n i : ℝ))` using `by conv_lhs => rw [aeval_rename]`. Simplify using `only [Function.comp_def, e₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[rename_eq_aeval]`. Both sides reduce to the same expression. Rewrite using `[Model.isArFun_unique hX hΦ h, LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_mul, map_pow, e₂, aeval_X, e₀, add_mul, smul_mul_assoc, smul_mul_assoc, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixed_eq_of_icls (hX : IsArithVar p D) {T M N : HermLB p} {L : ι → HermLB p}
     {Ψ : MvPolynomial (Option (Option ι)) ℝ →ₗ[ℝ] ℝ}
@@ -56,9 +56,9 @@ end GlobalTheory.ArInt
 namespace GlobalTheory.Published
 
 /- English proof (translation)
-Introduce `HE H k _ X _ p D hX ι _ M L u hu hc Φ Φ' hΦ hΦ' n`. Take `⟨Ψ, hΨ⟩` from `((HE k X p D hX).2 _ fun o : Option (Option ι) => o.elim (ArInt.fnB u hu hc) fun o => o.elim M L).1`. Take `⟨Θ, hΘ⟩` from `((HE k X p D hX).2 _ fun o : Option ι => o.elim (ArInt.fnB u hu hc) L).1`. Take `⟨h₁, h₂⟩` from `H.fnB HE hX hΘ n`. Use `⟨h₁, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h₂, mixed_eq_of_icls hX hΨ 1 0 (by simp) hΦ, mixed_eq_of_icls hX hΨ 0 1 (by simp) hΘ, mixed_eq_of_icls hX hΨ 1 1 (by`. Rewrite using `[← icls_eq_iff.2 (isometric_tens_fnB M u hu hc), icls_tens, one_smul, one_smul, add_comm]) hΦ']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem arMetric_of_arMix : ArExists → ArMix → ArMetric := by
   intro HE H k _ X _ p D hX ι _ M L u hu hc Φ Φ' hΦ hΦ' n

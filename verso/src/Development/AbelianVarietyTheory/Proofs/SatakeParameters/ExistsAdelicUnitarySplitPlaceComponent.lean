@@ -19,49 +19,47 @@ open Formalism.UG
 
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjTransposeBy_ringInvolution_add (σ : A →+* A) (M N : Matrix n n A) : cT σ (M + N) = cT σ M + cT σ N := by
   ext i j; simp [cT]
 
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjTransposeBy_ringInvolution_smul (σ : A →+* A) (a : A) (M : Matrix n n A) : cT σ (a • M) = σ a • cT σ M := by
   ext i j; simp [cT]
 
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjTransposeBy_ringInvolution_involutive (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) (M : Matrix n n A) : cT σ (cT σ M) = M := by
   ext i j; simp [cT, hσ]
 
 /- English proof (translation)
-Establish `hKJ : K * J = 1` using `mul_eq_one_comm.1 hJK`. Establish `hK : cT σ K = K`. Establish `h1 : cT σ K * J = 1` using `by rw [← hJ, ← cT_mul, hJK, cT_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hee : σ e * σ e = σ e` using `by rw [← map_mul, he]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `he'' : σ e * e = 0` using `by rw [mul_comm, he']`. Take `⟨x, hx⟩ : ∃ x, x = m - 1` from `⟨_, rfl⟩`. Take `⟨y, hy⟩ : ∃ y, y = m' - 1` from `⟨_, rfl⟩`. Establish `hm : m = 1 + x` using `by rw [hx]; abel`. Establish `hm' : m' = 1 + y` using `by rw [hy]; abel`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab : (1 + e • x) * (1 + e • y) = 1`. Establish `h2 : e • (x + y + x * y) = 0`. Establish `: x + y + x * y = m * m' - 1` using `by rw [hm, hm']; noncomm_ring`. Rewrite using `[this, smul_sub, h, sub_self]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [mul_add, add_mul, one_mul, mul_one]`. Normalize the expressions using the abelian group laws. Use `_ = 1 := by`. Rewrite using `[smul_mul_smul_comm, he, ← smul_add, ← smul_add, h2, add_zero]`. Establish `hba : (1 + e • y) * (1 + e • x) = 1` using `mul_eq_one_comm.1 hab`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `s : Matrix n n A → Matrix n n A` to `fun z => K * cT σ z * J`. Establish `hs_mul : ∀ z w, s (z * w) = s w * s z`. Introduce `z w`. Use `show K * cT σ (z * w) * J = K * cT σ w * J * (K * cT σ z * J)`. Rewrite using `[cT_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hs_one : s 1 = 1` using `by show K * cT σ 1 * J = 1`. Rewrite using `[cT_one, mul_one, hKJ]`. Establish `hs_e : ∀ z, s (1 + e • z) = 1 + σ e • s z`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show K * cT σ (1 + e • z) * J = 1 + σ e • (K * cT σ z * J)`. Rewrite using `[conjTransposeBy_ringInvolution_add, cT_one, conjTransposeBy_ringInvolution_smul, mul_add, add_mul, mul_one, hKJ, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hss : ∀ z, s (s z) = z`. Introduce `z`. Use `show K * cT σ (K * cT σ z * J) * J = z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[cT_mul, cT_mul, conjTransposeBy_ringInvolution_involutive σ hσ, hJ, hK]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcomm : ∀ z w : Matrix n n A, (1 + e • z) * (1 + σ e • w) = 1 + e • z + σ e • w ∧ (1 + σ e • w) * (1 + e • z) = 1 + e • z + σ e • w`. Introduce `z w`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_add, add_mul, add_mul, smul_mul_smul_comm e z (σ e) w, he', zero_smul]`. Simplify using the standard rewrite rules. Rewrite using `[mul_add, add_mul, add_mul, smul_mul_smul_comm (σ e) w e z, he'', zero_smul]`. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : s ((1 + e • x) * s (1 + e • y)) * ((1 + e • x) * s (1 + e • y)) = 1`. Establish `hc : s (1 + e • x) * (1 + e • x) = (1 + e • x) * s (1 + e • x)`. Rewrite using `[hs_e, (hcomm _ _).1, (hcomm _ _).2]`. Rewrite using `[hs_mul, hss]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation.
 
-Establish `hg : (1 + e • x) * s (1 + e • y) = 1 + e • x + σ e • s y` using `by rw [hs_e, (hcomm _ _).1]`. Use `⟨⟨_, _, mul_eq_one_comm.1 hu, hu⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show cT σ ((1 + e • x) * s (1 + e • y)) * J * ((1 + e • x) * s (1 + e • y)) = J`. Generalize the expression as in `(1 + e • x) * s (1 + e • y) = g at hu`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `show (e + σ e) • ((1 + e • x) * s (1 + e • y) - 1) = (1 + e • x) * s (1 + e • y) - 1`. Establish `: (1 + e • x) * s (1 + e • y) - 1 = e • x + σ e • s y` using `by rw [hg]; abel`. Rewrite using `[this, smul_add, smul_smul, smul_smul, add_mul, add_mul, he, he', he'', hee, add_zero, zero_add]`. Use `show e • ((1 + e • x) * s (1 + e • y)) = e • m`. Rewrite using `[hg, hm, smul_add, smul_add, smul_add, smul_smul, smul_smul, he, he', zero_smul, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) (J K : Matrix n n A) (hJ : cT σ J = J)
     (hJK : J * K = 1) (e : A) (he : e * e = e) (he' : e * σ e = 0) (m m' : Matrix n n A)
@@ -137,13 +135,13 @@ theorem exists_unitary (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) (J K : Matr
     rw [hg, hm, smul_add, smul_add, smul_add, smul_smul, smul_smul, he, he', zero_smul, add_zero]
 
 /- English proof (translation)
-Establish `lift : ∀ M : Matrix n n C, ∃ N : Matrix n n A, N.map q = M`. Introduce `M`. Use `⟨Matrix.of fun i j => φ.symm (0, M i j), Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Use `show q (φ.symm (0, M i j)) = M i j`. Rewrite using `[← (hφ _).2, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨N, rfl⟩` from `lift m`. Take `⟨N', rfl⟩` from `lift m'`. Establish `hN : e • (N * N') = e • (1 : Matrix n n A)`. Use `Matrix.ext fun i j => φ.injective (Prod.ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[(hφ _).1, (hφ _).1, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, map_mul, hinf, zero_mul, zero_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← Matrix.map_mul, ← Matrix.map_one q (map_zero _) (map_one _)]`. Rewrite using `[(hφ _).2, (hφ _).2, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, map_mul]`. Conclude with `congrFun (congrFun h i) j`. Take `⟨g, hg, h1, h2⟩` from `exists_unitary σ hσ _ _ hJ hJK e he he' N N' hN`. Use `⟨g, hg, fun i j => congrFun (congrFun h1 i) j, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : e * g.1 i j = e * N i j` using `congrFun (congrFun h2 i) j`. Establish `h4` using `congrArg q h3`. Rewrite `h4` using `[map_mul, map_mul]`. Conclude with `h4`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_prod {B C : Type} [CommRing B] [CommRing C] (p : A →+* B) (q : A →+* C) (φ : A ≃+* B × C)
     (hφ : ∀ z, (φ z).1 = p z ∧ (φ z).2 = q z)
@@ -181,13 +179,13 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D V e he m m' h`. Take `⟨φ, hφ, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `hφ' : ∀ z, (φ z).1 = infPart D z ∧ (φ z).2 = finPart D z` using `hφ`. Establish `hinf : infPart D e = 0`. Take `⟨h1, h2, v, ε, ⟨α, rfl, -⟩, h4⟩` from `he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h5 : infPart D (e + cA D e) = 0`. Rewrite using `[h4]`. Conclude with `TensorProduct.zero_tmul _ _`. Establish `h6 : e = e * (e + cA D e)` using `by rw [mul_add, h1, h2, add_zero]`. Rewrite using `[h6, RingHom.map_mul, h5, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJK : JR (AF D.host.F) V.gram * (V.gram⁻¹).map (incA D) = 1` using `by show V.gram.map (incA D) * (V.gram⁻¹).map (incA D) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (GlobalTheory.UnitaryGlue.gram_det_ne_zero V).isUnit, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hJ : Formalism.UG.cT (cA D) (JR (AF D.host.F) V.gram) = JR (AF D.host.F) V.gram`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show cA D (incA D (V.gram j i)) = incA D (V.gram i j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[GlobalTheory.DualPairCheck.cA_incA, GlobalTheory.DualPairCheck.gram_star]`. Take `⟨g, hg, h1, h2⟩` from `exists_unitary_prod (infPart D) (finPart D) φ hφ' (cA D) GlobalTheory.DualPairCheck.cA_cA _ _ hJ hJK e he.1 he.2.1 hinf m m' h`. Conclude with `⟨⟨g, hg⟩, h1, h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem split_lift : ∀ {D : D7} (V : HSp D) (e : Formalism.L2.Theta.AE D), IsSplitIdem D e → ∀ m m' : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E), finPart D e • (m * m') = finPart D e • (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) → ∃ g : GA D V, Formalism.L2.Theta.SuppAt e V g ∧ finPart D e • finMat D.sp.cm.sig V.gram g = finPart D e • m := by
   intro D V e he m m' h

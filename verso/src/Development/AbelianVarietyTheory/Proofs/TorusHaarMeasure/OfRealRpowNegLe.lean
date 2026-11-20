@@ -16,7 +16,7 @@ open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r} in
 
 /- English proof (translation)
-Establish `hpos` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.FlowCoefficientBounds.nfac_pos X hx la`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.phla`. Rewrite using `[show -(-2 * Real.log (X.nfac la x)) = Real.log (X.nfac la x) + Real.log (X.nfac la x) by ring, Real.exp_add, Real.exp_log hpos]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.Up.DivMetricPf.exp_neg_phla {x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r} (hx : x ∈ X.dom)
     (la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) :
@@ -32,7 +32,7 @@ open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r} in
 
 /- English proof (translation)
-The claim follows from `_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.pnorm_rmul X la P hP.2.1 x hx b hb`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Up.DivMetricPf.pnorm_rmul (hN : _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.NfacRmulStatement (E := E)) {la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r}
     {P : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ} (hP : X.IsSec la P) {x b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r} (hx : x ∈ X.dom)
@@ -45,7 +45,7 @@ open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r} in
 
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.NfacLactStatement at hN`. Express the relevant statement in the definitionally equal form `‖P (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ x)‖ * X.nfac la (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ x) = ‖P x‖ * X.nfac la x`. Rewrite using `[hP.2.2 γ hγ x hx, norm_mul, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OntoE.chi_norm X la hγ, one_mul, hN r X la γ hγ x hx]`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.Up.DivMetricPf.pnorm_lact (hN : _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.NfacLactStatement (E := E)) {la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r}
     {P : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ} (hP : X.IsSec la P) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ)
@@ -60,13 +60,13 @@ open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r} in
 
 /- English proof (translation)
-Establish `hc : ContinuousOn (fun x => ((Real.sqrt (f x) : ℝ) : ℂ)) X.dom` using `Complex.continuous_ofReal.comp_continuousOn (Real.continuous_sqrt.comp_continuousOn hf)`. Establish `key : ∀ y, ENNReal.ofReal (‖((Real.sqrt (f y) : ℝ) : ℂ)‖ ^ 2) = ENNReal.ofReal (f y)`. Introduce `y`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, sq_abs]`. Break down `le_total 0 (f y) with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Real.sq_sqrt h]`. Rewrite using `[Real.sqrt_eq_zero'.mpr h, ENNReal.ofReal_of_nonpos h]`. Simplify using the standard rewrite rules. Establish `hm` using `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OntoE.phiF_meas X (W := 1) hc measurable_one`. Use `hm using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `y`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OntoE.phiF`. Simplify using `only [Pi.one_apply, mul_one]`. Distinguish the cases in `hy : y ∈ X.dom`. Rewrite using `[Set.indicator_of_mem hy, Set.piecewise_eq_of_mem _ _ _ hy, key]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hy, Set.piecewise_eq_of_notMem _ _ _ hy]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.Up.DivMetricPf.measurable_cut {f : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℝ}
     (hf : ContinuousOn f X.dom) :
@@ -96,9 +96,9 @@ open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r} in
 
 /- English proof (translation)
-Use `choose C hC using fun k => (hP k).2`. Use `⟨1 + ∑ k, C k ^ 2, by positivity, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hle : ∀ k, X.pnorm la (P k) x ^ 2 ≤ C k ^ 2`. Introduce `k`. Establish `h0 : 0 ≤ X.pnorm la (P k) x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.pnorm`. Conclude with `mul_nonneg (norm_nonneg _) (_root_.ReciprocityTheory.ChartRestriction.G.FD.FlowCoefficientBounds.nfac_pos X hx la).le`. Conclude with `pow_le_pow_left₀ h0 (hC k x hx) 2`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Up.DivMetricPf.exists_sum_le {N : ℕ} {la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r}
     {P : Fin N → _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ} (hP : ∀ k, X.IsBddSec la (P k)) :
@@ -119,9 +119,9 @@ open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r} in
 
 /- English proof (translation)
-Break down `lt_or_ge 0 a with ha | ha` into its components or cases. Rewrite using `[ENNReal.ofReal_rpow_of_pos ha]`. Conclude with `ENNReal.ofReal_le_ofReal (Real.rpow_le_rpow_of_nonpos ha h (by linarith))`. Rewrite using `[ENNReal.ofReal_of_nonpos ha]`. Break down `ht.lt_or_eq with ht | ht` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.zero_rpow_of_neg (by linarith)]`. Conclude with `le_top`. Substitute `ht` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Up.DivMetricPf.ofReal_rpow_neg_le {a C t : ℝ} (hC : 0 < C) (h : a ≤ C) (ht : 0 ≤ t) :
     ENNReal.ofReal (C ^ (-t)) ≤ ENNReal.ofReal a ^ (-t) := by
@@ -138,11 +138,11 @@ theorem _root_.GlobalTheory.Up.DivMetricPf.ofReal_rpow_neg_le {a C t : ℝ} (hC 
 variable (Xa : ArchInM X) (Fl : FlatM X Xa) (n : ℕ)
 
 /- English proof (translation)
-Establish `h1` using `measurable_cut ((ExtFPf.nfac_contOn X Xa.Fp).pow 2)`. Establish `h2 : Measurable (X.dom.indicator fun x => ENNReal.ofReal (∑ k, ‖Xa.w k x‖ ^ 2))` using `measurable_cut (continuousOn_finsetSum _ fun k _ => (Xa.w_van k).1.1.1.1.continuousOn.norm.pow 2)`. Establish `h3 : Measurable (X.dom.indicator fun x => ENNReal.ofReal (∑ k, ‖Fl.s k x‖ ^ 2))` using `measurable_cut (continuousOn_finsetSum _ fun k _ => (Fl.s_van k).1.1.1.1.continuousOn.norm.pow 2)`. Establish `h` using `(h1.mul (h2.pow_const (-(1 / 2 : ℝ)))).mul (h3.pow_const (-((n : ℝ) - 1 / 2)))`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ X.dom`. Rewrite using `[Wdiv_of_mem Xa Fl n hx, exp_neg_phla hx]`. Simplify using `only [Pi.mul_apply, Set.indicator_of_mem hx, Pi.pow_apply]`. Rewrite using `[Wdiv_of_notMem Xa Fl n hx]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.mul_apply, Set.indicator_of_notMem hx, zero_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem measurable_Wdiv : Measurable (Wdiv X Xa Fl n) := by
   have h1 := measurable_cut ((ExtFPf.nfac_contOn X Xa.Fp).pow 2)
@@ -162,9 +162,9 @@ theorem measurable_Wdiv : Measurable (Wdiv X Xa Fl n) := by
     simp only [Pi.mul_apply, Set.indicator_of_notMem hx, zero_mul]
 
 /- English proof (translation)
-Establish `hxb` using `OntoS.dom_rmul X hx hb`. Establish `h0 : 0 < ‖bchar (Xa.Fp + n • Xa.L) b‖ ^ 2` using `pow_pos (norm_pos_iff.2 (OntoE.bchar_ne X _ hb)) 2`. Rewrite using `[Wdiv_eq_pnorm Xa Fl n hxb, Wdiv_eq_pnorm Xa Fl n hx, exp_neg_phla hx, exp_neg_phla hxb, hN r X _ x hx b hb]`. Simplify using `only [fun k => pnorm_rmul hN (Xa.w_van k).1.1.1 hx hb, fun k => pnorm_rmul hN (Fl.s_van k).1.1.1 hx hb]`. Rewrite using `[mul_pow, inv_pow, ENNReal.ofReal_mul (inv_nonneg.2 h0.le), ENNReal.ofReal_inv_of_pos h0, ENNReal.div_eq_inv_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Wdiv_rmul (hN : NfacRmulStatement (E := E)) {x b : Frame X.Ψ r} (hx : x ∈ X.dom)
     (hb : b ∈ Bor X.Ψ r) :
@@ -182,7 +182,7 @@ theorem Wdiv_rmul (hN : NfacRmulStatement (E := E)) {x b : Frame X.Ψ r} (hx : x
   simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `hxb` using `OntoS.dom_lact X hγ hx`. Rewrite using `[Wdiv_eq_pnorm Xa Fl n hxb, Wdiv_eq_pnorm Xa Fl n hx, exp_neg_phla hx, exp_neg_phla hxb, hN r X _ γ hγ x hx]`. Simplify using `only [fun k => pnorm_lact hN (Xa.w_van k).1.1.1 hγ hx, fun k => pnorm_lact hN (Fl.s_van k).1.1.1 hγ hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Wdiv_lact (hN : NfacLactStatement (E := E)) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ)
     {x : Frame X.Ψ r} (hx : x ∈ X.dom) : Wdiv X Xa Fl n (lact γ x) = Wdiv X Xa Fl n x := by
@@ -193,9 +193,9 @@ theorem Wdiv_lact (hN : NfacLactStatement (E := E)) {γ : GL (Fin r) E} (hγ : �
     fun k => pnorm_lact hN (Fl.s_van k).1.1.1 hγ hx]
 
 /- English proof (translation)
-Take `⟨A, hA, hAw⟩` from `exists_sum_le fun k => (Xa.w_van k).1.1`. Take `⟨B, hB, hBs⟩` from `exists_sum_le fun k => (Fl.s_van k).1.1`. Establish `hn' : 0 ≤ (n : ℝ) - 1 / 2`. Establish `: (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hA'` using `Real.rpow_pos_of_pos hA (-(1 / 2 : ℝ))`. Establish `hB'` using `Real.rpow_pos_of_pos hB (-((n : ℝ) - 1 / 2))`. Use `⟨A ^ (-(1 / 2 : ℝ)) * B ^ (-((n : ℝ) - 1 / 2)), mul_pos hA' hB', fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Wdiv_eq_pnorm Xa Fl n hx, mul_comm, ← mul_assoc, ENNReal.ofReal_mul (mul_pos (Real.exp_pos _) hA').le, ENNReal.ofReal_mul (Real.exp_pos _).le]`. Conclude with `mul_le_mul' (mul_le_mul' le_rfl (ofReal_rpow_neg_le hA (hAw x hx) (by norm_num))) (ofReal_rpow_neg_le hB (hBs x hx) hn')`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Wdiv_lower (hn : 1 ≤ n) : WLower X (Xa.Fp + n • Xa.L) (Wdiv X Xa Fl n) := by
   obtain ⟨A, hA, hAw⟩ := exists_sum_le fun k => (Xa.w_van k).1.1
@@ -212,7 +212,7 @@ theorem Wdiv_lower (hn : 1 ≤ n) : WLower X (Xa.Fp + n • Xa.L) (Wdiv X Xa Fl 
     (ofReal_rpow_neg_le hB (hBs x hx) hn')
 
 /- English proof (translation)
-Introduce `h r X Xa Fl n hn`. Conclude with `⟨⟨measurable_Wdiv Xa Fl n, fun x hx b hb => Wdiv_rmul Xa Fl n h.1 hx hb, fun γ hγ x hx => Wdiv_lact Xa Fl n h.2.1 hγ hx⟩, Wdiv_lower Xa Fl n hn, fun x hx hs => Wdiv_eq_exp Xa Fl n hx hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem divMetric_of :
     (NfacRmulStatement (E := E) ∧ NfacLactStatement (E := E) ∧ PnormInvStatement (E := E)) →

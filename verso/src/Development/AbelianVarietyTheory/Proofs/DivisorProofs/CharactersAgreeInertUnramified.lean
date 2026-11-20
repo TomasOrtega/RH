@@ -18,7 +18,7 @@ namespace GlobalTheory.InertChars
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h0 : evFin F v (1 - GlobalTheory.EmbChart.atPlace v 1) = 0`. Rewrite using `[map_sub, map_one, GlobalTheory.EmbChart.evFin_atPlace, sub_self]`. Establish `h1 : (1 - GlobalTheory.EmbChart.atPlace v 1) • y = 0` using `hy _ h0`. Rewrite `h1` using `[Algebra.smul_def, map_sub, map_one, sub_mul, one_mul, sub_eq_zero]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_mul_of_at {v : Pl F} {y : AE F E} (hy : At (evFin F v) y) :
     y = algebraMap (AF F) (AE F E) (GlobalTheory.EmbChart.atPlace v 1) * y := by
@@ -29,7 +29,7 @@ theorem eq_mul_of_at {v : Pl F} {y : AE F E} (hy : At (evFin F v) y) :
   exact h1
 
 /- English proof (translation)
-Rewrite using `[eq_mul_of_at hy, map_mul, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.map_tmul, Algebra.algebraMap_self_apply, hφ, TensorProduct.zero_tmul, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma tensorProduct_map_eq_zero_of_at_of_atPlace_eq_zero {R : Type} [CommRing R] [Algebra F R] {v : Pl F} (φ : AF F →ₐ[F] R)
     (hφ : φ (GlobalTheory.EmbChart.atPlace v 1) = 0) {y : AE F E} (hy : At (evFin F v) y) :
@@ -38,15 +38,13 @@ private lemma tensorProduct_map_eq_zero_of_at_of_atPlace_eq_zero {R : Type} [Com
     Algebra.algebraMap_self_apply, hφ, TensorProduct.zero_tmul, zero_mul]
 
 /- English proof (translation)
-Establish `hev : ∀ {R : Type} [CommRing R] [Algebra F R] (φ : AF F →ₐ[F] R), φ (GlobalTheory.EmbChart.atPlace v 1) = 0 → Algebra.TensorProduct.map φ (AlgHom.id F E) (z : AE F E) = 1`. Introduce `R _ _ φ hφ`. Establish `h` using `tensorProduct_map_eq_zero_of_at_of_atPlace_eq_zero φ hφ hz`. Rewrite `h` using `[map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis. Apply `GlobalTheory.Doubling.idele_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `w`. Rewrite using `[GlobalTheory.Doubling.unitInf_ideleAt]`. Use `ext`. Use `hev (evInf F w) ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.EmbChart.atPlace_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show GlobalTheory.AutFunCompare.evW w (fstA F (pairA F 0 (singleFin v 1))) = 0`. Conclude with `map_zero _`. Introduce `u`. Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.Doubling.unitFin_ideleAt_self]`. Rewrite using `[GlobalTheory.Doubling.unitFin_ideleAt_ne huv]`. Use `ext`. Use `hev (evFin F u) ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.EmbChart.atPlace_apply]`.
-
-Conclude with `evalV_singleFin_ne huv 1`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_ideleAt_of_at {v : Pl F} (z : (AE F E)ˣ) (hz : At (evFin F v) ((z : AE F E) - 1)) :
     z = GlobalTheory.Doubling.ideleAt F E v (GlobalTheory.Doubling.unitFin F E v z) := by
@@ -80,17 +78,15 @@ namespace GlobalTheory.InertChars
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `UnrAt at hα hβ`. Establish `h` using `GlobalTheory.LFun.under_eq_of_isInertAt hw`. Take `⟨a, ha⟩` from `GlobalTheory.LFun.InertValue.exists_isUnifAt hw h`. Establish `hπ : α (locIdele F w (Units.map (complMap h).toMonoidHom a)) = β (locIdele F w (Units.map (complMap h).toMonoidHom a))`. Rewrite using `[GlobalTheory.LFun.InertValue.locIdele_complMap hw h a]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hres _`. Generalize the expression as in `Units.map (complMap h).toMonoidHom a = π at ha hπ`. Establish `hunit : ∀ u : (w.adicCompletion E)ˣ, Valued.v (u : w.adicCompletion E) = 1 → α (locIdele F w u) = β (locIdele F w u)`. Introduce `u hu`. Establish `h1 : locChar α w u = 1` using `hα u hu`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : locChar β w u = 1` using `hβ u hu`. Rewrite `h1` using `[← h2]`. Establish `h3` using `congrArg (fun x : ℂˣ => (x : ℂ)) h1`. Simplify using `only [locChar, MonoidHom.comp_apply, Circle.toUnits_apply, Units.val_mk0] at h3`. Conclude with `Circle.ext h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ (u : (w.adicCompletion E)ˣ) (n : ℤ), Valued.v (u : w.adicCompletion E) = 1 → α (locIdele F w (u * π ^ n)) = β (locIdele F w (u * π ^ n))`. Introduce `u n hu'`. Rewrite using `[map_mul, map_mul, map_mul, map_zpow, map_zpow, map_zpow, hunit u hu', hπ]`. Establish `hy0 : Valued.v (y : w.adicCompletion E) ≠ 0` using `(Valuation.ne_zero_iff _).mpr y.ne_zero`. Take `⟨k, hk⟩ : ∃ k : ℤ, Valued.v (y : w.adicCompletion E) = WithZero.exp k` from `⟨_, (WithZero.exp_log hy0).symm⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : Valued.v ((y * π ^ k : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 1`. Establish `hπv : Valued.v (π : w.adicCompletion E) = WithZero.exp (-1 : ℤ)` using `ha`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, hπv, hk, ← WithZero.exp_zsmul, ← WithZero.exp_add, smul_neg, smul_eq_mul, mul_one, add_neg_cancel, WithZero.exp_zero]`. Establish `hy : y = (y * π ^ k) * π ^ (-k)`. Rewrite using `[mul_assoc, ← zpow_add, add_neg_cancel, zpow_zero, mul_one]`.
-
-Rewrite using `[hy]`. Conclude with `key _ _ hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locIdele_eq_of_inert {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : Formalism.UG.IsInertAt F E v w)
     (α β : Chr F E) (hres : ∀ b : (AF F)ˣ, α (ideleMap F E b) = β (ideleMap F E b))
@@ -130,13 +126,13 @@ theorem locIdele_eq_of_inert {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : F
   exact key _ _ hu
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v w hw hv z hz`. Establish `h` using `GlobalTheory.LFun.under_eq_of_isInertAt hw`. Establish `hpow : ((-1 : ℂ)) ^ a = (-1) ^ a'`. Establish `he` using `hT.geo.even`. Rewrite `he` using `[Nat.even_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Nat.even_or_odd a with ha | ha` into its components or cases. Rewrite using `[ha.neg_one_pow, (he.mp ha).neg_one_pow]`. Establish `ha' : Odd a'` using `Nat.not_even_iff_odd.mp (fun h' => Nat.not_even_iff_odd.mpr ha (he.mpr h'))`. Rewrite using `[ha.neg_one_pow, ha'.neg_one_pow]`. Establish `hres : ∀ b : (AF F)ˣ, X.β (ideleMap F E b) = X.α (ideleMap F E b)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `b`. Establish `e1 : ((X.α (ideleMap F E b) : Circle) : ℂ) = _` using `hT.chars.resα b`. Establish `e2 : ((X.β (ideleMap F E b) : Circle) : ℂ) = _` using `hT.chars.resβ b`. Apply `Circle.ext` to reduce the goal to its premises. Rewrite using `[e1, e2, hpow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hnot : ¬ (w.under (𝓞 F) ∈ (X.T : Set (Pl F)))`. Rewrite using `[h]`. Conclude with `hv`. Rewrite using `[eq_ideleAt_of_at z hz, GlobalTheory.LFun.ideleAt_eq_locIdele_of_isInertAt h hw]`. Conclude with `locIdele_eq_of_inert hw X.β X.α hres (hT.chars.unrβ w hnot) (hT.chars.unrα w hnot) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem beta_eq_alpha_of_inert : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

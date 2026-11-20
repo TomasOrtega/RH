@@ -13,7 +13,7 @@ namespace Formalism.L2.SG.Closed
 
 open Formalism.L2.SG.Pf.NcReal.JX in
 /- English proof (translation)
-The claim follows from `covolRef_of_steps (coordCovol_of kapLaw_holds (nofib_of hNL) (CovB.blockCovol_of hRB)) (refNBox_of Formalism.L2.SG.Pf.NcReal.JX.FR.frameRow_holds)`.
+A detailed English derivation is pending.
 -/
 theorem CovolRef_holds (hNL : NOfibLat) (hRB : CovB.RowBlockCovol) : CovolRef :=
   covolRef_of_steps (coordCovol_of kapLaw_holds (nofib_of hNL) (CovB.blockCovol_of hRB)) (refNBox_of Formalism.L2.SG.Pf.NcReal.JX.FR.frameRow_holds)
@@ -21,7 +21,7 @@ theorem CovolRef_holds (hNL : NOfibLat) (hRB : CovB.RowBlockCovol) : CovolRef :=
 open Formalism.L2.SG.Pf.NcReal.JX in
 variable [Fact PI.AprimeInfW.GaugeVolUD] [Fact Formalism.L2.SG.Pf.WB.RhsWLim] in
 /- English proof (translation)
-The claim follows from `RealBracket_holds (CovolRef_holds hNL hRB)`.
+A detailed English derivation is pending.
 -/
 theorem RealBracket_of_leaves (hNL : NOfibLat) (hRB : CovB.RowBlockCovol) :
     Formalism.L2.SG.Pf.NcReal.RealBracket :=
@@ -29,7 +29,7 @@ theorem RealBracket_of_leaves (hNL : NOfibLat) (hRB : CovB.RowBlockCovol) :
 
 open Formalism.L2.SG.Pf.NcReal.JX in
 /- English proof (translation)
-The claim follows from `covolRef_of_steps (coordCovol_of kapLaw_holds NOf.nofib_holds (CovB.blockCovol_of hRB)) (refNBox_of Formalism.L2.SG.Pf.NcReal.JX.FR.frameRow_holds)`.
+A detailed English derivation is pending.
 -/
 theorem CovolRef_of_rowBlock (hRB : CovB.RowBlockCovol) : CovolRef :=
   covolRef_of_steps (coordCovol_of kapLaw_holds NOf.nofib_holds (CovB.blockCovol_of hRB))
@@ -38,14 +38,14 @@ theorem CovolRef_of_rowBlock (hRB : CovB.RowBlockCovol) : CovolRef :=
 open Formalism.L2.SG.Pf.NcReal.JX in
 variable [Fact PI.AprimeInfW.GaugeVolUD] [Fact Formalism.L2.SG.Pf.WB.RhsWLim] in
 /- English proof (translation)
-The claim follows from `RealBracket_holds (CovolRef_of_rowBlock hRB)`.
+A detailed English derivation is pending.
 -/
 theorem RealBracket_of_rowBlock (hRB : CovB.RowBlockCovol) : Formalism.L2.SG.Pf.NcReal.RealBracket :=
   RealBracket_holds (CovolRef_of_rowBlock hRB)
 
 open Formalism.L2.SG.Pf.NcReal.JX in
 /- English proof (translation)
-The claim follows from `covolRef_of_steps (coordCovol_of kapLaw_holds NOf.nofib_holds Formalism.L2.SG.Pf.NcReal.JX.CovB.blockCovol_holds) (refNBox_of Formalism.L2.SG.Pf.NcReal.JX.FR.frameRow_holds)`.
+A detailed English derivation is pending.
 -/
 theorem CovolRef_outright : CovolRef :=
   covolRef_of_steps (coordCovol_of kapLaw_holds NOf.nofib_holds Formalism.L2.SG.Pf.NcReal.JX.CovB.blockCovol_holds)
@@ -53,7 +53,7 @@ theorem CovolRef_outright : CovolRef :=
 
 variable [Fact PI.AprimeInfW.GaugeVolUD] [Fact Formalism.L2.SG.Pf.WB.RhsWLim] in
 /- English proof (translation)
-The claim follows from `RealBracket_holds CovolRef_outright`.
+A detailed English derivation is pending.
 -/
 theorem RealBracket_outright : Formalism.L2.SG.Pf.NcReal.RealBracket := RealBracket_holds CovolRef_outright
 

@@ -8,9 +8,9 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.CountingSumsFrames Formalism.GradedWeylDivisibility MvPolynomial Formalism.MainNotions.G.LatticeSystems
 
 /- English proof (translation)
-Simplify using `only [Pi.sub_apply, wtPQ]`. Use `split_ifs with h1 h2`. Substitute `h1` using the available equality. Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Substitute using the available equality.
 
-Substitute `h2` using the available equality. Rewrite using `[hl]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem sub_wtPQ_apply_eq_ite (mm ccl P Q : ℕ) (lam : Fin (mm + 1 + 1) → ℤ) (h0 : lam 0 = (P : ℤ) + ccl)
     (hl : lam (Fin.last (mm + 1)) = -((Q : ℤ) + ccl)) (i : Fin (mm + 1 + 1)) :
@@ -26,21 +26,19 @@ private theorem sub_wtPQ_apply_eq_ite (mm ccl P Q : ℕ) (lam : Fin (mm + 1 + 1)
   · ring
 
 /- English proof (translation)
-Introduce `a b hab`. Rewrite using `[sub_wtPQ_apply_eq_ite mm ccl P Q lam h0 hl a, sub_wtPQ_apply_eq_ite mm ccl P Q lam h0 hl b]`. Establish `hlv : (Fin.last (mm + 1)).val = mm + 1` using `Fin.val_last _`. Establish `hab' : a.val ≤ b.val` using `hab`. Establish `hc : (0 : ℤ) ≤ (ccl : ℤ)` using `Int.natCast_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbl'` using `b.isLt`. Establish `hal'` using `a.isLt`. Distinguish the cases in `ha0 : a = 0`. Substitute `ha0` using the available equality. Rewrite using `[if_pos rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hb0 hbl`. Conclude with `le_refl _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb1 : 0 < b.val` using `Nat.pos_of_ne_zero (fun h => hb0 (Fin.ext h))`. Establish `hb2 : b.val < mm + 1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `: b.val ≠ mm + 1` using `fun h => hbl (Fin.ext (h.trans hlv.symm))`. Use linear arithmetic over natural numbers and integers. Conclude with `le_trans (le_abs_self _) (hmid b hb1 hb2)`. Distinguish the cases in `hal : a = Fin.last (mm + 1)`. Establish `hb : b = Fin.last (mm + 1)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Apply `Fin.ext` to reduce the goal to its premises. Rewrite `hab'` using `[hal]`. Use linear arithmetic over natural numbers and integers. Substitute `hal` using the available equality. Substitute `hb` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_refl _`. Establish `ha1 : 0 < a.val` using `Nat.pos_of_ne_zero (fun h => ha0 (Fin.ext h))`. Establish `ha2 : a.val < mm + 1`. Establish `: a.val ≠ mm + 1` using `fun h => hal (Fin.ext (h.trans hlv.symm))`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[if_neg ha0, if_neg hal]`. Use `split_ifs with hb0 hbl`. It suffices to derive a contradiction. Establish `: b.val = 0` using `by rw [hb0]; rfl`. Use linear arithmetic over natural numbers and integers.
-
-Combine the linear relations using `[neg_abs_le (lam a), hmid a ha1 ha2]`. Conclude with `hlam hab`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem antitone_sub_wtPQ (mm ccl P Q : ℕ) (lam : Fin (mm + 1 + 1) → ℤ) (hlam : Antitone lam)
     (h0 : lam 0 = (P : ℤ) + ccl) (hl : lam (Fin.last (mm + 1)) = -((Q : ℤ) + ccl))
@@ -85,27 +83,23 @@ private theorem antitone_sub_wtPQ (mm ccl P Q : ℕ) (lam : Fin (mm + 1 + 1) →
       · exact hlam hab
 
 /- English proof (translation)
-Unfold `RestCloudLat`. Introduce `p n' R mm hmm TT a ccl aw bw lam0 A B hbase hdom hoff hAB hc H Hp ze lo lo' hH hHp hze hlo hlo'`. Substitute `hH hHp hze hlo hlo'` using the available equality. Establish `hdomlo : IsDominant (lam0 - flatW (mm + 1) A B)`. Introduce `s`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hs : s ∈ TT`. Establish `e : (lam0 - flatW (mm + 1) A B) s = lam0 s - wtPQ (mm + 1) (A ⟨s, hs⟩) (B ⟨s, hs⟩)`. Rewrite using `[Pi.sub_apply, ← flatW_top (mm + 1) A B ⟨s, hs⟩]`. Rewrite using `[e]`. Take `⟨h0, hl, hmid⟩` from `(hbase s).1 hs`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hA, hB⟩` from `hAB ⟨s, hs⟩`. Conclude with `antitone_sub_wtPQ mm ccl _ _ (lam0 s) (hdom s) (by rw [h0]; linarith) (by rw [hl]; linarith) hmid`. Establish `e : (lam0 - flatW (mm + 1) A B) s = lam0 s`. Rewrite using `[Pi.sub_apply, flatW_off (mm + 1) A B s hs, sub_zero]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hdom s`. Establish `hdomlo' : IsDominant (dualW (lam0 - flatW (mm + 1) A B))`. Introduce `s a' b' hab`. Use `show -(lam0 - flatW (mm + 1) A B) s b'.rev ≤ -(lam0 - flatW (mm + 1) A B) s a'.rev`. Conclude with `neg_le_neg (hdomlo s (Fin.rev_le_rev.mpr hab))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hadd1 : ∀ s, lamAt (flatW (mm + 1) (fun s : TT => A s + 2 * ccl) fun s : TT => B s + 2 * ccl) s = lamAt (flatW (mm + 1) A B) s + lamAt (flatW (mm + 1) (fun _ : TT => 2 * ccl) fun _ : TT => 2 * ccl) s`. Introduce `s`. Rewrite using `[← lamAt_add']`. Use `congr 1`. Conclude with `flatW_add (mm + 1) A B (fun _ : TT => 2 * ccl) (fun _ : TT => 2 * ccl)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hadd2 : ∀ s, lamAt lam0 s = lamAt (flatW (mm + 1) A B) s + lamAt (lam0 - flatW (mm + 1) A B) s`. Introduce `s`. Rewrite using `[lamAt_sub']`. Expand and normalize the polynomial expressions, which then agree. Establish `hdz : dualWt (0 : Fin (mm + 1 + 1) → ℤ) = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `i`. Simplify using `[dualWt]`. Establish `hpos : ∀ s, PosOK R (mm + 1) (lamAt lam0 s) (lamAt (flatW (mm + 1) A B) s) (lamAt (flatW (mm + 1) (fun s : TT => A s + 2 * ccl) fun s : TT => B s + 2 * ccl) s) (lamAt (flatW (mm + 1) (fun _ : TT => 2 * ccl) fun _ : TT => 2 * ccl) s) (lamAt (lam0 - flatW (mm + 1) A B) s) (lamAt (d …`. Introduce `s`. Distinguish the cases in `hs : s ∈ TT`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_pos hs, if_pos hs]`. Conclude with `posOK_at_top h1 R mm hmm TT a ccl aw bw lam0 A B hbase hdom hAB hc ⟨s, hs⟩`. Rewrite using `[if_neg hs, if_neg hs, lamAt_dualW, lamAt_sub', tn_lamAt_zero lam0 s (hoff s hs), lamAt_flat_off (mm + 1) A B s hs, lamAt_flat_off (mm + 1) (fun s : TT => A s + 2 * ccl) (fun s : TT => B s + 2 * ccl) s hs, lamAt_flat_off (mm + 1) (fun _ : TT => 2 * ccl) (fun _ : TT => 2 * ccl) s …`. Conclude with `posOK_zero R (mm + 1)`. Take `⟨mH, mU, abelian₂, hlat, hrest⟩` from `cloudTen R (mm + 1) lam0 _ _ _ _ _ hdom (flatW_dom _ _ _) (flatW_dom _ _ _) (flatW_dom _ _ _) hdomlo hdomlo' hadd1 hadd2 _ _ hpos hCO hIso`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨mH, mU, abelian₂, hlat, fun gs hgs => ?_⟩` and prove the remaining obligations. Take `⟨nb, z0, sb, sb', ka, hnb, hka, hrest2⟩` from `hrest gs hgs`. Use `⟨nb, z0, sb, sb', ka, ?_, ?_, hrest2⟩` and prove the remaining obligations. Establish `e : (∏ s : Fin n', (if s ∈ TT then weylDim mm (cloudAt lam0 s) else 1)) = ∏ s : TT, weylDim mm (cloudAt lam0 ↑s)`. Rewrite using `[Finset.prod_ite_mem, Finset.univ_inter, Finset.prod_coe_sort TT (fun s => weylDim mm (cloudAt lam0 s))]`.
-
-Rewrite using `[dimCl, ← e, ← hnb]`. Conclude with `(Rat.cast_natCast nb).symm`. Introduce `b`. Establish `hb` using `hka b`. Rewrite `hb` using `[Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, smul_eq_mul]`.
-
-Conclude with `hb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restCloudLat_of (h1 : CloudOne) (hCO : CartanOnto) (hIso : CloudIsoP) : RestCloudLat := by
   unfold RestCloudLat

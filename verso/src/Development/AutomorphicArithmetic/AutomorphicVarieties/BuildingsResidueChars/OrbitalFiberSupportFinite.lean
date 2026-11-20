@@ -1,15 +1,15 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.GlobalUnitaryForms.FibAbs
 
 /- English proof (translation)
-Introduce `Γ G V _ _ _ _ B hB h0 f hf g`. Establish `hK : Finite ((B.U.map (MulAut.conj g).toMonoidHom).comap B.ι)`. Establish `h` using `hB.stab g`. Rewrite `h` using `[h0, Subgroup.relIndex_bot_left]`. Conclude with `Nat.finite_of_card_ne_zero h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hKs : (((B.U.map (MulAut.conj g).toMonoidHom).comap B.ι : Subgroup Γ) : Set Γ).Finite` using `Set.toFinite _`. Establish `hfib : ∀ x : G ⧸ B.U, ((fun γ => ((g⁻¹ * B.ι γ * g : G) : G ⧸ B.U)) ⁻¹' {x}).Finite`. Introduce `x`. Break down `Set.eq_empty_or_nonempty ((fun γ => ((g⁻¹ * B.ι γ * g : G) : G ⧸ B.U)) ⁻¹' {x}) with he | ⟨γ₀, h₀⟩` into its components or cases. Rewrite using `[he]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Set.finite_empty`. Use `(hKs.image (fun k => γ₀ * k)).subset fun γ hγ => ⟨γ₀⁻¹ * γ, ?_, by simp⟩` and prove the remaining obligations. Establish `e : ((g⁻¹ * B.ι γ₀ * g : G) : G ⧸ B.U) = ((g⁻¹ * B.ι γ * g : G) : G ⧸ B.U)` using `(Set.mem_singleton_iff.1 h₀).trans (Set.mem_singleton_iff.1 hγ).symm`. Use `⟨_, QuotientGroup.eq.1 e, ?_⟩` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hf.fin.preimage' (f := fun γ => ((g⁻¹ * B.ι γ * g : G) : G ⧸ B.U)) fun x _ => hfib x).subset ?_` and prove the remaining obligations. Introduce `γ hγ h`. Apply `hγ` to reduce the goal to its premises. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul B.U (g⁻¹ * B.ι γ * g)`. Establish `hr` using `hf.right u (g⁻¹ * B.ι γ * g)`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `f (((g⁻¹ * B.ι γ * g : G) : G ⧸ B.U).out) = 0 at h`. Express the relevant statement in the definitionally equal form `f (g⁻¹ * B.ι γ * g * u) = _ at hr`. Rewrite `h` using `[hu, hr]`. Conclude with `(mul_eq_zero.1 h).resolve_left (Units.ne_zero _)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.orbitalFiber_support_finite :
     UpperTheory.V.Z.Sym.Glob.Fib.SuppFin := by

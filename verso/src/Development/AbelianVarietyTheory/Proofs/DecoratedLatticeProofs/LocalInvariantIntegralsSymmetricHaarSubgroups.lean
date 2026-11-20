@@ -29,9 +29,9 @@ namespace GlobalTheory.HaarR
 open scoped ENNReal NNReal
 
 /- English proof (translation)
-Establish `h` using `Measure.isMulLeftInvariant_eq_smul κ μ`. Use `set a := Measure.haarScalarFactor κ μ`. Establish `h1 : (a : ℝ≥0∞) = 1`. Rewrite `hκ` using `[h, Measure.smul_apply, hS, ENNReal.smul_def, smul_eq_mul, mul_one]`. Conclude with `hκ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: a = 1` using `by exact_mod_cast h1`. Rewrite using `[h, this, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_mass_one {G : Type} [TopologicalSpace G] [Group G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [LocallyCompactSpace G] [SecondCountableTopology G] (κ μ : Measure G) [μ.IsHaarMeasure]
@@ -45,41 +45,31 @@ theorem eq_of_mass_one {G : Type} [TopologicalSpace G] [Group G] [IsTopologicalG
   rw [h, this, one_smul]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν hν n _ _ c ρ m G hm hG hmK`. Use `haveI := hν.1`. Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Use `haveI : BorelSpace (GL n k) := GlobalTheory.SplitFlip.borel_GL`. Use `haveI : BorelSpace (GL (n ⊕ Fin c) k) := GlobalTheory.SplitFlip.borel_GL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKO : ∀ (S : Subgroup (GL (n ⊕ Fin c) k)), MeasurableSet {x : S | (x : GL (n ⊕ Fin c) k) ∈ KO k (n ⊕ Fin c)}` using `fun S => (GlobalTheory.SplitFlip.isOpen_KO.preimage continuous_subtype_val).measurableSet`. Establish `hFint : ∀ F ∈ SB (GL (n ⊕ Fin c) k), Integrable F G` using `fun F hF => hF.1.continuous.integrable_of_hasCompactSupport hF.2`. Establish `hFS : ∀ (S : Subgroup (GL (n ⊕ Fin c) k)), IsClosed (S : Set (GL (n ⊕ Fin c) k)) → ∀ (μS : Measure S), μS.IsHaarMeasure → ∀ F ∈ SB (GL (n ⊕ Fin c) k), ∀ h, Integrable (fun r : S => F (r * h)) μS`. Introduce `S hS μS _ F hF h`. Conclude with `(hF.1.continuous.comp (continuous_subtype_val.mul continuous_const)).integrable_of_hasCompactSupport ((hF.2.comp_homeomorph (Homeomorph.mulRight h)).comp_isClosedEmbedding hS.isClosedEmbedding_subtypeVal)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨fun hc μR hR hRK => ?_, fun h1 hc μR hR hRK => ?_⟩` and prove the remaining obligations. Establish `h1 : 1 ≤ ρ` using `by omega`. Establish `h2 : ρ ≤ c` using `by omega`. Take `⟨hNc, hcl, hNH, -, -⟩` from `GlobalTheory.RootEx.VolN.volN_haar_and_modulus k n c ρ h1 h2 ν`. Use `haveI : LocallyCompactSpace (N k n c ρ) := hNc.locallyCompactSpace`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hNH`. Use `haveI : LocallyCompactSpace (R k n c ρ) := hcl.locallyCompactSpace`. Use `haveI := hR`. Use `haveI := hm`. Use `haveI := GlobalTheory.T.levyProductMap_haar_isMulLeftInvariant k n c ρ h1 h2 ν hν.1 m hm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := GlobalTheory.T.levyProductMap_haar_finiteOnCompacts k n c ρ h1 h2 ν hν.1 m hm`. Establish `hmeas : Measurable (prodR (k` using `k) (n := n) (c := c) ρ) := (Continuous.subtype_mk ((GlobalTheory.RootEx.QuotStep.continuous_embX.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)) _).measurable`. Establish `hκ : (m.prod (volN ν n c ρ)).map (prodR ρ) = μR`. Use `eq_of_mass_one _ μR _ hRK ((Measure.map_apply hmeas (hKO (R k n c ρ))).trans ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.levyProductMap_preimage_integralGL, Measure.prod_prod, hmK, GlobalTheory.T.rootExchangeUnipotentHaar_integralPoints_eq_one k n c ρ h1 h2 ν hν, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `haveI : μR.IsMulRightInvariant := GlobalTheory.LevelUnimod.unimodular k n c ρ (fun i => i.val + 1) (fun i => by simp [Fin.rev]; omega) (R k n c ρ) (GlobalTheory.RootEx.ParabolicEntries.mem_R_iff_and_mem_RFJ_iff k n c ρ).1 μR hR`. Use `⟨GlobalTheory.SemiHaar.invInv_of_rightInv μR, ?_⟩` and prove the remaining obligations. Introduce and unpack `f z ⟨F, hF, hf, hz⟩`. Establish `hi` using `hFS _ hcl μR hR F hF`. Use `⟨F, hFint F hF, hi, fun h => ?_, hz⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hc' : Continuous fun r : R k n c ρ => F (r * h)` using `hF.1.continuous.comp (continuous_subtype_val.mul continuous_const)`. Establish `hp : Integrable (fun q => F ((prodR (k` using `k) (n := n) (c := c) ρ q : GL (n ⊕ Fin c) k) * h)) (m.prod (volN ν n c ρ)) := by`. Use `hi h` as an intermediate fact. Rewrite `this` using `[← hκ]`. Conclude with `(integrable_map_measure hc'.aestronglyMeasurable hmeas.aemeasurable).1 this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hf h, ← hκ, integral_map hmeas.aemeasurable hc'.aestronglyMeasurable, integral_prod _ hp]`. Both sides reduce to the same expression. Establish `h2 : ρ < c` using `by omega`. Take `⟨hNc, -, hNH, -, -⟩` from `GlobalTheory.RootEx.VolN.volN_haar_and_modulus k n c (ρ + 1) (by omega) (by omega) ν`. Use `haveI : LocallyCompactSpace (N k n c (ρ + 1)) := hNc.locallyCompactSpace`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := hNH`. Use `haveI := hm`. Use `haveI := hR`. Establish `hmem` using `(GlobalTheory.RootEx.ParabolicEntries.mem_R_iff_and_mem_RFJ_iff k n c ρ).2 h1 h2`. Establish `hcl : IsClosed (RFJ k n c ρ : Set (GL (n ⊕ Fin c) k))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (RFJ k n c ρ : Set (GL (n ⊕ Fin c) k)) = ⋂ r : n ⊕ Fin c, ⋂ s : n ⊕ Fin c, {g : GL (n ⊕ Fin c) k | (r.isRight ∨ s.isRight) → Sum.elim (fun _ => 2 * ρ + 1) (fun i : Fin c => 2 * (i.val + 1)) s ≤ Sum.elim (fun _ => 2 * ρ + 1) (fun i : Fin c => 2 * (i.val + 1)) r → g.val r s = ( …`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, hmem, Set.mem_iInter, Set.mem_setOf_eq]`. Rewrite using `[e]`. Use `isClosed_iInter fun r => isClosed_iInter fun s => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hrs : (r.isRight ∨ s.isRight) ∧ Sum.elim (fun _ => 2 * ρ + 1) (fun i : Fin c => 2 * (i.val + 1)) s ≤ Sum.elim (fun _ => 2 * ρ + 1) (fun i : Fin c => 2 * (i.val + 1)) r`. Establish `: {g : GL (n ⊕ Fin c) k | (r.isRight ∨ s.isRight) → Sum.elim (fun _ => 2 * ρ + 1) (fun i : Fin c => 2 * (i.val + 1)) s ≤ Sum.elim (fun _ => 2 * ρ + 1) (fun i : Fin c => 2 * (i.val + 1)) r → g.val r s = (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r s} = {g : GL (n ⊕ Fin c) k | g.val r …`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq]`. Conclude with `⟨fun h => h hrs.1 hrs.2, fun h _ _ => h⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[this]`. Apply the tactic sequence `exact isClosed_eq (GlobalTheory.RootEx.VolN.continuous_entry r s) continuous_const`. Establish `: {g : GL (n ⊕ Fin c) k | (r.isRight ∨ s.isRight) → Sum.elim (fun _ => 2 * ρ + 1) (fun i : Fin c => 2 * (i.val + 1)) s ≤ Sum.elim (fun _ => 2 * ρ + 1) (fun i : Fin c => 2 * (i.val + 1)) r → g.val r s = (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r s} = Set.univ`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_univ, iff_true]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `fun a b => absurd ⟨a, b⟩ hrs`. Rewrite using `[this]`. Conclude with `isClosed_univ`. Use `haveI : LocallyCompactSpace (RFJ k n c ρ) := hcl.locallyCompactSpace`. Use `haveI := GlobalTheory.T.isMulLeftInvariant_map_levyProductMapToFourierJacobi k n c ρ h1 h2 ν hν.1 m hm`.
-
-Use `haveI := GlobalTheory.T.fourierJacobiProductMap_haar_finiteOnCompacts k n c ρ h1 h2 ν hν.1 m hm`. Establish `hmeas : Measurable (prodRFJ (k` using `k) (n := n) (c := c) ρ) := (Continuous.subtype_mk (((GlobalTheory.RootEx.QuotStep.continuous_embX.comp (continuous_fst.comp continuous_fst)).mul (continuous_subtype_val.comp (continuous_snd.comp continuous_fst))).mul ((GlobalTheory.RootEx.QuotStep.continuous_colE (ρ + 1)).comp co …`. Establish `hκ : ((m.prod (volN ν n c (ρ + 1))).prod (Measure.pi fun _ : n => ν)).map (prodRFJ ρ) = μR`. Use `eq_of_mass_one _ μR _ hRK ((Measure.map_apply hmeas (hKO (RFJ k n c ρ))).trans ?_)` and prove the remaining obligations. Establish `hpi : {β : n → k | ∀ i, β i ∈ 𝒪[k]} = Set.univ.pi fun _ : n => (𝒪[k] : Set k)`.
-
-Use extensionality with `β`. Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.T.levyProductMapToFourierJacobi_preimage_integralGL k n c ρ h2, Measure.prod_prod, Measure.prod_prod, hmK, GlobalTheory.T.rootExchangeUnipotentHaar_integralPoints_eq_one k n c (ρ + 1) (by omega) (by omega) ν hν, hpi, Measure.pi_pi, hν.2]`. Simplify using the standard rewrite rules. Use `haveI : μR.IsMulRightInvariant := GlobalTheory.LevelUnimod.unimodular k n c (2 * ρ + 1) (fun i => 2 * (i.val + 1)) (fun i => by simp [Fin.rev]; omega) (RFJ k n c ρ) hmem μR hR`.
-
-Use `⟨GlobalTheory.SemiHaar.invInv_of_rightInv μR, ?_⟩` and prove the remaining obligations. Introduce and unpack `f z ⟨F, hF, hf, hz⟩`. Establish `hi` using `hFS _ hcl μR hR F hF`. Use `⟨F, hFint F hF, hi, fun h => ?_, hz⟩` and prove the remaining obligations. Establish `hc' : Continuous fun r : RFJ k n c ρ => F (r * h)` using `hF.1.continuous.comp (continuous_subtype_val.mul continuous_const)`.
-
-Establish `hp : Integrable (fun q => F ((prodRFJ (k` using `k) (n := n) (c := c) ρ q : GL (n ⊕ Fin c) k) * h)) ((m.prod (volN ν n c (ρ + 1))).prod (Measure.pi fun _ : n => ν)) := by`. Use `hi h` as an intermediate fact. Rewrite `this` using `[← hκ]`. Conclude with `(integrable_map_measure hc'.aestronglyMeasurable hmeas.aemeasurable).1 this`. Rewrite using `[hf h, ← hκ, integral_map hmeas.aemeasurable hc'.aestronglyMeasurable, integral_prod _ hp, integral_prod _ hp.integral_prod_left]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem quot_int_haar : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν → ∀ (n : Type) [Fintype n] [DecidableEq n] (c ρ : ℕ) (m : Measure (GL n k)) (G : Measure (GL (n ⊕ Fin c) k)), m.IsHaarMeasure → G.IsHaarMeasure → m (KO k n) = 1 → (c + 1 = 2 * ρ → ∀ μR : Measure (R k n c ρ), μR.IsHaarMeasure → μR {x | x.1 ∈ KO k (n ⊕ Fin c)} = 1 → μR.IsInvInvariant ∧ ∀ f z, IsQuotInt ν m G ρ f z → IsQuotIntL1 μR G f z) ∧ (1 ≤ ρ → c = 2 * ρ → ∀ μR : Measure (RFJ k n c ρ), μR.IsHaarMeasure → μR {x | x.1 ∈ KO k (n ⊕ Fin c)} = 1 → μR.IsInvInvariant ∧ ∀ f z, IsQuotIntFJ ν m G ρ f z → IsQuotIntL1 μR G f z) := by
   intro k _ _ _ _ _ _ ν hν n _ _ c ρ m G hm hG hmK

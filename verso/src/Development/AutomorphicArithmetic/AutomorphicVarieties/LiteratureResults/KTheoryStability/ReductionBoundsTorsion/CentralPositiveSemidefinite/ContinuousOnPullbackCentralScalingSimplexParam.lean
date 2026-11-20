@@ -9,7 +9,7 @@ namespace PositivityTheory.KB.CentralizerFixed
 def Smp (q : ℕ) : Set (Fin q → ℝ) := {t | (∀ j, 0 ≤ t j) ∧ ∑ j, t j ≤ 1}
 
 /- English proof (translation)
-Establish `h1 : IsClosed {t : Fin q → ℝ | ∀ j, 0 ≤ t j}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun j => isClosed_le continuous_const (continuous_apply j)`. Establish `h2 : IsClosed {t : Fin q → ℝ | ∑ j, t j ≤ 1}` using `isClosed_le (continuous_finset_sum _ fun j _ => continuous_apply j) continuous_const`. Conclude with `h1.inter h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smp_closed (q : ℕ) : IsClosed (Smp q) := by
   have h1 : IsClosed {t : Fin q → ℝ | ∀ j, 0 ≤ t j} := by
@@ -20,7 +20,7 @@ theorem smp_closed (q : ℕ) : IsClosed (Smp q) := by
   exact h1.inter h2
 
 /- English proof (translation)
-Use `(isCompact_Icc (a := (0 : Fin q → ℝ)) (b := 1)).of_isClosed_subset (smp_closed q) ?_` and prove the remaining obligations. Introduce and unpack `t ⟨h0, h1⟩`. Use `⟨fun j => h0 j, fun j => ?_⟩` and prove the remaining obligations. Use `show t j ≤ 1`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem smp_compact (q : ℕ) : IsCompact (Smp q) := by
   refine (isCompact_Icc (a := (0 : Fin q → ℝ)) (b := 1)).of_isClosed_subset (smp_closed q) ?_
@@ -31,13 +31,9 @@ theorem smp_compact (q : ℕ) : IsCompact (Smp q) := by
     _ ≤ 1 := h1
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x₀`. Take `⟨M, hM⟩` from `((isCompact_Icc (a := x₀ - 1) (b := x₀ + 1)).prod hs).bddAbove_image (hf.norm.mono (Set.prod_mono (Set.subset_univ _) le_rfl))`. Establish `hsec : ∀ y ∈ s, Continuous fun x => f x y` using `fun y hy => by`. Establish `h` using `hf.comp (s := Set.univ) (Continuous.continuousOn (by fun_prop : Continuous fun x : ℝ => (x, y))) (fun (x : ℝ) _ => ⟨trivial, hy⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `continuousOn_univ.mp h`. Apply `continuousAt_of_dominated (bound := fun _ => M)` to reduce the goal to its premises. Use `filter_upwards with x`. Conclude with `ContinuousOn.aestronglyMeasurable (hf.comp (s := s) (Continuous.continuousOn (by fun_prop : Continuous fun y : Fin n → ℝ => (x, y))) (fun (y : Fin n → ℝ) hy => ⟨trivial, hy⟩)) hsm`. Use `filter_upwards [Icc_mem_nhds (by linarith : x₀ - 1 < x₀) (by linarith : x₀ < x₀ + 1)] with x hx`.
-
-Rewrite using `[ae_restrict_iff' hsm]`. Use `filter_upwards with y hy`. Conclude with `hM ⟨(x, y), ⟨hx, hy⟩, rfl⟩`. Conclude with `integrableOn_const hs.measure_ne_top`. Rewrite using `[ae_restrict_iff' hsm] filter_upwards with y hy`.
-
-Conclude with `(hsec y hy).continuousAt`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_param {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E] {n : ℕ}
     {f : ℝ → (Fin n → ℝ) → E} {s : Set (Fin n → ℝ)} (hs : IsCompact s) (hsm : MeasurableSet s)
@@ -66,9 +62,9 @@ theorem cont_param {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [Comple
     exact (hsec y hy).continuousAt
 
 /- English proof (translation)
-Simplify using `only [intervalIntegral.integral_of_le zero_le_one]`. Establish `hint : IntegrableOn (fun p : (Fin q → ℝ) × ℝ => Φ p.2 p.1) (Smp q ×ˢ Set.Icc (0 : ℝ) 1)`. Use `ContinuousOn.integrableOn_compact ((smp_compact q).prod isCompact_Icc) ?_` and prove the remaining obligations. Conclude with `hΦ.comp (s := Smp q ×ˢ Set.Icc (0 : ℝ) 1) (Continuous.continuousOn (by fun_prop : Continuous fun p : (Fin q → ℝ) × ℝ => (p.2, p.1))) (fun p hp => ⟨trivial, hp.1⟩)`. Establish `hint' : Integrable (Function.uncurry fun (t : Fin q → ℝ) (τ : ℝ) => Φ τ t) ((volume.restrict (Smp q)).prod (volume.restrict (Set.Ioc (0 : ℝ) 1)))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.prod_restrict]`. Conclude with `hint.mono_set (Set.prod_mono le_rfl Set.Ioc_subset_Icc_self)`. Conclude with `integral_integral_swap hint'`.
+A detailed English derivation is pending.
 -/
 theorem fubini_smp {q : ℕ} {Φ : ℝ → (Fin q → ℝ) → ℝ}
     (hΦ : ContinuousOn (fun p : ℝ × (Fin q → ℝ) => Φ p.1 p.2) (Set.univ ×ˢ Smp q)) :
@@ -88,7 +84,7 @@ theorem fubini_smp {q : ℕ} {Φ : ℝ → (Fin q → ℝ) → ℝ}
 variable {L : Type} [Field L] [NumberField L] {N : ℕ}
 
 /- English proof (translation)
-Unfold `intS`. Use `congr 1`. Use extensionality with `t`. Simplify using `only [ContinuousAlternatingMap.compContinuousLinearMap_apply, map_add, map_sum, map_smul, map_sub, Function.comp_def]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem intS_lin {q : ℕ} (ω : Form (HS L N) q) (A : HS L N →L[ℝ] HS L N) (Y : Fin (q + 1) → HS L N) :
     intS ω (fun j => A (Y j)) = intS (fun h => (ω (A h)).compContinuousLinearMap A) Y := by
@@ -103,7 +99,7 @@ section One
 variable {q : ℕ} (v : InfinitePlace L → ℝ) (ω : Form (HS L N) q)
 
 /- English proof (translation)
-Establish `hA : Continuous fun p : ℝ × HS L N => actL (sc (p.1 • v) : Gp L N)` using `hcont.comp (by fun_prop : Continuous fun p : ℝ × HS L N => p.1 • v)`. Establish `hpt : ContinuousOn (fun p : ℝ × HS L N => ω (actL (sc (p.1 • v) : Gp L N) p.2)) (Set.univ ×ˢ Pos L N)` using `hc.comp (hA.clm_apply continuous_snd).continuousOn (fun p hp => ((sc (p.1 • v) : Gp L N) • (⟨p.2, hp.2⟩ : Pos L N)).2)`. Establish `hB` using `((ContinuousAlternatingMap.continuous_compContinuousLinearMapCLM (𝕜 := ℝ)).comp hA).continuousOn.clm_apply hpt`. Unfold `pb`. Conclude with `hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuousOn_pullback_centralScaling_line (hcont : Continuous fun t : InfinitePlace L → ℝ => actL (sc t : Gp L N))
     (hc : ContinuousOn ω (Pos L N)) :
@@ -120,7 +116,7 @@ theorem continuousOn_pullback_centralScaling_line (hcont : Continuous fun t : In
 variable {v ω}
 
 /- English proof (translation)
-Establish `hcomp` using `F1.comp (s := Set.univ) (Continuous.continuousOn (by fun_prop : Continuous fun τ : ℝ => (τ, h))) (fun τ _ => ⟨trivial, hh⟩)`. Conclude with `continuousOn_univ.mp hcomp`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_pullback_centralScaling_line_apply (F1 : ContinuousOn (fun p : ℝ × HS L N => pb (sc (p.1 • v)) ω p.2) (Set.univ ×ˢ Pos L N))
     {h : HS L N} (hh : h ∈ Pos L N) : Continuous fun τ : ℝ => pb (sc (τ • v)) ω h := by
@@ -129,9 +125,9 @@ theorem continuous_pullback_centralScaling_line_apply (F1 : ContinuousOn (fun p 
   exact continuousOn_univ.mp hcomp
 
 /- English proof (translation)
-Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `hg : Continuous fun p : Pos L N × ℝ => ((p.2, (p.1 : HS L N)) : ℝ × HS L N)` using `by fun_prop`. Establish `hm : ∀ p : Pos L N × ℝ, ((p.2, (p.1 : HS L N)) : ℝ × HS L N) ∈ Set.univ ×ˢ Pos L N` using `fun p => Set.mk_mem_prod trivial p.1.2`. Establish `h0` using `F1.comp_continuous hg hm`. Rewrite `h0` using `[Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous' (f := fun (x : Pos L N) (τ : ℝ) => pb (sc (τ • v)) ω x.1) (μ := volume) h0 0 1`. Conclude with `h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem av_cont (F1 : ContinuousOn (fun p : ℝ × HS L N => pb (sc (p.1 • v)) ω p.2) (Set.univ ×ˢ Pos L N)) :
     ContinuousOn (av v ω) (Pos L N) := by
@@ -146,7 +142,7 @@ theorem av_cont (F1 : ContinuousOn (fun p : ℝ × HS L N => pb (sc (p.1 • v))
   exact h1
 
 /- English proof (translation)
-Unfold `pb`. Use extensionality with `u`. Simplify using `[actL_mul, Function.comp_def]`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem pb_pb_apply_eq_pb_mul {q : ℕ} (g k : Gp L N) (ω : Form (HS L N) q) (h : HS L N) :
     pb g (pb k ω) h = pb (k * g) ω h := by
@@ -155,9 +151,9 @@ private theorem pb_pb_apply_eq_pb_mul {q : ℕ} (g k : Gp L N) (ω : Form (HS L 
   simp [actL_mul, Function.comp_def]
 
 /- English proof (translation)
-Establish `hgh : actL g h ∈ Pos L N` using `(g • (⟨h, hh⟩ : Pos L N)).2`. Establish `hint : IntervalIntegrable (fun τ : ℝ => pb (sc (τ • v)) ω (actL g h)) volume 0 1` using `(continuous_pullback_centralScaling_line_apply F1 hgh).intervalIntegrable 0 1`. Establish `e1 : pb g (av v ω) h = ContinuousAlternatingMap.compContinuousLinearMapCLM (actL g) (av v ω (actL g h))` using `rfl`. Establish `e2 : av v ω (actL g h) = ∫ τ in (0:ℝ)..1, pb (sc (τ • v)) ω (actL g h)` using `rfl`. Establish `e3 : av v (pb g ω) h = ∫ τ in (0:ℝ)..1, pb (sc (τ • v)) (pb g ω) h` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, ← ContinuousLinearMap.intervalIntegral_comp_comm _ hint, e3]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Use `show pb g (pb (sc (τ • v)) ω) h = pb (sc (τ • v)) (pb g ω) h`. Rewrite using `[pb_pb_apply_eq_pb_mul, pb_pb_apply_eq_pb_mul, hg]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem av_comm (F1 : ContinuousOn (fun p : ℝ × HS L N => pb (sc (p.1 • v)) ω p.2) (Set.univ ×ˢ Pos L N))
     (g : Gp L N) (hg : ∀ t, sc t * g = g * sc t) (h : HS L N) (hh : h ∈ Pos L N) :
@@ -176,11 +172,11 @@ theorem av_comm (F1 : ContinuousOn (fun p : ℝ × HS L N => pb (sc (p.1 • v))
   rw [pb_pb_apply_eq_pb_mul, pb_pb_apply_eq_pb_mul, hg]
 
 /- English proof (translation)
-Use `show ∀ h ∈ Pos L N, pb (sc (σ • v)) (av v ω) h = av v ω h`. Introduce `h hh`. Rewrite using `[av_comm F1 _ (fun t => hcomm t _) h hh]`. Use `show ∫ τ in (0:ℝ)..1, pb (sc (τ • v)) (pb (sc (σ • v)) ω) h = ∫ τ in (0:ℝ)..1, pb (sc (τ • v)) ω h`. Establish `ep : ∀ τ : ℝ, pb (sc (τ • v)) (pb (sc (σ • v)) ω) h = pb (sc ((τ + σ) • v)) ω h` using `fun τ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pb_pb_apply_eq_pb_mul, ← hadd, add_smul, add_comm (τ • v)]`. Establish `hper : Function.Periodic (fun τ : ℝ => pb (sc (τ • v)) ω h) 1` using `fun τ => by show pb (sc ((τ + 1) • v)) ω h = pb (sc (τ • v)) ω h`. Establish `hs : actL (sc (τ • v) : Gp L N) h ∈ Pos L N` using `((sc (τ • v) : Gp L N) • (⟨h, hh⟩ : Pos L N)).2`. Establish `hvh : pb (sc v) ω (actL (sc (τ • v) : Gp L N) h) = ω (actL (sc (τ • v) : Gp L N) h)` using `hv _ hs`. Rewrite using `[add_smul, one_smul, hadd, hcomm, ← pb_pb_apply_eq_pb_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show (pb (sc v) ω (actL (sc (τ • v) : Gp L N) h)).compContinuousLinearMap (actL (sc (τ • v) : Gp L N)) = (ω (actL (sc (τ • v) : Gp L N) h)).compContinuousLinearMap (actL (sc (τ • v) : Gp L N))`. Rewrite using `[hvh]`. Simplify using `only [ep]`. Rewrite using `[intervalIntegral.integral_comp_add_right (fun τ => pb (sc (τ • v)) ω h) σ, zero_add, add_comm 1 σ, hper.intervalIntegral_add_eq σ 0, zero_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem av_per (hadd : ∀ t t' : InfinitePlace L → ℝ, (sc (t + t') : Gp L N) = sc t * sc t')
     (hcomm : ∀ (t : InfinitePlace L → ℝ) (x : Gp L N), sc t * x = x * sc t)
@@ -205,7 +201,7 @@ theorem av_per (hadd : ∀ t t' : InfinitePlace L → ℝ, (sc (t + t') : Gp L N
     hper.intervalIntegral_add_eq σ 0, zero_add]
 
 /- English proof (translation)
-Use `show intS ω (fun j => actL (sc (τ • v) : Gp L N) (y j).1) = _`. Rewrite using `[intS_lin]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem simplexIntegral_centralScaling_smul_eq_param (y : Fin (q + 1) → Pos L N) (τ : ℝ) : intP ω (fun j => (sc (τ • v) : Gp L N) • y j) =
     ∫ t in Smp q, pb (sc (τ • v)) ω ((y 0).1 + ∑ j, t j • ((y j.succ).1 - (y 0).1))
@@ -215,9 +211,9 @@ theorem simplexIntegral_centralScaling_smul_eq_param (y : Fin (q + 1) → Pos L 
   rfl
 
 /- English proof (translation)
-Establish `hφ : Continuous fun p : ℝ × (Fin q → ℝ) => ((p.1, (y 0).1 + ∑ j, p.2 j • ((y j.succ).1 - (y 0).1)) : ℝ × HS L N)` using `by fun_prop`. Establish `hc` using `F1.comp (s := Set.univ ×ˢ Smp q) hφ.continuousOn (fun (p : ℝ × (Fin q → ℝ)) (hp : p ∈ Set.univ ×ˢ Smp q) => Set.mk_mem_prod trivial (hmem y p.2 hp.2.1 hp.2.2))`. Rewrite `hc` using `[Function.comp_def]`. Establish `hd` using `(ContinuousAlternatingMap.apply ℝ (HS L N) ℝ (fun j => (y j.succ).1 - (y 0).1)).continuous.comp_continuousOn hc`. Rewrite `hd` using `[Function.comp_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `hd` using `only [ContinuousAlternatingMap.apply_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuousOn_pullback_centralScaling_simplexParam (hmem : ∀ (y : Fin (q + 1) → Pos L N) (t : Fin q → ℝ), (∀ j, 0 ≤ t j) → ∑ j, t j ≤ 1 →
       (y 0).1 + ∑ j, t j • ((y j.succ).1 - (y 0).1) ∈ Pos L N)
@@ -236,9 +232,9 @@ theorem continuousOn_pullback_centralScaling_simplexParam (hmem : ∀ (y : Fin (
   simpa only [ContinuousAlternatingMap.apply_apply] using hd
 
 /- English proof (translation)
-Use `show ∫ t in Smp q, av v ω ((y 0).1 + ∑ j, t j • ((y j.succ).1 - (y 0).1)) (fun j => (y j.succ).1 - (y 0).1) = _`. Establish `e : ∀ t ∈ Smp q, av v ω ((y 0).1 + ∑ j, t j • ((y j.succ).1 - (y 0).1)) (fun j => (y j.succ).1 - (y 0).1) = ∫ τ in (0:ℝ)..1, pb (sc (τ • v)) ω ((y 0).1 + ∑ j, t j • ((y j.succ).1 - (y 0).1)) (fun j => (y j.succ).1 - (y 0).1)`. Introduce `t ht`. Establish `hint` using `(continuous_pullback_centralScaling_line_apply F1 (hmem y t ht.1 ht.2)).intervalIntegrable (μ := volume) 0 1`. Conclude with `(ContinuousLinearMap.intervalIntegral_comp_comm (ContinuousAlternatingMap.apply ℝ (HS L N) ℝ (fun j => (y j.succ).1 - (y 0).1)) hint).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[setIntegral_congr_fun (smp_closed q).measurableSet e, fubini_smp (continuousOn_pullback_centralScaling_simplexParam hmem F1 y)]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[simplexIntegral_centralScaling_smul_eq_param]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem av_int (hmem : ∀ (y : Fin (q + 1) → Pos L N) (t : Fin q → ℝ), (∀ j, 0 ≤ t j) → ∑ j, t j ≤ 1 →
       (y 0).1 + ∑ j, t j • ((y j.succ).1 - (y 0).1) ∈ Pos L N)
@@ -259,9 +255,9 @@ theorem av_int (hmem : ∀ (y : Fin (q + 1) → Pos L N) (t : Fin q → ℝ), (�
   rw [simplexIntegral_centralScaling_smul_eq_param]
 
 /- English proof (translation)
-Establish `hx : actL x (one L N).1 ∈ Pos L N` using `(x • one L N).2`. Establish `hint` using `(continuous_pullback_centralScaling_line_apply F1 hx).intervalIntegrable (μ := volume) 0 1`. Establish `e1 : fr (av v ω) x = ContinuousAlternatingMap.compContinuousLinearMapCLM (actL x) (∫ τ in (0:ℝ)..1, pb (sc (τ • v)) ω (actL x (one L N).1))` using `rfl`. Rewrite using `[e1, ← ContinuousLinearMap.intervalIntegral_comp_comm _ hint]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `τ`. Use `show pb x (pb (sc (τ • v)) ω) (one L N).1 = pb (sc (τ • v) * x) ω (one L N).1`. Rewrite using `[pb_pb_apply_eq_pb_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem av_fr (F1 : ContinuousOn (fun p : ℝ × HS L N => pb (sc (p.1 • v)) ω p.2) (Set.univ ×ˢ Pos L N))
     (x : Gp L N) : fr (av v ω) x = ∫ τ in (0 : ℝ)..1, fr ω (sc (τ • v) * x) := by
@@ -278,11 +274,11 @@ theorem av_fr (F1 : ContinuousOn (fun p : ℝ × HS L N => pb (sc (p.1 • v)) �
 end One
 
 /- English proof (translation)
-Unfold `TScal at hSc`. Unfold `TSimp at hSi`. Unfold `TAv`. Introduce `L _ _ N q v ω hc`. Take `⟨hadd, hcomm, -, -, hcont⟩` from `hSc L N`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hmem, -⟩` from `hSi L N q`. Establish `F1` using `continuousOn_pullback_centralScaling_line v ω hcont hc`. Use `⟨av_cont F1, fun g hg h hh => av_comm F1 g hg h hh, fun hv σ => av_per hadd hcomm F1 hv σ, fun y => ?_, fun y => av_int hmem F1 y, fun x => av_fr F1 x⟩` and prove the remaining obligations. Establish `e : (fun τ : ℝ => intP ω fun j => (sc (τ • v) : Gp L N) • y j) = fun τ => ∫ t in Smp q, pb (sc (τ • v)) ω ((y 0).1 + ∑ j, t j • ((y j.succ).1 - (y 0).1)) (fun j => (y j.succ).1 - (y 0).1)` using `funext fun τ => simplexIntegral_centralScaling_smul_eq_param y τ`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cont_param (smp_compact q) (smp_closed q).measurableSet (continuousOn_pullback_centralScaling_simplexParam hmem F1 y)`.
+A detailed English derivation is pending.
 -/
 theorem tAv_of (hSc : TScal) (hSi : TSimp) : TAv := by
   unfold TScal at hSc

@@ -7,7 +7,7 @@ open MeasureTheory Matrix ValuativeRel
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeisUnit.tr_cosetRep_orth | exact GlobalTheory.HeisUnit.tr_cosetRep_orth | (intros; apply GlobalTheory.HeisUnit.tr_cosetRep_orth <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.heisenbergCosetRepTranslates_orthogonal : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ} (ψ0 : AddChar k ℂ), Continuous ψ0 → ψ0 ≠ 1 →
     ∀ (ι : ((Fin n × Fin d → k) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) k → ℂ)),

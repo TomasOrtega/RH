@@ -17,7 +17,7 @@ section Glob
 variable (D : D7) {p : ℕ} {N N' : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hy s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natsmul_mem {V : Type*} [AddCommGroup V] [Module D.host.E V] [Module (𝓞 D.host.E) V]
     (L : Submodule (𝓞 D.host.E) V) (s : ℕ) {y : V} (hy : y ∈ L) : (s : D.host.E) • y ∈ L := by
@@ -25,9 +25,9 @@ theorem natsmul_mem {V : Type*} [AddCommGroup V] [Module D.host.E V] [Module (�
   exact nsmul_mem hy s
 
 /- English proof (translation)
-Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A hA => exact hA`. Consider the case `zero => intro x _`. Simplify using the standard rewrite rules. Consider the case `add A B _ _ hA hB => intro x hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[Matrix.add_mulVec]`. Conclude with `L'.add_mem (hA x hx) (hB x hx)`. Consider the case `smul c A _ hA => intro x hx`. Rewrite using `[Matrix.smul_mulVec]`. Conclude with `L'.smul_mem c (hA x hx)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homL_maps {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     {A : Matrix (Fin N') (Fin N) D.host.E} (hA : A ∈ TaylorLogMetric.homL D L L') : ∀ x ∈ L, A *ᵥ x ∈ L' := by
@@ -38,15 +38,15 @@ theorem homL_maps {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Sub
   | smul c A _ hA => intro x hx; rw [Matrix.smul_mulVec]; exact L'.smul_mem c (hA x hx)
 
 /- English proof (translation)
-Proceed by induction on `hB using Submodule.span_induction with`. Consider the case `mem B hB`. Take `⟨a, ha, A, hA, rfl⟩` from `hB`. Take `⟨s, hs, t, ht⟩` from `hA0 a ha`. Use `⟨s, hs, fun x hx => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (s : D.host.E) • ((a • A) *ᵥ x) = t • (A *ᵥ x)`. Rewrite using `[Matrix.smul_mulVec, smul_smul, ← ht, algebraMap_smul]`. Rewrite using `[e]`. Conclude with `L'.smul_mem t (homL_maps D hA x hx)`. Consider the case `zero => exact ⟨1, Nat.coprime_one_left p, fun x _ => by simp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add B C _ _ hB hC`. Take `⟨s, hs, hB⟩` from `hB`. Take `⟨t, ht, hC⟩` from `hC`. Use `⟨s * t, Nat.Coprime.mul_left hs ht, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e : ((s * t : ℕ) : D.host.E) • ((B + C) *ᵥ x) = (t : D.host.E) • ((s : D.host.E) • (B *ᵥ x)) + (s : D.host.E) • ((t : D.host.E) • (C *ᵥ x))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.add_mulVec, smul_add, smul_smul, smul_smul, Nat.cast_mul, mul_comm (t : D.host.E) (s : D.host.E)]`. Rewrite using `[e]`. Conclude with `L'.add_mem (natsmul_mem D L' t (hB x hx)) (natsmul_mem D L' s (hC x hx))`. Consider the case `smul c B _ hB`. Take `⟨s, hs, hB⟩` from `hB`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s, hs, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_mulVec, smul_comm]`. Conclude with `L'.smul_mem c (hB x hx)`.
+A detailed English derivation is pending.
 -/
 theorem yy_maps
     (hA0 : ∀ a ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E), ∃ s : ℕ, Nat.Coprime s p ∧
@@ -83,9 +83,9 @@ theorem yy_maps
 end Glob
 
 /- English proof (translation)
-Introduce `D p hA0 N N' L L' r b hb i`. Take `⟨s, hs, hsb⟩` from `hb.2.1 i`. Take `⟨t, ht, h⟩` from `yy_maps D hA0 hsb`. Use `⟨t * s, Nat.Coprime.mul_left ht hs, fun x hx => ?_⟩` and prove the remaining obligations. Use `h x hx` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.smul_mulVec, smul_smul, ← Nat.cast_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem locBasis_maps : ∀ (D : D7) (p : ℕ), (∀ a ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E), ∃ s : ℕ, Nat.Coprime s p ∧ (s : D.host.E) * a ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) → ∀ {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) {r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E), TaylorLogMetric.LocBasis D p (TaylorLogMetric.YYl D L L') b → ∀ i, ∃ s : ℕ, Nat.Coprime s p ∧ ∀ x ∈ L, (s : D.host.E) • (b i *ᵥ x) ∈ L' := by
   intro D p hA0 N N' L L' r b hb i

@@ -13,7 +13,7 @@ namespace GlobalTheory.ExpImage.PolyTaylor
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eval₂_eq_sum_range]`. Conclude with `Submodule.sum_mem _ fun k _ => FilB_zero_mul (hφ _) (by simpa using FilB_pow hτ k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval₂_mem_zero (φ : R →+* P.R.BdR) (hφ : ∀ x, φ x ∈ FilB P 0) {τ : P.R.BdR}
     (hτ : τ ∈ FilB P 0) (q : Polynomial R) : q.eval₂ φ τ ∈ FilB P 0 := by
@@ -21,9 +21,9 @@ theorem eval₂_mem_zero (φ : R →+* P.R.BdR) (hφ : ∀ x, φ x ∈ FilB P 0)
   exact Submodule.sum_mem _ fun k _ => FilB_zero_mul (hφ _) (by simpa using FilB_pow hτ k)
 
 /- English proof (translation)
-Establish `hd : Polynomial.X ^ m ∣ f.trunc m * g.trunc m - (f * g).trunc m`. Rewrite using `[Polynomial.X_pow_dvd_iff]`. Introduce `d hd`. Rewrite using `[Polynomial.coeff_sub, PowerSeries.coeff_trunc, if_pos hd, PowerSeries.coeff_mul_eq_coeff_trunc_mul_trunc f g hd, ← Polynomial.coe_mul, Polynomial.coeff_coe, sub_self]`. Take `⟨q, hq⟩` from `hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Polynomial.eval₂_mul, ← Polynomial.eval₂_sub, hq, Polynomial.eval₂_mul, Polynomial.eval₂_X_pow, mul_comm]`. Conclude with `FilB_zero_mul (eval₂_mem_zero φ hφ (FilB_anti zero_le_one hτ) q) (by simpa using FilB_pow hτ m)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trunc_mul_sub_mem (φ : R →+* P.R.BdR) (hφ : ∀ x, φ x ∈ FilB P 0) {τ : P.R.BdR}
     (hτ : τ ∈ FilB P 1) (m : ℕ) (f g : PowerSeries R) :
@@ -42,13 +42,13 @@ theorem trunc_mul_sub_mem (φ : R →+* P.R.BdR) (hφ : ∀ x, φ x ∈ FilB P 0
     (by simpa using FilB_pow hτ m)
 
 /- English proof (translation)
-Establish `hτ0` using `FilB_anti zero_le_one hτ`. Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a`. Break down `m with _ | m` into its components or cases. Conclude with `sub_mem (eval₂_mem_zero φ hφ hv _) (eval₂_mem_zero φ hφ hτ0 _)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.aeval_C, ← PowerSeries.C_eq_algebraMap, PowerSeries.trunc_C]`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq`. Use `add_mem hp hq` as an intermediate fact. Rewrite using `[map_add, map_add, Polynomial.eval₂_add, Polynomial.eval₂_add]`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Consider the case `monomial n a h`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, Polynomial.aeval_X, Polynomial.eval₂_mul, Polynomial.eval₂_X]`. Establish `h1` using `FilB_zero_mul hv h`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `FilB_zero_mul (eval₂_mem_zero φ hφ hτ0 ((Polynomial.aeval E (Polynomial.C a * Polynomial.X ^ n)).trunc m)) hE`. Establish `h3` using `trunc_mul_sub_mem φ hφ hτ m (Polynomial.aeval E (Polynomial.C a * Polynomial.X ^ n)) E`. Use `add_mem (add_mem h1 h2) h3` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eval₂_sub_trunc_mem (φ : R →+* P.R.BdR) (hφ : ∀ x, φ x ∈ FilB P 0) {τ : P.R.BdR}
     (hτ : τ ∈ FilB P 1) (m : ℕ) (E : PowerSeries R) {v : P.R.BdR} (hv : v ∈ FilB P 0)
@@ -79,15 +79,15 @@ theorem eval₂_sub_trunc_mem (φ : R →+* P.R.BdR) (hφ : ∀ x, φ x ∈ FilB
     ring
 
 /- English proof (translation)
-Introduce `l _ P AI T LL s ζ ι hζ p m`. Establish `hφ : ∀ x, (ι : ↥LL.1 →+* P.R.BdR) x ∈ FilB P 0` using `EmbFil.emb_mem_fil_zero l P AI T LL ι`. Establish `hτ : (((l : ℚ_[l]) ^ s)⁻¹) • P.ιB P.tB ∈ FilB P 1`. Rewrite using `[Algebra.smul_def]`. Conclude with `qB_mul_mem _ tD_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : P.ιB (AI.ιA (WittVector.teichmuller l (AI.εroot s) - 1)) ∈ FilB P 0` using `io_mem AI _`. Establish `key` using `eval₂_sub_trunc_mem (ι : ↥LL.1 →+* P.R.BdR) hφ hτ m (PowerSeries.C ζ * PowerSeries.exp ↥LL.1 - 1) hv ?_ p`. Rewrite `key` using `[PowerSeries.eval₂_trunc_eq_sum_range]`. Conclude with `key`. Break down `m with _ | m` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_mem hv (eval₂_mem_zero _ hφ (FilB_anti zero_le_one hτ) _)`. Establish `h` using `GlobalTheory.T.teichmullerEpsilonRoot_pow_sub_zeta_exp_mem_filtration l P AI T s 1 (m + 1)`. Rewrite using `[map_sub (PowerSeries.trunc (m + 1)), PowerSeries.trunc_one, Polynomial.eval₂_sub, Polynomial.eval₂_one, PowerSeries.eval₂_trunc_eq_sum_range, ← io_apply, map_sub, map_one, sub_sub_sub_cancel_right]`. Rewrite `h` using `[pow_one, pow_one, Finset.mul_sum]`. It suffices to establish `hs : ∑ k ∈ Finset.range (m + 1), (ι : ↥LL.1 →+* P.R.BdR) (PowerSeries.coeff k (PowerSeries.C ζ * PowerSeries.exp ↥LL.1)) * ((((l : ℚ_[l]) ^ s)⁻¹) • P.ιB P.tB) ^ k = ∑ k ∈ Finset.range (m + 1), oB P (P.ζQ s) * (qB P ((((1 : ℕ) : ℚ_[l]) / (l : ℚ_[l]) ^ s) ^ k / (k.factorial : ℚ_[l] …`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Conclude with `h`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hk : ι (algebraMap ℚ ↥LL.1 (1 / (k.factorial : ℚ))) = qB P (1 / (k.factorial : ℚ_[l]))`. Rewrite using `[← ι.commutes]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Rewrite using `[PowerSeries.coeff_C_mul, PowerSeries.coeff_exp, map_mul, RingHom.coe_coe, hζ, hk, Algebra.smul_def, mul_pow, ← map_pow, mul_assoc, ← mul_assoc (qB P _), ← map_mul]`. Use `congr 3`. Simplify using `[div_eq_mul_inv, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem poly_taylor : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (LL : FinExt l) (s : ℕ) (ζ : ↥LL.1) (ι : ↥LL.1 →ₐ[ℚ_[l]] P.R.BdR), ι ζ = algebraMap (Om l) P.R.BdR (P.ζQ s) → ∀ (p : Polynomial ↥LL.1) (m : ℕ), Polynomial.eval₂ (ι : ↥LL.1 →+* P.R.BdR) (P.ιB (AI.ιA (WittVector.teichmuller l (AI.εroot s) - 1))) p - ∑ k ∈ Finset.range m, ι (PowerSeries.coeff k (Polynomial.aeval (PowerSeries.C ζ * PowerSeries.exp ↥LL.1 - 1) p)) * ((((l : ℚ_[l]) ^ s)⁻¹) • P.ιB P.tB) ^ k ∈ GlobalTheory.ExpImage.FilB P (m : ℤ) := by
   intro l _ P AI T LL s ζ ι hζ p m

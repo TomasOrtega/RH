@@ -15,13 +15,13 @@ section Inner
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `f.rangeRestrict.exists_rightInverse_of_surjective f.range_rangeRestrict`. Establish `hr' : ∀ x : LinearMap.range f, f (r x) = x` using `fun x => by`. Use `congrArg Subtype.val (LinearMap.congr_fun hr x)` as an intermediate fact. Simplify using `using this`. Set `L : LinearMap.range f →ₗᵢ[ℂ] E` to `{ toLinearMap := h.comp r norm_map' := fun x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[← hn, hr']`. Use `rfl }`. Use `⟨L.extend, fun s => ?_⟩` and prove the remaining obligations. Establish `h1` using `L.extend_apply ⟨f s, LinearMap.mem_range_self f s⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h1.trans ?_` and prove the remaining obligations. Establish `h2 : f (r ⟨f s, LinearMap.mem_range_self f s⟩ - s) = 0`. Rewrite using `[map_sub, hr', sub_self]`. Establish `h3` using `hn (r ⟨f s, LinearMap.mem_range_self f s⟩ - s)`. Rewrite `h3` using `[h2, norm_zero, eq_comm, norm_eq_zero, map_sub, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem exists_isometry_comp {S : Type*} [AddCommGroup S] [Module ℂ S] (f h : S →ₗ[ℂ] E)
     (hn : ∀ s, ‖f s‖ = ‖h s‖) : ∃ φ : E →ₗᵢ[ℂ] E, ∀ s, φ (f s) = h s := by
@@ -44,21 +44,21 @@ theorem exists_isometry_comp {S : Type*} [AddCommGroup S] [Module ℂ S] (f h : 
   exact h3
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `zero`. Use `⟨LinearIsometry.id, fun i hi y hy => ?_⟩` and prove the remaining obligations. Take `rfl : i = 0` from `by omega`. Rewrite `hy` using `[h0, Submodule.mem_bot]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hy]`. Consider the case `succ l ih`. Take `⟨φ, hφ⟩` from `ih`. Establish `e1` using `Submodule.finrank_add_inf_finrank_orthogonal (hW (Nat.le_succ l))`. Establish `e2` using `Submodule.finrank_add_inf_finrank_orthogonal (hW' (Nat.le_succ l))`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : Module.finrank ℂ ((W l)ᗮ ⊓ W (l + 1) : Submodule ℂ E) = Module.finrank ℂ ((W' l)ᗮ ⊓ W' (l + 1) : Submodule ℂ E)`. Use `hd l` as an intermediate fact. Use `hd (l + 1)` as an intermediate fact. Simplify using `only [Nat.succ_eq_add_one] at e1 e2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Set `ψ` to `((stdOrthonormalBasis ℂ ((W l)ᗮ ⊓ W (l + 1) : Submodule ℂ E)).reindex (finCongr hD)).repr.trans (stdOrthonormalBasis ℂ ((W' l)ᗮ ⊓ W' (l + 1) : Submodule ℂ E)).repr.symm`. Take `⟨φ', hφ'⟩` from `exists_isometry_comp ((W l).subtype.coprod ((W l)ᗮ ⊓ W (l + 1) : Submodule ℂ E).subtype) ((φ.toLinearMap.comp (W l).subtype).coprod (((W' l)ᗮ ⊓ W' (l + 1) : Submodule ℂ E).subtype.comp ψ.toLinearEquiv.toLinearMap)) (by`. Introduce and unpack `⟨w, d⟩`. Establish `a1 : inner ℂ (w : E) (d : E) = 0` using `(Submodule.mem_orthogonal _ _).1 d.2.1 _ w.2`. Establish `a2 : inner ℂ (φ w) ((ψ d : _) : E) = 0` using `(Submodule.mem_orthogonal _ _).1 (ψ d).2.1 _ (hφ l le_rfl _ w.2)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1` using `norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero _ _ a1`. Establish `b2` using `norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero _ _ a2`. Establish `c1 : ‖((ψ d : _) : E)‖ = ‖(d : E)‖` using `ψ.norm_map d`. Rewrite `b2` using `[c1, φ.norm_map, ← b1]`. Conclude with `((mul_self_inj_of_nonneg (norm_nonneg _) (norm_nonneg _)).1 b2).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `k : ∀ (w : W l) (d : ((W l)ᗮ ⊓ W (l + 1) : Submodule ℂ E)), φ' (w + d) = φ w + ψ d` using `fun w d => hφ' (w, d)`. Use `⟨φ', fun i hi y hy => ?_⟩` and prove the remaining obligations. Break down `Nat.lt_or_ge i (l + 1) with hlt | hge` into its components or cases. Establish `hil : i ≤ l` using `by omega`. Use `k ⟨y, hW hil hy⟩ 0` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_zero, add_zero, map_zero] at this`. Rewrite using `[this]`. Conclude with `hφ i hil y hy`. Take `rfl : i = l + 1` from `by omega`. Rewrite `hy` using `[← Submodule.sup_orthogonal_inf_of_hasOrthogonalProjection (hW (Nat.le_succ l))]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw, d, hd', rfl⟩` from `Submodule.mem_sup.1 hy`. Use `k ⟨w, hw⟩ ⟨d, hd'⟩` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this]`. Conclude with `add_mem (hW' (Nat.le_succ l) (hφ l le_rfl w hw)) (ψ ⟨d, hd'⟩).2.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isometry_flag (W W' : ℕ → Submodule ℂ E) (h0 : W 0 = ⊥) (hW : Monotone W) (hW' : Monotone W')
     (hd : ∀ i, Module.finrank ℂ (W i) = Module.finrank ℂ (W' i)) (l : ℕ) :
@@ -117,11 +117,11 @@ section Mat
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hU : ∀ y, (Matrix.toEuclideanLin.symm φ.toLinearMap) *ᵥ y = (φ (WithLp.toLp 2 y)).ofLp` using `fun y => by`. Use `Matrix.toLpLin_apply 2 2 (Matrix.toEuclideanLin.symm φ.toLinearMap) (WithLp.toLp 2 y)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Conclude with `(congrArg WithLp.ofLp this).symm`. Use `⟨_, ?_, hU⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Establish `h` using `φ.inner_map_map (WithLp.toLp 2 (Pi.single a 1)) (WithLp.toLp 2 (Pi.single b 1))`. Rewrite `h` using `[EuclideanSpace.inner_eq_star_dotProduct, EuclideanSpace.inner_eq_star_dotProduct, ← hU, ← hU]`. Simplify using `only [Matrix.mulVec_single_one] at h`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `[dotProduct, mul_comm]`. Simplify using `[Pi.single_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unitary_of_isometry (φ : EuclideanSpace ℂ (Fin n) →ₗᵢ[ℂ] EuclideanSpace ℂ (Fin n)) :
     ∃ U : Matrix (Fin n) (Fin n) ℂ, Uᴴ * U = 1 ∧ ∀ y, U *ᵥ y = (φ (WithLp.toLp 2 y)).ofLp := by
@@ -140,9 +140,9 @@ theorem exists_unitary_of_isometry (φ : EuclideanSpace ℂ (Fin n) →ₗᵢ[�
   · simp [Pi.single_apply]
 
 /- English proof (translation)
-Set `e` to `(WithLp.linearEquiv 2 ℂ (Fin n → ℂ)).symm`. Take `⟨φ, hφ⟩` from `exists_isometry_flag (E := EuclideanSpace ℂ (Fin n)) (fun i => (W i).map e.toLinearMap) (fun i => (W' i).map e.toLinearMap) (by simp [h0]) (fun i k hik => Submodule.map_mono (hW hik)) (fun i k hik => Submodule.map_mono (hW' hik)) (fun i => by rw [LinearEquiv.finrank_map_eq, Linea …`. Apply the tactic sequence `obtain ⟨U, hU, hU'⟩ := exists_unitary_of_isometry φ`. Use `⟨U, hU, fun i hi y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hz'⟩` from `hφ i hi (e y) ⟨y, hy, rfl⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hU']`. Establish `: (φ (WithLp.toLp 2 y)).ofLp = z` using `(congrArg WithLp.ofLp hz').symm`. Rewrite using `[this]`. Conclude with `hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_flag (W W' : ℕ → Submodule ℂ (Fin n → ℂ)) (h0 : W 0 = ⊥) (hW : Monotone W)
     (hW' : Monotone W') (hd : ∀ i, Module.finrank ℂ (W i) = Module.finrank ℂ (W' i)) (l : ℕ) :
@@ -160,11 +160,11 @@ theorem exists_unitary_flag (W W' : ℕ → Submodule ℂ (Fin n → ℂ)) (h0 :
   rw [this]; exact hz
 
 /- English proof (translation)
-Set `e` to `(WithLp.linearEquiv 2 ℂ (Fin n → ℂ)).symm`. Set `W' : Submodule ℂ (EuclideanSpace ℂ (Fin n))` to `W.map e.toLinearMap`. Establish `hU : ∀ y, (Matrix.toEuclideanLin.symm W'.starProjection.toLinearMap) *ᵥ y = (W'.starProjection (WithLp.toLp 2 y)).ofLp` using `fun y => by`. Use `Matrix.toLpLin_apply 2 2 (Matrix.toEuclideanLin.symm W'.starProjection.toLinearMap) (WithLp.toLp 2 y)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(congrArg WithLp.ofLp this).symm`. Use `⟨Matrix.toEuclideanLin.symm W'.starProjection.toLinearMap, ?_, fun y => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Apply `Matrix.isSymmetric_toEuclideanLin_iff.1` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `W'.starProjection_isSymmetric`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz, hz'⟩` from `W'.starProjection_apply_mem (WithLp.toLp 2 y)`. Rewrite using `[hU, ← hz']`. Conclude with `hz`. Rewrite using `[hU, Submodule.starProjection_eq_self_iff.2 (show WithLp.toLp 2 y ∈ W' from ⟨y, hy, rfl⟩)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_proj (W : Submodule ℂ (Fin n → ℂ)) :
     ∃ P : Matrix (Fin n) (Fin n) ℂ, Pᴴ = P ∧ (∀ y, P *ᵥ y ∈ W) ∧ ∀ y ∈ W, P *ᵥ y = y := by
@@ -190,27 +190,27 @@ section Ring
 variable {A : Type*} [Ring A]
 
 /- English proof (translation)
-Set `Q : ℕ → A` to `fun i => P (i + 1) - P i`. Establish `hQP : ∀ i k, Q i * P k = if i < k then Q i else 0` using `fun i k => by`. Simplify using `only [Q, sub_mul]`. Use `split_ifs with h`. Rewrite using `[hl _ _ h, hl _ _ h.le]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr k (i + 1) (by omega), hr k i (by omega), sub_self]`. Establish `hPQ : ∀ i k, P k * Q i = if i < k then Q i else 0` using `fun i k => by`. Simplify using `only [Q, mul_sub]`. Use `split_ifs with h`. Rewrite using `[hr _ _ h, hr _ _ h.le]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hl k (i + 1) (by omega), hl k i (by omega), sub_self]`. Establish `hQQ : ∀ i k, Q i * Q k = if i = k then Q i else 0` using `fun i k => by`. Establish `: Q i * Q k = Q i * P (k + 1) - Q i * P k` using `by simp only [Q, mul_sub]`. Rewrite using `[this, hQP, hQP]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ (x : A) k, P k * ∑ i ∈ range a, Q i * x * Q i = (∑ i ∈ range a, Q i * x * Q i) * P k` using `fun x k => by`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc, hPQ, mul_assoc _ (Q i) (P k), hQP]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : ∀ x : A, (∑ i ∈ range a, Q i * x * Q i) * P a = ∑ i ∈ range a, Q i * x * Q i` using `fun x => by`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc _ (Q i), hQP, if_pos (Finset.mem_range.1 hi)]`. Establish `hs : ∀ (x : A) k, k < a → (∑ i ∈ range a, Q i * x * Q i) * Q k = Q k * x * Q k` using `fun x k hk => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul, Finset.sum_eq_single k]`. Rewrite using `[mul_assoc _ (Q k), hQQ, if_pos rfl]`. Introduce `i _ hik`. Rewrite using `[mul_assoc _ (Q i), hQQ, if_neg hik, mul_zero]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Finset.mem_range.2 hk) h`. Establish `hz : ∀ x : A, (∀ i, P i * x * P i = x * P i) → ∀ i, Q i * x * P i = 0` using `fun x hx i => by`. Rewrite using `[mul_assoc, ← hx, ← mul_assoc, ← mul_assoc, hQP, if_neg (lt_irrefl _), zero_mul, zero_mul]`. Use `⟨∑ i ∈ range a, Q i * p * Q i, ∑ i ∈ range a, Q i * q * Q i, ?_, hc p, hc q, ht p, ht q, fun i hi => ?_⟩` and prove the remaining obligations. Use `Finset.sum_range_sub P a` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[h0, sub_zero]`. Rewrite using `[← this, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc, hs q i (Finset.mem_range.1 hi)]`. Establish `e1 : Q i * q * Q i = Q i * q * P (i + 1)` using `by conv_lhs => rw [show Q i * q * Q i = Q i * q * P (i + 1) - Q i * q * P i by simp only [Q, mul_sub]]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hz q hq, sub_zero]`. Establish `e2 : P (i + 1) * p * Q i = p * Q i`. Establish `: Q i = P (i + 1) * Q i` using `by rw [hPQ, if_pos (Nat.lt_succ_self i)]`. Rewrite using `[this, ← mul_assoc, hp, mul_assoc]`. Rewrite using `[e1, mul_assoc (Q i * q), mul_assoc (Q i * q), e2, mul_assoc, ← mul_assoc q, hqp, one_mul, hQQ, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : ∀ x : A, x * P (i + 1) = x * Q i + x * P i` using `fun x => by simp only [Q, mul_sub, sub_add_cancel]`. Establish `e1 : P i * ((∑ i ∈ range a, Q i * p * Q i) * P (i + 1)) = (∑ i ∈ range a, Q i * p * Q i) * P i`. Rewrite using `[← mul_assoc, hc, mul_assoc, hl _ _ (Nat.le_succ i)]`. Establish `e2 : p * P (i + 1) = Q i * p * Q i + P i * (p * P (i + 1))`. Establish `: Q i * p * P (i + 1) = Q i * p * Q i` using `by rw [e0, hz p hp, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← this, ← mul_assoc, ← add_mul, ← add_mul]`. Simplify using `only [Q, sub_add_cancel, hp]`. Rewrite using `[sub_mul, mul_sub, e1, e0 (∑ i ∈ range a, Q i * p * Q i), hs p i hi]`. Use `conv_rhs => rw [e2]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_diagonal_blocks (P : ℕ → A) (h0 : P 0 = 0) (hl : ∀ i k, i ≤ k → P i * P k = P i)
     (hr : ∀ i k, i ≤ k → P k * P i = P i) (p q : A) (hqp : q * p = 1) (hp : ∀ i, P i * p * P i = p * P i)
@@ -276,39 +276,39 @@ theorem exists_diagonal_blocks (P : ℕ → A) (h0 : P 0 = 0) (hl : ∀ i k, i �
 variable [StarRing A]
 
 /- English proof (translation)
-Take `⟨R, hR⟩ : ∃ R, R = 1 - T - J * T * J` from `⟨_, rfl⟩`. Establish `JJ : ∀ x, J * (J * x) = x` using `fun x => by rw [← mul_assoc, hJJ, one_mul]`. Establish `TT : ∀ x, T * (T * x) = T * x` using `fun x => by rw [← mul_assoc, hTT]`. Establish `hiso' : T * (J * T) = 0` using `by rw [← mul_assoc, hiso]`. Establish `TJT : ∀ x, T * (J * (T * x)) = 0` using `fun x => by rw [← mul_assoc, ← mul_assoc, hiso, zero_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sR : star R = R` using `by simp [hR, hJ, hT, mul_assoc]`. Establish `RT : R * T = 0` using `by simp [hR, sub_mul, mul_assoc, hTT, hiso']`. Establish `TR : T * R = 0` using `by simp [hR, mul_sub, mul_assoc, hTT, TJT]`. Establish `JR : J * R = R * J`. Simplify using `only [hR, mul_sub, sub_mul, mul_assoc, JJ, hJJ, one_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Establish `RJT : R * (J * T) = 0` using `by rw [← mul_assoc, ← JR, mul_assoc, RT, mul_zero]`. Establish `TJR : T * (J * R) = 0` using `by rw [JR, ← mul_assoc, TR, zero_mul]`. Establish `RR : R * R = R` using `by conv_lhs => rw [show R * R = R * (1 - T - J * T * J) by rw [← hR]]`. Rewrite using `[mul_sub, mul_sub, RT, ← mul_assoc, RJT]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `s1 : star α * T = star α` using `by rw [← hT, ← star_mul, h1]`. Establish `s2 : T * star α = star α` using `by rw [← hT, ← star_mul, h2]`. Establish `s3 : star β * T = star β` using `by rw [← hT, ← star_mul, h3]`. Establish `s4 : T * star β = star β` using `by rw [← hT, ← star_mul, h4]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s5 : star α * star β = T` using `by rw [← star_mul, hβα, hT]`. Establish `Jp : J * p = star q * J` using `by conv_rhs => rw [← hp, ← mul_assoc, ← mul_assoc, ← star_mul, hpq, star_one, one_mul]`. Establish `Tq : T * star q = T * star q * T`. Use `congrArg star hqT` as an intermediate fact. Simplify using `only [star_mul, hT] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_assoc, this]`. Establish `TJpR : T * (J * (p * R)) = 0`. Rewrite using `[← mul_assoc J, Jp, mul_assoc, ← mul_assoc T, Tq, mul_assoc, TJR, mul_zero]`. Establish `pR : p * R = T * (p * R) + R * (p * R)` using `by conv_rhs => rw [show R * (p * R) = (1 - T - J * T * J) * (p * R) by rw [← hR]]`. Simplify using `only [sub_mul, mul_assoc, TJpR]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨ρ, hρ⟩ : ∃ ρ, ρ = R * (p * R)` from `⟨_, rfl⟩`. Establish `Rρ : R * ρ = ρ` using `by rw [hρ, ← mul_assoc, RR]`. Establish `ρR : ρ * R = ρ` using `by rw [hρ, mul_assoc, mul_assoc, RR]`. Establish `r1 : star ρ * R = star ρ` using `by rw [← sR, ← star_mul, Rρ]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r2 : R * star ρ = star ρ` using `by rw [← sR, ← star_mul, ρR]`. Establish `ρT : ρ * T = 0` using `by rw [← ρR, mul_assoc, RT, mul_zero]`. Establish `ρT' : star ρ * T = 0` using `by rw [← r1, mul_assoc, RT, mul_zero]`. Establish `ρJT' : star ρ * (J * T) = 0` using `by rw [← r1, mul_assoc, RJT, mul_zero]`. Establish `Tρ : T * ρ = 0` using `by rw [← Rρ, ← mul_assoc, TR, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `TJρ : T * (J * ρ) = 0` using `by rw [← Rρ, ← mul_assoc J, ← mul_assoc, TJR, zero_mul]`. Establish `ρJρ : star ρ * (J * ρ) = R * J`. Establish `e : star (p * R) * J * (p * R) = R * J`. Rewrite using `[star_mul, sR, mul_assoc, mul_assoc, ← mul_assoc J, ← mul_assoc (star p), ← mul_assoc (star p), hp, JR, ← mul_assoc, RR]`. Rewrite `pR` using `[← hρ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[pR, star_add, star_mul, hT]`. Establish `z : ∀ x, star ρ * (J * (T * x)) = 0` using `fun x => by`. Rewrite using `[← mul_assoc J, ← mul_assoc, ρJT', zero_mul]`. Simplify `e` using `only [add_mul, mul_add, mul_assoc, TJT, TJρ, z, mul_zero, zero_add]`. Establish `βJT : star β * (J * T) = 0` using `by rw [← s3, mul_assoc, hiso', mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `βJT' : β * (J * T) = 0` using `by rw [← h4, mul_assoc, hiso', mul_zero]`. Establish `αJT : star α * (J * T) = 0` using `by rw [← s1, mul_assoc, hiso', mul_zero]`. Take `⟨m, hm⟩ : ∃ m, m = α + ρ + J * star β * J` from `⟨_, rfl⟩`. Establish `sm : star m = star α + star ρ + J * β * J` using `by simp [hm, hJ, mul_assoc]`. Establish `mT : m * T = α` using `by simp [hm, add_mul, mul_assoc, h2, ρT, βJT]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Tm : T * star m = star α` using `by rw [← hT, ← star_mul, mT]`. Use `⟨m, ?_, mT, by simp [sm, add_mul, mul_assoc, s1, ρT', βJT'], ?_, ?_⟩` and prove the remaining obligations. Establish `a1 : star α * (J * α) = 0` using `by rw [← h1, ← mul_assoc J, ← mul_assoc, h1, αJT, zero_mul]`. Establish `a2 : star α * (J * ρ) = 0` using `by rw [← s1, mul_assoc, TJρ, mul_zero]`. Establish `a3 : star ρ * (J * α) = 0` using `by rw [← h1, ← mul_assoc J, ← mul_assoc, ρJT', zero_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a4 : star ρ * (star β * J) = 0` using `by rw [← s4, mul_assoc, ← mul_assoc, ρT', zero_mul]`. Establish `a5 : β * ρ = 0` using `by rw [← h4, mul_assoc, Tρ, mul_zero]`. Establish `a6 : β * (J * (star β * J)) = 0`. Rewrite using `[← s4, mul_assoc, ← mul_assoc J, ← mul_assoc, βJT', zero_mul]`. Establish `a7 : star α * (star β * J) = T * J` using `by rw [← mul_assoc, s5]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sm, hm]`. Simplify using `only [add_mul, mul_add, mul_assoc, JJ, a1, a2, a3, a4, a5, a6, a7, hβα, ρJρ, mul_zero]`. Simplify using `only [hR, sub_mul, mul_assoc, hJJ, one_mul, mul_one]`. Normalize the expressions using the abelian group laws. Simplify using `[sm, add_mul, mul_add, mul_assoc, JJ, αJT, ρJT', h4]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Establish `b1 : J * star m * J * (1 - J * T * J) = (T + R) * (J * star m * J * (1 - J * T * J))`. Establish `: J * T * J * (J * star m * J * (1 - J * T * J)) = 0`. Simplify using `only [mul_assoc, JJ]`. Rewrite using `[← mul_assoc T, Tm, mul_sub, JJ, mul_one, mul_sub, ← mul_assoc (star α), s1, sub_self, mul_zero]`. Rewrite using `[show T + R = 1 - J * T * J by rw [hR]; abel, sub_mul, this, one_mul, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `αR : α * R = 0` using `by rw [← h2, mul_assoc, TR, mul_zero]`. Establish `βJR : star β * (J * R) = 0` using `by rw [← s3, mul_assoc, TJR, mul_zero]`. Establish `mR : m * R = ρ` using `by simp [hm, add_mul, mul_assoc, αR, ρR, βJR]`. Establish `b2 : T * ((p - m) * (T + R)) = (p - m) * (T + R)`. Rewrite `pR` using `[← hρ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [sub_mul, mul_add, mT, mR, mul_sub, h1, Tρ]`. Rewrite using `[← mul_assoc T p T, hpT]`. Use `conv_rhs => rw [pR]`. Normalize the expressions using the abelian group laws. Rewrite using `[mul_assoc (p - m), b1, ← mul_assoc (p - m), ← mul_assoc T, b2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_levi (J T p q α β : A) (hJ : star J = J) (hJJ : J * J = 1) (hT : star T = T) (hTT : T * T = T)
     (hiso : T * J * T = 0) (hp : star p * J * p = J) (hpq : p * q = 1) (hpT : T * p * T = p * T)
@@ -404,7 +404,7 @@ theorem exists_levi (J T p q α β : A) (hJ : star J = J) (hJJ : J * J = 1) (hT 
     rw [mul_assoc (p - m), b1, ← mul_assoc (p - m), ← mul_assoc T, b2]
 
 /- English proof (translation)
-Establish `s : star u * T = T` using `by rw [← hT, ← star_mul, hT, h2, hT]`. Establish `e : u * (J * T * J) = J * T * J` using `by conv_lhs => rw [← s]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← mul_assoc, hu]`. Rewrite `h3` using `[← mul_assoc, mul_sub T, h2, mul_one, sub_self, zero_mul, mul_sub, mul_one, sub_mul, e, one_mul, sub_self, sub_zero]`. Conclude with `(sub_eq_zero.1 h3.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_fix (J T u : A) (hT : star T = T) (hu : u * J * star u = J) (h2 : T * u = T)
     (h3 : T * ((u - 1) * (1 - J * T * J)) = (u - 1) * (1 - J * T * J)) : u = 1 := by
@@ -423,7 +423,7 @@ section Main
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `(Submodule.equivMapOfInjective _ (fun x y hxy => ?_) W).finrank_eq.symm` and prove the remaining obligations. Use `congrArg (h *ᵥ ·) hxy` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finrank_map_toLin (g h : Matrix (Fin n) (Fin n) ℂ) (hg : h * g = 1) (W : Submodule ℂ (Fin n → ℂ)) :
     Module.finrank ℂ (W.map (Matrix.toLin' g)) = Module.finrank ℂ W := by
@@ -432,7 +432,7 @@ theorem finrank_map_toLin (g h : Matrix (Fin n) (Fin n) ℂ) (hg : h * g = 1) (W
   simpa [Matrix.mulVec_mulVec, hg] using this
 
 /- English proof (translation)
-Establish `e : W.map (Matrix.toLin' g) = W` using `Submodule.eq_of_le_of_finrank_eq (by rintro _ ⟨y, hy, rfl⟩; exact hW y hy) (finrank_map_toLin g h hg W)`. Introduce `y hy`. Rewrite `hy` using `[← e]`. Take `⟨z, hz, rfl⟩` from `hy`. Simplify `hz` using `[Matrix.mulVec_mulVec, hg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inv_stable (g h : Matrix (Fin n) (Fin n) ℂ) (hg : h * g = 1) (W : Submodule ℂ (Fin n → ℂ))
     (hW : ∀ y ∈ W, g *ᵥ y ∈ W) : ∀ y ∈ W, h *ᵥ y ∈ W := by
@@ -444,7 +444,7 @@ theorem inv_stable (g h : Matrix (Fin n) (Fin n) ℂ) (hg : h * g = 1) (W : Subm
   simpa [Matrix.mulVec_mulVec, hg] using hz
 
 /- English proof (translation)
-Use `Matrix.ext_iff_mulVec.2 fun y => ?_` and prove the remaining obligations. Simplify using `only [← Matrix.mulVec_mulVec]`. Conclude with `h2 _ (hg _ (h1 y))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem proj_mul_eq {W W' : Submodule ℂ (Fin n → ℂ)} {P P' : Matrix (Fin n) (Fin n) ℂ} (h1 : ∀ y, P *ᵥ y ∈ W)
     (h2 : ∀ y ∈ W', P' *ᵥ y = y) {g : Matrix (Fin n) (Fin n) ℂ} (hg : ∀ y ∈ W, g *ᵥ y ∈ W') :
@@ -454,7 +454,7 @@ theorem proj_mul_eq {W W' : Submodule ℂ (Fin n → ℂ)} {P P' : Matrix (Fin n
   exact h2 _ (hg _ (h1 y))
 
 /- English proof (translation)
-Establish `a` using `proj_mul_eq h1 h2 hg`. Establish `b` using `congrArg conjTranspose (proj_mul_eq h1 h2 hg')`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, h0] at b`. Rewrite using `[← b, ← mul_assoc, a]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_comm {W : Submodule ℂ (Fin n → ℂ)} {P : Matrix (Fin n) (Fin n) ℂ} (h0 : Pᴴ = P) (h1 : ∀ y, P *ᵥ y ∈ W)
     (h2 : ∀ y ∈ W, P *ᵥ y = y) {g : Matrix (Fin n) (Fin n) ℂ} (hg : ∀ y ∈ W, g *ᵥ y ∈ W)
@@ -465,7 +465,7 @@ theorem proj_comm {W : Submodule ℂ (Fin n → ℂ)} {P : Matrix (Fin n) (Fin n
   rw [← b, ← mul_assoc, a]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Use `hz _ (h1 (Pi.single b 1))` as an intermediate fact. Rewrite `this` using `[Matrix.star_mulVec, h0, ← Matrix.dotProduct_mulVec]`. Simplify `this` using `[Pi.star_single]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem proj_mulVec_eq_zero {W : Submodule ℂ (Fin n → ℂ)} {P : Matrix (Fin n) (Fin n) ℂ} (h0 : Pᴴ = P)
     (h1 : ∀ y, P *ᵥ y ∈ W) {z : Fin n → ℂ} (hz : ∀ x ∈ W, star x ⬝ᵥ z = 0) : P *ᵥ z = 0 := by
@@ -475,7 +475,7 @@ theorem proj_mulVec_eq_zero {W : Submodule ℂ (Fin n → ℂ)} {P : Matrix (Fin
   simpa [Pi.star_single] using this
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [← h2 x hx, Matrix.star_mulVec, h0, ← Matrix.dotProduct_mulVec, hz, dotProduct_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dot_eq_zero_of_proj {W : Submodule ℂ (Fin n → ℂ)} {P : Matrix (Fin n) (Fin n) ℂ} (h0 : Pᴴ = P)
     (h2 : ∀ y ∈ W, P *ᵥ y = y) {z : Fin n → ℂ} (hz : P *ᵥ z = 0) : ∀ x ∈ W, star x ⬝ᵥ z = 0 := fun x hx => by
@@ -484,7 +484,7 @@ theorem dot_eq_zero_of_proj {W : Submodule ℂ (Fin n → ℂ)} {P : Matrix (Fin
 variable {ε : Fin n → Bool}
 
 /- English proof (translation)
-Establish `h : Formalism.REAL.Jm ε * mᴴ * Formalism.REAL.Jm ε * m = 1`. Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc mᴴ, hm, Formalism.REAL.Jm_mul_self]`. Conclude with `⟨⟨⟨m, _, mul_eq_one_comm.1 h, h⟩, hm⟩, rfl, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_uMat (m : Matrix (Fin n) (Fin n) ℂ) (hm : mᴴ * Formalism.REAL.Jm ε * m = Formalism.REAL.Jm ε) :
     ∃ g : Formalism.REAL.UJ ε, uMat g = m ∧ uMat g⁻¹ = Formalism.REAL.Jm ε * mᴴ * Formalism.REAL.Jm ε := by
@@ -498,26 +498,26 @@ Both sides reduce to the same expression.
 theorem uMat_mul (g h : Formalism.REAL.UJ ε) : uMat (g * h) = uMat g * uMat h := rfl
 
 /- English proof (translation)
-Rewrite using `[← uMat_mul, inv_mul_cancel]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem uMat_inv_mul (g : Formalism.REAL.UJ ε) : uMat g⁻¹ * uMat g = 1 := by
   rw [← uMat_mul, inv_mul_cancel]; rfl
 
 /- English proof (translation)
-Rewrite using `[← uMat_mul, mul_inv_cancel]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem uMat_mul_inv (g : Formalism.REAL.UJ ε) : uMat g * uMat g⁻¹ = 1 := by
   rw [← uMat_mul, mul_inv_cancel]; rfl
 
 /- English proof (translation)
-The claim follows from `g.2`.
+A detailed English derivation is pending.
 -/
 theorem uMat_form (g : Formalism.REAL.UJ ε) : (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = Formalism.REAL.Jm ε := g.2
 
 variable {a : ℕ} {j : Fin a → ℕ} {W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)}
 
 /- English proof (translation)
-Use `Matrix.ext_iff_mulVec.2 fun y => ?_` and prove the remaining obligations. Simplify using `only [← Matrix.mulVec_mulVec, Matrix.zero_mulVec]`. Conclude with `proj_mulVec_eq_zero h0 h1 fun x hx => hW.2.2.2 x hx _ (h1 y)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem proj_iso (hW : IsIsoFlag ε j W) {T : Matrix (Fin n) (Fin n) ℂ} (h0 : Tᴴ = T)
     (h1 : ∀ y, T *ᵥ y ∈ W (Fin.last a)) : T * Formalism.REAL.Jm ε * T = 0 := by
@@ -526,17 +526,17 @@ theorem proj_iso (hW : IsIsoFlag ε j W) {T : Matrix (Fin n) (Fin n) ℂ} (h0 : 
   exact proj_mulVec_eq_zero h0 h1 fun x hx => hW.2.2.2 x hx _ (h1 y)
 
 /- English proof (translation)
-Set `c : ℕ → Fin (a + 1)` to `fun i => ⟨min i a, by omega⟩`. Establish `hc : Monotone c` using `fun i k h => Fin.mk_le_mk.2 (by omega)`. Establish `hci : ∀ i : Fin (a + 1), c i = i` using `fun i => Fin.ext (by simp only [c]; omega)`. Take `⟨U, hU, hUW⟩` from `exists_unitary_flag (fun i => W (c i)) (fun i => (W (c i)).map (Matrix.toLin' (uMat g⁻¹))) (by simpa [c] using hW.1) (hW.2.1.comp hc) (fun i k h => Submodule.map_mono (hW.2.1 (hc h))) (fun i => (finrank_map_toLin _ _ (uMat_mul_inv g) _).symm) a`. Establish `hgU : ∀ i, ∀ y ∈ W i, (uMat g * U) *ᵥ y ∈ W i` using `fun i y hy => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz, hz'⟩` from `hUW i (by omega) y (by rw [hci]; exact hy)`. Rewrite using `[← Matrix.mulVec_mulVec, ← hz', Matrix.toLin'_apply, Matrix.mulVec_mulVec, uMat_mul_inv, Matrix.one_mulVec]`. Rewrite `hz` using `[hci]`. Conclude with `hz`. Take `⟨T, hT0, hT1, hT2⟩` from `exists_proj (W (Fin.last a))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hiso` using `proj_iso hW hT0 hT1`. Establish `e` using `proj_mul_eq hT1 hT2 (hgU (Fin.last a))`. Take `⟨V, hV1, hV2, hV3⟩` from `GlobalTheory.HCXi.exists_unitary_comm_mul_eq_of_gram (Formalism.REAL.Jm ε) (Formalism.REAL.Jm_conjTranspose ε) (Formalism.REAL.Jm_mul_self ε) T (U * T) (by rw [conjTranspose_mul, mul_assoc, ← mul_assoc Uᴴ, hU, one_mul]) (by`. Establish `: (U * T)ᴴ * Formalism.REAL.Jm ε * (U * T) = (uMat g * U * T)ᴴ * Formalism.REAL.Jm ε * (uMat g * U * T)` using `by conv_lhs => rw [← uMat_form g]`. Simplify using `only [conjTranspose_mul, mul_assoc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← e, hT0, hiso, mul_assoc T _ T, conjTranspose_mul, hT0, mul_assoc, mul_assoc, ← mul_assoc T, ← mul_assoc _ T, hiso]`. Use the proof step `simp)`. Take `⟨k, hk, -⟩` from `exists_uMat (ε := ε) V (by rw [mul_assoc, ← hV2, ← mul_assoc, hV1, one_mul])`. Use `⟨k⁻¹, ?_, fun i y hy => ?_⟩` and prove the remaining obligations. Establish `h1 : uMat k⁻¹ = Vᴴ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `uMat_inv_mul k` as an intermediate fact. Rewrite `this` using `[hk]`. Rewrite using `[← mul_one (uMat k⁻¹), ← mul_eq_one_comm.1 hV1, ← mul_assoc, this, one_mul]`. Use `show _ = _`. Rewrite using `[h1, conjTranspose_conjTranspose, mul_eq_one_comm.1 hV1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy'` using `hT2 y (hW.2.1 (Fin.le_last i) hy)`. Use `hgU i y hy` as an intermediate fact. Rewrite using `[inv_inv, uMat_mul, hk, ← hy', Matrix.mulVec_mulVec, mul_assoc, hV3, ← mul_assoc, ← Matrix.mulVec_mulVec, hy']`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_stab_mul_compact (hW : IsIsoFlag ε j W) (g : Formalism.REAL.UJ ε) :
     ∃ k ∈ maxK ε, ∀ i, ∀ y ∈ W i, uMat (g * k⁻¹) *ᵥ y ∈ W i := by
@@ -577,25 +577,23 @@ theorem exists_stab_mul_compact (hW : IsIsoFlag ε j W) (g : Formalism.REAL.UJ �
     exact this
 
 /- English proof (translation)
-Set `c : ℕ → Fin (a + 1)` to `fun i => ⟨min i a, by omega⟩`. Establish `hc : Monotone c` using `fun i k h => Fin.mk_le_mk.2 (by omega)`. Establish `hci : ∀ i : Fin (a + 1), c i = i` using `fun i => Fin.ext (by simp only [c]; omega)`. Establish `hca : c a = Fin.last a` using `hci (Fin.last a)`. Use `choose P hP0 hP1 hP2 using fun i => exists_proj (W i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ∀ i k, i ≤ k → P k * P i = P i` using `fun i k h => by`. Simplify `hW.2.1 h hy)` using `using proj_mul_eq (g := 1) (hP1 i) (hP2 k) (fun y hy => by simpa`. Establish `hl : ∀ i k, i ≤ k → P i * P k = P i` using `fun i k h => by`. Use `congrArg conjTranspose (hr i k h)` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, hP0, hP0]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hq` using `fun i => inv_stable _ _ (uMat_inv_mul p) (W i) (hp i)`. Take `⟨α, β, hβα, hα, hβ, hαT, hβT, hN⟩` from `exists_diagonal_blocks (fun i => P (c i)) (by`. Use `Matrix.ext_iff_mulVec.2 fun y => ?_` and prove the remaining obligations. Use `hP1 0 y` as an intermediate fact. Rewrite `this` using `[hW.1, Submodule.mem_bot]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this)` using `[c]`. Use the proof step `(fun i k h => hl _ _ (hc h)) (fun i k h => hr _ _ (hc h)) (uMat p) (uMat p⁻¹) (uMat_inv_mul p)`. Use the proof step `(fun i => proj_mul_eq (hP1 _) (hP2 _) (hp _)) (fun i => proj_mul_eq (hP1 _) (hP2 _) (hq _)) a`. Use `replace hα : ∀ i, P i * α = α * P i := fun i => by simpa only [hci] using hα i`. Use `replace hβ : ∀ i, P i * β = β * P i := fun i => by simpa only [hci] using hβ i`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hβα`, `hαT`, `hβT` using `[hca]`. Take `⟨m, hm, hmT, hmT', hmβ, hmN⟩` from `exists_levi (Formalism.REAL.Jm ε) (P (Fin.last a)) (uMat p) (uMat p⁻¹) α β (Formalism.REAL.Jm_conjTranspose ε) (Formalism.REAL.Jm_mul_self ε) (hP0 _) (hl _ _ le_rfl) (proj_iso hW (hP0 _) (hP1 _)) (uMat_form p) (uMat_mul_inv p) (proj_mul_eq (hP1 _) (hP2 _) (hp _)) (proj_mul_eq (hP …`. Simplify using `only [star_eq_conjTranspose] at hm hmT' hmβ hmN`. Take `⟨g, rfl, hg⟩` from `exists_uMat m hm`. Rewrite `hmβ`, `hmN` using `[← hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : ∀ y, uMat (p * g⁻¹) *ᵥ y - y = ((uMat p - uMat g) * uMat g⁻¹) *ᵥ y` using `fun y => by`. Rewrite using `[sub_mul, uMat_mul_inv, Matrix.sub_mulVec, Matrix.one_mulVec, uMat_mul]`. Establish `key : ∀ (x γ : Matrix (Fin n) (Fin n) ℂ), x * P (Fin.last a) = γ → ∀ i, x * P i = γ * P i` using `fun x γ h i => by`. Rewrite using `[← h, mul_assoc, hr _ _ (Fin.le_last i)]`. Use `⟨g, fun i y hy => ⟨?_, ?_⟩, fun i y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hP2 i y hy, Matrix.mulVec_mulVec, key _ _ hmT, ← hα, ← Matrix.mulVec_mulVec]`. Conclude with `hP1 _ _`. Use `congrArg conjTranspose (hα i)` as an intermediate fact. Simplify using `only [conjTranspose_mul, hP0] at this`. Rewrite using `[← hP2 i y hy, Matrix.mulVec_mulVec, key _ _ hmT', this, ← Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP1 _ _`. Establish `h` using `hN i i.2`. Establish `c1 : c i = i.castSucc` using `hci i.castSucc`. Establish `c2 : c (i + 1) = i.succ` using `hci i.succ`. Simplify using `only [c1, c2] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (uMat p - uMat g) * P i.succ = (uMat p - α) * P i.succ` using `by rw [sub_mul, sub_mul, key _ _ hmT]`. Rewrite using `[hu, ← hP2 _ y hy, Matrix.mulVec_mulVec, mul_assoc, key _ _ hmβ, ← hβ, ← mul_assoc, e, ← h, mul_assoc, ← Matrix.mulVec_mulVec]`. Conclude with `hP1 _ _`. Establish `hz` using `proj_mulVec_eq_zero (hP0 _) (hP1 _) hy`. Establish `hy' : (1 - Formalism.REAL.Jm ε * P (Fin.last a) * Formalism.REAL.Jm ε) *ᵥ y = y`.
-
-Simplify using `only [Matrix.sub_mulVec, ← Matrix.mulVec_mulVec, hz]`. Simplify using the standard rewrite rules. Rewrite using `[hu, ← hy', Matrix.mulVec_mulVec, ← hmN, ← Matrix.mulVec_mulVec]`. Conclude with `hP1 _ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_unip_mul_levi (hW : IsIsoFlag ε j W) (p : Formalism.REAL.UJ ε) (hp : ∀ i, ∀ y ∈ W i, uMat p *ᵥ y ∈ W i) :
     ∃ m ∈ flagM ε W, p * m⁻¹ ∈ flagN ε W := by
@@ -654,25 +652,25 @@ theorem exists_unip_mul_levi (hW : IsIsoFlag ε j W) (p : Formalism.REAL.UJ ε) 
     exact hP1 _ _
 
 /- English proof (translation)
-Use `choose P hP0 hP1 hP2 using fun i => exists_proj (W i)`. Establish `hl : ∀ i k, i ≤ k → P i * P k = P i` using `fun i k h => by`. Establish `: P k * P i = P i`. Simplify `hW.2.1 h hy)` using `using proj_mul_eq (g := 1) (hP1 i) (hP2 k) (fun y hy => by simpa`. Use `congrArg conjTranspose this` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[conjTranspose_mul, hP0, hP0]`. Then use the resulting hypothesis. Establish `huW : ∀ i, ∀ y ∈ W i, uMat u *ᵥ y ∈ W i` using `fun i => by`. Use `Fin.cases (fun y hy => ?_) (fun i y hy => ?_) i` and prove the remaining obligations. Rewrite `hy` using `[hW.1, Submodule.mem_bot]`. Simplify using `[hy]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using add_mem (hW.2.1 (Fin.castSucc_le_succ i) (hu.1 i y hy)) hy`. Establish `hkW : ∀ i, ∀ y ∈ W i, uMat (u * m) *ᵥ y ∈ W i` using `fun i y hy => by`. Rewrite using `[uMat_mul, ← Matrix.mulVec_mulVec]`. Conclude with `huW i _ (hm i y hy).1`. Establish `hc : ∀ i, P i * uMat u = uMat u * P i` using `fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `proj_comm (hP0 i) (hP1 i) (hP2 i) (hkW i) (inv_stable _ _ hk _ (hkW i))`. Establish `h2` using `proj_comm (hP0 i) (hP1 i) (hP2 i) (fun y hy => (hm i y hy).1) (fun y hy => (hm i y hy).2)`. Rewrite `h1` using `[uMat_mul, mul_assoc, ← h2, ← mul_assoc, ← mul_assoc]`. Use `congrArg (· * uMat m⁻¹) h1` as an intermediate fact. Simplify `this` using `only [mul_assoc, uMat_mul_inv, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Proceed by induction.
 
-Establish `hfix : ∀ i, P i * (uMat u - 1) = 0` using `fun i => by`. Proceed by induction on `i using Fin.induction with`. Consider the case `zero`. Use `Matrix.ext_iff_mulVec.2 fun y => ?_` and prove the remaining obligations. Use `hP1 0 ((uMat u - 1) *ᵥ y)` as an intermediate fact.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[hW.1, Submodule.mem_bot]`. Simplify using `using this`. Consider the case `succ i ih`. Use `proj_mul_eq (g := uMat u - 1) (hP1 i.succ) (hP2 i.castSucc) (fun y hy => by simpa [Matrix.sub_mulVec] using hu.1 i y hy)` as an intermediate fact. Rewrite `this` using `[ih, zero_mul, sub_mul, ← hc, one_mul]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_sub, mul_one, ← this]`. Establish `hiso` using `proj_iso hW (hP0 _) (hP1 _)`. Establish `h1 : uMat u = 1`. Use `eq_one_of_fix (Formalism.REAL.Jm ε) (P (Fin.last a)) _ (hP0 _) ?_ ?_ ?_` and prove the remaining obligations. Take `⟨g, hg, hg'⟩` from `exists_uMat _ (uMat_form u)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `uMat_mul_inv g` as an intermediate fact. Rewrite `this` using `[hg, hg']`. Use `congrArg (· * Formalism.REAL.Jm ε) this` as an intermediate fact. Simplify `this` using `only [mul_assoc, Formalism.REAL.Jm_mul_self, mul_one, one_mul, star_eq_conjTranspose]`. Use `hfix (Fin.last a)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[mul_sub, mul_one, sub_eq_zero]`. Then use the resulting hypothesis. Use `Matrix.ext_iff_mulVec.2 fun y => ?_` and prove the remaining obligations. Simplify using `only [← Matrix.mulVec_mulVec]`. Use `hP2 _ _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hu.2 _ (dot_eq_zero_of_proj (hP0 _) (hP2 _) ?_)` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, mul_sub, ← mul_assoc, ← mul_assoc, mul_assoc (P _) _ (Formalism.REAL.Jm ε), Formalism.REAL.Jm_mul_self, mul_one, mul_one, hl _ _ le_rfl, sub_self, Matrix.zero_mulVec]`. Conclude with `Subtype.ext (Units.ext h1)`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_mul_mem_compact (hW : IsIsoFlag ε j W) (u : Formalism.REAL.UJ ε) (hu : u ∈ flagN ε W)
     (m : Formalism.REAL.UJ ε) (hm : m ∈ flagM ε W) (hk : u * m ∈ maxK ε) : u = 1 := by
@@ -730,7 +728,7 @@ theorem eq_one_of_mul_mem_compact (hW : IsIsoFlag ε j W) (u : Formalism.REAL.UJ
 end Main
 
 /- English proof (translation)
-Introduce `n ε a j W hW`. Use `⟨fun g => ?_, eq_one_of_mul_mem_compact hW⟩` and prove the remaining obligations. Take `⟨k, hk, hp⟩` from `exists_stab_mul_compact hW g`. Take `⟨m, hm, hu⟩` from `exists_unip_mul_levi hW _ hp`. Conclude with `⟨_, hu, m, hm, k, hk, by group⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iwasawa : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ)
     (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), IsIsoFlag ε j W →

@@ -15,21 +15,21 @@ namespace GlobalTheory.ArcBuild
 attribute [local instance] GlobalTheory.TorusExt.gtGroup
 
 /- English proof (translation)
-Introduce `E _ _ _ H D T t P hT F _ _ _`. Use `letI := H.starRing`. Introduce `J`. Establish `hL` using `GlobalTheory.firstFiveLaws`. Establish `hB` using `P.D.tau_bimult`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : AdmBase T.V (maximalIdeal T.V)` using `⟨inferInstance, inferInstance, inferInstance, inferInstance⟩`. Use `choose f f₁ f₂ f₃ f₄ f₅ f₆ using hT F`. Establish `tors : ∀ n (hn : 0 < n) p, f n hn p ^ n = 1` using `fun n hn p => by`. Take `⟨w, hw⟩` from `P.U.ext`. Conclude with `((f₁ n hn p _).2 rfl w hw).1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hev : ∀ n a, ∃ p : QkPt P.D.toPre F n, ∀ hn : 0 < n, f n hn p = J.ev n a` using `fun n a => by`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨GlobalTheory.TorusExt.qkZero hB F 0, fun h => absurd h (lt_irrefl 0)⟩`. Take `⟨p, hp⟩` from `f₂ n hn (J.ev n a) ((J.onto n hn _).2 ⟨a, rfl⟩)`. Conclude with `⟨p, fun _ => hp⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose ev evp using hev`. Use `⟨{ ζ := J.ζ, ζ_prim := J.ζ_prim, ζ_pow := J.ζ_pow, ev := ev add := fun n hn a b => ?_, lin := fun n hn c a => ?_, ker := fun n hn a b => ?_, onto := fun n hn p => ?_, tower := fun n m hn hm a => ?_, isom := fun n hn a b => ?_ }, rfl, fun k hk a q h => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.TorusExt.qkAdd_iff hB _ _ _).2 ((f₃ n hn _ _).1 ?_)` and prove the remaining obligations. Rewrite using `[f₄ n hn _ _ _ (GlobalTheory.TorusExt.qkAdd_qkAdd hB _ _), evp, evp, evp, J.add]`. Take `⟨p, hp⟩` from `qkAct_exists hL.1.globalFns hB P.oD c (ev n a)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h₁` using `f₅ n hn _ _ _ hp`. Take `⟨q, q₁, q₂, q₃⟩` from `hp`. Use `⟨q, q₁, q₂, GlobalTheory.TorusExt.equiv_trans hB q₃ ((f₃ n hn _ _).1 ?_)⟩` and prove the remaining obligations. Rewrite using `[h₁, evp, evp, J.lin]`. Rewrite using `[← f₃ n hn, evp, evp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h₁ : J.ev n a = J.ev n b * J.ev n (a - b)` using `by rw [← J.add, add_sub_cancel]`. Rewrite using `[h₁, mul_eq_left, J.ker n hn]`. Conclude with `exists_congr fun c => sub_eq_iff_eq_add'`. Take `⟨a, ha⟩` from `(J.onto n hn (f n hn p)).1 (tors n hn p)`. Conclude with `⟨a, (f₃ n hn _ _).1 (by rw [evp, ha])⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q, q₁, q₂⟩` from `GlobalTheory.ModelData.ModelTate.exists_level_down hB n m (ev (n * m) a)`. Establish `hN` using `Nat.mul_pos hn hm`. Establish `h` using `(GlobalTheory.LevelCompat.qkToAkU_level hL T.V _ hA P.D P.A t.G t.semi P.U F n m _ hn hm rfl q (ev (n * m) a) _).2 q₁ q₂ ((f₁ _ hN _ _).2 rfl)`. Use `⟨q, q₁, q₂, (f₃ n hn _ _).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← (f₁ n hn _ _).1 h, evp, evp, J.tower n m hn hm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(f₆ n hn _ _ _).2 ?_` and prove the remaining obligations. Rewrite using `[evp, evp]`. Conclude with `J.isom n hn a b`. Use `(f₃ k hk _ _).1 ?_` and prove the remaining obligations. Rewrite using `[← (f₁ k hk _ _).1 h, evp]`.
+A detailed English derivation is pending.
 -/
 theorem exists_tateIsoQ_of_torsionIso : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (T : CDVR) (t : SAB H (Sp T.V)) (P : PELUnif (maximalIdeal T.V) t), P.TorsionIso → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing T.V) F], letI := H.starRing; ∀ J : TateIso D F (Out.TFK (R := T.V) F ⟶ P.A.A) (fun a g => g ≫ P.oA.act a) (fun n g g' c => Out.WeilIs P.A.A P.A.L n g g' (unitOn c)), ∃ I : TateIsoQ D P.D.toPre P.oD F, I.ζ = J.ζ ∧ ∀ k, 0 < k → ∀ a q, P.ToA F k q (J.ev k a) → Out.QkPt.Equiv P.D.toPre F q (I.ev k a) := by
   intro E _ _ _ H D T t P hT F _ _ _

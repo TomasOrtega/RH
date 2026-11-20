@@ -5,7 +5,7 @@ noncomputable def UpperTheory.Reformulated.B.IsIntegralNatCast.IsIntP :
     fun {p : ℕ} [Fact (Nat.Prime p)] (x : ℂ_[p]) ↦ ‖x‖ ≤ (1 : ℝ)
 
 /- English proof (translation)
-Introduce `p _ n`. Conclude with `IsUltrametricDist.norm_natCast_le_one ℂ_[p] n`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.IsIntegralNatCast.isPadicIntegral_natCast :
     ∀ {p : ℕ} [inst : Fact (Nat.Prime p)] (n : ℕ), UpperTheory.Reformulated.B.IsIntegralNatCast.IsIntP (↑n : ℂ_[p]) := by

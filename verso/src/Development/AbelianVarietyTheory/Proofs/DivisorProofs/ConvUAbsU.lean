@@ -43,7 +43,7 @@ def absU {m : ℕ} (α : Fin m → ℂˣ) : Fin m → ℂˣ :=
   fun i => Units.mk0 ((‖(α i : ℂ)‖ : ℝ) : ℂ) (by simp)
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single (v j)]`. Rewrite using `[hx i (v j) (by simpa using hij), zero_mul]`. Introduce `b _ hb`. Rewrite using `[hy b j hb, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -56,13 +56,13 @@ theorem IsWeylRep.mul {R : Type} [CommRing R] {n : ℕ} {w v : Equiv.Perm (Fin n
   · simp
 
 /- English proof (translation)
-Establish `key : ∀ i j, ((y⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) i (v j) * (y : Matrix (Fin n) (Fin n) R) (v j) j = if i = j then 1 else 0`. Introduce `i j`. Establish `h` using `congrFun (congrFun (Units.inv_mul y) i) j`. Rewrite `h` using `[Matrix.mul_apply, Finset.sum_eq_single (v j)]`. Rewrite using `[h, Matrix.one_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _ hb`. Rewrite using `[hy b j hb, mul_zero]`. Simplify using the standard rewrite rules. Establish `hv : ∀ j, v (v⁻¹ j) = j` using `fun j => by simp`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : IsUnit ((y : Matrix (Fin n) (Fin n) R) j (v⁻¹ j))`. Establish `h` using `key (v⁻¹ j) (v⁻¹ j)`. Rewrite `h` using `[hv, if_pos rfl]`. Conclude with `IsUnit.of_mul_eq_one_right _ h`. Establish `h` using `key i (v⁻¹ j)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hv, if_neg hij]`. Conclude with `hu.mul_left_eq_zero.1 h`.
+A detailed English derivation is pending.
 -/
 theorem IsWeylRep.inv {R : Type} [CommRing R] {n : ℕ} {v : Equiv.Perm (Fin n)} {y : GL (Fin n) R}
     (hy : IsWeylRep v y) : IsWeylRep v⁻¹ y⁻¹ := by

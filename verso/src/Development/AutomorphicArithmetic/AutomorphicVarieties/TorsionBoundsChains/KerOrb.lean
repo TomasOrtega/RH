@@ -3,21 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 open CategoryTheory UpperTheory.V.KH
 
 /- English proof (translation)
-Introduce `G X _ _`. Use `set q : X → MulAction.orbitRel.Quotient G X := Quotient.mk (MulAction.orbitRel G X) with hq`. Use `set K := Representation.Coinvariants.ker (perm G X) with hK`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `hf` using `[LinearMap.mem_ker, Finsupp.lmapDomain_apply]`. Set `r : X → X` to `fun x => Quotient.out (q x)`. Establish `hstep : ∀ f : X →₀ ℤ, f - Finsupp.mapDomain r f ∈ K`. Introduce `f`. Proceed by induction on `f using Finsupp.induction_linear with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb`. Rewrite using `[Finsupp.mapDomain_add]`. Use `K.add_mem ha hb` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Normalize the expressions using the abelian group laws. Consider the case `single x c`. Rewrite using `[Finsupp.mapDomain_single]`. Establish `hx : (MulAction.orbitRel G X) (r x) x` using `Quotient.mk_out (s := MulAction.orbitRel G X) x`. Take `⟨g, hg⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : g • x = r x` using `hg`. Establish `hmem` using `Representation.Coinvariants.mem_ker_of_eq (ρ := perm G X) g (Finsupp.single x c) _ rfl`. Establish `hneg` using `K.neg_mem hmem`. Use `hneg using 1` and compare the differences between its conclusion and the goal. Rewrite using `[perm_single, hg']`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `h0 : Finsupp.mapDomain r f = 0`. Establish `: r = (fun c => Quotient.out c) ∘ q` using `rfl`. Rewrite using `[this, Finsupp.mapDomain_comp, hf, Finsupp.mapDomain_zero]`. Use `hstep f` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[h0, sub_zero]`. Then use the resulting hypothesis. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨g, v⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `Finsupp.lmapDomain ℤ ℤ q ((perm G X) g v - v) = 0`. Rewrite using `[map_sub, perm_apply, Finsupp.lmapDomain_apply, Finsupp.lmapDomain_apply, ← Finsupp.mapDomain_comp]`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: q ∘ (fun x => g • x) = q`. Use function extensionality and compare the values at `x`. Conclude with `Quotient.sound ⟨g, rfl⟩`. Rewrite using `[this, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KH.kerOrb :
     ∀ (G X : Type) [Group G] [MulAction G X],

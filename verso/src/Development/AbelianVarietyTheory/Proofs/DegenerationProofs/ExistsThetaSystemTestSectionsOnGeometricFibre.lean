@@ -27,23 +27,21 @@ namespace GlobalTheory.TestFibre
 open GlobalTheory.ThetaPtMove GlobalTheory.ConstFam
 
 /- English proof (translation)
-Introduce `_ o Ω _ _ _ _ S ρ p _ y₀ u x hx`. Take `⟨w, hw⟩` from `u.lb`. Establish `hp` using `u.cart`. Establish `hL₀` using `ρ.P.isLB`. Establish `hL₁` using `u.A.isLB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `u.A.isAb.comm` as an intermediate fact. Use `ρ.P.isAb.comm` as an intermediate fact. Set `τ : (TFK (R` to `u.V) (PadicAlgCl p)).left ⟶ (baseOver (Sp S.R)).left := spMap y₀`. Establish `hτ : τ ≫ (baseOver (Sp S.R)).hom = (TFK (R` using `u.V) (PadicAlgCl p)).hom ≫ spMap u.yK := by`. Use `(Category.comp_id _).trans (Eq.trans ?_ (Spec.map_comp _ _))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun q => spMap q) u.fac.symm`. Establish `hx' : ∀ a, (x a).left ≫ u.φ = τ ≫ (ρ.pt a).left` using `hx`. Take `⟨rig, hrig, Hr⟩` from `exists_gen_through (K := PUnit) (φ' := fun _ => eSec u.A.A) (φ := fun _ => eSec ρ.P.A) (ε := fun _ => 1) (h := spMap u.yK) hw hL₀ hL₁ (fun _ => PolBaseChange.eSec_comm hp) ρ.rig ρ.rig_gen`. Use `choose e he He using fun a => exists_gen_through (φ' := fun _ : Fin 1 => (x a).left) (h := τ) hw hL₀ hL₁ (fun _ => hx' a) (ρ.fr a) (ρ.fr_tors a).2.1`. Establish `hfr : ∀ a, IsTorsFrame u.A rig (S.r * S.N) (x a) (e a)` using `fun a => FrameMove.isTorsFrame_move hp hw (fun Z r z J J' hJ hJ' => (Hr Z r z J J' hJ hJ').trans (congrArg (· * _) ((Fintype.prod_unique _).trans (zpow_one _)))) (hx' a) (ρ.fr_tors a) (he a) (fun z J J' hJ hJ' => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `He a _ (𝟙 _) z J J' hJ hJ'` as an intermediate fact. Rewrite using `[Fin.prod_univ_one, zpow_one, Category.id_comp, Category.id_comp] at this)` and apply the resulting hypothesis. Take `⟨th, hth⟩` from `exists_secRel hp τ hτ hw hL₀ hL₁ ρ.th₁`. Use `choose s hs using fun i => exists_secRel hp τ hτ hw hL₀ hL₁ (ρ.s i)`. Take `⟨α, hα, vα⟩` from `exists_genThrough₂ hp τ hτ hw hL₀ hL₁ (psi_pow hp τ hτ (ρ.n ^ ρ.k)) ρ.α ρ.α_gen`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `hpow : ∀ (n : ℕ) a, ρ.pt (n • a) = ρ.pt a ^ n` using `fun n a => by`. Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `ρ.pt_add 0 0`. Rewrite `h` using `[add_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[zero_smul, pow_zero]`. Conclude with `left_eq_mul.1 h`. Consider the case `succ n ih => rw [succ_nsmul, ρ.pt_add, ih, pow_succ]`. Establish `hN : ∀ a, x (S.r • a) ^ S.N = 1` using `fun a => FrameMove.pow_eq_one_of hp (hx' _) (by`. Rewrite using `[hpow, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(ρ.fr_tors a).1)`. Use `⟨rig, e, th, s, hrig, hfr, fun a z J hJ => ?_, fun i a z J hJ => ?_, ⟨α, hα, ThetaGeom.norm_move hp τ hτ hL₀ hL₁ Hr vα ρ.α_norm, isTwistPull_move hp τ hτ hL₀ hL₁ (psi_pow hp τ hτ (ρ.n ^ ρ.k)) hα vα hth (hs ρ.i₀) ρ.s_zero⟩, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `isValueAt_move hp τ hτ hL₀ hL₁ (hx' a).symm (He a) hth (ρ.th_val a)`. Establish `q` using `sv_of_isValueAt h (𝟙 _) z hJ`. Rewrite `q` using `[Category.id_comp, spMap_appTop_fn]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ThetaGeom.val_powFrame, Nat.cast_one, zpow_one]`. Conclude with `q`. Establish `h` using `isValueAt_move hp τ hτ hL₀ hL₁ (hx' a).symm (ThetaGeom.genThrough_pow τ (He a) S.N) (hs i) (ρ.ev_val i a)`. Establish `q` using `sv_of_isValueAt h (𝟙 _) z hJ`. Rewrite `q` using `[Category.id_comp, spMap_appTop_fn]`.
-
-Conclude with `q`. Take `⟨θ, hθ, H⟩` from `ClassWeight.symLift_act_move hp τ hτ hw hL₀ hL₁ (hx' _).symm (hN a) (ρ.U_sym a) (fun l i => fn (algebraMap o S.R (S.ρ a l i))) (fun l i => cF u.V (y₀ (algebraMap o S.R (S.ρ a l i)))) (fun l i => spMap_appTop_fn y₀ _) hs (ρ.U_act a)`. Conclude with `⟨θ, hθ, fun i σ h => (ThetaGeom.comb_iff _ _ _).2 (H i σ h)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_secsOver : Laws → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (x : S.Gam → (TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A)), PtsOver u x → ∃ rig e th s, SecsOver u x rig e th s := by
   intro _ o Ω _ _ _ _ S ρ p _ y₀ u x hx

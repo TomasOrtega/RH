@@ -10,7 +10,7 @@ open scoped ComplexOrder
 namespace KLinesQuotGramLog
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Consider the cases of `x with`. Consider the case `inl i => exact hBl i`. Consider the case `inr j => exact hBr j`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem basis_eq_elim {K : Type*} [Field K] {n m k : ℕ}
     (B : Module.Basis (Fin m ⊕ Fin k) K (Fin n → K)) (b : Fin m → Fin n → K) (τ : Fin k → Fin n)
@@ -22,7 +22,7 @@ theorem basis_eq_elim {K : Type*} [Field K] {n m k : ℕ}
   | inr j => exact hBr j
 
 /- English proof (translation)
-The claim follows from `PosDef.diagonal fun x => Complex.zero_lt_real.mpr (hd x)`.
+A detailed English derivation is pending.
 -/
 theorem diag_posDef {n : ℕ} (d : Fin n → ℝ) (hd : ∀ x, 0 < d x) :
     (Matrix.diagonal fun x => (d x : ℂ)).PosDef :=
@@ -33,17 +33,17 @@ end KLinesQuotGramLog
 open KLinesQuotGramLog in
 
 /- English proof (translation)
-Introduce `K _ n m k d σ B b c τ hd hBl hBr hτ hli`. Use `set H : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal fun x => (d x : ℂ) with hH`. Establish `hHpd : H.PosDef` using `diag_posDef d hd`. Establish `hBe` using `basis_eq_elim B b τ hBl hBr`. Establish `hchg` using `h1 K n H σ (Fin m ⊕ Fin k) B (Sum.elim b c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hdetP, hV⟩` from `h2 K n m k B b c hBl hli`. Use `set z : ℂ := σ (B.toMatrix (Sum.elim b c)).toBlocks₂₂.det with hz`. Rewrite `hchg` using `[hdetP]`. Establish `hzc : star z * z = ((‖z‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, Complex.conj_mul']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hchg` using `[hzc]`. Establish `hGu : (gramAt H σ (Sum.elim b c)).det.re = ‖z‖ ^ 2 * (gramAt H σ (⇑B)).det.re`. Rewrite using `[hchg, Complex.re_ofReal_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hliB : LinearIndependent K (Sum.elim b fun j => (Pi.single (τ j) 1 : Fin n → K))`. Rewrite using `[← hBe]`. Conclude with `B.linearIndependent`. Establish `hFis` using `h3 K n m k d σ b τ hd hτ hliB`. Rewrite `hFis` using `[← hBe]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlib : LinearIndependent K b` using `hli.comp Sum.inl Sum.inl_injective`. Establish `hGb : 0 < (gramAt H σ b).det.re` using `MCDet.re_det_pos (h4 K n H σ (Fin m) b hHpd hlib)`. Establish `hGB : 0 < (gramAt H σ (⇑B)).det.re` using `MCDet.re_det_pos (h4 K n H σ (Fin m ⊕ Fin k) (⇑B) hHpd B.linearIndependent)`. Establish `hz0 : 0 < ‖z‖` using `norm_pos_iff.mpr ((map_ne_zero σ).mpr hV)`. Establish `hprod : 0 < ∏ j, d (τ j)` using `Finset.prod_pos fun j _ => hd (τ j)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hGu, Real.log_mul (pow_pos hz0 2).ne' hGB.ne', Real.log_pow]`. Establish `hlog` using `Real.log_le_log hGB hFis`. Rewrite `hlog` using `[Real.log_mul hGb.ne' hprod.ne', Real.log_prod fun j _ => (hd (τ j)).ne']`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem LinesQuotGramLog.proof (h1 : LinesGramDetChange.Statement) (h2 : LinesCoordDet.Statement)
     (h3 : LinesGramFischerBound.Statement) (h4 : LinesGramPosDef.Statement) :

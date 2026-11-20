@@ -14,17 +14,15 @@ noncomputable section
 namespace GlobalTheory.ThK.DblKer
 
 /- English proof (translation)
-Introduce `Y Ei σ₀ hloc m c T y₀ hrel s`. Establish `hm : ∀ y x, MeromorphicAt (fun t => Ei t y) x` using `fun y x => by`. Take `⟨k, r, H, hr, h, hH⟩` from `hloc x`. Conclude with `GlobalTheory.meromorphicAt_of_pow_mul_eq hr (fun t ht hts => h t ht hts y) (hH y)`. Use `set d : ℂ → ℂ := fun t => Ei t y₀ - ∑ j, c j * Ei t (T j) with hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdm : MeromorphicOn d Set.univ` using `fun x _ => (hm y₀ x).sub (MeromorphicAt.fun_sum fun j _ => (MeromorphicAt.const (c j) x).fun_mul (hm (T j) x))`. Establish `hev : ∀ᶠ t in 𝓝[≠] s, d t = 0`. Assume the negation of the conclusion as `hne`. Establish `h1 : meromorphicOrderAt d s ≠ ⊤`. Introduce `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[meromorphicOrderAt_eq_top_iff]`. Conclude with `hne h`. Establish `h2 : meromorphicOrderAt d ((σ₀ + 1 : ℝ) : ℂ) ≠ ⊤` using `hdm.meromorphicOrderAt_ne_top_of_isPreconnected isPreconnected_univ (Set.mem_univ s) (Set.mem_univ _) h1`. Apply `h2` to reduce the goal to its premises. Rewrite using `[meromorphicOrderAt_eq_top_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `ho : IsOpen {z : ℂ | σ₀ < z.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hmem : {z : ℂ | σ₀ < z.re} ∈ 𝓝 ((σ₀ + 1 : ℝ) : ℂ)` using `ho.mem_nhds (by simp)`. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds hmem] with t ht`. Conclude with `sub_eq_zero.mpr (hrel t ht)`. Distinguish the cases in `hall : ∀ y, ∃ v, Tendsto (fun t => Ei t y) (𝓝[≠] s) (𝓝 v)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `choose v hv using hall`. Rewrite using `[regFam_eq_of_tendsto hv y₀]`. Simplify using `only [regFam_eq_of_tendsto hv]`. Establish `hlim : Tendsto d (𝓝[≠] s) (𝓝 (v y₀ - ∑ j, c j * v (T j)))` using `(hv y₀).sub (tendsto_finset_sum _ fun j _ => (hv (T j)).const_mul (c j))`. Establish `h0 : Tendsto d (𝓝[≠] s) (𝓝 0)` using `tendsto_const_nhds.congr' (hev.mono fun t ht => ht.symm)`.
-
-Conclude with `sub_eq_zero.mp (tendsto_nhds_unique hlim h0)`. Simplify using `[regFam_of_not hall]`.
+A detailed English derivation is pending.
 -/
 theorem regFam_linRel : ∀ {Y : Type} (Ei : ℂ → Y → ℂ) (σ₀ : ℝ), (∀ s₁ : ℂ, ∃ (k : ℕ) (r : ℝ) (H : ℂ → Y → ℂ), 0 < r ∧
       (∀ s ∈ Metric.ball s₁ r, s ≠ s₁ → ∀ y, H s y = (s - s₁) ^ k * Ei s y) ∧
@@ -64,7 +62,7 @@ theorem regFam_linRel : ∀ {Y : Type} (Ei : ℂ → Y → ℂ) (σ₀ : ℝ), (
   · simp [regFam_of_not hall]
 
 /- English proof (translation)
-Use `regFam_linRel (fun _ (y : ℕ) => (2 : ℂ) - y) 0 (fun s₁ => ⟨0, 1, fun _ y => (2 : ℂ) - y, one_pos, fun s _ _ y => by simp, fun y => differentiableOn_const _⟩) 1 (fun _ => 2) (fun _ => 1) 0 (fun s _ => by norm_num) 0` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 example : regFam (fun (_ : ℂ) (y : ℕ) => (2 : ℂ) - y) 0 0 = ∑ j : Fin 1, (2 : ℂ) * regFam (fun _ (y : ℕ) => (2 : ℂ) - y) 0 ((fun _ => 1) j) := by
   refine regFam_linRel (fun _ (y : ℕ) => (2 : ℂ) - y) 0 (fun s₁ => ⟨0, 1, fun _ y => (2 : ℂ) - y, one_pos,

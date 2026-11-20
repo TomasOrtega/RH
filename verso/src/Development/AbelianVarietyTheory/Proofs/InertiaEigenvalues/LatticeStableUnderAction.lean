@@ -18,7 +18,7 @@ namespace GlobalTheory.LatKeep
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Use `sum_mem fun j _ => mul_mem ?_ (hv j)` and prove the remaining obligations. Conclude with `(y.val i j).2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem intGL_mulVec_int {n : ℕ} (y : GL (Fin n) (Formalism.L2.Herm.intAf D.host.F D.host.E)) (v : Fin n → EAf D)
     (hv : ∀ i, v i ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (i : Fin n) :
@@ -29,11 +29,11 @@ theorem intGL_mulVec_int {n : ℕ} (y : GL (Fin n) (Formalism.L2.Herm.intAf D.ho
   exact (y.val i j).2
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[hβ x]`. Establish `e1 : (((β * Formalism.L2.DIV.intGL D.host.F D.host.E n y)⁻¹ : GL (Fin n) (EAf D)) : Matrix (Fin n) (Fin n) (EAf D)) *ᵥ x = ((Formalism.L2.DIV.intGL D.host.F D.host.E n y⁻¹ : GL (Fin n) (EAf D)) : Matrix (Fin n) (Fin n) (EAf D)) *ᵥ (((β⁻¹ : GL (Fin n) (EAf D)) : Matrix (Fin n) (Fi …`. Establish `hm : (β * Formalism.L2.DIV.intGL D.host.F D.host.E n y)⁻¹ = Formalism.L2.DIV.intGL D.host.F D.host.E n y⁻¹ * β⁻¹`. Rewrite using `[_root_.mul_inv_rev, MonoidHom.map_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, Units.val_mul, Matrix.mulVec_mulVec]`. Establish `e2 : ((β⁻¹ : GL (Fin n) (EAf D)) : Matrix (Fin n) (Fin n) (EAf D)) *ᵥ x = ((Formalism.L2.DIV.intGL D.host.F D.host.E n y : GL (Fin n) (EAf D)) : Matrix (Fin n) (Fin n) (EAf D)) *ᵥ ((((β * Formalism.L2.DIV.intGL D.host.F D.host.E n y)⁻¹ : GL (Fin n) (EAf D)) : Matrix (Fin n) (Fin …`. Rewrite using `[e1, Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e1]`. Conclude with `intGL_mulVec_int _ _ h i`. Introduce `h i`. Rewrite using `[e2]`. Conclude with `intGL_mulVec_int _ _ h i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrame_mul_intGL {n : ℕ} {β : GL (Fin n) (EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     (hβ : Formalism.L2.DIV.IsFrame β Λ) (y : GL (Fin n) (Formalism.L2.Herm.intAf D.host.F D.host.E)) :
@@ -60,15 +60,13 @@ theorem isFrame_mul_intGL {n : ℕ} {β : GL (Fin n) (EAf D)} {Λ : Submodule (�
     exact intGL_mulVec_int _ _ h i
 
 /- English proof (translation)
-Introduce `D V W F hF k _ hk u`. Take `⟨y, hy⟩` from `hk`. Establish `hfin : ((Formalism.UG.bc (Lev.swapAE D) (finPt V k).1 : GL (Fin V.rank) (EAf D)) : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) = (mt V k).map (toEAf D)` using `rfl`. Establish `hβ' : Formalism.L2.DIV.IsFrame (F.βS * Formalism.L2.DIV.intGL D.host.F D.host.E V.rank y) F.ΛS` using `isFrame_mul_intGL hF.frS y`. Establish `hg : (F.βS * Formalism.L2.DIV.intGL D.host.F D.host.E V.rank y).val = (mt V k).map (toEAf D) * F.βS.val`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hfin, ← hy]`. Simplify using `[Formalism.L2.DIV.frGL, MulAut.conj_apply, Matrix.mul_assoc]`. Establish `hh : F.βT.val = (mt W 1).map (toEAf D) * F.βT.val`. Establish `h1 : (mt W 1).map (toEAf D) = 1`. Rewrite using `[GlobalTheory.AdelicLatMove.mt_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.map_one _ (toEAf D).map_zero (toEAf D).map_one`. Rewrite using `[h1, Matrix.one_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Conclude with `GlobalTheory.AdelicLatMove.actO_mem_latO V W k 1 F.ΛS F.ΛS F.ΛT F.ΛT F.βS _ F.βT F.βT hF.frS hβ' hF.frT hF.frT hg hh u hu`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hu`. Establish `h2` using `GlobalTheory.AdelicLatMove.actO_mem_latO V W k⁻¹ 1⁻¹ F.ΛS F.ΛS F.ΛT F.ΛT _ F.βS F.βT F.βT hβ' hF.frS hF.frT hF.frT (GlobalTheory.AdelicLatMove.frame_inv V k _ _ hg) (GlobalTheory.AdelicLatMove.frame_inv W 1 _ _ hh) _ hu`. Establish `e` using `GlobalTheory.AdelicLatMove.actO_actO_inv V W k⁻¹ 1⁻¹ u`. Rewrite `e` using `[inv_inv, inv_inv]`. Rewrite `h2` using `[e]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latKeep : ∀ (D : D7) (V W : HSp D) (F : GlobalTheory.ExportSeries.Frame V W), F.Good → ∀ k ∈ GfC V,
     Formalism.UG.bc (Lev.swapAE D) (finPt V k).1 ∈ Formalism.L2.DIV.St F.βS →

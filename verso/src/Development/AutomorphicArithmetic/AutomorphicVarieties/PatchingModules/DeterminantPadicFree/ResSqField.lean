@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Use `letI := (PowerSeries.map (algebraMap K K')).toAlgebra`. Set `b` to `Module.finBasis K K'`. Use `show Module.Finite (PowerSeries K) (PowerSeries K')`. Use `⟨⟨Finset.univ.image (fun i => PowerSeries.C (b i)), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ _`. Establish `key : φ = ∑ i, (PowerSeries.mk fun n => b.repr (PowerSeries.coeff n φ) i) • PowerSeries.C (b i)`. Use extensionality with `n`. Simplify using `only [Algebra.smul_def, RingHom.algebraMap_toAlgebra, map_sum, PowerSeries.coeff_mul_C, PowerSeries.coeff_map, PowerSeries.coeff_mk]`. Repeatedly rewrite using `[← Algebra.smul_def]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(b.sum_repr _).symm`. Rewrite using `[key]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Pa.Det.resSq_fin {K K' : Type} [Field K] [Field K'] [Algebra K K']
     [Module.Finite K K'] : (PowerSeries.map (algebraMap K K')).Finite := by
@@ -30,11 +30,11 @@ private theorem UpperTheory.V.Pa.Det.resSq_fin {K K' : Type} [Field K] [Field K'
   simp
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite K`. Set `p : Polynomial K` to `∏ a : K, (Polynomial.X ^ 2 - Polynomial.C a)`. Establish `hp : p ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun a _ => Polynomial.X_pow_sub_C_ne_zero (by norm_num) a`. Use `⟨p.SplittingField, inferInstance, inferInstance, inferInstance, fun a => ?_⟩` and prove the remaining obligations. Establish `hs` using `Polynomial.SplittingField.splits p`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd : (Polynomial.X ^ 2 - Polynomial.C a) ∣ p` using `Finset.dvd_prod_of_mem _ (Finset.mem_univ a)`. Establish `hs' : ((Polynomial.X ^ 2 - Polynomial.C a).map (algebraMap K p.SplittingField)).Splits` using `hs.of_dvd (Polynomial.map_ne_zero hp) (Polynomial.map_dvd _ hd)`. Take `⟨x, hx⟩` from `hs'.exists_eval_eq_zero (by`. Rewrite using `[Polynomial.degree_map, Polynomial.degree_X_pow_sub_C (by norm_num)]; norm_num)`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Polynomial.map_sub, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_C, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C] at hx`. Rewrite using `[← sq]`. Conclude with `(sub_eq_zero.mp hx).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Pa.Det.resSq_field (K : Type) [Field K] [Finite K] :
     ∃ (K' : Type) (_ : Field K') (_ : Algebra K K') (_ : Module.Finite K K'),
@@ -57,11 +57,11 @@ private theorem UpperTheory.V.Pa.Det.resSq_field (K : Type) [Field K] [Finite K]
   rw [← sq]; exact (sub_eq_zero.mp hx).symm
 
 /- English proof (translation)
-Introduce `K _ _`. Take `⟨K', _, _, _, hsq⟩` from `UpperTheory.V.Pa.Det.resSq_field K`. Use `haveI : Finite K' := Module.finite_of_finite K`. Establish `hcc : ∀ φ : PowerSeries K, PowerSeries.constantCoeff (PowerSeries.map (algebraMap K K') φ) = algebraMap K K' (PowerSeries.constantCoeff φ)`. Introduce `φ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Use `⟨K', inferInstance, inferInstance, PowerSeries.map (algebraMap K K'), PowerSeries.map_injective _ (algebraMap K K').injective, ⟨fun φ hφ => ?_⟩, UpperTheory.V.Pa.Det.resSq_fin, fun c => ?_⟩` and prove the remaining obligations. Rewrite `hφ` using `[PowerSeries.isUnit_iff_constantCoeff, hcc, isUnit_iff_ne_zero, map_ne_zero_iff _ (algebraMap K K').injective]`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero]`. Conclude with `hφ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr⟩` from `hsq (PowerSeries.constantCoeff (c : PowerSeries K))`. Use `⟨residue (PowerSeries K') (PowerSeries.C r), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, PowerSeries.isUnit_iff_constantCoeff, map_sub, hcc, hr, map_mul, PowerSeries.constantCoeff_C, sub_self]`. Conclude with `not_isUnit_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.resSq :
     ∀ {K : Type} [Field K] [Finite K], ∃ (K' : Type) (_ : Field K') (_ : Finite K') (j : PowerSeries K →+* PowerSeries K'), Function.Injective j ∧ IsLocalHom j ∧ j.Finite ∧ ∀ c : (PowerSeries K)ˣ, IsSquare (residue (PowerSeries K') (j c)) := by

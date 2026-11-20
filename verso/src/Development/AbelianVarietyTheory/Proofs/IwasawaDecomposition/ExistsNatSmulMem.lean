@@ -11,13 +11,11 @@ namespace GlobalTheory.PrincLat
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨y, hy, hint'⟩` from `exists_integral_multiples ℤ ℚ ({c} : Finset E)`. Establish `hint` using `hint' c (Finset.mem_singleton_self c)`. Establish `key : ∃ n : ℕ, n ≠ 0 ∧ IsIntegral ℤ ((n : E) * c)`. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg y`. Use `⟨n, by rintro rfl; simp at hy, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ((n : E) * c) = ((n : ℤ) • c)` using `by rw [zsmul_eq_mul]; push_cast; ring`. Rewrite using `[e]`. Conclude with `hint`. Use `⟨n, by rintro rfl; simp at hy, ?_⟩` and prove the remaining obligations. Establish `e : ((n : E) * c) = -((-(n : ℤ)) • c)` using `by rw [zsmul_eq_mul]; push_cast; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hint.neg`. Take `⟨n, hn, h2⟩` from `key`. Use `⟨n, Nat.pos_of_ne_zero hn, ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `(IsIntegralClosure.isIntegral_iff (A := 𝓞 E)).1 h2`.
-
-Conclude with `⟨a, ha⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem (c : E) : ∃ m : ℕ, 0 < m ∧ (m : E) * c ∈ intOE E := by
   obtain ⟨y, hy, hint'⟩ := exists_integral_multiples ℤ ℚ ({c} : Finset E)
@@ -36,9 +34,9 @@ theorem exists_nat_mul_mem (c : E) : ∃ m : ℕ, 0 < m ∧ (m : E) * c ∈ intO
   exact ⟨a, ha⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NatMulIntegralExists.main`. Consider the case `exact _root_.GlobalTheory.NatMulIntegralExists.main`. Consider the case `(apply _root_.GlobalTheory.NatMulIntegralExists.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NatMulIntegralExists.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NatMulIntegralExists.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NatMulIntegralExists.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_nat_smul_mem {r : ℕ} (Λ : Submodule (𝓞 E) (Fin r → E))
     (hsp : Submodule.span E (Λ : Set (Fin r → E)) = ⊤) (w : Fin r → E) :
@@ -52,17 +50,15 @@ theorem exists_nat_smul_mem {r : ℕ} (Λ : Submodule (𝓞 E) (Fin r → E))
   | (intros; exact _root_.GlobalTheory.NatMulIntegralExists.main ..)
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hfg`. Use `choose m hm hmem using fun (p : (Fin r → E) × Fin r) => exists_nat_mul_mem (E := E) (p.1 p.2)`. Use `⟨∏ p ∈ s ×ˢ Finset.univ, m p, Finset.prod_pos fun p _ => hm p, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Introduce `i`. Take `⟨k, hk⟩ : m (x, i) ∣ ∏ p ∈ s ×ˢ Finset.univ, m p` from `Finset.dvd_prod_of_mem _ (Finset.mem_product.2 ⟨hx, Finset.mem_univ _⟩)`. Establish `e : ((∏ p ∈ s ×ˢ Finset.univ, m p : ℕ) : E) * x i = (k : E) * ((m (x, i) : E) * x i)`. Rewrite using `[hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_mem (natCast_mem _ k) (hmem (x, i))`. Consider the case `zero => intro i`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Introduce `i`. Rewrite using `[Pi.add_apply, mul_add]`. Conclude with `add_mem (hx i) (hy i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `smul a x _ hx`. Introduce `i`. Establish `e : ((∏ p ∈ s ×ˢ Finset.univ, m p : ℕ) : E) * (a • x) i = algebraMap (𝓞 E) E a * (((∏ p ∈ s ×ˢ Finset.univ, m p : ℕ) : E) * x i)`. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Conclude with `mul_mem ⟨a, rfl⟩ (hx i)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_den {r : ℕ} (Λ : Submodule (𝓞 E) (Fin r → E)) (hfg : Λ.FG) :
     ∃ d : ℕ, 0 < d ∧ ∀ w ∈ Λ, ∀ i, (d : E) * w i ∈ intOE E := by
@@ -94,13 +90,13 @@ theorem exists_nat_den {r : ℕ} (Λ : Submodule (𝓞 E) (Fin r → E)) (hfg : 
     exact mul_mem ⟨a, rfl⟩ (hx i)
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.locL latS at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, hw, rfl⟩` from `hx`. Introduce `i`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (d : E ⊗[F] v.adicCompletion F) * inclE (F` using `F) (v.adicCompletion F) (w i) = inclE (F := F) (v.adicCompletion F) ((d : E) * w i) := by`. Rewrite using `[map_mul, map_natCast]`. Rewrite using `[e]`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨_, hd w hw i⟩, rfl⟩)`. Consider the case `zero => intro i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Introduce `i`. Rewrite using `[Pi.add_apply, mul_add]`. Conclude with `add_mem (hx i) (hy i)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `smul a x _ hx`. Introduce `i`. Rewrite using `[Pi.smul_apply, Subring.smul_def, smul_eq_mul, mul_left_comm]`. Conclude with `mul_mem a.2 (hx i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem den_locL (v : HeightOneSpectrum (𝓞 F)) {r : ℕ} (Λ : Submodule (𝓞 E) (Fin r → E)) {d : ℕ}
     (hd : ∀ w ∈ Λ, ∀ i, (d : E) * w i ∈ intOE E) {y : Fin r → E ⊗[F] v.adicCompletion F}
@@ -127,19 +123,19 @@ theorem den_locL (v : HeightOneSpectrum (𝓞 F)) {r : ℕ} (Λ : Submodule (�
     exact mul_mem a.2 (hx i)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ r v Λ hfg hsp`. Use `choose k hk hkmem using fun b : Fin r => exists_nat_smul_mem Λ hsp (Pi.single b 1)`. Take `⟨d₂, hd₂, hden⟩` from `exists_nat_den Λ hfg`. Establish `hd₁ : 0 < ∏ b, k b` using `Finset.prod_pos fun b _ => hk b`. Establish `hmem : ∀ b, ((∏ b, k b : ℕ) : E) • (Pi.single b 1 : Fin r → E) ∈ Λ` using `fun b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `Finset.dvd_prod_of_mem k (Finset.mem_univ b)`. Establish `e : ((∏ b, k b : ℕ) : E) • (Pi.single b 1 : Fin r → E) = t • ((k b : E) • (Pi.single b 1 : Fin r → E))`. Rewrite using `[← Nat.cast_smul_eq_nsmul E, smul_smul, ht, Nat.cast_mul, mul_comm]`. Rewrite using `[e]`. Conclude with `Λ.toAddSubmonoid.nsmul_mem (hkmem b) t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `⟨(∏ b, k b) * d₂, Nat.mul_pos hd₁ hd₂, fun M x hx a b => ?_⟩` and prove the remaining obligations. Use `set d₁ := ∏ b, k b with hd₁def`. Set `y : Fin r → E ⊗[F] v.adicCompletion F` to `fun i => inclE (F := F) (v.adicCompletion F) (((d₁ : E) • (Pi.single b 1 : Fin r → E)) i)`. Establish `hy : y ∈ Formalism.L2.Herm.locL v Λ` using `Submodule.subset_span ⟨_, hmem b, rfl⟩`. Take `⟨z, hz, hxz⟩` from `hx y hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hy' : y = (d₁ : E ⊗[F] v.adicCompletion F) • (Pi.single b 1 : Fin r → E ⊗[F] v.adicCompletion F)`. Use function extensionality and compare the values at `i`. Simplify using `only [y, Pi.smul_apply, smul_eq_mul, map_mul, map_natCast]`. Distinguish the cases in `h : i = b`. Substitute `h` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Establish `hcol : x *ᵥ y - y = (d₁ : E ⊗[F] v.adicCompletion F) • ((x - 1) *ᵥ Pi.single b 1)`. Rewrite using `[hy', Matrix.mulVec_smul, Matrix.sub_mulVec, Matrix.one_mulVec, smul_sub]`. Establish `h1` using `congrFun hxz a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hcol, Pi.smul_apply, Pi.smul_apply, Matrix.mulVec_single_one, Matrix.col_apply, smul_eq_mul, smul_eq_mul]`. Establish `hu : IsUnit (d₁ : E ⊗[F] v.adicCompletion F)`. Use `(IsUnit.mk0 (d₁ : F) (Nat.cast_ne_zero.2 hd₁.ne')).map (algebraMap F (E ⊗[F] v.adicCompletion F))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `⟨(d₂ : E ⊗[F] v.adicCompletion F) * z a, den_locL v Λ hden hz a, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem princ_lat : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {r : ℕ} (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (Fin r → E)), Λ.FG → Submodule.span E (Λ : Set (Fin r → E)) = ⊤ → ∃ d : ℕ, 0 < d ∧ ∀ (M : ℕ) (x : Matrix (Fin r) (Fin r) (E ⊗[F] v.adicCompletion F)), (∀ y ∈ Formalism.L2.Herm.locL v Λ, ∃ z ∈ Formalism.L2.Herm.locL v Λ, x *ᵥ y - y = ((M * d : ℕ) : E ⊗[F] v.adicCompletion F) • z) → ∀ a b, ∃ c ∈ tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring, (x - 1) a b = (M : E ⊗[F] v.adicCompletion F) * c := by
   intro F E _ _ _ _ _ r v Λ hfg hsp

@@ -8,9 +8,7 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC
 namespace PositivityTheory.Rg.Rs.JExpNegGlue
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show Matrix.diagonal _ * Matrix.diagonal _ = Matrix.diagonal _ * Matrix.diagonal _`. Rewrite using `[Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
-
-Conclude with `mul_comm _ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem aInf_comm (E : Type) [Field E] (N r : ℕ) (s t : ℝ) :
     aInf E N r s * aInf E N r t = aInf E N r t * aInf E N r s := by
@@ -20,7 +18,7 @@ theorem aInf_comm (E : Type) [Field E] (N r : ℕ) (s t : ℝ) :
   congr 1; funext i; exact mul_comm _ _
 
 /- English proof (translation)
-Unfold `aT`. Rewrite using `[← map_mul, aInf_comm, map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem aT_comm (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N r : ℕ) (s t : ℝ) :
     aT E N r s * aT E N r t = aT E N r t * aT E N r s := by
@@ -29,11 +27,9 @@ theorem aT_comm (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N r :
 
 open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm in
 /- English proof (translation)
-Use `haveI : SecondCountableTopology (GA E N) := inferInstance`. Use `haveI : FirstCountableTopology (GA E N) := inferInstance`. Take `⟨C, hC, hDC⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := E) (n := N) (r := r)`. Use `haveI : IsFiniteMeasure ((unipMeasure E N r).restrict (unipFundamentalDomain E N r)) := isFiniteMeasure_restrict.2 (by rw [unipMeasure_unipFundamentalDomain]; exact ENNReal.one_ne_top)`. Establish `hf : Continuous (Function.uncurry fun (g : GA E N) (X : UPos N r → AdeleRing (𝓞 E) E) => φ (unipGL X * g))` using `hφ.comp ((continuous_unipGL.comp continuous_snd).mul continuous_fst)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `continuous_parametric_integral_of_continuous (μ := (unipMeasure E N r).restrict (unipFundamentalDomain E N r)) hf hC`. Establish `e : ∀ g : GA E N, constantTerm r φ g = ∫ X in C, φ (unipGL X * g) ∂((unipMeasure E N r).restrict (unipFundamentalDomain E N r))`. Introduce `g`. Rewrite using `[Measure.restrict_restrict' measurableSet_unipFundamentalDomain, Set.inter_eq_right.2 hDC]`. Both sides reduce to the same expression.
-
-Unfold `An.ctn`. Conclude with `continuous_const.mul (h.congr fun g => (e g).symm)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_ctn {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ} (r : ℕ)
     {φ : GA E N → ℂ} (hφ : Continuous φ) : Continuous (An.ctn (K := E) (n := N) r φ) := by
@@ -56,37 +52,33 @@ theorem continuous_ctn {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
   exact continuous_const.mul (h.congr fun g => (e g).symm)
 
 /- English proof (translation)
-Introduce `hDict hL2 E _ _ _ N φ hA hSq r hr0 hrN c hc`. Take `⟨haR, hsplit, hlat, hct⟩` from `hDict E N`. Establish `hctn` using `(hct φ hA r hr0 hrN).2`. Take `⟨F₀, hF₀, F, hFspan, hF0, hFeq⟩` from `hc`. Take `⟨c₀, -, hF₀eq⟩` from `hctn F₀ hF₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `hF₀eq` using the available equality. Establish `hφc : Continuous φ.1` using `GlobalTheory.CompanionTheory.ConstTerm.continuous_of_isOpen_stab φ hA.level`. Take `⟨hcen, μ, 𝓕, hHaar, hFD, hfin⟩` from `hSq`. Use `haveI := hHaar`. Establish `hleft : ∀ γ ∈ An.lat E N, ∀ g, φ.1 (γ * g) = φ.1 g`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `S : Subgroup (GA E N)` to `{ carrier := {γ | ∀ g, φ.1 (γ * g) = φ.1 g} mul_mem' := fun {x y} hx hy g => by`. Simplify using `only [Set.mem_setOf_eq] at hx hy ⊢`. Rewrite using `[mul_assoc, hx, hy]`. Use the proof step `one_mem' := fun g => by simp`. Use the proof step `inv_mem' := fun {x} hx g => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Combine the equalities or inequalities in the displayed calculation. Establish `hS : An.lat E N ≤ S`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, rfl⟩ g`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.CompanionTheory.LeftInv.isLeftInvariant_of_isAutForm E N φ hA γ g`. Rewrite using `[Subgroup.zpowers_le]`. Introduce `g`. Use `hcen 1 g` as an intermediate fact. Rewrite `this` using `[hsplit 1]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fun γ hγ => hS hγ`. Use `set ρ := An.rho E N r with hρ`. Use `set a : ℝ → GA E N := aT E N r with ha`. Establish `hcomm : ∀ s t, a s * a t = a t * a s` using `aT_comm E N r`. Establish `hdec_ctn : Dec μ ρ a (An.ctn r φ.1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨continuous_ctn r hφc, fun Q hQ => ?_⟩` and prove the remaining obligations. Establish `h` using `hL2 E N r hr0 hrN μ φ.1 𝓕 hφc hleft (hlat ▸ hFD) hfin Q hQ`. Simplify using `only [ha, haR]`. Conclude with `h`. Establish `hdecF : Dec μ ρ a F`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `Submodule.span_induction (p := fun H _ => Dec μ ρ a H) ?_ (dec_zero μ ρ a) (fun x y _ _ hx hy => dec_add μ ρ a hx hy) (fun b x _ hx => dec_smul μ ρ a b hx) hFspan` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`. Use `dec_smul μ ρ a c₀ (dec_translate μ ρ a hcomm s hdec_ctn) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨g₀, hg₀⟩ : ∃ g₀, F g₀ ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hF0 (funext h)`. Take `⟨Q, hQc, hQn⟩` from `exists_compact_mem_nhds g₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hFc` using `hdecF.1`. Use `set I := ∫ g in Q, ‖F g‖ ^ 2 ∂μ with hI`. Establish `hIpos : 0 < I`. Establish `hint : IntegrableOn (fun g => ‖F g‖ ^ 2) Q μ` using `(hFc.norm.pow 2).continuousOn.integrableOn_compact hQc`. Rewrite using `[hI, setIntegral_pos_iff_support_of_nonneg_ae (ae_of_all _ fun g => by show (0 : ℝ) ≤ ‖F g‖ ^ 2; positivity) hint]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hopen : IsOpen (Function.support (fun g => ‖F g‖ ^ 2) ∩ interior Q)` using `(hFc.norm.pow 2).isOpen_support.inter isOpen_interior`. Establish `hne : (Function.support (fun g => ‖F g‖ ^ 2) ∩ interior Q).Nonempty` using `⟨g₀, by simp [Function.mem_support, hg₀], mem_interior_iff_mem_nhds.2 hQn⟩`. Conclude with `lt_of_lt_of_le (hopen.measure_pos μ hne) (measure_mono (Set.inter_subset_inter_right _ interior_subset))`. Establish `hval : ∀ t : ℝ, Real.exp (-(2 * ρ * t)) * ∫ g in Q, ‖F (a t * g)‖ ^ 2 ∂μ = Real.exp (2 * (c.re - ρ) * t) * I`. Introduce `t`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hre : (c * (t : ℂ)).re = c.re * t` using `by simp`. Establish `hpt : ∀ g, ‖F (a t * g)‖ ^ 2 = Real.exp (c.re * t) ^ 2 * ‖F g‖ ^ 2`. Introduce `g`. Rewrite using `[hFeq, norm_mul, Complex.norm_exp, mul_pow, hre]`. Repeatedly rewrite using `[hpt]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[integral_const_mul, ← mul_assoc, sq, ← Real.exp_add, ← Real.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hlim` using `hdecF.2 Q hQc`. Rewrite `hlim` using `[tendsto_congr hval]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hlt : c.re < ρ`. Assume the negation of the conclusion as `hge`. Use `push_neg at hge`. Establish `hev : ∀ᶠ t in atTop, I ≤ Real.exp (2 * (c.re - ρ) * t) * I` using `by filter_upwards [eventually_ge_atTop 0] with t ht`. Establish `h1 : 1 ≤ Real.exp (2 * (c.re - ρ) * t)` using `Real.one_le_exp (by nlinarith [mul_nonneg (sub_nonneg.2 hge) ht])`.
-
-Use the polynomial consequences of the given equalities and inequalities. Use `ge_of_tendsto hlim hev` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : (0 : ℝ) < Module.finrank ℚ E` using `Nat.cast_pos.2 Module.finrank_pos`. Rewrite `hlt` using `[hρ, An.rho]`.
-
-Unfold `pE`. Establish `: c.re / (Module.finrank ℚ E : ℝ) < (r : ℝ) * ((N : ℝ) - r) / 2`. Rewrite using `[div_lt_iff₀ hd]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem main : ExpNegGlue := by
   intro hDict hL2 E _ _ _ N φ hA hSq r hr0 hrN c hc
@@ -181,7 +173,7 @@ theorem main : ExpNegGlue := by
 end PositivityTheory.Rg.Rs.JExpNegGlue
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Rg.Rs.JExpNegGlue.main`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Rg.Rs.expNegGlue_holds : PositivityTheory.Rg.Rs.ExpNegGlue := PositivityTheory.Rg.Rs.JExpNegGlue.main
 

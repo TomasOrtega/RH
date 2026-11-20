@@ -12,9 +12,9 @@ namespace GlobalTheory.LocalNormNegOne
 open Polynomial IsLocalRing
 
 /- English proof (translation)
-Use `Fintype.ofFinite k` as an intermediate fact. Establish `hc : ringChar k ≠ 2` using `fun h => h2 (by`. Use `ringChar.Nat.cast_ringChar (R := k)` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hodd : Fintype.card k % 2 = 1` using `FiniteField.odd_card_of_char_ne_two hc`. Take `⟨x, y, h⟩` from `FiniteField.exists_root_sum_quadratic (R := k) (f := X ^ 2) (g := C (-D) * X ^ 2 + C 0 * X + C 4) (degree_X_pow 2) (degree_quadratic (neg_ne_zero.2 hD)) hodd`. Use `⟨x, y, ?_⟩` and prove the remaining obligations. Simplify using `only [eval_pow, eval_X, eval_add, eval_mul, eval_C] at h`. Take the linear combination `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_sq_sub_finite {k : Type*} [Field k] [Finite k] (h2 : (2 : k) ≠ 0) (D : k) (hD : D ≠ 0) :
     ∃ x y : k, x ^ 2 - (D * y ^ 2 - 4) = 0 := by
@@ -34,9 +34,9 @@ theorem exists_sq_sub_finite {k : Type*} [Field k] [Finite k] (h2 : (2 : k) ≠ 
 variable {R : Type*} [CommRing R] [IsLocalRing R] [HenselianRing R (maximalIdeal R)]
 
 /- English proof (translation)
-Take `⟨x, hx, hx'⟩` from `HenselianRing.is_henselian (I := maximalIdeal R) (X ^ 2 + C p * X + C q) (by monicity!) x₀ (by simpa using h₀) (by`. Establish `: (X ^ 2 + C p * X + C q : R[X]).derivative.eval x₀ = 2 * x₀ + p`. Simplify using `[one_add_one_eq_two]`. Rewrite using `[this]`. Conclude with `h₁.map _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨x, by simpa [IsRoot] using hx, hx'⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_root_quadratic (p q x₀ : R) (h₀ : x₀ ^ 2 + p * x₀ + q ∈ maximalIdeal R)
     (h₁ : IsUnit (2 * x₀ + p)) : ∃ x : R, x ^ 2 + p * x + q = 0 ∧ x - x₀ ∈ maximalIdeal R := by
@@ -49,31 +49,29 @@ theorem exists_root_quadratic (p q x₀ : R) (h₀ : x₀ ^ 2 + p * x₀ + q ∈
   exact ⟨x, by simpa [IsRoot] using hx, hx'⟩
 
 /- English proof (translation)
-Distinguish the cases in `h2 : IsUnit (2 : R)`. Take `⟨u, hu⟩` from `h2.exists_left_inv`. Establish `key : ∃ x b : R, x ^ 2 - ((t ^ 2 - 4 * n) * b ^ 2 - 4) = 0`. Generalize the expression as in `t ^ 2 - 4 * n = D at hD`. Take `⟨x, y, h⟩` from `exists_sq_sub_finite (k := ResidueField R) (by have := (h2.map (residue R)).ne_zero; rwa [map_ofNat] at this) (residue R D) (hD.map _).ne_zero`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `residue_surjective x`. Take `⟨y, rfl⟩` from `residue_surjective y`. Establish `hm : x ^ 2 - (D * y ^ 2 - 4) ∈ maximalIdeal R`. Rewrite using `[← residue_eq_zero_iff, ← h]`. Simplify using `[map_ofNat]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hx : IsUnit x`. Take `⟨z, hz, -⟩` from `exists_root_quadratic 0 (-(D * y ^ 2 - 4)) x (by simpa [sub_eq_add_neg] using hm) (by simpa using h2.mul hx)`. Conclude with `⟨z, y, by linear_combination hz⟩`. Establish `hxm : x ∈ maximalIdeal R` using `hx`. Establish `hm' : D * y ^ 2 - 4 ∈ maximalIdeal R`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(maximalIdeal R).sub_mem (Ideal.mul_mem_left _ x hxm) hm` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨d, hd⟩` from `hD.exists_left_inv`. Establish `hy : IsUnit y`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hy`. Establish `hym : y ∈ maximalIdeal R` using `hy`. Establish `h4 : (2 * 2 : R) ∈ maximalIdeal R`. Use `(maximalIdeal R).sub_mem (Ideal.mul_mem_left _ (D * y) hym) hm'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `h4 (h2.mul h2)`. Take `⟨z, hz, -⟩` from `exists_root_quadratic 0 (-(4 * d)) y (by`. Use `Ideal.mul_mem_left _ d hm'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-y ^ 2) * hd) (by simpa using h2.mul hy)`. Conclude with `⟨0, z, by linear_combination (-D) * hz - 4 * hd⟩`. Take `⟨x, b, h⟩` from `key`. Use `⟨u * (x - t * b), b, ?_⟩` and prove the remaining obligations. Take the linear combination `u ^ 2 * h - (u * (x - t * b) * b * t + (b ^ 2 * n + 1) * (u * 2 + 1)) * hu`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h2m : (2 : R) ∈ maximalIdeal R` using `h2`. Establish `ht : IsUnit t`. Assume the negation of the conclusion as `ht`. Establish `htm : t ∈ maximalIdeal R` using `ht`. Establish `: t ^ 2 - 4 * n ∈ maximalIdeal R`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(maximalIdeal R).sub_mem (Ideal.mul_mem_left _ t htm) (Ideal.mul_mem_left _ (2 * n) h2m)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Conclude with `this hD`. Take `⟨c, hc, hc'⟩` from `exists_root_quadratic t (2 * n) (-t) (by`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `Ideal.mul_mem_left _ n h2m` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use the proof step `ring)`. Use the proof step `(by`. Establish `: 2 * -t + t = -t` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `ht.neg)`. Establish `hcu : IsUnit c`. Assume the negation of the conclusion as `hcu`. Establish `hcm : c ∈ maximalIdeal R` using `hcu`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Establish `: t ∈ maximalIdeal R`. Use `(maximalIdeal R).sub_mem hc' hcm` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Conclude with `this ht`.
-
-Take `⟨e, he⟩` from `hcu.exists_left_inv`. Use `⟨1, 2 * e, ?_⟩` and prove the remaining obligations. Take the linear combination `2 * e ^ 2 * hc - (2 * e * t + 2 * (e * c + 1)) * he`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_eq_neg_one [Finite (ResidueField R)] (t n : R) (hD : IsUnit (t ^ 2 - 4 * n)) :
     ∃ a b : R, a ^ 2 + a * b * t + b ^ 2 * n = -1 := by
@@ -141,9 +139,9 @@ theorem exists_eq_neg_one [Finite (ResidueField R)] (t n : R) (hD : IsUnit (t ^ 
     linear_combination 2 * e ^ 2 * hc - (2 * e * t + 2 * (e * c + 1)) * he
 
 /- English proof (translation)
-Introduce and unpack `F E _ _ _ _ _ _ - v θ ⟨t, n, h1, h2, h3⟩`. Use `GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v` as an intermediate fact. Use `GlobalTheory.SelfDualGenus.finite_residueField_adicCompletionIntegers v` as an intermediate fact. Establish `hD` using `(GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff v _).2 h3`. Rewrite `hD` using `[map_sub, map_pow, map_mul, map_ofNat]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, b, h⟩` from `exists_eq_neg_one _ _ hD`. Conclude with `⟨a, b, t, n, h1, h2, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (v : HeightOneSpectrum (𝓞 F)) (θ : 𝓞 E), (∃ t : 𝓞 F, ∃ n : 𝓞 F, (θ : E) + star (θ : E) = algebraMap F E t ∧ (θ : E) * star (θ : E) = algebraMap F E n ∧ t ^ 2 - 4 * n ∉ v.asIdeal) → ∃ a b : v.adicCompletionIntegers F, ∃ t n : 𝓞 F, (θ : E) + star (θ : E) = algebraMap F E t ∧ (θ : E) * star (θ : E) = algebraMap F E n ∧ a ^ 2 + a * b * algebraMap (𝓞 F) (v.adicCompletionIntegers F) t + b ^ 2 * algebraMap (𝓞 F) (v.adicCompletionIntegers F) n = -1 := by
   rintro F E _ _ _ _ _ _ - v θ ⟨t, n, h1, h2, h3⟩

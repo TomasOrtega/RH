@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.BesselIntegrals.Bessel
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Finset
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.energy_bound_gfPow_smul_comp_polyOp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FEnergyBoundPolynomialWeightPowCapelliEigen.lean&line=12#L12)
 -/

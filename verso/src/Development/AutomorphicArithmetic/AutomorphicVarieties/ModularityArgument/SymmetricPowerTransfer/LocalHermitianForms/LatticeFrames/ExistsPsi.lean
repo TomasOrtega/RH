@@ -23,7 +23,7 @@ Both sides reduce to the same expression.
 theorem Bf_apply (c t : K) (v w : K × Etau K τ) : Bf τ c t v w = c * v.1 * w.1 + t * QuadraticAlgebra.trace (v.2 * star w.2) := rfl
 
 /- English proof (translation)
-Simplify using `[Bf_apply, QuadraticAlgebra.trace_def]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Bf_symm (c t : K) (v w : K × Etau K τ) : Bf τ c t v w = Bf τ c t w v := by
   simp [Bf_apply, QuadraticAlgebra.trace_def]; ring
@@ -40,7 +40,7 @@ theorem psi_apply (s : K) (β : Etau K τ) (v : K × Etau K τ) (y : Etau K τ) 
     psi s β v y = s • (v.1 • ((ω - star ω) * y) + v.2 * β * star y) := rfl
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Rewrite `hβ` using `[QuadraticAlgebra.norm_def]`. Apply the tactic sequence `ext <;> simp [psi_apply, Bf_apply, QuadraticAlgebra.trace_def]`. Take the linear combination `(2 * v.2.re * w.2.re + τ * v.2.re * w.2.im + 2 * v.2.im * w.2.im + τ * v.2.im * w.2.re) * y.re * hβ`. Take the linear combination `(2 * v.2.re * w.2.re + τ * v.2.re * w.2.im + 2 * v.2.im * w.2.im + τ * v.2.im * w.2.re) * y.im * hβ`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem psi_anti {c t s ε : K} {β : Etau K τ} (hc : c = (τ ^ 2 - 4) * ε * s ^ 2) (hβ : QuadraticAlgebra.norm β * ε * s ^ 2 = 2 * t)
     (v w : K × Etau K τ) (y : Etau K τ) : ε • (psi s β v (psi s β w y) + psi s β w (psi s β v y)) = (2 * Bf τ c t v w) • y := by
@@ -51,7 +51,7 @@ theorem psi_anti {c t s ε : K} {β : Etau K τ} (hc : c = (τ ^ 2 - 4) * ε * s
   · linear_combination (2 * v.2.re * w.2.re + τ * v.2.re * w.2.im + 2 * v.2.im * w.2.im + τ * v.2.im * w.2.re) * y.im * hβ
 
 /- English proof (translation)
-Establish `h1 : star ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) * star (z : Etau K τ) = 1`. Rewrite using `[← star_mul, Units.mul_inv, star_one]`. Simplify using `only [psi_apply, quo, star_mul, Algebra.smul_def]`. Take the linear combination `(algebraMap K (Etau K τ) s * (z : Etau K τ) * v.2 * β * star y) * h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem psi_quo (s : K) (β : Etau K τ) (z : (Etau K τ)ˣ) (v : K × Etau K τ) (y : Etau K τ) :
     psi s β (v.1, quo z * v.2) ((z : Etau K τ) * y) = (z : Etau K τ) * psi s β v y := by
@@ -61,13 +61,11 @@ theorem psi_quo (s : K) (β : Etau K τ) (z : (Etau K τ)ˣ) (v : K × Etau K τ
   linear_combination (algebraMap K (Etau K τ) s * (z : Etau K τ) * v.2 * β * star y) * h1
 
 /- English proof (translation)
-Establish `h1` using `h 1`. Establish `h2` using `h ω`. Simplify using `only [psi_apply, Algebra.smul_def] at h1 h2`. Establish `hs' : IsUnit (algebraMap K (Etau K τ) s)` using `(isUnit_iff_ne_zero.mpr hs).map _`. Rewrite `h1`, `h2` using `[hs'.mul_right_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [star_one, mul_one] at h1`. Establish `hΩ2 : (ω - star ω : Etau K τ) * (ω - star ω) = algebraMap K (Etau K τ) (τ ^ 2 - 4)`. Apply the tactic sequence `ext <;> simp [pow_two] <;> ring`. Establish `key : algebraMap K (Etau K τ) (v.1 * (τ ^ 2 - 4)) = 0`. Rewrite using `[map_mul, ← hΩ2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `h2 - star ω * h1`. Establish `hv1 : v.1 = 0` using `(mul_eq_zero.mp ((algebraMap K (Etau K τ)).injective (key.trans (map_zero _).symm))).resolve_right hD`. Establish `hv2 : v.2 = 0`. Rewrite `h1` using `[hv1, map_zero, zero_mul, zero_add]`. Conclude with `hβ.mul_left_eq_zero.mp h1`.
-
-Conclude with `Prod.ext hv1 hv2`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_inj {s : K} {β : Etau K τ} (hD : τ ^ 2 - 4 ≠ 0) (hs : s ≠ 0) (hβ : IsUnit β) {v : K × Etau K τ} (h : ∀ y, psi s β v y = 0) : v = 0 := by
   have h1 := h 1
@@ -88,15 +86,15 @@ theorem psi_inj {s : K} {β : Etau K τ} (hD : τ ^ 2 - 4 ≠ 0) (hs : s ≠ 0) 
   exact Prod.ext hv1 hv2
 
 /- English proof (translation)
-Establish `hDu : IsUnit (algebraMap K (Etau K τ) (τ ^ 2 - 4))` using `(isUnit_iff_ne_zero.mpr hD).map _`. Establish `hΩ2 : (ω - star ω : Etau K τ) * (ω - star ω) = algebraMap K (Etau K τ) (τ ^ 2 - 4)`. Apply the tactic sequence `ext <;> simp [pow_two] <;> ring`. Establish `hΩu : IsUnit (ω - star ω : Etau K τ)` using `isUnit_of_mul_isUnit_left (hΩ2 ▸ hDu)`. Establish `htr : algebraMap K (Etau K τ) (QuadraticAlgebra.trace (star y * y')) = star y * y' + y * star y'`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.trace_def] <;> ring`. Establish `hk : algebraMap K (Etau K τ) s * algebraMap K (Etau K τ) (s * (τ ^ 2 - 4))⁻¹ * algebraMap K (Etau K τ) (τ ^ 2 - 4) = 1`. Rewrite using `[← map_mul, ← map_mul, ← map_one (algebraMap K (Etau K τ))]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Establish `hsub : ∀ z : Etau K τ, algebraMap K (Etau K τ) z.im * (ω - star ω) = z - star z`. Introduce `z`. Rewrite using `[QuadraticAlgebra.sub_star z, Algebra.smul_def]`. Establish `hinv : ((hβ.unit⁻¹ : (Etau K τ)ˣ) : Etau K τ) * β = 1`. Use `hβ.unit.inv_mul` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hβ.unit_spec]`. Then use the resulting hypothesis. Use `⟨((s * (τ ^ 2 - 4))⁻¹ * QuadraticAlgebra.trace (star y * y'), -(2 * (algebraMap K (Etau K τ) (s * (τ ^ 2 - 4))⁻¹ * (y * y' * (ω - star ω) * ((hβ.unit⁻¹ : (Etau K τ)ˣ) : Etau K τ))))), fun b => ?_⟩` and prove the remaining obligations. Establish `hs1` using `hsub (b * star y)`. Establish `hs2` using `hsub (b * star y')`. Rewrite `hs1`, `hs2` using `[star_mul, star_star]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hΩu.mul_left_cancel` to reduce the goal to its premises. Simplify using `only [psi_apply, Algebra.smul_def, map_mul]`. Take the linear combination `(algebraMap K (Etau K τ) s * algebraMap K (Etau K τ) (s * (τ ^ 2 - 4))⁻¹ * algebraMap K (Etau K τ) (QuadraticAlgebra.trace (star y * y')) * b - 2 * algebraMap K (Etau K τ) s * algebraMap K (Etau K τ) (s * (τ ^ 2 - 4))⁻¹ * y * y' * ((hβ.unit⁻¹ : (Etau K τ)ˣ) : Etau K τ) * β * star …`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_psi {s : K} {β : Etau K τ} (hD : τ ^ 2 - 4 ≠ 0) (hs : s ≠ 0) (hβ : IsUnit β) (y y' : Etau K τ) :
     ∃ v, ∀ b, psi s β v b = (b * star y).im • y' + (b * star y').im • y := by
@@ -141,7 +139,7 @@ structure Uni (c t : K) (S : Set (K × Etau K τ)) : Prop where
   dual : ∀ y, y ∈ S ↔ ∀ x ∈ S, Bf τ c t x y ∈ (algebraMap O K).range
 
 /- English proof (translation)
-Establish `key : (y₂ * star y₁).im • b = (-(b * star y₂).im) • y₁ + (b * star y₁).im • y₂`. Apply the tactic sequence `ext <;> simp <;> ring`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ hg, one_smul]`. Use `_ = _ := by rw [key, smul_add, smul_smul, smul_smul, div_eq_inv_mul, div_eq_inv_mul]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord {y₁ y₂ : Etau K τ} (hg : (y₂ * star y₁).im ≠ 0) (b : Etau K τ) :
     b = (-(b * star y₂).im / (y₂ * star y₁).im) • y₁ + ((b * star y₁).im / (y₂ * star y₁).im) • y₂ := by
@@ -152,13 +150,11 @@ theorem coord {y₁ y₂ : Etau K τ} (hg : (y₂ * star y₁).im ≠ 0) (b : Et
     _ = _ := by rw [key, smul_add, smul_smul, smul_smul, div_eq_inv_mul, div_eq_inv_mul]
 
 /- English proof (translation)
-Establish `e1` using `congrArg (fun z => (z * star y₁).im) h`. Establish `e2` using `congrArg (fun z => (z * star y₂).im) h`. Simplify using `only [add_mul, smul_mul_assoc, im_add, im_smul, smul_eq_mul] at e1 e2`. Establish `n1 : (y₁ * star y₁).im = 0`. Rewrite using `[← QuadraticAlgebra.algebraMap_norm_eq_mul_star, QuadraticAlgebra.algebraMap_im]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `n2 : (y₂ * star y₂).im = 0`. Rewrite using `[← QuadraticAlgebra.algebraMap_norm_eq_mul_star, QuadraticAlgebra.algebraMap_im]`. Establish `h12 : (y₁ * star y₂).im = -(y₂ * star y₁).im`. Rewrite using `[← im_star, star_mul, star_star]`. Rewrite `e1` using `[n1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[n2, h12]`. Prove the components needed by the constructor for the conclusion. Establish `: (a - a') * (y₂ * star y₁).im = 0` using `by linear_combination -e2`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_right hg)`. Establish `: (b - b') * (y₂ * star y₁).im = 0` using `by linear_combination e1`.
-
-Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_right hg)`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coord_uniq {y₁ y₂ : Etau K τ} (hg : (y₂ * star y₁).im ≠ 0) {a b a' b' : K} (h : a • y₁ + b • y₂ = a' • y₁ + b' • y₂) : a = a' ∧ b = b' := by
   have e1 := congrArg (fun z => (z * star y₁).im) h
@@ -179,11 +175,11 @@ theorem coord_uniq {y₁ y₂ : Etau K τ} (hg : (y₂ * star y₁).im ≠ 0) {a
     exact sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_right hg)
 
 /- English proof (translation)
-Establish `n1 : (y₁ * star y₁).im = 0`. Rewrite using `[← QuadraticAlgebra.algebraMap_norm_eq_mul_star, QuadraticAlgebra.algebraMap_im]`. Establish `n2 : (y₂ * star y₂).im = 0`. Rewrite using `[← QuadraticAlgebra.algebraMap_norm_eq_mul_star, QuadraticAlgebra.algebraMap_im]`. Establish `h12 : (y₁ * star y₂).im = -(y₂ * star y₁).im`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← im_star, star_mul, star_star]`. Establish `hstar : ∀ (k : K) (x : Etau K τ), star (k • x) = k • star x`. Apply the tactic sequence `intro k x; ext <;> simp <;> ring`. Use `set G := (y₂ * star y₁).im with hG`. Take `⟨e, he⟩` from `exists_psi hD hs hβ y₁ ((2 * G)⁻¹ • y₁)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `exists_psi hD hs hβ y₂ ((-(2 * G))⁻¹ • y₂)`. Take `⟨h, hh⟩` from `exists_psi hD hs hβ y₁ (G⁻¹ • y₂)`. Apply the tactic sequence `refine ⟨e, f, h, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>`. Simplify using `only [he, hf, hh, hstar, mul_smul_comm, im_smul, smul_eq_mul, n1, n2, h12, ← hG, zero_smul, mul_zero, zero_add, add_zero, smul_smul, ← add_smul]`. Apply the tactic sequence `all_goals (ext <;> simp <;> field_simp <;> ring)`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_efh {s : K} {β : Etau K τ} (hD : τ ^ 2 - 4 ≠ 0) (h2 : (2 : K) ≠ 0) (hs : s ≠ 0) (hβ : IsUnit β) {y₁ y₂ : Etau K τ}
     (hg : (y₂ * star y₁).im ≠ 0) : ∃ e f h, psi s β e y₁ = 0 ∧ psi s β e y₂ = y₁ ∧ psi s β f y₁ = y₂ ∧ psi s β f y₂ = 0 ∧

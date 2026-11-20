@@ -7,13 +7,13 @@ namespace Formalism.L2.Th1.Top.FrP.UnitaryGroupMassFormula.HermFrame
 open Formalism.L2.Th1.Top.FrP
 
 /- English proof (translation)
-Simplify using `[sq, Complex.conj_ofReal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sq_conj (d : ℕ) : conj (sq d) = -sq d := by
   simp [sq, Complex.conj_ofReal]
 
 /- English proof (translation)
-Rewrite using `[← pow_two]`. Establish `h : ((Real.sqrt d : ℝ) : ℂ) ^ 2 = (d : ℂ)`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Rewrite using `[sq, mul_pow, h, Complex.I_sq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -62,7 +62,7 @@ def Kc (d : ℕ) (hd : 0 < d) : Subfield ℂ where
     linear_combination (-(b:ℂ) ^ 2) * this
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `hz`. Conclude with `⟨a, -b, by simp [sq_conj]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem conj_mem_Kc {d : ℕ} {hd : 0 < d} {z : ℂ} (hz : z ∈ Kc d hd) : conj z ∈ Kc d hd := by
   obtain ⟨a, b, rfl⟩ := hz

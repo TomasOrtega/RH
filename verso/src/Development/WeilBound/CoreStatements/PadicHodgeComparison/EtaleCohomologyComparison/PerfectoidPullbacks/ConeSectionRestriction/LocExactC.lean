@@ -19,9 +19,9 @@ section Pts
 variable {K : Type} [Field K] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)}
 
 /- English proof (translation)
-Introduce `x _`. Establish `e` using `pt_map f`. Establish `hx : (Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J f.φ f.hle)) x) ∈ pt T ⁻¹ᵁ V` using `h (Set.mem_univ _)`. Express the relevant statement in the definitionally equal form `(pt T') x ∈ V`. Rewrite using `[← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem inU_map_c {V : X.Opens} {T T' : Thick (smFun X q)} (f : T ⟶ T') (h : InU V T) : InU V T' := by
   intro x _
@@ -32,13 +32,13 @@ theorem inU_map_c {V : X.Opens} {T T' : Thick (smFun X q)} (f : T ⟶ T') (h : I
   exact hx
 
 /- English proof (translation)
-The claim follows from `inU_mono q inf_le_left h`.
+A detailed English derivation is pending.
 -/
 theorem inU_inf_left {V W : X.Opens} {T : Thick (smFun X q)} (h : InU (V ⊓ W) T) : InU V T :=
   inU_mono q inf_le_left h
 
 /- English proof (translation)
-The claim follows from `inU_mono q inf_le_right h`.
+A detailed English derivation is pending.
 -/
 theorem inU_inf_right {V W : X.Opens} {T : Thick (smFun X q)} (h : InU (V ⊓ W) T) : InU W T :=
   inU_mono q inf_le_right h
@@ -49,31 +49,31 @@ variable {K : Type} [Field K] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K
   (i : X ⟶ PSpace K N) {m e : ℕ} (y : Fin m → MvPolynomial (Fin (N + 1)) K) (hy : ∀ k, (y k).IsHomogeneous e) (s : ℕ)
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem wK_tf {k : Fin m} {T : Thick (smFun X q)} (h : wK q i y s k T) : TF 1 s T := h.1
 
 /- English proof (translation)
-Take `⟨-, V, ⟨j, rfl⟩, hV⟩` from `h`. Conclude with `inU_inf_left hV`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem wK_uy {k : Fin m} {T : Thick (smFun X q)} (h : wK q i y s k T) : InU (uy i y k) T := by
   obtain ⟨-, V, ⟨j, rfl⟩, hV⟩ := h
   exact inU_inf_left hV
 
 /- English proof (translation)
-Take `⟨-, V, ⟨j, rfl⟩, hV⟩` from `h`. Conclude with `⟨j, inU_inf_right hV⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem wK_wch {k : Fin m} {T : Thick (smFun X q)} (h : wK q i y s k T) : ∃ j, InU (wch i j) T := by
   obtain ⟨-, V, ⟨j, rfl⟩, hV⟩ := h
   exact ⟨j, inU_inf_right hV⟩
 
 /- English proof (translation)
-Introduce `_ h` and use `⟨k, h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem wK_le_wU (k : Fin m) : wK q i y s k ≤ wU q i y s := fun _ h => ⟨k, h⟩
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `h`. Conclude with `wK_wch i y s hk`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem wU_wch {T : Thick (smFun X q)} (h : wU q i y s T) : ∃ j, InU (wch i j) T := by
   obtain ⟨k, hk⟩ := h
@@ -83,7 +83,7 @@ def lj (T : Thick (smFun X q)) (j : Fin (N + 1)) (h : InU (wch i j) T) : ChartR 
   liftA (pt T ≫ i) (X_mem K N j) one_pos h
 
 /- English proof (translation)
-The claim follows from `(liftA_spec (pt T ≫ i) (X_mem K N j) one_pos h).symm`.
+A detailed English derivation is pending.
 -/
 theorem lj_spec (T : Thick (smFun X q)) (j : Fin (N + 1)) (h : InU (wch i j) T) :
     pt T ≫ i = Spec.map (CommRingCat.ofHom (lj i T j h)) ≫ chart K N j :=
@@ -94,9 +94,9 @@ def az (T : Thick (smFun X q)) (j : Fin (N + 1)) (h : InU (wch i j) T) :
   pullback.lift (pt T) (Spec.map (CommRingCat.ofHom (lj i T j h))) (lj_spec i T j h)
 
 /- English proof (translation)
-Establish `e : pt T' ≫ i = Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J f.φ f.hle)) ≫ (pt T ≫ i)`. Rewrite using `[← Category.assoc, pt_map f]`. Unfold `lj`. Establish `key` using `liftA_comp (Ideal.quotientMap T'.J f.φ f.hle) (pt T ≫ i) (X_mem K N j) one_pos h (e ▸ h')`. Use `Eq.trans ?_ key` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments.
 -/
 theorem lj_comp {T T' : Thick (smFun X q)} (f : T ⟶ T') (j : Fin (N + 1)) (h : InU (wch i j) T) (h' : InU (wch i j) T') :
     lj i T' j h' = (Ideal.quotientMap T'.J f.φ f.hle).comp (lj i T j h) := by
@@ -113,13 +113,13 @@ variable {D : E.LineData X}
 def sO (hD : IsTautologicalLineAt D N i) (j : Fin (N + 1)) : pullback i (chart K N j) ⟶ D.Y := hD.2.choose j
 
 /- English proof (translation)
-The claim follows from `hD.2.choose_spec.choose j`.
+A detailed English derivation is pending.
 -/
 theorem sO_f (hD : IsTautologicalLineAt D N i) (j : Fin (N + 1)) : sO i hD j ≫ D.f = pullback.fst _ _ :=
   hD.2.choose_spec.choose j
 
 /- English proof (translation)
-The claim follows from `hD.2.choose_spec.choose_spec V j k a b h`.
+A detailed English derivation is pending.
 -/
 theorem sO_u (hD : IsTautologicalLineAt D N i) {V : Scheme.{0}} (j k : Fin (N + 1)) (a : V ⟶ pullback i (chart K N j))
     (b : V ⟶ pullback i (chart K N k)) (h : a ≫ pullback.fst _ _ = b ≫ pullback.fst _ _)
@@ -129,14 +129,14 @@ theorem sO_u (hD : IsTautologicalLineAt D N i) {V : Scheme.{0}} (j k : Fin (N + 
   hD.2.choose_spec.choose_spec V j k a b h
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ub_congr {A : Type} [CommRing A] {a a' b b' : Spec (CommRingCat.of A) ⟶ D.Y} (ha : a = a') (hb : b = b')
     (h : a ≫ D.f = b ≫ D.f) (h' : a' ≫ D.f = b' ≫ D.f) : ub (D := D) a b h = ub (D := D) a' b' h' := by
   subst ha hb; rfl
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, sO_f]`. Conclude with `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem az_f (hD : IsTautologicalLineAt D N i) (T : Thick (smFun X q)) (j : Fin (N + 1)) (h : InU (wch i j) T) :
     (az i T j h ≫ sO i hD j) ≫ D.f = pt T := by
@@ -144,7 +144,7 @@ theorem az_f (hD : IsTautologicalLineAt D N i) (T : Thick (smFun X q)) (j : Fin 
   exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Rewrite using `[sO_f]`. Conclude with `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem az_f' (hD : IsTautologicalLineAt D N i) (T : Thick (smFun X q)) (j : Fin (N + 1)) (h : InU (wch i j) T) :
     az i T j h ≫ sO i hD j ≫ D.f = pt T := by
@@ -154,7 +154,7 @@ theorem az_f' (hD : IsTautologicalLineAt D N i) (T : Thick (smFun X q)) (j : Fin
 def jc (c : (wU q i y s).FullSubcategory) : Fin (N + 1) := (wU_wch i y s c.property).choose
 
 /- English proof (translation)
-The claim follows from `(wU_wch i y s c.property).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem hjc (c : (wU q i y s).FullSubcategory) : InU (wch i (jc i y s c)) c.obj := (wU_wch i y s c.property).choose_spec
 
@@ -167,7 +167,7 @@ def μ (hD : IsTautologicalLineAt D N i) (Λ : CLiftK (wU q i y s).ι D) (k : Fi
     (((AU i y s hD Λ c)⁻¹ ^ e : (c.obj.B ⧸ c.obj.J)ˣ) : c.obj.B ⧸ c.obj.J)
 
 /- English proof (translation)
-The claim follows from `(liftA_yx_isUnit (pt c.obj ≫ i) y hy _ k (hjc i y s c) hk).mul (Units.isUnit _)`.
+A detailed English derivation is pending.
 -/
 theorem μ_isUnit (hD : IsTautologicalLineAt D N i) (Λ : CLiftK (wU q i y s).ι D) (k : Fin m) (c : (wU q i y s).FullSubcategory)
     (hk : InU (uy i y k) c.obj) : IsUnit (μ i y hy s hD Λ k c) :=
@@ -178,7 +178,7 @@ def vv (hD : IsTautologicalLineAt D N i) (Λ : CLiftK (wU q i y s).ι D) (k : Fi
   (exists_unit_lift c.obj _ (μ_isUnit i y hy s hD Λ k c hk)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_unit_lift c.obj _ (μ_isUnit i y hy s hD Λ k c hk)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem vv_spec (hD : IsTautologicalLineAt D N i) (Λ : CLiftK (wU q i y s).ι D) (k : Fin m) (c : (wU q i y s).FullSubcategory)
     (hk : InU (uy i y k) c.obj) :
@@ -191,7 +191,7 @@ section E
 variable {D : E.LineData X}
 
 /- English proof (translation)
-Establish `e` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ψ)`. Express the relevant statement in the definitionally equal form `((Spec.map (CommRingCat.ofHom ψ)).appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of S)).hom).hom _ = _`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gamma_specMap {R S : Type} [CommRing R] [CommRing S] (ψ : R →+* S) (r : R) :
     (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom
@@ -202,35 +202,31 @@ theorem gamma_specMap {R S : Type} [CommRing R] [CommRing S] (ψ : R →+* S) (r
   simp
 
 /- English proof (translation)
-Use `set f : c.obj ⟶ c'.obj := (wU q i y s).ι.map φ with hf`. Use `set Q := Ideal.quotientMap c'.obj.J f.φ f.hle with hQ`. Establish `hj : InU (wch i (jc i y s c)) c.obj` using `hjc i y s c`. Establish `hj' : InU (wch i (jc i y s c')) c'.obj` using `hjc i y s c'`. Establish `hjT : InU (wch i (jc i y s c)) c'.obj` using `inU_map_c f hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : Spec.map (CommRingCat.ofHom Q) ≫ pt c.obj = pt c'.obj` using `pt_map f`. Establish `h1 : (Spec.map (CommRingCat.ofHom Q) ≫ Λ.p c) ≫ D.f = Λ.p c' ≫ D.f`. Rewrite using `[Category.assoc, Λ.hp, Λ.hp]`. Conclude with `hpt`. Establish `ew : Ideal.Quotient.mk c'.obj.J ((show c'.obj.Bˣ from Λ.w φ) : c'.obj.B) = ub (D` using `D) (Spec.map (CommRingCat.ofHom Q) ≫ Λ.p c) (Λ.p c') h1 := Λ.hw φ h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (Spec.map (CommRingCat.ofHom Q) ≫ (az i c.obj _ hj ≫ sO i hD (jc i y s c))) ≫ D.f = (Spec.map (CommRingCat.ofHom Q) ≫ Λ.p c) ≫ D.f`. Simplify using `only [Category.assoc, az_f']`. Rewrite using `[Λ.hp]`. Both sides reduce to the same expression. Establish `eA : Q (((AU i y s hD Λ c : (c.obj.B ⧸ c.obj.J)ˣ)) : c.obj.B ⧸ c.obj.J) = ub (D` using `D) (Spec.map (CommRingCat.ofHom Q) ≫ (az i c.obj _ hj ≫ sO i hD (jc i y s c))) (Spec.map (CommRingCat.ofHom Q) ≫ Λ.p c) h2 := (ub_nat Q _ _ _ h2).symm`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3 : (Spec.map (CommRingCat.ofHom Q) ≫ (az i c.obj _ hj ≫ sO i hD (jc i y s c))) ≫ D.f = (az i c'.obj _ hj' ≫ sO i hD (jc i y s c')) ≫ D.f`. Simplify using `only [Category.assoc, az_f']`. Conclude with `hpt`. Establish `h4 : (az i c'.obj _ hj' ≫ sO i hD (jc i y s c')) ≫ D.f = Λ.p c' ≫ D.f`. Rewrite using `[az_f, Λ.hp]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hcoc : ub (D` using `D) _ _ h2 * ub (D := D) _ _ h1 = ub (D := D) _ _ h3 * ub (D := D) _ _ h4 := by`. Rewrite using `[ub_mul, ub_mul]`. Establish `h5 : (Spec.map (CommRingCat.ofHom Q) ≫ az i c.obj _ hj) ≫ pullback.fst _ _ = az i c'.obj _ hj' ≫ pullback.fst _ _`. Rewrite using `[Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `az`. Rewrite using `[pullback.lift_fst, pullback.lift_fst, hpt]`. Establish `h3' : ((Spec.map (CommRingCat.ofHom Q) ≫ az i c.obj _ hj) ≫ sO i hD (jc i y s c)) ≫ D.f = (az i c'.obj _ hj' ≫ sO i hD (jc i y s c')) ≫ D.f`. Rewrite using `[Category.assoc]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eR : ub (D` using `D) _ _ h3 = lj i c'.obj _ hjT (ratio K N (jc i y s c) (jc i y s c')) := by`. Rewrite using `[ub_congr (Category.assoc _ _ _).symm rfl h3 h3']`. Unfold `ub`. Rewrite using `[sO_u i hD _ _ _ _ h5 h3']`. Establish `e6 : (Spec.map (CommRingCat.ofHom Q) ≫ az i c.obj _ hj) ≫ pullback.snd _ _ = Spec.map (CommRingCat.ofHom (lj i c'.obj _ hjT))`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc]`. Unfold `az`. Rewrite using `[pullback.lift_snd, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Conclude with `congrArg (fun ψ => Spec.map (CommRingCat.ofHom ψ)) (lj_comp i f _ hj hjT).symm`. Rewrite using `[e6]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `gamma_specMap _ _`. Establish `hY : lj i c'.obj _ hjT (yx y hy (jc i y s c) k) = lj i c'.obj _ hj' (yx y hy (jc i y s c') k) * lj i c'.obj _ hjT (ratio K N (jc i y s c) (jc i y s c')) ^ e` using `liftA_yx_change (pt c'.obj ≫ i) y hy (jc i y s c) (jc i y s c') k hjT hj'`. Establish `eY : Q (lj i c.obj _ hj (yx y hy (jc i y s c) k)) = lj i c'.obj _ hjT (yx y hy (jc i y s c) k)` using `(RingHom.congr_fun (lj_comp i f _ hj hjT) _).symm`. Establish `key : Ideal.Quotient.mk c'.obj.J ((show c'.obj.Bˣ from Λ.w φ) : c'.obj.B) ^ e * μ i y hy s hD Λ k c' = Q (μ i y hy s hD Λ k c)` using `by set U := Units.map Q.toMonoidHom (AU i y s hD Λ c) with hU`. Establish `hUv : (U : c'.obj.B ⧸ c'.obj.J) = ub (D` using `D) _ _ h2 := eA`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `set A' := AU i y s hD Λ c' with hA'`. Establish `hA'v : (A' : c'.obj.B ⧸ c'.obj.J) = ub (D` using `D) _ _ h4 := rfl`. Use `set W := Ideal.Quotient.mk c'.obj.J ((show c'.obj.Bˣ from Λ.w φ) : c'.obj.B) with hWdef`. Use `set R := lj i c'.obj _ hjT (ratio K N (jc i y s c) (jc i y s c')) with hR`. Establish `hc : (U : c'.obj.B ⧸ c'.obj.J) * W = R * A'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hUv, hA'v, ew, ← eR]`. Conclude with `hcoc`. Establish `hW : W = ((U⁻¹ : (c'.obj.B ⧸ c'.obj.J)ˣ) : c'.obj.B ⧸ c'.obj.J) * (R * A')`. Rewrite using `[← hc, ← mul_assoc, Units.inv_mul, one_mul]`. Establish `hQμ : Q (μ i y hy s hD Λ k c) = lj i c'.obj _ hjT (yx y hy (jc i y s c) k) * (((U⁻¹ : (c'.obj.B ⧸ c'.obj.J)ˣ) : c'.obj.B ⧸ c'.obj.J)) ^ e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `μ`. Rewrite using `[map_mul, eY, Units.val_pow_eq_pow_val, map_pow]`. Both sides reduce to the same expression. Rewrite using `[hQμ]`. Unfold `μ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hA', hY, hW, Units.val_pow_eq_pow_val]`. Establish `hA : (A' : c'.obj.B ⧸ c'.obj.J) ^ e * ((A'⁻¹ : (c'.obj.B ⧸ c'.obj.J)ˣ) : c'.obj.B ⧸ c'.obj.J) ^ e = 1`. Rewrite using `[← mul_pow, Units.mul_inv, one_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `hv` using `vv_spec i y hy s hD Λ k c hk`.
-
-Establish `hv'` using `vv_spec i y hy s hD Λ k c' hk'`. Establish `hfv : Ideal.Quotient.mk c'.obj.J ((Units.map f.φ.toMonoidHom (vv i y hy s hD Λ k c hk) : c'.obj.Bˣ) : c'.obj.B) = Q (μ i y hy s hD Λ k c)`. Rewrite using `[← hv]`. Both sides reduce to the same expression. Establish `hinv : Ideal.Quotient.mk c'.obj.J (((Units.map f.φ.toMonoidHom (vv i y hy s hD Λ k c hk))⁻¹ : c'.obj.Bˣ) : c'.obj.B) * Q (μ i y hy s hD Λ k c) = 1`.
-
-Rewrite using `[← hfv, ← map_mul, Units.inv_mul, map_one]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_one, sub_eq_zero, Units.val_mul, Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_mul, map_pow, hv', key, mul_comm]`. Conclude with `hinv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_mem (hD : IsTautologicalLineAt D N i) (Λ : CLiftK (wU q i y s).ι D) (k : Fin m) {c c' : (wU q i y s).FullSubcategory}
     (φ : c ⟶ c') (hk : InU (uy i y k) c.obj) (hk' : InU (uy i y k) c'.obj) :

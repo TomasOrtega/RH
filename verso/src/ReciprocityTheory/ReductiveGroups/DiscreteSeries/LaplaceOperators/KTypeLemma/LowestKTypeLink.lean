@@ -13,7 +13,7 @@ open ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `apply ReciprocityTheory.ChartRestriction.DS.Lap.LemK.LowestWeightLiftLemmas.lift_highestWeightVector <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_highestWeightVector {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M) (hV : IsKStableSub ε E V)

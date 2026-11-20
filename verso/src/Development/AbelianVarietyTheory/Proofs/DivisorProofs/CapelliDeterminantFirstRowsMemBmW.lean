@@ -40,20 +40,20 @@ section Basic
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-The claim follows from `@fockSHerm K _ starRingOfComm _ g f`.
+A detailed English derivation is pending.
 -/
 theorem fockB_symm {σ : Type} (f g : MvPolynomial σ K) : fockB f g = fockB g f :=
   @fockSHerm K _ starRingOfComm _ g f
 
 /- English proof (translation)
-Conclude with `@fockL_X_pderiv K _ starRingOfComm σ _ v f g`.
+A detailed English derivation is pending.
 -/
 theorem fockB_X_mul {σ : Type} (v : σ) (f g : MvPolynomial σ K) : fockB (X v * f) g = fockB f (pderiv v g) := by
   classical
   exact @fockL_X_pderiv K _ starRingOfComm σ _ v f g
 
 /- English proof (translation)
-Rewrite using `[rowE_apply, rowE_apply, ← fockBL_apply, ← fockBL_apply, map_sum, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[fockBL_apply, fockBL_apply, fockB_X_mul, fockB_symm f, fockB_X_mul, fockB_symm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fockB_rowE {r m : ℕ} (a b : Fin r) (f g : MvPolynomial (Fin r × Fin m) K) :
     fockB (rowE K r m a b f) g = fockB f (rowE K r m b a g) := by
@@ -62,7 +62,7 @@ theorem fockB_rowE {r m : ℕ} (a b : Fin r) (f g : MvPolynomial (Fin r × Fin m
   rw [fockBL_apply, fockBL_apply, fockB_X_mul, fockB_symm f, fockB_X_mul, fockB_symm]
 
 /- English proof (translation)
-Establish `h` using `glRel_rowE K (n + 1) m i.castSucc j.castSucc k.castSucc l.castSucc`. Simplify using `only [Fin.castSucc_inj] at h`. Simplify using `only [rE, h, eq_comm (a := l)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rE_rel (n m : ℕ) (i j k l : Fin n) :
     rE K n m i j * rE K n m k l - rE K n m k l * rE K n m i j =
@@ -72,26 +72,26 @@ theorem rE_rel (n m : ℕ) (i j k l : Fin n) :
   simp only [rE, h, eq_comm (a := l)]
 
 /- English proof (translation)
-Rewrite `h` using `[← two_smul K x]`. Conclude with `(smul_eq_zero.1 h).resolve_left two_ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem end_two [CharZero K] {M : Type} [AddCommGroup M] [Module K M] (x : Module.End K M) (h : x + x = 0) : x = 0 := by
   rw [← two_smul K x] at h
   exact (smul_eq_zero.1 h).resolve_left two_ne_zero
 
 /- English proof (translation)
-The claim follows from `capDet_central _ u (rE_rel n m) end_two k l`.
+A detailed English derivation is pending.
 -/
 theorem rE_comm_rCap [CharZero K] (n m : ℕ) (u : ℤ) (k l : Fin n) : Commute (rE K n m k l) (rCap K n m u) :=
   capDet_central _ u (rE_rel n m) end_two k l
 
 /- English proof (translation)
-The claim follows from `capDet_commute_of _ v _ fun i j => (rE_comm_rCap n m u i j).symm`.
+A detailed English derivation is pending.
 -/
 theorem rCap_comm [CharZero K] (n m : ℕ) (u v : ℤ) : Commute (rCap K n m u) (rCap K n m v) :=
   capDet_commute_of _ v _ fun i j => (rE_comm_rCap n m u i j).symm
 
 /- English proof (translation)
-Rewrite using `[(rowE_eq_rowDiv K r m a b f).1]`. Conclude with `rowDivStable K r m ν a b 1 f hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowE_mem {r m : ℕ} {ν : Fin m → ℕ} (a b : Fin r) {f : MvPolynomial (Fin r × Fin m) K}
     (hf : f ∈ dualWeyl K r m ν) : rowE K r m a b f ∈ dualWeyl K r m ν := by
@@ -99,11 +99,11 @@ theorem rowE_mem {r m : ℕ} {ν : Fin m → ℕ} (a b : Fin r) {f : MvPolynomia
   exact rowDivStable K r m ν a b 1 f hf
 
 /- English proof (translation)
-Establish `h1 : ∀ (k a i : Fin n) x, bmF E' u k a i (φ x) = φ (bmF E u k a i x)`. Introduce `k a i x`. Unfold `bmF`. Use `split_ifs`. Simplify using `only [LinearMap.sub_apply, Module.End.intCast_apply, h, map_sub, map_zsmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Establish `h2 : ∀ (l : List (Fin n)) (α β : Fin n → Fin n) x, (l.map fun k => bmF E' u k (α k) (β k)).prod (φ x) = φ ((l.map fun k => bmF E u k (α k) (β k)).prod x)`. Introduce `l α β x`. Proceed by induction on `l with`. Consider the case `nil => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cons a l ih => simp only [List.map_cons, List.prod_cons, Module.End.mul_apply, ih, h1]`. Simplify using `only [capDet, bmPi, bmM, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_zsmul, List.ofFn_eq_map, h2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem capDet_intertwine {M M' : Type} [AddCommGroup M] [Module K M] [AddCommGroup M'] [Module K M'] {n : ℕ}
     (E : Fin n → Fin n → Module.End K M) (E' : Fin n → Fin n → Module.End K M') (φ : M →ₗ[K] M')
@@ -123,7 +123,7 @@ theorem capDet_intertwine {M M' : Type} [AddCommGroup M] [Module K M] [AddCommGr
   simp only [capDet, bmPi, bmM, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_zsmul, List.ofFn_eq_map, h2]
 
 /- English proof (translation)
-Use `capDet_intertwine (fun i j => (E i j).restrict (h i j)) E W.subtype (fun _ _ _ => rfl) u ⟨x, hx⟩` as an intermediate fact. Rewrite using `[show x = W.subtype ⟨x, hx⟩ from rfl, this]`. Conclude with `Subtype.property _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem capDet_mem {M : Type} [AddCommGroup M] [Module K M] {n : ℕ} (E : Fin n → Fin n → Module.End K M)
     (W : Submodule K M) (h : ∀ i j, ∀ x ∈ W, E i j x ∈ W) (u : ℤ) {x : M} (hx : x ∈ W) : capDet E u x ∈ W := by
@@ -132,9 +132,9 @@ theorem capDet_mem {M : Type} [AddCommGroup M] [Module K M] {n : ℕ} (E : Fin n
   exact Subtype.property _
 
 /- English proof (translation)
-Unfold `rE`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [emb, rowE_C]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨a, s⟩` from `v`. Rewrite using `[map_mul, rowE_mul, rowE_mul, hp, map_add, map_mul, map_mul, bmF_emb_X, rowE_X, rowE_X]`. Apply the tactic sequence `by_cases h : j = a <;> simp [h, bmF_emb_X]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rE_emb (n : ℕ) (i j : Fin n) (f : MvPolynomial (Fin n × Fin n) K) :
     rE K n n i j (emb K n f) = emb K n (rowE K n n i j f) := by
@@ -148,11 +148,11 @@ theorem rE_emb (n : ℕ) (i j : Fin n) (f : MvPolynomial (Fin n × Fin n) K) :
     by_cases h : j = a <;> simp [h, bmF_emb_X]
 
 /- English proof (translation)
-Unfold `rE zmon`. Use `Finset.prod_induction _ (fun P => rowE K (n + 1) n i.castSucc j.castSucc P = 0) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b ha hb`. Rewrite using `[rowE_mul, ha, hb]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `rowE_C K _ _ _ _ 1`. Introduce `s _`. Proceed by induction on `b s with`. Consider the case `zero => exact rowE_C K _ _ _ _ 1`. Consider the case `succ k ih => rw [pow_succ, rowE_mul, ih, rowE_X, if_neg (Fin.castSucc_lt_last j).ne]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem rE_zmon (n : ℕ) (i j : Fin n) (b : Fin n → ℕ) : rE K n n i j (zmon K n b) = 0 := by
   unfold rE zmon
@@ -166,7 +166,7 @@ theorem rE_zmon (n : ℕ) (i j : Fin n) (b : Fin n → ℕ) : rE K n n i j (zmon
     | succ k ih => rw [pow_succ, rowE_mul, ih, rowE_X, if_neg (Fin.castSucc_lt_last j).ne]; simp
 
 /- English proof (translation)
-Establish `h1` using `rE_zmon (K := K) n i j b`. Establish `h2` using `rE_emb n i j f`. Unfold `rE at *`. Rewrite using `[rowE_mul, h1, h2, zero_mul, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rE_lead (n : ℕ) (i j : Fin n) (b : Fin n → ℕ) (f : MvPolynomial (Fin n × Fin n) K) :
     rE K n n i j (zmon K n b * emb K n f) = zmon K n b * emb K n (rowE K n n i j f) := by
@@ -176,7 +176,7 @@ theorem rE_lead (n : ℕ) (i j : Fin n) (b : Fin n → ℕ) (f : MvPolynomial (F
   rw [rowE_mul, h1, h2, zero_mul, zero_add]
 
 /- English proof (translation)
-The claim follows from `capDet_intertwine (fun i j => rowE K n n i j) (rE K n n) (LinearMap.mulLeft K (zmon K n b) ∘ₗ (emb K n).toLinearMap) (fun i j x => rE_lead n i j b x) u f`.
+A detailed English derivation is pending.
 -/
 theorem rCap_lead (n : ℕ) (u : ℤ) (b : Fin n → ℕ) (f : MvPolynomial (Fin n × Fin n) K) :
     rCap K n n u (zmon K n b * emb K n f) = zmon K n b * emb K n (capDet (fun i j => rowE K n n i j) u f) :=
@@ -184,9 +184,9 @@ theorem rCap_lead (n : ℕ) (u : ℤ) (b : Fin n → ℕ) (f : MvPolynomial (Fin
     (LinearMap.mulLeft K (zmon K n b) ∘ₗ (emb K n).toLinearMap) (fun i j x => rE_lead n i j b x) u f
 
 /- English proof (translation)
-Unfold `rE`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [incl, rowE_C]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨a, s⟩` from `v`. Establish `hX : ∀ a s, incl K n (X (a, s)) = X (a, s.castSucc)` using `fun a s => rename_X _ _`. Rewrite using `[map_mul, rowE_mul, rowE_mul, hp, map_add, map_mul, map_mul, hX, rowE_X, rowE_X]`. Apply the tactic sequence `by_cases h : j.castSucc = a <;> simp [h, hX]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rE_incl (n : ℕ) (i j : Fin n) (f : BP K n) :
     rE K n (n + 1) i j (incl K n f) = incl K n (rE K n n i j f) := by
@@ -201,15 +201,15 @@ theorem rE_incl (n : ℕ) (i j : Fin n) (f : BP K n) :
     by_cases h : j.castSucc = a <;> simp [h, hX]
 
 /- English proof (translation)
-The claim follows from `capDet_intertwine (rE K n n) (rE K n (n + 1)) (incl K n).toLinearMap (rE_incl n) u f`.
+A detailed English derivation is pending.
 -/
 theorem rCap_incl (n : ℕ) (u : ℤ) (f : BP K n) : rCap K n (n + 1) u (incl K n f) = incl K n (rCap K n n u f) :=
   capDet_intertwine (rE K n n) (rE K n (n + 1)) (incl K n).toLinearMap (rE_incl n) u f
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c => rw [rowE_C, derivation_C]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Take `⟨c, s⟩` from `v`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[rowE_mul, hp, Derivation.leibniz, mkDerivation_X, rowE_X]`. Simplify using `only [smul_eq_mul, eq_comm (a := b)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rowE_eq_deriv {r m : ℕ} (a b : Fin r) (f : MvPolynomial (Fin r × Fin m) K) :
     rowE K r m a b f = mkDerivation K (fun v : Fin r × Fin m =>
@@ -224,9 +224,9 @@ theorem rowE_eq_deriv {r m : ℕ} (a b : Fin r) (f : MvPolynomial (Fin r × Fin 
     ring
 
 /- English proof (translation)
-Use `commute_weightedComponent_of_monomial w _ (fun μ => ?_) β` and prove the remaining obligations. Establish `h` using `bm_deriv_monomial_WH (R := K) w 0 (fun v : Fin (n + 1) × Fin m => if v.1 = j.castSucc then (X (i.castSucc, v.2) : MvPolynomial (Fin (n + 1) × Fin m) K) else 0) (fun v => by split_ifs with hv`. Take `⟨a, s⟩` from `v`. Take `rfl : a = j.castSucc` from `hv`. Rewrite using `[add_zero, hw j i]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isWeightedHomogeneous_X K w _`. Conclude with `isWeightedHomogeneous_zero K w _) μ`. Rewrite `h` using `[add_zero, ← rowE_eq_deriv]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem comp_comm_rE {B : Type} [AddCommMonoid B] [IsRightCancelAdd B] (n m : ℕ) (w : Fin (n + 1) × Fin m → B)
     (hw : ∀ (a a' : Fin n) s, w (a.castSucc, s) = w (a'.castSucc, s)) (β : B) (i j : Fin n) :
@@ -244,20 +244,20 @@ theorem comp_comm_rE {B : Type} [AddCommMonoid B] [IsRightCancelAdd B] (n m : �
   rwa [add_zero, ← rowE_eq_deriv] at h
 
 /- English proof (translation)
-The claim follows from `comp_comm_rE n n (zW n) (fun a a' s => by rw [bmF_zW_castSucc, bmF_zW_castSucc]) β i j`.
+A detailed English derivation is pending.
 -/
 theorem zcomp_comm_rE (n : ℕ) (β : Fin n → ℤ) (i j : Fin n) : Commute (zcomp K n β) (rE K n n i j) :=
   comp_comm_rE n n (zW n) (fun a a' s => by rw [bmF_zW_castSucc, bmF_zW_castSucc]) β i j
 
 /- English proof (translation)
-The claim follows from `comp_comm_rE n n (lastW n) (fun a a' s => by rw [bmF_lastW_castSucc, bmF_lastW_castSucc]) d i j`.
+A detailed English derivation is pending.
 -/
 theorem lastcomp_comm_rE (n d : ℕ) (i j : Fin n) :
     Commute (weightedHomogeneousComponent (lastW n) d : Module.End K (BP K n)) (rE K n n i j) :=
   comp_comm_rE n n (lastW n) (fun a a' s => by rw [bmF_lastW_castSucc, bmF_lastW_castSucc]) d i j
 
 /- English proof (translation)
-Rewrite `hG`, the goal using `[bmK_mem_alt]`. Conclude with `⟨rowE_mem _ _ hG.1, bm_isWH_of_comm (lastW n) d _ (lastcomp_comm_rE n d i j) G hG.2⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem glOperatorFirstRows_mem_bmW {n d : ℕ} {lam : Fin n → ℕ} (i j : Fin n) {G : BP K n} (hG : G ∈ bmW K n lam d) :
     rE K n n i j G ∈ bmW K n lam d := by
@@ -265,24 +265,24 @@ theorem glOperatorFirstRows_mem_bmW {n d : ℕ} {lam : Fin n → ℕ} (i j : Fin
   exact ⟨rowE_mem _ _ hG.1, bm_isWH_of_comm (lastW n) d _ (lastcomp_comm_rE n d i j) G hG.2⟩
 
 /- English proof (translation)
-The claim follows from `capDet_mem _ _ (fun i j _ hx => glOperatorFirstRows_mem_bmW i j hx) u hG`.
+A detailed English derivation is pending.
 -/
 theorem capelliDeterminantFirstRows_mem_bmW {n d : ℕ} {lam : Fin n → ℕ} (u : ℤ) {G : BP K n} (hG : G ∈ bmW K n lam d) :
     rCap K n n u G ∈ bmW K n lam d :=
   capDet_mem _ _ (fun i j _ hx => glOperatorFirstRows_mem_bmW i j hx) u hG
 
 /- English proof (translation)
-The claim follows from `capDet_commute_of _ u _ (zcomp_comm_rE n β)`.
+A detailed English derivation is pending.
 -/
 theorem zcomp_comm_rCap (n : ℕ) (β : Fin n → ℤ) (u : ℤ) : Commute (zcomp K n β) (rCap K n n u) :=
   capDet_commute_of _ u _ (zcomp_comm_rE n β)
 
 /- English proof (translation)
-Rewrite using `[rowE_apply, coeff_sum, rowDeg, Nat.cast_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_X_mul']`. Use `split_ifs with h`. Establish `h1 : Finsupp.single (a, s) 1 ≤ μ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.single_le_iff]`. Conclude with `Nat.one_le_iff_ne_zero.2 (Finsupp.mem_support_iff.1 h)`. Rewrite using `[coeff_pderiv, tsub_add_cancel_of_le h1, mul_comm]`. Use `congr 1`. Establish `h2 : 1 ≤ μ (a, s)` using `Finsupp.single_le_iff.1 h1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Nat.cast_sub h2]`. Rewrite using `[Finsupp.notMem_support_iff.1 h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_rowE_self {r m : ℕ} (a : Fin r) (f : MvPolynomial (Fin r × Fin m) K) (μ : Fin r × Fin m →₀ ℕ) :
     coeff μ (rowE K r m a a f) = (rowDeg μ a : K) * coeff μ f := by
@@ -300,11 +300,11 @@ theorem coeff_rowE_self {r m : ℕ} (a : Fin r) (f : MvPolynomial (Fin r × Fin 
   · rw [Finsupp.notMem_support_iff.1 h]; simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a`. Use extensionality with `μ`. Rewrite using `[coeff_rowE_self, coeff_smul, smul_eq_mul]`. Distinguish the cases in `h0 : coeff μ f = 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h0]`. Rewrite using `[← bm_weight_rowW, h h0]`. Introduce `h μ h0`. Use function extensionality and compare the values at `a`. Use `congrArg (coeff μ) (h a)` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `this` using `[coeff_rowE_self, coeff_smul, smul_eq_mul]`. Rewrite using `[bm_weight_rowW]`. Conclude with `mul_right_cancel₀ h0 this` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowWeight_iff [CharZero K] {r m : ℕ} (ρ : Fin r → ℕ) (f : MvPolynomial (Fin r × Fin m) K) :
     IsWeightedHomogeneous (rowW r m) f ρ ↔ ∀ a, rowE K r m a a f = (ρ a : K) • f := by
@@ -323,15 +323,15 @@ theorem rowWeight_iff [CharZero K] {r m : ℕ} (ρ : Fin r → ℕ) (f : MvPolyn
     exact_mod_cast mul_right_cancel₀ h0 this
 
 /- English proof (translation)
-The claim follows from `Finset.sum_eq_zero fun μ hμ => by rw [h μ (mem_support_iff.1 hμ)]; simp`.
+A detailed English derivation is pending.
 -/
 theorem fockB_eq_zero {σ : Type} (f g : MvPolynomial σ K) (h : ∀ μ, coeff μ f ≠ 0 → coeff μ g = 0) : fockB f g = 0 :=
   Finset.sum_eq_zero fun μ hμ => by rw [h μ (mem_support_iff.1 hμ)]; simp
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on generalizing g with`. Consider the case `C a`. Establish `h1 : ∀ {σ : Type} (g : MvPolynomial σ K), fockB (C a) g = a * constantCoeff g` using `fun g => @fockL_C_left K _ starRingOfComm _ a g`. Rewrite using `[rename_C, h1, h1, constantCoeff_rename]`. Consider the case `add p q hp hq => simp only [← fockBL_apply, map_add, LinearMap.add_apply] at *`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hp, hq]`. Consider the case `mul_X p v hp => rw [mul_comm, map_mul, rename_X, fockB_X_mul, fockB_X_mul, pderiv_rename he, hp]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem fockB_rename {σ τ : Type} {e : σ → τ} (he : Function.Injective e) (f g : MvPolynomial σ K) :
     fockB (rename e f) (rename e g) = fockB f g := by
@@ -345,7 +345,7 @@ theorem fockB_rename {σ τ : Type} {e : σ → τ} (he : Function.Injective e) 
   | mul_X p v hp => rw [mul_comm, map_mul, rename_X, fockB_X_mul, fockB_X_mul, pderiv_rename he, hp]
 
 /- English proof (translation)
-The claim follows from `fockB_rename (Function.injective_id.prodMap (Fin.castSucc_injective n)) f g`.
+A detailed English derivation is pending.
 -/
 theorem fockB_incl (n : ℕ) (f g : BP K n) : fockB (incl K n f) (incl K n g) = fockB f g :=
   fockB_rename (Function.injective_id.prodMap (Fin.castSucc_injective n)) f g

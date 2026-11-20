@@ -5,49 +5,41 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdjoinRootProdLinea
 open GlobalTheory.IndefiniteRowSideFullHecke.MultiplicationKernelIdentity GlobalTheory.HermitianPreEigenvalues Polynomial Module
 
 /- English proof (translation)
-Introduce `C _ v S _ _ a ha N Fil hFil τ`. Take `⟨hfree, hfin, hlc, hev, hker, ⟨g, hg⟩, hann⟩` from `GlobalTheory.T.adjoinRootProdLinearFactors_structure (Int0 v) S a τ`. Establish `hd : ev a τ (cofac a τ) ≠ 0`. Rewrite using `[hev]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun s hs => sub_ne_zero.mpr fun h => Finset.ne_of_mem_erase hs (ha h).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hid : ∀ x : Fin N → RS a, ev a τ (cofac a τ) • x = cofac a τ • x - g • (lin a τ • x)`. Introduce `x`. Establish `: cofac a τ • x = ev a τ (cofac a τ) • x + g • (lin a τ • x)` using `by conv_lhs => rw [hg]`. Rewrite using `[add_smul, algebraMap_smul, mul_comm, mul_smul]`. Rewrite using `[this, add_sub_cancel_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htf : ∀ (c : Int0 v) (x : Fin N → RS a), c ≠ 0 → c • x = 0 → x = 0`. Introduce `c x hc hx`. Use `haveI := hfree`. Use `haveI : Module.IsTorsionFree (Int0 v) (Fin N → RS a) := (Module.Free.chooseBasis (Int0 v) (Fin N → RS a)).isTorsionFree`. Conclude with `(smul_eq_zero_iff_right hc).mp hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomp0 : ∀ x : Fin N → RS a, comp a N τ x = 0 ↔ ∀ i, ev a τ (x i) = 0`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Conclude with `congrFun h i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use function extensionality and compare the values at `i`. Conclude with `h i`. Establish `h2 : ∀ x : Fin N → RS a, comp a N τ x = 0 ↔ mulR a N (cofac a τ) x = 0`. Introduce `x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcomp0]`. Prove the components needed by the constructor for the conclusion. Introduce `h show cofac a τ • x = 0`. Use function extensionality and compare the values at `i`. Take `⟨r', hr'⟩` from `hker _ (h i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `show cofac a τ * x i = 0`. Rewrite using `[hr', ← mul_assoc, mul_comm (cofac a τ), hlc, zero_mul]`. Introduce `h i`. Establish `hi : cofac a τ * x i = 0` using `congrFun h i`. Use `congrArg (ev a τ) hi` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite `this` using `[map_mul, map_zero]`. Conclude with `(mul_eq_zero.mp this).resolve_left hd`. Establish `h3 : LinearMap.ker (comp a N τ) = LinearMap.range (mulR a N (lin a τ))`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_range, hcomp0]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h choose r hr using fun i => hker _ (h i)`. Conclude with `⟨r, funext fun i => (hr i).symm⟩`. Introduce and unpack `⟨y, rfl⟩ i show ev a τ (lin a τ * y i) = 0`. Rewrite using `[map_mul, ev_lin, sub_self, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hcz : ∀ x : Fin N → RS a, comp a N τ x = 0 → cofac a τ • x = 0` using `fun x h => (h2 x).mp h`. Use `⟨hd, h2, h3, ?_, ?_, ?_, ?_, ?_, ?_, ?_, htf, ⟨g, hid⟩⟩` and prove the remaining obligations. Introduce and unpack `x ⟨hx1, hx2⟩`. Establish `hx1' : lin a τ • x ∈ Fil` using `hx1`. Establish `hc : cofac a τ • x = 0` using `hcz x hx2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hFil _ x hd` to reduce the goal to its premises. Rewrite using `[hid, hc, zero_sub]`. Conclude with `Fil.neg_mem (Fil.smul_mem g hx1')`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Establish `hx' : lin a τ • x ∈ Fil` using `hx`. Use `⟨hx', ?_⟩` and prove the remaining obligations. Use `show cofac a τ • (lin a τ • x) = 0`. Rewrite using `[smul_smul, mul_comm, hlc, zero_smul]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨hy1, hy2⟩`. Establish `hy2' : mulR a N (cofac a τ) y = 0` using `hy2`. Establish `hk : y ∈ LinearMap.ker (comp a N τ)` using `(h2 y).mpr hy2'`. Rewrite `hk` using `[h3]`. Take `⟨x, rfl⟩` from `hk`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x, hy1, rfl⟩`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨hx1, hx2⟩`. Establish `hx1' : lin a τ • x = 0` using `hx1`. Establish `hc : cofac a τ • x = 0` using `hcz x hx2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ev a τ (cofac a τ) • x = 0` using `by rw [hid, hc, hx1', smul_zero, sub_zero]`. Conclude with `(Submodule.mem_bot _).mpr (htf _ x hd this)`. Use extensionality with `y`. Simplify using `only [Submodule.mem_map, Submodule.mem_top, true_and, LinearMap.lsmul_apply]`. Prove the components needed by the constructor for the conclusion.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Establish `hx' : lin a τ • x = 0` using `hx`. Use `choose c hc using fun i => hann (x i) (congrFun hx' i)`. Use `⟨c, funext fun i => ?_⟩` and prove the remaining obligations. Use `show ev a τ (cofac a τ) * c i = ev a τ (x i)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc i, map_mul, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, mul_comm]`. Introduce and unpack `⟨c, rfl⟩`. Use `⟨fun i => algebraMap (Int0 v) (RS a) (c i) * cofac a τ, ?_, ?_⟩` and prove the remaining obligations. Use `show lin a τ • (fun i => algebraMap (Int0 v) (RS a) (c i) * cofac a τ) = 0`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show lin a τ * (algebraMap (Int0 v) (RS a) (c i) * cofac a τ) = 0`. Rewrite using `[mul_left_comm, hlc, mul_zero]`. Use function extensionality and compare the values at `i show ev a τ (algebraMap (Int0 v) (RS a) (c i) * cofac a τ) = ev a τ (cofac a τ) * c i`. Rewrite using `[map_mul, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, mul_comm]`. Use extensionality with `q`.
-
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Establish `hx' : lin a τ • x ∈ Fil` using `hx`. Use `show lin a τ • Fil.mkQ x = 0`. Rewrite using `[← LinearMap.map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
-
-Conclude with `hx'`. Introduce `hq`. Establish `hq' : lin a τ • q = 0` using `hq`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective Fil q`. Use `⟨x, ?_, rfl⟩` and prove the remaining obligations.
-
-Use `show lin a τ • x ∈ Fil`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul]`. Conclude with `hq'`. Introduce `x hx`. Establish `hx' : lin a τ • x = 0` using `hx`.
-
-Use `show lin a τ • x ∈ Fil`. Rewrite using `[hx']`. Conclude with `Fil.zero_mem`. Introduce `x hx show lin a τ • x ∈ Fil`. Conclude with `Fil.smul_mem _ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.herbrand_lattice_facts : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (S : Type) [Fintype S] [DecidableEq S] (a : S → Int0 v), Function.Injective a → ∀ (N : ℕ) (Fil : Submodule (RS a) (Fin N → RS a)), (∀ (c : Int0 v) (x : Fin N → RS a), c ≠ 0 → c • x ∈ Fil → x ∈ Fil) → ∀ τ : S, ev a τ (cofac a τ) ≠ 0 ∧ (∀ x : Fin N → RS a, comp a N τ x = 0 ↔ mulR a N (cofac a τ) x = 0) ∧ LinearMap.ker (comp a N τ) = LinearMap.range (mulR a N (lin a τ)) ∧ preEig a Fil τ ⊓ LinearMap.ker (comp a N τ) ≤ Fil.restrictScalars (Int0 v) ∧ (preEig a Fil τ).map (mulR a N (lin a τ)) = filKer a Fil τ ∧ eigSub a τ (Fin N → RS a) ⊓ LinearMap.ker (comp a N τ) = ⊥ ∧ (eigSub a τ (Fin N → RS a)).map (comp a N τ) = (⊤ : Submodule (Int0 v) (Fin N → Int0 v)).map (LinearMap.lsmul (Int0 v) (Fin N → Int0 v) (ev a τ (cofac a τ))) ∧ (preEig a Fil τ).map (proj a Fil) = eigSub a τ ((Fin N → RS a) ⧸ Fil) ∧ eigSub a τ (Fin N → RS a) ≤ preEig a Fil τ ∧ Fil.restrictScalars (Int0 v) ≤ preEig a Fil τ ∧ (∀ (c : Int0 v) (x : Fin N → RS a), c ≠ 0 → c • x = 0 → x = 0) ∧ (∃ g : RS a, ∀ x : Fin N → RS a, ev a τ (cofac a τ) • x = cofac a τ • x - g • (lin a τ • x)) := by
   intro C _ v S _ _ a ha N Fil hFil τ

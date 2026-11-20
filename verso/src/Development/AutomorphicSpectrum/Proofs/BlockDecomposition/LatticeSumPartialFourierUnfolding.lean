@@ -13,7 +13,7 @@ namespace GlobalTheory.CompanionTheory.EisUnfold.Period
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[rat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rat_sub' {m n : ℕ} (p p₀ : Matrix (Fin m) (Fin n) D.host.E) :
     (rat (p - p₀) : Mx D m n) = rat p - rat p₀ := by
@@ -21,9 +21,9 @@ theorem rat_sub' {m n : ℕ} (p p₀ : Matrix (Fin m) (Fin n) D.host.E) :
   simp [rat]
 
 /- English proof (translation)
-Establish `h : (inner V (rat q) (rat q₀) : Mx D s s) = rat (qᴴ * (V.gram * q₀))`. Express the relevant statement in the definitionally equal form `(adj (rat q) ⬝ (gA V ⬝ rat q₀) : Mx D s s) = rat (qᴴ * (V.gram * q₀))`. Rewrite using `[rat_mul, rat_mul, rat_conjTranspose, gA]`. Establish `ht : ∀ M : Matrix (Fin s) (Fin s) D.host.E, Matrix.trace (rat M : Mx D s s) = incA D (Matrix.trace M)` using `fun M => by`. Simplify using `only [rat, Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, ht, GlobalTheory.CompanionTheory.ThetaInv.trA_incA]`. Conclude with `hψ.2.2.1 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_inner_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (V : HSp D) {s : ℕ}
     (q q₀ : Matrix (Fin V.rank) (Fin s) D.host.E) :
@@ -38,7 +38,7 @@ theorem psi_inner_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F 
   exact hψ.2.2.1 _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(adj x ⬝ (gA V ⬝ (y + z)) : Mx D s s) = adj x ⬝ (gA V ⬝ y) + adj x ⬝ (gA V ⬝ z)`. Simplify using `[Matrix.mul_add]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem inner_add_right' (V : HSp D) {s : ℕ} (x y z : Mx D V.rank s) :
     (inner V x (y + z) : Mx D s s) = inner V x y + inner V x z := by
@@ -46,15 +46,15 @@ theorem inner_add_right' (V : HSp D) {s : ℕ} (x y z : Mx D V.rank s) :
   simp [Matrix.mul_add]
 
 /- English proof (translation)
-Simplify using `[trA]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trA_add' (x y : AE D) : trA (x + y) = trA x + trA y := by
   simp [trA]
 
 /- English proof (translation)
-Establish `e₁ : y₁ + rat p₀ - rat p = y₁ - rat (p - p₀)` using `by rw [rat_sub']; abel`. Establish `e₂ : rat p - (y₁ + rat p₀) = rat (p - p₀) - y₁` using `by rw [rat_sub']; abel`. Establish `e₃ : ψ (trA (Matrix.trace (inner V (rat q) (y₂ + rat q₀)))) = ψ (trA (Matrix.trace (inner V (rat q) y₂)))`. Rewrite using `[inner_add_right', Matrix.trace_add, trA_add', AddChar.map_add_eq_mul, psi_inner_rat hψ, mul_one]`. Unfold `cellTerm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[e₁, e₂, e₃]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem term_shift {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (V : HSp D) {r s : ℕ}
     (b : Matrix (Fin r) (Fin r) D.host.E) (a : Matrix (Fin (r + s)) (Fin (r + s)) D.host.E)
@@ -71,7 +71,7 @@ theorem term_shift {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
   rw [e₁, e₂, e₃]
 
 /- English proof (translation)
-Introduce `D ψ hψ V r s b a Φ p₀ q₀ y₁ y₂`. Simplify using `only [term_shift hψ]`. Conclude with `(Equiv.prodCongr (Equiv.subRight p₀) (Equiv.refl _)).tsum_eq (fun pq => cellTerm ψ V b a Φ pq.1 pq.2 y₁ y₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tsum_cellTerm_add_rat : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ (V : HSp D) (r s : ℕ)
     (b : Matrix (Fin r) (Fin r) D.host.E) (a : Matrix (Fin (r + s)) (Fin (r + s)) D.host.E) (Φ : Mx D V.rank (r + s) → ℂ)

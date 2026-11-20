@@ -15,7 +15,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UnitTheta
 
 /- English proof (translation)
-Introduce `x hx`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(σ ≫ π) x ∈ L.U k`. Rewrite using `[h]`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_preimage_wchart_of_section {X Y : Scheme.{0}} (L : LB X) (π : Y ⟶ X) (σ : X ⟶ Y) (h : σ ≫ π = 𝟙 X)
     (k : L.ι) : L.U k ≤ σ ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => π) (fun _ => k) := by
@@ -39,7 +39,7 @@ noncomputable def secOfSection {X Y : Scheme.{0}} (L : LB X) (π : Y ⟶ X) (σ 
     simp only [trF, Fin.prod_univ_one, zpow_one, Category.assoc, h, Category.comp_id]
 
 /- English proof (translation)
-The claim follows from `(gs_res r z _ hz _).trans (gs_pull r σ z _ (le_preimage_wchart_of_section L π σ h k hz) _)`.
+A detailed English derivation is pending.
 -/
 theorem gs_secOfSection {X Y Z : Scheme.{0}} (L : LB X) (π : Y ⟶ X) (σ : X ⟶ Y) (h : σ ≫ π = 𝟙 X)
     (s : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => π) (fun _ => 1))) (r : Z ⟶ X) (z : Z) (k : L.ι)
@@ -48,7 +48,7 @@ theorem gs_secOfSection {X Y Z : Scheme.{0}} (L : LB X) (π : Y ⟶ X) (σ : X �
   (gs_res r z _ hz _).trans (gs_pull r σ z _ (le_preimage_wchart_of_section L π σ h k hz) _)
 
 /- English proof (translation)
-The claim follows from `(HolHom.valR_res r _ _ hr).trans (HolHom.valR_comp r σ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem valR_secOfSection {X Y : Scheme.{0}} (L : LB X) (π : Y ⟶ X) (σ : X ⟶ Y) (h : σ ≫ π = 𝟙 X)
     (s : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => π) (fun _ => 1))) {F : Type} [CommRing F] (r : Sp F ⟶ X)
@@ -57,7 +57,7 @@ theorem valR_secOfSection {X Y : Scheme.{0}} (L : LB X) (π : Y ⟶ X) (σ : X �
   (HolHom.valR_res r _ _ hr).trans (HolHom.valR_comp r σ _ _).symm
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `AmpleSpan.exists_chart_of_mem s hy`. Take `⟨k, rfl⟩ : ∃ k, j = fun _ => k` from `⟨j (0 : Fin 1), funext fun i => by rw [Subsingleton.elim i 0]⟩`. Establish `hk : π y ∈ L.U k` using `Set.mem_iInter.1 hj 0`. Rewrite using `[AmpleSpan.mem_nonzeroLocus_iff_gs _ π y hk, gs_secOfSection L π σ h s π y k hk, h']`. Conclude with `(AmpleSpan.mem_nonzeroLocus_iff_gs s (𝟙 Y) y hj).1 hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_secOfSection {X Y : Scheme.{0}} (L : LB X) (π : Y ⟶ X) (σ : X ⟶ Y) (h : σ ≫ π = 𝟙 X)
     (h' : π ≫ σ = 𝟙 Y) (s : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => π) (fun _ => 1))) (y : Y)
@@ -69,15 +69,15 @@ theorem mem_nonzeroLocus_secOfSection {X Y : Scheme.{0}} (L : LB X) (π : Y ⟶ 
   exact (AmpleSpan.mem_nonzeroLocus_iff_gs s (𝟙 Y) y hj).1 hy
 
 /- English proof (translation)
-Introduce `R _ P th`. Set `σ : P.A ⟶ baseOver (Sp R) ⊗ P.A` to `lift (toUnit P.A) (𝟙 P.A)`. Establish `h : σ ≫ snd _ _ = 𝟙 _` using `lift_snd _ _`. Establish `h' : snd _ _ ≫ σ = 𝟙 _`. Use `CartesianMonoidalCategory.hom_ext _ _ (toUnit_unique _ _) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, h, Category.comp_id, Category.id_comp]`. Establish `hl : σ.left ≫ (snd (baseOver (Sp R)) P.A).left = 𝟙 _` using `by rw [← Over.comp_left, h, Over.id_left]`. Establish `hl' : (snd (baseOver (Sp R)) P.A).left ≫ σ.left = 𝟙 _` using `by rw [← Over.comp_left, h', Over.id_left]`. Use `⟨secOfSection P.L _ σ.left hl th, mem_nonzeroLocus_secOfSection P.L _ σ.left hl hl' th, ?_⟩` and prove the remaining obligations. Introduce `z τ a hv F _ f k hk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : z ≫ σ = ptSecT P.A z`. Use `CartesianMonoidalCategory.hom_ext _ _ (toUnit_unique _ _) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, h, Category.comp_id, ptSecT, lift_snd]`. Establish `e' : z.left ≫ σ.left = (ptSecT P.A z).left` using `by rw [← Over.comp_left, e]`. Set `x : Sp F ⟶ (baseOver (Sp R)).left` to `spMap f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hw : ⊤ ≤ x ⁻¹ᵁ LB.wchart P.L (fun _ : Fin 1 => z.left) (fun _ => k)` using `fun p hp => Set.mem_iInter.2 fun _ => hk hp`. Establish `H` using `congrArg (valR x _) (hv (fun _ => k))`. Establish `H₁` using `(HolHom.valR_comp x (ptSecT P.A z).left _ _).trans ((HolHom.valR_res x _ _ hw).symm.trans H)`. Establish `H₂` using `H₁.trans (((HolHom.valR_eq x _ hw _).trans (map_mul _ _ _)).trans (congrArg₂ (· * ·) ((HolHom.valR_eq x _ hw _).symm.trans ((HolHom.valR_res x _ _ hw).trans (Conv.valR_spMap_top f a))) (HolHom.valR_eq x _ hw _).symm))`. Use `(valR_secOfSection P.L _ σ.left hl th (x ≫ z.left) k hk).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, e']`. Conclude with `H₂`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_of_baseOver : ∀ (R : Type) [CommRing R] (P : PolAV (Sp R)) (th : LB.Sec (LPow P.A P.L 1 (baseOver (Sp R)))), ∃ θ : LB.Sec P.L, (∀ y ∈ nonzeroLocus th, (snd (baseOver (Sp R)) P.A).left y ∈ nonzeroLocus θ) ∧ ∀ (z : baseOver (Sp R) ⟶ P.A) (τ : LB.Gen (LB.LinComb P.L (Y := (baseOver (Sp R)).left) (K := Fin 1) (fun _ => z.left) (fun _ => 1))) (a : R), IsValueAt P.A P.L 1 th z τ (fn a) → ∀ (F : Type) [CommRing F] (f : R →+* F) (k : P.L.ι), ⊤ ≤ (spMap f ≫ z.left) ⁻¹ᵁ P.L.U k → valR (spMap f ≫ z.left) _ (θ.f k) = f a * valR (X := (baseOver (Sp R)).left) (spMap f) _ (τ.s (fun _ => k)).val := by
   intro R _ P th

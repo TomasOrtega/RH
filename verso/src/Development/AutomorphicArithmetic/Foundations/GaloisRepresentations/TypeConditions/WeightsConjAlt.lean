@@ -95,7 +95,7 @@ def Row1 : Prop :=
       ∃ (r : G E Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (E →+* Qbar l) → Multiset ℤ), Props Rc π ι r wt HT ∧ TameN Rc π ι r
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp` and use `by obtain ⟨r, wt, HT, k, -⟩ := H E Ω l ι a ha π χ hr hp exact ⟨r, wt, HT, k⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Row1.row0 (H : Row1 Rc) : Row0 Rc := fun E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp => by
   obtain ⟨r, wt, HT, k, -⟩ := H E Ω l ι a ha π χ hr hp

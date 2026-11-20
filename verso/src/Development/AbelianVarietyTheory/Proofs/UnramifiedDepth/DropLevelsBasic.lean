@@ -5,29 +5,27 @@ open Formalism.UnitaryBoundIntegral Formalism.IncomingBounds
 namespace GlobalTheory.BasicFlow
 
 /- English proof (translation)
-Use `set t := s.filter fun i => x i ≠ 0 with ht`. Apply the tactic sequence `let E : (t → ℝ) →ₗ[ℝ] (ι → ℝ) := { toFun := fun v i => if h : i ∈ t then v ⟨i, h⟩ else 0 map_add' := fun v w => by ext i; by_cases h : i ∈ t <;> simp [h] map_smul' := fun c v => by ext i; by_cases h : i ∈ t <;> simp [h] }`. Establish `hker : LinearMap.ker (T ∘ₗ E) ≠ ⊥`. Apply `LinearMap.ker_ne_bot_of_finrank_lt` to reduce the goal to its premises. Simplify using `using hc`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hker`. Establish `hw' : T (E w) = 0` using `hw`. Establish `hE0 : E w ≠ 0`. Introduce `h`. Apply `hw0` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `⟨i, hi⟩`. Use `congrFun h i` as an intermediate fact. Simplify `this` using `[E, hi]`. Establish `hEt : ∀ i, i ∉ t → E w i = 0` using `fun i hi => by simp [E, hi]`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv0, hvt, hvT, hvφ⟩ : ∃ v : ι → ℝ, v ≠ 0 ∧ (∀ i, i ∉ t → v i = 0) ∧ T v = 0 ∧ 0 ≤ φ v := by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_total 0 (φ (E w)) with h | h` into its components or cases. Conclude with `⟨E w, hE0, hEt, hw', h⟩`. Use `⟨-E w, neg_ne_zero.2 hE0, fun i hi => by simp [hEt i hi], by simp [hw'], ?_⟩` and prove the remaining obligations. Simplify using `using h`. Establish `hneg : (t.filter fun i => v i < 0).Nonempty`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Apply `hv0` to reduce the goal to its premises. Use `hT v (fun i hi => hvt i fun h => hi (Finset.mem_filter.1 h).1) (fun i => ?_) hvT` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ t`. Assume the negation of the conclusion as `hlt`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hn ⟨i, Finset.mem_filter.2 ⟨hi, not_le.1 hlt⟩⟩`. Conclude with `(hvt i hi).ge`. Take `⟨j, hj, hmin⟩` from `Finset.exists_min_image _ (fun i => x i / (-v i)) hneg`. Take `⟨hjt, hjv⟩` from `Finset.mem_filter.1 hj`. Establish `hc0 : 0 ≤ x j / (-v j)` using `div_nonneg (hx j) (by linarith)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hzero : ∀ i, x i = 0 → (x + (x j / (-v j)) • v) i = 0`. Introduce `i hi`. Establish `: v i = 0` using `hvt i fun h => (Finset.mem_filter.1 h).2 hi`. Simplify using `[hi, this]`. Use `⟨x + (x j / (-v j)) • v, fun i => ?_, by simp [hvT], ?_, hzero, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hi : v i < 0`. Establish `hit : i ∈ t`. Assume the negation of the conclusion as `h`. Conclude with `hi.ne (hvt i h)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `hmin i (Finset.mem_filter.2 ⟨hit, hi⟩)` as an intermediate fact. Rewrite `this` using `[le_div_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `mul_nonneg hc0 (not_lt.1 hi)` as an intermediate fact. Combine the linear relations using `[hx i]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_add, map_smul, smul_eq_mul]`. Use `mul_nonneg hc0 hvφ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Apply `Finset.card_lt_card` to reduce the goal to its premises. Use `⟨fun i hi => ?_, fun h => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨h1, h2⟩` from `Finset.mem_filter.1 hi`. Conclude with `Finset.mem_filter.2 ⟨h1, fun h => h2 (hzero i h)⟩`. Apply `(Finset.mem_filter.1 (h hjt)).2` to reduce the goal to its premises. Establish `: v j ≠ 0` using `hjv.ne`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma pivot {ι κ : Type} [DecidableEq ι] [Fintype κ] (s : Finset ι)
     (T : (ι → ℝ) →ₗ[ℝ] (κ → ℝ)) (φ : (ι → ℝ) →ₗ[ℝ] ℝ)
@@ -99,9 +97,9 @@ lemma pivot {ι κ : Type} [DecidableEq ι] [Fintype κ] (s : Finset ι)
       ring
 
 /- English proof (translation)
-Use the proof step `induction' h : (s.filter fun i => x i ≠ 0).card using Nat.strong_induction_on with n ih generalizing x`. Distinguish the cases in `hc : (s.filter fun i => x i ≠ 0).card ≤ Fintype.card κ`. Conclude with `⟨x, hx, rfl, le_rfl, fun _ h => h, hc⟩`. Take `⟨y, h1, h2, h3, h4, h5⟩` from `pivot s T φ hT x hx hs (not_le.1 hc)`. Take `⟨z, g1, g2, g3, g4, g5⟩` from `ih _ (h ▸ h5) y h1 (fun i hi => h4 i (hs i hi)) rfl`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨z, g1, g2.trans h2, h3.trans g3, fun i hi => g4 i (h4 i hi), g5⟩`.
+A detailed English derivation is pending.
 -/
 lemma basic {ι κ : Type} [DecidableEq ι] [Fintype κ] (s : Finset ι)
     (T : (ι → ℝ) →ₗ[ℝ] (κ → ℝ)) (φ : (ι → ℝ) →ₗ[ℝ] ℝ)
@@ -119,9 +117,9 @@ lemma basic {ι κ : Type} [DecidableEq ι] [Fintype κ] (s : Finset ι)
     exact ⟨z, g1, g2.trans h2, h3.trans g3, fun i hi => g4 i (h4 i hi), g5⟩
 
 /- English proof (translation)
-Take `⟨h0, h2⟩` from `hx`. Establish `hl1 : (1 : ℝ) ≤ l` using `by exact_mod_cast (by omega : 1 ≤ l)`. Establish `e1 : (l : ℝ) ^ i * x a i ≤ ∑ i ∈ oddLevels d, (l : ℝ) ^ i * x a i` using `Finset.single_le_sum (f := fun i => (l : ℝ) ^ i * x a i) (fun j _ => mul_nonneg (by positivity) (h0 a j)) hi`. Establish `e2 : 0 ≤ ∑ i ∈ oddLevels d, x (a - i) i` using `Finset.sum_nonneg fun j _ => h0 _ j`. Establish `e3 : x a i ≤ (l : ℝ) ^ i * x a i` using `le_mul_of_one_le_left (h0 a i) (one_le_pow₀ hl1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h2 a` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma entry_le (l d : ℕ) [NeZero d] (hl : 2 ≤ l) (W : ZMod d → ℝ) (x : ZMod d → ℕ → ℝ)
     (hx : IsFlow l d W x) (a : ZMod d) (i : ℕ) (hi : i ∈ oddLevels d) : x a i ≤ W a := by
@@ -136,13 +134,11 @@ lemma entry_le (l d : ℕ) [NeZero d] (hl : 2 ≤ l) (W : ZMod d → ℝ) (x : Z
   linarith
 
 /- English proof (translation)
-Set `S : Set (ZMod d → ℕ → ℝ)` to `{x | IsFlow l d W x ∧ ∀ a i, (i0 ≤ i ∨ i ∉ oddLevels d) → x a i = 0}`. Establish `hclosed : IsClosed S`. Simplify using `only [S, IsFlow, Set.setOf_and, Set.setOf_forall]`. Use `IsClosed.inter (IsClosed.inter ?_ ?_) ?_` and prove the remaining obligations. Conclude with `isClosed_iInter fun a => isClosed_iInter fun i => isClosed_le continuous_const (by fun_prop)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `isClosed_iInter fun a => isClosed_le (by fun_prop) continuous_const`. Conclude with `isClosed_iInter fun a => isClosed_iInter fun i => isClosed_iInter fun _ => isClosed_eq (by fun_prop) continuous_const`. Establish `hK : IsCompact (Set.pi Set.univ fun a : ZMod d => Set.pi Set.univ fun _ : ℕ => Set.Icc (0 : ℝ) (W a))` using `isCompact_univ_pi fun a => isCompact_univ_pi fun _ => isCompact_Icc`. Establish `hS : IsCompact S`. Use `hK.of_isClosed_subset hclosed ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Introduce and unpack `x ⟨h0, h1⟩ a - i -`. Use `⟨h0.1 a i, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i ∈ oddLevels d`. Conclude with `entry_le l d hl W x h0 a i h`. Rewrite using `[h1 a i (Or.inr h)]`.
-
-Conclude with `hW a`. Establish `hne : S.Nonempty` using `⟨fun _ _ => 0, ⟨fun _ _ => le_rfl, fun a => by simpa using hW a⟩, fun _ _ _ => rfl⟩`. Take `⟨x, hx, hmax⟩` from `hS.exists_isMaxOn hne (f := fun x => flowVal d x) (Continuous.continuousOn (by unfold flowVal; fun_prop))`. Conclude with `⟨x, hx, fun x' h1 h2 => hmax (a := x') ⟨h1, h2⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma low_optimum (l d : ℕ) [NeZero d] (hl : 2 ≤ l) (W : ZMod d → ℝ) (hW : 0 ≤ W) (i0 : ℕ) :
     ∃ x : ZMod d → ℕ → ℝ, (IsFlow l d W x ∧ ∀ a i, (i0 ≤ i ∨ i ∉ oddLevels d) → x a i = 0) ∧
@@ -175,19 +171,15 @@ lemma low_optimum (l d : ℕ) [NeZero d] (hl : 2 ≤ l) (W : ZMod d → ℝ) (hW
   exact ⟨x, hx, fun x' h1 h2 => hmax (a := x') ⟨h1, h2⟩⟩
 
 /- English proof (translation)
-Take `⟨h0, h2⟩` from `hx`. Establish `hl1 : (1 : ℝ) ≤ l` using `by exact_mod_cast (by omega : 1 ≤ l)`. Set `y : ZMod d → ℕ → ℝ` to `fun a i => if i0 ≤ i ∨ i ∉ oddLevels d then 0 else x a i`. Establish `hy : ∀ a i, y a i ≤ x a i` using `fun a i => by`. Simplify using `only [y]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Conclude with `h0 a i`. Conclude with `le_rfl`. Use `⟨y, ⟨fun a i => ?_, fun a => le_trans (add_le_add ?_ ?_) (h2 a)⟩, fun a i h => if_pos h, ?_⟩` and prove the remaining obligations. Simplify using `only [y]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Conclude with `le_rfl`. Conclude with `h0 a i`. Conclude with `Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left (hy a i) (by positivity)`. Conclude with `Finset.sum_le_sum fun i _ => hy _ i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : (0 : ℝ) < (l : ℝ) ^ i0` using `by positivity`. Rewrite using `[← sub_le_iff_le_add', le_div_iff₀ hp]`. Unfold `flowVal`. Rewrite using `[← Finset.sum_sub_distrib, Finset.sum_mul]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : 0 ≤ ∑ i ∈ oddLevels d, x (a - i) i` using `Finset.sum_nonneg fun j _ => h0 _ j`. Establish `e3 : (∑ i ∈ oddLevels d, x a i - ∑ i ∈ oddLevels d, y a i) * (l : ℝ) ^ i0 ≤ ∑ i ∈ oddLevels d, (l : ℝ) ^ i * x a i`. Rewrite using `[← Finset.sum_sub_distrib, Finset.sum_mul]`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `h : i0 ≤ i`.
-
-Establish `: y a i = 0` using `if_pos (Or.inl h)`. Rewrite using `[this, sub_zero, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hl1 h) (h0 a i)`. Establish `: y a i = x a i` using `if_neg (by simp [h, hi])`. Rewrite using `[this, sub_self, zero_mul]`.
-
-Conclude with `mul_nonneg (by positivity) (h0 a i)`. Use `h2 a` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma truncate (l d : ℕ) [NeZero d] (hl : 2 ≤ l) (W : ZMod d → ℝ) (i0 : ℕ)
     (x : ZMod d → ℕ → ℝ) (hx : IsFlow l d W x) :
@@ -229,17 +221,15 @@ lemma truncate (l d : ℕ) [NeZero d] (hl : 2 ≤ l) (W : ZMod d → ℝ) (i0 : 
     linarith
 
 /- English proof (translation)
-Introduce `l d _ hl W hW i0`. Take `⟨x, ⟨hx, hx0⟩, hmax⟩` from `low_optimum l d hl W hW i0`. Establish `hm : maxFlow l d W ≤ flowVal d x + (∑ a, W a) / (l : ℝ) ^ i0`. Use `csSup_le ⟨_, x, hx, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨z', h1, h2, h3⟩` from `truncate l d hl W i0 z hz`. Combine the linear relations using `[hmax z' h1 h2]`. Set `T : (ZMod d × ℕ → ℝ) →ₗ[ℝ] (ZMod d → ℝ)` to `{ toFun := fun v s => (∑ i ∈ oddLevels d, (l : ℝ) ^ i * v (s, i)) + (∑ i ∈ oddLevels d, v (s - (i : ZMod d), i)) map_add' := fun v w => by`. Use extensionality with `s`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun c v => by`. Use extensionality with `s`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, mul_add, Finset.mul_sum, mul_left_comm c] }`. Set `φ : (ZMod d × ℕ → ℝ) →ₗ[ℝ] ℝ` to `{ toFun := fun v => ∑ s : ZMod d, ∑ i ∈ oddLevels d, v (s, i) map_add' := fun v w => by simp only [Pi.add_apply, Finset.sum_add_distrib] map_smul' := fun c v => by`.
+Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum] }`. Take `⟨y, h1, h2, h3, h4, h5⟩` from `basic ((Finset.univ : Finset (ZMod d)) ×ˢ oddLevels d) T φ (fun v hv hv0 hT => by`. Use extensionality with `⟨a, i⟩`. Distinguish the cases in `hi : i ∈ oddLevels d`. Use `le_antisymm ?_ (hv0 _)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `entry_le l d hl 0 (fun a i => v (a, i)) ⟨fun a i => hv0 _, fun s => (congrFun hT s).le⟩ a i hi`. Conclude with `hv _ (by simp [hi]))`. Use the proof step `(fun p => x p.1 p.2) (fun p => hx.1 _ _)`. Use the proof step `(fun p hp => hx0 _ _ (Or.inr (by simpa using hp)))`. Use `⟨fun a i => y (a, i), ⟨fun a i => h1 _, fun s => ?_⟩, fun a i h => h4 (a, i) (hx0 a i h), ?_, ?_⟩` and prove the remaining obligations.
-
-Conclude with `(congrFun h2 s).le.trans (hx.2 s)`. Simplify `h5` using `[ZMod.card]`. Establish `: flowVal d x ≤ flowVal d (fun a i => y (a, i))` using `h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dropLevelsBasic : DropLevelsBasic := by
   intro l d _ hl W hW i0
@@ -281,17 +271,15 @@ theorem dropLevelsBasic : DropLevelsBasic := by
     linarith
 
 /- English proof (translation)
-Introduce `l n l1 W ys hn hl1 hl hy hW`. Take `⟨q, rfl⟩ : ∃ q, l = q + 1 + n` from `⟨l - 1 - n, by omega⟩`. Establish `hq : q + 1 + n - 1 - n = q` using `by omega`. Rewrite using `[hq]`. Establish `hq0 : 0 < q` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨(⌊ys⌋₊ % q) :: List.replicate (⌊ys⌋₊ / q) q, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Break down `List.mem_cons.1 hp with h | h` into its components or cases. Conclude with `h ▸ (Nat.mod_lt _ hq0).le`. Conclude with `(List.eq_of_mem_replicate h).le`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.sum_cons, List.sum_replicate, smul_eq_mul]`. Conclude with `Nat.mod_add_div' _ _`. Simplify using `only [List.length_cons, List.length_replicate]`. Move the coercions through the operations in `at *`. Use `set k : ℕ := ⌊ys⌋₊ / q with hk`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (k : ℝ) * q ≤ ys`. Use `le_trans ?_ (Nat.floor_le hy)` and prove the remaining obligations. Conclude with `Nat.div_mul_le_self _ _` after adjusting the coercions. Establish `h2 : (n : ℝ) + 1 ≤ q` using `by exact_mod_cast (by omega : n + 1 ≤ q)`. Establish `hk0 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `h3 : (k : ℝ) ≤ 2 * W / l1 ^ 2`. Rewrite using `[le_div_iff₀ (by positivity)]`. Establish `h4 : l1 ^ 2 ≤ ((q : ℝ) + 1 + n + 1) * (2 * q)` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem splitLarge : SplitLarge := by
   intro l n l1 W ys hn hl1 hl hy hW
@@ -326,7 +314,7 @@ theorem splitLarge : SplitLarge := by
     linarith
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dropLevelsBasic, splitLarge⟩`.
+Supply the required witnesses or components.
 -/
 theorem main : DropLevelsBasic ∧ SplitLarge := ⟨dropLevelsBasic, splitLarge⟩
 

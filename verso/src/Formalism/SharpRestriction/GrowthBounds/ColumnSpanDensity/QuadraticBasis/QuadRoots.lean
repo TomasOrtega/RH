@@ -5,13 +5,13 @@ namespace Formalism.MainNotions.flipOneThree.Pf.QuadraticBasis
 open Polynomial
 
 /- English proof (translation)
-Establish `hP : (X ^ q - X : k[X]) ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero k hq`. Establish `hroot : ∀ z : k, z ^ q = z → z ∈ (X ^ q - X : k[X]).roots.toFinset`. Introduce `z hz`. Rewrite using `[Multiset.mem_toFinset, mem_roots hP, IsRoot, eval_sub, eval_pow, eval_X, hz, sub_self]`. Establish `hsub : Finset.univ.image ι ⊆ (X ^ q - X : k[X]).roots.toFinset`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z hz`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.mp hz`. Apply `hroot` to reduce the goal to its premises. Rewrite using `[← map_pow, ← hF, FiniteField.pow_card]`. Establish `hle : (X ^ q - X : k[X]).roots.toFinset.card ≤ (Finset.univ.image ι).card`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.card_image_of_injective _ ι.injective, Finset.card_univ, hF]`. Combine the equalities or inequalities in the displayed calculation. Establish `heq` using `Finset.eq_of_subset_of_card_le hsub hle`. Establish `hx'` using `hroot x hx`. Rewrite `hx'` using `[← heq]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, -, hy⟩` from `Finset.mem_image.mp hx'`. Conclude with `⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem qr_fix {F k : Type} [Field F] [Field k] [Fintype F] (ι : F →+* k) (q : ℕ)
     (hF : Fintype.card F = q) (hq : 1 < q) (x : k) (hx : x ^ q = x) : ∃ y, ι y = x := by
@@ -37,23 +37,21 @@ private theorem qr_fix {F k : Type} [Field F] [Field k] [Fintype F] (ι : F →+
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Establish `hq2 : p ^ n < (p ^ n) ^ 2` using `by nlinarith`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : k, ∀ y, ι y ≠ t := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `Fintype.card_le_of_surjective ι h` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hF, hk]`. Conclude with `absurd this (not_le.mpr hq2)`. Establish `hφ : ∀ x : k, iterateFrobenius k p n x = x ^ (p ^ n)` using `fun x => iterateFrobenius_def p n x`. Establish `htq : t ^ ((p ^ n) ^ 2) = t` using `by rw [← hk]; exact FiniteField.pow_card t`. Establish `hqq : ∀ x : k, (x ^ (p ^ n)) ^ (p ^ n) = x ^ ((p ^ n) ^ 2)` using `fun x => by rw [← pow_mul, sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hne : t ^ (p ^ n) ≠ t` using `fun h => by`. Take `⟨y, hy⟩` from `qr_fix ι (p ^ n) hF hq t h`. Conclude with `ht y hy`. Take `⟨b, hb⟩` from `qr_fix ι (p ^ n) hF hq (-(t + t ^ (p ^ n))) (by`. Establish `h` using `hφ (-(t + t ^ (p ^ n)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[map_neg, map_add, hφ, hφ, hqq, htq]`. Rewrite using `[← h]`. Use the proof step `ring)`. Take `⟨c, hc⟩` from `qr_fix ι (p ^ n) hF hq (t * t ^ (p ^ n)) (by`. Rewrite using `[mul_pow, hqq, htq, mul_comm])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hmonic : (X ^ 2 + C b * X + C c : F[X]).Monic` using `by monicity!`. Establish `hmap : (X ^ 2 + C b * X + C c : F[X]).map ι = (X - C t) * (X - C (t ^ (p ^ n)))`. Simplify using `only [Polynomial.map_add, Polynomial.map_mul, Polynomial.map_pow, map_X, map_C, hb, hc, map_neg, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hQ : (X ^ ((p ^ n) ^ 2) - X : F[X]).map ι = (X ^ ((p ^ n) ^ 2) - X : k[X])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Polynomial.map_sub, Polynomial.map_pow, map_X]`. Use `⟨b, c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.map_dvd_map ι ι.injective hmonic, hmap, hQ]`. Establish `hcop : IsCoprime (X - C t) (X - C (t ^ (p ^ n)))` using `Polynomial.isCoprime_X_sub_C_of_isUnit_sub (sub_ne_zero.mpr hne.symm).isUnit`. Use `hcop.mul_dvd ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[dvd_iff_isRoot, IsRoot, eval_sub, eval_pow, eval_X, htq, sub_self]`. Rewrite using `[dvd_iff_isRoot, IsRoot, eval_sub, eval_pow, eval_X, ← pow_mul, mul_comm, pow_mul, htq, sub_self]`. Introduce `x hx`. Establish `h1 : (ι x - t) * (ι x - t ^ (p ^ n)) = 0`. Establish `h` using `congrArg ι hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h` using `[map_add, map_add, map_mul, map_pow, hb, hc, map_zero]`. Take the linear combination `h`. Break down `mul_eq_zero.mp h1 with h | h` into its components or cases. Conclude with `ht x (sub_eq_zero.mp h)`. Apply `ht (x ^ (p ^ n))` to reduce the goal to its premises.
-
-Rewrite using `[map_pow, sub_eq_zero.mp h, hqq, htq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem qr_exists {F k : Type} [Field F] [Field k] [Fintype F] [Fintype k] (ι : F →+* k) (p n : ℕ)
     [Fact p.Prime] [CharP k p] (hF : Fintype.card F = p ^ n) (hk : Fintype.card k = (p ^ n) ^ 2)
@@ -104,19 +102,19 @@ private theorem qr_exists {F k : Type} [Field F] [Field k] [Fintype F] [Fintype 
       rw [map_pow, sub_eq_zero.mp h, hqq, htq]
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `h1q : 1 < Fintype.card k`. Establish `: 1 < p ^ n` using `Nat.one_lt_pow hn.ne' hp.one_lt`. Rewrite using `[hk]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hQ0 : (X ^ ((p ^ n) ^ 2) - X : k[X]) ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero k (hk ▸ h1q)`. Establish `hdvd' : (X ^ 2 + C (ι b) * X + C (ι c) : k[X]) ∣ X ^ ((p ^ n) ^ 2) - X`. Establish `h` using `Polynomial.map_dvd ι hdvd`. Simplify using `using h`. Establish `hsplitQ : (X ^ ((p ^ n) ^ 2) - X : k[X]).Splits`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← hk, splits_iff_card_roots, FiniteField.roots_X_pow_card_sub_X, FiniteField.X_pow_card_sub_X_natDegree_eq k h1q]`. Simplify using the standard rewrite rules. Establish `hsplitP` using `Splits.of_dvd hsplitQ hQ0 hdvd'`. Establish `hdegP : (X ^ 2 + C (ι b) * X + C (ι c) : k[X]).natDegree = 2` using `by compute_degree!`. Establish `hP0 : (X ^ 2 + C (ι b) * X + C (ι c) : k[X]) ≠ 0` using `fun h => by rw [h] at hdegP; simp at hdegP`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hsplitP` using `[splits_iff_card_roots, hdegP]`. Take `⟨t, ht⟩` from `Multiset.card_pos_iff_exists_mem.mp (by rw [hsplitP]; norm_num)`. Rewrite `ht` using `[mem_roots hP0, IsRoot, eval_add, eval_add, eval_mul, eval_pow, eval_C, eval_C, eval_X]`. Use `⟨t, ht, ?_, ?_⟩` and prove the remaining obligations. Introduce `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsq : (X ^ 2 + C (ι b) * X + C (ι c) : k[X]) = (X - C t) * (X - C t)`. Establish `hb' : ι b = -2 * t` using `by linear_combination h2`. Establish `hc' : ι c = t ^ 2` using `by linear_combination ht - t * h2`. Rewrite using `[hb', hc']`. Simplify using `only [map_mul, map_neg, map_pow, map_ofNat]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsf` using `(galois_poly_separable p ((p ^ n) ^ 2) (dvd_pow (dvd_pow_self p hn.ne') two_ne_zero) : (X ^ ((p ^ n) ^ 2) - X : k[X]).Separable).squarefree`. Rewrite `hdvd'` using `[hsq]`. Conclude with `Polynomial.not_isUnit_X_sub_C t (hsf _ hdvd')`. Introduce `y hy`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hno y` to reduce the goal to its premises. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[map_add, map_add, map_mul, map_pow, hy, map_zero]`. Conclude with `ht`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem qr_root {F k : Type} [Field F] [Field k] [Fintype k] (ι : F →+* k) (p n : ℕ)
     [Fact p.Prime] [CharP k p] (hn : 0 < n) (hk : Fintype.card k = (p ^ n) ^ 2) (b c : F)
@@ -160,11 +158,9 @@ private theorem qr_root {F k : Type} [Field F] [Field k] [Fintype k] (ι : F →
     exact ht
 
 /- English proof (translation)
-Use `haveI := hc`. Use `haveI := IsAdicComplete.henselianRing O (IsLocalRing.maximalIdeal O)`. Establish `hmax` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer w).mp hw`. Establish `hd : eval a₀ (derivative (X ^ 2 + C B * X + C D)) = 2 * a₀ + B`. Simplify using `only [derivative_add, derivative_X_pow, derivative_mul, derivative_C, derivative_X, eval_add, eval_mul, eval_C, eval_X, eval_pow, eval_zero, eval_one, eval_natCast, zero_mul, mul_one, add_zero, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `(try norm_num) <;> ring`. Take `⟨θ, hθ, hθa⟩` from `HenselianRing.is_henselian (I := IsLocalRing.maximalIdeal O) (X ^ 2 + C B * X + C D) (by monicity!) a₀ (by rw [hmax, Ideal.mem_span_singleton]; simpa using h1) (by rw [hd]`. Conclude with `(IsLocalRing.notMem_maximalIdeal.mp (by rw [hmax, Ideal.mem_span_singleton]; exact h2)).map _)`. Use `⟨θ, ?_, ?_⟩` and prove the remaining obligations. Simplify `hθ` using `[IsRoot]`.
-
-Rewrite `hθa` using `[hmax, Ideal.mem_span_singleton]`. Conclude with `hθa`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem qr_hensel {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (hc : IsAdicComplete (IsLocalRing.maximalIdeal O) O) (w : O) (hw : Irreducible w) (B D a₀ : O)
@@ -194,11 +190,11 @@ private def qrGood (p n : ℕ) (W : Type) [CommRing W] (b c : W) : Prop :=
       x ^ 2 + Ideal.Quotient.mk (Ideal.span {(p : W)}) b * x + Ideal.Quotient.mk (Ideal.span {(p : W)}) c ≠ 0
 
 /- English proof (translation)
-Unfold `qrGood at h ⊢`. Take `⟨hd, hr⟩` from `h`. Apply the tactic sequence `obtain ⟨ψ, hψ⟩ : ∃ ψ : (W₁ ⧸ Ideal.span {(p : W₁)}) ≃+* (W₂ ⧸ Ideal.span {(p : W₂)}), ∀ x, ψ (Ideal.Quotient.mk _ x) = Ideal.Quotient.mk _ (φ x) := ⟨Ideal.quotientEquiv _ _ φ (by rw [Ideal.map_span, Set.image_singleton]; simp), fun x => by first | exact Ideal.quotientEquiv_mk _ _ …`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `Polynomial.map_dvd (ψ : (W₁ ⧸ Ideal.span {(p : W₁)}) →+* (W₂ ⧸ Ideal.span {(p : W₂)})) hd`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `h` using `[hψ]`. Introduce `x hx`. Apply `hr (ψ.symm x)` to reduce the goal to its premises. Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[map_add, map_add, map_mul, map_pow, hψ, hψ, RingEquiv.apply_symm_apply, map_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 private theorem qr_transport (p n : ℕ) {W₁ W₂ : Type} [CommRing W₁] [CommRing W₂] (φ : W₁ ≃+* W₂) (b c : W₁)
     (h : qrGood p n W₁ b c) : qrGood p n W₂ (φ b) (φ c) := by
@@ -218,23 +214,19 @@ private theorem qr_transport (p n : ℕ) {W₁ W₂ : Type} [CommRing W₁] [Com
     exact hx
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : (Ideal.span {(p : W)}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hpW`. Use `haveI : (Ideal.span {w}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hw`. Use `letI : Field (W ⧸ Ideal.span {(p : W)}) := Ideal.Quotient.field _`. Use `letI : Field (O ⧸ Ideal.span {w}) := Ideal.Quotient.field _`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : Finite (W ⧸ Ideal.span {(p : W)}) := Nat.finite_of_card_ne_zero (by rw [hcW]; exact (pow_pos hp.pos _).ne')`. Use `haveI : Finite (O ⧸ Ideal.span {w}) := Nat.finite_of_card_ne_zero (by rw [hcO]; exact (pow_pos hp.pos _).ne')`. Use `letI : Fintype (W ⧸ Ideal.span {(p : W)}) := Fintype.ofFinite _`. Use `letI : Fintype (O ⧸ Ideal.span {w}) := Fintype.ofFinite _`. Establish `hFc : Fintype.card (W ⧸ Ideal.span {(p : W)}) = p ^ n` using `by rw [← Nat.card_eq_fintype_card, hcW]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hkc : Fintype.card (O ⧸ Ideal.span {w}) = (p ^ n) ^ 2`. Rewrite using `[← Nat.card_eq_fintype_card, hcO]`. Expand and normalize the polynomial expressions, which then agree. Use `haveI : CharP (O ⧸ Ideal.span {w}) p := (CharP.charP_iff_prime_eq_zero hp).mpr (by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {w})), ← hw2, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `dvd_pow_self w two_ne_zero)`. Take `⟨ι, hι⟩ : ∃ ι : (W ⧸ Ideal.span {(p : W)}) →+* (O ⧸ Ideal.span {w}), ∀ a, ι (Ideal.Quotient.mk _ a) = Ideal.Quotient.mk _ (j a)` from `⟨Ideal.Quotient.lift _ ((Ideal.Quotient.mk (Ideal.span {w})).comp j) (by`. Introduce `a ha`. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton.mp ha`. Rewrite using `[RingHom.comp_apply, map_mul, map_natCast, ← hw2, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Conclude with `dvd_mul_of_dvd_left (dvd_pow_self w two_ne_zero) _), fun a => rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨b₀, c₀, hd, hr⟩` from `qr_exists ι p n hFc hkc (Nat.one_lt_pow hn.ne' hp.one_lt)`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b₀`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective c₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨b, c, by unfold qrGood; exact ⟨hd, hr⟩⟩`. Introduce `b c hg`. Unfold `qrGood at hg`. Take `⟨hd, hr⟩` from `hg`. Take `⟨t, ht, ht2, htn⟩` from `qr_root ι p n hn hkc (Ideal.Quotient.mk _ b) (Ideal.Quotient.mk _ c) hd hr`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a₀, rfl⟩` from `Ideal.Quotient.mk_surjective t`. Take `⟨θ, hθ, hθa⟩` from `qr_hensel hc w hw (j b) (j c) a₀ (by rw [← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem]; simpa [hι] using ht) (by`. Introduce `hdv`. Apply `ht2` to reduce the goal to its premises. Establish `e : Ideal.Quotient.mk (Ideal.span {w}) (2 * a₀ + j b) = 2 * Ideal.Quotient.mk (Ideal.span {w}) a₀ + ι (Ideal.Quotient.mk _ b)`.
-
-Rewrite using `[hι, map_add, map_mul]`. Apply the tactic sequence `first | rfl | (rw [map_ofNat]) | norm_num | simp`. Rewrite using `[← e, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `hdv)`. Use `⟨θ, hθ, fun a ha => htn (Ideal.Quotient.mk _ a) ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hι, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Establish `h` using `dvd_sub hθa ha`. Rewrite `h` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem qr_side (p n : ℕ) (hp : p.Prime) (hn : 0 < n) (W O : Type) [CommRing W] [IsDomain W]
     [IsDiscreteValuationRing W] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (j : W →+* O) (w : O)
@@ -296,9 +288,9 @@ private theorem qr_side (p n : ℕ) (hp : p.Prime) (hn : 0 < n) (W O : Type) [Co
     rwa [sub_sub_sub_cancel_left] at h
 
 /- English proof (translation)
-Introduce `p n hp hn W₁ W₂ O₁ O₂ _ _ _ _ _ _ _ _ _ _ _ _ j₁ j₂ w₁ w₂ hpW₁ hpW₂ hcW₁ hcW₂ hc₁ hc₂ hw2₁ hw2₂ hw₁ hw₂ hcO₁ hcO₂ φW`. Take `⟨⟨b, c, hg⟩, h1⟩` from `qr_side p n hp hn W₁ O₁ j₁ w₁ hpW₁ hcW₁ hc₁ hw2₁ hw₁ hcO₁`. Take `⟨-, h2⟩` from `qr_side p n hp hn W₂ O₂ j₂ w₂ hpW₂ hcW₂ hc₂ hw2₂ hw₂ hcO₂`. Take `⟨θ₁, e1, n1⟩` from `h1 b c hg`. Take `⟨θ₂, e2, n2⟩` from `h2 (φW b) (φW c) (qr_transport p n φW b c hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, b, θ₁, θ₂, e1, e2, n1, n2⟩`.
+Supply the required witnesses or components.
 -/
 theorem existsCompatibleRoots_holds : QuadRoots := by
   intro p n hp hn W₁ W₂ O₁ O₂ _ _ _ _ _ _ _ _ _ _ _ _ j₁ j₂ w₁ w₂ hpW₁ hpW₂ hcW₁ hcW₂ hc₁ hc₂ hw2₁ hw2₂

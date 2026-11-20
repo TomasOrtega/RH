@@ -34,7 +34,7 @@ theorem pairOf_γ {G : HTGroup p} (F : Form G) (r : grp G F.β) (h : RegEl G (r 
 open GlobalTheory.LKTrip.Example GlobalTheory.LKMid.Example in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exPair.reg, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ (h : RegEl (ex 1 one_ne_zero) exPair.γ),
     pairOf (Form.ofPair exPair) ⟨(exPair.γ, exPair.c), exPair.sim, by show (0:ℚ) < 5; norm_num⟩ h = exPair :=

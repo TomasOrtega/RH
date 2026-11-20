@@ -18,7 +18,7 @@ private def PF (δ : F) (O : Ops F) (f : V4 F → ℂ) : Prop :=
   ∃ Λ m, ∃ φ ∈ O.Fk (Vac δ ⊓ Fix δ Λ) m, φ.1 = f
 
 /- English proof (translation)
-The claim follows from `(fkBasic F O).1 _ _ (inf_le_inf_left _ ((fixEx F δ).2 _ _ hΛ)) m m' hm hφ`.
+A detailed English derivation is pending.
 -/
 private theorem fk_mono {δ : F} {O : Ops F} {Λ Λ' : OpenAddSubgroup (FiniteAdeleRing (𝓞 F) F)} {m m' : ℕ}
     (hΛ : Λ' ≤ Λ) (hm : m ≤ m') {φ : S4 F} (hφ : φ ∈ O.Fk (Vac δ ⊓ Fix δ Λ) m) :
@@ -26,7 +26,7 @@ private theorem fk_mono {δ : F} {O : Ops F} {Λ Λ' : OpenAddSubgroup (FiniteAd
   (fkBasic F O).1 _ _ (inf_le_inf_left _ ((fixEx F δ).2 _ _ hΛ)) m m' hm hφ
 
 /- English proof (translation)
-Take `⟨Λ, m, φ, hφ, rfl⟩` from `h`. Take `⟨Λ', m', φ', hφ', rfl⟩` from `h'`. Conclude with `⟨Λ ⊓ Λ', max m m', φ + φ', add_mem (fk_mono inf_le_left (le_max_left _ _) hφ) (fk_mono inf_le_right (le_max_right _ _) hφ'), rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem PF.add {δ : F} {O : Ops F} {f f' : V4 F → ℂ} (h : PF δ O f) (h' : PF δ O f') :
     PF δ O (f + f') := by
@@ -36,7 +36,7 @@ private theorem PF.add {δ : F} {O : Ops F} {f f' : V4 F → ℂ} (h : PF δ O f
     add_mem (fk_mono inf_le_left (le_max_left _ _) hφ) (fk_mono inf_le_right (le_max_right _ _) hφ'), rfl⟩
 
 /- English proof (translation)
-Take `⟨Λ, m, φ, hφ, rfl⟩` from `h`. Conclude with `⟨Λ, m, c • φ, Submodule.smul_mem _ c hφ, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem PF.smul {δ : F} {O : Ops F} {f : V4 F → ℂ} (c : ℂ) (h : PF δ O f) :
     PF δ O (c • f) := by
@@ -44,13 +44,13 @@ private theorem PF.smul {δ : F} {O : Ops F} {f : V4 F → ℂ} (c : ℂ) (h : P
   exact ⟨Λ, m, c • φ, Submodule.smul_mem _ c hφ, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⊤, 0, 0, zero_mem _, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem PF.zero (δ : F) (O : Ops F) : PF δ O 0 :=
   ⟨⊤, 0, 0, zero_mem _, rfl⟩
 
 /- English proof (translation)
-Take `⟨Λ, m, φ, hφ, rfl⟩` from `h`. Conclude with `⟨Λ, m + 1, O.x w i φ, (fkBasic F O).2.1 _ m w i φ hφ, funext fun v => O.x_apply w i φ v⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem PF.coord {δ : F} {O : Ops F} {f : V4 F → ℂ} (i : Fin 4) (w : InfinitePlace F) (h : PF δ O f) :
     PF δ O ((fun v => ((TR.pInf F (v i) w : ℝ) : ℂ)) * f) := by
@@ -58,11 +58,11 @@ private theorem PF.coord {δ : F} {O : Ops F} {f : V4 F → ℂ} (i : Fin 4) (w 
   exact ⟨Λ, m + 1, O.x w i φ, (fkBasic F O).2.1 _ m w i φ hφ, funext fun v => O.x_apply w i φ v⟩
 
 /- English proof (translation)
-Use `Algebra.adjoin_induction (p := fun p _ => ∀ f, PF δ O f → PF δ O (p * f)) ?_ ?_ ?_ ?_ hp` and prove the remaining obligations. Introduce and unpack `_ ⟨i, w, rfl⟩ f hf`. Conclude with `PF.coord i w hf`. Introduce `c f hf`. Establish `: (algebraMap ℂ (V4 F → ℂ) c) * f = c • f`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def]`. Rewrite using `[this]`. Conclude with `PF.smul c hf`. Introduce `a b _ _ ha hb f hf`. Rewrite using `[add_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ha f hf).add (hb f hf)`. Introduce `a b _ _ ha hb f hf`. Rewrite using `[mul_assoc]`. Conclude with `ha _ (hb f hf)`.
+A detailed English derivation is pending.
 -/
 private theorem PF.poly {δ : F} {O : Ops F} {p : V4 F → ℂ} (hp : p ∈ polyFn (F := F)) :
     ∀ f, PF δ O f → PF δ O (p * f) := by
@@ -86,19 +86,19 @@ end SlopeTestRemainingChoices
 end UpperTheory.ConvolutionTheory.R2.Fo
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D O s hs`. Establish `hgauss : ∀ g ∈ finiteSchwartzBruhatPi F (ι` using `Fin 4), PF D.δ O (fun v => gauss D.δ v * g (finPartPi v)) := by`. Introduce `g hg`. Set `φ₀ : S4 F` to `⟨_, gaussMem F E D g hg⟩`. Take `⟨Λ, hΛ⟩` from `(fixEx F D.δ).1 φ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hV : φ₀ ∈ Vac D.δ`. Introduce `v v' e`. Express the relevant statement in the definitionally equal form `(gauss D.δ v * g (finPartPi v)) * gauss D.δ v' = (gauss D.δ v' * g (finPartPi v')) * gauss D.δ v`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `⟨Λ, 0, φ₀, ⟨hV, hΛ⟩, rfl⟩`. Establish `hfock : ∀ φ ∈ Fock D.δ, PF D.δ O φ.1`. Introduce `φ hφ`. Establish `hφ' : φ.1 ∈ Submodule.span ℂ {φ : V4 F → ℂ | ∃ p ∈ polyFn (F` using `F), ∃ g ∈ finiteSchwartzBruhatPi F (ι := Fin 4), φ = fun v => p v * gauss D.δ v * g (finPartPi v)} := hφ`. Use `Submodule.span_induction (p := fun f _ => PF D.δ O f) ?_ (PF.zero _ _) ?_ ?_ hφ'` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨p, hp, g, hg, rfl⟩`. Use `PF.poly hp _ (hgauss g hg)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Simplify using `only [Pi.mul_apply, mul_assoc]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `a b _ _ ha hb`. Conclude with `ha.add hb`. Introduce `c a _ ha`. Conclude with `ha.smul c`. Proceed by induction on `s, hs using Set.Finite.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `empty => exact fun _ => ⟨⊤, 0, fun φ h => absurd h (Set.notMem_empty φ)⟩`. Consider the case `@insert a s _ _ ih`. Introduce `h`. Take `⟨Λ, m, hm⟩` from `ih fun φ hφ => h φ (Set.mem_insert_of_mem _ hφ)`. Take `⟨Λ', m', φ, hφ, e⟩` from `hfock a (h a (Set.mem_insert _ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : φ = a` from `Subtype.ext e`. Use `⟨Λ ⊓ Λ', max m m', ?_⟩` and prove the remaining obligations. Introduce and unpack `ψ' (rfl | hψ)`. Conclude with `fk_mono inf_le_right (le_max_right _ _) hφ`. Conclude with `fk_mono inf_le_left (le_max_left _ _) (hm ψ' hψ)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.fockEx :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (O : Ops F) (s : Set (S4 F)), s.Finite → (∀ φ ∈ s, φ ∈ Fock D.δ) → ∃ Λ m, ∀ φ ∈ s, φ ∈ O.Fk (Vac D.δ ⊓ Fix D.δ Λ) m := by

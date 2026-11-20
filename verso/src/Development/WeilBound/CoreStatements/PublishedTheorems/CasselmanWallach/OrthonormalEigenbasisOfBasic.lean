@@ -12,7 +12,7 @@ namespace EigenvectorBasisSetup
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
 /- English proof (translation)
-Unfold `casimirK`. Simplify using `only [Finset.sum_filter, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem casK_apply (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (v : V) :
     casimirK ε E v = ∑ a, ∑ b, if ε b = ε a then E a b (E b a v) else 0 := by
@@ -22,7 +22,7 @@ theorem casK_apply (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `casimir`. Simplify using `[LinearMap.sum_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cas_apply (E : Fin n → Fin n → Module.End ℂ V) (v : V) :
     casimir E v = ∑ a, ∑ b, E a b (E b a v) := by
@@ -30,9 +30,9 @@ theorem cas_apply (E : Fin n → Fin n → Module.End ℂ V) (v : V) :
   simp [LinearMap.sum_apply]
 
 /- English proof (translation)
-Unfold `nc`. Rewrite using `[Finset.sum_filter, ← Finset.univ_product_univ, Finset.sum_product]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ε b = ε a`. Simplify using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `: ε a ≠ ε b` using `fun h' => h h'.symm`. Simplify using `[h, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem nc_sum {M : Type*} [AddCommMonoid M] (ε : Fin n → Bool) (f : Fin n × Fin n → M) :
     ∑ p ∈ nc ε, f p = ∑ a, ∑ b, if ε b = ε a then 0 else f (a, b) := by
@@ -45,9 +45,9 @@ theorem nc_sum {M : Type*} [AddCommMonoid M] (ε : Fin n → Bool) (f : Fin n ×
     simp [h, this]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ε b = ε a`. Simplify using `[h]`. Establish `: ε a ≠ ε b` using `fun h' => h h'.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h, this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem swap_sum {M : Type*} [AddCommMonoid M] (ε : Fin n → Bool) (f g : Fin n → Fin n → M) :
     (∑ a, ∑ b, if ε b = ε a then f a b else g a b) =
@@ -60,13 +60,13 @@ theorem swap_sum {M : Type*} [AddCommMonoid M] (ε : Fin n → Bool) (f g : Fin 
     simp [h, this]
 
 /- English proof (translation)
-Simplify using `using (inner_self_eq_norm_sq (𝕜 := ℂ) u).symm`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sq_re (u : V) : ‖u‖ ^ 2 = (inner ℂ u u).re := by
   simpa using (inner_self_eq_norm_sq (𝕜 := ℂ) u).symm
 
 /- English proof (translation)
-Rewrite using `[inner_smul_right, Complex.re_ofReal_mul, ← sq_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sm_re (r : ℝ) (u : V) : (inner ℂ u ((r : ℂ) • u)).re = r * ‖u‖ ^ 2 := by
   rw [inner_smul_right, Complex.re_ofReal_mul, ← sq_re]
@@ -75,39 +75,37 @@ end EigenvectorBasisSetup
 
 open EigenvectorBasisSetup in
 /- English proof (translation)
-Introduce `n ε V _ _ E hM`. Establish `hU` using `hM.uni`. Establish `hc : ∀ a b, ε b = ε a → ∀ x y, inner ℂ (E a b x) y = inner ℂ x (E b a y)`. Introduce `a b h x y`. Rewrite using `[hU a b x y]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[adjSign, h.symm]`. Establish `hK : ∀ x y, inner ℂ x (casimirK ε E y) = ∑ a, ∑ b, if ε b = ε a then inner ℂ (E b a x) (E b a y) else 0`. Introduce `x y`. Rewrite using `[casK_apply, inner_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inner_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[hc b a h.symm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hKre : ∀ w, (inner ℂ w (casimirK ε E w)).re = ∑ a, ∑ b, if ε b = ε a then ‖E b a w‖ ^ 2 else 0`. Introduce `w`. Rewrite using `[hK, Complex.re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.re_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[sq_re]`. Simplify using the standard rewrite rules. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y`. Rewrite using `[← inner_conj_symm, hK, hK, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `split_ifs <;> simp`. Introduce `μ v hv h0`. Establish `h1` using `hKre v`. Rewrite `h1` using `[hv, sm_re]`. Establish `h2 : 0 ≤ μ * ‖v‖ ^ 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1]`. Use `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> positivity`. Establish `h3 : 0 < ‖v‖ ^ 2` using `by positivity`. Conclude with `nonneg_of_mul_nonneg_left h2 h3`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b h`. Unfold `Z`. Conclude with `sub_eq_zero.mpr (casimirK_comm ε hM.gl a b h)`. Introduce `κ hκ w`. Establish `h3 : ∑ p ∈ nc ε, E p.1 p.2 (E p.2 p.1 w) = (κ : ℂ) • w - casimirK ε E w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hκ w, cas_apply, casK_apply, nc_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnorm : ∀ a b, ‖E a b w‖ ^ 2 = (adjSign ε a b * inner ℂ w (E b a (E a b w))).re`. Introduce `a b`. Rewrite using `[sq_re, hU]`. Establish `h2 : ∑ p ∈ nc ε, ‖E p.1 p.2 w‖ ^ 2 = (inner ℂ w (casimirK ε E w)).re - κ * ‖w‖ ^ 2`. Establish `e1 : ∑ p ∈ nc ε, ‖E p.1 p.2 w‖ ^ 2 = ∑ a, ∑ b, if ε b = ε a then 0 else -(inner ℂ w (E b a (E a b w))).re`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[nc_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ε b = ε a`. Simplify using `[h]`. Establish `: ε a ≠ ε b` using `fun h' => h h'.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[h, hnorm, adjSign, this]`. Establish `e2 : (∑ a, ∑ b, if ε b = ε a then (0 : ℝ) else -(inner ℂ w (E b a (E a b w))).re) = -(inner ℂ w (∑ p ∈ nc ε, E p.1 p.2 (E p.2 p.1 w))).re`. Rewrite using `[swap_sum, nc_sum, inner_sum, Complex.re_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[inner_sum, Complex.re_sum, ← Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e1, e2, h3, inner_sub_right, Complex.sub_re, sm_re]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ∑ a, ∑ b, ‖E a b w‖ ^ 2 = 2 * (inner ℂ w (casimirK ε E w)).re - κ * ‖w‖ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∑ a, ∑ b, ‖E a b w‖ ^ 2 = (∑ a, ∑ b, if ε b = ε a then ‖E a b w‖ ^ 2 else 0) + ∑ a, ∑ b, if ε b = ε a then 0 else ‖E a b w‖ ^ 2`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `e2 : (∑ a, ∑ b, if ε b = ε a then ‖E a b w‖ ^ 2 else (0 : ℝ)) = (inner ℂ w (casimirK ε E w)).re`. Rewrite using `[hKre, swap_sum]`. Establish `e3 : (∑ a, ∑ b, if ε b = ε a then (0 : ℝ) else ‖E a b w‖ ^ 2) = ∑ p ∈ nc ε, ‖E p.1 p.2 w‖ ^ 2`. Rewrite using `[nc_sum]`.
-
-Rewrite using `[e1, e2, e3, h2]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨h1, h2, h3⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem orthonormal_eigenbasis_of_basic : A0 := by
   intro n ε V _ _ E hM

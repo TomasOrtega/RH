@@ -10,7 +10,7 @@ open GroundTheory.PAdicHodge
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Establish `h` using `eq_toBdRPlus_of_bounded (jOC l) (jOC_zero l) (jOC_bounded l)`. Rewrite using `[← h]`. Use `show Cmp6.cP l ((Cmp6.cP l).symm (iotaP l (Cmp6.cA l x))) = _`. Rewrite using `[RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem comparison_toBdRPlus (x : Reformulated.AutPerF.Acris l (Cmp6.OC l)) :
     Cmp6.cP l (Reformulated.AutPerF.Acris.toBdRPlus l (Cmp6.OC l) x) = ACris.iota ℂ_[l] l (Cmp6.cA l x) := by

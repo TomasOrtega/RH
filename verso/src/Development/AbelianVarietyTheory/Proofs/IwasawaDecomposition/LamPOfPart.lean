@@ -52,21 +52,19 @@ open scoped InnerProductSpace
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hCRD D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH i π p hne hle`. Establish `hC` using `hP.char`. Establish `hEx` using `hH.aux.ex`. Establish `hA` using `hH.prim.thmA`. Establish `hGE` using `hH.prim.gEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : R.toRealDat.IsThP` using `RealDat.thP_of_weak hC.base.thP hEx`. Establish `hM : R.toRealDat.IsModels` using `hC.base.models`. Establish `hμ : Used0 D D.what₂.mu0` using `Or.inl rfl`. Establish `hT` using `Y.tied.lift`. Establish `htup : Y.tupT D.what₂.mu0 = A3.A.μ0` using `by rw [← Y.tup0, Y.tupT_tup]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hread` using `thetaP_read R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop Y.hinj hC.base.lev hC.base.grp hM hE Y.IL hT D.what₂.mu0 hμ i`. Rewrite using `[← htup]`. Use `hT.lamP D.what₂.mu0 hμ i π _ hne fun y hy' => ?_` and prove the remaining obligations. Establish `hw0p : Y.mj.eW i y ∈ R.Wp3 i p` using `hle hy'`. Establish `hw0e : PiTensorProduct.lift ((R.HW i (sg0 D A3.A)).e (Y.mj.eW i y)) = (Y.IL.jMj i y).1` using `(Y.mjRead i y).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0W : PiTensorProduct.lift ((R.HW i (sg0 D A3.A)).e (Y.mj.eW i y)) ∈ (toLiftReal R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop Y.hinj).Wc i`. Rewrite using `[hw0e]`. Conclude with `(Y.IL.jMj i y).2`. Establish `haS` using `GlobalTheory.LamPrimeTransport.adjoint_mem_base_level R F hCRD hC hEx hGE Y.tupT Y.hm Y.hTop Y.hinj i (Y.mj.eW i y) hw0W`. Take `⟨a, ha⟩ : ∃ a, LinearMap.adjoint (R.thG i (Y.tupT D.what₂.mu0)) (Y.mj.eW i y) = a` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `haS` using `[ha]`. Take `⟨x', hx'⟩ : ∃ x', Y.IL.jMt D.what₂.mu0 hμ i x' = ⟨R.toRealDat.extV i (Y.tupT D.what₂.mu0) a, haS⟩` from `⟨_, LinearEquiv.apply_symm_apply _ _⟩`. Establish `hprex : pre R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop Y.hinj D.what₂.mu0 i (Y.IL.jMt D.what₂.mu0 hμ i x') = a`. Apply `Y.hinj i (Y.tupT D.what₂.mu0)` to reduce the goal to its premises. Rewrite using `[ext_pre, hx']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTx : D.what₂.thetaT D.what₂.mu0 ((i : ℕ) + 1) y = x'`. Use `ext_inner_left ℂ fun u => ?_` and prove the remaining obligations. Establish `e1 : ⟪u, D.what₂.thetaT D.what₂.mu0 ((i : ℕ) + 1) y⟫_ℂ = ⟪D.what₂.thetaP D.what₂.mu0 ((i : ℕ) + 1) u, y⟫_ℂ` using `LinearMap.adjoint_inner_right _ _ _`. Rewrite using `[e1, hT.mj i, hT.mt D.what₂.mu0 hμ i, hread u, ← hw0e]`. Use `erw [ipWc_lift R.toRealDat hM.HW F.lv2 Y.tupT Y.hm Y.hTop Y.hinj i]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ext_pre R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop Y.hinj D.what₂.mu0 i (Y.IL.jMt D.what₂.mu0 hμ i u), ← ext_pre R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop Y.hinj D.what₂.mu0 i (Y.IL.jMt D.what₂.mu0 hμ i x'), ipA_ext, hprex, ← ha, LinearMap.adjoint_inner_right]`. Rewrite using `[hTx]`. Apply `(Y.IL.jMj i).injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hread x', hprex, ← ha, hA i (Y.tupT D.what₂.mu0) p (Y.mj.eW i y) hw0p, LinearEquiv.map_smul, Submodule.coe_smul, ← hw0e]`.
-
-Rewrite using `[map_smul]`. Conclude with `map_smul _ _ _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigenvalue_of_part : GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
@@ -127,15 +125,13 @@ open Formalism.L2.Col GlobalTheory.HeckeLifts₂
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH i π c p hne hc hp`. Assume the negation of the conclusion as `hcp`. Take `⟨hW, hHk⟩` from `hH.prim.hecke.2`. Establish `hu` using `untw_of_hH hP.char hHk`. Establish `hd0` using `disjoint_eigSum (hu.comm i) (C := SysC A3 i c) (C' := SysC A3 i p) fun y h h' => h.elim fun x hx => h'.elim fun x' hx' => by`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : x = x'` using `funext fun k => D.what₂.embLL.injective ((congrFun hx.2 k).symm.trans (congrFun hx'.2 k))`. Substitute `e` using the available equality. Conclude with `(A3.liftI i A3.A.fam.μ0).excl3 (hH.sep c.1 c.2 p.1 p.2 (fun h => hcp (Subtype.ext h)) i) x hx.1 hx'.1`. Establish `hd : Disjoint (R.Wp3 i c) (R.Wp3 i p)` using `hd0.mono (hu.parts i c).le (hu.parts i p).le`. Establish `hinj : ∀ x, Y.mj.eW i x = 0 → x = 0` using `fun x hx => by`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Y.mj.eW_norm i x`. Rewrite `h1` using `[hx, norm_zero]`. Establish `hn` using `RealDat.nP_pos (F := F.lv2) false`. Establish `h2 : ‖x‖ ^ 2 = 0`. Break down `mul_eq_zero.1 (show RealDat.nP F.lv2 false * ‖x‖ ^ 2 = 0 by rw [← h1]; ring) with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `absurd h hn.ne'`. Conclude with `h`. Conclude with `norm_eq_zero.1 (pow_eq_zero_iff (n := 2) (by norm_num) |>.1 h2)`. Apply `hne` to reduce the goal to its premises. Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations.
-
-Establish `h1 : Y.mj.eW i x ∈ R.Wp3 i c` using `hc hx`. Establish `h2 : Y.mj.eW i x ∈ R.Wp3 i p` using `hp hx`. Conclude with `(Submodule.mem_bot ℂ).2 (hinj x ((Submodule.disjoint_def.1 hd) _ h1 h2))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem part_unique : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]

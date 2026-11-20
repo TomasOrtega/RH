@@ -26,7 +26,7 @@ namespace GlobalTheory.RealColAct
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `gramAt`. Rewrite using `[hV]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramAt_of_gram_one {V : HSp D} (hV : HSpace.gram V = 1) (τ : D.what₂.Tau) : gramAt D V τ = 1 := by
   unfold gramAt
@@ -34,7 +34,7 @@ theorem gramAt_of_gram_one {V : HSp D} (hV : HSpace.gram V = 1) (τ : D.what₂.
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.StdUnn.CartanMove.compAt_isom hθ V g τ`. Rewrite `h` using `[gramAt_of_gram_one hV, Matrix.mul_one]`. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_mem_unitary {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} (hV : HSpace.gram V = 1) (g : GA D V)
     (τ : D.what₂.Tau) : compAt θ τ (Formalism.L2.Theta.mt V g) ∈ Matrix.unitaryGroup (Fin V.rank) ℂ := by
@@ -44,9 +44,9 @@ theorem compAt_mem_unitary {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} (hV :
   exact h
 
 /- English proof (translation)
-Establish `h2 : K * star K = 1` using `Matrix.mem_unitaryGroup_iff.1 hK`. Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Establish `e : star Kᵀ = (star K)ᵀ`. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.star_eq_conjTranspose]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e, ← Matrix.transpose_mul, h2, Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transpose_mem_unitary {n : ℕ} {K : Matrix (Fin n) (Fin n) ℂ} (hK : K ∈ Matrix.unitaryGroup (Fin n) ℂ) :
     Kᵀ ∈ Matrix.unitaryGroup (Fin n) ℂ := by

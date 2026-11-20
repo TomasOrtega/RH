@@ -6,7 +6,7 @@ open scoped ComplexConjugate
 namespace UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.KX
 
 /- English proof (translation)
-Use `continuous_parametric_integral_of_continuous (μ := ν) (f := fun x y => h (x, y)) hc isCompact_univ` as an intermediate fact. Simplify `this` using `only [Measure.restrict_univ]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cont_cpt {X Y : Type} [TopologicalSpace X] [FirstCountableTopology X] [LocallyCompactSpace X] [TopologicalSpace Y]
     [CompactSpace Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ν : Measure Y) [IsFiniteMeasure ν]
@@ -15,16 +15,14 @@ theorem cont_cpt {X Y : Type} [TopologicalSpace X] [FirstCountableTopology X] [L
   simpa only [Measure.restrict_univ] using this
 
 /- English proof (translation)
-The claim follows from `hc.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace h)`.
+A detailed English derivation is pending.
 -/
 theorem int_cpt {Y : Type} [TopologicalSpace Y] [CompactSpace Y] [MeasurableSpace Y] [OpensMeasurableSpace Y]
     (ν : Measure Y) [IsFiniteMeasure ν] {h : Y → ℂ} (hc : Continuous h) : Integrable h ν :=
   hc.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace h)
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Take `⟨C, hC, hx⟩` from `exists_compact_mem_nhds x`. Take `⟨B, hB⟩` from `hb C hC`. Use `continuousAt_of_dominated (bound := fun _ => B) (Eventually.of_forall fun x => ?_) ?_ (integrable_const B) (ae_of_all _ fun y => (hc.comp (by fun_prop)).continuousAt)` and prove the remaining obligations. Conclude with `(hc.comp (Continuous.prodMk_right x)).aestronglyMeasurable`.
-
-Use `filter_upwards [hx] with x hx using ae_of_all _ fun y => hB y x hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cont_loc {X Y : Type} [TopologicalSpace X] [FirstCountableTopology X] [LocallyCompactSpace X] [TopologicalSpace Y]
     [MeasurableSpace Y] [OpensMeasurableSpace Y] (ν : Measure Y) [IsFiniteMeasure ν]
@@ -39,21 +37,17 @@ theorem cont_loc {X Y : Type} [TopologicalSpace X] [FirstCountableTopology X] [L
   · filter_upwards [hx] with x hx using ae_of_all _ fun y => hB y x hx
 
 /- English proof (translation)
-Use `haveI : CompactSpace Kc := isCompact_iff_compactSpace.1 hK`. Use `haveI : CompactSpace (S ⊓ Kc : Subgroup G) := isCompact_iff_compactSpace.1 (hK.inter_left hS)`. Use `haveI : LocallyCompactSpace S := hS.locallyCompactSpace`. Use `haveI : SecondCountableTopology S := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SecondCountableTopology (S ⊓ Kc : Subgroup G) := TopologicalSpace.Subtype.secondCountableTopology _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose p hp k hk he using hs`. Use `set Φ : S × G → ℂ := fun q => ∫ u : (S ⊓ Kc : Subgroup G), F (π q.1 * π ⟨u, u.2.1⟩) * ψ ((u : G)⁻¹ * q.2) ∂lam with hΦ`. Establish `hc : Continuous Φ`. Use `cont_cpt lam (h := fun z : (S × G) × (S ⊓ Kc : Subgroup G) => F (π z.1.1 * π ⟨z.2, z.2.2.1⟩) * ψ ((z.2 : G)⁻¹ * z.1.2)) ?_` and prove the remaining obligations. Establish `: Continuous fun z : (S × G) × (S ⊓ Kc : Subgroup G) => (⟨z.2, z.2.2.1⟩ : S)` using `(continuous_subtype_val.comp continuous_snd).subtype_mk _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Use `fun_prop`. Establish `hw : ∀ (q : S), ∀ c ∈ Kc, Φ (⟨p (q * c), hp _⟩, k (q * c)) = Φ (q, c)`. Introduce `q c hc`. Establish `e` using `he (q * c)`. Establish `e1 : (q : G)⁻¹ * p (q * c) = c * (k (q * c))⁻¹`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, eq_mul_inv_iff_mul_eq]`. Conclude with `e.symm`. Set `u₀ : (S ⊓ Kc : Subgroup G)` to `⟨(q : G)⁻¹ * p (q * c), S.mul_mem (S.inv_mem q.2) (hp _), e1 ▸ Kc.mul_mem hc (Kc.inv_mem (hk _))⟩`. Simplify using `only [hΦ]`. Rewrite using `[← integral_mul_left_eq_self (fun u : (S ⊓ Kc : Subgroup G) => F (π q * π ⟨u, u.2.1⟩) * ψ ((u : G)⁻¹ * c)) u₀]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `integral_congr_ae (ae_of_all _ fun u => ?_)` and prove the remaining obligations. Establish `a1 : π q * π ⟨(u₀ * u : (S ⊓ Kc : Subgroup G)), (u₀ * u).2.1⟩ = π ⟨p (q * c), hp _⟩ * π ⟨u, u.2.1⟩`. Rewrite using `[← map_mul, ← map_mul]`. Conclude with `congrArg π (Subtype.ext (by show (q : G) * ((q : G)⁻¹ * p (q * c) * u) = p (q * c) * u; group))`. Establish `a2 : ((u₀ * u : (S ⊓ Kc : Subgroup G)) : G)⁻¹ * c = (u : G)⁻¹ * k (q * c)` using `by show ((q : G)⁻¹ * p (q * c) * u)⁻¹ * c = _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Use `group`. Simplify using `only [a1, a2]`. Use `⟨fun g => Φ (⟨p g, hp g⟩, k g), ?_, fun q c hc => hw q c hc⟩` and prove the remaining obligations. Establish `hm : Continuous fun z : S × Kc => (z.1 : G) * z.2` using `by fun_prop`.
-
-Establish `hcl : IsClosedMap fun z : S × Kc => (z.1 : G) * z.2`. Establish `h1 : IsClosedMap (Prod.map (Subtype.val : S → G) (id : Kc → Kc))` using `(hS.isClosedEmbedding_subtypeVal.prodMap IsClosedEmbedding.id).isClosedMap`. Set `e : G × Kc ≃ₜ G × Kc` to `{ toFun := fun z => (z.1 * z.2, z.2), invFun := fun z => (z.1 * (z.2 : G)⁻¹, z.2) left_inv := fun z => by simp, right_inv := fun z => by simp }`. Conclude with `(isClosedMap_fst_of_compactSpace.comp e.isClosedMap).comp h1`. Establish `hq` using `hcl.isQuotientMap hm fun g => ⟨(⟨p g, hp g⟩, ⟨k g, hk g⟩), (he g).symm⟩`.
-
-Rewrite using `[hq.continuous_iff]`. Establish `: (fun g => Φ (⟨p g, hp g⟩, k g)) ∘ (fun z : S × Kc => (z.1 : G) * z.2) = fun z => Φ (z.1, z.2)`. Use function extensionality and compare the values at `fun z => hw z.1 z.2 z.2.2`. Rewrite using `[this]`. Use `fun_prop`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indSec {G M : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] [Group M] [TopologicalSpace M] [IsTopologicalGroup M]
@@ -107,9 +101,9 @@ theorem indSec {G M : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G
   fun_prop
 
 /- English proof (translation)
-Establish `m1` using `measurePreserving_prodAssoc (a.prod b) (c.prod d) e`. Establish `m2 : MeasurePreserving ((MeasurableEquiv.refl (A × B)).prodCongr (MeasurableEquiv.prodAssoc (α` using `T) (β := K) (γ := N))) ((a.prod b).prod ((c.prod d).prod e)) ((a.prod b).prod (c.prod (d.prod e))) := (MeasurePreserving.id _).prod (measurePreserving_prodAssoc c d e)`. Establish `m3` using `measurePreserving_prodAssoc a b (c.prod (d.prod e))`. Establish `m` using `(m1.trans m2).trans m3`. Establish `h1` using `(m.integrable_comp_emb (MeasurableEquiv.measurableEmbedding _)).2 h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← m.integral_comp', show (fun x => Ψ _) = Ψ ∘ _ from rfl, integral_prod _ h1, integral_prod_symm _ h1.integral_prod_left, integral_prod _ h1.integral_prod_left.integral_prod_right]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fub5 {A B T K N : Type} [MeasurableSpace A] [MeasurableSpace B] [MeasurableSpace T] [MeasurableSpace K] [MeasurableSpace N]
     (a : Measure A) (b : Measure B) (c : Measure T) (d : Measure K) (e : Measure N) [SFinite a] [SFinite b] [SFinite c] [SFinite d]
@@ -127,13 +121,13 @@ theorem fub5 {A B T K N : Type} [MeasurableSpace A] [MeasurableSpace B] [Measura
   rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Take `⟨b, hb1, -, hbc, hb⟩` from `exists_continuous_one_zero_of_isCompact (isCompact_singleton (x := t₀)) isClosed_empty (disjoint_empty _)`. Establish `hs : HasCompactSupport fun t => (b t : ℂ) * J t` using `(hbc.comp_left (g := fun x : ℝ => (x : ℂ)) (by simp)).mul_right`. Use `h (fun t => b t * J t) (by fun_prop) hs` as an intermediate fact. Rewrite `this` using `[integral_withDensity_eq_integral_toReal_smul (by fun_prop) (ae_of_all _ fun _ => ENNReal.ofReal_lt_top)]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : ∀ t, (ENNReal.ofReal (Real.exp (-4 * t))).toReal • (conj ((b t : ℂ) * J t * Complex.exp ((2 * t : ℝ) : ℂ)) * J t) = ((b t * (Real.exp (-4 * t) * Real.exp (2 * t) * Complex.normSq (J t)) : ℝ) : ℂ)`. Introduce `t`. Rewrite using `[ENNReal.toReal_ofReal (Real.exp_pos _).le, ← Complex.ofReal_exp, map_mul, map_mul, Complex.conj_ofReal, Complex.conj_ofReal, Complex.real_smul]`. Simplify using `only [Complex.ofReal_mul, Complex.normSq_eq_conj_mul_self]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [e] at this`. Rewrite `this` using `[integral_complex_ofReal, Complex.ofReal_eq_zero]`. Establish `hn` using `Complex.continuous_normSq`. Use `ne_of_gt (Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := t₀) (f := fun t => b t * (Real.exp (-4 * t) * Real.exp (2 * t) * Complex.normSq (J t))) (by fun_prop) hbc.mul_right (fun t => mul_nonneg (hb t).1 (mul_nonneg (by positivity) (Complex.normSq_nonneg _))) ?_ …` and prove the remaining obligations. Establish `: b t₀ = 1` using `hb1 rfl`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, one_mul]`. Conclude with `mul_ne_zero (by positivity) (by simpa using h0)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_line (J : ℝ → ℂ) (hJ : Continuous J) (h : ∀ β : ℝ → ℂ, Continuous β → HasCompactSupport β →
     ∫ t, conj (β t * Complex.exp ((2 * t : ℝ) : ℂ)) * J t
@@ -162,7 +156,7 @@ theorem zero_line (J : ℝ → ℂ) (hJ : Continuous J) (h : ∀ β : ℝ → �
   exact mul_ne_zero (by positivity) (by simpa using h0)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hy`. Simplify using `only [← Complex.normSq_eq_conj_mul_self] at h0`. Rewrite `h0` using `[integral_complex_ofReal, Complex.ofReal_eq_zero]`. Conclude with `ne_of_gt (Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := y) (f := fun y => Complex.normSq (h y)) (Complex.continuous_normSq.comp hc) (HasCompactSupport.of_compactSpace _) (fun t => Complex.normSq_nonneg _) (by simpa using hy)) h0`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_cpt {Y : Type} [TopologicalSpace Y] [CompactSpace Y] [MeasurableSpace Y] [BorelSpace Y] (ν : Measure Y) [IsFiniteMeasure ν]
     [ν.IsOpenPosMeasure] {h : Y → ℂ} (hc : Continuous h) (h0 : ∫ y, conj (h y) * h y ∂ν = 0) (y : Y) : h y = 0 := by
@@ -174,7 +168,7 @@ theorem zero_cpt {Y : Type} [TopologicalSpace Y] [CompactSpace Y] [MeasurableSpa
     (HasCompactSupport.of_compactSpace _) (fun t => Complex.normSq_nonneg _) (by simpa using hy)) h0
 
 /- English proof (translation)
-Use `haveI : SecondCountableTopology U := TopologicalSpace.Subtype.secondCountableTopology _`. Rewrite using `[integral_integral_swap (int_cpt _ (by fun_prop))]`. Establish `: ∀ u : U, ∫ k : Kc, h ((u : G)⁻¹ * k) ∂κ = ∫ k : Kc, h k ∂κ` using `fun u => integral_mul_left_eq_self (fun k : Kc => h k) (⟨u, hU u.2⟩⁻¹ : Kc)`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem avg_cpt {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G]
     [BorelSpace G] (U Kc : Subgroup G) [CompactSpace U] [CompactSpace Kc] (hU : U ≤ Kc) (lam : Measure U) [IsProbabilityMeasure lam]
@@ -187,11 +181,11 @@ theorem avg_cpt {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   simp [this]
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `isCompact_univ.exists_bound_of_continuousOn hc.continuousOn`. Establish `hi : Integrable (Function.uncurry fun m u => conj (c u) * (conj (F (m, u)) * W m)) (ν.prod lam)`. Use `Integrable.of_bound (Continuous.aestronglyMeasurable (by fun_prop)) (D * B) (ae_of_all _ fun z => ?_)` and prove the remaining obligations. Simplify using `only [Function.uncurry, norm_mul, RCLike.norm_conj]`. Conclude with `mul_le_mul (hD _ trivial) (hB _ _) (by positivity) ((norm_nonneg _).trans (hD z.2 trivial))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [← integral_const_mul]`. Rewrite using `[← integral_integral_swap hi]`. Use `integral_congr_ae (ae_of_all _ fun m => ?_)` and prove the remaining obligations. Simplify using `only [← integral_conj, ← integral_mul_const]`. Use `integral_congr_ae (ae_of_all _ fun u => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem swap_sec {M U : Type} [TopologicalSpace M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M]
     [TopologicalSpace U] [CompactSpace U] [SecondCountableTopology U] [MeasurableSpace U] [BorelSpace U]
@@ -212,9 +206,9 @@ theorem swap_sec {M U : Type} [TopologicalSpace M] [SecondCountableTopology M] [
   ring
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `hb _ (hU.image (continuous_const_mul g))`. Take `⟨D, hD⟩` from `hU.exists_bound_of_continuousOn he.continuousOn`. Establish `hi : Integrable (Function.uncurry fun k y => e k * H (g * k, y)) (ν.prod ρ)`. Use `Integrable.of_bound (Continuous.aestronglyMeasurable (by fun_prop)) (D * B) ?_` and prove the remaining obligations. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae hν, Measure.quasiMeasurePreserving_snd.ae hB] with z h1 h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.uncurry, norm_mul]`. Conclude with `mul_le_mul (hD _ h1) (h2 _ ⟨_, h1, rfl⟩) (norm_nonneg _) ((norm_nonneg _).trans (hD _ h1))`. Simplify using `only [← integral_const_mul]`. Rewrite using `[integral_integral_swap hi]`. Simplify using `only [hf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fix_swap {G Y : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G]
     [BorelSpace G] [TopologicalSpace Y] [MeasurableSpace Y] [OpensMeasurableSpace Y] (ν : Measure G) [IsFiniteMeasure ν]

@@ -50,11 +50,11 @@ def EulerSES.Statement : Prop :=
 def EulerSES.degZero (n : ℕ) : Submodule ℚ ℚ := if n = 0 then ⊤ else ⊥
 
 /- English proof (translation)
-Introduce `CA CB d f g`. Use `⟨fun _ _ _ => zero_mem _, fun _ _ _ => zero_mem _, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => zero_mem _, fun _ _ h => h, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ x hx _ => (Submodule.mem_bot ℚ).1 hx, fun _ _ _ => rfl, fun _ y _ hy => ⟨0, zero_mem _, hy.symm⟩, fun _ z hz = …` and prove the remaining obligations. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ha` using `(Submodule.mem_bot ℚ).1 (Submodule.mem_inf.1 a.2).1`. Establish `hb` using `(Submodule.mem_bot ℚ).1 (Submodule.mem_inf.1 b.2).1`. Use `congr 1`. Conclude with `Subtype.ext (ha.trans hb.symm)`. Establish `hcyc : cyc CB d 0 = ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[cyc, CB, EulerSES.degZero, d]`. Establish `hbnd : bnd CB d 0 = ⊥` using `rfl`. Rewrite using `[Submodule.Quotient.equiv _ ⊥ (LinearEquiv.ofTop _ hcyc) (by`. Rewrite using `[hbnd, Submodule.comap_bot, Submodule.map_eq_bot_iff, Submodule.ker_subtype]) |>.finrank_eq]`. Rewrite using `[(Submodule.quotEquivOfEqBot ⊥ rfl).finrank_eq, Module.finrank_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EulerSES.hyps :
     let CA : ∀ _ : ℕ, Submodule ℚ ℚ := fun _ => ⊥

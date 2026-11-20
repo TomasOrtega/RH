@@ -15,11 +15,11 @@ namespace PositivityTheory.RgUd.Form.LeviSmoothness.Final
 open PositivityTheory.RgUd.Form PositivityTheory.RgUd.Form.ColumnElementGluing PositivityTheory.RgUd.Form.LeviSmoothness
 
 /- English proof (translation)
-Introduce `ψ hψ hψ1 m N hN V _ _ π hπ s B hpsd hk hmir`. Establish `hB : Lv ψ hN π s B` using `⟨hψ, hψ1, hπ, hpsd, hk, hmir⟩`. Take `⟨A₀, hA₀⟩` from `Ex.exists_lat (k := k) m`. Take `⟨B', hD, hU⟩` from `Ex.dens_exists_of hB (fun ξ A hA v w => alg.avg_selfadj hB ξ hA v w) (fun K hK _ hA₀ => stab.stab' hB K hK hA₀) hA₀`. Use `⟨B', props.dens_psd hB hA₀ hD, props.dens_kills hB hA₀ hD, props.dens_rad hB hA₀ hD, mir.dens_mir hB hA₀ hD, fun K hK => ?_, fun z hz v => besselOf.dens_bessel_of hB (fun K hK _ hA₀ => stab.stab' hB K hK hA₀) hA₀ hD z hz v⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨A₁, hA₁, h01, hA⟩` from `hU K hK`. Use `⟨(A₀.relIndex A₁ : ℝ), fun v hv => ?_⟩` and prove the remaining obligations. Establish `e` using `hA v v hv hv A₁ hA₁ le_rfl`. Rewrite using `[e]`. Establish `hsa` using `alg.avg_selfadj hB (xi0 k m) hA₁ v v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `asm.re_le_of_selfadj hpsd (avg ψ hN π (xi0 k m) A₁ v) v hsa`. Establish `hc : ((A₀.relIndex A₁ : ℕ) : ℂ) = ((A₀.relIndex A₁ : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[hc, Complex.re_ofReal_mul, hsa]`. Conclude with `mul_le_mul_of_nonneg_left key (Nat.cast_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepForm (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] : StepForm k := by
   intro ψ hψ hψ1 m N hN V _ _ π hπ s B hpsd hk hmir

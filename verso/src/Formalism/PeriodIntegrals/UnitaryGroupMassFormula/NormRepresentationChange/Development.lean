@@ -49,16 +49,16 @@ section Phase
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Establish `h` using `Algebra.trace_eq_of_algEquiv ((starRingAut : RingAut K).toRatAlgEquiv) a`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem trace_star (a : K) : Algebra.trace ℚ K (star a) = Algebra.trace ℚ K a := by
   have h := Algebra.trace_eq_of_algEquiv ((starRingAut : RingAut K).toRatAlgEquiv) a
   simpa using h
 
 /- English proof (translation)
-Unfold `psiInf`. Establish `htr : Algebra.trace ℚ K (-(star a + b)) = -((g : ℚ) * k)`. Rewrite using `[map_neg, map_add, trace_star, ← map_add, hk]`. Rewrite using `[htr]`. Distinguish the cases in `hg : (g : ℂ) = 0`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hg]`. Rewrite using `[show (((-((g : ℚ) * k) : ℚ) : ℂ) / (g : ℂ)) = -(k : ℂ) by push_cast; field_simp]`. Rewrite using `[show 2 * (Real.pi : ℂ) * Complex.I * -(k : ℂ) = ((-k : ℤ) : ℂ) * (2 * Real.pi * Complex.I) by push_cast; ring]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I (-k)`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiInf_of_trace (g : ℕ) (a b : K) (k : ℤ) (hk : Algebra.trace ℚ K (a + b) = (g : ℚ) * k) :
     psiInf g (-(star a + b)) = 1 := by

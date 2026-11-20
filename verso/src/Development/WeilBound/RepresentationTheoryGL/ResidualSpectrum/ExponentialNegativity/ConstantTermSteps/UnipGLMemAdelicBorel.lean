@@ -14,9 +14,9 @@ open PositivityTheory.Rg.Rs.An
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[mem_adelicBorel, coe_unipGL]`. Introduce `i j hij`. Establish `hij' : (j : ℕ) < i` using `hij`. Simplify using `only [unipMatrix, Matrix.add_apply, blockEntry_apply, Matrix.one_apply]`. Establish `hne : i ≠ j` using `fun h => by subst h; omega`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[if_neg hne, dif_neg (by omega), add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unipGL_mem_adelicBorel (r : ℕ) (X : UPos n r → 𝔸[K]) :
     (unipGL X : AdelicGLn.AdelicGL K n) ∈ (adelicBorel (K := K) (n := n)) := by
@@ -28,9 +28,9 @@ theorem unipGL_mem_adelicBorel (r : ℕ) (X : UPos n r → 𝔸[K]) :
   rw [if_neg hne, dif_neg (by omega), add_zero]
 
 /- English proof (translation)
-Unfold `ctn`. Use `congr 1`. Establish `hFD` using `isAddFundamentalDomain_unipFundamentalDomain (K := K) (n := n) (r := r)`. Establish `hFD'` using `hFD.vadd_of_comm X`. Rewrite using `[constantTerm_eq_setIntegral hφ hFD' g]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [constantTerm, ← mul_assoc, ← unipGL_add]`. Rewrite using `[show X +ᵥ unipFundamentalDomain K n r = (fun Z => X + Z) '' unipFundamentalDomain K n r from Set.image_vadd.symm, (measurePreserving_add_left (unipMeasure K n r) X).setIntegral_image_emb (measurableEmbedding_addLeft X)]`. Use `congr 1`. Use extensionality with `Z`. Rewrite using `[add_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem ctn_unipGL_mul {r : ℕ} {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsLeftInvariant φ)
     (X : UPos n r → 𝔸[K]) (g : AdelicGLn.AdelicGL K n) :
@@ -50,9 +50,9 @@ theorem ctn_unipGL_mul {r : ℕ} {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : Is
   rw [add_comm]
 
 /- English proof (translation)
-Unfold `ctn`. Establish `hfin : unipMeasure K n r (unipFundamentalDomain K n r) < ⊤` using `(measure_mono hFD).trans_lt hD.measure_lt_top`. Establish `hI : ‖constantTerm r φ g‖ ≤ M * (unipMeasure K n r).real (unipFundamentalDomain K n r)` using `norm_setIntegral_le_of_norm_le_const hfin (fun X hX => h X (hFD hX))`. Use `set v := (unipMeasure K n r).real (unipFundamentalDomain K n r) with hv'`. Establish `hv : 0 ≤ v` using `measureReal_nonneg`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hv]`. Break down `hv.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Simplify using `[hM]`. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_ctn_le {r : ℕ} (φ : AdelicGLn.AdelicGL K n → ℂ) {D : Set (UPos n r → 𝔸[K])}
     (hD : IsCompact D) (hFD : unipFundamentalDomain K n r ⊆ D) (g : AdelicGLn.AdelicGL K n)
@@ -71,11 +71,11 @@ theorem norm_ctn_le {r : ℕ} (φ : AdelicGLn.AdelicGL K n → ℂ) {D : Set (UP
       _ = M := by field_simp
 
 /- English proof (translation)
-Introduce `ω hω hωB t₀ Q hQ`. Take `⟨D, hD, hFD⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := n) (r := r)`. Use `set ω' := (fun p : (UPos n r → 𝔸[K]) × AdelicGLn.AdelicGL K n => unipGL p.1 * p.2) '' (D ×ˢ ω)`. Establish `hω' : IsCompact ω'` using `(hD.prod hω).image ((continuous_unipGL.comp continuous_fst).mul continuous_snd)`. Establish `hω'B : ω' ⊆ (adelicBorel (K` using `K) (n := n) : Set _) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨⟨X, b⟩, ⟨hX, hb⟩, rfl⟩`. Conclude with `mul_mem (unipGL_mem_adelicBorel r X) (hωB hb)`. Take `⟨C, hC⟩` from `h ω' hω' hω'B t₀ Q hQ`. Use `⟨max C 0, fun b hb x hx q hq => ?_⟩` and prove the remaining obligations. Use `norm_ctn_le φ hD hFD _ (by positivity) fun X hX => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hC (unipGL X * b) ⟨(X, b), ⟨hX, hb⟩, rfl⟩ x hx q hq` as an intermediate fact. Rewrite using `[← mul_assoc, ← mul_assoc]`. Conclude with `this.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.exp_pos _).le)`.
+A detailed English derivation is pending.
 -/
 theorem bnd_ctn {r : ℕ} {φ : AdelicGLn.AdelicGL K n → ℂ} {m : ℕ → ℝ} (h : Bnd φ m) :
     Bnd (ctn r φ) m := by
@@ -95,9 +95,9 @@ theorem bnd_ctn {r : ℕ} {φ : AdelicGLn.AdelicGL K n → ℂ} {m : ℕ → ℝ
   exact this.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.exp_pos _).le)
 
 /- English proof (translation)
-Unfold `tor`. Rewrite using `[← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.mul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[posIdele_mul]`. Use `congr 1`. Conclude with `Real.exp_add _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem tor_add (x y : Fin n → ℝ) : tor K (x + y) = tor K x * tor K y := by
   unfold tor
@@ -110,9 +110,9 @@ theorem tor_add (x y : Fin n → ℝ) : tor K (x + y) = tor K x * tor K y := by
   exact Real.exp_add _ _
 
 /- English proof (translation)
-Unfold `aR`. Rewrite using `[← tor_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem aR_mul (r : ℕ) (s t : ℝ) : aR K n r s * aR K n r t = aR K n r (s + t) := by
   unfold aR
@@ -123,13 +123,11 @@ theorem aR_mul (r : ℕ) (s t : ℝ) : aR K n r s * aR K n r t = aR K n r (s + t
   split_ifs <;> ring
 
 /- English proof (translation)
-Take `⟨Y, hY0, hY⟩` from `conj_block r b hb (fun i => posIdele (K := K) (Real.exp (if (i : ℕ) < r then t else 0)) (Real.exp_pos _)) (by`. Introduce `i j hij`. Distinguish the cases in `hi : (i : ℕ) < r`. Simplify using `[hi, hij.1 hi]`. Simplify using `[hi, (not_congr hij).1 hi])`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨fun p => Y p.1.1 p.1.2, Units.ext ?_⟩` and prove the remaining obligations. Establish `e : unipMatrix (fun p : UPos n r => Y p.1.1 p.1.2) = 1 + Y`. Unfold `unipMatrix`. Use `congr 1`. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[blockEntry_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(hY0 i j h).symm`. Rewrite using `[Units.val_mul, Units.val_mul, Units.val_mul, coe_unipGL, e]`.
-
-Simplify `hY` using `only [aR, tor, coe_diagUnits]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem borel_aR {r : ℕ} {b : AdelicGLn.AdelicGL K n} (hb : b ∈ (adelicBorel (K := K) (n := n)))
     (t : ℝ) : ∃ X : UPos n r → 𝔸[K], b * aR K n r t = unipGL X * (aR K n r t * b) := by
@@ -155,9 +153,9 @@ theorem borel_aR {r : ℕ} {b : AdelicGLn.AdelicGL K n} (hb : b ∈ (adelicBorel
 def shift (r : ℕ) (x : Fin n → ℝ) (s : ℝ) : Fin n → ℝ := fun i => x i + if (i : ℕ) < r then s else 0
 
 /- English proof (translation)
-Unfold `sr`. Distinguish the cases in `h : 0 < r' ∧ r' < n`. Rewrite using `[dif_pos h, dif_pos h]`. Simplify using `only [shift]`. Apply the tactic sequence `split_ifs <;> first | omega | ring`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[dif_neg h, dif_neg h]`. Establish `: r' ≠ r` using `by omega`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sr_shift {r : ℕ} (hr : 0 < r) (hrn : r < n) (x : Fin n → ℝ) (s : ℝ) (r' : ℕ) :
     sr (shift r x s) r' = sr x r' + if r' = r then s else 0 := by
@@ -171,9 +169,9 @@ theorem sr_shift {r : ℕ} (hr : 0 < r) (hrn : r < n) (x : Fin n → ℝ) (s : �
     simp [this]
 
 /- English proof (translation)
-Unfold `aR`. Rewrite using `[← tor_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [shift, Pi.add_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tor_shift (r : ℕ) (x : Fin n → ℝ) (s : ℝ) : tor K (shift r x s) = aR K n r s * tor K x := by
   unfold aR

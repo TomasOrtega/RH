@@ -20,9 +20,9 @@ def qf {P Q : ℕ} (x : Wsp P Q) : ℝ := (herm x x).re
 def bil {P Q : ℕ} (x y : Wsp P Q) : ℝ := Algebra.trace ℝ ℂ (herm x y)
 
 /- English proof (translation)
-Establish `term : ∀ j, sgn j * x j * (starRingEnd ℂ) (x j) = (((sgn j).re * Complex.normSq (x j) : ℝ) : ℂ)`. Introduce `j`. Rewrite using `[mul_assoc, Complex.mul_conj]`. Apply the tactic sequence `rcases j with j | j <;> simp [sgn]`. Unfold `qf herm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Repeatedly rewrite using `[term]`. Rewrite using `[← Complex.ofReal_sum, Complex.ofReal_re]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_self {P Q : ℕ} (x : Wsp P Q) : herm x x = (qf x : ℂ) := by
   have term : ∀ j, sgn j * x j * (starRingEnd ℂ) (x j) =
@@ -88,23 +88,23 @@ def QuotientMeasure : Prop :=
 def RealPlaceMeasures : Prop := SelfDualMeasures ∧ SphereVolume ∧ QuotientMeasure
 
 /- English proof (translation)
-Simplify using `[cM]`.
+Simplify using the standard rewrite rules.
 -/
 example : cM 1 = ENNReal.ofReal (2 * Real.pi) := by simp [cM]
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> simp [qf, herm, sgn, Pi.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : qf (Pi.single (Sum.inl 0) 1 : Wsp 1 1) = 1 ∧
     qf (Pi.single (Sum.inr 0) 1 : Wsp 1 1) = -1 := by
   constructor <;> simp [qf, herm, sgn, Pi.single_apply]
 
 /- English proof (translation)
-Establish `h1 : UpqT.mat (1 : UpqT 1 0) = 1` using `rfl`. Use `⟨fun v w => by simp [herm], fun y => ?_, fun g' => by simp [act, h1]⟩` and prove the remaining obligations. Simplify using `only [herm, sgn, Fintype.sum_sum_type, Finset.univ_unique, Finset.sum_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases. Establish `: i = default` using `Subsingleton.elim _ _`. Substitute `this` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify `h` using `[eq_comm]`. Conclude with `i.elim0`. Introduce and unpack `⟨v, rfl⟩`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example : IsPerpFrame (P := 1) (Q := 0) (P' := 0) (Q' := 0) (fun _ => 1) 0 (fun _ => 1) := by
   have h1 : UpqT.mat (1 : UpqT 1 0) = 1 := rfl

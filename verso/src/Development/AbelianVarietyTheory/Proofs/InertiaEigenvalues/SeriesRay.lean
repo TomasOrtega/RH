@@ -34,9 +34,7 @@ section Forms
 variable {T : CoreJ D} {j : ℕ} {σ : T.Q.c.F →+* ℂ} (C : Cover T j σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ)
 
 /- English proof (translation)
-Use `choose f hf e using hφ`. Use `⟨∑ k, x k • f k, ⟨⟨sum_mem fun k _ => Submodule.smul_mem _ _ (hf k).1.1, ?_⟩, fun la hla v hv => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `sum_mem fun k _ => by rw [map_smulₛₗ]; exact Submodule.smul_mem _ _ (hf k).1.2`. Establish `hV` using `isVal_valSet la v hv`.
-
-Conclude with `GlobalTheory.IdemInt.nonneg_sum hV _ _ fun k _ => GlobalTheory.IdemInt.nonneg_smul hV (hx k la hla) ((hf k).2 la hla v hv)`. Simplify using `only [← e, Cover.rd, map_sum, map_smulₛₗ, Finset.smul_sum, RingHom.id_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => smul_comm _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_mem_intForms (S : Set (HeightOneSpectrum (𝓞 C.d.c₂.F))) {m : ℕ} (x : Fin m → C.d.c₂.F)
     (hx : ∀ k, ∀ la ∈ S, la.valuation C.d.c₂.F (x k) ≤ 1) (φ : Fin m → GA D (T.V j σ) → ℂ) (hφ : ∀ k, φ k ∈ C.intForms a n S) :
@@ -117,7 +115,7 @@ structure Dict : Prop where
     IntegralSeries.fock R i (R.BV i) f (R.ioP i (PiTensorProduct.tprod ℂ u) (c0 v)) = ka • IntegralSeries.fock R i (fun _ => 1) f (J v)
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun x => R.ωP i A.μ0 (s, g) x 0) (h.eq f hf v)`. Simplify using `only [map_smul] at e`. Conclude with `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Dict.series (h : Dict u c0 ka J) {f} (hf : IsThetaFunO R.ψ (Vc D i) (Wc D i) f) (s v g) :
     TwistSeries.series R i u s f (c0 v) g = ka * ker1 (R := R) s g f (J v) := by

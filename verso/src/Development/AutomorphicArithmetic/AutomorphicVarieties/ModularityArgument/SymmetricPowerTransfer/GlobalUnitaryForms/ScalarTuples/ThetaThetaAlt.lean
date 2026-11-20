@@ -9,7 +9,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [theta]`. Conclude with `⟨(hk i j).2, by simpa using (hk i j).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem ku_theta {O K : Type} [CommRing O] [Field K] [Algebra O K] {Δ : K} {k : U3 Δ} (hk : k ∈ KU O Δ) :
     theta Δ k ∈ KU O Δ := by
@@ -18,7 +18,7 @@ private theorem ku_theta {O K : Type} [CommRing O] [Field K] [Algebra O K] {Δ :
   exact ⟨(hk i j).2, by simpa using (hk i j).1⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Use `show star (star (y.1 i j)) = y.1 i j`. Conclude with `star_star _`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem theta_theta {K : Type} [Field K] {Δ : K} (y : U3 Δ) : theta Δ (theta Δ y) = y := by
   apply Subtype.ext
@@ -27,11 +27,9 @@ private theorem theta_theta {K : Type} [Field K] {Δ : K} (y : U3 Δ) : theta Δ
   exact star_star _
 
 /- English proof (translation)
-Unfold `HasTau at h ⊢`. Establish `e : y⁻¹ * δ * theta Δ y * theta Δ (y⁻¹ * δ * theta Δ y) = y⁻¹ * (δ * theta Δ δ * y)`. Simplify using `only [map_mul, map_inv, theta_theta]`. Use `group`. Use `set w := δ * theta Δ δ with hw`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : w * y * y⁻¹ = w` using `by group`. Establish `key` using `Matrix.charpoly_mul_comm (y⁻¹ : U3 Δ).1 (w * y).1`. Establish `e3 : (w * y).1 * (y⁻¹ : U3 Δ).1 = w.1` using `congrArg Subtype.val e2`. Rewrite `key` using `[e3]`. Rewrite using `[e, ← h]`.
-
-Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hasTau_conj {K : Type} [Field K] {Δ τ : K} {δ : U3 Δ} (h : HasTau δ τ) (y : U3 Δ) :
     HasTau (y⁻¹ * δ * theta Δ y) τ := by
@@ -48,7 +46,7 @@ private theorem hasTau_conj {K : Type} [Field K] {Δ τ : K} {δ : U3 Δ} (h : H
   exact key
 
 /- English proof (translation)
-Set `f : Etau K τ →ₐ[O] Etau K τ` to `{ starRingEnd (Etau K τ) with commutes' := fun r => by`. Rewrite using `[IsScalarTower.algebraMap_apply O K (Etau K τ)]`. Apply the tactic sequence `ext <;> simp [starRingEnd_apply] }`. Conclude with `hx.map f`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem isIntegral_star_of_isIntegral {K : Type} [Field K] (O : Type) [CommRing O] [Algebra O K] (τ : K)
     {x : Etau K τ} (hx : IsIntegral O x) : IsIntegral O (star x) := by
@@ -60,9 +58,9 @@ private theorem isIntegral_star_of_isIntegral {K : Type} [Field K] (O : Type) [C
   exact hx.map f
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨u, rfl⟩`. Establish `hI : ∀ w : (integralClosure O (Etau K τ))ˣ, IsIntegral O (((w : integralClosure O (Etau K τ)) : Etau K τ))` using `fun w => (w : integralClosure O (Etau K τ)).2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [quo, ← map_inv]`. Conclude with `(hI u).mul (isIntegral_star_of_isIntegral O τ (hI u⁻¹))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [quo, ← map_inv, inv_inv]`. Conclude with `(hI u⁻¹).mul (isIntegral_star_of_isIntegral O τ (hI u))`.
+A detailed English derivation is pending.
 -/
 private theorem cu_le_cint {K : Type} [Field K] (O : Type) [CommRing O] [Algebra O K] (τ : K) : Cu O τ ≤ Cint O τ := by
   rintro _ ⟨u, rfl⟩
@@ -76,61 +74,49 @@ private theorem cu_le_cint {K : Type} [Field K] (O : Type) [CommRing O] [Algebra
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce `F _ _ Δ D hOk ι hιG θ hθ t hCone τ c d m δ i P hCM hdat hmod`. Use `haveI := hOk.real`. Establish `hΔ : Δ ≠ 0` using `hOk.ne0`. Establish `hcz : ∀ v : Pl F, CharZero (Kv v)` using `fun v => (RingHom.charZero_iff (cv v).injective).mp inferInstance`. Establish `hreg : τ ^ 2 - 4 ≠ 0` using `cm_ne hCM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hglob` using `modelFacts F Δ τ c d m δ i P hΔ hdat hmod`. Establish `hloc : ∀ v : Pl F, ∃ (ι' : (Etau (Kv v) (cv v τ))ˣ →* U3 (cv v Δ)) (P' : Sp (cv v Δ) (cv v τ) ≃ₗ[Lsq (Kv v) (cv v Δ)] Fin 3 → Lsq (Kv v) (cv v Δ)), Models (cv v c) (elmap (cv v) d) (elmap (cv v) m) ((ι δ).1 v) ι' P' ∧ ∀ (z : (Etau F τ)ˣ) (z' : (Etau (Kv v) (cv v τ))ˣ), (z' : Etau …` using `fun v => (modelMap F (Kv v) (cv v) Δ τ c d m hdat).2 δ i P hmod _ (hιG δ v)`. Use `choose ιv Pv hMv hιv using hloc`. Establish `hdatv : ∀ v : Pl F, IsDat (cv v c) (elmap (cv v) d) (elmap (cv v) m)` using `fun v => (modelMap F (Kv v) (cv v) Δ τ c d m hdat).1`. Establish `hΔv : ∀ v : Pl F, cv v Δ ≠ 0` using `fun v => (map_ne_zero (cv v)).mpr hΔ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlocF` using `fun v : Pl F => by haveI := hcz v`. Conclude with `modelFacts (Kv v) (cv v Δ) (cv v τ) (cv v c) _ _ _ (ιv v) (Pv v) (hΔv v) (hdatv v) (hMv v)`. Establish `hfS : ∀ v ∈ D.Sg, D.fGv t v = (D.S v).fG (t v)` using `fun v hv => funext fun g => if_pos hv`. Establish `hfN : ∀ v ∉ D.Sg, D.fGv t v = fun g => one (g ∈ KU (Ov v) (cv v Δ))` using `fun v hv => funext fun g => if_neg hv`. Establish `hJS : ∀ v ∈ D.Sg, D.Jv v = (D.S v).J` using `fun v hv => if_pos hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hJN : ∀ v ∉ D.Sg, D.Jv v = KU (Ov v) (cv v Δ)` using `fun v hv => if_neg hv`. Take `⟨hphi⟩ : Nonempty (∃ φ, IsDiagT τ φ)` from `⟨(iotaEx F Δ).2.2 τ⟩`. Use `set φ := hphi.choose with hφdef`. Establish `hφ : IsDiagT τ φ` using `hphi.choose_spec`. Establish `hB : {v : Pl F | ¬ (((ι δ).1 v) ∈ KU (Ov v) (cv v Δ) ∧ ∃ u : (Ov v)ˣ, algebraMap (Ov v) (Kv v) ↑u = cv v τ ^ 2 - 4)}.Finite` using `Filter.eventually_cofinite.mp (((rpg (fun v => U3 (cv v Δ)) fun v => KU (Ov v) (cv v Δ)).ae (ι δ)).and (ae_reg hreg))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `set S : Finset (Pl F) := D.Sg ∪ hB.toFinset with hSdef`. Establish `hgood : ∀ v ∉ S, v ∉ D.Sg ∧ ((ι δ).1 v) ∈ KU (Ov v) (cv v Δ) ∧ ∃ u : (Ov v)ˣ, algebraMap (Ov v) (Kv v) ↑u = cv v τ ^ 2 - 4`. Introduce `v hv`. Simplify using `only [hSdef, Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_or, not_not] at hv`. Conclude with `⟨hv.1, hv.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hone` using `fun v (hv : v ∉ S) => oneU (Ov v) (Kv v) (cv v Δ) (cv v τ) (hOk.off v (hgood v hv).1) (cv v c) _ _ (hdatv v) _ (ιv v) (Pv v) (hMv v) (hgood v hv).2.1 (hgood v hv).2.2`. Establish `hfin` using `fun v (hv : v ∉ D.Sg) => finUq (Ov v) (Kv v) (cv v Δ) (cv v τ) (hOk.off v hv) (cv v c) _ _ (hdatv v) _ (ιv v) (Pv v) (hMv v)`. Establish `hGorb` using `fun v (hv : v ∈ D.Sg) => (hOk.sig v hv).G_orb (t v) (hCone v hv) (cv v τ) (cv v c) _ _ _ (ιv v) (Pv v) (hdatv v) (hMv v)`. Establish `hinv : ∀ v, ∀ u ∈ D.Jv v, ∀ x, D.fGv t v (u⁻¹ * x * theta (cv v Δ) u) = D.fGv t v x`. Introduce `v u hu x`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hv : v ∈ D.Sg`. Rewrite `hu` using `[hJS v hv]`. Rewrite using `[hfS v hv]`. Establish `hg` using `(hOk.sig v hv).G_inv (t v) (hCone v hv)`. Rewrite using `[(hg u hu _).2, (hg u⁻¹ (inv_mem hu) x).1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite `hu` using `[hJN v hv]`. Rewrite using `[hfN v hv]`. Establish `hθu` using `ku_theta hu`. Establish `e : u⁻¹ * x * theta (cv v Δ) u ∈ KU (Ov v) (cv v Δ) ↔ x ∈ KU (Ov v) (cv v Δ)`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Use `mul_mem (mul_mem hu h) (inv_mem hθu)` as an intermediate fact. Rewrite `this` using `[show u * (u⁻¹ * x * theta (cv v Δ) u) * (theta (cv v Δ) u)⁻¹ = x by group]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `mul_mem (mul_mem (inv_mem hu) h) hθu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [e]`. Establish `hcomm : ∀ v (s : (Etau (Kv v) (cv v τ))ˣ), (ιv v s)⁻¹ * ((ι δ).1 v) * theta (cv v Δ) (ιv v s) = ((ι δ).1 v)` using `fun v s => ((hlocF v).2.2.2 _).mpr (Or.inl ⟨s, rfl⟩)`. Establish `hmapKU : ∀ v ∉ S, Subgroup.map (ιv v) (Cint (Ov v) (cv v τ)) ≤ KU (Ov v) (cv v Δ)` using `fun v hv => Subgroup.map_le_iff_le_comap.mpr (le_of_eq (hone v hv).2.symm)`. Establish `hy : ∀ v ∉ S, ∀ y : U3 (cv v Δ), one (y⁻¹ * ((ι δ).1 v) * theta (cv v Δ) y ∈ KU (Ov v) (cv v Δ)) ≠ 0 → ∃ s, ∃ u ∈ KU (Ov v) (cv v Δ), y = ιv v s * u`. Introduce `v hv y hne`.
+Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hm : y⁻¹ * ((ι δ).1 v) * theta (cv v Δ) y ∈ KU (Ov v) (cv v Δ)`. Assume the negation of the conclusion as `hc`. Conclude with `hne (by simp [one, hc])`. Conclude with `((hone v hv).1 y).mp hm`. Distinguish the cases in `hAdm : D.admitted t τ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `gqAbs (fun v => D.Jv v) (fun v => Cint (Ov v) (cv v τ)) (rpg (fun v => U3 (cv v Δ)) fun v => KU (Ov v) (cv v Δ)) (rpg (fun v => (Etau (Kv v) (cv v τ))ˣ) fun v => Cu (Ov v) (cv v τ)) ιv θ (fun v => theta (cv v Δ)) (D.FG t) (D.fGv t) (ι δ) φ (ι.comp i) (scalE τ) (fun h v => Subtype …`. Introduce `v hv`. Distinguish the cases in `hs : v ∈ D.Sg`. Rewrite using `[hfS v hs, hJS v hs]`. Conclude with `(hGorb v hs).1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hfN v hs, hJN v hs]`. Conclude with `(hfin v hs).2.1)`. Use the proof step `(by`. Introduce `v hv`. Establish `hs` using `(hgood v hv).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨by rw [hJN v hs], cu_le_cint _ _, by rw [hJN v hs]; exact hmapKU v hv, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfN v hs] show one (((ι δ).1 v) ∈ KU (Ov v) (cv v Δ)) = 1`. Simplify using `[one, (hgood v hv).2.1]`. Rewrite using `[hfN v hs, hJN v hs]`. Conclude with `hy v hv)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun v hv => (Subgroup.map_mono (cu_le_cint _ _)).trans (hmapKU v hv))`. Use the proof step `(by`. Introduce `v`. Distinguish the cases in `hs : v ∈ D.Sg`. Rewrite using `[hJS v hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Use `⟨?_, (hGorb v hs).2.2 (hAdm v hs) y⟩` and prove the remaining obligations. Introduce `s hs'`. Establish `hs2 : ιv v s • ((Quotient.out y : U3 (cv v Δ)) : U3 (cv v Δ) ⧸ (D.S v).J) = ((Quotient.out y : U3 (cv v Δ)) : U3 (cv v Δ) ⧸ (D.S v).J)`. Rewrite using `[QuotientGroup.out_eq']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hs'`. Establish `hm` using `(smul_mk_iff _ _ _).mp hs2`. Conclude with `(stabLe (Ov v) (Kv v) (cv v Δ) (cv v τ) (hΔv v) (hdatv v).reg).2 (cv v c) _ _ _ (ιv v) (Pv v) (hdatv v) (hMv v) _ s ((hOk.sig v hs).J_le hm)`. Rewrite using `[hJN v hs]`. Conclude with `(hfin v hs).2.2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use the proof step `(by`. Introduce `z hz v y`. Rewrite `hz` using `[← hglob.2.1]`. Establish `: (ι.comp i) z = 1` using `by rw [MonoidHom.comp_apply, MonoidHom.mem_ker.mp hz, map_one]`. Rewrite using `[this, map_one, mul_one, inv_mul_cancel]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _)`. Use the proof step `(massFin F τ hCM φ hφ).1 (massFin F τ hCM φ hφ).2`. Use `key.trans ?_` and prove the remaining obligations. Establish `hsplit` using `prod_split D.Sg S Finset.subset_union_left (fun v => ((D.S v).cG : ℂ) * one (Ind (D.S v).H (cv v τ) (t v))) (fun v => lcount (Ov v) (cv v c) (elmap (cv v) d) (elmap (cv v) m)) (fun v => orb (ιv v) (Cint (Ov v) (cv v τ)) (theta (cv v Δ)) (D.Jv v) (D.fGv t v) (((ι δ).1 v))) (by`. Introduce `v hv`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `beta_reduce`. Rewrite using `[hfS v hv, hJS v hv]`. Conclude with `(hGorb v hv).2.1)`. Use the proof step `(by`. Introduce `v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `beta_reduce`. Rewrite using `[hfN v hv, hJN v hv]`. Conclude with `(hfin v hv).1)`. Use the proof step `(by`. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hs` using `(hgood v hv).1`. Use `beta_reduce`. Rewrite using `[← (hfin v hs).1]`. Rewrite using `[Tf.orbOne _ _ (ιv v) _ (theta (cv v Δ)) _ _ _ ?_ (hcomm v) (hmapKU v hv) (hy v hv)]`. Simplify using `[one, (hgood v hv).2.1]`.
-
-Introduce `u hu x`. Use `hinv v u (by rw [hJN v hs]; exact hu) x` as an intermediate fact. Rewrite using `[hfN v hs] at this)` and apply the resulting hypothesis. Establish `hms : ms τ = mass φ (scalE τ) ((rpg (fun v => (Etau (Kv v) (cv v τ))ˣ) fun v => Cu (Ov v) (cv v τ)).box fun v => Cint (Ov v) (cv v τ))`. Rewrite using `[ms, dif_pos hphi]`.
-
-Establish `hprod : ∏ v ∈ D.Sg, ((D.S v).cG : ℂ) * one (Ind (D.S v).H (cv v τ) (t v)) = ∏ v ∈ D.Sg, ((D.S v).cG : ℂ)` using `Finset.prod_congr rfl fun v hv => by simp [one, hAdm v hv]`. Use `show mass φ (scalE τ) _ * ∏ v ∈ S, orb (ιv v) (Cint (Ov v) (cv v τ)) (theta (cv v Δ)) (D.Jv v) (D.fGv t v) ((ι δ).1 v) = _`. Rewrite using `[hsplit, hprod, hms]`. Simplify using `only [one, if_pos hAdm, Dat.nL]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hz : ∀ y : GA Δ ⧸ D.UG, D.FG t ((Quotient.out y)⁻¹ * ι δ * θ (Quotient.out y)) = 0`. Introduce `y`. Simplify using `only [Dat.admitted, not_forall] at hAdm`. Take `⟨v0, hv0, hI⟩` from `hAdm`. Use `fin_mulSupp (D.fGv t) D.Sg ?_ _ (v := v0) ?_` and prove the remaining obligations.
-
-Introduce `v hv k hk`. Rewrite using `[hfN v hv]`. Simplify using `[one, hk]`. Rewrite using `[hfS v0 hv0]`. Assume the negation of the conclusion as `hne`.
-
-Apply `hI` to reduce the goal to its premises. Use `(hOk.sig v0 hv0).G_supp (t v0) (hCone v0 hv0) _ (cv v0 τ) ?_ hne` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Pi.mul_apply, Pi.inv_apply, hθ]`. Conclude with `hasTau_conj (hlocF v0).1 _`. Rewrite using `[gqOn_zero _ _ _ _ hz]`.
-
-Simplify using `[one, hAdm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Glob.gqG :
     UpperTheory.V.Z.Sym.Glob.GqG := by

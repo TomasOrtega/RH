@@ -14,7 +14,7 @@ namespace GlobalTheory.CechDR.FormExt
 attribute [local instance] GlobalTheory.Cris.opModule GlobalTheory.Cris.isCentralScalar_kaehler GlobalTheory.Cris.isScalarTower_kaehler
 
 /- English proof (translation)
-Rewrite using `[← TrivSqZeroExt.inr_add, ← TrivSqZeroExt.inr_add, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inr_add_inr_eq {A M : Type} [AddCommGroup A] [AddCommGroup M] {x y z w : M}
     (h : x + y = z + w) :
@@ -23,7 +23,7 @@ theorem inr_add_inr_eq {A M : Type} [AddCommGroup A] [AddCommGroup M] {x y z w :
   rw [← TrivSqZeroExt.inr_add, ← TrivSqZeroExt.inr_add, h]
 
 /- English proof (translation)
-Rewrite using `[← TrivSqZeroExt.inr_sub, ← TrivSqZeroExt.inr_add, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inr_sub_add_inr_eq {A M : Type} [AddCommGroup A] [AddCommGroup M] {x y z w : M}
     (h : x - y + z = w) :
@@ -32,14 +32,14 @@ theorem inr_sub_add_inr_eq {A M : Type} [AddCommGroup A] [AddCommGroup M] {x y z
   rw [← TrivSqZeroExt.inr_sub, ← TrivSqZeroExt.inr_add, h]
 
 /- English proof (translation)
-Rewrite using `[TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem snd_sub_add {A M : Type} [AddCommGroup A] [AddCommGroup M] (a b c : TrivSqZeroExt A M) :
     (a - b + c).snd = a.snd - b.snd + c.snd := by
   rw [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_sub]
 
 /- English proof (translation)
-The claim follows from `TrivSqZeroExt.ext ((fst_extMap F φ _).trans (by rw [TrivSqZeroExt.fst_inr, map_zero]; rfl)) ((snd_extMap F φ _).trans (by rw [TrivSqZeroExt.snd_inr]; rfl))`.
+A detailed English derivation is pending.
 -/
 theorem mp_omExt_inr {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
     {T T' : C} (φ : T ⟶ T') (x : Ω[F.obj T⁄R]) :
@@ -49,13 +49,11 @@ theorem mp_omExt_inr {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C 
     ((snd_extMap F φ _).trans (by rw [TrivSqZeroExt.snd_inr]; rfl))
 
 /- English proof (translation)
-Introduce `R _ C _ C' _ F G hinj κ hκ β' hβ'`. Set `z : Z2 (omExt F)` to `⟨fun T T' T'' φ ψ ↦ TrivSqZeroExt.inr (κ T T' T'' φ ψ), fun T T' T'' T''' φ ψ χ ↦ by`. Simplify using `only []`. Rewrite using `[mp_omExt_inr]`. Conclude with `inr_add_inr_eq (hκ φ ψ χ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : (CoefMap.restrict (omExt F) G).pull2 (H2.mk (omExt F) z) = 0`. Rewrite using `[CoefMap.pullCohomologyTwo_class, H2.mk_eq_zero]`. Use `⟨fun t t' a ↦ (TrivSqZeroExt.inr (β' t t' a) : (omExt F).obj (G.obj t')), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t t' t'' a b`. Conclude with `(congrArg (fun x : TrivSqZeroExt (F.obj (G.obj t'')) Ω[F.obj (G.obj t'')⁄R] ↦ x - TrivSqZeroExt.inr (β' t t'' (a ≫ b)) + TrivSqZeroExt.inr (β' t' t'' b)) (mp_omExt_inr F (G.map b) (β' t t' a))).trans (inr_sub_add_inr_eq (hβ' a b).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : H2.mk (omExt F) z = 0` using `hinj (h0.trans (map_zero _).symm)`. Take `⟨f, hf⟩` from `H2.mk_eq_zero.1 h1`. Use `⟨fun T T' φ ↦ (f T T' φ).snd, fun T T' T'' φ ψ ↦ ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg TrivSqZeroExt.snd (congrFun (congrFun (congrFun (congrFun (congrFun hf T) T') T'') φ) ψ)`. Establish `e2` using `(snd_sub_add (mp (omExt F) ψ (f T T' φ)) (f T T'' (φ ≫ ψ)) (f T' T'' ψ)).symm.trans (e.trans (TrivSqZeroExt.snd_inr _ _))`.
-
-Rewrite `e2` using `[show (mp (omExt F) ψ (f T T' φ)).snd = p1 F ψ (f T T' φ).snd from snd_extMap F ψ _]`. Conclude with `e2.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coboundary_of_restrict_forms : ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] {C' : Type} [Category.{0} C'] (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C), Function.Injective (CoefMap.restrict (FormExt.omExt F) G).pull2 → (∀ κ : A2 F, (∀ ⦃T T' T'' T''' : C⦄ (φ : T ⟶ T') (ψ : T' ⟶ T'') (χ : T'' ⟶ T'''), p1 F χ (κ T T' T'' φ ψ) + κ T T'' T''' (φ ≫ ψ) χ = κ T T' T''' φ (ψ ≫ χ) + κ T' T'' T''' ψ χ) → ∀ β' : ∀ t t', (t ⟶ t') → Ω[F.obj (G.obj t')⁄R], (∀ ⦃t t' t'' : C'⦄ (a : t ⟶ t') (b : t' ⟶ t''), κ _ _ _ (G.map a) (G.map b) = p1 F (G.map b) (β' t t' a) - β' t t'' (a ≫ b) + β' t' t'' b) → ∃ β : A1 F, ∀ ⦃T T' T'' : C⦄ (φ : T ⟶ T') (ψ : T' ⟶ T''), κ T T' T'' φ ψ = p1 F ψ (β T T' φ) - β T T'' (φ ≫ ψ) + β T' T'' ψ) := by
   intro R _ C _ C' _ F G hinj κ hκ β' hβ'

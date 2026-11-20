@@ -50,7 +50,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Unfold `maxContactIdeal`. Conclude with `derivIdealSheafIterate_comap k p g (μ - 1) A`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem maxContactIdeal_comap (k : Type u) [Field k] {P Y : Scheme.{u}}
     (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -80,7 +80,7 @@ def MaxContactHypersurfaceSmoothPullback : Prop :=
         IsMaxContactHypersurface k (g ≫ p) (A.comap g) μ (H.comap g)
 
 /- English proof (translation)
-Introduce `i hi`. Establish `hnoeth : AlgebraicGeometry.IsNoetherian (s.toMarkedSequenceOfBlowups.schemeAt i)` using `MarkedSequenceOfBlowups.isNoetherian_schemeAt effectiveCartierSupportContainsNoComponent hV s.toMarkedSequenceOfBlowups i (s.le_toSequenceOfBlowups_length hi)`. Use `show AlgebraicGeometry.IsLocallyNoetherian (s.toMarkedSequenceOfBlowups.schemeAt i)`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocallyNoetherian_schemeAt (_hMaxContact : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) :
@@ -93,7 +93,7 @@ theorem isLocallyNoetherian_schemeAt (_hMaxContact : MaxContactCoverProperties.{
   infer_instance
 
 /- English proof (translation)
-Use `BoundarySeparationByMaxContact.isAdmissible_derivedTriple hstar S hV s hft [] 0 ?_` and prove the remaining obligations. Establish `hlev : (S.transformAt s.toMarkedSequenceOfBlowups s.length).IsAdmissible` using `MarkedIdealWithBoundary.IsAdmissible.transformAt effectiveCartierSupportContainsNoComponent hV s.toMarkedSequenceOfBlowups s.length (s.le_toSequenceOfBlowups_length (le_refl s.length))`. Establish `h` using `hlev.snc`. Rewrite `h` using `[MarkedIdealWithBoundary.transformAt_structureMorphism, MarkedIdealWithBoundary.transformAt_boundary, MarkedSequenceOfBlowups.projectionToSpec_eq, MarkedBlowupSequenceData.toMarkedSequence_projectionToBase]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdmissible_derivedTriple_nil (hstar : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
@@ -109,7 +109,7 @@ theorem isAdmissible_derivedTriple_nil (hstar : MaxContactCoverProperties.{u}) (
   exact h
 
 /- English proof (translation)
-Introduce `D hD`. Simplify using `at hD`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem orderAtLeastLocus_inter_support_eq_empty_of_mem_take_zero (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) :
@@ -119,11 +119,11 @@ theorem orderAtLeastLocus_inter_support_eq_empty_of_mem_take_zero (S : MarkedIde
   simp at hD
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `n D hD`. Simplify using `at hD`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `cons a t ih`. Introduce `n D hD`. Consider the cases of `n with`. Consider the case `zero => simp at hD`. Consider the case `succ m`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `hD' : D ∈ a :: t.take m` using `hD`. Break down `List.mem_cons.mp hD' with rfl | hD''` into its components or cases. Conclude with `⟨0, by simp, Nat.succ_pos m, rfl⟩`. Take `⟨i, hi, hin, hget⟩` from `ih m D hD''`. Conclude with `⟨i + 1, Nat.succ_lt_succ hi, Nat.succ_lt_succ hin, hget⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_index_of_mem_take {α : Type*} :
     ∀ (L : List α) (n : ℕ) (D : α), D ∈ L.take n →
@@ -145,7 +145,7 @@ private theorem exists_index_of_mem_take {α : Type*} :
         exact ⟨i + 1, Nat.succ_lt_succ hi, Nat.succ_lt_succ hin, hget⟩
 
 /- English proof (translation)
-Introduce `D hD`. Take `⟨i, hi, hin, hget⟩` from `exists_index_of_mem_take (s.boundary s.length) n D hD`. Establish `key` using `h i hin hi`. Rewrite `key` using `[hget]`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderAtLeastLocus_inter_support_eq_empty_of_boundarySeparated (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) (n : ℕ)
@@ -159,9 +159,9 @@ theorem orderAtLeastLocus_inter_support_eq_empty_of_boundarySeparated (S : Marke
   exact key
 
 /- English proof (translation)
-Establish `h1 : s.boundaryFrom S.boundary s.length = s.boundary s.length` using `MarkedBlowupSequenceData.toBlowupSequenceData_boundary_eq s s.length le_rfl`. Establish `h2 : s.boundaryFrom S.boundary s.length = S.boundary.map (s.toBlowupSequenceData.iteratedStrictTransform s.length) ++ s.boundaryFrom ([] : List S.scheme.IdealSheafData) s.length` using `BlowupSequenceData.boundary_eq_map_iteratedStrictTransform_append s.toBlowupSequenceData S.boundary s.length`. Establish `h5 : S.boundary.length ≤ (s.boundary s.length).length`. Rewrite using `[← h1, h2]`. Simplify using `only [List.length_append, List.length_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [List.nil_append, List.drop_zero]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lt_length_nil_append_boundary_drop_zero (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) (j : ℕ)
@@ -181,7 +181,7 @@ theorem lt_length_nil_append_boundary_drop_zero (S : MarkedIdealWithBoundary.{u}
   omega
 
 /- English proof (translation)
-Establish `: CharZero S.base` using `hV.charZero`. Establish `: AlgebraicGeometry.Smooth S.structMap` using `hV.smooth`. Introduce `x`. Establish `h : orderAt (S.ideal.comap q) x = orderAt S.ideal (q x)` using `orderAt_comap S.base S.structMap q S.ideal x`. Conclude with `le_trans (le_of_eq h) (hO (q x))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem orderAt_pullbackTriple_le_mult (S : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (q : X' ⟶ S.scheme)
     [AlgebraicGeometry.Smooth q] (hV : S.IsAdmissible)
@@ -201,15 +201,13 @@ abbrev separateBoundaryOfFamily (hinv : ComapIsoInvariance.{u}) (T : MarkedIdeal
   MaxContactReduction.separateBoundary hinv T (fun S' _ i => A i S') S n
 
 /- English proof (translation)
-Use `revert hj`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_`. Use `show BoundarySeparationByMaxContact.SeparateBoundaryInvariant S H (separateBoundaryOfFamily hinv T A S 0) 0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : separateBoundaryOfFamily hinv T A S 0 = emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary` using `MaxContactCoverData.separateBoundary_zero hinv T (fun S' _ i => A i S') S`. Establish `h1 : (separateBoundaryOfFamily hinv T A S 0).toBlowupSequenceData = BlowupSequenceData.empty S.scheme` using `Eq.trans (congrArg (fun s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary => s.toBlowupSequenceData) h0) (emptyMarkedBlowupSequenceData_toBlowupSequenceData S.structMap S.ideal S.mult S.boundary)`. Establish `hlen : (separateBoundaryOfFamily hinv T A S 0).length = 0` using `Eq.trans (congrArg (fun d : BlowupSequenceData S.scheme => d.length) h1) (BlowupSequenceData.empty_length S.scheme)`. Use `And.intro ?_ (And.intro ?_ ?_)` and prove the remaining obligations. Introduce `i hi`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Conclude with `absurd hi (Nat.not_lt_zero i)`. Introduce `i hi`. Conclude with `absurd hi (by omega)`. Conclude with `BoundarySeparationByMaxContact.inStrictNormalCrossingPosition_iteratedStrictTransform_zero S (separateBoundaryOfFamily hinv T A S 0) H hH`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hj`. Use `show BoundarySeparationByMaxContact.SeparateBoundaryInvariant S H (separateBoundaryOfFamily hinv T A S (n + 1)) (n + 1)`. Establish `hjn : n < S.boundary.length` using `Nat.lt_of_succ_le hj`. Establish `key : BoundarySeparationByMaxContact.SeparateBoundaryInvariant S H (MaxContactReduction.appendLowerDimReduction hinv T (fun S' _ i => A i S') S (separateBoundaryOfFamily hinv T A S n) [] 0 n) (n + 1)` using `BoundarySeparationByMaxContact.separateBoundaryInvariant_appendLowerDimReduction hstar hinv P hmono A B hspec T hPdimT S hV hO hdimS H hH (separateBoundaryOfFamily hinv T A S n) n hjn (ih (Nat.le_of_succ_le hj))`. Establish `hstep : separateBoundaryOfFamily hinv T A S (n + 1) = MaxContactReduction.appendLowerDimReduction hinv T (fun S' _ i => A i S') S (separateBoundaryOfFamily hinv T A S n) [] 0 n` using `MaxContactCoverData.separateBoundary_succ hinv T (fun S' _ i => A i S') S n`.
-
-Rewrite using `[hstep]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem separateBoundaryInvariant_separateBoundaryOfFamily (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u})
     (P : ℕ → Prop) (hmono : ∀ a b : ℕ, a ≤ b → P b → P a) (A : ℕ → PrincipalizationAssignment.{u})
@@ -258,7 +256,7 @@ theorem separateBoundaryInvariant_separateBoundaryOfFamily (hstar : MaxContactCo
       exact key
 
 /- English proof (translation)
-The claim follows from `StrictPullbackBlowupSeq.isStrictPullback { comp := fun i hi => eqToHom (congrArg t.schemeAt (by omega : i = 0)) ≫ t.isoZero.hom ≫ g ≫ s.isoZero.inv ≫ eqToHom (congrArg s.schemeAt (by omega : (0 : ℕ) = i)) comp_zero := by simp pullback := fun i hi => absurd hi (by omega) length_eq …`.
+A detailed English derivation is pending.
 -/
 private theorem isStrictPullback_of_length_eq_zero {X' X : Scheme.{u}} (g : X' ⟶ X)
     (t : SequenceOfBlowups X') (s : SequenceOfBlowups X) (ht : t.length = 0) (hs : s.length = 0) :
@@ -273,7 +271,7 @@ private theorem isStrictPullback_of_length_eq_zero {X' X : Scheme.{u}} (g : X' �
       center_eq := fun i hi => absurd hi (by omega) }
 
 /- English proof (translation)
-Establish `h0 : separateBoundaryOfFamily hinv T A S 0 = emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary` using `MaxContactCoverData.separateBoundary_zero hinv T (fun S' _ i => A i S') S`. Establish `h1 : (separateBoundaryOfFamily hinv T A S 0).toBlowupSequenceData = BlowupSequenceData.empty S.scheme` using `Eq.trans (congrArg (fun s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary => s.toBlowupSequenceData) h0) (emptyMarkedBlowupSequenceData_toBlowupSequenceData S.structMap S.ideal S.mult S.boundary)`. Establish `hlen : (separateBoundaryOfFamily hinv T A S 0).length = 0` using `Eq.trans (congrArg (fun d : BlowupSequenceData S.scheme => d.length) h1) (BlowupSequenceData.empty_length S.scheme)`. Conclude with `hlen`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem length_separateBoundaryOfFamily_zero (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (A : ℕ → PrincipalizationAssignment.{u}) (S : MarkedIdealWithBoundary.{u}) :
@@ -291,7 +289,7 @@ private theorem length_separateBoundaryOfFamily_zero (hinv : ComapIsoInvariance.
   exact hlen
 
 /- English proof (translation)
-Establish `h : krullDimSucc (s.toMarkedSequenceOfBlowups.schemeAt s.length) ≤ S.krullDimSucc` using `hstar.schemeDim_level_le S hV s.toMarkedSequenceOfBlowups s.length (s.le_toSequenceOfBlowups_length (le_refl s.length))`. Use `show krullDimSucc (MaxContactCoverData.derivedTriple S s hft added nDrop).scheme ≤ S.krullDimSucc`. Rewrite using `[MaxContactCoverData.derivedTriple_scheme]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dim_derivedTriple_le_dim (hstar : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u})
     (hV : S.IsAdmissible) (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
@@ -306,7 +304,7 @@ private theorem dim_derivedTriple_le_dim (hstar : MaxContactCoverProperties.{u})
   exact h
 
 /- English proof (translation)
-Use `show (List.map (fun D : S.scheme.IdealSheafData => D.comap g) S.boundary).length = S.boundary.length`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem boundary_length_pullbackTriple (S : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}}
     (g : X' ⟶ S.scheme) : (LowerDimReductionPullback.pullbackTriple S g).boundary.length = S.boundary.length := by
@@ -315,7 +313,7 @@ private theorem boundary_length_pullbackTriple (S : MarkedIdealWithBoundary.{u})
   simp
 
 /- English proof (translation)
-Substitute `hL` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem boundary_pullbackAlong_eq_map_comap (U : MarkedIdealWithBoundary.{u}) {Y : Scheme.{u}}
     (qq : Y ⟶ Spec (CommRingCat.of U.base)) (h : Y ⟶ U.scheme)
@@ -325,7 +323,7 @@ private theorem boundary_pullbackAlong_eq_map_comap (U : MarkedIdealWithBoundary
   rfl
 
 /- English proof (translation)
-Substitute `hL` using the available equality. Conclude with `hU`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isAdmissible_withBoundary_of_eq (U : MarkedIdealWithBoundary.{u}) (hU : U.IsAdmissible)
     (L : List U.scheme.IdealSheafData) (hL : U.boundary = L) : (U.withBoundary L).IsAdmissible := by
@@ -333,7 +331,7 @@ private theorem isAdmissible_withBoundary_of_eq (U : MarkedIdealWithBoundary.{u}
   exact hU
 
 /- English proof (translation)
-The claim follows from `hb`.
+A detailed English derivation is pending.
 -/
 private theorem length_toMarkedSequence_eq_zero {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData)
@@ -341,13 +339,13 @@ private theorem length_toMarkedSequence_eq_zero {k : Type u} [Field k] {X : Sche
     ((BlowupSequenceData.ofSequenceOfBlowups b).toMarkedBlowupSequenceData p I m E h).length = 0 := hb
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 private theorem orderAt_le_mult_of_isOrderBoundedByMult (T : MarkedIdealWithBoundary.{u}) (h : T.IsOrderBoundedByMult) :
     ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞) := h
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 private theorem isMaxContactHypersurface_derivedTriple (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
@@ -366,9 +364,9 @@ private theorem isMaxContactHypersurface_derivedTriple (S : MarkedIdealWithBound
       (MaxContactCoverData.derivedTriple S s hft added nDrop).mult E := h
 
 /- English proof (translation)
-Use `hV.charZero` as an intermediate fact. Use `hV.smooth` as an intermediate fact. Use `hV.locallyOfFiniteType` as an intermediate fact. Use `BoundarySeparationByMaxContact.smooth_projectionToBase_comp hstar S hV s s.length (le_refl s.length)` as an intermediate fact. Use `hft` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsMaxContactHypersurface S.base (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult (MaxContactReduction.iteratedStrictTransform s Hs s.length)` using `isMaxContactHypersurface_iteratedStrictTransform hstar S hV hO Hs hH s s.length (le_refl s.length)`. Rewrite using `[LowerDimReductionPullback.tunedIdealAtLength_eq_balancedTunedSheaf, MaxContactReduction.strictTransformAtLength_eq]`. Conclude with `BoundarySeparationByMaxContact.isMaxContactHypersurface_balancedTunedSheaf hstar S.base (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult hV.one_le_mult (fun x => LowerDimReductionPullback.orderAt_ideal_length_le hstar S hV hO s x) (MaxContactReduction.iteratedStrictTrans …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isMaxContactHypersurface_strictTransformAtLength (hstar : MaxContactCoverProperties.{u})
     (S : MarkedIdealWithBoundary.{u})
@@ -396,9 +394,9 @@ private theorem isMaxContactHypersurface_strictTransformAtLength (hstar : MaxCon
     (MaxContactReduction.iteratedStrictTransform s Hs s.length) h1
 
 /- English proof (translation)
-Use `hV.charZero` as an intermediate fact. Use `BoundarySeparationByMaxContact.smooth_projectionToBase_comp hstar S hV s s.length (le_refl s.length)` as an intermediate fact. Use `hftS` as an intermediate fact. Establish `hsm : AlgebraicGeometry.Smooth (LowerDimReductionPullback.pullbackMapAtLength S g s t D)` using `LowerDimReductionPullback.smooth_pullbackMapAtLength S g s t D`. Establish `hftg : AlgebraicGeometry.LocallyOfFiniteType (LowerDimReductionPullback.pullbackMapAtLength S g s t D ≫ (s.proj s.length ≫ S.structMap))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LowerDimReductionPullback.pullbackMapAtLength_comp_eq_pullbackTriple_structureMorphism S g s t D]`. Conclude with `hftT`. Establish `key` using `hAdm S.base (s.obj s.length) (s.proj s.length ≫ S.structMap) (t.obj t.length) (LowerDimReductionPullback.pullbackMapAtLength S g s t D) (LowerDimReductionPullback.tunedIdealAtLength S s hftS) (tuningExponent S.mult) (one_le_tuningExponent S.mult) Hs h`. Conclude with `@isMaxContactHypersurface_of_eq_of_eq_of_eq S.base S.instField (t.obj t.length) (LowerDimReductionPullback.pullbackMapAtLength S g s t D ≫ (s.proj s.length ≫ S.structMap)) (t.proj t.length ≫ (LowerDimReductionPullback.pullbackTriple S g).structMap) hftg hftT ((LowerDimReductionPu …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isMaxContactHypersurface_comap_lastMap (hAdm : MaxContactHypersurfaceSmoothPullback.{u})
     (hstar : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
@@ -442,11 +440,11 @@ private theorem isMaxContactHypersurface_comap_lastMap (hAdm : MaxContactHypersu
     (LowerDimReductionPullback.tunedIdealAtLength_comap_pullbackMapAtLength S g s t D hftS hftT added nDrop hVc) rfl key
 
 /- English proof (translation)
-Establish `hsm : AlgebraicGeometry.Smooth (LowerDimReductionPullback.pullbackMapAtLength S g s t D)` using `LowerDimReductionPullback.smooth_pullbackMapAtLength S g s t D`. Establish `hlev : ((LowerDimReductionPullback.pullbackTriple S g).transformAt t.toMarkedSequenceOfBlowups t.length).IsAdmissible` using `MarkedIdealWithBoundary.IsAdmissible.transformAt effectiveCartierSupportContainsNoComponent hV' t.toMarkedSequenceOfBlowups t.length (t.le_toSequenceOfBlowups_length (le_refl t.length))`. Establish `hqc0` using `hlev.quasiCompact`. Rewrite `hqc0` using `[MarkedIdealWithBoundary.transformAt_structureMorphism, MarkedSequenceOfBlowups.projectionToSpec_eq, MarkedBlowupSequenceData.toMarkedSequence_projectionToBase]`. Establish `hqcA : AlgebraicGeometry.QuasiCompact (LowerDimReductionPullback.pullbackMapAtLength S g s t D ≫ (s.proj s.length ≫ S.structMap))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[LowerDimReductionPullback.pullbackMapAtLength_comp_eq_pullbackTriple_structureMorphism S g s t D]`. Conclude with `hqc0`. Establish `hpb` using `@OrderReduction.OrderReductionHypotheses.valid_pullbackAlong hin (MaxContactCoverData.derivedTriple S s hftS added nDrop) hVc (t.obj t.length) (LowerDimReductionPullback.pullbackMapAtLength S g s t D ≫ (MaxContactCoverData.derivedTriple S s hftS added nDrop).structMap) (LowerDimR …`. Establish `hbd1 : ((MaxContactCoverData.derivedTriple S s hftS added nDrop).pullbackAlong (t.obj t.length) (LowerDimReductionPullback.pullbackMapAtLength S g s t D ≫ (MaxContactCoverData.derivedTriple S s hftS added nDrop).structMap) (LowerDimReductionPullback.pullbackMapAtLength S g s t D) …` using `boundary_pullbackAlong_eq_map_comap (MaxContactCoverData.derivedTriple S s hftS added nDrop) (LowerDimReductionPullback.pullbackMapAtLength S g s t D ≫ (MaxContactCoverData.derivedTriple S s hftS added nDrop).structMap) (LowerDimReductionPullback.pullbackMapAtLength S g s t D) _ …`. Establish `hbd2 : (added ++ (s.boundary s.length).drop nDrop).map (fun Dv => Dv.comap (LowerDimReductionPullback.pullbackMapAtLength S g s t D)) = LowerDimReductionPullback.comapBoundaryPullback S g s t D added ++ (t.boundary t.length).drop nDrop`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.map_append, List.map_drop, LowerDimReductionPullback.boundary_eq_map_comap_pullbackMapAtLength S g s t D hNs hNt]`. Rewrite using `[← LowerDimReductionPullback.pullbackAlong_derivedTriple_eq S g s t D hftS hftT added nDrop hVc]`. Conclude with `isAdmissible_withBoundary_of_eq _ hpb _ (hbd1.trans hbd2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isAdmissible_derivedTriple_pullbackTriple (hin : OrderReduction.OrderReductionHypotheses.{u})
     (S : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (g : X' ⟶ S.scheme) [AlgebraicGeometry.Smooth g]
@@ -497,19 +495,17 @@ private theorem isAdmissible_derivedTriple_pullbackTriple (hin : OrderReduction.
   exact isAdmissible_withBoundary_of_eq _ hpb _ (hbd1.trans hbd2)
 
 /- English proof (translation)
-Establish `hdim1 : (MaxContactCoverData.derivedTriple S s hft [E1] nDrop).krullDimSucc ≤ T.krullDimSucc` using `le_trans (dim_derivedTriple_le_dim hstar S hV s hft [E1] nDrop) hdimS`. Establish `hdim2 : (MaxContactCoverData.derivedTriple S s hft [E2] nDrop).krullDimSucc ≤ T.krullDimSucc` using `le_trans (dim_derivedTriple_le_dim hstar S hV s hft [E2] nDrop) hdimS`. Establish `hj1 : 0 < ([E1] ++ (s.boundary s.length).drop nDrop).length` using `by simp`. Establish `hj2 : 0 < ([E2] ++ (s.boundary s.length).drop nDrop).length` using `by simp`. Take `⟨hmk1, hc1, -⟩` from `LowerDimReductionPullback.appendLowerDimReduction_eq_append hstar hinv T P A B 0 (hspec 0) (fun S' _ i => A i S') (fun _ _ _ => rfl) S hV hV.one_le_mult hO s [E1] nDrop hft hdim1 (hmono _ _ hdim1 hPdimT) hV1 hj1 hsep`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hmk2, hc2, -⟩` from `LowerDimReductionPullback.appendLowerDimReduction_eq_append hstar hinv T P A B 0 (hspec 0) (fun S' _ i => A i S') (fun _ _ _ => rfl) S hV hV.one_le_mult hO s [E2] nDrop hft hdim2 (hmono _ _ hdim2 hPdimT) hV2 hj2 hsep`. Rewrite using `[hc1, hc2]`. Distinguish the cases in `hne : (orderAtLeastLocus (s.ideal s.length) S.mult).Nonempty`. Use `hV.charZero` as an intermediate fact. Use `BoundarySeparationByMaxContact.smooth_projectionToBase_comp hstar S hV s s.length (le_refl s.length)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hft` as an intermediate fact. Establish `hmax : MaxOrderEq (s.ideal s.length) S.mult` using `LowerDimReductionPullback.maxOrderEq_ideal_length_of_nonempty hstar S hV hO s hne`. Establish `hbdT : (MaxContactCoverData.derivedTriple S s hft [E1] nDrop).boundary = E1 :: (s.boundary s.length).drop nDrop` using `MaxContactCoverData.derivedTriple_boundary S s hft [E1] nDrop`. Establish `hA1 : ∀ [inst : AlgebraicGeometry.LocallyOfFiniteType (MaxContactCoverData.derivedTriple S s hft [E1] nDrop).structMap], IsMaxContactHypersurface (MaxContactCoverData.derivedTriple S s hft [E1] nDrop).base (MaxContactCoverData.derivedTriple S s hft [E1] nDrop).structMap (MaxConta …`. Introduce `inst`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isMaxContactHypersurface_derivedTriple S s hft [E1] nDrop E1 inst hR1`. Establish `hA2 : ∀ [inst : AlgebraicGeometry.LocallyOfFiniteType (MaxContactCoverData.derivedTriple S s hft [E1] nDrop).structMap], IsMaxContactHypersurface (MaxContactCoverData.derivedTriple S s hft [E1] nDrop).base (MaxContactCoverData.derivedTriple S s hft [E1] nDrop).structMap (MaxConta …`. Introduce `inst`. Conclude with `isMaxContactHypersurface_derivedTriple S s hft [E1] nDrop E2 inst hR2`. Establish `hMCinv : ∀ [inst : AlgebraicGeometry.LocallyOfFiniteType (MaxContactCoverData.derivedTriple S s hft [E1] nDrop).structMap], IsMaxContactInvariant (MaxContactCoverData.derivedTriple S s hft [E1] nDrop).base (MaxContactCoverData.derivedTriple S s hft [E1] nDrop).structMap (MaxConta …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `inst`. Rewrite using `[MaxContactCoverData.derivedTriple_mult, LowerDimReductionPullback.ideal_derivedTriple, LowerDimReductionPullback.tunedIdealAtLength_eq_balancedTunedSheaf]`. Conclude with `hMC S.base (s.obj s.length) (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult hV.one_le_mult hmax`. Establish `hEq` using `DivisorReductionIndependence.isomorphic_withBoundary_cons_of_isMaxContactHypersurface hin P hmono (A 0) B (hspec 0) (MaxContactCoverData.derivedTriple S s hft [E1] nDrop) hV1 (hmono _ _ hdim1 hPdimT) (orderAt_le_mult_of_isOrderBoundedByMult _ (LowerDimReductionPullback.isOrderBou …`. Use `MarkedBlowupSequenceData.append_isomorphic_of_isomorphic s _ _ hinv ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `SequenceOfBlowups.Isomorphic.trans (BlowupSequenceData.ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic (A 0 (MaxContactCoverData.derivedTriple S s hft [E1] nDrop)).toSequenceOfBlowups) (SequenceOfBlowups.Isomorphic.trans hEq (SequenceOfBlowups.Isomorphic.symm (BlowupSequenceDa …`. Establish `hempty : orderAtLeastLocus (s.ideal s.length) S.mult = ∅` using `Set.not_nonempty_iff_eq_empty.mp hne`. Establish `hl1 : (A 0 (MaxContactCoverData.derivedTriple S s hft [E1] nDrop)).length = 0` using `LowerDimReductionPullback.length_eq_zero_of_orderAtLeastLocus_eq_empty hstar P 0 (A 0) B (hspec 0) S hV hV.one_le_mult hO s hft [E1] nDrop (hmono _ _ hdim1 hPdimT) hV1 hj1 hempty`. Establish `hl2 : (A 0 (MaxContactCoverData.derivedTriple S s hft [E2] nDrop)).length = 0` using `LowerDimReductionPullback.length_eq_zero_of_orderAtLeastLocus_eq_empty hstar P 0 (A 0) B (hspec 0) S hV hV.one_le_mult hO s hft [E2] nDrop (hmono _ _ hdim2 hPdimT) hV2 hj2 hempty`. Establish `e1` using `MarkedBlowupSequenceData.append_isomorphic_of_length_eq_zero s _ hinv (length_toMarkedSequence_eq_zero (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult (s.boundary s.length) (A 0 (MaxContactCoverData.derivedTriple S s hft [E1] nDrop)).toSequenceOfBlowups hmk1 hl1)`.
-
-Establish `e2` using `MarkedBlowupSequenceData.append_isomorphic_of_length_eq_zero s _ hinv (length_toMarkedSequence_eq_zero (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult (s.boundary s.length) (A 0 (MaxContactCoverData.derivedTriple S s hft [E2] nDrop)).toSequenceOfBlowups hmk2 hl2)`. Conclude with `SequenceOfBlowups.Isomorphic.trans e1 (SequenceOfBlowups.Isomorphic.symm e2)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isomorphic_appendLowerDimReduction_of_isMaxContactHypersurface (hstar : MaxContactCoverProperties.{u})
     (hin : OrderReduction.OrderReductionHypotheses.{u}) (hMC : IsMaxContactInvariantBalancedTuned.{u})
@@ -615,23 +611,23 @@ private theorem isomorphic_appendLowerDimReduction_of_isMaxContactHypersurface (
     exact SequenceOfBlowups.Isomorphic.trans e1 (SequenceOfBlowups.Isomorphic.symm e2)
 
 /- English proof (translation)
-Establish `hO'` using `orderAt_pullbackTriple_le_mult S q hV hO`. Establish `hLen : (LowerDimReductionPullback.pullbackTriple S q).boundary.length = S.boundary.length` using `boundary_length_pullbackTriple S q`. Establish `key : ∀ n : ℕ, n ≤ S.boundary.length → IsStrictPullbackBlowupSeq q (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) n).toMarkedSequenceOfBlowups.toSequenceOfBlowups (separateBoundaryOfFamily hinv T A S n).toMarkedSequenceOfBlowups.toSequenceOfBlow …`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `_`. Conclude with `isStrictPullback_of_length_eq_zero q _ _ (length_separateBoundaryOfFamily_zero hinv T A (LowerDimReductionPullback.pullbackTriple S q)) (length_separateBoundaryOfFamily_zero hinv T A S)`. Consider the case `succ m ih`. Introduce `hm`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm' : m < S.boundary.length` using `lt_of_lt_of_le (Nat.lt_succ_self m) hm`. Establish `D` using `(ih (le_of_lt hm')).toStrictPullbackBlowupSeq`. Establish `hftS` using `BoundarySeparationByMaxContact.locallyOfFiniteType_projectionToBase_comp hstar S hV (separateBoundaryOfFamily hinv T A S m) (separateBoundaryOfFamily hinv T A S m).length le_rfl`. Establish `hftT` using `BoundarySeparationByMaxContact.locallyOfFiniteType_projectionToBase_comp hstar (LowerDimReductionPullback.pullbackTriple S q) hV' (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) m) (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pul …`. Establish `hdim : (MaxContactCoverData.derivedTriple S (separateBoundaryOfFamily hinv T A S m) hftS ([] : List ((separateBoundaryOfFamily hinv T A S m).obj (separateBoundaryOfFamily hinv T A S m).length).IdealSheafData) 0).krullDimSucc ≤ T.krullDimSucc` using `le_trans (dim_derivedTriple_le_dim hstar S hV (separateBoundaryOfFamily hinv T A S m) hftS [] 0) hdimS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdimb : (MaxContactCoverData.derivedTriple (LowerDimReductionPullback.pullbackTriple S q) (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) m) hftT ([] : List ((separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) m).obj …` using `le_trans (dim_derivedTriple_le_dim hstar (LowerDimReductionPullback.pullbackTriple S q) hV' (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) m) hftT [] 0) hdim'`. Establish `hres` using `LowerDimReductionPullback.nonempty_strictPullback_appendLowerDimReduction S q (separateBoundaryOfFamily hinv T A S m) (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) m) D hstar hinv T P A B m (hspec m) (fun S' _ i => A i S') (fun _ _ _ => rfl) [] …`. Establish `e1 : separateBoundaryOfFamily hinv T A S (m + 1) = MaxContactReduction.appendLowerDimReduction hinv T (fun S' _ i => A i S') S (separateBoundaryOfFamily hinv T A S m) [] 0 m` using `MaxContactCoverData.separateBoundary_succ hinv T (fun S' _ i => A i S') S m`. Establish `e2 : separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) (m + 1) = MaxContactReduction.appendLowerDimReduction hinv T (fun S' _ i => A i S') (LowerDimReductionPullback.pullbackTriple S q) (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.p …` using `MaxContactCoverData.separateBoundary_succ hinv T (fun S' _ i => A i S') (LowerDimReductionPullback.pullbackTriple S q) m`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hres.elim fun D' => D'.isStrictPullback`. Establish `hftS2` using `BoundarySeparationByMaxContact.locallyOfFiniteType_projectionToBase_comp hstar S hV (separateBoundaryOfFamily hinv T A S S.boundary.length) (separateBoundaryOfFamily hinv T A S S.boundary.length).length le_rfl`. Establish `hftT2` using `BoundarySeparationByMaxContact.locallyOfFiniteType_projectionToBase_comp hstar (LowerDimReductionPullback.pullbackTriple S q) hV' (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) S.boundary.length) (separateBoundaryOfFamily hinv T A (LowerDimReduc …`. Establish `hTS` using `separateBoundaryInvariant_separateBoundaryOfFamily hstar hinv P hmono A B hspec T hPdimT S hV hO hdimS H hHsnc S.boundary.length le_rfl`. Establish `hTS'` using `separateBoundaryInvariant_separateBoundaryOfFamily hstar hinv P hmono A B hspec T hPdimT (LowerDimReductionPullback.pullbackTriple S q) hV' hO' hdim' H' hH'snc (LowerDimReductionPullback.pullbackTriple S q).boundary.length le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hTS'` using `[hLen]`. Establish `hsncF0` using `inStrictNormalCrossingPosition_iteratedStrictTransform_cons_drop hstar S hV hO H (@hH hV.locallyOfFiniteType) (separateBoundaryOfFamily hinv T A S S.boundary.length) hTS.2.2 (separateBoundaryOfFamily hinv T A S S.boundary.length).length le_rfl`. Rewrite `hsncF0` using `[← MaxContactReduction.strictTransformAtLength_eq]`. Establish `hVcF` using `BoundarySeparationByMaxContact.isAdmissible_derivedTriple hstar S hV (separateBoundaryOfFamily hinv T A S S.boundary.length) hftS2 [MaxContactReduction.strictTransformAtLength (separateBoundaryOfFamily hinv T A S S.boundary.length) H] S.boundary.length hsncF0`. Establish `hsncF0'` using `inStrictNormalCrossingPosition_iteratedStrictTransform_cons_drop hstar (LowerDimReductionPullback.pullbackTriple S q) hV' hO' H' (@hH' hV'.locallyOfFiniteType) (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) S.boundary.length) hTS'.2.2 (separateB …`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hsncF0'` using `[← MaxContactReduction.strictTransformAtLength_eq, hLen]`. Establish `hVcF'` using `BoundarySeparationByMaxContact.isAdmissible_derivedTriple hstar (LowerDimReductionPullback.pullbackTriple S q) hV' (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) S.boundary.length) hftT2 [MaxContactReduction.strictTransformAtLength (separateBoun …`. Rewrite using `[MaxContactCoverData.reduceAlongHypersurface_eq_appendLowerDimReduction, MaxContactCoverData.reduceAlongHypersurface_eq_appendLowerDimReduction, hLen]`. Establish `D` using `(key S.boundary.length le_rfl).toStrictPullbackBlowupSeq`. Establish `hdimF : (MaxContactCoverData.derivedTriple S (separateBoundaryOfFamily hinv T A S S.boundary.length) hftS2 [MaxContactReduction.strictTransformAtLength (separateBoundaryOfFamily hinv T A S S.boundary.length) H] S.boundary.length).krullDimSucc ≤ T.krullDimSucc` using `le_trans (dim_derivedTriple_le_dim hstar S hV (separateBoundaryOfFamily hinv T A S S.boundary.length) hftS2 [MaxContactReduction.strictTransformAtLength (separateBoundaryOfFamily hinv T A S S.boundary.length) H] S.boundary.length) hdimS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVcF2` using `isAdmissible_derivedTriple_pullbackTriple hin S q hV' (separateBoundaryOfFamily hinv T A S S.boundary.length) (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) S.boundary.length) D (isLocallyNoetherian_schemeAt hstar S hV (separateBoundaryOfFamily …`. Establish `hdimF' : (MaxContactCoverData.derivedTriple (LowerDimReductionPullback.pullbackTriple S q) (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) S.boundary.length) hftT2 (LowerDimReductionPullback.comapBoundaryPullback S q (separateBoundaryOfFamily hin …` using `le_trans (dim_derivedTriple_le_dim hstar (LowerDimReductionPullback.pullbackTriple S q) hV' (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) S.boundary.length) hftT2 _ S.boundary.length) hdim'`. Establish `hNonempty` using `LowerDimReductionPullback.nonempty_strictPullback_appendLowerDimReduction S q (separateBoundaryOfFamily hinv T A S S.boundary.length) (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) S.boundary.length) D hstar hinv T P A B 0 (hspec 0) (fun S' _ i …`. Establish `hMaxContactS` using `isMaxContactHypersurface_strictTransformAtLength hstar S hV hO H hH (separateBoundaryOfFamily hinv T A S S.boundary.length) hftS2`. Establish `hMaxContactT` using `isMaxContactHypersurface_strictTransformAtLength hstar (LowerDimReductionPullback.pullbackTriple S q) hV' hO' H' hH' (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) S.boundary.length) hftT2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMaxContactComap` using `isMaxContactHypersurface_comap_lastMap hAdm hstar S hV q (separateBoundaryOfFamily hinv T A S S.boundary.length) (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) S.boundary.length) D hftS2 hftT2 (MaxContactReduction.strictTransformAtLength (separa …`. Establish `he` using `isomorphic_appendLowerDimReduction_of_isMaxContactHypersurface hstar hin hMC hinv P hmono A B hspec T hPdimT (LowerDimReductionPullback.pullbackTriple S q) hV' hO' hdim' (separateBoundaryOfFamily hinv T A (LowerDimReductionPullback.pullbackTriple S q) S.boundary.length) hftT2 S.b …`. Conclude with `hNonempty.elim fun D' => IsStrictPullbackBlowupSeq.of_isomorphic_pullback D'.isStrictPullback he`.
+A detailed English derivation is pending.
 -/
 theorem isStrictPullbackBlowupSeq_reduceAlongHypersurface (hstar : MaxContactCoverProperties.{u}) (hin : OrderReduction.OrderReductionHypotheses.{u})
     (hMC : IsMaxContactInvariantBalancedTuned.{u}) (hAdm : MaxContactHypersurfaceSmoothPullback.{u})

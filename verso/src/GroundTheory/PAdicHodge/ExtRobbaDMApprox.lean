@@ -13,13 +13,11 @@ section Seq
 variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Establish `hρ0 : 0 < ρ` using `hσ0.trans hσρ`. Establish `hY : 0 ≤ Y` using `(mul_nonneg (norm_nonneg _) (zpow_pos hρ0 0).le).trans (h 0)`. Establish `hsr0 : 0 ≤ σ / ρ` using `by positivity`. Establish `hsr1 : σ / ρ < 1` using `by rwa [div_lt_one hρ0]`. Use `convergesAt_of_eventually hσ0 hneg fun ε hε => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨M, hM⟩` from `exists_pow_lt_of_lt_one (show 0 < ε / (Y + 1) by positivity) hsr1`. Use `⟨M, fun n hn => ?_⟩` and prove the remaining obligations. Use `lift n to ℕ using (by omega)`. Establish `hn' : M ≤ n` using `by exact_mod_cast hn`. Rewrite using `[zpow_natCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_pow, zpow_natCast]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ Y * (σ / ρ) ^ M := mul_le_mul (h n) (pow_le_pow_of_le_one hsr0 hsr1.le hn') (by positivity) hY`. Use `_ ≤ (Y + 1) * (ε / (Y + 1)) := mul_le_mul (by linarith) hM.le (by positivity) (by linarith)`.
-
-Use `_ = ε := by field_simp`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem convergesAt_of_weight_le {a : ℤ → K} {ρ σ Y : ℝ} (hσ0 : 0 < σ) (hσρ : σ < ρ)
     (hneg : ∃ N, ∀ n < N, a n = 0) (h : ∀ n, ‖a n‖ * ρ ^ n ≤ Y) : ConvergesAt a σ := by
@@ -45,7 +43,7 @@ end Seq
 def fwdConst (q c : ℕ) (ρ : ℝ) : ℝ := ⨆ k : ℕ, ρ ^ (-((c * k : ℕ) : ℤ)) * (1 / 2 : ℝ) ^ (q ^ k - 1)
 
 /- English proof (translation)
-Use `tendsto_mul_pow_pow_sub_one (A := (ρ ^ c)⁻¹) (by positivity) (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num) hq` as an intermediate fact. Use `this.congr fun k => ?_` and prove the remaining obligations. Rewrite using `[inv_pow, ← pow_mul, ← zpow_natCast, ← zpow_neg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tendsto_fwdConst_terms {q : ℕ} (hq : 2 ≤ q) (c : ℕ) {ρ : ℝ} (hρ0 : 0 < ρ) :
     Tendsto (fun k : ℕ => ρ ^ (-((c * k : ℕ) : ℤ)) * (1 / 2 : ℝ) ^ (q ^ k - 1)) atTop (𝓝 0) := by
@@ -55,14 +53,14 @@ theorem tendsto_fwdConst_terms {q : ℕ} (hq : 2 ≤ q) (c : ℕ) {ρ : ℝ} (h�
   rw [inv_pow, ← pow_mul, ← zpow_natCast, ← zpow_neg]
 
 /- English proof (translation)
-The claim follows from `le_ciSup (tendsto_fwdConst_terms hq c hρ0).bddAbove_range k`.
+A detailed English derivation is pending.
 -/
 theorem le_fwdConst {q : ℕ} (hq : 2 ≤ q) (c : ℕ) {ρ : ℝ} (hρ0 : 0 < ρ) (k : ℕ) :
     ρ ^ (-((c * k : ℕ) : ℤ)) * (1 / 2 : ℝ) ^ (q ^ k - 1) ≤ fwdConst q c ρ :=
   le_ciSup (tendsto_fwdConst_terms hq c hρ0).bddAbove_range k
 
 /- English proof (translation)
-The claim follows from `(by positivity : (0 : ℝ) ≤ ρ ^ (-((c * 0 : ℕ) : ℤ)) * (1 / 2 : ℝ) ^ (q ^ 0 - 1)).trans (le_fwdConst hq c hρ0 0)`.
+A detailed English derivation is pending.
 -/
 theorem fwdConst_nonneg {q : ℕ} (hq : 2 ≤ q) (c : ℕ) {ρ : ℝ} (hρ0 : 0 < ρ) :
     0 ≤ fwdConst q c ρ :=
@@ -75,9 +73,9 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] (T : TeichLift p L Γ)
 
 /- English proof (translation)
-Establish `h : (IsLocalization.Away.invSelf T.π ^ c * b) * algebraMap Γ T.B T.π ^ (T.den b + c) = algebraMap Γ T.B (T.num b)`. Rewrite using `[pow_add, ← T.num_spec b]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[T.coeffB_eq h, T.coeffB_eq (T.num_spec b)]`. Simplify using `only`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coeffB_invSelf_pow_mul (c : ℕ) (b : T.B) (n : ℤ) :
     T.coeffB (IsLocalization.Away.invSelf T.π ^ c * b) n = T.coeffB b (n + c) := by
@@ -101,7 +99,7 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] {T : TeichLift p L Γ}
 
 /- English proof (translation)
-Rewrite using `[← map_pow, T.coeffB_algebraMap, zcoeff_π_pow, gaussNorm_pi_single _ _ hρ0]`. Conclude with `⟨convergesAt_pi_single _ _ _, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem gaussNorm_π_pow (c : ℕ) {ρ : ℝ} (hρ0 : 0 < ρ) :
     ConvergesAt (T.coeffB (algebraMap Γ T.B T.π ^ c)) ρ ∧
@@ -114,31 +112,29 @@ namespace TeichFrob
 variable (F : T.TeichFrob)
 
 /- English proof (translation)
-Establish `hq` using `F.two_le_q ha`. Establish `hθ0 : (0 : ℝ) < 1 / 2` using `by norm_num`. Establish `hsd : T.smallPart (1 / 2) d + T.bigPart (1 / 2) d = d` using `T.smallPart_add_bigPart _ d`. Take `⟨w, hwdef⟩ : ∃ w, IsLocalization.Away.invSelf T.π ^ c * T.smallPart (1 / 2) d = w` from `⟨_, rfl⟩`. Establish `hw : ∀ n, ‖T.coeffB w n‖ ≤ 1 / 2` using `fun n => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hwdef, T.coeffB_invSelf_pow_mul]`. Conclude with `(T.norm_coeffB_smallPart_lt hθ0 d _).le`. Establish `hπw : algebraMap Γ T.B T.π ^ c * w = T.smallPart (1 / 2) d`. Rewrite using `[← hwdef, ← mul_assoc, ← mul_pow, IsLocalization.Away.mul_invSelf, one_pow, one_mul]`. Take `⟨z, hz, hzb⟩` from `F.exists_sol_big ha c hθ0 (by norm_num) (T.coeffB_bigPart_eq_zero_or (1 / 2) d)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z + F.fwdSum c w K, algebraMap Γ T.B T.π ^ c * (F.fwd c)^[K] w, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `F.toB_fwdSum_sub c w K`. Rewrite `h1` using `[hπw]`. Rewrite using `[map_add, ← hsd]`. Take the linear combination `hz + h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ρ hρ0 hρ1`. Establish `hdρ` using `hd ρ hρ0 hρ1`. Take `⟨hbρ, hbρn⟩` from `convergesAt_of_norm_le hρ0 (T.norm_coeffB_bigPart_le (1 / 2) d) hdρ`. Take `⟨hsρ, hsρn⟩` from `convergesAt_of_norm_le hρ0 (T.norm_coeffB_smallPart_le hθ0 d) hdρ`. Take `⟨ρ', hρ'0, hρ'1, hρρ'⟩ : ∃ ρ' : ℝ, 0 < ρ' ∧ ρ' < 1 ∧ ρ < ρ'` from `⟨(ρ + 1) / 2, by positivity, by linarith, by linarith⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hbρ', -⟩` from `convergesAt_of_norm_le hρ'0 (T.norm_coeffB_bigPart_le (1 / 2) d) (hd ρ' hρ'0 hρ'1)`. Establish `hzc : ConvergesAt (T.coeffB z) ρ` using `convergesAt_of_weight_le hρ0 hρρ' (T.coeffB_neg_exists z) (hzb ρ' hρ'0 hρ'1 hbρ')`. Establish `hzn : gaussNorm (T.coeffB z) ρ ≤ 2 * gaussNorm (T.coeffB d) ρ`. Use `gaussNorm_le fun n => (hzb ρ hρ0 hρ1 hbρ n).trans ?_` and prove the remaining obligations. Rewrite using `[show ((1 : ℝ) / 2)⁻¹ = 2 by norm_num]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_le_mul_of_nonneg_left hbρn (by norm_num)`. Take `⟨hi1, hi2⟩` from `T.gaussNorm_invSelf_pow c hρ0`. Take `⟨hwc, hwn⟩` from `T.convergesAt_coeffB_mul hρ0 hρ1 hi1 hsρ`. Rewrite `hwc`, `hwn` using `[hwdef]`. Establish `hwd : gaussNorm (T.coeffB w) ρ ≤ ρ ^ (-(c : ℤ)) * gaussNorm (T.coeffB d) ρ`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hwn, hi2]`. Conclude with `mul_le_mul_of_nonneg_left hsρn (zpow_pos hρ0 _).le`. Establish `hM : 0 ≤ fwdConst (p ^ F.a) c ρ * ρ ^ (-(c : ℤ)) * gaussNorm (T.coeffB d) ρ` using `mul_nonneg (mul_nonneg (fwdConst_nonneg hq c hρ0) (zpow_pos hρ0 _).le) (gaussNorm_nonneg hρ0)`. Take `⟨hSc, hSn⟩` from `F.gaussNorm_fwdSum_sub_le c hθ0.le hw (Nat.zero_le K) hρ0 hρ1 hM fun k _ => by`. Rewrite using `[mul_assoc (fwdConst _ _ _)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_le_mul (le_fwdConst hq c hρ0 k) hwd (gaussNorm_nonneg hρ0) (fwdConst_nonneg hq c hρ0)`. Establish `e0 : F.fwdSum c w 0 = 0` using `by simp [fwdSum]`. Rewrite `hSc`, `hSn` using `[e0, sub_zero]`. Take `⟨htc, htn⟩` from `T.convergesAt_coeffB_add hρ0 hρ1 hzc hSc`. Use `⟨htc, htn.trans ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[max_mul_of_nonneg _ _ (gaussNorm_nonneg hρ0)]`. Conclude with `max_le_max hzn (by rw [mul_assoc] at hSn ⊢; exact hSn)`. Introduce `ρ hρ0 hρ1`. Establish `hdρ` using `hd ρ hρ0 hρ1`. Take `⟨hsρ, hsρn⟩` from `convergesAt_of_norm_le hρ0 (T.norm_coeffB_smallPart_le hθ0 d) hdρ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hi1, hi2⟩` from `T.gaussNorm_invSelf_pow c hρ0`. Take `⟨-, hwn⟩` from `T.convergesAt_coeffB_mul hρ0 hρ1 hi1 hsρ`. Rewrite `hwn` using `[hwdef]`. Take `⟨hKc, hKn⟩` from `F.gaussNorm_fwd_iterate_le c hθ0.le hw K hρ0 hρ1`. Take `⟨hp1, hp2⟩` from `gaussNorm_π_pow (T := T) c hρ0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hRc, hRn⟩` from `T.convergesAt_coeffB_mul hρ0 hρ1 hp1 hKc`. Use `⟨hRc, ?_⟩` and prove the remaining obligations. Rewrite using `[hRn, hp2]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (hKn.trans ?_) (pow_pos hρ0 c).le` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[hwn, hi2]`. Conclude with `mul_le_mul_of_nonneg_left hsρn (zpow_pos hρ0 _).le`. Use `_ = ρ ^ (-((c * K : ℕ) : ℤ)) * (1 / 2 : ℝ) ^ ((p ^ F.a) ^ K - 1) * gaussNorm (T.coeffB d) ρ := by`. Rewrite using `[← zpow_natCast ρ c]`.
-
-Establish `: ρ ^ (c : ℤ) * ρ ^ (-(c : ℤ)) = 1`. Rewrite using `[← zpow_add₀ hρ0.ne', add_neg_cancel, zpow_zero]`. Take the linear combination `(ρ ^ (-((c * K : ℕ) : ℤ)) * (1 / 2 : ℝ) ^ ((p ^ F.a) ^ K - 1) * gaussNorm (T.coeffB d) ρ) * this`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_approx_sol [IsAlgClosed L] (ha : 0 < F.a) (c : ℕ) {d : T.B}
     (hd : ∀ ρ : ℝ, 0 < ρ → ρ < 1 → ConvergesAt (T.coeffB d) ρ) (K : ℕ) :

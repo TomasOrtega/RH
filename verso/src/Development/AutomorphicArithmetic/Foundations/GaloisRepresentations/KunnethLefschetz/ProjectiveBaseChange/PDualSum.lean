@@ -6,33 +6,31 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 namespace UpperTheory.Gal.KunnethLefschetz
 
 /- English proof (translation)
-Set `eA` to `LinearEquiv.ofBijective (LinearMap.pi pa) ha`. Set `eB` to `LinearEquiv.ofBijective (LinearMap.pi pe) hb`. Set `eC` to `LinearEquiv.ofBijective (LinearMap.pi pc) hc`. Establish `kB : ∀ (x : ∀ s, B' s) t, pe t (eB.symm x) = x t` using `fun x t => congrFun (eB.apply_symm_apply x) t`. Establish `kC : ∀ (x : ∀ s, C' s) t, pc t (eC.symm x) = x t` using `fun x t => congrFun (eC.apply_symm_apply x) t`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : Fin r → C` to `fun s => eC.symm (Pi.single (M := C') s ((tr s).symm 1))`. Establish `hg : ∀ s t, pc t (g s) = Pi.single (M` using `C') s ((tr s).symm 1) t := fun s t => kC _ t`. Use `⟨g, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s h0`. Rewrite `h0` using `[hg, Pi.single_eq_same]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg (tr s) h0` as an intermediate fact. Simplify using `at this`. Introduce `s v`. Use `⟨tr s v, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, Pi.single_eq_same]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `(tr s).injective` to reduce the goal to its premises. Simplify using the standard rewrite rules. Introduce `s t hst`. Rewrite using `[hg, Pi.single_eq_of_ne (Ne.symm hst)]`. Rewrite using `[eq_top_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `c _`. Establish `hc' : c = ∑ s, tr s (pc s c) • g s`. Apply `hc.1` to reduce the goal to its premises. Use function extensionality and compare the values at `t`. Simplify using `only [map_sum, map_smul, hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single t]`. Rewrite using `[Pi.single_eq_same]`. Apply `(tr t).injective` to reduce the goal to its premises. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_eq_of_ne (Ne.symm hb), smul_zero]`. Introduce `ht`. Conclude with `absurd (Finset.mem_univ t) ht`. Rewrite using `[hc']`. Conclude with `Submodule.sum_mem _ fun s _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨s, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff]`. Introduce `f _`. Establish `hy : ∀ s, ∃ y' : B' s, ∀ a', tr s (cup' s a' y') = f (eA.symm (Pi.single s a'))`. Introduce `s`. Take `⟨y', hy'⟩` from `(hd s).2 (f ∘ₗ eA.symm.toLinearMap ∘ₗ LinearMap.single F A' s)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨y', fun a' => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun hy' a'` as an intermediate fact. Simplify using `using this`. Use `choose y' hy' using hy`. Set `φ : Fin r → Module.Dual F A` to `fun s => f ∘ₗ eA.symm.toLinearMap ∘ₗ LinearMap.single F A' s ∘ₗ pa s`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `memS : ∀ s, φ s ∈ {f : Module.Dual F A | ∃ (s : Fin r) (y : B), ∀ x, cup x y = f x • g s}`. Introduce `s`. Use `⟨s, eB.symm (Pi.single s (y' s)), fun x => ?_⟩` and prove the remaining obligations. Apply `hc.1` to reduce the goal to its premises. Use function extensionality and compare the values at `t`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [map_smul, nat, kB, hg]`. Distinguish the cases in `hts : t = s`. Substitute `hts` using the available equality. Simplify using `only [Pi.single_eq_same]`. Apply `(tr t).injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy']`. Simplify using `[φ]`. Rewrite using `[Pi.single_eq_of_ne hts, Pi.single_eq_of_ne hts]`. Simplify using the standard rewrite rules. Establish `hf : f = ∑ s, φ s`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Establish `e1 : (∑ s, Pi.single s (pa s x) : ∀ s, A' s) = eA x` using `Finset.univ_sum_single _`. Rewrite using `[LinearMap.sum_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hf]`.
-
-Conclude with `Submodule.sum_mem _ fun s _ => Submodule.subset_span (memS s)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dualSum_abs {F : Type*} [Field F] {r : ℕ} {A B C : Type*}
     [AddCommGroup A] [Module F A] [AddCommGroup B] [Module F B] [AddCommGroup C] [Module F C]
@@ -122,9 +120,9 @@ private theorem dualSum_abs {F : Type*} [Field F] {r : ℕ} {A B C : Type*}
     exact Submodule.sum_mem _ fun s _ => Submodule.subset_span (memS s)
 
 /- English proof (translation)
-Unfold `DualSum`. Introduce `l _ hR X r Y j d hb hD a b w h hw`. Substitute `hw` using the available equality. Establish `hD' : ∀ s, ∃ tr : V l (Y s) (2 * (d : ℤ)) ≃ₗ[ℚ_[l]] ℚ_[l], ∀ (n m : ℤ) (h : n + m = 2 * d), Function.Bijective ((cupV l (Y s) h).compr₂ tr.toLinearMap).flip` using `fun s => (hD s).2.2`. Use `choose tr htr using hD'`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, h1, h2, h3, h4, h5⟩` from `dualSum_abs (fun s => pb l (j s) a) (fun s => pb l (j s) b) (fun s => pb l (j s) (2 * (d : ℤ))) (hb a) (hb b) (hb _) (cupV l X h) (fun s => cupV l (Y s) h) (fun s x y => hR.nat (j s) a b _ h x y) tr (fun s => htr s a b h)`. Conclude with `⟨g, ⟨h1, h2, h3⟩, h4, h5⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dualSum_holds : DualSum := by
   unfold DualSum

@@ -14,37 +14,31 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨hUo, hFc, c₀, C₀, hc₀, hb⟩` from `hB n s hs p q R`. Use `set K : ℝ := ((N * n : ℕ) : ℝ) with hK`. Use `set C₁ : ℝ := max C₀ 0 with hC₁`. Use `⟨(Fintype.card (Fin N → Equiv.Perm (Fin n)) : ℝ) * ((K / c₀) ^ n) ^ N * C₁, fun y => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, lam, hy⟩` from `herm_spectral y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w : Fin n → ℝ := fun i => 1 + |lam i| with hw`. Establish `hwpos : ∀ i, 0 < w i` using `fun i => by simp only [hw]; positivity`. Use `set W : ℝ := ∏ i, w i with hW`. Establish `hWpos : 0 < W` using `Finset.prod_pos fun i _ => hwpos i`. Use `set d : Mc n := Matrix.diagonal (fun i => (lam i : ℂ)) with hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ρ : Fin n → Fin n → ℝ := fun i j => c₀ * Real.sqrt ((1 + |lam i|) * (1 + |lam j|)) with hρ`. Establish `hρpos : ∀ i j, 0 < ρ i j` using `fun i j => mul_pos hc₀ (Real.sqrt_pos.2 (mul_pos (hwpos i) (hwpos j)))`. Establish `hlink` using `(hL n (Fr s p q R) (Ugood s) hUo hFc (herm_mem_Ugood s hs)).1 N y`. Rewrite using `[cls_zero, hlink, hy]`. Use `set F' : Mc n → ℂ := fun c => Fr s p q R (k * c * kᴴ) with hF'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set U' : Set (Mc n) := {c | k * c * kᴴ ∈ Ugood s} with hU'`. Establish `hU'o : IsOpen U'` using `hUo.preimage (contDiff_conj k).continuous`. Establish `hF'c : ContDiffOn ℂ (⊤ : ℕ∞) F' U'` using `hFc.comp (contDiff_conj k).contDiffOn (fun c hc => hc)`. Establish `hdisc : pdisc d ρ ⊆ U'` using `fun b hb' => (hb k hk lam b hb').1`. Establish `hdmem : d ∈ U'` using `hdisc (fun i j => by simp [hρpos i j |>.le])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hherm' : ∀ y', herm y' ∈ U'` using `fun y' => conj_mem_Ugood s k hk _ (herm_mem_Ugood s hs y')`. Rewrite using `[← hI n (Fr s p q R) (Ugood s) hUo hFc k hk N d hdmem, (hL n F' U' hU'o hF'c hherm').2 N d hdmem]`. Establish `hM : ∀ b ∈ pdisc d ρ, ‖F' b‖ ≤ C₁ * W ^ (-((p + q : ℕ) : ℝ))` using `fun b hb' => ((hb k hk lam b hb').2).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg hWpos.le _))`. Establish `hword : ∀ τ : Fin N → Equiv.Perm (Fin n), ‖word ((List.finRange N).flatMap fun j => (List.finRange n).map fun k => (τ j k, k)) F' d‖ ≤ ((K / c₀) ^ n / W) ^ N * (C₁ * W ^ (-((p + q : ℕ) : ℝ)))`. Introduce `τ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hC n F' U' hU'o hF'c d ρ hρpos hdisc _ hM ((List.finRange N).flatMap fun j => (List.finRange n).map fun k => (τ j k, k))`. Use `h.trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[List.map_flatMap]`. Simplify using `only [List.map_map, Function.comp_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prod_blocks N (fun j k => (((List.finRange N).flatMap fun j => (List.finRange n).map fun k => (τ j k, k)).length : ℝ) / ρ (τ j k) k)]`. Rewrite using `[length_blocks]`. Use `show ∏ j, ∏ k, K / ρ ((τ j) k) k = ((K / c₀) ^ n / W) ^ N`. Establish `hblock : ∀ j, ∏ k, K / ρ ((τ j) k) k = (K / c₀) ^ n / W`. Introduce `j`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs` using `prod_sqrt_perm (τ j) w hwpos`. Simplify using `only [hw] at hs`. Simplify using `only [hρ]`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, hs, div_pow]`. Simplify using `only [hW, hw]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[Finset.prod_congr rfl fun j _ => hblock j, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `hsgn : ∀ τ : Fin N → Equiv.Perm (Fin n), ‖(((∏ j, (Equiv.Perm.sign (τ j) : ℤ) : ℤ) : ℂ))‖ = 1`. Introduce `τ`. Establish `h : ∀ j, |((Equiv.Perm.sign (τ j) : ℤ))| = 1` using `fun j => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (τ j)) with h | h <;> simp [h]`. Establish `h2 : |∏ j, ((Equiv.Perm.sign (τ j) : ℤ))| = 1`. Rewrite using `[Finset.abs_prod, Finset.prod_eq_one fun j _ => h j]`. Rewrite using `[Complex.norm_intCast]`. Conclude with `h2` after adjusting the coercions.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdP : dP y ≤ W ^ (2 : ℝ)`. Rewrite using `[dP_of_spectral y k hk lam hy, Real.rpow_two, hW, ← Finset.prod_pow]`. Use `Finset.prod_le_prod (fun i _ => by positivity) fun i _ => ?_` and prove the remaining obligations. Simplify using `only [hw]`. Establish `: lam i ^ 2 = |lam i| ^ 2` using `(sq_abs _).symm`.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[abs_nonneg (lam i)]`. Establish `hWe : ∀ e : ℝ, 0 ≤ e → W ^ (-e) ≤ (dP y) ^ (-e / 2)`. Introduce `e he`. Establish `h1 : W ^ (-e) = (W ^ (2 : ℝ)) ^ (-e / 2)`. Rewrite using `[← Real.rpow_mul hWpos.le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Put the polynomial expressions in normal form. Rewrite using `[h1]`. Conclude with `Real.rpow_le_rpow_of_nonpos (dP_pos y) hdP (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun τ _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[norm_mul, hsgn τ, one_mul]`. Conclude with `hword τ`. Use `_ = (Fintype.card (Fin N → Equiv.Perm (Fin n)) : ℝ) * ((K / c₀) ^ n) ^ N * C₁ * (W ^ (-((p + q + N : ℕ) : ℝ))) := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Establish `: W ^ (-((p + q + N : ℕ) : ℝ)) = W ^ (-((p + q : ℕ) : ℝ)) * (W ^ N)⁻¹`.
-
-Rewrite using `[show (-((p + q + N : ℕ) : ℝ)) = (-((p + q : ℕ) : ℝ)) + (-(N : ℝ)) by push_cast; ring, Real.rpow_add hWpos, Real.rpow_neg hWpos.le, Real.rpow_natCast, Real.rpow_neg hWpos.le, Real.rpow_natCast]`. Rewrite using `[this, div_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (Fintype.card (Fin N → Equiv.Perm (Fin n)) : ℝ) * ((K / c₀) ^ n) ^ N * C₁ * (dP y) ^ (-((p + q + N : ℕ) : ℝ) / 2) := by`. Use `mul_le_mul_of_nonneg_left (hWe _ (by positivity)) ?_` and prove the remaining obligations.
-
-Use `mul_nonneg (mul_nonneg (by positivity) (pow_nonneg (pow_nonneg (div_nonneg (by positivity) hc₀.le) _) _)) (le_max_right _ _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ratBound (hC : CauchyW) (hI : Invar) (hB : PBound) (hL : Link) (s : ℂ) (hs : s = 1 ∨ s = -1)
     (p q N : ℕ) (R : MvPolynomial (Bool × Fin n × Fin n) ℂ) :

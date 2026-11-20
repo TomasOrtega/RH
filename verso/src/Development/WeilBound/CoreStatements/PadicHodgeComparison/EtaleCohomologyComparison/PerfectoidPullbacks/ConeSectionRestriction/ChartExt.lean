@@ -12,7 +12,7 @@ namespace CrystallineSemistableComparison.Pb
 variable {K : Type} [Field K] {R : Type} [CommRing R] [IsDomain R] [Algebra K R]
 
 /- English proof (translation)
-The claim follows from `chart_ext_pf A T B0 Bu hAT hAB0 hB0 hTBu hB0FG hB0Int hBuFG hBuInt hFrac w hwA hw0 hscale`.
+A detailed English derivation is pending.
 -/
 theorem chart_ext (A T B0 Bu : Subalgebra K R) (hAT : A ≤ T) (hAB0 : A ≤ B0) (hB0 : B0 ≤ Bu) (hTBu : T ≤ Bu)
     (hB0FG : B0.FG) (hB0Int : ∀ b ∈ B0, IsIntegral A b) (hBuFG : Bu.FG) (hBuInt : ∀ b ∈ Bu, IsIntegral T b)

@@ -20,7 +20,7 @@ open NumberField IsDedekindDomain ValuativeRel Matrix Polynomial Formalism.Conju
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GoodTransport.good_transport`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RecTTransport.good_of_repRel : ∀ (k k' : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] [CharZero k'] (i : k ≃+* k'), Continuous i → ∀ (x : IrrGL k) (x' : IrrGL k'), RepRel i x x' → UpperTheory.Zero.LLC.Good x → UpperTheory.Zero.LLC.Good x' :=
   GlobalTheory.GoodTransport.good_transport

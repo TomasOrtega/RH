@@ -17,11 +17,9 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicN
   {Λ : Submodule (𝓞 E) S.V} {g : ℕ} {T T' : E} {F : LFlag S r T} {F' : LFlag S r T'}
 
 /- English proof (translation)
-Use `P.isPrime` as an intermediate fact. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => rw [a_frame_last]`. Conclude with `c3eqv_le_loc _ hzm`. Consider the case `cast b`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[a_frame_castSucc]`. Take `⟨c, -, hc1, heq⟩` from `hc.1 P`. Establish `h1 : F₁.fl.e b ∈ Submodule.span (𝓞 E) (Set.range fun a => c a • F₁.fl.e a)` using `Submodule.subset_span ⟨b, by simp [hc1 hP b]⟩`. Establish `h2 : F₁.fl.e b ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (XLam Λ F₁)`. Rewrite using `[heq]`.
-
-Conclude with `c3eqv_le_loc _ h1`. Conclude with `c3eqv_loc_mono hX h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_mem_localization (F₁ : LFlag S r T) (UUm : Submodule (𝓞 E) S.V) (hX : XLam Λ F₁ ≤ UUm) (hzm : F₁.fl.z ∈ UUm)
     (hc : IsFixedConv Λ g F₁) (P : HeightOneSpectrum (𝓞 E)) (hP : (g : 𝓞 E) ∈ P.asIdeal) (b : Fin (r + 1)) :
@@ -46,25 +44,21 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicN
   {Λ : Submodule (𝓞 E) S.V} {g : ℕ} {T T' : E} {F : LFlag S r T} {F' : LFlag S r T'}
 
 /- English proof (translation)
-Introduce `w hw`. Apply `BridgeLemma.lframe_local_global` to reduce the goal to its premises. Introduce `P`. Use `P.isPrime` as an intermediate fact. Take `⟨ξ, hξ, hloc⟩` from `hgen`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hA : XLam Λ F ≤ UU Λ F F'` using `le_sup_of_le_left (le_sup_of_le_left le_sup_left)`. Establish `hB : F.fl.z ∈ UU Λ F F'`. Rewrite using `[← hz.2]`. Conclude with `(le_sup_of_le_left (le_sup_of_le_left le_sup_right) : Submodule.span (𝓞 E) {F.zt} ≤ UU Λ F F') (Submodule.mem_span_singleton_self _)`. Establish `hC : XLam Λ F' ≤ UU Λ F F'` using `le_sup_of_le_left le_sup_right`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : F'.fl.z ∈ UU Λ F F'`. Rewrite using `[← hz'.2]`. Conclude with `(le_sup_right : Submodule.span (𝓞 E) {F'.zt} ≤ UU Λ F F') (Submodule.mem_span_singleton_self _)`. Distinguish the cases in `hP : (g : 𝓞 E) ∈ P.asIdeal`. Establish `h1 : w ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Mplus Λ g F F' ξ)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← (hloc P).1 hP]`. Conclude with `c3eqv_le_loc _ hw`. Take `⟨s, hs, hsw⟩` from `BridgeLemma.lframe_mem_locP.1 h1`. Establish `hle : Mplus Λ g F F' ξ ≤ (Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (UU Λ F F')).comap (LinearMap.lsmul (𝓞 E) S.V (g : 𝓞 E))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x ((hx | hx) | ⟨b, rfl⟩)`. Conclude with `c3eqv_le_loc _ (Submodule.smul_mem _ _ (hA hx))`. Establish `hx' : x = F.zt` using `hx`. Rewrite using `[hx', hz.2]`. Conclude with `c3eqv_le_loc _ (Submodule.smul_mem _ _ hB)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (g : 𝓞 E) • ((g : E)⁻¹ • (frame F' b - frameAct (frame F) ξ b)) ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (UU Λ F F')`. Establish `hgE : (g : E) ≠ 0` using `by exact_mod_cast hg`. Establish `e : (g : 𝓞 E) • ((g : E)⁻¹ • (frame F' b - frameAct (frame F) ξ b)) = frame F' b - frameAct (frame F) ξ b`. Rewrite using `[← algebraMap_smul E (g : 𝓞 E), map_natCast, smul_smul, mul_inv_cancel₀ hgE, one_smul]`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.sub_mem _ (frame_mem_localization F' _ hC hD hc' P hP b) ?_` and prove the remaining obligations. Simplify using `only [frameAct]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Use `Submodule.smul_mem _ (ξ a b) (frame_mem_localization F _ hA hB hc P hP a)` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul E (ξ a b)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h2 : (g : 𝓞 E) • (s • w) ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (UU Λ F F')` using `hle hsw`. Take `⟨t, ht, htx⟩` from `BridgeLemma.lframe_mem_locP.1 h2`. Use `⟨t * s, fun h => ?_, ?_⟩` and prove the remaining obligations. Break down `P.isPrime.mem_or_mem h with h | h` into its components or cases.
-
-Conclude with `ht h`. Conclude with `hs h`. Rewrite using `[mul_smul, smul_comm s (g : 𝓞 E) w]`. Conclude with `htx`. Establish `h1 : w ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (UU Λ F F')`.
-
-Rewrite using `[← (hloc P).2 hP]`. Conclude with `c3eqv_le_loc _ hw`. Take `⟨s, hs, hsw⟩` from `BridgeLemma.lframe_mem_locP.1 h1`. Conclude with `⟨s, hs, by rw [smul_comm]; exact Submodule.smul_mem _ _ hsw⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem generic_kills_B (hg : g ≠ 0) (hz : IsLift Λ F) (hz' : IsLift Λ F') (hc : IsFixedConv Λ g F) (hc' : IsFixedConv Λ g F')
     (hgen : IsGeneric Λ g F F') : ∀ w ∈ BLat Λ F F', (g : 𝓞 E) • w ∈ UU Λ F F' := by
@@ -119,9 +113,9 @@ theorem generic_kills_B (hg : g ≠ 0) (hz : IsLift Λ F) (hz' : IsLift Λ F') (
     exact ⟨s, hs, by rw [smul_comm]; exact Submodule.smul_mem _ _ hsw⟩
 
 /- English proof (translation)
-Unfold `gB`. Rewrite using `[eq_bot_iff, Submodule.smul_le]`. Introduce `a ha q _`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.mem_bot, mul_smul, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_mem _ c (generic_kills_B hg hz hz' hc hc' hgen w.1 w.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generic_B_eq_bot (hg : g ≠ 0) (hz : IsLift Λ F) (hz' : IsLift Λ F') (hc : IsFixedConv Λ g F)
     (hc' : IsFixedConv Λ g F') (hgen : IsGeneric Λ g F F') : gB Λ g F F' = ⊥ := by
@@ -150,13 +144,11 @@ def GenericIndexOne (C' Cl Cg cb Cu cT CT C0 A : ℝ) : Prop :=
     La Λ (gS D) (lf D F0) F' ≤ Thp Λ (lf D F0) F'
 
 /- English proof (translation)
-Introduce `hH F0 _ _ Λ hΛr F' hT' hgen x hx`. Establish `hSt : Cnt.Stand D u u'` using `hH.2.1`. Establish `hPr` using `Formalism.MainNotions.VanishingOnXAndXPlus.primeHyp_of_stand D u u' hSt`. Establish `hF : FixedHyp D Λ (lf D F0)` using `hΛr.2.1`. Establish `hg : gS D ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `gS`. Conclude with `Nat.mul_ne_zero hSt.2.2.2.2.2.2.2.1.ne_zero hSt.2.2.2.2.2.2.2.2.1.ne_zero`. Take `⟨_, _, _, _, φ, hφ, _⟩` from `lemma_one_section D u (Tu D u') Λ (lf D F0) F' hF hPr hT'.1`. Establish `hbot` using `generic_B_eq_bot hg hF.2.2.1 hT'.1.1 hF.2.2.2 hT'.2.1 hgen`. Establish `h0 : φ (Submodule.Quotient.mk ⟨x, hx⟩) = φ 0`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `hall : ∀ y : gB Λ (gS D) (lf D F0) F', (y : BQ Λ (lf D F0) F') = 0` using `fun y => (Submodule.mem_bot (𝓞 D.host.E)).1 (hbot.le y.2)`. Rewrite using `[hall, hall]`. Establish `h3` using `hφ h0`. Rewrite `h3` using `[Submodule.Quotient.mk_eq_zero]`.
-
-Conclude with `h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generic_index_one (C' Cl Cg cb Cu cT CT C0 A : ℝ) : GenericIndexOne D large₂ u u' C' Cl Cg cb Cu cT CT C0 A := by
   intro hH F0 _ _ Λ hΛr F' hT' hgen x hx

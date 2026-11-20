@@ -34,9 +34,9 @@ variable (k) in
 abbrev uc (a : ℂˣ) : IrrGL k := IrrGL.ofChar (unrChar k a) (isSmoothChar_of_isUnram (isUnram_unrChar k a))
 
 /- English proof (translation)
-Establish `h2` using `h.hasSupport`. Take `⟨z, hz⟩` from `Multiset.card_eq_one.1 ((Segment.card_ms Δ).trans h1)`. Establish `h3 : z = Δ.first`. Establish `hm : z ∈ Δ.ms` using `by rw [hz]; exact Multiset.mem_singleton_self z`. Take `⟨a, ha, rfl⟩` from `Segment.mem_carrier.1 (Segment.mem_ms.1 hm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl : a = 0` from `by omega`. Simplify using the standard rewrite rules. Rewrite `h2` using `[hz, h3]`. Conclude with `GlobalTheory.CompanionTheory.CuspPairSub.eq_of_hasSupport_singleton h2`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_first_of_isLSeg {Δ : Segment k} {y : IrrGL k} (h : IsLSeg Δ y.rep) (h1 : Δ.len = 1) : y = Δ.first := by
   have h2 := h.hasSupport
@@ -50,17 +50,15 @@ theorem eq_first_of_isLSeg {Δ : Segment k} {y : IrrGL k} (h : IsLSeg Δ y.rep) 
   exact GlobalTheory.CompanionTheory.CuspPairSub.eq_of_hasSupport_singleton h2
 
 /- English proof (translation)
-Establish `hv : ∀ i, ∃ v : (uc k (β i)).2.rep.V, v ≠ 0 ∧ ∀ g ∈ GlobalTheory.SplitWeil.KO k (Fin (uc k (β i)).1), (uc k (β i)).rep g v = v` using `fun i => by`. Set `r` to `IrrRep.det (Fin 1) (unrChar k (β i)) (isSmoothChar_of_isUnram (isUnram_unrChar k (β i)))`. Set `e` to `equivRep r`. Set `u : r.V` to `(1 : ℂ)`. Establish `hu : u ≠ 0` using `show (1 : ℂ) ≠ 0 from one_ne_zero`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨e u, fun h0 => hu (e.toLinearEquiv.injective (h0.trans (map_zero _).symm)), fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1` using `e.toIntertwiningMap.isIntertwining _ _ g u`. Use `h1.symm.trans (congrArg e ?_)` and prove the remaining obligations. Establish `h4 : unrChar k (β i) (Matrix.GeneralLinearGroup.det g) = 1` using `isUnram_unrChar k (β i) _ (GlobalTheory.StepData.valuation_det_of_mem_KO hg)`. Use `show ((ofChar (detChar (Fin 1) (unrChar k (β i)))) g) (1 : ℂ) = (1 : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[ofChar, twist, detChar_apply]`. Conclude with `h4`. Use `choose v hv0 hvK using hv`. Take `⟨f, hf, hf1⟩` from `GlobalTheory.SatInd.exists_fixed_apply_one (stdBlocks (fun i => (uc k (β i)).1) hd) (ρ := piTensor fun i => (uc k (β i)).rep) (x := PiTensorProduct.tprod ℂ v) fun g hg => by`. Rewrite using `[piTensor_tprod]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `hvK a _ (hg a)`. Use `(Submodule.ne_bot_iff _).2 ⟨f, hf, fun h0 => ?_⟩` and prove the remaining obligations. Establish `h5 : PiTensorProduct.tprod ℂ v = 0` using `by rw [← hf1, h0]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl : ∀ i, ∃ l : Module.Dual ℂ (uc k (β i)).2.rep.V, l (v i) ≠ 0` using `fun i => by by_contra! hn`. Conclude with `hv0 i ((Module.forall_dual_apply_eq_zero_iff ℂ (v i)).1 hn)`. Use `choose l hl using hl`. Set `ev : (⨂[ℂ] i, (uc k (β i)).2.rep.V) →ₗ[ℂ] ℂ` to `PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ (Fin c) ℂ).compLinearMap l)`. Establish `h6 : ev (PiTensorProduct.tprod ℂ v) = ∏ i, l i (v i)` using `by simp [ev]`.
-
-Rewrite `h6` using `[h5, map_zero]`. Conclude with `Finset.prod_ne_zero_iff.2 (fun i _ => hl i) h6.symm`.
+A detailed English derivation is pending.
 -/
 theorem isSpherical_prodIrr_uc {c N : ℕ} (β : Fin c → ℂˣ) (hd : ∑ i, (uc k (β i)).1 = N) :
     IsSpherical (prodIrr (fun i => uc k (β i)) hd) := by
@@ -98,7 +96,7 @@ theorem isSpherical_prodIrr_uc {c N : ℕ} (β : Fin c → ℂˣ) (hd : ∑ i, (
   exact Finset.prod_ne_zero_iff.2 (fun i _ => hl i) h6.symm
 
 /- English proof (translation)
-Set `φ` to `multiProdEquiv (stdBlocks (fun i => (uc k (α i)).1) hd) fun a => (equivRep (IrrRep.det (Fin 1) (unrChar k (α a)) (isSmoothChar_of_isUnram (isUnram_unrChar k (α a))))).symm`. Conclude with `(IsSubquotient.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective).trans (GlobalTheory.PermPrin.isSubquotient_multiProd_prinSeries _ _)`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isSubquotient_prodIrr_uc {N : ℕ} (α : Fin N → ℂˣ) (hd : ∑ i, (uc k (α i)).1 = N) :
     IsSubquotient (prodIrr (fun i => uc k (α i)) hd) (prinSeries fun i => unrChar k (α i)) := by

@@ -18,23 +18,15 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ConeSmallHol
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he' K μK μ hKs hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h`. Take `⟨K₀, μK₀, μ₀, hK₀, hK₀c, -, -⟩` from `GlobalTheory.T.theta_stabilizer_exists hK.base F E σ B (b + 2) G.V' G.q (b + 2 - G.q) hT.base hT.geo.hV'`. Establish `hKK : K = K₀`. Use extensionality with `g`. Rewrite using `[hKs g, hK₀ g]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Substitute `hKK` using the available equality. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK₀c`. Use `haveI : IsFiniteMeasure μK := inferInstance`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Take `⟨eq⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Use `haveI : LocallyCompactSpace (AE F E) := eq.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := eq.secondCountableTopology`. Use `haveI : T2Space (AE F E) := eq.isEmbedding.t2Space`. Use `haveI : LocallyCompactSpace (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.secondCountableTopology`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : LocallyCompactSpace (AE F E)ˣ := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E)ˣ := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Use `haveI : SigmaCompactSpace (AE F E)ˣ := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `haveI : SigmaFinite μ := Measure.IsHaarMeasure.sigmaFinite μ`.
-
-Establish `hν : Continuous fun l : (AE F E)ˣ => ((X.ν l : Circle) : ℂ)`. Establish `h1 : Continuous fun l : (AE F E)ˣ => X.α l / X.β l` using `hT.chars.heckeα.1.div' hT.chars.heckeβ.1`. Establish `h2 : Continuous (X.α / X.β)` using `h1.congr fun l => (MonoidHom.div_apply _ _ _).symm`. Conclude with `continuous_subtype_val.comp h2`. Establish `ha : Continuous fun l : (AE F E)ˣ => (absE F E l : ℝ)` using `NNReal.continuous_coe.comp GlobalTheory.Doubling.continuous_absE`.
-
-Establish `hpos : ∀ l : (AE F E)ˣ, 0 < (absE F E l : ℝ)` using `fun l => by`. Establish `h0` using `congrArg (fun t : ℝ≥0 => (t : ℝ)) (map_mul_eq_one (absE F E) (mul_inv_cancel l))`. Simplify using `only [NNReal.coe_mul, NNReal.coe_one] at h0`. Break down `(NNReal.coe_nonneg (absE F E l)).lt_or_eq with h' | h'` into its components or cases. Conclude with `h'`.
-
-Rewrite `h0` using `[← h', zero_mul]`. Conclude with `absurd h0 zero_ne_one`. Take `⟨g, hg, hgb⟩` from `GlobalTheory.T.config_b_stabilizer_integral_identity hK F E σ B a b G G₁ H H' hC e' he' K μK μ hKs hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h`. Establish `hm` using `GlobalTheory.T.config_b_stabilizer_integral_bound hK F E σ B a b G G₁ H H' hC e' he' K μK μ hKs hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h`. Establish `hA : AEStronglyMeasurable (Function.uncurry fun (k : K) (l : (AE F E)ˣ) => G₁.M'.I om₁' (e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, h) Φ'))) 1 * ((X.ν l : Circle) : ℂ)) (μK.prod μ)` using `hm.mul ((hν.measurable.comp measurable_snd).aestronglyMeasurable)`.
-
-Establish `key` using `GlobalTheory.T.holomorphic_parameter_integral μK μ (fun (k : K) (l : (AE F E)ˣ) => G₁.M'.I om₁' (e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, h) Φ'))) 1 * ((X.ν l : Circle) : ℂ)) (fun l => (absE F E l : ℝ)) ha.measurable hpos hA g hg (fun k l => by`. Rewrite using `[norm_mul, Circle.norm_coe, mul_one]`. Conclude with `hgb k l)`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coneI_differentiableOn : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

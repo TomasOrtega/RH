@@ -7,9 +7,9 @@ namespace PI.UnitaryGroupMassFormula.ProdUnitInert
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Introduce `h`. Establish `hmem : t ^ 2 + (d : ℤ_[p]) ∈ RingHom.ker (PadicInt.toZMod (p` using `p)) := by`. Rewrite using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`. Conclude with `h`. Rewrite `hmem` using `[RingHom.mem_ker, map_add, map_pow, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hd` to reduce the goal to its premises. Use `⟨PadicInt.toZMod t, ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `(-1 : ZMod p) * hmem`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma not_small_sq_add (d : ℕ) (hd : ¬ IsSquare (((-(d : ℤ) : ℤ) : ZMod p))) (t : ℤ_[p]) :
     ¬ ‖t ^ 2 + (d : ℤ_[p])‖ < 1 := by
@@ -23,25 +23,23 @@ lemma not_small_sq_add (d : ℕ) (hd : ¬ IsSquare (((-(d : ℤ) : ℤ) : ZMod p
   linear_combination (-1 : ZMod p) * hmem
 
 /- English proof (translation)
-Simplify using `using Padic.norm_int_le_one (p := p) (d : ℤ)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma natCast_norm_le_one (d : ℕ) : ‖(d : ℚ_[p])‖ ≤ 1 := by
   simpa using Padic.norm_int_le_one (p := p) (d : ℤ)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hY`. Use `push Not at hY`. Establish `hY0 : Y ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hY`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : (X / Y) ^ 2 + d = 1 / Y ^ 2`. Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hsmall : ‖(X / Y) ^ 2 + (d : ℚ_[p])‖ < 1`. Rewrite using `[key, norm_div, norm_one, norm_pow]`. Establish `: 1 < ‖Y‖ ^ 2` using `by nlinarith`. Rewrite using `[div_lt_one (by linarith)]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `ht1 : ‖X / Y‖ ≤ 1`. Assume the negation of the conclusion as `ht1`. Use `push Not at ht1`. Establish `h2 : 1 < ‖(X / Y) ^ 2‖` using `by rw [norm_pow]; nlinarith`. Establish `hd1` using `natCast_norm_le_one (p := p) d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ‖(X / Y) ^ 2‖ ≠ ‖(d : ℚ_[p])‖` using `by intro h'; linarith`. Rewrite `hsmall` using `[Padic.add_eq_max_of_ne hne]`. Use `le_max_left ‖(X / Y) ^ 2‖ ‖(d : ℚ_[p])‖` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Set `T : ℤ_[p]` to `⟨X / Y, ht1⟩`.
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `not_small_sq_add d hd T` to reduce the goal to its premises. Establish `hc : (((T ^ 2 + (d : ℤ_[p]) : ℤ_[p])) : ℚ_[p]) = (X / Y) ^ 2 + d`. Establish `hT : (T : ℚ_[p]) = X / Y` using `rfl`. Rewrite using `[PadicInt.coe_add, PadicInt.coe_pow, hT, PadicInt.coe_natCast]`. Rewrite using `[PadicInt.norm_def, hc]`.
-
-Conclude with `hsmall`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma y_norm_le_one (d : ℕ) (hd : ¬ IsSquare (((-(d : ℤ) : ℤ) : ZMod p))) (X Y : ℚ_[p])
     (h : X ^ 2 + d * Y ^ 2 = 1) : ‖Y‖ ≤ 1 := by
@@ -78,9 +76,9 @@ lemma y_norm_le_one (d : ℕ) (hd : ¬ IsSquare (((-(d : ℤ) : ℤ) : ZMod p)))
   exact hsmall
 
 /- English proof (translation)
-Establish `hX2 : X ^ 2 = 1 + (-(d * Y ^ 2))` using `by linear_combination h`. Establish `hd1` using `natCast_norm_le_one (p := p) d`. Establish `hle : ‖X‖ ^ 2 ≤ 1`. Rewrite using `[← norm_pow, hX2]`. Use `(Padic.nonarchimedean _ _).trans (max_le (le_of_eq norm_one) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_neg, norm_mul, norm_pow]`. Establish `h0 : ‖Y‖ ^ 2 ≤ 1` using `by nlinarith [norm_nonneg Y]`. Use polynomial arithmetic with `[norm_nonneg (d : ℚ_[p]), norm_nonneg Y, sq_nonneg ‖Y‖]`. Use polynomial arithmetic with `[norm_nonneg X]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma x_norm_le_one (d : ℕ) (X Y : ℚ_[p]) (hY : ‖Y‖ ≤ 1)
     (h : X ^ 2 + d * Y ^ 2 = 1) : ‖X‖ ≤ 1 := by
@@ -95,7 +93,7 @@ lemma x_norm_le_one (d : ℕ) (X Y : ℚ_[p]) (hY : ‖Y‖ ≤ 1)
   nlinarith [norm_nonneg X]
 
 /- English proof (translation)
-Establish `hc : (((q : ℚ_[p]) : PadicAlgCl p) : ℂ_[p]) = (q : ℂ_[p])`. Simplify using `only [PadicComplex.coe_eq, map_ratCast]`. Rewrite using `[← hc, PadicComplex.norm_extends, PadicAlgCl.norm_extends]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma normC_ratCast (q : ℚ) : ‖(q : ℂ_[p])‖ = ‖(q : ℚ_[p])‖ := by
   have hc : (((q : ℚ_[p]) : PadicAlgCl p) : ℂ_[p]) = (q : ℂ_[p]) := by
@@ -103,17 +101,15 @@ lemma normC_ratCast (q : ℚ) : ‖(q : ℂ_[p])‖ = ‖(q : ℚ_[p])‖ := by
   rw [← hc, PadicComplex.norm_extends, PadicAlgCl.norm_extends]
 
 /- English proof (translation)
-Establish `hQ : (x : ℚ_[p]) ^ 2 + d * (y : ℚ_[p]) ^ 2 = 1`. Conclude with `congrArg (fun q : ℚ => (q : ℚ_[p])) hxy` after adjusting the coercions. Establish `hy` using `y_norm_le_one d hd _ _ hQ`. Establish `hx` using `x_norm_le_one d _ _ hy hQ`. Establish `hy' : ‖(y : ℂ_[p])‖ ≤ 1` using `by rw [normC_ratCast]; exact hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : ‖(x : ℂ_[p])‖ ≤ 1` using `by rw [normC_ratCast]; exact hx`. Establish `hdC : ‖(d : ℂ_[p])‖ ≤ 1`. Establish `h1` using `normC_ratCast (p := p) (d : ℚ)`. Move the coercions through the operations in `at h1`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `natCast_norm_le_one d`. Establish `hγ1 : ‖γ‖ ≤ 1`. Establish `h2 : ‖γ‖ ^ 2 ≤ 1` using `by rw [← norm_pow, hγ, norm_neg]; exact hdC`. Use polynomial arithmetic with `[norm_nonneg γ]`. Establish `hC : (x : ℂ_[p]) ^ 2 + d * (y : ℂ_[p]) ^ 2 = 1`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `congrArg (fun q : ℚ => (q : ℂ_[p])) hxy` after adjusting the coercions. Establish `hprod : ((x : ℂ_[p]) + y * γ) * ((x : ℂ_[p]) - y * γ) = 1`. Take the linear combination `hC - (y : ℂ_[p]) ^ 2 * hγ`. Establish `hyγ : ‖(y : ℂ_[p]) * γ‖ ≤ 1`. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[norm_nonneg (y : ℂ_[p]), norm_nonneg γ]`. Establish `hA : ‖(x : ℂ_[p]) + y * γ‖ ≤ 1` using `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx' hyγ)`. Establish `hB : ‖(x : ℂ_[p]) - y * γ‖ ≤ 1` using `sub_eq_add_neg (x : ℂ_[p]) (y * γ) ▸ (IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx' (by rwa [norm_neg]))`. Establish `hAB : ‖(x : ℂ_[p]) + y * γ‖ * ‖(x : ℂ_[p]) - y * γ‖ = 1`. Rewrite using `[← norm_mul, hprod, norm_one]`.
-
-Use `le_antisymm hA ?_` and prove the remaining obligations. Use polynomial arithmetic with `[norm_nonneg ((x : ℂ_[p]) + y * γ), norm_nonneg ((x : ℂ_[p]) - y * γ)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_conic_eq_one (d : ℕ) (hd : ¬ IsSquare (((-(d : ℤ) : ℤ) : ZMod p))) (x y : ℚ)
     (hxy : x ^ 2 + d * y ^ 2 = 1) (γ : ℂ_[p]) (hγ : γ ^ 2 = -(d : ℂ_[p])) :

@@ -11,7 +11,7 @@ variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 omit [IsTotallyReal F] in
 /- English proof (translation)
-Take `⟨n, hn, e⟩` from `isOfFinOrder_iff_pow_eq_one.1 h`. Establish `e2 : ω.1 ^ n = 1` using `congrArg Subtype.val e`. Conclude with `⟨n, hn, fun x => by rw [← MonoidHom.pow_apply, e2, MonoidHom.one_apply]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pow_char {ω : HChar F} (h : IsOfFinOrder ω) : ∃ n, 0 < n ∧ ∀ x, ω.1 x ^ n = 1 := by
   obtain ⟨n, hn, e⟩ := isOfFinOrder_iff_pow_eq_one.1 h
@@ -19,9 +19,9 @@ theorem pow_char {ω : HChar F} (h : IsOfFinOrder ω) : ∃ n, 0 < n ∧ ∀ x, 
   exact ⟨n, hn, fun x => by rw [← MonoidHom.pow_apply, e2, MonoidHom.one_apply]⟩
 
 /- English proof (translation)
-Take `⟨n, hn, e⟩` from `isOfFinOrder_iff_pow_eq_one.1 h`. Establish `e1 : TR.expU z = TR.expU ((n : ℝ)⁻¹ • z) ^ n`. Use `Units.ext (funext fun i => ?_)` and prove the remaining obligations. Establish `: (n : ℝ) ≠ 0` using `by positivity`. Simplify using `only [Units.val_pow_eq_pow_val, Pi.pow_apply, TR.expU_val, ← Real.exp_nat_mul, Pi.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, map_pow, map_pow]`. Establish `e2 : ω.1 ^ n = 1` using `congrArg Subtype.val e`. Conclude with `DFunLike.congr_fun e2 _`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exp_triv {ω : HChar F} (h : IsOfFinOrder ω) (z : TR.Rinf F) : ω.1 (TR.infId F (TR.expU z)) = 1 := by
   obtain ⟨n, hn, e⟩ := isOfFinOrder_iff_pow_eq_one.1 h
@@ -57,17 +57,17 @@ def atV (v : InfinitePlace F) (x : ℝˣ) : (TR.Rinf F)ˣ := pU.symm (Pi.mulSing
 open Classical in
 omit [NumberField F] [IsTotallyReal F] in
 /- English proof (translation)
-The claim follows from `pU_symm_val _ w`.
+A detailed English derivation is pending.
 -/
 theorem atV_val (v w : InfinitePlace F) (x : ℝˣ) :
     ((atV v x : (TR.Rinf F)ˣ) : TR.Rinf F) w = (((Pi.mulSingle v x : InfinitePlace F → ℝˣ) w : ℝˣ) : ℝ) := pU_symm_val _ w
 
 /- English proof (translation)
-Use `Units.ext (Prod.ext (funext fun w => ?_) ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 - TR.infEq F 1 + TR.infEq F ((atV v (-1) : (TR.Rinf F)ˣ) : TR.Rinf F)) w = Pi.mulSingle (M := fun w : InfinitePlace F => w.Completion) v (-1) w`. Rewrite using `[map_one, sub_self, zero_add]`. Express the relevant statement in the definitionally equal form `(InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm (((atV v (-1) : (TR.Rinf F)ˣ) : TR.Rinf F) w) = _`. Distinguish the cases in `h : w = v`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Establish `: ((atV w (-1) : (TR.Rinf F)ˣ) : TR.Rinf F) w = -1` using `by rw [atV_val]; simp`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `: ((atV v (-1) : (TR.Rinf F)ˣ) : TR.Rinf F) w = 1` using `by rw [atV_val, Pi.mulSingle_eq_of_ne h]; simp`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this]`. Simplify using `[h]`. Express the relevant statement in the definitionally equal form `(1 : Af F) - 0 + 0 = 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem atV_neg (v : InfinitePlace F) :
     TR.infId F (atV v (-1)) = ReciprocityTheory.Neutral.Bridge.HCFR.infIdele F v (-1) := by
@@ -92,24 +92,24 @@ theorem atV_neg (v : InfinitePlace F) :
 open Classical in
 omit [IsTotallyReal F] in
 /- English proof (translation)
-Simplify using `only [atV]`. Rewrite using `[← map_prod, Finset.univ_prod_mulSingle, MulEquiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_atV (s : (TR.Rinf F)ˣ) : s = ∏ v, atV v (pU s v) := by
   simp only [atV]
   rw [← map_prod, Finset.univ_prod_mulSingle, MulEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Take `⟨s, hss, e⟩` from `TR.exists_sign_mul_expU u`. Establish `hsv : ∀ v, (s : TR.Rinf F) v = 1 ∨ (s : TR.Rinf F) v = -1` using `fun v => by`. Use `congrArg (fun x : (TR.Rinf F)ˣ => (x : TR.Rinf F) v) hss` as an intermediate fact. Simplify using `only [Units.val_mul, Pi.mul_apply, Units.val_one, Pi.one_apply] at this`. Conclude with `mul_self_eq_one_iff.1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsign : ∀ v, ((SignType.sign (u.val v) : ℝ)) = (s : TR.Rinf F) v` using `fun v => by`. Establish `hu : u.val v = (s : TR.Rinf F) v * Real.exp (Real.log |u.val v|)` using `by conv_lhs => rw [e]`. Simplify using `[TR.expU_val]`. Rewrite using `[hu, sign_mul, sign_pos (Real.exp_pos _), mul_one]`. Apply the tactic sequence `rcases hsv v with h | h <;> rw [h] <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hL : ((ω.1 (TR.infId F u) : ℂˣ) : ℂ) = ∏ v, ((ω.1 (TR.infId F (atV v (pU s v))) : ℂˣ) : ℂ)`. Establish `h1 : ω.1 (TR.infId F u) = ω.1 (TR.infId F s)`. Rewrite using `[e, map_mul, map_mul, exp_triv hω, mul_one]`. Rewrite using `[h1]`. Use `conv_lhs => rw [prod_atV s]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_prod, map_prod, Units.coe_prod]`. Rewrite using `[hL]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hsign v]`. Establish `hpv : ((pU s v : ℝˣ) : ℝ) = (s : TR.Rinf F) v` using `pU_val s v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `hsv v with h | h` into its components or cases. Establish `: pU s v = 1` using `Units.ext (hpv.trans h)`. Rewrite using `[this, h]`. Simplify using `[atV]`. Establish `: pU s v = -1` using `Units.ext (by rw [hpv, h]; simp)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, h, atV_neg]`. Use `hs v` as an intermediate fact. Rewrite `this` using `[HChar.locInf]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inf_sign {k : InfinitePlace F → ℕ} {ω : HChar F} (hω : IsOfFinOrder ω) (hs : Sgn k ω) (u : (TR.Rinf F)ˣ) :
     ((ω.1 (TR.infId F u) : ℂˣ) : ℂ) = ∏ v, ((SignType.sign (u.val v) : ℝ) : ℂ) ^ k v := by
@@ -145,7 +145,7 @@ theorem inf_sign {k : InfinitePlace F → ℕ} {ω : HChar F} (hω : IsOfFinOrde
     simpa using this
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal v) (algebraMap F (InfiniteAdeleRing F) x v) = _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem pInf_alg (x : F) (v : InfinitePlace F) :
     TR.pInf F (algebraMap F (Ad F) x) v = InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) x := by
@@ -153,17 +153,17 @@ theorem pInf_alg (x : F) (v : InfinitePlace F) :
   simp
 
 /- English proof (translation)
-Set `φ : F →+* TR.Rinf F` to `(TR.pInf F).comp (algebraMap F (AdeleRing (𝓞 F) F))`. Establish `e : TR.infId F (Units.map φ.toMonoidHom a) * finId F (ratU F a) = Units.map (algebraMap F (AdeleRing (𝓞 F) F)).toMonoidHom a`. Use `Units.ext (TR.ad_ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul]`. Express the relevant statement in the definitionally equal form `TR.pInf F (1 - TR.sInf F 1 + TR.sInf F (φ a)) * TR.pInf F (1 - GlobalTheory.CuspRep.sFin F 1 + GlobalTheory.CuspRep.sFin F _) = φ a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : ∀ x, TR.pInf F (TR.sInf F x) = x` using `fun x => (TR.infEq F).symm_apply_apply x`. Establish `h2 : ∀ x, TR.pInf F (GlobalTheory.CuspRep.sFin F x) = 0` using `fun x => map_zero (TR.infEq F).symm`. Simplify using `only [map_add, map_sub, map_one, h1, h2, sub_self, zero_add, sub_zero, add_zero, mul_one]`. Rewrite using `[Units.val_mul, map_mul]`. Express the relevant statement in the definitionally equal form `((1 : Af F) - 0 + 0) * ((1 : Af F) - 1 + algebraMap F (Af F) a) = algebraMap F (Af F) a`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [sub_self, zero_add, sub_zero, add_zero, one_mul]`. Establish `h1 : ω.1 (Units.map (algebraMap F (AdeleRing (𝓞 F) F)).toMonoidHom a) = 1` using `ω.2.2 a`. Rewrite `h1` using `[← e, map_mul]`. Establish `h2` using `congrArg Units.val h1`. Rewrite `h2` using `[Units.val_mul, Units.val_one, inf_sign hω hs]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ∀ v, ((Units.map φ.toMonoidHom a : (TR.Rinf F)ˣ) : TR.Rinf F) v = InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) (a : F)` using `fun v => pInf_alg (a : F) v`. Simplify using `only [h3] at h2`. Establish `hP : (∏ v, ((SignType.sign (InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) (a : F)) : ℝ) : ℂ) ^ k v) * ∏ v, ((SignType.sign (InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) (a : F)) : ℝ) : ℂ) ^ k v = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_pow]`. Establish `: ((SignType.sign (InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) (a : F)) : ℝ) : ℂ) * ((SignType.sign (InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) (a : F)) : ℝ) : ℂ) = 1`. Establish `ha : InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) (a : F) ≠ 0` using `(map_ne_zero _).2 a.ne_zero`. Break down `lt_or_gt_of_ne ha with h | h` into its components or cases. Rewrite using `[sign_neg h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[sign_pos h]`. Simplify using the standard rewrite rules. Rewrite using `[this, one_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem fin_rat {k : InfinitePlace F → ℕ} {ω : HChar F} (hω : IsOfFinOrder ω) (hs : Sgn k ω) (a : Fˣ) :
     ((ω.1 (finId F (ratU F a)) : ℂˣ) : ℂ) =
@@ -210,13 +210,13 @@ end UpperTheory.Esk.HyperbolicSetupLemmas
 
 open UpperTheory.Esk.HyperbolicSetupLemmas in
 /- English proof (translation)
-Introduce `F _ _ _ k c ω χ hω hχ`. Use `⟨?_, fun hs => ⟨?_, inf_sign hω hs⟩⟩` and prove the remaining obligations. Take `⟨n, hn, hp⟩` from `pow_char hω`. Use `⟨n, hn, fun h => ?_⟩` and prove the remaining obligations. Take `⟨⟨k', hk', z, hz⟩, h2⟩` from `hχ h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h2 k' hk' z hz]`. Conclude with `hp _`. Introduce `γ h`. Take `⟨h1, h2, h3⟩` from `center_entries h`. Establish `h0 : γ 0 0 ≠ 0` using `fun e => γ.det_ne_zero (by rw [Matrix.det_fin_two, e, h1]; simp)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a : Fˣ := Units.mk0 _ h0 with ha`. Establish `hz : jF F γ = zc F (ratU F a)`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap F (Af F) (γ i j) = Matrix.scalar (Fin 2) (algebraMap F (Af F) (γ 0 0)) i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [h1, h2, ← h3]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, hχ2⟩` from `hχ ⟨jF F γ, (mkDat c χ).cenH γ h⟩`. Establish `e` using `hχ2 1 (one_mem _) (ratU F a) (by rw [one_mul]; exact hz)`. Express the relevant statement in the definitionally equal form `((χ ⟨jF F γ, _⟩ : ℂˣ) : ℂ) = ∏ v, ((SignType.sign (InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) (γ 0 0)) : ℝ) : ℂ) ^ k v`. Rewrite using `[e, fin_rat hω hs a]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.hyperbolic_orbit_integral_proof : UpperTheory.Esk.H0b := by
   intro F _ _ _ k c ω χ hω hχ

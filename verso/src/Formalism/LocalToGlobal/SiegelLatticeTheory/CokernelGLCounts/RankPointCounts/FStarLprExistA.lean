@@ -16,13 +16,11 @@ section Glob
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1 : ∀ x ∈ s, ∀ y ∈ Submodule.span D.host.E s, (VS D).hT x y = 0`. Introduce `x hx y hy`. Establish `hle : Submodule.span D.host.E s ≤ LinearMap.ker ((VS D).hT x)`. Rewrite using `[Submodule.span_le]`. Introduce `y' hy'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h x hx y' hy'`. Conclude with `hle hy`. Introduce `x hx y hy`. Establish `hle : Submodule.span D.host.E s ≤ LinearMap.ker ((VS D).hT.flip y)`. Rewrite using `[Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x' hx'`. Use `show (VS D).hT.flip y x' = 0`. Rewrite using `[LinearMap.flip_apply]`. Conclude with `h1 x' hx' y hy`. Use `hle hx` as an intermediate fact.
-
-Rewrite `this` using `[LinearMap.mem_ker, LinearMap.flip_apply]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LprExistA_iso_span {s : Set (VS D).V} (h : ∀ x ∈ s, ∀ y ∈ s, (VS D).hT x y = 0) :
     ∀ x ∈ Submodule.span D.host.E s, ∀ y ∈ Submodule.span D.host.E s, (VS D).hT x y = 0 := by
@@ -45,9 +43,9 @@ theorem LprExistA_iso_span {s : Set (VS D).V} (h : ∀ x ∈ s, ∀ y ∈ s, (VS
   exact this
 
 /- English proof (translation)
-Introduce `v hv`. Establish `hle : Submodule.span D.host.E s ≤ LinearMap.ker ((VS D).hT.flip x)`. Rewrite using `[Submodule.span_le]`. Introduce `v' hv'`. Use `show (VS D).hT.flip x v' = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.flip_apply]`. Conclude with `h v' hv'`. Use `hle hv` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.flip_apply]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LprExistA_orth_span {s : Set (VS D).V} {x : (VS D).V} (h : ∀ v ∈ s, (VS D).hT v x = 0) :
     ∀ v ∈ Submodule.span D.host.E s, (VS D).hT v x = 0 := by
@@ -63,21 +61,17 @@ theorem LprExistA_orth_span {s : Set (VS D).V} {x : (VS D).V} (h : ∀ v ∈ s, 
   exact this
 
 /- English proof (translation)
-Establish `hmap : Submodule.span D.host.E (Set.range fun b : Fin D.R.rS => g2' b.castSucc) ≤ (Submodule.span D.host.E (Set.range fun a : Fin D.R.rS => g1 a.castSucc)).comap β.symm.toLinearMap`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `hG.xmap' b`. Use `{ iso := hG.iso lam := hG.lam lam' := hG.lam' xmap := fun a => hX ▸ hG.xmap a xmap' := fun a => ?_ zmap := ?_ fiso := hG.fiso g2iso := fun a b => ?_ proj := hG.proj gram := hG.gram theta := fun x1 hx1 => ?_ ratio := ?_ omp := ?_ om := ?_ }` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h : g2 a.castSucc ∈ Submodule.span D.host.E (Set.range fun b : Fin D.R.rS => g2' b.castSucc)`. Rewrite using `[hX]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Conclude with `hmap h`. Establish `h1` using `hG.zmap`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[hX]`. Establish `h3` using `Submodule.add_mem _ h1 hz`. Rewrite `h3` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `hiso : ∀ x ∈ Set.range (fun b : Fin D.R.rS => g2' b.castSucc), ∀ y ∈ Set.range (fun b : Fin D.R.rS => g2' b.castSucc), (VS D).hT x y = 0`. Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨j, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hG.g2iso i j`. Establish `ha : g2 a.castSucc ∈ Submodule.span D.host.E (Set.range fun b : Fin D.R.rS => g2' b.castSucc)`. Rewrite using `[hX]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Establish `hb : g2 b.castSucc ∈ Submodule.span D.host.E (Set.range fun b : Fin D.R.rS => g2' b.castSucc)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[hX]`. Conclude with `Submodule.subset_span ⟨b, rfl⟩`. Conclude with `LprExistA_iso_span hiso _ ha _ hb`. Take `⟨x2, h1, h2, h3⟩` from `hG.theta x1 hx1`. Use `⟨x2, fun i => ?_, h2, hX ▸ h3⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `i with a | b` into its components or cases. Conclude with `h1 (Sum.inl a)`. Establish `horth : ∀ v ∈ Set.range g2', (VS D).hT v x2 = 0`. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `h1 (Sum.inr c)`.
-
-Establish `hb : g2 b ∈ Submodule.span D.host.E (Set.range g2')`. Rewrite using `[hsp]`. Conclude with `Submodule.subset_span ⟨b, rfl⟩`. Conclude with `LprExistA_orth_span horth _ hb`. Rewrite using `[← ht, ← hr]`.
-
-Conclude with `hG.ratio`. Rewrite using `[← ht, ← ho']`. Conclude with `hG.omp`. Rewrite using `[← ht, ← ho, ← hX]`. Conclude with `hG.om`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gfacts_move {Λ : Submodule (𝓞 D.host.E) (VS D).V} {f g1 g2 g2' : Fin (D.R.rS + 1) → (VS D).V}
     {β : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hG : GFacts Λ f g1 g2' β)
@@ -140,7 +134,7 @@ theorem gfacts_move {Λ : Submodule (𝓞 D.host.E) (VS D).V} {f g1 g2 g2' : Fin
   · rw [← ht, ← ho, ← hX]; exact hG.om
 
 /- English proof (translation)
-Establish `hη` using `inv_unitri ξ h1 h2`. Use `gfacts_move hG (Xs_frameAct_inv h ξ h1 h2) (span_frameAct_inv h ξ h1 h2) ?_ (GDl_frameAct_top f h ξ⁻¹ hη.1 hη.2) (GDl_frameAct_r f h ξ⁻¹ hη.1 hη.2) (Gom'_frameAct f h ξ⁻¹ hη.1 hη.2) (Gom_frameAct f h ξ⁻¹ hη.1 hη.2)` and prove the remaining obligations. Conclude with `frameAct_last_sub h ξ⁻¹ (hη.2 _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gfacts_frameAct {Λ : Submodule (𝓞 D.host.E) (VS D).V} {f g1 h : Fin (D.R.rS + 1) → (VS D).V}
     {β : (VS D).V ≃ₗ[D.host.E] (VS D).V} (ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E))
@@ -161,7 +155,7 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V)
 
 /- English proof (translation)
-Unfold `IotaG at h ⊢`. Rewrite using `[← hX]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaG_congr {q : E} {abelian₂ : Submodule M.L.O V} {r : ℕ} {f₀ f₁ f₂ f₂' : Fin (r + 1) → V} {e : V ≃ₗ[E] V}
     (hX : H.X f₂ = H.X f₂') (h : IotaG H q abelian₂ f₀ f₁ f₂ e) : IotaG H q abelian₂ f₀ f₁ f₂' e := by
@@ -176,11 +170,11 @@ section Loc
 variable {D : D7} (Z : LocDat D) (p : PlF D)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Unfold `Loc.HermSp.X`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Establish `hm : g2' a.castSucc ∈ Submodule.span D.host.E (Set.range fun b : Fin D.R.rS => g2 b.castSucc)`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← hX]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (bcP_mem_X Z p g2 (sF' Z p) (isUnit_sF' Z p) hm)`. Unfold `Loc.HermSp.X`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Establish `hm : g2 a.castSucc ∈ Submodule.span D.host.E (Set.range fun b : Fin D.R.rS => g2' b.castSucc)`. Rewrite using `[hX]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (bcP_mem_X Z p g2' (sF' Z p) (isUnit_sF' Z p) hm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locX_eq {g2 g2' : Fin (D.R.rS + 1) → (VS D).V}
     (hX : Submodule.span D.host.E (Set.range fun b : Fin D.R.rS => g2' b.castSucc) =
@@ -201,7 +195,7 @@ theorem locX_eq {g2 g2' : Fin (D.R.rS + 1) → (VS D).V}
     exact Submodule.smul_mem _ _ (bcP_mem_X Z p g2' (sF' Z p) (isUnit_sF' Z p) hm)
 
 /- English proof (translation)
-Introduce `gg hgg`. Conclude with `iotaG_congr (locH Z p) (locX_eq Z p (Xs_frameAct_inv h ξ h1 h2)) (hI gg hgg)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem iotaEl_frameAct {Λ : Submodule (𝓞 D.host.E) (VS D).V} {f g1 h : Fin (D.R.rS + 1) → (VS D).V}
     {β : (VS D).V ≃ₗ[D.host.E] (VS D).V} (ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E))

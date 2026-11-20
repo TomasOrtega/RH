@@ -10,11 +10,9 @@ noncomputable section
 namespace Formalism.HadamardInequality.P
 
 /- English proof (translation)
-Take `⟨q0, hq0, hq00⟩` from `(Submodule.ne_bot_iff Q).1 hne`. Establish `hcl : IsClosed (Q : Set E)`. Rewrite using `[← Submodule.coe_toAddSubgroup]`. Conclude with `AddSubgroup.isClosed_of_discrete`. Establish `hfin : (Metric.closedBall (0 : E) ‖q0‖ ∩ (Q : Set E)).Finite` using `Metric.finite_isBounded_inter_isClosed DiscreteTopology.isDiscrete Metric.isBounded_closedBall hcl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S := (Metric.closedBall (0 : E) ‖q0‖ ∩ (Q : Set E)) \ {0} with hS`. Establish `hSfin : S.Finite` using `hfin.sdiff`. Establish `hq0S : q0 ∈ S` using `⟨⟨by simp, hq0⟩, hq00⟩`. Take `⟨q, hqS, hmin⟩` from `Set.exists_min_image S (fun x => ‖x‖) hSfin ⟨q0, hq0S⟩`. Use `⟨q, hqS.1.2, hqS.2, fun q' hq' hq'0 => ?_⟩` and prove the remaining obligations.
-
-Distinguish the cases in `hle : ‖q'‖ ≤ ‖q0‖`. Conclude with `hmin q' ⟨⟨by simpa using hle, hq'⟩, hq'0⟩`. Conclude with `(hmin q0 hq0S).trans (le_of_lt (not_le.1 hle))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem tr_shortest {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] (Q : Submodule ℤ E) [hQ : DiscreteTopology Q] (hne : Q ≠ ⊥) :
@@ -35,17 +33,17 @@ theorem tr_shortest {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   · exact (hmin q0 hq0S).trans (le_of_lt (not_le.1 hle))
 
 /- English proof (translation)
-Take `⟨hsat, hNS, -⟩` from `Formalism.F.saturation_properties E M N hMd hNM`. Use `set S := Formalism.F.satur M N with hSdef`. Establish `hSW : span ℝ (S : Set E) = W`. Rewrite using `[← hNW]`. Use `le_antisymm (span_le.2 fun x hx => (Submodule.mem_inf.1 hx).2) (span_mono hNS)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hQd : DiscreteTopology (Formalism.F.quot M S)` using `(Formalism.F.degree_quotient E M S hMd hsat).1`. Use `set Q := Formalism.F.quot M S with hQdef`. Establish `hmemQ : ∀ q, q ∈ Q ↔ ∃ m ∈ M, Wᗮ.starProjection m = q`. Introduce `q`. Simplify using `[hQdef, Formalism.F.quot, hSW]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsubW : ∀ x, x - Wᗮ.starProjection x ∈ W`. Introduce `x`. Use `sub_starProjection_mem_orthogonal (K := Wᗮ) x` as an intermediate fact. Rewrite `this` using `[orthogonal_orthogonal]`. Then use the resulting hypothesis. Establish `hQne : Q ≠ ⊥`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hQ`. Apply `hW` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← hspan, span_le]`. Introduce `m hm`. Establish `h0 : Wᗮ.starProjection m = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: Wᗮ.starProjection m ∈ Q` using `(hmemQ _).2 ⟨m, hm, rfl⟩`. Rewrite `this` using `[hQ]`. Conclude with `(Submodule.mem_bot ℤ).1 this`. Use `hsubW m` as an intermediate fact. Rewrite `this` using `[h0, sub_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨q, hqQ, hq0, hqmin⟩` from `tr_shortest Q hQne`. Take `⟨m, hm, rfl⟩` from `(hmemQ q).1 hqQ`. Conclude with `⟨m, hm, hq0, fun m' hm' h0 => hqmin _ ((hmemQ _).2 ⟨m', hm', rfl⟩) h0⟩`.
+A detailed English derivation is pending.
 -/
 theorem tr_step {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] (M : Submodule ℤ E) [hMd : DiscreteTopology M]
@@ -85,49 +83,43 @@ theorem tr_step {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   exact ⟨m, hm, hq0, fun m' hm' h0 => hqmin _ ((hmemQ _).2 ⟨m', hm', rfl⟩) h0⟩
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_`. Use `⟨Fin.elim0, Fin.elim0, fun i => i.elim0, linearIndependent_empty_type, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw`. Establish `hr : Set.range (Fin.elim0 : Fin 0 → E) = ∅` using `Set.range_eq_empty _`. Rewrite `hw` using `[hr, Submodule.span_empty, Submodule.mem_bot]`. Use `⟨0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Simplify using `[hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Introduce `hk`. Take `⟨b, t, hbM, hli, ht0, hbn, hWs, hcov⟩` from `ih (by omega)`. Use `set W := span ℝ (Set.range b) with hWdef`. Use `set N := span ℤ (Set.range b) with hNdef`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNM : N ≤ M` using `span_le.2 (Set.range_subset_iff.2 hbM)`. Establish `hNW : span ℝ (N : Set E) = W` using `Submodule.span_span_of_tower ℤ ℝ (Set.range b)`. Establish `hNWle : ∀ z ∈ N, z ∈ W` using `fun z hz => by`. Rewrite using `[← hNW]`. Conclude with `Submodule.subset_span hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hWrk : finrank ℝ W = k`. Rewrite using `[hWdef, finrank_span_eq_card hli, Fintype.card_fin]`. Establish `hWtop : W ≠ ⊤`. Introduce `h`. Establish `: finrank ℝ W = finrank ℝ E` using `by rw [h, finrank_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨m, hm, hq0, hqmin⟩` from `tr_step M hspan W N hNM hNW hWtop`. Use `set q := Wᗮ.starProjection m with hqdef`. Use `set S := ∑ l, t l ^ 2 with hSdef`. Establish `hqW : q ∈ Wᗮ` using `starProjection_apply_mem _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwW : m - q ∈ W`. Use `sub_starProjection_mem_orthogonal (K := Wᗮ) m` as an intermediate fact. Rewrite `this` using `[orthogonal_orthogonal]`. Then use the resulting hypothesis. Take `⟨z, hzN, hz⟩` from `hcov (m - q) hwW`. Use `set b' := m - z with hb'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb'M : b' ∈ M` using `M.sub_mem hm (hNM hzN)`. Establish `hdecomp : b' = q + (m - q - z)` using `by rw [hb']; abel`. Establish `hezW : m - q - z ∈ W` using `W.sub_mem hwW (hNWle z hzN)`. Establish `horth : ∀ e ∈ W, inner ℝ q e = 0` using `fun e he => by`. Rewrite using `[real_inner_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Conclude with `Submodule.inner_right_of_mem_orthogonal he hqW`. Establish `hqpos : 0 < ‖q‖` using `norm_pos_iff.2 hq0`. Establish `hb'n : 4 * ‖b'‖ ^ 2 ≤ 4 * ‖q‖ ^ 2 + S`. Rewrite using `[hdecomp, Formalism.NormUnitaryCountingLemmas.norm_add_sq_eq_of_inner_eq_zero (horth _ hezW)]`. Establish `: m - q - z = m - q - z` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hb'W : b' ∉ W`. Introduce `hW'`. Apply `hq0` to reduce the goal to its premises. Establish `hqW' : q ∈ W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: q = b' - (m - q - z)` using `by rw [hdecomp]; abel`. Rewrite using `[this]`. Conclude with `W.sub_mem hW' hezW`. Conclude with `inner_self_eq_zero.1 (horth q hqW')`. Establish `hsum : ∑ l, (Fin.snoc (α` using `fun _ => ℝ) t ‖q‖ l) ^ 2 = S + ‖q‖ ^ 2 := by`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `[hSdef]`. Use `⟨Fin.snoc b b', Fin.snoc (α := fun _ => ℝ) t ‖q‖, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hb'M`. Simplify using `using hbM j`. Conclude with `linearIndependent_finSnoc.2 ⟨hli, hb'W⟩`. Introduce `i`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Simplify using `using hqpos`. Simplify using `using ht0 j`. Introduce `i`. Rewrite using `[hsum]`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Fin.snoc_last]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Fin.snoc_castSucc]`. Use `hbn j` as an intermediate fact. Use polynomial arithmetic with `[sq_nonneg ‖q‖]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `i`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Use `⟨W, by simpa using hWrk, fun m' hm' h0 => ?_⟩` and prove the remaining obligations. Simplify using `using hqmin m' hm' h0`. Take `⟨W', hW'r, hW'm⟩` from `hWs j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Conclude with `⟨W', by simpa using hW'r, fun m' hm' h0 => by simpa using hW'm m' hm' h0⟩`. Introduce `w' hw'`. Rewrite using `[hsum]`. Rewrite `hw'` using `[Fin.range_snoc, Submodule.mem_span_insert]`. Take `⟨c0, w0, hw0, rfl⟩` from `hw'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `set c : ℤ := round c0 with hc`. Use `set s : ℝ := c0 - c with hs`. Establish `hsabs : |s| ≤ 1 / 2` using `abs_sub_round c0`. Establish `hs2 : s ^ 2 ≤ 1 / 4`. Use `sq_abs s` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[abs_nonneg s]`. Use `set w1 := w0 + s • (m - q - z) with hw1`. Establish `hw1W : w1 ∈ W` using `W.add_mem hw0 (W.smul_mem _ hezW)`. Take `⟨z1, hz1N, hz1⟩` from `hcov w1 hw1W`. Use `⟨c • b' + z1, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Fin.range_snoc, Submodule.mem_span_insert]`. Conclude with `⟨c, z1, hz1N, rfl⟩`. Establish `heq : c0 • b' + w0 - (c • b' + z1) = s • q + (w1 - z1)`. Rewrite using `[← Int.cast_smul_eq_zsmul ℝ, hw1, hs]`. Use `conv_lhs => rw [hdecomp]`.
-
-Simplify using `only [sub_smul, smul_add, smul_sub]`. Normalize the expressions using the abelian group laws. Establish `hw1z1 : w1 - z1 ∈ W` using `W.sub_mem hw1W (hNWle z1 hz1N)`. Rewrite using `[heq, Formalism.NormUnitaryCountingLemmas.norm_add_sq_eq_of_inner_eq_zero (by`. Rewrite using `[real_inner_smul_left, horth _ hw1z1, mul_zero]), norm_smul, Real.norm_eq_abs,`.
-
-Use the proof step `mul_pow, sq_abs]`. Establish `hqq : 0 ≤ ‖q‖ ^ 2` using `sq_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem tr_chain {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] (M : Submodule ℤ E) [hMd : DiscreteTopology M]
@@ -247,27 +239,25 @@ theorem tr_chain {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
         nlinarith
 
 /- English proof (translation)
-Set `P : E →ₗ[ℝ] Wᗮ` to `(Wᗮ.orthogonalProjectionOnto : E →L[ℝ] Wᗮ).toLinearMap`. Establish `hP : ∀ x : E, ((P x : Wᗮ) : E) = Wᗮ.starProjection x` using `fun x => rfl`. Set `Q' : Submodule ℤ Wᗮ` to `M.map (P.restrictScalars ℤ)`. Establish `hmemQ : ∀ x : Wᗮ, x ∈ Q' ↔ ∃ m ∈ M, P m = x`. Introduce `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Q']`. Establish `hQnorm : ∀ x ∈ Q', x ≠ 0 → t ≤ ‖x‖`. Introduce `x hx hx0`. Take `⟨m, hm, rfl⟩` from `(hmemQ x).1 hx`. Establish `h1 : Wᗮ.starProjection m ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hP]`. Conclude with `hx0` after adjusting the coercions. Use `hmin m hm h1` as an intermediate fact. Rewrite `this` using `[← hP]`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hQd : DiscreteTopology Q'` using `Formalism.NormUnitaryCountingLemmas.discreteTopology_of_norm_ge Q' ht hQnorm`. Establish `hQl : IsZLattice ℝ Q'` using `⟨by`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : (x : E) ∈ span ℝ (M : Set E)` using `by rw [hspan]; trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPx : P (x : E) = x` using `Submodule.orthogonalProjectionOnto_mem_subspace_eq_self x`. Rewrite using `[← hPx]`. Establish `: P (x : E) ∈ (span ℝ (M : Set E)).map P` using `Submodule.mem_map_of_mem hx`. Rewrite `this` using `[Submodule.map_span]`. Use `span_mono ?_ this` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `(hmemQ _).2 ⟨m, hm, rfl⟩⟩`. Take `⟨hXd, hXl⟩` from `Formalism.H.dualIsLattice (Wᗮ) Q'`. Use `@hXl hXd` as an intermediate fact. Establish `hDD` using `Formalism.H.dualDual (Wᗮ) Q'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hvX, hvli, hvn⟩` from `Formalism.NormUnitaryCountingLemmas.Final.gn1 Wᗮ (Formalism.H.dual Q') hXd IsZLattice.span_top t ht (by`. Introduce `y hy0 hint`. Establish `hyQ : y ∈ Q'`. Rewrite using `[← hDD, LinearMap.BilinForm.mem_dualSubmodule]`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz⟩` from `hint x hx`. Rewrite using `[Submodule.mem_one]`. Conclude with `⟨z, by rw [algebraMap_int_eq, eq_intCast, ← hz]; exact real_inner_comm _ _⟩`. Conclude with `hQnorm y hyQ hy0)`. Use `⟨fun j => (v j : E), fun j => ?_, ?_, fun j => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Establish `h` using `(LinearMap.BilinForm.mem_dualSubmodule _).1 (hvX j) (P x) ((hmemQ _).2 ⟨x, hx, rfl⟩)`. Take `⟨z, hz⟩` from `Submodule.mem_one.1 h`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[algebraMap_int_eq, eq_intCast]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(z : ℝ) = inner ℝ (v j) (P x) at hz`. Establish `e1 : inner ℝ x (v j : E) = inner ℝ (P x) (v j)` using `(Submodule.inner_orthogonalProjectionOnto_eq_of_mem_right (v j) x).symm`. Use `show inner ℝ x (v j : E) = z`. Rewrite using `[e1, real_inner_comm, hz]`. Conclude with `hvli.map' Wᗮ.subtype (Submodule.ker_subtype _)`.
-
-Simplify using `using hvn j`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tr_dual {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] (M : Submodule ℤ E) (hspan : span ℝ (M : Set E) = ⊤)
@@ -328,7 +318,7 @@ theorem tr_dual {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   · simpa using hvn j
 
 /- English proof (translation)
-The claim follows from `csInf_le ⟨0, fun _ hx => hx.1⟩ ⟨hr, v, hv, hli, hn⟩`.
+A detailed English derivation is pending.
 -/
 theorem tr_succMin_le {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     (L : Submodule ℤ E) {i : ℕ} {r : ℝ} (v : Fin i → E) (hv : ∀ j, v j ∈ L)
@@ -337,34 +327,32 @@ theorem tr_succMin_le {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E
   csInf_le ⟨0, fun _ hx => hx.1⟩ ⟨hr, v, hv, hli, hn⟩
 
 /- English proof (translation)
-The claim follows from `Real.sInf_nonneg fun _ hx => hx.1`.
+A detailed English derivation is pending.
 -/
 theorem tr_succMin_nonneg {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     (L : Submodule ℤ E) (i : ℕ) : 0 ≤ Formalism.HadamardInequality.succMin L i :=
   Real.sInf_nonneg fun _ hx => hx.1
 
 /- English proof (translation)
-Introduce `E _ _ _ M hMd hspan i hi1 hin`. Use `set n := finrank ℝ E with hn`. Use `set k := n + 1 - i with hk`. Establish `hkn : k ≤ n` using `by omega`. Establish `hk1 : 1 ≤ k` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, t, hbM, hli, ht0, hbn, hWs, -⟩` from `tr_chain M hspan k hkn`. Take `⟨j0, -, hj0⟩` from `Finset.exists_max_image Finset.univ t ⟨⟨0, by omega⟩, Finset.mem_univ _⟩`. Use `set T := t j0 with hT`. Establish `hTpos : 0 < T` using `ht0 j0`. Establish `htT : ∀ l, t l ^ 2 ≤ T ^ 2` using `fun l => pow_le_pow_left₀ (ht0 l).le (hj0 l (Finset.mem_univ _)) 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hS : ∑ l, t l ^ 2 ≤ (k : ℝ) * T ^ 2`. Combine the equalities or inequalities in the displayed calculation. Use `set R := Real.sqrt (((k : ℝ) + 3) / 4 * T ^ 2) with hR`. Establish `hR0 : 0 ≤ R` using `Real.sqrt_nonneg _`. Establish `hbR : ∀ j, ‖b j‖ ≤ R`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Establish `h1` using `hbn j`. Establish `h2` using `htT j`. Establish `h3 : ‖b j‖ ^ 2 ≤ ((k : ℝ) + 3) / 4 * T ^ 2` using `by nlinarith`. Use `Real.abs_le_sqrt h3` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis. Establish `hMk : Formalism.HadamardInequality.succMin M k ≤ R` using `tr_succMin_le M b hbM hli hR0 hbR`. Take `⟨W, hWr, hWm⟩` from `hWs j0`. Take `⟨y, hyD, hyli, hyn⟩` from `tr_dual M hspan W hTpos hWm`. Establish `hfr : finrank ℝ W + finrank ℝ Wᗮ = n` using `Submodule.finrank_add_finrank_orthogonal W`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj0k` using `j0.2`. Establish `hij : i ≤ finrank ℝ Wᗮ` using `by omega`. Establish `hWn : finrank ℝ Wᗮ ≤ n` using `by omega`. Use `set A := (n : ℝ) ^ ((3 : ℝ) / 2) / T with hA`. Establish `hA0 : 0 ≤ A` using `by positivity`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyA : ∀ j, ‖y (Fin.castLE hij j)‖ ≤ A`. Introduce `j`. Use `(hyn _).trans (div_le_div_of_nonneg_right ?_ hTpos.le)` and prove the remaining obligations. Conclude with `Real.rpow_le_rpow (Nat.cast_nonneg _) (by exact_mod_cast hWn) (by norm_num)`. Establish `hDi : Formalism.HadamardInequality.succMin (Formalism.HadamardInequality.zdual M) i ≤ A` using `tr_succMin_le _ (fun j => y (Fin.castLE hij j)) (fun j => hyD _) (hyli.comp _ (Fin.castLE_injective hij)) hA0 hyA`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hAR : A * R ≤ (n : ℝ) ^ 2`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg _`. Establish `hA2 : A ^ 2 = (n : ℝ) ^ 3 / T ^ 2`. Rewrite using `[hA, div_pow, ← Real.rpow_natCast ((n : ℝ) ^ ((3 : ℝ) / 2)) 2, ← Real.rpow_mul hn0]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hR2 : R ^ 2 = ((k : ℝ) + 3) / 4 * T ^ 2` using `Real.sq_sqrt (by positivity)`. Establish `hk' : (k : ℝ) ≤ n` using `by exact_mod_cast hkn`. Rewrite using `[← pow_le_pow_iff_left₀ (mul_nonneg hA0 hR0) (by positivity) two_ne_zero]`. Rewrite using `[mul_pow, hA2, hR2]`. Establish `e : (n : ℝ) ^ 3 / T ^ 2 * (((k : ℝ) + 3) / 4 * T ^ 2) = (n : ℝ) ^ 3 * (((k : ℝ) + 3) / 4)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Establish `h4 : ((k : ℝ) + 3) / 4 ≤ n`. Establish `: (1 : ℝ) ≤ k` using `by exact_mod_cast hk1`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem transference_principle : Formalism.HadamardInequality.Transference := by
   intro E _ _ _ M hMd hspan i hi1 hin

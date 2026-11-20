@@ -129,9 +129,9 @@ variable {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [T
 def resFun : (G → T.V) →ₗ[O] (↥H → T.V) := LinearMap.funLeft O T.V (Subtype.val : ↥H → G)
 
 /- English proof (translation)
-Take `⟨⟨hcont, hcoc⟩, hT⟩` from `hc`. Use `⟨⟨hcont.comp continuous_subtype_val, fun g h => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [resFun, LinearMap.funLeft_apply, Subgroup.coe_mul, hcoc]`. Both sides reduce to the same expression. Introduce `g _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hT (g : G) (Set.mem_univ _)`.
+A detailed English derivation is pending.
 -/
 theorem resFun_Z1T (c : G → T.V) (hc : c ∈ latticeCocycles T.L) : resFun T H c ∈ latticeCocycles (resLat T H) := by
   obtain ⟨⟨hcont, hcoc⟩, hT⟩ := hc
@@ -142,7 +142,7 @@ theorem resFun_Z1T (c : G → T.V) (hc : c ∈ latticeCocycles T.L) : resFun T H
     exact hT (g : G) (Set.mem_univ _)
 
 /- English proof (translation)
-Take `⟨x, hx, rfl⟩` from `hc`. Conclude with `⟨x, hx, by funext g; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem resFun_B1T (c : G → T.V) (hc : c ∈ latticeCoboundaries T.L) : resFun T H c ∈ latticeCoboundaries (resLat T H) := by
   obtain ⟨x, hx, rfl⟩ := hc
@@ -385,21 +385,21 @@ def NΔ (T : LocLat G Qp LL O) : Submodule O (W.DD T) where
     exact (W.N T).smul_mem _ ha
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[φA, letφ, letπ, q, W.φ₀_X]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem φA_π : W.φA letπ = letπ * W.q := by
   funext i
   simp [φA, letφ, letπ, q, W.φ₀_X]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[φA, γA, letφ, letγ, W.γ₀_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem φA_γA (g : W.Gam) (a : LetA O n) : W.φA (W.γA g a) = W.γA g (W.φA a) := by
   funext i
   simp [φA, γA, letφ, letγ, W.γ₀_comm]
 
 /- English proof (translation)
-Establish `h : W.φA * W.φA ^ (W.s - 1) = W.φA ^ (W.s - 1) * W.φA` using `(pow_mul_comm' _ _).symm`. Use `congrArg (fun f : LetA O n →ₐ[O] LetA O n => f letπ) h` as an intermediate fact. Simplify using `only [AlgHom.mul_apply] at this`. Rewrite using `[X, this, φA_π, map_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem φA_X : W.φA W.X = W.X * W.Q := by
   have h : W.φA * W.φA ^ (W.s - 1) = W.φA ^ (W.s - 1) * W.φA := (pow_mul_comm' _ _).symm
@@ -718,7 +718,7 @@ open Loc
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Introduce `_ hg x` and use `hg ⟨x.1, h x.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GK_le {K K' : FinExt l} (h : K.1 ≤ K'.1) : GK K' ≤ GK K := fun _ hg x => hg ⟨x.1, h x.2⟩
 
@@ -764,11 +764,9 @@ namespace Loc
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `((PadicComplexInt.integers l).isUnit_iff_valuation_eq_one).mp h`. Establish `h2 : (PadicComplex.valued l).v (algebraMap (PadicComplexInt l) (PadicComplex l) ((l : ℕ) : PadicComplexInt l)) = 1 / (l : ℝ≥0)`. Rewrite using `[map_natCast]`. Conclude with `PadicComplex.valuation_p l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1]`. Establish `hl : (2 : ℝ≥0) ≤ (l : ℝ≥0)` using `by exact_mod_cast (Fact.out : l.Prime).two_le`. Establish `: (1 : ℝ≥0) / (l : ℝ≥0) < 1`. Rewrite using `[div_lt_one (by positivity)]`. Conclude with `lt_of_lt_of_le (by norm_num) hl`.
-
-Conclude with `absurd h2 (ne_of_gt this)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OC_l_not_unit : ¬ IsUnit ((l : ℕ) : PadicComplexInt l) := by
   intro h
@@ -867,7 +865,7 @@ def π₁ : Ainf l := WittVector.teichmuller l AI.ε1 - 1
 def ξ : Ainf l := ∑ i ∈ Finset.range l, (WittVector.teichmuller l AI.ε1) ^ i
 
 /- English proof (translation)
-Establish `h : (WittVector.teichmuller l AI.ε1) ^ l = WittVector.teichmuller l AI.ε`. Rewrite using `[← map_pow, ε1, frobeniusEquiv_symm_pow_p]`. Rewrite using `[μ, π₁, ξ, mul_comm, geom_sum_mul, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem μ_eq : AI.μ = AI.π₁ * AI.ξ := by
   have h : (WittVector.teichmuller l AI.ε1) ^ l = WittVector.teichmuller l AI.ε := by
@@ -894,12 +892,12 @@ instance algZlWCb : Algebra ℤ_[l] (WCb l) := (zlW l (Cb l)).toAlgebra
 instance algZlAinf : Algebra ℤ_[l] (Ainf l) := (zlW l (OCb l)).toAlgebra
 
 /- English proof (translation)
-The claim follows from `map_natCast _ _`.
+A detailed English derivation is pending.
 -/
 example : algebraMap ℤ_[l] (WCb l) ((l : ℕ) : ℤ_[l]) = ((l : ℕ) : WCb l) := map_natCast _ _
 
 /- English proof (translation)
-Simplify using `only [zlW, RingHom.comp_apply]`. Use extensionality with `n`. Rewrite using `[WittVector.map_coeff, WittVector.map_coeff, WittVector.map_coeff]`. Conclude with `congrArg (fun φ : ZMod l →+* S => φ (((WittVector.equiv l).symm.toRingHom x).coeff n)) (RingHom.ext_zmod (f.comp (ZMod.castHom (dvd_refl l) R)) (ZMod.castHom (dvd_refl l) S))`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_zlW {R S : Type} [CommRing R] [CommRing S] [CharP R l] [CharP S l] (f : R →+* S)
     (x : ℤ_[l]) : WittVector.map f (zlW l R x) = zlW l S x := by
@@ -931,7 +929,7 @@ def mapAlgEquivW {R S : Type} [CommRing R] [CommRing S] [CharP R l] [CharP S l] 
     (zlW l S).toAlgebra (mapEquivW l e) (fun x => map_zlW l e.toRingHom x)
 
 /- English proof (translation)
-Unfold `autCb`. Use `erw [IsLocalization.ringEquivOfRingEquiv_eq]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem autCb_alg (g : OCb l ≃+* OCb l) (x : OCb l) :
     autCb l g (algebraMap (OCb l) (Cb l) x) = algebraMap (OCb l) (Cb l) (g x) := by
@@ -939,7 +937,7 @@ theorem autCb_alg (g : OCb l ≃+* OCb l) (x : OCb l) :
   erw [IsLocalization.ringEquivOfRingEquiv_eq]
 
 /- English proof (translation)
-Apply `RingEquiv.toRingHom_injective` to reduce the goal to its premises. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (OCb l))` to reduce the goal to its premises. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `autCb l 1 (algebraMap (OCb l) (Cb l) x) = algebraMap (OCb l) (Cb l) x`. Rewrite using `[autCb_alg]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -952,7 +950,7 @@ theorem autCb_one : autCb l (1 : OCb l ≃+* OCb l) = 1 := by
   rfl
 
 /- English proof (translation)
-Apply `RingEquiv.toRingHom_injective` to reduce the goal to its premises. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (OCb l))` to reduce the goal to its premises. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `autCb l (g * h) (algebraMap (OCb l) (Cb l) x) = autCb l g (autCb l h (algebraMap (OCb l) (Cb l) x))`. Rewrite using `[autCb_alg, autCb_alg, autCb_alg]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -990,9 +988,9 @@ def actWCbHom : GQ l →* (WCb l ≃ₐ[ℤ_[l]] WCb l) where
     simp [mapAlgEquivW, mapEquivW, WittVector.map_coeff, autCb_mul]
 
 /- English proof (translation)
-Establish `hnot : ¬ AI.ζ 2 ^ l ^ 1 = 1`. Rewrite using `[pow_one, AI.ζ_succ 1]`. Conclude with `AI.ζ_one`. Establish `hfin : AI.ζ 2 ^ l ^ (1 + 1) = 1`. Rewrite using `[show l ^ (1 + 1) = l * l by ring, pow_mul, AI.ζ_succ 1, AI.ζ_succ 0, AI.ζ_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `orderOf_eq_prime_pow hnot hfin`. Rewrite `h` using `[show (1 + 1 : ℕ) = 2 from rfl]`. Rewrite using `[← h]`. Conclude with `IsPrimitiveRoot.orderOf _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ζ2_prim : IsPrimitiveRoot (AI.ζ 2) (l ^ 2) := by
   have hnot : ¬ AI.ζ 2 ^ l ^ 1 = 1 := by
@@ -1006,21 +1004,21 @@ theorem ζ2_prim : IsPrimitiveRoot (AI.ζ 2) (l ^ 2) := by
   exact IsPrimitiveRoot.orderOf _
 
 /- English proof (translation)
-Introduce `hε`. Establish `h2` using `AI.ε_coeff 2`. Rewrite `h2` using `[hε, map_one, ← map_one (Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)})), eq_comm, Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨b, hb⟩` from `h2`. Establish `hprim` using `AI.ζ2_prim`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hev` using `Polynomial.eval_one_cyclotomic_prime_pow (R := OC l) (p := l) 1`. Rewrite `hev` using `[Polynomial.cyclotomic_eq_prod_X_sub_primitiveRoots hprim, Polynomial.eval_prod]`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C] at hev`. Use `set s := primitiveRoots (l ^ 2) (OC l)`. Establish `hfac : ∀ μ ∈ s, ∃ c, 1 - μ = (1 - AI.ζ 2) * c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `μ hμ`. Establish `hμ'` using `(mem_primitiveRoots (pow_pos (Fact.out : l.Prime).pos 2)).mp hμ`. Take `⟨i, -, rfl⟩` from `hprim.eq_pow_of_pow_eq_one hμ'.pow_eq_one`. Use `⟨∑ j ∈ Finset.range i, AI.ζ 2 ^ j, ?_⟩` and prove the remaining obligations. Take the linear combination `geom_sum_mul (AI.ζ 2) i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression.
 
-Set `c : OC l → OC l` to `fun μ => if h : μ ∈ s then Classical.choose (hfac μ h) else 0`. Establish `hc : ∀ μ ∈ s, 1 - μ = (1 - AI.ζ 2) * c μ`. Introduce `μ hμ`. Simplify using `only [c, dif_pos hμ]`. Conclude with `Classical.choose_spec (hfac μ hμ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hev` using `[Finset.prod_congr rfl hc, Finset.prod_mul_distrib, Finset.prod_const]`. Establish `hcard : s.card = l * (l - 1)`. Rewrite using `[hprim.card_primitiveRoots, show l ^ 2 = l ^ (1 + 1) by ring, Nat.totient_prime_pow_succ (Fact.out : l.Prime), pow_one]`. Establish `hl2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hN : 2 ≤ s.card`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcard]`. Establish `: 1 ≤ l - 1` using `by omega`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : 1 - AI.ζ 2 = -b * ((l : ℕ) : OC l)` using `by linear_combination hb`. Rewrite `hev` using `[h1, mul_pow, show s.card = (s.card - 2) + 2 by omega, pow_add, pow_add]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl0 : ((l : ℕ) : OC l) ≠ 0`. Introduce `h0`. Apply `OC_l_not_unit l` to reduce the goal to its premises. Use `congrArg (fun x : OC l => (x : PadicComplex l)) h0` as an intermediate fact. Simplify using `at this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd this (Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero)`. Apply `OC_l_not_unit l` to reduce the goal to its premises. Use `isUnit_iff_exists_inv.mpr ⟨(-b) ^ (s.card - 2 + 2) * ((l : ℕ) : OC l) ^ (s.card - 2) * ∏ μ ∈ s, c μ, ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hl0` to reduce the goal to its premises. Take the linear combination `hev`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ε_ne_one : AI.ε ≠ 1 := by
   classical
@@ -1069,11 +1067,11 @@ theorem ε_ne_one : AI.ε ≠ 1 := by
   linear_combination hev
 
 /- English proof (translation)
-Apply `WittVector.isUnit_of_coeff_zero_ne_zero` to reduce the goal to its premises. Rewrite using `[inclW, WittVector.map_coeff]`. Establish `h0 : AI.ξ.coeff 0 = ∑ i ∈ Finset.range l, AI.ε1 ^ i`. Use `congrArg (fun x => WittVector.constantCoeff x) (show AI.ξ = AI.ξ from rfl)` as an intermediate fact. Simplify using `only [ξ, map_sum, map_pow] at this ⊢`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `WittVector.constantCoeff (∑ i ∈ Finset.range l, (WittVector.teichmuller l AI.ε1) ^ i) = _`. Simplify using `[map_sum, map_pow, WittVector.teichmuller_coeff_zero]`. Rewrite using `[h0]`. Introduce `hz`. Establish `hz' : ∑ i ∈ Finset.range l, AI.ε1 ^ i = 0` using `(IsFractionRing.injective (OCb l) (Cb l)) (by rw [hz, map_zero])`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `AI.ε_ne_one` to reduce the goal to its premises. Establish `hg` using `geom_sum_mul AI.ε1 l`. Rewrite `hg` using `[hz', zero_mul, ε1, frobeniusEquiv_symm_pow_p]`. Conclude with `(sub_eq_zero.mp hg.symm)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_inclW_ξ : IsUnit (inclW l AI.ξ) := by
   apply WittVector.isUnit_of_coeff_zero_ne_zero

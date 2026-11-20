@@ -9,11 +9,11 @@ open NumberField IsDedekindDomain
 namespace UpperTheory.CBC
 
 /- English proof (translation)
-Introduce `F _ _ n π π' h w B hB`. Consider the cases of `π with`. Consider the case `cx p`. Consider the cases of `π' with`. Consider the case `cx p'`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Conclude with `(GlobalTheory.CuspRep.CG.hasSat_mk p' w B).2 (GlobalTheory.CuspRep.CuspSub.Iso.hasSatGL (π := p) (π' := p') h ((GlobalTheory.CuspRep.CG.hasSat_mk p w B).1 hB))`. Consider the case `re p' => exact h.elim`. Consider the case `re p`. Consider the cases of `π' with`. Consider the case `cx p' => exact h.elim`.
+Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `re p' => exact UpperTheory.V.TR.CuspSub.Iso.hasSat (π := p) (π' := p') h hB`.
+A detailed English derivation is pending.
 -/
 theorem SIsoSat_holds : SIsoSat := by
   intro F _ _ n π π' h w B hB

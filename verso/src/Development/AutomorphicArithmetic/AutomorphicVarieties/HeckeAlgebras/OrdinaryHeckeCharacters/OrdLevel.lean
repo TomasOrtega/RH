@@ -3,17 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Cont
 open IsLocalRing Matrix UpperTheory.V.Hi
 
 /- English proof (translation)
-Introduce `Γ Ga Gp _ _ _ X A _ _ m τ θ hθ U V hVU hidx hU hF`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `Frame.FinLevel at hU ⊢`. Take `⟨s, hs⟩` from `hU`. Use `haveI : (V.subgroupOf U).FiniteIndex := ⟨hidx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Fintype (U ⧸ V.subgroupOf U) := Fintype.ofFinite _`. Use `⟨(s ×ˢ (Finset.univ : Finset (U ⧸ V.subgroupOf U))).image (fun p => p.1 * ((((Quotient.out p.2 : U) : X.Ub) : Ga), (1 : Gp))), ?_⟩` and prove the remaining obligations. Introduce `g`. Take `⟨γ, x, hx, u, hu, b, hb, rfl⟩` from `hs g`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (V.subgroupOf U) (⟨u, hu⟩ : U)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : (x, (QuotientGroup.mk (⟨u, hu⟩ : U) : U ⧸ V.subgroupOf U)) ∈ s ×ˢ (Finset.univ : Finset (U ⧸ V.subgroupOf U))` using `Finset.mem_product.mpr ⟨hx, Finset.mem_univ _⟩`. Use `⟨γ, _, Finset.mem_image_of_mem _ hmem, ((h⁻¹ : V.subgroupOf U) : U), Subgroup.mem_subgroupOf.mp (h⁻¹).2, b, hb, ?_⟩` and prove the remaining obligations. Simplify using `only at hh ⊢`. Rewrite using `[hh]`. Simplify using `[Prod.ext_iff, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Frame.Free at hF ⊢`. Introduce `g γ u hu b hb h`. Conclude with `hF g γ u (hVU hu) b hb h`. Establish `hfix : fixd (X.ra τ) U ≤ fixd (X.ra τ) V`. Unfold `fixd`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `f hf u hu`. Conclude with `hf u (hVU hu)`. Unfold `Frame.Ord Frame.Sp`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.mem_inf] at hf ⊢`. Conclude with `⟨⟨⟨hf.1.1, hfix hf.1.2⟩, hf.2⟩, hf.1.2⟩`. Introduce `f hf`. Simplify using `only [Submodule.mem_inf] at hf ⊢`. Conclude with `⟨⟨hf.1.1.1, hf.2⟩, hf.1.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.ordLevel :
     ∀ (Γ Ga Gp : Type) [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) (A : Type) [CommRing A] [IsCNL A] (m : ℕ) (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ), X.I.ContChar θ → ∀ U V : Subgroup X.Ub, V ≤ U → V.relIndex U ≠ 0 → X.FinLevel U → X.Free τ θ U → X.FinLevel V ∧ X.Free τ θ V ∧ X.Ord τ θ U = X.Ord τ θ V ⊓ fixd (X.ra τ) U := by

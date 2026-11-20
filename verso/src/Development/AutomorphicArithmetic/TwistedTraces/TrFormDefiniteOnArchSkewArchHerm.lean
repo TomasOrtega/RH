@@ -6,7 +6,7 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 
 open scoped Classical in
 /- English proof (translation)
-Rewrite using `[UpperTheory.trace_mixedSpace_eq_mixedTraceL_mul, mixedTraceL_apply, mixedTraceL_apply]`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, Pi.mul_apply, mul_one, Complex.mul_re, Complex.re_ofNat, Complex.im_ofNat, mul_zero, sub_zero, ← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem trace_mixedSpace_eq {K : Type} [Field K] [NumberField K]
     (x : NumberField.mixedEmbedding.mixedSpace K) :
@@ -19,9 +19,9 @@ private theorem trace_mixedSpace_eq {K : Type} [Field K] [NumberField K]
 
 open scoped Classical in
 /- English proof (translation)
-Establish `h1 : mixedTraceL K (star z) = mixedTraceL K z` using `mixedTraceL_star z`. Rewrite `h1` using `[hz, map_neg]`. Establish `h2 : ∑ v, (z.2 v).re = 0`. Establish `h3 : ∀ v, (z.2 v).re = 0` using `fun v => by`. Establish `h4 : star (z.2 v) = -(z.2 v)` using `congrFun (congrArg Prod.snd hz) v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `congrArg Complex.re h4`. Simplify using `only [Complex.star_def, Complex.conj_re, Complex.neg_re] at h5`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[h3]`. Rewrite using `[trace_mixedSpace_eq, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -42,9 +42,9 @@ private theorem trace_eq_zero_of_star_neg {K : Type} [Field K] [NumberField K]
 
 open scoped Classical in
 /- English proof (translation)
-Rewrite using `[trace_mixedSpace_eq]`. Establish `h1` using `mixedTraceL_trace_conjTranspose_mul_self_pos hA`. Establish `h2 : 0 ≤ ∑ v, ((Matrix.trace (A.conjTranspose * A)).2 v).re`. Use `Finset.sum_nonneg fun v _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Prod.snd_sum, Finset.sum_apply, Complex.re_sum, Prod.snd_mul, Pi.mul_apply, Prod.snd_star, Pi.star_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re]`. Conclude with `Complex.normSq_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem trace_conjTranspose_mul_pos {K : Type} [Field K] [NumberField K] {n : ℕ}
     {A : Matrix (Fin n) (Fin n) (NumberField.mixedEmbedding.mixedSpace K)} (hA : A ≠ 0) :
@@ -63,15 +63,15 @@ private theorem trace_conjTranspose_mul_pos {K : Type} [Field K] [NumberField K]
   linarith
 
 /- English proof (translation)
-Introduce `K _ _ n`. Use `⟨fun X hX h0 => ?_, fun X hX h0 => ?_, fun X hX Y hY => ?_⟩` and prove the remaining obligations. Rewrite `hX` using `[mem_archSkew]`. Establish `hX0 : mat (X : ArchMatrix K n) ≠ 0` using `fun e => h0 (Subtype.ext (mat_injective e))`. Establish `e : mat (X : ArchMatrix K n) * mat (X : ArchMatrix K n) = -((mat (X : ArchMatrix K n)).conjTranspose * mat (X : ArchMatrix K n))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hX, Matrix.neg_mul, neg_neg]`. Establish `h` using `trace_conjTranspose_mul_pos hX0`. Establish `h2 : trForm K n X X = Algebra.trace ℝ (NumberField.mixedEmbedding.mixedSpace K) (Matrix.trace (mat (X : ArchMatrix K n) * mat (X : ArchMatrix K n)))` using `rfl`. Rewrite using `[h2, e, Matrix.trace_neg, map_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hX` using `[mem_archHerm]`. Establish `hX0 : mat (X : ArchMatrix K n) ≠ 0` using `fun e => h0 (Subtype.ext (mat_injective e))`. Establish `h` using `trace_conjTranspose_mul_pos hX0`. Rewrite `h` using `[hX]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hX` using `[mem_archSkew]`. Rewrite `hY` using `[mem_archHerm]`. Establish `h2 : trForm K n X Y = Algebra.trace ℝ (NumberField.mixedEmbedding.mixedSpace K) (Matrix.trace (mat (X : ArchMatrix K n) * mat (Y : ArchMatrix K n)))` using `rfl`. Rewrite using `[h2]`. Use `trace_eq_zero_of_star_neg _ ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.trace_conjTranspose, Matrix.conjTranspose_mul, hX, hY, Matrix.mul_neg, Matrix.trace_neg, Matrix.trace_mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.trForm_definite_on_archSkew_archHerm :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), (∀ X ∈ archSkew K n, X ≠ 0 → trForm K n X X < 0) ∧ (∀ X ∈ archHerm K n, X ≠ 0 → 0 < trForm K n X X) ∧ (∀ X ∈ archSkew K n, ∀ Y ∈ archHerm K n, trForm K n X Y = 0) := by

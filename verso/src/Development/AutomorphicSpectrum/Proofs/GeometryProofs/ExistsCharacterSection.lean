@@ -7,7 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalC
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `PositivityTheory.UnitarySelfGeneration.ht_char_section` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FHomogeneousNonvanishing%2FHtExists.lean&line=14#L14)
 -/

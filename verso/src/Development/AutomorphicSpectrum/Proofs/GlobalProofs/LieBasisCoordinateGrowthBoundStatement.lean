@@ -8,7 +8,7 @@ open Matrix Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta GlobalTheo
 open scoped InnerProductSpace ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Hypotheses₂.HCA.WordExpand.wordBound_of_basis` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGlobalProofs%2FLieBasisCoordinateGrowthBound.lean&line=170#L170)
 -/

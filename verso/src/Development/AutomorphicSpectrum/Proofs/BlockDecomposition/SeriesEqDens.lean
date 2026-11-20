@@ -18,9 +18,9 @@ open PositivityTheory.PfSWUS.Loc GlobalTheory.CompanionTheory.UnrDens GlobalTheo
 namespace GlobalTheory.CompanionTheory.SiegLoc
 
 /- English proof (translation)
-Proceed by induction on `j using Nat.twoStepInduction with`. Consider the case `zero`. Establish `: Subsingleton (R ⧸ lev ϖ 0)` using `Ideal.Quotient.subsingleton_iff.2 (by simp [lev])`. Rewrite using `[Fintype.sum_subsingleton _ 0]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `one => simpa using GlobalTheory.T.gauss_sum_hermitian_norm_level_one R σ ϖ q ε hR ψ hψ a ha ha'`. Consider the case `more j ih _`. Rewrite using `[GlobalTheory.T.gauss_sum_hermitian_norm_level_shift R σ ϖ q ε hR ψ hψ j a ha ha', ih, pow_add, mul_pow (ε : ℂ) (q : ℂ) 2, hε]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gauss1 {R : Type} [CommRing R] {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (hR : IsUnrQuad R σ ϖ q ε)
     [∀ k, Fintype (R ⧸ lev ϖ k)] {ψ : ∀ k, AddChar (R ⧸ lev ϖ k) ℂ} (hψ : IsLevelChars σ ϖ ψ)
@@ -37,25 +37,25 @@ theorem gauss1 {R : Type} [CommRing R] {σ : R →+* R} {ϖ : R} {q : ℕ} {ε :
     ring
 
 /- English proof (translation)
-Take `⟨h, hh, rfl⟩` from `hB`. Take `⟨g, g', d, hgg, hgg', hd, hgd⟩` from `GlobalTheory.T.hermitian_matrix_diagonalizable R σ ϖ q ε hR n h hh`. Take `⟨p, p', e, hpp, hpp', he, hpe⟩` from `GlobalTheory.T.hermitian_matrix_diagonalizable R σ ϖ q ε hR m S hS.1`. Establish `hq0 : (q : ℂ) ≠ 0`. Use `hR.one_lt` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(by omega : q ≠ 0)` after adjusting the coercions. Establish `hunit : ∀ l, e l ∉ lev ϖ 1`. Introduce `l hl`. Establish `h1 : IsUnit p.det` using `Matrix.isUnit_det_of_right_inverse hpp`. Establish `h2 : IsUnit (cT σ p).det`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: cT σ p * cT σ p' = 1`. Establish `: cT σ (p' * p) = cT σ p * cT σ p'`. Simplify using `[cT, Matrix.transpose_mul, Matrix.map_mul]`. Rewrite using `[← this, hpp']`. Simplify using `[cT]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Matrix.isUnit_det_of_right_inverse this`. Establish `h3 : IsUnit (Matrix.diagonal e).det`. Rewrite using `[← hpe, Matrix.det_mul, Matrix.det_mul]`. Conclude with `(h2.mul hS.2).mul h1`. Rewrite `h3` using `[Matrix.det_diagonal]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : IsUnit (e l)` using `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem _ (Finset.mem_univ l)) h3`. Take `⟨c, hc⟩` from `mem_lev_iff.1 hl`. Rewrite `h4` using `[hc, pow_one]`. Conclude with `hR.notUnit (isUnit_of_mul_isUnit_left h4)`. Use `choose eI heI hcard hsum using fun i => GlobalTheory.T.card_range_mul_quotient_bounded_level R σ ϖ q ε hR ψ hψ (fun j a ha ha' => gauss1 hR hψ hε j a ha ha') k (d i) (hd i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.matrix_gauss_sum_congr_invariance R σ ϖ hR.fix_ϖ hR.inv k (ψ k) m n h _ g g' S _ p p' hgg hgg' hpp hpp' hgd hpe, GlobalTheory.T.matrix_gauss_sum_diagonal_factor R σ ϖ hR.fix_ϖ k (ψ k) m n d e, GlobalTheory.T.multiplicity_reduction_diagonal_prod R σ ϖ hR.fix_ϖ hR.i …`. Establish `hq2 : 1 < q ^ 2` using `Nat.one_lt_pow (by norm_num) hR.one_lt`. Establish `hnu : (∏ i, Nat.card (Set.range fun w : R ⧸ lev ϖ k => w * Ideal.Quotient.mk (lev ϖ k) (d i))) = (q ^ 2) ^ (∑ i, eI i)`. Rewrite using `[Finset.prod_congr rfl (fun i _ => hcard i), Finset.prod_pow_eq_pow_sum]`. Rewrite using `[hnu, Nat.log_pow hq2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hM : (Nat.card (Matrix (Fin m) (Fin n) (R ⧸ lev ϖ k)) : ℂ) = ((q : ℂ) ^ (2 * k)) ^ (m * n)`. Establish `hc : Nat.card (R ⧸ lev ϖ k) = q ^ (2 * k)` using `GlobalTheory.T.unramified_quotient_card R σ ϖ q ε hR k`. Establish `: Nat.card (Matrix (Fin m) (Fin n) (R ⧸ lev ϖ k)) = (q ^ (2 * k)) ^ (m * n)` using `by show Nat.card (Fin m → Fin n → R ⧸ lev ϖ k) = _`. Rewrite using `[Nat.card_fun, Nat.card_fun, hc]`. Simplify using `only [Nat.card_eq_fintype_card, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_mul, mul_comm n m]`. Rewrite using `[this]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : ((ε : ℂ) ^ m * (q : ℂ) ^ (-(m : ℤ))) = ((ε : ℂ) / q) ^ m`. Rewrite using `[div_pow, zpow_neg, zpow_natCast, div_eq_mul_inv]`. Rewrite using `[hc']`. Simplify using `only [fun i l => hsum i (e l) (he l) (hunit l), Finset.prod_const, Finset.card_univ, Fintype.card_fin, mul_pow, Finset.prod_mul_distrib]`. Rewrite using `[← pow_mul, ← pow_mul]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hx : ∀ x, (((ε : ℂ) / q) ^ eI x) ^ m = (((ε : ℂ) / q) ^ m) ^ eI x` using `fun x => by`. Rewrite using `[← pow_mul, ← pow_mul, mul_comm]`. Simplify using `only [hx]`. Rewrite using `[Finset.prod_pow_eq_pow_sum]`.
+A detailed English derivation is pending.
 -/
 theorem gauss_full {R : Type} [CommRing R] {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (hR : IsUnrQuad R σ ϖ q ε)
     [∀ k, Fintype (R ⧸ lev ϖ k)] {ψ : ∀ k, AddChar (R ⧸ lev ϖ k) ℂ} (hψ : IsLevelChars σ ϖ ψ)
@@ -117,11 +117,9 @@ theorem gauss_full {R : Type} [CommRing R] {σ : R →+* R} {ϖ : R} {q : ℕ} {
   rw [Finset.prod_pow_eq_pow_sum]
 
 /- English proof (translation)
-Introduce `R _ σ ϖ q ε hR ψ hψ m n _ S T hS hT α hα`. Establish `hfin : ∀ k, Finite (R ⧸ lev ϖ k)` using `fun k => Nat.finite_of_card_ne_zero (by`. Rewrite using `[GlobalTheory.T.unramified_quotient_card R σ ϖ q ε hR k]`. Use `hR.one_lt` as an intermediate fact. Conclude with `pow_ne_zero _ (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : ∀ k, Fintype (R ⧸ lev ϖ k) := fun k => Fintype.ofFinite _`. Establish `hε : (ε : ℂ) ^ 2 = 1`. Apply the tactic sequence `rcases hR.eps with ⟨rfl, -⟩ | ⟨rfl, -⟩ <;> simp`. Establish `: siegAt ϖ σ ψ q ε m T = fun k => ((densAt σ ϖ S T k : ℝ) : ℂ)` using `funext fun k => GlobalTheory.T.hermitian_rep_count_fourier_expansion R σ ϖ q ε hR ψ hψ m n k S T hS.1 hT.1 (GlobalTheory.T.hermitian_character_orthogonality R σ ϖ q ε hR ψ hψ n k) (fun B hB => gauss_full hR hψ hε k S hS B hB)`. Rewrite using `[this]`.
-
-Conclude with `(Complex.continuous_ofReal.tendsto α).comp hα`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seriesEqDens : SeriesEqDens := by
   intro R _ σ ϖ q ε hR ψ hψ m n _ S T hS hT α hα

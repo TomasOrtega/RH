@@ -20,7 +20,7 @@ instance borel_HA (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) {n : ℕ
     (J : Matrix (Fin n) (Fin n) E) : BorelSpace (HA (Fv F v) σ J) := ⟨rfl⟩
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     MeasurableMul (HA (Fv F v) σ J) := inferInstance

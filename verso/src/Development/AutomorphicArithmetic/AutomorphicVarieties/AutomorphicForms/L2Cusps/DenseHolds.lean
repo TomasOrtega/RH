@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.L
 import GroundTheory.AutomorphicForms.L2LocalComponents
 
 /- English proof (translation)
-Introduce `_ _ _ _ μ₁ _` and use `GroundTheory.Automorphic.CuspidalSpectrum.topologicalClosure_map_centralCuspForms μ₁`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KernelIndexFullLattice.dense_holds :
     UpperTheory.V.KernelIndexFullLattice.Dense :=

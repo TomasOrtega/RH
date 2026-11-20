@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.mp h`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hk' : (k : ℂ) ≠ 0` using `by exact_mod_cast hk.ne'`. Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ((y - x : ℝ) : ℂ) = ((n * k : ℝ) : ℂ)`. Use `push_cast`. Clear denominators, using `at hn` for the nonvanishing conditions. Take the linear combination `hn`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_int_sub_eq_mul_of_exp_neg_two_pi_I_div_eq (x y : ℝ) (k : ℕ) (hk : 0 < k)
     (h : Complex.exp (-(2 * Real.pi * Complex.I) * (x : ℂ) / k) =
@@ -23,13 +23,13 @@ theorem exists_int_sub_eq_mul_of_exp_neg_two_pi_I_div_eq (x y : ℝ) (k : ℕ) (
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `x y h`. Take `⟨m, hm⟩` from `exists_int_sub_eq_mul_of_exp_neg_two_pi_I_div_eq x y 1 one_pos (h 1 one_pos)`. Simplify using `only [Nat.cast_one, mul_one] at hm`. Take `⟨n, hn⟩` from `exists_int_sub_eq_mul_of_exp_neg_two_pi_I_div_eq x y (m.natAbs + 1) (Nat.succ_pos _) (h _ (Nat.succ_pos _))`. Generalize the expression as in `hK : m.natAbs + 1 = K at hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Establish `hmn : m = n * (K : ℤ)`. Establish `: ((m : ℤ) : ℝ) = ((n * (K : ℤ) : ℤ) : ℝ)` using `by push_cast; rw [← hm, hn]`. Conclude with `this` after adjusting the coercions. Establish `hm0 : m = 0`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne (by simpa using hmn)`. Establish `h1 : m.natAbs = n.natAbs * K`. Rewrite using `[hmn, Int.natAbs_mul]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h2 : 1 ≤ n.natAbs` using `Int.natAbs_pos.mpr hn0`. Use the polynomial consequences of the given equalities and inequalities. Establish `: y - x = 0` using `by rw [hm, hm0]; simp`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem real_eq_of_exp_neg_two_pi_I_div_eq : ∀ x y : ℝ, (∀ k : ℕ, 0 < k →
     Complex.exp (-(2 * Real.pi * Complex.I) * (x : ℂ) / k) = Complex.exp (-(2 * Real.pi * Complex.I) * (y : ℂ) / k)) →

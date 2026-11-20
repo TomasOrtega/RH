@@ -35,12 +35,12 @@ def negFr (F : GlobalTheory.LocMod.Frame k N Y) : GlobalTheory.LocMod.Frame k N 
   γβ := by rw [Matrix.neg_mul, Matrix.mul_neg, neg_neg, F.γβ]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨e, h, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isStdFr_stdFr {pos : Y → ℕ} {e : Y ≃ Fin N} (h : IsOrd pos e) : IsStdFr pos (stdFr k e) := ⟨e, h, rfl⟩
 
 /- English proof (translation)
-Take `⟨e, he, hF⟩` from `h`. Take `⟨e', he', hF'⟩` from `h'`. Establish `: e = e'` using `Equiv.ext fun a => Fin.ext ((he a).trans (he' a).symm)`. Rewrite using `[hF, hF', this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isStdFr_unique {pos : Y → ℕ} {F F' : GlobalTheory.LocMod.Frame k N Y} (h : IsStdFr pos F) (h' : IsStdFr pos F') : F.β = F'.β := by
   obtain ⟨e, he, hF⟩ := h
@@ -49,7 +49,7 @@ theorem isStdFr_unique {pos : Y → ℕ} {F F' : GlobalTheory.LocMod.Frame k N Y
   rw [hF, hF', this]
 
 /- English proof (translation)
-Introduce `h'` and use `by have hβ : -F.β = F.β := isStdFr_unique h' h obtain ⟨e, -, hF⟩ := h obtain ⟨a⟩ := ‹Nonempty Y› have h1 : -F.β (e a) a = F.β (e a) a := congrFun (congrFun hβ (e a)) a have h0 : F.β (e a) a = 1 := by rw [hF]; exact Matrix.one_apply_eq (e a) rw [h0] at h1 exact h2 (by linear_combi …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isStdFr_neg [Nonempty Y] (h2 : (2 : k) ≠ 0) {pos : Y → ℕ} {F : GlobalTheory.LocMod.Frame k N Y} (h : IsStdFr pos F) :
     ¬ IsStdFr pos (negFr F) := fun h' => by
@@ -65,21 +65,21 @@ def blockOrd (κ τ l j : ℕ) : (Fin κ ⊕ Fin l) ⊕ Fin j × Fin τ ≃ Fin 
   (Equiv.sumCongr finSumFinEquiv finProdFinEquiv).trans finSumFinEquiv
 
 /- English proof (translation)
-Apply the tactic sequence `rintro ((i | i) | ⟨a, b⟩) <;> simp [blockOrd, xPos, finProdFinEquiv]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isOrd_xPos (κ τ j : ℕ) : IsOrd (xPos (κ := κ) (τ := τ) (j := j)) (blockOrd κ τ j j) := by
   rintro ((i | i) | ⟨a, b⟩) <;> simp [blockOrd, xPos, finProdFinEquiv]
   ring
 
 /- English proof (translation)
-Apply the tactic sequence `rintro ((i | i) | ⟨a, b⟩) <;> simp [blockOrd, zPos, finProdFinEquiv]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isOrd_zPos (κ τ l j : ℕ) : IsOrd (zPos (κ := κ) (τ := τ) (l := l) (j := j)) (blockOrd κ τ l j) := by
   rintro ((i | i) | ⟨a, b⟩) <;> simp [blockOrd, zPos, finProdFinEquiv]
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨_, isStdFr_stdFr (isOrd_xPos κ τ j)⟩, ⟨_, isStdFr_stdFr (isOrd_zPos κ τ l j)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isStdFr (k : Type) [Field k] (κ τ l j : ℕ) :
     (∃ F : GlobalTheory.LocMod.Frame k (κ + j + j * τ) (XIx (Fin κ) (Fin τ) j), IsStdFr xPos F) ∧
@@ -87,7 +87,7 @@ theorem exists_isStdFr (k : Type) [Field k] (κ τ l j : ℕ) :
   ⟨⟨_, isStdFr_stdFr (isOrd_xPos κ τ j)⟩, ⟨_, isStdFr_stdFr (isOrd_zPos κ τ l j)⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isStdFr_stdFr (isOrd_xPos 1 1 1), not_isStdFr_neg two_ne_zero (isStdFr_stdFr (isOrd_xPos 1 1 1))⟩`.
+Supply the required witnesses or components.
 -/
 theorem isStdFr_stdFr_and_not_isStdFr_negFr : IsStdFr (xPos (κ := 1) (τ := 1) (j := 1)) (stdFr ℚ (blockOrd 1 1 1 1)) ∧
     ¬ IsStdFr (xPos (κ := 1) (τ := 1) (j := 1)) (negFr (stdFr ℚ (blockOrd 1 1 1 1))) :=
@@ -125,7 +125,7 @@ def tupP {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
     {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (s : W.P.T) : D.what₂.Tup := W.P.I.tup s
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.IndefR.LevelRealisationRankEquality.tupAllUsed_of_real (realTOf y) s, x.Y.tupT_tup s⟩`.
+Supply the required witnesses or components.
 -/
 theorem packOf_tup {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} {x : TwIn ex} {Rc : Formalism.L2.RecT ex}

@@ -14,9 +14,9 @@ open scoped Classical
 open GlobalTheory.CovTestDR
 
 /- English proof (translation)
-Introduce `hS hX h2 hH hR hV r hr D O hc hf A T H h`. Establish `ha : Tendsto (fun R : ℝ => sieg O.Y ∅ R - vdmVal O.Y R) atTop (𝓝 (O.Y.vol * bcFl O.Y))` using `(GlobalTheory.T.siegel_vandermonde_limit_volume) h2 hH hR hV D O hc hf A T H h`. Establish `hb : Tendsto (vdmVal O.Y) atTop (𝓝 (-(2 * r * O.Y.vol * testI O.Y)))` using `(GlobalTheory.T.vandermonde_value_tendsto_constant) hS hX h2 hH hR hV r hr D O hc hf A T H h`. Establish `e` using `ha.add hb`. Simplify using `only [sub_add_cancel] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `DRAt`. Use `e using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem GlobalTheory.DeRhamValue.main : GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → RegularAlteration →
     GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.Ch2HodgeVanishes → ∀ r : ℝ, Ch2Const r → OnObj fun _ O _ _ _ _ => DRAt O.Y r := by

@@ -156,7 +156,7 @@ def SymplDetBound.Statement : Prop :=
     ∃ P ∈ symplecticGroup (Fin n) ℤ, (symplGram P G).toBlocks₁₁.det ≤ (2 * (n : ℝ)) ^ n
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Submonoid.one_mem _, Matrix.PosDef.one, by simp, Submonoid.one_mem _⟩`.
+Supply the required witnesses or components.
 -/
 example (n : ℕ) :
     (1 : Matrix (Fin (n + 1) ⊕ Fin (n + 1)) (Fin (n + 1) ⊕ Fin (n + 1)) ℝ) ∈
@@ -168,7 +168,7 @@ example (n : ℕ) :
   ⟨Submonoid.one_mem _, Matrix.PosDef.one, by simp, Submonoid.one_mem _⟩
 
 /- English proof (translation)
-Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun h (Sum.inr 0)) (Sum.inr 0)` as an intermediate fact. Simplify using `[siegelGram] at this`. Simplify using `[siegelGram]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 example : siegelGram (1 : Matrix (Fin 1) (Fin 1) ℝ) 1 ≠ 1 ∧
     siegelGram (1 : Matrix (Fin 1) (Fin 1) ℝ) 1 (Sum.inl 0) (Sum.inl 0) ≠ 0 := by
@@ -178,7 +178,7 @@ example : siegelGram (1 : Matrix (Fin 1) (Fin 1) ℝ) 1 ≠ 1 ∧
   · simp [siegelGram]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by norm_num, by norm_num, Submonoid.one_mem _⟩`.
+Supply the required witnesses or components.
 -/
 example (n : ℕ) : (1 : ℤ) * 1 - 0 * 0 = 1 ∧ (2 : ℤ) * 1 - 1 * 1 = 1 ∧
     (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℤ) ∈ symplecticGroup (Fin n) ℤ :=
@@ -190,7 +190,7 @@ Evaluate the numerical expressions.
 example : (-1 : ℤ) * 2 + 1 * 3 = 1 := by norm_num
 
 /- English proof (translation)
-Use `⟨by simp, by simp, fun _ => by norm_num, by norm_num, Matrix.PosDef.one, by simp⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 example : (1 : Matrix (Fin 2) (Fin 2) ℝ).det ≠ 0 ∧ |(1 : Matrix (Fin 2) (Fin 2) ℝ).det| = 1 ∧
     (∀ i : Fin 2, (0 : ℝ) < (fun _ => 2) i) ∧ (1 : ℝ) < ∏ _i : Fin 2, (2 : ℝ) ∧
@@ -198,11 +198,11 @@ example : (1 : Matrix (Fin 2) (Fin 2) ℝ).det ≠ 0 ∧ |(1 : Matrix (Fin 2) (F
   refine ⟨by simp, by simp, fun _ => by norm_num, by norm_num, Matrix.PosDef.one, by simp⟩
 
 /- English proof (translation)
-Use `⟨by simp, fun h => by simpa using congrFun h 0, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Establish `h0 : u 0 ≠ 0`. Introduce `h`. Apply `hu` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `h`. Establish `h1 : (1 : ℝ) ≤ |(u 0 : ℝ)|` using `by exact_mod_cast Int.one_le_abs h0`. Establish `h2 : (1 : ℝ) ≤ (u 0 : ℝ) * (u 0 : ℝ)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use polynomial arithmetic with `[abs_mul_abs_self (u 0 : ℝ), abs_nonneg (u 0 : ℝ)]`. Simplify `h2` using `[qf, intVec, dotProduct]`.
+A detailed English derivation is pending.
 -/
 example : (fun _ : Fin 1 => (1 : ℤ)) = (1 : ℤ) • (fun _ : Fin 1 => (1 : ℤ)) ∧
     (fun _ : Fin 1 => (1 : ℤ)) ≠ 0 ∧

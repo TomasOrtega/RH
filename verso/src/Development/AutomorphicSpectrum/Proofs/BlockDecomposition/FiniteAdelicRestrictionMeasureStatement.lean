@@ -15,7 +15,7 @@ open GroundTheory.Automorphic
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GrowthHaar.isHaarMeasure_map_restrict | exact GlobalTheory.CompanionTheory.GrowthHaar.isHaarMeasure_map_restrict | (intros; apply GlobalTheory.CompanionTheory.GrowthHaar.isHaarMeasure_map_restrict <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.finite_adelic_restriction_measure : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a))
     [μ.IsHaarMeasure] [MeasurableSpace (AutomorphicForm.archGroup E a)]

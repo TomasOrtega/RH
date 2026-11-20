@@ -16,11 +16,11 @@ open MvPolynomial GlobalTheory.Capelli Formalism.BasicNotions.TH GlobalTheory.Fo
 namespace GlobalTheory.JointHarm
 
 /- English proof (translation)
-Take `⟨m₀, hm₀⟩` from `support_nonempty.2 hP`. Set `κ : Fin n → ℤ` to `fun t => ((∑ i, m₀ (z (i, t)) : ℕ) : ℤ) - (∑ j, m₀ (y (j, t)) : ℕ)`. Establish `hκ : ∀ t, ν t = κ t` using `fun t => by`. Rewrite using `[mixed_weight z y (hwt t) hm₀]`. Simplify using `[κ]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨ha, hdeg⟩` from `ColumnDegree.column_degrees σ k l n z y hz hy hzy P κ hP hh hup fun t => by rw [hwt, hκ, Rat.cast_intCast]`. Use `⟨fun t => (κ t).toNat, fun t => (-κ t).toNat, fun i j h => Int.toNat_le_toNat (ha h), fun i j h => Int.toNat_le_toNat (neg_le_neg (ha h)), fun t => by dsimp only; omega, fun t => ?_, sep_of_degrees hz hzy (fun m hm t => ?_) (fun m hm t => ?_) hup⟩` and prove the remaining obligations. Rewrite using `[hκ]`. Conclude with `(Int.toNat_sub_toNat_neg (κ t)).symm` after adjusting the coercions. Use `(hdeg m hm t).1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← Nat.cast_sum]`. Use linear arithmetic over natural numbers and integers. Use `(hdeg m hm t).2` as an intermediate fact. Rewrite `this` using `[← Nat.cast_sum]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_sep {σ : Type} [Fintype σ] {k l n : ℕ} {z : Fin k × Fin n → σ}
     {y : Fin l × Fin n → σ} (hz : Function.Injective z) (hy : Function.Injective y)
@@ -49,9 +49,9 @@ theorem exists_sep {σ : Type} [Fintype σ] {k l n : ℕ} {z : Fin k × Fin n �
     omega
 
 /- English proof (translation)
-Establish `h : ∀ u v : σ, X u * pderiv v P ∈ homog σ d`. Introduce `u v`. Break down `d with _ | d` into its components or cases. Rewrite using `[totalDegree_eq_zero_iff_eq_C.1 ((totalDegree_zero_iff_isHomogeneous _).2 hP), pderiv_C, mul_zero]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(isHomogeneous_X ℂ u).mul (IsHomogeneous.pderiv (i := v) hP)` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel, add_comm]`. Then use the resulting hypothesis. Rewrite using `[mixedOp_apply]`. Conclude with `Submodule.sub_mem _ (Submodule.sum_mem _ fun _ _ => h _ _) (Submodule.sum_mem _ fun _ _ => h _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixedOp_homog {σ : Type} {k l n : ℕ} (z : Fin k × Fin n → σ) (y : Fin l × Fin n → σ)
     (a b : Fin n) {d : ℕ} {P : MvPolynomial σ ℂ} (hP : P ∈ homog σ d) :
@@ -74,7 +74,7 @@ variable {σ : Type} [Fintype σ] {p q r s : ℕ} {e : Ln p q r s → σ}
   {act : Mat p q →ₗ[ℂ] Module.End ℂ (MvPolynomial σ ℂ)}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `(h.mem_hwSub μ P).1 hw`. Take `⟨h4, h5⟩` from `(h.mem_wtSub μ P).1 h1`. Conclude with `⟨GlobalTheory.JointHarm.exists_sep (zA_inj he) (zB_inj he) (zAB he) hP hh.1 h2 h4, GlobalTheory.JointHarm.exists_sep (zC_inj he) (zD_inj he) (zCD he) hP hh.2 h3 h5⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsSide.exists_sep (he : Function.Injective e) (h : IsSide e act) {μ : Ix p q → ℚ}
     {P : MvPolynomial σ ℂ} (hP : P ≠ 0) (hw : P ∈ hwSub act μ)
@@ -90,9 +90,9 @@ theorem IsSide.exists_sep (he : Function.Injective e) (h : IsSide e act) {μ : I
 
 omit [Fintype σ] in
 /- English proof (translation)
-Take `⟨a1, a2, a3⟩` from `s1.mixed hAB`. Take `⟨b1, b2, b3⟩` from `s2.mixed hCD`. Use `⟨(h.mem_hwSub μ P).2 ⟨(h.mem_wtSub μ P).2 ⟨fun t => ?_, fun t => ?_⟩, a2, b2⟩, a1, b1⟩` and prove the remaining obligations. Rewrite using `[a3, h1]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite using `[b3, h2]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem IsSide.of_sep (h : IsSide e act) {μ : Ix p q → ℚ} {P : MvPolynomial σ ℂ}
     {A B : Fin p → ℕ} {C D : Fin q → ℕ} (hAB : ∀ t, A t = 0 ∨ B t = 0)
@@ -108,15 +108,15 @@ theorem IsSide.of_sep (h : IsSide e act) {μ : Ix p q → ℚ} {P : MvPolynomial
   · rw [b3, h2]; push_cast; rfl
 
 /- English proof (translation)
-Apply the tactic sequence `rcases h with rfl | rfl <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_sub_of_disjoint {a b : ℕ} (h : a = 0 ∨ b = 0) : |(a : ℚ) - b| = (a + b : ℕ) := by
   rcases h with rfl | rfl <;> simp
 
 /- English proof (translation)
-Take `⟨⟨A, B, -, -, h1, h2, h3⟩, C, D, -, -, h4, h5, h6⟩` from `h.exists_sep he.1 hw.1 hw.2 hh`. Use `⟨∑ t, (A t + B t) + ∑ t, (C t + D t), ?_, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[degW, Fintype.sum_sum_type, Nat.cast_add, Nat.cast_sum, Nat.cast_sum]`. Simplify using `only [h2, h5, abs_sub_of_disjoint (h1 _), abs_sub_of_disjoint (h4 _)]`. Establish `hm'` using `mem_support_iff.2 hm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `g : ∀ {k n : ℕ} {z : Fin k × Fin n → σ} {t : Fin n} {c : ℕ}, colOp ℂ z t t P = (c : ℂ) • P → ∑ i, m (z (i, t)) = c` using `fun hz => Nat.cast_injective ((colOp_eq_smul_iff _ _ _ _).1 hz m hm')`. Use `(DFunLike.congr_fun Finsupp.degree_eq_weight_one m).symm.trans ?_` and prove the remaining obligations. Rewrite using `[degree_eq_blocks he]`. Simplify using `only [g (h3.1 _), g (h3.2.1 _), g (h6.1 _), g (h6.2.1 _)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsSide.homog_of_hw (he : Function.Bijective e) (h : IsSide e act) {μ : Ix p q → ℚ}
     {P : MvPolynomial σ ℂ} (hw : IsHW act μ P)
@@ -136,7 +136,7 @@ theorem IsSide.homog_of_hw (he : Function.Bijective e) (h : IsSide e act) {μ : 
 
 omit [Fintype σ] in
 /- English proof (translation)
-Take `⟨v, hv, hv0, u1, u2, κ, κ', w1, w2⟩` from `exists_highest_pair _ _ (mixedOp_lie _ (zA_inj he) _ (zB_inj he) (zAB he)) (mixedOp_lie _ (zC_inj he) _ (zD_inj he) (zCD he)) (commute_mixedOp_mixedOp _ _ _ _ (zAC he) (zAD he) (zBC he) (zBD he)) (mixed_diag _ _) (mixed_diag _ _) W h1 h2 h0`. Use `⟨Sum.elim (fun i => κ i + cPair r s) (fun i => κ' i - cPair r s), v, hv, hv0, (h.mem_hwSub _ _).2 ⟨(h.mem_wtSub _ _).2 ⟨fun a => ?_, fun a => ?_⟩, u1, u2⟩⟩` and prove the remaining obligations. Simplify using `[shiftNu, w1]`. Simplify using `[shiftNu, w2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem IsSide.exists_hw (he : Function.Injective e) (h : IsSide e act)
     (W : Submodule ℂ (MvPolynomial σ ℂ)) [FiniteDimensional ℂ W]
@@ -154,25 +154,21 @@ theorem IsSide.exists_hw (he : Function.Injective e) (h : IsSide e act)
   · simp [shiftNu, w2]
 
 /- English proof (translation)
-Take `⟨W, hfin, hPW, hst, hμ⟩` from `ht`. Establish `kc : ∀ a b : Ix p q, sameBlock a b → IsKC (Eab a b)`. Introduce `a b hab c d hcd`. Rewrite using `[Eab, Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hcd hab`. Set `W₁` to `W ⊓ (harmSub (zA e) (zB e) ⊓ harmSub (zC e) (zD e))`. Establish `: FiniteDimensional ℂ W₁` using `Submodule.finiteDimensional_of_le inf_le_left`. Establish `s1 : ∀ a b, ∀ w ∈ W₁, mixedOp ℂ (zA e) (zB e) a b w ∈ W₁` using `fun a b w hw => by`. Use `⟨?_, harmSub_mixedOp (zA_inj he.1) (zB_inj he.1) (zAB he.1) a b hw.2.1, harmSub_mixedOp' (fun _ _ => (zAC he.1 _ _).symm) (fun _ _ => (zBC he.1 _ _).symm) (fun _ _ => (zAD he.1 _ _).symm) (fun _ _ => (zBD he.1 _ _).symm) a b hw.2.2⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_iff_eq_add.2 (h.1 a b w)]`. Conclude with `W.sub_mem (hst _ (kc (.inl a) (.inl b) trivial) w hw.1) (W.smul_mem _ hw.1)`. Establish `s2 : ∀ a b, ∀ w ∈ W₁, mixedOp ℂ (zC e) (zD e) a b w ∈ W₁` using `fun a b w hw => by`. Use `⟨?_, harmSub_mixedOp' (zAC he.1) (zAD he.1) (zBC he.1) (zBD he.1) a b hw.2.1, harmSub_mixedOp (zC_inj he.1) (zD_inj he.1) (zCD he.1) a b hw.2.2⟩` and prove the remaining obligations. Rewrite using `[← eq_sub_iff_add_eq.1 (h.2 a b w)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `W.add_mem (hst _ (kc (.inr a) (.inr b) trivial) w hw.1) (W.smul_mem _ hw.1)`. Take `⟨ν, v, hv, hvw⟩` from `h.exists_hw he.1 W₁ s1 s2 fun h0 => hP ((Submodule.eq_bot_iff _).1 h0 P ⟨hPW, hh⟩)`. Take `rfl` from `hμ ν v hv.1 hvw`. Take `⟨d, hd, -⟩` from `h.homog_of_hw he hvw hv.2`. Use `⟨d, hd, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `U` to `W₁ ⊓ homog σ d`. Establish `: FiniteDimensional ℂ U` using `Submodule.finiteDimensional_of_le inf_le_left`. Set `K : Submodule ℂ (MvPolynomial σ ℂ)` to `W₁ ⊓ ((U.map ι)ᗮ).comap ι`. Establish `: FiniteDimensional ℂ K` using `Submodule.finiteDimensional_of_le inf_le_left`. Establish `mK : ∀ w, w ∈ K ↔ w ∈ W₁ ∧ ∀ u ∈ U, inner ℂ (ι u) (ι w) = 0` using `fun w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [K, Submodule.mem_inf, Submodule.mem_comap, Submodule.mem_orthogonal]`. Conclude with `and_congr_right fun _ => ⟨fun h u hu => h _ (Submodule.mem_map_of_mem hu), by`. Introduce and unpack `h _ ⟨u, hu, rfl⟩`. Conclude with `h u hu⟩`. Establish `hK : K = ⊥`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h0`. Take `⟨ν', v', hv', hvw'⟩` from `h.exists_hw he.1 K (fun a b w hw => (mK _).2 ⟨s1 a b w hw.1, fun u hu => by`. Rewrite using `[← inner_mixedOp hι]`. Conclude with `((mK _).1 hw).2 _ ⟨s1 b a u hu.1, mixedOp_homog _ _ _ _ hu.2⟩⟩)`. Use the proof step `(fun a b w hw => (mK _).2 ⟨s2 a b w hw.1, fun u hu => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← inner_mixedOp hι]`. Conclude with `((mK _).1 hw).2 _ ⟨s2 b a u hu.1, mixedOp_homog _ _ _ _ hu.2⟩⟩) h0`. Take `rfl` from `hμ ν' v' hv'.1.1 hvw'`. Take `⟨d', hd', hv''⟩` from `h.homog_of_hw he hvw' hv'.1.2`. Take `rfl : d' = d` from `by exact_mod_cast hd'.trans hd.symm`.
-
-Use `((mK _).1 hv').2 v' ⟨hv'.1, hv''⟩` as an intermediate fact. Rewrite `this` using `[inner_self_eq_zero]`. Conclude with `hvw'.1 (hinj (this.trans (map_zero ι).symm))`. Take `⟨u, hu, ho⟩` from `exists_orth ι U P`. Establish `: P - u ∈ K` using `(mK _).2 ⟨W₁.sub_mem ⟨hPW, hh⟩ hu.1, ho⟩`.
-
-Rewrite `this` using `[hK, Submodule.mem_bot, sub_eq_zero]`. Conclude with `this ▸ hu.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsSide.homog_of_type [DecidableEq σ] {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {ι : MvPolynomial σ ℂ →ₗ[ℂ] H} (hι : IsFockIP ι)
@@ -242,30 +238,30 @@ def rv {σ : Type} {m n : ℕ} (z : Fin m × Fin n → σ) : Fin m × Fin n → 
   fun w => z (w.1.rev, w.2.rev)
 
 /- English proof (translation)
-Introduce `u w h` and use `by simpa [Prod.ext_iff] using hz h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rv_inj {σ : Type} {m n : ℕ} {z : Fin m × Fin n → σ} (hz : Function.Injective z) :
     Function.Injective (rv z) := fun u w h => by
   simpa [Prod.ext_iff] using hz h
 
 /- English proof (translation)
-The claim follows from `Fintype.sum_equiv Fin.revPerm _ _ fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem colOp_rv {σ : Type} {m n : ℕ} (z : Fin m × Fin n → σ) (k l : Fin n) :
     colOp ℂ (rv z) k l = colOp ℂ z k.rev l.rev :=
   Fintype.sum_equiv Fin.revPerm _ _ fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `Fintype.sum_equiv Fin.revPerm _ _ fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem rowOp_rv {σ : Type} {m n : ℕ} (z : Fin m × Fin n → σ) (k l : Fin m) :
     rowOp ℂ (rv z) k l = rowOp ℂ z k.rev l.rev :=
   Fintype.sum_equiv Fin.revPerm _ _ fun _ => rfl
 
 /- English proof (translation)
-Simplify using `only [BlockHW, colOp_rv, rowOp_rv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Conclude with `⟨fun a b h => by simpa using h1 b.rev a.rev (Fin.rev_lt_rev.2 h), fun a b h => by simpa using h2 b.rev a.rev (Fin.rev_lt_rev.2 h), fun a => by simpa using h3 a.rev, fun a => by simpa using h4 a.rev⟩`. Introduce and unpack `⟨h1, h2, h3, h4⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun a b h => h1 _ _ (Fin.rev_lt_rev.2 h), fun a b h => h2 _ _ (Fin.rev_lt_rev.2 h), fun a => by rw [h3, Fin.rev_rev], fun a => by rw [h4, Fin.rev_rev]⟩`.
+Supply the required witnesses or components.
 -/
 theorem blockHW_rv_iff {σ : Type} {m n : ℕ} (z : Fin m × Fin n → σ) (β : ℕ → ℕ)
     (P : MvPolynomial σ ℂ) : BlockHW (rv z) β P ↔
@@ -311,9 +307,9 @@ def FourHW (α β γ δ : ℕ → ℕ) (P : Pol p q r s) : Prop :=
     BlockHW (rv (bD p q r s)) δ P
 
 /- English proof (translation)
-Establish `key : ∀ i : Fin n, α i = α' i ∧ β i.rev = β' i.rev` using `fun i => by`. Establish `h3 : (α i : ℤ) - β i.rev = α' i - β' i.rev` using `by exact_mod_cast e i`. Use `h i` as an intermediate fact. Use `h' i` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Apply the tactic sequence `constructor <;> funext i <;> by_cases hi : i < n`. Conclude with `(key ⟨i, hi⟩).1`. Rewrite using `[h1 i (by omega), h1' i (by omega)]`. Simplify `(key (Fin.rev ⟨i, hi⟩)).2` using `only [Fin.rev_rev]`. Rewrite using `[h2 i (by omega), h2' i (by omega)]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_unique {n : ℕ} {α β α' β' : ℕ → ℕ} (h1 : ∀ i, n ≤ i → α i = 0)
     (h2 : ∀ i, n ≤ i → β i = 0) (h1' : ∀ i, n ≤ i → α' i = 0) (h2' : ∀ i, n ≤ i → β' i = 0)
@@ -331,9 +327,9 @@ theorem pair_unique {n : ℕ} {α β α' β' : ℕ → ℕ} (h1 : ∀ i, n ≤ i
   · rw [h2 i (by omega), h2' i (by omega)]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, a1, a2, a3, a4, a5, a6, -, -, a7, a8, -, -⟩` from `h`. Take `⟨-, -, -, -, b1, b2, b3, b4, b5, b6, -, -, b7, b8, -, -⟩` from `h'`. Establish `m : ∀ {a b : ℕ} {f : ℕ → ℕ}, (∀ i, min a b ≤ i → f i = 0) → ∀ i, a ≤ i → f i = 0` using `fun h i hi => h i ((min_le_left _ _).trans hi)`. Take `⟨e1, e2⟩` from `pair_unique (m a1) (m a2) (m b1) (m b2) a5 b5 fun i => (a7 i).symm.trans (b7 i)`. Take `⟨e3, e4⟩` from `pair_unique (m a3) (m a4) (m b3) (m b4) a6 b6 fun i => (a8 i).symm.trans (b8 i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e1, e2, e3, e4⟩`.
+Supply the required witnesses or components.
 -/
 theorem ShapeData.unique {μ : Ix p q → ℚ} {μ' : Ix r s → ℚ} {α β γ δ α' β' γ' δ' : ℕ → ℕ}
     (h : ShapeData μ μ' α β γ δ) (h' : ShapeData μ μ' α' β' γ' δ') :
@@ -347,7 +343,7 @@ theorem ShapeData.unique {μ : Ix p q → ℚ} {μ' : Ix r s → ℚ} {α β γ 
   exact ⟨e1, e2, e3, e4⟩
 
 /- English proof (translation)
-Take `⟨β, b1, b2, b3, b4⟩` from `BlockWeights.row_col_weights_agree σ m n (rv z) (rv_inj hz) P (fun i => a i.rev) (fun i => a' i.rev) hP (fun i j h => ha (Fin.rev_le_rev.2 h)) (fun i j h => by rw [rowOp_rv]; exact h1 _ _ (Fin.rev_lt_rev.2 h)) (fun i j h => by rw [colOp_rv]; exact h2 _ _ (Fin.rev_lt_rev.2 h)) (fu …`. Conclude with `⟨β, b1, b2, fun i => by simpa only [Fin.rev_rev] using b3 i.rev, fun i => by simpa only [Fin.rev_rev] using b4 i.rev⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem weights_rv {σ : Type} [DecidableEq σ] {m n : ℕ} {z : Fin m × Fin n → σ}
     (hz : Function.Injective z) {P : MvPolynomial σ ℂ} {a : Fin m → ℕ} {a' : Fin n → ℕ}
@@ -365,15 +361,13 @@ theorem weights_rv {σ : Type} [DecidableEq σ] {m n : ℕ} {z : Fin m × Fin n 
     fun i => by simpa only [Fin.rev_rev] using b4 i.rev⟩
 
 /- English proof (translation)
-Establish `hid : Function.Injective (id : Ln p q r s → Ln p q r s)` using `Function.injective_id`. Take `⟨⟨A, B, -, -, hAB, eAB, sAB⟩, C, D, -, -, hCD, eCD, sCD⟩` from `isSide_one.exists_sep hid hP h.1.1 h.2.2`. Take `⟨⟨A', D', mA, mD, hAD, eAD, sAD⟩, C', B', mC, mB, hCB, eCB, sCB⟩` from `isSide_two.exists_sep Prod.swap_injective hP h.1.2 h.2.1`. Take `⟨α, a1, a2, a3, a4⟩` from `BlockWeights.row_col_weights_agree _ r p (bA p q r s) (zA_inj hid) P A' A hP mA sAD.2.2.1 sAB.2.2.1 sAD.1 sAB.1`. Take `⟨γ, c1, c2, c3, c4⟩` from `BlockWeights.row_col_weights_agree _ s q (bC p q r s) (zC_inj hid) P C' C hP mC sCB.2.2.1 sCD.2.2.1 sCB.1 sCD.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨β, b1, b2, b3, b4⟩` from `weights_rv (z := bB p q r s) (zB_inj hid) hP mB sCB.2.2.2 sAB.2.2.2 sCB.2.1 sAB.2.1`. Take `⟨δ, d1, d2, d3, d4⟩` from `weights_rv (z := bD p q r s) (zD_inj hid) hP mD sAD.2.2.2 sCD.2.2.2 sAD.2.1 sCD.2.1`. Rewrite `a2`, `b2`, `c2`, `d2` using `[min_comm]`. Apply the tactic sequence `refine ⟨α, β, γ, δ, ⟨a1, b1, c1, d1, a2, b2, c2, d2, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, ⟨sAD.2.2.1, sAB.2.2.1, fun i => a3 i ▸ sAD.1 i, fun i => a4 i ▸ sAB.1 i⟩, (blockHW_rv_iff _ _ _).2 ⟨sCB.2.2.2, sAB.2.2.2, fun i => b3 i ▸ sCB.2.1 i, fun i => b4 i ▸ sAB.2.1 i⟩, ⟨sCB.2.2.1, sCD.2 …`. Rewrite using `[← a4, ← b4]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hAB i`. Rewrite using `[← c4, ← d4]`. Conclude with `hCD i`. Rewrite using `[← a3, ← d3]`. Conclude with `hAD i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← c3, ← b3]`. Conclude with `hCB i`. Rewrite using `[← a4, ← b4]`. Conclude with `eAB i`. Rewrite using `[← c4, ← d4]`.
-
-Conclude with `eCD i`. Rewrite using `[← a3, ← d3]`. Conclude with `eAD i`. Rewrite using `[← c3, ← b3]`. Conclude with `eCB i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem four_of_joint {μ : Ix p q → ℚ} {μ' : Ix r s → ℚ} {P : Pol p q r s} (hP : P ≠ 0)
     (h : P ∈ jointHW μ μ') : ∃ α β γ δ, ShapeData μ μ' α β γ δ ∧ FourHW α β γ δ P := by
@@ -408,9 +402,9 @@ theorem four_of_joint {μ : Ix p q → ℚ} {μ' : Ix r s → ℚ} {P : Pol p q 
   · rw [← c3, ← b3]; exact eCB i
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, a1, a2, a3, a4, a5, a6, a7, a8⟩` from `h`. Take `⟨A, B, C, D⟩` from `h4`. Rewrite `B`, `D` using `[blockHW_rv_iff]`. Take `⟨u1, u2⟩` from `isSide_one.of_sep a1 a2 a5 a6 ⟨A.2.2.2, B.2.2.2, A.2.1, B.2.1⟩ ⟨C.2.2.2, D.2.2.2, C.2.1, D.2.1⟩`. Take `⟨v1, v2⟩` from `isSide_two.of_sep a3 a4 a7 a8 ⟨A.2.2.1, D.2.2.1, A.1, D.1⟩ ⟨C.2.2.1, B.2.2.1, C.1, B.1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨u1, v1⟩, v2, u2⟩`.
+Supply the required witnesses or components.
 -/
 theorem joint_of_four {μ : Ix p q → ℚ} {μ' : Ix r s → ℚ} {α β γ δ : ℕ → ℕ} {P : Pol p q r s}
     (h : ShapeData μ μ' α β γ δ) (h4 : FourHW α β γ δ P) : P ∈ jointHW μ μ' := by
@@ -424,9 +418,9 @@ theorem joint_of_four {μ : Ix p q → ℚ} {μ' : Ix r s → ℚ} {α β γ δ 
   exact ⟨⟨u1, v1⟩, v2, u2⟩
 
 /- English proof (translation)
-Establish `h1 : ∀ a b, rowOp ℂ z a b (P * Q) = rowOp ℂ z a b P * Q` using `fun a b => by`. Simplify using `only [rowOp_apply, Derivation.leibniz, hQ, smul_zero, zero_add, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Establish `h2 : ∀ a b, colOp ℂ z a b (P * Q) = colOp ℂ z a b P * Q` using `fun a b => by`. Simplify using `only [colOp_apply, Derivation.leibniz, hQ, smul_zero, zero_add, smul_eq_mul, Finset.sum_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Conclude with `⟨fun a b hab => by rw [h1, h.1 a b hab, zero_mul], fun a b hab => by rw [h2, h.2.1 a b hab, zero_mul], fun a => by rw [h1, h.2.2.1, smul_mul_assoc], fun a => by rw [h2, h.2.2.2, smul_mul_assoc]⟩`.
+A detailed English derivation is pending.
 -/
 theorem BlockHW.mul {σ : Type} {m n : ℕ} {z : Fin m × Fin n → σ} {α : ℕ → ℕ}
     {P Q : MvPolynomial σ ℂ} (h : BlockHW z α P) (hQ : ∀ w, pderiv (z w) Q = 0) :
@@ -444,27 +438,25 @@ theorem BlockHW.mul {σ : Type} {m n : ℕ} {z : Fin m × Fin n → σ} {α : �
     fun a => by rw [h1, h.2.2.1, smul_mul_assoc], fun a => by rw [h2, h.2.2.2, smul_mul_assoc]⟩
 
 /- English proof (translation)
-Establish `hid : Function.Injective (id : Ln p q r s → Ln p q r s)` using `Function.injective_id`. Establish `⟨a1, b1, c1, d1, a2, b2, c2, d2, _⟩` using `h`. Rewrite `a2`, `b2`, `c2`, `d2` using `[min_comm]`. Establish `iA` using `zA_inj hid`. Establish `iB` using `rv_inj (zB_inj hid)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `iC` using `zC_inj hid`. Establish `iD` using `rv_inj (zD_inj hid)`. Take `⟨nA, vA, hA⟩` from `Minor.minorPoly_highest _ _ _ (bA p q r s) iA α a1 a2`. Take `⟨nB, vB, hB⟩` from `Minor.minorPoly_highest _ _ _ (rv (bB p q r s)) iB β b1 b2`. Take `⟨nC, vC, hC⟩` from `Minor.minorPoly_highest _ _ _ (bC p q r s) iC γ c1 c2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨nD, vD, hD⟩` from `Minor.minorPoly_highest _ _ _ (rv (bD p q r s)) iD δ d1 d2`. Set `B : Fin 4 → Set (Ln p q r s)` to `![Set.range (bA p q r s), Set.range (rv (bB p q r s)), Set.range (bC p q r s), Set.range (rv (bD p q r s))]`. Set `D : Fin 4 → Pol p q r s` to `![minorPoly (bA p q r s) α, minorPoly (rv (bB p q r s)) β, minorPoly (bC p q r s) γ, minorPoly (rv (bD p q r s)) δ]`. Establish `hB4 : ∀ i j, i ≠ j → ∀ v ∈ B i, v ∉ B j`. Introduce `i j hij v`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first`. Consider the case `exact absurd rfl hij`. Consider the case `(rintro ⟨u, rfl⟩ ⟨w, e⟩; simp [zA, zB, zC, zD, rv] at e)`. Establish `hv4 : ∀ j, ∀ v ∈ (D j).vars, v ∈ B j`. Introduce `j`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `fin_cases j`. Use `exacts [vA, vB, vC, vD]`. Establish `hd : ∀ i, ∀ v ∈ B i, pderiv v (∏ j ∈ Finset.univ.erase i, D j) = 0`. Introduce `i v hv`. Use `pderiv_eq_zero_of_notMem_vars fun h' => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, hj, h''⟩` from `Finset.mem_biUnion.1 (vars_prod _ h')`. Conclude with `hB4 i j (Finset.ne_of_mem_erase hj).symm v hv (hv4 j v h'')`. Establish `hm` using `fun i => Finset.mul_prod_erase Finset.univ D (Finset.mem_univ i)`. Establish `hΦ : FourHW α β γ δ (∏ j, D j)` using `⟨hm 0 ▸ hA.mul fun w => hd 0 _ ⟨w, rfl⟩, hm 1 ▸ hB.mul fun w => hd 1 _ ⟨w, rfl⟩, hm 2 ▸ hC.mul fun w => hd 2 _ ⟨w, rfl⟩, hm 3 ▸ hD.mul fun w => hd 3 _ ⟨w, rfl⟩⟩`. Establish `hΦ0 : ∏ j, D j ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => by fin_cases j exacts [nA, nB, nC, nD]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨x₀, hx₀⟩ : ∃ x₀, eval x₀ (∏ j, D j) ≠ 0` from `by by_contra! h0`. Conclude with `hΦ0 (MvPolynomial.funext fun x => by rw [h0, map_zero])`. Rewrite using `[finrank_eq_one_iff_of_nonzero' (⟨_, joint_of_four h hΦ⟩ : jointHW μ μ') fun e => hΦ0 (congrArg Subtype.val e)]`. Introduce and unpack `⟨P, hP⟩`. Distinguish the cases in `h0 : P = 0`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨0, Subtype.ext (by simp [h0])⟩`. Take `⟨α', β', γ', δ', h', qA, qB, qC, qD⟩` from `four_of_joint h0 hP`. Take `⟨rfl, rfl, rfl, rfl⟩` from `h.unique h'`. Use `⟨eval x₀ P / eval x₀ (∏ j, D j), Subtype.ext (MvPolynomial.funext fun x => ?_)⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.Harm.HighestUnique.eval_mul_prod_eq B hB4 D (fun j x x' hx => GlobalTheory.Harm.HighestUnique.eval_congr_vars fun v hv => hx v (hv4 j v hv)) P ?_ ?_ x₀ x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[← map_prod, ← map_prod]`. Express the relevant statement in the definitionally equal form `eval x (_ • ∏ j, D j) = eval x P`. Rewrite using `[smul_eval, div_mul_eq_mul_div, ← key, mul_div_cancel_right₀ _ hx₀]`. Establish `g : ∀ {m n : ℕ} {z : Fin m × Fin n → Ln p q r s} {F : Pol p q r s}, (∃ Q : Pol p q r s, (∀ w, z w ∉ Q.vars) ∧ P = Q * F) → ∃ Q : Pol p q r s, (∀ v ∈ Set.range z, v ∉ Q.vars) ∧ P = Q * F`. Introduce and unpack `m n z F ⟨Q, h1, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨Q, by rintro _ ⟨w, rfl⟩; exact h1 w, h2⟩`. Introduce `j`. Use `fin_cases j`. Use `exacts [g (exists_eq_mul_minorPoly _ _ _ _ iA α a1 a2 P qA), g (exists_eq_mul_minorPoly _ _ _ _ iB β b1 b2 P qB), g (exists_eq_mul_minorPoly _ _ _ _ iC γ c1 c2 P qC), g (exists_eq_mul_minorPoly _ _ _ _ iD δ d1 d2 P qD)]`. Introduce and unpack `⟨a | a, c | c⟩ -`.
-
-Conclude with `⟨0, (c, a), rfl⟩`. Conclude with `⟨1, (c.rev, a.rev), by simp [rv, zB]⟩`. Conclude with `⟨3, (c.rev, a.rev), by simp [rv, zD]⟩`. Conclude with `⟨2, (c, a), rfl⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finrank_jointHW {μ : Ix p q → ℚ} {μ' : Ix r s → ℚ} {α β γ δ : ℕ → ℕ}
     (h : ShapeData μ μ' α β γ δ) : Module.finrank ℂ (jointHW μ μ') = 1 := by
@@ -539,7 +531,7 @@ theorem finrank_jointHW {μ : Ix p q → ℚ} {μ' : Ix r s → ℚ} {α β γ �
     · exact ⟨2, (c, a), rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← Submodule.span_eq (_ ⊓ _)]`. Use `congr 1`. Use extensionality with `P`. Conclude with `and_congr (mem_harm2 P) (mem_harm1 P)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem span_jointHarm : Submodule.span ℂ (jointHarm p q r s) =
     (harmSub (zA Prod.swap) (zB Prod.swap) ⊓ harmSub (zC Prod.swap) (zD Prod.swap)) ⊓
@@ -550,9 +542,9 @@ theorem span_jointHarm : Submodule.span ℂ (jointHarm p q r s) =
   exact and_congr (mem_harm2 P) (mem_harm1 P)
 
 /- English proof (translation)
-Rewrite using `[span_jointHarm]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨α, β, γ, δ, h'⟩` from `fnShape_of_jointShape p q r s μ μ' h`. Conclude with `finrank_jointHW h'`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `(Submodule.eq_bot_iff _).2 fun P hP => by_contra fun h0 => h ?_` and prove the remaining obligations. Take `⟨α, β, γ, δ, h', -⟩` from `four_of_joint h0 hP`. Conclude with `jointShape_of_fnShape p q r s μ μ' ⟨α, β, γ, δ, h'⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem joint_harmonics (μ : Ix p q → ℚ) (μ' : Ix r s → ℚ) :
     (JointShape p q r s μ μ' →
@@ -576,11 +568,11 @@ end Joint
 open Formalism.MainNotions.SchurIrreducible in
 
 /- English proof (translation)
-Introduce `p q r s`. Establish `hι` using `isFockIsometry_of_fockData (X.fock p q r s)`. Establish `hinj` using `(X.fock p q r s).ι_inj`. Use `⟨fun d μ P hd hP => isSide_one.degW_le Function.bijective_id hd hP, fun d μ P hd hP => isSide_two.degW_le Prod.swap_bijective hd hP, fun μ P h0 ht hh => isSide_one.homog_of_type hι hinj Function.bijective_id h0 ht ((mem_harm1 P).1 hh), fun μ P h0 ht hh => isSide_two.homog_of_type …` and prove the remaining obligations. Use `fischer hι hinj {M | (u1 = true ∧ ∃ Z, IsPC Z ∧ M = kron1 r s Z) ∨ (u2 = true ∧ ∃ Z, IsPC Z ∧ M = kron2 p q Z)} ?_ ?_ d _ _ (fun P hP => ?_) fun P => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ (⟨-, Z, hZ, rfl⟩ | ⟨-, Z, hZ, rfl⟩) exacts [odd_kron1 hZ, odd_kron2 hZ]`. Introduce and unpack `_ (⟨h, Z, hZ, rfl⟩ | ⟨h, Z, hZ, rfl⟩) exacts [⟨_, .inl ⟨h, _, isPC_conjTranspose hZ, rfl⟩, lineKroneckerLeftMatrix_conjTranspose Z⟩, ⟨_, .inr ⟨h, _, isPC_conjTranspose hZ, rfl⟩, lineKroneckerRightMatrix_conjTranspose Z⟩]`. Conclude with `⟨fun h Z hZ => hP _ (.inl ⟨h, Z, hZ, rfl⟩), fun h Z hZ => hP _ (.inr ⟨h, Z, hZ, rfl⟩)⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, hQ, ⟨h, Z, hZ, rfl⟩ | ⟨h, Z, hZ, rfl⟩⟩ exacts [⟨Q, hQ, _, .inl ⟨h, Z, hZ, rfl⟩, rfl⟩, ⟨Q, hQ, _, .inr ⟨h, Z, hZ, rfl⟩, rfl⟩]`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨Q, hQ, _, ⟨h, Z, hZ, rfl⟩ | ⟨h, Z, hZ, rfl⟩, rfl⟩ exacts [⟨Q, hQ, .inl ⟨h, Z, hZ, rfl⟩⟩, ⟨Q, hQ, .inr ⟨h, Z, hZ, rfl⟩⟩]`.
+Assume the hypotheses and unpack their components.
 -/
 theorem fock_polynomials (X : ProvA) : admH2 X := by
   intro p q r s

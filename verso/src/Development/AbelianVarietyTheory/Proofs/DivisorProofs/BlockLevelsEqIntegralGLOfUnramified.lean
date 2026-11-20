@@ -9,7 +9,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT.CtLevel
 
 /- English proof (translation)
-Simplify using `only [dgMat, reindex_apply, submatrix_apply]`. Apply the tactic sequence `rcases (blkEq h).symm i with i' | i' <;> rcases (blkEq h).symm j with j' | j' <;>`. Simplify using `[fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, hA, hD, O.zero_mem]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blockDiagonalMatrixOfAddEq_entries_mem_subring {R : Type} [CommRing R] (O : Subring R) {a b n : ℕ} (h : a + b = n)
     (A : Matrix (Fin a) (Fin a) R) (D : Matrix (Fin b) (Fin b) R)
@@ -19,7 +19,7 @@ theorem blockDiagonalMatrixOfAddEq_entries_mem_subring {R : Type} [CommRing R] (
     simp [fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, hA, hD, O.zero_mem]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Conclude with `O.sum_mem fun σ _ => O.mul_mem (intCast_mem O _) (O.prod_mem fun i _ => hA _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_subring_of_entries_mem_fin {R : Type} [CommRing R] (O : Subring R) {m : ℕ} (A : Matrix (Fin m) (Fin m) R)
     (hA : ∀ i j, A i j ∈ O) : A.det ∈ O := by
@@ -27,7 +27,7 @@ theorem det_mem_subring_of_entries_mem_fin {R : Type} [CommRing R] (O : Subring 
   exact O.sum_mem fun σ _ => O.mul_mem (intCast_mem O _) (O.prod_mem fun i _ => hA _ _)
 
 /- English proof (translation)
-Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `O.one_mem`. Conclude with `O.zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_matrix_apply_mem_subring {R : Type} [CommRing R] (O : Subring R) {m : ℕ} (i j : Fin m) :
     (1 : Matrix (Fin m) (Fin m) R) i j ∈ O := by
@@ -38,11 +38,11 @@ theorem one_matrix_apply_mem_subring {R : Type} [CommRing R] (O : Subring R) {m 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use `set d := GeneralLinearGroup.det k`. Set `u : GL (Fin 1) (w.adicCompletion E)` to `Units.map (Matrix.scalar (Fin 1)).toMonoidHom d`. Establish `hu : GeneralLinearGroup.det u = d` using `by ext; simp [u]`. Rewrite using `[← hu]`. Apply `hμ` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `GlobalTheory.AdelicU.mem_GLint_iff.1 hk`. Use `GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Establish `: (u : Matrix (Fin 1) (Fin 1) _) i j = (k.val).det`. Simplify using `[u, d, Subsingleton.elim i j]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `det_mem_subring_of_entries_mem_fin _ _ h1`. Establish `: (u⁻¹ : GL (Fin 1) _).val i j = (k⁻¹ : GLw m w).val.det`. Simplify using `[u, d, Subsingleton.elim i j, ← map_inv]`. Rewrite using `[this]`. Conclude with `det_mem_subring_of_entries_mem_fin _ _ h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem character_det_integralGL_eq_one_of_unramified (w : Pl E) (μ : (w.adicCompletion E)ˣ →* ℂˣ)
     (hμ : ∀ u ∈ GlobalTheory.LFun.KGL w 1, μ (GeneralLinearGroup.det u) = 1) {m : ℕ} (k : GLw m w)
@@ -67,13 +67,11 @@ end GlobalTheory.BCT.CtLevel
 namespace GlobalTheory.BCT.CtLevel
 
 /- English proof (translation)
-Introduce `E _ _ _ a b n h w μ hμ`. Prove the components needed by the constructor for the conclusion. Use `le_antisymm (fun x hx => hx.1.1) fun k hk => ⟨⟨hk, ?_⟩, character_det_integralGL_eq_one_of_unramified w μ hμ k hk⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `GlobalTheory.AdelicU.mem_GLint_iff.1 hk`. Use `show dgM h w (k, 1) ∈ GlobalTheory.LFun.KGL w n`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[dgM_val]`. Conclude with `blockDiagonalMatrixOfAddEq_entries_mem_subring _ h _ _ h1 (one_matrix_apply_mem_subring _) i j`. Rewrite using `[← map_inv, dgM_val]`. Conclude with `blockDiagonalMatrixOfAddEq_entries_mem_subring _ h _ _ h2 (fun i j => by simpa using one_matrix_apply_mem_subring (Ov E w) i j) i j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm (fun x hx => hx.1.1) fun k hk => ⟨⟨hk, ?_⟩, character_det_integralGL_eq_one_of_unramified w μ hμ k hk⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `GlobalTheory.AdelicU.mem_GLint_iff.1 hk`. Use `show dgM h w (1, k) ∈ GlobalTheory.LFun.KGL w n`. Use `GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[dgM_val]`.
-
-Conclude with `blockDiagonalMatrixOfAddEq_entries_mem_subring _ h _ _ (one_matrix_apply_mem_subring _) h1 i j`. Rewrite using `[← map_inv, dgM_val]`. Conclude with `blockDiagonalMatrixOfAddEq_entries_mem_subring _ h _ _ (fun i j => by simpa using one_matrix_apply_mem_subring (Ov E w) i j) h2 i j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_KGL_of_unram : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b n : ℕ) (h : a + b = n)
     (w : Pl E) (μ : (w.adicCompletion E)ˣ →* ℂˣ), (∀ u ∈ GlobalTheory.LFun.KGL w 1, μ (GeneralLinearGroup.det u) = 1) →

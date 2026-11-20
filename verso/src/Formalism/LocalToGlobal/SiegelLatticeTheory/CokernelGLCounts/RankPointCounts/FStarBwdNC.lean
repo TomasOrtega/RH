@@ -10,43 +10,41 @@ namespace Formalism.L2.SG.Pf.FrameGlobalPatching.FStar.BwdNA
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E)
 
 /- English proof (translation)
-Introduce `x hx` and use `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).2 fun y hy => hXiso y hy x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem X_le_orth (X : Submodule E S.V) (hXiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y = 0) : X ≤ orth S X :=
   fun x hx => (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).2 fun y hy => hXiso y hy x hx
 
 /- English proof (translation)
-The claim follows from `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).1 hu x hx`.
+A detailed English derivation is pending.
 -/
 theorem orth_X {X : Submodule E S.V} {u x : S.V} (hu : u ∈ orth S X) (hx : x ∈ X) : S.hT x u = 0 :=
   (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).1 hu x hx
 
 /- English proof (translation)
-Rewrite using `[hsw S x u, orth_X S hu hx, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem orth_X' {X : Submodule E S.V} {u x : S.V} (hu : u ∈ orth S X) (hx : x ∈ X) : S.hT u x = 0 := by
   rw [hsw S x u, orth_X S hu hx, star_zero]
 
 /- English proof (translation)
-Take `⟨y, hyΛ, hyX, hyz⟩` from `hy`. Set `M₂ : Submodule (𝓞 E) S.V` to `Λ₂ ⊓ (orth S X).restrictScalars (𝓞 E)`. Establish `hM₂fg : M₂.FG` using `Submodule.FG.of_le hΛ₂.fg inf_le_left`. Establish `hXo` using `X_le_orth S X hXiso`. Take `⟨δ, hδX, hδ0, hδΛ⟩` from `glift S M₂ Λ hM₂fg X X (fun x hx hxX => hX x hxX hx.1) (fun x hx => hL x hx.1 hx.2)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `z₂ : M₂` to `⟨z, hz₂, hzX⟩`. Set `κ : M₂ →ₗ[𝓞 E] E` to `((S.hT y).restrictScalars (𝓞 E)) ∘ₗ M₂.subtype`. Set `δ' : M₂ →ₗ[𝓞 E] S.V` to `δ - κ.smulRight (δ z₂)`. Establish `hδ'app : ∀ m, δ' m = δ m - S.hT y m • δ z₂` using `fun m => rfl`. Establish `hδ'X : ∀ m, δ' m ∈ X` using `fun m => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hδ'app]`. Conclude with `X.sub_mem (hδX m) (X.smul_mem _ (hδX z₂))`. Establish `hδ'0 : ∀ m : M₂, (m : S.V) ∈ X → δ' m = 0` using `fun m hm => by`. Rewrite using `[hδ'app, hδ0 m hm, orth_X' S hyX hm, zero_smul, sub_zero]`. Establish `hδ'z : δ' z₂ = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hδ'app]`. Use `show δ z₂ - S.hT y z • δ z₂ = 0`. Rewrite using `[hyz, one_smul, sub_self]`. Establish `hδzΛ : δ z₂ ∈ Λ`. Use `Λ.sub_mem (hδΛ z₂) hz` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e : (z₂ : S.V) + δ z₂ - z = δ z₂` using `by show z + δ z₂ - z = δ z₂; abel`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `hδ'Λ : ∀ m : M₂, (m : S.V) + δ' m ∈ Λ` using `fun m => by`. Rewrite using `[hδ'app, ← add_sub_assoc]`. Conclude with `Λ.sub_mem (hδΛ m) (int_smul_mem (sd_int hSD₂ m.2.1 hyΛ) hδzΛ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hfull : ∀ u ∈ orth S X, ∃ d : 𝓞 E, d ≠ 0 ∧ d • u ∈ M₂` using `fun u hu => by`. Take `⟨d, hd, hdu⟩` from `PI.UnitaryGroupMassFormula.BetaLUniq.exists_smul_mem S Λ₂ hΛ₂ u`. Conclude with `⟨d, hd, hdu, by show d • u ∈ orth S X; rw [oSmul]; exact (orth S X).smul_mem _ hu⟩`. Take `⟨A, hA⟩` from `ext_lat S (W := S.V) (orth S X) M₂ (fun x hx => hx.2) hfull δ'`. Establish `hscale : ∀ u : orth S X, ∃ d : 𝓞 E, d ≠ 0 ∧ ∃ hm : ((d : E) • (u : S.V)) ∈ M₂, (d : E) • A u = δ' ⟨_, hm⟩` using `fun u => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d, hd, hdu⟩` from `hfull u u.2`. Rewrite `hdu` using `[oSmul]`. Use `⟨d, hd, hdu, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, ← hA _ hdu]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨A, fun u => ?_, fun u hu => ?_, ?_, fun x hx hxΛ => ?_⟩` and prove the remaining obligations. Take `⟨d, hd, hm, he⟩` from `hscale u`. Establish `h1 : (d : E) • A u ∈ X` using `by rw [he]; exact hδ'X _`. Establish `h2` using `X.smul_mem ((d : E)⁻¹) h1`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ (coe_ne_zero hd), one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, hd, hm, he⟩` from `hscale u`. Rewrite `he` using `[hδ'0 _ (X.smul_mem _ hu)]`. Conclude with `(smul_eq_zero.1 he).resolve_left (coe_ne_zero hd)`. Rewrite using `[hA z ⟨hz₂, hzX⟩]`. Conclude with `hδ'z`.
-
-Rewrite using `[hA x ⟨hxΛ, hx⟩]`. Conclude with `hδ'Λ ⟨x, hxΛ, hx⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepB (X : Submodule E S.V) (hXiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y = 0) (z : S.V) (hzX : z ∈ orth S X)
     (Λ Λ₂ : Submodule (𝓞 E) S.V) (hΛ₂ : Submodule.IsLattice E Λ₂) (hSD₂ : SD S Λ₂)
@@ -102,11 +100,11 @@ theorem stepB (X : Submodule E S.V) (hXiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y 
   · rw [hA x ⟨hxΛ, hx⟩]; exact hδ'Λ ⟨x, hxΛ, hx⟩
 
 /- English proof (translation)
-Set `f : orth S X →ₗ[E] S.V` to `(orth S X).subtype + A`. Establish `hinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `u hu`. Rewrite `hu` using `[LinearMap.mem_ker]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (u : S.V) = -A u` using `eq_neg_of_add_eq_zero_left hu`. Establish `h2 : (u : S.V) ∈ X` using `by rw [h1]; exact X.neg_mem (hA u)`. Establish `h3` using `hA0 u h2`. Rewrite `h1` using `[h3, neg_zero]`. Conclude with `(Submodule.mem_bot E).2 (Subtype.ext h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hiso : ∀ u v : orth S X, S.hT (f u) (f v) = S.hT u v` using `fun u v => by show S.hT ((u : S.V) + A u) ((v : S.V) + A v) = S.hT u v`. Rewrite using `[map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, orth_X' S u.2 (hA v), orth_X S v.2 (hA u), hXiso _ (hA u) _ (hA v)]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨g, hg, hgf⟩` from `witt_extension_theorem E S.V S.hT (fun x y => by rw [hsw S x y]) (fun x hx => S.nondeg.1 x hx) (orth S X) f hinj hiso`. Conclude with `⟨g, hg, fun u => hgf u⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stepW (X : Submodule E S.V) (hXiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y = 0) (A : orth S X →ₗ[E] S.V)
     (hA : ∀ u, A u ∈ X) (hA0 : ∀ u : orth S X, (u : S.V) ∈ X → A u = 0) :

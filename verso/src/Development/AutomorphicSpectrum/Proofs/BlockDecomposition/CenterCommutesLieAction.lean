@@ -9,11 +9,11 @@ open NumberField MeasureTheory Topology Matrix GlobalTheory.AutomorphicL2Unitary
 namespace GlobalTheory.CompanionTheory.ZalgCentral
 
 /- English proof (translation)
-Introduce `E _ _ _ a z hz X`. Unfold `Zalg at hz`. Establish `hle : Algebra.adjoin ℂ {z : Module.End ℂ (Sm E a) | ∃ τ u, z = cap τ u} ≤ Subalgebra.centralizer ℂ {lie E a X}`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨τ, u, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce `g hg`. Rewrite `hg` using `[Set.mem_singleton_iff]`. Substitute `hg` using the available equality. Conclude with `(commute_cap_lie τ u X).symm.eq`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hc` using `(Subalgebra.mem_centralizer_iff ℂ).mp (hle hz) (lie E a X) (Set.mem_singleton _)`. Conclude with `hc.symm`.
+A detailed English derivation is pending.
 -/
 theorem Zalg_mul_lie : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (z : Module.End ℂ (Sm E a)),
     z ∈ Zalg E a → ∀ X, z * lie E a X = lie E a X * z := by

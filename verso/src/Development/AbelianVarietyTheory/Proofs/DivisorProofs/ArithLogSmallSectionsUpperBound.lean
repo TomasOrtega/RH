@@ -16,31 +16,25 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSNef
 
 /- English proof (translation)
-Introduce `hC hA hS k _ X _ p D hX P x β q hx hxB hNef hSI hq`. Use `haveI := hX.charZero`. Use `haveI hcz : CharZero X.functionField := charZero_of_injective_ringHom (f := (X.germToFunctionField ⊤).hom) (X.germToFunctionField_injective ⊤)`. Establish `hβ : 0 ≤ β`. Take `⟨h, hh, rfl⟩` from `hSI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.T.arithKleiman_heightNef_of_isNef hC hA hS k X p D hX _ hNef).2 h hh _`. Establish `hg : 0 ≤ gdeg (P.L.tens P.A) D` using `GlobalTheory.T.hermLineBundleGeometricDegree_nonneg_of_semiPos k X p D hX _ hNef.semiPos`. Establish `hq' : (3:ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `hΔ : 0 < Real.log ((q:ℝ)/2)` using `Real.log_pos (by linarith)`. Establish `hF : (0:ℝ) < ((D+1).factorial : ℝ)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl2 : 0 ≤ Real.log 2` using `Real.log_nonneg (by norm_num)`. Establish `hFD : 0 < ((D+1).factorial : ℝ) * Real.log ((q:ℝ)/2)` using `mul_pos hF hΔ`. Use `set g := gdeg (P.L.tens P.A) D with hgdef`. Use `set Δ := Real.log ((q:ℝ)/2) with hΔdef`. Use `set α := (β + (D + 1) * (Δ + D * Real.log 2 / 2) * g) / ((D + 1).factorial * Δ) with hαdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set β' := (D + 1) * g / (2 * ((D + 1).factorial * Δ)) with hβ'def`. Establish `hα : 0 ≤ α` using `div_nonneg (by positivity) hFD.le`. Establish `hβ' : 0 ≤ β'` using `div_nonneg (by positivity) (by positivity)`. Establish `hT : 0 ≤ α + β' * Real.log ((α + 2 * β' + 1) ^ 2)` using `add_nonneg hα (mul_nonneg hβ' (Real.log_nonneg (by nlinarith)))`. Establish `hexp : ∀ m : ℕ, (2 / q : ℝ) ^ m = Real.exp (-(m * Δ))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `m`. Establish `e1 : (2 / q : ℝ) = Real.exp (-Δ)`. Rewrite using `[Real.exp_neg, hΔdef, Real.exp_log (by positivity), inv_div]`. Rewrite using `[e1, ← Real.exp_nat_mul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ (r : ℕ) (e : Fin r → X.functionField) (n : Fin r → ℕ), LinearIndependent ℤ e → (∀ j, e j ∈ P.Bl 1 0 ((2 / q : ℝ) ^ n j)) → ((∑ j, (n j + 1) : ℕ) : ℝ) ≤ α + β' * Real.log ((α + 2 * β' + 1) ^ 2)`. Introduce `r e n he hB`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Simplify using `using hT`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Nonempty (Fin r) := ⟨⟨0, hr⟩⟩`. Establish `hsmall : SmallFam (P.L.tens P.A) (boxFam e x) (fun c => n c.1 * Δ)`. Apply `GlobalTheory.T.smallSections_pairSum_ratFnFamily_tensor k X p P` to reduce the goal to its premises. Introduce and unpack `⟨j, S⟩`. Establish `h1` using `hB j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hxB S`. Take `⟨hm, hnu⟩` from `GlobalTheory.VolBr.NuMul.mul_mem_H_and_nu_mul k X p P 1 0 0 1 _ _ h1.1 h2.1`. Establish `e10 : ((1:ℤ) + 0) = 1` using `by norm_num`. Establish `e01 : ((0:ℤ) + 1) = 1` using `by norm_num`. Rewrite `hm`, `hnu` using `[e10, e01]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `⟨hm, fun σ y => ?_⟩` and prove the remaining obligations. Use `show P.nu 1 1 σ y (e j * ∏ i ∈ S, x i) ≤ _`. Rewrite using `[hnu, ← hexp]`. Establish `h0 : 0 ≤ P.nu 1 0 σ y (e j)` using `by unfold Pair.nu; positivity`. Conclude with `(mul_le_of_le_one_right h0 (h2.2 σ y)).trans (h1.2 σ y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hcore` using `GlobalTheory.T.nef_hermitian_small_sections_key_inequality hC hA hS k X p D hX _ β hNef hSI x Δ hx hΔ (Fin r) e n he hsmall`. Rewrite `hcore` using `[Fintype.card_fin]`. Establish `hrs : (r:ℝ) ≤ ((∑ j, (n j + 1) : ℕ) : ℝ)`. Establish `: r ≤ ∑ j : Fin r, (n j + 1)`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `this` after adjusting the coercions. Establish `hs : ((∑ j, (n j + 1) : ℕ) : ℝ) ≤ α + β' * Real.log r`. Establish `e2 : α + β' * Real.log r = (β + ((D:ℝ) + 1) * (Δ + D * Real.log 2 / 2 + Real.log r / 2) * g) / ((D + 1).factorial * Δ)`. Rewrite using `[hαdef, hβ'def]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, le_div_iff₀ hFD]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `GlobalTheory.le_add_mul_log_sq_of_le_add_mul_log α β' r _ hα hβ' (by exact_mod_cast hr) hrs hs`. Establish `hfin` using `GlobalTheory.T.hermLineBundlePair_sectionBall_finite k X p D hX P 1 0 1`.
-
-Conclude with `GlobalTheory.T.log_ncard_unitBall_le_of_independent_level_bound X.functionField (P.H 1 0) (P.Bl 1 0) (GlobalTheory.VolBr.Pair.isBallFam k X p P 1 0) hfin q _ hq hT key`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HSNef.lc_le_bound : GlobalTheory.Published.ArCalc → AmpleHS → SemiPull → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p) (x : Fin D → X.functionField) (β : ℝ) (q : ℕ), AlgebraicIndependent ℤ x → (∀ S : Finset (Fin D), ∏ i ∈ S, x i ∈ P.Bl 0 1 1) → (P.L.tens P.A).IsNef D → (P.L.tens P.A).IsSelfInter β → 3 ≤ q → P.lc 1 0 1 ≤ bound D q β (gdeg (P.L.tens P.A) D) := by
   intro hC hA hS k _ X _ p D hX P x β q hx hxB hNef hSI hq

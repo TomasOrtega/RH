@@ -20,19 +20,19 @@ namespace GlobalTheory.RatCoord
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Generalize the expression as in `hg : d.nC c' * (d.nB b' * d.levi u) = g at hQ`. Establish `hM : mt V g ∈ ratMx D V.rank V.rank` using `(mem_GQ_iff V g).1 hQ`. Establish `hM' : mt V g⁻¹ ∈ ratMx D V.rank V.rank` using `(mem_GQ_iff V g⁻¹).1 (inv_mem hQ)`. Establish `hX : mt V g ⬝ d.jX = d.jX ⬝ u.1`. Rewrite using `[← hg]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mt_mul, Matrix.mul_assoc, d.levi_jX, cancel₂ (d.nB_jX _), cancel₂ (d.nC_jX _)]`. Establish `hX' : mt V g⁻¹ ⬝ d.jX = d.jX ⬝ (u⁻¹).1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc d.jX, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Use `_ = d.jX ⬝ (u⁻¹).1 := by rw [← hX, ← Matrix.mul_assoc, ← Matrix.mul_assoc, mt_inv_mul, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : mt V g ⬝ d.j0 = d.j0 + d.jX ⬝ b'`. Rewrite using `[← hg]`. Simplify using `only [mt_mul, Matrix.mul_assoc, d.wittDecomp_levi_inclAnisotropic, d.nB_j0, Matrix.mul_add, cancel₂ (d.nC_jX _), d.nC_j0]`. Establish `hY : d.pX ⬝ (mt V g ⬝ d.jY) = (c'.1 - half D • (b' ⬝ plus V₀ b')) ⬝ adj (u⁻¹).1`. Rewrite using `[← hg, mt_mul, mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, d.levi_jY, cancel₂ (d.nB_jY _)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, cancel₂ (d.nC_jY _), cancel₂ (d.nC_j0 _), cancel₂ (d.nC_jX _), cancel₂ d.pX_jY, cancel₂ d.pX_jX, cancel₂ d.pX_j0, d.pX_jY, d.pX_jX, d.pX_j0, Matrix.one_mul, Matrix.zero_mul, zero_add, zero_sub …`. Establish `hu1 : u.1 ∈ ratMx D ρ ρ`. Establish `e : d.pX ⬝ (mt V g ⬝ d.jX) = u.1` using `by rw [hX, cancel₂ d.pX_jX, Matrix.one_mul]`. Rewrite using `[← e]`. Conclude with `ratMx_mul (rat_mem _) (ratMx_mul hM (rat_mem _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu2 : (u⁻¹).1 ∈ ratMx D ρ ρ`. Establish `e : d.pX ⬝ (mt V g⁻¹ ⬝ d.jX) = (u⁻¹).1` using `by rw [hX', cancel₂ d.pX_jX, Matrix.one_mul]`. Rewrite using `[← e]`. Conclude with `ratMx_mul (rat_mem _) (ratMx_mul hM' (rat_mem _))`. Establish `hb : b' ∈ ratMx D ρ V₀.rank`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : d.pX ⬝ (mt V g ⬝ d.j0) = b'`. Rewrite using `[h0, Matrix.mul_add, d.pX_j0, zero_add, cancel₂ d.pX_jX, Matrix.one_mul]`. Rewrite using `[← e]`. Conclude with `ratMx_mul (rat_mem _) (ratMx_mul hM (rat_mem _))`. Establish `hc : c'.1 = d.pX ⬝ (mt V g ⬝ d.jY) ⬝ adj u.1 + half D • (b' ⬝ plus V₀ b')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : adj (u⁻¹).1 ⬝ adj u.1 = 1` using `by rw [← adj_mul, Units.mul_inv, adj_one]`. Rewrite using `[hY, Matrix.mul_assoc, e, Matrix.mul_one, sub_add_cancel]`. Use `⟨?_, hb, hu1, hu2⟩` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `add_mem (ratMx_mul (ratMx_mul (rat_mem _) (ratMx_mul hM (rat_mem _))) (ratMx_adj hu1)) (ratMx_smul _ (ratMx_mul hb (ratMx_mul (rat_mem _) (ratMx_adj hb))))`.
+A detailed English derivation is pending.
 -/
 theorem coords_rat {D : D7} {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) (c' : skewA D ρ) (b' : Mx D ρ V₀.rank)
     (u : GL (Fin ρ) (AE D)) (hQ : d.nC c' * (d.nB b' * d.levi u) ∈ GQ V) :
@@ -72,9 +72,9 @@ theorem coords_rat {D : D7} {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) (
     (ratMx_smul _ (ratMx_mul hb (ratMx_mul (rat_mem _) (ratMx_adj hb))))
 
 /- English proof (translation)
-Introduce `D V V₀ ρ d γ hQ hN`. Take `⟨u, hu, b, c, rfl⟩` from `((GlobalTheory.T.flag_unipotent_fourier_jacobi_group_structure D V V₀ ρ d).1 γ).1 hN`. Establish `hγ : d.levi u * (d.nB b * d.nC c) = d.nC (skewConj u.1 c) * (d.nB (u.1 ⬝ b) * d.levi u)`. Rewrite using `[← mul_assoc, d.levi_mul_nB, mul_assoc, d.levi_mul_nC, ← mul_assoc, ← d.nC_mul_nB, mul_assoc]`. Rewrite `hQ`, the goal using `[hγ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨h1, h2, h3, h4⟩` from `coords_rat d _ _ u hQ`. Conclude with `⟨skewConj u.1 c, u.1 ⬝ b, ⟨u, hu⟩, rfl, h1, h2, h3, h4⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rat_coords_of_mem_flagN : ∀ (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (γ : GA D V), γ ∈ GQ V → γ ∈ flagN d → ∃ (c : skewA D ρ) (b : Mx D ρ V₀.rank) (u : UX D ρ), γ = d.nC c * (d.nB b * d.levi u.1) ∧ c.1 ∈ ratMx D ρ ρ ∧ b ∈ ratMx D ρ V₀.rank ∧ u ∈ UXQ D ρ := by
   intro D V V₀ ρ d γ hQ hN

@@ -9,18 +9,18 @@ open MvPolynomial Finset Coinv
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `IsHomogeneous.sum _ _ _ fun _ _ => isHomogeneous_X_pow _ _`.
+A detailed English derivation is pending.
 -/
 theorem Coinv.bps_isHomogeneous (K : Type) [Field K] (f n m : ℕ) (b : Fin f) :
     (bps K f n m b).IsHomogeneous m :=
   IsHomogeneous.sum _ _ _ fun _ _ => isHomogeneous_X_pow _ _
 
 /- English proof (translation)
-Introduce `K _ f n J hJ d`. Take `⟨a, rfl⟩` from `h1 K f n J hJ`. Use `⟨fun m b => if m ≤ d then homogeneousComponent (d - m) (a m b) else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `m b dsimp only split_ifs`. Conclude with `homogeneousComponent_isHomogeneous _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Conclude with `isHomogeneous_zero _ _ _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2 (Fin f × Fin n) K (bps K f n m b) (a m b) m d (bps_isHomogeneous K f n m b)]`. Apply the tactic sequence `by_cases hmd : m ≤ d <;> simp [hmd]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem CoinvIdealComponent.proof (h1 : CoinvIdealRepresentation.Statement)
     (h2 : HomogeneousComponentMul.Statement) : CoinvIdealComponent.Statement := by

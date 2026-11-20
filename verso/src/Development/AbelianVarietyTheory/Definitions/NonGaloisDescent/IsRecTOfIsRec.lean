@@ -15,7 +15,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Take `⟨a, ha, ε, hε, H⟩` from `hrec`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Conclude with `{ dim := H.dim one := H.one langlands := fun l x hx => H.langlands l x hx cusp := fun x hx => (H.cusp x).1 hx nu := fun x s => H.nu_eq x s absCentral := fun x ω hω σ => by rw [H.central x ω hω σ] twist := fun x χ hχ _ => H.twist x χ hχ central := fun x ω _ hω => H.central x ω hω …`. Introduce `E' _ _ _ _ _ _ g _ w' h'`. Conclude with `hT E E' Ω g A w h w' h' rc ⟨a, ha, ε, hε, H⟩ }`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isRecT_of_isRec (hT : GlobalTheory.Published.DepthZeroTypeInertia) {rc : IrrGL (w.adicCompletion E) → WD h}
     (hrec : IsRec h rc) : IsRecT h rc := by
@@ -38,7 +38,7 @@ theorem isRecT_of_isRec (hT : GlobalTheory.Published.DepthZeroTypeInertia) {rc :
         exact hT E E' Ω g A w h w' h' rc ⟨a, ha, ε, hε, H⟩ }
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h`. Take `⟨rc, hrc, -⟩` from `hL.1 E Ω A w h`. Conclude with `⟨rc, isRecT_of_isRec hT hrc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem recTExists_of (hL : GlobalTheory.Published.LocalLanglandsGL) (hT : GlobalTheory.Published.DepthZeroTypeInertia) : RecTExists := by
   intro E Ω _ _ _ _ _ A w h
@@ -50,7 +50,7 @@ section Classes
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨s, hs, hy⟩` from `hx`. Conclude with `⟨s, hs, fun y hys => Or.inl (hy y hys)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem good_of_toral {x : IrrGL k} (hx : Toral x) : Good x := by
   obtain ⟨s, hs, hy⟩ := hx

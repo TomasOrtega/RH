@@ -13,9 +13,9 @@ open Polynomial GlobalTheory.CuspGL
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Establish `: Finite (Module.End F V)` using `Module.finite_of_finite F`. Unfold `mass`. Establish `hfin : ({g : Module.End F V | LinearMap.charpoly g = P}).Finite` using `Set.toFinite _`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: LinearMap.charpoly g = P` using `by simpa using hg`. Simplify using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mass_comp_charpoly_eq_mul (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (s : F[X] → ℂ) (P : F[X]) :
@@ -30,13 +30,13 @@ theorem mass_comp_charpoly_eq_mul (F : Type) [Field F] [Finite F] (V : Type) [Ad
   simp [this]
 
 /- English proof (translation)
-Introduce `F _ _ V _ _ _ s hs P hP hdeg`. Establish `hiso` using `GlobalTheory.T.invariantSubspaceMobiusInverseCharpoly_linearEquiv_conj F s`. Establish `hq : 2 ≤ Nat.card F` using `Finite.one_lt_card`. Establish `hmu1 : mu (1 : F[X]) = 1` using `(GlobalTheory.T.charpolyEndomorphismDensityGL_recursion F 1 monic_one).2`. Establish `hlog` using `GlobalTheory.T.additive_mul_eq_vonMangoldt_convolution F (Nat.card F) hq s mu hs hmu1 (fun Q hQ => (GlobalTheory.T.charpolyEndomorphismDensityGL_recursion F Q hQ).1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : ∀ Q : F[X], Q.Monic → s Q * mu Q = conv (fun D => mass (psi s (Fin D.natDegree → F)) D / glCard F D.natDegree) mu Q`. Introduce `Q hQ`. Establish `h` using `GlobalTheory.T.endomorphismMass_mul_parabolic_induction_trivial F (Fin Q.natDegree → F) (fun V _ _ _ => psi s V) hiso Q hQ (by simp)`. Establish `h2 : (fun g : Module.End F (Fin Q.natDegree → F) => ∑ᶠ W : {W : Submodule F (Fin Q.natDegree → F) // ∀ x ∈ W, g x ∈ W}, psi s W.1 (g.restrict W.2)) = fun g => s (LinearMap.charpoly g)`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(GlobalTheory.T.apply_charpoly_eq_finsum_psi_invariant_submodules F _ s g).symm`. Rewrite using `[← h]`. Rewrite using `[h2, mass_comp_charpoly_eq_mul, mu, mul_div_assoc]`. Establish `hc` using `GlobalTheory.T.monicFactorizationConvolution_cancel_of_one F _ _ mu hmu1 (fun Q hQ => (hmul Q hQ).symm.trans (hlog Q hQ)) P hP`. Establish `hV` using `GlobalTheory.T.endomorphismMass_eq_of_linearEquiv_invariant F V (fun V _ _ _ => psi s V) hiso P hdeg`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : glCard F P.natDegree ≠ 0`. Unfold `glCard`. Conclude with `(Nat.card_pos (α := GL (Fin P.natDegree) F)).ne'` after adjusting the coercions. Rewrite using `[hV, mul_div_assoc, ← hc, mul_div_cancel₀ _ hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_psi_eq_glCard_mul_mangoldt_div :
     ∀ (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V]

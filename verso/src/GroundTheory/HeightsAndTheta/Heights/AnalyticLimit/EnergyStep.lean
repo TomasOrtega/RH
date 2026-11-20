@@ -39,7 +39,7 @@ def EnergyStep.Statement : Prop :=
       mInt A (Fin.cons Om.pot d.T) (fun x => -d.w x) + d.M * Om.vol
 
 /- English proof (translation)
-Introduce `x j y hy z`. Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Simplify using `[levi]`. Conclude with `(Om.pos x j y hy z hz).le`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem KaehlerForm.isPsh {n : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas n X}
     (Om : KaehlerForm A) : IsPsh A Om.pot := by
@@ -50,7 +50,7 @@ theorem KaehlerForm.isPsh {n : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolA
   · exact (Om.pos x j y hy z hz).le
 
 /- English proof (translation)
-Establish `h : fderiv ℝ (fun y' => g y' + c) = fderiv ℝ g` using `funext fun y' => fderiv_add_const c`. Unfold `levi`. Rewrite using `[h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_add_const {ι : Type} [Fintype ι] (g : (ι → ℂ) → ℝ) (c : ℝ) (y z : ι → ℂ) :
     levi (fun y' => g y' + c) y z = levi g y z := by
@@ -59,7 +59,7 @@ theorem levi_add_const {ι : Type} [Fintype ι] (g : (ι → ℂ) → ℝ) (c : 
   rw [h]
 
 /- English proof (translation)
-Introduce `x j y hy z`. Establish `h : (P + LocPot.ofFun fun _ => c).φ x ∘ (A.chart j).symm = fun y' => (P.φ x ∘ (A.chart j).symm) y' + c` using `rfl`. Rewrite using `[h, levi_add_const]`. Conclude with `hP x j y ⟨hy.1, hy.2.1⟩ z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPsh_add_const {n : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas n X}
     {P : LocPot X} (hP : IsPsh A P) (c : ℝ) : IsPsh A (P + LocPot.ofFun fun _ => c) := by
@@ -70,7 +70,7 @@ theorem isPsh_add_const {n : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtl
   exact hP x j y ⟨hy.1, hy.2.1⟩ z
 
 /- English proof (translation)
-Establish `h` using `mIntLinear A Φ hΦ (-1) g (fun _ => 0) hg (mIntegrableCont A Φ hΦ _ continuous_const)`. Simplify using `only [neg_one_mul, add_zero, st_mInt_zero] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mInt_neg {n : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas n X) (Φ : Fin n → LocPot X) (hΦ : ∀ i, IsPotential A (Φ i)) (g : X → ℝ)
@@ -80,25 +80,25 @@ theorem mInt_neg {n : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2S
   exact h
 
 /- English proof (translation)
-Introduce `n X _ _ _ A Om d`. Establish `hT : ∀ i, IsPotential A (d.T i)` using `fun i => isPotentialAdd A _ _ Om.isPot (isPotential_ofFun A _ (d.f_smooth i))`. Establish `hcons : ∀ P, IsPotential A P → ∀ i, IsPotential A ((Fin.cons P d.T : Fin (n + 1) → LocPot X) i)`. Introduce `P hP i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hP`. Simplify using `using hT i`. Establish `hw` using `isPotential_ofFun A _ d.w_smooth`. Establish `hv` using `isPotential_ofFun A _ d.v_smooth`. Establish `hOw` using `isPotentialAdd A _ _ Om.isPot hw`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cw` using `st_smooth_continuous A d.w_smooth`. Establish `cv` using `st_smooth_continuous A d.v_smooth`. Establish `int : ∀ P, IsPotential A P → ∀ g : X → ℝ, Continuous g → MIntegrable A (Fin.cons P d.T) g` using `fun P hP g hg => mIntegrableCont A _ (hcons P hP) g hg`. Establish `h1` using `mIntAdd A Om.pot (LocPot.ofFun d.v) d.T Om.isPot hv hT (fun x => -d.w x) (int _ Om.isPot _ cw.neg) (int _ hv _ cw.neg)`. Establish `h2` using `mInt_neg A _ (hcons _ hv) d.w (int _ hv _ cw)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(byPartsSymm A d.v d.w d.v_smooth d.w_smooth d.T hT).symm`. Establish `h4` using `mIntAdd A Om.pot (LocPot.ofFun d.w) d.T Om.isPot hw hT d.v (int _ Om.isPot _ cv) (int _ hw _ cv)`. Establish `hpsh : ∀ P, IsPsh A P → ∀ i, IsPsh A ((Fin.cons P d.T : Fin (n + 1) → LocPot X) i)`. Introduce `P hP i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hP`. Conclude with `d.f_psh i`. Establish `h5` using `mIntNonneg A _ (hcons _ Om.isPot) (hpsh _ Om.isPsh) (fun x => -d.v x) fun x => by have := d.v_nonpos x; linarith`. Rewrite `h5` using `[mInt_neg A _ (hcons _ Om.isPot) d.v (int _ Om.isPot _ cv)]`. Establish `h6` using `mIntLinear A _ (hcons _ hOw) d.M (fun _ => 1) d.v (int _ hOw _ continuous_const) (int _ hOw _ cv)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `beta_reduce at h6`. Establish `h7` using `mIntNonneg A _ (hcons _ hOw) (hpsh _ d.w_psh) (fun x => d.M * 1 + d.v x) fun x => by have := d.le_v x; linarith`. Rewrite `h7` using `[h6]`. Establish `h8` using `mIntAdd A Om.pot (LocPot.ofFun d.w) d.T Om.isPot hw hT (fun _ => 1) (int _ Om.isPot _ continuous_const) (int _ hw _ continuous_const)`. Establish `h9` using `stokes A d.w d.w_smooth d.T hT`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h10` using `massIndep A (fun _ => Om.pot) (Fin.cons (fun _ => 0) d.f) (fun _ => Om.isPot) (by`. Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using st_smooth_const A 0`. Simplify using `using d.f_smooth i)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h11 : mInt A (Fin.cons Om.pot d.T) (fun _ => 1) = mInt A (fun i => Om.pot + LocPot.ofFun ((Fin.cons (fun _ => 0) d.f : Fin (n + 1) → X → ℝ) i)) (fun _ => 1)`. Apply `st_mInt_congr_phi` to reduce the goal to its premises. Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Use function extensionality and compare the values at `x y show Om.pot.φ x y = Om.pot.φ x y + 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression.
 
-Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression. Establish `hV : mInt A (Fin.cons Om.pot d.T) (fun _ => 1) = Om.vol`. Rewrite using `[h11, h10]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h7` using `[h8, h9, add_zero, hV]`. Rewrite using `[h1, h2, h3]`. Combine the linear relations using `[h4, h5, h7]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem EnergyStep.proof : EnergyStep.Statement := by
   intro n X _ _ _ A Om d
@@ -180,7 +180,7 @@ def projectiveLineEnergyData : EnergyStep.Data p1 projectiveLineKaehler where
   f_psh i := Fin.elim0 i
 
 /- English proof (translation)
-The claim follows from `EnergyStep.proof p1 projectiveLineKaehler projectiveLineEnergyData`.
+A detailed English derivation is pending.
 -/
 theorem projectiveLine_energy_inequality :
     mInt p1 (Fin.cons (projectiveLineKaehler.pot + LocPot.ofFun projectiveLineEnergyData.v) projectiveLineEnergyData.T)

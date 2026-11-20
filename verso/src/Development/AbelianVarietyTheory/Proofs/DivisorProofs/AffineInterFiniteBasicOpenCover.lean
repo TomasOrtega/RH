@@ -5,11 +5,11 @@ open AlgebraicGeometry TopologicalSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X hX W V hW hV`. Establish `key : ∀ x : ((W ⊓ V : X.Opens) : Set X), ∃ (f : Γ(X, W)) (g : Γ(X, V)), X.basicOpen f = X.basicOpen g ∧ (x : X) ∈ X.basicOpen f` using `fun x => exists_basicOpen_le_affine_inter hW hV x.1 x.2`. Use `choose f g hfg hx using key`. Establish `hc : IsCompact ((W ⊓ V : X.Opens) : Set X)` using `NoetherianSpace.isCompact _`. Take `⟨t, ht⟩` from `hc.elim_finite_subcover (fun x => (X.basicOpen (f x) : Set X)) (fun x => (X.basicOpen (f x)).isOpen) (fun y hy => Set.mem_iUnion.2 ⟨⟨y, hy⟩, hx _⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t.image f, ?_, ?_⟩` and prove the remaining obligations. Introduce `h hh`. Take `⟨x, -, rfl⟩` from `Finset.mem_image.1 hh`. Conclude with `⟨g x, hfg x⟩`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hxt, hyx⟩` from `Set.mem_iUnion₂.1 (ht hy)`. Conclude with `Set.mem_iUnion₂.2 ⟨f x, Finset.mem_image_of_mem f hxt, hyx⟩`.
+A detailed English derivation is pending.
 -/
 theorem affine_inter_finite_basicOpen_cover :
     ∀ (X : Scheme.{0}), IsNoetherian X → ∀ (W V : X.Opens), IsAffineOpen W → IsAffineOpen V →

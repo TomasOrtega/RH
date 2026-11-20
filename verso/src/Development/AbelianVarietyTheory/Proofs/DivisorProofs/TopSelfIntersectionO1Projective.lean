@@ -17,7 +17,7 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory.ProjSpaceDegree
 
 /- English proof (translation)
-Introduce `k _ N` and use `GlobalTheory.NefNumericsModel.selfIntersection_O1 k N`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem topSelf_O1_str : ∀ (k : Type) [Field k] (N : ℕ),
     letI := GlobalTheory.algebraΓOfHom (PSpace.str k N); topSelfIntersection k (ProjSpace.O1 k N) N = 1 :=

@@ -14,15 +14,13 @@ variable {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K))
   [IsFractionRing V K'] {ι : K →+* K'} {e : ℕ}
 
 /- English proof (translation)
-The claim follows from `Ideal.finiteQuotientOfFreeOfNeBot la.asIdeal la.ne_bot`.
+A detailed English derivation is pending.
 -/
 lemma crv_finite : Finite (𝓞 K ⧸ la.asIdeal) :=
   Ideal.finiteQuotientOfFreeOfNeBot la.asIdeal la.ne_bot
 
 /- English proof (translation)
-Use `haveI := crv_finite la`. Use `haveI : la.asIdeal.IsPrime := la.isPrime`. Unfold `resCharOf`. Break down `CharP.char_is_prime_or_zero (𝓞 K ⧸ la.asIdeal) (ringChar (𝓞 K ⧸ la.asIdeal)) with hp | hp` into its components or cases. Conclude with `hp`.
-
-Conclude with `absurd hp (CharP.char_ne_zero_of_finite (𝓞 K ⧸ la.asIdeal) _)`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem resCharOf_prime : (resCharOf la).Prime := by
   haveI := crv_finite la
@@ -33,7 +31,7 @@ theorem resCharOf_prime : (resCharOf la).Prime := by
   · exact absurd hp (CharP.char_ne_zero_of_finite (𝓞 K ⧸ la.asIdeal) _)
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Unfold `resCharOf`. Conclude with `ringChar.Nat.cast_ringChar`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma crv_char_mem : ((resCharOf la : ℕ) : 𝓞 K) ∈ la.asIdeal := by
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
@@ -41,7 +39,7 @@ lemma crv_char_mem : ((resCharOf la : ℕ) : 𝓞 K) ∈ la.asIdeal := by
   exact ringChar.Nat.cast_ringChar
 
 /- English proof (translation)
-Introduce `hmem`. Apply `hm` to reduce the goal to its premises. Rewrite `hmem` using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Unfold `resCharOf`. Conclude with `ringChar.dvd hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma crv_not_mem {m : ℕ} (hm : ¬ resCharOf la ∣ m) : ((m : ℕ) : 𝓞 K) ∉ la.asIdeal := by
   intro hmem
@@ -51,7 +49,7 @@ lemma crv_not_mem {m : ℕ} (hm : ¬ resCharOf la ∣ m) : ((m : ℕ) : 𝓞 K) 
   exact ringChar.dvd hmem
 
 /- English proof (translation)
-Unfold `vLa`. Rewrite using `[map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).mpr hx) ((Valuation.ne_zero_iff _).mpr hy)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma crv_vLa_mul {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) : vLa la (x * y) = vLa la x + vLa la y := by
   unfold vLa
@@ -59,7 +57,7 @@ lemma crv_vLa_mul {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) : vLa la (x * y) = vLa
   ring
 
 /- English proof (translation)
-Unfold `vLa`. Rewrite using `[map_pow, WithZero.log_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma crv_vLa_pow {x : K} (hx : x ≠ 0) (k : ℕ) : vLa la (x ^ k) = k * vLa la x := by
   unfold vLa
@@ -67,16 +65,14 @@ lemma crv_vLa_pow {x : K} (hx : x ≠ 0) (k : ℕ) : vLa la (x ^ k) = k * vLa la
   ring
 
 /- English proof (translation)
-Unfold `vLa`. Rewrite using `[← map_natCast (algebraMap (𝓞 K) K) N, HeightOneSpectrum.valuation_of_algebraMap]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma crv_vLa_natCast_eq (N : ℕ) : vLa la ((N : ℕ) : K) = -WithZero.log (la.intValuation (N : 𝓞 K)) := by
   unfold vLa
   rw [← map_natCast (algebraMap (𝓞 K) K) N, HeightOneSpectrum.valuation_of_algebraMap]
 
 /- English proof (translation)
-Rewrite using `[crv_vLa_natCast_eq]`. Establish `h1 : la.intValuation (m : 𝓞 K) = 1`. Break down `(la.intValuation_le_one (m : 𝓞 K)).lt_or_eq with hlt | heq` into its components or cases. Conclude with `absurd ((la.intValuation_lt_one_iff_mem _).mp hlt) (crv_not_mem la hm)`. Conclude with `heq`.
-
-Rewrite using `[h1, WithZero.log_one, neg_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma crv_vLa_coprime {m : ℕ} (hm : ¬ resCharOf la ∣ m) : vLa la ((m : ℕ) : K) = 0 := by
   rw [crv_vLa_natCast_eq]
@@ -87,15 +83,13 @@ lemma crv_vLa_coprime {m : ℕ} (hm : ¬ resCharOf la ∣ m) : vLa la ((m : ℕ)
   rw [h1, WithZero.log_one, neg_zero]
 
 /- English proof (translation)
-Rewrite using `[crv_vLa_natCast_eq]`. Unfold `ramOverZ Ideal.ramificationIdx'`. Establish `hr0 : ((resCharOf la : ℕ) : 𝓞 K) ≠ 0` using `Nat.cast_ne_zero.mpr (resCharOf_prime la).ne_zero`. Establish `hv0 : la.intValuation ((resCharOf la : ℕ) : 𝓞 K) ≠ 0` using `la.intValuation_ne_zero _ hr0`. Establish `e1 : ∀ m : ℤ, la.intValuation ((resCharOf la : ℕ) : 𝓞 K) ≤ WithZero.exp m ↔ WithZero.log (la.intValuation ((resCharOf la : ℕ) : 𝓞 K)) ≤ m`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m`. Use `conv_lhs => rw [← WithZero.exp_log hv0]`. Conclude with `WithZero.exp_le_exp`. Establish `key : ∀ n : ℕ, (Ideal.map (algebraMap ℤ (𝓞 K)) (Ideal.span {((resCharOf la : ℕ) : ℤ)}) ≤ la.asIdeal ^ n ↔ (n : ℤ) ≤ -WithZero.log (la.intValuation ((resCharOf la : ℕ) : 𝓞 K)))`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast, ← Ideal.dvd_iff_le, ← la.intValuation_le_pow_iff_dvd, e1]`. Use linear arithmetic over natural numbers and integers. Establish `hk : (0 : ℤ) ≤ -WithZero.log (la.intValuation ((resCharOf la : ℕ) : 𝓞 K))`. Conclude with `(key 0).mp (by simp)` after adjusting the coercions. Establish `hS : {n : ℕ | Ideal.map (algebraMap ℤ (𝓞 K)) (Ideal.span {((resCharOf la : ℕ) : ℤ)}) ≤ la.asIdeal ^ n} = Set.Iic (-WithZero.log (la.intValuation ((resCharOf la : ℕ) : 𝓞 K))).toNat`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `n`. Simplify using `only [Set.mem_setOf_eq, Set.mem_Iic]`. Rewrite using `[key]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hS, csSup_Iic]`.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma crv_vLa_char : vLa la ((resCharOf la : ℕ) : K) = ramOverZ la := by
   rw [crv_vLa_natCast_eq]
@@ -125,13 +119,13 @@ lemma crv_vLa_char : vLa la ((resCharOf la : ℕ) : K) = ramOverZ la := by
   omega
 
 /- English proof (translation)
-Establish `hp` using `resCharOf_prime la`. Use `haveI : Fact (resCharOf la).Prime := ⟨hp⟩`. Take `⟨n', hn'⟩ : resCharOf la ^ padicValNat (resCharOf la) N ∣ N` from `pow_padicValNat_dvd`. Establish `hndvd : ¬ resCharOf la ∣ n'`. Introduce and unpack `⟨b, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hd : resCharOf la ^ (padicValNat (resCharOf la) N + 1) ∣ resCharOf la ^ padicValNat (resCharOf la) N * (resCharOf la * b)` using `⟨b, by ring⟩`. Rewrite `hd` using `[← hn']`. Conclude with `pow_succ_padicValNat_not_dvd (p := resCharOf la) hN hd`. Establish `hn0 : n' ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `hN (by simpa using hn')`. Establish `hK : ((N : ℕ) : K) = ((resCharOf la : ℕ) : K) ^ padicValNat (resCharOf la) N * ((n' : ℕ) : K)` using `by conv_lhs => rw [hn']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hp0 : ((resCharOf la : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hn0' : ((n' : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr hn0`. Rewrite using `[hK, crv_vLa_mul la (pow_ne_zero _ hp0) hn0', crv_vLa_pow la hp0, crv_vLa_coprime la hndvd, crv_vLa_char]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma crv_vLa_natCast {N : ℕ} (hN : N ≠ 0) :
     vLa la ((N : ℕ) : K) = (padicValNat (resCharOf la) N * ramOverZ la : ℕ) := by
@@ -159,11 +153,11 @@ lemma crv_vLa_natCast {N : ℕ} (hN : N ≠ 0) :
   ring
 
 /- English proof (translation)
-Unfold `nval OverLa at *`. Establish `hN' : ((N : ℕ) : K') ≠ 0`. Rewrite using `[← map_natCast ι N]`. Conclude with `(map_ne_zero ι).mpr (Nat.cast_ne_zero.mpr hN)`. Rewrite using `[if_neg hN', ← map_natCast ι N, ho.2, crv_vLa_natCast la hN]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : (e : ℝ) ≠ 0` using `by exact_mod_cast ho.1.ne'`. Use `congr 1`. Generalize the expression as in `padicValNat (resCharOf la) N * ramOverZ la = m`. Use `push_cast`. Rewrite using `[div_eq_iff he]`.
+Reduce the equality to equality of the corresponding arguments. Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma crv_nval_natCast (ho : OverLa la V ι e) {N : ℕ} (hN : N ≠ 0) :
     nval V e ((N : ℕ) : K') = (((padicValNat (resCharOf la) N * ramOverZ la : ℕ) : ℝ) : EReal) := by
@@ -180,7 +174,7 @@ lemma crv_nval_natCast (ho : OverLa la V ι e) {N : ℕ} (hN : N ≠ 0) :
   ring
 
 /- English proof (translation)
-Simplify using `only [Finsupp.prod]`. Use `Finset.induction_on α.support ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a u ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, padicValNat.mul (Nat.factorial_ne_zero _) (Finset.prod_ne_zero_iff.mpr fun _ _ => Nat.factorial_ne_zero _), ih]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma crv_padic_prod {σ : Type} (p : ℕ) [Fact p.Prime] (α : σ →₀ ℕ) :
     padicValNat p (α.prod fun _ t => t.factorial) = ∑ s ∈ α.support, padicValNat p (α s).factorial := by
@@ -194,7 +188,7 @@ lemma crv_padic_prod {σ : Type} (p : ℕ) [Fact p.Prime] (α : σ →₀ ℕ) :
         (Finset.prod_ne_zero_iff.mpr fun _ _ => Nat.factorial_ne_zero _), ih]
 
 /- English proof (translation)
-Rewrite using `[crv_padic_prod, Finset.mul_sum]`. Unfold `Finsupp.degree`. Conclude with `Finset.sum_le_sum fun s _ => by`. Rewrite using `[sub_one_mul_padicValNat_factorial]`. Conclude with `Nat.sub_le _ _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma crv_legendre {σ : Type} (p : ℕ) [Fact p.Prime] (α : σ →₀ ℕ) :
     (p - 1) * padicValNat p (α.prod fun _ t => t.factorial) ≤ α.degree := by
@@ -205,13 +199,11 @@ lemma crv_legendre {σ : Type} (p : ℕ) [Fact p.Prime] (α : σ →₀ ℕ) :
     exact Nat.sub_le _ _
 
 /- English proof (translation)
-Establish `hp` using `resCharOf_prime la`. Use `haveI : Fact (resCharOf la).Prime := ⟨hp⟩`. Establish `hne : (α.prod fun _ t => t.factorial) ≠ 0`. Simplify using `only [Finsupp.prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun _ _ => Nat.factorial_ne_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[crv_nval_natCast la ho hne, EReal.coe_le_coe_iff]`. Establish `hleg` using `crv_legendre (resCharOf la) α`. Establish `hp1 : (1 : ℝ) < resCharOf la` using `by exact_mod_cast hp.one_lt`. Establish `hsub : ((resCharOf la - 1 : ℕ) : ℝ) = (resCharOf la : ℝ) - 1`. Rewrite using `[Nat.cast_sub hp.one_le, Nat.cast_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hleg' : ((resCharOf la : ℝ) - 1) * (padicValNat (resCharOf la) (α.prod fun _ t => t.factorial) : ℝ) ≤ α.degree`. Rewrite using `[← hsub]`. Conclude with `hleg` after adjusting the coercions. Rewrite using `[le_div_iff₀ (by linarith)]`. Use `push_cast`.
-
-Establish `hr : (0 : ℝ) ≤ ramOverZ la` using `Nat.cast_nonneg _`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hleg' hr]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem nval_factProd_le (ho : OverLa la V ι e) {σ : Type} (α : σ →₀ ℕ) :
     nval V e (((α.prod fun _ t => t.factorial : ℕ) : K')) ≤
@@ -236,11 +228,9 @@ theorem nval_factProd_le (ho : OverLa la V ι e) {σ : Type} (α : σ →₀ ℕ
   nlinarith [mul_le_mul_of_nonneg_left hleg' hr]
 
 /- English proof (translation)
-Establish `hp` using `resCharOf_prime la`. Use `haveI : Fact (resCharOf la).Prime := ⟨hp⟩`. Establish `hne : (α.prod fun _ t => t.factorial) ≠ 0`. Simplify using `only [Finsupp.prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun _ _ => Nat.factorial_ne_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : padicValNat (resCharOf la) (α.prod fun _ t => t.factorial) = 0`. Rewrite using `[crv_padic_prod]`. Use `Finset.sum_eq_zero fun s _ => padicValNat.eq_zero_of_not_dvd ?_` and prove the remaining obligations. Rewrite using `[hp.dvd_factorial]`. Conclude with `not_le.mpr (hα s)`.
-
-Rewrite using `[crv_nval_natCast la ho hne, hv]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nval_factProd_le_zero (ho : OverLa la V ι e) {σ : Type} (α : σ →₀ ℕ) (hα : ∀ s, α s < resCharOf la) :
     nval V e (((α.prod fun _ t => t.factorial : ℕ) : K')) ≤ 0 := by

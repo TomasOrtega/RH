@@ -14,15 +14,15 @@ open scoped Pointwise in
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] in
 
 /- English proof (translation)
-Establish `hval : ∀ y : Ω, A.valuation (σ y) = A.valuation y`. Introduce `y`. Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules. Establish `h1 : A.valuation (σ y / y) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `A.valuation.map_one_add_of_lt (hσ y hy)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `h2 : σ y = σ y / y * y` using `(div_mul_cancel₀ _ hy).symm`. Rewrite using `[h2, map_mul, h1, one_mul]`. Rewrite using `[_root_.ReciprocityTheory.Gal.mem_Ine]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `_root_.Formalism.ConjugateSelfDual.Inertia`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(σ : Gal(Ω/E)) • A = A`. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← A.valuation_le_one_iff, ← A.valuation_le_one_iff, AlgEquiv.smul_def]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hx` using `hval (σ⁻¹ x)`. Rewrite `hx` using `[← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`. Rewrite using `[← hx]`. Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Establish `hsplit : σ x - x = (σ x / x - 1) * x`. Rewrite using `[sub_mul, div_mul_cancel₀ _ hx0, one_mul]`. Rewrite using `[hsplit, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem _root_.GlobalTheory.TameCharUnique.mem_Ine_of_wild {A : ValuationSubring Ω} {σ : _root_.Formalism.ConjugateSelfDual.G E Ω}
     (hσ : ∀ y : Ω, y ≠ 0 → A.valuation (σ y / y - 1) < 1) : σ ∈ _root_.ReciprocityTheory.Gal.Ine (F := E) A := by
@@ -62,11 +62,9 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] in
 variable [IsAlgClosure E Ω] in
 
 /- English proof (translation)
-Take `⟨C, hC, hCS⟩` from `(Topology.IsInducing.subtypeVal.isClosed_iff).mp hS`. Establish `hmapC : ((S.map (_root_.ReciprocityTheory.Gal.Ine (F` using `E) A).subtype : Subgroup (_root_.Formalism.ConjugateSelfDual.G E Ω)) : Set (_root_.Formalism.ConjugateSelfDual.G E Ω)) ⊆ C := by`. Introduce and unpack `_ ⟨τ, hτ, rfl⟩`. Conclude with `(Set.ext_iff.mp hCS τ).mpr hτ`. Establish `hle : Subgroup.closure (insert γ {τ : _root_.Formalism.ConjugateSelfDual.G E Ω | ∀ y : Ω, y ≠ 0 → A.valuation (τ y / y - 1) < 1}) ≤ S.map (_root_.ReciprocityTheory.Gal.Ine (F` using `E) A).subtype := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `τ (rfl | hτ)`. Conclude with `⟨_, h1, rfl⟩`. Conclude with `⟨⟨τ, _root_.GlobalTheory.TameCharUnique.mem_Ine_of_wild hτ⟩, h2 _ hτ, rfl⟩`. Establish `hσC : (σ : _root_.Formalism.ConjugateSelfDual.G E Ω) ∈ C` using `closure_minimal ((SetLike.coe_subset_coe.mpr hle).trans hmapC) hC (hγ.2 σ.2)`.
-
-Conclude with `(Set.ext_iff.mp hCS σ).mp hσC`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.TameCharUnique.mem_of_tameGen {A : ValuationSubring Ω} {γ : _root_.Formalism.ConjugateSelfDual.G E Ω}
     (hγ : _root_.Formalism.BasicNotions.TameGenAt A γ)
@@ -94,11 +92,9 @@ open scoped Pointwise in
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] in
 variable [IsAlgClosure E Ω] in
 /- English proof (translation)
-Take `⟨i, j, hij, heq⟩` from `Finite.exists_ne_map_eq_of_infinite (fun n : ℕ => ((τ ^ n : Gal(Ω/E)).toAlgHom.comp K.val : K →ₐ[E] Ω))`. Establish `hfix : ∀ a b : ℕ, a < b → (∀ x ∈ K, (τ ^ a) x = (τ ^ b) x) → ∃ m : ℕ, 0 < m ∧ ∀ x ∈ K, (τ ^ m) x = x`. Introduce `a b hab hx`. Use `⟨b - a, Nat.sub_pos_of_lt hab, fun x hxK => ?_⟩` and prove the remaining obligations. Apply `(τ ^ a).injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← AlgEquiv.mul_apply, ← pow_add, Nat.add_sub_cancel' hab.le]`. Conclude with `(hx x hxK).symm`. Establish `hij' : ∀ x ∈ K, (τ ^ i) x = (τ ^ j) x` using `fun x hx => by`. Simplify using `using DFunLike.congr_fun heq ⟨x, hx⟩`. Break down `Nat.lt_or_gt_of_ne hij with h | h` into its components or cases.
-
-Conclude with `hfix i j h hij'`. Conclude with `hfix j i h fun x hx => (hij' x hx).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private lemma exists_pow_fixes_finiteDimensional (K : IntermediateField E Ω)
     [FiniteDimensional E K] (τ : Gal(Ω/E)) : ∃ m : ℕ, 0 < m ∧ ∀ x ∈ K, (τ ^ m) x = x := by
@@ -123,17 +119,15 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] in
 variable [IsAlgClosure E Ω] in
 
 /- English proof (translation)
-Establish `hl1 : l ≠ 1` using `(Fact.out : l.Prime).ne_one`. Rewrite using `[← norm_eq_zero]`. Use `le_antisymm (le_of_forall_pos_lt_add fun ε hε => ?_) (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[zero_add]`. Establish `hUo : IsOpen (t ⁻¹' {x : Multiplicative ℤ_[l] | ‖x.toAdd‖ < ε})` using `(isOpen_lt (continuous_norm.comp continuous_toAdd) continuous_const).preimage ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨V, hVo, hVU⟩` from `(Topology.IsInducing.subtypeVal.isOpen_iff).mp hUo`. Establish `h1V : (1 : Gal(Ω/E)) ∈ V`. Establish `h1U : (1 : _root_.ReciprocityTheory.Gal.Ine (F` using `E) A) ∈ t ⁻¹' {x : Multiplicative ℤ_[l] | ‖x.toAdd‖ < ε} := by`. Simplify using `[hε]`. Rewrite `h1U` using `[← hVU]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1U`. Take `⟨K, hK, hKV⟩` from `(krullTopology_mem_nhds_one_iff E Ω V).mp (hVo.mem_nhds h1V)`. Take `⟨m, hm0, hmK⟩` from `exists_pow_fixes_finiteDimensional K σ.1`. Take `⟨e, m', hlm', hm⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hm0.ne' l hl1`. Establish `hτ` using `_root_.GlobalTheory.WildInertiaChar.wild_pow A σ.1 hσ m'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : (σ ^ m' : _root_.ReciprocityTheory.Gal.Ine (F` using `E) A).1 ∈ K.fixingSubgroup := by`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Rewrite using `[Subgroup.coe_pow]`. Use `_root_.GlobalTheory.WildInertiaChar.fixed_of_pow_fixed A _ hτ (l ^ e) (_root_.ReciprocityTheory.Gal.not_valuation_lt_one_of_isPlaceOver hlw h e) x ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_mul, mul_comm, ← hm]`. Conclude with `hmK x hx`. Establish `hmem : σ ^ m' ∈ t ⁻¹' {x : Multiplicative ℤ_[l] | ‖x.toAdd‖ < ε}`. Rewrite using `[← hVU]`. Conclude with `hKV hfix`.
-
-Establish `hnorm : ‖(t (σ ^ m')).toAdd‖ < ε` using `hmem`. Rewrite `hnorm` using `[map_pow, toAdd_pow, nsmul_eq_mul, norm_mul, PadicInt.norm_natCast_eq_one_iff.mpr ((Nat.Prime.coprime_iff_not_dvd Fact.out).mpr hlm'), one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.TameCharUnique.eq_zero_of_wild {A : ValuationSubring Ω}
     {w : HeightOneSpectrum (𝓞 E)} (h : _root_.Formalism.ConjugateSelfDual.IsPlaceOver A w)
@@ -178,23 +172,19 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] in
 variable [IsAlgClosure E Ω] in
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h l _ hlw t t' ht ht' hsurj`. Take `⟨γ, hγ⟩` from `_root_.GlobalTheory.TameInertiaGen.exists_tameGenAt_of_valuationSubring (E := E) A`. Establish `hwild : ∀ s : _root_.ReciprocityTheory.Gal.Ine (F` using `E) A →* Multiplicative ℤ_[l], Continuous s → ∀ σ : _root_.ReciprocityTheory.Gal.Ine (F := E) A, (∀ y : Ω, y ≠ 0 → A.valuation (σ.1 y / y - 1) < 1) → s σ = 1 := by`. Introduce `s hs σ hσ`. Rewrite using `[← toAdd_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `_root_.GlobalTheory.TameCharUnique.eq_zero_of_wild h hlw s hs σ hσ`. Establish `hb : IsUnit (t' ⟨γ, hγ.1⟩).toAdd`. Assume the negation of the conclusion as `hb`. Set `S : Subgroup (_root_.ReciprocityTheory.Gal.Ine (F` to `E) A) := { carrier := {σ | ‖(t' σ).toAdd‖ ≤ (l : ℝ) ^ (-1 : ℤ)} mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, map_mul, toAdd_mul] at *`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(PadicInt.nonarchimedean _ _).trans (max_le ha hb)`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := fun {a} ha => by simpa using ha }`. Establish `hS : IsClosed (S : Set (_root_.ReciprocityTheory.Gal.Ine (F` using `E) A)) := isClosed_le (continuous_norm.comp (continuous_toAdd.comp ht')) continuous_const`. Establish `hγS : (⟨γ, hγ.1⟩ : _root_.ReciprocityTheory.Gal.Ine (F` using `E) A) ∈ S := by show ‖(t' ⟨γ, hγ.1⟩).toAdd‖ ≤ (l : ℝ) ^ (-1 : ℤ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite using `[PadicInt.norm_le_pow_iff_norm_lt_pow_add_one]`. Rewrite `hb` using `[PadicInt.isUnit_iff]`. Evaluate the numerical expressions. Conclude with `lt_of_le_of_ne (PadicInt.norm_le_one _) hb`. Establish `hall : ∀ σ, σ ∈ S` using `fun σ => _root_.GlobalTheory.TameCharUnique.mem_of_tameGen hγ S hS hγS (fun τ hτ => by show ‖(t' τ).toAdd‖ ≤ (l : ℝ) ^ (-1 : ℤ)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hwild t' ht' τ hτ]`. Use the proof step `simp) σ`. Take `⟨σ, hσ⟩` from `hsurj (Multiplicative.ofAdd 1)`. Establish `h1 : ‖(t' σ).toAdd‖ ≤ (l : ℝ) ^ (-1 : ℤ)` using `hall σ`. Rewrite `h1` using `[hσ, toAdd_ofAdd, norm_one, zpow_neg_one]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Conclude with `absurd h1 (not_le.mpr (inv_lt_one_of_one_lt₀ hl))`. Use `⟨(t ⟨γ, hγ.1⟩).toAdd * ↑hb.unit⁻¹, fun σ => ?_⟩` and prove the remaining obligations. Set `f : _root_.ReciprocityTheory.Gal.Ine (F` to `E) A →* Multiplicative ℤ_[l] := (AddMonoidHom.toMultiplicative (AddMonoidHom.mulLeft ((t ⟨γ, hγ.1⟩).toAdd * ↑hb.unit⁻¹))).comp t'`. Establish `hf : Continuous f` using `by show Continuous fun τ => Multiplicative.ofAdd ((t ⟨γ, hγ.1⟩).toAdd * ↑hb.unit⁻¹ * (t' τ).toAdd)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `continuous_ofAdd.comp (continuous_const.mul (continuous_toAdd.comp ht'))`. Establish `hγmem : (⟨γ, hγ.1⟩ : _root_.ReciprocityTheory.Gal.Ine (F` using `E) A) ∈ MonoidHom.eqLocus t f := by show t ⟨γ, hγ.1⟩ = f ⟨γ, hγ.1⟩`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Use `show (t ⟨γ, hγ.1⟩).toAdd = (t ⟨γ, hγ.1⟩).toAdd * ↑hb.unit⁻¹ * (t' ⟨γ, hγ.1⟩).toAdd`. Rewrite using `[mul_assoc, IsUnit.val_inv_mul, mul_one]`.
-
-Establish `hwmem : ∀ τ : _root_.ReciprocityTheory.Gal.Ine (F` using `E) A, (∀ y : Ω, y ≠ 0 → A.valuation (τ.1 y / y - 1) < 1) → τ ∈ MonoidHom.eqLocus t f := by`. Introduce `τ hτ`. Use `show t τ = f τ`. Simplify using `[f, hwild t ht τ hτ, hwild t' ht' τ hτ]`. Establish `hmem` using `_root_.GlobalTheory.TameCharUnique.mem_of_tameGen hγ (MonoidHom.eqLocus t f) (isClosed_eq ht hf) hγmem hwmem σ`.
-
-Conclude with `congrArg Multiplicative.toAdd hmem`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.TameCharUnique.exists_eq_mul : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : _root_.Formalism.ConjugateSelfDual.IsPlaceOver A w) (l : ℕ) [Fact l.Prime], ((l : ℕ) : 𝓞 E) ∉ w.asIdeal → ∀ (t t' : _root_.ReciprocityTheory.Gal.Ine (F := E) A →* Multiplicative ℤ_[l]), Continuous t → Continuous t' → Function.Surjective t' → ∃ c : ℤ_[l], ∀ σ, (t σ).toAdd = c * (t' σ).toAdd := by
   intro E Ω _ _ _ _ _ A w h l _ hlw t t' ht ht' hsurj

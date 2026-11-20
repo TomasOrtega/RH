@@ -18,7 +18,7 @@ instance Aset_finite (k d : ℕ) : Finite (Aset k d) := by
   exact this.to_subtype
 
 /- English proof (translation)
-The claim follows from `(sSIdxFinite (m + 1) (m + 1) ν).subset fun _ he => he.1`.
+A detailed English derivation is pending.
 -/
 theorem XsFinP (m : ℕ) (top vec : Bool) (ν : Fin (m + 1) → ℕ) : (Xs m top vec ν).Finite :=
   (sSIdxFinite (m + 1) (m + 1) ν).subset fun _ he => he.1
@@ -36,17 +36,17 @@ theorem glue_apply {n' k : ℕ} {d : Fin n' → ℕ} (a : ∀ s, Aset k (d s)) (
     glue a (s, c) = (a s).1 c := rfl
 
 /- English proof (translation)
-Use extensionality with `e`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_monomial]`. Distinguish the cases in `he : e ∈ Q.support`. Set `a : ∀ s, Aset k (d s)` to `fun s => ⟨Finsupp.equivFunOnFinite.symm fun c => e (s, c), by simpa using hQ e he s⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression.
 
-Establish `ha : glue a = e`. Use extensionality with `v`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_eq_single a]`. Rewrite using `[if_pos ha, ha]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `a' _ hne`. Rewrite using `[if_neg]`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `c`. Use `DFunLike.congr_fun (h.trans ha.symm) (s, c)` as an intermediate fact. Conclude with `this`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Establish `h0 : coeff e Q = 0` using `by simpa using he`. Rewrite using `[h0]`. Use `symm`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `split_ifs with h`. Rewrite using `[h, h0]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem expand {R : Type} [CommRing R] {n' k : ℕ} {d : Fin n' → ℕ} [Fintype (∀ s, Aset k (d s))]
     (Q : MvPolynomial (Fin n' × Fin k) R) (hQ : IsMultiHom d Q) :
@@ -83,9 +83,9 @@ theorem expand {R : Type} [CommRing R] {n' k : ℕ} {d : Fin n' → ℕ} [Fintyp
     · rfl
 
 /- English proof (translation)
-Unfold `thAll`. Rewrite using `[aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_prod_type, Algebra.smul_def]`. Use `congr 1`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem thAll_monomial (F : Type) [CommRing F] (n' m : ℕ) (vec : Fin n' → Bool) (d : Fin n' → ℕ)
     (a : ∀ s, Aset (m + 1) (d s)) (r : F) :
@@ -113,9 +113,7 @@ def fam1 (s : Fin n') (y : Aset (m + 1) (d s) × X s) : MvPolynomial (Fin (m + 1
 def pairUp {n' : ℕ} {A X : Fin n' → Type} (z : (∀ s, A s) × (∀ s, X s)) : ∀ s, A s × X s := fun s => (z.1 s, z.2 s)
 
 /- English proof (translation)
-Introduce `z z' h`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Conclude with `congrArg Prod.fst (congrFun h s)`. Use function extensionality and compare the values at `s`.
-
-Conclude with `congrArg Prod.snd (congrFun h s)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pairUp_inj {n' : ℕ} {A X : Fin n' → Type} : Function.Injective (pairUp (A := A) (X := X)) := by
   intro z z' h
@@ -126,7 +124,7 @@ theorem pairUp_inj {n' : ℕ} {A X : Fin n' → Type} : Function.Injective (pair
     exact congrArg Prod.snd (congrFun h s)
 
 /- English proof (translation)
-Establish `hli : LinearIndependent F (fun i : (∀ s, Aset (m + 1) (d s) × X s) => ∏ s, blockEmb F s (fam1 F n' m vec d b s (i s)))` using `ldtensor_prod_linInd_field F (fam1 F n' m vec d b) hpos`. Establish `h2` using `hli.comp (pairUp (A := fun s => Aset (m + 1) (d s)) (X := X)) pairUp_inj`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem famG_li (hpos : ∀ s, LinearIndependent F (fam1 F n' m vec d b s)) :
     LinearIndependent F (famG F n' m vec d b) := by
@@ -137,11 +135,11 @@ theorem famG_li (hpos : ∀ s, LinearIndependent F (fam1 F n' m vec d b s)) :
   exact h2
 
 /- English proof (translation)
-Establish `e` using `expand Q hQ`. Establish `e2 : thAll F n' m vec Q = ∑ a : (∀ s, Aset (m + 1) (d s)), coeff (glue a) Q • ∏ s, blockEmb F s (∏ c, Nv F m (vec s) c ^ (a s).1 c)` using `by conv_lhs => rw [e]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => thAll_monomial F n' m vec d a _`. Rewrite using `[e2, Finset.sum_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`. Unfold `famG`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`.
+A detailed English derivation is pending.
 -/
 theorem famG_sum [Fintype (∀ s, Aset (m + 1) (d s))] (Q : MvPolynomial (Fin n' × Fin (m + 1)) F) (hQ : IsMultiHom d Q)
     (i : ∀ s, X s) :
@@ -163,13 +161,13 @@ theorem famG_sum [Fintype (∀ s, Aset (m + 1) (d s))] (Q : MvPolynomial (Fin n'
   rw [map_mul]
 
 /- English proof (translation)
-Establish `: Fintype (∀ s, Aset (m + 1) (d s))` using `Fintype.ofFinite _`. Establish `: Fintype (∀ s, X s)` using `Fintype.ofFinite _`. Establish `hli2` using `famG_li F n' m vec d b hpos`. Rewrite `hli2` using `[Fintype.linearIndependent_iff]`. Establish `key` using `hli2 (fun z => if z.2 ∈ J then coeff (glue z.1) (Q z.2) else 0) ?_`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `i hi`. Rewrite using `[expand (Q i) (hQ i)]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Establish `h1` using `key (a, i)`. Simplify using `only [hi, if_true] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, monomial_zero]`. Rewrite using `[Fintype.sum_prod_type_right, ← hsum]`. Establish `h1 : ∀ i : (∀ s, X s), (∑ a : (∀ s, Aset (m + 1) (d s)), (if i ∈ J then coeff (glue a) (Q i) else 0) • famG F n' m vec d b (a, i)) = if i ∈ J then thAll F n' m vec (Q i) * ∏ s, blockEmb F s (b s (i s)) else 0`. Introduce `i`. Distinguish the cases in `hi : i ∈ J`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hi, if_true]`. Conclude with `famG_sum F n' m vec d b (Q i) (hQ i) i`. Simplify using `only [hi, if_false, zero_smul, Finset.sum_const_zero]`. Rewrite using `[Finset.sum_congr rfl fun i _ => h1 i, Finset.sum_ite_mem, Finset.univ_inter]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem big_core [∀ s, Finite (X s)] (hpos : ∀ s, LinearIndependent F (fam1 F n' m vec d b s))
     (J : Finset (∀ s, X s)) (Q : (∀ s, X s) → MvPolynomial (Fin n' × Fin (m + 1)) F) (hQ : ∀ i, IsMultiHom d (Q i))
@@ -200,7 +198,7 @@ theorem big_core [∀ s, Finite (X s)] (hpos : ∀ s, LinearIndependent F (fam1 
 end Core
 
 /- English proof (translation)
-Introduce `F _ n' m hm top vec d ν htop hν b hb J Q hQ hsum`. Conclude with `big_core F n' m vec d b (fun s => posInd F m hm (top s) (vec s) (d s) (ν s) (htop s) (hν s) (b s) (hb s)) J Q hQ hsum`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem bigInd : BigInd := by
   intro F _ n' m hm top vec d ν htop hν b hb J Q hQ hsum

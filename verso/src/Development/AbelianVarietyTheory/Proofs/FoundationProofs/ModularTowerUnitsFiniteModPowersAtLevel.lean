@@ -13,19 +13,19 @@ open Matrix GlobalTheory.KZ Filter Topology
 namespace GlobalTheory.KZ.FinLev
 
 /- English proof (translation)
-The claim follows from `isOpen_lt continuous_const Complex.continuous_im`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_Hs : IsOpen Hs := isOpen_lt continuous_const Complex.continuous_im
 
 /- English proof (translation)
-The claim follows from `(convex_halfSpace_im_gt 0).isPreconnected`.
+A detailed English derivation is pending.
 -/
 theorem isPreconnected_Hs : IsPreconnected Hs := (convex_halfSpace_im_gt 0).isPreconnected
 
 /- English proof (translation)
-Rewrite using `[← Filter.forall_mem_nonempty_iff_neBot]`. Introduce `s hs`. Establish `hI : Complex.I ∈ Hs` using `by simp [Hs]`. Establish `h1` using `(mem_codiscreteWithin_iff_forall_mem_nhdsNE.1 hs) _ hI`. Establish `h2 : Hs ∈ nhdsWithin Complex.I {Complex.I}ᶜ` using `mem_nhdsWithin_of_mem_nhds (isOpen_Hs.mem_nhds hI)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, hz1, hz2⟩` from `Filter.nonempty_of_mem (Filter.inter_mem h1 h2)`. Break down `hz1 with h | h` into its components or cases. Conclude with `⟨z, h⟩`. Conclude with `absurd hz2 h`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem neBot_Hs : (codiscreteWithin Hs).NeBot := by
   rw [← Filter.forall_mem_nonempty_iff_neBot]
@@ -39,59 +39,59 @@ theorem neBot_Hs : (codiscreteWithin Hs).NeBot := by
   · exact absurd hz2 h
 
 /- English proof (translation)
-Rewrite using `[Filter.Germ.coe_eq]`. Conclude with `Filter.mem_of_superset (Filter.self_mem_codiscreteWithin Hs) h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_eq_of_eqOn {φ ψ : ℂ → ℂ} (h : ∀ z ∈ Hs, φ z = ψ z) : (φ : Mero) = (ψ : Mero) := by
   rw [Filter.Germ.coe_eq]
   exact Filter.mem_of_superset (Filter.self_mem_codiscreteWithin Hs) h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.glTwoPosRatMobius_upperHalfPlane_properties.1 _ _ hz`.
+A detailed English derivation is pending.
 -/
 theorem mob_mem (γ : SL(2, ℤ)) {z : ℂ} (hz : z ∈ Hs) : mob (ofSL γ) z ∈ Hs := GlobalTheory.T.glTwoPosRatMobius_upperHalfPlane_properties.1 _ _ hz
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Conclude with `GlobalTheory.T.glTwoPosRatMobius_upperHalfPlane_properties.2.1 _ _ _ hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mob_mul (γ δ : SL(2, ℤ)) {z : ℂ} (hz : z ∈ Hs) :
     mob (ofSL (γ * δ)) z = mob (ofSL γ) (mob (ofSL δ) z) := by
   rw [map_mul]; exact GlobalTheory.T.glTwoPosRatMobius_upperHalfPlane_properties.2.1 _ _ _ hz
 
 /- English proof (translation)
-Rewrite using `[map_one]`. Conclude with `GlobalTheory.T.glTwoPosRatMobius_upperHalfPlane_properties.2.2.1 z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mob_ofSL_one (z : ℂ) : mob (ofSL 1) z = z := by
   rw [map_one]; exact GlobalTheory.T.glTwoPosRatMobius_upperHalfPlane_properties.2.2.1 z
 
 /- English proof (translation)
-Rewrite using `[← mob_mul _ _ hz, mul_inv_cancel, mob_ofSL_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mob_mob_inv (γ : SL(2, ℤ)) {z : ℂ} (hz : z ∈ Hs) : mob (ofSL γ) (mob (ofSL γ⁻¹) z) = z := by
   rw [← mob_mul _ _ hz, mul_inv_cancel, mob_ofSL_one]
 
 /- English proof (translation)
-The claim follows from `ha.comp (GlobalTheory.T.glTwoPosRatMobius_upperHalfPlane_properties.2.2.2.2.1 _) (fun _ hz => mob_mem γ hz)`.
+A detailed English derivation is pending.
 -/
 theorem diff_comp {a : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) (γ : SL(2, ℤ)) :
     DifferentiableOn ℂ (fun z => a (mob (ofSL γ) z)) Hs :=
   ha.comp (GlobalTheory.T.glTwoPosRatMobius_upperHalfPlane_properties.2.2.2.2.1 _) (fun _ hz => mob_mem γ hz)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.upperHalfPlaneCodiscreteGerm_identity_and_units.2.1 a b ha hb h`.
+A detailed English derivation is pending.
 -/
 theorem eqOn_of_germ {a b : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) (hb : DifferentiableOn ℂ b Hs)
     (h : (a : Mero) = (b : Mero)) : ∀ z ∈ Hs, a z = b z :=
   GlobalTheory.T.upperHalfPlaneCodiscreteGerm_identity_and_units.2.1 a b ha hb h
 
 /- English proof (translation)
-The claim follows from `eqOn_of_germ ha hb (Filter.Germ.coe_eq.2 h)`.
+A detailed English derivation is pending.
 -/
 theorem eqOn_of_eventually {a b : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) (hb : DifferentiableOn ℂ b Hs)
     (h : ∀ᶠ z in codiscreteWithin Hs, a z = b z) : ∀ z ∈ Hs, a z = b z :=
   eqOn_of_germ ha hb (Filter.Germ.coe_eq.2 h)
 
 /- English proof (translation)
-Introduce `h0`. Conclude with `h (eqOn_of_germ ha (differentiableOn_const 0) h0 z₀ hz₀)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem germ_ne_zero {a : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) {z₀ : ℂ} (hz₀ : z₀ ∈ Hs) (h : a z₀ ≠ 0) :
     (a : Mero) ≠ 0 := by
@@ -99,7 +99,7 @@ theorem germ_ne_zero {a : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) {z₀ : 
   exact h (eqOn_of_germ ha (differentiableOn_const 0) h0 z₀ hz₀)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h (germ_eq_of_eqOn (ψ := fun _ => 0) hc)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero {a : ℂ → ℂ} (h : (a : Mero) ≠ 0) : ∃ z ∈ Hs, a z ≠ 0 := by
   by_contra hc
@@ -107,21 +107,21 @@ theorem exists_ne_zero {a : ℂ → ℂ} (h : (a : Mero) ≠ 0) : ∃ z ∈ Hs, 
   exact h (germ_eq_of_eqOn (ψ := fun _ => 0) hc)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.upperHalfPlaneCodiscreteGerm_identity_and_units.2.2 a ha (germ_ne_zero ha hz₀ h)).1`.
+A detailed English derivation is pending.
 -/
 theorem eventually_ne_zero {a : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) {z₀ : ℂ} (hz₀ : z₀ ∈ Hs) (h : a z₀ ≠ 0) :
     ∀ᶠ z in codiscreteWithin Hs, a z ≠ 0 :=
   (GlobalTheory.T.upperHalfPlaneCodiscreteGerm_identity_and_units.2.2 a ha (germ_ne_zero ha hz₀ h)).1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mob (ofSL γ⁻¹) z₀, mob_mem _ hz₀, by rwa [mob_mob_inv γ hz₀]⟩`.
+Supply the required witnesses or components.
 -/
 theorem comp_ne_zero {a : ℂ → ℂ} {z₀ : ℂ} (hz₀ : z₀ ∈ Hs) (h : a z₀ ≠ 0) (γ : SL(2, ℤ)) :
     ∃ z ∈ Hs, a (mob (ofSL γ) z) ≠ 0 :=
   ⟨mob (ofSL γ⁻¹) z₀, mob_mem _ hz₀, by rwa [mob_mob_inv γ hz₀]⟩
 
 /- English proof (translation)
-Use `haveI := neBot_Hs`. Establish `hs : ∀ᶠ z in codiscreteWithin Hs, z ∈ Hs` using `Filter.self_mem_codiscreteWithin Hs`. Take `⟨z, hz, h1, h2⟩` from `(hs.and ((eventually_ne_zero ha hz₁ h₁).and (eventually_ne_zero hb hz₂ h₂))).exists`. Conclude with `⟨z, hz, h1, h2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_both_ne_zero {a b : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) (hb : DifferentiableOn ℂ b Hs)
     {z₁ z₂ : ℂ} (hz₁ : z₁ ∈ Hs) (hz₂ : z₂ ∈ Hs) (h₁ : a z₁ ≠ 0) (h₂ : b z₂ ≠ 0) :
@@ -132,22 +132,20 @@ theorem exists_both_ne_zero {a b : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs)
   exact ⟨z, hz, h1, h2⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.tendsto_mob_codiscreteWithin_codiscreteWithin (ofSL γ)).eventually h`.
+A detailed English derivation is pending.
 -/
 theorem comp_eventually {φ ψ : ℂ → ℂ} (γ : SL(2, ℤ)) (h : ∀ᶠ z in codiscreteWithin Hs, φ z = ψ z) :
     ∀ᶠ z in codiscreteWithin Hs, φ (mob (ofSL γ) z) = ψ (mob (ofSL γ) z) :=
   (GlobalTheory.T.tendsto_mob_codiscreteWithin_codiscreteWithin (ofSL γ)).eventually h
 
 /- English proof (translation)
-Use `set ζ := u z₀ / v z₀ with hζdef`. Establish `hζ : ζ ^ m = 1` using `by rw [hζdef, div_pow, h z₀ hz₀, div_self (pow_ne_zero _ hv0)]`. Use `⟨ζ, hζ, ?_⟩` and prove the remaining obligations. Establish `hn : Hs ∈ 𝓝 z₀` using `isOpen_Hs.mem_nhds hz₀`. Establish `hvc : ContinuousAt v z₀` using `hv.continuousOn.continuousAt hn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ContinuousAt (fun z => u z / v z) z₀` using `(hu.continuousOn.continuousAt hn).div hvc hv0`. Set `T : Finset ℂ` to `(Polynomial.nthRootsFinset m (1 : ℂ)).erase ζ`. Establish `hT : IsClosed (T : Set ℂ)` using `T.finite_toSet.isClosed`. Establish `hnT : (T : Set ℂ)ᶜ ∈ 𝓝 ζ` using `hT.isOpen_compl.mem_nhds (by simp [T])`. Establish `h1 : ∀ᶠ z in 𝓝 z₀, u z / v z ∈ (T : Set ℂ)ᶜ` using `hcont hnT`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ᶠ z in 𝓝 z₀, v z ≠ 0` using `hvc.eventually_ne hv0`. Establish `hloc : u =ᶠ[𝓝 z₀] fun z => ζ * v z` using `by filter_upwards [h1, h2, hn] with z h1 h2 h3`. Establish `hr : (u z / v z) ^ m = 1` using `by rw [div_pow, h z h3, div_self (pow_ne_zero _ h2)]`. Establish `hmem : u z / v z ∈ Polynomial.nthRootsFinset m (1 : ℂ)` using `(Polynomial.mem_nthRootsFinset hm 1).2 hr`. Establish `he : u z / v z = ζ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `h1 (Finset.mem_erase.2 ⟨hne, hmem⟩)`. Rewrite using `[← he, div_mul_cancel₀ _ h2]`. Establish `hua : AnalyticOnNhd ℂ u Hs` using `hu.analyticOnNhd isOpen_Hs`. Establish `hva : AnalyticOnNhd ℂ (fun z => ζ * v z) Hs` using `(hv.const_mul ζ).analyticOnNhd isOpen_Hs`.
-
-Conclude with `fun z hz => hua.eqOn_of_preconnected_of_eventuallyEq hva isPreconnected_Hs hz₀ hloc hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem const_of_pow_eq {u v : ℂ → ℂ} (hu : DifferentiableOn ℂ u Hs) (hv : DifferentiableOn ℂ v Hs) {m : ℕ}
     (hm : 0 < m) (h : ∀ z ∈ Hs, u z ^ m = v z ^ m) {z₀ : ℂ} (hz₀ : z₀ ∈ Hs) (hv0 : v z₀ ≠ 0) :
@@ -183,14 +181,14 @@ def RootRel (a b : ℂ → ℂ) (γ : SL(2, ℤ)) (ζ : ℂ) : Prop :=
   ∀ z ∈ Hs, a (mob (ofSL γ) z) * b z = ζ * (a z * b (mob (ofSL γ) z))
 
 /- English proof (translation)
-Introduce `z _`. Rewrite using `[mob_ofSL_one, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem rel_one (a b : ℂ → ℂ) : RootRel a b 1 1 := by
   intro z _
   rw [mob_ofSL_one, one_mul]
 
 /- English proof (translation)
-Introduce `z hz`. Establish `e` using `h _ (mob_mem γ⁻¹ hz)`. Rewrite `e` using `[mob_mob_inv γ hz]`. Rewrite using `[e, ← mul_assoc, inv_mul_cancel₀ hζ, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rel_inv {a b : ℂ → ℂ} {γ : SL(2, ℤ)} {ζ : ℂ} (hζ : ζ ≠ 0) (h : RootRel a b γ ζ) :
     RootRel a b γ⁻¹ ζ⁻¹ := by
@@ -200,11 +198,11 @@ theorem rel_inv {a b : ℂ → ℂ} {γ : SL(2, ℤ)} {ζ : ℂ} (hζ : ζ ≠ 0
   rw [e, ← mul_assoc, inv_mul_cancel₀ hζ, one_mul]
 
 /- English proof (translation)
-Take `⟨w₁, hw₁, e₁⟩` from `comp_ne_zero hz₁ h₁ δ`. Take `⟨w₂, hw₂, e₂⟩` from `comp_ne_zero hz₂ h₂ δ`. Establish `hev` using `(eventually_ne_zero (diff_comp ha δ) hw₁ e₁).and (eventually_ne_zero (diff_comp hb δ) hw₂ e₂)`. Establish `hs : ∀ᶠ z in codiscreteWithin Hs, z ∈ Hs` using `Filter.self_mem_codiscreteWithin Hs`. Use `eqOn_of_eventually ((diff_comp ha (γ * δ)).mul hb) ((ha.mul (diff_comp hb (γ * δ))).const_mul (ζ * η)) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hev, hs] with z hn hz`. Take `⟨n1, n2⟩` from `hn`. Establish `e1` using `hγ _ (mob_mem δ hz)`. Establish `e2` using `hδ z hz`. Use `show a (mob (ofSL (γ * δ)) z) * b z = ζ * η * (a z * b (mob (ofSL (γ * δ)) z))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mob_mul γ δ hz]`. Apply `mul_right_cancel₀ (mul_ne_zero n1 n2)` to reduce the goal to its premises. Take the linear combination `(a (mob (ofSL δ) z) * b z) * e1 + (ζ * a (mob (ofSL δ) z) * b (mob (ofSL γ) (mob (ofSL δ) z))) * e2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rel_mul {a b : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) (hb : DifferentiableOn ℂ b Hs) {z₁ z₂ : ℂ}
     (hz₁ : z₁ ∈ Hs) (hz₂ : z₂ ∈ Hs) (h₁ : a z₁ ≠ 0) (h₂ : b z₂ ≠ 0) {γ δ : SL(2, ℤ)} {ζ η : ℂ}
@@ -226,13 +224,11 @@ theorem rel_mul {a b : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) (hb : Diffe
     (ζ * a (mob (ofSL δ) z) * b (mob (ofSL γ) (mob (ofSL δ) z))) * e2
 
 /- English proof (translation)
-Take `⟨φ, -, hφ, -⟩` from `X.an_exp f`. Establish `E1 : ∀ᶠ z in codiscreteWithin Hs, φ z * b z ^ m = a z ^ m`. Rewrite `hab` using `[hφ, ← Filter.Germ.coe_pow, ← Filter.Germ.coe_pow, ← Filter.Germ.coe_mul, Filter.Germ.coe_eq]`. Use `filter_upwards [hab] with z hz`. Simplify using `using hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `E2 : ∀ᶠ z in codiscreteWithin Hs, φ z = φ (mob (ofSL γ) z)`. Establish `h` using `X.an_sl (ofSL γ) f φ hφ`. Rewrite `h` using `[hf γ hγ, hφ]`. Conclude with `Filter.Germ.coe_eq.1 h`. Establish `E3` using `comp_eventually γ E1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `(diff_comp ha γ).mul hb`. Establish `hv` using `ha.mul (diff_comp hb γ)`. Establish `hpow : ∀ z ∈ Hs, (fun z => (a (mob (ofSL γ) z) * b z) ^ m) z = (fun z => (a z * b (mob (ofSL γ) z)) ^ m) z` using `eqOn_of_eventually (hu.pow m) (hv.pow m) (by filter_upwards [E1, E2, E3] with z e1 e2 e3 beta_reduce at e3 ⊢`. Take the linear combination `(-(b z) ^ m) * e3 + (b (mob (ofSL γ) z)) ^ m * e1 - ((b (mob (ofSL γ) z)) ^ m * (b z) ^ m) * e2)`. Take `⟨w₂, hw₂, e₂⟩` from `comp_ne_zero hz₂ h₂ γ`.
-
-Take `⟨z₀, hz₀, n1, n2⟩` from `exists_both_ne_zero ha (diff_comp hb γ) hz₁ hw₂ h₁ e₂`. Conclude with `const_of_pow_eq hu hv hm hpow hz₀ (mul_ne_zero n1 n2)`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem char_exists {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) {M m : ℕ} (hm : 0 < m)
     {f : X.K} (hf : ∀ γ ∈ CongruenceSubgroup.Gamma M, X.sl (ofSL γ) f = f) {a b : ℂ → ℂ}
@@ -266,31 +262,29 @@ end GlobalTheory.KZ.FinLev
 namespace GlobalTheory.KZ.FinLev
 
 /- English proof (translation)
-Establish `hs : ∀ᶠ z in codiscreteWithin Hs, z ∈ Hs` using `Filter.self_mem_codiscreteWithin Hs`. Establish `hAd : DifferentiableOn ℂ (a * b') Hs` using `ha.mul hb'`. Establish `hBd : DifferentiableOn ℂ (b * a') Hs` using `hb.mul ha'`. Take `⟨z₀, hz₀, n1, n2⟩` from `exists_both_ne_zero hb ha' hz₂ hz₃ h₂ h₃`. Establish `hB0 : (b * a') z₀ ≠ 0` using `by simp [n1, n2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hBev : ∀ᶠ z in codiscreteWithin Hs, (b * a') z ≠ 0` using `eventually_ne_zero hBd hz₀ hB0`. Establish `hinv : ∀ γ ∈ CongruenceSubgroup.Gamma M, ∀ z ∈ Hs, (a * b') (mob (ofSL γ) z) * (b * a') z = (a * b') z * (b * a') (mob (ofSL γ) z)`. Introduce `γ hγ z hz`. Take `⟨ζ, h1, h2⟩` from `hrel γ hγ`. Establish `e1` using `h1 z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2` using `h2 z hz`. Simplify using `only [Pi.mul_apply]`. Take the linear combination `(b' (mob (ofSL γ) z) * a' z) * e1 - (a z * b (mob (ofSL γ) z)) * e2`. Establish `hFr : X.an ((f * r⁻¹ : X.Kˣ) : X.K) * X.an (r : X.K) = X.an (f : X.K)`. Rewrite using `[← map_mul, Units.val_mul, mul_assoc, Units.inv_mul, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hFAB : X.an ((f * r⁻¹ : X.Kˣ) : X.K) * ((b * a' : ℂ → ℂ) : Mero) ^ m = ((a * b' : ℂ → ℂ) : Mero) ^ m`. Rewrite using `[Filter.Germ.coe_mul, Filter.Germ.coe_mul]`. Take the linear combination `(-(X.an ((f * r⁻¹ : X.Kˣ) : X.K) * (b : Mero) ^ m)) * hab' + ((b : Mero) ^ m * (b' : Mero) ^ m) * hFr + (b' : Mero) ^ m * hab`. Take `⟨φ, -, hφ, -⟩` from `X.an_exp ((f * r⁻¹ : X.Kˣ) : X.K)`. Establish `E1 : ∀ᶠ z in codiscreteWithin Hs, φ z * (b * a') z ^ m = (a * b') z ^ m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `hFAB`. Rewrite `h` using `[hφ, ← Filter.Germ.coe_pow, ← Filter.Germ.coe_pow, ← Filter.Germ.coe_mul, Filter.Germ.coe_eq]`. Use `filter_upwards [h] with z hz`. Simplify `hz` using `only [Pi.mul_apply, Pi.pow_apply]`. Establish `hgerm : ∀ γ ∈ CongruenceSubgroup.Gamma M, ((fun z => (a * b') (mob (ofSL γ) z) * (b * a') z : ℂ → ℂ) : Mero) = ((fun z => (a * b') z * (b * a') (mob (ofSL γ) z) : ℂ → ℂ) : Mero)` using `fun γ hγ => germ_eq_of_eqOn (hinv γ hγ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpoly : ∃ P : Polynomial X.K, P ≠ 0 ∧ P.eval₂ X.an ((((a * b') / (b * a') : ℂ → ℂ)) : Mero) = 0`. Use `⟨Polynomial.X ^ m - Polynomial.C ((f * r⁻¹ : X.Kˣ) : X.K), Polynomial.X_pow_sub_C_ne_zero hm _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_C, hφ, ← Filter.Germ.coe_pow, sub_eq_zero, Filter.Germ.coe_eq]`. Use `filter_upwards [E1, hBev] with z e hz`. Simplify using `only [Pi.pow_apply, Pi.div_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[div_pow, ← e]`. Clear the denominators using the available nonvanishing facts. Take `⟨g₀, hg₀⟩` from `X.sat (a * b') (b * a') M hM hAd hBd (germ_ne_zero hBd hz₀ hB0) hgerm hpoly`. Take `⟨ψ, -, hψ, -⟩` from `X.an_exp g₀`. Establish `G1 : ∀ᶠ z in codiscreteWithin Hs, ψ z * (b * a') z = (a * b') z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hg₀` using `[hψ, ← Filter.Germ.coe_mul, Filter.Germ.coe_eq]`. Use `filter_upwards [hg₀] with z hz`. Simplify `hz` using `only [Pi.mul_apply]`. Use `haveI : Nontrivial Mero := GlobalTheory.T.upperHalfPlaneCodiscreteGerm_identity_and_units.1`. Establish `hinj : Function.Injective X.an` using `X.an.injective`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hpowg : g₀ ^ m = ((f * r⁻¹ : X.Kˣ) : X.K)`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_pow, hψ, hφ, ← Filter.Germ.coe_pow, Filter.Germ.coe_eq]`. Use `filter_upwards [G1, E1, hBev] with z g e hz`. Simplify using `only [Pi.pow_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `mul_right_cancel₀ (pow_ne_zero m hz)` to reduce the goal to its premises. Rewrite using `[e, ← g, mul_pow]`. Establish `hg0 : g₀ ≠ 0`. Introduce `h`. Rewrite `hpowg` using `[h, zero_pow hm.ne']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(f * r⁻¹).ne_zero hpowg.symm`. Establish `hinvg : ∀ γ ∈ CongruenceSubgroup.Gamma M, X.sl (ofSL γ) g₀ = g₀`. Introduce `γ hγ`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[X.an_sl (ofSL γ) g₀ ψ hψ, hψ, Filter.Germ.coe_eq]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw, hw0⟩` from `comp_ne_zero hz₀ hB0 γ`. Use `filter_upwards [comp_eventually γ G1, G1, hBev, eventually_ne_zero (diff_comp hBd γ) hw hw0, hs] with z g1 g2 m1 m2 hz`. Use `beta_reduce at g1 m2 ⊢`. Establish `e` using `hinv γ hγ z hz`. Apply `mul_right_cancel₀ (mul_ne_zero m1 m2)` to reduce the goal to its premises.
-
-Take the linear combination `((b * a') z) * g1 - ((b * a') (mob (ofSL γ) z)) * g2 + e`. Use `⟨Units.mk0 g₀ hg0, hinvg, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mk0, hpowg, Units.val_mul, mul_left_comm, Units.mul_inv, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem quot_pow {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) {M m : ℕ} (hM : 0 < M)
     (hm : 0 < m) (f r : X.Kˣ) {a b a' b' : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) (hb : DifferentiableOn ℂ b Hs)
@@ -376,29 +370,23 @@ end GlobalTheory.KZ.FinLev
 namespace GlobalTheory.KZ.FinLev
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X hε hj M m hM hm`. Use `haveI : NeZero M := ⟨hM.ne'⟩`. Use `haveI : Nontrivial Mero := GlobalTheory.T.upperHalfPlaneCodiscreteGerm_identity_and_units.1`. Use `haveI : Group.FG SL(2, ℤ) := ⟨⟨{ModularGroup.S, ModularGroup.T}, by simpa using SpecialLinearGroup.SL2Z_generators⟩⟩`. Take `⟨S, hS⟩` from `(Group.fg_iff_subgroup_fg (CongruenceSubgroup.Gamma M)).1 (Subgroup.fg_of_index_ne_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hSmem : ∀ s ∈ S, s ∈ CongruenceSubgroup.Gamma M` using `fun s hs => hS ▸ Subgroup.subset_closure hs`. Set `Sset` to `{f : X.Kˣ // f ∈ X.Un m ∧ ∀ γ ∈ CongruenceSubgroup.Gamma M, X.sl (ofSL γ) (f : X.K) = f}`. Establish `hroot : ∀ f : Sset, ∃ a b : ℂ → ℂ, DifferentiableOn ℂ a Hs ∧ DifferentiableOn ℂ b Hs ∧ (b : Mero) ≠ 0 ∧ X.an (f.1 : X.K) * (b : Mero) ^ m = (a : Mero) ^ m` using `fun f => GlobalTheory.T.exists_meromorphic_root_of_mem_modularFunctionTower_Un ε X hε hj m hm f.1 f.2.1`. Use `choose A B hA hB hB0 hAB using hroot`. Establish `hAnz : ∀ f : Sset, ∃ z ∈ Hs, A f z ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `f`. Apply `exists_ne_zero` to reduce the goal to its premises. Introduce `h0`. Establish `hu : IsUnit (X.an (f.1 : X.K) * (B f : Mero) ^ m)` using `((f.1.isUnit).map X.an).mul ((GlobalTheory.T.upperHalfPlaneCodiscreteGerm_identity_and_units.2.2 (B f) (hB f) (hB0 f)).2.pow m)`. Rewrite `hu` using `[hAB f, h0, zero_pow hm.ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `not_isUnit_zero hu`. Establish `hBnz : ∀ f : Sset, ∃ z ∈ Hs, B f z ≠ 0` using `fun f => exists_ne_zero (hB0 f)`. Use `choose zA hzA hAz using hAnz`. Use `choose zB hzB hBz using hBnz`. Establish `hchar : ∀ (f : Sset) (s : S), ∃ ζ : ℂ, ζ ^ m = 1 ∧ RootRel (A f) (B f) s ζ` using `fun f s => char_exists X hm f.2.2 (hA f) (hB f) (hAB f) (hzA f) (hzB f) (hAz f) (hBz f) (hSmem s s.2)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose Z hZ hZrel using hchar`. Set `sig : Sset → (S → Polynomial.nthRootsFinset m (1 : ℂ))` to `fun f s => ⟨Z f s, (Polynomial.mem_nthRootsFinset hm 1).2 (hZ f s)⟩`. Set `rep : (S → Polynomial.nthRootsFinset m (1 : ℂ)) → X.Kˣ` to `fun σ => if h : ∃ f : Sset, sig f = σ then (h.choose).1 else 1`. Use `⟨Finset.univ.image rep, ?_⟩` and prove the remaining obligations. Introduce `f hfU hfinv`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Set `f' : Sset` to `⟨f, hfU, hfinv⟩`. Establish `hex : ∃ g : Sset, sig g = sig f'` using `⟨f', rfl⟩`. Establish `hrep : rep (sig f') = hex.choose.1` using `dif_pos hex`. Establish `hsig : sig hex.choose = sig f'` using `hex.choose_spec`. Establish `hsame : ∀ s : S, Z hex.choose s = Z f' s` using `fun s => congrArg Subtype.val (congrFun hsig s)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `r : Sset` to `hex.choose`. Set `H : Subgroup SL(2, ℤ)` to `{ carrier := {γ | ∃ ζ : ℂ, ζ ^ m = 1 ∧ RootRel (A f') (B f') γ ζ ∧ RootRel (A r) (B r) γ ζ} mul_mem' := by`. Introduce and unpack `γ δ ⟨ζ, hζ, h1, h2⟩ ⟨η, hη, h3, h4⟩`. Conclude with `⟨ζ * η, by rw [mul_pow, hζ, hη, one_mul], rel_mul (hA f') (hB f') (hzA f') (hzB f') (hAz f') (hBz f') h1 h3, rel_mul (hA r) (hB r) (hzA r) (hzB r) (hAz r) (hBz r) h2 h4⟩`. Use the proof step `one_mem' := ⟨1, one_pow m, rel_one _ _, rel_one _ _⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use the proof step `inv_mem' := by`. Introduce and unpack `γ ⟨ζ, hζ, h1, h2⟩`. Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hζ` using `[zero_pow hm.ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_ne_one hζ`. Conclude with `⟨ζ⁻¹, by rw [inv_pow, hζ, inv_one], rel_inv hζ0 h1, rel_inv hζ0 h2⟩ }`. Establish `hle : CongruenceSubgroup.Gamma M ≤ H`. Rewrite using `[← hS, Subgroup.closure_le]`. Introduce `s hs`.
-
-Establish `h` using `hZrel r ⟨s, hs⟩`. Rewrite `h` using `[hsame]`. Use `show ∃ ζ : ℂ, ζ ^ m = 1 ∧ RootRel (A f') (B f') s ζ ∧ RootRel (A r) (B r) s ζ`. Conclude with `⟨Z f' ⟨s, hs⟩, hZ f' ⟨s, hs⟩, hZrel f' ⟨s, hs⟩, h⟩`. Take `⟨g, hg, hfg⟩` from `quot_pow X hM hm f r.1 (hA f') (hB f') (hA r) (hB r) (hAB f') (hAB r) (hzB f') (hzA r) (hBz f') (hAz r) (fun γ hγ => by`.
-
-Establish `h : ∃ ζ : ℂ, ζ ^ m = 1 ∧ RootRel (A f') (B f') γ ζ ∧ RootRel (A r) (B r) γ ζ` using `hle hγ`. Take `⟨ζ, -, h1, h2⟩` from `h`. Conclude with `⟨ζ, h1, h2⟩)`. Use `⟨r.1, Finset.mem_image.2 ⟨sig f', Finset.mem_univ _, hrep⟩, g, hg, 1, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, mul_one]`.
-
-Conclude with `hfg`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_mod_powers : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε),
     Function.Injective ε → (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) →

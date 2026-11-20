@@ -15,7 +15,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan
 
 /- English proof (translation)
-Establish `hpoly : IsPolyFan H.bar q (vorFun (𝓞 E) (Module.finrank ℤ (𝓞 E) * q))` using `GlobalTheory.T.voronoi_fan_is_polyhedral (𝓞 E) H.bar _ q (fun Y _ _ _ _ => GlobalTheory.T.hasPolyhedralCover_balancedForms_CMField E H Y) le_rfl`. Establish `htw : IsTwInv H (vorFun (𝓞 E) (Module.finrank ℤ (𝓞 E) * q))` using `fun σ _ n B => baseFun_twist _ _ _ σ n B`. Take `⟨φ₁, f1, f2, f3, -⟩` from `GlobalTheory.T.exists_invariant_smoothProjective_refinement_polyFan E H q _ (fun X _ _ _ _ => GlobalTheory.T.dominatesLinearFormsOnBalancedForms_cm E H X) hpoly htw`. Take `⟨φ₂, k1, k2, -, k4, -, -⟩` from `GlobalTheory.T.exists_homogeneous_positive_polFan_extension E H q φ₁ f1 f2 f3`. Conclude with `⟨φ₂, k1, k2, k4⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_fan (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) :
     ∃ φ : InvFun (𝓞 E), IsPolFan H.bar q φ ∧ NoSelfInt H.bar q φ ∧ GlobalTheory.TorRef.IsPosFn H φ := by

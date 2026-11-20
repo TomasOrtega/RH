@@ -19,9 +19,9 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
 omit [CompactSpace G] in
 
 /- English proof (translation)
-Introduce `y`. Use `set e := cohomologyMapAlong (Subgroup.subgroupOfEquivOfLe (show (V : Subgroup G) ≤ U from h)).symm.toMonoidHom (continuous_subgroupOfEquivOfLe_symm _) (resSubgroupOfHom (show (V : Subgroup G) ≤ U from h) C) n`. Establish `he : Function.Injective e.hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Take `⟨x, hx⟩` from `hs (e.hom y)`. Use `⟨x, he ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hx, cohomologyResLE_eq_cohomologyRes_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cohomologyRes_subgroupOf_surjective {U V : OpenSubgroup G} (h : V ≤ U) (n : ℕ)
     (hs : Function.Surjective (cohomologyResLE C (show (V : Subgroup G) ≤ U from h) n).hom) :
@@ -37,7 +37,7 @@ theorem cohomologyRes_subgroupOf_surjective {U V : OpenSubgroup G} (h : V ≤ U)
   rfl
 
 /- English proof (translation)
-Use `ModuleCat.hom_ext (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Take `⟨x, rfl⟩` from `cohomologyRes_subgroupOf_surjective h 2 (F.cohomologyResLE_surjective h) y`. Conclude with `congrArg (fun φ => φ.hom x) (cohomologyRes_comp_cohomologyConj (Rep.res (U : Subgroup G).subtype C) ((V : Subgroup G).subgroupOf U) 2 g)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ClassFormation.cohomologyConj_two_eq_id (F : ClassFormation C) {U V : OpenSubgroup G}
     (h : V ≤ U) [((V : Subgroup G).subgroupOf (U : Subgroup G)).Normal] (g : (U : Subgroup G)) :
@@ -88,7 +88,7 @@ instance isDiscreteRep_res_res_res_galRootsOfUnity (U : Subgroup Gal(Ksep/K)) (N
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 /- English proof (translation)
-The claim follows from `shortExact_map_res N (shortExact_map_res U (kummerSequence_shortExact l hl))`.
+A detailed English derivation is pending.
 -/
 theorem kummerSequenceResRes_shortExact (hl : (l : K) ≠ 0) (U : Subgroup Gal(Ksep/K)) (N : Subgroup U) :
     (kummerSequenceResRes (K := K) (Ksep := Ksep) l U N).ShortExact :=
@@ -97,7 +97,7 @@ theorem kummerSequenceResRes_shortExact (hl : (l : K) ≠ 0) (U : Subgroup Gal(K
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Establish `e` using `asIso (cohomologyMapAlong (Subgroup.subgroupOfEquivOfLe (show (V : Subgroup Gal(Ksep/K)) ≤ U from h)).symm.toMonoidHom (continuous_subgroupOfEquivOfLe_symm _) (resSubgroupOfHom _ (galUnits.{0} K Ksep)) 1)`. Conclude with `(ModuleCat.isZero_iff_subsingleton).1 ((isZero_H1_open K Ksep V).of_iso e)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_one_galUnits_subgroupOf {U V : OpenSubgroup Gal(Ksep/K)} (h : V ≤ U) :
     Subsingleton (cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf U).subtype
@@ -108,9 +108,9 @@ theorem subsingleton_cohomology_one_galUnits_subgroupOf {U V : OpenSubgroup Gal(
   exact (ModuleCat.isZero_iff_subsingleton).1 ((isZero_H1_open K Ksep V).of_iso e)
 
 /- English proof (translation)
-Use `set N := (V : Subgroup Gal(Ksep/K)).subgroupOf U`. Use `set f := (Rep.resFunctor (U : Subgroup Gal(Ksep/K)).subtype).map (kummerSequence K Ksep l).f`. Use `set fN := cohomologyMap ((Rep.resFunctor N.subtype).map f) 2`. Establish `hinj : Function.Injective fN.hom` using `cohomologyMap_f_injective_of_subsingleton (kummerSequenceResRes_shortExact hl _ N) 1 (subsingleton_cohomology_one_galUnits_subgroupOf h)`. Establish `hnat` using `cohomologyConj_naturality (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l)) N f 2 g`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ModuleCat.hom_ext (LinearMap.ext fun y => hinj ?_)` and prove the remaining obligations. Establish `e1 : (cohomologyConj (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galUnits.{0} K Ksep)) N 2 g).hom (fN.hom y) = fN.hom ((cohomologyConj (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l)) N 2 g).hom y)` using `congrArg (fun φ => φ.hom y) hnat`. Establish `e2` using `congrArg (fun φ => φ.hom (fN.hom y)) ((localClassFormationOfIsSepClosure K Ksep).cohomologyConj_two_eq_id h g)`. Conclude with `e1.symm.trans (e2.trans rfl)`.
+A detailed English derivation is pending.
 -/
 theorem cohomologyConj_two_galRootsOfUnity_eq_id (hl : (l : K) ≠ 0) {U V : OpenSubgroup Gal(Ksep/K)}
     (h : V ≤ U) [((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).Normal] (g : (U : Subgroup Gal(Ksep/K))) :

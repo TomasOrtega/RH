@@ -23,16 +23,16 @@ section Field
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {L : Type} [Field L]
 
 /- English proof (translation)
-Use `(Scheme.Hom.comp_apply (spMap e) zL _).trans ?_` and prove the remaining obligations. Conclude with `congrArg zL (Subsingleton.elim _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem centre_map (zL : Sp L ⟶ X) (e : L →+* ℂ) : centre (spMap e ≫ zL) = centre zL := by
   refine (Scheme.Hom.comp_apply (spMap e) zL _).trans ?_
   exact congrArg zL (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Establish `hc : centre zL = centre (spMap e ≫ zL)` using `(centre_map zL e).symm`. Establish `h0` using `h`. Take `⟨h', s, hs, -⟩` from `h`. Establish `h'' : genPt ξ ⤳ centre zL` using `hc ▸ h'`. Establish `hv : ValAt ξ zL a (Scheme.stalkClosedPointTo zL |>.hom (X.presheaf.stalkSpecializes (specializes_of_eq hc) s))` using `⟨h'', _, (genMap_stalkSpecializes ξ hc h' h'' s).trans hs, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨_, hv, ValAt.unique hξ (valAt_of_field_map ξ zL _ e rfl hv) h0⟩`.
+Supply the required witnesses or components.
 -/
 theorem descend {ξ : Sp Ω ⟶ X} (hξ : IsCptGen ξ) (zL : Sp L ⟶ X) (e : L →+* ℂ) {a : Ω} {r : ℂ}
     (h : ValAt ξ (spMap e ≫ zL) a r) : ∃ t : L, ValAt ξ zL a t ∧ e t = r := by
@@ -45,9 +45,9 @@ theorem descend {ξ : Sp Ω ⟶ X} (hξ : IsCptGen ξ) (zL : Sp L ⟶ X) (e : L 
   exact ⟨_, hv, ValAt.unique hξ (valAt_of_field_map ξ zL _ e rfl hv) h0⟩
 
 /- English proof (translation)
-Use `⟨fun k => (hw.1 k).imp fun c hc => hc.map e, fun k c hc => ?_⟩` and prove the remaining obligations. Establish `hne : w ⟨k, c⟩ ≠ 0` using `fun h0 => by simp [h0] at hc`. Take `⟨hy, hi⟩` from `hw.2 k c (isUnit_iff_ne_zero.2 hne)`. Use `⟨hy, fun i => ?_⟩` and prove the remaining obligations. Take `⟨ρ, hρ, hr⟩` from `hi i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e ρ, valAt_of_field_map ξ zL _ e rfl hρ, by simp only [hr, map_mul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem coords_map (ξ : Sp Ω ⟶ X) {K : Type} {J : K → Type} {y : (Σ k, J k) → Ω} {zL : Sp L ⟶ X}
     {w : (Σ k, J k) → L} (hw : CoordsAt ξ y zL w) (e : L →+* ℂ) :
@@ -62,9 +62,9 @@ theorem coords_map (ξ : Sp Ω ⟶ X) {K : Type} {J : K → Type} {y : (Σ k, J 
 variable {ξ : Sp Ω ⟶ X} {z : Sp L ⟶ X}
 
 /- English proof (translation)
-Take `⟨h1, s, rfl, rfl⟩` from `h`. Take `⟨u, rfl⟩ : IsUnit s` from `(Scheme.isLocalHom_stalkClosedPointTo' z).map_nonunit s (isUnit_iff_ne_zero.2 hr)`. Use `⟨h1, (u⁻¹ : (X.presheaf.stalk (centre z))ˣ).1, eq_inv_of_mul_eq_one_left ?_, eq_inv_of_mul_eq_one_left ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Use `((Scheme.stalkClosedPointTo z).hom.map_mul _ _).symm.trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (Scheme.stalkClosedPointTo z).hom (Units.inv_mul u)).trans (Scheme.stalkClosedPointTo z).hom.map_one`.
+A detailed English derivation is pending.
 -/
 theorem val_inv {a : Ω} {r : L} (h : ValAt ξ z a r) (hr : r ≠ 0) : ValAt ξ z a⁻¹ r⁻¹ := by
   obtain ⟨h1, s, rfl, rfl⟩ := h
@@ -75,7 +75,7 @@ theorem val_inv {a : Ω} {r : L} (h : ValAt ξ z a r) (hr : r ≠ 0) : ValAt ξ 
     exact (congrArg (Scheme.stalkClosedPointTo z).hom (Units.inv_mul u)).trans (Scheme.stalkClosedPointTo z).hom.map_one
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using RootHt.valAt_one h₀`. Consider the case `succ n ih => simpa [pow_succ] using RootHt.valAt_mul ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem val_pow (h₀ : genPt ξ ⤳ centre z) {a : Ω} {r : L} (h : ValAt ξ z a r) (n : ℕ) : ValAt ξ z (a ^ n) (r ^ n) := by
   induction n with
@@ -83,7 +83,7 @@ theorem val_pow (h₀ : genPt ξ ⤳ centre z) {a : Ω} {r : L} (h : ValAt ξ z 
   | succ n ih => simpa [pow_succ] using RootHt.valAt_mul ih h
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `ofNat n => simpa using val_pow h₀ h n`. Consider the case `negSucc n`. Simplify `val_inv (val_pow h₀ h (n + 1)) (pow_ne_zero _ hr)` using `[zpow_negSucc]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_zpow (h₀ : genPt ξ ⤳ centre z) {a : Ω} {r : L} (h : ValAt ξ z a r) (hr : r ≠ 0) (n : ℤ) :
     ValAt ξ z (a ^ n) (r ^ n) := by
@@ -93,7 +93,7 @@ theorem val_zpow (h₀ : genPt ξ ⤳ centre z) {a : Ω} {r : L} (h : ValAt ξ z
     simpa [zpow_negSucc] using val_inv (val_pow h₀ h (n + 1)) (pow_ne_zero _ hr)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using RootHt.valAt_one h₀`. Consider the case `insert k s hk ih`. Rewrite using `[Finset.prod_insert hk, Finset.prod_insert hk]`. Conclude with `RootHt.valAt_mul (val_zpow h₀ (h k) (hr k) _) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_prod_zpow (h₀ : genPt ξ ⤳ centre z) {K : Type} (s : Finset K) {A : K → Ω} {r : K → L} (b : K → ℤ)
     (h : ∀ k, ValAt ξ z (A k) (r k)) (hr : ∀ k, r k ≠ 0) :
@@ -108,27 +108,25 @@ theorem val_prod_zpow (h₀ : genPt ξ ⤳ centre z) {K : Type} (s : Finset K) {
 end Field
 
 /- English proof (translation)
-Introduce `E _ _ _ _ H D l Xo c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or L _ _ z w cc p hw hcc hp`. Take `⟨e₀⟩ : Nonempty (L →+* ℂ)` from `inferInstance`. Establish `hT` using `Or.𝔐.tie`. Establish `hξ` using `hT.gen`. Establish `hwe` using `fun e : L →+* ℂ => coords_map Or.𝔐.ξ hw e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : ∀ e : L →+* ℂ, (fun q => e (w q)) ∈ mcPts (mCoordIdeal Dc.y)` using `fun e => (GlobalTheory.T.complex_points_iff_centres _ _ _ K J _ hT _).2 ⟨_, Or.𝔐.all _, hwe e⟩`. Establish `tv : ∀ (e : L →+* ℂ) (a : Ω) (r : ℂ), ValAt Or.𝔐.ξ (spMap e ≫ z) a r ↔ IsValueAt Dc.y a (fun q => e (w q)) r` using `fun e a r => GlobalTheory.T.valAt_iff_value_at _ _ _ K J _ hT _ _ (Or.𝔐.all _) (hwe e) a r`. Establish `hne` using `GlobalTheory.CompanionTheory.Ar.ProvConj.valAt_ne_zero (Dc.S_prime p hp).ne_zero (Dc.vertical p hp) (hm e₀) cc (fun k => (map_ne_zero e₀).2 (hcc k)) Dc.arith.2.1.2.1`. Establish `hex : ∃ v, IsValueAt Dc.y (MvPolynomial.aeval Dc.y (Dc.vnum p) / MvPolynomial.aeval Dc.y (Dc.vden p) * chartMono Dc.y cc (-Dc.vdeg p)) (fun q => e₀ (w q)) v`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hne (by rw [GroundTheory.Heights₂.Heights.LowerBoundFree.valAt, dif_neg h])`. Take `⟨v, hv⟩` from `hex`. Rewrite `hne` using `[valAt_eq (hm e₀) hv]`. Take `⟨t, ht, het⟩` from `descend hξ z e₀ ((tv e₀ _ _).2 hv)`. Use `⟨t, fun h0 => hne (by rw [← het, h0, map_zero]), ht, fun e => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hve` using `valAt_of_field_map Or.𝔐.ξ z _ e rfl ht`. Establish `hccz : ∀ k, e (w ⟨k, cc k⟩) ≠ 0` using `fun k => (map_ne_zero e).2 (hcc k)`. Establish `hc : ∃ c : (k : K) → J k, ∀ k, (fun q => e (w q)) ⟨k, c k⟩ ≠ 0` using `⟨cc, hccz⟩`. Unfold `ComponentData.vertFactor`. Rewrite using `[dif_pos hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcs` using `hc.choose_spec`. Generalize the expression as in `hc.choose = c at hcs ⊢`. Establish `hcs' : ∀ k, e (w ⟨k, c k⟩) ≠ 0` using `hcs`. Establish `hy : ∀ k, Dc.y ⟨k, c k⟩ ≠ 0` using `fun k => ((hwe e).2 k (c k) (isUnit_iff_ne_zero.2 (hcs' k))).1`. Establish `hy' : ∀ k, Dc.y ⟨k, cc k⟩ ≠ 0` using `fun k => ((hwe e).2 k (cc k) (isUnit_iff_ne_zero.2 (hccz k))).1`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ∀ k, ValAt Or.𝔐.ξ (spMap e ≫ z) (Dc.y ⟨k, cc k⟩ / Dc.y ⟨k, c k⟩) (e (w ⟨k, cc k⟩) / e (w ⟨k, c k⟩))` using `fun k => by`. Take `⟨ρ, h1, h2⟩` from `((hwe e).2 k (c k) (isUnit_iff_ne_zero.2 (hcs' k))).2 (cc k)`. Establish `h3 : e (w ⟨k, cc k⟩) / e (w ⟨k, c k⟩) = ρ`. Rewrite using `[div_eq_iff (hcs' k)]`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Conclude with `h1`. Establish `hall` using `RootHt.valAt_mul hve (val_prod_zpow (Or.𝔐.all _) Finset.univ (Dc.vdeg p) hr (fun k => div_ne_zero (hccz k) (hcs' k)))`. Establish `ha : MvPolynomial.aeval Dc.y (Dc.vnum p) / MvPolynomial.aeval Dc.y (Dc.vden p) * chartMono Dc.y cc (-Dc.vdeg p) * ∏ k, (Dc.y ⟨k, cc k⟩ / Dc.y ⟨k, c k⟩) ^ Dc.vdeg p k = MvPolynomial.aeval Dc.y (Dc.vnum p) / MvPolynomial.aeval Dc.y (Dc.vden p) * chartMono Dc.y c (-Dc.vdeg p)`. Rewrite using `[_root_.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Unfold `chartMono`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.neg_apply, _root_.zpow_neg, _root_.zpow_neg, div_zpow, div_eq_mul_inv, ← _root_.mul_assoc, inv_mul_cancel₀ (zpow_ne_zero _ (hy' k)), _root_.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hall` using `[ha]`. Rewrite using `[valAt_eq (hm e) ((tv e _ _).1 hall), ← norm_mul]`. Establish `hid : e t * (∏ k, (e (w ⟨k, cc k⟩) / e (w ⟨k, c k⟩)) ^ Dc.vdeg p k) * zMono (fun q => e (w q)) c (Dc.vdeg p) = e t * ∏ k, e (w ⟨k, cc k⟩) ^ Dc.vdeg p k`. Rewrite using `[_root_.mul_assoc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `zMono`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow, div_mul_cancel₀ _ (hcs' k)]`. Rewrite using `[hid, norm_mul, norm_prod]`.
-
-Simplify using `only [norm_zpow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vertical_value : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (L : Type) [Field L] [NumberField L] (z : Sp L ⟶ Or.𝔐.X) (w : (Σ k, J k) → L) (cc : (k : K) → J k) (p : ℕ), CoordsAt Or.𝔐.ξ Dc.y z w → (∀ k, w ⟨k, cc k⟩ ≠ 0) → p ∈ Dc.S → ∃ t : L, t ≠ 0 ∧ ValAt Or.𝔐.ξ z (MvPolynomial.aeval Dc.y (Dc.vnum p) / MvPolynomial.aeval Dc.y (Dc.vden p) * chartMono Dc.y cc (-Dc.vdeg p)) t ∧ ∀ e : L →+* ℂ, Dc.vertFactor p (fun i => e (w i)) = ‖e t‖ * ∏ k, ‖e (w ⟨k, cc k⟩)‖ ^ Dc.vdeg p k := by
   intro E _ _ _ _ H D l Xo c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or L _ _ z w cc p hw hcc hp

@@ -15,9 +15,9 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundl
 namespace GlobalTheory.CompanionTheory.Ar.Num.HodgeTate
 
 /- English proof (translation)
-Introduce `h0`. Apply `hw` to reduce the goal to its premises. Establish `hmem : w ∈ (mcIdeal O x).comap (C : O →+* MvPolynomial (Σ k, ι k) O)`. Rewrite using `[Ideal.mem_comap]`. Use `show _ = _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (C w : MvPolynomial (Σ k, ι k) O) = algebraMap O _ w` using `rfl`. Rewrite using `[this, AlgHom.commutes]`. Simplify using `[MvPolynomial.algebraMap_eq, h0]`. Rewrite `hmem` using `[hm.2.2.1]`. Simplify using `using hmem`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem algebraMap_ne_zero_of_model {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {Ω : Type} [Field Ω] [Algebra O Ω] {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
@@ -36,17 +36,17 @@ theorem algebraMap_ne_zero_of_model {O : Type} [CommRing O] [IsDomain O] [IsDisc
   simpa using hmem
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x d r s n VL _ _ VO _ _ VH _ _ Lie W La om omHT T H w hw hm hLW hWL hsc hom hHT hex k hk1 hk2 q L Q hQ`. Establish `hw' : algebraMap O Ω w ≠ 0` using `algebraMap_ne_zero_of_model hm hw`. Establish `hscale : ∀ s, mseg x s ≠ 0 → ∀ v ∈ La.lat s, algebraMap O Ω w • v ∈ Lie.lat s` using `fun s hs v hv => (hsc s hs _).2 ⟨v, hv, rfl⟩`. Establish `sWLa : SameGeneric O x W La` using `fun s hs => ⟨fun v hv => ⟨1, one_ne_zero, by simpa using hWL s hs hv⟩, fun v hv => ⟨w, hw, hLW s hs (hscale s hs v hv)⟩⟩`. Establish `sLaW : SameGeneric O x La W` using `fun s hs => ⟨(sWLa s hs).2, (sWLa s hs).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sLieW : SameGeneric O x Lie W` using `fun s hs => ⟨fun v hv => ⟨1, one_ne_zero, by simpa using hLW s hs hv⟩, fun v hv => ⟨w, hw, hscale s hs v (hWL s hs hv)⟩⟩`. Establish `sWLie : SameGeneric O x W Lie` using `fun s hs => ⟨(sLieW s hs).2, (sLieW s hs).1⟩`. Establish `sLaLa : SameGeneric O x La La` using `fun s hs => ⟨fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩, fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩⟩`. Establish `h1` using `GlobalTheory.T.chart_bundle_extension_intersection O Ω K ι x d r n s VL VH VO La W H T om omHT hm sLaW hHT hom hex k hk1 hk2 q L Q hQ`. Establish `h2` using `(GlobalTheory.T.dvr_bundle_statement_a O Ω K ι x d r VL La W Lie hm sLaW sWLie k hk1 hk2 q L Q hQ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(GlobalTheory.T.dvr_bundle_statement_a O Ω K ι x d r VL Lie W Lie hm sLieW sWLie k hk1 hk2 q L Q hQ).2`. Establish `h4` using `(GlobalTheory.T.dvr_bundle_statement_d O Ω K ι x d r VL La Lie w hw hm hsc k hk1 hk2 q L Q hQ).1`. Establish `hcarry : ∀ s, mseg x s ≠ 0 → ∀ v, ((LinearEquiv.smulOfNeZero Ω VL _ hw') v ∈ Lie.lat s ↔ v ∈ La.lat s) ∧ ((LinearEquiv.smulOfNeZero Ω VL _ hw') v ∈ Lie.lat s ↔ v ∈ La.lat s)`. Introduce `s hs v`. Establish `: (LinearEquiv.smulOfNeZero Ω VL _ hw') v ∈ Lie.lat s ↔ v ∈ La.lat s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.smulOfNeZero_apply, hsc s hs]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he, hve⟩`. Rewrite using `[smul_right_injective VL hw' hve]` and apply the resulting hypothesis. Conclude with `fun hv => ⟨v, hv, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨this, this⟩`. Establish `hQ' : Q.IsHomogeneous (d - (k - 1))`. Establish `: d - (k - 1) = d + 1 - k` using `by omega`. Rewrite using `[this]` and apply the resulting hypothesis. Establish `h5` using `(GlobalTheory.T.same_generic_linear_equiv O Ω K ι x d hm r VL VL (LinearEquiv.smulOfNeZero Ω VL _ hw') La La Lie Lie sLaLa hcarry).2 (k - 1) (psum (Fin r) ℤ (k - 1)) (psum_isSymmetric _ _ _) (isHomogeneous_psum r (k - 1)) (by omega) q L Q hQ' w hw`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[h5]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (d r s n : ℕ) (VL : Type) [AddCommGroup VL] [Module Ω VL] (VO : Type) [AddCommGroup VO] [Module Ω VO] (VH : Type) [AddCommGroup VH] [Module Ω VH] (Lie W La : ChartBundle O (mseg x) r VL) (om omHT : ChartBundle O (mseg x) s VO) (T H : ChartBundle O (mseg x) n VH) (w : O), w ≠ 0 → GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d → LatLE O x Lie W → LatLE O x W La → IsScaled x (algebraMap O Ω w) La.lat Lie.lat → SameGeneric O x om omHT → SameGeneric O x H T → QuotExact O x La.lat W.lat H.lat T.lat om.lat omHT.lat → ∀ (k : ℕ), 1 ≤ k → k ≤ d + 1 → ∀ (q : ℕ) (L : Fin q → K → ℤ) (Q : MvPolynomial (Fin q) ℤ), Q.IsHomogeneous (d + 1 - k) → ck O x d r Lie W k L Q + ck O x d s om omHT k L Q = ck O x d n H T k L Q - (k : ℤ) * rootNum O x d r Lie (psum (Fin r) ℤ (k - 1)) L Q w := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x d r s n VL _ _ VO _ _ VH _ _ Lie W La om omHT T H w hw hm hLW hWL hsc

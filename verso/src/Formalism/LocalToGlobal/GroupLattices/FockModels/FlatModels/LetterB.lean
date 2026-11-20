@@ -12,16 +12,16 @@ def Hd (R : Type) [CommRing R] (k d : ℕ) : Submodule R (MvPolynomial (Fin k) R
   restrictSupport R {μ | ∑ c, μ c = d}
 
 /- English proof (translation)
-Simplify using `only [Hd, MvPolynomial.mem_restrictSupport_iff, Set.subset_def, Finset.mem_coe, Set.mem_setOf_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Hd {R : Type} [CommRing R] {k d : ℕ} {P : MvPolynomial (Fin k) R} :
     P ∈ Hd R k d ↔ ∀ μ ∈ P.support, ∑ c, μ c = d := by
   simp only [Hd, MvPolynomial.mem_restrictSupport_iff, Set.subset_def, Finset.mem_coe, Set.mem_setOf_eq]
 
 /- English proof (translation)
-Rewrite using `[mem_Hd]`. Introduce `μ hμ`. Rewrite `hμ` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_one]`. Use `split_ifs at hμ with h0`. Substitute `h0` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `absurd rfl hμ`.
+A detailed English derivation is pending.
 -/
 theorem Hd_one (R : Type) [CommRing R] (k : ℕ) : (1 : MvPolynomial (Fin k) R) ∈ Hd R k 0 := by
   rw [mem_Hd]
@@ -33,9 +33,9 @@ theorem Hd_one (R : Type) [CommRing R] (k : ℕ) : (1 : MvPolynomial (Fin k) R) 
   · exact absurd rfl hμ
 
 /- English proof (translation)
-Rewrite using `[mem_Hd]`. Introduce `μ hμ`. Rewrite `hμ` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_X']`. Use `split_ifs at hμ with h0`. Substitute `h0` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.single_apply]`. Simplify using `at hμ`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Hd_X (R : Type) [CommRing R] (k : ℕ) (a : R) (c : Fin k) : C a * X c ∈ Hd R k 1 := by
   rw [mem_Hd]
@@ -47,7 +47,7 @@ theorem Hd_X (R : Type) [CommRing R] (k : ℕ) (a : R) (c : Fin k) : C a * X c �
   · simp at hμ
 
 /- English proof (translation)
-Rewrite `hP`, `hQ`, the goal using `[mem_Hd]`. Introduce `μ hμ`. Take `⟨a1, ha1, b1, hb1, rfl⟩` from `Finset.mem_add.1 (MvPolynomial.support_mul P Q hμ)`. Simplify using `only [Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib, hP a1 ha1, hQ b1 hb1]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem Hd_mul {R : Type} [CommRing R] {k a b : ℕ} {P Q : MvPolynomial (Fin k) R} (hP : P ∈ Hd R k a)
     (hQ : Q ∈ Hd R k b) : P * Q ∈ Hd R k (a + b) := by
@@ -58,9 +58,9 @@ theorem Hd_mul {R : Type} [CommRing R] {k a b : ℕ} {P Q : MvPolynomial (Fin k)
   simp only [Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib, hP a1 ha1, hQ b1 hb1]
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Rewrite using `[Finset.prod_empty, Finset.sum_empty]`. Conclude with `Hd_one R k`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j s hj ih h`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj]`. Conclude with `Hd_mul (h j (Finset.mem_insert_self j s)) (ih (fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+A detailed English derivation is pending.
 -/
 theorem Hd_prod {R : Type} [CommRing R] {k : ℕ} {J : Type} (s : Finset J) (δ : J → ℕ)
     (q : J → MvPolynomial (Fin k) R) (h : ∀ i ∈ s, q i ∈ Hd R k (δ i)) :
@@ -79,13 +79,13 @@ def nuL (m d : ℕ) (vec : Bool) : Fin (m + 1) → ℕ :=
   fun t => if vec then (if t = 0 then d else 0) else (if t = Fin.last m then 0 else d)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Unfold `nuOf letterWt nuL`. Establish `hl : (Fin.last m : Fin (m + 1)) ≠ 0`. Introduce `h`. Establish `h2` using `congrArg Fin.val h`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at h2`. Use linear arithmetic over natural numbers and integers. Consider the cases of `vec`. Simplify using `only [Bool.false_eq_true, ↓reduceIte]`. Distinguish the cases in `ht : t = Fin.last m`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `ht` using the available equality. Simplify using the standard rewrite rules. Simplify using `[ht]`. Simplify using `only [↓reduceIte]`. Distinguish the cases in `ht : t = 0`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `ht` using the available equality. Simplify using `[hl]`. Simplify using `[ht, hl]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem nuOf_letterWt (m : ℕ) (hm : 1 ≤ m) (d : ℕ) (vec : Bool) : nuOf (letterWt m d vec) = nuL m d vec := by
   funext t
@@ -108,7 +108,7 @@ theorem nuOf_letterWt (m : ℕ) (hm : 1 ≤ m) (d : ℕ) (vec : Bool) : nuOf (le
     · simp [ht, hl]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Apply the tactic sequence `cases vec <;> simp [nuL] <;> split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nuL_smul (m d : ℕ) (vec : Bool) : nuL m d vec = d • nuL m 1 vec := by
   funext t
@@ -117,7 +117,7 @@ theorem nuL_smul (m d : ℕ) (vec : Bool) : nuL m d vec = d • nuL m 1 vec := b
 def s0 (m : ℕ) (vec : Bool) : ℕ := if vec then 1 else m
 
 /- English proof (translation)
-Unfold `Nv`. Simplify using `only [Bool.false_eq_true, ↓reduceIte]`. Rewrite using `[Matrix.adjugate_fin_succ_eq_det_submatrix, Fin.val_last, Fin.succAbove_last]`. Unfold `initMinor genM`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem Nv_false_eq (R : Type) [CommRing R] (m : ℕ) (c : Fin (m + 1)) :
     Nv R m false c = (-1) ^ ((c : ℕ) + m) * initMinor R c.succAbove (Nat.le_succ m) := by
@@ -128,7 +128,7 @@ theorem Nv_false_eq (R : Type) [CommRing R] (m : ℕ) (c : Fin (m + 1)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[lcminor_initMinor_eq, Fintype.sum_subsingleton _ 1]`. Simplify using `[Nv, MvPolynomial.X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Nv_true_eq (R : Type) [CommRing R] (m : ℕ) (c : Fin (m + 1)) :
     Nv R m true c = initMinor R (fun _ : Fin 1 => c) (Nat.succ_le_succ (Nat.zero_le m)) := by
@@ -136,15 +136,15 @@ theorem Nv_true_eq (R : Type) [CommRing R] (m : ℕ) (c : Fin (m + 1)) :
   simp [Nv, MvPolynomial.X]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Unfold `shapeDeg s0 nuL`. Consider the cases of `vec`. Simplify using `only [Bool.false_eq_true, ↓reduceIte]`. Distinguish the cases in `ht : t = Fin.last m`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `ht` using the available equality. Simplify using the standard rewrite rules. Establish `h1 : (t : ℕ) < m` using `Fin.val_lt_last ht`. Simplify using `[ht, h1]`. Simplify using `only [↓reduceIte]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using the standard rewrite rules. Establish `h1 : ¬ (t : ℕ) < 1`. Introduce `h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ht` to reduce the goal to its premises. Use `ext`. Use `first`. Consider the case `(rw [Fin.val_zero]; omega)`. Consider the case `(simp only [Fin.coe_ofNat_eq_mod, Nat.zero_mod]; omega)`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(norm_num; omega)`. Simplify using `[ht, h1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shape_one (m : ℕ) (vec : Bool) : shapeDeg (n := m + 1) (fun _ : Fin 1 => s0 m vec) = nuL m 1 vec := by
   funext t
@@ -171,21 +171,21 @@ theorem shape_one (m : ℕ) (vec : Bool) : shapeDeg (n := m + 1) (fun _ : Fin 1 
       simp [ht, h1]
 
 /- English proof (translation)
-Consider the cases of `vec`. Rewrite using `[Nv_false_eq]`. Establish `hmem : initMinor R c.succAbove (Nat.le_succ m) ∈ dualWeyl R (m + 1) (m + 1) (nuL m 1 false)`. Rewrite using `[mem_dualWeyl_iff]`. Use `⟨?_, fun l j hlj => initMinor_invariant _ _ l j hlj⟩` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : nuL m 1 false = initW (m + 1) m`. Use function extensionality and compare the values at `t`. Simplify using `only [nuL, initW, Bool.false_eq_true, ↓reduceIte]`. Distinguish the cases in `ht : t = Fin.last m`. Substitute `ht` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `h1 : (t : ℕ) < m` using `Fin.val_lt_last ht`. Simplify using `[ht, h1]`. Rewrite using `[e]`. Conclude with `initMinor_isWeightedHomogeneous _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ((-1 : MvPolynomial (Fin (m + 1) × Fin (m + 1)) R) ^ ((c : ℕ) + m)) * initMinor R c.succAbove (Nat.le_succ m) = ((-1 : R) ^ ((c : ℕ) + m)) • initMinor R c.succAbove (Nat.le_succ m)`. Rewrite using `[Algebra.smul_def]`. Simplify using the standard rewrite rules. Rewrite using `[e2]`. Conclude with `Submodule.smul_mem _ _ hmem`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nv_true_eq, mem_dualWeyl_iff]`. Use `⟨?_, fun l j hlj => initMinor_invariant _ _ l j hlj⟩` and prove the remaining obligations. Establish `e : nuL m 1 true = initW (m + 1) 1`. Use function extensionality and compare the values at `t`. Simplify using `only [nuL, initW, ↓reduceIte]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using the standard rewrite rules. Establish `h1 : ¬ (t : ℕ) < 1`. Introduce `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Apply `ht` to reduce the goal to its premises. Use `ext`. Use `first`. Consider the case `(rw [Fin.val_zero]; omega)`. Consider the case `(simp only [Fin.coe_ofNat_eq_mod, Nat.zero_mod]; omega)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(norm_num; omega)`. Simplify using `[ht, h1]`. Rewrite using `[e]`. Conclude with `initMinor_isWeightedHomogeneous _ _`.
+A detailed English derivation is pending.
 -/
 theorem Nv_mem (R : Type) [CommRing R] (m : ℕ) (vec : Bool) (c : Fin (m + 1)) :
     Nv R m vec c ∈ dualWeyl R (m + 1) (m + 1) (nuL m 1 vec) := by
@@ -232,11 +232,11 @@ theorem Nv_mem (R : Type) [CommRing R] (m : ℕ) (vec : Bool) (c : Fin (m + 1)) 
     exact initMinor_isWeightedHomogeneous _ _
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero`. Establish `e : (0 : ℕ) • ν = 0`. Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[pow_zero, e]`. Conclude with `one_mem_dualWeyl`. Consider the case `succ a ih`. Establish `e : (a + 1) • ν = a • ν + ν`. Use function extensionality and compare the values at `t`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[add_mul]`. Rewrite using `[pow_succ, e]`. Conclude with `Formalism.GradedWeylDivisibility.dualWeyl_mul ih hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dw_pow {R : Type} [CommRing R] {r n : ℕ} {ν : Fin n → ℕ} {f : MvPolynomial (Fin r × Fin n) R}
     (hf : f ∈ dualWeyl R r n ν) (a : ℕ) : f ^ a ∈ dualWeyl R r n (a • ν) := by
@@ -255,11 +255,11 @@ theorem dw_pow {R : Type} [CommRing R] {r n : ℕ} {ν : Fin n → ℕ} {f : MvP
     exact Formalism.GradedWeylDivisibility.dualWeyl_mul ih hf
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Establish `e : (∑ i ∈ (∅ : Finset J), a i) • ν = 0`. Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Rewrite using `[Finset.prod_empty, e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem_dualWeyl`. Introduce `j s hj ih`. Establish `e : (∑ i ∈ insert j s, a i) • ν = a j • ν + (∑ i ∈ s, a i) • ν`. Use function extensionality and compare the values at `t`. Simplify using `[Finset.sum_insert hj, add_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert hj, e]`. Conclude with `Formalism.GradedWeylDivisibility.dualWeyl_mul (dw_pow (hf j) (a j)) ih`.
+A detailed English derivation is pending.
 -/
 theorem dw_prod {R : Type} [CommRing R] {r n : ℕ} {ν : Fin n → ℕ} {J : Type} (s : Finset J)
     (f : J → MvPolynomial (Fin r × Fin n) R) (a : J → ℕ) (hf : ∀ i, f i ∈ dualWeyl R r n ν) :
@@ -279,11 +279,11 @@ theorem dw_prod {R : Type} [CommRing R] {r n : ℕ} {ν : Fin n → ℕ} {J : Ty
     exact Formalism.GradedWeylDivisibility.dualWeyl_mul (dw_pow (hf j) (a j)) ih
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨P, hP, rfl⟩` from `Submodule.mem_map.1 hy`. Rewrite `hP` using `[mem_Hd]`. Rewrite using `[AlgHom.toLinearMap_apply, P.as_sum, map_sum]`. Use `Submodule.sum_mem _ (fun μ hμ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `theta`. Rewrite using `[MvPolynomial.aeval_monomial, ← Algebra.smul_def]`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Establish `hsum : ∑ i ∈ μ.support, μ i = d`. Rewrite using `[← hP μ hμ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_subset (Finset.subset_univ _) (fun i _ hi => by simpa using hi)`. Establish `hmem` using `dw_prod μ.support (fun i => Nv R m vec i) (fun i => μ i) (fun i => Nv_mem R m vec i)`. Rewrite `hmem` using `[hsum, ← nuL_smul]`. Unfold `Finsupp.prod`. Conclude with `hmem`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem theta_Hd_le (R : Type) [CommRing R] (m d : ℕ) (vec : Bool) :
     (Hd R (m + 1) d).map (theta R m vec).toLinearMap ≤ dualWeyl R (m + 1) (m + 1) (nuL m d vec) := by
@@ -305,15 +305,15 @@ theorem theta_Hd_le (R : Type) [CommRing R] (m d : ℕ) (vec : Bool) :
   exact hmem
 
 /- English proof (translation)
-Establish `hinj` using `hI.injective`. Establish `hcard : (Finset.univ \ Finset.univ.image I).card = 1` using `by first`. Consider the case `rw [Finset.card_sdiff (Finset.subset_univ _), Finset.card_image_of_injective _ hinj]`. Consider the case `rw [Finset.card_sdiff_of_subset (Finset.subset_univ _), Finset.card_image_of_injective _ hinj]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Take `⟨c, hc⟩` from `Finset.card_eq_one.1 hcard`. Use `⟨c, (StrictMono.range_inj hI (Fin.strictMono_succAbove c)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.range_succAbove]`. Use extensionality with `x`. Simplify using `only [Set.mem_range, Set.mem_compl_iff, Set.mem_singleton_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ hy`. Establish `h1 : I y ∈ Finset.univ \ Finset.univ.image I`. Rewrite using `[hc, hy]`. Conclude with `Finset.mem_singleton_self _`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at h1`. Introduce `hx`. Assume the negation of the conclusion as `hne`. Establish `h1 : x ∈ Finset.univ \ Finset.univ.image I`. Simplify using `only [Finset.mem_sdiff, Finset.mem_univ, Finset.mem_image, true_and]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hex`. Apply `hne` to reduce the goal to its premises. Simplify using `using hex`. Rewrite `h1` using `[hc]`. Conclude with `hx (Finset.mem_singleton.1 h1)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_succAbove {m : ℕ} (I : Fin m → Fin (m + 1)) (hI : StrictMono I) :
     ∃ c : Fin (m + 1), I = c.succAbove := by
@@ -346,15 +346,15 @@ theorem exists_succAbove {m : ℕ} (I : Fin m → Fin (m + 1)) (hI : StrictMono 
     exact hx (Finset.mem_singleton.1 h1)
 
 /- English proof (translation)
-Break down `h with rfl | hs0` into its components or cases. Use `⟨1, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using Hd_one R (m + 1)`. Rewrite using `[map_one]`. Unfold `initMinor`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `[Matrix.det_isEmpty]`. Consider the cases of `vec`. Simplify using `only [s0, Bool.false_eq_true, ↓reduceIte] at hs0`. Substitute `hs0` using the available equality. Take `⟨c, rfl⟩` from `exists_succAbove I hI`.
+Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `⟨MvPolynomial.C ((-1 : R) ^ ((c : ℕ) + s)) * X c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg (by omega)]`. Conclude with `Hd_X R (s + 1) _ c`. Unfold `theta`. Rewrite using `[map_mul, MvPolynomial.aeval_C, MvPolynomial.aeval_X, Nv_false_eq, MvPolynomial.algebraMap_eq, ← mul_assoc, map_pow, map_neg, map_one, ← pow_add, Even.neg_one_pow ⟨_, rfl⟩, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [s0, ↓reduceIte] at hs0`. Substitute `hs0` using the available equality. Use `⟨X (I 0), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg one_ne_zero]`. Simplify using `using Hd_X R (m + 1) 1 (I 0)`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Unfold `theta`. Rewrite using `[MvPolynomial.aeval_X, Nv_true_eq]`. Establish `hI2 : (fun _ : Fin 1 => I 0) = I` using `funext fun i => by rw [Subsingleton.elim i 0]`. Rewrite using `[hI2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_pre (R : Type) [CommRing R] (m : ℕ) (hm : 1 ≤ m) (vec : Bool) (s : ℕ) (hs : s ≤ m + 1)
     (I : Fin s → Fin (m + 1)) (hI : StrictMono I) (h : s = 0 ∨ s = s0 m vec) :
@@ -386,31 +386,29 @@ theorem minor_pre (R : Type) [CommRing R] (m : ℕ) (hm : 1 ≤ m) (vec : Bool) 
         rw [hI2]
 
 /- English proof (translation)
-Establish `hA : ∀ t : Fin (m + 1), (Finset.univ.filter fun k : Fin K => t.val < sz k).card = nuL m d vec t`. Introduce `t`. Rewrite using `[← hshape]`. Both sides reduce to the same expression. Establish `hl : (0 : Fin (m + 1)) ≠ Fin.last m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `h`. Establish `h2` using `congrArg Fin.val h`. Simplify using `at h2`. Use linear arithmetic over natural numbers and integers. Establish `hz : ((0 : Fin (m + 1)) : ℕ) = 0` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hsum : ∑ k, (if sz k = 0 then 0 else 1) = (Finset.univ.filter fun k : Fin K => ((0 : Fin (m + 1)) : ℕ) < sz k).card`. Rewrite using `[Finset.card_filter]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases h : sz k = 0 <;> simp [h, Nat.pos_iff_ne_zero, Fin.val_zero]`. Establish `h0 : (Finset.univ.filter fun k : Fin K => ((0 : Fin (m + 1)) : ℕ) < sz k).card = d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[hA 0]`. Apply the tactic sequence `cases vec <;> simp [nuL, hl]`. Use `⟨?_, hsum.trans h0⟩` and prove the remaining obligations. Introduce `k`. Consider the cases of `vec`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Simplify using `only [s0, Bool.false_eq_true, ↓reduceIte]`. Establish `hlast : (Finset.univ.filter fun k : Fin K => m < sz k).card = 0`. Establish `h1` using `hA (Fin.last m)`. Simplify `h1` using `[nuL]`. Establish `hle : sz k ≤ m`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `hlast` using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Conclude with `not_lt.1 (hlast (Finset.mem_univ k))`. Establish `hne : (⟨m - 1, by omega⟩ : Fin (m + 1)) ≠ Fin.last m`. Introduce `h`. Establish `h2` using `congrArg Fin.val h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at h2`. Use linear arithmetic over natural numbers and integers. Establish `hm1 : (Finset.univ.filter fun k : Fin K => m - 1 < sz k).card = d`. Establish `h1` using `hA ⟨m - 1, by omega⟩`. Simplify `h1` using `[nuL, hne]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hsub : (Finset.univ.filter fun k : Fin K => m - 1 < sz k) ⊆ (Finset.univ.filter fun k : Fin K => ((0 : Fin (m + 1)) : ℕ) < sz k)`. Introduce `k hk`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hk ⊢`. Use linear arithmetic over natural numbers and integers. Establish `heq` using `Finset.eq_of_subset_of_card_le hsub (by rw [h0, hm1])`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hk : sz k = 0`. Use `left`. Conclude with `hk`. Use `right`. Establish `hk0 : k ∈ Finset.univ.filter fun k : Fin K => ((0 : Fin (m + 1)) : ℕ) < sz k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use linear arithmetic over natural numbers and integers. Rewrite `hk0` using `[← heq]`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hk0`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [s0, ↓reduceIte]`. Establish `hne : (⟨1, by omega⟩ : Fin (m + 1)) ≠ 0`. Introduce `h`. Establish `h2` using `congrArg Fin.val h`. Simplify using `at h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (Finset.univ.filter fun k : Fin K => 1 < sz k).card = 0`. Establish `h3` using `hA ⟨1, by omega⟩`. Simplify `h3` using `[nuL, hne]`. Rewrite `h1` using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Establish `h4` using `h1 (Finset.mem_univ k)`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem shape_sizes (m : ℕ) (hm : 1 ≤ m) (d : ℕ) (vec : Bool) {K : ℕ} (sz : Fin K → ℕ)
     (hshape : shapeDeg (n := m + 1) sz = nuL m d vec) :
@@ -480,11 +478,11 @@ theorem shape_sizes (m : ℕ) (hm : 1 ≤ m) (d : ℕ) (vec : Bool) {K : ℕ} (s
     omega
 
 /- English proof (translation)
-Apply `le_antisymm (theta_Hd_le R m d vec)` to reduce the goal to its premises. Take `⟨b, hb, h2⟩` from `sSBasis R (m + 1) (m + 1) (nuL m d vec)`. Rewrite using `[← hb.2.1, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨-, -, K, sz, hsz, I, hshape, hI, hbi⟩` from `h2 i`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨hs1, hs2⟩` from `shape_sizes m hm d vec sz hshape`. Establish `hq` using `fun k => minor_pre R m hm vec (sz k) (hsz k) (I k) (hI k) (hs1 k)`. Use `choose q hq1 hq2 using hq`. Use `⟨∏ k, q k, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Hd_prod Finset.univ _ q fun k _ => hq1 k`. Use `show theta R m vec (∏ k, q k) = b i`. Rewrite using `[map_prod, hbi]`. Unfold `bideterminant`. Conclude with `Finset.prod_congr rfl fun k _ => hq2 k`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem theta_Hd (R : Type) [CommRing R] [IsDomain R] (m : ℕ) (hm : 1 ≤ m) (d : ℕ) (vec : Bool) :
     (Hd R (m + 1) d).map (theta R m vec).toLinearMap = dualWeyl R (m + 1) (m + 1) (nuL m d vec) := by

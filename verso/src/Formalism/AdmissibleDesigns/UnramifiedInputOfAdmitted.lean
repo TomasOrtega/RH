@@ -25,9 +25,9 @@ def UnrIn : Prop :=
         (1 : Representation ↥(TruncatedSeriesCountingIdentities.CoefExt.self i w hw).LL.1 (Br.G D.nbr i w hw) ↥(TruncatedSeriesCountingIdentities.CoefExt.self i w hw).LL.1)
 
 /- English proof (translation)
-Introduce `w hw hc`. Establish `h2` using `h w hw hc (TruncatedSeriesCountingIdentities.CoefExt.self i w hw)`. Unfold `UnrTriv at h2`. Use `first`. Consider the case `exact h2.ge`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately.
 
-Consider the case `exact h2.symm.le`. Consider the case `exact le_of_eq h2.symm`. Consider the case `(rw [h2])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unramified_input_of_admitted (h : EmbeddingTypes.UnramifiedTrivialH1f i dc) : UnrIn i dc := by
   intro w hw hc
@@ -40,23 +40,19 @@ theorem unramified_input_of_admitted (h : EmbeddingTypes.UnramifiedTrivialH1f i 
   | (rw [h2])
 
 /- English proof (translation)
-Introduce `f hf`. Establish `hn` using `KUnr.col_over i dc l`. Use `Submodule.mem_map_of_mem ?_` and prove the remaining obligations. Use `show (fun g => KHf.mkK (((KFin.uzOf i dc δO l f hf.1 : _ → _) g))) ∈ ((KHf.fZ i dc (K.colIdx i dc l) (KHf.locRep (Representation.trivial (D.nd.O i) ↥(KFin.Γc i dc l) ↥(Ideal.span {δO})))).restrictScalars (D.nd.O i))`. Rewrite using `[Submodule.restrictScalars_mem, KHf.fZ_pos i dc _ hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU` using `hA (K.plOf i dc (K.colIdx i dc l)) hn (KUnr.col_mem i dc l)`. Set `Bw` to `D.nbr i (K.plOf i dc (K.colIdx i dc l)) hn`. Set `V` to `KHf.MK (O := D.nd.O i) ↥(Ideal.span {δO})`. Set `c' : Br.G D.nbr i _ hn → Br.LLw Bw` to `fun g => KHf.eK Bw (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) (f (Br.iota D.nbr i _ hn g)))`. Establish `hc' : c' ∈ Z1ur (1 : Representation (Br.LLw Bw) (Br.G D.nbr i _ hn) (Br.LLw Bw)) (Br.inert D.nbr i _ hn)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨hf.2.2 hn, fun g h => ?_⟩, 0, fun g hg => ?_⟩` and prove the remaining obligations. Use `show c' (g * h) = c' g + c' h`. Establish `h1 : f (Br.iota D.nbr i _ hn g * Br.iota D.nbr i _ hn h) = f (Br.iota D.nbr i _ hn g) + f (Br.iota D.nbr i _ hn h)` using `hf.1 _ _`. Simplify using `only [c', map_mul]`. Rewrite using `[h1, map_add, map_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show c' g = 0 - 0`. Rewrite using `[sub_zero]`. Use `show KHf.eK Bw (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) (f (Br.iota D.nbr i _ hn g))) = 0`. Rewrite using `[hf.2.1 _ hg, map_zero, map_zero]`. Establish `hcf : c' ∈ finiteCocycles (Br.PD D.loc D.nbr i _ hn) (1 : Representation (Br.LLw Bw) (Br.G D.nbr i _ hn) (Br.LLw Bw))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `hU hc'`. Set `v0 : KHf.TrV (KHf.eK Bw) V` to `KHf.mkK (⟨δO, Ideal.mem_span_singleton_self δO⟩ : ↥(Ideal.span {δO}))`. Set `f0 : Br.LLw Bw →ₗ[Br.LLw Bw] KHf.TrV (KHf.eK Bw) V` to `LinearMap.toSpanSingleton _ _ v0`. Establish `hf0 : Continuous f0` using `continuous_id.smul continuous_const`. Set `ρ'` to `KHf.repL (KHf.eK Bw) (KHf.locRep (Representation.trivial (D.nd.O i) ↥(KFin.Γc i dc l) ↥(Ideal.span {δO}))) (Br.iota D.nbr i _ hn)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : ∀ g x, f0 ((1 : Representation (Br.LLw Bw) (Br.G D.nbr i _ hn) (Br.LLw Bw)) g x) = ρ' g (f0 x)` using `fun g x => (KUnr.locRep_triv (Br.iota D.nbr i _ hn g) (f0 x : V)).symm`. Establish `key` using `(cocyclesFunctorial_holds _ _ _ _ _ _ (Br.PD D.loc D.nbr i _ hn) (Br.LLw Bw) (Br.LLw Bw) (KHf.TrV (KHf.eK Bw) V) 1 ρ' f0 hf0 heq c').2 hcf`. Set `lhs : Br.G D.nbr i _ hn → KHf.TrV (KHf.eK Bw) V` to `fun g => ((KHf.mkK ((KFin.uzOf i dc δO l f hf.1 : ↥(KFin.Γc i dc l) → ↥(Ideal.span {δO})) (Br.iota D.nbr i _ hn g)) : V) : KHf.TrV (KHf.eK Bw) V)`. Use `show lhs ∈ finiteCocycles (Br.PD D.loc D.nbr i _ hn) ρ'`. It suffices to establish `hfun : lhs = ⇑f0 ∘ c' by`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Conclude with `key`. Use function extensionality and compare the values at `g`. Use `show _ = f0 (c' g)`. Rewrite using `[LinearMap.toSpanSingleton_apply]`.
-
-Use `show _ = ((KHf.eK Bw).symm (c' g) • (show V from v0) : V)`. Simplify using `only [c', RingEquiv.symm_apply_apply]`. Rewrite using `[algebraMap_smul]`. Rewrite using `[← map_smul]`. Use `show KHf.mkK ((KFin.uzOf i dc δO l f hf.1 : ↥(KFin.Γc i dc l) → ↥(Ideal.span {δO})) (Br.iota D.nbr i _ hn g)) = KHf.mkK _`.
-
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show δO * f (Br.iota D.nbr i _ hn g) = f (Br.iota D.nbr i _ hn g) * δO`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem unrFinIn_of (hA : UnrIn i dc) (l : K.Col i dc) : KFin.UnrFinIn i dc δO l := by
   intro f hf
@@ -115,11 +111,11 @@ theorem unrFinIn_of (hA : UnrIn i dc) (l : K.Col i dc) : KFin.UnrFinIn i dc δO 
   ring
 
 /- English proof (translation)
-Introduce `l`. Use `unrFinIn_of i dc δO hA l _ ?_` and prove the remaining obligations. Distinguish the cases in `hU : KFin.UnrHom i dc l`. Unfold `KFin.uCol`. Rewrite using `[dif_pos hU]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU.choose_spec.1`. Establish `h0 : KFin.uCol i dc l = 0` using `by unfold KFin.uCol; exact dif_neg hU`. Rewrite using `[h0]`. Unfold `KFin.UnrAdm`. Use `⟨fun g h => by simp, fun g _ => rfl, fun hn => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `first`. Consider the case `(simp only [Pi.zero_apply, map_zero]; exact continuous_const)`. Consider the case `exact Continuous.congr (f := fun _ => KHf.eK (D.nbr i (plOf i dc (colIdx i dc l)) hn) ((algebraMap (D.nd.O i) (FractionRing (D.nd.O i))) 0)) continuous_const (fun _ => rfl)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unrFin_of (hA : UnrIn i dc) : KHf.UnrFin i dc δO (KFin.uz i dc δO) := by
   intro l
@@ -159,7 +155,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `w _ hn` and use `Font.isDR_dat i dc r ρ π g0 eB e₁ s Dd (hKm i) (hEps i) (hM0 i r π g0 eB e₁ s Dd hD hc) hF hG2 hDec hc hD hN w hn`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rowDR_of_fontaine (hF : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (hG2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π) (hDec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π)
     (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) : RowDR i r π dc g0 eB e₁ s Dd hD hc := fun w _ hn =>
@@ -185,7 +181,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Use `haveI := Topo.rTop_addGroup_RD i r π g0 eB e₁ s Dd hD`. Take `⟨hSub, hOrb, hMat, hTop1, hFin, hcob⟩` from `h`. Conclude with `rowTie_S i r ρ π dc g0 eB e₁ s Dd hD hc hT hrk hSub hOrb hMat (KRow.rowTop_of i dc _ (fun _ _ hw => KOrb.topMatch_pi i hw _) hTop1) hFin hcob`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem row_match_from_comparison (h : RowTieIn i r ρ π dc g0 eB e₁ s Dd hD hc) :
     Sel.RowTie i dc r ρ π (rowLenS i r π dc g0 eB e₁ s Dd hD hc hT hrk) := by

@@ -25,7 +25,7 @@ def intSub : AddSubgroup (AF F) where
     exact neg_mem (ha v)
 
 /- English proof (translation)
-Conclude with `(h3 F).preimage (continuous_snd : Continuous (Prod.snd : Ainf F × Af F → Af F))`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_intSub (h3 : OpenInt) : IsOpen (intSub F : Set (AF F)) := by
   exact (h3 F).preimage (continuous_snd : Continuous (Prod.snd : Ainf F × Af F → Af F))

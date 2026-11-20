@@ -18,7 +18,7 @@ def CokAff : Prop := A2 → DivisorNaturality → B1 → ∀ (q : ℕ) [NeZero q
     ∃ y, lh q p (Spec.map (s ≫ t)) i r c M n y = N • pull _ (sch.map (bcMap p s (s ≫ t) t rfl)) _ _ x
 
 /- English proof (translation)
-Introduce `R U u`. Take `⟨b, hb⟩` from `U.left.affineCover.covers u`. Conclude with `⟨_, Spec.preimage (U.left.affineCover.f (U.left.affineCover.idx u) ≫ U.hom), U.left.affineCover.f (U.left.affineCover.idx u), U.left.affineCover.map_prop _, b, by simp, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem affNbhd : AffNbhd := by
   intro R U u
@@ -27,13 +27,13 @@ theorem affNbhd : AffNbhd := by
     U.left.affineCover.f (U.left.affineCover.idx u), U.left.affineCover.map_prop _, b, by simp, hb⟩
 
 /- English proof (translation)
-Introduce `h2 h6 hb1 q _ X R p _ _ hq i r c M N n hiso U u x`. Take `⟨B, s, ι, _, b, hs, hb'⟩` from `hA U u`. Set `g0 : Over.mk (Spec.map s) ⟶ U` to `Over.homMk ι hs`. Take `⟨C, t, ht, ⟨w, hw⟩, y, hy⟩` from `hC h2 h6 hb1 q p hq i r c M N n hiso B s b (pull _ (sch.map (rst p g0)) _ _ x)`. Establish `: Etale (Spec.map t)` using `(HasRingHomProperty.Spec_iff (P := @Etale)).2 ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `g : Over.mk (Spec.map (s ≫ t)) ⟶ U` to `Over.homMk (Spec.map t ≫ ι) (by simp [hs, Spec.map_comp])`. Use `⟨Over.mk (Spec.map (s ≫ t)), g, ⟨?_, w, ?_⟩, y, ?_⟩` and prove the remaining obligations. Use `show Etale (Spec.map t ≫ ι)`. Use `infer_instance`. Use `show (Spec.map t ≫ ι) w = u`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Scheme.Hom.comp_apply, hw, hb']`. Use `show lh q p (Spec.map (s ≫ t)) i r c M n y = _`. Establish `key : bcMap p s (s ≫ t) t rfl ≫ rst p g0 = rst p g`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [bcMap, rst, g, g0, pullback.map, Over.homMk_left, Category.assoc, Category.comp_id] erw [pullback.lift_fst, pullback.lift_fst, pullback.lift_fst]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [bcMap, rst, g, g0, pullback.map, Over.homMk_left, Category.assoc, Category.comp_id] erw [pullback.lift_snd, pullback.lift_snd_assoc, pullback.lift_snd]`. Simplify using `only [Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[hy, ← pull_comp, ← Functor.map_comp, key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locCok_of (hA : AffNbhd) (hC : CokAff) : LocCok := by
   intro h2 h6 hb1 q _ X R p _ _ hq i r c M N n hiso U u x
@@ -60,7 +60,7 @@ theorem locCok_of (hA : AffNbhd) (hC : CokAff) : LocCok := by
     rw [hy, ← pull_comp, ← Functor.map_comp, key]
 
 /- English proof (translation)
-The claim follows from `locCok_of affNbhd hC`.
+A detailed English derivation is pending.
 -/
 theorem locCok_of_cokAff (hC : CokAff) : LocCok := locCok_of affNbhd hC
 

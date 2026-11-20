@@ -26,9 +26,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : S
 variable {S : Type} [CommRing S] {x0 : Sp S ⟶ X0} {d : ℕ} {j : JetPts t.G x0 d}
 
 /- English proof (translation)
-Establish `key : ∀ {T : Over X0} {p q : Fin 2 → (T ⟶ t.G)} (h : p = q) (h' : lamφ t.G p = lamφ t.G q) (g : LB.Gen (cubeLB t.G p t.PP.L)), genCast (L` using `t.PP.L) lamε h' g = FrameCompare.castGen t h g := by`. Introduce `T p q h h' g`. Substitute `h` using the available equality. Unfold `FrameCompare.castGen`. Conclude with `genCast_rfl (L := t.PP.L) lamε g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `m`. Rewrite using `[frameEquiv_apply, FrameCompare.frEquiv_apply]`. Conclude with `key (FrameCompare.pair_eq t x0 j m) _ (e m)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameEquiv_eq (e : FrameFam t.G x0 t.PP.L j) : frameEquiv t x0 j e = FrameCompare.frEquiv t x0 j e := by
   have key : ∀ {T : Over X0} {p q : Fin 2 → (T ⟶ t.G)} (h : p = q) (h' : lamφ t.G p = lamφ t.G q)
@@ -42,7 +42,7 @@ theorem frameEquiv_eq (e : FrameFam t.G x0 t.PP.L j) : frameEquiv t x0 j e = Fra
   exact key (FrameCompare.pair_eq t x0 j m) _ (e m)
 
 /- English proof (translation)
-Introduce `i j`. Establish `h` using `congrArg (· ^ k) (he i j)`. Simplify using `only [mul_zpow, ← map_zpow] at h`. Use `h.trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Simplify using `only [LB.LinComb, Fintype.prod_unique, zpow_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -57,9 +57,9 @@ theorem powFrame_isGen {T : Over X0} (z : T ⟶ t.G)
   rfl
 
 /- English proof (translation)
-Use `psJet_inj fun m => ?_` and prove the remaining obligations. Take `⟨F₁, hP₁, hV₁⟩` from `hf m`. Take `⟨F₂, hP₂, hV₂⟩` from `hf' m`. Establish `hF` using `pull_unique _ _ _ _ _ _ _ _ hP₁ hP₂`. Substitute `hF` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `toΓ_injective _ (value_unique _ _ t.PP.isLB _ _ _ _ _ _ hV₁ hV₂)`.
+A detailed English derivation is pending.
 -/
 theorem isGermIn_unique (eL : FrameL t.G x0 t.PP.L j) (k : ℤ) (F : LB.Sec (LPow t.G t.PP.L k (Over.mk x0)))
     (f f' : Germ.PS S 1 d) (hf : IsGermIn eL k F f) (hf' : IsGermIn eL k F f') : f = f' := by
@@ -73,9 +73,9 @@ theorem isGermIn_unique (eL : FrameL t.G x0 t.PP.L j) (k : ℤ) (F : LB.Sec (LPo
 def zeroSec (t : SAB H X0) (k : ℤ) (T : Over X0) : LB.Sec (LPow t.G t.PP.L k T) := ⟨fun _ => 0, fun i j => by simp⟩
 
 /- English proof (translation)
-Introduce `m`. Use `⟨zeroSec t k _, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [zeroSec, map_zero]`. Establish `h : funOn (psJet m (0 : Germ.PS S 1 d)) = 0`. Establish `: psJet m (0 : Germ.PS S 1 d) = 0` using `by simp [psJet, psTrunc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `map_zero _`. Rewrite using `[h]`. Simplify using `only [zeroSec, map_zero]`. Conclude with `((congrArg _ (map_zero _)).trans (map_zero _)).trans (zero_mul _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isGermIn_zero (eL : FrameL t.G x0 t.PP.L j) (k : ℤ) : IsGermIn eL k (zeroSec t k _) 0 := by
   intro m
@@ -89,31 +89,27 @@ theorem isGermIn_zero (eL : FrameL t.G x0 t.PP.L j) (k : ℤ) : IsGermIn eL k (z
     exact ((congrArg _ (map_zero _)).trans (map_zero _)).trans (zero_mul _).symm
 
 /- English proof (translation)
-Establish `hL` using `t.PP.isLB`. Set `x : ∀ m, jOG x0 d m 1 ⟶ t.G` to `chartEquiv t x0 j`. Set `τ : ∀ m, LB.Gen (LB.LinComb t.PP.L (Y` to `(jOG x0 d m 1).left) (K := Fin 1) (fun _ => (x m).left) fun _ => k) := fun m => powFrame t.G t.PP.L (x m) (eL m) k`. Establish `hτg : ∀ m, (τ m).IsGen` using `fun m => powFrame_isGen (x m) (eL m) (hg m) k`. Use `choose F' hF' using fun m => exists_pullSec t.G t.PP.L k (jBaseG x0 d m 1 ▷ t.G) (whiskerRight_snd _ _) Fs`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose v hv using fun m => exists_value t.G t.PP.L hL k (F' m) (x m) (τ m) (hτg m)`. Establish `hvc : ∀ m, v m = (ρT x0 d m).left.appTop.hom (v (m + 1))`. Introduce `m`. Use `fn_ext (V := ⊤) fun y _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart hL ((x m).left y)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hρx : (ρT x0 d m).left ≫ (x (m + 1)).left = (x m).left`. Rewrite using `[← Over.comp_left, hx m]`. Establish `hm : (𝟙 _ : (jOG x0 d m 1).left ⟶ _) y ∈ LB.wchart t.PP.L (fun _ : Fin 1 => (x m).left) (fun _ => i)` using `Set.mem_iInter.2 fun _ => hi`. Establish `app_eq : ∀ {A B C : Scheme.{0}} (f : A ⟶ B) (g : B ⟶ C) (h : A ⟶ C), f ≫ g = h → ∀ a, g (f a) = h a` using `fun f g h e a => congrArg (fun q => q a) e`. Establish `hps0 : (𝟙 _ ≫ (ptSecT t.G (x m)).left) ≫ (snd (jOG x0 d m 1) t.G).left = (x m).left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.id_comp, ← Over.comp_left, ptSecT, lift_snd]`. Establish `hps1 : ((ρT x0 d m).left ≫ (ptSecT t.G (x (m + 1))).left) ≫ (snd (jOG x0 d (m + 1) 1) t.G).left = (x m).left`. Rewrite using `[Category.assoc, ← Over.comp_left, ptSecT, lift_snd, hρx]`. Establish `hm1 : (ρT x0 d m).left y ∈ LB.wchart t.PP.L (fun _ : Fin 1 => (x (m + 1)).left) (fun _ => i)`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (x (m + 1)).left ((ρT x0 d m).left y) ∈ (t.PP.L.U i : Set t.G.left)`. Rewrite using `[app_eq _ _ _ hρx]`. Conclude with `hi`. Establish `mem0 : (𝟙 _ ≫ (ptSecT t.G (x m)).left) y ∈ (LPow t.G t.PP.L k (jOG x0 d m 1)).U (fun _ => i)`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (snd (jOG x0 d m 1) t.G).left ((𝟙 _ ≫ (ptSecT t.G (x m)).left) y) ∈ (t.PP.L.U i : Set t.G.left)`. Rewrite using `[app_eq _ _ _ hps0]`. Conclude with `hi`. Establish `mem1 : ((ρT x0 d m).left ≫ (ptSecT t.G (x (m + 1))).left) y ∈ (LPow t.G t.PP.L k (jOG x0 d (m + 1) 1)).U (fun _ => i)`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (snd (jOG x0 d (m + 1) 1) t.G).left (((ρT x0 d m).left ≫ (ptSecT t.G (x (m + 1))).left) y) ∈ (t.PP.L.U i : Set t.G.left)`. Rewrite using `[app_eq _ _ _ hps1]`. Conclude with `hi`. Establish `e0` using `value_stalk t.G t.PP.L hL k (hv m) (𝟙 _) y (fun _ => i) hm`. Establish `e1` using `value_stalk t.G t.PP.L hL k (hv (m + 1)) (ρT x0 d m).left y (fun _ => i) hm1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `l0` using `pullSec_stalk t.G t.PP.L k (hF' m) (𝟙 _ ≫ (ptSecT t.G (x m)).left) y (fun _ => i) mem0`. Establish `l1` using `pullSec_stalk t.G t.PP.L k (hF' (m + 1)) ((ρT x0 d m).left ≫ (ptSecT t.G (x (m + 1))).left) y (fun _ => i) mem1`. Establish `hmor : (𝟙 _ ≫ (ptSecT t.G (x m)).left) ≫ (jBaseG x0 d m 1 ▷ t.G).left = ((ρT x0 d m).left ≫ (ptSecT t.G (x (m + 1))).left) ≫ (jBaseG x0 d (m + 1) 1 ▷ t.G).left`. Rewrite using `[Category.id_comp, Category.assoc]`. Simplify using `only [← Over.comp_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun f => Over.Hom.left f) ?_` and prove the remaining obligations. Simplify using `only [ptSecT, lift_whiskerRight, comp_lift, Category.id_comp]`. Rewrite using `[jBase_trunc, hx m]`. Take `⟨J, hJ, hJi⟩` from `exists_good t.PP.L hL y (fun _ : Fin 1 => (x m).left) (fun _ => i) (fun _ _ _ => rfl) (fun _ => hi)`. Establish `p0 : val (τ m) (𝟙 _) y J = val (eL m) (𝟙 _) y J ^ k` using `map_zpow _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `p1 : val (τ (m + 1)) (ρT x0 d m).left y J = val (eL (m + 1)) (ρT x0 d m).left y J ^ k` using `map_zpow _ _ _`. Establish `hunit : gm (𝟙 _) y (LB.wchart t.PP.L (fun _ : Fin 1 => (x m).left) (fun _ => i)) ((τ m).s (fun _ => i)) = gm (ρT x0 d m).left y (LB.wchart t.PP.L (fun _ : Fin 1 => (x (m + 1)).left) (fun _ => i)) ((τ (m + 1)).s (fun _ => i))` using `(val_of (τ m) (𝟙 _) y J (fun _ => i) (fun _ => by rw [Category.id_comp]; exact hJi 0)).symm.trans (p0.trans ((congrArg (· ^ k) (htr m y J hJ)).symm.trans (p1.symm.trans (val_of (τ (m + 1)) _ y J (fun _ => i) (fun _ => by rw [hρx]; exact hJi 0)))))`. Establish `hmain` using `e0.symm.trans (l0.trans ((congrArg (fun r => gs r y _ (Fs.f (fun _ => i))) hmor).trans (l1.symm.trans e1)))`. Establish `h2` using `(Units.mul_left_inj (gm (𝟙 _) y _ ((τ m).s (fun _ => i)))).1 (hmain.trans (congrArg (fun u => gs (ρT x0 d m).left y ⊤ (v (m + 1)) * (u : (_ : Type)ˣ).val) hunit.symm))`. Establish `h3` using `gs_pull (𝟙 _) (ρT x0 d m).left y ⊤ (by trivial) (v (m + 1))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[Category.id_comp]`. Conclude with `h2.trans h3.symm`. Use `choose a ha using fun m => (⟨_, congrArg (fun f => CommRingCat.Hom.hom f (v m)) (Iso.hom_inv_id (Scheme.ΓSpecIso (CommRingCat.of (Jet S (Fin 1 × Fin d) m))))⟩ : ∃ b, toΓ (Jet S (Fin 1 × Fin d) m) b = v m)`. Establish `hac : ∀ m, (jetTrunc : Jet S (Fin 1 × Fin d) (m + 1) →ₐ[S] _) (a (m + 1)) = a m`. Introduce `m`.
-
-Apply `toΓ_injective` to reduce the goal to its premises. Rewrite using `[ha m, hvc m, ← ha (m + 1)]`. Conclude with `congrArg (fun f => CommRingCat.Hom.hom f (a (m + 1))) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ((jetTrunc : Jet S (Fin 1 × Fin d) (m + 1) →ₐ[S] _) : Jet S (Fin 1 × Fin d) (m + 1) →+* Jet S (Fin 1 × Fin d) m)))`. Take `⟨f, hf⟩` from `exists_ps_of_jets a hac`. Use `⟨f, fun m => ⟨F' m, hF' m, ?_⟩⟩` and prove the remaining obligations.
-
-Rewrite using `[funOn_eq, hf m, ha m]`. Conclude with `hv m`.
+A detailed English derivation is pending.
 -/
 theorem exists_isGermIn (eL : FrameL t.G x0 t.PP.L j) (hg : ∀ m, (eL m).IsGen)
     (hx : ∀ m, ρT x0 d m ≫ chartEquiv t x0 j (m + 1) = chartEquiv t x0 j m)
@@ -204,11 +200,11 @@ theorem exists_isGermIn (eL : FrameL t.G x0 t.PP.L j) (hg : ∀ m, (eL m).IsGen)
   exact hv m
 
 /- English proof (translation)
-Establish `hL` using `t.PP.isLB`. Establish `k0 : ∀ y J, Good t.PP.L y J → val (LB.pullGen t.PP.L _ _ (eL 0) (algMap x0 (jetAug : Jet S (Fin 1 × Fin d) 0 →ₐ[S] S)).left) (𝟙 _) y J = val (LB.pullGen t.PP.L _ _ (eLG t x0 d (chartEquiv t x0 j) act e wP 0) (homAt x0 (jetAug : Jet S (Fin 1 × Fin d) 0 →ₐ[S] S)).left) (𝟙 _) y J` using `fun y J hJ => (val_pull hJ _ _ _).trans ((val_corr hJ h0 _).trans (val_pull hJ _ _ _).symm)`. Use `⟨fun h => corr_of_val hL fun y J hJ => (k0 y J hJ).symm.trans (val_corr hJ (h 0) _), fun h m => ?_⟩` and prove the remaining obligations. Proceed by induction on `m with`. Consider the case `zero => exact corr_of_val hL fun y J hJ => (k0 y J hJ).trans (val_corr hJ h _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `succ m ih`. Establish `hc : LB.Gen.Corr t.PP.L _ _ _ _ (LB.pullGen t.PP.L _ _ (eL (m + 1)) (ρT x0 d m).left) (eL m)` using `corr_of_val hL fun y J hJ => (val_pull hJ _ _ _).trans ((congrArg (fun r => val (eL (m + 1)) r y J) (Category.id_comp _)).trans (htr m y J hJ))`. Establish `ha : homAt x0 (jetAug : Jet S (Fin 1 × Fin d) m →ₐ[S] S) ≫ ρT x0 d m = homAt x0 (jetAug : Jet S (Fin 1 × Fin d) (m + 1) →ₐ[S] S)`. Rewrite using `[homAt_comp]`. Conclude with `congrArg (homAt x0) (jet_hom_ext fun s => rfl)`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `corr_of_val hL fun y J hJ => Eq.trans ?_ (val_corr hJ ih _)` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ ((val_pull hJ _ _ _).trans (val_corr hJ hc _).symm).symm)` and prove the remaining obligations. Use `Eq.trans (congrArg (fun r => val (eL (m + 1)) r y J) ?_) (val_pull hJ _ _ _).symm` and prove the remaining obligations. Rewrite using `[Category.assoc, algMap_eq, algMap_eq, ← Over.comp_left, ha]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRigAtZero_iff (eL : FrameL t.G x0 t.PP.L j)
     (htr : ∀ m y J, Good t.PP.L y J → val (eL (m + 1)) (ρT x0 d m).left y J = val (eL m) (𝟙 _) y J)
@@ -243,7 +239,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `@⟨@⟨@⟨⟨s⟩, _⟩, _⟩, _⟩` from `st`. Take `rfl : s = fun a => H.bar a` from `funext h`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem starRing_eq (st : StarRing (𝓞 E)) (h : ∀ a : 𝓞 E, star a = H.bar a) : st = H.starRing := by
   obtain @⟨@⟨@⟨⟨s⟩, _⟩, _⟩, _⟩ := st
@@ -267,11 +263,11 @@ variable {d : ℕ} {j : JetPts Xo.univ.t.G y.x d} {e : FrameFam Xo.univ.t.G y.x 
   {cf : Lt1 Dw → Fin d → S} {h : Germ.PS S 2 d} {eL : FrameL Xo.univ.t.G y.x Xo.univ.t.PP.L j}
 
 /- English proof (translation)
-Use `letI := H.starRing`. Use `letI := ratAlg c S`. Establish `tr : ∀ wP : PrimTyG Xo.univ.t, IsChartG Xo.univ.t y.x d B.G.F B.A.act (fun ℓ : Lt1 Dw => y.u ℓ.1 ℓ.2) cf (chartEquiv _ y.x j) → FrTrunc Xo.univ.t y.x d (chartEquiv _ y.x j) (frameEquiv _ y.x j e) → (∀ m, (eL m).IsGen ∧ LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _ (eL m) (eLG Xo.univ.t y.x …` using `fun wP hc ht hL m z J hJ => (val_corr hJ (hL (m + 1)).2 _).trans ((val_eL_trunc hc _ wP ht m z J hJ).trans (val_corr hJ (hL m).2 _).symm)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hc, hr, hg, ⟨-, w, hw, hL⟩, h0⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hc'` using `(ChartCompare.isChartOf_iff_framed y j B.G B.A cf).1 hc`. Take `⟨-, hf, ht⟩` from `(FrameCompare.realises_iff e B).1 hr`. Rewrite `hf`, `ht` using `[← frameEquiv_eq]`. Establish `hL'` using `((isFrameLVia_iff B.A.act e w eL).1 hL).2.2`. Conclude with `⟨_, ⟨hc', hf, (isPrim_iff_isPrimG _ w).1 hw, hg, (isRigAtZero_iff eL (tr _ hc' ht hL') (hL' 0).2).1 h0⟩, ht, hL'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce and unpack `⟨wP, ⟨hc', hf, hw, hg, h0⟩, ht, hL'⟩`. Take `⟨w, rfl⟩` from `(primEquiv Xo.univ.t).surjective wP`. Establish `hc` using `(ChartCompare.isChartOf_iff_framed y j B.G B.A cf).2 hc'`. Establish `hr : Realises Xo.univ.t y.x j e B` using `(FrameCompare.realises_iff e B).2 ⟨⟨fun _ => rfl, hc.1, hc.2.1, hc.2.2.1⟩, by rw [← frameEquiv_eq]; exact ⟨hf, ht⟩⟩`. Conclude with `⟨hc, hr, hg, ⟨hc.1, w, (isPrim_iff_isPrimG _ w).2 hw, (isFrameLVia_iff B.A.act e w eL).2 ⟨hr.2.2.2.2.1, hc.2.2.1 H.w0, hL'⟩⟩, (isRigAtZero_iff eL (tr _ hc' ht hL') (hL' 0).2).2 h0⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isGaugedChart_iff : IsGaugedChart y j e B cf h eL ↔
     letI := H.starRing
@@ -312,7 +308,7 @@ theorem isGaugedChart_iff : IsGaugedChart y j e B cf h eL ↔
       (isRigAtZero_iff eL (tr _ hc' ht hL') (hL' 0).2).2 h0⟩
 
 /- English proof (translation)
-Take `⟨wP, ⟨hc, -⟩, ht, hL⟩` from `isGaugedChart_iff.1 hg`. Take `⟨f, hf⟩` from `exists_isGermIn eL (fun m => (hL m).1) hc.trunc (fun m z J hJ => (val_corr hJ (hL (m + 1)).2 _).trans ((val_eL_trunc hc _ wP ht m z J hJ).trans (val_corr hJ (hL m).2 _).symm)) k F`. Conclude with `⟨f, hf, fun f' hf' => isGermIn_unique eL k F f' f hf' hf⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_germ (hg : IsGaugedChart y j e B cf h eL) (k : ℤ) (F : SecAt y k) :
     ∃! f, IsGermIn eL k F f := by
@@ -331,9 +327,9 @@ def SameData (C : BarChart y) : Prop :=
       (eLG Xo.univ.t y.x d (chartEquiv _ y.x j) B.A.act (frameEquiv _ y.x j e) wP m)
 
 /- English proof (translation)
-Use `letI := H.starRing`. Use `letI := ratAlg c S`. Use `isGaugedChart_iff.trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨wP, ⟨hc, hf, hp, hg, hr⟩, ht, hL⟩`. Conclude with `⟨_, ⟨wP, (isChart_iff y d _ _ _ _).2 hc, (Formalism.L2.Pj.isFrame_iff y d _ _ _ _ _ _ _ _).2 hf, hp, hg, hr, rfl, hL⟩, ht⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, ⟨wP, hc, hf, hp, hg, hr, rfl, hL⟩, ht⟩`. Conclude with `⟨wP, ⟨(isChart_iff y d _ _ _ _).1 hc, (Formalism.L2.Pj.isFrame_iff y d _ _ _ _ _ _ _ _).1 hf, hp, hg, hr⟩, ht, hL⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isGaugedChart_iff_chartAt : IsGaugedChart y j e B cf h eL ↔
     ∃ C : BarChart y, SameData j e B cf h eL C ∧ Compat C := by
@@ -347,9 +343,9 @@ theorem isGaugedChart_iff_chartAt : IsGaugedChart y j e B cf h eL ↔
     exact ⟨wP, ⟨(isChart_iff y d _ _ _ _).1 hc, (Formalism.L2.Pj.isFrame_iff y d _ _ _ _ _ _ _ _).1 hf, hp, hg, hr⟩, ht, hL⟩
 
 /- English proof (translation)
-Use `letI := H.starRing`. Use `letI := ratAlg c S`. Take `⟨d, B, cf, x, e, wP, h, hc, hf, hp, hg, hr⟩` from `C`. Take `⟨j, rfl⟩` from `(chartEquiv Xo.univ.t y.x).surjective x`. Take `⟨e, rfl⟩` from `(frameEquiv Xo.univ.t y.x j).surjective e`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, rfl⟩` from `(primEquiv Xo.univ.t).surjective wP`. Take `⟨eL, hL⟩` from `exists_frameL B.A.act e w ((isGen_primEquiv _ w).1 hp.1) (fun m => (isGen_frameEquiv e m).1 (hf.gen m)) (fun m => hc.act m H.w0)`. Conclude with `⟨j, e, eL, _, hc, hf, hp, hg, hr, rfl, hL⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sameData (C : BarChart y) :
     letI := H.starRing
@@ -374,11 +370,11 @@ def ComputesNat (C : BarChart y) (v : ∀ k : ℤ, SecAt y k → (Lt1 Dw →₀ 
         ∀ α : Lt1 Dw →₀ ℕ, v k F α = C.B.nabVal S C.h H.w0 k f C.uvec (MvPolynomial.monomial α 1)
 
 /- English proof (translation)
-Use `letI := H.starRing`. Use `letI := ratAlg c S`. Take `⟨wP, hc, hf, hp, hg, hr, rfl, hL⟩` from `hC`. Take `⟨w, rfl⟩` from `(primEquiv Xo.univ.t).surjective wP`. Establish `g` using `fun k F f => (isGermIn_iff B.A.act e w eL (fun m => (hL m).2) k F f).trans (isGerm_iff y d _ _ _ _ k F f).symm`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `n : ∀ (k : ℕ) f α, IndefiniteRowSideFullHecke.HarmonicChartValues.chartVal c B cf h k f α = B.nabVal S h H.w0 k f cf (MvPolynomial.monomial α 1)` using `fun k f α => monVal_natCast B h H.w0 k f cf α`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ k F`. Take `⟨f, hf⟩` from `h1 k F`. Conclude with `⟨f, (g k F f).2 hf, fun α => (h2 k F f hf α).trans (n k f α).symm⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `fun hv => ⟨fun k F => (hv k F).imp fun f hf => (g k F f).1 hf.1, fun k F f hf α => ?_⟩` and prove the remaining obligations. Take `⟨f', h1, h2⟩` from `hv k F`. Take `rfl` from `isGermIn_unique eL k F f f' ((g k F f).2 hf) h1`. Conclude with `(h2 α).trans (n k f α)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem computesNat_iff {C : BarChart y} (hC : SameData j e B cf h eL C)
     (v : ∀ k : ℤ, SecAt y k → (Lt1 Dw →₀ ℕ) → S) : ComputesNat C v ↔
@@ -401,11 +397,11 @@ theorem computesNat_iff {C : BarChart y} (hC : SameData j e B cf h eL C)
     exact (h2 α).trans (n k f α)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C, ht, hv⟩`. Take `⟨j, e, eL, hC⟩` from `exists_sameData C`. Establish `hg` using `isGaugedChart_iff_chartAt.2 ⟨C, hC, ht⟩`. Use `choose f hf hu using existsUnique_germ hg`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k F α => IndefiniteRowSideFullHecke.HarmonicChartValues.chartVal c _ _ _ k (f k F) α, ⟨_, j, e, _, _, _, eL, hg, fun k F => ⟨f k F, hf k F, fun _ => rfl⟩⟩, fun k F α => ?_⟩` and prove the remaining obligations. Take `⟨f', h1, h2⟩` from `(computesNat_iff hC v).1 hv k F`. Rewrite using `[h2 α, hu k F f' h1]`. Introduce and unpack `⟨v', ⟨d, j, e, B, cf, h, eL, hg, hv⟩, hvv⟩`. Take `⟨C, hC, ht⟩` from `isGaugedChart_iff_chartAt.1 hg`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨C, ht, (computesNat_iff hC v).2 fun k F => (hv k F).imp fun f hf => ⟨hf.1, fun α => (hvv k F α).trans (hf.2 α)⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem computesNat_iff_extends (v : ∀ k : ℤ, SecAt y k → (Lt1 Dw →₀ ℕ) → S) :
     (∃ C : BarChart y, Compat C ∧ ComputesNat C v) ↔
@@ -425,9 +421,9 @@ theorem computesNat_iff_extends (v : ∀ k : ℤ, SecAt y k → (Lt1 Dw →₀ �
       (hv k F).imp fun f hf => ⟨hf.1, fun α => (hvv k F α).trans (hf.2 α)⟩⟩
 
 /- English proof (translation)
-Take `⟨d, j, e, B, cf, h, eL, -, hv⟩` from `hv`. Take `⟨f, h1, h2⟩` from `hv k (zeroSec _ k _)`. Take `rfl` from `isGermIn_unique eL k _ f 0 h1 (isGermIn_zero eL k)`. Use `letI := H.starRing`. Use `letI := ratAlg c S`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Rewrite using `[h2, IndefiniteRowSideFullHecke.HarmonicChartValues.chartVal, monVal, zero_mul, ReciprocityTheory.ChartRestriction.G.TB.GE.dmonOf_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isNablaAt_zero {v : ∀ k : ℤ, SecAt y k → (Lt1 Dw →₀ ℕ) → S} (hv : IsNablaAt y v) (k : ℤ)
     (α : Lt1 Dw →₀ ℕ) : v k (zeroSec _ k _) α = 0 := by
@@ -456,7 +452,7 @@ def IsNabCompat [StarRing (𝓞 E)] (nab : NabV Xo c) : Prop :=
 variable {Xo c}
 
 /- English proof (translation)
-The claim follows from `haveI := Xo.univ.proper FrameCompatOfGerms.frTrunc_of_germs Xo.univ.ample ((isChart_iff y C.d _ _ _ _).1 C.chart) ((Formalism.L2.Pj.isFrame_iff y C.d _ _ _ _ _ _ _ _).1 C.frame) (wP := C.wP) fun k F => (h k F).imp fun f hf => (isGerm_iff y C.d _ _ _ _ k F f).1 hf`.
+A detailed English derivation is pending.
 -/
 theorem compat_of_germs [StarRing (𝓞 E)] {S : Type} [CommRing S] [Algebra c.F S] [Algebra ℚ S] {y : FrPt Xo c S}
     (C : ChartAt Xo c y)
@@ -471,22 +467,22 @@ def AgreeNat (nab nab' : NabV Xo c) : Prop :=
     nab y k F α = nab' y k F α
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun S _ _ _ y => (h.2 S y).imp fun _ hC => hC.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsNabCompat.isNab [StarRing (𝓞 E)] {nab : NabV Xo c} (h : IsNabCompat Xo c nab) : IsNab Xo c nab :=
   ⟨h.1, fun S _ _ _ y => (h.2 S y).imp fun _ hC => hC.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1, fun S _ _ _ y => (h.2 S y).imp fun C hC => ⟨compat_of_germs C hC.1, hC⟩⟩, IsNabCompat.isNab⟩`.
+Supply the required witnesses or components.
 -/
 theorem isNab_iff_compat [StarRing (𝓞 E)] (nab : NabV Xo c) :
     IsNab Xo c nab ↔ IsNabCompat Xo c nab :=
   ⟨fun h => ⟨h.1, fun S _ _ _ y => (h.2 S y).imp fun C hC => ⟨compat_of_germs C hC.1, hC⟩⟩, IsNabCompat.isNab⟩
 
 /- English proof (translation)
-Use `and_congr_right fun hs => ?_` and prove the remaining obligations. Take `rfl` from `starRing_eq st hs`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), ∃ v', IsNablaAt y v' ∧ ∀ (k : ℕ) F α, nab y k F α = v' k F α` using `fun S _ _ y => (computesNat_iff_extends fun k F α => nab y k F α).1 (@h S _ _ (ratAlg c S) y)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose v hv using h'`. Conclude with `⟨fun y => v _ y, fun S _ _ y => (hv S y).1, fun S _ _ y => (hv S y).2⟩`. Introduce and unpack `⟨nab', h, ha⟩ S _ _ q y`. Take `rfl : q = ratAlg c S` from `Subsingleton.elim _ _`. Conclude with `(computesNat_iff_extends fun k F α => nab y k F α).2 ⟨_, h S y, ha S y⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isNabCompat_iff [st : StarRing (𝓞 E)] (nab : NabV Xo c) :
     IsNabCompat Xo c nab ↔
@@ -505,14 +501,14 @@ theorem isNabCompat_iff [st : StarRing (𝓞 E)] (nab : NabV Xo c) :
     exact (computesNat_iff_extends fun k F α => nab y k F α).2 ⟨_, h S y, ha S y⟩
 
 /- English proof (translation)
-The claim follows from `((isNabCompat_iff nab).2 ⟨hs, nab, h, fun _ _ _ _ _ _ _ => rfl⟩).isNab`.
+A detailed English derivation is pending.
 -/
 theorem isNab_of_isNablaPin [StarRing (𝓞 E)] (hs : ∀ a : 𝓞 E, star a = H.bar a) {nab : NabV Xo c}
     (h : IsNablaPin Xo c nab) : IsNab Xo c nab :=
   ((isNabCompat_iff nab).2 ⟨hs, nab, h, fun _ _ _ _ _ _ _ => rfl⟩).isNab
 
 /- English proof (translation)
-The claim follows from `(isNab_iff_compat nab).trans (isNabCompat_iff nab)`.
+A detailed English derivation is pending.
 -/
 theorem isNab_iff [StarRing (𝓞 E)] (nab : NabV Xo c) :
     IsNab Xo c nab ↔
@@ -520,9 +516,9 @@ theorem isNab_iff [StarRing (𝓞 E)] (nab : NabV Xo c) :
   (isNab_iff_compat nab).trans (isNabCompat_iff nab)
 
 /- English proof (translation)
-Use `(isNab_iff nab).trans (and_congr_right fun _ => ⟨?_, fun h => ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨nab', h, ha⟩ S _ _ y`. Take `⟨d, j, e, B, cf, g, eL, hg, hv⟩` from `h S y`. Conclude with `⟨d, j, e, B, cf, g, eL, hg, fun k F => (hv k F).imp fun f hf => ⟨hf.1, fun α => (ha S y k F α).trans (hf.2 α)⟩⟩`. Establish `h' : ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), ∃ v', IsNablaAt y v' ∧ ∀ (k : ℕ) F α, nab y k F α = v' k F α` using `fun S _ _ y => by`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨d, j, e, B, cf, g, eL, hg, hv⟩` from `h S y`. Take `⟨C, hC, ht⟩` from `isGaugedChart_iff_chartAt.1 hg`. Conclude with `(computesNat_iff_extends fun k F α => nab y k F α).1 ⟨C, ht, (computesNat_iff hC _).2 hv⟩`. Use `choose v hv using h'`. Conclude with `⟨fun y => v _ y, fun S _ _ y => (hv S y).1, fun S _ _ y => (hv S y).2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isNab_iff_nat [StarRing (𝓞 E)] (nab : NabV Xo c) :
     IsNab Xo c nab ↔ (∀ a : 𝓞 E, star a = H.bar a) ∧
@@ -545,7 +541,7 @@ theorem isNab_iff_nat [StarRing (𝓞 E)] (nab : NabV Xo c) :
     exact ⟨fun y => v _ y, fun S _ _ y => (hv S y).1, fun S _ _ y => (hv S y).2⟩
 
 /- English proof (translation)
-Establish `key : ∀ (k : ℤ), 0 ≤ k → ∀ (F : SecAt y k) α, nab y k F α = nab' y k F α`. Introduce `k hk`. Take `⟨k, rfl⟩` from `Int.eq_ofNat_of_zero_le hk`. Conclude with `h S y k`. Simplify using `only [thExpr, key _ (sq_nonneg _)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem AgreeNat.thExpr_eq {nab nab' : NabV Xo c} (h : AgreeNat nab nab') {S : Type} [CommRing S] [Algebra c.F S]
     (y : FrPt Xo c S) {n : ℕ} (P : MvPolynomial (LtN Dw n) c.F) (F : Fin n → SecAt y ((l.M : ℤ) ^ 2)) :
@@ -557,7 +553,7 @@ theorem AgreeNat.thExpr_eq {nab nab' : NabV Xo c} (h : AgreeNat nab nab') {S : T
   simp only [thExpr, key _ (sq_nonneg _)]
 
 /- English proof (translation)
-The claim follows from `letI := ratAlg c S thExprUniq_of_chartIndep2 hC E H Dw l Xo c nab nab' h (isNab_of_isNablaPin h.1 h') S y k n F a P hP`.
+A detailed English derivation is pending.
 -/
 theorem polyVal_eq_of_chartIndep (hC : ChartIndepSt2) [StarRing (𝓞 E)] {nab nab' : NabV Xo c} (h : IsNab Xo c nab)
     (h' : IsNablaPin Xo c nab') {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (k n : ℕ)
@@ -567,7 +563,7 @@ theorem polyVal_eq_of_chartIndep (hC : ChartIndepSt2) [StarRing (𝓞 E)] {nab n
   thExprUniq_of_chartIndep2 hC E H Dw l Xo c nab nab' h (isNab_of_isNablaPin h.1 h') S y k n F a P hP
 
 /- English proof (translation)
-Set `nab' : NabV Xo c` to `fun y k F α => if k < 0 then 1 else nab y k F α`. Establish `ha : AgreeNat nab' nab` using `fun _ _ _ _ k _ _ => if_neg (not_lt.2 (Int.natCast_nonneg k))`. Use `⟨nab', ⟨h.1, fun T _ _ _ z => (h.2 T z).imp fun C hC => ⟨hC.1, fun k F f hf α => (ha T z k F α).trans (hC.2 k F f hf α)⟩⟩, ha, fun hp => ?_⟩` and prove the remaining obligations. Conclude with `one_ne_zero ((if_pos (by decide)).symm.trans (isNablaAt_zero (hp S y) (-1) 0))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isNab_not_isNablaPin [StarRing (𝓞 E)] {nab : NabV Xo c} (h : IsNab Xo c nab)
     {S : Type} [CommRing S] [Nontrivial S] [Algebra c.F S] (y : FrPt Xo c S) :

@@ -32,7 +32,7 @@ def divBack {Z : w.Lt} {S' : SStage B w.C Z.W} {N : ∀ u, Submodule (𝓞 B.LL)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(by with_unfolding_all exact (x.pl :)), (by with_unfolding_all exact (x.idem :)), (by with_unfolding_all exact (x.cen :))⟩`.
+Supply the required witnesses or components.
 -/
 theorem grpAt_up {Z : w.Lt} (S' : SStage B w.C Z.W) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ)
     (x : GrpAt (w.st Z) w.I) : GrpAt (w.st (SRe.upL Z S' N h)) w.I :=
@@ -41,7 +41,7 @@ theorem grpAt_up {Z : w.Lt} (S' : SStage B w.C Z.W) (N : ∀ u, Submodule (𝓞 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (x.inj :)) range := (by with_unfolding_all exact (x.range :)) mu0 := (by with_unfolding_all exact (x.mu0 :)) star := (by with_unfolding_all exact (x.star :)) star' := (by with_unfolding_all exact (x.star' :)) tw := (by with_unfolding_all exact (x.tw : …`.
+A detailed English derivation is pending.
 -/
 theorem muIsW_up {Z : w.Lt} {Wt : Set B.places.Pl} (S' : SStage B w.C Z.W) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V)
     (h : B.Word → ℝ) (x : V4.MuIsW (w.st Z) f T Wt w.I.xi) : V4.MuIsW (w.st (SRe.upL Z S' N h)) f T Wt w.I.xi where
@@ -59,7 +59,7 @@ theorem muIsW_up {Z : w.Lt} {Wt : Set B.places.Pl} (S' : SStage B w.C Z.W) (N : 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(by with_unfolding_all exact (x.ref :)), (by with_unfolding_all exact (x.tw :))⟩`.
+Supply the required witnesses or components.
 -/
 theorem rowInt_up {Z : w.Lt} (S' : SStage B w.C Z.W) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ)
     (x : GlobalTheory.PerQ.RowInt w.I w.l Z) : GlobalTheory.PerQ.RowInt w.I w.l (SRe.upL Z S' N h) :=
@@ -68,7 +68,7 @@ theorem rowInt_up {Z : w.Lt} (S' : SStage B w.C Z.W) (N : ∀ u, Submodule (𝓞
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(by with_unfolding_all exact (hI.Ij_def :)), (by with_unfolding_all exact (hI.jw_def :))⟩`.
+Supply the required witnesses or components.
 -/
 theorem idxDefs_up {Z : w.Lt} {S' : SStage B w.C Z.W} {N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V} {h : B.Word → ℝ}
     (Y : DivX (w.D (SRe.upL Z S' N h))) (hI : IdxDefs (w.D Z) (divBack Y)) : IdxDefs (w.D (SRe.upL Z S' N h)) Y :=

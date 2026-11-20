@@ -8,7 +8,7 @@ namespace ReciprocityTheory.ChartRestriction.G.FD
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 /- English proof (translation)
-The claim follows from `CoefficientPositivity.nonvanishing_coefficient_positivity_of unipotent_lattice_lift fourier_coefficients_holds`.
+A detailed English derivation is pending.
 -/
 theorem nonvanishing_coefficient_positivity : NonvanishingCoefficientPositivity (E := E) := CoefficientPositivity.nonvanishing_coefficient_positivity_of unipotent_lattice_lift fourier_coefficients_holds
 

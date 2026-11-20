@@ -17,9 +17,9 @@ open GlobalTheory.RegSch (ikS projS Lvl)
 namespace PositivityTheory.Rg.Rsw.L
 
 /- English proof (translation)
-Introduce `D n`. Take `⟨S₀, hS₀⟩` from `LGenK.dyadic_fin D`. Use `⟨S₀, fun S hS A _ h1 hgen k hk => ?_⟩` and prove the remaining obligations. Establish `hS2 : ∀ v ∉ S, (2 : 𝓞 D.host.F) ∉ v.asIdeal` using `fun v hv h2 => hv (hS (hS₀ v h2))`. Take `⟨g1, g2, g3, g4, rfl, m1, n1, m2, i2, m3, w3, m4, n4⟩` from `LGenK.factor hS2 hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `a4` using `hgen g4 m4 (Or.inl n4) 1 h1`. Establish `a3` using `hgen g3 m3 (Or.inr (Or.inr w3)) _ a4`. Establish `a2` using `hgen g2 m2 (Or.inr (Or.inl i2)) _ a3`. Establish `a1` using `hgen g1 m1 (Or.inl n1) _ a2`. Simplify `a1` using `only [mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem genK : GenK := by
   intro D n

@@ -18,23 +18,21 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Take `⟨hkx, hkw⟩` from `Subgroup.mem_inf.1 hk`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, Pi.mul_apply, Units.val_mul]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `matrix_ext_mulVec fun z => ?_` and prove the remaining obligations. Establish `hH` using `(h2 w).1`. Establish `hAA : hForm (gramAt h v w) (vecAt v x₀ w) (vecAt v x₀ w) = 0`. Rewrite using `[hForm, ← h1 w, hp.1, map_zero]`. Establish `hBB : hForm (gramAt h v w) (vecAt v w₀ w) (vecAt v w₀ w) = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hForm, ← h1 w, hp.2.1, map_zero]`. Establish `hAB : hForm (gramAt h v w) (vecAt v x₀ w) (vecAt v w₀ w) = 1`. Rewrite using `[hForm, ← h1 w, hp.2.2, map_one]`. Establish `hBA : hForm (gramAt h v w) (vecAt v w₀ w) (vecAt v x₀ w) = 1`. Rewrite using `[← hForm_conj hH, hAB, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hKu : (((k : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ))ᴴ * gramAt h v w * ((k : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) = gramAt h v w` using `mem_archUnitary.1 k.2 w`. Use `set H := gramAt h v w`. Use `set A := vecAt v x₀ w`. Use `set B := vecAt v w₀ w`. Use `set G := ((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set K := ((k : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ)`. Establish `hKA : K *ᵥ A = A` using `hkx w`. Establish `hKB : K *ᵥ B = B` using `hkw w`. Use `set y := z - hForm H B z • A - hForm H A z • B with hy`. Establish `hyA : hForm H A y = 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hy, hForm_sub_right, hForm_sub_right, hForm_smul_right, hForm_smul_right, hAA, hAB]`. Expand and normalize the polynomial expressions, which then agree. Establish `hyB : hForm H B y = 0`. Rewrite using `[hy, hForm_sub_right, hForm_sub_right, hForm_smul_right, hForm_smul_right, hBA, hBB]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKyA : hForm H A (K *ᵥ y) = 0`. Establish `e` using `hForm_mulVec_of_unitary H hKu A y`. Rewrite `e` using `[hKA]`. Rewrite using `[e, hyA]`. Establish `hKyB : hForm H B (K *ᵥ y) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `hForm_mulVec_of_unitary H hKu B y`. Rewrite `e` using `[hKB]`. Rewrite using `[e, hyB]`. Establish `hGy : G *ᵥ y = y` using `hgY w y hyA hyB`. Establish `hGKy : G *ᵥ (K *ᵥ y) = K *ᵥ y` using `hgY w _ hKyA hKyB`.
-
-Establish `hGA : G *ᵥ A = a w • A` using `hgx w`. Establish `hGB : G *ᵥ B = (starRingEnd ℂ (a w))⁻¹ • B` using `hgw w`. Establish `hz : z = y + hForm H B z • A + hForm H A z • B` using `by rw [hy]; abel`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, hz]`. Simplify using `only [mulVec_add, mulVec_smul, hKA, hKB, hGy, hGKy, hGA, hGB]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem TorusModulus.commute (h : HermitianForm F E W) (v : Basis ι E W)
     (h1 : HermAtPlace.Statement h v) (h2 : GramAtData.Statement h v) {x₀ w₀ : W}
@@ -96,25 +94,23 @@ theorem TorusModulus.commute (h : HermitianForm F E W) (v : Basis ι E W)
   simp only [mulVec_add, mulVec_smul, hKA, hKB, hGy, hGKy, hGA, hGB]
 
 /- English proof (translation)
-Introduce `x₀ w₀ hp g a hgx hgw hgY ν _ f hf`. Establish `: FiniteDimensional E W` using `Module.Finite.of_basis v`. Take `⟨h', hh'⟩` from `h3 x₀ w₀ hp`. Set `v'` to `Module.finBasis E (hypComplement h x₀ w₀)`. Take `⟨i, q, hic, hqc, hqi, hker, hiw, -⟩` from `h4 x₀ w₀ hp h' hh' _ v'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `τ : archUnitary h' v' →* archUnitary h v` to `(vecFixGroup h v x₀).subtype.comp i`. Establish `hτc : Continuous τ` using `continuous_subtype_val.comp hic`. Establish `hτmem : ∀ t, τ t ∈ vecFixGroup h v x₀ ⊓ vecFixGroup h v w₀` using `fun t => Subgroup.mem_inf.2 ⟨(i t).2, hiw t⟩`. Establish `hnorm : ∀ t, ∀ x ∈ unipRadical h v x₀, τ t * x * (τ t)⁻¹ ∈ unipRadical h v x₀`. Introduce `t x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxP : x ∈ vecFixGroup h v x₀` using `unipRadical_le_vecFixGroup h v x₀ hx`. Establish `e` using `(hker (i t * ⟨x, hxP⟩ * (i t)⁻¹)).1 (by`. Rewrite using `[map_mul, map_mul, map_inv, hqi, (hker ⟨x, hxP⟩).2 hx, mul_one, mul_inv_cancel])`. Simplify `e` using `[τ]`. Establish `hinj : ∀ t, τ t ∈ unipRadical h v x₀ → t = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `t ht`. Rewrite using `[← hqi t]`. Conclude with `(hker (i t)).2 ht`. Establish `hdec : ∀ p : vecFixGroup h v x₀, (p : archUnitary h v) * (τ (q p))⁻¹ ∈ unipRadical h v x₀`. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `(hker (p * (i (q p))⁻¹)).1 (by rw [map_mul, map_inv, hqi, mul_inv_cancel])`. Simplify `e` using `[τ]`. Set `νN : Measure (unipRadical h v x₀)` to `Measure.haar`. Set `ρ : Measure (archUnitary h' v')` to `Measure.haar`. Establish `hδ : ∀ (t : archUnitary h' v') (f : archUnitary h v → ℝ≥0∞), Measurable f → ∫⁻ x, f (τ t * x * (τ t)⁻¹) ∂νN = ((1 : ℝ≥0) : ℝ≥0∞) * ∫⁻ x, f x ∂νN`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t f hf`. Establish `e` using `h5 x₀ w₀ hp νN (τ t) (hτmem t)`. Establish `hm : Measurable fun n : unipRadical h v x₀ => τ t * (n : archUnitary h v) * (τ t)⁻¹` using `((continuous_const.mul continuous_subtype_val).mul continuous_const).measurable`. Rewrite using `[ENNReal.coe_one, one_mul, ← lintegral_map hf hm, e, lintegral_map hf measurable_subtype_coe]`. Take `⟨c, -, hc⟩` from `h7 x₀ w₀ h' _ v' (vecFixGroup h v x₀) (unipRadical h v x₀) (isClosed_vecFixGroup h v x₀) (isClosed_unipRadical h v x₀) (unipRadical_le_vecFixGroup h v x₀) τ q (fun _ => 1) hτc hqc continuous_const (fun t => (i t).2) hnorm hinj hdec ν νN ρ hδ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hconj : ∀ t (n : archUnitary h v), g * (n * τ t) * g⁻¹ = g * n * g⁻¹ * τ t`. Introduce `t n`. Establish `e : τ t * g⁻¹ = g⁻¹ * τ t`. Rewrite using `[eq_inv_mul_iff_mul_eq, ← mul_assoc, TorusModulus.commute h v h1 h2 hp g a hgx hgw hgY _ (hτmem t), mul_inv_cancel_right]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `set K := ∏ w, ‖a w‖ₑ⁻¹ ^ (2 * (finrank E W - 1))`. Establish `hφ : Measurable fun y : archUnitary h v => f (g * y * g⁻¹)` using `hf.comp ((continuous_const.mul continuous_id).mul continuous_const).measurable`. Establish `step : ∀ t, ∫⁻ x : unipRadical h v x₀, f (g * (x * τ t) * g⁻¹) ∂νN = K * ∫⁻ x : unipRadical h v x₀, f (x * τ t) ∂νN`. Introduce `t`. Repeatedly rewrite using `[hconj t]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `h6 x₀ w₀ hp g a hgx hgw hgY νN (fun y => f (y * τ t)) (hf.comp (continuous_id.mul continuous_const).measurable)`. Establish `hmeas : Measurable fun t => ∫⁻ x : unipRadical h v x₀, f (x * τ t) ∂νN` using `Measurable.lintegral_prod_right' (f := fun p : archUnitary h' v' × unipRadical h v x₀ => f (p.2 * τ p.1)) (hf.comp ((continuous_subtype_val.comp continuous_snd).mul (hτc.comp continuous_fst)).measurable)`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[ENNReal.coe_one, one_mul, step]`. Use `_ = K * (c * ∫⁻ t, ((1 : ℝ≥0) : ℝ≥0∞) * ∫⁻ x : unipRadical h v x₀, f (x * τ t) ∂νN ∂ρ) := by`.
-
-Rewrite using `[lintegral_const_mul _ hmeas]`. Simplify using `only [ENNReal.coe_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = K * ∫⁻ x, f x ∂ν := by rw [hc f hf]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem TorusModulus.proof (h : HermitianForm F E W) (v : Basis ι E W)
     (h1 : HermAtPlace.Statement h v) (h2 : GramAtData.Statement h v)

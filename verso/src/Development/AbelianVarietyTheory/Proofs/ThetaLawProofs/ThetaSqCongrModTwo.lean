@@ -13,7 +13,7 @@ open Complex Matrix ReciprocityTheory.PTheta ReciprocityTheory.ChartRestriction.
 namespace GlobalTheory.KeyPow
 
 /- English proof (translation)
-Rewrite using `[theta_sq_red k k', theta_sq_red m m', funext h, funext h']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_sq_congr_mod_two {g : ℕ} {k k' m m' : Fin g → ℤ} (h : ∀ i, k i % 2 = m i % 2)
     (h' : ∀ i, k' i % 2 = m' i % 2) (z : Fin g → ℂ) (τ : Matrix (Fin g) (Fin g) ℂ) :
@@ -21,7 +21,7 @@ theorem theta_sq_congr_mod_two {g : ℕ} {k k' m m' : Fin g → ℤ} (h : ∀ i,
   rw [theta_sq_red k k', theta_sq_red m m', funext h, funext h']
 
 /- English proof (translation)
-Take `⟨c, hc, hlaw⟩` from `hl`. Conclude with `⟨c, hc, fun τ hτ z => by rw [theta_sq_congr_mod_two h h']; exact hlaw τ hτ z⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ThetaLaw.congr_target {g : ℕ} {sp : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     {n n' k k' m m' : Fin g → ℤ} (hl : ThetaLaw g sp n n' k k') (h : ∀ i, m i % 2 = k i % 2)
@@ -30,15 +30,15 @@ theorem ThetaLaw.congr_target {g : ℕ} {sp : Matrix (Fin g ⊕ Fin g) (Fin g �
   exact ⟨c, hc, fun τ hτ z => by rw [theta_sq_congr_mod_two h h']; exact hlaw τ hτ z⟩
 
 /- English proof (translation)
-Use `set X : ℂ := -(ofRealVec (halfVec n) ⬝ᵥ (S.map (fun x : ℤ => (x : ℂ)) *ᵥ ofRealVec (halfVec n))) / 2 - ofRealVec (halfVec n) ⬝ᵥ (fun i => ((S i i : ℤ) : ℂ) / 2) with hX`. Use `⟨eC X ^ 2, ?_, fun τ _ z => ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, eC_pow]`. Establish `h8 : ((2 * 4 : ℕ) : ℂ) * X = ((-(n ⬝ᵥ (S *ᵥ n)) - 2 * (n ⬝ᵥ fun i => S i i) : ℤ) : ℂ)`. Establish `hd : ofIntVec n ⬝ᵥ (fun i => ((S i i : ℤ) : ℂ)) = ((n ⬝ᵥ fun i => S i i : ℤ) : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[dotProduct, ofIntVec]`. Establish `hd2 : (fun i => ((S i i : ℤ) : ℂ) / 2) = (1 / 2 : ℂ) • fun i => ((S i i : ℤ) : ℂ)`. Use extensionality with `i`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX, ofRealVec_halfVec, Matrix.mulVec_smul, ← ofIntVec_mulVec, smul_dotProduct, dotProduct_smul, ofIntVec_dot, hd2, smul_dotProduct, dotProduct_smul, hd]`. Simplify using `only [smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h8, eC_int]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : halfVec (n' - S *ᵥ n - fun i => S i i) + S.map (fun x : ℤ => (x : ℝ)) *ᵥ halfVec n + (fun i => ((S i i : ℤ) : ℝ) / 2) = halfVec n'`. Rewrite using `[mulVec_halfVec]`. Use extensionality with `i`. Simplify using `only [halfVec, Pi.add_apply, Pi.sub_apply]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hz : zAct (spTransl S) τ z = z` using `by simp [zAct, jAut_spTransl]`. Establish `he : expArg (spTransl S) τ z = 0` using `by simp [expArg, jAut_spTransl, cMat_spTransl]`. Rewrite using `[hz, he, spAct_spTransl, jAut_spTransl, thetaTranslTau_holds (Fin g) _ _ _ _ S hS, hb, mul_pow, det_one, eC_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem thetaLaw_spTransl {g : ℕ} (S : Matrix (Fin g) (Fin g) ℤ) (hS : S.IsSymm) (n n' : Fin g → ℤ) :
     ThetaLaw g (spTransl S) n n' n (n' - S *ᵥ n - fun i => S i i) := by
@@ -67,15 +67,15 @@ theorem thetaLaw_spTransl {g : ℕ} (S : Matrix (Fin g) (Fin g) ℤ) (hS : S.IsS
     ring
 
 /- English proof (translation)
-Use `set F : ℂ := 2 * (ofRealVec (halfVec (-n')) ⬝ᵥ ofRealVec (halfVec n))`. Use `⟨(-I) ^ g * eC F, ?_, fun τ hτ z => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, mul_comm g 4, pow_mul, eC_pow]`. Establish `hI : (-I : ℂ) ^ 4 = 1`. Rewrite using `[show (4 : ℕ) = 2 * 2 from rfl, pow_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hF : ((4 : ℕ) : ℂ) * F = ((-(2 * (n' ⬝ᵥ n)) : ℤ) : ℂ)`. Simplify using `only [F, ofRealVec_halfVec, smul_dotProduct, dotProduct_smul, ofIntVec_dot, smul_eq_mul]`. Simplify using `[dotProduct]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI, one_pow, one_mul, hF, eC_int]`. Establish `hsym : τ.IsSymm` using `hτ.1`. Establish `hs : spAct (Matrix.J (Fin g) ℤ) τ = -τ⁻¹`. Rewrite using `[spAct_eq, jAut_J, nAut_eq, cMat_J]`. Simplify using `[Matrix.J]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `htinv : (τ⁻¹)ᵀ = τ⁻¹` using `by rw [Matrix.transpose_nonsing_inv, hsym.eq]`. Establish `hz : zAct (Matrix.J (Fin g) ℤ) τ z = τ⁻¹ *ᵥ z` using `by rw [zAct, jAut_J, htinv]`. Establish `he : expArg (Matrix.J (Fin g) ℤ) τ z = z ⬝ᵥ (τ⁻¹ *ᵥ z)`. Rewrite using `[expArg, jAut_J, cMat_J]`. Simplify using `[Matrix.J]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hneg : -halfVec (-n') = halfVec n'` using `by ext i; simp [halfVec]; ring`. Rewrite using `[hs, hz, he, jAut_J, hInv g _ _ τ hτ z, hneg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem thetaLaw_J {g : ℕ} (hInv : InversionStatement) (n n' : Fin g → ℤ) :
     ThetaLaw g (Matrix.J (Fin g) ℤ) n n' (-n') n := by
@@ -100,7 +100,7 @@ theorem thetaLaw_J {g : ℕ} (hInv : InversionStatement) (n n' : Fin g → ℤ) 
     ring
 
 /- English proof (translation)
-Use `⟨fun S n' hS hd => (thetaLaw_spTransl S hS k n').congr_target (fun _ => rfl) fun i => ?_, (thetaLaw_J hInv k' k).congr_target (fun i => ?_) fun _ => rfl⟩` and prove the remaining obligations. Use `hd i` as an intermediate fact. Simplify using `only [Pi.sub_apply]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Pi.neg_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/

@@ -16,7 +16,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 local notation "ι" => Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F)
 
 /- English proof (translation)
-The claim follows from `(afIso F E).injective (FiniteAdeleRing.ext _ h)`.
+A detailed English derivation is pending.
 -/
 theorem ad_ext {a b : AfE F E} (h : ∀ P, adAt F P a = adAt F P b) : a = b :=
   (afIso F E).injective (FiniteAdeleRing.ext _ h)
@@ -27,9 +27,9 @@ def idem (F : Type) [Field F] [NumberField F] [Algebra F E] (P : HeightOneSpectr
 open Classical in
 
 /- English proof (translation)
-Unfold `idem`. Rewrite using `[map_sub, adAt_finAf, map_one]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[compAt_localIdele_self]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show algebraMap E (w.adicCompletion E) 2 - 1 = 1`. Rewrite using `[map_ofNat]`. Evaluate the numerical expressions. Rewrite using `[compAt_localIdele_ne h, sub_self]`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adAt_idem (P w : HeightOneSpectrum (𝓞 E)) : adAt F w (idem F P) = if w = P then 1 else 0 := by
   unfold idem
@@ -43,11 +43,9 @@ theorem adAt_idem (P w : HeightOneSpectrum (𝓞 E)) : adAt F w (idem F P) = if 
   · rw [compAt_localIdele_ne h, sub_self]
 
 /- English proof (translation)
-Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, rfl⟩` from `hx`. Use `show Valued.v (adAt F P (ι (algebraMap (𝓞 E) E b))) < 1`. Rewrite using `[adAt_inclE, valued_algebraMap]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem _ _).2 hb`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[Subring.coe_add, map_add]`. Conclude with `Valuation.map_add_lt _ hx hy`.
-
-Consider the case `smul a x _ hx`. Rewrite using `[smul_eq_mul, Subring.coe_mul, map_mul, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ((mem_rInt_iff F E _).1 a.2 P)) hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_lt_of_mem {P : HeightOneSpectrum (𝓞 E)} {w : Formalism.L2.Herm.intAf F E} (h : w ∈ idS F P.asIdeal) :
     Valued.v (adAt F P (w : AfE F E)) < 1 := by
@@ -66,9 +64,9 @@ theorem valued_lt_of_mem {P : HeightOneSpectrum (𝓞 E)} {w : Formalism.L2.Herm
     exact lt_of_le_of_lt (mul_le_of_le_one_left' ((mem_rInt_iff F E _).1 a.2 P)) hx
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (redA P a)`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Establish `h0 : resS F P (⟨a, ha⟩ - oToS F E r) = 0`. Rewrite using `[map_sub, resS_oToS, ← redA_int, hr, sub_self]`. Establish `h1` using `valued_lt_of_mem (Formalism.L2.Col.mem_idS_of_resS h0)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← adAt_inclE F, ← map_sub]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasRes_redA [StarRing E] (P : HeightOneSpectrum (𝓞 E)) {a : AfE F E} (ha : a ∈ RInt F E) :
     HasRes P (adAt F P a) (redA P a) := by
@@ -85,16 +83,14 @@ variable [StarRing E] (hc : CMData F E)
 local notation "σ" => Formalism.UG.sigR (CMData.sig hc) (FiniteAdeleRing (𝓞 F) F)
 
 /- English proof (translation)
-The claim follows from `DetClass.sigR_sigR (fun x => star_star x) z`.
+A detailed English derivation is pending.
 -/
 theorem sig_sig (z : AfE F E) : σ (σ z) = z := DetClass.sigR_sigR (fun x => star_star x) z
 
 open Classical in
 
 /- English proof (translation)
-Use `split_ifs with h`. Establish `e` using `valued_sigR hc w (idem F P - 1)`. Rewrite `e` using `[map_sub (adAt F (conjPrime₂ w)), adAt_idem, if_pos h, map_one, sub_self, map_zero, Valuation.zero_iff, map_sub, map_sub, map_one, map_one, sub_eq_zero]`. Conclude with `e`. Establish `e` using `valued_sigR hc w (idem F P)`.
-
-Rewrite `e` using `[adAt_idem, if_neg h, map_zero, Valuation.zero_iff]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem adAt_sig_idem (P w : HeightOneSpectrum (𝓞 E)) : adAt F w (σ (idem F P)) = if conjPrime₂ w = P then 1 else 0 := by
   split_ifs with h
@@ -111,7 +107,7 @@ def glue (z : AfE F E) (a b : HeightOneSpectrum (𝓞 E) → E) : AfE F E :=
   (1 - ∑ P ∈ Q, idem F P - σ (∑ P ∈ Q, idem F P)) * z + ∑ P ∈ Q, idem F P * ι (a P) + σ (∑ P ∈ Q, idem F P * ι (b P))
 
 /- English proof (translation)
-Unfold `glue`. Rewrite using `[map_add, map_add, map_mul, map_sub, map_sub, sig_sig, sig_sig, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sig_glue (z : AfE F E) (a b : HeightOneSpectrum (𝓞 E) → E) : σ (glue hc Q z a b) = glue hc Q (σ z) b a := by
   unfold glue
@@ -121,7 +117,7 @@ theorem sig_glue (z : AfE F E) (a b : HeightOneSpectrum (𝓞 E) → E) : σ (gl
 open Classical in
 
 /- English proof (translation)
-Unfold `glue`. Simplify using `only [map_add, map_mul, map_sub, map_sum, map_one, adAt_idem, adAt_sig_idem, sigR_inclE, adAt_inclE, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq]`. Distinguish the cases in `h : w ∈ Q`. Simplify using `[h, hQ w h]`. Apply the tactic sequence `by_cases h' : conjPrime₂ w ∈ Q <;> simp [h, h']`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adAt_glue (hQ : ∀ P ∈ Q, conjPrime₂ P ∉ Q) (z : AfE F E) (a b : HeightOneSpectrum (𝓞 E) → E)
     (w : HeightOneSpectrum (𝓞 E)) : adAt F w (glue hc Q z a b) =
@@ -134,13 +130,13 @@ theorem adAt_glue (hQ : ∀ P ∈ Q, conjPrime₂ P ∉ Q) (z : AfE F E) (a b : 
   · by_cases h' : conjPrime₂ w ∈ Q <;> simp [h, h']
 
 /- English proof (translation)
-Introduce `N hN hU`. Establish `hs : ∀ e, (hc.sig : E →+* E) ((hc.sig : E →+* E) e) = e` using `fun e => star_star e`. Establish `hfix : ∀ e : E, hc.sig e = e → ∃ a : F, algebraMap F E a = e` using `fun e he => (hc.fixed e).1 he`. Set `h : (Fin n → E) →ₗ⋆[E] (Fin n → E) →ₗ[E] E` to `Formalism.UG.CS.formJ (hc.sig : E →+* E) hs 1 1`. Take `⟨hsym, hap⟩` from `Formalism.UG.P.hermitian_form_symmetry_holds E _ hs (Fin n) 1 1 (map_one _) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.one_apply, eq_comm])`. Use `replace hsym : h.IsSymm := hsym`. Use `replace hap : ∀ x y, h x y = Formalism.UG.hform (starRingEnd E) 1 x y := fun x y => (hap x y).trans (one_mul _)`. Establish `he : h = hStd E n`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun x => LinearMap.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[hap, Formalism.UG.hform]`. Use `show _ = ∑ i, star (x i) * y i`. Simplify using `[Matrix.one_apply, starRingEnd_apply]`. Establish `hr : ∀ y, (∀ x, h x y = 0) → y = 0` using `fun y hy => funext fun i => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `hy (Pi.single i 1)` as an intermediate fact. Rewrite `this` using `[he, hStd_single_left]`. Then use the resulting hypothesis. Establish `hn : h.Nondegenerate` using `⟨fun x hx => hr x fun y => by rw [← hsym.eq, hx, map_zero], hr⟩`. Conclude with `GlobalTheory.Mass.Genus.exists_globLat_eq (J := 1) hs hfix (Module.Finite.iff_fg.2 stdLat_lattice.fg) stdLat_lattice.span_eq_top N (GlobalTheory.SelfDualPoint.mem_genus h hc.cmUnram hsym hn stdLat_lattice hN (he ▸ stdLat_unimodular) (he ▸ hU))`.
+A detailed English derivation is pending.
 -/
 theorem unimodGenus (n : ℕ) [NeZero n] : UnimodGenus hc n := by
   intro N hN hU
@@ -168,7 +164,7 @@ theorem unimodGenus (n : ℕ) [NeZero n] : UnimodGenus hc n := by
 variable {hc Q} {n : ℕ}
 
 /- English proof (translation)
-Use `show Formalism.UG.cT σ (g : Matrix (Fin n) (Fin n) (AfE F E)) * (1 : Matrix (Fin n) (Fin n) E).map ι * g = (1 : Matrix (Fin n) (Fin n) E).map ι ↔ _`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_uad_iff (g : GL (Fin n) (AfE F E)) :
     g ∈ UAd hc n ↔ Formalism.UG.cT σ (g : Matrix (Fin n) (Fin n) (AfE F E)) * g = 1 := by
@@ -177,7 +173,7 @@ theorem mem_uad_iff (g : GL (Fin n) (AfE F E)) :
   rw [Matrix.map_one _ (map_zero _) (map_one _), mul_one]
 
 /- English proof (translation)
-Rewrite using `[Units.inv_eq_of_mul_eq_one_left ((mem_uad_iff g).1 hg)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inv_apply {g : GL (Fin n) (AfE F E)} (hg : g ∈ UAd hc n) (i j : Fin n) :
     ((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) i j =
@@ -186,9 +182,9 @@ theorem inv_apply {g : GL (Fin n) (AfE F E)} (hg : g ∈ UAd hc n) (i j : Fin n)
   rfl
 
 /- English proof (translation)
-Use `(mem_rInt_iff F E _).2 fun w => ?_` and prove the remaining obligations. Distinguish the cases in `h : conjPrime₂ w ∈ Q`. Establish `e` using `inv_apply (inv_mem hk) i j`. Rewrite `e` using `[inv_inv]`. Rewrite using `[← adAt_apply, e, valued_sigR]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 _ (hQ _ h) j i`. Conclude with `h1 w h i j`.
+A detailed English derivation is pending.
 -/
 theorem int_of_uni (hQ : ∀ P ∈ Q, conjPrime₂ P ∉ Q) {k : GL (Fin n) (AfE F E)} (hk : k ∈ UAd hc n)
     (h1 : ∀ w, conjPrime₂ w ∉ Q → ∀ i j, Valued.v (adAt F w ((k : Matrix (Fin n) (Fin n) (AfE F E)) i j)) ≤ 1)
@@ -208,9 +204,9 @@ def mat (f : Sp E n ≃ₗ[E] Sp E n) : Matrix (Fin n) (Fin n) E := Matrix.of fu
 omit [NumberField E] [StarRing E] in
 
 /- English proof (translation)
-Use `conv_rhs => rw [← Finset.univ_sum_single v, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: (Pi.single j (v j) : Sp E n) = v j • (Pi.single j 1 : Sp E n)`. Rewrite using `[← Pi.single_smul', smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mat_mulVec (f : Sp E n ≃ₗ[E] Sp E n) (v : Sp E n) (i : Fin n) : ∑ j, mat f i j * v j = f v i := by
   conv_rhs => rw [← Finset.univ_sum_single v, map_sum, Finset.sum_apply]
@@ -223,7 +219,7 @@ theorem mat_mulVec (f : Sp E n ≃ₗ[E] Sp E n) (v : Sp E n) (i : Fin n) : ∑ 
 omit [NumberField E] [StarRing E] in
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Use `(mat_mulVec f.symm (f (Pi.single j 1)) i).trans ?_` and prove the remaining obligations. Rewrite using `[f.symm_apply_apply, Matrix.one_apply, Pi.single_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_symm_mul (f : Sp E n ≃ₗ[E] Sp E n) : mat f.symm * mat f = 1 := by
   ext i j
@@ -232,7 +228,7 @@ theorem mat_symm_mul (f : Sp E n ≃ₗ[E] Sp E n) : mat f.symm * mat f = 1 := b
   rw [f.symm_apply_apply, Matrix.one_apply, Pi.single_apply]
 
 /- English proof (translation)
-Take `⟨s, hs, h⟩` from `(mem_locP _ _ _).1 hv`. Establish `h1` using `(mem_rInt_iff F E _).1 ((mem_globLat x _).1 h i) P`. Rewrite `h1` using `[← adAt_apply, pullV_osmul, map_mul, map_mul, adAt_inclE, valued_algebraMap, CharValCompare.val_of_notMem hs, one_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem valued_pullV_le (x : GL (Fin n) (AfE F E)) {P : HeightOneSpectrum (𝓞 E)} {v : Sp E n}
     (hv : v ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Formalism.UG.CS.globLat x (stdLat E n))) (i : Fin n) :
@@ -243,15 +239,13 @@ theorem valued_pullV_le (x : GL (Fin n) (AfE F E)) {P : HeightOneSpectrum (𝓞 
     one_mul] at h1
 
 /- English proof (translation)
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, rfl⟩` from `hx`. Simplify using `only [adAt_inclE, ← map_mul, ← map_sum]`. Rewrite using `[mat_mulVec, valued_algebraMap]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : f.symm v ∈ stdAt E n P` using `(hf _).1 (by rw [f.apply_symm_apply]; exact le_locP P _ hv)`. Take `⟨s, hs, h⟩` from `(mem_locP _ _ _).1 h1`. Take `⟨r, hr⟩` from `(mem_stdLat _).1 h i`. Establish `h2 : P.valuation E (algebraMap (𝓞 E) E r) ≤ 1` using `HeightOneSpectrum.valuation_le_one (K := E) P r`. Rewrite `h2` using `[hr, Pi.smul_apply, Algebra.smul_def, map_mul, CharValCompare.val_of_notMem hs, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Simplify using `only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`. Conclude with `Valuation.map_add_le _ hx hy`. Consider the case `smul a x _ hx`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `e : ∀ j, algebraMap E (P.adicCompletion E) (mat f.symm i j) * adAt F P ((a • x) j) = adAt F P a * (algebraMap E (P.adicCompletion E) (mat f.symm i j) * adAt F P (x j))` using `fun j => by show _ * adAt F P ((a : AfE F E) * x j) = _`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, ← Finset.mul_sum]`. Rewrite using `[map_mul]`.
-
-Conclude with `mul_le_one' ((mem_rInt_iff F E _).1 a.2 P) hx`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_symm_le {N : Submodule (𝓞 E) (Sp E n)} {P : HeightOneSpectrum (𝓞 E)} {f : Sp E n ≃ₗ[E] Sp E n}
     (hf : CharValCompare.IsFr P N f) {u : Fin n → AfE F E} (hu : u ∈ Formalism.L2.Herm.hatL (F := F) N) (i : Fin n) :
@@ -281,7 +275,7 @@ theorem valued_symm_le {N : Submodule (𝓞 E) (Sp E n)} {P : HeightOneSpectrum 
     exact mul_le_one' ((mem_rInt_iff F E _).1 a.2 P) hx
 
 /- English proof (translation)
-The claim follows from `Formalism.UG.P.span_recovery_of_integral_adelic_approx Formalism.UG.P.integral_adele_approximation_holds F E (Fin n) (stdLat E n) (Module.Finite.iff_fg.2 stdLat_lattice.fg) stdLat_lattice.span_eq_top x`.
+A detailed English derivation is pending.
 -/
 theorem carries_globLat (x : GL (Fin n) (AfE F E)) :
     Formalism.L2.Herm.Carries x (stdLat E n) (Formalism.UG.CS.globLat x (stdLat E n)) :=
@@ -291,7 +285,7 @@ theorem carries_globLat (x : GL (Fin n) (AfE F E)) :
 omit [StarRing E] in
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hk i j) (hz j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_int {k : Matrix (Fin n) (Fin n) (AfE F E)} (hk : ∀ i j, k i j ∈ RInt F E) {z : Fin n → AfE F E}
     (hz : ∀ i, z i ∈ RInt F E) (i : Fin n) : k.mulVec z i ∈ RInt F E := by
@@ -299,31 +293,27 @@ theorem mulVec_int {k : Matrix (Fin n) (Fin n) (AfE F E)} (hk : ∀ i j, k i j �
   exact Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hk i j) (hz j)
 
 /- English proof (translation)
-Set `G : Matrix (Fin n) (Fin n) (AfE F E)` to `Matrix.of fun i j => glue hc Q ((x : Matrix (Fin n) (Fin n) (AfE F E)) i j) (fun P => mat (fr P) i j) fun P => mat (fr P).symm j i`. Set `G' : Matrix (Fin n) (Fin n) (AfE F E)` to `Matrix.of fun i j => glue hc Q (((x⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) i j) (fun P => mat (fr P).symm i j) fun P => mat (fr P) j i`. Establish `hG : ∀ w i j, adAt F w (G i j) = _` using `fun w i j => adAt_glue hc Q hQ _ _ _ w`. Establish `hG' : ∀ w i j, adAt F w (G' i j) = _` using `fun w i j => adAt_glue hc Q hQ _ _ _ w`. Establish `hone : ∀ w i j, adAt F w ((1 : Matrix (Fin n) (Fin n) (AfE F E)) i j) = algebraMap E _ ((1 : Matrix (Fin n) (Fin n) E) i j)` using `fun w i j => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h1 : G' * G = 1`. Use extensionality with `i j`. Use `ad_ext fun w => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_apply, map_sum]`. Simplify using `only [map_mul, hG, hG']`. Use `split_ifs with h h'`. Simplify using `only [← map_mul, ← map_sum]`. Rewrite using `[← Matrix.mul_apply, mat_symm_mul, hone]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← map_mul, ← map_sum, ← star_mul, ← star_sum]`. Rewrite using `[← Matrix.mul_apply, mat_symm_mul, hone, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `by_cases e : i = j <;> simp [e, eq_comm]`. Simplify using `only [← map_mul, ← map_sum]`. Rewrite using `[← Matrix.mul_apply, Units.inv_mul]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `g : GL (Fin n) (AfE F E)` to `⟨G, G', mul_eq_one_comm.1 h1, h1⟩`. Establish `hg : g ∈ UAd hc n`. Rewrite using `[mem_uad_iff, ← h1]`. Use `congr 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `show σ (G j i) = G' i j`. Conclude with `(sig_glue hc Q _ _ _).trans (by rw [← inv_apply hx]; rfl)`. Establish `hk : x⁻¹ * g ∈ UAd hc n` using `mul_mem (inv_mem hx) hg`. Establish `k1 : ∀ w, conjPrime₂ w ∉ Q → ∀ i j, Valued.v (adAt F w (((x⁻¹ * g : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) i j)) ≤ 1`. Introduce `w hw i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, Matrix.mul_apply, map_sum]`. Simplify using `only [g, map_mul, hG, if_neg hw]`. Use `split_ifs with h`. Use `valued_pullV_le x ((hfr w h (Pi.single j 1)).2 (le_locP w _ (by simpa using single_mem_stdLat (E := E) j 1))) i` as an intermediate fact. Simplify using `only [Formalism.L2.Col.pullV, Matrix.mulVec, dotProduct, map_sum, map_mul, adAt_inclE] at this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Conclude with `this`. Simplify using `only [← map_mul, ← map_sum]`. Rewrite using `[← Matrix.mul_apply, Units.inv_mul, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `k2 : ∀ w, conjPrime₂ w ∉ Q → ∀ i j, Valued.v (adAt F w ((((x⁻¹ * g)⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) i j)) ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `w hw i j`. Rewrite using `[mul_inv_rev, inv_inv, Units.val_mul, Matrix.mul_apply, map_sum]`. Simplify using `only [g, Units.inv_mk, map_mul, hG', if_neg hw]`. Use `split_ifs with h`. Use `valued_symm_le (u := fun l => (x : Matrix (Fin n) (Fin n) (AfE F E)) l j) (hfr w h) ((carries_globLat x _).2 ((mem_latS_std _).2 fun l => ?_)) i` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[← Matrix.mul_apply, Units.inv_mul, Matrix.one_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`. Simplify using `only [← map_mul, ← map_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← Matrix.mul_apply, Units.inv_mul, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `i1` using `int_of_uni hQ hk k1 k2`. Establish `i2` using `int_of_uni hQ (inv_mem hk) k2 (by rw [inv_inv]; exact k1)`. Use `⟨g, hg, fun z => (carries_globLat x z).trans ?_, fun P hP i j => ?_, fun w h h' v i => ?_⟩` and prove the remaining obligations.
-
-Use `(mem_latS_std _).trans (Iff.trans ⟨fun h i => ?_, fun h i => ?_⟩ (mem_latS_std _).symm)` and prove the remaining obligations. Use `mulVec_int i2 h i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_rev, inv_inv, mul_inv_cancel_right]`. Then use the resulting hypothesis. Use `mulVec_int i1 h i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_right]`. Then use the resulting hypothesis.
-
-Conclude with `(hG P i j).trans (if_pos hP)`. Simplify using `only [pullV, Formalism.L2.Col.pullV, Matrix.mulVec, dotProduct, map_sum, map_mul, g, Units.inv_mk, hG', if_neg h, if_neg h']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_modify (hQ : ∀ P ∈ Q, conjPrime₂ P ∉ Q) {x : GL (Fin n) (AfE F E)} (hx : x ∈ UAd hc n)
     (fr : HeightOneSpectrum (𝓞 E) → Sp E n ≃ₗ[E] Sp E n)
@@ -406,19 +396,17 @@ theorem exists_modify (hQ : ∀ P ∈ Q, conjPrime₂ P ∉ Q) {x : GL (Fin n) (
 variable (hc) in
 
 /- English proof (translation)
-Simplify using `only [Finset.mem_union, not_or] at h4`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨1, one_mem _, fun z => ?_, fun _ _ _ i => i.elim0, fun _ _ _ i => i.elim0, fun _ i => i.elim0⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim z 0, Matrix.mulVec_zero]`. Conclude with `iff_of_true (zero_mem _) (zero_mem _)`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: NeZero n` using `⟨hn.ne'⟩`. Take `⟨q, hq⟩` from `decoPtSurj_of hc n ST SG (unimodGenus hc n) reduction_surjective_bis (fun P hP P' hP' hcj => by`. Establish `e : P' = conjPrime₂ P`. Use extensionality with `b`. Rewrite using `[mem_conjP]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(hcj (cO E b) b (star_star _).symm).symm`. Simplify using `only [Finset.mem_union] at hP hP'`. Use `h4 P (by tauto)` as an intermediate fact. Rewrite `this` using `[← e]`. Use the proof step `tauto) h1 p.deco`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx, hd⟩ : ∃ x ∈ UAd hc n, decoRaw ST SG x = p.deco.1 := by`. Use `⟨_, (Quotient.out q).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hq, decoPt, decoOf, dif_pos (decorated_lattice_exists hc n ST SG _ (Quotient.out q).2)]`. Establish `hN : Formalism.UG.CS.globLat x (stdLat E n) = p.deco.1.N` using `congrArg Deco.N hd`. Take `⟨g, hg, c1, c2, c3⟩` from `exists_modify (fun P hP => (h4 P (Or.inr (Or.inr hP))).2.2) hx (ptFr p) fun P _ => hN ▸ isFr_ptFr p P`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨g, hg, hN ▸ c1, fun P v hv i hi => ?_, fun P v hv i => ?_, fun P i j => ?_⟩` and prove the remaining obligations. Establish `e : lastIdx n = i` using `Fin.ext (by simp [lastIdx]; omega)`. Rewrite `hv` using `[← hN]`. Rewrite using `[c3 _ (Finset.disjoint_left.1 h2 P.2) (h4 _ (Or.inl P.2)).2.2, ← hd]`. Simplify using `only [decoRaw]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (le_locP _ _ hv), e]`. Conclude with `hasRes_redA _ ((mem_globLat x v).1 hv i)`. Rewrite `hv` using `[← hN]`. Rewrite using `[c3 _ (Finset.disjoint_left.1 h3 P.2) (h4 _ (Or.inr (Or.inl P.2))).2.2, ← hd]`. Simplify using `only [decoRaw]`.
-
-Rewrite using `[if_pos (le_locP _ _ hv)]`. Conclude with `hasRes_redA _ ((mem_globLat x v).1 hv i)`. Rewrite using `[c2 _ P.2, ptFr_of_mem p (Finset.disjoint_right.1 h3 P.2) P.2]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isPtOf_cm (n : ℕ) (ST SG Q : Finset (HeightOneSpectrum (𝓞 E))) (p : DecoF E n ST SG Q)
     (h1 : Disjoint ST SG) (h2 : Disjoint ST Q) (h3 : Disjoint SG Q)
@@ -463,7 +451,7 @@ theorem exists_isPtOf_cm (n : ℕ) (ST SG Q : Finset (HeightOneSpectrum (𝓞 E)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `R H n ST SG Q p` and use `exists_isPtOf_cm (host_cmData R H) n ST SG Q p`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_isPtOf : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (n : ℕ) (ST SG Q : Finset (HeightOneSpectrum (𝓞 H.E))) (p : DecoF H.E n ST SG Q), Disjoint ST SG → Disjoint ST Q → Disjoint SG Q → (∀ P ∈ uSG ST (uSG SG Q), conjPrime₂ P ∉ uSG ST (uSG SG Q)) → ∃ g : GL (Fin n) (AfE H.F H.E), IsPtOf (host_cmData R H) g p :=
   fun R H n ST SG Q p => exists_isPtOf_cm (host_cmData R H) n ST SG Q p

@@ -13,11 +13,11 @@ open scoped TensorProduct
 variable {F Ω Ω' : Type} [Field F] [Field Ω] [Algebra F Ω] [Field Ω'] [Algebra F Ω']
 
 /- English proof (translation)
-Set `e : Γ(M.Z, U) ≅ CommRingCat.of (M.ringOn U)` to `(M.sectionsEquiv U hne).toCommRingCatIso`. Establish `hx` using `GlobalTheory.Points.le_preimage_specMap_fromSpec hU e.hom`. Establish `hv : ∀ f, valR (Spec.map e.hom ≫ hU.fromSpec) U f = M.sectionsEquiv U hne f` using `fun f => by`. Rewrite using `[GlobalTheory.Points.valR_eq _ U hx, GlobalTheory.Points.valMap_specMap_fromSpec]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨Spec.map e.hom ≫ hU.fromSpec, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, (Spec.map e.hom).surjective.range_eq, Set.image_univ, hU.range_fromSpec]`. Rewrite using `[← Spec.map_preimage ((Spec.map e.hom ≫ hU.fromSpec) ≫ M.s)]`. Use `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun b => ?_))` and prove the remaining obligations. Rewrite using `[← GlobalTheory.Points.valR_constFn M.s _ U hx, hv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext ((RatModel.coe_sectionsEquiv U hne _).trans (M.valF_constFn hne b))`.
+A detailed English derivation is pending.
 -/
 theorem exists_openImmersion_ringOn (M : RatModel F Ω) {U : M.Z.Opens} (hU : IsAffineOpen U)
     (hne : (U : Set M.Z).Nonempty) : ∃ ι : Sp (M.ringOn U) ⟶ M.Z, IsOpenImmersion ι ∧ Set.range ι = U ∧
@@ -36,11 +36,11 @@ theorem exists_openImmersion_ringOn (M : RatModel F Ω) {U : M.Z.Opens} (hU : Is
     exact Subtype.ext ((RatModel.coe_sectionsEquiv U hne _).trans (M.valF_constFn hne b))
 
 /- English proof (translation)
-Take `⟨ι, hι, hr, hs⟩` from `exists_openImmersion_ringOn M hU hne`. Establish `h1` using `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct F (M.ringOn U) K)`. Rewrite `h1` using `[show Spec.map (CommRingCat.ofHom (algebraMap F (M.ringOn U))) = ι ≫ M.s from hs.symm]`. Set `j` to `h.lift (_ ≫ ι) _ ((Category.assoc _ _ _).trans h1.w)`. Establish `h2 : IsPullback j _ p ι` using `(IsPullback.of_bot (h₁₁ := _) (by simpa [j] using h1) (h.lift_fst _ _ _).symm h).flip`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨j, MorphismProperty.of_isPullback h2.flip hι, ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (p ⁻¹' ·) hr)` and prove the remaining obligations. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, by rw [← Scheme.Hom.comp_apply, ← h2.w, Scheme.Hom.comp_apply]⟩`. Introduce and unpack `⟨w, hw⟩`. Take `⟨v, hv, -⟩` from `Scheme.exists_preimage_of_isPullback h2 z w hw.symm`. Conclude with `⟨v, hv⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_openImmersion_tensor (M : RatModel F Ω) {U : M.Z.Opens} (hU : IsAffineOpen U)
     (hne : (U : Set M.Z).Nonempty) {K : Type} [Field K] [Algebra F K] {Z : Scheme.{0}} {p : Z ⟶ M.Z} {q : Z ⟶ Sp K}
@@ -63,15 +63,15 @@ theorem exists_openImmersion_tensor (M : RatModel F Ω) {U : M.Z.Opens} (hU : Is
     exact ⟨v, hv⟩
 
 /- English proof (translation)
-Set `ψ : MvPolynomial σ A →ₐ[F] Ω'` to `MvPolynomial.aevalTower (φ.comp A.val) t`. Establish `hinj : Function.Injective ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `P hP`. Use `MvPolynomial.map_injective (A.val : A →+* Ω) Subtype.val_injective ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zero]`. Use `ht _ ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂_map]`. Conclude with `hP`. Establish `hr : ψ.range = Algebra.adjoin F (φ '' (A : Set Ω) ∪ Set.range t)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm ?_ (Algebra.adjoin_le ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨P, rfl⟩ show ψ P ∈ _`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => exact Algebra.subset_adjoin (Or.inl ⟨a, a.2, by simp [ψ]⟩)`. Consider the case `add P Q hP hQ => rw [map_add]`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hP hQ`. Consider the case `mul_X P i hP`. Rewrite using `[map_mul]`. Conclude with `mul_mem hP (Algebra.subset_adjoin (Or.inr ⟨i, by simp [ψ]⟩))`. Introduce and unpack `_ (⟨a, ha, rfl⟩ | ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨MvPolynomial.C ⟨a, ha⟩, by simp [ψ]⟩`. Conclude with `⟨MvPolynomial.X i, by simp [ψ]⟩`. Conclude with `⟨(AlgEquiv.ofInjective ψ hinj).trans (Subalgebra.equivOfEq _ _ hr)⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_algEquiv_adjoin (φ : Ω →ₐ[F] Ω') (A : Subalgebra F Ω) {σ : Type} (t : σ → Ω')
     (ht : ∀ P : MvPolynomial σ Ω, MvPolynomial.eval₂ (φ : Ω →+* Ω') t P = 0 → P = 0) :
@@ -101,7 +101,7 @@ theorem nonempty_algEquiv_adjoin (φ : Ω →ₐ[F] Ω') (A : Subalgebra F Ω) {
   exact ⟨(AlgEquiv.ofInjective ψ hinj).trans (Subalgebra.equivOfEq _ _ hr)⟩
 
 /- English proof (translation)
-Set `e1 : MvPolynomial σ A ⊗[F] K ≃ₐ[F] (A ⊗[F] MvPolynomial σ F) ⊗[F] K` to `Algebra.TensorProduct.congr ((MvPolynomial.algebraTensorAlgEquiv F A).symm.restrictScalars F) AlgEquiv.refl`. Set `e2 : (A ⊗[F] MvPolynomial σ F) ⊗[F] K ≃ₐ[F] (A ⊗[F] K) ⊗[F] MvPolynomial σ F` to `(Algebra.TensorProduct.assoc F F F A (MvPolynomial σ F) K).trans ((Algebra.TensorProduct.congr AlgEquiv.refl (Algebra.TensorProduct.comm F _ _)).trans (Algebra.TensorProduct.assoc F F F A K (MvPolynomial σ F)).symm)`. Set `e3` to `MvPolynomial.algebraTensorAlgEquiv (σ := σ) F (A ⊗[F] K)`. Conclude with `(((e1.trans e2).toRingEquiv).trans e3.toRingEquiv).toMulEquiv.isDomain _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isDomain_mvPolynomial_tensor (A K σ : Type) [CommRing A] [Algebra F A] [CommRing K] [Algebra F K]
     [IsDomain (A ⊗[F] K)] : IsDomain (MvPolynomial σ A ⊗[F] K) := by
@@ -115,21 +115,19 @@ theorem isDomain_mvPolynomial_tensor (A K σ : Type) [CommRing A] [Algebra F A] 
   exact (((e1.trans e2).toRingEquiv).trans e3.toRingEquiv).toMulEquiv.isDomain _
 
 /- English proof (translation)
-Introduce `F Ω Ω' _ _ _ _ _ M M' φ f r h hM`. Use `⟨geometrically_iff_of_commRing.2 fun K _ _ Z p q hZ => ?_⟩` and prove the remaining obligations. Establish `hI : IsIntegral (pullback M.s (spMap (algebraMap F K)))` using `pullback_of_geometrically hM.geometrically_isIntegral K _`. Establish `key : ∀ z' : M'.Z, ∃ (U : M'.Z.Opens) (Y : Scheme.{0}) (j : Y ⟶ Z), z' ∈ U ∧ IsIntegral Y ∧ IsOpenImmersion j ∧ Set.range j = p ⁻¹' U`. Introduce `z'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U, W, t, hU, hW, hz, hUW, ht, hR⟩` from `h.2 z'`. Establish `hWne : (W : Set M.Z).Nonempty` using `⟨_, hUW z' hz⟩`. Take `⟨i, hi, -⟩` from `exists_openImmersion_tensor M hW hWne (IsPullback.of_hasPullback M.s (spMap (algebraMap F K)))`. Establish `: Nontrivial (M.ringOn W ⊗[F] K)` using `inferInstance`. Establish `: IsIntegral (Sp (M.ringOn W ⊗[F] K))` using `isIntegral_of_isOpenImmersion i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDomain (M.ringOn W ⊗[F] K)` using `(affine_isIntegral_iff (CommRingCat.of _)).1 this`. Use `isDomain_mvPolynomial_tensor (F := F) (M.ringOn W) K (Fin r)` as an intermediate fact. Take `⟨e⟩` from `nonempty_algEquiv_adjoin φ (M.ringOn W) t ht`. Rewrite `e` using `[← hR]`. Establish `: IsDomain (M'.ringOn U ⊗[F] K)` using `(Algebra.TensorProduct.congr e.symm (AlgEquiv.refl (A₁ := K) (R := F))).toMulEquiv.isDomain _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨j, hj, hr⟩` from `exists_openImmersion_tensor M' hU ⟨_, hz⟩ hZ`. Conclude with `⟨U, _, j, hz, inferInstance, hj, hr⟩`. Establish `hred : IsReduced Z`. Establish `: ∀ z : Z, _root_.IsReduced (Z.presheaf.stalk z)` using `fun z => by`. Take `⟨U, Y, j, hz, hY, hj, hr⟩` from `key (p z)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩ : z ∈ Set.range j` from `hr ▸ hz`. Conclude with `isReduced_of_injective (j.stalkMap y).hom (asIso (j.stalkMap y)).commRingCatIsoToRingEquiv.injective`. Conclude with `isReduced_of_isReduced_stalk Z`. Establish `hopen : UniversallyOpen p` using `MorphismProperty.of_isPullback hZ.flip inferInstance`. Establish `hirr : IrreducibleSpace Z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U, Y, j, hz, hY, hj, hr⟩` from `key (genericPoint M'.Z)`. Establish `h1 : IsIrreducible (Set.range j)`. Rewrite using `[← Set.image_univ]`. Conclude with `(IrreducibleSpace.isIrreducible_univ Y).image _ j.continuous.continuousOn`. Establish `h2 : Dense (Set.range j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hr]`. Conclude with `(U.isOpen.dense ⟨_, hz⟩).preimage p.isOpenMap`. Establish `h3` using `h1.closure`. Rewrite `h3` using `[h2.closure_eq]`. Conclude with `(irreducibleSpace_def Z).2 h3`.
-
-Conclude with `isIntegral_of_irreducibleSpace_of_isReduced Z`.
+A detailed English derivation is pending.
 -/
 theorem AffCover.geometricallyIntegral : ∀ (F Ω Ω' : Type) [Field F] [Field Ω] [Algebra F Ω] [Field Ω'] [Algebra F Ω']
     (M : RatModel F Ω) (M' : RatModel F Ω') (φ : Ω →ₐ[F] Ω') (f : M'.Z ⟶ M.Z) (r : ℕ), AffCover M M' φ f r →

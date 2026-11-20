@@ -7,12 +7,12 @@ import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.PfActs
 namespace PositivityTheory.KCo
 
 /- English proof (translation)
-The claim follows from `dictX_of model_existence cyclicity adjoint_statement section_statement action_uniqueness`.
+A detailed English derivation is pending.
 -/
 theorem dictionary_extended : DictX := dictX_of model_existence cyclicity adjoint_statement section_statement action_uniqueness
 
 /- English proof (translation)
-The claim follows from `dictSt_of dictionary_extended section_statement`.
+A detailed English derivation is pending.
 -/
 theorem dictionary_statement : DictSt := dictSt_of dictionary_extended section_statement
 

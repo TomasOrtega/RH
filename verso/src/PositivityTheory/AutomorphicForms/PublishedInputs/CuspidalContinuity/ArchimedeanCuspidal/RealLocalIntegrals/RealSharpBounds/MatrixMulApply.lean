@@ -43,9 +43,9 @@ theorem ell_apply (M : M3) (i j : Fin 3) (m : M3) :
     ell M i j m = ((((Matrix.of M)⁻¹ * Matrix.of m) i j : ℝ) : ℂ) := rfl
 
 /- English proof (translation)
-Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun m => ?_` and prove the remaining obligations. Establish `h1 : ‖ell M i j m‖ = ‖mul3 (minv M) m i j‖`. Rewrite using `[ell_apply, Complex.norm_real]`. Both sides reduce to the same expression. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_ell_le (M : M3) (i j : Fin 3) : ‖ell M i j‖ ≤ ‖mul3‖ * ‖minv M‖ := by
   refine ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun m => ?_

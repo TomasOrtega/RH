@@ -13,31 +13,23 @@ namespace GlobalTheory
 open Set Metric
 
 /- English proof (translation)
-Use `haveI : ProperSpace E := FiniteDimensional.proper_real E`. Use `set K := e '' C with hKdef`. Use `set O := e '' U with hOdef`. Establish `hK : IsCompact K` using `hC.image_of_continuousOn (e.continuousOn.mono (hCU.trans hUs))`. Establish `hO : IsOpen O` using `e.isOpen_image_of_subset_source hU hUs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hKO : K ⊆ O` using `image_mono hCU`. Establish `hOt : O ⊆ e.target`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `e.map_source (hUs hu)`. Take `⟨δ0, hδ0, hδ0O⟩` from `hK.exists_cthickening_subset_open hO hKO`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set δ := δ0 / 2 with hδdef`. Establish `hδ : 0 < δ` using `by positivity`. Use `set T := cthickening δ K with hTdef`. Establish `hT : IsCompact T` using `hK.cthickening`. Establish `hTO : T ⊆ O` using `(cthickening_mono (by linarith) K).trans hδ0O`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, hf0, hf1, hf01⟩` from `exists_contMDiffMap_zero_one_of_isClosed (𝓘(ℝ, E)) (n := (⊤ : ℕ∞)) (isOpen_thickening (δ := δ) (E := K)).isClosed_compl hK.isClosed (disjoint_compl_left_iff_subset.2 (self_subset_thickening hδ K))`. Use `set ψ : E → ℝ := ⇑f with hψdef`. Establish `hψ : ContDiff ℝ ∞ ψ`. Use `contMDiff_iff_contDiff.1 f.contMDiff` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hψT : tsupport ψ ⊆ T`. Use `(closure_mono ?_).trans (closure_thickening_subset_cthickening δ K)` and prove the remaining obligations. Introduce `x hx`. Assume the negation of the conclusion as `h`. Conclude with `hx (hf0 h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `set ρ : X → ℝ := fun y => if y ∈ e.source then ψ (e y) else 0 with hρdef`. Use `set S := e.symm '' T with hSdef`. Establish `hS : IsCompact S` using `hT.image_of_continuousOn (e.continuousOn_symm.mono (hTO.trans hOt))`. Establish `hSU : S ⊆ U`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Take `⟨u, hu, rfl⟩` from `hTO hx`. Rewrite using `[e.left_inv (hUs hu)]`. Conclude with `hu`. Establish `hsupp : Function.support ρ ⊆ S`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.mem_support, hρdef] at hy`. Use `split_ifs at hy with hys`. Conclude with `⟨e y, hψT (subset_tsupport _ hy), e.left_inv hys⟩`. Conclude with `absurd rfl hy`. Establish `htsupp : tsupport ρ ⊆ S` using `closure_minimal hsupp hS.isClosed`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨ρ, ?_, ?_, ?_, ?_, htsupp.trans hSU⟩` and prove the remaining obligations. Use `continuous_iff_continuousAt.2 fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ e.source`. Establish `h1 : ContinuousAt (ψ ∘ e) y` using `hψ.continuous.continuousAt.comp (e.continuousAt hy)`. Use `h1.congr ?_` and prove the remaining obligations.
-
-Use `filter_upwards [e.open_source.mem_nhds hy] with z hz`. Simplify using `[hρdef, hz]`. Establish `hyS : y ∉ S` using `fun h => hy (hUs (hSU h))`. Use `(continuousAt_const (y := (0 : ℝ))).congr ?_` and prove the remaining obligations. Use `filter_upwards [hS.isClosed.isOpen_compl.mem_nhds hyS] with z hz`.
-
-Conclude with `(Function.notMem_support.1 fun h => hz (hsupp h)).symm`. Use `hψ.contDiffOn.congr fun x hx => ?_` and prove the remaining obligations. Simplify using `[hρdef, e.map_target hx, e.right_inv hx]`. Introduce `y`. Simplify using `only [hρdef]`.
-
-Use `split_ifs`. Conclude with `hf01 _`. Conclude with `⟨le_rfl, zero_le_one⟩`. Introduce `y hy`. Simplify using `only [hρdef, if_pos (hUs (hCU hy))]`.
-
-Conclude with `hf1 (mem_image_of_mem e hy)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cutoff_of_openPartialHomeomorph {X E : Type} [TopologicalSpace X] [T2Space X]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
@@ -109,7 +101,7 @@ theorem exists_cutoff_of_openPartialHomeomorph {X E : Type} [TopologicalSpace X]
     exact hf1 (mem_image_of_mem e hy)
 
 /- English proof (translation)
-Introduce `k _ Y p σ d _ c C U hC hU hCU hUs`. Conclude with `exists_cutoff_of_openPartialHomeomorph c.e C U hC hU hCU hUs`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cutoff_chart : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) [T2Space (CxPts p σ)] (c : AlgChart p σ d) (C U : Set (CxPts p σ)), IsCompact C → IsOpen U → C ⊆ U → U ⊆ c.e.source → ∃ ρ : CxPts p σ → ℝ, Continuous ρ ∧ ContDiffOn ℝ ∞ (ρ ∘ c.e.symm) c.e.target ∧ (∀ y, 0 ≤ ρ y ∧ ρ y ≤ 1) ∧ (∀ y ∈ C, ρ y = 1) ∧ tsupport ρ ⊆ U := by
   intro k _ Y p σ d _ c C U hC hU hCU hUs

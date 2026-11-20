@@ -15,7 +15,7 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
 variable {S : Subring K} {π : K} {h : V →ₗ⋆[K] V →ₗ[K] K}
 
 /- English proof (translation)
-Rewrite using `[map_sum h, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ₂, G3.form_sum_orth ho d i, starRingEnd_apply, smul_eq_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_sums {J : Type} [Fintype J] {b : J → V} (ho : ∀ i j, i ≠ j → h (b i) (b j) = 0)
     (c d : J → K) :
@@ -25,7 +25,7 @@ theorem form_sums {J : Type} [Fintype J] {b : J → V} (ho : ∀ i j, i ≠ j �
   rw [LinearMap.map_smulₛₗ₂, G3.form_sum_orth ho d i, starRingEnd_apply, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [Finset.sum_filter, ite_smul, zero_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_filter_smul {J : Type} [Fintype J] (p : J → Prop) [DecidablePred p] (x : J → K)
     (b : J → V) :
@@ -33,7 +33,7 @@ theorem sum_filter_smul {J : Type} [Fintype J] (p : J → Prop) [DecidablePred p
   simp only [Finset.sum_filter, ite_smul, zero_smul]
 
 /- English proof (translation)
-Take `⟨ha0, haS, haI⟩` from `ha`. Take `⟨hb0, hbS, hbI⟩` from `hb`. Use `(⟨mul_ne_zero ha0 hb0, S.mul_mem haS hbS, ?_⟩ : a * b ≠ 0 ∧ a * b ∈ S ∧ (a * b)⁻¹ ∈ S)` and prove the remaining obligations. Rewrite using `[mul_inv]`. Conclude with `S.mul_mem haI hbI`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unit_mul_lemma {a b : K} (ha : IsUnitIn S a) (hb : IsUnitIn S b) :
     IsUnitIn S (a * b) := by
@@ -44,9 +44,9 @@ private theorem unit_mul_lemma {a b : K} (ha : IsUnitIn S a) (hb : IsUnitIn S b)
   exact S.mul_mem haI hbI
 
 /- English proof (translation)
-Establish `hu' : u ≠ 0 ∧ u ∈ S ∧ u⁻¹ ∈ S` using `hu`. Establish `hd' : d * π⁻¹ ∈ S` using `hd`. Establish `e : u * (1 + π * (u⁻¹ * (d * π⁻¹))) = u + d`. Rewrite using `[mul_add, mul_one, mul_left_comm u π, mul_inv_cancel_left₀ hu'.1, mul_left_comm π d, mul_inv_cancel₀ hπ.3, mul_one]`. Rewrite using `[← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `unit_mul_lemma hu (hπ.5 _ (S.mul_mem hu'.2.2 hd'))`.
+A detailed English derivation is pending.
 -/
 private theorem unit_add_dv_lemma_2 (hπ : IsUnif S π) {u d : K} (hu : IsUnitIn S u) (hd : Dv S π d) :
     IsUnitIn S (u + d) := by
@@ -59,23 +59,21 @@ private theorem unit_add_dv_lemma_2 (hπ : IsUnif S π) {u d : K} (hu : IsUnitIn
   exact unit_mul_lemma hu (hπ.5 _ (S.mul_mem hu'.2.2 hd'))
 
 /- English proof (translation)
-Introduce `J _ _ b e i₀ ho hu hmin X hX hXu`. Take `⟨x, hxS, rfl⟩` from `hX`. Establish `hπ0 : π ≠ 0` using `hπ.3`. Establish `hterm : ∀ i, e i ≠ e i₀ → Dv S π (star (x i) * x i * h (b i) (b i) * (π ^ e i₀)⁻¹)`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlt : e i₀ < e i` using `lt_of_le_of_ne (hmin i) (Ne.symm hi)`. Establish `hP : π ^ e i ≠ 0` using `pow_ne_zero _ hπ0`. Establish `hw : h (b i) (b i) * (π ^ e i)⁻¹ ∈ S` using `(show _ ∧ _ ∧ _ from hu i).2.1`. Establish `hs : star (x i) * x i * (h (b i) (b i) * (π ^ e i)⁻¹) ∈ S` using `S.mul_mem (S.mul_mem (hS.1 _ (hxS i)) (hxS i)) hw`. Establish `hk : Dv S π (π ^ e i * (π ^ e i₀)⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_sub₀ π hπ0 (hmin i)]`. Take `⟨m, hm⟩` from `Nat.exists_eq_add_of_lt hlt`. Use `show π ^ (e i - e i₀) * π⁻¹ ∈ S`. Rewrite using `[hm, show e i₀ + m + 1 - e i₀ = m + 1 by omega, pow_succ, mul_inv_cancel_right₀ hπ0]`. Conclude with `S.pow_mem hπ.1 m`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e1 : star (x i) * x i * h (b i) (b i) * (π ^ e i₀)⁻¹ = star (x i) * x i * (h (b i) (b i) * (π ^ e i)⁻¹) * (π ^ e i * (π ^ e i₀)⁻¹)`. Rewrite using `[mul_assoc _ (_ * _⁻¹), mul_assoc (h (b i) (b i)), inv_mul_cancel_left₀ hP, ← mul_assoc]`. Rewrite using `[e1]`. Conclude with `Dv.mul_left hk hs`. Establish `hD : Dv S π (h (∑ i ∈ Finset.univ.filter (fun i => e i = e i₀), x i • b i) (∑ i ∈ Finset.univ.filter (fun i => e i = e i₀), x i • b i) * (π ^ e i₀)⁻¹ - h (∑ i, x i • b i) (∑ i, x i • b i) * (π ^ e i₀)⁻¹)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_filter_smul, form_sums ho, form_sums ho, ← sub_mul, ← Finset.sum_sub_distrib, Finset.sum_mul]`. Use `Finset.sum_induction _ (Dv S π) (fun _ _ ha hb => Dv.add ha hb) ?_ fun i _ => ?_` and prove the remaining obligations. Use `show (0 : K) * π⁻¹ ∈ S`. Rewrite using `[zero_mul]`. Conclude with `S.zero_mem`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hi : e i = e i₀`. Rewrite using `[if_pos hi, sub_self, zero_mul] show (0 : K) * π⁻¹ ∈ S`. Rewrite using `[zero_mul]`. Conclude with `S.zero_mem`. Rewrite using `[if_neg hi, star_zero, zero_mul, zero_mul, zero_sub, neg_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Dv.neg (hterm i hi)`. Establish `hYu : IsUnitIn S (h (∑ i ∈ Finset.univ.filter (fun i => e i = e i₀), x i • b i) (∑ i ∈ Finset.univ.filter (fun i => e i = e i₀), x i • b i) * (π ^ e i₀)⁻¹)`. Establish `e2 : ∀ p q : K, p + (q - p) = q` using `fun p q => by ring`. Use `unit_add_dv_lemma_2 hπ hXu hD` as an intermediate fact. Rewrite `this` using `[e2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hco, hcu, hci0, hck, hspan, hspanS⟩` from `hUP J b e i₀ ho hu x hxS hYu`. Establish `hi₀T : i₀ ∉ Finset.univ.filter (fun j => ¬ e j = e i₀)` using `fun hm => (Finset.mem_filter.mp hm).2 rfl`. Establish `hTlt : ∀ j ∈ Finset.univ.filter (fun j => ¬ e j = e i₀), e i₀ < e j` using `fun j hj => lt_of_le_of_ne (hmin j) (Ne.symm (Finset.mem_filter.mp hj).2)`. Take `⟨c', hco', hcu', hc'i0, hc'k, hspan', hspanS'⟩` from `hAB J e i₀ x hxS _ hi₀T hTlt c hco hcu`. Establish `hT' : ∑ j ∈ Finset.univ.filter (fun j => ¬ e j = e i₀), x j • c j = ∑ j ∈ Finset.univ.filter (fun j => ¬ e j = e i₀), x j • b j` using `Finset.sum_congr rfl fun j hj => by rw [hck j (Finset.mem_filter.mp hj).2]`.
-
-Use `⟨c', hco', hcu', ?_, hspan'.trans hspan, fun v => (hspanS' v).trans (hspanS v)⟩` and prove the remaining obligations. Rewrite using `[hc'i0, hci0, hT', Finset.sum_filter_add_sum_filter_not]`.
+A detailed English derivation is pending.
 -/
 theorem rebaseAt_of (hS : IsHermSemilocal S) (hπ : IsUnif S π)
     (hUP : ∀ (J : Type) [Fintype J] [DecidableEq J] (b : J → V) (e : J → ℕ) (i₀ : J),

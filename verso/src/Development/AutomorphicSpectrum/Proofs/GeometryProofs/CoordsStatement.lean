@@ -6,7 +6,7 @@ open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.
 namespace GlobalTheory.CompanionTheory.Geo.SncCoordsSide
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Geo.SncCoords.coordsStatement`.
+A detailed English derivation is pending.
 -/
 theorem coordsStatement_side : ReciprocityTheory.ChartRestriction.G.Geo.ResK.CoordsStatement :=
   GlobalTheory.CompanionTheory.Geo.SncCoords.coordsStatement

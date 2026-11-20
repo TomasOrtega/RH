@@ -18,17 +18,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {φ : InvFun (𝓞 E)}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hX`. Rewrite `hX` using `[not_nontrivial_iff_subsingleton]`. Use `haveI : IsEmpty (Fin C.m) := ⟨fun i => C.cone.linearIndependent.ne_zero i (LinearMap.ext₂ fun a b => by`. Rewrite using `[Subsingleton.elim a 0]`. Use the proof step `simp)⟩`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hprod : ∏ i, C.s i = 1` using `by simp [Finset.univ_eq_empty]`. Take `⟨yo, -, -, -, hg⟩` from `GlobalTheory.T.openPart_classified_monomialBoundaryFamily Xo c φ V hV C`. Set `A` to `Localization.Away (∏ i, C.s i)`. Set `e : V ≃ₐ[V] A` to `IsLocalization.atUnit V A (∏ i, C.s i) (by rw [hprod]; exact isUnit_one)`. Set `h : A →+* V` to `e.symm.toRingEquiv.toRingHom`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hcomp : h.comp (algebraMap V A) = RingHom.id V`. Use extensionality with `r`. Use `show e.symm (algebraMap V A r) = r`. Conclude with `e.symm.commutes r`. Establish `hid : spMap h ≫ spMap (algebraMap V A) = 𝟙 _` using `by show Spec.map _ ≫ Spec.map _ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hcomp]`. Conclude with `Spec.map_id _`. Establish `hψ : jK V ≫ spMap h ≫ yo = C.y`. Rewrite using `[← Category.assoc]`. Conclude with `hg _ (by rw [Category.assoc, hid, Category.comp_id])`.
-
-Establish `hgen : jK V ≫ (spMap h ≫ yo) ≫ j = jK V ≫ ξV`. Rewrite using `[← Category.assoc, hψ, hy]`. Use `haveI : IsDominant (jK V) := (GlobalTheory.Mum.Modif.self V).dominant`. Establish `heq : (spMap h ≫ yo) ≫ j = ξV` using `ext_of_isDominant_of_isSeparated s (hs _ _ hgen) (jK V) hgen`. Conclude with `hx ⟨(spMap h ≫ yo) (closedPoint V), by show ((spMap h ≫ yo) ≫ j) (closedPoint V) = _`.
-
-Rewrite using `[heq]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nontrivial_of_not_mem_range {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] (hV : GlobalTheory.Mum.Base V)
     (C : MonoFam Xo c φ V) {S T : Scheme.{0}} (s : S ⟶ T) [IsSeparated s] (j : Xo.XF c ⟶ S) (ξV : Sp V ⟶ S)
@@ -71,29 +67,23 @@ namespace GlobalTheory.UChartGeo
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c φ hpq hpf hns Z zs i OZ N d J S π j _ BD hU hS x hx`. Take `⟨V, _, _, _, C, ξV, hV, hy, hxV⟩` from `GlobalTheory.UChartTrait.exists_monoFam_through Xo c φ hpq hpf hns zs i OZ N d J π j BD hU hS x hx`. Take `⟨Nn, ιP, hci, hι⟩` from `hU.2.2.2.2.1.2.1`. Use `haveI : IsSeparated (π ≫ zs) := by rw [← hι]; infer_instance`. Use `haveI : IsDominant (jK V) := (GlobalTheory.Mum.Modif.self V).dominant`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∀ f g : Sp V ⟶ S, jK V ≫ f = jK V ≫ g → f ≫ π ≫ zs = g ≫ π ≫ zs` using `fun f g hfg => ext_of_isDominant_of_isSeparated (terminal.from (Sp c.F)) (terminal.hom_ext _ _) (jK V) (by`. Rewrite using `[← Category.assoc, hfg, Category.assoc])`. Establish `hX : Nontrivial C.P.D.toPre.X` using `nontrivial_of_not_mem_range hV C (π ≫ zs) j ξV hs hy (hxV ▸ hx)`. Take `⟨y0, hy0⟩` from `exists_ne (0 : C.P.D.toPre.X)`. Take `⟨i0, -⟩` from `C.mono.exists_pos (maximalIdeal.isMaximal _).ne_top hy0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnf : ¬ IsField V`. Introduce `hf`. Establish `hm` using `C.s_mem i0`. Rewrite `hm` using `[(IsLocalRing.isField_iff_maximalIdeal_eq).1 hf, Ideal.mem_bot]`. Conclude with `C.s_ne_zero i0 hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsNoetherianRing V := hV.1.1`. Use `haveI : CharZero V := hV.2`. Take `⟨W, _, _, _, ρ, hcomp, hac, hinj, hloc⟩` from `GlobalTheory.T.exists_complete_dvr_algClosed_residue_injective_local V hnf ⟨C.b.comp (algebraMap ℚ c.F)⟩`. Use `haveI : CharZero W := charZero_of_injective_ringHom hinj`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible W`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ∀ k, ρ (C.s k) ≠ 0` using `fun k h0 => C.s_ne_zero k (hinj (h0.trans (map_zero ρ).symm))`. Use `choose w u hwu using fun k => IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (hne k) hϖ`. Establish `hW : GlobalTheory.UU.CDVR W` using `⟨inferInstance, hcomp, inferInstance⟩`. Take `⟨t, P, e, be, -, htK, hbe, -, hmono, -⟩` from `trait_pull C hV W hW ϖ ρ hinj hloc w u hwu`. Establish `hinj' : Function.Injective ((algebraMap W (FractionRing W)).comp ρ)` using `(IsFractionRing.injective W (FractionRing W)).comp hinj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨gam, hgam⟩ : ∃ gam : FractionRing V →+* FractionRing W, gam.comp (algebraMap V (FractionRing V)) = (algebraMap W (FractionRing W)).comp ρ` from `⟨IsFractionRing.lift hinj', RingHom.ext fun r => by`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply]`. Conclude with `IsFractionRing.lift_algebraMap hinj' r⟩`. Establish `hκ : spMap gam ≫ jK V = jK W ≫ spMap ρ` using `by show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hgam]`.
+Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨tK, h1, h2⟩` from `htK (spMap gam) hκ`. Establish `hover : (spMap gam ≫ C.y) ≫ pullback.snd _ _ = jK W ≫ spMap (ρ.comp C.b)`. Rewrite using `[Category.assoc, C.y_over, ← Category.assoc, hκ, Category.assoc]`. Use `congr 1`. Conclude with `(Spec.map_comp (CommRingCat.ofHom C.b) (CommRingCat.ofHom ρ)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Set `F : Fam Xo c W` to `⟨ρ.comp C.b, t, P, spMap gam ≫ C.y, hover, ⟨tK, h1, h2⟩⟩`. Set `β : LinearMap.BilinForm ℤ P.D.toPre.X` to `∑ k, (w k : ℤ) • pull e.toLinearMap (C.δ k)`. Establish `hβ : β ∈ balForms H.bar P.D.toPre.X` using `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (pull_mem _ (C.cone.mem k))`. Establish `hbeq : be = (l.M' : ℤ) • β`. Rewrite using `[hbe, Finset.smul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `only [LinearMap.smul_apply, pull_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmono' : IsMonomial F.P.D.toPre ![ϖ] ![(l.M' : ℤ) • β]` using `hbeq ▸ hmono`.
-
-Establish `hϖm : ϖ ∈ maximalIdeal W` using `(mem_maximalIdeal _).2 hϖ.not_isUnit`. Take `⟨C', hC'⟩` from `F.exists_monoFam hpf hϖm hβ hmono'`. Establish `hyC : C'.toFam.y = spMap gam ≫ C.y` using `by rw [hC']`. Use `⟨W, inferInstance, inferInstance, inferInstance, C', spMap ρ ≫ ξV, ⟨⟨inferInstance, inferInstance, inferInstance, hcomp⟩, inferInstance⟩, hac, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hC']`.
-
-Conclude with `e.symm.injective.nontrivial`. Use `show C'.toFam.y ≫ j = _`. Rewrite using `[hyC, Category.assoc, hy, ← Category.assoc, hκ, Category.assoc]`. Use `show ξV (spMap ρ (closedPoint W)) = x`. Establish `hcl : spMap ρ (closedPoint W) = closedPoint V` using `IsLocalRing.comap_closedPoint ρ`.
-
-Rewrite using `[hcl, hxV]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_monoFam_algClosed : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), 1 ≤ Dw.p + Dw.q → IsPolFan H.bar (min Dw.p Dw.q) φ → NoSelfInt H.bar (min Dw.p Dw.q) φ → ∀ {Z : Scheme.{0}} (zs : Z ⟶ Sp c.F) (i : Xo.XF c ⟶ Z) (OZ : LB Z) (N d : ℕ) (J : Z.IdealSheafData) {S : Scheme.{0}} (π : S ⟶ Z) (j : Xo.XF c ⟶ S) [IsOpenImmersion j] (BD : GlobalTheory.EffCartierData S), GlobalTheory.UPoinc.UPoinOnX Xo c φ zs i OZ N d J π j BD → SepB Xo c φ j → ∀ x : S, x ∉ Set.range j → ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsLocalRing V) (C : MonoFam Xo c φ V) (ξV : Sp V ⟶ S), GlobalTheory.Mum.Base V ∧ IsAlgClosed (ResidueField V) ∧ Nontrivial C.P.D.toPre.X ∧ C.y ≫ j = jK V ≫ ξV ∧ ξV (closedPoint V) = x := by
   intro E _ _ _ H Dw l Xo c φ hpq hpf hns Z zs i OZ N d J S π j _ BD hU hS x hx

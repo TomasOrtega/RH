@@ -13,38 +13,38 @@ set_option autoImplicit false
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Rewrite using `[Hom.mul_def, ← Category.assoc, comp_lift, Category.comp_id]`. Simplify using `using lift_comp_one_left (𝟙 _) η[G]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eta_comp_mul_self {S : Scheme.{0}} (G : Over S) [GrpObj G] : η[G] ≫ (𝟙 G * 𝟙 G) = η[G] := by
   rw [Hom.mul_def, ← Category.assoc, comp_lift, Category.comp_id]
   simpa using lift_comp_one_left (𝟙 _) η[G]
 
 /- English proof (translation)
-The claim follows from `congrArg (·.left) (eta_comp_mul_self G)`.
+A detailed English derivation is pending.
 -/
 private theorem unitSec_comp_sqr {S : Scheme.{0}} (G : Over S) [GrpObj G] : unitSec G ≫ sqr G = unitSec G :=
   congrArg (·.left) (eta_comp_mul_self G)
 
 /- English proof (translation)
-Introduce `S G _ hqs s π ε m hd f hf`. Use `haveI := hqs`. Take `⟨hπ, hε, hm⟩` from `GlobalTheory.T.groupSchemeUnitStalkData_germ S G s π ε m hd`. Establish `he : unitSec G ≫ G.hom = 𝟙 S` using `sec_hom η[G]`. Take `⟨U₀, hU₀, g, rfl⟩` from `G.left.presheaf.germ_exist f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsq : sqr G (unitSec G s) = unitSec G s` using `by rw [← Scheme.Hom.comp_apply, unitSec_comp_sqr]`. Establish `hb : G.hom (unitSec G s) = s` using `by rw [← Scheme.Hom.comp_apply, he]; rfl`. Take `⟨U₁, hU₁, hs₁, -⟩` from `QCoh.exists_affine_mem_le (U := (⊤ : S.Opens)) s trivial`. Take `⟨W₁, hW₁, hx₁, k₁⟩` from `QCoh.exists_affine_mem_le (U := U₀ ⊓ sqr G ⁻¹ᵁ U₀ ⊓ G.hom ⁻¹ᵁ U₁) (unitSec G s) ⟨⟨hU₀, show sqr G (unitSec G s) ∈ U₀ by rw [hsq]; exact hU₀⟩, show G.hom (unitSec G s) ∈ U₁ by rw [hb]; exact hs₁⟩`. Take `⟨U, hsU, -, -, c⟩` from `GlobalTheory.Conormal.exists_isChart_inf he hU₁ hW₁ (k₁.trans inf_le_right) hx₁ (show s ∈ (⊤ : S.Opens) from trivial)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `kW : W₁ ⊓ G.hom ⁻¹ᵁ U ≤ U₀` using `inf_le_left.trans (k₁.trans (inf_le_left.trans inf_le_left))`. Establish `kS : W₁ ⊓ G.hom ⁻¹ᵁ U ≤ sqr G ⁻¹ᵁ U₀` using `inf_le_left.trans (k₁.trans (inf_le_left.trans inf_le_right))`. Establish `hxW : unitSec G s ∈ W₁ ⊓ G.hom ⁻¹ᵁ U` using `c.le hsU`. Establish `hU0 : U ≤ unitSec G ⁻¹ᵁ U₀` using `c.le.trans ((unitSec G).preimage_mono kW)`. Establish `a1` using `cotMap_d (𝟙 G * 𝟙 G) (eta_comp_mul_self G) hU0 c.le kS g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `cotMap_d (𝟙 G) (Category.comp_id _) hU0 c.le kW g`. Establish `hmul` using `cotMap_mul (x := 𝟙 G) (y := 𝟙 G) (Category.comp_id η[G]) (Category.comp_id η[G]) (eta_comp_mul_self G)`. Establish `key : GlobalTheory.Conormal.d he c.le ((sqr G).appLE U₀ _ kS g) = GlobalTheory.Conormal.d he c.le (resG G.left kW g) + GlobalTheory.Conormal.d he c.le (resG G.left kW g)`. Use `congrArg (fun φ => φ.app U (GlobalTheory.Conormal.d he hU0 g)) hmul` as an intermediate fact. Simplify using `only at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Equip the data with the indicated structure.
 
-Conclude with `(a1.symm.trans this).trans (congrArg₂ (· + ·) a2 a2)`. Use `letI := c.algebra`. Set `h : Γ(G.left, W₁ ⊓ G.hom ⁻¹ᵁ U)` to `(sqr G).appLE U₀ _ kS g - (resG G.left kW g + resG G.left kW g)`. Establish `hz : AugCot.d (c.aug he) h = 0` using `(c.augCotEquiv he).injective (by`. Rewrite using `[c.augCotEquiv_d he, map_zero, map_sub, map_add, key, sub_self])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `hz` using `[AugCot.d_eq_zero_iff]`. Set `gW` to `G.left.presheaf.germ (W₁ ⊓ G.hom ⁻¹ᵁ U) (unitSec G s) hxW`. Establish `g1 : gW ((sqr G).appLE U₀ _ kS g) = m (G.left.presheaf.germ U₀ (unitSec G s) hU₀ g)` using `(hm U₀ hU₀ _ hxW kS g).symm`. Establish `g2 : gW (resG G.left kW g) = G.left.presheaf.germ U₀ (unitSec G s) hU₀ g` using `TopCat.Presheaf.germ_res_apply _ _ _ _ _`. Establish `gh : gW h = m (G.left.presheaf.germ U₀ (unitSec G s) hU₀ g) - 2 * G.left.presheaf.germ U₀ (unitSec G s) hU₀ g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [h, map_sub, map_add, g1, g2, two_mul]`. Establish `hf0 : ε (G.left.presheaf.germ U₀ (unitSec G s) hU₀ g) = 0` using `hf`. Establish `hker : ∀ x, c.aug he x = 0 → ε (gW x) = 0`. Introduce `x hx`. Establish `hx' : (unitSec G).appLE _ U c.le x = 0` using `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hε _ hxW U hsU c.le x, hx', map_zero]`. Establish `hmap : ∀ y ∈ RingHom.ker (c.aug he) ^ 2, gW y ∈ RingHom.ker ε ^ 2`. Introduce `y hy`. Use `Ideal.mem_map_of_mem (ConcreteCategory.hom gW) hy` as an intermediate fact. Rewrite `this` using `[Ideal.map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 fun x hx => Ideal.mem_comap.2 (RingHom.mem_ker.2 (hker x (RingHom.mem_ker.1 hx)))) 2 this`. Establish `hεm : ε (m (G.left.presheaf.germ U₀ (unitSec G s) hU₀ g)) = 0`. Rewrite using `[← g1, hε _ hxW U hsU c.le, GlobalTheory.Conormal.appLE_appLE (unitSec_comp_sqr G) kS c.le hU0, ← hε U₀ hU₀ U hsU hU0 g, hf0]`. Establish `hεh : ε (gW h) = 0` using `by rw [gh, map_sub, map_mul, hεm, hf0, mul_zero, sub_zero]`. Establish `halg : gW (algebraMap Γ(S, U) Γ(G.left, W₁ ⊓ G.hom ⁻¹ᵁ U) (c.aug he h)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : gW (algebraMap Γ(S, U) Γ(G.left, W₁ ⊓ G.hom ⁻¹ᵁ U) (c.aug he h)) = π (S.presheaf.germ U s hsU (c.aug he h))` using `(hπ U hsU _ hxW c.le_base _).symm`. Establish `e2 : S.presheaf.germ U s hsU (c.aug he h) = ε (gW h)` using `(hε _ hxW U hsU c.le h).symm`. Rewrite using `[e1, e2, hεh, map_zero]`. Rewrite using `[← gh, show gW h = gW (h - algebraMap Γ(S, U) Γ(G.left, W₁ ⊓ G.hom ⁻¹ᵁ U) (c.aug he h)) + gW (algebraMap Γ(S, U) Γ(G.left, W₁ ⊓ G.hom ⁻¹ᵁ U) (c.aug he h)) by rw [← map_add, sub_add_cancel], halg, add_zero]`. Conclude with `hmap _ hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqr_sub_two_mem : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], QuasiSeparated G.hom → ∀ (s : S) (π : S.presheaf.stalk s →+* G.left.presheaf.stalk (unitSec G s)) (ε : G.left.presheaf.stalk (unitSec G s) →+* S.presheaf.stalk s) (m : G.left.presheaf.stalk (unitSec G s) →+* G.left.presheaf.stalk (unitSec G s)), StalkData G s π ε m → ∀ f ∈ RingHom.ker ε, m f - 2 * f ∈ RingHom.ker ε ^ 2 := by
   intro S G _ hqs s π ε m hd f hf

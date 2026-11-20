@@ -11,7 +11,7 @@ namespace GlobalTheory.CMTrace
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_sig {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -19,11 +19,9 @@ theorem sig_sig {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = 
   rw [h.2.2.2, h.2.2.2, star_star]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Establish `hr : w.IsReal`. Rewrite using `[InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq]`. Use `h.2.2.2 w.embedding x` as an intermediate fact. Rewrite `this` using `[hc x]`. Conclude with `this.symm`.
-
-Conclude with `(InfinitePlace.not_isReal_iff_isComplex.mpr (h.2.1.isComplex w)) hr`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_ne_id {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
   by_contra hc
@@ -42,17 +40,17 @@ def sigE {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : Gal(E/F) :=
   AlgEquiv.ofAlgHom σ σ (AlgHom.ext fun x => sig_sig h x) (AlgHom.ext fun x => sig_sig h x)
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ h.2.2.1`. Establish `hne : (1 : Gal(E/F)) ≠ sigE h`. Introduce `h1`. Take `⟨x, hx⟩` from `sig_ne_id h`. Conclude with `hx (congrArg (fun g : Gal(E/F) => g x) h1).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hle : Nat.card Gal(E/F) ≤ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hall : ∀ g : Gal(E/F), g = 1 ∨ g = sigE h` using `by classical`. Establish `hc : (({1, sigE h} : Finset Gal(E/F))).card = 2` using `Finset.card_pair hne`. Establish `hu : ({1, sigE h} : Finset Gal(E/F)) = Finset.univ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.eq_univ_of_card` to reduce the goal to its premises. Rewrite using `[hc]`. Rewrite using `[← Nat.card_eq_fintype_card]`. Establish `: 2 ≤ Nat.card Gal(E/F)`. Rewrite using `[Nat.card_eq_fintype_card, ← hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.card_le_univ _`. Use linear arithmetic over natural numbers and integers. Introduce `g`. Use `Finset.mem_univ g` as an intermediate fact. Rewrite `this` using `[← hu]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using this`. Establish `hgal : IsGalois F E`. Apply `IsGalois.of_card_aut_eq_finrank` to reduce the goal to its premises. Rewrite using `[h.2.2.1]`. Apply `le_antisymm hle` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_eq_fintype_card, ← Finset.card_pair hne]`. Conclude with `Finset.card_le_univ _`. Rewrite using `[trace_eq_sum_automorphisms]`. Rewrite using `[Fintype.sum_eq_add 1 (sigE h) hne (fun g hg => absurd (hall g) (by tauto))]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trace_eq {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (e : E) :
     algebraMap F E (Algebra.trace F E e) = e + σ e := by
@@ -97,13 +95,11 @@ end GlobalTheory.CMTrace
 namespace GlobalTheory.CMTrace
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ h.2.2.1`. Use `haveI : Nontrivial (AF F) := (AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial`. Use `⟨fun x => ?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.trace_algebraMap, Module.finrank_baseChange, h.2.2.1, nsmul_eq_mul, Nat.cast_ofNat]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htm : ∀ (a : AF F) (e : E), Algebra.trace (AF F) (AE F E) (a ⊗ₜ[F] e) = a * algebraMap F (AF F) (Algebra.trace F E e)`. Introduce `a e`. Establish `h1 : a ⊗ₜ[F] e = a • ((1 : AF F) ⊗ₜ[F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h1, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add]`. Normalize the expressions using the abelian group laws. Consider the case `tmul a e`.
-
-Rewrite using `[htm, Algebra.TensorProduct.algebraMap_apply, cA, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, ← TensorProduct.tmul_add, ← trace_eq h, mul_comm, ← Algebra.smul_def, Algebra.algebraMap_self, RingHom.id_apply, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one]`.
+Treat this case separately. Normalize the expressions using the abelian group laws. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adele_trace : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → (∀ x : AF F, Algebra.trace (AF F) (AE F E) (algebraMap (AF F) (AE F E) x) = 2 * x) ∧ ∀ c : AE F E, algebraMap (AF F) (AE F E) (Algebra.trace (AF F) (AE F E) c) = c + cA σ c := by
   intro F E _ _ _ _ _ σ h

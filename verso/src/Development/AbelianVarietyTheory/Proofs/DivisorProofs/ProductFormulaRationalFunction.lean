@@ -29,9 +29,9 @@ open Function
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `h` using `(FinitePlace.hasFiniteMulSupport hb)`. Establish `h' : (mulSupport fun w : FinitePlace F => w b).Finite` using `h`. Establish `e : (mulSupport fun v : HeightOneSpectrum (𝓞 F) => HeightOneSpectrum.adicAbv F v b) = FinitePlace.equivHeightOneSpectrum '' (mulSupport fun w : FinitePlace F => w b)`. Use extensionality with `v`. Rewrite using `[Equiv.image_eq_preimage_symm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mem_mulSupport, Set.mem_preimage, FinitePlace.equivHeightOneSpectrum_symm_apply, FinitePlace.norm_embedding]`. Rewrite using `[e]`. Conclude with `h'.image _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_mulSupport_adicAbv {b : F} (hb : b ≠ 0) :
     (mulSupport fun v : HeightOneSpectrum (𝓞 F) => HeightOneSpectrum.adicAbv F v b).Finite := by
@@ -47,7 +47,7 @@ theorem finite_mulSupport_adicAbv {b : F} (hb : b ≠ 0) :
   exact h'.image _
 
 /- English proof (translation)
-Use `(finite_mulSupport_adicAbv hb).subset fun v hv => ?_` and prove the remaining obligations. Rewrite `hv` using `[mem_support]`. Rewrite using `[mem_mulSupport]`. Introduce `h1`. Conclude with `hv (by rw [h1, Real.log_one])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_support_log_adicAbv {b : F} (hb : b ≠ 0) :
     (support fun v : HeightOneSpectrum (𝓞 F) => Real.log (HeightOneSpectrum.adicAbv F v b)).Finite := by
@@ -58,13 +58,13 @@ theorem finite_support_log_adicAbv {b : F} (hb : b ≠ 0) :
   exact hv (by rw [h1, Real.log_one])
 
 /- English proof (translation)
-Establish `hs` using `finite_mulSupport_adicAbv hb`. Establish `hl` using `finite_support_log_adicAbv hb`. Establish `hp : ∏ᶠ v : HeightOneSpectrum (𝓞 F), HeightOneSpectrum.adicAbv F v b = ((|Algebra.norm ℚ b|⁻¹ : ℚ) : ℝ)`. Rewrite using `[← FinitePlace.prod_eq_inv_abs_norm hb, ← finprod_comp_equiv FinitePlace.equivHeightOneSpectrum.symm]`. Simplify using `only [FinitePlace.equivHeightOneSpectrum_symm_apply, FinitePlace.norm_embedding]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : ∑ᶠ v : HeightOneSpectrum (𝓞 F), Real.log (HeightOneSpectrum.adicAbv F v b) = ∑ v ∈ hs.toFinset, Real.log (HeightOneSpectrum.adicAbv F v b)`. Use `finsum_eq_sum_of_support_subset _ ?_` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[Set.Finite.coe_toFinset]`. Rewrite `hv` using `[mem_support]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_mulSupport]`. Introduce `h1`. Conclude with `hv (by rw [h1, Real.log_one])`. Establish `e2 : ∏ᶠ v : HeightOneSpectrum (𝓞 F), HeightOneSpectrum.adicAbv F v b = ∏ v ∈ hs.toFinset, HeightOneSpectrum.adicAbv F v b` using `finprod_eq_prod_of_mulSupport_subset _ (by rw [Set.Finite.coe_toFinset])`. Rewrite using `[e1, ← Real.log_prod (fun v _ => (AbsoluteValue.pos _ hb).ne'), ← e2, hp]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[Real.log_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_log_adicAbv {b : F} (hb : b ≠ 0) :
     ∑ᶠ v : HeightOneSpectrum (𝓞 F), Real.log (HeightOneSpectrum.adicAbv F v b) = -Real.log |Algebra.norm ℚ b| := by
@@ -91,9 +91,9 @@ theorem finsum_log_adicAbv {b : F} (hb : b ≠ 0) :
   rw [Real.log_inv]
 
 /- English proof (translation)
-Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[← Real.log_prod (fun σ _ => by simpa using hb)]`. Use `congr 1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h` using `Algebra.norm_eq_prod_embeddings ℚ ℂ b`. Establish `h2 : ∏ σ : F →+* ℂ, σ b = ∏ τ : F →ₐ[ℚ] ℂ, τ b` using `Fintype.prod_equiv (RingHom.equivRatAlgHom F ℂ) _ _ (fun σ => rfl)`. Rewrite using `[← norm_prod, h2, ← h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_log_norm_embeddings (b : F) :
     ∑ σ : F →+* ℂ, Real.log ‖σ b‖ = Real.log |(Algebra.norm ℚ b : ℝ)| := by
@@ -109,7 +109,7 @@ theorem sum_log_norm_embeddings (b : F) :
   simp
 
 /- English proof (translation)
-Rewrite using `[sum_log_norm_embeddings, finsum_log_adicAbv hb]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem product_formula {b : F} (hb : b ≠ 0) :
     (∑ σ : F →+* ℂ, Real.log ‖σ b‖) +
@@ -127,9 +127,9 @@ section Geo
 variable {K : Type} [Field K] {X : Scheme.{0}} [IsIntegral X]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e : ψ = Scheme.descResidueField (Scheme.stalkClosedPointTo y)`. Apply `Spec.map_injective` to reduce the goal to its premises. Apply `(cancel_mono (X.fromSpecResidueField (below y))).1` to reduce the goal to its premises. Rewrite using `[hψ]`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K X y).symm`. Substitute `e` using the available equality. Rewrite using `[Base.valAt_stalk]`. Conclude with `(congrArg (fun q => q.hom a) (Scheme.residue_descResidueField (Scheme.stalkClosedPointTo y))).symm`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_of_factor (y : Sp K ⟶ X) (x : X) (h : below y = x) (ψ : X.residueField x ⟶ CommRingCat.of K)
     (hψ : Spec.map ψ ≫ X.fromSpecResidueField x = y) (a : X.presheaf.stalk x) :
@@ -154,9 +154,9 @@ noncomputable def toPt (ψ : {ψ : X.residueField x →+* K // ψ.comp φ₀.hom
       exact congrArg Spec.map (CommRingCat.hom_ext ψ.2)⟩, ExtConj.below_comp x _⟩
 
 /- English proof (translation)
-Use `⟨fun a b h => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : Spec.map (CommRingCat.ofHom a.1) ≫ X.fromSpecResidueField x = Spec.map (CommRingCat.ofHom b.1) ≫ X.fromSpecResidueField x` using `congrArg (fun t => t.1.1) h`. Conclude with `Subtype.ext (congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono _).1 h1)))`. Introduce and unpack `⟨⟨y, hy⟩, hyx⟩`. Take `⟨ψ, h⟩` from `ExtConj.factor y x hyx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : Spec.map (φ₀ ≫ ψ) = Spec.map (CommRingCat.ofHom φ)`. Rewrite using `[Spec.map_comp, hφ₀, ← Category.assoc, h]`. Conclude with `hy`. Establish `h3` using `Spec.map_injective h2`. Conclude with `⟨⟨ψ.hom, congrArg CommRingCat.Hom.hom h3⟩, Subtype.ext (Subtype.ext h)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem toPt_bijective : Function.Bijective (toPt s x φ₀ hφ₀ φ) := by
   refine ⟨fun a b h => ?_, ?_⟩
@@ -174,7 +174,7 @@ theorem toPt_bijective : Function.Bijective (toPt s x φ₀ hφ₀ φ) := by
 include hφ₀ in
 
 /- English proof (translation)
-Rewrite using `[← finsum_subtype_eq_finsum_cond (fun y : {y : Sp K ⟶ X // y ≫ s = spMap φ} => below y.1 = x) (f := fun y => f (GlobalTheory.TrueGeo.valAt y.1 (algebraMap (X.presheaf.stalk x) X.functionField a)))]`. Rewrite using `[← finsum_comp_equiv (Equiv.ofBijective _ (toPt_bijective s x φ₀ hφ₀ φ))]`. Use `finsum_congr fun ψ => ?_` and prove the remaining obligations. Conclude with `congrArg f (valAt_of_factor _ x (ExtConj.below_comp x _) _ rfl a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finsum_pts (f : K → ℝ) (a : X.presheaf.stalk x) :
     ∑ᶠ (y : {y : Sp K ⟶ X // y ≫ s = spMap φ}) (_ : below y.1 = x),
@@ -203,9 +203,9 @@ noncomputable def homsEquiv :
     right_inv := fun _ => rfl }
 
 /- English proof (translation)
-Use `letI := φ.toAlgebra`. Set `e` to `homsEquiv (L := L) φ`. Use `haveI : Finite {ψ : L →+* K // ψ.comp (algebraMap F L) = φ} := Finite.of_equiv _ e.symm`. Use `haveI := Fintype.ofFinite {ψ : L →+* K // ψ.comp (algebraMap F L) = φ}`. Rewrite using `[finsum_eq_sum_of_fintype, ← Real.log_prod (fun ψ _ => hf _ ((map_ne_zero ψ.1).2 hr)), ← map_prod]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 2`. Establish `h` using `Algebra.norm_eq_prod_embeddings F K r`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Conclude with `Fintype.prod_equiv e _ _ (fun ψ => rfl)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finsum_log (f : K →*₀ ℝ) (hf : ∀ c, c ≠ 0 → f c ≠ 0) {r : L} (hr : r ≠ 0) :
     ∑ᶠ ψ : {ψ : L →+* K // ψ.comp (algebraMap F L) = φ}, Real.log (f (ψ.1 r)) =
@@ -226,19 +226,17 @@ end GlobalTheory.HtAdd.ProdFormulaPts
 
 open GlobalTheory.HtAdd.ProdFormulaPts in
 /- English proof (translation)
-Introduce `F _ _ Y x hx g hg`. Take `⟨a₀, hu, rfl⟩` from `hg`. Use `isClosed_singleton_iff_isClosedImmersion.1 hx` as an intermediate fact. Take `⟨φ₀, hφ₀⟩` from `Spec.map_surjective (Y.X.fromSpecResidueField x ≫ Y.str)`. Establish `hfin : IsFinite (Spec.map φ₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hφ₀]`. Conclude with `isFinite_iff_locallyOfFiniteType_of_jacobsonSpace.2 inferInstance`. Use `letI : Algebra F (Y.X.residueField x) := φ₀.hom.toAlgebra`. Use `haveI : Module.Finite F (Y.X.residueField x) := (IsFinite.SpecMap_iff φ₀).1 hfin`. Establish `hr : (Y.X.residue x).hom a₀ ≠ 0` using `(hu.map (Y.X.residue x).hom).ne_zero`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : Algebra.norm F ((Y.X.residue x).hom a₀) ≠ 0` using `Algebra.norm_ne_zero_iff.2 hr`. Establish `hfv : (fun v : HeightOneSpectrum (𝓞 F) => if h : Nonempty (Ext v) then ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), Real.log (h.some.w (GlobalTheory.TrueGeo.valAt y.1 (algebraMap (Y.X.presheaf.stalk x) Y.X.functionField a₀))) else 0) = fun v => Real.log (HeightOneSpectrum.adicAbv F v (A …`. Use function extensionality and compare the values at `v`. Establish `hne : Nonempty (Ext v)` using `(ExtConj.main F).1 v`. Rewrite using `[dif_pos hne]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(finsum_pts Y.str x φ₀ hφ₀ (algebraMap F (AlgebraicClosure F)) (fun c => Real.log (hne.some.w c)) a₀).trans ?_` and prove the remaining obligations. Use `(finsum_log (algebraMap F (AlgebraicClosure F)) hne.some.w.toMonoidWithZeroHom (fun c hc => (hne.some.w.pos hc).ne') hr).trans ?_` and prove the remaining obligations. Conclude with `congrArg Real.log (hne.some.w_alg _)`. Establish `hσ : ∀ σ : F →+* ℂ, ∑ᶠ (z : Pts Y σ) (_ : under z = x), Real.log ‖ratVal (algebraMap (Y.X.presheaf.stalk x) Y.X.functionField a₀) z‖ = Real.log ‖σ (Algebra.norm F ((Y.X.residue x).hom a₀))‖`. Introduce `σ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : ∑ᶠ (z : Pts Y σ) (_ : under z = x), Real.log ‖ratVal (algebraMap (Y.X.presheaf.stalk x) Y.X.functionField a₀) z‖ = ∑ᶠ (z : {z : Sp ℂ ⟶ Y.X // z ≫ Y.str = spMap σ}) (_ : below z.1 = x), Real.log ‖GlobalTheory.TrueGeo.valAt z.1 (algebraMap (Y.X.presheaf.stalk x) Y.X.functionFie …`. Use `finsum_congr fun z => finsum_congr fun hz => ?_` and prove the remaining obligations. Establish `hreg : RegAt (under z) (algebraMap (Y.X.presheaf.stalk x) Y.X.functionField a₀)`. Rewrite using `[hz]`. Conclude with `⟨a₀, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Res.ratVal_eq_valAt z hreg]`. Use `e.trans ((finsum_pts Y.str x φ₀ hφ₀ σ (fun c => Real.log ‖c‖) a₀).trans ?_)` and prove the remaining obligations. Conclude with `finsum_log σ (normHom : ℂ →*₀ ℝ) (fun c hc => norm_ne_zero_iff.2 hc) hr`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfv]`.
-
-Conclude with `finite_support_log_adicAbv hb`. Rewrite using `[hfv, Finset.sum_congr rfl (fun σ _ => hσ σ)]`. Conclude with `product_formula hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HtAdd.ProdFormulaPts.main : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (x : Y.X), IsClosed ({x} : Set Y.X) →
     ∀ g : Y.Fn, UnitAt x g →

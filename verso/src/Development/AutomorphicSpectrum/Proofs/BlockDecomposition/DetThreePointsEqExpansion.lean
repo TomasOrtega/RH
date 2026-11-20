@@ -12,7 +12,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Simplify using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ, Matrix.det_fin_two, Fin.succAbove]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_three_points_eq_expansion (h : GL (Fin 2) F) :
     (!![h.val 0 0, h.val 0 1, 0; h.val 1 0, h.val 1 1, 0; 0, 0, 1] : Matrix (Fin 3) (Fin 3) F).det
@@ -20,15 +20,15 @@ theorem det_three_points_eq_expansion (h : GL (Fin 2) F) :
   simp [Matrix.det_succ_row_zero, Fin.sum_univ_succ, Matrix.det_fin_two, Fin.succAbove]
 
 /- English proof (translation)
-The claim follows from `((Matrix.isUnit_iff_isUnit_det _).1 h.isUnit).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem det_ne (h : GL (Fin 2) F) : (h.val).det ≠ 0 :=
   ((Matrix.isUnit_iff_isUnit_det _).1 h.isUnit).ne_zero
 
 /- English proof (translation)
-Establish `hd : (!![h.val 0 0, h.val 0 1, 0; h.val 1 0, h.val 1 1, 0; 0, 0, 1] : Matrix (Fin 3) (Fin 3) F).det ≠ 0`. Rewrite using `[det_three_points_eq_expansion]`. Conclude with `det_ne h`. Unfold `Ad3.K.GL2LocalData.em`. Rewrite using `[dif_pos hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem em_val (h : GL (Fin 2) F) : (Ad3.K.GL2LocalData.em h).val =
     !![h.val 0 0, h.val 0 1, 0; h.val 1 0, h.val 1 1, 0; 0, 0, 1] := by
@@ -41,7 +41,7 @@ theorem em_val (h : GL (Fin 2) F) : (Ad3.K.GL2LocalData.em h).val =
   rfl
 
 /- English proof (translation)
-Rewrite using `[em_val]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [LFS.blk, cat3, Matrix.mul_apply, Fin.sum_univ_three]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blk_mul_em (h : GL (Fin 2) F) (x : Fin 2 → F) :
     LFS.blk x * (Ad3.K.GL2LocalData.em h).val = cat3 h.val x := by
@@ -50,7 +50,7 @@ theorem blk_mul_em (h : GL (Fin 2) F) (x : Fin 2 → F) :
   fin_cases i <;> fin_cases j <;> simp [LFS.blk, cat3, Matrix.mul_apply, Fin.sum_univ_three]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[cat3, Matrix.mul_apply, Fin.sum_univ_two, Matrix.mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem mul_concat_column (k A : Matrix (Fin 2) (Fin 2) F) (x : Fin 2 → F) :
     k * cat3 A x = cat3 (k * A) (k *ᵥ x) := by
@@ -59,32 +59,32 @@ theorem mul_concat_column (k A : Matrix (Fin 2) (Fin 2) F) (x : Fin 2 → F) :
     simp [cat3, Matrix.mul_apply, Fin.sum_univ_two, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Simplify using `only [mp, Units.val_mul, modulus_mul, NNReal.coe_mul, Complex.ofReal_mul]`. Conclude with `Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _) s`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mp_mul (a b : Fˣ) (s : ℂ) : mp (a * b) s = mp a s * mp b s := by
   simp only [mp, Units.val_mul, modulus_mul, NNReal.coe_mul, Complex.ofReal_mul]
   exact Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _) s
 
 /- English proof (translation)
-Use `modulus_ne_zero (K := F) a.ne_zero` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem modulus_unit_ne (a : Fˣ) : (((modulus (a : F) : ℝ≥0) : ℝ) : ℂ) ≠ 0 := by
   have := modulus_ne_zero (K := F) a.ne_zero
   exact_mod_cast this
 
 /- English proof (translation)
-The claim follows from `Complex.cpow_add _ _ (modulus_unit_ne a)`.
+A detailed English derivation is pending.
 -/
 theorem mp_add (a : Fˣ) (s t : ℂ) : mp a (s + t) = mp a s * mp a t :=
   Complex.cpow_add _ _ (modulus_unit_ne a)
 
 /- English proof (translation)
-The claim follows from `Complex.cpow_one _`.
+A detailed English derivation is pending.
 -/
 theorem mp_one (a : Fˣ) : mp a 1 = ((modulus (a : F) : ℝ≥0) : ℝ) := Complex.cpow_one _
 
 /- English proof (translation)
-Establish `: ((GeneralLinearGroup.det (Ad3.K.GL2LocalData.em h) : Fˣ) : F) = ((GeneralLinearGroup.det h : Fˣ) : F)`. Simplify using `only [GeneralLinearGroup.val_det_apply]`. Rewrite using `[em_val, det_three_points_eq_expansion]`. Simplify using `only [mp, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mp_det_em (h : GL (Fin 2) F) (s : ℂ) :
     mp (GeneralLinearGroup.det (Ad3.K.GL2LocalData.em h)) s = mp (GeneralLinearGroup.det h) s := by
@@ -94,11 +94,11 @@ theorem mp_det_em (h : GL (Fin 2) F) (s : ℂ) :
   simp only [mp, this]
 
 /- English proof (translation)
-Establish `key` using `GroundTheory.Heights₂.Theta.integral_comp_mulVec (ψ := ψ) (det_ne k) (fun y => Φ (cat3 (k * h).val y) * (ψ (-((e2r k⁻¹) 0 * y 0 + (e2r k⁻¹) 1 * y 1)) : ℂ))`. Unfold `LFS.inn pFT`. Use `Eq.trans ?_ key` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `hx : (k⁻¹ : GL (Fin 2) F).val *ᵥ (k.val *ᵥ x) = x`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel]`. Simplify using the standard rewrite rules. Establish `h1 : -x 1 = -((e2r k⁻¹) 0 * (k.val *ᵥ x) 0 + (e2r k⁻¹) 1 * (k.val *ᵥ x) 1)`. Use `congrFun hx 1` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [e2r, Matrix.cons_val_zero, Matrix.cons_val_one]`. Conclude with `congrArg Neg.neg this.symm`. Establish `h2 : (k.val * LFS.blk x * (Ad3.K.GL2LocalData.em h).val) = cat3 (k * h).val (k.val *ᵥ x)`. Rewrite using `[Matrix.mul_assoc, blk_mul_em, mul_concat_column, Units.val_mul]`. Simplify using `only [h2, ← h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inn_em (ψ : AddChar F Circle) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (k h : GL (Fin 2) F) :
     LFS.inn ψ Φ k (Ad3.K.GL2LocalData.em h) =
@@ -128,19 +128,17 @@ namespace GlobalTheory.CompanionTheory.KTwoWhittakerSubgroup
 open scoped NNReal
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ W₀ Φ hΦ h`. Use `haveI : (LFS.hG ψ).IsMulRightInvariant := by`. Unfold `LFS.hG`. Use `infer_instance`. Use `set f : GL (Fin 2) F → ℂ := fun g => pFT ψ Φ g.val (e2r (h * g⁻¹)) * mp (GeneralLinearGroup.det g) (1 / 2) * W₀ (h * g⁻¹) with hf`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_mul_right_eq_self f h]`. Unfold `LFS.Wp`. Rewrite using `[mp_det_em]`. Establish `hpt : ∀ k : GL (Fin 2) F, W₀ k⁻¹ * mp (GeneralLinearGroup.det k) (3 / 2) * LFS.inn ψ Φ k (Ad3.K.GL2LocalData.em h) = (mp (GeneralLinearGroup.det h) (-(1 / 2))) * f (k * h)`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : h * (k * h)⁻¹ = k⁻¹` using `by group`. Establish `hm : ((modulus (k.val).det : ℝ≥0) : ℝ) = ((modulus ((GeneralLinearGroup.det k : Fˣ) : F) : ℝ≥0) : ℝ)`. Simplify using `only [GeneralLinearGroup.val_det_apply]`. Establish `hne` using `modulus_unit_ne (GeneralLinearGroup.det k)`. Establish `h3 : mp (GeneralLinearGroup.det k) (3 / 2) = mp (GeneralLinearGroup.det k) (1 / 2) * (((modulus ((GeneralLinearGroup.det k : Fˣ) : F) : ℝ≥0) : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite using `[← mp_one, ← mp_add]`. Evaluate the numerical expressions. Establish `hh : mp (GeneralLinearGroup.det h) (-(1 / 2)) * mp (GeneralLinearGroup.det h) (1 / 2) = 1`. Rewrite using `[← mp_add, neg_add_cancel]`. Simplify using `[mp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inn_em]`. Simplify using `only [hf, e1, map_mul, mp_mul]`. Rewrite using `[h3]`. Use `push_cast`. Rewrite using `[hm]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Establish `hmm` using `mul_inv_cancel₀ hne`. Take the linear combination `(W₀ k⁻¹ * mp (GeneralLinearGroup.det k) (1 / 2) * pFT ψ Φ (k * h).val (e2r k⁻¹)) * hmm - (pFT ψ Φ (k * h).val (e2r k⁻¹) * mp (GeneralLinearGroup.det k) (1 / 2) * W₀ k⁻¹) * hh`. Simplify using `only [hpt]`. Rewrite using `[integral_const_mul, ← mul_assoc]`. Use `congr 1`.
-
-Rewrite using `[← mp_add]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem main : Ad3.K.GL2LocalData.GodementSectionPartialFourier := by
   intro F _ _ _ _ _ _ ψ hψ W₀ Φ hΦ h

@@ -3,15 +3,15 @@ import Mathlib
 namespace Bl.general_b_fact_third_form
 
 /- English proof (translation)
-Introduce `E V _ _ _ _ _ _ _ _ Λ hΛ v`. Establish `hv : v ∈ Submodule.span E (Λ : Set V)`. Rewrite using `[hΛ.span_eq_top]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact Λ.zero_mem⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, hty⟩` from `hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s * t, mul_ne_zero hs ht, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `Λ.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `Λ.smul_mem t hsx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[mul_smul]`. Conclude with `Λ.smul_mem s hty`. Consider the case `smul a x _ hx`. Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨p, hp⟩` from `IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers E)) a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ((p.2 : NumberField.RingOfIntegers E)) • (a • x) = p.1 • x`. Rewrite using `[← algebraMap_smul E (p.2 : NumberField.RingOfIntegers E) (a • x), smul_smul, mul_comm, hp, algebraMap_smul]`. Use `⟨s * (p.2 : NumberField.RingOfIntegers E), mul_ne_zero hs (nonZeroDivisors.ne_zero p.2.2), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, key, ← mul_smul, mul_comm, mul_smul]`. Conclude with `Λ.smul_mem p.1 hsx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {E V : Type} [inst : Field.{0} E] [NumberField.{0} E] [StarRing.{0} E] [inst_3 : AddCommGroup.{0} V]

@@ -8,13 +8,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel.HT.ES
 
 /- English proof (translation)
-Introduce `Y A B _ _ k ψ ψ' hA hB hk hq`. Take `⟨-, -, h1, h2⟩` from `hq`. Take `⟨⟨hAf, hAe⟩, -⟩` from `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion A (hG := hA) hk`. Take `⟨⟨-, hBe⟩, -⟩` from `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion B (hG := hB) hk`. Rewrite `hAf`, `hAe` using `[GlobalTheory.GrpTangent.mulN_eq_pow, ← h1, Over.comp_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hBe` using `[GlobalTheory.GrpTangent.mulN_eq_pow, ← h2, Over.comp_left]`. Use `haveI := hB.proper`. Use `haveI : IsSeparated (ψ'.left ≫ A.hom) := by rw [Over.w]; infer_instance`. Use `haveI := IsSeparated.of_comp ψ'.left A.hom`. Use `haveI := FormallyUnramified.of_comp ψ'.left ψ.left`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := locallyOfFiniteType_of_comp ψ'.left ψ.left`. Use `⟨IsFinite.of_comp ψ.left ψ'.left, Etale.of_comp ψ.left ψ'.left, ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases. Use `⟨fun b => ?_⟩` and prove the remaining obligations. Establish `hu` using `hk.map (Y.evaluation ⊤ (B.hom.base b) trivial).hom`.
-
-Rewrite `hu` using `[map_natCast, Nat.cast_zero]`. Conclude with `absurd hu not_isUnit_zero`. Take `⟨-, hs, -⟩` from `GlobalTheory.UPel.HT.SiegUniqBase.flat_surjective_qc_pow Y B hB k hk0`. Rewrite `hs` using `[← h2, Over.comp_left]`. Conclude with `Surjective.of_comp ψ'.left ψ.left`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinite_etale_surjective_of_isQuasiInv : ∀ (Y : Scheme.{0}) (A B : Over Y) [GrpObj A] [GrpObj B] (k : ℕ) (ψ : A ⟶ B) (ψ' : B ⟶ A), IsAbelianScheme A → IsAbelianScheme B → IsUnit (k : Γ(Y, ⊤)) → IsQuasiInv k ψ ψ' → IsFinite ψ.left ∧ Etale ψ.left ∧ Surjective ψ.left := by
   intro Y A B _ _ k ψ ψ' hA hB hk hq

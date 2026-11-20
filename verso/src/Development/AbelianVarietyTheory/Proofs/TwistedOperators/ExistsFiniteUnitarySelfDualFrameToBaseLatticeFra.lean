@@ -25,19 +25,17 @@ variable {D : D7}
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Set `L : Submodule (𝓞 D.host.E) V.V` to `(lat γ).comap ((crd V : V.V →ₗ[D.host.E] (Fin V.rank → D.host.E)).restrictScalars (𝓞 D.host.E))`. Establish `hL : crdLat V L = lat γ` using `Submodule.map_comap_eq_of_surjective (f := (crd V : V.V →ₗ[D.host.E] (Fin V.rank → D.host.E)).restrictScalars (𝓞 D.host.E)) (crd V).surjective _`. Establish `hm : ∀ x, x ∈ L ↔ crd V x ∈ lat γ` using `fun _ => Iff.rfl`. Establish `h1 : Submodule.IsLattice D.host.E L`. Use `⟨Submodule.fg_of_fg_map_injective ((crd V : V.V →ₗ[D.host.E] (Fin V.rank → D.host.E)).restrictScalars (𝓞 D.host.E)) (crd V).injective (hL ▸ (lat_isLattice γ).fg : (crdLat V L).FG), ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Submodule.map_injective_of_injective (f := (crd V).toLinearMap) (crd V).injective` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, Submodule.map_top, LinearEquiv.range, ← (lat_isLattice γ).span_eq_top, ← hL]`. Both sides reduce to the same expression. Establish `h2 : Formalism.HermitianLatticesTheory.IsUnimodular V.hT L`. Use extensionality with `x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one]`. Rewrite using `[hm, mem_lat_iff_dual hγ]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Take `⟨y, rfl⟩` from `(crd V).surjective y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `h y hy` as an intermediate fact. Rewrite `this` using `[hT_crd D.sp.cm]`. Conclude with `this`. Introduce `h y hy`. Rewrite using `[hT_crd D.sp.cm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h _ hy`. Take `⟨k, hkG, hk⟩` from `GlobalTheory.VolumeRatioTypings.exists_conj V L h1 h2`. Use `⟨k, hkG, eq_lat (fun x => ?_) (isLattice_crdLat V V.standardTuple_isLattice)⟩` and prove the remaining obligations. Establish `hk' : ∀ y, y ∈ GlobalTheory.AdLat.hat D.host.F (crdLat V V.L0 : Set (Fin V.rank → D.host.E)) ↔ finMat D.sp.cm.sig V.gram k *ᵥ y ∈ GlobalTheory.AdLat.hat D.host.F (lat γ : Set (Fin V.rank → D.host.E))`. Rewrite using `[← hL, GlobalTheory.LevelChoices.coe_crdLat]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `GlobalTheory.LevelChoices.coe_crdLat (GlobalTheory.VolRatioCompare.reLat V L h1 h2)` as an intermediate fact. Rewrite `hk` using `[← this]`. Conclude with `hk`. Use `(hatL_of_hat _ _ _ hk' x).trans ((isFrame_lat γ _).trans ?_)` and prove the remaining obligations. Rewrite using `[mulVec_mulVec, _root_.mul_inv_rev, inv_inv, Units.val_mul]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_gfc (V : HSp D) (γ : GL (Fin V.rank) (Ef D)) (hγ : Unimod (OA D) (gramOf V γ)) :
     ∃ k ∈ Formalism.L2.Theta.GfC V, crdLat V V.L0 = lat ((Formalism.IndefR.Lev.finE V k)⁻¹ * γ) := by
@@ -84,7 +82,7 @@ end SlopeTestRemainingChoices
 end GlobalTheory.SelfDualFrameConj
 
 /- English proof (translation)
-Introduce `D V β Λ N h`. Take `⟨k, hk, hL⟩` from `GlobalTheory.SelfDualFrameConj.exists_gfc V β (GlobalTheory.StdFrames.unimod_of_isSD h)`. Use `⟨k⁻¹, inv_mem hk, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv, hL]`. Conclude with `GlobalTheory.StdFrames.isFrame_lat _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SelfDualFrameConj.frame_conj : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), IsSDFrame V β Λ N → ∃ t ∈ GfC V, IsFrame (finE V t * β) (Formalism.L2.Herm.crdLat V V.L0) := by
   intro D V β Λ N h

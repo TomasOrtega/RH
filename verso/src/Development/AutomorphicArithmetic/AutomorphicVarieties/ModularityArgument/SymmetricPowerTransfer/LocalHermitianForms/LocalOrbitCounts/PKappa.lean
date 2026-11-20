@@ -17,11 +17,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 /- English proof (translation)
-Establish `key : ∀ k, I (k + 1) + q ^ k = q ^ (k + 1)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using h1`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hs (k + 1) (by omega)]`. Combine the equalities or inequalities in the displayed calculation. Proceed by induction on `n with`. Consider the case `zero => simp [h0]`. Consider the case `succ k ih`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_range_succ, ih]`. Combine the linear relations using `[key k]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem sum_split (I : ℕ → ℕ) (q : ℕ) (h0 : I 0 = 1) (h1 : I 1 + 1 = q)
     (hs : ∀ m, 1 ≤ m → I (m + 1) = q * I m) (n : ℕ) :
@@ -41,13 +41,13 @@ private theorem sum_split (I : ℕ → ℕ) (q : ℕ) (h0 : I 0 = 1) (h1 : I 1 +
     linarith [key k]
 
 /- English proof (translation)
-Establish `key : ∀ k, (I (k + 1) : ℤ) = (q : ℤ) ^ (k + 1) + (q : ℤ) ^ k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [h1]`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hs (k + 1) (by omega)]`. Use `push_cast`. Rewrite using `[ih]`. Expand and normalize the polynomial expressions, which then agree. Proceed by induction on `n with`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Proceed by induction.
 
-Consider the case `zero => simp [h0]`. Consider the case `succ k ih`. Rewrite using `[Finset.sum_range_succ]`. Establish `e : ∑ m ∈ Finset.range (k + 1), (-1 : ℤ) ^ (k + 1 + m) * (I m : ℤ) = -∑ m ∈ Finset.range (k + 1), (-1 : ℤ) ^ (k + m) * (I m : ℤ)`. Rewrite using `[← Finset.sum_neg_distrib]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[show k + 1 + m = (k + m) + 1 by omega, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ih, key k, show k + 1 + (k + 1) = 2 * (k + 1) by omega, pow_mul]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 private theorem sum_inert (I : ℕ → ℕ) (q : ℕ) (h0 : I 0 = 1) (h1 : I 1 = q + 1)
     (hs : ∀ m, 1 ≤ m → I (m + 1) = q * I m) (n : ℕ) :
@@ -78,9 +78,9 @@ section
 variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] {Δ : K}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h hy'`. Apply `hg` to reduce the goal to its premises. Establish `e` using `PS.even_mul h (PS.even_inv hy')`. Rewrite `e` using `[show y * g * y⁻¹ = g by field_simp]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `hy'`. Establish `h1` using `(PS.even_or L hy hg0 hg).resolve_left hy'`. Establish `h2 : EvenVal O (g ^ 2)` using `⟨1, g, hg0, by simp⟩`. Establish `e` using `PS.even_mul h1 h2`. Rewrite `e` using `[show y / g * g ^ 2 = y * g by field_simp]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem ev_odd (L : IsLoc O Δ) {g y : K} (hg0 : g ≠ 0) (hg : ¬ EvenVal O g) (hy : y ≠ 0) :
     EvenVal O (y * g) ↔ ¬ EvenVal O y := by
@@ -96,11 +96,11 @@ private theorem ev_odd (L : IsLoc O Δ) {g y : K} (hg0 : g ≠ 0) (hg : ¬ EvenV
     rwa [show y / g * g ^ 2 = y * g by field_simp] at e
 
 /- English proof (translation)
-Use `haveI := L.frac`. Establish `hinj` using `IsFractionRing.injective O K`. Establish `hπ0 : algebraMap O K π ≠ 0`. Introduce `h`. Conclude with `hπ.ne_zero (hinj (by rw [h, map_zero]))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `k with`. Consider the case `zero`. Simplify using `only [pow_zero, map_one]`. Conclude with `⟨fun _ => ⟨0, rfl⟩, fun _ => ⟨1, 1, one_ne_zero, by simp⟩⟩`. Consider the case `succ k ih`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : algebraMap O K (π ^ k) ≠ 0`. Rewrite using `[map_pow]`. Conclude with `pow_ne_zero k hπ0`. Rewrite using `[pow_succ, map_mul, ev_odd L hπ0 (PS.not_even_irr L hπ) hy, Nat.even_add_one]`. Conclude with `not_congr ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ev_pow (L : IsLoc O Δ) {π : O} (hπ : Irreducible π) (k : ℕ) :
     EvenVal O (algebraMap O K (π ^ k)) ↔ Even k := by
@@ -123,65 +123,59 @@ private theorem ev_pow (L : IsLoc O Δ) {π : O} (hπ : Irreducible π) (k : ℕ
 end
 
 /- English proof (translation)
-Unfold `UpperTheory.V.Z.Sym.Loc.PKappa`. Introduce `O K _ _ _ _ _ Δ τ L hD hτ s ε hDs`. Take `⟨π, n, e, h, x, hC, hspan⟩` from `UpperTheory.exists_discriminant_normal_form O K Δ τ L hD hτ s ε hDs`. Establish `hπ : Irreducible π` using `hC.irr`. Use `haveI := L.frac`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj` using `IsFractionRing.injective O K`. Establish `hπ0 : algebraMap O K π ≠ 0`. Introduce `h0`. Conclude with `hπ.ne_zero (hinj (by rw [h0, map_zero]))`. Establish `hodd : ¬ EvenVal O (algebraMap O K π)` using `PS.not_even_irr L hπ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : ∀ m, algebraMap O K (π ^ (n + m)) ≠ 0` using `fun m => by`. Rewrite using `[map_pow]`. Conclude with `pow_ne_zero _ hπ0`. Use `set q := Nat.card (IsLocalRing.ResidueField O) with hq`. Use `set r : ℕ → ℕ := fun m => (PK.Hu O (PK.yy π m x)).relIndex (PK.Gu O τ) with hr`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r0 : r 0 = 1` using `UpperTheory.relIndex_stabilizer_order_level_zero O K Δ τ L hD π n e h x hC`. Establish `rs : ∀ m, 1 ≤ m → r (m + 1) = q * r m`. Introduce `m hm`. Establish `h1` using `(UpperTheory.stabilizer_order_level_antitone_le_units O K Δ τ L hD π n e h x hC m).1`. Establish `h2` using `(UpperTheory.stabilizer_order_level_antitone_le_units O K Δ τ L hD π n e h x hC m).2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hr]`. Rewrite using `[← Subgroup.relIndex_mul_relIndex _ _ _ h1 h2, UpperTheory.relIndex_stabilizer_succ_eq_card_residueField O K Δ τ L hD π n e h x hC m hm]`. Establish `hcount : ∀ t : Kˣ, ((PS.Gs O τ (↑t) 1).ncard : ℂ) = ∑ m ∈ Finset.range (n + 1), if EvenVal O ((t : K) * algebraMap O K (π ^ (n + m))) then (r m : ℂ) else 0`. Introduce `t`. Rewrite using `[PK.gs_count L hD hC t]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hRHS : Nat.card (O ⧸ Ideal.span {s}) = q ^ n`. Rewrite using `[hspan, UpperTheory.card_quotient_span_uniformizer_pow O K Δ τ L π hπ n]`. Rewrite using `[hRHS]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDe` using `UpperTheory.isSquare_sq_sub_four_iff_isSquare_unit O K Δ τ L hD π n e h x hC`. Establish `hL` using `hsLaw O K Δ L`. Distinguish the cases in `hsq : IsSquare (τ ^ 2 - 4)`. Establish `hE : IsSquare (e : O)` using `hDe.1 hsq`. Establish `r1 : r 1 + 1 = q` using `(UpperTheory.relIndex_stabilizer_level_one_of_isSquare_unit O K Δ τ L hD π n e h x hC).2 hE`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hall : ∀ t : Kˣ, t ∈ NE τ` using `fun t => (hsNE O K Δ τ L hD t).2 (hL.2.2.2 _ _ hD hsq)`. Take `⟨b, hb⟩` from `MonoidHom.mem_range.1 (hall (Units.mk0 (algebraMap O K π) hπ0))`. Establish `hnb' : PS.nU b = Units.mk0 (algebraMap O K π) hπ0` using `hb`. Establish `hnb : QuadraticAlgebra.norm (b : Etau K τ) = algebraMap O K π`. Rewrite using `[← PS.nU_val, hnb', Units.val_mk0]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hC13` using `UpperTheory.evenValuation_norm_compactUnits_of_split O K Δ τ L hD hsq`. Establish `hbC : b ∉ Cint O τ`. Introduce `hb'`. Use `hC13.1 b hb'` as an intermediate fact. Rewrite `this` using `[hnb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hodd this`. Establish `cover : ∀ y : (Etau K τ)ˣ, ∃ z, ∃ c ∈ Cint O τ, y = 1 * c * z ^ 2 ∨ y = b * c * z ^ 2`. Introduce `y`. Establish `hy0 : QuadraticAlgebra.norm (y : Etau K τ) ≠ 0`. Rewrite using `[← PS.nU_val]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Units.ne_zero _`. Break down `PS.even_or L hy0 hπ0 hodd with hev | hev` into its components or cases. Take `⟨z, c, hc, hyz⟩` from `hC13.2 y hev`. Conclude with `⟨z, c, hc, Or.inl (by rw [hyz, one_mul])⟩`. Establish `hev' : EvenVal O (QuadraticAlgebra.norm ((b⁻¹ * y : (Etau K τ)ˣ) : Etau K τ))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← PS.nU_val]`. Simplify using `only [map_mul, map_inv, Units.val_mul, Units.val_inv_eq_inv_val, PS.nU_val, hnb]`. Rewrite `hev` using `[div_eq_mul_inv, mul_comm]`. Then use the resulting hypothesis. Take `⟨z, c, hc, hyz⟩` from `hC13.2 _ hev'`. Conclude with `⟨z, c, hc, Or.inr (by rw [mul_assoc, ← hyz, mul_inv_cancel_left])⟩`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `uniq : ∀ z : (Etau K τ)ˣ, z ^ 2 * 1 * b⁻¹ ∈ Cint O τ → z ∈ Cint O τ`. Introduce `z hz`. It suffices to derive a contradiction. Apply `hodd` to reduce the goal to its premises. Establish `h1 : EvenVal O (QuadraticAlgebra.norm ((z ^ 2 * 1 * b⁻¹ : (Etau K τ)ˣ) : Etau K τ))` using `hC13.1 _ hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : EvenVal O (((PS.nU z : Kˣ) : K) ^ 2)` using `⟨1, _, Units.ne_zero _, by rw [Units.val_one, map_one, one_mul]⟩`. Establish `h3` using `PS.even_mul h2 (PS.even_inv h1)`. Establish `e3 : ((PS.nU z : Kˣ) : K) ^ 2 * (QuadraticAlgebra.norm ((z ^ 2 * 1 * b⁻¹ : (Etau K τ)ˣ) : Etau K τ))⁻¹ = algebraMap O K π`. Rewrite using `[← PS.nU_val, ← hnb, ← PS.nU_val]`. Simplify using `only [map_mul, map_pow, map_one, mul_one, map_inv, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite `h3` using `[e3]`. Then use the resulting hypothesis. Establish `disj : ∀ t : K, Disjoint (PS.Gs O τ t 1) (PS.Gs O τ t b)`. Introduce `t`. Rewrite using `[Set.disjoint_left]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `S ⟨_, c, hc, hg⟩ ⟨_, c', hc', hg'⟩`. Establish `hu` using `PS.gen_uniq hg hg'`. Apply `hbC` to reduce the goal to its premises. Establish `e1 : b = (1 * c) * ((1 * c)⁻¹ * (b * c')) * c'⁻¹` using `by group`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Cint O τ).mul_mem ((Cint O τ).mul_mem (by rwa [one_mul]) hu) ((Cint O τ).inv_mem hc')`. Establish `hp : ∀ t : Kˣ, pcount O τ (t : K) = ((PS.Gs O τ (↑t) 1).ncard : ℂ) + ((PS.Gs O τ (↑(t * Units.mk0 (algebraMap O K π) hπ0)) 1).ncard : ℂ)`. Introduce `t`. Rewrite using `[PS.pcount_eq L hD t 1 b cover uniq, Set.ncard_union_eq (disj _) (PS.gs_fin L hD t 1) (PS.gs_fin L hD t b), PS.gs_ncard (↑t) b, hnb', ← Units.val_mul]`. Conclude with `Nat.cast_add _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Unique (Kˣ ⧸ NE τ) := { default := 1 uniq := fun u => by`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective u`. Conclude with `(QuotientGroup.eq_one_iff a).2 (hall a) }`. Rewrite using `[finsum_unique]`. Establish `hterm : ∀ t0 : Kˣ, ∀ m ∈ Finset.range (n + 1), ((if EvenVal O ((t0 : K) * algebraMap O K (π ^ (n + m))) then (r m : ℂ) else 0) + (if EvenVal O (((t0 * Units.mk0 (algebraMap O K π) hπ0 : Kˣ) : K) * algebraMap O K (π ^ (n + m))) then (r m : ℂ) else 0)) = (r m : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `t0 m _`. Rewrite using `[Units.val_mul, Units.val_mk0, show (t0 : K) * algebraMap O K π * algebraMap O K (π ^ (n + m)) = (t0 : K) * algebraMap O K (π ^ (n + m)) * algebraMap O K π by ring, ev_odd L hπ0 hodd (mul_ne_zero (Units.ne_zero t0) (hP m))]`. Distinguish the cases in `hE : EvenVal O ((t0 : K) * algebraMap O K (π ^ (n + m)))`. Rewrite using `[if_pos hE, if_neg (not_not.2 hE), add_zero]`. Rewrite using `[if_neg hE, if_pos hE, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hL.2.2.2 _ _ hD hsq, one_mul, hp, hcount, hcount, ← Finset.sum_add_distrib, Finset.sum_congr rfl (hterm _)]`. Conclude with `sum_split r q r0 r1 rs n` after adjusting the coercions. Establish `hE : ¬ IsSquare (e : O)` using `fun h' => hsq (hDe.2 h')`. Establish `r1 : r 1 = q + 1` using `(UpperTheory.relIndex_stabilizer_level_one_of_isSquare_unit O K Δ τ L hD π n e h x hC).1 hE`. Establish `hCt : Cint O τ = ⊤` using `UpperTheory.compactTorusUnits_eq_top_of_nonsplit O K Δ τ L hD hsq`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨⟨g, hg⟩, hfin⟩` from `UpperTheory.finsum_quotient_norms_of_nonsplit O K Δ τ L hD hsq`. Establish `cover : ∀ y : (Etau K τ)ˣ, ∃ z, ∃ c ∈ Cint O τ, y = 1 * c * z ^ 2 ∨ y = 1 * c * z ^ 2` using `fun y => ⟨1, y, by rw [hCt]; exact Subgroup.mem_top _, Or.inl (by simp)⟩`. Establish `uniq : ∀ z : (Etau K τ)ˣ, z ^ 2 * 1 * 1⁻¹ ∈ Cint O τ → z ∈ Cint O τ` using `fun z _ => by rw [hCt]; exact Subgroup.mem_top _`. Establish `hp : ∀ t : Kˣ, pcount O τ (t : K) = ((PS.Gs O τ (↑t) 1).ncard : ℂ)`. Introduce `t`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[PS.pcount_eq L hD t 1 1 cover uniq, Set.union_self]`. Establish `hGs : ∀ (t : K) (a : (Etau K τ)ˣ), PS.Gs O τ t a = PS.Gs O τ t 1`. Introduce `t a`. Use extensionality with `S`. Simplify using `only [PS.Gs, Set.mem_setOf_eq, hCt, Subgroup.mem_top, true_and, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hf, c, hc⟩`. Conclude with `⟨hf, a * c, hc⟩`. Introduce and unpack `⟨hf, c, hc⟩`. Conclude with `⟨hf, a⁻¹ * c, by rwa [mul_inv_cancel_left]⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : algebraMap O K s ≠ 0`. Introduce `h0`. Apply `hD` to reduce the goal to its premises. Rewrite using `[hDs, map_mul, map_pow, h0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hDv : EvenVal O (τ ^ 2 - 4)` using `⟨ε, algebraMap O K s, hs0, by rw [hDs, map_mul, map_pow]⟩`. Establish `hg1 : hs (τ ^ 2 - 4) (g : K) = -1`. Establish `h1 : ¬ hs (τ ^ 2 - 4) (g : K) = 1` using `fun h' => hg ((hsNE O K Δ τ L hD g).2 h')`. Unfold `UpperTheory.V.Z.Sym.Loc.hs at h1 ⊢`. Use `split_ifs at h1 ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd rfl h1`. Both sides reduce to the same expression. Establish `hgodd : ¬ EvenVal O (g : K)` using `fun hev => by`. Establish `h2` using `hL.2.1 _ _ hDv hev`. Rewrite `h2` using `[hg1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Evaluate the numerical expressions using `at h2`. Establish `hinv : ∀ t ∈ NE τ, ∀ y : Kˣ, hs (τ ^ 2 - 4) ((t * y : Kˣ) : K) * pcount O τ ((t * y : Kˣ) : K) = hs (τ ^ 2 - 4) (y : K) * pcount O τ (y : K)`. Introduce `t ht y`. Take `⟨a, ha⟩` from `MonoidHom.mem_range.1 ht`. Establish `ha' : PS.nU a = t` using `ha`.
-
-Rewrite using `[Units.val_mul, hsMul O K Δ L _ _ _ hD (Units.ne_zero _) (Units.ne_zero _), (hsNE O K Δ τ L hD t).1 ht, one_mul, ← Units.val_mul, hp, hp]`. Use `congr 1`. Rewrite using `[Units.val_mul, mul_comm, ← ha', ← PS.gs_ncard, hGs]`. Establish `hf` using `hfin (fun t : Kˣ => hs (τ ^ 2 - 4) (t : K) * pcount O τ (t : K)) hinv g hg`. Rewrite using `[hf]`.
-
-Establish `hterm : ∀ m ∈ Finset.range (n + 1), ((if EvenVal O (((1 : Kˣ) : K) * algebraMap O K (π ^ (n + m))) then (r m : ℂ) else 0) + -(if EvenVal O ((g : K) * algebraMap O K (π ^ (n + m))) then (r m : ℂ) else 0)) = (-1 : ℂ) ^ (n + m) * (r m : ℂ)`. Introduce `m _`. Rewrite using `[Units.val_one, one_mul, ev_pow L hπ, mul_comm (g : K), ev_odd L (Units.ne_zero g) hgodd (hP m), ev_pow L hπ]`. Distinguish the cases in `hev : Even (n + m)`. Simplify using `[hev, hev.neg_one_pow]`.
-
-Simplify using `[hev, (Nat.not_even_iff_odd.1 hev).neg_one_pow]`. Rewrite using `[(hsNE O K Δ τ L hD 1).1 (NE τ).one_mem, hg1, hp, hp, hcount, hcount, one_mul, neg_one_mul, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib, Finset.sum_congr rfl hterm]`. Conclude with `sum_inert r q r0 r1 rs n` after adjusting the coercions.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.pKappa :
     UpperTheory.V.Z.Sym.Loc.PKappa := by

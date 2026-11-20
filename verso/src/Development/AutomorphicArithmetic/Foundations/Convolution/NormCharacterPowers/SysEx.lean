@@ -7,19 +7,19 @@ open UpperTheory.ConvolutionTheory.R
 
 open NumberField IsDedekindDomain Formalism.L2.Host GlobalTheory.CuspRep PositivityTheory.RgJS in
 /- English proof (translation)
-Introduce `E _ _ _ X hfin hX`. Establish `hRSU : RSU` using `rankin_selberg_unitary_of_pole norm_exponent_equality satake_twist_holds PositivityTheory.AdelicQuotientData.rsPole`. Establish `hBd : GlobalTheory.Published.JacquetShalikaBound` using `PositivityTheory.JacquetShalikaLocal.jacquetShalikaBound`. Establish `hDO : DetOne` using `determinant_one_condition_holds`. Establish `hPO : PrimeOff` using `prime_sum_converges_and_diverges`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Fintype X` using `hfin.fintype`. Use `choose S0 hS0 using fun x y : X => hRSU E x.1.1 y.1.1 x.1.2 y.1.2 (hX x x.2).1 (hX y y.2).1 (hX x x.2).2.1 (hX y y.2).2.1`. Establish `hw : ∀ᶠ w in Filter.cofinite, ∀ x : X, ∃ B, x.1.2.HasSat w B` using `Filter.eventually_all.2 fun x => (hX x x.2).2.2`. Use `⟨(Filter.eventually_cofinite.1 hw).toFinset ∪ Finset.univ.biUnion (fun p : X × X => S0 p.1 p.2), fun S hS => ?_⟩` and prove the remaining obligations. Establish `hex : ∀ (x : X) (w : Off E S), ∃ f : Fin x.1.1 → ℂˣ, x.1.2.HasSat w.1 (Finset.univ.val.map f)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x w`. Establish `h : ∀ x : X, ∃ B, x.1.2.HasSat w.1 B`. Assume the negation of the conclusion as `h`. Conclude with `w.2 (hS (Finset.mem_union_left _ (by rw [Set.Finite.mem_toFinset]; exact h)))`. Take `⟨B, hB⟩` from `h x`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨f, hf⟩` from `RigidityLemmas.exists_fin _ hB.card`. Conclude with `⟨f, hf ▸ hB⟩`. Use `choose α hα using hex`. Establish `hsub : ∀ x y : X, S0 x y ⊆ S` using `fun x y z hz => hS (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨(x, y), Finset.mem_univ _, hz⟩))`. Use `⟨α, hα, hPO E S, fun x => (hX x x.2).1, fun x w a => ?_, fun x w => ?_, fun x y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `(hBd E x.1.1 x.1.2 (hX x x.2).2.1 w.1 _ (hα x w) (α x w a) (Multiset.mem_map_of_mem _ (Finset.mem_univ_val _))).2 show ‖((α x w a : ℂˣ) : ℂ)‖ ≤ Real.sqrt ((Ideal.absNorm w.1.asIdeal : ℕ) : ℝ)`. Rewrite using `[Real.sqrt_eq_rpow]`. Conclude with `h.le`. Establish `h` using `hDO E x.1.1 x.1.2 w.1 _ (hX x x.2).2.1 (hα x w)`. Rewrite `h` using `[← Finset.prod_eq_multiset_prod, Units.coe_prod]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `h`. Take `⟨F, σ₀, hF, hFe⟩` from `hS0 x y S (hsub x y) (α x) (α y) (hα x) (hα y)`. Use `⟨F, σ₀, hF, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[hFe σ hσ]`. Distinguish the cases in `hxy : x = y`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Substitute `hxy` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Both sides reduce to the same expression. Rewrite using `[if_neg (fun h => hxy (Subtype.ext (by simpa using h))), if_neg hxy]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R.sysEx :
     SysEx := by

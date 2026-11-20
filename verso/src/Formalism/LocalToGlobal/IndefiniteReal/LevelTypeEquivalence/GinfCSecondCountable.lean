@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable (D : D7)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `G5.af_facts D.host.F`. Conclude with `G5.ha_facts (AF D.host.F) D.sp.cm.deg2 D.sp.cm.sig V.gram`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ga_facts (V : HSp D) :
     IsTopologicalGroup (GA D V) ∧ T2Space (GA D V) ∧ LocallyCompactSpace (GA D V) ∧
@@ -22,7 +22,7 @@ theorem ga_facts (V : HSp D) :
   exact G5.ha_facts (AF D.host.F) D.sp.cm.deg2 D.sp.cm.sig V.gram
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `G5.af_facts D.host.F`. Conclude with `G5.tens_facts (AF D.host.F) D.sp.cm.deg2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ae_facts : IsTopologicalRing (AE D) ∧ T2Space (AE D) ∧ LocallyCompactSpace (AE D) ∧
     SecondCountableTopology (AE D) ∧ BorelSpace (AE D) := by
@@ -30,38 +30,38 @@ theorem ae_facts : IsTopologicalRing (AE D) ∧ T2Space (AE D) ∧ LocallyCompac
   exact G5.tens_facts (AF D.host.F) D.sp.cm.deg2
 
 /- English proof (translation)
-Introduce `V` and use `G5.hfin_disc D.sp.cm.sig V.gram`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gQDiscrete_holds : GQDiscrete D := fun V => G5.hfin_disc D.sp.cm.sig V.gram
 
 /- English proof (translation)
-The claim follows from `G5.hfin_countable D.sp.cm.sig V.gram`.
+A detailed English derivation is pending.
 -/
 theorem gQ_countable (V : HSp D) : Countable (GQ V) := G5.hfin_countable D.sp.cm.sig V.gram
 
 /- English proof (translation)
-Take `⟨h1, -, -, -, h5⟩` from `ga_facts D V`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem measurableMul_GA (V : HSp D) : MeasurableMul (GA D V) := by
   obtain ⟨h1, -, -, -, h5⟩ := ga_facts D V
   infer_instance
 
 /- English proof (translation)
-Take `⟨h1, -, -, h4, h5⟩` from `ga_facts D V`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem measurableMul₂_GA (V : HSp D) : MeasurableMul₂ (GA D V) := by
   obtain ⟨h1, -, -, h4, h5⟩ := ga_facts D V
   infer_instance
 
 /- English proof (translation)
-Take `⟨-, -, -, h4, -⟩` from `ga_facts D V`. Conclude with `Topology.IsInducing.subtypeVal.secondCountableTopology`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gfC_secondCountable (V : HSp D) : SecondCountableTopology (GfC V) := by
   obtain ⟨-, -, -, h4, -⟩ := ga_facts D V
   exact Topology.IsInducing.subtypeVal.secondCountableTopology
 
 /- English proof (translation)
-Introduce `V` and use `by obtain ⟨h1, -, -, h4, h5⟩ := ga_facts D V have := gQDiscrete_holds D V exact G5.fdom_exists_all (GQ V)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fundDomExists_holds : FundDomExists D := fun V => by
   obtain ⟨h1, -, -, h4, h5⟩ := ga_facts D V

@@ -15,11 +15,11 @@ namespace GlobalTheory.BesCover
 open GlobalTheory.Per GlobalTheory.Per.Inhab
 
 /- English proof (translation)
-Take `⟨K, hK, hcov⟩` from `GlobalTheory.Mem.AnisoQuotient.exists_compact D A hA`. Take `⟨K', hK', hcov'⟩` from `(GlobalTheory.Mem.UnipCocompact.radicals_cocompact D B _ _ he).1`. Take `⟨s, hc, hs, hq⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D B A ι hι`. Take `⟨-, -, -, -, _, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Take `rfl : t = s` from `funext fun h => (hs h _).1 (ht h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(fun q : GA D A × NFlag B e => (q.2 : GA D B) * s q.1) '' (K ×ˢ K'), (hK.prod hK').image ((continuous_subtype_val.comp continuous_snd).mul (hc.comp continuous_fst)), fun g n => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, rfl⟩` from `hcov g`. Take `⟨γ', hγ', k', hk', e⟩` from `hcov' ⟨_, hnorm _ γ⁻¹ ((hs _ _).2 rfl) n n.2⟩`. Establish `e' : s γ⁻¹ * n * (s γ⁻¹)⁻¹ = (γ' : GA D B) * k'` using `congrArg Subtype.val e`. Establish `e1 : (n : GA D B) = s γ * (γ' * k') * (s γ)⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e']`. Simplify using `only [map_inv, inv_inv, mul_assoc, mul_inv_cancel_left, mul_inv_cancel, mul_one]`. Use `⟨(s γ * γ')⁻¹, inv_mem (mul_mem (hq γ hγ) hγ'), (k, k'), ⟨hk, hk'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Simplify using `only [map_mul, mul_inv_rev, mul_assoc, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_compact_cover {D : D7} {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V} {ρ : ℕ}
     {e : Matrix (Fin B.rank) (Fin ρ) D.host.E} (he : IsIsoSub B e) (hι : HSpace.IsIsomEmb A B ι) (hA : IsAniso A)
@@ -43,9 +43,9 @@ theorem exists_compact_cover {D : D7} {A B : HSp D} {ι : A.V →ₗ[D.host.E] B
   simp only [map_mul, mul_inv_rev, mul_assoc, inv_mul_cancel_left]
 
 /- English proof (translation)
-Introduce `D T L sc G W M _`. Establish `hV` using `G.isV (X := .top 0) (Nat.zero_le _) (fun j e => by cases e)`. Establish `hA : IsAniso (G.V (.top 0))` using `GlobalTheory.Per.isAniso_of_posDef hV.sigOK fun τ => by`. Rewrite using `[hV.sig τ, hV.rank]`. Simplify using `[Node.neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hι` using `(G.rowDec 0 (by have := D.R.two_le_m; omega)).isom`. Establish `hs : ∀ h, EmbRel _ _ (G.rowDec 0 (by have` using `D.R.two_le_m; omega)).ι (embTop G h) h := fun h => (embRel_iff _ h _).2 rfl`. Conclude with `exists_compact_cover G.besTop.e_iso hι hA (fun δ γ h n hn => (GlobalTheory.BesselChar.besChar_conj W.ψ G.besTop δ γ h n hn).1) hs`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bplus_cover : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (M : Vol G), M.IsRow →
     ∃ Ω : Set (GA D (G.V (.grid D.R.m 0))), IsCompact Ω ∧ ∀ (h : GA D (G.V (.top 0))) (n : NFlag (G.V (.grid D.R.m 0)) G.besTop.e),

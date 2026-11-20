@@ -30,7 +30,7 @@ theorem val_halfE (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E]
 open scoped TensorProduct in
 open NumberField in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.Eis.Conv.halfE, _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Algebra.TensorProduct.algebraMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.Eis.Conv.sigR_halfE {F E : Type} [Field F] [NumberField F] [Field E]
     [Algebra F E] (σ : E →ₐ[F] E) :

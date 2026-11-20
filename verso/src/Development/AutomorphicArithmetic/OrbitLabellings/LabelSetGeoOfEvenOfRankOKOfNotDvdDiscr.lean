@@ -23,15 +23,15 @@ private def pairColsS (n : ℕ) : Fin (n / 2) × Fin 2 ↪ Fin n where
     exact Prod.ext (Fin.ext (by simp only; omega)) (Fin.ext (by simp only; omega))
 
 /- English proof (translation)
-Introduce `hUp E _ _ _ H Dw lv Xo c _ hstar T io y C3 C _ _ V ι hι k Y hY halg Orb _ d _ lab ha hdisc hev hr hbig hj a ga hsupp htie nW ν hν`. Establish `hg : LabSGeo C3 ι Y lab` using `UpperTheory.labelSetGeo_of_labelSetArith E H Dw lv Xo c hstar T io y C3 C V ι hι k Y hY Orb d lab ha`. Establish `hR2 : RankMaximalSelfCharts Xo c` using `rank_maximal_self_charts_of_nondegenerate Xo c rank_maximal_self_unconditional (GlobalTheory.T.biextension_nondegenerate_mod_maximalIdeal_integral_chart E H Dw lv Xo c)`. Establish `hCart : CartSelfSt` using `cartesian_self_conj_of_stability ptSelf_holds hStabSelf_holds`. Establish `Hy : ∀ o, (Y.rawSelf (selfOfLab ha hg o)).Hyps V` using `fun o => { charZero := inferInstance algClosed := Y.algClosed l_odd := Y.l_odd k_unit := Y.k_unit cartH := hCart C V (𝓞 E) _ Y d _ (selfOfLab ha hg o) rank := rankHyp_ofLabS ha hg hr o axes := axesSelf_holds C V (𝓞 E) _ Y d _ (selfOfLab ha hg o) G0 := SelfConjugateGermZero.germ_z …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hty : ∀ o (g : Fin 2) (x : lab.II Dw o), ((rdS Y (selfOfLab ha hg) Hy o).G g).ty (Sum.inl x) = if g = 0 then x.1 else x.1 + lab.hd` using `fun _ _ _ => rfl`. Establish `hrk : ∀ o g t, (rdS Y (selfOfLab ha hg) Hy o).rkF g t = Dw.mult (lab.tau o (idxS lab.hd g t))` using `fun o g t => rkF_sigmaS (m := fun s => Dw.mult (lab.tau o s)) lab.hd _ (hty o) g t`. Establish `hrk0 : ∀ o s, (rdS Y (selfOfLab ha hg) Hy o).rkF 0 s = Dw.mult (lab.tau o s)` using `fun o s => hrk o 0 s`. Establish `hrk1 : ∀ o s, (rdS Y (selfOfLab ha hg) Hy o).rkF 1 (s + lab.hd) = (rdS Y (selfOfLab ha hg) Hy o).rkF 0 s`. Introduce `o s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hrk0, hrk]`. Establish `e : idxS lab.hd 1 (s + lab.hd) = s`. Unfold `idxS`. Rewrite using `[if_neg (by decide), add_sub_cancel_right]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : ∀ o, (rdS Y (selfOfLab ha hg) Hy o).Alt` using `fun o => ⟨hev, hbig o⟩`. Establish `hsupp' : ∀ o s k', ga o s k' ≠ 0 → 1 ≤ k' ∧ k' ≤ (rdS Y (selfOfLab ha hg) Hy o).rkF 0 s`. Introduce `o s k' h`. Rewrite using `[hrk0]`. Conclude with `hsupp o s k' h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun o => rdS Y (selfOfLab ha hg) Hy o, fun o => stdFlagS (m := fun s => Dw.mult (lab.tau o s)) lab.hd _ (hty o), fun o => ⟨rfl, rfl, hA o, hrk0 o⟩, ?_⟩` and prove the remaining obligations. Conclude with `UpperTheory.valBlocksS_of_blkMemS C V d lab.hd ha.hd_two Orb _ _ _ (nW / 2) _ ν (RF.valO_self Y (selfOfLab ha hg) Hy (chartLetterSystem C3 V ι a) nW ν (hν.trans (descent_holds Xo c T io y C3 C V ι hι k Y hY a nW)) (selfSep_ofLab ha hg) (valuation_eq_self_of_unit_germ Y _ _ _ nW ( …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.labelSetGeo_of_even_of_rankOK_of_not_dvd_discr :
     (∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.UpFSt p) →

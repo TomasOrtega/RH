@@ -13,7 +13,7 @@ section General
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Use `show g ∈ RingHom.ker (mConeMap y)`. Rewrite using `[RingHom.mem_ker, ProjLine.mConeMap_eq_of_isMultiHomog y hg, h0, map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_aeval (y : (Σ k, ι k) → Ω) {g : MRing ι} {d : K → ℕ}
     (hg : IsMultiHomog g d) (h0 : aeval y g = 0) : g ∈ mCoordIdeal y := by
@@ -21,25 +21,25 @@ theorem mem_of_aeval (y : (Σ k, ι k) → Ω) {g : MRing ι} {d : K → ℕ}
   rw [RingHom.mem_ker, ProjLine.mConeMap_eq_of_isMultiHomog y hg, h0, map_zero, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[eval_map, aeval_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_map_eq (z : (Σ k, ι k) → ℂ) (f : MRing ι) :
     eval z (map (Int.castRingHom ℂ) f) = aeval z f := by
   rw [eval_map, aeval_def]; rfl
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [ptsOver, mcPts, Set.mem_setOf_eq, eval_map_eq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ptsOver_complex (P : Ideal (MRing ι)) : ptsOver ℂ P = mcPts P := by
   ext z
   simp only [ptsOver, mcPts, Set.mem_setOf_eq, eval_map_eq]
 
 /- English proof (translation)
-Take `⟨dg, dh, g, h, hg, hh, hd, e1, n1, v1⟩` from `h`. Take `⟨dg', dh', g', h', hg', hh', hd', e1', n1', v1'⟩` from `h'`. Establish `hdeg : dg' + dh = dg + dh'`. Use function extensionality and compare the values at `k`. Use `hd k` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `hd' k` as an intermediate fact. Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Establish `hom : IsMultiHomog (g * h' + -(g' * h)) (dg + dh')` using `ProjLine.mhAdd (ProjLine.mhMul hg hh') (ProjLine.mhNeg (hdeg ▸ ProjLine.mhMul hg' hh))`. Establish `h0` using `hz.2 _ (mem_of_aeval y hom (by simp only [map_add, map_neg, map_mul, e1, e1']; ring))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_neg, map_mul, v1, v1'] at h0`. Establish `: (w - w') * (aeval z h * aeval z h') = 0` using `by linear_combination h0`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_right (mul_ne_zero n1 n1'))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasVal_unique (y : (Σ k, ι k) → Ω) (a : K → ℤ) (s : Ω) {𝕜 : Type} [Field 𝕜]
     {z : (Σ k, ι k) → 𝕜} (hz : z ∈ ptsOver 𝕜 (mCoordIdeal y)) {w w' : 𝕜}
@@ -58,7 +58,7 @@ theorem hasVal_unique (y : (Σ k, ι k) → Ω) (a : K → ℤ) (s : Ω) {𝕜 :
   exact sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_right (mul_ne_zero n1 n1'))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨d, 0, g, 1, hg, ProjLine.isMultiHomog_one, fun k => by simp, by simp, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasVal_form (y : (Σ k, ι k) → Ω) {g : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d)
     {𝕜 : Type} [Field 𝕜] (z : (Σ k, ι k) → 𝕜) :
@@ -66,7 +66,7 @@ theorem hasVal_form (y : (Σ k, ι k) → Ω) {g : MRing ι} {d : K → ℕ} (hg
   ⟨d, 0, g, 1, hg, ProjLine.isMultiHomog_one, fun k => by simp, by simp, by simp, by simp⟩
 
 /- English proof (translation)
-Use `⟨⟨0, ProjLine.isMultiHomog_one⟩, fun h => ?_⟩` and prove the remaining obligations. Establish `: mConeMap y 1 = 0` using `h`. Simplify using `at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem one_off (y : (Σ k, ι k) → Ω) : IsFormOff (mCoordIdeal y) 1 := by
   refine ⟨⟨0, ProjLine.isMultiHomog_one⟩, fun h => ?_⟩
@@ -74,11 +74,11 @@ theorem one_off (y : (Σ k, ι k) → Ω) : IsFormOff (mCoordIdeal y) 1 := by
   simp at this
 
 /- English proof (translation)
-Establish `key : ∀ {𝕜 : Type} [Field 𝕜] {z : (Σ k, ι k) → 𝕜}, z ∈ ptsOver 𝕜 (mCoordIdeal y) → ∀ w, HasVal y (L.a - L.a) 1 z w → w = 1`. Introduce `𝕜 _ z hz w hw`. Use `hasVal_unique y _ _ hz hw ?_` and prove the remaining obligations. Use `hasVal_form y (ProjLine.isMultiHomog_one (ι := ι)) z` as an intermediate fact. Simplify `this` using `[sub_self, Pi.zero_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨1, 1, ∅, 0, 0, one_ne_zero, one_off y, by simp, by simp, by simp, by simp, ⟨?_, ?_⟩, by simp [embMean]⟩` and prove the remaining obligations. Introduce `p _ z hz _ w hw`. Simplify using `[key hz.1 w hw]`. Introduce `sg z hz _ _ w hw`. Rewrite `hz` using `[← ptsOver_complex]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[key hz w hw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hasMultiplier_refl (y : (Σ k, ι k) → Ω) (F : Type) [Field F] [NumberField F] [Algebra F Ω]
     (L : HermLine ι) : HasMultiplier y F L L 0 := by
@@ -97,15 +97,15 @@ theorem hasMultiplier_refl (y : (Σ k, ι k) → Ω) (F : Type) [Field F] [Numbe
     simp [key hz w hw]
 
 /- English proof (translation)
-Introduce `d g h θ hg hh e`. Establish `hC : ∀ r : ℤ, IsMultiHomog (C r : MRing ι) 0` using `by classical`. Introduce `r m hm k`. Rewrite `hm` using `[mem_support_iff, coeff_C]`. Use `split_ifs at hm with h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Conclude with `absurd rfl hm`. Establish `hom : IsMultiHomog (C (θ.den : ℤ) * g + -(C θ.num * h)) (0 + d)` using `ProjLine.mhAdd (ProjLine.mhMul (hC _) hg) (ProjLine.mhNeg (ProjLine.mhMul (hC _) hh))`. Establish `h0` using `hz.2 _ (mem_of_aeval y hom (by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_neg, map_mul, e, eq_intCast, map_intCast, map_natCast, eq_ratCast, Int.cast_natCast]`. Establish `: (θ.den : Ω) * (θ : Ω) = θ.num` using `by exact_mod_cast Rat.den_mul_eq_num θ`. Rewrite using `[← this]`. Use the proof step `ring))`. Rewrite `h0` using `[eval_map_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[eval_map_eq, eval_map_eq]`. Simplify using `only [map_add, map_neg, map_mul, eq_intCast, map_intCast, map_natCast, Int.cast_natCast] at h0`. Establish `h1 : (θ.den : ℂ) * (θ : ℂ) = θ.num` using `by exact_mod_cast Rat.den_mul_eq_num θ`. Establish `h2 : (θ.den : ℂ) ≠ 0` using `by exact_mod_cast θ.den_ne_zero`. Rewrite using `[eq_ratCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `mul_left_cancel₀ h2` to reduce the goal to its premises. Rewrite using `[← mul_assoc, h1]`. Take the linear combination `h0`.
+A detailed English derivation is pending.
 -/
 theorem liesOver_rat [CharZero Ω] (y : (Σ k, ι k) → Ω) (sg : ℚ →+* ℂ) {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal y)) : LiesOver y sg z := by
@@ -140,7 +140,7 @@ end General
 open ProjLine
 
 /- English proof (translation)
-The claim follows from `le_rfl arith := isArithVar_y' bir := birational_y uniq z hz := ⟨Rat.castHom ℂ, liesOver_rat y _ hz, fun _ _ => Subsingleton.elim _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem isModelOver_line : IsModelOver (ι := GlobalTheory (Fin 2)) y ℚ 1 where
   one_le := le_rfl
@@ -149,7 +149,7 @@ theorem isModelOver_line : IsModelOver (ι := GlobalTheory (Fin 2)) y ℚ 1 wher
   uniq z hz := ⟨Rat.castHom ℂ, liesOver_rat y _ hz, fun _ _ => Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⊥, bot_le, isSemipositiveRel_fs _ _⟩ conj := isConjInvariantH_fs _ nef := ProjLine.nefOnFibres_of_nonneg _ _ fun _ => zero_le_one`.
+Supply the required witnesses or components.
 -/
 theorem isNefH_line : IsNefH (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) fsLine1 where
   semipos := ⟨⊥, bot_le, isSemipositiveRel_fs _ _⟩
@@ -157,13 +157,13 @@ theorem isNefH_line : IsNefH (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) fsLine
   nef := ProjLine.nefOnFibres_of_nonneg _ _ fun _ => zero_le_one
 
 /- English proof (translation)
-The claim follows from `PiLp.norm_apply_le (WithLp.toLp 2 z) p`.
+A detailed English derivation is pending.
 -/
 theorem coord_le_fs (z : Ix (Fin 2) → ℂ) (p : Ix (Fin 2)) : ‖z p‖ ≤ fsLine1.h z :=
   PiLp.norm_apply_le (WithLp.toLp 2 z) p
 
 /- English proof (translation)
-The claim follows from `one_pos semipos := ⟨⊥, bot_le, isSemipositiveRel_fs _ _⟩ conj := isConjInvariantH_fs _ mono := ⟨fun _ => 1, rfl, fun z _ μ hμ => by have h1 : ∑ p, μ p = 1 := by rw [Fintype.sum_sigma, Fintype.sum_unique]; exact hμ _ rw [norm_prod, one_mul] calc ∏ p, ‖z p ^ μ p‖ ≤ ∏ p, fsLine1.h z …`.
+A detailed English derivation is pending.
 -/
 theorem isGenH_line : IsGenH (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) fsLine1 1 where
   pos := one_pos
@@ -181,15 +181,15 @@ theorem isGenH_line : IsGenH (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) fsLine
 def triv : HermLine (GlobalTheory (Fin 2)) := HermLine.ofWeight (fun _ => 0) (fun _ _ _ => rfl)
 
 /- English proof (translation)
-Establish `hX : IsMultiHomog (X ⟨(), 1⟩ : MRing (GlobalTheory (Fin 2))) (fun _ => 1)`. Use `isMultiHomog_X (ι := GlobalTheory (Fin 2)) ⟨(), 1⟩ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Establish `key : ∀ {𝕜 : Type} [Field 𝕜] {z : Ix (Fin 2) → 𝕜}, z ∈ ptsOver 𝕜 (mCoordIdeal (ι` using `GlobalTheory (Fin 2)) y) → ∀ w, HasVal (ι := GlobalTheory (Fin 2)) y (fsLine1.a - triv.a) (y ⟨(), 1⟩) z w → w = z ⟨(), 1⟩ := by`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `𝕜 _ z hz w hw`. Use `hasVal_unique y _ _ hz hw ?_` and prove the remaining obligations. Use `hasVal_form y hX z` as an intermediate fact. Simplify using `only [aeval_X] at this`. Establish `e : fsLine1.a - triv.a = fun _ => ((1 : ℕ) : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Simplify using `[triv, HermLine.ofWeight, HermLine.ofCone]`. Rewrite using `[e]`. Conclude with `this`. Establish `hne : y ⟨(), 1⟩ ≠ 0` using `linearIndependent_y.ne_zero _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y ⟨(), 1⟩, 1, ∅, 0, 0, hne, one_off y, by simp, by simp, by simp, by simp, ⟨?_, ?_⟩, by simp [embMean]⟩` and prove the remaining obligations. Introduce `p _ z hz _ w hw`. Rewrite using `[key hz.1 w hw]`. Use `norm_le_pi_norm (fun i : Fin 2 => z ⟨(), i⟩) 1` as an intermediate fact. Simplify `this` using `[supMet, triv, HermLine.ofWeight, HermLine.ofCone]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `sg z hz _ _ w hw`. Rewrite `hz` using `[← ptsOver_complex]`. Rewrite using `[key hz w hw]`. Use `coord_le_fs z ⟨(), 1⟩` as an intermediate fact. Simplify `this` using `[triv, HermLine.ofWeight]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasMultiplier_line : HasMultiplier (ι := GlobalTheory (Fin 2)) y ℚ triv fsLine1 0 := by
   have hX : IsMultiHomog (X ⟨(), 1⟩ : MRing (GlobalTheory (Fin 2))) (fun _ => 1) := by
@@ -219,19 +219,19 @@ theorem hasMultiplier_line : HasMultiplier (ι := GlobalTheory (Fin 2)) y ℚ tr
     simpa [triv, HermLine.ofWeight] using this
 
 /- English proof (translation)
-Establish `hv : ∀ {𝕜 : Type} [Field 𝕜] [CharZero 𝕜] (z : Ix (Fin 2) → 𝕜), HasVal (ι` using `GlobalTheory (Fin 2)) y (L.a - L.a) 2⁻¹ z (2⁻¹ : 𝕜) := by`. Introduce `𝕜 _ _ z`. Use `⟨0, 0, 1, 1 + 1, isMultiHomog_one, mhAdd isMultiHomog_one isMultiHomog_one, by simp, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_one, map_add]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Simplify using `only [map_one, map_add]`. Evaluate the numerical expressions. Simplify using `only [map_one, map_add]`. Evaluate the numerical expressions. Establish `hp : ∀ (𝕜 : Type) [Field 𝕜], (1 : Ix (Fin 2) → 𝕜) ∈ ptsOver 𝕜 (mCoordIdeal (ι` using `GlobalTheory (Fin 2)) y) := by`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Introduce `𝕜 _`. Use `⟨fun _ => ⟨0, one_ne_zero⟩, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite `hf` using `[mCoordIdeal_y, Ideal.mem_bot]`. Simplify using `[hf]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use `H.fin 2 1 ⟨hp _, fun _ => isAlgebraic_one⟩ (by simp) _ (hv 1)` as an intermediate fact. Establish `h1 : supMet L.a (1 : Ix (Fin 2) → PadicAlgCl 2) = 1`. Establish `: ‖fun _ : Fin 2 => (1 : PadicAlgCl 2)‖ = 1` using `by simp`. Simplify using `[supMet, this]`. Establish `h2 : ‖(2 : PadicAlgCl 2)‖ = 2⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `PadicAlgCl.norm_extends (p := 2) (2 : ℚ_[2])` as an intermediate fact. Establish `h3 : ‖(2 : ℚ_[2])‖ = 2⁻¹` using `by simpa using (Padic.norm_p (p := 2))`. Rewrite using `[← h3, ← this]`. Use `congr 1`. Rewrite `this` using `[h1, norm_inv, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Establish `hz` using `hp ℂ`. Rewrite `hz` using `[ptsOver_complex]`. Use `H.arch _ 1 hz (liesOver_rat y (Rat.castHom ℂ) hz) (by simp) _ (hv 1)` as an intermediate fact. Establish `hpos` using `L.pos 1 hz.1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `le_of_mul_le_mul_right this hpos`. Simplify using `using h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem multBound_half (L : HermLine (GlobalTheory (Fin 2))) (c : ℕ → ℝ) (t : (ℚ →+* ℂ) → ℝ)
     (H : MultBound (ι := GlobalTheory (Fin 2)) y L L (2⁻¹) 1 c t) :

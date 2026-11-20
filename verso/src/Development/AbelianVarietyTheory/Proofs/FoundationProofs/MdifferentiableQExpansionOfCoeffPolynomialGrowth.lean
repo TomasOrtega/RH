@@ -9,9 +9,9 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Establish `hr : ‖r‖ < 1`. Rewrite using `[Real.norm_eq_abs, abs_of_pos hr0]`. Conclude with `hr1`. Establish `h` using `(summable_nat_add_iff 1).mpr (summable_pow_mul_geometric_of_norm_lt_one A hr : Summable fun m : ℕ => (m : ℝ) ^ A * r ^ m)`. Use `(h.mul_left (C * r⁻¹)).congr fun n => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hr' : r ≠ 0` using `hr0.ne'`. Use `push_cast`. Rewrite using `[pow_succ]`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private lemma summable_poly_mul_geometric (C : ℝ) (A : ℕ) {r : ℝ} (hr0 : 0 < r) (hr1 : r < 1) :
     Summable fun n : ℕ => C * ((n : ℝ) + 1) ^ A * r ^ n := by
@@ -27,11 +27,11 @@ private lemma summable_poly_mul_geometric (C : ℝ) (A : ℕ) {r : ℝ} (hr0 : 0
   field_simp
 
 /- English proof (translation)
-Rewrite using `[norm_mul, Complex.norm_exp]`. Establish `hre : (2 * π * Complex.I * n * w).re = -(2 * π * n * w.im)`. Simplify using `[Complex.mul_re, Complex.mul_im]`. Rewrite using `[hre]`. Establish `hexp : Real.exp (-(2 * π * n * w.im)) ≤ Real.exp (-(2 * π * y0)) ^ n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.exp_nat_mul]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `hp : (0:ℝ) ≤ 2 * π * n` using `by positivity`. Use `mul_le_mul_of_nonneg_left hw.le hp` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `mul_le_mul (hC n) hexp (Real.exp_pos _).le (le_trans (norm_nonneg _) (hC n))`.
+A detailed English derivation is pending.
 -/
 private lemma qs_term_bound (a : ℕ → ℂ) (C : ℝ) (A : ℕ) (hC : ∀ n : ℕ, ‖a n‖ ≤ C * ((n : ℝ) + 1) ^ A)
     (y0 : ℝ) (n : ℕ) (w : ℂ) (hw : y0 < w.im) :
@@ -49,15 +49,15 @@ private lemma qs_term_bound (a : ℕ → ℂ) (C : ℝ) (A : ℕ) (hC : ∀ n : 
   exact mul_le_mul (hC n) hexp (Real.exp_pos _).le (le_trans (norm_nonneg _) (hC n))
 
 /- English proof (translation)
-Introduce and unpack `a ⟨C, A, hC⟩`. Rewrite using `[UpperHalfPlane.mdifferentiable_iff]`. Introduce `z hz`. Establish `hz' : 0 < z.im` using `hz`. Use `set y0 := z.im / 2 with hy0def`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0 : 0 < y0` using `by positivity`. Use `set U : Set ℂ := {w | y0 < w.im} with hUdef`. Establish `hU : IsOpen U` using `isOpen_lt continuous_const Complex.continuous_im`. Establish `hzU : z ∈ U` using `by show y0 < z.im`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0 : 0 < Real.exp (-(2 * π * y0))` using `Real.exp_pos _`. Establish `hr1 : Real.exp (-(2 * π * y0)) < 1`. Rewrite using `[Real.exp_lt_one_iff]`. Use `Real.pi_pos` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : DifferentiableOn ℂ (fun w : ℂ => ∑' n : ℕ, a n * cexp (2 * π * Complex.I * n * w)) U` using `Complex.differentiableOn_tsum_of_summable_norm (summable_poly_mul_geometric C A hr0 hr1) (fun n => (by fun_prop : Differentiable ℂ fun w : ℂ => a n * cexp (2 * π * Complex.I * n * w)).differentiableOn) hU (fun n w hw => qs_term_bound a C A hC y0 n w hw)`. Establish `hDz` using `(hD z hzU).differentiableAt (hU.mem_nhds hzU)`. Apply `DifferentiableAt.differentiableWithinAt` to reduce the goal to its premises. Apply `hDz.congr_of_eventuallyEq` to reduce the goal to its premises. Use `filter_upwards [hU.mem_nhds hzU] with w hw`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hw' : 0 < w.im` using `lt_trans hy0 hw`. Rewrite using `[Function.comp_apply, UpperHalfPlane.ofComplex_apply_of_im_pos hw']`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem qs_mdifferentiable : ∀ a : ℕ → ℂ, PolyB a → MDifferentiable 𝓘(ℂ) 𝓘(ℂ) (qs a) := by
   rintro a ⟨C, A, hC⟩

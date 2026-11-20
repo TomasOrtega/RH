@@ -4,23 +4,21 @@ open MeasureTheory Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `G : Y → V` to `fun y => ⟨Fm y, hFm y⟩`. Set `ev : X → Module.Dual ℂ V` to `fun x => (LinearMap.proj x).comp V.subtype`. Establish `hev : ∀ x v, ev x v = (v : X → ℂ) x` using `fun x v => rfl`. Establish `hspan : Submodule.span ℂ (Set.range ev) = ⊤`. Establish `h0 : (Submodule.span ℂ (Set.range ev)).dualCoannihilator = ⊥`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Rewrite `hv` using `[Submodule.mem_dualCoannihilator]`. Rewrite using `[Submodule.mem_bot]`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `hv (ev x) (Submodule.subset_span ⟨x, rfl⟩)` as an intermediate fact. Simplify `this` using `[hev]`. Rewrite using `[← Subspace.dualCoannihilator_dualAnnihilator_eq (W := Submodule.span ℂ (Set.range ev)), h0]`. Conclude with `Submodule.dualAnnihilator_bot`. Set `P : Submodule ℂ (Module.Dual ℂ V)` to `{ carrier := {φ | Integrable (fun y => φ (G y)) μ} add_mem' := fun {a b} ha hb => by show Integrable (fun y => a (G y) + b (G y)) μ`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `ha.add hb`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c φ hφ => by simpa using hφ.const_mul c }`. Establish `hP : ∀ φ : Module.Dual ℂ V, Integrable (fun y => φ (G y)) μ`. Introduce `φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Establish `hle : Submodule.span ℂ (Set.range ev) ≤ P`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hint x`. Conclude with `hle (hspan ▸ Submodule.mem_top)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Set `b` to `Module.finBasis ℂ V`. Set `E` to `b.equivFun`. Establish `hEi : Integrable (fun y => E (G y)) μ`. Rewrite using `[integrable_pi_iff]`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `hP (b.coord j)` using `[E]`. Use `set c := ∫ y, E (G y) ∂μ`. Establish `key : ∀ x, ∫ y, Fm y x ∂μ = ((E.symm c : V) : X → ℂ) x`. Introduce `x`. Set `ℓ : (Fin (Module.finrank ℂ V) → ℂ) →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap ((ev x).comp E.symm.toLinearMap)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `ℓ.integral_comp_comm hEi`. Establish `h2 : ∀ y, ℓ (E (G y)) = Fm y x` using `by intro y; simp [ℓ, hev, G]`. Simplify using `only [h2] at h1`. Rewrite using `[h1]`. Both sides reduce to the same expression.
-
-Establish `: (fun x => ∫ y, Fm y x ∂μ) = ((E.symm c : V) : X → ℂ)` using `funext key`. Rewrite using `[this]`. Conclude with `(E.symm c).2`.
+A detailed English derivation is pending.
 -/
 theorem integral_mem_of_finiteDimensional_fun {X Y : Type} [MeasurableSpace Y] (μ : Measure Y)
     (V : Submodule ℂ (X → ℂ)) (hV : FiniteDimensional ℂ V)
@@ -76,7 +74,7 @@ theorem integral_mem_of_finiteDimensional_fun {X Y : Type} [MeasurableSpace Y] (
   exact (E.symm c).2
 
 /- English proof (translation)
-The claim follows from `@integral_mem_of_finiteDimensional_fun`.
+A detailed English derivation is pending.
 -/
 example : ∀ {X Y : Type} [MeasurableSpace Y] (μ : Measure Y) (V : Submodule ℂ (X → ℂ)), FiniteDimensional ℂ V →
   ∀ Fm : Y → X → ℂ, (∀ y, Fm y ∈ V) → (∀ x, Integrable (fun y => Fm y x) μ) → (fun x => ∫ y, Fm y x ∂μ) ∈ V :=

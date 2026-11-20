@@ -33,17 +33,17 @@ def NUniq : Prop :=
     IsHaarOn (Formalism.QuantumDeterminants.Nset k r) μ' → ∃ c : ℝ≥0∞, c ≠ ⊤ ∧ μ = c • μ'
 
 /- English proof (translation)
-Introduce `k r μN hN _`. Take `⟨m, d, q, Φ, κ, hq, hD, hκ, hΦ, hrange, hT, hgrow⟩` from `hC k r`. Establish `hmeasL : ∀ a : Mat k r, Measurable (Formalism.QuantumDeterminants.lmulM (k` using `k) (r := r) a) := fun a => by`. Establish `: Continuous (Formalism.QuantumDeterminants.lmulM (k` using `k) (r := r) a) := by`. Unfold `Formalism.QuantumDeterminants.lmulM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `continuous_const.matrix_mul continuous_id`. Conclude with `this.measurable`. Establish `hH : IsHaarOn (Formalism.QuantumDeterminants.Nset k r) ((volume : Measure (CSp m d)).map Φ)`. Use `⟨hΦ.sigmaFinite_map, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[Measure.map_eq_zero_iff hΦ.measurable.aemeasurable]`. Conclude with `isOpen_univ.measure_ne_zero (volume : Measure (CSp m d)) Set.univ_nonempty (by rw [h0, Measure.coe_zero, Pi.zero_apply])`. Rewrite using `[Measure.map_apply hΦ.measurable]`. Establish `: Φ ⁻¹' {x | Matrix.of x ∉ Formalism.QuantumDeterminants.Nset k r} = ∅`. Use extensionality with `t`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_not]`. Establish `: Φ t ∈ Set.range Φ` using `⟨t, rfl⟩`. Rewrite `this` using `[hrange]`. Conclude with `this`. Rewrite using `[this, measure_empty]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcl : MeasurableSet (Set.range Φ)` using `hΦ.measurableSet_range`. Rewrite `hcl` using `[hrange]`. Conclude with `hcl.compl`. Introduce `s hs`. Take `⟨T, hTm, hTe⟩` from `hT s hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[Measure.map_map (hmeasL s) hΦ.measurable]`. Establish `: Formalism.QuantumDeterminants.lmulM s ∘ Φ = Φ ∘ T` using `funext hTe`. Rewrite using `[this, ← Measure.map_map hΦ.measurable hTm.measurable, hTm.map_eq]`. Take `⟨c, hc, hμ⟩` from `hU k r μN _ hN hH`. Conclude with `⟨m, d, q, Φ, c, κ, hq, hD, hκ, hc, hΦ.measurable, hμ, hgrow⟩`.
+A detailed English derivation is pending.
 -/
 theorem nCoordHaar_of (hC : NChart) (hU : NUniq) : NCoordHaar := by
   intro k r μN hN _
@@ -84,7 +84,7 @@ local instance instModCLM (n : ℕ) :
     Module ℂ (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) := ContinuousLinearMap.module
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.WuDecay.opn`. Establish `: Continuous fun m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ => Matrix.toEuclideanCLM (𝕜` using `ℂ) (n := Fin (2 * r + k + 1)) m := by`. Set `L : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ →ₗ[ℂ] (EuclideanSpace ℂ (Fin (2 * r + k + 1)) →L[ℂ] EuclideanSpace ℂ (Fin (2 * r + k + 1)))` to `{ toFun := fun m => Matrix.toEuclideanCLM (𝕜 := ℂ) m map_add' := fun a b => map_add _ a b map_smul' := fun a b => map_smul _ a b }`. Conclude with `L.continuous_of_finiteDimensional`. Conclude with `continuous_norm.comp (this.comp continuous_id)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 lemma opn_continuous (k r : ℕ) :
     Continuous fun m : Formalism.QuantumDeterminants.Mt k r => Formalism.L2.SG.WuDecay.opn (Matrix.of m) := by
@@ -100,26 +100,24 @@ lemma opn_continuous (k r : ℕ) :
   exact continuous_norm.comp (this.comp continuous_id)
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_prod, Module.finrank_pi_fintype, Module.finrank_fin_fun]`. Simplify using `[Complex.finrank_real_complex, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma finrank_CSp (m d : ℕ) : Module.finrank ℝ (CSp m d) = 2 * m + d := by
   rw [Module.finrank_prod, Module.finrank_pi_fintype, Module.finrank_fin_fun]
   simp [Complex.finrank_real_complex, mul_comm]
 
 /- English proof (translation)
-Introduce `k r μN hN hNc`. Take `⟨m, d, q, Φ, c, κ, hq, hD, hκ, hc, hΦ, hμ, hgrow⟩` from `h k r μN hN hNc`. Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hD' : (Module.finrank ℝ (CSp m d) : ℝ) < N1H k r / q`. Rewrite using `[finrank_CSp, lt_div_iff₀ hq0, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hD` after adjusting the coercions. Establish `hF : Measurable fun x : Formalism.QuantumDeterminants.Mt k r => ENNReal.ofReal (Formalism.L2.SG.WuDecay.opn (Matrix.of x) ^ (-N1H k r))` using `ENNReal.measurable_ofReal.comp ((opn_continuous k r).measurable.pow_const _)`. Rewrite using `[hμ, lintegral_smul_measure, lintegral_map hF hΦ]`. Use `ENNReal.mul_lt_top hc.lt_top ?_` and prove the remaining obligations. Use `set s := N1H k r / q with hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbound : ∀ t : CSp m d, ENNReal.ofReal (Formalism.L2.SG.WuDecay.opn (Matrix.of (Φ t)) ^ (-N1H k r)) ≤ ENNReal.ofReal (κ ^ s) * ENNReal.ofReal ((1 + ‖t‖) ^ (-s))`. Introduce `t`. Use `set o := Formalism.L2.SG.WuDecay.opn (Matrix.of (Φ t)) with ho`. Establish `ho0 : 0 ≤ o` using `norm_nonneg _`. Establish `h1 : 0 < 1 + ‖t‖` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (1 + ‖t‖) / κ ≤ o ^ q`. Rewrite using `[div_le_iff₀ hκ, mul_comm]`. Conclude with `hgrow t`. Establish `h3 : 0 < (1 + ‖t‖) / κ` using `div_pos h1 hκ`. Establish `hoq : o ^ (-N1H k r) = (o ^ q) ^ (-s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul ho0, hs]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hoq]`. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 < s` using `lt_of_le_of_lt (Nat.cast_nonneg _) hD'`. Use the proof step `linarith)`. Use `_ = κ ^ s * (1 + ‖t‖) ^ (-s) := by`.
-
-Rewrite using `[Real.div_rpow h1.le hκ.le, div_eq_mul_inv, ← Real.rpow_neg hκ.le, neg_neg, mul_comm]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem nIntDecay_of (h : NCoordHaar) : NIntDecay := by
   intro k r μN hN hNc

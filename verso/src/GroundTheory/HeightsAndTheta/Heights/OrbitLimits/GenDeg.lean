@@ -11,14 +11,14 @@ namespace GroundTheory.Heights₂.Heights.Targets
 open GroundTheory.Heights₂.Heights.Inter
 
 /- English proof (translation)
-The claim follows from `PushforwardArithIntersection.proof arithVarZero hRat hCyc hInt`.
+A detailed English derivation is pending.
 -/
 theorem GenDeg.of_found (hRat : RatR.Statement) (hCyc : ArithmeticIntersectionCycle.Statement) (hInt : ArithmeticIntersectionIntegral.Statement) :
     ReciprocityTheory.ChartRestriction.G.AI.I4.GenDegStatement :=
   PushforwardArithIntersection.proof arithVarZero hRat hCyc hInt
 
 /- English proof (translation)
-The claim follows from `GenDeg.of_found (RatR.proof hPts) hCyc (ArithmeticIntersectionIntegral.proof hPts hSec)`.
+A detailed English derivation is pending.
 -/
 theorem GenDeg.of_pts (hPts : ReciprocityTheory.ChartRestriction.G.Geo.PtsIntegrableStatement) (hSec : IntersectionWithSection.Statement)
     (hCyc : ArithmeticIntersectionCycle.Statement) : ReciprocityTheory.ChartRestriction.G.AI.I4.GenDegStatement :=

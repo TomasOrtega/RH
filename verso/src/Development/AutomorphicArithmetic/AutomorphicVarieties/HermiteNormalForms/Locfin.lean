@@ -6,15 +6,13 @@ open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `L _ _ N h hh B`. Take `⟨c, hc, hev⟩` from `lowbd L N h hh`. Take `⟨R, hR⟩` from `exists_nat_gt (max (B / c) 1)`. Establish `hR1 : (1 : ℝ) < R` using `lt_of_le_of_lt (le_max_right _ _) hR`. Establish `hRB : B / c < R` using `lt_of_le_of_lt (le_max_left _ _) hR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set T := {a : 𝓞 L | ∀ w : InfinitePlace L, ‖embO w a‖ ≤ (R : ℝ)} with hT`. Use `⟨Set.pi Set.univ (fun _ => T), Set.Finite.pi (fun _ => (cntconj L R).1), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev] with k hk`. Introduce `y hy`. Establish `hy' : ∃ a w, (R : ℝ) < ‖embO w (y a)‖`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `hy (fun a _ w => hne a w)`. Take `⟨a, w, hlt⟩` from `hy'`. Establish `hle : ‖embO w (y a)‖ ≤ ‖toR y‖` using `(norm_le_pi_norm (toR y w) a).trans (norm_le_pi_norm (toR y) w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzR : (R : ℝ) < ‖toR y‖` using `hlt.trans_le hle`. Establish `hz1 : (1 : ℝ) ≤ ‖toR y‖` using `hR1.le.trans hzR.le`. Establish `hsq : ‖toR y‖ ≤ ‖toR y‖ ^ 2` using `by nlinarith`. Establish `hB : B < c * ‖toR y‖`. Rewrite `hRB` using `[div_lt_iff₀ hc]`.
-
-Use the polynomial consequences of the given equalities and inequalities. Conclude with `lt_of_lt_of_le (hB.trans_le (mul_le_mul_of_nonneg_left hsq hc.le)) (hk (toR y))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KT.locfin :
     ∀ (L : Type) [Field L] [NumberField L] (N : ℕ) (h : HS L N), h ∈ Pos L N → ∀ B : ℝ,

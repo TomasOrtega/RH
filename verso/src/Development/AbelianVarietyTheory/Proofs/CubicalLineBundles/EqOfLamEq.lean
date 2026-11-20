@@ -17,11 +17,9 @@ namespace GlobalTheory.CM.PairingInj
 open GlobalTheory.KerPow GlobalTheory.CM.PairingIso
 
 /- English proof (translation)
-Establish `g₂ : HasGen L _ _` using `g₁`. Establish `g₃ : LocGen L (fst T A).left (fun I : ULift.{0} (Finset (Fin 2)) => (psum A ![fst T A ≫ x, snd T A] I.down).left) (fun I => (-1) ^ (2 - I.down.card))` using `fun _ => ⟨⊤, trivial, g₂.pull _ fun _ => rfl⟩`. Establish `b₁` using `locGen_base hL (fst T A).left x.left (b := (fst T A ≫ x).left) rfl`. Establish `b₀` using `locGen_base hL (fst T A).left (1 : T ⟶ A).left (b := (1 : T ⊗ A ⟶ A).left) (congrArg (fun q : T ⊗ A ⟶ A => q.left) (MonObj.comp_one (fst T A) : fst T A ≫ (1 : T ⟶ A) = 1).symm)`. Establish `b` using `b₀.comb hL b₁ (φ'' := ![(1 : T ⊗ A ⟶ A).left, (fst T A ≫ x).left]) (ε'' := ![1, -1]) fun U _ k => by simp [Fin.prod_univ_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `eq_one_of_locGen hK x (g₃.comb hL b fun U _ k => ?_)` and prove the remaining obligations. Rewrite using `[PrimNorm.prod_square_id, Fin.prod_univ_two, Fin.prod_univ_two]`. Use `show k ((fst T A ≫ x) * snd T A).left * (k (fst T A ≫ x).left)⁻¹ * (k (snd T A).left)⁻¹ * k (1 : T ⊗ A ⟶ A).left * (k (1 : T ⊗ A ⟶ A).left ^ (1 : ℤ) * k (fst T A ≫ x).left ^ (-1 : ℤ))⁻¹ = k ((fst T A ≫ x) * snd T A).left ^ (1 : ℤ) * k (snd T A).left ^ (-1 : ℤ)`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`.
-
-Use `module`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_one_of_gen_cubeLB {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
     {L : LB A.left} (hL : L.IsLB) (hK : Out.KTriv A L) {T : Over S} (x : T ⟶ A)
@@ -45,11 +43,11 @@ theorem eq_one_of_gen_cubeLB {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMon
   module
 
 /- English proof (translation)
-Introduce `hL S _ P X f g h`. Use `P.isAb.comm` as an intermediate fact. Take `⟨ρ, hρ⟩` from `P.rigid`. Take `⟨⟨c⟩, -⟩` from `hL.cube S P ⟨P.L, ρ, P.isLB, hρ⟩ rfl`. Establish `hT : ∃ t : LB.Gen (Theta P.A P.L), t.IsGen` using `⟨c.t, c.isGen⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `C` using `LamCalc.lamEq_calculus S X P.A P.A P.A P.A P.L P.L P.L P.isLB P.isLB P.isLB`. Establish `h₁ : LamEq P.L (f * g⁻¹) (𝟙 P.A) P.L (g * g⁻¹) (𝟙 P.A)` using `((C f g⁻¹ (𝟙 _) (𝟙 _) g g⁻¹ (𝟙 _) (𝟙 _) g (𝟙 _)).2.2.1 hT hT h).1 (C g⁻¹ g (𝟙 _) (𝟙 _) g g (𝟙 _) (𝟙 _) g (𝟙 _)).1`. Rewrite `h₁` using `[mul_inv_cancel]`. Establish `h₂` using `LamCalc.lbIso_of_lamEq h₁ (fst X P.A) (snd X P.A)`. Rewrite `h₂` using `[Category.comp_id, MonObj.comp_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mul_inv_eq_one.1 (eq_one_of_gen_cubeLB P.isLB P.ktriv _ (exists_gen_of_lbIso (LamCalc.cubeLB_isLB P.isLB _) (LamCalc.cubeLB_isLB P.isLB _) h₂.symm ?_))` and prove the remaining obligations. Conclude with `hasGen_of_trivial P.isLB fun U _ k => (PrimNorm.prod_square_id _ _ k).trans (by simp [PrimNorm.diff₂])`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_of_lamEq : Out.Laws → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : Out.PolAV S) (X : Over S) (f g : X ⟶ P.A), LamEq P.L f (𝟙 P.A) P.L g (𝟙 P.A) → f = g := by
   intro hL S _ P X f g h

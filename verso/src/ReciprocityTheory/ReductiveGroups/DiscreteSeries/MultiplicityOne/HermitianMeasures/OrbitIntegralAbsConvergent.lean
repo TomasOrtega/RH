@@ -82,7 +82,7 @@ def SOrbBound : Prop :=
       (∫⁻ p : Mt k r × Mt k r, ENNReal.ofReal (gN (Matrix.of p.1 * Matrix.of p.2 * x) ^ (-b)) ∂(μW.prod μN)) ≤ M
 
 /- English proof (translation)
-Establish `h : (2 * r + k) * (r * (2 * r + 2 * k + 1)) ≤ 2 * r * (2 * r + k + 1) ^ 2`. Use polynomial arithmetic with `[Nat.zero_le (r * r * r), Nat.zero_le (r * r * k), Nat.zero_le (r * k * k), Nat.zero_le (k * k * k), Nat.zero_le (r * r), Nat.zero_le (r * k), Nat.zero_le (k * k), Nat.zero_le r, Nat.zero_le k]`. Unfold `bS dimN ReciprocityTheory.ChartRestriction.DS.Mult1.nR`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem bS_le (k r : ℕ) : bS k r ≤ 2 * (r : ℝ) * ReciprocityTheory.ChartRestriction.DS.Mult1.nR k r ^ 2 := by
   have h : (2 * r + k) * (r * (2 * r + 2 * k + 1)) ≤ 2 * r * (2 * r + k + 1) ^ 2 := by

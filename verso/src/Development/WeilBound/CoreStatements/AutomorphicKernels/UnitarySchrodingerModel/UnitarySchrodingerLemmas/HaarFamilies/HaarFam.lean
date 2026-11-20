@@ -9,11 +9,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 namespace PositivityTheory.PfSWUS.SwMatch
 
 /- English proof (translation)
-Introduce `D n`. Establish `key : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F), ∃ m : Measure (Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E), m.IsAddHaarMeasure`. Introduce `v`. Use `(GlobalTheory.LocalDensityCompare.lcs (E := D.host.E) v).1` as an intermediate fact. Use `(GlobalTheory.LocalDensityCompare.lcs (E := D.host.E) v).2.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.LocalDensityCompare.topRing (E := D.host.E) v` as an intermediate fact. Establish `: BorelSpace (HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: BorelSpace (Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E)` using `Pi.borelSpace`. Conclude with `⟨Measure.addHaar, inferInstance⟩`. Use `choose lam hlam using key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨lam, hlam⟩`.
+A detailed English derivation is pending.
 -/
 theorem haarFam : HaarFam := by
   intro D n

@@ -9,9 +9,9 @@ open UpperTheory.V.Af.Bc (cPl)
 open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm UpperTheory.V.Z.Tf.GaloisFromTraceFormula
 
 /- English proof (translation)
-Introduce `E _ _ _ N P z τ`. Establish `key : (P.twist (Model.absC E z)).infChar τ = (P.infChar τ).map (· + z)`. Establish `e` using `((ParLaws.hasInfChar_infChar P τ).twist (Model.absC E z)).infChar_eq`. Rewrite `e` using `[Model.expo_absC]`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨key, key⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GaloisFromTraceFormula.absInf :
     AbsInf := by

@@ -31,21 +31,21 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ZM.SiegelArithFamily
 
 /- English proof (translation)
-Rewrite using `[spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : B →+* C) (g : A →+* B) :
     spMap f ≫ spMap g = spMap (f.comp g) := by
   rw [spMap, spMap, ← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Establish `: spMap (RingHom.id A) = 𝟙 _` using `Spec.map_id _`. Rewrite using `[this, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_spMap_id {A : Type} [CommRing A] {S : Scheme.{0}} (s : S ⟶ Sp A) : s ≫ spMap (RingHom.id A) = s := by
   have : spMap (RingHom.id A) = 𝟙 _ := Spec.map_id _
   rw [this, Category.comp_id]
 
 /- English proof (translation)
-Take `⟨N, i, hi, -, rfl⟩` from `h`. Establish `: IsProper (PSpace.str R N)` using `isProper_str R N`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locallyOfFiniteType_of_qproj {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R} (h : IsQProjOver f) :
     LocallyOfFiniteType f := by
@@ -54,9 +54,9 @@ theorem locallyOfFiniteType_of_qproj {R : Type} [CommRing R] {X : Scheme.{0}} {f
   infer_instance
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `Spec.map_surjective (S.fromSpecResidueField p ≫ s)`. Establish `h1 : (Spec.map φ) (⊥ : PrimeSpectrum (S.residueField p)) = s p`. Rewrite using `[hφ]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg s (Scheme.fromSpecResidueField_apply p _))`. Establish `h2 : Ideal.comap φ.hom ⊥ = ⊥`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp, ← h1]`. Both sides reduce to the same expression. Establish `h3 : Function.Injective φ.hom` using `(RingHom.injective_iff_ker_eq_bot _).2 h2`. Conclude with `charZero_of_injective_ringHom (R := o) h3`.
+Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem charZero_residueField {o : Type} [CommRing o] [CharZero o] {S : Scheme.{0}} (s : S ⟶ Sp o) (p : S)
     (hp : (s p).asIdeal = ⊥) : CharZero (S.residueField p) := by
@@ -70,7 +70,7 @@ theorem charZero_residueField {o : Type} [CommRing o] [CharZero o] {S : Scheme.{
   exact charZero_of_injective_ringHom (R := o) h3
 
 /- English proof (translation)
-Rewrite using `[constPt, spMap_comp_spMap, spMap_comp_spMap, spMap_comp_spMap, spMap_comp_spMap]`. Use `congr 1`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dirMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dir_over {o K : Type} [CommRing o] [Field K] {r : ℕ} (β : o →+* K) (lam : (Fin r → K) →ₗ[K] K) :
     spMap (dirMap lam) ≫ spMap ((algebraMap K (TrivSqZeroExt K (Fin r → K))).comp β) =
@@ -81,7 +81,7 @@ theorem dir_over {o K : Type} [CommRing o] [Field K] {r : ℕ} (β : o →+* K) 
   ext <;> simp [dirMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Use `⟨Sum.elim (fun uv => Matrix.single uv.1 uv.2 1) (fun c => (W + W.transpose).adjugate * (if c then W else W.transpose)), .inr true, .inr false, ?_, ?_, fun u v => ⟨.inl (u, v), rfl⟩⟩` and prove the remaining obligations. Simplify using `only [Sum.elim_inr, if_true]`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_adjugate, hW.2, one_smul, Matrix.one_mul]`. Simplify using `only [Sum.elim_inr, Bool.false_eq_true, if_false]`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_adjugate, hW.2, one_smul, Matrix.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_matrices {W : Matrix (Fin 8) (Fin 8) ℤ} (hW : IsE8 W) :
     ∃ (a : (Fin 8 × Fin 8) ⊕ Bool → Matrix (Fin 8) (Fin 8) ℤ) (w w' : (Fin 8 × Fin 8) ⊕ Bool),
@@ -96,35 +96,33 @@ theorem exists_matrices {W : Matrix (Fin 8) (Fin 8) ℤ} (hW : IsE8 W) :
     rw [← Matrix.mul_assoc, Matrix.mul_adjugate, hW.2, one_smul, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `L1 L2 hT hU h n hh hn hodd`. Take `⟨W, hW, hbas⟩` from `exists_isE8_isSharpBasis`. Take `⟨bas, hb⟩` from `hbas h`. Take `⟨a, w, w', hw, hw', hu⟩` from `exists_matrices hW`. Take `⟨Mat, κ, hgood⟩` from `GlobalTheory.T.isGoodThetaComplexClass_E8Sharp L1 L2 hT hU h _ W _ a w w' bas hW hb hw hw' hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j₁, hj₁⟩` from `hgood n hn hodd`. Take `⟨j₂, hj₂⟩` from `GlobalTheory.T.nonempty_thetaFamily_over_open_closure L1 L2 _ _ Mat κ n w w' hn hodd`. Take `⟨j₃, hj₃⟩` from `GlobalTheory.T.existsUnique_map_to_thetaFamily_openPart L1 L2 _ _ Mat κ n w w' hn hodd`. Use `⟨max (max j₁ 1) (max j₂ j₃), fun j hj o _ b em hem => ?_⟩` and prove the remaining obligations. Establish `hj1 : j ≥ j₁` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hj0 : j ≠ 0` using `by omega`. Establish `hj2 : j ≥ j₂` using `by omega`. Establish `hj3 : j ≥ j₃` using `by omega`. Establish `h3 : 3 ≤ n ^ j`. Establish `h2` using `hn.two_le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: n ≠ 2` using `fun e => by rw [e] at hodd; exact absurd hodd (by decide)`. Conclude with `le_trans (by omega) (Nat.le_self_pow hj0 n)`. Establish `hoN : Odd (n ^ j)` using `hodd.pow`. Establish `hok : Odd ((n ^ j) ^ 2)` using `hoN.pow`. Establish `h3k : 3 ≤ (n ^ j) ^ 2` using `h3.trans (Nat.le_self_pow two_ne_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζ : b.ζ ^ ((n ^ j) ^ 2) = 1`. Use `Units.ext (hem.2.2 ?_)` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, (b.prim ℂ em).pow_eq_one, Units.val_one, map_one]`. Establish `hG` using `hj₁ j hj1 _ rfl o b em`. Take `⟨F⟩` from `hj₂ j hj2 o b em _ _ hem hG`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hq, hflat, hred, hinj⟩` from `GlobalTheory.T.thetaClosureOpenFamily_qproj_flat_reduced_ext L1 L2 o _ n _ _ b em _ Mat κ F hoN`. Use `haveI := hem.1`. Use `haveI : CharZero o := em.charZero`. Establish `hq : IsQProjOver (F.U.ι ≫ F.Y.s)` using `hq.resolve_right (not_not.2 inferInstance)`. Establish `hft` using `locallyOfFiniteType_of_qproj hq`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsLocallyNoetherian F.U.toScheme := LocallyOfFiniteType.isLocallyNoetherian (F.U.ι ≫ F.Y.s)`. Take `⟨c, hc, hsc⟩` from `GlobalTheory.T.exists_eighthPower_principalSiegel_of_dense L1 L2 hT h _ W _ a bas hW hb hu _ o b em _ _ F.univ hok F.dense`. Establish `pull : ∀ (S' : Scheme.{0}) (s' : S' ⟶ Sp o) (f : S' ⟶ F.U.toScheme), f ≫ F.U.ι ≫ F.Y.s = s' → ∃ (c' : SiegPre h ((n ^ j) ^ 2) (b.ζ : o) s') (t : TObj (8 * h) ((n ^ j) ^ 2) _ b s'), SiegPB c' c f ∧ c'.Principal ∧ IsSharp W a bas t c'`. Introduce `S' s' f hf`. Take `⟨p1, p2, -⟩` from `GlobalTheory.T.siegelPre_pullback_principal_ringChange h ((n ^ j) ^ 2) o o (b.ζ : o) (b.ζ : o) (RingHom.id o) _ S' _ s' f rfl (hf.trans (comp_spMap_id s').symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c', hc'⟩` from `p1 c`. Take `⟨t, ht⟩` from `GlobalTheory.T.exists_thetaObject_eighthPower_principalSiegel L1 L2 h _ W _ a bas hW hb _ o b S' s' c' hok h3k hζ (p2 c c' hc' hc)`. Conclude with `⟨c', t, hc', p2 c c' hc' hc, ht⟩`. Use `⟨⟨F.U.toScheme, F.U.ι ≫ F.Y.s, ?_, hq, c, hc, ?_, ?_⟩⟩` and prove the remaining obligations. Use `GlobalTheory.T.smoothOfRelativeDimension_of_flat_dedekind_tangent_le o _ _ _ hem.2.1 hflat hft (fun R _ _ x hx hs => GlobalTheory.T.le_ringKrullDim_thetaFamily_genericFibre L1 L2 _ n _ _ Mat κ w w' o b em _ _ F h3 hoN hem hG R x hx hs) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `K _ _ r β x hx hlam`. Take `⟨c', t, hp, hc', ht⟩` from `pull _ _ x hx`. Establish `htx : TMap t F.univ x` using `(GlobalTheory.T.siegelPullback_iff_eighthPower_pullback L1 L2 h _ W _ a bas hW hb _ o b _ _ _ _ c c' F.univ t x hc hc' hsc ht).1 hp`. Use `GlobalTheory.T.siegelFamily_tangent_dimension_bound L1 L2 hT h _ W _ a bas hW hb w w' hw hw' _ o b K r β t c' hc' ht fun lam t' h1 h2 => hlam lam ?_` and prove the remaining obligations. Establish `e : constPt (spMap (dirMap lam) ≫ x) = constPt (spMap (dirMap lam)) ≫ x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [constPt, Category.assoc]`. Rewrite using `[e]`. Use `hinj _ _ _ _ t' ?_ (((GlobalTheory.T.thetaLevelPullback_id_comp_cancel o _ _ _ b _ _ _ _ _ _ F.univ t t').2 x _ htx).1 h1) (((GlobalTheory.T.thetaLevelPullback_id_comp_cancel o _ _ _ b _ _ _ _ _ _ F.univ t t').2 x _ htx).1 h2)` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hx]`. Conclude with `dir_over β lam`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `S s' c' hS hd hc'`. Take `⟨t, ht⟩` from `GlobalTheory.T.exists_thetaObject_eighthPower_principalSiegel L1 L2 h _ W _ a bas hW hb _ o b S s' c' hok h3k hζ hc'`. Establish `hfrom : ∀ p : S, (s' p).asIdeal = ⊥ → FromC em (SharpClass (b` using `b) W a bas em) t (K := S.residueField p) (S.fromSpecResidueField p) := by`. Introduce `p hp`. Use `haveI := charZero_residueField s' p hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.T.fromC_sharpClass_fibre_of_charZero L1 L2 h _ W _ a w w' bas hW hb hw hw' hu _ o b em hem S s' t c' hc' ht _ _`. Establish `hdense : Dense (fromSet em (SharpClass (b` using `b) W a bas em) t) := hd.mono fun p hp => ⟨S.residueField p, inferInstance, S.fromSpecResidueField p, ⟨default, Scheme.fromSpecResidueField_apply p _⟩, hfrom p hp⟩`. Establish `hshape : t.FibShape Mat κ`. Introduce `K _ _ x t' ht'`. Establish `: Nonempty S` using `⟨x (⊥ : PrimeSpectrum K)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p, hp⟩` from `hd.nonempty`. Take `⟨_, _, _, _, _, _, _, tc, -, -, -, -, -, htc⟩` from `hfrom p hp`. Establish `hsh` using `(hG.shape tc htc).1`. Take `⟨cc, hcc, hscc⟩` from `htc`. Conclude with `(GlobalTheory.T.thetaLevel_shape_primitivity_pullback_descent o _ _ _ b Mat κ w w' _ _ _ _ x t t' ht').1 (GlobalTheory.T.eighthPower_shape_depends_only_on_matrices L1 L2 h _ W _ a bas hW hb _ o b Mat κ _ _ _ _ cc c' tc t hh ⟨(⊥ : PrimeSpectrum ℂ)⟩ hcc hc' hscc ht hsh)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨f, ⟨hf, htf⟩, -⟩` from `hj₃ j hj3 o b em _ _ hem hG F S s' t hS hdense hshape`. Conclude with `⟨f, hf, (GlobalTheory.T.siegelPullback_iff_eighthPower_pullback L1 L2 h _ W _ a bas hW hb _ o b _ _ _ _ c c' F.univ t f hc hc' hsc ht).2 hu htf⟩`. Introduce `R _ _ x y s' c₀ hxy hx hy`. Take `⟨c', t, hp, hc', ht⟩` from `pull _ _ x rfl`. Establish `h1 : SiegPB c' c₀ (𝟙 _)` using `((GlobalTheory.SiegelPullComp.id_comp_cancel h _ o o o _ _ _ _ _ _ _ _ _ c c₀ c' x (𝟙 _)).2 hx).2 (by rwa [Category.id_comp])`.
-
-Establish `h2 : SiegPB c' c y`. Use `((GlobalTheory.SiegelPullComp.id_comp_cancel h _ o o o _ _ _ _ _ _ _ _ _ c c₀ c' y (𝟙 _)).2 hy).1 h1` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Conclude with `hinj R x y _ t hxy ((GlobalTheory.T.siegelPullback_iff_eighthPower_pullback L1 L2 h _ W _ a bas hW hb _ o b _ _ _ _ c c' F.univ t x hc hc' hsc ht).1 hp) ((GlobalTheory.T.siegelPullback_iff_eighthPower_pullback L1 L2 h _ W _ a bas hW hb _ o b _ _ _ _ c c' F.univ t y hc hc' hsc ht) …`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_sFam : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (h n : ℕ), 1 ≤ h → n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)) (em : o →+* ℂ), ArBase em → Nonempty (SFam h ((n ^ j) ^ 2) (b.ζ : o)) := by
   intro L1 L2 hT hU h n hh hn hodd

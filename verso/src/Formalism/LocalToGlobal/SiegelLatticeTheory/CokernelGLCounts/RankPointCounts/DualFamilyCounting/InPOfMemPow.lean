@@ -15,7 +15,7 @@ variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Number
   [Algebra F K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Establish `e` using `UnimodularLocalization.algebraMap_smul_K (K := K) t (1 : K)`. Rewrite `e` using `[Algebra.smul_def, mul_one, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem jι_eq' (t : 𝓞 F) :
     algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) t) = algebraMap F K (t : F) := by
@@ -23,7 +23,7 @@ theorem jι_eq' (t : 𝓞 F) :
   rwa [Algebra.smul_def, mul_one, mul_one] at e
 
 /- English proof (translation)
-Rewrite using `[← jι_eq']`. Apply `inP_jK` to reduce the goal to its premises. Rewrite using `[extP, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ ht`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inP_of_mem_pow {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {k : ℕ} {t : 𝓞 F} (ht : t ∈ 𝔭 ^ k) :
     InP 𝔭 k (algebraMap F K (t : F)) := by
@@ -33,7 +33,7 @@ theorem inP_of_mem_pow {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {k : ℕ} {t : �
   exact Ideal.mem_map_of_mem _ ht
 
 /- English proof (translation)
-Use `h𝔭.isPrime` as an intermediate fact. Conclude with `inP_of_mem_pow ((G1.mem_pow_iff h𝔭 ht _).2 le_rfl)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inP_vF {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {t : 𝓞 F} (ht : t ≠ 0) :
     InP 𝔭 (vF 𝔭 t) (algebraMap F K (t : F)) := by
@@ -41,9 +41,7 @@ theorem inP_vF {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {t : 𝓞 F} (ht
   exact inP_of_mem_pow ((G1.mem_pow_iff h𝔭 ht _).2 le_rfl)
 
 /- English proof (translation)
-Take `⟨s, hs, rfl⟩` from `(mem_noncompactPart_iff hu k x).1 hx`. Establish `h0 : algebraMap F K (π : F) ≠ 0`. Rewrite using `[← jι_eq']`. Conclude with `jι_ne_zero hu.ne_zero`. Rewrite using `[jι_eq', ← mul_assoc, ← mul_pow, inv_mul_cancel₀ h0, one_pow, one_mul]`.
-
-Conclude with `hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_SP_of_inP {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {π s₀ : 𝓞 F} (hu : IsUnif0 𝔭 π s₀) {k : ℕ}
     {x : K} (hx : InP 𝔭 k x) : (algebraMap F K (π : F))⁻¹ ^ k * x ∈ SP K 𝔭 := by
@@ -54,34 +52,34 @@ theorem mem_SP_of_inP {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {π s₀ : 𝓞 F} 
   exact hs
 
 /- English proof (translation)
-The claim follows from `(hF _).2 ⟨x, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem star_fix (hF : IsFixF K F) (x : F) : star (algebraMap F K x) = algebraMap F K x :=
   (hF _).2 ⟨x, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← map_inv₀, ← map_pow]`. Conclude with `star_fix hF _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_inv_pow (hF : IsFixF K F) (x : F) (k : ℕ) :
     star ((algebraMap F K x)⁻¹ ^ k) = (algebraMap F K x)⁻¹ ^ k := by
   rw [← map_inv₀, ← map_pow]; exact star_fix hF _
 
 /- English proof (translation)
-Rewrite using `[map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_smul_left (h : V →ₗ⋆[K] V →ₗ[K] K) (r : K) (x y : V) :
     h (r • x) y = star r * h x y := by
   rw [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]
 
 /- English proof (translation)
-Rewrite using `[map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_smul_right (h : V →ₗ⋆[K] V →ₗ[K] K) (r : K) (x y : V) :
     h x (r • y) = r * h x y := by
   rw [map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[form_smul_left, form_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_smul_smul (h : V →ₗ⋆[K] V →ₗ[K] K) (r r' : K) (x y : V) :
     h (r • x) (r' • y) = star r * r' * h x y := by

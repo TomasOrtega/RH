@@ -20,9 +20,9 @@ def PairUnit (S : Subring K) (h : V →ₗ⋆[K] V →ₗ[K] K) : Prop :=
     ∃ c ∈ S, ∃ d ∈ S, IsUnitIn S (h (c • w + d • y) (c • w + d • y))
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc j`. Use `congrArg (h (x j)) hc` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero, Finset.sum_eq_single j]`. Rewrite `this` using `[map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 this).resolve_right (hx0 j)`. Introduce `i _ hij`. Rewrite using `[map_smul, hxo j i (Ne.symm hij), smul_zero]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linIndep_orth {ι : Type} [Fintype ι] (x : ι → V) (hxo : ∀ i j, i ≠ j → h (x i) (x j) = 0)
     (hx0 : ∀ i, h (x i) (x i) ≠ 0) : LinearIndependent K x := by
@@ -38,7 +38,7 @@ theorem linIndep_orth {ι : Type} [Fintype ι] (x : ι → V) (hxo : ∀ i j, i 
   · simp
 
 /- English proof (translation)
-Rewrite using `[map_sub, map_sum, Finset.sum_eq_single j]`. Rewrite using `[map_smul, smul_eq_mul, mul_right_comm, inv_mul_cancel₀ (hx0 j), one_mul, sub_self]`. Introduce `i _ hij`. Rewrite using `[map_smul, hxo j i (Ne.symm hij), smul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem orth_sub_proj {ι : Type} [Fintype ι] (x : ι → V) (hxo : ∀ i j, i ≠ j → h (x i) (x j) = 0)
     (hx0 : ∀ i, h (x i) (x i) ≠ 0) (v : V) (j : ι) :
@@ -51,7 +51,7 @@ theorem orth_sub_proj {ι : Type} [Fintype ι] (x : ι → V) (hxo : ∀ i j, i 
   · simp
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ExistsOrthogonalBasisWithUnitNorms.exists_ortho_unit hS hs hnd hPU hL`.
+A detailed English derivation is pending.
 -/
 theorem exists_ortho_unit [FiniteDimensional K V] (hS : IsHermSemilocal S) (hs : h.IsSymm)
     (hnd : h.Nondegenerate) (hPU : PairUnit S h) {L : AddSubgroup V} (hL : IsSelfDualMod S h L) :
@@ -60,27 +60,23 @@ theorem exists_ortho_unit [FiniteDimensional K V] (hS : IsHermSemilocal S) (hs :
   _root_.UpperTheory.Reformulated.B.ExistsOrthogonalBasisWithUnitNorms.exists_ortho_unit hS hs hnd hPU hL
 
 /- English proof (translation)
-Establish `P : ∀ k, k ≤ n → ∃ g ∈ Formalism.HermitianLatticesTheory.isom h, ∀ i : Fin n, i.val < k → g (x i) ∈ M`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _`. Conclude with `⟨1, one_mem _, fun i hi => absurd hi (Nat.not_lt_zero _)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `succ k ih`. Introduce `hk`. Take `⟨g, hg, hgM⟩` from `ih (by omega)`. Establish `hg' : ∀ a b, h (g a) (g b) = h a b` using `hg`. Establish `hne : ∀ i : Fin n, i.val < k → i ≠ ⟨k, hk⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i hi e`. Rewrite `hi` using `[e]`. Conclude with `lt_irrefl _ hi`. Set `y : {i : Fin n // i.val < k} → V` to `fun i => g (x i.1)`. Establish `hyo : ∀ i j : {i : Fin n // i.val < k}, i ≠ j → h (y i) (y j) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Simplify using `only [y]`. Rewrite using `[hg']`. Conclude with `hxo _ _ (fun e => hij (Subtype.ext e))`. Establish `hyu : ∀ i : {i : Fin n // i.val < k}, IsUnitIn S (h (y i) (y i))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i`. Simplify using `only [y]`. Rewrite using `[hg']`. Conclude with `hxu _`. Establish `hyM : ∀ i : {i : Fin n // i.val < k}, y i ∈ M` using `fun i => hgM i.1 i.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `hxu ⟨k, hk⟩`. Establish `hus : star (h (x ⟨k, hk⟩) (x ⟨k, hk⟩)) = h (x ⟨k, hk⟩) (x ⟨k, hk⟩)` using `star_h hs _ _`. Establish `hrr : h (g (x ⟨k, hk⟩)) (g (x ⟨k, hk⟩)) = h (x ⟨k, hk⟩) (x ⟨k, hk⟩)` using `hg' _ _`. Establish `hrx : ∀ i : {i : Fin n // i.val < k}, h (y i) (g (x ⟨k, hk⟩)) = 0`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [y]`. Rewrite using `[hg']`. Conclude with `hxo _ _ (hne i.1 i.2)`. Take `⟨z, hzM, hzz, hzo⟩` from `exists_of_ref hS hs hM y hyo hyu hyM hu hus hrr hrx`. Take `⟨τ, hτ, hτr, hτfix⟩` from `exists_isom_move hS hs hu.1 hus hrr hzz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨τ * g, mul_mem hτ hg, fun i hi => ?_⟩` and prove the remaining obligations. Use `show τ (g (x i)) ∈ M`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hi with h1 | h1` into its components or cases. Rewrite using `[hτfix]`. Conclude with `hgM i h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg']`. Conclude with `hxo _ _ (fun e => hne i h1 e.symm)`. Rewrite using `[← star_h hs]`. Use `hzo ⟨i, h1⟩` as an intermediate fact. Simplify using `only [y] at this`.
-
-Rewrite using `[this, star_zero]`. Establish `: i = ⟨k, hk⟩` using `Fin.ext h1`. Rewrite using `[this, hτr]`. Conclude with `hzM`. Take `⟨g, hg, hgM⟩` from `P n le_rfl`.
-
-Conclude with `⟨g, hg, fun i => hgM i i.isLt⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isom_frameU (hS : IsHermSemilocal S) (hs : h.IsSymm) {M : AddSubgroup V}
     (hM : IsSelfDualMod S h M) {n : ℕ} (x : Fin n → V) (hxo : ∀ i j, i ≠ j → h (x i) (x j) = 0)
@@ -139,17 +135,17 @@ theorem exists_isom_frameU (hS : IsHermSemilocal S) (hs : h.IsSymm) {M : AddSubg
   exact ⟨g, hg, fun i => hgM i i.isLt⟩
 
 /- English proof (translation)
-Take `⟨x, hxL, hxo, hxu⟩` from `exists_ortho_unit hS hs hnd hPU hL`. Take `⟨g, hg, hgM⟩` from `exists_isom_frameU hS hs hM x hxo hxu`. Establish `hg' : ∀ a b, h (g a) (g b) = h a b` using `hg`. Establish `hli` using `linIndep_orth x hxo (fun i => (hxu i).1)`. Establish `hspan : Submodule.span K (Set.range x) = ⊤`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[finrank_span_eq_card hli, Fintype.card_fin]`. Establish `hexp : ∀ v, v = ∑ i, ((h (x i) (x i))⁻¹ * h (x i) v) • x i`. Introduce `v`. Establish `hxv'` using `orth_sub_proj x hxo (fun i => (hxu i).1) v`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hall : ∀ y, h y (v - ∑ i, ((h (x i) (x i))⁻¹ * h (x i) v) • x i) = 0`. Introduce `y`. Establish `hy : y ∈ Submodule.span K (Set.range x)` using `by rw [hspan]; trivial`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨j, rfl⟩` from `ha`. Conclude with `hxv' j`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [ha, hb]`. Consider the case `smul c a _ ha => simp [ha]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 (hnd.2 _ hall)`. Establish `hfwd : ∀ v, v ∈ L → g v ∈ M`. Introduce `v hv`. Rewrite using `[hexp v, map_sum]`. Use `M.sum_mem fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul]`. Conclude with `hM.smul_mem _ (S.mul_mem (hxu i).2.2 (hL.int _ (hxL i) _ hv)) _ (hgM i)`. Use `⟨g, hg, fun v => ⟨hfwd v, fun hv => hL.dual v fun m hm => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hg']`. Conclude with `hM.int _ (hfwd m hm) _ hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isom_selfDual [FiniteDimensional K V] (hS : IsHermSemilocal S) (hs : h.IsSymm)
     (hnd : h.Nondegenerate) (hPU : PairUnit S h) {L M : AddSubgroup V} (hL : IsSelfDualMod S h L)

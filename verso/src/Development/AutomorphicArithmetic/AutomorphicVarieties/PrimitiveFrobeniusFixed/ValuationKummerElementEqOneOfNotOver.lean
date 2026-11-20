@@ -4,7 +4,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors Pointwise
 
 /- English proof (translation)
-Establish `h1 : v.valuation K (a : K) = v.intValuation a` using `v.valuation_of_algebraMap a`. Establish `h2 : FractionalIdeal.spanSingleton (𝓞 K)⁰ (a : K) = ((Ideal.span {a} : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K)` using `(FractionalIdeal.coeIdeal_span_singleton a).symm`. Rewrite using `[h1, h2, v.intValuation_if_neg ha, FractionalIdeal.count_coe K v (by simpa using ha)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem val_count_int {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (a : 𝓞 K) (ha : a ≠ 0) :
     v.valuation K (a : K) = WithZero.exp (-FractionalIdeal.count K v
@@ -16,11 +16,11 @@ private theorem val_count_int {K : Type} [Field K] [NumberField K] (v : HeightOn
   rw [h1, h2, v.intValuation_if_neg ha, FractionalIdeal.count_coe K v (by simpa using ha)]
 
 /- English proof (translation)
-Take `⟨a, b, hb, e⟩` from `IsFractionRing.div_surjective (𝓞 K) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbK : (b : K) ≠ 0` using `by exact_mod_cast hb0`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `hx` to reduce the goal to its premises. Simplify using `[← e]`. Establish `e' : x * (b : K) = (a : K)`. Rewrite using `[← e]`. Conclude with `div_mul_cancel₀ _ hbK`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `val_count_int v a ha0`. Establish `h2` using `val_count_int v b hb0`. Rewrite `h1` using `[← e', map_mul, h2, ← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul K v (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hx) (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hbK), neg_add, WithZero.exp_add]`. Conclude with `mul_right_cancel₀ WithZero.exp_ne_zero h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_count {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (x : K) (hx : x ≠ 0) :
     v.valuation K x = WithZero.exp (-FractionalIdeal.count K v
@@ -42,13 +42,13 @@ private theorem val_count {K : Type} [Field K] [NumberField K] (v : HeightOneSpe
   exact mul_right_cancel₀ WithZero.exp_ne_zero h1
 
 /- English proof (translation)
-Introduce `M _ K _ _ _ b r v w X hX hv hw`. Establish `hX0 : X ≠ 0` using `left_ne_zero_of_mul_eq_one hX.1`. Set `P : (ZMod M)ˣ → HeightOneSpectrum (𝓞 K)` to `fun t => HeightOneSpectrum.comap (sgO M K t : 𝓞 K →+* 𝓞 K) (sgO M K t).surjective v`. Establish `hP : ∀ t, (P t).asIdeal = conjI M K v.asIdeal t` using `fun t => rfl`. Establish `hne : ∀ t, P t ≠ w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t h`. Apply `hw` to reduce the goal to its premises. Rewrite using `[← h, hP, mem_conjI, map_natCast]`. Conclude with `hv`. Rewrite using `[val_count w X hX0, hX.2, FractionalIdeal.count_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_zero, neg_zero, WithZero.exp_zero]`. Introduce `t _`. Rewrite using `[FractionalIdeal.count_zpow, ← hP, FractionalIdeal.count_maximal_coprime K w (hne t), mul_zero]`. Introduce `t _`. Apply `zpow_ne_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hP]`. Conclude with `FractionalIdeal.coeIdeal_ne_zero.mpr (P t).ne_bot`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.valuation_kummerElement_eq_one_of_not_over :
     ∀ (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (b r : ℕ) (v w : HeightOneSpectrum (𝓞 K)) (X : K), IsX M K b v.asIdeal X → (r : 𝓞 K) ∈ v.asIdeal → (r : 𝓞 K) ∉ w.asIdeal → w.valuation K X = 1 := by

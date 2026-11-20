@@ -8,11 +8,11 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 nE)
 open scoped Classical
 
 /- English proof (translation)
-Establish `h1` using `(UpperTheory.ConvolutionTheory.R2.Fo.coordMk ℚ E D).1 w.embedding ((rot t).val i j) 0`. Rewrite `h1` using `[FieldIso.coord_embedding]`. Establish `h2 : D.mkE ((rot t).val i j) 0 = AdeleBaseChange.adeleMap ℚ E ((rot t).val i j)`. Simplify using `[Dat.mkE]`. Establish `h3 : TR.pInf ℚ ((rot t).val i j) = (Nz.X t).val i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun g : GL (Fin 2) (TR.Rinf ℚ) => g.val i j) (TR.pInf_infGL (Nz.X t))`. Rewrite `h` using `[← Nz.rot_eq]`. Conclude with `h`. Express the relevant statement in the definitionally equal form `pInf E (AdeleBaseChange.adeleMap ℚ E ((rot t).val i j)) w = _`. Rewrite using `[← h2, h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Fo.cw, h3]`.
+A detailed English derivation is pending.
 -/
 private theorem kInf_val {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (t : ℝ)
     (i j : Fin 2) (w : InfinitePlace E) :
@@ -30,7 +30,7 @@ private theorem kInf_val {E : Type} [Field E] [NumberField E] [IsTotallyComplex 
   simp [Fo.cw, h3]
 
 /- English proof (translation)
-Use extensionality with `i j w`. Rewrite using `[kInf_val D]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Nz.X]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem kInf_rot {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (t : ℝ) :
     (kInf (em E (rot t))).val =
@@ -40,9 +40,9 @@ private theorem kInf_rot {E : Type} [Field E] [NumberField E] [IsTotallyComplex 
   fin_cases i <;> fin_cases j <;> simp [Nz.X]
 
 /- English proof (translation)
-Introduce `E _ _ _ D t`. Establish `hinv : (kInf (em E (rot t)))⁻¹ = kInf (em E (rot (-t)))`. Rewrite using `[Nz.rot_neg, map_inv]`. Simplify using `[kInf, map_inv]`. Rewrite using `[XB, hinv, kInf_rot D, kInf_rot D]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j w`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, Real.cos_neg, Real.sin_neg] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem UpperTheory.conj_lie_element_embed_rotation_eq_trig_matrix :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (t : ℝ), XB D (em E (rot t)) = !![(Real.cos t * Real.sin t) • thInf D, (Real.cos t ^ 2) • thInf D; -((Real.sin t ^ 2) • thInf D), -((Real.cos t * Real.sin t) • thInf D)] := by

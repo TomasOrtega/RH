@@ -5,29 +5,27 @@ open scoped ENNReal NNReal Topology
 namespace GlobalTheory.CompanionTheory.RealCoordinates
 
 /- English proof (translation)
-Set `f : P → (Fin N → ℝ) →+ (Fin N → ℝ)` to `fun s => e.toAddMonoidHom.comp ((A s).comp e.symm.toAddMonoidHom)`. Establish `hf : ∀ s, Continuous (f s)` using `fun s => he.comp ((hA s).comp hes)`. Set `L : P → (Fin N → ℝ) →L[ℝ] (Fin N → ℝ)` to `fun s => (f s).toRealLinearMap (hf s)`. Establish `hL : ∀ s x, e (A s x) = L s (e x)`. Introduce `s x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[L, f]`. Establish `hLc : Function.Injective (L c)`. Introduce `y z h`. Establish `h' : A c (e.symm y) = A c (e.symm z)`. Apply `e.injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `h` using `[L, f]`. Simplify using `using congrArg e (hinj h')`. Take `⟨K, hK, hKL⟩` from `(L c : (Fin N → ℝ) →ₗ[ℝ] (Fin N → ℝ)).exists_antilipschitzWith (LinearMap.ker_eq_bot.mpr hLc)`. Establish `hKpos : (0 : ℝ) < K` using `hK`. Use `set δ : ℝ := 1 / (2 * K) with hδ`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδpos : 0 < δ` using `by positivity`. Establish `hlow : ∀ y, 2 * δ * ‖y‖ ≤ ‖L c y‖`. Introduce `y`. Establish `h1` using `hKL.le_mul_dist y 0`. Simplify using `only [dist_zero_right, map_zero, ContinuousLinearMap.coe_coe] at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : 2 * δ = (K : ℝ)⁻¹`. Rewrite using `[hδ]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h2, inv_mul_le_iff₀ hKpos]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b : Fin N → Fin N → ℝ` to `fun i j => if i = j then 1 else 0`. Use `set ε : ℝ := δ / (N + 1) with hε`. Establish `hεpos : 0 < ε` using `by positivity`. Establish `hev : ∀ᶠ s in nhds c, ∀ i : Fin N, ‖L s (b i) - L c (b i)‖ < ε`. Rewrite using `[Filter.eventually_all]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Establish `ht : Filter.Tendsto (fun s => L s (b i)) (nhds c) (nhds (L c (b i)))`. Use `(he.tendsto _).comp (hlim (e.symm (b i)))` as an intermediate fact. Simplify `this` using `[L, f, Function.comp_def]`. Conclude with `(Metric.tendsto_nhds.mp ht ε hεpos).mono fun s hs => by rwa [dist_eq_norm] at hs`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hNε : (N : ℝ) * ε ≤ δ`. Rewrite using `[hε, mul_div_assoc', div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨δ, hδpos, hev.mono fun s hs x => ?_⟩` and prove the remaining obligations. Rewrite using `[hL]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hdiff : ‖L s (e x) - L c (e x)‖ ≤ δ * ‖e x‖`. Establish `hy : L s (e x) - L c (e x) = ∑ i, (e x) i • (L s (b i) - L c (b i))` using `by conv_lhs => rw [pi_eq_sum_univ (e x)]`. Simplify using `only [map_sum, map_smul, smul_sub, Finset.sum_sub_distrib]`. Both sides reduce to the same expression. Rewrite using `[hy]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[norm_smul]`. Conclude with `mul_le_mul (norm_le_pi_norm (e x) i) (hs i).le (norm_nonneg _) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `_ = (N : ℝ) * ε * ‖e x‖ := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ δ * ‖e x‖ := mul_le_mul_of_nonneg_right hNε (norm_nonneg _)`. Establish `hc` using `hlow (e x)`.
-
-Establish `htri : ‖L c (e x)‖ ≤ ‖L s (e x)‖ + ‖L s (e x) - L c (e x)‖`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[norm_nonneg (e x)]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem eventually_lower_bound_of_tendsto_injective
     (X P : Type) [AddCommGroup X] [TopologicalSpace X] [TopologicalSpace P] (N : ℕ)

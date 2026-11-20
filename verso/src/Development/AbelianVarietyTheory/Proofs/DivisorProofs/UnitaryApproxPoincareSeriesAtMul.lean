@@ -14,15 +14,13 @@ noncomputable section
 namespace GlobalTheory.UPoinc
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c C X₁ φ d m hm hd p _ z₁ t₀ e`. Take `⟨f, hf0, hf⟩` from `hd p z₁ t₀ e`. Establish `hpow : ∀ t : UCTrait X₁ p z₁, ‖t.val (f ^ m)‖ = ‖t.val f‖ ^ m` using `fun t => by`. Rewrite using `[UModel.val_eq_valInt, UModel.val_eq_valInt, map_pow]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `norm_pow _ _`. Establish `hexp : ∀ t : UCTrait X₁ p z₁, Real.exp (-(t.sc * (((d * m : ℕ) : ℝ) * φ.evalZ t.T.be))) = Real.exp (-(t.sc * (d * φ.evalZ t.T.be))) ^ m` using `fun t => by`. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨f ^ m, ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hpow, hf0, hexp]`. Break down `hf t with h1 | ⟨h, hh, h2⟩` into its components or cases. Use `left`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hpow, hexp]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) h1 m`. Use `right`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Rewrite using `[hpow]`.
-
-Conclude with `(pow_le_of_le_one (norm_nonneg _) (UModel.norm_val_le t f) (by omega)).trans h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uApproxAt_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (φ : InvFun (𝓞 E)) (d m : ℕ), 1 ≤ m → UApproxAt X₁ φ d → UApproxAt X₁ φ (d * m) := by
   intro E _ _ _ H Dw l Xo c C X₁ φ d m hm hd p _ z₁ t₀ e

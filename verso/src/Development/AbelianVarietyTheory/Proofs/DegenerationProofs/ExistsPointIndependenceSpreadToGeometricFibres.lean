@@ -20,7 +20,7 @@ namespace GlobalTheory.GenSpread
 set_option backward.isDefEq.respectTransparency false
 
 /- English proof (translation)
-Unfold `linComb`. Rewrite using `[map_list_prod, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `map_pow ρ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem map_linComb_pts {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {T : Over S}
     {T' : Over S'} (ρ : (T' ⟶ G') →* (T ⟶ G)) {n : ℕ} (x : Fin n → (T' ⟶ G')) (a : Fin n → ℕ) :
@@ -32,7 +32,7 @@ theorem map_linComb_pts {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj 
   exact map_pow ρ _ _
 
 /- English proof (translation)
-Set `U : Over.mk (T'.hom ≫ f) ⟶ baseOver S` to `Over.homMk (T'.hom ≫ f) (Category.comp_id _)`. Establish `hx' : ∀ i, pushPt h.1.w (x' i) = U ≫ x i` using `fun i => Over.OverMorphism.ext (hx i)`. Establish `e : pushPt h.1.w (linComb x' a) = U ≫ linComb x a` using `(map_linComb_pts (pushHom h T') x' a).trans ((congrArg (fun z => linComb z a) (funext hx')).trans (map_linComb_pts (preHom U) x a).symm)`. Conclude with `congrArg (fun z => z.left) e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linComb_left_push {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {T' : Over S'} {n : ℕ} (x' : Fin n → (T' ⟶ G'))
@@ -46,15 +46,15 @@ theorem linComb_left_push {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpOb
   exact congrArg (fun z => z.left) e
 
 /- English proof (translation)
-Set `j : (equalizer z z').left ⟶ Sp R` to `(equalizer.ι z z').left`. Establish `hj : IsClosedImmersion j` using `isClosedImmersion_equalizer_ι_left z z'`. Establish `hC : IsClosed (Set.range j)` using `j.isClosedEmbedding.isClosed_range`. Establish `hg : genericPoint (Sp R) ∉ Set.range j`. Introduce `hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd : IsDominant j`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[DenseRange, dense_iff_closure_eq, hC.closure_eq]`. Conclude with `Set.eq_univ_of_univ_subset (((genericPoint_spec (Sp R)).mem_closed_set_iff hC).1 hg)`. Use `hz (Over.OverMorphism.ext ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hr : IsReduced (baseOver (Sp R)).left` using `inferInstanceAs (IsReduced (Sp R))`. Use `ext_of_isDominant_of_isSeparated G.hom ((Over.w z).trans (Over.w z').symm) j ?_` and prove the remaining obligations. Conclude with `congrArg (fun u => u.left) (equalizer.condition z z')`. Take `⟨a, ha, H⟩` from `exists_forall_mem (V := ⟨(Set.range j)ᶜ, hC.isOpen_compl⟩) hg`. Use `⟨a, ha, fun R' _ g hga X hX s e => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨x⟩` from `hX`. Set `U : Over.mk (s ≫ spMap g) ⟶ baseOver (Sp R)` to `Over.homMk (s ≫ spMap g) (Category.comp_id _)`. Establish `hU : U ≫ z = U ≫ z'` using `Over.OverMorphism.ext e`. Establish `hl : (equalizer.lift U hU).left ≫ j = s ≫ spMap g` using `congrArg (fun u => u.left) (equalizer.lift_ι U hU)`. Use `H R' g hga (s x) ⟨(equalizer.lift U hU).left x, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hl]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_forall_sections_ne {R : Type} [CommRing R] [IsDomain R] {G : Over (Sp R)} [IsSeparated G.hom]
     {z z' : baseOver (Sp R) ⟶ G} (hz : z ≠ z') :
@@ -84,15 +84,15 @@ theorem exists_forall_sections_ne {R : Type} [CommRing R] [IsDomain R] {G : Over
   rfl
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ G _ A _ φ hsep hA n k y y₀ hy hind`. Establish `key : ∀ p : (Fin n → Fin k) × (Fin n → Fin k), ∃ a : R, a ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (g : R →+* R'), IsUnit (g a) → ∀ (X : Scheme.{0}) [Nonempty X] (s : X ⟶ Sp R'), (s ≫ spMap g) ≫ (linComb y (fun i => (p.1 i : ℕ))).left = (s ≫ spMap g) ≫ (linComb y (fun i => (p.2 i : ℕ))) …`. Introduce and unpack `⟨c, c'⟩`. Distinguish the cases in `hc : c = c'`. Conclude with `⟨1, one_ne_zero, fun _ _ _ _ _ _ _ _ => hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Establish `hne : linComb y (fun i => (c i : ℕ)) ≠ linComb y (fun i => (c' i : ℕ))`. Introduce `e`. Use `hc (hind c c' (Over.OverMorphism.ext (hA.1.hom_ext ?_ ?_)))` and prove the remaining obligations. Establish `hy' : ∀ i, (y₀ i).left ≫ φ = ((baseOver (Sp K)).hom ≫ spMap (algebraMap R K)) ≫ (y i).left` using `fun i => (hy i).trans (congrArg (· ≫ (y i).left) (Category.id_comp _).symm)`. Rewrite using `[linComb_left_push hA y₀ y hy', linComb_left_push hA y₀ y hy', e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Over.w _).trans (Over.w _).symm`. Take `⟨a, ha, H⟩` from `exists_forall_sections_ne hne`. Conclude with `⟨a, ha, fun R' _ g hg X _ s e => (H R' g hg X s e).elim⟩`. Use `choose a ha H using key`. Use `⟨∏ p, a p, Finset.prod_ne_zero_iff.2 fun p _ => ha p, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `R' _ g hg G' _ π y' hπ hy' F _ _ s c c' e`. Establish `hu : IsUnit (g (a (c, c')))` using `isUnit_of_dvd_unit (map_dvd g (Finset.dvd_prod_of_mem a (Finset.mem_univ _))) hg`. Use `H (c, c') R' g hu _ s ?_` and prove the remaining obligations. Establish `hx : ∀ i, ((Over.homMk s (by simp) : Over.mk s ⟶ baseOver (Sp R')) ≫ y' i).left ≫ π = ((Over.mk s).hom ≫ spMap g) ≫ (y i).left` using `fun i => by show (s ≫ (y' i).left) ≫ π = (s ≫ spMap g) ≫ (y i).left`. Rewrite using `[Category.assoc, hy' i, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `linComb_left_push hπ _ y hx (fun i => (c i : ℕ))`. Establish `e₂` using `linComb_left_push hπ _ y hx (fun i => (c' i : ℕ))`. Rewrite `e₁` using `[e]`. Conclude with `e₁.symm.trans e₂`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_forall_linComb_injective : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] (A : Over (Sp K)) [GrpObj A] (φ : A.left ⟶ G.left), IsSeparated G.hom → IsGrpPullback A G (spMap (algebraMap R K)) φ → ∀ (n k : ℕ) (y : Fin n → (baseOver (Sp R) ⟶ G)) (y₀ : Fin n → (baseOver (Sp K) ⟶ A)), (∀ i, (y₀ i).left ≫ φ = spMap (algebraMap R K) ≫ (y i).left) → (∀ c c' : Fin n → Fin k, linComb y₀ (fun i => (c i : ℕ)) = linComb y₀ (fun i => (c' i : ℕ)) → c = c') → ∃ a : R, a ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (g : R →+* R'), IsUnit (g a) → ∀ (G' : Over (Sp R')) [GrpObj G'] (π : G'.left ⟶ G.left) (y' : Fin n → (baseOver (Sp R') ⟶ G')), IsGrpPullback G' G (spMap g) π → (∀ i, (y' i).left ≫ π = spMap g ≫ (y i).left) → ∀ (F : Type) [Field F] [IsAlgClosed F] (s : Spec (CommRingCat.of F) ⟶ Sp R') (c c' : Fin n → Fin k), linComb (fun i => (Over.homMk s (by simp) : Over.mk s ⟶ baseOver (Sp R')) ≫ y' i) (fun i => (c i : ℕ)) = linComb (fun i => (Over.homMk s (by simp) : Over.mk s ⟶ baseOver (Sp R')) ≫ y' i) (fun i => (c' i : ℕ)) → c = c' := by
   intro R K _ _ _ _ _ _ G _ A _ φ hsep hA n k y y₀ hy hind

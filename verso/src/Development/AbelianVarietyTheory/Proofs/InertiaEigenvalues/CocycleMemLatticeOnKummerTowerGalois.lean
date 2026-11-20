@@ -19,7 +19,7 @@ variable {l : ℕ} [Fact l.Prime] {a e : ℕ} [NeZero a] [NeZero e] {O K : Type}
   [DecidableEq ι] {G : Type} [Group G] [TopologicalSpace G] {T : LocLat G ℚ_[l] K O}
 
 /- English proof (translation)
-Rewrite using `[inclL_apply, inclL_apply, ← Matrix.mulVec_smul]`. Use `congr 1`. Use `ext1 i`. Simplify using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inclL_smul (P : PhiMod O K l e a ι) (r : OA l O) (c : ι → OA l O) :
     inclL t ϖ P (r • c) = inclO l O r • inclL t ϖ P c := by
@@ -29,9 +29,9 @@ theorem inclL_smul (P : PhiMod O K l e a ι) (r : OA l O) (c : ι → OA l O) :
   simp [map_mul]
 
 /- English proof (translation)
-Take `⟨m, c, hm, hw, hb⟩` from `h`. Take `⟨m', c', hm', hw', hb'⟩` from `h'`. Use `⟨m * m', m' • c + m • c', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `hm.mul hm'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, inclL_smul, inclL_smul, ← hw, ← hw', smul_smul, smul_smul, smul_add, map_mul, mul_comm (inclO l O m) (inclO l O m')]`. Establish `e1 : (fun i => toB l O ((m' • c + m • c') i)) = toB l O m' • (fun i => toB l O (c i)) + toB l O m • (fun i => toB l O (c' i))` using `by ext1 i`. Simplify using `[map_add, map_mul]`. Rewrite using `[e1, map_add, map_smul, map_smul, ← hb, ← hb', map_mul, smul_add, smul_smul, smul_smul, mul_comm (toB l O m') (toB l O m)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCrisVal_add (P : PhiMod O K l e a ι) (jB : (ι → OB l O) ≃ₗ[OB l O] TW (OB l O) T)
     {w w' : ι → OW l O} {b b' : TW (OB l O) T} (h : IsCrisVal t ϖ P jB w b)
@@ -50,15 +50,15 @@ theorem isCrisVal_add (P : PhiMod O K l e a ι) (jB : (ι → OB l O) ≃ₗ[OB 
       mul_comm (toB l O m') (toB l O m)]
 
 /- English proof (translation)
-Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ η H D T R y hyY b hpot g hg`. Take `⟨hy, m₀, σ, b₀, hm₀, hσ, -, hval, rfl⟩` from `hpot`. Take `⟨γ, hγ⟩` from `GlobalTheory.T.exists_muSemidirectCyclic_cover_of_mem_GKinf_coeffs l a e O K t ϖ (sQ l g) hg`. Establish `hσfix : actB (sQ l) T g (R.jB (toBcris t ϖ D.toPhiMod σ)) = R.jB (toBcris t ϖ D.toPhiMod σ)` using `GlobalTheory.T.kisinInfGalois_acts_through_descentDatum l a e O K t ϖ ι D.toPhiMod T R.I R.jB D.desc R.cmp R.desc g γ hγ σ σ (hσ γ).symm`. Establish `hyfix : R.I.act (sQ l g) g (toW t ϖ D.toPhiMod ⟨y, hy⟩) = toW t ϖ D.toPhiMod ⟨y, hy⟩` using `R.desc g γ hγ ⟨y, hy⟩ ⟨y, hy⟩ (((Descent.mem_invOf _).1 hyY).2 γ).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w := R.I.act (sQ l g) g m₀ - m₀ with hw`. Establish `hφw : phiW t ϖ D.toPhiMod w = w`. Establish `h1 : phiW t ϖ D.toPhiMod w - w = R.I.act (sQ l g) g (phiW t ϖ D.toPhiMod m₀ - m₀) - (phiW t ϖ D.toPhiMod m₀ - m₀)`. Rewrite using `[hw, map_sub, map_sub, R.I.act_phiW]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hm₀, hyfix, sub_self]`. Conclude with `sub_eq_zero.1 h1`. Take `⟨x, hx⟩ : w ∈ LinearMap.range R.I.ofT` from `by rw [R.I.range_ofT]; exact hφw`. Take `⟨-, huniq, -, hofT, hgal⟩` from `(GlobalTheory.T.breuilKisin_bcris_comparison_frobenius_naturality l a e O K t ϖ ι D.toPhiMod T R.I).2 R.jB R.cmp`. Establish `h2 : IsCrisVal t ϖ D.toPhiMod R.jB (R.I.act (sQ l g) g (phiW t ϖ D.toPhiMod m₀)) (actB (sQ l) T g b₀)` using `hgal g (R.stable g) _ _ hval`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : R.I.act (sQ l g) g (phiW t ϖ D.toPhiMod m₀) = phiW t ϖ D.toPhiMod m₀ + R.I.ofT x`. Rewrite using `[R.I.act_phiW, hx, ← hφw, hw, map_sub]`. Normalize the expressions using the abelian group laws. Rewrite `h2` using `[h3]`. Establish `h4` using `huniq _ _ _ h2 (GlobalTheory.CocycleKinf.isCrisVal_add D.toPhiMod R.jB hval (hofT x))`.
+Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨-x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hσfix, h4, tmul_neg]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem cocycle_mem_lattice_of_mem_GKinf : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (η H : ℕ) (D : BKDat O K l e a ι η H) (T : LocLat (Gl l) ℚ_[l] K O) (R : GalDat t ϖ (sQ l) D T), ∀ y ∈ D.Y, ∀ b, R.IsPotential y b → ∀ g : Gl l, sQ l g ∈ ϖ.GKinf → ∃ x : ↥T.L.T, actB (sQ l) T g b - b = (1 : OB l O) ⊗ₜ[O] x := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ η H D T R y hyY b hpot g hg

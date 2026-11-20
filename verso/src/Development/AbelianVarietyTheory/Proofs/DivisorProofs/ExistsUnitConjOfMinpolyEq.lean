@@ -18,7 +18,7 @@ def evalQuot {F C : Type} [Field F] [Ring C] [Algebra F C] (q : Polynomial F) (x
     rw [map_mul, hx, mul_zero])
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Polynomial.aeval x Polynomial.X = x`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem evalQuot_root {F C : Type} [Field F] [Ring C] [Algebra F C] (q : Polynomial F) (x : C)
     (hx : Polynomial.aeval x q = 0) : evalQuot q x hx (AdjoinRoot.root q) = x := by
@@ -30,7 +30,7 @@ section Generic2
 variable {S : Type*} [Ring S]
 
 /- English proof (translation)
-Establish `h1 : (σ u).unop * (σ ((u⁻¹ : Sˣ) : S)).unop = 1`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, map_mul, MulOpposite.unop_mul, mul_assoc]`. Use `_ = _ := by rw [Units.inv_mul, h1, one_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem triv_change (σ : S →+* Sᵐᵒᵖ) (x u : Sˣ) (b : S) :
     ((x * u⁻¹ : Sˣ) : S) * ((u : S) * b * (σ u).unop) * (σ ((x * u⁻¹ : Sˣ) : S)).unop =
@@ -49,31 +49,31 @@ namespace Pair
 variable {G : HTGroup p}
 
 /- English proof (translation)
-Simplify using `only [sh, map_mul, MulOpposite.unop_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sh_mul (a b : G.C) : sh G (a * b) = sh G b * sh G a := by
   simp only [sh, map_mul, MulOpposite.unop_mul]
 
 /- English proof (translation)
-The claim follows from `G.star_star a`.
+A detailed English derivation is pending.
 -/
 theorem sh_sh (a : G.C) : sh G (sh G a) = a := G.star_star a
 
 /- English proof (translation)
-Rewrite using `[← sh_mul, Units.inv_mul]`. Simplify using `[sh]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sh_units_mul_inv (y : G.Cˣ) : sh G (y : G.C) * sh G ((y⁻¹ : G.Cˣ) : G.C) = 1 := by
   rw [← sh_mul, Units.inv_mul]; simp [sh]
 
 /- English proof (translation)
-The claim follows from `(starT_tmul G.star R 1 a).symm`.
+A detailed English derivation is pending.
 -/
 theorem inC_sh (R : Type) [CommRing R] [Algebra ℚ R] (a : G.C) :
     inC G R (sh G a) = (starT G.star R (inC G R a)).unop :=
   (starT_tmul G.star R 1 a).symm
 
 /- English proof (translation)
-Unfold `Triv at hx ⊢`. Establish `e : inC G R ((y : G.C) * β * sh G y) = ((Units.map (inC G R).toMonoidHom y : (R ⊗[ℚ] G.C)ˣ) : R ⊗[ℚ] G.C) * inC G R β * (starT G.star R ((Units.map (inC G R).toMonoidHom y : (R ⊗[ℚ] G.C)ˣ) : R ⊗[ℚ] G.C)).unop`. Rewrite using `[map_mul, map_mul, inC_sh]`. Both sides reduce to the same expression. Rewrite using `[e, triv_change, hx]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_conj (R : Type) [CommRing R] [Algebra ℚ R] (β : G.C) (y : G.Cˣ) (x : (R ⊗[ℚ] G.C)ˣ) (t : Rˣ)
     (hx : Triv G R β x t) :

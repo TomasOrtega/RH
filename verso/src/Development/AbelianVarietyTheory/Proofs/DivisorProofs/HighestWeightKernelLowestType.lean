@@ -18,29 +18,27 @@ namespace GlobalTheory.PsCo.PcEF
 open GlobalTheory.PsCo.PcEG
 
 /- English proof (translation)
-Introduce `n ε lam hg M _ _ E hE hU z hz0 hzp hz hcas S hSfd hSk hzS`. Establish `hz' : IsKHWVec ε (fun a b => TensorProduct.map (E a b) LinearMap.id + LinearMap.lTensor M (sgE ε cpFock cmFock a b)) (gaW ε lam) z`. Establish `e : (diagE ε (eT E) cpT cmT : Fin n → Fin n → Module.End ℂ (TensorProduct ℂ M (Fock n))) = fun a b => TensorProduct.map (E a b) LinearMap.id + LinearMap.lTensor M (sgE ε cpFock cmFock a b)`. Use function extensionality and compare the values at `a b`. Simplify using `only [diagE, eT, sgE_cpT]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e]`. Conclude with `hz`. Take `⟨s, hy0, hy⟩` from `khw_extract ε hg.1 hz' hz0`. Use `set y := tcoef ((fockBasis n).coord s) z with hydef`. Establish `hs : s ⊆ lfPhysModes ε`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `m hm`. Assume the negation of the conclusion as `hnm`. Apply `hy0` to reduce the goal to its premises. Use `tco_physSub_zero hzp hm fun hp => hnm ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `finProdFinEquiv.surjective m`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hp` using `[Equiv.symm_apply_apply]`. Conclude with `(lf_mem_phys ε x.1 x.2).2 hp`. Use `set Ph := gcPh ε s with hPh`. Establish `hwt : gaW ε lam - fockWt ε s = lowK ε lam - phSum Ph`. Rewrite using `[gc_wt_eq ε hs]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [gaW, lowK, Pi.sub_apply, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hy` using `[hwt]`. Establish `hyS : y ∈ S` using `hzS s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set V := kLowSpan ε E y with hV`. Establish `hVS : V ≤ S` using `kLowSpan_le hSk hyS`. Use `haveI : FiniteDimensional ℂ S := hSfd`. Establish `hVfd : FiniteDimensional ℂ V` using `Submodule.finiteDimensional_of_le hVS`. Establish `hVirr : IsKIrrHW ε E (lowK ε lam - phSum Ph) V` using `kLowSpan_kIrrHW hE hU hy hy0 hVfd`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `set T : Submodule ℂ M := LinearMap.ker (casimir E - ((casVal lam : ℝ) : ℂ) • (1 : Module.End ℂ M)) with hT`. Establish `hTk : IsKStableSub ε E T`. Introduce `a b _ v hv`. Rewrite `hv`, the goal using `[hT, LinearMap.mem_ker]`. Establish `hc` using `congrArg (fun X : Module.End ℂ M => X v) (casimir_comm hE a b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Module.End.mul_apply] at hc`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply] at hv ⊢`. Rewrite using `[hc, sub_eq_zero.1 hv, map_smul, sub_self]`. Establish `hyT : y ∈ T`. Rewrite using `[hT, LinearMap.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Rewrite using `[hcas s, sub_self]`. Establish `hVT : V ≤ T` using `kLowSpan_le hTk hyT`. Establish `hVc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v`. Introduce `v hv`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `hVT hv` as an intermediate fact. Rewrite `this` using `[hT, LinearMap.mem_ker]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply] at this`. Conclude with `sub_eq_zero.1 this`. Establish `hPh0 : Ph = ∅`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Conclude with `dirac_sharp hg hE hU (gc_isPosNC ε hs) (Finset.nonempty_iff_ne_empty.2 hne) hVirr hVc`. Rewrite `hVirr` using `[hPh0]`. Simplify using `only [phSum, Finset.sum_empty, sub_zero] at hVirr`. Use `⟨V, hVirr, ?_, hVc⟩` and prove the remaining obligations.
-
-Introduce `h0`. Apply `hy0` to reduce the goal to its premises. Establish `: y ∈ V` using `self_mem_kLowSpan y`. Rewrite `this` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).1 this`.
+A detailed English derivation is pending.
 -/
 theorem highestWeightKernel_lowestType : AlgDatum := by
   intro n ε lam hg M _ _ E hE hU z hz0 hzp hz hcas S hSfd hSk hzS

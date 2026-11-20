@@ -9,7 +9,7 @@ open scoped ENNReal InnerProductSpace ComplexConjugate ContDiff
 noncomputable section
 
 /- English proof (translation)
-Establish `h1 : ‖a + b‖ ^ 2 ≤ (‖a‖ + ‖b‖) ^ 2` using `by first`. Consider the case `exact pow_le_pow_left₀ (norm_nonneg _) (norm_add_le a b) 2`. Consider the case `(gcongr; exact norm_add_le a b)`. Use polynomial arithmetic with `[sq_nonneg (‖a‖ - ‖b‖)]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem cut_sq_add_le {E : Type*} [SeminormedAddCommGroup E] (a b : E) :
     ‖a + b‖ ^ 2 ≤ 2 * ‖a‖ ^ 2 + 2 * ‖b‖ ^ 2 := by
@@ -20,7 +20,7 @@ theorem cut_sq_add_le {E : Type*} [SeminormedAddCommGroup E] (a b : E) :
   nlinarith [sq_nonneg (‖a‖ - ‖b‖)]
 
 /- English proof (translation)
-Establish `h1 : ‖a - b‖ ^ 2 ≤ (‖a‖ + ‖b‖) ^ 2` using `by first`. Consider the case `exact pow_le_pow_left₀ (norm_nonneg _) (norm_sub_le a b) 2`. Consider the case `(gcongr; exact norm_sub_le a b)`. Use polynomial arithmetic with `[sq_nonneg (‖a‖ - ‖b‖)]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem cut_sq_sub_le {E : Type*} [SeminormedAddCommGroup E] (a b : E) :
     ‖a - b‖ ^ 2 ≤ 2 * ‖a‖ ^ 2 + 2 * ‖b‖ ^ 2 := by
@@ -31,7 +31,7 @@ theorem cut_sq_sub_le {E : Type*} [SeminormedAddCommGroup E] (a b : E) :
   nlinarith [sq_nonneg (‖a‖ - ‖b‖)]
 
 /- English proof (translation)
-Simplify using `only [sq2]`. Use `first`. Consider the case `positivity`. Consider the case `exact div_nonneg (Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun k _ => sq_nonneg _) (by norm_num)`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem two_form_sq_nonneg (n : ℕ) (σ : Fin n → Fin n → ℂ) : 0 ≤ sq2 n σ := by
   simp only [sq2]
@@ -40,7 +40,7 @@ theorem two_form_sq_nonneg (n : ℕ) (σ : Fin n → Fin n → ℂ) : 0 ≤ sq2 
   | exact div_nonneg (Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun k _ => sq_nonneg _) (by norm_num)
 
 /- English proof (translation)
-Simplify using `only [sq2]`. Establish `h : ∑ j, ∑ k, ‖a j k + b j k‖ ^ 2 ≤ ∑ j, ∑ k, (2 * ‖a j k‖ ^ 2 + 2 * ‖b j k‖ ^ 2)` using `Finset.sum_le_sum fun j _ => Finset.sum_le_sum fun k _ => cut_sq_add_le _ _`. Establish `e : ∑ j, ∑ k, (2 * ‖a j k‖ ^ 2 + 2 * ‖b j k‖ ^ 2) = 2 * ∑ j, ∑ k, ‖a j k‖ ^ 2 + 2 * ∑ j, ∑ k, ‖b j k‖ ^ 2`. Simplify using `only [Finset.sum_add_distrib, Finset.mul_sum]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem two_form_sq_add_le (n : ℕ) (a b : Fin n → Fin n → ℂ) :
     sq2 n (fun j k => a j k + b j k) ≤ 2 * sq2 n a + 2 * sq2 n b := by
@@ -54,7 +54,7 @@ theorem two_form_sq_add_le (n : ℕ) (a b : Fin n → Fin n → ℂ) :
   linarith
 
 /- English proof (translation)
-Simplify using `only [sq2, norm_mul, mul_pow, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem two_form_sq_smul (n : ℕ) (c : ℂ) (a : Fin n → Fin n → ℂ) :
     sq2 n (fun j k => c * a j k) = ‖c‖ ^ 2 * sq2 n a := by
@@ -62,11 +62,11 @@ theorem two_form_sq_smul (n : ℕ) (c : ℂ) (a : Fin n → Fin n → ℂ) :
   ring
 
 /- English proof (translation)
-Unfold `sq2 wedge`. Establish `h : ∀ j k, ‖a j * b k - a k * b j‖ ^ 2 ≤ 2 * (‖a j‖ ^ 2 * ‖b k‖ ^ 2) + 2 * (‖a k‖ ^ 2 * ‖b j‖ ^ 2)`. Introduce `j k`. Use `cut_sq_sub_le (a j * b k) (a k * b j)` as an intermediate fact. Simplify `this` using `[mul_pow]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : ∑ j, ∑ k, ‖a j * b k - a k * b j‖ ^ 2 ≤ ∑ j, ∑ k, (2 * (‖a j‖ ^ 2 * ‖b k‖ ^ 2) + 2 * (‖a k‖ ^ 2 * ‖b j‖ ^ 2))` using `Finset.sum_le_sum fun j _ => Finset.sum_le_sum fun k _ => h j k`. Establish `e1 : ∑ j, ∑ k, ‖a j‖ ^ 2 * ‖b k‖ ^ 2 = (∑ i, ‖a i‖ ^ 2) * (∑ i, ‖b i‖ ^ 2)`. Rewrite using `[Finset.sum_mul_sum]`. Establish `e2 : ∑ j, ∑ k, ‖a k‖ ^ 2 * ‖b j‖ ^ 2 = (∑ i, ‖a i‖ ^ 2) * (∑ i, ‖b i‖ ^ 2)`. Rewrite using `[Finset.sum_comm, Finset.sum_mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : ∑ j, ∑ k, (2 * (‖a j‖ ^ 2 * ‖b k‖ ^ 2) + 2 * (‖a k‖ ^ 2 * ‖b j‖ ^ 2)) = 2 * (∑ j, ∑ k, ‖a j‖ ^ 2 * ‖b k‖ ^ 2) + 2 * (∑ j, ∑ k, ‖a k‖ ^ 2 * ‖b j‖ ^ 2)`. Simplify using `only [Finset.sum_add_distrib, Finset.mul_sum]`. Rewrite `h2` using `[e3, e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem two_form_sq_wedge_le (n : ℕ) (a b : Fin n → ℂ) :
     sq2 n (wedge a b) ≤ 2 * (∑ i, ‖a i‖ ^ 2) * (∑ i, ‖b i‖ ^ 2) := by
@@ -90,9 +90,9 @@ theorem two_form_sq_wedge_le (n : ℕ) (a b : Fin n → ℂ) :
   linarith
 
 /- English proof (translation)
-Establish `h1 : ‖∑ j, a j * b j‖ ≤ ∑ j, ‖a j‖ * ‖b j‖`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun j => ‖a j‖) (fun j => ‖b j‖)`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact pow_le_pow_left₀ (norm_nonneg _) h1 2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Treat this case separately.
 
-Consider the case `gcongr`. Use `_ ≤ (∑ j, ‖a j‖ ^ 2) * (∑ j, ‖b j‖ ^ 2) := h2`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cut_cs (n : ℕ) (a b : Fin n → ℂ) :
     ‖∑ j, a j * b j‖ ^ 2 ≤ (∑ j, ‖a j‖ ^ 2) * (∑ j, ‖b j‖ ^ 2) := by
@@ -107,13 +107,13 @@ theorem cut_cs (n : ℕ) (a b : Fin n → ℂ) :
     _ ≤ (∑ j, ‖a j‖ ^ 2) * (∑ j, ‖b j‖ ^ 2) := h2
 
 /- English proof (translation)
-Unfold `d`. Use `split_ifs with hc`. Establish `hs` using `Classical.choose_spec hc`. Generalize the expression as in `Classical.choose hc = e at hs ⊢`. Take `⟨hch, hxs⟩` from `hs`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzx : z x = e x` using `hch hxs`. Establish `ht : Tendsto e.symm (𝓝 (e x)) (𝓝 x)` using `by first`. Consider the case `exact e.tendsto_symm hxs`. Consider the case `(have h0 := e.continuousAt_symm (e.map_source hxs)`. Unfold `ContinuousAt at h0`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[e.left_inv hxs] at h0)` and apply the resulting hypothesis. Establish `hev : f ∘ e.symm =ᶠ[𝓝 (z x)] g ∘ e.symm`. Rewrite using `[hzx]`. Conclude with `h.comp_tendsto ht`. Unfold `wd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hev.fderiv_eq]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cut_d_congr {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (j : Fin n) (f g : M → ℂ) (x : M) (h : f =ᶠ[𝓝 x] g) :
@@ -138,13 +138,13 @@ theorem cut_d_congr {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   · rfl
 
 /- English proof (translation)
-Unfold `db`. Use `split_ifs with hc`. Establish `hs` using `Classical.choose_spec hc`. Generalize the expression as in `Classical.choose hc = e at hs ⊢`. Take `⟨hch, hxs⟩` from `hs`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzx : z x = e x` using `hch hxs`. Establish `ht : Tendsto e.symm (𝓝 (e x)) (𝓝 x)` using `by first`. Consider the case `exact e.tendsto_symm hxs`. Consider the case `(have h0 := e.continuousAt_symm (e.map_source hxs)`. Unfold `ContinuousAt at h0`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[e.left_inv hxs] at h0)` and apply the resulting hypothesis. Establish `hev : f ∘ e.symm =ᶠ[𝓝 (z x)] g ∘ e.symm`. Rewrite using `[hzx]`. Conclude with `h.comp_tendsto ht`. Unfold `wdb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hev.fderiv_eq]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cut_db_congr {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (j : Fin n) (f g : M → ℂ) (x : M) (h : f =ᶠ[𝓝 x] g) :
@@ -169,9 +169,9 @@ theorem cut_db_congr {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   · rfl
 
 /- English proof (translation)
-Establish `hev : (fun y => (η y : ℂ)) =ᶠ[𝓝 x] (fun _ => (1 : ℂ))` using `by filter_upwards [hU.mem_nhds hx] with y hy`. Simplify using `[hη y hy]`. Rewrite using `[cut_d_congr n z hz j _ _ x hev, cut_db_congr n z hz j _ _ x hev]`. Prove the components needed by the constructor for the conclusion. Unfold `d split_ifs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions.
 
-Simplify using `[wd, Function.comp_def]`. Both sides reduce to the same expression. Unfold `db split_ifs`. Simplify using `[wdb, Function.comp_def]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cut_d_eq_zero {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (j : Fin n) (η : M → ℝ) (U : Set M) (hU : IsOpen U)
@@ -192,11 +192,11 @@ theorem cut_d_eq_zero {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     · rfl
 
 /- English proof (translation)
-Establish `key : ∀ v : V n, (starRingEnd ℂ) (fderiv ℝ (fun y => (h y : ℂ)) y v) = fderiv ℝ (fun y => (h y : ℂ)) y v`. Introduce `v`. Establish `hf : (fun y => (h y : ℂ)) = Complex.conjCLE ∘ (fun y => (h y : ℂ))`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `conv_rhs => rw [hf]`. Rewrite using `[ContinuousLinearEquiv.comp_fderiv]`. Simplify using the standard rewrite rules. Unfold `wd wdb`. Rewrite using `[← Complex.norm_conj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [map_div₀, map_sub, map_add, map_mul, key, Complex.conj_I, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma norm_wd_ofReal_eq_norm_wdb_ofReal (n : ℕ) (j : Fin n) (h : V n → ℝ) (y : V n) :
     ‖wd n j (fun y => (h y : ℂ)) y‖ = ‖wdb n j (fun y => (h y : ℂ)) y‖ := by
@@ -216,7 +216,7 @@ private lemma norm_wd_ofReal_eq_norm_wdb_ofReal (n : ℕ) (j : Fin n) (h : V n �
   ring
 
 /- English proof (translation)
-Unfold `d db`. Use `split_ifs with hc`. Conclude with `norm_wd_ofReal_eq_norm_wdb_ofReal n j (η ∘ (Classical.choose hc).symm) (z x)`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cut_norm_d_eq {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n)
     (η : M → ℝ) (x : M) :
@@ -227,13 +227,13 @@ theorem cut_norm_d_eq {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   · rfl
 
 /- English proof (translation)
-Unfold `SmoothR Smooth at hf`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨e, hxe, hze⟩` from `hz x`. Establish `hch : IsChart n z e`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `IsChart`. Rewrite using `[hze]`. Conclude with `Set.eqOn_refl _ _`. Establish `hco : ContinuousOn ((fun x => (f x : ℂ)) ∘ e.symm) e.target` using `(hf e hch).continuousOn`. Establish `h1 : ContinuousAt ((fun x => (f x : ℂ)) ∘ e.symm) (e x)` using `hco.continuousAt (e.open_target.mem_nhds (e.map_source hxe))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ContinuousAt (((fun x => (f x : ℂ)) ∘ e.symm) ∘ e) x` using `ContinuousAt.comp (f := e) h1 (e.continuousAt hxe)`. Establish `hev : ((fun x => (f x : ℂ)) ∘ e.symm) ∘ e =ᶠ[𝓝 x] (fun x => (f x : ℂ))` using `by filter_upwards [e.open_source.mem_nhds hxe] with y hy`. Simplify using `[e.left_inv hy]`. Establish `h3 : ContinuousAt (fun x => (f x : ℂ)) x` using `by first`. Consider the case `exact h2.congr hev`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact h2.congr_of_eventuallyEq hev.symm`. Establish `h4 : ContinuousAt (fun y => ((f y : ℂ)).re) x` using `Complex.continuous_re.continuousAt.comp h3`. Simplify using `using h4`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem SmoothR.cut_continuous {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (f : M → ℝ) (hf : SmoothR n z f) : Continuous f := by
@@ -261,17 +261,17 @@ theorem SmoothR.cut_continuous {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M
   simpa using h4
 
 /- English proof (translation)
-Unfold `LocalL2Isometry`. Use `⟨hu, fun C hC => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hC.bddAbove_image hph.continuousOn`. Establish `hCm : MeasurableSet C` using `hC.isClosed.measurableSet`. Establish `hpt : ∀ x ∈ C, ‖u x‖ₑ ^ 2 ≤ ENNReal.ofReal (c * Real.exp K) * ENNReal.ofReal (q x * Real.exp (-ph x))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hphK : ph x ≤ K` using `hK ⟨x, hx, rfl⟩`. Establish `hE : Real.exp (ph x) ≤ Real.exp K` using `Real.exp_le_exp.2 hphK`. Establish `hF : 0 < Real.exp (-ph x)` using `Real.exp_pos _`. Establish `hEF : Real.exp (ph x) * Real.exp (-ph x) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.exp_add]`. Simplify using the standard rewrite rules. Establish `hcq : 0 ≤ c * q x` using `le_trans (sq_nonneg _) (hq x)`. Establish `hEF' : c * q x * (Real.exp (ph x) * Real.exp (-ph x)) = c * q x`. Rewrite using `[hEF, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hprod` using `mul_nonneg (mul_nonneg hcq hF.le) (sub_nonneg.2 hE)`. Establish `hq'` using `hq x`. Establish `hb : ‖u x‖ ^ 2 ≤ (c * Real.exp K) * (q x * Real.exp (-ph x))`. Use polynomial arithmetic with `[hEF', hprod, hq']`. Rewrite using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _), ← ENNReal.ofReal_mul (mul_nonneg hc (Real.exp_pos _).le)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.ofReal_le_ofReal hb`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact setLIntegral_mono' hCm hpt`. Consider the case `exact lintegral_mono_ae ((ae_restrict_iff' hCm).2 (ae_of_all _ hpt))`. Use `_ = ENNReal.ofReal (c * Real.exp K) * ∫⁻ x in C, ENNReal.ofReal (q x * Real.exp (-ph x)) ∂μ := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`.
+Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `_ ≤ ENNReal.ofReal (c * Real.exp K) * ∫⁻ x, ENNReal.ofReal (q x * Real.exp (-ph x)) ∂μ := by gcongr first`. Consider the case `exact Measure.restrict_le_self`. Consider the case `exact setLIntegral_le_lintegral _ _`. Consider the case `exact lintegral_mono' Measure.restrict_le_self le_rfl`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top h`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem locL2_of_weighted_bound {M E : Type*} [TopologicalSpace M] [T2Space M] [MeasurableSpace M]
     [BorelSpace M] [NormedAddCommGroup E]
@@ -317,7 +317,7 @@ theorem locL2_of_weighted_bound {M E : Type*} [TopologicalSpace M] [T2Space M] [
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top h
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_const_mul' _ _ (by simp), lintegral_const_mul' _ _ (by simp)]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem cut_lint_tri {M : Type*} [MeasurableSpace M] (μ : Measure M) (F G H : M → ℝ≥0∞)
     (hG : AEMeasurable G μ) (h : ∀ x, F x ≤ 2 * H x + 2 * G x) :
@@ -337,7 +337,7 @@ def cutS {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (η : M → 
   (η x : ℂ) * σ x j k + wedge (fun i => db n z i (fun y => (η y : ℂ)) x) (fun i => f x i) j k
 
 /- English proof (translation)
-Establish `h1 : ‖(c : ℂ)‖ ≤ 1`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs]`. Conclude with `hc`. Use polynomial arithmetic with `[norm_nonneg (c : ℂ)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private lemma norm_ofReal_sq_le_one_of_abs_le_one (c : ℝ) (hc : |c| ≤ 1) : ‖(c : ℂ)‖ ^ 2 ≤ 1 := by
   have h1 : ‖(c : ℂ)‖ ≤ 1 := by
@@ -346,7 +346,7 @@ private lemma norm_ofReal_sq_le_one_of_abs_le_one (c : ℝ) (hc : |c| ≤ 1) : �
   nlinarith [norm_nonneg (c : ℂ)]
 
 /- English proof (translation)
-Rewrite using `[norm_smul, mul_pow]`. Establish `h2` using `norm_ofReal_sq_le_one_of_abs_le_one c hc`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 h2) (sq_nonneg ‖v‖)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem cut_ptF {n : ℕ} (c : ℝ) (hc : |c| ≤ 1) (v : V n) : ‖(c : ℂ) • v‖ ^ 2 ≤ ‖v‖ ^ 2 := by
   rw [norm_smul, mul_pow]
@@ -354,15 +354,15 @@ theorem cut_ptF {n : ℕ} (c : ℝ) (hc : |c| ≤ 1) (v : V n) : ‖(c : ℂ) �
   nlinarith [mul_nonneg (sub_nonneg.2 h2) (sq_nonneg ‖v‖)]
 
 /- English proof (translation)
-Establish `h1` using `cut_sq_sub_le ((c : ℂ) * wx) ((Real.exp (-ψ) : ℂ) * S)`. Establish `hc2` using `norm_ofReal_sq_le_one_of_abs_le_one c hc`. Establish `h2 : ‖(c : ℂ) * wx‖ ^ 2 ≤ ‖wx‖ ^ 2`. Rewrite using `[norm_mul, mul_pow]`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hc2) (sq_nonneg ‖wx‖)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h3 : ‖(Real.exp (-ψ) : ℂ) * S‖ ^ 2 = Real.exp (-ψ) ^ 2 * ‖S‖ ^ 2`. Rewrite using `[norm_mul, mul_pow, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le]`. Establish `hP : 0 < Real.exp (-(ph - 2 * ψ))` using `Real.exp_pos _`. Establish `hPQ : Real.exp (-(ph - 2 * ψ)) = Real.exp (-(ph - ψ)) * Real.exp ψ`. Rewrite using `[← Real.exp_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hAB : Real.exp (-ψ) * Real.exp ψ = 1`. Rewrite using `[← Real.exp_add]`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hS' : Real.exp (-ψ) ^ 2 * ‖S‖ ^ 2 ≤ Real.exp (-ψ) ^ 2 * (D * fx2)` using `mul_le_mul_of_nonneg_left hS (sq_nonneg _)`. Establish `hD' : Real.exp (-ψ) ^ 2 * (D * fx2) ≤ Real.exp (-ψ) ^ 2 * (Real.exp ψ * fx2)` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hD hf2) (sq_nonneg _)`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hP.le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `_ = 2 * (‖wx‖ ^ 2 * Real.exp (-(ph - 2 * ψ))) + 2 * (fx2 * Real.exp (-(ph - ψ))) := by`. Rewrite using `[hPQ]`. Take the linear combination `(2 * fx2 * Real.exp (-(ph - ψ)) * (Real.exp (-ψ) * Real.exp ψ + 1)) * hAB`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cut_ptW (c : ℝ) (hc : |c| ≤ 1) (wx S : ℂ) (fx2 D ph ψ : ℝ) (hS : ‖S‖ ^ 2 ≤ D * fx2)
     (hD : D ≤ Real.exp ψ) (hf2 : 0 ≤ fx2) :
@@ -396,15 +396,15 @@ theorem cut_ptW (c : ℝ) (hc : |c| ≤ 1) (wx S : ℂ) (fx2 D ph ψ : ℝ) (hS 
         linear_combination (2 * fx2 * Real.exp (-(ph - ψ)) * (Real.exp (-ψ) * Real.exp ψ + 1)) * hAB
 
 /- English proof (translation)
-Establish `h1` using `two_form_sq_add_le n (fun j k => (c : ℂ) * σx j k) (wedge a b)`. Establish `h2` using `two_form_sq_smul n (c : ℂ) σx`. Establish `h3` using `two_form_sq_wedge_le n a b`. Rewrite `h3` using `[ha, hb]`. Establish `hc2` using `norm_ofReal_sq_le_one_of_abs_le_one c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs0` using `two_form_sq_nonneg n σx`. Establish `hcs` using `mul_le_mul_of_nonneg_right hc2 hs0`. Establish `hf0 : 0 ≤ fx2`. Rewrite using `[← hb]`. Conclude with `Finset.sum_nonneg fun i _ => sq_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD' : D * fx2 ≤ Real.exp ψ * fx2` using `mul_le_mul_of_nonneg_right hD hf0`. Establish `hE : 0 < Real.exp (-ph)` using `Real.exp_pos _`. Establish `hQ : Real.exp (-ph) * Real.exp ψ = Real.exp (-(ph - ψ))`. Rewrite using `[← Real.exp_add]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hbound : sq2 n (fun j k => (c : ℂ) * σx j k + wedge a b j k) ≤ 2 * sq2 n σx + 4 * (Real.exp ψ * fx2)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hQ]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem cut_ptS {n : ℕ} (c : ℝ) (hc : |c| ≤ 1) (σx : Fin n → Fin n → ℂ) (a b : Fin n → ℂ)
     (D fx2 ph ψ : ℝ) (ha : ∑ i, ‖a i‖ ^ 2 = D) (hb : ∑ i, ‖b i‖ ^ 2 = fx2)
@@ -438,9 +438,9 @@ theorem cut_ptS {n : ℕ} (c : ℝ) (hc : |c| ≤ 1) (σx : Fin n → Fin n → 
         ring
 
 /- English proof (translation)
-Establish `h` using `cut_cs n (fun j => d n z j (fun y => (η y : ℂ)) x) (fun j => fx j)`. Unfold `dbarSq`. Rewrite using `[EuclideanSpace.norm_sq_eq]`. Establish `he : ∑ j, ‖d n z j (fun y => (η y : ℂ)) x‖ ^ 2 = ∑ j, ‖db n z j (fun y => (η y : ℂ)) x‖ ^ 2` using `Finset.sum_congr rfl fun j _ => by rw [cut_norm_d_eq]`. Rewrite using `[← he]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem cut_S_bound {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (η : M → ℝ)
     (fx : V n) (x : M) :
@@ -455,7 +455,7 @@ theorem cut_S_bound {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (
   exact h
 
 /- English proof (translation)
-Use `show Continuous fun σ : Fin n → Fin n → ℂ => sq2 n σ`. Simplify using `only [sq2]`. Use `first`. Consider the case `fun_prop`. Consider the case `exact (continuous_finset_sum _ fun j _ => continuous_finset_sum _ fun k _ => ((continuous_apply k).comp (continuous_apply j)).norm.pow 2).div_const _`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_two_form_sq (n : ℕ) : Continuous (sq2 n) := by
   show Continuous fun σ : Fin n → Fin n → ℂ => sq2 n σ
@@ -466,7 +466,7 @@ theorem continuous_two_form_sq (n : ℕ) : Continuous (sq2 n) := by
       ((continuous_apply k).comp (continuous_apply j)).norm.pow 2).div_const _
 
 /- English proof (translation)
-Establish `h1 : AEMeasurable (fun x => ‖u x‖) μ` using `hu.norm.aemeasurable`. Establish `h2 : Measurable (fun x => Real.exp (-ph x))` using `(Real.continuous_exp.comp hph.neg).measurable`. Conclude with `ENNReal.measurable_ofReal.comp_aemeasurable ((h1.pow_const 2).mul h2.aemeasurable)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cut_aem {M E : Type*} [TopologicalSpace M] [MeasurableSpace M] [BorelSpace M]
     [NormedAddCommGroup E] (μ : Measure M) (u : M → E)
@@ -477,7 +477,7 @@ theorem cut_aem {M E : Type*} [TopologicalSpace M] [MeasurableSpace M] [BorelSpa
   exact ENNReal.measurable_ofReal.comp_aemeasurable ((h1.pow_const 2).mul h2.aemeasurable)
 
 /- English proof (translation)
-Establish `h1 : AEMeasurable (fun x => sq2 n (u x)) μ` using `((continuous_two_form_sq n).comp_aestronglyMeasurable hu).aemeasurable`. Establish `h2 : Measurable (fun x => Real.exp (-ph x))` using `(Real.continuous_exp.comp hph.neg).measurable`. Conclude with `ENNReal.measurable_ofReal.comp_aemeasurable (h1.mul h2.aemeasurable)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aemeasurable_weighted_two_form {M : Type*} [TopologicalSpace M] [MeasurableSpace M] [BorelSpace M]
     (n : ℕ) (μ : Measure M) (u : M → Fin n → Fin n → ℂ)
@@ -489,7 +489,7 @@ theorem aemeasurable_weighted_two_form {M : Type*} [TopologicalSpace M] [Measura
   exact ENNReal.measurable_ofReal.comp_aemeasurable (h1.mul h2.aemeasurable)
 
 /- English proof (translation)
-Use `first`. Consider the case `fun_prop`. Consider the case `continuity`. Consider the case `exact (EuclideanSpace.proj j).continuous`. Consider the case `exact continuous_apply j`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma continuous_coord_apply {n : ℕ} (j : Fin n) : Continuous (fun v : V n => v j) := by
   first
@@ -499,9 +499,9 @@ private lemma continuous_coord_apply {n : ℕ} (j : Fin n) : Continuous (fun v :
   | exact continuous_apply j
 
 /- English proof (translation)
-Establish `h1 : AEStronglyMeasurable (fun x => (c x : ℂ) * w x) μ` using `(Complex.continuous_ofReal.comp hc).aestronglyMeasurable.mul hw`. Establish `h2 : AEStronglyMeasurable (fun x => (Real.exp (w1 ph ψ x - w2 ph ψ x) : ℂ)) μ` using `(Complex.continuous_ofReal.comp (Real.continuous_exp.comp hE)).aestronglyMeasurable`. Establish `h3 : AEStronglyMeasurable (fun x => ∑ j, d n z j (fun y => (η y : ℂ)) x * f x j) μ`. Establish `hj : ∀ j ∈ (Finset.univ : Finset (Fin n)), AEStronglyMeasurable (fun x => d n z j (fun y => (η y : ℂ)) x * f x j) μ` using `fun j _ => (hd j).aestronglyMeasurable.mul ((continuous_coord_apply j).comp_aestronglyMeasurable hf)`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact Finset.aestronglyMeasurable_sum' _ hj`. Consider the case `exact Finset.aestronglyMeasurable_fun_sum _ hj`. Consider the case `exact (Finset.aestronglyMeasurable_sum _ hj).congr (ae_of_all _ fun x => by simp)`. Conclude with `h1.sub (h2.mul h3)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cut_aesmW {M : Type*} [TopologicalSpace M] [MeasurableSpace M] [BorelSpace M]
     (n : ℕ) (z : M → V n) (μ : Measure M) (ph ψ η c : M → ℝ) (f : M → V n) (w : M → ℂ)
@@ -525,11 +525,11 @@ theorem cut_aesmW {M : Type*} [TopologicalSpace M] [MeasurableSpace M] [BorelSpa
   exact h1.sub (h2.mul h3)
 
 /- English proof (translation)
-Establish `ha : Continuous (fun x => fun i => db n z i (fun y => (η y : ℂ)) x)` using `continuous_pi fun i => hd i`. Establish `hb : AEStronglyMeasurable (fun x => fun i => f x i) μ` using `(continuous_pi fun i => continuous_coord_apply (n := n) i).comp_aestronglyMeasurable hf`. Establish `hW : Continuous (fun p : (Fin n → ℂ) × (Fin n → ℂ) => wedge p.1 p.2)` using `by show Continuous fun p : (Fin n → ℂ) × (Fin n → ℂ) => fun j k => p.1 j * p.2 k - p.1 k * p.2 j first`. Consider the case `fun_prop`. Consider the case `exact continuous_pi fun j => continuous_pi fun k => (((continuous_apply j).comp continuous_fst).mul ((continuous_apply k).comp continuous_snd)).sub (((continuous_apply k).comp continuous_fst).mul ((continuous_apply j).comp continuous_snd))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `hpair : AEStronglyMeasurable (fun x => ((fun i => db n z i (fun y => (η y : ℂ)) x), (fun i => f x i))) μ` using `by first`. Consider the case `exact ha.aestronglyMeasurable.prodMk hb`. Consider the case `exact ha.aestronglyMeasurable.prod_mk hb`. Establish `h2 : AEStronglyMeasurable (fun x => wedge (fun i => db n z i (fun y => (η y : ℂ)) x) (fun i => f x i)) μ` using `hW.comp_aestronglyMeasurable hpair`. Establish `h1 : AEStronglyMeasurable (fun x => (c x : ℂ) • σ x) μ` using `(Complex.continuous_ofReal.comp hc).aestronglyMeasurable.smul hσ`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `first`. Consider the case `exact h1.add h2`. Consider the case `exact (h1.add h2).congr (ae_of_all _ fun x => by funext j k; simp)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cut_aesmS {M : Type*} [TopologicalSpace M] [MeasurableSpace M] [BorelSpace M]
     (n : ℕ) (z : M → V n) (μ : Measure M) (η c : M → ℝ) (f : M → V n)

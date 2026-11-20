@@ -14,19 +14,19 @@ open PI.ScPiExists
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨y, hy, hperp⟩` from `exists_perp ε (Sum.elim e (Sum.elim f (Sum.elim (fun _ : Unit => z) w))) (by simp only [Fintype.card_sum, Fintype.card_fin, Fintype.card_unit]; omega)`. Establish `hey : ∀ c, hJ ε (e c) y = 0` using `fun c => hperp (Sum.inl c)`. Establish `hfy : ∀ c, hJ ε (f c) y = 0` using `fun c => hperp (Sum.inr (Sum.inl c))`. Establish `hzy : hJ ε z y = 0` using `hperp (Sum.inr (Sum.inr (Sum.inl ())))`. Establish `hwy : ∀ a, hJ ε (w a) y = 0` using `fun a => hperp (Sum.inr (Sum.inr (Sum.inr a)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : 0 < (hJ ε y y).re` using `pos_of_perp ε σ hσ e f z t ht hee hff hef hez hfz hzz y hey hfy hzy hy`. Take `⟨s, hs_eq⟩ : ∃ s : ℝ, s = (hJ ε y y).re` from `⟨_, rfl⟩`. Establish `hs : 0 < s` using `hs_eq ▸ hs0`. Establish `hyy : hJ ε y y = (s : ℂ)`. Rewrite using `[hs_eq, hJ_self, Complex.ofReal_re]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hμ : star (((Real.sqrt s)⁻¹ : ℝ) : ℂ) * ((((Real.sqrt s)⁻¹ : ℝ) : ℂ) * hJ ε y y) = 1`. Rewrite using `[hyy, show star (((Real.sqrt s)⁻¹ : ℝ) : ℂ) = (starRingEnd ℂ) (((Real.sqrt s)⁻¹ : ℝ) : ℂ) from rfl, Complex.conj_ofReal]`. Establish `hsq : Real.sqrt s * Real.sqrt s = s` using `Real.mul_self_sqrt hs.le`. Establish `h1 : (Real.sqrt s)⁻¹ * ((Real.sqrt s)⁻¹ * s) = 1`. Rewrite using `[← mul_assoc, ← mul_inv, hsq, inv_mul_cancel₀ hs.ne']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1` after adjusting the coercions. Use `⟨Fin.cons ((((Real.sqrt s)⁻¹ : ℝ) : ℂ) • y) w, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`. Apply the tactic sequence `refine Fin.cases ?_ (fun a' => ?_) a <;> refine Fin.cases ?_ (fun b' => ?_) b`. Rewrite using `[if_pos rfl]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.cons_zero, hJ_smul_left, hJ_smul_right]`. Rewrite using `[mul_left_comm]`. Conclude with `hμ`. Rewrite using `[if_neg (Fin.succ_ne_zero b').symm]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, hJ_smul_left, hJ_conj ε (w b') y, hwy, star_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (Fin.succ_ne_zero a')]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, hJ_smul_right, hwy, mul_zero]`. Simplify using `only [Fin.cons_succ, Fin.succ_inj]`. Conclude with `hwo a' b'`. Introduce `a`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Fin.cases ?_ (fun a' => ?_) a` and prove the remaining obligations. Simplify using `[hJ_smul_right, hey, hfy, hzy]`. Simplify using `only [Fin.cons_succ]`. Conclude with `hwp a'`.
+A detailed English derivation is pending.
 -/
 theorem gs_step (ε : Fin n → Bool) {r k : ℕ} (hn : n = 2 * r + k + 1) (σ : Fin (r + 1) → Fin n)
     (hσ : ∀ i, ε i = false → ∃ j, σ j = i)
@@ -80,9 +80,9 @@ theorem gs_step (ε : Fin n → Bool) {r k : ℕ} (hn : n = 2 * r + k + 1) (σ :
       exact hwp a'
 
 /- English proof (translation)
-Establish `key : ∀ m, m ≤ k → ∃ w : Fin m → Fin n → ℂ, (∀ a b, hJ ε (w a) (w b) = if a = b then 1 else 0) ∧ ∀ a, (∀ c, hJ ε (e c) (w a) = 0 ∧ hJ ε (f c) (w a) = 0) ∧ hJ ε z (w a) = 0`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro _`. Conclude with `⟨fun a => a.elim0, fun a => a.elim0, fun a => a.elim0⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `succ m ih`. Introduce `hm`. Take `⟨w, h1, h2⟩` from `ih (by omega)`. Conclude with `gs_step ε hn σ hσ e f z t ht hee hff hef hez hfz hzz m (by omega) w h1 h2`. Conclude with `key k le_rfl`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem frame_core (ε : Fin n → Bool) {r k : ℕ} (hn : n = 2 * r + k + 1) (σ : Fin (r + 1) → Fin n)
     (hσ : ∀ i, ε i = false → ∃ j, σ j = i)

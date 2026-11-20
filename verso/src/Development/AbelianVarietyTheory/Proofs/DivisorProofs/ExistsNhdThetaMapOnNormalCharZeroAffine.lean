@@ -14,29 +14,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UMin
 
 /- English proof (translation)
-Introduce `S G _ _ L ρ hL hρ g m n o _ X s q hmo hm3 hu hn hP U hD hN hI hC x hx`. Set `R : Type` to `Γ(X, U)`. Establish `hU : IsAffineOpen (U : X.Opens)` using `U.2`. Set `β : o →+* R` to `(Spec.preimage (hU.fromSpec ≫ s)).hom`. Establish `hβ : spMap β = hU.fromSpec ≫ s` using `Spec.map_preimage _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `p : PrimeSpectrum R` to `hU.primeIdealOf ⟨x, hx⟩`. Take `⟨r, hr, θ, hθ⟩` from `GlobalTheory.T.exists_basicOpen_generating_section_all_fibres S G L hL g R (hU.fromSpec ≫ q) (hP R hU.fromSpec) p`. Set `Rr` to `Localization.Away r`. Establish `hr0 : r ≠ 0` using `fun h => hr (h ▸ p.asIdeal.zero_mem)`. Establish `hle : Submonoid.powers r ≤ nonZeroDivisors R` using `powers_le_nonZeroDivisors_of_noZeroDivisors hr0`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsDomain Rr := IsLocalization.isDomain_localization hle`. Use `haveI : IsNoetherianRing Rr := IsLocalization.isNoetherianRing (Submonoid.powers r) Rr hN`. Use `haveI : IsIntegrallyClosed Rr := isIntegrallyClosed_of_isLocalization Rr _ hle`. Establish `hinj : Function.Injective (algebraMap R Rr)` using `IsLocalization.injective Rr hle`. Use `haveI : CharZero Rr := charZero_of_injective_algebraMap hinj`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `β' : o →+* Rr` to `(algebraMap R Rr).comp β`. Establish `hu' : IsUnit (m : Rr)`. Use `hu.map β'` as an intermediate fact. Simplify using `using this`. Establish `hP' : PolFib G L g (spMap (algebraMap R Rr) ≫ hU.fromSpec ≫ q)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `hP Rr (spMap (algebraMap R Rr) ≫ hU.fromSpec)` as an intermediate fact. Simplify `this` using `[Category.assoc]`. Take `⟨f, hf, hT⟩` from `GlobalTheory.T.exists_thetaMap_affineNormalBase_universalGenerator S G L ρ hL hρ g m n o Rr β' (spMap (algebraMap R Rr) ≫ hU.fromSpec ≫ q) θ hmo hm3 hu' hn hP' hθ`. Set `Wo : X.Opens` to `X.basicOpen r`. Establish `hW : IsAffineOpen Wo` using `hU.basicOpen r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hxW : x ∈ Wo`. Establish `h1 : hU.fromSpec p ∈ X.basicOpen r` using `by show p ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen r`. Rewrite using `[hU.fromSpec_preimage_basicOpen]`. Conclude with `hr`. Rewrite `h1` using `[hU.fromSpec_primeIdealOf]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle' : Wo ≤ (U : X.Opens)` using `X.basicOpen_le r`. Set `res : R →+* Γ(X, Wo)` to `(X.presheaf.map (homOfLE hle').op).hom`. Establish `hres : IsUnit (res r)` using `RingedSpace.isUnit_res_basicOpen X.toRingedSpace r`. Set `lft : Rr →+* Γ(X, Wo)` to `IsLocalization.Away.lift r hres`. Establish `hlft : lft.comp (algebraMap R Rr) = res` using `IsLocalization.Away.lift_comp r hres`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `e : Wo.toScheme ⟶ Sp Rr` to `hW.isoSpec.hom ≫ Spec.map (CommRingCat.ofHom lft)`. Establish `he : e ≫ spMap (algebraMap R Rr) ≫ hU.fromSpec = Wo.ι`. Establish `: Spec.map (CommRingCat.ofHom lft) ≫ spMap (algebraMap R Rr) = Spec.map (X.presheaf.map (homOfLE hle').op)`. Rewrite using `[spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hlft]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e, Category.assoc]`. Rewrite using `[reassoc_of% this, hU.map_fromSpec hW, hW.isoSpec_hom_fromSpec]`. Use `⟨Wo, e ≫ f, hxW, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hf, show spMap β' = spMap (algebraMap R Rr) ≫ spMap β from by`. Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl, hβ, ← he]`. Simplify using `only [Category.assoc]`. Introduce `K _ x' c hc`. Establish `hc' : HasTh G L ρ m ((x' ≫ e) ≫ spMap (algebraMap R Rr) ≫ hU.fromSpec ≫ q) c`. Establish `: (x' ≫ e) ≫ spMap (algebraMap R Rr) ≫ hU.fromSpec ≫ q = x' ≫ Wo.ι ≫ q`.
-
-Rewrite using `[← he]`. Simplify using `only [Category.assoc]`. Rewrite using `[this]`. Conclude with `hc`. Use `hT K (x' ≫ e) c hc'` as an intermediate fact.
-
-Simplify `this` using `[Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_nbhd_thetaMap : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen →
     ∀ (g m n : ℕ) (o : Type) [CommRing o] (X : Scheme.{0}) (s : X ⟶ Sp o) (q : X ⟶ S), Odd m → 3 ≤ m → IsUnit (m : o) → n + 1 = m ^ (4 * g) →

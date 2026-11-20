@@ -15,7 +15,7 @@ open PositivityTheory.SiegelWeilFormula PositivityTheory.SiegelWeilFormula.KWhit
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_eq (z : AF F ⊗[F] E) : HeckeCharacterZeroLocus.SiegelWeilU.sigR (AF F) σ z = cA σ z := by
   induction z using TensorProduct.induction_on with
@@ -24,7 +24,7 @@ theorem sigR_eq (z : AF F ⊗[F] E) : HeckeCharacterZeroLocus.SiegelWeilU.sigR (
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite using `[Matrix.smul_eq_diagonal_mul]`. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [incM, Matrix.scalar_apply, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem incM_scalar_mul {k p : ℕ} (η : E) (M : Matrix (Fin k) (Fin p) (AE F E)) :
     incM F (Matrix.scalar (Fin k) η) * M = inclR (F := F) (AF F) η • M := by
@@ -34,7 +34,7 @@ theorem incM_scalar_mul {k p : ℕ} (η : E) (M : Matrix (Fin k) (Fin p) (AE F E
   by_cases h : i = j <;> simp [incM, Matrix.scalar_apply, h]
 
 /- English proof (translation)
-Rewrite using `[← map_mul, inv_mul_cancel₀ hne, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inclR_inv_mul {η : E} (hne : η ≠ 0) : inclR (F := F) (AF F) η⁻¹ * inclR (F := F) (AF F) η = 1 := by
   rw [← map_mul, inv_mul_cancel₀ hne, map_one]
@@ -44,7 +44,7 @@ section HOf
 variable {d : SD σ} {η : E} (hOf : nA σ d.Y d.b → HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n)
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `h` using `congrFun (congrFun (hof β) b) a`. Rewrite `h` using `[incM_scalar_mul]`. Simplify using `only [Matrix.neg_apply, Matrix.smul_apply, Matrix.transpose_apply, smul_eq_mul] at h ⊢`. Take the linear combination `inclR (F := F) (AF F) η⁻¹ * h - ((hOf β).1 a b) * inclR_inv_mul (F := F) hne`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hOf_val (hne : η ≠ 0)
     (hof : ∀ β, β.1 = -(incM F (Matrix.scalar (Fin d.n) η) * ((hOf β).1 : Mx F E d.n d.n)ᵀ)) (β : nA σ d.Y d.b) :
@@ -56,11 +56,11 @@ theorem hOf_val (hne : η ≠ 0)
   linear_combination inclR (F := F) (AF F) η⁻¹ * h - ((hOf β).1 a b) * inclR_inv_mul (F := F) hne
 
 /- English proof (translation)
-Establish `hσ` using `sigma_sigma_of_good d.ok.good`. Take `⟨⟨ε, hb⟩, -⟩` from `d.ok.frame`. Establish `hrel` using `eta_sign d herm hb`. Rewrite using `[mem_nA_iff hσ hb]`. Establish `hS : ∀ a b, HeckeCharacterZeroLocus.SiegelWeilU.sigR (AF F) σ (S.1 b a) = S.1 a b` using `S.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∀ a b, cA σ (S.1 b a) = S.1 a b` using `fun a b => by rw [← sigR_eq]; exact hS a b`. Establish `h2 : cA σ (inclR (F` using `F) (AF F) η) = -(((ε : ℤ) : AE F E)) * inclR (F := F) (AF F) η := by`. Rewrite using `[cA_inclR', hrel, map_mul, map_neg, inclR_int]`. Use `show (-(inclR (F := F) (AF F) η • (S.1 : Mx F E d.n d.n)ᵀ))ᵀ = -((((ε : ℤ) : AE F E)) • (-(inclR (F := F) (AF F) η • (S.1 : Mx F E d.n d.n)ᵀ)).map (cA σ))`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.transpose_apply, Matrix.neg_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_neg, map_mul, h1, h2]`. Take the linear combination `(inclR (F := F) (AF F) η * S.1 a b) * eps_sq (F := F) (E := E) ε`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem inv_mem (herm : ∀ i j, σ (η * d.A.J j i) = η * d.A.J i j) (S : HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n) :
     (-(inclR (F := F) (AF F) η • (S.1 : Mx F E d.n d.n)ᵀ)) ∈ nA σ d.Y d.b := by

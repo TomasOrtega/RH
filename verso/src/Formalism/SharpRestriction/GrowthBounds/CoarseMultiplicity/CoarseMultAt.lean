@@ -7,21 +7,17 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees Formalism.MainNotions.G.GLWeightTheory MvPolynomial
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨h1, h2⟩` from `h52 p hp h5`. Use `set t' : σ → ℕ := fun v => if odd v then t v else 0 with ht'`. Use `set ρ' : σ → ℕ := fun v => if odd v then ρ v else 0 with hρ'`. Establish `hlt : ∀ k, ρ' k < p ^ (t' k + 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Introduce `k`. Distinguish the cases in `hk : odd k`. Simplify using `only [hρ', ht', if_pos hk]`. Rewrite using `[← (hodd k hk).1]`. Conclude with `(hodd k hk).2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hρ', ht', if_neg hk]`. Conclude with `pow_pos hp.pos _`. Take `⟨hunit, -, -⟩` from `h2 σ t' ρ' hlt`. Use `set e' : σ → ℕ := fun v => if odd v then μ v else 0 with he'`. Use `set U : ℚ := ∏ k, cUnit (p ^ (t' k + 1)) (e' k) * dUnit (p ^ (t' k + 1)) (e' k) (ρ' k) with hU`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hU0 : U ≠ 0` using `(hunit e').1`. Establish `hUv : padicValRat p U = 0` using `(hunit e').2`. Establish `key : ((∏ v, (ρ v + L v * μ v).factorial : ℕ) : ℚ) = ((∏ v, (ρ v).factorial * (μ v).factorial * (L v).factorial ^ (μ v) : ℕ) : ℚ) * U`. Use `push_cast`. Rewrite using `[hU, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `hv : odd v`. Use `h1 (t' v) (ρ' v) (e' v) (hlt v)` as an intermediate fact. Simplify using `only [hρ', ht', he', if_pos hv] at this ⊢`. Rewrite using `[(hodd v hv).1, this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `h1 (t' v) (ρ' v) (e' v) (hlt v)` as an intermediate fact. Simplify using `only [hρ', ht', he', if_neg hv] at this ⊢`. Rewrite using `[(hend v hv).1, (hend v hv).2]`. Simplify using `only [zero_add, mul_zero, Nat.factorial_zero, Nat.cast_one, pow_zero, one_mul, mul_one, zero_add] at this ⊢`.
-
-Rewrite using `[← this]`. Simplify using the standard rewrite rules. Establish `hQ0 : ((∏ v, (ρ v).factorial * (μ v).factorial * (L v).factorial ^ (μ v) : ℕ) : ℚ) ≠ 0`. Conclude with `Finset.prod_ne_zero_iff.2 fun v _ => mul_ne_zero (mul_ne_zero (Nat.factorial_ne_zero _) (Nat.factorial_ne_zero _)) (pow_ne_zero _ (Nat.factorial_ne_zero _))` after adjusting the coercions. Establish `hv` using `congrArg (padicValRat p) key`.
-
-Rewrite `hv` using `[padicValRat.mul hQ0 hU0, hUv, add_zero, padicValRat.of_nat, padicValRat.of_nat]`. Rewrite using `[Nat.factorization_def _ hp, Nat.factorization_def _ hp]`. Conclude with `hv` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_digit {D : Formalism.BasicNotions.D7} (h52 : Formalism.MainNotions.CovariantDegrees.FactorialUnitDecomposition D) {p : ℕ} (hp : p.Prime) (h5 : 5 ≤ p) (σ : Type)
     [Fintype σ] [DecidableEq σ] (odd : σ → Prop) [DecidablePred odd] (t ρ L : σ → ℕ)
@@ -87,27 +83,25 @@ def CoarseMultAt (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) : Prop :=
         (expFact (mu0 C0 CE1 CE2 X j b)).factorization X.p + lgSeg X j
 
 /- English proof (translation)
-Introduce `X _ hD1 hH hc j b hb`. Establish `hp : X.p.Prime` using `hD1.1`. Take `⟨hT1, hT2⟩` from `hT X hD1 hH hc j b hb`. Establish `hM1` using `hM X hD1 hH hc j b hb`. Use `set μ0 := mu0 C0 CE1 CE2 X j b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM0, hEM, hMv⟩` from `expFact_mul X.p (tdeg C0 CE1 CE2 X j b) (ioExp C0 CE1 CE2 X j b μ0) (fun x => rfl)`. Rewrite `hEM` using `[hT1]`. Establish `hMv' : M.factorization X.p ≤ X.m * lgSeg X j`. Rewrite using `[← hT2, Finset.mul_sum]`. Use `hMv.trans (le_of_eq (Finset.sum_congr rfl fun x _ => ?_))` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `ht : ∀ v : BV C0 CE1 CE2 X j, ∃ t, IsOddVar C0 CE1 CE2 X j v → symLev X.p C0 CE1 CE2 X j v = X.p ^ (t + 1)`. Introduce `v`. Distinguish the cases in `hv : IsOddVar C0 CE1 CE2 X j v`. Take `⟨t, ht⟩` from `(oddVar_data C0 CE1 CE2 X j b hb v hv).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨t, fun _ => ht⟩`. Conclude with `⟨0, fun h => absurd h hv⟩`. Use `choose t ht using ht`. Establish `hvd` using `val_digit h52 hp hD1.2.1 (BV C0 CE1 CE2 X j) (IsOddVar C0 CE1 CE2 X j) t (fun v => baseExp C0 CE1 CE2 X j b (symVar C0 CE1 CE2 X j v)) (fun v => symLev X.p C0 CE1 CE2 X j v) (fun v hv => ⟨ht v hv, (oddVar_data C0 CE1 CE2 X j b hb v hv).2⟩) (fun v hv => endVar_data C0 CE1 CE2 X j …`. Establish `hE0 : expFact (ioExp C0 CE1 CE2 X j b μ0) ≠ 0`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `expFact`. Conclude with `Finsupp.prod_ne_zero_iff.2 fun _ _ => Nat.factorial_ne_zero _`. Establish `hmu0 : expFact μ0 = ∏ v : BV C0 CE1 CE2 X j, (μ0 v).factorial`. Unfold `expFact`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => rfl)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR0 : Rblk C0 CE1 CE2 X j b ≠ 0` using `Finset.prod_ne_zero_iff.2 fun _ _ => Nat.factorial_ne_zero _`. Establish `hP1 : (∏ v : BV C0 CE1 CE2 X j, (baseExp C0 CE1 CE2 X j b (symVar C0 CE1 CE2 X j v) + symLev X.p C0 CE1 CE2 X j v * μ0 v).factorial) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun _ _ => Nat.factorial_ne_zero _`. Establish `hP2 : (∏ v : BV C0 CE1 CE2 X j, (baseExp C0 CE1 CE2 X j b (symVar C0 CE1 CE2 X j v)).factorial * (symLev X.p C0 CE1 CE2 X j v).factorial ^ (μ0 v)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun _ _ => mul_ne_zero (Nat.factorial_ne_zero _) (pow_ne_zero _ (Nat.factorial_ne_zero _))`. Establish `hP3 : (∏ v : BV C0 CE1 CE2 X j, (μ0 v).factorial) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun _ _ => Nat.factorial_ne_zero _`. Establish `hsplit : (∏ v : BV C0 CE1 CE2 X j, (baseExp C0 CE1 CE2 X j b (symVar C0 CE1 CE2 X j v)).factorial * (μ0 v).factorial * (symLev X.p C0 CE1 CE2 X j v).factorial ^ (μ0 v)) = (∏ v : BV C0 CE1 CE2 X j, (baseExp C0 CE1 CE2 X j b (symVar C0 CE1 CE2 X j v)).factorial * (symLev X.p C0 CE1 …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun v _ => by ring`. Establish `hvE : (expFact (ioExp C0 CE1 CE2 X j b μ0)).factorization X.p = (PhiB C0 CE1 CE2 X j b).factorization X.p + (expFact μ0).factorization X.p`. Rewrite using `[expFact_ioExp, Nat.factorization_mul hR0 hP1, Finsupp.add_apply, hvd, hsplit, Nat.factorization_mul hP2 hP3, Finsupp.add_apply, hmu0]`. Unfold `PhiB`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.factorization_mul hR0 hP2, Finsupp.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hvF : (facSeg X j).factorization X.p = (expFact (ioExp C0 CE1 CE2 X j b μ0)).factorization X.p + M.factorization X.p`. Rewrite using `[← hEM, Nat.factorization_mul hE0 hM0, Finsupp.add_apply]`. Establish `hdv : expFact μ0 ∣ ∏ x : X.TT × Bool, (cdeg C0 CE1 CE2 X j b x).factorial`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `dvdAt C0 CE1 CE2 X j b hb μ0 (leading_exponent_homogeneous C0 CE1 CE2 X j b)`. Unfold `Nblk at h`. Conclude with `Nat.dvd_of_mul_dvd_mul_right (Nat.pos_of_ne_zero (specConst_ne _ _ _)) h`. Establish `hc0 : (∏ x : X.TT × Bool, (cdeg C0 CE1 CE2 X j b x).factorial) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun x _ => Nat.factorial_ne_zero _`. Establish `hle : (expFact μ0).factorization X.p ≤ (∏ x : X.TT × Bool, (cdeg C0 CE1 CE2 X j b x).factorial).factorization X.p` using `(Nat.factorization_le_iff_dvd (by rw [hmu0]; exact hP3) hc0).2 hdv X.p`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[hvF, hvE]`. Establish `: X.m * lgSeg X j ≤ (X.m + 1) * lgSeg X j` using `Nat.mul_le_mul_right _ (Nat.le_succ _)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hvF, hvE]`.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem kapNumAt_of {D : Formalism.BasicNotions.D7} (h52 : Formalism.MainNotions.CovariantDegrees.FactorialUnitDecomposition D) {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
     (hT : TrueDegAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) (hM : CoarseMultAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) :

@@ -13,33 +13,31 @@ open MvPowerSeries PI.OrbShared
 variable {D : D7}
 
 /- English proof (translation)
-Use `set e := embOne z N0 N1 with he`. Establish `hA : HasSubst (fun v : Pl D × Fin N0 × Fin N1 => (C ep0 * logPl D p v : MvPowerSeries _ ℂ_[p]))` using `hasSubst_of_constantCoeff_zero (fun v => by simp [constantCoeff_logPl])`. Establish `hL : HasSubst (logPl D p (β` using `Fin N0 × Fin N1)) := hasSubst_of_constantCoeff_zero (fun v => constantCoeff_logPl p v)`. Establish `hJ : HasSubst (jetLogG p 1 (β` using `Fin N0 × Fin N1)) := hasSubst_of_constantCoeff_zero (fun v => constantCoeff_jetLogG p 1 v)`. Establish `hB : HasSubst (fun v : ZMod 1 × Fin N0 × Fin N1 => (C ep0 * jetLogG p 1 v : MvPowerSeries _ ℂ_[p]))` using `hasSubst_of_constantCoeff_zero (fun v => by simp [constantCoeff_jetLogG])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ : HasSubst (fun v : Pl D × Fin N0 × Fin N1 => killCompl e (X v : MvPowerSeries _ ℂ_[p]))` using `hasSubst_killCompl e HasSubst.X`. Establish `hσ0 : ∀ (y : Pl D) (a : Fin N0) (b : Fin N1) (s : ZMod 2), constantCoeff (if s = 0 then (X (y, a, b) : MvPowerSeries (Pl D × Fin N0 × Fin N1) ℂ_[p]) else C (ep y) * X (y, a, b)) = 0`. Apply the tactic sequence `intro y a b s; split_ifs <;> simp`. Establish `hσ : ∀ (y : Pl D) (a : Fin N0) (b : Fin N1), HasSubst (fun s : ZMod 2 => if s = 0 then (X (y, a, b) : MvPowerSeries (Pl D × Fin N0 × Fin N1) ℂ_[p]) else C (ep y) * X (y, a, b))` using `fun y a b => hasSubst_of_constantCoeff_zero (hσ0 y a b)`. Use `set S : MvPowerSeries (Pl D × Fin N0 × Fin N1) ℂ_[p] := ∑ z : Pl D, (sg z / 2) • ∑ a : Fin N0, ∑ b : Fin N1,`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `(fun s : ZMod 2 => if s = 0 then (X (z, a, b) : MvPowerSeries (Pl D × Fin N0 × Fin N1) ℂ_[p]) else C (ep z) * X (z, a, b)) (be z) with hSdef` using the available equality. Establish `hS : constantCoeff S = 0`. Rewrite using `[hSdef, map_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `y _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, map_smul, map_sum]`. Rewrite using `[Finset.sum_eq_zero, smul_zero]`. Introduce `a _`. Rewrite using `[map_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _`. Rewrite using `[coeff_zero_eq_constantCoeff_apply]`. Conclude with `constantCoeff_subst_eq_zero (hσ y a b) (hσ0 y a b) (hbe y)`. Establish `hκS : killCompl e S = (sg z / 2) • ∑ a : Fin N0, ∑ b : Fin N1,`. Substitute `(fun s : ZMod 2 => if s = 0 then (X ((0 : ZMod 1), a, b) : MvPowerSeries (ZMod 1 × Fin N0 × Fin N1) ℂ_[p]) else C (ep z) * X ((0 : ZMod 1), a, b)) (be z) := by` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hSdef, map_sum, Finset.sum_eq_single z]`. Rewrite using `[map_smul, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[killCompl_subst e (hσ z a b)]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Use `split_ifs`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, killCompl_X_one, if_pos rfl]`. Rewrite using `[map_mul, killCompl_C, he, killCompl_X_one, if_pos rfl]`. Introduce `y _ hy`. Rewrite using `[map_smul, map_sum]`. Rewrite using `[Finset.sum_eq_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a _`. Rewrite using `[map_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[killCompl_subst e (hσ y a b)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (fun s : ZMod 2 => killCompl e (if s = 0 then (X (y, a, b) : MvPowerSeries (Pl D × Fin N0 × Fin N1) ℂ_[p]) else C (ep y) * X (y, a, b))) = 0`. Use function extensionality and compare the values at `s`. Establish `hx : killCompl e (X (y, a, b) : MvPowerSeries (Pl D × Fin N0 × Fin N1) ℂ_[p]) = 0`. Rewrite using `[he, killCompl_X_one, if_neg hy]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Both sides reduce to the same expression. Rewrite using `[map_mul, hx, mul_zero]`. Both sides reduce to the same expression. Rewrite using `[h0, subst_zero_of_constantCoeff_zero (hbe y)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ z) h`. Establish `h1` using `congrArg (killCompl e) hEq`. Rewrite `h1` using `[killCompl_subst e hA, map_mul, killCompl_subst e hL]`. Rewrite using `[restr1_eq_killCompl, ← he, killCompl_eq_subst e Th, subst_comp_subst_apply hρ hB]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `eA : (fun v : Pl D × Fin N0 × Fin N1 => subst (fun v : ZMod 1 × Fin N0 × Fin N1 => (C ep0 * jetLogG p 1 v : MvPowerSeries _ ℂ_[p])) (killCompl e (X v : MvPowerSeries (Pl D × Fin N0 × Fin N1) ℂ_[p]))) = fun v => killCompl e (C ep0 * logPl D p v)`. Use function extensionality and compare the values at `v`. Rewrite using `[he, subst_killCompl_X_one p z hB, map_mul, killCompl_C, killCompl_logPl p hn]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[eA, h1]`.
-
-Use `congr 1`. Establish `eL : (fun v : Pl D × Fin N0 × Fin N1 => killCompl e (logPl D p v)) = fun v => subst (jetLogG p 1 (β` using `Fin N0 × Fin N1)) (killCompl e (X v : MvPowerSeries (Pl D × Fin N0 × Fin N1) ℂ_[p])) := by`. Use function extensionality and compare the values at `v`. Rewrite using `[he, subst_killCompl_X_one p z hJ, killCompl_logPl p hn]`. Rewrite using `[eL, ← subst_comp_subst_apply hρ hJ, ← killCompl_eq_subst e, killCompl_expS e S hS, hκS]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restricted_single_jet_equation (p : ℕ) [Fact p.Prime] (hn : nP D p = 1) {N0 N1 : ℕ} (z : Pl D)
     (Th U : MvPowerSeries (Pl D × Fin N0 × Fin N1) ℂ_[p]) (ep0 : ℂ_[p])

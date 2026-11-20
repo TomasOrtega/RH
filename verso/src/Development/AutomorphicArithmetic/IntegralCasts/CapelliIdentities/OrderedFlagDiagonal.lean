@@ -5,11 +5,11 @@ abbrev M4 (R : Type) : Type := Matrix (Fin 4) (Fin 4) R
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Establish `hev : ∀ j, Module.End.HasEigenvalue (Matrix.toLin' X) (c j)`. Introduce `j`. Rewrite using `[Module.End.hasEigenvalue_iff_isRoot_charpoly, Matrix.charpoly_toLin', hX, Polynomial.IsRoot, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ j) (by simp)`. Use `choose v hv using fun j => (hev j).exists_hasEigenvector`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent K v` using `Module.End.eigenvectors_linearIndependent' (Matrix.toLin' X) c hc v hv`. Establish `hU : IsUnit (Matrix.of fun i j => v j i : Matrix (Fin 4) (Fin 4) K)` using `Matrix.linearIndependent_cols_iff_isUnit.mp hli`. Take `⟨P, hP⟩` from `hU`. Use `⟨P, ?_⟩` and prove the remaining obligations. Rewrite using `[hP]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Establish `h` using `congrFun (hv j).apply_eq_smul i`. Rewrite `h` using `[Matrix.toLin'_apply]`. Rewrite using `[Matrix.mul_diagonal, Matrix.mul_apply]`. Simplify `h` using `[Matrix.mulVec, dotProduct, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ordFlag_diag (c : Fin 4 → K) (hc : Function.Injective c) (X : M4 K)
     (hX : X.charpoly = ∏ j, (Polynomial.X - Polynomial.C (c j))) :

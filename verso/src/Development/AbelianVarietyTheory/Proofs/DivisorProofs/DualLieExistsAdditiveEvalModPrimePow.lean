@@ -11,15 +11,15 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p O _ G l n`. Set `I : Ideal O` to `Ideal.span {(p : O) ^ n}`. Set `N : Submodule O G.dual.omega` to `Ideal.span {(p : O)} ^ n • ⊤`. Set `m : G.dual.omega →ₗ[O] O ⧸ I` to `(Ideal.Quotient.mkₐ O I).toLinearMap ∘ₗ l`. Establish `hN : N ≤ LinearMap.ker m`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hx' : x ∈ (Ideal.span {(p : O)} ^ n • ⊤ : Submodule O G.dual.omega)` using `hx`. Rewrite `hx'` using `[Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨v, -, rfl⟩` from `hx'`. Rewrite using `[LinearMap.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk I (l ((p : O) ^ n • v)) = 0`. Rewrite using `[map_smul, smul_eq_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`. Set `u : Cot O (CartierDual O (G.A n)) →ₗ[O] O ⧸ I` to `N.liftQ m hN ∘ₗ (G.dual.omegaQuotEquiv n).symm.toLinearMap`. Establish `hu : ∀ w : G.dual.omega, u (w.1 n) = Ideal.Quotient.mk I (l w)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Establish `h` using `(G.dual.omegaQuotEquiv_mk n w)`. Express the relevant statement in the definitionally equal form `N.liftQ m hN ((G.dual.omegaQuotEquiv n).symm (w.1 n)) = _`. Rewrite using `[← h, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨b, z, hb, hφ⟩` from `GlobalTheory.T.cartierDual_tangent_mod_eq_eval_additive O (G.A n) ((p : O) ^ n) u`. Use `⟨b, z, hb, fun w φ hφw => ?_⟩` and prove the remaining obligations. Establish `h1` using `hφ φ`. Rewrite `h1` using `[hφw, hu, Ideal.Quotient.eq]`. Conclude with `Ideal.mem_span_singleton.1 h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PDivGroup.dual_lie_exists_eval_mod_pow : ∀ (p : ℕ) (O : Type) [CommRing O]
     (G : PDivGroup p O) (l : G.dual.Lie) (n : ℕ), ∃ (b : G.A n) (z : G.A n ⊗[O] G.A n),

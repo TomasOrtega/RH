@@ -18,21 +18,17 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
   {E : Fin n → Fin n → Module.End ℂ D} {V : Submodule ℂ D}
 
 /- English proof (translation)
-Establish `hSK' : ∀ k ∈ Kset ε, ∀ x ∈ S, σ k x ∈ S`. Introduce `k hk x hx`. Conclude with `hST.2.1 k (by rw [mir_Kset_eq]; exact hk) x hx`. Establish `hSM : S ≤ (genSub E V).map D.subtype` using `data_kfin_le hgap hσ hD hV hc hVK S hS hST.1 hSK'`. Establish `hSD : S ≤ D` using `fun x hx => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, -, rfl⟩` from `Submodule.mem_map.1 (hSM hx)`. Conclude with `y.2`. Take `⟨w, hwS, hw0, hwhw⟩` from `exists_isKHWVec_of_isKTypeOf hσ hD hST hSD`. Establish `hwG : w ∈ genSub E V`. Take `⟨y, hy, hyw⟩` from `Submodule.mem_map.1 (hSM hwS)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: y = w` using `Subtype.ext hyw`. Conclude with `this ▸ hy`. Establish `hwV : w ∈ V` using `khw_lowK_mem hD.glRep (isInfUnitary_of_isDerivedOn hσ hD) hV hc hgap hwG hwhw`. Establish `hTK : Formalism.MainNotions.S.IsKStableOn ε σ (V.map D.subtype)`. Introduce `g hg x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, rfl⟩` from `Submodule.mem_map.1 hx`. Rewrite `hg` using `[mir_Kset_eq]`. Take `⟨u, hu, huv⟩` from `hVK g hg v hv`. Conclude with `Submodule.mem_map.2 ⟨u, hu, by simpa using huv⟩`. Establish `hwT : (w : H) ∈ V.map D.subtype` using `Submodule.mem_map_of_mem hwV`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hle : S ≤ V.map D.subtype`. Break down `hST.2.2.1 (S ⊓ V.map D.subtype) inf_le_left (fun g hg x hx => Submodule.mem_inf.2 ⟨hST.2.1 g hg x (Submodule.mem_inf.1 hx).1, hTK g hg x (Submodule.mem_inf.1 hx).2⟩) with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hw0` to reduce the goal to its premises. Establish `hm : (w : H) ∈ S ⊓ V.map D.subtype` using `Submodule.mem_inf.2 ⟨hwS, hwT⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Rewrite `hm` using `[h]`. Conclude with `(Submodule.coe_eq_zero).1 ((Submodule.mem_bot ℂ).1 hm)`. Rewrite using `[← h]`. Conclude with `inf_le_right`. Break down `(data_isKTypeOf hgap hσ hD hV hc hVK).2.2.1 S hle hST.2.1 with h | h` into its components or cases.
-
-It suffices to derive a contradiction. Apply `hw0` to reduce the goal to its premises. Establish `hm : (w : H) ∈ S` using `hwS`. Rewrite `hm` using `[h]`. Conclude with `(Submodule.coe_eq_zero).1 ((Submodule.mem_bot ℂ).1 hm)`.
-
-Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem data_lowK_eq (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)

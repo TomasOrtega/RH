@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `G X _ _ _ _ μ _ ν q ρ g v v' φ hq hρ hv hφ`. Establish `h1 : ∀ᵐ y ∂μ, v' (q y) = v (ρ (q y))` using `hq.ae hv`. Establish `h2 : ∀ᵐ y ∂μ, v (q (y * g)) = φ (y * g)` using `(MeasureTheory.measurePreserving_mul_right μ g).quasiMeasurePreserving.ae hφ`. Use `filter_upwards [h1, h2] with y a b`. Rewrite using `[a, hρ, b]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ae_translate_eq :
     ∀ {G X : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] [MeasurableSpace X]

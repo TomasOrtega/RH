@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.GroupIndex.RelProd
 
 /- English proof (translation)
-Establish `hmap : ((I₁.prod I₂).subgroupOf (K₁.prod K₂)) = ((I₁.subgroupOf K₁).prod (I₂.subgroupOf K₂)).comap (Subgroup.prodEquiv K₁ K₂).toMonoidHom`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_prod, Subgroup.mem_comap]`. Conclude with `Iff.rfl`. Unfold `Subgroup.relIndex`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Replace the relevant objects with their definitions.
 
-Rewrite using `[hmap, Subgroup.index_comap_of_surjective _ (Subgroup.prodEquiv K₁ K₂).surjective, Subgroup.index_prod]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_prod_eq_mul {G₁ G₂ : Type} [Group G₁] [Group G₂]
     (I₁ K₁ : Subgroup G₁) (I₂ K₂ : Subgroup G₂) :
@@ -21,7 +21,7 @@ theorem relIndex_prod_eq_mul {G₁ G₂ : Type} [Group G₁] [Group G₂]
     Subgroup.index_prod]
 
 /- English proof (translation)
-Introduce `G₁ G₂ _ _ I₁ K₁ I₂ K₂ h₁ h₂`. Rewrite using `[relIndex_prod_eq_mul]`. Conclude with `mul_ne_zero h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_prod_ne_zero_of_ne_zero :
     ∀ (G₁ G₂ : Type) [Group G₁] [Group G₂] (I₁ K₁ : Subgroup G₁) (I₂ K₂ : Subgroup G₂),

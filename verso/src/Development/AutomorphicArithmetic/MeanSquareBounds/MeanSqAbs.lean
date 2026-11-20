@@ -6,21 +6,19 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 namespace QH
 
 /- English proof (translation)
-Introduce `P m₀ a₀ nstar Z y η B κ h8 hcop hy hη hP hκ hB hJ`. Use `set N := ⌊Z⌋₊ with hN`. Establish `hc0 : ∀ n, 0 ≤ cN y n` using `cN_nonneg y hy`. Establish `hcpp : ∀ n, cN y n ≠ 0 → IsPrimePow n` using `cN_primePow y`. Establish `hexp` using `meansq_expand P (Icc 1 N) (cN y) hc0 κ hκ (fun n q => jacobiSym (n : ℤ) q)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpair : ∀ n ∈ Icc 1 N, ∀ n' ∈ Icc 1 N, |∑ q ∈ P, ((jacobiSym (n : ℤ) q * jacobiSym (n' : ℤ) q : ℤ) : ℝ)| = |∑ q ∈ P, (jacobiSym (q : ℤ) (soutPart m₀ (n * n')) : ℝ)|`. Introduce `n hn n' hn'`. Rewrite `hn`, `hn'` using `[Finset.mem_Icc]`. Use `abs_pair_sum_eq P m₀ a₀ n n' h8 hcop (by omega) (by omega) ?_` and prove the remaining obligations. Introduce `q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3⟩` from `hP q hq`. Use `⟨h1, h2, lt_of_le_of_lt ?_ h3⟩` and prove the remaining obligations. Rewrite using `[pow_two]`. Conclude with `Nat.mul_le_mul hn.2 hn'.2`. Establish `hsplit` using `meansq_split (Icc 1 N) (cN y) hc0 (fun n n' => soutPart m₀ (n * n')) (fun n n' => |∑ q ∈ P, ((jacobiSym (n : ℤ) q * jacobiSym (n' : ℤ) q : ℤ) : ℝ)|) (P.card : ℝ) η (by positivity) hη (max nstar 2) (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n hn n' hn'`. Rewrite using `[hpair n hn n' hn']`. Conclude with `abs_sum_jacobi_le P _)`. Use the proof step `(by`. Introduce `n hn n' hn' hr1 hrs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hpair n hn n' hn']`. Rewrite `hn`, `hn'` using `[Finset.mem_Icc]`. Establish `hpos` using `soutPart_pos m₀ (n * n')`. Establish `hnn : 0 < n * n'` using `Nat.mul_pos (by omega) (by omega)`. Establish `hle : soutPart m₀ (n * n') ≤ N ^ 2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(soutPart_le m₀ _ hnn).trans ?_` and prove the remaining obligations. Rewrite using `[pow_two]`. Conclude with `Nat.mul_le_mul hn.2 hn'.2`. Use `hJ _ (by omega) (soutPart_odd m₀ _ (dvd_trans (by norm_num) h8)) (soutPart_squarefree m₀ _) (soutPart_coprime m₀ _) hle ?_` and prove the remaining obligations. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hrs` to reduce the goal to its premises. Use the proof step `omega)`. Use `beta_reduce at hsplit`. Establish `h1` using `pairs_one (cN y) hc0 hcpp m₀ N`. Establish `h2` using `pairs_r (cN y) hc0 hcpp m₀ N (max nstar 2) (by omega) B hB`.
-
-Use `hexp.trans (hsplit.trans ?_)` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem meanSq_abs :
     ∀ (P : Finset ℕ) (m₀ a₀ nstar : ℕ) (Z y η B : ℝ) (κ : ℕ → ℂ), 8 ∣ m₀ → a₀.Coprime m₀ → 0 ≤ y → 0 ≤ η →

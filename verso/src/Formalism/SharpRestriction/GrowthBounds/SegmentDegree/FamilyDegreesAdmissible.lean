@@ -9,21 +9,21 @@ open Finset Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas
 def sumBin (r K n : ℕ) : ℝ := ((Nat.choose (n + (r + K) - 1) (r + K - 1) : ℕ) : ℝ)
 
 /- English proof (translation)
-Unfold `sumBin`. Conclude with `Nat.succ_le_of_lt (Nat.choose_pos (by omega))` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sum_one_le_bin (r K n : ℕ) : 1 ≤ sumBin r K n := by
   unfold sumBin
   exact_mod_cast Nat.succ_le_of_lt (Nat.choose_pos (by omega))
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_one_le_prod {ι : Type*} (s : Finset ι) (f : ι → ℝ) (h1 : ∀ i ∈ s, 1 ≤ f i) : 1 ≤ ∏ i ∈ s, f i := by
   calc (1 : ℝ) = ∏ _i ∈ s, (1 : ℝ) := by simp
     _ ≤ _ := Finset.prod_le_prod (fun _ _ => zero_le_one) h1
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase s f ha]`. Establish `h2 : (1 : ℝ) ≤ ∏ i ∈ s.erase a, f i` using `sum_one_le_prod _ _ fun i hi => h1 i (Finset.mem_of_mem_erase hi)`. Establish `h3 : 0 ≤ f a` using `le_trans zero_le_one (h1 a ha)`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sum_single_le_prod {ι : Type*} (s : Finset ι) (f : ι → ℝ) (h1 : ∀ i ∈ s, 1 ≤ f i) {a : ι} (ha : a ∈ s) :
     f a ≤ ∏ i ∈ s, f i := by
@@ -56,7 +56,7 @@ def sumWf (j : ℤ) : ℝ := ∏ i : Fin r, sumBin r K ((X.Bw p K j (X.F.fr (j -
 def sumTf (j : ℤ) : ℝ := (((X.Qc p K j : ℕ) : ℝ) ^ (r - 1) * max 0 (1 - (r : ℝ) / (2 * X.Y))) ^ r
 
 /- English proof (translation)
-Unfold `segBound firstSumFactor sumWf sumTf sumBin`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_segBound_eq (j : ℤ) (b : ℤ → ℕ) :
     X.segBound p K j b = (X.firstSumFactor * X.sumWf p K j * X.sumTf p K j) * ∏ x ∈ X.F.LLset j, sumBin r K (b x) := by
@@ -91,9 +91,9 @@ variable {n' r : ℕ} [NeZero n'] {X : Dat n' r} {p K : ℕ}
 
 omit [NeZero n'] in
 /- English proof (translation)
-Establish `hJ : 0 < X.F.J` using `lt_of_le_of_lt (Nat.zero_le _) j.isLt`. Unfold `Dat.eZ`. Rewrite using `[dif_pos hJ]`. Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : ((j.val : ℤ) % (X.F.J : ℤ)) = j.val` using `Int.emod_eq_of_lt (by omega) (by exact_mod_cast j.isLt)`. Simplify using `only [h1, Int.toNat_natCast]`. Conclude with `Nat.mod_eq_of_lt j.isLt`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_eZ_val (e : Fin X.F.J → Fin r → ℕ) (j : Fin X.F.J) : X.eZ e (j.val : ℤ) = e j := by
   have hJ : 0 < X.F.J := lt_of_le_of_lt (Nat.zero_le _) j.isLt
@@ -106,7 +106,7 @@ theorem sum_eZ_val (e : Fin X.F.J → Fin r → ℕ) (j : Fin X.F.J) : X.eZ e (j
   exact Nat.mod_eq_of_lt j.isLt
 
 /- English proof (translation)
-Establish `hx'` using `Finset.mem_filter.mp hx`. Establish `h2` using `Finset.mem_filter.mp hx'.1`. Conclude with `⟨hx'.1, hx'.2, (Finset.mem_Icc.mp h2.1).2, h2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem sum_late_mem {j x : ℤ} (hx : x ∈ X.toLate j) :
     x ∈ X.F.letters j ∧ ¬ X.F.IsW j x ∧ x ≤ X.F.fr j (r - 1) ∧ posOf n' x ∈ X.F.TT := by
@@ -116,9 +116,9 @@ theorem sum_late_mem {j x : ℤ} (hx : x ∈ X.toLate j) :
   exact ⟨hx'.1, hx'.2, (Finset.mem_Icc.mp h2.1).2, h2.2⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, -⟩` from `sum_late_mem hx`. Unfold `Dat.bfam Dat.setTau`. Rewrite using `[if_pos h1, if_neg h2, sum_eZ_val]`. Distinguish the cases in `h : X.F.fr (j.val : ℤ) 0 ≤ x`. Rewrite using `[if_pos h, if_pos ⟨h, h3⟩]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg (fun hh => h hh.1)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_bfam_late (la : Fin n' → Fin (r + K) → ℕ) (e : Fin X.F.J → Fin r → ℕ) (j : Fin X.F.J) (x : ℤ)
     (hx : x ∈ X.toLate (j.val : ℤ)) :
@@ -131,17 +131,13 @@ theorem sum_bfam_late (la : Fin n' → Fin (r + K) → ℕ) (e : Fin X.F.J → F
   · rw [if_neg h, if_neg (fun hh => h hh.1)]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hv : la (posOf n' x) ∈ X.laSet p K (posOf n' x)` using `(Fintype.mem_piFinset.mp hla) _`. Take `⟨-, hle, hall⟩` from `Finset.mem_filter.mp hv`. Take `⟨hlt, hmod⟩` from `hall j x (hLL j x hx) rfl`. Use `set P := X.Pz p K j x with hPdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set n := X.a' p K (posOf n' x) with hn`. Use `set s := ∑ c, la (posOf n' x) c with hs`. Establish `hP : 0 < P` using `by rw [hPdef]; unfold Dat.Pz; exact pow_pos hp _`. Establish `hdvd : P ∣ n - s` using `(Nat.modEq_iff_dvd' hle).mp hmod`. Establish `hnz : X.nz p K la j x = (n - s) / P` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPr : (0 : ℝ) < (P : ℝ)` using `by exact_mod_cast hP`. Establish `hcast : ((X.nz p K la j x : ℕ) : ℝ) = ((n : ℝ) - s) / P`. Rewrite using `[hnz, Nat.cast_div hdvd hPr.ne', Nat.cast_sub hle]`. Establish `hslt : s < (r + K) * P`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hs]`. Conclude with `Finset.sum_lt_sum_of_nonempty ⟨⟨0, by omega⟩, Finset.mem_univ _⟩ fun c _ => hlt c`. Use `_ = (r + K) * P := by simp`. Establish `hslt' : (s : ℝ) < Dat.k (r` using `r) K * P := by`. Unfold `Dat.k`.
-
-Conclude with `hslt` after adjusting the coercions. Rewrite using `[hcast]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[sub_div, sub_lt_sub_iff_left, div_lt_iff₀ hPr]`. Conclude with `hslt'`.
-
-Conclude with `div_le_div_of_nonneg_right (by have : (0 : ℝ) ≤ s := Nat.cast_nonneg _; linarith) hPr.le`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem family_degrees_admissible (hr : 0 < r) (hp : 0 < p) (hLL : ∀ j x, x ∈ X.F.LLset j → x ∈ X.toLate j)
     (la : Fin n' → Fin (r + K) → ℕ) (hla : la ∈ X.LA p K) (j : ℤ) :
@@ -175,9 +171,9 @@ theorem family_degrees_admissible (hr : 0 < r) (hp : 0 < p) (hLL : ∀ j x, x �
   · exact div_le_div_of_nonneg_right (by have : (0 : ℝ) ≤ s := Nat.cast_nonneg _; linarith) hPr.le
 
 /- English proof (translation)
-Establish `ha1 : 1 ≤ X.a` using `by linarith`. Establish `h1 : X.a ≤ X.a ^ (X.Ns ^ 2)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : 1 / X.a ^ (X.Ns ^ 2) ≤ 1 / (32 * X.Y)` using `one_div_le_one_div_of_le (by linarith) (ha.trans h1)`. Establish `h3 : 1 / (32 * X.Y) ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_one (by linarith)]; linarith`. Unfold `Dat.firstSumFactor`. Apply the tactic sequence `constructor <;> linarith`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem first_sum_factor_bounds (hY : 1 ≤ X.Y) (ha : 32 * X.Y ≤ X.a) (hNs : 1 ≤ X.Ns) :
     1 - 1 / (32 * X.Y) ≤ X.firstSumFactor ∧ 0 ≤ X.firstSumFactor := by

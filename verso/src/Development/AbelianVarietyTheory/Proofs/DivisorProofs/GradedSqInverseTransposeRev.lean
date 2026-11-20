@@ -9,7 +9,7 @@ open GlobalTheory.HodgeLocGeo
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n M h i`. Use `GlobalTheory.ShFam.MetsTest.grSq_dual_rev h (Fin.rev i)` as an intermediate fact. Rewrite `this` using `[Fin.rev_rev]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem grSq_inv_transpose_rev : ∀ {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ), M.PosDef → ∀ i : Fin n,
     GlobalTheory.GradedNorm.grSq ((M⁻¹)ᵀ.submatrix Fin.rev Fin.rev) (Fin.rev i) = (GlobalTheory.GradedNorm.grSq M i)⁻¹ := by

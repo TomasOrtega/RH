@@ -16,7 +16,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Use `L.rank` as an intermediate fact. Rewrite `this` using `[Module.finrank_zero_of_subsingleton]`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem locE_nontrivial (L : LocE F E) : Nontrivial E := by
   by_contra h
@@ -26,18 +26,18 @@ theorem locE_nontrivial (L : LocE F E) : Nontrivial E := by
   omega
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[L.O_def]`. Conclude with `hx.map ((L.cj : E →ₐ[F] E).restrictScalars 𝒪[F])`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locE_cj_mem (L : LocE F E) {x : E} (hx : x ∈ L.O) : L.cj x ∈ L.O := by
   rw [L.O_def] at hx ⊢
   exact hx.map ((L.cj : E →ₐ[F] E).restrictScalars 𝒪[F])
 
 /- English proof (translation)
-Use `haveI := locE_nontrivial L`. Rewrite using `[L.O_def]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : IsIntegral 𝒪[F] f` using `(isIntegral_algHom_iff ((Algebra.ofId F E).restrictScalars 𝒪[F]) (algebraMap F E).injective).mp h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h'`. Rewrite using `[← hy]`. Conclude with `y.2`. Introduce `h`. Establish `: algebraMap F E f = algebraMap 𝒪[F] E ⟨f, h⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[IsScalarTower.algebraMap_apply 𝒪[F] F E]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locE_algMap_mem (L : LocE F E) [IsNonarchimedeanLocalField F] {f : F} :
     algebraMap F E f ∈ L.O ↔ f ∈ 𝒪[F] := by
@@ -56,9 +56,9 @@ theorem locE_algMap_mem (L : LocE F E) [IsNonarchimedeanLocalField F] {f : F} :
     rw [this]; exact isIntegral_algebraMap
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h1 : Module.finrank F E ≤ 1`. Apply `finrank_le_one (1 : E)` to reduce the goal to its premises. Introduce `w`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `h w`. Conclude with `⟨c, by rw [Algebra.smul_def, mul_one, hc]⟩`. Use `L.rank` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Supply the required witnesses or components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem locE_exists_nonF (L : LocE F E) : ∃ s : E, s ∉ Set.range (algebraMap F E) := by
   by_contra h
@@ -72,25 +72,23 @@ theorem locE_exists_nonF (L : LocE F E) : ∃ s : E, s ∉ Set.range (algebraMap
   omega
 
 /- English proof (translation)
-Use `haveI := locE_nontrivial L`. Use `haveI := L.reduced`. Take `⟨s, hs⟩` from `locE_exists_nonF L`. Use `set δ0 := s - L.cj s with hδ0`. Establish `hcj0 : L.cj δ0 = -δ0` using `by rw [hδ0, map_sub, L.cj_cj]; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hne0 : δ0 ≠ 0`. Introduce `h0`. Apply `hs` to reduce the goal to its premises. Establish `: L.cj s = s` using `by rw [hδ0, sub_eq_zero] at h0; exact h0.symm`. Take `⟨a, ha⟩` from `(L.cj_fix s).mp this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, ha⟩`. Establish `hfix : L.cj (δ0 * δ0) = δ0 * δ0` using `by rw [map_mul, hcj0]; ring`. Take `⟨d0, hd0⟩` from `(L.cj_fix _).mp hfix`. Establish `hd0ne : d0 ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `hd0` using `[map_zero]`. Apply `hne0` to reduce the goal to its premises. Establish `: IsNilpotent δ0` using `⟨2, by rw [pow_two]; exact hd0.symm⟩`. Conclude with `this.eq_zero`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := 𝒪[F]) d0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : (b : F) ≠ 0`. Introduce `h`. Establish `: b = 0` using `Subtype.ext h`. Conclude with `(nonZeroDivisors.ne_zero hb) this`. Establish `hmem : (b : F) * (b : F) * d0 ∈ 𝒪[F]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hab]`. Establish `: (b : F) * (b : F) * (algebraMap 𝒪[F] F a / algebraMap 𝒪[F] F b) = (b : F) * (a : F)`. Express the relevant statement in the definitionally equal form `(b : F) * (b : F) * ((a : F) / (b : F)) = (b : F) * (a : F)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem b.2 a.2`. Use `⟨algebraMap F E (b : F) * δ0, ?_, ?_, ?_, (b : F) * (b : F) * d0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[L.O_def]`. Apply `IsIntegral.of_pow (n := 2) (by norm_num)` to reduce the goal to its premises. Establish `: (algebraMap F E (b : F) * δ0) ^ 2 = algebraMap F E ((b : F) * (b : F) * d0)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, hd0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, ← L.O_def]`. Conclude with `(locE_algMap_mem L).mpr hmem`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Apply `hne0` to reduce the goal to its premises. Establish `: algebraMap F E (b : F)⁻¹ * (algebraMap F E (b : F) * δ0) = δ0`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hb0, map_one, one_mul]`. Rewrite using `[← this, h, mul_zero]`. Rewrite using `[map_mul, hcj0, AlgEquiv.commutes]`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_ne_zero (mul_ne_zero hb0 hb0) hd0ne`. Rewrite using `[map_mul, map_mul, hd0]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem locE_exists_delta (L : LocE F E) [IsNonarchimedeanLocalField F] :
     ∃ δ : E, δ ∈ L.O ∧ δ ≠ 0 ∧ L.cj δ = -δ ∧ ∃ d : F, d ≠ 0 ∧ δ * δ = algebraMap F E d := by
@@ -148,11 +146,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Establish `h1 : L.cj (x + L.cj x) = x + L.cj x` using `by rw [map_add, L.cj_cj, add_comm]`. Take `⟨A, hA⟩` from `(L.cj_fix _).mp h1`. Establish `h2 : L.cj ((x - L.cj x) * δ) = (x - L.cj x) * δ`. Rewrite using `[map_mul, map_sub, L.cj_cj, hcj]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨Bc, hB⟩` from `(L.cj_fix _).mp h2`. Use `⟨A / 2, Bc / (2 * d), ?_⟩` and prove the remaining obligations. Establish `h2ne : (2 : F) ≠ 0` using `two_ne_zero`. Establish `hu : IsUnit (algebraMap F E (2 * d))` using `(IsUnit.mk0 _ (mul_ne_zero h2ne hd0)).map _`. Apply `hu.mul_left_cancel` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mul_add, ← mul_assoc, ← map_mul, ← map_mul]`. Establish `e1 : 2 * d * (A / 2) = d * A` using `by field_simp`. Establish `e2 : 2 * d * (Bc / (2 * d)) = Bc` using `by field_simp`. Rewrite using `[e1, e2, map_mul, map_mul, hA, hB, map_ofNat]`. Take the linear combination `(-(x - L.cj x)) * hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem locE_decomp (L : LocE F E) [CharZero F] {δ : E} (hcj : L.cj δ = -δ) {d : F} (hd0 : d ≠ 0)
     (hd : δ * δ = algebraMap F E d) (x : E) :
@@ -183,48 +181,44 @@ structure QBasis (L : LocE F E) where
   span : ∀ x ∈ L.O, ∃ a b : 𝒪[F], x = algebraMap F E (a : F) + algebraMap F E (b : F) * ω
 
 /- English proof (translation)
-Use `Q.hn` as an intermediate fact. Rewrite `this` using `[Q.hcj]`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem QBasis.sq {L : LocE F E} (Q : QBasis L) :
     Q.ω * Q.ω = algebraMap F E (Q.t : F) * Q.ω - algebraMap F E (Q.n : F) := by
   have := Q.hn; rw [Q.hcj] at this; rw [← this]; ring
 
 /- English proof (translation)
-Take `⟨δ, hδO, hδ0, hcj, d, hd0, hd⟩` from `locE_exists_delta L`. Use `set e : F := (2 * d)⁻¹ with he`. Establish `he0 : e ≠ 0` using `inv_ne_zero (mul_ne_zero two_ne_zero hd0)`. Set `I : Ideal 𝒪[F]` to `{ carrier := {c | ∃ a : F, algebraMap F E a + algebraMap F E ((c : F) * e) * δ ∈ L.O} add_mem' := by`. Introduce and unpack `c1 c2 ⟨a1, h1⟩ ⟨a2, h2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a1 + a2, ?_⟩` and prove the remaining obligations. Establish `: algebraMap F E (a1 + a2) + algebraMap F E (((c1 + c2 : 𝒪[F]) : F) * e) * δ = (algebraMap F E a1 + algebraMap F E ((c1 : F) * e) * δ) + (algebraMap F E a2 + algebraMap F E ((c2 : F) * e) * δ)` using `by push_cast; simp only [map_add, add_mul, map_mul]; ring`. Rewrite using `[this]`. Conclude with `add_mem h1 h2`. Use the proof step `zero_mem' := ⟨0, by simp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the proof step `smul_mem' := by`. Introduce and unpack `c x ⟨a, h⟩`. Use `⟨(c : F) * a, ?_⟩` and prove the remaining obligations. Establish `: algebraMap F E ((c : F) * a) + algebraMap F E (((c • x : 𝒪[F]) : F) * e) * δ = algebraMap F E (c : F) * (algebraMap F E a + algebraMap F E ((x : F) * e) * δ)`. Simplify using `only [smul_eq_mul]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `mul_mem ((locE_algMap_mem L).mpr c.2) h }`. Establish `hcoord : ∀ x ∈ L.O, ∀ a b : F, x = algebraMap F E a + algebraMap F E b * δ → ∃ c : 𝒪[F], c ∈ I ∧ (c : F) * e = b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `x hx a b hxab`. Establish `hm : (x - L.cj x) * δ = algebraMap F E (2 * b * d)`. Rewrite using `[hxab, map_add, map_mul, hcj, AlgEquiv.commutes, AlgEquiv.commutes, map_mul, map_mul, ← hd, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : 2 * b * d ∈ 𝒪[F]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← locE_algMap_mem L, ← hm]`. Conclude with `mul_mem (sub_mem hx (locE_cj_mem L hx)) hδO`. Use `⟨⟨2 * b * d, hmem⟩, ⟨a, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: (2 * b * d) * e = b` using `by rw [he]; field_simp`. Simplify using `only [this]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hxab]`. Conclude with `hx`. Use `show 2 * b * d * e = b`. Rewrite using `[he]`. Clear the denominators using the available nonvanishing facts.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set c0 := Submodule.IsPrincipal.generator I with hc0`. Establish `hI : I = Ideal.span {c0}` using `(Ideal.span_singleton_generator I).symm`. Take `⟨a0, ha0⟩ : c0 ∈ I` from `Submodule.IsPrincipal.generator_mem I`. Establish `hc0ne : (c0 : F) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hc : c0 = 0` using `Subtype.ext h`. Rewrite `hc` using `[← Submodule.IsPrincipal.eq_bot_iff_generator_eq_zero]`. Take `⟨c, hcI, hce⟩` from `hcoord δ hδO 0 1 (by simp)`. Rewrite `hcI` using `[hc]`. Establish `: c = 0` using `(Submodule.mem_bot _).mp hcI`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hce` using `[this]`. Simplify using `at hce`. Use `set ω := algebraMap F E a0 + algebraMap F E ((c0 : F) * e) * δ with hωdef`. Establish `hnot : ω ∉ Set.range (algebraMap F E)`. Introduce and unpack `⟨f, hf⟩`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hce : (c0 : F) * e ≠ 0` using `mul_ne_zero hc0ne he0`. Establish `hδF : δ = algebraMap F E ((f - a0) / ((c0 : F) * e))`. Establish `hu : IsUnit (algebraMap F E ((c0 : F) * e))` using `(IsUnit.mk0 _ hce).map _`. Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← map_mul, mul_div_cancel₀ _ hce, map_sub, hf, hωdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Apply `hδ0` to reduce the goal to its premises. Establish `h2 : L.cj δ = δ` using `by rw [hδF, AlgEquiv.commutes]`. Rewrite `h2` using `[hcj]`. Establish `: (2 : E) * δ = 0` using `by linear_combination (-1 : E) * h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2u : IsUnit (2 : E)`. Use `((IsUnit.mk0 (2 : F) two_ne_zero).map (algebraMap F E))` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Conclude with `(h2u.mul_right_eq_zero).mp this`. Establish `hfixT : L.cj (ω + L.cj ω) = ω + L.cj ω` using `by rw [map_add, L.cj_cj, add_comm]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT⟩` from `(L.cj_fix _).mp hfixT`. Establish `hfixN : L.cj (ω * L.cj ω) = ω * L.cj ω` using `by rw [map_mul, L.cj_cj, mul_comm]`. Take `⟨Nn, hN⟩` from `(L.cj_fix _).mp hfixN`. Establish `hTm : T ∈ 𝒪[F]` using `by rw [← locE_algMap_mem L, hT]; exact add_mem ha0 (locE_cj_mem L ha0)`. Establish `hNm : Nn ∈ 𝒪[F]` using `by rw [← locE_algMap_mem L, hN]; exact mul_mem ha0 (locE_cj_mem L ha0)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `⟨⟨ω, ha0, hnot, ⟨T, hTm⟩, ⟨Nn, hNm⟩, ?_, hN.symm, ?_⟩⟩` and prove the remaining obligations. Use `show L.cj ω = algebraMap F E T - ω`. Rewrite using `[hT]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b, hab⟩` from `locE_decomp L hcj hd0 hd x`. Take `⟨c, hcI, hce⟩` from `hcoord x hx a b hab`. Rewrite `hcI` using `[hI]`. Take `⟨m, hm⟩` from `Ideal.mem_span_singleton'.mp hcI`. Establish `hrest : x - algebraMap F E (m : F) * ω = algebraMap F E (a - (m : F) * a0)`.
-
-Rewrite using `[hab, hωdef, ← hce, ← hm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : a - (m : F) * a0 ∈ 𝒪[F]`. Rewrite using `[← locE_algMap_mem L, ← hrest]`.
-
-Conclude with `sub_mem hx (mul_mem ((locE_algMap_mem L).mpr m.2) ha0)`. Use `⟨⟨_, hmem⟩, m, ?_⟩` and prove the remaining obligations. Use `show x = algebraMap F E (a - (m : F) * a0) + algebraMap F E (m : F) * ω`. Rewrite using `[← hrest]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem locE_qbasis (L : LocE F E) [IsNonarchimedeanLocalField F] [CharZero F] : Nonempty (QBasis L) := by
   obtain ⟨δ, hδO, hδ0, hcj, d, hd0, hd⟩ := locE_exists_delta L
@@ -320,19 +314,19 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Distinguish the cases in `h2 : IsUnit (2 : 𝒪[F])`. Take `⟨u, hu⟩` from `h2`. Establish `hmul : (u : 𝒪[F]) * ↑u⁻¹ = 1` using `u.mul_inv`. Use `⟨-(t * ↑u⁻¹), ?_, ?_⟩` and prove the remaining obligations. Establish `: t + 2 * -(t * ↑u⁻¹) = 0`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take the linear combination `(-t) * hmul + (t * ↑u⁻¹) * hu`. Rewrite using `[this]`. Conclude with `zero_mem _`. Establish `: -(t * ↑u⁻¹) * -(t * ↑u⁻¹) - n = ↑u⁻¹ * ↑u⁻¹ * (t * t - 4 * n)`. Take the linear combination `(n * ((u : 𝒪[F]) * ↑u⁻¹ + 1)) * hmul + (-(n * ↑u⁻¹ * ↑u⁻¹ * ((u : 𝒪[F]) + 2))) * hu`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ hΔ`. Establish `h2m : (2 : 𝒪[F]) ∈ 𝓂[F]` using `(IsLocalRing.mem_maximalIdeal _).mpr h2`. Establish `htt : t * t ∈ 𝓂[F]`. Establish `: t * t = (t * t - 4 * n) + 2 * (2 * n)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `add_mem hΔ (Ideal.mul_mem_right _ _ h2m)`. Establish `ht : t ∈ 𝓂[F]`. Apply the tactic sequence `rcases (IsLocalRing.maximalIdeal.isMaximal 𝒪[F]).isPrime.mem_or_mem htt with h | h <;> exact h`. Establish `h2k : (2 : 𝓀[F]) = 0`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `(IsLocalRing.residue_eq_zero_iff (2 : 𝒪[F])).mpr h2m` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `hinj : Function.Injective (fun x : 𝓀[F] => x * x)`. Introduce `x y hxy`. Simplify using `only at hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h1 : (x + y) * (x + y) = 0`. Take the linear combination `(-1 : 𝓀[F]) * hxy + (x * x + x * y) * h2k`. Establish `h3 : x + y = 0` using `mul_self_eq_zero.mp h1`. Take the linear combination `h3 - y * h2k`. Take `⟨r, hr⟩` from `(Finite.injective_iff_surjective.mp hinj) (IsLocalRing.residue 𝒪[F] n)`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `IsLocalRing.residue_surjective r`. Use `⟨a, add_mem ht (Ideal.mul_mem_right _ _ h2m), ?_⟩` and prove the remaining obligations. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, map_mul, ha]`. Simplify using `only at hr`. Rewrite using `[hr, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_a_mod [IsNonarchimedeanLocalField F] (t n : 𝒪[F]) (hΔ : t * t - 4 * n ∈ 𝓂[F]) :
     ∃ a : 𝒪[F], t + 2 * a ∈ 𝓂[F] ∧ a * a - n ∈ 𝓂[F] := by
@@ -372,7 +366,7 @@ theorem exists_a_mod [IsNonarchimedeanLocalField F] (t n : 𝒪[F]) (hΔ : t * t
 variable (L : LocE F E) [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Establish `hn` using `Q.hn`. Rewrite `hn` using `[Q.hcj]`. Rewrite using `[map_add, map_mul, AlgEquiv.commutes, AlgEquiv.commutes, Q.hcj]`. Simplify using `only [map_add, map_mul]`. Take the linear combination `(algebraMap F E b * algebraMap F E b) * hn`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem QBasis.normE {L : LocE F E} (Q : QBasis L) (a b : F) :
     (algebraMap F E a + algebraMap F E b * Q.ω) * L.cj (algebraMap F E a + algebraMap F E b * Q.ω) =
@@ -384,25 +378,25 @@ theorem QBasis.normE {L : LocE F E} (Q : QBasis L) (a b : F) :
   linear_combination (algebraMap F E b * algebraMap F E b) * hn
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hΔ`. Establish `hΔm : Q.t * Q.t - 4 * Q.n ∈ 𝓂[F]` using `(IsLocalRing.mem_maximalIdeal _).mpr hΔ`. Take `⟨a, h1, h2⟩` from `exists_a_mod Q.t Q.n hΔm`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`. Rewrite `h1`, `h2` using `[hϖ.maximalIdeal_eq]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨p1, hp1⟩` from `Ideal.mem_span_singleton'.mp h1`. Take `⟨p2, hp2⟩` from `Ideal.mem_span_singleton'.mp h2`. Establish `e1 : algebraMap F E (p1 : F) * algebraMap F E (ϖ : F) = algebraMap F E (Q.t : F) + 2 * algebraMap F E (a : F)`. Establish `e1F : (p1 : F) * (ϖ : F) = (Q.t : F) + 2 * (a : F)`. Use `congrArg Subtype.val hp1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[← map_mul, e1F, map_add, map_mul, map_ofNat]`. Establish `e2 : algebraMap F E (p2 : F) * algebraMap F E (ϖ : F) = algebraMap F E (a : F) * algebraMap F E (a : F) - algebraMap F E (Q.n : F)`. Establish `e2F : (p2 : F) * (ϖ : F) = (a : F) * (a : F) - (Q.n : F)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Subtype.val hp2` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[← map_mul, e2F, map_sub, map_mul]`. Use `set y := Q.ω + algebraMap F E (a : F) with hy`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyO : y ∈ L.O` using `add_mem Q.hω ((locE_algMap_mem L).mpr a.2)`. Establish `hsq : y * y = algebraMap F E (p1 : F) * Q.ω * algebraMap F E (ϖ : F) + algebraMap F E (p2 : F) * algebraMap F E (ϖ : F)`. Rewrite using `[hy]`. Take the linear combination `Q.sq - Q.ω * e1 - e2`. Establish `hmemO : algebraMap F E (p1 : F) * Q.ω + algebraMap F E (p2 : F) ∈ L.O` using `add_mem (mul_mem ((locE_algMap_mem L).mpr p1.2) Q.hω) ((locE_algMap_mem L).mpr p2.2)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hspan : y * y ∈ Submodule.span L.O {algebraMap F E ((ϖ : 𝒪[F]) : F)}`. Rewrite using `[Submodule.mem_span_singleton]`. Use `⟨⟨_, hmemO⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.smul_def, smul_eq_mul, hsq]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hyd` using `L.unram ϖ hϖ y hyO (by simpa using hspan)`. Take `⟨⟨w, hw⟩, hwy⟩` from `Submodule.mem_span_singleton.mp hyd`. Rewrite `hwy` using `[Subring.smul_def, smul_eq_mul]`. Take `⟨a', b', hab'⟩` from `Q.span w hw`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hwy' : w * algebraMap F E (ϖ : F) = y` using `hwy`. Rewrite `hwy'` using `[hab']`. Apply `Q.hnot` to reduce the goal to its premises. Establish `hne : (1 : F) - (ϖ : F) * (b' : F) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Apply `hϖ.not_isUnit` to reduce the goal to its premises. Establish `hm : ϖ * b' = 1` using `Subtype.ext (by push_cast; linear_combination -h)`. Conclude with `⟨⟨ϖ, b', hm, by rw [mul_comm]; exact hm⟩, rfl⟩`. Use `⟨((ϖ : F) * (a' : F) - (a : F)) / (1 - (ϖ : F) * (b' : F)), ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (algebraMap F E (1 - (ϖ : F) * (b' : F)))` using `(IsUnit.mk0 _ hne).map _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← map_mul, mul_div_cancel₀ _ hne]`. Simplify using `only [map_sub, map_mul, map_one]`. Rewrite `hwy'` using `[hy]`. Take the linear combination `hwy'`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem QBasis.disc_unit {L : LocE F E} (Q : QBasis L) : IsUnit (Q.t * Q.t - 4 * Q.n) := by
   by_contra hΔ
@@ -454,21 +448,19 @@ theorem QBasis.disc_unit {L : LocE F E} (Q : QBasis L) : IsUnit (Q.t * Q.t - 4 *
   linear_combination hwy'
 
 /- English proof (translation)
-Use `haveI := locE_nontrivial L`. Take `⟨a, b, hab⟩` from `Q.span x hx`. Take `⟨z1, hz1⟩` from `h 1 (one_mem _)`. Take `⟨z2, hz2⟩` from `h Q.ω Q.hω`. Establish `hn` using `Q.hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[Q.hcj]`. Establish `i1 : (2 * (a : F) + (b : F) * (Q.t : F)) = (ϖ : F) * (z1 : F)`. Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[← hz1, one_mul, hab, map_add L.cj, map_mul L.cj, AlgEquiv.commutes, AlgEquiv.commutes, Q.hcj]`. Simplify using `only [map_add, map_mul, map_ofNat]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `i2 : ((a : F) * (Q.t : F) + (b : F) * ((Q.t : F) * (Q.t : F) - 2 * (Q.n : F))) = (ϖ : F) * (z2 : F)`. Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[← hz2, hab, map_mul L.cj, map_add L.cj, map_mul L.cj, AlgEquiv.commutes, AlgEquiv.commutes, Q.hcj]`. Simplify using `only [map_add, map_mul, map_sub, map_ofNat]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(2 * algebraMap F E (b : F)) * hn`. Take `⟨u, hu⟩` from `Q.disc_unit`. Establish `hinv : ((u⁻¹ : (𝒪[F])ˣ) : F) * ((Q.t : F) * (Q.t : F) - 4 * (Q.n : F)) = 1`. Use `congrArg (fun z : 𝒪[F] => (z : F)) (u.inv_mul)` as an intermediate fact. Rewrite `this` using `[hu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at this`. Conclude with `this`. Use `set v : F := ((u⁻¹ : (𝒪[F])ˣ) : F)`. Establish `hv : v ∈ 𝒪[F]` using `((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F]).2`. Use `set al : F := v * (((Q.t : F) * (Q.t : F) - 2 * (Q.n : F)) * (z1 : F) - (Q.t : F) * (z2 : F))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `set be : F := v * (2 * (z2 : F) - (Q.t : F) * (z1 : F))`. Establish `hal : al ∈ 𝒪[F]` using `mul_mem hv (sub_mem (mul_mem (sub_mem (mul_mem Q.t.2 Q.t.2) (mul_mem (by simpa using (2 : 𝒪[F]).2) Q.n.2)) z1.2) (mul_mem Q.t.2 z2.2))`. Establish `hbe : be ∈ 𝒪[F]` using `mul_mem hv (sub_mem (mul_mem (by simpa using (2 : 𝒪[F]).2) z2.2) (mul_mem Q.t.2 z1.2))`. Establish `ha : (a : F) = (ϖ : F) * al`. Take the linear combination `(v * ((Q.t : F) * (Q.t : F) - 2 * (Q.n : F))) * i1 + (-(v * (Q.t : F))) * i2 + (-(a : F)) * hinv`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hb : (b : F) = (ϖ : F) * be`. Take the linear combination `(-(v * (Q.t : F))) * i1 + (2 * v) * i2 + (-(b : F)) * hinv`. Use `⟨algebraMap F E al + algebraMap F E be * Q.ω, add_mem ((locE_algMap_mem L).mpr hal) (mul_mem ((locE_algMap_mem L).mpr hbe) Q.hω), ?_⟩` and prove the remaining obligations. Rewrite using `[hab, ha, hb]`. Simplify using `only [map_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem QBasis.trace_nondeg {L : LocE F E} (Q : QBasis L) {ϖ : 𝒪[F]} {x : E} (hx : x ∈ L.O)
     (h : ∀ c ∈ L.O, ∃ z : 𝒪[F], c * x + L.cj (c * x) = algebraMap F E ((ϖ : F) * (z : F))) :

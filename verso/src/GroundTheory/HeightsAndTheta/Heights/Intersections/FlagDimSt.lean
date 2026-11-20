@@ -18,7 +18,7 @@ Both sides reduce to the same expression.
 theorem flagIdealQ_eq (n : ℕ) : flagIdealQ n = flagIdealOver ℚ n := rfl
 
 /- English proof (translation)
-The claim follows from `RingHom.ker_isPrime _`.
+A detailed English derivation is pending.
 -/
 theorem flagIdealOver_isPrime (F : Type) [Field F] (n : ℕ) : (flagIdealOver F n).IsPrime :=
   RingHom.ker_isPrime _

@@ -16,9 +16,9 @@ def stabCard (Γ K : Subgroup G) (t : G) : ℕ := Nat.card {γ : Γ // t⁻¹ * 
 def mass (Γ K : Subgroup G) : ℚ := ∑ᶠ c : DC Γ K, ((stabCard Γ K c.out : ℕ) : ℚ)⁻¹
 
 /- English proof (translation)
-Set `f : DC Γ W → DC Γ K` to `Quotient.map' (s₁ := dcSetoid Γ W) (s₂ := dcSetoid Γ K) id (by`. Introduce `a b hab`. Take `⟨γ, hγ, κ, hκ, e⟩` from `hab`. Conclude with `⟨γ, hγ, κ, hWK hκ, e⟩)`. Use `Finite.of_surjective f ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨x⟩`. Conclude with `⟨Quotient.mk'' x, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem finite_dc_of_le {Γ W K : Subgroup G} (hWK : W ≤ K) [Finite (DC Γ W)] : Finite (DC Γ K) := by
   let f : DC Γ W → DC Γ K := Quotient.map' (s₁ := dcSetoid Γ W) (s₂ := dcSetoid Γ K) id (by
@@ -30,7 +30,7 @@ theorem finite_dc_of_le {Γ W K : Subgroup G} (hWK : W ≤ K) [Finite (DC Γ W)]
   exact ⟨Quotient.mk'' x, rfl⟩
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `hT`. Use `Finite.of_surjective (fun t : T => (Quotient.mk'' (t : G) : DC Γ K)) ?_` and prove the remaining obligations. Introduce and unpack `⟨g⟩`. Take `⟨γ, hγ, t, ht, κ, hκ, e⟩` from `hT g`. Use `⟨⟨t, ht⟩, Quotient.sound' ⟨γ, hγ, κ, hκ, e⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem finite_dc_of_cover {Γ K : Subgroup G} (hT : ∃ T : Finset G, ∀ g, ∃ γ ∈ Γ, ∃ t ∈ T, ∃ κ ∈ K, g = γ * t * κ) :
     Finite (DC Γ K) := by
@@ -41,7 +41,7 @@ theorem finite_dc_of_cover {Γ K : Subgroup G} (hT : ∃ T : Finset G, ∀ g, �
   refine ⟨⟨t, ht⟩, Quotient.sound' ⟨γ, hγ, κ, hκ, e⟩⟩
 
 /- English proof (translation)
-Use `haveI := h`. Use `haveI : Nonempty {γ : Γ // t⁻¹ * (γ : G) * t ∈ K} := ⟨⟨1, by simp [K.one_mem]⟩⟩`. Conclude with `Nat.card_pos`.
+A detailed English derivation is pending.
 -/
 theorem stabCard_pos {Γ K : Subgroup G} (t : G) (h : Finite {γ : Γ // t⁻¹ * (γ : G) * t ∈ K}) :
     0 < stabCard Γ K t := by
@@ -50,9 +50,9 @@ theorem stabCard_pos {Γ K : Subgroup G} (t : G) (h : Finite {γ : Γ // t⁻¹ 
   exact Nat.card_pos
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite (DC Γ K)`. Rewrite using `[mass, finsum_eq_sum_of_fintype]`. Establish `hne : (Finset.univ : Finset (DC Γ K)).Nonempty` using `⟨Quotient.mk'' 1, Finset.mem_univ _⟩`. Use `Finset.sum_pos (fun c _ => ?_) hne` and prove the remaining obligations. Use `stabCard_pos c.out (hfin c.out)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression.
+A detailed English derivation is pending.
 -/
 theorem mass_pos {Γ K : Subgroup G} [Finite (DC Γ K)]
     (hfin : ∀ t : G, Finite {γ : Γ // t⁻¹ * (γ : G) * t ∈ K}) : 0 < mass Γ K := by
@@ -70,9 +70,9 @@ namespace GlobalTheory.UnimodMass
 variable {G : Type*} [Group G]
 
 /- English proof (translation)
-Take `⟨γ, hγ, κ, hκ, rfl⟩` from `hr`. Unfold `stabCard`. Use `Nat.card_congr { toFun := fun x => ⟨⟨γ⁻¹ * (x.1 : G) * γ, Γ.mul_mem (Γ.mul_mem (Γ.inv_mem hγ) x.1.2) hγ⟩, ?_⟩ invFun := fun x => ⟨⟨γ * (x.1 : G) * γ⁻¹, Γ.mul_mem (Γ.mul_mem hγ x.1.2) (Γ.inv_mem hγ)⟩, ?_⟩ left_inv := fun x => by ext; simp [mul_assoc] right_inv := fun x => by ext; …` and prove the remaining obligations. Use `K.mul_mem (K.mul_mem hκ x.2) (K.inv_mem hκ)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `[mul_assoc]`. Use `K.mul_mem (K.mul_mem (K.inv_mem hκ) x.2) hκ` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem stabCard_eq {Γ K : Subgroup G} {t t' : G} (hr : (dcSetoid Γ K) t t') :
     stabCard Γ K t' = stabCard Γ K t := by
@@ -91,14 +91,14 @@ theorem stabCard_eq {Γ K : Subgroup G} {t t' : G} (hr : (dcSetoid Γ K) t t') :
     simp [mul_assoc]
 
 /- English proof (translation)
-The claim follows from `(stabCard_eq (Quotient.mk_out (s := dcSetoid Γ K) x)).symm`.
+A detailed English derivation is pending.
 -/
 theorem stabCard_out (Γ K : Subgroup G) (x : G) :
     stabCard Γ K (Quotient.mk (dcSetoid Γ K) x).out = stabCard Γ K x :=
   (stabCard_eq (Quotient.mk_out (s := dcSetoid Γ K) x)).symm
 
 /- English proof (translation)
-Unfold `stabCard`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun γ => ?_)` and prove the remaining obligations. Rewrite using `[Subgroup.mem_map_equiv]`. Simplify using `[MulAut.conj_symm_apply, mul_assoc]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stabCard_conj (Γ K : Subgroup G) (h g : G) :
     stabCard Γ (K.map (MulAut.conj h).toMonoidHom) g = stabCard Γ K (g * h) := by
@@ -126,9 +126,9 @@ def dcConj (Γ K : Subgroup G) (h : G) : DC Γ (K.map (MulAut.conj h).toMonoidHo
         simp [mul_assoc])
 
 /- English proof (translation)
-Unfold `mass`. Rewrite using `[← finsum_comp_equiv (dcConj Γ K h)]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Proceed by induction on `c using Quotient.inductionOn with`. Consider the case `h x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Establish `e1 : dcConj Γ K h (Quotient.mk _ x) = Quotient.mk (dcSetoid Γ K) (x * h)` using `rfl`. Rewrite using `[e1, stabCard_out, stabCard_out, stabCard_conj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mass_conj (Γ K : Subgroup G) (h : G) :
     mass Γ (K.map (MulAut.conj h).toMonoidHom) = mass Γ K := by

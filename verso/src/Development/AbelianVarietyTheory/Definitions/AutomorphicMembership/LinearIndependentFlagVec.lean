@@ -22,15 +22,15 @@ section Linear
 variable {C M : Type} [NormedField C] [IsUltrametricDist C] [AddCommGroup M] [Module C M] {m : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, _, ⟨i, hi, rfl⟩, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨Pi.single i a, fun k => ?_, fun k hk => Pi.single_eq_of_ne (fun e : k = i => hk (e ▸ hi)) _, ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : k = i`. Substitute `e` using the available equality. Simplify using `using ha`. Simplify using `[Pi.single_eq_of_ne e]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, ite_smul]`. Consider the case `zero => exact ⟨0, by simp, by simp, by simp⟩`. Consider the case `add x x' _ _ hx hx'`. Take `⟨c, h1, h0, rfl⟩` from `hx`. Take `⟨c', h1', h0', rfl⟩` from `hx'`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c + c', fun i => (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h1 i) (h1' i)), fun i hi => by simp [h0 i hi, h0' i hi], by simp [add_smul, Finset.sum_add_distrib]⟩`. Consider the case `neg x _ hx`. Take `⟨c, h1, h0, rfl⟩` from `hx`. Conclude with `⟨-c, fun i => by simpa using h1 i, fun i hi => by simp [h0 i hi], by simp⟩`. Introduce and unpack `⟨c, h1, h0, rfl⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `AddSubgroup.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ s`. Conclude with `AddSubgroup.subset_closure ⟨c i, h1 i, _, ⟨i, hi, rfl⟩, rfl⟩`. Simplify using `[h0 i hi]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_Ospan_image (b : Fin m → M) (s : Set (Fin m)) (v : M) :
     v ∈ Ospan (C := C) (b '' s) ↔ ∃ c : Fin m → C, (∀ i, ‖c i‖ ≤ 1) ∧ (∀ i, i ∉ s → c i = 0) ∧ v = ∑ i, c i • b i := by
@@ -66,7 +66,7 @@ def Adapted (Λ : ℕ → AddSubgroup M) (b : Fin m → M) : Prop :=
   ∀ a : Fin m, Λ (a + 1) = Ospan (C := C) (b '' Set.Iic a)
 
 /- English proof (translation)
-Establish `: ∀ a, b' a ∈ Ospan (C` using `C) (b '' Set.Iic a) := fun a => by`. Rewrite using `[← h a, h' a]`. Conclude with `AddSubgroup.subset_closure ⟨1, by simp, _, ⟨a, Set.mem_Iic.2 le_rfl, rfl⟩, (one_smul _ _).symm⟩`. Use `choose c h1 h0 e using fun a => (mem_Ospan_image b _ _).1 (this a)`. Conclude with `⟨fun a => c a a, fun a => ⟨c a, rfl, fun k hk => h0 a k (not_le.2 hk), e a⟩, fun a => h1 a a⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Adapted.exists_diag {Λ : ℕ → AddSubgroup M} {b b' : Fin m → M} (h : Adapted C Λ b) (h' : Adapted C Λ b') :
     ∃ d : Fin m → C, Diag b b' d ∧ ∀ a, ‖d a‖ ≤ 1 := by
@@ -77,9 +77,9 @@ theorem Adapted.exists_diag {Λ : ℕ → AddSubgroup M} {b b' : Fin m → M} (h
   exact ⟨fun a => c a a, fun a => ⟨c a, rfl, fun k hk => h0 a k (not_le.2 hk), e a⟩, fun a => h1 a a⟩
 
 /- English proof (translation)
-Take `⟨d₁, h₁, n₁⟩` from `h.exists_diag h'`. Take `⟨d₂, h₂, n₂⟩` from `h'.exists_diag h`. Take `rfl` from `hd.unique li h₁`. Establish `e : ‖d₂ a‖ * ‖d a‖ = 1`. Rewrite using `[← norm_mul, congrFun ((hd.trans h₂).unique li (Diag.refl b)) a, norm_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_antisymm (n₁ a) ?_` and prove the remaining obligations. Use polynomial arithmetic with `[n₂ a, norm_nonneg (d a)]`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem Adapted.norm_diag {Λ : ℕ → AddSubgroup M} {b b' : Fin m → M} (h : Adapted C Λ b) (h' : Adapted C Λ b')
     (li : LinearIndependent C b) {d : Fin m → C} (hd : Diag b b' d) (a : Fin m) : ‖d a‖ = 1 := by
@@ -94,9 +94,9 @@ theorem Adapted.norm_diag {Λ : ℕ → AddSubgroup M} {b b' : Fin m → M} (h :
 omit [IsUltrametricDist C] in
 
 /- English proof (translation)
-Use `choose A hA h0 e using h`. Establish `hdet : (Matrix.of A).det ≠ 0`. Rewrite using `[Matrix.det_of_lowerTriangular (Matrix.of A) (fun i k hik => h0 i k hik)]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => fun h => hd a ((hA a).symm.trans h)`. Use `Fintype.linearIndependent_iff.2 fun c hc => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Matrix.vecMul c (Matrix.of A) = 0` using `funext (Fintype.linearIndependent_iff.1 li _ (by`. Rewrite using `[← hc]`. Simplify using `only [e, Finset.smul_sum, smul_smul, Matrix.vecMul, dotProduct, Finset.sum_smul, Matrix.of_apply]`. Conclude with `Finset.sum_comm))`. Conclude with `congrFun (Matrix.eq_zero_of_vecMul_eq_zero hdet h1)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_diag {w b : Fin m → M} {d : Fin m → C} (li : LinearIndependent C w) (h : Diag w b d)
     (hd : ∀ a, d a ≠ 0) : LinearIndependent C b := by
@@ -115,7 +115,7 @@ theorem linearIndependent_of_diag {w b : Fin m → M} {d : Fin m → C} (li : Li
 omit [IsUltrametricDist C] in
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono (Set.Iic_subset_Iic.2 hi)) ((diag_iff_span w b).1 h i)`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_of_diag {w b : Fin m → M} (h : ∃ d : Fin m → C, Diag w b d) {i a : Fin m} (hi : i ≤ a) :
     b i ∈ Submodule.span C (w '' Set.Iic a) :=
@@ -124,7 +124,7 @@ theorem mem_span_of_diag {w b : Fin m → M} (h : ∃ d : Fin m → C, Diag w b 
 omit [IsUltrametricDist C] in
 
 /- English proof (translation)
-Rewrite using `[Set.image_eq_range]`. Conclude with `(finrank_span_eq_card (li.comp (fun b : Set.Iic a => (b : Fin m)) Subtype.val_injective)).trans (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_span_Iic {w : Fin m → M} (li : LinearIndependent C w) (a : Fin m) :
     Module.finrank C (Submodule.span C (w '' Set.Iic a)) = a + 1 := by
@@ -132,7 +132,7 @@ theorem finrank_span_Iic {w : Fin m → M} (li : LinearIndependent C w) (a : Fin
   exact (finrank_span_eq_card (li.comp (fun b : Set.Iic a => (b : Fin m)) Subtype.val_injective)).trans (by simp)
 
 /- English proof (translation)
-Take `⟨l, hl0, hl⟩` from `(Finsupp.mem_span_image_iff_linearCombination C).1 hv`. Rewrite `hl` using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`. Use `(mem_Ospan_image w s v).2 ⟨l, fun i => ?_, fun i hi => (Finsupp.mem_supported' _ l).1 hl0 i hi, hl.symm⟩` and prove the remaining obligations. Rewrite using `[← coeff_eq li e (cf := l) (c := c) (by simp only [he, hl, e']) i]`. Conclude with `hc _`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Ospan_of_coord {n : ℕ} {V : Fin n → M} (li : LinearIndependent C V) (e : Fin m ↪ Fin n) {w : Fin m → M}
     (he : ∀ i, V (e i) = w i) {s : Set (Fin m)} {v : M} (hv : v ∈ Submodule.span C (w '' s)) {c : Fin n → C}
@@ -146,7 +146,7 @@ theorem mem_Ospan_of_coord {n : ℕ} {V : Fin n → M} (li : LinearIndependent C
 omit [IsUltrametricDist C] in
 
 /- English proof (translation)
-The claim follows from `(AddSubgroup.closure_le _).2 fun _ ⟨a, ha, v, hv, e⟩ => e ▸ h a ha v hv`.
+A detailed English derivation is pending.
 -/
 theorem Ospan_le {s : Set M} {Λ : AddSubgroup M} (h : ∀ a : C, ‖a‖ ≤ 1 → ∀ v ∈ s, a • v ∈ Λ) : Ospan (C := C) s ≤ Λ :=
   (AddSubgroup.closure_le _).2 fun _ ⟨a, ha, v, hv, e⟩ => e ▸ h a ha v hv
@@ -159,7 +159,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {t : SAB H X} {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ X} {x' : Sp T ⟶ X}
 
 /- English proof (translation)
-The claim follows from `(comb_iff (fun i => isTan_map φ hx (isTan_tv (u i))) _ _).1 (comb_map φ hx ((isComb_iff u a _).2 rfl))`.
+A detailed English derivation is pending.
 -/
 theorem tanOf_map_sum (φ : S →+* T) (hx : spMap φ ≫ x = x') {m : ℕ} (u : Fin m → TanM x t.G) (a : Fin m → S) :
     tanOf (isTan_map φ hx (isTan_tv (∑ i, a i • u i))) = ∑ i, φ (a i) • tanOf (isTan_map φ hx (isTan_tv (u i))) :=
@@ -179,11 +179,9 @@ theorem left_bcTan (φ : S →+* T) (hx : spMap φ ≫ x = x') (v : TanM x t.G) 
 end Tangent
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.LB.isQuasicoherent_toMod hL`. Establish `hv : PtNorm.evq z hp h (GlobalTheory.LB.chartEquiv hL i inf_le_left (GlobalTheory.Twist.resM _ inf_le_right s)) = valR (PtNorm.zq z) _ (GlobalTheory.LB.coord s i)`. Rewrite using `[← valR_res _ (inf_comm _ _).le (PtNorm.zq_le z hp h), valR_eq _ _ (PtNorm.zq_le z hp h)]`. Conclude with `congrArg (PtNorm.evq z hp h) (GlobalTheory.LB.resG_resG _ _ _)`. Rewrite using `[PtNorm.nrmSet_eq z hp hU h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨(PtNorm.evq z hp h).toSemilinearMap.comp (GlobalTheory.LB.chartEquiv hL i inf_le_left).toLinearMap, fun m => ?_, (congrArg norm hv).symm⟩, ?_⟩` and prove the remaining obligations. Use `le_of_eq_of_le (congrArg (fun t => ‖PtNorm.evq z hp h t‖) (GlobalTheory.LB.chartEquiv_map hL i le_rfl inf_le_left m)) ?_` and prove the remaining obligations. Rewrite using `[PtNorm.evq_res]`. Conclude with `(PtNorm.evz z h _).2`. Introduce and unpack `r ⟨ν, hν, rfl⟩`.
-
-Rewrite using `[← (GlobalTheory.LB.chartEquiv hL i inf_le_left).symm_apply_apply (GlobalTheory.Twist.resM _ _ _), GlobalTheory.LB.chartEquiv_symm_apply, ν.map_smulₛₗ, smul_eq_mul, norm_mul, hv]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (hν _)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGreatest_nrmSet_chart {X : Scheme.{0}} {p : ℕ} {C : SCF p} (z : Sp ↥(intO ↥C.S) ⟶ X) (hp : p ≠ 0) {L : LB X}
     (hL : L.IsLB) {i : L.ι} (hU : IsAffineOpen (L.U i)) (h : ⊤ ≤ z ⁻¹ᵁ L.U i) (s : Γ(GlobalTheory.LB.toMod L, PtNorm.gen X p)) :
@@ -224,7 +222,7 @@ def lieEquiv : TanM y.gen Z.t.G ≃ₗ[↥y.C.S] Lie y := pushE Z.tMap y.gen rfl
 abbrev LieInt : Type := TanM (y.z ≫ Z.π) (Y Z.i).t.G
 
 /- English proof (translation)
-The claim follows from `(Category.assoc _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem gen_π : spMap (intO ↥y.C.S).subtype ≫ y.z ≫ Z.π = y.gen ≫ Z.π := (Category.assoc _ _ _).symm
 
@@ -244,27 +242,27 @@ def taut (σ : E →+* ℂ) (i : ℕ) : AddSubgroup (Lie y) := (Wst y σ i).toAd
 variable {y}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨w, hw⟩ => ⟨_, isTan_tv w, hw ▸ rfl⟩, fun ⟨_, hw, e⟩ => ⟨tanOf hw, tan_ext e.symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_lieL {v : Lie y} : v ∈ lieL y ↔ ∃ w, IsTanAtG (Y Z.i).t (y.z ≫ Z.π) w ∧
     (tv v).left = spMap (dualMap (intO ↥y.C.S).subtype) ≫ w :=
   ⟨fun ⟨w, hw⟩ => ⟨_, isTan_tv w, hw ▸ rfl⟩, fun ⟨_, hw, e⟩ => ⟨tanOf hw, tan_ext e.symm⟩⟩
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `hv`. Conclude with `⟨(⟨a, ha⟩ : ↥(intO ↥y.C.S)) • w, (toGen y).map_smulₛₗ _ w⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem smul_mem_lieL {a : ↥y.C.S} (ha : ‖a‖ ≤ 1) {v : Lie y} (hv : v ∈ lieL y) : a • v ∈ lieL y := by
   obtain ⟨w, rfl⟩ := hv
   exact ⟨(⟨a, ha⟩ : ↥(intO ↥y.C.S)) • w, (toGen y).map_smulₛₗ _ w⟩
 
 /- English proof (translation)
-Simplify using `only [eig, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eig {σ : E →+* ℂ} {v : Lie y} : v ∈ eig y σ ↔ ∀ a : 𝓞 E, act y a v = y.P.emb σ a • v := by
   simp only [eig, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]
 
 /- English proof (translation)
-The claim follows from `mem_eig.trans (forall_congr' fun _ => ⟨fun h => congrArg (fun z => (tv z).left) h, fun h => tan_ext h⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mem_eig_iff_left {σ : E →+* ℂ} {v : Lie y} : v ∈ eig y σ ↔ ∀ a : 𝓞 E,
     (tv v).left ≫ ((Y Z.i).t.act.act a).left = spMap (epsMul (y.P.fK (embK Z.i.c σ a))) ≫ (tv v).left :=
@@ -273,7 +271,7 @@ theorem mem_eig_iff_left {σ : E →+* ℂ} {v : Lie y} : v ∈ eig y σ ↔ ∀
 variable (y) in
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨s, rfl⟩`. Establish `e : y.gen ≫ Z.π = y.P.y ≫ (Y Z.i).j` using `by rw [← gen_π, y.z_π, y.P.ext]`. Conclude with `⟨y.P.y s, by rw [← Scheme.Hom.comp_apply, ← e, Scheme.Hom.comp_apply]⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem range_gen : Set.range y.gen ⊆ Z.opn := by
   rintro _ ⟨s, rfl⟩
@@ -281,9 +279,9 @@ theorem range_gen : Set.range y.gen ⊆ Z.opn := by
   exact ⟨y.P.y s, by rw [← Scheme.Hom.comp_apply, ← e, Scheme.Hom.comp_apply]⟩
 
 /- English proof (translation)
-Take `⟨a, φ, hx, hf, -⟩` from `h`. Establish `e : spMap ((φ.comp (Z.alg a)).comp (Z.i.c.V W).subtype) = spMap (y.P.fK.comp (Z.i.c.V W).subtype)`. Rewrite using `[RingHom.comp_assoc, ← spMap_comp_spMap, ← Z.alg_s, ← Category.assoc, hx, ← Z.π_s, ← Category.assoc, ← gen_π, y.z_π, Category.assoc, y.P.yt_over, spMap_comp_spMap, y.P.compat]`. Establish `e' : ∀ x ∈ Z.i.c.V W, φ.comp (Z.alg a) x = y.P.fK x` using `fun x hx => RingHom.congr_fun (congrArg (fun f => f.hom) (Spec.map_injective e)) ⟨x, hx⟩`. Establish `: φ.comp (Z.alg a) = y.P.fK` using `RingHom.ext fun x => ((Z.i.c.V W).mem_or_inv_mem x).elim (e' x) fun hx => inv_injective (by rw [← map_inv₀, ← map_inv₀, e' _ hx])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this ▸ hf`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_of_flagAt {u : Vecs Dw (Y Z.i).t ↥y.C.S} (h : Z.FlagAt y.gen u) :
     IsFrame (Y Z.i).t y.P.fK (y.gen ≫ Z.π) u := by
@@ -301,13 +299,13 @@ def flagVec {u : Vecs Dw (Y Z.i).t ↥y.C.S} (h : Z.FlagAt y.gen u) (σ : E →+
   tanOf ((isFrame_of_flagAt h).1 σ a).1
 
 /- English proof (translation)
-The claim follows from `mem_eig_iff_left.2 ((isFrame_of_flagAt h).1 σ a).2`.
+A detailed English derivation is pending.
 -/
 theorem flagVec_mem_eig {u : Vecs Dw (Y Z.i).t ↥y.C.S} (h : Z.FlagAt y.gen u) (σ : E →+* ℂ) (a : Fin (Dw.mult σ)) :
     flagVec h σ a ∈ eig y σ := mem_eig_iff_left.2 ((isFrame_of_flagAt h).1 σ a).2
 
 /- English proof (translation)
-Conclude with `(existsUnique_congr fun c => LieMet.isComb_iff (flagVec h σ) c v).1 ((isFrame_of_flagAt h).2 σ _ (isTan_tv v) (mem_eig_iff_left.1 hv))`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_flagVec {u : Vecs Dw (Y Z.i).t ↥y.C.S} (h : Z.FlagAt y.gen u) {σ : E →+* ℂ} {v : Lie y}
     (hv : v ∈ eig y σ) : ∃! c : Fin (Dw.mult σ) → ↥y.C.S, v = ∑ a, c a • flagVec h σ a := by
@@ -315,7 +313,7 @@ theorem existsUnique_flagVec {u : Vecs Dw (Y Z.i).t ↥y.C.S} (h : Z.FlagAt y.ge
     ((isFrame_of_flagAt h).2 σ _ (isTan_tv v) (mem_eig_iff_left.1 hv))
 
 /- English proof (translation)
-The claim follows from `Fintype.linearIndependent_iffₛ.2 fun c _ e => congrFun ((existsUnique_flagVec h (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ (c a) (flagVec_mem_eig h σ a))).unique rfl e)`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_flagVec {u : Vecs Dw (Y Z.i).t ↥y.C.S} (h : Z.FlagAt y.gen u) (σ : E →+* ℂ) :
     LinearIndependent ↥y.C.S (flagVec h σ) :=
@@ -324,7 +322,7 @@ theorem linearIndependent_flagVec {u : Vecs Dw (Y Z.i).t ↥y.C.S} (h : Z.FlagAt
       rfl e)
 
 /- English proof (translation)
-The claim follows from `exists_diag_of_flagAt Z hty h' h σ (fun a => ((isFrame_of_flagAt h').1 σ a).1) (fun a => ((isFrame_of_flagAt h).1 σ a).1) (linearIndependent_flagVec h σ)`.
+A detailed English derivation is pending.
 -/
 theorem exists_diag_flagVec (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) {u u' : Vecs Dw (Y Z.i).t ↥y.C.S}
     (h : Z.FlagAt y.gen u) (h' : Z.FlagAt y.gen u') (σ : E →+* ℂ) :
@@ -335,7 +333,7 @@ theorem exists_diag_flagVec (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 
 variable (y) in
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `v ⟨u, h, b, -, e⟩`. Conclude with `(tan_ext e : v = flagVec h σ b) ▸ flagVec_mem_eig h σ b`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Wst_le (σ : E →+* ℂ) (i : ℕ) : Wst y σ i ≤ eig y σ := by
   refine Submodule.span_le.2 ?_
@@ -343,9 +341,9 @@ theorem Wst_le (σ : E →+* ℂ) (i : ℕ) : Wst y σ i ≤ eig y σ := by
   exact (tan_ext e : v = flagVec h σ b) ▸ flagVec_mem_eig h σ b
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `v ⟨u', h', b, hb, e⟩`. Take `rfl : v = flagVec h' σ b` from `tan_ext e`. Conclude with `mem_span_of_diag (exists_diag_flagVec hty h h' σ) (Nat.lt_succ_iff.1 hb)`. Introduce and unpack `_ ⟨b, hb, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨u, h, b, Nat.lt_succ_iff.2 hb, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem Wst_succ (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) {u : Vecs Dw (Y Z.i).t ↥y.C.S}
     (h : Z.FlagAt y.gen u) (σ : E →+* ℂ) (a : Fin (Dw.mult σ)) :
@@ -358,7 +356,7 @@ theorem Wst_succ (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) {u : Ve
     exact ⟨u, h, b, Nat.lt_succ_iff.2 hb, rfl⟩
 
 /- English proof (translation)
-Use `le_antisymm (Wst_le y σ i) fun v hv => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(existsUnique_flagVec h hv).exists`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨u, h, a, a.2.trans_le hi, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Wst_eq_eig {u : Vecs Dw (Y Z.i).t ↥y.C.S} (h : Z.FlagAt y.gen u) (σ : E →+* ℂ) {i : ℕ} (hi : Dw.mult σ ≤ i) :
     Wst y σ i = eig y σ := by
@@ -367,7 +365,7 @@ theorem Wst_eq_eig {u : Vecs Dw (Y Z.i).t ↥y.C.S} (h : Z.FlagAt y.gen u) (σ :
   exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨u, h, a, a.2.trans_le hi, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[Wst_succ hty h]`. Conclude with `finrank_span_Iic (linearIndependent_flagVec h σ) a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_Wst_succ (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) {u : Vecs Dw (Y Z.i).t ↥y.C.S}
     (h : Z.FlagAt y.gen u) (σ : E →+* ℂ) (a : Fin (Dw.mult σ)) :
@@ -376,7 +374,7 @@ theorem finrank_Wst_succ (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1))
   exact finrank_span_Iic (linearIndependent_flagVec h σ) a
 
 /- English proof (translation)
-Establish `hx : spMap (valMap y.gen U h).hom ≫ hU.fromSpec = y.gen` using `specMap_valMap_fromSpec hU y.gen h`. Use `hw.2 _ (valMap y.gen U h).hom (by rw [hx]; exact range_gen y)` as an intermediate fact. Rewrite `this` using `[hx]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem flagAt_of_intFrame {U : Z.X.Opens} {hU : IsAffineOpen U} {w : Vecs Dw (Y Z.i).t Γ(Z.X, U)}
     (hw : IntFrame Z hU w) (h : ⊤ ≤ y.gen ⁻¹ᵁ U) : Z.FlagAt y.gen (w.bc (valMap y.gen U h).hom) := by
@@ -385,20 +383,18 @@ theorem flagAt_of_intFrame {U : Z.X.Opens} {hU : IsAffineOpen U} {w : Vecs Dw (Y
   rwa [hx] at this
 
 /- English proof (translation)
-Introduce `_ _` and use `h trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gen_le {U : Z.X.Opens} (h : ⊤ ≤ y.z ⁻¹ᵁ U) : ⊤ ≤ y.gen ⁻¹ᵁ U := fun _ _ => h trivial
 
 /- English proof (translation)
-Introduce `a`. Establish `hz : spMap (valMap y.z U h).hom ≫ hU.fromSpec = y.z` using `specMap_valMap_fromSpec hU y.z h`. Establish `hc : (intO ↥y.C.S).subtype.comp (valMap y.z U h).hom = (valMap y.gen U (gen_le h)).hom` using `RingHom.ext fun f => by`. Rewrite using `[RingHom.comp_apply, ← valR_eq, ← valR_eq, ← valR_spMap_comp _ _ _ h]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `le_antisymm (fun v hv => ?_) (Ospan_le ?_)` and prove the remaining obligations. Take `⟨n, V, em, he, hV, hb⟩` from `hw.1 σ`. Take `⟨u, hu, eu⟩` from `mem_lieL.1 hv.2`. Establish `hz' : spMap (valMap y.z U h).hom ≫ hU.fromSpec ≫ Z.π = y.z ≫ Z.π` using `by rw [← Category.assoc, hz]`. Establish `hg' : spMap (valMap y.gen U (gen_le h)).hom ≫ hU.fromSpec ≫ Z.π = y.gen ≫ Z.π`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ Z.π) (specMap_valMap_fromSpec hU y.gen (gen_le h))`. Take `⟨cf, hcf⟩` from `(basis_map _ hz' hV hb u hu).exists`. Establish `hk` using `comb_map (intO ↥y.C.S).subtype (gen_π y) hcf`. Simplify using `only [dual_comp, hc, ← eu] at hk`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hVk` using `fun i => isTan_map _ hg' (hV i)`. Establish `h1 : v ∈ Wst y σ (a + 1)` using `hv.1`. Rewrite `h1` using `[Wst_succ hty (flagAt_of_intFrame hw (gen_le h))]`. Conclude with `mem_Ospan_of_coord (linInd_of_basis hVk (basis_map _ hg' hV hb)) em (w := flagVec (flagAt_of_intFrame hw (gen_le h)) σ) (fun i => tan_ext (congrArg (spMap (dualMap (valMap y.gen U (gen_le h)).hom) ≫ ·) (he i))) h1 (fun k => (cf k).2) ((LieMet.isComb_iff (fun i => tanOf (hVk i)) _ …`. Introduce and unpack `c hc1 _ ⟨i, hi, rfl⟩`.
-
-Conclude with `⟨(Wst y σ (a + 1)).smul_mem c (Submodule.subset_span ⟨_, flagAt_of_intFrame hw (gen_le h), i, Nat.lt_succ_iff.2 hi, rfl⟩), smul_mem_lieL hc1 (mem_lieL.2 ⟨_, tan_bc hw _ hz σ i, by rw [Vecs.bc, dual_comp, hc]; rfl⟩)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem adapted_taut (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) {U : Z.X.Opens} {hU : IsAffineOpen U}
     {w : Vecs Dw (Y Z.i).t Γ(Z.X, U)} (hw : IntFrame Z hU w) (h : ⊤ ≤ y.z ⁻¹ᵁ U) (σ : E →+* ℂ) :
@@ -432,7 +428,7 @@ theorem adapted_taut (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) {U 
       smul_mem_lieL hc1 (mem_lieL.2 ⟨_, tan_bc hw _ hz σ i, by rw [Vecs.bc, dual_comp, hc]; rfl⟩)⟩
 
 /- English proof (translation)
-The claim follows from `(le_preimage_basicOpen_iff y.gen (le_preimage_top _) _).2 (by rw [valR_eq _ _ (le_preimage_top _), map_natCast] exact (Nat.cast_ne_zero.2 hp).isUnit)`.
+A detailed English derivation is pending.
 -/
 theorem gen_le_genO (hp : p ≠ 0) : ⊤ ≤ y.gen ⁻¹ᵁ Z.genO :=
   (le_preimage_basicOpen_iff y.gen (le_preimage_top _) _).2 (by
@@ -445,7 +441,7 @@ def secVal {F : Z.X.Modules} {L : LB Z.X} (e : F ≅ GlobalTheory.LB.toMod L) (f
   valR y.gen (Z.genO ⊓ L.U i) (GlobalTheory.LB.coord (e.hom.app Z.genO f) i)
 
 /- English proof (translation)
-Establish `hw : ⊤ ≤ y.gen ⁻¹ᵁ (Z.genO ⊓ L.U i ⊓ L.U i')` using `fun z hz => ⟨⟨gen_le_genO hp hz, h hz⟩, h' hz⟩`. Use `congrArg (valR y.gen _) (GlobalTheory.LB.coord_rel (e.hom.app Z.genO f) i i' (W := Z.genO ⊓ L.U i ⊓ L.U i') inf_le_left (inf_le_inf_right _ inf_le_left) (inf_le_inf_right _ inf_le_right))` as an intermediate fact. Rewrite `this` using `[valR_mul _ _ hw]`. Conclude with `((valR_res _ _ hw _).symm.trans this).trans (congrArg₂ (· * ·) (valR_res _ _ hw _) (valR_res _ _ hw _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secVal_change (hp : p ≠ 0) {F : Z.X.Modules} {L : LB Z.X} (e : F ≅ GlobalTheory.LB.toMod L) (f : Γ(F, Z.genO)) {i i' : L.ι}
     (h : ⊤ ≤ y.gen ⁻¹ᵁ L.U i) (h' : ⊤ ≤ y.gen ⁻¹ᵁ L.U i') :
@@ -457,7 +453,7 @@ theorem secVal_change (hp : p ≠ 0) {F : Z.X.Modules} {L : LB Z.X} (e : F ≅ G
   exact ((valR_res _ _ hw _).symm.trans this).trans (congrArg₂ (· * ·) (valR_res _ _ hw _) (valR_res _ _ hw _))
 
 /- English proof (translation)
-The claim follows from `(congrArg sSup (PtNorm.nrmSet_iso y.z e f)).symm.trans (isGreatest_nrmSet_chart y.z hp hL hU h _).csSup_eq`.
+A detailed English derivation is pending.
 -/
 theorem nrm_eq_secVal (hp : p ≠ 0) {F : Z.X.Modules} {L : LB Z.X} (hL : L.IsLB) (e : F ≅ GlobalTheory.LB.toMod L)
     (f : Γ(F, Z.genO)) {i : L.ι} (hU : IsAffineOpen (L.U i)) (h : ⊤ ≤ y.z ⁻¹ᵁ L.U i) :
@@ -465,11 +461,9 @@ theorem nrm_eq_secVal (hp : p ≠ 0) {F : Z.X.Modules} {L : LB Z.X} (hL : L.IsLB
   (congrArg sSup (PtNorm.nrmSet_iso y.z e f)).symm.trans (isGreatest_nrmSet_chart y.z hp hL hU h _).csSup_eq
 
 /- English proof (translation)
-Establish `hf` using `flagAt_of_intFrame hw h`. Establish `hf'` using `flagAt_of_intFrame hw' h'`. Use `choose d hd using exists_diag_flagVec hty hf' hf`. Use `⟨d, hd, fun σ a => ?_, ?_⟩` and prove the remaining obligations. Take `⟨d', hd'⟩` from `exists_diag_flagVec hty hf hf' σ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `left_ne_zero_of_mul_eq_one (congrFun ((hd'.trans (hd σ)).unique (linearIndependent_flagVec hf σ) (Diag.refl _)) a)`. Establish `hx : spMap (valMap y.gen _ h).hom ≫ hU.fromSpec = y.gen` using `specMap_valMap_fromSpec _ y.gen h`. Establish `hx' : spMap (valMap y.gen _ h').hom ≫ hU'.fromSpec = y.gen` using `specMap_valMap_fromSpec _ y.gen h'`. Establish `key` using `hg _ (valMap y.gen _ h).hom (valMap y.gen _ h').hom d`. Rewrite `key` using `[← Category.assoc, hx, hx']`.
-
-Conclude with `key rfl (range_gen y) fun σ a => (hd σ a).imp fun cf hcf => ⟨hcf.1, hcf.2.1, (LieMet.isComb_iff (flagVec hf' σ) cf (flagVec hf σ a)).2 hcf.2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_diag_transition (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) {U U' : Z.X.Opens}
     {hU : IsAffineOpen U} {hU' : IsAffineOpen U'} {w : Vecs Dw (Y Z.i).t Γ(Z.X, U)} {w' : Vecs Dw (Y Z.i).t Γ(Z.X, U')}
@@ -510,13 +504,13 @@ def expOf (N : ℕ) (l : PsiT D → ℕ → ℤ) (s : PsiT D × Bool) (a : ℕ) 
   if s.2 then -l s.1 (N - a) else l s.1 (a + 1)
 
 /- English proof (translation)
-Establish `zs : ∀ (x : k), x ≠ 0 → ∀ (n : D.what₂.Tau → ℤ), x ^ (∑ t, n t) = ∏ t, x ^ n t` using `fun x hx n => by`. Proceed by induction on `(Finset.univ : Finset D.what₂.Tau) using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add₀ hx, ih]`. Establish `one : ∀ (ρ : D.host.E →+* ℂ) (n : ℕ → ℤ), ∏ σ, ∏ a, d σ a ^ (if σ = ρ then n a else 0) = ∏ a, d ρ a ^ n a` using `fun ρ n => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_eq_single ρ (fun σ _ hσ => by simp [hσ]) (by simp)]`. Simplify using the standard rewrite rules. Simplify using `only [At.expo, zs _ (hd _ _), zpow_add₀ (hd _ _)]`. Rewrite using `[Finset.prod_congr rfl fun σ _ => Finset.prod_comm, Finset.prod_comm, Fintype.prod_prod_type, ← Equiv.prod_comp D.eTau]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.prod_mul_distrib]`. Rewrite using `[Fintype.prod_bool, mul_comm]`. Establish `e : ∀ b, embOf (D.eTau t, b) = if b then conjEmb (DV.tauEmb D t) else DV.tauEmb D t` using `fun b => by`. Simplify using `[embOf]`. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← one (embOf (D.eTau t, true)) (expOf N l (D.eTau t, true)), e]`. Simplify using `[expOf]`. Rewrite using `[← one (embOf (D.eTau t, false)) (expOf N l (D.eTau t, false)), e]`. Simplify using `[expOf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_expo (l : PsiT D → ℕ → ℤ) {k : Type} [Field k] (d : ∀ σ : D.host.E →+* ℂ, Fin (S.Dw.mult σ) → k)
     (hd : ∀ σ a, d σ a ≠ 0) :
@@ -545,24 +539,24 @@ theorem prod_expo (l : PsiT D → ℕ → ℤ) {k : Type} [Field k] (d : ∀ σ 
     simp [expOf]
 
 /- English proof (translation)
-The claim follows from `ct.isYY.2.1.1 σ`.
+A detailed English derivation is pending.
 -/
 theorem ty_YY (σ : D.host.E →+* ℂ) : ct.YY.ty σ = Finset.range (S.Dw.mult σ + 1) := ct.isYY.2.1.1 σ
 
 /- English proof (translation)
-The claim follows from `exists_isGrLB' ct.YY ct.isYY.2.1 _`.
+A detailed English derivation is pending.
 -/
 theorem exists_grLB (l : PsiT D → ℕ → ℤ) : ∃ L, IsGrLB ct.YY (ct.expo l) L := exists_isGrLB' ct.YY ct.isYY.2.1 _
 
 def grLB (l : PsiT D → ℕ → ℤ) : LB ct.YY.X := (exists_grLB ct l).choose
 
 /- English proof (translation)
-The claim follows from `(exists_grLB ct l).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem isGrLB_grLB (l : PsiT D → ℕ → ℤ) : IsGrLB ct.YY (ct.expo l) (grLB ct l) := (exists_grLB ct l).choose_spec
 
 /- English proof (translation)
-The claim follows from `(isGrLB_grLB ct l).2.choose i`.
+A detailed English derivation is pending.
 -/
 theorem grAff (l : PsiT D → ℕ → ℤ) (i : (grLB ct l).ι) : IsAffineOpen ((grLB ct l).U i) := (isGrLB_grLB ct l).2.choose i
 
@@ -570,13 +564,13 @@ def grFr (l : PsiT D → ℕ → ℤ) (i : (grLB ct l).ι) : Vecs S.Dw (ct.Y ct.
   (isGrLB_grLB ct l).2.choose_spec.choose i
 
 /- English proof (translation)
-The claim follows from `(isGrLB_grLB ct l).2.choose_spec.choose_spec.1 i`.
+A detailed English derivation is pending.
 -/
 theorem intFrame_grFr (l : PsiT D → ℕ → ℤ) (i : (grLB ct l).ι) : IntFrame ct.YY (grAff ct l i) (grFr ct l i) :=
   (isGrLB_grLB ct l).2.choose_spec.choose_spec.1 i
 
 /- English proof (translation)
-Use `haveI := (GlobalTheory.VB.isVB_toMod (isGrLB_grLB ct l).1).isFiniteQC`. Unfold `At.Lb`. Rewrite using `[dif_pos (exists_grLB ct l)]`. Conclude with `GlobalTheory.ModelPresentation.nonempty_ofMod_toMod_iso _ _ _ _ p ct.W ct.hp ct.hW _ _ ct.YY (GlobalTheory.LB.toMod (grLB ct l))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_grIso (l : PsiT D → ℕ → ℤ) : Nonempty ((ct.Lb l).toMod ≅ GlobalTheory.LB.toMod (grLB ct l)) := by
   haveI := (GlobalTheory.VB.isVB_toMod (isGrLB_grLB ct l).1).isFiniteQC
@@ -603,7 +597,7 @@ def nrmIn (l : PsiT D → ℕ → ℤ) (f : ct.Sec (ct.Lb l)) (y : ct.Pt ct.YY)
     (Λ : PsiT D × Bool → ℕ → AddSubgroup (Lie y)) : ℝ := sSup {r | IsReading l f y Λ r}
 
 /- English proof (translation)
-Take `⟨d, hd, h0, e⟩` from `exists_diag_transition (ty_YY ct) (intFrame_grFr ct l i) (intFrame_grFr ct l i') ((isGrLB_grLB ct l).2.choose_spec.choose_spec.2 i i') h h'`. Conclude with `⟨d, hd, h0, e.trans (prod_expo ct l d h0)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_diag_chartVec (l : PsiT D → ℕ → ℤ) (y : ct.Pt ct.YY) {i i' : (grLB ct l).ι}
     (h : ⊤ ≤ y.gen ⁻¹ᵁ (grLB ct l).U i) (h' : ⊤ ≤ y.gen ⁻¹ᵁ (grLB ct l).U i') :
@@ -615,13 +609,13 @@ theorem exists_diag_chartVec (l : PsiT D → ℕ → ℤ) (y : ct.Pt ct.YY) {i i
   exact ⟨d, hd, h0, e.trans (prod_expo ct l d h0)⟩
 
 /- English proof (translation)
-Take `⟨i, h, b, d, hb, hd, h0, rfl⟩` from `H`. Take `⟨i', h', b', d', hb', hd', h0', rfl⟩` from `H'`. Take `⟨g, hg, -, e⟩` from `exists_diag_chartVec l y h h'`. Establish `li` using `fun s => linearIndependent_flagVec (flagAt_of_intFrame (intFrame_grFr ct l i) h) (embOf s)`. Establish `li'` using `fun s => linearIndependent_flagVec (flagAt_of_intFrame (intFrame_grFr ct l i') h') (embOf s)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ s a, ‖d' s a‖ = ‖g (embOf s) a‖ * ‖d s a‖ * ‖c s a‖` using `fun s a => by`. Take `⟨c₁, h₁, -⟩` from `(hb s).exists_diag (hu s)`. Take `⟨c₂, h₂, -⟩` from `(hu' s).exists_diag (hb' s)`. Take `⟨c₃, h₃, -⟩` from `(hb' s).exists_diag (hu' s)`. Establish `lb` using `linearIndependent_of_diag (li s) (hd s) (h0 s)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `lb'` using `linearIndependent_of_diag (li' s) (hd' s) (h0' s)`. Establish `n₁` using `(hb s).norm_diag (hu s) lb h₁ a`. Establish `n₃` using `fun a => (hb' s).norm_diag (hu' s) lb' h₃ a`. Establish `n₂` using `(hu' s).norm_diag (hb' s) (linearIndependent_of_diag lb' h₃ fun a h => by simpa [h] using n₃ a) h₂ a`. Use `congrFun ((hd' s).unique (li' s) (((((hg _).trans (hd s)).trans h₁).trans (hc s)).trans h₂)) a` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Simplify using `only [norm_mul, n₁, n₂]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[secVal_change ct.hp.ne_zero _ f h h', e]`. Simplify using `only [norm_mul, norm_prod, norm_zpow, key, mul_zpow, Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -655,7 +649,7 @@ theorem IsReading.eq_mul {l : PsiT D → ℕ → ℤ} {f : ct.Sec (ct.Lb l)} {y 
   ring
 
 /- English proof (translation)
-Take `⟨_, _, b, _, hb, -⟩` from `id H`. Simplify using `using H.eq_mul H' hb hb fun s => Diag.refl (b s)`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsReading.unique {l : PsiT D → ℕ → ℤ} {f : ct.Sec (ct.Lb l)} {y : ct.Pt ct.YY}
     {Λ : PsiT D × Bool → ℕ → AddSubgroup (Lie y)} {r r' : ℝ} (H : IsReading l f y Λ r) (H' : IsReading l f y Λ r') :
@@ -664,7 +658,7 @@ theorem IsReading.unique {l : PsiT D → ℕ → ℤ} {f : ct.Sec (ct.Lb l)} {y 
   simpa using H.eq_mul H' hb hb fun s => Diag.refl (b s)
 
 /- English proof (translation)
-Rewrite using `[nrmIn, show {r | IsReading l f y Λ r} = {r} from Set.eq_singleton_iff_unique_mem.2 ⟨H, fun _ h => H.unique h⟩, csSup_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsReading.nrmIn_eq {l : PsiT D → ℕ → ℤ} {f : ct.Sec (ct.Lb l)} {y : ct.Pt ct.YY}
     {Λ : PsiT D × Bool → ℕ → AddSubgroup (Lie y)} {r : ℝ} (H : IsReading l f y Λ r) : nrmIn l f y Λ = r := by
@@ -672,7 +666,7 @@ theorem IsReading.nrmIn_eq {l : PsiT D → ℕ → ℤ} {f : ct.Sec (ct.Lb l)} {
     csSup_singleton]
 
 /- English proof (translation)
-Use `haveI := PtNorm.isLocalRing_intO ↥y.C.S`. Establish `: y.z (IsLocalRing.closedPoint _) ∈ ⨆ i, (grLB ct l).U i` using `by rw [(isGrLB_grLB ct l).1.cover]; trivial`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 this`. Conclude with `⟨i, (PtNorm.top_le_preimage_iff _).2 hi⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_chart (l : PsiT D → ℕ → ℤ) (y : ct.Pt ct.YY) : ∃ i, ⊤ ≤ y.z ⁻¹ᵁ (grLB ct l).U i := by
   haveI := PtNorm.isLocalRing_intO ↥y.C.S
@@ -681,7 +675,7 @@ theorem exists_chart (l : PsiT D → ℕ → ℤ) (y : ct.Pt ct.YY) : ∃ i, ⊤
   exact ⟨i, (PtNorm.top_le_preimage_iff _).2 hi⟩
 
 /- English proof (translation)
-Take `⟨i, h⟩` from `exists_chart l y`. Use `⟨i, gen_le h, fun s => chartVec l y (gen_le h) (embOf s), fun _ _ => 1, fun s => adapted_taut (ty_YY ct) (intFrame_grFr ct l i) h _, fun s => Diag.refl _, fun _ _ => one_ne_zero, ?_⟩` and prove the remaining obligations. Simplify using `only [one_zpow, Finset.prod_const_one]`. Rewrite using `[_root_.mul_one]`. Conclude with `nrm_eq_secVal ct.hp.ne_zero (isGrLB_grLB ct l).1 (grIso ct l) f (grAff ct l i) h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isReading_taut (l : PsiT D → ℕ → ℤ) (f : ct.Sec (ct.Lb l)) (y : ct.Pt ct.YY) :
     IsReading l f y (fun s => taut y (embOf s)) (ct.nrm (ct.Lb l) f y) := by
@@ -693,7 +687,7 @@ theorem isReading_taut (l : PsiT D → ℕ → ℤ) (f : ct.Sec (ct.Lb l)) (y : 
   exact nrm_eq_secVal ct.hp.ne_zero (isGrLB_grLB ct l).1 (grIso ct l) f (grAff ct l i) h
 
 /- English proof (translation)
-The claim follows from `(isReading_taut l f y).nrmIn_eq.symm`.
+A detailed English derivation is pending.
 -/
 theorem nrm_eq_nrmIn (l : PsiT D → ℕ → ℤ) (f : ct.Sec (ct.Lb l)) (y : ct.Pt ct.YY) :
     ct.nrm (ct.Lb l) f y = nrmIn l f y fun s => taut y (embOf s) := (isReading_taut l f y).nrmIn_eq.symm
@@ -716,7 +710,7 @@ def _root_.GlobalTheory.LocM.frmTrue : FrmSt ct where
   nrm_Lb_def := nrm_eq_nrmIn
 
 /- English proof (translation)
-The claim follows from `(isReading_taut l f y).eq_mul H hu hb hc`.
+A detailed English derivation is pending.
 -/
 theorem IsReading.eq_nrm_mul {l : PsiT D → ℕ → ℤ} {f : ct.Sec (ct.Lb l)} {y : ct.Pt ct.YY}
     {Λ : PsiT D × Bool → ℕ → AddSubgroup (Lie y)} {r : ℝ} (H : IsReading l f y Λ r)
@@ -728,7 +722,7 @@ theorem IsReading.eq_nrm_mul {l : PsiT D → ℕ → ℤ} {f : ct.Sec (ct.Lb l)}
   (isReading_taut l f y).eq_mul H hu hb hc
 
 /- English proof (translation)
-Take `⟨i, h⟩` from `exists_chart (fun _ _ => 0) y`. Conclude with `⟨_, _, adapted_taut (ty_YY ct) (intFrame_grFr ct _ i) h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_flagAt_adapted (y : ct.Pt ct.YY) : ∃ (u : Vecs S.Dw (ct.Y ct.YY.i).t ↥y.C.S) (h : ct.YY.FlagAt y.gen u),
     ∀ σ, Adapted ↥y.C.S (taut y σ) (flagVec h σ) := by
@@ -736,9 +730,7 @@ theorem exists_flagAt_adapted (y : ct.Pt ct.YY) : ∃ (u : Vecs S.Dw (ct.Y ct.YY
   exact ⟨_, _, adapted_taut (ty_YY ct) (intFrame_grFr ct _ i) h⟩
 
 /- English proof (translation)
-Take `⟨i, h⟩` from `exists_chart l y`. Establish `hf` using `flagAt_of_intFrame (intFrame_grFr ct l i) (gen_le h)`. Use `choose d hd using fun s => (diag_iff_span (k := ↥y.C.S) (flagVec hf (embOf s)) (b s)).2 fun a => Wst_succ (ty_YY ct) hf (embOf s) a ▸ hW s a`. Use `⟨_, i, gen_le h, b, d, hb, hd, fun s a => ?_, rfl⟩` and prove the remaining obligations. Take `⟨d', hd'⟩` from `(hd s).symm (li s)`.
-
-Conclude with `left_ne_zero_of_mul_eq_one (congrFun ((hd'.trans (hd s)).unique (li s) (Diag.refl _)) a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isReading (l : PsiT D → ℕ → ℤ) (f : ct.Sec (ct.Lb l)) (y : ct.Pt ct.YY)
     {Λ : PsiT D × Bool → ℕ → AddSubgroup (Lie y)} {b : ∀ s : PsiT D × Bool, Fin (S.Dw.mult (embOf s)) → Lie y}
@@ -754,9 +746,9 @@ theorem exists_isReading (l : PsiT D → ℕ → ℤ) (f : ct.Sec (ct.Lb l)) (y 
   exact left_ne_zero_of_mul_eq_one (congrFun ((hd'.trans (hd s)).unique (li s) (Diag.refl _)) a)
 
 /- English proof (translation)
-Take `⟨r, H⟩` from `exists_isReading l f y hb li fun s a => by`. Establish `hu' : ∀ k : Fin _, k ≤ a → u s k ∈ Wst y (embOf s) ((a : ℕ) + 1)` using `fun k hk => (show u s k ∈ taut y (embOf s) ((a : ℕ) + 1) from hu s a ▸ AddSubgroup.subset_closure ⟨1, by simp, _, ⟨k, hk, rfl⟩, (one_smul _ _).symm⟩).1`. Use `Submodule.span_le.2 ?_ (mem_span_of_diag ⟨_, hc s⟩ (le_refl a))` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `hu' k hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H.nrmIn_eq, H.eq_nrm_mul hu hb hc]`.
+A detailed English derivation is pending.
 -/
 theorem nrmIn_eq_nrm_mul (l : PsiT D → ℕ → ℤ) (f : ct.Sec (ct.Lb l)) (y : ct.Pt ct.YY)
     {Λ : PsiT D × Bool → ℕ → AddSubgroup (Lie y)} {u b : ∀ s : PsiT D × Bool, Fin (S.Dw.mult (embOf s)) → Lie y}
@@ -774,7 +766,7 @@ theorem nrmIn_eq_nrm_mul (l : PsiT D → ℕ → ℤ) (f : ct.Sec (ct.Lb l)) (y 
   rw [H.nrmIn_eq, H.eq_nrm_mul hu hb hc]
 
 /- English proof (translation)
-Take `⟨u, h, -⟩` from `exists_flagAt_adapted y`. Conclude with `⟨finrank_Wst_succ (ty_YY ct) h σ, Wst_eq_eig h σ le_rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (y : ct.Pt ct.YY) (σ : D.host.E →+* ℂ) :
     (∀ a : Fin (S.Dw.mult σ), Module.finrank ↥y.C.S (Wst y σ (a + 1)) = a + 1) ∧ Wst y σ (S.Dw.mult σ) = eig y σ := by
@@ -782,9 +774,9 @@ example (y : ct.Pt ct.YY) (σ : D.host.E →+* ℂ) :
   exact ⟨finrank_Wst_succ (ty_YY ct) h σ, Wst_eq_eig h σ le_rfl⟩
 
 /- English proof (translation)
-Take `⟨u, h, ha⟩` from `exists_flagAt_adapted y`. Establish `hv : flagVec h σ ⟨0, hσ⟩ ∈ taut y σ (((⟨0, hσ⟩ : Fin _) : ℕ) + 1)` using `ha σ ⟨0, hσ⟩ ▸ AddSubgroup.subset_closure ⟨1, by simp, _, ⟨_, Set.mem_Iic.2 le_rfl, rfl⟩, (one_smul _ _).symm⟩`. Use `⟨_, hv.2, fun h' => ?_⟩` and prove the remaining obligations. Establish `h2 : (p : ↥y.C.S)⁻¹ • flagVec h σ ⟨0, hσ⟩ ∈ taut y σ (((⟨0, hσ⟩ : Fin _) : ℕ) + 1)` using `⟨Submodule.smul_mem _ _ hv.1, h'⟩`. Rewrite `h2` using `[ha σ ⟨0, hσ⟩, mem_Ospan_image]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, h1, -, e⟩` from `h2`. Use `Fintype.linearIndependent_iffₛ.1 (linearIndependent_flagVec h σ) (Pi.single ⟨0, hσ⟩ (p : ↥y.C.S)⁻¹) c (by simpa [Pi.single_apply, ite_smul] using e) ⟨0, hσ⟩` as an intermediate fact. Establish `h3` using `h1 ⟨0, hσ⟩`. Rewrite `h3` using `[← this, Pi.single_eq_same, norm_inv, y.C.norm_p, inv_inv]`. Conclude with `absurd h3 (not_le.2 (by exact_mod_cast ct.hp.one_lt))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example (y : ct.Pt ct.YY) (σ : D.host.E →+* ℂ) (hσ : 0 < S.Dw.mult σ) :
     ∃ v ∈ lieL y, (p : ↥y.C.S)⁻¹ • v ∉ lieL y := by
@@ -803,7 +795,7 @@ example (y : ct.Pt ct.YY) (σ : D.host.E →+* ℂ) (hσ : 0 < S.Dw.mult σ) :
   exact absurd h3 (not_le.2 (by exact_mod_cast ct.hp.one_lt))
 
 /- English proof (translation)
-Establish `hd : ∀ s, Diag (flagVec h (embOf s)) (fun a => (p : ↥y.C.S) • flagVec h (embOf s) a) fun _ => (p : ↥y.C.S)` using `fun s a => ⟨Pi.single a p, by simp, fun b hb => Pi.single_eq_of_ne hb.ne' _, by simp [Pi.single_apply, ite_smul]⟩`. Rewrite using `[nrmIn_eq_nrm_mul l f y (fun s => ha _) hΛ (fun s => linearIndependent_of_diag (linearIndependent_flagVec h _) (hd s) fun _ => Nat.cast_ne_zero.2 ct.hp.ne_zero) hd, y.C.norm_p]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 example (l : PsiT D → ℕ → ℤ) (f : ct.Sec (ct.Lb l)) (y : ct.Pt ct.YY) {u : Vecs S.Dw (ct.Y ct.YY.i).t ↥y.C.S}
     (h : ct.YY.FlagAt y.gen u) (ha : ∀ σ, Adapted ↥y.C.S (taut y σ) (flagVec h σ))

@@ -10,9 +10,9 @@ namespace GlobalTheory.ExpTie.Lift
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1` using `lamT_of_lt j τ a ha`. Establish `h2` using `congrArg (Int.cast : ℤ → ℝ) h1`. Move the coercions through the operations in `at h2`. Use `show ((Formalism.CohomologicalDescent.UnitNormBounds.UN (Vc D j).rank (lamT j τ) a : ℤ) : ℝ) - cT j τ = _`. Unfold `Formalism.CohomologicalDescent.UnitNormBounds.UN cT`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem U_sub_c_eq_w (L : SizeData₂ D) (j : Fin D.R.m) (τ : D.what₂.Tau) (a : ℕ) (ha : a < (Vc D j).rank) :
     ((wts L j).U (parOf L j) τ a : ℝ) - (wts L j).c τ =
@@ -27,41 +27,41 @@ theorem U_sub_c_eq_w (L : SizeData₂ D) (j : Fin D.R.m) (τ : D.what₂.Tau) (a
   ring
 
 /- English proof (translation)
-Introduce `D L j τ h`. Take `⟨hj, W, hk, hm, ht, hJ, he, hv, hb, hw⟩` from `h`. Take `⟨k, m, t, J, e, v, b⟩` from `W`. Simplify using `only at hk hm ht hJ he hv hb`. Substitute `hk hm ht hJ` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Establish `hN` using `rank_eq j`. Establish `hK` using `D.R.m_add_three_le_k`. Establish `ht0` using `D.R.t_odd.pos`. Establish `hjm` using `j.2`. Establish `hrk : ((Vc D j).rank : ℚ) = (D.R.k : ℚ) + D.R.m + D.R.t - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hN, Nat.cast_add, Nat.cast_add, Nat.cast_sub (by omega)]; push_cast; ring`. Establish `hmj : ((D.R.m - ((j : ℕ) + 1) : ℕ) : ℚ) = (D.R.m : ℚ) - j - 1`. Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`. Establish `hk1 : ((D.R.k - 1 : ℕ) : ℚ) = (D.R.k : ℚ) - 1`. Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr1 : D.R.k + D.R.m - 1 + D.R.t = (Vc D j).rank` using `by omega`. Establish `hp : D.R.k + ((j : ℕ) + 1) - 1 = D.R.k + j` using `by omega`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Establish `hal : a < (Vc D j).rank` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[U_sub_c_eq_w L j τ a hal]`. Establish `hq` using `hw ⟨a, hal⟩`. Simplify using `only [Formalism.IndefR.IndefiniteWeightData.WeightData.lamPrime, Formalism.IndefR.IndefiniteWeightData.WeightData.thetaWt, Formalism.IndefR.IndefiniteWeightData.WeightData.dTau, Formalism.IndefR.IndefiniteWeightData.WeightData.aPlus, Formalism.IndefR.IndefiniteWeightData.WeightDa …`. Apply the tactic sequence `split_ifs at hq with c1 c2 <;> try omega`. Rewrite `hq` using `[hr1, hp, hmj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv' : ((v (a + 1 + 1) : ℤ) : ℚ) = (D.hc τ).v ⟨a, ha⟩` using `hv ⟨a, ha⟩`. Establish `hQ : (((lamL j τ).w ⟨a, hal⟩ : ℤ) : ℚ) + ((Vc D j).rank : ℚ) / 2 - a = (D.hc τ).v ⟨a, ha⟩`. Rewrite using `[hq, ← hv']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congrArg (Rat.cast : ℚ → ℝ) hQ` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Introduce `i hi`. Establish `hal : D.R.k - 1 + i < (Vc D j).rank` using `by omega`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[U_sub_c_eq_w L j τ _ hal]`. Establish `hq` using `hw ⟨_, hal⟩`. Simplify using `only [Formalism.IndefR.IndefiniteWeightData.WeightData.lamPrime, Formalism.IndefR.IndefiniteWeightData.WeightData.thetaWt, Formalism.IndefR.IndefiniteWeightData.WeightData.dTau, Formalism.IndefR.IndefiniteWeightData.WeightData.aPlus, Formalism.IndefR.IndefiniteWeightData.WeightDa …`. Apply the tactic sequence `split_ifs at hq with c1 c2 <;> try omega`. Rewrite `hq` using `[hr1, hp, hmj, show D.R.k - 1 + (i : ℕ) + 1 - (D.R.k - 1) = (i : ℕ) + 1 by omega, show D.R.k - 1 + (i : ℕ) + 1 = D.R.k + i by omega]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb'` using `hb i`. Establish `hQ : (((lamL j τ).w ⟨_, hal⟩ : ℤ) : ℚ) + ((Vc D j).rank : ℚ) / 2 - ((D.R.k - 1 + i : ℕ) : ℚ) = -(D.hc τ).b i`. Rewrite using `[Nat.cast_add, hk1]`. Move the coercions through the operations in `at hq`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `congrArg (Rat.cast : ℚ → ℝ) hQ` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Conclude with `this`. Introduce `s hs`. Establish `hal : D.R.k + j + s < (Vc D j).rank` using `by omega`.
+Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[U_sub_c_eq_w L j τ _ hal]`. Establish `hq` using `hw ⟨_, hal⟩`. Simplify using `only [Formalism.IndefR.IndefiniteWeightData.WeightData.lamPrime, Formalism.IndefR.IndefiniteWeightData.WeightData.thetaWt, Formalism.IndefR.IndefiniteWeightData.WeightData.dTau, Formalism.IndefR.IndefiniteWeightData.WeightData.aPlus, Formalism.IndefR.IndefiniteWeightData.WeightDa …`. Apply the tactic sequence `split_ifs at hq with c1 c2 <;> try omega`. Establish `c3 : D.R.k + ↑j + s + 1 ≤ D.R.k + ((j : ℕ) + 1) - 1 + D.R.t` using `by omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [c3, if_true] at hq`. Rewrite `hq` using `[hp, hmj]`. Establish `hQ : (((lamL j τ).w ⟨_, hal⟩ : ℤ) : ℚ) + ((Vc D j).rank : ℚ) / 2 - ((D.R.k + j + s : ℕ) : ℚ) = -(D.hc τ).e ⟨(j : ℕ) + 1 - 1, hj.2⟩ + ((D.R.t : ℚ) - 1) / 2 - s`. Move the coercions through the operations in `at hq he ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hwj : wj D ((j : ℕ) + 1) τ = (((D.hc τ).e ⟨(j : ℕ) + 1 - 1, hj.2⟩ : ℚ) : ℝ)`. Unfold `wj`. Rewrite using `[dif_pos hj.2]`. Use `congrArg (Rat.cast : ℚ → ℝ) hQ` as an intermediate fact. Rewrite using `[hwj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `i hi`. Establish `hal : D.R.k - 1 + i + D.R.t < (Vc D j).rank` using `by omega`. Rewrite using `[U_sub_c_eq_w L j τ _ hal]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hq` using `hw ⟨_, hal⟩`. Simplify using `only [Formalism.IndefR.IndefiniteWeightData.WeightData.lamPrime, Formalism.IndefR.IndefiniteWeightData.WeightData.thetaWt, Formalism.IndefR.IndefiniteWeightData.WeightData.dTau, Formalism.IndefR.IndefiniteWeightData.WeightData.aPlus, Formalism.IndefR.IndefiniteWeightData.WeightDa …`. Apply the tactic sequence `split_ifs at hq with c1 c2 <;> try omega`. Establish `c3 : ¬ (D.R.k - 1 + (i : ℕ) + D.R.t + 1 ≤ D.R.k + ((j : ℕ) + 1) - 1 + D.R.t)` using `by omega`. Simplify using `only [c3, if_false] at hq`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq` using `[show D.R.m - ((j : ℕ) + 1) + 1 - (D.R.m - ((j : ℕ) + 1) + 1 - (D.R.k - 1 + (i : ℕ) + D.R.t + 1 - (D.R.k + ((j : ℕ) + 1) - 1) - D.R.t)) = (i : ℕ) - j by omega]`. Rewrite `hq` using `[show (j : ℕ) + 1 + ((i : ℕ) - j) = (i : ℕ) + 1 by omega, hp, hmj]`. Establish `hij : (((i : ℕ) - (j : ℕ) : ℕ) : ℚ) = (i : ℚ) - j`. Rewrite using `[Nat.cast_sub (by omega)]`. Establish `hb'` using `hb i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ : (((lamL j τ).w ⟨_, hal⟩ : ℤ) : ℚ) + ((Vc D j).rank : ℚ) / 2 - ((D.R.k - 1 + i + D.R.t : ℕ) : ℚ) = -(D.hc τ).b i`. Rewrite using `[Nat.cast_add, Nat.cast_add, hk1]`. Rewrite `hq` using `[hij]`. Move the coercions through the operations in `at hq`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `congrArg (Rat.cast : ℚ → ℝ) hQ` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem valsAt_of_isLamPrime : ∀ {D : Formalism.BasicNotions.D7} (L : Formalism.BasicNotions.SizeData₂ D) (j : Fin D.R.m) (τ : D.what₂.Tau),
     Formalism.IndefR.Bridge.IsLamPrime (GlobalTheory.ExpTie.Lift.lamL j τ) ((j : ℕ) + 1) τ → GlobalTheory.ExpTie.Lift.ValsAt L j τ := by

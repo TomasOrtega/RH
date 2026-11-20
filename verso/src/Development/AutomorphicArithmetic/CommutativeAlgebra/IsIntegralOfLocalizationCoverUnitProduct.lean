@@ -11,7 +11,7 @@ private def sub (φ : B →+* D) (α : A →+* B) (h : φ.comp α = algebraMap A
     algebraMap_mem' := fun r => ⟨α r, by rw [← h]; rfl⟩ }
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_sub (φ : B →+* D) (α : A →+* B) (h : φ.comp α = algebraMap A D) (x : D) :
     x ∈ sub φ α h ↔ ∃ y, φ y = x := Iff.rfl
@@ -23,11 +23,11 @@ private theorem coe_sub (φ : B →+* D) (α : A →+* B) (h : φ.comp α = alge
     ((sub φ α h : Subalgebra A D) : Set D) = Set.range φ := rfl
 
 /- English proof (translation)
-Introduce and unpack `x ⟨y, rfl⟩`. Establish `hle : Subring.closure (Set.range α ∪ {t}) ≤ (Algebra.adjoin A {φ t}).toSubring.comap φ`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `z (⟨r, rfl⟩ | hz)`. Establish `: φ (α r) = algebraMap A D r` using `by rw [← h]; rfl`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `φ (α r) ∈ Algebra.adjoin A {φ t}`. Rewrite using `[this]`. Conclude with `Subalgebra.algebraMap_mem _ r`. Rewrite `hz` using `[Set.mem_singleton_iff]`. Substitute `hz` using the available equality.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Introduce a local definition for the expression.
 
-Conclude with `Algebra.subset_adjoin (Set.mem_singleton _)`. Set `f : Subring.closure (Set.range α ∪ {t}) →+* Algebra.adjoin A {φ t}` to `(φ.comp (Subring.closure (Set.range α ∪ {t})).subtype).codRestrict (Algebra.adjoin A {φ t}) (fun r => hle r.2)`. Conclude with `IsIntegral.map_of_comp_eq f φ (by ext r; rfl) (hint y)`.
+A detailed English derivation is pending.
 -/
 private theorem int_sub (φ : B →+* D) (α : A →+* B) (h : φ.comp α = algebraMap A D) (t : B)
     (hint : ∀ x : B, IsIntegral (Subring.closure (Set.range α ∪ {t})) x) :
@@ -50,13 +50,13 @@ private theorem int_sub (φ : B →+* D) (α : A →+* B) (h : φ.comp α = alge
   exact IsIntegral.map_of_comp_eq f φ (by ext r; rfl) (hint y)
 
 /- English proof (translation)
-Introduce `p hp hd`. Set `g : B →+* sub φ α h` to `φ.codRestrict (sub φ α h) (fun y => (mem_sub φ α h _).2 ⟨y, rfl⟩)`. Establish `hg : Function.Bijective g`. Use `⟨fun a b hab => hφ (congrArg Subtype.val hab), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨y, rfl⟩` from `(mem_sub φ α h x).1 hx`. Conclude with `⟨y, rfl⟩`. Set `e` to `RingEquiv.ofBijective g hg`. Take `⟨a, ha⟩` from `hr (p.map (e.symm : sub φ α h →+* B)) (hp.map _) (by rwa [Polynomial.natDegree_map_eq_of_injective e.symm.injective])`. Use `⟨e a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpm : (p.map (e.symm : sub φ α h →+* B)).map (e : B →+* sub φ α h) = p`. Rewrite using `[Polynomial.map_map]`. Use `Polynomial.map_id` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hpm, Polynomial.eval_map]`. Use `Polynomial.eval₂_hom (e : B →+* sub φ α h) a (p := p.map (e.symm : sub φ α h →+* B))` as an intermediate fact. Rewrite `this` using `[ha, map_zero]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem roots_sub (φ : B →+* D) (α : A →+* B) (h : φ.comp α = algebraMap A D)
     (hφ : Function.Injective φ)
@@ -87,9 +87,9 @@ end UpperTheory.IntegralSubring
 
 open UpperTheory.IntegralSubring in
 /- English proof (translation)
-Introduce `A D B C _ _ _ _ _ φ ψ α β hα hβ hφ hψ t s hts hlB hlC hiB hiC hrB hrC`. Use `⟨⟨sub φ α hα, sub ψ β hβ, φ t, ψ s, hts, (mem_sub φ α hα _).2 ⟨t, rfl⟩, (mem_sub ψ β hβ _).2 ⟨s, rfl⟩, ?_, ?_⟩, ⟨int_sub φ α hα t hiB, int_sub ψ β hβ s hiC⟩, roots_sub φ α hα hφ hrB, roots_sub ψ β hβ hψ hrC, coe_sub φ α hα, coe_sub ψ β hβ⟩` and prove the remaining obligations. Introduce `x`. Take `⟨k, y, hy⟩` from `hlB x`. Conclude with `⟨k, (mem_sub φ α hα _).2 ⟨y, hy.symm⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `x`. Take `⟨k, y, hy⟩` from `hlC x`. Conclude with `⟨k, (mem_sub ψ β hβ _).2 ⟨y, hy.symm⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.isIntegral_of_localization_cover_unit_product :
     ∀ {A D B C : Type} [CommRing A] [CommRing D] [Algebra A D] [CommRing B] [CommRing C]

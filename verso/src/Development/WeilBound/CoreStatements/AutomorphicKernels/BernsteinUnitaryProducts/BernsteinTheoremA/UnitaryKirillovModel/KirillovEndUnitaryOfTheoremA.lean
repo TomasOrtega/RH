@@ -38,11 +38,11 @@ def EndPScalar (P : Subgroup G) (ρ : Representation ℂ G V) : Prop :=
   ∀ T : Module.End ℂ V, (∀ p ∈ P, T * ρ p = ρ p * T) → ∃ c : ℂ, ∀ v, T v = c • v
 
 /- English proof (translation)
-Take `⟨D, hequiv, hfaith⟩` from `hD`. Establish `hP : ∀ p ∈ P, ∀ f ∈ testFn G, D T (conjFn p f) = D T f`. Introduce `p hp f hf`. Establish `e : ρ p⁻¹ * T * ρ p = T`. Rewrite using `[mul_assoc, hT p hp, ← mul_assoc, ← map_mul, inv_mul_cancel, map_one, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hequiv p T f hf, e]`. Establish `hG` using `hA (D T) hP`. Establish `h0 : ρ g⁻¹ * T * ρ g - T = 0` using `hfaith _ fun f hf => by`. Rewrite using `[map_sub, LinearMap.sub_apply, hequiv g T f hf, hG g f hf, sub_self]`. Establish `h1 : ρ g⁻¹ * T * ρ g = T` using `sub_eq_zero.1 h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← mul_assoc, ← map_mul, mul_inv_cancel, map_one, one_mul]`. Use `_ = ρ g * T := by rw [h1]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_of_trace (P : Subgroup G) (ρ : Representation ℂ G V) (hA : PInvIsGInv G P)
     (hD : HasTraceDistr ρ) (T : Module.End ℂ V) (hT : ∀ p ∈ P, T * ρ p = ρ p * T) (g : G) :
@@ -62,21 +62,21 @@ theorem commute_of_trace (P : Subgroup G) (ρ : Representation ℂ G V) (hA : PI
     _ = ρ g * T := by rw [h1]
 
 /- English proof (translation)
-Take `⟨v₀, hv₀⟩` from `exists_ne_zero_of_isIrreducible (ρ := ρ)`. Establish `hU : (stabilizerOf ρ v₀ : Set G) ∈ nhds (1 : G)` using `(hadm.1 v₀).mem_nhds (one_mem _)`. Take `⟨K, hKc, hKU⟩` from `exists_openSubgroup_isCompact_subset hU`. Establish `hfin` using `hadm.2 (K : Subgroup G) hKc K.isOpen`. Establish `hTW : ∀ w ∈ fixedVectors ρ (K : Subgroup G), T w ∈ fixedVectors ρ (K : Subgroup G)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Rewrite `hw`, the goal using `[mem_fixedVectors]`. Introduce `x hx`. Use `congrArg (fun S : Module.End ℂ V => S w) (hT x)` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this, hw x hx]`. Establish `hv₀W : v₀ ∈ fixedVectors ρ (K : Subgroup G)`. Rewrite using `[mem_fixedVectors]`. Introduce `x hx`. Conclude with `hKU hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `T' : Module.End ℂ (fixedVectors ρ (K : Subgroup G))` to `T.restrict hTW`. Establish `hnt : Nontrivial (fixedVectors ρ (K : Subgroup G))` using `⟨⟨⟨v₀, hv₀W⟩, 0, fun h => hv₀ (congrArg Subtype.val h)⟩⟩`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue T'`. Take `⟨w, hw⟩` from `hc.exists_hasEigenvector`. Establish `hTw : T (w : V) = c • (w : V)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Subtype.val (Module.End.mem_eigenspace_iff.1 hw.1)` as an intermediate fact. Simplify `this` using `[T']`. Set `S : Subrepresentation ρ` to `⟨LinearMap.ker (T - c • (1 : Module.End ℂ V)), fun g x hx => by`. Simplify using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply] at hx ⊢`. Use `congrArg (fun S : Module.End ℂ V => S x) (hT g)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[this, ← map_smul, ← map_sub, hx, map_zero]⟩`. Establish `hwS : (w : V) ∈ S.toSubmodule` using `by show (w : V) ∈ LinearMap.ker (T - c • (1 : Module.End ℂ V))`. Simplify using `[hTw]`. Establish `hw0 : (w : V) ≠ 0` using `fun h => hw.2 (Subtype.ext h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hStop : S = ⊤` using `(eq_bot_or_eq_top S).resolve_left fun h => hw0 (by`. Rewrite `hwS` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 hwS)`. Use `⟨c, fun v => ?_⟩` and prove the remaining obligations. Establish `hv : v ∈ S.toSubmodule` using `by rw [hStop]; exact Submodule.mem_top`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: (T - c • (1 : Module.End ℂ V)) v = 0` using `hv`. Simplify `this` using `[sub_eq_zero]`.
+A detailed English derivation is pending.
 -/
 theorem scalar_of_admissible [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
     (ρ : Representation ℂ G V) (hadm : GroundTheory.Automorphic.IsAdmissible ρ) [ρ.IsIrreducible]
@@ -122,7 +122,7 @@ theorem scalar_of_admissible [IsTopologicalGroup G] [LocallyCompactSpace G] [T2S
   simpa [sub_eq_zero] using this
 
 /- English proof (translation)
-Introduce `T hT` and use `scalar_of_admissible ρ hadm T (commute_of_trace P ρ hA hD T hT)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem endPScalar_of_admissible [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G] (P : Subgroup G) (ρ : Representation ℂ G V) (hA : PInvIsGInv G P)
@@ -143,11 +143,11 @@ def PFormScalar (P : Subgroup G) (ρ : Representation ℂ G V) (B₀ : Sesq V) :
   ∀ B : Sesq V, (∀ p ∈ P, ∀ v w, B (ρ p v) (ρ p w) = B v w) → ∃ c : ℂ, B = c • B₀
 
 /- English proof (translation)
-Take `⟨D, hequiv, hfaith⟩` from `hD`. Establish `hP : ∀ p ∈ P, ∀ f ∈ testFn G, D B (conjFn p f) = D B f`. Introduce `p hp f hf`. Establish `e : (B ∘ₗ ρ p).compl₂ (ρ p) = B`. Use extensionality with `v w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hB p hp v w`. Rewrite using `[← hequiv p B f hf, e]`. Establish `hG` using `hA (D B) hP`. Establish `h0 : (B ∘ₗ ρ g).compl₂ (ρ g) - B = 0` using `hfaith _ fun f hf => by`. Rewrite using `[map_sub, LinearMap.sub_apply, hequiv g B f hf, hG g f hf, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun C : Sesq V => C v w) (sub_eq_zero.1 h0)`. Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem form_inv_of_trace (P : Subgroup G) (ρ : Representation ℂ G V) (hA : PInvIsGInv G P)
     (hD : HasFormTraceDistr ρ) (B : Sesq V) (hB : ∀ p ∈ P, ∀ v w, B (ρ p v) (ρ p w) = B v w) (g : G) (v w : V) :
@@ -166,34 +166,32 @@ theorem form_inv_of_trace (P : Subgroup G) (ρ : Representation ℂ G V) (hA : P
   simpa using h1
 
 /- English proof (translation)
-Introduce `B hB` and use `hS B (form_inv_of_trace P ρ hA hD B hB)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pFormScalar_of (P : Subgroup G) (ρ : Representation ℂ G V) (B₀ : Sesq V) (hA : PInvIsGInv G P)
     (hD : HasFormTraceDistr ρ) (hS : InvFormScalar ρ B₀) : PFormScalar P ρ B₀ :=
   fun B hB => hS B (form_inv_of_trace P ρ hA hD B hB)
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ W`. Set `L0 : W →ₗ[ℂ] (Fin (Module.finrank ℂ W) → ℂ)` to `{ toFun := fun x j => B₀ (x : V) (b j : V) map_add' := by`. Introduce `x y`. Use extensionality with `j`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := by`. Introduce `c x`. Use extensionality with `j`. Simplify using `}`. Set `L : W →ₗ[ℂ] (Fin (Module.finrank ℂ W) → ℂ)` to `{ toFun := fun x j => B (x : V) (b j : V) map_add' := by`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Use extensionality with `j`. Simplify using the standard rewrite rules. Use the proof step `map_smul' := by`. Introduce `c x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `j`. Simplify using `}`. Establish `hext : ∀ (C : Sesq V) (c : ℂ) (x : V), (∀ j, C x (b j : V) = c * B₀ x (b j : V)) → ∀ y ∈ W, C x y = c * B₀ x y`. Introduce `C c x h y hy`. Establish `key : (C x).comp W.subtype = c • ((B₀ x).comp W.subtype)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `b.ext` to reduce the goal to its premises. Introduce `j`. Simplify using `[h j]`. Use `LinearMap.congr_fun key ⟨y, hy⟩` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective L0`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h0 : ∀ j, B₀ (x : V) (b j : V) = 0 * B₀ (x : V) (b j : V)`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun hx j` as an intermediate fact. Simplify `this` using `[L0]`. Establish `hxx` using `hext B₀ 0 x h0 x x.2`. Assume the negation of the conclusion as `hne`. Establish `hx0 : (x : V) ≠ 0` using `by simpa using hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hpos _ hx0` as an intermediate fact. Rewrite `this` using `[hxx]`. Simplify using `at this`. Set `E` to `L0.linearEquivOfInjective hinj (by simp)`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (E.symm.toLinearMap ∘ₗ L)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx⟩` from `hc.exists_hasEigenvector`. Use `⟨c, x, x.2, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hx.2`. Apply `hext B c x` to reduce the goal to its premises. Introduce `j`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hx.apply_eq_smul`. Establish `h2 : L x = E (c • x)`. Rewrite using `[← h1]`. Simplify using the standard rewrite rules. Establish `h3` using `congrFun h2 j`.
-
-Simplify `h3` using `[E, L, L0, LinearMap.linearEquivOfInjective_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem eigen_lemma (W : Submodule ℂ V) [FiniteDimensional ℂ W] [Nontrivial W] (B B₀ : Sesq V)
     (hpos : ∀ v, v ≠ 0 → 0 < (B₀ v v).re) :
@@ -256,25 +254,23 @@ private theorem eigen_lemma (W : Submodule ℂ V) [FiniteDimensional ℂ W] [Non
     simpa [E, L, L0, LinearMap.linearEquivOfInjective_apply] using h3
 
 /- English proof (translation)
-Introduce `B hB`. Take `⟨v0, hv0⟩` from `exists_ne_zero_of_isIrreducible (ρ := ρ)`. Take `⟨K, hKc, hKle⟩` from `hasBasis_nhds_one_compactOpenSubgroup.mem_iff.1 ((hadm.1 v0).mem_nhds (stabilizerOf ρ v0).one_mem)`. Establish `hKo : IsOpen ((K : Subgroup G) : Set G)` using `K.isOpen`. Use `haveI : FiniteDimensional ℂ (fixedVectors ρ (K : Subgroup G)) := hadm.2 _ hKc hKo`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv0W : v0 ∈ fixedVectors ρ (K : Subgroup G)` using `mem_fixedVectors.2 (fun k hk => hKle hk)`. Use `haveI : Nontrivial (fixedVectors ρ (K : Subgroup G)) := ⟨⟨⟨v0, hv0W⟩, 0, fun h => hv0 (congrArg Subtype.val h)⟩⟩`. Take `⟨c, x0, hx0W, hx0, hxy⟩` from `eigen_lemma (fixedVectors ρ (K : Subgroup G)) B B₀ hpos`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hB'inv : ∀ g v w, (B - c • B₀) (ρ g v) (ρ g w) = (B - c • B₀) v w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g v w`. Simplify using `[hB, hinv]`. Establish `hW0 : ∀ y ∈ fixedVectors ρ (K : Subgroup G), (B - c • B₀) x0 y = 0`. Introduce `y hy`. Simplify using `[hxy y hy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hall : ∀ y, (B - c • B₀) x0 y = 0`. Introduce `y`. Establish `hker : coinvariantsKer ρ (K : Subgroup G) ≤ LinearMap.ker ((B - c • B₀) x0)`. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨⟨k, v⟩, rfl⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : ρ (k : G) x0 = x0` using `(mem_fixedVectors.1 hx0W) k k.2`. Establish `e` using `hB'inv k x0 v`. Rewrite `e` using `[hk]`. Express the relevant statement in the definitionally equal form `(B - c • B₀) x0 (ρ (k : G) v - v) = 0`. Rewrite using `[map_sub, e, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hker (sub_fixedProj_mem hadm.1 hKc hKo y)`. Rewrite `h1` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Rewrite using `[h1]`. Conclude with `hW0 _ (fixedProj ρ hadm.1 hKc hKo y).2`. Set `U : Subrepresentation ρ` to `⟨LinearMap.ker (B - c • B₀), by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Introduce `g v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Use extensionality with `w`. Establish `hw : ρ g (ρ g⁻¹ w) = w`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Rewrite using `[LinearMap.zero_apply, ← hw, hB'inv, hv, LinearMap.zero_apply]⟩`. Break down `IsSimpleOrder.eq_bot_or_eq_top U with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hmem : x0 ∈ U.toSubmodule` using `LinearMap.mem_ker.2 (LinearMap.ext hall)`. Rewrite `hmem` using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx0 ((Submodule.mem_bot ℂ).1 hmem)`. Establish `hmem : ∀ v, v ∈ U.toSubmodule`. Introduce `v`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`.
-
-Use `LinearMap.ext fun v => LinearMap.ext fun w => ?_` and prove the remaining obligations. Establish `h2` using `LinearMap.congr_fun (LinearMap.mem_ker.1 (hmem v)) w`. Simplify `h2` using `[sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem invFormScalar_of_admissible [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G] (ρ : Representation ℂ G V) (hadm : GroundTheory.Automorphic.IsAdmissible ρ) [ρ.IsIrreducible]
@@ -346,7 +342,7 @@ def KirillovEnd (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNo
     GroundTheory.Automorphic.IsAdmissible π → π.IsIrreducible → EndPScalar (GlobalTheory.BZMir.Mir k n) π
 
 /- English proof (translation)
-Introduce `n V _ _ π hadm hirr`. Use `hirr` as an intermediate fact. Conclude with `endPScalar_of_admissible (GlobalTheory.BZMir.Mir k n) π (hA n) (hD n V π hadm hirr) hadm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kirillovEnd_of_theoremA (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (hA : TheoremA k) (hD : TraceDistrGL k) : KirillovEnd k := by
   intro n V _ _ π hadm hirr
@@ -369,7 +365,7 @@ def KirillovForm (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
     (∀ v, v ≠ 0 → 0 < (B₀ v v).re) → (∀ g v w, B₀ (π g v) (π g w) = B₀ v w) → PFormScalar (GlobalTheory.BZMir.Mir k n) π B₀
 
 /- English proof (translation)
-Introduce `n V _ _ π B₀ hadm hirr h1 h2 h3`. Conclude with `pFormScalar_of _ π B₀ (hA n) (hD n V π hadm hirr ⟨B₀, h1, h2, h3⟩) (hS n V π B₀ hadm hirr h1 h2 h3)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kirillovForm_of_theoremA (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (hA : TheoremA k) (hD : FormTraceDistrGL k) (hS : FormSchurGL k) :
     KirillovForm k := by
@@ -377,14 +373,14 @@ theorem kirillovForm_of_theoremA (k : Type) [Field k] [ValuativeRel k] [Topologi
   exact pFormScalar_of _ π B₀ (hA n) (hD n V π hadm hirr ⟨B₀, h1, h2, h3⟩) (hS n V π B₀ hadm hirr h1 h2 h3)
 
 /- English proof (translation)
-Introduce `n V _ _ π B₀ hadm hirr _ h2 h3`. Conclude with `invFormScalar_of_admissible π hadm B₀ h2 h3`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem formSchurGL (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] : FormSchurGL k := by
   intro n V _ _ π B₀ hadm hirr _ h2 h3
   exact invFormScalar_of_admissible π hadm B₀ h2 h3
 
 /- English proof (translation)
-The claim follows from `kirillovForm_of_theoremA k hA hD (formSchurGL k)`.
+A detailed English derivation is pending.
 -/
 theorem kirillovForm_of_theoremA' (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (hA : TheoremA k) (hD : FormTraceDistrGL k) : KirillovForm k :=
   kirillovForm_of_theoremA k hA hD (formSchurGL k)

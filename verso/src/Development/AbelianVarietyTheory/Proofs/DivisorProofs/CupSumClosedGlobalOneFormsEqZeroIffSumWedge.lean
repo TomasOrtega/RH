@@ -13,31 +13,31 @@ noncomputable section
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Establish `hcl : ∀ w : Glob1 F, clAll F hc w = Hyp1.mk F (formZZ F ⟨w, hc ▸ Submodule.mem_top⟩)` using `fun w ↦ rfl`. Establish `hsum : ∑ k, cupHyp F (clAll F hc (u k)) (clAll F hc (v k)) = Hyp2.mk F (∑ k, cupZZ F (formZZ F ⟨u k, hc ▸ Submodule.mem_top⟩) (formZZ F ⟨v k, hc ▸ Submodule.mem_top⟩))`. Simplify using `only [hcl, cupHyp_mk, map_sum]`. Establish `hval : ∀ T, (∑ k, cupZZ F (formZZ F ⟨u k, hc ▸ Submodule.mem_top⟩) (formZZ F ⟨v k, hc ▸ Submodule.mem_top⟩)).1.2.2 T = wsum F u v T`. Introduce `T`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Submodule.coe_sum, Prod.snd_sum, Finset.sum_apply, coe_cupZZ, cupTot_η, wsum]`. Both sides reduce to the same expression. Establish `h1 : ∀ T T' T'' (φ : T ⟶ T') (ψ : T' ⟶ T''), (∑ k, cupZZ F (formZZ F ⟨u k, hc ▸ Submodule.mem_top⟩) (formZZ F ⟨v k, hc ▸ Submodule.mem_top⟩)).1.1 T T' T'' φ ψ = 0`. Introduce `T T' T'' φ ψ`. Simplify using `only [Submodule.coe_sum, Prod.fst_sum, Finset.sum_apply, coe_cupZZ, cupTot_apply]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_eq_zero fun k _ ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mp F ψ 0 * 0 = 0`. Simplify using the standard rewrite rules. Establish `h2 : ∀ T T' (φ : T ⟶ T'), (∑ k, cupZZ F (formZZ F ⟨u k, hc ▸ Submodule.mem_top⟩) (formZZ F ⟨v k, hc ▸ Submodule.mem_top⟩)).1.2.1 T T' φ = 0`. Introduce `T T' φ`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Submodule.coe_sum, Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, coe_cupZZ, cupTot_a]`. Use `Finset.sum_eq_zero fun k _ ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : F.obj T') • _ - (0 : F.obj T') • _ = 0`. Simplify using the standard rewrite rules. Rewrite using `[hsum, Hyp2.mk_eq_zero]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he⟩`. Establish `hz : ∀ T T' T'' (φ : T ⟶ T') (ψ : T' ⟶ T''), (dTot1 F e).1 T T' T'' φ ψ = 0` using `fun T T' T'' φ ψ ↦ by`. Rewrite using `[he]`. Conclude with `h1 T T' T'' φ ψ`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : ∀ T T' (φ : T ⟶ T'), e.2 T' = p1 F φ (e.2 T) + D R _ (e.1 T T' φ)` using `fun T T' φ ↦ by`. Use `(congrArg (fun x : Tot2 F ↦ x.2.1 T T' φ) he).trans (h2 T T' φ)` as an intermediate fact. Rewrite `this` using `[dTot1_a]`. Rewrite `this` using `[sub_sub, sub_eq_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη : ∀ T, dOne R _ (e.2 T) = wsum F u v T` using `fun T ↦ by`. Use `congrArg (fun x : Tot2 F ↦ x.2.2 T) he` as an intermediate fact. Rewrite `this` using `[dTot1_η]`. Rewrite using `[this, hval]`. Establish `hf : e.1 ∈ Z1 F`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[commAlgFunctorCocyclesOne_eq_ker]`. Use function extensionality and compare the values at `T T' T'' φ ψ`. Conclude with `hz T T' T'' φ ψ`. Take `⟨c, hcz⟩` from `hs (CatCoh.H1.mk F ⟨e.1, hf⟩)`. Take `⟨cz, rfl⟩` from `Hyp1.mk_surjective F c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hcz` using `[toO_mk, CatCoh.H1.mk_eq_mk]`. Take `⟨g, hg⟩` from `hcz`. Establish `hg' : ∀ T T' (φ : T ⟶ T'), g T' - mp F φ (g T) = cz.1.1 T T' φ - e.1 T T' φ` using `fun T T' φ ↦ congrFun (congrFun (congrFun hg T) T') φ`. Set `θ : A0 F` to `fun T ↦ e.2 T - (cz.1.2 T - D R _ (g T))`. Establish `hθ : θ ∈ Glob1 F`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `T T' φ`. Simplify using `only [θ, map_sub, p1_D]`. Establish `hgT : g T' = mp F φ (g T) + (cz.1.1 T T' φ - e.1 T T' φ)` using `by rw [← hg' T T' φ]; abel`. Rewrite using `[ha T T' φ, cechDeRhamTotalCocyclesOne.conn cz φ, hgT]`. Simplify using `only [map_add, map_sub]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Normalize the expressions using the abelian group laws. Establish `hθc : (⟨θ, hθ⟩ : Glob1 F) ∈ Closed1 F` using `hc ▸ Submodule.mem_top`. Use function extensionality and compare the values at `T`. Establish `hθ0 : dOne R _ (e.2 T - (cz.1.2 T - D R _ (g T))) = 0` using `hθc T`. Rewrite `hθ0` using `[map_sub, map_sub, cechDeRhamTotalCocyclesOne.closed cz T, dOne_D, sub_zero, sub_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hη T, hθ0]`. Both sides reduce to the same expression. Introduce `hw`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Tot2.ext (fun T T' T'' φ ψ ↦ (h1 T T' T'' φ ψ).symm) (fun T T' φ ↦ (h2 T T' φ).symm) fun T ↦ ?_` and prove the remaining obligations. Rewrite using `[hval, hw]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cupSum_eq_zero_iff_wsum_eq_zero (R : Type) [CommRing R] (C : Type) [Category.{0} C]
     (F : C ⥤ CommAlgCat.{0} R) (hc : Closed1 F = ⊤) (hs : Function.Surjective (toO F)) (n : ℕ)

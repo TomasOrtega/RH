@@ -20,7 +20,7 @@ def flagIntegralLinear (f N : ℕ) : RootRing f N →ₗ[ℚ] ℚ where
     simp only [flagIntegral, coeff_smul, smul_eq_mul, RingHom.id_apply, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[blockPowerSum, map_sum, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[pderiv_pow, pderiv_X_of_ne (show ((0 : Fin 1), j) ≠ ((0 : Fin 1), i) by simp [hj]), mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_blockPowerSum (N k : ℕ) (i : Fin N) :
     pderiv ((0 : Fin 1), i) (blockPowerSum 1 N k 0) =
@@ -33,11 +33,11 @@ theorem pderiv_blockPowerSum (N k : ℕ) (i : Fin N) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[eq_sub_iff_add_eq, blockPowerSum, ← Finset.sum_filter_add_sum_filter_not Finset.univ (fun i : Fin (r + a) => (i : ℕ) < a)]`. Use `congr 1`. Simplify using `only [smallPowerSum, yRoot, SmallBlock.sign, map_one, one_mul, yIndex]`. Use `Finset.sum_bij (fun j _ => (⟨a + (j : ℕ), by have := j.isLt; omega⟩ : Fin (r + a))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `j _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `j₁ _ j₂ _ h`. Simplify using `only [Fin.mk.injEq, Nat.add_left_cancel_iff] at h`. Conclude with `Fin.ext h`. Introduce `i hi`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, not_lt] at hi`. Conclude with `⟨⟨(i : ℕ) - a, by have := i.isLt; omega⟩, Finset.mem_univ _, by ext; simp; omega⟩`. Introduce `j _`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_first_pow (r a m : ℕ) :
     ∑ i ∈ Finset.univ.filter (fun i : Fin (r + a) => (i : ℕ) < a),
@@ -64,23 +64,23 @@ end ShiftSumRule
 open ShiftSumRule in
 
 /- English proof (translation)
-Introduce `r a hr ha Q hQ`. Establish `h0 : flagIntegralLinear 1 (r + a) (∑ i ∈ Finset.univ.filter (fun i : Fin (r + a) => (i : ℕ) < a), pderiv ((0 : Fin 1), i) (restPolynomial 1 r a .last)) = 0` using `(hS 1 r a 0).1.1`. Establish `hnat : ∀ (n : ℕ) (G : RootRing 1 (r + a)), flagIntegralLinear 1 (r + a) ((n : RootRing 1 (r + a)) * G) = n * flagIntegralLinear 1 (r + a) G`. Introduce `n G`. Rewrite using `[show (n : RootRing 1 (r + a)) = C (n : ℚ) from (map_natCast C n).symm, C_mul', map_smul, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hexp : ∑ i ∈ Finset.univ.filter (fun i : Fin (r + a) => (i : ℕ) < a), pderiv ((0 : Fin 1), i) (restPolynomial 1 r a .last) = ∑ k ∈ Icc 1 (r + a), (blockPowerSum 1 (r + a) k 0 * ∑ i ∈ Finset.univ.filter (fun i : Fin (r + a) => (i : ℕ) < a), pderiv ((0 : Fin 1), i) (Q k 0) + (k : R …`. Rewrite using `[hQ]`. Simplify using `only [Fin.sum_univ_one]`. Repeatedly rewrite using `[map_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[← sum_first_pow, Finset.mul_sum, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[pderiv_mul, pderiv_blockPowerSum]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h0` using `[hexp, map_sum]`. Establish `hval : ∀ k ∈ Icc 1 (r + a), flagIntegralLinear 1 (r + a) (blockPowerSum 1 (r + a) k 0 * ∑ i ∈ Finset.univ.filter (fun i : Fin (r + a) => (i : ℕ) < a), pderiv ((0 : Fin 1), i) (Q k 0) + (k : RootRing 1 (r + a)) * (blockPowerSum 1 (r + a) (k - 1) 0 - smallPowerSum 1 r a .last (k - …`. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_Icc]`. Rewrite using `[map_add, show flagIntegralLinear 1 (r + a) (blockPowerSum 1 (r + a) k 0 * _) = 0 from h1 1 (r + a) k 0 _ hk.1 hk.2, zero_add, mul_assoc, hnat, sub_mul, map_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h0` using `[Finset.sum_congr rfl hval]`. Establish `hI : Icc 1 (r + a) = insert 1 (Icc 2 (r + a))`. Use extensionality with `k`. Simplify using `only [Finset.mem_Icc, Finset.mem_insert]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h0` using `[hI, Finset.sum_insert (by simp)]`. Establish `hk1 : ((1 : ℕ) : ℚ) * (flagIntegralLinear 1 (r + a) (blockPowerSum 1 (r + a) (1 - 1) 0 * Q 1 0) - flagIntegralLinear 1 (r + a) (smallPowerSum 1 r a .last (1 - 1) 0 * Q 1 0)) = (a : ℚ) * flagIntegral 1 (r + a) (Q 1 0)`. Establish `e1 : blockPowerSum 1 (r + a) 0 0 = ((r + a : ℕ) : RootRing 1 (r + a))`. Simplify using `[blockPowerSum]`. Establish `e2 : smallPowerSum 1 r a .last 0 0 = ((r : ℕ) : RootRing 1 (r + a))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[smallPowerSum]`. Rewrite using `[Nat.sub_self, e1, e2, hnat, hnat]`. Express the relevant statement in the definitionally equal form `((1 : ℕ) : ℚ) * (((r + a : ℕ) : ℚ) * flagIntegral 1 (r + a) (Q 1 0) - (r : ℚ) * flagIntegral 1 (r + a) (Q 1 0)) = _`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hk2 : ∀ k ∈ Icc 2 (r + a), (k : ℚ) * (flagIntegralLinear 1 (r + a) (blockPowerSum 1 (r + a) (k - 1) 0 * Q k 0) - flagIntegralLinear 1 (r + a) (smallPowerSum 1 r a .last (k - 1) 0 * Q k 0)) = -restTerm 1 (r + a) Q k 0 (smallPowerSum 1 r a .last (k - 1) 0)`. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_Icc]`. Rewrite using `[show flagIntegralLinear 1 (r + a) (blockPowerSum 1 (r + a) (k - 1) 0 * Q k 0) = 0 from h1 1 (r + a) (k - 1) 0 _ (by omega) (by omega), zero_sub, restTerm, mul_neg]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h0` using `[hk1, Finset.sum_congr rfl hk2, Finset.sum_neg_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ShiftSumRule.proof (hS : ShiftTotalValues.Statement)
     (h1 : FlagIntegralKillsPowerSums.Statement) : ShiftSumRule.Statement := by

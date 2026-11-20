@@ -15,13 +15,13 @@ namespace GlobalTheory.SnMass.NEntry
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hp : ∀ n v, P n ((N ^ n) v)` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => exact fun v => h0 _`. Consider the case `succ n ih => intro v`. Rewrite using `[pow_succ']`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 _ _ (ih v)`. Establish `hK : IsNilpotent N` using `⟨m, LinearMap.ext fun v => h2 _ (hp m v)⟩`. Establish `hd : LinearMap.det (1 + N) = 1`. Establish `h` using `(hK.neg).charpoly_eq_X_pow_finrank`. Establish `h2` using `LinearMap.eval_charpoly (-N) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h]`. Simplify using `using h2.symm`. Use `⟨?_, (Module.End.isUnit_iff (1 + N)).1 hK.isUnit_one_add⟩` and prove the remaining obligations. Use `⟨(LinearMap.continuous_of_finiteDimensional (1 + N)).measurable, ?_⟩` and prove the remaining obligations. Use `Measure.map_linearMap_addHaar_eq_smul_addHaar μ (f := 1 + N) (by rw [hd]; exact one_ne_zero)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hd, inv_one, abs_one, ENNReal.ofReal_one, one_smul]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem unip {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V]
     [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] (N : V →ₗ[ℝ] V) (P : ℕ → V → Prop) (m : ℕ)
@@ -44,7 +44,7 @@ theorem unip {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimens
   exact this
 
 /- English proof (translation)
-Simplify using `[upper, h.not_gt, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem upper_sub (x : UT r → ℂ) (a c : Fin r) (h : c ≤ a) : (upper x - 1) a c = 0 := by
   simp [upper, h.not_gt, Matrix.one_apply]
@@ -55,9 +55,9 @@ def NB (k : ℕ) (x : UT r → ℂ) : (Fin r → Fin (k + 1) → ℂ) →ₗ[ℝ
   map_smul' t C := by ext a j; simp [Finset.mul_sum, mul_left_comm]
 
 /- English proof (translation)
-Use `haveI : (volume : Measure (Fin r → Fin (k + 1) → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `unip _ _ (fun n C => ∀ a : Fin r, r ≤ a.val + n → C a = 0) r (fun v a h => by omega) ?_ fun v h => funext fun a => h a (by omega)` and prove the remaining obligations. Introduce `n C h a ha`. Use function extensionality and compare the values at `j`. Use `show ∑ c, (upper x - 1) a c * C c j = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c ≤ a`. Rewrite using `[upper_sub x a c hc, zero_mul]`. Rewrite using `[h c (by have : a.val < c.val := not_le.1 hc; omega)]; simp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unip_NB (x : UT r → ℂ) :
     MeasurePreserving (fun v => v + NB k x v) volume volume ∧ Function.Bijective fun v => v + NB k x v := by
@@ -73,7 +73,7 @@ theorem unip_NB (x : UT r → ℂ) :
   · rw [h c (by have : a.val < c.val := not_le.1 hc; omega)]; simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [skewM, Matrix.smul_apply, Pi.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp [mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem skewM_smul (c : ℝ) (s : UT r → ℂ) (t : Fin r → ℝ) : skewM (c • s) (c • t) = c • skewM s t := by
   ext a b
@@ -83,19 +83,19 @@ theorem skewM_smul (c : ℝ) (s : UT r → ℂ) (t : Fin r → ℝ) : skewM (c �
 def co (S : Matrix (Fin r) (Fin r) ℂ) : (UT r → ℂ) × (Fin r → ℝ) := (fun p => S p.1.1 p.1.2, fun a => (S a a).im)
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [co]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem co_add (S S' : Matrix (Fin r) (Fin r) ℂ) : co (S + S') = co S + co S' := by
   ext <;> simp [co]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [co]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem co_smul (c : ℝ) (S : Matrix (Fin r) (Fin r) ℂ) : co (c • S) = c • co S := by
   ext <;> simp [co]
 
 /- English proof (translation)
-Use extensionality with `p`. Simplify using `[co, skewM, p.2]`. Simplify using `[co, skewM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem co_skewM (v : (UT r → ℂ) × (Fin r → ℝ)) : co (skewM v.1 v.2) = v := by
   ext p
@@ -108,13 +108,13 @@ def NS (x : UT r → ℂ) : ((UT r → ℂ) × (Fin r → ℝ)) →ₗ[ℝ] ((UT
   map_smul' t v := by rw [Prod.smul_fst, Prod.smul_snd, skewM_smul, Matrix.mul_smul, co_smul]; rfl
 
 /- English proof (translation)
-Use `haveI : (volume : Measure ((UT r → ℂ) × (Fin r → ℝ))).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Use `unip _ _ (fun n v => (∀ p : UT r, 2 * r ≤ 2 * p.1.1.val + 1 + n → v.1 p = 0) ∧ ∀ a : Fin r, 2 * r ≤ 2 * a.val + n → v.2 a = 0) (2 * r) (fun v => ⟨fun p h => by have := p.1.1.2; omega, fun a h => by omega⟩) ?_ fun v h => Prod.ext (funext fun a => h.1 a (by omega)) (funext fun a => …` and prove the remaining obligations. Introduce and unpack `n v ⟨h1, h2⟩`. Establish `key : ∀ a b : Fin r, a ≤ b → 2 * r ≤ 2 * a.val + 1 + n ∨ (a < b ∧ 2 * r ≤ 2 * a.val + 2 + n) → ((upper x - 1) * skewM v.1 v.2) a b = 0`. Introduce `a b hab h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c ≤ a`. Rewrite using `[upper_sub x a c hc, zero_mul]`. Establish `hc' : a.val < c.val` using `not_le.1 hc`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab' : a.val ≤ b.val` using `hab`. Rewrite `h` using `[Fin.lt_def]`. Unfold `skewM`. Use `split_ifs with g1 g2`. Rewrite using `[h1 _ (by simp only; omega), mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1 _ (by simp only; omega)]; simp`. Rewrite using `[h2 _ (by omega)]; simp`. Use `⟨fun p hp => key _ _ p.2.le (Or.inr ⟨p.2, by omega⟩), fun a ha => ?_⟩` and prove the remaining obligations. Use `show (((upper x - 1) * skewM v.1 v.2) a a).im = 0`. Rewrite using `[key a a le_rfl (Or.inl (by omega)), Complex.zero_im]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unip_NS (x : UT r → ℂ) :
     MeasurePreserving (fun v => v + NS x v) volume volume ∧ Function.Bijective fun v => v + NS x v := by
@@ -146,11 +146,11 @@ theorem unip_NS (x : UT r → ℂ) :
 def cj (B : Fin r → Fin (k + 1) → ℂ) : Fin r → Fin (k + 1) → ℂ := fun a j => -(star (B a j) * Rad.sg k j)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `volume_preserving_pi (f := fun (_ : Fin r) (v : Fin (k + 1) → ℂ) j => -(star (v j) * Rad.sg k j)) fun a => ?_` and prove the remaining obligations. Use `volume_preserving_pi (f := fun j (z : ℂ) => -(star z * Rad.sg k j)) fun j => ?_` and prove the remaining obligations. Establish `h` using `Complex.conjLIE.measurePreserving`. Unfold `Rad.sg`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Simplify using `only [mul_neg, mul_one, neg_neg]`. Conclude with `h`. Simplify using `only [mul_one]`. Conclude with `(Measure.measurePreserving_neg volume).comp h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `Function.Involutive.bijective fun B => ?_` and prove the remaining obligations. Use extensionality with `a j`. Simplify using `only [cj, Rad.sg]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cj_mp : MeasurePreserving (cj (k := k) (r := r)) volume volume ∧ Function.Bijective (cj (k := k) (r := r)) := by
   constructor
@@ -191,13 +191,13 @@ def glue (q : (UT r → ℂ) × (Fin r → Fin (k + 1) → ℂ)) : Idx k r → �
   Sum.elim q.1 (fun y => q.2 y.1 y.2) ((idx k r).symm p)
 
 /- English proof (translation)
-Establish `hm : Measurable (glue (k` using `k) (r := r)) := by`. Use `measurable_pi_lambda _ fun p => ?_` and prove the remaining obligations. Unfold `glue`. Apply the tactic sequence `rcases (idx k r).symm p with y | y <;> simp only [Sum.elim_inl, Sum.elim_inr] <;> fun_prop`. Use `⟨⟨hm, (Measure.pi_eq fun s hs => ?_).symm⟩, fun q q' h => ?_, fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Measure.map_apply hm (MeasurableSet.univ_pi hs)]`. Establish `e : glue ⁻¹' Set.univ.pi s = (Set.univ.pi fun p => s (idx k r (.inl p))) ×ˢ Set.univ.pi (fun i => Set.univ.pi (fun j => s (idx k r (.inr (i, j)))))`. Use extensionality with `f`. Simplify using `only [Set.mem_preimage, Set.mem_univ_pi, Set.mem_prod]`. Rewrite using `[← (idx k r).forall_congr_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[glue]`. Rewrite using `[e, Measure.volume_eq_prod, Measure.prod_prod, volume_pi, Measure.pi_pi, volume_pi, Measure.pi_pi]`. Repeatedly rewrite using `[volume_pi, Measure.pi_pi]`. Rewrite using `[← (idx k r).prod_comp, Fintype.prod_sum_type, Fintype.prod_prod_type]`. Use `Prod.ext (funext fun p => ?_) (funext fun a => funext fun j => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `congrFun h (idx k r (.inl p))` using `[glue]`. Simplify `congrFun h (idx k r (.inr (a, j)))` using `[glue]`. Use `⟨(fun p => y (idx k r (.inl p)), fun a j => y (idx k r (.inr (a, j)))), funext fun p => ?_⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `(idx k r).surjective p`. Apply the tactic sequence `rcases p with p | p <;> simp [glue]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glue_mp : MeasurePreserving (glue (k := k) (r := r)) volume volume ∧
     Function.Bijective (glue (k := k) (r := r)) := by
@@ -224,7 +224,7 @@ theorem glue_mp : MeasurePreserving (glue (k := k) (r := r)) volume volume ∧
     rcases p with p | p <;> simp [glue]
 
 /- English proof (translation)
-Rewrite using `[NHaar.coord, Matrix.mul_apply, UEmb.sum_idx]`. Simplify using `only [UEmb.u_ee, UEmb.u_em, UEmb.u_es, zero_mul, Finset.sum_const_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coord_e (q : (UT r → ℂ) × PPar k r) (a : Fin r) (j : Fin (2 * r + k + 1)) :
     NHaar.coord k r q (eI k r a) j = ∑ c, upper q.1 a c * pOf k r q.2 (eI k r c) j := by
@@ -238,13 +238,13 @@ def tri (x : UT r → ℂ) (q : PPar k r) : PPar k r :=
   (cj q.1 + NB k x (cj q.1), shift x q.1 + (q.2 + NS x q.2))
 
 /- English proof (translation)
-Use `Prod.ext (funext fun p => ?_) ?_` and prove the remaining obligations. Take `⟨p, rfl⟩` from `(idx k r).surjective p`. Break down `p with p | p` into its components or cases. Simplify using `only [glue, Equiv.symm_apply_apply, Sum.elim_inl] show NHaar.coord k r q (eI k r p.1.1) (eI k r p.1.2) = _`. Simplify using `[coord_e, pOf, Rad.pEl_ee, upper, p.2]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [glue, Equiv.symm_apply_apply, Sum.elim_inr] show NHaar.coord k r q (eI k r p.1) (wI k r p.2) = cj q.2.1 p.1 p.2 + ∑ c, (upper q.1 - 1) p.1 c * cj q.2.1 c p.2`. Simplify using `only [coord_e, pOf, Rad.pEl_ew, Matrix.sub_apply, sub_mul, Finset.sum_sub_distrib, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, cj]`. Expand and normalize the polynomial expressions, which then agree. Use `show co (Matrix.of fun a b => NHaar.coord k r q (eI k r a) (esI k r b)) = shift q.1 q.2.1 + (q.2.2 + co ((upper q.1 - 1) * skewM q.2.2.1 q.2.2.2))`. Establish `e : ∀ S, q.2.2 + co S = co (skewM q.2.2.1 q.2.2.2 + S)` using `fun S => by rw [co_add, co_skewM]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[shift, e, ← co_add]`. Use `congr 1`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, add_sub_cancel, ← Matrix.mul_add]`. Use extensionality with `a b`. Rewrite using `[Matrix.of_apply, coord_e]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.of_apply, pOf, Rad.pEl_es, Matrix.mul_apply, Matrix.add_apply]`. Conclude with `Finset.sum_congr rfl fun c _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem nCoords_coord (q : (UT r → ℂ) × PPar k r) :
     nCoords k r (Matrix.of.symm (NHaar.coord k r q)) = (glue (q.1, (tri q.1 q.2).1), (tri q.1 q.2).2) := by
@@ -270,9 +270,9 @@ theorem nCoords_coord (q : (UT r → ℂ) × PPar k r) :
     exact Finset.sum_congr rfl fun c _ => by ring
 
 /- English proof (translation)
-Establish `hB` using `(unip_NB (k := k) x).2.comp cj_mp.2`. Establish `hS` using `(unip_NS x).2`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨B, v⟩ ⟨B', v'⟩ h`. Take `rfl : B = B'` from `hB.1 (congrArg Prod.fst h)`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg _ (hS.1 (add_left_cancel (congrArg Prod.snd h)))`. Introduce and unpack `⟨C, w⟩`. Take `⟨B, rfl⟩` from `hB.2 C`. Take `⟨v, hv⟩` from `hS.2 (w - shift x B)`. Conclude with `⟨(B, v), Prod.ext rfl (by simp only [tri] at hv ⊢; rw [hv, add_sub_cancel])⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tri_bij (x : UT r → ℂ) : Function.Bijective (tri (k := k) x) := by
   have hB := (unip_NB (k := k) x).2.comp cj_mp.2
@@ -287,14 +287,14 @@ theorem tri_bij (x : UT r → ℂ) : Function.Bijective (tri (k := k) x) := by
     exact ⟨(B, v), Prod.ext rfl (by simp only [tri] at hv ⊢; rw [hv, add_sub_cancel])⟩
 
 /- English proof (translation)
-Unfold `nCoords`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_nCoords : Continuous (nCoords k r) := by
   unfold nCoords
   fun_prop
 
 /- English proof (translation)
-Establish `h` using `cont_nCoords.comp (f := fun q => Matrix.of.symm (NHaar.coord k r q)) (NCoord.coord_homeo k r).2.1`. Simplify using `only [Function.comp_def, nCoords_coord] at h`. Use `Continuous.prodMk (continuous_pi fun a => continuous_pi fun j => ?_) h.snd` and prove the remaining obligations. Use `((continuous_apply (idx k r (.inr (a, j)))).comp h.fst).congr fun q => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, glue, Equiv.symm_apply_apply, Sum.elim_inr]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -307,7 +307,7 @@ theorem cont_tri : Continuous fun q : (UT r → ℂ) × PPar k r => tri q.1 q.2 
   rfl
 
 /- English proof (translation)
-Establish `hI : (volume : Measure ((UT r → ℂ) × (Fin r → ℝ))).IsAddLeftInvariant` using `Measure.prod.instIsAddLeftInvariant`. Conclude with `((unip_NB (k := k) x).1.comp cj_mp.1).skew_product (g := fun B v => shift x B + (v + NS x v)) (cont_tri.comp (Continuous.prodMk_right x)).snd.measurable (Filter.Eventually.of_forall fun B => ((measurePreserving_add_left volume (shift x B)).comp (unip_NS x).1).map_eq)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tri_mp (x : UT r → ℂ) : MeasurePreserving (tri (k := k) x) volume volume := by
   have hI : (volume : Measure ((UT r → ℂ) × (Fin r → ℝ))).IsAddLeftInvariant :=
@@ -317,7 +317,7 @@ theorem tri_mp (x : UT r → ℂ) : MeasurePreserving (tri (k := k) x) volume vo
     (Filter.Eventually.of_forall fun B => ((measurePreserving_add_left volume (shift x B)).comp (unip_NS x).1).map_eq)
 
 /- English proof (translation)
-Establish `h1 : MeasurePreserving (fun q : (UT r → ℂ) × PPar k r => (q.1, tri q.1 q.2)) volume volume` using `(MeasurePreserving.id volume).skew_product (g := tri) cont_tri.measurable (Filter.Eventually.of_forall fun x => (tri_mp x).map_eq)`. Establish `h2` using `(volume_preserving_prodAssoc (α₁ := UT r → ℂ) (β₁ := Fin r → Fin (k + 1) → ℂ) (γ₁ := (UT r → ℂ) × (Fin r → ℝ))).symm`. Establish `h3` using `(glue_mp (k := k) (r := r)).1.prod (MeasurePreserving.id (volume : Measure ((UT r → ℂ) × (Fin r → ℝ))))`. Simplify using `only [nCoords_coord]`. Conclude with `(h3.comp h2).comp h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem entries_mp : MeasurePreserving
     (fun q : (UT r → ℂ) × PPar k r => nCoords k r (Matrix.of.symm (NHaar.coord k r q))) volume volume := by
@@ -331,13 +331,13 @@ theorem entries_mp : MeasurePreserving
   exact (h3.comp h2).comp h1
 
 /- English proof (translation)
-Introduce `k r`. Take `⟨hbij, hΦ, -⟩` from `NCoord.coord_homeo k r`. Use `⟨GlobalTheory.T.haarLie_isHaarOn_unipotentRadical k r 1 one_pos ENNReal.one_lt_top, fun x hx y hy h => ?_, fun y _ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨q, -, hq⟩` from `hbij.surjOn hx`. Take `⟨q', -, hq'⟩` from `hbij.surjOn hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : Matrix.of.symm (NHaar.coord k r q) = x` from `hq`. Take `rfl : Matrix.of.symm (NHaar.coord k r q') = y` from `hq'`. Rewrite `h` using `[nCoords_coord, nCoords_coord, Prod.mk.injEq]`. Establish `h1` using `glue_mp.2.1 h.1`. Rewrite `h1` using `[Prod.mk.injEq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : tri q.1 q.2 = tri q'.1 q'.2` using `Prod.ext h1.2 h.2`. Rewrite `h2` using `[h1.1]`. Rewrite using `[show q = q' from Prod.ext h1.1 ((tri_bij _).1 h2)]`. Take `⟨⟨x, C⟩, hx⟩` from `glue_mp.2.2 y.1`. Take `⟨q, hq⟩` from `(tri_bij x).2 (C, y.2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Matrix.of.symm (NHaar.coord k r (x, q)), hbij.mapsTo (Set.mem_univ (x, q)), ?_⟩` and prove the remaining obligations. Rewrite using `[nCoords_coord, hq, hx]`. Establish `hΦ' : Continuous fun q => (Matrix.of.symm (NHaar.coord k r q) : Mt k r)` using `hΦ`. Rewrite using `[GlobalTheory.T.haar_lie_nilpotent_eq_lebesgue, Measure.map_smul, add_comm (r * (k + 1)), lebN, Measure.map_map cont_nCoords.measurable hΦ'.measurable]`. Conclude with `congrArg _ entries_mp.map_eq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haarLie_entries : ∀ (k r : ℕ), IsHaarOn (Nset k r) (haarLie (Nset k r) 1) ∧
     Set.InjOn (nCoords k r) {x | Matrix.of x ∈ Nset k r} ∧

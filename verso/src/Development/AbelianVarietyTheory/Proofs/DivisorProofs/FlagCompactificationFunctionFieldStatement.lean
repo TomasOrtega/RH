@@ -9,7 +9,7 @@ open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open GlobalTheory.FlagCls
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FlagCls.carries_genericPt_of_isMap` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFlagCompactificationFunctionField.lean&line=15#L15)
 -/

@@ -20,37 +20,33 @@ variable {n : ℕ}
 variable {ε : Fin n → Bool} {lam : Fin n → ℝ}
 
 /- English proof (translation)
-Establish `hq1 : (1 : ℝ) ≤ q0 ε` using `by exact_mod_cast hq`. Use `set c : ℝ := Real.sqrt (2 * q0 ε) with hcdef`. Establish `hc1 : 1 ≤ c` using `Real.one_le_sqrt.mpr (by linarith)`. Establish `hc0 : 0 < c` using `by linarith`. Establish `hcc : c ^ 2 = 2 * q0 ε` using `Real.sq_sqrt (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Use `set f : UJ ε → (T.V →L[ℂ] T.V) := fun g => PsiM T μ (toM g) with hfdef`. Establish `hfc : Continuous f` using `(psiM_continuousOn T μ hμ).comp_continuous (continuous_toM ε) (fun g => g.2)`. Establish `key : 0 ≤ h → ∀ (k : KG ε) (X : Matrix (Fin n) (Fin n) ℂ), inP ε X → ‖f (toUJ ε (toMK k * NormedSpace.exp X))‖ ≤ Real.exp (h / (32 * c ^ 2)) * Real.exp (-(h / (8 * c)) * Real.sqrt (hs X)) ∧ hs (toM (toUJ ε (toMK k * NormedSpace.exp X))) ≤ n * Real.exp (2 * Real.sqrt (hs X))`. Introduce `hh k X hX`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : toM (toUJ ε (toMK k * NormedSpace.exp X)) = toMK k * NormedSpace.exp X` using `toM_toUJ (inUJ_kexp k hX)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ‖PsiM T μ (toM (toUJ ε (toMK k * NormedSpace.exp X)))‖ ≤ _`. Rewrite using `[hm, ← Real.exp_add]`. Conclude with `(psiM_dec T μ hμ hlam hgap hq k hX).trans (Real.exp_le_exp.2 (min_bound hh hc0 (hs_nonnegVG X)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hm, hs_kmulVG]`. Conclude with `hs_exp_leVG X`. Use `⟨fun hth => ?_, fun hth => ?_, fun s hs0 hth => ?_⟩` and prove the remaining obligations. Establish `hh : 0 ≤ h`. Establish `: 0 ≤ 16 * (n : ℝ) * q0 ε` using `by positivity`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `integrable_of_polar hq ν f hfc (M := Real.exp (h / (32 * c ^ 2))) (δ := h / (8 * c) - n * c) (Real.exp_pos _).le ?_ ?_` and prove the remaining obligations. Rewrite using `[sub_pos, lt_div_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Introduce `k X hX`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : -(h / (8 * c) - n * c + n * c) * Real.sqrt (hs X) = -(h / (8 * c)) * Real.sqrt (hs X)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(key hh k X hX).1`. Establish `hh : 0 ≤ h`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: 0 ≤ 8 * (n : ℝ) * q0 ε` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(memLp_two_iff_integrable_sq_norm hfc.aestronglyMeasurable).mpr ?_` and prove the remaining obligations. Use `integrable_of_polar hq ν (fun g => ‖f g‖ ^ 2) (hfc.norm.pow 2) (M := Real.exp (h / (32 * c ^ 2)) ^ 2) (δ := h / (4 * c) - n * c) (by positivity) ?_ ?_` and prove the remaining obligations. Rewrite using `[sub_pos, lt_div_iff₀ (by positivity)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Introduce `k X hX`. Establish `hb` using `(key hh k X hX).1`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_pow, ← Real.exp_nat_mul (-(h / (8 * c)) * Real.sqrt (hs X)) 2]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hh : 0 ≤ h`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: 0 ≤ 8 * (n : ℝ) * q0 ε + 4 * s * c` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs2 : 0 ≤ s / 2` using `by linarith`. Establish `hcw : Continuous fun g : UJ ε => hs (toM g) ^ (s / 2)` using `(hs_contVG.comp (continuous_toM ε)).rpow_const (fun _ => Or.inr hs2)`. Use `integrable_of_polar hq ν (fun g => ‖f g‖ ^ 2 * hs (toM g) ^ (s / 2)) ((hfc.norm.pow 2).mul hcw) (M := Real.exp (h / (32 * c ^ 2)) ^ 2 * (n : ℝ) ^ (s / 2)) (δ := h / (4 * c) - s - n * c) (by positivity) ?_ ?_` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : h / (4 * c) - s - n * c = (h - (8 * n * q0 ε + 4 * s * c)) / (4 * c)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hcc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `div_pos (by linarith) (by positivity)`. Introduce `k X hX`. Take `⟨hb, hw⟩` from `key hh k X hX`. Use `set g := toUJ ε (toMK k * NormedSpace.exp X) with hgdef`. Use `set r := Real.sqrt (hs X) with hrdef`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hw0 : 0 ≤ hs (toM g) ^ (s / 2)` using `Real.rpow_nonneg (hs_nonnegVG _) _`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (by positivity) hw0)]`. Establish `hw' : hs (toM g) ^ (s / 2) ≤ (n : ℝ) ^ (s / 2) * Real.exp (s * r)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.mul_rpow hn0 (Real.exp_pos _).le, ← Real.exp_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hf2 : ‖f g‖ ^ 2 ≤ Real.exp (h / (32 * c ^ 2)) ^ 2 * Real.exp (-(h / (4 * c)) * r)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← Real.exp_nat_mul (-(h / (8 * c)) * r) 2]`.
-
-Use `congr 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show -(h / (4 * c) - s - n * c + n * c) * r = -(h / (4 * c)) * r + s * r by ring, Real.exp_add]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem psiM_integrable (T : KType ε (lowK ε lam)) (μ : Fin n → ℤ) (hμ : IsMu lam μ)
     (hlam : IsHCParam lam) {h : ℝ} (hgap : GapAtLeast ε lam h) (hq : 1 ≤ q0 ε)

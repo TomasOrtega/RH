@@ -10,9 +10,9 @@ open MvPolynomial NumberField Module GlobalTheory.ChowHt GlobalTheory.CompHt Mea
 namespace GlobalTheory.HeightShift
 
 /- English proof (translation)
-Use `conv_lhs => rw [g.as_sum]`. Use `conv_rhs => rw [g.as_sum]`. Simplify using `only [linSubst, map_sum, aeval_monomial, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `: a.degree = m` using `by rw [Finsupp.degree_eq_weight_one]; exact hg (mem_support_iff.1 ha)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, mul_assoc, ← Finset.mul_sum, Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, map_pow]`. Rewrite using `[← this, Finsupp.degree_apply, mul_left_comm]`.
+A detailed English derivation is pending.
 -/
 theorem linSubst_smul {R : Type} [CommRing R] {B N n m : ℕ} (s : R) (M : Matrix (Fin N) (Fin n) R)
     {g : MvPolynomial (Fin B × Fin N) R} (hg : g.IsHomogeneous m) :
@@ -27,11 +27,9 @@ theorem linSubst_smul {R : Type} [CommRing R] {B N n m : ℕ} (s : R) (M : Matri
   rw [← this, Finsupp.degree_apply, mul_left_comm]
 
 /- English proof (translation)
-Establish `hP : IsProbabilityMeasure (blockSphereProb B n)`. Establish `: NeZero n` using `⟨hn.ne'⟩`. Establish `hne : (volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere Set.univ ≠ 0`. Rewrite using `[Ne, Measure.measure_univ_eq_zero]`. Conclude with `Measure.toSphere_ne_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsProbabilityMeasure (sphereProb n)`. Unfold `sphereProb`. Conclude with `ProbabilityTheory.cond_isProbabilityMeasure hne`. Unfold `blockSphereProb`. Use `infer_instance`.
-
-Unfold `blockSphereMean`. Simplify using `[MvPolynomial.eval_C]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockSphereMean_C {B n : ℕ} (hn : 0 < n) (c : ℂ) :
     blockSphereMean B n (C c) = Real.log ‖c‖ := by
@@ -49,9 +47,9 @@ theorem blockSphereMean_C {B n : ℕ} (hn : 0 < n) (c : ℂ) :
   simp [MvPolynomial.eval_C]
 
 /- English proof (translation)
-Establish `h : (((Real.exp t : ℝ) : ℂ) • A)⁻¹ = ((Real.exp (-t) : ℝ) : ℂ) • A⁻¹`. Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, A.mul_nonsing_inv hA.isUnit, ← Complex.ofReal_mul, ← Real.exp_add, add_neg_cancel, Real.exp_zero, Complex.ofReal_one, one_smul]`. Rewrite using `[frameNorm, frameNorm, h, Matrix.smul_mulVec]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, ← Finset.mul_sum, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (Real.exp_pos _).le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frameNorm_exp_smul {N : ℕ} {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.det ≠ 0) (t : ℝ) (x : Fin N → ℂ) :
     frameNorm (((Real.exp t : ℝ) : ℂ) • A) x = Real.exp (-t) * frameNorm A x := by
@@ -65,9 +63,9 @@ theorem frameNorm_exp_smul {N : ℕ} {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.de
   rw [Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (Real.exp_pos _).le]
 
 /- English proof (translation)
-Establish `hinf : ∀ σ : F →+* ℂ, blockSphereMean B N (linSubst (((Real.exp (t σ) : ℝ) : ℂ) • A σ) (MvPolynomial.map σ f)) = (B : ℝ) * δ * t σ + blockSphereMean B N (linSubst (A σ) (MvPolynomial.map σ f))`. Introduce `σ`. Establish `hm` using `isMultiHomogeneous_map_ring _ f ha σ`. Establish `hh` using `(isMultiHomogeneous_iff_block.1 hm).isHomogeneous`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs : ((Real.exp (t σ) : ℝ) : ℂ) ^ (B * δ) ≠ 0` using `pow_ne_zero _ (Complex.ofReal_ne_zero.2 (Real.exp_pos _).ne')`. Rewrite using `[linSubst_smul _ _ hh, sphere_mean_mul_multihomogeneous Closed.sphereLogIntegrable B N 0 (fun _ => δ) _ _ (by rwa [Ne, MvPolynomial.C_eq_zero]) (HeightUnique.linSubst_ne_zero ((A σ).mul_nonsing_inv (hA σ).isUnit) fun h => hf (MvPolynomial.map_injective σ σ.injective (by rw [h, ma …`. Unfold `formHeight`. Simplify using `only [hinf, Finset.sum_add_distrib, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem formHeight_exp_smul {F : Type} [Field F] [NumberField F] {B N n : ℕ} (hN : 0 < N) (δ : ℕ)
     (w : Matrix (Fin N) (Fin n) F) {A : (F →+* ℂ) → Matrix (Fin N) (Fin N) ℂ} (hA : ∀ σ, (A σ).det ≠ 0)
@@ -96,11 +94,11 @@ theorem formHeight_exp_smul {F : Type} [Field F] [NumberField F] {B N n : ℕ} (
   ring
 
 /- English proof (translation)
-Introduce and unpack `K V Ω _ _ _ _ _ _ _ _ Nm L ev D h t ht ⟨N, n, b, w, A, δ, f, hF, hf, e⟩`. Take `⟨y, hy, -⟩` from `hf.exists_point`. Take `⟨j, -⟩` from `Function.ne_iff.1 hy`. Use `⟨N, n, b, w, fun σ => ((Real.exp (t σ) : ℝ) : ℂ) • A σ, δ, f, ⟨hF.span, hF.full, fun σ => ?_, fun σ x => ?_, fun σ x => ?_⟩, hf, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_smul]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (pow_ne_zero _ (Complex.ofReal_ne_zero.2 (Real.exp_pos _).ne')) (hF.herm σ)`. Simplify using `only [frameNorm_exp_smul (hF.herm _), ht]`. Rewrite using `[hF.conj σ x]`. Rewrite using `[frameNorm_exp_smul (hF.herm _), hF.norm]`. Rewrite using `[formHeight_exp_smul (Fin.pos j) δ w hF.herm hf.ne_zero hf.homog, ← e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isImageHeight_shift : ∀ (K V Ω : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (Nm : (K →+* ℂ) → V → ℝ)

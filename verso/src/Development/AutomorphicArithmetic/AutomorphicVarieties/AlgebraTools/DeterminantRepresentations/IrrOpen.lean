@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 open Polynomial Matrix
 
 /- English proof (translation)
-Introduce `A G ι _ _ _ _ t`. Use `⟨⋃ g : ι × ι → G, ((PrimeSpectrum.basicOpen (Matrix.of fun a b => t (g a * g b)).det : TopologicalSpace.Opens (PrimeSpectrum A)) : Set (PrimeSpectrum A)), isOpen_iUnion (fun g => (PrimeSpectrum.basicOpen _).isOpen), ?_⟩` and prove the remaining obligations. Introduce `K _ φ ρ p hp htr`. Rewrite using `[UpperTheory.V.AlgebraTools.Det.gramIff, Set.mem_iUnion]`. Apply `exists_congr` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `g`. Establish `hM : φ.mapMatrix (Matrix.of fun a b => t (g a * g b)) = Matrix.of fun a b => (ρ (g a * g b)).trace`. Use extensionality with `a b`. Use `show φ (t (g a * g b)) = (ρ (g a * g b)).trace`. Rewrite using `[htr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, PrimeSpectrum.mem_basicOpen, hp, RingHom.mem_ker, RingHom.map_det, hM]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.irrOpen :
     ∀ {A G ι : Type} [CommRing A] [Group G] [Fintype ι] [DecidableEq ι] (t : G → A),

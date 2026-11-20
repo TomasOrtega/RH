@@ -15,14 +15,14 @@ namespace GlobalTheory.PtExt
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Simplify using `[epsHom, DualNumber.lift_apply_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snd_epsHom {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D')
     (z : DualNumber D) : (epsHom φ z).snd = φ z.snd := by
   simp [epsHom, DualNumber.lift_apply_apply]
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `[epsHom, DualNumber.lift_apply_apply]`. Simplify using `[AlgHom.comp_apply, snd_epsHom]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem epsHom_comp_inl {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') :
     (epsHom φ).comp (TrivSqZeroExt.inlAlgHom R D D) = (TrivSqZeroExt.inlAlgHom R D' D').comp φ := by
@@ -31,7 +31,7 @@ theorem epsHom_comp_inl {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [
   · simp [AlgHom.comp_apply, snd_epsHom]
 
 /- English proof (translation)
-Apply `DualNumber.algHom_ext` to reduce the goal to its premises. Simplify using `[epsHom, EpsWeil.epsMap, DualNumber.lift_apply_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem epsHom_comp_epsMap {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') :
     (epsHom φ).comp (EpsWeil.epsMap R D) = EpsWeil.epsMap R D' := by
@@ -39,7 +39,7 @@ theorem epsHom_comp_epsMap {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'
   simp [epsHom, EpsWeil.epsMap, DualNumber.lift_apply_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `ext1 <;> simp [ptV, pt0, MonObj.mul_comp, comp_lift, MonObj.comp_one]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ptV_eq {A B : Over (Sp R)} [GrpObj A] [GrpObj B] (v : epsR R ⟶ B) {D : Type} [CommRing D] [Algebra R D]
     (x : Pt A D) : ptV v x = (spOver (TrivSqZeroExt.inlAlgHom R D D) ≫ pt0 B x) *
@@ -47,22 +47,22 @@ theorem ptV_eq {A B : Over (Sp R)} [GrpObj A] [GrpObj B] (v : epsR R ⟶ B) {D :
   ext1 <;> simp [ptV, pt0, MonObj.mul_comp, comp_lift, MonObj.comp_one]
 
 /- English proof (translation)
-Simplify using `[pt0, comp_lift]`.
+Simplify using the standard rewrite rules.
 -/
 theorem specOverOfAlgHom_comp_pointWithZeroSecondCoord {A B : Over (Sp R)} [GrpObj A] [GrpObj B] {D D' : Type} [CommRing D] [Algebra R D] [CommRing D']
     [Algebra R D'] (φ : D →ₐ[R] D') (x : Pt A D) : spOver φ ≫ pt0 B x = pt0 B (spOver φ ≫ x) := by
   simp [pt0, comp_lift]
 
 /- English proof (translation)
-Introduce `R _ A B _ _ f hf v`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_additiveStructure_of_primitiveDeRhamClass R (A ⊗ B) f hf`. Establish `hc` using `(GlobalTheory.T.crystallineCocycleOnPoints_isCocycle_and_eval_eq R (A ⊗ B) f).1`. Set `V1 : Pt (A ⊗ B) (DualNumber R)` to `CartesianMonoidalCategory.lift 1 v`. Use `⟨fun D _ _ x ↦ (g (DualNumber D) (spOver (TrivSqZeroExt.inlAlgHom R D D) ≫ pt0 B x) (spOver (EpsWeil.epsMap R D) ≫ V1) + fv f D (DualNumber D) (TrivSqZeroExt.inlAlgHom R D D) (pt0 B x) + fv f (DualNumber R) (DualNumber D) (EpsWeil.epsMap R D) V1).snd, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `D _ _ D' _ _ φ x _`. Establish `e1` using `hg (DualNumber D) (DualNumber D') (epsHom φ) (spOver (TrivSqZeroExt.inlAlgHom R D D) ≫ pt0 B x) (spOver (EpsWeil.epsMap R D) ≫ V1)`. Rewrite `e1` using `[← ptV_eq]`. Establish `hX : spOver (epsHom φ) ≫ spOver (TrivSqZeroExt.inlAlgHom R D D) ≫ pt0 B x = spOver (TrivSqZeroExt.inlAlgHom R D' D') ≫ pt0 B (spOver φ ≫ x)`. Rewrite using `[← Category.assoc, spOver_comp, epsHom_comp_inl, ← spOver_comp, Category.assoc, specOverOfAlgHom_comp_pointWithZeroSecondCoord]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hV : spOver (epsHom φ) ≫ spOver (EpsWeil.epsMap R D) ≫ V1 = spOver (EpsWeil.epsMap R D') ≫ V1`. Rewrite using `[← Category.assoc, spOver_comp, epsHom_comp_epsMap]`. Rewrite `e1` using `[hX, hV]`. Establish `c1` using `hc D (DualNumber D) (DualNumber D') (TrivSqZeroExt.inlAlgHom R D D) (epsHom φ) (pt0 B x) (sm_whole _)`. Establish `c2` using `hc D D' (DualNumber D') φ (TrivSqZeroExt.inlAlgHom R D' D') (pt0 B x) (sm_whole _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `c1` using `[epsHom_comp_inl, c2, specOverOfAlgHom_comp_pointWithZeroSecondCoord]`. Establish `c3` using `hc (DualNumber R) (DualNumber D) (DualNumber D') (EpsWeil.epsMap R D) (epsHom φ) V1 (sm_whole _)`. Rewrite `c3` using `[epsHom_comp_epsMap]`. Establish `s1` using `congrArg TrivSqZeroExt.snd e1`. Establish `s2` using `congrArg TrivSqZeroExt.snd c1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s3` using `congrArg TrivSqZeroExt.snd c3`. Simplify using `only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_sub, snd_epsHom, AlgHom.coe_coe, TrivSqZeroExt.inlAlgHom_apply, TrivSqZeroExt.snd_inl, zero_add] at s1 s2 s3`. Simplify using `only [Fn1.add, Fn1.neg, Fn1.zero, sndPull, neg_zero, add_zero, TrivSqZeroExt.snd_add, map_add]`. Take the linear combination `-s1 - s2 - s3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cohom_sndPull_zero : ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B]
     (f : Z1 (O (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _))), CatCoh.H1.mk _ f ∈ primDR (A ⊗ B) →

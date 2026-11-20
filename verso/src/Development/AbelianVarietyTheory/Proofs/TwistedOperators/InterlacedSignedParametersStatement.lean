@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.StrictInterlaceI
 open Formalism.L2.Theta
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SignedHC.GridData.interlaced_pi_zero_and_D0` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FInterlacedSignedParameters.lean&line=117#L117)
 -/

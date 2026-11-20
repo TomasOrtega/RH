@@ -15,23 +15,21 @@ variable {A A' : Type*} [CommRing A] [StarRing A] [CommRing A'] [StarRing A']
 variable {m : Type*} [Fintype m] [DecidableEq m]
 
 /- English proof (translation)
-Establish `hgH : ∀ Y : Matrix m m A, (H * Y + Yᴴ * H)ᴴ = H * Y + Yᴴ * H`. Introduce `Y`. Rewrite using `[conjTranspose_add, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hH, add_comm]`. Establish `h1` using `card_uniform (⊤ : AddSubgroup (Matrix m m A)) (hermSub m (RingHom.ker π)) (fun Y : Matrix m m A => H * Y + Yᴴ * H) (fun _ => True) (fun _ _ _ => Iff.rfl) (by`. Introduce `X _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨AddMonoidHom.mk' (fun Y => H * Y.1 + Y.1ᴴ * H) (fun a b => by` and prove the remaining obligations. Simplify using `only [AddSubgroup.coe_add, conjTranspose_add, Matrix.mul_add, Matrix.add_mul]`. Use the proof step `abel),`. Use the proof step `?_, ?_⟩`. Introduce `Y show H * (X + Y.1) + (X + Y.1)ᴴ * H = H * X + Xᴴ * H + (H * Y.1 + Y.1ᴴ * H)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [conjTranspose_add, Matrix.mul_add, Matrix.add_mul]`. Normalize the expressions using the abelian group laws. Introduce `S hS'`. Take `⟨Y, h⟩` from `hS S hS'`. Conclude with `⟨⟨Y, trivial⟩, h⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : {Y : Matrix m m A // H * Y + Yᴴ * H = 0} ≃ {Y : Matrix m m A // True ∧ H * Y + Yᴴ * H = 0}` using `Equiv.subtypeEquivRight fun X => by rw [true_and]`. Rewrite using `[Nat.card_congr e0, ← h1]`. Establish `hsurj : Function.Surjective (π.toAddMonoidHom.mapMatrix (m` using `m) (n := m)) := by`. Introduce `X'`. Use `choose f hf using hπ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨X'.map f, by ext i j; simp [hf]⟩`. Establish `h2` using `card_preimage (π.toAddMonoidHom.mapMatrix (m := m) (n := m)) hsurj (fun Y' => H.map π * Y' + Y'ᴴ * H.map π = 0)`. Establish `hker : (π.toAddMonoidHom.mapMatrix (m` using `m) (n := m)).ker = entSub m m (RingHom.ker π) := by`. Use extensionality with `X`. Rewrite using `[AddMonoidHom.mem_ker, mem_entSub]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Conclude with `this`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `i j`. Conclude with `h i j`. Rewrite using `[← hker, ← h2]`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun X => ?_)` and prove the remaining obligations. Use `show _ ↔ H.map π * X.map π + (X.map π)ᴴ * H.map π = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components.
 
-Establish `hm : H.map π * X.map π + (X.map π)ᴴ * H.map π = (H * X + Xᴴ * H).map π`. Rewrite using `[Matrix.map_add π (map_add π), Matrix.map_mul, Matrix.map_mul, conjTranspose_map π (fun a => hπs a)]`. Rewrite using `[hm, mem_hermSub, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h3⟩`.
-
-Use extensionality with `i j`. Conclude with `h3 i j`. Introduce `h3`. Conclude with `⟨hgH X, fun i j => congrFun (congrFun h3 i) j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_skew_lift [Finite A] (π : A →+* A') (hπ : Function.Surjective π)
     (hπs : ∀ a, π (star a) = star (π a)) (H : Matrix m m A) (hH : Hᴴ = H)
@@ -101,7 +99,7 @@ abbrev Hq (H : Matrix κ κ (𝓞 K)) (𝔭 : Ideal (𝓞 F)) (k : ℕ) : Matrix
 variable [Fact (IsFixF K F)]
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `exists_theta hK (Fact.out : IsFixF K F) h𝔭`. Take `⟨e, he⟩` from `exists_inv_theta hθ k`. Use `⟨Ideal.Quotient.mk _ θ, Ideal.Quotient.mk _ e, ?_⟩` and prove the remaining obligations. Rewrite using `[star_mk, ← map_sub, ← map_mul, ← map_one (Ideal.Quotient.mk (extP K 𝔭 ^ k)), Ideal.Quotient.eq]`. Conclude with `he`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_theta_inv (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) :
     ∃ θ e : 𝓞 K ⧸ extP K 𝔭 ^ k, (θ - star θ) * e = 1 := by
@@ -112,7 +110,7 @@ theorem exists_theta_inv (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {�
   exact he
 
 /- English proof (translation)
-Use `conv_rhs => rw [← hH]`. Conclude with `(conjTranspose_map (Ideal.Quotient.mk (extP K 𝔭 ^ k)) (fun a => (star_mk 𝔭 k a).symm)).symm`.
+A detailed English derivation is pending.
 -/
 theorem Hq_conjTranspose {H : Matrix κ κ (𝓞 K)} (hH : Hᴴ = H) (𝔭 : Ideal (𝓞 F)) (k : ℕ) :
     (Hq H 𝔭 k)ᴴ = Hq H 𝔭 k := by
@@ -120,19 +118,17 @@ theorem Hq_conjTranspose {H : Matrix κ κ (𝓞 K)} (hH : Hᴴ = H) (𝔭 : Ide
   exact (conjTranspose_map (Ideal.Quotient.mk (extP K 𝔭 ^ k)) (fun a => (star_mk 𝔭 k a).symm)).symm
 
 /- English proof (translation)
-Take `⟨θ, u, hu⟩` from `exists_theta_inv hK h𝔭 (j + 1)`. Establish `hτ : θ * u + star (θ * u) = 1`. Rewrite using `[star_mul', star_inv_eq_neg hu]`. Take the linear combination `hu`. Use `set mk := Ideal.Quotient.mk (extP K 𝔭 ^ (j + 1)) with hmk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `set dq := mk (algebraMap (𝓞 F) (𝓞 K) d) with hdq`. Establish `hds : star dq = dq`. Rewrite using `[hdq, hmk, star_mk, star_def, conjO_map Fact.out]`. Establish `hfill : ∀ a b, ∃ r : 𝓞 K, S a b = dq * mk r`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `Ideal.Quotient.mk_surjective (S a b)`. Establish `hs' : s ∈ extP K 𝔭 ^ j`. Rewrite using `[← mk_mem_ker_piQ, hs]`. Conclude with `hS.2 a b`. Take `⟨r, -, hr⟩` from `exists_fillO h𝔭 hd hj hs'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs, hdq, ← map_mul]`. Conclude with `Ideal.Quotient.eq.2 hr`. Use `choose r hr using hfill`. Use `set R : Matrix κ κ (𝓞 K ⧸ extP K 𝔭 ^ (j + 1)) := Matrix.of fun a b => mk (r a b) with hR`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSR : S = dq • R`. Use extensionality with `a b`. Rewrite using `[hr a b]`. Both sides reduce to the same expression. Establish `hSR' : S = dq • Rᴴ` using `by conv_lhs => rw [← hS.1, hSR, conjTranspose_smul, hds]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hHEq : Hq H 𝔭 (j + 1) * E₀.map mk = dq • (1 : Matrix κ κ _)`. Rewrite using `[← Matrix.map_mul, hHE]`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, Matrix.one_apply]`. Rewrite using `[apply_ite mk, map_one, map_zero]`.
-
-Establish `hEH : (E₀.map mk)ᴴ * Hq H 𝔭 (j + 1) = dq • (1 : Matrix κ κ _)`. Use `congrArg conjTranspose hHEq` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, Hq_conjTranspose hH, conjTranspose_smul, conjTranspose_one, hds]`. Then use the resulting hypothesis. Use `⟨E₀.map mk * ((θ * u) • R), ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, hHEq, conjTranspose_mul, Matrix.mul_assoc, hEH, conjTranspose_smul, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, smul_comm dq, ← hSR, smul_comm dq, ← hSR', ← add_smul, hτ, one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_skew_value (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     {H E₀ : Matrix κ κ (𝓞 K)} (hH : Hᴴ = H) {d : 𝓞 F} {e : ℕ} (hd : d ∉ 𝔭 ^ (e + 1))
@@ -180,17 +176,17 @@ theorem exists_skew_value (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {
     smul_comm dq, ← hSR', ← add_smul, hτ, one_smul]
 
 /- English proof (translation)
-Establish `hF : IsFixF K F` using `Fact.out`. Use `finite_quot (K := K) h𝔭 (j + 1)` as an intermediate fact. Establish `h1` using `card_skew_lift (piQ K 𝔭 j) (piQ_surjective 𝔭 j) (piQ_star 𝔭 j) (Hq H 𝔭 (j + 1)) (Hq_conjTranspose hH 𝔭 (j + 1)) (exists_skew_value hK h𝔭 hH hd hHE hj)`. Establish `hmap : (Hq H 𝔭 (j + 1)).map (piQ K 𝔭 j) = Hq H 𝔭 j`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Rewrite `h1` using `[hmap]`. Take `⟨θ, u, hu⟩` from `exists_theta_inv hK h𝔭 (j + 1)`. Establish `hst : ∀ a ∈ RingHom.ker (piQ K 𝔭 j), star a ∈ RingHom.ker (piQ K 𝔭 j)`. Introduce `a ha`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ha`, the goal using `[RingHom.mem_ker]`. Rewrite using `[piQ_star, ha, star_zero]`. Establish `h2` using `card_hermSub_sq (r := κ) hst hu`. Establish `h3 : Nat.card (entSub κ κ (RingHom.ker (piQ K 𝔭 j))) = (Ideal.absNorm 𝔭 ^ (Fintype.card κ ^ 2)) ^ 2`. Rewrite using `[card_entSub, card_ker_piQ hK hF h𝔭, ← pow_mul, ← pow_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h3]`. Establish `h4 : Nat.card (hermSub κ (RingHom.ker (piQ K 𝔭 j))) = Ideal.absNorm 𝔭 ^ (Fintype.card κ ^ 2)` using `Nat.pow_left_injective (n := 2) (by norm_num) h2`. Rewrite `h1` using `[h3, h4]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : 0 < Ideal.absNorm 𝔭 ^ (Fintype.card κ ^ 2)`. Apply `pow_pos` to reduce the goal to its premises. Conclude with `Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact ne_bot h𝔭)`. Apply `Nat.eq_of_mul_eq_mul_right hpos` to reduce the goal to its premises. Rewrite using `[h1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem card_sigma_succ (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     {H E₀ : Matrix κ κ (𝓞 K)} (hH : Hᴴ = H) {d : 𝓞 F} {e : ℕ} (hd : d ∉ 𝔭 ^ (e + 1))

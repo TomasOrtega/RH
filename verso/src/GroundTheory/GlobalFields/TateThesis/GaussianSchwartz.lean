@@ -8,9 +8,9 @@ namespace GroundTheory.Global
 noncomputable section
 
 /- English proof (translation)
-Establish `h1 : (1 + r) ^ N ≤ Real.exp (N * r)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ (by positivity)]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[sq_nonneg ((N : ℝ) - 2 * π * r), Real.pi_pos]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_add_pow_mul_exp_neg_pi_mul_sq_le {r : ℝ} (hr : 0 ≤ r) (N : ℕ) :
     (1 + r) ^ N * Real.exp (-π * r ^ 2) ≤ Real.exp (N ^ 2 / (4 * π)) := by
@@ -31,14 +31,14 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 def gaussianFun (x : E) : ℂ := ((Real.exp (-π * ‖x‖ ^ 2) : ℝ) : ℂ)
 
 /- English proof (translation)
-The claim follows from `Complex.ofRealCLM.contDiff.comp (Real.contDiff_exp.comp (contDiff_const.mul (contDiff_norm_sq ℝ)))`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_gaussianFun : ContDiff ℝ ∞ (gaussianFun (E := E)) :=
   Complex.ofRealCLM.contDiff.comp
     (Real.contDiff_exp.comp (contDiff_const.mul (contDiff_norm_sq ℝ)))
 
 /- English proof (translation)
-Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv, iteratedDeriv_eq_iterate, Real.iter_deriv_exp, Real.norm_eq_abs, abs_of_pos (Real.exp_pos y)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_iteratedFDeriv_exp (i : ℕ) (y : ℝ) :
     ‖iteratedFDeriv ℝ i Real.exp y‖ = Real.exp y := by
@@ -46,13 +46,11 @@ theorem norm_iteratedFDeriv_exp (i : ℕ) (y : ℝ) :
     Real.norm_eq_abs, abs_of_pos (Real.exp_pos y)]
 
 /- English proof (translation)
-Use `set q : E → ℝ := fun x ↦ -π * ‖x‖ ^ 2 with hq_def`. Establish `hq : q.HasTemperateGrowth` using `(HasTemperateGrowth.const (-π)).mul (hasTemperateGrowth_norm_sq E)`. Establish `hqs : ContDiff ℝ ∞ q` using `contDiff_const.mul (contDiff_norm_sq ℝ)`. Take `⟨k, C, hC, hb⟩` from `hq.norm_iteratedFDeriv_le_uniform n`. Use `⟨n ! * max C 1 ^ n, k * n, by positivity, fun x ↦ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx1 : 1 ≤ (1 + ‖x‖) ^ k` using `one_le_pow₀ (by linarith [norm_nonneg x])`. Use `set D := max C 1 * (1 + ‖x‖) ^ k`. Establish `hD1 : 1 ≤ D` using `one_le_mul_of_one_le_of_one_le (le_max_right _ _) hx1`. Establish `hcomp : ‖iteratedFDeriv ℝ n (Real.exp ∘ q) x‖ ≤ n ! * Real.exp (q x) * D ^ n`. Use `norm_iteratedFDeriv_comp_le Real.contDiff_exp hqs (by exact_mod_cast le_top) x (fun i _ ↦ (norm_iteratedFDeriv_exp i (q x)).le) fun i hi1 hin ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hG : gaussianFun (E` using `E) = (Complex.ofRealLI : ℝ →ₗᵢ[ℝ] ℂ) ∘ (Real.exp ∘ q) := rfl`. Rewrite using `[hG, LinearIsometry.norm_iteratedFDeriv_comp_left _ (Real.contDiff_exp.comp hqs).contDiffAt (by exact_mod_cast le_top)]`. Use `hcomp.trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [D, mul_pow, ← pow_mul, hq_def]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_iteratedFDeriv_gaussian_le (n : ℕ) :
     ∃ (C : ℝ) (k : ℕ), 0 ≤ C ∧ ∀ x : E, ‖iteratedFDeriv ℝ n (gaussianFun (E := E)) x‖ ≤

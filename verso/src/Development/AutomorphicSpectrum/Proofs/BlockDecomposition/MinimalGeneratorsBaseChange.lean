@@ -10,7 +10,7 @@ open GlobalTheory.AbLaw (rs)
 namespace GlobalTheory.CompanionTheory.FewEq
 
 /- English proof (translation)
-Establish `hw' : w ∈ J • Submodule.span S (Set.range u)` using `hw`. Take `⟨a, ha, hsum⟩` from `(Submodule.mem_ideal_smul_span_iff_exists_sum J u w).1 hw'`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsum, Finsupp.sum_fintype _ _ (fun i => zero_smul S (u i))]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coeffs_of_mem_mul_span {S : Type} [CommRing S] {r : ℕ} (J : Ideal S)
     (u : Fin r → S) {w : S} (hw : w ∈ J * Ideal.span (Set.range u)) :
@@ -22,11 +22,11 @@ theorem exists_coeffs_of_mem_mul_span {S : Type} [CommRing S] {r : ℕ} (J : Ide
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `hrel : ∑ j, t j • (y j - a j) = 0`. Simplify using `only [Algebra.smul_def, mul_sub, Finset.sum_sub_distrib, h, sub_self]`. Take `⟨k, d, w, hw, hd⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero (R := R) (M := S) (f := t) (x := fun j => y j - a j) hrel`. Establish `hwi : y i - a i = ∑ j, d i j • w j` using `hw i`. Rewrite using `[hwi]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Use `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ?_)` and prove the remaining obligations. Use `hmin (fun i => d i j) ?_ i` and prove the remaining obligations. Rewrite using `[← hd j]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem mem_map_maximalIdeal_of_flat {R : Type} [CommRing R] [IsLocalRing R] {S : Type}
     [CommRing S] [Algebra R S] [Module.Flat R S] {r : ℕ} (t : Fin r → R)
@@ -47,11 +47,11 @@ theorem mem_map_maximalIdeal_of_flat {R : Type} [CommRing R] [IsLocalRing R] {S 
   exact Finset.sum_congr rfl fun _ _ => mul_comm _ _
 
 /- English proof (translation)
-Introduce `R _ _ S _ c hc r t I hI hmin y hy i`. Establish `hmap : (IsLocalRing.maximalIdeal R * I).map c = (IsLocalRing.maximalIdeal R).map c * Ideal.span (Set.range fun j => c (t j))`. Rewrite using `[Ideal.map_mul, ← hI, Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite `hy` using `[hmap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha, hsum⟩` from `exists_coeffs_of_mem_mul_span _ _ hy`. Establish `hmin0 : ∀ x : Fin r → R, ∑ i, x i * t i = 0 → ∀ i, x i ∈ IsLocalRing.maximalIdeal R` using `fun x hx => hmin x (by rw [hx]; exact Ideal.zero_mem _)`. Establish `h3 : y i - a i ∈ (IsLocalRing.maximalIdeal R).map c`. Use `letI := c.toAlgebra`. Use `haveI : Module.Flat R S := hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Conclude with `mem_map_maximalIdeal_of_flat t hmin0 y a hsum.symm i`. Establish `h4` using `Ideal.add_mem _ h3 (ha i)`. Rewrite `h4` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem minimal_generators_flat_independent :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] (S : Type) [CommRing S] (c : R →+* S), c.Flat →

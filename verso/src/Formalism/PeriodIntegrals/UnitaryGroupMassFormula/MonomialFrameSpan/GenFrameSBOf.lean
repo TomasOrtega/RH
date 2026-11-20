@@ -5,7 +5,7 @@ namespace GenFrameSpan
 open CutKW
 
 /- English proof (translation)
-Introduce `hSB Lt _ _ l _ N0 N1 nu Th B`. Conclude with `⟨fun h I => ht hSB Lt l N0 nu _ B (hs Lt l N0 N1 nu Th I) (h I), hb Lt l N0 N1 nu Th B⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem genFrameSB_of (hb : StepBack) (hs : StepSpan) (ht : StepSat) : CutKW.KWsb := by
   intro hSB Lt _ _ l _ N0 N1 nu Th B

@@ -8,13 +8,11 @@ set_option autoImplicit false
 namespace GlobalTheory.WholeFlag.Glue
 
 /- English proof (translation)
-Introduce `R _ g U J τ hJ hU i k`. Establish `hL : leftInv U τ * U = 1`. Conclude with `(Matrix.mul_assoc (rowSel τ * U : Matrix (Fin g) (Fin g) R)⁻¹ (rowSel τ) U).trans (Matrix.nonsing_inv_mul _ hU)`. Establish `h2 : U.transpose * J * (J⁻¹ * (leftInv U τ).transpose * antiDiag R g) = antiDiag R g`. Establish `: U.transpose * J * (J⁻¹ * (leftInv U τ).transpose * antiDiag R g) = U.transpose * (J * J⁻¹) * (leftInv U τ).transpose * antiDiag R g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, Matrix.mul_nonsing_inv _ hJ, Matrix.mul_one, ← Matrix.transpose_mul, hL, Matrix.transpose_one, Matrix.one_mul]`. Establish `h1 : ∀ r, ((fullFrame U J (leftInv U τ)).transpose * J) (Fin.castAdd g i) r = (U.transpose * J) i r`. Introduce `r`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, fullFrame_left]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply (M := U.transpose * J)]`. Conclude with `Finset.sum_congr rfl fun r _ => by rw [h1, fullFrame_left]`. Use `conv_rhs => rw [← h2]`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply (M := U.transpose * J)]`.
-
-Conclude with `Finset.sum_congr rfl fun r _ => by rw [h1, fullFrame_right]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fullFrame_gram : ∀ {R : Type} [CommRing R] {g : ℕ} (U : Matrix (Fin (g + g)) (Fin g) R) (J : Matrix (Fin (g + g)) (Fin (g + g)) R) (τ : Fin g → Fin (g + g)), IsUnit J.det → IsUnit (rowSel τ * U : Matrix (Fin g) (Fin g) R).det → ∀ (i k : Fin g), ((fullFrame U J (leftInv U τ)).transpose * J * fullFrame U J (leftInv U τ)) (Fin.castAdd g i) (Fin.castAdd g k) = (U.transpose * J * U) i k ∧ ((fullFrame U J (leftInv U τ)).transpose * J * fullFrame U J (leftInv U τ)) (Fin.castAdd g i) (Fin.natAdd g k) = antiDiag R g i k := by
   intro R _ g U J τ hJ hU i k

@@ -5,15 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HidaC
 open UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite TensorProduct
 
 /- English proof (translation)
-Introduce `K Y ι _ _ _ _ A hA x y hy hAy`. Establish `hc : ∀ i j, Commute (A i).dualMap (A j).dualMap`. Introduce `i j`. Use `show (A i).dualMap * (A j).dualMap = (A j).dualMap * (A i).dualMap`. Use `LinearMap.ext fun ψ => LinearMap.ext fun z => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `LinearMap.congr_fun (hA j i).eq z`. Simplify using `only [Module.End.mul_apply] at h`. Simplify using `only [Module.End.mul_apply, LinearMap.dualMap_apply]`. Rewrite using `[h]`. Establish `hne : Module.Dual.eval K Y y ≠ 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hy` to reduce the goal to its premises. Use `(Module.forall_dual_apply_eq_zero_iff K y).mp ?_` and prove the remaining obligations. Introduce `ψ`. Conclude with `LinearMap.congr_fun h0 ψ`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ψ, hψ, hψA⟩` from `eigOfQuot (fun i => (A i).dualMap) hc x (Module.Dual.eval K Y y) hne (by`. Introduce `i ψ`. Simplify using `[LinearMap.dualMap_apply, hAy])`. Use `⟨ψ, hψ, fun i z => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun (hψA i) z` as an intermediate fact.
-
-Simplify `this` using `[LinearMap.dualMap_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.quotOfEig :
     ∀ {K Y ι : Type*} [Field K] [AddCommGroup Y] [Module K Y] [FiniteDimensional K Y] (A : ι → Module.End K Y), (∀ i j, Commute (A i) (A j)) → ∀ (x : ι → K) (y : Y), y ≠ 0 → (∀ i, A i y = x i • y) → ∃ φ : Module.Dual K Y, φ ≠ 0 ∧ ∀ i z, φ (A i z) = x i * φ z := by

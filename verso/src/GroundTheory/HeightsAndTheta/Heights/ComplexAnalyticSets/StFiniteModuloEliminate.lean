@@ -10,7 +10,7 @@ noncomputable def zeroCoordinate {τ : Type} [DecidableEq τ] (c : τ) : (τ →
   ContinuousLinearMap.pi fun c' => if c' = c then 0 else ContinuousLinearMap.proj c'
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases h : c' = c <;> simp [zeroCoordinate, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zeroCoordinate_apply {τ : Type} [DecidableEq τ] (c : τ) (y : τ → ℂ) (c' : τ) :
     zeroCoordinate c y c' = if c' = c then 0 else y c' := by

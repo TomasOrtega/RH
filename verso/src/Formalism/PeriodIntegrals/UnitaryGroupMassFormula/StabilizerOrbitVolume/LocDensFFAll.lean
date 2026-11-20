@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.L
 namespace PI.VolStabSW
 
 /- English proof (translation)
-The claim follows from `fFCount_of_inert FFHS.fFInert_holds`.
+A detailed English derivation is pending.
 -/
 theorem fFCount_holds : FFCount := fFCount_of_inert FFHS.fFInert_holds
 

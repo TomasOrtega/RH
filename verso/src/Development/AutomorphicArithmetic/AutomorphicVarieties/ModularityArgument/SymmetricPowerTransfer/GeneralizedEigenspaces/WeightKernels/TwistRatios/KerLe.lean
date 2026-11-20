@@ -13,7 +13,7 @@ open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qe26.kerLe`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Ga.kerLe :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (H : Type) [Group H] (n : ℕ) (R : H →* GL (Fin n) k), IsIrr R → ∀ (x₀ : GL (Fin n) k) (B : Type) [Ring B] [Algebra k B] [Module.Finite k B] (φ : H →* B) (f : B →ₗ[k] k), (∀ h, Ga.tr (x₀ * R h) = f (φ h)) → n ^ 2 ≤ Module.finrank k (Algebra.adjoin k (Set.range φ)) ∧ ∀ x : MonoidAlgebra k H, MonoidAlgebra.lift k B H φ x = 0 → MonoidAlgebra.lift k (Matrix (Fin n) (Fin n) k) H ((Units.coeHom _).comp R) x = 0 :=

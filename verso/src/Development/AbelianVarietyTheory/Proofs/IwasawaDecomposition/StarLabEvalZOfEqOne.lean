@@ -16,13 +16,13 @@ def IsCentreRay (w : InvFun O) (X : Type) [AddCommGroup X] [Module O X] [Module.
   ∃ t : ℝ, 0 < t ∧ ∃ β : LinearMap.BilinForm ℤ X, w.evalZ β = 1 ∧ ∀ a b, t * B a b = β a b
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, β, hw, hβ⟩`. Take `⟨s, hs⟩` from `Module.projective_lifting_property r LinearMap.id hr`. Establish `hs' : ∀ x, r (s x) = x` using `fun x => LinearMap.congr_fun hs x`. Use `⟨t, ht, pull s β, ?_, fun x y => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : pull r (pull s β) = β` using `LinearMap.ext₂ fun a b => by`. Establish `h1` using `hβ (s (r a)) (s (r b))`. Establish `h2` using `hβ a b`. Simplify using `only [hs'] at h1`. Simplify using `only [pull_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `h1.symm.trans h2` after adjusting the coercions. Rewrite using `[← evalZ_pull w hr, e, hw]`. Use `hβ (s x) (s y)` as an intermediate fact. Simplify using `only [hs'] at this`. Simplify `this` using `only [pull_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨t, ht, β, hw, hβ⟩`. Conclude with `⟨t, ht, pull r β, by rw [evalZ_pull w hr, hw], fun a b => by simp only [pull_apply, hβ]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCentreRay_comp (w : InvFun O) {X X₁ : Type} [AddCommGroup X] [Module O X] [Module.Finite O X]
     [AddCommGroup X₁] [Module O X₁] [Module.Finite O X₁] [Module.Projective O X₁] {r : X →ₗ[O] X₁}
@@ -62,7 +62,7 @@ def starLab (lab w : InvFun O) : InvFun O where
 open Classical in
 
 /- English proof (translation)
-Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' O X`. Rewrite using `[(starLab lab w).eval_eq hr, lab.eval_eq hr]`. Simplify using `only [starLab, isCentreRay_comp w hr B]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem starLab_eval (lab w : InvFun O) {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X]
     [Module.Projective O X] (B : X → X → ℝ) :
@@ -76,14 +76,14 @@ variable {X : Type} [AddCommGroup X]
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[InvFun.evalZ, starLab_eval, if_pos ⟨1, one_pos, β, h, fun a b => one_mul _⟩]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem starLab_evalZ_of_eq_one (lab w : InvFun O) [Module O X] [Module.Finite O X] [Module.Projective O X]
     {β : LinearMap.BilinForm ℤ X} (h : w.evalZ β = 1) : (starLab lab w).evalZ β = -1 := by
   rw [InvFun.evalZ, starLab_eval, if_pos ⟨1, one_pos, β, h, fun a b => one_mul _⟩]
 
 /- English proof (translation)
-Rewrite using `[InvFun.evalZ, starLab_eval, if_neg h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem starLab_evalZ_of_not (lab w : InvFun O) [Module O X] [Module.Finite O X] [Module.Projective O X]
     {β : LinearMap.BilinForm ℤ X} (h : ¬ IsCentreRay w X (fun a b => (β a b : ℝ))) :
@@ -91,11 +91,11 @@ theorem starLab_evalZ_of_not (lab w : InvFun O) [Module O X] [Module.Finite O X]
   rw [InvFun.evalZ, starLab_eval, if_neg h]; rfl
 
 /- English proof (translation)
-Establish `hk' : (0 : ℝ) < k` using `by exact_mod_cast hk`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, β', hw, h⟩`. Use `⟨t * k, mul_pos ht hk', β', hw, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[← h a b]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.smul_apply, smul_eq_mul, Int.cast_mul, Int.cast_natCast]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨t, ht, β', hw, h⟩`. Use `⟨t / k, div_pos ht hk', β', hw, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[← h a b]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.smul_apply, smul_eq_mul, Int.cast_mul, Int.cast_natCast]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem isCentreRay_smul_iff (w : InvFun O) [Module O X] [Module.Finite O X] (β : LinearMap.BilinForm ℤ X) {k : ℕ}
     (hk : 0 < k) :
@@ -110,7 +110,7 @@ theorem isCentreRay_smul_iff (w : InvFun O) [Module O X] [Module.Finite O X] (β
     rw [← h a b]; simp only [LinearMap.smul_apply, smul_eq_mul, Int.cast_mul, Int.cast_natCast]; field_simp
 
 /- English proof (translation)
-Unfold `InvFun.evalZ at hlab ⊢`. Rewrite using `[starLab_eval, starLab_eval, hlab]`. Distinguish the cases in `hc : IsCentreRay w X (fun a b => (β a b : ℝ))`. Rewrite using `[if_pos ((isCentreRay_smul_iff w β hk).2 hc), if_pos hc]`. Rewrite using `[if_neg (mt (isCentreRay_smul_iff w β hk).1 hc), if_neg hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem starLab_evalZ_smul (lab w : InvFun O) [Module O X] [Module.Finite O X] [Module.Projective O X]
     (β : LinearMap.BilinForm ℤ X) {k : ℕ} (hk : 0 < k) (hlab : lab.evalZ ((k : ℤ) • β) = lab.evalZ β) :
@@ -122,9 +122,9 @@ theorem starLab_evalZ_smul (lab w : InvFun O) [Module O X] [Module.Finite O X] [
   · rw [if_neg (mt (isCentreRay_smul_iff w β hk).1 hc), if_neg hc]
 
 /- English proof (translation)
-Take `⟨t, ht, β', hw, h⟩` from `h`. Simplify using `only at h`. Use `⟨t, ht, β', ⟨fun y z => ?_, fun a y z => ?_⟩, fun y => ?_, hw, LinearMap.ext₂ fun a b => ?_⟩` and prove the remaining obligations. Establish `: (β' y z : ℝ) = β' z y` using `by rw [← h, ← h, hb.1 y z]`. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (β' (a • y) z : ℝ) = β' y (bar a • z)` using `by rw [← h, ← h, hb.2 a y z]`. Conclude with `this` after adjusting the coercions. Establish `: (0 : ℝ) ≤ β' y y` using `by rw [← h]; exact mul_nonneg ht.le (by exact_mod_cast hp y)`. Conclude with `this` after adjusting the coercions. Simplify using `[← h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem exists_of_isCentreRay {bar : O → O} (w : InvFun O) [Module O X] [Module.Finite O X]
     {β : LinearMap.BilinForm ℤ X} (hb : β ∈ balForms bar X) (hp : ∀ y, 0 ≤ β y y)
@@ -143,7 +143,7 @@ theorem exists_of_isCentreRay {bar : O → O} (w : InvFun O) [Module O X] [Modul
   · simp [← h]
 
 /- English proof (translation)
-Take `⟨c, hc, e'⟩` from `hβ`. Use `⟨fun i => t * c i, fun i => mul_nonneg ht (hc i), ?_⟩` and prove the remaining obligations. Rewrite using `[e, e', Finset.smul_sum]`. Simplify using `only [smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem InRCone.of_toReal_eq_smul {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} {β β' : LinearMap.BilinForm ℤ X}
     (hβ : InRCone γ β) {t : ℝ} (ht : 0 ≤ t) (e : toReal β' = t • toReal β) : InRCone γ β' := by
@@ -153,7 +153,7 @@ theorem InRCone.of_toReal_eq_smul {m : ℕ} {γ : Fin m → LinearMap.BilinForm 
   simp only [smul_smul]
 
 /- English proof (translation)
-Set `e` to `Fintype.equivFin {j : Fin m // h (γ j) = 0}`. Use `⟨_, e.symm.toEmbedding.trans (Function.Embedding.subtype _), hh, fun j => ⟨fun hj => ⟨e ⟨j, hj⟩, by simp⟩, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(e.symm i).2`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_isFaceCut {m : ℕ} (γ : Fin m → LinearMap.BilinForm ℤ X) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ)
     (hh : ∀ j, 0 ≤ h (γ j)) : ∃ (m' : ℕ) (s : Fin m' ↪ Fin m), IsFaceCut γ s h := by
@@ -164,11 +164,11 @@ theorem exists_isFaceCut {m : ℕ} (γ : Fin m → LinearMap.BilinForm ℤ X) (h
   exact (e.symm i).2
 
 /- English proof (translation)
-Take `⟨c, hc, e⟩` from `hβ`. Establish `h1` using `apply_eq_of_toReal_eq e h`. Rewrite `h1` using `[h0, Int.cast_zero]`. Establish `hz : ∀ i, c i * (h (γ i) : ℝ) = 0` using `fun i => (Finset.sum_eq_zero_iff_of_nonneg (fun i _ => mul_nonneg (hc i) (by exact_mod_cast hf.1 i))).1 h1.symm i (Finset.mem_univ _)`. Establish `hc0 : ∀ i, i ∉ Set.range s → c i = 0` using `fun i hi => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : (h (γ i) : ℝ) ≠ 0` using `by exact_mod_cast fun h' => hi ((hf.2 i).1 h')`. Conclude with `(mul_eq_zero.1 (hz i)).resolve_right hpos`. Use `⟨fun j => c (s j), fun j => hc _, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Establish `hm` using `Finset.sum_map Finset.univ s (fun i => c i • toReal (γ i))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hm]`. Use `(Finset.sum_subset (Finset.subset_univ _) fun i _ hi => ?_).symm` and prove the remaining obligations. Rewrite using `[hc0 i (fun ⟨j, hj⟩ => hi (Finset.mem_map.2 ⟨j, Finset.mem_univ _, hj⟩)), zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inRCone_face {m m' : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} {s : Fin m' ↪ Fin m}
     {h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ} (hf : IsFaceCut γ s h) {β : LinearMap.BilinForm ℤ X} (hβ : InRCone γ β)
@@ -191,7 +191,7 @@ theorem inRCone_face {m m' : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} {s 
   rw [hc0 i (fun ⟨j, hj⟩ => hi (Finset.mem_map.2 ⟨j, Finset.mem_univ _, hj⟩)), zero_smul]
 
 /- English proof (translation)
-Take `⟨c, hc, e⟩` from `hβ`. Establish `h1` using `apply_eq_of_toReal_eq e h`. Simplify using `only [(hf.2 _).2 ⟨_, rfl⟩, Int.cast_zero, mul_zero, Finset.sum_const_zero] at h1`. Conclude with `h1` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsFaceCut.apply_eq_zero {m m' : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} {s : Fin m' ↪ Fin m}
     {h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ} (hf : IsFaceCut γ s h) {β : LinearMap.BilinForm ℤ X}
@@ -202,22 +202,22 @@ theorem IsFaceCut.apply_eq_zero {m m' : ℕ} {γ : Fin m → LinearMap.BilinForm
   exact_mod_cast h1
 
 /- English proof (translation)
-The claim follows from `inRCone_trans (fun j => inRCone_self γ (s j)) hβ`.
+A detailed English derivation is pending.
 -/
 theorem inRCone_of_sub {m m' : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} (s : Fin m' → Fin m)
     {β : LinearMap.BilinForm ℤ X} (hβ : InRCone (fun j => γ (s j)) β) : InRCone γ β :=
   inRCone_trans (fun j => inRCone_self γ (s j)) hβ
 
 /- English proof (translation)
-Introduce `σ hσ n B`. Set `e : (Fin n → 𝓞 E) ≃ₗ[ℤ] (Fin n → 𝓞 E)` to `AddEquiv.toIntLinearEquiv (AddEquiv.piCongrRight fun _ => σ.toAddEquiv)`. Establish `he : ∀ a, e a = fun i => σ (a i)` using `fun a => rfl`. Establish `hwt : ∀ β : LinearMap.BilinForm ℤ (Fin n → 𝓞 E), w.evalZ (β.compl₁₂ e.toLinearMap e.toLinearMap) = w.evalZ β` using `fun β => by`. Simplify using `only [InvFun.evalZ, InvFun.eval_pi, LinearMap.compl₁₂_apply, LinearEquiv.coe_coe, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hw σ hσ n (fun a b => (β a b : ℝ))`. Establish `key : IsCentreRay w (Fin n → 𝓞 E) (fun a b => B (fun i => σ (a i)) (fun i => σ (b i))) ↔ IsCentreRay w (Fin n → 𝓞 E) B`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, β, h1, h2⟩`. Use `⟨t, ht, β.compl₁₂ e.symm.toLinearMap e.symm.toLinearMap, ?_, fun a b => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hwt, ← h1]`. Use `congr 1`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Use `h2 (e.symm a) (e.symm b)` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [← he, LinearEquiv.apply_symm_apply] at this`. Simplify using `using this`. Introduce and unpack `⟨t, ht, β, h1, h2⟩`. Conclude with `⟨t, ht, β.compl₁₂ e.toLinearMap e.toLinearMap, by rw [hwt, h1], fun a b => by`. Simplify using `only [LinearMap.compl₁₂_apply, LinearEquiv.coe_coe, he, h2]⟩`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hlab` using `hl σ hσ n B`. Simplify using `only [starLab]`. Distinguish the cases in `hc : IsCentreRay w (Fin n → 𝓞 E) B`. Rewrite using `[if_pos (key.2 hc), if_pos hc]`. Rewrite using `[if_neg (mt key.1 hc), if_neg hc, hlab]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTwInv_starLab {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {lab w : InvFun (𝓞 E)}
     (hl : IsTwInv H lab) (hw : IsTwInv H w) : IsTwInv H (starLab lab w) := by

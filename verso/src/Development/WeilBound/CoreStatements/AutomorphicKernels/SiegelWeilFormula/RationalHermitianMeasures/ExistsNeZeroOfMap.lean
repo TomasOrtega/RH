@@ -17,7 +17,7 @@ open PositivityTheory.SiegelWeilFormula PositivityTheory.SiegelWeilFormula.KWhit
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, hσ, hM, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_sym {ι κ : Type} [Fintype ι] (hσ : ∀ a, σ (σ a) = a) (P : Matrix ι κ E) (M : Matrix ι ι E) (s : E)
     (hM : ∀ i j, σ (M j i) = s * M i j) (i j : κ) :
@@ -28,7 +28,7 @@ theorem conj_sym {ι κ : Type} [Fintype ι] (hσ : ∀ a, σ (σ a) = a) (P : M
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Establish `hD : ∀ i j, σ (dbl J j i) = s * dbl J i j`. Apply the tactic sequence `rintro (i | i) (j | j) <;> simp [dbl, hJ]`. Establish `h` using `conj_sym hσ b.1 (dbl J) s hD (Sum.inl ⟨0, hn⟩) (Sum.inr ⟨0, hn⟩)`. Rewrite `h` using `[hb]`. Simplify using `using h`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem frame_sign (hσ : ∀ a, σ (σ a) = a) {n : ℕ} (hn : 1 ≤ n) (J : Matrix (Fin n) (Fin n) E) (s : E)
     (hJ : ∀ i j, σ (J j i) = s * J i j) (b : GL (Fin n ⊕ Fin n) E) (ε : ℤˣ)
@@ -40,9 +40,9 @@ theorem frame_sign (hσ : ∀ a, σ (σ a) = a) {n : ℕ} (hn : 1 ≤ n) (J : Ma
   simpa using h
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Take `⟨hrs, A, hA⟩` from `h`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul] at hA`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Establish `hs : 0 < s` using `by omega`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `congrFun (congrFun hA (Sum.inr ⟨0, hs⟩)) (Sum.inr ⟨0, hs⟩)` as an intermediate fact. Simplify using `at this`. Use `congrFun (congrFun hA (Sum.inl ⟨0, hr⟩)) (Sum.inl ⟨0, hr⟩)` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ne_zero_of_sig {m r s : ℕ} (hm : 1 ≤ m) (M : Matrix (Fin m) (Fin m) ℂ) (h : HasSig M r s) : M ≠ 0 := by
   rintro rfl
@@ -56,7 +56,7 @@ theorem ne_zero_of_sig {m r s : ℕ} (hm : 1 ≤ m) (M : Matrix (Fin m) (Fin m) 
     simp at this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[hc i j]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_of_map {m : ℕ} (J : Matrix (Fin m) (Fin m) E) (f : E →+* ℂ) (c : ℂ) (h : c • J.map f ≠ 0) :
     ∃ i j, J i j ≠ 0 := by
@@ -67,13 +67,13 @@ theorem exists_ne_zero_of_map {m : ℕ} (J : Matrix (Fin m) (Fin m) E) (f : E �
   simp [hc i j]
 
 /- English proof (translation)
-Establish `hσ` using `sigma_sigma_of_good d.ok.good`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Break down `d.ok.sign with ⟨hA, hY⟩ | ⟨hA, hY⟩` into its components or cases. Establish `he` using `frame_sign hσ d.ok.hn d.Y.J (-1) (fun i j => by rw [hY, neg_one_mul]) d.b ε hb`. Take `⟨i, j, hij⟩` from `exists_ne_zero_of_map d.A.J (d.B.emb w).1 1 (by rw [one_smul]; exact ne_zero_of_sig d.ok.hm _ (hA.sig w))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h` using `herm i j`. Rewrite `h` using `[map_mul, hA.herm]`. Rewrite using `[he, neg_neg, one_mul]`. Conclude with `mul_right_cancel₀ hij h`. Establish `he` using `frame_sign hσ d.ok.hn d.Y.J 1 (fun i j => by rw [hY, one_mul]) d.b ε hb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, j, hij⟩` from `exists_ne_zero_of_map d.A.J (d.B.emb w).1 Complex.I (ne_zero_of_sig d.ok.hm _ (hA.sig w))`. Establish `h` using `herm i j`. Rewrite `h` using `[map_mul, hA.skew]`. Rewrite using `[he, neg_one_mul]`. Apply `mul_right_cancel₀ hij` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-h`.
+A detailed English derivation is pending.
 -/
 theorem eta_sign (d : SD σ) {η : E} (herm : ∀ i j, σ (η * d.A.J j i) = η * d.A.J i j) {ε : ℤˣ}
     (hb : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) :

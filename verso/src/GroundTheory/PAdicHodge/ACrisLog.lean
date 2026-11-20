@@ -18,16 +18,16 @@ def IsAdicSum (a : ℕ → R) (s : R) : Prop :=
 variable {I}
 
 /- English proof (translation)
-The claim follows from `Ideal.sum_mem _ fun n hn => h n (Finset.mem_Ico.1 hn).1`.
+A detailed English derivation is pending.
 -/
 theorem sum_Ico_mem_of_forall {J : Ideal R} {a : ℕ → R} {N : ℕ} (h : ∀ n, N ≤ n → a n ∈ J)
     (M : ℕ) : ∑ n ∈ Finset.Ico N M, a n ∈ J :=
   Ideal.sum_mem _ fun n hn => h n (Finset.mem_Ico.1 hn).1
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Apply `IsHausdorff.haus' (I := I)` to reduce the goal to its premises. Introduce `k`. Take `⟨N, hN⟩` from `hs k`. Take `⟨N', hN'⟩` from `hs' k`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h` using `sub_mem (hN (max N N') (le_max_left _ _)) (hN' (max N N') (le_max_right _ _))`. Rewrite using `[SModEq.sub_mem, sub_zero, smul_eq_mul, Ideal.mul_top]`. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsAdicSum.unique [IsHausdorff I R] {a : ℕ → R} {s s' : R} (hs : IsAdicSum I a s)
     (hs' : IsAdicSum I a s') : s = s' := by
@@ -42,13 +42,13 @@ theorem IsAdicSum.unique [IsHausdorff I R] {a : ℕ → R} {s s' : R} (hs : IsAd
   ring
 
 /- English proof (translation)
-Use `choose g hg using ha`. Use `set G : ℕ → ℕ := fun k => ∑ j ∈ Finset.range (k + 1), g j`. Establish `hG : ∀ k, g k ≤ G k` using `fun k => Finset.single_le_sum (f := g) (fun _ _ => Nat.zero_le _) (Finset.self_mem_range_succ k)`. Establish `hGm : Monotone G` using `fun m n hmn => Finset.sum_le_sum_of_subset (Finset.range_subset_range.2 (Nat.succ_le_succ hmn))`. Establish `hdiff : ∀ k M, G k ≤ M → ∑ n ∈ Finset.range M, a n - ∑ n ∈ Finset.range (G k), a n ∈ I ^ k` using `fun k M hM => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Finset.sum_range_add_sum_Ico _ hM, add_sub_cancel_left]`. Conclude with `sum_Ico_mem_of_forall (fun n hn => hg k n ((hG k).trans hn)) M`. Take `⟨L, hL⟩` from `IsPrecomplete.prec (I := I) inferInstance (f := fun k => ∑ n ∈ Finset.range (G k), a n) (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Use `hdiff m (G n) (hGm hmn)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← neg_sub]`. Conclude with `neg_mem this)`. Use `⟨L, fun k => ⟨G k, fun M hM => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hL k`. Rewrite `h1` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2` using `hdiff k M hM`. Use `add_mem (neg_mem h1) (neg_mem h2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_isAdicSum [IsPrecomplete I R] {a : ℕ → R}
     (ha : ∀ k, ∃ N, ∀ n, N ≤ n → a n ∈ I ^ k) : ∃ s, IsAdicSum I a s := by
@@ -77,7 +77,7 @@ theorem exists_isAdicSum [IsPrecomplete I R] {a : ℕ → R}
   ring
 
 /- English proof (translation)
-Introduce `k` and use `by obtain ⟨N, hN⟩ := hs k obtain ⟨N', hN'⟩ := ht k refine ⟨max N N', fun M hM => ?_⟩ have := add_mem (hN M (le_of_max_le_left hM)) (hN' M (le_of_max_le_right hM)) rw [Finset.sum_add_distrib] convert this using 1 ring`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsAdicSum.add {a b : ℕ → R} {s t : R} (hs : IsAdicSum I a s) (ht : IsAdicSum I b t) :
     IsAdicSum I (fun n => a n + b n) (s + t) := fun k => by
@@ -90,7 +90,7 @@ theorem IsAdicSum.add {a b : ℕ → R} {s t : R} (hs : IsAdicSum I a s) (ht : I
   ring
 
 /- English proof (translation)
-Introduce `k` and use `by obtain ⟨N, hN⟩ := hs k refine ⟨N, fun M hM => ?_⟩ rw [← Finset.mul_sum, ← mul_sub] exact Ideal.mul_mem_left _ c (hN M hM)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsAdicSum.mul_left (c : R) {a : ℕ → R} {s : R} (hs : IsAdicSum I a s) :
     IsAdicSum I (fun n => c * a n) (c * s) := fun k => by
@@ -100,21 +100,21 @@ theorem IsAdicSum.mul_left (c : R) {a : ℕ → R} {s : R} (hs : IsAdicSum I a s
   exact Ideal.mul_mem_left _ c (hN M hM)
 
 /- English proof (translation)
-Simplify using `using hs.mul_left (-1)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsAdicSum.neg {a : ℕ → R} {s : R} (hs : IsAdicSum I a s) :
     IsAdicSum I (fun n => -a n) (-s) := by
   simpa using hs.mul_left (-1)
 
 /- English proof (translation)
-Simplify `hs.add ht.neg` using `[sub_eq_add_neg]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsAdicSum.sub {a b : ℕ → R} {s t : R} (hs : IsAdicSum I a s) (ht : IsAdicSum I b t) :
     IsAdicSum I (fun n => a n - b n) (s - t) := by
   simpa [sub_eq_add_neg] using hs.add ht.neg
 
 /- English proof (translation)
-Establish `: a = b` using `funext h`. Rewrite using `[← this]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem IsAdicSum.congr {a b : ℕ → R} {s : R} (hs : IsAdicSum I a s) (h : ∀ n, a n = b n) :
     IsAdicSum I b s := by
@@ -122,7 +122,7 @@ theorem IsAdicSum.congr {a b : ℕ → R} {s : R} (hs : IsAdicSum I a s) (h : �
   rwa [← this]
 
 /- English proof (translation)
-Introduce `k` and use `⟨m, fun M hM => by rw [← Finset.sum_range_add_sum_Ico _ hM, Finset.sum_eq_zero (fun n hn => h n (Finset.mem_Ico.1 hn).1), add_zero, sub_self] exact zero_mem _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isAdicSum_of_eq_zero {a : ℕ → R} {m : ℕ} (h : ∀ n, m ≤ n → a n = 0) :
     IsAdicSum I a (∑ n ∈ Finset.range m, a n) := fun k => ⟨m, fun M hM => by
@@ -131,7 +131,7 @@ theorem isAdicSum_of_eq_zero {a : ℕ → R} {m : ℕ} (h : ∀ n, m ≤ n → a
   exact zero_mem _⟩
 
 /- English proof (translation)
-Introduce `k` and use `by obtain ⟨N, hN⟩ := hs k refine ⟨N, fun M hM => ?_⟩ rw [← map_sum, ← map_sub] exact (Ideal.pow_right_mono hf k).trans (Ideal.le_comap_pow f k) (hN M hM)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsAdicSum.map {S : Type*} [CommRing S] {J : Ideal S} (f : R →+* S) (hf : I ≤ J.comap f)
     {a : ℕ → R} {s : R} (hs : IsAdicSum I a s) : IsAdicSum J (fun n => f (a n)) (f s) := fun k => by
@@ -141,7 +141,7 @@ theorem IsAdicSum.map {S : Type*} [CommRing S] {J : Ideal S} (f : R →+* S) (hf
   exact (Ideal.pow_right_mono hf k).trans (Ideal.le_comap_pow f k) (hN M hM)
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `hs k`. Use `add_mem (hJ (hN N le_rfl)) (Ideal.sum_mem J (t := Finset.range N) fun n _ => ha n)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsAdicSum.mem {J : Ideal R} {k : ℕ} (hJ : I ^ k ≤ J) {a : ℕ → R} {s : R}
     (hs : IsAdicSum I a s) (ha : ∀ n, a n ∈ J) : s ∈ J := by
@@ -168,14 +168,14 @@ local notation "𝔭" => Ideal.span {(p : ACris K p)}
 omit [IsPerfectoidField K p] in
 
 /- English proof (translation)
-The claim follows from `((pow_dvd_pow p (by rw [padicValNat_factorial_mul]; omega)).trans pow_padicValNat_dvd).trans (Nat.factorial_dvd_factorial h)`.
+A detailed English derivation is pending.
 -/
 theorem pow_dvd_factorial {k n : ℕ} (h : p * k ≤ n) : p ^ k ∣ n.factorial :=
   ((pow_dvd_pow p (by rw [padicValNat_factorial_mul]; omega)).trans pow_padicValNat_dvd).trans
     (Nat.factorial_dvd_factorial h)
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Rewrite using `[Nat.cast_mul, Nat.cast_pow, Ideal.span_singleton_pow]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_pow {k n : ℕ} (h : p ^ k ∣ n) :
     (n : ACrisZero K p) ∈ Ideal.span {(p : ACrisZero K p)} ^ k := by
@@ -184,14 +184,14 @@ theorem natCast_mem_pow {k n : ℕ} (h : p ^ k ∣ n) :
   exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_pow, Ideal.map_span, Set.image_singleton, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_span_p_pow (k : ℕ) :
     (Ideal.span {(p : ACrisZero K p)} ^ k).map (algebraMap (ACrisZero K p) (ACris K p)) = 𝔭 ^ k := by
   rw [Ideal.map_pow, Ideal.map_span, Set.image_singleton, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[← map_span_p_pow]`. Conclude with `Ideal.mem_map_of_mem _ hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_pow {k : ℕ} {y : ACrisZero K p} (hy : y ∈ Ideal.span {(p : ACrisZero K p)} ^ k) :
     algebraMap (ACrisZero K p) (ACris K p) y ∈ 𝔭 ^ k := by
@@ -199,7 +199,7 @@ theorem algebraMap_mem_pow {k : ℕ} {y : ACrisZero K p} (hy : y ∈ Ideal.span 
   exact Ideal.mem_map_of_mem _ hy
 
 /- English proof (translation)
-Simplify `Ideal.mem_span_singleton_self _)` using `using algebraMap_mem_pow (k := 1) (y := (p : ACrisZero K p)) (by simpa`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem algebraMap_p_mem : algebraMap (ACrisZero K p) (ACris K p) (p : ACrisZero K p) ∈ 𝔭 := by
   simpa using algebraMap_mem_pow (k := 1) (y := (p : ACrisZero K p)) (by simpa using Ideal.mem_span_singleton_self _)
@@ -221,21 +221,21 @@ def logTerm {x : AInf K p} (hx : x ∈ RingHom.ker θ) (n : ℕ) : ACris K p :=
   algebraMap (ACrisZero K p) (ACris K p) (logTermZero hx n)
 
 /- English proof (translation)
-The claim follows from `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (natCast_mem_pow (pow_dvd_factorial h)))`.
+A detailed English derivation is pending.
 -/
 theorem logTermZero_mem {x : AInf K p} (hx : x ∈ RingHom.ker θ) {k n : ℕ} (h : p * k ≤ n) :
     logTermZero hx n ∈ Ideal.span {(p : ACrisZero K p)} ^ k :=
   Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (natCast_mem_pow (pow_dvd_factorial h)))
 
 /- English proof (translation)
-The claim follows from `algebraMap_mem_pow (logTermZero_mem hx h)`.
+A detailed English derivation is pending.
 -/
 theorem logTerm_mem {x : AInf K p} (hx : x ∈ RingHom.ker θ) {k n : ℕ} (h : p * k ≤ n) :
     logTerm hx n ∈ 𝔭 ^ k :=
   algebraMap_mem_pow (logTermZero_mem hx h)
 
 /- English proof (translation)
-The claim follows from `exists_isAdicSum fun k => ⟨p * k, fun _ hn => logTerm_mem hx hn⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isAdicSum_logTerm {x : AInf K p} (hx : x ∈ RingHom.ker θ) :
     ∃ s, IsAdicSum 𝔭 (logTerm hx) s :=
@@ -245,21 +245,21 @@ def log {x : AInf K p} (hx : x ∈ RingHom.ker θ) : ACris K p :=
   (exists_isAdicSum_logTerm hx).choose
 
 /- English proof (translation)
-The claim follows from `(exists_isAdicSum_logTerm hx).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem isAdicSum_log {x : AInf K p} (hx : x ∈ RingHom.ker θ) :
     IsAdicSum 𝔭 (logTerm hx) (log hx) :=
   (exists_isAdicSum_logTerm hx).choose_spec
 
 /- English proof (translation)
-The claim follows from `(isAdicSum_log hx).unique hs`.
+A detailed English derivation is pending.
 -/
 theorem log_eq_of_isAdicSum {x : AInf K p} {hx : x ∈ RingHom.ker θ} {s : ACris K p}
     (hs : IsAdicSum 𝔭 (logTerm hx) s) : log hx = s :=
   (isAdicSum_log hx).unique hs
 
 /- English proof (translation)
-The claim follows from `RingHom.mem_ker.2 (AInf.fontaineTheta_mu hε)`.
+A detailed English derivation is pending.
 -/
 theorem mu_mem_ker {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) : AInf.mu (K := K) ε ∈ RingHom.ker θ :=
   RingHom.mem_ker.2 (AInf.fontaineTheta_mu hε)
@@ -272,7 +272,7 @@ section Theta
 variable [CharZero K]
 
 /- English proof (translation)
-Rewrite using `[logTerm, AdicCompletion.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, theta_of, logTermZero, map_mul, dpowZero, thetaZero_dpow hx n.succ_ne_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_logTerm {x : AInf K p} (hx : x ∈ RingHom.ker θ) (n : ℕ) :
     theta K p (logTerm hx n) = 0 := by
@@ -280,9 +280,9 @@ theorem theta_logTerm {x : AInf K p} (hx : x ∈ RingHom.ker θ) (n : ℕ) :
     theta_of, logTermZero, map_mul, dpowZero, thetaZero_dpow hx n.succ_ne_zero, mul_zero]
 
 /- English proof (translation)
-Establish `hle : 𝔭 ≤ (Ideal.span {(p : 𝒪)}).comap (theta K p)`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `h` using `(isAdicSum_log hx).map (theta K p) hle`. Establish `h0 : IsAdicSum (Ideal.span {(p : 𝒪)}) (fun n => theta K p (logTerm hx n)) 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isAdicSum_of_eq_zero (I := Ideal.span {(p : 𝒪)}) (a := fun n => theta K p (logTerm hx n)) (m := 0) (fun n _ => theta_logTerm hx n)` as an intermediate fact. Simplify using `using this`. Conclude with `h.unique h0`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem theta_log {x : AInf K p} (hx : x ∈ RingHom.ker θ) : theta K p (log hx) = 0 := by
   have hle : 𝔭 ≤ (Ideal.span {(p : 𝒪)}).comap (theta K p) := by
@@ -296,7 +296,7 @@ theorem theta_log {x : AInf K p} (hx : x ∈ RingHom.ker θ) : theta K p (log hx
   exact h.unique h0
 
 /- English proof (translation)
-The claim follows from `theta_log _`.
+A detailed English derivation is pending.
 -/
 theorem theta_periodT {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) : theta K p (periodT hε) = 0 :=
   theta_log _
@@ -321,11 +321,11 @@ local notation "φ" => WittVector.frobeniusEquiv p (PreTilt (normInteger K) p)
 local notation "𝔭" => Ideal.span {(p : ACris K p)}
 
 /- English proof (translation)
-Use `haveI := IsPerfectoidField.isDomain_preTilt (K := K) p`. Rewrite using `[mem_span_p_iff_coeff_zero_eq_zero, ← WittVector.constantCoeff_apply, AInf.frobeniusEquiv_symm_mu, AInf.xi]`. Simplify using `only [map_sub, map_sum, map_pow, map_one, WittVector.constantCoeff_apply, teichmuller_coeff_zero]`. Use `set e := (_root_.frobeniusEquiv 𝒪♭ p).symm ε`. Establish `h1` using `geom_sum_mul e p`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : (e - 1) ^ p = e ^ p - 1` using `by rw [sub_pow_char, one_pow]`. Distinguish the cases in `he : e - 1 = 0`. Rewrite using `[he, zero_pow (Nat.sub_ne_zero_of_lt hp.out.one_lt), sub_zero, sub_eq_zero.1 he]`. Simplify using `only [one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Conclude with `CharP.cast_eq_zero _ p`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_zero]`. Apply `mul_right_cancel₀ he` to reduce the goal to its premises. Rewrite using `[h1, ← h2, ← pow_succ, Nat.sub_add_cancel hp.out.one_le]`.
+A detailed English derivation is pending.
 -/
 theorem xi_sub_pow_mem (ε : 𝒪♭) :
     AInf.xi (K := K) ε - ((φ).symm (AInf.mu ε)) ^ (p - 1) ∈ Ideal.span {(p : AInf K p)} := by
@@ -346,11 +346,11 @@ theorem xi_sub_pow_mem (ε : 𝒪♭) :
     rw [h1, ← h2, ← pow_succ, Nat.sub_add_cancel hp.out.one_le]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 (xi_sub_pow_mem (K := K) ε)`. Establish `hξ : AInf.xi ε ∈ RingHom.ker θ` using `RingHom.mem_ker.2 (AInf.fontaineTheta_xi hε hζ)`. Use `set ξ := AInf.xi (K := K) ε`. Use `set v := (φ).symm (AInf.mu ε)`. Establish `hμ : AInf.mu ε = ξ * v` using `AInf.mu_eq_xi_mul ε`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : AInf.mu ε ^ (p - 1) = ξ ^ p - (p : AInf K p) * (a * ξ ^ (p - 1))`. Establish `hv : v ^ (p - 1) = ξ - a * p` using `by rw [ha]; ring`. Establish `hp1 : ξ ^ p = ξ ^ (p - 1) * ξ` using `by rw [← pow_succ, Nat.sub_add_cancel hp.out.one_le]`. Rewrite using `[hμ, mul_pow, hv, hp1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨((p - 1).factorial : ACrisZero K p) * ⟨dpow p ξ, dpow_mem hξ p⟩ - algebraMap (AInf K p) (ACrisZero K p) (a * ξ ^ (p - 1)), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_pow, Subalgebra.coe_mul, Subalgebra.coe_sub, SubringClass.coe_natCast, Subalgebra.coe_algebraMap]`. Rewrite using `[← map_pow, hW, map_sub, map_pow, ← factorial_mul_dpow, map_mul, map_natCast, ← Nat.mul_factorial_pred hp.out.ne_zero, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_mu_pow_eq {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) :
@@ -376,13 +376,13 @@ theorem exists_mu_pow_eq {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
   ring
 
 /- English proof (translation)
-Establish `hcop : (n + 1).Coprime p` using `(Nat.coprime_of_lt_prime (Nat.succ_ne_zero n) hn hp.out).symm`. Establish `hu` using `WittVector.isUnit_natCast_of_coprime (R := 𝒪♭) hcop`. Use `⟨(-1) ^ n * algebraMap (AInf K p) (ACrisZero K p) (x ^ n * ↑hu.unit⁻¹), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [logTermZero, Subalgebra.coe_pow, Subalgebra.coe_mul, Subalgebra.coe_neg, Subalgebra.coe_one, SubringClass.coe_natCast, Subalgebra.coe_algebraMap, coe_dpowZero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `h1` using `isUnit_natCast (K := K) (p := p) (Nat.succ_ne_zero n)`. Apply `h1.mul_left_cancel` to reduce the goal to its premises. Establish `h2 : ((n + 1 : ℕ) : 𝔸) * (n.factorial : 𝔸) = ((n + 1).factorial : 𝔸)`. Rewrite using `[← Nat.cast_mul, Nat.factorial_succ]`. Establish `h3 : ((n + 1 : ℕ) : 𝔸) * algebraMap (AInf K p) 𝔸 ↑hu.unit⁻¹ = 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (algebraMap (AInf K p) 𝔸), ← map_mul, IsUnit.mul_val_inv, map_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, factorial_mul_dpow]`. Use `_ = ((n + 1 : ℕ) : 𝔸) * (algebraMap (AInf K p) 𝔸 x * ((-1) ^ n * algebraMap (AInf K p) 𝔸 (x ^ n * ↑hu.unit⁻¹))) := by`. Rewrite using `[map_mul, map_pow]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-1) ^ n * algebraMap (AInf K p) 𝔸 x ^ (n + 1) * h3.symm`.
+A detailed English derivation is pending.
 -/
 theorem logTermZero_eq_mul_of_lt {x : AInf K p} (hx : x ∈ RingHom.ker θ) {n : ℕ} (hn : n + 1 < p) :
     ∃ w : ACrisZero K p, logTermZero hx n = algebraMap (AInf K p) (ACrisZero K p) x * w := by
@@ -408,11 +408,11 @@ theorem logTermZero_eq_mul_of_lt {x : AInf K p} (hx : x ∈ RingHom.ker θ) {n :
         linear_combination (-1) ^ n * algebraMap (AInf K p) 𝔸 x ^ (n + 1) * h3.symm
 
 /- English proof (translation)
-Establish `hcc` using `congrArg (fun y : ACrisZero K p => (y : 𝔸)) hc`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [logTermZero, Subalgebra.coe_pow, Subalgebra.coe_mul, Subalgebra.coe_neg, Subalgebra.coe_one, SubringClass.coe_natCast, Subalgebra.coe_algebraMap, coe_dpowZero] at hcc ⊢`. Establish `h1` using `isUnit_natCast (K := K) (p := p) hp.out.ne_zero`. Apply `h1.mul_left_cancel` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Nat.sub_add_cancel hp.out.one_le]`. Establish `h2 : (p : 𝔸) * ((p - 1).factorial : 𝔸) = (p.factorial : 𝔸)`. Rewrite using `[← Nat.cast_mul, Nat.mul_factorial_pred hp.out.ne_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, factorial_mul_dpow, ← pow_succ', Nat.sub_add_cancel hp.out.one_le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (p : 𝔸) * (algebraMap (AInf K p) 𝔸 x * ((-1) ^ (p - 1) * (c : 𝔸))) := by`. Rewrite using `[hcc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem logTermZero_pred_eq {x : AInf K p} (hx : x ∈ RingHom.ker θ) {c : ACrisZero K p}
     (hc : (algebraMap (AInf K p) (ACrisZero K p) x) ^ (p - 1) = (p : ACrisZero K p) * c) :
@@ -436,21 +436,21 @@ theorem logTermZero_pred_eq {x : AInf K p} (hx : x ∈ RingHom.ker θ) {c : ACri
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hsmall : ∀ n, ∃ w : ACrisZero K p, n < p → logTermZero hx n = algebraMap (AInf K p) (ACrisZero K p) x * w` using `fun n => by`. Distinguish the cases in `hn' : n + 1 < p`. Take `⟨w, hw⟩` from `logTermZero_eq_mul_of_lt hx hn'`. Conclude with `⟨w, fun _ => hw⟩`. Distinguish the cases in `hn : n < p`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Establish `hnp : n = p - 1` using `by omega`. Substitute `hnp` using the available equality. Conclude with `⟨_, fun _ => logTermZero_pred_eq hx hc⟩`. Conclude with `⟨0, fun h => absurd h hn⟩`. Use `choose w hw using hsmall`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `b0 : ℕ → ACrisZero K p` to `fun n => if n < p then 0 else (-1) ^ n * ((n.factorial / p : ℕ) : ACrisZero K p) * dpowZero hx (n + 1)`. Establish `hbmem : ∀ k n, p * (k + 1) ≤ n → algebraMap (ACrisZero K p) (ACris K p) (b0 n) ∈ 𝔭 ^ k` using `fun k n hn => by`. Establish `hnp : ¬ n < p` using `by nlinarith [hp.out.one_lt]`. Use `algebraMap_mem_pow ?_` and prove the remaining obligations. Simplify using `only [b0, hnp, if_false]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (natCast_mem_pow ?_))` and prove the remaining obligations. Take `⟨d, hd⟩` from `pow_dvd_factorial (p := p) hn`. Rewrite using `[hd, pow_succ', mul_assoc, Nat.mul_div_cancel_left _ hp.out.pos]`. Conclude with `Dvd.intro d rfl`. Take `⟨s, hs⟩` from `exists_isAdicSum (I := 𝔭) (a := fun n => algebraMap (ACrisZero K p) (ACris K p) (b0 n)) fun k => ⟨p * (k + 1), hbmem k⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `a0 : ℕ → ACrisZero K p` to `fun n => if n < p then logTermZero hx n else 0`. Establish `hsplit : ∀ n, a0 n + (p : ACrisZero K p) * b0 n = logTermZero hx n` using `fun n => by`. Distinguish the cases in `hn : n < p`. Simplify using `[a0, b0, hn]`. Simplify using `only [a0, b0, hn, if_false, zero_add, logTermZero]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hdvd : p ∣ n.factorial` using `Nat.dvd_factorial hp.out.pos (not_lt.1 hn)`. Use `conv_rhs => rw [← Nat.mul_div_cancel' hdvd, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsplit' : ∀ n, algebraMap (ACrisZero K p) (ACris K p) (a0 n) + algebraMap (ACrisZero K p) (ACris K p) (p : ACrisZero K p) * algebraMap (ACrisZero K p) (ACris K p) (b0 n) = logTerm hx n` using `fun n => by`. Rewrite using `[logTerm, ← hsplit n, map_add, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha'sum : IsAdicSum 𝔭 (fun n => algebraMap (ACrisZero K p) (ACris K p) (a0 n)) (∑ n ∈ Finset.range p, algebraMap (ACrisZero K p) (ACris K p) (a0 n))` using `isAdicSum_of_eq_zero fun n hn => by simp [a0, not_lt.2 hn]`. Establish `ht : log hx = ∑ n ∈ Finset.range p, algebraMap (ACrisZero K p) (ACris K p) (a0 n) + algebraMap (ACrisZero K p) (ACris K p) (p : ACrisZero K p) * s` using `log_eq_of_isAdicSum ((ha'sum.add (hs.mul_left _)).congr hsplit')`. Establish `hfin : ∑ n ∈ Finset.range p, algebraMap (ACrisZero K p) (ACris K p) (a0 n) = algebraMap (ACrisZero K p) (ACris K p) (algebraMap (AInf K p) (ACrisZero K p) x) * ∑ n ∈ Finset.range p, algebraMap (ACrisZero K p) (ACris K p) (w n)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hn'` using `Finset.mem_range.1 hn`. Simplify using `only [a0, hn', if_true]`. Rewrite using `[hw n hn', map_mul]`. Establish `hp0 : Ideal.Quotient.mk 𝔭 (algebraMap (ACrisZero K p) (ACris K p) (p : ACrisZero K p)) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 algebraMap_p_mem`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_pow, ht, hfin, map_add, map_mul (Ideal.Quotient.mk 𝔭) (algebraMap (ACrisZero K p) (ACris K p) (p : ACrisZero K p)), hp0, zero_mul, add_zero, map_mul, mul_pow, ← map_pow, ← map_pow, hc, map_mul, map_mul, hp0, zero_mul, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_pow_mem {x : AInf K p} (hx : x ∈ RingHom.ker θ) {c : ACrisZero K p}
     (hc : (algebraMap (AInf K p) (ACrisZero K p) x) ^ (p - 1) = (p : ACrisZero K p) * c) :
@@ -512,7 +512,7 @@ theorem log_pow_mem {x : AInf K p} (hx : x ∈ RingHom.ker θ) {c : ACrisZero K 
     mul_pow, ← map_pow, ← map_pow, hc, map_mul, map_mul, hp0, zero_mul, zero_mul]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_mu_pow_eq hε hζ`. Conclude with `log_pow_mem _ hc`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem periodT_pow_mem {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) :

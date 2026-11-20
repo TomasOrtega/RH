@@ -8,9 +8,9 @@ namespace LateralTheory.E.LeafKumFieldPf.H0Naturality
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Establish `h` using `congrArg (fun f => HomologicalComplex.Hom.f f 0) (InjectiveResolution.desc_commutes φ (injectiveResolution G) (injectiveResolution F))`. Simplify using `only [HomologicalComplex.comp_f] at h`. Simplify using `only [resι, resMap, InjectiveResolution.ι'_f_zero, InjectiveResolution.cochainComplexXIso]`. Rewrite using `[HomologicalComplex.extendMap_f _ _ (i := 0) (by rfl)]`. Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc, Iso.inv_hom_id_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[reassoc_of% h]`. Apply the tactic sequence `first | rfl | simp | (congr 1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resι_nat {F G : Shv ℤ} (φ : F ⟶ G) : resι ℤ F ≫ (resMap ℤ φ).f 0 = φ ≫ resι ℤ G := by
   have h := congrArg (fun f => HomologicalComplex.Hom.f f 0)
@@ -23,13 +23,11 @@ theorem resι_nat {F G : Shv ℤ} (φ : F ⟶ G) : resι ℤ F ≫ (resMap ℤ �
   first | rfl | simp | (congr 1)
 
 /- English proof (translation)
-Establish `key : ∀ (η : (freeP ℤ).obj ((sch.obj X).obj (op (SimplexCategory.mk 0))) ⟶ I.obj) (U : Scheme.{0}) (x : U ⟶ X), (η.app (op U)).hom (ModuleCat.freeMk (ULift.up x)) = (I.obj.map x.op).hom ((η.app (op X)).hom (ModuleCat.freeMk (ULift.up (𝟙 X))))`. Introduce `η U x`. Use `congrArg (fun m => m.hom (ModuleCat.freeMk (ULift.up (𝟙 X)))) (η.naturality x.op)` as an intermediate fact. Use `Eq.trans ?_ this` and prove the remaining obligations. Rewrite using `[ModuleCat.hom_comp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `erw [LinearMap.comp_apply]`. Use `congr 1`. Use `erw [ModuleCat.free_map_apply]`. Use `congr 2`. Apply `Sheaf.hom_ext` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `sheafify_hom_ext _ _ _ I.2` to reduce the goal to its premises. Use `NatTrans.ext (funext fun U => ModuleCat.free_hom_ext fun ⟨x⟩ => ?_)` and prove the remaining obligations. Establish `h1` using `key (toSheafify _ _ ≫ f.hom) U.unop x`. Establish `h2` using `key (toSheafify _ _ ≫ g.hom) U.unop x`. Use `h1.trans (h2.trans ?_).symm` and prove the remaining obligations.
-
-Use `congr 1`. Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem free_ext (X : Scheme.{0}) {I : Shv ℤ}
     (f g : (free ℤ).obj ((sch.obj X).obj (op (SimplexCategory.mk 0))) ⟶ I)
@@ -55,11 +53,11 @@ theorem free_ext (X : Scheme.{0}) {I : Shv ℤ}
   exact h.symm
 
 /- English proof (translation)
-Apply `Cocycle.ext` to reduce the goal to its premises. Apply `Cochain.ext` to reduce the goal to its premises. Introduce `p q hpq`. Take `rfl : p = q` from `by omega`. Break down `lt_trichotomy p 0 with hp | rfl | hp` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Apply `IsZero.eq_of_tgt` to reduce the goal to its premises. Conclude with `HomologicalComplex.isZero_extend_X _ _ _ (fun i => by show ((i:ℕ):ℤ) ≠ p; omega)`. Establish `e` using `free_ext X ((chainsXIso ℤ (sch.obj X) 0).inv ≫ a.1.v 0 0 (by simp)) ((chainsXIso ℤ (sch.obj X) 0).inv ≫ b.1.v 0 0 (by simp)) h`. Use `congrArg ((chainsXIso ℤ (sch.obj X) 0).hom ≫ ·) e` as an intermediate fact. Simplify using `using this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsZero.eq_of_src` to reduce the goal to its premises. Conclude with `HomologicalComplex.isZero_extend_X _ _ _ (fun i => by show -((i:ℕ):ℤ) ≠ p; omega)`.
+A detailed English derivation is pending.
 -/
 theorem coc_ext (X : Scheme.{0}) (G : Shv ℤ) (a b : Cocycle ((chains ℤ).obj (sch.obj X)) (res ℤ G) 0)
     (h : ev a.1 0 0 (by simp) X (𝟙 X) = ev b.1 0 0 (by simp) X (𝟙 X)) : a = b := by
@@ -78,7 +76,7 @@ theorem coc_ext (X : Scheme.{0}) (G : Shv ℤ) (a b : Cocycle ((chains ℤ).obj 
     exact HomologicalComplex.isZero_extend_X _ _ _ (fun i => by show -((i:ℕ):ℤ) ≠ p; omega)
 
 /- English proof (translation)
-Simplify using `only [ev, zcomp, Cocycle.mk, Cochain.comp_zero_cochain_v, Cocycle.ofHom, Cochain.ofHom_v]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ev_post (X : Scheme.{0}) {F G : Shv ℤ} (φ : F ⟶ G) (α : Cocycle ((chains ℤ).obj (sch.obj X)) (res ℤ F) 0) :
     ev (zcomp α (Cocycle.ofHom (resMap ℤ φ)) (add_zero 0)).1 0 0 (by simp) X (𝟙 X) =
@@ -87,11 +85,11 @@ theorem ev_post (X : Scheme.{0}) {F G : Shv ℤ} (φ : F ⟶ G) (α : Cocycle ((
   rfl
 
 /- English proof (translation)
-Introduce `_`. Use `choose e he using fun F : Shv ℤ => (hA9 ℤ F).2`. Use `⟨e, ?_⟩` and prove the remaining obligations. Introduce `F G φ X s`. Take `⟨α, hα, hαv⟩` from `(he F).2 X s`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ, hβv⟩` from `(he G).2 X (Sec.map φ s)`. Rewrite using `[← hα, ← hβ]`. Use `show CohomologyClass.mk (zcomp α (Cocycle.ofHom (resMap ℤ φ)) (add_zero 0)) = _`. Use `congr 1`. Apply `coc_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hβv, ev_post, hαv]`. Use `congrArg (fun m => (m.hom.app (op X)).hom s) (resι_nat φ)` as an intermediate fact. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem etale_degree_zero_cohomology_natural_in_sheaf (hA9 : A9) : EtaleDegreeZeroCohomologyNaturallyIsoToSections := by
   intro _

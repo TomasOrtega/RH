@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.Flat
 
 /- English proof (translation)
-Establish `h : ‖circleMap (0 : ℂ) ρ t‖ = ρ` using `by simp [abs_of_pos hρ]`. Simplify using `only [pker, poissonKernel_def, sub_zero, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem pker_eq {ρ : ℝ} (hρ : 0 < ρ) (w : ℂ) (t : ℝ) :
     pker ρ w t = (ρ ^ 2 - ‖w‖ ^ 2) / ‖circleMap 0 ρ t - w‖ ^ 2 := by
@@ -18,7 +18,7 @@ theorem pker_eq {ρ : ℝ} (hρ : 0 < ρ) (w : ℂ) (t : ℝ) :
   simp only [pker, poissonKernel_def, sub_zero, h]
 
 /- English proof (translation)
-Establish `h : ‖circleMap (0 : ℂ) ρ t‖ = ρ` using `by simp [abs_of_pos hρ]`. Establish `h2` using `norm_sub_norm_le (circleMap (0 : ℂ) ρ t) w`. Rewrite `h2` using `[h]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sub_le_norm_circleMap_sub {ρ : ℝ} (hρ : 0 < ρ) (w : ℂ) (t : ℝ) :
     ρ - ‖w‖ ≤ ‖circleMap 0 ρ t - w‖ := by
@@ -27,9 +27,9 @@ theorem sub_le_norm_circleMap_sub {ρ : ℝ} (hρ : 0 < ρ) (w : ℂ) (t : ℝ) 
   rwa [h] at h2
 
 /- English proof (translation)
-Establish `h : pker ρ w = fun t => (ρ ^ 2 - ‖w‖ ^ 2) / ‖circleMap 0 ρ t - w‖ ^ 2`. Use function extensionality and compare the values at `(pker_eq hρ w)`. Rewrite using `[h]`. Use `continuous_const.div (((continuous_circleMap 0 ρ).sub continuous_const).norm.pow 2) ?_` and prove the remaining obligations. Introduce `t`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `sub_le_norm_circleMap_sub hρ w t`. Establish `h2 : 0 < ‖circleMap (0 : ℂ) ρ t - w‖` using `by linarith`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem continuous_pker {ρ : ℝ} (hρ : 0 < ρ) {w : ℂ} (hw : ‖w‖ < ρ) :
     Continuous (pker ρ w) := by
@@ -44,9 +44,9 @@ theorem continuous_pker {ρ : ℝ} (hρ : 0 < ρ) {w : ℂ} (hw : ‖w‖ < ρ) 
   positivity
 
 /- English proof (translation)
-Use `⟨(ρ ^ 2 - ‖w‖ ^ 2) / (ρ - ‖w‖) ^ 2, fun t => ?_⟩` and prove the remaining obligations. Establish `h1` using `sub_le_norm_circleMap_sub hρ w t`. Establish `h0 : 0 < ρ - ‖w‖` using `by linarith`. Establish `hn : 0 ≤ ρ ^ 2 - ‖w‖ ^ 2`. Use `pow_le_pow_left₀ (norm_nonneg w) hw.le 2` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[pker_eq hρ, abs_of_nonneg (by positivity)]`. Conclude with `div_le_div_of_nonneg_left hn (by positivity) (pow_le_pow_left₀ h0.le h1 2)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_abs_pker_le {ρ : ℝ} (hρ : 0 < ρ) {w : ℂ} (hw : ‖w‖ < ρ) :
     ∃ K : ℝ, ∀ t, |pker ρ w t| ≤ K := by
@@ -60,13 +60,13 @@ theorem exists_abs_pker_le {ρ : ℝ} (hρ : 0 < ρ) {w : ℂ} (hw : ‖w‖ < �
   exact div_le_div_of_nonneg_left hn (by positivity) (pow_le_pow_left₀ h0.le h1 2)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => (continuous_circleMap 0 ρ).comp (continuous_apply i)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_torusPt {n : ℕ} (ρ : ℝ) : Continuous (torusPt (n := n) ρ) :=
   continuous_pi fun i => (continuous_circleMap 0 ρ).comp (continuous_apply i)
 
 /- English proof (translation)
-Use `⟨circleMap_ne_center hρ.ne', ?_⟩` and prove the remaining obligations. Establish `h : ‖circleMap (0 : ℂ) ρ t‖ = ρ` using `by simp [abs_of_pos hρ]`. Rewrite using `[h]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem circleMap_mem {ρ R : ℝ} (hρ : 0 < ρ) (hρR : ρ < R) (t : ℝ) :
     circleMap (0 : ℂ) ρ t ≠ 0 ∧ ‖circleMap (0 : ℂ) ρ t‖ < R := by
@@ -75,13 +75,13 @@ theorem circleMap_mem {ρ R : ℝ} (hρ : 0 < ρ) (hρR : ρ < R) (t : ℝ) :
   rwa [h]
 
 /- English proof (translation)
-Introduce `i` and use `circleMap_mem hρ hρR (θ i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem torusPt_mem_punct {n : ℕ} {ρ R : ℝ} (hρ : 0 < ρ) (hρR : ρ < R) (θ : Fin n → ℝ) :
     torusPt ρ θ ∈ punct R := fun i => circleMap_mem hρ hρR (θ i)
 
 /- English proof (translation)
-Introduce `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hc`. Simplify using `using hy j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cons_mem_punct {n : ℕ} {R : ℝ} {c : ℂ} {y : Fin n → ℂ} (hc : c ≠ 0 ∧ ‖c‖ < R)
     (hy : y ∈ punct R) : (Fin.cons c y : Fin (n + 1) → ℂ) ∈ punct R := by
@@ -91,7 +91,7 @@ theorem cons_mem_punct {n : ℕ} {R : ℝ} {c : ℂ} {y : Fin n → ℂ} (hc : c
   · simpa using hy j
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using continuous_fst`. Simplify using `only [Fin.cons_succ]`. Conclude with `(continuous_apply j).comp continuous_snd`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_cons_pair {n : ℕ} {α : Type*} [TopologicalSpace α] :
     Continuous (fun p : α × (Fin n → α) => (Fin.cons p.1 p.2 : Fin (n + 1) → α)) := by
@@ -102,9 +102,9 @@ theorem continuous_cons_pair {n : ℕ} {α : Type*} [TopologicalSpace α] :
     exact (continuous_apply j).comp continuous_snd
 
 /- English proof (translation)
-Establish `mp : MeasurePreserving (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 1) => ℝ) 0).symm (angMeas.prod (Measure.pi fun _ : Fin n => angMeas)) (Measure.pi fun _ : Fin (n + 1) => angMeas)` using `(measurePreserving_piFinSuccAbove (fun _ : Fin (n + 1) => angMeas) 0).symm _`. Establish `he : ∀ p : ℝ × (Fin n → ℝ), (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 1) => ℝ) 0).symm p = Fin.cons p.1 p.2`. Introduce and unpack `⟨a, b⟩`. Use extensionality with `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp [MeasurableEquiv.piFinSuccAbove]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← mp.integral_comp']`. Simplify using `only [he]`. Conclude with `integral_prod _ hF`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_pi_cons {n : ℕ} (F : (Fin (n + 1) → ℝ) → ℝ)
     (hF : Integrable (fun p : ℝ × (Fin n → ℝ) => F (Fin.cons p.1 p.2))
@@ -126,29 +126,27 @@ theorem integral_pi_cons {n : ℕ} (F : (Fin (n + 1) → ℝ) → ℝ)
   exact integral_prod _ hF
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `f ρ R M _ _ _ _ _ z _`. Establish `h : ∀ θ : Fin 0 → ℝ, (∏ i, pker ρ (z i) (θ i)) * f (torusPt ρ θ) = f z`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `θ`. Simplify using `only [Finset.univ_eq_empty, Finset.prod_empty, one_mul]`. Rewrite using `[Subsingleton.elim (torusPt ρ θ) z]`. Simplify using `only [polyPoisson, h]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `f ρ R M hρ hρR hc hs hb z hz`. Establish `hz0` using `hz 0`. Establish `hzt : Fin.tail z ∈ punct ρ` using `fun i => hz i.succ`. Establish `hztR : Fin.tail z ∈ punct R` using `fun i => ⟨(hzt i).1, (hzt i).2.trans hρR⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hslice : ∀ t, polyPoisson ρ (fun y => f (Fin.cons (circleMap 0 ρ t) y)) (Fin.tail z) = f (Fin.cons (circleMap 0 ρ t) (Fin.tail z))`. Introduce `t`. Establish `hcm` using `circleMap_mem (t := t) hρ hρR`. Use `ih _ ρ R M hρ hρR ?_ ?_ ?_ _ hzt` and prove the remaining obligations. Establish `hcont : Continuous (fun y : Fin n → ℂ => (Fin.cons (circleMap 0 ρ t) y : Fin (n + 1) → ℂ))` using `continuous_cons_pair.comp (continuous_const.prodMk continuous_id)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hc.comp hcont.continuousOn (fun y hy => cons_mem_punct hcm hy)`. Introduce `y hy i`. Establish `h` using `hs _ (cons_mem_punct hcm hy) i.succ`. Simplify using `only [Fin.cons_succ] at h`. Simplify `h` using `only [Fin.cons_update]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun y hy => hb _ (cons_mem_punct hcm hy)`. Establish `hone` using `GlobalTheory.CompanionTheory.Ar.PuncturedDisc.poisson_formula_punctured (fun w => f (Fin.cons w (Fin.tail z))) ρ R M hρ hρR (fun w hw0 hwR => by`. Establish `h` using `hs _ (cons_mem_punct ⟨hw0, hwR⟩ hztR) 0`. Simplify `h)` using `only [Fin.update_cons_zero, Fin.cons_zero]`. Use the proof step `(fun w hw0 hwR => hb _ (cons_mem_punct ⟨hw0, hwR⟩ hztR))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `(z 0) hz0.1 hz0.2`. Simplify using `only [Fin.cons_self_tail] at hone`. Use `set F : (Fin (n + 1) → ℝ) → ℝ := fun θ => (∏ i, pker ρ (z i) (θ i)) * f (torusPt ρ θ) with hFdef`. Establish `hFc : Continuous F` using `(continuous_finsetProd _ fun i _ => (continuous_pker hρ (hz i).2).comp (continuous_apply i)).mul (hc.comp_continuous (continuous_torusPt ρ) (torusPt_mem_punct hρ hρR))`. Establish `hFb : ∃ K, ∀ θ, |F θ| ≤ K` using `by choose K hK using fun i => exists_abs_pker_le hρ (hz i).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨(∏ i, K i) * M, fun θ => ?_⟩` and prove the remaining obligations. Rewrite using `[hFdef]`. Simplify using `only [abs_mul, Finset.abs_prod]`. Establish `hM : 0 ≤ M` using `(abs_nonneg _).trans (hb _ (torusPt_mem_punct hρ hρR θ))`. Establish `hK0 : 0 ≤ ∏ i, K i` using `Finset.prod_nonneg fun i _ => (abs_nonneg _).trans (hK i 0)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_le_mul (Finset.prod_le_prod (fun i _ => abs_nonneg _) (fun i _ => hK i _)) (hb _ (torusPt_mem_punct hρ hρR θ)) (abs_nonneg _) hK0`. Take `⟨K, hK⟩` from `hFb`. Establish `hint : Integrable (fun p : ℝ × (Fin n → ℝ) => F (Fin.cons p.1 p.2)) (angMeas.prod (Measure.pi fun _ : Fin n => angMeas))` using `Integrable.of_bound (hFc.comp continuous_cons_pair).aestronglyMeasurable K (ae_of_all _ fun p => hK _)`. Establish `hFcons : ∀ t θ', F (Fin.cons t θ') = pker ρ (z 0) t * ((∏ i, pker ρ (Fin.tail z i) (θ' i)) * f (Fin.cons (circleMap 0 ρ t) (torusPt ρ θ')))`. Introduce `t θ'`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Establish `ht : torusPt ρ (Fin.cons t θ' : Fin (n + 1) → ℝ) = Fin.cons (circleMap 0 ρ t) (torusPt ρ θ')`. Use extensionality with `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp [torusPt]`. Simplify using `only [hFdef, ht, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, Fin.tail, mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Establish `h : ∫ θ', F (Fin.cons t θ') ∂(Measure.pi fun _ : Fin n => angMeas) = pker ρ (z 0) t * polyPoisson ρ (fun y => f (Fin.cons (circleMap 0 ρ t) y)) (Fin.tail z)`. Simplify using `only [hFcons]`. Rewrite using `[integral_const_mul]`. Both sides reduce to the same expression.
-
-Simplify using `only [h, hslice t]`. Use `_ = f z := hone`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polyPoisson_eq_self : ∀ (n : ℕ) (f : (Fin n → ℂ) → ℝ) (ρ R M : ℝ), 0 < ρ → ρ < R →
     ContinuousOn f (punct R) → SepHarm R f → (∀ z ∈ punct R, |f z| ≤ M) →

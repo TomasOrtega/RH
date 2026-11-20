@@ -8,9 +8,9 @@ namespace GlobalTheory.HeightCounting.JumpsAt
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hL', eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, rfl⟩` from `b`. Introduce `i a r w τ hw hτ hdR`. Establish `hdA` using `((Au.wdOf i a r w).2.2.2.1).mp hdR`. Establish `e1` using `(Au.wdOf i a r w).2.2.2.2 τ`. Use `haveI : Fact (L.X.nd.l i).Prime := L.X.nd.lPrime i`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hp.card _ (L.Y.naut.iotaQC i) a r τ w trivial (fun x => (hτ x).symm) hdA`. Use `show Multiset.card (L.Y.jumpsW i r τ) = a`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jumpsCard_of_built (hH : HtCard) {hL : GlobalTheory.Published.LocalLanglandsGL} {D' : D7} (b : NBuilt hL D')
     (fr : OmFrame b.D) (hp : PhtOn b.A.wd fr fun _ _ _ _ => True) : JumpsCard D'.nd D'.naut := by
@@ -24,20 +24,20 @@ theorem jumpsCard_of_built (hH : HtCard) {hL : GlobalTheory.Published.LocalLangl
   rw [e1, e2]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, fun B f T _ _ _ _ => h B f T⟩`.
+Supply the required witnesses or components.
 -/
 theorem lg_of_forall {K : Ctx} {p : ∀ B : Base, Fr B.toPre → TwDat B → Prop} (h : ∀ B f T, p B f T) : large₂ K p :=
   ⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, fun B f T _ _ _ _ => h B f T⟩
 
 /- English proof (translation)
-The claim follows from `evLgG_of_evLg ⟨1, one_pos, fun _ _ _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ => ⟨0, fun K _ _ _ _ _ => lg_of_forall (h K)⟩⟩⟩⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem evLgG_of_forall {p : Ctx → ∀ B : Base, Fr B.toPre → TwDat B → Prop} (h : ∀ K B f T, p K B f T) : EvLgG p :=
   evLgG_of_evLg ⟨1, one_pos, fun _ _ _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨0,
     fun _ _ => ⟨0, fun K _ _ _ _ _ => lg_of_forall (h K)⟩⟩⟩⟩⟩
 
 /- English proof (translation)
-Introduce `hH hL`. Use `evLgG_of_forall fun K B f T _ w Z Wt p0 t nch n xd c hE _ _ => ?_` and prove the remaining obligations. Take `⟨e⟩` from `hE`. Take `⟨fr, -, hp⟩` from `(e : NMore (D := (w.st Z).toD7) c.row t.r.z.geo xd).pht`. Conclude with `jumpsCard_of_built hH c.a.nt.toNBuilt fr hp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem jumpsCard_atMem : HtCard → ∀ hL : GlobalTheory.Published.LocalLanglandsGL,
     AtMem hL fun _ _ _ _ w Z _ _ _ _ _ _ => JumpsCard (w.D Z).nd (w.D Z).naut := by

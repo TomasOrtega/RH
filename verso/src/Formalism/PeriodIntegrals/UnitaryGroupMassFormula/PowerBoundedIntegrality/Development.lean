@@ -14,7 +14,7 @@ def StepB : Prop :=
     ∀ i, IsIntegral ℤ (γ.charpoly.coeff i)
 
 /- English proof (translation)
-Introduce `E _ _ k γ N hN h i`. Conclude with `hb E k γ (ha E k γ N hN h) i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem powBddInt_of (ha : StepA) (hb : StepB) : PI.PowBddInt := by
   intro E _ _ k γ N hN h i

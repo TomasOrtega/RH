@@ -12,7 +12,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.kunf
 
 /- English proof (translation)
-The claim follows from `frame_inv_pf s hs e he hse M hM`.
+A detailed English derivation is pending.
 -/
 theorem frame_inv {R : Type} [CommRing R] (s : R →+* R) (hs : ∀ x, s (s x) = x) {n : ℕ} (e : R) (he : e * e = 1)
     (hse : s e = e) (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R) (hM : Mᵀ * jw n e * M.map s = jw n e) :
@@ -23,7 +23,7 @@ theorem frame_inv {R : Type} [CommRing R] (s : R →+* R) (hs : ∀ x, s (s x) =
   frame_inv_pf s hs e he hse M hM
 
 /- English proof (translation)
-The claim follows from `exists_beta_pf s hs e he hse a c d' hc hda T hT hTd`.
+A detailed English derivation is pending.
 -/
 theorem exists_beta {K : Type} [Field K] (s : K →+* K) (hs : ∀ x, s (s x) = x) {n : ℕ} (e : K) (he : e * e = 1)
     (hse : s e = e) (a c d' : Matrix (Fin n) (Fin n) K) (hc : c.det = 0) (hda : e • (c.map s)ᵀ * a + d' * c = 0)
@@ -33,7 +33,7 @@ theorem exists_beta {K : Type} [Field K] (s : K →+* K) (hs : ∀ x, s (s x) = 
   exists_beta_pf s hs e he hse a c d' hc hda T hT hTd
 
 /- English proof (translation)
-The claim follows from `psi_moves_pf hψ x hx`.
+A detailed English derivation is pending.
 -/
 theorem psi_moves {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (x : F) (hx : x ≠ 0) :
     ∃ l : AF F, ψ (-(l * algebraMap F (AF F) x)) ≠ 1 :=

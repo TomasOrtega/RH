@@ -15,7 +15,7 @@ def universalSliceIdeal {n : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ)) (d : �
     Ideal.span (Set.range fun i : Fin d => ∑ j, C (X (i, j)) * (X j - C (C (q j))))
 
 /- English proof (translation)
-Rewrite using `[fibreIdeal, universalSliceIdeal, Ideal.map_sup, ← fibreIdeal, fibreIdeal_map_C, Ideal.map_span, sliceIdeal, ← Set.range_comp]`. Establish `h : (MvPolynomial.map (eval fun ij : Fin d × Fin n => L ij.1 ij.2)) ∘ (fun i : Fin d => ∑ j, C (X (i, j)) * (X j - C (C (q j)))) = fun i => ComplexSets.linPoly L i - C ((L *ᵥ q) i)`. Use function extensionality and compare the values at `i`. Simplify using `[ComplexSets.linPoly, Matrix.mulVec, dotProduct, mul_sub, Finset.sum_sub_distrib, map_sum]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fibreIdeal_universalSliceIdeal {n d : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ)) (q : Fin n → ℂ)
     (L : Matrix (Fin d) (Fin n) ℂ) :

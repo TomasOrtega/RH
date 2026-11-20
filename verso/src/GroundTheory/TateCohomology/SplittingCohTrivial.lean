@@ -15,13 +15,13 @@ section LES
 variable {k H : Type u} [CommRing k] [Group H] {X : ShortComplex (Rep.{u} k H)} (hX : X.ShortExact)
 
 /- English proof (translation)
-The claim follows from `(ModuleCat.subsingleton_of_isZero h).elim x 0`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_isZero {A : ModuleCat.{u} k} (h : IsZero A) (x : A) : x = 0 :=
   (ModuleCat.subsingleton_of_isZero h).elim x 0
 
 /- English proof (translation)
-The claim follows from `ModuleCat.isZero_iff_subsingleton.2 ⟨fun a b => (h a).trans (h b).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem isZero_of_forall_eq_zero {A : ModuleCat.{u} k} (h : ∀ x : A, x = 0) : IsZero A :=
   ModuleCat.isZero_iff_subsingleton.2 ⟨fun a b => (h a).trans (h b).symm⟩
@@ -29,7 +29,7 @@ theorem isZero_of_forall_eq_zero {A : ModuleCat.{u} k} (h : ∀ x : A, x = 0) : 
 include hX in
 
 /- English proof (translation)
-Establish `h` using `congr(($((map_cochainsFunctor_shortExact hX).comp_δ i j hij)).hom x)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem δ_map_g_apply (i j : ℕ) (hij : i + 1 = j) (x : groupCohomology X.X₂ i) :
     δ hX i j hij (map (MonoidHom.id H) X.g i x) = 0 := by
@@ -39,7 +39,7 @@ theorem δ_map_g_apply (i j : ℕ) (hij : i + 1 = j) (x : groupCohomology X.X₂
 include hX in
 
 /- English proof (translation)
-Establish `h` using `congr(($((map_cochainsFunctor_shortExact hX).δ_comp i j hij)).hom z)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_f_δ_apply (i j : ℕ) (hij : i + 1 = j) (z : groupCohomology X.X₃ i) :
     map (MonoidHom.id H) X.f j (δ hX i j hij z) = 0 := by
@@ -49,7 +49,7 @@ theorem map_f_δ_apply (i j : ℕ) (hij : i + 1 = j) (z : groupCohomology X.X₃
 include hX in
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.moduleCat_exact_iff _).1 (mapShortComplex₂_exact hX n) x hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_map_f_eq (n : ℕ) (x : groupCohomology X.X₂ n)
     (hx : map (MonoidHom.id H) X.g n x = 0) : ∃ w, map (MonoidHom.id H) X.f n w = x :=
@@ -58,7 +58,7 @@ theorem exists_map_f_eq (n : ℕ) (x : groupCohomology X.X₂ n)
 include hX in
 
 /- English proof (translation)
-Use `isZero_of_forall_eq_zero fun x => ?_` and prove the remaining obligations. Establish `h1 : map (MonoidHom.id H) X.g n x = 0` using `hδ (by rw [δ_map_g_apply hX n (n + 1) rfl, map_zero])`. Take `⟨w, hw⟩` from `exists_map_f_eq hX n x h1`. Rewrite using `[← hw, eq_zero_of_isZero h₁ w, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isZero_X₂_of_injective_δ (n : ℕ) (h₁ : IsZero (groupCohomology X.X₁ n))
     (hδ : Function.Injective (δ hX n (n + 1) rfl)) : IsZero (groupCohomology X.X₂ n) := by
@@ -71,7 +71,7 @@ theorem isZero_X₂_of_injective_δ (n : ℕ) (h₁ : IsZero (groupCohomology X.
 include hX in
 
 /- English proof (translation)
-Use `isZero_of_forall_eq_zero fun x => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `exists_map_f_eq hX (n + 1) x (eq_zero_of_isZero h₃ _)`. Take `⟨z, rfl⟩` from `hδ w`. Rewrite using `[← hw, map_f_δ_apply hX n (n + 1) rfl z]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isZero_X₂_succ_of_surjective_δ (n : ℕ) (h₃ : IsZero (groupCohomology X.X₃ (n + 1)))
     (hδ : Function.Surjective (δ hX n (n + 1) rfl)) : IsZero (groupCohomology X.X₂ (n + 1)) := by
@@ -85,9 +85,7 @@ end LES
 section TrivialInt
 
 /- English proof (translation)
-Establish `: Subsingleton (Additive H →+ ℤ)` using `⟨fun f g => AddMonoidHom.ext fun x => by`. Establish `key : ∀ φ : Additive H →+ ℤ, φ x = 0` using `fun φ => by`. Establish `h : addOrderOf x • φ x = 0` using `by rw [← map_nsmul, addOrderOf_nsmul_eq_zero, map_zero]`. Conclude with `(smul_eq_zero.1 h).resolve_left (addOrderOf_pos x).ne'`. Rewrite using `[key f, key g]⟩`.
-
-Conclude with `(ModuleCat.isZero_of_subsingleton _).of_iso (H1IsoOfIsTrivial _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isZero_H1_trivial_int {H : Type} [Group H] [Finite H] :
     IsZero (groupCohomology (Rep.trivial ℤ H ℤ) 1) := by
@@ -106,13 +104,13 @@ variable {G : Type} [Group G] [Fintype G] (M : Rep ℤ G) (u : groupCohomology M
 variable (S : Subgroup G) [Fintype S]
 
 /- English proof (translation)
-The claim follows from `cohTrivial_leftRegular ℤ G S`.
+A detailed English derivation is pending.
 -/
 theorem tateAcyclic_res_leftRegular : TateAcyclic (res S.subtype (Rep.leftRegular ℤ G)) :=
   cohTrivial_leftRegular ℤ G S
 
 /- English proof (translation)
-The claim follows from `((tateAcyclic_res_leftRegular S) n).of_iso (tateIsoH _ n n rfl).symm`.
+A detailed English derivation is pending.
 -/
 theorem isZero_groupCohomology_res_leftRegular (n : ℕ) [NeZero n] :
     IsZero (groupCohomology (res S.subtype (Rep.leftRegular ℤ G)) n) :=
@@ -122,11 +120,11 @@ noncomputable def augClass : groupCohomology (res S.subtype (augIdeal ℤ G)) 1 
   δ (augTrivSES_res_shortExact ℤ S.subtype) 0 1 rfl ((H0Iso _).inv (oneInvariant ℤ S.subtype))
 
 /- English proof (translation)
-Establish `hep : Epi (δ (augTrivSES_res_shortExact ℤ S.subtype) 0 1 rfl)` using `epi_δ_of_isZero (augTrivSES_res_shortExact ℤ S.subtype) 0 (isZero_groupCohomology_res_leftRegular S 1)`. Take `⟨w, rfl⟩` from `(ModuleCat.epi_iff_surjective _).1 hep y`. Set `c : ℤ` to `show ℤ from ((H0Iso _).hom w).1`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hw : w = (H0Iso _).inv (c • oneInvariant ℤ S.subtype)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: ((H0Iso _).hom w) = c • oneInvariant ℤ S.subtype`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ = c * 1`. Rewrite using `[mul_one]`. Rewrite using `[← this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Iso.hom_inv_id_apply (H0Iso _) w)).symm`. Use `conv_lhs => rw [hw]`. Rewrite using `[map_zsmul]`. Conclude with `map_zsmul _ c _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_zsmul_augClass (y : groupCohomology (res S.subtype (augIdeal ℤ G)) 1) :
     ∃ m : ℤ, y = m • augClass S := by
@@ -153,7 +151,7 @@ noncomputable def subgroupNormElt : MonoidAlgebra ℤ G :=
 omit [Fintype G] in
 
 /- English proof (translation)
-Simplify using `only [subgroupNormElt, map_sum, Representation.ofMulAction_single, smul_eq_mul]`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft s) _ _ (fun t => rfl)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ρ_subgroupNormElt (s : S) :
     (Rep.leftRegular ℤ G).ρ (s : G) (subgroupNormElt S) = subgroupNormElt S := by
@@ -163,7 +161,7 @@ theorem ρ_subgroupNormElt (s : S) :
 omit [Fintype G] in
 
 /- English proof (translation)
-Rewrite using `[subgroupNormElt, map_sum, Finset.sum_congr rfl (fun (x : S) _ => augmentation_single (k := ℤ) (x : G) (1 : ℤ))]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem augmentation_subgroupNormElt :
     augmentation ℤ G (subgroupNormElt S) = (Fintype.card S : ℤ) := by
@@ -172,11 +170,11 @@ theorem augmentation_subgroupNormElt :
   simp
 
 /- English proof (translation)
-Set `z : (res S.subtype (Rep.trivial ℤ G ℤ)).ρ.invariants` to `⟨(Fintype.card S : ℤ), fun _ => rfl⟩`. Establish `hx : ((augTrivSES ℤ G).map (resFunctor S.subtype)).f.hom ∘ (0 : S → res S.subtype (augIdeal ℤ G)) = d₀₁ ((augTrivSES ℤ G).map (resFunctor S.subtype)).X₂ (subgroupNormElt S)`. Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `(augIdealι ℤ G).hom 0 = (Rep.leftRegular ℤ G).ρ (s : G) (subgroupNormElt S) - subgroupNormElt S`. Rewrite using `[map_zero, ρ_subgroupNormElt, sub_self]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hδ` using `δ₀_apply (augTrivSES_res_shortExact ℤ S.subtype) z (subgroupNormElt S) (by exact augmentation_subgroupNormElt S) _ hx`. Establish `hz : z = (Fintype.card S : ℤ) • oneInvariant ℤ S.subtype`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ = (Fintype.card S : ℤ) * 1`. Rewrite using `[mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : H1π ((augTrivSES ℤ G).map (resFunctor S.subtype)).X₁ ⟨0, mem_cocycles₁_of_comp_eq_d₀₁ (augTrivSES_res_shortExact ℤ S.subtype) hx⟩ = 0`. Establish `: (⟨0, mem_cocycles₁_of_comp_eq_d₀₁ (augTrivSES_res_shortExact ℤ S.subtype) hx⟩ : cocycles₁ ((augTrivSES ℤ G).map (resFunctor S.subtype)).X₁) = 0` using `rfl`. Rewrite using `[this, map_zero]`. Establish `e1 : (H0Iso ((augTrivSES ℤ G).map (resFunctor S.subtype)).X₃).inv z = (Fintype.card S : ℤ) • (H0Iso ((augTrivSES ℤ G).map (resFunctor S.subtype)).X₃).inv (oneInvariant ℤ S.subtype)` using `(congrArg (H0Iso ((augTrivSES ℤ G).map (resFunctor S.subtype)).X₃).inv hz).trans (map_zsmul _ _ _)`. Conclude with `(map_zsmul _ _ _).symm.trans ((congrArg _ e1.symm).trans (hδ.trans h0))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_smul_augClass : (Fintype.card S : ℤ) • augClass S = 0 := by
   let z : (res S.subtype (Rep.trivial ℤ G ℤ)).ρ.invariants := ⟨(Fintype.card S : ℤ), fun _ => rfl⟩
@@ -215,15 +213,15 @@ noncomputable abbrev splitδ :
 omit [Fintype S] in
 
 /- English proof (translation)
-The claim follows from `δ_splittingSES_res_δ₀ M u S.subtype`.
+A detailed English derivation is pending.
 -/
 theorem splitδ_augClass : splitδ M u S (augClass S) = resClass M u S :=
   δ_splittingSES_res_δ₀ M u S.subtype
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun y hy => ?_` and prove the remaining obligations. Take `⟨m, rfl⟩` from `exists_eq_zsmul_augClass S y`. Rewrite `hy` using `[map_zsmul, splitδ_augClass]`. Establish `hd` using `addOrderOf_dvd_iff_zsmul_eq_zero.2 hy`. Rewrite `hd` using `[h2, Nat.card_eq_fintype_card]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, rfl⟩` from `hd`. Rewrite using `[mul_comm, mul_zsmul, card_smul_augClass, zsmul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem splitδ_injective (h2 : addOrderOf (resClass M u S) = Nat.card S) :
     Function.Injective (splitδ M u S) := by
@@ -238,7 +236,7 @@ theorem splitδ_injective (h2 : addOrderOf (resClass M u S) = Nat.card S) :
 omit [Fintype S] in
 
 /- English proof (translation)
-Introduce `y`. Take `⟨m, rfl⟩` from `h3 y`. Conclude with `⟨m • augClass S, by rw [map_zsmul, splitδ_augClass]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem splitδ_surjective
     (h3 : ∀ y : groupCohomology (res S.subtype M) 2, ∃ m : ℤ, y = m • resClass M u S) :
@@ -248,7 +246,7 @@ theorem splitδ_surjective
   exact ⟨m • augClass S, by rw [map_zsmul, splitδ_augClass]⟩
 
 /- English proof (translation)
-Establish `hep : Epi (δ (augTrivSES_res_shortExact ℤ S.subtype) 1 2 rfl)` using `epi_δ_of_isZero (augTrivSES_res_shortExact ℤ S.subtype) 1 (isZero_groupCohomology_res_leftRegular S 2)`. Use `isZero_of_forall_eq_zero fun x => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `(ModuleCat.epi_iff_surjective _).1 hep x`. Establish `hz : IsZero (groupCohomology (res S.subtype (Rep.trivial ℤ G ℤ)) 1)` using `isZero_H1_trivial_int (H := S)`. Conclude with `(congrArg _ (eq_zero_of_isZero hz z)).trans (map_zero _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isZero_groupCohomology_res_augIdeal_two :
     IsZero (groupCohomology (res S.subtype (augIdeal ℤ G)) 2) := by
@@ -262,7 +260,7 @@ theorem isZero_groupCohomology_res_augIdeal_two :
   exact (congrArg _ (eq_zero_of_isZero hz z)).trans (map_zero _)
 
 /- English proof (translation)
-The claim follows from `isZero_X₂_of_injective_δ ((shortExact_res S.subtype).2 (splittingSES_shortExact M u)) 1 h1 (splitδ_injective M u S h2)`.
+A detailed English derivation is pending.
 -/
 theorem isZero_groupCohomology_res_splittingModule_one
     (h1 : IsZero (groupCohomology (res S.subtype M) 1))
@@ -272,7 +270,7 @@ theorem isZero_groupCohomology_res_splittingModule_one
     (splitδ_injective M u S h2)
 
 /- English proof (translation)
-The claim follows from `isZero_X₂_succ_of_surjective_δ ((shortExact_res S.subtype).2 (splittingSES_shortExact M u)) 1 (isZero_groupCohomology_res_augIdeal_two S) (splitδ_surjective M u S h3)`.
+A detailed English derivation is pending.
 -/
 theorem isZero_groupCohomology_res_splittingModule_two
     (h3 : ∀ y : groupCohomology (res S.subtype M) 2, ∃ m : ℤ, y = m • resClass M u S) :
@@ -283,7 +281,7 @@ theorem isZero_groupCohomology_res_splittingModule_two
 omit [Fintype S] in
 
 /- English proof (translation)
-Use `cohTrivial_of_forall_subgroup _ 1 fun T _ => ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(isZero_groupCohomology_res_splittingModule_one M u T (h1 T) (h2 T)).of_iso (tateIsoH _ 1 1 rfl)`. Conclude with `(isZero_groupCohomology_res_splittingModule_two M u T (h3 T)).of_iso (tateIsoH _ (1 + 1) 2 (by norm_num))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cohTrivial_splittingModule
     (h1 : ∀ S : Subgroup G, IsZero (groupCohomology (res S.subtype M) 1))

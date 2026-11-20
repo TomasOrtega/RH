@@ -17,16 +17,16 @@ def ell (π : CuspSub E a) (Ξ : AlgRep E a) (g : GA E a) (i : Fin Ξ.d) :
   (TensorProduct.lid ℂ ℂ).toLinearMap.comp (TensorProduct.map (evAt π g) (LinearMap.proj i))
 
 /- English proof (translation)
-Simplify using `[ell, evAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ell_tmul (π : CuspSub E a) (Ξ : AlgRep E a) (g : GA E a) (i : Fin Ξ.d) (φ : π.V) (v : Fin Ξ.d → ℂ) :
     ell π Ξ g i (φ ⊗ₜ v) = φ.1.1 g * v i := by
   simp [ell, evAt]
 
 /- English proof (translation)
-Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, Submodule.coe_add, hx, hy]`. Consider the case `tmul φ v`. Rewrite using `[ell_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[TensorProduct.piScalarRight_apply, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piScalarRight_eval (π : CuspSub E a) (Ξ : AlgRep E a) (m : π.V ⊗[ℂ] (Fin Ξ.d → ℂ)) (g : GA E a) (i : Fin Ξ.d) :
     ((TensorProduct.piScalarRight ℂ ℂ π.V (Fin Ξ.d) m) i).1.1 g = ell π Ξ g i m := by
@@ -38,7 +38,7 @@ theorem piScalarRight_eval (π : CuspSub E a) (Ξ : AlgRep E a) (m : π.V ⊗[�
     simp [TensorProduct.piScalarRight_apply, mul_comm]
 
 /- English proof (translation)
-Use `(LinearEquiv.map_eq_zero_iff (TensorProduct.piScalarRight ℂ ℂ π.V (Fin Ξ.d))).1 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Rewrite using `[piScalarRight_eval, h]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ell_sep (π : CuspSub E a) (Ξ : AlgRep E a) (m : π.V ⊗[ℂ] (Fin Ξ.d → ℂ))
     (h : ∀ g i, ell π Ξ g i m = 0) : m = 0 := by
@@ -49,13 +49,13 @@ theorem ell_sep (π : CuspSub E a) (Ξ : AlgRep E a) (m : π.V ⊗[ℂ] (Fin Ξ.
   rfl
 
 /- English proof (translation)
-Establish `h0' : Unitary.toUnits (c 0) = 1` using `by rw [h0, map_one]`. Establish `hc' : HasDerivAt (fun t => toL (Unitary.toUnits (c t)).val) (toL Z) 0` using `hc`. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simpa using hasDerivAt_const (0 : ℝ) (0 : ℂ)`. Consider the case `add x y hx hy => simp only [map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `hx.add hy`. Consider the case `tmul φ v`. Establish `h1` using `GlobalTheory.CuspRep.hasDerivAt_curve φ.1 g (fun t => Unitary.toUnits (c t)) (toL Z) h0' hc'`. Establish `h2 : HasDerivAt (fun t => (Ξ.mat (Unitary.toUnits (c t)) *ᵥ v) i) ((Ξ.dmat (toL Z) *ᵥ v) i) 0`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `HasDerivAt.fun_sum (u := Finset.univ) fun j _ => (Ξ.hasDerivAt_curve (fun t => Unitary.toUnits (c t)) (toL Z) h0' hc' i j).mul_const (v j)`. Establish `e1 : ∀ t, ell π Ξ g i (tensorK π Ξ (c t) (φ ⊗ₜ v)) = φ.1.1 (g * infGL E a (Unitary.toUnits (c t))) * (Ξ.mat (Unitary.toUnits (c t)) *ᵥ v) i` using `fun t => by`. Rewrite using `[tensorK, TensorProduct.map_tmul, ell_tmul]`. Both sides reduce to the same expression. Establish `e2 : ell π Ξ g i (tensorLie π Ξ (toL Z) (φ ⊗ₜ v)) = lieD (toL Z) φ.1.1 g * (Ξ.mat (Unitary.toUnits (c 0)) *ᵥ v) i + φ.1.1 (g * infGL E a (Unitary.toUnits (c 0))) * (Ξ.dmat (toL Z) *ᵥ v) i`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h0', map_one, map_one, mul_one, Matrix.one_mulVec, tensorLie_tmul, map_add, ell_tmul, ell_tmul]`. Both sides reduce to the same expression. Rewrite using `[funext e1, e2]`. Conclude with `h1.mul h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ell_deriv (π : CuspSub E a) (Ξ : AlgRep E a) (c : ℝ → Kinf E a) (Z : Matrix (Fin a) (Fin a) (Cinf E))
     (h0 : c 0 = 1) (hc : HasDerivAt (fun t => toL (c t).1) (toL Z) 0) (g : GA E a) (i : Fin Ξ.d)
@@ -89,7 +89,7 @@ end GlobalTheory.WigSep
 namespace GlobalTheory.WigSep
 
 /- English proof (translation)
-Introduce `E _ _ _ a π Ξ`. Use `⟨Set.range fun p : GA E a × Fin Ξ.d => ell π Ξ p.1 p.2, fun m h => ell_sep π Ξ m fun g i => h _ ⟨(g, i), rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `c Z h0 hc _ ⟨⟨g, i⟩, rfl⟩ m`. Conclude with `ell_deriv π Ξ c Z h0 hc g i m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_separating_functionals : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a) (Ξ : AlgRep E a), ∃ S : Set (Module.Dual ℂ (π.V ⊗[ℂ] (Fin Ξ.d → ℂ))), (∀ m, (∀ l ∈ S, l m = 0) → m = 0) ∧ ∀ (c : ℝ → Kinf E a) (Z : Matrix (Fin a) (Fin a) (Cinf E)), c 0 = 1 → HasDerivAt (fun t => toL (c t).1) (toL Z) 0 → ∀ l ∈ S, ∀ m, HasDerivAt (fun t => l (tensorK π Ξ (c t) m)) (l (tensorLie π Ξ (toL Z) m)) 0 := by
   intro E _ _ _ a π Ξ

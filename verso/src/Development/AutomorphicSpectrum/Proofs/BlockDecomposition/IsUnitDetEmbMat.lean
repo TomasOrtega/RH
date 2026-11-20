@@ -23,14 +23,14 @@ def ev (σ : LL →ₐ[Qp] Om) : (Fin 1 → LL) ⊗[Qp] BdR →ₗ[Qp] BdR :=
         (LinearMap.proj 0 : (Fin 1 → LL) →ₗ[Qp] LL)))
 
 /- English proof (translation)
-Simplify using `[ev]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem ev_tmul (σ : LL →ₐ[Qp] Om) (v : Fin 1 → LL) (b : BdR) :
     ev σ (v ⊗ₜ[Qp] b) = algebraMap Om BdR (σ (v 0)) * b := by
   simp [ev]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [TensorProduct.smul_tmul', mul_assoc]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy, mul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ev_smul (σ : LL →ₐ[Qp] Om) (c : LL) (z : (Fin 1 → LL) ⊗[Qp] BdR) :
     ev σ (c • z) = algebraMap Om BdR (σ c) * ev σ z := by
@@ -57,9 +57,9 @@ Both sides reduce to the same expression.
 theorem embMat_apply (i j : LL →ₐ[Qp] Om) : embMat Qp Om LL i j = j (embBasis Qp Om LL i) := rfl
 
 /- English proof (translation)
-Use `isUnit_iff_ne_zero.2 fun h => ?_` and prove the remaining obligations. Establish `h1` using `Algebra.discr_eq_det_embeddingsMatrixReindex_pow_two Qp Om (embBasis Qp Om LL) (Equiv.refl _)`. Establish `h2 : algebraMap Qp Om (Algebra.discr Qp (embBasis Qp Om LL)) = 0`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `(embMat Qp Om LL).det ^ 2 = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h]`. Simplify using the standard rewrite rules. Conclude with `Algebra.discr_not_zero_of_basis Qp (embBasis Qp Om LL) ((map_eq_zero_iff _ (algebraMap Qp Om).injective).1 h2)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_det_embMat : IsUnit (embMat Qp Om LL).det := by
   refine isUnit_iff_ne_zero.2 fun h => ?_
@@ -74,11 +74,11 @@ def coordInv (f : (LL →ₐ[Qp] Om) → BdR) : (Fin 1 → LL) ⊗[Qp] BdR :=
     ∑ j, algebraMap Om BdR ((embMat Qp Om LL)⁻¹ j i) * f j
 
 /- English proof (translation)
-Establish `hN : (embMat Qp Om LL)⁻¹ * embMat Qp Om LL = 1` using `Matrix.nonsing_inv_mul _ isUnit_det_embMat`. Establish `h1 : ∀ j, ∑ i, embMat Qp Om LL i k * (embMat Qp Om LL)⁻¹ j i = if j = k then 1 else 0` using `fun j => by`. Use `congrFun (congrFun hN j) k` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[← this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Simplify using `only [coordInv, map_sum, ev_tmul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `h2 : ∀ j, ∑ i, algebraMap Om BdR (k (embBasis Qp Om LL i)) * (algebraMap Om BdR ((embMat Qp Om LL)⁻¹ j i) * f j) = algebraMap Om BdR (if j = k then 1 else 0) * f j` using `fun j => by`. Rewrite using `[← h1 j, map_sum, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, embMat_apply, mul_assoc]`. Simplify using `only [h2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ev_coordInv (f : (LL →ₐ[Qp] Om) → BdR) (k : LL →ₐ[Qp] Om) :
     ev k (coordInv f) = f k := by
@@ -100,27 +100,25 @@ theorem ev_coordInv (f : (LL →ₐ[Qp] Om) → BdR) (k : LL →ₐ[Qp] Om) :
   simp
 
 /- English proof (translation)
-Simplify using `only [coordInv, Pi.add_apply, mul_add, Finset.sum_add_distrib, tmul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordInv_add (f g : (LL →ₐ[Qp] Om) → BdR) : coordInv (f + g) = coordInv f + coordInv g := by
   simp only [coordInv, Pi.add_apply, mul_add, Finset.sum_add_distrib, tmul_add]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp [coordInv]`. Consider the case `add x y hx hy => nth_rw 2 [← hx] nth_rw 2 [← hy]`. Rewrite using `[← coordInv_add]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `σ`. Simplify using the standard rewrite rules. Consider the case `tmul v b`. Establish `hM : embMat Qp Om LL * (embMat Qp Om LL)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ isUnit_det_embMat`. Use `set a := (embBasis Qp Om LL).repr (v 0) with ha`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : v 0 = ∑ k, a k • embBasis Qp Om LL k` using `((embBasis Qp Om LL).sum_repr (v 0)).symm`. Establish `h1 : ∀ i, ∑ j, (embMat Qp Om LL)⁻¹ j i * j (v 0) = algebraMap Qp Om (a i)` using `fun i => by`. Establish `h2 : ∀ j : LL →ₐ[Qp] Om, j (v 0) = ∑ k, algebraMap Qp Om (a k) * embMat Qp Om LL k j` using `fun j => by`. Rewrite using `[hv, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, Algebra.smul_def, embMat_apply]`. Simplify using `only [h2, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `h3 : ∀ k, ∑ j, (embMat Qp Om LL)⁻¹ j i * (algebraMap Qp Om (a k) * embMat Qp Om LL k j) = algebraMap Qp Om (a k) * (if k = i then 1 else 0)` using `fun k => by`. Use `congrFun (congrFun hM k) i` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[← this, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Simplify using `only [h3]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ∀ i, ∑ j, algebraMap Om BdR ((embMat Qp Om LL)⁻¹ j i) * (algebraMap Om BdR (j (v 0)) * b) = a i • b` using `fun i => by`. Rewrite using `[Algebra.smul_def, IsScalarTower.algebraMap_apply Qp Om BdR, ← h1, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc]`. Simplify using `only [coordInv, ev_tmul, h4, tmul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h5 : v = ∑ i, a i • (fun _ : Fin 1 => embBasis Qp Om LL i)`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply]`. Conclude with `hv`.
-
-Use `conv_rhs => rw [h5, sum_tmul]`. Conclude with `Finset.sum_congr rfl fun i _ => rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coordInv_ev (z : (Fin 1 → LL) ⊗[Qp] BdR) :
     coordInv (fun σ : LL →ₐ[Qp] Om => ev σ z) = z := by
@@ -167,7 +165,7 @@ theorem coordInv_ev (z : (Fin 1 → LL) ⊗[Qp] BdR) :
     exact Finset.sum_congr rfl fun i _ => rfl
 
 /- English proof (translation)
-Rewrite using `[← coordInv_ev (Om := Om) z, ← coordInv_ev (Om := Om) w]`. Conclude with `congrArg _ (funext h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_injective {z w : (Fin 1 → LL) ⊗[Qp] BdR} (h : ∀ σ : LL →ₐ[Qp] Om, ev σ z = ev σ w) : z = w := by
   rw [← coordInv_ev (Om := Om) z, ← coordInv_ev (Om := Om) w]
@@ -187,14 +185,14 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
 /- English proof (translation)
-Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_DdR_iff (ρ : Representation LL G V) (z : V ⊗[Qp] BdR) :
     z ∈ DdR PD ρ ↔ ∀ g, actVdR PD ρ g z = z := by
   simp only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]
 
 /- English proof (translation)
-Simplify using `only [DdRE, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_DdRE_iff (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (z : V ⊗[Qp] BdR) :
     z ∈ DdRE PD ρ τ ↔ z ∈ DdR PD ρ ∧
@@ -203,15 +201,13 @@ theorem mem_DdRE_iff (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (z : V 
     LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional LL (DdRE PD ρ τ) := finite_ddRE_of_multV PD ρ τ {J} (by simp) fun a => by`. Apply the tactic sequence `rw [h, Multiset.count_singleton]; split_ifs <;> rfl`. Establish `hanti : ∀ a, FildR PD ρ τ (a + 1) ≤ FildR PD ρ τ a` using `fun a => inf_le_inf_left _ (filV_anti PD (by omega : a ≤ a + 1))`. Establish `h1 : finrank LL (DdRE PD ρ τ) = 1` using `finrank_eq_one_of_jump (FildR PD ρ τ) _ (fun _ => inf_le_left) hanti (fun x hx => (filV_exh PD (LL := LL) x).imp fun _ ha => ⟨hx, ha⟩) (fun x hx => filV_sep PD (LL := LL) x fun a => (hx a).2) J h`. Establish `hJ` using `h J`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hJ` using `[if_pos rfl]`. Unfold `multV at hJ`. Establish `hle : finrank LL (FildR PD ρ τ J) ≤ 1`. Rewrite using `[← h1]`. Conclude with `Submodule.finrank_mono inf_le_left`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : finrank LL (FildR PD ρ τ J) = 1` using `by omega`. Establish `h3 : finrank LL (FildR PD ρ τ (J + 1)) = 0` using `by omega`. Establish `h4 : FildR PD ρ τ J = DdRE PD ρ τ` using `Submodule.eq_of_le_of_finrank_eq inf_le_left (by rw [h1, h2])`. Use `haveI : FiniteDimensional LL (FildR PD ρ τ (J + 1)) := Submodule.finiteDimensional_of_le inf_le_left`. Establish `h5 : FildR PD ρ τ (J + 1) = ⊥` using `Submodule.finrank_eq_zero.1 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz0, hz⟩` from `finrank_eq_one_iff'.1 h1`. Establish `hz1 : (z : V ⊗[Qp] BdR) ∈ FildR PD ρ τ J` using `by rw [h4]; exact z.2`. Use `⟨z, z.2, fun w hw => ?_, hz1.2, fun hz2 => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hz ⟨w, hw⟩`. Conclude with `⟨c, (congrArg Subtype.val hc).symm⟩`.
-
-Establish `: (z : V ⊗[Qp] BdR) ∈ FildR PD ρ τ (J + 1)` using `⟨z.2, hz2⟩`. Rewrite `this` using `[h5, Submodule.mem_bot]`. Conclude with `hz0 (Subtype.ext this)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (J : ℤ)
     (h : ∀ a, multV PD ρ τ a = if a = J then 1 else 0) :
@@ -247,15 +243,15 @@ theorem exists_gen (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (J : ℤ)
     exact hz0 (Subtype.ext this)
 
 /- English proof (translation)
-Establish `hz0 : z ≠ 0` using `fun h => h2 (h ▸ Submodule.zero_mem _)`. Establish `hlo : ∀ a ≤ J, FildR PD ρ τ a = LL ∙ z` using `fun a ha => by`. Use `le_antisymm (fun w hw => ?_) ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `hgen w hw.1`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self z)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Conclude with `⟨hz, filV_anti PD ha h1⟩`. Establish `hhi : ∀ a, J < a → FildR PD ρ τ a = ⊥` using `fun a ha => by`. Use `eq_bot_iff.2 fun w hw => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `hgen w hw.1`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc : c = 0`. Simplify using `[hc]`. Use `absurd ?_ h2` and prove the remaining obligations. Use `filV_anti PD (by omega : J + 1 ≤ a) hw.2` as an intermediate fact. Simplify `(Submodule.smul_mem_iff _ hc).1 this` using `[hc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hone : finrank LL (LL ∙ z) = 1` using `finrank_span_singleton hz0`. Unfold `multV`. Break down `lt_trichotomy a J with ha | ha | ha` into its components or cases. Rewrite using `[hlo a ha.le, hlo (a + 1) (by omega), if_neg ha.ne]; simp`. Substitute `ha` using the available equality.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlo a le_rfl, hhi (a + 1) (by omega), if_pos rfl, hone]; simp`. Rewrite using `[hhi a ha, hhi (a + 1) (by omega), if_neg ha.ne']; simp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multV_of_gen (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (J : ℤ) (z : V ⊗[Qp] BdR)
     (hz : z ∈ DdRE PD ρ τ) (hgen : ∀ w ∈ DdRE PD ρ τ, ∃ c : LL, w = c • z)

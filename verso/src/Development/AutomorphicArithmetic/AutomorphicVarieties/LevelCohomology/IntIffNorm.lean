@@ -10,11 +10,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open TensorProduct nonZeroDivisors
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `h0 : ‖φ x‖ = spectralValue (minpoly ℚ_[l] (φ x))` using `rfl`. Rewrite using `[h0, minpoly.algHom_eq φ φ.injective, spectralValue_le_one_iff (minpoly.monic hi)]`. Prove the components needed by the constructor for the conclusion. Introduce `h n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]`. Conclude with `PadicInt.norm_le_one _`. Introduce `h`. Establish `hl' : minpoly ℚ_[l] x ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l])` using `(Polynomial.lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨q, hqm, by`. Rewrite using `[← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem int_iff_norm {l : ℕ} [Fact l.Prime] {K : Type} [Field K]
     [Algebra ℚ_[l] K] [Algebra ℤ_[l] K] [IsScalarTower ℤ_[l] ℚ_[l] K] [FiniteDimensional ℚ_[l] K]
@@ -34,15 +34,15 @@ private theorem int_iff_norm {l : ℕ} [Fact l.Prime] {K : Type} [Field K]
       rw [← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
 
 /- English proof (translation)
-Use `haveI : Algebra.IsPushout ℤ_[l] O ℚ_[l] K := Algebra.isPushout_of_isLocalization ℤ_[l]⁰ ℚ_[l] O K`. Set `φ` to `Algebra.IsPushout.equiv ℤ_[l] O ℚ_[l] K`. Set `π : O ⊗[ℤ_[l]] ℚ_[l] →ₗ[O] QO l O` to `(ZlSub l).mkQ.baseChange O`. Establish `hs : Function.Surjective π` using `LinearMap.lTensor_surjective O (ZlSub l).mkQ_surjective`. Establish `hex : Function.Exact (Algebra.linearMap ℤ_[l] ℚ_[l]) (ZlSub l).mkQ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.exact_iff, Submodule.ker_mkQ]`. Establish `hex2` using `lTensor_exact O hex (ZlSub l).mkQ_surjective`. Establish `hk1 : LinearMap.ker π = Submodule.span O {1}`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `(hex2 x).1 hx`. Take `⟨o, rfl⟩` from `(TensorProduct.rid ℤ_[l] O).symm.surjective y`. Rewrite using `[Submodule.mem_span_singleton]`. Use `⟨o, ?_⟩` and prove the remaining obligations. Simplify using `[Algebra.TensorProduct.one_def, TensorProduct.smul_tmul']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `(hex2 1).2 ⟨1, by simp [Algebra.TensorProduct.one_def]⟩`. Use `⟨π ∘ₗ φ.symm.toLinearMap, hs.comp φ.symm.surjective, fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.symm x ∈ LinearMap.ker π ↔ _`. Rewrite using `[hk1, Submodule.mem_span_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `exists_congr fun o => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.algebraMap_eq_smul_one, AlgEquiv.eq_symm_apply, φ.commutes]`.
+A detailed English derivation is pending.
 -/
 private theorem qo_proj (l : ℕ) [Fact l.Prime] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Field K] [Algebra O K]
     [Algebra ℚ_[l] K] [Algebra ℤ_[l] K] [IsScalarTower ℤ_[l] ℚ_[l] K] [IsScalarTower ℤ_[l] O K]
@@ -72,13 +72,13 @@ private theorem qo_proj (l : ℕ) [Fact l.Prime] (O K : Type) [CommRing O] [Alge
   rw [← Algebra.algebraMap_eq_smul_one, AlgEquiv.eq_symm_apply, φ.commutes]
 
 /- English proof (translation)
-Establish `hf` using `Module.length_ne_top_iff.1 h`. Rewrite `hf` using `[isFiniteLength_iff_isNoetherian_isArtinian]`. Take `⟨h1, h2⟩` from `hf`. Take `⟨n, hn⟩` from `IsArtinian.range_smul_pow_stabilizes N p`. Establish `hle : LinearMap.range (p ^ n • LinearMap.id : N →ₗ[O] N) ≤ IsLocalRing.maximalIdeal O • LinearMap.range (p ^ n • LinearMap.id : N →ₗ[O] N)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite `hx` using `[hn (n + 1) (Nat.le_succ n)]`. Take `⟨y, rfl⟩` from `hx`. Establish `: (p ^ (n + 1) • LinearMap.id : N →ₗ[O] N) y = p • (p ^ n • LinearMap.id : N →ₗ[O] N) y`. Simplify using `[pow_succ', mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul hp ⟨y, rfl⟩`. Establish `hb` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot _ _ (IsNoetherian.noetherian _) hle (IsLocalRing.maximalIdeal_le_jacobson _)`. Use `⟨n, fun x => ?_⟩` and prove the remaining obligations. Establish `: (p ^ n • LinearMap.id : N →ₗ[O] N) x ∈ (⊥ : Submodule O N)` using `hb ▸ ⟨x, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 private theorem kill_of_len {O N : Type} [CommRing O] [IsLocalRing O] [AddCommGroup N] [Module O N]
     (h : Module.length O N ≠ ⊤) {p : O} (hp : p ∈ IsLocalRing.maximalIdeal O) : ∃ n : ℕ, ∀ x : N, p ^ n • x = 0 := by
@@ -102,27 +102,25 @@ private theorem kill_of_len {O N : Type} [CommRing O] [IsLocalRing O] [AddCommGr
   simpa using this
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `kill_of_len hfin hp`. Use `set q := algebraMap O K p with hq`. Establish `key : ∀ n : ℕ, ∃ m : K, ∀ g, ‖c g - (θ g • m - m)‖ ≤ ‖q‖ ^ n`. Introduce `n`. Establish `hqn : q ^ (n + N) ≠ 0` using `pow_ne_zero _ hp0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `z : Z1U ρ ⊤` to `⟨fun u => π ((q ^ (n + N))⁻¹ * c u.1), hc.comp (continuous_const.mul (hcc.comp continuous_subtype_val)), fun g h => by show π (_ * c (g.1 * h.1)) = π _ + ρ g.1 (π _)`. Rewrite using `[hco, hρ, mul_add, map_add, mul_smul_comm, map_smul]⟩`. Establish `hz : Submodule.Quotient.mk z ∈ LocSel ρ ⊤ 𝒟`. Rewrite using `[mk_mem_locSel]`. Introduce `D hD`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hloc D hD`. Use `⟨π ((q ^ (n + N))⁻¹ * m), fun u hu => ?_⟩` and prove the remaining obligations. Use `show π (_ * c u.1) = _`. Rewrite using `[hm _ hu, hρ, mul_sub, map_sub, mul_smul_comm, map_smul]`. Establish `h0 : (Submodule.Quotient.mk (p ^ N • z) : H1U ρ ⊤) = Submodule.Quotient.mk 0` using `congrArg Subtype.val (hN ⟨_, hz⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `(mk_eq_mk ρ ⊤ _ _).1 h0`. Take `⟨y, rfl⟩` from `hs w`. Use `⟨q ^ n * y, fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : p ^ N • π ((q ^ (n + N))⁻¹ * c g) - 0 = ρ g (π y) - π y` using `hw ⟨g, trivial⟩`. Rewrite `h1` using `[sub_zero, hρ, ← map_smul, ← map_smul, ← map_sub, ← sub_eq_zero, ← map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hk _ h1`. Establish `h3 : c g - (θ g • (q ^ n * y) - q ^ n * y) = q ^ n * (p ^ N • ((q ^ (n + N))⁻¹ * c g) - (θ g • y - y))`. Simplify using `only [Algebra.smul_def, map_pow, ← hq]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h3, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (by positivity) h2`. Establish `lim : ∀ (x : K) (C : ℝ), (∀ n : ℕ, ‖x‖ ≤ ‖q‖ ^ n * C) → x = 0`. Introduce `x C h`. Establish `ht` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hp1).mul_const C`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `ht` using `[zero_mul]`. Conclude with `norm_le_zero_iff.1 (ge_of_tendsto' ht h)`. Distinguish the cases in `hθ : ∀ g, algebraMap O K (θ g) = 1`. Use `⟨0, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `lim _ 1 fun n => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `key n`. Simplify `hm g` using `[Algebra.smul_def, hθ]`. Use `push Not at hθ`. Take `⟨g₀, hg₀⟩` from `hθ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hd : algebraMap O K (θ g₀) - 1 ≠ 0` using `sub_ne_zero.2 hg₀`. Use `⟨c g₀ / (algebraMap O K (θ g₀) - 1), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `lim _ (1 + ‖(algebraMap O K (θ g) - 1) / (algebraMap O K (θ g₀) - 1)‖) fun n => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `key n`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : c g - (θ g • (c g₀ / (algebraMap O K (θ g₀) - 1)) - c g₀ / (algebraMap O K (θ g₀) - 1)) = (c g - (θ g • m - m)) - (c g₀ - (θ g₀ • m - m)) * ((algebraMap O K (θ g) - 1) / (algebraMap O K (θ g₀) - 1))`. Simplify using `only [Algebra.smul_def]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, mul_add, mul_one]`.
-
-Use `(norm_sub_le _ _).trans (add_le_add (hm g) ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hm g₀) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem core {G O K W : Type} [Group G] [TopologicalSpace G] [CommRing O] [IsLocalRing O] [NormedField K] [Algebra O K]
     [AddCommGroup W] [Module O W] [TopologicalSpace W] [IsTopologicalAddGroup W] [ContinuousConstSMul O W]
@@ -191,41 +189,35 @@ private theorem core {G O K W : Type} [Group G] [TopologicalSpace G] [CommRing O
   exact mul_le_mul_of_nonneg_right (hm g₀) (norm_nonneg _)
 
 /- English proof (translation)
-Introduce `CK hK hPT hLF hLT k Ω _ _ _ _ _ l _ E _ ψ hψ hψE e he θ hθ c hc hcE hco hI hD`. Take `⟨h1, h2, h3⟩` from `UpperTheory.V.abelian₂.dvr_intClosure l E`. Set `O` to `integralClosure ℤ_[l] E`. Establish `hint : ∀ x : E, IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1` using `int_iff_norm E.val`. Use `haveI : IsGalois k Ω := {}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : CompactSpace (G k Ω) := inferInstanceAs (CompactSpace (Ω ≃ₐ[k] Ω))`. Use `haveI : Finite (G k Ω ⧸ ψ.ker) := Subgroup.quotient_finite_of_isOpen _ hψ`. Establish `hidx : ψ.ker.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Establish `hψ1 : ∀ g, ‖(ψ g : PadicAlgCl l)‖ ≤ 1`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `MonoidHom.mem_ker.1 (ψ.ker.pow_index_mem g)`. Rewrite `h` using `[map_pow]`. Establish `h' : ‖(ψ g : PadicAlgCl l)‖ ^ ψ.ker.index = 1`. Rewrite using `[← norm_pow, ← Units.val_pow_eq_pow_val, h, Units.val_one, norm_one]`. Conclude with `((pow_eq_one_iff_of_nonneg (norm_nonneg _) hidx).1 h').le`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `ψ₀ : G k Ω →* O` to `{ toFun := fun g => ⟨⟨ψ g, hψE g⟩, (hint _).2 (hψ1 g)⟩ map_one' := Subtype.ext (Subtype.ext (by simp)) map_mul' := fun a b => Subtype.ext (Subtype.ext (by simp)) }`. Set `ψO : G k Ω →* Oˣ` to `ψ₀.toHomUnits`. Establish `hker : ψO.ker = ψ.ker`. Use extensionality with `g`. Simplify using `only [MonoidHom.mem_ker, Units.ext_iff, Subtype.ext_iff]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Establish `hfin` using `soFin CK hK hPT hLF hLT k Ω l O ψO (hker ▸ hψ) e he`. Set `ι : O →+* PadicAlgCl l` to `(algebraMap E (PadicAlgCl l)).comp (algebraMap O E)`. Set `θO : G k Ω →* Oˣ` to `ψO⁻¹ * chiO k Ω l O ^ (-(e : ℤ))`. Establish `hθO : ∀ g, ι (θO g : O) = θ g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Establish `a1 : θO g * ψO g * chiO k Ω l O g ^ e = 1`. Simplify using `only [θO, MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.zpow_apply, zpow_neg, zpow_natCast, MonoidHom.pow_apply]`. Rewrite using `[mul_comm (ψO g)⁻¹, inv_mul_cancel_right, inv_mul_cancel]`. Establish `a2` using `congrArg (fun u : Oˣ => ι u) a1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, Units.val_one, map_one] at a2`. Establish `a3 : ι (θO g : O) * (ψ g : PadicAlgCl l) * algebraMap ℤ_[l] (PadicAlgCl l) (cycZ k Ω l g : ℤ_[l]) ^ e = 1` using `a2`. Establish `a4` using `hθ g`. Rewrite `a3`, `a4` using `[mul_assoc]`. Rewrite using `[eq_inv_of_mul_eq_one_left a3, eq_inv_of_mul_eq_one_left a4]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hsm : ∀ g (x : E), (((θO g : O) • x : E) : PadicAlgCl l) = θ g * x`. Introduce `g x`. Rewrite using `[← hθO]`. Both sides reduce to the same expression. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid O ℤ_[l]⁰) E := IsIntegralClosure.isLocalization ℤ_[l] ℚ_[l] E O`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨π, hs, hk⟩` from `qo_proj l O E`. Establish `hk' : ∀ x, π x = 0 ↔ ‖x‖ ≤ 1` using `fun x => (hk x).trans ⟨fun ⟨o, ho⟩ => (hint x).1 (ho ▸ o.2), fun h => ⟨⟨x, (hint x).2 h⟩, rfl⟩⟩`. Establish `hπ : Continuous π`. Use `continuous_of_continuousAt_zero π ?_` and prove the remaining obligations. Use `(continuousAt_const (y := (0 : QO l O))).congr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [Metric.closedBall_mem_nhds (0 : E) one_pos] with x hx`. Conclude with `((hk' x).2 (by simpa using hx)).symm`. Establish `hl1 : ‖algebraMap O E (l : O)‖ < 1`. Establish `: ‖algebraMap O E (l : O)‖ = ‖algebraMap ℚ_[l] (PadicAlgCl l) l‖`. Rewrite using `[map_natCast, map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[this, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`. Establish `hl0 : algebraMap O E (l : O) ≠ 0`. Rewrite using `[map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hlm : (l : O) ∈ IsLocalRing.maximalIdeal O`. Introduce and unpack `⟨u, hu⟩`. Establish `b1 : ‖algebraMap O E ((u⁻¹ : Oˣ) : O)‖ ≤ 1` using `(hint _).1 ((u⁻¹ : Oˣ) : O).2`. Establish `b2 : ‖algebraMap O E (l : O)‖ * ‖algebraMap O E ((u⁻¹ : Oˣ) : O)‖ = 1`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← norm_mul, ← map_mul, ← hu, Units.mul_inv, map_one, norm_one]`. Conclude with `absurd b2 (mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) hl1 b1).ne`. Establish `hθE : ∀ g, θ g ∈ E` using `fun g => hθO g ▸ ((θO g : O) : E).2`. Establish `hE : ∀ (D : Subgroup (G k Ω)) (m : PadicAlgCl l), (∀ g ∈ D, c g = θ g * m - m) → ∃ m' : E, ∀ g ∈ D, (⟨c g, hcE g⟩ : E) = (θO g : O) • m' - m'`. Introduce `D m hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : ∀ g ∈ D, θ g = 1`. Use `⟨0, fun g hg => Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[hm g hg, h g hg]`. Use `push Not at h`. Take `⟨g₀, hg₀, h⟩` from `h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmE : m ∈ E`. Establish `: m = c g₀ / (θ g₀ - 1)`. Rewrite using `[hm g₀ hg₀, eq_div_iff (sub_ne_zero.2 h)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
-
-Conclude with `div_mem (hcE _) (sub_mem (hθE _) (one_mem _))`. Use `⟨⟨m, hmE⟩, fun g hg => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubgroupClass.coe_sub, hsm]`. Conclude with `hm g hg`. Take `⟨m, hm⟩` from `core π hs hπ (fun x => (hk' x).1) (Chr.rho l e ψO) (fun g => (θO g : O)) (fun _ _ => rfl) (shaFam k Ω l) hfin hlm hl0 hl1 (fun g => ⟨c g, hcE g⟩) (hc.subtype_mk _) (fun g h => Subtype.ext (by rw [AddMemClass.coe_add, hsm]; exact hco g h)) (by`.
-
-Introduce and unpack `D (⟨A, hA, rfl⟩ | ⟨A, rfl⟩)`. Take `⟨m, hm⟩` from `hD A hA`. Conclude with `hE _ m hm`. Take `⟨m, hm⟩` from `hI A`. Conclude with `hE _ m hm)`.
-
-Use `⟨m, m.2, fun g => ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val (hm g)` as an intermediate fact. Rewrite `this` using `[AddSubgroupClass.coe_sub, hsm]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.soVec :
     ∀ CK : ℝ, LemmaK CK → GlobalTheory.Published.PoitouTateDuality → LocalFinitenessK → LocalTateDualityK → ∀ (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (l : ℕ) [Fact l.Prime] (E : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] E] (ψ : G k Ω →* (PadicAlgCl l)ˣ), IsOpen (ψ.ker : Set (G k Ω)) → (∀ g, (ψ g : PadicAlgCl l) ∈ E) →

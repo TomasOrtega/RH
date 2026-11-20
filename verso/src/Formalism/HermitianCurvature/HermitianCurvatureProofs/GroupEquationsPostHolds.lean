@@ -24,19 +24,19 @@ def gpMulL (X : B.Mat k r) : B.Mat k r →L[ℝ] B.Mat k r :=
   LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ X)
 
 /- English proof (translation)
-Simplify using `[gpMulR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gpMulR_apply (X Y : B.Mat k r) : gpMulR X Y = Y * X := by
   simp [gpMulR]
 
 /- English proof (translation)
-Simplify using `[gpMulL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gpMulL_apply (X Y : B.Mat k r) : gpMulL X Y = X * Y := by
   simp [gpMulL]
 
 /- English proof (translation)
-Establish `hγ` using `B5.curve_hasDerivAt g X 0`. Establish `h0 : g * NormedSpace.exp (((0 : ℝ) : ℂ) • X) = g` using `by simp`. Rewrite `hγ` using `[h0]`. Conclude with `(hf.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hγ h0.symm).deriv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gp_rdV (X g : B.Mat k r) (f : B.Mat k r → E) (hf : DifferentiableAt ℝ f g) :
     Formalism.REAL.RdV X f g = fderiv ℝ f g (g * X) := by
@@ -46,11 +46,9 @@ theorem gp_rdV (X g : B.Mat k r) (f : B.Mat k r → E) (hf : DifferentiableAt �
   exact (hf.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hγ h0.symm).deriv
 
 /- English proof (translation)
-Establish `hγ : HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) * g) (X * g) 0`. Establish `h1` using `(gpMulR g).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (B5.curve_hasDerivAt (1 : B.Mat k r) X 0)`. Establish `e : (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) * g) = (⇑(gpMulR g) ∘ fun t : ℝ => (1 : B.Mat k r) * NormedSpace.exp ((t : ℂ) • X))`. Use function extensionality and compare the values at `t`. Simplify using `[gpMulR_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `e2 : gpMulR g (1 * NormedSpace.exp (((0 : ℝ) : ℂ) • X) * X) = X * g`. Simplify using `[gpMulR_apply]`. Rewrite using `[e, ← e2]`. Conclude with `h1`. Establish `h0 : NormedSpace.exp (((0 : ℝ) : ℂ) • X) * g = g` using `by simp`.
-
-Conclude with `(hf.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hγ h0.symm).deriv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gp_ldV (X g : B.Mat k r) (f : B.Mat k r → E) (hf : DifferentiableAt ℝ f g) :
     Q.LdV X f g = fderiv ℝ f g (X * g) := by
@@ -67,7 +65,7 @@ theorem gp_ldV (X g : B.Mat k r) (f : B.Mat k r → E) (hf : DifferentiableAt �
   exact (hf.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hγ h0.symm).deriv
 
 /- English proof (translation)
-Establish `h : HasFDerivAt (fun x => ℓ (f x)) ((ℓ.restrictScalars ℝ).comp (fderiv ℝ f g)) g` using `(ℓ.restrictScalars ℝ).hasFDerivAt.comp g hf.hasFDerivAt`. Rewrite using `[h.fderiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gp_fderiv_post (ℓ : E →L[ℂ] ℂ) (f : B.Mat k r → E) (g : B.Mat k r) (hf : DifferentiableAt ℝ f g)
     (v : B.Mat k r) : fderiv ℝ (fun x => ℓ (f x)) g v = ℓ (fderiv ℝ f g v) := by
@@ -77,7 +75,7 @@ theorem gp_fderiv_post (ℓ : E →L[ℂ] ℂ) (f : B.Mat k r → E) (g : B.Mat 
   rfl
 
 /- English proof (translation)
-The claim follows from `(hf.fderiv_right (by norm_cast)).clm_apply A.contDiff`.
+A detailed English derivation is pending.
 -/
 theorem gp_cd (A : B.Mat k r →L[ℝ] B.Mat k r) (m : ℕ) (f : B.Mat k r → E)
     (hf : ContDiff ℝ ((m + 1 : ℕ) : WithTop ℕ∞) f) :
@@ -85,11 +83,11 @@ theorem gp_cd (A : B.Mat k r →L[ℝ] B.Mat k r) (m : ℕ) (f : B.Mat k r → E
   (hf.fderiv_right (by norm_cast)).clm_apply A.contDiff
 
 /- English proof (translation)
-Establish `hd : ∀ g, DifferentiableAt ℝ f g` using `fun g => hf.differentiable (by simp) g`. Establish `hdl : ∀ g, DifferentiableAt ℝ (fun x => ℓ (f x)) g` using `fun g => (ℓ.restrictScalars ℝ).differentiableAt.comp g (hd g)`. Establish `e : Q.RZ H Z f = fun g => fderiv ℝ f g (gpMulR (hpart1 H Z) g) + Complex.I • fderiv ℝ f g (gpMulR (hpart2 H Z) g)`. Use function extensionality and compare the values at `g`. Simplify using `only [Q.RZ, gpMulR_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[gp_rdV _ _ f (hd g), gp_rdV _ _ f (hd g)]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(gp_cd _ m f hf).add ((gp_cd _ m f hf).const_smul Complex.I)`. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Q.RZ]`. Rewrite using `[gp_rdV _ _ _ (hdl g), gp_rdV _ _ _ (hdl g), gp_rdV _ _ f (hd g), gp_rdV _ _ f (hd g), gp_fderiv_post ℓ f g (hd g), gp_fderiv_post ℓ f g (hd g), map_add, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gp_RZ (ℓ : E →L[ℂ] ℂ) (H Z : B.Mat k r) (m : ℕ) (f : B.Mat k r → E)
     (hf : ContDiff ℝ ((m + 1 : ℕ) : WithTop ℕ∞) f) :
@@ -111,11 +109,11 @@ theorem gp_RZ (ℓ : E →L[ℂ] ℂ) (H Z : B.Mat k r) (m : ℕ) (f : B.Mat k r
       gp_fderiv_post ℓ f g (hd g), gp_fderiv_post ℓ f g (hd g), map_add, map_smul]
 
 /- English proof (translation)
-Establish `hd : ∀ g, DifferentiableAt ℝ f g` using `fun g => hf.differentiable (by simp) g`. Establish `hdl : ∀ g, DifferentiableAt ℝ (fun x => ℓ (f x)) g` using `fun g => (ℓ.restrictScalars ℝ).differentiableAt.comp g (hd g)`. Establish `e : Q.LZ H Z f = fun g => fderiv ℝ f g (gpMulL (hpart1 H Z) g) + Complex.I • fderiv ℝ f g (gpMulL (hpart2 H Z) g)`. Use function extensionality and compare the values at `g`. Simplify using `only [Q.LZ, gpMulL_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[gp_ldV _ _ f (hd g), gp_ldV _ _ f (hd g)]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(gp_cd _ m f hf).add ((gp_cd _ m f hf).const_smul Complex.I)`. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Q.LZ]`. Rewrite using `[gp_ldV _ _ _ (hdl g), gp_ldV _ _ _ (hdl g), gp_ldV _ _ f (hd g), gp_ldV _ _ f (hd g), gp_fderiv_post ℓ f g (hd g), gp_fderiv_post ℓ f g (hd g), map_add, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gp_LZ (ℓ : E →L[ℂ] ℂ) (H Z : B.Mat k r) (m : ℕ) (f : B.Mat k r → E)
     (hf : ContDiff ℝ ((m + 1 : ℕ) : WithTop ℕ∞) f) :
@@ -142,7 +140,7 @@ def gpLtr {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℂ E'] {m : ℕ}
   q.1 • y + Eop q.2.1 q.2.2 y
 
 /- English proof (translation)
-Rewrite using `[List.map_ofFn]`. Use `congr 1`. Use function extensionality and compare the values at `j y`. Simplify using `only [Function.comp, gpLtr]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gp_ofFn {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℂ E'] {m t : ℕ}
     (Eop : Fin m → Fin m → (B.Mat k r → E') → B.Mat k r → E') (a b : Fin t → Fin m) (u : ℂ)
@@ -160,7 +158,7 @@ theorem gp_ofFn {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℂ E'] {m t :
 variable {m : ℕ}
 
 /- English proof (translation)
-The claim follows from `| [], j, f, hf => ⟨by simpa using hf, rfl⟩ | q :: qs, j, f, hf => by have hf' : ContDiff ℝ ((j + 1 + qs.length : ℕ) : WithTop ℕ∞) f := by have e : j + 1 + qs.length = j + (q :: qs).length := by simp only [List.length_cons]; omega rw [e]; exact hf obtain ⟨h1, h2⟩ := gp_foldr ℓ Eop …`.
+A detailed English derivation is pending.
 -/
 theorem gp_foldr (ℓ : E →L[ℂ] ℂ) (EopE : Fin m → Fin m → (B.Mat k r → E) → B.Mat k r → E)
     (EopC : Fin m → Fin m → (B.Mat k r → ℂ) → B.Mat k r → ℂ)
@@ -190,7 +188,7 @@ theorem gp_foldr (ℓ : E →L[ℂ] ℂ) (EopE : Fin m → Fin m → (B.Mat k r 
       rw [h5]
 
 /- English proof (translation)
-The claim follows from `| [], j, f, hf => ⟨by simpa using hf, rfl⟩ | q :: qs, j, f, hf => by have hf' : ContDiff ℝ ((j + qs.length + 1 : ℕ) : WithTop ℕ∞) f := by have e : j + qs.length + 1 = j + (q :: qs).length := by simp only [List.length_cons]; omega rw [e]; exact hf obtain ⟨h3, h4⟩ := h q.2.1 q.2.2 …`.
+A detailed English derivation is pending.
 -/
 theorem gp_foldl (ℓ : E →L[ℂ] ℂ) (EopE : Fin m → Fin m → (B.Mat k r → E) → B.Mat k r → E)
     (EopC : Fin m → Fin m → (B.Mat k r → ℂ) → B.Mat k r → ℂ)
@@ -221,9 +219,9 @@ theorem gp_foldl (ℓ : E →L[ℂ] ℂ) (EopE : Fin m → Fin m → (B.Mat k r 
     rw [h7, hq]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [Q.qmF, Finset.sum_apply, Pi.smul_apply, map_sum, map_smul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[gp_ofFn EopE a b u σ, gp_ofFn EopC a b u σ]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (gp_foldr ℓ EopE EopC h _ 0 f (by simpa using hf)).2 g`.
+A detailed English derivation is pending.
 -/
 theorem gp_qmF (ℓ : E →L[ℂ] ℂ) (EopE : Fin m → Fin m → (B.Mat k r → E) → B.Mat k r → E)
     (EopC : Fin m → Fin m → (B.Mat k r → ℂ) → B.Mat k r → ℂ)
@@ -240,9 +238,9 @@ theorem gp_qmF (ℓ : E →L[ℂ] ℂ) (EopE : Fin m → Fin m → (B.Mat k r �
   exact congrFun (gp_foldr ℓ EopE EopC h _ 0 f (by simpa using hf)).2 g
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [Q.qmFrev, Finset.sum_apply, Pi.smul_apply, map_sum, map_smul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[gp_ofFn EopE a b u σ, gp_ofFn EopC a b u σ]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (gp_foldl ℓ EopE EopC h _ 0 f (by simpa using hf)).2 g`.
+A detailed English derivation is pending.
 -/
 theorem gp_qmFrev (ℓ : E →L[ℂ] ℂ) (EopE : Fin m → Fin m → (B.Mat k r → E) → B.Mat k r → E)
     (EopC : Fin m → Fin m → (B.Mat k r → ℂ) → B.Mat k r → ℂ)
@@ -259,7 +257,7 @@ theorem gp_qmFrev (ℓ : E →L[ℂ] ℂ) (EopE : Fin m → Fin m → (B.Mat k r
   exact congrFun (gp_foldl ℓ EopE EopC h _ 0 f (by simpa using hf)).2 g
 
 /- English proof (translation)
-Unfold `Q.capR`. Conclude with `gp_qmF ℓ (fun a b => Q.RZ (Hpk k r) (Q.unitB (Hpk k r) Bs a b)) (fun a b => Q.RZ (Hpk k r) (Q.unitB (Hpk k r) Bs a b)) (fun a b j f hf => gp_RZ ℓ (Hpk k r) (Q.unitB (Hpk k r) Bs a b) j f hf) id id w f hf`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gp_capR_post (ℓ : E →L[ℂ] ℂ) (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (w : ℂ) (f : B.Mat k r → E)
     (hf : ContDiff ℝ (m : WithTop ℕ∞) f) :
@@ -270,7 +268,7 @@ theorem gp_capR_post (ℓ : E →L[ℂ] ℂ) (Bs : Fin m → Fin (2 * r + k + 1)
     (fun a b j f hf => gp_RZ ℓ (Hpk k r) (Q.unitB (Hpk k r) Bs a b) j f hf) id id w f hf
 
 /- English proof (translation)
-Unfold `Q.capLft`. Conclude with `gp_qmFrev ℓ (fun a b => Q.LZ (Hpk k r) (Q.unitB (Hpk k r) Bs a b)) (fun a b => Q.LZ (Hpk k r) (Q.unitB (Hpk k r) Bs a b)) (fun a b j f hf => gp_LZ ℓ (Hpk k r) (Q.unitB (Hpk k r) Bs a b) j f hf) id id w f hf`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gp_capLft_post (ℓ : E →L[ℂ] ℂ) (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (w : ℂ) (f : B.Mat k r → E)
     (hf : ContDiff ℝ (m : WithTop ℕ∞) f) :
@@ -287,21 +285,19 @@ section loc
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hx, fun _ ha => absurd ha (Nat.not_lt_zero _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem gp_glev0 {x : B.Mat k r} (hx : x ∈ B.GV k r) : x ∈ Q.Glev k r 0 :=
   ⟨hx, fun _ ha => absurd ha (Nat.not_lt_zero _)⟩
 
 /- English proof (translation)
-The claim follows from `(Qx8.glev_mul (gp_glev0 hg) (gp_glev0 hh)).1`.
+A detailed English derivation is pending.
 -/
 theorem gp_gv_mul {g h : B.Mat k r} (hg : g ∈ B.GV k r) (hh : h ∈ B.GV k r) : g * h ∈ B.GV k r :=
   (Qx8.glev_mul (gp_glev0 hg) (gp_glev0 hh)).1
 
 /- English proof (translation)
-Unfold `Formalism.REAL.RdV`. Apply `Filter.EventuallyEq.deriv_eq` to reduce the goal to its premises. Establish `hc : ContinuousAt (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) 0` using `(B5.curve_hasDerivAt g X 0).continuousAt`. Establish `h0 : g * NormedSpace.exp (((0 : ℝ) : ℂ) • X) = g` using `by simp`. Use `filter_upwards [hc.preimage_mem_nhds (by rw [h0]; exact hV.mem_nhds hgV)] with t ht`.
-
-Conclude with `h _ ht (gp_gv_mul hg (hX t).1)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gp_rd_loc {f f₂ : B.Mat k r → E} {V : Set (B.Mat k r)} (hV : IsOpen V)
     (h : ∀ x ∈ V, x ∈ B.GV k r → f x = f₂ x) {X : B.Mat k r} (hX : X ∈ JfS.lieOf (Nset k r))
@@ -315,7 +311,7 @@ theorem gp_rd_loc {f f₂ : B.Mat k r → E} {V : Set (B.Mat k r)} (hV : IsOpen 
   exact h _ ht (gp_gv_mul hg (hX t).1)
 
 /- English proof (translation)
-Unfold `Q.LdV`. Apply `Filter.EventuallyEq.deriv_eq` to reduce the goal to its premises. Establish `h0 : NormedSpace.exp (((0 : ℝ) : ℂ) • X) * g = g` using `by simp`. Use `filter_upwards [(Qx8.lcurve_cont X g).continuousAt.preimage_mem_nhds (by rw [h0]; exact hV.mem_nhds hgV)] with t ht`. Conclude with `h _ ht (gp_gv_mul (hX t).1 hg)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gp_ld_loc {f f₂ : B.Mat k r → E} {V : Set (B.Mat k r)} (hV : IsOpen V)
     (h : ∀ x ∈ V, x ∈ B.GV k r → f x = f₂ x) {X : B.Mat k r} (hX : X ∈ JfS.lieOf (Nset k r))
@@ -328,13 +324,13 @@ theorem gp_ld_loc {f f₂ : B.Mat k r → E} {V : Set (B.Mat k r)} (hV : IsOpen 
   exact h _ ht (gp_gv_mul (hX t).1 hg)
 
 /- English proof (translation)
-Take `⟨ρ, hρ, hball⟩` from `Metric.isOpen_iff.1 hU g hgU`. Set `b : ContDiffBump g` to `⟨ρ / 4, ρ / 2, by positivity, by linarith⟩`. Use `⟨Metric.ball g (ρ / 4), fun x => (b x : ℝ) • F x, Metric.isOpen_ball, Metric.mem_ball_self (by positivity), ?_, fun x hx hxG => ?_⟩` and prove the remaining obligations. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hx : x ∈ Metric.closedBall g (ρ / 2)`. Establish `hxU : x ∈ U` using `hball (Metric.closedBall_subset_ball (by linarith) hx)`. Conclude with `b.contDiff.contDiffAt.smul (hF.contDiffAt (hU.mem_nhds hxU))`. Establish `: (fun x => (b x : ℝ) • F x) =ᶠ[𝓝 x] fun _ => 0` using `by filter_upwards [Metric.isClosed_closedBall.isOpen_compl.mem_nhds hx] with y hy`. Establish `: b y = 0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Function.notMem_support, b.support_eq]`. Conclude with `fun h => hy (Metric.ball_subset_closedBall h)`. Simplify using `[this]`. Conclude with `contDiffAt_const.congr_of_eventuallyEq this`. Establish `h1 : b x = 1` using `b.one_of_mem_closedBall (Metric.ball_subset_closedBall hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : x ∈ U` using `hball (Metric.ball_subset_ball (by linarith) hx)`. Simplify using `[h1, hJF x h2 hxG]`.
+A detailed English derivation is pending.
 -/
 theorem gp_glob {n : ℕ} {J : B.Mat k r → E} {U : Set (B.Mat k r)} {F : B.Mat k r → E} {g : B.Mat k r}
     (hU : IsOpen U) (hgU : g ∈ U) (hF : ContDiffOn ℝ (n : WithTop ℕ∞) F U)
@@ -364,25 +360,25 @@ theorem gp_glob {n : ℕ} {J : B.Mat k r → E} {U : Set (B.Mat k r)} {F : B.Mat
 end loc
 
 /- English proof (translation)
-Introduce `k r z z' E _ _ J ℓ hG`. Take `⟨hC, hR1, hL1, hCl, hCr, hCV⟩` from `hG`. Establish `loc : ∀ g ∈ JF.Om k r z z', ∃ (V : Set (B.Mat k r)) (J' : B.Mat k r → E), IsOpen V ∧ g ∈ V ∧ ContDiff ℝ ((2 * r + k + 1 : ℕ) : WithTop ℕ∞) J' ∧ ∀ x ∈ V, x ∈ Q.Glev k r 0 → J x = J' x`. Introduce `g hg`. Take `⟨U, F, hU, hgU, hF, hJF⟩` from `hC g ⟨gp_glev0 hg.1, hg.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `gp_glob hU hgU hF hJF`. Establish `hd : ∀ (J' : B.Mat k r → E), ContDiff ℝ ((2 * r + k + 1 : ℕ) : WithTop ℕ∞) J' → ∀ g, DifferentiableAt ℝ J' g` using `fun J' h g => h.differentiable (by simp) g`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hJF⟩` from `hC g₀ hg₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨U, fun x => ℓ (F x), hU, hgU, (ℓ.restrictScalars ℝ).contDiff.comp_contDiffOn hF, fun x hx hxG => by simp [hJF x hx hxG]⟩`. Introduce `X hX`. Take `⟨c, hc⟩` from `hR1 X hX`. Use `⟨c, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨V, J', hV, hgV, hJ', hJJ'⟩` from `loc g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdl : DifferentiableAt ℝ (fun x => ℓ (J' x)) g` using `(ℓ.restrictScalars ℝ).differentiableAt.comp g (hd J' hJ' g)`. Rewrite using `[gp_rd_loc (f₂ := fun x => ℓ (J' x)) hV (fun x hx hxG => by simp [hJJ' x hx (gp_glev0 hxG)]) hX hg.1 hgV, gp_rdV X g _ hdl, gp_fderiv_post ℓ J' g (hd J' hJ' g), ← gp_rdV X g J' (hd J' hJ' g), ← gp_rd_loc hV (fun x hx hxG => hJJ' x hx (gp_glev0 hxG)) hX hg.1 hgV, hc g hg, map_smul …`. Introduce `X hX`. Take `⟨c, hc⟩` from `hL1 X hX`. Use `⟨c, fun g hg => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨V, J', hV, hgV, hJ', hJJ'⟩` from `loc g hg`. Establish `hdl : DifferentiableAt ℝ (fun x => ℓ (J' x)) g` using `(ℓ.restrictScalars ℝ).differentiableAt.comp g (hd J' hJ' g)`. Rewrite using `[gp_ld_loc (f₂ := fun x => ℓ (J' x)) hV (fun x hx hxG => by simp [hJJ' x hx (gp_glev0 hxG)]) hX hg.1 hgV, gp_ldV X g _ hdl, gp_fderiv_post ℓ J' g (hd J' hJ' g), ← gp_ldV X g J' (hd J' hJ' g), ← gp_ld_loc hV (fun x hx hxG => hJJ' x hx (gp_glev0 hxG)) hX hg.1 hgV, hc g hg, map_smul …`. Introduce `Bs hBs w`. Take `⟨c, hc⟩` from `hCl Bs hBs w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨V, J', hV, hgV, hJ', hJJ'⟩` from `loc g hg`. Establish `hgx : g ∈ Q.Glev k r 0 ∩ V` using `⟨gp_glev0 hg.1, hgV⟩`. Establish `l1` using `Qx8.loc_capLft (E := ℂ) (i := 0) hV Bs hBs.1 w (fun x => ℓ (J x)) (fun x => ℓ (J' x)) (fun x hx => by simp [hJJ' x hx.2 hx.1]) g hgx`. Establish `l2` using `Qx8.loc_capLft (E := E) (i := 0) hV Bs hBs.1 w J J' (fun x hx => hJJ' x hx.2 hx.1) g hgx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `congrFun (gp_capLft_post ℓ Bs w J' (hJ'.of_le (by norm_cast; omega))) g`. Rewrite using `[l1, ← hp, ← l2, hc g hg, map_smul]`. Introduce `Bs hBs w`. Take `⟨c, hc⟩` from `hCr Bs hBs w`. Use `⟨c, fun g hg => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨V, J', hV, hgV, hJ', hJJ'⟩` from `loc g hg`. Establish `hgx : g ∈ Q.Glev k r 0 ∩ V` using `⟨gp_glev0 hg.1, hgV⟩`. Establish `l1` using `(CapelliCoordinates.good_capR (E := ℂ) (i := 0) hV Bs hBs.1 w).loc (fun x => ℓ (J x)) (fun x => ℓ (J' x)) (fun x hx => by simp [hJJ' x hx.2 hx.1]) g hgx`. Establish `l2` using `(CapelliCoordinates.good_capR (E := E) (i := 0) hV Bs hBs.1 w).loc J J' (fun x hx => hJJ' x hx.2 hx.1) g hgx`. Establish `hp` using `congrFun (gp_capR_post ℓ Bs w J' (hJ'.of_le (by norm_cast; omega))) g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[l1, ← hp, ← l2, hc g hg, map_smul]`. Introduce `Y`. Take `⟨c, hc⟩` from `hCV Y`. Use `⟨c, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨V, J', hV, hgV, hJ', hJJ'⟩` from `loc g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgx : g ∈ Q.Glev k r 0 ∩ V` using `⟨gp_glev0 hg.1, hgV⟩`. Establish `l1 : Q.CV k r (Y : ℂ) (fun x => ℓ (J x)) g = Q.CV k r (Y : ℂ) (fun x => ℓ (J' x)) g` using `(Qx2.good_qminor (E := ℂ) (i := 0) hV id id (Q.uC k r 0 (Y : ℂ))).loc (fun x => ℓ (J x)) (fun x => ℓ (J' x)) (fun x hx => by simp [hJJ' x hx.2 hx.1]) g hgx`. Establish `l2 : Q.CV k r (Y : ℂ) J g = Q.CV k r (Y : ℂ) J' g` using `(Qx2.good_qminor (E := E) (i := 0) hV id id (Q.uC k r 0 (Y : ℂ))).loc J J' (fun x hx => hJJ' x hx.2 hx.1) g hgx`. Establish `hck : B.CkOn ((2 * r + k + 1 : ℕ) : ℕ∞) (B.GV k r) J'` using `fun _ _ => ⟨Set.univ, J', isOpen_univ, trivial, by exact_mod_cast hJ'.contDiffOn, fun _ _ _ => rfl⟩`. Rewrite using `[l1, JFxB.cvPost k r E ℂ (Y : ℂ) ℓ J' hck g hg.1, ← l2, hc g hg, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem group_equations_post_holds : GEqsPost := by
   intro k r z z' E _ _ J ℓ hG

@@ -10,11 +10,9 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory.RetractionLiftSection
 
 /- English proof (translation)
-Establish `inj : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Establish `key : ∀ a : A, ∃ r : R, algebraMap R K r = ψ a`. Introduce `a`. Take `⟨f, hf, hfa⟩` from `hφ a`. Establish `hi : IsIntegral R (ψ a)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Rewrite using `[← h, ← Polynomial.hom_eval₂, hfa, map_zero]`. Conclude with `IsIntegrallyClosed.algebraMap_eq_of_integral hi`. Use `choose s hs using key`. Set `σ : A →+* R` to `{ toFun := s map_one' := inj (by rw [hs, map_one, map_one]) map_mul' := fun a b => inj (by rw [map_mul, hs, hs, hs, map_mul]) map_zero' := inj (by rw [hs, map_zero, map_zero]) map_add' := fun a b => inj (by rw [map_add, hs, hs, hs, map_add]) }`.
-
-Use `⟨σ, RingHom.ext hs, RingHom.ext fun r => inj ?_⟩` and prove the remaining obligations. Conclude with `(hs (φ r)).trans (RingHom.congr_fun h r)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_retraction {R K A : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [Algebra R K]
     [IsFractionRing R K] [CommRing A] (φ : R →+* A) (hφ : φ.IsIntegral) (ψ : A →+* K)
@@ -39,13 +37,13 @@ theorem exists_retraction {R K A : Type} [CommRing R] [IsDomain R] [IsIntegrally
   exact (hs (φ r)).trans (RingHom.congr_fun h r)
 
 /- English proof (translation)
-Use `haveI : IsAffine W := isAffine_of_isAffineHom q`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (W.isoSpec.inv ≫ q)`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (y ≫ W.isoSpec.hom)`. Establish `hfin : IsFinite (Spec.map φ)` using `by rw [hφ]; infer_instance`. Establish `hint : φ.hom.IsIntegral` using `((IsFinite.SpecMap_iff φ).1 hfin).to_isIntegral`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : φ ≫ ψ = CommRingCat.ofHom (algebraMap R K)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hφ, hψ, Category.assoc, Iso.hom_inv_id_assoc, h]`. Take `⟨σ, h₁, h₂⟩` from `exists_retraction (R := R) (K := K) φ.hom hint ψ.hom (congrArg CommRingCat.Hom.hom hc)`. Use `⟨Spec.map (CommRingCat.ofHom σ) ≫ W.isoSpec.inv, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : CommRingCat.ofHom σ ≫ CommRingCat.ofHom (algebraMap R K) = ψ` using `CommRingCat.hom_ext h₁`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Use `erw [e]`. Rewrite using `[hψ, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Establish `e : φ ≫ CommRingCat.ofHom σ = 𝟙 _` using `CommRingCat.hom_ext h₂`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ← hφ, ← Spec.map_comp]`. Use `erw [e]`. Rewrite using `[Spec.map_id]`.
+A detailed English derivation is pending.
 -/
 theorem exists_section {R K : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [Algebra R K]
     [IsFractionRing R K] {W : Scheme.{0}} (q : W ⟶ Spec (CommRingCat.of R)) [IsFinite q]
@@ -71,7 +69,7 @@ theorem exists_section {R K : Type} [CommRing R] [IsDomain R] [IsIntegrallyClose
     rw [Spec.map_id]
 
 /- English proof (translation)
-Take `⟨s, h₁, h₂⟩` from `exists_section (K := K) (pullback.snd p x) (pullback.lift y _ h) (pullback.lift_snd _ _ _)`. Use `⟨s ≫ pullback.fst p x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, h₁, pullback.lift_fst]`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, h₂, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift {R K : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [Algebra R K]
     [IsFractionRing R K] {Z P : Scheme.{0}} (p : Z ⟶ P) [IsFinite p] (x : Spec (CommRingCat.of R) ⟶ P)
@@ -83,7 +81,7 @@ theorem exists_lift {R K : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R
   · rw [Category.assoc, pullback.condition, ← Category.assoc, h₂, Category.id_comp]
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ p x y _ h` and use `exists_lift (R := R) (K := FractionRing R) p x y h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lift_finite : ∀ (R : Type) [inst : CommRing R] [IsDomain R] [IsIntegrallyClosed R] (Z P : AlgebraicGeometry.Scheme) (p : Z ⟶ P) (ξ₀ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R ⟶ P) (y : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp (FractionRing R) ⟶ Z), AlgebraicGeometry.IsFinite p → CategoryTheory.CategoryStruct.comp y p = CategoryTheory.CategoryStruct.comp (ReciprocityTheory.ChartRestriction.G.Out.jK R) ξ₀ → ∃ (ξ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R ⟶ Z), CategoryTheory.CategoryStruct.comp (ReciprocityTheory.ChartRestriction.G.Out.jK R) ξ = y ∧ CategoryTheory.CategoryStruct.comp ξ p = ξ₀ :=
   fun R _ _ _ _ _ p x y _ h => exists_lift (R := R) (K := FractionRing R) p x y h

@@ -5,19 +5,17 @@ universe u_1
 namespace Bl.general_b_fact_second_ter_form
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.strongInduction with`. Consider the case `H t ih`. Introduce `i hi`. Break down `t.eq_empty_or_nonempty with rfl | ⟨j, hj⟩` into its components or cases. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Establish `hij : i ≠ j` using `fun h => hi (h ▸ hj)`. Take `⟨w, hw⟩ : ∃ w, χ i w ≠ χ j w` from `by by_contra! h`. Conclude with `hij (hχ (funext h))`. Establish `hmem : ∀ k v, v ∈ p k → C w v = χ k w • v` using `fun k v hv => (hp k v).1 hv w`. Establish `key : ∀ v ∈ t.sup p, C w v - χ j w • v ∈ (t.erase j).sup p`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Establish `hle : t.sup p ≤ Submodule.comap (C w - χ j w • LinearMap.id) ((t.erase j).sup p)`. Use `Finset.sup_le fun k hk => ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[Submodule.mem_comap, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hmem k x hx, ← sub_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hkj : k = j`. Simplify using `[hkj]`. Conclude with `Finset.le_sup (f := p) (Finset.mem_erase.2 ⟨hkj, hk⟩) (Submodule.smul_mem _ _ hx)`. Use `hle hv` as an intermediate fact. Rewrite `this` using `[Submodule.mem_comap, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.disjoint_def]`. Introduce `v hvi hvt`. Establish `h1 : C w v - χ j w • v = (χ i w - χ j w) • v` using `by rw [hmem i v hvi, sub_smul]`. Establish `h2 : (χ i w - χ j w) • v ∈ p i` using `Submodule.smul_mem _ _ hvi`. Establish `h3` using `key v hvt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[h1]`. Establish `h4` using `ih (t.erase j) (Finset.erase_ssubset hj) i (fun h => hi (Finset.mem_of_mem_erase h))`. Establish `h5 : (χ i w - χ j w) • v = 0` using `(Submodule.disjoint_def.1 h4) _ h2 h3`. Break down `smul_eq_zero.1 h5 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h) hw`.
-
-Conclude with `h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private lemma aux {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type u_1}
     (C : ℂ → Module.End ℂ V) (χ : ι → ℂ → ℂ) (hχ : Function.Injective χ)
@@ -58,9 +56,9 @@ private lemma aux {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type u_1}
   · exact h
 
 /- English proof (translation)
-Introduce `V _ _ ι C χ hχ p hp`. Rewrite using `[iSupIndep_iff_supIndep]`. Introduce `s`. Rewrite using `[Finset.supIndep_iff_disjoint_erase]`. Introduce `i _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `aux C χ hχ p hp _ i (Finset.notMem_erase i s)`.
+A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {V : Type} [inst : AddCommGroup.{0} V] [inst_1 : Module.{0, 0} Complex V] {ι : Type u_1}

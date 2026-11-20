@@ -11,27 +11,27 @@ namespace GlobalTheory.FibreCorr
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M₁ M : RatModel o Ω} {π : M.Z ⟶ M₁.Z}
 
 /- English proof (translation)
-Simplify using `using hπ.map_mem_O hF`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_O_of_isHom (hπ : M₁.IsHom M (AlgHom.id o Ω) π) {x : M.Z} {F : Ω} (hF : F ∈ M₁.O (π x)) : F ∈ M.O x := by
   simpa using hπ.map_mem_O hF
 
 /- English proof (translation)
-The claim follows from `RatModel.norm_val_le_one rfl (mem_O_of_isHom hπ (hy ▸ hF))`.
+A detailed English derivation is pending.
 -/
 theorem norm_val_le_one' (hπ : M₁.IsHom M (AlgHom.id o Ω) π) {q : ℕ} [Fact q.Prime] {y : Sp (OO q) ⟶ M.Z} {z : M₁.Z}
     (hy : π (y (cPt q)) = z) {F : Ω} (hF : F ∈ M₁.O z) : ‖M.val (gPt q ≫ y) F‖ ≤ 1 :=
   RatModel.norm_val_le_one rfl (mem_O_of_isHom hπ (hy ▸ hF))
 
 /- English proof (translation)
-The claim follows from `H.imp hs.trans fun ⟨h, hq, hr⟩ => ⟨h, hq, hs.trans hr⟩`.
+A detailed English derivation is pending.
 -/
 theorem bound_mono {r s t : ℝ} {Q : Ω → Prop} {g : Ω → ℝ} (hs : s ≤ r) (H : r ≤ t ∨ ∃ h, Q h ∧ r ≤ g h) :
     s ≤ t ∨ ∃ h, Q h ∧ s ≤ g h :=
   H.imp hs.trans fun ⟨h, hq, hr⟩ => ⟨h, hq, hs.trans hr⟩
 
 /- English proof (translation)
-Use `⟨h.2, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : (h : Ω) = 0`. Conclude with `Or.inl h0`. Conclude with `Or.inr fun hi => hh ((RatModel.isUnit_O_iff h).2 ⟨h0, hi⟩)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 -/
 theorem nonUnitAt_of_not_isUnit {z : M₁.Z} {h : M₁.O z} (hh : ¬ IsUnit h) : NonUnitAt M₁ z h := by
   refine ⟨h.2, ?_⟩
@@ -40,17 +40,17 @@ theorem nonUnitAt_of_not_isUnit {z : M₁.Z} {h : M₁.O z} (hh : ¬ IsUnit h) :
   · exact Or.inr fun hi => hh ((RatModel.isUnit_O_iff h).2 ⟨h0, hi⟩)
 
 /- English proof (translation)
-Establish `hs : ∀ w, (gPt q ≫ y) w ⤳ y (cPt q)` using `RatModel.gPt_specializes rfl`. Establish `hO : ∀ a : M₁.O z, (a : Ω) ∈ M.O (y (cPt q))` using `fun a => mem_O_of_isHom hπ (hy ▸ a.2)`. Establish `hadd : ∀ a b : M₁.O z, M.val (gPt q ≫ y) ((a + b : M₁.O z) : Ω) = M.val (gPt q ≫ y) a + M.val (gPt q ≫ y) b` using `fun a b => RatModel.val_add hs (hO a) (hO b)`. Establish `hmul : ∀ a b : M₁.O z, M.val (gPt q ≫ y) ((a * b : M₁.O z) : Ω) = M.val (gPt q ≫ y) a * M.val (gPt q ≫ y) b` using `fun a b => RatModel.val_mul hs (hO a) (hO b)`. Proceed by induction on `e with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero`. Introduce `F _`. Use `⟨0, not_isUnit_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero]`. Conclude with `norm_val_le_one' hπ hy F.2`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `F hF`. Rewrite `hF` using `[pow_succ]`. Use `Submodule.mul_induction_on hF ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh, hle⟩` from `ih a ha`. Establish `hb' : ¬ IsUnit b` using `(mem_maximalIdeal b).1 hb`. Rewrite using `[hmul, norm_mul]`. Break down `le_total ‖M.val (gPt q ≫ y) (h : Ω)‖ ‖M.val (gPt q ≫ y) (b : Ω)‖ with hc | hc` into its components or cases. Use `⟨b, hb', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Conclude with `mul_le_mul_of_nonneg_right (hle.trans (pow_le_pow_left₀ (norm_nonneg _) hc n)) (norm_nonneg _)`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `mul_le_mul hle hc (norm_nonneg _) (pow_nonneg (norm_nonneg _) _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce and unpack `a b ⟨h₁, hh₁, h₁le⟩ ⟨h₂, hh₂, h₂le⟩`. Rewrite using `[hadd]`. Break down `le_total ‖M.val (gPt q ≫ y) (h₁ : Ω)‖ ‖M.val (gPt q ≫ y) (h₂ : Ω)‖ with hc | hc` into its components or cases. Conclude with `⟨h₂, hh₂, (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h₁le.trans (pow_le_pow_left₀ (norm_nonneg _) hc _)) h₂le)⟩`. Conclude with `⟨h₁, hh₁, (IsUltrametricDist.norm_add_le_max _ _).trans (max_le h₁le (h₂le.trans (pow_le_pow_left₀ (norm_nonneg _) hc _)))⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_nonUnit_pow (hπ : M₁.IsHom M (AlgHom.id o Ω) π) {q : ℕ} [Fact q.Prime] {y : Sp (OO q) ⟶ M.Z} {z : M₁.Z}
     (hy : π (y (cPt q)) = z) (e : ℕ) : ∀ F ∈ maximalIdeal (M₁.O z) ^ e, ∃ h : M₁.O z, ¬ IsUnit h ∧
@@ -134,13 +134,13 @@ def fibreIdeal (D : EffCartierData M.Z) (z : M₁.Z) : Ideal (M₁.O z) where
 variable {hπ}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_fibreIdeal {D : EffCartierData M.Z} {z : M₁.Z} {G : M₁.O z} :
     G ∈ fibreIdeal hπ D z ↔ ∀ x' : M.Z, π x' = z → ∀ f', EqAt M D x' f' → (G : Ω) / f' ∈ M.O x' := Iff.rfl
 
 /- English proof (translation)
-Introduce `e e' hee F hF q _ y hy hU f hf`. Break down `hF q y hy hU f hf with h | ⟨h, hh, hle⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨h, hh, hle.trans (pow_le_pow_of_le_one (norm_nonneg _) (norm_val_le_one' hπ hy hh.1) hee)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem approxIdeal_antitone (U : M.Z.Opens) (D : EffCartierData M.Z) (z : M₁.Z) :
     Antitone (approxIdeal hπ U D z) := by
@@ -150,7 +150,7 @@ theorem approxIdeal_antitone (U : M.Z.Opens) (D : EffCartierData M.Z) (z : M₁.
   · exact Or.inr ⟨h, hh, hle.trans (pow_le_pow_of_le_one (norm_nonneg _) (norm_val_le_one' hπ hy hh.1) hee)⟩
 
 /- English proof (translation)
-Introduce `F hF q _ y hy hU f hf`. Take `⟨h, hh, hle⟩` from `exists_nonUnit_pow hπ hy e F hF`. Conclude with `Or.inr ⟨h, nonUnitAt_of_not_isUnit hh, hle⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the second alternative.
 -/
 theorem pow_le_approxIdeal (U : M.Z.Opens) (D : EffCartierData M.Z) (z : M₁.Z) (e : ℕ) :
     maximalIdeal (M₁.O z) ^ e ≤ approxIdeal hπ U D z e := by
@@ -159,7 +159,7 @@ theorem pow_le_approxIdeal (U : M.Z.Opens) (D : EffCartierData M.Z) (z : M₁.Z)
   exact Or.inr ⟨h, nonUnitAt_of_not_isUnit hh, hle⟩
 
 /- English proof (translation)
-Use `haveI : IsDedekindDomain o := ArithBase.ded Ω`. Use `haveI := M.lft`. Use `haveI : IsLocallyNoetherian M.Z := LocallyOfFiniteType.isLocallyNoetherian M.s`. Conclude with `isNoetherianRing_of_ringEquiv _ (M.stalkEquiv z)`.
+A detailed English derivation is pending.
 -/
 theorem isNoetherianRing_O [ArithBase o Ω] (M : RatModel o Ω) (z : M.Z) : IsNoetherianRing (M.O z) := by
   haveI : IsDedekindDomain o := ArithBase.ded Ω

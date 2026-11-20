@@ -8,13 +8,11 @@ noncomputable section
 namespace QmCapCommW
 
 /- English proof (translation)
-Introduce `A _ _ n E hE u v`. Establish `hc : ∀ c d, Commute (qdet E u) (E c d)` using `fun c d => qDetCentral A n E hE u c d`. Establish `hT : ∀ w a b, Commute (qdet E u) (Tm E w a b)`. Introduce `w a b`. Unfold `Tm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `Commute.add_right ?_ (hc a b)` and prove the remaining obligations. Use `split_ifs`. Conclude with `Algebra.commute_algebraMap_right w _`. Conclude with `Commute.zero_right _`. Establish `key : Commute (qdet E u) (qdet E v)` using `by show Commute (qdet E u) (∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : A) * (List.ofFn fun k : Fin n => Tm E (v - (k : ℂ)) (id (σ k)) (id k)).prod)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Commute.sum_right _ _ _ fun σ _ => ?_` and prove the remaining obligations. Use `Commute.mul_right Commute.intCast_right ?_` and prove the remaining obligations. Use `Commute.list_prod_right _ _ fun y hy => ?_` and prove the remaining obligations. Simplify using `only [List.mem_ofFn] at hy`. Take `⟨k, rfl⟩` from `hy`.
-
-Conclude with `hT _ _ _`. Conclude with `key.eq`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem quantum_determinant_commutes : QdetCommute := by
   intro A _ _ n E hE u v

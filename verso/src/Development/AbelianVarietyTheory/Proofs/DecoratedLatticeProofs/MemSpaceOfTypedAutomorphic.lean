@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.TriStepMem
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NormPowerTwoUnity.eq_one_of_norm_pow_two_pow_sub_one_lt`. Consider the case `exact _root_.GlobalTheory.NormPowerTwoUnity.eq_one_of_norm_pow_two_pow_sub_one_lt`. Consider the case `(apply _root_.GlobalTheory.NormPowerTwoUnity.eq_one_of_norm_pow_two_pow_sub_one_lt <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NormPowerTwoUnity.eq_one_of_norm_pow_two_pow_sub_one_lt <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NormPowerTwoUnity.eq_one_of_norm_pow_two_pow_sub_one_lt <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NormPowerTwoUnity.eq_one_of_norm_pow_two_pow_sub_one_lt ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow_two_pow (z : ℂ) (h : ∀ m : ℕ, ‖z ^ (2 ^ m) - 1‖ < 1 / 2) : z = 1 := by
   first
@@ -36,23 +36,21 @@ namespace GlobalTheory.TriStep
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {S : Dbl2 ψ σ}
 
 /- English proof (translation)
-Introduce `D ψ σ S Q f hf hT`. Establish `hgl : Continuous Q.gl₂` using `(GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D Q.k Q.q S.B'.V _ Q.F.G₂ Q.gl₂ Q.loc₂).1.continuous`. Use `⟨fun y => ⟨fun γ hγ x => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [rTrans]`. Rewrite using `[mul_assoc, hf.1 γ hγ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf.2.comp (continuous_id.mul continuous_const)`. Distinguish the cases in `h0 : ∃ x, f x ≠ 0`. Take `⟨x, hx⟩` from `h0`. Establish `hval : ∀ j : Q.L₂.J, f (x * Q.gl₂ j.1) = (Q.L₂.lam j : ℂ) * f x` using `fun j => by`. Use `congrFun (hT j) x` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[rTrans]`. Set `φ : GL (Q.n₂ ⊕ Fin (Q.c + 1)) Q.k → ℂ` to `fun g => f (x * Q.gl₂ g) / f x`. Establish `hφc : Continuous φ` using `(hf.2.comp (continuous_const.mul hgl)).div_const _`. Establish `hφ : ∀ j : Q.L₂.J, φ j.1 = (Q.L₂.lam j : ℂ)` using `fun j => by`. Simplify using `only [φ, hval j]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Set `U : Set (GL (Q.n₂ ⊕ Fin (Q.c + 1)) Q.k)` to `(Q.L₂.J : Set _) ∩ φ ⁻¹' Metric.ball 1 (1 / 2)`. Establish `hU : U ∈ nhds (1 : GL (Q.n₂ ⊕ Fin (Q.c + 1)) Q.k)`. Use `(Q.co₂.1.inter (Metric.isOpen_ball.preimage hφc)).mem_nhds ⟨Q.L₂.J.one_mem, ?_⟩` and prove the remaining obligations. Use `hφ 1` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [OneMemClass.coe_one, map_one, Units.val_one] at this`. Simplify using `[this]`. Take `⟨K, hKo, hKU, -, -⟩` from `GlobalTheory.SmGL.exists_open_normalised_subgroup_subset Q.k (Q.n₂ ⊕ Fin (Q.c + 1)) U hU`. Use `⟨K, hKo, fun u hu => ?_⟩` and prove the remaining obligations. Establish `huJ : u ∈ Q.L₂.J` using `(hKU hu).1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlam : (Q.L₂.lam ⟨u, huJ⟩ : ℂ) = 1`. Apply `GlobalTheory.TriStepMem.eq_one_of_pow_two_pow` to reduce the goal to its premises. Introduce `m`. Establish `hm : u ^ (2 ^ m) ∈ K` using `K.pow_mem hu _`. Establish `hmU` using `hKU hm`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmJ : u ^ (2 ^ m) ∈ Q.L₂.J` using `hmU.1`. Establish `e : (⟨u ^ (2 ^ m), hmJ⟩ : Q.L₂.J) = (⟨u, huJ⟩ : Q.L₂.J) ^ (2 ^ m)` using `rfl`. Establish `h2 : φ (u ^ (2 ^ m)) ∈ Metric.ball (1 : ℂ) (1 / 2)` using `hmU.2`. Rewrite `h2` using `[show u ^ (2 ^ m) = ((⟨u ^ (2 ^ m), hmJ⟩ : Q.L₂.J) : GL _ _) from rfl, hφ, e, map_pow, Units.val_pow_eq_pow_val, Metric.mem_ball, dist_eq_norm]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hT ⟨u, huJ⟩` as an intermediate fact. Rewrite `this` using `[hlam, one_smul]`. Conclude with `this`. Use `push_neg at h0`. Use `⟨⊤, isOpen_univ, fun u _ => ?_⟩` and prove the remaining obligations.
-
-Use function extensionality and compare the values at `g`. Simplify using `[rTrans, h0]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_space_of_typed : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (S : Dbl2 ψ σ) (Q : QStep S)
     (f : GA D S.B'.V → ℂ), IsContAut S.B'.V f → Q.Typed f → f ∈ GlobalTheory.TriStep.space Q := by

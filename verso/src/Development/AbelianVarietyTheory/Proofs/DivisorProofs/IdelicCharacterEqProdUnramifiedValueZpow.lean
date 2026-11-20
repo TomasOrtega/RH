@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CharUnramVal
 
 /- English proof (translation)
-Establish `h1 : Valued.v ((atFin Q k : (Q.adicCompletion L)ˣ) : Q.adicCompletion L) = WithZero.exp (-m)` using `(GlobalTheory.CharLocProd.val_algebraMap Q (k : L)).trans hk`. Establish `h2 : Valued.v ((atFin Q (unif Q) : (Q.adicCompletion L)ˣ) : Q.adicCompletion L) = WithZero.exp (-1 : ℤ)` using `unif_spec Q`. Establish `h3 : IsUnitAt Q (atFin Q k * atFin Q (unif Q) ^ (-m))` using `by show Valued.v _ = _`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, h1, h2, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h4` using `hu _ h3`. Rewrite `h4` using `[map_mul, map_zpow, zpow_neg, mul_inv_eq_one]`. Conclude with `h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locK_eq_val_zpow {L : Type} [Field L] [NumberField L] (χ : HChar L) (Q : HeightOneSpectrum (𝓞 L))
     (hu : χ.UnrAt Q) (k : Lˣ) (m : ℤ) (hk : Q.valuation L (k : L) = WithZero.exp (-m)) :
@@ -33,15 +33,13 @@ theorem locK_eq_val_zpow {L : Type} [Field L] [NumberField L] (χ : HChar L) (Q 
   exact h4
 
 /- English proof (translation)
-Introduce `D ι h1 h2 h3 c χ hc x hx S m hS hoff`. Take `⟨N, hN, hprod⟩` from `GlobalTheory.CharLocProd.char_eq_prod_locK D ι h1 h2 h3 c χ hc`. Take `⟨S', k₀, -, hS'⟩` from `GlobalTheory.finiteIdele_exists_local_approx D.host.E N hN (Units.map ((ι : _ →+* _).comp (finPart D)).toMonoidHom x)`. Establish `hx0 : ∀ P : HeightOneSpectrum (𝓞 D.host.E), ι (finPart D (x : AE D)) P ≠ 0`. Introduce `P h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hP : P ∈ S`. Use `(hS P hP).2` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero this.symm`. Conclude with `zero_ne_one (h.symm.trans (hoff P hP))`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `choose k hk using fun P => GlobalTheory.adicCompletion_exists_unit_approx D.host.E N hN P _ (hx0 P)`. Establish `key` using `hprod x hx (S ∪ S') (fun P => if P ∈ S then k P else 1) (fun P _ => by`. Distinguish the cases in `hP : P ∈ S`. Simplify using `only [if_pos hP]`. Conclude with `⟨(hk P).1, (hk P).2.1⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [if_neg hP, hoff P hP, Units.val_one, map_one, sub_self, map_zero, zero_le, and_self])`. Use the proof step `(fun P hP => hS' P fun h => hP (Finset.mem_union_right _ h))`. Rewrite using `[key, Units.coe_prod, ← Finset.prod_subset (Finset.subset_union_left (s₁ := S) (s₂ := S'))]`. Use `Finset.prod_congr rfl fun P hP => ?_` and prove the remaining obligations. Simplify using `only [if_pos hP]`.
-
-Rewrite using `[locK_eq_val_zpow χ P (hS P hP).1 (k P) (m P) ((hk P).1.symm.trans (hS P hP).2)]`. Introduce `P _ hP`. Simplify using `only [if_neg hP, map_one, Units.val_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem char_eq_prod_val_zpow : ∀ (D : D7) (ι : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E), (∀ x : D.host.E, ι ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) = algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) x) → (∀ y, y ∈ intAE D ↔ ∀ P : HeightOneSpectrum (𝓞 D.host.E), Valued.v (ι y P) ≤ 1) → (∀ P : HeightOneSpectrum (𝓞 D.host.E), ∃ e : AE D, IsPlIdem D e P ∧ infPart D e = 0 ∧ ι (finPart D e) P = 1 ∧ ∀ P' : HeightOneSpectrum (𝓞 D.host.E), P' ≠ P → ι (finPart D e) P' = 0) → ∀ (c : (AE D)ˣ →* Circle) (χ : HChar D.host.E), ChrEq c χ → ∀ x : (AE D)ˣ, infPart D (x : AE D) = 1 → ∀ (S : Finset (HeightOneSpectrum (𝓞 D.host.E))) (m : HeightOneSpectrum (𝓞 D.host.E) → ℤ), (∀ Q ∈ S, χ.UnrAt Q ∧ Valued.v (ι (finPart D (x : AE D)) Q) = WithZero.exp (-m Q)) → (∀ Q, Q ∉ S → ι (finPart D (x : AE D)) Q = 1) → ((c x : Circle) : ℂ) = ((∏ Q ∈ S, χ.val Q ^ m Q : ℂˣ) : ℂ) := by
   classical

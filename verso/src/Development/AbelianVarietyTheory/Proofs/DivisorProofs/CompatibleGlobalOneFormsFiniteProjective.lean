@@ -10,11 +10,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Introduce `R _ C _ F hF h0`. Take `⟨n, ⟨Φ⟩⟩` from `hF`. Take `⟨l, -, hl⟩` from `GlobalTheory.T.globalOneFormFrame_coordinates_constant R C F h0 n Φ`. Set `L : Glob1 F →ₗ[R] (Fin n → R)` to `LinearMap.pi l`. Set `S : (Fin n → R) →ₗ[R] Glob1 F` to `Fintype.linearCombination R Φ.w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hSL : S.comp L = LinearMap.id`. Use `LinearMap.ext fun w ↦ ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, S, L, Fintype.linearCombination_apply, LinearMap.pi_apply]`. Conclude with `(hl w).symm`. Establish `hsurj : Function.Surjective S` using `fun w ↦ ⟨L w, by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using LinearMap.congr_fun hSL w⟩`. Conclude with `⟨Module.Finite.of_surjective S hsurj, Module.Projective.of_split L S hSL⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem compatibleGlobalOneForms_finite_projective : ∀ (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R),
     HasFrame F → CohomZeroIsConstants F → Module.Finite R (Glob1 F) ∧ Module.Projective R (Glob1 F) := by

@@ -25,11 +25,11 @@ namespace GlobalTheory.LogDR
 open GlobalTheory.Twist GlobalTheory.LB GlobalTheory.QCoh
 
 /- English proof (translation)
-Set `bs : Module.Basis (Fin n) K Ω[K⁄ℤ]` to `Module.Basis.mk hx.1 hx.2.ge`. Use `haveI : Module.Finite K Ω[K⁄ℤ] := Module.Finite.of_basis bs`. Establish `hfr : Module.finrank K Ω[K⁄ℤ] = n`. Rewrite using `[Module.finrank_eq_card_basis bs, Fintype.card_fin]`. Use `eq_bot_iff.2 ((AddSubgroup.closure_le _).2 ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `η ⟨c, -, v, -, rfl⟩`. Establish `hv : ¬ LinearIndependent K v` using `fun h => by`. Use `h.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin, hfr]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlternatingMap.map_linearDependent _ v hv, smul_zero]`. Conclude with `AddSubgroup.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem spanForms_eq_bot_of_isCoord {K : Type} [Field K] {n : ℕ} {x : Fin n → Kˣ} (hx : IsCoord x)
     (M : Set K) (H : Set Ω[K⁄ℤ]) {a : ℕ} (ha : n < a) : spanForms M H a = ⊥ := by
@@ -47,7 +47,7 @@ theorem spanForms_eq_bot_of_isCoord {K : Type} [Field K] {n : ℕ} {x : Fin n �
   exact AddSubgroup.zero_mem _
 
 /- English proof (translation)
-Establish `hg : genericPoint X ∈ (⨆ i, 𝒜.U i)` using `by rw [𝒜.cover]; trivial`. Take `⟨i, -⟩` from `(Opens.mem_iSup).1 hg`. Conclude with `spanForms_eq_bot_of_isCoord ((𝒜.chart i).chart _ (𝒜.gen i)).coord _ _ ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem logAt_eq_bot_of_lt {X : Scheme.{0}} [IsIntegral X] {C : Type} {E : C → CartierDiv X} {n : ℕ}
     {ι : Type} (𝒜 : SncAtlas E n ι) (Z : Set X) (G : CartierDiv X) {a : ℕ} (ha : n < a) (y : X) :
@@ -57,7 +57,7 @@ theorem logAt_eq_bot_of_lt {X : Scheme.{0}} [IsIntegral X] {C : Type} {E : C →
   exact spanForms_eq_bot_of_isCoord ((𝒜.chart i).chart _ (𝒜.gen i)).coord _ _ ha
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Simplify using `only [cechFam, logSec, latSec, logAt_eq_bot_of_lt 𝒜 _ G ha, logAt_eq_bot_of_lt 𝒜 _ G (Nat.lt_succ_self n)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cechFam_eq_of_lt {X : Scheme.{0}} [IsIntegral X] {C : Type} {E : C → CartierDiv X} {n : ℕ}
     {ι : Type} (𝒜 : SncAtlas E n ι) (G : CartierDiv X) {a : ℕ} (ha : n < a) :
@@ -73,17 +73,13 @@ namespace GlobalTheory.LogDR
 open GlobalTheory.Twist GlobalTheory.LB GlobalTheory.QCoh
 
 /- English proof (translation)
-Introduce `k _ X _ f hf C _ E n ι _ _ 𝒜 H B R hH`. Use `haveI : IsProper f := (isProper_and_exists_isAmpleLB_of_isProjOver hf).1`. Use `haveI : X.IsSeparated := by`. Prove the components needed by the constructor for the conclusion. Rewrite using `[show terminal.from X = f ≫ terminal.from _ from Subsingleton.elim _ _]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `infer_instance`. Use `letI := algebraΓOfHom f`. Establish `key : ∀ (j : Fin B) (a : Fin (n + 2)), ∃ q₀ : ℕ, ∀ q, q₀ ≤ q → ∀ b : ℕ, 0 < b → DI.CechZero (cechFam 𝒜 (q • H + R j) a) b`. Introduce `j a`. Take `⟨F, ⟨lm⟩⟩` from `GlobalTheory.T.exists_lattice_model X (logAt (suppAll E) (R j) a) (fun y g v hg hv => logAt_smul_mem X _ _ _ y g v hg hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsFiniteQC F := GlobalTheory.T.log_forms_lattice_finite X E 𝒜 (R j) a F lm`. Establish `hev` using `eventually_subsingleton_coh_twistZ_of_isProjOver (f := f) (fun _ => rfl) F hf hH`. Take `⟨q₀, hq₀⟩` from `Filter.eventually_atTop.1 (tendsto_natCast_atTop_atTop.eventually hev)`. Use `⟨q₀, fun q hq b hb => ?_⟩` and prove the remaining obligations. Take `⟨lm'⟩` from `nonempty_latModel_twist X (logAt (suppAll E) (R j) a) (logAt (suppAll E) (q • H + R j) a) F (q • H) (toLB (q • H)) _ (presents_toLB _) (fun y g v hD => by rw [add_comm]; exact logtwist X _ _ _ _ y g v hD) lm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsFiniteQC (twist F (toLB (q • H))) := isFiniteQC_twist (isLB_toLB _)`. Establish `hc` using `GlobalTheory.T.cech_lattice_cohomology_vanish X (logAt (suppAll E) (q • H + R j) a) (twist F (toLB (q • H))) 𝒜.U lm' 𝒜.affine 𝒜.gen 𝒜.cover b hb`. Use `hc.2 ?_` and prove the remaining obligations. Use `haveI hs : Subsingleton (coh (twist F (lbZPow (toLB H) (q : ℤ))) b) := hq₀ q hq b hb`. Take `⟨e⟩` from `nonempty_twist_iso_of_cls_eq F (isLB_toLB (q • H)) (isLB_lbZPow (isLB_toLB H) q) (by rw [cls_lbZPow (isLB_toLB H), ← toPic_apply, ← toPic_apply, map_nsmul, natCast_zsmul])`.
-
-Conclude with `(cohOn.mapIso k ⊤ b e).injective.subsingleton`. Use `choose q₁ hq₁ using key`. Take `⟨Q, hQ⟩` from `Finite.exists_le (fun p : Fin B × Fin (n + 2) => q₁ p.1 p.2)`. Use `⟨Q, fun q hq j a b hb => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha : a ≤ n + 1`.
-
-Conclude with `hq₁ j ⟨a, by omega⟩ q ((hQ (j, ⟨a, by omega⟩)).trans hq) b hb`. Rewrite using `[cechFam_eq_of_lt 𝒜 _ (by omega : n < a)]`. Conclude with `hq₁ j ⟨n + 1, by omega⟩ q ((hQ (j, ⟨n + 1, by omega⟩)).trans hq) b hb`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cechZero_cechFam_nsmul_add : ∀ (k : Type) [Field k] (X : Scheme.{0}) [IsIntegral X] (f : X ⟶ Sp k), IsProjOver f → ∀ {C : Type} [Fintype C] (E : C → CartierDiv X) {n : ℕ} {ι : Type} [Fintype ι] [LinearOrder ι] (𝒜 : SncAtlas E n ι) (H : CartierDiv X) (B : ℕ) (R : Fin B → CartierDiv X), IsAmpleLB (toLB H) → ∃ q₀ : ℕ, ∀ q, q₀ ≤ q → ∀ (j : Fin B) (a b : ℕ), 0 < b → DI.CechZero (cechFam 𝒜 (q • H + R j) a) b := by
   intro k _ X _ f hf C _ E n ι _ _ 𝒜 H B R hH

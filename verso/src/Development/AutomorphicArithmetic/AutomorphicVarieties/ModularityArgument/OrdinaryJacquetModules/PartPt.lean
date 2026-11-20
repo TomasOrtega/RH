@@ -12,9 +12,9 @@ open private pa_fin pa_part from Development.AutomorphicArithmetic.AutomorphicVa
 namespace UpperTheory.V.Z.Ord
 
 /- English proof (translation)
-Establish `h1 : H.ClAt θ ι x.toRingHom lam ξ K c0 ≤ ⨆ Y : {Y : H.Part ι lam ξ // P lam d ξ Y}, Y.1.Y ⊓ H.ClAt θ ι x.toRingHom lam ξ K c0`. Introduce `F hF`. Establish `hF'` using `(cl_mem H ι θ _ lam ξ K c0 F).1 hF`. Conclude with `cl_one H ι θ _ lam ξ K c0 hH (fun Y : {Y : H.Part ι lam ξ // P lam d ξ Y} => Y.1) F hF (hP lam hlam d ξ hs.alg F hF'.1 ⟨K, hF'.2.1⟩ ⟨c0, classical_fixed_by_iwahori H ι θ _ lam ξ K c0 c0 le_rfl hs.triv F hF⟩)`. Use `le_antisymm (iSup_le fun μ => ?_) (iSup_le fun _ => inf_le_right)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := hs.fin K c0 le_rfl`. Establish `h2` using `cl_gen (fun Y : {Y : H.Part ι lam ξ // P lam d ξ Y} => Y.1.Y) (H.ClAt θ ι x.toRingHom lam ξ K c0) (H.uzC ι lam d) (cl_stab H ι θ _ lam ξ K c0 c0 le_rfl hs.triv) (fun Y => cl_Yuz H ι lam ξ Y.1) h1 μ.1`. Establish `h3 : H.ClAt θ ι x.toRingHom lam ξ K c0 ⊓ (H.uzC ι lam d).maxGenEigenspace μ.1 ≤ H.OrdAt θ ι x.toRingHom lam ξ K c0` using `le_iSup (fun μ : {μ : ℂ // ‖ι.symm μ‖ = 1} => H.ClAt θ ι x.toRingHom lam ξ K c0 ⊓ (H.uzC ι lam d).maxGenEigenspace μ.1) μ`. Conclude with `h2.trans (iSup_mono fun Y => inf_le_inf_left _ h3)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ord_parts {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime]
     {n : ℕ} {c : Coef l} (H : HSet L Ω l n c) (hH : H.Ax) {A : Type} [CommRing A] [Algebra c.O A] [Alg.IsCO c.O A]
@@ -40,9 +40,9 @@ private theorem ord_parts {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Al
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `_ L Ω _ _ _ _ _ l _ n c H hH A _ _ _ θ hθ ι P hP x lam d ξ c0 sp hsp hlam a K _ y hy`. Use `haveI : Finite (ResidueField c.O) := by haveI : IsLocalHom (algebraMap ℤ_[l] c.O) := (UpperTheory.V.Base.dvrFacts l c.O).2.2.1 haveI : Finite (ResidueField ℤ_[l]) := IsCNL.finite`. Conclude with `Module.finite_of_finite (ResidueField ℤ_[l])`. Use `haveI : IsCNL A := IsCNL.ofCO c.O A`. Take `⟨h0, hfin, hfree, hK⟩` from `hiComm L Ω l n c H hH A θ hθ K`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := (hK a).2.1`. Take `⟨e, he, hi, hY, -⟩` from `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.locIdem A _ _ _ (H.op A) (fun i => algebraMap c.O A (a i)) h0`. Take `⟨-, -, -, -, -, -, h4, -⟩` from `pa_fin (H.X.Ord (H.τA A) θ (H.lev K)) (H.MK θ a K) inf_le_left (H.op A) e he hi hY ι x sp (hsp.add K) (hsp.smul K) (hsp.indep K) (H.opC ι lam d) (hsp.op K) _ (Submodule.span ℂ (sp '' H.MK θ a K)) (hsp.span K c0 le_rfl) rfl (fun Y : {Y : H.Part ι lam ξ // P lam d ξ Y} => Y.1.Y) (f …`. Take `⟨Y, F, hF0, hF, h⟩` from `h4 y hy`. Conclude with `⟨Y.1, F, Y.2, hF0, hF, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem partPt : GlobalTheory.Mem.LiteralAutomorphy.LitN → PartPt := by
   intro _ L Ω _ _ _ _ _ l _ n c H hH A _ _ _ θ hθ ι P hP x lam d ξ c0 sp hsp hlam a K _ y hy

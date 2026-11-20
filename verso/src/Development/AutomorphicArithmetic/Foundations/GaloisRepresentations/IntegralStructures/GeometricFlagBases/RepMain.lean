@@ -48,70 +48,70 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Kunne
 namespace UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-The claim follows from `G3.pBcSplits (G3.pSplitsBasic (G3.pSplitsPts G3.pIsoPts) G3.pPtsOfSplits)`.
+A detailed English derivation is pending.
 -/
 theorem bcSplits : G3.BcSplits := G3.pBcSplits (G3.pSplitsBasic (G3.pSplitsPts G3.pIsoPts) G3.pPtsOfSplits)
 
 /- English proof (translation)
-The claim follows from `G3.pEtGood (G3.pEtnGood (G3.pFEtBasic G3.pPtsOfSplits) G3.pEtTr)`.
+A detailed English derivation is pending.
 -/
 theorem etGood : G3.EtGood := G3.pEtGood (G3.pEtnGood (G3.pFEtBasic G3.pPtsOfSplits) G3.pEtTr)
 
 /- English proof (translation)
-The claim follows from `G3.pGalClos (G3.pGalClosD (G3.pSplitsPts G3.pIsoPts) (G3.pOrdEx G3.pOrdStep))`.
+A detailed English derivation is pending.
 -/
 theorem galClos : G3.GalClos := G3.pGalClos (G3.pGalClosD (G3.pSplitsPts G3.pIsoPts) (G3.pOrdEx G3.pOrdStep))
 
 /- English proof (translation)
-The claim follows from `G3.pHopSpec etGood (G3.pBcGood bcSplits (G3.pBcGal bcSplits)) galClos (G3.pOpEx G3.pOpTr) G3.pOpTr G3.pOpEt (G3.pOpBc bcSplits (G3.pBcGal bcSplits)) bcSplits`.
+A detailed English derivation is pending.
 -/
 theorem hopSpec : G3.HopSpec := G3.pHopSpec etGood (G3.pBcGood bcSplits (G3.pBcGal bcSplits)) galClos (G3.pOpEx G3.pOpTr)
   G3.pOpTr G3.pOpEt (G3.pOpBc bcSplits (G3.pBcGal bcSplits)) bcSplits
 
 /- English proof (translation)
-The claim follows from `grEx_of flagEx_of flagBasis_of flagMove_of grHom_of (grSS_of grHom_of sSOfSum_of)`.
+A detailed English derivation is pending.
 -/
 theorem grEx : GrEx := grEx_of flagEx_of flagBasis_of flagMove_of grHom_of (grSS_of grHom_of sSOfSum_of)
 
 /- English proof (translation)
-The claim follows from `hopGal_of hopSpec opConj_of (opUniq_of hopSpec (G3.pOpEx G3.pOpTr) G3.pOpEt etGood bcSplits)`.
+A detailed English derivation is pending.
 -/
 theorem hopGal : HopGal := hopGal_of hopSpec opConj_of (opUniq_of hopSpec (G3.pOpEx G3.pOpTr) G3.pOpEt etGood bcSplits)
 
 /- English proof (translation)
-The claim follows from `pieceStab_of hopGal`.
+A detailed English derivation is pending.
 -/
 theorem pieceStab : PieceStab := pieceStab_of hopGal
 
 /- English proof (translation)
-The claim follows from `degFin_of h.qDual KunnethLefschetz.inSum_holds h.inputs.a9 KunnethLefschetz.projBC_holds KunnethLefschetz.sumCl_holds KunnethLefschetz.sumHl_holds KunnethLefschetz.piBC_holds relDim_of compSum_of`.
+A detailed English derivation is pending.
 -/
 theorem degFin (h : KunnethLefschetz.Core) : DegFin :=
   degFin_of h.qDual KunnethLefschetz.inSum_holds h.inputs.a9 KunnethLefschetz.projBC_holds KunnethLefschetz.sumCl_holds KunnethLefschetz.sumHl_holds KunnethLefschetz.piBC_holds relDim_of compSum_of
 
 /- English proof (translation)
-The claim follows from `htotFin_of (degFin h)`.
+A detailed English derivation is pending.
 -/
 theorem htotFin (h : KunnethLefschetz.Core) : HtotFin := htotFin_of (degFin h)
 
 /- English proof (translation)
-The claim follows from `degCont_of (stabOpen_of htDesc_of)`.
+A detailed English derivation is pending.
 -/
 theorem degCont : DegCont := degCont_of (stabOpen_of htDesc_of)
 
 /- English proof (translation)
-The claim follows from `totCont_of (vFin_of h.inputs) degCont`.
+A detailed English derivation is pending.
 -/
 theorem totCont (h : KunnethLefschetz.Core) : TotCont := totCont_of (vFin_of h.inputs) degCont
 
 /- English proof (translation)
-The claim follows from `repEx_of grEx contGL_of matEx_of matConj_of pieceStab (htotFin h) extCont_of (totCont h) KunnethLefschetz.projBC_holds`.
+A detailed English derivation is pending.
 -/
 theorem repEx_core (h : KunnethLefschetz.Core) : RepEx :=
   repEx_of grEx contGL_of matEx_of matConj_of pieceStab (htotFin h) extCont_of (totCont h) KunnethLefschetz.projBC_holds
 
 /- English proof (translation)
-The claim follows from `repEx_core KunnethLefschetz.core_holds`.
+A detailed English derivation is pending.
 -/
 theorem repEx_holds : RepEx := repEx_core KunnethLefschetz.core_holds
 

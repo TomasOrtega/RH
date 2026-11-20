@@ -20,7 +20,7 @@ section Local
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Establish `ho : IsOpen (GLs n)`. Establish `: Continuous fun g : Mat n => g.det` using `Continuous.matrix_det continuous_id`. Conclude with `isOpen_ne.preimage this`. Conclude with `Filter.eventuallyEq_of_mem (ho.mem_nhds hx) h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventuallyEq_of_agree_GLs {F F' : Mat n → V} (h : ∀ g ∈ GLs n, F g = F' g) {x : Mat n}
     (hx : x ∈ GLs n) : F =ᶠ[nhds x] F' := by
@@ -30,7 +30,7 @@ theorem eventuallyEq_of_agree_GLs {F F' : Mat n → V} (h : ∀ g ∈ GLs n, F g
   exact Filter.eventuallyEq_of_mem (ho.mem_nhds hx) h
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Rd, (eventuallyEq_of_agree_GLs h hx).fderiv_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem Rd_agree_GLs (X : Mat n) {F F' : Mat n → V} (h : ∀ g ∈ GLs n, F g = F' g) :
     ∀ x ∈ GLs n, Rd X F x = Rd X F' x := by
@@ -38,7 +38,7 @@ theorem Rd_agree_GLs (X : Mat n) {F F' : Mat n → V} (h : ∀ g ∈ GLs n, F g 
   simp only [Rd, (eventuallyEq_of_agree_GLs h hx).fderiv_eq]
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, Rd_agree_GLs _ h x hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem Eu_agree_GLs (s : Bool) (a b : Fin n) {F F' : Mat n → V} (h : ∀ g ∈ GLs n, F g = F' g) :
     ∀ x ∈ GLs n, Eu s a b F x = Eu s a b F' x := by
@@ -46,9 +46,9 @@ theorem Eu_agree_GLs (s : Bool) (a b : Fin n) {F F' : Mat n → V} (h : ∀ g �
   simp only [Eu, Pi.smul_apply, Pi.add_apply, Rd_agree_GLs _ h x hx]
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero`. Introduce `x hx`. Distinguish the cases in `hab : a = b`. Simplify `h x hx` using `[Epow, hab]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[Epow, hab]`. Consider the case `succ m ih`. Introduce `x hx`. Simplify using `only [Epow, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun c _ => Eu_agree_GLs s a c (ih c b) x hx`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Epow_agree_GLs (s : Bool) (m : ℕ) (a b : Fin n) {F F' : Mat n → V}
     (h : ∀ g ∈ GLs n, F g = F' g) : ∀ x ∈ GLs n, Epow s m a b F x = Epow s m a b F' x := by
@@ -64,7 +64,7 @@ theorem Epow_agree_GLs (s : Bool) (m : ℕ) (a b : Fin n) {F F' : Mat n → V}
     exact Finset.sum_congr rfl fun c _ => Eu_agree_GLs s a c (ih c b) x hx
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [gel, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => Epow_agree_GLs s m a a h x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gel_agree_GLs (s : Bool) (m : ℕ) {F F' : Mat n → V} (h : ∀ g ∈ GLs n, F g = F' g) :
     ∀ x ∈ GLs n, gel s m F x = gel s m F' x := by
@@ -75,7 +75,7 @@ theorem gel_agree_GLs (s : Bool) (m : ℕ) {F F' : Mat n → V} (h : ∀ g ∈ G
 end Local
 
 /- English proof (translation)
-Introduce `n V _ _ w`. Proceed by induction on `w with`. Consider the case `nil => exact fun F F' h x hx => h x hx`. Consider the case `cons p w ih => exact fun F F' h => gel_agree_GLs p.1 p.2 (ih F F' h)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zOp_agree_GLs : ∀ (n : ℕ) {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (w : List (Bool × ℕ)) (F F' : Mat n → V), (∀ g ∈ GLs n, F g = F' g) →

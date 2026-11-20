@@ -9,16 +9,16 @@ namespace PositivityTheory.Rg.Cz.TA
 variable {n : ℕ} {M : Type} [AddCommGroup M] [Module ℂ M]
 
 /- English proof (translation)
-Simplify using `[qdet, qminor, Tm, map_list_prod, List.map_ofFn, Function.comp_def, apply_ite φ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qdet_map' {A B : Type*} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] {m : ℕ} (φ : A →ₐ[ℂ] B)
     (E : Fin m → Fin m → A) (u : ℂ) : φ (qdet E u) = qdet (fun a b => φ (E a b)) u := by
   simp [qdet, qminor, Tm, map_list_prod, List.map_ofFn, Function.comp_def, apply_ite φ]
 
 /- English proof (translation)
-Unfold `qdet qminor`. Use `Commute.sum_left _ _ _ fun σ _ => ?_` and prove the remaining obligations. Use `Commute.mul_left (Int.cast_commute _ _) (Commute.list_prod_left _ _ ?_)` and prove the remaining obligations. Introduce `x hx`. Take `⟨k, rfl⟩` from `List.mem_ofFn.mp hx`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Unfold `Tm`. Use `Commute.add_left ?_ (h _ _)` and prove the remaining obligations. Use `split_ifs`. Conclude with `Algebra.commute_algebraMap_left _ _`. Conclude with `Commute.zero_left _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem qdet_commute {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fin m → A) (u : ℂ) (Z : A)
     (h : ∀ a b, Commute (E a b) Z) : Commute (qdet E u) Z := by
@@ -34,7 +34,7 @@ theorem qdet_commute {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m �
   · exact Commute.zero_left _
 
 /- English proof (translation)
-Introduce `a b c d`. Simplify using `only`. Rewrite using `[← map_mul, ← map_mul, ← map_sub, h a b c d]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glRel_map {A B : Type*} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] {m : ℕ} (φ : A →ₐ[ℂ] B)
     (E : Fin m → Fin m → A) (h : GlRel E) : GlRel fun a b => φ (E a b) := by
@@ -44,9 +44,9 @@ theorem glRel_map {A B : Type*} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hs : s ⊆ Subalgebra.centralizer ℂ {Z}` using `fun T hT => by`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce `g hg`. Rewrite `hg` using `[Set.mem_singleton_iff]`. Rewrite using `[hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h T hT).symm.eq`. Establish `hX'` using `Algebra.adjoin_le hs hX`. Rewrite `hX'` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(hX' Z rfl).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_of_mem_adjoin {A : Type*} [Ring A] [Algebra ℂ A] {s : Set A} {X Z : A}
     (hX : X ∈ Algebra.adjoin ℂ s) (h : ∀ T ∈ s, Commute T Z) : Commute X Z := by
@@ -70,7 +70,7 @@ Both sides reduce to the same expression.
 
 omit [Fintype P] [DecidableEq P] in
 /- English proof (translation)
-Introduce `u`. Establish `e : (fun a b => (lift (F a b) : Module.End ℂ (TV n M P))) = fun a b => liftA n M P (F a b)`. Use function extensionality and compare the values at `a b`. Rewrite using `[liftA_apply]`. Rewrite using `[e, ← qdet_map', h u, AlgHom.commutes]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem qdet_lift (F : Fin n → Fin n → Module.End ℂ M) (l : Fin n → ℂ) (h : HasChar F l) :
     HasChar (fun a b => (lift (F a b) : Module.End ℂ (TV n M P))) l := by
@@ -82,7 +82,7 @@ theorem qdet_lift (F : Fin n → Fin n → Module.End ℂ M) (l : Fin n → ℂ)
 
 omit [Fintype P] in
 /- English proof (translation)
-Use function extensionality and compare the values at `a b`. Simplify using `[tE]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tE_empty (F : Fin n → Fin n → Module.End ℂ M) :
     (tE (∅ : Finset P) F : Fin n → Fin n → Module.End ℂ (TV n M P)) = fun a b => lift (F a b) := by
@@ -91,9 +91,9 @@ theorem tE_empty (F : Fin n → Fin n → Module.End ℂ M) :
 
 omit [Fintype P] in
 /- English proof (translation)
-Unfold `tE`. Use `Commute.add_left ?_ (Commute.sum_left _ _ _ fun p _ => ?_)` and prove the remaining obligations. Establish `hc` using `(h a b).map (liftA n M P)`. Simplify `hc` using `only [liftA_apply]`. Unfold `Commute SemiconjBy`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Use `LinearMap.ext fun x => funext fun I => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, eAt, lift, LinearMap.pi_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_proj, Function.eval]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tE_comm_lift (S : Finset P) (F : Fin n → Fin n → Module.End ℂ M) (B : Module.End ℂ M)
     (h : ∀ c d, Commute (F c d) B) (a b : Fin n) :
@@ -108,7 +108,7 @@ theorem tE_comm_lift (S : Finset P) (F : Fin n → Fin n → Module.End ℂ M) (
     split_ifs <;> simp
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `[cA, alt, pm, lift, LinearMap.sum_apply, map_sum, map_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem cA_lift {C : Type} [DecidableEq C] (col : P → C) (b : P → Fin n) (B : Module.End ℂ M) :
     cA col b ∘ₗ lift B = B ∘ₗ (cA col b : TV n M P →ₗ[ℂ] M) := by

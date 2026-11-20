@@ -9,13 +9,13 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce and unpack `⟨l, e⟩`. Rewrite using `[Derivation.commutator_apply, Derivation.sub_apply]`. Apply the tactic sequence `have h1 : (if b = c then letterPolarizationDerivation R LL S a d else 0) (X (l, e)) = if b = c then letterPolarizationDerivation R LL S a d (X (l, e)) else 0 := by split_ifs <;> simp`. Apply the tactic sequence `have h2 : (if d = a then letterPolarizationDerivation R LL S c b else 0) (X (l, e)) = if d = a then letterPolarizationDerivation R LL S c b (X (l, e)) else 0 := by split_ifs <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h1, h2]`. Simplify using `only [v2con_der_X]`. Establish `k5 : (c = b) = (b = c)` using `propext eq_comm`. Establish `k6 : (a = d) = (d = a)` using `propext eq_comm`. Distinguish the cases in `hS : l ∈ S`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hv : LL.vec l = true`. Simplify using `only [hS, hv, if_true]`. Apply the tactic sequence `by_cases h3 : e = d <;> by_cases h4 : e = b <;> by_cases h5 : b = c <;> by_cases h6 : d = a <;>`. Simplify using `[v2con_der_X]`. Simplify using `only [hS, hv, if_true]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases h3 : e = c <;> by_cases h4 : e = a <;> by_cases h5 : b = c <;> by_cases h6 : d = a <;>`. Simplify using `[v2con_der_X]`. Simplify using `[hS]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together. Simplify using the standard rewrite rules.
 -/
 theorem v2con_bracket {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι)
     (a b c d : Fin n) :
@@ -44,9 +44,9 @@ theorem v2con_bracket {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : �
   · simp [hS]
 
 /- English proof (translation)
-Introduce `R _ ι _ LL n S a b c d`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `F`. Establish `h` using `congrArg (fun D : Derivation R (MvPolynomial (ι × Fin n) R) (MvPolynomial (ι × Fin n) R) => D F) (v2con_bracket (R := R) LL S a b c d)`. Simplify using `only [Derivation.commutator_apply, Derivation.sub_apply] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [glOps, LinearMap.sub_apply, Module.End.mul_apply, v2con_glAct_eq]`. Rewrite using `[h]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp [v2con_glAct_eq]`. Apply the tactic sequence `split_ifs <;> simp [v2con_glAct_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem polynomial_operators_gl_relations : PolynomialOperatorsGLRelations := by
   intro R _ ι _ LL n S a b c d

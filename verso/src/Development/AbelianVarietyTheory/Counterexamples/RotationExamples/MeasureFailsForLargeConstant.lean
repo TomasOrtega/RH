@@ -18,15 +18,13 @@ def OneConstant {d : ℕ} (X X' : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ
     (c v : ℂ) * Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin d)) X' v x y
 
 /- English proof (translation)
-Establish `hli : LinearIndependent K (fun i : Fin d => (Pi.basisFun K (Fin d)) i)` using `(Pi.basisFun K (Fin d)).linearIndependent`. Rewrite using `[(Formalism.DivisionValues.covolume_via_basis K d X hX M hM _ hli).2, (Formalism.DivisionValues.covolume_via_basis K d X' hX' M hM _ hli).2]`. Establish `hv : ∀ v, Real.log (Formalism.DivisionValues.gram X v (fun i : Fin d => (Pi.basisFun K (Fin d)) i)).det.re = d * Real.log (c v) + Real.log (Formalism.DivisionValues.gram X' v (fun i : Fin d => (Pi.basisFun K (Fin d)) i)).det.re`. Introduce `v`. Establish `e : Formalism.DivisionValues.gram X v (fun i : Fin d => (Pi.basisFun K (Fin d)) i) = (c v : ℂ) • Formalism.DivisionValues.gram X' v (fun i : Fin d => (Pi.basisFun K (Fin d)) i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `only [Formalism.DivisionValues.gram, gramPl, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `(hc v).2 _ _`. Establish `hne : (Formalism.DivisionValues.gram X' v (fun i : Fin d => (Pi.basisFun K (Fin d)) i)).det.re ≠ 0`. Establish `g : Formalism.DivisionValues.gram X' v (fun i : Fin d => (Pi.basisFun K (Fin d)) i) = ((X' v)⁻¹).conjTranspose * (X' v)⁻¹`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using `[Formalism.DivisionValues.gram, gramPl, Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt, Matrix.mul_apply, Matrix.mulVec, dotProduct, Pi.single_apply, apply_ite v.embedding]`. Rewrite using `[g, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `hu : ((X' v)⁻¹).det ≠ 0` using `(Matrix.isUnit_nonsing_inv_det _ (hX' v)).ne_zero`. Rewrite using `[Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Complex.normSq_pos.mpr hu).ne'`. Rewrite using `[e, Matrix.det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul, Real.log_mul (pow_pos (hc v).1 d).ne' hne, Real.log_pow]`. Simplify using `only [hv, Finset.sum_add_distrib, ← Finset.mul_sum]`. Establish `hd' : (d : ℝ) ≠ 0` using `by exact_mod_cast hd.ne'`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lcv_of_oneConstant [IsTotallyComplex K] {d : ℕ} (hd : 0 < d)
     (X X' : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (hX : ∀ v, IsUnit (X v).det) (hX' : ∀ v, IsUnit (X' v).det)

@@ -26,7 +26,7 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.SkewLat
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.hasHermitianSignature_pos_smul_blockDiagonalReindexed e GA GB hκ hA hB`.
+A detailed English derivation is pending.
 -/
 theorem hasSig_blk {a b d : ℕ} (e : Fin a ⊕ Fin b ≃ Fin d) (GA : Matrix (Fin a) (Fin a) ℂ) (GB : Matrix (Fin b) (Fin b) ℂ)
     {pa qa pb qb : ℕ} {κ : ℝ} (hκ : 0 < κ) (hA : Formalism.UG.HasSignature GA pa qa) (hB : Formalism.UG.HasSignature GB pb qb) :
@@ -34,7 +34,7 @@ theorem hasSig_blk {a b d : ℕ} (e : Fin a ⊕ Fin b ≃ Fin d) (GA : Matrix (F
   GlobalTheory.T.hasHermitianSignature_pos_smul_blockDiagonalReindexed e GA GB hκ hA hB
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isCartanInvolutionHermitian_smul_blockDiagonalReindexed e GA sA GB sB hκ hA hB`.
+A detailed English derivation is pending.
 -/
 theorem isCartan_blk {a b d : ℕ} (e : Fin a ⊕ Fin b ≃ Fin d) (GA sA : Matrix (Fin a) (Fin a) ℂ)
     (GB sB : Matrix (Fin b) (Fin b) ℂ) {κ : ℝ} (hκ : 0 < κ) (hA : IsCartanInv GA sA) (hB : IsCartanInv GB sB) :
@@ -42,13 +42,13 @@ theorem isCartan_blk {a b d : ℕ} (e : Fin a ⊕ Fin b ≃ Fin d) (GA sA : Matr
   GlobalTheory.T.isCartanInvolutionHermitian_smul_blockDiagonalReindexed e GA sA GB sB hκ hA hB
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.star_mem_polarizationIdeal_of_mem_conj hc`.
+A detailed English derivation is pending.
 -/
 theorem star_mem_AA {D : D7} {c : D.host.E} (hc : c ∈ D.host.AAbar) : star c ∈ D.host.AA :=
   GlobalTheory.T.star_mem_polarizationIdeal_of_mem_conj hc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isLattice_latticeBlockDirectSum_scaled h𝔞 hA hB e`.
+A detailed English derivation is pending.
 -/
 theorem isLattice_pairLat {E : Type} [Field E] [NumberField E] {a b d : ℕ} {𝔞 : FractionalIdeal (𝓞 E)⁰ E} (h𝔞 : 𝔞 ≠ 0)
     {ΛA : Submodule (𝓞 E) (Fin a → E)} {ΛB : Submodule (𝓞 E) (Fin b → E)} (hA : Submodule.IsLattice E ΛA)
@@ -57,7 +57,7 @@ theorem isLattice_pairLat {E : Type} [Field E] [NumberField E] {a b d : ℕ} {�
   GlobalTheory.T.isLattice_latticeBlockDirectSum_scaled h𝔞 hA hB e
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.scaledBlockSum_selfDual_traceSkewForm hc A B hA hB e y`.
+A detailed English derivation is pending.
 -/
 theorem dual_pairLat {D : D7} (hc : ∀ c ∈ D.host.AAbar, star c ∈ D.host.AA) (A B : HSp D)
     {ΛA : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)} {ΛB : Submodule (𝓞 D.host.E) (Fin B.rank → D.host.E)}
@@ -67,13 +67,13 @@ theorem dual_pairLat {D : D7} (hc : ∀ c ∈ D.host.AAbar, star c ∈ D.host.AA
   GlobalTheory.T.scaledBlockSum_selfDual_traceSkewForm hc A B hA hB e y
 
 /- English proof (translation)
-Establish `hre : (tauE D τ D.host.xi0).re = 0`. Establish `h` using `congrArg Complex.re (GlobalTheory.FockCompare.tauE_star τ D.host.xi0)`. Rewrite `h` using `[GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg D, map_neg, Complex.neg_re, Complex.conj_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx : φ D.host.xi0 = -((((tauE D τ D.host.xi0).im : ℝ) : ℂ) * Complex.I)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [hφ]; apply Complex.ext <;> simp [hre]`. Establish `hg : ∀ (S : HSp D) (k l : Fin S.rank), φ (S.gram l k) = tauE D τ (S.gram k l)` using `fun S k l => by`. Rewrite using `[hφ, ← GlobalTheory.FockCompare.tauE_star]`. Establish `h1 : S.gramᴴ = S.gram` using `Matrix.ext fun a b => S.herm.eq _ _`. Establish `h2` using `congrFun (congrFun h1 k) l`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.conjTranspose_apply]`. Rewrite using `[h2]`. Use extensionality with `k l`. Take `⟨k, rfl⟩` from `e.surjective k`. Take `⟨l, rfl⟩` from `e.surjective l`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, skewGram, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, map_mul, hx]`. Establish `hI : Complex.I * Complex.I = -1` using `Complex.I_mul_I`. Apply the tactic sequence `rcases k with k | k <;> rcases l with l | l <;>`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.transpose_apply, Matrix.zero_apply, map_zero, mul_zero, hg, Formalism.BasicNotions.TH.gramAt, Matrix.map_apply]`. Apply the tactic sequence `all_goals linear_combination (-(((tauE D τ D.host.xi0).im : ℝ) : ℂ) * tauE D τ (HSpace.gram _ _ _)) * hI`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem I_smul_skewGram_map {D : D7} (A B : HSp D) {d : ℕ} (e : Fin A.rank ⊕ Fin B.rank ≃ Fin d) (τ : D.what₂.Tau)
     (φ : D.host.E →+* ℂ) (hφ : ∀ x, φ x = conj (tauE D τ x)) :
@@ -105,27 +105,25 @@ theorem I_smul_skewGram_map {D : D7} (A B : HSp D) {d : ℕ} (e : Fin A.rank ⊕
 open GlobalTheory.SkewLat in
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W i j e B τf hB`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Establish `hrV : Node.InRange D.R.m (.grid (i : ℕ) ((j : ℕ) + 1))` using `⟨by omega, by omega⟩`. Establish `hrV₁ : Node.InRange D.R.m (.grid ((i : ℕ) + 1) (j : ℕ))` using `⟨by omega, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV` using `GlobalTheory.FunObj.node_isV G hL hrV`. Establish `hV₁` using `GlobalTheory.FunObj.node_isV G hL hrV₁`. Establish `hcm` using `(GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm).1`. Establish `hAA : D.host.AA ≠ 0` using `fun h => by`. Use `Formalism.IndefR.Fin.factPrincipalDatum D.R D.host` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h, mul_zero, zero_mul, zero_mul]`. Conclude with `zero_ne_one this`. Use `set Λ := pairLat (scLat D.host.AA (G.Λ (.grid (i : ℕ) ((j : ℕ) + 1)))) (scLat D.host.AA (G.Λ (.grid ((i : ℕ) + 1) (j : ℕ)))) e with hΛ`. Establish `hlat : Submodule.IsLattice D.host.E Λ` using `isLattice_pairLat hAA hV.sd.1 hV₁.sd.1 e`. Establish `hex : ∀ v : B.P, ∃ β, GlobalTheory.AdelicU.IsSplitBasis (B.τ v) Λ β` using `fun v => GlobalTheory.AdelicU.exists_isSplitBasis (B.τ v) Λ hcm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `⟨Λ, fun v => if h : v ∈ B.P then (hex ⟨v, h⟩).choose else 1, ?skew, ?sig, hlat, ?dual, ?cartan, ?bas⟩` and prove the remaining obligations. Use `case skew =>`. Introduce `k l`. Take `⟨k, rfl⟩` from `e.surjective k`. Take `⟨l, rfl⟩` from `e.surjective l`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ∀ (S : HSp D) (a b : Fin S.rank), star (S.gram a b) = S.gram b a` using `fun S a b => by`. Establish `h1 : S.gramᴴ = S.gram` using `Matrix.ext fun a b => S.herm.eq _ _`. Establish `h2` using `congrFun (congrFun h1 b) a`. Rewrite `h2` using `[Matrix.conjTranspose_apply]`. Then use the resulting hypothesis. Use `show star (skewGram (spV G i j) (spV₁ G i j) e (e l) (e k)) = -skewGram (spV G i j) (spV₁ G i j) e (e k) (e l)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [skewGram, Matrix.smul_apply, smul_eq_mul, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, star_mul', GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg D]`. Apply the tactic sequence `rcases k with k | k <;> rcases l with l | l <;>`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.transpose_apply, Matrix.zero_apply, star_zero, mul_zero, neg_zero, hg, neg_mul]`. Use `case sig =>`. Introduce `w`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig (Complex.I • (skewGram (spV G i j) (spV₁ G i j) e).map (B.emb w).1) _ _`. Rewrite using `[I_smul_skewGram_map _ _ e (τf w) (B.emb w).1 (hB w)]`. Establish `hA` using `hV.sigOK (tauE D (τf w))`. Establish `hA₁` using `hV₁.sigOK (tauE D (τf w))`. Rewrite `hA` using `[hV.sig]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hA₁` using `[hV₁.sig]`. Establish `h` using `hasSig_blk e (gramAt D (spV G i j) (τf w)) (gramAt D (spV₁ G i j) (τf w)) (Formalism.L2.Theta.xi_zero_im_pos D (τf w)) hA hA₁`. Establish `hsum` using `h.1`. Establish `hd : Fintype.card (Fin (spV G i j).rank ⊕ Fin (spV₁ G i j).rank) = Fintype.card (Fin ((spW G i j).rank + (spW₁ G i j).rank))` using `Fintype.card_congr e`. Simplify using `only [Fintype.card_sum, Fintype.card_fin] at hd`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h1` using `hV.rank`. Establish `h2` using `hV₁.rank`. Simplify using `only [Node.rank, Node.neg] at h1 h2 h hsum`. Apply the tactic sequence `convert h using 2 <;> omega`. Use `case dual => exact fun y => dual_pairLat (fun c hc => star_mem_AA hc) _ _ hV.sd hV₁.sd e y`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `case cartan =>`. Introduce `w`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan (Complex.I • (skewGram (spV G i j) (spV₁ G i j) e).map (B.emb w).1) _`. Rewrite using `[I_smul_skewGram_map _ _ e (τf w) (B.emb w).1 (hB w)]`. Conclude with `isCartan_blk e _ _ _ _ (Formalism.L2.Theta.xi_zero_im_pos D (τf w)) (W.cart_is _ hrV (τf w)) (W.cart_is _ hrV₁ (τf w))`.
-
-Use `case bas =>`. Introduce `v`. Use `show GlobalTheory.AdelicU.IsSplitBasis (B.τ v) Λ (if h : (v : HeightOneSpectrum (𝓞 D.host.F)) ∈ B.P then (hex ⟨v, h⟩).choose else 1)`. Rewrite using `[dif_pos v.2]`. Conclude with `(hex v).choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bigSpace_isSkew : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (W : G.Weil)
     (i j : Fin D.R.m) (e : Num G i j) (B : Base D.host.F D.host.E) (τf : InfinitePlace D.host.F → D.what₂.Tau),

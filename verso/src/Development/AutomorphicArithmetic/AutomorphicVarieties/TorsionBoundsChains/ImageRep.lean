@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 open CategoryTheory UpperTheory.V.KH
 
 /- English proof (translation)
-Introduce `G _ C B M d e h`. Establish `hs : Function.Surjective (Abelian.factorThruImage d).hom` using `(Rep.epi_iff_surjective _).1 inferInstance`. Establish `hi : Function.Injective (Abelian.image.ι d).hom` using `(Rep.mono_iff_injective _).1 inferInstance`. Establish `hc : ∀ x, (Abelian.image.ι d).hom ((Abelian.factorThruImage d).hom x) = d.hom x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun f : C ⟶ B => f.hom x) (Abelian.image.fac d)` as an intermediate fact. Simplify using `using this`. Use `⟨Abelian.image d, Abelian.factorThruImage d, Abelian.image.ι d, hs, hi, hc, ?_⟩` and prove the remaining obligations. Introduce `y`. Rewrite using `[h y]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, hc x⟩`. Introduce and unpack `⟨z, rfl⟩`. Take `⟨x, rfl⟩` from `hs z`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, (hc x).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.KH.imageRep :
     ∀ (G : Type) [Group G] (C B M : Rep ℤ G) (d : C ⟶ B) (e : B ⟶ M), Function.Exact d.hom e.hom →

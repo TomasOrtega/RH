@@ -12,7 +12,7 @@ open NumberField IsDedekindDomain MvPolynomial Formalism.BasicNotions Formalism.
 open scoped Matrix ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.neg_rank_mul_log_le_lcv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FNegRankMulLogLeLogCovolumeHermitian.lean&line=68#L68)
 -/

@@ -17,7 +17,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {B : Type} [CommRing B] {b : Base l B} {k : Type} [Field k] {s : Sp k ⟶ Sp B}
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hs y`. Take `⟨r, -, hr⟩` from `Nat.exists_mul_mod_eq_of_coprime 1 hc.symm hn.ne'`. Use `⟨u ^ (q * r), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, pow_mul, hq _ ((map_pow _ _ _).trans hy), one_pow]`. Rewrite using `[map_pow, pow_eq_pow_of_modEq (show q * r ≡ 1 [MOD n] from hr) hy, pow_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem exists_torsion_lift {Q Q' : Type} [CommGroup Q] [CommGroup Q'] (ψ : Q →* Q') (hs : Function.Surjective ψ)
     {q n : ℕ} (hq : ∀ x, ψ x = 1 → x ^ q = 1) (hn : 0 < n) (hc : n.Coprime q) (y : Q') (hy : y ^ n = 1) :
@@ -29,23 +29,23 @@ theorem exists_torsion_lift {Q Q' : Type} [CommGroup Q] [CommGroup Q'] (ψ : Q �
   · rw [map_pow, pow_eq_pow_of_modEq (show q * r ≡ 1 [MOD n] from hr) hy, pow_one]
 
 /- English proof (translation)
-Take `⟨hom₁, lin₁, sur₁, ker₁, weil₁, lev₁⟩` from `h₁`. Take `⟨hom₂, lin₂, sur₂, ker₂, weil₂, lev₂⟩` from `h₂`. Take `⟨hab, hdim, -, -⟩` from `hfacts E H D l B b _ s o`. Take `⟨hab₁, hdim₁, -, -⟩` from `hfacts E H D l B b _ s o₁`. Take `⟨hab₂, hdim₂, -, -⟩` from `hfacts E H D l B b _ s o₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `P` to `polOf o.t o.proper o.ample o.ktriv hdim`. Set `P₁` to `polOf o₁.t o₁.proper o₁.ample o₁.ktriv hdim₁`. Set `P₂` to `polOf o₂.t o₂.proper o₂.ample o₂.ktriv hdim₂`. Use `o₁.proper` as an intermediate fact. Use `o₂.proper` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨α, hα⟩` from `exists_fac hab.smooth ψ₁ ψ₂ fun x hx => (ker₂ x).2 ((ker₁ x).1 hx)`. Establish `homα : IsMonHom α` using `hL.rigidity _ _ _ hab₁ hab₂ α (by`. Rewrite using `[← IsMonHom.one_hom ψ₁, Category.assoc, hα, IsMonHom.one_hom])`. Establish `: Epi ψ₁.left` using `Flat.epi_of_flat_of_surjective _`. Establish `: Epi ψ₁` using `Over.epi_of_epi_left ψ₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `linα : ∀ a, o₁.t.act.act a ≫ α = α ≫ o₂.t.act.act a` using `fun a => by`. Rewrite using `[← cancel_epi ψ₁, ← reassoc_of% lin₁, hα, reassoc_of% hα, lin₂]`. Set `ρ : (𝟙_ (Over (Sp k)) ⟶ o.t.G) →* (𝟙_ (Over (Sp k)) ⟶ o₁.t.G)` to `MonoidHom.mk' (fun z => z ≫ ψ₁) fun a c => MonObj.mul_comp a c ψ₁`. Establish `hlam : LBIso (abelian₂ o₁.t.G (lbPow o₁.t.PP.L 1)) (abelian₂ o₁.t.G (o₂.t.PP.L.pull α.left))` using `hDet k P₁ P₂ α p 1 homα hp inferInstance fun n x y c hn hc hx hy h => by`. Establish `lift` using `exists_torsion_lift ρ sur₁ (fun x hx => hC x ((ker₁ x).1 hx)) hn (hc.pow_right 2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x₀, tx, ex⟩` from `lift x hx`. Take `⟨y₀, ty, ey⟩` from `lift y hy`. Take `rfl : x₀ ≫ ψ₁ = x` from `ex`. Take `rfl : y₀ ≫ ψ₁ = y` from `ey`. Take `⟨c₀, hc₀, -⟩` from `(hL.weil _ P n _).1 x₀ y₀ tx ty`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c₀, rfl⟩` from `(unitOn_bijective k).2 c₀`. Establish `e : c = c₀ ^ p ^ 2` using `(unitOn_bijective k).1 (((hL.weil _ P₁ n _).1 _ _ hx hy).unique h (weil₁ n x₀ y₀ c₀ hc hc₀))`. Establish `w` using `weil₂ n x₀ y₀ c₀ hc hc₀`. Rewrite `w` using `[← hα, ← Category.assoc, ← Category.assoc, ← e]`. Rewrite using `[pow_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `w`. Establish `hiso` using `iso_of_lam o₁.t o₂.t α linα hlam`. Use `mono_of_kTriv α o₁.t.PP.isLB o₂.t.PP.isLB hiso o₁.ktriv` as an intermediate fact. Establish `: IsIso α` using `isIso_of_mono α hab₂.smooth fun y => by`. Take `⟨x, rfl⟩` from `sur₂ y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x ≫ ψ₁, by rw [Category.assoc, hα]⟩`. Establish `: IsMonHom (asIso α).hom` using `homα`. Take `⟨p₀, hp₀⟩` from `exists_inv_mod hp hpM`. Use `⟨{ cm := CubeMap.ofHom α, cart := isGrpPullback_of_iso (asIso α), base := rfl act := fun a => congrArg (fun q => q.left) (linα a) lin := isPullCubical_of_iso hL.globalFns hab₁ α _ _ hiso eta := fun a => ?_, etaA := fun a => ?_ }⟩` and prove the remaining obligations. Rewrite using `[Category.id_comp, ← (lev₁ p₀ hp₀ a).1, ← (lev₂ p₀ hp₀ a).1, ← hα, ← Category.assoc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[Category.id_comp, ← (lev₁ p₀ hp₀ a).2, ← (lev₂ p₀ hp₀ a).2, ← hα, ← Category.assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem objMap_of_isHeckeIsog [IsAlgClosed k] [CharZero k] (hL : Out.Laws)
     (hfacts : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B : Type) [CommRing B] (b : Base l B) (S : Scheme.{0}) (s : S ⟶ Sp B) (o : Obj D l b s), IsAbelianScheme o.t.G ∧ SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (D.p + D.q)) o.t.G.hom ∧ Out.Rigidified o.t.G o.t.PP.L ∧ Out.Sym o.t.G o.t.PP.L)

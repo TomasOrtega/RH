@@ -14,7 +14,7 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) 
   {A : Type} [Fintype A] {κa : A → Type} (w : ∀ a, κa a → Ω)
 
 /- English proof (translation)
-Use `choose c hc using h`. Use `⟨c, Finset.prod_ne_zero_iff.2 fun a _ => (hc a).1, fun c' => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `prod_mem fun a _ => (hc a).2 (c' a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inChart_prod_of_forall (p : Cpt ξ) (h : ∀ a, ∃ l, InChart ξ (w a) l p) :
     ∃ c, InChart ξ (fun c : (∀ a, κa a) => ∏ a, w a (c a)) c p := by
@@ -24,9 +24,9 @@ theorem inChart_prod_of_forall (p : Cpt ξ) (h : ∀ a, ∃ l, InChart ξ (w a) 
   exact prod_mem fun a _ => (hc a).2 (c' a)
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `h`. Establish `hne : ∀ b, w b (c b) ≠ 0` using `fun b => (Finset.prod_ne_zero_iff.1 h0) b (Finset.mem_univ b)`. Use `⟨hne a, fun l => ?_⟩` and prove the remaining obligations. Establish `key : (∏ b, w b (Function.update c a l b)) / (∏ b, w b (c b)) = w a l / w a (c a)`. Rewrite using `[← Finset.prod_div_distrib, Fintype.prod_eq_single a]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b hb`. Simplify using `[Function.update_of_ne hb, div_self (hne b)]`. Rewrite using `[← key]`. Conclude with `h1 _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inChart_of_inChart_prod [DecidableEq A] {p : Cpt ξ} {c : ∀ a, κa a}
     (h : InChart ξ (fun c : (∀ a, κa a) => ∏ a, w a (c a)) c p) (a : A) : InChart ξ (w a) (c a) p := by
@@ -46,11 +46,11 @@ end PositivityTheory.HtPt.Mb.LJoinMany.JoinMany
 namespace PositivityTheory.HtPt.Mb.LJoinMany
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ κ _ x M A _ κa _ w hw`. Use `haveI := Fintype.ofFinite A`. Establish `hW : ∃ l : (∀ a, κa a), (∏ a, w a (l a)) ≠ 0` using `by choose c hc using hw`. Conclude with `⟨c, Finset.prod_ne_zero_iff.2 fun a _ => hc a⟩`. Establish `hcl : Subfield.closure (Set.range (RingHom.id Ω) ∪ {z | ∃ l l' : (∀ a, κa a), z = (∏ a, w a (l a)) / ∏ a, w a (l' a)}) = ⊤` using `eq_top_iff.2 fun z _ => Subfield.subset_closure (Or.inl ⟨z, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M', f, hf⟩` from `PositivityTheory.HtPt.Mb.join_exists o Ω κ x M Ω (RingHom.id Ω) (∀ a, κa a) (fun c => ∏ a, w a (c a)) (fun _ => rfl) hW hcl`. Use `⟨κ × (∀ a, κa a), inferInstance, _, M', f, hf, ?_, ?_⟩` and prove the remaining obligations. Introduce `a p'`. Take `⟨-, c, hc⟩` from `PositivityTheory.HtPt.Mb.join_charts o Ω κ (∀ a, κa a) x Ω (RingHom.id Ω) (fun c => ∏ a, w a (c a)) M' (fun _ => rfl) p'`. Conclude with `⟨c a, JoinMany.inChart_of_inChart_prod _ w hc a⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Conclude with `PositivityTheory.HtPt.Mb.join_iso o Ω κ x M (∀ a, κa a) (fun c => ∏ a, w a (c a)) M' f hf p (JoinMany.inChart_prod_of_forall _ w p hp)`.
+A detailed English derivation is pending.
 -/
 theorem join_finitely_many : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (A : Type) [Finite A] (κa : A → Type) [∀ a, Finite (κa a)] (w : ∀ a, κa a → Ω), (∀ a, ∃ l, w a l ≠ 0) → ∃ (κ' : Type) (_ : Finite κ') (y : κ' → Ω) (M' : PModel o y) (f : M'.X ⟶ M.X), Dominates M'.ξ M.ξ f (RingHom.id Ω) ∧ (∀ a (p' : Cpt M'.ξ), ∃ l, InChart M'.ξ (w a) l p') ∧ ∀ p : Cpt M.ξ, (∀ a, ∃ l, InChart M.ξ (w a) l p) → IsoAt M'.ξ f (RingHom.id Ω) p := by
   intro o _ Ω _ _ κ _ x M A _ κa _ w hw
@@ -78,7 +78,7 @@ end PositivityTheory.HtPt.Mb.LJoinMany
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField in
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Mb.LJoinMany.join_finitely_many`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.HtPt.Mb.join_many : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (A : Type) [Finite A] (κa : A → Type) [∀ a, Finite (κa a)] (w : ∀ a, κa a → Ω), (∀ a, ∃ l, w a l ≠ 0) → ∃ (κ' : Type) (_ : Finite κ') (y : κ' → Ω) (M' : PModel o y) (f : M'.X ⟶ M.X), Dominates M'.ξ M.ξ f (RingHom.id Ω) ∧ (∀ a (p' : Cpt M'.ξ), ∃ l, InChart M'.ξ (w a) l p') ∧ ∀ p : Cpt M.ξ, (∀ a, ∃ l, InChart M.ξ (w a) l p) → IsoAt M'.ξ f (RingHom.id Ω) p :=
   @PositivityTheory.HtPt.Mb.LJoinMany.join_finitely_many

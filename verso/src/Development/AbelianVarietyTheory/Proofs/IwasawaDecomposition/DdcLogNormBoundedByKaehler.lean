@@ -14,17 +14,15 @@ namespace GlobalTheory.ShFam.CurvBound
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Establish `hs : IsCompact (Metric.sphere (0 : E) 1)` using `isCompact_sphere _ _`. Establish `hne : ∀ ξ ∈ Metric.sphere (0 : E) 1, ξ ≠ 0` using `fun ξ hξ h => by simp [h] at hξ`. Establish `cF : Continuous (F x₀)` using `continuous_iff_continuousAt.2 fun ξ => (hF ξ).comp (f := fun ξ => (x₀, ξ)) (by fun_prop)`. Establish `cG : Continuous (G x₀)` using `continuous_iff_continuousAt.2 fun ξ => (hG ξ).comp (f := fun ξ => (x₀, ξ)) (by fun_prop)`. Take `⟨B, hB⟩` from `hs.bddAbove_image (f := fun ξ => |F x₀ ξ| / G x₀ ξ) (cF.abs.continuousOn.div cG.continuousOn fun ξ hξ => (hp ξ (hne ξ hξ)).ne')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨B + 1, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ᶠ x in 𝓝 x₀, ∀ ξ ∈ Metric.sphere (0 : E) 1, |F x ξ| < (B + 1) * G x ξ`. Use `hs.eventually_forall_of_forall_eventually fun ξ hξ => ?_` and prove the remaining obligations. Use `(hF ξ).abs.eventually_lt (continuousAt_const.mul (hG ξ)) ?_` and prove the remaining obligations. Establish `h2` using `hp ξ (hne ξ hξ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3` using `(div_le_iff₀ h2).1 (hB ⟨ξ, hξ, rfl⟩)`. Use `show |F x₀ ξ| < (B + 1) * G x₀ ξ`. Combine the linear equalities and inequalities to obtain the conclusion. Use `filter_upwards [h1] with x hx ξ`. Break down `eq_or_ne ξ 0 with rfl | hξ` into its components or cases.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `sF x 0 0`. Establish `e2` using `sG x 0 0`. Simplify using `only [zero_smul, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_mul] at e1 e2`. Simplify using `[e1, e2]`. Establish `hn : ‖ξ‖ ≠ 0` using `norm_ne_zero_iff.2 hξ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hx (‖ξ‖⁻¹ • ξ) (by simp [norm_smul, hn])`. Establish `e : ξ = ‖ξ‖ • (‖ξ‖⁻¹ • ξ)` using `by rw [smul_smul, mul_inv_cancel₀ hn, one_smul]`. Generalize the expression as in `‖ξ‖⁻¹ • ξ = w at h2 e`. Generalize the expression as in `‖ξ‖ = r at e`. Rewrite using `[e, sF, sG, abs_mul, abs_of_nonneg (sq_nonneg r), mul_left_comm]`.
-
-Conclude with `mul_le_mul_of_nonneg_left h2.le (sq_nonneg r)`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_abs_le {X E : Type*} [TopologicalSpace X] [NormedAddCommGroup E] [NormedSpace ℝ E] [ProperSpace E]
     {F G : X → E → ℝ} {x₀ : X} (hF : ∀ ξ, ContinuousAt (fun q : X × E => F q.1 q.2) (x₀, ξ))
@@ -64,9 +62,9 @@ theorem eventually_abs_le {X E : Type*} [TopologicalSpace X] [NormedAddCommGroup
 open ReciprocityTheory.L2DbarEstimates in
 
 /- English proof (translation)
-Establish `h1 : ContDiffAt ℝ 1 (fderiv ℝ g) x` using `hg.fderiv_right (by norm_num)`. Establish `h2 : ∀ k, ContDiffAt ℝ 1 (wdb d k g) x` using `fun k => ((h1.clm_apply contDiffAt_const).add (contDiffAt_const.mul (h1.clm_apply contDiffAt_const))).div_const 2`. Establish `h3 : ∀ j k, ContinuousAt (wd d j (wdb d k g)) x` using `fun j k => by`. Establish `h4 : ContinuousAt (fderiv ℝ (wdb d k g)) x` using `((h2 k).fderiv_right (m := 0) (by norm_num)).continuousAt`. Conclude with `((h4.clm_apply continuousAt_const).sub (continuousAt_const.mul (h4.clm_apply continuousAt_const))).div_const 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `leviV`. Use `tendsto_finset_sum _ fun j _ => tendsto_finset_sum _ fun k _ => ?_` and prove the remaining obligations. Use `ContinuousAt.mul (ContinuousAt.mul (ContinuousAt.comp (g := wd d j (wdb d k g)) (f := Prod.fst) (x := (x, ξ)) (h3 j k) continuousAt_fst) (by fun_prop)) ?_` and prove the remaining obligations. Conclude with `Complex.continuous_conj.continuousAt.comp (by fun_prop)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousAt_leviV {d : ℕ} {g : V d → ℂ} {x : V d} (hg : ContDiffAt ℝ 2 g x) (ξ : Fin d → ℂ) :
     ContinuousAt (fun q : V d × (Fin d → ℂ) => leviV d g q.1 q.2) (x, ξ) := by
@@ -86,7 +84,7 @@ theorem continuousAt_leviV {d : ℕ} {g : V d → ℂ} {x : V d} (hg : ContDiffA
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `continuousAt_leviV (Complex.ofRealCLM.contDiff.contDiffAt.comp _ hf) ξ`. Establish `h2 : ContinuousAt (fun q : CxPts p σ × (Fin d → ℂ) => (c.e q.1, q.2)) (y, ξ)` using `((c.e.continuousAt hy).comp (f := Prod.fst) continuousAt_fst).prodMk continuousAt_snd`. Conclude with `(Complex.continuous_re.continuousAt.comp (h1.comp (f := fun q : CxPts p σ × (Fin d → ℂ) => (c.e q.1, q.2)) h2)).div_const _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousAt_ddcForm {c : AlgChart p σ d} {f : CxPts p σ → ℝ} {y : CxPts p σ} (hy : y ∈ c.e.source)
     (hf : ContDiffAt ℝ 2 (f ∘ c.e.symm) (c.e y)) (ξ : Fin d → ℂ) :
@@ -98,9 +96,9 @@ theorem continuousAt_ddcForm {c : AlgChart p σ d} {f : CxPts p σ → ℝ} {y :
     h2)).div_const _
 
 /- English proof (translation)
-Establish `: ∀ g v, ReciprocityTheory.L2DbarEstimates.leviV d g v (r • ξ) = ((r ^ 2 : ℝ) : ℂ) * ReciprocityTheory.L2DbarEstimates.leviV d g v ξ` using `fun g v => by`. Simplify using `only [ReciprocityTheory.L2DbarEstimates.leviV, Finset.mul_sum, Pi.smul_apply, Complex.real_smul, map_mul, Complex.conj_ofReal]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[ddcForm, ddcForm, AlgChart.levi, AlgChart.levi, this, Complex.re_ofReal_mul, mul_div_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ddcForm_smul (c : AlgChart p σ d) (f : CxPts p σ → ℝ) (y : CxPts p σ) (r : ℝ) (ξ : Fin d → ℂ) :
     ddcForm f c y (r • ξ) = r ^ 2 * ddcForm f c y ξ := by
@@ -112,13 +110,13 @@ theorem ddcForm_smul (c : AlgChart p σ d) (f : CxPts p σ → ℝ) (y : CxPts p
   rw [ddcForm, ddcForm, AlgChart.levi, AlgChart.levi, this, Complex.re_ofReal_mul, mul_div_assoc]
 
 /- English proof (translation)
-Establish `hS` using `(isOpen_not_liesIn (p := p) (σ := σ) C).inter (isOpen_ptsIn V.1)`. Establish `h0 : ∀ z ∈ {z | ¬ LiesIn z C} ∩ ptsIn p σ V.1, ev p σ _ t z ≠ 0` using `fun z hz h0 => hz.1 ((ev_eq_zero_iff ht hz.2).1 h0)`. Establish `hu` using `AnRead.holoOn_ev_of_subset (R := R) t (Set.inter_subset_right (s := {z | ¬ LiesIn z C}))`. Establish `hl` using `hu.smoothOn_log hS h0`. Establish `key : ∀ z ∈ {z | ¬ LiesIn z C} ∩ ptsIn p σ V.1, Real.exp 1 - Real.log (n z ^ 2) = f z + Real.exp 1 - Real.log (‖ev p σ _ t z‖ ^ 2)` using `fun z hz => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e z hz.2, Real.log_mul (pow_ne_zero _ (norm_ne_zero_iff.2 (h0 z hz))) (Real.exp_ne_zero _), Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : R.SmoothOn ({z | ¬ LiesIn z C} ∩ ptsIn p σ V.1) fun z => Real.exp 1 - Real.log (n z ^ 2)` using `AnRead.SmoothOn.congr (f := fun z => f z + Real.exp 1 - Real.log (‖ev p σ _ t z‖ ^ 2)) (fun i => ((hf.mono Set.inter_subset_right i).add contDiffOn_const).sub (hl i)) key`. Rewrite using `[← AnRead.levi_eq_of_add_log (g := fun z => f z + Real.exp 1) hS hs hu h0 (fun z hz => by rw [key z hz, sub_add_cancel]) hc ⟨hC, hy⟩, AlgChart.levi_add (hf.contDiffAt_two (isOpen_ptsIn _) hc hy) contDiffAt_const]`. Establish `: c.levi (fun _ => Real.exp 1) y ξ = 0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ∀ j, ReciprocityTheory.L2DbarEstimates.wdb d j (fun _ => ((Real.exp 1 : ℝ) : ℂ)) = fun _ => 0` using `fun j => by`. Use function extensionality and compare the values at `v`. Simplify using `[ReciprocityTheory.L2DbarEstimates.wdb]`. Simplify using `only [AlgChart.levi, ReciprocityTheory.L2DbarEstimates.leviV, this]`. Simplify using `[ReciprocityTheory.L2DbarEstimates.wd]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_eq {R : AnRead p σ d} {C : Closeds Y} {n f : CxPts p σ → ℝ} {V : Y.affineOpens} {t : Γ(Y, V.1)}
     (ht : (Scheme.IdealSheafData.vanishingIdeal C).ideal V = Ideal.span {t}) (hf : R.SmoothOn (ptsIn p σ V.1) f)
@@ -149,7 +147,7 @@ theorem levi_eq {R : AnRead p σ d} {C : Closeds Y} {n f : CxPts p σ → ℝ} {
   rw [this, add_zero]
 
 /- English proof (translation)
-The claim follows from `|ddcForm (fun z => Real.exp 1 - Real.log (n z ^ 2)) c y ξ| ≤ K * a c y ξ := by obtain ⟨V, t, f, hy, ht, hf, e⟩ := hn.2 y₀ obtain ⟨W, φ, hW, ho, hs, eφ⟩ := ha.1 y₀ obtain ⟨i, hi⟩ := R.cover y₀ obtain ⟨K, hK⟩ := eventually_abs_le (F := ddcForm f (R.chart i)) (G := ddcForm φ (R.char …`.
+A detailed English derivation is pending.
 -/
 theorem eventually_bound {R : AnRead p σ d} {C : Closeds Y} {n : CxPts p σ → ℝ} {a : ChartForm p σ d}
     (hn : IsDivNorm R C n) (ha : IsKaehlerForm R a) (y₀ : CxPts p σ) : ∃ K : ℝ, ∀ᶠ y in 𝓝 y₀,
@@ -170,7 +168,7 @@ theorem eventually_bound {R : AnRead p σ d} {C : Closeds Y} {n : CxPts p σ →
   exact h1 _
 
 /- English proof (translation)
-The claim follows from `|ddcForm (fun z => Real.exp 1 - Real.log (n z ^ 2)) c y ξ| ≤ K * a c y ξ := by intro k _ Y p d _ σ C n a hp hn ha have := CxPts.compactSpace σ hp choose K hK using eventually_bound hn ha obtain ⟨s, -, hs⟩ := isCompact_univ.elim_nhds_subcover _ fun y _ => hK y refine ⟨∑ x ∈ s, |K …`.
+A detailed English derivation is pending.
 -/
 theorem exists_bound : ∀ (k : Type) [Field k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (d : ℕ) [SmoothOfRelativeDimension d p]
     (σ : k →+* ℂ) (C : Closeds Y) (n : CxPts p σ → ℝ) (a : ChartForm p σ d), IsProjOver p →

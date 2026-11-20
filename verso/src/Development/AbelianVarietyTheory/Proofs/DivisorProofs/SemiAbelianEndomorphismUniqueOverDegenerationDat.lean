@@ -22,7 +22,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : 
   {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Establish `: IsProper D.P.A.hom` using `D.P.isAb.proper`. Conclude with `{ comm := inferInstance smooth := by have := D.P.isAb.smooth; show Smooth (pullback.snd _ _); infer_instance proper := by show IsProper (pullback.snd _ _); infer_instance geomConnected := by`. Use `D.P.isAb.geomConnected` as an intermediate fact. Use `show GeometricallyConnected (pullback.snd _ _)`. Use `infer_instance }`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_thick (D : DegPre R) (e : ℕ) : IsAbelianScheme (thickObj R I e D.P.A) := by
   have : IsProper D.P.A.hom := D.P.isAb.proper
@@ -36,17 +36,15 @@ theorem isAbelianScheme_thick (D : DegPre R) (e : ℕ) : IsAbelianScheme (thickO
         infer_instance }
 
 /- English proof (translation)
-Use `g.q_hom` as an intermediate fact. Use `g.i_hom` as an intermediate fact. Use `g.q_flat` as an intermediate fact. Use `g.q_surj` as an intermediate fact. Use `g.q_affine` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `g.isKernel`. Establish `: Mono g.i`. Establish `: Mono (η[thickObj R I e D.P.A])` using `⟨fun _ _ _ => toUnit_unique _ _⟩`. Conclude with `(MorphismProperty.monomorphisms _).of_isPullback hk.flip (.infer_property _)`. Establish `hc : IsMonHom (b₁ / b₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_eq_mul_inv]`. Conclude with `GlobalTheory.Serre.isMonHom_mul _ _`. Establish `hcq : (b₁ / b₂) ≫ g.q = toUnit _ ≫ η[thickObj R I e D.P.A]`. Rewrite using `[GrpObj.div_comp, h₁, h₂, div_self', Hom.one_def]`. Set `τ` to `hk.lift (b₁ / b₂) (toUnit _) hcq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : τ ≫ g.i = b₁ / b₂` using `hk.lift_fst _ _ _`. Establish `: IsMonHom (τ ≫ g.i)` using `hτ ▸ hc`. Establish `: IsMonHom τ` using `GlobalTheory.EndTorus.isMonHom_of_mono τ g.i`. Establish `hiτ : g.i ≫ τ = toUnit _ ≫ η`. Rewrite using `[← cancel_mono g.i, Category.assoc, hτ, GrpObj.comp_div, hi, div_self', Category.assoc, IsMonHom.one_hom, Hom.one_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a₀, ha₀⟩` from `GlobalTheory.eq_toUnit_comp_of_const_on_fibres _ _ _ (isAbelianScheme_thick D e) g.q g.q_flat g.q_surj inferInstance D.X τ (fun Z x y hxy => GlobalTheory.FlatQuotient.comp_eq_of_kills_kernel g.q g.i τ hk hiτ x y hxy)`. Establish `hτ1 : τ = toUnit _ ≫ η`. Establish `h` using `IsMonHom.one_hom τ`. Rewrite `h` using `[ha₀, ← Category.assoc, toUnit_unique (η ≫ toUnit _) (𝟙 _), Category.id_comp]`. Rewrite using `[ha₀, h]`.
-
-Establish `: b₁ / b₂ = 1` using `by rw [← hτ, hτ1, Category.assoc, IsMonHom.one_hom, Hom.one_def]`. Conclude with `div_eq_one.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_q_of_i (g : GtCoord I D e G) (b₁ b₂ : thickObj R I e G ⟶ thickObj R I e G)
     [IsMonHom b₁] [IsMonHom b₂] (aB : thickObj R I e D.P.A ⟶ thickObj R I e D.P.A)
@@ -87,19 +85,19 @@ end GlobalTheory.MumUniq
 namespace GlobalTheory.MumUniq
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.fromSpecStalk_comp_eq_of_agree_on_closedThickenings`.
+A detailed English derivation is pending.
 -/
 theorem stalk_eq_of_thick : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (G : Over (Spec (CommRingCat.of R))), LocallyOfFiniteType G.hom → ∀ (b b' : G ⟶ G), (∀ e : ℕ, (Over.pullback (thick R (maximalIdeal R) e)).map b = (Over.pullback (thick R (maximalIdeal R) e)).map b') → ∀ x : G.left, G.hom x = closedPoint R → G.left.fromSpecStalk x ≫ b.left = G.left.fromSpecStalk x ≫ b'.left := GlobalTheory.T.fromSpecStalk_comp_eq_of_agree_on_closedThickenings
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.irreducibleSpace_of_smooth_geometricallyConnected_domain`.
+A detailed English derivation is pending.
 -/
 theorem irreducible_of_smooth : ∀ (R : Type) [CommRing R] [IsDomain R] (G : Over (Spec (CommRingCat.of R))), Smooth G.hom → GeometricallyConnected G.hom → Nonempty G.left → IrreducibleSpace G.left := GlobalTheory.T.irreducibleSpace_of_smooth_geometricallyConnected_domain
 
 /- English proof (translation)
-Establish `: IrreducibleSpace G.left` using `irreducible_of_smooth R G inferInstance inferInstance ⟨x⟩`. Establish `: IsReduced G.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced G.hom`. Establish `: IsDominant (G.left.fromSpecStalk x)`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[DenseRange, Scheme.range_fromSpecStalk, dense_iff_closure_eq, Set.eq_univ_iff_forall]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Conclude with `closure_mono (Set.singleton_subset_iff.2 (genericPoint_specializes x)) ((genericPoint_spec G.left).def ▸ Set.mem_univ y)`. Conclude with `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated G.hom (by rw [Over.w b, Over.w b']) (G.left.fromSpecStalk x) h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_of_stalk {R : Type} [CommRing R] [IsDomain R] (G : Over (Sp R)) [Smooth G.hom]
     [IsSeparated G.hom] [GeometricallyConnected G.hom] (b b' : G ⟶ G) (x : G.left)
@@ -116,13 +114,13 @@ theorem eq_of_stalk {R : Type} [CommRing R] [IsDomain R] (G : Over (Sp R)) [Smoo
     (G.left.fromSpecStalk x) h)
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D A G _ _ hG U a h'`. Use `⟨fun b b' hb hb' => funext fun e => ?_, fun b b' hbb => ?_⟩` and prove the remaining obligations. Take `⟨hm, -, hq, ht⟩` from `hb`. Take `⟨hm', -, hq', ht'⟩` from `hb'`. Use `hm e` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hm' e` as an intermediate fact. Take `⟨t, htt, hti⟩` from `ht e`. Take `⟨t', htt', hti'⟩` from `ht' e`. Take `rfl` from `GlobalTheory.LinearUnifCheck.torusEndOf_unique htt htt'`. Conclude with `eq_of_q_of_i (U.gt e) (b e) (b' e) _ (hq e) (hq' e) (hti.trans hti'.symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hG.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Establish `: IsNoetherianRing R` using `hR.1`. Establish `hw : (η[G]).left ≫ G.hom = 𝟙 _` using `Over.w (η[G])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : G.hom ((η[G]).left (closedPoint R : (𝟙_ (Over (Sp R))).left)) = closedPoint R` using `by show ((η[G]).left ≫ G.hom) (closedPoint R : (𝟙_ (Over (Sp R))).left) = _`. Rewrite using `[hw]`. Both sides reduce to the same expression. Conclude with `eq_of_stalk G b b' _ (stalk_eq_of_thick R G inferInstance b b' hbb _ hx)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (a : D.toPre.P.A ⟶ D.toPre.P.A) (h' : D.toPre.X →+ D.toPre.X), (∀ b b', FormalEnd U.toUnifPre a h' b → FormalEnd U.toUnifPre a h' b' → b = b') ∧ ∀ b b' : G ⟶ G, (∀ e, (Over.pullback (thick R (maximalIdeal R) e)).map b = (Over.pullback (thick R (maximalIdeal R) e)).map b') → b = b' := by
   intro R _ _ _ hR D A G _ _ hG U a h'

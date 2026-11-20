@@ -16,9 +16,9 @@ def RegularInjectivePieces.Statement : Prop :=
       ∀ i, Set.InjOn g (P i)
 
 /- English proof (translation)
-Use `⟨isOpen_univ, ?_⟩` and prove the remaining obligations. Introduce `w _`. Apply `DifferentiableAt.differentiableWithinAt` to reduce the goal to its premises. Apply `differentiableAt_pi.2` to reduce the goal to its premises. Introduce `_`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((differentiableAt_apply 0 w).pow 2)`.
+A detailed English derivation is pending.
 -/
 theorem RegularInjectivePieces.hypotheses_inhabited :
     IsOpen (Set.univ : Set (Fin 1 → ℂ)) ∧

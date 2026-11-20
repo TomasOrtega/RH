@@ -24,13 +24,13 @@ theorem ex_comp (z : Fin g → ℂ) : (u.ex z).left ≫ A.hom = 𝟙 _ := by
   simp
 
 /- English proof (translation)
-The claim follows from `(u.hol U 0).1.mem_nhds h`.
+A detailed English derivation is pending.
 -/
 theorem eventually_le {U : A.left.Opens} (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U) :
     ∀ᶠ z in 𝓝 (0 : Fin g → ℂ), ⊤ ≤ (u.ex z).left ⁻¹ᵁ U := (u.hol U 0).1.mem_nhds h
 
 /- English proof (translation)
-The claim follows from `(u.hol U f).2.differentiableAt ((u.hol U f).1.mem_nhds h)`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_val {U : A.left.Opens} (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U) (f : Γ(A.left, U)) :
     DifferentiableAt ℂ (fun z => valAt' (u.ex z).left U f) 0 := (u.hol U f).2.differentiableAt ((u.hol U f).1.mem_nhds h)
@@ -48,9 +48,9 @@ theorem dirDeriv_apply {U : A.left.Opens} (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U)
     dirDeriv u h w f = fderiv ℂ (fun z => valAt' (u.ex z).left U f) 0 w := rfl
 
 /- English proof (translation)
-Establish `key : ∀ (q : Sp ℂ ⟶ Sp ℂ) (e : ⊤ ≤ q ⁻¹ᵁ ⊤), q = 𝟙 _ → (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ q.appLE ⊤ ⊤ e ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom = 𝟙 _`. Introduce and unpack `q e rfl`. Simplify using `[Scheme.Hom.appLE]`. Use `erw [CategoryTheory.Functor.map_id]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcomp : (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ p.appLE ⊤ U (show U ≤ p ⁻¹ᵁ ⊤ from fun _ _ => trivial) ≫ x.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom = 𝟙 _`. Rewrite using `[Scheme.Hom.appLE_comp_appLE_assoc]`. Conclude with `key _ _ hp`. Rewrite using `[valAt', dif_pos h]`. Conclude with `congrArg (fun φ => φ.hom a) hcomp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valAt'_constFn_of_comp_eq_id {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (p : X ⟶ Sp ℂ) (hp : x ≫ p = 𝟙 _)
     (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (a : ℂ) : valAt' x U (constFn p U a) = a := by
@@ -69,7 +69,7 @@ private theorem valAt'_constFn_of_comp_eq_id {X : Scheme.{0}} (x : Sp ℂ ⟶ X)
   exact congrArg (fun φ => φ.hom a) hcomp
 
 /- English proof (translation)
-Rewrite using `[dirDeriv_apply]`. Establish `hev : (fun z => valAt' (u.ex z).left U (constFn A.hom U a)) =ᶠ[𝓝 0] fun _ => a` using `by filter_upwards [eventually_le u h] with z hz`. Conclude with `valAt'_constFn_of_comp_eq_id _ _ (ex_comp u z) U hz a`. Rewrite using `[hev.fderiv_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dirDeriv_constFn {U : A.left.Opens} (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U) (w : Fin g → ℂ) (a : ℂ) :
     dirDeriv u h w (constFn A.hom U a) = 0 := by
@@ -81,9 +81,9 @@ theorem dirDeriv_constFn {U : A.left.Opens} (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ 
   simp
 
 /- English proof (translation)
-Rewrite using `[dirDeriv_apply, dirDeriv_apply, dirDeriv_apply]`. Establish `hprod : (fun z => valAt' (u.ex z).left U (f * f')) = fun z => valAt' (u.ex z).left U f * valAt' (u.ex z).left U f'`. Use function extensionality and compare the values at `z`. Conclude with `valAt'_mul _ _ _ _`. Rewrite using `[hprod, fderiv_fun_mul (differentiableAt_val u h f) (differentiableAt_val u h f')]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [_root_.add_apply, _root_.smul_apply, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem dirDeriv_mul {U : A.left.Opens} (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U) (w : Fin g → ℂ) (f f' : Γ(A.left, U)) :
     dirDeriv u h w (f * f') =
@@ -97,9 +97,9 @@ theorem dirDeriv_mul {U : A.left.Opens} (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U) (
   simp only [_root_.add_apply, _root_.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h (show (default : PrimeSpectrum ℂ) ∈ (⊤ : (Sp ℂ).Opens) from trivial)`. Introduce `h q _`. Establish `hq : q = (default : PrimeSpectrum ℂ)` using `@Subsingleton.elim (PrimeSpectrum ℂ) _ q default`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hq` using the available equality. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private theorem preimage_whole_of_closedPoint_mem' {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (W : X.Opens) :
     ⊤ ≤ x ⁻¹ᵁ W ↔ x (default : PrimeSpectrum ℂ) ∈ W := by
@@ -112,19 +112,17 @@ private theorem preimage_whole_of_closedPoint_mem' {X : Scheme.{0}} (x : Sp ℂ 
     exact h
 
 /- English proof (translation)
-Establish `hxU` using `(preimage_whole_of_closedPoint_mem' (u.ex 0).left U).1 h`. Establish `hxV` using `(preimage_whole_of_closedPoint_mem' (u.ex 0).left V).1 hV`. Take `⟨b, hbV, hxb⟩` from `hU.exists_basicOpen_le (V := V) ⟨_, hxV⟩ hxU`. Establish `hb0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ A.left.basicOpen b` using `(preimage_whole_of_closedPoint_mem' _ _).2 hxb`. Establish `hloc` using `hU.isLocalization_basicOpen b`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨a, s⟩, hs⟩` from `IsLocalization.surj (Submonoid.powers b) (A.left.presheaf.map (homOfLE hbV).op f)`. Simplify using `only at hs`. Establish `hres : ∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ A.left.basicOpen b → ∀ c : Γ(A.left, U), valAt' (u.ex z).left (A.left.basicOpen b) (algebraMap Γ(A.left, U) Γ(A.left, A.left.basicOpen b) c) = valAt' (u.ex z).left U c` using `fun z hz c => by`. Conclude with `valAt'_res _ (A.left.basicOpen_le b) c hz`. Establish `hev : (fun z => valAt' (u.ex z).left V f * valAt' (u.ex z).left U (s : Γ(A.left, U))) =ᶠ[𝓝 0] fun z => valAt' (u.ex z).left U a` using `by filter_upwards [eventually_le u hb0] with z hz`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : valAt' (u.ex z).left (A.left.basicOpen b) (A.left.presheaf.map (homOfLE hbV).op f) = valAt' (u.ex z).left V f`. Conclude with `valAt'_res _ hbV f hz`. Rewrite using `[← hres z hz a, ← hres z hz (s : Γ(A.left, U)), ← hs, valAt'_mul, hf]`. Establish `hDa : fderiv ℂ (fun z => valAt' (u.ex z).left U a) 0 w = 0`. Rewrite using `[← dirDeriv_apply u h w a, hw, AddMonoidHom.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hDs : fderiv ℂ (fun z => valAt' (u.ex z).left U (s : Γ(A.left, U))) 0 w = 0`. Rewrite using `[← dirDeriv_apply u h w (s : Γ(A.left, U)), hw, AddMonoidHom.zero_apply]`. Establish `hs0 : valAt' (u.ex 0).left U (s : Γ(A.left, U)) ≠ 0`. Take `⟨v, hv⟩` from `IsLocalization.map_units Γ(A.left, A.left.basicOpen b) s`. Rewrite using `[← hres 0 hb0, ← hv]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Establish `hone` using `valAt'_mul (u.ex 0).left (A.left.basicOpen b) (v : Γ(A.left, A.left.basicOpen b)) (↑v⁻¹ : Γ(A.left, A.left.basicOpen b))`. Establish `h1 : valAt' (u.ex 0).left (A.left.basicOpen b) (1 : Γ(A.left, A.left.basicOpen b)) = 1`. Conclude with `valAt'_one _ hb0`. Rewrite `hone` using `[Units.mul_inv, h1, h0, zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `one_ne_zero hone`. Establish `hmul` using `fderiv_fun_mul (differentiableAt_val u hV f) (differentiableAt_val u h (s : Γ(A.left, U)))`. Rewrite `hmul` using `[hev.fderiv_eq]`. Establish `key` using `congrArg (fun L => L w) hmul`. Simplify using `only [_root_.add_apply, _root_.smul_apply, smul_eq_mul, hDa, hDs, mul_zero, zero_add] at key`.
-
-Conclude with `(mul_eq_zero.1 key.symm).resolve_left hs0`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fderiv_eq_zero_of_affine {U : A.left.Opens} (hU : IsAffineOpen U) (h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U)
     (w : Fin g → ℂ) (hw : dirDeriv u h w = 0) (V : A.left.Opens) (f : Γ(A.left, V))
@@ -176,7 +174,7 @@ theorem fderiv_eq_zero_of_affine {U : A.left.Opens} (hU : IsAffineOpen U) (h : �
   exact (mul_eq_zero.1 key.symm).resolve_left hs0
 
 /- English proof (translation)
-Establish `hv : v = ∑ j, v j • Pi.single j (1 : ℂ)`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hv]`. Simplify using `[map_sum, Finset.sum_apply, mul_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem apply_eq_sum (S : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (v : Fin g → ℂ) (i : Fin g) :
     S v i = ∑ j, S (Pi.single j 1) i * v j := by
@@ -187,7 +185,7 @@ theorem apply_eq_sum (S : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (v : Fin 
   simp [map_sum, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Unfold `valAt'`. Apply the tactic sequence `split_ifs <;> simp [valAt]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem valAt'_zero_toric_geometry {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (U : X.Opens) :
     valAt' x U 0 = 0 := by
@@ -195,7 +193,7 @@ private theorem valAt'_zero_toric_geometry {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (
   split_ifs <;> simp [valAt]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.sum_empty, valAt'_zero_toric_geometry]`. Introduce `j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, valAt'_add, ih]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem valAt'_finset_sum' {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (U : X.Opens) {J : Type} (s : Finset J)
     (F : J → Γ(X, U)) : valAt' x U (∑ j ∈ s, F j) = ∑ j ∈ s, valAt' x U (F j) := by
@@ -210,27 +208,27 @@ end AdaptedCoord
 open AdaptedCoord in
 
 /- English proof (translation)
-Introduce `H A _ L g u hsm hinj`. Take `⟨W, σ, U, t, -, hW0, hσ0, hU, -, hσW, -, hD⟩` from `H A g hsm (u.ex 0)`. Establish `h : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U` using `hσ0 ▸ (hσW 0 hW0).1`. Establish `hφd : DifferentiableAt ℂ (fun z i => valAt' (u.ex z).left U (t i)) 0` using `differentiableAt_pi.2 fun i => differentiableAt_val u h (t i)`. Take `⟨M, hMdef⟩ : ∃ M : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), ∀ v, M v = fderiv ℂ (fun z i => valAt' (u.ex z).left U (t i)) 0 v` from `⟨(fderiv ℂ (fun z i => valAt' (u.ex z).left U (t i)) 0 : (Fin g → ℂ) →L[ℂ] (Fin g → ℂ)), fun _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hM : ∀ v i, M v i = dirDeriv u h v (t i)`. Introduce `v i`. Rewrite using `[hMdef, dirDeriv_apply, (hasFDerivAt_pi'.1 hφd.hasFDerivAt i).fderiv]`. Both sides reduce to the same expression. Establish `hMinj : Function.Injective M`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `v v' hvv`. Establish `hv0 : v - v' = 0`. Apply `hinj` to reduce the goal to its premises. Introduce `V f hV`. Use `fderiv_eq_zero_of_affine u hU h (v - v') ?_ V f hV` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hD _ (fun a => dirDeriv_constFn u h _ a) (fun f f' => dirDeriv_mul u h _ f f') fun i => ?_` and prove the remaining obligations. Rewrite using `[← hM, map_sub, hvv, sub_self]`. Both sides reduce to the same expression. Conclude with `sub_eq_zero.1 hv0`. Choose the witnesses or unpack the hypotheses as in `⟨Sinv, hSM, hSinj⟩ : ∃ S : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), (∀ v, S (M v) = v) ∧ Function.Injective S := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `N` to `LinearEquiv.ofInjectiveEndo M hMinj`. Use `⟨N.symm.toLinearMap, fun v => ?_, N.symm.injective⟩` and prove the remaining obligations. Establish `hN : N v = M v` using `by simp [N, LinearEquiv.coe_ofInjectiveEndo]`. Rewrite using `[LinearEquiv.coe_coe, ← hN, LinearEquiv.symm_apply_apply]`. Take `⟨t', ht'⟩ : ∃ t' : Fin g → Γ(A.left, U), ∀ i, t' i = ∑ j, constFn A.hom U (Sinv (Pi.single j 1) i) * t j` from `⟨fun i => ∑ j, constFn A.hom U (Sinv (Pi.single j 1) i) * t j, fun _ => rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc0 : ∀ c : ℂ, valAt' (u.ex 0).left U (constFn A.hom U c) = c` using `fun c => valAt'_constFn_of_comp_eq_id _ _ (ex_comp u 0) U h c`. Use `⟨U, t', hU, h, ?_, ?_⟩` and prove the remaining obligations. Introduce `D hc hl hD'`. Apply `hD D hc hl` to reduce the goal to its premises. Establish `hS : Sinv (fun j => D (t j)) = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Establish `e : D (t' i) = ∑ j, Sinv (Pi.single j 1) i * D (t j)`. Rewrite using `[ht', map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hl, hc, hc0, mul_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[apply_eq_sum]`. Simplify using `only [Pi.zero_apply]`. Rewrite using `[← e, hD' i]`. Establish `h0 : (fun j => D (t j)) = 0` using `hSinj (hS.trans (map_zero Sinv).symm)`. Conclude with `fun j => congrFun h0 j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hev : (fun w i => valAt' (u.ex w).left U (t' i)) =ᶠ[𝓝 0] fun w => Sinv (fun i => valAt' (u.ex w).left U (t i))` using `by filter_upwards [eventually_le u h] with z hz`. Use function extensionality and compare the values at `i`. Rewrite using `[ht', valAt'_finset_sum', apply_eq_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[valAt'_mul, valAt'_constFn_of_comp_eq_id _ _ (ex_comp u z) U hz]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomp : HasFDerivAt (fun w => Sinv (fun i => valAt' (u.ex w).left U (t i))) ((LinearMap.toContinuousLinearMap Sinv).comp (fderiv ℂ (fun z i => valAt' (u.ex z).left U (t i)) 0)) 0` using `(LinearMap.toContinuousLinearMap Sinv).hasFDerivAt.comp 0 hφd.hasFDerivAt`. Establish `hid : (LinearMap.toContinuousLinearMap Sinv).comp (fderiv ℂ (fun z i => valAt' (u.ex z).left U (t i)) 0) = ContinuousLinearMap.id ℂ (Fin g → ℂ)`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, ← hMdef, LinearMap.coe_toContinuousLinearMap', hSM]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcomp` using `[hid]`. Conclude with `hcomp.congr_of_eventuallyEq hev`.
+A detailed English derivation is pending.
 -/
 theorem exists_coord_adapted : (∀ (X : Over (Sp ℂ)) (g : ℕ), SmoothOfRelativeDimension g X.hom → ∀ e : (𝟙_ (Over (Sp ℂ)) ⟶ X), ∃ (W : Set (Fin g → ℂ)) (σ : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (U : X.left.Opens) (t : Fin g → Γ(X.left, U)), IsOpen W ∧ 0 ∈ W ∧ σ 0 = e ∧ IsAffineOpen U ∧ (∀ (U : (X).left.Opens) (f : Γ((X).left, U)), IsOpen {w | w ∈ W ∧ ⊤ ≤ (σ w).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' (σ w).left U f) {w | w ∈ W ∧ ⊤ ≤ (σ w).left ⁻¹ᵁ U}) ∧ (∀ w ∈ W, ⊤ ≤ (σ w).left ⁻¹ᵁ U ∧ ∀ i, valAt' (σ w).left U (t i) = w i) ∧ IsOpen[(TopologicalSpace.generateFrom {S : Set (𝟙_ (Over (Sp ℂ)) ⟶ X) | ∃ (U : X.left.Opens) (f : Γ(X.left, U)) (O : Set ℂ), IsOpen O ∧ S = {x | ⊤ ≤ (x).left ⁻¹ᵁ U ∧ valAt' x.left U f ∈ O}})] (σ '' W) ∧ (∀ D : Γ(X.left, U) →+ ℂ, (∀ a, D (constFn X.hom U a) = 0) → (∀ f f', D (f * f') = valAt' e.left U f * D f' + valAt' e.left U f' * D f) → (∀ i, D (t i) = 0) → D = 0)) → (∀ (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left) (g : ℕ) (u : HolUnif A L g), SmoothOfRelativeDimension g A.hom → (∀ w : Fin g → ℂ, (∀ (U : A.left.Opens) (f : Γ(A.left, U)), ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U → fderiv ℂ (fun z => valAt' (u.ex z).left U f) 0 w = 0) → w = 0) → ∃ (U : A.left.Opens) (t : Fin g → Γ(A.left, U)), IsAffineOpen U ∧ ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U ∧ (∀ D : Γ(A.left, U) →+ ℂ, (∀ a, D (constFn A.hom U a) = 0) → (∀ f f', D (f * f') = valAt' (u.ex 0).left U f * D f' + valAt' (u.ex 0).left U f' * D f) → (∀ i, D (t i) = 0) → D = 0) ∧ HasFDerivAt (fun w i => valAt' (u.ex w).left U (t i)) (ContinuousLinearMap.id ℂ (Fin g → ℂ)) 0) := by
   intro H A _ L g u hsm hinj

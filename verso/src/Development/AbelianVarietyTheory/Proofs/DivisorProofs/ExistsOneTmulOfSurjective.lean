@@ -23,7 +23,7 @@ instance : IsDirectedOrder (Idx R Ω) where
 instance : Nonempty (Idx R Ω) := ⟨⟨⊥, inferInstance⟩⟩
 
 /- English proof (translation)
-Use `E.2` as an intermediate fact. Establish `: Algebra.IsSeparable (ResidueField R) Ω` using `IsSepClosure.separable`. Establish `: Algebra.IsSeparable (ResidueField R) E.1` using `Algebra.isSeparable_tower_bot_of_isSeparable _ E.1 Ω`. Conclude with `GlobalTheory.exists_etale_henselian_lift_of_isSeparable R E.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_lift (E : Idx R Ω) : ∃ (A : Type) (_ : CommRing A) (_ : Algebra R A),
     Module.Finite R A ∧ Algebra.Etale R A ∧ HenselianLocalRing A ∧
@@ -42,7 +42,7 @@ instance instAlgebra (E : Idx R Ω) : Algebra R (Lift R Ω E) :=
   (exists_lift R Ω E).choose_spec.choose_spec.choose
 
 /- English proof (translation)
-The claim follows from `(exists_lift R Ω E).choose_spec.choose_spec.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem lift_spec (E : Idx R Ω) : Module.Finite R (Lift R Ω E) ∧ Algebra.Etale R (Lift R Ω E) ∧
     HenselianLocalRing (Lift R Ω E) ∧
@@ -67,9 +67,9 @@ theorem red_apply (E : Idx R Ω) (a : Lift R Ω E) :
     red R Ω E a = (liftEquiv R Ω E (1 ⊗ₜ a) : Ω) := rfl
 
 /- English proof (translation)
-Apply `(GlobalTheory.bijective_baseChange_residueField_of_finiteEtale R _ _).1` to reduce the goal to its premises. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `c a`. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq]`. Establish `h1 : (1 : ResidueField R) ⊗ₜ[R] φ a = 1 ⊗ₜ ψ a`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `(liftEquiv R Ω F).injective` to reduce the goal to its premises. Conclude with `Subtype.ext (h a)`. Establish `h2 : c ⊗ₜ[R] φ a = (c ⊗ₜ[R] (1 : Lift R Ω F)) * (1 ⊗ₜ φ a)` using `by simp`. Establish `h3 : c ⊗ₜ[R] ψ a = (c ⊗ₜ[R] (1 : Lift R Ω F)) * (1 ⊗ₜ ψ a)` using `by simp`. Rewrite using `[h2, h3, h1]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algHom_ext_of_red {E F : Idx R Ω} (φ ψ : Lift R Ω E →ₐ[R] Lift R Ω F)
     (h : ∀ a, red R Ω F (φ a) = red R Ω F (ψ a)) : φ = ψ := by
@@ -85,7 +85,7 @@ theorem algHom_ext_of_red {E F : Idx R Ω} (φ ψ : Lift R Ω E →ₐ[R] Lift R
   rw [h2, h3, h1]
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `(GlobalTheory.bijective_baseChange_residueField_of_finiteEtale R (Lift R Ω E) (Lift R Ω F)).2 (((liftEquiv R Ω F).symm.toAlgHom.comp (IntermediateField.inclusion h)).comp (liftEquiv R Ω E).toAlgHom)`. Use `⟨φ, fun a => ?_⟩` and prove the remaining obligations. Use `congrArg (fun g => liftEquiv R Ω F (g (1 ⊗ₜ a))) hφ` as an intermediate fact. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq, AlgHom.coe_comp, Function.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, AlgEquiv.apply_symm_apply] at this`. Rewrite using `[red_apply, red_apply, this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -105,7 +105,7 @@ theorem exists_trans {E F : Idx R Ω} (h : E ≤ F) :
 def trans (E F : Idx R Ω) (h : E ≤ F) : Lift R Ω E →ₐ[R] Lift R Ω F := (exists_trans R Ω h).choose
 
 /- English proof (translation)
-The claim follows from `(exists_trans R Ω h).choose_spec a`.
+A detailed English derivation is pending.
 -/
 theorem red_trans {E F : Idx R Ω} (h : E ≤ F) (a : Lift R Ω E) :
     red R Ω F (trans R Ω E F h a) = red R Ω E a := (exists_trans R Ω h).choose_spec a
@@ -136,7 +136,7 @@ variable {R : Type} [CommRing R] [HenselianLocalRing R] {Ω : Type} [Field Ω]
   [Algebra (ResidueField R) Ω] [IsSepClosure (ResidueField R) Ω]
 
 /- English proof (translation)
-Establish `h1 : (1 : ResidueField R) ⊗ₜ[R] algebraMap R (Lift R Ω E) r = algebraMap (ResidueField R) (ResidueField R ⊗[R] Lift R Ω E) (algebraMap R _ r)`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, ← Algebra.TensorProduct.tmul_one_eq_one_tmul]`. Rewrite using `[red_apply, h1, AlgEquiv.commutes]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem red_algebraMap (E : Idx R Ω) (r : R) :
     red R Ω E (algebraMap R _ r) = algebraMap (ResidueField R) Ω (residue R r) := by
@@ -148,7 +148,7 @@ theorem red_algebraMap (E : Idx R Ω) (r : R) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, red_algebraMap, map_eq_zero_iff _ (algebraMap (ResidueField R) Ω).injective, residue_eq_zero_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem comap_ker_red (E : Idx R Ω) :
     (RingHom.ker (red R Ω E)).comap (algebraMap R (Lift R Ω E)) = maximalIdeal R := by
@@ -157,7 +157,7 @@ theorem comap_ker_red (E : Idx R Ω) :
     map_eq_zero_iff _ (algebraMap (ResidueField R) Ω).injective, residue_eq_zero_iff]
 
 /- English proof (translation)
-Establish `hp : (RingHom.ker (red R Ω E)).IsPrime` using `RingHom.ker_isPrime _`. Use `haveI : Algebra.IsIntegral R (Lift R Ω E) := Algebra.IsIntegral.of_finite R _`. Establish `: (RingHom.ker (red R Ω E)).IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := R) _ (by rw [comap_ker_red]; infer_instance)`. Conclude with `IsLocalRing.eq_maximalIdeal this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ker_red (E : Idx R Ω) : RingHom.ker (red R Ω E) = maximalIdeal (Lift R Ω E) := by
   have hp : (RingHom.ker (red R Ω E)).IsPrime := RingHom.ker_isPrime _
@@ -167,14 +167,14 @@ theorem ker_red (E : Idx R Ω) : RingHom.ker (red R Ω E) = maximalIdeal (Lift R
   exact IsLocalRing.eq_maximalIdeal this
 
 /- English proof (translation)
-Rewrite using `[← ker_red]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem red_eq_zero_iff (E : Idx R Ω) (a : Lift R Ω E) :
     red R Ω E a = 0 ↔ a ∈ maximalIdeal (Lift R Ω E) := by
   rw [← ker_red]; rfl
 
 /- English proof (translation)
-Rewrite using `[Ne, red_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, not_not]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_iff_red_ne_zero (E : Idx R Ω) (a : Lift R Ω E) : IsUnit a ↔ red R Ω E a ≠ 0 := by
   rw [Ne, red_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, not_not]
@@ -192,16 +192,14 @@ instance isLocalHom_algebraMap_lift (E : Idx R Ω) : IsLocalHom (algebraMap R (L
     by_contra h; exact hr h
 
 /- English proof (translation)
-The claim follows from `Algebra.FormallyUnramified.map_maximalIdeal`.
+A detailed English derivation is pending.
 -/
 theorem map_maximalIdeal_lift (E : Idx R Ω) :
     (maximalIdeal R).map (algebraMap R (Lift R Ω E)) = maximalIdeal (Lift R Ω E) :=
   Algebra.FormallyUnramified.map_maximalIdeal
 
 /- English proof (translation)
-Use `letI : Algebra (Lift R Ω E) (Lift R Ω F) := (trans R Ω E F h).toRingHom.toAlgebra`. Use `haveI : IsScalarTower R (Lift R Ω E) (Lift R Ω F) := IsScalarTower.of_algebraMap_eq (fun r => ((trans R Ω E F h).commutes r).symm)`. Use `haveI : Algebra.Etale (Lift R Ω E) (Lift R Ω F) := Algebra.Etale.of_restrictScalars R _ _`. Use `haveI : Module.Flat (Lift R Ω E) (Lift R Ω F) := Algebra.Smooth.flat _ _`. Use `haveI : IsLocalHom (algebraMap (Lift R Ω E) (Lift R Ω F)) := isLocalHom_trans E F h`.
-
-Use `haveI : Module.FaithfullyFlat (Lift R Ω E) (Lift R Ω F) := Module.FaithfullyFlat.of_flat_of_isLocalHom`. Use `haveI := Module.FaithfullyFlat.faithfulSMul (A := Lift R Ω E) (B := Lift R Ω F)`. Conclude with `FaithfulSMul.algebraMap_injective (Lift R Ω E) (Lift R Ω F)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem trans_injective (E F : Idx R Ω) (h : E ≤ F) : Function.Injective (trans R Ω E F h) := by
   letI : Algebra (Lift R Ω E) (Lift R Ω F) := (trans R Ω E F h).toRingHom.toAlgebra
@@ -220,13 +218,13 @@ variable (R Ω) in
 def ofA (E : Idx R Ω) : Lift R Ω E →ₐ[R] SH R Ω := DirectLimit.Algebra.of (R := R) (Lift R Ω) (trans R Ω) E
 
 /- English proof (translation)
-The claim follows from `DirectLimit.mk_injective (trans R Ω) (fun i j h => trans_injective i j h) E`.
+A detailed English derivation is pending.
 -/
 theorem ofA_injective (E : Idx R Ω) : Function.Injective (ofA R Ω E) :=
   DirectLimit.mk_injective (trans R Ω) (fun i j h => trans_injective i j h) E
 
 /- English proof (translation)
-The claim follows from `DirectLimit.Algebra.of_f ..`.
+A detailed English derivation is pending.
 -/
 theorem ofA_trans {E F : Idx R Ω} (h : E ≤ F) (a : Lift R Ω E) :
     ofA R Ω F (trans R Ω E F h a) = ofA R Ω E a := DirectLimit.Algebra.of_f ..
@@ -237,18 +235,18 @@ Both sides reduce to the same expression.
 theorem redSH_ofA (E : Idx R Ω) (a : Lift R Ω E) : redSH R Ω (ofA R Ω E a) = red R Ω E a := rfl
 
 /- English proof (translation)
-Take `⟨E, a, rfl⟩` from `DirectLimit.exists_eq_mk _ s`. Conclude with `⟨E, a, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ofA (s : SH R Ω) : ∃ E a, ofA R Ω E a = s := by
   obtain ⟨E, a, rfl⟩ := DirectLimit.exists_eq_mk _ s
   exact ⟨E, a, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨Classical.arbitrary _, by simp⟩`. Consider the case `insert x s _ ih`. Take `⟨E, hE⟩` from `ih`. Take `⟨F, b, rfl⟩` from `exists_ofA x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hEG, hFG⟩` from `(inferInstance : IsDirectedOrder (Idx R Ω)).directed E F`. Use `⟨G, fun y hy => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases. Conclude with `⟨trans R Ω F G hFG b, ofA_trans hFG b⟩`. Take `⟨a, rfl⟩` from `hE y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨trans R Ω E G hEG a, ofA_trans hEG a⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_ofA_finset (s : Finset (SH R Ω)) : ∃ E, ∀ x ∈ s, ∃ a, ofA R Ω E a = x := by
   classical
@@ -265,7 +263,7 @@ theorem exists_ofA_finset (s : Finset (SH R Ω)) : ∃ E, ∀ x ∈ s, ∃ a, of
       exact ⟨trans R Ω E G hEG a, ofA_trans hEG a⟩
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => h.map _⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_red_ne_zero, ← redSH_ofA]`. Conclude with `(h.map (redSH R Ω)).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_ofA_iff (E : Idx R Ω) (a : Lift R Ω E) : IsUnit (ofA R Ω E a) ↔ IsUnit a := by
   refine ⟨fun h => ?_, fun h => h.map _⟩
@@ -273,7 +271,7 @@ theorem isUnit_ofA_iff (E : Idx R Ω) (a : Lift R Ω E) : IsUnit (ofA R Ω E a) 
   exact (h.map (redSH R Ω)).ne_zero
 
 /- English proof (translation)
-Take `⟨E, a, rfl⟩` from `exists_ofA s`. Rewrite using `[isUnit_ofA_iff, redSH_ofA, isUnit_iff_red_ne_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_iff_redSH_ne_zero (s : SH R Ω) : IsUnit s ↔ redSH R Ω s ≠ 0 := by
   obtain ⟨E, a, rfl⟩ := exists_ofA s
@@ -288,13 +286,13 @@ instance : IsLocalRing (SH R Ω) := by
   exact IsLocalRing.isUnit_or_isUnit_one_sub_self a
 
 /- English proof (translation)
-Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, isUnit_iff_redSH_ne_zero, not_not]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_maximalIdeal_iff (s : SH R Ω) : s ∈ maximalIdeal (SH R Ω) ↔ redSH R Ω s = 0 := by
   rw [mem_maximalIdeal, mem_nonunits_iff, isUnit_iff_redSH_ne_zero, not_not]
 
 /- English proof (translation)
-Use extensionality with `s`. Rewrite using `[mem_maximalIdeal_iff]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ker_redSH : RingHom.ker (redSH R Ω) = maximalIdeal (SH R Ω) := by
   ext s; rw [mem_maximalIdeal_iff]; rfl
@@ -303,7 +301,7 @@ instance isLocalHom_ofA (E : Idx R Ω) : IsLocalHom (ofA R Ω E : Lift R Ω E �
   map_nonunit a h := (isUnit_ofA_iff E a).1 h
 
 /- English proof (translation)
-The claim follows from `(ofA R Ω E).commutes r`.
+A detailed English derivation is pending.
 -/
 theorem ofA_algebraMap (E : Idx R Ω) (r : R) : ofA R Ω E (algebraMap R _ r) = algebraMap R (SH R Ω) r :=
   (ofA R Ω E).commutes r
@@ -314,9 +312,9 @@ instance isLocalHom_algebraMap : IsLocalHom (algebraMap R (SH R Ω)) where
     exact IsLocalHom.map_nonunit _ h
 
 /- English proof (translation)
-Use `le_antisymm (Ideal.map_le_iff_le_comap.2 fun r hr => ?_) fun s hs => ?_` and prove the remaining obligations. Conclude with `fun h => hr (IsLocalHom.map_nonunit _ h)`. Take `⟨E, a, rfl⟩` from `exists_ofA s`. Establish `ha : a ∈ maximalIdeal (Lift R Ω E)`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, ← isUnit_ofA_iff]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs`. Rewrite `ha` using `[← map_maximalIdeal_lift]`. Use `Ideal.mem_map_of_mem (ofA R Ω E : Lift R Ω E →+* SH R Ω) ha` as an intermediate fact. Rewrite `this` using `[Ideal.map_map, show ((ofA R Ω E : Lift R Ω E →+* SH R Ω)).comp (algebraMap R _) = algebraMap R (SH R Ω) from RingHom.ext (ofA_algebraMap E)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem map_maximalIdeal :
     (maximalIdeal R).map (algebraMap R (SH R Ω)) = maximalIdeal (SH R Ω) := by
@@ -366,9 +364,9 @@ variable {R : Type} [CommRing R] [HenselianLocalRing R] {Ω : Type} [Field Ω]
   [Algebra (ResidueField R) Ω] [IsSepClosure (ResidueField R) Ω]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, TensorProduct.tmul_zero _ _⟩`. Consider the case `tmul c m`. Take `⟨r, rfl⟩` from `h c`. Conclude with `⟨r • m, by rw [TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.algebraMap_eq_smul_one]⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add x y hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, TensorProduct.tmul_add _ _ _⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_one_tmul_of_surjective {R K M : Type} [CommRing R] [CommRing K] [Algebra R K]
     [AddCommGroup M] [Module R M] (h : Function.Surjective (algebraMap R K)) (t : K ⊗[R] M) :
@@ -384,16 +382,16 @@ theorem exists_one_tmul_of_surjective {R K M : Type} [CommRing R] [CommRing K] [
     exact ⟨a + b, TensorProduct.tmul_add _ _ _⟩
 
 /- English proof (translation)
-The claim follows from `exists_one_tmul_of_surjective (R := R) (K := ResidueField R) IsLocalRing.residue_surjective t`.
+A detailed English derivation is pending.
 -/
 theorem exists_one_tmul (E : Idx R Ω) (t : ResidueField R ⊗[R] Lift R Ω E) :
     ∃ a : Lift R Ω E, (1 : ResidueField R) ⊗ₜ[R] a = t :=
   exists_one_tmul_of_surjective (R := R) (K := ResidueField R) IsLocalRing.residue_surjective t
 
 /- English proof (translation)
-Introduce `ω`. Establish `: Algebra.IsSeparable (ResidueField R) Ω` using `IsSepClosure.separable`. Establish `hi : IsIntegral (ResidueField R) ω` using `Algebra.IsIntegral.isIntegral ω`. Set `E : Idx R Ω` to `⟨IntermediateField.adjoin (ResidueField R) {ω}, IntermediateField.adjoin.finiteDimensional hi⟩`. Take `⟨a, ha⟩` from `exists_one_tmul E ((liftEquiv R Ω E).symm ⟨ω, IntermediateField.mem_adjoin_simple_self _ _⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `⟨ofA R Ω E a, ?_⟩` and prove the remaining obligations. Rewrite using `[redSH_ofA, red_apply, ha, AlgEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem redSH_surjective : Function.Surjective (redSH R Ω) := by
   intro ω
@@ -422,7 +420,7 @@ def resAlgEquiv : ResidueField (SH R Ω) ≃ₐ[ResidueField R] Ω :=
       ← ofA_algebraMap (Classical.arbitrary _), redSH_ofA, red_algebraMap]
 
 /- English proof (translation)
-Establish `: IsSepClosed Ω` using `IsSepClosure.sep_closed (ResidueField R)`. Set `e : ResidueField (SH R Ω) ≃+* Ω` to `resRingEquiv`. Use `⟨fun p hp => ?_⟩` and prove the remaining obligations. Establish `h` using `IsSepClosed.splits_domain (f := e.symm.toRingHom) (p.map e.toRingHom) hp.map`. Rewrite `h` using `[Polynomial.map_map, show e.symm.toRingHom.comp e.toRingHom = RingHom.id _ from by ext; simp, Polynomial.map_id]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isSepClosed_residueField : IsSepClosed (ResidueField (SH R Ω)) := by
   have : IsSepClosed Ω := IsSepClosure.sep_closed (ResidueField R)

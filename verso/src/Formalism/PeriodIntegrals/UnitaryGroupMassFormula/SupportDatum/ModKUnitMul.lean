@@ -23,7 +23,7 @@ def DetForm : Prop :=
     a.mat.det = (D.s.atP p).ιE (Dmin w (D.R.rS + 1)) * C (kind w)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular _ (fun i j hij => ?_)]`. Simplify using `[Loc.uLow]`. Establish `hij' : i < j` using `hij`. Simplify using `only [Loc.uLow]`. Rewrite using `[if_neg (ne_of_lt hij'), dif_neg (not_lt.2 hij'.le)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem uLow_det {E : Type} [CommRing E] {n : ℕ} (x : Loc.IL n → E) : (Loc.uLow x).det = 1 := by
   rw [Matrix.det_of_lowerTriangular _ (fun i j hij => ?_)]
@@ -33,7 +33,7 @@ theorem uLow_det {E : Type} [CommRing E] {n : ℕ} (x : Loc.IL n → E) : (Loc.u
     rw [if_neg (ne_of_lt hij'), dif_neg (not_lt.2 hij'.le)]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => ?_)]`. Simplify using `[Loc.uUp]`. Establish `hij' : j < i` using `hij`. Simplify using `only [Loc.uUp]`. Rewrite using `[if_neg (ne_of_gt hij'), dif_neg (fun h => absurd h.1 (not_lt.2 hij'.le))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem uUp_det {E : Type} [CommRing E] {n : ℕ} (w : Loc.Pt E n) (y : Loc.IN w → E) :
     (Loc.uUp w y).det = 1 := by
@@ -44,13 +44,11 @@ theorem uUp_det {E : Type} [CommRing E] {n : ℕ} (w : Loc.Pt E n) (y : Loc.IN w
     rw [if_neg (ne_of_gt hij'), dif_neg (fun h => absurd h.1 (not_lt.2 hij'.le))]
 
 /- English proof (translation)
-Establish `hex : ∃ xy, M.bbIntegrand w c xy ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Apply `h` to reduce the goal to its premises. Unfold `Loc.Model.BB`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `[hne]`. Take `⟨⟨x, y⟩, hxy⟩` from `hex`. Unfold `Loc.Model.bbIntegrand at hxy`. Simplify using `only at hxy`. Use `split_ifs at hxy with hZ`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `left_ne_zero_of_mul hxy`. Establish `h2` using `Nat.cast_ne_zero.mp h1`. Unfold `Loc.Model.nIso at h2`. Use `⟨_, ?_, (Nat.card_ne_zero.mp h2).1⟩` and prove the remaining obligations. Use `show (Loc.uLow x * w.mat * Loc.uUp w y).det = _`.
-
-Rewrite using `[Matrix.det_mul, Matrix.det_mul, uLow_det, uUp_det, one_mul, mul_one]`. Conclude with `absurd rfl hxy`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bb_exists {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
@@ -76,9 +74,9 @@ theorem bb_exists {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   · exact absurd rfl hxy
 
 /- English proof (translation)
-Unfold `BBtop at h`. Apply the tactic sequence `rcases hm : modPt δ T T' p w with _ | a <;> rcases c with _ | cl`. Simplify using `[hm] at h`. Simplify using `[hm] at h`. Simplify using `[hm] at h`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hm] at h`. Conclude with `⟨a, cl, rfl, rfl, right_ne_zero_of_mul h⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem bbtop_ne {D : Formalism.BasicNotions.D7} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {T T' : ℕ} {p : PlF D}
@@ -94,11 +92,11 @@ theorem bbtop_ne {D : Formalism.BasicNotions.D7} {δ : ∀ p : PlF D, (D.s.atP p
     exact ⟨a, cl, rfl, rfl, right_ne_zero_of_mul h⟩
 
 /- English proof (translation)
-Establish `hu : (((u : M.R) : E)) * ((((u⁻¹ : (M.R)ˣ) : M.R) : E)) = 1`. Rewrite using `[← Subring.coe_mul, Units.mul_inv, Subring.coe_one]`. Unfold `Loc.Model.modK`. Use `congr 2`. Use extensionality with `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_image, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨((u : M.R) : E) * y, M.R.mul_mem (u : M.R).2 hy, by ring⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨(((u⁻¹ : (M.R)ˣ) : M.R) : E) * y, M.R.mul_mem (↑u⁻¹ : M.R).2 hy, ?_⟩` and prove the remaining obligations. Take the linear combination `(x * y) * hu`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem modK_unit_mul {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
@@ -117,7 +115,7 @@ theorem modK_unit_mul {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     linear_combination (x * y) * hu
 
 /- English proof (translation)
-Use `mem_nonZeroDivisors_iff.2 ⟨fun y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1 : (x : E) * (y : E) = 0` using `by rw [← Subring.coe_mul, hy, Subring.coe_zero]`. Conclude with `Subtype.ext (by simpa using h.mul_right_eq_zero.1 h1)`. Establish `h1 : (y : E) * (x : E) = 0` using `by rw [← Subring.coe_mul, hy, Subring.coe_zero]`. Conclude with `Subtype.ext (by simpa using h.mul_left_eq_zero.1 h1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nzd_of_unit {E : Type} [CommRing E] (S : Subring E) (x : S) (h : IsUnit (x : E)) :
     x ∈ nonZeroDivisors S := by
@@ -128,33 +126,33 @@ theorem nzd_of_unit {E : Type} [CommRing E] (S : Subring E) (x : S) (h : IsUnit 
     exact Subtype.ext (by simpa using h.mul_left_eq_zero.1 h1)
 
 /- English proof (translation)
-Take `⟨a, cl, ha, hc, hb⟩` from `bbtop_ne hw`. Take `⟨a', cl', ha', hc', hb'⟩` from `bbtop_ne hw'`. Rewrite `hc'` using `[hc]`. Consider the cases of `hc'`. Take `⟨Z, hZ, ⟨φ⟩⟩` from `bb_exists (M p) a cl hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result.
 
-Take `⟨Z', hZ', ⟨φ'⟩⟩` from `bb_exists (M p) a' cl hb'`. Establish `hmap : ∀ Y : (M p).Mat (D.R.rS + 1), (Y.Z.map (M p).R.subtype).det = ((Y.Z.det : (M p).R) : _)` using `fun Y => (RingHom.map_det (M p).R.subtype Y.Z).symm`. Establish `hu1 : IsUnit (Z.Z.map (M p).R.subtype).det` using `Z.unit`. Establish `hu2 : IsUnit (Z'.Z.map (M p).R.subtype).det` using `Z'.unit`. Establish `n1 : Z.Z.det ∈ nonZeroDivisors (M p).R` using `nzd_of_unit _ _ (by rw [← hmap]; exact hu1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2 : Z'.Z.det ∈ nonZeroDivisors (M p).R` using `nzd_of_unit _ _ (by rw [← hmap]; exact hu2)`. Take `⟨u, hu⟩` from `hC (M p).R (D.R.rS + 1) Z.Z Z'.Z n1 n2 ⟨φ.1.trans φ'.1.symm⟩`. Take `⟨C, hCf⟩` from `hD D δ p T T'`. Establish `d1` using `hCf w a ha`. Establish `d2` using `hCf w' a' ha'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `d2` using `[← hk]`. Establish `e : a'.mat.det = ((u : (M p).R) : (D.s.atP p).Ep) * a.mat.det`. Rewrite using `[← hZ, ← hZ', hmap, hmap, hu, Subring.coe_mul]`. Establish `hua : IsUnit a.mat.det` using `hZ ▸ hu1`. Establish `hCu : IsUnit (C (kind w))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hua` using `[d1]`. Conclude with `isUnit_of_mul_isUnit_right hua`. Establish `key : (D.s.atP p).ιE (Dmin w' (D.R.rS + 1)) = ((u : (M p).R) : (D.s.atP p).Ep) * (D.s.atP p).ιE (Dmin w (D.R.rS + 1))`. Rewrite `e` using `[d1, d2, ← mul_assoc]`. Conclude with `hCu.mul_right_cancel e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨by rw [key, modK_unit_mul], ?_⟩` and prove the remaining obligations. Break down `hcase : kind w with _ | ζ` into its components or cases. Establish `h0 : Dmin w D.R.rS = 0`. Unfold `kind at hcase`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hne] at hcase`. Establish `hcase' : kind w' = none` using `hk ▸ hcase`. Establish `h0' : Dmin w' D.R.rS = 0`. Unfold `kind at hcase'`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hne] at hcase'`. Rewrite using `[h0, h0']`. Establish `hcase' : kind w' = some ζ` using `hk ▸ hcase`. Establish `hr : Dmin w D.R.rS ≠ 0`. Unfold `kind at hcase`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hne`. Simplify using `[hne] at hcase`. Establish `hr' : Dmin w' D.R.rS ≠ 0`. Unfold `kind at hcase'`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hne] at hcase'`. Establish `hz : zetaOf w = ζ`. Unfold `kind at hcase`. Simplify `hcase` using `[hr]`. Establish `hz' : zetaOf w' = ζ`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `kind at hcase'`. Simplify `hcase'` using `[hr']`. Establish `e1 : Dmin w (D.R.rS + 1) = ζ * Dmin w D.R.rS`. Rewrite using `[← hz, zetaOf, div_mul_cancel₀ _ hr]`. Establish `e1' : Dmin w' (D.R.rS + 1) = ζ * Dmin w' D.R.rS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hz', zetaOf, div_mul_cancel₀ _ hr']`. Establish `hζ : ζ ≠ 0`. Introduce `h0`. Apply `hT D w` to reduce the goal to its premises. Rewrite using `[e1, h0, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζu : IsUnit ((D.s.atP p).ιE ζ)` using `(isUnit_iff_ne_zero.mpr hζ).map (D.s.atP p).ιE`. Establish `key' : (D.s.atP p).ιE (Dmin w' D.R.rS) = ((u : (M p).R) : (D.s.atP p).Ep) * (D.s.atP p).ιE (Dmin w D.R.rS)`. Rewrite `key` using `[e1, e1', map_mul, map_mul]`. Apply `hζu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[key]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key', modK_unit_mul]`.
+A detailed English derivation is pending.
 -/
 theorem locStep_of (hC : CokDetL) (hD : DetForm)
     (hT : ∀ (D : Formalism.BasicNotions.D7) (w : Point D.host.E (D.R.rS + 1)), Dmin w (D.R.rS + 1) ≠ 0)

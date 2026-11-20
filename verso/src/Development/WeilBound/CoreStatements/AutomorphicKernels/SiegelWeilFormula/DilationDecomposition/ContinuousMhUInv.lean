@@ -25,19 +25,19 @@ abbrev bA : Module.Basis (Fin 2) (AF F) (AE F E) := Algebra.TensorProduct.basis 
 abbrev Ix : Type := Fin d.m × Fin d.n × Fin 2
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_eq (c : AF F) (k : Fin 2) : c ⊗ₜ[F] d.bs k = c • bA d k := by
   rw [Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Simplify using `only [SD.cmb, tmul_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cmb_eq (c : Ix d → AF F) (i : Fin d.m) (j : Fin d.n) : d.cmb c i j = ∑ k, c (i, j, k) • bA d k := by
   simp only [SD.cmb, tmul_eq]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Rewrite using `[cmb_eq]`. Conclude with `(bA d).sum_repr (Y i j)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmb_crd (Y : Mx F E d.m d.n) : d.cmb (d.crd Y) = Y := by
   funext i j
@@ -45,7 +45,7 @@ theorem cmb_crd (Y : Mx F E d.m d.n) : d.cmb (d.crd Y) = Y := by
   exact (bA d).sum_repr (Y i j)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨i, j, k⟩` from `p`. Use `show ((bA d).repr (d.cmb c i j)) k = c (i, j, k)`. Rewrite using `[cmb_eq]`. Conclude with `congrFun ((bA d).repr_sum_self fun k => c (i, j, k)) k`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_cmb (c : Ix d → AF F) : d.crd (d.cmb c) = c := by
   funext p
@@ -58,9 +58,9 @@ def mh (M : Matrix (Fin d.m) (Fin d.m) (AE F E)) : Matrix (Ix d) (Ix d) (AF F) :
   fun p q => if p.2.1 = q.2.1 then (bA d).repr (M p.1 q.1 * bA d q.2.2) p.2.2 else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨i, j, k⟩` from `p`. Establish `hY : ∀ i', Y i' j = ∑ k', d.crd Y (i', j, k') • bA d k'` using `fun i' => ((bA d).sum_repr (Y i' j)).symm`. Use `show ((bA d).repr ((M * Y) i j)) k = _`. Rewrite using `[Matrix.mul_apply, Finset.sum_congr rfl fun i' _ => by rw [hY i']]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_prod_type, mh, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.mul_sum, mul_smul_comm, map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single j (fun b _ hb => by simp [Ne.symm hb]) (fun h => absurd (Finset.mem_univ j) h)]`. Simplify using `only [if_true]`. Conclude with `Finset.sum_congr rfl fun k' _ => mul_comm _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem crd_mul (M : Matrix (Fin d.m) (Fin d.m) (AE F E)) (Y : Mx F E d.m d.n) :
     d.crd (M * Y) = mh d M *ᵥ d.crd Y := by
@@ -78,7 +78,7 @@ theorem crd_mul (M : Matrix (Fin d.m) (Fin d.m) (AE F E)) (Y : Mx F E d.m d.n) :
   exact Finset.sum_congr rfl fun k' _ => mul_comm _ _
 
 /- English proof (translation)
-Use extensionality with `p q`. Use `congrFun (h (Pi.single q 1)) p` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single_one]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mulVec_ext {A B : Matrix (Ix d) (Ix d) (AF F)} (h : ∀ c, A *ᵥ c = B *ᵥ c) : A = B := by
   ext p q
@@ -86,7 +86,7 @@ theorem mulVec_ext {A B : Matrix (Ix d) (Ix d) (AF F)} (h : ∀ c, A *ᵥ c = B 
   simpa [Matrix.mulVec_single_one] using this
 
 /- English proof (translation)
-The claim follows from `mulVec_ext d fun c => by conv_lhs => rw [← crd_cmb d c] conv_rhs => rw [← crd_cmb d c] rw [← crd_mul, ← Matrix.mulVec_mulVec, ← crd_mul, ← crd_mul, Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem mh_mul (M N : Matrix (Fin d.m) (Fin d.m) (AE F E)) : mh d (M * N) = mh d M * mh d N :=
   mulVec_ext d fun c => by
@@ -95,7 +95,7 @@ theorem mh_mul (M N : Matrix (Fin d.m) (Fin d.m) (AE F E)) : mh d (M * N) = mh d
     rw [← crd_mul, ← Matrix.mulVec_mulVec, ← crd_mul, ← crd_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `mulVec_ext d fun c => by conv_lhs => rw [← crd_cmb d c] rw [← crd_mul, Matrix.one_mul, crd_cmb, Matrix.one_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem mh_one : mh d 1 = 1 :=
   mulVec_ext d fun c => by
@@ -103,9 +103,7 @@ theorem mh_one : mh d 1 = 1 :=
     rw [← crd_mul, Matrix.one_mul, crd_cmb, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `continuous_pi fun p => continuous_pi fun q => ?_` and prove the remaining obligations. Simplify using `only [mh]`. Use `split_ifs`. Establish `hc` using `(IsModuleTopology.continuous_of_linearMap ((bA d).coord p.2.2)).comp ((continuous_id.matrix_elem p.1 q.1).mul (continuous_const (y := bA d q.2.2)))`.
-
-Conclude with `hc`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_mh : Continuous (mh d) := by
   haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _
@@ -121,9 +119,9 @@ def mhU : GL (Fin d.m) (AE F E) →* GL (Ix d) (AF F) :=
   Units.map { toFun := mh d, map_one' := mh_one d, map_mul' := mh_mul d }
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Establish `h1 : Continuous fun h : UA σ d.A.J => ((h : GL (Fin d.m) (AE F E)) : Matrix (Fin d.m) (Fin d.m) (AE F E))` using `Units.continuous_val.comp continuous_subtype_val`. Establish `h2 : Continuous fun h : UA σ d.A.J => (((h : GL (Fin d.m) (AE F E))⁻¹ : GL (Fin d.m) (AE F E)) : Matrix (Fin d.m) (Fin d.m) (AE F E))` using `Units.continuous_coe_inv.comp continuous_subtype_val`. Use `⟨(continuous_mh d).comp h2, ?_⟩` and prove the remaining obligations. Simplify using `only [← map_inv, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(continuous_mh d).comp h1`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mhU_inv : Continuous fun h : UA σ d.A.J => mhU d ((h : GL (Fin d.m) (AE F E))⁻¹) := by
   rw [Units.continuous_iff]
@@ -148,7 +146,7 @@ def xi : Matrix (Fin d.m) (Fin d.n) E ≃ (Ix d → F) where
     exact congrFun (d.bs.repr_sum_self fun k => c (i, j, k)) k
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨i, j, k⟩` from `p`. Use `show ((bA d).repr ((1 : AF F) ⊗ₜ[F] X i j)) k = algebraMap F (AF F) (d.bs.repr (X i j) k)`. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem crd_incM (X : Matrix (Fin d.m) (Fin d.n) E) : d.crd (incM F X) = PositivityTheory.RgEis.ratV (xi d X) := by
   funext p
@@ -158,9 +156,9 @@ theorem crd_incM (X : Matrix (Fin d.m) (Fin d.n) E) : d.crd (incM F X) = Positiv
   simp
 
 /- English proof (translation)
-Establish `hG : (fun c => Fn (d.cmb c)) ∈ GroundTheory.Automorphic.GJMatrix.schwartzBruhatPi F (Ix d)` using `hF`. Take `⟨u, hu, hb⟩` from `GlobalTheory.T.exists_summable_majorant_lattice_sum hG (hΩ.image (continuous_mhU_inv d))`. Use `⟨u, hu, fun h hh X => ?_⟩` and prove the remaining obligations. Establish `e : Fn (mat h⁻¹ * incM F X) = Fn (d.cmb (((mhU d ((h : GL (Fin d.m) (AE F E))⁻¹) : GL (Ix d) (AF F)) : Matrix (Ix d) (Ix d) (AF F)) *ᵥ PositivityTheory.RgEis.ratV (xi d X)))`. Rewrite using `[← crd_incM, ← cmb_crd d (mat h⁻¹ * incM F X), crd_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hb _ ⟨h, hh, rfl⟩ _`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bound_cpt (Fn : Mx F E d.m d.n → ℂ) (hF : Fn ∈ d.schM) (Ω : Set (UA σ d.A.J)) (hΩ : IsCompact Ω) :
     ∃ u : (Ix d → F) → ℝ, Summable u ∧ ∀ h ∈ Ω, ∀ X, ‖Fn (mat h⁻¹ * incM F X)‖ ≤ u (xi d X) := by
@@ -176,13 +174,13 @@ theorem bound_cpt (Fn : Mx F E d.m d.n → ℂ) (hF : Fn ∈ d.schM) (Ω : Set (
   exact hb _ ⟨h, hh, rfl⟩ _
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `MonoidHom.mem_range.1 (Subgroup.mem_subgroupOf.1 hγ)`. Establish `hinc : ∀ A B : Matrix (Fin d.m) (Fin d.m) E, incM F (A * B) = incM F A * incM F B` using `fun A B => by`. Simplify using `only [incM]`. Conclude with `Matrix.map_mul`. Establish `hinc' : ∀ (A : Matrix (Fin d.m) (Fin d.m) E) (B : Matrix (Fin d.m) (Fin d.n) E), incM F (A * B) = incM F A * incM F B` using `fun A B => by simp only [incM]; exact Matrix.map_mul`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l1 : ∀ X : Matrix (Fin d.m) (Fin d.n) E, ((G⁻¹ : GL (Fin d.m) E) : Matrix (Fin d.m) (Fin d.m) E) * ((G : Matrix (Fin d.m) (Fin d.m) E) * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Establish `l2 : ∀ X : Matrix (Fin d.m) (Fin d.n) E, (G : Matrix (Fin d.m) (Fin d.m) E) * (((G⁻¹ : GL (Fin d.m) E) : Matrix (Fin d.m) (Fin d.m) E) * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Use `⟨⟨fun X => (G : Matrix (Fin d.m) (Fin d.m) E) * X, fun X => ((G⁻¹ : GL (Fin d.m) E) : Matrix (Fin d.m) (Fin d.m) E) * X, l1, l2⟩, fun h X => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `hm : mat (γ * h)⁻¹ = mat h⁻¹ * incM F ((G⁻¹ : GL (Fin d.m) E) : Matrix (Fin d.m) (Fin d.m) E)`. Establish `: (((γ : GL (Fin d.m) (AE F E))⁻¹ : GL (Fin d.m) (AE F E)) : Matrix (Fin d.m) (Fin d.m) (AE F E)) = incM F ((G⁻¹ : GL (Fin d.m) E) : Matrix (Fin d.m) (Fin d.m) E)`. Rewrite using `[← hG, ← map_inv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [mat, mul_inv_rev, Subgroup.coe_mul, Units.val_mul, Subgroup.coe_inv]`. Rewrite using `[this]`. Simplify using `only [Equiv.coe_fn_mk, hm]`. Rewrite using `[Matrix.mul_assoc, ← hinc', l1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reindex (Fn : Mx F E d.m d.n → ℂ) (γ : UA σ d.A.J) (hγ : γ ∈ ratU σ d.A.J) :
     ∃ e : Matrix (Fin d.m) (Fin d.n) E ≃ Matrix (Fin d.m) (Fin d.n) E, ∀ h X,
@@ -209,7 +207,7 @@ theorem reindex (Fn : Mx F E d.m d.n → ℂ) (γ : UA σ d.A.J) (hγ : γ ∈ r
   rw [Matrix.mul_assoc, ← hinc', l1]
 
 /- English proof (translation)
-Establish `hC` using `GlobalTheory.ThK.Dbl.cptAll_of PositivityTheory.ThKEst.grpTop_of PositivityTheory.ThKEst.epsOf_of (PositivityTheory.ThKEst.siegelAll_of hS) PositivityTheory.ThKEst.finVolU PositivityTheory.ThKF.unimodularity_holds`. Break down `d.ok.sign with ⟨h1, -⟩ | ⟨h1, -⟩` into its components or cases. Conclude with `hC F E σ d.B d.m d.A d.r d.s d.ok.good (Or.inl h1) d.ok.aniso`. Conclude with `hC F E σ d.B d.m d.A d.r d.s d.ok.good (Or.inr h1) d.ok.aniso`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem cpt (hS : GlobalTheory.Published.SiegelSetUnitary) : GlobalTheory.ThK.Dbl.Cpt σ d.A.J := by
   have hC := GlobalTheory.ThK.Dbl.cptAll_of PositivityTheory.ThKEst.grpTop_of PositivityTheory.ThKEst.epsOf_of (PositivityTheory.ThKEst.siegelAll_of hS)
@@ -225,13 +223,11 @@ namespace PositivityTheory.SiegelWeilFormula.Kdil
 open Tb in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d Fn hF`. Take `⟨Ω, hΩ, cov⟩` from `(cpt d hS).cov`. Take `⟨u, hu, hb⟩` from `bound_cpt d Fn hF Ω hΩ`. Use `⟨∑' ξ, u ξ, fun h => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hγΩ⟩` from `cov h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `reindex d Fn γ hγ`. Establish `key : (fun X => ‖Fn (mat h⁻¹ * incM F X)‖) = (fun Y => ‖Fn (mat (γ * h)⁻¹ * incM F Y)‖) ∘ e`. Use function extensionality and compare the values at `X`. Conclude with `congrArg norm (he h X).symm`. Establish `hs : Summable (fun Y => ‖Fn (mat (γ * h)⁻¹ * incM F Y)‖)` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun Y => hb _ hγΩ Y) ((xi d).summable_iff.2 hu)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `e.summable_iff.2 hs`. Rewrite using `[key] show ∑' X, ‖Fn (mat (γ * h)⁻¹ * incM F (e X))‖ ≤ _`. Rewrite using `[e.tsum_eq (fun Y => ‖Fn (mat (γ * h)⁻¹ * incM F Y)‖)]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem thetaBdd_of (hS : GlobalTheory.Published.SiegelSetUnitary) : ThetaBdd := by
   intro F E _ _ _ _ _ σ d Fn hF

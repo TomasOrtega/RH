@@ -7,17 +7,15 @@ noncomputable section
 namespace Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Introduce `m H hH`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (1 : Matrix (Fin m) (Fin m) ℂ)ᴴ * H * 1 = H`. Simplify using the standard rewrite rules. Introduce `g hg h' hh`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hg' : gᴴ * H * g = H` using `hg`. Establish `hh' : h'ᴴ * H * h' = H` using `hh`. Use `show (g * h')ᴴ * H * (g * h') = H`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = H := by rw [hg', hh']`. Introduce `g hg`. Establish `hg' : gᴴ * H * g = H` using `hg`. Establish `hdet : IsUnit g.det`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e` using `congrArg Matrix.det hg'`. Rewrite `e` using `[Matrix.det_mul, Matrix.det_mul]`. Rewrite `hH`, the goal using `[isUnit_iff_ne_zero]`. Introduce `h0`. Rewrite `e` using `[h0, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hH e.symm`. Use `⟨hdet, ?_⟩` and prove the remaining obligations. Use `show (g⁻¹)ᴴ * H * g⁻¹ = H`. Establish `h1 : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv g hdet`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = H := by rw [h1]; simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitary_group_holds : UHGroup := by
   intro m H hH
@@ -50,15 +48,13 @@ theorem unitary_group_holds : UHGroup := by
       _ = H := by rw [h1]; simp
 
 /- English proof (translation)
-Introduce `m ε H P hP hH g`. Substitute `hH` using the available equality. Use `show gᴴ * (Pᴴ * Formalism.REAL.Jm ε * P) * g = Pᴴ * Formalism.REAL.Jm ε * P ↔ (P * g * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * g * P⁻¹) = Formalism.REAL.Jm ε`. Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hP`. Establish `h2 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (P⁻¹)ᴴ * Pᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Establish `h4 : Pᴴ * (P⁻¹)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, h2, Matrix.conjTranspose_one]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P⁻¹)ᴴ * (Pᴴ * Formalism.REAL.Jm ε * P) * P⁻¹ := by rw [h]`. Use `_ = ((P⁻¹)ᴴ * Pᴴ) * Formalism.REAL.Jm ε * (P * P⁻¹) := by simp only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Formalism.REAL.Jm ε := by rw [h3, h1, Matrix.one_mul, Matrix.mul_one]`. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h4, h2, Matrix.one_mul, Matrix.mul_one]`. Use `_ = Pᴴ * ((P * g * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * g * P⁻¹)) * P := by`.
-
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Pᴴ * Formalism.REAL.Jm ε * P := by rw [h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitary_conjugation_holds : UHConj := by
   intro m ε H P hP hH g
@@ -93,7 +89,7 @@ def sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
   if i.val < r ∨ r + k < i.val then ⟨2 * r + k - i.val, by omega⟩ else i
 
 /- English proof (translation)
-Unfold `sig`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sig_val (k r : ℕ) (i : Fin (2 * r + k + 1)) :
     (sig k r i).val = if i.val < r ∨ r + k < i.val then 2 * r + k - i.val else i.val := by
@@ -101,7 +97,7 @@ lemma sig_val (k r : ℕ) (i : Fin (2 * r + k + 1)) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[sig_val k r (sig k r i), sig_val k r i]`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sig_sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : sig k r (sig k r i) = i := by
   have hi := i.isLt
@@ -112,7 +108,7 @@ lemma sig_sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : sig k r (sig k r i) = i :=
 def sgn (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ := if i.val = r + k then -1 else 1
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Unfold `sgn`. Rewrite using `[sig_val]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sgn_sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : sgn k r (sig k r i) = sgn k r i := by
   have hi := i.isLt
@@ -121,7 +117,7 @@ lemma sgn_sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : sgn k r (sig k r i) = sgn 
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [Hpk, sgn, Fin.ext_iff, sig_val]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Hpk_eq (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j = sig k r i then sgn k r i else 0 := by
@@ -131,28 +127,28 @@ lemma Hpk_eq (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega) | norm_num
 
 /- English proof (translation)
-Simplify using `[herm, bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma herm_bvec (k r : ℕ) (x y : Fin (2 * r + k + 1)) :
     herm (Hpk k r) (bvec x) (bvec y) = Hpk k r y x := by
   simp [herm, bvec, Matrix.mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[sig_val, if_pos (Or.inl h)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma sig_lo (k r : ℕ) (i : Fin (2 * r + k + 1)) (h : i.val < r) :
     (sig k r i).val = 2 * r + k - i.val := by
   rw [sig_val, if_pos (Or.inl h)]
 
 /- English proof (translation)
-Rewrite using `[sig_val, if_pos (Or.inr h)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma sig_hi (k r : ℕ) (i : Fin (2 * r + k + 1)) (h : r + k < i.val) :
     (sig k r i).val = 2 * r + k - i.val := by
   rw [sig_val, if_pos (Or.inr h)]
 
 /- English proof (translation)
-Unfold `sig`. Rewrite using `[if_neg (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma sig_mid (k r : ℕ) (i : Fin (2 * r + k + 1)) (h1 : r ≤ i.val) (h2 : i.val ≤ r + k) :
     sig k r i = i := by
@@ -160,15 +156,15 @@ lemma sig_mid (k r : ℕ) (i : Fin (2 * r + k + 1)) (h1 : r ≤ i.val) (h2 : i.v
   rw [if_neg (by omega)]
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> intro h <;> subst h <;> rw [sig_sig]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma eq_sig_iff (k r : ℕ) (i l : Fin (2 * r + k + 1)) : i = sig k r l ↔ l = sig k r i := by
   constructor <;> intro h <;> subst h <;> rw [sig_sig]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e` using `congrArg (sig k r) h`. Rewrite `e` using `[sig_sig, sig_sig]`. Then use the resulting hypothesis. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma sig_inj (k r : ℕ) (i j : Fin (2 * r + k + 1)) : sig k r i = sig k r j ↔ i = j := by
   constructor
@@ -192,38 +188,38 @@ def Pk (k r : ℕ) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := f
   (if j = i then c1 k r i else 0) + (if i = sig k r j then c2 k r i else 0)
 
 /- English proof (translation)
-Simplify using `only [Pk, c1, c2]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Pk_star (k r : ℕ) (i j : Fin (2 * r + k + 1)) : star (Pk k r i j) = Pk k r i j := by
   simp only [Pk, c1, c2]
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Rewrite using `[Hpk_eq, Matrix.mul_apply]`. Simplify using `only [Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.conjTranspose_apply, Pk_star]`. Simplify using `only [Pk, add_mul, mul_add, ite_mul, mul_ite, zero_mul, mul_zero, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hs : j = sig k r i`. Substitute `hs` using the available equality. Break down `lt_or_ge i.val r with h | h` into its components or cases. Establish `hsv` using `sig_lo k r i h`. Establish `hne : ¬ sig k r i = i` using `fun e => by have := congrArg Fin.val e; omega`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne' : ¬ i = sig k r i` using `fun e => hne e.symm`. Establish `f1 : ¬ (2 * r + k - i.val < r)` using `by omega`. Establish `f2 : r + k < 2 * r + k - i.val` using `by omega`. Establish `f3 : ¬ (i.val = r + k)` using `by omega`. Establish `f4 : i.val < r + k` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f5 : ¬ (2 * r + k - i.val < r + k)` using `by omega`. Simplify using `[c1, c2, epsK, sgn, sig_sig, hsv, hne, hne', h, f1, f2, f3, f4, f5]`. Apply the tactic sequence `all_goals norm_num`. Break down `le_or_gt i.val (r + k) with h' | h'` into its components or cases. Establish `hm` using `sig_mid k r i h h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [sig_sig, hm]`. Establish `f1 : ¬ (i.val < r)` using `by omega`. Establish `f2 : ¬ (r + k < i.val)` using `by omega`. Distinguish the cases in `h3 : i.val = r + k`. Simplify using `[c1, c2, epsK, sgn, f1, f2, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `f4 : i.val < r + k` using `by omega`. Simplify using `[c1, c2, epsK, sgn, f1, f2, h3, f4]`. Establish `hsv` using `sig_hi k r i h'`. Establish `hne : ¬ sig k r i = i` using `fun e => by have := congrArg Fin.val e; omega`. Establish `hne' : ¬ i = sig k r i` using `fun e => hne e.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f1 : 2 * r + k - i.val < r` using `by omega`. Establish `f2 : ¬ (i.val < r)` using `by omega`. Establish `f3 : ¬ (i.val = r + k)` using `by omega`. Establish `f4 : ¬ (i.val < r + k)` using `by omega`. Establish `f5 : 2 * r + k - i.val < r + k` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[c1, c2, epsK, sgn, sig_sig, hsv, hne, hne', h', f1, f2, f3, f4, f5]`. Apply the tactic sequence `all_goals norm_num`. Establish `hs' : ¬ i = sig k r j` using `fun e => hs ((eq_sig_iff k r i j).1 e)`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `lt_or_ge j.val r with h | h` into its components or cases. Establish `hsv` using `sig_lo k r j h`. Establish `f1 : ¬ (2 * r + k - j.val < r)` using `by omega`. Establish `f2 : r + k < 2 * r + k - j.val` using `by omega`. Establish `f4 : j.val < r + k` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f5 : ¬ (2 * r + k - j.val < r + k)` using `by omega`. Establish `hne : ¬ sig k r j = j` using `fun e => hs e.symm`. Simplify using `[c1, c2, epsK, sgn, hs, hne, hsv, h, f1, f2, f4, f5]`. Apply the tactic sequence `all_goals norm_num`. Break down `le_or_gt j.val (r + k) with h' | h'` into its components or cases.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (sig_mid k r j h h').symm hs`. Establish `hsv` using `sig_hi k r j h'`. Establish `f1 : 2 * r + k - j.val < r` using `by omega`. Establish `f2 : ¬ (j.val < r)` using `by omega`. Establish `f4 : ¬ (j.val < r + k)` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `f5 : 2 * r + k - j.val < r + k` using `by omega`. Establish `hne : ¬ sig k r j = j` using `fun e => hs e.symm`. Simplify using `[c1, c2, epsK, sgn, hs, hne, hsv, h', f1, f2, f4, f5]`. Apply the tactic sequence `all_goals norm_num`. Establish `hij' : ¬ i = j` using `fun e => hij e.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hss : ¬ sig k r i = sig k r j` using `fun e => hij' ((sig_inj k r i j).1 e)`. Establish `hs'' : ¬ sig k r j = i` using `fun e => hs' e.symm`. Establish `hs3 : ¬ sig k r i = j` using `fun e => hs e.symm`. Establish `hss' : ¬ sig k r j = sig k r i` using `fun e => hss e.symm`. Simplify using `[hs, hs', hs'', hs3, hij, hij', hss, hss']`.
+A detailed English derivation is pending.
 -/
 lemma PJP_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     ((Pk k r)ᴴ * Formalism.REAL.Jm (epsK k r) * Pk k r) i j = Hpk k r i j := by
@@ -295,16 +291,16 @@ lemma PJP_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
       simp [hs, hs', hs'', hs3, hij, hij', hss, hss']
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `PJP_apply k r i j`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 lemma PJP (k r : ℕ) : (Pk k r)ᴴ * Formalism.REAL.Jm (epsK k r) * Pk k r = Hpk k r := by
   ext i j
   exact PJP_apply k r i j
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply, Hpk_eq, Hpk_eq]`. Distinguish the cases in `h : j = sig k r i`. Rewrite using `[if_pos ((eq_sig_iff k r i j).2 h), if_pos h, h, sgn_sig]`. Unfold `sgn`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[if_neg (fun e => h ((eq_sig_iff k r i j).1 e)), if_neg h, star_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 lemma Hpk_herm (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
   ext i j
@@ -316,9 +312,9 @@ lemma Hpk_herm (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
   · rw [if_neg (fun e => h ((eq_sig_iff k r i j).1 e)), if_neg h, star_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Hpk_eq, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, sig_sig, sgn_sig, Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [if_true]`. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`. Rewrite using `[if_neg (fun e => h e.symm), if_neg h]`. Conclude with `mul_zero _`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Hpk_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   ext i j
@@ -337,25 +333,23 @@ end GBasic
 
 open GBasic in
 /- English proof (translation)
-Introduce `k r`. Establish `hsq` using `Hpk_sq k r`. Use `⟨Hpk_herm k r, hsq, ?_, ⟨epsK k r, ?_, Pk k r, ?_, PJP k r⟩⟩` and prove the remaining obligations. Introduce `a b`. Establish `hb` using `b.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : sig k r (esI k r b) = eI k r b`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[sig_hi k r _ (by show r + k < 2 * r + k - b.val; omega)]`. Use `show 2 * r + k - (2 * r + k - b.val) = b.val`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h2 : sgn k r (esI k r b) = 1`. Unfold `sgn`. Rewrite using `[if_neg]`. Use `show ¬ (2 * r + k - b.val = r + k)`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[herm_bvec, Hpk_eq, h1, h2]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg, if_neg h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `e`. Apply `h` to reduce the goal to its premises. Establish `e2` using `congrArg Fin.val e`. Conclude with `Fin.ext e2`. Establish `e0 : (Finset.univ.filter fun i : Fin (2 * r + k + 1) => epsK k r i = true) = Finset.univ.filter (fun i : Fin (2 * r + k + 1) => i.val < r + k)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Simplify using `[epsK]`. Rewrite using `[e0, ← Finset.card_map Fin.valEmbedding]`. Establish `e : (Finset.univ.filter fun i : Fin (2 * r + k + 1) => i.val < r + k).map Fin.valEmbedding = Finset.range (r + k)`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `ha`. Introduce `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨⟨x, by omega⟩, hx, rfl⟩`. Rewrite using `[e, Finset.card_range, Nat.add_comm]`. Establish `hdet` using `congrArg Matrix.det (PJP k r)`. Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `hH : (Hpk k r).det ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `congrArg Matrix.det hsq`. Rewrite `e` using `[Matrix.det_mul, Matrix.det_one]`. Introduce `h0`. Rewrite `e` using `[h0, mul_zero]`. Conclude with `zero_ne_one e`.
-
-Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Rewrite `hdet` using `[h0, mul_zero]`. Conclude with `hH hdet.symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermitian_pos_facts_hold : HpkFacts := by
   intro k r

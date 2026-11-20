@@ -24,9 +24,9 @@ noncomputable section
 namespace GlobalTheory.FullPoint
 
 /- English proof (translation)
-Take `rfl : U = ⊤` from `eq_top_iff.2 fun x _ => by`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum k) x s]` and apply the resulting hypothesis. Establish `e : φ = fun i => Y.topIso.inv ≫ ψ i` using `funext fun i => by`. Rewrite using `[hψ]`. Conclude with `((Y.topIso.inv_hom_id_assoc _)).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `MulPull.HasGen.pull h _`.
+A detailed English derivation is pending.
 -/
 theorem hasGen_of_point {X Y : Scheme.{0}} {k : Type} [Field k] (p : Y ⟶ Sp k) {L : LB X} {K : Type} [Fintype K]
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} {U : (Sp k).Opens} {s : Sp k} (hs : s ∈ U) {ψ : K → ((p ⁻¹ᵁ U).toScheme ⟶ X)}
@@ -42,11 +42,11 @@ theorem hasGen_of_point {X Y : Scheme.{0}} {k : Type} [Field k] (p : Y ⟶ Sp k)
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
 
 /- English proof (translation)
-Take `⟨U, hU, h⟩` from `h (default : PrimeSpectrum k)`. Establish `e` using `(PrimNorm.hasGen_iff hL _ _).1 (hasGen_of_point (A ⊗ A).hom hU (fun _ => rfl) h)`. Use `(PrimNorm.lbIso_iff hL _ _ _ _).2 ((PrimNorm.prod_square_id _ _ (PrimNorm.cls L)).trans (Eq.trans ?_ (PrimNorm.prod_square_id _ _ (PrimNorm.cls L)).symm))` and prove the remaining obligations. Rewrite `e` using `[Fin.prod_univ_six]`. Set `m : ((A ⊗ A) ⟶ A) → PrimNorm.PullClass L (A ⊗ A).left` to `fun q => PrimNorm.cls L q.left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `e' : m ((fst A A ≫ f) * snd A A) ^ (1 : ℤ) * m (fst A A ≫ f) ^ (-1 : ℤ) * m (snd A A) ^ (-1 : ℤ) * m (fst A A * (snd A A ≫ g)) ^ (-1 : ℤ) * m (fst A A) ^ (1 : ℤ) * m (snd A A ≫ g) ^ (1 : ℤ) = 1` using `e`. Use `show PrimNorm.diff₂ m _ _ = PrimNorm.diff₂ m _ _`. Rewrite using `[← mul_inv_eq_one, ← e', PrimNorm.diff₂, PrimNorm.diff₂]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, zpow_neg, zpow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem lbIso_of_rosatiAdj {k : Type} [Field k] {A : Over (Sp k)} [GrpObj A] [IsCommMonObj A] {L : LB A.left}
     (hL : L.IsLB) {f g : A ⟶ A} (h : RosatiAdj A L f g) :
@@ -66,11 +66,11 @@ theorem lbIso_of_rosatiAdj {k : Type} [Field k] {A : Over (Sp k)} [GrpObj A] [Is
   abel
 
 /- English proof (translation)
-Establish `: CharZero Ω` using `(RingHom.charZero_iff i.injective).1 ‹_›`. Set `f : (Over.mk x ⟶ P.A) →* (Over.mk x' ⟶ P.A)` to `MonoidHom.mk' (u ≫ ·) (MonObj.comp_mul u)`. Establish `hinj : Function.Injective f` using `TorsionFieldExt.comp_injective u P.A`. Establish `hu' : ∀ c : Kˣ, unitOn (Units.map i.toMonoidHom c) = Units.map u.left.appTop.hom.toMonoidHom (unitOn c)` using `fun c => by`. Rewrite using `[hu]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ext (congrArg (fun q => q.hom c.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom i)))`. Use `⟨{ ζ := fun n => Units.map i.toMonoidHom (I.ζ n) ζ_prim := fun n hn => (I.ζ_prim n hn).map_of_injective (Units.map_injective i.injective) ζ_pow := fun n m hn hm => by rw [← map_pow, I.ζ_pow n m hn hm] ev := fun n v => f (I.ev n v) add := fun n a b => by rw [I.add, map_mul] lin := …` and prove the remaining obligations. Rewrite using `[← map_zpow, hu']`. Conclude with `CommPairing.weilIs_pull laws.globalFns P.isAb P.isLB u (I.isom n hn a b) },`. Use `fun _ => rfl, fun _ _ => rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, hy, rfl⟩` from `TorsionFieldExt.exists_of_isAlgClosed laws P u (Nat.cast_ne_zero.2 hn.ne') (Nat.cast_ne_zero.2 hn.ne') z hz`. Take `⟨a, rfl⟩` from `(I.onto n hn y).1 hy`. Conclude with `⟨a, rfl⟩`. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[← map_pow, (I.onto n hn _).2 ⟨a, rfl⟩, map_one]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tateIso_up (laws : Laws) {S : Scheme.{0}} (P : PolAV S) (act : 𝓞 E → (P.A ⟶ P.A)) {K Ω : Type}
     [Field K] [Field Ω] [IsAlgClosed K] [IsAlgClosed Ω] [CharZero K] (i : K →+* Ω) {x : Sp K ⟶ S} {x' : Sp Ω ⟶ S}
@@ -106,9 +106,9 @@ theorem exists_tateIso_up (laws : Laws) {S : Scheme.{0}} (P : PolAV S) (act : �
     rw [← map_pow, (I.onto n hn _).2 ⟨a, rfl⟩, map_one]
 
 /- English proof (translation)
-Establish `h1 : e • a ∈ (J * J') • (⊤ : Submodule (𝓞 E) D.La)`. Rewrite using `[Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul he ha`. Rewrite `h1` using `[hJ, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨c, -, hc⟩` from `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c, by rw [← hc, Nat.cast_smul_eq_nsmul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_nsmul (l : Geo.Tor.Level H) {J J' : Ideal (𝓞 E)}
     (hJ : J * J' = Ideal.span {(l.M : 𝓞 E)}) {e : 𝓞 E} (he : e ∈ J) {a : D.La}
@@ -120,9 +120,9 @@ theorem exists_eq_nsmul (l : Geo.Tor.Level H) {J J' : Ideal (𝓞 E)}
   exact ⟨c, by rw [← hc, Nat.cast_smul_eq_nsmul]⟩
 
 /- English proof (translation)
-Take `⟨rig, hrig⟩` from `o.P.rigid`. Set `PP : RigLB o.P.A` to `⟨o.P.L, rig, o.P.isLB, hrig⟩`. Take `⟨cub⟩` from `(laws.cube _ o.P PP rfl).1`. Take `⟨U, hU, h⟩` from `o.P.sym (default : PrimeSpectrum K)`. Use `⟨PP, cub, rfl, PrimNorm.isSymmetric_of_hasGen PP (hasGen_of_point o.P.A.hom hU (fun i => ?_) h)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases i`. Both sides reduce to the same expression. Conclude with `(Category.comp_id _).symm`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_sab (laws : Laws) {K : Type} [Field K] (o : Full D K) :
     letI := H.starRing
@@ -137,7 +137,7 @@ theorem exists_sab (laws : Laws) {K : Type} [Field K] (o : Full D K) :
   · exact (Category.comp_id _).symm
 
 /- English proof (translation)
-Establish `h : v = e • v + (1 - e) • v` using `by rw [← add_smul, add_sub_cancel, one_smul]`. Use `conv_rhs => rw [h]`. Rewrite using `[o.eta_add, o.eta_ker _ (Submodule.smul_mem_smul he trivial), _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eta_smul {l : Geo.Tor.Level H} {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}} {s : S ⟶ Sp B}
     (o : Obj D l b s) {e : 𝓞 E} (he : 1 - e ∈ l.Mb) (v : D.La) : o.eta (e • v) = o.eta v := by
@@ -154,17 +154,17 @@ def IsFibre {l : Geo.Tor.Level H} {B : Type} [CommRing B] {b : Base l B} {S : Sc
     ∀ v ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), (o.I.ev l.M v).left ≫ φ = y ≫ (ob.eta v).left
 
 /- English proof (translation)
-Use `letI := H.starRing`. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Take `⟨⟨L, rig, hL, hrig⟩, cub, rfl, sym⟩` from `exists_sab laws o`. Take `⟨f, hf, e, he, hfe⟩ : ∃ f ∈ l.Mb, ∃ e ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E), f + e = 1` from `Submodule.mem_sup.1 (by rw [l.coprime]; trivial)`. Establish `h2 : ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), o.I.ev l.M a = o.I.ev l.M (e • a)` using `fun a ha => by`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `exists_eq_nsmul l l.prod hf ha`. Establish `h1 : a = e • a + l.M • c` using `by rw [← hc, ← add_smul, add_comm, hfe, one_smul]`. Use `conv_lhs => rw [h1]`. Rewrite using `[o.I.add, (o.I.ker _ hM _).2 ⟨c, rfl⟩, _root_.mul_one]`. Set `t : SAB H (Sp K)` to `{ G := o.P.A, semi := isSemiAbelian_of_isAbelianScheme _ o.P.isAb, act := ofRingAct o.oa.toRingAct PP := ⟨o.P.L, rig, hL, hrig⟩, cub := cub, sym := sym adj := fun a => lbIso_of_rosatiAdj o.P.isLB (o.oa.rosati a), prim := o.prim }`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ t := t, proper := o.P.isAb.proper, ample := o.P.ample, ktriv := o.P.ktriv eta := fun a => o.I.ev l.M (e • a) eta_add := fun a c => by rw [smul_add]; exact o.I.add _ _ _ eta_ker := fun a ha => (o.I.ker _ hM _).2 (exists_eq_nsmul l (by rw [mul_comm]; exact l.prod) he ha) etaA := …` and prove the remaining obligations. Introduce `k _ _ x β hx`. Take `rfl : x = spMap β` from `(Category.comp_id x).symm.trans hx`. Use `o.P.isAb.smooth` as an intermediate fact. Use `⟨by rw [hρ]; exact LieExt.detCond_extend D β o.P.A _ o.det, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨I', hζ', hev⟩` from `exists_tateIso_up laws o.P o.oa.act β (x := 𝟙 _) (x' := spMap β) (toUnit _) (ObjPull.toUnit_left' _) o.I`. Use `⟨I', by rw [hζ', hζ], fun a => (hev _ _).symm, fun a ha => Eq.trans ?_ (hev _ _).symm⟩` and prove the remaining obligations. Rewrite using `[h2 a ha]`. Introduce and unpack `⟨m⟩`. Take `⟨w, hw, -⟩` from `m.lin`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m.cm.F, m.cart, ⟨w, hw⟩, m.act, m.etaA, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 v hv]`. Conclude with `m.eta v`. Introduce and unpack `⟨φ, h₁, h₂, h₃, h₄, h₅⟩`. Take `⟨m, rfl⟩` from `exists_sabMap_of_isProper_of_lbIso laws.globalFns E H _ _ ob'.t t y φ ob'.proper h₁ h₂ h₃`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨m, fun v => ?_, h₄⟩⟩` and prove the remaining obligations. Rewrite using `[← eta_smul ob' (e := e) (by rw [← hfe, add_sub_cancel_right]; exact hf) v]`. Conclude with `h₅ _ (Submodule.smul_mem_smul he trivial)`.
+A detailed English derivation is pending.
 -/
 theorem exists_obj (laws : Laws) (l : Geo.Tor.Level H) {K : Type} [Field K] [IsAlgClosed K] [CharZero K] (o : Full D K)
     (b : Base l K) (hρ : b.ρ = o.ρ) (hζ : b.ζ = o.I.ζ l.A) :
@@ -214,17 +214,17 @@ theorem exists_obj (laws : Laws) (l : Geo.Tor.Level H) {K : Type} [Field K] [IsA
     exact h₅ _ (Submodule.smul_mem_smul he trivial)
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem spMap_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
 /- English proof (translation)
-Use `letI := H.starRing`. Take `⟨o', ⟨m⟩⟩` from `ObjPull.objPull_of_pol (PolPull.pol_pull_of_relAmple_local AmpleLocal.relAmple_of_locally) E H D l B B b b (RingHom.id B) S (Sp K) s (y ≫ s) y rfl rfl (by rw [show spMap (RingHom.id B) = 𝟙 _ from Spec.map_id _, Category.comp_id]) ob`. Set `β : B →+* K` to `(Spec.preimage (y ≫ s)).hom`. Take `⟨hdet, I, hI, hA, hM⟩` from `o'.geom K (𝟙 _) β ((Category.id_comp _).trans (Spec.map_preimage (y ≫ s)).symm)`. Take `⟨w, hw, -⟩` from `m.lin`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `u : (toUnit (Over.mk (𝟙 (Sp K)))).left = 𝟙 _` using `ObjPull.toUnit_left' _`. Use `⟨{ P := Obj.toPolAV o', oa := ⟨o'.t.act.toRingAct, o'.t.rosatiAdj⟩, prim := o'.t.prim, ρ := β b.ρ ρ_sq := by rw [← map_pow, b.ρ_sq, map_neg, map_natCast] det := hdet, I := I, closed := ‹_› }, ⟨m.cm.F, m.cart, ⟨w, hw⟩, m.act, fun v => ?_, fun v hv => ?_⟩, fun f hf => ?_⟩` and prove the remaining obligations. Use `Eq.trans (congrArg (fun q => q.left ≫ m.cm.F) (hA v)).symm ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, u]`. Conclude with `(congrArg (· ≫ m.cm.F) (Category.id_comp _)).trans (m.etaA v)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans (congrArg (fun q => q.left ≫ m.cm.F) (hM v hv)).symm ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, u]`. Conclude with `(congrArg (· ≫ m.cm.F) (Category.id_comp _)).trans (m.eta v)`. Take `rfl : β = f` from `spMap_inj ((Spec.map_preimage (y ≫ s)).trans hf)`. Conclude with `⟨rfl, hI⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isFibre {l : Geo.Tor.Level H} {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}} {s : S ⟶ Sp B}
     (ob : Obj D l b s) {K : Type} [Field K] [IsAlgClosed K] (y : Sp K ⟶ S) :
@@ -252,9 +252,9 @@ theorem exists_isFibre {l : Geo.Tor.Level H} {B : Type} [CommRing B] {b : Base l
     exact ⟨rfl, hI⟩
 
 /- English proof (translation)
-Take `⟨φ, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Use `⟨ψ ≫ φ, g₁.comp h₁, LBIso.trans o'.P.isLB (pull_isLB o.P.isLB _) (pull_isLB ob.t.PP.isLB _) g₂ (LBIso.chartPull (Geo.Tor.chartPullPull _ _ _ rfl) (chartPullSame ob.t.PP.L (fun _ : PUnit => ψ ≫ φ) (fun _ => φ) (fun _ => 1) ψ fun _ => rfl) h₂), fun x => ?_, fun v => ?_, fun v hv => …` and prove the remaining obligations. Rewrite using `[← Category.assoc, g₃, Category.assoc, h₃, Category.assoc]`. Use `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ φ) (g₄ _ v l.A_pos))).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Category.assoc _ _ _).trans ((congrArg (spMap f ≫ ·) (h₄ v)).trans (Category.assoc _ _ _).symm)`. Use `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ φ) (g₄ _ v hM))).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (spMap f ≫ ·) (h₅ v hv)).trans (Category.assoc _ _ _).symm)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsFibre.ext {l : Geo.Tor.Level H} {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}} {s : S ⟶ Sp B}
     {ob : Obj D l b s} {K K' : Type} [Field K] [Field K'] (f : K →+* K') {y : Sp K ⟶ S} {o : Full D K}
@@ -275,13 +275,13 @@ theorem IsFibre.ext {l : Geo.Tor.Level H} {B : Type} [CommRing B] {b : Base l B}
     exact (Category.assoc _ _ _).trans ((congrArg (spMap f ≫ ·) (h₅ v hv)).trans (Category.assoc _ _ _).symm)
 
 /- English proof (translation)
-Establish `: CharZero K` using `(RingHom.charZero_iff bF.injective).1 inferInstance`. Set `b : Base l K` to `{ unit := fun n hn => IsUnit.mk0 _ (Nat.cast_ne_zero.2 hn.ne'), ρ := o.ρ, ρ_sq := o.ρ_sq, ζ := o.I.ζ l.A ζ_prim := (o.I.ζ_prim _ l.A_pos).map_of_injective (f := Units.coeHom K) Units.val_injective }`. Take `⟨ob, hob⟩` from `exists_obj laws l o b rfl rfl`. Set `i : KA l →+* c.F` to `(IntermediateField.inclusion c.le).toRingHom`. Take `⟨f, ⟨hf, ⟨m⟩⟩, hu⟩` from `moduli_rep_of_base ObjMaps.id_comp_cancel E H D l Xo K b (bF.comp i) (Sp K) (𝟙 _) ob inferInstance (hρ _ rfl).symm (hζ _ rfl).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Rewrite `hf` using `[Category.id_comp, spMap_comp]`. Set `y : Sp K ⟶ Xo.XF c` to `pullback.lift f (spMap bF) hf`. Establish `hy : y ≫ pullback.fst _ _ = f` using `pullback.lift_fst _ _ _`. Use `⟨y, ⟨pullback.lift_snd _ _ _, (hob _ _).1 ?_⟩, fun y' ⟨h₁, h₂⟩ => ?_⟩` and prove the remaining obligations. Rewrite `m` using `[← hy]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m', -⟩` from `ObjComp.objMap_cancel Y.m0 m`. Conclude with `⟨m'⟩`. Take `⟨m'⟩` from `(hob _ _).2 h₂`. Take `⟨m'', -⟩` from `ObjComp.objMap_comp Y.m0 m'`. Use `pullback.hom_ext ((hu _ ⟨?_, ⟨m''⟩⟩).trans hy.symm) (h₁.trans (pullback.lift_snd _ _ _).symm)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.id_comp, spMap_comp, Category.assoc, pullback.condition, ← Category.assoc, h₁]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem existsUnique_point (laws : Laws) {l : Geo.Tor.Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O]
     {β : O →+* c.F} (Y : Model Xo c β) {K : Type} [Field K] [IsAlgClosed K] (bF : c.F →+* K) (o : Full D K)

@@ -16,7 +16,7 @@ namespace GlueE
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-The claim follows from `modF_smul (AcrEl P n) _ (fun T => show algebraMap (Acris l) (((elπ P).obj T).Acr n) ((l : Acris l) ^ n) = 0 by rw [map_pow, map_natCast]; exact ((elπ P).obj T).pow_l_acr n) T x`.
+A detailed English derivation is pending.
 -/
 theorem kill_acr (P : PAlg l ⥤ Type) (n : ℕ) (T : El P) (x : (CH.modF (AcrEl P n)).obj T) :
     ((l : Acris l) ^ n) • x = 0 :=
@@ -24,7 +24,7 @@ theorem kill_acr (P : PAlg l ⥤ Type) (n : ℕ) (T : El P) (x : (CH.modF (AcrEl
     rw [map_pow, map_natCast]; exact ((elπ P).obj T).pow_l_acr n) T x
 
 /- English proof (translation)
-The claim follows from `tower_smul_zero (fun n => CH.modF (AcrEl P n)) (fun n => redEl P n.le_succ) j n _ (fun T y => kill_acr P n T y) x`.
+A detailed English derivation is pending.
 -/
 theorem kill_MS (P : PAlg l ⥤ Type) (n j : ℕ) (x : (MSys P j).M n) : ((l : Acris l) ^ n) • x = 0 :=
   tower_smul_zero (fun n => CH.modF (AcrEl P n)) (fun n => redEl P n.le_succ) j n _ (fun T y => kill_acr P n T y) x
@@ -37,7 +37,7 @@ def eMap (M : Model l K) (j : ℕ) : M.T j →+ (M.MS j).lim where
   map_add' v w := Subtype.ext (funext fun n => map_add (e M n j) (v.lev n) (w.lev n))
 
 /- English proof (translation)
-The claim follows from `((congrArg (e M n j) (GlobalTheory.EtC.HtL.smul_eq l n n le_rfl M.spc j 0 z (v.1 n))).trans (map_nsmul (e M n j) _ _)).trans (padic_smul f n ((eMap e he M j v).1 n) (kill_MS M.P n j _) z).symm`.
+A detailed English derivation is pending.
 -/
 theorem eMap_lin_lev (M : Model l K) (j : ℕ) (f : ℤ_[l] →+* Acris l) (z : ℤ_[l]) (v : M.T j) (n : ℕ) :
     (eMap e he M j (z • v)).1 n = f z • (eMap e he M j v).1 n :=
@@ -45,48 +45,48 @@ theorem eMap_lin_lev (M : Model l K) (j : ℕ) (f : ℤ_[l] →+* Acris l) (z : 
     (map_nsmul (e M n j) _ _)).trans (padic_smul f n ((eMap e he M j v).1 n) (kill_MS M.P n j _) z).symm
 
 /- English proof (translation)
-The claim follows from `lim_ext fun n => (eMap_lin_lev e he M j f z v n).trans (lim_smul_val _ _ _ n).symm`.
+A detailed English derivation is pending.
 -/
 theorem eMap_lin (M : Model l K) (j : ℕ) (f : ℤ_[l] →+* Acris l) (z : ℤ_[l]) (v : M.T j) :
     eMap e he M j (z • v) = f z • eMap e he M j v :=
   lim_ext fun n => (eMap_lin_lev e he M j f z v n).trans (lim_smul_val _ _ _ n).symm
 
 /- English proof (translation)
-The claim follows from `lim_ext fun n => hq M n j σ (v.lev n)`.
+A detailed English derivation is pending.
 -/
 theorem eMap_act (hq : e.Equi) (M : Model l K) (j : ℕ) (σ : Gal(PadicAlgCl l/K)) (v : M.T j) :
     eMap e he M j (GlobalTheory.EtC.galHl l (PadicAlgCl l) M.q j 0 σ v) = (M.galS j σ).lim (eMap e he M j v) :=
   lim_ext fun n => hq M n j σ (v.lev n)
 
 /- English proof (translation)
-The claim follows from `lim_ext fun n => hp M n j (v.lev n)`.
+A detailed English derivation is pending.
 -/
 theorem eMap_phi (hp : e.Phi) (M : Model l K) (j : ℕ) (v : M.T j) :
     (M.phiS j).lim (eMap e he M j v) = eMap e he M j v :=
   lim_ext fun n => hp M n j (v.lev n)
 
 /- English proof (translation)
-The claim follows from `lim_ext fun n => hn M N u hu n j (v.lev n)`.
+A detailed English derivation is pending.
 -/
 theorem eMap_nat (hn : e.Natu) {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) (j : ℕ) (v : N.T j) :
     eMap e he M j (Model.pullT u hu j v) = (Model.pullS u hu j).lim (eMap e he N j v) :=
   lim_ext fun n => hn M N u hu n j (v.lev n)
 
 /- English proof (translation)
-The claim follows from `(congrArg (e M n (i + j)) (h n)).trans (hc M n i j (x.lev n) (y.lev n))`.
+A detailed English derivation is pending.
 -/
 theorem eMap_cup (hc : e.Cup) (M : Model l K) {i j : ℕ} (x : M.T i) (y : M.T j) (z : M.T (i + j)) (h : M.CupT x y z)
     (n : ℕ) : (eMap e he M (i + j) z).1 n = (CH.mulP (AcrEl M.P n)).cup rfl ((eMap e he M i x).1 n) ((eMap e he M j y).1 n) :=
   (congrArg (e M n (i + j)) (h n)).trans (hc M n i j (x.lev n) (y.lev n))
 
 /- English proof (translation)
-The claim follows from `(ho M).elim fun v hv => ⟨v, hv⟩`.
+A detailed English derivation is pending.
 -/
 theorem eMap_one (ho : e.One) (M : Model l K) : ∃ v : M.T 0, ∀ n, (eMap e he M 0 v).1 n = CH.oneH (AcrEl M.P n) :=
   (ho M).elim fun v hv => ⟨v, hv⟩
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Conclude with `(h1 M D).elim fun v hv => ⟨v, by rw [lim_smul_fun]; exact hv⟩`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem etale_map_first_chern (h1 : e.C1) (M : Model l K) (D : E.LineData M.X) (c : Acris l)
     (hc : c = ACris.periodT (untilt_epsilon (p := l))) :
@@ -107,7 +107,7 @@ def emap (Amp : ∀ M : Model l K, E.LineData M.X → Prop) (e : E.EtFam l K) (h
 end GlueE
 
 /- English proof (translation)
-Introduce `_ _ _ Amp hE` and use `hE.elim fun e he => ⟨GlueE.emap Amp e he⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem glueE : GlueE := fun _ _ _ Amp hE => hE.elim fun e he => ⟨GlueE.emap Amp e he⟩
 

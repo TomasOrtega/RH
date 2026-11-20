@@ -24,20 +24,20 @@ Both sides reduce to the same expression.
 def dl (p : parab k (eOne m)) : ℂˣ := deltaHalf k (fun _ : Fin m => Fin 1) (leviProj k (eOne m) p)
 
 /- English proof (translation)
-Simplify using `[dl, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dl_mul (p q : parab k (eOne m)) : dl (p * q) = dl p * dl q := by
   simp [dl, map_mul]
 
 /- English proof (translation)
-Simplify using `[dl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dl_one : dl (1 : parab k (eOne m)) = 1 := by simp [dl]
 
 /- English proof (translation)
-Rewrite using `[dl, deltaHalf_apply]`. Use `Finset.prod_eq_one fun a _ => Units.ext ?_` and prove the remaining obligations. Rewrite using `[val_absPow, Units.val_one]`. Establish `hd : ((GeneralLinearGroup.det (leviProj k (eOne m) q a) : kˣ) : k) = ((q : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) a a`. Simplify using `only [GeneralLinearGroup.val_det_apply, det_unique]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[nabs_eq_one k (by rw [hd]; exact hq a)]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dl_eq_one {q : parab k (eOne m)} (hq : ∀ a, valuation k (((q : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) a a) = 1) :
     dl q = 1 := by
@@ -62,13 +62,11 @@ def cellFun (g : GL (Fin m) k) : ℂ := if h : InCell S g then (dl h.choose : �
 variable {S}
 
 /- English proof (translation)
-Establish `h : InCell S ((p : GL (Fin m) k) * wRev k m * y)` using `⟨p, y, hy, rfl⟩`. Rewrite using `[cellFun, dif_pos h]`. Take `⟨y', hy', e⟩` from `h.choose_spec`. Use `set p' := h.choose`. Set `q : parab k (eOne m)` to `p'⁻¹ * p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hq : ((q : GL (Fin m) k)) = wRev k m * (y' * y⁻¹) * (wRev k m)⁻¹`. Establish `e2 : (p : GL (Fin m) k) = p' * (wRev k m * (y' * y⁻¹) * (wRev k m)⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [q, Subgroup.coe_mul, Subgroup.coe_inv]`. Rewrite using `[e2]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `group`. Establish `hs : y' * y⁻¹ ∈ S` using `S.mul_mem hy' (S.inv_mem hy)`. Establish `h1 : dl q = 1` using `dl_eq_one fun a => by`. Rewrite using `[hq, wRev_inv, wRev_conj_apply]`. Conclude with `hS4 _ hs _`.
-
-Establish `: p = p' * q` using `by simp [q]`. Rewrite using `[this, dl_mul, h1, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cellFun_eq (hS4 : ∀ y ∈ S, ∀ a, valuation k (((y : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) a a) = 1)
     (p : parab k (eOne m)) {y : GL (Fin m) k} (hy : y ∈ S) :

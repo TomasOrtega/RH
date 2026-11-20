@@ -12,17 +12,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CMSep
 
 /- English proof (translation)
-Introduce `E _ _ _ I _ φ hφ i`. Set `L : I → FR E →ₗ[ℚ] ℂ` to `fun j => ((φ j).comp (algebraMap (FR E) E)).toRatAlgHom.toLinearMap`. Establish `hL : ∀ j (x : FR E), L j x = φ j (x : E)` using `fun j x => rfl`. Set `p : {j : I // j ≠ i} → Subspace ℚ (FR E)` to `fun j => LinearMap.ker (L j.1 - L i)`. Establish `hp : ∀ j, p j ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `j htop`. Take `⟨a, ha⟩` from `exists_int_ne E I φ hφ j.1 i j.2`. Establish `: ((a : FR E)) ∈ p j` using `htop ▸ Submodule.mem_top`. Simplify using `only [p, LinearMap.mem_ker, LinearMap.sub_apply, hL, sub_eq_zero] at this`. Conclude with `ha this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcov : ⋃ j, (p j : Set (FR E)) ≠ Set.univ`. Introduce `h`. Take `⟨j, hj⟩` from `Subspace.exists_eq_top_of_iUnion_eq_univ h`. Conclude with `hp j hj`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : FR E, ∀ j : {j : I // j ≠ i}, x ∉ p j := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Conclude with `hcov (Set.eq_univ_of_forall fun x => by`. Take `⟨j, hj⟩` from `hno x`. Conclude with `Set.mem_iUnion.mpr ⟨j, hj⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨y, hy0, hyint'⟩` from `exists_integral_multiples ℤ ℚ ({x} : Finset (FR E))`. Establish `hyint` using `hyint' x (Finset.mem_singleton_self x)`. Use `⟨⟨y • x, hyint⟩, fun j hj => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hji`. Apply `hx ⟨j, hji⟩` to reduce the goal to its premises.
-
-Simplify using `only [p, LinearMap.mem_ker, LinearMap.sub_apply, hL, sub_eq_zero]`. Establish `e : ((y • x : FR E) : E) = (y : E) * (x : E)` using `by simp [zsmul_eq_mul]`. Express the relevant statement in the definitionally equal form `φ j ((y • x : FR E) : E) = φ i ((y • x : FR E) : E) at hj`. Rewrite `hj` using `[e, map_mul, map_mul, map_intCast, map_intCast]`. Conclude with `mul_left_cancel₀ (by exact_mod_cast hy0) hj`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_sep_all : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ), IsCMType φ →
     ∀ i : I, ∃ b₀ : 𝓞 (FR E), ∀ j : I, φ j ((b₀ : FR E) : E) = φ i ((b₀ : FR E) : E) → j = i := by

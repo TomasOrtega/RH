@@ -13,15 +13,15 @@ section gen
 variable {G M V W : Type} [Group G] [Group M] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-The claim follows from `h ▸ ⟨Representation.Equiv.refl _⟩`.
+A detailed English derivation is pending.
 -/
 theorem equiv_of_eq {ρ σ : Representation ℂ G V} (h : ρ = σ) : Nonempty (ρ.Equiv σ) :=
   h ▸ ⟨Representation.Equiv.refl _⟩
 
 /- English proof (translation)
-Set `f` to `twMap ρ σ N θ e.toLinearEquiv.toLinearMap (fun g v => eint e g v)`. Set `f'` to `twMap σ ρ N θ e.symm.toLinearEquiv.toLinearMap (fun g v => eint e.symm g v)`. Use `⟨Representation.Equiv.mk (LinearEquiv.ofLinear f f' ?_ ?_) fun x => ?_⟩` and prove the remaining obligations. Use `Submodule.linearMap_qext _ (LinearMap.ext fun v => ?_) show Submodule.Quotient.mk (e (e.symm v)) = Submodule.Quotient.mk v` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Submodule.linearMap_qext _ (LinearMap.ext fun v => ?_) show Submodule.Quotient.mk (e.symm (e v)) = Submodule.Quotient.mk v` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `Submodule.linearMap_qext _ (LinearMap.ext fun v => ?_) show Submodule.Quotient.mk (e (ρ (s x) v)) = Submodule.Quotient.mk (σ (s x) (e v))` and prove the remaining obligations. Rewrite using `[eint e]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem twAct_equiv {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (N : Subgroup G) (θ : N →* ℂˣ) (s : M →* G)
     (hs : ∀ (m : M) (n : N), ∃ h : s m * (n : G) * (s m)⁻¹ ∈ N, θ ⟨_, h⟩ = θ n) (e : ρ.Equiv σ) :
@@ -40,7 +40,7 @@ theorem twAct_equiv {ρ : Representation ℂ G V} {σ : Representation ℂ G W} 
     rw [eint e]
 
 /- English proof (translation)
-Unfold `twKer`. Use `congr 1`. Use extensionality with `w`. Simplify using `only [twist_apply, hN, Units.val_one, one_smul, Set.mem_setOf_eq]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem twKer_twist (ρ : Representation ℂ G V) (N : Subgroup G) (θ : N →* ℂˣ) (χ : G →* ℂˣ) (hN : ∀ n : N, χ n = 1) :
     twKer (twist ρ χ) N θ = twKer ρ N θ := by
@@ -50,7 +50,7 @@ theorem twKer_twist (ρ : Representation ℂ G V) (N : Subgroup G) (θ : N →* 
   simp only [twist_apply, hN, Units.val_one, one_smul, Set.mem_setOf_eq]
 
 /- English proof (translation)
-Use `⟨Representation.Equiv.mk (Submodule.quotEquivOfEq (twKer (twist ρ χ) N θ) (twKer ρ N θ) (twKer_twist ρ N θ χ hN)) fun x => ?_⟩` and prove the remaining obligations. Use `Submodule.linearMap_qext _ (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Use `show Submodule.Quotient.mk (p := twKer ρ N θ) ((χ (s x) : ℂ) • ρ (s x) v) = (χ' x : ℂ) • Submodule.Quotient.mk (p := twKer ρ N θ) (ρ (s x) v)`. Rewrite using `[hχ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem twAct_twist (ρ : Representation ℂ G V) (N : Subgroup G) (θ : N →* ℂˣ) (s : M →* G)
     (hs : ∀ (m : M) (n : N), ∃ h : s m * (n : G) * (s m)⁻¹ ∈ N, θ ⟨_, h⟩ = θ n) (χ : G →* ℂˣ) (χ' : M →* ℂˣ)
@@ -68,9 +68,9 @@ end gen
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h0 : ∀ j : Fin n, A (Fin.last n) (Fin.castSucc j) = 0` using `fun j => by`. Rewrite using `[h]`. Simplify using `[eLast, Pi.single_apply, Fin.castSucc_ne_last]`. Establish `h1 : A (Fin.last n) (Fin.last n) = 1`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[eLast]`. Rewrite using `[Matrix.det_succ_row A (Fin.last n), Fin.sum_univ_castSucc]`. Simplify using `only [h0, h1, Fin.succAbove_last]`. Simplify using `[blockMat, ← two_mul, Matrix.submatrix]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem det_of_last {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (h : A (Fin.last n) = eLast k n) :
     A.det = (blockMat k n A).det := by
@@ -84,9 +84,9 @@ theorem det_of_last {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (h : A 
   rfl
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `(u.2 : ((u : Mir k n) : GL (Fin (n + 1)) k) ∈ MirU k n)`. Establish `hb : blockMat k n (((u : Mir k n) : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = 1`. Rewrite using `[show ((u : Mir k n) : GL (Fin (n + 1)) k) = unip k n v from hv.symm]`. Use extensionality with `i j`. Use `show (1 + colMat k n v.toAdd) (Fin.castSucc i) (Fin.castSucc j) = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[colMat, one_apply, Fin.castSucc_ne_last]`. Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, det_of_last _ ((mem_Mir_iff k _).1 (u : Mir k n).2), hb]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_uin {n : ℕ} (u : MirUin k n) :
     Matrix.GeneralLinearGroup.det ((u : Mir k n) : GL (Fin (n + 1)) k) = 1 := by
@@ -101,9 +101,9 @@ theorem det_uin {n : ℕ} (u : MirUin k n) :
   simp
 
 /- English proof (translation)
-Establish `hb : blockMat k n (((levi k n m : Mir k n) : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = (m : Matrix (Fin n) (Fin n) k)`. Use extensionality with `i j`. Use `show glEmbMat k n (m : Matrix (Fin n) (Fin n) k) (Fin.castSucc i) (Fin.castSucc j) = _`. Simplify using `[glEmbMat]`. Use `ext`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, det_of_last _ ((mem_Mir_iff k _).1 (levi k n m : Mir k n).2), hb]`.
+A detailed English derivation is pending.
 -/
 theorem det_levi {n : ℕ} (m : GL (Fin n) k) :
     Matrix.GeneralLinearGroup.det ((levi k n m : Mir k n) : GL (Fin (n + 1)) k) = Matrix.GeneralLinearGroup.det m := by
@@ -117,7 +117,7 @@ theorem det_levi {n : ℕ} (m : GL (Fin n) k) :
     det_of_last _ ((mem_Mir_iff k _).1 (levi k n m : Mir k n).2), hb]
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [dpow, detChar_apply, MonoidHom.mul_apply, Complex.ofReal_add, absPow_add, Units.val_mul]`. Conclude with `mul_comm _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dpow_add (n : ℕ) (s t : ℝ) : dpow (k := k) n (s + t) = dpow n t * dpow n s := by
   ext g
@@ -125,35 +125,35 @@ theorem dpow_add (n : ℕ) (s t : ℝ) : dpow (k := k) n (s + t) = dpow n t * dp
   exact mul_comm _ _
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `[dpow]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dpow_zero (n : ℕ) : dpow (k := k) n 0 = 1 := by
   ext g
   simp [dpow]
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `[dpowM, dpow_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dpowM_add (n : ℕ) (s t : ℝ) : dpowM (k := k) n (s + t) = dpowM n t * dpowM n s := by
   ext g
   simp [dpowM, dpow_add]
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `[dpowM, dpow_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dpowM_zero (n : ℕ) : dpowM (k := k) n 0 = 1 := by
   ext g
   simp [dpowM, dpow_zero]
 
 /- English proof (translation)
-Use `show detChar (Fin (n + 1)) (absPow k (s : ℂ)) ((u : Mir k n) : GL (Fin (n + 1)) k) = 1`. Rewrite using `[detChar_apply, det_uin, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dpowM_uin {n : ℕ} (s : ℝ) (u : MirUin k n) : dpowM n s (u : Mir k n) = 1 := by
   show detChar (Fin (n + 1)) (absPow k (s : ℂ)) ((u : Mir k n) : GL (Fin (n + 1)) k) = 1
   rw [detChar_apply, det_uin, map_one]
 
 /- English proof (translation)
-Use `show detChar (Fin (n + 1)) (absPow k (s : ℂ)) ((levi k n m : Mir k n) : GL (Fin (n + 1)) k) = _`. Rewrite using `[detChar_apply, det_levi]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dpowM_levi {n : ℕ} (s : ℝ) (m : GL (Fin n) k) : dpowM n s (levi k n m) = dpow n s m := by
   show detChar (Fin (n + 1)) (absPow k (s : ℂ)) ((levi k n m : Mir k n) : GL (Fin (n + 1)) k) = _
@@ -161,37 +161,35 @@ theorem dpowM_levi {n : ℕ} (s : ℝ) (m : GL (Fin n) k) : dpowM n s (levi k n 
   rfl
 
 /- English proof (translation)
-Use `show Nonempty ((twist (twist π.ρ (dpow n s)) (dpow n t)).Equiv (twist π.ρ (dpow n (s + t))))`. Conclude with `equiv_of_eq (by rw [twist_twist, dpow_add])`.
+A detailed English derivation is pending.
 -/
 theorem tw_tw {n : ℕ} (π : GRep k n) (s t : ℝ) : GIso ((π.tw s).tw t) (π.tw (s + t)) := by
   show Nonempty ((twist (twist π.ρ (dpow n s)) (dpow n t)).Equiv (twist π.ρ (dpow n (s + t))))
   exact equiv_of_eq (by rw [twist_twist, dpow_add])
 
 /- English proof (translation)
-Use `show Nonempty ((twist π.ρ (dpow n 0)).Equiv π.ρ)`. Conclude with `equiv_of_eq (by rw [dpow_zero, twist_one])`.
+A detailed English derivation is pending.
 -/
 theorem tw_zero {n : ℕ} (π : GRep k n) : GIso (π.tw 0) π := by
   show Nonempty ((twist π.ρ (dpow n 0)).Equiv π.ρ)
   exact equiv_of_eq (by rw [dpow_zero, twist_one])
 
 /- English proof (translation)
-Use `show Nonempty ((twist (twist τ.ρ (dpowM n s)) (dpowM n t)).Equiv (twist τ.ρ (dpowM n (s + t))))`. Conclude with `equiv_of_eq (by rw [twist_twist, dpowM_add])`.
+A detailed English derivation is pending.
 -/
 theorem mtw_mtw {n : ℕ} (τ : MRep k n) (s t : ℝ) : MIso (mtw (mtw τ s) t) (mtw τ (s + t)) := by
   show Nonempty ((twist (twist τ.ρ (dpowM n s)) (dpowM n t)).Equiv (twist τ.ρ (dpowM n (s + t))))
   exact equiv_of_eq (by rw [twist_twist, dpowM_add])
 
 /- English proof (translation)
-Use `show Nonempty ((twist τ.ρ (dpowM n 0)).Equiv τ.ρ)`. Conclude with `equiv_of_eq (by rw [dpowM_zero, twist_one])`.
+A detailed English derivation is pending.
 -/
 theorem mtw_zero {n : ℕ} (τ : MRep k n) : MIso (mtw τ 0) τ := by
   show Nonempty ((twist τ.ρ (dpowM n 0)).Equiv τ.ρ)
   exact equiv_of_eq (by rw [dpowM_zero, twist_one])
 
 /- English proof (translation)
-Take `⟨e⟩` from `h`. Conclude with `⟨Representation.Equiv.mk e.toLinearEquiv fun x => by`. Use extensionality with `v`. Use `show e (((dpowM n s x : ℂˣ) : ℂ) • A.ρ x v) = ((dpowM n s x : ℂˣ) : ℂ) • B.ρ x (e v)`. Rewrite using `[map_smul]`.
-
-Conclude with `congrArg _ (eint e x v)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem miso_mtw {n : ℕ} {A B : MRep k n} (s : ℝ) (h : MIso A B) : MIso (mtw A s) (mtw B s) := by
   obtain ⟨e⟩ := h
@@ -204,7 +202,7 @@ theorem miso_mtw {n : ℕ} {A B : MRep k n} (s : ℝ) (h : MIso A B) : MIso (mtw
 def psiG {n : ℕ} (τ : MRep k n) : GRep k n := ⟨_, psiMinus k τ.ρ⟩
 
 /- English proof (translation)
-Take `⟨e⟩` from `h`. Conclude with `twAct_equiv _ _ _ (levi_stab ψ n) e`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem miso_phiM (ψ : AddChar k Circle) {n : ℕ} {A B : MRep k (n + 1)} (h : MIso A B) :
     MIso (MRep.phiM k ψ A) (MRep.phiM k ψ B) := by
@@ -212,14 +210,14 @@ theorem miso_phiM (ψ : AddChar k Circle) {n : ℕ} {A B : MRep k (n + 1)} (h : 
   exact twAct_equiv _ _ _ (levi_stab ψ n) e
 
 /- English proof (translation)
-Take `⟨e⟩` from `h`. Conclude with `twAct_equiv _ _ _ (levi_normalises n) e`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem giso_psiG {n : ℕ} {A B : MRep k n} (h : MIso A B) : GIso (psiG A) (psiG B) := by
   obtain ⟨e⟩ := h
   exact twAct_equiv _ _ _ (levi_normalises n) e
 
 /- English proof (translation)
-The claim follows from `twAct_twist τ.ρ _ _ _ (levi_stab ψ n) (dpowM (n + 1) s) (dpowM n s) (dpowM_uin s) fun m => by show dpowM (n + 1) s (levi k (n + 1) (m : GL (Fin (n + 1)) k)) = _ rw [dpowM_levi] rfl`.
+A detailed English derivation is pending.
 -/
 theorem phiM_mtw (ψ : AddChar k Circle) {n : ℕ} (τ : MRep k (n + 1)) (s : ℝ) :
     MIso (MRep.phiM k ψ (mtw τ s)) (mtw (MRep.phiM k ψ τ) s) :=
@@ -229,13 +227,13 @@ theorem phiM_mtw (ψ : AddChar k Circle) {n : ℕ} (τ : MRep k (n + 1)) (s : �
     rfl
 
 /- English proof (translation)
-The claim follows from `twAct_twist τ.ρ _ _ _ (levi_normalises n) (dpowM n s) (dpow n s) (dpowM_uin s) (dpowM_levi s)`.
+A detailed English derivation is pending.
 -/
 theorem psiG_mtw {n : ℕ} (τ : MRep k n) (s : ℝ) : GIso (psiG (mtw τ s)) ((psiG τ).tw s) :=
   twAct_twist τ.ρ _ _ _ (levi_normalises n) (dpowM n s) (dpow n s) (dpowM_uin s) (dpowM_levi s)
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, h => h | j + 1, _, _, h => miso_iterPhi ψ j (miso_phiM ψ h)`.
+A detailed English derivation is pending.
 -/
 theorem miso_iterPhi (ψ : AddChar k Circle) {n : ℕ} : ∀ (j : ℕ) {A B : MRep k (n + j)}, MIso A B →
     MIso (iterPhi k ψ j A) (iterPhi k ψ j B)
@@ -243,7 +241,7 @@ theorem miso_iterPhi (ψ : AddChar k Circle) {n : ℕ} : ∀ (j : ℕ) {A B : MR
   | j + 1, _, _, h => miso_iterPhi ψ j (miso_phiM ψ h)
 
 /- English proof (translation)
-The claim follows from `| 0, _ => miso_refl _ | j + 1, X => miso_trans (miso_iterPhi ψ j (phiM_mtw ψ X s)) (iterPhi_mtw ψ s j (MRep.phiM k ψ X))`.
+A detailed English derivation is pending.
 -/
 theorem iterPhi_mtw (ψ : AddChar k Circle) {n : ℕ} (s : ℝ) : ∀ (j : ℕ) (X : MRep k (n + j)),
     MIso (iterPhi k ψ j (mtw X s)) (mtw (iterPhi k ψ j X) s)
@@ -251,7 +249,7 @@ theorem iterPhi_mtw (ψ : AddChar k Circle) {n : ℕ} (s : ℝ) : ∀ (j : ℕ) 
   | j + 1, X => miso_trans (miso_iterPhi ψ j (phiM_mtw ψ X s)) (iterPhi_mtw ψ s j (MRep.phiM k ψ X))
 
 /- English proof (translation)
-The claim follows from `| 0, τ => by rw [show -((0 : ℕ) : ℝ) / 2 = 0 by simp] exact miso_symm (mtw_zero τ) | j + 1, τ => by have h1 := iterN_iso ψ j (phiN ψ τ) have h2 := iterPhi_mtw ψ (-1 / 2) j (MRep.phiM k ψ τ) have h3 := mtw_mtw (iterPhi k ψ j (MRep.phiM k ψ τ)) (-1 / 2) (-(j : ℝ) / 2) rw [show (-1 …`.
+A detailed English derivation is pending.
 -/
 theorem iterN_iso (ψ : AddChar k Circle) {n : ℕ} : ∀ (j : ℕ) (τ : MRep k (n + j)),
     MIso (iterN ψ j τ) (mtw (iterPhi k ψ j τ) (-(j : ℝ) / 2))
@@ -266,11 +264,11 @@ theorem iterN_iso (ψ : AddChar k Circle) {n : ℕ} : ∀ (j : ℕ) (τ : MRep k
     exact miso_trans h1 (miso_trans (miso_mtw _ h2) h3)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ j n π`. Consider the cases of `j with`. Consider the case `zero`. Rewrite using `[show ((0 : ℕ) : ℝ) / 2 = 0 by simp]`. Conclude with `giso_symm (tw_zero π)`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ j`. Establish `h1 : MIso (iterN ψ j (gres π)) (mtw (iterPhi k ψ j (resM k π.ρ)) (-(j : ℝ) / 2))` using `iterN_iso ψ j (gres π)`. Establish `h2 : GIso (psiN (iterN ψ j (gres π))) ((psiG (mtw (iterPhi k ψ j (resM k π.ρ)) (-(j : ℝ) / 2))).tw (-1 / 2))` using `giso_tw _ (giso_psiG h1)`. Establish `h3` using `giso_tw (-1 / 2) (psiG_mtw (iterPhi k ψ j (resM k π.ρ)) (-(j : ℝ) / 2))`. Establish `h4` using `tw_tw (psiG (iterPhi k ψ j (resM k π.ρ))) (-(j : ℝ) / 2) (-1 / 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : GIso ((dG ψ (j + 1) π).tw (((j + 1 : ℕ) : ℝ) / 2)) (((psiG (iterPhi k ψ j (resM k π.ρ))).tw (-(j : ℝ) / 2 + -1 / 2)).tw (((j + 1 : ℕ) : ℝ) / 2))` using `giso_tw _ (giso_trans h2 (giso_trans h3 h4))`. Establish `h6` using `tw_tw (psiG (iterPhi k ψ j (resM k π.ρ))) (-(j : ℝ) / 2 + -1 / 2) (((j + 1 : ℕ) : ℝ) / 2)`. Rewrite `h6` using `[show -(j : ℝ) / 2 + -1 / 2 + ((j + 1 : ℕ) : ℝ) / 2 = 0 by push_cast; ring]`. Conclude with `giso_symm (giso_trans h5 (giso_trans h6 (tw_zero _)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivB_iso_tw : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ψ : AddChar k Circle) (j n : ℕ) (π : GRep k (n + j)), GIso (derivB ψ j π) ((dG ψ j π).tw ((j : ℝ) / 2)) := by

@@ -55,13 +55,13 @@ theorem IntSec.ofIntData_θ {Xo : Moduli Dw l} {c : Coeff l} {T : CDVR} {io : c.
     letI := io.toAlgebra; (IntSec.ofIntData I).θ = I.θ := rfl
 
 /- English proof (translation)
-Unfold `eSec`. Set `T : Over S'` to `𝟙_ (Over S')`. Set `x : T ⟶ G'` to `1`. Establish `hx : x.left = Over.Hom.left (η : 𝟙_ (Over S') ⟶ G')`. Express the relevant statement in the definitionally equal form `(1 : T ⟶ G').left = _`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Hom.one_def, CartesianMonoidalCategory.toUnit_unique (toUnit T) (𝟙 T), Category.id_comp]`. Set `x₀ : Over.mk (T.hom ≫ f) ⟶ G` to `Over.homMk (x.left ≫ φ) (by`. Express the relevant statement in the definitionally equal form `(x.left ≫ φ) ≫ G.hom = T.hom ≫ f`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w])`. Establish `hsq : x₀ * x₀ = x₀`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ext`. Rewrite using `[h.2 T x x x₀ x₀ rfl rfl]`. Express the relevant statement in the definitionally equal form `(x * x).left ≫ φ = x.left ≫ φ`. Rewrite using `[show x * x = x from _root_.mul_one (1 : T ⟶ G')]`. Establish `h1 : x₀ = 1` using `mul_left_cancel (hsq.trans (_root_.mul_one x₀).symm)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : x₀.left = f ≫ Over.Hom.left (η : 𝟙_ (Over S) ⟶ G)`. Rewrite using `[h1, Hom.one_def, Over.comp_left]`. Use `congr 1`. Rewrite using `[← hx]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eSec_comp_eq_comp_eSec_of_isGrpPullback {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) : eSec G' ≫ φ = f ≫ eSec G := by
@@ -101,9 +101,9 @@ structure Fib (Xo : Moduli Dw l) {K : Type} [Field K] (x : Sp K ⟶ Xo.X) (A : P
       val (L := Xo.univ.t.PP.L) (φ := fun _ : PUnit => eSec Xo.univ.t.G) (ε := fun _ => 1) Xo.univ.t.PP.rig x z J
 
 /- English proof (translation)
-Take `⟨P, φ, act, hc, ⟨ω, hω⟩, -⟩` from `GlobalTheory.exists_polAV_pullback_of_isLocalRing E H Xo.X Xo.univ.t Xo.univ.proper Xo.univ.ample Xo.univ.ktriv K x`. Establish `he : eSec P.A ≫ φ = x ≫ eSec Xo.univ.t.G` using `eSec_comp_eq_comp_eSec_of_isGrpPullback hc`. Take `⟨ρ, hρ, hv⟩` from `GlobalTheory.ConstFam.exists_gen_through (φ' := fun _ : PUnit => eSec P.A) (φ := fun _ : PUnit => eSec Xo.univ.t.G) (ε := fun _ => 1) (h := x) hω Xo.univ.t.PP.isLB P.isLB (fun _ => he) Xo.univ.t.PP.rig Xo.univ.t.PP.rigGen`. Use `⟨P, ⟨⟨φ, hc, ω, hω, ρ, hρ, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `z JA J hJA hJ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `hv _ (𝟙 _) z J JA hJ hJA`. Rewrite `key` using `[Category.id_comp]`. Rewrite using `[key]`. Simplify using `only [GlobalTheory.ConstFam.wVal, Fintype.prod_unique, zpow_one, Category.id_comp, he]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_fib (Xo : Moduli Dw l) {K : Type} [Field K] (x : Sp K ⟶ Xo.X) :
     ∃ A : PolAV (Spec (CommRingCat.of K)), Nonempty (Fib Xo x A) := by
@@ -138,19 +138,19 @@ def Fib.SecTie (Φ : Fib Xo x A) (xF : Sp F ⟶ Xo.X) (s : LB.Sec (PPx xF)) (th 
           (JA (r ≫ (snd (TFK (R := R) F) A.A).left))).val * GlobalTheory.UT.sA th r z JA
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem Fib.SecTie.pt_eq {Φ : Fib Xo x A} {xF : Sp F ⟶ Xo.X} {s : LB.Sec (PPx xF)} {th : GlobalTheory.UT.SecA A F 1}
     (h : Φ.SecTie xF s th) : xF = jFK (R := R) F ≫ x := h.1
 
 /- English proof (translation)
-Take `⟨hx, h2⟩` from `h`. Take `⟨-, h2'⟩` from `h'`. Substitute `hx` using the available equality. Set `a` to `Φ.cart.1.lift (pullback.snd (jFK (R := R) F ≫ x) Xo.univ.t.G.hom) (pullback.fst (jFK (R := R) F ≫ x) Xo.univ.t.G.hom ≫ jFK (R := R) F) (by rw [← pullback.condition, Category.assoc])`. Set `r : (Over.mk (jFK (R` to `R) F ≫ x) ⊗ Xo.univ.t.G).left ⟶ (TFK (R := R) F ⊗ A.A).left := pullback.lift (pullback.fst (jFK (R := R) F ≫ x) Xo.univ.t.G.hom) a (Φ.cart.1.lift_snd _ _ _).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `e1 : 𝟙 _ ≫ (snd (Over.mk (jFK (R` using `R) F ≫ x)) Xo.univ.t.G).left = r ≫ (snd (TFK (R := R) F) A.A).left ≫ Φ.φ := by`. Express the relevant statement in the definitionally equal form `𝟙 _ ≫ pullback.snd _ _ = r ≫ pullback.snd _ _ ≫ Φ.φ`. Rewrite using `[Category.id_comp, ← Category.assoc, pullback.lift_snd, IsPullback.lift_fst]`. Both sides reduce to the same expression. Establish `e2 : 𝟙 _ ≫ (fst (Over.mk (jFK (R` using `R) F ≫ x)) Xo.univ.t.G).left = r ≫ (fst (TFK (R := R) F) A.A).left := by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `𝟙 _ ≫ pullback.fst _ _ = r ≫ pullback.fst _ _`. Rewrite using `[Category.id_comp, pullback.lift_fst]`. Both sides reduce to the same expression. Establish `hss : s = s'`. Use `GlobalTheory.FieldBaseChange.sec_ext' Xo.univ.t.PP.isLB fun y J hJ => ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨JA, hJA⟩` from `GlobalTheory.ConstFam.exists_good' A.isLB y`. Rewrite using `[h2 _ r (𝟙 _) e1 e2 y JA J hJA hJ, h2' _ r (𝟙 _) e1 e2 y JA J hJA hJ]`. Rewrite using `[hss]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Fib.SecTie.unique {Φ : Fib Xo x A} {xF : Sp F ⟶ Xo.X} {s s' : LB.Sec (PPx xF)}
     {th : GlobalTheory.UT.SecA A F 1} (h : Φ.SecTie xF s th) (h' : Φ.SecTie xF s' th) (i) : s.f i = s'.f i := by
@@ -179,13 +179,13 @@ theorem Fib.SecTie.unique {Φ : Fib Xo x A} {xF : Sp F ⟶ Xo.X} {s s' : LB.Sec 
   rw [hss]
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Set `hm : (TFK (R` to `R) F ⊗ A.A).left ⟶ (Over.mk (jFK (R := R) F ≫ x) ⊗ Xo.univ.t.G).left := pullback.lift (pullback.fst (TFK (R := R) F).hom A.A.hom) (pullback.snd (TFK (R := R) F).hom A.A.hom ≫ Φ.φ) (by simp only [Category.assoc, Φ.cart.1.w]; exact pullback.condition_assoc x)`. Establish `hψ : ∀ _k : Fin 1, (snd (TFK (R` using `R) F) A.A).left ≫ Φ.φ = hm ≫ (snd (Over.mk (jFK (R := R) F ≫ x)) Xo.univ.t.G).left := fun _ => (pullback.lift_snd _ _ _).symm`. Take `⟨th, hth⟩` from `GlobalTheory.ConstFam.exists_secThrough (w := Φ.ω) (ε := fun _ => 1) Φ.ωgen Xo.univ.t.PP.isLB A.isLB hψ s`. Use `⟨th, rfl, ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Z r r' h1 h2 z JA J hJA hJ`. Establish `hr : r' = r ≫ hm`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `r' ≫ (fst (Over.mk (jFK (R := R) F ≫ x)) Xo.univ.t.G).left = _`. Rewrite using `[h2, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (r ≫ ·) (pullback.lift_fst _ _ _)).symm`. Express the relevant statement in the definitionally equal form `r' ≫ (snd (Over.mk (jFK (R := R) F ≫ x)) Xo.univ.t.G).left = _`. Rewrite using `[h1, Category.assoc]`. Conclude with `(congrArg (r ≫ ·) (pullback.lift_snd _ _ _)).symm`. Substitute `hr` using the available equality.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.ConstFam.SecThrough.sval hψ hth r hJ hJA).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_one, zpow_one, h1]`. Simplify using `only [GlobalTheory.ConstFam.wVal, Category.assoc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Fib.exists_secTie (Φ : Fib Xo x A) {xF : Sp F ⟶ Xo.X} (hx : xF = jFK (R := R) F ≫ x) (s : LB.Sec (PPx xF)) :
     ∃ th : GlobalTheory.UT.SecA A F 1, Φ.SecTie xF s th := by
@@ -229,7 +229,7 @@ def IntTh {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
           GlobalTheory.UT.sA th (r ≫ (U.genF F).left) z JA
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem IntTh.isGen {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
@@ -237,9 +237,9 @@ theorem IntTh.isGen {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegD
     {th : GlobalTheory.UT.SecA A F 1} (h : IntTh U w th) : w.IsGen := h.1
 
 /- English proof (translation)
-Use `⟨hw, ⟨fun _ => 0, fun _ _ => by simp⟩, fun Z r z JA JG hA hG => ?_⟩` and prove the remaining obligations. Establish `g0 : ∀ {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (V : X.Opens), gs f y V 0 = 0` using `fun f y V => by`. Unfold `gs`. Use `split_ifs`. Rewrite using `[map_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `(g0 _ _ _).trans ((congrArg (_ * ·) (g0 _ _ _)).trans (mul_zero _)).symm`.
+A detailed English derivation is pending.
 -/
 example {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]

@@ -27,7 +27,7 @@ def resHom : Dec (F := E) A →* Dec (F := F) A where
   map_mul' _ _ := rfl
 
 /- English proof (translation)
-Introduce `g g' hgg`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `z`. Use `congrArg (fun k : Dec (F := F) A => (k : G F Ω) z) hgg` as an intermediate fact. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem resHom_injective : Function.Injective (resHom (F := F) (E := E) A) := by
   intro g g' hgg
@@ -37,7 +37,7 @@ theorem resHom_injective : Function.Injective (resHom (F := F) (E := E) A) := by
   exact this
 
 /- English proof (translation)
-The claim follows from `(Subgroup.mem_map_iff_mem (resHom_injective (E := E) A))`.
+A detailed English derivation is pending.
 -/
 theorem mem_map_iff (V : Subgroup (Dec (F := E) A)) (g : Dec (F := E) A) :
     resHom (F := F) A g ∈ V.map (resHom (F := F) (E := E) A) ↔ g ∈ V :=
@@ -47,22 +47,20 @@ variable (hfix : ∀ g ∈ Dec (F := F) A, ∀ x : E, g (algebraMap E Ω x) = al
 include hfix
 
 /- English proof (translation)
-Introduce `k`. Conclude with `⟨⟨lift (k : G F Ω) (hfix _ k.2), k.2⟩, Subtype.ext (by ext z; rfl)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem resHom_surjective : Function.Surjective (resHom (F := F) (E := E) A) := by
   intro k
   exact ⟨⟨lift (k : G F Ω) (hfix _ k.2), k.2⟩, Subtype.ext (by ext z; rfl)⟩
 
 /- English proof (translation)
-Take `⟨U, hU, hUV⟩` from `isOpen_induced_iff.mp hV`. Establish `h1 : (1 : Dec (F` using `E) A) ∈ V := V.one_mem`. Establish `hU1 : (1 : G E Ω) ∈ U`. Establish `: (1 : Dec (F` using `E) A) ∈ Subtype.val ⁻¹' U := by rw [hUV]; exact h1`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK, hKU⟩` from `(krullTopology_mem_nhds_one_iff E Ω U).mp (hU.mem_nhds hU1)`. Use `haveI := hK`. Use `haveI : FiniteDimensional F (K.restrictScalars F) := (Module.Finite.trans E K : Module.Finite F K)`. Apply `Subgroup.isOpen_of_mem_nhds _ (g := 1)` to reduce the goal to its premises. Establish `hO : IsOpen (Subtype.val ⁻¹' ((K.restrictScalars F).fixingSubgroup : Set (G F Ω)) : Set (Dec (F` using `F) A)) := (IntermediateField.fixingSubgroup_isOpen (K.restrictScalars F)).preimage continuous_subtype_val`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `Filter.mem_of_superset (hO.mem_nhds ((K.restrictScalars F).fixingSubgroup.one_mem)) ?_` and prove the remaining obligations. Introduce `k hk`. Take `⟨g, rfl⟩` from `resHom_surjective (E := E) A hfix k`. Use `⟨g, ?_, rfl⟩` and prove the remaining obligations. Establish `hgU : (g : G E Ω) ∈ U`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `hKU` to reduce the goal to its premises. Introduce `z`. Conclude with `hk ⟨z.1, z.2⟩`. Establish `: g ∈ Subtype.val ⁻¹' U` using `hgU`. Rewrite `this` using `[hUV]`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_map [FiniteDimensional F E] (V : Subgroup (Dec (F := E) A)) (hV : IsOpen (V : Set (Dec (F := E) A))) :
     IsOpen ((V.map (resHom (F := F) (E := E) A)) : Set (Dec (F := F) A)) := by
@@ -91,7 +89,7 @@ theorem isOpen_map [FiniteDimensional F E] (V : Subgroup (Dec (F := E) A)) (hV :
   exact this
 
 /- English proof (translation)
-Establish `hs` using `resHom_surjective (E := E) A hfix`. Rewrite using `[commutator_def, ← Subgroup.map_top_of_surjective _ hs, ← Subgroup.map_commutator]`. Conclude with `Subgroup.map_mono (by rw [← commutator_def]; exact hc)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commutator_le_map (V : Subgroup (Dec (F := E) A)) (hc : commutator (Dec (F := E) A) ≤ V) :
     commutator (Dec (F := F) A) ≤ V.map (resHom (F := F) (E := E) A) := by
@@ -106,11 +104,11 @@ namespace GlobalTheory.AboveL
 open GlobalTheory.AboveL.DecRes in
 
 /- English proof (translation)
-Introduce `Ω _ E _ _ _ _ _ A w h hfix V hVo hVc N hNo`. Use `haveI : IsAlgClosure (maximalRealSubfield E) Ω := ⟨IsAlgClosure.isAlgClosed E, Algebra.IsAlgebraic.trans _ E Ω⟩`. Take `⟨n, hn, hnv⟩` from `(Formalism.MainNotions.V.Pf.ShaCmp.exists_over_iff (K := E) A).mp ⟨w, h⟩`. Take `⟨v, hv⟩` from `(Formalism.MainNotions.V.Pf.ShaCmp.exists_over_iff (K := maximalRealSubfield E) A).mpr ⟨n, hn, hnv⟩`. Take `⟨T, hvT, hT⟩` from `GlobalTheory.T.exists_cmField_lift_disjoint_of_real_solvable Ω E v N hNo`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨F₁, hfin, hab, hreal, hdecF, hsplit⟩` from `GlobalTheory.T.exists_abelian_totallyReal_ext_prescribedCompletion Ω (maximalRealSubfield E) A v hv (V.map (resHom (F := maximalRealSubfield E) (E := E) A)) (isOpen_map A hfix V hVo) (commutator_le_map A hfix V hVc) T hvT`. Establish `hsolv : IsSolvable (F₁ ≃ₐ[maximalRealSubfield E] F₁)` using `isSolvable_of_comm fun a b => hab.toIsMulCommutative.is_comm.comm a b`. Take `⟨M, i1, i2, i3, i4, i5, i6, i7, hSD, hM, -⟩` from `hT F₁ hfin hab.toIsGalois hsolv hreal hsplit`. Use `⟨M, i1, i2, i3, i4, i5, i6, i7, hSD, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hM (g : G E Ω), ← mem_map_iff (F := maximalRealSubfield E) A V g, ← hdecF, IntermediateField.mem_fixingSubgroup_iff]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_cm_solvDisj_dec_eq : ∀ (Ω : Type) [Field Ω] (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w), (∀ g ∈ Dec (F := maximalRealSubfield E) A, ∀ x : E, g (algebraMap E Ω x) = algebraMap E Ω x) → ∀ V : Subgroup (Dec (F := E) A), IsOpen (V : Set (Dec (F := E) A)) → commutator (Dec (F := E) A) ≤ V → ∀ N : Subgroup (G E Ω), IsOpen (N : Set (G E Ω)) → ∃ (M : Type) (_ : Field M) (_ : NumberField M) (_ : IsCMField M) (_ : Algebra M Ω) (_ : IsAlgClosure M Ω) (_ : Algebra E M) (_ : IsScalarTower E M Ω), SolvDisj M N ∧ ∀ g : Dec (F := E) A, (∀ x : M, (g : G E Ω) (algebraMap M Ω x) = algebraMap M Ω x) ↔ g ∈ V := by
   intro Ω _ E _ _ _ _ _ A w h hfix V hVo hVc N hNo

@@ -10,9 +10,9 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.FlagMeas
 
 /- English proof (translation)
-Establish `hg : (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = Formalism.REAL.Jm ε` using `g.2`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : (uMat g)ᴴ * uMat g = 1` using `h`. Establish `h2 : uMat g * (uMat g)ᴴ = 1` using `mul_eq_one_comm.mp h1`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Matrix.mem_unitaryGroup_iff'.mpr h1, ?_⟩` and prove the remaining obligations. Use `show uMat g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * uMat g`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Conclude with `Matrix.mem_unitaryGroup_iff'.mp h.1`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gaugeSubEx_mem_maxK_iff {n : ℕ} (ε : Fin n → Bool) (g : Formalism.REAL.UJ ε) :
     g ∈ maxK ε ↔ g ∈ Formalism.REAL.KG ε := by
@@ -30,13 +30,13 @@ theorem gaugeSubEx_mem_maxK_iff {n : ℕ} (ε : Fin n → Bool) (g : Formalism.R
     exact Matrix.mem_unitaryGroup_iff'.mp h.1
 
 /- English proof (translation)
-Establish `hK : maxK ε = (Formalism.REAL.KG ε : Set (Formalism.REAL.UJ ε))` using `Set.ext fun g => gaugeSubEx_mem_maxK_iff ε g`. Establish `hc : IsCompact (Formalism.REAL.KG ε : Set (Formalism.REAL.UJ ε))` using `isCompact_iff_compactSpace.mpr (Formalism.REAL.instCompactKG n ε)`. Establish `hm : MeasurableSet (maxK ε)` using `hK ▸ hc.isClosed.measurableSet`. Establish `hv : Measurable (Subtype.val : Formalism.REAL.KG ε → Formalism.REAL.UJ ε)` using `measurable_subtype_coe`. Use `Formalism.REAL.compact_haar_probability n ε` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(Formalism.REAL.muK ε).map Subtype.val, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hv hm.compl]`. Establish `: (Subtype.val : Formalism.REAL.KG ε → Formalism.REAL.UJ ε) ⁻¹' (maxK ε)ᶜ = ∅`. Use extensionality with `k`. Simplify using `[hK]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, measure_empty]`. Rewrite using `[Measure.map_apply hv MeasurableSet.univ, Set.preimage_univ, measure_univ]`. Introduce `k hk`. Establish `hk' : k ∈ Formalism.REAL.KG ε` using `(gaugeSubEx_mem_maxK_iff ε k).mp hk`. Establish `h` using `map_mul_left_eq_self (Formalism.REAL.muK ε) ⟨k, hk'⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Measure.map_map (measurable_const_mul k) hv]`. Use `conv_rhs => rw [← h]`. Rewrite using `[Measure.map_map hv (measurable_const_mul _)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gaugeSubEx_haarK (n : ℕ) (ε : Fin n → Bool) :
     ∃ μ : Measure (Formalism.REAL.UJ ε), μ (maxK ε)ᶜ = 0 ∧ μ Set.univ = 1 ∧
@@ -64,9 +64,9 @@ theorem gaugeSubEx_haarK (n : ℕ) (ε : Fin n → Bool) :
     rfl
 
 /- English proof (translation)
-Introduce `n ε a j W _ hW`. Use `⟨?_, ?_, gaugeSubEx_haarK n ε⟩` and prove the remaining obligations. Take `⟨A, E, h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_nilpotentAlgebra_isotropicFlagUnipotentRadical n ε a j W hW`. Rewrite using `[h4]`. Conclude with `GlobalTheory.T.exists_riemannianHaar_unitaryJSubgroupOfAlgebra n ε A _ E h1 h2 h3`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨A, E, h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_algebra_isotropicFlagSelfAdjointLevi n ε a j W hW`. Rewrite using `[h4]`. Conclude with `GlobalTheory.T.exists_riemannianHaar_unitaryJSubgroupOfAlgebra n ε A _ E h1 h2 h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaugeSubEx : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), (∀ i, 1 ≤ j i) → IsIsoFlag ε j W → (∃ μ, SigmaFinite μ ∧ IsGaugeSub (flagN ε W) (dimN n j) μ) ∧ (∃ μ, SigmaFinite μ ∧ IsGaugeSub (flagM ε W) ((n - 2 * ∑ i, j i) ^ 2 + 2 * ∑ i, j i ^ 2) μ) ∧ ∃ μ : Measure (Formalism.REAL.UJ ε), μ (maxK ε)ᶜ = 0 ∧ μ Set.univ = 1 ∧ ∀ k ∈ maxK ε, μ.map (fun g => k * g) = μ := by
   intro n ε a j W _ hW

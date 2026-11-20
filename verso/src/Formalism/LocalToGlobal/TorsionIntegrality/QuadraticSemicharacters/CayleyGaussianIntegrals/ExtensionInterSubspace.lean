@@ -14,13 +14,13 @@ def powForm (l : V →L[ℂ] ℂ) (n : ℕ) : ContinuousMultilinearMap ℂ (fun 
   (ContinuousMultilinearMap.mkPiAlgebra ℂ (Fin n) ℂ).compContinuousLinearMap (fun _ => l)
 
 /- English proof (translation)
-Simplify using `[powForm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem powForm_diag (l : V →L[ℂ] ℂ) (n : ℕ) (y : V) : powForm l n (fun _ => y) = l y ^ n := by
   simp [powForm]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_powForm_le (l : V →L[ℂ] ℂ) (n : ℕ) : ‖powForm l n‖ ≤ ‖l‖ ^ n := by
   calc ‖powForm l n‖ ≤ ‖ContinuousMultilinearMap.mkPiAlgebra ℂ (Fin n) ℂ‖ * ∏ _i : Fin n, ‖l‖ :=
@@ -32,7 +32,7 @@ def expTerm {X : Type*} (c : X → ℂ) (l : X → V →L[ℂ] ℂ) (n : ℕ) (x
   (c x / (n ! : ℂ)) • powForm (l x) n
 
 /- English proof (translation)
-Establish `hn : ‖((n ! : ℕ) : ℂ)‖ = (n ! : ℝ)` using `by simp`. Rewrite using `[expTerm, norm_smul, norm_div, hn]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_expTerm_le {X : Type*} (c : X → ℂ) (l : X → V →L[ℂ] ℂ) (n : ℕ) (x : X) :
     ‖expTerm c l n x‖ ≤ ‖c x‖ * (‖l x‖ ^ n / (n ! : ℝ)) := by
@@ -43,7 +43,7 @@ theorem norm_expTerm_le {X : Type*} (c : X → ℂ) (l : X → V →L[ℂ] ℂ) 
     _ = ‖c x‖ * (‖l x‖ ^ n / (n ! : ℝ)) := by ring
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_expTerm_mul_le {X : Type*} (c : X → ℂ) (l : X → V →L[ℂ] ℂ) (n : ℕ) (x : X) (r : ℝ)
     (hr : 0 ≤ r) : ‖expTerm c l n x‖ * r ^ n ≤ ‖c x‖ * Real.exp (r * ‖l x‖) := by
@@ -54,7 +54,7 @@ theorem norm_expTerm_mul_le {X : Type*} (c : X → ℂ) (l : X → V →L[ℂ] �
         mul_le_mul_of_nonneg_left (Real.pow_div_factorial_le_exp _ (by positivity) n) (norm_nonneg _)
 
 /- English proof (translation)
-Use `Summable.of_nonneg_of_le (fun x => norm_nonneg _) (fun x => ?_) (h 1)` and prove the remaining obligations. Use `norm_expTerm_mul_le c l n x 1 zero_le_one` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem summable_norm_expTerm {X : Type*} (c : X → ℂ) (l : X → V →L[ℂ] ℂ)
     (h : ∀ r : ℝ, Summable fun x => ‖c x‖ * Real.exp (r * ‖l x‖)) (n : ℕ) :
@@ -67,13 +67,13 @@ def expFPS {X : Type*} (c : X → ℂ) (l : X → V →L[ℂ] ℂ) : FormalMulti
   fun n => ∑' x, expTerm c l n x
 
 /- English proof (translation)
-Apply `FormalMultilinearSeries.radius_eq_top_of_summable_norm` to reduce the goal to its premises. Introduce `r`. Establish `hb : ∀ n, ‖expFPS c l n‖ * (r : ℝ) ^ n ≤ (∑' x, ‖c x‖ * Real.exp ((2 * (r : ℝ)) * ‖l x‖)) * (1 / 2 : ℝ) ^ n`. Introduce `n`. Establish `hs` using `summable_norm_expTerm c l h n`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ‖expFPS c l n‖ ≤ ∑' x, ‖expTerm c l n x‖` using `norm_tsum_le_tsum_norm hs`. Establish `h2 : ∀ x, ‖expTerm c l n x‖ * (r : ℝ) ^ n ≤ ‖c x‖ * Real.exp ((2 * (r : ℝ)) * ‖l x‖) * (1 / 2 : ℝ) ^ n`. Introduce `x`. Establish `h3` using `norm_expTerm_mul_le c l n x (2 * (r : ℝ)) (by positivity)`. Establish `e : ‖expTerm c l n x‖ * (r : ℝ) ^ n = ‖expTerm c l n x‖ * (2 * (r : ℝ)) ^ n * (1 / 2 : ℝ) ^ n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← mul_pow]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right h3 (by positivity)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `Summable.of_nonneg_of_le (fun n => by positivity) hb (summable_geometric_two.mul_left _)`.
+A detailed English derivation is pending.
 -/
 theorem expFPS_radius {X : Type*} (c : X → ℂ) (l : X → V →L[ℂ] ℂ)
     (h : ∀ r : ℝ, Summable fun x => ‖c x‖ * Real.exp (r * ‖l x‖)) : (expFPS c l).radius = ⊤ := by
@@ -104,25 +104,23 @@ theorem expFPS_radius {X : Type*} (c : X → ℂ) (l : X → V →L[ℂ] ℂ)
   exact Summable.of_nonneg_of_le (fun n => by positivity) hb (summable_geometric_two.mul_left _)
 
 /- English proof (translation)
-Establish `hterm : ∀ n x, expTerm c l n x (fun _ => y) = c x * (l x y) ^ n / (n ! : ℂ)`. Introduce `n x`. Rewrite using `[expTerm, ContinuousMultilinearMap.smul_apply, powForm_diag, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hev : ∀ n, expFPS c l n (fun _ => y) = ∑' x, c x * (l x y) ^ n / (n ! : ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `n`. Establish `hs : HasSum (fun x => expTerm c l n x) (expFPS c l n)` using `(Summable.of_norm (summable_norm_expTerm c l h n)).hasSum`. Establish `h1` using `hs.mapL (ContinuousMultilinearMap.apply ℂ (fun _ : Fin n => V) ℂ (fun _ => y))`. Conclude with `h1.tsum_eq.symm.trans (tsum_congr fun x => hterm n x)`. Set `g : X × ℕ → ℂ` to `fun p => c p.1 * (l p.1 y) ^ p.2 / (p.2 ! : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfib : ∀ x, HasSum (fun n => g (x, n)) (c x * Complex.exp (l x y))`. Introduce `x`. Establish `h1` using `NormedSpace.expSeries_div_hasSum_exp (l x y)`. Rewrite `h1` using `[← Complex.exp_eq_exp_ℂ]`. Establish `h2` using `h1.mul_left (c x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h2` using `[g, mul_div_assoc]`. Establish `hg : ∀ p : X × ℕ, ‖g p‖ = ‖c p.1‖ * (‖l p.1 y‖ ^ p.2 / (p.2 ! : ℝ))`. Introduce `p`. Establish `hn : ‖((p.2 ! : ℕ) : ℂ)‖ = (p.2 ! : ℝ)` using `by simp`. Simplify using `only [g, norm_div, norm_mul, norm_pow, hn]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hnorm : Summable fun p : X × ℕ => ‖g p‖`. Repeatedly rewrite using `[hg]`. Rewrite using `[summable_prod_of_nonneg (fun _ => by positivity)]`. Use `⟨fun x => by simpa using (Real.summable_pow_div_factorial ‖l x y‖).mul_left ‖c x‖, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Summable.of_nonneg_of_le (fun x => by positivity) (fun x => ?_) (h ‖y‖)` and prove the remaining obligations. Establish `he` using `NormedSpace.expSeries_div_hasSum_exp (‖l x y‖)`. Rewrite `he` using `[← Real.exp_eq_exp_ℝ]`. Simplify using `only`. Rewrite using `[tsum_mul_left, he.tsum_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) (norm_nonneg _)` and prove the remaining obligations. Use `(l x).le_opNorm y` as an intermediate fact. Combine the linear relations using `[mul_comm ‖y‖ ‖l x‖]`. Establish `hsum : Summable g` using `hnorm.of_norm`. Establish `htot : HasSum g (∑' x, c x * Complex.exp (l x y))`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hsum.hasSum`. Rewrite `h1` using `[hsum.tsum_prod' (fun x => (hfib x).summable)]`. Establish `e : (fun b => ∑' n, g (b, n)) = fun b => c b * Complex.exp (l b y)`. Use function extensionality and compare the values at `fun b => (hfib b).tsum_eq`. Rewrite `h1` using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `hswap : HasSum (fun p : ℕ × X => g (p.2, p.1)) (∑' x, c x * Complex.exp (l x y))` using `(Equiv.prodComm ℕ X).hasSum_iff.2 htot`. Establish `hfin` using `hswap.prod_fiberwise (fun n => (hswap.summable.prod_factor n).hasSum)`. Use `hfin using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`.
-
-Rewrite using `[hev n]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expFPS_hasSum {X : Type*} (c : X → ℂ) (l : X → V →L[ℂ] ℂ)
     (h : ∀ r : ℝ, Summable fun x => ‖c x‖ * Real.exp (r * ‖l x‖)) (y : V) :
@@ -179,7 +177,7 @@ theorem expFPS_hasSum {X : Type*} (c : X → ℂ) (l : X → V →L[ℂ] ℂ)
 end ExpSeries
 
 /- English proof (translation)
-Unfold `ExpSeriesEntire`. Introduce `V _ _ X c ℓ h z _`. Establish `hfps : HasFPowerSeriesOnBall (fun z => ∑' x, c x * Complex.exp (ℓ x z)) (expFPS c ℓ) 0 ⊤` using `{ r_le := by rw [expFPS_radius c ℓ h] r_pos := ENNReal.zero_lt_top hasSum := fun {y} _ => by simpa using expFPS_hasSum c ℓ h y }`. Conclude with `hfps.analyticAt_of_mem (by simp)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exp_series_entire : ExpSeriesEntire := by
   unfold ExpSeriesEntire
@@ -204,7 +202,7 @@ def flipR (H : Sesq V) : V →ₗ[ℝ] (V →L[ℂ] ℂ) where
     rw [← Complex.coe_smul r u, map_smulₛₗ, Complex.conj_ofReal, smul_eq_mul, Complex.real_smul]
 
 /- English proof (translation)
-Set `T : V →L[ℝ] (V →L[ℂ] ℂ)` to `LinearMap.toContinuousLinearMap (flipR H)`. Conclude with `⟨‖T‖, norm_nonneg _, fun u => T.le_opNorm u⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_form_bound (H : Sesq V) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ u, ‖LinearMap.toContinuousLinearMap (H.flip u)‖ ≤ K * ‖u‖ := by
@@ -218,9 +216,9 @@ def kL (H : Sesq V) (w x : V) : V →L[ℂ] ℂ :=
   (Real.pi : ℂ) • LinearMap.toContinuousLinearMap (H.flip (w - x))
 
 /- English proof (translation)
-Simplify using `only [opU, kerK, kC, kL, ContinuousLinearMap.smul_apply, LinearMap.coe_toContinuousLinearMap', LinearMap.flip_apply, smul_eq_mul, map_add, map_sub, LinearMap.add_apply]`. Rewrite using `[mul_assoc]`. Use `congr 1`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [ContinuousLinearMap.sub_apply, LinearMap.coe_toContinuousLinearMap', LinearMap.flip_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem term_eq (H : Sesq V) (α : V → ℂ) (w x z : V) :
     α x * opU H x (kerK H w) z = kC H α w x * Complex.exp (kL H w x z) := by
@@ -234,7 +232,7 @@ theorem term_eq (H : Sesq V) (α : V → ℂ) (w x z : V) :
   ring
 
 /- English proof (translation)
-Rewrite using `[← sub_nonneg]`. Establish `e : a * t ^ 2 + b ^ 2 / (4 * a) - b * t = (2 * a * t - b) ^ 2 / (4 * a)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Check the signs of the components of the expression.
 -/
@@ -247,21 +245,19 @@ theorem quad_bound (a b t : ℝ) (ha : 0 < a) : b * t ≤ a * t ^ 2 + b ^ 2 / (4
   positivity
 
 /- English proof (translation)
-Take `⟨c0, C0, hc0, hC0, hn⟩` from `hN V H hH hP`. Take `⟨K, hK0, hK⟩` from `exists_form_bound H`. Establish `ha0 : 0 < Real.pi * c0 / 2` using `by positivity`. Take `⟨u, hu, hub⟩` from `hS V Λ hL (Real.pi * c0 / 2 / 2) 0 (by positivity)`. Use `Summable.of_nonneg_of_le (fun x => by positivity) (fun x => ?_) (hu.mul_left (Real.exp ((Real.pi * K * ‖w‖ + |r| * Real.pi * K) ^ 2 / (4 * (Real.pi * c0 / 2 / 2)) + |r| * Real.pi * K * ‖w‖)))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hux` using `hub x 0 (by simp)`. Simplify using `only [sub_zero] at hux`. Establish `hαx : ‖α x‖ = 1`. Apply the tactic sequence `rcases hα.1 x x.2 with h | h <;> simp [h]`. Establish `hxw : ‖H x w‖ ≤ K * ‖w‖ * ‖(x : V)‖`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h1 : H x w = LinearMap.toContinuousLinearMap (H.flip w) x` using `rfl`. Rewrite using `[h1]`. Conclude with `((LinearMap.toContinuousLinearMap (H.flip w)).le_opNorm x).trans (mul_le_mul_of_nonneg_right (hK w) (norm_nonneg _))`. Establish `hxx : c0 * ‖(x : V)‖ ^ 2 ≤ (H x x).re` using `(hn x).1`. Establish `hkL : ‖kL H w x‖ ≤ Real.pi * (K * (‖w‖ + ‖(x : V)‖))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[kL, norm_smul]`. Establish `hpi : ‖(Real.pi : ℂ)‖ = Real.pi` using `by simp [Real.pi_pos.le]`. Rewrite using `[hpi]`. Apply `mul_le_mul_of_nonneg_left _ Real.pi_pos.le` to reduce the goal to its premises. Conclude with `(hK (w - x)).trans (mul_le_mul_of_nonneg_left (norm_sub_le _ _) hK0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hre : (((Real.pi : ℂ) * H x w - (Real.pi : ℂ) * H x x / 2)).re ≤ Real.pi * (K * ‖w‖ * ‖(x : V)‖) - Real.pi * (c0 * ‖(x : V)‖ ^ 2) / 2`. Establish `e : (((Real.pi : ℂ) * H x w - (Real.pi : ℂ) * H x x / 2)).re = Real.pi * (H x w).re - Real.pi * (H x x).re / 2` using `by simp`. Rewrite using `[e]`. Establish `h1 : (H x w).re ≤ K * ‖w‖ * ‖(x : V)‖` using `(Complex.re_le_norm _).trans hxw`. Establish `h2` using `mul_le_mul_of_nonneg_left h1 Real.pi_pos.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3` using `mul_le_mul_of_nonneg_left hxx Real.pi_pos.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkC : ‖kC H α w x‖ = Real.exp ((((Real.pi : ℂ) * H x w - (Real.pi : ℂ) * H x x / 2)).re)`. Rewrite using `[kC, norm_mul, hαx, Complex.norm_exp, one_mul]`. Establish `hr : r * ‖kL H w x‖ ≤ |r| * (Real.pi * (K * (‖w‖ + ‖(x : V)‖)))` using `(mul_le_mul_of_nonneg_right (le_abs_self r) (norm_nonneg _)).trans (mul_le_mul_of_nonneg_left hkL (abs_nonneg r))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq` using `quad_bound (Real.pi * c0 / 2 / 2) (Real.pi * K * ‖w‖ + |r| * Real.pi * K) ‖(x : V)‖ (by positivity)`. Rewrite using `[hkC, ← Real.exp_add]`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use polynomial arithmetic with `[hre, hr, hq]`.
-
-Use `_ = Real.exp ((Real.pi * K * ‖w‖ + |r| * Real.pi * K) ^ 2 / (4 * (Real.pi * c0 / 2 / 2)) + |r| * Real.pi * K * ‖w‖) * Real.exp (-(Real.pi * c0 / 2 / 2) * ‖(x : V)‖ ^ 2) := Real.exp_add _ _`. Use `_ ≤ _ := mul_le_mul_of_nonneg_left hux (Real.exp_pos _).le`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem kernel_summable_bound (hS : LatGaussSummable) (hN : FormNorm) (H : Sesq V) (Λ : AddSubgroup V)
     (α : V → ℂ) (hH : IsHerm H) (hP : IsPosDef H) (hL : IsLat Λ) (hα : IsSemiChar H Λ α) (w : V) (r : ℝ) :
@@ -317,21 +313,19 @@ theorem kernel_summable_bound (hS : LatGaussSummable) (hN : FormNorm) (H : Sesq 
 end KerP
 
 /- English proof (translation)
-Unfold `KerPTh`. Introduce `V _ _ _ H Λ α hH hP hL hα w`. Use `⟨fun z => ?_, ?_⟩` and prove the remaining obligations. Establish `hb` using `kernel_summable_bound hS hN H Λ α hH hP hL hα w ‖z‖`. Use `Summable.of_norm (Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun x => ?_) hb)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[term_eq, norm_mul, Complex.norm_exp]`. Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) (norm_nonneg _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `show AnalyticOnNhd ℂ (fun z => kerP H α Λ z w) Set.univ ∧ (fun z => kerP H α Λ z w) ∈ fixedBy H α Λ`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfun : (fun z => kerP H α Λ z w) = fun z => ∑' x : Λ, kC H α w x * Complex.exp (kL H w x z)`. Use function extensionality and compare the values at `fun z => tsum_congr fun x => term_eq H α w x z`. Rewrite using `[hfun]`. Conclude with `hE V Λ (fun x => kC H α w x) (fun x => kL H w x) (kernel_summable_bound hS hN H Λ α hH hP hL hα w)`. Introduce `y hy z`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hmul` using `heisenbergMul V H hH`. Use `show α y * (kerP H α Λ (z + y) w * Complex.exp (-(Real.pi : ℂ) * H z y - (Real.pi : ℂ) * H y y / 2)) = kerP H α Λ z w`. Unfold `kerP`. Rewrite using `[← tsum_mul_right, ← tsum_mul_left]`. Establish `key : ∀ x : Λ, α y * (α x * opU H x (kerK H w) (z + y) * Complex.exp (-(Real.pi : ℂ) * H z y - (Real.pi : ℂ) * H y y / 2)) = α ((x : V) + y) * opU H ((x : V) + y) (kerK H w) z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Establish `h1 : opU H x (kerK H w) (z + y) * Complex.exp (-(Real.pi : ℂ) * H z y - (Real.pi : ℂ) * H y y / 2) = opU H y (opU H x (kerK H w)) z` using `rfl`. Establish `h2` using `hmul y x (kerK H w) z`. Establish `h3` using `hα.2 x x.2 y hy`. Establish `h4 : altE H y x = -altE H x y`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `altE`. Rewrite using `[hH x y, Complex.conj_im]`. Establish `h5 : Complex.exp (-(Real.pi : ℂ) * Complex.I * ((altE H y x : ℝ) : ℂ)) = Complex.exp ((Real.pi : ℂ) * Complex.I * ((altE H x y : ℝ) : ℂ))`. Rewrite using `[h4]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_assoc (α x), h1, h2, h5, h3, add_comm y (x : V)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[tsum_congr key]`.
-
-Conclude with `(Equiv.addRight (⟨y, hy⟩ : Λ)).tsum_eq (fun x : Λ => α (x : V) * opU H (x : V) (kerK H w) z)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KerPTh_of (hE : ExpSeriesEntire) (hS : LatGaussSummable) (hN : FormNorm) : KerPTh := by
   unfold KerPTh

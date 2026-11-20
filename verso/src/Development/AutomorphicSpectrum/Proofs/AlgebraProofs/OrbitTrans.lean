@@ -10,7 +10,7 @@ open GlobalTheory.CompanionTheory.FreeQuotProof GlobalTheory.CompanionTheory.Hyp
 namespace GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd
 
 /- English proof (translation)
-Establish `key : ∀ c : Y ⟶ M ⊗ X, c ≫ ModObj.smul (M` using `M) (X := X) = (c ≫ SemiCartesianMonoidalCategory.fst M X) • (c ≫ SemiCartesianMonoidalCategory.snd M X) := by`. Introduce `c`. Rewrite using `[CategoryTheory.Hom.smul_def, CartesianMonoidalCategory.lift_comp_fst_snd]`. Use `⟨CartesianMonoidalCategory.lift ((b ≫ SemiCartesianMonoidalCategory.fst M X) * (a ≫ SemiCartesianMonoidalCategory.fst M X)) (a ≫ SemiCartesianMonoidalCategory.snd M X), CartesianMonoidalCategory.lift_snd _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← CategoryTheory.Hom.smul_def, mul_smul, ← key a, ← h, ← key b]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_hom_of_comp_snd_eq_comp_smul {C : Type*} [Category C] [CartesianMonoidalCategory C]
     {M X Y : C} [MonObj M] [ModObj M X] (a b : Y ⟶ M ⊗ X)
@@ -27,13 +27,13 @@ private theorem exists_hom_of_comp_snd_eq_comp_smul {C : Type*} [Category C] [Ca
   rw [← CategoryTheory.Hom.smul_def, mul_smul, ← key a, ← h, ← key b]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.CompanionTheory.Hypotheses₂.FreeQuot.orbit, Set.mem_image, Set.mem_preimage, Set.mem_singleton_iff]`. Introduce and unpack `⟨p, hp, rfl⟩ ⟨q, hq, rfl⟩`. Take `⟨z, hz₁, hz₂⟩` from `Scheme.Pullback.exists_preimage_pullback (f := (ModObj.smul (M := G) (X := X)).left) (g := (SemiCartesianMonoidalCategory.snd G X).left) p q hq.symm`. Establish `e₁ : (SemiCartesianMonoidalCategory.snd G X).left ≫ X.hom = (G ⊗ X).hom` using `Over.w _`. Establish `e₂ : (ModObj.smul (M` using `G) (X := X)).left ≫ X.hom = (G ⊗ X).hom := Over.w _`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : pullback.snd (ModObj.smul (M` using `G) (X := X)).left (SemiCartesianMonoidalCategory.snd G X).left ≫ (G ⊗ X).hom = pullback.fst (ModObj.smul (M := G) (X := X)).left (SemiCartesianMonoidalCategory.snd G X).left ≫ (G ⊗ X).hom := by`. Rewrite using `[← e₂, pullback.condition_assoc, e₁, e₂]`. Take `⟨r, hr₁, hr₂⟩` from `exists_hom_of_comp_snd_eq_comp_smul (Y := Over.mk (pullback.fst (ModObj.smul (M := G) (X := X)).left (SemiCartesianMonoidalCategory.snd G X).left ≫ (G ⊗ X).hom)) (Over.homMk (pullback.fst (ModObj.smul (M := G) (X := X)).left (SemiCartesianMonoidalCategory.snd G X).left) rfl) (Ove …`. Simplify using `only [Over.comp_left, Over.homMk_left]`. Conclude with `pullback.condition.symm))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r.left z, ?_, ?_⟩` and prove the remaining obligations. Establish `h₁` using `congrArg Over.Hom.left hr₁`. Simplify using `only [Over.comp_left, Over.homMk_left] at h₁`. Rewrite using `[← Scheme.Hom.comp_apply, h₁, Scheme.Hom.comp_apply, hz₁, hp]`. Establish `h₂` using `congrArg Over.Hom.left hr₂`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.comp_left, Over.homMk_left] at h₂`. Rewrite using `[← Scheme.Hom.comp_apply, h₂, Scheme.Hom.comp_apply, hz₂]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbit_trans {S : Scheme.{0}} (G X : Over S) [GrpObj G] [ModObj G X] (x y w : X.left) :
     y ∈ orbit G X x → w ∈ orbit G X y → w ∈ orbit G X x := by

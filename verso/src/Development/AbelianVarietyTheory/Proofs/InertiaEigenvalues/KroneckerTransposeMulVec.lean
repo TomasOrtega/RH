@@ -28,7 +28,7 @@ theorem homUnit_val (A : GL a R) (B : GL b R) :
       Matrix.kroneckerMap (· * ·) (A : Matrix a a R) ((B⁻¹ : GL b R) : Matrix b b R)ᵀ := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨i, j⟩` from `p`. Simplify using `only [vecM, Matrix.mulVec, dotProduct, Matrix.kroneckerMap_apply, Matrix.transpose_apply, Matrix.mul_apply, Fintype.sum_prod_type, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -43,7 +43,7 @@ theorem kronecker_transpose_mulVec {S : Type*} [CommRing S] (A : Matrix a a S) (
   ring
 
 /- English proof (translation)
-Rewrite using `[homUnit_val, ← kronecker_transpose_mulVec]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `[Matrix.kroneckerMap_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem homUnit_mulVec {S : Type*} [CommRing S] (f : R →+* S) (A : GL a R) (B : GL b R) (X : Matrix a b S) :
     (((homUnit A B : GL (a × b) R) : Matrix (a × b) (a × b) R).map f).mulVec (vecM X) =
@@ -73,7 +73,7 @@ def extCoc {G : Type*} [Group G] (ρ₂ : G →* GL b R) (c : G → Matrix a b R
   vecM (c g * (((ρ₂ g)⁻¹ : GL b R) : Matrix b b R))
 
 /- English proof (translation)
-Introduce `X Y h`. Use extensionality with `i j`. Conclude with `congrFun h (i, j)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem vecM_injective {S : Type*} : Function.Injective (vecM : Matrix a b S → a × b → S) := by
   intro X Y h

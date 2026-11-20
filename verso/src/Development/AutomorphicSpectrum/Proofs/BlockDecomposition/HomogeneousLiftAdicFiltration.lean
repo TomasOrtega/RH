@@ -11,9 +11,9 @@ namespace GlobalTheory.CompanionTheory.GE.Tower
 variable {R : Type} [CommRing R] {N : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `h2 : G (m + k) - G (m + k + 1) ∈ (I ^ (e + m + 1)).map (C : R →+* MvPolynomial (Fin (N + 1)) R)` using `Ideal.map_mono (Ideal.pow_le_pow_right (by omega)) (hd (m + k))`. Establish `h3 : G m - G (m + (k + 1)) = (G m - G (m + k)) + (G (m + k) - G (m + k + 1))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show m + (k + 1) = m + k + 1 from rfl]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Conclude with `add_mem ih h2`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_tail_mem (I : Ideal R) (e : ℕ) (G : ℕ → MvPolynomial (Fin (N + 1)) R)
     (hd : ∀ i, G i - G (i + 1) ∈
@@ -31,25 +31,21 @@ theorem sub_tail_mem (I : Ideal R) (e : ℕ) (G : ℕ → MvPolynomial (Fin (N +
     exact add_mem ih h2
 
 /- English proof (translation)
-Establish `htop : ∀ k, (I ^ k • ⊤ : Submodule R R) = I ^ k` using `fun k => by`. Rewrite using `[smul_eq_mul, Ideal.mul_top]`. Establish `hcoef : ∀ d i k, coeff d (G i) - coeff d (G (i + k)) ∈ I ^ (e + i + 1)`. Introduce `d i k`. Establish `h` using `(mem_map_C_iff.1 (sub_tail_mem I e G hd i k)) d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[coeff_sub]`. Then use the resulting hypothesis. Establish `hL : ∀ d, ∃ Ld : R, ∀ i, coeff d (G i) - Ld ∈ I ^ (e + i + 1)`. Introduce `d`. Take `⟨Ld, hLd⟩` from `IsPrecomplete.prec' (I := I) (fun i => coeff d (G i)) (by`. Introduce `m n hmn`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[SModEq.sub_mem, htop]`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Conclude with `Ideal.pow_le_pow_right (by omega) (hcoef d m k))`. Use `⟨Ld, fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `hcoef d i (e + 1)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hLd (i + (e + 1))`. Rewrite `h2` using `[SModEq.sub_mem, htop]`. Establish `h3 : coeff d (G i) - Ld = (coeff d (G i) - coeff d (G (i + (e + 1)))) + (coeff d (G (i + (e + 1))) - Ld)` using `by ring`. Rewrite using `[h3]`. Conclude with `add_mem h1 (Ideal.pow_le_pow_right (by omega) h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose Lf hLf using hL`. Use `⟨∑ d ∈ (Finset.univ : Finset (Fin (N + 1))).finsuppAntidiag n, monomial d (Lf d), ?_, ?_⟩` and prove the remaining obligations. Use `IsHomogeneous.sum _ _ _ (fun d hd => isHomogeneous_monomial _ ?_)` and prove the remaining obligations. Rewrite `hd` using `[Finset.mem_finsuppAntidiag]`. Rewrite using `[Finsupp.degree_eq_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hd.1`. Introduce `i`. Rewrite using `[mem_map_C_iff]`. Introduce `d`. Rewrite using `[coeff_sub, coeff_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Distinguish the cases in `hdS : d ∈ (Finset.univ : Finset (Fin (N + 1))).finsuppAntidiag n`. Rewrite using `[if_pos hdS]`. Conclude with `hLf d i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[if_neg hdS, sub_zero]`. Establish `h0 : coeff d (G i) = 0`. Assume the negation of the conclusion as `hne`. Apply `hdS` to reduce the goal to its premises. Establish `hw` using `hom i hne`.
-
-Rewrite using `[Finset.mem_finsuppAntidiag]`. Use `⟨?_, Finset.subset_univ _⟩` and prove the remaining obligations. Rewrite using `[← Finsupp.degree_eq_sum, Finsupp.degree_eq_weight_one]`. Conclude with `hw`. Rewrite using `[h0]`.
-
-Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_limit_form (I : Ideal R) [IsPrecomplete I R] (n e : ℕ)
     (G : ℕ → MvPolynomial (Fin (N + 1)) R) (hom : ∀ i, (G i).IsHomogeneous n)
@@ -107,15 +103,15 @@ theorem exists_limit_form (I : Ideal R) [IsPrecomplete I R] (n e : ℕ)
       exact zero_mem _
 
 /- English proof (translation)
-Establish `hL : Antitone L` using `antitone_nat_of_succ_le hanti`. Set `lift' : ℕ → MvPolynomial (Fin (N + 1)) R → MvPolynomial (Fin (N + 1)) R` to `fun j f => if h : ∃ f' ∈ L (j + 1), f'.IsHomogeneous n ∧ f - f' ∈ (I ^ (j + 1)).map (C : R →+* MvPolynomial (Fin (N + 1)) R) then h.choose else f`. Set `s : ℕ → MvPolynomial (Fin (N + 1)) R` to `fun i => Nat.rec (motive := fun _ => MvPolynomial (Fin (N + 1)) R) g (fun k f => lift' (e + k) f) i`. Establish `hsS : ∀ i, s (i + 1) = lift' (e + i) (s i)` using `fun i => rfl`. Establish `hstep : ∀ i, s i ∈ L (e + i) ∧ (s i).IsHomogeneous n → s (i + 1) ∈ L (e + i + 1) ∧ (s (i + 1)).IsHomogeneous n ∧ s i - s (i + 1) ∈ (I ^ (e + i + 1)).map (C : R →+* MvPolynomial (Fin (N + 1)) R)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `i ⟨h1, h2⟩`. Establish `hex` using `hlift (e + i) n hn (s i) h1 h2`. Rewrite using `[hsS]`. Simplify using `only [lift']`. Rewrite using `[dif_pos hex]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hex.choose_spec`. Establish `hinv : ∀ i, s i ∈ L (e + i) ∧ (s i).IsHomogeneous n`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => exact ⟨hg, hgn⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ i ih => exact ⟨(hstep i ih).1, (hstep i ih).2.1⟩`. Establish `hd : ∀ i, s i - s (i + 1) ∈ (I ^ (e + i + 1)).map (C : R →+* MvPolynomial (Fin (N + 1)) R)` using `fun i => (hstep i (hinv i)).2.2`. Take `⟨g', hg'n, hg'⟩` from `exists_limit_form I n e s (fun i => (hinv i).2) hd`. Use `⟨g', hg'n, fun j => ?_, hg' 0⟩` and prove the remaining obligations. Establish `h1 : s j ∈ L j` using `hL (by omega : j ≤ e + j) (hinv j).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : s j - g' ∈ L j` using `hL (by omega : j ≤ e + j) (hbase (e + j) (hg' j))`. Establish `h3 : g' = s j - (s j - g')` using `by ring`. Rewrite using `[h3]`. Conclude with `sub_mem h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form_in_all (I : Ideal R) [IsPrecomplete I R]
     (L : ℕ → Ideal (MvPolynomial (Fin (N + 1)) R))
@@ -163,15 +159,15 @@ theorem exists_form_in_all (I : Ideal R) [IsPrecomplete I R]
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
 /- English proof (translation)
-Introduce `R _ I hI N L hhom hbase hanti n₀ hlift`. Establish `: IsPrecomplete I R` using `hI.toIsPrecomplete`. Set `S : Set (MvPolynomial (Fin (N + 1)) R)` to `{g | ∃ n, n₀ ≤ n ∧ g.IsHomogeneous n ∧ ∀ j, g ∈ L j}`. Use `⟨Ideal.span S, ?_, fun e => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `d f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hH : (Ideal.span S).IsHomogeneous (homogeneousSubmodule (Fin (N + 1)) R)` using `Ideal.homogeneous_span _ _ (fun x hx => by`. Take `⟨n, _, hn, _⟩` from `hx`. Conclude with `⟨n, (mem_homogeneousSubmodule n x).2 hn⟩)`. Establish `h` using `(Ideal.IsHomogeneous.mem_iff _ hH).1 hf d`. Establish `e1 : (DirectSum.decompose (homogeneousSubmodule (Fin (N + 1)) R) f d : MvPolynomial (Fin (N + 1)) R) = homogeneousComponent d f` using `decomposition.decompose'_apply f d`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e1]`. Then use the resulting hypothesis. Rewrite using `[Ideal.span_le]`. Introduce and unpack `g ⟨n, _, _, hall⟩`. Conclude with `hall e`. Introduce `f hf k`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← sum_homogeneousComponent f, Finset.mul_sum]`. Use `Submodule.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Establish `hmem : X k ^ n₀ * homogeneousComponent d f ∈ L e` using `Ideal.mul_mem_left _ _ (hhom e d f hf)`. Establish `hh : (X k ^ n₀ * homogeneousComponent d f).IsHomogeneous (n₀ + d)` using `(isHomogeneous_X_pow k n₀).mul (homogeneousComponent_isHomogeneous d f)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hg'n, hall, hdiff⟩` from `exists_form_in_all I L hbase hanti n₀ hlift e (n₀ + d) (Nat.le_add_right _ _) _ hmem hh`. Establish `h3 : X k ^ n₀ * homogeneousComponent d f = g' + (X k ^ n₀ * homogeneousComponent d f - g')`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Conclude with `add_mem (Ideal.mem_sup_left (Ideal.subset_span ⟨n₀ + d, Nat.le_add_right _ _, hg'n, hall⟩)) (Ideal.mem_sup_right hdiff)`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_limit_ideal : ∀ (R : Type) [CommRing R] (I : Ideal R), IsAdicComplete I R → ∀ (N : ℕ)
     (L : ℕ → Ideal (MvPolynomial (Fin (N + 1)) R)),

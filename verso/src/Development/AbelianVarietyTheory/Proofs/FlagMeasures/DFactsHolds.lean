@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.Dec
 
 /- English proof (translation)
-Rewrite using `[Subsingleton.elim g 0]`. Simplify using `[GlobalTheory.Count.dOp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dOp_fin_zero (g : Matrix (Fin 0) (Fin 0) ℂ) : dOp g = 0 := by
 
@@ -17,9 +17,9 @@ theorem dOp_fin_zero (g : Matrix (Fin 0) (Fin 0) ℂ) : dOp g = 0 := by
   simp [GlobalTheory.Count.dOp]
 
 /- English proof (translation)
-Establish `hX' : Formalism.REAL.inG ε X ∧ X * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * X)` using `hX`. Establish `hG : Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0` using `hX'.1`. Establish `h1 : Xᴴ * Formalism.REAL.Jm ε = X * Formalism.REAL.Jm ε`. Rewrite using `[hX'.2]`. Conclude with `eq_neg_of_add_eq_zero_left hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (· * Formalism.REAL.Jm ε) h1`. Simplify using `only [Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.mul_one] at h2`. Conclude with `h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isHermitian_of_inP {n : ℕ} {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : Formalism.REAL.inP ε X) : X.IsHermitian := by
@@ -33,7 +33,7 @@ private theorem isHermitian_of_inP {n : ℕ} {ε : Fin n → Bool} {X : Matrix (
   exact h2
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε` using `hg`. Establish `h : (Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) * g = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg', Formalism.REAL.Jm_mul_self]`. Conclude with `(Matrix.isUnit_iff_isUnit_det g).mpr (Matrix.isUnit_det_of_left_inverse h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_of_inUJ_flag_measures' {n : ℕ} {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : Formalism.REAL.inUJ ε g) : IsUnit g := by
@@ -43,11 +43,11 @@ private theorem isUnit_of_inUJ_flag_measures' {n : ℕ} {ε : Fin n → Bool} {g
   exact (Matrix.isUnit_iff_isUnit_det g).mpr (Matrix.isUnit_det_of_left_inverse h)
 
 /- English proof (translation)
-Establish `hP : Formalism.REAL.inP ε 0` using `by simp [Formalism.REAL.inP, Formalism.REAL.inG]`. Take `⟨h0, h1, -⟩` from `GlobalTheory.Count.Cartan.dOp_bounds hn (Matrix.unitaryGroup (Fin n) ℂ).one_mem hP`. Establish `hs0 : Formalism.REAL.hs (0 : Matrix (Fin n) (Fin n) ℂ) = 0` using `by simp [Formalism.REAL.hs]`. Simplify using `only [NormedSpace.exp_zero, Matrix.mul_one] at h0 h1`. Rewrite `h1` using `[hs0, Real.sqrt_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs2 : (0 : ℝ) < Real.sqrt 2` using `by positivity`. Establish `hle : dOp (1 : Matrix (Fin n) (Fin n) ℂ) ≤ 0`. Assume the negation of the conclusion as `h`. Use `mul_pos hs2 (lt_of_not_ge h)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `le_antisymm hle h0`.
+A detailed English derivation is pending.
 -/
 private theorem dOp_one' {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) :
     dOp (1 : Matrix (Fin n) (Fin n) ℂ) = 0 := by
@@ -64,13 +64,13 @@ private theorem dOp_one' {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) :
   exact le_antisymm hle h0
 
 /- English proof (translation)
-Introduce `n ε`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨fun g _ => ⟨by rw [dOp_fin_zero], by rw [dOp_fin_zero, dOp_fin_zero], fun g' _ => by rw [dOp_fin_zero, dOp_fin_zero, dOp_fin_zero, add_zero], fun k₁ _ k₂ _ => by rw [dOp_fin_zero, dOp_fin_zero]⟩, GlobalTheory.Count.Cartan.continuousOn_dOp ε, fun k hk X hX => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Count.Cartan.dHS_polar hk.1 (isHermitian_of_inP hX)`. Rewrite using `[dOp_fin_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.sqrt_nonneg _`. Rewrite using `[dOp_fin_zero, mul_zero]`. Simplify using `[Formalism.REAL.hs]`. Use `⟨fun g hg => ?_, GlobalTheory.Count.Cartan.continuousOn_dOp ε, fun k hk X hX => ?_⟩` and prove the remaining obligations. Establish `hgU : Formalism.REAL.inUJ ε g` using `hg`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu` using `isUnit_of_inUJ_flag_measures' hgU`. Use `⟨?_, GlobalTheory.Count.Cartan.dOp_inv hgU, fun g' hg' => GlobalTheory.Count.Cartan.dOp_mul_le hn hu (isUnit_of_inUJ_flag_measures' hg'), fun k₁ hk₁ k₂ hk₂ => GlobalTheory.Count.Cartan.dOp_unitary hk₁.1 hk₂.1 g⟩` and prove the remaining obligations. Establish `hdet : IsUnit g.det` using `(Matrix.isUnit_iff_isUnit_det g).mp hu`. Establish `hinv : IsUnit g⁻¹` using `Matrix.isUnit_nonsing_inv_iff.mpr hu`. Establish `h` using `GlobalTheory.Count.Cartan.dOp_mul_le hn hu hinv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h` using `[Matrix.mul_nonsing_inv g hdet, dOp_one' hn ε, GlobalTheory.Count.Cartan.dOp_inv hgU]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨-, h1, h2⟩` from `GlobalTheory.Count.Cartan.dOp_bounds hn hk.1 hX`. Conclude with `⟨GlobalTheory.Count.Cartan.dHS_polar hk.1 (isHermitian_of_inP hX), h1, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dFacts_holds : DFacts := by
   intro n ε

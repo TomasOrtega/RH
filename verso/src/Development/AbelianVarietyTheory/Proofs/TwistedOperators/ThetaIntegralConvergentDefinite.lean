@@ -16,11 +16,9 @@ noncomputable section
 namespace GlobalTheory.DefLiftSmooth
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `((isCompact_closedBall t₀ 1).prod hC).exists_bound_of_continuousOn hK'.continuousOn`. Establish `hconst : IntegrableOn (fun _ : H => (M : ℂ)) 𝓕 μ` using `GlobalTheory.CocompactIntegrable.integrableOn_of_cocompact Γ μ 𝓕 C h𝓕 hC hcov _ continuous_const (fun _ _ _ => rfl)`. Establish `hK'c : ∀ t, Continuous (K' t)` using `fun t => hK'.comp (Continuous.prodMk_right t)`. Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (bound := fun _ => ‖(M : ℂ)‖) (Metric.ball_mem_nhds t₀ one_pos) (Filter.Eventually.of_forall fun t => (hK t).aestronglyMeasurable) (GlobalTheory.CocompactIntegrable.integrableOn_of_cocompact Γ μ 𝓕 C h𝓕 hC hcov _ (hK t₀) (fun γ hγ …` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun h t ht => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hγ, c, hc, rfl⟩` from `hcov h`. Rewrite using `[hinv' γ hγ]`. Use `(hM (t, c) ⟨Metric.ball_subset_closedBall ht, hc⟩).trans ?_` and prove the remaining obligations. Rewrite using `[Complex.norm_real]`. Conclude with `le_abs_self M`.
-
-Conclude with `Filter.Eventually.of_forall fun h t _ => hd t h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_integral_of_cocompact {H : Type*} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [MeasurableSpace H] [BorelSpace H] (Γ : Subgroup H) [Countable Γ] (μ : Measure H)
@@ -49,15 +47,15 @@ theorem hasDerivAt_integral_of_cocompact {H : Type*} [Group H] [TopologicalSpace
   · exact Filter.Eventually.of_forall fun h t _ => hd t h
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT om Φ φ ν 𝓕 _ hω hθ hΦ hS _ hν h𝓕 hφ k τs Xs hX h`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D T`. Take `⟨C, hC, hcov⟩` from `GlobalTheory.definite_unitary_cocompact S hS`. Establish `hK` using `GlobalTheory.Mem.Lift.isKerSys_thKer (θ := θ) hθ hω.std (GlobalTheory.Ker.isWeak_of_datum hω) hω.om_cont`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set κ := GlobalTheory.Mem.Lift.thKer ψ S T om with hκ`. Set `L : GlobalTheory.RealWeil.thetaSub ψ S T → GA D T → ℂ` to `fun f h => ∫ g in 𝓕, κ f g h * φ g ∂ν`. Establish `hkinv : ∀ f, ∀ γ ∈ GQ S, ∀ (g : GA D S) (h : GA D T), κ f (γ * g) h * φ (γ * g) = κ f g h * φ g`. Introduce `f γ hγ g h`. Use `hK.left f γ hγ 1 (one_mem _) g h` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[one_mul]`. Rewrite using `[this, hφ.left γ hγ]`. Establish `hcont : ∀ φ' ∈ Set.range L, Continuous φ'`. Introduce and unpack `_ ⟨f, rfl⟩`. Conclude with `GlobalTheory.DefLiftCont.continuous_integral_of_cocompact (GQ S) ν 𝓕 C h𝓕 hC hcov (fun h g => κ f g h * φ g) (((hK.cont f).comp continuous_swap).mul (hφ.cont.comp continuous_snd)) (fun γ hγ h g => hkinv f γ hγ g h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hder : ∀ φ' ∈ Set.range L, ∀ τ, ∀ X ∈ lieAt T τ, ∃ φ'' ∈ Set.range L, ∀ h, HasDerivAt (fun t : ℝ => φ' (h * oneP θ T τ X t)) (φ'' h) 0`. Introduce and unpack `_ ⟨f, rfl⟩ τ X hX`. Take `⟨f', e⟩` from `hK.derW τ X hX f`. Use `⟨L f', ⟨f', rfl⟩, fun h => ?_⟩` and prove the remaining obligations. Establish `hoc` using `GlobalTheory.Mem.Lift.continuous_oneP (V := T) hθ hX`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `key` using `hasDerivAt_integral_of_cocompact (GQ S) ν 𝓕 C h𝓕 hC hcov (fun t g => κ f g (h * oneP θ T τ X t) * φ g) (fun t g => κ f' g (h * oneP θ T τ X t) * φ g) (fun t => ((hK.cont f).comp (continuous_id.prodMk continuous_const)).mul hφ.cont) (((hK.cont f').comp (continuous_snd.prodMk (cont …`. Simplify `key` using `only [GlobalTheory.Mem.Lift.oneP_zero hθ, mul_one, L]`. Establish `hsm` using `GlobalTheory.Mem.DerClosed.mem_smFun_of_closed D θ hθ T (Set.range L) hcont hder (L ⟨Φ, hΦ⟩) ⟨_, rfl⟩`. Conclude with `hsm k τs Xs hX h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lift_smooth : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (Φ : WO S T → ℂ) (φ : GA D S → ℂ) (ν : Measure (GA D S)) (𝓕 : Set (GA D S)), GlobalTheory.FunPr.Hypotheses₂ → IsWeilDatumO ψ S T χS χT om → IsInfFam θ → IsThetaFunO ψ S T Φ → (∀ τ, (gramAt D S τ).PosDef) → (∀ τ, (gramAt D T τ).PosDef) → ν.IsHaarMeasure → IsFundamentalDomain (GQ S) 𝓕 ν → IsAutFunSm θ S φ → ∀ (k : ℕ) (τs : Fin k → D.what₂.Tau) (Xs : Fin k → Matrix (Fin T.rank) (Fin T.rank) ℂ), (∀ i, Xs i ∈ lieAt T (τs i)) → ∀ h : GA D T, ContDiff ℝ ∞ fun t : Fin k → ℝ => (fun h : GA D T => ∫ g in 𝓕, thetaKO om g h Φ * φ g ∂ν) (h * (List.ofFn fun i => oneP θ T (τs i) (Xs i) (t i)).prod) := by
   intro D ψ θ S T χS χT om Φ φ ν 𝓕 _ hω hθ hΦ hS _ hν h𝓕 hφ k τs Xs hX h

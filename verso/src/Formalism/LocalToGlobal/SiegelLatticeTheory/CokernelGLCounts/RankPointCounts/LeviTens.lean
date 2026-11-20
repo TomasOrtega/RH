@@ -17,17 +17,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [HidaSetting.eR]`. Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.ee, map_zero]`. Use `ef a b := by`. Apply the tactic sequence `simp only [HidaSetting.eR, HidaSetting.fR]; rw [Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.ef]; split_ifs <;> simp`. Use `ff a b := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [HidaSetting.fR]`. Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.ff, map_zero]`. Use `ez a := by`. Simplify using `only [HidaSetting.eR, HidaSetting.zR]`. Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, (X.zu_orth u a).1, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `fz a := by`. Simplify using `only [HidaSetting.fR, HidaSetting.zR]`. Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, (X.zu_orth u a).2, map_zero]`. Use `ew a b := ((X.wfr_perp u v b).1 a).1`. Use `fw a b := ((X.wfr_perp u v b).1 a).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `zw b := (X.wfr_perp u v b).2`. Use `ww := X.wfr_on u v`. Use `zz := by`. Simplify using `only [HidaSetting.zR]`. Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.zu_norm, map_neg, map_natCast]`.
-
-Conclude with `neg_ne_zero.2 (Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero)`. Use `card := by`. Establish `h1` using `X.n_eq`. Establish `h2` using `D.R.r_eq`. Establish `h3` using `D.R.rS_two`.
-
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem frameAt (X : HidaSetting D) (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     Frame (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (fun a => rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u))
@@ -54,26 +50,24 @@ theorem frameAt (X : HidaSetting D) (u : D.what₂.Word) (v : InfinitePlace X.B.
     have h1 := X.n_eq; have h2 := D.R.r_eq; have h3 := D.R.rS_two; omega
 
 /- English proof (translation)
-Introduce `D X u v y hef hz`. Conclude with `perp_efz (frameAt X u v) y hef hz`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wfrSpan : WfrSpan := by
   intro D X u v y hef hz
   exact perp_efz (frameAt X u v) y hef hz
 
 /- English proof (translation)
-Introduce `D X u h hh x`. Establish `hS : ∀ v, InS (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) (uMat (h v))` using `hh`. Use `choose V hVu hVe hVf hVz hVw hVN using fun v => levi_place (frameAt X u v) ((h v : Formalism.REAL.UJ (X.B.I.ε v)) : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) (h v).2 (hS v)`. Set `s0 : X.B.I.Ginf` to `fun v => ⟨V v, hVu v⟩`. Establish `hs0 : ∀ v, uMat (s0 v) = (V v : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)` using `fun v => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ v, uMat ((s0⁻¹ * h) v) = (((V v)⁻¹ : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) * uMat (h v)` using `fun v => rfl`. Establish `hs0S : s0 ∈ X.SinfU u`. Introduce `v`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hs0, sub_mulVec, one_mulVec, hVe v a, sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Rewrite using `[hs0, sub_mulVec, one_mulVec, hVz v, sub_self]`. Conclude with `zero_mem _`. Establish `hnN : s0⁻¹ * h ∈ X.NinfU u` using `fun v => by rw [show uMat ((s0⁻¹ * h) v) = _ from hn v]; exact hVN v`. Establish `hnS : s0⁻¹ * h ∈ X.SinfU u` using `fun v => (hnN v).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : h = s0 * (s0⁻¹ * h)` using `by rw [mul_inv_cancel_left]`. Establish `hpi : X.piU u h = X.piU u s0`. Rewrite using `[hsplit, (X.piU_rep u).2.1 s0 hs0S _ hnS, (X.piU_rep u).2.2.2.1 _ hnN, mul_one]`. Establish `hs0H : s0 ∈ Hset X.B.I (Set.range (fun a => crdOf X.B.I X.ιE X.bas (X.eX a)) ∪ Set.range (fun a => crdOf X.B.I X.ιE X.bas (X.fY a)) ∪ {crdOf X.B.I X.ιE X.bas (X.zu u)})`. Introduce `v p hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hs0]`. Break down `hp with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hp` into its components or cases. Conclude with `hVe v a`. Conclude with `hVf v a`. Rewrite `hp` using `[Set.mem_singleton_iff]`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hp` using the available equality. Conclude with `hVz v`. Establish `hmat : ∀ v, matW X.B.I (X.wfr u v) v s0 = matW X.B.I (X.wfr u v) v h` using `fun v => by`. Use extensionality with `a b`. Conclude with `hVw v a b`.
-
-Rewrite using `[hpi, X.tensU_equiv u s0 hs0H x]`. Simplify using `only [hmat]`.
+A detailed English derivation is pending.
 -/
 theorem leviTens : LeviTens := by
   intro D X u h hh x

@@ -20,7 +20,7 @@ namespace GlobalTheory.FlipStart
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-The claim follows from `| _, .nil => rfl | _, .snoc a q => by show (restrictPol P (p.comp q), polOf P a) = (Path.Fam.append (restrictPol P p) (restrictPol P q), polOf P a) rw [restrictPol_comp P p q]`.
+A detailed English derivation is pending.
 -/
 theorem restrictPol_comp (P : PolE G) {X Y : Node} (p : Path T X Y) : ∀ {Z : Node} (q : Path T Y Z),
     restrictPol P (p.comp q) = Path.Fam.append (restrictPol P p) (restrictPol P q)
@@ -30,7 +30,7 @@ theorem restrictPol_comp (P : PolE G) {X Y : Node} (p : Path T X Y) : ∀ {Z : N
     rw [restrictPol_comp P p q]
 
 /- English proof (translation)
-The claim follows from `| _, .nil, _, _ => rfl | _, .snoc a q, e, e' => by show (Path.Fam.zip φ (d.append e.1) (d'.append e'.1), φ a e.2 e'.2) = ((Path.Fam.zip φ d d').append (Path.Fam.zip φ e.1 e'.1), φ a e.2 e'.2) rw [zip_append φ d d' q e.1 e'.1]`.
+A detailed English derivation is pending.
 -/
 theorem zip_append {S S' S'' : Arrow T → Type} (φ : ∀ a, S a → S' a → S'' a) {X Y : Node} {p : Path T X Y} (d : p.Fam S)
     (d' : p.Fam S') : ∀ {Z : Node} (q : Path T Y Z) (e : q.Fam S) (e' : q.Fam S'),
@@ -42,7 +42,7 @@ theorem zip_append {S S' S'' : Arrow T → Type} (φ : ∀ a, S a → S' a → S
     rw [zip_append φ d d' q e.1 e'.1]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => rfl | n + 1, f, g => by show (Path.Fam.zip φ (rowFam j n fun i => f i.castSucc) (rowFam j n fun i => g i.castSucc), φ _ (f (Fin.last n)) (g (Fin.last n))) = (rowFam j n fun i => φ _ (f i.castSucc) (g i.castSucc), φ _ (f (Fin.last n)) (g (Fin.last n))) rw [zip_rowFam …`.
+A detailed English derivation is pending.
 -/
 theorem zip_rowFam {S S' S'' : Arrow T → Type} (φ : ∀ a, S a → S' a → S'' a) (j : ℕ) : ∀ n (f : ∀ i : Fin n, S (.right i j))
     (g : ∀ i : Fin n, S' (.right i j)), Path.Fam.zip φ (rowFam j n f) (rowFam j n g) = rowFam j n fun i => φ _ (f i) (g i)
@@ -53,7 +53,7 @@ theorem zip_rowFam {S S' S'' : Arrow T → Type} (φ : ∀ a, S a → S' a → S
     rw [zip_rowFam φ j n]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => rfl | n + 1, f, g => by show Path.Fam.zip φ (Path.Fam.append (p := Path.one (.down t i n)) ((), f (Fin.last n)) (downFam t i n fun j => f j.castSucc)) (Path.Fam.append (p := Path.one (.down t i n)) ((), g (Fin.last n)) (downFam t i n fun j => g j.castSucc)) = Path.Fa …`.
+A detailed English derivation is pending.
 -/
 theorem zip_downFam {S S' S'' : Arrow T → Type} (φ : ∀ a, S a → S' a → S'' a) (t : T) (i : ℕ) : ∀ n (f : ∀ j : Fin n, S (.down t i j))
     (g : ∀ j : Fin n, S' (.down t i j)), Path.Fam.zip φ (downFam t i n f) (downFam t i n g) = downFam t i n fun j => φ _ (f j) (g j)
@@ -70,7 +70,7 @@ theorem zip_downFam {S S' S'' : Arrow T → Type} (φ : ∀ a, S a → S' a → 
     rfl
 
 /- English proof (translation)
-The claim follows from `| 0 => rfl | n + 1 => by show (restrictPol P (rowPath T j n), polOf P (.right n j)) = (rowFam j n fun i => polOf P (.right (i.castSucc : Fin (n + 1)) j), _) rw [restrictPol_rowPath P j n] rfl`.
+A detailed English derivation is pending.
 -/
 theorem restrictPol_rowPath (P : PolE G) (j : ℕ) : ∀ n, restrictPol P (rowPath T j n) = rowFam j n fun i => polOf P (.right i j)
   | 0 => rfl
@@ -80,7 +80,7 @@ theorem restrictPol_rowPath (P : PolE G) (j : ℕ) : ∀ n, restrictPol P (rowPa
     rfl
 
 /- English proof (translation)
-The claim follows from `| 0 => rfl | n + 1 => by show restrictPol P ((Path.one (.down t i n)).comp (downPath t i n)) = _ rw [restrictPol_comp, restrictPol_downPath P t i n] rfl`.
+A detailed English derivation is pending.
 -/
 theorem restrictPol_downPath (P : PolE G) (t : T) (i : ℕ) : ∀ n,
     restrictPol P (downPath t i n) = downFam t i n fun j => polOf P (.down t i j)
@@ -91,7 +91,7 @@ theorem restrictPol_downPath (P : PolE G) (t : T) (i : ℕ) : ∀ n,
     rfl
 
 /- English proof (translation)
-Unfold `tensE tensT`. Rewrite using `[Finsupp.mapDomain_single, Finsupp.sum_single_index, Finsupp.sum_single_index, one_mul]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tensE_single (W : G.Weil) {X Y : Node} (p : Path T X Y) (P : PolE G) (d : PureT G p) (c : ℂ) :
     tensE W p (Finsupp.single P 1) (Finsupp.single d c) =
@@ -102,9 +102,9 @@ theorem tensE_single (W : G.Weil) {X Y : Node} (p : Path T X Y) (P : PolE G) (d 
   · simp
 
 /- English proof (translation)
-Unfold `givenFin givenPath`. Rewrite using `[restrictPol_comp, zip_append, restrictPol_downPath, restrictPol_rowPath, zip_downFam, zip_rowFam]`. Use `congr 1`. Unfold `rowDatum`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Use `show W.fock (.chi i 0) (W.cosVec i (Φ i)) (if h : (i : ℕ) < D.R.m then ρ ⟨i, h⟩ else 0) = W.datum ρ Φ i`. Rewrite using `[dif_pos i.2]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem zip_given (W : G.Weil) (t : T) (ρ : G.RealVec) (q : ∀ j : ℕ, PolF D (G.V (.grid 0 (j + 1))).rank (G.V (.grid 0 j)).rank)
     (f : ∀ j : Fin D.R.m, Sch G (.down t 0 j)) (Φ : G.Datum) :
@@ -125,15 +125,15 @@ end GlobalTheory.FlipStart
 open GlobalTheory.FlipStart in
 
 /- English proof (translation)
-Introduce `hP hC`. Take `⟨a, h⟩` from `((GlobalTheory.T.path_convergence_down_chain hP hC).and (GlobalTheory.T.path_convergence_horizontal_theta hP hC)).and (GlobalTheory.T.given_finite_representation_chain hP)`. Use `⟨a, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x, h⟩` from `h ε CF hCF`. Use `⟨x, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch i j => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨hcol, hrow⟩, hfin⟩` from `h D large₂ e hx Γ Pl0 T A Ks R F s ch i j`. Take `⟨q, hq⟩` from `exists_chainPols ch`. Use `⟨Finsupp.single (gPol ch.ρ q) 1, fun t => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `exists_chainVecs ch t`. Take `⟨z, hz, hrep⟩` from `hfin t f hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨z, hz, fun Φ => ⟨Finsupp.single (givenFin ch.W t f Φ) (z : ℂ), hrep Φ, fun M hM y => ?_⟩⟩` and prove the remaining obligations. Take `⟨hc1, hc2⟩` from `hcol t f q hf hq M hM y`. Take `⟨hr1, hr2⟩` from `hrow t Φ M hM y`. Rewrite using `[tensE_single]`. Use `⟨fun d hd => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd'` using `Finsupp.support_single_subset hd`. Rewrite `hd'` using `[Finset.mem_singleton]`. Substitute `hd'` using the available equality. Rewrite using `[zip_given]`. Use `(pathConv_comp ch.W M _ _ _ _ _).2 ⟨hc1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc2]`. Conclude with `hr1`. Rewrite using `[liftT_single, zip_given]`. Unfold `givenPath`. Rewrite using `[pathLift_comp, hc2, ← hr2, smul_smul, inv_mul_cancel₀ (Units.ne_zero z), one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlipStart.start : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.RowClaim.Big fun {D} _ _ _ _ {T} _ _ _ _ _ {R} ch => ∃ Pg : GlobalTheory.FlipRun.PolE ch.G →₀ ℂ, ∀ t : T, ∃ z : ℂˣ, z ∈ GlobalTheory.RowClaim.xiVals R.toLevCh t ∧ ∀ Φ : ch.G.Datum, ∃ τg : TotT ch.G (GlobalTheory.FunObj.givenPath t D.R.m), GlobalTheory.FlipRun.RepFin ch.S.B ch.rm t (GlobalTheory.FunObj.givenPath t D.R.m) τg (fun w => (givenStage t w ch.S.B Φ).tensor) ∧ ∀ M : Vol ch.G, M.Is t → ∀ y, TotConv ch.W M _ (GlobalTheory.FlipRun.tensE ch.W _ Pg τg) (GlobalTheory.RowClaim.formTop ch t y) ∧ thetaChi ch.W ch.M ch.ρ Φ (ch.cv.lift t y) = (z : ℂ)⁻¹ • liftT ch.W M _ (GlobalTheory.FlipRun.tensE ch.W _ Pg τg) (GlobalTheory.RowClaim.formTop ch t y) := by
   intro hP hC

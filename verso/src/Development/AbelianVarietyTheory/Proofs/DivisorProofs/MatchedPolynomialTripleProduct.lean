@@ -24,15 +24,15 @@ open GlobalTheory.ThK.EvAt0.PolD
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Set `φs : ∀ v : Pl F, (κ → Fv F v) → ℂ` to `fun v => Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1`. Establish `hSB : ∀ v, φs v ∈ SB _` using `fun v => GlobalTheory.StdVacuum.indicator_mem_SB v`. Set `rr : (κ → AF F) → ℂ` to `fun x => ∏ᶠ v, φs v fun i => evFin F v (x i)`. Establish `hinv : ∀ x z : κ → AF F, At (evI F) z → rr (x + z) = rr x` using `fun x z hz => by`. Establish `hz0 : ∀ v i, evFin F v (z i) = 0` using `fun v i => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrFun (hz ((0, 1) : AF F) (map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F))) i`. Establish `h2 : (1 : Af F) * (z i).2 = 0` using `congrArg Prod.snd h`. Rewrite `h2` using `[one_mul]`. Rewrite using `[evFin, AlgHom.comp_apply]`. Use `map_zero (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v)` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `h2`. Simplify using `only [rr, Pi.add_apply, map_add, hz0, add_zero]`. Establish `hr0 : rr 0 = 1`. Use `finprod_eq_one_of_forall_eq_one fun v => ?_` and prove the remaining obligations. Simplify using `only [φs, Pi.zero_apply, map_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem (by intro i; exact zero_mem _)]`. Both sides reduce to the same expression. Use `⟨rr, fun f => ⟨hinv, GlobalTheory.TensUniq.pure_mem_schA f φs hSB (Eventually.of_forall fun _ => rfl)⟩, fun y => ?_⟩` and prove the remaining obligations. Establish `hz : At (evI F) (fun i : κ => liftA (y i))` using `fun u hu => funext fun i => smul_liftA hu (y i)`. Use `hinv 0 _ hz` as an intermediate fact.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[zero_add]`. Rewrite using `[this, hr0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rest (κ : Type) [Fintype κ] : ∃ r : (κ → AF F) → ℂ, (∀ f : SInf F κ, Rest (evI F) (⇑f) r) ∧
     ∀ y : κ → mixedEmbedding.mixedSpace F, r (fun i => liftA (y i)) = 1 := by
@@ -61,11 +61,11 @@ theorem exists_rest (κ : Type) [Fintype κ] : ∃ r : (κ → AF F) → ℂ, (�
   rw [this, hr0]
 
 /- English proof (translation)
-Take `⟨r, hr, hr1⟩` from `exists_rest (F := F) κ`. Establish `e0 : tens (evI F) (⇑(f - g - h)) r = tens (evI F) (⇑f) r - tens (evI F) (⇑g) r - tens (evI F) (⇑h) r`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.sub_apply, SchwartzMap.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1` using `he r (hr _)`. Rewrite `e1` using `[e0, map_sub, map_sub, hf r (hr _), hg r (hr _), hh r (hr _)]`. Use `DFunLike.ext _ _ fun y => ?_` and prove the remaining obligations. Establish `e2` using `congrFun e1 (fun i => liftA (y i))`. Simplify using `only [tens, Pi.sub_apply, evI_liftA, hr1, mul_one] at e2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [SchwartzMap.sub_apply]`. Conclude with `e2.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem acts_sub_sub {κ : Type} [Fintype κ] (T : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ → AF F) → ℂ) {f g h f₁ g₁ h₁ e₁ : SInf F κ}
     (hf : Acts (evI F) T f f₁) (hg : Acts (evI F) T g g₁) (hh : Acts (evI F) T h h₁)
@@ -84,7 +84,7 @@ theorem acts_sub_sub {κ : Type} [Fintype κ] (T : ((κ → AF F) → ℂ) →�
   exact e2.symm
 
 /- English proof (translation)
-Introduce `r _`. Establish `e0 : tens (evI F) (⇑(0 : SInf F κ)) r = 0`. Use function extensionality and compare the values at `x`. Simplify using `[tens]`. Rewrite using `[e0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem acts_zero {κ : Type} [Fintype κ] (T : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ → AF F) → ℂ) :
     Acts (evI F) T (⇑(0 : SInf F κ)) (⇑(0 : SInf F κ)) := by
@@ -95,11 +95,11 @@ theorem acts_zero {κ : Type} [Fintype κ] (T : ((κ → AF F) → ℂ) →ₗ[�
   rw [e0, map_zero]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM k hk f hf g hg h hh f₁ g₁ h₁ af ag ah hp`. Take `⟨-, -, -, hP4⟩` from `GlobalTheory.T.real_line_polynomial_equivariance hKP F E σ B a a' G X om om' hM.triple`. Establish `he : f - g - h ∈ G.M.Pol B.ψ B.emb` using `Submodule.sub_mem _ (Submodule.sub_mem _ hf hg) hh`. Take `⟨e₁, -, ae, -⟩` from `hP4 k hk _ he`. Establish `e1 : e₁ = f₁ - g₁ - h₁` using `acts_sub_sub (om (1, k)) af ag ah ae`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : R.p (f - g - h) = R.p' 0`. Rewrite using `[map_sub, map_sub, hp, map_zero]`. Normalize the expressions using the abelian group laws. Establish `h1` using `hM.real.cpt k hk _ he 0 (Submodule.zero_mem _) e₁ 0 ae (acts_zero (om' (1, k))) h0`. Rewrite `h1` using `[e1, map_sub, map_sub, map_zero, sub_sub, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem p_add_of_acts : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)

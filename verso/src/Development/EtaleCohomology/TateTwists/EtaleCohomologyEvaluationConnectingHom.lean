@@ -5,27 +5,27 @@ import Development.EtaleCohomology.TateTwists.EtaleSemilinearCohomologyOperation
 
 namespace LateralTheory.Fin.EtaleCochainSemilinearMapOnClasses
 /- English proof (translation)
-Apply `LateralTheory.EtaleFoundations.pp_ev_basic_of` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result.
 -/
 theorem etale_evaluation_map_basic_of_components : LateralTheory.EtaleFoundations.pp_ev_basic := by
   apply LateralTheory.EtaleFoundations.pp_ev_basic_of
 /- English proof (translation)
-Apply `LateralTheory.EtaleFoundations.pp_ev_mk_of` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result.
 -/
 theorem etale_cohomology_evaluation_mk : LateralTheory.EtaleFoundations.pp_ev_mk := by
   apply LateralTheory.EtaleFoundations.pp_ev_mk_of
 /- English proof (translation)
-Apply `LateralTheory.EtaleFoundations.pp_ev_delta_of` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result.
 -/
 theorem etale_cohomology_evaluation_connecting_hom : LateralTheory.EtaleFoundations.pp_ev_delta := by
   apply LateralTheory.EtaleFoundations.pp_ev_delta_of
 /- English proof (translation)
-Apply the tactic sequence `apply LateralTheory.EtaleFoundations.etale_semilinear_cohomology_operation_exists_of_evaluation <;> first | exact etale_evaluation_map_basic_of_components | exact etale_cohomology_evaluation_mk | exact etale_cohomology_evaluation_connecting_hom`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem etale_torsion_cohomology_operation_spec : LateralTheory.EtaleFoundations.EtaleCochainSemilinearMapOnClasses := by
   apply LateralTheory.EtaleFoundations.etale_semilinear_cohomology_operation_exists_of_evaluation <;> first | exact etale_evaluation_map_basic_of_components | exact etale_cohomology_evaluation_mk | exact etale_cohomology_evaluation_connecting_hom
 /- English proof (translation)
-The claim follows from `etale_torsion_cohomology_operation_spec`.
+A detailed English derivation is pending.
 -/
 theorem intersectionNumber_baseChange : LateralTheory.EtaleFoundations.EtaleCochainSemilinearMapOnClasses := etale_torsion_cohomology_operation_spec
 end LateralTheory.Fin.EtaleCochainSemilinearMapOnClasses

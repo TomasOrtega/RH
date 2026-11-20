@@ -12,11 +12,11 @@ open scoped BigOperators
 namespace GlobalTheory.TwoTorsionPt
 
 /- English proof (translation)
-Establish `h1 : IsIntegral ℤ ((starRingEnd ℂ) x)` using `hx.map (starRingEnd ℂ).toIntAlgHom`. Establish `h2 : IsIntegral ℤ (algebraMap ℚ ℂ ((N : ℚ) / 2))`. Establish `: algebraMap ℚ ℂ ((N : ℚ) / 2) = (N : ℂ) / 2` using `by simp`. Rewrite using `[this, ← h]`. Conclude with `hx.add h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : IsIntegral ℤ ((N : ℚ) / 2)` using `(isIntegral_algebraMap_iff (algebraMap ℚ ℂ).injective).1 h2`. Take `⟨m, hm⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h3`. Establish `h4 : (N : ℚ) = 2 * (m : ℚ)`. Establish `: (m : ℚ) = (N : ℚ) / 2` using `by simpa using hm`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h5 : (N : ℤ) = 2 * m` using `by exact_mod_cast h4`. Take `⟨k, hk⟩` from `hN`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem not_integral_half {N : ℕ} (hN : Odd N) {x : ℂ} (hx : IsIntegral ℤ x)
     (h : x + (starRingEnd ℂ) x = (N : ℂ) / 2) : False := by
@@ -35,15 +35,15 @@ theorem not_integral_half {N : ℕ} (hN : Odd N) {x : ℂ} (hx : IsIntegral ℤ 
   omega
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: 2 * (δ * N / 2) = δ * N` using `by ring`. Rewrite using `[this]`. Conclude with `hmem`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, e⟩` from `hint _ h`. Establish `e' : x = ((1 + Complex.I * (Real.sqrt D.host.d : ℂ)) / 2) * (N / 2)`. Apply `mul_left_cancel₀ hδ` to reduce the goal to its premises. Rewrite using `[← e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `not_integral_half hN hx ?_` and prove the remaining obligations. Rewrite using `[e']`. Simplify using `only [map_mul, map_div₀, map_add, map_one, Complex.conj_I, Complex.conj_ofReal, map_natCast, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, e⟩` from `hint _ h`. Establish `e' : x = ((1 - Complex.I * (Real.sqrt D.host.d : ℂ)) / 2) * (N / 2)`. Apply `mul_left_cancel₀ hδ` to reduce the goal to its premises. Rewrite using `[← e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `not_integral_half hN hx ?_` and prove the remaining obligations. Rewrite using `[e']`. Simplify using `only [map_mul, map_div₀, map_sub, map_one, Complex.conj_I, Complex.conj_ofReal, map_natCast, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isTwoTorsionCMPoint_of_odd_multiple (D : D7) (Λ : AddSubgroup ℂ) {δ : ℂ} (hδ : δ ≠ 0) {N : ℕ} (hN : Odd N)
     (hmem : δ * N ∈ Λ) (hint : ∀ w ∈ Λ, ∃ x : ℂ, IsIntegral ℤ x ∧ w = δ * x) :
@@ -73,13 +73,13 @@ theorem isTwoTorsionCMPoint_of_odd_multiple (D : D7) (Λ : AddSubgroup ℂ) {δ 
     ring
 
 /- English proof (translation)
-Introduce `w hw`. Unfold `lamOf at hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨c, -, rfl⟩` from `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨_, ?_, rfl⟩` and prove the remaining obligations. Establish `h0 : IsIntegral ℤ (c : D.host.K)` using `c.2`. Conclude with `h0.map (D.host.φ₀.comp (algebraMap D.host.K D.host.E)).toIntAlgHom`. Consider the case `zero => exact ⟨0, isIntegral_zero, by simp⟩`. Consider the case `add a b _ _ ha hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, rfl⟩` from `ha`. Take `⟨y, hy, rfl⟩` from `hb`. Conclude with `⟨x + y, hx.add hy, by ring⟩`. Consider the case `neg a _ ha`. Take `⟨x, hx, rfl⟩` from `ha`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨-x, hx.neg, by ring⟩`.
+A detailed English derivation is pending.
 -/
 theorem lamOf_integral (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
     ∀ w ∈ lamOf D cc δ, ∃ x : ℂ, IsIntegral ℤ x ∧ w = δ * x := by
@@ -101,7 +101,7 @@ theorem lamOf_integral (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
     exact ⟨-x, hx.neg, by ring⟩
 
 /- English proof (translation)
-Use `AddSubgroup.subset_closure ⟨((Ideal.absNorm cc : ℕ) : 𝓞 D.host.K), Ideal.absNorm_mem cc, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem norm_mem_lamOf (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
     δ * (Ideal.absNorm cc : ℕ) ∈ lamOf D cc δ := by
@@ -109,33 +109,33 @@ theorem norm_mem_lamOf (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
   simp
 
 /- English proof (translation)
-The claim follows from `Nat.coprime_two_right.1 (Nat.Coprime.coprime_mul_right_right h.1.2)`.
+A detailed English derivation is pending.
 -/
 theorem odd_norm {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : Crv D cc δ) :
     Odd (Ideal.absNorm cc) :=
   Nat.coprime_two_right.1 (Nat.Coprime.coprime_mul_right_right h.1.2)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.idealPeriodLattice_of_curveDatum D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ h).2.1`.
+A detailed English derivation is pending.
 -/
 theorem delta_ne {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : Crv D cc δ) : δ ≠ 0 :=
   (GlobalTheory.T.idealPeriodLattice_of_curveDatum D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ h).2.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, isTwoTorsionCMPoint_of_odd_multiple D _ (delta_ne h) (odd_norm h) (norm_mem_lamOf D cc δ) (lamOf_integral D cc δ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lamOf {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : Crv D cc δ) :
     ∃ t0, GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 :=
   ⟨_, isTwoTorsionCMPoint_of_odd_multiple D _ (delta_ne h) (odd_norm h) (norm_mem_lamOf D cc δ) (lamOf_integral D cc δ)⟩
 
 /- English proof (translation)
-Establish `hδ : (starRingEnd ℂ) δ ≠ 0` using `by simpa using delta_ne h`. Use `⟨_, isTwoTorsionCMPoint_of_odd_multiple D Λ hδ (odd_norm h) ?_ ?_⟩` and prove the remaining obligations. Establish `h1` using `norm_mem_lamOf D cc δ`. Rewrite `h1` using `[← hΛ]`. Take `⟨w, hw, e⟩` from `h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e1 : (starRingEnd ℂ) w = δ * (Ideal.absNorm cc : ℕ)` using `e`. Establish `e2 : w = (starRingEnd ℂ) δ * (Ideal.absNorm cc : ℕ)`. Rewrite using `[← Complex.conj_conj w, e1, map_mul, map_natCast]`. Rewrite using `[← e2]`. Conclude with `hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Establish `h1 : (starRingEnd ℂ) w ∈ lamOf D cc δ`. Rewrite using `[← hΛ]`. Conclude with `⟨w, hw, rfl⟩`. Take `⟨x, hx, e⟩` from `lamOf_integral D cc δ _ h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(starRingEnd ℂ) x, hx.map (starRingEnd ℂ).toIntAlgHom, ?_⟩` and prove the remaining obligations. Rewrite using `[← Complex.conj_conj w, e, map_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bar {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : Crv D cc δ) (Λ : AddSubgroup ℂ)
     (hΛ : Λ.map (starRingEnd ℂ).toAddMonoidHom = lamOf D cc δ) :
@@ -157,9 +157,9 @@ theorem exists_bar {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : Crv D c
     rw [← Complex.conj_conj w, e, map_mul]
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `IsAlgClosed.surjective_restrictDomain_of_isAlgebraic (K := ℚ) (L := M) (M := ℂ) (E := algebraicClosure M ℂ) ρ`. Use `⟨(algebraicClosure M ℂ).restrictScalars ℚ, φ, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Conclude with `mem_algebraicClosure_iff.2 (hx.extendScalars (algebraMap ℚ M).injective)`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : x ∈ (algebraicClosure M ℂ).restrictScalars ℚ` using `(algebraicClosure M ℂ).algebraMap_mem (⟨x, hx⟩ : M)`. Use `⟨hx', ?_⟩` and prove the remaining obligations. Unfold `TaylorLogMetric.liftM`. Rewrite using `[dif_pos hx', dif_pos hx, ← hφ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_extension (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) :
     ∃ (M' : IntermediateField ℚ ℂ) (ρ' : M' →ₐ[ℚ] ℂ), (∀ x : ℂ, IsAlgebraic ℚ x → x ∈ M') ∧
@@ -178,13 +178,13 @@ theorem exists_extension (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ
     rfl
 
 /- English proof (translation)
-Introduce `D cc δ hc`. Use `⟨exists_lamOf hc, ?_⟩` and prove the remaining obligations. Introduce `M ρ h2 h3`. Take `⟨M', ρ', halg, hext⟩` from `exists_extension M ρ`. Establish `hl : lamConj M ρ (lamOf D cc δ) = lamConj M' ρ' (lamOf D cc δ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `lamConj`. Rewrite using `[(hext _ h2).2, (hext _ h3).2]`. Rewrite using `[hl]`. Establish `hD : DataIn D (tor0 D cc δ) M'`. Use `⟨fun τ x => halg _ ?_, (hext _ h2).1, (hext _ h3).1⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom (embT D τ).toRatAlgHom`. Take `⟨hfix, hbar, -⟩` from `GlobalTheory.T.cmTheta_complexConjugation_compatible D cc δ hc M' ρ' hD`. Break down `hfix with hfix | hfix` into its components or cases. Take `⟨cc', δ', hc', -, e⟩` from `GlobalTheory.T.conjugate_curveDatum_lattice_isCurveLattice D cc δ hc M' ρ' hfix hD.2.1 hD.2.2 1 one_pos`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `exists_lamOf hc'`. Take `⟨cc', δ', hc', -, e⟩` from `GlobalTheory.T.conjugate_curveDatum_lattice_isCurveLattice D cc δ hc M' (rhoBar M' ρ') hfix hD.2.1 hD.2.2 1 one_pos`. Use `exists_bar hc' _ ?_` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `(congrArg Tor.abelian₂ hbar).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_point : ∀ D : D7, t0Ex D := by
   intro D cc δ hc

@@ -6,17 +6,15 @@ open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApply
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
 /- English proof (translation)
-Introduce `V _ _ _ _`. Establish `h0 : ∀ φ : ℝ → ℂ, MemLp φ 2 volume → ∀ e : V, ∀ᵐ x : ℝ, sv V φ e x = φ x • e`. Introduce `φ hφ`. Establish `hc : ∀ e : V, ∀ᵐ x : ℝ, (ContinuousLinearMap.toSpanSingleton ℂ e).compLpL 2 volume (hφ.toLp φ) x = φ x • e` using `fun e => by filter_upwards [(ContinuousLinearMap.toSpanSingleton ℂ e).coeFn_compLpL (hφ.toLp φ), hφ.coeFn_toLp] with x h1 h2`. Rewrite using `[h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Set `A : V →ₗ[ℂ] L V` to `{ toFun := fun e => (ContinuousLinearMap.toSpanSingleton ℂ e).compLpL 2 volume (hφ.toLp φ) map_add' := fun e f => Lp.ext (by filter_upwards [hc (e + f), hc e, hc f, Lp.coeFn_add ((ContinuousLinearMap.toSpanSingleton ℂ e).compLpL 2 volume (hφ.toLp φ)) ((ContinuousLinearMap.toSpanS …`. Rewrite using `[h1, h4, Pi.add_apply, h2, h3, smul_add])`. Use the proof step `map_smul' := fun c e => Lp.ext (by filter_upwards [hc (c • e), hc e, Lp.coeFn_smul c ((ContinuousLinearMap.toSpanSingleton ℂ e).compLpL 2 volume (hφ.toLp φ))] with x h1 h2 h4`. Rewrite using `[h1, RingHom.id_apply, h4, Pi.smul_apply, h2, smul_comm]) }`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Classical.epsilon_spec (p := fun C : V →L[ℂ] L V => ∀ e, ∀ᵐ x : ℝ, C e x = φ x • e) ⟨LinearMap.toContinuousLinearMap A, hc⟩`. Use `⟨fun φ hφ e => ⟨h0 φ hφ e, ?_⟩, fun e => ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, c4, -, -, -, -, c9⟩` from `cutLaws (V := V) univ univ .univ .univ`. Use `c9 (sv V φ e)` as an intermediate fact. Rewrite `this` using `[c4, Measure.restrict_univ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← integral_mul_const]`. Use `this.trans (integral_congr_ae ?_)` and prove the remaining obligations. Use `filter_upwards [h0 φ hφ e] with x h`. Rewrite using `[h, norm_smul, mul_pow]`. Establish `h1 : ∀ᵐ x : ℝ, one V e x = (Ioc (0 : ℝ) 1).indicator (fun _ => e) x` using `by filter_upwards [h0 _ (memLp_indicator_const 2 measurableSet_Ioc (1 : ℂ) (Or.inr (by simp : volume (Ioc (0 : ℝ) 1) ≠ ⊤))) e] with x h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.trans ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases b : x ∈ Ioc (0 : ℝ) 1 <;> simp [b]`. Use `⟨h1, ⟨1, ((cutLaws (V := V) _ univ measurableSet_Icc .univ).2.2.2.2.2.2.2.1 _).2 ?_⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h1] with x h hx`. Rewrite using `[h, indicator_of_notMem fun b => hx ⟨by linarith [b.1], b.2⟩]`.
-
-Rewrite using `[integral_congr_ae h1, integral_indicator measurableSet_Ioc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.svSpec :
     ∀ {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V], (∀ φ : ℝ → ℂ, MemLp φ 2 volume → ∀ e : V, (∀ᵐ x : ℝ, sv V φ e x = φ x • e) ∧ ‖sv V φ e‖ ^ 2 = (∫ x, ‖φ x‖ ^ 2) * ‖e‖ ^ 2) ∧

@@ -13,7 +13,7 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 namespace GlobalTheory.PairingScheme
 
 /- English proof (translation)
-Use `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom.toMonoidHom c, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `[unitOn]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_unitOn {K : Type} [CommRing K] (c : Γ(Sp K, ⊤)ˣ) : ∃ z : Kˣ, unitOn z = c := by
   refine ⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom.toMonoidHom c, ?_⟩
@@ -21,33 +21,31 @@ theorem exists_unitOn {K : Type} [CommRing K] (c : Γ(Sp K, ⊤)ˣ) : ∃ z : K�
   simp [unitOn]
 
 /- English proof (translation)
-Rewrite using `[← MonObj.pow_comp, hx, MonObj.one_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_pow_eq_one {S : Scheme.{0}} {T X A : Over S} [GrpObj X] [GrpObj A] (f : X ⟶ A) [IsMonHom f]
     {x : T ⟶ X} {k : ℕ} (hx : x ^ k = 1) : (x ≫ f) ^ k = 1 := by
   rw [← MonObj.pow_comp, hx, MonObj.one_comp]
 
 /- English proof (translation)
-Rewrite using `[← MonObj.comp_pow, hx, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_pow_eq_one {S : Scheme.{0}} {T T' X : Over S} [GrpObj X] (t : T' ⟶ T)
     {x : T ⟶ X} {k : ℕ} (hx : x ^ k = 1) : (t ≫ x) ^ k = 1 := by
   rw [← MonObj.comp_pow, hx, MonObj.comp_one]
 
 /- English proof (translation)
-Introduce `hL R _ _ _ X Y A B f₁ f₂ g₁ g₂ hf₁ hf₂ hg₁ hg₂ hlam T k x y c hk hx hy`. Establish `hN : IsLocallyNoetherian (Sp R)` using `inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of R)))`. Take `⟨T₀, x₀, y₀, hx₀, hy₀, huniv, hsep⟩` from `GlobalTheory.T.exists_universal_torsion_pair_polAV hL R X Y k hk`. Take `⟨a, ha, -⟩` from `(hL.weil (Sp R) A k T₀).1 _ _ (comp_pow_eq_one f₁ hx₀) (comp_pow_eq_one f₂ hy₀)`. Take `⟨b, hb, -⟩` from `(hL.weil (Sp R) B k T₀).1 _ _ (comp_pow_eq_one g₁ hx₀) (comp_pow_eq_one g₂ hy₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hab : a = b`. Apply `Units.ext` to reduce the goal to its premises. Use `hsep _ _ fun k' _ _ _ β t => ?_` and prove the remaining obligations. Establish `hw` using `(GlobalTheory.T.cubeLBPairingIso_iff_weilPairingCompatible_over_ring hL R X Y A B f₁ f₂ g₁ g₂ hf₁ hf₂ hg₁ hg₂ k' β).1 hlam`. Establish `ha'` using `CommPairing.weilIs_pull hL.globalFns A.isAb A.isLB t ha`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb'` using `CommPairing.weilIs_pull hL.globalFns B.isAb B.isLB t hb`. Take `⟨z, hz⟩` from `exists_unitOn (K := k') (Units.map t.left.appTop.hom.toMonoidHom a)`. Establish `hx'` using `pull_pow_eq_one t hx₀`. Establish `hy'` using `pull_pow_eq_one t hy₀`. Rewrite `ha'`, `hb'` using `[← Category.assoc, ← Category.assoc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₁` using `(hw k (t ≫ x₀) (t ≫ y₀) z hk hx' hy').1 (by rw [hz]; exact ha')`. Rewrite `h₁` using `[hz]`. Establish `h₂` using `((hL.weil (Sp R) B k _).1 _ _ (comp_pow_eq_one g₁ hx') (comp_pow_eq_one g₂ hy')).unique h₁ hb'`. Conclude with `congrArg Units.val h₂`. Substitute `hab` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl, rfl⟩` from `huniv T x y hx hy`. Establish `ha'` using `CommPairing.weilIs_pull hL.globalFns A.isAb A.isLB t ha`. Establish `hb'` using `CommPairing.weilIs_pull hL.globalFns B.isAb B.isLB t hb`. Rewrite `ha'`, `hb'` using `[← Category.assoc, ← Category.assoc]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H`. Rewrite using `[((hL.weil (Sp R) A k _).1 _ _ (comp_pow_eq_one f₁ hx) (comp_pow_eq_one f₂ hy)).unique H ha']`. Conclude with `hb'`. Introduce `H`. Rewrite using `[((hL.weil (Sp R) B k _).1 _ _ (comp_pow_eq_one g₁ hx) (comp_pow_eq_one g₂ hy)).unique H hb']`.
-
-Conclude with `ha'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilIs_iff_of_lamEq : Out.Laws → ∀ (R : Type) [CommRing R] [IsDedekindDomain R] [CharZero R] (X Y A B : Out.PolAV (Sp R)) (f₁ : X.A ⟶ A.A) (f₂ : Y.A ⟶ A.A) (g₁ : X.A ⟶ B.A) (g₂ : Y.A ⟶ B.A), IsMonHom f₁ → IsMonHom f₂ → IsMonHom g₁ → IsMonHom g₂ → LamEq A.L f₁ f₂ B.L g₁ g₂ → ∀ (T : Over (Sp R)) (k : ℕ) (x : T ⟶ X.A) (y : T ⟶ Y.A) (c : Γ(T.left, ⊤)ˣ), 0 < k → x ^ k = 1 → y ^ k = 1 → (Out.WeilIs A.A A.L k (x ≫ f₁) (y ≫ f₂) c ↔ Out.WeilIs B.A B.L k (x ≫ g₁) (y ≫ g₂) c) := by
   intro hL R _ _ _ X Y A B f₁ f₂ g₁ g₂ hf₁ hf₂ hg₁ hg₂ hlam T k x y c hk hx hy

@@ -12,9 +12,9 @@ open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (mIdealOver mConeM
 open GroundTheory.Heights₂.Heights.FieldNumbers (relDim)
 
 /- English proof (translation)
-Use `FieldNumbers.ContractRelevant.isMultiProjPrime_comap_rename (j := fun _ : Unit => k₀) (g := fun p : (Σ _ : Unit, Fin (N + 1)) => (⟨k₀, e.symm p.2⟩ : Σ k, ι k)) (fun _ => rfl) (fun _ _ _ => Subsingleton.elim _ _) ?_ ?_ hW` and prove the remaining obligations. Introduce and unpack `⟨⟨⟩, a⟩ ⟨⟨⟩, b⟩ h`. Simplify using `only [Sigma.mk.inj_iff, heq_eq_eq, true_and, EmbeddingLike.apply_eq_iff_eq] at h`. Rewrite using `[h]`. Introduce and unpack `⟨k, i⟩ ⟨⟨⟩, hk⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `rfl : k₀ = k` from `hk`. Conclude with `⟨⟨(), e i⟩, by simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isMultiProjPrime_baseComap (F : Type) [Field F] {K : Type} [DecidableEq K] {ι : K → Type} (k₀ : K)
     {N : ℕ} (e : ι k₀ ≃ Fin (N + 1)) {W : Ideal (NumbersDVR.MRing ι F)} (hW : NumbersDVR.IsMultiProjPrime W) :
@@ -30,11 +30,11 @@ theorem isMultiProjPrime_baseComap (F : Type) [Field F] {K : Type} [DecidableEq 
     exact ⟨⟨(), e i⟩, by simp⟩
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Introduce `f hf`. Rewrite using `[baseComap, Ideal.mem_comap]`. Apply `hW` to reduce the goal to its premises. Establish `hcomp : (mConeMapOver F y).comp (rename fun p : (Σ _ : Unit, Fin (N + 1)) => (⟨k₀, e.symm p.2⟩ : Σ k, ι k)) = ((rename (R` using `Ω) fun _ : Unit => k₀).restrictScalars F).comp (mConeMapOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm))) := by`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[mConeMapOver, IndefiniteRowSideFullHecke.Kleiman2.oneBlock, IndefiniteRowSideFullHecke.Kleiman2.blockVec]`. Establish `hf' : mConeMapOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm)) f = 0` using `hf`. Establish `h1` using `AlgHom.congr_fun hcomp f`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[AlgHom.comp_apply, AlgHom.comp_apply, hf', map_zero]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mIdealOver_le_baseComap (F : Type) [Field F] {K : Type} {ι : K → Type} {Ω : Type} [Field Ω]
     [Algebra F Ω] (y : (Σ k, ι k) → Ω) (k₀ : K) {N : ℕ} (e : ι k₀ ≃ Fin (N + 1)) {x : Fin (N + 1) → Ω}
@@ -57,7 +57,7 @@ theorem mIdealOver_le_baseComap (F : Type) [Field F] {K : Type} {ι : K → Type
   exact h1
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ Ω _ _ y k₀ N e x hx hy d`. Use `⟨fun W hW hyW hd => ⟨isMultiProjPrime_baseComap F k₀ e hW, mIdealOver_le_baseComap F y k₀ e hx hyW, ?_⟩, fun P hP hxP hd => ?_⟩` and prove the remaining obligations. Rewrite using `[hdim F K ι Ω y k₀ N e hy W hW hyW, hd]`. Take `⟨W, hW, hyW, rfl⟩` from `hlift F K ι Ω y k₀ N e x hx hy P hP hxP`. Conclude with `⟨W, hW, hyW, by rw [← hdim F K ι Ω y k₀ N e hy W hW hyW, hd], rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ModelCurves.proof (hdim : ModelCurvesDim.Statement) (hlift : ModelCurvesLift.Statement) :
     ModelCurves.Statement := by

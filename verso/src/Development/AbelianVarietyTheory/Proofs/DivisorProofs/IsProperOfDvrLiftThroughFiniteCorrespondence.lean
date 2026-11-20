@@ -8,17 +8,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.FiniteCoverProper
 
 /- English proof (translation)
-Introduce `R _ _ X Y₀ Y τ s t i hτ hs hi hd ht h`. Establish `hX : IsLocallyNoetherian X`. Take `⟨N, j, hj, -, e⟩` from `hτ`. Establish `: IsProper (PSpace.str R N)` using `isProper_str R N`. Establish `: LocallyOfFiniteType τ` using `by rw [← e]; infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocallyNoetherian (Sp R)` using `inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of R)))`. Conclude with `LocallyOfFiniteType.isLocallyNoetherian τ`. Establish `hsep : IsSeparated τ`. Take `⟨N, j, hj, -, e⟩` from `hτ`. Establish `: IsProper (PSpace.str R N)` using `isProper_str R N`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsImmersion j` using `hj`. Rewrite using `[← e]`. Use `infer_instance`. Establish `hY : IsLocallyNoetherian Y` using `LocallyOfFiniteType.isLocallyNoetherian s`. Establish `hq : IsQProjOver (t ≫ τ)` using `ht ▸ GlobalTheory.isQProjOver_comp_of_isFinite_general s hτ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.ValuativeGeneric.isProper_of_lift_generic R Y X t τ hsep hq ?_` and prove the remaining obligations. Introduce `V K _ _ _ _ _ _ _ x y hx hxy`. Establish `hgen : genericPoints Y ⊆ Set.range i` using `GlobalTheory.genericPoints_subset_range_of_isDominant i`. Establish `hr : Set.range x ⊆ Set.range i` using `hx.trans hgen`. Establish `hx₀ : IsOpenImmersion.lift i x hr ≫ i = x` using `IsOpenImmersion.lift_fac i x hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `h V K y (IsOpenImmersion.lift i x hr) (by rw [← Category.assoc, hx₀, hxy])`. Establish `hE : ValuativeCriterion.Existence s` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed s) : (ValuativeCriterion.Existence ⊓ @QuasiCompact) s).1`. Establish `hw : x ≫ s = Spec.map (CommRingCat.ofHom (algebraMap V K)) ≫ z`. Rewrite using `[← hx₀, Category.assoc]`. Conclude with `hz.symm`.
-
-Take `⟨⟨x', hx', -⟩⟩` from `(hE { R := V, K := K, i₁ := x, i₂ := z, commSq := ⟨hw⟩ }).exists_lift`. Conclude with `⟨x', hx'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isProper_of_lift_through_finite : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (X Y₀ Y : Scheme.{0}) (τ : X ⟶ Sp R) (s t : Y ⟶ X) (i : Y₀ ⟶ Y), IsQProjOver τ → IsFinite s → IsOpenImmersion i → IsDominant i → t ≫ τ = s ≫ τ → (∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (y : Sp V ⟶ X) (x : Sp K ⟶ Y₀), spMap (algebraMap V K) ≫ y = x ≫ i ≫ t → ∃ z : Sp V ⟶ X, spMap (algebraMap V K) ≫ z = x ≫ i ≫ s) → IsProper t := by
   intro R _ _ X Y₀ Y τ s t i hτ hs hi hd ht h

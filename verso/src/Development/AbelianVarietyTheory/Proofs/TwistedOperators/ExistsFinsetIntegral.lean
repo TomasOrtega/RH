@@ -13,11 +13,11 @@ namespace GlobalTheory.MellinPoly
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hq : (0 : ℝ) < (resCard k : ℝ)`. Unfold `resCard`. Conclude with `Nat.card_pos` after adjusting the coercions. Establish `hq0 : (resCard k : ℂ) ≠ 0` using `by exact_mod_cast hq.ne'`. Establish `hz : (resCard k : ℝ) ^ (-SmGL.ord k x) ≠ 0` using `(zpow_pos hq _).ne'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `absPow`. Simplify using `only [MonoidHom.coe_toHomUnits, MonoidHom.coe_mk, OneHom.coe_mk]`. Rewrite using `[GlobalTheory.LGrp.nabs_eq_zpow, Complex.cpow_def_of_ne_zero (Complex.ofReal_ne_zero.2 hz), Complex.cpow_def_of_ne_zero hq0, ← Complex.exp_int_mul, ← Complex.ofReal_log (zpow_pos hq _).le, Real.log_zpow, ← Complex.ofReal_natCast, ← Complex.ofReal_log hq.le]`. Use `push_cast`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Apply the tactic sequence `try simp only [Complex.ofReal_intCast, Complex.ofReal_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem absPow_eq_zpow (s : ℂ) (x : kˣ) :
     (absPow k s x : ℂ) = ((resCard k : ℂ) ^ (-s)) ^ (SmGL.ord k x : ℤ) := by

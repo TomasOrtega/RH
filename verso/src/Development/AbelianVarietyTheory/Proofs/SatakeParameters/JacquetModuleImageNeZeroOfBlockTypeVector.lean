@@ -18,14 +18,14 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Spl
 abbrev sz (r t : ℕ) : Fin 2 → ℕ := ![r, t]
 
 /- English proof (translation)
-Simplify using `[sz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_sz (r t : ℕ) : ∑ a, sz r t a = r + t := by simp [sz]
 
 def blocks2 (r t : ℕ) : (Σ a : Fin 2, Fin (sz r t a)) ≃ Fin (r + t) := stdBlocks _ (sum_sz r t)
 
 /- English proof (translation)
-Use `ext`. Use `(stdBlocks_val (sz r t) (sum_sz r t) 0 i).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem blocks2_zero (r t : ℕ) (i : Fin r) : blocks2 r t ⟨0, i⟩ = Fin.castAdd t i := by
   ext
@@ -33,7 +33,7 @@ theorem blocks2_zero (r t : ℕ) (i : Fin r) : blocks2 r t ⟨0, i⟩ = Fin.cast
   simp
 
 /- English proof (translation)
-Use `ext`. Use `(stdBlocks_val (sz r t) (sum_sz r t) 1 j).trans ?_` and prove the remaining obligations. Simplify using `[sz]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem blocks2_one (r t : ℕ) (j : Fin t) : blocks2 r t ⟨1, j⟩ = Fin.natAdd r j := by
   ext
@@ -41,13 +41,13 @@ theorem blocks2_one (r t : ℕ) (j : Fin t) : blocks2 r t ⟨1, j⟩ = Fin.natAd
   simp [sz]
 
 /- English proof (translation)
-Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem twoE_false (r t : ℕ) (i : Fin r) : two (stdSum (rfl : r + t = r + t)) ⟨false, i⟩ = Fin.castAdd t i := by
   ext; simp
 
 /- English proof (translation)
-Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem twoE_true (r t : ℕ) (j : Fin t) : two (stdSum (rfl : r + t = r + t)) ⟨true, j⟩ = Fin.natAdd r j := by
   ext; simp
@@ -63,13 +63,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Spl
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem stdSum_inl' (r t : ℕ) (i : Fin r) : stdSum (rfl : r + t = r + t) (Sum.inl i) = Fin.castAdd t i := by
   ext; simp
 
 /- English proof (translation)
-Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem stdSum_inr' (r t : ℕ) (j : Fin t) : stdSum (rfl : r + t = r + t) (Sum.inr j) = Fin.natAdd r j := by
   ext; simp
@@ -82,13 +82,13 @@ def IsUpperUnip {r t : ℕ} (g : GL (Fin (r + t)) k) : Prop :=
     (1 : Matrix (Fin t) (Fin t) k) i j)
 
 /- English proof (translation)
-Rewrite using `[mem_unipRad, mem_parab_two]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, hD⟩`. Use `⟨fun i j => ?_, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← stdSum_inl', ← stdSum_inr']`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0 i j`. Rewrite using `[← twoE_false, ← twoE_false]`. Conclude with `hD false i j`. Rewrite using `[← twoE_true, ← twoE_true]`. Conclude with `hD true i j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `⟨h0, h1, h2⟩`. Use `⟨fun j i => ?_, ?_⟩` and prove the remaining obligations. Use `h0 j i` as an intermediate fact. Rewrite `this` using `[← stdSum_inl', ← stdSum_inr']`. Then use the resulting hypothesis. Introduce and unpack `(_ | _) i j`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `h1 i j` as an intermediate fact. Rewrite `this` using `[← twoE_false, ← twoE_false]`. Then use the resulting hypothesis. Use `h2 i j` as an intermediate fact. Rewrite `this` using `[← twoE_true, ← twoE_true]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_unipRad_two {r t : ℕ} {g : GL (Fin (r + t)) k} :
     g ∈ unipRad k (two (stdSum (rfl : r + t = r + t))) ↔ IsUpperUnip g := by
@@ -107,17 +107,13 @@ theorem mem_unipRad_two {r t : ℕ} {g : GL (Fin (r + t)) k} :
       · have := h2 i j; rwa [← twoE_true, ← twoE_true] at this
 
 /- English proof (translation)
-Rewrite using `[mem_unipRad, mem_parab_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, hD⟩`. Use `⟨fun i j => ?_, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← blocks2_one, ← blocks2_zero]; exact h0 1 0 i j (by decide)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← blocks2_zero, ← blocks2_zero]`. Conclude with `hD 0 i j`. Rewrite using `[← blocks2_one, ← blocks2_one]`. Conclude with `hD 1 i j`. Introduce and unpack `⟨h0, h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `⟨fun a b => ?_, fun a => ?_⟩` and prove the remaining obligations. Use `match a, b with`. Consider the case `0, 0 => intro i j hab`. Conclude with `absurd hab (lt_irrefl _)`. Consider the case `0, 1 => intro i j hab; exact absurd hab (by decide)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `1, 0 => intro i j _`. Rewrite using `[blocks2_one r t i, blocks2_zero r t j]`. Conclude with `h0 i j`. Consider the case `1, 1 => intro i j hab`. Conclude with `absurd hab (lt_irrefl _)`.
-
-Use `match a with`. Consider the case `0 => intro i j`. Rewrite using `[blocks2_zero r t i, blocks2_zero r t j]`. Conclude with `h1 i j`. Consider the case `1 => intro i j`.
-
-Rewrite using `[blocks2_one r t i, blocks2_one r t j]`. Conclude with `h2 i j`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unipRad_blocks2 {r t : ℕ} {g : GL (Fin (r + t)) k} :
     g ∈ unipRad k (blocks2 r t) ↔ IsUpperUnip g := by
@@ -140,16 +136,16 @@ theorem mem_unipRad_blocks2 {r t : ℕ} {g : GL (Fin (r + t)) k} :
       | 1 => intro i j; rw [blocks2_one r t i, blocks2_one r t j]; exact h2 i j
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_unipRad_blocks2, mem_unipRad_two]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem unipRad_blocks2 (r t : ℕ) :
     unipRad k (blocks2 r t) = unipRad k (two (stdSum (rfl : r + t = r + t))) := by
   ext g; rw [mem_unipRad_blocks2, mem_unipRad_two]
 
 /- English proof (translation)
-Introduce `h hh`. Take `⟨h0, h1, h2⟩` from `mem_unipRad_two.1 hh.1`. Establish `hsub : h.val.submatrix (Fin.natAdd r) (Fin.natAdd r) = 1` using `by ext i j; exact h2 i j`. Establish `key` using `hv h hh.2 (fun i j => by simp [h0]) (fun i j => by simp [h1, Matrix.one_apply]) 1 (by rw [hsub, det_one, Units.val_one])`. Use `show π h v = v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, map_one, Units.val_one, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem unipRad_two_inf_KO_le_stab {r t : ℕ} {χ : kˣ →* ℂˣ} {W : Type} [AddCommGroup W] [Module ℂ W]
     {π : Representation ℂ (GL (Fin (r + t)) k) W} {v : W} (hv : IsBlockVec χ π v) :
@@ -163,7 +159,7 @@ theorem unipRad_two_inf_KO_le_stab {r t : ℕ} {χ : kˣ →* ℂˣ} {W : Type} 
   rw [key, map_one, Units.val_one, one_smul]
 
 /- English proof (translation)
-Consider the cases of `a`. Rewrite using `[Pi.mulSingle_eq_of_ne (by decide)]; exact one_mem _`. Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `hg`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulSingle_mem_KO {r t : ℕ} {g : GL (Fin t) k} (hg : g ∈ KO k (Fin t)) (a : Bool) :
     (Pi.mulSingle true g : Levi k (Two (Fin r) (Fin t))) a ∈ KO k (Two (Fin r) (Fin t) a) := by
@@ -172,7 +168,7 @@ theorem mulSingle_mem_KO {r t : ℕ} {g : GL (Fin t) k} (hg : g ∈ KO k (Fin t)
   · rw [Pi.mulSingle_eq_same]; exact hg
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply]`. Use `Finset.prod_eq_one fun a _ => isUnram_absPow k _ _ ?_` and prove the remaining obligations. Conclude with `GlobalTheory.StepData.valuation_det_of_mem_KO (mulSingle_mem_KO (r := r) hg a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem deltaHalf_mulSingle {r t : ℕ} {g : GL (Fin t) k} (hg : g ∈ KO k (Fin t)) :
     deltaHalf k (Two (Fin r) (Fin t)) (Pi.mulSingle true g) = 1 := by
@@ -181,11 +177,11 @@ theorem deltaHalf_mulSingle {r t : ℕ} {g : GL (Fin t) k} (hg : g ∈ KO k (Fin
   exact GlobalTheory.StepData.valuation_det_of_mem_KO (mulSingle_mem_KO (r := r) hg a)
 
 /- English proof (translation)
-Use `set h := leviEmb k (two (stdSum (rfl : r + t = r + t))) (Pi.mulSingle true g : Levi k (Two (Fin r) (Fin t))) with hdef`. Establish `hKO : h ∈ KO k (Fin (r + t))`. Use `GlobalTheory.StepData.mem_KO.2 ⟨intM_leviEmb _ _ fun a => GlobalTheory.StepData.intM_of_mem_KO (mulSingle_mem_KO hg a), ?_⟩` and prove the remaining obligations. Rewrite using `[hdef, ← map_inv]`. Conclude with `intM_leviEmb _ _ fun a => GlobalTheory.StepData.intM_of_mem_KO (inv_mem (mulSingle_mem_KO hg a))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ∀ (i : Fin t) (j : Fin r), h.val (Fin.natAdd r i) (Fin.castAdd t j) = 0` using `fun i j => by`. Rewrite using `[← twoE_true, ← twoE_false]`. Conclude with `leviEmb_apply_ne k _ _ (by decide) _ _`. Establish `h1 : ∀ i j : Fin r, h.val (Fin.castAdd t i) (Fin.castAdd t j) = (1 : Matrix (Fin r) (Fin r) k) i j` using `fun i j => by`. Rewrite using `[← twoE_false, ← twoE_false, hdef, leviEmb_apply_same, Pi.mulSingle_eq_of_ne (by decide)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `hsub : h.val.submatrix (Fin.natAdd r) (Fin.natAdd r) = g.val`. Use extensionality with `i j`. Rewrite using `[Matrix.submatrix_apply, ← twoE_true, ← twoE_true, hdef, leviEmb_apply_same, Pi.mulSingle_eq_same]`. Conclude with `hv h hKO (fun i j => by simp [h0]) (fun i j => by simp [h1, Matrix.one_apply]) (Matrix.GeneralLinearGroup.det g) (by rw [hsub, Matrix.GeneralLinearGroup.val_det_apply])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_mulSingle {r t : ℕ} {χ : kˣ →* ℂˣ} {W : Type} [AddCommGroup W] [Module ℂ W]
     {π : Representation ℂ (GL (Fin (r + t)) k) W} {v : W} (hv : IsBlockVec χ π v)
@@ -213,11 +209,11 @@ theorem act_mulSingle {r t : ℕ} {χ : kˣ →* ℂˣ} {W : Type} [AddCommGroup
     (Matrix.GeneralLinearGroup.det g) (by rw [hsub, Matrix.GeneralLinearGroup.val_det_apply])
 
 /- English proof (translation)
-Introduce `hP k _ _ _ _ r t χ V _ _ π v hsm hirr hχ hv0 hv`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `hx`. Apply `hv0` to reduce the goal to its premises. Establish `hx' : (Submodule.Quotient.mk v : Jacquet π (unipRad k (blocks2 r t))) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[unipRad_blocks2]`. Conclude with `hx`. Use `hP k (r + t) 2 (sz r t) (blocks2 r t) ⟨V, π, hsm, hirr⟩ v ?_ hx'` and prove the remaining obligations. Rewrite using `[unipRad_blocks2]`. Introduce and unpack `⟨h, hh⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `sup_le (KOne_le_stab hχ hv) (unipRad_two_inf_KO_le_stab hv) hh` as an intermediate fact. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Conclude with `this`. Introduce `g hg`. Rewrite using `[jac_mk, deltaHalf_mulSingle hg, act_mulSingle hv hg, inv_one, Units.val_one, one_smul, Submodule.Quotient.mk_smul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jacquet_ne_zero_of_isBlockVec_two : GlobalTheory.Published.DepthZeroJacquetInjective → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ) (χ : kˣ →* ℂˣ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin (r + t)) k) V) (v : V), IsSmooth π → π.IsIrreducible → IsTame χ → v ≠ 0 → IsBlockVec χ π v → (Submodule.Quotient.mk v : Jacquet π (unipRad k (two (stdSum (rfl : r + t = r + t))))) ≠ 0 ∧ ∀ g ∈ KO k (Fin t), jac (two (stdSum (rfl : r + t = r + t))) π (Pi.mulSingle true g) (Submodule.Quotient.mk v) = (χ (Matrix.GeneralLinearGroup.det g) : ℂ) • Submodule.Quotient.mk v := by
   intro hP k _ _ _ _ r t χ V _ _ π v hsm hirr hχ hv0 hv

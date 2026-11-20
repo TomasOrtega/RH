@@ -18,19 +18,19 @@ def ChrFacts : Prop :=
     (v ∉ X.T → GlobalTheory.SplitWeil.IsUnram (chrW X.α τ) ∧ GlobalTheory.SplitWeil.IsUnram (chrW X.β τ))
 
 /- English proof (translation)
-Conclude with `SetLike.ext fun _ => Iff.rfl`.
+A detailed English derivation is pending.
 -/
 theorem sb_eq (Y : Type) [TopologicalSpace Y] : GlobalTheory.SplitWeil.SB Y = GlobalTheory.WeilM.SB Y := by
   exact SetLike.ext fun _ => Iff.rfl
 
 /- English proof (translation)
-Establish `h0 : g 0 = 0`. Establish `h1` using `hg 0 S.zero_mem 0 S.zero_mem 1`. Rewrite `h1` using `[smul_zero, add_zero, one_smul]`. Establish `h2 : g 0 + g 0 = g 0 + 0`. Rewrite using `[add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.symm`. Conclude with `add_left_cancel h2`. Set `gS : S →ₗ[ℂ] W` to `{ toFun := fun x => g x map_add' := fun x y => by`. Establish `h3` using `hg x x.2 y y.2 1`. Rewrite `h3` using `[one_smul, one_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using h3`. Use the proof step `map_smul' := fun c x => by`. Establish `h3` using `hg 0 S.zero_mem x x.2 c`. Rewrite `h3` using `[zero_add, h0, zero_add]`. Simplify using `using h3 }`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨p, hp⟩` from `LinearMap.exists_extend gS`. Use `⟨p, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h4` using `LinearMap.congr_fun hp ⟨x, hx⟩`. Simplify `h4` using `[gS]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem extendOn {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (S : Submodule ℂ V)
     (g : V → W) (hg : ∀ x ∈ S, ∀ y ∈ S, ∀ c : ℂ, g (x + c • y) = g x + c • g y) :
@@ -58,13 +58,13 @@ theorem extendOn {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [
   simpa [gS] using h4
 
 /- English proof (translation)
-Set `g : (D → ℂ) → N` to `fun φ => if h : ι φ ∈ SM then ⟨f (ι φ), hmem _ h⟩ else 0`. Establish `hgS : ∀ φ ∈ SD, (g φ : P) = f (ι φ)`. Introduce `φ hφ`. Use `show ((if h : ι φ ∈ SM then (⟨f (ι φ), hmem _ h⟩ : N) else 0 : N) : P) = f (ι φ)`. Rewrite using `[dif_pos (show ι φ ∈ SM from hι.mapsTo hφ)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `extendOn SD g (by`. Introduce `x hx y hy c`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_add, Submodule.coe_smul, hgS _ (SD.add_mem hx (SD.smul_mem c hy)), hgS _ hx, hgS _ hy, map_add, map_smul]`. Conclude with `hlin _ (hι.mapsTo hx) _ (hι.mapsTo hy) c)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨p, fun φ hφ => by rw [hp φ hφ]; exact hgS φ hφ, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Take `⟨Φ, hΦ, hfΦ⟩` from `hon y.1 y.2`. Take `⟨φ, hφ, hιφ⟩` from `hι.surjOn hΦ`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨φ, hφ, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hp φ hφ, hgS φ hφ, hιφ, hfΦ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_p {D M P : Type} [AddCommGroup P] [Module ℂ P] (SD : Submodule ℂ (D → ℂ)) (SM : Submodule ℂ (M → ℂ))
     (ι : (D → ℂ) →ₗ[ℂ] (M → ℂ)) (hι : Set.BijOn ι SD SM) (N : Submodule ℂ P) (f : (M → ℂ) → P)

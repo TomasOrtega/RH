@@ -19,14 +19,14 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule (ofAdj)
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ h _ hf` and use `GlobalTheory.ThetaJointCont.continuous_om_oriented h hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jointCont (D : D7) : JointCont D := fun _ _ _ _ _ _ h _ hf => GlobalTheory.ThetaJointCont.continuous_om_oriented h hf
 
 /- English proof (translation)
-Use `⟨fun h γ w => ?_, ?_, fun γ hγ h w => ?_⟩` and prove the remaining obligations. Rewrite using `[(hom.om_pres _ f hf).quasi]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(hφ.2.comp continuous_fst).star.mul ((jointCont D ψ S L χS χL om hom f hf).comp (f := fun p : GA D S × WO S L => ((p.1, (1 : GA D L)), p.2)) ((continuous_fst.prodMk continuous_const).prodMk continuous_snd))`. Establish `h1` using `GlobalTheory.MixPer.Check.om_rat hom hγ (one_mem _) (hom.om_pres (h, 1) f hf) (fun u => GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hom.std (hom.om_pres (h, 1) f hf) u) (w ⬝ mt S γ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[actO_eq, mt_one, Matrix.one_mul, Matrix.mul_assoc, mt_mul_inv, Matrix.mul_one, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[hφ.1 γ hγ, h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quasiFam_of_weil {S L : HSp D} {χS χL} {om : Om S L} (hom : IsWeilDatumO ψ S L χS χL om) {f : WO S L → ℂ}
     (hf : IsThetaFunO ψ S L f) {φ : GA D S → ℂ} (hφ : IsContAut S φ) :
@@ -43,11 +43,11 @@ theorem quasiFam_of_weil {S L : HSp D} {χS χL} {om : Om S L} (hom : IsWeilDatu
     rw [hφ.1 γ hγ, h1]
 
 /- English proof (translation)
-Take `⟨ψ, θ, μ, 𝓕, U, f, hψ, -, hm, hU, hf, h0, -⟩` from `GlobalTheory.Size.exists_theta_posSp D m 1`. Take `⟨χS, χL, om, hom⟩` from `hW ψ hψ`. Establish `hf' : IsThetaFunO ψ _ _ f` using `GlobalTheory.Size.isTheta_iff_level.2 ⟨U, hU, hf⟩`. Use `⟨ψ, _, hψ, quasiFam_of_weil hom hf' (φ := fun _ => 1) ⟨fun _ _ _ => rfl, continuous_const⟩, fun h => h0 ?_⟩` and prove the remaining obligations. Establish `e : f = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `w`. Use `congrFun h w` as an intermediate fact. Rewrite `this` using `[show ((1 : GA D (posSp D m)), (1 : GA D (posSp D 1))) = 1 from rfl, map_one]`. Simplify using `using this`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[GlobalTheory.Ker.ipO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_quasiFam (D : D7) (m : ℕ) (hW : ∀ ψ, IsStdChar D ψ (-1) →
     ∃ χS χL om, IsWeilDatumO ψ (posSp D m) (posSp D 1) χS χL om) :
@@ -65,7 +65,7 @@ theorem exists_quasiFam (D : D7) (m : ℕ) (hW : ∀ ψ, IsStdChar D ψ (-1) →
   rw [e]; simp [GlobalTheory.Ker.ipO]
 
 /- English proof (translation)
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_smul, trace_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_inverseGram_conj_smul_eq {R : Type} [CommRing R] {m n : ℕ} (c : R) (a : Matrix (Fin m) (Fin m) R) (b : Matrix (Fin m) (Fin n) R)
     (g : Matrix (Fin n) (Fin n) R) (y : Matrix (Fin n) (Fin m) R) :
@@ -75,13 +75,13 @@ theorem trace_inverseGram_conj_smul_eq {R : Type} [CommRing R] {m n : ℕ} (c : 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `h : adj (rat τ : Mx D L.rank L'.rank) ⬝ (gA L ⬝ (rat τ : Mx D L.rank L'.rank)) = incA D c • gA L'`. Rewrite using `[gA, gA, ← rat_conjTranspose, ← rat_mul, ← rat_mul, ← rat_smul]`. Conclude with `congrArg rat hτ`. Rewrite using `[hO_eq_trace, hO_eq_trace, ofAdj, ofAdj]`. Simplify using `only [adj_smul, adj_mul, adj_adj, adj_gA, adj_giA, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc, giA_gA_cancel, gA_giA_cancel, trace_smul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[trace_mul_comm (rat τ : Mx D L.rank L'.rank), Matrix.mul_assoc y, trace_mul_comm y]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[cancel₃ h]`. Establish `h0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Establish `h1 : incA D (c / (D.host.xi0 * star D.host.xi0)) = incA D (-D.host.xi0⁻¹) * (cA D (incA D (-D.host.xi0⁻¹)) * incA D c)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.DualPairCheck.cA_incA, ← map_mul, ← map_mul]`. Use `congr 1`. Rewrite using `[star_neg, star_inv₀, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg]`. Clear the denominators using the available nonvanishing facts. Establish `h2` using `trace_inverseGram_conj_smul_eq (R := AE D) (incA D c) (giA S) (adj x) (gA L') y`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, mul_assoc, mul_assoc]`. Conclude with `congrArg (fun t => incA D (-D.host.xi0⁻¹) * (cA D (incA D (-D.host.xi0⁻¹)) * t)) h2`.
+A detailed English derivation is pending.
 -/
 theorem hO_ofAdj (L L' S : HSp D) (τ : Matrix (Fin L.rank) (Fin L'.rank) D.host.E) (c : D.host.E)
     (hτ : τᴴ ⬝ (L.gram ⬝ τ) = c • L'.gram) (x y : WO S L') :
@@ -108,13 +108,13 @@ theorem hO_ofAdj (L L' S : HSp D) (τ : Matrix (Fin L.rank) (Fin L'.rank) D.host
   exact congrArg (fun t => incA D (-D.host.xi0⁻¹) * (cA D (incA D (-D.host.xi0⁻¹)) * t)) h2
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D) (star_ne_zero.2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D))`.
+A detailed English derivation is pending.
 -/
 theorem normSq_xi_ne_zero : D.host.xi0 * star D.host.xi0 ≠ 0 :=
   mul_ne_zero (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D) (star_ne_zero.2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D))
 
 /- English proof (translation)
-Rewrite using `[symplOH_eq, hO_ofAdj L L' S τ _ hτ, div_self normSq_xi_ne_zero, map_one, one_mul, ← symplOH_eq, symplOH_skew]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sympl_link (L L' S : HSp D) (τ : Matrix (Fin L.rank) (Fin L'.rank) D.host.E)
     (hτ : τᴴ ⬝ (L.gram ⬝ τ) = (D.host.xi0 * star D.host.xi0) • L'.gram) (x y : WO S L') :
@@ -123,7 +123,7 @@ theorem sympl_link (L L' S : HSp D) (τ : Matrix (Fin L.rank) (Fin L'.rank) D.ho
   rw [symplOH_eq, hO_ofAdj L L' S τ _ hτ, div_self normSq_xi_ne_zero, map_one, one_mul, ← symplOH_eq, symplOH_skew]
 
 /- English proof (translation)
-Rewrite using `[symplOH_eq, hO_ofAdj L L' S τ _ hτ, neg_div, div_self normSq_xi_ne_zero, map_neg, map_one, neg_one_mul, map_neg, ← symplOH_eq, symplOH_skew, neg_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sympl_last (L L' S : HSp D) (τ : Matrix (Fin L.rank) (Fin L'.rank) D.host.E)
     (hτ : τᴴ ⬝ (L.gram ⬝ τ) = (-(D.host.xi0 * star D.host.xi0)) • L'.gram) (x y : WO S L') :
@@ -133,14 +133,14 @@ theorem sympl_last (L L' S : HSp D) (τ : Matrix (Fin L.rank) (Fin L'.rank) D.ho
     ← symplOH_eq, symplOH_skew, neg_neg]
 
 /- English proof (translation)
-Simplify using `only [ofAdj, mt_inv, adj_mul, Matrix.mul_smul, Matrix.mul_assoc, gA_giA_cancel]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_inv_ofAdj (L W : HSp D) (n : GA D W) (z : Mx D L.rank W.rank) :
     mt W n⁻¹ ⬝ ofAdj L W z = ofAdj L W (z ⬝ mt W n) := by
   simp only [ofAdj, mt_inv, adj_mul, Matrix.mul_smul, Matrix.mul_assoc, gA_giA_cancel]
 
 /- English proof (translation)
-Simplify using `only [ofAdj, d.incAdj_apply, d.incY_apply, d.pX_eq, adj_mul, adj_adj, adj_gA, Matrix.mul_smul, Matrix.mul_assoc, giA_gA_cancel]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incAdj_eq {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) (L : HSp D) (y : Mx D L.rank ρ) :
     d.incAdj L y = ofAdj L W (y ⬝ d.pX) := by
@@ -148,14 +148,14 @@ theorem incAdj_eq {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) (L : HSp D)
     giA_gA_cancel]
 
 /- English proof (translation)
-Simplify using `only [ofAdj, d.p0_eq, adj_mul, Matrix.mul_smul, Matrix.mul_assoc, gA_giA_cancel]`.
+Simplify using the standard rewrite rules.
 -/
 theorem projection_mul_ofAdjoint {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) (L : HSp D) (z : Mx D L.rank W.rank) :
     d.p0 ⬝ ofAdj L W z = ofAdj L W₀ (z ⬝ d.j0) := by
   simp only [ofAdj, d.p0_eq, adj_mul, Matrix.mul_smul, Matrix.mul_assoc, gA_giA_cancel]
 
 /- English proof (translation)
-Rewrite using `[zEll, Matrix.mul_vecMulVec, ← ratV_mulVec, l.map, yZero, zEll, ← Matrix.neg_vecMulVec]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `map_neg (incA D) _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem tau_zEll {ρ σ : ℕ} {B : BesLev D σ} {L' : HSp D} {ζ' : Fin L'.rank → D.host.E} (l : Link B L' ζ') :
     (rat l.τ : Mx D B.L.rank L'.rank) ⬝ zEll L' ρ ζ' = yZero B.L ρ B.ζ := by
@@ -164,7 +164,7 @@ theorem tau_zEll {ρ σ : ℕ} {B : BesLev D σ} {L' : HSp D} {ζ' : Fin L'.rank
   funext i; exact map_neg (incA D) _
 
 /- English proof (translation)
-Rewrite using `[ptT, incAdj_eq, mt_inv_ofAdj, projection_mul_ofAdjoint, Link.κ, ptS, d.extX_apply, ← tau_zEll l]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem link_point {ρ σ : ℕ} {B : BesLev D σ} {L' W W₀ : HSp D} {ζ' : Fin L'.rank → D.host.E} (l : Link B L' ζ')
     (d : HypDec W W₀ ρ) (n : GA D W) : ptT d B.L (yZero B.L ρ B.ζ) n = l.κ W₀ (ptS d L' (zEll L' ρ ζ') n) := by
@@ -172,7 +172,7 @@ theorem link_point {ρ σ : ℕ} {B : BesLev D σ} {L' W W₀ : HSp D} {ζ' : Fi
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[cenT, incAdj_eq, mt_inv_ofAdj, cenS, d.extX_apply, ← tau_zEll l, ← sympl_link B.L L' W l.τ hτ]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem link_centre {ρ σ : ℕ} {B : BesLev D σ} {L' W W₀ : HSp D} {ζ' : Fin L'.rank → D.host.E} (l : Link B L' ζ')
     (hτ : l.τᴴ ⬝ (B.L.gram ⬝ l.τ) = (D.host.xi0 * star D.host.xi0) • L'.gram)
@@ -181,11 +181,11 @@ theorem link_centre {ρ σ : ℕ} {B : BesLev D σ} {L' W W₀ : HSp D} {ζ' : F
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `e : star ζ' ⬝ᵥ (l.τᴴ ⬝ (B.L.gram ⬝ l.τ)) *ᵥ ζ' = star ζ' ⬝ᵥ ((D.host.xi0 * star D.host.xi0) • L'.gram) *ᵥ ζ'`. Rewrite using `[← Matrix.mulVec_mulVec, dotProduct_mulVec, ← Matrix.star_mulVec, ← Matrix.mulVec_mulVec, l.map, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, ← l.norm, star_neg, Matrix.mulVec_neg, neg_dotProduct_neg]`. Establish `hu : Unique (Fin L'.rank)` using `by rw [h.1]; infer_instance`. Establish `h2` using `h.2`. Simplify using `only [dotProduct, Matrix.mulVec, Fintype.sum_unique] at e h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i j`. Rewrite using `[Subsingleton.elim i default, Subsingleton.elim j default]`. Establish `a : star ζ' default ≠ 0` using `left_ne_zero_of_mul h2`. Establish `b : ζ' default ≠ 0` using `right_ne_zero_of_mul (right_ne_zero_of_mul h2)`. Establish `c` using `mul_left_cancel₀ a e`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c'` using `mul_right_cancel₀ b c`. Conclude with `c'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem link_simil {σ : ℕ} {B : BesLev D σ} {L' : HSp D} {ζ' : Fin L'.rank → D.host.E} (h : IsLineVec L' ζ')
     (l : Link B L' ζ') : l.τᴴ ⬝ (B.L.gram ⬝ l.τ) = (D.host.xi0 * star D.host.xi0) • L'.gram := by
@@ -205,7 +205,7 @@ theorem link_simil {σ : ℕ} {B : BesLev D σ} {L' : HSp D} {ζ' : Fin L'.rank 
   exact c'
 
 /- English proof (translation)
-Use `⟨D.host.xi0 • 1, ?_⟩` and prove the remaining obligations. Rewrite using `[diagSp_gram, diagSp_gram]`. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Simplify using `[Examples₂.sgn, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example (D : D7) : ∃ τ : Matrix (Fin 1) (Fin 1) D.host.E,
     τᴴ ⬝ ((show Matrix (Fin 1) (Fin 1) D.host.E from (diagSp D 1 ![true] 0 1).gram) ⬝ τ) =

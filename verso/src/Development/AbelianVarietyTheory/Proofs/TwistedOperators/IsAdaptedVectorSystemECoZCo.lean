@@ -19,15 +19,15 @@ def eCo (E : ∀ j, ℕ → (D.sp.Y j).V) (j i : ℕ) : Fin (D.sp.Y j).rank → 
 def zCo (z : ∀ j, (D.sp.Y j).V) (j : ℕ) : Fin (D.sp.Y j).rank → D.host.E := ⇑((D.sp.Y j).frame.repr (z j))
 
 /- English proof (translation)
-Establish `hpar` using `even_iff_odd_c hj`. Establish `hb : 0 < bI D j` using `by unfold bI; omega`. Rewrite using `[nfScal_kap j hb i]`. Unfold `normalFr adaptedVector nAux`. Distinguish the cases in `h1 : i < (D.R.m - 1 - j) / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Establish `hb' : ¬ bI D j ≤ i` using `by unfold bI; omega`. Simplify using `only [if_pos h1, if_neg hb', one_mul]`. Both sides reduce to the same expression. Distinguish the cases in `h2 : Even j ∧ i = (D.R.m - 1 - j) / 2`. Establish `hc : (D.R.m - 1 - j) % 2 = 1 ∧ i = (D.R.m - 1 - j) / 2` using `⟨hpar.1 h2.1, h2.2⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hb' : ¬ bI D j ≤ i` using `by unfold bI; omega`. Simplify using `only [if_neg h1, if_pos h2, if_pos hc, if_neg hb', one_mul]`. Both sides reduce to the same expression. Establish `h3 : ¬ ((D.R.m - 1 - j) % 2 = 1 ∧ i = (D.R.m - 1 - j) / 2)` using `fun h => h2 ⟨hpar.2 h.1, h.2⟩`. Establish `hb' : bI D j ≤ i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `bI`. Distinguish the cases in `hc : (D.R.m - 1 - j) % 2 = 1`. Establish `: i ≠ (D.R.m - 1 - j) / 2` using `fun h => h3 ⟨hc, h⟩`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [if_neg h1, if_neg h2, if_neg h3, if_pos hb', map_smul, Finsupp.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem normalFr_repr' (E Ev : ∀ j, ℕ → (D.sp.Y j).V) (z : ∀ j, (D.sp.Y j).V) {j : ℕ} (hj : j < D.R.m) {i : ℕ}
     (hi : i < D.R.m - 1 - j) (r : Fin (D.sp.Y j).rank) :
@@ -57,11 +57,11 @@ theorem normalFr_repr' (E Ev : ∀ j, ℕ → (D.sp.Y j).V) (z : ∀ j, (D.sp.Y 
       rfl
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Establish `hρ : nAux D 0 / 2 = D.R.rS` using `by unfold nAux Ranks.rS; omega`. Unfold `normalFr frame0`. Rewrite using `[hρ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h1 : i < D.R.rS`. Rewrite using `[if_pos h1, dif_pos h1, (hE0 i h1).1]`. Rewrite using `[if_neg h1, dif_neg h1]`. Distinguish the cases in `h3 : i = D.R.rS`. Rewrite using `[if_pos ⟨(Nat.even_iff.2 rfl : Even 0), h3⟩, if_pos h3, hz0]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h => h3 h.2), if_neg h3, if_pos (Nat.even_iff.2 rfl : Even 0)]`. Establish `h5 : 2 * D.R.rS - i < D.R.rS` using `by unfold Ranks.rS at *; omega`. Establish `h6 : nAux D 0 - 1 - i = 2 * D.R.rS - i` using `by unfold nAux Ranks.rS at *; omega`. Rewrite using `[dif_pos h5, h6, (hE0 _ h5).2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem normalFr_zero_repr' (E Ev : ∀ j, ℕ → (D.sp.Y j).V) (z : ∀ j, (D.sp.Y j).V)
     (hE0 : ∀ i (hi : i < D.R.rS), E 0 i = D.sp.hypE ⟨i, hi⟩ ∧ Ev 0 i = D.sp.hypF ⟨i, hi⟩) (hz0 : z 0 = D.sp.zm)
@@ -83,15 +83,13 @@ theorem normalFr_zero_repr' (E Ev : ∀ j, ℕ → (D.sp.Y j).V) (z : ∀ j, (D.
       rw [dif_pos h5, h6, (hE0 _ h5).2]
 
 /- English proof (translation)
-Introduce `j hj`. Take `⟨hA, hB, hC⟩` from `hAux j hj`. Establish `hpar` using `even_iff_odd_c hj`. Simplify using `only [nAux] at hA hB hC`. Simplify using `only [eCo, zCo, Formalism.IndefR.Seed.Frm.vecY_repr]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨fun i hi l hl => ⟨?_, ?_, ?_⟩, fun hc => ?_, fun x i' hi' => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine hT_swap _ _ (hA i hi l hl).2.2 ?_ split_ifs <;> simp`. Conclude with `(hA l hl i hi).1`. Conclude with `(hA l hl i hi).2.1`. Take `⟨h1, -, h3⟩` from `hC (hpar.2 hc)`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Conclude with `⟨h1, fun i hi => ⟨(h3 i hi).1, (h3 i hi).2⟩⟩`. Unfold `adaptedVector split_ifs with h1 h2`. Simplify using `only [eCo, Formalism.IndefR.Seed.Frm.vecY_repr]`. Conclude with `(hB _ h1 x).1`. Simplify using `only [zCo, Formalism.IndefR.Seed.Frm.vecY_repr]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `(hC (hpar.2 h2.1)).2.1 x`. Simplify using `only [eCo, Formalism.IndefR.Seed.Frm.vecY_repr]`. Use `(hB _ ?_ x).2` and prove the remaining obligations. Distinguish the cases in `hc : (D.R.m - 1 - j) % 2 = 1`. Establish `: i' ≠ (D.R.m - 1 - j) / 2` using `fun h => h2 ⟨hc, h⟩`.
-
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isAdaptedVectorSystem_eCo_zCo (E Ev : ∀ j, ℕ → (D.sp.Y j).V) (z : ∀ j, (D.sp.Y j).V)
     (hAux : ∀ j, j < D.R.m → IsAuxiliaryHeckeCharacter D j (E j) (Ev j) (z j)) : IsAdaptedVectorSystem (eCo E) (eCo Ev) (zCo z) := by
@@ -129,11 +127,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices GlobalTheory.StdFrame
 variable {D : D7}
 
 /- English proof (translation)
-Use `⟨fun i hi col hcol r => ?_, fun col l' hcl r => ?_⟩` and prove the remaining obligations. Rewrite using `[agree_all hA hei r col]`. Simplify using `only [chainMat]`. Rewrite using `[if_neg (by omega), if_pos (by unfold nAux; omega), absNorm_of_div P hl, show (col : ℕ) - D.R.k = i by omega, normalFr_repr' E Ev z hj hi r]`. Rewrite using `[agree_all hA hei r col]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [chainMat]`. Break down `hcl with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Establish `hl' : l' = ⟨col, (idx_lt hj col).1 h1⟩` using `Fin.ext h2`. Substitute `hl'` using the available equality. Rewrite using `[if_pos h1, colX_eq j _ col ((idx_lt hj col).1 h1)]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ¬ (col : ℕ) < D.R.k` using `by omega`. Establish `h4 : ¬ (col : ℕ) < D.R.k + nAux D j` using `by unfold nAux; omega`. Establish `hl' : l' = ⟨(col : ℕ) - nAux D j, (idx_lt hj col).2 h4⟩` using `Fin.ext (by simp only [nAux]; omega)`. Substitute `hl'` using the available equality. Rewrite using `[if_neg h3, if_neg h4, colX_eq j _ _ ((idx_lt hj col).2 h4)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem colsAt' (γ : ∀ j, GL (Fin (D.sp.X j).rank) (Ef D)) (E Ev : ∀ j, ℕ → (D.sp.Y j).V) (z : ∀ j, (D.sp.Y j).V)
     {j : ℕ} (hj : j < D.R.m) (β : GL (Fin (D.sp.Y j).rank) (EAf D)) (P : Formalism.L2.Host.PiBar D.host)
@@ -163,19 +161,17 @@ theorem colsAt' (γ : ∀ j, GL (Fin (D.sp.X j).rank) (Ef D)) (E Ev : ∀ j, ℕ
       rw [if_neg h3, if_neg h4, colX_eq j _ _ ((idx_lt hj col).2 h4)]
 
 /- English proof (translation)
-Introduce `D T L hPg γ E Ev z hγ hAux hE0 hz0 hSh`. Establish `hshape : ∀ j < D.R.m, ShapeY L j (γ j) (E j) (Ev j) (z j) (betaYOf L.βY j)` using `fun j hj => shape_betaYOf L γ E Ev z L.βY j hj.le (hSh.1 j hj (hAux _ (lt_of_le_of_lt (min_le_left _ _) hj)))`. Establish `hcols : ∀ j (hj : j < D.R.m), ∀ PP ∈ L.Pg, ∀ ei : AE D, Formalism.L2.NTheta.IsIdemAt ei PP → (∀ i < D.R.m - 1 - j, ∀ col : Fin (D.sp.Y j).rank, col.val = D.R.k + i → ∀ r, toEAf D ei * (betaYOf L.βY j).val r col = toEAf D ei * eToEAf D (((Ideal.absNorm PP.asIdeal : ℕ) : D.host.E) …` using `D) j col l' → ∀ r, toEAf D ei * (betaYOf L.βY j).val r col = toEAf D ei * (xMat (D := D) j).mulVec (fun i => (γ j).val i l') r := by`. Introduce `j hj PP hPP ei hei`. Take `⟨l, hl⟩` from `(hPg PP).1 hPP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `colsAt' γ E Ev z hj _ L.C.P hl ((hshape j hj).1 l PP hl) hei`. Establish `hxspan : ∀ j (hj : j < D.R.m), ∀ PP ∈ L.Pg, ∀ ei : AE D, Formalism.L2.NTheta.IsIdemAt ei PP → ∀ col : Fin (D.sp.Y j).rank, (col.val < D.R.k ∨ D.R.k + (D.R.m - 1 - j) ≤ col.val) → XSpanAt j (betaYOf L.βY j).val ei col`. Introduce `j hj PP hPP ei hei col hcol`. Establish `hc` using `(hcols j hj PP hPP ei hei).2`. Break down `hcol with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨_, hc col ⟨col, (idx_lt hj col).1 h⟩ (Or.inl ⟨h, rfl⟩)⟩`. Conclude with `⟨_, hc col ⟨(col : ℕ) - (D.R.m - 1 - j), (idx_lt hj col).2 (by unfold nAux; omega)⟩ (Or.inr ⟨h, rfl⟩)⟩`. Establish `h0m : 0 < D.R.m` using `lt_of_lt_of_le two_pos D.R.two_le_m`. Use `⟨⟨eCo E, eCo Ev, zCo z, kap D, fun _ => 1, ⟨isAdaptedVectorSystem_eCo_zCo E Ev z hAux, kap_ne, fun _ => one_ne_zero, ?_, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `PP hPP j _ i hi`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl⟩` from `(hPg PP).1 hPP`. Establish `hb : 0 < bI D j` using `by unfold bI; omega`. Rewrite using `[nfScal_kap j hb i]`. Use `split_ifs`. Unfold `sgT split_ifs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Valuation.map_neg, valuation_splitTraceElement_eq_one L.C.P hl]`. Conclude with `valuation_splitTraceElement_eq_one L.C.P hl`. Conclude with `map_one _`. Introduce `PP hPP ei hei j hj`. Use `⟨fun i hi col hcol r => ?_, hxspan j hj PP hPP ei hei⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_pos hPP]`. Conclude with `(hcols j hj PP hPP ei hei).1 i hi col hcol r`. Introduce `PP hPP ei hei`. Establish `hc` using `(hcols 0 h0m PP hPP ei hei).1`. Use `⟨fun i hi col hcol r => ?_, fun col hcol => hxspan 0 h0m PP hPP ei hei col (Or.inl (by rw [← Formalism.IndefR.Seed.FrmC.N_zero D]; exact hcol))⟩` and prove the remaining obligations.
-
-Establish `hi' : i < D.R.m - 1 - 0` using `by omega`. Rewrite using `[if_pos hPP, hc i hi' col (by rw [hcol, Formalism.IndefR.Seed.FrmC.N_zero]) r, ← normalFr_repr' E Ev z h0m hi' r, normalFr_zero_repr' E Ev z hE0 hz0 hi]`. Introduce `j hj`. Use `⟨γ j, by rw [← crdLat_eq_l0X]; exact hγ j hj, fun PP hPP ei hei col l' hcl r => ?_⟩` and prove the remaining obligations. Conclude with `(hcols j hj PP hPP ei hei).2 col l' hcl r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem normalFrames_of_stdShape : ∀ {D : D7} {T : Type} (L : LevCh D T), (∀ PP, PP ∈ L.Pg ↔ ∃ l, L.C.P.Div l PP) → ∀ (γ : ∀ j, GL (Fin (D.sp.X j).rank) (Formalism.IndefR.Lev.EAf D)) (E Ev : ∀ j, ℕ → (D.sp.Y j).V) (z : ∀ j, (D.sp.Y j).V), (∀ j, j < D.R.m → IsFrame (γ j) (Formalism.L2.Herm.crdLat (D.sp.X j) (D.sp.X j).L0)) → (∀ j, j < D.R.m → GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices.IsAuxiliaryHeckeCharacter D j (E j) (Ev j) (z j)) → (∀ i (hi : i < D.R.rS), E 0 i = D.sp.hypE ⟨i, hi⟩ ∧ Ev 0 i = D.sp.hypF ⟨i, hi⟩) → z 0 = D.sp.zm → GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices.StdShape L γ E Ev z → (∃ (e ev : ∀ j : ℕ, ℕ → Fin (D.sp.Y j).rank → D.host.E) (z' : ∀ j : ℕ, Fin (D.sp.Y j).rank → D.host.E) (κ : ℕ → ℕ → D.host.E) (s : ℕ → D.host.E), NormalFrames (betaYOf L.βY) e ev z' κ s L.Pg L.Pg ∧ NormalFrame0 (betaYOf L.βY 0) L.Pg L.Pg) ∧ XBasesG L.Pg L.βY := by
   intro D T L hPg γ E Ev z hγ hAux hE0 hz0 hSh

@@ -9,9 +9,7 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `X s d g hs hqc hsep A _ _ hA hg k`. Establish `hP : IsProper (KS.pow A k).hom` using `KS.Leray.isProper_pow_hom A hA.proper k`. Establish `hsm` using `FibPow.smoothOfRelativeDimension_fibrePower ℂ X s d g hs A hA hg k`. Use `⟨hsm, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `infer_instance`.
-
-Use `infer_instance`. Use `haveI : Smooth ((KS.pow A k).hom ≫ s) := hsm.smooth infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.powSm_of :
     UpperTheory.Gal.W2.PowSm := by

@@ -5,24 +5,24 @@ open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual 
 open UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ExistsInjectiveCharacter.exists_injective_char p`.
+A detailed English derivation is pending.
 -/
 private theorem exists_injective_char (p : ℕ) [Fact p.Prime] :
     ∃ lam0 : (ZMod p)ˣ →* ℂˣ, Function.Injective lam0 :=
   _root_.UpperTheory.Reformulated.B.ExistsInjectiveCharacter.exists_injective_char p
 
 /- English proof (translation)
-Introduce `p _ ℓ k a hℓ hdvd`. Take `⟨lam0, hinj⟩` from `exists_injective_char p`. Establish `hm0 : 0 < orderOf (a ^ 2)` using `orderOf_pos _`. Establish `h2m : orderOf a ∣ 2 * orderOf (a ^ 2)`. Apply `orderOf_dvd_of_pow_eq_one` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[pow_mul, pow_orderOf_eq_one]`. Establish `hlk : ℓ ^ k ∣ orderOf (a ^ 2)`. Establish `h1 : ℓ ^ (k + 1) ∣ 2 * orderOf (a ^ 2)` using `hdvd.trans h2m`. Distinguish the cases in `h2 : ℓ = 2`. Substitute `h2` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite `h1` using `[pow_succ, mul_comm]`. Conclude with `Nat.dvd_of_mul_dvd_mul_left (by norm_num) h1`. Establish `hc : Nat.Coprime (ℓ ^ (k + 1)) 2` using `Nat.Coprime.pow_left _ ((Nat.coprime_primes hℓ Nat.prime_two).mpr h2)`. Conclude with `(Dvd.intro _ (pow_succ ℓ k).symm).trans (hc.dvd_of_dvd_mul_left h1)`. Take `⟨e, he⟩` from `hlk`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hepos : 0 < e`. Break down `Nat.eq_zero_or_pos e with h | h` into its components or cases. Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hlpos : 0 < ℓ ^ k` using `pow_pos hℓ.pos k`. Use `⟨lam0 ^ (2 * e), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, pow_mul, ← map_pow]`. Simplify using the standard rewrite rules. Establish `h1 : (lam0 ^ (2 * e)) a = (lam0 (a ^ 2)) ^ e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.pow_apply, pow_mul, ← map_pow]`. Establish `h2 : orderOf (lam0 (a ^ 2)) = ℓ ^ k * e`. Rewrite using `[orderOf_injective lam0 hinj, he]`. Rewrite using `[h1, orderOf_pow' _ hepos.ne', h2, Nat.gcd_eq_right (Dvd.intro_left _ rfl), Nat.mul_div_cancel _ hepos]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.charOrd : CharOrd := by
   intro p _ ℓ k a hℓ hdvd

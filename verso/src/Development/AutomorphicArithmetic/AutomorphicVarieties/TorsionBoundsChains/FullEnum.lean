@@ -3,21 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 open CategoryTheory UpperTheory.V.KH
 
 /- English proof (translation)
-Introduce `ι _ b hb hn`. Establish `hli : LinearIndependent ℤ (fun x : b => (x : ι →₀ ℤ))` using `hb`. Use `haveI : Finite b := hli.finite`. Use `letI := Fintype.ofFinite ι`. Use `letI := Fintype.ofFinite b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h1 : Fintype.card b ≤ Fintype.card ι`. Use `hli.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[Module.finrank_finsupp_self]`. Then use the resulting hypothesis. Use `choose n hn0 hmem using hn`. Establish `hind : LinearIndependent ℤ (fun k : ι => n k • Finsupp.single k (1 : ℤ))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[linearIndependent_iff']`. Introduce `s c hs i hi`. Use `congrArg (fun f : ι →₀ ℤ => f i) hs` as an intermediate fact. Simplify using `only [Finsupp.finset_sum_apply, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, Finsupp.coe_zero, Pi.zero_apply] at this`. Rewrite `this` using `[Finset.sum_eq_single i]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [if_true, mul_one] at this`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h (hn0 i)`. Introduce `j _ hj`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[hj]`. Introduce `h`. Conclude with `absurd hi h`. Set `w : ι → Submodule.span ℤ b` to `fun k => ⟨n k • Finsupp.single k (1 : ℤ), hmem k⟩`. Establish `hw : LinearIndependent ℤ w` using `LinearIndependent.of_comp (Submodule.span ℤ b).subtype hind`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Introduce a local definition for the expression.
 
-Establish `h2 : Fintype.card ι ≤ Fintype.card b`. Use `hw.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[finrank_span_set_eq_card hb, Set.toFinset_card]`. Use `this` and compare the differences between its conclusion and the goal. Set `e : ι ≃ b` to `Fintype.equivOfCardEq (le_antisymm h2 h1)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun k => (e k : ι →₀ ℤ), hli.comp e e.injective, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Conclude with `(e k).2`.
-
-Introduce `hy`. Conclude with `⟨e.symm ⟨y, hy⟩, by simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KH.fullEnum :
     ∀ (ι : Type) [Finite ι] (b : Set (ι →₀ ℤ)), LinearIndepOn ℤ id b →

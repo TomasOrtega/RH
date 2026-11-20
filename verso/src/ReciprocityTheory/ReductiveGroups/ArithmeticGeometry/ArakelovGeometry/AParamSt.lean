@@ -10,9 +10,9 @@ open scoped ComplexOrder
 variable {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ] {D : ℕ}
 
 /- English proof (translation)
-Establish `: pts P = ({0}ᶜ : Set (J → ℂ)) ∩ ⋂ f ∈ P, {z : J → ℂ | eval z (map (Int.castRingHom ℂ) f) = 0}`. Use extensionality with `z`. Simplify using `[pts, conePts]`. Rewrite using `[this]`. Use `(measurableSet_singleton 0).compl.inter (IsClosed.measurableSet ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isClosed_biInter fun f _ => isClosed_eq (MvPolynomial.continuous_eval _) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem gaap_measurableSet_pts {J : Type} [Fintype J] (P : Ideal (MvPolynomial J ℤ)) :
     MeasurableSet (pts P) := by
@@ -25,50 +25,42 @@ theorem gaap_measurableSet_pts {J : Type} [Fintype J] (P : Ideal (MvPolynomial J
   exact isClosed_biInter fun f _ => isClosed_eq (MvPolynomial.continuous_eval _) continuous_const
 
 /- English proof (translation)
-Simplify using `[Metric.mem_ball, dist_eq_norm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gaap_mem_ball_add {y₀ y : Fin D → ℂ} {ρ₀ : ℝ} :
     y₀ + y ∈ Metric.ball y₀ ρ₀ ↔ y ∈ Metric.ball (0 : Fin D → ℂ) ρ₀ := by
   simp [Metric.mem_ball, dist_eq_norm]
 
 /- English proof (translation)
-Use `set P := coordIdeal ℤ x with hPdef`. Take `⟨T, hT, hTd⟩` from `hg.smooth z₀ hz₀`. Take `⟨-, ⟨hprime, -, -⟩, hhor, hdim⟩` from `hg.arith`. Use `haveI : P.IsPrime := hprime`. Establish `hTle : D + 1 ≤ Fintype.card (Ix κ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← hTd, ← Module.finrank_fintype_fun_eq_card ℂ]`. Conclude with `Submodule.finrank_le T`. Use `set c := Fintype.card (Ix κ) - (D + 1) with hc`. Set `e : Ix κ ≃ Fin (D + 1 + c)` to `Fintype.equivFinOfCardEq (by omega)`. Establish `hhor' : ∀ m : ℤ, (C m : MvPolynomial (Ix κ) ℤ) ∈ P → m = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `m hm`. Establish `: m ∈ P.comap (C : ℤ →+* MvPolynomial (Ix κ) ℤ)` using `hm`. Rewrite `this` using `[hhor]`. Conclude with `(Submodule.mem_bot ℤ).1 this`. Establish `hdim' : ringKrullDim (MvPolynomial (Ix κ) ℤ ⧸ P) = ((D + 1 + 1 : ℕ) : WithBot ℕ∞)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hdim using 3` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Take `⟨f, hfP, hli⟩` from `gbap_indep_grads e P z₀ T hT hTd`. Take `⟨F, h, hFli, hph, hiff⟩` from `gbap_cut e P hhor' hdim' z₀ hz₀.2 f hfP hli`. Use `set p' : Fin (D + 1 + c) → ℂ := fun j => z₀ (e.symm j) with hp'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set Z' : Set (Fin (D + 1 + c) → ℂ) := {w | (fun j => w (e j)) ∈ pts P} with hZ'`. Establish `hψ0 : ∀ w : Fin (D + 1 + c) → ℂ, w ≠ 0 → (fun j => w (e j)) ≠ 0`. Introduce `w hw h0`. Apply `hw` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun h0 (e.symm i)` as an intermediate fact. Simplify using `using this`. Establish `hZc : ∀ w ∈ Z', ∀ t : ℂ, t ≠ 0 → t • w ∈ Z'`. Introduce `w hw t ht`. Conclude with `gbap_smul_mem_pts x hw ht`.
+Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hZ : ∀ w, w ≠ 0 → eval w h ≠ 0 → (w ∈ Z' ↔ ∀ i, eval w (F i) = 0)`. Introduce `w hw hwh`. Rewrite using `[hiff w hwh]`. Conclude with `⟨fun H => H.2, fun H => ⟨hψ0 w hw, H⟩⟩`. Establish `hp'e : (fun j => p' (e j)) = z₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Simplify using `[hp']`. Establish `hp'Z : p' ∈ Z'` using `by show (fun j => p' (e j)) ∈ pts P`. Rewrite using `[hp'e]`. Conclude with `hz₀`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp'0 : p' ≠ 0`. Introduce `h0`. Apply `hz₀.1` to reduce the goal to its premises. Rewrite using `[← hp'e, h0]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨ρ₀, γ', hρ₀, hγan, hγZ, ⟨O', q', hO', hq', hOeq, hOc, hqγ⟩, hγ0⟩` from `gbap_param_of_cut Z' hZc F h hZ p' hp'Z hp'0 hph (gbap_surj_of_li F p' hFli)`. Use `⟨ρ₀, fun y j => γ' y (e j), hρ₀, ⟨Metric.isOpen_ball, ?_, fun y hy => hγZ y hy, {z | (fun i => z (e.symm i)) ∈ O'}, fun z => q' (fun i => z (e.symm i)), ?_, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Conclude with `analyticAt_pi_iff.2 fun j => (gbap_analyticAt_apply (e j) _).comp (hγan y hy)`. Conclude with `hO'.preimage (continuous_pi fun i => continuous_apply _)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `z hz`. Conclude with `(hq' _ hz).comp (analyticAt_pi_iff.2 fun i => gbap_analyticAt_apply (e.symm i) z)`. Use extensionality with `z`. Establish `hzz : (fun j => (fun i => z (e.symm i)) (e j)) = z`. Use function extensionality and compare the values at `j`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hzO, hzP⟩`. Establish `: (fun i => z (e.symm i)) ∈ O' ∩ Z'` using `⟨hzO, by show _ ∈ pts P`. Rewrite using `[hzz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hzP⟩`. Rewrite `this` using `[hOeq]`. Take `⟨y, hy, t, ht, hte⟩` from `this`. Use `⟨y, hy, t, ht, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun hte (e j)` as an intermediate fact. Simplify using `using this`. Introduce and unpack `⟨y, hy, t, ht, rfl⟩`. Establish `hmem : t • γ' y ∈ O' ∩ Z'`. Rewrite using `[hOeq]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `⟨y, hy, t, ht, rfl⟩`. Establish `heq : (fun i => (t • fun j => γ' y (e j)) (e.symm i)) = t • γ' y`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Use `show (fun i => (t • fun j => γ' y (e j)) (e.symm i)) ∈ O'`. Rewrite using `[heq]`. Conclude with `hmem.1`. Conclude with `hmem.2`. Introduce `z hz t ht`.
-
-Conclude with `hOc _ hz t ht`. Introduce `y hy`. Establish `: (fun i => γ' y (e (e.symm i))) = γ' y`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
-
-Use `show q' (fun i => γ' y (e (e.symm i))) = y`. Rewrite using `[this]`. Conclude with `hqγ y hy`. Use function extensionality and compare the values at `j show γ' 0 (e j) = z₀ j`. Rewrite using `[hγ0]`.
-
-Simplify using `[hp']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isParam {x : Ix κ → Ω} {m : ConeMetric ℂ (Ix κ)} {μ : Measure (Ix κ → ℂ)}
     (hg : IsGood D x m μ) {z₀ : Ix κ → ℂ} (hz₀ : z₀ ∈ pts (coordIdeal ℤ x)) :
@@ -173,21 +165,19 @@ theorem exists_isParam {x : Ix κ → Ω} {m : ConeMetric ℂ (Ix κ)} {μ : Mea
     simp [hp']
 
 /- English proof (translation)
-Take `⟨_, hd, hpts, O, q, hO, hq, hOeq, hsc, hqγ⟩` from `h`. Establish `hmaps : ∀ y ∈ Metric.ball (0 : Fin D → ℂ) ρ₀, y₀ + y ∈ U` using `fun y hy => hball (gaap_mem_ball_add.2 hy)`. Establish `hγO : ∀ y ∈ U, γ y ∈ O` using `fun y hy => by`. Establish `: γ y ∈ coneOver U γ` using `⟨y, hy, 1, one_ne_zero, (one_smul ℂ _).symm⟩`. Rewrite `this` using `[← hOeq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.1`. Use `⟨Metric.isOpen_ball, ?_, fun y hy => hpts _ (hmaps y hy), O ∩ q ⁻¹' Metric.ball y₀ ρ₀, fun z => q z - y₀, hq.continuousOn.isOpen_inter_preimage hO Metric.isOpen_ball, (hq.mono Set.inter_subset_left).sub analyticOnNhd_const, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hd.comp (analyticOnNhd_const.add analyticOnNhd_id) fun y hy => hmaps y hy`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨hzO, hzq⟩, hzp⟩`. Establish `hz : z ∈ coneOver U γ` using `hOeq ▸ ⟨hzO, hzp⟩`. Take `⟨y, hyU, c, hc, rfl⟩` from `hz`. Establish `h1 : q (c • γ y) = y` using `by rw [(hsc _ (hγO y hyU) c hc).2, hqγ y hyU]`. Establish `hy : y ∈ Metric.ball y₀ ρ₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hzq` as an intermediate fact. Simplify using `only [Set.mem_preimage, h1] at this`. Conclude with `this`. Use `⟨y - y₀, ?_, c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← gaap_mem_ball_add (y₀ := y₀), add_sub_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hy`. Simplify using the standard rewrite rules. Introduce and unpack `⟨y, hy, c, hc, rfl⟩`. Establish `hcone : c • γ (y₀ + y) ∈ coneOver U γ` using `⟨y₀ + y, hmaps y hy, c, hc, rfl⟩`. Rewrite `hcone` using `[← hOeq]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨hcone.1, ?_⟩, hcone.2⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage]`. Rewrite using `[(hsc _ (hγO _ (hmaps y hy)) c hc).2, hqγ _ (hmaps y hy)]`. Conclude with `gaap_mem_ball_add.2 hy`. Introduce and unpack `z ⟨hzO, hzq⟩ c hc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hsc z hzO c hc` as an intermediate fact. Use `⟨⟨this.1, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, this.2]`. Conclude with `hzq`. Simplify using `only [this.2]`.
-
-Introduce `y hy`. Simplify using `only`. Rewrite using `[hqγ _ (hmaps y hy), add_sub_cancel_left]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsParam.translate {P : Ideal (MvPolynomial (Ix κ) ℤ)} {U : Set (Fin D → ℂ)}
     {γ : (Fin D → ℂ) → Ix κ → ℂ} (h : IsParam P U γ) (y₀ : Fin D → ℂ) {ρ₀ : ℝ}
@@ -237,7 +227,7 @@ theorem IsParam.translate {P : Ideal (MvPolynomial (Ix κ) ℤ)} {U : Set (Fin D
     rw [hqγ _ (hmaps y hy), add_sub_cancel_left]
 
 /- English proof (translation)
-Establish `hpre : (fun y => y₀ + y) ⁻¹' Metric.ball y₀ ρ₀ = Metric.ball (0 : Fin D → ℂ) ρ₀`. Use extensionality with `y`. Conclude with `gaap_mem_ball_add`. Rewrite using `[← hpre]`. Conclude with `(measurePreserving_add_left volume y₀).setLIntegral_comp_preimage_emb (measurableEmbedding_addLeft y₀) F _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaap_setLIntegral_translate (y₀ : Fin D → ℂ) (ρ₀ : ℝ) (F : (Fin D → ℂ) → ENNReal) :
     ∫⁻ y in Metric.ball (0 : Fin D → ℂ) ρ₀, F (y₀ + y) = ∫⁻ y in Metric.ball y₀ ρ₀, F y := by
@@ -249,29 +239,27 @@ theorem gaap_setLIntegral_translate (y₀ : Fin D → ℂ) (ρ₀ : ℝ) (F : (F
     (measurableEmbedding_addLeft y₀) F _
 
 /- English proof (translation)
-Take `⟨hνc, hνpos, hνint⟩` from `hν`. Establish `hmaps : ∀ y ∈ Metric.ball (0 : Fin D → ℂ) ρ₀, y₀ + y ∈ U` using `fun y hy => hball (gaap_mem_ball_add.2 hy)`. Use `⟨hνc.comp (contDiffOn_const.add contDiffOn_id) (fun y hy => hmaps y hy), fun y hy => hνpos _ (hmaps y hy), ?_⟩` and prove the remaining obligations. Introduce `g hg hg0 hgnn`. Take `⟨_, _, _, O', q', hO', -, hO'eq, -, -⟩` from `h.translate y₀ hball`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hU, _, _, O, q, _, _, hOeq, hsc, hqγ⟩` from `h`. Establish `hγO : ∀ y ∈ U, γ y ∈ O` using `fun y hy => by`. Establish `: γ y ∈ coneOver U γ` using `⟨y, hy, 1, one_ne_zero, (one_smul ℂ _).symm⟩`. Rewrite `this` using `[← hOeq]`. Conclude with `this.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set S := coneOver (Metric.ball (0 : Fin D → ℂ) ρ₀) (fun y => γ (y₀ + y)) with hSdef`. Establish `hSm : MeasurableSet S`. Rewrite using `[← hO'eq]`. Conclude with `hO'.measurableSet.inter (gaap_measurableSet_pts P)`. Establish `hSsub : S ⊆ coneOver U γ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `z ⟨y, hy, c, hc, rfl⟩`. Conclude with `⟨y₀ + y, hmaps y hy, c, hc, rfl⟩`. Establish `hSsmul : ∀ (c : ℂ) (z : Ix κ → ℂ), c ≠ 0 → (c • z ∈ S ↔ z ∈ S)`. Introduce `c z hc`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨y, hy, c', hc', he⟩`. Use `⟨y, hy, c⁻¹ * c', mul_ne_zero (inv_ne_zero hc) hc', ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, ← he, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Introduce and unpack `⟨y, hy, c', hc', rfl⟩`. Conclude with `⟨y, hy, c * c', mul_ne_zero hc hc', by rw [mul_smul]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Establish `hγS : ∀ y ∈ U, (γ y ∈ S ↔ y ∈ Metric.ball y₀ ρ₀)`. Introduce `y hyU`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y', hy', c, hc, he⟩`. Establish `h1 : q (γ y) = y₀ + y'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, (hsc _ (hγO _ (hmaps y' hy')) c hc).2, hqγ _ (hmaps y' hy')]`. Rewrite `h1` using `[hqγ y hyU]`. Rewrite using `[h1]`. Conclude with `gaap_mem_ball_add.2 hy'`. Introduce `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨y - y₀, ?_, 1, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[← gaap_mem_ball_add (y₀ := y₀), add_sub_cancel]`. Conclude with `hy`. Simplify using the standard rewrite rules. Establish `key` using `hνint (S.indicator g) (hg.indicator hSm) (fun c z hc => by`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hz : z ∈ S`. Rewrite using `[Set.indicator_of_mem hz, Set.indicator_of_mem ((hSsmul c z hc).2 hz), hg0 c z hc]`. Rewrite using `[Set.indicator_of_notMem hz, Set.indicator_of_notMem (fun h' => hz ((hSsmul c z hc).1 h'))])`. Use the proof step `(fun z => Set.indicator_nonneg (fun z _ => hgnn z) z)`. Establish `hL : ∫⁻ z in coneOver U γ, ENNReal.ofReal (S.indicator g z) ∂μ = ∫⁻ z in S, ENNReal.ofReal (g z) ∂μ`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (fun z => ENNReal.ofReal (S.indicator g z)) = S.indicator (fun z => ENNReal.ofReal (g z))`. Use function extensionality and compare the values at `z`. Apply the tactic sequence `by_cases hz : z ∈ S <;> simp [hz]`. Rewrite using `[this, setLIntegral_indicator hSm, Set.inter_eq_left.2 hSsub]`. Establish `hR : ∫⁻ y in U, ENNReal.ofReal (S.indicator g (γ y) * ν y) = ∫⁻ y in Metric.ball y₀ ρ₀, ENNReal.ofReal (g (γ y) * ν y)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Set.inter_eq_left.2 hball, ← setLIntegral_indicator Metric.isOpen_ball.measurableSet]`. Use `setLIntegral_congr_fun hU.measurableSet (fun y hyU => ?_)` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ Metric.ball y₀ ρ₀`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem ((hγS y hyU).2 hy)]`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem (fun h' => hy ((hγS y hyU).1 h'))]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[← hL, key, hR]`. Conclude with `(gaap_setLIntegral_translate y₀ ρ₀ (fun y => ENNReal.ofReal (g (γ y) * ν y))).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsDensityFor.translate {P : Ideal (MvPolynomial (Ix κ) ℤ)} {μ : Measure (Ix κ → ℂ)}
     {U : Set (Fin D → ℂ)} {γ : (Fin D → ℂ) → Ix κ → ℂ} {ν : (Fin D → ℂ) → ℝ} (h : IsParam P U γ)
@@ -342,21 +330,17 @@ theorem IsDensityFor.translate {P : Ideal (MvPolynomial (Ix κ) ℤ)} {μ : Meas
   exact (gaap_setLIntegral_translate y₀ ρ₀ (fun y => ENNReal.ofReal (g (γ y) * ν y))).symm
 
 /- English proof (translation)
-Use `set P := coordIdeal ℤ x with hPdef`. Use `set S := pts P ∩ Metric.sphere (0 : Ix κ → ℂ) 1 with hSdef`. Establish `hS : IsCompact S` using `gbap_isCompact_pts_sphere P`. Establish `hex : ∀ s : S, ∃ (ρ : ℝ) (γ : (Fin D → ℂ) → Ix κ → ℂ) (O : Set (Ix κ → ℂ)), 0 < ρ ∧ IsParam P (Metric.ball 0 ρ) γ ∧ IsOpen O ∧ (s : Ix κ → ℂ) ∈ O ∧ O ∩ pts P ⊆ coneOver (Metric.closedBall 0 (ρ / 2)) γ`. Introduce `s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ρ, γ, hρ, hγ, h0⟩` from `exists_isParam hg s.2.1`. Establish `hsub : Metric.ball (0 : Fin D → ℂ) (ρ / 2) ⊆ Metric.ball 0 ρ` using `Metric.ball_subset_ball (by linarith)`. Take `⟨_, _, _, O, q, hO, _, hOeq, _, _⟩` from `hγ.translate 0 hsub`. Use `⟨ρ, γ, O, hρ, hγ, hO, ?_, ?_⟩` and prove the remaining obligations. Establish `: (s : Ix κ → ℂ) ∈ coneOver (Metric.ball (0 : Fin D → ℂ) (ρ / 2)) fun y => γ (0 + y)` using `⟨0, Metric.mem_ball_self (by linarith), 1, one_ne_zero, by simp [h0]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← hOeq]`. Conclude with `this.1`. Rewrite using `[hOeq]`. Introduce and unpack `z ⟨y, hy, c, hc, rfl⟩`. Conclude with `⟨y, Metric.ball_subset_closedBall hy, c, hc, by simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose ρ γ O hρ hγ hO hsO hOsub using hex`. Take `⟨t, ht⟩` from `hS.elim_finite_subcover (fun s : S => O s) (fun s => hO s) (fun s hs => Set.mem_iUnion.2 ⟨⟨s, hs⟩, hsO _⟩)`. Set `e` to `t.equivFin`. Use `⟨t.card, fun a => Metric.ball 0 (ρ (e.symm a).1), fun a => Metric.closedBall 0 (ρ (e.symm a).1 / 2), fun a => γ (e.symm a).1, fun a => hγ _, fun a => ⟨isCompact_closedBall _ _, Metric.closedBall_subset_ball (by linarith [hρ (e.symm a).1])⟩, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : ‖z‖ ≠ 0` using `norm_ne_zero_iff.2 hz.1`. Use `set r : ℂ := (‖z‖ : ℂ) with hr`. Establish `hr0 : r ≠ 0`. Rewrite using `[hr]`. Conclude with `hn` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set s := r⁻¹ • z with hsdef`. Establish `hsS : s ∈ S`. Use `⟨gbap_smul_mem_pts x hz (inv_ne_zero hr0), ?_⟩` and prove the remaining obligations. Rewrite using `[mem_sphere_zero_iff_norm, hsdef, norm_smul, norm_inv, hr, Complex.norm_real, Real.norm_eq_abs, abs_norm, inv_mul_cancel₀ hn]`. Take `⟨i, hit, hsi⟩` from `Set.mem_iUnion₂.1 (ht hsS)`.
-
-Establish `hsc` using `hOsub i ⟨hsi, hsS.1⟩`. Use `⟨e ⟨i, hit⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply]`. Take `⟨y, hy, c, hc, hce⟩` from `hsc`. Use `⟨y, hy, r * c, mul_ne_zero hr0 hc, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[mul_smul, ← hce, hsdef, smul_smul, mul_inv_cancel₀ hr0, one_smul]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_param_cover {x : Ix κ → Ω} {m : ConeMetric ℂ (Ix κ)}
     {μ : Measure (Ix κ → ℂ)} (hg : IsGood D x m μ) :

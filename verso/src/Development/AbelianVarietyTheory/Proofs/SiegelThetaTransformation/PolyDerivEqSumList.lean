@@ -14,7 +14,7 @@ variable {σ W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
 noncomputable abbrev lst (m : σ →₀ ℕ) : List σ := (Finsupp.toMultiset m).toList
 
 /- English proof (translation)
-Rewrite using `[dirPolyDeriv_eq_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[dirPolyDeriv_monomial_eq_lineDerivList (Multiset.coe_toList _) u hF]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem polyDeriv_eq_sum_list (P : MvPolynomial σ ℂ) (u : σ → W) {F : W → ℂ} {x : W}
     (hF : AnalyticAt ℂ F x) :
@@ -24,13 +24,13 @@ theorem polyDeriv_eq_sum_list (P : MvPolynomial σ ℂ) (u : σ → W) {F : W �
   rw [dirPolyDeriv_monomial_eq_lineDerivList (Multiset.coe_toList _) u hF]
 
 /- English proof (translation)
-Establish `h1 (z : W) : polyDeriv Q u (fun w => F (z, w)) 0 = ∑ m' ∈ Q.support, Q.coeff m' • lineDerivList ℂ ((lst m').map (fun s => (0, u s))) F (LinearMap.inl ℂ W W z)`. Establish `ha : AnalyticAt ℂ (fun w => F (z, w)) 0` using `(hF _).comp₂ analyticAt_const analyticAt_id`. Rewrite using `[polyDeriv_eq_sum_list _ _ ha]`. Use `Finset.sum_congr rfl fun m' _ => ?_` and prove the remaining obligations. Establish `h2` using `congrFun (lineDerivList_comp_linearMap (LinearMap.inr ℂ W W) ((lst m').map u) (fun p => F (p + (z, 0)))) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[lineDerivList_comp_add_const]`. Simplify using `only [LinearMap.inr_apply, Prod.mk_add_mk, zero_add, add_zero, List.map_map] at h2`. Rewrite using `[h2]`. Both sides reduce to the same expression. Establish `h3 (m' : σ →₀ ℕ) : AnalyticAt ℂ (fun z => Q.coeff m' • lineDerivList ℂ ((lst m').map (fun s => (0, u s))) F (LinearMap.inl ℂ W W z)) 0` using `analyticAt_const.fun_smul ((analyticAt_lineDerivList (hF _) _).comp ((ContinuousLinearMap.inl ℂ W W).analyticAt 0))`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [h1]`. Rewrite using `[polyDeriv_eq_sum_list _ _ (Finset.analyticAt_fun_sum _ fun m' _ => h3 m')]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[lineDerivList_sum _ fun m' _ => h3 m', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m' _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lineDerivList_const_smul, lineDerivList_comp_linearMap, lineDerivList_append, List.map_map, mul_assoc]`. Simplify using `only [map_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem polyDeriv_polyDeriv (P Q : MvPolynomial σ ℂ) (u : σ → W) {F : W × W → ℂ}
     (hF : ∀ p, AnalyticAt ℂ F p) :
@@ -64,9 +64,9 @@ theorem polyDeriv_polyDeriv (P Q : MvPolynomial σ ℂ) (u : σ → W) {F : W ×
   rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons v l ih`. Use function extensionality and compare the values at `z`. Rewrite using `[lineDerivList_cons, ih fun w hw => hl w (List.mem_cons_of_mem _ hw), lineDerivList_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [lineDeriv, star_add, star_smul, hl v List.mem_cons_self]`. Establish `h` using `congrFun (deriv_conj_conj (f := fun t : ℂ => lineDerivList ℂ l F (star z + t • v))) 0`. Simplify `h` using `[Function.comp_def]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lineDerivList_conj {V : Type} [AddCommGroup V] [Module ℂ V] [StarAddMonoid V]
     [StarModule ℂ V] (l : List V) (hl : ∀ v ∈ l, star v = v) (F : V → ℂ) :
@@ -82,13 +82,13 @@ theorem lineDerivList_conj {V : Type} [AddCommGroup V] [Module ℂ V] [StarAddMo
     simpa [Function.comp_def] using h
 
 /- English proof (translation)
-Establish `hs : (barP P).support = P.support` using `MvPolynomial.support_map_of_injective _ (starRingEnd ℂ).injective`. Establish `hc (m : σ →₀ ℕ) : (barP P).coeff m = conj (P.coeff m)` using `MvPolynomial.coeff_map _ _ _`. Establish `e1` using `polyDeriv_polyDeriv P (barP P) u hF`. Establish `e2` using `polyDeriv_polyDeriv P (barP P) u hG`. Simplify using `only at e1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Rewrite using `[e1, e2, hs, Finset.sum_comm]`. Simplify using `only [map_sum, map_mul, hc, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun m' _ => ?_` and prove the remaining obligations. Establish `h1 : (fun p : W × W => G p.1 p.2) = fun p => conj ((fun q : W × W => F q.2 q.1) (star p))` using `funext fun p => h p.1 p.2`. Establish `h2 (l : List (W × W))` using `congrFun (lineDerivList_comp_linearMap (LinearEquiv.prodComm ℂ W W).toLinearMap l (fun p : W × W => F p.1 p.2)) 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.prodComm_apply, Prod.fst_swap, Prod.snd_swap, Prod.swap_zero] at h2`. Rewrite using `[h1, lineDerivList_conj _ (by`. Simplify using `only [List.mem_append, List.mem_map]`. Apply the tactic sequence `rintro v (⟨s, -, rfl⟩ | ⟨s, -, rfl⟩) <;> simp [Prod.ext_iff, hu]) fun q : W × W => F q.2 q.1]`. Simplify using `only [star_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2, List.map_append, List.map_map, List.map_map, lineDerivList_perm (hF 0) List.perm_append_comm, mul_comm (P.coeff m')]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem polyDeriv_barP_symm [StarAddMonoid W] [StarModule ℂ W] (P : MvPolynomial σ ℂ) (u : σ → W)
     (hu : ∀ s, star (u s) = u s) {F G : W → W → ℂ}
@@ -121,9 +121,9 @@ theorem polyDeriv_barP_symm [StarAddMonoid W] [StarModule ℂ W] (P : MvPolynomi
   rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons v l ih`. Use function extensionality and compare the values at `w`. Rewrite using `[lineDerivList_cons, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(((ℓ.hasFDerivAt (x := w)).cexp.const_mul C).const_mul (l.map ℓ).prod).hasLineDerivAt v`. Simplify using `only [h.lineDeriv, List.map_cons, List.prod_cons, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lineDerivList_exp (ℓ : W →L[ℂ] ℂ) (C : ℂ) (l : List W) :
     lineDerivList ℂ l (fun w => C * Complex.exp (ℓ w)) =
@@ -140,9 +140,9 @@ theorem lineDerivList_exp (ℓ : W →L[ℂ] ℂ) (C : ℂ) (l : List W) :
     ring
 
 /- English proof (translation)
-Establish `ha : AnalyticAt ℂ (fun w => C * Complex.exp (ℓ w)) 0` using `analyticAt_const.mul (ℓ.analyticAt 0).cexp`. Rewrite using `[polyDeriv_eq_sum_list _ _ ha, MvPolynomial.eval_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `h : ((List.map u (lst m)).map ℓ).prod = ∏ i ∈ m.support, ℓ (u i) ^ m i`. Rewrite using `[List.map_map, ← Multiset.prod_coe, ← Multiset.map_coe, Multiset.coe_toList, Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (by simp) (by simp [pow_add])]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[lineDerivList_exp, h]`. Simplify using `only [map_zero, Complex.exp_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem polyDeriv_exp (Q : MvPolynomial σ ℂ) (u : σ → W) (ℓ : W →L[ℂ] ℂ) (C : ℂ) :
     polyDeriv Q u (fun w => C * Complex.exp (ℓ w)) 0 =
@@ -161,11 +161,11 @@ theorem polyDeriv_exp (Q : MvPolynomial σ ℂ) (u : σ → W) (ℓ : W →L[ℂ
   ring
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial n c`. Establish `h : n.prod (fun s k => (t s • (MvPowerSeries.X s : MvPowerSeries σ ℂ)) ^ k) = (∏ s, t s ^ n s) • MvPowerSeries.monomial n 1`. Rewrite using `[← MvPolynomial.coe_monomial, MvPolynomial.monomial_eq, ← MvPolynomial.coeToMvPowerSeries.ringHom_apply]`. Simplify using `only [map_one, one_mul, smul_pow, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), map_prod, map_pow]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finsupp.prod_fintype _ _ (by simp), Finset.prod_smul]`. Simplify using the standard rewrite rules. Rewrite using `[MvPolynomial.aeval_monomial, h, ← Algebra.smul_def, map_smul, map_smul, MvPowerSeries.coeff_monomial, MvPolynomial.coeff_monomial]`. Distinguish the cases in `e : m = n`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[mul_comm]`. Simplify using `[e, Ne.symm e]`. Consider the case `add P Q hP hQ => simp only [map_add, hP, hQ, MvPolynomial.coeff_add, mul_add]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem coeff_aeval_smul_X [Fintype σ] (t : σ → ℂ) (Q : MvPolynomial σ ℂ) (m : σ →₀ ℕ) :
     MvPowerSeries.coeff m
@@ -189,13 +189,13 @@ theorem coeff_aeval_smul_X [Fintype σ] (t : σ → ℂ) (Q : MvPolynomial σ �
   | add P Q hP hQ => simp only [map_add, hP, hQ, MvPolynomial.coeff_add, mul_add]
 
 /- English proof (translation)
-Establish `h1 (z : W) : polyDeriv (barP P) u (fun w => C * Complex.exp (∑ s, t s * π s z * π s w)) 0 = C * MvPolynomial.eval (fun s => ((t s : ℂ) • π s) z) (barP P)`. Establish `h` using `polyDeriv_exp (barP P) u (∑ s, (t s * π s z) • π s) C`. Simplify `h` using `[hπ]`. Establish `h2 (s : σ) : taylorDir u ((t s : ℂ) • π s : W →L[ℂ] ℂ) = (t s : ℂ) • MvPowerSeries.X s`. Rewrite using `[taylorDir_clm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hπ]`. Establish `ha (s : σ) : AnalyticAt ℂ ((t s : ℂ) • π s : W →L[ℂ] ℂ) 0` using `ContinuousLinearMap.analyticAt _ _`. Establish `h3 : taylorDir u (fun z => C * MvPolynomial.eval (fun s => ((t s : ℂ) • π s) z) (barP P)) = (C : ℂ) • MvPolynomial.aeval (fun s => (t s : ℂ) • (MvPowerSeries.X s : MvPowerSeries σ ℂ)) (barP P)`. Simplify using `only [← h2]`. Rewrite using `[← taylorDir_eval u ha, ← taylorDir_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `AnalyticAt.aeval_mvPolynomial ha _`. Simplify using `only [h1]`. Rewrite using `[dirPolyDeriv_eq_sum_coeff_taylorDir, h3]`. Use `push_cast`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, coeff_aeval_smul_X, barP, MvPolynomial.coeff_map, ← Complex.mul_conj, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem polyDeriv_barP_exp [Fintype σ] [DecidableEq σ] (P : MvPolynomial σ ℂ) (u : σ → W)
     (π : σ → W →L[ℂ] ℂ) (hπ : ∀ s s', π s (u s') = if s = s' then 1 else 0) (t : σ → ℝ) (C : ℝ) :
@@ -228,7 +228,7 @@ theorem polyDeriv_barP_exp [Fintype σ] [DecidableEq σ] (P : MvPolynomial σ �
   ring
 
 /- English proof (translation)
-Use `Finset.sum_pos (fun m hm => ?_) (MvPolynomial.support_nonempty.2 hP)` and prove the remaining obligations. Use `mul_pos (mul_pos ?_ (Finset.prod_pos fun s _ => pow_pos (ht s) _)) (Complex.normSq_pos.2 (MvPolynomial.mem_support_iff.1 hm))` and prove the remaining obligations. Conclude with `Finset.prod_pos fun s _ => Nat.factorial_pos _` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem apolar_norm_pos [Fintype σ] {P : MvPolynomial σ ℂ} (hP : P ≠ 0) {t : σ → ℝ}
     (ht : ∀ s, 0 < t s) :

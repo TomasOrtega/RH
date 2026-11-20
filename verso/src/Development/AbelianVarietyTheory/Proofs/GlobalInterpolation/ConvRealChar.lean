@@ -14,7 +14,7 @@ def normEq (K : Type) [Field K] [NumberField K] (n : ℕ) : Finset (Ideal (𝓞 
   (Ideal.finite_setOf_absNorm_eq (S := 𝓞 K) n).toFinset
 
 /- English proof (translation)
-Simplify using `[normEq]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_normEq {n : ℕ} {I : Ideal (𝓞 K)} : I ∈ normEq K n ↔ Ideal.absNorm I = n := by
   simp [normEq]
@@ -23,9 +23,7 @@ def dv (C : Ideal (𝓞 K)) : Finset (Ideal (𝓞 K)) :=
   ((Ideal.finite_setOf_absNorm_le (S := 𝓞 K) (Ideal.absNorm C)).toFinset).filter (· ∣ C)
 
 /- English proof (translation)
-Simplify using `only [dv, Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq, and_iff_right_iff_imp]`. Introduce `h`. Establish `hC' : Ideal.absNorm C ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `hC`.
-
-Conclude with `Nat.le_of_dvd (Nat.pos_of_ne_zero hC') (map_dvd Ideal.absNorm h)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_dv {C J : Ideal (𝓞 K)} (hC : C ≠ 0) : J ∈ dv C ↔ J ∣ C := by
   simp only [dv, Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq, and_iff_right_iff_imp]
@@ -38,11 +36,11 @@ lemma mem_dv {C J : Ideal (𝓞 K)} (hC : C ≠ 0) : J ∈ dv C ↔ J ∣ C := b
 def r (f : Ideal (𝓞 K) → ℝ) (C : Ideal (𝓞 K)) : ℝ := ∑ J ∈ dv C, f J
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ih` to reduce the goal to its premises. Take `⟨Y, hY⟩` from `h`. Establish `hPY : P ∣ J * Y` using `⟨P ^ k * C, by rw [← hY]; ring⟩`. Break down `hP.dvd_or_dvd hPY with h1 | ⟨Y', rfl⟩` into its components or cases. Conclude with `absurd h1 hJ`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Y', ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hP.ne_zero` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma dvd_of_dvd_prime_pow_mul' {P C J : Ideal (𝓞 K)} (hP : Prime P) (hJ : ¬ P ∣ J) :
     ∀ k : ℕ, J ∣ P ^ k * C → J ∣ C := by
@@ -63,19 +61,17 @@ private lemma dvd_of_dvd_prime_pow_mul' {P C J : Ideal (𝓞 K)} (hP : Prime P) 
         _ = P * (J * Y') := by ring
 
 /- English proof (translation)
-Establish `hP0 : P ≠ 0` using `hP.ne_zero`. Establish `hA : P ^ (k + 1) * C ≠ 0` using `mul_ne_zero (pow_ne_zero _ hP0) hC`. Establish `hB : P ^ k * C ≠ 0` using `mul_ne_zero (pow_ne_zero _ hP0) hC`. Establish `hsplit : dv (P ^ (k + 1) * C) = dv C ∪ (dv (P ^ k * C)).image (P * ·)`. Use extensionality with `J`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Finset.mem_union, Finset.mem_image, mem_dv hA, mem_dv hC]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Distinguish the cases in `hJ : P ∣ J`. Use `right`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨J', rfl⟩` from `hJ`. Use `⟨J', (mem_dv hB).2 ?_, rfl⟩` and prove the remaining obligations. Take `⟨Y, hY⟩` from `h`. Use `⟨Y, mul_left_cancel₀ hP0 ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components.
 
-Use `left`. Conclude with `dvd_of_dvd_prime_pow_mul' hP hJ (k + 1) h`. Introduce and unpack `(h | ⟨J', hJ', rfl⟩)`. Conclude with `h.trans ⟨P ^ (k + 1), by ring⟩`. Rewrite `hJ'` using `[mem_dv hB]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : P * (P ^ k * C) = P ^ (k + 1) * C` using `by ring`. Rewrite using `[← e]`. Conclude with `mul_dvd_mul_left P hJ'`. Establish `hdisj : Disjoint (dv C) ((dv (P ^ k * C)).image (P * ·))`. Rewrite using `[Finset.disjoint_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `J hJ hJ'`. Rewrite `hJ` using `[mem_dv hC]`. Take `⟨J', -, rfl⟩` from `Finset.mem_image.1 hJ'`. Conclude with `hPC ((dvd_mul_right P J').trans hJ)`. Unfold `r`.
-
-Rewrite using `[hsplit, Finset.sum_union hdisj, Finset.sum_image (fun a _ b _ hab => mul_left_cancel₀ hP0 hab)]`. Simplify using `only [hf, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma r_step (f : Ideal (𝓞 K) → ℝ) (hf : ∀ I J, f (I * J) = f I * f J) {P C : Ideal (𝓞 K)} (hP : Prime P) (hC : C ≠ 0)
     (hPC : ¬ P ∣ C) (k : ℕ) : r f (P ^ (k + 1) * C) = f P * r f (P ^ k * C) + r f C := by
@@ -116,9 +112,9 @@ lemma r_step (f : Ideal (𝓞 K) → ℝ) (hf : ∀ I J, f (I * J) = f I * f J) 
   ring
 
 /- English proof (translation)
-Establish `hg : ∀ m : ℕ, ∑ i ∈ Finset.range (m + 1), f P ^ i = f P * ∑ i ∈ Finset.range m, f P ^ i + 1`. Introduce `m`. Rewrite using `[Finset.sum_range_succ', Finset.mul_sum]`. Simplify using `only [pow_succ', pow_zero]`. Proceed by induction on `k with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[r_step f hf hP hC hPC k, ih, hg (k + 1)]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma r_pow (f : Ideal (𝓞 K) → ℝ) (hf : ∀ I J, f (I * J) = f I * f J) {P C : Ideal (𝓞 K)} (hP : Prime P) (hC : C ≠ 0)
     (hPC : ¬ P ∣ C) (k : ℕ) : r f (P ^ k * C) = (∑ i ∈ Finset.range (k + 1), f P ^ i) * r f C := by
@@ -133,9 +129,9 @@ lemma r_pow (f : Ideal (𝓞 K) → ℝ) (hf : ∀ I J, f (I * J) = f I * f J) {
     ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, ih]`. Distinguish the cases in `h : Even n`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h' : ¬ Even (n + 1)` using `by rw [Nat.even_add_one]; exact not_not.2 h`. Rewrite using `[if_pos h, if_neg h', h.neg_one_pow]`. Evaluate the numerical expressions. Establish `h' : Even (n + 1)` using `Nat.even_add_one.2 h`. Rewrite using `[if_neg h, if_pos h', (Nat.not_even_iff_odd.1 h).neg_one_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Evaluate the numerical expressions.
 -/
@@ -154,11 +150,11 @@ private lemma sum_range_neg_one_pow_eq_ite (n : ℕ) :
       norm_num
 
 /- English proof (translation)
-Break down `hx with rfl | rfl | rfl` into its components or cases. Simplify using `[Finset.sum_range_succ']`. Simplify using `only [one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Combine the linear relations using `[(Nat.cast_nonneg k : (0 : ℝ) ≤ k)]`. Rewrite using `[sum_range_neg_one_pow_eq_ite, sum_range_neg_one_pow_eq_ite]`. Establish `h : ¬ Even (2 * k + 1)`. Rewrite using `[Nat.even_add_one, not_not]`. Conclude with `even_two_mul k`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h]`. Use `⟨?_, le_refl _⟩` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> norm_num`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma geom_bounds {x : ℝ} (hx : x = 0 ∨ x = 1 ∨ x = -1) (k : ℕ) :
     0 ≤ ∑ i ∈ Finset.range (k + 1), x ^ i ∧ 1 ≤ ∑ i ∈ Finset.range (2 * k + 1), x ^ i := by
@@ -177,7 +173,7 @@ lemma geom_bounds {x : ℝ} (hx : x = 0 ∨ x = 1 ∨ x = -1) (k : ℕ) :
     split_ifs <;> norm_num
 
 /- English proof (translation)
-Establish `hd : dv (1 : Ideal (𝓞 K)) = {1}`. Use extensionality with `J`. Rewrite using `[mem_dv one_ne_zero, Finset.mem_singleton, Ideal.dvd_iff_le, Ideal.one_eq_top, top_le_iff]`. Unfold `r`. Rewrite using `[hd, Finset.sum_singleton, h1]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma r_one (f : Ideal (𝓞 K) → ℝ) (h1 : f 1 = 1) : r f 1 = 1 := by
   have hd : dv (1 : Ideal (𝓞 K)) = {1} := by
@@ -187,27 +183,23 @@ lemma r_one (f : Ideal (𝓞 K) → ℝ) (h1 : f 1 = 1) : r f 1 = 1 := by
   rw [hd, Finset.sum_singleton, h1]
 
 /- English proof (translation)
-It suffices to establish `h : ∀ N : ℕ, ∀ C : Ideal (𝓞 K), C ≠ 0 → Ideal.absNorm C = N → 0 ≤ r f C ∧ 1 ≤ r f (C ^ 2) from h _ C hC rfl`. Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `C hC hN`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hu : IsUnit C`. Take `rfl : C = 1` from `isUnit_iff_eq_one.1 hu`. Rewrite using `[one_pow, r_one f h1]`. Evaluate the numerical expressions. Take `⟨P, hPirr, hPC⟩` from `WfDvdMonoid.exists_irreducible_factor hu hC`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result.
 
-Establish `hP : Prime P` using `UniqueFactorizationMonoid.irreducible_iff_prime.1 hPirr`. Take `⟨k, D, hPD, rfl⟩` from `WfDvdMonoid.max_power_factor hC hPirr`. Establish `hD : D ≠ 0`. Introduce and unpack `rfl`. Conclude with `hC (mul_zero _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hk : k ≠ 0`. Introduce and unpack `rfl`. Rewrite `hPC` using `[pow_zero, one_mul]`. Conclude with `hPD hPC`. Establish `hN2 : 2 ≤ Ideal.absNorm P`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : Ideal.absNorm P ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `hP.ne_zero`. Establish `h1' : Ideal.absNorm P ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hPirr.not_isUnit` to reduce the goal to its premises. Rewrite using `[h, ← Ideal.one_eq_top]`. Conclude with `isUnit_one`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD0 : 0 < Ideal.absNorm D`. Apply `Nat.pos_of_ne_zero` to reduce the goal to its premises. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `hD`. Establish `hlt : Ideal.absNorm D < N`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hN, map_mul, map_pow]`. Establish `h2 : 2 ≤ Ideal.absNorm P ^ k` using `le_trans hN2 (Nat.le_self_pow hk _)`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨ihD1, ihD2⟩` from `ih _ hlt D hD rfl`. Establish `hPD2 : ¬ P ∣ D ^ 2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pow_two]`. Introduce `h`. Apply the tactic sequence `rcases hP.dvd_or_dvd h with h | h <;> exact hPD h`. Establish `hD2 : D ^ 2 ≠ 0` using `pow_ne_zero _ hD`. Take `⟨g1, g2⟩` from `geom_bounds (hv P) k`.
-
-Prove the components needed by the constructor for the conclusion. Rewrite using `[r_pow f hf hP hD hPD k]`. Conclude with `mul_nonneg g1 ihD1`. Establish `e : (P ^ k * D) ^ 2 = P ^ (2 * k) * D ^ 2` using `by ring`. Rewrite using `[e, r_pow f hf hP hD2 hPD2 (2 * k)]`.
-
-Conclude with `one_le_mul_of_one_le_of_one_le g2 ihD2`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma r_bounds (f : Ideal (𝓞 K) → ℝ) (h1 : f 1 = 1) (hf : ∀ I J, f (I * J) = f I * f J)
     (hv : ∀ I, f I = 0 ∨ f I = 1 ∨ f I = -1) (C : Ideal (𝓞 K)) (hC : C ≠ 0) : 0 ≤ r f C ∧ 1 ≤ r f (C ^ 2) := by
@@ -265,35 +257,33 @@ lemma r_bounds (f : Ideal (𝓞 K) → ℝ) (h1 : f 1 = 1) (hf : ∀ I J, f (I *
       exact one_le_mul_of_one_le_of_one_le g2 ihD2
 
 /- English proof (translation)
-Establish `L : (∑ p ∈ n.divisorsAntidiagonal, ∑ I ∈ normEq K p.1, ∑ J ∈ normEq K p.2, F (I * J) J) = ∑ y ∈ n.divisorsAntidiagonal.sigma (fun p => normEq K p.1 ×ˢ normEq K p.2), F (y.2.1 * y.2.2) y.2.2`. Rewrite using `[Finset.sum_sigma]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_product]`. Establish `R : (∑ C ∈ normEq K n, ∑ J ∈ dv C, F C J) = ∑ y ∈ (normEq K n).sigma (fun C => dv C), F y.1 y.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_sigma]`. Rewrite using `[L, R]`. Use `Finset.sum_nbij' (fun y : (Σ _ : ℕ × ℕ, Ideal (𝓞 K) × Ideal (𝓞 K)) => (⟨y.2.1 * y.2.2, y.2.2⟩ : Σ _ : Ideal (𝓞 K), Ideal (𝓞 K))) (fun y : (Σ _ : Ideal (𝓞 K), Ideal (𝓞 K)) => (⟨(Ideal.absNorm y.1 / Ideal.absNorm y.2, Ideal.absNorm y.2), ((if h : y.2 ∣ y.1 then Exists.choose h else …` and prove the remaining obligations. Introduce and unpack `⟨⟨a, b⟩, I, J⟩ hy`. Simplify using `only [Finset.mem_sigma, Finset.mem_product, Nat.mem_divisorsAntidiagonal, mem_normEq] at hy ⊢`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Take `⟨⟨hab, -⟩, hI, hJ⟩` from `hy`. Establish `hIJ0 : I * J ≠ 0`. Introduce `h`. Establish `e` using `congrArg Ideal.absNorm h`. Rewrite `e` using `[map_mul, _root_.map_zero, hI, hJ, hab]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hn e`. Conclude with `⟨by rw [map_mul, hI, hJ, hab], (mem_dv hIJ0).2 (dvd_mul_left J I)⟩`. Introduce and unpack `⟨C, J⟩ hy`. Simplify using `only [Finset.mem_sigma, mem_normEq] at hy`. Take `⟨hCn, hJ⟩` from `hy`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC0 : C ≠ 0`. Introduce and unpack `rfl`. Rewrite `hCn` using `[_root_.map_zero]`. Conclude with `hn hCn.symm`. Take `⟨c, rfl⟩` from `(mem_dv hC0).1 hJ`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hJ0 : J ≠ 0`. Introduce and unpack `rfl`. Conclude with `hC0 (zero_mul c)`. Establish `hch : (if h : J ∣ J * c then Exists.choose h else 0) = c`. Rewrite using `[dif_pos (dvd_mul_right J c)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_left_cancel₀ hJ0 (Exists.choose_spec (dvd_mul_right J c)).symm`. Establish `hNJ : 0 < Ideal.absNorm J`. Apply `Nat.pos_of_ne_zero` to reduce the goal to its premises. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `hJ0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Finset.mem_sigma, Finset.mem_product, Nat.mem_divisorsAntidiagonal, mem_normEq]`. Rewrite using `[hch, map_mul, Nat.mul_div_cancel_left _ hNJ]`. Rewrite `hCn` using `[map_mul]`. Conclude with `⟨⟨by rw [mul_comm]; exact hCn, hn⟩, rfl, trivial⟩`. Introduce and unpack `⟨⟨a, b⟩, I, J⟩ hy`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Finset.mem_sigma, Finset.mem_product, Nat.mem_divisorsAntidiagonal, mem_normEq] at hy`. Take `⟨⟨hab, -⟩, hI, hJ⟩` from `hy`. Establish `hJ0 : J ≠ 0`. Introduce and unpack `rfl`. Rewrite `hJ` using `[_root_.map_zero]`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `hJ` using the available equality. Conclude with `hn (by rw [← hab, mul_zero])`. Establish `hNJ : 0 < Ideal.absNorm J`. Apply `Nat.pos_of_ne_zero` to reduce the goal to its premises. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hJ0`. Establish `hch : (if h : J ∣ I * J then Exists.choose h else 0) = I`. Rewrite using `[dif_pos (dvd_mul_left J I)]`. Apply `mul_left_cancel₀ hJ0` to reduce the goal to its premises. Rewrite using `[← Exists.choose_spec (dvd_mul_left J I), mul_comm]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only`. Rewrite using `[hch, map_mul, Nat.mul_div_cancel _ hNJ, hI, hJ]`. Introduce and unpack `⟨C, J⟩ hy`. Simplify using `only [Finset.mem_sigma, mem_normEq] at hy`. Take `⟨hCn, hJ⟩` from `hy`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hC0 : C ≠ 0`. Introduce and unpack `rfl`. Rewrite `hCn` using `[_root_.map_zero]`. Conclude with `hn hCn.symm`. Take `⟨c, rfl⟩` from `(mem_dv hC0).1 hJ`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Establish `hJ0 : J ≠ 0`. Introduce and unpack `rfl`. Conclude with `hC0 (zero_mul c)`. Establish `hch : (if h : J ∣ J * c then Exists.choose h else 0) = c`. Rewrite using `[dif_pos (dvd_mul_right J c)]`.
-
-Conclude with `mul_left_cancel₀ hJ0 (Exists.choose_spec (dvd_mul_right J c)).symm`. Simplify using `only`. Rewrite using `[hch, mul_comm]`. Introduce and unpack `⟨p, I, J⟩ _`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 lemma conv_eq (F : Ideal (𝓞 K) → Ideal (𝓞 K) → ℝ) {n : ℕ} (hn : n ≠ 0) :
     ∑ p ∈ n.divisorsAntidiagonal, ∑ I ∈ normEq K p.1, ∑ J ∈ normEq K p.2, F (I * J) J =
@@ -389,13 +379,13 @@ def chi (ε : D.G → ℝ) (I : Ideal (𝓞 K)) : ℝ :=
   if I ≠ ⊥ ∧ IsCoprime I (Ideal.span {(M : 𝓞 K)}) then ε (D.cls I) else 0
 
 /- English proof (translation)
-Establish `hcard : ∀ g, aRay D g n = (((normEq K n).filter (fun I => (I ≠ ⊥ ∧ IsCoprime I (Ideal.span {(M : 𝓞 K)})) ∧ D.cls I = g)).card : ℝ)`. Introduce `g`. Unfold `aRay`. Use `congr 1`. Rewrite using `[← Set.ncard_coe_finset]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `I`. Simplify using `only [idealsIn, Finset.coe_filter, Set.mem_setOf_eq, mem_normEq]`. The claim follows by propositional logic. Establish `hchi : ∀ I, chi D ε I = ∑ g, if (I ≠ ⊥ ∧ IsCoprime I (Ideal.span {(M : 𝓞 K)})) ∧ D.cls I = g then ε g else 0`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact.
 
-Introduce `I`. Distinguish the cases in `h : I ≠ ⊥ ∧ IsCoprime I (Ideal.span {(M : 𝓞 K)})`. Rewrite using `[chi, if_pos h]`. Simplify using `only [ite_and, if_pos h]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[chi, if_neg h]`. Simplify using `only [ite_and, if_neg h, Finset.sum_const_zero]`. Rewrite using `[Finset.sum_congr rfl (fun I _ => hchi I), Finset.sum_comm]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, hcard g, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma sum_aRay (ε : D.G → ℝ) (n : ℕ) : ∑ g, ε g * aRay D g n = ∑ I ∈ normEq K n, chi D ε I := by
   have hcard : ∀ g, aRay D g n = (((normEq K n).filter (fun I =>
@@ -422,11 +412,11 @@ lemma sum_aRay (ε : D.G → ℝ) (n : ℕ) : ∑ g, ε g * aRay D g n = ∑ I �
   rw [← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, hcard g, mul_comm]
 
 /- English proof (translation)
-Distinguish the cases in `hI : I ≠ ⊥ ∧ IsCoprime I (Ideal.span {(M : 𝓞 K)})`. Distinguish the cases in `hJ : J ≠ ⊥ ∧ IsCoprime J (Ideal.span {(M : 𝓞 K)})`. Establish `hIJ : I * J ≠ ⊥ ∧ IsCoprime (I * J) (Ideal.span {(M : 𝓞 K)})` using `⟨mul_ne_zero hI.1 hJ.1, hI.2.mul_left hJ.2⟩`. Simplify using `only [chi]`. Rewrite using `[if_pos hIJ, if_pos hI, if_pos hJ, D.cls_mul I J hI.2 hJ.2 hI.1 hJ.1, hε]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hIJ : ¬ (I * J ≠ ⊥ ∧ IsCoprime (I * J) (Ideal.span {(M : 𝓞 K)}))`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hJ ⟨fun h => h1 (by rw [h, Ideal.mul_bot]), h2.of_mul_left_right⟩`. Simplify using `only [chi]`. Rewrite using `[if_pos hI, if_neg hJ, if_neg hIJ, mul_zero]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hIJ : ¬ (I * J ≠ ⊥ ∧ IsCoprime (I * J) (Ideal.span {(M : 𝓞 K)}))`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hI ⟨fun h => h1 (by rw [h, Ideal.bot_mul]), h2.of_mul_left_left⟩`. Simplify using `only [chi]`. Rewrite using `[if_neg hI, if_neg hIJ, zero_mul]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma chi_mul (ε : D.G → ℝ) (hε : ∀ g h, ε (g * h) = ε g * ε h) (I J : Ideal (𝓞 K)) :
     chi D ε (I * J) = chi D ε I * chi D ε J := by
@@ -448,9 +438,9 @@ lemma chi_mul (ε : D.G → ℝ) (hε : ∀ g h, ε (g * h) = ε g * ε h) (I J 
     rw [if_neg hI, if_neg hIJ, zero_mul]
 
 /- English proof (translation)
-Establish `hc : IsCoprime (1 : Ideal (𝓞 K)) (Ideal.span {(M : 𝓞 K)})` using `isCoprime_one_left`. Establish `hb : (1 : Ideal (𝓞 K)) ≠ ⊥`. Rewrite using `[Ideal.one_eq_top]`. Conclude with `top_ne_bot`. Establish `hcls : D.cls 1 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `D.cls_mul 1 1 hc hc hb hb`. Rewrite `e` using `[one_mul]`. Conclude with `mul_left_cancel (by rw [mul_one]; exact e.symm : D.cls 1 * D.cls 1 = D.cls 1 * 1)`. Rewrite using `[chi, if_pos ⟨hb, hc⟩, hcls, h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma chi_one (ε : D.G → ℝ) (h1 : ε 1 = 1) : chi D ε 1 = 1 := by
   have hc : IsCoprime (1 : Ideal (𝓞 K)) (Ideal.span {(M : 𝓞 K)}) := isCoprime_one_left
@@ -464,11 +454,11 @@ lemma chi_one (ε : D.G → ℝ) (h1 : ε 1 = 1) : chi D ε 1 = 1 := by
   rw [chi, if_pos ⟨hb, hc⟩, hcls, h1]
 
 /- English proof (translation)
-Establish `h1 : ∀ m, ∑ g, aRay D g m = ∑ I ∈ normEq K m, chi D (fun _ => 1) I`. Introduce `m`. Rewrite using `[← sum_aRay D (fun _ => 1) m]`. Simplify using the standard rewrite rules. Establish `hkey : ∀ I J : Ideal (𝓞 K), chi D (fun _ => 1) I * chi D ε J = chi D (fun _ => 1) (I * J) * chi D ε J`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `I J`. Rewrite using `[chi_mul D (fun _ => 1) (fun _ _ => (mul_one 1).symm) I J, mul_assoc]`. Use `congr 1`. Simplify using `only [chi]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[h1, sum_aRay D ε, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun I _ => Finset.sum_congr rfl fun J _ => hkey I J`. Use `_ = _ := (conv_eq (fun C J => chi D (fun _ => 1) C * chi D ε J) hn).trans (by simp only [r, Finset.mul_sum])`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 lemma conv_aRay (ε : D.G → ℝ) {n : ℕ} (hn : n ≠ 0) :
     ∑ p ∈ n.divisorsAntidiagonal, (∑ g, aRay D g p.1) * ∑ g, ε g * aRay D g p.2 =
@@ -493,25 +483,23 @@ lemma conv_aRay (ε : D.G → ℝ) {n : ℕ} (hn : n ≠ 0) :
         (by simp only [r, Finset.mul_sum])
 
 /- English proof (translation)
-Introduce `K _ _ M _ D ε h1 hmul hpm n`. Establish `hv : ∀ I, chi D ε I = 0 ∨ chi D ε I = 1 ∨ chi D ε I = -1`. Introduce `I`. Unfold `chi`. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases hpm (D.cls I) with h | h <;> simp [h]`. Simplify using the standard rewrite rules. Establish `hr : ∀ C : Ideal (𝓞 K), C ≠ 0 → 0 ≤ r (chi D ε) C ∧ 1 ≤ r (chi D ε) (C ^ 2)` using `fun C hC => r_bounds (chi D ε) (chi_one D ε h1) (chi_mul D ε hmul) hv C hC`. Establish `h01 : ∀ I, chi D (fun _ => 1) I = if I ≠ ⊥ ∧ IsCoprime I (Ideal.span {(M : 𝓞 K)}) then 1 else 0` using `fun I => rfl`. Establish `hterm : ∀ C : Ideal (𝓞 K), 0 ≤ chi D (fun _ => 1) C * r (chi D ε) C`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `C`. Rewrite using `[h01]`. Use `split_ifs with h`. Rewrite using `[one_mul]`. Conclude with `(hr C h.1).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[zero_mul]`. Establish `hsum1 : ∀ m, ∑ g, aRay D g m = ∑ I ∈ normEq K m, chi D (fun _ => 1) I`. Introduce `m`. Rewrite using `[← sum_aRay D (fun _ => 1) m]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨by simp, ?_⟩` and prove the remaining obligations. Establish `h0 : ∑ I ∈ normEq K 0, chi D (fun _ => 1) I = 0`. Use `Finset.sum_eq_zero fun I hI => ?_` and prove the remaining obligations. Rewrite `hI` using `[mem_normEq, Ideal.absNorm_eq_zero_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[chi, hI]`. Rewrite using `[hsum1, h0]`. Simplify using the standard rewrite rules. Establish `hn0 : n ≠ 0` using `hn.ne'`. Rewrite using `[conv_aRay D ε hn0, conv_aRay D ε (pow_ne_zero 2 hn0), hsum1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Finset.sum_nonneg fun C _ => hterm C, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun I _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : I ≠ ⊥ ∧ IsCoprime I (Ideal.span {(M : 𝓞 K)})`. Establish `h2 : I ^ 2 ≠ ⊥ ∧ IsCoprime (I ^ 2) (Ideal.span {(M : 𝓞 K)})` using `⟨pow_ne_zero 2 h.1, h.2.pow_left⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h01, h01, if_pos h, if_pos h2, one_mul]`. Conclude with `(hr I h.1).2`. Rewrite using `[h01 I, if_neg h]`. Conclude with `hterm (I ^ 2)`. Use `_ = ∑ C ∈ (normEq K n).image (· ^ 2), chi D (fun _ => 1) C * r (chi D ε) C := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.sum_image]`. Introduce `a _ b _ hab`. Establish `hab' : a ^ 2 = b ^ 2` using `hab`. Conclude with `dvd_antisymm ((UniqueFactorizationMonoid.pow_dvd_pow_iff_dvd two_ne_zero).1 hab'.dvd) ((UniqueFactorizationMonoid.pow_dvd_pow_iff_dvd two_ne_zero).1 hab'.symm.dvd)`. Use `_ ≤ ∑ C ∈ normEq K (n ^ 2), chi D (fun _ => 1) C * r (chi D ε) C := by`.
-
-Use `Finset.sum_le_sum_of_subset_of_nonneg ?_ fun C _ _ => hterm C` and prove the remaining obligations. Introduce `C hC`. Take `⟨I, hI, rfl⟩` from `Finset.mem_image.1 hC`. Rewrite `hI`, the goal using `[mem_normEq]`. Rewrite using `[map_pow, hI]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_real_char : ∀ (K : Type) [Field K] [NumberField K] (M : ℕ), 2 ≤ M → ∀ (D : RayData K M) (ε : D.G → ℝ), ε 1 = 1 → (∀ g h, ε (g * h) = ε g * ε h) → (∀ g, ε g = 1 ∨ ε g = -1) → ∀ n : ℕ, 0 ≤ ∑ p ∈ n.divisorsAntidiagonal, (∑ g, aRay D g p.1) * ∑ g, ε g * aRay D g p.2 ∧ ∑ g, aRay D g n ≤ ∑ p ∈ (n ^ 2).divisorsAntidiagonal, (∑ g, aRay D g p.1) * ∑ g, ε g * aRay D g p.2 := by
   intro K _ _ M _ D ε h1 hmul hpm n

@@ -2,6 +2,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RowExpansionMinor.First
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QmRowForm
 
 /- English proof (translation)
-The claim follows from `PI.qmRowExp_of_rowForm quantum_minor_row_form`.
+A detailed English derivation is pending.
 -/
 theorem quantum_minor_row_expansion : PI.QmRowExp := PI.qmRowExp_of_rowForm quantum_minor_row_form

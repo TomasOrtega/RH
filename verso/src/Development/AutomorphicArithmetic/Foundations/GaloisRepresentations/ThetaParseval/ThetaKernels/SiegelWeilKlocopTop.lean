@@ -10,7 +10,7 @@ set_option synthInstance.maxHeartbeats 200000
 section
 namespace PositivityTheory.SiegelWeilFormula
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.locOpEx_of_k hT _root_.PositivityTheory.SiegelWeilFormula.kfour.auxiliaryExistence_holds`.
+A detailed English derivation is pending.
 -/
 theorem locOpEx_of_tAll_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) : _root_.PositivityTheory.SiegelWeilFormula.LocOpEx_k := _root_.PositivityTheory.SiegelWeilFormula.locOpEx_of_k hT _root_.PositivityTheory.SiegelWeilFormula.kfour.auxiliaryExistence_holds
 end PositivityTheory.SiegelWeilFormula

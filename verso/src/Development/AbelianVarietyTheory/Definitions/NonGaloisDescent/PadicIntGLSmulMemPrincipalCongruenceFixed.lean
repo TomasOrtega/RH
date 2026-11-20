@@ -14,13 +14,11 @@ open scoped Classical
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Introduce `x`. Establish `hs : Function.Surjective (PadicInt.toZMod (p` using `g)) := ZMod.ringHom_surjective _`. Set `M : Matrix (Fin n) (Fin n) ℤ_[g]` to `fun i j => Function.surjInv hs ((x : Mt g n) i j)`. Establish `hM : (PadicInt.toZMod (p` using `g)).mapMatrix M = (x : Mt g n) := by`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `Function.surjInv_eq hs _`. Establish `hd : IsUnit M.det`. Assume the negation of the conclusion as `h`. Establish `h1 : M.det ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`. Rewrite using `[PadicInt.ker_toZMod]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Rewrite `h1` using `[RingHom.mem_ker, RingHom.map_det, hM]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _ |>.1 x.isUnit).ne_zero h1`. Use `⟨((Matrix.isUnit_iff_isUnit_det M).2 hd).unit, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
-
-Conclude with `congrFun (congrFun hM i) j`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem red_surjective (n : ℕ) : Function.Surjective (red g n) := by
   intro x
@@ -41,14 +39,14 @@ theorem red_surjective (n : ℕ) : Function.Surjective (red g n) := by
 variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Simplify using `[fixK1, Submodule.mem_iInf, sub_eq_zero, MonoidHom.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_principalCongruenceFixedVectors_iff (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) (v : V) :
     v ∈ fixK1 π ↔ ∀ k, red g n k = 1 → π (inc g n k) v = v := by
   simp [fixK1, Submodule.mem_iInf, sub_eq_zero, MonoidHom.mem_ker]
 
 /- English proof (translation)
-Establish `h` using `Function.invFun_eq (f := red g n) ⟨k, rfl⟩`. Establish `h2` using `(mem_principalCongruenceFixedVectors_iff π v).1 hv (k⁻¹ * Function.invFun (red g n) (red g n k)) (by simp [h])`. Establish `: lift g n (red g n k) = inc g n k * inc g n (k⁻¹ * Function.invFun (red g n) (red g n k))`. Simplify using `[lift]`. Rewrite using `[this, map_mul, Module.End.mul_apply, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_red (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) {v : V} (hv : v ∈ fixK1 π)
     (k : GL (Fin n) ℤ_[g]) : π (lift g n (red g n k)) v = π (inc g n k) v := by
@@ -59,7 +57,7 @@ theorem lift_red (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) {v : V} (hv : 
   rw [this, map_mul, Module.End.mul_apply, h2]
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[mem_principalCongruenceFixedVectors_iff]`. Introduce `m hm`. Establish `h` using `hv (k⁻¹ * m * k) (by simp [hm])`. Establish `: inc g n m * inc g n k = inc g n k * inc g n (k⁻¹ * m * k)` using `by simp [mul_assoc]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, this, map_mul, Module.End.mul_apply, h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem padicIntGL_smul_mem_principalCongruenceFixed (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) {v : V} (hv : v ∈ fixK1 π)
     (k : GL (Fin n) ℤ_[g]) : π (inc g n k) v ∈ fixK1 π := by
@@ -70,7 +68,7 @@ theorem padicIntGL_smul_mem_principalCongruenceFixed (π : Representation ℂ (G
   rw [← Module.End.mul_apply, ← map_mul, this, map_mul, Module.End.mul_apply, h]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `red_surjective n x`. Take `⟨m, rfl⟩` from `red_surjective n y`. Rewrite using `[← map_mul, lift_red π hv, lift_red π hv, lift_red π (padicIntGL_smul_mem_principalCongruenceFixed π hv m), map_mul, map_mul, Module.End.mul_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_mul (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) {v : V} (hv : v ∈ fixK1 π) (x y : Gn g n) :
     π (lift g n (x * y)) v = π (lift g n x) (π (lift g n y) v) := by
@@ -80,15 +78,11 @@ theorem lift_mul (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) {v : V} (hv : 
     Module.End.mul_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hn, h⟩ haveI : Nontrivial (Subrepresentation π) := ⟨⊥, ⊤, fun e => by`. Establish `: (⊥ : Submodule ℂ V) = ⊤` using `congrArg Subrepresentation.toSubmodule e`. Conclude with `bot_ne_top this⟩`. Use `⟨fun W => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `h W.toSubmodule (fun x v hv => W.apply_mem_toSubmodule x hv) with e | e` into its components or cases. Use `left`. Conclude with `Subrepresentation.toSubmodule_injective e`. Use `right`. Conclude with `Subrepresentation.toSubmodule_injective e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Use `⟨?_, fun W hW => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Establish `: (⊥ : Subrepresentation π) = ⊤` using `Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _)`.
-
-Conclude with `bot_ne_top this`. Break down `eq_bot_or_eq_top (⟨W, fun x v hv => hW x v hv⟩ : Subrepresentation π) with e | e` into its components or cases. Use `left`. Conclude with `congrArg Subrepresentation.toSubmodule e`. Use `right`.
-
-Conclude with `congrArg Subrepresentation.toSubmodule e`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isIrrRep_iff {G : Type} [Group G] (π : Representation ℂ G V) : IsIrrRep π ↔ π.IsIrreducible := by
   constructor
@@ -116,13 +110,13 @@ def chRep {G : Type} [Group G] (φ : G →* ℂˣ) : Representation ℂ G ℂ wh
   map_mul' x y := by ext; simp [mul_comm]
 
 /- English proof (translation)
-Simplify using `[chRep]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem chRep_apply {G : Type} [Group G] (φ : G →* ℂˣ) (x : G) (v : ℂ) : chRep φ x v = φ x * v := by
   simp [chRep]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, fun W _ => eq_bot_or_eq_top W⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIrrRep_chRep {G : Type} [Group G] (φ : G →* ℂˣ) : IsIrrRep (chRep φ) :=
   ⟨inferInstance, fun W _ => eq_bot_or_eq_top W⟩
@@ -142,9 +136,9 @@ def unitPart : ℚ_[g]ˣ →* ℤ_[g]ˣ where
     ring
 
 /- English proof (translation)
-Establish `h : ((u : ℤ_[g]) : ℚ_[g]).valuation = 0`. Establish `h1 : ‖((u : ℤ_[g]) : ℚ_[g])‖ = 1` using `PadicInt.norm_units u`. Establish `h0 : ((u : ℤ_[g]) : ℚ_[g]) ≠ 0` using `by intro e; rw [e] at h1; simp at h1`. Rewrite `h1` using `[Padic.norm_eq_zpow_neg_valuation h0]`. Establish `hg : (1 : ℝ) < g` using `by exact_mod_cast (Fact.out : g.Prime).one_lt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(zpow_eq_one_iff_right₀ (by positivity) hg.ne').1 h1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[unitPart, h]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem unitPart_unit (u : ℤ_[g]ˣ) : unitPart (Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom u) = u := by
   have h : ((u : ℤ_[g]) : ℚ_[g]).valuation = 0 := by
@@ -164,7 +158,7 @@ def detRep (n : ℕ) (μ : ℚ_[g]ˣ →* ℂˣ) : Representation ℂ (GL (Fin n
   chRep (μ.comp Matrix.GeneralLinearGroup.det)
 
 /- English proof (translation)
-Establish `h1 : Matrix.GeneralLinearGroup.det (inc g n k) = Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom (Matrix.GeneralLinearGroup.det k)` using `by ext; simp [inc, RingHom.map_det]`. Establish `h2 : Matrix.GeneralLinearGroup.det (red g n k) = Units.map (PadicInt.toZMod (p` using `g)).toMonoidHom (Matrix.GeneralLinearGroup.det k) := by ext; simp [red, RingHom.map_det]`. Rewrite using `[h1, h2, tame, MonoidHom.comp_apply, MonoidHom.comp_apply, unitPart_unit]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tame_inc (χ : (ZMod g)ˣ →* ℂˣ) (k : GL (Fin n) ℤ_[g]) :
     tame χ (Matrix.GeneralLinearGroup.det (inc g n k)) = χ (Matrix.GeneralLinearGroup.det (red g n k)) := by
@@ -177,14 +171,14 @@ theorem tame_inc (χ : (ZMod g)ˣ →* ℂˣ) (k : GL (Fin n) ℤ_[g]) :
   rw [h1, h2, tame, MonoidHom.comp_apply, MonoidHom.comp_apply, unitPart_unit]
 
 /- English proof (translation)
-Rewrite using `[mem_principalCongruenceFixedVectors_iff]`. Introduce `k hk`. Simplify using `[detRep, tame_inc, hk]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem tame_mem_fixK1 (χ : (ZMod g)ˣ →* ℂˣ) (v : ℂ) : v ∈ fixK1 (detRep n (tame χ)) := by
   rw [mem_principalCongruenceFixedVectors_iff]; intro k hk
   simp [detRep, tame_inc, hk]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `red_surjective n x`. Rewrite using `[lift_red _ (tame_mem_fixK1 χ v)]`. Simplify using `[detRep, tame_inc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tame_lift (χ : (ZMod g)ˣ →* ℂˣ) (x : Gn g n) (v : ℂ) :
     detRep n (tame χ) (lift g n x) v = χ (Matrix.GeneralLinearGroup.det x) * v := by
@@ -193,14 +187,14 @@ theorem tame_lift (χ : (ZMod g)ˣ →* ℂˣ) (x : Gn g n) (v : ℂ) :
   simp [detRep, tame_inc]
 
 /- English proof (translation)
-Simplify using `[Matrix.det_fin_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_one' {R : Type} [CommRing R] (y : GL (Fin 1) R) :
     ((Matrix.GeneralLinearGroup.det y : Rˣ) : R) = (y : Matrix (Fin 1) (Fin 1) R) 0 0 := by
   simp [Matrix.det_fin_one]
 
 /- English proof (translation)
-Simplify using `[Matrix.det_fin_two, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_two' {R : Type} [CommRing R] (y : GL (Fin 2) R) (h : (y : Matrix (Fin 2) (Fin 2) R) 1 0 = 0) :
     ((Matrix.GeneralLinearGroup.det y : Rˣ) : R) =
@@ -208,18 +202,18 @@ theorem det_two' {R : Type} [CommRing R] (y : GL (Fin 2) R) (h : (y : Matrix (Fi
   simp [Matrix.det_fin_two, h]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Matrix.GeneralLinearGroup.scalar (Fin 1) u, by ext; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem det_surj_one {R : Type} [CommRing R] (u : Rˣ) :
     ∃ y : GL (Fin 1) R, Matrix.GeneralLinearGroup.det y = u :=
   ⟨Matrix.GeneralLinearGroup.scalar (Fin 1) u, by ext; simp⟩
 
 /- English proof (translation)
-Use `set M : Mt g 2 := fun i j : Fin 2 => if (i : ℕ) < 1 ∧ (j : ℕ) < 1 then Formalism.MainNotions.ArithmeticCylinders.entN (x : Mt g 1) i j else if 1 ≤ (i : ℕ) ∧ 1 ≤ (j : ℕ) then Formalism.MainNotions.ArithmeticCylinders.entN (y : Mt g 1) (i - 1) (j - 1) else 0 with hM`. Establish `hd : M.det = (Matrix.GeneralLinearGroup.det x * Matrix.GeneralLinearGroup.det y : (ZMod g)ˣ)`. Rewrite using `[Units.val_mul, det_one', det_one', Matrix.det_fin_two]`. Simplify using `[hM, Formalism.MainNotions.ArithmeticCylinders.entN]`. Establish `hu : IsUnit M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, hd]`. Conclude with `Units.isUnit _`. Establish `: blk 1 1 2 x y = hu.unit` using `by show toG M = _`. Rewrite using `[toG, dif_pos hu]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Rewrite using `[← hd]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_blk (x y : Gn g 1) : Matrix.GeneralLinearGroup.det (blk 1 1 2 x y) =
     Matrix.GeneralLinearGroup.det x * Matrix.GeneralLinearGroup.det y := by
@@ -237,13 +231,13 @@ theorem det_blk (x y : Gn g 1) : Matrix.GeneralLinearGroup.det (blk 1 1 2 x y) =
   rw [this]; ext; rw [← hd]; simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, -, h⟩`. Use extensionality with `u`. Take `⟨y, rfl⟩` from `det_surj_one u`. Use `h y` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[tame_lift, det_blk, map_one, one_mul, smul_eq_mul]`. Conclude with `(mul_right_cancel₀ hv this).symm`. Introduce and unpack `rfl`. Use `⟨tame_mem_fixK1 _ _, fun u h1 h2 h3 => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `e1` using `congrFun (congrFun h2 0) 0`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `congrFun (congrFun h3 0) 0`. Establish `e3` using `h1 1 0 (by simp) (by simp)`. Establish `: Matrix.GeneralLinearGroup.det u = 1` using `by ext; rw [det_two' u e3]`. Simplify using `[tl, br, Formalism.MainNotions.ArithmeticCylinders.entN] at e1 e2`. Simplify using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tame_lift, this]`. Simplify using the standard rewrite rules. Rewrite using `[tame_lift, det_blk, map_one, one_mul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isParVec_tame (χ χ' : (ZMod g)ˣ →* ℂˣ) (v : ℂ) (hv : v ≠ 0) :
     IsParVec (detRep 2 (tame χ)) 1 1 χ' v ↔ χ' = χ := by
@@ -267,19 +261,19 @@ theorem isParVec_tame (χ χ' : (ZMod g)ˣ →* ℂˣ) (v : ℂ) (hv : v ≠ 0) 
     · rw [tame_lift, det_blk, map_one, one_mul, smul_eq_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Λ, h0, h⟩`. Establish `hΛ : Λ 1 ≠ 0` using `fun e => h0 (by ext; simpa using e)`. Establish `key : ∀ a d : ℚ_[g]ˣ, μ a * μ d = ν₁ a * ν₂ d`. Introduce `a d`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `p : GL (Fin 2) ℚ_[g]` to `Matrix.GeneralLinearGroup.mkOfDetNeZero !![(a : ℚ_[g]), 0; 0, d] (by`. Simplify using `[Matrix.det_fin_two])`. Establish `hp : Matrix.GeneralLinearGroup.det p = a * d` using `by ext; simp [p, Matrix.det_fin_two]`. Establish `hs : ∀ u : ℚ_[g]ˣ, Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin 1) u) = u` using `fun u => by ext; simp`. Apply the tactic sequence `have := h p (Matrix.GeneralLinearGroup.scalar (Fin 1) a) (Matrix.GeneralLinearGroup.scalar (Fin 1) d) (fun i j hj hi => by fin_cases i <;> fin_cases j <;> simp_all [p]) (fun i j => by fin_cases i; fin_cases j; simp [p, Formalism.MainNotions.ArithmeticCylinders.entN]) (fun i j => …`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [detRep, chRep_apply, MonoidHom.comp_apply, hp, hs, MonoidHom.one_apply, Units.val_one, one_mul, mul_one, smul_eq_mul] at this`. Establish `e : Λ (μ (a * d) : ℂ) = (μ (a * d) : ℂ) * Λ 1`. Simplify using `using Λ.map_smul (μ (a * d) : ℂ) 1`. Rewrite `this` using `[e]`. Rewrite using `[← map_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ext (mul_right_cancel₀ hΛ this)`. Prove the components needed by the constructor for the conclusion. Use extensionality with `a`. Use `key a 1` as an intermediate fact. Simplify using `at this`.
+Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use extensionality with `a`. Use `key 1 a` as an intermediate fact. Simplify using `at this`. Rewrite using `[this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨rfl, h⟩`. Substitute `h` using the available equality. Use `⟨LinearMap.id, fun e => by simpa using LinearMap.congr_fun e 1, fun p x y h1 h2 h3 v => ?_⟩` and prove the remaining obligations. Establish `hp : Matrix.GeneralLinearGroup.det p = Matrix.GeneralLinearGroup.det x * Matrix.GeneralLinearGroup.det y`. Use `ext`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_two' p (h1 1 0 (by simp) (by simp)), Units.val_mul, det_one', det_one', h2, h3]`. Simplify using `[Formalism.MainNotions.ArithmeticCylinders.entN]`. Simplify using `[detRep, hp]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mapsToInd_det (μ ν₁ ν₂ : ℚ_[g]ˣ →* ℂˣ) :
     MapsToInd (detRep 2 μ) 1 1 (detRep 1 1) ν₁ ν₂ ↔ ν₁ = μ ∧ ν₂ = μ := by
@@ -316,13 +310,13 @@ theorem mapsToInd_det (μ ν₁ ν₂ : ℚ_[g]ˣ →* ℂˣ) :
     simp [detRep, hp]
 
 /- English proof (translation)
-Establish `hp : g.Prime` using `Fact.out`. Establish `ho` using `L.gen_order 1 one_pos`. Rewrite `ho` using `[pow_one]`. Establish `h1 : L.gen 1 ^ (g - 1) = 1` using `by rw [← ho]; exact pow_orderOf_eq_one _`. Establish `hpos : 0 < g - 1` using `by have := hp.two_le; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : L.gen 1 ^ g = L.gen 1`. Establish `: L.gen 1 ^ g = L.gen 1 ^ (g - 1 + 1)` using `by congr 1; omega`. Rewrite using `[this, pow_succ, h1, one_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : ZMod g, algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) c = L.gen 1 := by`. Take `⟨m, hm⟩` from `(mem_bot_iff_intCast g (Formalism.CyclotomicNorms.Fbar g)).1 ((Subfield.mem_bot_iff_pow_eq_self (Formalism.CyclotomicNorms.Fbar g) g).2 h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m, by simpa using hm⟩`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `h1` using `[← hc]`. Simplify using `[hpos.ne'] at h1`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨Units.mk0 c hc0, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← ho, ← hc, ← orderOf_units, Units.val_mk0]`. Conclude with `(orderOf_injective (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).toMonoidHom (algebraMap (ZMod g) _).injective c).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen (L : LabelDatum g) : ∃ u : (ZMod g)ˣ, algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) u = L.gen 1 ∧
     orderOf u = g - 1 := by
@@ -348,9 +342,9 @@ theorem exists_gen (L : LabelDatum g) : ∃ u : (ZMod g)ˣ, algebraMap (ZMod g) 
 def dch (χ : (ZMod g)ˣ →* ℂˣ) : Gn g 1 → ℂ := fun y => (χ (Matrix.GeneralLinearGroup.det y) : ℂ)
 
 /- English proof (translation)
-Establish `hc : ∀ x, (FDRep.of (chRep (χ.comp (Matrix.GeneralLinearGroup.det (n` using `Fin 1))))).character x = dch χ x := fun x => by`. Express the relevant statement in the definitionally equal form `LinearMap.trace ℂ ℂ (((χ (Matrix.GeneralLinearGroup.det x) : ℂˣ) : ℂ) • LinearMap.id) = _`. Simplify using `[dch]`. Use `⟨_, ?_, hc⟩` and prove the remaining obligations. Rewrite using `[FDRep.simple_iff_char_is_norm_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hc, dch]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isIrr_dch (χ : (ZMod g)ˣ →* ℂˣ) : IsIrr (dch χ) := by
   have hc : ∀ x, (FDRep.of (chRep (χ.comp (Matrix.GeneralLinearGroup.det (n := Fin 1))))).character x =
@@ -362,11 +356,9 @@ theorem isIrr_dch (χ : (ZMod g)ˣ →* ℂˣ) : IsIrr (dch χ) := by
   simp [hc, dch]
 
 /- English proof (translation)
-Take `⟨A, hA, ha⟩` from `ha`. Take `⟨B, hB, hb⟩` from `hb`. Use `haveI : Invertible (Nat.card G : ℂ) := invertibleOfNonzero (Nat.cast_ne_zero.2 Nat.card_pos.ne')`. Use `FDRep.char_orthonormal A B` as an intermediate fact. Simplify using `only [ha, hb, Nat.card_eq_fintype_card] at this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : Nonempty (A ≅ B)`. Take `⟨i⟩` from `hi`. Use function extensionality and compare the values at `x`. Rewrite using `[← ha, ← hb, FDRep.char_iso i]`. Rewrite `this` using `[if_neg hi]`.
-
-Conclude with `absurd this h`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_ip {G : Type} [Group G] [Fintype G] {α β : G → ℂ} (ha : IsIrr α) (hb : IsIrr β) (h : ip α β ≠ 0) :
     α = β := by
@@ -381,13 +373,13 @@ theorem eq_of_ip {G : Type} [Group G] [Fintype G] {α β : G → ℂ} (ha : IsIr
   · rw [if_neg hi] at this; exact absurd this h
 
 /- English proof (translation)
-Establish `hcp : (y : Mt g 1).charpoly = X - C ((y : Mt g 1) 0 0)`. Simplify using `[Matrix.charpoly, Matrix.det_fin_one]`. Rewrite `hz` using `[hcp]`. Establish `hz1` using `GLq.Model.mem_rootsBar_X_sub_C hz`. Take `⟨u, hu, ho⟩` from `exists_gen L`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgen : ∀ w : (ZMod g)ˣ, ∃ m : ℕ, u ^ m = w` using `fun w => by`. Establish `: Subgroup.zpowers u = ⊤`. Apply `Subgroup.eq_top_of_card_eq` to reduce the goal to its premises. Rewrite using `[Nat.card_zpowers, ho, Nat.card_eq_fintype_card, ZMod.card_units]`. Conclude with `(mem_powers_iff_mem_zpowers.2 (this ▸ Subgroup.mem_top w))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hgen (Matrix.GeneralLinearGroup.det y)`. Establish `hz2 : z = L.gen 1 ^ m`. Rewrite using `[hz1, ← det_one', ← hm, ← hu]`. Simplify using the standard rewrite rules. Establish `hcp : (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) c) ^ (g ^ 1 - 1) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, pow_one, ZMod.pow_card_sub_one_eq_one hc.1, map_one]`. Simplify using `[hz2, GLq.Model.thetaOf_gen_pow L one_pos hcp, dch, ← hm, hc.2 u hu]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_eq (L : LabelDatum g) {χ : (ZMod g)ˣ →* ℂˣ} {c : ZMod g} (hc : IsCharLab L χ c) (y : Gn g 1)
     {z : Formalism.CyclotomicNorms.Fbar g} (hz : z ∈ Formalism.CyclotomicNorms.rootsBar (y : Mt g 1).charpoly) :
@@ -410,11 +402,11 @@ theorem theta_eq (L : LabelDatum g) {χ : (ZMod g)ˣ →* ℂˣ} {c : ZMod g} (h
   simp [hz2, GLq.Model.thetaOf_gen_pow L one_pos hcp, dch, ← hm, hc.2 u hu]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, -, h⟩`. Use function extensionality and compare the values at `y`. Establish `hcp : (y : Mt g 1).charpoly = X - C ((y : Mt g 1) 0 0)`. Simplify using `[Matrix.charpoly, Matrix.det_fin_one]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hz : algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) ((y : Mt g 1) 0 0) ∈ Formalism.CyclotomicNorms.rootsBar (y : Mt g 1).charpoly`. Rewrite using `[hcp]`. Simplify using `[Formalism.CyclotomicNorms.rootsBar]`. Rewrite using `[h (algebraMap (ZMod g) _ c) (by simp [Formalism.CyclotomicNorms.rootsBar]) y (hcp ▸ irreducible_X_sub_C _) _ hz, theta_eq L hc y hz]`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨monic_X_sub_C _, irreducible_X_sub_C _, by simpa using hc.1, natDegree_X_sub_C _⟩, ⟨one_pos, isIrr_dch χ, fun a h1 h2 => by omega⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx y _ z hz`. Rewrite using `[GLq.Model.mem_rootsBar_X_sub_C hx, theta_eq L hc y hz]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCuspOf_iff (L : LabelDatum g) {χ : (ZMod g)ˣ →* ℂˣ} {c : ZMod g} (hc : IsCharLab L χ c)
     (τ : Gn g 1 → ℂ) : IsCuspOf L (X - C c) τ ↔ τ = dch χ := by
@@ -434,31 +426,29 @@ theorem isCuspOf_iff (L : LabelDatum g) {χ : (ZMod g)ˣ →* ℂˣ} {c : ZMod g
     rw [GLq.Model.mem_rootsBar_X_sub_C hx, theta_eq L hc y hz]
 
 /- English proof (translation)
-Introduce `x y` and use `by simp [dch, mul_comm]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isClass_dch (χ : (ZMod g)ˣ →* ℂˣ) : IsClass (dch χ) := fun x y => by
   simp [dch, mul_comm]
 
 /- English proof (translation)
-Simplify using `[ip, dch]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ip_dch (χ : (ZMod g)ˣ →* ℂˣ) : ip (dch χ) (dch χ) = 1 := by
   simp [ip, dch]
 
 /- English proof (translation)
-Establish `: {τ : Gn g 1 → ℂ | IsIrr τ ∧ HasLabel L τ (X - C c)} = {dch χ}`. Use extensionality with `τ`. Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hτ, Q, hQ, hd, hf, hip⟩ match Q, hQ, hd, hf, hip with`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Consider the case `[], _, hd, _, _ => simp [degL] at hd`. Consider the case `[(P, ⟨d, σ⟩)], hQ, hd, hf, hip`. Establish `: d = 1` using `by simpa [degL] using hd`. Substitute `this` using the available equality. Establish `hP : X - C c = P` using `by simpa using hf`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hP` using the available equality. Use `(isCuspOf_iff L hc σ).1 (hQ _ List.mem_cons_self)` as an intermediate fact. Substitute `this` using the available equality. Establish `e : hcL ([(X - C c, (⟨1, dch χ⟩ : Pc g))].map Prod.snd) 1 = dch χ` using `GLq.Model.hc_full _ (isClass_dch χ)`. Rewrite `hip` using `[e]`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `eq_of_ip hτ (isIrr_dch χ) hip`. Consider the case `p :: q :: R, hQ, hd, _, _`. Establish `h1` using `(hQ p (by simp)).2.1.1`. Establish `h2` using `(hQ q (by simp)).2.1.1`. Simplify using `[degL] at hd`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce and unpack `rfl`. Use `⟨isIrr_dch χ, [(X - C c, ⟨1, dch χ⟩)], ?_, by simp [degL], by simp, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Rewrite using `[List.mem_singleton.1 hp]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(isCuspOf_iff L hc _).2 rfl`. Establish `e : hcL ([(X - C c, (⟨1, dch χ⟩ : Pc g))].map Prod.snd) 1 = dch χ` using `GLq.Model.hc_full _ (isClass_dch χ)`. Rewrite using `[e, ip_dch]`. Conclude with `one_ne_zero`. Unfold `eSerC`.
-
-Rewrite using `[this, finsum_mem_singleton]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eSerC_one (L : LabelDatum g) {χ : (ZMod g)ˣ →* ℂˣ} {c : ZMod g} (hc : IsCharLab L χ c) :
     eSerC L 1 (X - C c) = zOf (dch χ) := by
@@ -496,11 +486,11 @@ theorem eSerC_one (L : LabelDatum g) {χ : (ZMod g)ˣ →* ℂˣ} {c : ZMod g} (
   rw [this, finsum_mem_singleton]
 
 /- English proof (translation)
-Establish `key : ∀ v, actK (detRep 1 (tame χ')) (eSerC L 1 (X - C c)) v = ip (dch χ') (dch χ) * v` using `fun v => by`. Establish `hco : ∀ x, (zOf (dch χ)).coeff x = (Fintype.card (Gn g 1) : ℂ)⁻¹ * dch χ x⁻¹` using `fun x => by`. Simplify using `[zOf, Finsupp.single_apply, dch]`. Rewrite using `[eSerC_one L hc, actK, LinearMap.sum_apply]`. Simplify using `only [LinearMap.smul_apply, tame_lift, hco, smul_eq_mul, ip, Finset.mul_sum, Finset.sum_mul, dch]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun x _ => by ring`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, -, hv⟩`. Rewrite `hv` using `[key]`. Use `eq_of_ip (isIrr_dch χ') (isIrr_dch χ) (left_ne_zero_of_mul hv)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `u`. Take `⟨y, rfl⟩` from `det_surj_one u`. Conclude with `congrFun this y`. Introduce and unpack `rfl`. Conclude with `⟨1, tame_mem_fixK1 _ _, by rw [key, ip_dch]; simp⟩`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hasLab_tame (L : LabelDatum g) {χ : (ZMod g)ˣ →* ℂˣ} {c : ZMod g} (hc : IsCharLab L χ c)
     (χ' : (ZMod g)ˣ →* ℂˣ) : HasLab L (detRep 1 (tame χ')) (X - C c) ↔ χ' = χ := by
@@ -521,7 +511,7 @@ theorem hasLab_tame (L : LabelDatum g) {χ : (ZMod g)ˣ →* ℂˣ} {c : ZMod g}
     exact ⟨1, tame_mem_fixK1 _ _, by rw [key, ip_dch]; simp⟩
 
 /- English proof (translation)
-Take `⟨u, hu, -⟩` from `exists_gen L`. Conclude with `(algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).injective (L.teich_inj _ _ (by simpa using h.1) (by simpa using h'.1) ((h.2 u hu).symm.trans (h'.2 u hu)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCharLab_unique (L : LabelDatum g) {χ : (ZMod g)ˣ →* ℂˣ} {c c' : ZMod g} (h : IsCharLab L χ c)
     (h' : IsCharLab L χ c') : c = c' := by
@@ -530,11 +520,11 @@ theorem isCharLab_unique (L : LabelDatum g) {χ : (ZMod g)ˣ →* ℂˣ} {c c' :
     (L.teich_inj _ _ (by simpa using h.1) (by simpa using h'.1) ((h.2 u hu).symm.trans (h'.2 u hu)))
 
 /- English proof (translation)
-Take `⟨u, hu, ho⟩` from `exists_gen L`. Establish `hpos : 0 < g - 1` using `by have := (Fact.out : g.Prime).two_le; omega`. Use `haveI : NeZero (g - 1) := ⟨hpos.ne'⟩`. Set `T : (ZMod g)ˣ →* ℂ` to `L.teich.comp ((algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).toMonoidHom.comp (Units.coeHom _))`. Establish `hT : Function.Injective T` using `fun a b e => Units.ext <| (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).injective (L.teich_inj _ _ (by simp) (by simp) e)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprim : IsPrimitiveRoot (T u) (g - 1)`. Rewrite using `[← ho, ← orderOf_injective T hT u]`. Conclude with `IsPrimitiveRoot.orderOf _`. Take `⟨m, -, hm⟩` from `hprim.eq_pow_of_pow_eq_one (ξ := (χ u : ℂ)) (by`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, ← ho, pow_orderOf_eq_one]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the proof step `simp)`. Use `⟨(u ^ m : (ZMod g)ˣ), Units.ne_zero _, fun w hw => ?_⟩` and prove the remaining obligations. Establish `: w = u` using `Units.ext ((algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).injective (hw.trans hu.symm))`. Rewrite using `[this, ← hm, ← map_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isCharLab_exists (L : LabelDatum g) (χ : (ZMod g)ˣ →* ℂˣ) : ∃ c, IsCharLab L χ c := by
   obtain ⟨u, hu, ho⟩ := exists_gen L
@@ -552,7 +542,7 @@ theorem isCharLab_exists (L : LabelDatum g) (χ : (ZMod g)ˣ →* ℂˣ) : ∃ c
   rw [this, ← hm, ← map_pow]; rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hf`. Take `⟨v, -, hv⟩` from `h`. Simplify using `[GLq.Model.eSerC_zero L n f hf, actK] at hv`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem hasLab_monic (L : LabelDatum g) (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) (f : (ZMod g)[X])
     (h : HasLab L π f) : f.Monic ∧ f.natDegree = n ∧ f.coeff 0 ≠ 0 := by
@@ -561,7 +551,7 @@ theorem hasLab_monic (L : LabelDatum g) (π : Representation ℂ (GL (Fin n) ℚ
   simp [GLq.Model.eSerC_zero L n f hf, actK] at hv
 
 /- English proof (translation)
-Use `⟨LinearMap.id, fun e => by simpa using LinearMap.congr_fun e 1, fun p x y _ _ h3 v => ?_⟩` and prove the remaining obligations. Establish `h` using `h3 0 0`. Use `y.det_ne_zero` as an intermediate fact. Simplify using `[Formalism.MainNotions.ArithmeticCylinders.entN] at h`. Simplify using `[Matrix.det_fin_one, h] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mapsToInd_of_too_large (μ μ' ν₁ ν₂ : ℚ_[g]ˣ →* ℂˣ) : MapsToInd (detRep 1 μ) 1 1 (detRep 1 μ') ν₁ ν₂ := by
   refine ⟨LinearMap.id, fun e => by simpa using LinearMap.congr_fun e 1, fun p x y _ _ h3 v => ?_⟩
@@ -571,14 +561,14 @@ theorem mapsToInd_of_too_large (μ μ' ν₁ ν₂ : ℚ_[g]ˣ →* ℂˣ) : Map
   simp [Matrix.det_fin_one, h] at this
 
 /- English proof (translation)
-Simplify using `[actTop, LinearMap.sum_apply, tame_lift, det_blk, Finsupp.single_apply, dch]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actTop_tame (χ : (ZMod g)ˣ →* ℂˣ) (x : Gn g 1) (v : ℂ) :
     actTop (detRep 2 (tame χ)) 1 1 (MonoidAlgebra.single x 1) v = dch χ x * v := by
   simp [actTop, LinearMap.sum_apply, tame_lift, det_blk, Finsupp.single_apply, dch]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `isCharLab_exists (GLq.Model.datum g) χ`. Conclude with `⟨_, (hasLab_tame _ hc χ).2 rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasLab_inhabited (χ : (ZMod g)ˣ →* ℂˣ) :
     ∃ f, HasLab (GLq.Model.datum g) (detRep 1 (tame χ)) f := by

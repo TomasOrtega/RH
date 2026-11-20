@@ -11,17 +11,15 @@ namespace GlobalTheory.Mem.ChiDet
 variable {R : Ranks} (H : Formalism.BasicNotions.Host R)
 
 /- English proof (translation)
-Unfold `Th.detId detSub`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨A, hA, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨fun j i => A i j, fun j => ?_, (Matrix.det_transpose A).symm⟩` and prove the remaining obligations. Establish `h1 : (Pi.single j 1 : Fin N → H.E) ∈ Th.stdL H N` using `fun k _ => by`. Distinguish the cases in `e : k = j`. Substitute `e` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.one_le.1 le_rfl`. Rewrite using `[Pi.single_eq_of_ne e]`. Conclude with `Submodule.zero_mem _`. Establish `h2` using `hA _ h1`. Rewrite `h2` using `[Matrix.mulVec_single_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h2`. Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨(Matrix.of x).transpose, fun v hv => ?_, (Matrix.det_transpose _).symm⟩` and prove the remaining obligations. Use `choose b hb using fun i => Submodule.mem_one.1 (hv i trivial)`. Establish `e : (Matrix.of x).transpose.mulVec v = ∑ i, b i • x i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[Finset.sum_apply]`. Use `show ∑ i, x i j * v i = ∑ i, b i • x i j`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, hb, mul_comm]`.
-
-Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hx i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detId_stdL (N : ℕ) (M : Submodule (𝓞 H.E) (Fin N → H.E)) : Th.detId H (Th.stdL H N) M = detSub M := by
   classical
@@ -54,7 +52,7 @@ theorem detId_stdL (N : ℕ) (M : Submodule (𝓞 H.E) (Fin N → H.E)) : Th.det
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hx i)
 
 /- English proof (translation)
-Rewrite using `[← detId_stdL, detId_std, Submodule.one_eq_span]`. Establish `h` using `ordSub_span_singleton w (1 : H.Eˣ)`. Rewrite `h` using `[Units.val_one]`. Rewrite using `[h]`. Simplify using `[ordF]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ordSub_detSub_stdL (N : ℕ) (w : HeightOneSpectrum (𝓞 H.E)) : ordSub w (detSub (Th.stdL H N)) = 0 := by
   rw [← detId_stdL, detId_std, Submodule.one_eq_span]
@@ -64,13 +62,13 @@ theorem ordSub_detSub_stdL (N : ℕ) (w : HeightOneSpectrum (𝓞 H.E)) : ordSub
   simp [ordF]
 
 /- English proof (translation)
-Introduce `R H χ hχ N M hM x hx`. Establish `hK : KD H ≤ (χ.1.comp (finPartI H.E)).ker` using `(KerDet.kernel_open_and_factor R H).2.2.2 χ hχ.triv (fun v y hy _ => hχ.unr v y hy) fun v _ => hχ.unr v`. Establish `hU` using `(ChiLaws.chi_laws R H χ hχ).1`. Establish `hfin` using `(ordSub_detSub_lattice H.E N M hM.fg hM.span_eq_top).1`. Unfold `relDetT at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h1` using `hU _ (QuotientGroup.eq.1 hx)`. Rewrite `h1` using `[map_mul, map_inv, inv_mul_eq_one]`. Rewrite using `[h1, tildeD_mk H hK, detId_stdL]`. Unfold `chiId`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [ordSub_detSub_stdL, sub_zero]`. Establish `h2 : Function.HasFiniteMulSupport fun w : HeightOneSpectrum (𝓞 H.E) => localIdele H.E w (atFin w (unif w)) ^ (ordSub w (detSub M)).toNat`. Use `hfin.subset fun w hw h0 => hw ?_` and prove the remaining obligations. Simplify using `only [h0, Int.toNat_zero, pow_zero]`. Use `((χ.1.comp (finPartI H.E)).map_finprod h2).trans (finprod_congr fun w => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_pow, MonoidHom.comp_apply, KerDet.finPartI_localIdele]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tildeD_eq_chiId : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (χ : HChar H.E), IsChiPsi H χ → ∀ (N : ℕ) (M : Submodule (𝓞 H.E) (Fin N → H.E)), Submodule.IsLattice H.E M → ∀ x : DtT H, (QuotientGroup.mk x : DtT H ⧸ UOT H) = relDetT H N (Th.stdL H N) M → ((tildeD H χ x : ℂˣ) : ℂ) = chiId χ (Th.detId H (Th.stdL H N) M) := by
   intro R H χ hχ N M hM x hx

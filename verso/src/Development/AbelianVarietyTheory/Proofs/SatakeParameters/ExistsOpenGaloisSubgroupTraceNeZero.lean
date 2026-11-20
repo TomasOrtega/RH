@@ -10,9 +10,9 @@ open GlobalTheory.AboveL
 namespace GlobalTheory.AboveL
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : G K Ω => (r g).val.trace` using `(Units.continuous_val.comp hr).matrix_trace`. Use `set U : Set (G K Ω) := {g | (r g).val.trace ≠ 0} with hU`. Establish `hUo : IsOpen U` using `isOpen_ne_fun hc continuous_const`. Establish `h1 : (1 : G K Ω) ∈ U`. Simplify using `only [hU, Set.mem_setOf_eq, map_one, Units.val_one, Matrix.trace_one, Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `(by omega : a ≠ 0)` after adjusting the coercions. Take `⟨E, hE, hEU⟩` from `(krullTopology_mem_nhds_one_iff K Ω U).mp (hUo.mem_nhds h1)`. Conclude with `⟨E.fixingSubgroup, E.fixingSubgroup_isOpen, fun n hn => hEU hn⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_open_trace_ne_zero (Ω : Type) [Field Ω] (K : Type) [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω]
     (l : ℕ) [Fact l.Prime] (a : ℕ) (ha : 1 ≤ a) (r : G K Ω →* GL (Fin a) (Qbar l)) (hr : Continuous r) :

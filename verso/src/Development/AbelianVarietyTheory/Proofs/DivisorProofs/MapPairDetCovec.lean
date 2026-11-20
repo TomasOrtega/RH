@@ -71,7 +71,7 @@ def covec (β : V →+* R) (T : J → Fin N → V) (h : Fin N → Fin g → R) (
   fun k b => ∑ a, β (T (I k) a) * h a b
 
 /- English proof (translation)
-Rewrite using `[pairDet, pairDet, RingHom.map_det]`. Use `congr 1`. Use extensionality with `k k'`. Simplify using `[covec, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_pairDet_covec {S : Type} [CommRing S] (φ : R →+* S) (β : V →+* R) (T : J → Fin N → V)
     (h : Fin N → Fin g → R) (I : Fin m → J) (U : Fin m → Fin g → R) :
@@ -355,7 +355,7 @@ section BaseChange
 variable {X : Scheme.{0}} {t : SAB H X} {g : ℕ} {R S S' : Type} [CommRing R] [CommRing S] [CommRing S']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[bcV, bcV, bcV, ← Category.assoc, spMap_spMap]`. Use `congr 2`. Apply the tactic sequence `ext s <;> simp [dualMap]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bcV_bcV (φ : R →+* S) (ψ : S →+* S') (e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)) :
     bcV t ψ (bcV t φ e) = bcV t (ψ.comp φ) e := by
@@ -365,17 +365,17 @@ theorem bcV_bcV (φ : R →+* S) (ψ : S →+* S') (e : Fin g → (Sp (DualNumbe
   ext s <;> simp [dualMap]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, spMap_spMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sp_sp (φ : R →+* S) (ψ : S →+* S') (x : Sp R ⟶ X) : spMap ψ ≫ spMap φ ≫ x = spMap (ψ.comp φ) ≫ x := by
   rw [← Category.assoc, spMap_spMap]
 
 /- English proof (translation)
-Use `⟨fun i => ⟨?_, ?_⟩, fun S' _ ψ w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[bcV, Category.assoc, (h.1 i).1, sp_sp, sp_sp]`. Use `congr 2`. Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `e1 : (1 : Over.mk (spMap φ ≫ x) ⟶ t.G) = (Over.homMk (spMap φ) rfl : Over.mk (spMap φ ≫ x) ⟶ Over.mk x) ≫ 1` using `(MonObj.comp_one _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[e1, Over.comp_left, ← (h.1 i).2, bcV, ← Category.assoc, spMap_spMap]`. Express the relevant statement in the definitionally equal form `_ = spMap φ ≫ _ ≫ _`. Rewrite using `[← Category.assoc, spMap_spMap]`. Use `congr 2`. Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `hw`, the goal using `[sp_sp]`. Use `h.2 S' (ψ.comp φ) w hw` as an intermediate fact. Express the relevant statement in the definitionally equal form `∃! a, IsCombAtG t _ (bcV t ψ (bcV t φ e)) a w`. Rewrite using `[bcV_bcV]`. Conclude with `this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTanBasis_bc {x : Sp R ⟶ X} {e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)} (h : IsTanBasis t x e)
     (φ : R →+* S) : IsTanBasis t (spMap φ ≫ x) (bcV t φ e) := by
@@ -397,7 +397,7 @@ theorem isTanBasis_bc {x : Sp R ⟶ X} {e : Fin g → (Sp (DualNumber R) ⟶ t.G
     exact this
 
 /- English proof (translation)
-Use `(Scheme.Hom.comp_apply _ _ _).trans (congrArg x ?_)` and prove the remaining obligations. Conclude with `PrimeSpectrum.ext ((RingHom.injective_iff_ker_eq_bot φ).1 hφ)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bot_map [IsDomain R] [IsDomain S] {φ : R →+* S} (hφ : Function.Injective φ) (x : Sp R ⟶ X) :
     (spMap φ ≫ x) (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum S) = x (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R) := by
@@ -405,7 +405,7 @@ theorem bot_map [IsDomain R] [IsDomain S] {φ : R →+* S} (hφ : Function.Injec
   exact PrimeSpectrum.ext ((RingHom.injective_iff_ker_eq_bot φ).1 hφ)
 
 /- English proof (translation)
-Establish `h1 : (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R) ⤳ z` using `(PrimeSpectrum.le_iff_specializes _ _).1 bot_le`. Conclude with `(h1.map x.continuous).mem_open O.isOpen h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bot_mem [IsDomain R] (x : Sp R ⟶ X) {O : X.Opens} {z : Sp R} (h : x z ∈ O) :
     x (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R) ∈ O := by
@@ -415,7 +415,7 @@ theorem bot_mem [IsDomain R] (x : Sp R ⟶ X) {O : X.Opens} {z : Sp R} (h : x z 
 end BaseChange
 
 /- English proof (translation)
-Rewrite using `[PadicComplex.norm_eq_norm, Valued.v.norm_def, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_valued (p : ℕ) [Fact p.Prime] (x : ℂ_[p]) : ((Valued.v x : ℝ≥0) : ℝ) = ‖x‖ := by
   rw [PadicComplex.norm_eq_norm, Valued.v.norm_def, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict]

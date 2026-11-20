@@ -9,7 +9,7 @@ open MeasureTheory
 namespace Formalism.DoubleCosetMeasures.P
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Quotient.out_eq q]`. Rewrite using `[Quotient.eq, QuotientGroup.rightRel_apply, ← K.inv_mem_iff, mul_inv_rev, inv_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_preimage_rightRel_mk {G : Type} [Group G] (K : Subgroup G)
     (q : Quotient (QuotientGroup.rightRel K)) (x : G) :
@@ -18,7 +18,7 @@ theorem mem_preimage_rightRel_mk {G : Type} [Group G] (K : Subgroup G)
   rw [Quotient.eq, QuotientGroup.rightRel_apply, ← K.inv_mem_iff, mul_inv_rev, inv_inv]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`. Rewrite using `[QuotientGroup.eq, ← K.inv_mem_iff, mul_inv_rev, inv_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_preimage_leftQuot_mk {G : Type} [Group G] (K : Subgroup G) (q : G ⧸ K) (y : G) :
     (y : G ⧸ K) = q ↔ q.out⁻¹ * y ∈ K := by
@@ -34,7 +34,7 @@ def clsTS {G₁ G₂ : Type} [Group G₁] [Group G₂] (K₁ : Subgroup G₁) (K
   (Quotient.mk _ z.1, (z.2 : G₂ ⧸ K₂))
 
 /- English proof (translation)
-Simplify using `only [box, clsTS, Prod.ext_iff, Set.mem_prod, Set.mem_preimage, SetLike.mem_coe, mem_preimage_rightRel_mk, mem_preimage_leftQuot_mk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_box_iff {G₁ G₂ : Type} [Group G₁] [Group G₂] (K₁ : Subgroup G₁) (K₂ : Subgroup G₂)
     (p : Quotient (QuotientGroup.rightRel K₁) × (G₂ ⧸ K₂)) (z : G₁ × G₂) :
@@ -43,7 +43,7 @@ theorem mem_box_iff {G₁ G₂ : Type} [Group G₁] [Group G₂] (K₁ : Subgrou
     mem_preimage_rightRel_mk, mem_preimage_leftQuot_mk]
 
 /- English proof (translation)
-Simplify using `only [clsTS, Quotient.out_eq, QuotientGroup.out_eq']`.
+Simplify using the standard rewrite rules.
 -/
 theorem cls_out {G₁ G₂ : Type} [Group G₁] [Group G₂] (K₁ : Subgroup G₁) (K₂ : Subgroup G₂)
     (p : Quotient (QuotientGroup.rightRel K₁) × (G₂ ⧸ K₂)) :
@@ -51,7 +51,7 @@ theorem cls_out {G₁ G₂ : Type} [Group G₁] [Group G₂] (K₁ : Subgroup G�
   simp only [clsTS, Quotient.out_eq, QuotientGroup.out_eq']
 
 /- English proof (translation)
-Establish `h1` using `(mem_preimage_rightRel_mk K₁ (Quotient.mk (QuotientGroup.rightRel K₁) z.1) z.1).1 rfl`. Establish `h2` using `(mem_preimage_leftQuot_mk K₂ (z.2 : G₂ ⧸ K₂) z.2).1 rfl`. Establish `h` using `hf _ h1 _ h2 (Quotient.mk (QuotientGroup.rightRel K₁) z.1).out (z.2 : G₂ ⧸ K₂).out`. Simplify using `only [inv_mul_cancel_right, mul_inv_cancel_left] at h`. Simplify `h` using `[clsTS]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inv_eq_cls {G₁ G₂ : Type} [Group G₁] [Group G₂] (K₁ : Subgroup G₁) (K₂ : Subgroup G₂)
     {E : Type} (f : G₁ × G₂ → E)
@@ -64,33 +64,29 @@ theorem inv_eq_cls {G₁ G₂ : Type} [Group G₁] [Group G₂] (K₁ : Subgroup
   simpa [clsTS] using h
 
 /- English proof (translation)
-Introduce `G₁ G₂ _ _ _ _ _ _ _ _ _ _ μ₁ μ₂ _ _ _ _ K₁ K₂ hK₁ hK₂ E _ _ _ f hf hcs`. Use `set g : Quotient (QuotientGroup.rightRel K₁) × (G₂ ⧸ K₂) → E := fun p => f (p.1.out, p.2.out) with hg`. Establish `hopen : ∀ p, IsOpen (box K₁ K₂ p)` using `fun p => (hK₁.preimage (continuous_mul_right _)).prod (hK₂.preimage (continuous_mul_left _))`. Establish `hmeas : ∀ p, MeasurableSet (box K₁ K₂ p)` using `fun p => (hK₁.preimage (continuous_mul_right _)).measurableSet.prod (hK₂.preimage (continuous_mul_left _)).measurableSet`. Establish `hfg : ∀ z, f z = g (clsTS K₁ K₂ z)` using `fun z => inv_eq_cls K₁ K₂ f hf z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : (Function.support g).Finite`. Take `⟨t, ht⟩` from `hcs.elim_finite_subcover (fun p => box K₁ K₂ p) hopen (fun z _ => Set.mem_iUnion.2 ⟨clsTS K₁ K₂ z, (mem_box_iff K₁ K₂ _ z).2 rfl⟩)`. Use `t.finite_toSet.subset fun p hp => ?_` and prove the remaining obligations. Establish `hz : ((p.1.out, p.2.out) : G₁ × G₂) ∈ tsupport f` using `subset_tsupport f hp`. Take `⟨i, hi, hzi⟩` from `Set.mem_iUnion₂.1 (ht hz)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpi` using `(mem_box_iff K₁ K₂ i _).1 hzi`. Rewrite `hpi` using `[cls_out]`. Rewrite using `[hpi]`. Conclude with `hi`. Use `⟨hfin, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `∫ p, f p ∂(μ₁.prod μ₂) = ∑ᶠ p : Quotient (QuotientGroup.rightRel K₁) × (G₂ ⧸ K₂), ((μ₁ (K₁ : Set G₁)).toReal * (μ₂ (K₂ : Set G₂)).toReal) • g p`. Use `set S := hfin.toFinset with hS`. Establish `hsum : ∑ᶠ p : Quotient (QuotientGroup.rightRel K₁) × (G₂ ⧸ K₂), ((μ₁ (K₁ : Set G₁)).toReal * (μ₂ (K₂ : Set G₂)).toReal) • g p = ∑ p ∈ S, ((μ₁ (K₁ : Set G₁)).toReal * (μ₂ (K₂ : Set G₂)).toReal) • g p`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `p hp`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hS, Set.Finite.coe_toFinset]`. Introduce `h`. Apply `hp` to reduce the goal to its premises. Simplify using `[h]`. Rewrite using `[hsum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hdecomp : f = fun z => ∑ p ∈ S, (box K₁ K₂ p).indicator (fun _ => g p) z`. Use function extensionality and compare the values at `z`. Establish `hind : ∀ p, (box K₁ K₂ p).indicator (fun _ => g p) z = if clsTS K₁ K₂ z = p then g p else 0`. Introduce `p`. Simplify using `only [Set.indicator, mem_box_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [hind, Finset.sum_ite_eq]`. Rewrite using `[hfg z]`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite `h` using `[hS, Set.Finite.mem_toFinset, Function.mem_support, not_not]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hbox : ∀ p, (μ₁.prod μ₂) (box K₁ K₂ p) = μ₁ (K₁ : Set G₁) * μ₂ (K₂ : Set G₂)`. Introduce `p`. Rewrite using `[box, Measure.prod_prod, measure_preimage_mul_right, measure_preimage_mul]`. Establish `hpiece : ∀ p, ∫ z, (box K₁ K₂ p).indicator (fun _ => g p) z ∂(μ₁.prod μ₂) = ((μ₁ (K₁ : Set G₁)).toReal * (μ₂ (K₂ : Set G₂)).toReal) • g p`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Rewrite using `[integral_indicator_const _ (hmeas p), Measure.real, hbox p, ENNReal.toReal_mul]`. Distinguish the cases in `hint : Integrable f (μ₁.prod μ₂)`. Establish `hI : ∀ p ∈ S, Integrable ((box K₁ K₂ p).indicator (fun _ => g p)) (μ₁.prod μ₂)`. Introduce `p _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(hint.indicator (hmeas p)).congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ box K₁ K₂ p`. Rewrite using `[Set.indicator_of_mem hz, Set.indicator_of_mem hz, hfg z, (mem_box_iff K₁ K₂ p z).1 hz]`. Rewrite using `[Set.indicator_of_notMem hz, Set.indicator_of_notMem hz]`. Use `conv_lhs => rw [hdecomp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_finset_sum S hI]`. Conclude with `Finset.sum_congr rfl fun p _ => hpiece p`. Rewrite using `[integral_undef hint]`. Establish `hex : ∃ p ∈ S, ¬ Integrable ((box K₁ K₂ p).indicator (fun _ => g p)) (μ₁.prod μ₂)`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hne`. Apply `hint` to reduce the goal to its premises. Rewrite using `[hdecomp]`. Conclude with `integrable_finset_sum S hne`. Take `⟨p, -, hnp⟩` from `hex`.
-
-Establish `htop : μ₁ (K₁ : Set G₁) * μ₂ (K₂ : Set G₂) = ⊤`. Assume the negation of the conclusion as `hne`. Apply `hnp` to reduce the goal to its premises. Rewrite using `[integrable_indicator_iff (hmeas p)]`. Conclude with `integrableOn_const (by rw [hbox p]; exact hne)`.
-
-Establish `h0 : (μ₁ (K₁ : Set G₁)).toReal * (μ₂ (K₂ : Set G₂)).toReal = 0`. Rewrite using `[← ENNReal.toReal_mul, htop, ENNReal.toReal_top]`. Simplify using `[h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem intTwoSided : Formalism.DoubleCosetMeasures.IntTwoSided := by
   classical

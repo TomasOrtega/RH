@@ -12,13 +12,11 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `Ω` to `AlgebraicClosure K'`. Set `_ : Algebra K K'` to `φ.toAlgebra`. Set `σ : k →ₐ[K] Ω` to `IsAlgClosed.lift`. Set `bs` to `Module.finBasis K k`. Set `k'` to `IntermediateField.adjoin K' (Set.range fun i => σ (bs i))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `sepσ : ∀ z : k, IsSeparable K' (σ z)` using `fun z => ((Algebra.IsSeparable.isSeparable K z).map σ σ.injective).tower_top _`. Establish `h₁ : FiniteDimensional K' k'` using `IntermediateField.finiteDimensional_adjoin (by rintro _ ⟨i, rfl⟩; exact (sepσ _).isIntegral)`. Establish `h₂ : Algebra.IsSeparable K' k'` using `(IntermediateField.isSeparable_adjoin_iff_isSeparable _ _).2 (by rintro _ ⟨i, rfl⟩; exact sepσ _)`. Establish `hmem : ∀ z : k, σ z ∈ k'` using `fun z => by`. Rewrite using `[← bs.sum_repr z, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def, IsScalarTower.algebraMap_apply K K' Ω]`. Conclude with `mul_mem (k'.algebraMap_mem _) (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)`. Use `⟨k', inferInstance, inferInstance, σ.toRingHom.codRestrict k'.toSubring hmem, h₁, h₂, ?_⟩` and prove the remaining obligations. Use extensionality with `z`.
-
-Conclude with `σ.commutes z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_finite_separable_compositum (K K' k : Type) [Field K] [Field K'] [Field k] [Algebra K k]
     [FiniteDimensional K k] [Algebra.IsSeparable K k] (φ : K →+* K') :
@@ -45,13 +43,13 @@ theorem exists_finite_separable_compositum (K K' k : Type) [Field K] [Field K'] 
   exact σ.commutes z
 
 /- English proof (translation)
-Introduce `hB X X' f G _ G' _ φ hφ hS x'`. Take `⟨k, _, _, hfin, hsep, S, hGt⟩` from `hS (f x')`. Take `⟨k', _, _, g, h₁, h₂, hg⟩` from `exists_finite_separable_compositum (X.residueField (f x')) (X'.residueField x') k (f.residueFieldMap x').hom`. Use `⟨k', inferInstance, inferInstance, h₁, h₂, ?_⟩` and prove the remaining obligations. Establish `key : spMap g ≫ Spec.map (CommRingCat.ofHom (algebraMap (X.residueField (f x')) k)) ≫ X.fromSpecResidueField (f x') = (Spec.map (CommRingCat.ofHom (algebraMap (X'.residueField x') k')) ≫ X'.fromSpecResidueField x') ≫ f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a₁ : spMap g ≫ Spec.map (CommRingCat.ofHom (algebraMap (X.residueField (f x')) k)) = spMap (algebraMap (X'.residueField x') k') ≫ Spec.map (f.residueFieldMap x')` using `(spMap_comp _ _).symm.trans ((congrArg spMap hg).trans (spMap_comp _ _))`. Rewrite using `[← Category.assoc, a₁, Category.assoc, Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField, Category.assoc]`. Take `⟨S', -, -, -, -, hGt'⟩` from `hB _ _ (spMap g) S _ hGt`. Use `⟨S', ?_⟩` and prove the remaining obligations. Establish `: IsMonHom (pullCompIso (spMap g) (Spec.map (CommRingCat.ofHom (algebraMap (X.residueField (f x')) k)) ≫ X.fromSpecResidueField (f x')) G).symm.hom` using `by show IsMonHom (pullCompIso _ _ _).inv infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h₀` using `isGt_of_iso (pullCompIso (spMap g) _ G).symm hGt'`. Rewrite `h₀` using `[key]`. Establish `h₃` using `isGt_of_iso (pullCompIso _ f G) h₀`. Take `⟨e, he, -⟩` from `grpPullback_iso (isGrpPullback_pullback G f) hφ`. Establish `: IsMonHom ((Over.pullback (Spec.map (CommRingCat.ofHom (algebraMap (X'.residueField x') k')) ≫ X'.fromSpecResidueField x')).mapIso e).hom`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Functor.mapIso_hom]`. Use `infer_instance`. Conclude with `isGt_of_iso ((Over.pullback _).mapIso e) h₃`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitFibres_of_isGrpPullback : Out.GtBaseChangeSt → ∀ (X X' : Scheme.{0}) (f : X' ⟶ X) (G : Over X) [GrpObj G] (G' : Over X') [GrpObj G'] (φ : G'.left ⟶ G.left), IsGrpPullback G' G f φ → (∀ x : X, ∃ (k : Type) (_ : Field k) (_ : Algebra (X.residueField x) k), FiniteDimensional (X.residueField x) k ∧ Algebra.IsSeparable (X.residueField x) k ∧ ∃ S : SplitExt (Sp k), S.IsGt ((Over.pullback (Spec.map (CommRingCat.ofHom (algebraMap (X.residueField x) k)) ≫ X.fromSpecResidueField x)).obj G)) → (∀ x : X', ∃ (k : Type) (_ : Field k) (_ : Algebra (X'.residueField x) k), FiniteDimensional (X'.residueField x) k ∧ Algebra.IsSeparable (X'.residueField x) k ∧ ∃ S : SplitExt (Sp k), S.IsGt ((Over.pullback (Spec.map (CommRingCat.ofHom (algebraMap (X'.residueField x) k)) ≫ X'.fromSpecResidueField x)).obj G')) := by
   intro hB X X' f G _ G' _ φ hφ hS x'

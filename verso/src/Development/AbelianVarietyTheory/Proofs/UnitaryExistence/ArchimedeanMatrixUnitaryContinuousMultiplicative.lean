@@ -16,9 +16,9 @@ open GlobalTheory.Member
 namespace GlobalTheory.Member.Arch
 
 /- English proof (translation)
-Establish `e : (-Gᵀ).map τ = -(G.map τ)ᵀ`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Establish `e2 : u.map (starRingEnd ℂ) = (uᴴ)ᵀ`. Use extensionality with `a b`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[e, e2, Matrix.mul_neg, Matrix.neg_mul, neg_inj, Matrix.mul_assoc, ← Matrix.transpose_mul, ← Matrix.transpose_mul]`. Conclude with `Matrix.transpose_injective.eq_iff`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_iff {E : Type} [CommRing E] {n : Type} [Fintype n] (τ : E →+* ℂ) (G : Matrix n n E) (u : Matrix n n ℂ) :
     uᵀ * (-Gᵀ).map τ * u.map (starRingEnd ℂ) = (-Gᵀ).map τ ↔ uᴴ * G.map τ * u = G.map τ := by
@@ -30,7 +30,7 @@ theorem unit_iff {E : Type} [CommRing E] {n : Type} [Fintype n] (τ : E →+* �
   exact Matrix.transpose_injective.eq_iff
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Use `congr 2`. Use extensionality with `a b`. Conclude with `h _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem form_map {A : Type} [CommRing A] {n : Type} [Fintype n] (s : A →+* A) (φ : A →+* ℂ)
     (h : ∀ z, φ (s z) = starRingEnd ℂ (φ z)) (M J : Matrix n n A) :
@@ -41,7 +41,7 @@ theorem form_map {A : Type} [CommRing A] {n : Type} [Fintype n] (s : A →+* A) 
   exact h _
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun a b => hθ (funext fun i => congrFun (congrFun (h i) a) b)`.
+A detailed English derivation is pending.
 -/
 theorem mat_ext {A : Type} [CommRing A] {n ι : Type} (θ : ι → (A →+* ℂ))
     (hθ : Function.Injective fun (z : A) (i : ι) => θ i z) {M N : Matrix n n A}
@@ -49,11 +49,11 @@ theorem mat_ext {A : Type} [CommRing A] {n ι : Type} (θ : ι → (A →+* ℂ)
   Matrix.ext fun a b => hθ (funext fun i => congrFun (congrFun (h i) a) b)
 
 /- English proof (translation)
-Establish `lift : ∀ w : ι → Matrix n n ℂ, ∃ M : Matrix n n A, ∀ i, M.map (θ i) = w i`. Introduce `w`. Use `choose M hM using fun a b => hθ.2 fun i => w i a b`. Conclude with `⟨Matrix.of M, fun i => Matrix.ext fun a b => congrFun (hM a b) i⟩`. Establish `hd : ∀ i, IsUnit (u i).det`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `IsUnit.mk0 _ fun h0 => hJ i ?_` and prove the remaining obligations. Rewrite using `[← hu i, Matrix.det_mul, h0, mul_zero]`. Take `⟨M, hM⟩` from `lift u`. Take `⟨N, hN⟩` from `lift fun i => (u i)⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨M, N, mat_ext θ hθ.1 fun i => ?_, mat_ext θ hθ.1 fun i => ?_⟩, mat_ext θ hθ.1 fun i => ?_, hM⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, hM, hN, Matrix.mul_nonsing_inv _ (hd i), Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[Matrix.map_mul, hM, hN, Matrix.nonsing_inv_mul _ (hd i), Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[form_map s (θ i) (hs i), hM, hu]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift {A : Type} [CommRing A] {n ι : Type} [Fintype n] [DecidableEq n] (s : A →+* A)
     (θ : ι → (A →+* ℂ)) (hθ : Function.Bijective fun (z : A) (i : ι) => θ i z)
@@ -76,11 +76,11 @@ theorem exists_lift {A : Type} [CommRing A] {n ι : Type} [Fintype n] [Decidable
   · rw [form_map s (θ i) (hs i), hM, hu]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v, hv, h0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Apply `hv` to reduce the goal to its premises. Establish `hy : S.frame.equivFun.symm v = 0`. Apply `S.nondeg.2` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Establish `hi : ∀ i, S.hT (S.frame i) (S.frame.equivFun.symm v) = 0`. Introduce `i`. Use `congrFun h0 i` as an intermediate fact. Rewrite using `[Module.Basis.equivFun_symm_apply, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[Matrix.mulVec, dotProduct, Formalism.BasicNotions.HSpace.gram, mul_comm]`. Rewrite using `[← S.frame.sum_repr x, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, hi, smul_zero]`. Conclude with `S.frame.equivFun.symm.map_eq_zero_iff.1 hy`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_det_ne_zero {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E) :
     S.gram.det ≠ 0 := by
@@ -101,9 +101,9 @@ theorem gram_det_ne_zero {E : Type} [Field E] [NumberField E] [StarRing E] (S : 
   exact S.frame.equivFun.symm.map_eq_zero_iff.1 hy
 
 /- English proof (translation)
-Establish `: IsModuleTopology (Ainf F) (Ainf F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: ContinuousAdd (Ainf F ⊗[F] E)` using `IsModuleTopology.toContinuousAdd (Ainf F) _`. Establish `: ContinuousSMul (Ainf F) (Ainf F ⊗[F] E)` using `IsModuleTopology.toContinuousSMul _ _`. Set `φ : AF F ⊗[F] E →ₛₗ[(fstA F).toRingHom] Ainf F ⊗[F] E` to `{ toFun := Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) map_add' := map_add _ map_smul' := fun a x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`. Use `rfl }`. Establish `hs : Continuous ((fstA F).toRingHom : AF F → Ainf F)` using `continuous_fst`. Conclude with `IsModuleTopology.continuous_of_linearMapₛₗ hs φ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_inf (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] :
     Continuous (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) : AF F ⊗[F] E → Ainf F ⊗[F] E) := by
@@ -121,11 +121,11 @@ theorem continuous_inf (F E : Type) [Field F] [NumberField F] [Field E] [Algebra
   exact IsModuleTopology.continuous_of_linearMapₛₗ hs φ
 
 /- English proof (translation)
-Set `π : AF F ⊗[F] E →+* Ainf F ⊗[F] E` to `(Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom`. Establish `hπ : ∀ z, π (sigR (AF F) σ z) = sigR (Ainf F) σ (π z)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]`. Consider the case `tmul a x => rfl`. Establish `hg' : Formalism.UG.cT (sigR (AF F) σ) g.1 * JR (AF F) J * g.1 = JR (AF F) J` using `hg`. Establish `hJ : (JR (F` using `F) (AF F) J).map π = JR (Ainf F) J := rfl`. Establish `hc : (Formalism.UG.cT (sigR (AF F) σ) g.1).map π = Formalism.UG.cT (sigR (Ainf F) σ) (g.1.map π)` using `Matrix.ext fun a b => hπ _`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR (Ainf F) σ) (g.1.map π) * JR (Ainf F) J * g.1.map π = JR (Ainf F) J`. Rewrite using `[← hc, ← hJ, ← Matrix.map_mul, ← Matrix.map_mul, hg']`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem inf_mem {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (g : GL (Fin n) (AF F ⊗[F] E)) (hg : g ∈ HR (AF F) σ J) :
@@ -147,21 +147,21 @@ theorem inf_mem {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun _ _ => h.1 _`.
+A detailed English derivation is pending.
 -/
 theorem JR_map (V : HSp D) {τ : D.host.E →+* ℂ} {θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ}
     (h : Formalism.MainNotions.StandardLattice.IsInfEmb τ θ) : (JR (F := D.host.F) (Ainf D.host.F) V.gram).map θ = V.gram.map τ :=
   Matrix.ext fun _ _ => h.1 _
 
 /- English proof (translation)
-Rewrite using `[archM, hk, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem archM_of_one (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) {k : GA D V}
     (hk : infHom V k = 1) : archM V θ k = 1 := by
   rw [archM, hk, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun h : GA D V => (matHom V h).1` using `Units.continuous_val.comp (continuous_subtype_val (p := (· ∈ HR (AF D.host.F) D.sp.cm.sig V.gram)))`. Conclude with `(h1.matrix_map (continuous_inf D.host.F D.host.E)).matrix_map hθ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_archM (V : HSp D) {θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ} (hθ : Continuous θ) :
     Continuous fun h => archM V θ h := by
@@ -170,13 +170,13 @@ theorem continuous_archM (V : HSp D) {θ : Ainf D.host.F ⊗[D.host.F] D.host.E 
   exact (h1.matrix_map (continuous_inf D.host.F D.host.E)).matrix_map hθ
 
 /- English proof (translation)
-Introduce `D V θ hθ`. Take `⟨hc, hs, hb⟩` from `(GlobalTheory.T.realAdeles_cmField_equiv_complex_cmType D).2 θ hθ`. Use `⟨fun τ => ⟨archM_of_one V _ (map_one _), fun h h' => ?_, fun k hk => archM_of_one V _ hk, continuous_archM V (hc τ), fun h => ?_⟩, fun h hh => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[archM, archM, archM, map_mul, Units.val_mul, Matrix.map_mul]`. Establish `hm : Formalism.UG.cT (sigR (Ainf D.host.F) D.sp.cm.sig) (infHom V h).1 * JR (Ainf D.host.F) V.gram * (infHom V h).1 = JR (Ainf D.host.F) V.gram` using `inf_mem D.sp.cm.sig V.gram (matHom V h) h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[unit_iff, ← JR_map V (hθ τ), archM, ← form_map _ _ (hs τ), hm]`. Use `Units.ext (mat_ext _ hb.1 fun τ => ?_)` and prove the remaining obligations. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `hh τ.1 τ.2`. Take `⟨g, hg, hgu⟩` from `exists_lift (sigR (Ainf D.host.F) D.sp.cm.sig) _ hb (fun τ => hs τ.1) (JR (Ainf D.host.F) V.gram) (fun τ => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[JR_map V (hθ τ.1)]`. Establish `: (V.gram.map τ.1).det = τ.1 V.gram.det` using `(τ.1.map_det V.gram).symm`. Rewrite using `[this]`. Conclude with `(map_ne_zero τ.1).2 (gram_det_ne_zero V)) (fun τ => u τ.1) (fun τ => by`. Rewrite using `[JR_map V (hθ τ.1)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(unit_iff _ _ _).1 (hu τ.1 τ.2))`. Take `⟨a, ha, hag⟩` from `(GlobalTheory.T.adelicUnitary_eq_real_mul_finite_split D V).2.2.2.2 g hg`. Use `⟨a, ha, fun τ hτ => ?_⟩` and prove the remaining obligations. Rewrite using `[archM, hag]`. Conclude with `hgu ⟨τ, hτ⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archM_spec : ∀ (D : D7) (V : HSp D), ∀ (θ : (D.host.E →+* ℂ) → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), (∀ τ, Formalism.MainNotions.StandardLattice.IsInfEmb τ (θ τ)) → (∀ τ, archM V (θ τ) 1 = 1 ∧ (∀ h h', archM V (θ τ) (h * h') = archM V (θ τ) h * archM V (θ τ) h') ∧ (∀ k ∈ GfC V, archM V (θ τ) k = 1) ∧ Continuous (fun h => archM V (θ τ) h) ∧ ∀ h, (archM V (θ τ) h)ᵀ * (-V.gramᵀ).map τ * (archM V (θ τ) h).map (starRingEnd ℂ) = (-V.gramᵀ).map τ) ∧ (∀ h, (∀ τ, τ D.host.sqrtMinusD = D.host.φ₀ D.host.sqrtMinusD → archM V (θ τ) h = 1) → h ∈ GfC V) ∧ ∀ u : (D.host.E →+* ℂ) → Matrix (Fin V.rank) (Fin V.rank) ℂ, (∀ τ, τ D.host.sqrtMinusD = D.host.φ₀ D.host.sqrtMinusD → (u τ)ᵀ * (-V.gramᵀ).map τ * (u τ).map (starRingEnd ℂ) = (-V.gramᵀ).map τ) → ∃ a ∈ GinfC V, ∀ τ, τ D.host.sqrtMinusD = D.host.φ₀ D.host.sqrtMinusD → archM V (θ τ) a = u τ := by
   intro D V θ hθ

@@ -33,7 +33,7 @@ theorem cmp_apply (u w hg) (x : ((D.fm u).lat 0).V) :
     B.cmp u w hg x = ∑ a, B.embW u w hg (((D.fm u).lat 0).b.repr x a) • B.bas u w hg a := rfl
 
 /- English proof (translation)
-Rewrite using `[cmp_apply, cmp_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cmp_smul (u w hg) (r : D.what₂.LL) (x : ((D.fm u).lat 0).V) :
     B.cmp u w hg (r • x) = B.embW u w hg r • B.cmp u w hg x := by
@@ -42,9 +42,9 @@ theorem cmp_smul (u w hg) (r : D.what₂.LL) (x : ((D.fm u).lat 0).V) :
   rw [map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, mul_smul]
 
 /- English proof (translation)
-Rewrite using `[cmp_apply, Finset.sum_eq_single a]`. Rewrite using `[Module.Basis.repr_self, Finsupp.single_eq_same, map_one, one_smul]`. Introduce `c _ hc`. Rewrite using `[Module.Basis.repr_self, Finsupp.single_eq_of_ne hc, map_zero, zero_smul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ a) h`.
+A detailed English derivation is pending.
 -/
 theorem cmp_basis (u w hg) (a : ((D.fm u).lat 0).ι) : B.cmp u w hg (((D.fm u).lat 0).b a) = B.bas u w hg a := by
   rw [cmp_apply, Finset.sum_eq_single a]
@@ -54,7 +54,7 @@ theorem cmp_basis (u w hg) (a : ((D.fm u).lat 0).ι) : B.cmp u w hg (((D.fm u).l
   · intro h; exact absurd (Finset.mem_univ a) h
 
 /- English proof (translation)
-Rewrite using `[← B.embW_int, D.val_nonneg_iff]`. Conclude with `(D.plEq w).valuation_le_one r`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_mem (u w hg) (r : 𝓞 D.what₂.LL) :
     B.embW u w hg (r : D.what₂.LL) ∈ Set.range (algebraMap (D.gat u w hg).O (D.gat u w hg).Kf) := by
@@ -96,7 +96,7 @@ def toCmp (hstd : ∀ u, ((D.fm u).lat 0).L = Submodule.span (𝓞 D.what₂.LL)
 include B in
 
 /- English proof (translation)
-Unfold `GAtP.d`. Rewrite using `[← B.bas_span u w hg]`. Use `finrank_span_eq_card ?_` and prove the remaining obligations. Establish `: FaithfulSMul (D.gat u w hg).O (D.gat u w hg).Kf` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr hinj`. Conclude with `(B.bas_li u w hg).restrict_scalars' (D.gat u w hg).O`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem d_eq (u w hg) (hinj : Function.Injective (algebraMap (D.gat u w hg).O (D.gat u w hg).Kf)) :
     (D.gat u w hg).d = Fintype.card ((D.fm u).lat 0).ι := by

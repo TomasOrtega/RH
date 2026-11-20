@@ -13,15 +13,13 @@ open MvPolynomial MeasureTheory Matrix ComplexSets
 noncomputable section
 
 /- English proof (translation)
-Introduce `n e h J F u ℓ hJ hF hu hℓ`. Use `set S := J ⊔ Ideal.span {linForm ℓ - 1} with hS`. Use `set g : (Fin n → ℂ) → ℝ := fun x => Real.log (h.dualNorm x) - Real.log ‖linEval u x‖ with hg`. Use `set φ : Fin (e + 1) → (Fin n → ℂ) → ℝ := fun _ x => Real.log (h.dualNorm x) with hφ`. Distinguish the cases in `hA : ∃ A : Matrix (Fin (e + 1)) (Fin n) ℂ, IsFiniteProjection S A`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨∫ y, chartAbsDens S hA.choose g φ y, fun w M _ hwM => ?_⟩` and prove the remaining obligations. Establish `hM : 0 ≤ M` using `(abs_nonneg _).trans (hwM 0)`. Establish `hint` using `hL n e h J F u ℓ hA.choose hJ hF hu hℓ hA.choose_spec`. Establish `hpt : ∀ y, ‖chartDens S hA.choose (fun x => g x * w x) φ y‖ ≤ M * chartAbsDens S hA.choose g φ y`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Real.norm_eq_abs _ ▸ abs_chartDens_le _ _ _ _ y).trans ?_` and prove the remaining obligations. Use `sheetSum_le_mul (IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA.choose_spec y) M _ _ ?_` and prove the remaining obligations. Introduce `x _ s _`. Rewrite using `[abs_mul, abs_mul, abs_mul]`. Use `hwM x` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hb` using `norm_integral_le_of_norm_le (hint.const_mul M) (Filter.Eventually.of_forall hpt)`. Rewrite `hb` using `[integral_const_mul, Real.norm_eq_abs]`. Simplify using `only [varInt, dif_pos hA, chartInt]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `⟨0, fun w M _ hwM => ?_⟩` and prove the remaining obligations. Simplify using `only [varInt, dif_neg hA, abs_zero, zero_mul, le_refl]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SliceWeightBound.proof (hL : SliceLogIntegrable.Statement) : SliceWeightBound.Statement := by
   classical

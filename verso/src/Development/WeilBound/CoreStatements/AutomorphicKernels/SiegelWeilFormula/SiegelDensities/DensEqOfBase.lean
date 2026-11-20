@@ -7,7 +7,7 @@ noncomputable section
 namespace PositivityTheory.SiegelWeilFormula.Densx
 
 /- English proof (translation)
-The claim follows from `densEq_of_pieces PositivityTheory.Rg.Mass.oneVecBinary PositivityTheory.PfSWUS.HMass.oneVecBinaryMass hB hBase hO`.
+A detailed English derivation is pending.
 -/
 theorem densEq_of_base (hB : PositivityTheory.PfSWUS.HMass.SchwartzDensInf) (hBase : BaseOne) (hO : MassOne) :
     PositivityTheory.SiegelWeilFormula.Gen.DensEq :=

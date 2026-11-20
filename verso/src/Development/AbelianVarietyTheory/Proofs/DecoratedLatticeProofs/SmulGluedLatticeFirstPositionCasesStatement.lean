@@ -9,7 +9,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData (lastKer lastPai
 open GlobalTheory.RootEx (embX)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GluedOrbit.smul_gluedS_cases` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSmulGluedLatticeFirstPositionCases.lean&line=72#L72)
 -/

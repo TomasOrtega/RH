@@ -14,13 +14,13 @@ open Formalism.MainNotions.AdmissibleParameterJ
 variable {D : D7}
 open Classical in
 /- English proof (translation)
-Introduce `_ D L P nch HW F Cm X C₂ S ep hJa`. Take `⟨-, hJb, hJc, -⟩` from `_root_.GlobalTheory.JumpStatement.holds_all_alt D L (S.facts.admJ L S.par)`. Introduce `i _ w hw C τ`. Take `⟨g, ρ, hR, hjx, -⟩` from `hJa i (X.r i) (S.canon.fam.good i) w hw C τ`. Take `⟨hj1, hj2⟩` from `D.nd.j_range i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hlo, hhi⟩` from `sz_bounds L P S.par (D.nd.j i) hj1 hj2 ρ`. Establish `hUp : EmbeddingTypeJumps.UpAt ep C τ → AdmissibleParameterJ.TypeU D ep g` using `fun ⟨τ₀, h0, e0⟩ => typeU_of_emb i C τ g ρ hR ep τ₀ h0 e0`. Establish `hDn : EmbeddingTypeJumps.DownAt ep C τ → ¬ AdmissibleParameterJ.TypeU D ep g` using `fun ⟨τ₀, h0, e0⟩ h => by`. Establish `h'` using `typeU_of_emb i C τ g ρ hR (!ep) τ₀ h0 e0`. Unfold `AdmissibleParameterJ.TypeU at h h'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `cases ep <;> simp_all`. Take `⟨s, Jc, Jl, h1, h2, h3, h4, h5, hpos, hneg, hJJ⟩` from `key_sets L hJb hJc (D.nd.j i) hj1 hj2 ρ (decide (AdmissibleParameterJ.TypeU D ep g)) hlo hhi`. Use `⟨s, Jc, Jl, h1, h2, h3, h4, h5, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `ht : AdmissibleParameterJ.TypeU D ep g`. Use the proof step `left; exact hpos (by simp [ht])`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `right; exact hneg (by simp [ht])`. Introduce `hu; exact hpos (by simp [hUp hu])`. Introduce `hd; exact hneg (by simp [hDn hd])`. Introduce `x a`. Conclude with `((hjx x a).1).trans (hJJ a)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main_alt_alt : Hypotheses₂ → ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (X : KillingConditions.HubData D) (C₂ : ℝ), _root_.GlobalTheory.NLink.SetupAlt L nch HW X C₂ → ∀ ep, AdmissibleParameterJ.hodgeTateJumpsAtModulesForSign D ep → EmbeddingTypeJumps.HodgeJumpWindowsAtDistinguishedPrimes X.r ep L := by
   intro _ D L P nch HW F Cm X C₂ S ep hJa

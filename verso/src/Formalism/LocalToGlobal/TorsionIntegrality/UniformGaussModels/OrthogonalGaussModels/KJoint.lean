@@ -16,7 +16,7 @@ open Formalism.G (unitBall)
 namespace KJ
 
 /- English proof (translation)
-Unfold `phC Formalism.L2.Th1.E.phL`. Rewrite using `[Formalism.L2.Th1.E.wpBridge p L ι]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem phC_eq (p : ℕ) [Fact p.Prime] (L : PeriodPair) (ι : ℂ ≃+* ℂ_[p]) :
     phC p L ι = Formalism.L2.Th1.E.phL p L ι := by
@@ -24,7 +24,7 @@ theorem phC_eq (p : ℕ) [Fact p.Prime] (L : PeriodPair) (ι : ℂ ≃+* ℂ_[p]
   rw [Formalism.L2.Th1.E.wpBridge p L ι]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.G.phSum Formalism.L2.Th1.E.phSum Formalism.InvariantFactorPaths.G7.at1`. Conclude with `Finset.sum_congr rfl fun i _ => one_smul _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem phSum_one {K : Type} [Field K] {n : Type} [Fintype n] (ph : PowerSeries K) :
     Formalism.L2.Th1.G.phSum (fun _ : n => (1 : K)) ph = Formalism.L2.Th1.E.phSum ph := by
@@ -32,9 +32,9 @@ theorem phSum_one {K : Type} [Field K] {n : Type} [Fintype n] (ph : PowerSeries 
   exact Finset.sum_congr rfl fun i _ => one_smul _ _
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.E.thetaProd Formalism.InvariantFactorPaths.G7.at1`. Rewrite using `[← Formalism.L2.Th1.G.toZHom_apply h0, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_prod]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[MvPowerSeries.c_eq_algebraMap, AlgHom.commutes]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.L2.Th1.G.toZHom_apply, Formalism.L2.Th1.G.toZ_subst_X h0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem toZ_thetaProd {K : Type} [Field K] {κ n : Type} [Fintype κ] [Fintype n] {linv : PowerSeries K}
     (h0 : PowerSeries.constantCoeff linv = 0) (r : κ → K) (H : κ → n → PowerSeries K) :
@@ -52,13 +52,13 @@ theorem toZ_thetaProd {K : Type} [Field K] {κ n : Type} [Fintype κ] [Fintype n
 end KJ
 
 /- English proof (translation)
-Introduce `p _ L ι hp2 hW n _ ω₀ hω hω2 κ _ r s N hr hN hpN hs`. Establish `hlp` using `Formalism.L2.Th1.C.WeierstrassCurveSeries.logPair (curveL p L ι)`. Take `⟨hl0, -, hv0, -, hlv⟩` from `hlp`. Establish `hph : PowerSeries.constantCoeff (Formalism.L2.Th1.E.phL p L ι) = 0` using `Formalism.L2.Th1.E.AnaSys.cc_phL p L ι`. Establish `hT` using `(Formalism.L2.Th1.E.th0Analytic p L ι hp2 hW ω₀ hω hω2).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e1, hInt⟩` from `Formalism.L2.Th1.E.prodInt ℂ_[p] κ n (Formalism.L2.Th1.E.phL p L ι) r (fun k i => Formalism.L2.Th1.B.fExp (Formalism.L2.Th1.E.phL p L ι) * Formalism.L2.Th1.E.inU p L ι (Formalism.L2.Th1.F.opU L (s k i) (Formalism.L2.Th1.F.th0 L (ω₀ / 2)))) hph hr (fun k i => (hT (s k i) N hN hpN …`. Use `⟨_, fun d => hInt d, ?_⟩` and prove the remaining obligations. Rewrite using `[KJ.phC_eq, KJ.phSum_one]`. Express the relevant statement in the definitionally equal form `_ = Formalism.L2.Th1.G.toZ _ (Formalism.DworkPowerSeriesWeights.mvExp _ * _)`. Rewrite using `[← e1, KJ.toZ_thetaProd hv0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Unfold `thetaZ`. Use `congr 1`. Use function extensionality and compare the values at `k i`. Express the relevant statement in the definitionally equal form `_ = PowerSeries.subst _ (Formalism.L2.Th1.B.fExp (-(Formalism.L2.Th1.E.phL p L ι)) * _)`. Rewrite using `[← mul_assoc, ← Formalism.L2.Th1.B.fExp_add (by rw [map_neg]; exact neg_eq_zero.2 hph) hph, neg_add_cancel, Formalism.L2.Th1.B.ParO.fExp_zero, one_mul]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.L2.Th1.E.inU`. Rewrite using `[PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hl0) (PowerSeries.HasSubst.of_constantCoeff_zero' hv0), hlv]`. Conclude with `(PowerSeries.X_subst _).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kernel_bounds_joint : KernelJoint := by
   intro p _ L ι hp2 hW n _ ω₀ hω hω2 κ _ r s N hr hN hpN hs

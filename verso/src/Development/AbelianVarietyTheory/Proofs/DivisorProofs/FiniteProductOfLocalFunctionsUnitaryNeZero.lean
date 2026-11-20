@@ -15,7 +15,7 @@ namespace GlobalTheory.BCT.HSupp
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Unfold `toSub`. Rewrite using `[dif_pos (cLoc_mem_UL E hE n w x)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem toSub_cLoc_val (hE : Unr E) (w : Pl E) (x : finU E n) :
     ((toSub (UL n w) (cLoc w (x : UA E n)) : UL n w) : GLw n w) = cLoc w (x : UA E n) := by
@@ -23,13 +23,11 @@ theorem toSub_cLoc_val (hE : Unr E) (w : Pl E) (x : finU E n) :
   rw [dif_pos (cLoc_mem_UL E hE n w x)]
 
 /- English proof (translation)
-Use `set g : Pl E → ℂ := fun w => f w (toSub (UL n w) (cLoc w (x : UA E n))) with hg`. Establish `hB : {w | ¬ (f w = (KL n w : Set (UL n w)).indicator 1 ∧ toSub (UL n w) (cLoc w (x : UA E n)) ∈ KL n w)}.Finite` using `Filter.eventually_cofinite.1 (hf.and (RegVan.eventually_toSub_mem (n := n) x))`. Establish `hfin : (S ∩ Function.mulSupport g).Finite`. Use `hB.subset fun w hw => ?_` and prove the remaining obligations. Introduce `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hw.2` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `f w _ = 1`. Rewrite using `[hc.1]`. Conclude with `Set.indicator_of_mem hc.2 _`. Introduce `w hwS`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hm : w ∈ Function.mulSupport g`. Establish `hx' : ∏ᶠ w ∈ S, g w ≠ 0` using `hx`. Rewrite `hx'` using `[← finprod_mem_inter_mulSupport, finprod_mem_eq_finite_toFinset_prod _ hfin]`. Conclude with `Finset.prod_ne_zero_iff.1 hx' w (hfin.mem_toFinset.2 ⟨hwS, hm⟩)`. Rewrite `hm` using `[Function.notMem_mulSupport]`.
-
-Express the relevant statement in the definitionally equal form `g w ≠ 0`. Rewrite using `[hm]`. Conclude with `one_ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor_ne_zero (S : Set (Pl E)) (K' : ∀ w : Pl E, Subgroup (UL n w)) (hK : ∀ᶠ w in cofinite, K' w = KL n w)
     (f : ∀ w : Pl E, UL n w → ℂ) (hf : ∀ᶠ w in cofinite, f w = (KL n w : Set (UL n w)).indicator 1)
@@ -61,17 +59,15 @@ end GlobalTheory.BCT.HSupp
 open GlobalTheory.BCT.HSupp in
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n S K' hK f hf`. Use `set F : Set (Pl E) := {w | ¬ (K' w = KL n w ∧ f w = (KL n w : Set (UL n w)).indicator 1)} with hF`. Establish `hFfin : F.Finite` using `Filter.eventually_cofinite.1 (hK.2.and hf.2)`. Establish `key` using `factor_ne_zero S K' hK.2 f hf.2`. Establish `inK : ∀ x : finU E n, globFn S f x ≠ 0 → ∀ w ∈ S, w ∉ F → toSub (UL n w) (cLoc w (x : UA E n)) ∈ K' w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx w hwS hwF`. Simplify using `only [hF, Set.mem_setOf_eq, not_not] at hwF`. Establish `h` using `key x hx w hwS`. Rewrite `h` using `[hwF.2]`. Rewrite using `[hwF.1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Conclude with `h (Set.indicator_of_notMem hc _)`. Use `haveI : Finite ↥(F ∩ S) := (hFfin.inter_of_left S).to_subtype`. Set `Φ : finU E n ⧸ globLev S K' → ∀ w : ↥(F ∩ S), UL n w.1 ⧸ K' w.1` to `fun q w => (toSub (UL n w.1) (cLoc w.1 (q.out : UA E n)) : UL n w.1 ⧸ K' w.1)`. Use `Set.Finite.of_injOn (f := Φ) (t := Set.pi Set.univ fun w : ↥(F ∩ S) => {c : UL n w.1 ⧸ K' w.1 | f w.1 c.out ≠ 0}) ?_ ?_ (Set.Finite.pi fun w => LevOpTmul.finite_supp (hK.1 w.1).1 (hf.1 w.1).1)` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `q hq w _`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (K' w.1) (toSub (UL n w.1) (cLoc w.1 (q.out : UA E n)))`. Express the relevant statement in the definitionally equal form `f w.1 (QuotientGroup.mk _ : UL n w.1 ⧸ K' w.1).out ≠ 0`. Rewrite using `[hh, ((hf.1 w.1).2 h h.2 _).2]`. Conclude with `key _ hq w.1 w.2.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q₁ hq₁ q₂ hq₂ he`. Rewrite using `[← QuotientGroup.out_eq' q₁, ← QuotientGroup.out_eq' q₂]`. Use `QuotientGroup.eq.2 ((mem_globLev_iff S K' _).2 fun w hwS => ?_)` and prove the remaining obligations. Use `⟨(toSub (UL n w) (cLoc w (q₁.out : UA E n)))⁻¹ * toSub (UL n w) (cLoc w (q₂.out : UA E n)), ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwF : w ∈ F`.
-
-Use `congrFun he ⟨w, hwF, hwS⟩` as an intermediate fact. Conclude with `QuotientGroup.eq.1 this`. Conclude with `mul_mem (inv_mem (inK _ hq₁ w hwS hwF)) (inK _ hq₂ w hwS hwF)`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, toSub_cLoc_val hE, toSub_cLoc_val hE, Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BCT.finite_globFn_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ)
     (S : Set (Pl E)) (K' : ∀ w : Pl E, Subgroup (UL n w)),

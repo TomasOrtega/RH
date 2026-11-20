@@ -15,11 +15,11 @@ namespace GlobalTheory.WigSh
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P.PartialDerivativeAlgebra
 
 /- English proof (translation)
-Establish `hb : ∀ j : Fin (2 * r + k + 1), U.IsPolyDeg d (fun g => if r ≤ j.val ∧ j.val ≤ r + k then v g j else 0)`. Introduce `j`. Distinguish the cases in `h : r ≤ j.val ∧ j.val ≤ r + k`. Simplify `hv j` using `only [if_pos h]`. Simplify `pd_const (N := N) 0 d` using `only [if_neg h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `D.prW`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, div_eq_mul_inv]`. Use `pd_sub (hb i) (pd_mono (show d + 0 + 0 ≤ d by omega) (pd_mul (pd_mul ?_ (pd_const _ 0)) (pd_const _ 0)))` and prove the remaining obligations. Unfold `herm`. Simplify using `only [dotProduct, mulVec]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `pd_sum _ fun a _ => pd_mono (show 0 + d ≤ d by omega) (pd_mul (pd_const _ 0) ?_)` and prove the remaining obligations. Conclude with `pd_sum _ fun b _ => pd_mono (show 0 + d ≤ d by omega) (pd_mul (pd_const _ 0) (hb b))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isPolyDeg_prW {N : ℕ} (k r d : ℕ) (z : Fin (2 * r + k + 1) → ℂ)
     (v : Matrix (Fin N) (Fin N) ℂ → Fin (2 * r + k + 1) → ℂ) (hv : ∀ i, U.IsPolyDeg d (fun g => v g i))
@@ -40,9 +40,9 @@ theorem isPolyDeg_prW {N : ℕ} (k r d : ℕ) (z : Fin (2 * r + k + 1) → ℂ)
   exact pd_sum _ fun b _ => pd_mono (show 0 + d ≤ d by omega) (pd_mul (pd_const _ 0) (hb b))
 
 /- English proof (translation)
-Introduce `k r z z' i`. Unfold `omg`. Use `isPolyDeg_prW k r (r + 1) z' (fun g => (Hpk k r * gᴴ * Hpk k r) *ᵥ ∑ a, star ((Zhat k r z z' g).adjugate (Fin.last r) a) • fvec k r z a) (fun q => ?_) i` and prove the remaining obligations. Simplify using `only [dotProduct, mulVec]`. Use `pd_sum _ fun s _ => pd_mono (show 1 + r ≤ r + 1 by omega) (pd_mul (P.TLC.omp_inv_pd q s) ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `pd_sum _ fun a _ => pd_mono (show r + 0 ≤ r by omega) (pd_mul (P.TLC.omp_adj_pd z z' (Fin.last r) a) (pd_const _ 0))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem omg_isPolyDeg : ∀ (k r : ℕ) (z z' : (Fin (2 * r + k + 1) → ℂ)) (i : Fin (2 * r + k + 1)),
     Formalism.FourierDecayAlt.U.IsPolyDeg (r + 1) (fun g : Mx k r => GlobalTheory.WigSh.omg k r z z' g i) := by

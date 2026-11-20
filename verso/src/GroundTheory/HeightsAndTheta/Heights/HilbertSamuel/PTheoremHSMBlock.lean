@@ -11,7 +11,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Introduce `D K _ _ ι _ Ω _ _ I d hI`. Use `⟨?_, hS D K ι Ω d⟩` and prove the remaining obligations. Establish `h1` using `hR D K ι Ω I d hI`. Establish `h2` using `(hP D I hI).const_mul_left (genDeg (mCoordIdeal d.y) D d.A.a : ℝ)`. Use `(h1.add h2).congr_left fun n => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

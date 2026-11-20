@@ -14,17 +14,15 @@ section General
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Take `⟨ν, hν⟩` from `(GlobalTheory.SplitWeil.selfDual_measure k ψ hc h1).1`. Use `haveI := hν.1`. Use `set m : Measure (κ → k) := Measure.pi fun _ => ν with hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hμ : μ = μ.addHaarScalarFactor m • m` using `Measure.isAddLeftInvariant_eq_smul μ m`. Use `set r := μ.addHaarScalarFactor m with hr_def`. Establish `hr : r ≠ 0`. Introduce `h0`. Rewrite `hμ` using `[h0, zero_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `NeZero.ne μ hμ`. Establish `hr' : ((r : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hr`. Use `⟨((r : ℝ) : ℂ) ^ 2, pow_ne_zero 2 hr', fun φ hφ a => ?_⟩` and prove the remaining obligations. Establish `hg : (fun x => φ (x + -a)) ∈ SB (κ → k)` using `⟨hφ.1.comp_continuous (Homeomorph.addRight (-a)).continuous, hφ.2.comp_homeomorph (Homeomorph.addRight (-a))⟩`. Establish `key` using `(GlobalTheory.SplitWeil.FourierPi.fourier_pi k κ ψ hc h1 ν hν _ hg).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinner : ∀ y, ∫ x, φ (x + -a) * (ψ (x ⬝ᵥ y) : ℂ) ∂m = (∫ x, φ x * (ψ (x ⬝ᵥ y) : ℂ) ∂m) * (ψ (y ⬝ᵥ a) : ℂ)`. Introduce `y`. Rewrite using `[GlobalTheory.FourierLocBij.translate_fourier, neg_dotProduct, neg_neg, dotProduct_comm a y, mul_comm]`. Establish `key' : ∫ y, (∫ x, φ x * (ψ (x ⬝ᵥ y) : ℂ) ∂m) * (ψ (y ⬝ᵥ a) : ℂ) ∂m = φ (-a)`. Use `Eq.trans ?_ (key.trans (congrArg φ (zero_add (-a))))` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `(hinner y).symm`. Establish `hsm : ∀ G : (κ → k) → ℂ, ∫ y, G y ∂μ = ((r : ℝ) : ℂ) * ∫ y, G y ∂m`. Introduce `G`. Rewrite using `[hμ, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
-
-Establish `hfun : (fun y => (∫ x, φ x * (ψ (x ⬝ᵥ y) : ℂ) ∂μ) * (ψ (y ⬝ᵥ a) : ℂ)) = fun y => ((r : ℝ) : ℂ) * ((∫ x, φ x * (ψ (x ⬝ᵥ y) : ℂ) ∂m) * (ψ (y ⬝ᵥ a) : ℂ))`. Use function extensionality and compare the values at `y`. Rewrite using `[hsm, mul_assoc]`. Rewrite using `[show (∫ y, (∫ x, φ x * (ψ (x ⬝ᵥ y) : ℂ) ∂μ) * (ψ (y ⬝ᵥ a) : ℂ) ∂μ) = ∫ y, ((r : ℝ) : ℂ) * ((∫ x, φ x * (ψ (x ⬝ᵥ y) : ℂ) ∂m) * (ψ (y ⬝ᵥ a) : ℂ)) ∂μ from congrArg _ hfun, integral_const_mul, hsm, key']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem inversion_circle [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1)
     (κ : Type) [Fintype κ] (μ : Measure (κ → k)) [μ.IsAddHaarMeasure] :
@@ -72,11 +70,11 @@ end General
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `F _ _ v χ hc hn h1 κ _ inst _ μ _`. Use `letI : MeasurableSpace (Fv F v) := borel _`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Use `haveI := GlobalTheory.SplitWeil.secondCountable (Fv F v)`. Establish `e : inst = MeasurableSpace.pi`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[BorelSpace.measurable_eq (α := κ → Fv F v)]`. Conclude with `(BorelSpace.measurable_eq (α := κ → Fv F v) (self := Pi.borelSpace)).symm`. Substitute `e` using the available equality. Establish `hcont : Continuous (GlobalTheory.FourierLocBij.toCircle χ hn)` using `Continuous.subtype_mk hc _`. Establish `hne : GlobalTheory.FourierLocBij.toCircle χ hn ≠ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Introduce `h`. Apply `h1` to reduce the goal to its premises. Use extensionality with `t`. Simplify `congrArg (fun ψ : AddChar (Fv F v) Circle => ((ψ t : Circle) : ℂ)) h` using `[GlobalTheory.FourierLocBij.coe_toCircle]`. Conclude with `inversion_circle (GlobalTheory.FourierLocBij.toCircle χ hn) hcont hne κ μ`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fourier_inversion : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (χ : AddChar (Fv F v) ℂ), Continuous χ → (∀ t, ‖χ t‖ = 1) →
     χ ≠ 1 → ∀ (κ : Type) [Fintype κ] [MeasurableSpace (κ → Fv F v)] [BorelSpace (κ → Fv F v)]

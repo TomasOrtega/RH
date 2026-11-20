@@ -5,15 +5,13 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `C _ V _ _ h N g hspan hN`. Use `haveI : Module.Finite C V := ⟨by rw [← hspan]; exact Submodule.fg_span (Set.finite_range g)⟩`. Establish `h1 : Module.finrank C (⋀[C]^N V) = 1`. Rewrite using `[exteriorPower.finrank_eq, hN, Nat.choose_self]`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `htop` using `exteriorPower.ιMulti_span_of_span C N V hspan`. Establish `hle : Submodule.span C (exteriorPower.ιMulti C N '' {a | Set.range a ⊆ Set.range g}) ≤ ⊥`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `- ⟨a, ha, rfl⟩`. Establish `hmem : ∀ i, ∃ j, g j = a i` using `fun i => ha ⟨i, rfl⟩`. Use `choose s hs using hmem`. Establish `: a = g ∘ s` using `funext fun i => (hs i).symm`. Rewrite using `[this, hcon s]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite `hle` using `[htop, le_bot_iff]`. Establish `: Subsingleton (⋀[C]^N V)` using `subsingleton_of_forall_eq 0 fun x => by`. Establish `hx : x ∈ (⊤ : Submodule C (⋀[C]^N V))` using `trivial`. Rewrite `hx` using `[hle]`.
-
-Simplify using `using hx`. Rewrite `h1` using `[Module.finrank_zero_of_subsingleton]`. Conclude with `absurd h1 (by norm_num)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topWedge_line_and_nonzero : ∀ (C : Type) [Field C] (V : Type) [AddCommGroup V] [Module C V] (h N : ℕ) (g : Fin h → V), Submodule.span C (Set.range g) = ⊤ → Module.finrank C V = N → Module.finrank C (⋀[C]^N V) = 1 ∧ ∃ s : Fin N → Fin h, exteriorPower.ιMulti C N (g ∘ s) ≠ 0 := by
   intro C _ V _ _ h N g hspan hN

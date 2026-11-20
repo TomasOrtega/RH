@@ -7,15 +7,15 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.Fo
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `B C _ _ f hf J hs`. Use `letI := f.toAlgebra`. Use `haveI : Module.Finite B C := hf`. Use `set P : Submodule B C := LinearMap.range (Algebra.linearMap B C) with hP`. Establish `hle : (⊤ : Submodule B (C ⧸ P)) ≤ J • ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `m -`. Take `⟨c, rfl⟩` from `P.mkQ_surjective m`. Take `⟨b, hb⟩` from `hs (Ideal.Quotient.mk _ c)`. Establish `hy : c - f b ∈ J • (⊤ : Submodule B C)`. Rewrite using `[Ideal.smul_top_eq_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.Quotient.eq.mp hb.symm`. Establish `hfb : P.mkQ (f b) = 0` using `(Submodule.Quotient.mk_eq_zero _).mpr ⟨b, rfl⟩`. Establish `hc : P.mkQ c = P.mkQ (c - f b)` using `by rw [map_sub, hfb, sub_zero]`. Rewrite using `[hc]`. Establish `h1 : P.mkQ (c - f b) ∈ (J • (⊤ : Submodule B C)).map P.mkQ` using `Submodule.mem_map_of_mem hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top h1`. Take `⟨r, hr1, hr⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul J ⊤ Module.Finite.fg_top hle`. Use `⟨r, hr1, fun c => ?_⟩` and prove the remaining obligations. Establish `h` using `hr (P.mkQ c) trivial`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨b, hb⟩` from `h`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite `hb` using `[Algebra.smul_def]`. Conclude with `hb.symm`.
+A detailed English derivation is pending.
 -/
 theorem finite_surj_mod_ideal_exists_congr_one_mul_mem_range :
     ∀ (B C : Type) [CommRing B] [CommRing C] (f : B →+* C), f.Finite → ∀ J : Ideal B,

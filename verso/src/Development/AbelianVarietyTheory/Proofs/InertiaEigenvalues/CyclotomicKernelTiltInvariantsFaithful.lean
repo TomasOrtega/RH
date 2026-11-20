@@ -13,13 +13,11 @@ def Reps {G : Type*} [Group G] (H U : Subgroup G) (S : Finset G) : Prop :=
   (∀ s ∈ S, s ∈ H) ∧ ∀ h ∈ H, ∃! s, s ∈ S ∧ s⁻¹ * h ∈ U
 
 /- English proof (translation)
-Use `haveI : (U.subgroupOf H).FiniteIndex := Subgroup.finiteIndex_of_le (H := W.subgroupOf H) fun x hx => hW ⟨x.2, hx⟩`. Use `letI : Fintype (H ⧸ U.subgroupOf H) := Fintype.ofFinite _`. Use `⟨Finset.univ.image (fun q : H ⧸ U.subgroupOf H => (q.out : G)), ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hs`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `q.out.2`. Introduce `h hh`. Establish `key : ∀ q : H ⧸ U.subgroupOf H, (q.out : G)⁻¹ * h ∈ U ↔ q = ((⟨h, hh⟩ : H) : H ⧸ U.subgroupOf H)`. Introduce `q`. Use `conv_rhs => rw [← q.out_eq']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Both sides reduce to the same expression. Use `⟨(((⟨h, hh⟩ : H) : H ⧸ U.subgroupOf H).out : G), ⟨Finset.mem_image.2 ⟨_, Finset.mem_univ _, rfl⟩, (key _).2 rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `s ⟨hs, hs'⟩`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hs`.
-
-Rewrite using `[(key q).1 hs']`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reps' {G : Type*} [Group G] (H U W : Subgroup G) [W.FiniteIndex] (hW : H ⊓ W ≤ U) :
     ∃ S : Finset G, Reps H U S := by
@@ -45,19 +43,19 @@ theorem exists_reps' {G : Type*} [Group G] (H U W : Subgroup G) [W.FiniteIndex] 
     rw [(key q).1 hs']
 
 /- English proof (translation)
-Establish `huniq : ∀ h ∈ H, ∃! p : G × G, p ∈ S ×ˢ T ∧ (p.1 * p.2)⁻¹ * h ∈ U`. Introduce `h hh`. Take `⟨s, ⟨hs, hsh⟩, hsu⟩` from `hS.2 h hh`. Take `⟨t, ⟨ht, hth⟩, htu⟩` from `hT.2 _ hsh`. Use `⟨(s, t), ⟨Finset.mem_product.2 ⟨hs, ht⟩, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_inv_rev, mul_assoc]`. Conclude with `hth`. Introduce and unpack `⟨s', t'⟩ ⟨hm, hp⟩`. Take `⟨hs', ht'⟩` from `Finset.mem_product.1 hm`. Rewrite `hp` using `[mul_inv_rev, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : s' = s` using `hsu s' ⟨hs', by`. Use `V.mul_mem (hT.1 t' ht') (hUV hp)` as an intermediate fact. Rewrite using `[mul_inv_cancel_left] at this⟩` and apply the resulting hypothesis. Substitute `h1` using the available equality. Rewrite using `[htu t' ⟨ht', hp⟩]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Set.InjOn (fun p : G × G => p.1 * p.2) ↑(S ×ˢ T)`. Introduce `p hp q hq he`. Establish `hp'` using `Finset.mem_product.1 (Finset.mem_coe.1 hp)`. Use `(huniq (p.1 * p.2) (H.mul_mem (hS.1 _ hp'.1) (hVH (hT.1 _ hp'.2)))).unique ⟨hp, by simp⟩ ⟨hq, ?_⟩` and prove the remaining obligations. Establish `he' : p.1 * p.2 = q.1 * q.2` using `he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he']`. Simplify using the standard rewrite rules. Use `⟨(S ×ˢ T).image fun p => p.1 * p.2, ⟨?_, ?_⟩, fun f => ?_⟩` and prove the remaining obligations. Introduce `s hs`. Take `⟨p, hp, rfl⟩` from `Finset.mem_image.1 hs`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp'` using `Finset.mem_product.1 hp`. Conclude with `H.mul_mem (hS.1 _ hp'.1) (hVH (hT.1 _ hp'.2))`. Introduce `h hh`. Take `⟨p, ⟨hp, hph⟩, hpu⟩` from `huniq h hh`. Use `⟨p.1 * p.2, ⟨Finset.mem_image_of_mem _ hp, hph⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `s ⟨hs, hsh⟩`. Take `⟨q, hq, rfl⟩` from `Finset.mem_image.1 hs`. Rewrite using `[hpu q ⟨hq, hsh⟩]`. Rewrite using `[Finset.sum_image hinj, Finset.sum_product]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reps_mul {G : Type*} [Group G] {H V U : Subgroup G} (hVH : V ≤ H) (hUV : U ≤ V)
     {S T : Finset G} (hS : Reps H V S) (hT : Reps V U T) :
@@ -102,23 +100,21 @@ theorem reps_mul {G : Type*} [Group G] {H V U : Subgroup G} (hVH : V ≤ H) (hUV
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast hp.one_lt`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (x := (l : ℝ)⁻¹) (by positivity) hr`. Establish `hk' : r ^ l ^ k ≤ (l : ℝ)⁻¹` using `(pow_le_pow_of_le_one hr0 hr.le (Nat.lt_pow_self hp.one_lt).le).trans hk.le`. Establish `hB1 : ∀ j, ‖(B j : PadicComplex l)‖ ≤ 1` using `fun j => (mem_OC _).1 (B j).2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : ∀ n, (Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (B (n + 1 + k) ^ l ^ k) : ModP (OC l) l) ^ l = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (B (n + k) ^ l ^ k)`. Introduce `n`. Establish `h0 : Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) ((B (n + k + 1) ^ l - B (n + k)) ^ l ^ k) = 0`. Rewrite using `[mk_eq_zero_iff]`. Use `push_cast`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[norm_pow]`. Conclude with `(pow_le_pow_left₀ (norm_nonneg _) (hs _) _).trans hk'`. Establish `h2` using `sub_pow_char_pow (R := ModP (OC l) l) (p := l) (n := k) (Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (B (n + k + 1) ^ l)) (Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (B (n + k)))`. Rewrite `h0` using `[map_pow, map_sub]`. Establish `h3` using `sub_eq_zero.mp (h2.symm.trans h0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show n + 1 + k = n + k + 1 by omega, ← map_pow, ← pow_mul, mul_comm, pow_mul, map_pow, map_pow _ (B (n + k))]`. Conclude with `h3`. Set `x : OCb l` to `⟨fun n => Ideal.Quotient.mk _ (B (n + k) ^ l ^ k), hcomp⟩`. Establish `hx : ∀ n, PreTilt.coeff n x = Ideal.Quotient.mk _ (B (n + k) ^ l ^ k)` using `fun n => rfl`. Establish `h4 : ∀ j, ‖(B 0 : PadicComplex l) - (B j : PadicComplex l) ^ l ^ j‖ ≤ r`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simpa using hr0`. Consider the case `succ j ih`. Rewrite using `[← sub_add_sub_cancel _ ((B j : PadicComplex l) ^ l ^ j)]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ih ?_)` and prove the remaining obligations. Rewrite using `[pow_succ', pow_mul, norm_sub_rev]`. Use `(norm_pow_sub_pow_le ?_ (hB1 j) _).trans (hs j)` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) (hB1 _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Use `⟨x, _, fun g hg => Perfection.ext fun n => ?_, hx 0, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `PreTilt.coeff n (AI.actT g x) = PreTilt.coeff n x`. Take `⟨y', hy', hy⟩` from `AI.actT_coeff g x n _ (hx n)`. Rewrite using `[hy, hx]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hy']`. Use `push_cast`. Rewrite using `[map_pow, hB _ g hg]`. Rewrite using `[zero_add]`.
-
-Conclude with `h4 k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tilt_near {P : LocPrime l} (AI : LocAinf l P) (N : Subgroup (GQ l))
     (r : ℝ) (hr0 : 0 ≤ r) (hr : r < 1) (B : ℕ → OC l)
@@ -176,19 +172,17 @@ theorem exists_tilt_near {P : LocPrime l} (AI : LocAinf l P) (N : Subgroup (GQ l
     exact h4 k
 
 /- English proof (translation)
-Establish `hr0 : 0 ≤ r` using `(norm_nonneg _).trans hb`. Use `choose z hz hz' using fun s => AI.actT_coeff s x 0 y hy`. Establish `hd' : ∑ t ∈ T, AI.actT (d * t) x = ∑ t ∈ T, AI.actT t x`. Rewrite using `[← hd, map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul AI.actT, RingAut.mul_apply]`. Establish `h1` using `congrArg (PreTilt.coeff 0) hd'`. Rewrite `h1` using `[map_sum, map_sum, Finset.sum_congr rfl fun s _ => hz' (d * s), Finset.sum_congr rfl fun s _ => hz' s]`. Establish `h2 : Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (∑ s ∈ T, (z (d * s) - z s)) = 0`. Rewrite using `[Finset.sum_sub_distrib, map_sub, map_sum, map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.2 h1`. Rewrite `h2` using `[mk_eq_zero_iff]`. Establish `h3 : ((∑ s ∈ T, (z (d * s) - z s) : OC l) : PadicComplex l) = ∑ s ∈ T, (AI.actC (d * s) y - AI.actC s y)`. Rewrite using `[show ((∑ s ∈ T, (z (d * s) - z s) : OC l) : PadicComplex l) = ∑ s ∈ T, ((z (d * s) - z s : OC l) : PadicComplex l) from map_sum (PadicComplexInt l).subtype _ _]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hz, ← hz]`. Both sides reduce to the same expression. Establish `h5 : ((d (∑ t ∈ T, t b) - ∑ t ∈ T, t b : Om l) : PadicComplex l) = ∑ s ∈ T, (AI.actC (d * s) ((b : PadicComplex l) - y) - AI.actC s ((b : PadicComplex l) - y)) + ∑ s ∈ T, (AI.actC (d * s) y - AI.actC s y)`. Rewrite using `[← Finset.sum_add_distrib, map_sum, ← Finset.sum_sub_distrib, PadicComplex.coe_eq, map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_sub, map_sub, map_sub, AI.actC_ext, AI.actC_ext, PadicComplex.coe_eq, PadicComplex.coe_eq, AlgEquiv.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← PadicComplex.norm_extends l, h5]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ((h3 ▸ h2).trans hr))` and prove the remaining obligations. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hr0 fun s _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[AI.actC_norm]`. Conclude with `hb`. Rewrite using `[norm_neg, AI.actC_norm]`.
-
-Conclude with `hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem near_of_tilt {P : LocPrime l} (AI : LocAinf l P) (T : Finset (GQ l)) (d : GQ l) (x : OCb l)
     (y : OC l) (hy : PreTilt.coeff 0 x = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) y)
@@ -234,33 +228,31 @@ theorem near_of_tilt {P : LocPrime l} (AI : LocAinf l P) (T : Finset (GQ l)) (d 
   · rw [norm_neg, AI.actC_norm]; exact hb
 
 /- English proof (translation)
-Establish `hapos : 0 < ‖a‖` using `norm_pos_iff.2 ha0`. Establish `hdu : ∀ d ∈ D, ‖d u - u‖ ≤ ‖a‖ ^ 3` using `fun d hd => by`. Simplify using `using hnear 1 (by simp) (by simp) d hd`. Use `set m : Om l := (S.card : Om l) with hm`. Establish `hsplit : ∀ w : Om l, ∑ s ∈ S, s w = m * w + ∑ s ∈ S, (s w - w)` using `fun w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ‖a‖ ^ 3 < ‖a‖` using `pow_lt_self_of_lt_one₀ hapos ha1 (by norm_num)`. Establish `hmu : ‖a‖ ≤ ‖m‖ * ‖u‖`. Rewrite `hu` using `[hsplit]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hu.trans (IsUltrametricDist.norm_add_le_max _ _)`. Establish `h2 : ‖∑ s ∈ S, (s u - u)‖ ≤ ‖a‖ ^ 3` using `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun s hs => hdu s (hS.1 s hs)`. Break down `le_max_iff.1 h1 with h | h` into its components or cases. Rewrite `h` using `[norm_mul]`. Then use the resulting hypothesis. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hm1 : ‖m‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one _ _`. Establish `ham : ‖a‖ ≤ ‖m‖` using `hmu.trans (mul_le_of_le_one_right (norm_nonneg _) hu1)`. Establish `hau : ‖a‖ ≤ ‖u‖` using `hmu.trans (mul_le_of_le_one_left (norm_nonneg _) hm1)`. Establish `hmove : ∀ w : Om l, ‖w‖ ≤ 1 → (∀ n ∈ A, n w = w) → ∀ d ∈ D, ‖d w - w‖ ≤ ‖a‖ ^ 2`. Introduce `w hw1 hw d hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : u * (d w - w) = (d (u * w) - u * w) + -((d u - u) * d w)`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ‖u * (d w - w)‖ ≤ ‖a‖ ^ 3`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hnear w hw1 hw d hd) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg, norm_mul, hn]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) hw1).trans (hdu d hd)`. Rewrite `h1` using `[norm_mul]`. Establish `h2` using `(mul_le_mul_of_nonneg_right hau (norm_nonneg (d w - w))).trans h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[pow_succ']`. Conclude with `le_of_mul_le_mul_left h2 hapos`. Establish `hsmall : ∀ w : Om l, ‖w‖ ≤ 1 → (∀ n ∈ A, n w = w) → ∑ s ∈ S, s w = 0 → ‖w‖ ≤ ‖a‖`. Introduce `w hw1 hw h0`. Rewrite `h0` using `[hsplit, add_eq_zero_iff_eq_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ‖m * w‖ ≤ ‖a‖ ^ 2`. Rewrite using `[h0, norm_neg]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun s hs => hmove w hw1 hw s (hS.1 s hs)`. Rewrite `h1` using `[norm_mul]`. Establish `h2` using `(mul_le_mul_of_nonneg_right ham (norm_nonneg w)).trans h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `h2` using `[pow_two]`. Conclude with `le_of_mul_le_mul_left h2 hapos`. Establish `hzero : ∀ w : Om l, (∀ n ∈ A, n w = w) → ∑ s ∈ S, s w = 0 → w = 0`. Introduce `w hw h0`. Assume the negation of the conclusion as `hw0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk1, hk2⟩` from `exists_mem_Ioc_zpow (norm_pos_iff.2 hw0) ((one_lt_inv₀ hapos).2 ha1)`. Establish `hpos : 0 < ‖a‖ ^ (k + 1)` using `zpow_pos hapos _`. Establish `h1` using `hsmall (a ^ (k + 1) * w) (by`. Rewrite using `[norm_mul, norm_zpow]`. Use `(mul_le_mul_of_nonneg_left hk2 hpos.le).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[inv_zpow, mul_inv_cancel₀ hpos.ne'])`. Use the proof step `(fun n hnA => by rw [map_mul, map_zpow₀, haD n (hAD hnA), hw n hnA]) (by`. Rewrite using `[← mul_zero (a ^ (k + 1)), ← h0, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_zpow₀, haD s (hS.1 s hs)])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[norm_mul, norm_zpow]`. Establish `h2` using `mul_lt_mul_of_pos_left hk1 hpos`. Rewrite `h2` using `[inv_zpow, zpow_add_one₀ hapos.ne', mul_comm _ ‖a‖, mul_assoc, mul_inv_cancel₀ (zpow_pos hapos k).ne', mul_one, mul_comm ‖a‖, ← zpow_add_one₀ hapos.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `htr : ∀ d ∈ D, d (∑ s ∈ S, s y) = ∑ s ∈ S, s y` using `fun d hd => by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Use `sum_shift D A S hS.1 hS.2 (fun g => g y) ?_ d hd` and prove the remaining obligations. Introduce `g v _ hv`. Express the relevant statement in the definitionally equal form `g (v y) = g y`. Rewrite using `[hy v hv]`.
-
-Establish `h0` using `hzero (m * y - ∑ s ∈ S, s y) (fun n hnA => by rw [map_sub, map_mul, hm, map_natCast, hy n hnA, htr n (hAD hnA)]) (by`. Rewrite using `[Finset.sum_congr rfl fun s hs => show s (m * y - ∑ s ∈ S, s y) = m * s y - ∑ s ∈ S, s y by rw [map_sub, map_mul, hm, map_natCast, htr s (hS.1 s hs)], Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul, ← Finset.mul_sum, sub_self])`. Establish `h1` using `htr g hg`. Rewrite `h1` using `[← sub_eq_zero.1 h0, map_mul, hm, map_natCast]`. Conclude with `mul_left_cancel₀ (norm_pos_iff.1 (hapos.trans_le ham)) h1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_of_near (hn : ∀ (g : GQ l) (x : Om l), ‖g x‖ = ‖x‖) (D A : Subgroup (GQ l))
     (hAD : A ≤ D) (S : Finset (GQ l)) (hS : Reps D A S) (a u : Om l) (ha0 : a ≠ 0) (ha1 : ‖a‖ < 1)
@@ -345,51 +337,41 @@ theorem fixed_of_near (hn : ∀ (g : GQ l) (x : Om l), ‖g x‖ = ‖x‖) (D A
   exact mul_left_cancel₀ (norm_pos_iff.1 (hapos.trans_le ham)) h1
 
 /- English proof (translation)
-Introduce `l _ P AI L g hg hfix`. Establish `hp : l.Prime` using `Fact.out`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast hp.one_lt`. Establish `hn : ∀ (g : GQ l) (x : Om l), ‖g x‖ = ‖x‖` using `fun g x => by`. Rewrite using `[← PadicComplex.norm_extends l, ← AI.actC_ext, AI.actC_norm, PadicComplex.norm_extends]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `K : FinExt l` to `⟨⊥, inferInstance⟩`. Establish `hH : ∀ h : GQ l, h ∈ Hinf K ↔ P.χQ h = 1` using `fun h => ((cyc_basic l P.χQ P.χQ_cyc).2.2 K h (by`. Establish `: K0 K = ⊥` using `bot_inf_eq _`. Rewrite using `[this, IntermediateField.fixingSubgroup_bot]`. Use the proof step `trivial)).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `haveI : FiniteDimensional ℚ_[l] L.1 := L.2`. Set `E : IntermediateField ℚ_[l] (Om l)` to `IntermediateField.normalClosure ℚ_[l] L.1 (Om l)`. Establish `hLE : L.1 ≤ E` using `IntermediateField.le_normalClosure _`. Use `haveI : FiniteDimensional ℚ_[l] E := inferInstance`. Use `haveI : Normal ℚ_[l] E := inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : E.fixingSubgroup.FiniteIndex := by haveI := Subgroup.quotient_finite_of_isOpen E.fixingSubgroup E.fixingSubgroup_isOpen`. Conclude with `Subgroup.finiteIndex_of_finite_quotient`. Establish `hsup : (Kinf K ⊔ E).fixingSubgroup = Hinf K ⊓ E.fixingSubgroup` using `IntermediateField.fixingSubgroup_sup`. Establish `hst : ∀ h ∈ Hinf K, ∀ x ∈ Kinf K ⊔ E, h x ∈ Kinf K ⊔ E`. Introduce `h hh`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `: Kinf K ⊔ E ≤ (Kinf K ⊔ E).comap (h : Om l →ₐ[ℚ_[l]] Om l)`. Use `sup_le (fun x hx => ?_) (fun x hx => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `h x ∈ Kinf K ⊔ E`. Rewrite using `[(IntermediateField.mem_fixingSubgroup_iff _ _).1 hh x hx]`. Conclude with `(le_sup_left : Kinf K ≤ Kinf K ⊔ E) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `h x ∈ Kinf K ⊔ E`. Establish `h1` using `AlgEquiv.restrictNormal_commutes h E ⟨x, hx⟩`. Establish `h2 : h x ∈ E`. Establish `: h x = (h.restrictNormal E ⟨x, hx⟩ : E)` using `h1.symm`. Rewrite using `[this]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subtype.property _`. Conclude with `(le_sup_right : E ≤ Kinf K ⊔ E) h2`. Conclude with `fun x hx => this hx`. Use `set N := (Kinf K ⊔ E).fixingSubgroup with hN`. Set `A : Subgroup (GQ l)` to `Hinf K ⊓ GK L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `D : Subgroup (GQ l)` to `{ carrier := {d | d ∈ Hinf K ∧ ∀ x : OCb l, (∀ h ∈ A, AI.actT h x = x) → AI.actT d x = x} one_mem' := ⟨one_mem _, fun x _ => by rw [map_one]; rfl⟩ mul_mem' := fun {c d} hc hd => ⟨mul_mem hc.1 hd.1, fun x hx => by`. Rewrite using `[map_mul AI.actT, RingAut.mul_apply, hd.2 x hx, hc.2 x hx]⟩`. Use the proof step `inv_mem' := fun {c} hc => ⟨inv_mem hc.1, fun x hx => by conv_lhs => rw [← hc.2 x hx]`. Rewrite using `[← RingAut.mul_apply, ← map_mul AI.actT, inv_mul_cancel, map_one]`. Use the proof step `rfl⟩ }`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hDH : D ≤ Hinf K` using `fun d hd => hd.1`. Establish `hAD : A ≤ D` using `fun d hd => ⟨hd.1, fun x hx => hx d hd⟩`. Establish `hNA : N ≤ A`. Rewrite using `[hsup]`. Conclude with `inf_le_inf_left _ (IntermediateField.fixingSubgroup_le hLE)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgD : g ∈ D` using `⟨(hH g).2 hg, fun x hx => hfix x fun h h1 h2 => hx h ⟨(hH h).2 h2, h1⟩⟩`. Take `⟨S₁, hS₁⟩` from `exists_reps' (Hinf K) D E.fixingSubgroup (hsup ▸ hNA.trans hAD)`. Take `⟨S₂, hS₂⟩` from `exists_reps' D A E.fixingSubgroup ((inf_le_inf_right _ hDH).trans (hsup ▸ hNA))`. Take `⟨T, hT⟩` from `exists_reps' A N E.fixingSubgroup ((inf_le_inf_right _ (hAD.trans hDH)).trans hsup.ge)`. Take `⟨R₂, hR₂, hs₂⟩` from `reps_mul hAD hNA hS₂ hT`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Take `⟨R, hR, hs⟩` from `reps_mul hDH (hNA.trans hAD) hS₁ hR₂`. Take `⟨r, hr0, hr1, hroot⟩` from `approx_root hn K (Kinf K ⊔ E) R le_sup_left hst hR.1 hR.2`. Establish `hr' : max r (l : ℝ)⁻¹ < 1` using `max_lt hr1 (inv_lt_one_of_one_lt₀ hl)`. Establish `hr'0 : 0 ≤ max r (l : ℝ)⁻¹` using `le_max_of_le_left hr0`. Take `⟨a, ha, hra, ha1⟩` from `exists_near_one K ((max r (l : ℝ)⁻¹) ^ ((3 : ℕ)⁻¹ : ℝ)) (Real.rpow_nonneg hr'0 _) (Real.rpow_lt_one hr'0 hr' (by norm_num))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hra3 : max r (l : ℝ)⁻¹ ≤ ‖a‖ ^ 3`. Rewrite using `[← Real.rpow_inv_natCast_pow hr'0 (n := 3) (by norm_num)]`. Conclude with `pow_le_pow_left₀ (Real.rpow_nonneg hr'0 _) hra.le 3`. Establish `ha0 : a ≠ 0` using `norm_pos_iff.1 ((Real.rpow_nonneg hr'0 _).trans_lt hra)`. Take `⟨e, heM, he1, he⟩` from `trace_almost_onto l K (Kinf K ⊔ E) R le_sup_left hst hR.1 hR.2 a ha ha1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `heN : ∀ n ∈ N, n e = e` using `fun n hnN => (IntermediateField.mem_fixingSubgroup_iff _ _).1 hnN e heM`. Establish `key : ∀ b : Om l, ‖b‖ ≤ 1 → (∀ n ∈ N, n b = b) → ∀ d ∈ D, ‖d (∑ t ∈ T, t b) - ∑ t ∈ T, t b‖ ≤ ‖a‖ ^ 3`. Introduce `b0 hb01 hb0 d hd`. Set `X` to `{c : Om l // ‖c‖ ≤ 1 ∧ ∀ n ∈ N, n c = c}`. Establish `hstep : ∀ b : X, ∃ c : X, ‖c.1 ^ l - b.1‖ ≤ r` using `fun b => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc, hc'⟩` from `hroot b.1 b.2.1 b.2.2`. Conclude with `⟨⟨c, hc⟩, hc'⟩`. Use `choose f hf using hstep`. Set `b : ℕ → X` to `fun j => f^[j] ⟨b0, hb01, hb0⟩`. Take `⟨x, y, hxN, hxy, hy⟩` from `exists_tilt_near AI N r hr0 hr1 (fun j => ⟨((b j).1 : PadicComplex l), (mem_OC _).2 (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[PadicComplex.norm_extends]`. Conclude with `(b j).2.1)⟩)`. Use the proof step `(fun j n hnL => by`. Express the relevant statement in the definitionally equal form `AI.actC n ((b j).1 : PadicComplex l) = ((b j).1 : PadicComplex l)`. Rewrite using `[AI.actC_ext, (b j).2.2 n hnL])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun j => by`. Express the relevant statement in the definitionally equal form `‖((b (j + 1)).1 : PadicComplex l) ^ l - ((b j).1 : PadicComplex l)‖ ≤ r`. Establish `h1` using `hf (b j)`. Rewrite `h1` using `[← PadicComplex.norm_extends l, PadicComplex.coe_eq, map_sub, map_pow]`. Establish `h2 : b (j + 1) = f (b j)` using `Function.iterate_succ_apply' f j _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `h1)`. Use `near_of_tilt AI T d x y hxy b0 _ ((le_max_right _ _).trans hra3) (le_trans hy ((le_max_left _ _).trans hra3)) (hd.2 _ fun h hh => ?_)` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `sum_shift A N T hT.1 hT.2 (fun g => AI.actT g x) (fun g v _ hv => by rw [map_mul AI.actT, RingAut.mul_apply, hxN v hv]) h hh` as an intermediate fact.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul AI.actT, RingAut.mul_apply]`. Use `(IntermediateField.mem_fixingSubgroup_iff _ _).2 fun y hy => ?_` and prove the remaining obligations. Use `fixed_of_near hn D A hAD S₂ hS₂ a (∑ t ∈ T, t e) ha0 ha1 (fun d hd => (IntermediateField.mem_fixingSubgroup_iff _ _).1 (hDH hd) a ha) ?_ ?_ ?_ y (fun n hnA => (IntermediateField.mem_fixingSubgroup_iff _ _).1 hnA.2 y hy) g hgD` and prove the remaining obligations.
-
-Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun t _ => by`. Rewrite using `[hn]`. Conclude with `he1`. Rewrite using `[← he, hs (fun r => r e)]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun s _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← hn s (∑ s ∈ S₂, s (∑ t ∈ T, t e))]`. Apply `le_of_eq` to reduce the goal to its premises. Use `congr 1`. Rewrite using `[hs₂ (fun r => (s * r) e), map_sum]`. Use `Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_sum, map_sum]`. Both sides reduce to the same expression. Introduce `w hw1 hw d hd`. Establish `h1` using `key (e * w) (by`. Rewrite using `[norm_mul]`.
-
-Conclude with `mul_le_one₀ he1 (norm_nonneg _) hw1)`. Use the proof step `(fun n hnN => by rw [map_mul, heN n hnN, hw n (hNA hnN)]) d hd`. Establish `h2 : ∑ t ∈ T, t (e * w) = (∑ t ∈ T, t e) * w`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun t ht => by rw [map_mul, hw t (hT.1 t ht)]`.
-
-Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem faithH : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), FaithH AI := by
   intro l _ P AI L g hg hfix

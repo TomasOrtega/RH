@@ -71,7 +71,7 @@ section Zero
 variable {D : D7} {q : ℕ} [Fact q.Prime]
 
 /- English proof (translation)
-Unfold `lamC`. Rewrite using `[dif_pos (one_mem _)]`. Conclude with `map_one lam`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamC_one (lam : Qbar →+* ℂ_[q]) : lamC lam 1 = 1 := by
   unfold lamC
@@ -79,13 +79,13 @@ theorem lamC_one (lam : Qbar →+* ℂ_[q]) : lamC lam 1 = 1 := by
   exact map_one lam
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> simp [lamC_one]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isIdem_zero_one (lam : Qbar →+* ℂ_[q]) : IsIdem D lam 0 (1 : 𝓞 D.host.K) := by
   constructor <;> simp [lamC_one]
 
 /- English proof (translation)
-Establish `hp : (1 : ℝ) ≤ q` using `by exact_mod_cast (Fact.out : q.Prime).one_lt.le`. Establish `hmono : (q : ℝ) ^ (-(m : ℤ)) ≤ (q : ℝ) ^ (-(m' : ℤ))` using `zpow_le_zpow_right₀ hp (by omega)`. Conclude with `⟨h.1.trans hmono, h.2.trans hmono⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isIdem_mono (lam : Qbar →+* ℂ_[q]) {m m' : ℕ} (ε : 𝓞 D.host.K) (h : IsIdem D lam m ε) (hm : m' ≤ m) :
     IsIdem D lam m' ε := by
@@ -94,29 +94,29 @@ theorem isIdem_mono (lam : Qbar →+* ℂ_[q]) {m m' : ℕ} (ε : 𝓞 D.host.K)
   exact ⟨h.1.trans hmono, h.2.trans hmono⟩
 
 /- English proof (translation)
-Simplify using `[Hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_zero_right (T : Tor D) {N N' : ℕ} (z : VC D N N') : Hf D T z 0 = 0 := by
   simp [Hf]
 
 /- English proof (translation)
-Simplify using `[kap, hf_zero_right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kap_zero_right (T : Tor D) {N N' : ℕ} (x : VC D N N') : kap D T x 0 = 1 := by
   simp [kap, hf_zero_right]
 
 /- English proof (translation)
-Simplify using `[qH, hf_zero_right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qH_zero (T : Tor D) {N N' : ℕ} : qH D T (0 : VC D N N') = 0 := by
   simp [qH, hf_zero_right]
 
 /- English proof (translation)
-Unfold `wPh`. Rewrite using `[qH_zero]`. Use `split_ifs`. Simplify using the standard rewrite rules. Establish `hex : ∃ s : ℂ, ∃ (k : ℕ) (m : ℤ), (q : ℝ) ^ k * (0 : ℝ) = (m : ℝ) ∧ s = (-1 : ℂ) ^ m` using `⟨1, 0, 0, by simp⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, m, hm, hs⟩` from `Classical.epsilon_spec hex`. Rewrite using `[hs]`. Establish `hm0 : m = 0`. Establish `h0 : (m : ℝ) = 0` using `by rw [← hm, mul_zero]`. Conclude with `h0` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hm0]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem wPh_zero (T : Tor D) {N N' : ℕ} : wPh D T q (0 : VC D N N') = 1 := by
   unfold wPh
@@ -134,11 +134,11 @@ theorem wPh_zero (T : Tor D) {N N' : ℕ} : wPh D T q (0 : VC D N N') = 1 := by
     simp
 
 /- English proof (translation)
-Establish `hE : Complex.exp ((Real.pi : ℂ) * Complex.I * (qH D T x : ℂ)) = (-1 : ℂ) ^ m`. Rewrite using `[h, show (Real.pi : ℂ) * Complex.I * ((m : ℝ) : ℂ) = (m : ℂ) * (Real.pi * Complex.I) by push_cast; ring, Complex.exp_int_mul, Complex.exp_pi_mul_I]`. Unfold `wPh`. Use `split_ifs with hq`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE]`. Establish `hex : ∃ s : ℂ, ∃ (k : ℕ) (m' : ℤ), (q : ℝ) ^ k * qH D T x = (m' : ℝ) ∧ s = (-1 : ℂ) ^ m'` using `⟨(-1 : ℂ) ^ m, 0, m, by rw [h]; simp, rfl⟩`. Take `⟨k, m', hm', hs⟩` from `Classical.epsilon_spec hex`. Rewrite using `[hs]`. Rewrite `hm'` using `[h]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm'' : m' = (q : ℤ) ^ k * m` using `by exact_mod_cast hm'.symm`. Establish `hodd : Odd ((q : ℤ) ^ k)`. Use `((Fact.out : q.Prime).odd_of_ne_two hq).pow (n := k)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Rewrite using `[hm'', zpow_mul, hodd.neg_one_zpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wPh_of_int (T : Tor D) {N N' : ℕ} (x : VC D N N') (m : ℤ) (h : qH D T x = m) :
     wPh D T q x = Complex.exp ((Real.pi : ℂ) * Complex.I * (qH D T x : ℂ)) := by
@@ -161,16 +161,16 @@ theorem wPh_of_int (T : Tor D) {N N' : ℕ} (x : VC D N N') (m : ℤ) (h : qH D 
     rw [hm'', zpow_mul, hodd.neg_one_zpow]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[Wop, U, wPh_zero, hf_zero_right]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem wop_zero (T : Tor D) {N N' : ℕ} (G : VC D N N' → ℂ) : Wop D T q (0 : VC D N N') G = G := by
   funext z
   simp [Wop, U, wPh_zero, hf_zero_right]
 
 /- English proof (translation)
-Establish `hy : ∀ i, ((yt i : ℕ)) = 0` using `fun i => by`. Use `(yt i).isLt` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Use function extensionality and compare the values at `τ i j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[liftY, embV, tor0, hy]`.
+Simplify using the standard rewrite rules.
 -/
 theorem liftY_zero {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {N N' r : ℕ} (ε : 𝓞 D.host.K)
     (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (yt : Fin r → Fin (q ^ 0)) :
@@ -191,7 +191,7 @@ variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ
   (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (μ : Meas q r)
 
 /- English proof (translation)
-Introduce `k y g hg`. Use `h 0 0 1 (isIdem_zero_one lam) le_rfl (fun _ => 0) k y g (fun a => by` as an intermediate fact. Rewrite using `[hg a, liftY_zero, kap_zero_right, lamC_one, one_mul])`. Rewrite `this` using `[liftY_zero, wop_zero]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem momE_of_translateJetMomentLaw (h : TranslateJetMomentLawAnyIdempotentLevel B χ lam Ω L L' b μ) : MomE B χ lam Ω L L' b μ := by
   intro k y g hg
@@ -200,21 +200,21 @@ theorem momE_of_translateJetMomentLaw (h : TranslateJetMomentLawAnyIdempotentLev
   rwa [liftY_zero, wop_zero] at this
 
 /- English proof (translation)
-Introduce `n ε hε yt k y g hg`. Conclude with `h n (2 * n + 2) ε hε (by omega) yt k y g hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem firstMoment_of_idempotentLaw (h : TranslateJetMomentLawAnyIdempotentLevel B χ lam Ω L L' b μ) : TranslateJetMomentLaw B χ lam Ω L L' b μ := by
   intro n ε hε yt k y g hg
   exact h n (2 * n + 2) ε hε (by omega) yt k y g hg
 
 /- English proof (translation)
-Introduce `n ε hε Φ hΦ hF k y g hg`. Conclude with `h n (2 * n + 2) ε hε (by omega) Φ hΦ hF k y g hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem secondMoment_of_idempotentLaw (h : LocallyConstantJetMomentLawAnyIdempotentLevel B χ lam Ω L L' b μ) : LocallyConstantJetMomentLaw B χ lam Ω L L' b μ := by
   intro n ε hε Φ hΦ hF k y g hg
   exact h n (2 * n + 2) ε hε (by omega) Φ hΦ hF k y g hg
 
 /- English proof (translation)
-Take `⟨Ω, hΩ, H⟩` from `h`. Use `⟨Ω, hΩ, fun N N' L L' r b hA hB => ?_⟩` and prove the remaining obligations. Take `⟨μ, hμ, h1, h2⟩` from `H N N' L L' r b hA hB`. Conclude with `⟨μ, hμ, momE_of_translateJetMomentLaw B χ lam Ω L L' b μ h1, firstMoment_of_idempotentLaw B χ lam Ω L L' b μ h1, secondMoment_of_idempotentLaw B χ lam Ω L L' b μ h2⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem momSplit_of_momBN (h : MomBN B χ lam) : MomSplit D cc δ B χ q lam := by
   obtain ⟨Ω, hΩ, H⟩ := h
@@ -224,7 +224,7 @@ theorem momSplit_of_momBN (h : MomBN B χ lam) : MomSplit D cc δ B χ q lam := 
     secondMoment_of_idempotentLaw B χ lam Ω L L' b μ h2⟩
 
 /- English proof (translation)
-Take `⟨Ω, hΩ, H⟩` from `h`. Use `⟨Ω, hΩ.1, fun N N' L L' r b hA hB => ?_⟩` and prove the remaining obligations. Take `⟨μ, -, h1, h2⟩` from `H N N' L L' r b hA hB`. Conclude with `⟨μ, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem momB_of_momBN (h : MomBN B χ lam) : MomB B χ lam := by
   obtain ⟨Ω, hΩ, H⟩ := h
@@ -233,13 +233,13 @@ theorem momB_of_momBN (h : MomBN B χ lam) : MomB B χ lam := by
   exact ⟨μ, h1, h2⟩
 
 /- English proof (translation)
-Take `⟨Ω, hΩ, H⟩` from `h`. Use `⟨Ω, hΩ, fun N N' L L' r b hA hB => ?_⟩` and prove the remaining obligations. Take `⟨μ, hμ, -, h1, h2⟩` from `H N N' L L' r b hA hB`. Use `⟨μ, hμ, ?_, ?_⟩` and prove the remaining obligations. Introduce `n m ε hε hm yt k y g hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ε', hε'⟩` from `hE (2 * n + 2)`. Take `⟨hW, hk1, -⟩` from `hL N N' L L' r b hA hB n m (2 * n + 2) ε ε' hε hε' hm (by omega) yt`. Rewrite using `[hW]`. Conclude with `h1 n ε' hε' yt k y g (fun a => by rw [hg a, hk1 a])`. Introduce `n m ε hε hm Φ hΦ hF k y g hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨ε', hε'⟩` from `hE (2 * n + 2)`. Establish `hX : XiF D B.tor δ q n ε b Φ (B.eNat χ N N' L L') = XiF D B.tor δ q n ε' b Φ (B.eNat χ N N' L L')`. Use function extensionality and compare the values at `z`. Simplify using `only [XiF]`. Use `congrArg (fun s => ((q : ℂ) ^ (n * r))⁻¹ * s) (Finset.sum_congr rfl fun a _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun s => Φ (fun i => (((a i : ℕ) : ℤ_[q]))) * s) (Finset.sum_congr rfl fun yt _ => ?_)` and prove the remaining obligations. Take `⟨hW, -, hk2⟩` from `hL N N' L L' r b hA hB n m (2 * n + 2) ε ε' hε hε' hm (by omega) yt`. Rewrite using `[hW, hk2 a]`. Rewrite using `[hX]`. Conclude with `h2 n ε' hε' Φ hΦ hF k y g hg`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem momBN_of_momSplit (hL : LiftIndep B χ lam) (hE : IdemEx D lam) (h : MomSplit D cc δ B χ q lam) :
     MomBN B χ lam := by
@@ -267,7 +267,7 @@ theorem momBN_of_momSplit (hL : LiftIndep B χ lam) (hE : IdemEx D lam) (h : Mom
     exact h2 n ε' hε' Φ hΦ hF k y g hg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨momBN_of_momSplit B χ lam hL hE, momSplit_of_momBN B χ lam⟩`.
+Supply the required witnesses or components.
 -/
 theorem momSplit_iff_momBN (hL : LiftIndep B χ lam) (hE : IdemEx D lam) :
     MomSplit D cc δ B χ q lam ↔ MomBN B χ lam :=
@@ -280,7 +280,7 @@ section Rec
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : IdE D → ℂ)
 
 /- English proof (translation)
-Introduce `p _ lam hs hcop`. Take `⟨Ω, hΩ, H⟩` from `h p hs hcop lam`. Use `⟨Ω, hΩ, fun N N' L L' r b hA hB => ?_⟩` and prove the remaining obligations. Take `⟨μ, hμ, hE, -, h2⟩` from `H N N' L L' r b hA hB`. Conclude with `⟨μ, hμ, hE, fun n ε Φ hε hΦ hF m y g hg => h2 n ε hε Φ hΦ hF m y g hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem packetMoment_of_splitMoments
     (h : ∀ (q : ℕ) [Fact q.Prime], JetMomA.SplitK D q → Nat.Coprime (Ideal.absNorm cc) q →
@@ -293,7 +293,7 @@ theorem packetMoment_of_splitMoments
   exact ⟨μ, hμ, hE, fun n ε Φ hε hΦ hF m y g hg => h2 n ε hε Φ hΦ hF m y g hg⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h p _ lam hs hcop`. Conclude with `h p hs hcop lam`. Introduce `h q _ hs hcop lam`. Conclude with `h q lam hs hcop`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem momentLawUnderBasisChange_iff_largerSupportMomentCondition :
     (∀ (q : ℕ) [Fact q.Prime], JetMomA.SplitK D q → Nat.Coprime (Ideal.absNorm cc) q →
@@ -305,7 +305,7 @@ theorem momentLawUnderBasisChange_iff_largerSupportMomentCondition :
     exact h q lam hs hcop
 
 /- English proof (translation)
-Conclude with `⟨packetMoment_of_splitMoments B χ (fun q _ hs hcop lam => (h D cc δ B hc hd χ hχ q hs hcop lam).2.1), (momentLawUnderBasisChange_iff_largerSupportMomentCondition B χ).mp (fun q _ hs hcop lam => (h D cc δ B hc hd χ hχ q hs hcop lam).2.2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem moments_of_jetMoments (h : JetMomT) (hc : IsCurveIdeal D cc) (hd : IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (hχ : IsChi D χ) :
     B.MomP χ := by
@@ -313,7 +313,7 @@ theorem moments_of_jetMoments (h : JetMomT) (hc : IsCurveIdeal D cc) (hd : IsDis
     (momentLawUnderBasisChange_iff_largerSupportMomentCondition B χ).mp (fun q _ hs hcop lam => (h D cc δ B hc hd χ hχ q hs hcop lam).2.2)⟩
 
 /- English proof (translation)
-Introduce `N N' L L' hA F hF`. Take `⟨-, h2, h3⟩` from `(h q lam N N' L L' hA).1 hd F hF`. Conclude with `⟨h3 hs, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem splitIntegrality_of_packetIntegrality (h : int22 D B.tor (B.eNat χ)) {q : ℕ} [Fact q.Prime] (lam : Qbar →+* ℂ_[q])
     (hs : JetMomA.SplitK D q) (hd : q ≠ D.host.d) : IntSplit D cc δ B χ q lam := by
@@ -383,14 +383,14 @@ def JetMomR : Prop :=
       IntSplit D cc δ B χ q lam ∧ MomSplitR D cc δ B χ q lam ∧ MomentLawUnderBasisChange B χ lam
 
 /- English proof (translation)
-Take `⟨Ω, hΩ, H, -⟩` from `h`. Conclude with `⟨Ω, hΩ, H⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem momSplit_of_momSplitR (h : MomSplitR D cc δ B χ q lam) : MomSplit D cc δ B χ q lam := by
   obtain ⟨Ω, hΩ, H, -⟩ := h
   exact ⟨Ω, hΩ, H⟩
 
 /- English proof (translation)
-Introduce `D cc δ B hc hd χ hχ q _ hs hcop lam`. Take `⟨hI, hR, hM3⟩` from `h D cc δ B hc hd χ hχ q hs hcop lam`. Conclude with `⟨hI, momSplit_of_momSplitR D cc δ B χ q lam hR, hM3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jetMomT_of_jetMomR (h : JetMomR) : JetMomT := by
   intro D cc δ B hc hd χ hχ q _ hs hcop lam
@@ -398,7 +398,7 @@ theorem jetMomT_of_jetMomR (h : JetMomR) : JetMomT := by
   exact ⟨hI, momSplit_of_momSplitR D cc δ B χ q lam hR, hM3⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem firstMomentVectorLaw_iff {N N' r : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
     (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (μ : Meas q r) :

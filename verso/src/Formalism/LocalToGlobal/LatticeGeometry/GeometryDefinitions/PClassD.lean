@@ -26,13 +26,11 @@ abbrev latV (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (n → E))
     Submodule (SV E v) (n → E ⊗[F] v.adicCompletion F) := latS (F := F) (v.adicCompletion F) (SV E v) Λ
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact.
 
-Establish `: (fun i => prV (E` using `E) v ((0 : n → 𝒜) i)) = 0 := by ext i; simp`. Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `: (fun i => prV (E` using `E) v ((a + b) i)) = (fun i => prV (E := E) v (a i)) + (fun i => prV (E := E) v (b i)) := by ext i; simp`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `add_mem ha hb`. Consider the case `smul s a _ ha`. Establish `: (fun i => prV (E` using `E) v ((s • a) i)) = (⟨prV (E := E) v (s : 𝒜), afsplit_prV_int v _ s.2⟩ : SV E v) • (fun i => prV (E := E) v (a i)) := by`. Use extensionality with `i`.
-
-Simplify using `only [Pi.smul_apply, Subring.smul_def, smul_eq_mul, map_mul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ ha`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_lat (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (n → E)) (y : n → 𝒜)
     (hy : y ∈ latA (F := F) Λ) : (fun i => prV (E := E) v (y i)) ∈ latV v Λ := by
@@ -55,15 +53,13 @@ theorem pr_lat (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (n → 
     rw [this]; exact Submodule.smul_mem _ _ ha
 
 /- English proof (translation)
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨x, hx, rfl⟩` from `hu`. Establish `: (fun i => afsplitIE v (inclE (F` using `F) (v.adicCompletion F) (x i))) = (⟨afsplitEps E v, afsplit_eps_int v⟩ : 𝒮) • (fun i => inclE (F := F) 𝔸 (x i)) := by`. Use extensionality with `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Pi.smul_apply, Subring.smul_def, smul_eq_mul]`. Rewrite using `[← afsplit_decomp, afsplit_prV_inclE]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, hx, rfl⟩)`. Consider the case `zero`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `: (fun i => afsplitIE v ((0 : n → E ⊗[F] v.adicCompletion F) i)) = 0` using `by ext i; simp`. Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `: (fun i => afsplitIE v ((a + b) i)) = (fun i => afsplitIE v (a i)) + (fun i => afsplitIE v (b i))` using `by ext i; simp`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `add_mem ha hb`. Consider the case `smul s a _ ha`. Establish `: (fun i => afsplitIE v ((s • a) i)) = (⟨afsplitIE v (s : E ⊗[F] v.adicCompletion F), afsplit_IE_int v _ s.2⟩ : 𝒮) • (fun i => afsplitIE v (a i))`. Use extensionality with `i`.
-
-Simplify using `only [Pi.smul_apply, Subring.smul_def, smul_eq_mul, map_mul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ ha`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ie_lat (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (n → E))
     (u : n → E ⊗[F] v.adicCompletion F) (hu : u ∈ latV v Λ) :
@@ -94,17 +90,15 @@ theorem ie_lat (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (n → 
     rw [this]; exact Submodule.smul_mem _ _ ha
 
 /- English proof (translation)
-Establish `hmem : ∀ w : HeightOneSpectrum (𝓞 F), (if Valued.v (algebraMap (𝓞 F) (w.adicCompletion F) D) < 1 then 0 else (algebraMap (𝓞 F) (w.adicCompletion F) D)⁻¹) ∈ w.adicCompletionIntegers F`. Introduce `w`. Use `split_ifs with h`. Conclude with `zero_mem _`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Valued.v (algebraMap (𝓞 F) (w.adicCompletion F) D) ≤ 1` using `levelaf_int_mem_v w D`. Establish `h2 : Valued.v (algebraMap (𝓞 F) (w.adicCompletion F) D) = 1` using `le_antisymm h1 (not_lt.1 h)`. Rewrite using `[h2, inv_one]`. Set `u : 𝔸` to `⟨fun w => if Valued.v (algebraMap (𝓞 F) (w.adicCompletion F) D) < 1 then 0 else (algebraMap (𝓞 F) (w.adicCompletion F) D)⁻¹, Filter.Eventually.of_forall hmem⟩`. Use `⟨(levelaf_finite_places D hD).toFinset, u, hmem, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `FiniteAdeleRing.ext _ fun w => ?_` and prove the remaining obligations. Establish `hsum : (∑ v ∈ (levelaf_finite_places D hD).toFinset, afsplitI v 1 : 𝔸) w = if w ∈ (levelaf_finite_places D hD).toFinset then 1 else 0`. Express the relevant statement in the definitionally equal form `evalV F w (∑ v ∈ (levelaf_finite_places D hD).toFinset, afsplitI v 1 : 𝔸) = _`. Rewrite using `[map_sum]`. Use `split_ifs with h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_single_of_mem w h]`. Conclude with `afsplitI_self w 1`. Introduce `b _ hb`. Conclude with `afsplitI_ne b w hb.symm 1`. Use `Finset.sum_eq_zero fun b hb => afsplitI_ne b w ?_ 1` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `h hb`. Rewrite using `[afsplit_add_apply, afsplit_mul_apply, hsum]`. Use `show (1 : w.adicCompletion F) = algebraMap (𝓞 F) (w.adicCompletion F) D * (if Valued.v (algebraMap (𝓞 F) (w.adicCompletion F) D) < 1 then 0 else (algebraMap (𝓞 F) (w.adicCompletion F) D)⁻¹) + _`. Distinguish the cases in `h : Valued.v (algebraMap (𝓞 F) (w.adicCompletion F) D) < 1`.
-
-Establish `h' : w ∈ (levelaf_finite_places D hD).toFinset` using `by simpa using h`. Rewrite using `[if_pos h, if_pos h', mul_zero, zero_add]`. Establish `h' : w ∉ (levelaf_finite_places D hD).toFinset` using `by simpa using h`. Rewrite using `[if_neg h, if_neg h', add_zero, mul_inv_cancel₀ (levelaf_algebraMap_ne_zero w D hD)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_away (D : 𝓞 F) (hD : D ≠ 0) :
     ∃ (T : Finset (HeightOneSpectrum (𝓞 F))) (u : 𝔸), u ∈ intAd F ∧

@@ -24,17 +24,17 @@ def FrameShapeP : Prop :=
           (Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM D.R.rS * uu' * Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM D.R.rS)
 
 /- English proof (translation)
-Introduce `γ w F' L U hH`. Take `⟨hA, hT, hR, hP, hE, hN⟩` from `hH`. Take `⟨_, _, hL, hU, hZ⟩` from `hN`. Establish `hT0 : ((Tu D u : ℕ) : D.host.E) ≠ 0` using `by exact_mod_cast hP.1.pos.ne'`. Establish `hLd : IsUnit L.det` using `by rw [Formalism.L2.SG.Pf.StabilizerIndexVolumes.lo_det hL]; exact isUnit_one`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `a ⟨s, ⟨hsF, hsF'⟩, uu, huu, ha⟩`. Establish `hsF0` using `hsF`. Establish `hsF'0` using `hsF'`. Take `⟨⟨hiso, _⟩, hf1, hf2⟩` from `hsF`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨_, _⟩, hg1, hg2⟩` from `hsF'`. Take `⟨uu0, huu0, hu0⟩` from `Formalism.L2.SG.Pf.StabilizerIndexVolumes.tri_exists F0 s hf1 hf2`. Take `⟨uu', huu', hu'⟩` from `Formalism.L2.SG.Pf.StabilizerIndexVolumes.tri_exists F'.fl s hg1 hg2`. Establish `heq : uu = uu0` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.coef_unique (Formalism.L2.SG.Pf.StabilizerIndexVolumes.frame_indep F0 hT0) (fun b => s (F0.fvec b)) uu uu0 huu hu0`. Substitute `heq` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hZc` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.zhat_conj F0 F'.fl s hiso uu uu' hu0 hu'`. Establish `hdet : IsUnit uu.conjTranspose.det`. Rewrite using `[Formalism.L2.SG.Pf.StabilizerIndexVolumes.lo_det (Formalism.L2.SG.Pf.StabilizerIndexVolumes.lo_conjT huu0)]`. Conclude with `isUnit_one`. Set `a' : GLR D` to `Matrix.nonsingInvUnit uu.conjTranspose hdet`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ha' : (a' : MatR D) = uu.conjTranspose` using `rfl`. Establish `hshape` using `hF γ w F' L U ⟨hA, hT, hR, hP, hE, ⟨‹_›, ‹_›, hL, hU, hZ⟩⟩ s ⟨hsF0, hsF'0⟩ uu uu' huu0 huu' hu0 hu'`. Establish `hmem : a ∈ stZSet M δ u u' (ZhatL (lf D F0) F') L`. Use `(mem_stZSet_iff M δ u u' hA _ L a).2 ⟨a', by rw [ha', ha], by rw [ha']; exact Formalism.L2.SG.Pf.StabilizerIndexVolumes.lo_conjT huu0, Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM D.R.rS * uu' * Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM D.R.rS, Formalism.L2.SG.Pf.Stabilize …` and prove the remaining obligations. Rewrite using `[ha', Formalism.L2.SG.Pf.StabilizerIndexVolumes.zhatOM_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `show uu.conjTranspose * (Zhat F0 F'.fl * Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM D.R.rS) * (Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM D.R.rS * uu' * Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM D.R.rS) = Zhat F0 F'.fl * Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM …`. Rewrite using `[show uu.conjTranspose * (Zhat F0 F'.fl * Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM D.R.rS) * (Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM D.R.rS * uu' * Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM D.R.rS) = uu.conjTranspose * Zhat F0 F'.fl * (Formalism.L2.SG.Pf.Stabil …`. Conclude with `(mem_CZ M δ u u' _ L hLd a).2 hmem`.
+A detailed English derivation is pending.
 -/
 theorem stabInCZ_of (hF : FrameShapeP M δ u u' F0 what₂) : Formalism.L2.SG.Pf.ZsVolOrb.StabInCZ M δ u u' F0 what₂ := by
   intro γ w F' L U hH

@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hM : (1 : ℝ) ≤ max 1 t⁻¹` using `le_max_left _ _`. Establish `hM0 : (0 : ℝ) ≤ max 1 t⁻¹` using `le_trans zero_le_one hM`. Use `⟨(max 1 t⁻¹) ^ a, pow_nonneg hM0 _, fun r hr hstep p q hpq => ?_⟩` and prove the remaining obligations. Establish `key : ∀ (n : ℕ) (h : (p : ℕ) + n < a), r ⟨p + n, h⟩ ≤ (max 1 t⁻¹) ^ n * r p`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => intro h`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `h`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : (p : ℕ) + n < a` using `by omega`. Establish `h1` using `hstep ⟨p + n, h'⟩ ⟨p + (n + 1), h⟩ (by simp [add_assoc])`. Establish `h2 : r ⟨p + (n + 1), h⟩ ≤ t⁻¹ * r ⟨p + n, h'⟩`. Rewrite using `[inv_mul_eq_div, le_div_iff₀ ht, mul_comm]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hpq' : (p : ℕ) ≤ q` using `hpq`. Establish `hlt : (p : ℕ) + (q - p) < a` using `by have := q.2; omega`. Establish `hq : (⟨p + (q - p), hlt⟩ : Fin a) = q` using `Fin.ext (by simp only; omega)`. Establish `h3` using `key (q - p) hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hq]`. Rewrite using `[div_le_iff₀ (hr p)]`. Use `h3.trans (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hM ?_) (hr p).le)` and prove the remaining obligations. Use `q.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem cone_ratio_bounded (a : ℕ) (t : ℝ) (ht : 0 < t) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ r : Fin a → ℝ, (∀ i, 0 < r i) →

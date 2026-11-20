@@ -11,27 +11,27 @@ private def bd (A : Matrix (Fin a) (Fin a) R) (D : Matrix (Fin b) (Fin b) R) :
   (fromBlocks A 0 0 D).submatrix finSumFinEquiv.symm finSumFinEquiv.symm
 
 /- English proof (translation)
-Simplify using `[bd, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem bd_mul (A A' : Matrix (Fin a) (Fin a) R) (D D' : Matrix (Fin b) (Fin b) R) :
     bd A D * bd A' D' = bd (A * A') (D * D') := by
   simp [bd, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Simplify using `[bd]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem bd_one : bd (1 : Matrix (Fin a) (Fin a) R) (1 : Matrix (Fin b) (Fin b) R) = 1 := by
   simp [bd]
 
 /- English proof (translation)
-Simplify using `[bd, Matrix.transpose_submatrix, Matrix.fromBlocks_transpose]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem bd_transpose (A : Matrix (Fin a) (Fin a) R) (D : Matrix (Fin b) (Fin b) R) :
     (bd A D)ᵀ = bd Aᵀ Dᵀ := by
   simp [bd, Matrix.transpose_submatrix, Matrix.fromBlocks_transpose]
 
 /- English proof (translation)
-Unfold `bd`. Rewrite using `[← Matrix.submatrix_map, Matrix.fromBlocks_map]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem bd_map (f : R →+* S) (A : Matrix (Fin a) (Fin a) R) (D : Matrix (Fin b) (Fin b) R) :
     (bd A D).map f = bd (A.map f) (D.map f) := by
@@ -40,9 +40,9 @@ private theorem bd_map (f : R →+* S) (A : Matrix (Fin a) (Fin a) R) (D : Matri
   simp
 
 /- English proof (translation)
-Unfold `bd`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.submatrix_apply]`. Generalize the expression as in `finSumFinEquiv.symm i = x`. Generalize the expression as in `finSumFinEquiv.symm j = y`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem bd_smul (c : R) (A : Matrix (Fin a) (Fin a) R) (D : Matrix (Fin b) (Fin b) R) :
     c • bd A D = bd (c • A) (c • D) := by
@@ -54,21 +54,21 @@ private theorem bd_smul (c : R) (A : Matrix (Fin a) (Fin a) R) (D : Matrix (Fin 
   rcases x with x | x <;> rcases y with y | y <;> simp
 
 /- English proof (translation)
-Simplify using `[bd]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem bd_ll (A : Matrix (Fin a) (Fin a) R) (D : Matrix (Fin b) (Fin b) R) (i j : Fin a) :
     bd A D (Fin.castAdd b i) (Fin.castAdd b j) = A i j := by
   simp [bd]
 
 /- English proof (translation)
-Simplify using `[bd]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem bd_rr (A : Matrix (Fin a) (Fin a) R) (D : Matrix (Fin b) (Fin b) R) (i j : Fin b) :
     bd A D (Fin.natAdd a i) (Fin.natAdd a j) = D i j := by
   simp [bd]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use extensionality with `i j`. Rewrite using `[← bd_ll A D, h, bd_ll]`. Use extensionality with `i j`. Rewrite using `[← bd_rr A D, h, bd_rr]`.
+Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem bd_inj {A A' : Matrix (Fin a) (Fin a) R} {D D' : Matrix (Fin b) (Fin b) R}
     (h : bd A D = bd A' D') : A = A' ∧ D = D' := by
@@ -77,14 +77,14 @@ private theorem bd_inj {A A' : Matrix (Fin a) (Fin a) R} {D D' : Matrix (Fin b) 
   · ext i j; rw [← bd_rr A D, h, bd_rr]
 
 /- English proof (translation)
-Simplify using `[bd]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem bd_det (A : Matrix (Fin a) (Fin a) R) (D : Matrix (Fin b) (Fin b) R) :
     (bd A D).det = A.det * D.det := by
   simp [bd]
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun _ => trivial, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot]`. Apply the tactic sequence `induction i using Fin.addCases <;> induction j using Fin.addCases <;> simp [bd] at h ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem bd_mem (A : Matrix (Fin a) (Fin a) R) (D : Matrix (Fin b) (Fin b) R) :
     bd A D ∈ Ev R R (a + b) a := by
@@ -94,7 +94,7 @@ private theorem bd_mem (A : Matrix (Fin a) (Fin a) R) (D : Matrix (Fin b) (Fin b
   induction i using Fin.addCases <;> induction j using Fin.addCases <;> simp [bd] at h ⊢
 
 /- English proof (translation)
-Use `⟨M.submatrix (Fin.castAdd b) (Fin.castAdd b), M.submatrix (Fin.natAdd a) (Fin.natAdd a), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h'` using `(h i j).2`. Rewrite `h'` using `[Submodule.mem_bot]`. Apply the tactic sequence `induction i using Fin.addCases <;> induction j using Fin.addCases <;> simp [bd] at h' ⊢ <;> exact h'`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem bd_ex {M : Matrix (Fin (a + b)) (Fin (a + b)) R} (h : M ∈ Ev R R (a + b) a) :
     ∃ A D, M = bd A D := by
@@ -119,9 +119,9 @@ private def bdRep {G : Type} [Group G] (r₁ : G →* GL (Fin a) R) (r₂ : G �
     rw [map_mul, map_mul, Units.val_mul, Units.val_mul, bd_mul])
 
 /- English proof (translation)
-Use `choose A D hAD using fun g => bd_ex (h g)`. Establish `h1 : bd (A 1) (D 1) = bd 1 1` using `by rw [← hAD, map_one, bd_one]`. Establish `hm : ∀ g g', bd (A (g * g')) (D (g * g')) = bd (A g * A g') (D g * D g')` using `fun g g' => by`. Rewrite using `[← bd_mul, ← hAD, ← hAD, ← hAD, map_mul]`. Set `A' : G →* Matrix (Fin a) (Fin a) R` to `⟨⟨A, (bd_inj h1).1⟩, fun g g' => (bd_inj (hm g g')).1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `D' : G →* Matrix (Fin b) (Fin b) R` to `⟨⟨D, (bd_inj h1).2⟩, fun g g' => (bd_inj (hm g g')).2⟩`. Conclude with `⟨A'.toHomUnits, D'.toHomUnits, fun g => hAD g⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem rep_ex {G : Type} [Group G] (r : G →* GL (Fin (a + b)) R)
     (h : ∀ g, mat r g ∈ Ev R R (a + b) a) :
@@ -137,19 +137,17 @@ private theorem rep_ex {G : Type} [Group G] (r : G →* GL (Fin (a + b)) R)
 end Blocks
 
 /- English proof (translation)
-Introduce `K K' G _ _ _ n a j₁ f₁ j₂ f₂ r H σ u d h2 hf₁ hf₂ hX hsq hd hb hH hdet hσ hr ha hev hHev`. Take `⟨b, rfl⟩` from `Nat.exists_eq_add_of_le ha`. Take `⟨H₁, H₂, rfl⟩` from `bd_ex hHev`. Take `⟨r₁, r₂, hrr⟩` from `rep_ex r hev`. Rewrite `hH` using `[bd_transpose]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdet` using `[bd_det]`. Establish `hr' : ∀ g, bd ((mat r₁ g)ᵀ * H₁ * mat r₁ (σ g)) ((mat r₂ g)ᵀ * H₂ * mat r₂ (σ g)) = bd (algebraMap _ (FractionRing (PowerSeries K)) (u g) • H₁) (algebraMap _ (FractionRing (PowerSeries K)) (u g) • H₂)` using `fun g => by`. Rewrite using `[← bd_smul, ← hr g, ← bd_mul, ← bd_mul, ← bd_transpose]`. Use `show _ = ((r g).val)ᵀ * _ * (r (σ g)).val`. Rewrite using `[hrr, hrr]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨Q₁, s₁, hQ₁, hs₁⟩` from `UpperTheory.V.Pa.Det.oneBlock j₁ f₁ j₂ f₂ r₁ H₁ σ u d h2 hf₁ hf₂ hX hsq hd (fun g i i' => by`. Take `⟨y, hy⟩` from `hb g (Fin.castAdd b i) (Fin.castAdd b i')`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ * (r₁ g).val i i' = _ * (r g).val _ _`. Rewrite using `[hrr, bd_ll])`. Use the proof step `(bd_inj hH).1 (left_ne_zero_of_mul hdet) hσ (fun g => (bd_inj (hr' g)).1)`. Take `⟨Q₂, s₂, hQ₂, hs₂⟩` from `UpperTheory.V.Pa.Det.oneBlock j₁ f₁ j₂ f₂ r₂ H₂ σ u d h2 hf₁ hf₂ hX hsq hd (fun g i i' => by`. Take `⟨y, hy⟩` from `hb g (Fin.natAdd a i) (Fin.natAdd a i')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Use `show _ * (r₂ g).val i i' = _ * (r g).val _ _`. Rewrite using `[hrr, bd_rr])`. Use the proof step `(bd_inj hH).2 (right_ne_zero_of_mul hdet) hσ (fun g => (bd_inj (hr' g)).2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨bdU Q₁ Q₂, bdRep s₁ s₂, ?_, fun g => Units.ext ?_, bd_mem _ _, fun g => bd_mem _ _⟩` and prove the remaining obligations. Use `show (bd Q₁.val Q₂.val)ᵀ * _ * bd Q₁.val Q₂.val = 1`. Rewrite using `[bd_map, bd_transpose, bd_mul, bd_mul, hQ₁, hQ₂, bd_one]`. Establish `e₁ : (r₁ g).val.map (f₂.comp f₁) * Q₁.val = Q₁.val * (s₁ g).val.map (algebraMap _ _)` using `congrArg Units.val (hs₁ g)`. Establish `e₂ : (r₂ g).val.map (f₂.comp f₁) * Q₂.val = Q₂.val * (s₂ g).val.map (algebraMap _ _)` using `congrArg Units.val (hs₂ g)`.
-
-Use `show (r g).val.map (f₂.comp f₁) * bd Q₁.val Q₂.val = bd Q₁.val Q₂.val * (bd (s₁ g).val (s₂ g).val).map (algebraMap _ (FractionRing (PowerSeries K')))`. Rewrite using `[hrr, bd_map, bd_map, bd_mul, bd_mul, e₁, e₂]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.twoBlock :
     ∀ {K K' G : Type} [Field K] [Field K'] [Group G] {n : ℕ} (a : ℕ) (j₁ : PowerSeries K →+* PowerSeries K) (f₁ : FractionRing (PowerSeries K) →+* FractionRing (PowerSeries K)) (j₂ : PowerSeries K →+* PowerSeries K') (f₂ : FractionRing (PowerSeries K) →+* FractionRing (PowerSeries K')) (r : G →* GL (Fin n) (FractionRing (PowerSeries K))) (H : Matrix (Fin n) (Fin n) (FractionRing (PowerSeries K))) (σ : G → G) (u : G → PowerSeries K) (d : PowerSeries K), (2 : K) ≠ 0 → (∀ y, f₁ (algebraMap _ _ y) = algebraMap _ _ (j₁ y)) → (∀ y, f₂ (algebraMap _ _ y) = algebraMap _ _ (j₂ y)) → j₁ PowerSeries.X = PowerSeries.X ^ 2 → (∀ c : (PowerSeries K)ˣ, IsSquare (residue (PowerSeries K') (j₂ c))) → d ≠ 0 → (∀ g i i', ∃ y : PowerSeries K, algebraMap _ (FractionRing (PowerSeries K)) d * r g i i' = algebraMap _ (FractionRing (PowerSeries K)) y) → Hᵀ = H → H.det ≠ 0 → Function.Surjective σ → (∀ g, (mat r g)ᵀ * H * mat r (σ g) = algebraMap _ (FractionRing (PowerSeries K)) (u g) • H) → a ≤ n → (∀ g, mat r g ∈ Ev (FractionRing (PowerSeries K)) (FractionRing (PowerSeries K)) n a) → H ∈ Ev (FractionRing (PowerSeries K)) (FractionRing (PowerSeries K)) n a → ∃ (Q : GL (Fin n) (FractionRing (PowerSeries K'))) (r' : G →* GL (Fin n) (PowerSeries K')), (Q : Matrix (Fin n) (Fin n) (FractionRing (PowerSeries K')))ᵀ * H.map (f₂.comp f₁) * Q = 1 ∧ (∀ g, pushRep (f₂.comp f₁) r g * Q = Q * pushRep (algebraMap (PowerSeries K') (FractionRing (PowerSeries K'))) r' g) ∧ (Q : Matrix (Fin n) (Fin n) (FractionRing (PowerSeries K'))) ∈ Ev (FractionRing (PowerSeries K')) (FractionRing (PowerSeries K')) n a ∧ ∀ g, mat r' g ∈ Ev (PowerSeries K') (PowerSeries K') n a := by

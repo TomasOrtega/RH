@@ -34,20 +34,20 @@ def negate (S : SPar) : SPar := S.image fun x => (-x.1, x.2)
 def flip (S : SPar) : SPar := S.image fun x => (x.1, !x.2)
 
 /- English proof (translation)
-Simplify using `[entries]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_entries {S : SPar} {x : ℚ} : x ∈ entries S ↔ ∃ s, (x, s) ∈ S := by
   simp [entries]
 
 /- English proof (translation)
-The claim follows from `mem_image_of_mem _ h`.
+A detailed English derivation is pending.
 -/
 theorem fst_mem_entries {S : SPar} {x : ℚ × Bool} (h : x ∈ S) : x.1 ∈ entries S := mem_image_of_mem _ h
 
 /- English proof (translation)
-Take `⟨a, s⟩` from `x`. Simplify using `only [ofSign, mem_image, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl, rfl⟩`. Conclude with `⟨hy, rfl⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h, rfl⟩`. Conclude with `⟨a, h, rfl, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_ofSign {E : Finset ℚ} {sg : ℚ → Bool} {x : ℚ × Bool} : x ∈ ofSign E sg ↔ x.1 ∈ E ∧ x.2 = sg x.1 := by
   obtain ⟨a, s⟩ := x
@@ -57,13 +57,13 @@ theorem mem_ofSign {E : Finset ℚ} {sg : ℚ → Bool} {x : ℚ × Bool} : x �
   · rintro ⟨h, rfl⟩; exact ⟨a, h, rfl, rfl⟩
 
 /- English proof (translation)
-The claim follows from `mem_ofSign (sg := fun _ => true)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem mem_plus {E : Finset ℚ} {x : ℚ × Bool} : x ∈ plus E ↔ x.1 ∈ E ∧ x.2 = true :=
   mem_ofSign (sg := fun _ => true)
 
 /- English proof (translation)
-Simplify using `only [shift, mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `hx; exact ⟨_, hx, by simp⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem mem_shift {h : ℚ} {S : SPar} {x : ℚ × Bool} : x ∈ shift h S ↔ (x.1 - h, x.2) ∈ S := by
   simp only [shift, mem_image]
@@ -72,7 +72,7 @@ theorem mem_shift {h : ℚ} {S : SPar} {x : ℚ × Bool} : x ∈ shift h S ↔ (
   · intro hx; exact ⟨_, hx, by simp⟩
 
 /- English proof (translation)
-Simplify using `only [negate, mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `hx; exact ⟨_, hx, by simp⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem mem_negate {S : SPar} {x : ℚ × Bool} : x ∈ negate S ↔ (-x.1, x.2) ∈ S := by
   simp only [negate, mem_image]
@@ -81,7 +81,7 @@ theorem mem_negate {S : SPar} {x : ℚ × Bool} : x ∈ negate S ↔ (-x.1, x.2)
   · intro hx; exact ⟨_, hx, by simp⟩
 
 /- English proof (translation)
-Simplify using `only [flip, mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `hx; exact ⟨_, hx, by simp⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem mem_flip {S : SPar} {x : ℚ × Bool} : x ∈ flip S ↔ (x.1, !x.2) ∈ S := by
   simp only [flip, mem_image]
@@ -90,29 +90,29 @@ theorem mem_flip {S : SPar} {x : ℚ × Bool} : x ∈ flip S ↔ (x.1, !x.2) ∈
   · intro hx; exact ⟨_, hx, by simp⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[mem_shift]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem shift_zero (S : SPar) : shift 0 S = S := by
   ext x; simp [mem_shift]
 
 /- English proof (translation)
-The claim follows from `image_union _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem entries_union (S T : SPar) : entries (S ∪ T) = entries S ∪ entries T := image_union _ _
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[mem_entries, mem_ofSign]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem entries_ofSign (E : Finset ℚ) (sg : ℚ → Bool) : entries (ofSign E sg) = E := by
   ext x; simp [mem_entries, mem_ofSign]
 
 /- English proof (translation)
-The claim follows from `entries_ofSign E fun _ => true`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem entries_plus (E : Finset ℚ) : entries (plus E) = E := entries_ofSign E fun _ => true
 
 /- English proof (translation)
-The claim follows from `image_union _ _`.
+A detailed English derivation is pending.
 -/
 theorem plus_union (E E' : Finset ℚ) : plus (E ∪ E') = plus E ∪ plus E' := image_union _ _
 
@@ -122,21 +122,21 @@ Both sides reduce to the same expression.
 @[simp] theorem plus_empty : plus ∅ = ∅ := rfl
 
 /- English proof (translation)
-Introduce `x hx y hy h`. Rewrite using `[(mem_ofSign.1 hx).2, (mem_ofSign.1 hy).2, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isRegular_ofSign (E : Finset ℚ) (sg : ℚ → Bool) : IsRegular (ofSign E sg) := by
   intro x hx y hy h
   rw [(mem_ofSign.1 hx).2, (mem_ofSign.1 hy).2, h]
 
 /- English proof (translation)
-The claim follows from `isRegular_ofSign E fun _ => true`.
+A detailed English derivation is pending.
 -/
 theorem isRegular_plus (E : Finset ℚ) : IsRegular (plus E) := isRegular_ofSign E fun _ => true
 
 /- English proof (translation)
-Take `⟨a, s⟩` from `x`. Consider the cases of `s`. Simplify using `only [sign, decide_eq_false_iff_not]`. Introduce `h'`. Simplify using `using h _ hx _ h' rfl`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hx` using `[sign]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsRegular.sign_eq {S : SPar} (h : IsRegular S) {x : ℚ × Bool} (hx : x ∈ S) : sign S x.1 = x.2 := by
   obtain ⟨a, s⟩ := x
@@ -147,11 +147,11 @@ theorem IsRegular.sign_eq {S : SPar} (h : IsRegular S) {x : ℚ × Bool} (hx : x
   · simpa [sign] using hx
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_ofSign]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨fst_mem_entries hx, (h.sign_eq hx).symm⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Take `⟨s, hs⟩` from `mem_entries.1 h1`. Use `h.sign_eq hs` as an intermediate fact. Establish `e : x = (x.1, s)` using `Prod.ext rfl (by simp only at this ⊢; rw [h2, this])`. Rewrite using `[e]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs`.
+A detailed English derivation is pending.
 -/
 theorem IsRegular.eq_ofSign {S : SPar} (h : IsRegular S) : S = ofSign (entries S) (sign S) := by
   ext x
@@ -165,27 +165,25 @@ theorem IsRegular.eq_ofSign {S : SPar} (h : IsRegular S) : S = ofSign (entries S
     rw [e]; exact hs
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨_, _, h.eq_ofSign⟩, by rintro ⟨E, sg, rfl⟩; exact isRegular_ofSign E sg⟩`.
+Supply the required witnesses or components.
 -/
 theorem isRegular_iff {S : SPar} : IsRegular S ↔ ∃ E sg, S = ofSign E sg :=
   ⟨fun h => ⟨_, _, h.eq_ofSign⟩, by rintro ⟨E, sg, rfl⟩; exact isRegular_ofSign E sg⟩
 
 /- English proof (translation)
-The claim follows from `card_image_of_injOn fun x hx y hy e => Prod.ext e (h x hx y hy e)`.
+A detailed English derivation is pending.
 -/
 theorem IsRegular.card_entries {S : SPar} (h : IsRegular S) : (entries S).card = S.card :=
   card_image_of_injOn fun x hx y hy e => Prod.ext e (h x hx y hy e)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsRegular.card_entries, fun h _ hx _ hy e => congrArg Prod.snd (card_image_iff.1 h hx hy e)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isRegular_iff_card {S : SPar} : IsRegular S ↔ (entries S).card = S.card :=
   ⟨IsRegular.card_entries, fun h _ hx _ hy e => congrArg Prod.snd (card_image_iff.1 h hx hy e)⟩
 
 /- English proof (translation)
-Introduce `x hx y hy e`. Apply the tactic sequence `rcases mem_union.1 hx with hx | hx <;> rcases mem_union.1 hy with hy | hy`. Conclude with `hS x hx y hy e`. Conclude with `absurd (e ▸ fst_mem_entries hy) (disjoint_left.1 h (fst_mem_entries hx))`. Conclude with `absurd (e ▸ fst_mem_entries hx) (disjoint_left.1 h (fst_mem_entries hy))`.
-
-Conclude with `hT x hx y hy e`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem IsRegular.union {S T : SPar} (hS : IsRegular S) (hT : IsRegular T) (h : Disjoint (entries S) (entries T)) :
     IsRegular (S ∪ T) := by
@@ -197,7 +195,7 @@ theorem IsRegular.union {S T : SPar} (hS : IsRegular S) (hT : IsRegular T) (h : 
   · exact hT x hx y hy e
 
 /- English proof (translation)
-Unfold `nPlus nMinus`. Rewrite using `[← card_filter_add_card_filter_not (s := S) (fun x => x.2 = true)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nPlus_add_nMinus (S : SPar) : nPlus S + nMinus S = S.card := by
   unfold nPlus nMinus
@@ -205,14 +203,14 @@ theorem nPlus_add_nMinus (S : SPar) : nPlus S + nMinus S = S.card := by
   simp
 
 /- English proof (translation)
-Simplify using `only [nMinus, card_eq_zero, filter_eq_empty_iff, mem_plus]`. Introduce and unpack `x ⟨-, h⟩`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem nMinus_plus (E : Finset ℚ) : nMinus (plus E) = 0 := by
   simp only [nMinus, card_eq_zero, filter_eq_empty_iff, mem_plus]
   rintro x ⟨-, h⟩; simp [h]
 
 /- English proof (translation)
-Use `nPlus_add_nMinus (plus E)` as an intermediate fact. Rewrite `this` using `[nMinus_plus, ← (isRegular_plus E).card_entries, entries_plus]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem nPlus_plus (E : Finset ℚ) : nPlus (plus E) = E.card := by
   have := nPlus_add_nMinus (plus E)
@@ -227,36 +225,36 @@ def highestWeight {n : ℕ} (E : Finset ℚ) (h : E.card = n) : Fin n → ℚ :=
   fun i => descEnum E h i - (((n : ℚ) - 1) / 2 - ((i : ℕ) : ℚ))
 
 /- English proof (translation)
-The claim follows from `mem_sort _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem mem_descList {E : Finset ℚ} {x : ℚ} : x ∈ descList E ↔ x ∈ E := mem_sort _
 
 /- English proof (translation)
-The claim follows from `(sortedGT_sort E).pairwise`.
+A detailed English derivation is pending.
 -/
 theorem pairwise_descList (E : Finset ℚ) : (descList E).Pairwise (· > ·) := (sortedGT_sort E).pairwise
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `(List.toFinset_sort (· ≥ ·) (hL.imp fun h => ne_of_gt h)).2 (hL.imp fun h => le_of_lt h)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem descList_eq {E : Finset ℚ} {L : List ℚ} (hL : L.Pairwise (· > ·)) (h : L.toFinset = E) : descList E = L := by
   subst h
   exact (List.toFinset_sort (· ≥ ·) (hL.imp fun h => ne_of_gt h)).2 (hL.imp fun h => le_of_lt h)
 
 /- English proof (translation)
-Introduce `_ _ hab` and use `(E.orderEmbOfFin h).strictMono (Fin.rev_lt_rev.2 hab)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem strictAnti_descEnum {n : ℕ} (E : Finset ℚ) (h : E.card = n) : StrictAnti (descEnum E h) :=
   fun _ _ hab => (E.orderEmbOfFin h).strictMono (Fin.rev_lt_rev.2 hab)
 
 /- English proof (translation)
-The claim follows from `orderEmbOfFin_mem _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem descEnum_mem {n : ℕ} (E : Finset ℚ) (h : E.card = n) (i : Fin n) : descEnum E h i ∈ E :=
   orderEmbOfFin_mem _ _ _
 
 /- English proof (translation)
-Use `eq_of_subset_of_card_le (fun x hx => ?_) ?_` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `mem_image.1 hx`. Conclude with `descEnum_mem E h i`. Rewrite using `[card_image_of_injective _ (strictAnti_descEnum E h).injective]`. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem image_descEnum {n : ℕ} (E : Finset ℚ) (h : E.card = n) : univ.image (descEnum E h) = E := by
   refine eq_of_subset_of_card_le (fun x hx => ?_) ?_
@@ -264,7 +262,7 @@ theorem image_descEnum {n : ℕ} (E : Finset ℚ) (h : E.card = n) : univ.image 
   · rw [card_image_of_injective _ (strictAnti_descEnum E h).injective]; simp [h]
 
 /- English proof (translation)
-Use `orderEmbOfFin_unique h (f := fun i => f i.rev) (fun i => hm _) fun a b hab => hf (Fin.rev_lt_rev.2 hab)` as an intermediate fact. Use function extensionality and compare the values at `i`. Simplify using `only [descEnum, ← this, Fin.rev_rev]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem descEnum_unique {n : ℕ} {E : Finset ℚ} (h : E.card = n) {f : Fin n → ℚ} (hf : StrictAnti f) (hm : ∀ i, f i ∈ E) :
     descEnum E h = f := by
@@ -273,7 +271,7 @@ theorem descEnum_unique {n : ℕ} {E : Finset ℚ} (h : E.card = n) {f : Fin n �
   simp only [descEnum, ← this, Fin.rev_rev]
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hE _ (descEnum_mem E h i)`. Conclude with `⟨z + (i : ℕ), by simp only [highestWeight, hz]; push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem highestWeight_int {n : ℕ} {E : Finset ℚ} (h : E.card = n) (hE : InCoset (((n : ℚ) - 1) / 2) E) (i : Fin n) :
     ∃ z : ℤ, highestWeight E h i = z := by
@@ -281,11 +279,11 @@ theorem highestWeight_int {n : ℕ} {E : Finset ℚ} (h : E.card = n) (hE : InCo
   exact ⟨z + (i : ℕ), by simp only [highestWeight, hz]; push_cast; ring⟩
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => intro a`. Conclude with `a.elim0`. Consider the case `succ n`. Use `Fin.antitone_iff_succ_le.2 fun i => ?_` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `hE _ (descEnum_mem E h i.succ)`. Take `⟨w, hw⟩` from `hE _ (descEnum_mem E h i.castSucc)`. Establish `hlt` using `strictAnti_descEnum E h (Fin.castSucc_lt_succ (i := i))`. Rewrite `hlt` using `[hz, hw]`. Establish `h1 : z < w` using `by exact_mod_cast (by linarith : (z : ℚ) < w)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (z : ℚ) + 1 ≤ w` using `by exact_mod_cast h1`. Simplify using `only [highestWeight, hz, hw, Fin.val_succ, Fin.val_castSucc]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem highestWeight_antitone {n : ℕ} {E : Finset ℚ} (h : E.card = n) {c : ℚ} (hE : InCoset c E) :
     Antitone (highestWeight E h) := by
@@ -304,19 +302,19 @@ theorem highestWeight_antitone {n : ℕ} {E : Finset ℚ} (h : E.card = n) {c : 
     linarith
 
 /- English proof (translation)
-Establish `key : ∀ (f : Fin n → ℚ) (ε : Fin n → Bool), Function.Injective f → ∀ s : Bool, ((univ.image fun a => (f a, ε a)).filter fun x => x.2 = s).card = (univ.filter fun a => ε a = s).card`. Introduce `f ε hf s`. Rewrite using `[filter_image, card_image_of_injective _ fun a b h => hf (congrArg Prod.fst h)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨lam, ε, ⟨hanti, f, hf, rfl⟩, hHC, hp, hq⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hinj : Function.Injective f` using `fun a b h => hanti.injective (by rw [hf, hf, h])`. Use `⟨⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy e`. Take `⟨a, -, rfl⟩` from `mem_image.1 hx`. Take `⟨b, -, rfl⟩` from `mem_image.1 hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hinj e]`. Rewrite using `[card_image_of_injective _ fun a b h => hinj (congrArg Prod.fst h)]`. Simplify using the standard rewrite rules. Introduce `x hx`. Take `⟨s, hs⟩` from `mem_entries.1 hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, -, e⟩` from `mem_image.1 hs`. Take `⟨z, hz⟩` from `hHC.2 a`. Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `e1 : f a = x` using `congrArg Prod.fst e`. Rewrite `hz` using `[hf, e1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: ((x : ℚ) : ℝ) = ((((n : ℚ) - 1) / 2 + z : ℚ) : ℝ)` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions. Simplify using `only [signature, nPlus, nMinus, key f ε hinj, hp, hq]`. Introduce and unpack `⟨⟨hreg, hcard, hco⟩, hsig⟩`. Establish `hc : (entries S).card = n` using `hreg.card_entries.trans hcard`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : S = univ.image fun a => (descEnum _ hc a, sign S (descEnum _ hc a))` using `by conv_lhs => rw [hreg.eq_ofSign, ← image_descEnum _ hc, ofSign, image_image]`. Both sides reduce to the same expression. Establish `hanti : StrictAnti fun a => ((descEnum _ hc a : ℚ) : ℝ)` using `fun a b h => by simpa using strictAnti_descEnum _ hc h`. Use `⟨fun a => (descEnum _ hc a : ℝ), fun a => sign S (descEnum _ hc a), ⟨hanti, _, fun _ => rfl, hS⟩, ⟨hanti, fun a => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hco _ (descEnum_mem _ hc a)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨z, by simp only [hz]; push_cast; ring⟩`. Rewrite using `[← key _ _ (strictAnti_descEnum _ hc).injective, ← hS]`. Conclude with `congrArg Prod.fst hsig`. Rewrite using `[← key _ _ (strictAnti_descEnum _ hc).injective, ← hS]`. Conclude with `congrArg Prod.snd hsig`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodPar_iff {n p q : ℕ} {S : SPar} : GoodPar n p q S ↔ IsHC n S ∧ signature S = (p, q) := by
   have key : ∀ (f : Fin n → ℚ) (ε : Fin n → Bool), Function.Injective f → ∀ s : Bool,
@@ -361,9 +359,9 @@ def ncDists (S : SPar) : Finset ℚ := ((S ×ˢ S).filter fun x => x.1.2 ≠ x.2
 def ncGap (S : SPar) : WithTop ℚ := (ncDists S).min
 
 /- English proof (translation)
-Simplify using `only [ncDists, mem_image, mem_filter, mem_product]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨⟨h1, h2⟩, h3⟩, h4⟩`. Conclude with `⟨_, h1, _, h2, h3, h4⟩`. Introduce and unpack `⟨x, h1, y, h2, h3, h4⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(x, y), ⟨⟨h1, h2⟩, h3⟩, h4⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_ncDists {S : SPar} {d : ℚ} : d ∈ ncDists S ↔ ∃ x ∈ S, ∃ y ∈ S, x.2 ≠ y.2 ∧ |x.1 - y.1| = d := by
   simp only [ncDists, mem_image, mem_filter, mem_product]
@@ -372,7 +370,7 @@ theorem mem_ncDists {S : SPar} {d : ℚ} : d ∈ ncDists S ↔ ∃ x ∈ S, ∃ 
   · rintro ⟨x, h1, y, h2, h3, h4⟩; exact ⟨(x, y), ⟨⟨h1, h2⟩, h3⟩, h4⟩
 
 /- English proof (translation)
-Rewrite using `[ncGap, Finset.le_min_iff]`. Simplify using `only [mem_ncDists, WithTop.coe_le_coe]`. Conclude with `⟨fun H x hx y hy hs => H _ ⟨x, hx, y, hy, hs, rfl⟩, by rintro H _ ⟨x, hx, y, hy, hs, rfl⟩; exact H x hx y hy hs⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem le_ncGap_iff {S : SPar} {h : ℚ} :
     (h : WithTop ℚ) ≤ ncGap S ↔ ∀ x ∈ S, ∀ y ∈ S, x.2 ≠ y.2 → h ≤ |x.1 - y.1| := by
@@ -381,7 +379,7 @@ theorem le_ncGap_iff {S : SPar} {h : ℚ} :
   exact ⟨fun H x hx y hy hs => H _ ⟨x, hx, y, hy, hs, rfl⟩, by rintro H _ ⟨x, hx, y, hy, hs, rfl⟩; exact H x hx y hy hs⟩
 
 /- English proof (translation)
-Rewrite using `[ncGap, Finset.min_eq_top, eq_empty_iff_forall_notMem]`. Simplify using `only [mem_ncDists]`. Conclude with `⟨fun H x hx y hy => by_contra fun hs => H _ ⟨x, hx, y, hy, hs, rfl⟩, by rintro H _ ⟨x, hx, y, hy, hs, -⟩; exact hs (H x hx y hy)⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem ncGap_eq_top_iff {S : SPar} : ncGap S = ⊤ ↔ ∀ x ∈ S, ∀ y ∈ S, x.2 = y.2 := by
   rw [ncGap, Finset.min_eq_top, eq_empty_iff_forall_notMem]
@@ -390,7 +388,7 @@ theorem ncGap_eq_top_iff {S : SPar} : ncGap S = ⊤ ↔ ∀ x ∈ S, ∀ y ∈ S
     by rintro H _ ⟨x, hx, y, hy, hs, -⟩; exact hs (H x hx y hy)⟩
 
 /- English proof (translation)
-Rewrite using `[← mem_ncDists, ← le_ncGap_iff]`. Conclude with `⟨fun h => ⟨mem_of_min h, h.ge⟩, fun h => le_antisymm (min_le h.1) h.2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ncGap_eq_coe_iff {S : SPar} {g : ℚ} : ncGap S = (g : WithTop ℚ) ↔
     (∃ x ∈ S, ∃ y ∈ S, x.2 ≠ y.2 ∧ |x.1 - y.1| = g) ∧ ∀ x ∈ S, ∀ y ∈ S, x.2 ≠ y.2 → g ≤ |x.1 - y.1| := by
@@ -398,9 +396,9 @@ theorem ncGap_eq_coe_iff {S : SPar} {g : ℚ} : ncGap S = (g : WithTop ℚ) ↔
   exact ⟨fun h => ⟨mem_of_min h, h.ge⟩, fun h => le_antisymm (min_le h.1) h.2⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H x hx y hy hs`. Use `H.trans_le (min_le (mem_ncDists.2 ⟨x, hx, y, hy, hs, rfl⟩))` as an intermediate fact. Conclude with `this` after adjusting the coercions. Introduce `H`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hg : ncGap S with`. Consider the case `top => exact WithTop.coe_lt_top _`. Consider the case `coe g`. Take `⟨⟨x, hx, y, hy, hs, rfl⟩, -⟩` from `ncGap_eq_coe_iff.1 hg`. Conclude with `H x hx y hy hs` after adjusting the coercions.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lt_ncGap_iff {S : SPar} {h : ℚ} :
     (h : WithTop ℚ) < ncGap S ↔ ∀ x ∈ S, ∀ y ∈ S, x.2 ≠ y.2 → h < |x.1 - y.1| := by
@@ -416,20 +414,20 @@ theorem lt_ncGap_iff {S : SPar} {h : ℚ} :
       exact_mod_cast H x hx y hy hs
 
 /- English proof (translation)
-The claim follows from `ncGap_eq_top_iff.2 fun _ hx _ hy => by rw [(mem_plus.1 hx).2, (mem_plus.1 hy).2]`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ncGap_plus (E : Finset ℚ) : ncGap (plus E) = ⊤ :=
   ncGap_eq_top_iff.2 fun _ hx _ hy => by rw [(mem_plus.1 hx).2, (mem_plus.1 hy).2]
 
 /- English proof (translation)
-Simplify using `only [TPar.block, mem_image, mem_range]`. Conclude with `⟨fun ⟨a, h, e⟩ => ⟨a, h, e.symm⟩, fun ⟨a, h, e⟩ => ⟨a, h, e.symm⟩⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_block {c x : ℚ} {t : ℕ} : x ∈ TPar.block c t ↔ ∃ a : ℕ, a < t ∧ x = c + ((t : ℚ) - 1) / 2 - a := by
   simp only [TPar.block, mem_image, mem_range]
   exact ⟨fun ⟨a, h, e⟩ => ⟨a, h, e.symm⟩, fun ⟨a, h, e⟩ => ⟨a, h, e.symm⟩⟩
 
 /- English proof (translation)
-Rewrite using `[TPar.block, card_image_of_injective, card_range]`. Introduce `a b h`. Establish `: (a : ℚ) = b` using `by simp only at h; linarith`. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 @[simp] theorem card_block (c : ℚ) (t : ℕ) : (TPar.block c t).card = t := by
   rw [TPar.block, card_image_of_injective, card_range]
@@ -438,7 +436,7 @@ Rewrite using `[TPar.block, card_image_of_injective, card_range]`. Introduce `a 
   exact_mod_cast this
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `mem_block.1 h`. Establish `h1 : (a : ℚ) + 1 ≤ t` using `by exact_mod_cast ha`. Establish `h0 : (0 : ℚ) ≤ a` using `by positivity`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_sub_le_of_mem_block {c x : ℚ} {t : ℕ} (h : x ∈ TPar.block c t) : |x - c| ≤ ((t : ℚ) - 1) / 2 := by
   obtain ⟨a, ha, rfl⟩ := mem_block.1 h
@@ -447,9 +445,9 @@ theorem abs_sub_le_of_mem_block {c x : ℚ} {t : ℕ} (h : x ∈ TPar.block c t)
   rw [abs_le]; constructor <;> linarith
 
 /- English proof (translation)
-Establish `key : ∀ c x : ℚ, x ∈ TPar.block c t → -x ∈ TPar.block (-c) t`. Introduce `c x h`. Take `⟨a, ha, rfl⟩` from `mem_block.1 h`. Use `mem_block.2 ⟨t - 1 - a, by omega, ?_⟩` and prove the remaining obligations. Establish `: ((t - 1 - a : ℕ) : ℚ) = t - 1 - a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Nat.sub_sub, Nat.cast_sub (by omega)]; push_cast; ring`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨fun h => by simpa using key _ _ h, key _ _⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 -/
 theorem neg_mem_block {c x : ℚ} {t : ℕ} : -x ∈ TPar.block (-c) t ↔ x ∈ TPar.block c t := by
   have key : ∀ c x : ℚ, x ∈ TPar.block c t → -x ∈ TPar.block (-c) t := by
@@ -462,14 +460,14 @@ theorem neg_mem_block {c x : ℚ} {t : ℕ} : -x ∈ TPar.block (-c) t ↔ x ∈
   exact ⟨fun h => by simpa using key _ _ h, key _ _⟩
 
 /- English proof (translation)
-Simplify using `only [mem_block]`. Conclude with `exists_congr fun a => and_congr_right fun _ => ⟨fun e => by linarith, fun e => by linarith⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sub_mem_block {c x h : ℚ} {t : ℕ} : x - h ∈ TPar.block c t ↔ x ∈ TPar.block (c + h) t := by
   simp only [mem_block]
   exact exists_congr fun a => and_congr_right fun _ => ⟨fun e => by linarith, fun e => by linarith⟩
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨a, -, rfl⟩` from `mem_block.1 hx`. Conclude with `⟨-1 - a, by push_cast; ring⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inCoset_block (c : ℚ) (t : ℕ) : InCoset (c + ((t : ℚ) + 1) / 2) (TPar.block c t) := by
   intro x hx
@@ -498,9 +496,9 @@ def lift : Orientation → ℚ → ℕ → SPar → SPar
   | .neg => liftMinus
 
 /- English proof (translation)
-Rewrite using `[mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Apply the tactic sequence `by_cases h : P y.1 <;> simp [h, hy]`. Introduce and unpack `(⟨h, hx⟩ | ⟨h, hx⟩)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x, hx, by simp [h]⟩`. Conclude with `⟨_, hx, by simp [h]⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem mem_image_change {P : ℚ → Prop} [DecidablePred P] {S : SPar} {x : ℚ × Bool} :
     x ∈ (S.image fun y => (y.1, if P y.1 then !y.2 else y.2)) ↔ (¬ P x.1 ∧ x ∈ S) ∨ (P x.1 ∧ (x.1, !x.2) ∈ S) := by
@@ -513,21 +511,21 @@ theorem mem_image_change {P : ℚ → Prop} [DecidablePred P] {S : SPar} {x : �
     · exact ⟨_, hx, by simp [h]⟩
 
 /- English proof (translation)
-Rewrite using `[liftPlus, mem_union, mem_image_change (P := fun y => y < c), mem_plus, not_lt, or_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_liftPlus {c : ℚ} {t : ℕ} {S : SPar} {x : ℚ × Bool} : x ∈ liftPlus c t S ↔
     (c ≤ x.1 ∧ x ∈ S) ∨ (x.1 < c ∧ (x.1, !x.2) ∈ S) ∨ (x.1 ∈ TPar.block c t ∧ x.2 = true) := by
   rw [liftPlus, mem_union, mem_image_change (P := fun y => y < c), mem_plus, not_lt, or_assoc]
 
 /- English proof (translation)
-Rewrite using `[liftMinus, mem_union, mem_image_change (P := fun y => c < y), mem_plus, not_lt, or_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_liftMinus {c : ℚ} {t : ℕ} {S : SPar} {x : ℚ × Bool} : x ∈ liftMinus c t S ↔
     (x.1 ≤ c ∧ x ∈ S) ∨ (c < x.1 ∧ (x.1, !x.2) ∈ S) ∨ (x.1 ∈ TPar.block c t ∧ x.2 = true) := by
   rw [liftMinus, mem_union, mem_image_change (P := fun y => c < y), mem_plus, not_lt, or_assoc]
 
 /- English proof (translation)
-Apply the tactic sequence `cases o <;> simp only [lift, liftPlus, liftMinus, entries_union, entries_plus] <;> congr 1 <;>`. Apply the tactic sequence `simp only [entries, image_image] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem entries_lift (o : Orientation) (c : ℚ) (t : ℕ) (S : SPar) :
     entries (lift o c t S) = entries S ∪ TPar.block c t := by
@@ -535,14 +533,14 @@ theorem entries_lift (o : Orientation) (c : ℚ) (t : ℕ) (S : SPar) :
     simp only [entries, image_image] <;> rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mem_liftMinus, mem_negate, mem_liftPlus, neg_mem_block, neg_neg, neg_le_neg_iff, neg_lt_neg_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem liftMinus_eq_negate (c : ℚ) (t : ℕ) (S : SPar) : liftMinus c t S = negate (liftPlus (-c) t (negate S)) := by
   ext x
   simp only [mem_liftMinus, mem_negate, mem_liftPlus, neg_mem_block, neg_neg, neg_le_neg_iff, neg_lt_neg_iff]
 
 /- English proof (translation)
-Use extensionality with `x`. Apply the tactic sequence `cases o <;>`. Simplify using `only [lift, mem_liftMinus, mem_shift, mem_liftPlus, sub_mem_block, le_sub_iff_add_le, sub_lt_iff_lt_add, sub_le_iff_le_add, lt_sub_iff_add_lt]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem lift_shift (o : Orientation) (c h : ℚ) (t : ℕ) (S : SPar) :
     lift o (c + h) t (shift h S) = shift h (lift o c t S) := by
@@ -552,7 +550,7 @@ theorem lift_shift (o : Orientation) (c h : ℚ) (t : ℕ) (S : SPar) :
       sub_le_iff_le_add, lt_sub_iff_add_lt]
 
 /- English proof (translation)
-Use `disjoint_left.2 fun x hx hb => ?_` and prove the remaining obligations. Use `h x hx` as an intermediate fact. Use `abs_sub_le_of_mem_block hb` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem FarFrom.disjoint_block {c : ℚ} {t : ℕ} {S : SPar} (h : FarFrom c (((t : ℚ) + 1) / 2) S) :
     Disjoint (entries S) (TPar.block c t) := by
@@ -562,11 +560,11 @@ theorem FarFrom.disjoint_block {c : ℚ} {t : ℕ} {S : SPar} (h : FarFrom c (((
   linarith
 
 /- English proof (translation)
-Establish `key : ∀ (P : ℚ → Prop) [DecidablePred P], IsRegular ((S.image fun y => (y.1, if P y.1 then !y.2 else y.2)) ∪ plus (TPar.block c t))`. Introduce `P _`. Use `IsRegular.union ?_ (isRegular_plus _) ?_` and prove the remaining obligations. Introduce `x hx y hy e`. Take `⟨x, hx', rfl⟩` from `mem_image.1 hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy', rfl⟩` from `mem_image.1 hy`. Establish `e' : x.1 = y.1` using `e`. Simplify using `only [e', hS x hx' y hy' e']`. Rewrite using `[entries_plus, entries, image_image]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `o`. Conclude with `key fun y => y < c`. Conclude with `key fun y => c < y`.
+A detailed English derivation is pending.
 -/
 theorem IsRegular.lift {S : SPar} (hS : IsRegular S) (o : Orientation) {c : ℚ} {t : ℕ}
     (h : Disjoint (entries S) (TPar.block c t)) : IsRegular (lift o c t S) := by
@@ -585,14 +583,14 @@ theorem IsRegular.lift {S : SPar} (hS : IsRegular S) (o : Orientation) {c : ℚ}
   · exact key fun y => c < y
 
 /- English proof (translation)
-Rewrite using `[← (hS.lift o h).card_entries, entries_lift, card_union_of_disjoint h, card_block, hS.card_entries]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsRegular.card_lift {S : SPar} (hS : IsRegular S) (o : Orientation) {c : ℚ} {t : ℕ}
     (h : Disjoint (entries S) (TPar.block c t)) : (SignedHC.lift o c t S).card = S.card + t := by
   rw [← (hS.lift o h).card_entries, entries_lift, card_union_of_disjoint h, card_block, hS.card_entries]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx` using `[entries_lift, mem_union]`. Conclude with `hx.elim (h x) (inCoset_block c t x)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InCoset.lift {c : ℚ} {t : ℕ} {S : SPar} (h : InCoset (c + ((t : ℚ) + 1) / 2) (entries S)) (o : Orientation) :
     InCoset (c + ((t : ℚ) + 1) / 2) (entries (lift o c t S)) := by
@@ -601,13 +599,13 @@ theorem InCoset.lift {c : ℚ} {t : ℕ} {S : SPar} (h : InCoset (c + ((t : ℚ)
   exact hx.elim (h x) (inCoset_block c t x)
 
 /- English proof (translation)
-Rewrite using `[← card_union_of_disjoint (disjoint_filter.2 fun x _ h1 h2 => h1.1 h2.1), nMinus]`. Use `symm`. Use `card_bij (fun x _ => (x.1, false)) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨a, s⟩ hx`. Simplify using `only [mem_union, mem_filter, mem_image_change (P := P)] at hx ⊢`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Break down `hx with ⟨h1, h2, rfl⟩ | ⟨h1, h2, rfl⟩` into its components or cases. Conclude with `⟨Or.inl (Or.inl ⟨h2, h1⟩), trivial⟩`. Conclude with `⟨Or.inl (Or.inr ⟨h2, h1⟩), trivial⟩`. Introduce and unpack `⟨a, s⟩ hx ⟨a', s'⟩ hy e`. Take `rfl : a = a'` from `congrArg Prod.fst e`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Simplify using `only [mem_union, mem_filter] at hx hy`. Apply the tactic sequence `rcases hx with ⟨-, h2, rfl⟩ | ⟨-, h2, rfl⟩ <;> rcases hy with ⟨-, h3, rfl⟩ | ⟨-, h3, rfl⟩ <;> first | rfl | contradiction`. Introduce and unpack `⟨a, s⟩ hx`. Simplify using `only [mem_union, mem_filter, mem_image_change (P := P), mem_plus] at hx ⊢`. Take `⟨h, rfl⟩` from `hx`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Break down `h with (⟨h1, h2⟩ | ⟨h1, h2⟩) | ⟨-, h⟩` into its components or cases. Conclude with `⟨(a, false), Or.inl ⟨h2, h1, rfl⟩, rfl⟩`. Conclude with `⟨(a, true), Or.inr ⟨h2, h1, rfl⟩, rfl⟩`. Conclude with `absurd h (by simp)`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nMinus_change (P : ℚ → Prop) [DecidablePred P] (S : SPar) (E : Finset ℚ) :
     nMinus ((S.image fun y => (y.1, if P y.1 then !y.2 else y.2)) ∪ plus E) =
@@ -634,7 +632,7 @@ theorem nMinus_change (P : ℚ → Prop) [DecidablePred P] (S : SPar) (E : Finse
     · exact absurd h (by simp)
 
 /- English proof (translation)
-Rewrite using `[liftPlus, nMinus_change (fun y => y < c)]`. Simplify using `only [not_lt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nMinus_liftPlus (c : ℚ) (t : ℕ) (S : SPar) : nMinus (liftPlus c t S) =
     (S.filter fun x => c ≤ x.1 ∧ x.2 = false).card + (S.filter fun x => x.1 < c ∧ x.2 = true).card := by
@@ -642,7 +640,7 @@ theorem nMinus_liftPlus (c : ℚ) (t : ℕ) (S : SPar) : nMinus (liftPlus c t S)
   simp only [not_lt]
 
 /- English proof (translation)
-Rewrite using `[liftMinus, nMinus_change (fun y => c < y)]`. Simplify using `only [not_lt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nMinus_liftMinus (c : ℚ) (t : ℕ) (S : SPar) : nMinus (liftMinus c t S) =
     (S.filter fun x => x.1 ≤ c ∧ x.2 = false).card + (S.filter fun x => c < x.1 ∧ x.2 = true).card := by
@@ -652,9 +650,9 @@ theorem nMinus_liftMinus (c : ℚ) (t : ℕ) (S : SPar) : nMinus (liftMinus c t 
 def ofIx {p q : ℕ} (lam : Ix p q → ℚ) : SPar := univ.image fun a => (lam a, a.isLeft)
 
 /- English proof (translation)
-Substitute `hp hq` using the available equality. Take `⟨a, s⟩` from `x`. Simplify using `only [ofIx, mem_image, mem_univ, true_and, Sum.exists, ofBlocks, Sum.isLeft_inl, Sum.isLeft_inr, Prod.mk.injEq, List.mem_iff_getElem]`. Apply the tactic sequence `refine or_congr ?_ ?_ <;> constructor`. Introduce and unpack `⟨i, rfl, rfl⟩; exact ⟨⟨i, i.2, by simp⟩, rfl⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨i, hi, rfl⟩, rfl⟩; exact ⟨⟨i, hi⟩, by simp [hi], rfl⟩`. Introduce and unpack `⟨i, rfl, rfl⟩; exact ⟨⟨i, i.2, by simp⟩, rfl⟩`. Introduce and unpack `⟨⟨i, hi, rfl⟩, rfl⟩; exact ⟨⟨i, hi⟩, by simp [hi], rfl⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 -/
 theorem mem_ofIx_ofBlocks {p q : ℕ} {l₁ l₂ : List ℚ} (hp : l₁.length = p) (hq : l₂.length = q) {x : ℚ × Bool} :
     x ∈ ofIx (ofBlocks l₁ l₂ : Ix p q → ℚ) ↔ (x.1 ∈ l₁ ∧ x.2 = true) ∨ (x.1 ∈ l₂ ∧ x.2 = false) := by
@@ -669,11 +667,11 @@ theorem mem_ofIx_ofBlocks {p q : ℕ} {l₁ l₂ : List ℚ} (hp : l₁.length =
   · rintro ⟨⟨i, hi, rfl⟩, rfl⟩; exact ⟨⟨i, hi⟩, by simp [hi], rfl⟩
 
 /- English proof (translation)
-Use extensionality with `⟨a, s⟩`. Establish `hb : a ∈ TPar.block 0 t ↔ a ∈ Formalism.BasicNotions.TH.block t`. Simplify using `[mem_block, Formalism.BasicNotions.TH.block, eq_comm]`. Establish `hl : (Formalism.BasicNotions.TH.block t).length = t` using `by simp [Formalism.BasicNotions.TH.block]`. Simplify using `only [List.mem_append] at hp hn`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : a ∈ al → 0 < a` using `fun h => hp a (Or.inl h)`. Establish `h2 : a ∈ ga → 0 < a` using `fun h => hp a (Or.inr h)`. Establish `h3 : a ∈ be → a < 0` using `fun h => hn a (Or.inl h)`. Establish `h4 : a ∈ de → a < 0` using `fun h => hn a (Or.inr h)`. Rewrite using `[mem_liftPlus, lamA, lamA', mem_ofIx_ofBlocks (by simp) (by simp), mem_ofIx_ofBlocks (by simp) (by simp), mem_ofIx_ofBlocks (by simp [hl]; omega) (by simp), hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [List.mem_append]`. Apply the tactic sequence `cases s <;> simp <;> grind`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem liftPlus_lamA (t : ℕ) {al be ga de : List ℚ} (hp : ∀ e ∈ al ++ ga, 0 < e) (hn : ∀ e ∈ be ++ de, e < 0) :
     liftPlus 0 t (ofIx (lamA al be ga de)) = ofIx (lamA' t al be ga de) := by
@@ -692,7 +690,7 @@ theorem liftPlus_lamA (t : ℕ) {al be ga de : List ℚ} (hp : ∀ e ∈ al ++ g
   cases s <;> simp <;> grind
 
 /- English proof (translation)
-Rewrite using `[lt_ncGap_iff, GapGt]`. Simplify using `only [ofIx, forall_mem_image, mem_univ, true_implies]`. Use `forall₂_congr fun a b => imp_congr ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `cases a <;> cases b <;> simp [sameBlock]`. Rewrite using `[← Rat.cast_abs, Rat.cast_lt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem gapGt_iff {p q : ℕ} (lam : Ix p q → ℚ) (h : ℚ) : GapGt lam (h : ℝ) ↔ (h : WithTop ℚ) < ncGap (ofIx lam) := by
   rw [lt_ncGap_iff, GapGt]
@@ -704,17 +702,13 @@ theorem gapGt_iff {p q : ℕ} (lam : Ix p q → ℚ) (h : ℚ) : GapGt lam (h : 
 def Adjacent (E : Finset ℚ) (x y : ℚ) : Prop := x ∈ E ∧ y ∈ E ∧ y < x ∧ ∀ z ∈ E, ¬ (y < z ∧ z < x)
 
 /- English proof (translation)
-Establish `hp` using `List.pairwise_iff_getElem.1 (pairwise_descList E)`. Rewrite using `[List.isChain_iff_getElem]`. Prove the components needed by the constructor for the conclusion. Introduce `H x hx y hy hxy hz`. Take `⟨i, hi, rfl⟩` from `List.mem_iff_getElem.1 (mem_descList.2 hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj, rfl⟩` from `List.mem_iff_getElem.1 (mem_descList.2 hy)`. Break down `lt_trichotomy j (i + 1) with h | h | h` into its components or cases. Break down `Nat.lt_succ_iff_lt_or_eq.1 h with h | h` into its components or cases. Conclude with `absurd (hp j i hj hi h) (not_lt.2 hxy.le)`. Substitute `h` using the available equality.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Substitute using the available equality.
 
-Conclude with `absurd hxy (lt_irrefl _)`. Substitute `h` using the available equality. Conclude with `H i hj`. Conclude with `absurd ⟨hp (i + 1) j (by omega) hj h, hp i (i + 1) hi (by omega) (by omega)⟩ (hz _ (mem_descList.1 (List.getElem_mem _)))`. Introduce `H i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Use `H _ (mem_descList.1 (List.getElem_mem _)) _ (mem_descList.1 (List.getElem_mem _)) (hp i (i + 1) (by omega) hi (by omega)) ?_` and prove the remaining obligations. Introduce and unpack `z hz ⟨h1, h2⟩`. Take `⟨k, hk, rfl⟩` from `List.mem_iff_getElem.1 (mem_descList.2 hz)`. Break down `lt_trichotomy k i with h | h | h` into its components or cases. Conclude with `absurd (hp k i hk (by omega) h) (not_lt.2 h2.le)`.
-
-Substitute `h` using the available equality. Conclude with `absurd h2 (lt_irrefl _)`. Break down `(Nat.succ_le_of_lt h).eq_or_lt with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `absurd h1 (lt_irrefl _)`.
-
-Conclude with `absurd (hp (i + 1) k hi hk h) (not_lt.2 h1.le)`.
+Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isChain_descList_iff {E : Finset ℚ} {R : ℚ → ℚ → Prop} :
     (descList E).IsChain R ↔ ∀ x ∈ E, ∀ y ∈ E, y < x → (∀ z ∈ E, ¬ (y < z ∧ z < x)) → R x y := by
@@ -789,7 +783,7 @@ Evaluate the decidable proposition.
 theorem HePair.swap : ∀ {a b : Letter}, HePair a b → HePair a.swap b.swap := by decide
 
 /- English proof (translation)
-Rewrite using `[HeInterlace, word, List.isChain_map, isChain_descList_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heInterlace_iff {S T : SPar} : HeInterlace S T ↔
     IsRegular S ∧ IsRegular T ∧ Disjoint (entries S) (entries T) ∧
@@ -800,34 +794,34 @@ theorem heInterlace_iff {S T : SPar} : HeInterlace S T ↔
 instance (S T : SPar) : Decidable (HeInterlace S T) := decidable_of_iff _ heInterlace_iff.symm
 
 /- English proof (translation)
-Rewrite using `[word, descList_eq hL h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem word_eq {S T : SPar} {L : List ℚ} (hL : L.Pairwise (· > ·)) (h : L.toFinset = entries S ∪ entries T) :
     word S T = L.map (letter S T) := by
   rw [word, descList_eq hL h]
 
 /- English proof (translation)
-Rewrite using `[letter, if_pos (fst_mem_entries hx), hS.sign_eq hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem letter_left {S : SPar} (hS : IsRegular S) (T : SPar) {x : ℚ × Bool} (hx : x ∈ S) :
     letter S T x.1 = if x.2 then .plus else .minus := by
   rw [letter, if_pos (fst_mem_entries hx), hS.sign_eq hx]
 
 /- English proof (translation)
-Rewrite using `[letter, if_neg (disjoint_right.1 h (fst_mem_entries hx)), hT.sign_eq hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem letter_right {S T : SPar} (hT : IsRegular T) (h : Disjoint (entries S) (entries T)) {x : ℚ × Bool}
     (hx : x ∈ T) : letter S T x.1 = if x.2 then .circPlus else .circMinus := by
   rw [letter, if_neg (disjoint_right.1 h (fst_mem_entries hx)), hT.sign_eq hx]
 
 /- English proof (translation)
-Take `⟨hS, hT, hd, hw⟩` from `heInterlace_iff.1 h`. Establish `he : ∀ U : SPar, entries (SignedHC.flip U) = entries U` using `fun U => by`. Simplify using `only [entries, SignedHC.flip, image_image]`. Both sides reduce to the same expression. Establish `hr : ∀ U : SPar, IsRegular U → IsRegular (SignedHC.flip U)` using `fun U hU x hx y hy e => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `using hU _ (mem_flip.1 hx) _ (mem_flip.1 hy) e`. Establish `hd' : Disjoint (entries (SignedHC.flip S)) (entries (SignedHC.flip T))` using `by rwa [he, he]`. Establish `hl : ∀ x ∈ entries S ∪ entries T, letter (SignedHC.flip S) (SignedHC.flip T) x = (letter S T x).swap`. Introduce `x hx`. Apply the tactic sequence `rcases mem_union.1 hx with hx | hx <;> obtain ⟨s, hs⟩ := mem_entries.1 hx`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[letter_left (hr S hS) _ (x := (x, !s)) (mem_flip.2 (by simpa using hs)), letter_left hS T hs]`. Apply the tactic sequence `cases s <;> rfl`. Rewrite using `[letter_right (hr T hT) hd' (x := (x, !s)) (mem_flip.2 (by simpa using hs)), letter_right hT hd hs]`. Apply the tactic sequence `cases s <;> rfl`. Use `heInterlace_iff.2 ⟨hr S hS, hr T hT, hd', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he, he]`. Introduce `x hx y hy h1 h2`. Rewrite using `[hl x hx, hl y hy]`. Conclude with `(hw x hx y hy h1 h2).swap`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HeInterlace.flip {S T : SPar} (h : HeInterlace S T) : HeInterlace (flip S) (flip T) := by
   obtain ⟨hS, hT, hd, hw⟩ := heInterlace_iff.1 h
@@ -850,11 +844,11 @@ theorem HeInterlace.flip {S T : SPar} (h : HeInterlace S T) : HeInterlace (flip 
   exact (hw x hx y hy h1 h2).swap
 
 /- English proof (translation)
-Take `⟨hS, hT, hd, hw⟩` from `heInterlace_iff.1 h`. Establish `he : ∀ (U : SPar) (x : ℚ), x ∈ entries (SignedHC.negate U) ↔ -x ∈ entries U` using `fun U x => by`. Simplify using `only [mem_entries, mem_negate]`. Establish `hr : ∀ U : SPar, IsRegular U → IsRegular (SignedHC.negate U)` using `fun U hU x hx y hy e => hU (-x.1, x.2) (mem_negate.1 hx) (-y.1, y.2) (mem_negate.1 hy) (congrArg Neg.neg e)`. Establish `hl : ∀ x, letter (SignedHC.negate S) (SignedHC.negate T) x = letter S T (-x)` using `fun x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[letter, sign, he, mem_negate]`. Establish `hu : ∀ x, x ∈ entries (SignedHC.negate S) ∪ entries (SignedHC.negate T) ↔ -x ∈ entries S ∪ entries T` using `fun x => by simp only [mem_union, he]`. Use `heInterlace_iff.2 ⟨hr S hS, hr T hT, disjoint_left.2 fun x h1 h2 => disjoint_left.1 hd ((he _ _).1 h1) ((he _ _).1 h2), ?_⟩` and prove the remaining obligations. Introduce `x hx y hy h1 h2`. Rewrite using `[hl, hl]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(hw _ ((hu y).1 hy) _ ((hu x).1 hx) (neg_lt_neg h1) fun z hz hh => ?_).symm` and prove the remaining obligations. Conclude with `h2 (-z) ((hu _).2 (by rwa [neg_neg])) ⟨by linarith [hh.2], by linarith [hh.1]⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem HeInterlace.negate {S T : SPar} (h : HeInterlace S T) : HeInterlace (negate S) (negate T) := by
   obtain ⟨hS, hT, hd, hw⟩ := heInterlace_iff.1 h
@@ -878,7 +872,7 @@ def StrictInterlace (A B : Finset ℚ) : Prop :=
     ∀ i : Fin n, b i < a i.castSucc ∧ a i.succ < b i
 
 /- English proof (translation)
-Establish `ha : StrictAnti a` using `Fin.strictAnti_iff_succ_lt.2 fun i => (h i).2.trans (h i).1`. Use `⟨ha, fun i j hij => ?_⟩` and prove the remaining obligations. Conclude with `(h j).1.trans_le ((ha.antitone (show i.succ ≤ j.castSucc from hij)).trans (h i).2.le)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem strictAnti_of_interlace {n : ℕ} {a : Fin (n + 1) → ℚ} {b : Fin n → ℚ}
     (h : ∀ i : Fin n, b i < a i.castSucc ∧ a i.succ < b i) : StrictAnti a ∧ StrictAnti b := by
@@ -887,9 +881,9 @@ theorem strictAnti_of_interlace {n : ℕ} {a : Fin (n + 1) → ℚ} {b : Fin n �
   exact (h j).1.trans_le ((ha.antitone (show i.succ ≤ j.castSucc from hij)).trans (h i).2.le)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n', a, b, rfl, rfl, h⟩`. Take `⟨ha, hb⟩` from `strictAnti_of_interlace h`. Establish `: n' = n` using `by rw [card_image_of_injective _ hb.injective] at hB; simpa using hB`. Substitute `this` using the available equality.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[descEnum_unique hA ha fun i => mem_image_of_mem _ (mem_univ i), descEnum_unique hB hb fun i => mem_image_of_mem _ (mem_univ i)]`. Conclude with `h`. Introduce `h`. Conclude with `⟨n, _, _, (image_descEnum A hA).symm, (image_descEnum B hB).symm, h⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem strictInterlace_iff_descEnum {n : ℕ} {A B : Finset ℚ} (hA : A.card = n + 1) (hB : B.card = n) :
     StrictInterlace A B ↔ ∀ i : Fin n, descEnum B hB i < descEnum A hA i.castSucc ∧ descEnum A hA i.succ < descEnum B hB i := by
@@ -905,7 +899,7 @@ theorem strictInterlace_iff_descEnum {n : ℕ} {A B : Finset ℚ} (hA : A.card =
     exact ⟨n, _, _, (image_descEnum A hA).symm, (image_descEnum B hB).symm, h⟩
 
 /- English proof (translation)
-Take `⟨n, a, b, rfl, rfl, h⟩` from `h`. Take `⟨ha, hb⟩` from `strictAnti_of_interlace h`. Rewrite using `[card_image_of_injective _ ha.injective, card_image_of_injective _ hb.injective]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem StrictInterlace.card_eq {A B : Finset ℚ} (h : StrictInterlace A B) : A.card = B.card + 1 := by
   obtain ⟨n, a, b, rfl, rfl, h⟩ := h
@@ -913,41 +907,39 @@ theorem StrictInterlace.card_eq {A B : Finset ℚ} (h : StrictInterlace A B) : A
   rw [card_image_of_injective _ ha.injective, card_image_of_injective _ hb.injective]; simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, a, b, rfl, rfl, h⟩`. Take `⟨ha, hb⟩` from `strictAnti_of_interlace h`. Establish `ma : ∀ i, a i ∈ univ.image a` using `fun i => mem_image_of_mem _ (mem_univ i)`. Establish `mb : ∀ i, b i ∈ univ.image b` using `fun i => mem_image_of_mem _ (mem_univ i)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : Disjoint (univ.image a) (univ.image b)`. Use `disjoint_left.2 fun x hx hy => ?_` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `mem_image.1 hx`. Take `⟨j, -, e⟩` from `mem_image.1 hy`. Break down `le_or_gt i j.castSucc with hij | hij` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd ((h j).1.trans_le (ha.antitone hij)) (by rw [e]; exact lt_irrefl _)`. Conclude with `absurd ((ha.antitone (show j.succ ≤ i from hij)).trans_lt (h j).2) (by rw [e]; exact lt_irrefl _)`. Use `⟨hd, ⟨_, ma 0⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨j, -, rfl⟩` from `mem_image.1 hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, ma _, (h j).1⟩`. Introduce `y hy`. Take `⟨j, -, rfl⟩` from `mem_image.1 hy`. Conclude with `⟨_, ma _, (h j).2⟩`. Introduce `x hx y hy hxy hz`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hxa hya`. Take `⟨i, -, rfl⟩` from `mem_image.1 hxa`. Take `⟨j, -, rfl⟩` from `mem_image.1 hya`. Establish `hij : i < j` using `ha.lt_iff_gt.1 hxy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi : i.1 < n` using `by have := j.2; have : i.1 < j.1 := hij; omega`. Conclude with `hz (b ⟨i.1, hi⟩) (mem_union_right _ (mb _)) ⟨(ha.antitone (show (⟨i.1, hi⟩ : Fin n).succ ≤ j from hij)).trans_lt (h _).2, (h ⟨i.1, hi⟩).1⟩`. Introduce `hya`. Assume the negation of the conclusion as `hxa`. Take `⟨i, -, rfl⟩` from `mem_image.1 ((mem_union.1 hx).resolve_left hxa)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨j, -, rfl⟩` from `mem_image.1 ((mem_union.1 hy).resolve_left hya)`. Establish `hij : i < j` using `hb.lt_iff_gt.1 hxy`. Conclude with `hz (a i.succ) (mem_union_left _ (ma _)) ⟨(h j).1.trans_le (ha.antitone (show i.succ ≤ j.castSucc from hij)), (h i).2⟩`. Introduce and unpack `⟨hd, ⟨x0, hx0⟩, htop, hbot, hadj⟩`. Establish `hc` using `List.isChain_iff_getElem.1 ((isChain_descList_iff (R := fun x y => x ∈ A ↔ y ∉ A)).2 hadj)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Establish `hp` using `List.pairwise_iff_getElem.1 (pairwise_descList (A ∪ B))`. Establish `hm : ∀ x, x ∈ A ∪ B ↔ ∃ i, ∃ h : i < (descList (A ∪ B)).length, (descList (A ∪ B))[i] = x` using `fun x => by rw [← mem_descList, List.mem_iff_getElem]`. Generalize the expression as in `descList (A ∪ B) = L at hc hp hm`. Take `⟨i0, hi0, -⟩` from `(hm x0).1 (mem_union_left _ hx0)`. Establish `hin : ∀ i (h : i < L.length), L[i] ∉ A → L[i] ∈ B` using `fun i h hA => (mem_union.1 ((hm _).2 ⟨i, h, rfl⟩)).resolve_left hA`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h0 : L[0] ∈ A`. Assume the negation of the conclusion as `hA`. Take `⟨x, hx, hlt⟩` from `htop _ (hin 0 (by omega) hA)`. Take `⟨i, hi, rfl⟩` from `(hm x).1 (mem_union_left _ hx)`. Break down `Nat.eq_zero_or_pos i with rfl | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hA hx`. Conclude with `absurd (hp 0 i (by omega) hi h) (not_lt.2 hlt.le)`. Establish `hl : L[L.length - 1] ∈ A`. Assume the negation of the conclusion as `hA`. Take `⟨x, hx, hlt⟩` from `hbot _ (hin _ (by omega) hA)`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Take `⟨i, hi, rfl⟩` from `(hm x).1 (mem_union_left _ hx)`. Break down `(show i ≤ L.length - 1 by omega).eq_or_lt with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `hA hx`. Conclude with `absurd (hp i _ hi (by omega) h) (not_lt.2 hlt.le)`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpar : ∀ i (h : i < L.length), L[i] ∈ A ↔ i % 2 = 0`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro _`. Simplify using `using h0`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Consider the case `succ i ih`. Introduce `h`. Establish `h1` using `hc i h`. Establish `h2` using `ih (by omega)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Introduce `h3; by_contra h4; exact (h1.1 (h2.2 (by omega))) h3`. Introduce `h3`. Assume the negation of the conclusion as `h4`. Use `h2.1 (h1.2 h4)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hodd` using `(hpar _ (by omega)).1 hl`. Use `⟨L.length / 2, fun i => L[2 * i.1]'(by have := i.2; omega), fun i => L[2 * i.1 + 1]'(by have := i.2; omega), ?_, ?_, fun i => ⟨hp _ _ _ _ (by simp), hp _ _ _ _ (by simp; omega)⟩⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [mem_image, mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Take `⟨i, hi, rfl⟩` from `(hm x).1 (mem_union_left _ hx)`. Use `(hpar i hi).1 hx` as an intermediate fact. Conclude with `⟨⟨i / 2, by omega⟩, by congr 1; simp only; omega⟩`. Introduce and unpack `⟨i, rfl⟩; exact (hpar _ _).2 (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use extensionality with `x`. Simplify using `only [mem_image, mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨i, hi, rfl⟩` from `(hm x).1 (mem_union_right _ hx)`.
-
-Establish `: ¬ i % 2 = 0` using `fun h => disjoint_left.1 hd ((hpar i hi).2 h) hx`. Conclude with `⟨⟨i / 2, by omega⟩, by congr 1; simp only; omega⟩`. Introduce and unpack `⟨i, rfl⟩; exact hin _ _ fun h => by have := (hpar _ _).1 h; omega`.
+A detailed English derivation is pending.
 -/
 theorem strictInterlace_iff {A B : Finset ℚ} : StrictInterlace A B ↔
     Disjoint A B ∧ A.Nonempty ∧ (∀ y ∈ B, ∃ x ∈ A, y < x) ∧ (∀ y ∈ B, ∃ x ∈ A, x < y) ∧
@@ -1040,11 +1032,11 @@ theorem strictInterlace_iff {A B : Finset ℚ} : StrictInterlace A B ↔
 instance (A B : Finset ℚ) : Decidable (StrictInterlace A B) := decidable_of_iff _ strictInterlace_iff.symm
 
 /- English proof (translation)
-Establish `hl : ∀ x ∈ A ∪ B, letter (plus A) (plus B) x = if x ∈ A then .plus else .circPlus`. Introduce `x hx`. Distinguish the cases in `h : x ∈ A`. Simplify using `[letter, sign, h]`. Simplify using `[letter, sign, h, (mem_union.1 hx).resolve_left h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hq : ∀ x ∈ A ∪ B, ∀ y ∈ A ∪ B, HePair (letter (plus A) (plus B) x) (letter (plus A) (plus B) y) ↔ (x ∈ A ↔ y ∉ A)`. Introduce `x hx y hy`. Rewrite using `[hl x hx, hl y hy]`. Apply the tactic sequence `by_cases h : x ∈ A <;> by_cases h' : y ∈ A <;> simp [h, h'] <;> decide`. Rewrite using `[strictInterlace_iff, heInterlace_iff, entries_plus, entries_plus]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4, h5⟩`. Conclude with `⟨⟨isRegular_plus _, isRegular_plus _, h1, fun x hx y hy a b => (hq x hx y hy).2 (h5 x hx y hy a b)⟩, h2, h3, h4⟩`. Introduce and unpack `⟨⟨-, -, h1, h5⟩, h2, h3, h4⟩`. Conclude with `⟨h1, h2, h3, h4, fun x hx y hy a b => (hq x hx y hy).1 (h5 x hx y hy a b)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem strictInterlace_iff_he {A B : Finset ℚ} : StrictInterlace A B ↔
     HeInterlace (plus A) (plus B) ∧ A.Nonempty ∧ (∀ y ∈ B, ∃ x ∈ A, y < x) ∧ ∀ y ∈ B, ∃ x ∈ A, x < y := by
@@ -1157,39 +1149,39 @@ def weightX (j : ℕ) : Finset ℚ :=
 def parX (j : ℕ) : SPar := plus (G.weightX j)
 
 /- English proof (translation)
-Use `G.two_le_k` as an intermediate fact. Unfold `n r`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem n_eq : G.n = G.k + G.m := by have := G.two_le_k; unfold n r; omega
 
 /- English proof (translation)
-Unfold `a`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem a_m : G.a G.m = G.v 2 + G.ga + 1 / 2 := by unfold a; ring
 
 /- English proof (translation)
-Unfold `a`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem a_eq_succ_add (i : ℕ) : G.a i = G.a (i + 1) + G.ga := by unfold a; push_cast; ring
 
 /- English proof (translation)
-Take `⟨i, rfl⟩` from `Nat.exists_eq_add_of_le' hi`. Conclude with `G.a_eq_succ_add i`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem a_pred {i : ℕ} (hi : 1 ≤ i) : G.a (i - 1) = G.a i + G.ga := by
   obtain ⟨i, rfl⟩ := Nat.exists_eq_add_of_le' hi
   exact G.a_eq_succ_add i
 
 /- English proof (translation)
-Unfold `a`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem a_sub_a (i j : ℕ) : G.a i - G.a j = ((j : ℚ) - i) * G.ga := by unfold a; ring
 
 /- English proof (translation)
-Rewrite using `[mid, G.a_pred hi]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mid_eq {i : ℕ} (hi : 1 ≤ i) : G.mid i = G.a i + G.ga / 2 := by rw [mid, G.a_pred hi]; ring
 
 /- English proof (translation)
-Introduce `i hi`. Establish `h1` using `Int.floor_le (G.mid i)`. Establish `h2` using `Int.lt_floor_add_one (G.mid i)`. Apply the tactic sequence `rw [h i hi, abs_le]; constructor <;> linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nearMid_of_floor (h : ∀ i ∈ Icc 1 G.m, G.cen i = ⌊G.mid i⌋) : G.NearMid := by
   intro i hi
@@ -1198,7 +1190,7 @@ theorem nearMid_of_floor (h : ∀ i ∈ Icc 1 G.m, G.cen i = ⌊G.mid i⌋) : G.
   rw [h i hi, abs_le]; constructor <;> linarith
 
 /- English proof (translation)
-Introduce `i hi`. Establish `h1` using `Int.le_ceil (G.mid i)`. Establish `h2` using `Int.ceil_lt_add_one (G.mid i)`. Apply the tactic sequence `rw [h i hi, abs_le]; push_cast; constructor <;> linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nearMid_of_ceil (h : ∀ i ∈ Icc 1 G.m, G.cen i = ⌈G.mid i⌉ - 1) : G.NearMid := by
   intro i hi
@@ -1209,45 +1201,45 @@ theorem nearMid_of_ceil (h : ∀ i ∈ Icc 1 G.m, G.cen i = ⌈G.mid i⌉ - 1) :
 variable {G}
 
 /- English proof (translation)
-Simplify using `only [cloud, mem_image, mem_Icc, and_assoc, eq_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_cloud {x : ℚ} : x ∈ G.cloud ↔ ∃ i, 2 ≤ i ∧ i ≤ G.k ∧ x = G.v i := by
   simp only [cloud, mem_image, mem_Icc, and_assoc, eq_comm]
 
 /- English proof (translation)
-Simplify using `only [lows, mem_image, mem_Icc, and_assoc, eq_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_lows {x : ℚ} : x ∈ G.lows ↔ ∃ l, 1 ≤ l ∧ l ≤ G.m ∧ x = -(G.b l : ℚ) := by
   simp only [lows, mem_image, mem_Icc, and_assoc, eq_comm]
 
 /- English proof (translation)
-Simplify using `only [cloudHalf, mem_image, mem_Icc, and_assoc, eq_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_cloudHalf {x : ℚ} : x ∈ G.cloudHalf ↔ ∃ i, 2 ≤ i ∧ i ≤ G.k ∧ x = G.vHalf i := by
   simp only [cloudHalf, mem_image, mem_Icc, and_assoc, eq_comm]
 
 /- English proof (translation)
-Simplify using `only [tops, mem_image, mem_range, Nat.lt_succ_iff, eq_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_tops {x : ℚ} : x ∈ G.tops ↔ ∃ i, i ≤ G.m ∧ x = G.a i := by
   simp only [tops, mem_image, mem_range, Nat.lt_succ_iff, eq_comm]
 
 /- English proof (translation)
-Simplify using `only [lam, mem_union, mem_image, mem_range, Nat.lt_succ_iff, mem_plus, eq_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_lam {x : ℚ × Bool} : x ∈ G.lam ↔
     (∃ i, i ≤ G.m ∧ x = (G.a i, decide (Even (G.m - i)))) ∨ (x.1 ∈ G.cloudHalf ∧ x.2 = true) := by
   simp only [lam, mem_union, mem_image, mem_range, Nat.lt_succ_iff, mem_plus, eq_comm]
 
 /- English proof (translation)
-Simplify using `only [parD0, mem_union, mem_image, mem_Icc, mem_plus, and_assoc, eq_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_discrete_parameter_iff {x : ℚ × Bool} : x ∈ G.parD0 ↔
     (x.1 ∈ G.cloud ∧ x.2 = true) ∨ ∃ l, 1 ≤ l ∧ l ≤ G.m ∧ x = (-(G.b l : ℚ), decide (Even (l - 1))) := by
   simp only [parD0, mem_union, mem_image, mem_Icc, mem_plus, and_assoc, eq_comm]
 
 /- English proof (translation)
-Simplify using `only [parD, mem_union, mem_image, mem_Icc, mem_plus, mem_biUnion, and_assoc, or_assoc, eq_comm, ← exists_and_right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_parD {i j : ℕ} {x : ℚ × Bool} : x ∈ G.parD i j ↔
     (x.1 ∈ G.cloud ∧ x.2 = true) ∨
@@ -1258,7 +1250,7 @@ theorem mem_parD {i j : ℕ} {x : ℚ × Bool} : x ∈ G.parD i j ↔
     ← exists_and_right]
 
 /- English proof (translation)
-Simplify using `only [parPi, mem_union, mem_image, mem_range, Nat.lt_succ_iff, mem_Icc, mem_plus, mem_biUnion, and_assoc, or_assoc, eq_comm, ← exists_and_right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_parPi {i : ℕ} {x : ℚ × Bool} : x ∈ G.parPi i ↔
     (∃ l, l ≤ G.m ∧ x = (G.a l, decide (G.m - i ≤ l ∨ Even (G.m - i - l)))) ∨
@@ -1270,19 +1262,19 @@ theorem mem_parPi {i : ℕ} {x : ℚ × Bool} : x ∈ G.parPi i ↔
 variable (G)
 
 /- English proof (translation)
-Rewrite using `[lam, entries_union, entries_plus, entries, image_image]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem entries_lam : entries G.lam = G.tops ∪ G.cloudHalf := by
   rw [lam, entries_union, entries_plus, entries, image_image]; rfl
 
 /- English proof (translation)
-Rewrite using `[parD0, entries_union, entries_plus, entries, image_image]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem entries_discrete_parameter : entries G.parD0 = G.cloud ∪ G.lows := by
   rw [parD0, entries_union, entries_plus, entries, image_image]; rfl
 
 /- English proof (translation)
-Simplify using `only [parD, entries_union, entries_plus]`. Rewrite using `[entries, image_image]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem entries_parD (i j : ℕ) : entries (G.parD i j) =
     G.cloud ∪ G.lows ∪ (Icc 1 j).biUnion G.blockM ∪ (Icc (G.m - i + 1) G.m).biUnion G.blockC := by
@@ -1290,7 +1282,7 @@ theorem entries_parD (i j : ℕ) : entries (G.parD i j) =
   rw [entries, image_image]; rfl
 
 /- English proof (translation)
-Simplify using `only [parPi, entries_lam, entries_union, entries_plus]`. Rewrite using `[entries, image_image]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem entries_parPi (i : ℕ) : entries (G.parPi i) = entries G.lam ∪ (Icc (G.m - i + 1) G.m).biUnion G.blockC' := by
   simp only [parPi, entries_lam, entries_union, entries_plus]
@@ -1299,7 +1291,7 @@ theorem entries_parPi (i : ℕ) : entries (G.parPi i) = entries G.lam ∪ (Icc (
 variable {G}
 
 /- English proof (translation)
-Simplify using `only [weightX, entries_lam, mem_union, mem_biUnion, mem_Icc, and_assoc, or_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_weightX {j : ℕ} {x : ℚ} : x ∈ G.weightX j ↔ x ∈ G.tops ∨ x ∈ G.cloudHalf ∨
     (∃ i, 1 ≤ i ∧ i ≤ G.m ∧ x ∈ G.blockC' i) ∨ ∃ l, 1 ≤ l ∧ l ≤ j ∧ x ∈ G.blockMPlus l := by
@@ -1308,7 +1300,7 @@ theorem mem_weightX {j : ℕ} {x : ℚ} : x ∈ G.weightX j ↔ x ∈ G.tops ∨
 variable (G)
 
 /- English proof (translation)
-Establish `h : ∀ l, (G.m ≤ l ∨ Even (G.m - l)) ↔ Even (G.m - l)` using `fun l => ⟨fun h => h.elim (fun h => by simp [Nat.sub_eq_zero_of_le h]) id, Or.inr⟩`. Simplify using `[parPi, lam, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem parPi_zero : G.parPi 0 = G.lam := by
   have h : ∀ l, (G.m ≤ l ∨ Even (G.m - l)) ↔ Even (G.m - l) := fun l =>
@@ -1316,7 +1308,7 @@ theorem parPi_zero : G.parPi 0 = G.lam := by
   simp [parPi, lam, h]
 
 /- English proof (translation)
-Establish `h : ∀ l, (l ≤ 1 ∨ Even (l - 1)) ↔ Even (l - 1)` using `fun l => ⟨fun h => h.elim (fun h => by simp [Nat.sub_eq_zero_of_le h]) id, Or.inr⟩`. Simplify using `[parD, parD0, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem parD_zero_zero : G.parD 0 0 = G.parD0 := by
   have h : ∀ l, (l ≤ 1 ∨ Even (l - 1)) ↔ Even (l - 1) := fun l =>
@@ -1324,27 +1316,27 @@ theorem parD_zero_zero : G.parD 0 0 = G.parD0 := by
   simp [parD, parD0, h]
 
 /- English proof (translation)
-Simplify using `only [parPi, parX, weightX, entries_lam, plus_union, Nat.sub_self, zero_le, true_or, decide_true, zero_add]`. Simplify using `[plus, tops, image_image, Function.comp_def]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem parPi_m : G.parPi G.m = G.parX 0 := by
   simp only [parPi, parX, weightX, entries_lam, plus_union, Nat.sub_self, zero_le, true_or, decide_true, zero_add]
   simp [plus, tops, image_image, Function.comp_def]
 
 /- English proof (translation)
-Rewrite using `[weightX, weightX, ← Finset.insert_Icc_right_eq_Icc_add_one (by omega), biUnion_insert, union_assoc _ _ (G.blockMPlus _), union_comm (G.blockMPlus _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem weightX_succ (j : ℕ) : G.weightX (j + 1) = G.weightX j ∪ G.blockMPlus (j + 1) := by
   rw [weightX, weightX, ← Finset.insert_Icc_right_eq_Icc_add_one (by omega), biUnion_insert, union_assoc _ _ (G.blockMPlus _),
     union_comm (G.blockMPlus _)]
 
 /- English proof (translation)
-Unfold `TPar.Dpar shift`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[mem_parD]`. Simplify using `only [mem_union, mem_image, mem_biUnion, mem_filter, mem_univ, true_and, hv, hb, he, mem_cloud, blockM, ht, or_assoc]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `or_congr ?_ (or_congr ?_ ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩; exact ⟨⟨i.1 + 2, by omega, by have := i.2; omega, rfl⟩, rfl⟩`. Introduce and unpack `⟨⟨i, h1, h2, h3⟩, h4⟩`. Conclude with `⟨⟨i - 2, by omega⟩, Prod.ext (by rw [h3]; simp only [Nat.sub_add_cancel h1]) h4.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hs : ∀ l : ℕ, decide (l ≤ j ∨ Even (l - j)) = decide (l + 1 ≤ j + 1 ∨ Even (l + 1 - j - 1))` using `fun l => by`. Rewrite using `[show l + 1 - j - 1 = l - j by omega]; simp`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, rfl⟩; exact ⟨l.1 + 1, by omega, by have := l.2; omega, by rw [hs]⟩`. Introduce and unpack `⟨l, h1, h2, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨l - 1, by omega⟩, by rw [hs]; simp only [Nat.sub_add_cancel h1]⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, y, hy, rfl⟩; exact Or.inl ⟨l.1 + 1, by omega, by omega, hy, rfl⟩`. Introduce and unpack `(⟨l, h1, h2, h3, h4⟩ | ⟨l, h1, h2, -⟩)`. Conclude with `⟨⟨l - 1, by omega⟩, by simp only; omega, x.1, by simpa only [Nat.sub_add_cancel h1] using h3, Prod.ext rfl h4.symm⟩`.
+Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -1378,7 +1370,7 @@ theorem dpar_eq {D : D7} (P : TPar D) (τ : D.what₂.Tau) (hk : G.k = D.R.k) (h
 def extend {n : ℕ} (d : ℕ) (f : Fin n → ℚ) (i : ℕ) : ℤ := if h : i - d < n then ⌊f ⟨i - d, h⟩⌋ else 0
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hf i`. Simplify using `[extend, hz]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem extend_cast {n : ℕ} (d : ℕ) {f : Fin n → ℚ} (hf : ∀ i, ∃ z : ℤ, f i = z) (i : Fin n) :
     (extend d f (i.1 + d) : ℚ) = f i := by
@@ -1431,7 +1423,7 @@ def ofHCParam {R : Ranks} (P : HCParam R) (s ga : ℕ) (cen : ℕ → ℤ) : Gri
     exact_mod_cast h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => (extend_cast 2 P.v_int i).symm, fun l => (extend_cast 1 P.b_int l).symm, fun l => (extend_cast 1 P.e_int l).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem ofHCParam_spec {R : Ranks} (P : HCParam R) (s ga : ℕ) (cen : ℕ → ℤ) :
     (∀ i, P.v i = (ofHCParam P s ga cen).v (i.1 + 2)) ∧ (∀ l, P.b l = (ofHCParam P s ga cen).b (l.1 + 1)) ∧
@@ -1456,37 +1448,37 @@ def exGrid : GridData where
   b_mono := by intro i j _ _ _; omega
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem exGrid_lam : exGrid.lam =
     {(53 / 2, true), (37 / 2, false), (21 / 2, true), (3 / 2, true), (1 / 2, true), (-1 / 2, true)} := by decide +kernel
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem example_discrete_parameter : exGrid.parD0 = {(2, true), (1, true), (0, true), (-1, true), (-7, false)} := by decide +kernel
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem exGrid_parD : exGrid.parD 1 1 =
     plus {15, 14, 13, 2, 1, 0, -1, -3, -4, -5, -7} := by decide +kernel
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem exGrid_parPi : exGrid.parPi 1 = {(53 / 2, false), (37 / 2, true), (29 / 2, true), (27 / 2, true), (21 / 2, true),
     (3 / 2, true), (1 / 2, true), (-1 / 2, true)} := by decide +kernel
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem exGrid_signature : signature exGrid.lam = (5, 1) ∧ signature exGrid.parD0 = (4, 1) ∧
     ncGap exGrid.lam = ((8 : ℚ) : WithTop ℚ) ∧ ncGap exGrid.parD0 = ((6 : ℚ) : WithTop ℚ) ∧ exGrid.NearMid := by
   decide +kernel
 
 /- English proof (translation)
-Rewrite using `[word_eq (L := [53 / 2, 37 / 2, 21 / 2, 2, 3 / 2, 1, 1 / 2, 0, -1 / 2, -1, -7]) (by decide +kernel) (by decide +kernel)]`. Use `decide +kernel`.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 -/
 theorem exGrid_word : word exGrid.lam exGrid.parD0 =
     [.plus, .minus, .plus, .circPlus, .plus, .circPlus, .plus, .circPlus, .plus, .circPlus, .circMinus] := by
@@ -1495,14 +1487,14 @@ theorem exGrid_word : word exGrid.lam exGrid.parD0 =
   decide +kernel
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem exGrid_interlace : HeInterlace exGrid.lam exGrid.parD0 ∧
     StrictInterlace (exGrid.weightX 2) (entries (exGrid.parD 2 2)) ∧
     ¬ StrictInterlace (exGrid.weightX 1) (entries (exGrid.parD 2 2)) := by decide +kernel
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem exGrid_lift : exGrid.parD 1 0 = liftMinus 14 3 (exGrid.parD 0 0) ∧
     exGrid.parD 0 1 = liftPlus (-4) 3 (exGrid.parD 0 0) ∧ exGrid.parPi 1 = liftMinus 14 2 (exGrid.parPi 0) ∧
@@ -1510,13 +1502,13 @@ theorem exGrid_lift : exGrid.parD 1 0 = liftMinus 14 3 (exGrid.parD 0 0) ∧
   decide +kernel
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 example : HeInterlace {(5, true), (3, false), (1, false)} {(5 / 2, false), (1 / 2, false)} ∧
     ¬ HeInterlace {(5, true), (3, false), (1, false)} {(5 / 2, false), (3 / 2, false)} := by decide +kernel
 
 /- English proof (translation)
-Establish `h : descEnum (n` using `2) {5 / 2, -1 / 2} (by decide +kernel) = ![5 / 2, -1 / 2] := descEnum_unique _ (by decide +kernel) (by decide +kernel)`. Use function extensionality and compare the values at `i`. Simplify using `only [highestWeight, h]`. Apply the tactic sequence `fin_cases i <;> norm_num`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : highestWeight (n := 2) {5 / 2, -1 / 2} (by decide +kernel) = ![2, 0] := by
   have h : descEnum (n := 2) {5 / 2, -1 / 2} (by decide +kernel) = ![5 / 2, -1 / 2] :=

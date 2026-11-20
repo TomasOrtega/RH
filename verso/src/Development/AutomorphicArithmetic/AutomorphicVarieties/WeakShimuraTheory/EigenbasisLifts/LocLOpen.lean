@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.D
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Establish `hc : Continuous (Loc.cyc l l)` using `cyclotomicCharacter.continuous l ℚ_[l] (PadicAlgCl l)`. Establish `ha : Continuous (algebraMap ℤ_[l] (PadicAlgCl l))`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (PadicAlgCl l)]`. Conclude with `(continuous_algebraMap ℚ_[l] (PadicAlgCl l)).comp continuous_subtype_val`. Conclude with `(Continuous.units_map (algebraMap ℤ_[l] (PadicAlgCl l) : ℤ_[l] →* PadicAlgCl l) ha).comp hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Ws.Eb.locL_cyc (l : ℕ) [Fact l.Prime] :
     Continuous (Loc.cycA l l (PadicAlgCl l)) := by
@@ -16,9 +16,9 @@ private theorem UpperTheory.V.Ws.Eb.locL_cyc (l : ℕ) [Fact l.Prime] :
   exact (Continuous.units_map (algebraMap ℤ_[l] (PadicAlgCl l) : ℤ_[l] →* PadicAlgCl l) ha).comp hc
 
 /- English proof (translation)
-Establish `hfin : ({z : K | z ^ k = 1} \ {1}).Finite`. Use `Set.Finite.subset (Multiset.finite_toSet (nthRoots k (1 : K))) fun z hz => ?_` and prove the remaining obligations. Conclude with `(mem_nthRoots hk).2 hz.1`. Establish `ho : IsOpen (⋂ i, f i ⁻¹' ({z : K | z ^ k = 1} \ {1})ᶜ)` using `isOpen_iInter_of_finite fun i => hfin.isClosed.isOpen_compl.preimage (hf i)`. Take `⟨U, hU⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one ho (Set.mem_iInter.2 fun i h => h.2 (h1 i))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U.toOpenSubgroup.toSubgroup, U.toOpenSubgroup.isOpen, fun i g hg e => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `Set.mem_iInter.1 (hU hg) i ⟨e, hne⟩`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Ws.Eb.locL_open {H K ι : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [CompactSpace H] [TotallyDisconnectedSpace H] [Field K] [TopologicalSpace K] [T1Space K] [Finite ι]
@@ -36,13 +36,13 @@ private theorem UpperTheory.V.Ws.Eb.locL_open {H K ι : Type} [Group H] [Topolog
   exact Set.mem_iInter.1 (hU hg) i ⟨e, hne⟩
 
 /- English proof (translation)
-Introduce `P l _ H _ _ _ _ _ φ hφ n ρ hρ y hy ρ' ht κ m k hF hm hk hκ`. Establish `hpush : ∀ g, GeneralLinearGroup.map (dF (PadicAlgCl l)) (ρ' g) = ρ g` using `fun g => Units.ext (Matrix.ext fun a b => congrArg TrivSqZeroExt.fst (ht g a b))`. Establish `hκc : ∀ i, Continuous fun g => (κ i g : DualNumber (PadicAlgCl l)).fst`. Take `⟨h, hh⟩` from `hF`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (fun g => (κ i g : DualNumber (PadicAlgCl l)).fst) = fun g => ((GeneralLinearGroup.map (dF (PadicAlgCl l)) h * ρ g * (GeneralLinearGroup.map (dF (PadicAlgCl l)) h)⁻¹ : GL (Fin n) (PadicAlgCl l)) : Matrix (Fin n) (Fin n) (PadicAlgCl l)) i i`. Use function extensionality and compare the values at `g`. Rewrite using `[← hpush, ← map_inv, ← map_mul, ← map_mul, ← (hh g).2 i]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Units.continuous_val.comp ((continuous_const.mul hρ).mul continuous_const)).matrix_elem i i`. Take `⟨U, hUo, hU⟩` from `locL_open (fun i g => ((W.pushCh (dF _) (κ i) g * Loc.cycA l l (PadicAlgCl l) (φ g) ^ (-m i) : (PadicAlgCl l)ˣ) : PadicAlgCl l)) (fun i => (hκc i).mul (Units.continuous_val.comp (((locL_cyc l).comp hφ.continuous).zpow (-m i)))) (fun i => by simp only [map_one, _root_.one_zpow, mu …`. Use `Loc.pr6Bar P φ hφ ρ hρ y hy ρ' ht κ m hF (fun i j hij => by have := hm i j hij; omega) U hUo (fun i g hg hI => ?_) (fun i j hij => Or.inl (hm i j hij))` and prove the remaining obligations. Take `⟨h0, h1⟩` from `hκ i g hI`. Establish `h2` using `hU i g hg (by rw [← Units.val_pow_eq_pow_val, h1, Units.val_one])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Units.val_eq_one, _root_.zpow_neg, mul_inv_eq_one]`. Rewrite using `[← h2]`. Conclude with `TrivSqZeroExt.ext rfl h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Eb.locL :
     Loc.LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [CompactSpace H] [TotallyDisconnectedSpace H] (φ : H →* Formalism.BasicNotions.Loc.GQ l), Topology.IsOpenEmbedding φ →

@@ -16,7 +16,7 @@ variable (k r' : ℕ)
 def mp (j : Fin (2 * r' + k + 1)) : Fin (2 * (1 + r') + k + 1) := ⟨j.val + 1, by omega⟩
 
 /- English proof (translation)
-Establish `h : 2 * r' + k + 1 + 1 = 2 * (1 + r') + k` using `by ring`. Rewrite using `[Fin.sum_univ_succ, ← Fin.sum_congr' _ h, Fin.sum_univ_castSucc, add_assoc (f 0)]`. Establish `e1 : ∀ j : Fin (2 * r' + k + 1), (Fin.cast h j.castSucc).succ = mp k r' j` using `fun j => Fin.ext (by simp [mp])`. Establish `e2 : (Fin.cast h (Fin.last (2 * r' + k + 1))).succ = ⟨2 * (1 + r') + k, by omega⟩` using `Fin.ext (by simp only [Fin.val_succ, Fin.coe_cast, Fin.val_last]; omega)`. Simplify using `only [e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sum_split (f : Fin (2 * (1 + r') + k + 1) → ℂ) :
     ∑ p, f p = f 0 + ∑ j, f (mp k r' j) + f ⟨2 * (1 + r') + k, by omega⟩ := by
@@ -29,7 +29,7 @@ theorem sum_split (f : Fin (2 * (1 + r') + k + 1) → ℂ) :
   simp only [e1, e2]
 
 /- English proof (translation)
-Establish `hj` using `j.isLt`. Simplify using `[liftVec, mp]`. Introduce `h`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
 -/
 @[simp] theorem lift_mp (v : Fin (2 * r' + k + 1) → ℂ) (j : Fin (2 * r' + k + 1)) : liftVec k 1 r' v (mp k r' j) = v j := by
   have hj := j.isLt
@@ -38,13 +38,13 @@ Establish `hj` using `j.isLt`. Simplify using `[liftVec, mp]`. Introduce `h`. Us
   omega
 
 /- English proof (translation)
-Simplify using `[liftVec]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem lift_zero_pos (v : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' v 0 = 0 := by
   simp [liftVec]
 
 /- English proof (translation)
-Simplify using `only [liftVec]`. Rewrite using `[dif_neg]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 @[simp] theorem lift_last (v : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' v ⟨2 * (1 + r') + k, by omega⟩ = 0 := by
   simp only [liftVec]
@@ -52,9 +52,9 @@ Simplify using `only [liftVec]`. Rewrite using `[dif_neg]`. Use linear arithmeti
   omega
 
 /- English proof (translation)
-Establish `key : (p = eI k (1 + r') (a0 r')) ↔ p.val = 0`. Rewrite using `[Fin.ext_iff]`. Simplify using `only [eI, a0]`. Unfold `e0 bvec`. Rewrite using `[Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [key]`.
+Simplify using the standard rewrite rules.
 -/
 theorem goodRowsProjector_apply_eq_sum (p : Fin (2 * (1 + r') + k + 1)) : e0 k r' p = if p.val = 0 then 1 else 0 := by
   have key : (p = eI k (1 + r') (a0 r')) ↔ p.val = 0 := by
@@ -65,9 +65,9 @@ theorem goodRowsProjector_apply_eq_sum (p : Fin (2 * (1 + r') + k + 1)) : e0 k r
   simp only [key]
 
 /- English proof (translation)
-Establish `key : (p = esI k (1 + r') (a0 r')) ↔ p.val = 2 * (1 + r') + k`. Rewrite using `[Fin.ext_iff]`. Simplify using `only [esI, a0, Nat.sub_zero]`. Unfold `es0 bvec`. Rewrite using `[Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [key]`.
+Simplify using the standard rewrite rules.
 -/
 theorem last_basis_apply (p : Fin (2 * (1 + r') + k + 1)) :
     es0 k r' p = if p.val = 2 * (1 + r') + k then 1 else 0 := by
@@ -79,7 +79,7 @@ theorem last_basis_apply (p : Fin (2 * (1 + r') + k + 1)) :
   simp only [key]
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Pi.star_apply]`. Rewrite using `[sum_split k r']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dot_lift_lift (u v : Fin (2 * r' + k + 1) → ℂ) :
     star (liftVec k 1 r' u) ⬝ᵥ liftVec k 1 r' v = star u ⬝ᵥ v := by
@@ -88,7 +88,7 @@ theorem dot_lift_lift (u v : Fin (2 * r' + k + 1) → ℂ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[goodRowsProjector_apply_eq_sum, if_neg]`. Simplify using `only [mp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem e0_mp_eq_zero (j : Fin (2 * r' + k + 1)) : e0 k r' (mp k r' j) = 0 := by
   rw [goodRowsProjector_apply_eq_sum, if_neg]
@@ -96,7 +96,7 @@ private theorem e0_mp_eq_zero (j : Fin (2 * r' + k + 1)) : e0 k r' (mp k r' j) =
   omega
 
 /- English proof (translation)
-Establish `hj` using `j.isLt`. Rewrite using `[last_basis_apply, if_neg]`. Simplify using `only [mp]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem es0_mp_eq_zero (j : Fin (2 * r' + k + 1)) : es0 k r' (mp k r' j) = 0 := by
   have hj := j.isLt
@@ -105,7 +105,7 @@ private theorem es0_mp_eq_zero (j : Fin (2 * r' + k + 1)) : es0 k r' (mp k r' j)
   omega
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Pi.star_apply]`. Rewrite using `[sum_split k r']`. Simplify using `[e0_mp_eq_zero, es0_mp_eq_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem star_last_dot_lift (v : Fin (2 * r' + k + 1) → ℂ) : star (es0 k r') ⬝ᵥ liftVec k 1 r' v = 0 := by
   simp only [dotProduct, Pi.star_apply]
@@ -113,7 +113,7 @@ theorem star_last_dot_lift (v : Fin (2 * r' + k + 1) → ℂ) : star (es0 k r') 
   simp [e0_mp_eq_zero, es0_mp_eq_zero]
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Pi.star_apply]`. Rewrite using `[sum_split k r']`. Simplify using `[e0_mp_eq_zero, es0_mp_eq_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem star_lift_dot_last (v : Fin (2 * r' + k + 1) → ℂ) : star (liftVec k 1 r' v) ⬝ᵥ es0 k r' = 0 := by
   simp only [dotProduct, Pi.star_apply]
@@ -121,9 +121,9 @@ theorem star_lift_dot_last (v : Fin (2 * r' + k + 1) → ℂ) : star (liftVec k 
   simp [e0_mp_eq_zero, es0_mp_eq_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, goodRowsProjector_apply_eq_sum, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hb (Fin.ext (by simp [h]))`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mulVec_first_basis (M : Mat k (1 + r')) : M *ᵥ e0 k r' = fun i => M i 0 := by
   funext i
@@ -138,9 +138,9 @@ theorem mulVec_first_basis (M : Mat k (1 + r')) : M *ᵥ e0 k r' = fun i => M i 
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, last_basis_apply, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single (⟨2 * (1 + r') + k, by omega⟩ : Fin (2 * (1 + r') + k + 1))]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hb (Fin.ext h)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mulVec_last_basis (M : Mat k (1 + r')) : M *ᵥ es0 k r' = fun i => M i ⟨2 * (1 + r') + k, by omega⟩ := by
   funext i
@@ -155,9 +155,9 @@ theorem mulVec_last_basis (M : Mat k (1 + r')) : M *ᵥ es0 k r' = fun i => M i 
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Rewrite using `[mulVec_first_basis]`. Use function extensionality and compare the values at `p`. Rewrite using `[goodRowsProjector_apply_eq_sum]`. Establish `h0 : ((0 : Fin (2 * (1 + r') + k + 1)) : ℕ) = 0` using `by simp`. Establish `hp0` using `p.isLt`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ιLev, Fin.ext_iff, h0, and_false, false_and, and_true, true_and, not_false_eq_true, not_true_eq_false]`. Apply the tactic sequence `split_ifs <;> (try rfl) <;> (try omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem levi_fixes_base_vector (g : Mat k r') : ιLev k 1 r' g *ᵥ e0 k r' = e0 k r' := by
   rw [mulVec_first_basis]
@@ -169,9 +169,9 @@ theorem levi_fixes_base_vector (g : Mat k r') : ιLev k 1 r' g *ᵥ e0 k r' = e0
   split_ifs <;> (try rfl) <;> (try omega)
 
 /- English proof (translation)
-Rewrite using `[mulVec_last_basis]`. Use function extensionality and compare the values at `p`. Rewrite using `[last_basis_apply]`. Establish `hp0` using `p.isLt`. Simplify using `only [ιLev, Fin.ext_iff, and_false, false_and, and_true, true_and, not_false_eq_true, not_true_eq_false]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem levi_fixes_last_basis (g : Mat k r') : ιLev k 1 r' g *ᵥ es0 k r' = es0 k r' := by
   rw [mulVec_last_basis]
@@ -182,7 +182,7 @@ theorem levi_fixes_last_basis (g : Mat k r') : ιLev k 1 r' g *ᵥ es0 k r' = es
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Establish `hj` using `j.isLt`. Simplify using `only [ιLev, mp, Fin.ext_iff, and_false, false_and, and_true, true_and, not_false_eq_true, not_true_eq_false]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | exact congrArg (g _) (Fin.ext (by simp)) | (simp; intro; omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lev_mid (g : Mat k r') (p : Fin (2 * (1 + r') + k + 1)) (j : Fin (2 * r' + k + 1)) :
     ιLev k 1 r' g p (mp k r' j) =
@@ -192,9 +192,9 @@ theorem lev_mid (g : Mat k r') (p : Fin (2 * (1 + r') + k + 1)) (j : Fin (2 * r'
   split_ifs <;> first | rfl | omega | exact congrArg (g _) (Fin.ext (by simp)) | (simp; intro; omega)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [mulVec, dotProduct]`. Rewrite using `[sum_split k r']`. Simplify using `only [lift_zero_pos, lift_last, lift_mp, lev_mid, mul_zero, add_zero, zero_add]`. Simplify using `only [liftVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hp : 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1`. Simplify using `only [dif_pos hp, mulVec, dotProduct]`. Simplify using `only [dif_neg hp, zero_mul, Finset.sum_const_zero]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lev_lift (g : Mat k r') (v : Fin (2 * r' + k + 1) → ℂ) :
     ιLev k 1 r' g *ᵥ liftVec k 1 r' v = liftVec k 1 r' (g *ᵥ v) := by
@@ -208,7 +208,7 @@ theorem lev_lift (g : Mat k r') (v : Fin (2 * r' + k + 1) → ℂ) :
   · simp only [dif_neg hp, zero_mul, Finset.sum_const_zero]
 
 /- English proof (translation)
-Establish `hj` using `j.isLt`. Establish `hp0` using `p.isLt`. Simplify using `only [w0, mp, Fin.ext_iff, and_false, false_and, and_true, true_and, not_false_eq_true, not_true_eq_false]`. Apply the tactic sequence `split_ifs <;> (try rfl) <;> (try omega) <;> simp_all`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rankOneMatrix_middle_coord (c : ℂ) (p : Fin (2 * (1 + r') + k + 1)) (j : Fin (2 * r' + k + 1)) :
     w0 k r' c p (mp k r' j) = if p.val = j.val + 1 then 1 else 0 := by
@@ -218,9 +218,9 @@ theorem rankOneMatrix_middle_coord (c : ℂ) (p : Fin (2 * (1 + r') + k + 1)) (j
   split_ifs <;> (try rfl) <;> (try omega) <;> simp_all
 
 /- English proof (translation)
-Rewrite using `[mulVec_first_basis]`. Use function extensionality and compare the values at `p`. Rewrite using `[Pi.smul_apply, last_basis_apply, smul_eq_mul]`. Establish `h0 : ((0 : Fin (2 * (1 + r') + k + 1)) : ℕ) = 0` using `by simp`. Establish `hp0` using `p.isLt`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [w0, Fin.ext_iff, h0, and_false, false_and, and_true, true_and, not_false_eq_true, not_true_eq_false]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem long_weyl_sends_base_to_dual (c : ℂ) : w0 k r' c *ᵥ e0 k r' = c • es0 k r' := by
   rw [mulVec_first_basis]
@@ -232,9 +232,9 @@ theorem long_weyl_sends_base_to_dual (c : ℂ) : w0 k r' c *ᵥ e0 k r' = c • 
   split_ifs <;> first | rfl | omega | simp
 
 /- English proof (translation)
-Rewrite using `[mulVec_last_basis]`. Use function extensionality and compare the values at `p`. Rewrite using `[Pi.smul_apply, goodRowsProjector_apply_eq_sum, smul_eq_mul]`. Establish `hp0` using `p.isLt`. Simplify using `only [w0, Fin.ext_iff, and_false, false_and, and_true, true_and, not_false_eq_true, not_true_eq_false]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | omega | simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rankOneMatrix_last_basis (c : ℂ) : w0 k r' c *ᵥ es0 k r' = (star c)⁻¹ • e0 k r' := by
   rw [mulVec_last_basis]
@@ -245,17 +245,17 @@ theorem rankOneMatrix_last_basis (c : ℂ) : w0 k r' c *ᵥ es0 k r' = (star c)�
   split_ifs <;> first | rfl | omega | simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [mulVec, dotProduct]`. Rewrite using `[sum_split k r']`. Simplify using `only [lift_zero_pos, lift_last, lift_mp, rankOneMatrix_middle_coord, mul_zero, add_zero, zero_add, ite_mul, one_mul, zero_mul]`. Simplify using `only [liftVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hp : 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1`. Rewrite using `[dif_pos hp, Finset.sum_eq_single (⟨p.val - 1, by omega⟩ : Fin (2 * r' + k + 1))]`. Rewrite using `[if_pos] dsimp only`. Use linear arithmetic over natural numbers and integers. Introduce `b _ hb`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[if_neg]`. Introduce `h`. Apply `hb` to reduce the goal to its premises. Use `ext`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[dif_neg hp]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j _`. Establish `hj` using `j.isLt`. Rewrite using `[if_neg]`. Introduce `h`. Apply `hp` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem rankOneMatrix_lift (c : ℂ) (v : Fin (2 * r' + k + 1) → ℂ) : w0 k r' c *ᵥ liftVec k 1 r' v = liftVec k 1 r' v := by
   funext p
@@ -288,9 +288,9 @@ theorem rankOneMatrix_lift (c : ℂ) (v : Fin (2 * r' + k + 1) → ℂ) : w0 k r
     omega
 
 /- English proof (translation)
-Rewrite using `[mulVec_first_basis]`. Use function extensionality and compare the values at `p`. Rewrite using `[last_basis_apply]`. Establish `h0 : ((0 : Fin (2 * (1 + r') + k + 1)) : ℕ) = 0` using `by simp`. Establish `hp0` using `p.isLt`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Hpk, Fin.ext_iff, h0, and_false, false_and, and_true, true_and, not_false_eq_true, not_true_eq_false]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_mulVec_e0 : Hpk k (1 + r') *ᵥ e0 k r' = es0 k r' := by
   rw [mulVec_first_basis]
@@ -302,9 +302,9 @@ theorem Hpk_mulVec_e0 : Hpk k (1 + r') *ᵥ e0 k r' = es0 k r' := by
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Rewrite using `[mulVec_last_basis]`. Use function extensionality and compare the values at `p`. Rewrite using `[goodRowsProjector_apply_eq_sum]`. Establish `hp0` using `p.isLt`. Simplify using `only [Hpk, Fin.ext_iff, and_false, false_and, and_true, true_and, not_false_eq_true, not_true_eq_false]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hermMatrix_last_basis : Hpk k (1 + r') *ᵥ es0 k r' = e0 k r' := by
   rw [mulVec_last_basis]
@@ -315,7 +315,7 @@ theorem hermMatrix_last_basis : Hpk k (1 + r') *ᵥ es0 k r' = e0 k r' := by
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Establish `hj` using `j.isLt`. Establish `hp'` using `p.isLt`. Simplify using `only [Hpk, mp, Fin.ext_iff, and_false, false_and, and_true, true_and, not_false_eq_true, not_true_eq_false]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Hpk_one_add_apply_mp_eq_dite (p : Fin (2 * (1 + r') + k + 1)) (j : Fin (2 * r' + k + 1)) :
     Hpk k (1 + r') p (mp k r' j) =
@@ -326,9 +326,9 @@ private theorem Hpk_one_add_apply_mp_eq_dite (p : Fin (2 * (1 + r') + k + 1)) (j
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [mulVec, dotProduct]`. Rewrite using `[sum_split k r']`. Simplify using `only [lift_zero_pos, lift_last, lift_mp, Hpk_one_add_apply_mp_eq_dite, mul_zero, add_zero, zero_add]`. Simplify using `only [liftVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hp : 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1`. Simplify using `only [dif_pos hp, mulVec, dotProduct]`. Simplify using `only [dif_neg hp, zero_mul, Finset.sum_const_zero]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Hpk_lift (v : Fin (2 * r' + k + 1) → ℂ) :
     Hpk k (1 + r') *ᵥ liftVec k 1 r' v = liftVec k 1 r' (Hpk k r' *ᵥ v) := by
@@ -342,7 +342,7 @@ theorem Hpk_lift (v : Fin (2 * r' + k + 1) → ℂ) :
   · simp only [dif_neg hp, zero_mul, Finset.sum_const_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Establish `hj` using `j.isLt`. Establish `hp0` using `p.isLt`. Simplify using `only [liftVec, bvec, Pi.single_apply, mp, Fin.ext_iff, and_false, false_and, and_true, true_and, not_false_eq_true, not_true_eq_false]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_bvec (j : Fin (2 * r' + k + 1)) : liftVec k 1 r' (bvec j) = bvec (mp k r' j) := by
   funext p
@@ -354,7 +354,7 @@ theorem lift_bvec (j : Fin (2 * r' + k + 1)) : liftVec k 1 r' (bvec j) = bvec (m
 def sc (a : Fin (r' + 1)) : Fin (1 + r' + 1) := ⟨a.val + 1, by omega⟩
 
 /- English proof (translation)
-Establish `h0 : (0 : Fin (1 + r' + 1)).val < 1 + r'`. Rewrite using `[Fin.val_zero]`. Use linear arithmetic over natural numbers and integers. Simplify using `[phiV, h0, es0, a0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem phiV_zero : phiV k (1 + r') 0 = es0 k r' := by
   have h0 : (0 : Fin (1 + r' + 1)).val < 1 + r' := by
@@ -363,15 +363,15 @@ theorem phiV_zero : phiV k (1 + r') 0 = es0 k r' := by
   simp [phiV, h0, es0, a0]
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Distinguish the cases in `h : a.val < r'`. Establish `h' : (sc r' a).val < 1 + r'`. Simplify using `only [sc]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[phiV, dif_pos h', phiV, dif_pos h, lift_bvec]`. Use `congr 1`. Use `ext`. Simplify using `only [esI, sc, mp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `h' : ¬ (sc r' a).val < 1 + r'`. Simplify using `only [sc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[phiV, dif_neg h', phiV, dif_neg h]`. Simplify using `only [epsV]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hlin : ∀ (c : ℂ) (x y : Fin (2 * r' + k + 1) → ℂ), liftVec k 1 r' (c • (x + y)) = c • (liftVec k 1 r' x + liftVec k 1 r' y)`. Introduce `c x y`. Use function extensionality and compare the values at `q`. Simplify using `only [liftVec, Pi.smul_apply, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hlin, lift_bvec, lift_bvec]`. Apply the tactic sequence `congr 3 <;> (ext; simp only [wI, mp, Fin.val_zero, Fin.val_last]; omega)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem phiV_sc (a : Fin (r' + 1)) : phiV k (1 + r') (sc r' a) = liftVec k 1 r' (phiV k r' a) := by
   have ha := a.isLt
@@ -399,13 +399,13 @@ theorem phiV_sc (a : Fin (r' + 1)) : phiV k (1 + r') (sc r' a) = liftVec k 1 r' 
     congr 3 <;> (ext; simp only [wI, mp, Fin.val_zero, Fin.val_last]; omega)
 
 /- English proof (translation)
-Simplify using `only [phiV', phiV_zero, hermMatrix_last_basis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phiV'_zero : phiV' k (1 + r') 0 = e0 k r' := by
   simp only [phiV', phiV_zero, hermMatrix_last_basis]
 
 /- English proof (translation)
-Simplify using `only [phiV', phiV_sc, Hpk_lift]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phiV'_sc (a : Fin (r' + 1)) : phiV' k (1 + r') (sc r' a) = liftVec k 1 r' (phiV' k r' a) := by
   simp only [phiV', phiV_sc, Hpk_lift]

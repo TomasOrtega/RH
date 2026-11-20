@@ -9,7 +9,7 @@ open scoped ENNReal
 namespace WlocSk
 
 /- English proof (translation)
-Introduce `k r μ μ' hμ hμ'`. Take `⟨c, hc0, hct, hc⟩` from `HM.n_unique μ hμ`. Take `⟨c', hc0', hct', hc'⟩` from `HM.n_unique μ' hμ'`. Use `⟨c / c', ENNReal.div_ne_top hct hc0', ?_⟩` and prove the remaining obligations. Rewrite using `[hc, hc', smul_smul, ENNReal.div_mul_cancel hc0' hct']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem nilradical_haar_unique : NUniq := by
   intro k r μ μ' hμ hμ'

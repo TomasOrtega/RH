@@ -9,9 +9,9 @@ open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 namespace UpperTheory.Gal.W2
 
 /- English proof (translation)
-Use `letI : Algebra (MvPolynomial (Fin d) ℂ) B := (MvPolynomial.aeval a).toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℂ (MvPolynomial (Fin d) ℂ) B := IsScalarTower.of_algebraMap_eq (fun r => by`. Express the relevant statement in the definitionally equal form `algebraMap ℂ B r = MvPolynomial.aeval a (MvPolynomial.C r)`. Rewrite using `[MvPolynomial.aeval_C])`. Use `haveI : Algebra.Etale (MvPolynomial (Fin d) ℂ) B := he`.
+Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `b0` to `Algebra.TensorProduct.basis B (KaehlerDifferential.mvPolynomialBasis ℂ (Fin d))`. Use `⟨b0.map (KaehlerDifferential.tensorKaehlerEquivOfFormallyEtale ℂ (MvPolynomial (Fin d) ℂ) B), fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.map_apply, Algebra.TensorProduct.basis_apply, KaehlerDifferential.mvPolynomialBasis_apply, ← KaehlerDifferential.tensorKaehlerEquivOfFormallyEtale_symm_D_algebraMap, LinearEquiv.apply_symm_apply, show algebraMap (MvPolynomial (Fin d) ℂ) B (MvPolynomial.X l) = a l fr …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_basis {B : Type} [CommRing B] [Algebra ℂ B] (d : ℕ) (a : Fin d → B)
     (he : (MvPolynomial.aeval a : MvPolynomial (Fin d) ℂ →ₐ[ℂ] B).toRingHom.Etale) :
@@ -29,15 +29,15 @@ private theorem exists_basis {B : Type} [CommRing B] [Algebra ℂ B] (d : ℕ) (
     show algebraMap (MvPolynomial (Fin d) ℂ) B (MvPolynomial.X l) = a l from MvPolynomial.aeval_X a l]
 
 /- English proof (translation)
-Set `φ : Ω[B⁄ℂ] →ₗ[ℂ] (Fin d → ℂ)` to `{ toFun := fun ω l => e (bs.repr ω l) map_add' := by`. Introduce `x y`. Use function extensionality and compare the values at `l`. Simplify using the standard rewrite rules. Use the proof step `map_smul' := by`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c x`. Use function extensionality and compare the values at `l`. Rewrite using `[← algebraMap_smul B c x, LinearEquiv.map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, AlgHom.commutes]`. Simplify using `}`. Use `⟨φ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r ω`. Use function extensionality and compare the values at `l`. Simplify using `[φ]`. Introduce `l`. Use function extensionality and compare the values at `l'`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : l' = l`. Substitute `h` using the available equality. Simplify using `[φ]`. Simplify using `[φ, Finsupp.single_apply, Pi.single_apply, h, Ne.symm h]`. Introduce `ω hω`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d, fun l => bs.repr ω l, bs, ?_, (bs.sum_repr ω).symm⟩` and prove the remaining obligations. Introduce `i`. Simplify `congrFun hω i` using `[φ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem exists_phi {B : Type} [CommRing B] [Algebra ℂ B] (e : B →ₐ[ℂ] ℂ) (d : ℕ)
     (bs : Module.Basis (Fin d) B Ω[B⁄ℂ]) :
@@ -75,27 +75,25 @@ private theorem exists_phi {B : Type} [CommRing B] [Algebra ℂ B] (e : B →ₐ
 end UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `Z Y sZ s' d hsmooth c₁ c₂ h₁ h₂ hc₁ y hy`. Use `haveI := hsmooth`. Take `⟨U, x, hUaff, hzU, het⟩` from `GlobalTheory.AlgChart.exists_etale_coords (p := sZ) (D := d) ((↑y ≫ c₁ : Sp ℂ ⟶ Z) (IsLocalRing.closedPoint ℂ))`. Establish `hyU : ⊤ ≤ (↑y : Sp ℂ ⟶ Y) ⁻¹ᵁ (c₁ ⁻¹ᵁ U ⊓ c₂ ⁻¹ᵁ U)`. Rewrite using `[GlobalTheory.Points.le_preimage_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hzU`. Rewrite `h2` using `[hy]`. Conclude with `⟨hzU, h2⟩`. Take `⟨V, hVaff, hyV, hVle⟩` from `GlobalTheory.Points.exists_isAffineOpen_le (↑y : Sp ℂ ⟶ Y) hyU`. Establish `hV1 : V ≤ c₁ ⁻¹ᵁ U` using `hVle.trans inf_le_left`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV2 : V ≤ c₂ ⁻¹ᵁ U` using `hVle.trans inf_le_right`. Establish `hg` using `HasRingHomProperty.appLE @Etale c₁ hc₁ ⟨U, hUaff⟩ ⟨V, hVaff⟩ hV1`. Establish `hres : ∀ t, (c₁.appLE U V hV1).hom t = Sec.res s' hV1 (appSec sZ s' c₁ U t)`. Introduce `t`. Rewrite using `[Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `heq : (MvPolynomial.aeval (fun l => Sec.res s' hV1 (appSec sZ s' c₁ U (x l))) : MvPolynomial (Fin d) ℂ →ₐ[ℂ] Sec s' V).toRingHom = (c₁.appLE U V hV1).hom.comp (MvPolynomial.eval₂Hom (DVR.FlatBC.algX sZ U) x)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Establish `h1` using `semiHom_appSec h₁ U r 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Algebra.smul_def, _root_.mul_one, map_one, RingHom.id_apply] at h1`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MvPolynomial.aeval_C]`. Establish `h4 : (MvPolynomial.eval₂Hom (DVR.FlatBC.algX sZ U) x) (MvPolynomial.C r) = DVR.FlatBC.algX sZ U r` using `MvPolynomial.eval₂Hom_C _ _ _`. Use `Eq.trans ?_ ((congrArg (c₁.appLE U V hV1).hom h4).trans (hres _)).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap ℂ (Sec s' V) r = Sec.res s' hV1 (appSec sZ s' c₁ U (algebraMap ℂ (Sec sZ U) r))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, AlgHom.commutes]`. Introduce `i`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MvPolynomial.aeval_X]`. Establish `h4 : (MvPolynomial.eval₂Hom (DVR.FlatBC.algX sZ U) x) (MvPolynomial.X i) = x i` using `MvPolynomial.eval₂Hom_X' _ _ _`. Conclude with `((congrArg (c₁.appLE U V hV1).hom h4).trans (hres (x i))).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `het' : (MvPolynomial.aeval (fun l => Sec.res s' hV1 (appSec sZ s' c₁ U (x l))) : MvPolynomial (Fin d) ℂ →ₐ[ℂ] Sec s' V).toRingHom.Etale`. Rewrite using `[heq]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ het hg`. Take `⟨bs, hbs⟩` from `UpperTheory.Gal.W2.exists_basis d _ het'`. Establish `hyV' : y ∈ CxPts.ptsIn s' (RingHom.id ℂ) V` using `hyV`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `e : Sec s' V →ₐ[ℂ] ℂ` to `{ toRingHom := CxPts.evHom hyV' commutes' := fun r => (CxPts.ev_eq hyV' _).symm.trans (CxPts.ev_algX hyV' r) }`. Take `⟨φ, hsm, hbasis, hker⟩` from `UpperTheory.Gal.W2.exists_phi e d bs`. Use `⟨fun j l => φ (KaehlerDifferential.D ℂ (Sec s' V) (Sec.res s' hV2 (appSec sZ s' c₂ U (x j)))) l, U, V, hV1, hV2, x, hyV', hUaff, hVaff, φ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `b ω`. Rewrite using `[hsm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `(CxPts.ev_eq hyV' b).symm`. Introduce `l`. Establish `h3` using `hbasis l`. Rewrite `h3` using `[hbs l]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `h3`. Introduce `j`. Both sides reduce to the same expression. Introduce `ω hω`. Take `⟨m, b, ω', hb, hsum⟩` from `hker ω hω`.
-
-Conclude with `⟨m, b, ω', fun i => (CxPts.ev_eq hyV' (b i)).trans (hb i), hsum⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.tanExists_of :
     UpperTheory.Gal.W2.TanExists := by

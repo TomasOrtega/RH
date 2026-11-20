@@ -5,15 +5,13 @@ open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `L _ _ N J`. Establish `hpos : ∀ A : Matrix (Fin N) (Fin N) (𝓞 L), A.det ≠ 0 → 0 < nrmDet A`. Introduce `A hA`. Unfold `nrmDet`. Conclude with `Int.natAbs_pos.mpr ((Algebra.norm_ne_zero_iff (R := ℤ)).mpr hA)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hex : ∀ I : ℕ, ∃ S : Finset (Matrix (Fin N) (Fin N) (𝓞 L)), S.card ≤ I ^ (dd L N * N) ∧ ∀ A : Matrix (Fin N) (Fin N) (𝓞 L), A.det ≠ 0 → nrmDet A = I → ∃ g : Gm L N, (g : Matrix (Fin N) (Fin N) (𝓞 L)) * A ∈ S`. Introduce `I`. Break down `Nat.eq_zero_or_pos I with rfl | hI` into its components or cases. Use `⟨∅, by simp, ?_⟩` and prove the remaining obligations. Introduce `A hA hn`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd hn (hpos A hA).ne'`. Conclude with `hnfone L N I hI`. Use `choose S hScard hS using hex`. Use `⟨(Finset.Icc 1 J).biUnion S, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `I hI`. Conclude with `(hScard I).trans (Nat.pow_le_pow_left (Finset.mem_Icc.mp hI).2 _)`. Use `_ = J ^ (1 + dd L N * N) := by`. Rewrite using `[Finset.sum_const, Nat.card_Icc, smul_eq_mul, pow_add, pow_one]`.
-
-Simplify using the standard rewrite rules. Introduce `A hA hJ`. Take `⟨g, hg⟩` from `hS (nrmDet A) A hA rfl`. Use `⟨g, Finset.mem_biUnion.mpr ⟨nrmDet A, ?_, hg⟩⟩` and prove the remaining obligations. Conclude with `Finset.mem_Icc.mpr ⟨hpos A hA, hJ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KT.hnf :
     ∀ (L : Type) [Field L] [NumberField L] (N : ℕ) (J : ℕ),

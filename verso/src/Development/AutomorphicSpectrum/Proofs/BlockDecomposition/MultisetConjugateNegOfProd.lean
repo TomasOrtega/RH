@@ -6,7 +6,7 @@ open Formalism.REAL
 namespace GlobalTheory.CompanionTheory.Clozel
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Rewrite using `[Multiset.card_cons, Multiset.map_cons, Multiset.map_cons, Multiset.prod_cons, Multiset.prod_cons, ← ih, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem neg_one_pow_card_mul_prod_neg_add_conj (u : ℂ) (s : Multiset ℂ) :
     (-1 : ℂ) ^ Multiset.card s * (s.map fun w => -u + (starRingEnd ℂ) w).prod =
@@ -19,13 +19,13 @@ private theorem neg_one_pow_card_mul_prod_neg_add_conj (u : ℂ) (s : Multiset �
     ring
 
 /- English proof (translation)
-Introduce `n m m' _ hm' h`. Establish `key : ∀ u : ℂ, (m.map (u + ·)).prod = (m'.map fun w => u - (starRingEnd ℂ) w).prod`. Introduce `u`. Establish `hc : ((starRingEnd ℂ) ∘ fun w => -(starRingEnd ℂ) u + w) = fun w => -u + (starRingEnd ℂ) w`. Use function extensionality and compare the values at `w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite using `[h u, map_mul, map_pow, map_neg, map_one, map_multiset_prod, Multiset.map_map, hc, ← hm', neg_one_pow_card_mul_prod_neg_add_conj]`. Establish `hpoly : ((m.map fun z => -z).map fun a => Polynomial.X - Polynomial.C a).prod = ((m'.map (starRingEnd ℂ)).map fun a => Polynomial.X - Polynomial.C a).prod`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `u`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `key u` using `[Polynomial.eval_multiset_prod, Multiset.map_map, Function.comp_def]`. Establish `hroots` using `congrArg Polynomial.roots hpoly`. Rewrite `hroots` using `[Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C]`. Establish `hinv : (m'.map (starRingEnd ℂ)).map (starRingEnd ℂ) = m'`. Simplify using `[Multiset.map_map, Function.comp_def]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hinv, ← hroots, Multiset.map_map]`. Conclude with `Multiset.map_congr rfl fun z _ => by simp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multiset_eq_map_neg_conj_of_polyEq :
     ∀ (n : ℕ) (m m' : Multiset ℂ), Multiset.card m = n → Multiset.card m' = n →

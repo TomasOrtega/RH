@@ -16,9 +16,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.CsdTempered
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `hn' : ¬ ∃ m, (CG.mk π).HasInfChar τ m` using `hn`. Establish `h1` using `(hr τ).1`. Rewrite `h1` using `[CG.infChar, dif_neg hn']`. Rewrite `h1` using `[Multiset.nodup_iff_count_le_one]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `h1 0`. Rewrite `h2` using `[Multiset.count_replicate_self]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem hasInfChar_of_isRegAlg {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ} (ha : 2 ≤ a) {π : CuspSub E a}
     (hr : (CG.mk π).IsRegAlg) (τ : E →+* ℂ) : ∃ m, π.HasInfChar τ m := by
@@ -32,9 +32,9 @@ theorem hasInfChar_of_isRegAlg {E : Type} [Field E] [NumberField E] [IsCMField E
   omega
 
 /- English proof (translation)
-Establish `ha1 : 1 ≤ a` using `by omega`. Take `⟨r, wt, HT, H⟩` from `hG.of_isCsd Ω ι ha1 hr hc`. Establish `hwt` using `GlobalTheory.T.galois_weight_eq_dim_sub_one E Ω l ι a ha1 π _ r wt HT (hasInfChar_of_isRegAlg ha hr) hc H`. Establish `h1` using `H.tempered_wdOf hl h`. Rewrite `h1` using `[H.wdOf_eq hl hrc hσ, WD.lpTw_add, hwt, show (1 - (a : ℝ)) / 2 + ((((a : ℤ) - 1 : ℤ) : ℝ)) / 2 = 0 by push_cast; ring, WD.lpTw_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem tempered_of_prime (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) {E Ω : Type} [Field E] [NumberField E]
     [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {a : ℕ} (ha : 2 ≤ a) {π : CuspSub E a}
@@ -52,11 +52,9 @@ theorem tempered_of_prime (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspi
   exact h1
 
 /- English proof (translation)
-Introduce `hG E Ω _ _ _ _ _ _ a ha π hr hc A w h rc hrc σ hσ`. Distinguish the cases in `h2 : ((2 : ℕ) : 𝓞 E) ∈ w.asIdeal`. Establish `h3 : ((3 : ℕ) : 𝓞 E) ∉ w.asIdeal` using `fun h3 => w.isPrime.ne_top <| by`. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e : ((3 : ℕ) : 𝓞 E) - ((2 : ℕ) : 𝓞 E) = 1` using `by push_cast; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Conclude with `w.asIdeal.sub_mem h3 h2`. Take `⟨ι⟩ : Nonempty (Qbar 3 ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex 3`. Conclude with `tempered_of_prime hG ha hr hc h hrc hσ 3 ι h3`. Take `⟨ι⟩ : Nonempty (Qbar 2 ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex 2`.
-
-Conclude with `tempered_of_prime hG ha hr hc h hrc hσ 2 ι h2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal → ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (a : ℕ), 2 ≤ a → ∀ π : CuspSub E a, (CG.mk π).IsRegAlg → π.IsCsd → ∀ (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (rc : IrrGL (w.adicCompletion E) → WD h), IsRec h rc → ∀ σ, π.IsLocComp w σ → (rc (IrrGL.of σ.ρ σ.smooth σ.irred)).tempered := by
   intro hG E Ω _ _ _ _ _ _ a ha π hr hc A w h rc hrc σ hσ

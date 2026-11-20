@@ -19,11 +19,11 @@ namespace GlobalTheory.ShareRanks
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h u hu`. Use function extensionality and compare the values at `q`. Use `h u ?_ q` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `x`. Simplify using `[Finset.sum_apply, hu x.1 x.2]`. Introduce `h u hu q`. Establish `: u = 0` using `h u fun x hx => by`. Use `congrFun hu ⟨x, hx⟩` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Finset.sum_apply]`. Simplify using `[this]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem li_iff {α : Type} {D : Set α} {m : ℕ} (f : Fin m → α → ℂ) :
     LinearIndependent ℂ (fun q (x : D) => f q x.1) ↔
@@ -52,27 +52,25 @@ def LowC (X : Data E r) {Ψ : Finset (E →+* ℂ)} (hΨ : X.Ψ = Ψ) (G : Matri
     LinearIndependent ℂ (fun q (x : GG Ψ G p0) => g q x.1)
 
 /- English proof (translation)
-Establish `: Fintype C` using `Fintype.ofFinite C`. Set `Sc : C → Set (D → ℂ)` to `fun c => (fun g => g c) '' S`. Establish `hc : ∀ c, Module.Finite ℂ (Submodule.span ℂ (Sc c)) ∧ finrank ℂ (Submodule.span ℂ (Sc c)) ≤ N c`. Introduce `c`. Take `⟨b, hbS, hbsp, hbli⟩` from `exists_linearIndependent ℂ (Sc c)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcard : ∀ t : Finset (D → ℂ), (↑t : Set (D → ℂ)) ⊆ b → t.card ≤ N c`. Introduce `t ht`. Establish `hmem : ∀ v ∈ t, ∃ g ∈ S, g c = v` using `fun v hv => hbS (ht hv)`. Use `choose g hgS hgc using hmem`. Set `e` to `t.equivFin`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `gg : Fin t.card → C → D → ℂ` to `fun q => g (e.symm q).1 (e.symm q).2`. Establish `hli : LinearIndependent ℂ (fun q => gg q c)`. Establish `h1 : LinearIndependent ℂ (fun v : b => (v : D → ℂ))` using `hbli`. Establish `h2 : LinearIndependent ℂ (fun v : t => (v : D → ℂ))` using `h1.comp (fun v : t => (⟨v.1, ht v.2⟩ : b)) (fun v w h => Subtype.ext (by simpa using congrArg Subtype.val h))`. Establish `h3` using `h2.comp e.symm e.symm.injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`. Simplify using `[gg, hgc]`. Conclude with `hup c _ gg (fun q => hgS _ _) hli`. Establish `hfin : b.Finite`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hinf`. Take `⟨t, ht, htc⟩` from `Set.Infinite.exists_subset_card_eq hinf (N c + 1)`. Use `hcard t ht` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hfs` using `hfin.fintype`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsp : Submodule.span ℂ (Sc c) = Submodule.span ℂ b` using `hbsp.symm`. Rewrite using `[hsp]`. Use `⟨FiniteDimensional.span_of_finite ℂ hfin, ?_⟩` and prove the remaining obligations. Rewrite using `[finrank_span_set_eq_card hbli]`. Use `hcard hfin.toFinset (by simp)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[Set.toFinset_card]`. Establish `: ∀ c, Module.Finite ℂ (Submodule.span ℂ (Sc c))` using `fun c => (hc c).1`. Set `φ : Submodule.span ℂ S →ₗ[ℂ] ((c : C) → Submodule.span ℂ (Sc c))` to `LinearMap.pi fun c => ((LinearMap.proj c).comp (Submodule.span ℂ S).subtype).codRestrict _ (by`. Introduce `v`. Establish `hv` using `v.2`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.span_induction (p := fun w _ => w c ∈ Submodule.span ℂ (Sc c)) ?_ ?_ ?_ ?_ hv` and prove the remaining obligations. Introduce `w hw`. Conclude with `Submodule.subset_span ⟨w, hw, rfl⟩`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Submodule.add_mem _ hx hy`. Introduce `a x _ hx`. Simplify using `using Submodule.smul_mem _ a hx)`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `v hv`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Establish `h1 : ((φ v c : Submodule.span ℂ (Sc c)) : D → ℂ) = 0` using `by rw [hv]; rfl`. Conclude with `h1`.
-
-Use `⟨Module.Finite.of_injective φ hinj, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem span_upper {C D : Type} [Finite C] (S : Set (C → D → ℂ)) (N : C → ℕ)
     (hup : ∀ c (m : ℕ) (g : Fin m → C → D → ℂ), (∀ q, g q ∈ S) → LinearIndependent ℂ (fun q => g q c) → m ≤ N c) :
@@ -138,11 +136,11 @@ theorem span_upper {C D : Type} [Finite C] (S : Set (C → D → ℂ)) (N : C �
     _ = ∑ᶠ c, N c := (finsum_eq_sum_of_fintype _).symm
 
 /- English proof (translation)
-Establish `: Fintype C` using `Fintype.ofFinite C`. Use `choose g hgW hg0 hgli using hlow`. Set `G : (Σ c, Fin (N c)) → W` to `fun i => ⟨g i.1 i.2, hgW i.1 i.2⟩`. Establish `hli : LinearIndependent ℂ G`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha i`. Take `⟨c, q⟩` from `i`. Establish `h1` using `congrArg (fun v : W => (v : C → D → ℂ) c) ha`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, G, Submodule.coe_zero, Pi.zero_apply] at h1`. Rewrite `h1` using `[Fintype.sum_sigma]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Finset.sum_eq_single c (fun c' _ hc' => by simp [hg0 _ _ c (Ne.symm hc')]) (by simp)]`. Conclude with `Fintype.linearIndependent_iff.1 (hgli c) (fun q => a ⟨c, q⟩) h1 q`. Use `hli.fintype_card_le_finrank` as an intermediate fact. Rewrite using `[finsum_eq_sum_of_fintype]`. Simplify `this` using `[Fintype.card_sigma]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lower_of_comps {C D : Type} [Finite C] (W : Submodule ℂ (C → D → ℂ)) [Module.Finite ℂ W] (N : C → ℕ)
     (hlow : ∀ c, ∃ g : Fin (N c) → C → D → ℂ, (∀ q, g q ∈ W) ∧ (∀ q, ∀ c' ≠ c, g q c' = 0) ∧
@@ -167,9 +165,9 @@ theorem lower_of_comps {C D : Type} [Finite C] (W : Submodule ℂ (C → D → �
   simpa [Fintype.card_sigma] using this
 
 /- English proof (translation)
-Introduce `u hu`. Apply `hi u` to reduce the goal to its premises. Take `⟨x0, hx0, hw0⟩` from `hw0`. Establish `hg` using `(GlobalTheory.UpperModel.isBddSec_sum X hf u).1.1`. Use `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.eq_zero_of_mul_eq_zero (FourierCoefficientDomain.isOpen_dom X) (ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.flag_domain_frames_connected r X).isPreconnected hw hg ?_ hx0 hw0` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Rewrite using `[Finset.mul_sum, ← hu y hy]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem indep_mul (X : Data E r) {la : Wt X.Ψ r} {w : Frame X.Ψ r → ℂ} (hw : DifferentiableOn ℂ w X.dom)
     (hw0 : ∃ x ∈ X.dom, w x ≠ 0) {m : ℕ} {f : Fin m → Frame X.Ψ r → ℂ} (hf : ∀ q, X.IsBddSec la (f q))
@@ -188,7 +186,7 @@ theorem indep_mul (X : Data E r) {la : Wt X.Ψ r} {w : Frame X.Ψ r → ℂ} (hw
   ring
 
 /- English proof (translation)
-Use `(ReciprocityTheory.ChartRestriction.G.FD.siegelSpaceAlgebra_holds r X la la' 0).2.1 P hP Q hQ` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem (X : Data E r) {la la' mu : Wt X.Ψ r} {P Q : Frame X.Ψ r → ℂ} (hP : P ∈ X.SS la)
     (hQ : X.IsBddSec la' Q) (h : la + la' = mu) : P * Q ∈ X.SS mu := by
@@ -197,9 +195,9 @@ theorem mul_mem (X : Data E r) {la la' mu : Wt X.Ψ r} {P Q : Frame X.Ψ r → �
   exact this
 
 /- English proof (translation)
-Establish `hup : ∀ (m : ℕ) (f : Fin m → Frame X.Ψ r → ℂ), (∀ q, f q ∈ X.SS (Xa.Fp + Xa.T • Xa.L)) → (∀ a : Fin m → ℂ, (∀ x ∈ X.dom, ∑ q, a q * f q x = 0) → a = 0) → m ≤ Fl.δ * (Xa.T + 2 * nd X.toData + 6).choose (nd X.toData)` using `fun m f hf hi => GlobalTheory.UpperModel.upper E r X.toData Xa Fl m f (fun q => (hf q).1) hi`. Use `⟨hup, ?_, ?_, GlobalTheory.T.lowerRank_cuspForms_detWeight_oneComponent E r X Xa Fl hm h0 h1 hg1 hg2 hg3 hg4 s hs hsT u hu hu0⟩` and prove the remaining obligations. Introduce `m f hf hi`. Establish `hmem : ∀ q, f q * u ∈ X.SS (Xa.Fp + Xa.T • Xa.L)` using `fun q => mul_mem X.toData (hf q) hu.1 (sub_add_cancel _ _)`. Conclude with `hup m _ hmem (indep_mul X.toData hu.1.1.1 hu0 (fun q => (hf q).1) hi)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m f hf hi`. Take `⟨w, hw, hw0⟩` from `GlobalTheory.T.exists_nonzero_boundedSection_shiftedWeight E r X Xa Fl hm h0 h1 hg1 hg2 hg3 hg4 s hs hsT u hu hu0`. Establish `hmem : ∀ q, X.IsBddSec (Xa.Fp + (Xa.T + (nd X.toData + 4)) • Xa.L) (f q * w)` using `fun q => (mul_mem X.toData (hf q) hw (by simp only [add_smul]; abel)).1`. Conclude with `GlobalTheory.T.card_independent_boundedSections_shiftedWeight_le E r X.toData Xa Fl m _ hmem (indep_mul X.toData hw.1.1 hw0 (fun q => (hf q).1) hi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compX (X : DataX E r) (Xa : ArchInM X.toData) (Fl : FlatM X.toData Xa) (hm : GlobalTheory.Shares.Margins X.toData Xa)
     (h0 : 0 < X.p0) (h1 : X.p0 < r) (hg1 : GapsGe X.p0 Xa.L 1) (hg2 : PairGe Xa.L (1.9 * Xa.T))
@@ -234,9 +232,9 @@ theorem compX (X : DataX E r) (Xa : ArchInM X.toData) (Fl : FlatM X.toData Xa) (
     exact GlobalTheory.T.card_independent_boundedSections_shiftedWeight_le E r X.toData Xa Fl m _ hmem (indep_mul X.toData hw.1.1 hw0 (fun q => (hf q).1) hi)
 
 /- English proof (translation)
-Substitute `hΨ hG hp` using the available equality. Take `⟨Xa, hL, hF, hT, hm, ⟨Fl⟩⟩` from `hA`. Express the relevant statement in the definitionally equal form `Xa.L = L at hL`. Express the relevant statement in the definitionally equal form `Xa.Fp = Fp at hF`. Substitute `hL hF hT` using the available equality.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality.
 
-Take `⟨c1, c2, c3, g, hg, hgi⟩` from `compX X Xa Fl hm h0 h1 hg1 hg2 hg3 hg4 s hs hsT u hu hu0`. Conclude with `⟨Fl.δ, ⟨Xa.n_ge, Xa.T_ge⟩, fun m f hf hli => c1 m f hf ((li_iff f).1 hli), fun m f hf hli => c2 m f hf ((li_iff f).1 hli), fun m f hf hli => c3 m f hf ((li_iff f).1 hli), g, hg, (li_iff g).2 hgi⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem compT (X : DataX E r) {Ψ : Finset (E →+* ℂ)} (hΨ : X.Ψ = Ψ) (G : Matrix (Fin r) (Fin r) E) (p0 : ℕ)
     (hG : X.Gm = G) (hp : X.p0 = p0) (L Fp : Wt Ψ r) (T s : ℕ)
@@ -261,9 +259,9 @@ theorem compT (X : DataX E r) {Ψ : Finset (E →+* ℂ)} (hΨ : X.Ψ = Ψ) (G :
     fun m f hf hli => c3 m f hf ((li_iff f).1 hli), g, hg, (li_iff g).2 hgi⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Unfold `TwoLevels.detTr`. Establish `e : (Matrix.of fun g g' : U' => M.pull (g * g') F c x) = 0`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `g g'`. Simplify using `[hc]`. Use `haveI : Nonempty U' := ⟨1⟩`. Rewrite using `[e, Matrix.det_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pull_ne {U' C : Type} [Group U'] [Fintype U'] [DecidableEq U'] [MulAction U' C]
     (M : TwoLevels E r U' C) {F : C → Frame M.Ψ r → ℂ} {c : C} {x : Frame M.Ψ r} (h : M.detTr F c x ≠ 0) :
@@ -279,7 +277,7 @@ theorem exists_pull_ne {U' C : Type} [Group U'] [Fintype U'] [DecidableEq U'] [M
   rw [e, Matrix.det_zero]
 
 /- English proof (translation)
-Establish `h` using `M.tr_mul 1 1 c`. Simplify using `only [mul_one, one_smul] at h`. Establish `e : M.tr 1 c * (M.tr 1 c * M.tr 1 c)⁻¹ = (M.tr 1 c)⁻¹` using `by group`. Rewrite `h` using `[e]`. Conclude with `(Subgroup.inv_mem_iff _).1 h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_one_mem {U' C : Type} [Group U'] [MulAction U' C] (M : TwoLevels E r U' C) (c : C) :
     M.tr 1 c ∈ (M.comp c).Γ := by
@@ -290,7 +288,7 @@ theorem tr_one_mem {U' C : Type} [Group U'] [MulAction U' C] (M : TwoLevels E r 
   exact (Subgroup.inv_mem_iff _).1 h
 
 /- English proof (translation)
-Unfold `nd TwoLevels.dimY`. Rewrite using `[Fintype.card_prod, Fintype.card_coe, GlobalTheory.ChartCount.card_strictLower]`. Rewrite using `[M.comp_Ψ c]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem nd_comp {U' C : Type} [Group U'] [MulAction U' C] (M : TwoLevels E r U' C) (c : C) :
     nd (M.comp c).toData = M.dimY := by
@@ -299,7 +297,7 @@ theorem nd_comp {U' C : Type} [Group U'] [MulAction U' C] (M : TwoLevels E r U' 
   rw [M.comp_Ψ c]
 
 /- English proof (translation)
-Substitute `hΨ hG hp` using the available equality. Use `⟨x, hx, fun h0 => h ?_⟩` and prove the remaining obligations. Use `hF.2.2 γ hγ x hx` as an intermediate fact. Rewrite `this` using `[hχ, one_mul]`. Conclude with `this.trans h0`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nzT (X : Data E r) {Ψ : Finset (E →+* ℂ)} (hΨ : X.Ψ = Ψ) (G : Matrix (Fin r) (Fin r) E) (p0 : ℕ)
     (hG : X.Gm = G) (hp : X.p0 = p0) (F : Frame Ψ r → ℂ) {la : Wt X.Ψ r}
@@ -316,9 +314,9 @@ section Cusp
 variable {U C : Type} [Group U] [MulAction U C]
 
 /- English proof (translation)
-Use `span_upper _ N fun c m g hg hli => ?_` and prove the remaining obligations. Use `choose F hF hFg using hg`. Use `h c m (fun q => F q c) (fun q => hF q c) ?_` and prove the remaining obligations. Establish `e : (fun q => g q c) = fun q (x : GG M.Ψ M.Gm M.p0) => F q c x.1`. Use function extensionality and compare the values at `q x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hFg q]`. Both sides reduce to the same expression. Rewrite using `[← e]`. Conclude with `hli`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upper_cusp [Finite C] (M : TwoLevels E r U C) (la : Wt M.Ψ r) (N : C → ℕ)
     (h : ∀ c, UpC (M.comp c).toData (M.comp_Ψ c) M.Gm M.p0 la (N c)) :
@@ -334,13 +332,13 @@ theorem upper_cusp [Finite C] (M : TwoLevels E r U C) (la : Wt M.Ψ r) (N : C �
   exact hli
 
 /- English proof (translation)
-Use `lower_of_comps _ N fun c => ?_` and prove the remaining obligations. Take `⟨g, hg, hli⟩` from `h c`. Set `F : Fin (N c) → C → Frame M.Ψ r → ℂ` to `fun q c' => if c' = c then g q else 0`. Establish `hF : ∀ q, F q ∈ M.SS la`. Introduce `q c'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hc : c' = c`. Substitute `hc` using the available equality. Simplify `hg q` using `[F]`. Simplify using `only [F, if_neg hc]`. Conclude with `(ReciprocityTheory.ChartRestriction.G.FD.siegelSpaceAlgebra_holds r (M.comp c').toData _ 0 0).1.1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun q => M.res (F q), fun q => Submodule.subset_span ⟨F q, hF q, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `q c' hc'`. Use function extensionality and compare the values at `x`. Simplify using `[TwoLevels.res, F, hc']`. Establish `e : (fun q => M.res (F q) c) = fun q (x : GG M.Ψ M.Gm M.p0) => g q x.1`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `q x`. Simplify using `[TwoLevels.res, F]`. Use `show LinearIndependent ℂ (fun q => M.res (F q) c)`. Rewrite using `[e]`. Conclude with `hli`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lower_cusp [Finite C] (M : TwoLevels E r U C) (la : Wt M.Ψ r) [Module.Finite ℂ (M.cusp la)] (N : C → ℕ)
     (h : ∀ c, LowC (M.comp c).toData (M.comp_Ψ c) M.Gm M.p0 la (N c)) :
@@ -370,25 +368,21 @@ theorem lower_cusp [Finite C] (M : TwoLevels E r U C) (la : Wt M.Ψ r) [Module.F
 end Cusp
 
 /- English proof (translation)
-Introduce `E _ _ _ r U C _ _ _ _ M hLev h0 h1 ka T hArch hsT`. Take `⟨L, Fp, rfl, hg1, hg2, hg3, hg4, hA⟩` from `hArch`. Use `haveI : Fintype (⊥ : Subgroup U) := Fintype.ofFinite _`. Take `⟨u0, hu0, hnz⟩` from `GlobalTheory.T.exists_cuspForm_independent_translates E r (⊥ : Subgroup U) C (sub M ⊥) hLev (sOf M) (even_sOf M) (le_sOf M)`. Establish `hc : ∀ c, ∃ δ : ℕ, (2 ≤ M.dimY ∧ 11 * M.dimY ^ 2 ≤ T) ∧ UpC (M.comp c).toData (M.comp_Ψ c) M.Gm M.p0 (Fp + T • L) (δ * (T + 2 * M.dimY + 6).choose M.dimY) ∧ UpC (M.comp c).toData (M.comp_Ψ c) M.Gm M.p0 (Fp + T • L - deMul M.Ψ r M.p0 (sOf M)) (δ * (T + 2 * M.dimY + 6).choose M.dim …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Establish `hnd` using `nd_comp M c`. Establish `hg3'` using `hg3`. Establish `hg4'` using `hg4`. Rewrite `hg3'`, `hg4'` using `[← hnd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hdx⟩` from `hnz c`. Take `⟨h, hh⟩` from `exists_pull_ne (sub M ⊥) hdx`. Establish `hh1 : (h : U) = 1` using `Subgroup.mem_bot.1 h.2`. Express the relevant statement in the definitionally equal form `u0 ((h : U) • c) (lact (M.tr (h : U) c) x) ≠ 0 at hh`. Rewrite `hh` using `[hh1, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hγ` using `tr_one_mem M c`. Take `⟨y, hy, hy0⟩` from `nzT (M.comp c).toData (M.comp_Ψ c) M.Gm M.p0 (M.comp_Gm c) (M.comp_basePoint c) (u0 c) (hu0 c).1.1 hγ (M.χ_one c _ _ hγ) x hx hh`. Take `⟨δ, hn, c1, c2, c3, c4⟩` from `compT (M.comp c) (M.comp_Ψ c) M.Gm M.p0 (M.comp_Gm c) (M.comp_basePoint c) L Fp T (sOf M) (hA c) h0 h1 hg1 hg2 hg3' hg4' (even_sOf M) hsT (u0 c) (hu0 c) ⟨y, hy, hy0⟩`. Rewrite `hn`, `c1`, `c2`, `c3`, `c4` using `[hnd]`. Conclude with `⟨δ, hn, c1, c2, c3, c4⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `choose δ hn c1 c2 c3 c4 using hc`. Take `⟨f0, r0⟩` from `upper_cusp M _ _ c1`. Take `⟨fm, -⟩` from `upper_cusp M _ _ c2`. Take `⟨f2, r2⟩` from `upper_cusp M _ _ c3`. Establish `l0` using `lower_cusp M _ _ c4`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Fintype C := Fintype.ofFinite C`. Rewrite `r0`, `r2`, `l0` using `[finsum_eq_sum_of_fintype]`. Use `set n := M.dimY with hn_def`. Establish `hb : ∀ c, (T + 3 * n + 10).choose n ≤ 2 * (T + n).choose n ∧ (1 - (n : ℝ) * (n + 6) / T) * ((T + 2 * n + 6).choose n : ℕ) ≤ ((T + n).choose n : ℕ)` using `fun c => GlobalTheory.T.two_binomial_ratio_bounds T n (hn c).1 (hn c).2`. Use `⟨f0, f2, ?_, ?_, fm⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Distinguish the cases in `hε : 1 - (n : ℝ) * (n + 6) / T ≤ 0`. Conclude with `le_trans (mul_nonpos_of_nonpos_of_nonneg hε (Nat.cast_nonneg _)) (Nat.cast_nonneg _)`. Use `push_neg at hε`. Establish `r0' : (finrank ℂ (M.cusp (Fp + T • L)) : ℝ) ≤ ∑ c, (δ c : ℝ) * ((T + 2 * n + 6).choose n : ℕ)`. Conclude with `r0` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `l0' : ∑ c, (δ c : ℝ) * ((T + n).choose n : ℕ) ≤ (finrank ℂ (M.cusp (Fp + T • L - deMul M.Ψ r M.p0 (sOf M))) : ℝ)`. Conclude with `l0` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∑ c, (δ c : ℝ) * ((T + n).choose n : ℕ) := Finset.sum_le_sum fun c _ => mul_le_mul_of_nonneg_left (hb c).2 (Nat.cast_nonneg _)`. Use `_ ≤ _ := l0'`. Establish `key : finrank ℂ (M.cusp (Fp + T • L + 2 • deMul M.Ψ r M.p0 (sOf M))) ≤ 2 * finrank ℂ (M.cusp (Fp + T • L - deMul M.Ψ r M.p0 (sOf M)))`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := Nat.mul_le_mul_left _ l0`. Conclude with `key` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ranks : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [Finite U]
     [Finite C] [MulAction U C] (M : TwoLevels E r U C), LevelHyp (sub M ⊥) → 0 < M.p0 → M.p0 < r →

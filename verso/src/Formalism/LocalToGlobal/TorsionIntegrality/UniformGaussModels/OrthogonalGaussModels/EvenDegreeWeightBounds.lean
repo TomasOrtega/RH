@@ -11,7 +11,7 @@ open Formalism.L2.Th1.D
 open Formalism.L2.Th1.CM (cm2 cm3 cm4)
 
 /- English proof (translation)
-Introduce `l _ _ g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN d N0 N1 _ hd2 hde hN0 ιr _ _ om oms hO hT hζ U0 Φ hU0 hΦ0 hΦ TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 hJ δ hδ`. Take `⟨a1, a2, -⟩` from `FAux.ffs l first_level_on_curve g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN`. Take `⟨K1, ζ, be, g, U, hK1, hζ', hbe, hg0, hg, hUi, heq⟩` from `CohomologyFunctoriality₂.thetaForm l (CM.MaximalUnramifiedExtension l) σ hσ (CM.MaximalUnramifiedExtension l).subtype (FAux.norm_coe l) F hF _ a1 a2 d N0 N1 hd2 hde ιr om oms hO hT hζ U0 Φ hU0 hΦ0 hΦ`. Rewrite using `[heq]`. Conclude with `Formalism.DworkPowerSeriesWeights.OddLevelGainBounds.thmAEntry7 l d N0 N1 hσ.2.1 hd2 hde hN0 K1 hK1 ζ hζ' be hbe g hg0 hg U hUi (-1) (Or.inr rfl) TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 hJ δ hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matrix_entries_all_disc_seven : ThmAEntryAll7 := by
   intro l _ _ g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN d N0 N1 _ hd2 hde hN0 ιr _ _ om oms hO hT hζ U0 Φ hU0
@@ -24,7 +24,7 @@ theorem matrix_entries_all_disc_seven : ThmAEntryAll7 := by
     (Or.inr rfl) TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 hJ δ hδ
 
 /- English proof (translation)
-Introduce `l _ _ g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN d N0 N1 _ hd2 hde hN0 ιr _ _ om oms hO hT hζ U0 Φ hU0 hΦ0 hΦ TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 hJ n`. Take `⟨a1, a2, -⟩` from `FAux.ffs l first_level_on_curve g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN`. Take `⟨K1, ζ, be, g, U, hK1, hζ', hbe, hg0, hg, hUi, heq⟩` from `CohomologyFunctoriality₂.thetaForm l (CM.MaximalUnramifiedExtension l) σ hσ (CM.MaximalUnramifiedExtension l).subtype (FAux.norm_coe l) F hF _ a1 a2 d N0 N1 hd2 hde ιr om oms hO hT hζ U0 Φ hU0 hΦ0 hΦ`. Rewrite using `[heq]`. Conclude with `Formalism.DworkPowerSeriesWeights.OddLevelGainBounds.thmAGauss7 l d N0 N1 hσ.2.1 hd2 hde hN0 K1 hK1 ζ hζ' be hbe g hg0 hg U hUi (-1) (Or.inr rfl) TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 hJ n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_form_all_disc_seven : ThmAGaussAll7 := by
   intro l _ _ g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN d N0 N1 _ hd2 hde hN0 ιr _ _ om oms hO hT hζ U0 Φ hU0
@@ -37,11 +37,11 @@ theorem gauss_form_all_disc_seven : ThmAGaussAll7 := by
     (Or.inr rfl) TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 hJ n
 
 /- English proof (translation)
-Introduce `l _ _ g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN N0 N1 C U0 Φ hU0 hΦ0 hΦ p hp I n`. Take `⟨a1, a2, a3⟩` from `FAux.ffs l first_level_on_curve g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN`. Take `⟨ζ, hζ⟩` from `FAux.exists_root2 l`. Take `⟨U, hUi, hUeq⟩` from `single_letter_theta_factorization (CM.MaximalUnramifiedExtension l) ℂ_[l] l N0 N1 σ (CM.MaximalUnramifiedExtension l).subtype hσ (FAux.norm_coe l) F hF _ a1 a2 ζ hζ _ a3 U0 Φ hU0 hΦ0 hΦ`. Take `⟨g, hg0, hg, -⟩` from `Formalism.DworkPowerSeriesWeights.generalized_log_inverse.{0, 0} ℂ_[l] l hσ.1 (Fin N0 × Fin N1) id`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hg' : ∀ y, MvPowerSeries.subst g (Formalism.DworkPowerSeriesWeights.oneLog (K` using `ℂ_[l]) l y) = MvPowerSeries.X y := by`. Introduce `y`. Rewrite using `[(Formalism.DworkPowerSeriesWeights.logarithm_weight_comparison.{0} ℂ_[l] l 2 N0 N1).2.2 y]`. Conclude with `hg y`. Take `⟨hT1, hT2, -, -⟩` from `Formalism.DworkPowerSeriesWeights.admissibleTransfer (CM.MaximalUnramifiedExtension l) ℂ_[l] (CM.MaximalUnramifiedExtension l).subtype (FAux.norm_coe l) l 2 N0 N1 ⊤ ζ (beMean (d := 2) l σ _ (fun _ : Unit => (1 : CM.MaximalUnramifiedExtension l)) (fun _ => 1) ζ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hUeq g hg0 hg']`. Conclude with `Formalism.DworkPowerSeriesWeights.OddLevelGainBounds.oneLetterGauss7 l N0 N1 C hσ.2.1 _ (hT1 (unramified_top (CM.MaximalUnramifiedExtension l) l σ hσ)) ((CM.MaximalUnramifiedExtension l).subtype ζ) (hζ.map_of_injective (CM.MaximalUnramifiedExtension l).subtype.injective) _ (hT2 ( …`.
+A detailed English derivation is pending.
 -/
 theorem one_letter_gauss_all_disc_seven : OneLetterGaussAll7 := by
   intro l _ _ g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN N0 N1 C U0 Φ hU0 hΦ0 hΦ p hp I n
@@ -65,7 +65,7 @@ theorem one_letter_gauss_all_disc_seven : OneLetterGaussAll7 := by
     1 (by simp) g hg0 hg' U hUi (-1) (Or.inr rfl) p hp I n
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Conclude with `⟨s2, hs2, hc2, fun σ hσ F hF => matrix_entries_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem matrix_entries_every_integral_disc_seven : ThmAEntryEveryInt7 := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -75,7 +75,7 @@ theorem matrix_entries_every_integral_disc_seven : ThmAEntryEveryInt7 := by
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι`. Take `⟨g2, g3, ε, hg, hε, hth⟩` from `FAux.model l cm2 cm3 dK L hsq hd4 hcm h5 hd hin ι`. Take `⟨s2, hs2, hc2, tail⟩` from `matrix_entries_every_integral_disc_seven dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Conclude with `⟨g2, g3, ε, s2, hg, hε, hth, hs2, hc2, tail⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem matrix_entries_integral_disc_seven : ThmAEntryInt7 := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι
@@ -84,7 +84,7 @@ theorem matrix_entries_integral_disc_seven : ThmAEntryInt7 := by
   exact ⟨g2, g3, ε, s2, hg, hε, hth, hs2, hc2, tail⟩
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Conclude with `⟨s2, hs2, hc2, fun σ hσ F hF => gauss_form_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gauss_form_every_integral_disc_seven : ThmAGaussEveryInt7 := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -94,7 +94,7 @@ theorem gauss_form_every_integral_disc_seven : ThmAGaussEveryInt7 := by
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι`. Take `⟨g2, g3, ε, hg, hε, hth⟩` from `FAux.model l cm2 cm3 dK L hsq hd4 hcm h5 hd hin ι`. Take `⟨s2, hs2, hc2, tail⟩` from `gauss_form_every_integral_disc_seven dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Conclude with `⟨g2, g3, ε, s2, hg, hε, hth, hs2, hc2, tail⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gauss_form_integral_disc_seven : ThmAGaussInt7 := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι
@@ -103,7 +103,7 @@ theorem gauss_form_integral_disc_seven : ThmAGaussInt7 := by
   exact ⟨g2, g3, ε, s2, hg, hε, hth, hs2, hc2, tail⟩
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Conclude with `⟨s2, hs2, hc2, fun σ hσ F hF => one_letter_gauss_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem one_letter_gauss_every_integral_disc_seven : OneLetterGaussEveryInt7 := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -113,7 +113,7 @@ theorem one_letter_gauss_every_integral_disc_seven : OneLetterGaussEveryInt7 := 
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι`. Take `⟨g2, g3, ε, hg, hε, hth⟩` from `FAux.model l cm2 cm3 dK L hsq hd4 hcm h5 hd hin ι`. Take `⟨s2, hs2, hc2, tail⟩` from `one_letter_gauss_every_integral_disc_seven dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Conclude with `⟨g2, g3, ε, s2, hg, hε, hth, hs2, hc2, tail⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem one_letter_gauss_integral_disc_seven : OneLetterGaussInt7 := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι
@@ -122,9 +122,9 @@ theorem one_letter_gauss_integral_disc_seven : OneLetterGaussInt7 := by
   exact ⟨g2, g3, ε, s2, hg, hε, hth, hs2, hc2, tail⟩
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, hs2, hc2, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF d N0 N1 _ hd2 hev hN0' ιr _ _ om oms hO hT hζ n _ f f' hH Θ hInt`. Take `⟨U0, Φ, hU, hΦ, hsim, hΘ⟩` from `hS l h5 g2 g3 ε s2 hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF (hN σ hσ) N0 N1 ιr n f f' hH Θ hInt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hΘ]`. Conclude with `matrix_entries_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) d N0 N1 hd2 hev hN0' ιr om oms hO hT hζ U0 Φ hU hΦ hsim`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ThmAEntryEveryPh7_of (hS : HypShape) : ThmAEntryEveryPh7 := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -137,9 +137,9 @@ theorem ThmAEntryEveryPh7_of (hS : HypShape) : ThmAEntryEveryPh7 := by
   exact matrix_entries_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) d N0 N1 hd2 hev hN0' ιr om oms hO hT hζ U0 Φ hU hΦ hsim
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, hs2, hc2, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF d N0 N1 _ hd2 hev hN0' ιr _ _ om oms hO hT hζ n _ _ f f' hH Θ γ hγ hK1`. Establish `hInt` using `hK l h5 g2 g3 ε s2 hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF (hN σ hσ) n Θ γ hγ hK1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨U0, Φ, hU, hΦ, hsim, hΘ⟩` from `hS l h5 g2 g3 ε s2 hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF (hN σ hσ) N0 N1 ιr n f f' hH Θ hInt`. Rewrite using `[hΘ]`. Conclude with `matrix_entries_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) d N0 N1 hd2 hev hN0' ιr om oms hO hT hζ U0 Φ hU hΦ hsim`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matrix_entries_sharp_of_kappa_integral (hK : uniformGaussModelConditionReformulated) (hS : HypShape) : MatrixEntriesSharpCM := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -153,9 +153,9 @@ theorem matrix_entries_sharp_of_kappa_integral (hK : uniformGaussModelConditionR
   exact matrix_entries_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) d N0 N1 hd2 hev hN0' ιr om oms hO hT hζ U0 Φ hU hΦ hsim
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, ⟨c, hc, e2, e3, es⟩, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, c, hc, hs2, e2, e3, es, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF d N0 N1 _ hd2 hev hN0' ιr _ _ om oms hO hT hζ n _ f f' hH ω₀ hω hω2 κ _ r s N hr hN0 hlN hs`. Take `⟨U0, Φ, hU, hΦ, hsim, hΘ⟩` from `hS l h5 (Formalism.L2.Th1.F.scalePair L c hc) ι g2 g3 ε s2 e2 e3 es hg.2.2.1 hg.2.2.2.1 hg.2.2.2.2.1 hε hth σ hσ F hF (hN σ hσ) N0 N1 ιr n f f' hH ω₀ hω hω2 κ r s N hr hN0 hlN hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hΘ]`. Conclude with `matrix_entries_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) d N0 N1 hd2 hev hN0' ιr om oms hO hT hζ U0 Φ hU hΦ hsim`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ThmAEntryEveryOrth7_of (hS : OrthShape) : ThmAEntryEveryOrth7 := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -170,9 +170,9 @@ theorem ThmAEntryEveryOrth7_of (hS : OrthShape) : ThmAEntryEveryOrth7 := by
   exact matrix_entries_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) d N0 N1 hd2 hev hN0' ιr om oms hO hT hζ U0 Φ hU hΦ hsim
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, hs2, hc2, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF d N0 N1 _ hd2 hev hN0' ιr _ _ om oms hO hT hζ n _ f f' hH Θ hInt`. Take `⟨U0, Φ, hU, hΦ, hsim, hΘ⟩` from `hS l h5 g2 g3 ε s2 hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF (hN σ hσ) N0 N1 ιr n f f' hH Θ hInt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hΘ]`. Conclude with `gauss_form_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) d N0 N1 hd2 hev hN0' ιr om oms hO hT hζ U0 Φ hU hΦ hsim`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ThmAGaussEveryPh7_of (hS : HypShape) : ThmAGaussEveryPh7 := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -185,9 +185,9 @@ theorem ThmAGaussEveryPh7_of (hS : HypShape) : ThmAGaussEveryPh7 := by
   exact gauss_form_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) d N0 N1 hd2 hev hN0' ιr om oms hO hT hζ U0 Φ hU hΦ hsim
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, hs2, hc2, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF d N0 N1 _ hd2 hev hN0' ιr _ _ om oms hO hT hζ n _ _ f f' hH Θ γ hγ hK1`. Establish `hInt` using `hK l h5 g2 g3 ε s2 hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF (hN σ hσ) n Θ γ hγ hK1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨U0, Φ, hU, hΦ, hsim, hΘ⟩` from `hS l h5 g2 g3 ε s2 hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF (hN σ hσ) N0 N1 ιr n f f' hH Θ hInt`. Rewrite using `[hΘ]`. Conclude with `gauss_form_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) d N0 N1 hd2 hev hN0' ιr om oms hO hT hζ U0 Φ hU hΦ hsim`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_form_sharp_of_kappa_integral (hK : uniformGaussModelConditionReformulated) (hS : HypShape) : GaussFormSharpCM := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -201,9 +201,9 @@ theorem gauss_form_sharp_of_kappa_integral (hK : uniformGaussModelConditionRefor
   exact gauss_form_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) d N0 N1 hd2 hev hN0' ιr om oms hO hT hζ U0 Φ hU hΦ hsim
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, ⟨c, hc, e2, e3, es⟩, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, c, hc, hs2, e2, e3, es, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF d N0 N1 _ hd2 hev hN0' ιr _ _ om oms hO hT hζ n _ f f' hH ω₀ hω hω2 κ _ r s N hr hN0 hlN hs`. Take `⟨U0, Φ, hU, hΦ, hsim, hΘ⟩` from `hS l h5 (Formalism.L2.Th1.F.scalePair L c hc) ι g2 g3 ε s2 e2 e3 es hg.2.2.1 hg.2.2.2.1 hg.2.2.2.2.1 hε hth σ hσ F hF (hN σ hσ) N0 N1 ιr n f f' hH ω₀ hω hω2 κ r s N hr hN0 hlN hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hΘ]`. Conclude with `gauss_form_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) d N0 N1 hd2 hev hN0' ιr om oms hO hT hζ U0 Φ hU hΦ hsim`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ThmAGaussEveryOrth7_of (hS : OrthShape) : ThmAGaussEveryOrth7 := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -220,9 +220,9 @@ theorem ThmAGaussEveryOrth7_of (hS : OrthShape) : ThmAGaussEveryOrth7 := by
 namespace DiscriminantSevenGaussModels
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.E.phSum`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Use `Pair.constantCoeff_inVar_eq_zero x ?_` and prove the remaining obligations. Unfold `phL`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, FAux.cc_phFF (by omega), map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_phSum {l : ℕ} [Fact l.Prime] (h5 : 5 ≤ l) (g2 g3 s2 ε : CM.MaximalUnramifiedExtension l) (n : Type) [Fintype n] :
     MvPowerSeries.constantCoeff
@@ -236,9 +236,9 @@ theorem cc_phSum {l : ℕ} [Fact l.Prime] (h5 : 5 ≤ l) (g2 g3 s2 ε : CM.Maxim
     PowerSeries.coeff_zero_eq_constantCoeff_apply, FAux.cc_phFF (by omega), map_zero]
 
 /- English proof (translation)
-Establish `h0` using `cc_phSum h5 g2 g3 s2 ε n`. Take `⟨e0, -, eadd, -⟩` from `Formalism.L2.Th1.C.mvExpLaws ℂ_[l] n`. Establish `h1` using `eadd (-(Formalism.L2.Th1.E.phSum (phL l g2 g3 s2 ε))) (Formalism.L2.Th1.E.phSum (phL l g2 g3 s2 ε)) (by rw [map_neg, h0, neg_zero]) h0`. Rewrite `h1` using `[neg_add_cancel, e0]`. Rewrite using `[← mul_assoc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Θ = (Formalism.L2.Th1.C.mvExp _ * Formalism.L2.Th1.C.mvExp _) * Θ`. Rewrite using `[← h1, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem split {l : ℕ} [Fact l.Prime] (h5 : 5 ≤ l) (g2 g3 s2 ε : CM.MaximalUnramifiedExtension l) (n : Type) [Fintype n]
     (Θ : MvPowerSeries n ℂ_[l]) :
@@ -256,9 +256,9 @@ theorem split {l : ℕ} [Fact l.Prime] (h5 : 5 ≤ l) (g2 g3 s2 ε : CM.MaximalU
 end DiscriminantSevenGaussModels
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, hs2, hc2, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF N0 N1 C Θ hInt`. Rewrite using `[DiscriminantSevenGaussModels.split h5 g2 g3 s2 ε (Fin N0 × Fin N1) Θ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_letter_gauss_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) N0 N1 C _ _ hInt (DiscriminantSevenGaussModels.cc_phSum h5 g2 g3 s2 ε _) (InverseCommuting.sim_refl _)`.
+A detailed English derivation is pending.
 -/
 theorem one_letter_gauss_every_principal_seven : OneLetterGaussEveryPh7 := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -271,9 +271,9 @@ theorem one_letter_gauss_every_principal_seven : OneLetterGaussEveryPh7 := by
     _ _ hInt (DiscriminantSevenGaussModels.cc_phSum h5 g2 g3 s2 ε _) (InverseCommuting.sim_refl _)
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, hs2, hc2, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF N0 N1 C Θ γ hγ hK1`. Establish `hInt` using `hK l h5 g2 g3 ε s2 hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF (hN σ hσ) (Fin N0 × Fin N1) Θ γ hγ hK1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[DiscriminantSevenGaussModels.split h5 g2 g3 s2 ε (Fin N0 × Fin N1) Θ]`. Conclude with `one_letter_gauss_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) N0 N1 C _ _ hInt (DiscriminantSevenGaussModels.cc_phSum h5 g2 g3 s2 ε _) (InverseCommuting.sim_refl _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_letter_gauss_sharp_of_kappa_integral (hK : uniformGaussModelConditionReformulated) : OneLetterGaussSharpCM := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -287,9 +287,9 @@ theorem one_letter_gauss_sharp_of_kappa_integral (hK : uniformGaussModelConditio
     _ _ hInt (DiscriminantSevenGaussModels.cc_phSum h5 g2 g3 s2 ε _) (InverseCommuting.sim_refl _)
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, ⟨c, hc, e2, e3, es⟩, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, c, hc, hs2, e2, e3, es, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF N0 N1 C ω₀ hω hω2 κ _ r s N hr hN0 hlN hs`. Take `⟨U0, hU, hΘ⟩` from `hS l h5 (Formalism.L2.Th1.F.scalePair L c hc) ι g2 g3 ε s2 e2 e3 es hg.2.2.1 hg.2.2.2.1 hg.2.2.2.2.1 hε hth (Fin N0 × Fin N1) ω₀ hω hω2 κ r s N hr hN0 hlN hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hΘ]`. Conclude with `one_letter_gauss_all_disc_seven l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) N0 N1 C U0 _ hU (DiscriminantSevenGaussModels.cc_phSum h5 g2 g3 s2 ε _) (InverseCommuting.sim_refl _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OneLetterGaussEveryOrth7_of (hS : OrthShapeOne) : OneLetterGaussEveryOrth7 := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -305,7 +305,7 @@ theorem OneLetterGaussEveryOrth7_of (hS : OrthShapeOne) : OneLetterGaussEveryOrt
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι`. Take `⟨g2, g3, ε, hg, hε, hth⟩` from `FAux.model l cm2 cm3 dK L hsq hd4 hcm h5 hd hin ι`. Take `⟨s2, c, hc, hs2, e2, e3, es, tail⟩` from `h dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Conclude with `⟨g2, g3, ε, s2, c, hc, hg, hε, hth, hs2, e2, e3, es, tail⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ThmAEntryOrth7_of (h : ThmAEntryEveryOrth7) : ThmAEntryOrth7 := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι
@@ -315,7 +315,7 @@ theorem ThmAEntryOrth7_of (h : ThmAEntryEveryOrth7) : ThmAEntryOrth7 := by
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι`. Take `⟨g2, g3, ε, hg, hε, hth⟩` from `FAux.model l cm2 cm3 dK L hsq hd4 hcm h5 hd hin ι`. Take `⟨s2, c, hc, hs2, e2, e3, es, tail⟩` from `h dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Conclude with `⟨g2, g3, ε, s2, c, hc, hg, hε, hth, hs2, e2, e3, es, tail⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ThmAGaussOrth7_of (h : ThmAGaussEveryOrth7) : ThmAGaussOrth7 := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι
@@ -325,7 +325,7 @@ theorem ThmAGaussOrth7_of (h : ThmAGaussEveryOrth7) : ThmAGaussOrth7 := by
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι`. Take `⟨g2, g3, ε, hg, hε, hth⟩` from `FAux.model l cm2 cm3 dK L hsq hd4 hcm h5 hd hin ι`. Take `⟨s2, c, hc, hs2, e2, e3, es, tail⟩` from `h dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Conclude with `⟨g2, g3, ε, s2, c, hc, hg, hε, hth, hs2, e2, e3, es, tail⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem OneLetterGaussOrth7_of (h : OneLetterGaussEveryOrth7) : OneLetterGaussOrth7 := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι

@@ -16,7 +16,7 @@ open scoped ComplexOrder
 open Matrix GlobalTheory.HermFrame in
 
 /- English proof (translation)
-Use `⟨h.isOpen, fun i k => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Simplify `(h.smooth i k).const_smul (a : ℂ)` using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `(h.posDef z hz).smul (by exact_mod_cast ha)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPosFrame_smul {ι : Type} [Fintype ι] {m : Type} [Fintype m] [DecidableEq m] {U : Set (ι → ℂ)}
     {H : (ι → ℂ) → Matrix m m ℂ} (h : IsPosFrame U H) {a : ℝ} (ha : 0 < a) :
@@ -28,9 +28,9 @@ theorem isPosFrame_smul {ι : Type} [Fintype ι] {m : Type} [Fintype m] [Decidab
 open Matrix GlobalTheory.HermFrame in
 
 /- English proof (translation)
-Establish `hu : ∀ z ∈ U, IsUnit (subGram (ψ z)).det` using `fun z hz => by`. Establish `h1 : IsUnit (-subGram (ψ z))` using `(hψ.neg_sub z hz).isUnit`. Rewrite using `[← isUnit_iff_isUnit_det]`. Simplify using `using h1.neg`. Establish `hq : IsPosFrame U fun x => quotGram (ψ x)` using `(hψ.isHermFrame.quot hu).isPosFrame hψ.pos_quot`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hs : IsPosFrame U fun x => -subGram (ψ x)`. Use `⟨hψ.isHermFrame.isOpen, fun i k => ?_, hψ.neg_sub⟩` and prove the remaining obligations. Simplify `(hψ.isHermFrame.smooth (Sum.inl i) (Sum.inl k)).neg` using `[subGram, Matrix.toBlocks₁₁]`. Conclude with `⟨isPosFrame_smul hq ha, isPosFrame_smul hs hb⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem isPosFrame_hodge (ι : Type) [Fintype ι] (p q : ℕ) (U : Set (ι → ℂ))
     (ψ : (ι → ℂ) → Matrix (Fin q ⊕ Fin p) (Fin q ⊕ Fin p) ℂ) (a b : ℝ)
@@ -48,7 +48,7 @@ theorem isPosFrame_hodge (ι : Type) [Fintype ι] (p q : ℕ) (U : Set (ι → �
   exact ⟨isPosFrame_smul hq ha, isPosFrame_smul hs hb⟩
 
 /- English proof (translation)
-Establish `hp` using `fun i => GlobalTheory.ChernWeight.lineGram_pos hH hA hy i`. Establish `hfs` using `GlobalTheory.ChernWeight.lineGram_smooth hH hA hy`. Use `⟨?_, Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (hp i).1 _⟩` and prove the remaining obligations. Use `show ContDiffAt ℝ 2 (fun x => ∏ i, (GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.lineGram H π A i x () ()).re ^ (-lam i)) y`. Conclude with `contDiffAt_prod fun i _ => (hfs i).rpow_const_of_ne (hp i).1.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem weightNormSq_smooth (n : ℕ) (ι : Type) [Fintype ι] (m : ℕ) (U : Set (ι → ℂ))
     (H : (ι → ℂ) → Matrix (Fin m) (Fin m) ℂ) (Y : Set (Fin n → ℂ)) (π : (Fin n → ℂ) → ι → ℂ)
@@ -66,11 +66,11 @@ end GlobalTheory.HodgeLocal
 namespace GlobalTheory.HodgeLocal
 
 /- English proof (translation)
-Use `set G : (Fin n → ℂ) → ℂ := fun v => Complex.log (g v / g y) + (Real.log ‖g y‖ : ℂ) with hGdef`. Establish `hh : AnalyticAt ℂ (fun v => g v / g y) y` using `hg.div analyticAt_const h0`. Establish `h1 : (fun v => g v / g y) y ∈ Complex.slitPlane`. Simplify using `[div_self h0, Complex.one_mem_slitPlane]`. Establish `hG : AnalyticAt ℂ G y` using `(hh.clog h1).add analyticAt_const`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : (fun v => Real.log ‖g v‖) =ᶠ[𝓝 y] fun v => (G v).re` using `by filter_upwards [hg.continuousAt.eventually_ne h0] with v hv`. Simplify using `only [hGdef, Complex.add_re, Complex.log_re, Complex.ofReal_re, norm_div]`. Rewrite using `[Real.log_div (norm_ne_zero_iff.2 hv) (norm_ne_zero_iff.2 h0)]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Complex.reCLM.contDiff.contDiffAt.comp y (hG.restrictScalars (𝕜 := ℝ)).contDiffAt).congr_of_eventuallyEq hev`. Rewrite using `[ReciprocityTheory.AnForm.levi_congr hev]`. Conclude with `ReciprocityTheory.AnForm.levi_re_analytic hG w`.
+A detailed English derivation is pending.
 -/
 theorem log_norm_analytic {n : ℕ} {g : (Fin n → ℂ) → ℂ} {y : Fin n → ℂ} (hg : AnalyticAt ℂ g y)
     (h0 : g y ≠ 0) : ContDiffAt ℝ 2 (fun v => Real.log ‖g v‖) y ∧
@@ -92,11 +92,11 @@ theorem log_norm_analytic {n : ℕ} {g : (Fin n → ℂ) → ℂ} {y : Fin n →
     exact ReciprocityTheory.AnForm.levi_re_analytic hG w
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨by simpa using (contDiffAt_const (c := (0 : ℝ))), fun w => ?_⟩` and prove the remaining obligations. Simplify using `[ReciprocityTheory.AnForm.levi]`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `e : (fun v => ∑ i ∈ insert a s, c i * φ i v) = fun v => (∑ i ∈ s, c i * φ i v) + c a * φ a v`. Use function extensionality and compare the values at `v`. Rewrite using `[Finset.sum_insert ha, add_comm]`. Rewrite using `[e]`. Use `⟨ih.1.add (contDiffAt_const.mul (h a).1), fun w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ReciprocityTheory.AnForm.levi_add_smul (c a) ih.1 (h a).1 w, ih.2 w, (h a).2 w]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem levi_sum_eq_zero {n : ℕ} {κ : Type} (s : Finset κ) (c : κ → ℝ) (φ : κ → (Fin n → ℂ) → ℝ)
     {y : Fin n → ℂ} (h : ∀ i, ContDiffAt ℝ 2 (φ i) y ∧ ∀ w, ReciprocityTheory.AnForm.levi (φ i) y w = 0) :
@@ -120,9 +120,9 @@ end GlobalTheory.HodgeLocal
 namespace GlobalTheory.HodgeLocal
 
 /- English proof (translation)
-Introduce `n ι _ T _ p q U ψ a b Y π AW Aω lam y hψ ha hb hAW hAω hy`. Establish `hW` using `fun τ => weightNormSq_smooth n ι (p τ) U _ Y π (AW τ) (fun i => lam τ (Fin.castAdd (q τ) i)) y (isPosFrame_hodge ι (p τ) (q τ) U (ψ τ) (a τ) (b τ) (hψ τ) (ha τ) (hb τ)).1 (hAW τ) hy`. Establish `hω` using `fun τ => weightNormSq_smooth n ι (q τ) U _ Y π (Aω τ) (fun i => lam τ (Fin.natAdd (p τ) i)) y (isPosFrame_hodge ι (p τ) (q τ) U (ψ τ) (a τ) (b τ) (hψ τ) (ha τ) (hb τ)).2 (hAω τ) hy`. Use `⟨?_, Finset.prod_pos fun τ _ => mul_pos (hW τ).2 (hω τ).2⟩` and prove the remaining obligations. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.pairWeightNormSq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `contDiffAt_prod fun τ _ => (hW τ).1.mul (hω τ).1`.
+A detailed English derivation is pending.
 -/
 theorem pairWeightNormSq_smooth : ∀ (n : ℕ) (ι : Type) [Fintype ι] (T : Type) [Fintype T] (p q : T → ℕ) (U : Set (ι → ℂ))
     (ψ : ∀ τ, (ι → ℂ) → Matrix (Fin (q τ) ⊕ Fin (p τ)) (Fin (q τ) ⊕ Fin (p τ)) ℂ) (a b : T → ℝ)
@@ -147,11 +147,11 @@ theorem pairWeightNormSq_smooth : ∀ (n : ℕ) (ι : Type) [Fintype ι] (T : Ty
 end GlobalTheory.HodgeLocal
 
 /- English proof (translation)
-Introduce `hP hH D O hC hN A T H h c a j y hy hZ u hu f hf`. Take `⟨p, q, hpq, ι, _, U, ψ, a', b', Y', π, AW, Aω, g, hψ, ha, hb, hAW, hAω, hy', hg, hg0, heq⟩` from `GlobalTheory.T.exists_exponents_generating_divisor_at_point hP hH D O hC hN A T H h c a j y hy hZ f hf`. Take `⟨hF2, hFpos⟩` from `GlobalTheory.HodgeLocal.pairWeightNormSq_smooth _ ι D.what₂.Tau p q U ψ a' b' Y' π AW Aω (fun τ k => u τ (Fin.cast (hpq τ) k)) y hψ ha hb hAW hAω hy'`. Use `⟨D.what₂.Tau, inferInstance, p, q, ι, inferInstance, U, ψ, a', b', Y', π, AW, Aω, fun τ k => u τ (Fin.cast (hpq τ) k), hψ, ha, hb, hAW, hAω, fun τ k l hkl => hu τ _ _ hkl, hy', hF2, hFpos, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.AnForm.levi_congr (heq u) w]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hS` using `GlobalTheory.HodgeLocal.levi_sum_eq_zero Finset.univ (fun x : DV.Rt D.what₂.Tau O.N => u x.1 x.2) (fun x v => Real.log ‖g x v‖) (y := y) fun x => GlobalTheory.HodgeLocal.log_norm_analytic (hg x) (hg0 x)`. Establish `key : ∀ F : (Fin (Formalism.MainNotions.WeightThresholdDefs.dimY O.Y) → ℂ) → ℝ, ContDiffAt ℝ 2 F y → 0 < F y → ReciprocityTheory.AnForm.levi (fun v => -Real.log (F v) / 2 + ∑ x : DV.Rt D.what₂.Tau O.N, u x.1 x.2 * Real.log ‖g x v‖) y w = -ReciprocityTheory.AnForm.levi (fun v => R …`. Introduce `F h2 hpos`. Establish `hL : ContDiffAt ℝ 2 (fun v => Real.log (F v)) y` using `h2.log hpos.ne'`. Establish `e : (fun v => -Real.log (F v) / 2 + ∑ x : DV.Rt D.what₂.Tau O.N, u x.1 x.2 * Real.log ‖g x v‖) = fun v => (∑ x : DV.Rt D.what₂.Tau O.N, u x.1 x.2 * Real.log ‖g x v‖) + (-1 / 2) * Real.log (F v)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `v`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ReciprocityTheory.AnForm.levi_add_smul _ hS.1 hL w, hS.2 w]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `key _ hF2 hFpos`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HodgeLocal.hodge_potential_local : Hypotheses2 → HypothesesH → OnObj fun D O _ T _ h => ∀ (c : O.Y.Comp) (a : Fin ((T.M c).n + 1)) (j : Fin ((T.M c).A a).n),
   ∀ y ∈ (((T.M c).A a).chart j).target, (((T.M c).A a).chart j).symm y ∉ (T.M c).Z a →

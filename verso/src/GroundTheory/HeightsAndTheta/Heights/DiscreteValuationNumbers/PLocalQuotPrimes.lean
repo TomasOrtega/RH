@@ -7,23 +7,21 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 universe u
 
 /- English proof (translation)
-Introduce `R _ P U _ hPU`. Set `S` to `Localization.AtPrime U`. Set `PS : Ideal S` to `P.map (algebraMap R S)`. Establish `hsurj : Function.Surjective (Ideal.Quotient.mk PS)` using `Ideal.Quotient.mk_surjective`. Establish `hmap : ∀ I : Ideal R, I.map (localQuotMap P U) = (I.map (algebraMap R S)).map (Ideal.Quotient.mk PS)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `I`. Rewrite using `[Ideal.map_map]`. Both sides reduce to the same expression. Establish `hcomap : ∀ J : Ideal (localQuot P U), J.comap (localQuotMap P U) = (J.comap (Ideal.Quotient.mk PS)).comap (algebraMap R S)`. Introduce `J`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.comap_comap]`. Both sides reduce to the same expression. Use `⟨fun W hW hPW hWU => ?_, fun p hp => ?_⟩` and prove the remaining obligations. Establish `hdisj : Disjoint (U.primeCompl : Set R) W`. Rewrite using `[Set.disjoint_left]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx hxW`. Conclude with `hx (hWU hxW)`. Establish `hWS : (W.map (algebraMap R S)).IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint U.primeCompl S W hW hdisj`. Establish `hWSc : (W.map (algebraMap R S)).comap (algebraMap R S) = W` using `IsLocalization.under_map_of_isPrime_disjoint U.primeCompl S hW hdisj`. Establish `hker : RingHom.ker (Ideal.Quotient.mk PS) ≤ W.map (algebraMap R S)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mk_ker]`. Conclude with `Ideal.map_mono hPW`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmap]`. Conclude with `Ideal.map_isPrime_of_surjective hsurj hker`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hmap, hcomap, Ideal.comap_map_of_surjective _ hsurj, ← RingHom.ker_eq_comap_bot, sup_eq_left.mpr hker, hWSc]`. Set `q : Ideal S` to `p.comap (Ideal.Quotient.mk PS)`. Establish `hq : q.IsPrime` using `Ideal.comap_isPrime _ p`. Establish `hq'` using `(IsLocalization.isPrime_iff_isPrime_disjoint U.primeCompl S q).mp hq`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[Ideal.mem_comap]`. Establish `h0 : localQuotMap P U x = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_map_of_mem _ hx)`. Rewrite using `[h0]`. Conclude with `p.zero_mem`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Assume the negation of the conclusion as `hxU`. Rewrite `hx` using `[hcomap]`. Conclude with `Set.disjoint_left.mp hq'.2 (show x ∈ U.primeCompl from hxU) hx`. Rewrite using `[hmap, hcomap]`.
-
-Establish `hloc : (q.comap (algebraMap R S)).map (algebraMap R S) = q` using `IsLocalization.map_under U.primeCompl S q`. Rewrite using `[hloc]`. Conclude with `Ideal.map_comap_of_surjective _ hsurj p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocalQuotPrimes.proof : LocalQuotPrimes.Statement.{u} := by
   intro R _ P U _ hPU

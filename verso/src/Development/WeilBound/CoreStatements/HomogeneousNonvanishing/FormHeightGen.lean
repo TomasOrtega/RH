@@ -13,17 +13,15 @@ namespace PositivityTheory.UnitarySelfGeneration.UnitProductCombination.XB
 open MeasureTheory Set MvPolynomial ReciprocityTheory.MultiplicativeHeights GlobalTheory.SphereMeanDrop GlobalTheory.ChowHt
 
 /- English proof (translation)
-Establish `hn : 0 < n` using `lt_of_lt_of_le hN hNn`. Rewrite using `[linSubst_incl hNn]`. Use `set e : Fin B × Fin N → Fin B × Fin n := fun p => (p.1, Fin.castLE hNn p.2) with he`. Establish `heinj : Function.Injective e`. Introduce `p q hpq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [he, Prod.mk.injEq] at hpq`. Conclude with `Prod.ext hpq.1 (Fin.castLE_injective hNn hpq.2)`. Use `set g := rename e f with hgdef`. Establish `hg : g ≠ 0` using `fun h0 => hf (rename_injective e heinj (by rw [← hgdef, h0, map_zero]))`. Establish `hgm : IsMultiHomogeneous (fun _ => δ) g` using `isMultiHomogeneous_rename_castLE hNn _ f hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIn` using `(gauss_blockMean hn δ g hg hgm).2`. Establish `hIN` using `(gauss_blockMean hN δ f hf hm).2`. Establish `: IsProbabilityMeasure (gaussProb N)` using `isProbabilityMeasure_gaussProb hN`. Establish `hproj : MeasurePreserving (fun (x : Fin B → EuclideanSpace ℂ (Fin n)) b => firstCoords hNn (x b)) (Measure.pi fun _ => gaussProb n) (Measure.pi fun _ => gaussProb N)` using `measurePreserving_pi _ _ fun _ => GlobalTheory.GaussMarginal.measurePreserving_firstCoords_gaussProb N n hNn`. Establish `hev : ∀ x : Fin B → EuclideanSpace ℂ (Fin n), eval (fun p => WithLp.ofLp (x p.1) p.2) g = eval (fun p => WithLp.ofLp (firstCoords hNn (x p.1)) p.2) f`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `x`. Rewrite using `[hgdef, eval_rename]`. Both sides reduce to the same expression. Establish `hmeas : Measurable fun y : Fin B → EuclideanSpace ℂ (Fin N) => Real.log ‖eval (fun p => WithLp.ofLp (y p.1) p.2) f‖`. Use `Real.measurable_log.comp (Continuous.measurable ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_norm.comp ((continuous_eval f).comp (by fun_prop))`. Establish `hchange : ∫ x, Real.log ‖eval (fun p => WithLp.ofLp (x p.1) p.2) g‖ ∂(Measure.pi fun _ => gaussProb n) = ∫ y, Real.log ‖eval (fun p => WithLp.ofLp (y p.1) p.2) f‖ ∂(Measure.pi fun _ => gaussProb N)`. Repeatedly rewrite using `[hev]`. Rewrite using `[← hproj.map_eq, integral_map hproj.measurable.aemeasurable hmeas.aestronglyMeasurable]`. Rewrite `hIn` using `[hchange, hIN]`.
-
-Establish `hr` using `radRatio_sub hN hn`. Take the linear combination `hIn.symm + (B : ℝ) * δ * hr`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mean_incl (B N n δ : ℕ) (f : MvPolynomial (Fin B × Fin N) ℂ) (hN : 0 < N)
     (hNn : N ≤ n) (hf : f ≠ 0) (hm : IsMultiHomogeneous (fun _ => δ) f) :
@@ -67,23 +65,21 @@ theorem mean_incl (B N n δ : ℕ) (f : MvPolynomial (Fin B × Fin N) ℂ) (hN :
   linear_combination hIn.symm + (B : ℝ) * δ * hr
 
 /- English proof (translation)
-Set `T : EuclideanSpace ℂ (Fin N) →ₗᵢ[ℂ] EuclideanSpace ℂ (Fin m)` to `⟨Matrix.toEuclideanLin Q.transpose, fun z => by`. Rewrite using `[EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]`. Conclude with `congrArg _ (hQ z.ofLp)⟩`. Establish `hle : N ≤ m`. Use `LinearMap.finrank_le_finrank_of_injective (f := T.toLinearMap) T.injective` as an intermediate fact.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Use `⟨hle, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have ho : Orthonormal ℂ (T ∘ EuclideanSpace.basisFun (Fin N) ℂ) := (EuclideanSpace.basisFun (Fin N) ℂ).orthonormal.comp_linearIsometry T`. Set `v : Fin m → EuclideanSpace ℂ (Fin m)` to `fun k => if h : (k : ℕ) < N then T (EuclideanSpace.basisFun (Fin N) ℂ ⟨k, h⟩) else 0`. Establish `hv : Orthonormal ℂ (({k : Fin m | (k : ℕ) < N}).restrict v)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `ho.comp (fun k : {k : Fin m | (k : ℕ) < N} => (⟨k.1, k.2⟩ : Fin N)) fun a b h => Subtype.ext (Fin.ext (congrArg Fin.val h :))`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Conclude with `dif_pos k.2`. Take `⟨b, hb⟩` from `hv.exists_orthonormalBasis_extension_of_card_eq (by simp)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `⟨Matrix.of fun k a => b k a, fun x => ?_, ?_⟩` and prove the remaining obligations. Set `x' : EuclideanSpace ℂ (Fin m)` to `WithLp.toLp 2 fun a => starRingEnd ℂ (x a)`. Establish `h1` using `b.sum_sq_norm_inner_right x'`. Establish `h2 : ‖x'‖ = ‖x‖`. Rewrite using `[EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[x']`. Rewrite using `[EuclideanSpace.norm_eq, ← Real.sqrt_sq (norm_nonneg x), ← h2, ← h1]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Complex.norm_conj]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `starRingEnd ℂ (∑ a, b k a * x a) = _`. Simplify using `only [PiLp.inner_apply, RCLike.inner_apply, map_sum, map_mul, x']`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `j a`. Rewrite using `[Matrix.mul_apply, Fintype.sum_eq_single (Fin.castLE hle j)]`. Establish `hj : ((Fin.castLE hle j : Fin m) : ℕ) < N` using `j.2`. Simplify using `only [Matrix.of_apply, Fin.val_castLE, if_true, one_mul]`. Rewrite using `[hb _ hj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [v]`. Rewrite using `[dif_pos hj]`. Express the relevant statement in the definitionally equal form `Q j a = ∑ i, Q i a * (EuclideanSpace.basisFun (Fin N) ℂ j) i`. Simplify using `[EuclideanSpace.basisFun_apply, Pi.single_apply]`. Introduce `k hk`.
-
-Establish `hne : (j : ℕ) ≠ (k : ℕ)` using `fun he => hk (Fin.ext he.symm)`. Simplify using `[hne]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unitary {N m : ℕ} (Q : Matrix (Fin N) (Fin m) ℂ)
     (hQ : ∀ z : Fin N → ℂ, ∑ a, ‖∑ i, Q i a * z i‖ ^ 2 = ∑ i, ‖z i‖ ^ 2) :
@@ -138,13 +134,13 @@ theorem exists_unitary {N m : ℕ} (Q : Matrix (Fin N) (Fin m) ℂ)
       simp [hne]
 
 /- English proof (translation)
-Take `⟨hle, U, hU, hQ⟩` from `exists_unitary (A⁻¹ * (G * M)) fun z => by`. Establish `h1` using `h (Matrix.vecMul z A⁻¹)`. Rewrite `h1` using `[GlobalTheory.Adelic.archSize, Real.sq_sqrt (by positivity)]`. Establish `e1 : ∀ a, ∑ k, M k a * ∑ j, G j k * Matrix.vecMul z A⁻¹ j = ∑ i, (A⁻¹ * (G * M)) i a * z i` using `fun a => by`. Use `congrFun (Matrix.vecMul_vecMul z A⁻¹ (G * M)) a` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← Matrix.vecMul_vecMul]`. Simplify using `only [Matrix.vecMul, dotProduct] at this ⊢`. Simplify using `only [mul_comm (M _ a), mul_comm (G _ _), mul_comm _ (z _)]`. Conclude with `this`. Establish `e2 : ∀ i, ∑ j, A j i * Matrix.vecMul z A⁻¹ j = z i` using `fun i => by`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun (Matrix.vecMul_vecMul z A⁻¹ A) i` as an intermediate fact. Rewrite `this` using `[Matrix.nonsing_inv_mul _ hA.isUnit, Matrix.vecMul_one]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Simplify `h1` using `only [e1, e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : G * M = A * (Matrix.of fun (j : Fin N) (k : Fin m) => if (j : ℕ) = (k : ℕ) then (1 : ℂ) else 0) * U`. Rewrite using `[Matrix.mul_assoc, ← hQ, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hA.isUnit, Matrix.one_mul]`. Take `⟨n, rfl⟩ : ∃ n, m = n + 1` from `⟨m - 1, by omega⟩`. Rewrite using `[GlobalTheory.HeightUnique.linSubst_linSubst, e, ← GlobalTheory.HeightUnique.linSubst_linSubst, GlobalTheory.SphereMeanFrame.blockSphereMean_linSubst U hU, ← GlobalTheory.HeightUnique.linSubst_linSubst, mean_incl B N (n + 1) δ _ hN hle (GlobalTheory.HeightUnique.linSubst_ne_zero …`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mean_gen {B N m δ : ℕ} (hN : 0 < N) (G : Matrix (Fin N) (Fin m) ℂ) {A : Matrix (Fin N) (Fin N) ℂ}
     (hA : A.det ≠ 0) (M : Matrix (Fin m) (Fin m) ℂ)
@@ -183,9 +179,9 @@ end
 open MvPolynomial NumberField GlobalTheory.ChowHt GlobalTheory.CompHt
 
 /- English proof (translation)
-Unfold `formHeight`. Rewrite using `[GlobalTheory.HeightUnique.linSubst_one]`. Use `congr 2`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.ImageHeightUnique.map_linSubst]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PositivityTheory.UnitarySelfGeneration.UnitProductCombination.XB.mean_gen hN (g.map σ) (hA σ) (Mt σ) (hMt σ) (fun h => h0 (MvPolynomial.map_injective σ σ.injective (by rw [h, map_zero]))) (ReciprocityTheory.MultiplicativeHeights.isMultiHomogeneous_map_ring _ Φ hΦ σ)`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.UnitarySelfGeneration.UnitProductCombination.formHeight_gen {K : Type} [Field K] [NumberField K] {B N m δ : ℕ} (hN : 0 < N)
     (g : Matrix (Fin N) (Fin m) K) (hg : Submodule.span K (Set.range g.col) = ⊤)

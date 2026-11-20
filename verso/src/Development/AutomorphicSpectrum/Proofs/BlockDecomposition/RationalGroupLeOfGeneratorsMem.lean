@@ -20,37 +20,37 @@ variable {D : D7} {n : ℕ}
 abbrev rm (x : Matrix (Fin n) (Fin n) D.host.E) : Mx D n n := x.map (incA D)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem rm_mul (x y : Matrix (Fin n) (Fin n) D.host.E) : rm (x * y) = rm x * rm y :=
   Matrix.map_mul
 
 /- English proof (translation)
-The claim follows from `Matrix.map_add _ (map_add _) x y`.
+A detailed English derivation is pending.
 -/
 theorem rm_add (x y : Matrix (Fin n) (Fin n) D.host.E) : rm (x + y) = rm x + rm y :=
   Matrix.map_add _ (map_add _) x y
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[rm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rm_neg (x : Matrix (Fin n) (Fin n) D.host.E) : rm (-x) = -rm x := by
   ext i j; simp [rm]
 
 /- English proof (translation)
-Simplify using `[rm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rm_one : rm (1 : Matrix (Fin n) (Fin n) D.host.E) = 1 := by
   simp [rm]
 
 /- English proof (translation)
-Simplify using `[rm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rm_zero : rm (0 : Matrix (Fin n) (Fin n) D.host.E) = 0 := by
   simp [rm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blk4, Matrix.map_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockMatrix_map (a b c d : Matrix (Fin n) (Fin n) D.host.E) :
     (blk4 a b c d).map (incA D) = blk4 (rm a) (rm b) (rm c) (rm d) := by
@@ -77,11 +77,11 @@ variable {S : Subgroup (G D n)}
 
 include hm hn in
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `ha`. Take `⟨m, hmm⟩` from `exists_levi (D := D) (n := n) (ru u)⁻¹`. Establish `hmm' : mat m = blk4 (rm (u⁻¹).1) 0 0 (adj (rm u.1))`. Rewrite using `[hmm, ru_inv_val, inv_inv, ru_val]`. Establish `h1 : (adj (rm u.1) : Mx D n n) * rm d = 1` using `by simpa using (rel hg).2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmS : m ∈ S` using `hm m u⁻¹ (by rw [hmm', inv_inv])`. Rewrite using `[← S.mul_mem_cancel_left hmS]`. Use `hn _ ((u⁻¹).1 * b) ?_` and prove the remaining obligations. Establish `h2 : rm (u⁻¹).1 * rm u.1 = 1`. Rewrite using `[← rm_mul, Units.inv_mul, rm_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mat_mul, hmm', hg, submatrix_fromBlocks_mul]`. Simplify using `only [h2, mul_zero, zero_mul, add_zero, zero_add, h1]`. Express the relevant statement in the definitionally equal form `_ = blk4 1 (rm _) 0 1`. Rewrite using `[rm_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_of_upper {g : G D n} {a b d : Matrix (Fin n) (Fin n) D.host.E} (hg : mat g = blk4 (rm a) (rm b) 0 (rm d))
     (ha : IsUnit a) : g ∈ S := by
@@ -102,7 +102,7 @@ theorem mem_of_upper {g : G D n} {a b d : Matrix (Fin n) (Fin n) D.host.E} (hg :
 
 include hm hn hw in
 /- English proof (translation)
-Take `⟨w, hww⟩` from `exists_weyl (D := D) (n := n)`. Rewrite using `[← S.mul_mem_cancel_left (hw w hww), ← S.mul_mem_cancel_right (hw w hww)]`. Use `mem_of_upper hm hn (a := -d) (b := c) (d := -a) ?_ hd.neg` and prove the remaining obligations. Rewrite using `[mat_mul, mat_mul, hww, hg, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul, rm_neg, rm_neg]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_of_lower {g : G D n} {a c d : Matrix (Fin n) (Fin n) D.host.E} (hg : mat g = blk4 (rm a) 0 (rm c) (rm d))
     (hd : IsUnit d) : g ∈ S := by
@@ -114,13 +114,13 @@ theorem mem_of_lower {g : G D n} {a c d : Matrix (Fin n) (Fin n) D.host.E} (hg :
 
 include hm hn hw in
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hd`. Establish `h1 : (adj (rm u.1) : Mx D n n) * rm b = adj (rm b) * rm u.1` using `neg_add_eq_zero.1 (rel hg).2.2`. Establish `h0 : rm u.1 * rm (u⁻¹).1 = 1` using `by rw [← rm_mul, Units.mul_inv, rm_one]`. Establish `h0' : rm (u⁻¹).1 * rm u.1 = 1` using `by rw [← rm_mul, Units.inv_mul, rm_one]`. Establish `h2 : (adj (rm (u⁻¹).1) : Mx D n n) * adj (rm u.1) = 1` using `by rw [← adj_mul, h0, adj_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (adj (-(rm b * rm (u⁻¹).1)) : Mx D n n) = -(rm b * rm (u⁻¹).1)`. Rewrite using `[adj_neg, adj_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_assoc, h0, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = rm b * rm (u⁻¹).1 := by rw [← h1, ← mul_assoc, h2, one_mul]`. Take `⟨x, hx⟩` from `(exists_unip _).2 h3`. Establish `hxS : x ∈ S` using `hn x (-(b * (u⁻¹).1)) (by rw [hx]; change _ = blk4 1 (rm _) 0 1; rw [rm_neg, rm_mul])`. Rewrite using `[← S.mul_mem_cancel_left hxS]`. Use `mem_of_lower hm hn hw (a := a + -(b * (u⁻¹).1) * c) (c := c) (d := u.1) ?_ u.isUnit` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mat_mul, hx, hg, submatrix_fromBlocks_mul, rm_add, rm_mul, rm_neg, rm_mul]`. Simplify using `only [one_mul, zero_mul, zero_add, neg_mul, mul_assoc, h0', mul_one, add_neg_cancel]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_of_isUnit {g : G D n} {a b c d : Matrix (Fin n) (Fin n) D.host.E}
     (hg : mat g = blk4 (rm a) (rm b) (rm c) (rm d)) (hd : IsUnit d) : g ∈ S := by
@@ -143,7 +143,7 @@ theorem mem_of_isUnit {g : G D n} {a b c d : Matrix (Fin n) (Fin n) D.host.E}
   simp only [one_mul, zero_mul, zero_add, neg_mul, mul_assoc, h0', mul_one, add_neg_cancel]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [adj, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[GlobalTheory.DualPairCheck.cA_incA]`. Conclude with `congrArg _ (hx j i)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_rm {x : Matrix (Fin n) (Fin n) D.host.E} (hx : ∀ i j, (D.sp.cm.sig : D.host.E →+* D.host.E) (x i j) = x j i) :
     adj (rm x : Mx D n n) = rm x := by
@@ -153,9 +153,9 @@ theorem adj_rm {x : Matrix (Fin n) (Fin n) D.host.E} (hx : ∀ i j, (D.sp.cm.sig
   exact congrArg _ (hx j i)
 
 /- English proof (translation)
-Take `⟨x, hx, hu⟩` from `GlobalTheory.HermTransversal.exists_herm_notMem (D.sp.cm.sig : D.host.E →+* D.host.E) D.host.xi0 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D) (GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg D) (RingHom.id _) (D.sp.cm.sig : D.host.E →+* D.host.E) (fun _ => r …`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Establish `e : x.map (RingHom.id D.host.E) = x` using `by ext i j; rfl`. Rewrite `hu` using `[e]`. Use `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 fun h0 => hu ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h0, zero_mul]`. Conclude with `Ideal.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_herm_isUnit (c d p q : Matrix (Fin n) (Fin n) D.host.E) (h : c * p + d * q = 1) :
     ∃ x : Matrix (Fin n) (Fin n) D.host.E, (∀ i j, (D.sp.cm.sig : D.host.E →+* D.host.E) (x i j) = x j i) ∧
@@ -175,15 +175,15 @@ end GlobalTheory.CompanionTheory.RatGen
 namespace GlobalTheory.CompanionTheory
 
 /- English proof (translation)
-Introduce `D n S hm hn hw γ hγ`. Establish `hrat : ∀ {γ : G D n}, γ ∈ GF D n → ∃ x : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E, mat γ = x.map (incA D)`. Introduce `γ h`. Take `⟨x, -, hx⟩` from `h`. Conclude with `⟨x.1, (congrArg Units.val hx).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨M, hM⟩` from `hrat hγ`. Take `⟨M', hM'⟩` from `hrat ((GF D n).inv_mem hγ)`. Take `⟨a, b, c, d, rfl⟩` from `GlobalTheory.StdUnn.Gen.exists_blockMatrixTwoByTwoFin_eq M`. Take `⟨p', p, q', q, rfl⟩` from `GlobalTheory.StdUnn.Gen.exists_blockMatrixTwoByTwoFin_eq M'`. Rewrite `hM`, `hM'` using `[RatGen.blockMatrix_map]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : mat γ * mat γ⁻¹ = 1` using `by rw [← GlobalTheory.StdUnn.Gen.mat_mul, mul_inv_cancel]; rfl`. Rewrite `h1` using `[hM, hM', Model.submatrix_fromBlocks_mul, ← Model.block_matrix_one]`. Establish `h2 : RatGen.rm (c * p + d * q) = RatGen.rm (1 : Matrix (Fin n) (Fin n) D.host.E)`. Rewrite using `[RatGen.rm_add, RatGen.rm_mul, RatGen.rm_mul, RatGen.rm_one]`. Conclude with `(Model.blockMatrixTwoByTwoFin_injective h1).2.2.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : c * p + d * q = 1` using `Matrix.map_injective GlobalTheory.MixModel.incA_injective h2`. Take `⟨x, hx, hu⟩` from `RatGen.exists_herm_isUnit c d p q h3`. Take `⟨y, hy⟩` from `(Model.exists_unip (RatGen.rm x)).2 (RatGen.adj_rm hx)`. Rewrite using `[← S.mul_mem_cancel_right (hn y x hy)]`. Use `RatGen.mem_of_isUnit hm hn hw (a := a) (b := a * x + b) (c := c) (d := c * x + d) ?_ hu` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.StdUnn.Gen.mat_mul, hM, hy, Model.submatrix_fromBlocks_mul, RatGen.rm_add, RatGen.rm_add, RatGen.rm_mul, RatGen.rm_mul]`. Simplify using `only [mul_one, mul_zero, add_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem RatGen.GF_le_of_levi_unip_weyl : ∀ (D : D7) (n : ℕ) (S : Subgroup (G D n)),
   (∀ (g : G D n) (a : GL (Fin n) D.host.E), mat g = blk4 (a.1.map (incA D)) 0 0 (adj ((a⁻¹).1.map (incA D))) → g ∈ S) →

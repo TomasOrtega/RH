@@ -6,27 +6,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LayeredIsomorphism
 open NumberField Formalism.GaloisCohomology UpperTheory.Top UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Win
 
 /- English proof (translation)
-Introduce `l j n1 N0 hl hN0`. Establish `hlj : 1 ≤ l ^ j` using `Nat.one_le_pow _ _ hl.pos`. Use `set n0 : ℕ := (n1 + 1) * l ^ j with hn0`. Establish `hn0pos : 1 ≤ n0`. Rewrite using `[hn0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))`. Establish `hn0R : (1:ℝ) ≤ (n0:ℝ)` using `by exact_mod_cast hn0pos`. Establish `hN0R : (1:ℝ) ≤ (N0:ℝ)` using `by exact_mod_cast hN0`. Establish `hC1 : (1:ℝ) ≤ 2 * (n0:ℝ) * (N0:ℝ)` using `by nlinarith`. Establish `hlogC : 0 ≤ Real.log (2 * (n0:ℝ) * (N0:ℝ))` using `Real.log_nonneg hC1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog2 : 0 ≤ Real.log 2` using `Real.log_nonneg (by norm_num)`. Use `set A : ℝ := Real.log 2 + (n0:ℝ) * Real.log (2 * (n0:ℝ) * (N0:ℝ)) with hA`. Establish `hA0 : 0 ≤ A`. Establish `: 0 ≤ (n0:ℝ) * Real.log (2 * (n0:ℝ) * (N0:ℝ))` using `mul_nonneg (by linarith) hlogC`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨n0, A + n0, by linarith, ?_⟩` and prove the remaining obligations. Introduce `P w hP hw hlogP L₀ L₁ _ _ _ _ _ hdeg hemb hlay`. Establish `hdim : Module.finrank ℚ L₀ * Module.finrank L₀ L₁ = Module.finrank ℚ L₁` using `Module.finrank_mul_finrank ℚ L₀ L₁`. Establish `hrel : Module.finrank L₀ L₁ = l ^ j`. Unfold `IsLayer at hlay`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hlay.2`. Establish `hd1 : Module.finrank ℚ L₁ ≤ n0`. Rewrite using `[← hdim, hrel, hn0]`. Conclude with `Nat.mul_le_mul_right _ (by omega)`. Use `⟨hd1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNP : 0 < N0 * P` using `Nat.mul_pos hN0 hP`. Take `⟨N', hN'pos, hN'le, hN'emb⟩` from `layeremb l j (N0 * P) hl hNP L₀ L₁ hemb hlay`. Establish `hdisc` using `disc L₁ N' hN'pos hN'emb`. Establish `hd1R : ((Module.finrank ℚ L₁ : ℕ) : ℝ) ≤ (n0:ℝ)` using `by exact_mod_cast hd1`. Establish `hPR : (1:ℝ) ≤ (P:ℝ)` using `by exact_mod_cast hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN'R : (1:ℝ) ≤ (N':ℝ)` using `by exact_mod_cast hN'pos`. Establish `hlogN' : 0 ≤ Real.log (N':ℝ)` using `Real.log_nonneg hN'R`. Establish `hN'le' : (N':ℝ) ≤ 2 * (n0:ℝ) * (N0:ℝ) * (P:ℝ)`. Establish `h1 : (N':ℝ) ≤ ((2 * Module.finrank ℚ L₁ * (N0 * P) : ℕ) : ℝ)` using `by exact_mod_cast hN'le`. Establish `h2 : ((2 * Module.finrank ℚ L₁ * (N0 * P) : ℕ) : ℝ) ≤ 2 * (n0:ℝ) * (N0:ℝ) * (P:ℝ)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `push_cast`. Establish `: (0:ℝ) ≤ (N0:ℝ) * (P:ℝ)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogle : Real.log (N':ℝ) ≤ Real.log (2 * (n0:ℝ) * (N0:ℝ)) + Real.log (P:ℝ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.log_mul (by linarith) (by linarith)]`. Conclude with `Real.log_le_log (by linarith) hN'le'`. Establish `hLP0 : 0 ≤ Real.log (P:ℝ)` using `Real.log_nonneg hPR`. Establish `hlog2D : Real.log (2 * ((discr L₁).natAbs : ℝ)) ≤ Real.log 2 + Real.log ((discr L₁).natAbs : ℝ)`. Break down `Nat.eq_zero_or_pos (discr L₁).natAbs with h | h` into its components or cases.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h]`. Simplify using `using hlog2`. Establish `hD : ((discr L₁).natAbs : ℝ) ≠ 0` using `by positivity`. Rewrite using `[Real.log_mul (by norm_num) hD]`. Establish `k1 : ((Module.finrank ℚ L₁ : ℕ) : ℝ) * Real.log (N':ℝ) ≤ (n0:ℝ) * Real.log (N':ℝ)` using `mul_le_mul_of_nonneg_right hd1R hlogN'`.
-
-Establish `k2 : (n0:ℝ) * Real.log (N':ℝ) ≤ (n0:ℝ) * (Real.log (2 * (n0:ℝ) * (N0:ℝ)) + Real.log (P:ℝ))` using `mul_le_mul_of_nonneg_left hlogle (by linarith)`. Establish `k3 : (n0:ℝ) * Real.log (P:ℝ) ≤ (n0:ℝ) * w` using `mul_le_mul_of_nonneg_left hlogP (by linarith)`. Establish `k4 : A ≤ A * w` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Win.layerdisc :
     ∀ (l j n1 N0 : ℕ), l.Prime → 0 < N0 → ∃ (n0 : ℕ) (c0 : ℝ), 0 ≤ c0 ∧

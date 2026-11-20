@@ -5,40 +5,38 @@ namespace GlobalTheory.UnipotentDecomposition
 open Matrix
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Repeatedly rewrite using `[Matrix.mul_diagonal]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem udl_apply {O : Type} [CommRing O] {m : ℕ} (A B : Matrix (Fin m) (Fin m) O) (d : Fin m → O) (i j : Fin m) :
     (A * Matrix.diagonal d * B) i j = ∑ k, A i k * d k * B k j := by
   rw [Matrix.mul_apply]; simp_rw [Matrix.mul_diagonal]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `g _ _`. Use `⟨1, fun i => i.elim0, 1, fun i => i.elim0, fun i => i.elim0, ?_, fun i => i.elim0⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i`. Conclude with `i.elim0`. Consider the case `succ n ih`. Introduce `g hg hu`. Use `set a : Oˣ := (hu (Fin.last n)).unit with ha`.
+By extensionality, compare the relevant components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haa : (a : O) = g (Fin.last n) (Fin.last n)` using `IsUnit.unit_spec _`. Establish `hinv : (↑a⁻¹ : O) * ↑a = 1` using `Units.inv_mul a`. Use `set r : Fin n → O := fun i => g i.castSucc (Fin.last n) with hr_def`. Use `set c : Fin n → O := fun j => g (Fin.last n) j.castSucc with hc_def`. Use `set G : Matrix (Fin n) (Fin n) O := fun i j => g i.castSucc j.castSucc - r i * ↑a⁻¹ * c j with hG_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Establish `hr : ∀ i, α ∣ r i` using `fun i => (hg i.castSucc (Fin.last n)).1 (Fin.castSucc_lt_last i)`. Establish `hc : ∀ j, β ∣ c j` using `fun j => (hg (Fin.last n) j.castSucc).2 (Fin.castSucc_lt_last j)`. Establish `hG : ∀ i j, (i < j → α ∣ G i j) ∧ (j < i → β ∣ G i j)`. Introduce `i j`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `dvd_sub ((hg _ _).1 (Fin.castSucc_lt_castSucc_iff.2 h)) (Dvd.dvd.mul_right (Dvd.dvd.mul_right (hr i) _) _)`. Introduce `h`. Conclude with `dvd_sub ((hg _ _).2 (Fin.castSucc_lt_castSucc_iff.2 h)) (Dvd.dvd.mul_left (hc j) _)`. Establish `hrc : ∀ i, α * β ∣ r i * ↑a⁻¹ * c i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[show r i * ↑a⁻¹ * c i = r i * c i * ↑a⁻¹ by ring]`. Conclude with `Dvd.dvd.mul_right (mul_dvd_mul (hr i) (hc i)) _`. Establish `hGu : ∀ i, IsUnit (G i i)`. Introduce `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Establish `h1 : r i * ↑a⁻¹ * c i ∈ nonunits O` using `fun hu' => hab (isUnit_of_dvd_unit (hrc i) hu')`. Establish `h2` using `IsLocalRing.nonunits_add (show G i i ∈ nonunits O from h) h1`. Establish `h3 : G i i + r i * ↑a⁻¹ * c i = g i.castSucc i.castSucc` using `sub_add_cancel _ _`. Rewrite `h2` using `[h3]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `h2 (hu _)`. Take `⟨U, D, L, hU, hL, hUDL, hD⟩` from `ih G hG hGu`. Use `⟨Matrix.of fun i j => Fin.lastCases (motive := fun _ => O) (Fin.lastCases (motive := fun _ => O) 1 (fun _ => 0) j) (fun i' => Fin.lastCases (motive := fun _ => O) (r i' * ↑a⁻¹) (fun j' => U i' j') j) i, fun i => Fin.lastCases (motive := fun _ => Oˣ) a D i, Matrix.of fun i j => Fi …` and prove the remaining obligations. Introduce `i j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) i <;> refine Fin.lastCases ?_ (fun j => ?_) j`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Fin.castSucc_lt_last, (Fin.castSucc_lt_last j).ne', not_lt_of_gt (Fin.castSucc_lt_last j)]`. Apply the tactic sequence `simp [Fin.castSucc_lt_last, (Fin.castSucc_lt_last i).ne, not_lt_of_gt (Fin.castSucc_lt_last i)] first | exact hr i | exact (hr i).mul_right _`. Simplify using `using hU i j`. Introduce `i j`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) i <;> refine Fin.lastCases ?_ (fun j => ?_) j`. Simplify using the standard rewrite rules. Apply the tactic sequence `simp [Fin.castSucc_lt_last, (Fin.castSucc_lt_last j).ne', not_lt_of_gt (Fin.castSucc_lt_last j)] first | exact hc j | exact (hc j).mul_left _`. Simplify using `[Fin.castSucc_lt_last, (Fin.castSucc_lt_last i).ne, not_lt_of_gt (Fin.castSucc_lt_last i)]`. Simplify using `using hL i j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Rewrite using `[udl_apply, Fin.sum_univ_castSucc]`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) i <;> refine Fin.lastCases ?_ (fun j => ?_) j`. Simplify using `[haa]`. Simplify using `[c] done`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[r] done`. Establish `e` using `congrFun (congrFun hUDL i) j`. Rewrite `e` using `[udl_apply]`. Simplify using `only [Matrix.of_apply, Fin.lastCases_castSucc, Fin.lastCases_last, mul_zero, add_zero, mul_one]`. Rewrite using `[← e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [G]`. Take the linear combination `(-(r i * ↑a⁻¹ * c j)) * hinv`. Introduce `i`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[haa]`.
-
-Establish `e : ((D i : O)) - g i.castSucc i.castSucc = ((D i : O) - G i i) - r i * ↑a⁻¹ * c i`. Simplify using `[G]`. Expand and normalize the polynomial expressions, which then agree. Simplify `dvd_sub (hD i) (hrc i)` using `[e]`.
+A detailed English derivation is pending.
 -/
 theorem key {O : Type} [CommRing O] [IsLocalRing O] {α β : O} (hab : ¬ IsUnit (α * β)) :
     ∀ (n : ℕ) (g : Matrix (Fin n) (Fin n) O),
@@ -128,7 +126,7 @@ theorem key {O : Type} [CommRing O] [IsLocalRing O] {α β : O} (hab : ¬ IsUnit
         simpa [e] using dvd_sub (hD i) (hrc i)
 
 /- English proof (translation)
-Introduce `d1 d2 d3 O _ _ α β hab n g hg hu`. Conclude with `key hab n g hg hu`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : (let d1 : {O : Type} → [CommRing O] → {n : ℕ} → O → Matrix (Fin n) (Fin n) O → Prop := @(fun {O : Type} [CommRing O] {n : ℕ} (β : O) (l : Matrix (Fin n) (Fin n) O) ↦ ∀ (i j : Fin n), (i < j → l i j = (0 : O)) ∧ (i = j → l i j = (1 : O)) ∧ (j < i → β ∣ l i j)); let d2 : {O : Type} → [CommRing O] → {n : ℕ} → O → O → Matrix (Fin n) (Fin n) O → Prop := @(fun {O : Type} [CommRing O] {n : ℕ} (α β : O) (g : Matrix (Fin n) (Fin n) O) ↦ ∀ (i j : Fin n), (i < j → α ∣ g i j) ∧ (j < i → β ∣ g i j)); let d3 : {O : Type} → [CommRing O] → {n : ℕ} → O → Matrix (Fin n) (Fin n) O → Prop := @(fun {O : Type} [CommRing O] {n : ℕ} (α : O) (u : Matrix (Fin n) (Fin n) O) ↦ ∀ (i j : Fin n), (j < i → u i j = (0 : O)) ∧ (i = j → u i j = (1 : O)) ∧ (i < j → α ∣ u i j)); ∀ {O : Type} [inst : CommRing O] [IsLocalRing O] {α β : O}, ¬IsUnit (α * β) → ∀ (n : ℕ) (g : Matrix (Fin n) (Fin n) O), d2 α β g → (∀ (i : Fin n), IsUnit (g i i)) → ∃ (u : Matrix (Fin n) (Fin n) O) (d : Fin n → Oˣ) (l : Matrix (Fin n) (Fin n) O), d3 α u ∧ d1 β l ∧ g = (u * Matrix.diagonal fun (i : Fin n) ↦ (↑(d i) : O)) * l ∧ ∀ (i : Fin n), α * β ∣ (↑(d i) : O) - g i i) := by
   intro d1 d2 d3 O _ _ α β hab n g hg hu

@@ -9,7 +9,7 @@ open _root_.Neutral.B1 ReciprocityTheory.Coh Function
 variable {p : ℕ} [Fact p.Prime] {K L : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 /- English proof (translation)
-Unfold `normHom`. Rewrite using `[finsum_eq_sum_of_fintype, AddMonoidHom.finsetSum_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem normHom_apply [Fintype (GK p K ⧸ subG p K L)] (y : KbarMult p) :
     normHom p K L y = ∑ c : GK p K ⧸ subG p K L, kbarRep p K c.out y := by
@@ -18,14 +18,14 @@ theorem normHom_apply [Fintype (GK p K ⧸ subG p K L)] (y : KbarMult p) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kbarRep_mul (σ τ : GK p K) (y : KbarMult p) :
     kbarRep p K (σ * τ) y = kbarRep p K σ (kbarRep p K τ y) := by
   rw [map_mul]; rfl
 
 /- English proof (translation)
-Use `⟨Additive.ofMul (-1 : (PadicAlgCl p)ˣ), fun h0 => ?_⟩` and prove the remaining obligations. Establish `h1 : ((-1 : (PadicAlgCl p)ˣ) : PadicAlgCl p) = ((1 : (PadicAlgCl p)ˣ) : PadicAlgCl p)` using `congrArg (fun u : (PadicAlgCl p)ˣ => (u : PadicAlgCl p)) h0`. Rewrite `h1` using `[Units.val_neg, Units.val_one]`. Evaluate the numerical expressions using `at h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem exists_ne_zero_KbarMult : ∃ x : KbarMult p, x ≠ 0 := by
   refine ⟨Additive.ofMul (-1 : (PadicAlgCl p)ˣ), fun h0 => ?_⟩
@@ -35,11 +35,11 @@ theorem exists_ne_zero_KbarMult : ∃ x : KbarMult p, x ≠ 0 := by
   norm_num at h1
 
 /- English proof (translation)
-Unfold `normHom`. Apply `finsum_of_infinite_support` to reduce the goal to its premises. Establish `hs : Function.support (fun c : GK p K ⧸ subG p K L => (kbarRep p K c.out).toAddMonoidHom) = Set.univ`. Use extensionality with `c`. Simplify using `only [mem_support, Set.mem_univ, iff_true]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Take `⟨x, hx⟩` from `exists_ne_zero_KbarMult (p := p)`. Apply `hx` to reduce the goal to its premises. Establish `h1 : kbarRep p K c.out x = 0` using `DFunLike.congr_fun h0 x`. Establish `h2 : kbarRep p K (c.out⁻¹ * c.out) x = 0` using `by rw [kbarRep_mul, h1, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[inv_mul_cancel, map_one]`. Conclude with `h2`. Rewrite using `[hs]`. Conclude with `Set.infinite_univ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normHom_of_infinite [Infinite (GK p K ⧸ subG p K L)] : normHom p K L = 0 := by
   unfold normHom
@@ -59,7 +59,7 @@ theorem normHom_of_infinite [Infinite (GK p K ⧸ subG p K L)] : normHom p K L =
   exact Set.infinite_univ
 
 /- English proof (translation)
-Establish `h1 : σ⁻¹ * (QuotientGroup.mk σ : GK p K ⧸ subG p K L).out ∈ subG p K L` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' _).symm`. Establish `h2 : kbarRep p K (σ⁻¹ * (QuotientGroup.mk σ : GK p K ⧸ subG p K L).out) y = y` using `Units.ext (h1 _ hy)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel_left]`. Use `_ = kbarRep p K σ y := by rw [kbarRep_mul, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kbarRep_out (y : KbarMult p) (hy : y ∈ multOf p L) (σ : GK p K) :
     kbarRep p K (QuotientGroup.mk σ : GK p K ⧸ subG p K L).out y = kbarRep p K σ y := by
@@ -73,9 +73,9 @@ theorem kbarRep_out (y : KbarMult p) (hy : y ∈ multOf p L) (σ : GK p K) :
     _ = kbarRep p K σ y := by rw [kbarRep_mul, h2]
 
 /- English proof (translation)
-Use `finite_GalLK (p := p) (K := K) hL` as an intermediate fact. Use `Fintype.ofFinite (GK p K ⧸ subG p K L)` as an intermediate fact. Rewrite using `[mem_multOf_iff_fixed (le_refl K)]`. Introduce `σ _`. Rewrite using `[normHom_apply, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.sum_equiv (MulAction.toPerm σ) _ _ fun c => ?_` and prove the remaining obligations. Proceed by induction on `c using QuotientGroup.induction_on with`. Consider the case `H τ => show _ = kbarRep p K (QuotientGroup.mk (σ * τ) : GK p K ⧸ subG p K L).out y`. Rewrite using `[kbarRep_out y hy, kbarRep_out y hy, kbarRep_mul]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem normHom_mem_multiplicative_group (hL : FiniteDimensional ℚ_[p] L) (y : KbarMult p) (hy : y ∈ multOf p L) :
     normHom p K L y ∈ multOf p K := by
@@ -91,9 +91,9 @@ theorem normHom_mem_multiplicative_group (hL : FiniteDimensional ℚ_[p] L) (y :
     rw [kbarRep_out y hy, kbarRep_out y hy, kbarRep_mul]
 
 /- English proof (translation)
-Use `(normHom_apply (K := K) (L := L) (y.1 : KbarMult p)).trans ?_` and prove the remaining obligations. Establish `h1 : (∑ g, (layer p K L).rho g y).1 = ∑ g, ((layer p K L).rho g y).1` using `map_sum (Submodule.subtype _) _ _`. Use `Eq.trans ?_ h1.symm` and prove the remaining obligations. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← QuotientGroup.out_eq' g]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem normHom_layer_eq_trace_sum [(subG p K L).Normal] [Fintype (GalLK p K L)] (y : (layer p K L).V) :
     normHom p K L y.1 = (∑ g, (layer p K L).rho g y).1 := by
@@ -106,9 +106,9 @@ theorem normHom_layer_eq_trace_sum [(subG p K L).Normal] [Fintype (GalLK p K L)]
   rfl
 
 /- English proof (translation)
-Break down `finite_or_infinite (GK p K ⧸ subG p K L) with hf | hi` into its components or cases. Use `Fintype.ofFinite (GK p K ⧸ subG p K L)` as an intermediate fact. Rewrite using `[normHom_apply]`. Establish `h1 : ∀ c : GK p K ⧸ subG p K L, kbarRep p K c.out x = x` using `fun c => Units.ext (c.out.commutes ⟨_, hx⟩)`. Simplify using `only [h1]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression. Rewrite using `[normHom_of_infinite]`. Establish `h0 : degLK p K L = 0` using `Subgroup.index_eq_zero_iff_infinite.2 hi`. Rewrite using `[h0, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -128,7 +128,7 @@ theorem normHom_of_mem_base (x : KbarMult p) (hx : x ∈ multOf p K) :
     rfl
 
 /- English proof (translation)
-Establish `h1` using `finiteIndex_subG (p := p) (K := K) hL'`. Establish `h2 : (subG p K L).FiniteIndex` using `Subgroup.finiteIndex_of_le (subG_anti h')`. Conclude with `Subgroup.finite_quotient_of_finiteIndex`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_quot_of_le {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL' : FiniteDimensional ℚ_[p] L')
     (h' : L ≤ L') : Finite (GK p K ⧸ subG p K L) := by
@@ -137,21 +137,19 @@ theorem finite_quot_of_le {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL' :
   exact Subgroup.finite_quotient_of_finiteIndex
 
 /- English proof (translation)
-Establish `hres : ∀ τ : GK p L, resGK h τ ∈ subG p K L` using `fun τ => by`. Rewrite using `[← range_resGK h]`. Conclude with `⟨τ, rfl⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, d⟩ ⟨c', d'⟩ hcd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h1 : (c.out * resGK h d.out)⁻¹ * (c'.out * resGK h d'.out) ∈ subG p K L'` using `QuotientGroup.eq.1 hcd`. Establish `h2 : c.out⁻¹ * c'.out ∈ subG p K L`. Establish `h3` using `(subG p K L).mul_mem ((subG p K L).mul_mem (hres d.out) (subG_anti h' h1)) ((subG p K L).inv_mem (hres d'.out))`. Establish `h4 : resGK h d.out * ((c.out * resGK h d.out)⁻¹ * (c'.out * resGK h d'.out)) * (resGK h d'.out)⁻¹ = c.out⁻¹ * c'.out` using `by group`. Rewrite `h3` using `[h4]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hc : c = c'`. Rewrite using `[← QuotientGroup.out_eq' c, ← QuotientGroup.out_eq' c']`. Conclude with `QuotientGroup.eq.2 h2`. Substitute `hc` using the available equality. Establish `h5 : resGK h (d.out⁻¹ * d'.out) ∈ subG p K L'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : (c.out * resGK h d.out)⁻¹ * (c.out * resGK h d'.out) = resGK h (d.out⁻¹ * d'.out)`. Rewrite using `[map_mul, map_inv]`. Use `group`. Rewrite `h1` using `[h6]`. Then use the resulting hypothesis. Establish `hd : d = d'`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← QuotientGroup.out_eq' d, ← QuotientGroup.out_eq' d']`. Conclude with `QuotientGroup.eq.2 h5`. Rewrite using `[hd]`. Introduce `e`. Proceed by induction on `e using QuotientGroup.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `H σ`. Establish `h1 : (QuotientGroup.mk σ : GK p K ⧸ subG p K L).out⁻¹ * σ ∈ subG p K L` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' _)`. Establish `h1' : (QuotientGroup.mk σ : GK p K ⧸ subG p K L).out⁻¹ * σ ∈ (resGK h).range`. Rewrite using `[range_resGK h]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨τ, hτ⟩` from `h1'`. Use `⟨(QuotientGroup.mk σ, QuotientGroup.mk τ), ?_⟩` and prove the remaining obligations. Establish `h2 : (QuotientGroup.mk τ : GK p L ⧸ subG p L L').out⁻¹ * τ ∈ subG p L L'` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' _)`. Apply `QuotientGroup.eq.2` to reduce the goal to its premises. Establish `h3 : ((QuotientGroup.mk σ : GK p K ⧸ subG p K L).out * resGK h (QuotientGroup.mk τ : GK p L ⧸ subG p L L').out)⁻¹ * σ = resGK h ((QuotientGroup.mk τ : GK p L ⧸ subG p L L').out⁻¹ * τ)`.
-
-Rewrite using `[map_mul, map_inv, hτ, mul_inv_rev, mul_assoc]`. Rewrite using `[h3]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tower_bijective {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K ≤ L) (h' : L ≤ L') :
     Bijective (fun x : (GK p K ⧸ subG p K L) × (GK p L ⧸ subG p L L') =>
@@ -200,11 +198,11 @@ theorem tower_bijective {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K �
       exact h2
 
 /- English proof (translation)
-Use `finite_quot_of_le (p := p) (K := K) hL' h'` as an intermediate fact. Use `finite_quot_of_le (p := p) (K := K) hL' (le_refl L')` as an intermediate fact. Use `finite_quot_of_le (p := p) (K := L) hL' (le_refl L')` as an intermediate fact. Use `Fintype.ofFinite (GK p K ⧸ subG p K L)` as an intermediate fact. Use `Fintype.ofFinite (GK p K ⧸ subG p K L')` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Fintype.ofFinite (GK p L ⧸ subG p L L')` as an intermediate fact. Rewrite using `[normHom_apply, normHom_apply, normHom_apply]`. Simplify using `only [map_sum]`. Rewrite using `[← Fintype.sum_prod_type']`. Use `Fintype.sum_bijective _ (tower_bijective h h') _ _ fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[kbarRep_out y hy, kbarRep_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem normHom_comp_normHom_of_le {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL' : FiniteDimensional ℚ_[p] L')
     (h : K ≤ L) (h' : L ≤ L') (y : KbarMult p) (hy : y ∈ multOf p L') :
@@ -223,7 +221,7 @@ theorem normHom_comp_normHom_of_le {L' : IntermediateField ℚ_[p] (PadicAlgCl p
   rfl
 
 /- English proof (translation)
-Set `F : KbarMult p →+ Additive (PadicAlgCl p)` to `{ toFun := fun x => Additive.ofMul ((Additive.toMul x : (PadicAlgCl p)ˣ) : PadicAlgCl p) map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `h2` using `congrArg Additive.toMul (map_sum F f s)`. Rewrite `h2` using `[toMul_sum]`. Conclude with `h2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_sum_KbarMult {ι : Type*} (s : Finset ι) (f : ι → KbarMult p) :
     ((Additive.toMul (∑ c ∈ s, f c) : (PadicAlgCl p)ˣ) : PadicAlgCl p) =
@@ -237,15 +235,13 @@ theorem coe_sum_KbarMult {ι : Type*} (s : Finset ι) (f : ι → KbarMult p) :
   exact h2
 
 /- English proof (translation)
-Use `finite_GalLK (p := p) (K := K) hL` as an intermediate fact. Use `Fintype.ofFinite (GK p K ⧸ subG p K L)` as an intermediate fact. Establish `hfin : FiniteDimensional K (IntermediateField.extendScalars h)`. Apply `Module.finite_of_finrank_pos` to reduce the goal to its premises. Rewrite using `[← degLK_eq_finrank h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `degLK_pos hL`. Establish `hbij : Bijective (fun c : GK p K ⧸ subG p K L => ((c.out : PadicAlgCl p ≃ₐ[K] PadicAlgCl p) : PadicAlgCl p →ₐ[K] PadicAlgCl p).comp (IntermediateField.extendScalars h).val)`. Apply `Function.Injective.bijective_of_nat_card_le` to reduce the goal to its premises. Introduce `c c' hcc`. Rewrite using `[← QuotientGroup.out_eq' c, ← QuotientGroup.out_eq' c']`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `QuotientGroup.eq.2` to reduce the goal to its premises. Introduce `x hx`. Establish `h1 : c.out x = c'.out x` using `DFunLike.congr_fun hcc (⟨x, hx⟩ : IntermediateField.extendScalars h)`. Use `show c.out⁻¹ (c'.out x) = x`. Rewrite using `[← h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `c.out.symm_apply_apply x`. Rewrite using `[Nat.card_eq_fintype_card, AlgHom.card, ← degLK_eq_finrank h]`. Conclude with `le_of_eq rfl`. Establish `h1` using `Algebra.norm_eq_prod_embeddings K (PadicAlgCl p) (⟨((Additive.toMul y : (PadicAlgCl p)ˣ) : PadicAlgCl p), hy⟩ : IntermediateField.extendScalars h)`. Use `Eq.trans ?_ h1.symm` and prove the remaining obligations.
-
-Rewrite using `[normHom_apply]`. Use `(coe_sum_KbarMult _ _).trans ?_` and prove the remaining obligations. Conclude with `Fintype.prod_bijective _ hbij _ _ fun c => rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem normHom_eq_algebra_norm (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) (y : KbarMult p)
     (hy : y ∈ multOf p L) :
@@ -280,7 +276,7 @@ theorem normHom_eq_algebra_norm (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L)
   exact Fintype.prod_bijective _ hbij _ _ fun c => rfl
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[mem_normGrp_iff]`. Take `⟨y, hy, hxy⟩` from `hx`. Conclude with `⟨normHom p L L' y, normHom_mem_multiplicative_group hL' y hy, by rw [normHom_comp_normHom_of_le hL' h h' y hy, hxy]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem normGroup_antitone {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL' : FiniteDimensional ℚ_[p] L')
     (h : K ≤ L) (h' : L ≤ L') : normGrp p K L' ≤ normGrp p K L := by
@@ -290,7 +286,7 @@ theorem normGroup_antitone {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL' 
   exact ⟨normHom p L L' y, normHom_mem_multiplicative_group hL' y hy, by rw [normHom_comp_normHom_of_le hL' h h' y hy, hxy]⟩
 
 /- English proof (translation)
-Rewrite using `[mem_normGrp_iff]`. Use `⟨ofK p K (Additive.ofMul x), h (ofK_mem p K _), ?_⟩` and prove the remaining obligations. Rewrite using `[normHom_of_mem_base _ (ofK_mem p K _), ofMul_pow, map_nsmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_degree_mem_normGroup (h : K ≤ L) (x : Kˣ) : x ^ degLK p K L ∈ normGrp p K L := by
   rw [mem_normGrp_iff]
@@ -298,9 +294,9 @@ theorem pow_degree_mem_normGroup (h : K ≤ L) (x : Kˣ) : x ^ degLK p K L ∈ n
   rw [normHom_of_mem_base _ (ofK_mem p K _), ofMul_pow, map_nsmul]
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `h1 : degLK p K K = 1`. Establish `h2 : subG p K K = ⊤` using `eq_top_iff.2 fun σ _ x hx => σ.commutes ⟨x, hx⟩`. Use `show (subG p K K).index = 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, Subgroup.index_top]`. Establish `h3` using `pow_degree_mem_normGroup (le_refl K) x`. Rewrite `h3` using `[h1, pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem normGroup_self_eq_top : normGrp p K K = ⊤ := by
   rw [eq_top_iff]

@@ -13,17 +13,17 @@ open GlobalTheory.PRep Formalism.UG GlobalTheory.DefU
 open UpperTheory.Gal.Int.Div
 
 /- English proof (translation)
-Introduce `hL E _ _ _ a U hU w hw ⟨B, σ, ⟨hirr, f, hf0, hfU, hfe⟩, hB⟩`. Take `⟨hloc, β, hβ, hK, -⟩` from `hL E a w hw`. Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E a w hw`. Establish `hpe : ∀ g, cLoc w ((e.symm g : locU a w) : UA E a) = g` using `fun g => by`. Rewrite using `[← he, e.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx⟩` from `hB.exists_vec`. Establish `hker : LinearMap.ker f = ⊥` using `((GlobalTheory.CuspRep.isIrreducible_iff σ.ρ).1 hirr).2 _ (fun g v hv => by`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Establish `h1` using `hfe (e.symm g) v`. Rewrite `h1` using `[MonoidHom.comp_apply, Subgroup.subtype_apply, hpe]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1, hv, map_zero]) |>.resolve_right fun h => hf0 (LinearMap.ker_eq_top.1 h)`. Establish `h0 : f x ≠ 0` using `(map_ne_zero_iff f (LinearMap.ker_eq_bot.1 hker)).2 hx.1`. Take `⟨hne, hund, -⟩` from `GlobalTheory.SplitPts.over_split hw`. Establish `hs : IsSplitAt (cpl w)` using `⟨w, hne.symm, hund.symm⟩`. Establish `hfix : ∀ y ∈ locU a (cpl w), cLoc (cpl w) y ∈ GlobalTheory.LFun.KGL (cpl w) a → RU E a y (f x) = f x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy hk`. Establish `hy' : y ∈ locU a w` using `hloc ▸ hy`. Establish `hk' : cLoc w y ∈ GlobalTheory.LFun.KGL w a`. Rewrite using `[← hβ y]`. Conclude with `hK _ hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.LGrp.mem_fixed.1 hx.2.1 _ hk'`. Establish `h1` using `hfe ⟨y, hy'⟩ x`. Express the relevant statement in the definitionally equal form `f (σ.ρ (cLoc w y) x) = RU E a y (f x) at h1`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨σ', S, hc, hS, -⟩` from `GlobalTheory.FrameAut.exists_locComp_hasSatGL_heckeVec E a U hU (cpl w) hs (f x) (hfU x) h0 hfix`. Conclude with `⟨S, σ', hc, hS⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Div.satConj_of :
     LocIso → SatConj := by

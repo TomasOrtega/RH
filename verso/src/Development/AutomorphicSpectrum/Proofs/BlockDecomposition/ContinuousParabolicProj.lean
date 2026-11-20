@@ -7,7 +7,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.LeibPhi
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.BZMir.continuous_gpProj`.
+A detailed English derivation is pending.
 -/
 theorem continuous_gpProj_phi : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (m j : ℕ), Continuous (gpProj k m j) :=

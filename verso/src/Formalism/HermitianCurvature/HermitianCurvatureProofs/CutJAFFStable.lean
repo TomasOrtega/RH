@@ -4,7 +4,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAFFStableAdjCom
 namespace Formalism.FourierDecayAlt.P.CutMP.JA
 
 /- English proof (translation)
-The claim follows from `FFS.jAFFStable_of_adjComm FFS.adjoint_commutation_holds`.
+A detailed English derivation is pending.
 -/
 theorem smooth_forms_stability_holds : JAFFStable := FFS.jAFFStable_of_adjComm FFS.adjoint_commutation_holds
 

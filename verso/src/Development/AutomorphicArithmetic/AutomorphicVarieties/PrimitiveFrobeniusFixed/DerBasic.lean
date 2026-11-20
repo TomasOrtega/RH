@@ -9,14 +9,14 @@ section
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
 /- English proof (translation)
-Unfold `der1`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ ((map_ne_zero _).2 hu)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem derivation_ne_zero (q : ℕ) (t : G ℚ Ω) {u : Ω} (hu : u ≠ 0) : der1 q t u ≠ 0 := by
   unfold der1
   exact Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ ((map_ne_zero _).2 hu)
 
 /- English proof (translation)
-Unfold `der1`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem derivation_mul (q : ℕ) (t : G ℚ Ω) (u v : Ω) : der1 q t (u * v) = der1 q t u * der1 q t v := by
   unfold der1
@@ -25,7 +25,7 @@ private theorem derivation_mul (q : ℕ) (t : G ℚ Ω) (u v : Ω) : der1 q t (u
   rw [map_mul, mul_pow]
 
 /- English proof (translation)
-Unfold `der1`. Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, ← zpow_natCast ((t ^ i) u ^ k) i, ← zpow_natCast ((t ^ i) u) i, ← zpow_mul, ← zpow_mul, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem derivation_zpow (q : ℕ) (t : G ℚ Ω) (u : Ω) (k : ℤ) : der1 q t (u ^ k) = der1 q t u ^ k := by
   unfold der1
@@ -35,7 +35,7 @@ private theorem derivation_zpow (q : ℕ) (t : G ℚ Ω) (u : Ω) (k : ℤ) : de
     mul_comm]
 
 /- English proof (translation)
-Unfold `der1`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem derivation_galois_equivariant (q : ℕ) (t g : G ℚ Ω) (u : Ω) (h : ∀ s : G ℚ Ω, g (s u) = s (g u)) :
     g (der1 q t u) = der1 q t (g u) := by
@@ -45,7 +45,7 @@ private theorem derivation_galois_equivariant (q : ℕ) (t g : G ℚ Ω) (u : Ω
   rw [map_pow, h]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp only [der.eq_1]`. Consider the case `cons q L ih => rw [der.eq_2, der.eq_2, der.eq_2, ih, derivation_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem der_mul (τ : ℕ → G ℚ Ω) (L : List ℕ) (u v : Ω) : der τ L (u * v) = der τ L u * der τ L v := by
   induction L with
@@ -53,7 +53,7 @@ private theorem der_mul (τ : ℕ → G ℚ Ω) (L : List ℕ) (u v : Ω) : der 
   | cons q L ih => rw [der.eq_2, der.eq_2, der.eq_2, ih, derivation_mul]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rw [der.eq_1]`. Consider the case `cons q L ih`. Rewrite using `[der.eq_2, ih]`. Unfold `der1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
 Simplify using the standard rewrite rules.
 -/
@@ -71,15 +71,15 @@ private def derHom (τ : ℕ → G ℚ Ω) (L : List ℕ) : Ω →* Ω where
   map_mul' := der_mul τ L
 
 /- English proof (translation)
-Establish `key : ∀ (a : ℕ → Ω) (n : ℕ), (∏ i ∈ Finset.range n, a (i + 1) ^ i) * (∏ i ∈ Finset.range n, a i) * a n = a 0 * a n ^ n * ∏ i ∈ Finset.range n, a i ^ i`. Introduce `a n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.prod_range_succ, Finset.prod_range_succ, Finset.prod_range_succ]`. Combine the equalities or inequalities in the displayed calculation. Establish `hD : der1 q t u ≠ 0` using `derivation_ne_zero q t hu`. Establish `hN : nrm q t u ≠ 0`. Unfold `nrm`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => (map_ne_zero _).mpr hu`. Establish `htD : t (der1 q t u) = ∏ i ∈ Finset.range (q - 1), ((t ^ (i + 1)) u) ^ i`. Unfold `der1`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, pow_succ', AlgEquiv.mul_apply]`. Establish `hk` using `key (fun i => (t ^ i) u) (q - 1)`. Simplify using `only [pow_zero, AlgEquiv.one_apply, h] at hk`. Rewrite using `[div_eq_div_iff hD hN, htD]`. Establish `hD' : der1 q t u = ∏ i ∈ Finset.range (q - 1), ((t ^ i) u) ^ i` using `rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN' : nrm q t u = ∏ i ∈ Finset.range (q - 1), (t ^ i) u` using `rfl`. Rewrite using `[hD', hN']`. Apply `mul_right_cancel₀ hu` to reduce the goal to its premises. Take the linear combination `hk`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem tele (q : ℕ) (t : G ℚ Ω) (u : Ω) (hu : u ≠ 0) (h : (t ^ (q - 1)) u = u) :
     t (der1 q t u) / der1 q t u = u ^ (q - 1) / nrm q t u := by
@@ -116,37 +116,35 @@ private theorem tele (q : ℕ) (t : G ℚ Ω) (u : Ω) (hu : u ≠ 0) (h : (t ^ 
 end
 
 /- English proof (translation)
-Introduce `Ω _ _ _ N r hN τ L u hu hfix`. Take `⟨-, -, -, -, -, hcomm, -, -, -, -⟩` from `galBasic Ω N hN`. Establish `hfix1 : ∀ (q : ℕ) (t : G ℚ Ω) (x : Ω), (∀ g ∈ fixMu ℚ Ω N, g x = x) → ∀ g ∈ fixMu ℚ Ω N, g (der1 q t x) = der1 q t x`. Introduce `q t x hx g hg`. Rewrite using `[derivation_galois_equivariant q t g x (fun s => hcomm x hx g s), hx g hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfixL : ∀ (L : List ℕ) (x : Ω), (∀ g ∈ fixMu ℚ Ω N, g x = x) → ∀ g ∈ fixMu ℚ Ω N, g (der τ L x) = der τ L x`. Introduce `L x hx`. Proceed by induction on `L with`. Consider the case `nil => simpa only [der.eq_1] using hx`. Consider the case `cons q L ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[der.eq_2]`. Conclude with `hfix1 q (τ q) _ ih`. Establish `hneL : ∀ L : List ℕ, der τ L u ≠ 0`. Introduce `L`. Proceed by induction on `L with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `nil`. Rewrite using `[der.eq_1]`. Conclude with `hu`. Consider the case `cons q L ih`. Rewrite using `[der.eq_2]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `derivation_ne_zero q (τ q) ih`. Establish `hcommL : ∀ (L : List ℕ) (x : Ω), (∀ g ∈ fixMu ℚ Ω N, g x = x) → ∀ g : G ℚ Ω, g (der τ L x) = der τ L (g x)`. Introduce `L x hx g`. Proceed by induction on `L with`. Consider the case `nil => simp only [der.eq_1]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `cons q L ih`. Rewrite using `[der.eq_2, der.eq_2, derivation_galois_equivariant q (τ q) g _ (fun s => hcomm _ (hfixL L x hx) g s), ih]`. Establish `hder1 : ∀ (L : List ℕ) (x : Ω), (∀ g ∈ fixMu ℚ Ω N, g x = x) → ∀ (q : ℕ) (t : G ℚ Ω), der τ L (der1 q t x) = der1 q t (der τ L x)`. Introduce `L x hx q t`. Establish `e : der τ L (der1 q t x) = derHom τ L (der1 q t x)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Unfold `der1`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show der τ L ((t ^ i) x) ^ i = _`. Rewrite using `[← hcommL L x hx]`. Establish `hconj : ∀ x : Ω, (∀ A : ValuationSubring Ω, ¬ Over A r → A.valuation x = 1) → ∀ (s : G ℚ Ω) (A : ValuationSubring Ω), ¬ Over A r → A.valuation (s x) = 1`. Introduce `x hx s A hA`. Take `⟨-, -, -, hlt, heq⟩` from `(placeBasic Ω).2.2.2.2.2.2.2.2.2 (s⁻¹ • A) s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsA : s • (s⁻¹ • A) = A` using `smul_inv_smul s A`. Rewrite `hlt`, `heq` using `[hsA]`. Apply `(heq x).mpr` to reduce the goal to its premises. Apply `hx` to reduce the goal to its premises. Introduce `hB`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `hA` to reduce the goal to its premises. Establish `hr` using `(hlt (r : Ω)).mpr hB`. Use `show A.valuation (r : Ω) < 1`. Simplify using `using hr`. Establish `hvalL : (∀ A : ValuationSubring Ω, ¬ Over A r → A.valuation u = 1) → ∀ (L : List ℕ) (A : ValuationSubring Ω), ¬ Over A r → A.valuation (der τ L u) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hu1 L`. Proceed by induction on `L with`. Consider the case `nil => simpa only [der.eq_1] using hu1`. Consider the case `cons q L ih`. Introduce `A hA`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[der.eq_2]`. Unfold `der1`. Rewrite using `[map_prod]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `i _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[Valuation.map_pow, hconj _ ih _ A hA, one_pow]`. Establish `hzpowL : ∀ (L : List ℕ) (k : ℤ), der τ L (u ^ k) = der τ L u ^ k`. Introduce `L k`. Proceed by induction on `L with`. Consider the case `nil => simp only [der.eq_1]`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `cons q L ih => rw [der.eq_2, der.eq_2, ih, derivation_zpow]`. Establish `hperm : ∀ L' : List ℕ, L.Perm L' → der τ L u = der τ L' u`. Introduce `L' hp`. Proceed by induction on `hp with`. Consider the case `nil => rfl`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `cons q _ ih => rw [der.eq_2, der.eq_2, ih]`. Consider the case `swap a b l`. Rewrite using `[der.eq_2, der.eq_2, der.eq_2, der.eq_2]`. Establish `hx` using `hfixL l u hfix`. Establish `h1 : der1 b (τ b) (der1 a (τ a) (der τ l u)) = der τ [b] (der1 a (τ a) (der τ l u))`.
-
-Rewrite using `[der.eq_2, der.eq_1]`. Rewrite using `[h1, hder1 [b] _ hx, der.eq_2, der.eq_1]`. Consider the case `trans _ _ ih1 ih2 => exact ih1.trans ih2`. Conclude with `⟨hneL L, hfixL L u hfix, fun g => hcommL L u hfix g, fun h => hvalL h L, der_mul τ L u, hzpowL L, fun q => hder1 L u hfix q (τ q), hperm, fun q _ h => tele q (τ q) u hu h⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ML.derBasic :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (N r : ℕ), N ≠ 0 → ∀ (τ : ℕ → G ℚ Ω) (L : List ℕ) (u : Ω), u ≠ 0 → (∀ g ∈ fixMu ℚ Ω N, g u = u) →

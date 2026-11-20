@@ -11,15 +11,15 @@ open GlobalTheory GlobalTheory.AbLaw
 namespace GlobalTheory.AbLaw
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hM.cover.ge (Set.mem_univ x))`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hH.cover.ge (Set.mem_univ x))`. Establish `hx : x ∈ (⊤ ⊓ (M.U q ⊓ H.U k) : Y.Opens)` using `⟨trivial, hq, hk⟩`. Take `⟨_, ⟨W, hW, rfl⟩, hxW, hWU⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open hx (⊤ ⊓ (M.U q ⊓ H.U k) : Y.Opens).2`. Establish `hWU' : W ≤ ⊤ ⊓ (M.U q ⊓ H.U k)` using `hWU`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hWk : W ≤ H.U k` using `hWU'.trans (inf_le_right.trans inf_le_right)`. Establish `hb : Y.basicOpen (rs Y hWk (σ.f k)) ≤ nonzeroLocus σ ⊓ (M.U q ⊓ H.U k)`. Use `le_inf ?_ ((Y.basicOpen_le _).trans (hWU'.trans inf_le_right))` and prove the remaining obligations. Use `le_trans ?_ (le_iSup (fun j => Y.basicOpen (σ.f j)) k)` and prove the remaining obligations. Conclude with `(Scheme.basicOpen_res Y (σ.f k) (homOfLE hWk).op).le.trans inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isAffineOpen Y hW (rs Y hWU' (SecOn.twCoord a q k)) (rs Y hWk (σ.f k)) (by`. Establish `e` using `congrArg (fun y => rs Y hb (SecOn.twCoord y q k)) ha`. Simplify using `only [SecOn.twCoord_restrict, rs_rs] at e`. Conclude with `(rs_rs _ (Y.basicOpen_le _) _).trans (e.trans (map_zero _)))`. Use `⟨W, n, hxW, fun p l O hO h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `congrArg (rs Y hO) hn`. Rewrite `e` using `[map_mul, map_pow, rs_rs, rs_rs (U := H.U k) hWk hO (σ.f k), map_zero]`. Establish `hl : O ≤ H.U l` using `h.trans (inf_le_right.trans inf_le_right)`. Establish `hp : O ≤ M.U p` using `h.trans (inf_le_right.trans inf_le_left)`. Establish `hq' : O ≤ M.U q` using `hO.trans (hWU'.trans (inf_le_right.trans inf_le_left))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : rs Y hl (σ.f l) = rs Y (le_inf hl (hO.trans hWk)) ((pw H d).g l k).val * rs Y (hO.trans hWk) (σ.f k)` using `GlobalTheory.LB.sec_rel σ l k hl (hO.trans hWk) (le_inf hl (hO.trans hWk))`. Rewrite using `[SecOn.twCoord_compat a p q l k h (hO.trans hWU') (le_inf hp hq') (le_inf hl (hO.trans hWk)), e₁, mul_pow, mul_mul_mul_comm, e, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_nhds_pow_mul_twCoord_eq_zero {Y : Scheme.{0}} {H M : LB Y} {d : ℤ}
     (σ : LB.Sec (pw H d)) {t : ℤ} (hH : H.IsLB) (hM : M.IsLB) (a : SecOn (tw M H t) ⊤)
@@ -57,11 +57,9 @@ theorem exists_nhds_pow_mul_twCoord_eq_zero {Y : Scheme.{0}} {H M : LB Y} {d : �
     e₁, mul_pow, mul_mul_mul_comm, e, mul_zero]
 
 /- English proof (translation)
-Introduce and unpack `Y H M d σ V t hH hM rfl hY a ha`. Use `choose W n hxW hn using exists_nhds_pow_mul_twCoord_eq_zero σ hH hM a ha`. Take `⟨s, hs⟩` from `isCompact_univ.elim_finite_subcover (fun x : Y => (W x : Set Y)) (fun x => (W x).2) fun x _ => Set.mem_iUnion.2 ⟨x, hxW x⟩`. Use `⟨s.sup n, fun p l => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.LB.fun_ext_of_cover (fun x : s => W x ⊓ (⊤ ⊓ (M.U p ⊓ H.U l))) (fun _ => inf_le_right) (fun y hy => ?_) fun x => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hy'⟩` from `Set.mem_iUnion₂.1 (hs (Set.mem_univ y))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hx⟩, hy', hy⟩`. Take `⟨m, hm⟩` from `Nat.exists_eq_add_of_le' (Finset.le_sup (f := n) x.2)`. Establish `e` using `hn x p l _ inf_le_left inf_le_right`. Express the relevant statement in the definitionally equal form `rs Y _ _ = rs Y _ _`.
-
-Rewrite using `[map_mul, map_pow, rs_rs (U := H.U l) _ _ (σ.f l), map_zero, hm, pow_add, _root_.mul_assoc, e, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_twCoord_eq_zero : ∀ (Y : Scheme.{0}) (H M : LB Y) (d : ℤ) (σ : LB.Sec (pw H d)) (V : Y.Opens) (t : ℤ), H.IsLB → M.IsLB → V = nonzeroLocus σ → CompactSpace Y → ∀ a : SecOn (tw M H t) ⊤, SecOn.restrict _ (le_top : V ≤ ⊤) a = 0 → ∃ k : ℕ, ∀ (p : M.ι) (l : H.ι), rs Y (inf_le_right.trans inf_le_right : ⊤ ⊓ (M.U p ⊓ H.U l) ≤ H.U l) (σ.f l) ^ k * SecOn.twCoord a p l = 0 := by
   rintro Y H M d σ V t hH hM rfl hY a ha

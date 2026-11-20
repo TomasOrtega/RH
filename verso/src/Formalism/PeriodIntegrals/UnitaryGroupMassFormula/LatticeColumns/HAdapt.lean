@@ -30,26 +30,26 @@ def dlH : Idx r k → Idx r k
   | Sum.inr (Sum.inl (Sum.inl i)) => Sum.inr (Sum.inl (Sum.inl i))
 
 /- English proof (translation)
-Introduce and unpack `⟨i, h⟩`. Consider the cases of `h`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data.
 -/
 theorem not_isW_inl (a : Fin r) : ¬ IsW (Sum.inl a : Idx r k) := by
   rintro ⟨i, h⟩
   cases h
 /- English proof (translation)
-Introduce and unpack `⟨i, h⟩`. Consider the cases of `h`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data.
 -/
 theorem not_isWeightIndex_inr (u : Unit) : ¬ IsW (Sum.inr (Sum.inl (Sum.inr u)) : Idx r k) := by
   rintro ⟨i, h⟩
   cases h
 /- English proof (translation)
-Introduce and unpack `⟨i, h⟩`. Consider the cases of `h`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data.
 -/
 theorem not_isW_f (c : Fin r) : ¬ IsW (Sum.inr (Sum.inr c) : Idx r k) := by
   rintro ⟨i, h⟩
   cases h
 
 /- English proof (translation)
-Break down `s with a | ((i | u) | c)` into its components or cases. Conclude with `not_isW_f _`. Conclude with `absurd ⟨i, rfl⟩ hs`. Conclude with `not_isWeightIndex_inr u`. Conclude with `not_isW_inl _`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem dlH_frame (s : Idx r k) (hs : ¬ IsW s) : ¬ IsW (dlH s) := by
   rcases s with a | ((i | u) | c)
@@ -59,31 +59,29 @@ theorem dlH_frame (s : Idx r k) (hs : ¬ IsW s) : ¬ IsW (dlH s) := by
   · exact not_isW_inl _
 
 /- English proof (translation)
-Apply the tactic sequence `rcases s with a | ((i | u) | c) <;> simp [dlH]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dlH_dlH (s : Idx r k) : dlH (dlH s) = s := by
   rcases s with a | ((i | u) | c) <;> simp [dlH]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dlH s, dlH_frame s hs, dlH_dlH s⟩`.
+Supply the required witnesses or components.
 -/
 theorem dlH_surj (s : Idx r k) (hs : ¬ IsW s) : ∃ s', ¬ IsW s' ∧ dlH s' = s :=
   ⟨dlH s, dlH_frame s hs, dlH_dlH s⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H b`. Proceed by induction on `b using Fin.addCases with`. Consider the case `left b`. Proceed by induction on `b using Fin.lastCases with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `last`. Establish `h` using `H (Sum.inr (Sum.inl (Sum.inr ()))) (not_isWeightIndex_inr ())`. Unfold `tupH F0`. Rewrite using `[Fin.append_left, Fin.snoc_last]`. Conclude with `h`.
+Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `cast a`. Establish `h` using `H (Sum.inl a) (not_isW_inl a)`. Unfold `tupH F0`. Rewrite using `[Fin.append_left, Fin.snoc_castSucc]`. Conclude with `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `right c`. Establish `h` using `H (Sum.inr (Sum.inr (Fin.rev c))) (not_isW_f _)`. Unfold `tupH`. Rewrite using `[Fin.append_right]`. Simplify `h` using `[vecAt]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `H s hs`. Break down `s with a | ((i | u) | c)` into its components or cases. Establish `h` using `H (Fin.castAdd r (Fin.castSucc a))`. Unfold `tupH F0 at h`. Rewrite `h` using `[Fin.append_left, Fin.snoc_castSucc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `h`. Conclude with `absurd ⟨i, rfl⟩ hs`. Establish `h` using `H (Fin.castAdd r (Fin.last r))`. Unfold `tupH F0 at h`. Rewrite `h` using `[Fin.append_left, Fin.snoc_last]`.
-
-Conclude with `h`. Establish `h` using `H (Fin.natAdd (r + 1) (Fin.rev c))`. Unfold `tupH at h`. Rewrite `h` using `[Fin.append_right]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem forall_frame_iff (P : Frame E n r) (Φ : (Fin n → E) → Prop) :
     (∀ s : Idx r k, ¬ IsW s → Φ (vecAt P s)) ↔ ∀ b : Fin (r + 1 + r), Φ (tupH P b) := by
@@ -124,11 +122,9 @@ theorem forall_frame_iff (P : Frame E n r) (Φ : (Fin n → E) → Prop) :
       exact h
 
 /- English proof (translation)
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Unfold `pe F0`. Use `split_ifs with h`. Conclude with `absurd h (by simp)`.
+Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Fin.snoc_last]`. Both sides reduce to the same expression. Consider the case `cast a`. Unfold `pe F0`. Use `split_ifs with h`.
-
-Rewrite using `[Fin.snoc_castSucc]`. Both sides reduce to the same expression. Conclude with `absurd a.isLt h`.
+Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem vecAt_pe (P : Frame E n r) (b : Fin (r + 1)) : vecAt (k := k) P (pe b) = F0 P b := by
   induction b using Fin.lastCases with
@@ -146,11 +142,9 @@ theorem vecAt_pe (P : Frame E n r) (b : Fin (r + 1)) : vecAt (k := k) P (pe b) =
     · exact absurd a.isLt h
 
 /- English proof (translation)
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Unfold `pe pf`. Use `split_ifs with h`. Conclude with `absurd h (by simp)`.
+Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `cast a`. Unfold `pe pf`. Use `split_ifs with h`. Both sides reduce to the same expression.
-
-Conclude with `absurd a.isLt h`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dlH_pe (b : Fin (r + 1)) : dlH (pe (k := k) b) = pf b := by
   induction b using Fin.lastCases with
@@ -166,7 +160,7 @@ theorem dlH_pe (b : Fin (r + 1)) : dlH (pe (k := k) b) = pf b := by
     · exact absurd a.isLt h
 
 /- English proof (translation)
-Unfold `pe`. Use `split_ifs with h`. Conclude with `not_isW_inl _`. Conclude with `not_isWeightIndex_inr ()`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem not_isW_pe (b : Fin (r + 1)) : ¬ IsW (pe (k := k) b) := by
   unfold pe
@@ -195,7 +189,7 @@ private theorem coe_hEmbGL {A : Type} [CommRing A] (g : GL (Fin k) A) :
       hEmb r (g : Matrix (Fin k) (Fin k) A) := rfl
 
 /- English proof (translation)
-Unfold `hEmb midEmb`. Simplify using `[Matrix.fromBlocks_map]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem hEmb_map' {A B : Type} [CommRing A] [CommRing B] (π : A →+* B)
     (h : Matrix (Fin k) (Fin k) A) : (hEmb r h).map π = hEmb r (h.map π) := by
@@ -203,7 +197,7 @@ private theorem hEmb_map' {A B : Type} [CommRing A] [CommRing B] (π : A →+* B
   simp [Matrix.fromBlocks_map]
 
 /- English proof (translation)
-Unfold `hEmb midEmb`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem hEmb_wI_wI {A : Type} [CommRing A] (h : Matrix (Fin k) (Fin k) A) (i j : Fin k) :
     hEmb r h (wI i) (wI j) = h i j := by
@@ -211,17 +205,17 @@ private theorem hEmb_wI_wI {A : Type} [CommRing A] (h : Matrix (Fin k) (Fin k) A
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨MassDataIdxRed.glRed ι g, Units.ext (by simp only [coe_glRed, coe_hEmbGL, hEmb_map'])⟩`. Introduce and unpack `⟨g, hg⟩`. Establish `key : ∀ N : GL (Idx r k) O, (∃ g' : GL (Fin k) K, hEmbGL (A` using `K) r k g' = MassDataIdxRed.glRed ι N) → hEmb r (Matrix.of fun i j => (N : Matrix (Idx r k) (Idx r k) O) (wI i) (wI j)) = (N : Matrix (Idx r k) (Idx r k) O) := by`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `N ⟨g', hg'⟩`. Establish `hN : (N : Matrix (Idx r k) (Idx r k) O).map ι = hEmb r (g' : Matrix (Fin k) (Fin k) K)`. Rewrite using `[← coe_glRed, ← hg', coe_hEmbGL]`. Establish `hb : (Matrix.of fun i j => (N : Matrix (Idx r k) (Idx r k) O) (wI i) (wI j)).map ι = (g' : Matrix (Fin k) (Fin k) K)`. Use extensionality with `i j`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h` using `congrFun (congrFun hN (wI i)) (wI j)`. Rewrite `h` using `[Matrix.map_apply, hEmb_wI_wI]`. Simplify using `only [Matrix.map_apply, Matrix.of_apply]`. Conclude with `h`. Use extensionality with `s t`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hι` to reduce the goal to its premises. Establish `h1` using `congrFun (congrFun (hEmb_map' (r := r) ι (Matrix.of fun i j => (N : Matrix (Idx r k) (Idx r k) O) (wI i) (wI j))) s) t`. Rewrite `h1` using `[Matrix.map_apply, hb]`. Establish `h2` using `congrFun (congrFun hN s) t`. Rewrite `h2` using `[Matrix.map_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2]`. Establish `hM` using `key M ⟨g, hg⟩`. Establish `hMi` using `key M⁻¹ ⟨g⁻¹, by rw [map_inv, map_inv, hg]⟩`. Use `⟨⟨Matrix.of fun i j => (M : Matrix (Idx r k) (Idx r k) O) (wI i) (wI j), Matrix.of fun i j => ((M⁻¹ : GL (Idx r k) O) : Matrix (Idx r k) (Idx r k) O) (wI i) (wI j), ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `MassDataIdxStIm.hEmb_inj (r := r)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MassDataIdxStIm.hEmb_mul, hM, hMi, Units.mul_inv, MassDataIdxStIm.hEmb_one]`. Apply `MassDataIdxStIm.hEmb_inj (r := r)` to reduce the goal to its premises. Rewrite using `[← MassDataIdxStIm.hEmb_mul, hM, hMi, Units.inv_mul, MassDataIdxStIm.hEmb_one]`. Conclude with `Units.ext (by rw [coe_hEmbGL]; exact hM)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_hEmbGL_map (ι : O →+* K) (hι : Function.Injective ι) (M : GL (Idx r k) O) :
     M ∈ (hEmbGL (A := O) r k).range ↔ MassDataIdxRed.glRed ι M ∈ (hEmbGL (A := K) r k).range := by
@@ -277,9 +271,9 @@ def SplitBasisAdaptedFrame (X : HidaSetting D) (u : D.what₂.Word) (p : TypX X)
       LatBasis X p θ (reindex₂ X p Q)
 
 /- English proof (translation)
-Take `⟨θ, hθ, Q, l, hl, h1, h2, hL⟩` from `h`. Use `⟨θ, hθ, Q, fun b => l (pe b), fun b => hl _ (not_isW_pe b), fun b => ?_, fun b => ?_, hL⟩` and prove the remaining obligations. Establish `h` using `h1 (pe b) (not_isW_pe b)`. Rewrite `h` using `[vecAt_pe]`. Then use the resulting hypothesis. Establish `h` using `h2 (pe b) (not_isW_pe b)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h` using `[vecAt_pe, dlH_pe]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem stAdaptQ_of_H (X : HidaSetting D) (u : D.what₂.Word) (p : TypX X) (h : SplitBasisAdaptedFrame X u p) : StAdaptQ X u p := by
   obtain ⟨θ, hθ, Q, l, hl, h1, h2, hL⟩ := h
@@ -290,7 +284,7 @@ theorem stAdaptQ_of_H (X : HidaSetting D) (u : D.what₂.Word) (p : TypX X) (h :
     rwa [vecAt_pe, dlH_pe] at h
 
 /- English proof (translation)
-Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_mulVec_equiv]`. Simplify using `[Function.comp_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem reindex_mulVec_comp {R n ι : Type} [CommRing R] [Fintype n] [DecidableEq n] [Fintype ι] [DecidableEq ι]
     (e : n ≃ ι) (M : Matrix n n R) (v : n → R) :
@@ -299,15 +293,13 @@ theorem reindex_mulVec_comp {R n ι : Type} [CommRing R] [Fintype n] [DecidableE
   simp [Function.comp_assoc]
 
 /- English proof (translation)
-Introduce `x`. Establish `hι : Function.Injective (algebraMap (Op X p) (FpX X p))` using `fun a b hab => Subtype.ext hab`. Rewrite using `[mem_range_hEmbGL_map (algebraMap (Op X p) (FpX X p)) hι (ψ x)]`. Use `set e := idxEquiv X with he`. Use `set G := MassDataIdxRed.glRed (algebraMap (Op X p) (FpX X p)) (ψ x) with hG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set g1 : GL (Idx D.R.rS D.R.k) (FpX X p) := Q * G * Q⁻¹ with hg1`. Establish `hg1v : (g1 : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) = Matrix.reindex e e (cmp1 X.B.I.cm.sig X.B.I.J θ (x : HAp X p))`. Rewrite using `[hg1, Units.val_mul, Units.val_mul, hG, hform x]`. Simplify using `only [← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hGg : G = Q⁻¹ * g1 * Q` using `by rw [hg1]; group`. Rewrite using `[hGg]`. Establish `hJ : IsUnit (Matrix.reindex e e (jm1 X.B.I.J θ)).det`. Rewrite using `[Matrix.det_reindex_self]`. Conclude with `isUnit_det_split_form X p θ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : (Matrix.reindex e e (cmp2 X.B.I.cm.sig X.B.I.J θ (x : HAp X p)))ᵀ * Matrix.reindex e e (jm1 X.B.I.J θ) * (g1 : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) = Matrix.reindex e e (jm1 X.B.I.J θ)`. Rewrite using `[hg1v, Matrix.transpose_reindex, reindex_mul', reindex_mul', cmp_unit X.B.I.cm.sig X.B.I.J θ hθ]`. Rewrite using `[← frame_fix_iff g1 Q (Matrix.reindex e e (cmp2 X.B.I.cm.sig X.B.I.J θ (x : HAp X p))) (Matrix.reindex e e (jm1 X.B.I.J θ)) hJ hU (fun s => pr1 θ (ratV (F := X.B.I.F) (FpX X p) (vecAt (frameOf X u) s)) ∘ e.symm) (fun s => pr2 θ (ratV (F := X.B.I.F) (FpX X p) (vecAt (frameOf X u) …`. Rewrite using `[mem_Hsub_iff X.B.I.cm.sig X.B.I.J θ (frameOf X u) (x : HAp X p)]`. Rewrite using `[← forall_frame_iff (k := D.R.k) (frameOf X u) (fun v => cmp1 X.B.I.cm.sig X.B.I.J θ (x : HAp X p) *ᵥ pr1 θ (ratV (F := X.B.I.F) (FpX X p) v) = pr1 θ (ratV (F := X.B.I.F) (FpX X p) v) ∧ cmp2 X.B.I.cm.sig X.B.I.J θ (x : HAp X p) *ᵥ pr2 θ (ratV (F := X.B.I.F) (FpX X p) v) = pr2 θ ( …`.
-
-Use `forall_congr' fun s => imp_congr_right fun _ => ?_` and prove the remaining obligations. Establish `hinj : ∀ v w : Fin X.B.I.n → FpX X p, v ∘ e.symm = w ∘ e.symm ↔ v = w` using `fun v w => e.symm.surjective.injective_comp_right.eq_iff`. Rewrite using `[hg1v, reindex_mulVec_comp, reindex_mulVec_comp, hinj, hinj]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hH_of_form (X : HidaSetting D) (u : D.what₂.Word) (p : TypX X)
     (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p) (hθ : IsSplitEquiv X p θ)
@@ -361,9 +353,9 @@ theorem hH_of_form (X : HidaSetting D) (u : D.what₂.Word) (p : TypX X)
   rw [hg1v, reindex_mulVec_comp, reindex_mulVec_comp, hinj, hinj]
 
 /- English proof (translation)
-Take `⟨θ, hθ, Q, l, hl, hy1, hy2, hL⟩` from `h`. Establish `hKs : ((KvA X p.1 : Subgroup (HAp X p)) : Set (HAp X p)) = KvX X p` using `rfl`. Take `⟨ψ, hψ, hker, hform⟩` from `hC X p θ hθ Q hL (KvA X p.1) hKs`. Use `⟨ψ, 1, hψ, hker, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [inv_one, one_mul, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hH_of_form X u p θ hθ Q l hl hy1 hy2 ψ hform x`.
+A detailed English derivation is pending.
 -/
 theorem hModel_of_adapt0 (hC : LatCoreX) (X : HidaSetting D) (u : D.what₂.Word) (p : TypX X) (h : SplitBasisAdaptedFrame X u p) :
     HModel X u p := by
@@ -396,7 +388,7 @@ def HAdaptQ (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p
       LatBasis X p θ (reindex₂ X p Q) ∧ WClause X hb u p θ Q
 
 /- English proof (translation)
-Take `⟨θ, hθ, Q, l, hl, h1, h2, hL, -⟩` from `h`. Conclude with `⟨θ, hθ, Q, l, hl, h1, h2, hL⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem adaptedFrame_of_adaptedQ (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X)
     (h : HAdaptQ X hb u p) : SplitBasisAdaptedFrame X u p := by
@@ -404,14 +396,14 @@ theorem adaptedFrame_of_adaptedQ (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u
   exact ⟨θ, hθ, Q, l, hl, h1, h2, hL⟩
 
 /- English proof (translation)
-The claim follows from `hModel_of_adapt0 latCoreX_holds X u p (adaptedFrame_of_adaptedQ X hb u p h)`.
+A detailed English derivation is pending.
 -/
 theorem hModel_of_adapt (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X)
     (h : HAdaptQ X hb u p) : HModel X u p :=
   hModel_of_adapt0 latCoreX_holds X u p (adaptedFrame_of_adaptedQ X hb u p h)
 
 /- English proof (translation)
-The claim follows from `stAdaptQ_of_H X u p (adaptedFrame_of_adaptedQ X hb u p h)`.
+A detailed English derivation is pending.
 -/
 theorem stAdaptQ_of_full (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X)
     (h : HAdaptQ X hb u p) : StAdaptQ X u p :=

@@ -13,7 +13,7 @@ namespace ZM
 variable [IsCMField E] {X : PT E} {DF : ℕ} {P : Par X DF} {I : Submodule ℤ (Vsp X.dim)}
 
 /- English proof (translation)
-Set `L : Vsp X.dim →ₗ[ℝ] Vsp X.dim` to `{ toFun := uc (IR I) map_add' := fun x y => uc_add x y map_smul' := fun c v => by simpa using uc_rsmul (I := I) c v }`. Conclude with `L.continuous_of_finiteDimensional`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem uc_continuous : Continuous (uc (IR I) : Vsp X.dim → Vsp X.dim) := by
   let L : Vsp X.dim →ₗ[ℝ] Vsp X.dim :=
@@ -23,7 +23,7 @@ theorem uc_continuous : Continuous (uc (IR I) : Vsp X.dim → Vsp X.dim) := by
   exact L.continuous_of_finiteDimensional
 
 /- English proof (translation)
-Unfold `What`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem What_continuous (hI : IsSplit P I) (hP : Ext.PackingCount) :
     Continuous fun p : (Fin (Module.finrank ℝ (IR I)) → ℝ) × (Fin (2 * Fintype.card (Fin (gB (IR I)))) → ℝ) =>
@@ -32,7 +32,7 @@ theorem What_continuous (hI : IsSplit P I) (hP : Ext.PackingCount) :
   fun_prop
 
 /- English proof (translation)
-Simplify using `only [What, gam, Pi.add_apply, add_smul, Finset.sum_add_distrib, ← Int.cast_smul_eq_zsmul ℝ]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem What_add (hI : IsSplit P I) (hP : Ext.PackingCount) (a r) (n : Fin (Module.finrank ℝ (IR I)) → ℤ) :
     What hI hP a r + gam hI n = What hI hP (a + fun i => (n i : ℝ)) r := by
@@ -40,39 +40,35 @@ theorem What_add (hI : IsSplit P I) (hP : Ext.PackingCount) (a r) (n : Fin (Modu
   abel
 
 /- English proof (translation)
-Establish `hK` using `hK_of hI`. Establish `hβm` using `zeroMode_mem_sections hI hP hs`. Use `set g : Vsp X.dim → ℝ := fun v => X.ptN2 1 s (fun _ => v) with hg`. Establish `hg' : g = fun v => ‖s (fun _ => v)‖ ^ 2 * Real.exp (-(((1 : ℕ) : ℝ) * Real.pi) * ‖v‖ ^ 2)`. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [hg, PT.ptN2, HC_one, Hf_self_re]`. Establish `hgc : Continuous g`. Rewrite using `[hg']`. Conclude with `((hs.1.continuous.comp (continuous_pi fun _ => continuous_id)).norm.pow 2).mul (Real.continuous_exp.comp (continuous_const.mul (continuous_norm.pow 2)))`. Establish `hg0 : ∀ v, 0 ≤ g v` using `fun v => by rw [hg']; positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : X.l2 1 s = ∫ x in cubeIco _, g ((BB hI hP).equivFun.symm x)`. Rewrite using `[X.l2_one_eq_toGT_l2_col1 s, GT.l2]`. Establish `hper : ∀ γ ∈ Submodule.span ℤ (Set.range X.toGT.b), ∀ v, X.toGT.ptN2 1 (X.col1 s) (γ + v) = X.toGT.ptN2 1 (X.col1 s) v` using `fun γ hγ v => lemS_periodic X.toGT 1 (X.column_mem_sections hs) hγ v`. Rewrite using `[avg_fd_swap X.toGT.b (BB hI hP) (lat_BB hI hP).symm _ hper, avg_fd_cube]`. Conclude with `setIntegral_congr_fun (cubeIco_meas _) fun x _ => (X.pointNormSq_column s _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦc : Continuous (BB hI hP).equivFun.symm` using `(BB hI hP).equivFun.symm.toContinuousLinearEquiv.continuous`. Establish `hbox : ∀ κ : Type, [Fintype κ] → cubeIco κ ⊆ Set.Icc 0 1` using `fun κ _ x hx => ⟨fun i => (hx i).1, fun i => (hx i).2.le⟩`. Establish `h2 : ENNReal.ofReal (X.l2 1 s) = ∫⁻ x in cubeIco _, ENNReal.ofReal (g ((BB hI hP).equivFun.symm x))`. Rewrite using `[h1]`. Conclude with `ofReal_integral_eq_lintegral_ofReal (f := fun x => g ((BB hI hP).equivFun.symm x)) (((hgc.comp hΦc).continuousOn.integrableOn_compact isCompact_Icc).mono_set (hbox _)) (Filter.Eventually.of_forall fun x => hg0 _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmeas1 : Measurable fun x => ENNReal.ofReal (g ((BB hI hP).equivFun.symm x))` using `ENNReal.measurable_ofReal.comp (hgc.comp hΦc).measurable`. Rewrite `h2` using `[cube_split _ hmeas1]`. Establish `hΦ : ∀ t y, (BB hI hP).equivFun.symm (fun k => Sum.elim t y k) = What hI hP (fun j => y (Sum.inl j)) (fun l => y (Sum.inr l)) + tb hI t`. Introduce `t y`. Rewrite using `[Module.Basis.equivFun_symm_apply, Fintype.sum_sum_type, Fintype.sum_sum_type]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [BB_apply, Bf, Sum.elim_inl, Sum.elim_inr, What, tb]`. Normalize the expressions using the abelian group laws. Use `set Ψ : (Fin (Module.finrank ℝ (IR I)) → ℝ) → (Fin (2 * Fintype.card (Fin (gB (IR I)))) → ℝ) → ℝ := fun a r => (YB hI hP 1).ptN2 1 (zmB hI s) (wmap (IR I) (What hI hP a r)) * Real.exp (-(2 * Real.pi) * ‖uc (IR I) (What hI hP a r)‖ ^ 2) with hΨ`. Establish `hΨc : Continuous fun p : (Fin (Module.finrank ℝ (IR I)) → ℝ) × (Fin (2 * Fintype.card (Fin (gB (IR I)))) → ℝ) => Ψ p.1 p.2`. Establish `hY : Continuous fun t => (YB hI hP 1).ptN2 1 (zmB hI s) t`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Unfold `GT.ptN2`. Conclude with `(hβm.1.continuous.norm.pow 2).mul (Real.continuous_exp.comp (continuous_const.mul (continuous_norm.pow 2)))`. Establish `hW` using `What_continuous hI hP`. Conclude with `(hY.comp ((wmap (IR I)).continuous.comp hW)).mul (Real.continuous_exp.comp (continuous_const.mul ((continuous_norm.comp (uc_continuous.comp hW)).pow 2)))`. Establish `hin : ∀ y : Fin (Module.finrank ℝ (IR I)) ⊕ Fin (2 * Fintype.card (Fin (gB (IR I)))) → ℝ, ∫⁻ t in cubeIco _, ENNReal.ofReal (g ((BB hI hP).equivFun.symm (fun k => Sum.elim t y k))) = ∑' n : Fin (Module.finrank ℝ (IR I)) → ℤ, ENNReal.ofReal (Ψ ((fun j => y (Sum.inl j)) + fun i => …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Simplify using `only [hΦ]`. Use `(fibre_sum hI hP hs _).trans (tsum_congr fun n => ?_)` and prove the remaining obligations. Rewrite using `[What_add]`. Rewrite `h2` using `[lintegral_congr hin]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFm : Measurable fun y : Fin (Module.finrank ℝ (IR I)) ⊕ Fin (2 * Fintype.card (Fin (gB (IR I)))) → ℝ => ∑' n : Fin (Module.finrank ℝ (IR I)) → ℤ, ENNReal.ofReal (Ψ ((fun j => y (Sum.inl j)) + fun i => (n i : ℝ)) (fun l => y (Sum.inr l)))`. Use `Measurable.ennreal_tsum fun n => ENNReal.measurable_ofReal.comp ?_` and prove the remaining obligations. Use `(hΨc.comp (Continuous.prodMk ?_ ?_)).measurable` and prove the remaining obligations. Conclude with `(continuous_pi fun j => continuous_apply (Sum.inl j)).add continuous_const`. Conclude with `continuous_pi fun l => continuous_apply (Sum.inr l)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[cube_split _ hFm]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at h2`. Establish `hΨm : ∀ r, Measurable fun a => ENNReal.ofReal (Ψ a r)` using `fun r => ENNReal.measurable_ofReal.comp (hΨc.comp (continuous_id.prodMk continuous_const)).measurable`. Establish `h3 : ∀ r : Fin (2 * Fintype.card (Fin (gB (IR I)))) → ℝ, ∫⁻ a' in cubeIco _, ∑' n : Fin (Module.finrank ℝ (IR I)) → ℤ, ENNReal.ofReal (Ψ (a' + fun i => (n i : ℝ)) r) = ∫⁻ a, ENNReal.ofReal (Ψ a r)`. Introduce `r`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lintegral_tsum (f := fun (n : Fin (Module.finrank ℝ (IR I)) → ℤ) (a' : Fin (Module.finrank ℝ (IR I)) → ℝ) => ENNReal.ofReal (Ψ (a' + fun i => (n i : ℝ)) r)) (fun n => ((hΨm r).comp (measurable_id.add_const _)).aemeasurable), unfold_Zn (fun a => ENNReal.ofReal (Ψ a r))]`. Rewrite `h2` using `[lintegral_congr h3, lintegral_lintegral_swap (f := fun r a => ENNReal.ofReal (Ψ a r)) (ENNReal.measurable_ofReal.comp (hΨc.comp (continuous_snd.prodMk continuous_fst)).measurable).aemeasurable]`. Establish `h4 : ∀ a : Fin (Module.finrank ℝ (IR I)) → ℝ, ∫⁻ r in cubeIco _, ENNReal.ofReal (Ψ a r) = ENNReal.ofReal ((YB hI hP 1).l2 1 (zmB hI s)) * ENNReal.ofReal (Real.exp (-(2 * Real.pi) * ‖∑ j, a j • uc (IR I) (cp hI j)‖ ^ 2))`. Introduce `a`. Simplify using `only [hΨ, uc_What, wmap_What]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [ENNReal.ofReal_mul (pointNormSq_nonneg_quotient hP hI _ _)]`. Rewrite using `[lintegral_mul_const' _ _ ENNReal.ofReal_ne_top, YB_cube hI hP hs]`. Rewrite `h2` using `[lintegral_congr h4, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Establish `hub : ∀ j i, inner ℝ ((⟨uc (IR I) (cp hI j), uc_mem _ _⟩ : IR I)) (Ib hI i) = if j = i then (1 : ℝ) else 0` using `fun j i => by`. Rewrite using `[Submodule.coe_inner, inner_uc (IR I) _ _ (Ib hI i).2, cp_pair]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Pi.single_apply, Ne.symm h]`. Establish `hgl` using `gauss_lin (Col.ob (IR I)) (fun j => (⟨uc (IR I) (cp hI j), uc_mem _ _⟩ : IR I)) (Ib hI) hub`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnorm : ∀ a : Fin (Module.finrank ℝ (IR I)) → ℝ, ‖∑ j, a j • (⟨uc (IR I) (cp hI j), uc_mem _ _⟩ : IR I)‖ = ‖∑ j, a j • uc (IR I) (cp hI j)‖` using `fun a => by`. Establish `h : ((∑ j, a j • (⟨uc (IR I) (cp hI j), uc_mem _ _⟩ : IR I) : IR I) : Vsp X.dim) = ∑ j, a j • uc (IR I) (cp hI j)` using `by simp [Submodule.coe_sum]`. Rewrite using `[← h]`. Both sides reduce to the same expression. Simplify using `only [hnorm] at hgl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hl0 : 0 ≤ (YB hI hP 1).l2 1 (zmB hI s)`. Rewrite using `[GT.l2, MeasureTheory.average_eq]`. Conclude with `smul_nonneg (inv_nonneg.2 ENNReal.toReal_nonneg) (integral_nonneg fun _ => by unfold GT.ptN2; positivity)`. Establish `hX0 : 0 ≤ X.l2 1 s`. Rewrite using `[X.l2_one_eq_toGT_l2_col1 s, GT.l2, MeasureTheory.average_eq]`.
-
-Conclude with `smul_nonneg (inv_nonneg.2 ENNReal.toReal_nonneg) (integral_nonneg fun _ => by unfold GT.ptN2; positivity)`. Rewrite `h2` using `[hgl, ← ENNReal.ofReal_mul hl0]`. Establish `h'` using `(ENNReal.ofReal_eq_ofReal_iff hX0 (mul_nonneg hl0 (mul_nonneg (abs_nonneg _) (Real.rpow_nonneg (by norm_num) _)))).1 h2`. Rewrite using `[h']`. Simplify using `only [dK]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem zm_norm_eq (hI : IsSplit P I) (hP : Ext.PackingCount) {s : (Fin 1 → Vsp X.dim) → ℂ}
     (hs : s ∈ X.Sec 1 1) :

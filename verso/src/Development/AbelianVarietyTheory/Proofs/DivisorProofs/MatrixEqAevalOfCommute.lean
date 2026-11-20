@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqAevalOfCommuteOfS
 namespace GlobalTheory.CentralizerSeparable
 
 /- English proof (translation)
-Introduce `k _ n N X hs hc`. Take `⟨u, r, h⟩` from `hs`. Conclude with `GlobalTheory.SepCentralizer.eq_aeval_of_commute_of_separable k n N X u r h hc.eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem matrix_eq_aeval_of_commute :
     ∀ {k : Type} [Field k] (n : ℕ) (N X : Matrix (Fin n) (Fin n) k), N.charpoly.Separable →

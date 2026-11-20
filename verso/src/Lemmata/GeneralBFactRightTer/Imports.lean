@@ -5,7 +5,7 @@ open Matrix TensorProduct NumberField IsDedekindDomain
 namespace Bl.general_b_fact_right_ter
 
 /- English proof (translation)
-Use `choose! c hc0 hcQ using h`. Use `⟨∏ i ∈ s, c i, Finset.prod_ne_zero_iff.mpr hc0, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Rewrite using `[← Finset.mul_prod_erase s c hi]`. Conclude with `hQ i _ _ (hcQ i hi)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 {F : Type} [Field F] [NumberField F] {ι : Type} (s : Finset ι)
     (Q : ι → 𝓞 F → Prop) (hQ : ∀ i c r, Q i c → Q i (c * r)) (h : ∀ i ∈ s, ∃ c, c ≠ 0 ∧ Q i c) :

@@ -26,9 +26,9 @@ Both sides reduce to the same expression.
 theorem ren_apply (π : Equiv.Perm (Fin g)) (z : Fin g → ℂ) : ren π z = z ∘ π := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[ren_apply, Function.comp_apply]`. Distinguish the cases in `h : i = π.symm j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Pi.single_eq_of_ne h, Pi.single_eq_of_ne]`. Introduce `h'`. Conclude with `h (by rw [← h']; simp)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ren_single (π : Equiv.Perm (Fin g)) (j : Fin g) : ren π (Pi.single j 1) = Pi.single (π.symm j) 1 := by
   funext i
@@ -51,7 +51,7 @@ Both sides reduce to the same expression.
 theorem pv_ren (v : Fin r → E) : pv X (π.trans idx) x v = ren π (pv X idx x v) := rfl
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[perMat_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem perMat_trans_idx_eq_submatrix (s : Fin g → Fin g ⊕ Fin g) :
     perMat X bas (π.trans idx) s x = (perMat X bas idx s x).submatrix π (Equiv.refl _) := by
@@ -59,14 +59,14 @@ private theorem perMat_trans_idx_eq_submatrix (s : Fin g → Fin g ⊕ Fin g) :
   simp [perMat_apply]
 
 /- English proof (translation)
-Simplify using `only [hMat]`. Rewrite using `[perMat_trans_idx_eq_submatrix, Matrix.inv_submatrix_equiv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hMat_ren : hMat X bas (π.trans idx) x = (hMat X bas idx x).submatrix (Equiv.refl _) π := by
   simp only [hMat]
   rw [perMat_trans_idx_eq_submatrix, Matrix.inv_submatrix_equiv]
 
 /- English proof (translation)
-Rewrite using `[hMat_ren, ren_apply, Matrix.submatrix_mulVec_equiv]`. Use extensionality with `i`. Simplify using `[Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hMat_mulVec_ren (z : Fin g → ℂ) : hMat X bas (π.trans idx) x *ᵥ ren π z = hMat X bas idx x *ᵥ z := by
   rw [hMat_ren, ren_apply, Matrix.submatrix_mulVec_equiv]
@@ -74,7 +74,7 @@ theorem hMat_mulVec_ren (z : Fin g → ℂ) : hMat X bas (π.trans idx) x *ᵥ r
   simp [Function.comp_def]
 
 /- English proof (translation)
-Simplify using `only [tauMat]`. Rewrite using `[hMat_ren, perMat_trans_idx_eq_submatrix, Matrix.submatrix_mul_equiv]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tauMat_ren : tauMat X bas (π.trans idx) x = tauMat X bas idx x := by
   simp only [tauMat]
@@ -82,13 +82,13 @@ theorem tauMat_ren : tauMat X bas (π.trans idx) x = tauMat X bas idx x := by
   simp
 
 /- English proof (translation)
-Simplify using `only [imInv, tauMat_ren]`.
+Simplify using the standard rewrite rules.
 -/
 theorem imInv_ren : imInv X bas (π.trans idx) x = imInv X bas idx x := by
   simp only [imInv, tauMat_ren]
 
 /- English proof (translation)
-Simplify using `only [hx, hMat_mulVec_ren, imInv_ren]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hx_ren (z w : Fin g → ℂ) : hx X bas (π.trans idx) x (ren π z) (ren π w) = hx X bas idx x z w := by
   simp only [hx, hMat_mulVec_ren, imInv_ren]
@@ -96,9 +96,9 @@ theorem hx_ren (z w : Fin g → ℂ) : hx X bas (π.trans idx) x (ren π z) (ren
 def sg (π : Equiv.Perm (Fin g)) (n : ℕ) : ℂ := (((Equiv.Perm.sign π : ℤˣ) : ℤ) : ℂ) ^ (n / 2)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [letterDir]`. Distinguish the cases in `h : k = ℓ.2.2`. Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same, ren_single, Equiv.symm_trans_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.single_eq_of_ne h, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem letterDir_ren (hr : X.p0 + q0 = r) (ℓ : Harm.Var X.Ψ q0 X.p0 (Fin n)) :
     letterDir X hr (π.trans idx) ℓ = fun k => ren π (letterDir X hr idx ℓ k) := by

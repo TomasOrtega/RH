@@ -18,9 +18,9 @@ namespace GlobalTheory.DownLift.SplitCoef
 variable {D : D7}
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => by rw [h, map_zero]⟩` and prove the remaining obligations. Apply `GlobalTheory.SplitScalar.adele_ext` to reduce the goal to its premises. Rewrite using `[map_mul, GlobalTheory.SplitScalar.infPart_splitIdem he, zero_mul, map_zero]`. Rewrite using `[map_zero]`. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E) (finPart D (e * a)) = 0 at h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(map_eq_zero_iff _ (Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).injective).1 h`.
+A detailed English derivation is pending.
 -/
 theorem toEAf_idem_mul_eq_zero {e : AE D} (he : IsSplitIdem D e) (a : AE D) :
     toEAf D (e * a) = 0 ↔ e * a = 0 := by
@@ -32,7 +32,7 @@ theorem toEAf_idem_mul_eq_zero {e : AE D} (he : IsSplitIdem D e) (a : AE D) :
     exact (map_eq_zero_iff _ (Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).injective).1 h
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Conclude with `⟨fun h => lt_of_le_of_ne o.2 h, fun h => h.ne⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem residue_eq_zero_iff_val_lt {v : HeightOneSpectrum (𝓞 D.host.F)} (o : GlobalTheory.SplitHecke.Ov D v) :
     IsLocalRing.residue (GlobalTheory.SplitHecke.Ov D v) o = 0 ↔ Valued.v (o : Fv D.host.F v) < 1 := by
@@ -43,29 +43,25 @@ theorem residue_eq_zero_iff_val_lt {v : HeightOneSpectrum (𝓞 D.host.F)} (o : 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D e PP he`. Take `⟨v, π, hπ⟩` from `GlobalTheory.SplitChart.exists_chart e he.1`. Take `⟨φ, hφ, hres⟩` from `GlobalTheory.ThetaSupport.exists_chart_levels he hπ`. Take `⟨hi, hi1⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D e PP he`. Establish `hπe : π e = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : π (1 - e) = 0` using `(hπ.2.1 _).2 (by rw [mul_sub, mul_one, he.1.1, sub_self])`. Rewrite `h0` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `h0.symm`. Establish `hint_iff : ∀ a : AE D, toEAf D (e * a) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔ π a ∈ v.adicCompletionIntegers D.host.F`. Introduce `a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.SplitHecke.isInt_Ov, ← hπ.2.2.2 a]`. Conclude with `⟨GlobalTheory.PlaceDatum.finPart_mem_of_toEAf, GlobalTheory.IdemRes.toEAf_mem_of_finPart⟩`. Establish `hsurj : Function.Surjective φ` using `fun y => by`. Take `⟨a, ha⟩` from `hπ.1 y`. Conclude with `⟨toEAf D a, by rw [hφ, ha]⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hint : ∀ s : Formalism.L2.Herm.intAf D.host.F D.host.E, φ s ∈ v.adicCompletionIntegers D.host.F`. Introduce `s`. Take `⟨a, ha⟩` from `GlobalTheory.AdjDatumNe.toEAf_surjective (D := D) (s : Formalism.IndefR.Datum.EAf D)`. Rewrite using `[← ha, hφ, ← hint_iff, map_mul, ha]`. Conclude with `mul_mem hi s.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : Formalism.L2.Herm.intAf D.host.F D.host.E →+* IsLocalRing.ResidueField (GlobalTheory.SplitHecke.Ov D v)` to `(IsLocalRing.residue (GlobalTheory.SplitHecke.Ov D v)).comp ((φ.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype).codRestrict (v.adicCompletionIntegers D.host.F) hint)`. Establish `hg : ∀ s, g s = IsLocalRing.residue (GlobalTheory.SplitHecke.Ov D v) ⟨φ s, hint s⟩` using `fun s => rfl`. Establish `hrsurj : Function.Surjective (resS D.host.F PP)` using `fun q => by`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Conclude with `⟨_, resS_oToS PP x⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hker : RingHom.ker (resS D.host.F PP) ≤ RingHom.ker g` using `fun s hs => by`. Rewrite `hs`, the goal using `[RingHom.mem_ker]`. Rewrite using `[hg, residue_eq_zero_iff_val_lt]`. Conclude with `hres s hs`. Set `ι₀ : kP PP →+* IsLocalRing.ResidueField (GlobalTheory.SplitHecke.Ov D v)` to `RingHom.liftOfRightInverse (resS D.host.F PP) (Function.surjInv hrsurj) (Function.rightInverse_surjInv hrsurj) ⟨g, hker⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hι₀ : ∀ s, ι₀ (resS D.host.F PP s) = g s` using `fun s => RingHom.liftOfRightInverse_comp_apply _ _ _ _ s`. Use `haveI := PP.isMaximal`. Use `letI : Field (kP PP) := Ideal.Quotient.field PP.asIdeal`. Establish `hbij : Function.Bijective ι₀`. Use `⟨RingHom.injective ι₀, fun r => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨o, rfl⟩` from `IsLocalRing.residue_surjective r`. Take `⟨z, hz⟩` from `hsurj (o : Fv D.host.F v)`. Take `⟨a, rfl⟩` from `GlobalTheory.AdjDatumNe.toEAf_surjective (D := D) z`. Establish `hm : toEAf D e * toEAf D a ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[← map_mul, hint_iff, ← hφ, hz]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `o.2`. Use `⟨resS D.host.F PP ⟨_, hm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hι₀, hg]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show φ (toEAf D e * toEAf D a) = (o : Fv D.host.F v)`. Rewrite using `[map_mul, hz, hφ e, hπe, one_mul]`. Use `⟨v, φ, RingEquiv.ofBijective ι₀ hbij, hsurj, fun z => ?_, fun z => ?_, fun s o ho => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `GlobalTheory.AdjDatumNe.toEAf_surjective (D := D) z`. Rewrite using `[hφ, hπ.2.1, ← map_mul, toEAf_idem_mul_eq_zero he.1]`.
-
-Take `⟨a, rfl⟩` from `GlobalTheory.AdjDatumNe.toEAf_surjective (D := D) z`. Rewrite using `[← map_mul, hint_iff, hφ]`. Express the relevant statement in the definitionally equal form `ι₀ (resS D.host.F PP s) = _`. Rewrite using `[hι₀, hg]`. Use `congr 1`.
-
-Conclude with `Subtype.ext ho.symm`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_levChart : ∀ (D : D7) (e : AE D) (PP : Pl D.host.E), Formalism.L2.NTheta.IsIdemAt e PP →
     ∃ (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : Formalism.IndefR.Lev.EAf D →+* Fv D.host.F v)

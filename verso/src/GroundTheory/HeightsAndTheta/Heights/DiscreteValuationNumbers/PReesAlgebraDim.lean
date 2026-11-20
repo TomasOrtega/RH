@@ -10,19 +10,17 @@ open Polynomial
 universe u
 
 /- English proof (translation)
-Introduce `A _ _ _ I hI n hn`. Take `⟨a, haI, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Establish `hinj : Function.Injective (algebraMap A (reesAlgebra I))`. Introduce `x y h`. Use `congrArg (fun r : reesAlgebra I => (r : A[X])) h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[ringKrullDim_le_iff_height_le]`. Introduce `P hP`. Establish `key` using `h₁ A (reesAlgebra I) hinj P`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `htd : Algebra.trdeg A (reesAlgebra I) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hp : (P.under A).height ≤ n`. Use `Ideal.height_le_ringKrullDim_of_ne_top (inferInstance : (P.under A).IsPrime).ne_top` as an intermediate fact. Rewrite `this` using `[hn]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Establish `hc : Cardinal.ofENat P.height ≤ Cardinal.ofENat ((n + 1 : ℕ) : ℕ∞)`. Combine the equalities or inequalities in the displayed calculation. Establish `: P.height ≤ ((n + 1 : ℕ) : ℕ∞)` using `Cardinal.ofENat_le_ofENat.mp hc`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : reesAlgebra I →+* A` to `(Polynomial.constantCoeff).comp (reesAlgebra I).val.toRingHom`. Establish `hf : Function.Surjective f` using `fun x => ⟨algebraMap A (reesAlgebra I) x, by simp [f]⟩`. Set `r : reesAlgebra I` to `⟨monomial 1 a, reesAlgebra.monomial_mem.mpr (by simpa using haI)⟩`. Establish `hr0 : r ≠ 0`. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun s : reesAlgebra I => (s : A[X])) h` as an intermediate fact. Simplify using `[r] at this`. Conclude with `ha0 this`. Establish `h` using `ringKrullDim_succ_le_of_surjective f hf (mem_nonZeroDivisors_of_ne_zero hr0) (by simp [f, r])`. Rewrite `h` using `[hn]`.
-
-Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ReesAlgebraDim.proof (h₁ : DimensionInequality.Statement.{u, u}) :
     ReesAlgebraDim.Statement.{u} := by

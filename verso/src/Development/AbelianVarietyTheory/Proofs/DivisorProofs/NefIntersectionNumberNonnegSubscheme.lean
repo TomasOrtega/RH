@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.FibreNef
 
 /- English proof (translation)
-The claim follows from `LBIso.symm (LBIso.chartPull (chartPullLinComb L a (fun _ : PUnit => b) (fun _ => b ≫ a) (fun _ => 1) (𝟙 _) fun _ => (Category.id_comp _).symm) (chartPullId _) (PolBaseChange.lbIso_refl (LB.isLB_pull hL _)))`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_comp {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (a : Y ⟶ X) (b : Z ⟶ Y) :
     LBIso (L.pull (b ≫ a)) ((L.pull a).pull b) :=
@@ -23,13 +23,13 @@ theorem lbIso_pull_comp {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (a : Y ⟶
       (chartPullId _) (PolBaseChange.lbIso_refl (LB.isLB_pull hL _)))
 
 /- English proof (translation)
-Take `⟨N, e, he, -⟩` from `hp`. Establish `hb : IsFinite (spMap (Int.castRingHom k))`. Rewrite using `[spMap, IsFinite.SpecMap_iff]`. Conclude with `(RingHom.finite_algebraMap (A := ℤ) (B := k)).2 inferInstance`. Establish `P₀` using `GlobalTheory.ProjSpace.isPullback_baseChange N (Int.castRingHom k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : IsFinite (GlobalTheory.ProjSpace.baseChange N (Int.castRingHom k))` using `MorphismProperty.of_isPullback P₀.flip hb`. Establish `hZ : IsProjOver ((i ≫ e ≫ GlobalTheory.ProjSpace.baseChange N (Int.castRingHom k)) ≫ PSpace.str ℤ N)` using `GlobalTheory.isProjOver_comp_of_isFinite _ ⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩`. Take `⟨M, φ, hφ, -⟩` from `hZ`. Establish `P` using `GlobalTheory.ProjSpace.isPullback_baseChange M (Int.castRingHom (ZMod l))`. Establish `hc : IsClosedImmersion (spMap (Int.castRingHom (ZMod l)))` using `IsClosedImmersion.spec_of_surjective _ (ZMod.ringHom_surjective _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcb : IsClosedImmersion (GlobalTheory.ProjSpace.baseChange M (Int.castRingHom (ZMod l)))` using `MorphismProperty.of_isPullback P.flip hc`. Set `ψ` to `P.lift φ (strHom (ZMod l) Z) (specZIsTerminal.hom_ext _ _)`. Establish `hψ : ψ ≫ PSpace.str (ZMod l) M = strHom (ZMod l) Z` using `P.lift_snd _ _ _`. Establish `hψ' : ψ ≫ GlobalTheory.ProjSpace.baseChange M (Int.castRingHom (ZMod l)) = φ` using `P.lift_fst _ _ _`. Establish `: IsClosedImmersion (ψ ≫ GlobalTheory.ProjSpace.baseChange M (Int.castRingHom (ZMod l)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ']`. Conclude with `hφ`. Conclude with `⟨M, ψ, IsClosedImmersion.of_comp_isClosedImmersion ψ (GlobalTheory.ProjSpace.baseChange M (Int.castRingHom (ZMod l))), hψ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isProjOver_fibre {k : Type} [CommRing k] [Module.Finite ℤ k] {X : Scheme.{0}} {p : X ⟶ Sp k}
     (hp : IsProjOver p) (l : ℕ) [Fact l.Prime] {Z : Scheme.{0}} (i : Z ⟶ X) [IsClosedImmersion i]
@@ -58,9 +58,9 @@ theorem isProjOver_fibre {k : Type} [CommRing k] [Module.Finite ℤ k] {X : Sche
     (GlobalTheory.ProjSpace.baseChange M (Int.castRingHom (ZMod l))), hψ⟩
 
 /- English proof (translation)
-Establish `hLi` using `LB.isLB_pull L.isLB i`. Use `isNef_iff_isClosedImmersion.2 ⟨hLi, fun C c hc hC hd _ => ?_⟩` and prove the remaining obligations. Use `letI := algebraΓAlong (ZMod l) c`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Establish `h` using `hL C (c ≫ i) (ZMod l) hd`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[interNumOn_eq_interNum_pull (fun r => rfl) (fun j => by fin_cases j; exact hLi)]`. Rewrite `h` using `[topSelfIntersection]`. Use `h.trans_eq (interNum_congr_lbIso _ _ (fun _ => LB.isLB_pull L.isLB _) (fun j => by fin_cases j; exact LB.isLB_pull hLi c) fun j => ?_)` and prove the remaining obligations. Use `fin_cases j`. Conclude with `lbIso_pull_comp L.isLB i c`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isNef_pull_of_nefOver {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} (l : ℕ)
     [Fact l.Prime] {Z : Scheme.{0}} (i : Z ⟶ X) [IsClosedImmersion i] [Algebra (ZMod l) Γ(Z, ⊤)]
@@ -78,7 +78,7 @@ theorem isNef_pull_of_nefOver {k : Type} [CommRing k] {X : Scheme.{0}} {p : X �
   exact lbIso_pull_comp L.isLB i c
 
 /- English proof (translation)
-Introduce `hP k _ X _ p D hX l _ Z i _ _ _ hZ N hN`. Use `haveI := hX.finite`. Conclude with `hP.q7.1.interNum_nonneg (isProjOver_fibre hX.isProjOver l i) hZ fun j => isNef_pull_of_nefOver l i (N j) (hN j)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem interNum_nonneg_of_nefOver : Hypotheses2 → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (l : ℕ) [Fact l.Prime] (Z : Scheme.{0}) (i : Z ⟶ X)

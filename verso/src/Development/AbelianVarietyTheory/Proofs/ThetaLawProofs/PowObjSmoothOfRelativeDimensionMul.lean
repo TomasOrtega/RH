@@ -12,7 +12,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `_ A g j h` and use `smoothOfRelativeDimension_powObj A g h j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem powObj_smoothOfRelativeDimension_mul : ∀ (S : Scheme.{0}) (A : Over S) (g j : ℕ),
     SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension (j * g) (Out.powObj A j).hom :=

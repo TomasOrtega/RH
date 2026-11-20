@@ -32,31 +32,29 @@ end GlobalTheory.BigOn.Exp
 namespace GlobalTheory.BigOn.Exp.SerBase
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.BigOn.Exp.SerBase.ReadComparisonAt`. Use `_root_.GlobalTheory.BigOn.Exp.TwistConditions.of_forall fun Fm x hx i p hr hm w _ j => ?_` and prove the remaining obligations. Introduce `ρ hρ e he1 he2 ν hν rd hcan u hu f y a hfa`. Take `⟨Z⟩` from `hm.2.2.series`. Establish `hU : p.R.toRealDat.LUnif` using `hr.prim.unif`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hW : p.R.toRealDat.models_HW` using `p.charW.base.models.HW`. Establish `hK : (p.Sx.A ((j : ℕ) + 1)).IsKsForm` using `GlobalTheory.isKsForm_of_formsIso _ _ (p.nexp.fi j) (p.fw.ks j)`. Establish `hF : Faithful (rdAt p w j hρ ν)` using `GlobalTheory.SeriesTie.realRd_faithful _ _ _ _ _ _ _ p.R p.cG p.Sx p.nexp p.v₀ ρ hρ ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) ν hν hU hW (Z.vec j) hK`. Establish `hL : ∀ c : (Fm.D x i).ntw.O ((Fm.ex x hx i).nch.twI w), e (algebraMap _ (FractionRing ((Fm.ex x hx i).nch.Oe w)) c) = ρ.e ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w) (algebraMap _ (FractionRing _) c)` using `fun c => by`. Rewrite using `[IsScalarTower.algebraMap_apply _ ((Fm.ex x hx i).nch.Oe w) (FractionRing ((Fm.ex x hx i).nch.Oe w)), IsScalarTower.algebraMap_apply _ ((Fm.D x i).ntw.Ok ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.k' w)) ((Fm.ex x hx i).nch.Oe w), he2, hρ.ek_e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `set R := readExt (rdAt p w j hρ ν) e hL with hRdef`. Establish `hgen : ∀ f : NX.FmK p.Sx ((j : ℕ) + 1), R (rd ((p.nexp.fi j).e (Subtype.val f))) = ν⁻¹ • adForm (R2 p) j ((p.nexp.fi j).e (Subtype.val f)) (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A))` using `fun f => by`. Rewrite using `[hcan f, hRdef, readExt_tmul, map_one, one_smul]`. Use `erw [realRd_tmul]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `erw [map_one, mul_one]`. Both sides reduce to the same expression. Establish `hA0 : adForm (R2 p) j 0 (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A)) = 0`. Express the relevant statement in the definitionally equal form `((R2 p).HW j _).e (((R2 p).FW j).j _ 0) (p.v₀ j _) = 0`. Rewrite using `[map_zero, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Both sides reduce to the same expression. Establish `hAadd : ∀ u v, adForm (R2 p) j (u + v) (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A)) = adForm (R2 p) j u (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A)) + adForm (R2 p) j v (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A))` using `fun u v => by`. Express the relevant statement in the definitionally equal form `((R2 p).HW j _).e (((R2 p).FW j).j _ (u + v)) (p.v₀ j _) = _`. Rewrite using `[map_add, map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hs : sg0 (Fm.D x i) p.P.A3.A = (Fm.D x i).what₂.embLL` using `sgAt_mk _ (R2 p).hv0`. Establish `hAsmul : ∀ (c : (Fm.D x i).what₂.LL) u, adForm (R2 p) j (c • u) (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A)) = (Fm.D x i).what₂.embLL c • adForm (R2 p) j u (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A))` using `fun c u => by`. Express the relevant statement in the definitionally equal form `((R2 p).HW j _).e (((R2 p).FW j).j _ (c • u)) (p.v₀ j _) = _`. Rewrite using `[LinearMap.map_smulₛₗ, map_smul]`. Conclude with `congrArg (fun s : ℂ => s • adForm (R2 p) j u (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A))) (DFunLike.congr_fun hs c)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hrd : ∀ u ∈ Submodule.span (Fm.D x i).what₂.LL ((p.nexp.fi j).e '' ((p.Sx.A ((j : ℕ) + 1)).WK : Set _)), R (rd u) = ν⁻¹ • adForm (R2 p) j u (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A))` using `fun u hu => by`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨f, hf, rfl⟩` from `hu`. Conclude with `hgen ⟨f, hf⟩`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => erw [LinearMap.map_zero rd]`. Rewrite using `[AddMonoidHom.map_zero R]`. Use `erw [hA0]`. Rewrite using `[smul_zero]`. Consider the case `add u v _ _ hu hv => erw [LinearMap.map_add rd]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[AddMonoidHom.map_add R, hu, hv]`. Use `erw [hAadd]`. Rewrite using `[smul_add]`. Consider the case `smul c u _ hu => erw [LinearMap.map_smulₛₗ rd]`. Rewrite using `[hRdef, readExt_smul, ← hRdef, hu, he1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `erw [hAsmul]`. Rewrite using `[smul_comm]`. Establish `htop : ∀ y, y ∈ Submodule.span (Fm.D x i).what₂.LL ((p.nexp.fi j).e '' ((p.Sx.A ((j : ℕ) + 1)).WK : Set _))` using `fun y => by`. Take `⟨n, b, hmem, -, -, -, hLs⟩` from `hK`. Establish `h2 : (p.nexp.fi j).e.symm y ∈ Submodule.span (Fm.D x i).what₂.LL (Set.range b)` using `hLs ▸ Submodule.mem_top`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Submodule.mem_map_of_mem (f := (p.nexp.fi j).e.toLinearMap) h2`. Rewrite `h3` using `[Submodule.map_span]`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at h3`. Use `Submodule.span_mono ?_ h3` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨b k, hmem k, rfl⟩`. Establish `hv : (fun τ => (u τ : ((R2 p).MW j (sg0 (Fm.D x i) p.P.A3.A)).sm τ)) = p.v₀ j (sg0 (Fm.D x i) p.P.A3.A)` using `funext hu`. Establish `h1 : R ((1 : FractionRing ((Fm.ex x hx i).nch.Oe w)) ⊗ₜ f) = a • R (rd y)`. Rewrite using `[hRdef, readExt_tmul, map_one, one_smul, hfa, ← hRdef, hrd y (htop y), hv]`. Distinguish the cases in `hf : f = 0`.
-
-Conclude with `Or.inl hf`. Use `Or.inr (readExt_eq_smul_of_read _ e hL hF _ _ a h1 ?_)` and prove the remaining obligations. Rewrite using `[readExt_tmul, map_one, one_smul]`. Conclude with `fun h0 => hf (hF.injective (h0.trans (map_zero _).symm))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem readCmpAt_alt : _root_.GlobalTheory.BigOn.Exp.SerBase.ReadComparisonAt := by
   unfold _root_.GlobalTheory.BigOn.Exp.SerBase.ReadComparisonAt

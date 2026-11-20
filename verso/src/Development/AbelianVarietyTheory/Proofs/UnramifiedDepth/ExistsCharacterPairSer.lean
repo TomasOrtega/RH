@@ -31,18 +31,18 @@ section Local
 variable {O S : Type} [CommRing O] [CommRing S] [Algebra O S]
 
 /- English proof (translation)
-Use `h.isUnit_add_right_of_commute hx (Commute.all _ _)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem unit_of_nil {y x : S} (h : IsNilpotent (y - x)) (hx : IsUnit x) : IsUnit y := by
   have := h.isUnit_add_right_of_commute hx (Commute.all _ _)
   rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Use `haveI : Nontrivial S := e.domain_nontrivial`. Use `⟨IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun y => ?_, ⟨fun r hr => ?_⟩⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `h y`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self r with hu | hu` into its components or cases. Conclude with `Or.inl (unit_of_nil hr (hu.map _))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inr (unit_of_nil (x := algebraMap O S (1 - r)) ?_ (hu.map _))` and prove the remaining obligations. Use `hr.neg` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Use `hr.map e` as an intermediate fact.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[he]`. Conclude with `(isUnit_map_iff (IsLocalRing.residue O) r).1 this`.
+A detailed English derivation is pending.
 -/
 private theorem local_of_aug [IsLocalRing O] (h : ∀ y : S, ∃ r : O, IsNilpotent (y - algebraMap O S r))
     (e : S →+* IsLocalRing.ResidueField O) (he : ∀ r, e (algebraMap O S r) = IsLocalRing.residue O r) :
@@ -61,19 +61,19 @@ private theorem local_of_aug [IsLocalRing O] (h : ∀ y : S, ∃ r : O, IsNilpot
     exact (isUnit_map_iff (IsLocalRing.residue O) r).1 this
 
 /- English proof (translation)
-Set `e0 : MvPolynomial κ O →ₐ[O] IsLocalRing.ResidueField O` to `MvPolynomial.aeval fun _ => 0`. Establish `h0 : Ideal.span (Set.range (MvPolynomial.X : κ → MvPolynomial κ O)) ≤ RingHom.ker e0`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `[e0]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Set `e1 : Geo.Tor.JetR O κ m →ₐ[O] IsLocalRing.ResidueField O` to `Ideal.Quotient.liftₐ _ e0 fun a ha => h0 (Ideal.pow_le_self (by omega) ha)`. Establish `h1 : (I ^ (k + 1)).map (algebraMap O (Geo.Tor.JetR O κ m)) ≤ RingHom.ker e1`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `t ht`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, AlgHom.commutes]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsLocalRing.residue_eq_zero_iff t).2 (hI (Ideal.pow_le_self (by omega) ht))`. Set `e2` to `Ideal.Quotient.liftₐ _ e1 fun a ha => h1 ha`. Use `local_of_aug (fun y => ?_) e2.toRingHom fun r => e2.commutes r` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ideal.Quotient.mkₐ_surjective O _ y`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mkₐ_surjective O _ y`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨MvPolynomial.constantCoeff y, ?_⟩` and prove the remaining obligations. Rewrite using `[← AlgHom.commutes (Ideal.Quotient.mkₐ O _), ← map_sub]`. Use `IsNilpotent.map ?_ _` and prove the remaining obligations. Rewrite using `[← AlgHom.commutes (Ideal.Quotient.mkₐ O _), ← map_sub]`. Use `⟨m + 1, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Use `Ideal.pow_mem_pow ?_ _` and prove the remaining obligations. Proceed by induction on `y using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add f f' hf hf'`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `Ideal.add_mem _ hf hf'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X f i _`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, MvPolynomial.constantCoeff_X, mul_zero, map_zero, sub_zero]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem jet_local [IsLocalRing O] (I : Ideal O) (hI : I ≤ IsLocalRing.maximalIdeal O) (κ : Type) (k m : ℕ) :
     IsLocalRing (Geo.Tor.JetR O κ m ⧸ (I ^ (k + 1)).map (algebraMap O (Geo.Tor.JetR O κ m))) ∧
@@ -113,9 +113,9 @@ private theorem jet_local [IsLocalRing O] (I : Ideal O) (hI : I ≤ IsLocalRing.
     exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Use `⟨k + 1, ?_⟩` and prove the remaining obligations. Use `hk ((p : O) ^ (k + 1)) (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) _)` as an intermediate fact. Simplify using `using this`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨k, hk⟩`. Use `⟨k, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨c, rfl⟩` from `ht`. Simplify using `[pow_succ, hk]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 private theorem kills_iff (p : ℕ) : (∃ k, Kills (Ideal.span {(p : O)}) k S) ↔ IsNilpotent (p : S) := by
   constructor
@@ -135,11 +135,11 @@ section Pair
 variable {R₀ : Type} [CommRing R₀] {B : BX R₀} {O : LAlg R₀} {p : ℕ} {τ : ℕ → B.G O}
 
 /- English proof (translation)
-Proceed by induction on `m, hnm using Nat.le_induction with`. Consider the case `base => exact h`. Consider the case `succ m _ ih`. Establish `hx : p ^ (m + 1) • x = 0` using `ih.1`. Establish `hy : (p ^ (m + 1) * p) • B.map s (τ (m + 1)) = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_succ, ← map_nsmul, h1, map_zero]`. Take `⟨z', hz'⟩` from `B.pairing_exists (p ^ (m + 1) * p) x (B.map s (τ (m + 1))) (by rw [mul_comm, ← smul_smul, hx, nsmul_zero]) hy`. Establish `h3` using `B.pairing_mul _ _ _ _ _ hx hy hz'`. Rewrite `h3` using `[← map_nsmul, ← h2]`. Rewrite using `[B.pairing_unique _ _ _ _ _ ih h3, pow_succ p (m + 1)]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz'`.
+A detailed English derivation is pending.
 -/
 private theorem pair_up (h1 : ∀ n, (p ^ (n + 1)) • τ n = 0) (h2 : ∀ n, τ n = p • τ (n + 1)) {R : LAlg R₀}
     (s : LHom O R) {x : B.G R} {z : (R : Type)ˣ} {n m : ℕ} (hnm : n ≤ m)
@@ -161,7 +161,7 @@ private def PVal (p : ℕ) (τ : ℕ → B.G O) {R : LAlg R₀} (s : LHom O R) (
   ∃ n, B.IsPairing (p ^ (n + 1)) x (B.map s (τ n)) z
 
 /- English proof (translation)
-Take `⟨n, h⟩` from `h`. Take `⟨m, h'⟩` from `h'`. Conclude with `⟨max n m, B.isPairingValue_add_left _ _ _ _ _ _ (pair_up h1 h2 s (le_max_left _ _) h) (pair_up h1 h2 s (le_max_right _ _) h')⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem pval_mul (h1 : ∀ n, (p ^ (n + 1)) • τ n = 0) (h2 : ∀ n, τ n = p • τ (n + 1)) {R : LAlg R₀}
     {s : LHom O R} {x x' : B.G R} {z z' : (R : Type)ˣ} (h : PVal p τ s x z) (h' : PVal p τ s x' z') :
@@ -172,7 +172,7 @@ private theorem pval_mul (h1 : ∀ n, (p ^ (n + 1)) • τ n = 0) (h2 : ∀ n, �
     (pair_up h1 h2 s (le_max_right _ _) h')⟩
 
 /- English proof (translation)
-Take `⟨n, h⟩` from `h`. Take `⟨m, h'⟩` from `h'`. Conclude with `B.pairing_unique _ _ _ _ _ (pair_up h1 h2 s (le_max_left _ _) h) (pair_up h1 h2 s (le_max_right _ _) h')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem pval_unique (h1 : ∀ n, (p ^ (n + 1)) • τ n = 0) (h2 : ∀ n, τ n = p • τ (n + 1)) {R : LAlg R₀}
     {s : LHom O R} {x : B.G R} {z z' : (R : Type)ˣ} (h : PVal p τ s x z) (h' : PVal p τ s x z') : z = z' := by
@@ -181,7 +181,7 @@ private theorem pval_unique (h1 : ∀ n, (p ^ (n + 1)) • τ n = 0) (h2 : ∀ n
   exact B.pairing_unique _ _ _ _ _ (pair_up h1 h2 s (le_max_left _ _) h) (pair_up h1 h2 s (le_max_right _ _) h')
 
 /- English proof (translation)
-Take `⟨n, h⟩` from `h`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[B.map_comp]`. Conclude with `B.pairing_map f _ _ _ _ h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pval_map {R R' : LAlg R₀} {s : LHom O R} (f : LHom R R') {x : B.G R} {z : (R : Type)ˣ}
     (h : PVal p τ s x z) : PVal p τ (f.comp s) (B.map f x) (Units.map (f.1 : R →* R') z) := by
@@ -191,7 +191,7 @@ private theorem pval_map {R R' : LAlg R₀} {s : LHom O R} (f : LHom R R') {x : 
   exact B.pairing_map f _ _ _ _ h
 
 /- English proof (translation)
-Take `⟨n, hx⟩` from `hx`. Take `⟨z, hz⟩` from `B.pairing_exists (p ^ (n + 1)) x (B.map s (τ n)) hx (by rw [← map_nsmul, h1, map_zero])`. Conclude with `⟨z, n, hz⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem pval_exists (h1 : ∀ n, (p ^ (n + 1)) • τ n = 0) {R : LAlg R₀} (s : LHom O R) {x : B.G R}
     (hx : ∃ n, p ^ (n + 1) • x = 0) : ∃ z, PVal p τ s x z := by
@@ -210,7 +210,7 @@ private def mkH (R R' : LAlg R₀) (f : (R : Type) →+* (R' : Type))
   ⟨{ f with commutes' := h }, hl⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (AlgHom.ext h)`.
+A detailed English derivation is pending.
 -/
 private theorem lhom_ext {R R' : LAlg R₀} {f f' : LHom R R'} (h : ∀ r, f.1 r = f'.1 r) : f = f' :=
   Subtype.ext (AlgHom.ext h)
@@ -221,45 +221,41 @@ private def mkS (O : LAlg R₀) (S : Type) [CommRing S] [Algebra (O : Type) S] (
 end Pair
 
 /- English proof (translation)
-Introduce `R₀ _ B O g F Y hY p hp hc τ h1 h2`. Establish `hI : Ideal.span {(p : (O : Type))} ≤ IsLocalRing.maximalIdeal (O : Type)`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `hp`. Establish `hI' : Ideal.span {(p : (O : Type))} ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Ne, Ideal.span_singleton_eq_top]` and apply the resulting hypothesis. Establish `hex : ∀ (R : LAlg R₀) (s : LHom O R) (a : Fin g → (R : Type)), IsNilpotent (p : (R : Type)) → (∀ i, IsNilpotent (a i)) → ∃ z, PVal p τ s (Y R s a) z` using `fun R s a hR ha => pval_exists h1 s (GlobalTheory.T.abelianFunctorNilChart_nsmul_and_killed_by_p_pow R₀ B O g F Y hY p R s a hR ha).2`. Set `c : ∀ (S : Type) [CommRing S] [Algebra (O : Type) S], (Fin 1 → Fin g → S) → S` to `fun S _ _ a => if h : ∃ z : Sˣ, ∃ hL : LocO O S, PVal p τ (mkS O S hL) (Y _ (mkS O S hL) (a 0)) z then (h.choose : S) else 0`. Establish `hcv : ∀ (S : Type) [CommRing S] [Algebra (O : Type) S] (a : Fin 1 → Fin g → S) (hL : LocO O S) (z : Sˣ), PVal p τ (mkS O S hL) (Y _ (mkS O S hL) (a 0)) z → c S a = z`. Introduce `S _ _ a hL z hz`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h : ∃ z : Sˣ, ∃ hL : LocO O S, PVal p τ (mkS O S hL) (Y _ (mkS O S hL) (a 0)) z` using `⟨z, hL, hz⟩`. Take `⟨_, h'⟩` from `h.choose_spec`. Use `pval_unique h1 h2 h' hz` as an intermediate fact. Simplify using `only [c, dif_pos h]`. Conclude with `congrArg Units.val this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu⟩` from `GlobalTheory.T.exists_powerSeries_of_natural_nilpotentPoints (O : Type) _ hc 1 g (fun S _ _ => LocO O S) (fun k m => jet_local _ hI _ k m) c (by`. Introduce `S _ _ S' _ _ φ a hL hL' hS hk ha`. Take `⟨z, hz⟩` from `hex (mkL O S hL) (mkS O S hL) (a 0) ((kills_iff p).1 hk) (ha 0)`. Establish `hφ : IsLocalHom (φ : S →+* S')` using `⟨fun y hy => by`. Take `⟨r, hr⟩` from `hS y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : IsNilpotent (algebraMap (O : Type) S' r - φ y)`. Use `(hr.map φ).neg` as an intermediate fact. Rewrite `this` using `[map_sub, AlgHom.commutes, neg_sub]`. Then use the resulting hypothesis. Conclude with `unit_of_nil hr ((hL'.2.map_nonunit r (unit_of_nil h3 hy)).map _)⟩`. Set `f : LHom (mkL O S hL) (mkL O S' hL')` to `mkH _ _ (φ : S →+* S') (fun r => φ.commutes _) hφ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hf : f.comp (mkS O S hL) = mkS O S' hL'` using `lhom_ext fun r => φ.commutes r`. Establish `h4` using `pval_map f hz`. Rewrite `h4` using `[hY.nat _ _ _ f _ (ha 0), hf]`. Rewrite using `[hcv S a hL z hz, hcv S' (fun i j => φ (a i j)) hL' _ h4]`. Use the proof step `rfl)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `key : ∀ (R : LAlg R₀) (s : LHom O R) (a : Fin g → (R : Type)) (z : (R : Type)ˣ), IsNilpotent (p : (R : Type)) → (∀ i, IsNilpotent (a i)) → PVal p τ s (Y R s a) z → (z : (R : Type)) = nv s.1.toRingHom u ![a]`. Introduce `R s a z hR ha hz`. Use `letI := algOf s`. Establish `hL : LocO O (R : Type)` using `⟨inferInstance, s.2⟩`. Set `f : LHom R (mkL O R hL)` to `mkH _ _ (RingHom.id (R : Type)) (fun r => (s.1.commutes r).symm) ⟨fun _ h => h⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : f.comp s = mkS O R hL` using `lhom_ext fun r => rfl`. Establish `h4` using `pval_map f hz`. Rewrite `h4` using `[hY.nat _ _ _ f _ ha, hf]`. Establish `h5` using `hcv R ![a] hL _ h4`. Rewrite `h5` using `[hu R ![a] hL ((kills_iff p).2 hR) (fun i j => by fin_cases i; exact ha j)]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h5.symm`. Use `⟨u, ⟨?_, ?_⟩, fun R s a n z hR ha hz => key R s a z hR ha ⟨n, hz⟩⟩` and prove the remaining obligations. Establish `h6 : (MvPowerSeries.C (MvPowerSeries.constantCoeff u) : PS (O : Type) 1 g) = 1`. Use `GlobalTheory.T.powerSeries_eq_of_evalAtNilpotentPoints_eq (O : Type) _ hc.toIsHausdorff 1 g _ _ fun S _ _ k hk hL a ha => ?_` and prove the remaining obligations. Establish `hL : LocO O S` using `hL inferInstance hI'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hS` using `(kills_iff p).1 ⟨k, hk⟩`. Take `⟨ψ, hψ, hψC, -⟩` from `(nv_calculus _ S (algebraMap (O : Type) S) 1 g a ha).1`. Rewrite using `[← hψ, ← hψ, hψC, map_one]`. Take `⟨z, hz⟩` from `hex (mkL O S hL) (mkS O S hL) 0 hS (fun _ => IsNilpotent.zero)`. Establish `h7` using `key _ _ _ _ hS (fun _ => IsNilpotent.zero) hz`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hz` using `[hY.zero]`. Establish `h8` using `pval_mul h1 h2 hz hz`. Rewrite `h8` using `[add_zero]`. Establish `h9 : z = 1` using `mul_eq_left.1 (pval_unique h1 h2 h8 hz)`. Establish `h10` using `(nv_calculus _ S (algebraMap (O : Type) S) 1 g ![0] (fun i j => by fin_cases i; exact IsNilpotent.zero)).2.2.2.2.2 (fun i j i' j' => by fin_cases i; exact zero_mul _) u`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Finset.sum_eq_zero (fun q _ => by`. Rewrite using `[Subsingleton.elim q.1 0]`. Conclude with `mul_zero _), add_zero] at h10`. Rewrite using `[← h10]`. Rewrite `h7` using `[h9]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h7.symm`. Simplify using `using congrArg MvPowerSeries.constantCoeff h6`. Use `GlobalTheory.T.powerSeries_eq_of_evalAtNilpotentPoints_eq (O : Type) _ hc.toIsHausdorff 2 g _ _ fun S _ _ k hk hL a ha => ?_` and prove the remaining obligations. Establish `hL : LocO O S` using `hL inferInstance hI'`. Establish `hS` using `(kills_iff p).1 ⟨k, hk⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨⟨ψ, hψ, -, hψX⟩, hnil, hsub, -⟩` from `nv_calculus _ S (algebraMap (O : Type) S) 2 g a ha`. Establish `hpt : ∀ (i : Fin 2) (j : Fin g), nv (algebraMap (O : Type) S) (pt (O : Type) g i j) a = a i j` using `fun i j => (hψ _).symm.trans (hψX (i, j))`. Establish `hpt0 : ∀ (i : Fin 2) (j : Fin g), MvPowerSeries.constantCoeff (pt (O : Type) g i j) = 0` using `fun i j => MvPowerSeries.constantCoeff_X _`. Establish `hadd : addOf F.F (pt (O : Type) (n` using `2) g 0) (pt (O : Type) (n := 2) g 1) = F.F := by`. Use function extensionality and compare the values at `i`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (fun q : Fin 2 × Fin g => ![pt (O : Type) (n` using `2) g 0, pt (O : Type) (n := 2) g 1] q.1 q.2) = MvPowerSeries.X := by`. Use function extensionality and compare the values at `⟨i, j⟩`. Apply the tactic sequence `fin_cases i <;> rfl`. Simplify using `only [addOf, ev, this]`. Conclude with `congrFun MvPowerSeries.subst_self _`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hev : ∀ b : Fin g → PS (O : Type) 2 g, (∀ j, MvPowerSeries.constantCoeff (b j) = 0) → nv (algebraMap (O : Type) S) (ev (n` using `2) ![b] u) a = nv (algebraMap (O : Type) S) u ![fun j => nv (algebraMap (O : Type) S) (b j) a] := by`. Introduce `b hb`. Use `(hsub 1 g ![b] u (fun i j => by fin_cases i; exact hb j)).trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `fin_cases i`. Both sides reduce to the same expression. Rewrite using `[hadd, ← hψ (_ * _), map_mul, hψ, hψ, hev _ F.const, hev _ (hpt0 0), hev _ (hpt0 1)]`. Simplify using `only [hpt]`. Take `⟨z, hz⟩` from `hex (mkL O S hL) (mkS O S hL) (a 0) hS (ha 0)`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z', hz'⟩` from `hex (mkL O S hL) (mkS O S hL) (a 1) hS (ha 1)`. Establish `h8` using `pval_mul h1 h2 hz hz'`. Rewrite `h8` using `[hY.law _ _ _ _ (ha 0) (ha 1)]`. Establish `ha2 : ![a 0, a 1] = a`. Use function extensionality and compare the values at `i`.
-
-Apply the tactic sequence `fin_cases i <;> rfl`. Establish `e1` using `key _ _ _ _ hS (ha 0) hz`. Establish `e2` using `key _ _ _ _ hS (ha 1) hz'`. Use `erw [ha2] at h8`. Establish `e3` using `key _ _ _ _ hS (fun j => (hnil _ (F.const j)).1) h8`.
-
-Rewrite `e3` using `[Units.val_mul, e1, e2]`. Conclude with `e3.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_character_pairSer : ∀ (R₀ : Type) [CommRing R₀] (B : BX R₀) (O : LAlg R₀) (g : ℕ) (F : FGLaw (O : Type) g) (Y : ∀ R : LAlg R₀, LHom O R → (Fin g → (R : Type)) → B.G R), BXChart B O F.F Y → ∀ (p : ℕ), ¬ IsUnit (p : (O : Type)) → IsAdicComplete (Ideal.span {(p : (O : Type))}) (O : Type) → ∀ τ : ℕ → B.G O, (∀ n, (p ^ (n + 1)) • τ n = 0) → (∀ n, τ n = p • τ (n + 1)) → ∃ u : PS (O : Type) 1 g, IsCh F.F u ∧ PairSer B O Y p τ u := by
   intro R₀ _ B O g F Y hY p hp hc τ h1 h2

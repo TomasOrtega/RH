@@ -15,7 +15,7 @@ namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi
 attribute [local instance] borelG borelF borelA borelH
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [Lev, Subgroup.mem_iInf] at hg ⊢`. Conclude with `fun i => h _ (hg i)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem lev_mono {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (S : Set (Pl E))
     {N N' : ∀ w : Pl E, Subgroup (GLw n w)} (h : ∀ w, N w ≤ N' w) : Lev S N ≤ Lev S N' := by
@@ -24,13 +24,13 @@ private theorem lev_mono {E : Type} [Field E] [NumberField E] [IsCMField E] {n :
   exact fun i => h _ (hg i)
 
 /- English proof (translation)
-Take `⟨hKo, hKc, -, -⟩` from `h3 E n S Z N hS hZ hN`. Take `⟨hKθ, hY⟩` from `h6 E n S Z N hS hZ hN π u hu`. Set `K₀ : TopologicalSpace.PositiveCompacts (GF E n)` to `⟨⟨(Lev S N : Set (GF E n)), hKc⟩, by show (interior (Lev S N : Set (GF E n))).Nonempty`. Rewrite using `[hKo.interior_eq]`. Conclude with `⟨1, (Lev S N).one_mem⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Set `μf : Measure (GF E n)` to `Measure.haarMeasure K₀`. Use `haveI : μf.IsHaarMeasure := inferInstance`. Take `⟨Y, ρ, A, cK, hYπ, hfd, hne, hYfix, hact, hsimple, hsq, htw, hcK, htr⟩` from `h1 E n hn π hreg hd lamE hlam (Lev S N) hKo hKc hKθ hfix μC μf μ`. Take `⟨y, v, hv, hyv⟩` from `hY μf inferInstance Y ρ A hYπ hfd hne hYfix hact hsimple hsq htw`. Take `⟨href, d, hd0, hdtr⟩` from `h7 E n S Z N hS hZ hN π y B τ hB hτ`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨href, cK * v * d, mul_ne_zero (mul_ne_zero hcK hv) hd0, ?_⟩` and prove the remaining obligations. Introduce `φ₁ φ₂ hφ T hT e₁ e₂ k vl R hE hM`. Take `⟨hH, hTr⟩` from `hdtr φ₁ φ₂ hφ T hT e₁ e₂ hE`. Take `⟨hHF, hTrY⟩` from `hyv _ hH`. Establish `key` using `htr k vl (fun _ => R) hM _ hHF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hTrY, hTr]`. Establish `e : cK * (∏ w : InfinitePlace E, vl w (infOf (lamE w.embedding).w)) * (v * (d * (∏ w ∈ Z, trc (τ w).ρ (KGL w n) fun g => seen φ₁ φ₂ w (g, 1)) * val T e₁ e₂ B 0)) = cK * v * d * (∏ v : InfinitePlace E, vl v (infOf (lamE v.embedding).w)) * (∏ w ∈ Z, trc (τ w).ρ (KGL w n) fun g => s …` using `by ring`. Rewrite `key` using `[e]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem level_term (h1 : ThetaFixedGlobalWeights) (h3 : LevTop) (h6 : ToYd) (h7 : LevelTr)
     {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (hn : 1 ≤ n) (π : CuspSub E n)
@@ -78,15 +78,15 @@ private theorem level_term (h1 : ThetaFixedGlobalWeights) (h3 : LevTop) (h6 : To
   exact key
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 h7 h8 E _ _ _ _ n hn π hreg hd`. Take `⟨lamE, hlam⟩` from `h2 E n π hreg`. Use `⟨fun v => lamE v.embedding, fun v => hlam _, ?_⟩` and prove the remaining obligations. Introduce `S hS Z hZ B τ hB hτ u hu μC μ _ _`. Take `⟨N₀, hN₀, ψ, hψ, hψ0, hψfix⟩` from `h4 E n π S Z hS hZ fun w hw => ⟨B w, hB w hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨φr, hr, hrne⟩, c₀, hc₀, hlev₀⟩` from `level_term h1 h3 h6 h7 hn π hreg hd lamE hlam hS hZ hB hτ hu μC μ hN₀ ⟨ψ, hψ, hψ0, hψfix⟩`. Use `⟨c₀, hc₀, ?_⟩` and prove the remaining obligations. Introduce `φ₁ φ₂ hφ T hT e₁ e₂ k vl R hE hM`. Take `⟨N, hN, hle, hHecke⟩` from `h5 E n Z N₀ hN₀ φ₁ φ₂ hφ`. Take `⟨-, c, -, hlev⟩` from `level_term h1 h3 h6 h7 hn π hreg hd lamE hlam hS hZ hB hτ hu μC μ hN ⟨ψ, hψ, hψ0, fun g hg => hψfix g (lev_mono S hle hg)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `main` using `hlev φ₁ φ₂ hHecke T hT e₁ e₂ k vl R hE hM`. Distinguish the cases in `hP : (∏ v : InfinitePlace E, vl v (infOf (lamE v.embedding).w)) = 0`. Rewrite `main`, the goal using `[hP]`. Simplify using `using main`. Establish `hcc : c = c₀`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Set `e : Pl E → Ex (Fin (n + 1) × Fin (0 + 1))` to `fun _ => Ex.one`. Establish `hEe : TEv S (∅ : Finset (Pl E)) e` using `⟨by simp, by simp⟩`. Establish `a₀` using `hlev₀ φr φr (fun w hw b => hr w hw (N₀ w) le_rfl b) ∅ (Finset.disjoint_empty_left Z) e e k vl R hEe hM`. Establish `a₁` using `hlev φr φr (fun w hw b => hr w hw (N w) (hle w) b) ∅ (Finset.disjoint_empty_left Z) e e k vl R hEe hM`. Establish `heq` using `h8 E n μ π _ _ _ a₁ a₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [val, Finset.prod_empty, mul_one] at heq`. Conclude with `mul_right_cancel₀ hP (mul_right_cancel₀ hrne heq)`. Rewrite `main` using `[hcc]`. Conclude with `main`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piTerm_of_weights_levels :
     ThetaFixedGlobalWeights → WtEx → LevTop → LevFix → LcLevel → ToYd → LevelTr → TwUniq → PiTerm := by

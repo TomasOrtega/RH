@@ -12,15 +12,15 @@ noncomputable section
 namespace GlobalTheory.WeilConjLine
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hB hX hW hM hWeil g hg h hh T hT hTi γ hγ f hf f₁ hf₁`. Take `⟨f₂, hsd⟩` from `GlobalTheory.T.weil_model_line_action_exists hKP F E σ B n d X W M χX χW om r s r' s' hB hX hW hM hWeil γ hγ f hf`. Establish `e` using `(GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) f f₂ f₁).2.2.1 _ ((GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) f f₂ f₁).1 _ (fun t => map_zero _) hsd) hf₁`. Substitute `e` using the available equality. Establish `hS` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hWeil`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use `(GlobalTheory.RealLift.actsLaws F _ (T f) (T f₂) (T f₂)).1 _ (fun t => map_zero _) ?_` and prove the remaining obligations. Introduce `g' hg' l hl`. Establish `key : ∀ φ : SInf F (Fin n × Fin d), Acts (evI F) (om (g, h)) φ (T φ) → om (g, h) (GlobalTheory.WeilM.pureA F φ g') = GlobalTheory.WeilM.pureA F (T φ) g'`. Introduce `φ hφ`. Establish `hr : ∀ x z, At (evI F) z → (fun x : Fin n × Fin d → AF F => g' (fun i => (x i).2)) (x + z) = (fun x : Fin n × Fin d → AF F => g' (fun i => (x i).2)) x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x z hz`. Express the relevant statement in the definitionally equal form `g' (fun i => (x i + z i).2) = g' (fun i => (x i).2)`. Use `congr 1`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(x i).2 + (z i).2 = (x i).2`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.RealLift.fin_eq_zero_of_at hz, add_zero]`. Conclude with `hφ _ ⟨hr, Submodule.subset_span ⟨φ, g', hg', rfl⟩⟩`. Establish `hfun : (fun t : ℝ => l (om (g * γ (Multiplicative.ofAdd t) * g⁻¹, 1) (GlobalTheory.WeilM.pureA F (T f) g'))) = fun t => (l ∘ₗ om (g, h)) (om (γ (Multiplicative.ofAdd t), 1) (GlobalTheory.WeilM.pureA F f g'))`. Use function extensionality and compare the values at `t`. Rewrite using `[← key f (hT f), LinearMap.comp_apply, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 3`. Conclude with `Prod.ext (by simp only [Prod.fst_mul, inv_mul_cancel_right]) (by simp)`. Rewrite using `[hfun, ← key f₂ (hT f₂)]`. Conclude with `hsd g' hg' _ (hS.adm (g, h) l hl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deriv_conj_line : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)

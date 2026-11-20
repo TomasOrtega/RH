@@ -8,19 +8,17 @@ open UpperTheory.Gal.Gen (IsLevel fixedBy)
 open UpperTheory.Gal.Wt
 
 /- English proof (translation)
-Introduce `a κ b hb`. Establish `hbt : (b : Matrix (Fin a) (Fin a) ℂ).BlockTriangular id` using `fun i j h => hb i j h`. Establish `hdiag : ∀ i, (b : Matrix (Fin a) (Fin a) ℂ) i i ≠ 0`. Establish `hdet : (b : Matrix (Fin a) (Fin a) ℂ).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp b.isUnit).ne_zero`. Rewrite `hdet` using `[Matrix.det_of_upperTriangular hbt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `fun i => (Finset.prod_ne_zero_iff.mp hdet) i (Finset.mem_univ i)`. Set `t : Fin a → ℂˣ` to `fun i => Units.mk0 _ (hdiag i)`. Use `set D := diagGL ℂ a t with hD`. Use `set u := D⁻¹ * b with hu`. Establish `hbu : b = D * u` using `by rw [hu, mul_inv_cancel_left]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDinv : ((D⁻¹ : GL (Fin a) ℂ) : Matrix (Fin a) (Fin a) ℂ) = Matrix.diagonal fun i => (((t i)⁻¹ : ℂˣ) : ℂ)` using `rfl`. Establish `hucoe : (u : Matrix (Fin a) (Fin a) ℂ) = Matrix.diagonal (fun i => (((t i)⁻¹ : ℂˣ) : ℂ)) * (b : Matrix (Fin a) (Fin a) ℂ)`. Rewrite using `[hu, Units.val_mul, hDinv]`. Establish `hut : (u : Matrix (Fin a) (Fin a) ℂ).BlockTriangular id`. Rewrite using `[hucoe]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Matrix.blockTriangular_diagonal _).mul hbt`. Establish `hu1 : ∀ i, (u : Matrix (Fin a) (Fin a) ℂ) i i = 1`. Introduce `i`. Rewrite using `[hucoe, Matrix.diagonal_mul]`. Simplify using `[t, hdiag i]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hfix : (sqRep ℂ a κ u) (top κ) = top κ`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(factSqHighestWeight ℂ a κ).2 u hut hu1`. Establish `hscal : (sqRep ℂ a κ D) (top κ) = chi κ b • top κ`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h` using `(factSqHighestWeight ℂ a κ).1 t`. Establish `hc : (((∏ i, t i ^ κ.w i : ℂˣ)) : ℂ) = chi κ b`. Rewrite using `[Units.coe_prod]`. Simplify using `only [Units.val_zpow_eq_zpow_val, chi, t, Units.val_mk0]`. Rewrite `h` using `[hc]`.
-
-Conclude with `h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hbu, map_mul, Module.End.mul_apply]`. Use `_ = chi κ b • top κ := by rw [hfix, hscal]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Wt.topUp_of :
     UpperTheory.Gal.Wt.TopUp := by

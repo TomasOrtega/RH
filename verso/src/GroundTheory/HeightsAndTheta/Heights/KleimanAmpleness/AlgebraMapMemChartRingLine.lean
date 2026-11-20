@@ -238,7 +238,7 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
   {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Take `⟨s₁, m₁⟩` from `F`. Take `⟨s₂, m₂⟩` from `G`. Establish `: s₁ = s₂` using `funext h`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem SubSystem.ext_sub {E : Type v} [AddCommGroup E] [Module Ω E] [Module S E]
     [IsScalarTower S Ω E] {F G : SubSystem S x E} (h : ∀ I, F.sub I = G.sub I) : F = G := by
@@ -249,11 +249,11 @@ theorem SubSystem.ext_sub {E : Type v} [AddCommGroup E] [Module Ω E] [Module S 
   rfl
 
 /- English proof (translation)
-Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `I.2.1`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `q ∈ twistMod S x 0 I at hq`. Rewrite `hq` using `[twistMod_eq_span 0 I hi, zpow_zero, Submodule.mem_span_singleton]`. Take `⟨a, rfl⟩` from `hq`. Establish `: (a • (1 : Ω)) • y = a • y`. Rewrite using `[chartRing_smul_def, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[SetLike.mem_coe, this]`. Conclude with `(F.sub I).smul_mem a hy`. Introduce `y hy`. Conclude with `Submodule.subset_span ⟨1, one_mem_twistMod_zero I, y, hy, (one_smul Ω y).symm⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem SubSystem.twist_twistSys_zero {E : Type v} [AddCommGroup E] [Module Ω E] [Module S E]
     [IsScalarTower S Ω E] (F : SubSystem S x E) : F.twist (twistSys S x 0) = F := by
@@ -273,11 +273,11 @@ theorem SubSystem.twist_twistSys_zero {E : Type v} [AddCommGroup E] [Module Ω E
     exact Submodule.subset_span ⟨1, one_mem_twistMod_zero I, y, hy, (one_smul Ω y).symm⟩
 
 /- English proof (translation)
-Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `I.2.1`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `y ∈ twistMod S x 0 I at hy`. Rewrite `hy` using `[twistMod_eq_span 0 I hi, zpow_zero, Submodule.mem_span_singleton]`. Take `⟨a, rfl⟩` from `hy`. Establish `: q • (a • (1 : Ω)) = a • q`. Rewrite using `[chartRing_smul_def, chartRing_smul_def, mul_one, smul_eq_mul, mul_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, this]`. Conclude with `(Q.sub I).smul_mem a hq`. Introduce `q hq`. Conclude with `Submodule.subset_span ⟨q, hq, 1, one_mem_twistMod_zero I, by rw [smul_eq_mul, mul_one]⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem twistSys_zero_twist (Q : SubSystem S x Ω) : (twistSys S x 0).twist Q = Q := by
   refine SubSystem.ext_sub fun I => ?_
@@ -296,7 +296,7 @@ theorem twistSys_zero_twist (Q : SubSystem S x Ω) : (twistSys S x 0).twist Q = 
     exact Submodule.subset_span ⟨q, hq, 1, one_mem_twistMod_zero I, by rw [smul_eq_mul, mul_one]⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Express the relevant statement in the definitionally equal form `((twistSys S x 0).pow n).twist (twistSys S x 0) = _`. Rewrite using `[ih, SubSystem.twist_twistSys_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_twistSys_zero (n : ℕ) : (twistSys S x 0).pow n = twistSys S x 0 := by
   induction n with
@@ -306,7 +306,7 @@ theorem pow_twistSys_zero (n : ℕ) : (twistSys S x 0).pow n = twistSys S x 0 :=
     rw [ih, SubSystem.twist_twistSys_zero]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Rewrite using `[List.foldl_cons, hL a, SubSystem.twist_twistSys_zero]`. Conclude with `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem foldl_twist_zero {n : ℕ} (L : Fin n → SubSystem S x Ω) (hL : ∀ i, L i = twistSys S x 0)
     (l : List (Fin n)) :
@@ -318,16 +318,16 @@ theorem foldl_twist_zero {n : ℕ} (L : Fin n → SubSystem S x Ω) (hL : ∀ i,
     exact ih
 
 /- English proof (translation)
-The claim follows from `foldl_twist_zero L hL _`.
+A detailed English derivation is pending.
 -/
 theorem tensorSub_of_forall_eq {n : ℕ} (L : Fin n → SubSystem S x Ω)
     (hL : ∀ i, L i = twistSys S x 0) (T : Finset (Fin n)) : tensorSub L T = twistSys S x 0 :=
   foldl_twist_zero L hL _
 
 /- English proof (translation)
-Establish `h0 : interSum pp ![twistSys S x 0] = fun _ => 0`. Use function extensionality and compare the values at `c`. Establish `hT : ∀ T : Finset (Fin 1), tensorSub ![twistSys S x 0] T = twistSys S x 0` using `tensorSub_of_forall_eq _ (fun i => by fin_cases i; rfl)`. Simplify using `only [interSum, hT]`. Rewrite using `[← Finset.powerset_univ, Finset.sum_powerset_apply_card (f := fun j => (-1 : ℤ) ^ (1 - j) * restrLen pp ((twistSys S x 0).twist (twistSys S x (c : ℤ))))]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[Finset.sum_range_succ]`. Rewrite using `[interNum, h0]`. Conclude with `tendsto_const_nhds.limUnder_eq`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interNum_twistSys_zero (pp : Ideal (Poly S N)) : interNum pp ![twistSys S x 0] = 0 := by
   have h0 : interSum pp ![twistSys S x 0] = fun _ => 0 := by
@@ -342,7 +342,7 @@ theorem interNum_twistSys_zero (pp : Ideal (Poly S N)) : interNum pp ![twistSys 
   exact tendsto_const_nhds.limUnder_eq
 
 /- English proof (translation)
-Introduce `pp _ _` and use `by rw [interNum_twistSys_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nef_twistSys_zero : Nef (twistSys S x 0) := fun pp _ _ => by
   rw [interNum_twistSys_zero]
@@ -355,7 +355,7 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
   {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-The claim follows from `inferInstance homog p hp d := homogeneousComponent_mem_primeOf _ hp d le := le_rfl relevant := ⟨0, by rw [primeOf_genericPt, Submodule.mem_bot]; exact X_ne_zero 0⟩ dim := by rw [primeOf_genericPt, ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot (Poly k N)), MvPolynomial.ringK …`.
+A detailed English derivation is pending.
 -/
 theorem isSubvar_genericPt (k : Type u) [Field k] (N : ℕ) :
     IsSubvar (genericPt k N) (primeOf (S := k) (genericPt k N)) N where
@@ -369,7 +369,7 @@ theorem isSubvar_genericPt (k : Type u) [Field k] (N : ℕ) :
     simp
 
 /- English proof (translation)
-The claim follows from `mem_secs_twistBundle_one generates := span_range_eq_twistMod_one closed j hj a ha := by obtain ⟨n, hn⟩ := Set.mem_iInter.mp ha (singleChart hj) rw [one_mul] at hn obtain ⟨b, hb⟩ := Submodule.mem_span_singleton.mp (pow_twistSys_one_le n (singleChart hj) (Finset.mem_singleton_self …`.
+A detailed English derivation is pending.
 -/
 theorem isVeryAmpleBy_twistSys_one : IsVeryAmpleBy (twistSys S x 1) x where
   mem_secs := mem_secs_twistBundle_one
@@ -386,18 +386,18 @@ theorem isVeryAmpleBy_twistSys_one : IsVeryAmpleBy (twistSys S x 1) x where
   affine j hj := (twistAmple S x).affine j hj
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨N, x, isVeryAmpleBy_twistSys_one⟩`.
+Supply the required witnesses or components.
 -/
 theorem isVeryAmple_twistSys_one : IsVeryAmple (twistSys S x 1) := ⟨N, x, isVeryAmpleBy_twistSys_one⟩
 
 /- English proof (translation)
-The claim follows from `SubSystem.ext_sub fun I => span_range_eq_twistMod_one I`.
+A detailed English derivation is pending.
 -/
 theorem pullSys_self : pullSys (S := S) x x = twistSys S x 1 :=
   SubSystem.ext_sub fun I => span_range_eq_twistMod_one I
 
 /- English proof (translation)
-Rewrite using `[pullSys_self]`. Conclude with `(twistBundle S x 1).invertible I`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDomination_self : IsDomination S x x where
   invertible I := by
@@ -405,9 +405,9 @@ theorem isDomination_self : IsDomination S x x where
     exact (twistBundle S x 1).invertible I
 
 /- English proof (translation)
-Introduce `a ha`. Rewrite `ha` using `[domRing, pullSys_self]`. Take `⟨n, hn⟩` from `Set.mem_iInter.mp ha (singleChart hi)`. Rewrite `hn` using `[one_mul]`. Take `⟨b, hb⟩` from `Submodule.mem_span_singleton.mp (pow_twistSys_one_le n (singleChart hi) (Finset.mem_singleton_self i) hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hb` using `[chartRing_smul_def]`. Establish `hab : a = b` using `(mul_right_cancel₀ (pow_ne_zero n hi) hb).symm`. Rewrite using `[hab]`. Conclude with `b.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem domRing_self_le {i : Fin (N + 1)} (hi : x i ≠ 0) :
     domRing S x x i ⊆ chartRing S x (singleChart hi) := by
@@ -422,7 +422,7 @@ theorem domRing_self_le {i : Fin (N + 1)} (hi : x i ≠ 0) :
   rw [hab]; exact b.2
 
 /- English proof (translation)
-The claim follows from `hq add _ _ _ _ _ := rfl smul _ _ _ _ _ _ _ _ _ := rfl span I := by rw [Set.image_id]; exact Submodule.span_eq _`.
+A detailed English derivation is pending.
 -/
 theorem restrictData_id (Q : SubSystem S x Ω) :
     RestrictData (K' := Ω) Q (y := x) (fun _ h => h) Q id where
@@ -461,11 +461,11 @@ def lineStepData : StepData k (genericPt k 1) where
     (X_ne_zero 0)
 
 /- English proof (translation)
-Establish `hX : (RatFunc.X : RatFunc k) ∈ chartRing k (lineX k) (lineChart0 k)`. Use `(ratio (S := k) (lineX_ne_zero k 0) 1).2` as an intermediate fact. Unfold `lineChart0`. Simplify `this` using `[ratio, lineX]`. Set `φ` to `IsScalarTower.toAlgHom k (Polynomial k) (RatFunc k)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `hp : p ∈ Algebra.adjoin k {(Polynomial.X : Polynomial k)}`. Rewrite using `[Polynomial.adjoin_X]`. Discharge the goal by the elementary cases of `trivial`. Establish `hφ : φ p ∈ (Algebra.adjoin k {(Polynomial.X : Polynomial k)}).map φ` using `⟨p, hp, rfl⟩`. Rewrite `hφ` using `[AlgHom.map_adjoin, Set.image_singleton]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Algebra.adjoin_le ?_ hφ` and prove the remaining obligations. Rewrite using `[Set.singleton_subset_iff]`. Express the relevant statement in the definitionally equal form `algebraMap (Polynomial k) (RatFunc k) Polynomial.X ∈ _`. Rewrite using `[RatFunc.algebraMap_X]`. Conclude with `hX`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_chartRing_line (p : Polynomial k) :
     algebraMap (Polynomial k) (RatFunc k) p ∈ chartRing k (lineX k) (lineChart0 k) := by
@@ -485,7 +485,7 @@ theorem algebraMap_mem_chartRing_line (p : Polynomial k) :
   exact hX
 
 /- English proof (translation)
-Introduce `s`. Establish `hd : algebraMap (Polynomial k) (RatFunc k) s.denom ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).mpr s.denom_ne_zero`. Use `⟨lineChart0 k, algebraMap (Polynomial k) (RatFunc k) s.num, algebraMap (Polynomial k) (RatFunc k) s.denom, algebraMap_mem_chartRing_line k _, algebraMap_mem_chartRing_line k _, hd, ?_⟩` and prove the remaining obligations. Conclude with `((div_eq_iff hd).mp (RatFunc.num_div_denom s)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isBirationalPt_lineX : IsBirationalPt k (lineX k) := by
   intro s
@@ -499,23 +499,23 @@ theorem isBirationalPt_lineX : IsBirationalPt k (lineX k) := by
 def ptX : Fin (0 + 1) → k := fun _ => 1
 
 /- English proof (translation)
-The claim follows from `one_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem ptX_ne_zero (i : Fin (0 + 1)) : ptX k i ≠ 0 := one_ne_zero
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨C a, 1, 0, one_mem _, isHomogeneous_C _ _, isHomogeneous_one _ _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_chartRing_ptX (I : Chart (ptX k)) (a : k) : a ∈ chartRing k (ptX k) I :=
   ⟨C a, 1, 0, one_mem _, isHomogeneous_C _ _, isHomogeneous_one _ _, by simp⟩
 
 /- English proof (translation)
-Introduce `_ _ b _` and use `mem_chartRing_ptX k _ b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isNormalPt_ptX : IsNormalPt k (ptX k) := fun _ _ b _ => mem_chartRing_ptX k _ b
 
 /- English proof (translation)
-Introduce `s` and use `⟨singleChart (ptX_ne_zero k 0), s, 1, mem_chartRing_ptX k _ s, mem_chartRing_ptX k _ 1, one_ne_zero, mul_one s⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isBirationalPt_ptX : IsBirationalPt k (ptX k) := fun s =>
   ⟨singleChart (ptX_ne_zero k 0), s, 1, mem_chartRing_ptX k _ s, mem_chartRing_ptX k _ 1, one_ne_zero,

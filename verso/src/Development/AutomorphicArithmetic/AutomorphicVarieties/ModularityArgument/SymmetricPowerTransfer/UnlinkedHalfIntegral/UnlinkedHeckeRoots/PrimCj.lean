@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 namespace UpperTheory.V.Z.Sym.Unl
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, Units.val_one, cj, MulChar.ringHomComp_apply]`. Conclude with `map_eq_one_iff σ σ.injective`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ker_cj {N : ℕ} (σ : ℂ ≃+* ℂ) (χ : DirichletCharacter ℂ N) :
     (cj σ χ).toUnitHom.ker = χ.toUnitHom.ker := by
@@ -12,13 +12,11 @@ private theorem ker_cj {N : ℕ} (σ : ℂ ≃+* ℂ) (χ : DirichletCharacter �
   exact map_eq_one_iff σ σ.injective
 
 /- English proof (translation)
-Introduce `N _ χ σ hχ`. Establish `key : ∀ d : ℕ, (cj σ χ).FactorsThrough d ↔ χ.FactorsThrough d`. Introduce `d`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[DirichletCharacter.factorsThrough_iff_ker_unitsMap h.dvd, ← ker_cj σ χ]`. Conclude with `(DirichletCharacter.factorsThrough_iff_ker_unitsMap h.dvd).mp h`. Introduce `h`. Rewrite using `[DirichletCharacter.factorsThrough_iff_ker_unitsMap h.dvd, ker_cj σ χ]`. Conclude with `(DirichletCharacter.factorsThrough_iff_ker_unitsMap h.dvd).mp h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hc : (cj σ χ).conductor = χ.conductor`. Unfold `DirichletCharacter.conductor DirichletCharacter.conductorSet`. Use `congr 1`. Use extensionality with `d`. Conclude with `key d`.
-
-Unfold `DirichletCharacter.IsPrimitive at hχ ⊢`. Rewrite using `[hc]`. Conclude with `hχ`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primCj : PrimCj := by
   intro N _ χ σ hχ

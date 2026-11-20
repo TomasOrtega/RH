@@ -21,7 +21,7 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Core.Rk.IP
 
 /- English proof (translation)
-Establish `h : frameLat V = GlobalTheory.PlaceModel.latFrame V`. Use extensionality with `y`. Rewrite using `[mem_frameLat, GlobalTheory.PlaceModel.mem_latFrame]`. Rewrite using `[h]`. Conclude with `GlobalTheory.PlaceModel.isSelfDualC_latFrame V`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameLat_isSelfDualC {D : D7} (V : HSp D) : IsSelfDualC V (frameLat V) := by
   have h : frameLat V = GlobalTheory.PlaceModel.latFrame V := by
@@ -29,7 +29,7 @@ theorem frameLat_isSelfDualC {D : D7} (V : HSp D) : IsSelfDualC V (frameLat V) :
   rw [h]; exact GlobalTheory.PlaceModel.isSelfDualC_latFrame V
 
 /- English proof (translation)
-Introduce `hW hC hWS hSW hDM D A L hL`. Establish `hsw` using `GlobalTheory.T.siegelWeil_fockDoubledPair_of_weil_and_ichino hW hWS hSW D`. Establish `h0` using `GlobalTheory.T.global_form_frame_lattice hW hC hDM D hsw A`. Conclude with `GlobalTheory.T.global_doubling_zeta_form_selfDual_lattice_transfer D A (frameLat A) L (frameLat_isSelfDualC A) hL h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem globalForm_of_siegelWeil : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.CuspRapidDecay →
     GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitaryConvergent → GlobalTheory.Published.DoublingMethod →

@@ -9,21 +9,19 @@ namespace GlobalTheory.LoopV.Cell
 variable {K : Type} [Field K] {N : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `bs with`. Consider the case `nil => exact ⟨id, fun i hi => by simp at hi⟩`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`. Establish `hb : t ≠ 0 ∧ 1 ≤ s` using `h (t, s) (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `ih (fun b hb' => h b (List.mem_cons_of_mem _ hb'))`. Use `⟨fun i => if i < s then s - 1 - i else s + g (i - s), fun i hi => ?_⟩` and prove the remaining obligations. Simplify using `only [List.map_cons, List.sum_cons] at hi ⊢`. Distinguish the cases in `his : i < s`. Establish `e1 : (if i < s then s - 1 - i else s + g (i - s)) = s - 1 - i` using `if_pos his`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e2 : (if s - 1 - i < s then s - 1 - (s - 1 - i) else s + g (s - 1 - i - s)) = i`. Rewrite using `[if_pos (show s - 1 - i < s by omega)]; omega`. Rewrite using `[e1, e2]`. Use `⟨by omega, rfl, ?_, fun j hj => ?_⟩` and prove the remaining obligations. Simplify using `only [ptEntry]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos (show i < s ∧ s - 1 - i < s by omega), if_pos (show i + (s - 1 - i) + 1 = s by omega)]`. Conclude with `hb.1`. Simplify using `only [ptEntry]`. Distinguish the cases in `hjs : j < s`. Rewrite using `[if_pos (show i < s ∧ j < s from ⟨his, hjs⟩), if_neg (show ¬ (i + j + 1 = s) by omega)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (show ¬ (i < s ∧ j < s) by omega), if_neg (show ¬ (s ≤ i ∧ s ≤ j) by omega)]`. Establish `hi' : i - s < (bs.map Prod.snd).sum` using `by omega`. Take `⟨h1, h2, h3, h4⟩` from `hg (i - s) hi'`. Establish `e1 : (if i < s then s - 1 - i else s + g (i - s)) = s + g (i - s)` using `if_neg his`. Establish `e2 : (if s + g (i - s) < s then s - 1 - (s + g (i - s)) else s + g (s + g (i - s) - s)) = i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (show ¬ (s + g (i - s) < s) by omega), Nat.add_sub_cancel_left, h2]; omega`. Rewrite using `[e1, e2]`. Use `⟨by omega, rfl, ?_, fun j hj => ?_⟩` and prove the remaining obligations. Simplify using `only [ptEntry]`. Rewrite using `[if_neg (show ¬ (i < s ∧ s + g (i - s) < s) by omega), if_pos (show s ≤ i ∧ s ≤ s + g (i - s) by omega), Nat.add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h3`. Simplify using `only [ptEntry]`. Distinguish the cases in `hjs : j < s`. Rewrite using `[if_neg (show ¬ (i < s ∧ j < s) by omega), if_neg (show ¬ (s ≤ i ∧ s ≤ j) by omega)]`. Rewrite using `[if_neg (show ¬ (i < s ∧ j < s) by omega), if_pos (show s ≤ i ∧ s ≤ j by omega)]`.
-
-Conclude with `h4 (j - s) (by omega)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptEntry_inv (bs : List (K × ℕ)) (h : ∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) :
     ∃ f : ℕ → ℕ, ∀ i, i < (bs.map Prod.snd).sum → f i < (bs.map Prod.snd).sum ∧ f (f i) = i ∧
@@ -67,11 +65,9 @@ theorem ptEntry_inv (bs : List (K × ℕ)) (h : ∀ b ∈ bs, b.1 ≠ 0 ∧ 1 �
           exact h4 (j - s) (by omega)
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `ptEntry_inv p.1 p.2.1`. Apply the tactic sequence `have hf' : ∀ i : Fin N, f i < N ∧ f (f i) = i ∧ ptEntry p.1 i (f i) ≠ 0 ∧ ∀ j, j ≠ f i → ptEntry p.1 i j = 0 := by`. Introduce `i`. Use `hf i (by rw [p.2.2]; exact i.2)` as an intermediate fact. Rewrite `this` using `[p.2.2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Set `σ : Equiv.Perm (Fin N)` to `{ toFun := fun i => ⟨f i, (hf' i).1⟩ invFun := fun i => ⟨f i, (hf' i).1⟩ left_inv := fun i => Fin.ext (hf' i).2.1 right_inv := fun i => Fin.ext (hf' i).2.1 }`. Apply the tactic sequence `refine ⟨σ, fun i => ptEntry p.1 i (f i), fun i => (hf' i).2.2.1, fun i j => ?_⟩`. Apply the tactic sequence `show ptEntry p.1 i j = _`. Use `split_ifs with hj`.
-
-Substitute `hj` using the available equality. Both sides reduce to the same expression. Conclude with `(hf' i).2.2.2 j (fun h' => hj (Fin.ext h'))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptMat_monomial (p : Point K N) :
     ∃ (σ : Equiv.Perm (Fin N)) (d : Fin N → K), (∀ i, d i ≠ 0) ∧
@@ -98,11 +94,11 @@ section mono
 variable {w : Matrix (Fin N) (Fin N) K} {σ : Equiv.Perm (Fin N)} {d : Fin N → K}
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (σ i)]`. Rewrite using `[hw, if_pos rfl, Matrix.of_apply, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_pos rfl, if_pos rfl, mul_inv_cancel₀ (hd i)]`. Rewrite using `[if_neg (fun h => hij (σ.injective h)), if_neg hij, mul_zero]`. Introduce `k _ hk`. Rewrite using `[hw, if_neg hk, zero_mul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem mono_mul_inv (hd : ∀ i, d i ≠ 0) (hw : ∀ i j, w i j = if j = σ i then d i else 0) :
     w * (Matrix.of fun k j => if k = σ j then (d j)⁻¹ else 0) = 1 := by
@@ -116,11 +112,9 @@ theorem mono_mul_inv (hd : ∀ i, d i ≠ 0) (hw : ∀ i j, w i j = if j = σ i 
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Rewrite using `[Matrix.inv_eq_right_inv (mono_mul_inv hd hw), Matrix.mul_apply, Finset.sum_eq_single (σ j)]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (σ i)]`. Rewrite using `[hw, if_pos rfl, Matrix.of_apply, if_pos rfl]`. Introduce `k _ hk`. Rewrite using `[hw, if_neg hk, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `k _ hk`. Rewrite using `[Matrix.of_apply, if_neg hk, mul_zero]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mono_conj (hd : ∀ i, d i ≠ 0) (hw : ∀ i j, w i j = if j = σ i then d i else 0)
     (x : Matrix (Fin N) (Fin N) K) (i j : Fin N) :
@@ -134,13 +128,13 @@ theorem mono_conj (hd : ∀ i, d i ≠ 0) (hw : ∀ i j, w i j = if j = σ i the
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `key : ∀ a k, w a k ≠ 0 ↔ a = σ.symm k`. Introduce `a k`. Rewrite using `[hw]`. Prove the components needed by the constructor for the conclusion. Introduce `h split_ifs at h with hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hk, Equiv.symm_apply_apply]`. Conclude with `absurd rfl h`. Introduce and unpack `rfl`. Rewrite using `[if_pos (Equiv.apply_symm_apply σ k).symm]`. Conclude with `hd _`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [roots, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, a, b, hb, ha, hb'⟩`. Rewrite `ha`, `hb'` using `[key]`. Substitute `ha` using the available equality.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Substitute using the available equality. Supply the required witnesses or components.
 
-Substitute `hb'` using the available equality. Conclude with `⟨h1, hb⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, σ.symm i, σ.symm j, h2, (key _ _).2 rfl, (key _ _).2 rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mono_roots (hd : ∀ i, d i ≠ 0) (hw : ∀ i j, w i j = if j = σ i then d i else 0)
     (i j : Fin N) : (i, j) ∈ roots w ↔ i < j ∧ σ.symm j < σ.symm i := by
@@ -166,9 +160,9 @@ theorem mono_roots (hd : ∀ i, d i ≠ 0) (hw : ∀ i j, w i j = if j = σ i th
 end mono
 
 /- English proof (translation)
-Establish `hc : Ring.inverse Z.det ≠ 0`. Rewrite using `[Ring.inverse_eq_inv]`. Conclude with `inv_ne_zero hZ.ne_zero`. Establish `e : Z * x * Z⁻¹ = Ring.inverse Z.det • (Z * x * Z.adjugate)`. Rewrite using `[Matrix.inv_def, Matrix.mul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [lieU, Set.mem_ofPred_eq, e, StrLo, Matrix.smul_apply, smul_eq_mul, mul_eq_zero, hc, false_or]`.
+A detailed English derivation is pending.
 -/
 theorem mem_lieU_iff_inv {Z : Matrix (Fin N) (Fin N) K} (hZ : IsUnit Z.det)
     (x : Matrix (Fin N) (Fin N) K) : x ∈ lieU Z ↔ StrUp x ∧ StrLo (Z * x * Z⁻¹) := by
@@ -179,11 +173,11 @@ theorem mem_lieU_iff_inv {Z : Matrix (Fin N) (Fin N) K} (hZ : IsUnit Z.det)
   simp only [lieU, Set.mem_ofPred_eq, e, StrLo, Matrix.smul_apply, smul_eq_mul, mul_eq_zero, hc, false_or]
 
 /- English proof (translation)
-Simplify using `only [IsUpUni, StrUp, Matrix.sub_apply, Matrix.one_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hji`. Break down `hji.lt_or_eq with hlt | heq` into its components or cases. Rewrite using `[(h i j).1 hlt, if_neg hlt.ne', sub_zero]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Substitute `heq` using the available equality. Rewrite using `[(h j j).2 rfl, if_pos rfl, sub_self]`. Introduce `h i j`. Use `⟨fun hlt => ?_, fun hij => ?_⟩` and prove the remaining obligations. Use `h i j hlt.le` as an intermediate fact.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[if_neg hlt.ne', sub_zero]`. Then use the resulting hypothesis. Substitute `hij` using the available equality. Use `h i i le_rfl` as an intermediate fact. Rewrite `this` using `[if_pos rfl, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUpUni_iff_sub (a : Matrix (Fin N) (Fin N) K) : IsUpUni a ↔ StrUp (a - 1) := by
   simp only [IsUpUni, StrUp, Matrix.sub_apply, Matrix.one_apply]
@@ -201,11 +195,11 @@ theorem isUpUni_iff_sub (a : Matrix (Fin N) (Fin N) K) : IsUpUni a ↔ StrUp (a 
       rwa [if_pos rfl, sub_eq_zero] at this
 
 /- English proof (translation)
-Simplify using `only [IsLoUni, StrLo, Matrix.sub_apply, Matrix.one_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hij`. Break down `hij.lt_or_eq with hlt | heq` into its components or cases. Rewrite using `[(h i j).1 hlt, if_neg hlt.ne, sub_zero]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Substitute `heq` using the available equality. Rewrite using `[(h i i).2 rfl, if_pos rfl, sub_self]`. Introduce `h i j`. Use `⟨fun hlt => ?_, fun hij => ?_⟩` and prove the remaining obligations. Use `h i j hlt.le` as an intermediate fact.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[if_neg hlt.ne, sub_zero]`. Then use the resulting hypothesis. Substitute `hij` using the available equality. Use `h i i le_rfl` as an intermediate fact. Rewrite `this` using `[if_pos rfl, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isLoUni_iff_sub (a : Matrix (Fin N) (Fin N) K) : IsLoUni a ↔ StrLo (a - 1) := by
   simp only [IsLoUni, StrLo, Matrix.sub_apply, Matrix.one_apply]
@@ -223,14 +217,14 @@ theorem isLoUni_iff_sub (a : Matrix (Fin N) (Fin N) K) : IsLoUni a ↔ StrLo (a 
       rwa [if_pos rfl, sub_eq_zero] at this
 
 /- English proof (translation)
-Rewrite using `[mul_sub, mul_one, sub_mul, Matrix.mul_nonsing_inv _ hZ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_sub_one {Z : Matrix (Fin N) (Fin N) K} (hZ : IsUnit Z.det)
     (a : Matrix (Fin N) (Fin N) K) : Z * (a - 1) * Z⁻¹ = Z * a * Z⁻¹ - 1 := by
   rw [mul_sub, mul_one, sub_mul, Matrix.mul_nonsing_inv _ hZ]
 
 /- English proof (translation)
-Simplify using `only [stabU, Set.mem_ofPred_eq]`. Rewrite using `[mem_lieU_iff_inv hZ, conj_sub_one hZ, ← isUpUni_iff_sub, ← isLoUni_iff_sub]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_stabU_iff_sub {Z : Matrix (Fin N) (Fin N) K} (hZ : IsUnit Z.det)
     (a : Matrix (Fin N) (Fin N) K) : a ∈ stabU Z ↔ a - 1 ∈ lieU Z := by
@@ -238,9 +232,9 @@ theorem mem_stabU_iff_sub {Z : Matrix (Fin N) (Fin N) K} (hZ : IsUnit Z.det)
   rw [mem_lieU_iff_inv hZ, conj_sub_one hZ, ← isUpUni_iff_sub, ← isLoUni_iff_sub]
 
 /- English proof (translation)
-Introduce `i j hji`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Break down `lt_or_ge l i with h | h` into its components or cases. Rewrite using `[hA h, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx l j (hji.trans h), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem strUp_mul_of_blockTriangular {A x : Matrix (Fin N) (Fin N) K} (hA : A.BlockTriangular id)
     (hx : StrUp x) : StrUp (A * x) := by
@@ -252,9 +246,9 @@ private theorem strUp_mul_of_blockTriangular {A x : Matrix (Fin N) (Fin N) K} (h
   · rw [hx l j (hji.trans h), mul_zero]
 
 /- English proof (translation)
-Introduce `i j hji`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `lt_or_ge j k with h | h` into its components or cases. Rewrite using `[hB h, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx i k (h.trans hji), zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem strUp_mul_blockTriangular {B x : Matrix (Fin N) (Fin N) K} (hB : B.BlockTriangular id)
     (hx : StrUp x) : StrUp (x * B) := by
@@ -266,15 +260,15 @@ private theorem strUp_mul_blockTriangular {B x : Matrix (Fin N) (Fin N) K} (hB :
   · rw [hx i k (h.trans hji), zero_mul]
 
 /- English proof (translation)
-The claim follows from `strUp_mul_blockTriangular hB (strUp_mul_of_blockTriangular hA hx)`.
+A detailed English derivation is pending.
 -/
 theorem strUp_mul {A B x : Matrix (Fin N) (Fin N) K} (hA : A.BlockTriangular id)
     (hB : B.BlockTriangular id) (hx : StrUp x) : StrUp (A * x * B) := strUp_mul_blockTriangular hB (strUp_mul_of_blockTriangular hA hx)
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Break down `lt_or_ge i l with h | h` into its components or cases. Rewrite using `[hA (OrderDual.toDual_lt_toDual.mpr h), zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx l j (h.trans hij), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem strLo_mul_of_blockTriangular_toDual {A x : Matrix (Fin N) (Fin N) K}
     (hA : A.BlockTriangular OrderDual.toDual) (hx : StrLo x) : StrLo (A * x) := by
@@ -286,9 +280,9 @@ private theorem strLo_mul_of_blockTriangular_toDual {A x : Matrix (Fin N) (Fin N
   · rw [hx l j (h.trans hij), mul_zero]
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `lt_or_ge k j with h | h` into its components or cases. Rewrite using `[hB (OrderDual.toDual_lt_toDual.mpr h), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx i k (hij.trans h), zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem strLo_mul_blockTriangular_toDual {B x : Matrix (Fin N) (Fin N) K}
     (hB : B.BlockTriangular OrderDual.toDual) (hx : StrLo x) : StrLo (x * B) := by
@@ -300,20 +294,20 @@ private theorem strLo_mul_blockTriangular_toDual {B x : Matrix (Fin N) (Fin N) K
   · rw [hx i k (hij.trans h), zero_mul]
 
 /- English proof (translation)
-The claim follows from `strLo_mul_blockTriangular_toDual hB (strLo_mul_of_blockTriangular_toDual hA hx)`.
+A detailed English derivation is pending.
 -/
 theorem strLo_mul {A B x : Matrix (Fin N) (Fin N) K} (hA : A.BlockTriangular OrderDual.toDual)
     (hB : B.BlockTriangular OrderDual.toDual) (hx : StrLo x) : StrLo (A * x * B) := strLo_mul_blockTriangular_toDual hB (strLo_mul_of_blockTriangular_toDual hA hx)
 
 /- English proof (translation)
-Introduce `i j hij`. Conclude with `(h i j).1 hij`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem up_tri {U : Matrix (Fin N) (Fin N) K} (h : IsUpUni U) : U.BlockTriangular id := by
   intro i j hij
   exact (h i j).1 hij
 
 /- English proof (translation)
-Introduce `i j hij`. Conclude with `(h i j).1 (OrderDual.toDual_lt_toDual.mp hij)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lo_tri {L : Matrix (Fin N) (Fin N) K} (h : IsLoUni L) :
     L.BlockTriangular OrderDual.toDual := by
@@ -321,21 +315,21 @@ theorem lo_tri {L : Matrix (Fin N) (Fin N) K} (h : IsLoUni L) :
   exact (h i j).1 (OrderDual.toDual_lt_toDual.mp hij)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_isUpperTriangular (up_tri h), Finset.prod_eq_one (fun i _ => (h i i).2 rfl)]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_det {U : Matrix (Fin N) (Fin N) K} (h : IsUpUni U) : IsUnit U.det := by
   rw [Matrix.det_of_isUpperTriangular (up_tri h), Finset.prod_eq_one (fun i _ => (h i i).2 rfl)]
   exact isUnit_one
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_isLowerTriangular _ (lo_tri h), Finset.prod_eq_one (fun i _ => (h i i).2 rfl)]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lo_det {L : Matrix (Fin N) (Fin N) K} (h : IsLoUni L) : IsUnit L.det := by
   rw [Matrix.det_of_isLowerTriangular _ (lo_tri h), Finset.prod_eq_one (fun i _ => (h i i).2 rfl)]
   exact isUnit_one
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hZ, Matrix.mul_one, Matrix.nonsing_inv_mul_cancel_left _ _ hZ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_cancel {Z : Matrix (Fin N) (Fin N) K} (hZ : IsUnit Z.det)
     (x : Matrix (Fin N) (Fin N) K) : Z⁻¹ * (Z * x * Z⁻¹) * Z = x := by
@@ -343,9 +337,9 @@ theorem conj_cancel {Z : Matrix (Fin N) (Fin N) K} (hZ : IsUnit Z.det)
     Matrix.nonsing_inv_mul_cancel_left _ _ hZ]
 
 /- English proof (translation)
-Establish `hU` using `up_tri h`. Establish `hd` using `up_det h`. Use `Matrix.invertibleOfIsUnitDet U hd` as an intermediate fact. Establish `hUi : U⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hU`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Use `strUp_mul hUi hU hx` as an intermediate fact. Rewrite `this` using `[conj_cancel hd]`. Then use the resulting hypothesis. Introduce `hx`. Conclude with `strUp_mul hU hUi hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem strUp_conj {U : Matrix (Fin N) (Fin N) K} (h : IsUpUni U) (x : Matrix (Fin N) (Fin N) K) :
     StrUp (U * x * U⁻¹) ↔ StrUp x := by
@@ -361,9 +355,9 @@ theorem strUp_conj {U : Matrix (Fin N) (Fin N) K} (h : IsUpUni U) (x : Matrix (F
     exact strUp_mul hU hUi hx
 
 /- English proof (translation)
-Establish `hL` using `lo_tri h`. Establish `hd` using `lo_det h`. Use `Matrix.invertibleOfIsUnitDet L hd` as an intermediate fact. Establish `hLi : L⁻¹.BlockTriangular OrderDual.toDual` using `Matrix.blockTriangular_inv_of_blockTriangular hL`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Use `strLo_mul hLi hL hx` as an intermediate fact. Rewrite `this` using `[conj_cancel hd]`. Then use the resulting hypothesis. Introduce `hx`. Conclude with `strLo_mul hL hLi hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem strLo_conj {L : Matrix (Fin N) (Fin N) K} (h : IsLoUni L) (x : Matrix (Fin N) (Fin N) K) :
     StrLo (L * x * L⁻¹) ↔ StrLo x := by
@@ -379,16 +373,16 @@ theorem strLo_conj {L : Matrix (Fin N) (Fin N) K} (h : IsLoUni L) (x : Matrix (F
     exact strLo_mul hL hLi hx
 
 /- English proof (translation)
-Take `⟨σ, d, hd, hw⟩` from `ptMat_monomial p`. Conclude with `Matrix.isUnit_det_of_right_inverse (mono_mul_inv hd hw)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ptMat_det (p : Point K N) : IsUnit (ptMat p).det := by
   obtain ⟨σ, d, hd, hw⟩ := ptMat_monomial p
   exact Matrix.isUnit_det_of_right_inverse (mono_mul_inv hd hw)
 
 /- English proof (translation)
-Establish `hZ : IsUnit (L * w * U).det`. Rewrite using `[Matrix.det_mul, Matrix.det_mul]`. Conclude with `((lo_det hL).mul hw).mul (up_det hU)`. Establish `e : L * w * U * x * (L * w * U)⁻¹ = L * (w * (U * x * U⁻¹) * w⁻¹) * L⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[mem_lieU_iff_inv hZ, mem_lieU_iff_inv hw, e, strLo_conj hL, strUp_conj hU]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_lieU_cell {L U w : Matrix (Fin N) (Fin N) K} (hL : IsLoUni L) (hU : IsUpUni U)
     (hw : IsUnit w.det) (x : Matrix (Fin N) (Fin N) K) :
@@ -402,15 +396,15 @@ theorem mem_lieU_cell {L U w : Matrix (Fin N) (Fin N) K} (hL : IsLoUni L) (hU : 
   rw [mem_lieU_iff_inv hZ, mem_lieU_iff_inv hw, e, strLo_conj hL, strUp_conj hU]
 
 /- English proof (translation)
-Take `⟨σ, d, hd, hw⟩` from `ptMat_monomial p`. Rewrite using `[mem_lieU_iff_inv (ptMat_det p)]`. Establish `hc : ∀ i j, (ptMat p * x * (ptMat p)⁻¹) i j = 0 ↔ x (σ i) (σ j) = 0`. Introduce `i j`. Rewrite using `[mono_conj hd hw]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hd i, hd j]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hu, hl⟩ a b hab`. Rewrite `hab` using `[mono_roots hd hw, not_and_or, not_lt, not_lt]`. Break down `hab with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hu a b h`. Use `(hc (σ.symm a) (σ.symm b)).1 (hl _ _ h)` as an intermediate fact. Simplify using `using this`. Introduce `h`. Use `⟨fun a b hab => h a b ?_, fun i j hij => (hc i j).2 (h _ _ ?_)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mono_roots hd hw]`. Conclude with `fun hr => absurd hr.1 (not_lt.2 hab)`. Rewrite using `[mono_roots hd hw]`. Introduce `hr`. Establish `h2` using `hr.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.symm_apply_apply] at h2`. Conclude with `absurd h2 (not_lt.2 hij)`.
+A detailed English derivation is pending.
 -/
 theorem mem_lieU_ptMat (p : Point K N) (x : Matrix (Fin N) (Fin N) K) :
     x ∈ lieU (ptMat p) ↔ ∀ i j, (i, j) ∉ roots (ptMat p) → x i j = 0 := by
@@ -438,15 +432,13 @@ theorem mem_lieU_ptMat (p : Point K N) (x : Matrix (Fin N) (Fin N) K) :
       exact absurd h2 (not_lt.2 hij)
 
 /- English proof (translation)
-Introduce `K _ N L U p hL hU`. Establish `hw` using `ptMat_det p`. Establish `dU` using `up_det hU`. Establish `hZ : IsUnit (L * ptMat p * U).det`. Rewrite using `[Matrix.det_mul, Matrix.det_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((lo_det hL).mul hw).mul dU`. Take `⟨σ, d, hd, hm⟩` from `ptMat_monomial p`. Establish `hroot : ∀ i j, (i, j) ∈ roots (ptMat p) → i < j` using `fun i j hr => ((mono_roots hd hm i j).1 hr).1`. Use `⟨fun a => ?_, fun x => mem_lieU_cell hL hU hw x, fun a => ?_, fun x => mem_lieU_ptMat p x⟩` and prove the remaining obligations. Rewrite using `[mem_stabU_iff_sub hZ, mem_lieU_cell hL hU hw, mem_stabU_iff_sub hw, conj_sub_one dU]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_stabU_iff_sub hw, mem_lieU_ptMat, isUpUni_iff_sub]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i j hji => h i j fun hr => absurd (hroot i j hr) (not_lt.2 hji), fun i j hij hr => ?_⟩` and prove the remaining obligations. Use `h i j hr` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply, if_neg hij.ne, sub_zero]`. Then use the resulting hypothesis. Introduce and unpack `⟨hu, hr⟩ i j hn`. Break down `lt_or_ge i j with hij | hji` into its components or cases. Rewrite using `[Matrix.sub_apply, Matrix.one_apply, if_neg hij.ne, sub_zero]`. Conclude with `hr i j hij hn`.
-
-Conclude with `hu i j hji`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_cell : ∀ (K : Type) [Field K] (N : ℕ) (L U : Matrix (Fin N) (Fin N) K) (p : Point K N), IsLoUni L → IsUpUni U → (∀ a, a ∈ stabU (L * ptMat p * U) ↔ U * a * U⁻¹ ∈ stabU (ptMat p)) ∧ (∀ x, x ∈ lieU (L * ptMat p * U) ↔ U * x * U⁻¹ ∈ lieU (ptMat p)) ∧ (∀ a, a ∈ stabU (ptMat p) ↔ IsUpUni a ∧ ∀ i j, i < j → (i, j) ∉ roots (ptMat p) → a i j = 0) ∧ (∀ x, x ∈ lieU (ptMat p) ↔ ∀ i j, (i, j) ∉ roots (ptMat p) → x i j = 0) := by
   intro K _ N L U p hL hU

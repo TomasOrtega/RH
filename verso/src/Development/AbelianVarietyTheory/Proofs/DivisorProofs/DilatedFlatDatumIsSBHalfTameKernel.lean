@@ -16,37 +16,37 @@ noncomputable section
 namespace GlobalTheory.DilFlat
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inl ⟨⟨(x : D.host.E), ⟨x, rfl⟩⟩, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem eToEAf_int' {D : D7} (x : 𝓞 D.host.E) : eToEAf D (x : D.host.E) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E :=
   Subring.subset_closure (Or.inl ⟨⟨(x : D.host.E), ⟨x, rfl⟩⟩, rfl⟩)
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC _ i _ ξR Q _ eQ hq ϖ hϖ _ Gc`. It suffices to establish `hΦ : IsSBHalf eQ (lattice₂ R i) (fun x => flatDat R i Q ξR eQ (dil i (ϖ : D.host.E) x)) by`. Take `⟨h1, k, hk, h2, h3⟩` from `hΦ`. Conclude with `⟨fun t ht => h1 t (right_ne_zero_of_mul ht), k, hk, fun v hv hv' t => by simp only [h2 v hv hv' t], fun t ht => h3 t (right_ne_zero_of_mul ht)⟩`. Establish `sV : IsSelfDualC (Vc D i) (R.ΛV i)` using `GlobalTheory.AdTh.RecPair.selfDual_of_coe (GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hC.lev.βV i))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `sW : IsSelfDualC (Wc D i) (R.ΛW i)` using `GlobalTheory.AdTh.RecPair.selfDual_of_coe (GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hC.lev.βW i))`. Establish `hinfQ` using `GlobalTheory.PlaceDatum.infPart_idemSum hq`. Establish `hϖE : (ϖ : D.host.E) ≠ 0` using `by exact_mod_cast hϖ`. Establish `hu : IsUnit (incA D (ϖ : D.host.E))` using `(Ne.isUnit hϖE).map _`. Establish `hc : eToEAf D (ϖ : D.host.E) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `eToEAf_int' ϖ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfr : ∀ x : WO (Vc D i) (Wc D i), ∀ a b, frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (dil i (ϖ : D.host.E) x) a b = eToEAf D (ϖ : D.host.E) * frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) x a b`. Introduce `x a b`. Establish `hm : ((dil i (ϖ : D.host.E) x : Matrix (Fin (Wc D i).rank) (Fin (Vc D i).rank) (AE D)).map (toEAf D)) = eToEAf D (ϖ : D.host.E) • (x : Matrix (Fin (Wc D i).rank) (Fin (Vc D i).rank) (AE D)).map (toEAf D)`. Use extensionality with `a' b'`. Simplify using `only [dil, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, RingHom.map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [frMapO]`. Rewrite using `[hm, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul]`. Establish `hhalf : ∀ x : WO (Vc D i) (Wc D i), IsHalf eQ (dil i (ϖ : D.host.E) x) ↔ IsHalf eQ x`. Introduce `x`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun h a b => hu.mul_left_cancel ?_, fun h a b => ?_⟩` and prove the remaining obligations. Use `h a b` as an intermediate fact. Simplify using `only [dil, Matrix.map_apply] at this`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [dil, Matrix.map_apply]`. Rewrite using `[mul_left_comm, h a b]`. Establish `key : (fun x => flatDat R i Q ξR eQ (dil i (ϖ : D.host.E) x)) = fun x => if IsHalf eQ x ∧ IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (dil i (ϖ : D.host.E) x)) then omegaFlat Q (Wc D i).rank ξR (fun PP => redM PP (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (dil i (ϖ : D.ho …`. Use function extensionality and compare the values at `x`. Unfold `flatDat`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `h : IsHalf eQ x ∧ IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (dil i (ϖ : D.host.E) x))`. Rewrite using `[if_pos h, if_pos ⟨(hhalf x).2 h.1, h.2⟩]`. Rewrite using `[if_neg h, if_neg fun h' => h ⟨(hhalf x).1 h'.1, h'.2⟩]`. Rewrite using `[key]`. Use `GlobalTheory.PlaceDatum.isSBHalf_of_red eQ _ (fun x => frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (dil i (ϖ : D.host.E) x)) ?_ ?_ ?_ Q _ fun y y' h => GlobalTheory.FlatVecExist.omegaFlat_congr _ _ _ h` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x u k a b`. Simplify using `only [hfr, GlobalTheory.PlaceDatum.frMapO_add]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨M, hM, h⟩` from `GlobalTheory.PlaceDatum.exists_den_frMapO sV.1.fg sW.1.fg (R.βV i) (R.βW i)`. Use `⟨M, hM, fun u hu' a b => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hfr]`. Rewrite using `[mul_left_comm]`. Conclude with `mul_mem hc (h u hu' a b)`. Take `⟨K, hK, h⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_of_frMapO sV.1 sW.1 (R.βV i) (R.βW i)`. Establish `hI : Ideal.span {ϖ} ≠ ⊥` using `by simpa [Ideal.span_singleton_eq_bot] using hϖ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {ϖ}))`. Use `set n := Ideal.absNorm (Ideal.span {ϖ})`. Establish `hn : 0 < n` using `Nat.pos_of_ne_zero fun h0 => hI (Ideal.absNorm_eq_zero_iff.1 h0)`. Establish `hnE : eToEAf D ((y : 𝓞 D.host.E) : D.host.E) * eToEAf D (ϖ : D.host.E) = (n : EAf D)`. Rewrite using `[← RingHom.map_mul, ← map_natCast (eToEAf D)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Conclude with `hy` after adjusting the coercions. Use `⟨K * n, Nat.mul_pos hK hn, fun t ht hti => ?_⟩` and prove the remaining obligations. Establish `hnt : IsHalf eQ (n • t)` using `fun a b => by`. Express the relevant statement in the definitionally equal form `eQ * (n • t a b) = n • t a b`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_smul_comm, ht a b]`. Establish `hfn : ∀ a b, frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (n • t) a b = (n : EAf D) * frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) t a b` using `fun a b => by`. Use `GlobalTheory.PlaceDatum.frMapO_add (R.βV i) (R.βW i) 0 t n a b` as an intermediate fact. Rewrite `this` using `[zero_add]`. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[frMapO]`. Rewrite using `[← smul_smul]`. Use `h _ (GlobalTheory.PlaceDatum.infPart_of_half hinfQ hnt) fun a b => ?_` and prove the remaining obligations. Rewrite using `[hfn, ← hnE, mul_assoc, ← hfr]`. Conclude with `mul_mem (eToEAf_int' y) (hti a b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSBHalf_dilFlat : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → QGuard R → ∀ (i : Fin D.R.m), VStd D i → ∀ (ξR : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (Q : Finset (Pl D.host.E)),

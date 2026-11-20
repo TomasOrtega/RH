@@ -11,7 +11,7 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 namespace GlobalTheory.WBlockExists
 
 /- English proof (translation)
-Introduce `k r ε e f wf z0 z c hF hc hz`. Conclude with `n_unimodular_local k r ε e f wf z0 z c ⟨hF.ee, hF.ff, hF.ef, hF.ez, hF.fz, hF.zz, hF.ww, hF.ew, hF.fw, hF.zw⟩ hc hz`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nUnimodLoc : Formalism.L2.SG.Pf.WFL.NUnimodLoc := by
   intro k r ε e f wf z0 z c hF hc hz
@@ -19,7 +19,7 @@ theorem nUnimodLoc : Formalism.L2.SG.Pf.WFL.NUnimodLoc := by
     ⟨hF.ee, hF.ff, hF.ef, hF.ez, hF.fz, hF.zz, hF.ww, hF.ew, hF.fw, hF.zw⟩ hc hz
 
 /- English proof (translation)
-Introduce `hB hCW D` and use `Formalism.L2.SG.Pf.WFL.weighted_block_exists_of_local_data quotient_product_compact Formalism.L2.SG.Pf.WFL.locHNProps_holds nUnimodLoc D hB hCW GlobalTheory.wlocExists_real (GlobalTheory.GapAtRealPlaces.gapBigOfGapHyp D)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem realPlaceFunctionBlockExists_of_bessel_coef : BesselNVGap → CoefWeightedLoc → ∀ D : D7, GlobalTheory.St.WBlkExists D :=
   fun hB hCW D =>

@@ -20,7 +20,7 @@ variable {A k b sb PP TO rd : ℝ} (h : Bs A k b sb PP TO rd)
 include h
 
 /- English proof (translation)
-Establish `h1` using `h.PPA`. Establish `h2` using `h.forty_eight_le_constant`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem PP_ge : (10 : ℝ) ^ 60 ≤ PP := by
   have h1 := h.PPA
@@ -28,9 +28,9 @@ theorem PP_ge : (10 : ℝ) ^ 60 ≤ PP := by
   linarith
 
 /- English proof (translation)
-Establish `hA1 : (1 : ℝ) ≤ A` using `by linarith [h.forty_eight_le_constant]`. Establish `hA0 : (0 : ℝ) ≤ 10 ^ 60 * A` using `by linarith`. Establish `h1 : (10 ^ 60 * A) ^ 3 ≤ PP ^ 3` using `pow_le_pow_left₀ hA0 h.PPA 3`. Establish `h2 : A ^ 2 ≤ A ^ 3` using `pow_le_pow_right₀ hA1 (by norm_num)`. Establish `h3 : (0 : ℝ) ≤ A ^ 2` using `sq_nonneg A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (10 ^ 60 * A) ^ 3 = 10 ^ 180 * A ^ 3` using `by ring`. Rewrite `h1` using `[h4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem large_constant_le_param_cube : 10 ^ 100 * A ^ 2 ≤ PP ^ 3 := by
   have hA1 : (1 : ℝ) ≤ A := by linarith [h.forty_eight_le_constant]
@@ -43,7 +43,7 @@ theorem large_constant_le_param_cube : 10 ^ 100 * A ^ 2 ≤ PP ^ 3 := by
   linarith
 
 /- English proof (translation)
-Establish `h1 : 10 ^ 100 * A ^ 2 * TO ^ 2 ≤ PP ^ 3 * TO ^ 2` using `mul_le_mul_of_nonneg_right h.large_constant_le_param_cube (sq_nonneg TO)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem ATO : 10 ^ 100 * (A ^ 2 * TO ^ 2) ≤ sb := by
   have h1 : 10 ^ 100 * A ^ 2 * TO ^ 2 ≤ PP ^ 3 * TO ^ 2 :=
@@ -53,7 +53,7 @@ theorem ATO : 10 ^ 100 * (A ^ 2 * TO ^ 2) ≤ sb := by
     _ ≤ sb := h.h32
 
 /- English proof (translation)
-Establish `hA1 : (1 : ℝ) ≤ A` using `by linarith [h.forty_eight_le_constant]`. Establish `hT1` using `h.one_le_order_alt`. Establish `hAT : (1 : ℝ) ≤ A * TO` using `by nlinarith`. Establish `hQ : (1 : ℝ) ≤ A ^ 2 * TO ^ 2` using `by nlinarith`. Use `h.ATO` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -66,7 +66,7 @@ theorem sb_ge : (10 : ℝ) ^ 100 ≤ sb := by
   nlinarith
 
 /- English proof (translation)
-Establish `h1` using `h.sb_ge`. Rewrite using `[← h.sb_sq]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sb_le_b : sb ≤ b := by
   have h1 := h.sb_ge
@@ -74,17 +74,17 @@ theorem sb_le_b : sb ≤ b := by
   nlinarith
 
 /- English proof (translation)
-The claim follows from `le_trans h.sb_ge h.sb_le_b`.
+A detailed English derivation is pending.
 -/
 theorem b_ge : (10 : ℝ) ^ 100 ≤ b := le_trans h.sb_ge h.sb_le_b
 
 /- English proof (translation)
-The claim follows from `le_trans h.ATO h.sb_le_b`.
+A detailed English derivation is pending.
 -/
 theorem ATOb : 10 ^ 100 * (A ^ 2 * TO ^ 2) ≤ b := le_trans h.ATO h.sb_le_b
 
 /- English proof (translation)
-Establish `hP : (1 : ℝ) ≤ PP` using `le_trans (by norm_num) h.PP_ge`. Establish `h1 : TO * 1 ≤ TO * PP` using `mul_le_mul_of_nonneg_left hP (by linarith [h.one_le_order_alt])`. Combine the linear relations using `[h.hTP]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem TO_le_sb : TO ≤ sb := by
   have hP : (1 : ℝ) ≤ PP := le_trans (by norm_num) h.PP_ge
@@ -92,7 +92,7 @@ theorem TO_le_sb : TO ≤ sb := by
   linarith [h.hTP]
 
 /- English proof (translation)
-Establish `hP : (0 : ℝ) ≤ PP` using `le_trans (by norm_num) h.PP_ge`. Establish `h1 : PP * 1 ≤ PP * TO` using `mul_le_mul_of_nonneg_left h.one_le_order_alt hP`. Combine the linear relations using `[h.hTP]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem PP_le_sb : PP ≤ sb := by
   have hP : (0 : ℝ) ≤ PP := le_trans (by norm_num) h.PP_ge
@@ -100,7 +100,7 @@ theorem PP_le_sb : PP ≤ sb := by
   linarith [h.hTP]
 
 /- English proof (translation)
-Establish `hP : (0 : ℝ) ≤ PP` using `le_trans (by norm_num) h.PP_ge`. Establish `hT : (1 : ℝ) ≤ TO ^ 2` using `by nlinarith [h.one_le_order_alt]`. Establish `h1 : PP ^ 3 * 1 ≤ PP ^ 3 * TO ^ 2` using `mul_le_mul_of_nonneg_left hT (pow_nonneg hP 3)`. Combine the linear relations using `[h.h32]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem param_cube_le_bound : PP ^ 3 ≤ sb := by
   have hP : (0 : ℝ) ≤ PP := le_trans (by norm_num) h.PP_ge
@@ -109,7 +109,7 @@ theorem param_cube_le_bound : PP ^ 3 ≤ sb := by
   linarith [h.h32]
 
 /- English proof (translation)
-The claim follows from `le_trans (pow_le_pow_right₀ h.rd1 hn) h.rd8`.
+A detailed English derivation is pending.
 -/
 theorem rd_pow_le {n : ℕ} (hn : n ≤ 8) : rd ^ n ≤ sb :=
   le_trans (pow_le_pow_right₀ h.rd1 hn) h.rd8
@@ -134,14 +134,14 @@ variable {A k b sb PP TO rd r D2 nW nP q0 : ℝ} (h : Rn A k b sb PP TO rd r D2 
 include h
 
 /- English proof (translation)
-Establish `h1 : 2 * nW ≤ D2 * nW` using `mul_le_mul_of_nonneg_right h.two_le_degree_alt (by linarith [h.forty_le_weight_count])`. Combine the linear relations using `[h.W, h.r6, h.forty_le_weight_count]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nW_le : nW ≤ TO := by
   have h1 : 2 * nW ≤ D2 * nW := mul_le_mul_of_nonneg_right h.two_le_degree_alt (by linarith [h.forty_le_weight_count])
   linarith [h.W, h.r6, h.forty_le_weight_count]
 
 /- English proof (translation)
-Establish `hb` using `h.toBs.b_ge`. Establish `h1` using `h.q0lo`. Establish `h2` using `h.one_le_order_alt`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem modulus_pos_alt : 0 < q0 := by
   have hb := h.toBs.b_ge
@@ -150,14 +150,14 @@ theorem modulus_pos_alt : 0 < q0 := by
   nlinarith
 
 /- English proof (translation)
-Establish `h1 : TO * 1 ≤ TO * TO` using `mul_le_mul_of_nonneg_left h.one_le_order_alt (by linarith [h.one_le_order_alt])`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem TO_le_sq : TO ≤ TO ^ 2 := by
   have h1 : TO * 1 ≤ TO * TO := mul_le_mul_of_nonneg_left h.one_le_order_alt (by linarith [h.one_le_order_alt])
   nlinarith
 
 /- English proof (translation)
-Establish `hq` using `h.modulus_pos_alt`. Establish `h1 : 0 ≤ D2 * nW` using `mul_nonneg (by linarith [h.two_le_degree_alt]) (by linarith [h.forty_le_weight_count])`. Establish `h2 : 0 ≤ D2 * q0` using `mul_nonneg (by linarith [h.two_le_degree_alt]) hq.le`. Combine the linear relations using `[h.q0lo, h.r6]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem kl_ge : b ≤ D2 * nW + 2 * r + (TO + D2) * q0 := by
   have hq := h.modulus_pos_alt
@@ -166,7 +166,7 @@ theorem kl_ge : b ≤ D2 * nW + 2 * r + (TO + D2) * q0 := by
   linarith [h.q0lo, h.r6]
 
 /- English proof (translation)
-Establish `hq` using `h.modulus_pos_alt`. Establish `h40 : 40 * D2 * q0 ≤ TO * q0` using `mul_le_mul_of_nonneg_right h.forty_mul_degree_le_order hq.le`. Establish `hb : (0 : ℝ) ≤ b` using `le_trans (by norm_num) h.toBs.b_ge`. Combine the linear relations using `[h.W, h.q0hi, h.one_le_order_alt]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem kl_le : D2 * nW + 2 * r + (TO + D2) * q0 ≤ 3 * TO + 2 * b := by
   have hq := h.modulus_pos_alt
@@ -175,9 +175,9 @@ theorem kl_le : D2 * nW + 2 * r + (TO + D2) * q0 ≤ 3 * TO + 2 * b := by
   linarith [h.W, h.q0hi, h.one_le_order_alt]
 
 /- English proof (translation)
-Establish `hT1` using `h.one_le_order_alt`. Establish `hD2` using `h.two_le_degree_alt`. Establish `hr6` using `h.r6`. Establish `hDW : D2 * 1 ≤ D2 * nW` using `mul_le_mul_of_nonneg_left (by linarith [h.forty_le_weight_count]) (by linarith)`. Establish `hQ : TO + D2 + 2 * r ≤ 3 * TO` using `by linarith [h.W, h.forty_mul_degree_le_order]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : TO + D2 ≤ 2 * TO` using `by linarith [h.forty_mul_degree_le_order]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem TQ_le : (TO + D2) * (TO + D2 + 2 * r) ≤ 6 * TO ^ 2 := by
   have hT1 := h.one_le_order_alt
@@ -191,14 +191,14 @@ theorem TQ_le : (TO + D2) * (TO + D2 + 2 * r) ≤ 6 * TO ^ 2 := by
     _ = 6 * TO ^ 2 := by ring
 
 /- English proof (translation)
-Establish `h1 : 0 ≤ D2 * nW` using `mul_nonneg (by linarith [h.two_le_degree_alt]) (by linarith [h.forty_le_weight_count])`. Combine the linear relations using `[h.forty_mul_degree_le_order, h.W, h.one_le_order_alt]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem Q_le : TO + D2 + 2 * r ≤ 3 * TO := by
   have h1 : 0 ≤ D2 * nW := mul_nonneg (by linarith [h.two_le_degree_alt]) (by linarith [h.forty_le_weight_count])
   linarith [h.forty_mul_degree_le_order, h.W, h.one_le_order_alt]
 
 /- English proof (translation)
-Establish `h1` using `h.toBs.ATOb`. Establish `h2 : 0 ≤ A ^ 2 * TO ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sq_mul_sq_le : A ^ 2 * TO ^ 2 ≤ b := by
   have h1 := h.toBs.ATOb
@@ -206,7 +206,7 @@ theorem sq_mul_sq_le : A ^ 2 * TO ^ 2 ≤ b := by
   linarith
 
 /- English proof (translation)
-Establish `hb : (0 : ℝ) ≤ b` using `le_trans (by norm_num) h.toBs.b_ge`. Establish `h1 : b * 1 ≤ b * A` using `mul_le_mul_of_nonneg_left (by linarith [h.forty_eight_le_constant]) hb`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem b_le_Ab : b ≤ A * b := by
   have hb : (0 : ℝ) ≤ b := le_trans (by norm_num) h.toBs.b_ge
@@ -214,17 +214,17 @@ theorem b_le_Ab : b ≤ A * b := by
   linarith
 
 /- English proof (translation)
-Establish `hT1` using `h.one_le_order_alt`. Establish `hT0 : (0 : ℝ) ≤ TO` using `by linarith`. Establish `hA1 : (1 : ℝ) ≤ A` using `by linarith [h.forty_eight_le_constant]`. Establish `hA0 : (0 : ℝ) ≤ A` using `by linarith`. Establish `hr0 : (0 : ℝ) ≤ r` using `by linarith [h.r6]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrA : r ≤ A` using `by linarith [h.rA]`. Establish `hD2` using `h.two_le_degree_alt`. Establish `hkl` using `h.kl_le`. Establish `hTQ` using `h.TQ_le`. Establish `hY0 : 0 ≤ (TO + D2) * (TO + D2 + 2 * r)` using `mul_nonneg (by linarith) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : r * ((TO + D2) * (TO + D2 + 2 * r)) ≤ A * (6 * TO ^ 2)` using `mul_le_mul hrA hTQ hY0 hA0`. Establish `hnW` using `h.nW_le`. Establish `hnP : nP ≤ TO` using `le_trans h.nPW hnW`. Establish `e2 : TO * nW ≤ TO * TO` using `mul_le_mul_of_nonneg_left hnW hT0`. Establish `hATO : 1 ≤ A * TO` using `one_le_mul_of_one_le_of_one_le hA1 hT1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTA : TO ≤ A * TO` using `le_mul_of_one_le_left hT0 hA1`. Establish `p1 : A * TO * 1 ≤ A * TO * (A * TO)` using `mul_le_mul_of_nonneg_left hATO (by linarith)`. Establish `p2 : A * TO * TO ≤ A * TO * (A * TO)` using `mul_le_mul_of_nonneg_left hTA (by linarith)`. Establish `eP : A * TO * (A * TO) = A ^ 2 * TO ^ 2` using `by ring`. Establish `hB` using `h.toBs.ATOb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBA` using `h.b_le_Ab`. Establish `i1 : A * (D2 * nW + 2 * r + (TO + D2) * q0 + r * ((TO + D2) * (TO + D2 + 2 * r))) ≤ A * (3 * TO + 2 * b + A * (6 * TO ^ 2))` using `mul_le_mul_of_nonneg_left (by linarith) hA0`. Establish `i2 : A * (nP + TO * nW) ≤ A * (TO + TO * TO)` using `mul_le_mul_of_nonneg_left (by linarith) hA0`. Establish `f1 : A * (3 * TO + 2 * b + A * (6 * TO ^ 2)) = 2 * (A * b) + 3 * (A * TO) + 6 * (A ^ 2 * TO ^ 2)` using `by ring`. Establish `f2 : A * (TO + TO * TO) = A * TO + A * TO * TO` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP0 : (0 : ℝ) ≤ A ^ 2 * TO ^ 2` using `by positivity`. Establish `f3 : A * b = A * b` using `rfl`. Establish `hAb : b ≤ A * b` using `hBA`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sK {s : ℝ} (hs : s ≤ A * (D2 * nW + 2 * r + (TO + D2) * q0 + r * ((TO + D2) * (TO + D2 + 2 * r))) +
     A * (nP + TO * nW) + 1) : s ≤ 4 * A * b := by
@@ -261,17 +261,17 @@ theorem sK {s : ℝ} (hs : s ≤ A * (D2 * nW + 2 * r + (TO + D2) * q0 + r * ((T
   nlinarith
 
 /- English proof (translation)
-Establish `hT1` using `h.one_le_order_alt`. Establish `hT0 : (0 : ℝ) ≤ TO` using `by linarith`. Establish `hA1 : (1 : ℝ) ≤ A` using `by linarith [h.forty_eight_le_constant]`. Establish `hA0 : (0 : ℝ) ≤ A` using `by linarith`. Establish `hr0 : (0 : ℝ) ≤ r` using `by linarith [h.r6]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrA : r ≤ A` using `by linarith [h.rA]`. Establish `hD2` using `h.two_le_degree_alt`. Establish `hQ` using `h.Q_le`. Establish `hnW` using `h.nW_le`. Establish `hq` using `h.q0hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : s * TO ≤ (A * (q0 + r * (TO + D2 + 2 * r)) + A * nW + 1) * TO` using `mul_le_mul_of_nonneg_right hs hT0`. Establish `e1 : r * (TO + D2 + 2 * r) ≤ A * (3 * TO)` using `mul_le_mul hrA hQ (by linarith) hA0`. Establish `e2 : r * (TO + D2 + 2 * r) * TO ≤ A * (3 * TO) * TO` using `mul_le_mul_of_nonneg_right e1 hT0`. Establish `e3 : nW * TO ≤ TO * TO` using `mul_le_mul_of_nonneg_right hnW hT0`. Establish `e4 : A * (TO * q0) ≤ A * (b + TO)` using `mul_le_mul_of_nonneg_left hq hA0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e5 : A * (r * (TO + D2 + 2 * r) * TO) ≤ A * (A * (3 * TO) * TO)` using `mul_le_mul_of_nonneg_left e2 hA0`. Establish `e6 : A * (nW * TO) ≤ A * (TO * TO)` using `mul_le_mul_of_nonneg_left e3 hA0`. Establish `eX : (A * (q0 + r * (TO + D2 + 2 * r)) + A * nW + 1) * TO = A * (TO * q0) + A * (r * (TO + D2 + 2 * r) * TO) + A * (nW * TO) + TO` using `by ring`. Establish `hATO : 1 ≤ A * TO` using `one_le_mul_of_one_le_of_one_le hA1 hT1`. Establish `hTA : TO ≤ A * TO` using `le_mul_of_one_le_left hT0 hA1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p1 : A * TO * 1 ≤ A * TO * (A * TO)` using `mul_le_mul_of_nonneg_left hATO (by linarith)`. Establish `p2 : A * TO * TO ≤ A * TO * (A * TO)` using `mul_le_mul_of_nonneg_left hTA (by linarith)`. Establish `eA : A * (A * (3 * TO) * TO) = 3 * (A * TO * (A * TO))` using `by ring`. Establish `eB : A * (TO * TO) = A * TO * TO` using `by ring`. Establish `eP : A * TO * (A * TO) = A ^ 2 * TO ^ 2` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eC : A * (b + TO) = A * b + A * TO` using `by ring`. Establish `hB` using `h.toBs.ATOb`. Establish `hP0 : (0 : ℝ) ≤ A ^ 2 * TO ^ 2` using `by positivity`. Establish `hAb` using `h.b_le_Ab`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sL {s : ℝ} (hs : s ≤ A * (q0 + r * (TO + D2 + 2 * r)) + A * nW + 1) : s * TO ≤ 2 * A * b := by
   have hT1 := h.one_le_order_alt
@@ -308,15 +308,15 @@ theorem sL {s : ℝ} (hs : s ≤ A * (q0 + r * (TO + D2 + 2 * r)) + A * nW + 1) 
   linarith
 
 /- English proof (translation)
-Establish `hT1` using `h.one_le_order_alt`. Establish `hT0 : (0 : ℝ) ≤ TO` using `by linarith`. Establish `hA1 : (1 : ℝ) ≤ A` using `by linarith [h.forty_eight_le_constant]`. Establish `hA0 : (0 : ℝ) ≤ A` using `by linarith`. Establish `hr0 : (0 : ℝ) ≤ r` using `by linarith [h.r6]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrA : r ≤ A` using `by linarith [h.rA]`. Establish `hD2` using `h.two_le_degree_alt`. Establish `hQ` using `h.Q_le`. Establish `hq0` using `h.modulus_pos_alt`. Establish `hq1 : q0 * 1 ≤ q0 * TO` using `mul_le_mul_of_nonneg_left hT1 hq0.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : q0 ≤ b + TO` using `by linarith [h.q0hi]`. Establish `e1 : r * (TO + D2 + 2 * r) ≤ A * (3 * TO)` using `mul_le_mul hrA hQ (by linarith) hA0`. Establish `e2 : A * (q0 + r * (TO + D2 + 2 * r)) ≤ A * (b + TO + A * (3 * TO))` using `mul_le_mul_of_nonneg_left (by linarith) hA0`. Establish `hATO : 1 ≤ A * TO` using `one_le_mul_of_one_le_of_one_le hA1 hT1`. Establish `p1 : A * TO * 1 ≤ A * TO * (A * TO)` using `mul_le_mul_of_nonneg_left hATO (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTT : A * A * TO ≤ A * A * (TO * TO)` using `mul_le_mul_of_nonneg_left (by nlinarith) (by positivity)`. Establish `eA : A * (b + TO + A * (3 * TO)) = A * b + A * TO + 3 * (A * A * TO)` using `by ring`. Establish `eP : A * TO * (A * TO) = A ^ 2 * TO ^ 2` using `by ring`. Establish `eQ : A * A * (TO * TO) = A ^ 2 * TO ^ 2` using `by ring`. Establish `hB` using `h.toBs.ATOb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP0 : (0 : ℝ) ≤ A ^ 2 * TO ^ 2` using `by positivity`. Establish `hAb` using `h.b_le_Ab`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem dL {d : ℝ} (hd : d ≤ A * (q0 + r * (TO + D2 + 2 * r))) : d ≤ 2 * A * b := by
   have hT1 := h.one_le_order_alt
@@ -348,9 +348,9 @@ theorem dL {d : ℝ} (hd : d ≤ A * (q0 + r * (TO + D2 + 2 * r))) : d ≤ 2 * A
 end Rn
 
 /- English proof (translation)
-Establish `hb1 : (1 : ℝ) ≤ b` using `le_trans (by norm_num) hb`. Establish `hk0 : (0 : ℝ) ≤ k` using `by linarith`. Establish `hb0 : (0 : ℝ) ≤ b` using `by linarith`. Establish `hki : k ^ i ≤ k ^ 8` using `pow_le_pow_right₀ hk hi`. Establish `hbj : b ^ j ≤ b ^ 7` using `pow_le_pow_right₀ hb1 (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1 : c * k ^ i ≤ 10 ^ 100 * k ^ 8` using `mul_le_mul hc hki (pow_nonneg hk0 i) (by norm_num)`. Establish `s2 : c * k ^ i * b ^ j ≤ 10 ^ 100 * k ^ 8 * b ^ 7` using `mul_le_mul s1 hbj (pow_nonneg hb0 j) (mul_nonneg (by norm_num) (pow_nonneg hk0 8))`. Establish `s3 : 10 ^ 100 * k ^ 8 * b ^ 7 ≤ b * k ^ 8 * b ^ 7` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hb (pow_nonneg hk0 8)) (pow_nonneg hb0 7)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem absorb {k b c : ℝ} (hk : 1 ≤ k) (hb : 10 ^ 100 ≤ b) (hc0 : 0 ≤ c) (hc : c ≤ 10 ^ 100) {i j : ℕ} (hi : i ≤ 8)
     (hj : j + 1 ≤ 8) : c * k ^ i * b ^ j ≤ (k * b) ^ 8 := by
@@ -373,29 +373,29 @@ variable {A k b sb PP TO rd r D2 nW nP q0 : ℝ} (h : Rn A k b sb PP TO rd r D2 
 include h
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le (by norm_num) h.toBs.b_ge`.
+A detailed English derivation is pending.
 -/
 theorem b_pos : 0 < b := lt_of_lt_of_le (by norm_num) h.toBs.b_ge
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le (by norm_num) h.toBs.sb_ge`.
+A detailed English derivation is pending.
 -/
 theorem sb_pos : 0 < sb := lt_of_lt_of_le (by norm_num) h.toBs.sb_ge
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le (by norm_num) h.toBs.PP_ge`.
+A detailed English derivation is pending.
 -/
 theorem PP_pos : 0 < PP := lt_of_lt_of_le (by norm_num) h.toBs.PP_ge
 
 /- English proof (translation)
-Establish `h1 : A * b ≤ 2 * k ^ 2 * b` using `mul_le_mul_of_nonneg_right h.Ak h.b_pos.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem d_le {d : ℝ} (hd : d ≤ 2 * A * b) : d ≤ 4 * k ^ 2 * b := by
   have h1 : A * b ≤ 2 * k ^ 2 * b := mul_le_mul_of_nonneg_right h.Ak h.b_pos.le
   linarith
 
 /- English proof (translation)
-Establish `h1` using `pow_le_pow_left₀ hd0 (h.d_le hd) 2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem d_sq {d : ℝ} (hd0 : 0 ≤ d) (hd : d ≤ 2 * A * b) : d ^ 2 ≤ 16 * k ^ 4 * b ^ 2 := by
   have h1 := pow_le_pow_left₀ hd0 (h.d_le hd) 2
@@ -403,16 +403,16 @@ theorem d_sq {d : ℝ} (hd0 : 0 ≤ d) (hd : d ≤ 2 * A * b) : d ^ 2 ≤ 16 * k
     _ = 16 * k ^ 4 * b ^ 2 := by ring
 
 /- English proof (translation)
-Combine the linear relations using `[h.k8]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem k1 : 1 ≤ k := by linarith [h.k8]
 
 /- English proof (translation)
-Establish `hsb0` using `h.sb_pos.le`. Establish `e1 : (rd ^ 2) ^ 4 ≤ sb`. Establish `: (rd ^ 2) ^ 4 = rd ^ 8` using `by ring`. Rewrite using `[this]`. Conclude with `h.rd8`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : PP ^ 3 ≤ sb` using `h.toBs.param_cube_le_bound`. Establish `e3` using `h.d_sq hd0 hd`. Establish `s1 : (rd ^ 2) ^ 4 * PP ^ 3 ≤ sb * sb` using `mul_le_mul e1 e2 (pow_nonneg h.PP_pos.le 3) hsb0`. Establish `s2 : (rd ^ 2) ^ 4 * PP ^ 3 * d ^ 2 ≤ sb * sb * (16 * k ^ 4 * b ^ 2)` using `mul_le_mul s1 e3 (sq_nonneg d) (mul_nonneg hsb0 hsb0)`. Establish `s3 : sb * sb * (16 * k ^ 4 * b ^ 2) = 16 * k ^ 4 * b ^ 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.sb_sq]`. Expand and normalize the polynomial expressions, which then agree. Establish `s4 : 16 * k ^ 4 * b ^ 3 ≤ (k * b) ^ 8` using `absorb h.k1 h.toBs.b_ge (by norm_num) (by norm_num) (by norm_num) (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem h3a {d q : ℝ} (hd0 : 0 ≤ d) (hd : d ≤ 2 * A * b) (hq : (k * b) ^ 8 ≤ q) :
     (rd ^ 2) ^ 4 * PP ^ 3 * d ^ 2 ≤ q := by
@@ -432,18 +432,18 @@ theorem h3a {d q : ℝ} (hd0 : 0 ≤ d) (hd : d ≤ 2 * A * b) (hq : (k * b) ^ 8
   linarith
 
 /- English proof (translation)
-Combine the linear relations using `[sq_nonneg k, h.rA, h.Ak]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem r_le : r ≤ k ^ 2 := by linarith [sq_nonneg k, h.rA, h.Ak]
 
 /- English proof (translation)
-Establish `B` using `h.toBs`. Establish `hb0` using `h.b_pos.le`. Establish `hT : TO ≤ b` using `le_trans B.TO_le_sb B.sb_le_b`. Establish `hrd : rd ^ 2 ≤ b` using `le_trans (B.rd_pow_le (by norm_num)) B.sb_le_b`. Establish `hP : PP ≤ b` using `le_trans B.PP_le_sb B.sb_le_b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd2` using `h.d_sq hd0 hd`. Establish `hk2 : (0 : ℝ) ≤ 1250 * k ^ 2` using `by positivity`. Establish `s1 : TO * (1250 * r) ≤ b * (1250 * k ^ 2)` using `mul_le_mul hT (by linarith [h.r_le]) (by linarith [h.r6]) hb0`. Establish `n1 : 0 ≤ b * (1250 * k ^ 2)` using `mul_nonneg hb0 hk2`. Establish `s2 : TO * (1250 * r) * rd ^ 2 ≤ b * (1250 * k ^ 2) * b` using `mul_le_mul s1 hrd (sq_nonneg rd) n1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2 : 0 ≤ b * (1250 * k ^ 2) * b` using `mul_nonneg n1 hb0`. Establish `s3 : TO * (1250 * r) * rd ^ 2 * PP ≤ b * (1250 * k ^ 2) * b * b` using `mul_le_mul s2 hP h.PP_pos.le n2`. Establish `n3 : 0 ≤ b * (1250 * k ^ 2) * b * b` using `mul_nonneg n2 hb0`. Establish `s4 : TO * (1250 * r) * rd ^ 2 * PP * d ^ 2 ≤ b * (1250 * k ^ 2) * b * b * (16 * k ^ 4 * b ^ 2)` using `mul_le_mul s3 hd2 (sq_nonneg d) n3`. Establish `s5 : 20000 * k ^ 6 * b ^ 5 ≤ (k * b) ^ 8` using `absorb h.k1 B.b_ge (by norm_num) (by norm_num) (by norm_num) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s6 : b * (1250 * k ^ 2) * b * b * (16 * k ^ 4 * b ^ 2) = 20000 * k ^ 6 * b ^ 5` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem h3b {d q : ℝ} (hd0 : 0 ≤ d) (hd : d ≤ 2 * A * b) (hq : (k * b) ^ 8 ≤ q) :
     TO * (1250 * r) * rd ^ 2 * PP * d ^ 2 ≤ q := by
@@ -469,11 +469,11 @@ theorem h3b {d q : ℝ} (hd0 : 0 ≤ d) (hd : d ≤ 2 * A * b) (hq : (k * b) ^ 8
   linarith
 
 /- English proof (translation)
-Establish `B` using `h.toBs`. Establish `hb0` using `h.b_pos.le`. Establish `hrd4 : (rd ^ 2) ^ 2 ≤ b`. Establish `: (rd ^ 2) ^ 2 = rd ^ 4` using `by ring`. Rewrite using `[this]; exact le_trans (B.rd_pow_le (by norm_num)) B.sb_le_b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrd : rd ^ 2 ≤ b` using `le_trans (B.rd_pow_le (by norm_num)) B.sb_le_b`. Establish `hP : PP ≤ b` using `le_trans B.PP_le_sb B.sb_le_b`. Establish `hd2` using `h.d_sq hd0 hd`. Establish `hPP0` using `h.PP_pos.le`. Establish `t1 : fm * (rd ^ 2) ^ 2 ≤ k ^ 4 * b` using `mul_le_mul hf hrd4 (by positivity) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t2 : rd ^ 2 * PP ≤ b * b` using `mul_le_mul hrd hP hPP0 hb0`. Establish `t3 : rd ^ 2 * PP * d ^ 2 ≤ b * b * (16 * k ^ 4 * b ^ 2)` using `mul_le_mul t2 hd2 (sq_nonneg d) (mul_nonneg hb0 hb0)`. Establish `t4 : fm * (rd ^ 2) ^ 2 * (rd ^ 2 * PP * d ^ 2) ≤ k ^ 4 * b * (b * b * (16 * k ^ 4 * b ^ 2))` using `mul_le_mul t1 t3 (mul_nonneg (mul_nonneg (sq_nonneg rd) hPP0) (sq_nonneg d)) (mul_nonneg (by positivity) hb0)`. Establish `t5 : 32 * k ^ 8 * b ^ 5 ≤ (k * b) ^ 8` using `absorb h.k1 B.b_ge (by norm_num) (by norm_num) (by norm_num) (by norm_num)`. Establish `t6 : 2 * (k ^ 4 * b * (b * b * (16 * k ^ 4 * b ^ 2))) = 32 * k ^ 8 * b ^ 5` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -500,9 +500,9 @@ theorem h3e {d q fm : ℝ} (hd0 : 0 ≤ d) (hd : d ≤ 2 * A * b) (hq : (k * b) 
   linarith
 
 /- English proof (translation)
-Establish `B` using `h.toBs`. Establish `hb1 : (1 : ℝ) ≤ b` using `le_trans (by norm_num) B.b_ge`. Establish `hT : TO ≤ b` using `le_trans B.TO_le_sb B.sb_le_b`. Establish `h1 : D2 + 2 ≤ 2 * b` using `by linarith [h.forty_mul_degree_le_order, h.one_le_order_alt, B.b_ge]`. Establish `h2` using `h.d_le hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (D2 + 2) * d ≤ 2 * b * (4 * k ^ 2 * b)` using `mul_le_mul h1 h2 hd0 (by linarith)`. Establish `hk1 : (1 : ℝ) ≤ k ^ 2` using `by nlinarith [h.k1]`. Establish `hb2 : (1 : ℝ) ≤ b ^ 2` using `by nlinarith`. Establish `h4 : 1 * 1 ≤ k ^ 2 * b ^ 2` using `mul_le_mul hk1 hb2 zero_le_one (by linarith)`. Establish `h5 : 10 * k ^ 2 * b ^ 2 ≤ (k * b) ^ 8` using `absorb h.k1 B.b_ge (by norm_num) (by norm_num) (by norm_num) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -521,9 +521,9 @@ theorem h3f {d q : ℝ} (hd0 : 0 ≤ d) (hd : d ≤ 2 * A * b) (hq : (k * b) ^ 8
   nlinarith
 
 /- English proof (translation)
-Establish `B` using `h.toBs`. Establish `hb1 : (1 : ℝ) ≤ b` using `le_trans (by norm_num) B.b_ge`. Establish `h1 : A * b ≤ 2 * k ^ 2 * b` using `mul_le_mul_of_nonneg_right h.Ak (by linarith)`. Establish `hk : (64 : ℝ) ≤ k ^ 2` using `by nlinarith [h.k8]`. Establish `h2 : 64 * 1 ≤ k ^ 2 * b` using `mul_le_mul hk hb1 zero_le_one (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 18 * k ^ 2 * b ^ 1 ≤ (k * b) ^ 8` using `absorb h.k1 B.b_ge (by norm_num) (by norm_num) (by norm_num) (by norm_num)`. Establish `h4 : b ^ 1 = b` using `pow_one b`. Rewrite `h3` using `[h4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem g_gt {s q : ℝ} (hs : s ≤ 4 * A * b) (hq : (k * b) ^ 8 ≤ q) : 2 * s + 2 < q := by
   have B := h.toBs
@@ -540,11 +540,11 @@ theorem g_gt {s q : ℝ} (hs : s ≤ 4 * A * b) (hq : (k * b) ^ 8 ≤ q) : 2 * s
 end Rn
 
 /- English proof (translation)
-Establish `hZ1 : (1 : ℝ) ≤ Z` using `le_trans (by norm_num) hZ`. Establish `hZ0 : (0 : ℝ) ≤ Z` using `by linarith`. Establish `hZZ : Z ≤ Z ^ 10` using `by simpa using pow_le_pow_right₀ hZ1 (show 1 ≤ 10 by norm_num)`. Establish `hZ10 : (10 : ℝ) ^ 60 ≤ Z ^ 10` using `le_trans hZ hZZ`. Establish `hZ12 : Z ^ 2 * 10 ^ 60 ≤ Z ^ 2 * Z ^ 10` using `mul_le_mul_of_nonneg_left hZ10 (sq_nonneg Z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e12 : Z ^ 2 * Z ^ 10 = Z ^ 12` using `by ring`. Establish `hZ2 : (1 : ℝ) ≤ Z ^ 2` using `by nlinarith`. Establish `a1 : tableDegreeThreeBase * lk ≤ 30 * Z * lk` using `mul_le_mul_of_nonneg_right hP0 (by linarith)`. Establish `a2 : 30 * Z * lk ≤ 30 * Z * (6 * Z)` using `mul_le_mul_of_nonneg_left hl (by linarith)`. Establish `a3 : Z * lk ≤ Z * (6 * Z)` using `mul_le_mul_of_nonneg_left hl hZ0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : 2 * 0 + 1 / 2 + tableDegreeThreeBase * lk + 3 / 2 * (Z * lk + PO) ≤ 600 * Z ^ 2` using `by nlinarith`. Establish `hP1 : (1 : ℝ) ≤ PP` using `by nlinarith`. Establish `hPsq : PP * 1 ≤ PP * PP` using `mul_le_mul_of_nonneg_left hP1 (by linarith)`. Establish `hPD : PP ^ 2 * 1 ≤ PP ^ 2 * Dp` using `mul_le_mul_of_nonneg_left hD (sq_nonneg PP)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
 Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/

@@ -17,37 +17,35 @@ namespace GlobalTheory.JointHarm
 open GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes in
 
 /- English proof (translation)
-Introduce `D i σ hσ M _`. Substitute `hσ` using the available equality. Establish `hnr : ∃ s : ℕ, D.R.r + D.R.t = 2 * s`. Take `⟨a, ha⟩` from `Formalism.L2.NTheta.odd_r D.R`. Take `⟨b, hb⟩` from `D.R.t_odd`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a + b + 1, by omega⟩`. Take `⟨s, hs⟩` from `hnr`. Establish `hsq : (D.R.r : ℚ) + D.R.t = 2 * s` using `by exact_mod_cast hs`. Use `choose e he using fun τ : D.what₂.Tau => (D.hc τ).e_int i`. Use `choose d hd using fun τ : D.what₂.Tau => (GlobalTheory.T.thetaWeightArithmeticAtPlace_proof D i τ).d_int`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun τ => -e τ + s, fun τ => -e τ - s, fun τ => -d τ, fun τ => ?_⟩` and prove the remaining obligations. Establish `A` using `GlobalTheory.T.thetaWeightArithmeticAtPlace_proof D i τ`. Take `⟨hpq, hV⟩` from `A.rank`. Establish `hVq : ((Vc D i).rank : ℚ) = 2 * s` using `by rw [hV, hs]; push_cast; rfl`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[he, hVq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he, hVq]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `hd τ` as an intermediate fact. Unfold `dShift at this`. Use `push_cast`. Rewrite using `[← this]`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hen` using `M.enum τ`. Rewrite `hen` using `[GlobalTheory.ThetaFiresProbe.parAt_fixed]`. Take `⟨hn, hx⟩` from `GlobalTheory.HolDS.lowK_holPar (Formalism.L2.NTheta.holOK_kapW (D.hc τ) _ _ hpq) hen`. Introduce `a`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, rfl⟩ : ∃ x, a = Fin.cast hn (finSumFinEquiv x)` from `⟨finSumFinEquiv.symm (Fin.cast hn.symm a), by simp⟩`. Rewrite using `[hx x]`. Use `congr 1`. Break down `x with c | c` into its components or cases. Establish `h1` using `A.kap_plus c`.
+Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hsq, eS, he]`. Establish `h2 : Formalism.L2.NTheta.kapW (D.hc τ) (pS D i τ) (qS D i τ) (Sum.inl c) = (aP D i τ c : ℤ) + (-e τ + s)`. Establish `: ((Formalism.L2.NTheta.kapW (D.hc τ) (pS D i τ) (qS D i τ) (Sum.inl c) : ℤ) : ℚ) = (((aP D i τ c : ℤ) + (-e τ + s) : ℤ) : ℚ)` using `by rw [h1]; push_cast; ring`. Conclude with `this` after adjusting the coercions. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `wtK`. Rewrite using `[if_pos (by simp)]`. Simplify using the standard rewrite rules. Establish `h1` using `A.kap_minus c`. Rewrite `h1` using `[hsq, eS, he]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Formalism.L2.NTheta.kapW (D.hc τ) (pS D i τ) (qS D i τ) (Sum.inr c) = -(aM D i τ (qS D i τ - 1 - c) : ℤ) + (-e τ - s)`. Establish `: ((Formalism.L2.NTheta.kapW (D.hc τ) (pS D i τ) (qS D i τ) (Sum.inr c) : ℤ) : ℚ) = ((-(aM D i τ (qS D i τ - 1 - c) : ℤ) + (-e τ - s) : ℤ) : ℚ)` using `by rw [h1]; push_cast; ring`. Conclude with `this` after adjusting the coercions. Rewrite using `[h2]`. Unfold `wtK`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by simp)]`. Establish `h3 : (Wc D i).rank - 1 - ((Fin.cast hn (finSumFinEquiv (Sum.inr c)) : Fin (Wc D i).rank) : ℕ) = qS D i τ - 1 - c`. Simplify using `only [finSumFinEquiv_apply_right, Fin.val_cast, Fin.val_natAdd]`. Rewrite using `[← hn]`. Simplify using `only [qS]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[h3]`. Introduce `j`. Establish `h1` using `A.coef_eq j`. Rewrite `h1` using `[hd]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h2 : (Bridge.lamLdef (D` using `D) (Vc D i).rank ((i : ℕ) + 1) τ).w j = thetaWt D i τ j + d τ := by`. Conclude with `h1` after adjusting the coercions. Rewrite using `[h2]`. Establish `hj` using `j.2`. Unfold `wtU thetaWt`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [pS, qS] at hpq ⊢`. Distinguish the cases in `c1 : (j : ℕ) < ((Wc D i).sig (tauE D τ)).1`. Establish `ht` using `D.R.three_m_lt_t`. Rewrite using `[if_pos c1, if_pos c1, if_neg (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg c1, if_neg c1]`. Distinguish the cases in `c2 : (j : ℕ) < ((Wc D i).sig (tauE D τ)).1 + D.R.t`. Rewrite using `[if_pos c2, if_neg (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg c2, if_pos (by omega)]`.
-
-Establish `h3 : (Vc D i).rank - 1 - (j : ℕ) = ((Wc D i).sig (tauE D τ)).2 - 1 - (j - (((Wc D i).sig (tauE D τ)).1 + D.R.t))`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem weights_of_minors : ∀ (D : D7) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), σ = D.what₂.embLL → ∀ M : DSModel (Wc D i) (parAt (Wc D i) σ), (∀ τ a, M.ε τ a = decide ((a : ℕ) < ((Wc D i).sig (tauE D τ)).1)) → ∃ x₁ x₂ x₃ : D.what₂.Tau → ℤ, ∀ τ, (x₁ τ : ℚ) = -(D.hc τ).e i + ((Vc D i).rank : ℚ) / 2 ∧ (x₂ τ : ℚ) = -(D.hc τ).e i - ((Vc D i).rank : ℚ) / 2 ∧ (x₃ τ : ℚ) = -(((((Wc D i).sig (tauE D τ)).1 : ℚ) - ((Wc D i).sig (tauE D τ)).2) / 2 + (-(D.hc τ).e i - 1 / 2)) ∧ (∀ a, Formalism.QuantumDeterminants.lowK (M.ε τ) (M.lam τ) a = (wtK ((Wc D i).sig (tauE D τ)).1 (aPl D i ((Wc D i).sig (tauE D τ)).1 τ) (aMi D i ((Wc D i).sig (tauE D τ)).1 ((Wc D i).sig (tauE D τ)).2 τ) (x₁ τ) (x₂ τ) a : ℝ)) ∧ ∀ j : Fin (Vc D i).rank, wtU ((Wc D i).sig (tauE D τ)).1 ((Wc D i).sig (tauE D τ)).2 (aPl D i ((Wc D i).sig (tauE D τ)).1 τ) (aMi D i ((Wc D i).sig (tauE D τ)).1 ((Wc D i).sig (tauE D τ)).2 τ) (x₃ τ) j = -(Bridge.lamLdef (D := D) (Vc D i).rank ((i : ℕ) + 1) τ).w j := by
   intro D i σ hσ M _

@@ -10,7 +10,7 @@ namespace GlobalTheory.Mem.Per
 def posOr1 (x : ℝ) : ℝ := if 0 < x then x else 1
 
 /- English proof (translation)
-Unfold `posOr1`. Use `split_ifs with h`. Conclude with `h`. Conclude with `one_pos`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem posOr1_pos (x : ℝ) : 0 < posOr1 x := by
   unfold posOr1
@@ -64,7 +64,7 @@ def dlogK : ℝ :=
     DirichletCharacter.LFunction ((quadraticChar (ZMod H.d)).ringHomComp (Int.castRingHom ℂ)) 1).re
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isHalfPt_iff (D : D7) (Λ : AddSubgroup ℂ) (t : ℂ) : IsHalfPt D.host.d Λ t ↔ GL3Theta.IsTwoTorsionPointUnkilled D Λ t := Iff.rfl
 

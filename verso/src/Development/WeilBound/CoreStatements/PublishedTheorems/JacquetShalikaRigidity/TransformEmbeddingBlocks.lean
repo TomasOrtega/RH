@@ -17,7 +17,7 @@ namespace TransformEmbeddingBlocks
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Proceed by induction on `d generalizing f with`. Consider the case `zero => rfl`. Consider the case `succ d ih => show pT ψ j (d + 1) (colT ψ (j + (d + 1)) f) = colT ψ j (pT ψ (j + 1) d (colT ψ (j + 1 + d) f))`. Rewrite using `[ih, show j + 1 + d = j + (d + 1) by omega]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem pT_succ' (ψ : AddChar (Ad E) ℂ) {a : ℕ} (j d : ℕ) (f : GA E a → ℂ) :
     pT ψ j (d + 1) f = colT ψ j (pT ψ (j + 1) d f) := by
@@ -28,7 +28,7 @@ theorem pT_succ' (ψ : AddChar (Ad E) ℂ) {a : ℕ} (j d : ℕ) (f : GA E a →
     rw [ih, show j + 1 + d = j + (d + 1) by omega]
 
 /- English proof (translation)
-Proceed by induction on `d generalizing f with`. Consider the case `zero => rfl`. Consider the case `succ d ih => show whit ψ (i + d) (colT ψ (i + d + 1) f) = whit ψ i (pT ψ (i + 1) d (colT ψ (i + 1 + d) f))`. Rewrite using `[ih, show i + 1 + d = i + d + 1 by omega]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem whit_pT (ψ : AddChar (Ad E) ℂ) {a : ℕ} (i d : ℕ) (f : GA E a → ℂ) :
     whit ψ (i + d) f = whit ψ i (pT ψ (i + 1) d f) := by
@@ -39,7 +39,7 @@ theorem whit_pT (ψ : AddChar (Ad E) ℂ) {a : ℕ} (i d : ℕ) (f : GA E a → 
     rw [ih, show i + 1 + d = i + d + 1 by omega]
 
 /- English proof (translation)
-Proceed by induction on `d generalizing f with`. Consider the case `zero => exact hf`. Consider the case `succ d ih => show Good ψ i (pT ψ (i + 1) d (colT ψ (i + 1 + d) f))`. Rewrite using `[show i + 1 + d = i + d + 1 by omega]`. Conclude with `ih _ (by omega) (GlobalTheory.CuspRep.Generic.good_colT (m := i + d) hψ h hf)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_pT {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) {a : ℕ} (i d : ℕ) (f : GA E a → ℂ)
     (h : i + d < a) (hf : Good ψ (i + d) f) : Good ψ i (pT ψ (i + 1) d f) := by
@@ -51,7 +51,7 @@ theorem good_pT {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) {a : ℕ} (i d : ℕ
     exact ih _ (by omega) (GlobalTheory.CuspRep.Generic.good_colT (m := i + d) hψ h hf)
 
 /- English proof (translation)
-Use `⟨fun i c h => ?_, fun i => ?_, fun i c _ => rfl⟩` and prove the remaining obligations. Conclude with `Matrix.one_apply_ne (ne_of_gt h)`. Conclude with `Matrix.one_apply_eq i`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem uu_one {a : ℕ} (j : ℕ) : UU j (1 : GA E a) := by
   refine ⟨fun i c h => ?_, fun i => ?_, fun i c _ => rfl⟩
@@ -59,13 +59,13 @@ theorem uu_one {a : ℕ} (j : ℕ) : UU j (1 : GA E a) := by
   · exact Matrix.one_apply_eq i
 
 /- English proof (translation)
-Take `⟨x1, x2, x3⟩` from `hx`. Take `⟨y1, y2, y3⟩` from `hy`. Use `⟨fun i c h => ?_, fun i => ?_, fun i c h => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `lt_or_ge l i with hl | hl` into its components or cases. Rewrite using `[x1 i l hl, zero_mul]`. Rewrite using `[y1 l c (lt_of_lt_of_le h hl), mul_zero]`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single i, x2, y2, one_mul]`. Introduce `l _ hl`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `lt_or_gt_of_ne hl with hl | hl` into its components or cases. Rewrite using `[x1 i l hl, zero_mul]`. Rewrite using `[y1 l i hl, mul_zero]`. Simplify using the standard rewrite rules. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single c, y3 c c h, x3 i c h, Matrix.one_apply_eq, mul_one]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `l _ hl`. Rewrite using `[y3 l c h, Matrix.one_apply_ne hl, mul_zero]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uu_mul {a j : ℕ} {x y : GA E a} (hx : UU j x) (hy : UU j y) : UU j (x * y) := by
   obtain ⟨x1, x2, x3⟩ := hx
@@ -88,7 +88,7 @@ theorem uu_mul {a j : ℕ} {x y : GA E a} (hx : UU j x) (hy : UU j y) : UU j (x 
     · simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(1 + posM Subtype.val x : Matrix (Fin a) (Fin a) R) i c = _`. Rewrite using `[Matrix.add_apply, posM, Matrix.sum_apply]`. Simplify using `only [Matrix.single_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blkU_apply {R : Type} [CommRing R] {a r n : ℕ} (x : UnipotentBlockColumnIndex a r n → R) (i c : Fin a) :
     (blkU x).val i c = (1 : Matrix (Fin a) (Fin a) R) i c + ∑ t, if t.1.1 = i ∧ t.1.2 = c then x t else 0 := by
@@ -97,7 +97,7 @@ theorem blkU_apply {R : Type} [CommRing R] {a r n : ℕ} (x : UnipotentBlockColu
   simp only [Matrix.single_apply]
 
 /- English proof (translation)
-Rewrite using `[blkU_apply, Finset.sum_eq_zero, add_zero]`. Introduce `t _`. Rewrite using `[if_neg (h t)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem blkU_apply_of {R : Type} [CommRing R] {a r n : ℕ} (x : UnipotentBlockColumnIndex a r n → R) (i c : Fin a)
     (h : ∀ t : UnipotentBlockColumnIndex a r n, ¬ (t.1.1 = i ∧ t.1.2 = c)) :
@@ -107,13 +107,13 @@ theorem blkU_apply_of {R : Type} [CommRing R] {a r n : ℕ} (x : UnipotentBlockC
   rw [if_neg (h t)]
 
 /- English proof (translation)
-Use `⟨fun r c h => ?_, fun r => ?_, fun r c h => ?_⟩` and prove the remaining obligations. Rewrite using `[blkU_apply_of _ _ _ ?_, Matrix.one_apply_ne (ne_of_gt h)]`. Introduce and unpack `t ⟨e1, e2⟩`. Use `t.2` as an intermediate fact. Substitute `e1 e2` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite `h` using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[blkU_apply_of _ _ _ ?_, Matrix.one_apply_eq]`. Introduce and unpack `t ⟨e1, e2⟩`. Use `t.2` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e3 : (t.1.1 : ℕ) = t.1.2` using `by rw [e1, e2]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[blkU_apply_of _ _ _ ?_]`. Introduce and unpack `t ⟨e1, e2⟩`. Use `t.2` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Substitute `e1 e2` using the available equality. Use linear arithmetic over natural numbers and integers.
+Substitute using the available equality. Use linear arithmetic over natural numbers and integers.
 -/
 theorem uu_blkU {a j i : ℕ} (hj : j ≤ i) (y : UnipotentBlockColumnIndex a i i → Ad E) : UU j (blkU y : GA E a) := by
   refine ⟨fun r c h => ?_, fun r => ?_, fun r c h => ?_⟩
@@ -135,9 +135,9 @@ theorem uu_blkU {a j i : ℕ} (hj : j ≤ i) (y : UnipotentBlockColumnIndex a i 
     omega
 
 /- English proof (translation)
-Set `_ : MeasurableSpace G` to `borel G`. Unfold `avg`. Use `split_ifs with hp`. Take `⟨-, -, h1⟩` from `hp.choose_spec`. Use `norm_setIntegral_le_of_norm_le_const (μ := hp.choose.1) (s := hp.choose.2) (f := Φ) (C := B) (by rw [h1]; exact ENNReal.one_lt_top) (fun x _ => h x)` as an intermediate fact.
+Introduce a local definition for the expression. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Measure.real, h1, ENNReal.toReal_one, mul_one]`. Then use the resulting hypothesis. Simplify using `using hB`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_avg_le {G : Type} [AddCommGroup G] [TopologicalSpace G] (Γ : AddSubgroup G) (Φ : G → ℂ) {B : ℝ}
     (hB : 0 ≤ B) (h : ∀ x, ‖Φ x‖ ≤ B) : ‖avg Γ Φ‖ ≤ B := by
@@ -151,7 +151,7 @@ theorem norm_avg_le {G : Type} [AddCommGroup G] [TopologicalSpace G] (Γ : AddSu
   · simpa using hB
 
 /- English proof (translation)
-Unfold `colT coefF`. Use `norm_avg_le _ _ hB fun y => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hψ.norm, one_mul]`. Conclude with `h y`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_colT_le {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) {a : ℕ} (n : ℕ) (f : GA E a → ℂ) (x : GA E a) {B : ℝ}
     (hB : 0 ≤ B) (h : ∀ y : UnipotentBlockColumnIndex a n n → Ad E, ‖f (blkU y * x)‖ ≤ B) : ‖colT ψ n f x‖ ≤ B := by
@@ -161,9 +161,9 @@ theorem norm_colT_le {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) {a : ℕ} (n : 
   exact h y
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => exact fun f hf => hf`. Consider the case `succ d ih`. Introduce `f hf`. Use `ih _ fun u hu => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB : 0 ≤ B` using `(norm_nonneg _).trans (hf 1 (uu_one j))`. Use `norm_colT_le hψ _ _ _ hB fun y => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Conclude with `hf _ (uu_mul (uu_blkU (by omega) y) hu)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bound_pT {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) {a : ℕ} (j : ℕ) (x : GA E a) (B : ℝ) (d : ℕ) :
     ∀ f : GA E a → ℂ, (∀ u, UU j u → ‖f (u * x)‖ ≤ B) → ∀ u, UU j u → ‖pT ψ j d f (u * x)‖ ≤ B := by
@@ -178,11 +178,11 @@ theorem bound_pT {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) {a : ℕ} (j : ℕ)
     exact hf _ (uu_mul (uu_blkU (by omega) y) hu)
 
 /- English proof (translation)
-Introduce `i c h`. Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Break down `h with h | h` into its components or cases. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[hx i i (Or.inl h), Matrix.one_apply_eq, one_mul, hy i c (Or.inl h)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `l _ hl`. Rewrite using `[hx i l (Or.inl h), Matrix.one_apply_ne (Ne.symm hl), zero_mul]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_single c]`. Rewrite using `[hy c c (Or.inr h), Matrix.one_apply_eq, mul_one, hx i c (Or.inr h)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `l _ hl`. Rewrite using `[hy l c (Or.inr h), Matrix.one_apply_ne hl, mul_zero]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mir_mul {R : Type} [CommRing R] {a n : ℕ} {x y : GL (Fin a) R} (hx : Mir n x) (hy : Mir n y) :
     Mir n (x * y) := by
@@ -201,7 +201,7 @@ theorem mir_mul {R : Type} [CommRing R] {a n : ℕ} {x y : GL (Fin a) R} (hx : M
     · simp
 
 /- English proof (translation)
-Introduce `i c h`. Apply `blkU_apply_of` to reduce the goal to its premises. Introduce and unpack `t ⟨e1, e2⟩`. Use `t.2` as an intermediate fact. Substitute `e1 e2` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -214,7 +214,7 @@ theorem mir_blkU {R : Type} [CommRing R] {a j n : ℕ} (hj : j ≤ n) (y : Unipo
   omega
 
 /- English proof (translation)
-Introduce `i c hic`. Express the relevant statement in the definitionally equal form `algebraMap E (Ad E) (γ.val i c) = _`. Rewrite using `[h i c hic, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mir_ratGL {a n : ℕ} (γ : GL (Fin a) E) (h : IsMir n γ) : Mir n (ratGL E a γ) := by
   intro i c hic
@@ -224,9 +224,9 @@ theorem mir_ratGL {a n : ℕ} (γ : GL (Fin a) E) (h : IsMir n γ) : Mir n (ratG
 
 omit [NumberField E] in
 /- English proof (translation)
-Introduce `i c hic`. Rewrite using `[hιE, embM, Matrix.of_apply]`. Use `split_ifs with h2`. Rewrite using `[h ⟨i, h2.1⟩ ⟨c, h2.2⟩ hic]`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isMir_emb {k m n : ℕ} (ιE : GL (Fin k) E →* GL (Fin m) E) (hιE : IsEmb ιE) (γ : GL (Fin k) E)
     (h : IsMir n γ) : IsMir n (ιE γ) := by
@@ -238,7 +238,7 @@ theorem isMir_emb {k m n : ℕ} (ιE : GL (Fin k) E →* GL (Fin m) E) (hιE : I
   · rfl
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `hs x fun i c h => hx i c (by omega)`. Use `⟨q, fun i c h => ?_, rfl⟩` and prove the remaining obligations. Establish `h1` using `hx (Fin.castLE hkm i) (Fin.castLE hkm c) (by simpa using h)`. Rewrite `h1` using `[hι, embM, Matrix.of_apply, dif_pos ⟨i.2, c.2⟩]`. Apply the tactic sequence `convert h1 using 1 <;> first | rfl | (rw [Matrix.one_apply, Matrix.one_apply]; simp only [Fin.ext_iff, Fin.val_castLE])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mir_emb {m n : ℕ} (hkm : n + 1 ≤ m) (ι : GA E (n + 1) →* GA E m) (hι : IsEmb ι)
     (hs : ∀ x : GA E m, GlobalTheory (n + 1) x → ∃ g, x = ι g) (x : GA E m) (hx : Mir n x) :
@@ -250,7 +250,7 @@ theorem mir_emb {m n : ℕ} (hkm : n + 1 ≤ m) (ι : GA E (n + 1) →* GA E m) 
   convert h1 using 1 <;> first | rfl | (rw [Matrix.one_apply, Matrix.one_apply]; simp only [Fin.ext_iff, Fin.val_castLE])
 
 /- English proof (translation)
-The claim follows from `posU_zero _`.
+A detailed English derivation is pending.
 -/
 theorem blkU_zero' {a j : ℕ} : (blkU (0 : UnipotentBlockColumnIndex a j j → Ad E) : GA E a) = 1 := posU_zero _
 
@@ -288,9 +288,9 @@ theorem eqv_apply {k m j : ℕ} (hkm : k ≤ m) (hj : j < k) (x : UnipotentBlock
     eqv hkm hj x = fun t => x ((sig hkm hj).symm t) := rfl
 
 /- English proof (translation)
-Simplify using `only [ratV, AddMonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Use `⟨fun t => c (sig hkm hj t), funext fun t => ?_⟩` and prove the remaining obligations. Use `congrFun hc (sig hkm hj t)` as an intermediate fact.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[eqv_apply]`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨fun t => c ((sig hkm hj).symm t), rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_eqv {k m j : ℕ} (hkm : k ≤ m) (hj : j < k) (x : UnipotentBlockColumnIndex k j j → Ad E) :
     eqv hkm hj x ∈ ratV E (UnipotentBlockColumnIndex m j j) ↔ x ∈ ratV E (UnipotentBlockColumnIndex k j j) := by
@@ -304,13 +304,13 @@ theorem mem_eqv {k m j : ℕ} (hkm : k ≤ m) (hj : j < k) (x : UnipotentBlockCo
     exact ⟨fun t => c ((sig hkm hj).symm t), rfl⟩
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i c`. Rewrite using `[hι, embM, Matrix.of_apply]`. Use `split_ifs with h`. Rewrite using `[blkU_apply, blkU_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`. Use `Fintype.sum_equiv (sig hkm hj) _ _ fun t => ?_` and prove the remaining obligations. Simplify using `[Fin.ext_iff]`. Use `symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `blkU_apply_of` to reduce the goal to its premises. Introduce and unpack `t ⟨e1, e2⟩`. Apply `h` to reduce the goal to its premises. Use `t.2` as an intermediate fact. Substitute `e1 e2` using the available equality.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Substitute using the available equality. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem emb_blkU {k m j : ℕ} (hkm : k ≤ m) (hj : j < k) (ι : GA E k →* GA E m) (hι : IsEmb ι)
     (x : UnipotentBlockColumnIndex k j j → Ad E) : ι (blkU x) = blkU (fun t => x ((sig hkm hj).symm t)) := by
@@ -332,7 +332,7 @@ theorem emb_blkU {k m j : ℕ} (hkm : k ≤ m) (hj : j < k) (ι : GA E k →* GA
     omega
 
 /- English proof (translation)
-Unfold `dot`. Use `(Fintype.sum_equiv (sig hkm hj) _ _ fun t => ?_).symm` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dot_eqv {k m j : ℕ} (hkm : k ≤ m) (hj : j < k) (x : UnipotentBlockColumnIndex k j j → Ad E) :
     dot (eLast m j) (fun t => x ((sig hkm hj).symm t)) = dot (eLast k j) x := by
@@ -343,9 +343,9 @@ theorem dot_eqv {k m j : ℕ} (hkm : k ≤ m) (hj : j < k) (x : UnipotentBlockCo
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Unfold `colT coefF`. Use `Eq.trans ?_ (avg_equiv _ _ _ _ (isCoLat_ratV E _) (isCoLat_ratV E _) (eqv hkm hj) (mem_eqv hkm hj) _ (per_coef hψ (eLast m j) hG.cont (GlobalTheory.CuspRep.Generic.hl_of_good hG le_rfl) (ι g)))` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[eqv_apply, dot_eqv]`. Use `beta_reduce`. Rewrite using `[map_mul, emb_blkU hkm hj ι hι]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colT_emb {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) {k m j : ℕ} (hkm : k ≤ m) (hj : j < k)
     (ι : GA E k →* GA E m) (hι : IsEmb ι) (G : GA E m → ℂ) (hG : Good ψ j G) :
@@ -361,9 +361,9 @@ theorem colT_emb {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) {k m j : ℕ} (hkm 
   rw [map_mul, emb_blkU hkm hj ι hι]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro _ G _`. Both sides reduce to the same expression. Consider the case `succ n ih`. Introduce `hn G hG`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[whit_succ, whit_succ, colT_emb hψ hkm.le hn ι hι G hG]`. Conclude with `ih (by omega) _ (GlobalTheory.CuspRep.Generic.good_colT hψ (by omega) hG)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whit_emb {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) {k m : ℕ} (hkm : k < m) (ι : GA E k →* GA E m)
     (hι : IsEmb ι) (n : ℕ) : n < k → ∀ G : GA E m → ℂ, Good ψ n G →
@@ -378,23 +378,23 @@ theorem whit_emb {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) {k m : ℕ} (hkm : 
 end TransformEmbeddingBlocks
 
 /- English proof (translation)
-Introduce `hG11 _ _ _ hK5e E _ _ _ m k hk hkm ψ hψ ι hι φ hφ`. Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`. Take `⟨hR, hE⟩` from `hK5e E m (n + 1) hkm.le`. Take `⟨hcont, -, hsurj, -, -, -, hrat, -⟩` from `hE ι hι`. Take `⟨ιE, hιE⟩` from `hR E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hm1 : n + (m - (n + 1)) = m - 1` using `by omega`. Establish `hgood1 : Good ψ (n + 1) (pT ψ (n + 1 + 1) (m - (n + 1 + 1)) φ)`. Use `TransformEmbeddingBlocks.good_pT hψ (n + 1) (m - (n + 1 + 1)) φ (by omega) ?_` and prove the remaining obligations. Rewrite using `[show n + 1 + (m - (n + 1 + 1)) = m - 1 by omega]` and apply the resulting hypothesis. Establish `hgood0 : Good ψ n (pT ψ (n + 1) (m - (n + 1)) φ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `TransformEmbeddingBlocks.good_pT hψ n _ φ (by omega) ?_` and prove the remaining obligations. Rewrite using `[hm1]` and apply the resulting hypothesis. Establish `hwhit : whit ψ (m - 1) φ = whit ψ n (pT ψ (n + 1) (m - (n + 1)) φ)`. Rewrite using `[← TransformEmbeddingBlocks.whit_pT, hm1]`. Establish `hwe` using `TransformEmbeddingBlocks.whit_emb hψ hkm ι hι n (by omega) _ hgood0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hgood1, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show m - (n + 1) = m - (n + 1 + 1) + 1 by omega, TransformEmbeddingBlocks.pT_succ']`. Use `show Pre ψ n _`. Use `⟨hgood0.cont.comp hcont, fun γ hγ g => ?_, fun j hj y g => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hrat ιE hιE γ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hgood0.left _ (TransformEmbeddingBlocks.isMir_emb ιE hιE γ hγ) _`. Establish `: IsEmpty (UnipotentBlockColumnIndex (n + 1) j j)` using `⟨fun t => by have := t.2; have := t.1.2.2; omega⟩`. Take `rfl : y = 0` from `funext fun t => isEmptyElim t`. Rewrite using `[TransformEmbeddingBlocks.blkU_zero', one_mul]`. Simplify using `[dot]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g show whit ψ n _ g = _`. Rewrite using `[hwe, hwhit]`. Introduce `g hg`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `hg` to reduce the goal to its premises. Establish `key` using `hG11 E m ψ hψ n (pT ψ (n + 1) (m - (n + 1)) φ) (Or.inl (by omega)) hgood0 {x | ∃ p : GA E (n + 1), Mir n p ∧ x = ι (p * g)} ?_ ?_ ?_ (ι g) ⟨1, fun i c _ => rfl, by rw [one_mul]⟩`. Conclude with `key`. Introduce and unpack `γ hγ _ ⟨p, hp, rfl⟩`. Take `⟨q, hq, hq'⟩` from `TransformEmbeddingBlocks.mir_emb hkm.le ι hι hsurj _ (TransformEmbeddingBlocks.mir_ratGL γ hγ)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨q * p, TransformEmbeddingBlocks.mir_mul hq hp, by rw [hq', ← map_mul, mul_assoc]⟩`. Introduce and unpack `j hj y _ ⟨p, hp, rfl⟩`. Take `⟨q, hq, hq'⟩` from `TransformEmbeddingBlocks.mir_emb hkm.le ι hι hsurj _ (TransformEmbeddingBlocks.mir_blkU hj y)`. Conclude with `⟨q * p, TransformEmbeddingBlocks.mir_mul hq hp, by rw [hq', ← map_mul, mul_assoc]⟩`. Introduce and unpack `_ ⟨p, hp, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← hwhit]`. Conclude with `hne p hp`. Introduce `j x B hj hjm hB`. Use `TransformEmbeddingBlocks.bound_pT hψ j x B (m - j) φ hB 1 (TransformEmbeddingBlocks.uu_one j)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem transform_embedding_of : jumpWindows.FourierUniquenessMirabolic → P0 → P1 → P2 → CornerEmbedding → TransformsEmbedding := by
   intro hG11 _ _ _ hK5e E _ _ _ m k hk hkm ψ hψ ι hι φ hφ

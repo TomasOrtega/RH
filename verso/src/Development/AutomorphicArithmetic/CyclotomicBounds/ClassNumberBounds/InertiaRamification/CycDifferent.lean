@@ -9,13 +9,13 @@ variable {N : ℕ} [NeZero N] {K : Type*} [Field K] [NumberField K] [IsCyclotomi
 
 open Polynomial in
 /- English proof (translation)
-Establish `hint : IsIntegral F x` using `Algebra.IsIntegral.isIntegral x`. Establish `hinj : Function.Injective (fun σ : Gal(L/F) => σ x)`. Introduce `σ τ h`. Apply `AlgEquiv.coe_toAlgHom_injective` to reduce the goal to its premises. Apply `AlgHom.ext_of_adjoin_eq_top hx` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `y rfl`. Conclude with `h`. Establish `hm : (∏ σ : Gal(L/F), (X - C (σ x))).Monic` using `monic_prod_of_monic _ _ fun σ _ => monic_X_sub_C _`. Establish `hdvd : (∏ σ : Gal(L/F), (X - C (σ x))) ∣ (minpoly F x).map (algebraMap F L)`. Apply `Finset.prod_dvd_of_coprime` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ _ τ _ hne`. Conclude with `pairwise_coprime_X_sub_C hinj hne`. Introduce `σ _`. Rewrite using `[dvd_iff_isRoot, IsRoot.def, eval_map_algebraMap, aeval_algEquiv]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `eq_of_monic_of_dvd_of_natDegree_le hm ((minpoly.monic hint).map _) hdvd ?_` and prove the remaining obligations. Rewrite using `[natDegree_map, natDegree_prod_of_monic _ _ (fun σ _ => monic_X_sub_C _)]`. Simplify using `only [natDegree_X_sub_C, Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one]`. Rewrite using `[← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank]`. Conclude with `minpoly.natDegree_le x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem minpoly_map_eq_prod_gal {F L : Type*} [Field F] [Field L] [Algebra F L]
     [FiniteDimensional F L] [IsGalois F L] (x : L) (hx : Algebra.adjoin F {x} = ⊤) :
@@ -45,7 +45,7 @@ private theorem minpoly_map_eq_prod_gal {F L : Type*} [Field F] [Field L] [Algeb
 
 open Polynomial Classical in
 /- English proof (translation)
-Rewrite using `[← eval_map_algebraMap, ← derivative_map, minpoly_map_eq_prod_gal x hx, ← Finset.mul_prod_erase _ _ (Finset.mem_univ (1 : Gal(L/F))), derivative_mul]`. Simplify using `[eval_prod]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem aeval_derivative_minpoly_eq_prod_gal {F L : Type*} [Field F] [Field L]
     [Algebra F L] [FiniteDimensional F L] [IsGalois F L] (x : L)
@@ -57,9 +57,9 @@ private theorem aeval_derivative_minpoly_eq_prod_gal {F L : Type*} [Field F] [Fi
 
 open Polynomial Classical in
 /- English proof (translation)
-Establish `h` using `conductor_mul_differentIdeal A F L x hx'`. Rewrite `h` using `[conductor_eq_top_of_adjoin_eq_top hx, Ideal.top_mul]`. Rewrite using `[h]`. Use `congr 2`. Apply `IsFractionRing.injective (𝓞 L) L` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hint : IsIntegral A x` using `IsIntegralClosure.isIntegral A L x`. Rewrite using `[hy, ← aeval_derivative_minpoly_eq_prod_gal _ hx', minpoly.isIntegrallyClosed_eq_field_fractions F L hint, derivative_map, aeval_map_algebraMap, aeval_algebraMap_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem differentIdeal_eq_span_of_prod (A F : Type*) {L : Type*} [CommRing A] [IsDomain A]
     [IsIntegrallyClosed A] [Field F] [Field L] [NumberField L] [Algebra A F] [IsFractionRing A F]
@@ -81,9 +81,9 @@ private theorem differentIdeal_eq_span_of_prod (A F : Type*) {L : Type*} [CommRi
     aeval_algebraMap_apply]
 
 /- English proof (translation)
-Establish `h` using `IsCyclotomicExtension.adjoin_primitive_root_eq_top (A := ℚ) hζ`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `hy : y ∈ Algebra.adjoin ℚ {ζ}` using `h ▸ Algebra.mem_top`. Establish `: Algebra.adjoin ℚ {ζ} ≤ (Algebra.adjoin E {ζ}).restrictScalars ℚ` using `Algebra.adjoin_le (by simp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this hy`.
+A detailed English derivation is pending.
 -/
 private theorem adjoin_root_eq_top (E : Type*) [Field E] [Algebra ℚ E] [Algebra E K]
     [IsScalarTower ℚ E K] {ζ : K} (hζ : IsPrimitiveRoot ζ N) :
@@ -97,9 +97,9 @@ private theorem adjoin_root_eq_top (E : Type*) [Field E] [Algebra ℚ E] [Algebr
   exact this hy
 
 /- English proof (translation)
-Establish `h` using `adjoin_singleton_eq_top hζ`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `hy : y ∈ Algebra.adjoin ℤ {hζ.toInteger}` using `h ▸ Algebra.mem_top`. Establish `: Algebra.adjoin ℤ {hζ.toInteger} ≤ (Algebra.adjoin A {hζ.toInteger}).restrictScalars ℤ` using `Algebra.adjoin_le (by simp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this hy`.
+A detailed English derivation is pending.
 -/
 private theorem adjoin_toInteger_eq_top (A : Type*) [CommRing A] [Algebra A (𝓞 K)]
     {ζ : K} (hζ : IsPrimitiveRoot ζ N) :
@@ -115,17 +115,17 @@ private theorem adjoin_toInteger_eq_top (A : Type*) [CommRing A] [Algebra A (�
 open Classical in
 
 /- English proof (translation)
-Establish `: IsGalois ℚ K` using `IsCyclotomicExtension.isGalois {N} ℚ K`. Use `differentIdeal_eq_span_of_prod (𝓞 E) E hζ.toInteger _ (adjoin_toInteger_eq_top _ hζ) (adjoin_root_eq_top E hζ) ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `symm`. Use `Finset.prod_bij (fun σ _ => σ.restrictScalars ℚ) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `σ hσ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `σ.commutes ⟨x, hx⟩`. Introduce `h`. Apply `(Finset.mem_erase.mp hσ).1` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `DFunLike.congr_fun h x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `σ _ τ _ h`. Use extensionality with `x`. Conclude with `DFunLike.congr_fun h x`. Introduce `σ hσ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨E.fixingSubgroupEquiv ⟨σ, hσ.1⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_erase, Finset.mem_univ, and_true]`. Introduce `h`. Apply `hσ.2` to reduce the goal to its premises. Use extensionality with `x`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Conclude with `DFunLike.congr_fun h x`. Both sides reduce to the same expression. Introduce `σ _`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem relDifferent_eq_span_prod (E : IntermediateField ℚ K) {ζ : K} (hζ : IsPrimitiveRoot ζ N) :
     differentIdeal (𝓞 E) (𝓞 K) = Ideal.span
@@ -165,13 +165,13 @@ theorem relDifferent_eq_span_prod (E : IntermediateField ℚ K) {ζ : K} (hζ : 
 open Classical in
 
 /- English proof (translation)
-Establish `: IsGalois ℚ K` using `IsCyclotomicExtension.isGalois {N} ℚ K`. Establish `h1 : differentIdeal ℤ (𝓞 K) = Ideal.span {∏ σ ∈ (Finset.univ : Finset Gal(K/ℚ)).erase 1, (hζ.toInteger - σ • hζ.toInteger)}`. Use `differentIdeal_eq_span_of_prod ℤ ℚ hζ.toInteger _ (adjoin_toInteger_eq_top _ hζ) (adjoin_root_eq_top ℚ hζ) ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2` using `differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 E) (𝓞 K)`. Establish `h3 : differentIdeal (𝓞 E) (𝓞 K) ≠ ⊥` using `differentIdeal_ne_bot`. Apply `mul_left_cancel₀ h3` to reduce the goal to its premises. Rewrite using `[← h2, h1, relDifferent_eq_span_prod E hζ, Ideal.span_singleton_mul_span_singleton, ← Finset.prod_filter_mul_prod_filter_not _ (fun σ : Gal(K/ℚ) => σ ∈ E.fixingSubgroup)]`. Use `congr 4`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `σ`. Simplify using `[and_comm]`. Use extensionality with `σ`. Simplify using `only [Finset.mem_filter, Finset.mem_erase, Finset.mem_univ, and_true, true_and, and_iff_right_iff_imp]`. Introduce and unpack `h rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Conclude with `h (one_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem map_differentIdeal_eq_span_prod (E : IntermediateField ℚ K) {ζ : K}
     (hζ : IsPrimitiveRoot ζ N) :

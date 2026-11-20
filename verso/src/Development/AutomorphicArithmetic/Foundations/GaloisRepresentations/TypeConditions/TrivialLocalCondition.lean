@@ -19,16 +19,16 @@ structure RelU {w : PlE H} (x y : A.LP w) : Prop where
 
 variable {N A}
 /- English proof (translation)
-The claim follows from `h.rel.dim`.
+A detailed English derivation is pending.
 -/
 theorem RelU.dim {w : PlE H} {x y : A.LP w} (h : RelU N A x y) : A.lpDim x = A.lpDim y := h.rel.dim
 /- English proof (translation)
-The claim follows from `h.rel.ine h.nice`.
+A detailed English derivation is pending.
 -/
 theorem RelU.ine {w : PlE H} {x y : A.LP w} (h : RelU N A x y) :
     ∀ σ ∈ Ine (F := H.E) (N.plOm.1 w), A.inePol x σ = A.inePol y σ := h.rel.ine h.nice
 /- English proof (translation)
-The claim follows from `h.rel.mono h.nice`.
+A detailed English derivation is pending.
 -/
 theorem RelU.mono {w : PlE H} {x y : A.LP w} (h : RelU N A x y) : A.mono0 x := h.rel.mono h.nice
 variable (N)
@@ -85,7 +85,7 @@ def IsStringRepN (D : D7) (i : D.nd.Loc) (p : Part D.naut.CG)
       (D.naut.wdOf i R w) (D.naut.lpTw (D.naut.locG p.π w) (((p.d : ℝ) - 1) / 2 + (1 - (D.R.nV : ℝ)) / 2))
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem strN' {D : D7} {i : D.nd.Loc} {p : Part D.naut.CG} {R : G D.host.E D.nd.Om →* GL (Fin p.a) (Qbar (D.nd.l i))}
     (h : IsStringRepN D i p R) : IsStringRepN D i p R := h
@@ -96,7 +96,7 @@ def G2a {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂)
     ∀ τ, InducesW N i τ w → A.jumpsW i (mapRep (iotaOQ N A i) (r x)) τ = A.locAutHodgeTateWeightsLevelZero i τ
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem g2a' {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N} {i : N.Loc}
     {r : N.X i → (G H.E N.Om →* GL (Fin R.nV) (N.O i))} (h : G2a N A i r) : G2a N A i r := h

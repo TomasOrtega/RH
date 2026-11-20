@@ -12,9 +12,9 @@ namespace Formalism.L2.SG.NGCut.NormalVectorPairings
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
 
 /- English proof (translation)
-Establish `hF : F.fvec = G.fvec` using `funext h`. Establish `hF' : F'.fvec = G'.fvec` using `funext h'`. Establish `hZ : Zhat F F' = Zhat G G'`. Unfold `Zhat`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately.
 
-Consider the case `rw [hF, hF']`. Consider the case `(simp only [hF, hF']; rfl)`. Use `⟨?_, hZ⟩` and prove the remaining obligations. Unfold `omp`. Rewrite using `[hZ, hF']`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omp_congr {F G : FlagG S r T} {F' G' : FlagG S r T'} (h : ∀ a, F.fvec a = G.fvec a)
     (h' : ∀ a, F'.fvec a = G'.fvec a) : omp F F' = omp G G' ∧ Zhat F F' = Zhat G G' := by
@@ -30,7 +30,7 @@ theorem omp_congr {F G : FlagG S r T} {F' G' : FlagG S r T'} (h : ∀ a, F.fvec 
   rw [hZ, hF']
 
 /- English proof (translation)
-Unfold `FlagG.fvec`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp [mapFlag]`. Consider the case `cast i => simp [mapFlag]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem fvec_mapFlag (g : S.V ≃ₗ[E] S.V) (hg : g ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : FlagG S r T) (b : Fin (r + 1)) :
     (mapFlag g hg F).fvec b = g (F.fvec b) := by
@@ -40,25 +40,25 @@ theorem fvec_mapFlag (g : S.V ≃ₗ[E] S.V) (hg : g ∈ Formalism.HermitianLatt
   | cast i => simp [mapFlag]
 
 /- English proof (translation)
-Establish `hcolE : ∀ b' : Fin r, ∃ l : Fin r →₀ E, (∀ i : Fin r, ¬ i.1 < b'.1 → l i = 0) ∧ s (F.e b') = F.e b' + ∑ i, l i • F.e i`. Introduce `b'`. Establish `hmem : F.e b' ∈ F.Xa (b'.1 + 1)` using `Submodule.subset_span ⟨b', Nat.lt_succ_self _, rfl⟩`. Establish `h1` using `hs b'.1 (F.e b') hmem`. Take `⟨l, hl, hl2⟩` from `(Finsupp.mem_span_image_iff_linearCombination E).1 h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨l, fun i hi => (Finsupp.mem_supported' E l).1 hl i hi, ?_⟩` and prove the remaining obligations. Rewrite `hl2` using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`. Rewrite using `[hl2]`. Normalize the expressions using the abelian group laws. Use `choose l hl0 hl using hcolE`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result.
 
-Take `⟨cz, hcz⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hz`. Set `M : Matrix (Fin (r + 1)) (Fin (r + 1)) E` to `Matrix.of fun c b => Fin.lastCases (motive := fun _ => E) (Fin.lastCases (motive := fun _ => E) 1 (fun i => cz i) c) (fun b' => Fin.lastCases (motive := fun _ => E) 0 (fun i => (if i = b' then 1 else 0) + l b' i) c) b`. Establish `hMcol : ∀ b, s (F.fvec b) = ∑ c, M c b • F.fvec c`. Introduce `b`. Proceed by induction on `b using Fin.lastCases with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `last`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [M, Matrix.of_apply, Fin.lastCases_last, Fin.lastCases_castSucc, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_last, Fin.snoc_castSucc, one_smul]`. Establish `h2 : s F.z = F.z + ∑ i, cz i • F.e i`. Rewrite using `[hcz]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[h2, add_comm]`. Consider the case `cast b'`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [M, Matrix.of_apply, Fin.lastCases_last, Fin.lastCases_castSucc, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_last, Fin.snoc_castSucc, zero_smul, add_zero, add_smul, Finset.sum_add_distrib, ite_smul, one_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hl b'`. Establish `hdiag : ∀ i, M i i = 1`. Introduce `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp [M]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `cast i => simp [M, hl0 i i (lt_irrefl _)]`. Establish `htri : M.BlockTriangular id`. Introduce `i j hij`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd hij (not_lt.2 (Fin.le_last i))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `cast j`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp [M]`. Consider the case `cast i`. Establish `hji : j < i` using `by simpa using hij`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hne : i ≠ j` using `(ne_of_lt hji).symm`. Simplify using `[M, hne, hl0 j i (not_lt.2 (le_of_lt hji))]`. Use `⟨M, hMcol, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_of_upperTriangular htri]`. Conclude with `Finset.prod_eq_one fun i _ => hdiag i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `c`. Proceed by induction on `c using Fin.lastCases with`. Consider the case `last => simp [M]`. Consider the case `cast c => simp [M, Fin.castSucc_ne_last]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coef_mat (F : FlagG S r T) (s : S.V →ₗ[E] S.V) (hs : ∀ j, ∀ x ∈ F.Xa (j + 1), s x - x ∈ F.Xa j)
     (hz : s F.z - F.z ∈ F.X) :

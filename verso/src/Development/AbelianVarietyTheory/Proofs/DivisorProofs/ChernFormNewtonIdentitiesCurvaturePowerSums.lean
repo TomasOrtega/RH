@@ -13,9 +13,9 @@ set_option autoImplicit false
 namespace GlobalTheory.ChernCalc
 
 /- English proof (translation)
-Break down `k with _ | k` into its components or cases. Simplify using the standard rewrite rules. Establish `h` using `congrArg (PowerSeries.coeff k) (GroundTheory.Global.coe_derivative_charpolyRev M)`. Rewrite `h` using `[Polynomial.coeff_coe, Polynomial.coeff_derivative, neg_mul, map_neg, mul_comm (M.charpolyRev : PowerSeries R), PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`. Simplify using `only [PowerSeries.coeff_mk, Polynomial.coeff_coe] at h`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm]`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem newton_charpolyRev {R r : Type} [CommRing R] [Fintype r] [DecidableEq r] (M : Matrix r r R) (k : ℕ) :
     (k : R) * M.charpolyRev.coeff k =
@@ -30,13 +30,13 @@ theorem newton_charpolyRev {R r : Type} [CommRing R] [Fintype r] [DecidableEq r]
     simpa using h
 
 /- English proof (translation)
-Use `⟨?_, fun j => ?_⟩` and prove the remaining obligations. Establish `h : (Matrix.charpolyRev (-curvPoly G v)).coeff 0 = 1`. Rewrite using `[Polynomial.coeff_zero_eq_eval_zero, Matrix.eval_charpolyRev]`. Rewrite using `[chernAt, chernPoly, h, map_one, pow_zero, one_smul]`. Establish `h` using `congrArg (MvPolynomial.aeval (R := ℂ) (sym (n := n))) (newton_charpolyRev (-curvPoly G v) j)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp (k : ℕ) : MvPolynomial.aeval (R` using `ℂ) (sym (n := n)) ((-curvPoly G v) ^ k).trace = (-1 : ℂ) ^ k • powAt G v k := by`. Establish `e : curvEv G v ^ k = (curvPoly G v ^ k).map (MvPolynomial.aeval (R` using `ℂ) (sym (n := n))) := (map_pow (MvPolynomial.aeval (R := ℂ) (sym (n := n))).mapMatrix (curvPoly G v) k).symm`. Rewrite using `[← neg_one_smul ℂ (curvPoly G v), smul_pow, Matrix.trace_smul, map_smul, powAt, e]`. Simplify using `only [Matrix.trace, Matrix.diag, map_sum, Matrix.map_apply]`. Rewrite `h` using `[map_mul, map_natCast, map_neg, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_mul, hp] at h`. Simplify using `only [chernAt, chernPoly]`. Rewrite using `[smul_comm, Nat.cast_smul_eq_nsmul, nsmul_eq_mul, h, smul_neg, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi'` using `Finset.mem_range.1 hi`. Rewrite using `[mul_smul_comm, smul_mul_assoc, smul_smul, smul_smul]`. Use `congr 1`. Take `⟨m, rfl⟩ : ∃ m, j = i + 1 + m` from `⟨j - (i + 1), by omega⟩`. Rewrite using `[show i + 1 + m - 1 - i = m by omega, neg_pow kappa]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

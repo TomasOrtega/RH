@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilDatumOfSp
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT hψ hS hT rS rT` and use `GlobalTheory.WeilExist.exists_isWeilDatumO D ψ hψ S T χS χT (GlobalTheory.WeilParts.exists_isEtaTilde_unramified D) hS hT rS rT`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weilRepresentationUnitaryPair : GlobalTheory.Published.WeilRepresentationUnitaryPair :=
   fun D ψ S T χS χT hψ hS hT rS rT =>

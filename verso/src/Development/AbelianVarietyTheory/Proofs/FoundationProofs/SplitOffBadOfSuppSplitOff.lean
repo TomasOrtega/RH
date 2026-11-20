@@ -26,25 +26,21 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SublevelSplitting
 section Generic
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Set `σ : 𝓞 E ≃+* 𝓞 E` to `RingOfIntegers.mapRingEquiv c.toRingEquiv`. Establish `hσ : ∀ x : 𝓞 E, ((σ x : 𝓞 E) : E) = c x` using `fun _ => rfl`. Establish `one : ∀ b : 𝓞 E, b ∉ P.asIdeal → Valued.v (φ b) = 1` using `fun b hb => le_antisymm (hint b) (not_lt.1 fun h => hb ((hP b).2 h))`. Establish `key : ∀ b : 𝓞 E, b ∉ P.asIdeal → σ b ∉ P.asIdeal` using `fun b hb h => hn ⟨σ b, h, b, (hcc _).symm, hb⟩`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, c z ≠ z := by`. Assume the negation of the conclusion as `h`. Conclude with `hc (AlgEquiv.ext fun x => by simpa using not_exists.1 h x)`. Establish `hab : φ z - φ (c z) ≠ 0` using `sub_ne_zero.2 fun h => hz (φ.injective h).symm`. Establish `hab' : Valued.v (φ z - φ (c z)) ≠ 0` using `(Valuation.ne_zero_iff _).2 hab`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : F, Valued.v (φ z - algebraMap F (v.adicCompletion F) t) < Valued.v (φ z - φ (c z)) := by`. Establish `hd : DenseRange (algebraMap F (v.adicCompletion F))` using `HeightOneSpectrum.denseRange_algebraMap (K := F) v`. Establish `hN : {y : v.adicCompletion F | Valued.v (φ z - y) < Valued.v (φ z - φ (c z))} ∈ nhds (φ z)`. Establish `ho` using `(Valued.isOpen_ball (v.adicCompletion F) (Valued.v.restrict (φ z - φ (c z)))).preimage (continuous_const.sub continuous_id : Continuous fun y : v.adicCompletion F => φ z - y)`. Simplify using `only [Set.preimage_ofPred_eq, Valuation.restrict_lt_iff] at ho`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `ho.mem_nhds ?_` and prove the remaining obligations. Use `show Valued.v (φ z - φ z) < _`. Rewrite using `[sub_self, map_zero]`. Conclude with `zero_lt_iff.2 hab'`. Take `⟨t, ht⟩` from `hd.mem_nhds hN`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨t, ht⟩`. Establish `hb : Valued.v (φ (c z) - algebraMap F (v.adicCompletion F) t) = Valued.v (φ z - φ (c z))`. Rewrite using `[show φ (c z) - algebraMap F (v.adicCompletion F) t = (φ z - algebraMap F (v.adicCompletion F) t) - (φ z - φ (c z)) by ring]`. Conclude with `Valuation.map_sub_eq_of_lt_right _ ht`. Establish `h1 : Valued.v (φ (z - algebraMap F E t)) < Valued.v (φ (c (z - algebraMap F E t)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_sub c, c.commutes, map_sub φ, map_sub φ, hφ, hb]`. Conclude with `ht`. Generalize the expression as in `z - algebraMap F E t = u at h1`. Take `⟨a, b, h⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_or_mul_eq P (K := E) (u / c u)`. Establish `hu : c u ≠ 0` using `fun h0 => by`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0, map_zero, map_zero]`. Conclude with `not_lt_zero h1`. Use `absurd h1 (not_lt.2 ?_)` and prove the remaining obligations. Rewrite `h` using `[div_mul_eq_mul_div, div_mul_eq_mul_div, div_eq_iff hu, div_eq_iff hu]`. Break down `h with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : c u * (σ b.1 : 𝓞 E) = (σ a : 𝓞 E) * u`. Use `congrArg c h` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, hcc]`. Then use the resulting hypothesis. Establish `h3` using `congrArg (fun x => Valued.v (φ x)) h2`. Simplify using `only [map_mul, one _ (key _ b.2), mul_one] at h3`.
-
-Rewrite using `[h3]`. Conclude with `mul_le_of_le_one_left' (hint _)`. Establish `h2 : u * (a : E) = ((b.1 : 𝓞 E) : E) * c u` using `h`. Establish `h3` using `congrArg (fun x => Valued.v (φ x)) h2`. Simplify using `only [map_mul, one _ b.2, one_mul] at h3`.
-
-Rewrite using `[← h3]`. Conclude with `mul_le_of_le_one_right' (hint _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moved_of_hom {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (c : E ≃ₐ[F] E)
     (hcc : ∀ x, c (c x) = x) (hc : c ≠ 1) (v : HeightOneSpectrum (𝓞 F)) (φ : E →+* v.adicCompletion F)
@@ -105,11 +101,11 @@ theorem moved_of_hom {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
 variable {G Γ : Type} [Group G] [Group Γ] (ι : Γ →* G)
 
 /- English proof (translation)
-Take `⟨i, ⟨γ, k, rfl⟩, -⟩` from `hy g`. Use `hfin i` as an intermediate fact. Use `Finite.of_injective (β := Bridge.stab ι J (y i)) (fun δ => ⟨γ⁻¹ * δ.1 * γ, ?_⟩) ?_` and prove the remaining obligations. Establish `h` using `hle ((Bridge.mem_stab ι).1 δ.2)`. Rewrite using `[Bridge.mem_stab]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `J.mul_mem (J.mul_mem k.2 h) (J.inv_mem k.2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul, map_inv]`. Use `group`. Introduce `a b h`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : γ⁻¹ * a.1 * γ = γ⁻¹ * b.1 * γ` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (mul_left_cancel (mul_right_cancel h'))`.
+A detailed English derivation is pending.
 -/
 theorem finite_stab {J J' : Subgroup G} (hle : J' ≤ J) {I : Type} {y : I → G} (hy : Bridge.IsReps ι J y)
     (hfin : ∀ i, Finite (Bridge.stab ι J (y i))) (g : G) : Finite (Bridge.stab ι J' g) := by
@@ -135,22 +131,22 @@ open GlobalTheory.IdemModTwo GlobalTheory.SplitIdem GlobalTheory.IdemPrime Globa
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield D.host.E) D.host.E`.
+A detailed English derivation is pending.
 -/
 theorem finrank_two (D : D7) : Module.finrank D.host.F D.host.E = 2 :=
   Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield D.host.E) D.host.E
 
 /- English proof (translation)
-The claim follows from `(latHat_eq_hat_and_gram D D.sp.X').2.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem cF_ne_one (D : D7) : cF D ≠ 1 := (latHat_eq_hat_and_gram D D.sp.X').2.2.2.2.2.2.1
 
 /- English proof (translation)
-Rewrite using `[Compare.splitPl_iff _ (finrank_two D) (cF_ne_one D)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, P', hne, h, h'⟩`. Conclude with `⟨P.asIdeal, P'.asIdeal, fun e => hne (HeightOneSpectrum.ext e), P.isPrime, P'.isPrime, congrArg HeightOneSpectrum.asIdeal h, congrArg HeightOneSpectrum.asIdeal h'⟩`. Introduce and unpack `⟨w, w', hne, hw, hw', h, h'⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `nb : ∀ u : Ideal (𝓞 D.host.E), u.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = v.asIdeal → u ≠ ⊥`. Introduce and unpack `u hu rfl`. Apply `v.ne_bot` to reduce the goal to its premises. Rewrite using `[← hu]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨w, hw, nb w h⟩, ⟨w', hw', nb w' h'⟩, fun e => hne (congrArg HeightOneSpectrum.asIdeal e), HeightOneSpectrum.ext h, HeightOneSpectrum.ext h'⟩`.
+A detailed English derivation is pending.
 -/
 theorem isSplitPl_iff (v : HeightOneSpectrum (𝓞 D.host.F)) : IsSplitPl D v ↔ SplitPl (cF D) v := by
   rw [Compare.splitPl_iff _ (finrank_two D) (cF_ne_one D)]
@@ -168,7 +164,7 @@ theorem isSplitPl_iff (v : HeightOneSpectrum (𝓞 D.host.F)) : IsSplitPl D v �
       HeightOneSpectrum.ext h, HeightOneSpectrum.ext h'⟩
 
 /- English proof (translation)
-Rewrite using `[SuppSplit, Compare.support_iff (fun v => SplitPl (cF D) v ∧ (N : 𝓞 D.host.F) ∉ v.asIdeal), SuppSplitOff]`. Simplify using `only [isSplitPl_iff]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem suppSplitOff_iff (V : HSp D) (N : ℕ) (g : Bridge.Gf V) : SuppSplitOff V N g ↔ SuppSplit (cF D) N g.1.1 := by
   rw [SuppSplit, Compare.support_iff (fun v => SplitPl (cF D) v ∧ (N : 𝓞 D.host.F) ∉ v.asIdeal), SuppSplitOff]
@@ -176,15 +172,13 @@ theorem suppSplitOff_iff (V : HSp D) (N : ℕ) (g : Bridge.Gf V) : SuppSplitOff 
   exact Iff.rfl
 
 /- English proof (translation)
-Take `⟨v, he⟩` from `(isSplitIdem_iff e).1 h.1`. Take `⟨Q, hQ, hQv⟩` from `exists_isIdemAt D v e he`. Take `rfl : P = Q` from `HeightOneSpectrum.ext (Ideal.ext fun x => by`. Distinguish the cases in `hx : x = 0`. Rewrite using `[hx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `iff_of_true (zero_mem _) (zero_mem _)`. Rewrite using `[h.2 x hx, hQ.2 x hx])`. Take `⟨φ, hφ⟩` from `exists_hom he`. Use `⟨v, he, ⟨P.asIdeal, P.isPrime, hQv, moved_of_hom (cF D) (fun x => star_star x) (cF_ne_one D) v φ (hom_algebraMap he hφ) (fun x => ?_) P fun x => ?_⟩, hQv⟩` and prove the remaining obligations. Rewrite using `[← mem_iff he, ← hφ, RingHom.map_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `mul_mem_int (finPart_mem he) (AddSubgroup.subset_closure ⟨1, fun w => by rw [map_one]; exact one_mem _, x, rfl⟩)`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Use `iff_of_true (zero_mem _) ?_` and prove the remaining obligations. Use `show Valued.v (φ 0) < 1`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, map_zero]`. Conclude with `zero_lt_one`. Establish `hx0 : Valued.v (φ x) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff, map_ne_zero]`. Conclude with `fun h => hx (Subtype.ext h)`.
-
-Rewrite using `[h.2 x hx, hφ, mem_iff he, map_inv₀, map_inv₀, not_le, one_lt_inv₀ (zero_lt_iff.2 hx0)]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_splitAt_of_isIdemAt {e : AE D} {P : HeightOneSpectrum (𝓞 D.host.E)} (h : Formalism.L2.NTheta.IsIdemAt e P) :
     ∃ v, SplitAt D v e ∧ SplitPl (cF D) v ∧ P.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = v.asIdeal := by
@@ -211,9 +205,9 @@ theorem exists_splitAt_of_isIdemAt {e : AE D} {P : HeightOneSpectrum (𝓞 D.hos
       rw [h.2 x hx, hφ, mem_iff he, map_inv₀, map_inv₀, not_le, one_lt_inv₀ (zero_lt_iff.2 hx0)]
 
 /- English proof (translation)
-Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, RingHom.map_sub]`. Use `congr 1`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_ne e, Matrix.one_apply_ne e, RingHom.map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finPart_sub_one (V : HSp D) (h : GA D V) (i j : Fin V.rank) :
     finPart D ((Formalism.L2.Theta.mt V h - 1) i j) = ((finHom V h).1 - 1) i j := by
@@ -224,15 +218,13 @@ theorem finPart_sub_one (V : HSp D) (h : GA D V) (i j : Fin V.rank) :
   · rw [Matrix.one_apply_ne e, Matrix.one_apply_ne e, RingHom.map_zero]
 
 /- English proof (translation)
-Take `⟨-, e, P, ⟨⟨es, hes, rfl⟩, -⟩, hN, hsupp⟩` from `hs`. Use `choose pv h1 h2 h3 using fun PP : P => exists_splitAt_of_isIdemAt (hes PP.1 PP.2)`. Establish `hsum : ∑ PP ∈ P, es PP + cA D (∑ PP ∈ P, es PP) = fj D (∑ PP : P, singleV D.host.F (pv PP) 1)`. Rewrite using `[map_sum, map_sum, ← Finset.sum_add_distrib, ← Finset.sum_coe_sort P]`. Conclude with `Finset.sum_congr rfl fun PP _ => (h1 PP).2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨Finset.univ.image pv, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨PP, -, rfl⟩` from `Finset.mem_image.1 hv`. Use `⟨(isSplitPl_iff _).2 (h2 PP), fun hm => hN PP.1 PP.2 ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[← h3, Ideal.mem_comap, map_natCast]`. Then use the resulting hypothesis. Establish `h0 : evalV D.host.F v (∑ PP : P, singleV D.host.F (pv PP) 1) = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun PP _ => evalV_singleV_ne _ _ _ fun e => hv (Finset.mem_image.2 ⟨PP, Finset.mem_univ _, e.symm⟩)`. Generalize the expression as in `(∑ PP : P, singleV D.host.F (pv PP) 1) = α at hsum h0`. Set `π` to `Algebra.TensorProduct.map (evalV D.host.F v) (AlgHom.id D.host.F D.host.E)`. Rewrite using `[← Matrix.map_one π (map_zero _) (map_one _)]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `i j`. Establish `h4` using `congrArg (finPart D) (hsupp i j)`. Rewrite `h4` using `[hsum, RingHom.map_mul, finPart_sub_one]`. Establish `h5 : π (finPart D (fj D α)) = 0` using `by show evalV D.host.F v α ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Rewrite using `[h0, TensorProduct.zero_tmul]`.
-
-Establish `h6` using `congrArg π h4`. Rewrite `h6` using `[map_mul, h5, zero_mul, Matrix.sub_apply, map_sub]`. Conclude with `sub_eq_zero.1 h6.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppSplitOff_of_splitOffBad (V : HSp D) (N : ℕ) (h : GA D V) (hs : FWT.SplitOffBad V N h) :
     SuppSplitOff V N (FWT.fin V h) := by
@@ -264,7 +256,7 @@ theorem suppSplitOff_of_splitOffBad (V : HSp D) (N : ℕ) (h : GA D V) (hs : FWT
     exact sub_eq_zero.1 h6.symm
 
 /- English proof (translation)
-Take `⟨_, x, rfl⟩` from `g`. Take `⟨k, k1, k2⟩` from `GlobalTheory.UnitarySplit.ga_glue V 1 _ (one_mem _) (GlobalTheory.UnitarySplit.finHom_mem V x)`. Use `⟨k, ⟨k1, Subtype.ext k2⟩, fun y hy => GlobalTheory.UnitarySplit.ga_ext V (hy.1.trans k1.symm) ?_⟩` and prove the remaining obligations. Conclude with `(congrArg Subtype.val hy.2).trans k2.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem existsUnique_lift (V : HSp D) (g : Bridge.Gf V) : ∃! h : GA D V, h ∈ GfC V ∧ FWT.fin V h = g := by
   obtain ⟨_, x, rfl⟩ := g
@@ -281,9 +273,9 @@ open GlobalTheory.AdLat GlobalTheory.UnRep GlobalTheory.UnRep.FullReps GlobalThe
 variable {D : D7}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(g.1⁻¹).1 *ᵥ fv D.host.F x ∈ hat D.host.F _ ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨_, hx, by rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]⟩`. Introduce and unpack `⟨z, hz, e⟩`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← e, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Conclude with `hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mulVec_mem_iff (V : HSp D) (g : Bridge.Gf V) (x : Fin V.rank → D.host.E) :
     (matF V g⁻¹).mulVec (fun i => (1 : Af D.host.F) ⊗ₜ[D.host.F] x i) ∈
@@ -297,16 +289,16 @@ theorem inv_mulVec_mem_iff (V : HSp D) (g : Bridge.Gf V) (x : Fin V.rank → D.h
     exact hz
 
 /- English proof (translation)
-Simplify using `only [IsTransl, inv_mulVec_mem_iff, Set.ext_iff, SetLike.mem_coe]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isTransl_iff_latOf (V : HSp D) (g : Bridge.Gf V) (L : Lat V) :
     IsTransl V (latC V) g L ↔ (L : Set (Fin V.rank → D.host.E)) = latOf D.host.F g.1.1 (latC V) := by
   simp only [IsTransl, inv_mulVec_mem_iff, Set.ext_iff, SetLike.mem_coe]
 
 /- English proof (translation)
-Take `⟨-, -, hfg, hsp, -⟩` from `latHat_eq_hat_and_gram D V`. Take `⟨Λ, hΛ, -⟩` from `exists_lattice_latOf D.host.F D.host.E V.rank (latC V) g.1 hfg hsp`. Establish `: Bridge.hLat V g = Λ`. Unfold `Bridge.hLat`. Rewrite using `[← Submodule.span_eq Λ, hΛ, ← coe_selfDualLatticeInFrameCoordinates_eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Set.ext fun x => inv_mulVec_mem_iff V g x`. Rewrite using `[this, hΛ]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_hLat (V : HSp D) (g : Bridge.Gf V) :
     (Bridge.hLat V g : Set (Fin V.rank → D.host.E)) = latOf D.host.F g.1.1 (latC V) := by
@@ -320,14 +312,14 @@ theorem coe_hLat (V : HSp D) (g : Bridge.Gf V) :
   rw [this, hΛ]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.PrincInLevel.eq_latC hβ, isTransl_iff_latOf, ← coe_hLat, SetLike.coe_set_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isTransl_iff {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Lat V} (hβ : IsSDFrame V β Λ 1) (g : Bridge.Gf V)
     (L : Lat V) : IsTransl V Λ g L ↔ L = Bridge.hLat V g := by
   rw [GlobalTheory.PrincInLevel.eq_latC hβ, isTransl_iff_latOf, ← coe_hLat, SetLike.coe_set_eq]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← mul_assoc, ← mul_assoc, inv_mul_cancel, one_mul, Units.val_mul, ← Matrix.mulVec_mulVec]`. Generalize the expression as in `(β⁻¹).1 *ᵥ z = w at hz`. Conclude with `Subring.sum_mem S (t := Finset.univ) (f := fun j => (y.1 i j : R) * w j) fun j _ => mul_mem (y.1 i j).2 (hz j)`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. A detailed English derivation is pending.
 -/
 theorem conj_mulVec_mem {R : Type} [CommRing R] {n : ℕ} (S : Subring R) (β : GL (Fin n) R) (y : GL (Fin n) S) (z : Fin n → R)
     (hz : ∀ j, ((β⁻¹).1 *ᵥ z) j ∈ S) (i : Fin n) :
@@ -338,11 +330,11 @@ theorem conj_mulVec_mem {R : Type} [CommRing R] {n : ℕ} (S : Subring R) (β : 
   exact Subring.sum_mem S (t := Finset.univ) (f := fun j => (y.1 i j : R) * w j) fun j _ => mul_mem (y.1 i j).2 (hz j)
 
 /- English proof (translation)
-Take `⟨c, hfr, -⟩` from `hβ`. Establish `h1 : Formalism.UG.bc (Lev.swapAE D) k.1 ∈ Formalism.L2.DIV.lev D.sp.cm V.gram β (Lev.flag1L L)` using `hk`. Take `⟨y, hy⟩` from `Formalism.L2.DIV.parLev_St h1.1`. Establish `hy' : β * Formalism.L2.DIV.intGL D.host.F D.host.E V.rank y * β⁻¹ = Formalism.UG.bc (Lev.swapAE D) k.1` using `hy`. Establish `h2` using `(hfr _).1 (GlobalTheory.PrincInLevel.swap_mem_hatL Λ z hz)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (Formalism.UG.bc (Lev.swapAE D) k.1).1 *ᵥ (fun i => Algebra.TensorProduct.comm D.host.F _ D.host.E (z i)) ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) Λ := by`. Rewrite using `[← hy']`. Conclude with `(hfr _).2 (conj_mulVec_mem _ β y _ h2)`. Establish `h4` using `GlobalTheory.PrincInLevel.swap_symm_mem_hat Λ _ h3`. Use `h4 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[AlgEquiv.eq_symm_apply]`. Conclude with `RingHom.map_mulVec (Lev.swapAE D) k.1.1 z i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_hat {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Lat V} (hβ : IsSDFrame V β Λ 1)
     (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) {k : Bridge.Gf V} (hk : k ∈ (levEnv V β L).J)
@@ -364,7 +356,7 @@ theorem mulVec_mem_hat {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Lat 
   exact RingHom.map_mulVec (Lev.swapAE D) k.1.1 z i
 
 /- English proof (translation)
-Establish `: IsTopologicalRing (AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Establish `: IsTopologicalGroup (GA D V)` using `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`. Conclude with `Subgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset (PrincLevel.finCong_mem_nhds V hN) fun k hk => GlobalTheory.PrincInLevel.finCong_mem_levEnv D V β Λ L N k hβ hL hk)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpenLev_levEnv {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Lat V} (hβ : IsSDFrame V β Λ 1)
     (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) {N : ℕ} (hN : 0 < N)
@@ -375,7 +367,7 @@ theorem isOpenLev_levEnv {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : La
     fun k hk => GlobalTheory.PrincInLevel.finCong_mem_levEnv D V β Λ L N k hβ hL hk)
 
 /- English proof (translation)
-Take `⟨_, g, rfl⟩` from `g`. Introduce `x y`. Rewrite using `[GlobalTheory.UnitarySplit.hermA_eq, GlobalTheory.UnitarySplit.hermA_eq]`. Conclude with `(RatElt.mem_UJ_iff _ _ _).1 (GlobalTheory.UnitarySplit.finHom_mem V g) y x`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnA_gf (V : HSp D) (g : Bridge.Gf V) : IsUnA (cF D) V.gramᵀ g.1.1 := by
   obtain ⟨_, g, rfl⟩ := g
@@ -384,7 +376,7 @@ theorem isUnA_gf (V : HSp D) (g : Bridge.Gf V) : IsUnA (cF D) V.gramᵀ g.1.1 :=
   exact (RatElt.mem_UJ_iff _ _ _).1 (GlobalTheory.UnitarySplit.finHom_mem V g) y x
 
 /- English proof (translation)
-Take `⟨-, -, hfg, hsp, -⟩` from `latHat_eq_hat_and_gram D V`. Take `⟨Λ, hΛ, h1, h2, -⟩` from `exists_lattice_latOf D.host.F D.host.E V.rank (latC V) g.1 hfg hsp`. Rewrite using `[SetLike.coe_injective ((coe_hLat V g).trans hΛ.symm)]`. Conclude with `⟨h1, h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isLattice_hLat (V : HSp D) (g : Bridge.Gf V) : Submodule.IsLattice D.host.E (Bridge.hLat V g) := by
   obtain ⟨-, -, hfg, hsp, -⟩ := latHat_eq_hat_and_gram D V
@@ -393,13 +385,13 @@ theorem isLattice_hLat (V : HSp D) (g : Bridge.Gf V) : Submodule.IsLattice D.hos
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Take `⟨-, -, hfg, hsp, c2, -, -, gh, gd, -, hsd⟩` from `latHat_eq_hat_and_gram D V`. Establish `key` using `latOf_selfDual D.host.F D.host.E V.rank (latC V) (cF D) V.gramᵀ 1 g.1 hfg hsp c2 gh gd one_ne_zero hsd (isUnA_gf V g)`. Unfold `Formalism.L2.Herm.dualL`. Use `conv_rhs => rw [← Submodule.span_eq (Bridge.hLat V g)]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Rewrite using `[coe_hLat, ← key, ← coe_hLat]`. Use `forall_congr' fun y => imp_congr_right fun _ => ?_` and prove the remaining obligations. Establish `e : Formalism.UG.hform (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram y v = ∑ a, ∑ b, v a * V.gramᵀ a b * cF D (y b)`. Unfold `Formalism.UG.hform`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `star (y b) * V.gram b a * v a = v a * V.gram b a * star (y b)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, FractionalIdeal.mem_one_iff]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 
-Conclude with `Iff.rfl`.
+A detailed English derivation is pending.
 -/
 theorem dualL_hLat (V : HSp D) (g : Bridge.Gf V) : Formalism.L2.Herm.dualL D.sp.cm V (Bridge.hLat V g) = Bridge.hLat V g := by
   obtain ⟨-, -, hfg, hsp, c2, -, -, gh, gd, -, hsd⟩ := latHat_eq_hat_and_gram D V
@@ -421,11 +413,9 @@ theorem dualL_hLat (V : HSp D) (g : Bridge.Gf V) : Formalism.L2.Herm.dualL D.sp.
   exact Iff.rfl
 
 /- English proof (translation)
-Take `⟨-, -, hfg, hsp, -⟩` from `latHat_eq_hat_and_gram D V`. Take `⟨t, ht, hb⟩` from `exists_nat_bd _ hfg hsp N e he M hM`. Break down `t.eq_zero_or_pos with rfl | h0` into its components or cases. Take `⟨d, hd, h⟩` from `(idempotent_adeles_small_matrices D.host.F D.host.E _ _ hfg hsp).2.1 M`. Use `⟨d, hd, by rw [(Nat.coprime_zero_left N).1 ht]; exact Nat.coprime_one_right d, fun z hz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ((1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] ((d : 𝓞 D.host.E) : D.host.E) : RA D.host.F D.host.E) = (d : RA D.host.F D.host.E)`. Rewrite using `[show ((d : 𝓞 D.host.E) : D.host.E) = (d : D.host.E) from map_natCast (algebraMap (𝓞 D.host.E) D.host.E) d]`. Conclude with `map_natCast (Algebra.TensorProduct.includeRight : D.host.E →ₐ[D.host.F] RA D.host.F D.host.E) d`. Rewrite using `[this, Nat.cast_smul_eq_nsmul]`. Conclude with `h z hz`.
-
-Conclude with `⟨t, h0, ht, hb⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pos_bd (V : HSp D) (N : ℕ) (e : Af D.host.F)
     (he : ∀ v : HeightOneSpectrum (𝓞 D.host.F), (N : 𝓞 D.host.F) ∈ v.asIdeal → e v = 0)
@@ -446,11 +436,11 @@ theorem exists_pos_bd (V : HSp D) (N : ℕ) (e : Af D.host.F)
   · exact ⟨t, h0, ht, hb⟩
 
 /- English proof (translation)
-Take `⟨-, -, hfg, hsp, -⟩` from `latHat_eq_hat_and_gram D V`. Take `⟨e, -, -, he, hcut⟩` from `(suppSplitOff_iff V N g).1 hs`. Establish `he' : ∀ v : HeightOneSpectrum (𝓞 D.host.F), (N : 𝓞 D.host.F) ∈ v.asIdeal → e v = 0` using `fun v hv => by`. Assume the negation of the conclusion as `h0`. Conclude with `(he v h0).2 hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨t, h0, ht, hb⟩` from `exists_pos_bd V N e he' _ hcut`. Take `⟨t', h0', ht', hb'⟩` from `exists_pos_bd V N e he' _ (cut_inv g.1 _ hcut)`. Establish `h1` using `hb.mul (t' : 𝓞 D.host.E)`. Establish `h2` using `hb'.mul (t : 𝓞 D.host.E)`. Rewrite `h2` using `[mul_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1`, `h2` using `[← Nat.cast_mul]`. Establish `h3` using `smul_mem_of_bd hfg hsp (coe_hLat V g) h1 h2`. Simplify using `only [Nat.cast_smul_eq_nsmul] at h3 ⊢`. Conclude with `⟨t' * t, Nat.mul_pos h0' h0, Nat.Coprime.mul_left ht' ht, h3.2, h3.1⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_commens (V : HSp D) (N : ℕ) (g : Bridge.Gf V) (hs : SuppSplitOff V N g) :
     ∃ M : ℕ, 0 < M ∧ M.Coprime N ∧ (∀ x ∈ latC V, (M : D.host.E) • x ∈ Bridge.hLat V g) ∧
@@ -471,13 +461,13 @@ theorem exists_commens (V : HSp D) (N : ℕ) (g : Bridge.Gf V) (hs : SuppSplitOf
   exact ⟨t' * t, Nat.mul_pos h0' h0, Nat.Coprime.mul_left ht' ht, h3.2, h3.1⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, -⟩` from `H`. Establish `hL : ∀ a, Lh a = Bridge.hLat V (h a)` using `fun a => (isTransl_iff hβ _ _).1 (h3 a)`. Use `⟨fun a => ?_, fun g M hM => ?_⟩` and prove the remaining obligations. Rewrite using `[hL, GlobalTheory.PrincInLevel.eq_latC hβ]`. Conclude with `⟨isLattice_hLat V _, dualL_hLat V _, exists_commens V bad _ (h2 a)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨a, ⟨γ, k, rfl⟩, -⟩` from `h1 g`. Take `⟨γ', hγ', e⟩` from `γ.2`. Establish `hr : IsRat V γ.1 γ'` using `e.symm`. Use `⟨a, γ', hγ', fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[h3 a, hM]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (finHom V γ.1).1 *ᵥ fv D.host.F x = fv D.host.F (γ'.1 *ᵥ x)` using `((RatElt.rational_elements D V).2.2.2.2 _ _ hr).1 x`. Express the relevant statement in the definitionally equal form `((h a).1⁻¹).1 *ᵥ fv D.host.F x ∈ hat D.host.F _ ↔ ((finHom V γ.1 * (h a).1 * k.1.1)⁻¹).1 *ᵥ fv D.host.F (γ'.1 *ᵥ x) ∈ hat D.host.F _`. Rewrite using `[← e1, Matrix.mulVec_mulVec, ← Units.val_mul, show (finHom V γ.1 * (h a).1 * k.1.1)⁻¹ * finHom V γ.1 = k.1.1⁻¹ * (h a).1⁻¹ by group, Units.val_mul, ← Matrix.mulVec_mulVec]`. Use `⟨fun hx => mulVec_mem_hat hβ L (inv_mem (hle k.2)) hx, fun hx => ?_⟩` and prove the remaining obligations. Use `mulVec_mem_hat hβ L (hle k.2) hx` as an intermediate fact.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isLatReps_of_isAdReps {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Lat V} (hβ : IsSDFrame V β Λ 1)
     (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) {J' : Subgroup (Bridge.Gf V)} (hle : J' ≤ (levEnv V β L).J) {bad n : ℕ}
@@ -519,7 +509,7 @@ Both sides reduce to the same expression.
 theorem levJ_eq : FWT.levJ R i t = levJ R.toLevCh i t := rfl
 
 /- English proof (translation)
-The claim follows from `finite_stab _ hle (y := (R.B.L i t).pres.y) (R.B.L i t).pres.reps (fun c => Finite.of_equiv _ ((R.B.L i t).pres.stabI c).toEquiv) g`.
+A detailed English derivation is pending.
 -/
 theorem finite_stab_of_le {J' : Subgroup (Bridge.Gf (Vc D i))} (hle : J' ≤ FWT.levJ R i t) (g : Bridge.Gf (Vc D i)) :
     Finite (Bridge.stab (Bridge.ratF (Vc D i)) J' g) :=

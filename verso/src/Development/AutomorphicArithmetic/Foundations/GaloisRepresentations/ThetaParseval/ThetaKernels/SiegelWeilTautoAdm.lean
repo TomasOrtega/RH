@@ -14,31 +14,25 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.Tauto
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Take `⟨l, hl, hlθ⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Tauto.exists_lth_k d`. Establish `hpres : ∀ g, ∀ Ψ ∈ d.sch, d.S g Ψ ∈ d.sch` using `fun g Ψ hΨ => d.ok.dbl.lin.pres g Ψ hΨ`. Establish `hfun : ∀ Ψ ∈ d.sch, (fun g => l (d.S g Ψ)) = fun g => thetaSum F (d.S g Ψ)` using `fun Ψ hΨ => funext fun g => hlθ _ (hpres g Ψ hΨ)`. Establish `hint : ∀ Ψ ∈ d.sch, IntegrableOn (fun g => l (d.S g Ψ)) d.D d.μ` using `fun Ψ hΨ => by`. Rewrite using `[hfun Ψ hΨ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Tauto.intOn_S_k hS hP hT d hΨ`. Use `set c : ℝ := (d.μ.real d.D)⁻¹ with hc`. Set `L0 : d.sch →ₗ[ℂ] ℂ` to `{ toFun := fun Ψ => c • ∫ g in d.D, l (d.S g Ψ.1) ∂d.μ map_add' := fun Ψ Ψ' => by`. Simplify using `only [Submodule.coe_add, map_add]`. Rewrite using `[integral_add (hint _ Ψ.2) (hint _ Ψ'.2), smul_add]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_smul' := fun a Ψ => by`. Simplify using `only [SetLike.val_smul, map_smul, RingHom.id_apply, smul_eq_mul]`. Rewrite using `[integral_const_mul, mul_smul_comm] }`. Take `⟨Λ, hΛ⟩` from `LinearMap.exists_extend L0`. Establish `hΛv : ∀ Ψ (hΨ : Ψ ∈ d.sch), Λ Ψ = c • ∫ g in d.D, l (d.S g Ψ) ∂d.μ` using `fun Ψ hΨ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun L => L ⟨Ψ, hΨ⟩) hΛ` as an intermediate fact. Simplify `this` using `[L0]`. Use `⟨Λ, fun gf hgf => ?_, fun Ψ hΨ => by rw [hΛv Ψ hΨ, hfun Ψ hΨ]⟩` and prove the remaining obligations. Use `choose Th hTh using fun h : UA σ d.A.J => d.ok.dbl.lin.adm h l hl gf hgf`. Establish `hmem : ∀ f : SchwartzMap (d.κ → mixedEmbedding.mixedSpace F) ℂ, pureA F f gf ∈ d.sch` using `fun f => Submodule.subset_span ⟨f, gf, hgf, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hTv : ∀ h f, Th h f = thetaSum F (d.S h (pureA F f gf))` using `fun h f => by`. Rewrite using `[← hTh h f, LinearMap.comp_apply, hlθ _ (hpres h _ (hmem f))]`. Use `haveI : BarrelledSpace ℂ (SchwartzMap (d.κ → mixedEmbedding.mixedSpace F) ℂ) := GlobalTheory.T.schwartzMap_barrelledSpace' _`. Establish `hUE : UniformEquicontinuous ((↑) ∘ Th)` using `(norm_withSeminorms ℂ ℂ).banach_steinhaus fun _ f => by`. Take `⟨C, hC⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Tauto.bdd_S_k hS hP hT d (hmem f)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨C, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`. Simplify `hC h` using `[hTv]`. Establish `hpa : ∀ f f' : SchwartzMap (d.κ → mixedEmbedding.mixedSpace F) ℂ, pureA F (f + f') gf = pureA F f gf + pureA F f' gf` using `fun f f' => funext fun x => by`. Simplify using `[pureA, add_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hps : ∀ (a : ℂ) (f : SchwartzMap (d.κ → mixedEmbedding.mixedSpace F) ℂ), pureA F (a • f) gf = a • pureA F f gf` using `fun a f => funext fun x => by`. Simplify using `[pureA, mul_assoc]`. Set `Lf : SchwartzMap (d.κ → mixedEmbedding.mixedSpace F) ℂ →ₗ[ℂ] ℂ` to `{ toFun := fun f => Λ (pureA F f gf) map_add' := fun f f' => by rw [hpa, map_add] map_smul' := fun a f => by rw [hps, map_smul]; rfl }`. Establish `hLf : ∀ f, Lf f = c • ∫ g in d.D, Th g f ∂d.μ` using `fun f => by show Λ (pureA F f gf) = _`. Rewrite using `[hΛv _ (hmem f)]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `congr 1`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show l (d.S g (pureA F f gf)) = Th g f`. Rewrite using `[← hTh g f]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfin : d.μ d.D < ⊤` using `(_root_.PositivityTheory.SiegelWeilFormula.Tauto.cpt_k hS d).fin d.μ d.D d.ok.haar d.ok.dom`. Establish `hpos : 0 < d.μ.real d.D` using `by haveI := (_root_.PositivityTheory.SiegelWeilFormula.Tauto.cpt_k hS d).cnt haveI := d.ok.haar`. Conclude with `ENNReal.toReal_pos (fd_ne d.ok.dom) hfin.ne`. Establish `hcont : Continuous Lf`. Use `continuous_of_continuousAt_zero Lf.toAddMonoidHom ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[ContinuousAt, map_zero, Metric.tendsto_nhds]`. Introduce `ε hε`. Use `filter_upwards [(Metric.equicontinuousAt_iff_right.1 (hUE.equicontinuous 0)) (ε / 2) (half_pos hε)] with f hf`. Rewrite using `[dist_zero_right]`. Use `show ‖Lf f‖ < ε`.
-
-Rewrite using `[hLf]`. Establish `hb : ∀ g ∈ d.D, ‖Th g f‖ ≤ ε / 2` using `fun g _ => by`. Use `(hf g).le` as an intermediate fact. Simplify `this` using `[dist_comm]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[norm_smul, Real.norm_of_nonneg (inv_nonneg.2 hpos.le)]`. Use `gcongr`. Conclude with `norm_setIntegral_le_of_norm_le_const hfin hb`. Use `_ = ε / 2 := by rw [hc]; field_simp`. Use `_ < ε := half_lt_self hε`.
-
-Conclude with `⟨⟨Lf, hcont⟩, fun f => rfl⟩`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_meanAdm_k (hS : GlobalTheory.Published.SiegelSetUnitary) (hP : _root_.PositivityTheory.SiegelWeilFormula.TPar_k) (hT : _root_.PositivityTheory.SiegelWeilFormula.TTheta_k) (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) :
     ∃ Λ ∈ (adeleClass F).adm d.κ, ∀ Ψ ∈ d.sch,

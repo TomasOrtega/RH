@@ -19,7 +19,7 @@ open UpperTheory.V.Z UpperTheory.V.Z.Ord
 open UpperTheory.V.Af.Gu GlobalTheory.DefiniteBC
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 K)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Conclude with `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ev_offL {K : Type} [Field K] [NumberField K] (l : ℕ) [Fact l.Prime] :
     ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite, ((l : ℕ) : 𝓞 K) ∉ v.asIdeal := by
@@ -29,11 +29,11 @@ private theorem ev_offL {K : Type} [Field K] [NumberField K] (l : ℕ) [Fact l.P
   exact (Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)
 
 /- English proof (translation)
-Take `⟨φ, hφ, hφ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hσ.ne_bot`. Set `L : Subgroup (finU E n)` to `{ carrier := {k | RU E n k φ = φ} one_mem' := by simp mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply, hb, ha]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at *`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Subgroup.coe_inv, inv_mul_cancel, map_one, Module.End.one_apply] }`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hLo : IsOpen (L : Set (finU E n))` using `(hσ.aut φ hφ).level`. Use `filter_upwards [GlobalTheory.T.eventually_localIntegralPoints_mem_openSubgroup_definiteUnitary E n L hLo] with w hw`. Conclude with `⟨φ, hφ, hφ0, fun x hx hxK => hw x hx hxK hx.1⟩`.
+A detailed English derivation is pending.
 -/
 private theorem unram_ev {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {σ : Submodule ℂ (UA E n → ℂ)}
     (hσ : IsAutRepU σ) : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, IsUnramU σ w := by
@@ -55,7 +55,7 @@ private theorem unram_ev {E : Type} [Field E] [NumberField E] [IsCMField E] {n :
   exact ⟨φ, hφ, hφ0, fun x hx hxK => hw x hx hxK hx.1⟩
 
 /- English proof (translation)
-Introduce `M hM` and use `by rcases h.2.2 M le_top hM with rfl | rfl · exact ⟨⊤, h.2.1, isCompl_bot_top⟩ · refine ⟨⊥, fun g v hv => ?_, isCompl_top_bot⟩ rw [(Submodule.mem_bot k).1 hv] simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ss_irr {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {r : Γ →* GL (Fin n) k} (h : Af.IsIrr r) : IsSSRep r := fun M hM => by
   rcases h.2.2 M le_top hM with rfl | rfl
@@ -65,13 +65,13 @@ private theorem ss_irr {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {r : Γ →*
     simp
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `e`. Use `⟨h.1, fun _ _ _ => Submodule.mem_top, fun M _ hM => ?_⟩` and prove the remaining obligations. Set `T : (Fin n → k) ≃ₗ[k] (Fin n → k)` to `(Matrix.GeneralLinearGroup.toLin P).toLinearEquiv`. Establish `hT : ∀ v, T v = (P : Matrix (Fin n) (Fin n) k).mulVec v` using `fun v => rfl`. Establish `hi : IsInv r (M.comap (T : (Fin n → k) →ₗ[k] (Fin n → k)))` using `fun g v hv => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hM g _ hv`. Express the relevant statement in the definitionally equal form `(r' g : Matrix (Fin n) (Fin n) k).mulVec (T v) ∈ M at h1`. Express the relevant statement in the definitionally equal form `T _ ∈ M`. Establish `e1 : (P : Matrix (Fin n) (Fin n) k) * (r g : Matrix (Fin n) (Fin n) k) = (r' g : Matrix (Fin n) (Fin n) k) * (P : Matrix (Fin n) (Fin n) k)`. Establish `e2 : P * r g = r' g * P` using `by rw [hP g, inv_mul_cancel_right]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Units.val e2`. Rewrite using `[hT, Matrix.mulVec_mulVec, e1, ← Matrix.mulVec_mulVec, ← hT]`. Conclude with `h1`. Establish `hm : M = (M.comap (T : (Fin n → k) →ₗ[k] (Fin n → k))).map (T : (Fin n → k) →ₗ[k] (Fin n → k))` using `(Submodule.map_comap_eq_of_surjective T.surjective M).symm`. Break down `h.2.2 _ le_top hi with h0 | h1` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Rewrite using `[hm, h0, Submodule.map_bot]`. Use `right`. Rewrite using `[hm, h1, Submodule.map_top, LinearMap.range_eq_top.2 T.surjective]`.
+A detailed English derivation is pending.
 -/
 private theorem irr_conj {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {r r' : Γ →* GL (Fin n) k} (e : Af.RepIso r r')
     (h : Af.IsIrr r) : Af.IsIrr r' := by
@@ -98,7 +98,7 @@ private theorem irr_conj {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {r r' : Γ
     rw [hm, h1, Submodule.map_top, LinearMap.range_eq_top.2 T.surjective]
 
 /- English proof (translation)
-Establish `hc` using `UpperTheory.V.Af.Es.charpoly_eq_prod ι (I := Unit) (a := fun _ => n) r (fun _ => r') hr (fun _ => hr') (hw.mono fun w h hd => by`. Take `⟨B, h1, h2⟩` from `h hd`. Conclude with `⟨fun _ => B, by simpa using h1, fun _ => h2⟩)`. Take `⟨P, hP⟩` from `Formalism.MainNotions.SumRepresentations.brauerNesbitt_matrix r r' hs hs' (fun g => by simpa using hc g)`. Conclude with `⟨P⁻¹, fun s => by rw [hP s, inv_inv]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem iso_deg_one {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime]
     (ι : Qbar l ≃+* ℂ) {n : ℕ} (r r' : G E Ω →* GL (Fin n) (Qbar l)) (hr : Continuous r) (hr' : Continuous r')
@@ -113,28 +113,26 @@ private theorem iso_deg_one {E Ω : Type} [Field E] [NumberField E] [Field Ω] [
   exact ⟨P⁻¹, fun s => by rw [hP s, inv_inv]⟩
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.DefiniteBC.spehInf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem spehInf_len_one (m : Multiset ℂ) : GlobalTheory.DefiniteBC.spehInf 1 m = m := by
   simp [GlobalTheory.DefiniteBC.spehInf]
 
 /- English proof (translation)
-Simplify using `[satTot, GlobalTheory.WeilDeligne.qPow_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem satTot_len_one {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (S : Fin 1 → Multiset ℂˣ) :
     satTot w (fun _ => 1) S = S 0 := by
   simp [satTot, GlobalTheory.WeilDeligne.qPow_zero]
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Take `rfl : d = fun _ => 1` from `funext hd`. Establish `hn' : a 0 = n` using `by simpa using hn`. Take `rfl : a = fun _ => n` from `funext fun i => by rw [Subsingleton.elim i 0, hn']`. Establish `hw : ∀ φ lam, HasWeightAt π φ lam → (P 0).HasInfChar φ (infOfWeight lam)` using `fun φ lam h => by`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `H.weight φ lam h`. Rewrite `e` using `[Fin.sum_univ_one, spehInf_len_one]`. Conclude with `e ▸ H.inf 0 φ`. Use `⟨P 0, (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => ?_, GlobalTheory.LocGlobDual.Model.dualIsConj_of_isCsd (PH.toClassicalTheorems.litN.aut.gk E _ (P 0)) (H.csd 0), ⟨hr, hF.mono fun w ⟨S, h1, h2⟩ => ⟨S 0, h1 0, satTot_len_one w S ▸ h2⟩⟩, fun w hsp τ hτ => ?_⟩` and prove the remaining obligations. Take `⟨lam, hl⟩` from `GlobalTheory.T.exists_algebraicWeight_of_automorphic_definiteUnitary E _ hn1 π hπ τ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CG.HasInfChar.infChar_eq (π := CG.mk (P 0)) (hw τ lam hl)]`. Use `⟨nodup_infOfWeight lam, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[infOfWeight, Multiset.mem_map]`. Take `⟨j, -, rfl⟩` from `hz`. Conclude with `⟨lam.w j - (j : ℕ), by push_cast; ring⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `e : (σ · w) = fun _ => σ 0 w` using `funext fun i => by rw [Subsingleton.elim i 0]`. Establish `hcg : ∀ x y : (∀ _i : Fin 1, SmIrr (GL (Fin (1 * n)) (w.adicCompletion E))), x = y → IsCompAlong π (locU n w) ((cLoc w).comp (locU n w).subtype) (locProd (N` using `fun _ : Fin 1 => 1 * n) hn w x) → IsCompAlong π (locU n w) ((cLoc w).comp (locU n w).subtype) (locProd (N := fun _ : Fin 1 => 1 * n) hn w y) := by`. Introduce and unpack `x _ rfl h`. Conclude with `h`. Establish `h0` using `hcg _ _ e (hsplit w hsp)`.
-
-Establish `hρ : IsCompAlong π (locU n w) ((cLoc w).comp (locU n w).subtype) (ρ 0 w).ρ` using `UpperTheory.V.Z.Desc.irrComp E n π hn (P 0) w (ρ 0 w) (σ 0 w) (H.loc 0 w) (hS 0 w) h0 (ρ 0 w) (H.loc 0 w)`. Conclude with `(GlobalTheory.BCT.isLocComp_iff_equiv (H.loc 0 w) τ).2 (hUni E n π hπ w hsp _ _ _ _ hτ hρ)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem one_part (PH : Af.HypothesesH) (hUni : CompUnique) {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω]
     [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {n : ℕ} (hn1 : 1 ≤ n)
@@ -178,17 +176,15 @@ private theorem one_part (PH : Af.HypothesesH) (hUni : CompUnique) {E Ω : Type}
     exact (GlobalTheory.BCT.isLocComp_iff_equiv (H.loc 0 w) τ).2 (hUni E n π hπ w hsp _ _ _ _ hτ hρ)
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ hE l _ _ ι n hn π hπ ρ' hρc hρi hρF`. Take `⟨c, a, d, hsum, P, ρ, m, σ, hP, hS, hsplit⟩` from `GlobalTheory.BcSpeh.bcSpeh_of_baseChange (GlobalTheory.BaseChangeBridge.main H.litN.aut.bc H.litN.loc.bern) (GlobalTheory.SpehInfChar.discreteSpectrumGL_of_residual H.litN.aut.mw) E hE n hn π hπ`. Establish `hc : 1 ≤ c`. Break down `c with _ | c` into its components or cases. Simplify using `at hsum`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `hint : ∀ i (k : Fin (d i)) τ, (m i τ).Nodup ∧ ∀ z ∈ m i τ, ∃ j : ℤ, z + (ex n (d i) k : ℂ) / 2 = j` using `fun i k τ => by`. Take `⟨lam, hl⟩` from `GlobalTheory.T.exists_algebraicWeight_of_automorphic_definiteUnitary E n hn π hπ τ`. Conclude with `(hStr n c d (m · τ) lam (hP.weight τ lam hl)).1 i k`.
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose r₀ HT₀ h₀ hw₀ using fun i (k : Fin (d i)) => hHalf E Ω l ι (a i) (hP.pos i).1 (P i) (hP.csd i) (ρ i) (hP.loc i) (m i) (hP.inf i) (ex n (d i) k) (hint i k)`. Use `choose r₁ h₁ hi₁ using fun i => hFam E Ω l ι (d i) (hP.pos i).2 (fun _ => a i) (fun _ => (hP.pos i).1) (d i * a i) (by simp) (r₀ i) _ (HT₀ i) (h₀ i)`. Take `⟨r, hr, hi⟩` from `hFam E Ω l ι c hc (fun i => d i * a i) (fun i => Nat.mul_pos (hP.pos i).2 (hP.pos i).1) n hsum r₁ _ _ h₁`. Establish `hpar : ∀ w, ParAt ι r w (totPar n d (ρ · w))` using `hr.par`. Establish `hss' : IsSSRep ρ'` using `ss_irr hρi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hagree : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, w.asIdeal.inertiaDeg ℤ = 1 → ∃ B, Af.FrobEig ι r w B ∧ Af.FrobEig ι ρ' w B` using `by filter_upwards [ev_offL (K := E) l, unram_ev hπ, hρF] with w hl hu hw hd`. Establish `hsp` using `UpperTheory.isSplitAt_of_unramified_of_inertiaDeg_eq_one E w (hE w) hd`. Take `⟨τ, hτ⟩` from `(GlobalTheory.SplitComp.exists_comp_and_unique E n π hπ w hsp).1`. Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 (GlobalTheory.SphBC.isSpherical_of_isCompAlong_split hπ hsp τ.ρ hτ hu)`. Take `⟨B, hB⟩` from `(hLoc E n w τ).1 ⟨x, h0, GlobalTheory.LGrp.mem_fixed.1 hx⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨_, hSat E Ω l ι n r hr.cont w hl τ B hB fun A h rc hrc => ?_, hw hsp τ hτ B hB⟩` and prove the remaining obligations. Conclude with `(((Af.Gu.locGlob_iff ι r w τ).2 ((hpar w).congr (hRec E Ω n c a d hsum P w (ρ · w) (σ · w) hP.pos (hP.loc · w) (hS · w) τ (hUni E n π hπ w hsp _ _ _ _ hτ (hsplit w hsp))))) A h rc hrc).1 hl`. Establish `hiso : Af.RepIso r ρ'` using `iso_deg_one ι r ρ' hr.cont hρc hr.ss hss' hagree`. Establish `hir : Af.IsIrr r` using `irr_conj (Af.RepIso.symm' hiso) hρi`. Use `one_part H hUni ι hn hπ hsum hP (fun i w => (hS i w).2.2) hsplit (hi hir).1 (fun i => (hi₁ i ((hi hir).2 i)).1) hss' ?_` and prove the remaining obligations.
-
-Use `filter_upwards [ev_offL (K := E) l, Filter.eventually_all.2 fun i => (hLink E _ (P i)).2] with w h1 h2`. Take `⟨S, hSs⟩` from `Classical.skolem.1 h2`. Conclude with `⟨S, hSs, Af.FrobEig.of_iso (hFrob E Ω l ι n c a d r hr.cont w h1 (ρ · w) S (fun i => ((hLink E _ (P i)).1 w _ (hP.loc i w) _).1 (hSs i)) (hpar w)) hiso⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem assemble_link (H : Af.HypothesesH) (hFam : SumFam) (hHalf : Half) (hStr : Strings) (hUni : CompUnique) (hRec : RecTot)
     (hFrob : FrobTot) (hSat : Af.SatFrob) (hLoc : Af.SatLoc) (hLink : SatLink) : LinkU := by
@@ -229,7 +225,7 @@ private theorem assemble_link (H : Af.HypothesesH) (hFam : SumFam) (hHalf : Half
     (fun i => ((hLink E _ (P i)).1 w _ (hP.loc i w) _).1 (hSs i)) (hpar w)) hiso⟩
 
 /- English proof (translation)
-Introduce `H` and use `assemble_link H (UpperTheory.sum_family_of_reductions (UpperTheory.sum_two_of_hodge_tate H UpperTheory.galoisRep_direct_sum_away_from_places UpperTheory.sum_hodge_tate) UpperTheory.finiteSum_reduction) (UpperTheory.half_of_compatible_polarization H UpperTheory.eta_condition Upper …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Ord.linkU :
     Af.HypothesesH → LinkU := fun H =>

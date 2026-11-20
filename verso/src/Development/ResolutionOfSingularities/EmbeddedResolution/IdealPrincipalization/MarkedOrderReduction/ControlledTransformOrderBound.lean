@@ -28,11 +28,11 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Introduce `T hT Z hZsm hZsnc X' π hπ J c hJ J' hJ' x' hx'`. Establish `: CharZero T.base` using `hT.charZero`. Establish `: AlgebraicGeometry.Smooth T.structMap` using `hT.smooth`. Establish `hN : AlgebraicGeometry.IsNoetherian T.scheme` using `hT.isNoetherian`. Establish `hlocNoeth : AlgebraicGeometry.IsLocallyNoetherian T.scheme` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLN' : AlgebraicGeometry.IsLocallyNoetherian X'` using `isLocallyNoetherian_of_isBlowupAlongIdealSheaf π Z hπ`. Establish `hsub : (Z.support : Set ↥T.scheme) ⊆ orderAtLeastLocus J c`. Introduce `x hx`. Conclude with `(mem_orderAtLeastLocus_iff J c x).2 (hJ x hx).ge`. Establish `hI : J ≤ Z ^ c` using `le_pow_of_hasStrictNormalCrossingsWith T.structMap Z J T.boundary hZsnc c hsub`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ'eq : J' = controlledTransform π Z J c hπ hI` using `eq_controlledTransform_of_mul_eq_comap π Z J c hπ hI J' hJ'`. Rewrite using `[hJ'eq]`. Use `orderAt_controlledTransform_le_of_orderAt_image_le T.base T.structMap π Z T.boundary hZsnc hπ J c hI x' ?_` and prove the remaining obligations. Establish `h1 : π x' ∈ (Z.support : Set ↥T.scheme)` using `AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap.1 (by rw [← Blowup.exceptionalIdeal_eq_comap π Z]; exact hx')`. Conclude with `le_of_eq (hJ _ h1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem orderAt_controlledTransform_le_of_orderAt_eq_on_center :
     ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
@@ -86,7 +86,7 @@ structure StrictTransformAndMonomialCaseHypotheses : Prop where
   monomial : MonomialCaseHypotheses.{u}
 
 /- English proof (translation)
-The claim follows from `orderAt_controlledTransform_le_of_orderAt_eq_on_center strictTransform_components := h.strictTransform_components monomial := h.monomial`.
+A detailed English derivation is pending.
 -/
 theorem OrderReductionHypotheses.of_strictTransformHypotheses (h : StrictTransformAndMonomialCaseHypotheses.{u}) :
     OrderReductionHypotheses.{u} where

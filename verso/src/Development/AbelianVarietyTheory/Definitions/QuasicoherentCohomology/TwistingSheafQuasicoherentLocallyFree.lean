@@ -17,9 +17,9 @@ namespace GlobalTheory.LB.SheafModel
 variable {X : Scheme.{0}} {L : LB X}
 
 /- English proof (translation)
-Establish `h₁ : φ.app V ((unitMod X).presheaf.map (homOfLE (le_top : V ≤ ⊤)).op (1 : Γ(X, ⊤))) = F.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op (φ.app ⊤ (1 : Γ(X, ⊤)))` using `PresheafOfModules.naturality_apply φ.val (homOfLE (le_top : V ≤ ⊤)).op (1 : Γ(X, ⊤))`. Establish `h₂ : ((unitMod X).presheaf.map (homOfLE (le_top : V ≤ ⊤)).op (1 : Γ(X, ⊤))) = (1 : Γ(X, V))` using `map_one (resG X (le_top : V ≤ ⊤))`. Rewrite using `[← h₁, h₂]`. Establish `h₃` using `(φ.val.app (op V)).hom.map_smul a (1 : Γ(X, V))`. Establish `h₄ : a = a * 1` using `(mul_one a).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conv_lhs => rw [h₄]`. Conclude with `h₃`.
+A detailed English derivation is pending.
 -/
 theorem hom_app_eq_smul {F : X.Modules} (φ : unitMod X ⟶ F) (V : X.Opens) (a : Γ(X, V)) :
     φ.app V a = a • F.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op (φ.app ⊤ (1 : Γ(X, ⊤))) := by
@@ -35,11 +35,9 @@ theorem hom_app_eq_smul {F : X.Modules} (φ : unitMod X ⟶ F) (V : X.Opens) (a 
   exact h₃
 
 /- English proof (translation)
-Set `s : LB.Sec L` to `globalEquiv L (e.hom.app ⊤ (1 : Γ(X, ⊤)))`. Establish `hu (i : L.ι) : IsUnit (s.f i)`. Set `a : Γ(X, L.U i)` to `e.inv.app (L.U i) (chartSec hL i)`. Establish `h₁ : e.hom.app (L.U i) a = chartSec hL i`. Use `congrArg (fun φ => Scheme.Modules.Hom.app φ (L.U i) (chartSec hL i)) e.inv_hom_id` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Rewrite `h₁` using `[hom_app_eq_smul]`. Establish `h₂` using `congrArg (chartEquiv hL i le_rfl) h₁`. Rewrite `h₂` using `[map_smul, chartEquiv_apply, chartEquiv_apply, coord_chartSec, coord_map, resG_resG, resG_resG, resG_g_self hL]`. Conclude with `IsUnit.of_mul_eq_one_right a h₂`.
-
-Conclude with `⟨⟨fun i => (hu i).unit⟩, fun i j => Units.ext (s.compat i j)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gen_of_iso (hL : L.IsLB) (e : unitMod X ≅ toMod L) :
     ∃ t : LB.Gen L, t.IsGen := by
@@ -57,14 +55,14 @@ theorem exists_gen_of_iso (hL : L.IsLB) (e : unitMod X ≅ toMod L) :
   exact ⟨⟨fun i => (hu i).unit⟩, fun i j => Units.ext (s.compat i j)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨e⟩ => exists_gen_of_iso hL e, fun ⟨t, ht⟩ => ⟨unitIso hL t ht⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_iso_iff (hL : L.IsLB) :
     Nonempty (unitMod X ≅ toMod L) ↔ ∃ t : LB.Gen L, t.IsGen :=
   ⟨fun ⟨e⟩ => exists_gen_of_iso hL e, fun ⟨t, ht⟩ => ⟨unitIso hL t ht⟩⟩
 
 /- English proof (translation)
-Use extensionality with `V s : 3`. Use `sec_ext_of_cover hL.cover fun p q => ?_` and prove the remaining obligations. Rewrite using `[coord_isoOfGen_hom_app hL hL _ _ s p q _ (inf_le_inf_right _ inf_le_left) (inf_le_inf_right _ inf_le_right)]`. Conclude with `(coord_rel s p q _ _ _).symm`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoOfGen_idIso (hL : L.IsLB) :
     (isoOfGen hL hL (idIso L) (idIso_isGen hL)).hom = 𝟙 (toMod L) := by
@@ -75,13 +73,13 @@ theorem isoOfGen_idIso (hL : L.IsLB) :
   exact (coord_rel s p q _ _ _).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => sec_ext fun i => isEmptyElim i⟩`.
+Supply the required witnesses or components.
 -/
 theorem subsingleton_of_isEmpty [IsEmpty L.ι] (V : X.Opens) : Subsingleton Γ(toMod L, V) :=
   ⟨fun _ _ => sec_ext fun i => isEmptyElim i⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x => by obtain ⟨i, -⟩ := Opens.mem_iSup.1 (hL.cover.ge (Set.mem_univ x)) exact isEmptyElim i⟩`.
+Supply the required witnesses or components.
 -/
 theorem isEmpty_of_isLB [IsEmpty L.ι] (hL : L.IsLB) : IsEmpty X :=
   ⟨fun x => by
@@ -101,14 +99,14 @@ def genericPt : PSpace R 1 :=
     exact X_ne_zero _ (Ideal.mem_bot.1 this)⟩ : ProjectiveSpectrum (grading R 1))
 
 /- English proof (translation)
-Introduce `h` and use `hf (Ideal.mem_bot.1 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem genericPt_mem {f : MvPolynomial (Fin 2) R} (hf : f ≠ 0) :
     genericPt R ∈ Proj.basicOpen (grading R 1) f :=
   fun h => hf (Ideal.mem_bot.1 h)
 
 /- English proof (translation)
-Establish `h : IsUnit ((chartAlgEquiv R 1 i).symm u)` using `u.isUnit.map _`. Take `⟨c, hc, e⟩` from `isUnit_iff_eq_C_of_isReduced.1 h`. Use `⟨c, hc.ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[← (chartAlgEquiv R 1 i).apply_symm_apply u, e]`. Conclude with `(chartAlgEquiv R 1 i).commutes c`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_const (i : Fin 2) (u : Γ(PSpace R 1, chart R 1 i)ˣ) :
     ∃ c : R, c ≠ 0 ∧ (u : Γ(PSpace R 1, chart R 1 i)) = algebraMap R _ c := by
@@ -119,13 +117,13 @@ theorem exists_const (i : Fin 2) (u : Γ(PSpace R 1, chart R 1 i)ˣ) :
   exact (chartAlgEquiv R 1 i).commutes c
 
 /- English proof (translation)
-Introduce and unpack `⟨t, ht⟩`. Take `⟨c₀, h₀, e₀⟩` from `exists_const R 0 (t.s (0 : Fin 2))`. Take `⟨c₁, h₁, e₁⟩` from `exists_const R 1 (t.s (1 : Fin 2))`. Set `W : (PSpace R 1).Opens` to `chart R 1 0 ⊓ chart R 1 1`. Establish `hW : W ≤ chart R 1 0` using `inf_le_left`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : resG _ hW (t.s (0 : Fin 2)).val = ratioOn W 0 hW 1 * resG _ (inf_le_right : W ≤ chart R 1 1) (t.s (1 : Fin 2)).val` using `congrArg Units.val (ht (0 : Fin 2) (1 : Fin 2))`. Rewrite `e` using `[e₀, e₁, resG_algebraMap, resG_algebraMap]`. Establish `hf : (C c₀ * MvPolynomial.X 0 - C c₁ * MvPolynomial.X 1 : MvPolynomial (Fin 2) R).IsHomogeneous 1` using `((isHomogeneous_X R 0).C_mul c₀).sub ((isHomogeneous_X R 1).C_mul c₁)`. Establish `hz : formOn W 0 hW 1 _ hf = 0`. Rewrite using `[formOn_eq_aeval]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub, map_mul, aeval_C, aeval_X, ratioOn_self, mul_one]`. Rewrite using `[e, mul_comm, sub_self]`. Establish `hb` using `basicOpen_formOn (U := W) (hi := hW) hf`. Rewrite `hb` using `[hz, Scheme.basicOpen_zero]`. Establish `hne : (C c₀ * MvPolynomial.X 0 - C c₁ * MvPolynomial.X 1 : MvPolynomial (Fin 2) R) ≠ 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Use `congrArg (eval ![1, 0]) h` as an intermediate fact. Simplify using `at this`. Conclude with `h₀ this`. Conclude with `hb.ge (⟨⟨genericPt_mem R (X_ne_zero 0), genericPt_mem R (X_ne_zero 1)⟩, genericPt_mem R hne⟩ : genericPt R ∈ W ⊓ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_exists_gen : ¬ ∃ t : LB.Gen (O1 R 1), t.IsGen := by
   rintro ⟨t, ht⟩
@@ -155,13 +153,13 @@ theorem not_exists_gen : ¬ ∃ t : LB.Gen (O1 R 1), t.IsGen := by
     genericPt_mem R hne⟩ : genericPt R ∈ W ⊓ _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun e => not_exists_gen R (exists_gen_of_iso (O1_isLB R 1) e)⟩`.
+Supply the required witnesses or components.
 -/
 theorem twisting_sheaf_not_iso_structure_sheaf : IsEmpty (unitMod (PSpace R 1) ≅ toMod (O1 R 1)) :=
   ⟨fun e => not_exists_gen R (exists_gen_of_iso (O1_isLB R 1) e)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun e => (twisting_sheaf_not_iso_structure_sheaf R).false (trivIso _ ≪≫ e)⟩`.
+Supply the required witnesses or components.
 -/
 theorem twisting_sheaf_not_iso_trivial_bundle : IsEmpty (toMod (Out.Inh.trivLB (PSpace R 1)) ≅ toMod (O1 R 1)) :=
   ⟨fun e => (twisting_sheaf_not_iso_structure_sheaf R).false (trivIso _ ≪≫ e)⟩
@@ -169,7 +167,7 @@ theorem twisting_sheaf_not_iso_trivial_bundle : IsEmpty (toMod (Out.Inh.trivLB (
 omit [IsDomain R] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isQuasicoherent_toMod (O1_isLB R 1), isLocallyFree_toMod (O1_isLB R 1)⟩`.
+Supply the required witnesses or components.
 -/
 theorem twisting_sheaf_quasicoherent_locally_free : (toMod (O1 R 1)).IsQuasicoherent ∧ (toMod (O1 R 1)).IsLocallyFree :=
   ⟨isQuasicoherent_toMod (O1_isLB R 1), isLocallyFree_toMod (O1_isLB R 1)⟩
@@ -177,18 +175,16 @@ theorem twisting_sheaf_quasicoherent_locally_free : (toMod (O1 R 1)).IsQuasicohe
 omit [IsDomain R] in
 
 /- English proof (translation)
-The claim follows from `sec_ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem ofSec_coord_eq_chartSec (k : Fin 2) :
     ofSec (ProjSpace.coord R 1 k) (chart R 1 k) = chartSec (O1_isLB R 1) k :=
   sec_ext fun _ => rfl
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun s => (globalEquiv (O1 R 1) s).f (0 : Fin 2)) h`. Simplify using `only [map_add, map_smul, map_zero, ← globalEquiv_symm_apply, LinearEquiv.apply_symm_apply, add_f, smul_f, zero_f] at e`. Establish `e' : algebraMap R Γ(PSpace R 1, chart R 1 0) a * ratio R 1 0 0 + algebraMap R Γ(PSpace R 1, chart R 1 0) b * ratio R 1 0 1 = 0`. Rewrite using `[← resG_algebraMap (le_top : chart R 1 0 ≤ ⊤), ← resG_algebraMap (le_top : chart R 1 0 ≤ ⊤)]`. Conclude with `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : (C a * MvPolynomial.X 0 + C b * MvPolynomial.X 1 : MvPolynomial (Fin 2) R).IsHomogeneous 1` using `((isHomogeneous_X R 0).C_mul a).add ((isHomogeneous_X R 1).C_mul b)`. Establish `hz : (C a * MvPolynomial.X 0 + C b * MvPolynomial.X 1 : MvPolynomial (Fin 2) R) = 0`. Rewrite using `[← formOn_chart_inj R 1 0 hf (isHomogeneous_zero _ R 1), formOn_zero, formOn_eq_aeval]`. Simplify using `only [map_add, map_mul, aeval_C, aeval_X]`. Conclude with `e'`.
-
-Conclude with `⟨by simpa using congrArg (eval ![1, 0]) hz, by simpa using congrArg (eval ![0, 1]) hz⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coord_independent (a b : R)
     (h : algebraMap R Γ(PSpace R 1, ⊤) a • ofSec (ProjSpace.coord R 1 0) ⊤ +
@@ -212,7 +208,7 @@ theorem coord_independent (a b : R)
 omit [IsDomain R] in
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `(chartAlgEquiv R 1 i).surjective a`. Take `⟨n, f, hf, e⟩` from `HomogeneousLocalization.Away.mk_surjective _ (X_mem R 1 i) (polyToAway R 1 i p)`. Use `⟨n, f, by simpa using hf, ?_⟩` and prove the remaining obligations. Rewrite using `[chartAlgEquiv_apply, ← e, ProjFrac.awayToSection_mk]`. Conclude with `ProjFrac.frac_eq rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form (i : Fin 2) (a : Γ(PSpace R 1, chart R 1 i)) :
     ∃ (n : ℕ) (f : MvPolynomial (Fin 2) R) (hf : f.IsHomogeneous n),
@@ -230,7 +226,7 @@ abbrev negOne : LB (PSpace R 1) :=
 omit [IsDomain R] in
 
 /- English proof (translation)
-The claim follows from `twoChart_isLB (by rw [← iSup_chart R 1] refine le_antisymm (sup_le (le_iSup (chart R 1) 0) (le_iSup (chart R 1) 1)) (iSup_le ?_) intro i fin_cases i · exact le_sup_left · exact le_sup_right) _`.
+A detailed English derivation is pending.
 -/
 theorem negOne_isLB : (negOne R).IsLB :=
   twoChart_isLB (by
@@ -242,19 +238,19 @@ theorem negOne_isLB : (negOne R).IsLB :=
     · exact le_sup_right) _
 
 /- English proof (translation)
-Use `subsingleton_of_forall_eq 0 fun s => (globalEquiv _).injective ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Generalize the expression as in `globalEquiv _ s = σ`. Take `⟨n, f, hf, ef⟩` from `exists_form R 0 (σ.f true)`. Take `⟨m, g, hg, eg⟩` from `exists_form R 1 (σ.f false)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `W : (PSpace R 1).Opens` to `chart R 1 0 ⊓ chart R 1 1`. Establish `h₀ : W ≤ chart R 1 0` using `inf_le_left`. Establish `h₁ : W ≤ chart R 1 1` using `inf_le_right`. Establish `e : resG _ h₀ (σ.f true) = ratioOn W 1 h₁ 0 * resG _ h₁ (σ.f false)` using `σ.compat true false`. Rewrite `e` using `[ef, eg, resG_formOn, resG_formOn]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e'` using `congrArg (ProjFrac.ev (grading R 1) W (genericPt R) ⟨genericPt_mem R (X_ne_zero 0), genericPt_mem R (X_ne_zero 1)⟩) e`. Rewrite `e'` using `[map_mul]`. Express the relevant statement in the definitionally equal form `Localization.mk f _ = Localization.mk (MvPolynomial.X 0) _ * Localization.mk g _ at e'`. Rewrite `e'` using `[Localization.mk_mul, Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Take `⟨c, hc⟩` from `e'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hc0 : (c : MvPolynomial (Fin 2) R) ≠ 0` using `fun h => c.2 (h ▸ zero_mem _)`. Establish `key : MvPolynomial.X 1 * MvPolynomial.X 1 ^ m * f = MvPolynomial.X 0 ^ n * (MvPolynomial.X 0 * g)` using `mul_left_cancel₀ hc0 hc`. Establish `hf0 : f = 0`. Assume the negation of the conclusion as `hne`. Establish `hd` using `congrArg (degreeOf 0) key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hg0 : g ≠ 0`. Introduce and unpack `rfl`. Simplify using `[hne] at key`. Rewrite `hd` using `[← pow_succ', ← mul_assoc, ← pow_succ, degreeOf_mul_eq (pow_ne_zero _ (X_ne_zero _)) hne, degreeOf_mul_eq (pow_ne_zero _ (X_ne_zero _)) hg0, degreeOf_pow_eq _ _ _ (X_ne_zero _), degreeOf_pow_eq _ _ _ (X_ne_zero _), degreeOf_X_self, degreeOf_X_of_ne (by decide)]`. Use `(degreeOf_le_totalDegree f 0).trans hf.totalDegree_le` as an intermediate fact.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hg0 : g = 0`. Substitute `hf0` using the available equality. Simplify using `using key`. Substitute `hf0 hg0` using the available equality.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality.
 
-Use `f_injective (funext ?_)` and prove the remaining obligations. Introduce and unpack `(_ | _)`. Conclude with `eg.trans formOn_zero`. Conclude with `ef.trans formOn_zero`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem subsingleton_negOne : Subsingleton Γ(toMod (negOne R), ⊤) := by
   refine subsingleton_of_forall_eq 0 fun s => (globalEquiv _).injective ?_

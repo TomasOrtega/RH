@@ -29,7 +29,7 @@ noncomputable section
 namespace GlobalTheory.KSFam
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[embK_coe, embK_coe]`. Use `show starRingEnd ℂ (τ ((H.bar z : 𝓞 E) : E)) = τ (z : E)`. Rewrite using `[H.9 z, NumberField.IsCMField.complexEmbedding_complexConj, Complex.conj_conj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_embK' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H} (c : Coeff l)
     (τ : E →+* ℂ) (z : 𝓞 E) : embK c (conjEmb τ) (H.bar z) = embK c τ z := by
@@ -39,23 +39,19 @@ theorem conj_embK' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host 
   rw [H.9 z, NumberField.IsCMField.complexEmbedding_complexConj, Complex.conj_conj]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hP S _ _ y x' h1 h2`. It suffices to establish `hM : ∃ M, GlobalTheory.FlagTan.IsKSR (psiSet H) y x' M by`. Take `⟨M, hM⟩` from `hM`. Conclude with `⟨M, fun K _ _ ψ y' hy => GlobalTheory.FlagTan.isKSR_iff_isKS.mp (GlobalTheory.FlagTan.IsKSR.baseChange hP hy hM)⟩`. Use `letI : GrpObj ((Over.pullback x').obj Xo.univ.t.G) := Functor.grpObjObj (F := Over.pullback x')`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Equip the data with the indicated structure.
 
-Use `letI : GrpObj ((Over.pullback (GlobalTheory.DeRham.epsRed S)).obj ((Over.pullback x').obj Xo.univ.t.G)) := Functor.grpObjObj (F := Over.pullback (GlobalTheory.DeRham.epsRed S))`. Establish `hA'` using `isGrpPullback_pullback Xo.univ.t.G x'`. Establish `hi` using `isGrpPullback_pullback ((Over.pullback x').obj Xo.univ.t.G) (GlobalTheory.DeRham.epsRed S)`. Establish `hA : IsGrpPullback ((Over.pullback (GlobalTheory.DeRham.epsRed S)).obj ((Over.pullback x').obj Xo.univ.t.G)) Xo.univ.t.G y.x (pullback.fst _ _ ≫ pullback.fst _ _)` using `(hi.comp hA').congr h2 rfl`. Use `haveI : IsCommMonObj ((Over.pullback (GlobalTheory.DeRham.epsRed S)).obj ((Over.pullback x').obj Xo.univ.t.G)) := GlobalTheory.PolPull.isCommMonObj_of_isGrpPullback hA`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab` using `GlobalTheory.ObjDim.isAbelianScheme Xo.univ`. Establish `hsm` using `GlobalTheory.ObjDim.smoothOfRelativeDimension Xo.univ`. Establish `hab'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hab hA'`. Establish `hab0` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hab hA`. Establish `hsm' : SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) ((Over.pullback x').obj Xo.univ.t.G).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange (n := Module.finrank ℚ E / 2 * (Dw.p + Dw.q))).of_isPullback (IsPullback.of_hasPullback _ _) hsm`. Establish `hsm0 : SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) ((Over.pullback (GlobalTheory.DeRham.epsRed S)).obj ((Over.pullback x').obj Xo.univ.t.G)).hom`. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange (n := Module.finrank ℚ E / 2 * (Dw.p + Dw.q))).of_isPullback (IsPullback.of_hasPullback _ _) hsm'`. Take `⟨ψ, hpol, hiso, hperf, hmax⟩` from `GlobalTheory.T.exists_polarization_form_isotropic_filtration hP Xo hA`. Take `⟨a', ha'⟩` from `GlobalTheory.OActPull.exists_oAct_of_isGrpPullback Xo.univ.t.act hA'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha⟩` from `GlobalTheory.OActPull.exists_oAct_of_isGrpPullback a' hi`. Establish `haπ : ∀ z, (a.act z).left ≫ (pullback.fst _ _ ≫ pullback.fst _ _) = (pullback.fst _ _ ≫ pullback.fst _ _) ≫ (Xo.univ.t.act.act z).left`. Introduce `z`. Rewrite using `[← Category.assoc, ha z, Category.assoc, ha' z, Category.assoc]`. Establish `hadj` using `GlobalTheory.T.polarizationForm_adjoint_cmAction_moduli_point hP Xo hA a haπ hpol`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ub, hub1, hubT, hubE, hubS⟩` from `GlobalTheory.T.exists_tangent_frame_of_framedPoint_commRing y hA a haπ`. Establish `hex : ∀ k : (Σ σ : E →+* ℂ, Fin (Dw.mult σ)), ∃ h, IsLieImage h (ub k.1 k.2)` using `fun k => (hP.2.1 S _ _ hab0 hsm0).1.2 _ (hubT k.1 k.2)`. Use `choose hb hhb using hex`. Take `⟨hspan, hlin⟩` from `GlobalTheory.T.grp_pullback_basis_lift_compatible hP y hA ub hub1 hb hhb`. Establish `hreg` using `GlobalTheory.T.kodairaSpencerUniqueValue_abelianScheme_commRing hP hi hab' hsm'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcomp` using `fun z f w (e : IsKSValue hi f w) => GlobalTheory.T.isKodairaSpencerValue_endomorphism_lift hi a a' ha z e`. Establish `heig : ∀ (k : (Σ σ : E →+* ℂ, Fin (Dw.mult σ))) (z : 𝓞 E), act (dp0 S) (𝟙 _) a z (hb k) - (algebraMap c.F S).comp (embK c k.1) z • hb k ∈ Fil ((Over.pullback (GlobalTheory.DeRham.epsRed S)).obj ((Over.pullback x').obj Xo.univ.t.G))`. Introduce `k z`. Use `haveI := a.hom z`. Establish `e1` using `(hhb k).push (a.act z)`.
-
-Rewrite `e1` using `[hubE]`. Rewrite using `[act_apply]`. Conclude with `e1.sub_mem ((hhb k).smul _)`. Establish `key : ∀ (τ : psiSet H) (j : Fin (Dw.mult (conjEmb τ.1))), ∃ cf : Fin (Dw.mult τ.1) → S, ∃ w, IsLieComb cf (ub τ.1) w ∧ GlobalTheory.FlagTan.IsKSRow hi ψ hb ⟨conjEmb τ.1, j⟩ w` using `fun τ j => GlobalTheory.T.kodairaSpencerRow_dual_eigenvector_mem_span_ring hi a (fun z => H.bar z) ψ hiso hmax hperf hadj hreg hcomp (fun σ => (algebraMap c.F S).comp (embK c σ)) ub hb hspan hlin heig hubS τ.1 (conjEmb τ.1) (fun z => by simp only [RingHom.comp_apply, conj_embK']) …`. Use `choose cf hcf using key`.
-
-Conclude with `⟨fun k => cf k.1 k.2.1 k.2.2, _, inferInstance, _, inferInstance, _, _, _, hi, ψ, ub, hb, hA, hA', rfl, hpol, hub1, fun σ k => hhb ⟨σ, k⟩, fun τ j => hcf τ j⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ksFamily : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (hP : GlobalTheory.Published.AbelianDeRham) {S : Type} [CommRing S] [Algebra c.F S]
     (y : FrPt Xo c S) (x' : Sp (DualNumber S) ⟶ Xo.X) (h1 : x' ≫ Xo.s = sOf c (DualNumber S))

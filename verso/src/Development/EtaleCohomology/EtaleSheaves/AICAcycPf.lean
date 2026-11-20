@@ -6,9 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_
 namespace LateralTheory.E.AICAcycPf
 
 /- English proof (translation)
-Introduce `n i hn`. Use `h n i hn` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce `a b`. Establish `key : ∀ a : Ht q (sch.obj X) n i, a = pull _ (sch.map e.hom) _ n (pull _ (sch.map e.inv) _ n a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[← pull_comp, ← CategoryTheory.Functor.map_comp, e.hom_inv_id, CategoryTheory.Functor.map_id, pull_id]`. Rewrite using `[key a, key b, Subsingleton.elim (pull _ (sch.map e.inv) _ n a) (pull _ (sch.map e.inv) _ n b)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem acyc_of_iso (q : ℕ) {X Y : Scheme.{0}} (e : X ≅ Y) (h : Acyc q (sch.obj Y)) : Acyc q (sch.obj X) := by
   intro n i hn
@@ -22,7 +22,7 @@ theorem acyc_of_iso (q : ℕ) {X Y : Scheme.{0}} (e : X ≅ Y) (h : Acyc q (sch.
   rw [key a, key b, Subsingleton.elim (pull _ (sch.map e.inv) _ n a) (pull _ (sch.map e.inv) _ n b)]
 
 /- English proof (translation)
-Establish `: IsIntegral Z` using `hZ.1`. Establish `hA : AIC Γ(Z, ⊤)` using `hZ.2 ⊤ (isAffineOpen_top Z) ⟨Nonempty.some inferInstance, by simp⟩`. Establish `h5` using `hB5 q Γ(Z, ⊤) hA hq`. Conclude with `acyc_of_iso q Z.isoSpec h5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aff (hB5 : B5) (q : ℕ) (Z : Scheme.{0}) [IsAffine Z] (hZ : AICSch Z) (hq : IsUnit (q : Γ(Z, ⊤))) :
     Acyc q (sch.obj Z) := by
@@ -43,9 +43,9 @@ def Cov : Prop := ∀ (q : ℕ) (P : Scheme.{0} → Prop), (∀ {X Y : Scheme.{0
   ∀ (Z : Scheme.{0}) [CompactSpace Z] [QuasiSeparatedSpace Z], AICSch Z → IsUnit (q : Γ(Z, ⊤)) → P Z
 
 /- English proof (translation)
-Introduce `hyp q Z _ _ hZs hq`. Use `hCov q (fun W => Acyc q (sch.obj W)) ?_ ?_ ?_ Z hZs hq` and prove the remaining obligations. Introduce `X Y e h`. Conclude with `acyc_of_iso q e h`. Introduce `W hA hW hWq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `aff hyp.b5 q W hW hWq`. Introduce `U V X f g _ _ hc hX hU hV hq' hPU hPV hPW`. Conclude with `hStep hyp hMV hZ q f g hc hX hU hV hq' hPU hPV hPW`.
+A detailed English derivation is pending.
 -/
 theorem AICAcyc_of (hZ : HZero) (hMV : MV) (hStep : Step) (hCov : Cov) : AICAcyc := by
   intro hyp q Z _ _ hZs hq

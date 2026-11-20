@@ -36,15 +36,15 @@ def blockTri (b : Fin n → ℕ) : Subgroup (GL (Fin n) κ) where
     exact blockTriangular_inv_of_blockTriangular hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_blockTri {b : Fin n → ℕ} {g : GL (Fin n) κ} :
     g ∈ blockTri b ↔ ∀ i j, b j < b i → (g : Matrix (Fin n) (Fin n) κ) i j = 0 := Iff.rfl
 
 /- English proof (translation)
-Introduce `g hg i j hij`. Use `hg ?_` and prove the remaining obligations. Unfold `blk2 at hij`. Unfold `blkOf`. Distinguish the cases in `hj : j.val < r`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i.val < r`. Simplify using `[hj, hi] at hij`. Simplify using `[hj, hi]`. Apply the tactic sequence `by_cases hi : i.val < r <;> simp [hj, hi] at hij`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockTri_blkOf_le (r t : ℕ) : blockTri (κ := κ) (n := n) (blkOf r t) ≤ blockTri (blk2 r) := by
   intro g hg i j hij
@@ -58,7 +58,7 @@ theorem blockTri_blkOf_le (r t : ℕ) : blockTri (κ := κ) (n := n) (blkOf r t)
   · by_cases hi : i.val < r <;> simp [hj, hi] at hij
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [submatrix_apply, mul_apply]`. Conclude with `(Fintype.sum_of_injective e he _ _ (fun l hl => h i j l hl) (fun _ => rfl)).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem submatrix_mul_of_zero {ι : Type} [Fintype ι] (e : ι → Fin n) (he : Function.Injective e)
     (M N : Matrix (Fin n) (Fin n) κ) (h : ∀ i j l, l ∉ Set.range e → M (e i) l * N l (e j) = 0) :
@@ -109,27 +109,27 @@ def ext1 {G N : Type} [Group G] [One N] [Mul N] (P : Subgroup G) (f : P → N) (
   open Classical in if h : x ∈ P then f ⟨x, h⟩ else 1
 
 /- English proof (translation)
-Unfold `ext1`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem extendOne_of_mem {G N : Type} [Group G] [One N] [Mul N] {P : Subgroup G} (f : P → N) {x : G} (h : x ∈ P) :
     ext1 P f x = f ⟨x, h⟩ := by
   unfold ext1; rw [dif_pos h]
 
 /- English proof (translation)
-Rewrite using `[extendOne_of_mem _ P.one_mem]`. Conclude with `f.map_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockDiagonalExtendByOnePrimeField_one {G N : Type} [Group G] [MulOneClass N] (P : Subgroup G) (f : P →* N) : ext1 P f 1 = 1 := by
   rw [extendOne_of_mem _ P.one_mem]; exact f.map_one
 
 /- English proof (translation)
-Rewrite using `[extendOne_of_mem _ hx, extendOne_of_mem _ hy, extendOne_of_mem _ (P.mul_mem hx hy), ← f.map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem extendMatrixByIdentityAlongIndices_mul {G N : Type} [Group G] [MulOneClass N] {P : Subgroup G} (f : P →* N) {x y : G} (hx : x ∈ P)
     (hy : y ∈ P) : ext1 P f (x * y) = ext1 P f x * ext1 P f y := by
   rw [extendOne_of_mem _ hx, extendOne_of_mem _ hy, extendOne_of_mem _ (P.mul_mem hx hy), ← f.map_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[extendOne_of_mem _ hx, extendOne_of_mem _ (P.inv_mem hx), ← f.map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem extendOne_inv {G N : Type} [Group G] [Group N] {P : Subgroup G} (f : P →* N) {x : G} (hx : x ∈ P) :
     ext1 P f x⁻¹ = (ext1 P f x)⁻¹ := by
@@ -140,7 +140,7 @@ def upperLeftBlock {r : ℕ} (hr : r ≤ n) : GL (Fin n) κ → GL (Fin r) κ :=
 def dBlk (b : Fin n → ℕ) (c : ℕ) : GL (Fin n) κ → κˣ := ext1 (blockTri b) (blkDet b c)
 
 /- English proof (translation)
-Unfold `upperLeftBlock`. Rewrite using `[extendOne_of_mem _ h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem upper_block_val_submatrix {r : ℕ} (hr : r ≤ n) {g : GL (Fin n) κ} (h : g ∈ blockTri (blk2 r)) :
     ((upperLeftBlock hr g : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ) =
@@ -148,7 +148,7 @@ theorem upper_block_val_submatrix {r : ℕ} (hr : r ≤ n) {g : GL (Fin n) κ} (
   unfold upperLeftBlock; rw [extendOne_of_mem _ h]; rfl
 
 /- English proof (translation)
-Unfold `dBlk`. Rewrite using `[extendOne_of_mem _ h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem diag_block_det_val {b : Fin n → ℕ} (c : ℕ) {g : GL (Fin n) κ} (h : g ∈ blockTri b) :
     ((dBlk b c g : κˣ) : κ) =
@@ -156,7 +156,7 @@ theorem diag_block_det_val {b : Fin n → ℕ} (c : ℕ) {g : GL (Fin n) κ} (h 
   unfold dBlk; rw [extendOne_of_mem _ h]; rfl
 
 /- English proof (translation)
-The claim follows from `extendMatrixByIdentityAlongIndices_mul _ hx hy`.
+A detailed English derivation is pending.
 -/
 theorem diag_block_det_mul {b : Fin n → ℕ} {c : ℕ} {x y : GL (Fin n) κ} (hx : x ∈ blockTri b) (hy : y ∈ blockTri b) :
     dBlk b c (x * y) = dBlk b c x * dBlk b c y := extendMatrixByIdentityAlongIndices_mul _ hx hy
@@ -194,23 +194,21 @@ def unip (κ : Type) [CommRing κ] (r : ℕ) : Subgroup (GL (Fin r) κ) where
     · intro h; exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-The claim follows from `hg.1 (show j.val < i.val from h)`.
+A detailed English derivation is pending.
 -/
 theorem unip_lower {g : GL (Fin r) κ} (hg : g ∈ unip κ r) {i j : Fin r} (h : j < i) :
     (g : Matrix (Fin r) (Fin r) κ) i j = 0 := hg.1 (show j.val < i.val from h)
 
 /- English proof (translation)
-The claim follows from `hg.2 i`.
+A detailed English derivation is pending.
 -/
 theorem unip_diag {g : GL (Fin r) κ} (hg : g ∈ unip κ r) (i : Fin r) :
     (g : Matrix (Fin r) (Fin r) κ) i i = 1 := hg.2 i
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, mul_apply, Finset.sum_eq_add i j (ne_of_lt hij), unip_diag hx, unip_diag hy, one_mul, mul_one, add_comm]`. Introduce and unpack `l _ ⟨hli, hlj⟩`. Break down `lt_or_gt_of_ne hli with h | h` into its components or cases. Rewrite using `[unip_lower hx h, zero_mul]`. Break down `lt_or_gt_of_ne hlj with h' | h'` into its components or cases.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hmid l h h'`. Rewrite using `[unip_lower hy h', mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ j) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unip_mul_entry {x y : GL (Fin r) κ} (hx : x ∈ unip κ r) (hy : y ∈ unip κ r) {i j : Fin r} (hij : i < j)
     (hmid : ∀ l, i < l → l < j →
@@ -251,7 +249,7 @@ def unipCol (κ : Type) [CommRing κ] (r a c : ℕ) : Subgroup (GL (Fin r) κ) w
     exact h.symm
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unipCol_le (r a c : ℕ) : unipCol κ r a c ≤ unip κ r := fun _ h => h.1
 
@@ -346,23 +344,21 @@ Both sides reduce to the same expression.
 theorem oToS_coe (b : 𝓞 E) : ((oToS F E b : intAf F E) : E ⊗[F] Af F) = (algebraMap (𝓞 E) E b) ⊗ₜ[F] (1 : Af F) := rfl
 
 /- English proof (translation)
-Use `set π : intAf F E →+* intAf F E ⧸ idS F I := Ideal.Quotient.mk (idS F I) with hπ`. Use `set T : Subring (intAf F E) := ((π.comp (oToS F E)).range).comap π with hT`. Establish `hO : ∀ b : 𝓞 E, oToS F E b ∈ T` using `fun b => ⟨b, rfl⟩`. Establish `hN : ((Ideal.absNorm I : ℕ) : intAf F E) ∈ idS F I`. Establish `: oToS F E ((Ideal.absNorm I : ℕ) : 𝓞 E) ∈ idS F I` using `Ideal.mem_map_of_mem _ (Ideal.absNorm_mem I)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hD : ((Ideal.absNorm I : ℕ) : 𝓞 F) ≠ 0`. Establish `: Ideal.absNorm I ≠ 0` using `fun h0 => h (Ideal.absNorm_eq_zero_iff.1 h0)`. Conclude with `this` after adjusting the coercions. Establish `hle : intAf F E ≤ T.map (intAf F E).subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (⟨b, rfl⟩ | ⟨y, rfl⟩)`. Take `⟨b0, hb0⟩` from `b.2`. Use `⟨oToS F E b0, hO b0, ?_⟩` and prove the remaining obligations. Use `show (algebraMap (𝓞 E) E b0) ⊗ₜ[F] (1 : Af F) = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hb0]`. Take `⟨r, y', hy', e⟩` from `Formalism.UG.P.integral_adele_approximation_holds F _ hD (y : Af F) y.2`. Establish `hy1 : (1 : E) ⊗ₜ[F] (y' : Af F) ∈ intAf F E` using `Subring.subset_closure (Or.inr ⟨⟨y', hy'⟩, rfl⟩)`. Use `⟨oToS F E (algebraMap (𝓞 F) (𝓞 E) r) + ((Ideal.absNorm I : ℕ) : intAf F E) * ⟨_, hy1⟩, ?_, ?_⟩` and prove the remaining obligations. Use `T.add_mem (hO _) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : π (((Ideal.absNorm I : ℕ) : intAf F E) * ⟨_, hy1⟩) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mul_mem_right _ _ hN)`. Rewrite using `[hT, Subring.mem_comap, h0]`. Conclude with `Subring.zero_mem _`. Use `show (algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) r)) ⊗ₜ[F] (1 : Af F) + (((Ideal.absNorm I : ℕ) : intAf F E) : E ⊗[F] Af F) * ((1 : E) ⊗ₜ[F] (y' : Af F)) = (1 : E) ⊗ₜ[F] (y : Af F)`. Establish `h1 : algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) r) = algebraMap F E (algebraMap (𝓞 F) F r)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Establish `h2 : (algebraMap F E (algebraMap (𝓞 F) F r)) ⊗ₜ[F] (1 : Af F) = (1 : E) ⊗ₜ[F] (algebraMap (𝓞 F) (Af F) r)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, ← IsScalarTower.algebraMap_apply]`. Establish `h3 : (((Ideal.absNorm I : ℕ) : intAf F E) : E ⊗[F] Af F) = (1 : E) ⊗ₜ[F] (algebraMap (𝓞 F) (Af F) ((Ideal.absNorm I : ℕ) : 𝓞 F))`. Rewrite using `[map_natCast]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: ((1 : E) ⊗ₜ[F] ((Ideal.absNorm I : ℕ) : Af F) : E ⊗[F] Af F) = (Algebra.TensorProduct.includeRight : Af F →ₐ[F] E ⊗[F] Af F) ((Ideal.absNorm I : ℕ) : Af F)` using `rfl`. Rewrite using `[this, map_natCast]`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2, h3, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← TensorProduct.tmul_add, ← e]`. Introduce `q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Take `⟨s', hs', e⟩` from `hle s.2`. Establish `: s' = s` using `Subtype.ext e`. Substitute `this` using the available equality. Take `⟨b, hb⟩` from `hs'`.
-
-Conclude with `⟨Ideal.Quotient.mk I b, hb⟩`.
+A detailed English derivation is pending.
 -/
 theorem cmpS_surj (I : Ideal (𝓞 E)) (h : I ≠ ⊥) : Function.Surjective (cmpS F I) := by
   classical
@@ -416,21 +412,17 @@ theorem cmpS_surj (I : Ideal (𝓞 E)) (h : I ≠ ⊥) : Function.Surjective (cm
   exact ⟨Ideal.Quotient.mk I b, hb⟩
 
 /- English proof (translation)
-Use `Ideal.quotientMap_injective' ?_` and prove the remaining obligations. Introduce `b hb`. Establish `hb' : oToS F E b ∈ idS F I` using `hb`. Use `set φ : 𝓞 E →ₗ[𝓞 E] (Fin 1 → E) := LinearMap.pi (fun _ => Algebra.linearMap (𝓞 E) E) with hφ`. Use `set Λ : Submodule (𝓞 E) (Fin 1 → E) := Submodule.map φ I with hΛ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : Module.Finite (𝓞 E) Λ` using `Module.Finite.iff_fg.2 ((IsNoetherian.noetherian I).map φ)`. Establish `hspan : Submodule.span E (Λ : Set (Fin 1 → E)) = ⊤`. Take `⟨a, haI, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Establish `ha0' : algebraMap (𝓞 E) E a ≠ 0`. Simplify using `using ha0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Establish `: x = (x 0 / algebraMap (𝓞 E) E a) • φ a`. Use function extensionality and compare the values at `i`. Establish `hi : i = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hφ, div_mul_cancel₀ _ ha0']`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, haI, rfl⟩)`. Establish `key : ∀ s ∈ idS F I, (fun _ : Fin 1 => ((s : intAf F E) : E ⊗[F] Af F)) ∈ latS (F` using `F) (Af F) (intAf F E) Λ := by`. Introduce `s hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.span_induction (p := fun s _ => (fun _ : Fin 1 => ((s : intAf F E) : E ⊗[F] Af F)) ∈ latS (F := F) (Af F) (intAf F E) Λ) ?_ ?_ ?_ ?_ hs` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `Submodule.subset_span ⟨φ a, ⟨a, ha, rfl⟩, rfl⟩`. Conclude with `Submodule.zero_mem _`. Introduce `x y _ _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.add_mem _ hx hy`. Introduce `c x _ hx`. Conclude with `Submodule.smul_mem _ c hx`. Establish `hg` using `Formalism.UG.P.global_lattice_one_holds F E (Fin 1) Λ hfin hspan`. Establish `hmem : φ b ∈ Formalism.UG.CS.globLat (F` using `F) 1 Λ := by show ((1⁻¹ : GL (Fin 1) (E ⊗[F] Af F)) : Matrix (Fin 1) (Fin 1) (E ⊗[F] Af F)) *ᵥ (fun i => inclE (F := F) (Af F) (φ b i)) ∈ latS (F := F) (Af F) (intAf F E) Λ`.
-
-Rewrite using `[inv_one, Units.val_one, one_mulVec]`. Conclude with `key _ hb'`. Rewrite `hmem` using `[hg]`. Take `⟨a, ha, e⟩` from `hmem`. Establish `: algebraMap (𝓞 E) E a = algebraMap (𝓞 E) E b` using `congrFun e 0`.
-
-Establish `: a = b` using `RingOfIntegers.coe_injective this`. Conclude with `this ▸ ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cmpS_inj (I : Ideal (𝓞 E)) (h : I ≠ ⊥) : Function.Injective (cmpS F I) := by
   classical
@@ -477,7 +469,7 @@ theorem cmpS_inj (I : Ideal (𝓞 E)) (h : I ≠ ⊥) : Function.Injective (cmpS
   exact this ▸ ha
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cmpS_inj I h, cmpS_surj I h⟩`.
+Supply the required witnesses or components.
 -/
 theorem cmpS_bij (I : Ideal (𝓞 E)) (h : I ≠ ⊥) : Function.Bijective (cmpS F I) :=
   ⟨cmpS_inj I h, cmpS_surj I h⟩
@@ -497,7 +489,7 @@ def resS (F : Type) [Field F] [NumberField F] [Algebra F E] (PP : Pl E) : intAf 
     (Ideal.Quotient.mk (idS F PP.asIdeal))
 
 /- English proof (translation)
-Unfold `resS`. Rewrite using `[RingHom.comp_apply]`. Use `show (RingEquiv.ofBijective (cmpS F PP.asIdeal) _).symm _ = _`. Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem resS_oToS (PP : Pl E) (a : 𝓞 E) : resS F PP (oToS F E a) = Ideal.Quotient.mk PP.asIdeal a := by
   unfold resS
@@ -513,7 +505,7 @@ def frGL (β : GL (Fin n) (E ⊗[F] Af F)) : GL (Fin n) (intAf F E) →* GL (Fin
   (MulAut.conj β).toMonoidHom.comp (intGL F E n)
 
 /- English proof (translation)
-Introduce `x y h`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `congrArg (fun g : GL (Fin n) (E ⊗[F] Af F) => (g : Matrix (Fin n) (Fin n) (E ⊗[F] Af F)) i j) h` as an intermediate fact. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem intGL_injective : Function.Injective (intGL F E n) := by
   intro x y h
@@ -523,7 +515,7 @@ theorem intGL_injective : Function.Injective (intGL F E n) := by
   exact this
 
 /- English proof (translation)
-The claim follows from `(MulAut.conj β).injective.comp intGL_injective`.
+A detailed English derivation is pending.
 -/
 theorem frGL_injective (β : GL (Fin n) (E ⊗[F] Af F)) : Function.Injective (frGL β) :=
   (MulAut.conj β).injective.comp intGL_injective
@@ -534,14 +526,14 @@ def pullFr (β : GL (Fin n) (E ⊗[F] Af F)) : St β ≃* GL (Fin n) (intAf F E)
   (MonoidHom.ofInjective (frGL_injective β)).symm
 
 /- English proof (translation)
-Use `(MonoidHom.ofInjective (frGL_injective β)).apply_symm_apply x` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frGL_pullFr (β : GL (Fin n) (E ⊗[F] Af F)) (x : St β) : frGL β (pullFr β x) = x := by
   have := (MonoidHom.ofInjective (frGL_injective β)).apply_symm_apply x
   exact congrArg Subtype.val this
 
 /- English proof (translation)
-The claim follows from `(MonoidHom.ofInjective (frGL_injective β)).symm_apply_apply y`.
+A detailed English derivation is pending.
 -/
 theorem pullFr_frGL (β : GL (Fin n) (E ⊗[F] Af F)) (y : GL (Fin n) (intAf F E)) :
     pullFr β ⟨frGL β y, ⟨y, rfl⟩⟩ = y :=
@@ -554,7 +546,7 @@ def redFn (β : GL (Fin n) (E ⊗[F] Af F)) (PP : Pl E) : GL (Fin n) (E ⊗[F] A
   ext1 (St β) (redAt β PP)
 
 /- English proof (translation)
-Unfold `redFn`. Rewrite using `[extendOne_of_mem _ (⟨y, rfl⟩ : frGL β y ∈ St β)]`. Use `show bc (resS F PP) (pullFr β ⟨frGL β y, ⟨y, rfl⟩⟩) = _`. Rewrite using `[pullFr_frGL]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redFn_frGL (β : GL (Fin n) (E ⊗[F] Af F)) (PP : Pl E) (y : GL (Fin n) (intAf F E)) :
     redFn β PP (frGL β y) = bc (resS F PP) y := by
@@ -564,9 +556,9 @@ theorem redFn_frGL (β : GL (Fin n) (E ⊗[F] Af F)) (PP : Pl E) (y : GL (Fin n)
   rw [pullFr_frGL]
 
 /- English proof (translation)
-Establish `h : intGL F E n (bc (oToS F E) g) = frGL 1 (bc (oToS F E) g)`. Simplify using `[frGL]`. Rewrite using `[h, redFn_frGL]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Conclude with `resS_oToS PP _`.
+A detailed English derivation is pending.
 -/
 theorem redFn_int (PP : Pl E) (g : GL (Fin n) (𝓞 E)) :
     redFn (1 : GL (Fin n) (E ⊗[F] Af F)) PP (intGL F E n (bc (oToS F E) g)) = bc (Ideal.Quotient.mk PP.asIdeal) g := by
@@ -585,9 +577,9 @@ def parah (β : GL (Fin n) (E ⊗[F] Af F)) (PP : Pl E) (b : Fin n → ℕ) : Su
   ((blockTri b).comap (redAt β PP)).map (St β).subtype
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨y.2, ?_⟩` and prove the remaining obligations. Use `show ext1 (St β) (redAt β PP) y.1 ∈ _`. Rewrite using `[extendOne_of_mem _ y.2]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hy`. Introduce and unpack `⟨h1, h2⟩`. Unfold `redFn at h2`. Rewrite `h2` using `[extendOne_of_mem _ h1]`. Conclude with `⟨⟨x, h1⟩, h2, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_parah {β : GL (Fin n) (E ⊗[F] Af F)} {PP : Pl E} {b : Fin n → ℕ} {x : GL (Fin n) (E ⊗[F] Af F)} :
     x ∈ parah β PP b ↔ x ∈ St β ∧ redFn β PP x ∈ blockTri b := by
@@ -606,9 +598,9 @@ def princAt (β : GL (Fin n) (E ⊗[F] Af F)) (PP : Pl E) : Subgroup (GL (Fin n)
   ((redAt β PP).ker).map (St β).subtype
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨y.2, ?_⟩` and prove the remaining obligations. Use `show ext1 (St β) (redAt β PP) y.1 = 1`. Rewrite using `[extendOne_of_mem _ y.2]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hy`. Introduce and unpack `⟨h1, h2⟩`. Unfold `redFn at h2`. Rewrite `h2` using `[extendOne_of_mem _ h1]`. Conclude with `⟨⟨x, h1⟩, h2, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_princAt {β : GL (Fin n) (E ⊗[F] Af F)} {PP : Pl E} {x : GL (Fin n) (E ⊗[F] Af F)} :
     x ∈ princAt β PP ↔ x ∈ St β ∧ redFn β PP x = 1 := by
@@ -633,7 +625,7 @@ def stdSpace (n : ℕ) (neg : Bool) : HSpace E :=
   Formalism.BasicNotions.Examples₂.stdSpace Formalism.BasicNotions.Examples₂.star_isIntegral n (fun _ => neg) (if neg then 0 else n) (if neg then n else 0)
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h` using `Formalism.BasicNotions.Examples₂.stdSpace_gram_apply (E := E) Formalism.BasicNotions.Examples₂.star_isIntegral n (fun _ => neg) (if neg then 0 else n) (if neg then n else 0) i j`. Rewrite using `[Matrix.diagonal_apply]`. Conclude with `h`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdSpace_gram (n : ℕ) (neg : Bool) :
     (stdSpace (E := E) n neg).gram = Matrix.diagonal (fun _ => (Formalism.BasicNotions.Examples₂.sgn neg : E)) := by
@@ -690,7 +682,7 @@ def primesOf (a : 𝓞 E) : Finset (Pl E) :=
       rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]; exact h)).toFinset
 
 /- English proof (translation)
-Unfold `primesOf`. Use `split_ifs with h`. Simplify using `[h]`. Simplify using `[h, Ideal.dvd_span_singleton]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_primesOf {a : 𝓞 E} {PP : Pl E} : PP ∈ primesOf a ↔ a ≠ 0 ∧ a ∈ PP.asIdeal := by
   unfold primesOf
@@ -780,17 +772,17 @@ def rTup (β : GL (Fin n) (E ⊗[F] Af F)) (D : LevDat E LL n) (x : GL (Fin n) (
 variable {hc : CMData F E} {J : Matrix (Fin n) (Fin n) E} {β : GL (Fin n) (E ⊗[F] Af F)} {D : LevDat E LL n}
 
 /- English proof (translation)
-The claim follows from `h.1.1.1`.
+A detailed English derivation is pending.
 -/
 theorem parLev_UA {x : GL (Fin n) (E ⊗[F] Af F)} (h : x ∈ parLev hc J β D) : x ∈ UA hc J := h.1.1.1
 
 /- English proof (translation)
-The claim follows from `h.1.1.2`.
+A detailed English derivation is pending.
 -/
 theorem parLev_St {x : GL (Fin n) (E ⊗[F] Af F)} (h : x ∈ parLev hc J β D) : x ∈ St β := h.1.1.2
 
 /- English proof (translation)
-Establish `h1 : x ∈ ⨅ PP ∈ D.Pg, parah β PP (blkOf D.r D.t)` using `h.1.2`. Conclude with `(mem_parah.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h1 PP) hP)).2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem parLev_g {x : GL (Fin n) (E ⊗[F] Af F)} (h : x ∈ parLev hc J β D) {PP : Pl E} (hP : PP ∈ D.Pg) :
     redFn β PP x ∈ blockTri (blkOf D.r D.t) := by
@@ -798,7 +790,7 @@ theorem parLev_g {x : GL (Fin n) (E ⊗[F] Af F)} (h : x ∈ parLev hc J β D) {
   exact (mem_parah.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h1 PP) hP)).2
 
 /- English proof (translation)
-Establish `h1 : x ∈ ⨅ PP ∈ D.Q, parah β PP (blk2 D.r)` using `h.2`. Conclude with `(mem_parah.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h1 PP) hP)).2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem parLev_q {x : GL (Fin n) (E ⊗[F] Af F)} (h : x ∈ parLev hc J β D) {PP : Pl E} (hP : PP ∈ D.Q) :
     redFn β PP x ∈ blockTri (blk2 D.r) := by
@@ -806,24 +798,24 @@ theorem parLev_q {x : GL (Fin n) (E ⊗[F] Af F)} (h : x ∈ parLev hc J β D) {
   exact (mem_parah.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h1 PP) hP)).2
 
 /- English proof (translation)
-The claim follows from `extendMatrixByIdentityAlongIndices_mul _ hx hy`.
+A detailed English derivation is pending.
 -/
 theorem redFn_mul {x y : GL (Fin n) (E ⊗[F] Af F)} (hx : x ∈ St β) (hy : y ∈ St β) (PP : Pl E) :
     redFn β PP (x * y) = redFn β PP x * redFn β PP y := extendMatrixByIdentityAlongIndices_mul _ hx hy
 
 /- English proof (translation)
-The claim follows from `blockDiagonalExtendByOnePrimeField_one _ _`.
+A detailed English derivation is pending.
 -/
 theorem redFn_one (PP : Pl E) : redFn β PP 1 = 1 := blockDiagonalExtendByOnePrimeField_one _ _
 
 /- English proof (translation)
-The claim follows from `extendOne_inv _ hx`.
+A detailed English derivation is pending.
 -/
 theorem redFn_inv {x : GL (Fin n) (E ⊗[F] Af F)} (hx : x ∈ St β) (PP : Pl E) :
     redFn β PP x⁻¹ = (redFn β PP x)⁻¹ := extendOne_inv _ hx
 
 /- English proof (translation)
-Use function extensionality and compare the values at `PP`. Use `show upperLeftBlock D.hr (redFn β PP.1 1) = 1`. Rewrite using `[redFn_one]`. Conclude with `blockDiagonalExtendByOnePrimeField_one _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rTup_one : rTup β D 1 = 1 := by
   funext PP
@@ -831,7 +823,7 @@ theorem rTup_one : rTup β D 1 = 1 := by
   rw [redFn_one]; exact blockDiagonalExtendByOnePrimeField_one _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `PP`. Use `show upperLeftBlock D.hr (redFn β PP.1 (x * y)) = upperLeftBlock D.hr (redFn β PP.1 x) * upperLeftBlock D.hr (redFn β PP.1 y)`. Rewrite using `[redFn_mul (parLev_St hx) (parLev_St hy)]`. Conclude with `extendMatrixByIdentityAlongIndices_mul _ (blockTri_blkOf_le _ _ (parLev_g hx PP.2)) (blockTri_blkOf_le _ _ (parLev_g hy PP.2))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rTup_mul {x y : GL (Fin n) (E ⊗[F] Af F)} (hx : x ∈ parLev hc J β D) (hy : y ∈ parLev hc J β D) :
     rTup β D (x * y) = rTup β D x * rTup β D y := by
@@ -841,7 +833,7 @@ theorem rTup_mul {x y : GL (Fin n) (E ⊗[F] Af F)} (hx : x ∈ parLev hc J β D
   exact extendMatrixByIdentityAlongIndices_mul _ (blockTri_blkOf_le _ _ (parLev_g hx PP.2)) (blockTri_blkOf_le _ _ (parLev_g hy PP.2))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `PP`. Use `show upperLeftBlock D.hr (redFn β PP.1 x⁻¹) = (upperLeftBlock D.hr (redFn β PP.1 x))⁻¹`. Rewrite using `[redFn_inv (parLev_St hx)]`. Conclude with `extendOne_inv _ (blockTri_blkOf_le _ _ (parLev_g hx PP.2))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rTup_inv {x : GL (Fin n) (E ⊗[F] Af F)} (hx : x ∈ parLev hc J β D) :
     rTup β D x⁻¹ = (rTup β D x)⁻¹ := by
@@ -871,7 +863,7 @@ def levFn (β : GL (Fin n) (E ⊗[F] Af F)) (D : LevDat E LL n) (x : GL (Fin n) 
     ∏ PP ∈ D.Q, D.xq PP (dBlk (blk2 D.r) 1 (redFn β PP x))
 
 /- English proof (translation)
-Simplify using `only [mul_left_comm, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul3 {M : Type} [CommMonoid M] (a a' b b' c c' : M) :
     a * a' * (b * b') * (c * c') = a * b * c * (a' * b' * c') := by
@@ -918,13 +910,13 @@ Both sides reduce to the same expression.
 theorem levChar_apply (x : lev hc J β D) : levChar hc J β D x = levFn β D x.1 := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lev {x : GL (Fin n) (E ⊗[F] Af F)} :
     x ∈ lev hc J β D ↔ x ∈ parLev hc J β D ∧ rTup β D x ∈ D.P.H := Iff.rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `fun h => ⟨parLev_UA h, parLev_St h, fun PP hP => parLev_g h hP, fun PP hP => parLev_q h hP⟩`. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Conclude with `⟨⟨⟨h1, h2⟩, Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => mem_parah.2 ⟨h2, h3 PP hP⟩⟩, Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => mem_parah.2 ⟨h2, h4 PP hP⟩⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_parLev {x : GL (Fin n) (E ⊗[F] Af F)} :
     x ∈ parLev hc J β D ↔ x ∈ UA hc J ∧ x ∈ St β ∧ (∀ PP ∈ D.Pg, redFn β PP x ∈ blockTri (blkOf D.r D.t)) ∧
@@ -936,23 +928,21 @@ theorem mem_parLev {x : GL (Fin n) (E ⊗[F] Af F)} :
       Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => mem_parah.2 ⟨h2, h4 PP hP⟩⟩
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lev_le_parLev : lev hc J β D ≤ parLev hc J β D := fun _ h => h.1
 
 /- English proof (translation)
-Introduce `_ h` and use `parLev_UA h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lev_le_UA : lev hc J β D ≤ UA hc J := fun _ h => parLev_UA h.1
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h3 : ∀ PP ∈ T, redFn β PP x = 1`. Establish `h1 : x ∈ ⨅ PP ∈ T, princAt β PP` using `hx.2`. Conclude with `fun PP hP => (mem_princAt.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h1 PP) hP)).2`. Use `⟨⟨⟨hx.1, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => mem_parah.2 ⟨hx.1.2, ?_⟩` and prove the remaining obligations. Rewrite using `[h3 PP (hg hP)]`. Conclude with `Subgroup.one_mem _`. Use `Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => mem_parah.2 ⟨hx.1.2, ?_⟩` and prove the remaining obligations. Rewrite using `[h3 PP (hq hP)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subgroup.one_mem _`. Establish `: rTup β D x = 1`. Use function extensionality and compare the values at `PP`. Use `show upperLeftBlock D.hr (redFn β PP.1 x) = 1`. Rewrite using `[h3 PP.1 (hg PP.2)]`.
-
-Conclude with `blockDiagonalExtendByOnePrimeField_one _ _`. Use `show rTup β D x ∈ D.P.H`. Rewrite using `[this]`. Conclude with `Subgroup.one_mem _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Kg_le_lev {T : Finset (Pl E)} (hg : D.Pg ⊆ T) (hq : D.Q ⊆ T) : Kg hc J β T ≤ lev hc J β D := by
   intro x hx
@@ -1021,7 +1011,7 @@ variable {hc : CMData F E} {J : Matrix (Fin n) (Fin n) E} {K : Subgroup (GL (Fin
 def rep (c : Cl hc J K) : UA hc J := Quotient.out c
 
 /- English proof (translation)
-The claim follows from `Quotient.out_eq c`.
+A detailed English derivation is pending.
 -/
 theorem mk_rep (c : Cl hc J K) : (Quotient.mk'' (rep c) : Cl hc J K) = c := Quotient.out_eq c
 
@@ -1033,7 +1023,7 @@ def conjIn (hc : CMData F E) (J : Matrix (Fin n) (Fin n) E) (y : GL (Fin n) (E �
   (MulAut.conj y⁻¹).toMonoidHom.comp ((bc (inclE (F := F) (Af F))).comp (UR hc J).subtype)
 
 /- English proof (translation)
-Simplify using `[conjIn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjIn_apply (y : GL (Fin n) (E ⊗[F] Af F)) (γ : UR hc J) :
     conjIn hc J y γ = y⁻¹ * bc (inclE (F := F) (Af F)) (γ : GL (Fin n) E) * y := by

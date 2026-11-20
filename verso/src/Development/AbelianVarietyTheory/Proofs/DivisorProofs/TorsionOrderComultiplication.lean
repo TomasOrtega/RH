@@ -23,43 +23,41 @@ section Lemmas
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {N : ℕ}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (GrpObj.comp_inv _ _)`.
+A detailed English derivation is pending.
 -/
 theorem torsMap_inv' {B C : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] (φ : B →ₐ[R] C)
     (z : Tors G N B) : torsMap φ z⁻¹ = (torsMap φ z)⁻¹ :=
   Subtype.ext (GrpObj.comp_inv _ _)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (MonObj.comp_one _)`.
+A detailed English derivation is pending.
 -/
 theorem torsMap_one' {B C : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] (φ : B →ₐ[R] C) :
     torsMap φ (1 : Tors G N B) = 1 :=
   Subtype.ext (MonObj.comp_one _)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (MonObj.comp_mul _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem torsMap_mul' {B C : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] (φ : B →ₐ[R] C)
     (x y : Tors G N B) : torsMap φ (x * y) = torsMap φ x * torsMap φ y :=
   Subtype.ext (MonObj.comp_mul _ _ _)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp only [torsMap_val]; rw [← spOver_comp, Category.assoc])`.
+A detailed English derivation is pending.
 -/
 theorem torsMap_comp' {B C D : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] [CommRing D] [Algebra R D]
     (φ : C →ₐ[R] D) (ψ : B →ₐ[R] C) (z : Tors G N B) : torsMap (φ.comp ψ) z = torsMap φ (torsMap ψ z) :=
   Subtype.ext (by simp only [torsMap_val]; rw [← spOver_comp, Category.assoc])
 
 /- English proof (translation)
-The claim follows from `Subtype.ext x.2`.
+A detailed English derivation is pending.
 -/
 theorem tors_pow_N {B : Type} [CommRing B] [Algebra R B] (x : Tors G N B) : x ^ N = 1 :=
   Subtype.ext x.2
 
 /- English proof (translation)
-Establish `h : (Set.univ : Set (Tors G N K)) ⊆ ⋃ i, Set.range (fun ψ : (c i).C →ₐ[R] K => torsMap ψ (c i).j)`. Introduce `z _`. Take `⟨i, hi⟩` from `hcov z`. Take `⟨ψ, -, hψ⟩` from `((c i).bij K).surjOn hi`. Conclude with `Set.mem_iUnion.2 ⟨i, ψ, hψ⟩`.
-
-Conclude with `Set.finite_univ_iff.1 ((Set.finite_iUnion fun i => Set.finite_range _).subset h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_tors_of_cover {K : Type} [Field K] [Algebra R K] (Idx : Type) [Finite Idx] (q : Idx → PrimeSpectrum R)
     (c : ∀ i, PreChart G N (q i)) (hcov : ∀ z : Tors G N K, ∃ i, Set.range z.1.left ⊆ (c i).W)
@@ -107,45 +105,43 @@ end GlobalTheory.GroupBplus.Aff
 namespace GlobalTheory.GroupBplus.Aff
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG N hN q c hc f hf`. Take `⟨Idx, hIdx, qs, cs, hcov⟩` from `GlobalTheory.T.exists_finite_torsion_prechart_cover R K G hG N hN`. Use `haveI : Finite (Tors G N K) := finite_tors_of_cover Idx qs cs (hcov K) (fun i => (GlobalTheory.T.torsion_prechart_points_separate R K G hG N hN (qs i) (cs i)).1)`. Establish `hr : algebraMap R K c.r ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `c.hr` to reduce the goal to its premises. Rewrite using `[(IsFractionRing.injective R K) (h.trans (map_zero _).symm)]`. Conclude with `q.asIdeal.zero_mem`. Set `H : Subgroup (Tors G N K)` to `chartSub K c hc hr hN`. Use `haveI : Fintype (Tors G N K ⧸ H) := Fintype.ofFinite _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `pt : (c.C →ₐ[R] K) → Tors G N K` to `fun ψ => torsMap ψ c.j`. Establish `hinj : Function.Injective pt` using `fun ψ ψ' h => (c.bij K).injOn (Set.mem_univ _) (Set.mem_univ _) h`. Establish `hcoset : ∀ (α : Tors G N K ⧸ H) (a : Tors G N K), ((a : Tors G N K ⧸ H) = α) ↔ ∃ ψ, a = α.out * pt ψ`. Introduce `α a`. Use `conv_lhs => rw [← QuotientGroup.out_eq' α]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[eq_comm, QuotientGroup.eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ψ, hψ⟩`. Conclude with `⟨ψ, by rw [show pt ψ = α.out⁻¹ * a from hψ, mul_inv_cancel_left]⟩`. Introduce and unpack `⟨ψ, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨ψ, by show pt ψ = _; rw [inv_mul_cancel_left]⟩`. Set `ev : Tors G N K → Tors G N K → (ord G N K ⊗[R] ord G N K →ₐ[R] K)` to `fun a b => Algebra.TensorProduct.lift ((Pi.evalAlgHom R (fun _ : Tors G N K => K) a).comp (ord G N K).val) ((Pi.evalAlgHom R (fun _ : Tors G N K => K) b).comp (ord G N K).val) (fun _ _ => .all _ _)`. Set `Φ : ord G N K ⊗[R] ord G N K →ₗ[R] (Tors G N K → Tors G N K → K)` to `LinearMap.pi fun a => LinearMap.pi fun b => (ev a b).toLinearMap`. Establish `hΦ : ∀ T a b, Φ T a b = ev a b T` using `fun _ _ _ => rfl`. Set `P` to `LinearMap.range Φ`.
+Introduce a local definition for the expression. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-It suffices to establish `h : ∃ k : ℕ, c.r ^ k • (fun a b : Tors G N K => f (a * b)) ∈ P by`. Take `⟨k, T, hT⟩` from `h`. Use `⟨k, T, fun a b => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun hT a) b`. Rewrite `h1` using `[hΦ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[show ev a b T = _ from h1, Pi.smul_apply, Pi.smul_apply, Algebra.smul_def, map_pow]`. Establish `hsum : ∀ (Ix : Type) (S : Finset Ix) (v : Ix → (Tors G N K → Tors G N K → K)), (∀ i ∈ S, ∃ k : ℕ, c.r ^ k • v i ∈ P) → ∃ k : ℕ, c.r ^ k • ∑ i ∈ S, v i ∈ P`. Introduce `Ix S v hv`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by rw [Finset.sum_empty, smul_zero]; exact P.zero_mem⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `insert i S hi ih`. Take `⟨k1, h1⟩` from `hv i (Finset.mem_insert_self _ _)`. Take `⟨k2, h2⟩` from `ih (fun j hj => hv j (Finset.mem_insert_of_mem hj))`. Use `⟨k1 + k2, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_insert hi, smul_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `P.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `P.smul_mem _ h1`. Rewrite using `[pow_add, mul_smul]`. Conclude with `P.smul_mem _ h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpiece : ∀ s t : Tors G N K, ∃ k : ℕ, c.r ^ k • (fun a b : Tors G N K => if (∃ ψ, a = s * pt ψ) ∧ (∃ ψ, b = t * pt ψ) then f (a * b) else 0) ∈ P`. Introduce `s t`. Take `⟨σ, hσ, hσf⟩` from `hf (s * t)`. Establish `ha0 : ∀ ψ : c.C →ₐ[R] K, ψ (σ c.C c.j) = f (s * t * pt ψ)` using `fun ψ => (hσ c.C K ψ c.j).symm.trans (hσf _)`. Take `⟨ψ'', hψ''⟩` from `hc.2 (c.C ⊗[R] c.C) Algebra.TensorProduct.includeLeft Algebra.TensorProduct.includeRight`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ ψ₁ ψ₂ : c.C →ₐ[R] K, Algebra.TensorProduct.lift ψ₁ ψ₂ (fun _ _ => .all _ _) (ψ'' (σ c.C c.j)) = f (s * t * (pt ψ₁ * pt ψ₂))`. Introduce `ψ₁ ψ₂`. Rewrite using `[← AlgHom.comp_apply, ha0]`. Use `congr 2`. Use `show torsMap (((Algebra.TensorProduct.lift ψ₁ ψ₂ (fun _ _ => .all _ _))).comp ψ'') c.j = _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hL : (Algebra.TensorProduct.lift ψ₁ ψ₂ (fun _ _ => .all _ _)).comp (Algebra.TensorProduct.includeLeft : c.C →ₐ[R] c.C ⊗[R] c.C) = ψ₁` using `AlgHom.ext fun x => by simp`. Establish `hR : (Algebra.TensorProduct.lift ψ₁ ψ₂ (fun _ _ => .all _ _)).comp (Algebra.TensorProduct.includeRight : c.C →ₐ[R] c.C ⊗[R] c.C) = ψ₂` using `AlgHom.ext fun x => by simp`. Rewrite using `[torsMap_comp', hψ'', torsMap_mul', ← torsMap_comp', ← torsMap_comp', hL, hR]`. Take `⟨S, hS⟩` from `TensorProduct.exists_finset (ψ'' (σ c.C c.j))`. Use `choose k1 g1 hg1 using fun u => GlobalTheory.T.prechart_translate_order R K G hG N hN q c hc s u`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `choose k2 g2 hg2 using fun u => GlobalTheory.T.prechart_translate_order R K G hG N hN q c hc t u`. Set `K1` to `S.sup fun x => k1 x.1`. Set `K2` to `S.sup fun x => k2 x.2`. Set `T : ord G N K ⊗[R] ord G N K` to `∑ x ∈ S, (⟨c.r ^ (K1 - k1 x.1) • g1 x.1, (ord G N K).smul_mem (hg1 x.1).1 _⟩ : ord G N K) ⊗ₜ (⟨c.r ^ (K2 - k2 x.2) • g2 x.2, (ord G N K).smul_mem (hg2 x.2).1 _⟩ : ord G N K)`. Use `⟨K1 + K2, T, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `a b`. Rewrite using `[hΦ, Pi.smul_apply, Pi.smul_apply, Algebra.smul_def]`. Simplify using `only [T, ev, map_sum, Algebra.TensorProduct.lift_tmul, AlgHom.comp_apply, Subalgebra.coe_val, Pi.evalAlgHom_apply, Pi.smul_apply]`. Simplify using `only [Algebra.smul_def]`. Distinguish the cases in `hab : (∃ ψ, a = s * pt ψ) ∧ (∃ ψ, b = t * pt ψ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hab]`. Take `⟨⟨ψ₁, rfl⟩, ⟨ψ₂, rfl⟩⟩` from `hab`. Establish `e1 : ∀ x ∈ S, algebraMap R K (c.r ^ (K1 - k1 x.1)) * g1 x.1 (s * pt ψ₁) = algebraMap R K c.r ^ K1 * ψ₁ x.1`. Introduce `x hx`. Rewrite using `[(hg1 x.1).2.1, map_pow, ← _root_.mul_assoc, ← pow_add, Nat.sub_add_cancel (Finset.le_sup (f := fun x => k1 x.1) hx)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : ∀ x ∈ S, algebraMap R K (c.r ^ (K2 - k2 x.2)) * g2 x.2 (t * pt ψ₂) = algebraMap R K c.r ^ K2 * ψ₂ x.2`. Introduce `x hx`. Rewrite using `[(hg2 x.2).2.1, map_pow, ← _root_.mul_assoc, ← pow_add, Nat.sub_add_cancel (Finset.le_sup (f := fun x => k2 x.2) hx)]`. Rewrite using `[Finset.sum_congr rfl fun x hx => by rw [e1 x hx, e2 x hx]]`. Establish `hsumA` using `hA ψ₁ ψ₂`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hsumA` using `[hS, map_sum]`. Simplify using `only [Algebra.TensorProduct.lift_tmul] at hsumA`. Rewrite using `[map_pow, pow_add, show (s * pt ψ₁) * (t * pt ψ₂) = s * t * (pt ψ₁ * pt ψ₂) from mul_mul_mul_comm _ _ _ _, ← hsumA, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hab, mul_zero]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Break down `not_and_or.1 hab with ha | hb` into its components or cases. Rewrite using `[(hg1 x.1).2.2 a (fun ψ h => ha ⟨ψ, h⟩), mul_zero, zero_mul]`. Rewrite using `[(hg2 x.2).2.2 b (fun ψ h => hb ⟨ψ, h⟩), mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Set `v : (Tors G N K ⧸ H) × (Tors G N K ⧸ H) → (Tors G N K → Tors G N K → K)` to `fun p a b => if ((a : Tors G N K ⧸ H), (b : Tors G N K ⧸ H)) = p then f (a * b) else 0`. Establish `hv : (fun a b : Tors G N K => f (a * b)) = ∑ p ∈ Finset.univ, v p`. Use function extensionality and compare the values at `a b`. Simplify using `only [Finset.sum_apply, v, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[hv]`.
-
-Use `hsum _ _ v fun p _ => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `hpiece p.1.out p.2.out`. Use `⟨k, ?_⟩` and prove the remaining obligations. Use `hk using 3` and compare the differences between its conclusion and the goal. Simplify using `only [v, Prod.ext_iff, hcoset]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ord_comul_local : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 → ∀ (q : PrimeSpectrum R) (c : PreChart G N q), c.IsGrp → ∀ f ∈ ord G N K, ∃ (k : ℕ) (T : ord G N K ⊗[R] ord G N K), ∀ a b : Tors G N K, Algebra.TensorProduct.lift ((Pi.evalAlgHom R (fun _ : Tors G N K => K) a).comp (ord G N K).val) ((Pi.evalAlgHom R (fun _ : Tors G N K => K) b).comp (ord G N K).val) (fun _ _ => .all _ _) T = algebraMap R K c.r ^ k * f (a * b) := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG N hN q c hc f hf
@@ -272,19 +268,17 @@ end GlobalTheory.GroupBplus.Aff
 open GlobalTheory.GroupBplus.Aff in
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG N hN`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf`. Set `I : Ideal R` to `{ carrier := {x | ∃ T : ord G N K ⊗[R] ord G N K, ∀ a b : Tors G N K, Algebra.TensorProduct.lift ((Pi.evalAlgHom R (fun _ : Tors G N K => K) a).comp (ord G N K).val) ((Pi.evalAlgHom R (fun _ : Tors G N K => K) b).comp (ord G N K).val) (fun _ _ => .all _ _) T = algebraMap R K x * …`. Introduce and unpack `x y ⟨T, hT⟩ ⟨T', hT'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨T + T', fun a b => by rw [map_add, hT, hT', map_add, add_mul]⟩`. Use the proof step `zero_mem' := ⟨0, fun a b => by rw [map_zero, map_zero, zero_mul]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c x ⟨T, hT⟩`. Conclude with `⟨c • T, fun a b => by rw [map_smul, hT, smul_eq_mul, map_mul, Algebra.smul_def, _root_.mul_assoc]⟩ }`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `htop : I = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hIm⟩` from `Ideal.exists_le_maximal I hne`. Set `q : PrimeSpectrum R` to `⟨m, hm.isPrime⟩`. Take `⟨c⟩` from `GlobalTheory.T.exists_torsion_prechart R K G hG N hN q`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, T, hT⟩` from `ord_comul_local R K G hG N hN q c (GlobalTheory.T.torsion_prechart_group R K G hG N hN q c) f hf`. Establish `hmem : c.r ^ k ∈ I` using `⟨T, fun a b => by rw [hT, map_pow]⟩`. Conclude with `c.hr (hm.isPrime.mem_of_pow_mem k (hIm hmem))`. Take `⟨T, hT⟩ : (1 : R) ∈ I` from `htop ▸ Submodule.mem_top`. Conclude with `⟨T, fun a b => by rw [hT, map_one, _root_.one_mul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `f hf s`. Take `⟨σ, hσ, hσf⟩` from `hf s⁻¹`. Use `⟨fun B _ _ z => σ B z⁻¹, fun B C _ _ _ _ φ z => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `show σ C (torsMap φ z)⁻¹ = φ (σ B z⁻¹)`. Rewrite using `[← torsMap_inv', hσ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show σ K x⁻¹ = f (s * x)⁻¹`. Rewrite using `[hσf, mul_inv]`. Introduce `f hf`. Take `⟨σ, hσ, hσf⟩` from `hf 1`. Use `⟨σ R 1, ?_⟩` and prove the remaining obligations.
-
-Establish `h1` using `hσ R K (Algebra.ofId R K) 1`. Rewrite `h1` using `[torsMap_one']`. Rewrite using `[← _root_.one_mul (1 : Tors G N K), ← hσf, h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GroupBplus.Aff.ord_hopf_closed : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 → (∀ f ∈ ord G N K, ∃ T : ord G N K ⊗[R] ord G N K, ∀ a b : Tors G N K, Algebra.TensorProduct.lift ((Pi.evalAlgHom R (fun _ : Tors G N K => K) a).comp (ord G N K).val) ((Pi.evalAlgHom R (fun _ : Tors G N K => K) b).comp (ord G N K).val) (fun _ _ => .all _ _) T = f (a * b)) ∧ (∀ f ∈ ord G N K, (fun a => f a⁻¹) ∈ ord G N K) ∧ ∀ f ∈ ord G N K, ∃ c : R, algebraMap R K c = f 1 := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG N hN

@@ -169,7 +169,7 @@ variable {S₁ : Sys R n r₁} {S : Sys R n r} {F : Hom S₁ S}
 omit [IsDomain O] in
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `hfg`. Introduce `y hy`. Take `⟨x, hx, e⟩` from `h (c • y) (Submodule.smul_mem _ _ hy)`. Conclude with `⟨x, hx, by rw [e, smul_smul]⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Hom.Kills.of_dvd {i : ZMod n} {f g : O⟦X⟧} (h : F.Kills i f) (hfg : f ∣ g) :
     F.Kills i g := by
@@ -181,13 +181,13 @@ theorem Hom.Kills.of_dvd {i : ZMod n} {f g : O⟦X⟧} (h : F.Kills i f) (hfg : 
 omit [IsDomain O] in
 
 /- English proof (translation)
-The claim follows from `h.of_dvd (pow_dvd_pow f ha)`.
+A detailed English derivation is pending.
 -/
 theorem Hom.Kills.pow_le {i : ZMod n} {f : O⟦X⟧} {a a' : ℕ} (h : F.Kills i (f ^ a)) (ha : a ≤ a') :
     F.Kills i (f ^ a') := h.of_dvd (pow_dvd_pow f ha)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H => ⟨⟨H.good.1, H.jumps, H.size, H.le_h, H.low⟩, H.good.2⟩, fun H => ⟨⟨H.1.onto, H.2⟩, H.1.jumps, H.1.size, H.1.le_h, H.1.low⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem typed_iff {up : ZMod n → Fin R.e → Bool} {b : ZMod n → Fin R.e → ℕ} {Sn η m h : ℕ} :
     Typed F up b Sn η m h ↔
@@ -196,7 +196,7 @@ theorem typed_iff {up : ZMod n → Fin R.e → Bool} {b : ZMod n → Fin R.e →
     fun H => ⟨⟨H.1.onto, H.2⟩, H.1.jumps, H.1.size, H.1.le_h, H.1.low⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H => ⟨⟨H.isA, H.l_ge, Nat.pos_of_ne_zero (NeZero.ne n), H.even, (typed_iff.1 H.typed).1, H.big, H.half⟩, H.typed.good.2, H.kills⟩, fun H => ⟨H.1.isA, H.1.l_ge, H.1.even, typed_iff.2 ⟨H.1.typed, H.2.1⟩, H.1.big, H.1.half, H.2.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem cHyp_iff [NeZero n] {b : ZMod n → ℕ} {Sn η m h : ℕ} :
     CHyp F b Sn η m h ↔ CSet F b Sn η m h ∧ (∀ i, ∃ a : ℕ, F.Kills i ((l : O⟦X⟧) ^ a)) ∧
@@ -207,7 +207,7 @@ theorem cHyp_iff [NeZero n] {b : ZMod n → ℕ} {Sn η m h : ℕ} :
       H.2.2⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H => ⟨⟨H.isA, H.l_ge, Nat.pos_of_ne_zero (NeZero.ne n), (typed_iff.1 H.typed).1, H.w_pos, H.small, H.thick_or, H.some_thin, H.h_def⟩, H.killX, H.killL, H.killCut, H.A_le, H.a_le, H.A_next, H.A_cut⟩, fun ⟨H, h1, h2, h3, h4, h5, h6, h7⟩ => ⟨H.isA, H.l_ge, typed_iff.2 ⟨H.typed, …`.
+Supply the required witnesses or components.
 -/
 theorem bHyp_iff [NeZero n] {up : ZMod n → Bool} {sz : ZMod n → ℕ} {b w Sn η m h : ℕ}
     {A ρ : ZMod n → ℕ} :
@@ -219,7 +219,7 @@ theorem bHyp_iff [NeZero n] {up : ZMod n → Bool} {sz : ZMod n → ℕ} {b w Sn
       H.w_pos, H.small, H.thick_or, H.some_thin, H.h_def, h1, h2, h3, h4, h5, h6, h7⟩⟩
 
 /- English proof (translation)
-Introduce `a ha`. Establish `h1` using `H.jumps i τ a ha`. Establish `h2` using `H.size i τ`. Unfold `win winU winD at h1`. Apply the tactic sequence `cases hu : up i τ <;> simp [hu] at h1 ⊢ <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem TypedOnto.jumps_width {up : ZMod n → Fin R.e → Bool} {b : ZMod n → Fin R.e → ℕ}
     {Sn η m h : ℕ} (H : TypedOnto F up b Sn η m h) (i : ZMod n) (τ : Fin R.e) :
@@ -232,7 +232,7 @@ theorem TypedOnto.jumps_width {up : ZMod n → Fin R.e → Bool} {b : ZMod n →
   cases hu : up i τ <;> simp [hu] at h1 ⊢ <;> omega
 
 /- English proof (translation)
-Establish `h1` using `H.thick_or i`. Establish `h2` using `H.small.1`. Establish `h3` using `H.w_pos`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem BSet.lt_iff {up : ZMod n → Bool} {sz : ZMod n → ℕ} {b w Sn η m h : ℕ}
     (H : BSet F up sz b w Sn η m h) (i : ZMod n) : sz i < b ↔ sz i ≤ w := by
@@ -244,7 +244,7 @@ theorem BSet.lt_iff {up : ZMod n → Bool} {sz : ZMod n → ℕ} {b w Sn η m h 
 omit [IsDomain O] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => 0, fun _ => Nat.zero_le _, fun _ => by simp only [Nat.cast_zero, zero_div]; positivity, fun i => (h i).of_dvd (one_dvd _), fun i => (h i).of_dvd (one_dvd _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem CokBound.of_kills_one (h : ∀ i, F.Kills i 1) (Hw : ZMod n → ℕ) (H : ℕ) :
     CokBound F Hw H :=
@@ -254,22 +254,22 @@ theorem CokBound.of_kills_one (h : ∀ i, F.Kills i 1) (Hw : ZMod n → ℕ) (H 
 end Rel
 
 /- English proof (translation)
-Unfold `AltWord`. Evaluate the decidable proposition.
+Replace the relevant objects with their definitions. Evaluate the decidable proposition.
 -/
 example : AltWord (n := 2) (fun i => decide (i = 1)) (fun i => if i = 1 then 20 else 1) 20 := by
   unfold AltWord; decide
 
 /- English proof (translation)
-Unfold `OneWord`. Evaluate the decidable proposition.
+Replace the relevant objects with their definitions. Evaluate the decidable proposition.
 -/
 example : OneWord (n := 3) (fun _ => true) (fun i => if i = 0 then 1 else 20) 20 3 ∧
     ¬ OneWord (n := 3) (fun _ => true) (fun i => if i = 0 then 1 else 20) 20 2 := by
   unfold OneWord; decide
 
 /- English proof (translation)
-Introduce and unpack `⟨h, -⟩`. Establish `h0 : up 1 = !up 0` using `h 0`. Establish `h1 : up 2 = !up 1` using `h 1`. Establish `h2 : up 0 = !up 2` using `h 2`. Use `revert h0 h1 h2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases up 0 <;> cases up 1 <;> cases up 2 <;> simp`.
+A detailed English derivation is pending.
 -/
 example (up : ZMod 3 → Bool) (sz : ZMod 3 → ℕ) (b : ℕ) : ¬ AltWord up sz b := by
   rintro ⟨h, -⟩
@@ -280,7 +280,7 @@ example (up : ZMod 3 → Bool) (sz : ZMod 3 → ℕ) (b : ℕ) : ¬ AltWord up s
   cases up 0 <;> cases up 1 <;> cases up 2 <;> simp
 
 /- English proof (translation)
-Unfold `cW`. Establish `: Real.logb ((11 : ℕ) : ℝ) (((10 : ℕ) : ℝ) + 1) = 1`. Evaluate the numerical expressions. Rewrite using `[this]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 example : cW 11 10 = 2 := by
   unfold cW

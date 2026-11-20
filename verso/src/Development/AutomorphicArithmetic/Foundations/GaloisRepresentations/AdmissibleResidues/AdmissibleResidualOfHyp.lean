@@ -10,7 +10,7 @@ open NumberField IsDedekindDomain IsLocalRing Formalism.ConjugateSelfDual Recipr
 namespace UpperTheory.GalN.V
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![0, 1; -1, 0] (by simp), fun s => by have hd : ((Matrix.GeneralLinearGroup.det.comp W s : kˣ) : k) = (W s).val.det := rfl rw [hd, Matrix.det_fin_two (W s).val] ext i j simp only [Matrix.mul_apply, Fin.sum_univ_two] fin_cases i <;> fin_ca …`.
+Supply the required witnesses or components.
 -/
 theorem dual_two {Γ k : Type} [Group Γ] [Field k] (W : Γ →* GL (Fin 2) k) : DualTw W (Matrix.GeneralLinearGroup.det.comp W) :=
   ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![0, 1; -1, 0] (by simp), fun s => by
@@ -30,7 +30,7 @@ def IsModularN (_ : Dat Ω K c e ψ) (ι : Qbar l ≃+* ℂ) (W : G ℚ Ω →* 
 variable {D : Dat Ω K c e ψ} {ι : Qbar l ≃+* ℂ} {W : G ℚ Ω →* GL (Fin 2) (PadicAlgCl l)}
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem mod0 (h : D.IsModular ι W) : ∃ f : Af.Newform (2 * e + 1), f.Att ι (Af.tw W (cycBar ℚ Ω l ^ (-(e : ℤ)))) := h
 end
@@ -45,7 +45,7 @@ def AutEnd2N {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ
       (∃ f : Af.Newform (2 * e + 1), f.Att ι (Af.tw W (cycBar ℚ Ω l ^ (-(e : ℤ))))) ∧ WitQ ι W
 
 /- English proof (translation)
-Take `⟨⟨f, hf⟩, hw⟩` from `hf`. Apply the tactic sequence `exact ⟨hirr, mkQ' (newformAut0 P (2 * e + 1) (by omega) f l Ω ι W _ hf) fun _ => hw, hlev, ⟨_, hcyc, dual_two W⟩, Or.inr fun i j => by fin_cases i <;> fin_cases j <;> simp <;> omega⟩`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem newAdm (P : Hypotheses₂) (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (e M : ℕ)
     (he : 1 ≤ e) (W : G ℚ Ω →* GL (Fin 2) (Qbar l)) (hirr : IsIrr W)

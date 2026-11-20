@@ -16,7 +16,7 @@ set_option autoImplicit false
 namespace GlobalTheory.ArtinPatch
 
 /- English proof (translation)
-Establish `H'` using `(Types.isPullback_iff _ _ _ _).1 (H.map (forget CommRingCat))`. Conclude with `⟨fun x y hx hy ↦ H'.2.1 x y ⟨hx, hy⟩, fun b c hbc ↦ H'.2.2 b c hbc⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem elem_of_isPullback {A B C D : CommRingCat.{0}} {f : A ⟶ B} {g : A ⟶ C} {h : B ⟶ D} {i : C ⟶ D}
     (H : IsPullback f g h i) :
@@ -26,19 +26,19 @@ theorem elem_of_isPullback {A B C D : CommRingCat.{0}} {f : A ⟶ B} {g : A ⟶ 
   exact ⟨fun x y hx hy ↦ H'.2.1 x y ⟨hx, hy⟩, fun b c hbc ↦ H'.2.2 b c hbc⟩
 
 /- English proof (translation)
-Take `⟨-, hex⟩` from `elem_of_isPullback H`. Establish `key : ∀ s : PushoutCocone f₁ f₂, RingHom.ker g₁.hom ≤ RingHom.ker s.inl.hom`. Introduce `s r hr`. Rewrite `hr`, the goal using `[RingHom.mem_ker]`. Take `⟨a, ha1, ha2⟩` from `hex r 0 (by rw [hr, map_zero])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e` using `congrArg (fun φ => φ.hom a) s.condition`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Rewrite using `[← ha1, e, ha2, map_zero]`. Set `d : ∀ s : PushoutCocone f₁ f₂, R₀ ⟶ s.pt` to `fun s => CommRingCat.ofHom (RingHom.liftOfRightInverse g₁.hom (Function.surjInv hg₁) (Function.rightInverse_surjInv hg₁) ⟨s.inl.hom, key s⟩)`. Establish `hd : ∀ (s : PushoutCocone f₁ f₂) (r : R₁), (d s).hom (g₁.hom r) = s.inl.hom r` using `fun s r => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [d, CommRingCat.hom_ofHom]`. Conclude with `RingHom.liftOfRightInverse_comp_apply _ _ _ _ r`. Use `IsPushout.of_isColimit (c := PushoutCocone.mk g₁ g₂ H.w) ?_` and prove the remaining obligations. Use `PushoutCocone.IsColimit.mk _ d ?_ ?_ ?_` and prove the remaining obligations. Introduce `s`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Conclude with `hd s r`. Introduce `s`. Use extensionality with `r₂`. Take `⟨r₁, hr₁⟩` from `hg₁ (g₂.hom r₂)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha1, ha2⟩` from `hex r₁ r₂ hr₁`. Establish `e` using `congrArg (fun φ => φ.hom a) s.condition`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Express the relevant statement in the definitionally equal form `(d s).hom (g₂.hom r₂) = s.inr.hom r₂`. Rewrite using `[← hr₁, hd, ← ha1, e, ha2]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `s m h1 _`. Use extensionality with `y`. Take `⟨r, rfl⟩` from `hg₁ y`. Establish `e` using `congrArg (fun φ => φ.hom r) h1`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `m.hom (g₁.hom r) = (d s).hom (g₁.hom r)`. Rewrite using `[hd]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem isPushout_of_isPullback {P R₁ R₂ R₀ : CommRingCat.{0}} {f₁ : P ⟶ R₁} {f₂ : P ⟶ R₂} {g₁ : R₁ ⟶ R₀}
     {g₂ : R₂ ⟶ R₀} (H : IsPullback f₁ f₂ g₁ g₂) (hg₁ : Function.Surjective g₁.hom) :
@@ -80,7 +80,7 @@ theorem isPushout_of_isPullback {P R₁ R₂ R₀ : CommRingCat.{0}} {f₁ : P �
     exact e
 
 /- English proof (translation)
-Establish `h : ∀ z : PrimeSpectrum P, z.asIdeal = IsLocalRing.maximalIdeal P` using `fun z => IsLocalRing.eq_maximalIdeal (IsArtinianRing.isMaximal_of_isPrime z.asIdeal)`. Conclude with `PrimeSpectrum.ext ((h x).trans (h y).symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spec_eq_of_artinian (P : CommRingCat.{0}) [IsLocalRing P] [IsArtinianRing P] (x y : Spec P) :
     x = y := by
@@ -93,25 +93,23 @@ end GlobalTheory.ArtinPatch
 namespace GlobalTheory.ArtinPatch
 
 /- English proof (translation)
-Take `⟨hinj, hex⟩` from `elem_of_isPullback H`. Establish `inj : ∀ {R : CommRingCat.{0}} (u v : Γ(Spec R, ⊤)), (Scheme.ΓSpecIso R).hom.hom u = (Scheme.ΓSpecIso R).hom.hom v → u = v`. Introduce `R u v h`. Simplify using `using congrArg (Scheme.ΓSpecIso R).inv.hom h`. Establish `nat : ∀ {R S : CommRingCat.{0}} (f : R ⟶ S) (u : Γ(Spec R, ⊤)), (Scheme.ΓSpecIso S).hom.hom ((Spec.map f).appTop.hom u) = f.hom ((Scheme.ΓSpecIso R).hom.hom u)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `R S f u`. Conclude with `congrArg (fun φ => φ.hom u) (Scheme.ΓSpecIso_naturality f)`. Use `GlobalTheory.PinchLift.glues_of_basis _ _ _ _ {⊤} ?_ ?_` and prove the remaining obligations. Introduce `W x hx`. Use `⟨⊤, rfl, trivial, fun y _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP y x]`. Conclude with `hx`. Introduce and unpack `W rfl a b hab set V := Spec.map g₂ ⁻¹ᵁ Spec.map f₂ ⁻¹ᵁ (⊤ : (Spec P).Opens) ⊓ Spec.map g₁ ⁻¹ᵁ Spec.map f₁ ⁻¹ᵁ (⊤ : (Spec P).Opens) with hVdef`. Establish `hV : V = ⊤` using `top_le_iff.1 (fun x _ => ⟨trivial, trivial⟩)`. Establish `hiso : IsIso (homOfLE (le_top : V ≤ ⊤))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show homOfLE (le_top : V ≤ ⊤) = (eqToIso hV).hom from Subsingleton.elim _ _]`. Use `infer_instance`. Use `set ρ := (Spec R₀).presheaf.map (homOfLE (le_top : V ≤ ⊤)).op`. Establish `hρ : ∀ u v, ρ.hom u = ρ.hom v → u = v`. Introduce `u v h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using congrArg (inv ρ).hom h`. Establish `e : (Spec.map g₂).appTop.hom a = (Spec.map g₁).appTop.hom b`. Apply `hρ` to reduce the goal to its premises. Conclude with `hab`. Establish `key : g₁.hom ((Scheme.ΓSpecIso R₁).hom.hom b) = g₂.hom ((Scheme.ΓSpecIso R₂).hom.hom a)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← nat g₁ b, ← nat g₂ a, e]`. Take `⟨x, hx1, hx2⟩` from `hex _ _ key`. Use `⟨(Scheme.ΓSpecIso P).inv.hom x, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `inj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso R₂).hom.hom ((Spec.map f₂).appTop.hom _) = _`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nat]`. Simplify using `using hx2`. Apply `inj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso R₁).hom.hom ((Spec.map f₁).appTop.hom _) = _`. Rewrite using `[nat]`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using hx1`. Introduce and unpack `s ⟨hs2, hs1⟩`. Apply `inj` to reduce the goal to its premises. Simplify using `only [Iso.inv_hom_id_apply]`. Apply `hinj` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← nat]`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso R₁).hom.hom (((Spec.map f₁).app ⊤).hom s) = _`. Rewrite using `[hs1, hx1]`. Rewrite using `[← nat]`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso R₂).hom.hom (((Spec.map f₂).app ⊤).hom s) = _`.
-
-Rewrite using `[hs2, hx2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glues_spec {P R₁ R₂ R₀ : CommRingCat.{0}} {f₁ : P ⟶ R₁} {f₂ : P ⟶ R₂} {g₁ : R₁ ⟶ R₀} {g₂ : R₂ ⟶ R₀}
     (H : IsPullback f₁ f₂ g₁ g₂) (hP : ∀ x y : Spec P, x = y) :
@@ -172,39 +170,35 @@ end GlobalTheory.ArtinPatch
 namespace GlobalTheory.ArtinPatch
 
 /- English proof (translation)
-Introduce `P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hpb hloc hart hg₁ hg₂ X X₁ X₂ X₀ j₁ j₂ i₁ i₂ hflat h₁ h₂ h₀ hc hc₂ L₁ L₂ hL₁ hL₂ hiso`. Use `haveI := hloc`. Use `haveI := hart`. Take `⟨-, hex⟩` from `elem_of_isPullback hpb`. Establish `hf₁ : Function.Surjective f₁.hom` using `fun r => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r₂, hr₂⟩` from `hg₂ (g₁.hom r)`. Take `⟨a, ha, -⟩` from `hex r r₂ hr₂.symm`. Conclude with `⟨a, ha⟩`. Establish `hw : Spec.map g₂ ≫ Spec.map f₂ = Spec.map g₁ ≫ Spec.map f₁`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, hpb.w]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `O : Over (Spec P)` to `Over.mk (𝟙 (Spec P))`. Set `O₂ : Over (Spec P)` to `Over.mk (Spec.map f₂)`. Set `O₁ : Over (Spec P)` to `Over.mk (Spec.map f₁)`. Set `O₀ : Over (Spec P)` to `Over.mk (Spec.map g₁ ≫ Spec.map f₁)`. Set `q : O₂ ⟶ O` to `Over.homMk (Spec.map f₂) (Category.comp_id _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `r : O₁ ⟶ O` to `Over.homMk (Spec.map f₁) (Category.comp_id _)`. Set `r' : O₀ ⟶ O₂` to `Over.homMk (Spec.map g₂) hw`. Set `q' : O₀ ⟶ O₁` to `Over.homMk (Spec.map g₁) rfl`. Establish `hcomm : r' ≫ q = q' ≫ r` using `by ext1`. Simplify `hw` using `[q, r, q', r']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : IsPullback r'.left q'.left q.left r.left` using `(isPullback_SpecMap_of_isPushout _ _ _ _ (isPushout_of_isPullback hpb hg₁).flip)`. Use `haveI hcl : IsClosedImmersion r.left := IsClosedImmersion.spec_of_surjective f₁ hf₁`. Establish `haff : IsAffineHom q.left`. Express the relevant statement in the definitionally equal form `IsAffineHom (Spec.map f₂)`. Use `infer_instance`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgl : GlobalTheory.PinchLift.Glues q.left r.left r'.left q'.left` using `glues_spec hpb (spec_eq_of_artinian P)`. Take `⟨hpb', haff', hcl', hgl'⟩` from `GlobalTheory.PinchLift.glues_whiskerLeft (Spec P) X O O₂ O₁ O₀ q r r' q' hflat hcomm hsq haff hcl hgl`. Establish `hT : ∀ U : Over (Spec P), IsPullback (fst X U).left (snd X U).left X.hom U.hom` using `fun U => IsPullback.of_hasPullback X.hom U.hom`. Establish `h₀' : IsPullback (i₁ ≫ j₁) X₀.hom X.hom (Spec.map g₁ ≫ Spec.map f₁)` using `h₀.paste_horiz h₁`. Set `ψ₂` to `IsPullback.isoIsPullback _ _ h₂ (hT O₂)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ψ₁` to `IsPullback.isoIsPullback _ _ h₁ (hT O₁)`. Set `ψ₀` to `IsPullback.isoIsPullback _ _ h₀' (hT O₀)`. Establish `p₂f : ψ₂.hom ≫ (fst X O₂).left = j₂` using `IsPullback.isoIsPullback_hom_fst _ _ h₂ (hT O₂)`. Establish `p₂s : ψ₂.hom ≫ (snd X O₂).left = X₂.hom` using `IsPullback.isoIsPullback_hom_snd _ _ h₂ (hT O₂)`. Establish `p₁f : ψ₁.hom ≫ (fst X O₁).left = j₁` using `IsPullback.isoIsPullback_hom_fst _ _ h₁ (hT O₁)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `p₁s : ψ₁.hom ≫ (snd X O₁).left = X₁.hom` using `IsPullback.isoIsPullback_hom_snd _ _ h₁ (hT O₁)`. Establish `p₀f : ψ₀.hom ≫ (fst X O₀).left = i₁ ≫ j₁` using `IsPullback.isoIsPullback_hom_fst _ _ h₀' (hT O₀)`. Establish `p₀s : ψ₀.hom ≫ (snd X O₀).left = X₀.hom` using `IsPullback.isoIsPullback_hom_snd _ _ h₀' (hT O₀)`. Set `s : X.left ⟶ (X ⊗ O).left` to `(hT O).lift (𝟙 _) X.hom (by simp [O])`. Establish `wf : ∀ {U V : Over (Spec P)} (k : U ⟶ V), (X ◁ k).left ≫ (fst X V).left = (fst X U).left`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U V k`. Rewrite using `[← Over.comp_left, whiskerLeft_fst]`. Establish `ws : ∀ {U V : Over (Spec P)} (k : U ⟶ V), (X ◁ k).left ≫ (snd X V).left = (snd X U).left ≫ k.left`. Introduce `U V k`. Rewrite using `[← Over.comp_left, ← Over.comp_left, whiskerLeft_snd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `E₂ : j₂ ≫ s = ψ₂.hom ≫ (X ◁ q).left`. Apply `(hT O).hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, wf, (hT O).lift_fst, p₂f, Category.comp_id]`. Rewrite using `[Category.assoc, Category.assoc, ws, (hT O).lift_snd, ← Category.assoc, p₂s]`. Conclude with `h₂.w`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `E₁ : j₁ ≫ s = ψ₁.hom ≫ (X ◁ r).left`. Apply `(hT O).hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, wf, (hT O).lift_fst, p₁f, Category.comp_id]`. Rewrite using `[Category.assoc, Category.assoc, ws, (hT O).lift_snd, ← Category.assoc, p₁s]`. Conclude with `h₁.w`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `E₀₂ : ψ₀.hom ≫ (X ◁ r').left = i₂ ≫ ψ₂.hom`. Apply `(hT O₂).hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, wf, p₀f, p₂f, hc]`. Rewrite using `[Category.assoc, Category.assoc, ws, ← Category.assoc, p₀s, p₂s]`. Conclude with `hc₂.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `E₀₁ : ψ₀.hom ≫ (X ◁ q').left = i₁ ≫ ψ₁.hom`. Apply `(hT O₁).hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, wf, p₀f, p₁f]`. Rewrite using `[Category.assoc, Category.assoc, ws, ← Category.assoc, p₀s, p₁s]`. Conclude with `h₀.w.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hab0 : GlobalTheory.CechPic.pull i₂ (GlobalTheory.CechPic.cls L₂ hL₂) = GlobalTheory.CechPic.pull i₁ (GlobalTheory.CechPic.cls L₁ hL₁)`. Rewrite using `[← GlobalTheory.CechPic.cls_pull hL₂ i₂ (pull_isLB hL₂ i₂), ← GlobalTheory.CechPic.cls_pull hL₁ i₁ (pull_isLB hL₁ i₁)]`. Conclude with `((GlobalTheory.CechPic.cls_eq_iff _ _).2 hiso).symm`. Establish `e2 : (X ◁ r').left ≫ ψ₂.inv = ψ₀.inv ≫ i₂`. Rewrite using `[Iso.eq_inv_comp, ← Category.assoc, E₀₂, Category.assoc, Iso.hom_inv_id, Category.comp_id]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (X ◁ q').left ≫ ψ₁.inv = ψ₀.inv ≫ i₁`. Rewrite using `[Iso.eq_inv_comp, ← Category.assoc, E₀₁, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Establish `hab : GlobalTheory.CechPic.pull (X ◁ r').left (GlobalTheory.CechPic.pull ψ₂.inv (GlobalTheory.CechPic.cls L₂ hL₂)) = GlobalTheory.CechPic.pull (X ◁ q').left (GlobalTheory.CechPic.pull ψ₁.inv (GlobalTheory.CechPic.cls L₁ hL₁))`. Rewrite using `[← GlobalTheory.CechPic.pull_comp, ← GlobalTheory.CechPic.pull_comp, e2, e1, GlobalTheory.CechPic.pull_comp, GlobalTheory.CechPic.pull_comp, hab0]`. Take `⟨e', he2, he1⟩` from `GlobalTheory.PinchLift.exists_pic_patch _ _ _ _ _ _ _ _ hpb' haff' hcl' hgl' _ _ hab`.
-
-Take `⟨L, hL, hLe⟩` from `GlobalTheory.CechPic.cls_surj (GlobalTheory.CechPic.pull s e')`. Use `⟨L, hL, ?_, ?_⟩` and prove the remaining obligations. Establish `h : GlobalTheory.CechPic.cls (L.pull j₁) (pull_isLB hL j₁) = GlobalTheory.CechPic.cls L₁ hL₁`. Rewrite using `[GlobalTheory.CechPic.cls_pull hL j₁, hLe, ← GlobalTheory.CechPic.pull_comp, E₁, GlobalTheory.CechPic.pull_comp, he1, ← GlobalTheory.CechPic.pull_comp, Iso.hom_inv_id, GlobalTheory.CechPic.pull_id]`. Conclude with `LBIso.symm ((GlobalTheory.CechPic.cls_eq_iff _ _).1 h)`.
-
-Establish `h : GlobalTheory.CechPic.cls (L.pull j₂) (pull_isLB hL j₂) = GlobalTheory.CechPic.cls L₂ hL₂`. Rewrite using `[GlobalTheory.CechPic.cls_pull hL j₂, hLe, ← GlobalTheory.CechPic.pull_comp, E₂, GlobalTheory.CechPic.pull_comp, he2, ← GlobalTheory.CechPic.pull_comp, Iso.hom_inv_id, GlobalTheory.CechPic.pull_id]`. Conclude with `LBIso.symm ((GlobalTheory.CechPic.cls_eq_iff _ _).1 h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lb_glue : ∀ (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀) (g₂ : R₂ ⟶ R₀), IsPullback f₁ f₂ g₁ g₂ → IsLocalRing P → IsArtinianRing P → Function.Surjective g₁ → Function.Surjective g₂ → ∀ (X : Over (Spec P)) (X₁ : Over (Spec R₁)) (X₂ : Over (Spec R₂)) (X₀ : Over (Spec R₀)) (j₁ : X₁.left ⟶ X.left) (j₂ : X₂.left ⟶ X.left) (i₁ : X₀.left ⟶ X₁.left) (i₂ : X₀.left ⟶ X₂.left), Flat X.hom → IsPullback j₁ X₁.hom X.hom (Spec.map f₁) → IsPullback j₂ X₂.hom X.hom (Spec.map f₂) → IsPullback i₁ X₀.hom X₁.hom (Spec.map g₁) → i₁ ≫ j₁ = i₂ ≫ j₂ → i₂ ≫ X₂.hom = X₀.hom ≫ Spec.map g₂ → ∀ (L₁ : LB X₁.left) (L₂ : LB X₂.left), L₁.IsLB → L₂.IsLB → LBIso (L₁.pull i₁) (L₂.pull i₂) → ∃ L : LB X.left, L.IsLB ∧ LBIso L₁ (L.pull j₁) ∧ LBIso L₂ (L.pull j₂) := by
   intro P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hpb hloc hart hg₁ hg₂ X X₁ X₂ X₀ j₁ j₂ i₁ i₂ hflat h₁ h₂ h₀ hc hc₂ L₁ L₂ hL₁ hL₂ hiso

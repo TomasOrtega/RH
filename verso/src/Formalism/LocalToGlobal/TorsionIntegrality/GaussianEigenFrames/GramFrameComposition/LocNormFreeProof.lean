@@ -17,7 +17,7 @@ open Formalism.L2.Th1.A (logSer expSer)
 open Formalism.G (unitBall)
 
 /- English proof (translation)
-Introduce `p _ L ι hp hW ω₀ hω hω2 s N hN hpN hs`. Establish `h` using `(Formalism.L2.Th1.E.th0Analytic p L ι hp hW ω₀ hω hω2).2 s N hN hpN hs`. Rewrite using `[Formalism.L2.Th1.Top.KJ.phC_eq]`. Conclude with `h.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TransIntC_proof : TransIntC := by
   intro p _ L ι hp hW ω₀ hω hω2 s N hN hpN hs
@@ -26,7 +26,7 @@ theorem TransIntC_proof : TransIntC := by
   exact h.1
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.H.thetaU`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.one_apply]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem thetaU_one {K : Type} [Field K] (ι : ℂ →+* K) (lg : PowerSeries K) {n : Type} [Fintype n] [DecidableEq n]
     (f : (n → ℂ) → ℂ) :
@@ -38,13 +38,13 @@ theorem thetaU_one {K : Type} [Field K] (ι : ℂ →+* K) (lg : PowerSeries K) 
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `a₀ b₀ c₀ dK ha hdK lam hlam hok n _ _ h Λ hsd hst θ hθ p _ hp ι hW g₁ ε hiso hnd hrel hε htens t N hN hpN ht`. Establish `hω : (cmL a₀ b₀ dK ha hdK lam hlam).ω₁ = lam * a₀` using `by first`. Consider the case `rfl`. Consider the case `simp [cmL, Formalism.L2.Th1.F.scalePair, Formalism.L2.Th1.F.cmPair]`. Consider the case `(simp [cmL, Formalism.L2.Th1.F.scalePair, Formalism.L2.Th1.F.cmPair]; ring)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hmem : lam * (a₀ : ℂ) ∈ (cmL a₀ b₀ dK ha hdK lam hlam).lattice` using `hω ▸ PeriodPair.ω₁_mem_lattice _`. Establish `hnot : lam * (a₀ : ℂ) / 2 ∉ (cmL a₀ b₀ dK ha hdK lam hlam).lattice` using `hω ▸ PeriodPair.ω₁_div_two_notMem_lattice _`. Establish `hi1 : relIdx (stdLat (cmL a₀ b₀ dK ha hdK lam hlam) (Fin 4 × n)) (imgLat (g₁ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)) ≠ 0`. Introduce `h0`. Conclude with `hnd (h0 ▸ dvd_zero p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hstd` using `Formalism.L2.Th1.H.CmData.stdData_cm a₀ b₀ c₀ dK ha hdK lam hlam hok.1 hok.2.1 hok.2.2.1 h Λ g₁ hiso hsd hst hi1 hrel`. Establish `hTI` using `hT p (cmL a₀ b₀ dK ha hdK lam hlam) ι hp hW (lam * a₀) hmem hnot`. Establish `hcc : PowerSeries.constantCoeff (phC p (cmL a₀ b₀ dK ha hdK lam hlam) ι) = 0`. Rewrite using `[Formalism.L2.Th1.Top.KJ.phC_eq]`. Conclude with `Formalism.L2.Th1.E.Tor.cc_phL p _ ι`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hK` using `Formalism.L2.Th1.H.quadraticSemicharacters_fact p (cmL a₀ b₀ dK ha hdK lam hlam) ι (lam * a₀) _ _ _ (Formalism.L2.Th1.C.WeierstrassCurveSeries.logPair _) hcc hTI n h Λ _ _ g₁ hstd hnd ε hε θ hθ htens t N hN hpN ht ℂ_[p] (RingHom.id _) (fun w w' => ι (g₁.symm (Pi.single w' 1) w)) …`. Introduce `a i w`. Simplify using `[Matrix.one_apply])`. Rewrite `hK` using `[thetaU_one]`. Conclude with `hZ ℂ_[p] _ _ _ (Formalism.L2.Th1.C.WeierstrassCurveSeries.logPair _) hcc n _ _ hK`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TensStd_of (hZ : ShapeToZ) (hT : TransIntC) : TensStd := by
   intro a₀ b₀ c₀ dK ha hdK lam hlam hok n _ _ h Λ hsd hst θ hθ p _ hp ι hW g₁ ε hiso hnd hrel hε htens t N hN hpN ht

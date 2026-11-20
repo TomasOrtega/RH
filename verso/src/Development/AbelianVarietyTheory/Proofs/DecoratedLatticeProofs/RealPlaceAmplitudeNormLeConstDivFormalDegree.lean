@@ -51,11 +51,11 @@ open Formalism.MainNotions.BridgeLemma
 namespace GlobalTheory.AmpRec
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT C0 Cn`. Establish `hH : GlobalTheory.GapIn.Hyp` using `GlobalTheory.GapIn.hyp_of_uniqGap GlobalTheory.uniqGap_and_besselOfW.1`. Take `⟨m₀, hm⟩` from `GlobalTheory.Amp.OpenCellNormGap.norm_eq_const_div_deg_gap hH (GlobalTheory.AmpOrbGap.ampKF hH) GlobalTheory.CellMaj.cellConv Cg cb Cu cT CT C0 1 Cn`. Take `⟨thr, hthr⟩` from `GlobalTheory.Core.Deg.elementary_size_bounds_of_size_hypotheses (max m₀ 1)`. Use `⟨thr, fun D large₂ C' Cl hC' hCl hT => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hH0`. Take `⟨h1000, -, hmM, -, hrd, -⟩` from `hthr D large₂ C' Cl Cg cb Cu cT CT hC' hCl hH0.1`. Establish `hmm : m₀ ≤ (D.R.m : ℝ)` using `(le_max_left _ _).trans hmM`. Establish `hm1 : (1 : ℝ) ≤ (D.R.m : ℝ)` using `(le_max_right _ _).trans hmM`. Establish `hbig : GlobalTheory.Amp.Big D large₂ Cl m₀` using `⟨hrd, by nlinarith, hmm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hm D large₂ C' Cl h1000 hbig hT.cdScale_tie hH0`.
+A detailed English derivation is pending.
 -/
 theorem exists_threshold_adm9_of_ties : ∀ Cg cb Cu cT CT C0 : ℝ, ∀ Cn : ℝ, ∃ thr : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl : ℝ),
     thr ≤ C' → thr ≤ Cl → Ties D → VanishingOnXAndXPlusBranching.adm9 D large₂ C' Cl Cg cb Cu cT CT C0 Cn 1 := by

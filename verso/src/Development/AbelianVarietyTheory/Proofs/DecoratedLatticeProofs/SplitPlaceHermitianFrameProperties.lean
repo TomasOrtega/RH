@@ -14,13 +14,13 @@ namespace GlobalTheory.FrameAt
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `congGrp`. Rewrite using `[MonoidHom.mem_ker]`. Establish `key : ∀ i j, (Ideal.Quotient.mk I) ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D ⧸ I)) i j`. Introduce `i j`. Distinguish the cases in `hij : i = j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun u : GL (Fin V.rank) (AE D ⧸ I) => u.1 i j) h` as an intermediate fact. Simplify using `only [MonoidHom.comp_apply, Matrix.GeneralLinearGroup.map, Units.coe_map, Units.val_one] at this`. Rewrite using `[Matrix.sub_apply, ← Ideal.Quotient.eq, key]`. Conclude with `this`. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Use `h i j` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, ← Ideal.Quotient.eq, key]`. Simplify using `only [MonoidHom.comp_apply, Matrix.GeneralLinearGroup.map, Units.coe_map, Units.val_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_congGrp (V : HSp D) (I : Ideal (AE D)) (g : GA D V) :
     g ∈ congGrp V I ↔ ∀ i j, (Formalism.L2.Theta.mt V g - 1) i j ∈ I := by
@@ -50,19 +50,19 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {p : SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Theta.mt, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_mul (g h : GA D S) : Formalism.L2.Theta.mt S (g * h) = Formalism.L2.Theta.mt S g * Formalism.L2.Theta.mt S h := by
   simp [Formalism.L2.Theta.mt, map_mul]
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Theta.mt, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_one : Formalism.L2.Theta.mt S (1 : GA D S) = 1 := by
   simp [Formalism.L2.Theta.mt, map_one]
 
 /- English proof (translation)
-Establish `h1` using `p.pr_sec (p.pr 1)`. Rewrite `h1` using `[p.sec_pr, mul_one, map_one]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_e (p : SplitPt D k) : p.pr p.e = 1 := by
   have h1 := p.pr_sec (p.pr 1)
@@ -70,15 +70,15 @@ theorem pr_e (p : SplitPt D k) : p.pr p.e = 1 := by
   exact h1
 
 /- English proof (translation)
-The claim follows from `β.gl_mat g`.
+A detailed English derivation is pending.
 -/
 theorem gl_map (β : Frame p S n) (g : GL n k) :
     (Formalism.L2.Theta.mt S (β.gl g)).map p.pr = β.b * g.val * β.b' := β.gl_mat g
 
 /- English proof (translation)
-Introduce `g g' h`. Establish `h1` using `congrArg (fun x => β.b' * (Formalism.L2.Theta.mt S x).map p.pr * β.b) h`. Simplify using `only [gl_map] at h1`. Establish `e1 : ∀ x : Matrix n n k, β.b' * (β.b * x * β.b') * β.b = x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, β.b'b, Matrix.one_mul, Matrix.mul_assoc, β.b'b, Matrix.mul_one]`. Rewrite `h1` using `[e1, e1]`. Conclude with `Units.ext h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gl_inj (β : Frame p S n) : Function.Injective β.gl := by
   intro g g' h
@@ -91,11 +91,11 @@ theorem gl_inj (β : Frame p S n) : Function.Injective β.gl := by
   exact Units.ext h1
 
 /- English proof (translation)
-Use `set a := (Formalism.L2.Theta.mt S (β.gl g)).det`. Use `set c := (Formalism.L2.Theta.mt S (β.gl g⁻¹)).det`. Establish `hee : p.e * p.e = p.e` using `p.split.1`. Establish `hac : a * c = 1`. Simplify using `only [a, c]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.det_mul, ← mt_mul, ← map_mul, mul_inv_cancel, map_one, mt_one, Matrix.det_one]`. Use `⟨⟨p.e * a + (1 - p.e), p.e * c + (1 - p.e), ?_, ?_⟩, rfl, ?_⟩` and prove the remaining obligations. Take the linear combination `(2 - a - c) * hee + p.e * p.e * hac`. Take the linear combination `(2 - a - c) * hee + p.e * p.e * hac`. Simplify using `only [Units.val_mk, map_add, map_mul, map_sub, map_one, pr_e p, one_mul, sub_self, add_zero]`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [a]`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, gl_map, Matrix.mul_assoc, Matrix.det_comm' β.bb' β.b'b, Matrix.mul_assoc, β.b'b, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem det_at (β : Frame p S n) (g : GL n k) :
     ∃ x : (AE D)ˣ, IsDetAt p.e S (β.gl g) x ∧ p.pr x = g.val.det := by
@@ -119,21 +119,21 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {p : SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Take `⟨ε, hε, hsum⟩` from `p.above`. Establish `hL` using `(GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D p.v ε hε).1`. Unfold `grpAt`. Rewrite using `[mem_congGrp]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hh`. Establish `hsupp : SuppAt p.e S h`. Introduce `i j`. Rewrite using `[hsum]`. Conclude with `(hL _).1 (hh i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `M` to `(Formalism.L2.Theta.mt S h).map p.pr`. Set `M'` to `(Formalism.L2.Theta.mt S h⁻¹).map p.pr`. Establish `hMM : M * M' = 1`. Simplify using `only [M, M']`. Rewrite using `[← Matrix.map_mul, ← mt_mul, mul_inv_cancel, mt_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hM'M : M' * M = 1`. Simplify using `only [M, M']`. Rewrite using `[← Matrix.map_mul, ← mt_mul, inv_mul_cancel, mt_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e2 : ∀ X Y : Matrix (Fin S.rank) (Fin S.rank) k, β.b' * X * β.b * (β.b' * Y * β.b) = β.b' * (X * Y) * β.b`. Introduce `X Y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc β.b β.b', β.bb', Matrix.one_mul]`. Set `g : GL n k` to `⟨β.b' * M * β.b, β.b' * M' * β.b, by rw [e2, hMM, Matrix.mul_one, β.b'b], by rw [e2, hM'M, Matrix.mul_one, β.b'b]⟩`. Use `⟨g, GlobalTheory.T.eq_of_splitPart_agree_supportedAtSplitPlace D S p.e h (β.gl g) p.split hsupp (β.gl_supp g) ?_⟩` and prove the remaining obligations. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← p.sec_pr, ← p.sec_pr]`. Use `congr 1`. Use `congrArg (fun X => X i j) (gl_map β g)` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this`. Rewrite using `[this]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show M i j = (β.b * (β.b' * M * β.b) * β.b') i j`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc β.b β.b', β.bb', Matrix.one_mul, Matrix.mul_one]`. Introduce and unpack `⟨g, rfl⟩ i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(hL _)]`. Use `β.gl_supp g i j` as an intermediate fact. Rewrite `this` using `[hsum]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_grpAt_iff (β : Frame p S n) (h : GA D S) : h ∈ grpAt S (· = p.v) ↔ ∃ g, h = β.gl g := by
   obtain ⟨ε, hε, hsum⟩ := p.above
@@ -180,7 +180,7 @@ theorem mem_grpAt_iff (β : Frame p S n) (h : GA D S) : h ∈ grpAt S (· = p.v)
 end
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p S n _ _ β`. Conclude with `⟨mem_grpAt_iff β, gl_inj β, GlobalTheory.T.continuous_splitPlaceHermitianFrame_GL_embedding D k p S n β, GlobalTheory.T.selfDual_splitComponent_isLattice_stabilizer_eq D k p S n β, GlobalTheory.T.exists_selfDual_lattice_with_prescribed_splitComponent D k p S n β, det_at β⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem frame_facts : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (S : HSp D) (n : Type) [Fintype n] [DecidableEq n] (β : Frame p S n), (∀ h : GA D S, h ∈ grpAt S (· = p.v) ↔ ∃ g, h = β.gl g) ∧ Function.Injective β.gl ∧ Continuous β.gl ∧ (∀ L : Lat S, IsSelfDualC S L → ∃ Λ : Submodule 𝒪[k] (n → k), Λ.IsLattice k ∧ β.IsLat L Λ ∧ ∀ g, InK S L (· = p.v) (β.gl g) ↔ g • Λ = Λ) ∧ (∀ (L : Lat S) (Λ : Submodule 𝒪[k] (n → k)), IsSelfDualC S L → Λ.IsLattice k → ∃ M : Lat S, IsSelfDualC S M ∧ β.IsLat M Λ ∧ latV S M (· ≠ p.v) = latV S L (· ≠ p.v)) ∧ ∀ g, ∃ x : (AE D)ˣ, IsDetAt p.e S (β.gl g) x ∧ p.pr x = g.val.det := by
   intro D k _ _ _ _ p S n _ _ β

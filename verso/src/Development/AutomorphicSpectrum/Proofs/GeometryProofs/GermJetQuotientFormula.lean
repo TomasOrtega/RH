@@ -16,21 +16,19 @@ section Pow1
 variable {k : Type} [Field k] {d : ℕ}
 
 /- English proof (translation)
-Use `set θ : MvPolynomial (Fin 2 × Fin d) k →ₐ[k] B := MvPolynomial.aeval (fun q : Fin 2 × Fin d => if q.1 = 0 then (0 : B) else z q.2) with hθ`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add P Q hP hQ`. Simplify using `only [map_add, hP, hQ, mul_add, Finset.sum_add_distrib]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X P q hP`. Take `⟨a, j⟩` from `q`. Rewrite using `[map_mul, hP, MvPolynomial.aeval_X]`. Distinguish the cases in `ha : a = 0`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `ha` using the available equality. Establish `key : ∀ i, τ (θ (MvPolynomial.pderiv ((0 : Fin 2), i) (P * MvPolynomial.X ((0 : Fin 2), j)))) = if j = i then τ (θ P) else 0`. Introduce `i`. Establish `hX : θ (MvPolynomial.X ((0 : Fin 2), j)) = 0` using `by simp [hθ]`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul, map_add, map_mul, map_mul, hX, zero_mul, add_zero, MvPolynomial.pderiv_X]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hij, Ne.symm hij]`. Simplify using `only [key, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hX : θ (P * MvPolynomial.X ((0 : Fin 2), j)) = 0` using `by simp [hθ]`. Rewrite using `[hX, map_zero, zero_add]`. Take the linear combination `(algebraMap k A (c j) * ∑ i, algebraMap k A (c i) * τ (θ (MvPolynomial.pderiv ((0 : Fin 2), i) P))) * hε`. Establish `key : ∀ i, θ (MvPolynomial.pderiv ((0 : Fin 2), i) (P * MvPolynomial.X (a, j))) = θ (MvPolynomial.pderiv ((0 : Fin 2), i) P) * z j`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : MvPolynomial.pderiv ((0 : Fin 2), i) (MvPolynomial.X (a, j) : MvPolynomial (Fin 2 × Fin d) k) = 0`. Rewrite using `[MvPolynomial.pderiv_X, Pi.single_apply, if_neg]`. Introduce `h`. Conclude with `ha (congrArg Prod.fst h)`. Rewrite using `[Derivation.leibniz, h0, smul_zero, zero_add, smul_eq_mul, map_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hθ, ha]`. Establish `hX : θ (P * MvPolynomial.X (a, j)) = θ P * z j` using `by simp [hθ, ha]`. Simplify using `only [key, hX, ha, if_false, map_mul, Finset.mul_sum, Finset.sum_mul, add_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem aeval_firstOrder {B A : Type} [CommRing B] [Algebra k B] [CommRing A] [Algebra k A]
     (τ : B →ₐ[k] A) (ε : A) (hε : ε * ε = 0) (c : Fin d → k) (z : Fin d → B)
@@ -79,9 +77,9 @@ theorem aeval_firstOrder {B A : Type} [CommRing B] [Algebra k B] [CommRing A] [A
       ring
 
 /- English proof (translation)
-Rewrite using `[psJet, Ideal.Quotient.eq]`. Use `GermD.mem_orig_pow_of fun e he => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Apply `MvPolynomial.mem_support_iff.mp he` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.coeff_sub, GermFun.coeff_psTrunc _ _ _ (by omega), GermFun.coeff_psTrunc _ _ _ (by omega), sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem mk_psTrunc_of_le {κ : Type} [Fintype κ] [DecidableEq κ] {m N : ℕ} (hN : m ≤ N)
     (f : MvPowerSeries κ k) :
@@ -94,9 +92,9 @@ theorem mk_psTrunc_of_le {κ : Type} [Fintype κ] [DecidableEq κ] {m N : ℕ} (
   rw [MvPolynomial.coeff_sub, GermFun.coeff_psTrunc _ _ _ (by omega), GermFun.coeff_psTrunc _ _ _ (by omega), sub_self]
 
 /- English proof (translation)
-Rewrite using `[psJet, Ideal.Quotient.eq]`. Use `GermD.mem_orig_pow_of fun e he => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Apply `MvPolynomial.mem_support_iff.mp he` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hd : (e + Finsupp.single q 1).degree = e.degree + 1` using `by simp`. Rewrite using `[MvPolynomial.coeff_sub, MvPolynomial.coeff_pderiv, GermFun.coeff_psTrunc _ _ _ (by omega), GermFun.coeff_psTrunc _ _ _ (by omega), MvPowerSeries.coeff_pderiv, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_pderiv_psTrunc {κ : Type} [Fintype κ] [DecidableEq κ] {m N : ℕ} (hN : m + 1 ≤ N)
     (f : MvPowerSeries κ k) (q : κ) :
@@ -112,13 +110,13 @@ theorem mk_pderiv_psTrunc {κ : Type} [Fintype κ] [DecidableEq κ] {m N : ℕ} 
     GermFun.coeff_psTrunc _ _ _ (by omega), MvPowerSeries.coeff_pderiv, sub_self]
 
 /- English proof (translation)
-Establish `ha : ∀ q : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((![0, Germ.pt k d 0] : Fin 2 → Germ.Pt k 1 d) q.1 q.2) = 0`. Introduce and unpack `⟨a, j⟩`. Apply the tactic sequence `fin_cases a <;> simp [Germ.pt]`. Rewrite using `[Germ.ev, FBIdJet.psJet_subst m _ ha, ← hP, GermD.jetMap_mk]`. Establish `e : (MvPolynomial.aeval (fun q : Fin 2 × Fin d => if q.1 = 0 then (0 : Jet k (Fin 1 × Fin d) m) else Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), q.2))) : MvPolynomial (Fin 2 × Fin d) k →ₐ[k] _) = (Ideal.Quotient.mkₐ k _).comp (MvPolynomial.aeval fun q : Fin 2 × Fin d => psT …`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `MvPolynomial.algHom_ext fun q => ?_` and prove the remaining obligations. Take `⟨a, j⟩` from `q`. Rewrite using `[MvPolynomial.aeval_X, AlgHom.comp_apply, MvPolynomial.aeval_X]`. Use `show _ = psJet m _`. Use `fin_cases a`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[psJet, psTrunc]`. Establish `: (![0, Germ.pt k d 0] : Fin 2 → Germ.Pt k 1 d) 1 j = ((MvPolynomial.X ((0 : Fin 1), j) : MvPolynomial (Fin 1 × Fin d) k) : MvPowerSeries _ k)`. Simplify using `[Germ.pt]`. Simplify using `only [Fin.mk_one, this, ExpGF.psJet_coe]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem aeval_axis_eq_psJet (m : ℕ) (P : MvPolynomial (Fin 2 × Fin d) k) (h : Germ.PS k 2 d)
     (hP : Ideal.Quotient.mk (orig k (Fin 2 × Fin d) ^ (m + 1)) P = psJet m h) :
@@ -149,11 +147,11 @@ theorem aeval_axis_eq_psJet (m : ℕ) (P : MvPolynomial (Fin 2 × Fin d) k) (h :
   rfl
 
 /- English proof (translation)
-Establish `hadd : ∀ f g : MvPowerSeries κ k, psJet m (f + g) = psJet m f + psJet m g` using `fun f g => by`. Simplify using `[psJet, psTrunc, Finset.sum_add_distrib]`. Establish `hzero : psJet m (0 : MvPowerSeries κ k) = 0` using `by simp [psJet, psTrunc]`. Establish `hC : ∀ c : k, psJet m (MvPowerSeries.C c : MvPowerSeries κ k) = algebraMap k (Jet k κ m) c` using `fun c => by`. Establish `: (MvPowerSeries.C c : MvPowerSeries κ k) = ((MvPolynomial.C c : MvPolynomial κ k) : MvPowerSeries κ k)` using `by simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, ExpGF.psJet_coe]`. Both sides reduce to the same expression. Set `L : MvPowerSeries κ k →+ Jet k κ m` to `⟨⟨psJet m, hzero⟩, hadd⟩`. Use `map_sum L (fun i => MvPowerSeries.C (u i) * h i) Finset.univ` as an intermediate fact. Use `this.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show psJet m _ = _`. Rewrite using `[FBIdJet.psJet_mul, hC]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psJet_sum_C_mul {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (u : Fin d → k)
     (h : Fin d → MvPowerSeries κ k) :
@@ -172,21 +170,19 @@ theorem psJet_sum_C_mul {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (u :
   rw [FBIdJet.psJet_mul, hC]
 
 /- English proof (translation)
-Establish `hp : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Use `set B := Jet k (Fin 1 × Fin d) m with hB`. Use `set A := Jet B Unit p with hA`. Establish `hε : dQ B p ^ p * dQ B p ^ p = 0`. Rewrite using `[← pow_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `pow_eq_zero_of_le (by omega) (dQ_pow B p)`. Establish `ha : ∀ q : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((![ptPow k d p 0, Germ.pt k d 1] : Fin 2 → Germ.Pt k 2 d) q.1 q.2) = 0`. Introduce and unpack `⟨a, j⟩`. Use `fin_cases a`. Simplify using `[ptPow, hp]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Germ.pt]`. Establish `hjq : ∀ Q : MvPolynomial (Fin 2 × Fin d) k, jq w p m (Ideal.Quotient.mk _ Q) = MvPolynomial.aeval (fun q : Fin 2 × Fin d => if q.1 = 0 then algebraMap k A (w q.2) * dQ B p else inR (k` using `k) B p (Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), q.2)))) Q := fun Q => rfl`. Establish `step : jq w p m (psJet (p + m + 1) (Germ.ev (n` using `2) ![ptPow k d p 0, Germ.pt k d 1] g)) = MvPolynomial.aeval (fun q : Fin 2 × Fin d => if q.1 = 0 then algebraMap k A (w q.2 ^ p) * dQ B p ^ p else inR (k := k) B p (Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), q.2)))) (psTrunc (p + m + 1) g) := by`. Rewrite using `[Germ.ev, FBIdJet.psJet_subst _ _ ha, psJet, GermD.jetMap_mk, hjq, MvPolynomial.comp_aeval_apply]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `q`. Take `⟨a, j⟩` from `q`. Rewrite using `[← hjq]`. Use `show jq w p m (psJet _ _) = _`. Use `fin_cases a`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: (![ptPow k d p 0, Germ.pt k d 1] : Fin 2 → Germ.Pt k 2 d) 0 j = ((MvPolynomial.X ((0 : Fin 2), j) ^ p : MvPolynomial (Fin 2 × Fin d) k) : MvPowerSeries _ k)`. Simplify using `[ptPow]`. Simplify using `only [Fin.zero_eta, this, ExpGF.psJet_coe, hjq]`. Simplify using `[mul_pow]`. Establish `: (![ptPow k d p 0, Germ.pt k d 1] : Fin 2 → Germ.Pt k 2 d) 1 j = ((MvPolynomial.X ((1 : Fin 2), j) : MvPolynomial (Fin 2 × Fin d) k) : MvPowerSeries _ k)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[Germ.pt]`. Simplify using `only [Fin.mk_one, this, ExpGF.psJet_coe, hjq]`. Simplify using the standard rewrite rules. Rewrite using `[step, aeval_firstOrder (inR (k := k) B p) (dQ B p ^ p) hε (fun i => w i ^ p) (fun j => Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), j))) (psTrunc (p + m + 1) g)]`. Rewrite using `[aeval_axis_eq_psJet m _ g (mk_psTrunc_of_le (by omega) g), hg.1, FBIdJet.psJet_one, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `congr 2`. Rewrite using `[dSer, psJet_sum_C_mul, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[aeval_axis_eq_psJet m _ _ (mk_pderiv_psTrunc (by omega) g _), map_mul]`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem jq_psJet_ptPow (k : Type) [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (d m : ℕ) (w : Fin d → k)
     (g : Germ.PS k 2 d) (hg : AxOne g) :

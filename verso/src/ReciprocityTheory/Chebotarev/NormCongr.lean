@@ -5,13 +5,13 @@ namespace ReciprocityTheory.Cheb
 open Module
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `Ideal.mem_span_singleton'.mp h`. Establish `hα : α = α' + algebraMap ℤ S m * β`. Rewrite using `[algebraMap_int_eq, eq_intCast, mul_comm, hβ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Int.modEq_iff_dvd, ← Int.natAbs_dvd, ← ZMod.intCast_eq_intCast_iff_dvd_sub]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Set `b` to `Module.Free.chooseBasis ℤ S`. Rewrite using `[Algebra.norm_eq_matrix_det b, Algebra.norm_eq_matrix_det b, hα, map_add, map_mul, AlgHom.commutes]`. Establish `key : ∀ M : Matrix (Module.Free.ChooseBasisIndex ℤ S) (Module.Free.ChooseBasisIndex ℤ S) ℤ, ((Int.castRingHom (ZMod m.natAbs)) M.det : ZMod m.natAbs) = ((Int.castRingHom (ZMod m.natAbs)).mapMatrix M).det` using `fun M => RingHom.map_det _ M`. Simplify using `only [eq_intCast] at key`.
+Use symmetry to reverse the relation. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[key, key]`. Use `congr 1`. Establish `h0 : ((m : ZMod m.natAbs)) = 0`. Use `(ZMod.intCast_eq_intCast_iff_dvd_sub 0 m m.natAbs).mpr (by simp)` as an intermediate fact. Simplify using `using this.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hM : (Int.castRingHom (ZMod m.natAbs)).mapMatrix ((algebraMap ℤ (Matrix (Free.ChooseBasisIndex ℤ S) (Free.ChooseBasisIndex ℤ S) ℤ)) m) = 0`. Rewrite using `[eq_intCast, map_intCast]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, h0, Matrix.diagonal, ← Matrix.diagonal_intCast']`. Rewrite using `[map_add, map_mul, hM, zero_mul, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_modEq_of_sub_mem_span {S : Type*} [CommRing S] [Module.Free ℤ S] [Module.Finite ℤ S]
     (m : ℤ) {α α' : S} (h : α - α' ∈ Ideal.span {(m : S)}) :
@@ -42,7 +42,7 @@ theorem norm_modEq_of_sub_mem_span {S : Type*} [CommRing S] [Module.Free ℤ S] 
   rw [map_add, map_mul, hM, zero_mul, add_zero]
 
 /- English proof (translation)
-The claim follows from `Ideal.absNorm_dvd_norm_of_mem h`.
+A detailed English derivation is pending.
 -/
 theorem absNorm_dvd_algebraNorm {S : Type*} [CommRing S] [IsDedekindDomain S] [Module.Free ℤ S]
     [Module.Finite ℤ S] {b : Ideal S} {α : S} (h : α ∈ b) :
@@ -50,9 +50,9 @@ theorem absNorm_dvd_algebraNorm {S : Type*} [CommRing S] [IsDedekindDomain S] [M
   Ideal.absNorm_dvd_norm_of_mem h
 
 /- English proof (translation)
-Establish `hm` using `norm_modEq_of_sub_mem_span _ h`. Take `⟨a, ha⟩` from `absNorm_dvd_algebraNorm hα`. Take `⟨c, hc⟩` from `absNorm_dvd_algebraNorm hα'`. Rewrite `hm`, the goal using `[ha, hc]`. Distinguish the cases in `hN : (Ideal.absNorm b : ℤ) = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hN, Int.ediv_zero, Int.ediv_zero]`. Rewrite using `[Int.mul_ediv_cancel_left _ hN, Int.mul_ediv_cancel_left _ hN]`. Rewrite `hm` using `[mul_comm l]`. Conclude with `Int.ModEq.mul_left_cancel' hN hm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_div_absNorm_modEq {S : Type*} [CommRing S] [IsDedekindDomain S] [Module.Free ℤ S]
     [Module.Finite ℤ S] (l : ℤ) {b : Ideal S} {α α' : S} (hα : α ∈ b) (hα' : α' ∈ b)
@@ -69,14 +69,14 @@ theorem norm_div_absNorm_modEq {S : Type*} [CommRing S] [IsDedekindDomain S] [Mo
   exact Int.ModEq.mul_left_cancel' hN hm
 
 /- English proof (translation)
-The claim follows from `norm_modEq_of_sub_mem_span m h`.
+A detailed English derivation is pending.
 -/
 example {E : Type*} [Field E] [NumberField E] (m : ℤ) {α α' : NumberField.RingOfIntegers E}
     (h : α - α' ∈ Ideal.span {(m : NumberField.RingOfIntegers E)}) :
     Algebra.norm ℤ α ≡ Algebra.norm ℤ α' [ZMOD m] := norm_modEq_of_sub_mem_span m h
 
 /- English proof (translation)
-The claim follows from `norm_div_absNorm_modEq l hα hα' h`.
+A detailed English derivation is pending.
 -/
 example {E : Type*} [Field E] [NumberField E] (l : ℤ) {b : Ideal (NumberField.RingOfIntegers E)}
     {α α' : NumberField.RingOfIntegers E} (hα : α ∈ b) (hα' : α' ∈ b)

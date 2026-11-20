@@ -8,7 +8,7 @@ open Finset
 open Formalism.LogVandermondeBounds.flipTwoThree (hookF Interlace B0 len)
 
 /- English proof (translation)
-Unfold `mean`. Establish `hc : (0:ℝ) < (Fintype.card σ : ℝ)` using `by exact_mod_cast Fintype.card_pos`. Rewrite using `[div_le_iff₀ hc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_comm]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 private lemma mean_le_of_le_const {σ : Type} [Fintype σ] [Nonempty σ] (F : σ → ℝ) (B : ℝ)
     (h : ∀ s, F s ≤ B) : mean F ≤ B := by
@@ -20,7 +20,7 @@ private lemma mean_le_of_le_const {σ : Type} [Fintype σ] [Nonempty σ] (F : σ
       rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Unfold `mean`. Use `gcongr with s`. Conclude with `h s`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma mean_le_mean_of_le {σ : Type} [Fintype σ] (F G : σ → ℝ) (h : ∀ s, F s ≤ G s) :
     mean F ≤ mean G := by
@@ -29,7 +29,7 @@ private lemma mean_le_mean_of_le {σ : Type} [Fintype σ] (F G : σ → ℝ) (h 
   exact h s
 
 /- English proof (translation)
-Simplify using `only [mean]`. Rewrite using `[Finset.sum_add_distrib, add_div]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma mean_add_distrib {σ : Type} [Fintype σ] (F G : σ → ℝ) :
     mean (fun s => F s + G s) = mean F + mean G := by
@@ -37,7 +37,7 @@ private lemma mean_add_distrib {σ : Type} [Fintype σ] (F G : σ → ℝ) :
   rw [Finset.sum_add_distrib, add_div]
 
 /- English proof (translation)
-Simplify using `only [mean]`. Rewrite using `[Finset.sum_comm, Finset.sum_div]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma mean_sum_comm {σ J : Type} [Fintype σ] [Fintype J] (F : J → σ → ℝ) :
     mean (fun s => ∑ j, F j s) = ∑ j, mean (F j) := by
@@ -45,9 +45,9 @@ private lemma mean_sum_comm {σ J : Type} [Fintype σ] [Fintype J] (F : J → σ
   rw [Finset.sum_comm, Finset.sum_div]
 
 /- English proof (translation)
-Establish `hm' : (1:ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hL0 : (0:ℝ) ≤ L` using `by linarith`. Establish `hCL : 0 ≤ C₀ * L` using `mul_nonneg hC hL0`. Establish `e1 : C₀ * L ≤ C₀ * m * L` using `by nlinarith [mul_nonneg hCL (sub_nonneg.2 hm')]`. Establish `e2 : L ≤ m * L` using `by nlinarith [mul_nonneg (sub_nonneg.2 hm') hL0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : L + logT + logg ≤ (1 + 2 * C₀) * m * L` using `by linarith`. Establish `hN0 : (0:ℝ) ≤ (N:ℝ)` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private lemma square_moment_arithmetic_bound (C₀ L logT logg b' : ℝ) (m N : ℕ) (hC : 0 ≤ C₀) (hL : 1 ≤ L) (hm : 1 ≤ m)
     (hT : logT ≤ C₀ * m * L) (hg : logg ≤ C₀ * L) (hb : (1 + 2 * C₀) * (m : ℝ) ^ 3 * N ≤ b') :
@@ -66,19 +66,19 @@ private lemma square_moment_arithmetic_bound (C₀ L logT logg b' : ℝ) (m N : 
     _ = N * b' * L := by ring
 
 /- English proof (translation)
-Establish `hM0 : (0:ℝ) ≤ M` using `by linarith`. Establish `hN0 : (0:ℝ) ≤ Nn` using `by linarith`. Establish `hL0 : (0:ℝ) ≤ L` using `by linarith`. Establish `hb0 : (0:ℝ) ≤ b'` using `by linarith`. Establish `hQ : 0 ≤ M * Nn * L` using `mul_nonneg (mul_nonneg hM0 hN0) hL0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX0 : 0 ≤ logT + Nn * L` using `by nlinarith`. Establish `hX : logT + Nn * L ≤ (C₀ + 1) * (M * Nn * L)`. Establish `h1 : C₀ * M * L ≤ C₀ * M * Nn * L`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg (mul_nonneg hC hM0) hL0) (sub_nonneg.2 hNn1)]`. Establish `h2 : Nn * L ≤ M * Nn * L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hN0 hL0) (sub_nonneg.2 hm1)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hY0 : 0 ≤ eta + 3 * S + M * tr` using `by linarith`. Establish `hY : eta + 3 * S + M * tr ≤ 3 * b'` using `by linarith`. Establish `k1 : tt * b' * (logT + Nn * L) ≤ f * b' * ((C₀ + 1) * (M * Nn * L))` using `mul_le_mul (mul_le_mul_of_nonneg_right htt hb0) hX hX0 (mul_nonneg hf0 hb0)`.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1 : C3 * tt * b' * (logT + Nn * L) ≤ |C3| * (f * b' * ((C₀ + 1) * (M * Nn * L)))`. Combine the equalities or inequalities in the displayed calculation. Establish `k2 : f * (eta + 3 * S + M * tr) * (logT + Nn * L) ≤ f * (3 * b') * ((C₀ + 1) * (M * Nn * L))` using `mul_le_mul (mul_le_mul_of_nonneg_left hY hf0) hX hX0 (mul_nonneg hf0 (by linarith))`. Establish `t2 : C3 * f * (eta + 3 * S + M * tr) * (logT + Nn * L) ≤ |C3| * (f * (3 * b') * ((C₀ + 1) * (M * Nn * L)))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hML : 1 ≤ M * L` using `by nlinarith`. Establish `a1 : Nn ^ 2 * L ≤ Nn * b'`. Combine the equalities or inequalities in the displayed calculation. Establish `a2 : Nn * b' ≤ M * Nn * b' * L`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `k3 : f * Nn ^ 2 * L ≤ f * (M * Nn * b' * L)`. Combine the equalities or inequalities in the displayed calculation. Establish `t3 : C3 * f * Nn ^ 2 * L ≤ |C3| * (f * (M * Nn * b' * L))`. Combine the equalities or inequalities in the displayed calculation. Establish `t4 : M * (C2 * f * Nn * b' * L) ≤ |C2| * (f * M * Nn * b' * L)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the linear relations using `[t1, t2, t3, t4]`.
+Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma first_part_arithmetic_bound (C₀ C2 C3 f tt M tr Nn b' L logT eta S : ℝ) (hC : 0 ≤ C₀) (hf0 : 0 ≤ f)
     (htt0 : 0 ≤ tt) (htt : tt ≤ f) (hm1 : 1 ≤ M) (hNn1 : 1 ≤ Nn) (hb1 : 1 ≤ b') (hL : 1 ≤ L)
@@ -141,21 +141,21 @@ private lemma first_part_arithmetic_bound (C₀ C2 C3 f tt M tr Nn b' L logT eta
   linarith [t1, t2, t3, t4]
 
 /- English proof (translation)
-Introduce `C₀ hC`. Take `⟨C2, hC2⟩` from `h2 C₀ hC`. Take `⟨C3, hC3⟩` from `h3 C₀ hC`. Use `⟨|C2| + |C3| * (4 * (C₀ + 1) + 1), ?_⟩` and prove the remaining obligations. Introduce `ι σ _ _ _ _ TT T2 k m t n R nu A w bt lam sg a b' L v logT logg eta S logOm logOms logTh logK logP logPK hN hdis hR hanti htop htopj hthin hper hOm hTh hK hI hW hB0t hB0o hX hdt hdo hP hPK`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL` using `hN.one_le_L`. Establish `hL0 : (0:ℝ) ≤ L` using `by linarith`. Establish `hb1` using `hN.one_le_b'`. Establish `hb0 : (0:ℝ) ≤ b'` using `by linarith`. Establish `hba` using `hN.b'_le_a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT0` using `hN.logT_nonneg`. Establish `hg0` using `hN.logg_nonneg`. Establish `hm1 : (1:ℝ) ≤ m` using `by exact_mod_cast hN.one_le_m`. Establish `hm0 : (0:ℝ) ≤ m` using `by linarith`. Establish `ht0 : (0:ℝ) ≤ t` using `Nat.cast_nonneg t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0 : (0:ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hmt : (0:ℝ) ≤ (m:ℝ) * t` using `mul_nonneg hm0 ht0`. Establish `ha0 : (0:ℝ) < a` using `by linarith`. Establish `hloga : Real.log a ≤ L`. Use `le_trans (Real.log_le_log ha0 ?_) hN.log_av` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use polynomial arithmetic with `[hN.one_le_v]`. Establish `hlin` using `hN.lin`. Move the coercions through the operations in `at hlin`. Establish `hNL : ((n:ℝ) + 1) * L ≤ b'` using `by linarith`. Establish `hsqm` using `square_moment_arithmetic_bound C₀ L logT logg b' m (n + 1) hC hL hN.one_le_m hN.logT_le hN.logg_le hN.pow`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key2 : ∀ j, mean (logK j) ≤ ∑ τ ∈ TT, topTerm (A τ) logOm + ∑ τ ∈ T2, placeTerm (nu j τ) logOm + C2 * Fintype.card ι * ((n:ℝ) + 1) * b' * L`. Introduce `j`. Use `hC2 ι σ TT T2 (R j) (n + 1) m (nu j) A (w j) a b' L logT logg logOm logOms (logTh j) (logK j) hdis (hR j) hL hloga hb1 hba (by push_cast; exact hNL) hT0 hg0 hsqm (hanti j) (fun τ hτ => ⟨(htop τ hτ).1, (htop τ hτ).2.1, (htopj j τ hτ).1, (htopj j τ hτ).2.1, (htopj j τ hτ).2.2⟩) (ht …` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `key3` using `hC3 ι TT n lam sg (fun ρ => (A ρ : ℝ)) bt b' L logT eta S ((m:ℝ) * t) (∑ ρ, MeanSquareTwistBound (lam ρ) (sg ρ) logT) hL hT0 hb0 hN.eta_nonneg hN.S_nonneg hmt hI hW (fun ρ h => (htop ρ h).2.2) hB0t hB0o hX hdt hdo le_rfl`. Establish `hmean : mean logPK ≤ ∑ ρ, MeanSquareTwistBound (lam ρ) (sg ρ) logT + ∑ j, mean (logK j)`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum2 : ∑ j, mean (logK j) ≤ ∑ _j : Fin m, ∑ τ ∈ TT, topTerm (A τ) logOm + ∑ j : Fin m, ∑ τ ∈ T2, placeTerm (nu j τ) logOm + m * (C2 * Fintype.card ι * ((n:ℝ) + 1) * b' * L)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib]`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `har` using `first_part_arithmetic_bound C₀ C2 C3 (Fintype.card ι) TT.card m t ((n:ℝ) + 1) b' L logT eta S hC (Nat.cast_nonneg _) (Nat.cast_nonneg _) (by exact_mod_cast Finset.card_le_univ TT) hm1 (by linarith) hb1 hL hT0 hN.logT_le hN.eta_nonneg hN.S_nonneg hmt hN.small hNL`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem PropZ_i_of (h2 : MeanLogNormBound) (h3 : ZetaBoundApplication) : PropZ_i := by
   intro C₀ hC
@@ -217,12 +217,12 @@ theorem PropZ_i_of (h2 : MeanLogNormBound) (h3 : ZetaBoundApplication) : PropZ_i
   linarith
 
 /- English proof (translation)
-The claim follows from `PropZ_i_of second_zeta_mean_bound third_zeta_application`.
+A detailed English derivation is pending.
 -/
 theorem zeta_proposition_first : PropZ_i := PropZ_i_of second_zeta_mean_bound third_zeta_application
 
 /- English proof (translation)
-Simplify using `only [plus]`. Conclude with `sub_nonneg.2 (h (Fin.le_last i))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma zii_plus_nonneg {κ : ℕ} (lam : Fin (κ + 1) → ℤ) (h : Antitone lam) (i : Fin (κ + 1)) :
     0 ≤ plus lam i := by
@@ -230,7 +230,7 @@ private lemma zii_plus_nonneg {κ : ℕ} (lam : Fin (κ + 1) → ℤ) (h : Antit
   exact sub_nonneg.2 (h (Fin.le_last i))
 
 /- English proof (translation)
-Unfold `wt`. Conclude with `Finset.single_le_sum (f := plus lam) (fun i _ => zii_plus_nonneg lam h i) (Finset.mem_univ 0)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma zii_plus0_le {κ : ℕ} (lam : Fin (κ + 1) → ℤ) (h : Antitone lam) :
     plus lam 0 ≤ wt (plus lam) := by
@@ -238,9 +238,9 @@ private lemma zii_plus0_le {κ : ℕ} (lam : Fin (κ + 1) → ℤ) (h : Antitone
   exact Finset.single_le_sum (f := plus lam) (fun i _ => zii_plus_nonneg lam h i) (Finset.mem_univ 0)
 
 /- English proof (translation)
-Establish `ha0 : 0 < a` using `by linarith`. Establish `h1 : Real.log W ≤ Real.log (9 * a ^ 2)` using `Real.log_le_log hW0 hW`. Establish `h2 : Real.log (9 * a ^ 2) = Real.log 9 + 2 * Real.log a`. Rewrite using `[Real.log_mul (by norm_num) (pow_pos ha0 2).ne', Real.log_pow, Nat.cast_ofNat]`. Establish `h3 : Real.log 9 ≤ 8`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 9)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : Real.log a ≤ L`. Establish `: Real.log a ≤ Real.log (a * v)` using `Real.log_le_log ha0 (by nlinarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -259,47 +259,45 @@ private lemma zii_log_le {a L v W : ℝ} (ha : 1 ≤ a) (hv : 1 ≤ v) (hL : 1 �
   linarith
 
 /- English proof (translation)
-Introduce `C₀ hC`. Use `⟨11 + C₀, ?_⟩` and prove the remaining obligations. Introduce `ι X _ _ _ _ TT κ m t N lam A bt a b' L v logT logg eta S muM muV muDelta muNabla muMaxNabla hN hanti hTT hwt hwtp hwtp' hwt' hM hV hD hNab hMax`. Establish `hL1` using `hN.one_le_L`. Establish `hv1` using `hN.one_le_v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb1` using `hN.one_le_b'`. Establish `hba` using `hN.b'_le_a`. Establish `hT0` using `hN.logT_nonneg`. Establish `hS0` using `hN.S_nonneg`. Establish `hκ0 : (0:ℝ) ≤ κ` using `Nat.cast_nonneg κ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK1 : (1:ℝ) ≤ (κ:ℝ) + 1` using `by linarith`. Establish `hK0 : (0:ℝ) < (κ:ℝ) + 1` using `by linarith`. Establish `hKN : (κ:ℝ) + 1 ≤ N`. Establish `: κ + 1 ≤ N` using `by rw [hN.N_eq]; exact Nat.le_add_right _ _`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNL : (N:ℝ) * L ≤ b'` using `by linarith [hN.lin]`. Establish `hNNL : (N:ℝ) ≤ N * L` using `by nlinarith`. Establish `hKb : (κ:ℝ) + 1 ≤ b'` using `by linarith`. Establish `hKa : (κ:ℝ) + 1 ≤ a` using `le_trans hKb hba`. Establish `hSb : S ≤ b'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hN.small` as an intermediate fact. Use `hN.eta_nonneg` as an intermediate fact. Establish `: (0:ℝ) ≤ (m:ℝ) * t` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha1 : 1 ≤ a` using `le_trans hb1 hba`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haa : a ≤ a ^ 2` using `by nlinarith`. Establish `hlogK0 : 0 ≤ Real.log ((κ:ℝ) + 1)` using `Real.log_nonneg hK1`. Establish `hKbS : 0 ≤ ((κ:ℝ) + 1) * (b' + S) * Real.log ((κ:ℝ) + 1)` using `mul_nonneg (mul_nonneg hK0.le (by linarith)) hlogK0`. Establish `hZ4 : ∀ ρ, MeanSquareWeightBound (lam ρ) ≤ (if ρ ∈ TT then 2 * a * Real.log ((κ:ℝ) + 1) else 0) + (4 * ((κ:ℝ) + 1) * (b' + S) * Real.log ((κ:ℝ) + 1) + 10 * ((κ:ℝ) + 1) ^ 2 * L)`. Introduce `ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hp0 : (0:ℝ) ≤ (plus (lam ρ) 0 : ℝ)` using `by exact_mod_cast zii_plus_nonneg (lam ρ) (hanti ρ) 0`. Establish `hpW : (plus (lam ρ) 0 : ℝ) ≤ (wt (plus (lam ρ)) : ℝ)`. Conclude with `zii_plus0_le (lam ρ) (hanti ρ)` after adjusting the coercions. Unfold `MeanSquareWeightBound`. Distinguish the cases in `hρ : ρ ∈ TT`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_pos hρ]`. Take `⟨h1, h2, h3, h4⟩` from `hTT ρ hρ`. Establish `hw` using `hwtp ρ hρ`. Establish `e1 : ((κ:ℝ) + 1) * (bt ρ + S) ≤ ((κ:ℝ) + 1) * (2 * (b' + S))` using `mul_le_mul_of_nonneg_left (by linarith) hK0.le`. Establish `hWb : (wt (plus (lam ρ)) : ℝ) ≤ 2 * a + 2 * (((κ:ℝ) + 1) * (b' + S))` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ((κ:ℝ) + 1) * (b' + S) ≤ a * (2 * a)` using `mul_le_mul hKa (by linarith) (by linarith) (by linarith)`. Establish `hlog : Real.log ((plus (lam ρ) 0 : ℝ) + (κ:ℝ) + 1) ≤ 10 * L` using `zii_log_le ha1 hv1 hL1 hN.log_av (by linarith) (by nlinarith)`. Establish `f1` using `mul_le_mul_of_nonneg_right hWb hlogK0`. Establish `f2` using `mul_le_mul_of_nonneg_left hlog (sq_nonneg ((κ:ℝ) + 1))`. Use polynomial arithmetic with `[f1, f2, hKbS]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg hρ]`. Establish `hw` using `hwtp' ρ hρ`. Establish `e1 : ((κ:ℝ) + 1 + 3) * S ≤ 4 * (((κ:ℝ) + 1) * (b' + S))` using `by nlinarith`. Establish `e2 : ((κ:ℝ) + 1 + 3) * S ≤ (4 * a) * a` using `mul_le_mul (by linarith) (by linarith) hS0 (by linarith)`. Establish `hlog : Real.log ((plus (lam ρ) 0 : ℝ) + (κ:ℝ) + 1) ≤ 10 * L` using `zii_log_le ha1 hv1 hL1 hN.log_av (by linarith) (by nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f1` using `mul_le_mul_of_nonneg_right (hw.trans e1) hlogK0`. Establish `f2` using `mul_le_mul_of_nonneg_left hlog (sq_nonneg ((κ:ℝ) + 1))`. Use polynomial arithmetic with `[f1, f2, hKbS]`. Establish `hsumZ4 : ∑ ρ, MeanSquareWeightBound (lam ρ) ≤ (TT.card : ℝ) * (2 * a * Real.log ((κ:ℝ) + 1)) + (Fintype.card ι : ℝ) * (4 * ((κ:ℝ) + 1) * (b' + S) * Real.log ((κ:ℝ) + 1) + 10 * ((κ:ℝ) + 1) ^ 2 * L)`. Establish `e1 : ∑ ρ, (if ρ ∈ TT then 2 * a * Real.log ((κ:ℝ) + 1) else 0) = (TT.card : ℝ) * (2 * a * Real.log ((κ:ℝ) + 1))`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, nsmul_eq_mul]`. Establish `e2 : ∑ _ρ : ι, (4 * ((κ:ℝ) + 1) * (b' + S) * Real.log ((κ:ℝ) + 1) + 10 * ((κ:ℝ) + 1) ^ 2 * L) = (Fintype.card ι : ℝ) * (4 * ((κ:ℝ) + 1) * (b' + S) * Real.log ((κ:ℝ) + 1) + 10 * ((κ:ℝ) + 1) ^ 2 * L)`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hwtbound : ∀ ρ, (wt (lam ρ) : ℝ) / ((κ:ℝ) + 1) * logT ≤ (if ρ ∈ TT then A ρ / ((κ:ℝ) + 1) * logT else 0) + (1 + C₀) * S * logT`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ρ`. Establish `h3 : 0 ≤ C₀ * S * logT` using `mul_nonneg (mul_nonneg hC hS0) hT0`. Establish `h4 : 0 ≤ S * logT` using `mul_nonneg hS0 hT0`. Distinguish the cases in `hρ : ρ ∈ TT`. Rewrite using `[if_pos hρ]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hwt ρ hρ`. Establish `h1 : (wt (lam ρ) : ℝ) / ((κ:ℝ) + 1) ≤ A ρ / ((κ:ℝ) + 1) + S`. Rewrite using `[div_le_iff₀ hK0, add_mul, div_mul_cancel₀ _ hK0.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `mul_le_mul_of_nonneg_right h1 hT0`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg hρ]`. Establish `h` using `hwt' ρ hρ`. Establish `h1 : (wt (lam ρ) : ℝ) / ((κ:ℝ) + 1) ≤ C₀ * S`. Rewrite using `[div_le_iff₀ hK0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `mul_le_mul_of_nonneg_right h1 hT0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsumwt : ∑ ρ, (wt (lam ρ) : ℝ) / ((κ:ℝ) + 1) * logT ≤ ∑ τ ∈ TT, A τ / ((κ:ℝ) + 1) * logT + (Fintype.card ι : ℝ) * ((1 + C₀) * S * logT)`. Establish `e1 : ∑ ρ, (if ρ ∈ TT then A ρ / ((κ:ℝ) + 1) * logT else 0) = ∑ τ ∈ TT, A τ / ((κ:ℝ) + 1) * logT`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter]`. Establish `e2 : ∑ _ρ : ι, (1 + C₀) * S * logT = (Fintype.card ι : ℝ) * ((1 + C₀) * S * logT)`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hmean : muM = -(∑ ρ, (wt (lam ρ) : ℝ) / ((κ:ℝ) + 1) * logT) + ∑ ρ, muDelta ρ`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hM]`. Establish `hc : (0:ℝ) < (Fintype.card X : ℝ)` using `by exact_mod_cast Fintype.card_pos`. Unfold `mean`. Simplify using `only [hV]`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_div_cancel_left₀ _ hc.ne']`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hDel : -(∑ ρ, MeanSquareWeightBound (lam ρ)) ≤ ∑ ρ, muDelta ρ`. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_le_sum fun ρ _ => by rw [hD ρ]; linarith [hNab ρ, hMax ρ]`. Establish `hcard0 : (0:ℝ) ≤ (Fintype.card ι : ℝ)` using `Nat.cast_nonneg _`. Establish `n1 : 0 ≤ (TT.card : ℝ) * a * Real.log ((κ:ℝ) + 1)` using `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (by linarith)) hlogK0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m1 : 0 ≤ C₀ * ((TT.card : ℝ) * a * Real.log ((κ:ℝ) + 1))` using `mul_nonneg hC n1`. Establish `n2 : 0 ≤ (Fintype.card ι : ℝ) * S * logT` using `mul_nonneg (mul_nonneg hcard0 hS0) hT0`. Establish `n3 : 0 ≤ (Fintype.card ι : ℝ) * (((κ:ℝ) + 1) * (b' + S) * Real.log ((κ:ℝ) + 1))` using `mul_nonneg hcard0 hKbS`. Establish `m3 : 0 ≤ C₀ * ((Fintype.card ι : ℝ) * (((κ:ℝ) + 1) * (b' + S) * Real.log ((κ:ℝ) + 1)))` using `mul_nonneg hC n3`. Establish `n4 : 0 ≤ (Fintype.card ι : ℝ) * (((κ:ℝ) + 1) ^ 2 * L)` using `mul_nonneg hcard0 (mul_nonneg (sq_nonneg _) (by linarith))`.
-
-Establish `m4 : 0 ≤ C₀ * ((Fintype.card ι : ℝ) * (((κ:ℝ) + 1) ^ 2 * L))` using `mul_nonneg hC n4`. Combine the linear relations using `[hmean, hDel, hsumZ4, hsumwt, n1, m1, n2, n3, m3, n4, m4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem zeta_proposition_second : PropZ_ii := by
   intro C₀ hC
@@ -431,15 +429,15 @@ theorem zeta_proposition_second : PropZ_ii := by
   linarith [hmean, hDel, hsumZ4, hsumwt, n1, m1, n2, n3, m3, n4, m4]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨zii_plus_nonneg lam h 0, zii_plus0_le lam h⟩`.
+Supply the required witnesses or components.
 -/
 private lemma positive_part_head_le_weight {κ : ℕ} (lam : Fin (κ + 1) → ℤ) (h : Antitone lam) :
     0 ≤ plus lam 0 ∧ plus lam 0 ≤ wt (plus lam) := ⟨zii_plus_nonneg lam h 0, zii_plus0_le lam h⟩
 
 /- English proof (translation)
-Establish `ha0 : 0 < a` using `by linarith`. Establish `h1 : Real.log x ≤ Real.log (7 * a ^ 2)` using `Real.log_le_log hx0 hx`. Establish `h2 : Real.log (7 * a ^ 2) = Real.log 7 + 2 * Real.log a`. Rewrite using `[Real.log_mul (by norm_num) (pow_pos ha0 2).ne', Real.log_pow, Nat.cast_ofNat]`. Establish `h3 : Real.log 7 ≤ 6`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 7)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : Real.log a ≤ L`. Establish `: Real.log a ≤ Real.log (a * v)` using `Real.log_le_log ha0 (by nlinarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -458,7 +456,7 @@ private lemma ziii_log {a L v x : ℝ} (ha : 1 ≤ a) (hv : 1 ≤ v) (hL : 1 ≤
   linarith
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ C₀ * lkv` using `mul_nonneg hC hlkv`. Establish `h1` using `mul_le_mul_of_nonneg_right hW h0`. Establish `h2` using `mul_le_mul_of_nonneg_left hlg (sq_nonneg K)`. Establish `h3` using `mul_le_mul_of_nonneg_right hlst hT`. Combine the linear relations using `[h1, h2, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma ziii_place {C₀ K b' S L lkv logT W lst lg U : ℝ} (hC : 0 ≤ C₀) (hK : 1 ≤ K)
     (hlkv : 0 ≤ lkv) (hT : 0 ≤ logT)
@@ -472,11 +470,11 @@ private lemma ziii_place {C₀ K b' S L lkv logT W lst lg U : ℝ} (hC : 0 ≤ C
   linarith [h1, h2, h3]
 
 /- English proof (translation)
-Establish `hK0 : 0 ≤ K` using `by linarith`. Establish `ha0 : 0 ≤ a` using `by linarith`. Establish `hlkv : 0 ≤ Real.log (K * v)` using `Real.log_nonneg (by nlinarith)`. Establish `hbS : bt + S ≤ 3 * a` using `by linarith`. Establish `hKbt : K * (bt + S) ≤ a * (3 * a)` using `(mul_le_mul_of_nonneg_left hbS hK0).trans (mul_le_mul_of_nonneg_right hKa (by linarith))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW' : W ≤ 2 * a + 4 * K * (b' + S)`. Establish `: K * (bt + S) ≤ K * (4 * (b' + S))` using `mul_le_mul_of_nonneg_left (by linarith) hK0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `haa : a ≤ a ^ 2` using `by nlinarith`. Establish `hlg : Real.log (p + K) ≤ 8 * L` using `ziii_log (by linarith) hv hL hlog (by linarith) (by nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlst : lst ≤ (2 + C₀) * (b' + S)`. Use polynomial arithmetic with `[mul_nonneg hC (by linarith : (0:ℝ) ≤ b' + S)]`. Use `ziii_place (U := 2 * a) hC hK hlkv hT hW' hlg hlst` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma ziii_top {C₀ K a b' S L v logT W p lst At bt : ℝ} (hC : 0 ≤ C₀) (hK : 1 ≤ K)
     (hKa : K ≤ a) (hb1 : 1 ≤ b') (hba : b' ≤ a) (hS : 0 ≤ S) (hSb : S ≤ b') (hL : 1 ≤ L) (hv : 1 ≤ v)
@@ -503,11 +501,11 @@ private lemma ziii_top {C₀ K a b' S L v logT W p lst At bt : ℝ} (hC : 0 ≤ 
   linarith
 
 /- English proof (translation)
-Establish `hK0 : 0 ≤ K` using `by linarith`. Establish `ha0 : 0 ≤ a` using `by linarith`. Establish `hlkv : 0 ≤ Real.log (K * v)` using `Real.log_nonneg (by nlinarith)`. Establish `hW' : W ≤ 0 + 4 * K * (b' + S)`. Establish `h1 : 1 * S ≤ K * S` using `mul_le_mul_of_nonneg_right hK hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 0 ≤ K * b'` using `mul_nonneg hK0 (by linarith)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hK3 : K + 3 ≤ 4 * a` using `by linarith`. Establish `hSa : S ≤ a` using `by linarith`. Establish `hKS : (K + 3) * S ≤ 4 * a * a` using `mul_le_mul hK3 hSa hS (by linarith)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haa : a ≤ a ^ 2` using `by nlinarith`. Establish `hlg : Real.log (p + K) ≤ 8 * L` using `ziii_log (by linarith) hv hL hlog (by linarith) (by nlinarith)`. Establish `hlst : lst ≤ (2 + C₀) * (b' + S)`. Use polynomial arithmetic with `[mul_nonneg hC (by linarith : (0:ℝ) ≤ b')]`. Use `ziii_place (U := 0) hC hK hlkv hT hW' hlg hlst` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -537,9 +535,9 @@ private lemma ziii_other {C₀ K a b' S L v logT W p lst : ℝ} (hC : 0 ≤ C₀
   linarith
 
 /- English proof (translation)
-Establish `p1 : 0 ≤ nT * a * lkv` using `mul_nonneg (mul_nonneg hnT ha) hlkv`. Establish `q1 : 0 ≤ C₀ * (nT * a * lkv)` using `mul_nonneg hC p1`. Establish `p2 : 0 ≤ f * (b' + S) * K * lkv` using `mul_nonneg (mul_nonneg (mul_nonneg hf hbS) hK) hlkv`. Establish `p3 : 0 ≤ f * (b' + S) * logT` using `mul_nonneg (mul_nonneg hf hbS) hT`. Establish `q3 : 0 ≤ C₀ * (f * (b' + S) * logT)` using `mul_nonneg hC p3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q4 : 0 ≤ C₀ * (f * K ^ 2 * L)` using `mul_nonneg hC (mul_nonneg (mul_nonneg hf (sq_nonneg K)) hL)`. Combine the linear relations using `[p1, q1, p2, p3, q3, q4]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma final_part_arithmetic_bound {C₀ nT f a lkv K b' S logT L : ℝ} (hC : 0 ≤ C₀) (hnT : 0 ≤ nT) (hf : 0 ≤ f)
     (ha : 0 ≤ a) (hlkv : 0 ≤ lkv) (hK : 0 ≤ K) (hbS : 0 ≤ b' + S) (hT : 0 ≤ logT) (hL : 0 ≤ L) :
@@ -556,23 +554,23 @@ private lemma final_part_arithmetic_bound {C₀ nT f a lkv K b' S logT L : ℝ} 
   linarith [p1, q1, p2, p3, q3, q4]
 
 /- English proof (translation)
-Introduce `C₀ hC`. Use `⟨8 + 4 * C₀, ?_⟩` and prove the remaining obligations. Introduce `ι X _ _ _ _ TT κ m t N lam A bt a b' L v logT logg eta S muMaxM muMaxV hN hanti hTT hWT hlT hWo hlo hex hV`. Take `⟨c, hc⟩` from `hex`. Establish `hL` using `hN.one_le_L`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv` using `hN.one_le_v`. Establish `hb1` using `hN.one_le_b'`. Establish `hba` using `hN.b'_le_a`. Establish `hT` using `hN.logT_nonneg`. Establish `hS` using `hN.S_nonneg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : 1 ≤ a` using `le_trans hb1 hba`. Establish `hmt : (0:ℝ) ≤ (m : ℝ) * t` using `by positivity`. Establish `hSb : S ≤ b'` using `by have := hN.small; have := hN.eta_nonneg; linarith`. Establish `hKN : (κ : ℝ) + 1 ≤ N`. Establish `: κ + 1 ≤ N` using `by rw [hN.N_eq]; exact Nat.le_add_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hN0 : (0:ℝ) ≤ N` using `Nat.cast_nonneg N`. Establish `hNb : (N : ℝ) ≤ b'`. Establish `h1` using `hN.lin`. Establish `h2 : (N : ℝ) * 1 ≤ N * L` using `mul_le_mul_of_nonneg_left hL hN0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK1 : (1:ℝ) ≤ (κ : ℝ) + 1`. Establish `: (0:ℝ) ≤ κ` using `Nat.cast_nonneg κ`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hKa : (κ : ℝ) + 1 ≤ a` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlkv : 0 ≤ Real.log (((κ : ℝ) + 1) * v)` using `Real.log_nonneg (by nlinarith)`. Establish `key : ∀ ρ, ((wt (plus (lam ρ)) : ℝ) * (C₀ * Real.log (((κ : ℝ) + 1) * v)) + ((κ : ℝ) + 1) ^ 2 * Real.log ((plus (lam ρ) 0 : ℝ) + (κ : ℝ) + 1) + |(lam ρ (Fin.last κ) : ℝ)| * logT) ≤ (if ρ ∈ TT then 2 * a * (C₀ * Real.log (((κ : ℝ) + 1) * v)) else 0) + (4 * C₀ * ((κ : ℝ) + 1) * (b' …`. Introduce `ρ`. Take `⟨hp0, hpW⟩` from `positive_part_head_le_weight (lam ρ) (hanti ρ)`. Establish `hp0' : (0:ℝ) ≤ (plus (lam ρ) 0 : ℝ)` using `by exact_mod_cast hp0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpW' : (plus (lam ρ) 0 : ℝ) ≤ (wt (plus (lam ρ)) : ℝ)` using `by exact_mod_cast hpW`. Rewrite using `[add_assoc ((plus (lam ρ) 0 : ℤ) : ℝ) (κ : ℝ) 1]`. Distinguish the cases in `hρ : ρ ∈ TT`. Take `⟨hA1, hA2, hbt1, hbt2⟩` from `hTT ρ hρ`. Rewrite using `[if_pos hρ]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ziii_top hC hK1 hKa hb1 hba hS hSb hL hv hN.log_av hT hp0' hpW' hA2 hbt2 (hWT ρ hρ) (hlT ρ hρ)`. Rewrite using `[if_neg hρ]`. Conclude with `ziii_other hC hK1 hKa hb1 hba hS hSb hL hv hN.log_av hT hp0' hpW' (hWo ρ hρ) (hlo ρ hρ)`. Establish `hsum` using `Finset.sum_le_sum (s := (Finset.univ : Finset ι)) (fun ρ _ => key ρ)`. Establish `hrhs : ∀ x y : ℝ, ∑ ρ : ι, ((if ρ ∈ TT then x else 0) + y) = (TT.card : ℝ) * x + (Fintype.card ι : ℝ) * y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x y`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, Finset.sum_const, nsmul_eq_mul, nsmul_eq_mul, Finset.card_univ]`. Rewrite `hsum` using `[hrhs]`. Use `le_trans (le_trans hc (le_trans (hV c) hsum)) ?_` and prove the remaining obligations. Conclude with `final_part_arithmetic_bound hC (Nat.cast_nonneg _) (Nat.cast_nonneg _) (by linarith) hlkv (by linarith) (by linarith) hT (by linarith)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem zeta_proposition_third : PropZ_iii := by
   intro C₀ hC
@@ -634,45 +632,45 @@ theorem zeta_proposition_third : PropZ_iii := by
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `C₀ hC`. Use `⟨10 + 5 * C₀, ?_⟩` and prove the remaining obligations. Introduce `f nT k m t N x b a b' L v logT logg eta S sA hN hb hax hnT1 hnTf hsA0 hsA`. Establish `hL1` using `hN.one_le_L`. Establish `hv1` using `hN.one_le_v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb1` using `hN.one_le_b'`. Establish `hba` using `hN.b'_le_a`. Establish `hT0` using `hN.logT_nonneg`. Establish `hTle` using `hN.logT_le`. Establish `hS0` using `hN.S_nonneg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1 : (1:ℝ) ≤ k` using `by exact_mod_cast hN.one_le_k`. Establish `hm1 : (1:ℝ) ≤ m` using `by exact_mod_cast hN.one_le_m`. Establish `hkN : (k:ℝ) ≤ N`. Establish `: k ≤ N` using `by rw [hN.N_eq]; exact Nat.le_add_right _ _`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : (0:ℝ) ≤ N` using `Nat.cast_nonneg _`. Establish `hN1 : (1:ℝ) ≤ N` using `le_trans hk1 hkN`. Establish `hNL : (N:ℝ) * L ≤ b'` using `by linarith only [hN.lin, hT0]`. Establish `hNNL : (N:ℝ) ≤ N * L` using `le_mul_of_one_le_right hN0 hL1`. Establish `hkb : (k:ℝ) ≤ b'` using `by linarith only [hkN, hNNL, hNL]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hka : (k:ℝ) ≤ a` using `le_trans hkb hba`. Establish `hSb : S ≤ b'`. Establish `h1` using `hN.small`. Establish `h2` using `hN.eta_nonneg`. Establish `h3 : (0:ℝ) ≤ (m:ℝ) * t` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `only [h1, h2, h3]`. Establish `hnT : (1:ℝ) ≤ nT` using `by exact_mod_cast hnT1`. Establish `hnT0' : (0:ℝ) ≤ nT` using `by linarith only [hnT]`. Establish `hm0' : (0:ℝ) ≤ m` using `by linarith only [hm1]`. Establish `hf0 : (0:ℝ) ≤ f` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL0 : (0:ℝ) ≤ L` using `by linarith only [hL1]`. Establish `hb0 : (0:ℝ) ≤ b'` using `by linarith only [hb1]`. Establish `hk0 : (0:ℝ) ≤ k` using `by linarith only [hk1]`. Establish `ha0 : (0:ℝ) ≤ a` using `by linarith only [hb1, hba]`. Establish `hv0 : (0:ℝ) ≤ v` using `by linarith only [hv1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbS0 : (0:ℝ) ≤ b' + S` using `by linarith only [hb0, hS0]`. Establish `hlogk : Real.log k ≤ L`. Establish `: Real.log k ≤ Real.log (a * v)` using `Real.log_le_log (by linarith only [hk1]) (hka.trans (le_mul_of_one_le_right ha0 hv1))`. Combine the linear relations using `only [this, hN.log_av]`. Establish `hlogkv0 : 0 ≤ Real.log (k * v)` using `Real.log_nonneg (one_le_mul_of_one_le_of_one_le hk1 hv1)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogkv : Real.log (k * v) ≤ L`. Establish `: Real.log (k * v) ≤ Real.log (a * v)` using `Real.log_le_log (mul_pos (by linarith only [hk1]) (by linarith only [hv1])) (mul_le_mul_of_nonneg_right hka hv0)`. Combine the linear relations using `only [this, hN.log_av]`. Establish `hG0 : 0 ≤ (f:ℝ) * N * b' * L` using `mul_nonneg (mul_nonneg (mul_nonneg hf0 hN0) hb0) hL0`. Establish `hG : (f:ℝ) * N * b' * L ≤ f * m * N * b' * L`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left hm1 hG0` as an intermediate fact. Combine the linear relations using `only [this]`. Establish `t1 : sA / k * logT ≤ 2 * C₀ * (a * nT * m * L / k)`. Establish `s1 : sA / k ≤ 2 * a * nT / k` using `by gcongr`. Establish `s0 : 0 ≤ 2 * a * nT / k` using `div_nonneg (mul_nonneg (mul_nonneg (by norm_num) ha0) hnT0') hk0`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `t2 : (nT:ℝ) * a * Real.log k ≤ nT * a * L` using `mul_le_mul_of_nonneg_left hlogk (mul_nonneg hnT0' ha0)`. Establish `t6 : (nT:ℝ) * a * Real.log (k * v) ≤ nT * a * L` using `mul_le_mul_of_nonneg_left hlogkv (mul_nonneg hnT0' ha0)`. Establish `t3 : (f:ℝ) * k * (b' + S) * Real.log k ≤ 2 * ((f:ℝ) * N * b' * L)`. Establish `u1 : (k:ℝ) * (b' + S) ≤ N * (2 * b')` using `mul_le_mul hkN (by linarith only [hSb]) hbS0 hN0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u2 : (f:ℝ) * k * (b' + S) * Real.log k ≤ f * k * (b' + S) * L` using `mul_le_mul_of_nonneg_left hlogk (mul_nonneg (mul_nonneg hf0 hk0) hbS0)`. Establish `u3 : (f:ℝ) * (k * (b' + S)) * L ≤ f * (N * (2 * b')) * L` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left u1 hf0) hL0`. Combine the linear relations using `only [u2, u3]`. Establish `t4 : (f:ℝ) * S * logT ≤ C₀ * ((f:ℝ) * m * N * b' * L)`. Establish `u1 : S * logT ≤ b' * (C₀ * m * L)` using `mul_le_mul hSb hTle hT0 hb0`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u2 : (f:ℝ) * (S * logT) ≤ f * (b' * (C₀ * m * L))` using `mul_le_mul_of_nonneg_left u1 hf0`. Establish `u3 : 0 ≤ (f:ℝ) * b' * C₀ * m * L` using `mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg hf0 hb0) hC) hm0') hL0`. Establish `u4` using `mul_nonneg u3 (sub_nonneg.2 hN1)`. Combine the linear relations using `only [u2, u4]`. Establish `t5 : (f:ℝ) * (k:ℝ) ^ 2 * L ≤ (f:ℝ) * N * b' * L`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u1 : (k:ℝ) * k ≤ N * b'` using `mul_le_mul hkN hkb hk0 hN0`. Establish `u2 : (f:ℝ) * (k * k) * L ≤ f * (N * b') * L` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left u1 hf0) hL0`. Combine the linear relations using `only [u2]`. Establish `t7 : (f:ℝ) * (b' + S) * (k * Real.log (k * v) + logT) ≤ 2 * ((f:ℝ) * N * b' * L) + 2 * C₀ * ((f:ℝ) * m * N * b' * L)`. Establish `u1 : (k:ℝ) * Real.log (k * v) ≤ N * L` using `(mul_le_mul_of_nonneg_left hlogkv hk0).trans (mul_le_mul_of_nonneg_right hkN hL0)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u2 : logT ≤ C₀ * m * N * L`. Establish `h0 : 0 ≤ C₀ * m * L` using `mul_nonneg (mul_nonneg hC hm0') hL0`. Combine the equalities or inequalities in the displayed calculation. Establish `u3 : 0 ≤ (k:ℝ) * Real.log (k * v) + logT`. Establish `h0` using `mul_nonneg hk0 hlogkv0`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `only [h0, hT0]`. Establish `u4 : (b' + S) * ((k:ℝ) * Real.log (k * v) + logT) ≤ (2 * b') * (N * L + C₀ * m * N * L)` using `mul_le_mul (by linarith only [hSb]) (by linarith only [u1, u2]) u3 (by linarith only [hb0])`. Establish `u5` using `mul_le_mul_of_nonneg_left u4 hf0`. Combine the linear relations using `only [u5]`. Establish `hD : (0:ℝ) < nT * m * b` using `mul_pos (mul_pos (by linarith only [hnT]) (by linarith only [hm1])) hb`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_iff₀ hD]`. Establish `hm0 : (m:ℝ) ≠ 0` using `(by linarith only [hm1] : (0:ℝ) < m).ne'`. Establish `hk0' : (k:ℝ) ≠ 0` using `(by linarith only [hk1] : (0:ℝ) < k).ne'`. Establish `hnT0 : (nT:ℝ) ≠ 0` using `(by linarith only [hnT] : (0:ℝ) < nT).ne'`. Establish `hb0' : b ≠ 0` using `hb.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : (10 + 5 * C₀) * (x * L / m + x * L / k + f * N * b' * L / (nT * b)) * (nT * m * b) = (10 + 5 * C₀) * (a * nT * L + a * nT * m * L / k + f * m * N * b' * L)`. Rewrite using `[hax]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hE]`. Establish `hQ1 : 0 ≤ a * nT * L` using `mul_nonneg (mul_nonneg ha0 hnT0') hL0`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ2 : 0 ≤ a * nT * m * L / k` using `div_nonneg (mul_nonneg (mul_nonneg (mul_nonneg ha0 hnT0') hm0') hL0) hk0`. Establish `hQ3 : 0 ≤ (f:ℝ) * m * N * b' * L` using `by linarith only [hG0, hG]`. Establish `r1` using `mul_nonneg hC hQ1`. Establish `r2` using `mul_nonneg hC hQ2`. Establish `r3` using `mul_nonneg hC hQ3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `only [t1, t2, t3, t4, t5, t6, t7, hG, hQ1, hQ2, hQ3, r1, r2, r3]`.
+A detailed English derivation is pending.
 -/
 theorem zeta_proposition_tail : Formalism.HermitianLattices.TraceIntegrality.PropZ_tail := by
   intro C₀ hC

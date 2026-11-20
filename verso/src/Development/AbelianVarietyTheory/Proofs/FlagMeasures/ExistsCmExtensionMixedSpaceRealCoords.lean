@@ -6,9 +6,9 @@ open scoped TensorProduct ENNReal nonZeroDivisors Classical
 namespace GlobalTheory.SnMass.ReCoords
 
 /- English proof (translation)
-Rewrite using `[Fintype.bijective_iff_surjective_and_card]`. Use `⟨InfinitePlace.comap_surjective (k := F) (K := E), ?_⟩` and prove the remaining obligations. Establish `h1` using `IsTotallyComplex.finrank E`. Establish `h2'` using `IsTotallyReal.finrank F`. Establish `h3` using `Module.finrank_mul_finrank ℚ F E`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[h2]`. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero, IsTotallyReal.nrComplexPlaces_eq_zero F]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem comap_bij (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyReal F] [IsTotallyComplex E] (h2 : Module.finrank F E = 2) :
@@ -24,9 +24,9 @@ theorem comap_bij (F E : Type) [Field F] [NumberField F] [Field E] [NumberField 
   omega
 
 /- English proof (translation)
-Establish `key : ∀ φ : E →+* ℂ, (((InfinitePlace.mk φ).comap (algebraMap F E)).embedding y).re = (φ (algebraMap F E y)).re`. Introduce `φ`. Rewrite using `[InfinitePlace.comap_mk]`. Break down `InfinitePlace.embedding_mk_eq (φ.comp (algebraMap F E)) with h | h` into its components or cases. Rewrite using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h]`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Use `key w.embedding` as an intermediate fact. Rewrite `this` using `[InfinitePlace.mk_embedding]`. Then use the resulting hypothesis.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem re_embedding_comap {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (w : InfinitePlace E) (y : F) :
@@ -41,15 +41,13 @@ theorem re_embedding_comap {F E : Type} [Field F] [NumberField F] [Field E] [Num
   rwa [InfinitePlace.mk_embedding] at this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h`. Use `haveI : IsTotallyReal F := h.1`. Use `haveI : IsTotallyComplex E := h.2.1`. Use `haveI : IsEmpty {w : InfinitePlace F // InfinitePlace.IsComplex w} := ⟨fun w => InfinitePlace.not_isReal_iff_isComplex.2 w.2 (IsTotallyReal.isReal w.1)⟩`. Set `g : InfinitePlace E ≃ {v : InfinitePlace F // InfinitePlace.IsReal v}` to `(Equiv.ofBijective _ (comap_bij F E h.2.2.1)).trans (Equiv.subtypeUnivEquiv (fun v : InfinitePlace F => IsTotallyReal.isReal v)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg : ∀ w, (g w).1 = w.comap (algebraMap F E)` using `fun w => rfl`. Set `L : mixedEmbedding.mixedSpace F ≃ₗ[ℝ] (InfinitePlace E → ℝ)` to `{ toFun := fun x w => x.1 (g w) invFun := fun f => (fun v => f (g.symm v), 0) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun x => Prod.ext (funext fun v => by simp) (Subsingleton.elim _ _) right_inv := fun f => funext fun w => by simp }`. Use `⟨L.toContinuousLinearEquiv, ?_, ?_⟩` and prove the remaining obligations. Use `haveI : IsProbabilityMeasure (volume : Measure ({w : InfinitePlace F // InfinitePlace.IsComplex w} → ℂ)) := by`. Rewrite using `[volume_pi, Measure.pi_of_empty]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `infer_instance`. Establish `h1 : MeasurePreserving (Prod.fst : mixedEmbedding.mixedSpace F → _) volume volume` using `measurePreserving_fst`. Establish `h2` using `volume_measurePreserving_piCongrLeft (fun _ : InfinitePlace E => ℝ) g.symm`. Establish `heq : (L.toContinuousLinearEquiv : mixedEmbedding.mixedSpace F → InfinitePlace E → ℝ) = (MeasurableEquiv.piCongrLeft (fun _ : InfinitePlace E => ℝ) g.symm) ∘ Prod.fst`. Use function extensionality and compare the values at `x w`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[L, MeasurableEquiv.piCongrLeft, Equiv.piCongrLeft_apply]`. Rewrite using `[heq]`. Conclude with `h2.comp h1`. Introduce `y`. Use function extensionality and compare the values at `w`.
-
-Use `show (mixedEmbedding F y).1 (g w) = _`. Rewrite using `[mixedEmbedding.mixedEmbedding_apply_isReal, reV]`. Rewrite using `[← Complex.ofReal_re (InfinitePlace.embedding_of_isReal _ y), InfinitePlace.embedding_of_isReal_apply, hg]`. Conclude with `re_embedding_comap w y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixedSpace_reCoords : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∃ e : mixedEmbedding.mixedSpace F ≃L[ℝ] (InfinitePlace E → ℝ), MeasurePreserving e volume volume ∧ ∀ y : F, e (mixedEmbedding F y) = reV (algebraMap F E y) := by
   intro F E _ _ _ _ _ σ h

@@ -7,21 +7,17 @@ open scoped ComplexOrder
 namespace GlobalTheory.CompanionTheory.Iwasawa
 
 /- English proof (translation)
-Set `e : Fin n ≃ Fin n` to `Fin.revPerm`. Establish `hYd : Y.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det Y).mp hY).ne_zero`. Use `set Y' : Matrix (Fin n) (Fin n) ℂ := Y.submatrix e e with hY'`. Establish `hY'u : IsUnit Y'`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, hY', Matrix.det_submatrix_equiv_self]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Matrix.isUnit_iff_isUnit_det Y).mp hY`. Establish `hpd : (Y' * Y'ᴴ).PosDef` using `Matrix.PosDef.mul_conjTranspose_self Y' (Matrix.vecMul_injective_iff_isUnit.mpr hY'u)`. Take `⟨C, a, hCu, -, -, hC⟩` from `CompanionTheory.D.gk.admitted.CholeskyDecomposition.exists_cholesky hpd`. Establish `hBu : (Cᴴ.submatrix e e).IsUpperTriangular`. Introduce `i j hij`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : C (e j) (e i) = 0` using `hCu (Fin.rev_lt_rev.mpr hij)`. Simplify using `only [Matrix.submatrix_apply, Matrix.conjTranspose_apply]`. Rewrite using `[h0, star_zero]`. Establish `hBB : Cᴴ.submatrix e e * (Cᴴ.submatrix e e)ᴴ = Y * Yᴴ`. Rewrite using `[Matrix.conjTranspose_submatrix, Matrix.conjTranspose_conjTranspose, Matrix.submatrix_mul_equiv, hC, hY', Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_submatrix]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hee : (e : Fin n → Fin n) ∘ e = id` using `funext fun i => Fin.rev_rev i`. Rewrite using `[hee, Matrix.submatrix_id_id]`. Establish `hBd : (Cᴴ.submatrix e e).det ≠ 0`. Introduce `h0`. Use `congrArg Matrix.det hBB` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, h0, zero_mul, Matrix.det_conjTranspose]`. Conclude with `mul_ne_zero hYd (star_ne_zero.mpr hYd) this.symm`. Use `set B := Cᴴ.submatrix e e with hBdef`. Establish `hBi : B⁻¹ * B = 1` using `Matrix.nonsing_inv_mul B (isUnit_iff_ne_zero.mpr hBd)`. Establish `hBi' : B * B⁻¹ = 1` using `Matrix.mul_nonsing_inv B (isUnit_iff_ne_zero.mpr hBd)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hKK : (B⁻¹ * Y) * (B⁻¹ * Y)ᴴ = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = B⁻¹ * (B * Bᴴ) * B⁻¹ᴴ := by rw [hBB]`.
-
-Use `_ = (B⁻¹ * B) * (B⁻¹ * B)ᴴ := by`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hBi, Matrix.conjTranspose_one, Matrix.mul_one]`. Use `⟨B, B⁻¹, B⁻¹ * Y, hBu, hBi', hBi, hKK, mul_eq_one_comm.mp hKK, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Matrix.mul_assoc, hBi', Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_upper_mul_unitary_complex {n : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) (hY : IsUnit Y) :
     ∃ B R K : Matrix (Fin n) (Fin n) ℂ, B.IsUpperTriangular ∧ B * R = 1 ∧ R * B = 1 ∧
@@ -74,7 +70,7 @@ theorem evalMat_apply {ι : Type} {n : ℕ} (w : ι) (X : Matrix (Fin n) (Fin n)
     (i j : Fin n) : evalMat w X i j = X i j w := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [evalMat_apply, Matrix.conjTranspose_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem evalMat_conjTranspose {ι : Type} {n : ℕ} (w : ι) (X : Matrix (Fin n) (Fin n) (ι → ℂ)) :
     evalMat w Xᴴ = (evalMat w X)ᴴ := by
@@ -83,7 +79,7 @@ theorem evalMat_conjTranspose {ι : Type} {n : ℕ} (w : ι) (X : Matrix (Fin n)
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j w`. Use `congrFun (congrFun (h w) i) j` as an intermediate fact. Rewrite `this` using `[evalMat_apply, evalMat_apply]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem matrix_ext_eval {ι : Type} {n : ℕ} {X X' : Matrix (Fin n) (Fin n) (ι → ℂ)}
     (h : ∀ w, evalMat w X = evalMat w X') : X = X' := by
@@ -92,15 +88,15 @@ theorem matrix_ext_eval {ι : Type} {n : ℕ} {X X' : Matrix (Fin n) (Fin n) (ι
   rwa [evalMat_apply, evalMat_apply] at this
 
 /- English proof (translation)
-Establish `hu : ∀ w : ι, IsUnit (evalMat w (y : Matrix (Fin n) (Fin n) (ι → ℂ)))` using `fun w => (Units.isUnit y).map (evalMat w)`. Use `choose B R K hB hBR hRB hKK hKK' hY using fun w => exists_upper_mul_unitary_complex _ (hu w)`. Set `b : Matrix (Fin n) (Fin n) (ι → ℂ)` to `fun i j w => B w i j`. Set `r : Matrix (Fin n) (Fin n) (ι → ℂ)` to `fun i j w => R w i j`. Set `k : Matrix (Fin n) (Fin n) (ι → ℂ)` to `fun i j w => K w i j`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `eb : ∀ w, evalMat w b = B w` using `fun w => by ext i j; rw [evalMat_apply]`. Establish `er : ∀ w, evalMat w r = R w` using `fun w => by ext i j; rw [evalMat_apply]`. Establish `ek : ∀ w, evalMat w k = K w` using `fun w => by ext i j; rw [evalMat_apply]`. Establish `hbr : b * r = 1` using `matrix_ext_eval fun w => by rw [map_mul, eb, er, hBR w, map_one]`. Establish `hrb : r * b = 1` using `matrix_ext_eval fun w => by rw [map_mul, eb, er, hRB w, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1 : k * star k = 1` using `matrix_ext_eval fun w => by`. Rewrite using `[map_mul, Matrix.star_eq_conjTranspose, evalMat_conjTranspose, ek, hKK w, map_one]`. Establish `hk2 : star k * k = 1` using `matrix_ext_eval fun w => by`. Rewrite using `[map_mul, Matrix.star_eq_conjTranspose, evalMat_conjTranspose, ek, hKK' w, map_one]`. Use `⟨⟨b, r, hbr, hrb⟩, ⟨k, Unitary.mem_iff.mpr ⟨hk2, hk1⟩⟩, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Use function extensionality and compare the values at `w`. Conclude with `hB w hij`. Apply `Units.ext` to reduce the goal to its premises. Apply `matrix_ext_eval` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Rewrite using `[Units.val_mul]`. Use `show evalMat w (y : Matrix (Fin n) (Fin n) (ι → ℂ)) = evalMat w (b * k)`. Rewrite using `[map_mul, eb, ek]`. Conclude with `hY w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_upper_mul_unitary {ι : Type} {n : ℕ} (y : GL (Fin n) (ι → ℂ)) :
     ∃ (b : GL (Fin n) (ι → ℂ)) (k : Matrix.unitaryGroup (Fin n) (ι → ℂ)),

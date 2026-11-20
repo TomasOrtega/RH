@@ -14,7 +14,7 @@ open scoped ENNReal NNReal Pointwise
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Establish `: Countable F` using `(Module.finBasis ℚ F).equivFun.injective.countable`. Establish `: TopologicalSpace.SeparableSpace (Fv F v)` using `⟨⟨Set.range (algebraMap F (Fv F v)), Set.countable_range _, IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap F v⟩⟩`. Conclude with `UniformSpace.secondCountable_of_separable (Fv F v)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem secondCountable_Fv : SecondCountableTopology (Fv F v) := by
   have : Countable F := (Module.finBasis ℚ F).equivFun.injective.countable
@@ -24,14 +24,14 @@ theorem secondCountable_Fv : SecondCountableTopology (Fv F v) := by
   exact UniformSpace.secondCountable_of_separable (Fv F v)
 
 /- English proof (translation)
-The claim follows from `(PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v).locallyCompactSpace_of_mem_nhds_of_addGroup ((Valued.isOpen_valuationSubring _).mem_nhds (zero_mem _))`.
+A detailed English derivation is pending.
 -/
 theorem locallyCompact_Fv : LocallyCompactSpace (Fv F v) :=
   (PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v).locallyCompactSpace_of_mem_nhds_of_addGroup
     ((Valued.isOpen_valuationSubring _).mem_nhds (zero_mem _))
 
 /- English proof (translation)
-Use `first`. Consider the case `exact inferInstance`. Consider the case `exact ⟨rfl⟩`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem borel_Fv : BorelSpace (Fv F v) := by
   first
@@ -41,14 +41,14 @@ theorem borel_Fv : BorelSpace (Fv F v) := by
 abbrev Ov : Set (Fv F v) := (v.adicCompletionIntegers F : Set (Fv F v))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Ov {x : Fv F v} : x ∈ Ov v ↔ Valued.v x ≤ 1 := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Rewrite using `[Valued.mem_nhds]`. Use `⟨1, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : Valued.v (y - x) < 1` using `by simpa using hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx' : Valued.v x ≤ 1` using `(mem_Ov v).1 hx`. Use `(mem_Ov v).2 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem isOpen_Ov : IsOpen (Ov v) := by
   rw [isOpen_iff_mem_nhds]
@@ -63,31 +63,29 @@ theorem isOpen_Ov : IsOpen (Ov v) := by
     _ ≤ 1 := max_le hy'.le hx'
 
 /- English proof (translation)
-The claim follows from `PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_Ov : IsCompact (Ov v) := PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v
 
 /- English proof (translation)
-Introduce `h`. Conclude with `v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem q_ne_zero : Ideal.absNorm v.asIdeal ≠ 0 := by
   intro h
   exact v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Establish `hx1 : Valued.v (x : Fv F v) ≤ 1` using `x.2`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `lt_of_le_of_ne hx1 (fun h1 => hx ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx0 : (x : Fv F v) ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, map_zero]`. Conclude with `zero_ne_one h1`. Establish `hinv : Valued.v ((x : Fv F v)⁻¹) ≤ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv₀, h1, inv_one]`. Establish `hmul : x * ⟨(x : Fv F v)⁻¹, hinv⟩ = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(x : Fv F v) * (x : Fv F v)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ hx0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨x, ⟨(x : Fv F v)⁻¹, hinv⟩, hmul, by rw [mul_comm]; exact hmul⟩, rfl⟩`. Introduce `hlt hu`. Take `⟨y, hy⟩` from `hu.exists_right_inv`. Establish `h2 : (x : Fv F v) * (y : Fv F v) = 1` using `congrArg Subtype.val hy`. Establish `hy1 : Valued.v (y : Fv F v) ≤ 1` using `y.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : Valued.v (x : Fv F v) * Valued.v (y : Fv F v) = 1`. Rewrite using `[← map_mul, h2, map_one]`. Establish `h4 : Valued.v (x : Fv F v) * Valued.v (y : Fv F v) < 1`. Combine the equalities or inequalities in the displayed calculation. Consider the case `gcongr`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact mul_le_mul_of_nonneg_left hy1 zero_le'`. Consider the case `exact mul_le_mul_right' hy1 _`. Consider the case `exact mul_le_mul_left hy1 _`. Use `_ = Valued.v (x : Fv F v) := mul_one _`. Use `_ < 1 := hlt`.
-
-Rewrite `h4` using `[h3]`. Conclude with `lt_irrefl _ h4`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_max_iff (x : v.adicCompletionIntegers F) :
     x ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) ↔ Valued.v (x : Fv F v) < 1 := by
@@ -127,9 +125,9 @@ theorem mem_max_iff (x : v.adicCompletionIntegers F) :
     exact lt_irrefl _ h4
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_inv₀, hϖ]`. Break down `eq_or_ne (Valued.v y) 0 with h0 | h0` into its components or cases. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Take `⟨n, hn⟩ : ∃ n : ℤ, Valued.v y = WithZero.exp n` from `by first`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Consider the case `exact ⟨WithZero.log (Valued.v y), (WithZero.exp_log h0).symm⟩`. Consider the case `(obtain ⟨a, ha⟩ := WithZero.ne_zero_iff_exists.mp h0`. Conclude with `⟨Multiplicative.toAdd a, by rw [← ha]; rfl⟩)`. Rewrite using `[hn, ← WithZero.exp_neg, neg_neg, ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_lt_exp, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Treat this case separately. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lt_one_iff (ϖ : Fv F v) (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (y : Fv F v) :
     Valued.v y < 1 ↔ Valued.v (ϖ⁻¹ * y) ≤ 1 := by
@@ -149,12 +147,12 @@ theorem lt_one_iff (ϖ : Fv F v) (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (
 def Mv (ϖ : Fv F v) : Set (Fv F v) := (fun y => ϖ⁻¹ * y) ⁻¹' Ov v
 
 /- English proof (translation)
-The claim follows from `(isOpen_Ov v).preimage (continuous_mul_left _)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_Mv (ϖ : Fv F v) : IsOpen (Mv v ϖ) := (isOpen_Ov v).preimage (continuous_mul_left _)
 
 /- English proof (translation)
-Rewrite using `[← ReciprocityTheory.DiscreteGroups.GlobalClassField.ul_card_residue_eq F v]`. Use `show Submodule.cardQuot _ = _`. Rewrite using `[Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem index_max : (IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)).toAddSubgroup.index =
     Ideal.absNorm v.asIdeal := by
@@ -164,29 +162,23 @@ theorem index_max : (IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)).toAd
   rfl
 
 /- English proof (translation)
-Set `O'` to `v.adicCompletionIntegers F`. Establish `hO : MeasurableSet (Ov v)` using `(isOpen_Ov v).measurableSet`. Establish `hme : MeasurableEmbedding (Subtype.val : O' → Fv F v)` using `MeasurableEmbedding.subtype_coe hO`. Set `ν : Measure O'` to `Measure.comap Subtype.val μ`. Use `haveI : MeasurableAdd O' := ⟨fun c => hme.measurable_comp_iff.1 (by show Measurable fun x : O' => ((c + x : O') : Fv F v)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (measurable_subtype_coe.const_add (c : Fv F v))),`. Use `fun c => hme.measurable_comp_iff.1 (by show Measurable fun x : O' => ((x + c : O') : Fv F v)`. Simplify using `using (measurable_subtype_coe.add_const (c : Fv F v)))⟩`. Use `haveI : ν.IsAddLeftInvariant := ⟨fun g => by`. Use extensionality with `S hS`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Measure.map_apply (measurable_const_add g) hS]`. Simplify using `only [ν, hme.comap_apply]`. Establish `e : Subtype.val '' ((fun h => g + h) ⁻¹' S) = (fun h : Fv F v => (g : Fv F v) + h) ⁻¹' (Subtype.val '' S)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨g + x, hx, by simp⟩`. Introduce and unpack `⟨z, hz, hzy⟩`. Establish `hy : y ∈ O'`. Establish `e2 : y = (z : Fv F v) - g` using `by rw [hzy]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `sub_mem z.2 g.2`. Use `⟨⟨y, hy⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `e3 : g + ⟨y, hy⟩ = z` using `Subtype.ext (by simp [hzy])`. Use `show g + ⟨y, hy⟩ ∈ S`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[e3]`. Conclude with `hz`. Rewrite using `[e, measure_preimage_add]⟩`. Set `H : AddSubgroup O'` to `(IsLocalRing.maximalIdeal O').toAddSubgroup`. Use `haveI : H.FiniteIndex := ⟨by rw [index_max]; exact q_ne_zero v⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hHset : (H : Set O') = Subtype.val ⁻¹' Mv v ϖ`. Use extensionality with `x`. Use `show x ∈ IsLocalRing.maximalIdeal O' ↔ _`. Rewrite using `[mem_max_iff, lt_one_iff v ϖ hϖ]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `hH : MeasurableSet (H : Set O')`. Rewrite using `[hHset]`. Conclude with `measurable_subtype_coe (isOpen_Mv v ϖ).measurableSet`. Establish `key` using `AddSubgroup.index_mul_measure H hH ν`. Establish `e1 : ν H = μ (Mv v ϖ)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [ν, hme.comap_apply]`. Rewrite using `[hHset, Set.image_preimage_eq_inter_range, Subtype.range_coe]`. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨h1, -⟩`. Conclude with `h1`. Introduce `h1`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Conclude with `le_of_lt ((lt_one_iff v ϖ hϖ y).2 h1)`.
-
-Establish `e2 : ν Set.univ = μ (Ov v)`. Simplify using `only [ν, hme.comap_apply, Set.image_univ]`. Rewrite using `[Subtype.range_coe_subtype]`. Both sides reduce to the same expression. Rewrite `key` using `[e1, e2, index_max]`.
-
-Conclude with `key`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_Ov [MeasurableSpace (Fv F v)] [BorelSpace (Fv F v)] (μ : Measure (Fv F v))
     [μ.IsAddLeftInvariant] (ϖ : Fv F v) (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) :
@@ -253,13 +245,13 @@ section Char
 variable [LocallyCompactSpace (Fv F v)]
 
 /- English proof (translation)
-Use `haveI := borel_Fv v`. Establish `hset : (Units.mk0 ϖ hϖ0) • Ov v = Mv v ϖ`. Use extensionality with `x`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, Units.smul_def]`. Simplify using `only [Units.val_inv_eq_inv_val, Units.val_mk0, smul_eq_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 
-Conclude with `Iff.rfl`. Establish `h1` using `distribHaarChar_mul (MeasureTheory.Measure.addHaar : Measure (Fv F v)) (Units.mk0 ϖ hϖ0) (Ov v)`. Rewrite `h1` using `[hset]`. Establish `h2` using `measure_Ov v (MeasureTheory.Measure.addHaar : Measure (Fv F v)) ϖ hϖ`. Rewrite `h2` using `[← h1, ← mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : (MeasureTheory.Measure.addHaar : Measure (Fv F v)) (Ov v) ≠ 0` using `(isOpen_Ov v).measure_ne_zero _ ⟨0, (mem_Ov v).2 (by simp)⟩`. Establish `htop : (MeasureTheory.Measure.addHaar : Measure (Fv F v)) (Ov v) ≠ ⊤` using `(isCompact_Ov v).measure_lt_top.ne`. Establish `h3 : (Ideal.absNorm v.asIdeal : ℝ≥0∞) * ((distribHaarChar (Fv F v) (Units.mk0 ϖ hϖ0) : ℝ≥0) : ℝ≥0∞) = 1` using `by first`. Consider the case `exact (ENNReal.mul_eq_mul_right h0 htop).mp (by rw [one_mul]; exact h2)`. Consider the case `exact (ENNReal.mul_left_inj h0 htop).mp (by rw [one_mul]; exact h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h4 : (Ideal.absNorm v.asIdeal : ℝ≥0) * distribHaarChar (Fv F v) (Units.mk0 ϖ hϖ0) = 1`. Conclude with `h3` after adjusting the coercions. Conclude with `eq_inv_of_mul_eq_one_right h4`.
+A detailed English derivation is pending.
 -/
 theorem dhc_unif (ϖ : Fv F v) (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (hϖ0 : ϖ ≠ 0) :
     distribHaarChar (Fv F v) (Units.mk0 ϖ hϖ0) = ((Ideal.absNorm v.asIdeal : ℝ≥0))⁻¹ := by
@@ -289,11 +281,11 @@ theorem dhc_unif (ϖ : Fv F v) (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (h�
   exact eq_inv_of_mul_eq_one_right h4
 
 /- English proof (translation)
-Use `haveI := borel_Fv v`. Establish `hset : (Units.mk0 u hu0) • Ov v = Ov v`. Use extensionality with `x`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, Units.smul_def, mem_Ov, mem_Ov]`. Simplify using `only [Units.val_inv_eq_inv_val, Units.val_mk0, smul_eq_mul, map_mul, map_inv₀, hu, inv_one, one_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `distribHaarChar_mul (MeasureTheory.Measure.addHaar : Measure (Fv F v)) (Units.mk0 u hu0) (Ov v)`. Rewrite `h1` using `[hset]`. Establish `h0 : (MeasureTheory.Measure.addHaar : Measure (Fv F v)) (Ov v) ≠ 0` using `(isOpen_Ov v).measure_ne_zero _ ⟨0, (mem_Ov v).2 (by simp)⟩`. Establish `htop : (MeasureTheory.Measure.addHaar : Measure (Fv F v)) (Ov v) ≠ ⊤` using `(isCompact_Ov v).measure_lt_top.ne`. Establish `h2 : ((distribHaarChar (Fv F v) (Units.mk0 u hu0) : ℝ≥0) : ℝ≥0∞) = 1` using `by first`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact (ENNReal.mul_eq_mul_right h0 htop).mp (by rw [one_mul]; exact h1)`. Consider the case `exact (ENNReal.mul_left_inj h0 htop).mp (by rw [one_mul]; exact h1)`. Conclude with `h2` after adjusting the coercions.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dhc_unit (u : Fv F v) (hu : Valued.v u = 1) (hu0 : u ≠ 0) :
     distribHaarChar (Fv F v) (Units.mk0 u hu0) = 1 := by
@@ -316,7 +308,7 @@ theorem dhc_unit (u : Fv F v) (hu : Valued.v u = 1) (hu0 : u ≠ 0) :
   exact_mod_cast h2
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDedekindDomain.HeightOneSpectrum.valuation_exists_uniformizer F v`. Conclude with `⟨(π : Fv F v), by`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hπ]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_unif_lemma : ∃ ϖ : Fv F v, Valued.v ϖ = WithZero.exp (-1 : ℤ) := by
   obtain ⟨π, hπ⟩ := IsDedekindDomain.HeightOneSpectrum.valuation_exists_uniformizer F v
@@ -324,9 +316,9 @@ private theorem exists_unif_lemma : ∃ ϖ : Fv F v, Valued.v ϖ = WithZero.exp 
     rw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hπ]⟩
 
 /- English proof (translation)
-Establish `hne : (WithZero.exp (-1 : ℤ)) ≠ 0` using `by first`. Consider the case `exact WithZero.exp_ne_zero`. Consider the case `exact WithZero.coe_ne_zero`. Use `Int.induction_on k ?_ (fun i ih => ?_) (fun i ih => ?_)` and prove the remaining obligations. Simplify using `[WithZero.exp_zero]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[zpow_add_one₀ hne, ih, ← WithZero.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[zpow_sub_one₀ hne, ih, ← WithZero.exp_neg, ← WithZero.exp_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -346,17 +338,15 @@ private theorem exp_zpow_lemma_2 (k : ℤ) :
     ring
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `exists_unif_lemma v`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hϖ` using `[h, map_zero]`. Use `first`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `exact WithZero.exp_ne_zero hϖ.symm`. Consider the case `exact WithZero.coe_ne_zero hϖ.symm`. Establish `hva : Valued.v a ≠ 0` using `by first`. Consider the case `exact (map_ne_zero _).mpr ha`. Consider the case `exact (Valuation.ne_zero_iff _).mpr ha`.
+Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions.
 
-Unfold `PI.NglqJacSplitW.modF PI.LocJacTyp.absV`. Simplify using `only [dif_neg ha, dif_neg hva]`. Take `⟨m, hm, hmdef⟩ : ∃ m : ℤ, Valued.v a = WithZero.exp m ∧ Multiplicative.toAdd (WithZero.unzero hva) = m` from `⟨_, (WithZero.coe_unzero hva).symm, rfl⟩`. Rewrite using `[hmdef]`. Establish `hW : Valued.v ((Units.mk0 a ha * (Units.mk0 ϖ hϖ0) ^ m : (Fv F v)ˣ) : Fv F v) = 1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, Units.val_mk0, Units.val_mk0, map_mul, map_zpow₀, hϖ, exp_zpow_lemma_2, hm, ← WithZero.exp_add, add_neg_cancel, WithZero.exp_zero]`. Establish `hsplit : Units.mk0 a ha = (Units.mk0 a ha * (Units.mk0 ϖ hϖ0) ^ m) * (Units.mk0 ϖ hϖ0) ^ (-m)`. Rewrite using `[mul_assoc, ← zpow_add, add_neg_cancel, zpow_zero, mul_one]`. Establish `h1` using `dhc_unit v _ hW (Units.ne_zero _)`. Rewrite `h1` using `[Units.mk0_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `dhc_unif v ϖ hϖ hϖ0`. Rewrite using `[hsplit, map_mul, map_zpow, h1, h2, one_mul, inv_zpow', neg_neg, ← ENNReal.ofReal_coe_nnreal]`. Use `congr 1`. Apply the tactic sequence `all_goals first`. Consider the case `norm_cast`.
-
-Consider the case `simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem modF_Fv (a : Fv F v) (ha : a ≠ 0) :
     PI.NglqJacSplitW.modF (Fv F v) a = ENNReal.ofReal (absV v a) := by

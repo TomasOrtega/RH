@@ -6,9 +6,9 @@ namespace PI.UnitaryGroupMassFormula.ScGapBig
 open PI.ScGapBig
 
 /- English proof (translation)
-Establish `hmt : m * t ≤ (n + 1) * (n + 6)` using `Nat.mul_le_mul hm ht`. Establish `hsq : 1801 * n ≤ n * n` using `Nat.mul_le_mul_right n hn`. Establish `h1 : n + m * t ≤ 2 * n ^ 2` using `by nlinarith`. Establish `h2 : (n + m * t) ^ 3 ≤ (2 * n ^ 2) ^ 3` using `Nat.pow_le_pow_left h1 3`. Establish `h3 : (2 * n ^ 2) ^ 3 = 8 * n ^ 6` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : 2 ≤ n ^ 13` using `le_trans (by norm_num) (Nat.pow_le_pow_left (show 2 ≤ n by omega) 13)`. Establish `h5 : n ^ 19 = n ^ 6 * n ^ 13` using `by ring`. Establish `h6 : n ^ 6 * 2 ≤ n ^ 6 * n ^ 13` using `Nat.mul_le_mul_left _ h4`. Establish `h7 : n ≤ n ^ 6` using `Nat.le_self_pow (by norm_num) n`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem nat_bound (n m t : ℕ) (hn : 1801 ≤ n) (hm : m ≤ n + 1) (ht : t ≤ n + 6) :
     2 * (n + m * t) ^ 3 + t + 3 < 16 * n ^ 19 := by
@@ -25,11 +25,11 @@ theorem nat_bound (n m t : ℕ) (hn : 1801 ≤ n) (hm : m ≤ n + 1) (ht : t ≤
   omega
 
 /- English proof (translation)
-Introduce `k r b hn hgap`. Establish `hrk : rk48 k r = 2 * r + k + 1` using `rfl`. Choose the witnesses or unpack the hypotheses as in `⟨t, hodd, ht1, ht2⟩ : ∃ t : ℕ, Odd t ∧ rk48 k r + 5 ≤ t ∧ t ≤ rk48 k r + 6 := by`. Break down `Nat.even_or_odd (rk48 k r) with ⟨a, ha⟩ | ⟨a, ha⟩` into its components or cases. Conclude with `⟨rk48 k r + 5, ⟨a + 2, by omega⟩, le_refl _, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨rk48 k r + 6, ⟨a + 3, by omega⟩, by omega, le_refl _⟩`. Use `⟨t, hodd, ht1, by omega, ?_⟩` and prove the remaining obligations. Introduce `j hj`. Establish `hm : 2 * r + 2 ≤ rk48 k r + 1` using `by omega`. Establish `hb` using `nat_bound (rk48 k r) (2 * r + 2) t hn hm ht2`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcast : 2 * ((rk48 k r + (2 * r + 2) * t : ℕ) : ℝ) ^ 3 + (t : ℝ) + 3 < 16 * (rk48 k r : ℝ) ^ 19`. Conclude with `hb` after adjusting the coercions. Combine the linear relations using `[hgap j hj]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem scGapBig_main : ScGapBig := by
   intro k r b hn hgap

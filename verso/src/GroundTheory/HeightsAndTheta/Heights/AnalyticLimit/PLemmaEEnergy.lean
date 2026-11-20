@@ -8,15 +8,15 @@ namespace GroundTheory.Heights₂.Heights.AnalyticLimit
 open ReciprocityTheory.AnForm.M
 
 /- English proof (translation)
-Use `set σ : Equiv.Perm (Fin (n + 1)) := Equiv.swap 0 j with hσdef`. Establish `hσ : ∀ i : Fin n, σ i.succ ≠ j`. Introduce `i h`. Establish `h' : σ (σ i.succ) = σ j` using `congrArg σ h`. Rewrite `h'` using `[Equiv.swap_apply_self, hσdef, Equiv.swap_apply_right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Fin.succ_ne_zero i h'`. Set `d : EnergyStep.Data A Om` to `{ w := w, v := u j, f := fun i => u (σ i.succ), M := 1, w_smooth := hw, w_psh := hwp, v_smooth := hu j, v_nonpos := fun x => (hj x).2, le_v := fun x => (hj x).1, f_smooth := fun _ => hu _, f_psh := fun _ => hpsh _ }`. Establish `h` using `EnergyStep.proof A Om d`. Rewrite using `[← mIntSymm A _ σ, ← mIntSymm A (fun i => potForm Om.pot (Function.update u j 0 i)) σ]`. Establish `e1 : mInt A ((fun i => potForm Om.pot (u i)) ∘ σ) (fun x => -w x) = mInt A (Fin.cons (Om.pot + LocPot.ofFun d.v) d.T) (fun x => -w x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `st_mInt_congr_phi` to reduce the goal to its premises. Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[σ, d, potForm]`. Simplify using `[d, EnergyStep.Data.T, potForm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e2 : mInt A ((fun i => potForm Om.pot (Function.update u j 0 i)) ∘ σ) (fun x => -w x) = mInt A (Fin.cons Om.pot d.T) (fun x => -w x)`. Apply `st_mInt_congr_phi` to reduce the goal to its premises. Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Use function extensionality and compare the values at `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[σ, potForm, locPot_add_φ, LocPot.ofFun]`. Simplify using `[d, EnergyStep.Data.T, potForm, Function.update_of_ne (hσ i)]`. Rewrite using `[e1, e2]`. Simplify `h` using `[d]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lemmaEEnergy_step {n : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas (n + 1) X) (Om : KaehlerForm A) (u : Fin (n + 1) → X → ℝ) (w : X → ℝ)
@@ -55,23 +55,23 @@ theorem lemmaEEnergy_step {n : ℕ} {X : Type} [TopologicalSpace X] [CompactSpac
   simpa [d] using h
 
 /- English proof (translation)
-Introduce `D X _ _ _ A Om v w hv hpsh hb hw hwp`. Consider the cases of `D with`. Consider the case `zero`. Establish `e : (fun i : Fin 0 => potForm Om.pot (v i)) = fun _ => Om.pot` using `funext fun i => i.elim0`. Simplify using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `succ n`. Set `u : ℕ → Fin (n + 1) → X → ℝ` to `fun k i => if (i : ℕ) < k then v i else 0`. Establish `hu : ∀ k i, A.Smooth (u k i)` using `fun k i => by dsimp only [u]; split_ifs exacts [hv i, st_smooth_const A 0]`. Establish `hup : ∀ k i, IsPsh A (potForm Om.pot (u k i))` using `fun k i => by dsimp only [u]; split_ifs exacts [hpsh i, isPsh_add_const Om.isPsh 0]`. Establish `key : ∀ k ≤ n + 1, mInt A (fun i => potForm Om.pot (u k i)) (fun x => -w x) ≤ mInt A (fun i => potForm Om.pot (u 0 i)) (fun x => -w x) + k * Om.vol`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Simplify by unfolding definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `hk`. Establish `hupd : Function.update (u (k + 1)) ⟨k, hk⟩ 0 = u k`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = ⟨k, hk⟩`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[u]`. Rewrite using `[Function.update_of_ne h]`. Establish `hik : (i : ℕ) ≠ k` using `fun e => h (Fin.ext e)`. Distinguish the cases in `hlt : (i : ℕ) < k`. Simplify using `[u, hlt, Nat.lt_succ_of_lt hlt]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ¬ (i : ℕ) < k + 1` using `by omega`. Simplify using `[u, hlt, this]`. Establish `step` using `lemmaEEnergy_step A Om (u (k + 1)) w (hu _) (hup _) ⟨k, hk⟩ (fun x => by simpa [u] using hb ⟨k, hk⟩ x) hw hwp`. Rewrite `step` using `[hupd]`. Use `ih (by omega)` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `key (n + 1) le_rfl`. Establish `e1 : (fun i => potForm Om.pot (u (n + 1) i)) = fun i => potForm Om.pot (v i)`. Use function extensionality and compare the values at `fun i => by simp [u, i.isLt]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e0 : mInt A (fun i => potForm Om.pot (u 0 i)) (fun x => -w x) = mInt A (fun _ => Om.pot) (fun x => -w x)`. Apply `st_mInt_congr_phi` to reduce the goal to its premises. Introduce `i`. Use function extensionality and compare the values at `x y`. Simplify using `[u, potForm, locPot_add_φ, LocPot.ofFun]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[e1, e0]`. Simplify using `using h1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem LemmaEEnergy.proof : LemmaEEnergy.Statement := by
   intro D X _ _ _ A Om v w hv hpsh hb hw hwp

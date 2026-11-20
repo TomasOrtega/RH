@@ -5,15 +5,13 @@ open TopologicalSpace Order
 namespace GlobalTheory.DimDrop
 
 /- English proof (translation)
-Establish `hsub : ∀ i, (q i : Set X) ⊆ Z` using `fun i x hx => h (q.monotone (Fin.le_last i) hx)`. Establish `irr : ∀ i, IsIrreducible (Subtype.val ⁻¹' (q i : Set X) : Set Z)`. Introduce `i`. Use `haveI : IrreducibleSpace (q i : Set X) := Subtype.irreducibleSpace (q i).isIrreducible`. Use `(IrreducibleSpace.isIrreducible_univ (q i : Set X)).image (Set.inclusion (hsub i)) (continuous_inclusion (hsub i)).continuousOn` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Set.image_univ, Set.range_inclusion]`. Conclude with `this`. Set `f : Fin (q.length + 1) → IrreducibleCloseds Z` to `fun i => ⟨Subtype.val ⁻¹' (q i : Set X), irr i, (q i).isClosed.preimage continuous_subtype_val⟩`. Establish `hf : ∀ i j, f i = f j → q i = q j`. Introduce `i j e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : (Subtype.val ⁻¹' (q i : Set X) : Set Z) = Subtype.val ⁻¹' (q j : Set X)` using `congrArg SetLike.coe e`. Establish `e''` using `congrArg (Set.image (Subtype.val : Z → X)) e'`. Rewrite `e''` using `[Subtype.image_preimage_coe, Subtype.image_preimage_coe, Set.inter_eq_right.2 (hsub i), Set.inter_eq_right.2 (hsub j)]`. Conclude with `SetLike.coe_injective e''`. Set `p : LTSeries (IrreducibleCloseds Z)` to `{ length := q.length toFun := f step := fun i => by`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : q i.castSucc < q i.succ` using `q.step i`. Use `show f i.castSucc < f i.succ`. Use `lt_of_le_of_ne ?_ fun e => hs.ne (hf _ _ e)` and prove the remaining obligations. Introduce `x hx`. Conclude with `hs.le hx }`.
-
-Conclude with `LTSeries.length_le_krullDim p`.
+A detailed English derivation is pending.
 -/
 theorem length_le_topologicalKrullDim_of_last_subset {X : Type} [TopologicalSpace X] (Z : Set X)
     (q : LTSeries (IrreducibleCloseds X)) (h : (q.last : Set X) ⊆ Z) :
@@ -48,15 +46,15 @@ theorem length_le_topologicalKrullDim_of_last_subset {X : Type} [TopologicalSpac
   exact LTSeries.length_le_krullDim p
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_lt]`. Take `⟨p, hp⟩` from `le_krullDim_iff.1 hlt`. Set `q : LTSeries (IrreducibleCloseds S)` to `p.map (IrreducibleCloseds.map Subtype.val continuous_subtype_val) (IrreducibleCloseds.map_strictMono_of_isInducing Topology.IsInducing.subtypeVal)`. Establish `hql : q.length = d` using `hp`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hWC : (q.last : Set S) ⊆ C` using `by show closure (Subtype.val '' (p.last : Set C)) ⊆ C`. Use `closure_minimal ?_ hC` and prove the remaining obligations. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`. Take `⟨Z, hZc, hWZ⟩` from `exists_mem_irreducibleComponents_subset_of_isIrreducible _ q.last.isIrreducible`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hEq : (q.last : Set S) = Z`. Use `hZ Z hZc ?_ (hEq ▸ hWC)` and prove the remaining obligations. Use `length_le_topologicalKrullDim_of_last_subset Z q hEq.le` as an intermediate fact. Rewrite `this` using `[hql]`. Then use the resulting hypothesis. Set `Zt : IrreducibleCloseds S` to `⟨Z, hZc.1, isClosed_of_mem_irreducibleComponents Z hZc⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hlt' : q.last < Zt` using `lt_of_le_of_ne hWZ fun e => hEq (congrArg SetLike.coe e)`. Establish `h1` using `LTSeries.length_le_krullDim (q.snoc Zt hlt')`. Establish `h2 : ((d + 1 : ℕ) : WithBot ℕ∞) ≤ (d : WithBot ℕ∞)`. Establish `e : (q.snoc Zt hlt').length = d + 1` using `by simp [hql]`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Conclude with `h1.trans hS`. Normalize the coercions in `at h2`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_lt_of_isClosed (S : Type) [TopologicalSpace S] [NoetherianSpace S]
     (C : Set S) (d : ℕ) (hC : IsClosed C) (hS : topologicalKrullDim S ≤ d)
@@ -91,9 +89,9 @@ theorem topologicalKrullDim_lt_of_isClosed (S : Type) [TopologicalSpace S] [Noet
     omega
 
 /- English proof (translation)
-Establish `hm` using `Order.krullDim_nonpos_iff_forall_isMax.1 h`. Establish `hcomp : ∀ x : S, closure ({x} : Set S) ∈ irreducibleComponents S`. Introduce `x`. Use `⟨isIrreducible_singleton.closure, fun T hT hle => ?_⟩` and prove the remaining obligations. Use `hm ⟨closure {x}, isIrreducible_singleton.closure, isClosed_closure⟩ (b := ⟨closure T, hT.closure, isClosed_closure⟩) (fun y hy => subset_closure (hle hy))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `subset_closure.trans this`. Use `haveI : Finite (irreducibleComponents S) := NoetherianSpace.finite_irreducibleComponents.to_subtype`. Conclude with `Finite.of_injective (fun x => (⟨closure {x}, hcomp x⟩ : irreducibleComponents S)) fun x y hxy => (inseparable_iff_closure_eq.2 (congrArg Subtype.val hxy)).eq`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_topologicalKrullDim_nonpos (S : Type) [TopologicalSpace S] [NoetherianSpace S]
     [T0Space S] (h : topologicalKrullDim S ≤ 0) : Finite S := by
@@ -110,7 +108,7 @@ theorem finite_of_topologicalKrullDim_nonpos (S : Type) [TopologicalSpace S] [No
     fun x y hxy => (inseparable_iff_closure_eq.2 (congrArg Subtype.val hxy)).eq
 
 /- English proof (translation)
-Introduce `S _ _`. Conclude with `⟨fun C d hC hS hZ => topologicalKrullDim_lt_of_isClosed S C d hC hS hZ, fun _ h => finite_of_topologicalKrullDim_nonpos S h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem dim_drop : ∀ (S : Type) [TopologicalSpace S] [NoetherianSpace S],
     (∀ (C : Set S) (d : ℕ), IsClosed C → topologicalKrullDim S ≤ d →

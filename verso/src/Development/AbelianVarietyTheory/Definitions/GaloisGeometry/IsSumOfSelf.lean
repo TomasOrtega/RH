@@ -29,7 +29,7 @@ structure Base : Prop where
   gk : GlobalTheory.Published.GelfandKazhdanDual
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TheRec.recUnique_of_localConverse H.ex H.conv H.exh H.adm H.len`.
+A detailed English derivation is pending.
 -/
 theorem Base.uniq (H : Base) : GlobalTheory.TheRec.RecUnique :=
   GlobalTheory.TheRec.recUnique_of_localConverse H.ex H.conv H.exh H.adm H.len
@@ -42,7 +42,7 @@ def SatMatch (sat : HeightOneSpectrum (𝓞 E) → Multiset ℂˣ → Prop) (ι 
       IsWDOf ι r ((WD.lpUnr h (B.map fun b => ((b⁻¹ : ℂˣ) : ℂ))).lpTw ((1 - (a : ℝ)) / 2))
 
 /- English proof (translation)
-The claim follows from `H.mono fun _ ⟨B, hB, hw⟩ => ⟨B, hB, fun hl A h => (hw hl A h).wdOf_eq hl⟩`.
+A detailed English derivation is pending.
 -/
 theorem SatMatch.wdOf_eq {sat : HeightOneSpectrum (𝓞 E) → Multiset ℂˣ → Prop} {ι : Qbar l ≃+* ℂ}
     {r : G E Ω →* GL (Fin a) (Qbar l)} (H : SatMatch sat ι r) :
@@ -62,7 +62,7 @@ def GalPol [IsCMField E] (ι : Qbar l ≃+* ℂ) (r : G E Ω →* GL (Fin a) (Qb
       IsConjDual c r (cycBar E Ω l ^ (1 - (a : ℤ)) * μ.comp (AlgEquiv.restrictScalarsHom (maximalRealSubfield E)))
 
 /- English proof (translation)
-Use `H g` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_two]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 example {Γ k : Type} [Group Γ] [Field k] {a : ℕ} {b : Fin 2 → ℕ} (r : Γ →* GL (Fin a) k)
     (ρ : ∀ i, Γ →* GL (Fin (b i)) k) (H : IsSumOf r ρ) (g : Γ) :
@@ -70,7 +70,7 @@ example {Γ k : Type} [Group Γ] [Field k] {a : ℕ} {b : Fin 2 → ℕ} (r : Γ
   have := H g; rwa [Fin.sum_univ_two] at this
 
 /- English proof (translation)
-The claim follows from `H.uniq`.
+A detailed English derivation is pending.
 -/
 example (H : Base) : GlobalTheory.TheRec.RecUnique := H.uniq
 

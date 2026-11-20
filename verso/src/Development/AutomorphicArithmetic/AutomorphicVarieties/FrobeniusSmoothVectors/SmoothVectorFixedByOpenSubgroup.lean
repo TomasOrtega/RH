@@ -4,39 +4,33 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `l _ k _ _ F C₀ hok χ hc hloc hnt`. Take `⟨q, hq⟩` from `exists_ne (0 : H1C F.loc (chRep χ) fun _ => ⊥)`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite `hq` using `[Ne, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Take `⟨⟨x, y⟩, hz⟩` from `z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hlc, hcoc, hlocz⟩` from `hz`. Simplify using `only [chRep_apply] at hcoc`. Simplify using `only [chRep_apply, Submodule.mem_bot] at hlocz`. Establish `h2 : (2 : k) ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : ((2 : ℕ) : k) = 0` using `by exact_mod_cast h`. Rewrite `h'` using `[CharP.cast_eq_zero_iff k l]`. Conclude with `hok.l_odd ((Nat.prime_dvd_prime_iff_eq (Fact.out) Nat.prime_two).1 h')`. Establish `hx1 : x 1 = 0`. Establish `e` using `hcoc 1 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[mul_one, map_one, Units.val_one, one_mul]`. Take the linear combination `-e`. Establish `hχ : ∀ s, (χ s : k) * x F.c = x (s * F.c) - x s`. Introduce `s`. Rewrite using `[hcoc]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set X : k := -(x F.c) / 2 with hX`. Use `set x' : F.Γ → k := fun s => x s - ((χ s : k) * X - X) with hx'`. Establish `hform : x' = fun s => (x s + x (s * F.c) - x F.c) / 2`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [hx', hX]`. Rewrite using `[show x (s * F.c) = (χ s : k) * x F.c + x s by rw [hχ]; ring]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hcoc' : ∀ g h, x' (g * h) = x' g + (χ g : k) * x' h`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `g h`. Simplify using `only [hx']`. Rewrite using `[hcoc, map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc' : x' F.c = 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hform]`. Simplify using `only`. Rewrite using `[hok.c_sq, hx1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hloc' : ∀ v s, x' (F.loc v s) = (χ (F.loc v s) : k) * (y v - X) - (y v - X)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `v s`. Simplify using `only [hx']`. Establish `e` using `hlocz v s`. Take the linear combination `e`. Use `⟨x', ?_, hcoc', hc', fun v => ⟨y v - X, hloc' v⟩, ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[hform]`. Conclude with `IsLocallyConstant.comp₂ hlc (hlc.comp_continuous (continuous_mul_right F.c)) (fun a b => (a + b - x F.c) / 2)`. Assume the negation of the conclusion as `hall push_neg at hall`. Establish `hzero : ∀ γ, x' γ = 0`. Introduce `γ`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Break down `Int.units_eq_one_or (F.del γ) with hd | hd` into its components or cases. Conclude with `hall ⟨γ, hd⟩`. Establish `hm : γ * F.c ∈ F.del.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, hd, hok.del_c]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : γ = (γ * F.c) * F.c`. Rewrite using `[mul_assoc, hok.c_sq, mul_one]`. Rewrite using `[e, hcoc', hc', mul_zero, add_zero]`. Conclude with `hall ⟨_, hm⟩`. Establish `hy : ∀ v, y v - X = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `v`. Take `⟨s, hs⟩` from `hloc v`. Establish `e` using `hloc' v s`. Rewrite `e` using `[hzero]`. Establish `e' : ((χ (F.loc v s) : k) - 1) * (y v - X) = 0`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take the linear combination `-e`. Break down `mul_eq_zero.1 e' with h | h` into its components or cases. Conclude with `absurd (by`. Establish `: (χ (F.loc v s) : k) = 1` using `sub_eq_zero.1 h`. Conclude with `Units.val_eq_one.1 this) hs`.
-
-Conclude with `h`. Apply `hq` to reduce the goal to its premises. Use `⟨X, fun s => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `e` using `hzero s`. Simplify using `only [hx'] at e`.
-
-Use `show x s = (chRep χ s) X - X`. Rewrite using `[chRep_apply]`. Take the linear combination `e`. Use `show y v - X ∈ (⊥ : Submodule k k)`. Rewrite using `[Submodule.mem_bot]`.
-
-Conclude with `hy v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.smooth_vector_fixed_by_open_subgroup :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ : ℕ}, F.Ok C₀ → ∀ χ : F.Γ →* kˣ, χ F.c = -1 → (∀ v, ∃ s, χ (F.loc v s) ≠ 1) → Nontrivial (H1C F.loc (chRep χ) fun _ => ⊥) → ∃ x : F.Γ → k, IsLocallyConstant x ∧ (∀ g h, x (g * h) = x g + χ g * x h) ∧ x F.c = 0 ∧ (∀ v, ∃ Y : k, ∀ s, x (F.loc v s) = χ (F.loc v s) * Y - Y) ∧ ∃ g : F.G0, x g ≠ 0 := by

@@ -14,9 +14,9 @@ set_option autoImplicit false
 namespace GlobalTheory.MapLoc
 
 /- English proof (translation)
-Set `η : PrimeSpectrum (X.presheaf.stalk x)` to `⟨⊥, Ideal.isPrime_bot⟩`. Use `⟨X.fromSpecStalk x η, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : η ⤳ IsLocalRing.closedPoint (X.presheaf.stalk x)` using `(PrimeSpectrum.le_iff_specializes _ _).1 (show (⊥ : Ideal _) ≤ _ from bot_le)`. Use `h1.map (X.fromSpecStalk x).continuous` as an intermediate fact. Rewrite `this` using `[Scheme.fromSpecStalk_closedPoint]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `y hy`. Establish `: y ∈ Set.range (X.fromSpecStalk x)` using `by rw [Scheme.range_fromSpecStalk]; exact hy`. Take `⟨q, rfl⟩` from `this`. Conclude with `((PrimeSpectrum.le_iff_specializes η q).1 (show (⊥ : Ideal _) ≤ _ from bot_le)).map (X.fromSpecStalk x).continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_gen (X : Scheme.{0}) (x : X) (hd : IsDomain (X.presheaf.stalk x)) :
     ∃ ξ : X, ξ ⤳ x ∧ ∀ y, y ⤳ x → ξ ⤳ y := by
@@ -33,7 +33,7 @@ theorem exists_gen (X : Scheme.{0}) (x : X) (hd : IsDomain (X.presheaf.stalk x))
       (X.fromSpecStalk x).continuous
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isFractionRing_stalk_generic`.
+A detailed English derivation is pending.
 -/
 theorem isFractionRing_residue : ∀ (X : Scheme.{0}) (x ξ : X) (e : ξ ⤳ x), IsDomain (X.presheaf.stalk x) →
     (∀ y, y ⤳ ξ → y = ξ) →
@@ -42,7 +42,7 @@ theorem isFractionRing_residue : ∀ (X : Scheme.{0}) (x ξ : X) (e : ξ ⤳ x),
   GlobalTheory.T.isFractionRing_stalk_generic
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[← Spec.map_preimage u, ← Spec.map_preimage v]`. Use `congr 1`. Establish `e` using `Spec.map_injective ((Spec.map_comp _ _).trans (h.trans (Spec.map_comp _ _).symm))`. Use extensionality with `a`. Conclude with `hf (congrArg (fun φ => φ.hom a) e)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem spMap_cancel {R K A : Type} [CommRing R] [CommRing K] [CommRing A] (f : R →+* K) (hf : Function.Injective f)
     (u v : Sp R ⟶ Sp A) (h : spMap f ≫ u = spMap f ≫ v) : u = v := by
@@ -56,37 +56,31 @@ end GlobalTheory.MapLoc
 
 open GlobalTheory.MapLoc in
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ i X π ty A Z hp hW hgeo hF hty hloc`. Establish `hn : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z.X` using `(geoOf Z).normal`. Establish `: IsDiscreteValuationRing (Z.i.c.V W)` using `isDiscreteValuationRing_V _ W hp hW`. Establish `hZp : IsProper Z.s`. Use `projProper _ _ _ (geoOf Z).proj` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Z.π_s]`. Then use the resulting hypothesis. Establish `: IsLocallyNoetherian Z.X` using `LocallyOfFiniteType.isLocallyNoetherian Z.s`. Establish `: CompactSpace Z.X` using `QuasiCompact.compactSpace_of_compactSpace Z.s`. Establish `: IsNoetherian Z.X` using `{}`. Establish `hXp : IsProper (π ≫ (Y i).s)` using `projProper _ _ _ hgeo.proj`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hopen : IsOpen Z.opn`. Rewrite using `[← Z.cover]`. Conclude with `isOpen_iUnion fun a => (Z.U a).1.isOpen`. Establish `hdom : ∀ x : Z.X, IsDomain (Z.X.presheaf.stalk x)` using `fun x => (hn x).1`. Use `choose g hgx hgmin using fun x : Z.X => exists_gen Z.X x (hdom x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgo : ∀ x, g x ∈ Z.opn` using `fun x => by`. Take `⟨g', hg', hg'x⟩` from `GlobalTheory.ShFam.EigLoc.exists_generisation hopen Z.dense x`. Conclude with `(hgmin x g' hg'x).mem_open hopen hg'`. Establish `hgen : ∀ x y, y ⤳ g x → y = g x` using `fun x y hy => (hy.antisymm (hgmin x y (hy.trans (hgx x)))).eq`. Set `f : ∀ x : Z.X, Z.X.presheaf.stalk x →+* Z.X.residueField (g x)` to `fun x => (Z.X.presheaf.stalkSpecializes (hgx x) ≫ Z.X.residue (g x)).hom`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hfr : ∀ x, @IsFractionRing (Z.X.presheaf.stalk x) _ (Z.X.residueField (g x)) _ (f x).toAlgebra` using `fun x => isFractionRing_residue Z.X x (g x) (hgx x) (hdom x) (hgen x)`. Establish `hinj : ∀ x, Function.Injective (f x)` using `fun x => by`. Use `letI := (f x).toAlgebra`. Use `haveI := hfr x`. Conclude with `IsFractionRing.injective (Z.X.presheaf.stalk x) (Z.X.residueField (g x))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `key : ∀ x, spMap (f x) ≫ Z.X.fromSpecStalk x = Z.X.fromSpecResidueField (g x)` using `fun x => by show Spec.map (_ ≫ _) ≫ _ = _`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`. Both sides reduce to the same expression. Establish `Hy : ∀ ξ : Z.opn, ∃ y : Sp (Z.X.residueField ξ.1) ⟶ X, NatTo Z A (Z.X.fromSpecResidueField ξ.1) y ∧ ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsIntegrallyClosed R] [Algebra R (Z.X.residueField ξ.1)] [IsFractionRing R (Z.X.residueField ξ.1)] (z : Sp R ⟶ Z.X), spMap ( …` using `fun ξ => hloc _ _ (by`. Introduce and unpack `_ ⟨q, rfl⟩`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Conclude with `Set.mem_of_eq_of_mem (Scheme.fromSpecResidueField_apply ξ.1 _) ξ.2)`. Use `choose y hyN hyE using Hy`. Establish `Hh : ∀ x : Z.X, ∃ z' : Sp (Z.X.presheaf.stalk x) ⟶ X, spMap (f x) ≫ z' = y ⟨g x, hgo x⟩` using `fun x => by`. Use `letI := (f x).toAlgebra`. Use `haveI := hfr x`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hdom x`. Use `haveI := (hn x).2`. Conclude with `hyE ⟨g x, hgo x⟩ (Z.X.presheaf.stalk x) (Z.X.fromSpecStalk x) (key x)`. Use `choose h hh using Hh`. Establish `hh' : ∀ x ξ (e : ξ ⤳ x), g x = ξ → ∀ hξ : ξ ∈ Z.opn, Spec.map (Z.X.presheaf.stalkSpecializes e ≫ Z.X.residue ξ) ≫ h x = y ⟨ξ, hξ⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x ξ e rfl hξ`. Conclude with `hh x`. Set `b : i.c.V W →+* Z.i.c.V W` to `((IntermediateField.inclusion hF).toRingHom.comp (i.c.V W).subtype).codRestrict (Z.i.c.V W) fun x => x.2`. Establish `hovr : ∀ {K : Type} [Field K] (w : Sp K ⟶ Z.X) (y' : Sp K ⟶ X), NatTo Z A w y' → y' ≫ π ≫ (Y i).s = w ≫ Z.s ≫ spMap b`. Introduce and unpack `K _ w y' ⟨τ, mu, u, ⟨b', π', r, hb', h1, h2, -⟩, he, -, -⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eb : b' = b` using `RingHom.ext fun v => Subtype.ext (Subtype.ext (hb' v))`. Substitute `eb` using the available equality. Rewrite using `[← Category.assoc, he, ← h1, ← Z.π_s]`. Simplify using `only [Category.assoc]`. Rewrite using `[pullback.condition, reassoc_of% h2]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Establish `hover : ∀ x, h x ≫ π ≫ (Y i).s = Z.X.fromSpecStalk x ≫ Z.s ≫ spMap b` using `fun x => by`. Apply `spMap_cancel (f x) (hinj x)` to reduce the goal to its premises. Rewrite using `[← Category.assoc, hh x]`. Conclude with `(hovr (Z.X.fromSpecResidueField (g x)) (y ⟨g x, hgo x⟩) (hyN ⟨g x, hgo x⟩)).trans (by rw [← key x]; exact Category.assoc _ _ _)`. Take `⟨gg, hgg⟩` from `GlobalTheory.T.exists_morphism_of_stalk_maps (Sp (i.c.V W)) Z.X X (Z.s ≫ spMap b) (π ≫ (Y i).s) h inferInstance inferInstance inferInstance hn hover (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `x ξ e hξ`. Establish `hxg : g x = ξ` using `hξ _ (hgmin x ξ e)`. Establish `hξg : g ξ = ξ` using `hξ _ (hgx ξ)`. Establish `hξo : ξ ∈ Z.opn` using `hxg ▸ hgo x`. Establish `hi : Function.Injective (Z.X.residue ξ).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `letI := (Z.X.presheaf.stalkSpecializes (specializes_refl ξ) ≫ Z.X.residue ξ).hom.toAlgebra`. Use `haveI := isFractionRing_residue Z.X ξ ξ (specializes_refl ξ) (hdom ξ) hξ`. Use `IsFractionRing.injective (Z.X.presheaf.stalk ξ) (Z.X.residueField ξ)` as an intermediate fact. Rewrite `this` using `[RingHom.algebraMap_toAlgebra, TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp]`. Then use the resulting hypothesis. Use `haveI : IsIso (Z.X.residue ξ) := (ConcreteCategory.isIso_iff_bijective _).2 ⟨hi, Scheme.residue_surjective _ _⟩`.
-
-Rewrite using `[← cancel_epi (Spec.map (Z.X.residue ξ)), ← Category.assoc, ← Spec.map_comp, hh' x ξ e hxg hξo]`. Use `hh' ξ ξ (specializes_refl ξ) hξg hξo` as an intermediate fact. Rewrite `this` using `[TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp]`. Conclude with `this.symm)`. Use `⟨gg, fun k _ w hw => ?_⟩` and prove the remaining obligations.
-
-Take `⟨x, hx⟩ : ∃ x, w (IsLocalRing.closedPoint k) = x` from `⟨_, rfl⟩`. Take `⟨ψ, hψ⟩` from `GlobalTheory.ShFam.EigLoc.exists_stalk_factor w x (hx ▸ specializes_rfl)`. Establish `hxo : x ∈ Z.opn` using `hx ▸ hw ⟨_, rfl⟩`. Establish `e1 : w ≫ gg = spMap ψ ≫ h x` using `by rw [← hψ, Category.assoc, hgg]`. Rewrite using `[e1, ← hψ]`.
-
-Use `GlobalTheory.T.atlas_local_ring_points E H Dw Xo p W Y i₀ i X π ty A Z (Z.X.presheaf.stalk x) (Z.X.residueField (g x)) k (f x) ψ (Z.X.fromSpecStalk x) (h x) hF hty (hinj x) (by rw [Scheme.fromSpecStalk_closedPoint]; exact hxo) ?_` and prove the remaining obligations. Rewrite using `[key x, hh x]`. Conclude with `hyN ⟨g x, hgo x⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DRFlag.exists_mapsTo : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p) (i : Idx H p) (X : Scheme.{0}) (π : X ⟶ (Y i).X) (ty : (E →+* ℂ) → Finset ℕ) (A : Atlas (Y i) π ty) (Z : Mdl Y i₀), p.Prime → (p : ℂ) ∈ W.nonunits → Geo (Y i) π → i.c.F ≤ Z.i.c.F → (∀ σ, ty σ ⊆ Z.ty σ) → LocMaps Z A → ∃ h, MapsTo Z A h := by
   intro E _ _ _ H Dw Xo p W Y i₀ i X π ty A Z hp hW hgeo hF hty hloc

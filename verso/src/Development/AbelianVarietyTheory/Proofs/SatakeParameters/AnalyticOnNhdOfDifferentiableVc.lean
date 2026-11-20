@@ -19,9 +19,9 @@ namespace GlobalTheory
 variable {D : D7}
 
 /- English proof (translation)
-Set `e : TaylorLogMetric.VC D N N' ≃L[ℂ] (Fin (Module.finrank ℂ (TaylorLogMetric.VC D N N')) → ℂ)` to `ContinuousLinearEquiv.ofFinrankEq (by rw [Module.finrank_fin_fun])`. Establish `h1 : AnalyticOnNhd ℂ (H ∘ e.symm) Set.univ` using `ReciprocityTheory.AnForm.Osgood.osgood _ Set.univ (H ∘ e.symm) isOpen_univ (hH.comp e.symm.differentiable).differentiableOn`. Establish `h2 : H = (H ∘ e.symm) ∘ e`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2]`. Conclude with `h1.comp (e.toContinuousLinearMap.analyticOnNhd Set.univ) (Set.mapsTo_univ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_of_differentiable_vc {N N' : ℕ} (H : TaylorLogMetric.VC D N N' → ℂ) (hH : Differentiable ℂ H) :
     AnalyticOnNhd ℂ H Set.univ := by
@@ -37,9 +37,9 @@ theorem analyticOnNhd_of_differentiable_vc {N N' : ℕ} (H : TaylorLogMetric.VC 
   exact h1.comp (e.toContinuousLinearMap.analyticOnNhd Set.univ) (Set.mapsTo_univ _ _)
 
 /- English proof (translation)
-Introduce `D N N' m c G hc hG`. Establish `hd : ∀ k, Differentiable ℂ (G k)` using `fun k => (hG k).1`. Use `⟨by fun_prop, fun α => ?_⟩` and prove the remaining obligations. Establish `hsm : ∀ k (n : ℕ), ContDiff ℂ n (G k)` using `fun k n => Formalism.L2.KerInert.ie_smooth (analyticOnNhd_of_differentiable_vc (G k) (hd k)) n`. Rewrite using `[Formalism.L2.KerInert.ie_taylor_lin c G hsm α]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sum_mem fun k _ => mul_mem (hc k) ((hG k).2 α)`.
+A detailed English derivation is pending.
 -/
 theorem entire_algCoef_comb : ∀ (D : D7) {N N' m : ℕ} (c : Fin m → ℂ) (G : Fin m → TaylorLogMetric.VC D N N' → ℂ), (∀ k, c k ∈ TaylorLogMetric.Qbar) → (∀ k, Differentiable ℂ (G k) ∧ TaylorLogMetric.CoefIn D (G k) TaylorLogMetric.Qbar) → Differentiable ℂ (fun z => ∑ k, c k * G k z) ∧ TaylorLogMetric.CoefIn D (fun z => ∑ k, c k * G k z) TaylorLogMetric.Qbar := by
   intro D N N' m c G hc hG

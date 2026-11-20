@@ -18,35 +18,35 @@ variable (p : ℕ) [Fact p.Prime] (K L : IntermediateField ℚ_[p] (PadicAlgCl p
 variable {p K L}
 
 /- English proof (translation)
-Introduce `g hg` and use `hχ g fun x hx => hg x (h hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem TrivOn.of_le {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : L ≤ L') {χ : charGrp (GK p K)} (hχ : TrivOn p K L χ) : TrivOn p K L' χ :=
   fun g hg => hχ g fun x hx => hg x (h hx)
 
 /- English proof (translation)
-Introduce `χ hχ` and use `hg χ (hχ.of_le h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsRecip.of_le {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : L ≤ L') {a : Kˣ} {g : GK p K} (hg : IsRecip p K L' a g) :
     IsRecip p K L a g := fun χ hχ => hg χ (hχ.of_le h)
 
 /- English proof (translation)
-Introduce `χ hχ` and use `by rw [pairK_mul, ← h χ hχ, ← h' χ hχ, ofMul_mul, map_add]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsRecip.mul {a b : Kˣ} {g g' : GK p K} (h : IsRecip p K L a g) (h' : IsRecip p K L b g') :
     IsRecip p K L (a * b) (g * g') := fun χ hχ => by
   rw [pairK_mul, ← h χ hχ, ← h' χ hχ, ofMul_mul, map_add]
 
 /- English proof (translation)
-Introduce `χ hχ` and use `by rw [← h χ hχ, show g' = g * (g⁻¹ * g') by group, ofMul_mul, map_add, hχ _ hg, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsRecip.congr {a : Kˣ} {g g' : GK p K} (h : IsRecip p K L a g) (hg : g⁻¹ * g' ∈ subG p K L) :
     IsRecip p K L a g' := fun χ hχ => by
   rw [← h χ hχ, show g' = g * (g⁻¹ * g') by group, ofMul_mul, map_add, hχ _ hg, add_zero]
 
 /- English proof (translation)
-Use `hL.normal` as an intermediate fact. Use `discreteTopology_GalLK (K := K) hL.fin` as an intermediate fact. Use `⟨Additive (GalLK p K L), quotAddCommGroup (subG p K L) hL.comm, finite_GalLK (K := K) hL.fin, MonoidHom.toAdditive (QuotientGroup.mk' (subG p K L)), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun x => (QuotientGroup.mk'_surjective (subG p K L) (Additive.toMul x)).imp fun g hg => congrArg Additive.ofMul hg`. Conclude with `(IsLocallyConstant.of_discrete (fun x : GalLK p K L => Additive.ofMul x)).comp_continuous QuotientGroup.continuous_mk`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `g`. Conclude with `QuotientGroup.eq_one_iff g`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_quot_data (hL : IsAbLK p K L) : ∃ (A : Type) (_ : AddCommGroup A) (_ : Finite A) (π : Additive (GK p K) →+ A),
     Surjective π ∧ (IsLocallyConstant fun g : GK p K => π (Additive.ofMul g)) ∧ Nat.card A = degLK p K L ∧
@@ -63,7 +63,7 @@ theorem exists_quot_data (hL : IsAbLK p K L) : ∃ (A : Type) (_ : AddCommGroup 
     exact QuotientGroup.eq_one_iff g
 
 /- English proof (translation)
-Take `⟨A, _, _, π, hπ, hc, -, hker⟩` from `exists_quot_data hL`. Take `⟨χ, h1, h2⟩` from `exists_character_ne_zero_of_quotient hc g (fun h => hg ((hker g).1 h))`. Conclude with `⟨χ, fun g hg => h1 g ((hker g).2 hg), h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_char_ne_zero (hL : IsAbLK p K L) (g : GK p K) (hg : g ∉ subG p K L) :
     ∃ χ : charGrp (GK p K), TrivOn p K L χ ∧ χ.1 (Additive.ofMul g) ≠ 0 := by
@@ -72,7 +72,7 @@ theorem exists_char_ne_zero (hL : IsAbLK p K L) (g : GK p K) (hg : g ∉ subG p 
   exact ⟨χ, fun g hg => h1 g ((hker g).2 hg), h2⟩
 
 /- English proof (translation)
-Take `⟨A, _, _, π, hπ, hc, hcard, hker⟩` from `exists_quot_data hL`. Rewrite using `[← hcard, ← card_characters_of_finite_quotient hc hπ]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun χ => ⟨fun h g hg => h g ((hker g).1 hg), fun h g hg => h g ((hker g).2 hg)⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_trivOn (hL : IsAbLK p K L) :
     Nat.card {χ : charGrp (GK p K) // TrivOn p K L χ} = degLK p K L := by
@@ -82,7 +82,7 @@ theorem card_trivOn (hL : IsAbLK p K L) :
     ⟨fun h g hg => h g ((hker g).1 hg), fun h g hg => h g ((hker g).2 hg)⟩)
 
 /- English proof (translation)
-Take `⟨A, _, _, π, hπ, hc, -, hker⟩` from `exists_quot_data hL`. Take `⟨g, hg⟩` from `exists_element_evaluating_characters hc hπ f`. Conclude with `⟨g, fun χ hχ => hg χ fun g hg => hχ g ((hker g).1 hg)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eval (hL : IsAbLK p K L) (f : charGrp (GK p K) →+ QZ) :
     ∃ g : GK p K, ∀ χ, TrivOn p K L χ → χ.1 (Additive.ofMul g) = f χ := by
@@ -91,7 +91,7 @@ theorem exists_eval (hL : IsAbLK p K L) (f : charGrp (GK p K) →+ QZ) :
   exact ⟨g, fun χ hχ => hg χ fun g hg => hχ g ((hker g).1 hg)⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Take `⟨χ, hχ, hne⟩` from `exists_char_ne_zero hL _ hn`. Apply `hne` to reduce the goal to its premises. Rewrite using `[ofMul_mul, map_add, ofMul_inv, map_neg, h χ hχ, h' χ hχ, neg_add_cancel]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsRecip.unique (hL : IsAbLK p K L) {a : Kˣ} {g g' : GK p K} (h : IsRecip p K L a g)
     (h' : IsRecip p K L a g') : g⁻¹ * g' ∈ subG p K L := by
@@ -101,7 +101,7 @@ theorem IsRecip.unique (hL : IsAbLK p K L) {a : Kˣ} {g g' : GK p K} (h : IsReci
   rw [ofMul_mul, map_add, ofMul_inv, map_neg, h χ hχ, h' χ hχ, neg_add_cancel]
 
 /- English proof (translation)
-The claim follows from `exists_eval hL { toFun := fun χ => pairK p K a χ map_zero' := pairK_zero a map_add' := pairK_add a }`.
+A detailed English derivation is pending.
 -/
 theorem exists_isRecip (hL : IsAbLK p K L) (a : Kˣ) : ∃ g : GK p K, IsRecip p K L a g :=
   exists_eval hL
@@ -110,13 +110,11 @@ theorem exists_isRecip (hL : IsAbLK p K L) (a : Kˣ) : ∃ g : GK p K, IsRecip p
       map_add' := pairK_add a }
 
 /- English proof (translation)
-Use `⟨(finiteIndex_normGrp hK hL.fin hL.le).index_ne_zero, ?_⟩` and prove the remaining obligations. Proceed by induction on `hn : degLK p K L using Nat.strong_induction_on generalizing K with`. Consider the case `_ n ih`. Distinguish the cases in `hall : ∀ g : GK p K, g ∈ subG p K L`. Establish `h1 : L ≤ K`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `(subG_le_iff (L' := K) hL.le).1 fun s _ => hall s` as an intermediate fact. Rewrite `this` using `[sup_idem]`. Then use the resulting hypothesis. Establish `h2 : L = K` using `le_antisymm h1 hL.le`. Rewrite using `[h2, normGrp_self, Subgroup.index_top]`. Conclude with `hn ▸ degLK_pos hL.fin`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `push Not at hall`. Take `⟨g, hg⟩` from `hall`. Take `⟨χ, hχ, hne⟩` from `exists_char_ne_zero hL g hg`. Take `⟨M, hM, hML, hlt, hdeg, hle⟩` from `index_normGrp_le_step hK hL g χ hχ hne`. Establish `h3` using `ih _ (hn ▸ hlt) hM hML rfl`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem index_normGrp_le (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) :
     (normGrp p K L).index ≠ 0 ∧ (normGrp p K L).index ≤ degLK p K L := by
@@ -140,20 +138,20 @@ theorem index_normGrp_le (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) 
         _ = n := by rw [← hn, hdeg, mul_comm]
 
 /- English proof (translation)
-The claim follows from `local_pairing_eq_zero_of_mem_normGroup hK hL.fin hL.le a ha χ hχ`.
+A detailed English derivation is pending.
 -/
 theorem pairK_eq_zero_of_mem_normGrp (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) (a : Kˣ) (ha : a ∈ normGrp p K L)
     (χ : charGrp (GK p K)) (hχ : TrivOn p K L χ) : pairK p K a χ = 0 :=
   local_pairing_eq_zero_of_mem_normGroup hK hL.fin hL.le a ha χ hχ
 
 /- English proof (translation)
-Introduce `χ hχ` and use `by rw [pairK_inv, ← h χ hχ, ofMul_inv, map_neg]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsRecip.inv {a : Kˣ} {g : GK p K} (h : IsRecip p K L a g) : IsRecip p K L a⁻¹ g⁻¹ := fun χ hχ => by
   rw [pairK_inv, ← h χ hχ, ofMul_inv, map_neg]
 
 /- English proof (translation)
-Introduce `χ hχ` and use `by rw [pairK_one, hχ g hg]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isRecip_one_of_mem {g : GK p K} (hg : g ∈ subG p K L) : IsRecip p K L 1 g := fun χ hχ => by
   rw [pairK_one, hχ g hg]
@@ -167,9 +165,9 @@ def recipImage (H : Subgroup Kˣ) : Subgroup (GK p K) where
   inv_mem' := fun ⟨a, ha, h⟩ => ⟨a⁻¹, H.inv_mem ha, h.inv⟩
 
 /- English proof (translation)
-Establish `hle : subG p K L ≤ recipImage p K L H` using `fun g hg => ⟨1, H.one_mem, isRecip_one_of_mem hg⟩`. Take `⟨L₀, h0, -, he⟩` from `exists_subG_eq_of_isOpen hK _ (Subgroup.isOpen_mono hle (isOpen_subG hL.fin))`. Establish `h1 : L₀ ≤ L`. Use `(subG_le_iff (L' := L) h0).1 (he ▸ hle)` as an intermediate fact. Rewrite `this` using `[sup_eq_right.2 hL.le]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `⟨L₀, hL.of_le h0 h1, h1, he⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_field_recipImage (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) (H : Subgroup Kˣ) :
     ∃ L₀ : IntermediateField ℚ_[p] (PadicAlgCl p), IsAbLK p K L₀ ∧ L₀ ≤ L ∧ subG p K L₀ = recipImage p K L H := by
@@ -181,11 +179,9 @@ theorem exists_field_recipImage (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK 
   exact ⟨L₀, hL.of_le h0 h1, h1, he⟩
 
 /- English proof (translation)
-Take `⟨L₀, hL₀, hle, he⟩` from `exists_field_recipImage hK hL ⊤`. Assume the negation of the conclusion as `hcon`. Establish `hg : g ∉ subG p K L₀`. Rewrite using `[he]`. Introduce and unpack `⟨a, -, ha⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hcon ⟨a, ha⟩`. Take `⟨χ, hχ, hne⟩` from `exists_char_ne_zero hL₀ g hg`. Establish `h0 : χ = 0` using `eq_zero_of_pairK_eq_zero hK χ fun a => by`. Take `⟨g', hg'⟩` from `exists_isRecip hL a`. Rewrite using `[← hg' χ (hχ.of_le hle)]`.
-
-Conclude with `hχ g' (he ▸ ⟨a, trivial, hg'⟩)`. Conclude with `hne (by rw [h0]; rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isRecip_of_gal (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) (g : GK p K) : ∃ a : Kˣ, IsRecip p K L a g := by
   obtain ⟨L₀, hL₀, hle, he⟩ := exists_field_recipImage hK hL ⊤
@@ -202,11 +198,11 @@ theorem exists_isRecip_of_gal (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p 
   exact hne (by rw [h0]; rfl)
 
 /- English proof (translation)
-Use `choose γ hγ using fun a => exists_isRecip hL a`. Use `⟨MonoidHom.mk' (fun a => QuotientGroup.mk (γ a)) (fun a b => ?_), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.mk_mul]`. Conclude with `QuotientGroup.eq.2 (IsRecip.unique hL (hγ _) ((hγ a).mul (hγ b)))`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H g`. Take `⟨a, ha⟩` from `exists_isRecip_of_gal hK hL g`. Conclude with `⟨a, QuotientGroup.eq.2 (IsRecip.unique hL (hγ a) ha)⟩`. Introduce `a g`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `QuotientGroup.eq.2 (IsRecip.unique hL (hγ a) h)`. Introduce `h`. Conclude with `(hγ a).congr (QuotientGroup.eq.1 h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_recipHom (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) [(subG p K L).Normal] :
     ∃ φ : Kˣ →* GalLK p K L, Surjective φ ∧ ∀ a g, IsRecip p K L a g ↔ φ a = QuotientGroup.mk g := by
@@ -227,7 +223,7 @@ theorem exists_recipHom (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) [
       exact (hγ a).congr (QuotientGroup.eq.1 h)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hg`. Take `⟨χ, hχ, hne⟩` from `exists_char_ne_zero hL g hg`. Conclude with `hne ((h χ hχ).trans (pairK_eq_zero_of_mem_normGrp hK hL a ha χ hχ))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsRecip.mem_subG_of_mem_normGrp (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) {a : Kˣ} {g : GK p K}
     (h : IsRecip p K L a g) (ha : a ∈ normGrp p K L) : g ∈ subG p K L := by
@@ -236,11 +232,11 @@ theorem IsRecip.mem_subG_of_mem_normGrp (hK : FiniteDimensional ℚ_[p] K) (hL :
   exact hne ((h χ hχ).trans (pairK_eq_zero_of_mem_normGrp hK hL a ha χ hχ))
 
 /- English proof (translation)
-Establish `hle : normGrp p K L ≤ φ.ker` using `fun a ha => by`. Take `⟨g, hg⟩` from `exists_isRecip hL a`. Rewrite using `[MonoidHom.mem_ker, (hφ a g).1 hg]`. Conclude with `(QuotientGroup.eq_one_iff g).2 (hg.mem_subG_of_mem_normGrp hK hL ha)`. Establish `hk : φ.ker.index = degLK p K L`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.index_ker, MonoidHom.range_eq_top.2 hs, Subgroup.card_top]`. Both sides reduce to the same expression. Take `⟨h0, h1⟩` from `index_normGrp_le hK hL`. Establish `h2 : (normGrp p K L).index = degLK p K L` using `le_antisymm h1 (hk ▸ Nat.le_of_dvd (Nat.pos_of_ne_zero h0) (Subgroup.index_dvd_of_le hle))`. Use `⟨le_antisymm ?_ hle, h2⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3` using `Subgroup.relIndex_mul_index hle`. Rewrite `h3` using `[hk, h2]`. Establish `h4 : (normGrp p K L).relIndex φ.ker = 1` using `Nat.eq_of_mul_eq_mul_right (degLK_pos hL.fin) (by rw [h3, one_mul])`. Conclude with `Subgroup.relIndex_eq_one.1 h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem recipHom_ker (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) [(subG p K L).Normal] (φ : Kˣ →* GalLK p K L)
     (hs : Surjective φ) (hφ : ∀ a g, IsRecip p K L a g ↔ φ a = QuotientGroup.mk g) :
@@ -263,7 +259,7 @@ theorem recipHom_ker (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) [(su
   exact Subgroup.relIndex_eq_one.1 h4
 
 /- English proof (translation)
-Use `hL.normal` as an intermediate fact. Take `⟨φ, hs, hφ⟩` from `exists_recipHom hK hL`. Rewrite using `[← (recipHom_ker hK hL φ hs hφ).1, MonoidHom.mem_ker, (hφ a g).1 h]`. Conclude with `(QuotientGroup.eq_one_iff g).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRecip.mem_subG_iff (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) {a : Kˣ} {g : GK p K} (h : IsRecip p K L a g) :
     g ∈ subG p K L ↔ a ∈ normGrp p K L := by
@@ -273,7 +269,7 @@ theorem IsRecip.mem_subG_iff (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K
   exact (QuotientGroup.eq_one_iff g).symm
 
 /- English proof (translation)
-Use `hL.normal` as an intermediate fact. Take `⟨φ, hs, hφ⟩` from `exists_recipHom hK hL`. Conclude with `(recipHom_ker hK hL φ hs hφ).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem index_normGrp (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) : (normGrp p K L).index = degLK p K L := by
   have := hL.normal
@@ -281,7 +277,7 @@ theorem index_normGrp (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) : (
   exact (recipHom_ker hK hL φ hs hφ).2
 
 /- English proof (translation)
-Use extensionality with `a`. Take `⟨g, hg⟩` from `exists_isRecip (hL.sup hL') a`. Rewrite using `[Subgroup.mem_inf, ← hg.mem_subG_iff hK (hL.sup hL'), ← (hg.of_le le_sup_left).mem_subG_iff hK hL, ← (hg.of_le le_sup_right).mem_subG_iff hK hL', subG_sup_eq_inf, Subgroup.mem_inf]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem normGrp_sup (hK : FiniteDimensional ℚ_[p] K) {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL : IsAbLK p K L) (hL' : IsAbLK p K L') :
     normGrp p K (L ⊔ L') = normGrp p K L ⊓ normGrp p K L' := by
@@ -291,9 +287,9 @@ theorem normGrp_sup (hK : FiniteDimensional ℚ_[p] K) {L' : IntermediateField �
     ← (hg.of_le le_sup_right).mem_subG_iff hK hL', subG_sup_eq_inf, Subgroup.mem_inf]
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => normGrp_anti hL'.fin hL.le h⟩` and prove the remaining obligations. Establish `h1 : normGrp p K (L ⊔ L') = normGrp p K L'` using `by rw [normGrp_sup hK hL hL', inf_eq_right.2 h]`. Establish `h2 : degLK p K (L ⊔ L') = degLK p K L'`. Rewrite using `[← index_normGrp hK (hL.sup hL'), ← index_normGrp hK hL', h1]`. Establish `hle : subG p K (L ⊔ L') ≤ subG p K L'` using `subG_anti le_sup_right`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `Subgroup.relIndex_mul_index hle`. Establish `h4 : (subG p K (L ⊔ L')).relIndex (subG p K L') = 1` using `Nat.eq_of_mul_eq_mul_right (degLK_pos (K := K) hL'.fin) (by rw [one_mul]; exact h3.trans h2)`. Establish `h5 : subG p K L' ≤ subG p K L` using `(Subgroup.relIndex_eq_one.1 h4).trans (subG_anti le_sup_left)`. Use `(subG_le_iff hL.le).1 h5` as an intermediate fact. Rewrite `this` using `[sup_eq_right.2 hL'.le]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem normGrp_le_iff (hK : FiniteDimensional ℚ_[p] K) {L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL : IsAbLK p K L) (hL' : IsAbLK p K L') :
     normGrp p K L' ≤ normGrp p K L ↔ L ≤ L' := by
@@ -310,11 +306,11 @@ theorem normGrp_le_iff (hK : FiniteDimensional ℚ_[p] K) {L' : IntermediateFiel
   rwa [sup_eq_right.2 hL'.le] at this
 
 /- English proof (translation)
-Take `⟨L₀, hL₀, hle, he⟩` from `exists_field_recipImage hK hL H`. Use `⟨L₀, hL₀, hle, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Take `⟨g, hg⟩` from `exists_isRecip hL a`. Rewrite using `[← (hg.of_le hle).mem_subG_iff hK hL₀, he]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a', ha', hg'⟩`. Establish `h1 : IsRecip p K L (a * a'⁻¹) 1`. Use `hg.mul hg'.inv` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : a * a'⁻¹ ∈ H` using `hH ((h1.mem_subG_iff hK hL).1 (subG p K L).one_mem)`. Use `H.mul_mem h2 ha'` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis. Introduce `ha`. Conclude with `⟨a, ha, hg⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_normGrp_eq_of_le (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) (H : Subgroup Kˣ) (hH : normGrp p K L ≤ H) :
     ∃ L₀ : IntermediateField ℚ_[p] (PadicAlgCl p), IsAbLK p K L₀ ∧ L₀ ≤ L ∧ normGrp p K L₀ = H := by
@@ -335,14 +331,14 @@ theorem exists_normGrp_eq_of_le (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK 
     exact ⟨a, ha, hg⟩
 
 /- English proof (translation)
-Introduce `χ hχ` and use `(pairK_uniformiser_unr hK π hπ χ (hχ.of_le (Kn_le_Kur hn))).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isRecip_uniformiser_Kn (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) (π : Kˣ) (hπ : vK p K π = 1) :
     IsRecip p K (Kn p K n) π (frobK p K) := fun χ hχ =>
   (pairK_uniformiser_unr hK π hπ χ (hχ.of_le (Kn_le_Kur hn))).symm
 
 /- English proof (translation)
-Introduce `χ hχ` and use `by rw [pairK_norm hK hM h b a ha χ] exact hg (resChar h χ) fun s hs => hχ (resGK h s) fun x hx => hs x (hE hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsRecip.norm (hK : FiniteDimensional ℚ_[p] K) {M E : IntermediateField ℚ_[p] (PadicAlgCl p)} (hM : FiniteDimensional ℚ_[p] M) (h : K ≤ M) (hE : E ≤ L) {b : Mˣ} {a : Kˣ}
     (ha : ofK p K (Additive.ofMul a) = normHom p K M (ofK p M (Additive.ofMul b))) {g : GK p M}
@@ -351,9 +347,9 @@ theorem IsRecip.norm (hK : FiniteDimensional ℚ_[p] K) {M E : IntermediateField
   exact hg (resChar h χ) fun s hs => hχ (resGK h s) fun x hx => hs x (hE hx)
 
 /- English proof (translation)
-Set `f : M →ₐ[ℚ_[p]] M` to `AlgHom.codRestrict (((σ.restrictScalars ℚ_[p] : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) : PadicAlgCl p →ₐ[ℚ_[p]] PadicAlgCl p).comp M.val) M.toSubalgebra (fun x => h x.1 x.2)`. Establish `hf` using `Algebra.IsAlgebraic.algHom_bijective f`. Introduce `x hx`. Take `⟨y, hy⟩` from `hf.2 ⟨x, hx⟩`. Establish `h1 : σ y.1 = x` using `congrArg Subtype.val hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Use `show (σ⁻¹ * σ) y.1 ∈ M`. Rewrite using `[inv_mul_cancel]`. Conclude with `y.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stable_inv_of_stable {M : IntermediateField ℚ_[p] (PadicAlgCl p)} (hM : FiniteDimensional ℚ_[p] M) (σ : GK p K)
     (h : ∀ x ∈ M, σ x ∈ M) : ∀ x ∈ M, σ⁻¹ x ∈ M := by
@@ -370,13 +366,11 @@ theorem stable_inv_of_stable {M : IntermediateField ℚ_[p] (PadicAlgCl p)} (hM 
   exact y.2
 
 /- English proof (translation)
-Establish `hinv` using `stable_inv_of_stable hM σ hσ`. Establish `hex : ∀ g : GK p M, ∃ g' : GK p M, resGK h g' = σ * resGK h g * σ⁻¹` using `fun g => by`. Establish `: σ * resGK h g * σ⁻¹ ∈ (resGK h).range`. Rewrite using `[range_resGK h]`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show σ (g (σ⁻¹ x)) = x`. Rewrite using `[show g (σ⁻¹ x) = σ⁻¹ x from g.commutes ⟨_, hinv x hx⟩]`. Use `show (σ * σ⁻¹) x = x`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Use `choose c hc using hex`. Use `⟨MonoidHom.mk' c fun a b => resGK_injective h ?_, ?_, hc⟩` and prove the remaining obligations. Rewrite using `[map_mul, hc, hc, hc, map_mul]`. Use `group`.
-
-Rewrite using `[(isClosedEmbedding_resGK h).isInducing.continuous_iff]`. Establish `: (resGK h ∘ (MonoidHom.mk' c fun a b => resGK_injective h (by rw [map_mul, hc, hc, hc, map_mul]; group))) = fun g => σ * resGK h g * σ⁻¹` using `funext hc`. Rewrite using `[this]`. Conclude with `(continuous_const.mul (resGK_continuous h)).mul continuous_const`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conjGK {M : IntermediateField ℚ_[p] (PadicAlgCl p)} (hM : FiniteDimensional ℚ_[p] M) (h : K ≤ M) (σ : GK p K)
     (hσ : ∀ x ∈ M, σ x ∈ M) :
@@ -401,13 +395,11 @@ theorem exists_conjGK {M : IntermediateField ℚ_[p] (PadicAlgCl p)} (hM : Finit
     exact (continuous_const.mul (resGK_continuous h)).mul continuous_const
 
 /- English proof (translation)
-Establish `hfd : FiniteDimensional ℚ_[p] M` using `by assumption`. Take `⟨c, hcc, hc⟩` from `exists_conjGK hfd h σ hM`. Introduce `χ' hχ'`. Set `χ : charGrp (GK p M)` to `⟨χ'.1.comp (MonoidHom.toAdditive c), (show IsLocallyConstant fun g : GK p M => χ'.1 (Additive.ofMul g) from χ'.2).comp_continuous hcc⟩`. Establish `hχ : ∀ s s' : GK p M, resGK h s' = σ * resGK h s * σ⁻¹ → χ'.1 (Additive.ofMul s') = χ.1 (Additive.ofMul s)` using `fun s s' hs => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[resGK_injective h (hs.trans (hc s).symm)]`. Both sides reduce to the same expression. Establish `htriv : TrivOn p M L χ` using `fun s hs => by`. Use `hχ' (c s) fun x hx => ?_` and prove the remaining obligations. Use `show resGK h (c s) x = x`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Use `show σ (s (σ⁻¹ x)) = x`. Rewrite using `[hs _ (hL' x hx)]`. Use `show (σ * σ⁻¹) x = x`. Rewrite using `[mul_inv_cancel]`.
-
-Both sides reduce to the same expression. Rewrite using `[pairK_conj hK hfd h σ hM b b' hb χ χ' hχ, ← hg χ htriv]`. Conclude with `hχ g g' hg'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRecip.conj (hK : FiniteDimensional ℚ_[p] K) {M : IntermediateField ℚ_[p] (PadicAlgCl p)} (hM : FiniteDimensional ℚ_[p] M) (h : K ≤ M) (σ : GK p K)
     (hM : ∀ x ∈ M, σ x ∈ M) (hL : ∀ x ∈ L, σ x ∈ L) (hL' : ∀ x ∈ L, σ⁻¹ x ∈ L) {b b' : Mˣ} (hb : ((b' : M) : PadicAlgCl p) = σ ((b : M) : PadicAlgCl p))

@@ -11,11 +11,9 @@ open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (mConeMapOver mIde
 noncomputable section
 
 /- English proof (translation)
-Take `⟨f, t, e, ht, hf, hte, rfl⟩` from `ha`. Establish `ht' : t ∈ Submonoid.closure {(X i : Kleiman.Poly k N)}`. Establish `: ((fun l => (X l : Kleiman.Poly k N)) '' ((({i} : Finset (Fin (N + 1))) : Set (Fin (N + 1))))) = {X i}` using `by simp`. Rewrite using `[← this]`. Conclude with `ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨p, rfl⟩` from `Submonoid.mem_closure_singleton.mp ht'`. Establish `hpe : e = p` using `hte.inj_right (isHomogeneous_X_pow i p) (by`. Rewrite using `[X_pow_eq_monomial, Ne, monomial_eq_zero]`. Conclude with `one_ne_zero)`. Substitute `hpe` using the available equality.
-
-Conclude with `⟨e, f, hf, by rw [map_pow, aeval_X]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_form_div_of_mem_chartRing {k : Type} [Field k] {N : ℕ} {Ω : Type} [Field Ω] [Algebra k Ω]
     {x : Fin (N + 1) → Ω} {i : Fin (N + 1)} (hi : x i ≠ 0) {a : Ω}
@@ -33,9 +31,9 @@ theorem exists_form_div_of_mem_chartRing {k : Type} [Field k] {N : ℕ} {Ω : Ty
   exact ⟨e, f, hf, by rw [map_pow, aeval_X]⟩
 
 /- English proof (translation)
-Use `choose e f hf hfa using fun t => exists_form_div_of_mem_chartRing hi (ha t)`. Establish `hle : ∀ t, e t ≤ ∑ t, e t` using `fun t => Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ t)`. Use `⟨∑ t, e t, fun t => f t * X i ^ (∑ t, e t - e t), fun t => ?_, fun t => ?_⟩` and prove the remaining obligations. Establish `h` using `(hf t).mul (isHomogeneous_X_pow i (∑ t, e t - e t))`. Rewrite `h` using `[Nat.add_sub_cancel' (hle t)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hD : x i ^ (∑ t, e t) = x i ^ e t * x i ^ (∑ t, e t - e t)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' (hle t)]`. Rewrite using `[hfa t, map_mul, map_pow, aeval_X, hD, mul_div_mul_right _ _ (pow_ne_zero _ hi)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_common_form_div {k : Type} [Field k] {N : ℕ} {Ω : Type} [Field Ω] [Algebra k Ω]
     {x : Fin (N + 1) → Ω} {ι : Type} [Fintype ι] {i : Fin (N + 1)} (hi : x i ≠ 0) (a : ι → Ω)
@@ -54,7 +52,7 @@ theorem exists_common_form_div {k : Type} [Field k] {N : ℕ} {Ω : Type} [Field
     rw [hfa t, map_mul, map_pow, aeval_X, hD, mul_div_mul_right _ _ (pow_ne_zero _ hi)]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun φ => φ F) (mConeMapOver_graph_comp_base (S := k) x s)`. Simplify using `only [AlgHom.comp_apply] at h`. Rewrite using `[h, Kleiman.cone_eq, Kleiman.coneGen_of_isHomogeneous x hF]`. Simplify using `only [AlgHom.restrictScalars_apply, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X, MvPolynomial.algebraMap_eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mConeMapOver_rename_base {k : Type} [Field k] {N : ℕ} {Ω : Type} [Field Ω] [Algebra k Ω]
     (x : Fin (N + 1) → Ω) {m : ℕ} (s : Fin m → Ω) {F : Kleiman.Poly k N} {D : ℕ} (hF : F.IsHomogeneous D) :
@@ -67,7 +65,7 @@ theorem mConeMapOver_rename_base {k : Type} [Field k] {N : ℕ} {Ω : Type} [Fie
     MvPolynomial.algebraMap_eq]
 
 /- English proof (translation)
-Simplify using `[mConeMapOver]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mConeMapOver_X' {k : Type} [Field k] {N : ℕ} {Ω : Type} [Field Ω] [Algebra k Ω] {m : ℕ}
     (y : (Σ c, graphIdx N m c) → Ω) (v : Σ c, graphIdx N m c) :
@@ -75,23 +73,21 @@ theorem mConeMapOver_X' {k : Type} [Field k] {N : ℕ} {Ω : Type} [Field Ω] [A
   simp [mConeMapOver]
 
 /- English proof (translation)
-Introduce `k _ N Ω _ _ x Q n m s hx hgen W hW hle j b hYj`. Establish `hmem : ∀ P, mConeMapOver k (graphVec x s) P = 0 → P ∈ W` using `fun P hP => hle (RingHom.mem_ker.mpr hP)`. Take `⟨i, hXi⟩ : ∃ i : Fin (N + 1), (X ⟨baseBlock, i⟩ : NumbersDVR.MRing (graphIdx N m) k) ∉ W` from `hW.relevant baseBlock`. Establish `hi : x i ≠ 0` using `fun h0 => hXi (hmem _ (by`. Rewrite using `[mConeMapOver_X', show graphVec x s ⟨baseBlock, i⟩ = 0 from h0, map_zero, zero_mul]))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw, hsum⟩` from `exists_graph_inverse Q n s hgen hi`. Establish `hw' : ∀ p : Fin m × Fin m, x i ^ (-n) * s p.1 * w p.2 ∈ Kleiman.chartRing k x (Kleiman.singleChart hi)` using `fun p => by`. Rewrite using `[← chartRingOver_oneBlock x (fun _ => i) hi]`. Conclude with `hw p.1 p.2`. Take `⟨D, E, hE, hEq⟩` from `exists_common_form_div hi _ hw'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hval : ∀ a c, aeval x (E (a, c)) = x i ^ D * (x i ^ (-n) * s a * w c)` using `fun a c => by`. Establish `h` using `hEq (a, c)`. Simplify using `only at h`. Rewrite using `[h]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨b0, hb0⟩ : ∃ b0, rename (fun a : Fin (N + 1) => (⟨baseBlock, a⟩ : Σ c, graphIdx N m c)) (E (j, b0)) ∉ W := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `key : ∑ c, aeval x (E (j, c)) * s c = x i ^ D * s j`. Simplify using `only [hval]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun c _ => by ring`. Use `_ = x i ^ D * s j := by rw [hsum, mul_one]`. Establish `hrel : ∑ c, rename (fun a : Fin (N + 1) => (⟨baseBlock, a⟩ : Σ c, graphIdx N m c)) (E (j, c)) * X ⟨Sum.inr (), c⟩ - rename (fun a : Fin (N + 1) => (⟨baseBlock, a⟩ : Σ c, graphIdx N m c)) (X i ^ D) * X ⟨Sum.inr (), j⟩ ∈ W`. Apply `hmem` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_sum, map_mul, mConeMapOver_rename_base x s (isHomogeneous_X_pow i D), mConeMapOver_X']`. Establish `hc : ∀ c, mConeMapOver k (graphVec x s) (rename (fun a : Fin (N + 1) => (⟨baseBlock, a⟩ : Σ c, graphIdx N m c)) (E (j, c)) * X ⟨Sum.inr (), c⟩) = C (aeval x (E (j, c)) * s c) * (X baseBlock ^ D * X (Sum.inr ()))` using `fun c => by`. Rewrite using `[map_mul, mConeMapOver_rename_base x s (hE _), mConeMapOver_X', graphVec_inr, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun c _ => hc c, ← Finset.sum_mul, ← map_sum, key, graphVec_inr]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [map_pow, aeval_X, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsumW : ∑ c, rename (fun a : Fin (N + 1) => (⟨baseBlock, a⟩ : Σ c, graphIdx N m c)) (E (j, c)) * X ⟨Sum.inr (), c⟩ ∈ W` using `W.sum_mem fun c _ => W.mul_mem_right _ (h c)`. Establish `hXY` using `W.sub_mem hsumW hrel`. Rewrite `hXY` using `[sub_sub_cancel, map_pow, rename_X]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Break down `hW.isPrime.mem_or_mem hXY with h1 | h1` into its components or cases. Conclude with `hXi (hW.isPrime.mem_of_pow_mem _ h1)`. Conclude with `hYj h1`. Use `⟨D, E (b, b0), E (j, b0), hE _, hE _, hb0, hmem _ ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, map_mul, mConeMapOver_rename_base x s (hE _), mConeMapOver_rename_base x s (hE _), mConeMapOver_X', mConeMapOver_X', graphVec_inr, graphVec_inr, hval, hval]`.
-
-Simplify using `only`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify by unfolding definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem SectionRatio.full : SectionRatio.Statement := by
   intro k _ N Ω _ _ x Q n m s hx hgen W hW hle j b hYj

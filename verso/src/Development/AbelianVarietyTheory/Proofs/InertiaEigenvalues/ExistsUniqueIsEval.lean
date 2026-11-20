@@ -21,7 +21,7 @@ def IsEval (i : C →+* B) (κ : K →+* B) (L : PowerSeries K) (x y : B) : Prop
 variable {p} {i : C →+* B} {i' : C' →+* B'} {κ : K →+* B} {a : A →+* K} {o : A →+* C}
 
 /- English proof (translation)
-The claim follows from `h.haus' z fun r => by rw [SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton] exact hz r`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_dvd [h : IsHausdorff (Ideal.span {(p : C)}) C] {z : C} (hz : ∀ r : ℕ, (p : C) ^ r ∣ z) :
     z = 0 :=
@@ -30,9 +30,9 @@ theorem eq_zero_of_dvd [h : IsHausdorff (Ideal.span {(p : C)}) C] {z : C} (hz : 
     exact hz r
 
 /- English proof (translation)
-Establish `key : ∀ r : ℕ, ∃ z : C, y - y' = i ((p : C) ^ r * z)` using `fun r => by`. Take `⟨N, hN⟩` from `h r`. Take `⟨N', hN'⟩` from `h' r`. Take `⟨z, hz⟩` from `hN (max N N') (le_max_left _ _)`. Take `⟨z', hz'⟩` from `hN' (max N N') (le_max_right _ _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z' - z, by rw [mul_sub, map_sub, ← hz, ← hz']; ring⟩`. Take `⟨z, hz⟩` from `key 0`. Rewrite `hz` using `[pow_zero, one_mul]`. Establish `: z = 0` using `eq_zero_of_dvd (p := p) fun r => (key r).imp fun w hw => hi (hz.symm.trans hw)`. Rewrite `hz` using `[this, map_zero, sub_eq_zero]`. Then use the resulting hypothesis.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Tends.unique [IsHausdorff (Ideal.span {(p : C)}) C] (hi : Function.Injective i) {s : ℕ → B} {y y' : B}
     (h : Tends p i s y) (h' : Tends p i s y') : y = y' := by
@@ -48,7 +48,7 @@ theorem Tends.unique [IsHausdorff (Ideal.span {(p : C)}) C] (hi : Function.Injec
   rwa [this, map_zero, sub_eq_zero] at hz
 
 /- English proof (translation)
-Introduce `r` and use `(h r).imp fun N hN n hn => by obtain ⟨z, hz⟩ := hN n hn obtain ⟨z', hz'⟩ := hψ z exact ⟨z', by simp only [← map_sub, hz, map_mul, map_pow, map_natCast, hz']⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Tends.map (ψ : B →+* B') (hψ : ∀ z, ∃ z', ψ (i z) = i' z') {s : ℕ → B} {y : B}
     (h : Tends p i s y) : Tends p i' (fun n => ψ (s n)) (ψ y) := fun r =>
@@ -58,12 +58,12 @@ theorem Tends.map (ψ : B →+* B') (hψ : ∀ z, ∃ z', ψ (i z) = i' z') {s :
     exact ⟨z', by simp only [← map_sub, hz, map_mul, map_pow, map_natCast, hz']⟩
 
 /- English proof (translation)
-Introduce `_` and use `⟨0, fun _ _ => ⟨0, by simp⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Tends.const (y : B) : Tends p i (fun _ => y) y := fun _ => ⟨0, fun _ _ => ⟨0, by simp⟩⟩
 
 /- English proof (translation)
-Introduce `r` and use `by obtain ⟨N, hN⟩ := h r obtain ⟨N', hN'⟩ := h' r refine ⟨max N N', fun n hn => ?_⟩ obtain ⟨z, hz⟩ := hN n (le_of_max_le_left hn) obtain ⟨z', hz'⟩ := hN' n (le_of_max_le_right hn) exact ⟨z + z', by rw [mul_add, map_add, ← hz, ← hz']; ring⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Tends.add {s t : ℕ → B} {y w : B} (h : Tends p i s y) (h' : Tends p i t w) :
     Tends p i (fun n => s n + t n) (y + w) := fun r => by
@@ -75,7 +75,7 @@ theorem Tends.add {s t : ℕ → B} {y w : B} (h : Tends p i s y) (h' : Tends p 
   exact ⟨z + z', by rw [mul_add, map_add, ← hz, ← hz']; ring⟩
 
 /- English proof (translation)
-Introduce `r` and use `by obtain ⟨D, w, hw⟩ := hc refine (h (D + r)).imp fun N hN n hn => ?_ obtain ⟨z, hz⟩ := hN n hn refine ⟨w * z, ?_⟩ simp only [← mul_sub, hz, map_mul, map_pow, map_natCast, ← hw] ring`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Tends.mul_left (hp : IsUnit (p : B)) {c : B} (hc : ∃ (D : ℕ) (z : C), (p : B) ^ D * c = i z)
     {s : ℕ → B} {y : B} (h : Tends p i s y) : Tends p i (fun n => c * s n) (c * y) := fun r => by
@@ -87,9 +87,9 @@ theorem Tends.mul_left (hp : IsUnit (p : B)) {c : B} (hc : ∃ (D : ℕ) (z : C)
   ring
 
 /- English proof (translation)
-Rewrite using `[Metric.tendsto_atTop]`. Introduce `ε hε`. Take `⟨r, hr⟩` from `exists_pow_lt_of_lt_one hε hp`. Use `(h r).imp fun N hN n hn => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `hN n hn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[dist_eq_norm, ← map_sub, hz]`. Simplify using `only [map_mul, map_pow, map_natCast, norm_mul, norm_pow]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right (by positivity) (hψ z)) hr`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Tends.tendsto {F : Type*} [NormedField F] (ψ : B →+* F) (hψ : ∀ z, ‖ψ (i z)‖ ≤ 1) (hp : ‖(p : F)‖ < 1)
     {s : ℕ → B} {y : B} (h : Tends p i s y) : Filter.Tendsto (fun n => ψ (s n)) Filter.atTop (nhds (ψ y)) := by
@@ -103,11 +103,11 @@ theorem Tends.tendsto {F : Type*} [NormedField F] (ψ : B →+* F) (hψ : ∀ z,
   exact lt_of_le_of_lt (mul_le_of_le_one_right (by positivity) (hψ z)) hr
 
 /- English proof (translation)
-Establish `h1 : ∀ m n, m ≤ n → (p : C) ^ (m / N) ∣ ∑ k ∈ range m, t k - ∑ k ∈ range n, t k` using `fun m n hmn => by`. Rewrite using `[← neg_sub, dvd_neg, ← sum_Ico_eq_sub _ hmn]`. Conclude with `dvd_sum fun k hk => (pow_dvd_pow _ (Nat.div_le_div_right (mem_Ico.1 hk).1)).trans (ht k)`. Take `⟨S, hS⟩` from `h.prec' (fun n => ∑ k ∈ range (n * N), t k) fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h1 _ _ (Nat.mul_le_mul_right N hmn)` as an intermediate fact. Rewrite `this` using `[Nat.mul_div_cancel _ hN]`. Then use the resulting hypothesis. Use `⟨S, fun n => ?_⟩` and prove the remaining obligations. Establish `h2` using `hS (n / N)`. Rewrite `h2` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `h1 _ _ (Nat.div_mul_le_self n N)`. Rewrite `h3` using `[Nat.mul_div_cancel _ hN]`. Use `dvd_sub h2 h3` as an intermediate fact. Rewrite `this` using `[show ∀ u v w : C, u - v - (u - w) = w - v from fun u v w => by ring]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_sum [h : IsPrecomplete (Ideal.span {(p : C)}) C] {N : ℕ} (hN : 0 < N) (t : ℕ → C)
     (ht : ∀ k, (p : C) ^ (k / N) ∣ t k) : ∃ S : C, ∀ n, (p : C) ^ (n / N) ∣ ∑ k ∈ range n, t k - S := by
@@ -127,7 +127,7 @@ theorem exists_sum [h : IsPrecomplete (Ideal.span {(p : C)}) C] {N : ℕ} (hN : 
   rwa [show ∀ u v w : C, u - v - (u - w) = w - v from fun u v w => by ring] at this
 
 /- English proof (translation)
-Use `(pow_dvd_pow_of_dvd hx _).trans ?_` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Conclude with `pow_dvd_pow _ (Nat.mul_div_le k M)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_div_dvd {x : C} {M : ℕ} (hx : (p : C) ∣ x ^ M) (k : ℕ) : (p : C) ^ (k / M) ∣ x ^ k := by
   refine (pow_dvd_pow_of_dvd hx _).trans ?_
@@ -135,22 +135,22 @@ theorem pow_div_dvd {x : C} {M : ℕ} (hx : (p : C) ∣ x ^ M) (k : ℕ) : (p : 
   exact pow_dvd_pow _ (Nat.mul_div_le k M)
 
 /- English proof (translation)
-Rewrite using `[← Nat.div_div_eq_div_mul]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_mul_div_le (k M : ℕ) : k / (M * 2) + k / (M * 2) ≤ k / M := by
   rw [← Nat.div_div_eq_div_mul]
   omega
 
 /- English proof (translation)
-The claim follows from `hx.elim fun M hM => ⟨M + 1, M.succ_pos, hM.trans (pow_dvd_pow _ M.le_succ)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_pos_pow {x : C} (hx : ∃ M : ℕ, (p : C) ∣ x ^ M) : ∃ M : ℕ, 0 < M ∧ (p : C) ∣ x ^ M :=
   hx.elim fun M hM => ⟨M + 1, M.succ_pos, hM.trans (pow_dvd_pow _ M.le_succ)⟩
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `hD k`. Take `⟨w, rfl⟩` from `hz`. Establish `h1 : k / (M * 2) + n / (M * 2) ≤ n / M` using `(Nat.add_le_add_right (Nat.div_le_div_right hk) _).trans (two_mul_div_le n M)`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le h1`. Establish `h2` using `congrArg κ hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨(p : C) ^ d * o b * w, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, map_natCast, h, hd, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem term_bound (h : ∀ c, i (o c) = κ (a c)) {L : PowerSeries K} {M D : ℕ}
     (hD : ∀ k : ℕ, ∃ b : A, (p : K) ^ (D + k / (M * 2)) * coeff k L = a b) {k n : ℕ} (hk : k ≤ n) {z : C}
@@ -167,13 +167,13 @@ theorem term_bound (h : ∀ c, i (o c) = κ (a c)) {L : PowerSeries K} {M D : �
   ring
 
 /- English proof (translation)
-Take `⟨M, hM, hx⟩` from `exists_pos_pow hx`. Establish `hN : 0 < M * 2` using `by omega`. Take `⟨D, hD⟩` from `hL (M * 2) hN`. Establish `ht` using `fun k => term_bound h hD (le_refl k) (pow_div_dvd hx k)`. Simplify using `only [map_pow i x] at ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `choose w hw using id ht`. Take `⟨S, hS⟩` from `exists_sum hN (fun k => (p : C) ^ (k / (M * 2)) * w k) fun k => dvd_mul_right _ _`. Take `⟨u, hu⟩` from `(hp.pow D).exists_right_inv`. Establish `hr : ∀ n, ∃ w : C, (p : B) ^ D * (psum κ L (i x) n - u * i S) = i ((p : C) ^ (n / (M * 2)) * w)` using `fun n => (hS n).imp fun z hz => by`. Rewrite using `[← hz, map_sub, map_sum, mul_sub, ← mul_assoc, hu, one_mul, psum, mul_sum]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hw]`. Use `⟨u * i S, fun r => ⟨(D + r) * (M * 2), fun n hn => ?_⟩, D, M * 2, hN, ht, hr⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hr n`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le ((Nat.le_div_iff_mul_le hN).2 hn)`. Use `⟨(p : C) ^ d * z, (hp.pow D).mul_left_cancel ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hz, hd, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_isEval_rate [IsPrecomplete (Ideal.span {(p : C)}) C] (hp : IsUnit (p : B))
     (h : ∀ c, i (o c) = κ (a c)) {L : PowerSeries K} (hL : OnDisc p a L) {x : C}
@@ -200,7 +200,7 @@ theorem exists_isEval_rate [IsPrecomplete (Ideal.span {(p : C)}) C] (hp : IsUnit
   ring
 
 /- English proof (translation)
-The claim follows from `(exists_isEval_rate hp h hL hx).elim fun y hy => ⟨y, hy.1, fun _ h' => Tends.unique hi h' hy.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_isEval [IsAdicComplete (Ideal.span {(p : C)}) C] (hi : Function.Injective i)
     (hp : IsUnit (p : B)) (h : ∀ c, i (o c) = κ (a c)) {L : PowerSeries K} (hL : OnDisc p a L) {x : C}
@@ -208,7 +208,7 @@ theorem existsUnique_isEval [IsAdicComplete (Ideal.span {(p : C)}) C] (hi : Func
   (exists_isEval_rate hp h hL hx).elim fun y hy => ⟨y, hy.1, fun _ h' => Tends.unique hi h' hy.1⟩
 
 /- English proof (translation)
-Use `Tends.map ψ hψ h` as an intermediate fact. Introduce `r`. Simplify `this r` using `only [psum, map_sum, map_mul, map_pow, hκ, coeff_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsEval.map {K' : Type*} [CommRing K'] {κ' : K' →+* B'} (ψ : B →+* B') (τ : K →+* K')
     (hψ : ∀ z, ∃ z', ψ (i z) = i' z') (hκ : ∀ c, ψ (κ c) = κ' (τ c)) {L : PowerSeries K} {x y : B}
@@ -218,7 +218,7 @@ theorem IsEval.map {K' : Type*} [CommRing K'] {κ' : K' →+* B'} (ψ : B →+* 
   simpa only [psum, map_sum, map_mul, map_pow, hκ, coeff_map] using this r
 
 /- English proof (translation)
-Use `Tends.mul_left hp hc h` as an intermediate fact. Introduce `r`. Simplify `this r` using `only [psum, coeff_C_mul, map_mul, mul_sum, mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsEval.C_mul (hp : IsUnit (p : B)) {c : K} (hc : ∃ (D : ℕ) (z : C), (p : B) ^ D * κ c = i z)
     {L : PowerSeries K} {x y : B} (h : IsEval p i κ L x y) : IsEval p i κ (PowerSeries.C c * L) x (κ c * y) := by
@@ -227,7 +227,7 @@ theorem IsEval.C_mul (hp : IsUnit (p : B)) {c : K} (hc : ∃ (D : ℕ) (z : C), 
   simpa only [psum, coeff_C_mul, map_mul, mul_sum, mul_assoc] using this r
 
 /- English proof (translation)
-Use `Tends.add h h'` as an intermediate fact. Introduce `r`. Simplify `this r` using `only [psum, map_add, add_mul, sum_add_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsEval.add {L L' : PowerSeries K} {x y y' : B} (h : IsEval p i κ L x y) (h' : IsEval p i κ L' x y') :
     IsEval p i κ (L + L') x (y + y') := by
@@ -236,9 +236,9 @@ theorem IsEval.add {L L' : PowerSeries K} {x y y' : B} (h : IsEval p i κ L x y)
   simpa only [psum, map_add, add_mul, sum_add_distrib] using this r
 
 /- English proof (translation)
-Establish `e : ∀ v : PowerSeries A, ∑ j ∈ range n, o (coeff j v) * x ^ j = Polynomial.eval₂RingHom o x (trunc n v)` using `fun v => (eval₂_trunc_eq_sum_range x o n v).symm`. Rewrite `hy`, the goal using `[e]`. Establish `h1 : Polynomial.X ^ n ∣ trunc n u ^ k - trunc n (u ^ k)`. Rewrite using `[Polynomial.X_pow_dvd_iff]`. Introduce `j hj`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Polynomial.coeff_sub, ← trunc_trunc_pow, coeff_trunc, if_pos hj, ← Polynomial.coe_pow, Polynomial.coeff_coe, sub_self]`. Establish `h2` using `map_dvd (Polynomial.eval₂RingHom o x) h1`. Rewrite `h2` using `[map_pow, map_sub, map_pow, show Polynomial.eval₂RingHom o x Polynomial.X = x from Polynomial.eval₂_X o x]`. Use `dvd_add (hy.trans (sub_dvd_pow_sub_pow _ _ k)) (hx.trans h2)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pow_sub_dvd (u : PowerSeries A) {x y d : C} {n : ℕ} (hx : d ∣ x ^ n)
     (hy : d ∣ y - ∑ j ∈ range n, o (coeff j u) * x ^ j) (k : ℕ) :
@@ -258,7 +258,7 @@ theorem pow_sub_dvd (u : PowerSeries A) {x y d : C} {n : ℕ} (hx : d ∣ x ^ n)
   rwa [sub_add_sub_cancel] at this
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `X_dvd_iff.2 hu`. Rewrite using `[mul_pow, coeff_X_pow_mul', if_neg (by omega)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_pow_of_lt {u : PowerSeries K} (hu : constantCoeff u = 0) {m k : ℕ} (h : k < m) :
     coeff k (u ^ m) = 0 := by
@@ -266,17 +266,17 @@ theorem coeff_pow_of_lt {u : PowerSeries K} (hu : constantCoeff u = 0) {m k : �
   rw [mul_pow, coeff_X_pow_mul', if_neg (by omega)]
 
 /- English proof (translation)
-Establish `hN : 0 < M * 2` using `by omega`. Take `⟨D, hD⟩` from `hL (M * 2) hN`. Establish `hu' : constantCoeff (PowerSeries.map a u) = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, hu, map_zero]`. Establish `hc : ∀ n j, j < n → coeff j (L.subst (PowerSeries.map a u)) = ∑ k ∈ range n, coeff k L * a (coeff j (u ^ k))` using `fun n j hj => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[coeff_subst' (HasSubst.of_constantCoeff_zero' hu'), finsum_eq_sum_of_support_subset (s := range n)]`. Simplify using `only [smul_eq_mul, ← map_pow, coeff_map]`. Introduce `m hm`. Rewrite `hm` using `[Function.mem_support]`. Assume the negation of the conclusion as `hc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [coe_range, Set.mem_Iio, not_lt] at hc`. Conclude with `hm (by rw [coeff_pow_of_lt hu' (by omega), smul_zero])`. Establish `hs : ∀ n, psum κ L (i y) n - psum κ (L.subst (PowerSeries.map a u)) (i x) n = ∑ k ∈ range n, κ (coeff k L) * i (y ^ k - ∑ j ∈ range n, o (coeff j (u ^ k)) * x ^ j)` using `fun n => by`. Establish `e : psum κ (L.subst (PowerSeries.map a u)) (i x) n = ∑ j ∈ range n, ∑ k ∈ range n, κ (coeff k L * a (coeff j (u ^ k))) * i x ^ j` using `sum_congr rfl fun j hj => by rw [hc n j (mem_range.1 hj), map_sum, sum_mul]`. Rewrite using `[e, psum, sum_comm, ← sum_sub_distrib]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [map_sub, map_sum, map_mul, map_pow i, h, mul_sub, mul_sum, mul_assoc]`. Introduce `r`. Take `⟨N, hN'⟩` from `hw r`. Use `⟨max N ((D + r) * (M * 2)), fun n hn => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `hN' n (le_of_max_le_left hn)`. Use `choose! v hv using fun k (hk : k ∈ range n) => term_bound h hD (mem_range.1 hk).le (pow_sub_dvd u (pow_div_dvd hx n) (hy n) k)`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le ((Nat.le_div_iff_mul_le hN).2 (le_of_max_le_right hn))`. Establish `h2 : psum κ L (i y) n - psum κ (L.subst (PowerSeries.map a u)) (i x) n = i ((p : C) ^ r * ((p : C) ^ d * ∑ k ∈ range n, v k))`. Use `(hp.pow D).mul_left_cancel ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs, mul_sum, sum_congr rfl hv, ← map_sum, ← mul_sum]`. Simplify using `only [hd, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨z - (p : C) ^ d * ∑ k ∈ range n, v k, by rw [mul_sub, map_sub, ← hz, ← h2]; ring⟩`.
+Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsEval.subst (hp : IsUnit (p : B)) (h : ∀ c, i (o c) = κ (a c)) {L : PowerSeries K} (hL : OnDisc p a L)
     {u : PowerSeries A} (hu : constantCoeff u = 0) {x y : C} {M : ℕ} (hM : 0 < M) (hx : (p : C) ∣ x ^ M)
@@ -319,7 +319,7 @@ theorem IsEval.subst (hp : IsUnit (p : B)) (h : ∀ c, i (o c) = κ (a c)) {L : 
   exact ⟨z - (p : C) ^ d * ∑ k ∈ range n, v k, by rw [mul_sub, map_sub, ← hz, ← h2]; ring⟩
 
 /- English proof (translation)
-Introduce `M hM` and use `by refine ⟨M, fun k => ?_⟩ obtain ⟨b, hb⟩ := hL k obtain ⟨c, hc⟩ := hπ have h1 : Nat.log q k ≤ M + k / M := by rcases Nat.eq_zero_or_pos k with rfl | hk · simp refine (Nat.log_lt_of_lt_pow hk.ne' ?_).le rw [pow_add] refine (Nat.lt_mul_div_succ k hM).trans_le (Nat.mul_le_mul (Nat. …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem onDisc_of_log {π : A} (hπ : π ∣ (p : A)) {q : ℕ} (hq : 1 < q) {L : PowerSeries K}
     (hL : ∀ k, ∃ b : A, a π ^ Nat.log q k * coeff k L = a b) : OnDisc p a L := fun M hM => by

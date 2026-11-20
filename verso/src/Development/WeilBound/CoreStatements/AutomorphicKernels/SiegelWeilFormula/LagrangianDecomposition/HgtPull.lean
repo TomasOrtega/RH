@@ -10,7 +10,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.Ald
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.SiegelWeilFormula.Ldexb.hgtPull`.
+A detailed English derivation is pending.
 -/
 theorem hgtPull : HgtPull := PositivityTheory.SiegelWeilFormula.Ldexb.hgtPull
 

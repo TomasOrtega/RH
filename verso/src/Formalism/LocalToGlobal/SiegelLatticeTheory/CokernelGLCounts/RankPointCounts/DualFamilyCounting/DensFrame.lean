@@ -18,7 +18,7 @@ variable {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP 
   {δ : ∀ p : PlF D, (D.s.atP p).Fp}
 
 /- English proof (translation)
-Rewrite using `[(hA p).2.2.2.1]`. Conclude with `PI.CntNotIntW.iE_mem_O D p o`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iE_mem_LO (hA : ∀ p, Agree δ M p) (p : PlF D) (o : 𝓞 D.host.E) :
     (D.s.atP p).ιE (o : D.host.E) ∈ (M p).L.O := by
@@ -26,7 +26,7 @@ theorem iE_mem_LO (hA : ∀ p, Agree δ M p) (p : PlF D) (o : 𝓞 D.host.E) :
   exact PI.CntNotIntW.iE_mem_O D p o
 
 /- English proof (translation)
-Rewrite using `[← L.bc_smul]`. Use `congr 1`. Conclude with `(algebraMap_smul D.host.E o x).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem bc_smulO (L : LocSp D M) (p : PlF D) (o : 𝓞 D.host.E) (x : (VS D).V) :
     L.bc p (o • x) = (D.s.atP p).ιE (o : D.host.E) • L.bc p x := by
@@ -35,11 +35,11 @@ theorem bc_smulO (L : LocSp D M) (p : PlF D) (o : 𝓞 D.host.E) (x : (VS D).V) 
   exact (algebraMap_smul D.host.E o x).symm
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[lattice₂, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `Submodule.span_induction (p := fun x _ => L.bc p x ∈ Submodule.span (M p).L.O (L.bc p '' S)) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce `y hy`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `y z _ _ hy hz`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hy hz`. Introduce `o y _ hy`. Rewrite using `[bc_smulO]`. Conclude with `Submodule.smul_mem _ (⟨_, iE_mem_LO hA p o⟩ : (M p).L.O) hy`. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+A detailed English derivation is pending.
 -/
 theorem localLattice_span₂ (hA : ∀ p, Agree δ M p) (L : LocSp D M) (p : PlF D) (S : Set (VS D).V) :
     lattice₂ L p (Submodule.span (𝓞 D.host.E) S) = Submodule.span (M p).L.O (L.bc p '' S) := by
@@ -61,9 +61,9 @@ theorem localLattice_span₂ (hA : ∀ p, Agree δ M p) (L : LocSp D M) (p : PlF
   · exact Submodule.span_mono (Set.image_mono Submodule.subset_span)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[lattice₂, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (Submodule.mem_sup_left (Submodule.subset_span ⟨a, ha, rfl⟩)) (Submodule.mem_sup_right (Submodule.subset_span ⟨b, hb, rfl⟩))`. Conclude with `sup_le (Submodule.span_mono (Set.image_mono (SetLike.coe_subset_coe.2 (le_sup_left : A ≤ A ⊔ B)))) (Submodule.span_mono (Set.image_mono (SetLike.coe_subset_coe.2 (le_sup_right : B ≤ A ⊔ B))))`.
+A detailed English derivation is pending.
 -/
 theorem localLattice_sup (L : LocSp D M) (p : PlF D) (A B : Submodule (𝓞 D.host.E) (VS D).V) :
     lattice₂ L p (A ⊔ B) = lattice₂ L p A ⊔ lattice₂ L p B := by
@@ -80,17 +80,17 @@ theorem localLattice_sup (L : LocSp D M) (p : PlF D) (A B : Submodule (𝓞 D.ho
 def locDat (hA : ∀ p, Agree δ M p) : Formalism.L2.SG.TermLoc.LocDat D := ⟨δ, M, hA⟩
 
 /- English proof (translation)
-Establish `hdiff` using `Formalism.L2.SG.Pf.locDiffC_holds D (locDat hA) p`. Rewrite using `[XS, localLattice_span₂ hA]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, ⟨a, x, hx, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[L.bc_smul]`. Establish `hm : (D.s.atP p).ιE x ∈ Submodule.span (M p).L.O {frFac δ p a.castSucc}`. Establish `h0` using `hdiff a.castSucc`. Simplify using `only [locDat, Fin.val_castSucc] at h0`. Establish `h1 : (D.s.atP p).ιE x ∈ Submodule.span (M p).L.O ((D.s.atP p).ιE '' ((ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ))) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Set D.host.E))` using `Submodule.subset_span ⟨x, hx, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h0 ▸ h1`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 hm`. Rewrite using `[← hc, Subring.smul_def, smul_eq_mul, mul_smul]`. Use `Submodule.smul_mem (Submodule.span (M p).L.O (Set.range fun a : Fin D.R.rS => frFac δ p a.castSucc • L.bc p (F.e a))) c (Submodule.subset_span ⟨a, rfl⟩)` as an intermediate fact. Rewrite `this` using `[Subring.smul_def]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Establish `hm : frFac δ p a.castSucc ∈ Submodule.span (M p).L.O ((D.s.atP p).ιE '' ((ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ))) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Set D.host.E))`. Establish `h0` using `hdiff a.castSucc`. Simplify using `only [locDat, Fin.val_castSucc] at h0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : frFac δ p a.castSucc ∈ Submodule.span (M p).L.O {frFac δ p a.castSucc}` using `Submodule.mem_span_singleton_self _`. Conclude with `h0.symm ▸ h1`. Set `f : (D.s.atP p).Ep →ₗ[(M p).L.O] L.V p` to `(LinearMap.toSpanSingleton (D.s.atP p).Ep (L.V p) (L.bc p (F.e a))).restrictScalars (M p).L.O`. Establish `h2` using `Submodule.apply_mem_span_image_of_mem_span f hm`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Use `⟨x • F.e a, ⟨a, x, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `using hx`. Simplify using `[f, L.bc_smul]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem latP_XS (hA : ∀ p, Agree δ M p) (L : LocSp D M) (p : PlF D) {T : D.host.E} (F : FlagG (VS D) D.R.rS T) :
     lattice₂ L p (XS D F) =
@@ -136,9 +136,7 @@ theorem latP_XS (hA : ∀ p, Agree δ M p) (L : LocSp D M) (p : PlF D) {T : D.ho
 section Scal
 
 /- English proof (translation)
-Use `⟨(Formalism.L2.SG.Pf.BBTie.btT (locDat hA) p) ^ (D.R.rS - a.val), ?_, ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos (D.R.rS - a.val) with h | h` into its components or cases. Rewrite using `[h, pow_zero]`. Conclude with `(M p).L.O.one_mem`. Conclude with `(M p).L.O.pow_mem (Formalism.L2.SG.Pf.BBTie.bt_T_mem (locDat hA) p (Formalism.L2.SG.Pf.locDiffC_holds D (locDat hA)) (by omega)) _`.
-
-Unfold `frFac`. Conclude with `Ring.mul_inverse_cancel _ ((Formalism.L2.SG.Pf.BBTie.bt_T_unit (locDat hA) p).pow _)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem phi_inv_mem (hA : ∀ p, Agree δ M p) (p : PlF D) (a : Fin (D.R.rS + 1)) :
     ∃ w ∈ (M p).L.O, w * frFac δ p a = 1 := by
@@ -151,15 +149,15 @@ theorem phi_inv_mem (hA : ∀ p, Agree δ M p) (p : PlF D) (a : Fin (D.R.rS + 1)
     exact Ring.mul_inverse_cancel _ ((Formalism.L2.SG.Pf.BBTie.bt_T_unit (locDat hA) p).pow _)
 
 /- English proof (translation)
-The claim follows from `(PI.CntNotIntW.split_ell δ hA p g hs).2`.
+A detailed English derivation is pending.
 -/
 theorem split_some_typed (hA : ∀ p, Agree δ M p) (p : PlF D) {g : Loc.SplitG (M p).L}
     (hs : (M p).split = some g) : Loc.resChar p ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ) := (PI.CntNotIntW.split_ell δ hA p g hs).2
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `(D.s_split p).2 h`. Establish `hm` using `(hA p).2.2.2.2.2`. Rewrite `hm` using `[hs]`. Break down `hsp : (D.s.atP p).split with _ | sg` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hsp] at h2; exact absurd h2 (by simp)`. Rewrite `hm` using `[hsp]`. Conclude with `hm.elim`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_none_untyped (hA : ∀ p, Agree δ M p) (p : PlF D) (hs : (M p).split = none) :
     Loc.resChar p ∉ ({D.host.g 0, D.host.g 1} : Finset ℕ) := by
@@ -172,14 +170,14 @@ theorem split_none_untyped (hA : ∀ p, Agree δ M p) (p : PlF D) (hs : (M p).sp
   · rw [hsp] at hm; exact hm.elim
 
 /- English proof (translation)
-Conclude with `(PI.CntNotIntW.split_ell δ hA p g hs).1`.
+A detailed English derivation is pending.
 -/
 theorem q_eq_ell (hA : ∀ p, Agree δ M p) (p : PlF D) {g : Loc.SplitG (M p).L} (hs : (M p).split = some g) :
     ((g.q : (D.s.atP p).Fp)) = ((Loc.resChar p : ℕ) : (D.s.atP p).Fp) := by
   exact (PI.CntNotIntW.split_ell δ hA p g hs).1
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_unique {R : Type} [CommRing R] {x w n : R} (hx : x * n = 1) (hw : w * n = 1) : x = w := by
   calc x = x * (w * n) := by rw [hw, mul_one]
@@ -187,7 +185,7 @@ theorem inv_unique {R : Type} [CommRing R] {x w n : R} (hx : x * n = 1) (hw : w 
     _ = w := by rw [hx, mul_one]
 
 /- English proof (translation)
-Use `Nat.cast_ne_zero.2 ?_` and prove the remaining obligations. Use `show D.host.g 0 * D.host.g 1 ≠ 0`. Conclude with `Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gS_ne : ((Lat.gS D : ℕ) : D.host.E) ≠ 0 := by
   refine Nat.cast_ne_zero.2 ?_
@@ -195,18 +193,18 @@ theorem gS_ne : ((Lat.gS D : ℕ) : D.host.E) ≠ 0 := by
   exact Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (D.s.atP p).ιE (Lat.gS D), ← map_mul, inv_mul_cancel₀ gS_ne, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iE_gS_inv_mul (p : PlF D) :
     (D.s.atP p).ιE (((Lat.gS D : ℕ) : D.host.E))⁻¹ * ((Lat.gS D : ℕ) : (D.s.atP p).Ep) = 1 := by
   rw [← map_natCast (D.s.atP p).ιE (Lat.gS D), ← map_mul, inv_mul_cancel₀ gS_ne, map_one]
 
 /- English proof (translation)
-Establish `hun` using `split_none_untyped hA p hs`. Establish `hℓ : (Loc.resChar p).Prime` using `(D.s.atP p).ellPrime.out`. Establish `hnd : ¬ Loc.resChar p ∣ Lat.gS D`. Introduce `hd`. Break down `(Nat.Prime.dvd_mul hℓ).1 hd with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h'` using `(Nat.prime_dvd_prime_iff_eq hℓ (D.host.g_prime 0)).1 h`. Conclude with `hun (by simp [h'])`. Establish `h'` using `(Nat.prime_dvd_prime_iff_eq hℓ (D.host.g_prime 1)).1 h`. Conclude with `hun (by simp [h'])`. Take `⟨w, hw⟩` from `Formalism.L2.SG.Pf.BBTie.bt_natF_unit p (Lat.gS D) hnd`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (D.s.atP p).ιE (((Lat.gS D : ℕ) : D.host.E))⁻¹ = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (w : (D.s.atP p).Fp)` using `inv_unique (iE_gS_inv_mul p) (by`. Rewrite using `[← map_natCast (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep), ← map_mul, hw, map_one])`. Rewrite using `[e, (hA p).2.2.2.1]`. Conclude with `PI.CntNotIntW.algMap_mem_O D p _ w.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gS_inv_mem (hA : ∀ p, Agree δ M p) (p : PlF D) (hs : (M p).split = none) :
     (D.s.atP p).ιE (((Lat.gS D : ℕ) : D.host.E))⁻¹ ∈ (M p).L.O := by
@@ -230,13 +228,13 @@ theorem gS_inv_mem (hA : ∀ p, Agree δ M p) (p : PlF D) (hs : (M p).split = no
 def gj (p : PlF D) : ℕ := Lat.gS D / Loc.resChar p
 
 /- English proof (translation)
-Establish `hmem` using `split_some_typed hA p hs`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hmem`. Establish `h0` using `D.host.g_prime 0`. Establish `h1` using `D.host.g_prime 1`. Establish `hne` using `D.host.g_ne`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hmem with h | h` into its components or cases. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [gj, Lat.gS, h]`. Conclude with `Nat.mul_div_cancel' (dvd_mul_right _ _)`. Simplify using `only [gj, Lat.gS, h, Nat.mul_div_cancel_left _ h0.pos]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun hd => hne ((Nat.prime_dvd_prime_iff_eq h0 h1).1 hd)`. Simplify using `only [gpart, h, if_true]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [gj, Lat.gS, h]`. Conclude with `Nat.mul_div_cancel' (dvd_mul_left _ _)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `only [gj, Lat.gS, h, Nat.mul_div_cancel _ h1.pos]`. Conclude with `fun hd => hne ((Nat.prime_dvd_prime_iff_eq h1 h0).1 hd).symm`. Simplify using `only [gpart, h, if_neg (Ne.symm hne), if_true]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem typed_cases (hA : ∀ p, Agree δ M p) (p : PlF D) {g : Loc.SplitG (M p).L} (hs : (M p).split = some g) :
     Loc.resChar p * gj p = Lat.gS D ∧ ¬ Loc.resChar p ∣ gj p ∧ gpart p = Loc.resChar p := by
@@ -260,11 +258,11 @@ theorem typed_cases (hA : ∀ p, Agree δ M p) (p : PlF D) {g : Loc.SplitG (M p)
     · simp only [gpart, h, if_neg (Ne.symm hne), if_true]
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `typed_cases hA p hs`. Take `⟨w, hw⟩` from `Formalism.L2.SG.Pf.BBTie.bt_natF_unit p (gj p) h2`. Establish `hu` using `iE_gS_inv_mul (D := D) p`. Establish `hw' : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (w : (D.s.atP p).Fp) * ((gj p : ℕ) : (D.s.atP p).Ep) = 1`. Rewrite using `[← map_natCast (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep), ← map_mul, hw, map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgs : ((Lat.gS D : ℕ) : (D.s.atP p).Ep) = ((Loc.resChar p : ℕ) : (D.s.atP p).Ep) * ((gj p : ℕ) : (D.s.atP p).Ep)`. Rewrite using `[← h1, Nat.cast_mul]`. Establish `key : (D.s.atP p).ιE (((Lat.gS D : ℕ) : D.host.E))⁻¹ * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (w : (D.s.atP p).Fp)`. Rewrite using `[q_eq_ell hA p hs, map_natCast]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hw', mul_one]`. Use `_ = ((D.s.atP p).ιE (((Lat.gS D : ℕ) : D.host.E))⁻¹ * (((Loc.resChar p : ℕ) : (D.s.atP p).Ep) * ((gj p : ℕ) : (D.s.atP p).Ep))) * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (w : (D.s.atP p).Fp) := by ring`. Use `_ = _ := by rw [← hgs, hu, one_mul]`. Rewrite using `[key, (hA p).2.2.2.1]`. Conclude with `PI.CntNotIntW.algMap_mem_O D p _ w.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_gS_inv_mem (hA : ∀ p, Agree δ M p) (p : PlF D) {g : Loc.SplitG (M p).L} (hs : (M p).split = some g) :
     (D.s.atP p).ιE (((Lat.gS D : ℕ) : D.host.E))⁻¹ * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp)
@@ -292,9 +290,9 @@ theorem q_gS_inv_mem (hA : ∀ p, Agree δ M p) (p : PlF D) {g : Loc.SplitG (M p
   exact PI.CntNotIntW.algMap_mem_O D p _ w.2
 
 /- English proof (translation)
-Establish `hq0 : (g.q : (D.s.atP p).Fp) ≠ 0`. Introduce `h`. Apply `g.q_irr.ne_zero` to reduce the goal to its premises. Conclude with `Subtype.ext h`. Establish `hℓ : ((Loc.resChar p : ℕ) : (D.s.atP p).Fp) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← q_eq_ell hA p hs]`. Conclude with `hq0`. Take `⟨h1, -, -⟩` from `typed_cases hA p hs`. Rewrite using `[q_eq_ell hA p hs, ← h1, Nat.cast_mul, map_mul, map_natCast, map_natCast, ← map_natCast (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep) (Loc.resChar p), ← mul_assoc, ← map_mul, inv_mul_cancel₀ hℓ, map_one, one_mul]`. Conclude with `natCast_mem _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qinv_gS_mem (hA : ∀ p, Agree δ M p) (p : PlF D) {g : Loc.SplitG (M p).L} (hs : (M p).split = some g) :
     algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹) * (D.s.atP p).ιE ((Lat.gS D : ℕ) : D.host.E)
@@ -313,17 +311,15 @@ theorem qinv_gS_mem (hA : ∀ p, Agree δ M p) (p : PlF D) {g : Loc.SplitG (M p)
   exact natCast_mem _ _
 
 /- English proof (translation)
-Take `⟨e1, -, e3⟩` from `typed_cases hA p hs`. Establish `hδ` using `PI.CntNotIntW.deltaInvG_of (PI.CntNotIntW.locDiff_of PI.CntNotIntW.trace_dual_lattice (PI.CntNotIntW.dualApprox_of PI.CntNotIntW.small_powers_bound PI.CntNotIntW.tensorLiftSurjective) PI.CntNotIntW.small_powers_bound) PI.CntNotIntW.different_lattice_index D δ M hA p g hs`. Establish `hδ0 : δ p ≠ 0` using `(hA p).2.1`. Use `set x := algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p)⁻¹ * (((gj p : ℕ) : (D.s.atP p).Ep)) with hx`. Establish `hxO : x ∈ (M p).L.O` using `(M p).L.O.mul_mem (algebraMap_mem_LO _ hδ) (natCast_mem _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : ((gj p : ℕ) : D.host.E) ≠ 0`. Establish `: gj p ≠ 0`. Introduce `h0`. Rewrite `e1` using `[h0, mul_zero]`. Conclude with `gS_ne (by rw [← e1]; simp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hl : ((Loc.resChar p : ℕ) : D.host.E) ≠ 0` using `by exact_mod_cast (D.s.atP p).ellPrime.out.ne_zero`. Establish `huP : ((gj p : ℕ) : D.host.E) * (uP p : D.host.E) = 1`. Unfold `uP`. Rewrite using `[e3, ← e1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hxT : x * (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p) * (D.s.atP p).ιE (uP p : D.host.E)) = 1`. Rewrite using `[hx]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 1 := by rw [inv_mul_cancel₀ hδ0, huP, map_one, map_one, one_mul]`. Establish `hu : IsUnit ((algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p) * (D.s.atP p).ιE (uP p : D.host.E)) ^ (D.R.rS - a.val))` using `(Formalism.L2.SG.Pf.BBTie.bt_T_unit (locDat hA) p).pow _`. Establish `hinv : frFac δ p a = x ^ (D.R.rS - a.val)`.
-
-Unfold `frFac`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hinv]`. Conclude with `(M p).L.O.pow_mem hxO _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_mem_typed (hA : ∀ p, Agree δ M p) (p : PlF D) {g : Loc.SplitG (M p).L} (hs : (M p).split = some g)
     (a : Fin (D.R.rS + 1)) : frFac δ p a ∈ (M p).L.O := by
@@ -373,7 +369,7 @@ end Scal
 section Span
 
 /- English proof (translation)
-Conclude with `S.smul_mem ⟨c, hc⟩ hv`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_O {p : PlF D} {V : Type} [AddCommGroup V] [Module (D.s.atP p).Ep V]
     {S : Submodule (M p).L.O V} {c : (D.s.atP p).Ep} (hc : c ∈ (M p).L.O) {v : V} (hv : v ∈ S) : c • v ∈ S := by
@@ -394,14 +390,14 @@ theorem frame_g_zero_inr (L : LocSp D M) (p : PlF D) {T T' : D.host.E} (F0 : Fla
     g0 L δ p F0 F' (Sum.inr a) = frFac δ p a • L.bc p (F'.fl.fvec a) := rfl
 
 /- English proof (translation)
-Simplify using `only [locFam, hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem locFam_none (L : LocSp D M) (p : PlF D) {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') (hs : (M p).split = none) : locFam L δ p F0 F' = g0 L δ p F0 F' := by
   simp only [locFam, hs]
 
 /- English proof (translation)
-Simplify using `only [amat, Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, zero_smul, Finset.sum_const_zero, add_zero, Matrix.one_apply, ite_smul, one_smul, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem amat_inl (p : PlF D) (g : Loc.SplitG (M p).L) {V : Type} [AddCommGroup V] [Module (D.s.atP p).Ep V]
     (v : Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1) → V) (a : Fin (D.R.rS + 1)) :
@@ -411,13 +407,13 @@ theorem amat_inl (p : PlF D) (g : Loc.SplitG (M p).L) {V : Type} [AddCommGroup V
     Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_sum_type]`. Establish `h1 : ∑ x, amat p g (Sum.inl x) (Sum.inr a) • v (Sum.inl x) = -(algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹) • v (Sum.inl a))`. Rewrite using `[Finset.sum_eq_single a]`. Use `show ((-algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹)) • (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep)) a a • v (Sum.inl a) = _`. Rewrite using `[Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one, neg_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb show ((-algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹)) • (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep)) b a • v (Sum.inl b) = 0`. Rewrite using `[Matrix.smul_apply, Matrix.one_apply_ne hb, smul_zero, zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Establish `h2 : ∑ x, amat p g (Sum.inr x) (Sum.inr a) • v (Sum.inr x) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹) • v (Sum.inr a)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single a]`. Use `show (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹) • (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep)) a a • v (Sum.inr a) = _`. Rewrite using `[Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`. Introduce `b _ hb show (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹) • (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep)) b a • v (Sum.inr b) = 0`. Rewrite using `[Matrix.smul_apply, Matrix.one_apply_ne hb, smul_zero, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Rewrite using `[h1, h2, smul_sub]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem amat_inr (p : PlF D) (g : Loc.SplitG (M p).L) {V : Type} [AddCommGroup V] [Module (D.s.atP p).Ep V]
     (v : Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1) → V) (a : Fin (D.R.rS + 1)) :
@@ -446,7 +442,7 @@ theorem amat_inr (p : PlF D) (g : Loc.SplitG (M p).L) {V : Type} [AddCommGroup V
   abel
 
 /- English proof (translation)
-Simplify using `only [locFam, hs]`. Conclude with `amat_inl p g _ a`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locFam_some_inl (L : LocSp D M) (p : PlF D) {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') {g : Loc.SplitG (M p).L} (hs : (M p).split = some g) (a : Fin (D.R.rS + 1)) :
@@ -455,7 +451,7 @@ theorem locFam_some_inl (L : LocSp D M) (p : PlF D) {T T' : D.host.E} (F0 : Flag
   exact amat_inl p g _ a
 
 /- English proof (translation)
-Simplify using `only [locFam, hs]`. Conclude with `amat_inr p g _ a`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locFam_some_inr (L : LocSp D M) (p : PlF D) {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') {g : Loc.SplitG (M p).L} (hs : (M p).split = some g) (a : Fin (D.R.rS + 1)) :
@@ -469,7 +465,7 @@ end Span
 section SpanMain
 
 /- English proof (translation)
-Simplify using `[FlagG.fvec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fvec_cast {T : D.host.E} (F : FlagG (VS D) D.R.rS T) (a : Fin D.R.rS) : F.fvec a.castSucc = F.e a := by
   simp [FlagG.fvec]
@@ -485,9 +481,9 @@ def NX (δ : ∀ p : PlF D, (D.s.atP p).Fp) (L : LocSp D M) (p : PlF D) {T : D.h
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `e1 : lattice₂ L p (MMg D F0 F') = NG L p F0 F'`. Unfold `MMg NG`. Conclude with `localLattice_span₂ hA L p _`. Establish `e2 : lattice₂ L p (XS D F0) = NX δ L p F0` using `latP_XS hA L p F0`. Establish `e3 : lattice₂ L p (XS D F'.fl) = NX δ L p F'.fl` using `latP_XS hA L p F'.fl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[R3.MMof_eq, R3.BB, localLattice_sup, localLattice_sup]`. Conclude with `congrArg₂ (· ⊔ ·) (congrArg₂ (· ⊔ ·) e1 e2) e3`.
+A detailed English derivation is pending.
 -/
 theorem latP_MMof (hA : ∀ p, Agree δ M p) (L : LocSp D M) (p : PlF D) {T T' : D.host.E}
     (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') :
@@ -500,7 +496,7 @@ theorem latP_MMof (hA : ∀ p, Agree δ M p) (L : LocSp D M) (p : PlF D) {T T' :
   exact congrArg₂ (· ⊔ ·) (congrArg₂ (· ⊔ ·) e1 e2) e3
 
 /- English proof (translation)
-Rewrite using `[L.bc_smul, smul_smul, ← map_mul, mul_inv_cancel₀ gS_ne, map_one, one_smul, map_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hf'_eq (L : LocSp D M) (p : PlF D) {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') (b : Fin (D.R.rS + 1)) :
@@ -509,7 +505,7 @@ theorem hf'_eq (L : LocSp D M) (p : PlF D) {T T' : D.host.E} (F0 : FlagG (VS D) 
   rw [L.bc_smul, smul_smul, ← map_mul, mul_inv_cancel₀ gS_ne, map_one, one_smul, map_sub]
 
 /- English proof (translation)
-Rewrite using `[L.bc_smul, map_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hd_eq (L : LocSp D M) (p : PlF D) {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') (b : Fin (D.R.rS + 1)) :
@@ -518,29 +514,29 @@ theorem hd_eq (L : LocSp D M) (p : PlF D) {T T' : D.host.E} (F0 : FlagG (VS D) D
   rw [L.bc_smul, map_sub]
 
 /- English proof (translation)
-Rewrite using `[map_natCast]`. Conclude with `natCast_mem _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gS_mem_O (p : PlF D) : (D.s.atP p).ιE ((Lat.gS D : ℕ) : D.host.E) ∈ (M p).L.O := by
   rw [map_natCast]
   exact natCast_mem _ _
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨F0.fvec a, Or.inl ⟨a, rfl⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_NG_f (L : LocSp D M) (p : PlF D) {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') (a : Fin (D.R.rS + 1)) : L.bc p (F0.fvec a) ∈ NG L p F0 F' := Submodule.subset_span ⟨F0.fvec a, Or.inl ⟨a, rfl⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨_, Or.inr ⟨b, rfl⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_NG_d (L : LocSp D M) (p : PlF D) {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') (b : Fin (D.R.rS + 1)) :
     L.bc p ((((Lat.gS D : ℕ) : D.host.E))⁻¹ • (F'.fl.fvec b - F0.fvec b)) ∈ NG L p F0 F' := Submodule.subset_span ⟨_, Or.inr ⟨b, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Establish `h` using `hf'_eq L p F0 F' b`. Establish `e : L.bc p (F'.fl.fvec b) = L.bc p (F0.fvec b) + (D.s.atP p).ιE ((Lat.gS D : ℕ) : D.host.E) • L.bc p ((((Lat.gS D : ℕ) : D.host.E))⁻¹ • (F'.fl.fvec b - F0.fvec b))`. Rewrite using `[← h]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (mem_NG_f L p F0 F' b) (Submodule.smul_mem _ (⟨_, gS_mem_O (M := M) p⟩ : (M p).L.O) (mem_NG_d L p F0 F' b))`.
+A detailed English derivation is pending.
 -/
 theorem mem_NG_f' (L : LocSp D M) (p : PlF D) {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') (b : Fin (D.R.rS + 1)) : L.bc p (F'.fl.fvec b) ∈ NG L p F0 F' := by
@@ -553,13 +549,13 @@ theorem mem_NG_f' (L : LocSp D M) (p : PlF D) {T T' : D.host.E} (F0 : FlagG (VS 
     (Submodule.smul_mem _ (⟨_, gS_mem_O (M := M) p⟩ : (M p).L.O) (mem_NG_d L p F0 F' b))
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_NX (L : LocSp D M) (p : PlF D) {T : D.host.E} (F : FlagG (VS D) D.R.rS T) (a : Fin D.R.rS) :
     frFac δ p a.castSucc • L.bc p (F.e a) ∈ NX δ L p F := Submodule.subset_span ⟨a, rfl⟩
 
 /- English proof (translation)
-Break down `h : (M p).split with _ | g` into its components or cases. Rewrite using `[locFam_none L p F0 F' h]`. Conclude with `frame_g_zero_inl L p F0 F' a`. Rewrite using `[locFam_some_inl L p F0 F' h]`. Conclude with `frame_g_zero_inl L p F0 F' a`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locFam_inl (L : LocSp D M) (p : PlF D) {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') (a : Fin (D.R.rS + 1)) :
@@ -571,7 +567,7 @@ theorem locFam_inl (L : LocSp D M) (p : PlF D) {T T' : D.host.E} (F0 : FlagG (VS
     exact frame_g_zero_inl L p F0 F' a
 
 /- English proof (translation)
-Take `⟨w, hw, hw1⟩` from `phi_inv_mem hA p a`. Conclude with `⟨w, hw, by rw [locFam_inl, smul_smul, hw1, one_smul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bc_f_eq (hA : ∀ p, Agree δ M p) (L : LocSp D M) (p : PlF D) {T T' : D.host.E}
     (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') (a : Fin (D.R.rS + 1)) :
@@ -582,15 +578,13 @@ theorem bc_f_eq (hA : ∀ p, Agree δ M p) (L : LocSp D M) (p : PlF D) {T T' : D
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hlast : frFac δ p (Fin.last D.R.rS) = 1` using `by simp [frFac]`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[locFam_none L p F0 F' hs]`. Break down `i with a | a` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[frame_g_zero_inl]`. Consider the cases of `a using Fin.lastCases with`. Consider the case `last`. Rewrite using `[hlast, one_smul]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (mem_NG_f L p F0 F' _))`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `cast b`. Rewrite using `[fvec_cast]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right (mem_NX L p F0 b))`. Rewrite using `[frame_g_zero_inr]`. Consider the cases of `a using Fin.lastCases with`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `last`. Rewrite using `[hlast, one_smul]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (mem_NG_f' L p F0 F' _))`. Consider the case `cast b`. Rewrite using `[fvec_cast]`.
-
-Conclude with `Submodule.mem_sup_right (mem_NX L p F'.fl b)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_le_none (hA : ∀ p, Agree δ M p) (L : LocSp D M) (p : PlF D) {T T' : D.host.E}
     (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') (hs : (M p).split = none) :
@@ -620,19 +614,17 @@ theorem span_le_none (hA : ∀ p, Agree δ M p) (L : LocSp D M) (p : PlF D) {T T
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hF0 : ∀ b, L.bc p (F0.fvec b) ∈ Submodule.span (M p).L.O (Set.range (locFam L δ p F0 F'))`. Introduce `b`. Take `⟨w, hw, e⟩` from `bc_f_eq hA L p F0 F' b`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ (⟨w, hw⟩ : (M p).L.O) (Submodule.subset_span ⟨_, rfl⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF' : ∀ b, L.bc p (F'.fl.fvec b) ∈ Submodule.span (M p).L.O (Set.range (locFam L δ p F0 F'))`. Introduce `b`. Take `⟨w, hw, hw1⟩` from `phi_inv_mem hA p b`. Establish `e : L.bc p (F'.fl.fvec b) = w • locFam L δ p F0 F' (Sum.inr b)`. Rewrite using `[locFam_none L p F0 F' hs, frame_g_zero_inr, smul_smul, hw1, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ (⟨w, hw⟩ : (M p).L.O) (Submodule.subset_span ⟨_, rfl⟩)`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Unfold `NG`. Rewrite using `[Submodule.span_le]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Break down `hx with ⟨a, rfl⟩ | ⟨b, rfl⟩` into its components or cases. Conclude with `hF0 a`. Rewrite using `[hd_eq]`. Conclude with `Submodule.smul_mem _ (⟨_, gS_inv_mem hA p hs⟩ : (M p).L.O) (sub_mem (hF' b) (hF0 b))`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Unfold `NX`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Use `beta_reduce`. Rewrite using `[← fvec_cast, ← locFam_inl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Unfold `NX`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Establish `e : frFac δ p a.castSucc • L.bc p (F'.fl.e a) = locFam L δ p F0 F' (Sum.inr a.castSucc)`.
-
-Rewrite using `[locFam_none L p F0 F' hs, frame_g_zero_inr, fvec_cast]`. Use `beta_reduce`. Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_span_none (hA : ∀ p, Agree δ M p) (L : LocSp D M) (p : PlF D) {T T' : D.host.E}
     (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') (hs : (M p).split = none) :
@@ -679,13 +671,11 @@ section SpanG
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hlast : frFac δ p (Fin.last D.R.rS) = 1` using `by simp [frFac]`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Break down `i with a | a` into its components or cases. Rewrite using `[locFam_inl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `a using Fin.lastCases with`. Consider the case `last`. Rewrite using `[hlast, one_smul]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (mem_NG_f L p F0 F' _))`. Consider the case `cast b`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fvec_cast]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right (mem_NX L p F0 b))`. Rewrite using `[locFam_some_inr L p F0 F' hs, frame_g_zero_inr, frame_g_zero_inl, ← smul_sub, hf'_eq, smul_smul, smul_smul]`. Establish `hc : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹) * frFac δ p a * (D.s.atP p).ιE ((Lat.gS D : ℕ) : D.host.E) ∈ (M p).L.O`. Rewrite using `[mul_comm (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹)), mul_assoc]`.
-
-Conclude with `mul_mem (phi_mem_typed hA p hs a) (qinv_gS_mem hA p hs)`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.smul_mem _ (⟨_, hc⟩ : (M p).L.O) (mem_NG_d L p F0 F' a)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_le_some (hA : ∀ p, Agree δ M p) (L : LocSp D M) (p : PlF D) {T T' : D.host.E}
     (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') {g : Loc.SplitG (M p).L} (hs : (M p).split = some g) :
@@ -712,23 +702,21 @@ theorem span_le_some (hA : ∀ p, Agree δ M p) (L : LocSp D M) (p : PlF D) {T T
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hq0 : (g.q : (D.s.atP p).Fp) ≠ 0`. Introduce `h`. Apply `g.q_irr.ne_zero` to reduce the goal to its premises. Conclude with `Subtype.ext h`. Establish `hq : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, mul_inv_cancel₀ hq0, map_one]`. Establish `haq : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) ∈ (M p).L.O`. Rewrite using `[(hA p).2.2.2.1]`. Conclude with `PI.CntNotIntW.algMap_mem_O D p _ g.q.2`. Establish `hF0 : ∀ b, L.bc p (F0.fvec b) ∈ Submodule.span (M p).L.O (Set.range (locFam L δ p F0 F'))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `b`. Take `⟨w, hw, e⟩` from `bc_f_eq hA L p F0 F' b`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ (⟨w, hw⟩ : (M p).L.O) (Submodule.subset_span ⟨_, rfl⟩)`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Unfold `NG`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Break down `hx with ⟨a, rfl⟩ | ⟨b, rfl⟩` into its components or cases. Conclude with `hF0 a`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨w, hw, hw1⟩` from `phi_inv_mem hA p b`. Establish `e : L.bc p (F'.fl.fvec b) - L.bc p (F0.fvec b) = (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) * w) • locFam L δ p F0 F' (Sum.inr b)`. Rewrite using `[locFam_some_inr L p F0 F' hs, frame_g_zero_inr, frame_g_zero_inl, ← smul_sub, smul_smul, smul_smul]`. Establish `h2 : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) * w * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹) * frFac δ p b = 1`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, one_smul]`. Establish `hc : (D.s.atP p).ιE (((Lat.gS D : ℕ) : D.host.E))⁻¹ * (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) * w) ∈ (M p).L.O`. Rewrite using `[← mul_assoc]`. Conclude with `mul_mem (q_gS_inv_mem hA p hs) hw`. Rewrite using `[hd_eq, e, smul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `Submodule.smul_mem _ (⟨_, hc⟩ : (M p).L.O) (Submodule.subset_span ⟨_, rfl⟩)`. Unfold `NX`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← fvec_cast, ← locFam_inl]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Unfold `NX`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`.
-
-Use `beta_reduce`. Establish `e : frFac δ p a.castSucc • L.bc p (F'.fl.e a) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) • locFam L δ p F0 F' (Sum.inr a.castSucc) + locFam L δ p F0 F' (Sum.inl a.castSucc)`. Rewrite using `[locFam_some_inr L p F0 F' hs, smul_smul, hq, one_smul, frame_g_zero_inr, frame_g_zero_inl, locFam_inl, fvec_cast, fvec_cast, sub_add_cancel]`. Rewrite using `[e]`. Conclude with `add_mem (Submodule.smul_mem _ (⟨_, haq⟩ : (M p).L.O) (Submodule.subset_span ⟨_, rfl⟩)) (Submodule.subset_span ⟨_, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem le_span_some (hA : ∀ p, Agree δ M p) (L : LocSp D M) (p : PlF D) {T T' : D.host.E}
     (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') {g : Loc.SplitG (M p).L} (hs : (M p).split = some g) :
@@ -784,7 +772,7 @@ theorem le_span_some (hA : ∀ p, Agree δ M p) (L : LocSp D M) (p : PlF D) {T T
       (Submodule.subset_span ⟨_, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[latP_MMof hA]`. Break down `h : (M p).split with _ | g` into its components or cases. Conclude with `le_antisymm (span_le_none hA L p F0 F' h) (le_span_none hA L p F0 F' h)`. Conclude with `le_antisymm (span_le_some hA L p F0 F' h) (le_span_some hA L p F0 F' h)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem span_locFam (hA : ∀ p, Agree δ M p) (L : LocSp D M) (p : PlF D) {T T' : D.host.E}
     (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') :
@@ -799,13 +787,13 @@ end SpanG
 section Indep
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`. Establish `hzero : ∀ y, H.h 0 y = 0` using `fun y => by`. Establish `e` using `H.h_add_left 0 0 y`. Rewrite `e` using `[add_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `-e`. Establish `e : ∀ a, ∑ b, (c b : E) * H.h (g b) (g a) = 0`. Introduce `a`. Set `φ : V →+ E` to `⟨⟨fun x => H.h x (g a), hzero _⟩, fun x y => H.h_add_left x y _⟩`. Combine the equalities or inequalities in the displayed calculation.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation.
 
-Establish `hmv : Matrix.mulVec (Matrix.of fun a b => H.h (g b) (g a)) (fun b => (c b : E)) = 0`. Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `∑ b, H.h (g b) (g a) * (c b : E) = 0`. Rewrite using `[← e a]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : (fun b => (c b : E)) = 0`. Establish `h1` using `congrArg (Matrix.mulVec (Matrix.of fun a b => H.h (g b) (g a))⁻¹) hmv`. Rewrite `h1` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec, Matrix.mulVec_zero]`. Then use the resulting hypothesis. Conclude with `Subtype.ext (congrFun h0 i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem linIndep_of_gram_unit {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
@@ -837,7 +825,7 @@ theorem linIndep_of_gram_unit {F : Type} [Field F] [ValuativeRel F] [Topological
   exact Subtype.ext (congrFun h0 i)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [GaLoc, Matrix.of_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gaLoc_eq_diag (p : PlF D) (T T' : D.host.E) (Z : MatZ D) :
     GaLoc M δ p T T' Z = Matrix.diagonal (fun a => (M p).L.cj (phi δ p a)) * (Ga T T' Z).map (D.s.atP p).ιE *
@@ -847,13 +835,11 @@ theorem gaLoc_eq_diag (p : PlF D) (T T' : D.host.E) (Z : MatZ D) :
   ring
 
 /- English proof (translation)
-Establish `hg : gpart p ≠ 0`. Unfold `gpart`. Use `split_ifs`. Conclude with `(D.host.g_prime 0).ne_zero`. Conclude with `(D.host.g_prime 1).ne_zero`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_ne_zero`. Establish `hgS : Lat.gS D ≠ 0` using `Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`. Establish `hu : (uP p : D.host.E) ≠ 0`. Rewrite using `[Rat.cast_ne_zero]`. Conclude with `div_ne_zero (Nat.cast_ne_zero.2 hg) (Nat.cast_ne_zero.2 hgS)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : IsUnit (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p) * (D.s.atP p).ιE (uP p : D.host.E))` using `((hA p).2.1.isUnit.map _).mul (hu.isUnit.map _)`. Establish `hk : ∀ k : ℕ, IsUnit (Ring.inverse ((algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p) * (D.s.atP p).ιE (uP p : D.host.E)) ^ k))`. Introduce `k`. Take `⟨u, hu'⟩` from `hx.pow k`. Rewrite using `[← hu', Ring.inverse_unit]`.
-
-Conclude with `(u⁻¹).isUnit`. Break down `i with a | a` into its components or cases. Conclude with `hk _`. Conclude with `hk _`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem phi_unit (hA : ∀ p, Agree δ M p) (p : PlF D) (i : Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) :
     IsUnit (phi δ p i) := by
@@ -880,19 +866,19 @@ theorem phi_unit (hA : ∀ p, Agree δ M p) (p : PlF D) (i : Fin (D.R.rS + 1) �
   · exact hk _
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction f IsUnit (fun _ _ ha hb => ha.mul hb) isUnit_one fun i _ => h i`.
+A detailed English derivation is pending.
 -/
 theorem prod_unit {ι R : Type} [CommMonoid R] (s : Finset ι) (f : ι → R) (h : ∀ i, IsUnit (f i)) :
     IsUnit (∏ i ∈ s, f i) := Finset.prod_induction f IsUnit (fun _ _ ha hb => ha.mul hb) isUnit_one fun i _ => h i
 
 /- English proof (translation)
-Establish `hmap : ((Ga T T' Z).map (D.s.atP p).ιE).det = (D.s.atP p).ιE (Ga T T' Z).det` using `(RingHom.map_det _ _).symm`. Establish `hGL : IsUnit (GaLoc M δ p T T' Z).det`. Rewrite using `[gaLoc_eq_diag, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal, hmap]`. Conclude with `((prod_unit _ _ fun i => (phi_unit hA p i).map (M p).L.cj).mul ((Ne.isUnit hdet).map _)).mul (prod_unit _ _ fun i => phi_unit hA p i)`. Break down `h : (M p).split with _ | g` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [GaPlus, h]`. Conclude with `hGL`. Establish `hq0 : (g.q : (D.s.atP p).Fp) ≠ 0`. Introduce `hh`. Apply `g.q_irr.ne_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Subtype.ext hh`. Establish `hqi : IsUnit (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹))` using `(inv_ne_zero hq0).isUnit.map _`. Simplify using `only [GaPlus, h]`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Establish `hAd : IsUnit (Matrix.fromBlocks (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep) (-(algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((g.q : (D.s.atP p).Fp)⁻¹)) • (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep)) 0 ((algebraMap (D.s.atP p).Fp (D.s.atP p) …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, Matrix.det_smul, Matrix.det_one, mul_one, one_mul]`. Conclude with `hqi.pow _`. Establish `hmc : ∀ N : Matrix (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) (D.s.atP p).Ep, (N.map (M p).L.cj).det = (M p).L.cj N.det` using `fun N => (RingHom.map_det ((M p).L.cj : (D.s.atP p).Ep →+* (D.s.atP p).Ep) N).symm`. Rewrite using `[hmc]`. Conclude with `((hAd.map (M p).L.cj).mul hGL).mul hAd`.
+A detailed English derivation is pending.
 -/
 theorem gaPlus_det_unit (hA : ∀ p, Agree δ M p) (p : PlF D) (T T' : D.host.E) (Z : MatZ D)
     (hdet : (Ga T T' Z).det ≠ 0) : IsUnit (GaPlus M δ p T T' Z).det := by
@@ -928,19 +914,17 @@ end Indep
 section Final
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Rewrite `hc` using `[ga_eq]`. Use `set w : (VS D).V := ∑ b, c b • vfam F0 F' b with hw`. Establish `hvU : ∀ b, vfam F0 F' b ∈ UPair D F0 F'` using `fun b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `b with a | a` into its components or cases. Conclude with `Submodule.subset_span (Or.inl ⟨a, rfl⟩)`. Conclude with `Submodule.subset_span (Or.inr ⟨a, rfl⟩)`. Establish `hwU : w ∈ UPair D F0 F'` using `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (hvU b)`. Establish `hperp : ∀ a, (VS D).hT (vfam F0 F' a) w = 0` using `fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun hc a` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply, brS] at this`. Rewrite using `[hw, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`. Establish `hwO : w ∈ orthK (VS D).hT (UPair D F0 F')`. Simplify using `only [orthK, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately.
 
-Consider the case `mem y hy`. Break down `hy with ⟨a, rfl⟩ | ⟨a, rfl⟩` into its components or cases. Conclude with `hperp (Sum.inl a)`. Conclude with `hperp (Sum.inr a)`. Consider the case `zero => simp`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Consider the case `add y z _ _ hy hz => rw [map_add, LinearMap.add_apply, hy, hz, add_zero]`. Consider the case `smul s y _ hy => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, hy, smul_zero]`. Establish `hw0 : w = 0`. Use `hC.disjoint` as an intermediate fact. Rewrite `this` using `[Submodule.disjoint_def]`.
-
-Conclude with `this w hwU hwO`. Establish `hli` using `PI.PairCorankPos.W.linIndep F0 F'.fl hG`. Apply `hc0` to reduce the goal to its premises. Use function extensionality and compare the values at `b`. Conclude with `Fintype.linearIndependent_iff.1 hli c (by rw [← hw0, hw]; rfl) b`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ga_det_ne {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (hG : Gflag F0 F'.fl ≠ 0) (hC : IsCompl (UPair D F0 F') (orthK (VS D).hT (UPair D F0 F'))) :
@@ -981,9 +965,9 @@ theorem ga_det_ne {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS
   exact Fintype.linearIndependent_iff.1 hli c (by rw [← hw0, hw]; rfl) b
 
 /- English proof (translation)
-Introduce `D δ M hA L u u' hT F0 what₂ hR F' hz hP p`. Use `⟨?_, span_locFam hA L p F0 F'⟩` and prove the remaining obligations. Establish `hG : Gflag F0 F'.fl ≠ 0` using `PairSpanDimension.totPos_ne_zero hP`. Take `⟨hC, -, -, -⟩` from `perpendicular_definition_holds D u u' hT F0 what₂ hR _ F' hz rfl hP`. Apply `linIndep_of_gram_unit (L.H p)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← gaPlus_eq_gram L δ p F0 F']`. Conclude with `gaPlus_det_unit hA p _ _ _ (ga_det_ne F0 F' hG hC)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameBasisL_holds : FrameBasisL := by
   intro D δ M hA L u u' hT F0 what₂ hR F' hz hP p

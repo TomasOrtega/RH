@@ -3,15 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open UpperTheory.V.FW
 
 /- English proof (translation)
-Introduce `l _ a k G A _ _ _ _ _ r p χ e θ h`. Break down `subsingleton_or_nontrivial A with hA | hA` into its components or cases. Conclude with `Subsingleton.elim _ _`. Use `haveI : CharP A l := charP_of_injective_algebraMap (algebraMap k A).injective l`. Use `set q := l ^ a with hq`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `frob_add : ∀ x y : A, (x + y) ^ q = x ^ q + y ^ q` using `fun x y => by`. Rewrite using `[hq]`. Conclude with `add_pow_char_pow x y l a`. Establish `hs : ∀ (x : G) (b : k), r (MonoidAlgebra.single x b) ^ q = b ^ q • r (MonoidAlgebra.of k G (x ^ q))`. Introduce `x b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Establish `e1 : MonoidAlgebra.single x b = b • MonoidAlgebra.of k G x`. Simplify using `[MonoidAlgebra.of_apply, MonoidAlgebra.smul_single']`. Rewrite using `[e1, map_smul, smul_pow, map_pow (MonoidAlgebra.of k G), map_pow r]`. Proceed by induction on `θ using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add f g hf hg`. Simplify using `only [map_add, frob_add, add_mul, hf, hg]`. Consider the case `single g c`. Rewrite using `[tw_single, hs, hs]`. Establish `hg : g ^ q = (g * (p g)⁻¹) ^ q * (p g) ^ q`.
-
-Rewrite using `[mul_pow, inv_pow, inv_mul_cancel_right]`. Rewrite using `[hg, map_mul, map_mul, smul_mul_assoc, smul_mul_assoc, mul_comm (r (MonoidAlgebra.of k G ((g * (p g)⁻¹) ^ q))), mul_assoc, h g, mul_smul_comm, smul_smul, mul_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.frobEig :
     ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) (k G A : Type) [Field k] [CharP k l] [CommGroup G] [CommRing A] [Algebra k A] (r : MonoidAlgebra k G →ₐ[k] A) (p : G →* G) (χ : G →* kˣ) (e : A) (θ : MonoidAlgebra k G), (∀ g, r (MonoidAlgebra.of k G ((g * (p g)⁻¹) ^ l ^ a)) * e = ((χ g : k) ^ l ^ a) • e) → r θ ^ l ^ a * e = r (tw χ p θ) ^ l ^ a * e := by

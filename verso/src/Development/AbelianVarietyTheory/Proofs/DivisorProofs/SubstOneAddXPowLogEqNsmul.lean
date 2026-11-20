@@ -7,9 +7,9 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.Proof.subst_one_add_X_pow_log_eq_nsmul
 
 /- English proof (translation)
-Establish `h1 : up Q (fun _ : Unit => ((1 + X ()) ^ m - 1 : MvPowerSeries Unit B)) = fun _ : Unit => ((1 + X ()) ^ m - 1 : MvPowerSeries Unit Q)`. Use function extensionality and compare the values at `j`. Simplify using `[up]`. Establish `h2 : formalLog (1 + X () : MvPowerSeries Unit Q) = (PowerSeries.log Q : MvPowerSeries Unit Q)`. Rewrite using `[formalLog, add_sub_cancel_left, PowerSeries.subst]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun MvPowerSeries.subst_self _`. Establish `h3` using `formalLog_pow m (g := (1 + X () : MvPowerSeries Unit Q)) (by simp)`. Rewrite `h3` using `[h2]`. Rewrite using `[h1, Nat.cast_smul_eq_nsmul, ← h3]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem subst_pow_log (B Q : Type) [CommRing B] [CommRing Q] [Algebra B Q] [Algebra ℚ Q] (m : ℕ) :
     subst (up Q (fun _ : Unit => ((1 + X ()) ^ m - 1 : MvPowerSeries Unit B)))

@@ -11,13 +11,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.V.Z.Sym.Al
 
 /- English proof (translation)
-Establish `hle : π ≤ GlobalTheory.DefU.autU L n` using `hπ.aut`. Establish `hK : π ⊓ (LinearMap.ker P).map (GlobalTheory.DefU.autU L n).subtype = ⊥`. Use `(hπ.irred _ inf_le_left ?_).resolve_right fun e => h0 ?_` and prove the remaining obligations. Introduce and unpack `x _ ⟨h1, φ, h2, rfl⟩`. Use `⟨hπ.stable x _ h1, GlobalTheory.DefU.autRep L n x φ, ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2' : P φ = 0` using `h2`. Express the relevant statement in the definitionally equal form `P _ = 0`. Rewrite using `[he, h2', map_zero]`. Take `⟨-, φ, h2, h3⟩` from `e.ge hψ`. Take `rfl : φ = ψ` from `Subtype.ext h3`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h2`. Take `⟨h1, f, hf0, hf, h2⟩` from `h`. Set `g` to `f.codRestrict (GlobalTheory.DefU.autU L n) fun v => hle (hf v)`. Use `⟨h1, (GlobalTheory.DefU.autU L n).subtype ∘ₗ P ∘ₗ g, fun e => hf0 (LinearMap.ext fun v => ?_), fun v => hP _, fun x v => ?_⟩` and prove the remaining obligations. Establish `h3 : P (g v) = 0` using `Subtype.ext (LinearMap.congr_fun e v)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hK.le ⟨hf v, g v, h3, rfl⟩`. Establish `h3 : g (τ.ρ (((cLoc w).comp (locU n w).subtype) x) v) = GlobalTheory.DefU.autRep L n x (g v)` using `Subtype.ext (h2 x v)`. Conclude with `congrArg Subtype.val ((congrArg P h3).trans (he x _))`.
+A detailed English derivation is pending.
 -/
 private theorem comp_of_proj {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
     {π σ : Submodule ℂ (UA L n → ℂ)} (hπ : IsAutRepU π)
@@ -47,13 +47,13 @@ private theorem comp_of_proj {L : Type} [Field L] [NumberField L] [IsCMField L] 
     exact congrArg Subtype.val ((congrArg P h3).trans (he x _))
 
 /- English proof (translation)
-Introduce `L _ _ _ n V _ _ _ R hR U hU`. Use `afFin L n V R U hU` as an intermediate fact. Set `b` to `Module.finBasis ℂ V`. Set `T : Fin (Module.finrank ℂ V) → AF R U →ₗ[ℂ] GlobalTheory.DefU.autU L n` to `fun i => (((b.coord i).compLeft (UA L n)) ∘ₗ (AF R U).subtype).codRestrict _ fun φ => coefAut L n V R hR U hU φ.1 φ.2 (b.coord i)`. Take `⟨κ, _, σ, P, h1, h2, h3, h4⟩` from `autProj L n (⨆ i, LinearMap.range (T i)) inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `⟨Set.range σ, Set.finite_range σ, ?_, fun π hπ φ h0 hφ hc => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `h1 i`. Take `⟨i, hi⟩ : ∃ i, T i ⟨φ, hφ⟩ ≠ 0` from `by by_contra! h`. Use `h0 (funext fun g => b.ext_elem fun i => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h5 : b.coord i (φ g) = 0` using `congrFun (congrArg Subtype.val (h i)) g`. Simplify using `using h5`. Take `⟨k, hk⟩ : ∃ k, P k (T i ⟨φ, hφ⟩) ≠ 0` from `by by_contra! h`. Use `hi ?_` and prove the remaining obligations. Rewrite using `[← h4 (T i ⟨φ, hφ⟩) (Submodule.mem_iSup_of_mem i ⟨_, rfl⟩)]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Conclude with `⟨σ k, ⟨k, rfl⟩, comp_of_proj hπ (P k) (h2 k) (h3 k) _ (hc (b.coord i)) hk⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Al.finFam :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (R : Representation ℂ (InfinitePlace L → GL (Fin n) ℂ) V), ContCoef R → ∀ U, IsLevel U →

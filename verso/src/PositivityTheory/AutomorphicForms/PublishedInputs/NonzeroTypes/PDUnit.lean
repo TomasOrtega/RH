@@ -15,11 +15,9 @@ variable {n : ℕ} (G : Grp k n)
 namespace P_DUnit
 
 /- English proof (translation)
-Use `set M := (IsLocalRing.residue 𝒪[k]).mapMatrix (A : Matrix (Fin n) (Fin n) 𝒪[k]) with hM`. Establish `hdet : IsUnit M.det`. Rewrite using `[hM, ← RingHom.map_det]`. Conclude with `(Matrix.isUnits_det_units A).map _`. Establish `htri` using `Matrix.twoBlockTriangular_det M (fun i => G.bl i ≤ a) (fun i hi j hj => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hM, RingHom.mapMatrix_apply, Matrix.map_apply, IsLocalRing.residue_eq_zero_iff]`. Conclude with `hA i j (lt_of_le_of_lt hj (not_le.1 hi)))`. Rewrite `hdet` using `[htri]`. Establish `h1` using `isUnit_of_mul_isUnit_left hdet`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]`.
-
-Conclude with `h1.ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_sub (A : GL (Fin n) 𝒪[k]) (a : Fin G.s)
     (hA : ∀ i j, G.bl j < G.bl i → (A : Matrix (Fin n) (Fin n) 𝒪[k]) i j ∈ IsLocalRing.maximalIdeal 𝒪[k]) :
@@ -40,13 +38,13 @@ theorem isUnit_det_sub (A : GL (Fin n) 𝒪[k]) (a : Fin G.s)
 end P_DUnit
 
 /- English proof (translation)
-Introduce `hb g hg a`. Take `⟨A, rfl⟩` from `MonoidHom.mem_range.1 hg.1`. Establish `hinj : Function.Injective (algebraMap 𝒪[k] k)` using `Subtype.val_injective`. Establish `hA : ∀ i j, G.bl j < G.bl i → (A : Matrix (Fin n) (Fin n) 𝒪[k]) i j ∈ IsLocalRing.maximalIdeal 𝒪[k]`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, hyx⟩` from `hg.2 i j hij`. Establish `hc : cc G.μ (G.bl j) (G.bl i) ≠ 0`. Use `hb.1 (G.bl j) (G.bl i) (ne_of_lt hij)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `: y = (A : Matrix (Fin n) (Fin n) 𝒪[k]) i j` using `hinj (by rw [hyx]; rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `Ideal.pow_le_self hc hy`. Establish `hu` using `P_DUnit.isUnit_det_sub G A a hA`. Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem step_DUnit : ModulusOnUnitsProp G := by
   intro hb g hg a

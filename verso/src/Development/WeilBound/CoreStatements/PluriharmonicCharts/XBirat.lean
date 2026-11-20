@@ -10,7 +10,7 @@ namespace PositivityTheory.Xgp.birat
 variable {K : Type} {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨m₁, h₁, m₂, h₂, rfl⟩` from `Finset.mem_add.1 (support_mul f g hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, hf m₁ h₁ k, hg m₂ h₂ k, Pi.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem hom_mul {f g : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι} {a b : K → ℕ} (hf : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog f a)
     (hg : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog g b) : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog (f * g) (a + b) := by
@@ -20,7 +20,7 @@ theorem hom_mul {f g : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι} {a b :
   simp only [Finsupp.add_apply, Finset.sum_add_distrib, hf m₁ h₁ k, hg m₂ h₂ k, Pi.add_apply]
 
 /- English proof (translation)
-Introduce `m hm k`. Break down `Finset.mem_union.1 (support_add hm) with h | h` into its components or cases. Conclude with `hf m h k`. Conclude with `hg m h k`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem hom_add {f g : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι} {a : K → ℕ} (hf : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog f a)
     (hg : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog g a) : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog (f + g) a := by
@@ -31,7 +31,7 @@ theorem hom_add {f g : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι} {a : K
   · exact hg m h k
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[support_neg]`. Conclude with `hf m hm k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_neg {f : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι} {a : K → ℕ} (hf : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog f a) :
     ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog (-f) a := by
@@ -40,9 +40,9 @@ theorem hom_neg {f : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι} {a : K �
   exact hf m hm k
 
 /- English proof (translation)
-Introduce `m hm k`. Establish `: m = 0`. Assume the negation of the conclusion as `h`. Rewrite `hm` using `[mem_support_iff, coeff_one, if_neg (Ne.symm h)]`. Conclude with `hm rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `this` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hom_one : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog (1 : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι) 0 := by
   classical
@@ -55,9 +55,9 @@ theorem hom_one : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog (1 : Rec
   simp
 
 /- English proof (translation)
-Establish `key : ∀ i : ι k, ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog (X ⟨k, i⟩ : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι) (fun k' => if k = k' then 1 else 0)`. Introduce `i m hm k'`. Rewrite `hm` using `[support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Distinguish the cases in `h : k = k'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[Finsupp.single_apply]`. Simplify using `[Finsupp.single_apply, h]`. Conclude with `⟨_, key i, key j⟩`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem hom_X (k : K) (i j : ι k) : ∃ a, ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog (X ⟨k, i⟩ : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι) a ∧
     ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog (X ⟨k, j⟩ : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι) a := by
@@ -74,17 +74,17 @@ theorem hom_X (k : K) (i j : ι k) : ∃ a, ReciprocityTheory.ChartRestriction.G
   exact ⟨_, key i, key j⟩
 
 /- English proof (translation)
-Proceed by induction on `hs using Subfield.closure_induction with`. Consider the case `mem x hx`. Take `⟨⟨k, i⟩, rfl⟩` from `hx`. Take `⟨a, h1, h2⟩` from `hom_X k i (c k)`. Conclude with `⟨a, _, _, h1, h2, by simp [hc], by simp [hc]⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `one => exact ⟨0, 1, 1, hom_one, hom_one, by simp, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨d, g, h, a1, a2, a3, a4⟩` from `hx`. Take `⟨d', g', h', b1, b2, b3, b4⟩` from `hy`. Use `⟨d + d', g * h' + h * g', h * h', hom_add (hom_mul a1 b2) (hom_mul a2 b1), hom_mul a2 b2, ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Conclude with `mul_ne_zero a3 b3`. Rewrite using `[map_add, map_mul, map_mul, map_mul, a4, b4]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `neg x _ hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨d, g, h, a1, a2, a3, a4⟩` from `hx`. Conclude with `⟨d, -g, h, hom_neg a1, a2, a3, by rw [map_neg, a4]; ring⟩`. Consider the case `inv x _ hx`. Take `⟨d, g, h, a1, a2, a3, a4⟩` from `hx`. Distinguish the cases in `h0 : x = 0`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨d, g, h, a1, a2, a3, by rw [a4, h0, inv_zero]⟩`. Conclude with `⟨d, h, g, a2, a1, by rw [a4]; exact mul_ne_zero h0 a3, by rw [a4, inv_mul_cancel_left₀ h0]⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨d, g, h, a1, a2, a3, a4⟩` from `hx`. Take `⟨d', g', h', b1, b2, b3, b4⟩` from `hy`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d + d', g * g', h * h', hom_mul a1 b1, hom_mul a2 b2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero a3 b3`. Rewrite using `[map_mul, map_mul, a4, b4]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ratio {Ω : Type} [Field Ω] (r : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, r ⟨k, c k⟩ = 1) (s : Ω)
     (hs : s ∈ Subfield.closure (Set.range r)) :
@@ -121,21 +121,19 @@ end PositivityTheory.Xgp.birat
 
 open PositivityTheory.Xgp.birat in
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y hy`. Use `choose c hc using hy`. Set `r : (Σ k, ι k) → Ω` to `fun p => y p / y ⟨p.1, c p.1⟩`. Set `F : Subfield Ω` to `Subfield.closure (Set.range r)`. Set `y' : (Σ k, ι k) → F` to `fun p => ⟨r p, Subfield.subset_closure ⟨p, rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hev : ∀ g : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι, ((aeval y' g : F) : Ω) = aeval r g` using `fun g => by`. Establish `: (F.subtype.toIntAlgHom).comp (aeval y') = aeval r`. Use extensionality with `p`. Simplify using `[y']`. Conclude with `AlgHom.congr_fun this g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `⟨F, inferInstance, y', ?_, fun s => ?_⟩` and prove the remaining obligations. Set `θ : MvPolynomial K Ω →ₐ[Ω] MvPolynomial K Ω` to `aeval fun k => C (y ⟨k, c k⟩) * X k`. Set `θ' : MvPolynomial K Ω →ₐ[Ω] MvPolynomial K Ω` to `aeval fun k => C (y ⟨k, c k⟩)⁻¹ * X k`. Establish `hθ : θ'.comp θ = AlgHom.id Ω _`. Use `MvPolynomial.algHom_ext fun k => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [θ, θ', AlgHom.comp_apply, aeval_X, map_mul, aeval_C, algebraMap_eq, AlgHom.id_apply]`. Rewrite using `[← mul_assoc, ← C_mul, mul_inv_cancel₀ (hc k), C_1, one_mul]`. Establish `hθi : Function.Injective θ` using `Function.LeftInverse.injective (g := θ') (AlgHom.congr_fun hθ)`. Set `ψ : MvPolynomial K F →+* MvPolynomial K Ω` to `θ.toRingHom.comp (MvPolynomial.map F.subtype)`. Establish `hψ : Function.Injective ψ` using `hθi.comp (MvPolynomial.map_injective _ F.subtype.injective)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ψ.comp (mConeMap y').toRingHom = (mConeMap y).toRingHom`. Use `MvPolynomial.ringHom_ext (fun n => by simp) fun p => ?_` and prove the remaining obligations. Establish `e1 : mConeMap y' (X p) = C (y' p) * X p.1` using `aeval_X _ p`. Establish `e2 : mConeMap y (X p) = C (y p) * X p.1` using `aeval_X _ p`. Use `show θ (MvPolynomial.map F.subtype (mConeMap y' (X p))) = mConeMap y (X p)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Simplify using `only [θ, map_mul, map_C, map_X, aeval_X, aeval_C, algebraMap_eq]`. Rewrite using `[← mul_assoc, ← C_mul]`. Use `congr 2`. Conclude with `div_mul_cancel₀ _ (hc _)`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `g`. Use `show mConeMap y' g = 0 ↔ mConeMap y g = 0`. Rewrite using `[show mConeMap y g = ψ (mConeMap y' g) from (RingHom.congr_fun e g).symm]`. Conclude with `(map_eq_zero_iff ψ hψ).symm`. Take `⟨d, g, h, a1, a2, a3, a4⟩` from `ratio r c (fun k => div_self (hc k)) s.1 s.2`.
-
-Use `⟨d, g, h, a1, a2, fun h0 => a3 (by rw [← hev, h0]; rfl), Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Subfield.coe_mul, hev, hev, a4]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.t_birat : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω), (∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) → ∃ (Ω' : Type) (_ : Field Ω') (y' : (Σ k, ι k) → Ω'), mCoordIdeal y' = mCoordIdeal y ∧ Birational y' := by
   intro K _ ι _ Ω _ y hy

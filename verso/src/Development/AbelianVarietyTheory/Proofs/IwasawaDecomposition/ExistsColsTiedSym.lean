@@ -43,7 +43,7 @@ def colsRe (C : ColsTiedSym D) : ColsTiedSym (reD D Z) := (by with_unfolding_all
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `u`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact ((Eq.refl (C.forms u).to0.cls0.lev) :))`. Conclude with `(by with_unfolding_all exact ((Eq.refl (C.forms u).to0.cls0.y) :))`. Conclude with `(by with_unfolding_all exact ((Eq.refl (C.forms u).to0.val0.eY) :))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sameF_colsRe (C : ColsTiedSym D) :
     SameForms0LevelsAndValues Z (fun u => (C.forms u).to0) (fun u => ((colsRe Z C).forms u).to0) := by
@@ -56,7 +56,7 @@ theorem sameF_colsRe (C : ColsTiedSym D) :
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨colsRe Z C, sameF_colsRe Z C⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_colsTiedSym (D : D7) (Z : New D) (C : ColsTiedSym D) :
     ∃ C' : ColsTiedSym (reD D Z), SameForms0LevelsAndValues Z (fun u => (C.forms u).to0) (fun u => (C'.forms u).to0) :=

@@ -13,33 +13,31 @@ open scoped InnerProductSpace
 namespace GlobalTheory.Dec
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ μ _ _ H _ _ _ σ hσ hσc d hd hS w hw hint`. Establish `hcont : ∀ x y : H, Continuous fun g => ⟪y, σ g x⟫_ℂ` using `fun x y => continuous_const.inner (hσc x)`. Establish `hww : ⟪w, w⟫_ℂ = 1`. Rewrite using `[inner_self_eq_norm_sq_to_K, hw]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hm1 : ⟪w, σ 1 w⟫_ℂ = 1`. Rewrite using `[map_one, ContinuousLinearMap.one_apply, hww]`. Take `⟨hsf, hinv⟩` from `GlobalTheory.sigmaFinite_and_isInvInvariant_of_continuous_integrable G μ (fun g => ⟪w, σ g w⟫_ℂ) (hcont w w) (by show ⟪w, σ 1 w⟫_ℂ ≠ 0; rw [hm1]; exact one_ne_zero) hint`. Establish `hpol` using `GlobalTheory.polarised_schur_relations G μ H σ d (fun x y => (hcont x y).aestronglyMeasurable) hS`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.matrixCoeff_idempotent_of_orthogonality G μ H σ d hd hσ (fun v w v' w' => (hpol v w v' w').2) w hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hφ : Integrable (phG d σ w) μ`. Establish `: Integrable (fun g => star ⟪w, σ g w⟫_ℂ) μ` using `(Complex.conjCLE : ℂ →L[ℝ] ℂ).integrable_comp hint`. Conclude with `this.const_mul (d : ℂ)`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Introduce `Hp _ _ _ π hπ hπc`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨P, -, hP⟩` from `GlobalTheory.absOpInt G μ Hp π hπ hπc (phG d σ w) hφ`. Conclude with `⟨P, hφ, hP⟩`. Introduce `P hP`. Take `⟨hsp, hPxP⟩` from `GlobalTheory.integratedOperator_isStarProjection_and_sandwich G μ Hp π hπ hπc (phG d σ w) (fun x => ⟪w, σ x w⟫_ℂ) hφ h1 h2 hm1 P hP.2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfix : ∀ v ∈ LinearMap.range (P : Hp →ₗ[ℂ] Hp), P v = v`. Introduce and unpack `_ ⟨u, rfl⟩`. Use `congrArg (fun T : Hp →L[ℂ] Hp => T u) hsp.isIdempotentElem.eq` as an intermediate fact. Simplify using `using this`. Establish `hunit : ∀ v ∈ LinearMap.range (P : Hp →ₗ[ℂ] Hp), ‖v‖ = 1 → (∀ g : G, ⟪v, π g v⟫_ℂ = ⟪w, σ g w⟫_ℂ) ∧ ∃ io : H →ₗᵢ[ℂ] Hp, io w = v ∧ ∀ (g : G) (u : H), io (σ g u) = π g (io u)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv hn`. Establish `hPv` using `hfix v hv`. Establish `hc : ∀ g : G, ⟪v, π g v⟫_ℂ = ⟪w, σ g w⟫_ℂ`. Introduce `g`. Establish `hvv : ⟪v, v⟫_ℂ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_self_eq_norm_sq_to_K, hn]`. Simplify using the standard rewrite rules. Establish `e1 : P (π g v) = ⟪w, σ g w⟫_ℂ • v`. Use `congrArg (fun T : Hp →L[ℂ] Hp => T v) (hPxP g)` as an intermediate fact. Simplify `this` using `[hPv]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hadj : ContinuousLinearMap.adjoint P = P`. Rewrite using `[← ContinuousLinearMap.star_eq_adjoint]`. Conclude with `hsp.isSelfAdjoint`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨hc, GlobalTheory.exists_isometric_intertwiner_of_matrixCoeff_eq G H σ Hp π hσ hπ w v h4 hc⟩`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨hsp, hPxP, hunit, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Distinguish the cases in `h0 : v = 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨0, fun g => by simp, by simp [h0]⟩`. Establish `hn : (‖v‖ : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.mpr h0`. Establish `hv' : ((‖v‖ : ℂ)⁻¹ • v) ∈ LinearMap.range (P : Hp →ₗ[ℂ] Hp)` using `Submodule.smul_mem _ _ hv`. Take `⟨-, io, hio, hint'⟩` from `hunit _ hv' (norm_smul_inv_norm h0)`. Use `⟨(‖v‖ : ℂ) • io.toContinuousLinearMap, fun g => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `u`. Simplify using `[hint']`. Use `show v = (‖v‖ : ℂ) • io w`. Rewrite using `[hio, smul_smul, mul_inv_cancel₀ hn, one_smul]`. Introduce and unpack `⟨io, hio, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨io w, ?_⟩` and prove the remaining obligations. Use `show P (io w) = io w`. Use `ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Establish `e : ∀ g, ⟪x, π g (io w)⟫_ℂ = ⟪ContinuousLinearMap.adjoint io x, σ g w⟫_ℂ`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.adjoint_inner_left]`. Use `congrArg (fun T : H →L[ℂ] Hp => T w) (hio g)` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply] at this`. Rewrite using `[this]`. Rewrite using `[hP.2]`.
-
-Simplify using `only [e]`. Use `h3 w (ContinuousLinearMap.adjoint io x)` as an intermediate fact. Rewrite `this` using `[hww, one_mul, ContinuousLinearMap.adjoint_inner_left]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projAbs_holds : ProjAbs := by
   intro G _ _ _ _ _ _ μ _ _ H _ _ _ σ hσ hσc d hd hS w hw hint

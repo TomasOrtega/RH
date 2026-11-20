@@ -6,7 +6,7 @@ open scoped BigOperators ComplexConjugate
 namespace Formalism.L2.Th1.H
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by have : PowerSeries.constantCoeff (PowerSeries.C (v i) * PowerSeries.X : PowerSeries K) = 0 := by simp exact this`.
+A detailed English derivation is pending.
 -/
 theorem lineRestr_hasSubst {K : Type*} [CommRing K] {n : Type*} [Finite n] (v : n → K) :
     MvPowerSeries.HasSubst (fun i => (PowerSeries.C (v i) * PowerSeries.X : PowerSeries K)) :=
@@ -15,7 +15,7 @@ theorem lineRestr_hasSubst {K : Type*} [CommRing K] {n : Type*} [Finite n] (v : 
     exact this
 
 /- English proof (translation)
-Rewrite using `[Finsupp.prod_fintype _ _ (fun i => pow_zero _)]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, map_prod, map_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lineRestr_monomial {K : Type*} [CommRing K] {n : Type*} [Fintype n] (v : n → K) (d : n →₀ ℕ) :
     (d.prod fun s e => (PowerSeries.C (v s) * PowerSeries.X : PowerSeries K) ^ e)
@@ -24,13 +24,13 @@ theorem lineRestr_monomial {K : Type*} [CommRing K] {n : Type*} [Fintype n] (v :
   simp only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, map_prod, map_pow]
 
 /- English proof (translation)
-Introduce `K _ n _ _ v T k`. Unfold `lineRestr`. Rewrite using `[PowerSeries.coeff, MvPowerSeries.coeff_subst (lineRestr_hasSubst v)]`. Establish `key : ∀ d : n →₀ ℕ, MvPowerSeries.coeff d T • MvPowerSeries.coeff (Finsupp.single () k) (d.prod fun s e => (PowerSeries.C (v s) * PowerSeries.X : PowerSeries K) ^ e) = if k = ∑ i, d i then MvPowerSeries.coeff d T * ∏ i, v i ^ d i else 0`. Introduce `d`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[lineRestr_monomial]`. Establish `: MvPowerSeries.coeff (Finsupp.single () k) (PowerSeries.C (∏ i, v i ^ d i) * PowerSeries.X ^ (∑ i, d i) : PowerSeries K) = PowerSeries.coeff k (PowerSeries.C (∏ i, v i ^ d i) * PowerSeries.X ^ (∑ i, d i) : PowerSeries K)` using `rfl`. Rewrite using `[this, PowerSeries.coeff_C_mul, PowerSeries.coeff_X_pow]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[finsum_congr key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_sum_of_support_subset (s := Finset.finsuppAntidiag Finset.univ k)]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Rewrite `hd` using `[Finset.mem_finsuppAntidiag]`. Rewrite using `[if_pos hd.1.symm]`. Introduce `d hd`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.mem_support, ne_eq, ite_eq_right_iff, not_forall] at hd`. Take `⟨h, -⟩` from `hd`. Simplify using `[Finset.mem_finsuppAntidiag, h]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem lineCoeff' : LineCoeff := by
   intro K _ n _ _ v T k
@@ -58,15 +58,13 @@ theorem lineCoeff' : LineCoeff := by
     simp [Finset.mem_finsuppAntidiag, h]
 
 /- English proof (translation)
-Introduce `K _ _ n _ T T' hv`. Use extensionality with `ν`. Use `set k := ∑ i, ν i with hk`. Set `p : MvPolynomial n K` to `∑ μ ∈ Finset.finsuppAntidiag Finset.univ k, MvPolynomial.monomial μ (MvPowerSeries.coeff μ T)`. Set `q : MvPolynomial n K` to `∑ μ ∈ Finset.finsuppAntidiag Finset.univ k, MvPolynomial.monomial μ (MvPowerSeries.coeff μ T')`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpq : p = q`. Use `MvPolynomial.funext fun v => ?_` and prove the remaining obligations. Establish `h1` using `h K n v T k`. Establish `h2` using `h K n v T' k`. Rewrite `h1` using `[hv v, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [p, q, map_sum, MvPolynomial.eval_monomial]`. Simplify using `only [Finsupp.prod_fintype _ _ (fun i => pow_zero _)]`. Conclude with `h1.symm`. Establish `hν : ν ∈ Finset.finsuppAntidiag Finset.univ k` using `by simp [Finset.mem_finsuppAntidiag, hk]`. Establish `hc : ∀ S : MvPowerSeries n K, MvPolynomial.coeff ν (∑ μ ∈ Finset.finsuppAntidiag Finset.univ k, MvPolynomial.monomial μ (MvPowerSeries.coeff μ S)) = MvPowerSeries.coeff ν S`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `S`. Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq' _ ν, if_pos hν]`. Rewrite using `[← hc T, ← hc T']`.
-
-Conclude with `congrArg _ hpq`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LineUnique_of (h : LineCoeff) : LineUnique := by
   classical
@@ -96,7 +94,7 @@ theorem LineUnique_of (h : LineCoeff) : LineUnique := by
   exact congrArg _ hpq
 
 /- English proof (translation)
-The claim follows from `LineUnique_of lineCoeff'`.
+A detailed English derivation is pending.
 -/
 theorem lineUnique' : LineUnique := LineUnique_of lineCoeff'
 
@@ -110,7 +108,7 @@ theorem cntVec_apply {n : Type*} [Fintype n] [DecidableEq n] {k : ℕ} (f : Fin 
     cntVec f i = (Finset.univ.filter fun j => f j = i).card := rfl
 
 /- English proof (translation)
-Simplify using `only [cntVec_apply]`. Rewrite using `[← Finset.card_eq_sum_card_fiberwise (fun _ _ => Finset.mem_univ _)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cntVec_sum {n : Type*} [Fintype n] [DecidableEq n] {k : ℕ} (f : Fin k → n) :
     ∑ i, cntVec f i = k := by
@@ -119,7 +117,7 @@ theorem cntVec_sum {n : Type*} [Fintype n] [DecidableEq n] {k : ℕ} (f : Fin k 
   simp
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_fiberwise Finset.univ f (fun j => v (f j))]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[cntVec_apply, ← Finset.prod_const]`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hj).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cntVec_prod {n : Type*} [Fintype n] [DecidableEq n] {k : ℕ} {K : Type*} [CommMonoid K] (v : n → K)
     (f : Fin k → n) : ∏ i, v i ^ cntVec f i = ∏ j, v (f j) := by
@@ -130,11 +128,11 @@ theorem cntVec_prod {n : Type*} [Fintype n] [DecidableEq n] {k : ℕ} {K : Type*
   rw [(Finset.mem_filter.1 hj).2]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Express the relevant statement in the definitionally equal form `((ν.degree.factorial : ℕ) : ℂ)⁻¹ * _ = _`. Use `congr 1`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `f`.
+Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i`. Conclude with `h i`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h i`. Conclude with `(cntVec_apply f i).symm.trans (DFunLike.congr_fun h i)`.
+A detailed English derivation is pending.
 -/
 theorem taylorMv_coeff {n : Type*} [Fintype n] [DecidableEq n] (F : (n → ℂ) → ℂ) (k : ℕ) (ν : n →₀ ℕ)
     (h : ν.degree = k) :
@@ -151,9 +149,9 @@ theorem taylorMv_coeff {n : Type*} [Fintype n] [DecidableEq n] (F : (n → ℂ) 
   · intro h i; exact (cntVec_apply f i).symm.trans (DFunLike.congr_fun h i)
 
 /- English proof (translation)
-Establish `hv : v = ∑ i, v i • (Pi.single i (1 : ℂ) : n → ℂ)`. Use extensionality with `a`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `h1 : D (fun _ => v) = D (fun _ : Fin k => ∑ i, v i • (Pi.single i (1 : ℂ) : n → ℂ))`. Rewrite using `[← hv]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, D.map_sum]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[D.map_smul_univ (fun j => v (f j)) (fun j => Pi.single (f j) (1 : ℂ)), smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem multilinear_diag {n : Type*} [Fintype n] [DecidableEq n] {k : ℕ}
     (D : ContinuousMultilinearMap ℂ (fun _ : Fin k => n → ℂ) ℂ) (v : n → ℂ) :
@@ -168,11 +166,11 @@ theorem multilinear_diag {n : Type*} [Fintype n] [DecidableEq n] {k : ℕ}
   rw [D.map_smul_univ (fun j => v (f j)) (fun j => Pi.single (f j) (1 : ℂ)), smul_eq_mul]
 
 /- English proof (translation)
-Set `g : ℂ →L[ℂ] (n → ℂ)` to `ContinuousLinearMap.toSpanSingleton ℂ v`. Set `s : Set (n → ℂ)` to `{x | AnalyticAt ℂ F x}`. Establish `hs : IsOpen s` using `isOpen_analyticAt ℂ F`. Establish `hgs : IsOpen (g ⁻¹' s)` using `hs.preimage g.continuous`. Establish `h0 : g 0 ∈ s` using `by simpa [s] using hF`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ContDiffOn ℂ (k : ℕ∞) F s` using `AnalyticOnNhd.contDiffOn (fun x hx => hx) hs.uniqueDiffOn`. Use `g.iteratedFDerivWithin_comp_right hc hs.uniqueDiffOn hgs.uniqueDiffOn h0 (i := k) le_rfl` as an intermediate fact. Rewrite `this` using `[iteratedFDerivWithin_of_isOpen k hgs h0, iteratedFDerivWithin_of_isOpen k hs h0]`. Establish `hfg : (fun t : ℂ => F (t • v)) = F ∘ g`. Use extensionality with `t`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[g]`. Rewrite using `[iteratedDeriv_eq_iteratedFDeriv, hfg, this]`. Simplify using `[g]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iteratedDeriv_line {n : Type*} [Fintype n] (F : (n → ℂ) → ℂ) (hF : AnalyticAt ℂ F 0) (v : n → ℂ)
     (k : ℕ) : iteratedDeriv k (fun t : ℂ => F (t • v)) 0 = iteratedFDeriv ℂ k F 0 fun _ => v := by
@@ -191,11 +189,11 @@ theorem iteratedDeriv_line {n : Type*} [Fintype n] (F : (n → ℂ) → ℂ) (hF
   simp [g]
 
 /- English proof (translation)
-Introduce `n _ _ F hF v`. Use extensionality with `k`. Rewrite using `[h ℂ n v (taylorMv F) k, Formalism.L2.Th1.F.taylor0, PowerSeries.coeff_mk, iteratedDeriv_line F hF v k, multilinear_diag]`. Establish `h1 : ∀ ν ∈ Finset.finsuppAntidiag (Finset.univ : Finset n) k, MvPowerSeries.coeff ν (taylorMv F) * ∏ i, v i ^ ν i = ((k.factorial : ℕ) : ℂ)⁻¹ * ∑ f : Fin k → n with cntVec f = ν, (∏ j, v (f j)) * iteratedFDeriv ℂ k F 0 fun j => Pi.single (f j) (1 : ℂ)`. Introduce `ν hν`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hν` using `[Finset.mem_finsuppAntidiag]`. Rewrite using `[taylorMv_coeff F k ν (by rw [Finsupp.degree_eq_sum]; exact hν.1), mul_assoc, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun f hf => ?_` and prove the remaining obligations. Rewrite using `[← (Finset.mem_filter.1 hf).2, cntVec_prod, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl h1, ← Finset.mul_sum, Finset.sum_fiberwise_of_maps_to (fun f _ => by simp [Finset.mem_finsuppAntidiag, cntVec_sum]), div_eq_inv_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem TaylorLine_of (h : LineCoeff) : TaylorLine := by
   intro n _ _ F hF v
@@ -217,7 +215,7 @@ theorem TaylorLine_of (h : LineCoeff) : TaylorLine := by
     div_eq_inv_mul]
 
 /- English proof (translation)
-The claim follows from `TaylorLine_of lineCoeff'`.
+A detailed English derivation is pending.
 -/
 theorem taylorLine' : TaylorLine := TaylorLine_of lineCoeff'
 

@@ -24,7 +24,7 @@ section Group
 variable {G G' V W : Type} [Group G] [Group G'] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `(isIrreducible_iff π).1 h`. Use `(isIrreducible_iff _).2 ⟨h0, fun U hU => h1 U fun g v hv => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hψ g`. Conclude with `hU g v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIrreducible_comp {π : Representation ℂ G V} (h : π.IsIrreducible) (ψ : G' →* G)
     (hψ : Function.Surjective ψ) : Representation.IsIrreducible (π.comp ψ : Representation ℂ G' V) := by
@@ -34,7 +34,7 @@ theorem isIrreducible_comp {π : Representation ℂ G V} (h : π.IsIrreducible) 
   exact hU g v hv
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Conclude with `⟨⟨S.toSubmodule, fun g _ hv => S.apply_mem_toSubmodule (ψ g) hv⟩, ⟨f.toLinearMap, fun g => f.isIntertwining' (ψ g)⟩, hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSubquotient_comp {σ : Representation ℂ G W} {π : Representation ℂ G V} (h : IsSubquotient σ π)
     (ψ : G' →* G) : IsSubquotient (σ.comp ψ : Representation ℂ G' W) (π.comp ψ : Representation ℂ G' V) := by
@@ -43,13 +43,13 @@ theorem isSubquotient_comp {σ : Representation ℂ G W} {π : Representation �
     ⟨f.toLinearMap, fun g => f.isIntertwining' (ψ g)⟩, hf⟩
 
 /- English proof (translation)
-Take `⟨v, hf, hv⟩` from `(Submodule.ne_bot_iff _).1 hK`. Set `R` to `MonoidAlgebra ℂ G`. Set `v' : ρ.asModule` to `v`. Set `S : Submodule R ρ.asModule` to `Submodule.span R {v'}`. Establish `hS : v' ∈ S` using `Submodule.mem_span_singleton_self v'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hne : (⊥ : Submodule R S) ≠ ⊤`. Introduce `h`. Establish `: (⟨v', hS⟩ : S) ∈ (⊥ : Submodule R S)`. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Conclude with `hv (congrArg Subtype.val ((Submodule.mem_bot R).1 this))`. Take `⟨T, hT, -⟩` from `(eq_top_or_exists_le_coatom (⊥ : Submodule R S)).resolve_left hne`. Establish `h1 : (S.mapIic T).1 ⋖ S` using `(covBy_iff_coatom_Iic (S.mapIic T).2).2 ((S.mapIic.isCoatom_iff T).2 hT)`. Set `φ` to `Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := ρ)`. Use `⟨_, _, _, subQuot (φ.symm S) (φ.symm (S.mapIic T).1), isIrreducible_subQuot ((apply_covBy_apply_iff φ.symm).2 h1), (Submodule.ne_bot_iff _).2 ⟨Submodule.Quotient.mk ⟨v, hS⟩, fun x => ?_, fun h => h1.lt.not_ge ?_⟩, φ.symm S, ⟨Submodule.mkQ _, fun _ => rfl⟩, Submodule.Quotient.mk_s …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul]`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext ((hf x).trans (one_smul _ _)))`. Establish `h2` using `(Submodule.Quotient.mk_eq_zero _).1 h`. Conclude with `(Submodule.span_singleton_le_iff_mem _ _).2 h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_irreducible_fixed (ρ : Representation ℂ G V) (K : Subgroup G) (hK : fixed ρ K ≠ ⊥) :
     ∃ (Y : Type) (_ : AddCommGroup Y) (_ : Module ℂ Y) (σ : Representation ℂ G Y),
@@ -76,11 +76,11 @@ theorem exists_irreducible_fixed (ρ : Representation ℂ G V) (K : Subgroup G) 
     exact (Submodule.span_singleton_le_iff_mem _ _).2 h2
 
 /- English proof (translation)
-Use `choose b x hx e using hG`. Establish `key : ∀ (p : P), ∀ y ∈ K, χ (b (p * y)) = χ p` using `fun p y hy => by`. Establish `h1 : ((p⁻¹ * b (p * y) : P) : G) = y * (x (p * y))⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq, Subgroup.coe_mul, mul_assoc, ← e, Subgroup.coe_inv, inv_mul_cancel_left]`. Establish `h2` using `hχ _ (h1 ▸ mul_mem hy (inv_mem (hx _)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[map_mul, map_inv, inv_mul_eq_one, eq_comm]`. Then use the resulting hypothesis. Use `⟨fun g => χ (b g), ?_, fun p g => ?_, fun g y hy => ?_⟩` and prove the remaining obligations. Simplify using `using congrArg Units.val (key 1 1 (one_mem _))`. Use `key (p * b g) _ (hx g)` as an intermediate fact. Rewrite `this` using `[Subgroup.coe_mul, mul_assoc, ← e]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [this, map_mul, Units.val_mul]`. Use `key (b g) _ (mul_mem (hx g) hy)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← e]`. Simplify using `only [this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_fun (P K : Subgroup G) (χ : P →* ℂˣ) (hG : ∀ g, ∃ p : P, ∃ x ∈ K, g = p * x)
     (hχ : ∀ p : P, p.1 ∈ K → χ p = 1) :
@@ -113,7 +113,7 @@ def diagU (b : borel k (Fin n)) (i : Fin n) : kˣ := GeneralLinearGroup.det (lev
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Rewrite using `[diagU, GeneralLinearGroup.val_det_apply, Matrix.det_unique]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_diagU (b : borel k (Fin n)) (i : Fin n) : (diagU b i : k) = b.1.val i i := by
   rw [diagU, GeneralLinearGroup.val_det_apply, Matrix.det_unique]
@@ -126,7 +126,7 @@ def borelChar (α : Fin n → ℂˣ) : borel k (Fin n) →* ℂˣ :=
     (leviTorus k (Fin n)).symm.toMonoidHom).comp (leviProj k (points (Fin n)))
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_mul_distrib]`. Use `congrArg₂ (· * ·) ((deltaHalf_apply k _).trans (Finset.prod_congr rfl fun i _ => ?_)) (torusChar_apply _ _)` and prove the remaining obligations. Rewrite using `[modExp_fin _ (fun _ => by simp)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem borelChar_apply (α : Fin n → ℂˣ) (b : borel k (Fin n)) : borelChar k α b =
     ∏ i : Fin n, absPow k ((((n : ℤ) - 1 - 2 * (i : ℕ) : ℤ) : ℂ) / 2) (diagU b i) * α i ^ ord k (diagU b i) := by
@@ -136,7 +136,7 @@ theorem borelChar_apply (α : Fin n → ℂˣ) (b : borel k (Fin n)) : borelChar
   rfl
 
 /- English proof (translation)
-The claim follows from `forall₂_congr fun b g => Iff.of_eq (congrArg (φ (b * g) = ·) (mul_assoc _ _ _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem law_iff (α : Fin n → ℂˣ) (φ : GL (Fin n) k → ℂ) :
     φ ∈ indSpace (parab k (points (Fin n))) ((twist ((ofChar (torusChar fun i => SmGL.unrChar k (α i))).comp
@@ -145,11 +145,11 @@ theorem law_iff (α : Fin n → ℂˣ) (φ : GL (Fin n) k → ℂ) :
   forall₂_congr fun b g => Iff.of_eq (congrArg (φ (b * g) = ·) (mul_assoc _ _ _).symm)
 
 /- English proof (translation)
-Rewrite using `[borelChar_apply]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `(GlobalTheory.SplitFlip.mem_KO_iff _).1 hb`. Establish `h3` using `congrArg (valuation k) (inv_diag_mul b.2 i)`. Rewrite `h3` using `[map_mul, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a1 : valuation k (b.1.val i i) ≤ 1` using `h1 i i`. Establish `a2 : valuation k ((b.1⁻¹).val i i) ≤ 1` using `h2 i i`. Establish `h : valuation k (diagU b i : k) = 1`. Rewrite using `[val_diagU]`. Conclude with `le_antisymm a1 (h3.ge.trans (mul_le_of_le_one_left' a2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isUnram_absPow k _ _ h, ord_eq_zero h, zpow_zero, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem borelChar_eq_one (α : Fin n → ℂˣ) (b : borel k (Fin n)) (hb : b.1 ∈ KO k (Fin n)) : borelChar k α b = 1 := by
   rw [borelChar_apply]
@@ -165,9 +165,9 @@ theorem borelChar_eq_one (α : Fin n → ℂˣ) (b : borel k (Fin n)) (hb : b.1 
   rw [isUnram_absPow k _ _ h, ord_eq_zero h, zpow_zero, mul_one]
 
 /- English proof (translation)
-Take `⟨φ, h1, h2, h3⟩` from `exists_fun (borel k (Fin n)) (KO k (Fin n)) (borelChar k α) (fun g => by`. Take `⟨b, hb, x, hx, e⟩` from `iwasawa_blockTriangular k (Fin n) Fin.val g`. Conclude with `⟨⟨b, (mem_borel _).2 hb⟩, x, hx, e⟩) (borelChar_eq_one α)`. Take `⟨f, hf, e⟩` from `(SphCompletion.exists_fixed_iff (fun i => SmGL.unrChar k (α i)) φ).2 ⟨(law_iff α φ).2 h2, fun x hx g => h3 g x hx⟩`. Establish `h0 : f ≠ 0` using `fun h => one_ne_zero (by rw [← h1, ← e, h]; rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Y, _, _, σ, a1, a2, a3⟩` from `exists_irreducible_fixed _ _ ((Submodule.ne_bot_iff _).2 ⟨f, hf, h0⟩)`. Conclude with `⟨⟨Y, σ, a3.isSmooth (isSmooth_parInd _ _), a1⟩, a1, a2, a3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hasSatake (α : Fin n → ℂˣ) : ∃ π : IrrRep (GL (Fin n) k), HasSatake π.ρ α := by
   obtain ⟨φ, h1, h2, h3⟩ := exists_fun (borel k (Fin n)) (KO k (Fin n)) (borelChar k α) (fun g => by
@@ -184,7 +184,7 @@ def flip (j : k' →+* k) (n : ℕ) : GL (Fin n) k' →* GL (Fin n) k := invRevT
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [ValuativeRel k'] [IsNonarchimedeanLocalField k'] in
 
 /- English proof (translation)
-The claim follows from `Units.continuous_iff.2 ⟨continuous_matrix fun a b => hj.comp (Units.continuous_coe_inv.matrix_elem b.rev a.rev), continuous_matrix fun a b => hj.comp (Units.continuous_val.matrix_elem b.rev a.rev)⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_flip {j : k' →+* k} (hj : Continuous j) : Continuous (flip j n) :=
   Units.continuous_iff.2 ⟨continuous_matrix fun a b => hj.comp (Units.continuous_coe_inv.matrix_elem b.rev a.rev),
@@ -194,7 +194,7 @@ omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [ValuativeRel k'] [IsNonarc
   [TopologicalSpace k] [TopologicalSpace k'] in
 
 /- English proof (translation)
-Introduce `g` and use `by let e := RingEquiv.ofBijective j ⟨j.injective, hj⟩ refine ⟨GeneralLinearGroup.map e.symm.toRingHom (invRevT g), ?_⟩ conv_rhs => rw [← invRevT_invRevT g] exact congrArg invRevT (Units.ext (Matrix.ext fun a b => e.apply_symm_apply _))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem flip_surjective {j : k' →+* k} (hj : Function.Surjective j) : Function.Surjective (flip j n) := fun g => by
   let e := RingEquiv.ofBijective j ⟨j.injective, hj⟩
@@ -203,21 +203,19 @@ theorem flip_surjective {j : k' →+* k} (hj : Function.Surjective j) : Function
   exact congrArg invRevT (Units.ext (Matrix.ext fun a b => e.apply_symm_apply _))
 
 /- English proof (translation)
-Establish `hB : ∀ b : borel k' (Fin n), flip j n b ∈ borel k (Fin n)` using `fun b => invRevT_mem_borel ((mem_borel _).2 fun a c h => (congrArg j ((mem_borel _).1 b.2 a c h)).trans (map_zero j))`. Establish `hχ : ∀ b : borel k' (Fin n), borelChar k α ⟨_, hB b⟩ = borelChar k' (fun i => (α i.rev)⁻¹) b` using `fun b => by`. Rewrite using `[borelChar_apply, borelChar_apply]`. Use `Fintype.prod_equiv Fin.revPerm _ _ fun i => ?_` and prove the remaining obligations. Establish `e : diagU ⟨_, hB b⟩ i = (Units.map j.toMonoidHom (diagU b i.rev))⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `eq_inv_of_mul_eq_one_left (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(diagU ⟨_, hB b⟩ i : k) * j (diagU b i.rev : k') = 1`. Rewrite using `[val_diagU, val_diagU, ← map_one j, ← inv_diag_mul b.2 i.rev, map_mul]`. Both sides reduce to the same expression. Rewrite using `[e, ord_inv_eq_neg, ho, Fin.revPerm_apply, Fin.rev_rev, _root_.zpow_neg, _root_.inv_zpow, map_inv]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `e2 : ((((n : ℤ) - 1 - 2 * ((i.rev : Fin n) : ℕ) : ℤ) : ℂ) / 2) = -((((n : ℤ) - 1 - 2 * (i : ℕ) : ℤ) : ℂ) / 2)`. Rewrite using `[← neg_div, ← Int.cast_neg]`. Use `i.2` as an intermediate fact. Rewrite using `[Fin.val_rev]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e2, absPow_neg, MonoidHom.inv_apply, _root_.inv_inj]`. Use `ext`. Rewrite using `[val_absPow, val_absPow, GlobalTheory.LGrp.nabs_eq_zpow, GlobalTheory.LGrp.nabs_eq_zpow, ho, hq]`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨isIrreducible_comp h.1 _ (flip_surjective hj), ?_, (isSubquotient_comp h.2.2 _).trans ?_⟩` and prove the remaining obligations. Take `⟨v, h1, h0⟩` from `(Submodule.ne_bot_iff _).1 h.2.1`. Use `(Submodule.ne_bot_iff _).2 ⟨v, fun x => h1 ⟨flip j n x, invRevT_mem_KO ?_⟩, h0⟩` and prove the remaining obligations. Take `⟨a1, a2⟩` from `(GlobalTheory.SplitFlip.mem_KO_iff _).1 x.2`. Conclude with `(GlobalTheory.SplitFlip.mem_KO_iff _).2 ⟨fun a b => hv _ (a1 a b), fun a b => hv _ (a2 a b)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `.of_injective ⟨⟨⟨fun f => ⟨⟨f.1.1 ∘ flip j n, (law_iff _ _).2 fun b g => ?_⟩, mem_smoothPart_of_nhds (Filter.mem_of_superset ((IsOpen.preimage (continuous_flip hc) f.2).mem_nhds ?_) fun g hg => Subtype.ext (funext fun x => ?_))⟩, fun _ _ => rfl⟩, fun _ _ => rfl⟩, fun g => ?_⟩ fun …` and prove the remaining obligations. Rewrite using `[← hχ, Function.comp_apply, map_mul]`. Conclude with `(law_iff α _).1 f.1.2 ⟨_, hB b⟩ _`. Express the relevant statement in the definitionally equal form `ind _ _ (flip j n 1) f.1 = f.1`. Rewrite using `[map_one, map_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Conclude with `(congrArg f.1.1 (map_mul (flip j n) x g)).trans (congrFun (congrArg Subtype.val hg) _)`. Conclude with `LinearMap.ext fun f => Subtype.ext (Subtype.ext (funext fun x => (congrArg f.1.1 (map_mul (flip j n) x g)).symm))`. Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Take `⟨x, rfl⟩` from `flip_surjective hj x`.
-
-Conclude with `congrFun (congrArg (fun z => z.1.1) e) x`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hasSatake_flip {j : k' →+* k} (hc : Continuous j) (hj : Function.Surjective j)
     (hv : ∀ x, valuation k' x ≤ 1 → valuation k (j x) ≤ 1)
@@ -282,7 +280,7 @@ def locRec (hL : GlobalTheory.Published.LocalLanglandsGL) (h : IsPlaceOver A w) 
   (hL.1 E Ω A w h).exists.choose
 
 /- English proof (translation)
-The claim follows from `(hL.1 E Ω A w h).exists.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem isRec_locRec (hL : GlobalTheory.Published.LocalLanglandsGL) (h : IsPlaceOver A w) : IsRec h (locRec hL h) :=
   (hL.1 E Ω A w h).exists.choose_spec
@@ -290,7 +288,7 @@ theorem isRec_locRec (hL : GlobalTheory.Published.LocalLanglandsGL) (h : IsPlace
 variable {h : IsPlaceOver A w} {rc : IrrGL (w.adicCompletion E) → WD h}
 
 /- English proof (translation)
-Take `⟨_, _, _, -, H⟩` from `H`. Rewrite using `[← H.sph]`. Conclude with `⟨fixed_ne_bot_of_equiv (equivRep σ).symm, fixed_ne_bot_of_equiv (equivRep σ)⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem unr_iff (H : IsRec h rc) (σ : IrrRep (GL (Fin a) (w.adicCompletion E))) :
     (rc (cls σ)).unr ↔ IsSpherical σ.ρ := by
@@ -299,7 +297,7 @@ theorem unr_iff (H : IsRec h rc) (σ : IrrRep (GL (Fin a) (w.adicCompletion E)))
   exact ⟨fixed_ne_bot_of_equiv (equivRep σ).symm, fixed_ne_bot_of_equiv (equivRep σ)⟩
 
 /- English proof (translation)
-Take `⟨_, _, _, -, H⟩` from `H`. Establish `φ` using `equivRep σ`. Conclude with `H.sat (cls σ) α ⟨IrrRep.irr _, fixed_ne_bot_of_equiv φ hα.2.1, (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans hα.2.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rec_eq_diag (H : IsRec h rc) {σ : IrrRep (GL (Fin a) (w.adicCompletion E))} {α : Fin a → ℂˣ}
     (hα : HasSatake σ.ρ α) : rc (cls σ) = WD.mk (WDRep.diag h fun i => (α i)⁻¹) := by
@@ -309,9 +307,9 @@ theorem rec_eq_diag (H : IsRec h rc) {σ : IrrRep (GL (Fin a) (w.adicCompletion 
     (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans hα.2.2⟩
 
 /- English proof (translation)
-Take `⟨m, c, e⟩` from `Unram.exists_diag hu`. Establish `H'` using `H`. Take `⟨_, _, _, -, H'⟩` from `H'`. Take `rfl : a = m` from `by simpa [e] using (H'.dim (cls σ)).symm`. Take `⟨τ, hτ⟩` from `exists_hasSatake (k := w.adicCompletion E) fun i => (c i)⁻¹`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e2` using `rec_eq_diag H hτ`. Simplify using `only [inv_inv] at e2`. Take `⟨φ⟩` from `(H'.eq_iff τ σ).1 (e2.trans e.symm)`. Conclude with `⟨_, σ.irr, fixed_ne_bot_of_equiv φ hτ.2.1, (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans hτ.2.2⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hasSatake_of_unr (H : IsRec h rc) {σ : IrrRep (GL (Fin a) (w.adicCompletion E))}
     (hu : (rc (cls σ)).unr) : ∃ α, HasSatake σ.ρ α := by
@@ -334,7 +332,7 @@ def locPar (hL : GlobalTheory.Published.LocalLanglandsGL) (π : CG E a) (h : IsP
 variable (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
 
 /- English proof (translation)
-Establish `h1 : (CG.mk π).IsLoc w (Quotient.mk _ σ)` using `hσ`. Rewrite using `[locPar, CG.IsLoc.unique E a _ w _ _ h1.loc h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem locPar_mk {π : CuspSub E a} {σ : SmIrr (GL (Fin a) (w.adicCompletion E))} (hσ : π.IsLocComp w σ)
     (h : IsPlaceOver A w) : locPar hL (CG.mk π) h = locRec hL h (cls (toRep σ)) := by
@@ -343,7 +341,7 @@ theorem locPar_mk {π : CuspSub E a} {σ : SmIrr (GL (Fin a) (w.adicCompletion E
   rfl
 
 /- English proof (translation)
-Take `⟨_, _, _, -, H⟩` from `isRec_locRec hL h`. Conclude with `H.dim _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lpDim_locPar (π : CG E a) (h : IsPlaceOver A w) : (locPar hL π h).lpDim = a := by
   obtain ⟨_, _, _, -, H⟩ := isRec_locRec hL h
@@ -352,9 +350,9 @@ theorem lpDim_locPar (π : CG E a) (h : IsPlaceOver A w) : (locPar hL π h).lpDi
 include hF in
 
 /- English proof (translation)
-Proceed by induction on `π using Quotient.inductionOn with | _ π =>`. Use `filter_upwards [LocSph.locComp_spherical E a π] with w hw A h`. Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF E a π w`. Take `⟨v, h0, hv⟩` from `hw σ hσ`. Use `(locPar_mk hL hσ h).symm ▸ (unr_iff (isRec_locRec hL h) _).2 ((Submodule.ne_bot_iff _).2 ⟨v, fun x => ?_, h0⟩)` and prove the remaining obligations.
+Proceed by induction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `x`. Rewrite `hx` using `[SphCompletion.KO_completion]`. Take `⟨g, rfl⟩` from `hx`. Conclude with `(hv g).trans (one_smul _ _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually_unr (π : CG E a) : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite,
     ∀ (A : ValuationSubring Ω) (h : IsPlaceOver A w), (locPar hL π h).unr := by
@@ -369,7 +367,7 @@ theorem eventually_unr (π : CG E a) : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in 
   exact (hv g).trans (one_smul _ _).symm
 
 /- English proof (translation)
-Establish `h2 : Continuous (GeneralLinearGroup.scalar (R` using `w.adicCompletion E) (Fin 1)) := Units.continuous_map (continuous_matrix fun i j => by`. Rewrite using `[Subsingleton.elim i j]`. Simplify using `using continuous_id')`. Establish `h3 : (CuspSub.locDet 1 χ w).comp (GeneralLinearGroup.scalar (Fin 1)) = χ.loc w` using `MonoidHom.ext fun z => congrArg (χ.loc w) (CG.det_oneByOne z)`. Conclude with `h3 ▸ IsSmoothChar.comp (CuspSub.isOpen_ker_locDet χ w) _ h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSmoothChar_loc (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) : IsSmoothChar (χ.loc w) := by
   have h2 : Continuous (GeneralLinearGroup.scalar (R := w.adicCompletion E) (Fin 1)) :=
@@ -380,7 +378,7 @@ theorem isSmoothChar_loc (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) : IsSmo
   exact h3 ▸ IsSmoothChar.comp (CuspSub.isOpen_ker_locDet χ w) _ h2
 
 /- English proof (translation)
-The claim follows from `locPar_mk hL (CG.isLoc_ofChar χ w) h`.
+A detailed English derivation is pending.
 -/
 theorem locPar_ofChar (χ : HChar E) (h : IsPlaceOver A w) :
     locPar hL (CG.ofChar χ) h = locRec hL h (.ofChar (χ.loc w) (isSmoothChar_loc χ w)) :=
@@ -389,9 +387,9 @@ theorem locPar_ofChar (χ : HChar E) (h : IsPlaceOver A w) :
 include hF in
 
 /- English proof (translation)
-Proceed by induction on `π using Quotient.inductionOn with | _ π =>`. Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF E a π w`. Take `⟨_, _, _, -, H⟩` from `isRec_locRec hL h`. Use `(locPar_mk hL (hσ.twist χ) h).trans ?_` and prove the remaining obligations. Rewrite using `[locPar_ofChar, show locPar hL (Quotient.mk _ π) h = _ from locPar_mk hL hσ h, ← H.twist]`.
+Proceed by induction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (IrrGL.tw_of σ.ρ σ.smooth σ.irred _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem locPar_twist (π : CG E a) (χ : HChar E) (h : IsPlaceOver A w) :
     locPar hL (π.twist χ) h = (locPar hL π h).lpChar (locPar hL (CG.ofChar χ) h) := by
@@ -405,14 +403,14 @@ theorem locPar_twist (π : CG E a) (χ : HChar E) (h : IsPlaceOver A w) :
 include hF in
 
 /- English proof (translation)
-Rewrite using `[CG.tw, locPar_twist hL hF, CG.ofChar_toChar]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locPar_tw (π : CG E a) (χ : CG E 1) (h : IsPlaceOver A w) :
     locPar hL (π.tw χ) h = (locPar hL π h).lpChar (locPar hL χ h) := by
   rw [CG.tw, locPar_twist hL hF, CG.ofChar_toChar]
 
 /- English proof (translation)
-The claim follows from `hasInfChar_infChar_of_commute E a (fun τ u o => by cases o with | fin k => exact commute_cap_finRep τ u k | cpt k => exact GlobalTheory.CapAdInv.cap_commute_rt_infGL E a τ u _ | lie X => exact commute_cap_lie τ u X) π τ`.
+A detailed English derivation is pending.
 -/
 theorem hasInfChar_infChar (π : CG E a) (τ : E →+* ℂ) : π.HasInfChar τ (π.infChar τ) :=
   hasInfChar_infChar_of_commute E a (fun τ u o => by
@@ -422,7 +420,7 @@ theorem hasInfChar_infChar (π : CG E a) (τ : E →+* ℂ) : π.HasInfChar τ (
     | lie X => exact commute_cap_lie τ u X) π τ
 
 /- English proof (translation)
-Rewrite `hs` using `[← CG.ofChar_toChar χ, CG.infChar_ofChar, Multiset.singleton_inj]`. Conclude with `hs ▸ ((hasInfChar_infChar π τ).twist _).infChar_eq`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infChar_tw (π : CG E a) (χ : CG E 1) (τ : E →+* ℂ) (s : ℂ) (hs : χ.infChar τ = {s}) :
     (π.tw χ).infChar τ = (π.infChar τ).map (· + s) := by
@@ -436,9 +434,9 @@ section Conj
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
 /- English proof (translation)
-Establish `e : GeneralLinearGroup.map p (PhiU a R) = PhiU a T` using `Units.ext (Matrix.ext fun i k => by`. Express the relevant statement in the definitionally equal form `p (GlobalTheory.Tw.Phi a R i k) = GlobalTheory.Tw.Phi a T i k`. Simplify using `[GlobalTheory.Tw.Phi, apply_ite p])`. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map p (PhiU a R * invT a R (GeneralLinearGroup.map c g) * (PhiU a R)⁻¹) = _`. Rewrite using `[map_mul, map_mul, map_inv, e]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun x => PhiU a T * x * (PhiU a T)⁻¹) (Units.ext (Matrix.ext fun i k => h _))`.
+A detailed English derivation is pending.
 -/
 theorem map_thetaGL {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (p : R →+* T) (c : R →+* R) (q : R →+* S)
     (j : S →+* T) (h : ∀ x, p (c x) = j (q x)) (g : GL (Fin a) R) :
@@ -452,7 +450,7 @@ theorem map_thetaGL {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (p : R
   exact congrArg (fun x => PhiU a T * x * (PhiU a T)⁻¹) (Units.ext (Matrix.ext fun i k => h _))
 
 /- English proof (translation)
-Rewrite using `[eq_mul_inv_iff_mul_eq]`. Use `Units.ext (Matrix.ext fun i k => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ l, (g⁻¹).val l i * (if k = l.rev then 1 else 0) = ∑ l, (if l = i.rev then 1 else 0) * (g⁻¹).val k.rev l.rev`. Rewrite using `[Finset.sum_eq_single k.rev (fun b _ hb => by rw [if_neg (fun e => hb (by rw [e, Fin.rev_rev])), mul_zero]) (by simp), Finset.sum_eq_single i.rev (fun b _ hb => by rw [if_neg hb, zero_mul]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem invRevT_eq {R : Type} [CommRing R] (g : GL (Fin a) R) :
     invT a R g = longElt a R * invRevT g * (longElt a R)⁻¹ := by
@@ -464,9 +462,9 @@ theorem invRevT_eq {R : Type} [CommRing R] (g : GL (Fin a) R) :
   simp
 
 /- English proof (translation)
-Establish `key : ∀ v, GeneralLinearGroup.map (pLoc E v) (thetaGL a (conjFin c) (locGL E a (conjSrc c w) g)) = GeneralLinearGroup.map (pLoc E v) (locGL E a w (PhiU a _ * longElt a _ * flip (conjLoc c w) a g * (PhiU a _ * longElt a _)⁻¹))` using `fun v => by`. Rewrite using `[map_thetaGL _ _ _ _ (fun x => pLoc_conjFin c x v)]`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Rewrite using `[pLoc_locGL, pLoc_locGL, invRevT_eq, _root_.mul_inv_rev]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[pLoc_locGL_of_ne hv, pLoc_locGL_of_ne fun e => hv (conjSrc_injective c e), map_one, map_one, mul_one, mul_inv_cancel]`. Conclude with `Units.ext (Matrix.ext fun i k => IsDedekindDomain.FiniteAdeleRing.ext _ fun v => congrArg (fun x : GL (Fin a) (v.adicCompletion E) => x.val i k) (key v))`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaGL_locGL (c : E ≃+* E) (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin a) ((conjSrc c w).adicCompletion E)) :
     thetaGL a (conjFin c) (locGL E a (conjSrc c w) g) =
@@ -486,7 +484,7 @@ theorem thetaGL_locGL (c : E ≃+* E) (w : HeightOneSpectrum (𝓞 E)) (g : GL (
     congrArg (fun x : GL (Fin a) (v.adicCompletion E) => x.val i k) (key v))
 
 /- English proof (translation)
-Take `⟨t, t1, t2, -⟩` from `exists_finCompl_map c.symm ((conjPl_symm_iff c _ _).2 (conjPl_conjSrc c w))`. Use `fun x => ⟨t x, ?_⟩` and prove the remaining obligations. Use `(HeightOneSpectrum.denseRange_algebraMap E w).induction_on (p := fun x => conjLoc c w (t x) = x) x (isClosed_eq ((conjLoc_spec c w).1.comp t1) continuous_id) fun y => ?_` and prove the remaining obligations. Rewrite using `[t2, (conjLoc_spec c w).2.1, c.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjLoc_surjective (c : E ≃+* E) (w : HeightOneSpectrum (𝓞 E)) : Function.Surjective (conjLoc c w) := by
   obtain ⟨t, t1, t2, -⟩ := exists_finCompl_map c.symm ((conjPl_symm_iff c _ _).2 (conjPl_conjSrc c w))
@@ -496,7 +494,7 @@ theorem conjLoc_surjective (c : E ≃+* E) (w : HeightOneSpectrum (𝓞 E)) : Fu
   rw [t2, (conjLoc_spec c w).2.1, c.apply_symm_apply]
 
 /- English proof (translation)
-Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Conclude with `(isEquiv (valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))).le_one_iff_le_one`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valuation_le_one_iff (w : HeightOneSpectrum (𝓞 E)) (x : w.adicCompletion E) :
     valuation (w.adicCompletion E) x ≤ 1 ↔ Valued.v x ≤ 1 := by
@@ -506,7 +504,7 @@ theorem valuation_le_one_iff (w : HeightOneSpectrum (𝓞 E)) (x : w.adicComplet
     (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))).le_one_iff_le_one
 
 /- English proof (translation)
-The claim follows from `hasSatake_flip (conjLoc_spec c w).1 (conjLoc_surjective c w) (fun x hx => by rwa [valuation_le_one_iff, (conjLoc_spec c w).2.2, ← valuation_le_one_iff]) (fun x => by rw [SphCompletion.ord_completion, SphCompletion.ord_completion] exact congrArg (fun z => -WithZero.log z) ((conjLo …`.
+A detailed English derivation is pending.
 -/
 theorem hasSatake_flip_conjLoc (c : E ≃+* E) (w : HeightOneSpectrum (𝓞 E)) {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin a) (w.adicCompletion E)) V} {α : Fin a → ℂˣ} (h : HasSatake π α) :
@@ -521,9 +519,9 @@ theorem hasSatake_flip_conjLoc (c : E ≃+* E) (w : HeightOneSpectrum (𝓞 E)) 
 variable {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `hπ`. Take `⟨f, h0, hf⟩` from `hσ`. Use `⟨T.toLinearMap ∘ₗ f ∘ₗ σ.ρ (PhiU a _ * longElt a _), fun h => h0 (LinearMap.ext fun v => T.injective ?_), fun g v => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun h (σ.ρ (PhiU a _ * longElt a _)⁻¹ v)` as an intermediate fact. Rewrite `this` using `[LinearMap.comp_apply, LinearMap.comp_apply, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[LinearMap.zero_apply, map_zero]`. Conclude with `this`. Express the relevant statement in the definitionally equal form `T (f (σ.ρ _ (σ.ρ (flip _ a g) v))) = π.op (.fin _) (T (f (σ.ρ _ v)))`. Rewrite using `[← hT, thetaOp, thetaGL_locGL, ← CuspSub.locRep_eq, ← hf, ← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocComp_flip {π : CuspSub L a} (hπ : π.IsCsd) {w : HeightOneSpectrum (𝓞 L)}
     {σ : SmIrr (GL (Fin a) (w.adicCompletion L))} (hσ : π.IsLocComp w σ) :
@@ -544,11 +542,11 @@ theorem isLocComp_flip {π : CuspSub L a} (hπ : π.IsCsd) {w : HeightOneSpectru
       ← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]
 
 /- English proof (translation)
-Take `rfl : w' = conjSrc (IsCMField.complexConj L).toRingEquiv w` from `eq_conjSrc fun x => by`. Simplify using `using (hc (IsCMField.complexConj L x)).symm`. Proceed by induction on `π using Quotient.inductionOn with | _ π =>`. Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF L a π w`. Establish `e : locPar hL (Quotient.mk _ π) h = _` using `locPar_mk hL hσ h`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e' : locPar hL (Quotient.mk _ π) h' = _` using `locPar_mk hL (isLocComp_flip hπ hσ) h'`. Rewrite `hu` using `[e]`. Take `⟨α, hα⟩` from `exists_hasSatake_of_unr (isRec_locRec hL h) hu`. Rewrite using `[e, e', rec_eq_diag (isRec_locRec hL h) hα, rec_eq_diag (isRec_locRec hL h') (hasSatake_flip_conjLoc _ w hα), WD.frobEig_diag, WD.frobEig_diag, Multiset.map_map]`. Use `⟨(WD.unr_mk _).2 (WDRep.unr_diag _), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_rhs => rw [← Finset.map_univ_equiv Fin.revPerm, Finset.map_val, Multiset.map_map]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem csd_unr (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (π : CG L a) (hπ : π.IsCsd)
     {w w' : HeightOneSpectrum (𝓞 L)} (hc : ConjPl (IsCMField.complexConj L).toRingEquiv w w')
@@ -573,7 +571,7 @@ end Conj
 def jumps (a : ℕ) (m : Multiset ℂ) : Multiset ℤ := m.map fun z => ⌊(-z + ((a : ℂ) - 1) / 2).re⌋
 
 /- English proof (translation)
-Rewrite using `[jumps, Multiset.map_map]`. Use `Multiset.map_congr rfl fun z hz => ?_` and prove the remaining obligations. Take `⟨n, rfl⟩` from `h z hz`. Establish `e : -((n : ℂ) + ((a : ℂ) - 1) / 2) + ((a : ℂ) - 1) / 2 = ((-n : ℤ) : ℂ)` using `by push_cast; ring`. Rewrite using `[Function.comp_apply, e, Complex.intCast_re, Int.floor_intCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_jumps {a : ℕ} {m : Multiset ℂ} (h : ∀ z ∈ m, ∃ n : ℤ, z = (n : ℂ) + ((a : ℂ) - 1) / 2) :
     (jumps a m).map (fun n : ℤ => (n : ℂ)) = m.map fun z => -z + ((a : ℂ) - 1) / 2 := by
@@ -584,7 +582,7 @@ theorem map_jumps {a : ℕ} {m : Multiset ℂ} (h : ∀ z ∈ m, ∃ n : ℤ, z 
   rw [Function.comp_apply, e, Complex.intCast_re, Int.floor_intCast]
 
 /- English proof (translation)
-Use `⟨fun e => ?_, fun ⟨h, e⟩ => e ▸ map_jumps h⟩` and prove the remaining obligations. Establish `h : ∀ z ∈ m, ∃ n : ℤ, z = (n : ℂ) + ((a : ℂ) - 1) / 2` using `fun z hz => by`. Take `⟨n, -, hn⟩` from `Multiset.mem_map.1 (e ▸ Multiset.mem_map_of_mem (fun z => -z + ((a : ℂ) - 1) / 2) hz)`. Conclude with `⟨-n, by push_cast; linear_combination hn⟩`. Conclude with `⟨h, Multiset.map_injective Int.cast_injective (e.trans (map_jumps h).symm)⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem map_jumps_iff {a : ℕ} {m : Multiset ℂ} (J : Multiset ℤ) :
     J.map (fun n : ℤ => (n : ℂ)) = m.map (fun z => -z + ((a : ℂ) - 1) / 2) ↔
@@ -596,7 +594,7 @@ theorem map_jumps_iff {a : ℕ} {m : Multiset ℂ} (J : Multiset ℤ) :
   exact ⟨h, Multiset.map_injective Int.cast_injective (e.trans (map_jumps h).symm)⟩
 
 /- English proof (translation)
-The claim follows from `(((map_jumps_iff (a := 2) {0, 1}).1 (by norm_num)).2).symm`.
+A detailed English derivation is pending.
 -/
 example : jumps 2 {1 / 2, -1 / 2} = {0, 1} :=
   (((map_jumps_iff (a := 2) {0, 1}).1 (by norm_num)).2).symm
@@ -620,7 +618,7 @@ def locG (hL : GlobalTheory.Published.LocalLanglandsGL) (pl : Formalism.GaloisCo
   haveI := host_isCMField H; locPar hL π.1 (pl.2 w)
 
 /- English proof (translation)
-The claim follows from `host_isCMField H (∀ {a} (π : HostCGu H a) w, (locG hL pl π w).lpDim = a) ∧ (∀ {a} (π : HostCGu H a), ∀ᶠ w in Filter.cofinite, (locG hL pl π w).unr) ∧ (∀ {a} (π : HostCGu H a) (χ : HostCGu H 1) w, locG hL pl (π.tw χ) w = (locG hL pl π w).lpChar (locG hL pl χ w)) ∧ (∀ {a} (π : Host …`.
+A detailed English derivation is pending.
 -/
 theorem laws (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) {R : Ranks}
     (H : Formalism.BasicNotions.Host R) (Ω : Type) [Field Ω] [Algebra H.E Ω] [IsAlgClosure H.E Ω] (pl : Formalism.GaloisCohomology.Places H.E Ω) :

@@ -10,7 +10,7 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped ContDiff
 
 /- English proof (translation)
-Unfold `rconv`. Rewrite using `[← integral_add (integrable_rconv (Gam K n) μ a φ x) (integrable_rconv (Gam K n) μ b φ x)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [CompactlySupportedContinuousMap.coe_add, Pi.add_apply, add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem rconv_add_fun {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n))
     [μ.IsHaarMeasure] (a b : CC K n) (φ : L2 μ) (x : G1 K n) :
@@ -22,14 +22,14 @@ private theorem rconv_add_fun {K : Type} [Field K] [NumberField K] {n : ℕ} (μ
   simp only [CompactlySupportedContinuousMap.coe_add, Pi.add_apply, add_mul]
 
 /- English proof (translation)
-Introduce `_` and use `⟨0, fun φ _ x => by simp [rconv]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private theorem cuspDecay_zero {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n))
     [μ.IsHaarMeasure] : CuspDecay μ (0 : CC K n) := fun _ =>
   ⟨0, fun φ _ x => by simp [rconv]⟩
 
 /- English proof (translation)
-Introduce `N'` and use `by obtain ⟨C₁, h₁⟩ := ha N' obtain ⟨C₂, h₂⟩ := hb N' refine ⟨C₁ + C₂, fun φ hφ x => ?_⟩ rw [rconv_add_fun, add_mul, add_mul] exact (norm_add_le _ _).trans (add_le_add (h₁ φ hφ x) (h₂ φ hφ x))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem cuspDecay_add {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n))
     [μ.IsHaarMeasure] {a b : CC K n} (ha : CuspDecay μ a) (hb : CuspDecay μ b) :
@@ -41,7 +41,7 @@ private theorem cuspDecay_add {K : Type} [Field K] [NumberField K] {n : ℕ} (μ
   exact (norm_add_le _ _).trans (add_le_add (h₁ φ hφ x) (h₂ φ hφ x))
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ ι _ f hf`. Conclude with `Finset.sum_induction f (CuspDecay μ) (fun _ _ => cuspDecay_add μ) (cuspDecay_zero μ) (fun i _ => hf i)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cuspDecay_finset_sum :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure]

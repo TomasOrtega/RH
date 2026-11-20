@@ -18,7 +18,7 @@ variable {C : Type} [Field C] [CharZero C] {V : VF C}
 variable {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {Orb : Type} [Fintype Orb]
 
 /- English proof (translation)
-The claim follows from `block_membership_self_conj_charts isotropic_to_std_subst_harmonic isotropic_to_standard_substitution_invariant isotropic_to_std_subst_degree ha hg Hy a plc F gaC std alt hj supp tie`.
+A detailed English derivation is pending.
 -/
 theorem block_membership_self_conj_finite {C3 : IntChart T io y} {ι : T.Fr →+* C} {Y : FBChart C V (𝓞 E) (chD C3.ch)} {lab : LabS E C Orb 2}
     (ha : LabSArith V io ι lab) (hg : LabSGeo C3 ι Y lab) (Hy : ∀ o, (Y.rawSelf (selfOfLab ha hg o)).Hyps V)
@@ -32,7 +32,7 @@ theorem block_membership_self_conj_finite {C3 : IntChart T io y} {ι : T.Fr →+
   block_membership_self_conj_charts isotropic_to_std_subst_harmonic isotropic_to_standard_substitution_invariant isotropic_to_std_subst_degree ha hg Hy a plc F gaC std alt hj supp tie
 
 /- English proof (translation)
-The claim follows from `valBlocksC_chart Y (selfOfLab ha hg) Hy (chartLetterSystem C3 V ι a) n ν (hν.trans (hD T io y C3 C V ι hι k Y hY a n)) (selfSep_ofLab ha hg) hv plc F nW hn gaC (block_membership_self_conj_finite ha hg Hy a plc F gaC std alt hj supp tie) alt (fun _ => hj) (fun o s k h => (supp o s …`.
+A detailed English derivation is pending.
 -/
 theorem value_blocks_self_conj_finite (hD : DescentSt Xo c) {C3 : IntChart T io y} {ι : T.Fr →+* C} (hι : EmbOK T V ι) {k : ℕ}
     {Y : FBChart C V (𝓞 E) (chD C3.ch)} (hY : IsBC C3 ι k Y) {lab : LabS E C Orb 2}

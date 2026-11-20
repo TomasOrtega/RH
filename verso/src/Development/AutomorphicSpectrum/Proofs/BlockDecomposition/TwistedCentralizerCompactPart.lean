@@ -11,19 +11,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CentOk
 
 /- English proof (translation)
-Introduce `G _ _ _ _ θ hθ K I C δ hK hI hC hcpt x`. Establish `hTc : IsClosed (twCent θ δ : Set G)`. Establish `: (twCent θ δ : Set G) = {g | g * δ = δ * θ g}` using `rfl`. Rewrite using `[this]`. Conclude with `isClosed_eq (continuous_id.mul continuous_const) (continuous_const.mul hθ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hconj : Continuous fun a : G => x * a * x⁻¹` using `by fun_prop`. Prove the components needed by the constructor for the conclusion. Establish `hKx : IsCompact ((K.map (MulAut.conj x).toMonoidHom : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_map]`. Conclude with `hK.image hconj`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `g hg`. Apply `Subgroup.subset_closure` to reduce the goal to its premises. Use `⟨hg.1, ?_⟩` and prove the remaining obligations. Establish `hzp : (Subgroup.zpowers g : Set G) ⊆ (K.map (MulAut.conj x).toMonoidHom : Subgroup G)` using `(Subgroup.zpowers_le (G := G) (H := K.map (MulAut.conj x).toMonoidHom)).2 hg.2`. Conclude with `hKx.of_isClosed_subset isClosed_closure (closure_minimal hzp hKx.isClosed)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set A : Subgroup G := I.map (MulAut.conj x).toMonoidHom with hA`. Establish `hAo : IsOpen (A : Set G)`. Rewrite using `[hA, Subgroup.coe_map]`. Conclude with `(Homeomorph.mulLeft x |>.trans (Homeomorph.mulRight x⁻¹)).isOpenMap _ hI`. Establish `hHc : IsCompact (cptPart (twCent θ δ) : Set G)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hcpt, Subgroup.coe_inf]`. Conclude with `hC.inter_left hTc`. Establish `hHT : cptPart (twCent θ δ) ≤ twCent θ δ`. Rewrite using `[hcpt]`. Conclude with `inf_le_left`.
-
-Establish `e : (twCent θ δ ⊓ A) ⊓ cptPart (twCent θ δ) = A ⊓ cptPart (twCent θ δ)`. Use extensionality with `g`. Simplify using `only [Subgroup.mem_inf]`. Conclude with `⟨fun h => ⟨h.1.2, h.2⟩, fun h => ⟨⟨hHT h.2, h.1⟩, h.2⟩⟩`. Rewrite using `[← Subgroup.inf_relIndex_right, e, Subgroup.inf_relIndex_right]`.
-
-Use `haveI : CompactSpace (cptPart (twCent θ δ)) := isCompact_iff_compactSpace.mp hHc`. Establish `ho : IsOpen ((A.subgroupOf (cptPart (twCent θ δ)) : Subgroup _) : Set (cptPart (twCent θ δ)))` using `hAo.preimage continuous_subtype_val`. Use `haveI := Subgroup.quotient_finite_of_isOpen _ ho`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem centraliser_hyps : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] (θ : G →* G), Continuous θ → ∀ (K I C : Subgroup G) (δ : G), IsCompact (K : Set G) → IsOpen (I : Set G) → IsCompact (C : Set G) → cptPart (twCent θ δ) = twCent θ δ ⊓ C → ∀ x : G, twCent θ δ ⊓ K.map (MulAut.conj x).toMonoidHom ≤ cptPart (twCent θ δ) ∧ (twCent θ δ ⊓ I.map (MulAut.conj x).toMonoidHom).relIndex (cptPart (twCent θ δ)) ≠ 0 := by
   intro G _ _ _ _ θ hθ K I C δ hK hI hC hcpt x

@@ -24,7 +24,7 @@ variable {E : Type} (Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field �
 omit [IsCMField E] in
 
 /- English proof (translation)
-Take `⟨rc', h', -⟩` from `hL.1 E Ω A w h`. Rewrite using `[← H.2 rc' h'.toLit]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem isRec_of_isTheRec (hL : GlobalTheory.Published.LocalLanglandsGL) {w : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
     {h : IsPlaceOver A w} {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsTheRec h rc) : IsRec h rc := by
@@ -32,9 +32,9 @@ theorem isRec_of_isTheRec (hL : GlobalTheory.Published.LocalLanglandsGL) {w : He
   rwa [← H.2 rc' h'.toLit]
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π hc hcoh R hR P AI hT w A h O _ _ _ Bw hj hp σ σ' hσ hσ' rc hrc`. Take `⟨π', c', coh', loc'⟩` from `hd E a π hc hcoh`. Take `⟨R', h1, h2, h3, h4⟩` from `H E Ω l ι a ha π' c' coh'`. Take `⟨p, e⟩` from `hR.2 R' ⟨h1, h2, fun w hl A h rc hrc σ σ' hσ _ hσ' => (h3 w hl A h rc (isRec_of_isTheRec Ω hL hrc) σ' (loc' w σ σ' hσ hσ')).wdOf_eq hl⟩`. Rewrite using `[← (GlobalTheory.PstConj.main E Ω l ι a P AI hT w A h O Bw hj (R.comp (Dec (F := E) A).subtype) (R'.comp (Dec (F := E) A).subtype) p (fun g => e g) hp).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h4 P AI hT w A h O Bw hj).2 σ' (loc' w σ σ' hσ hσ') rc (isRec_of_isTheRec Ω hL hrc)`.
+A detailed English derivation is pending.
 -/
 theorem caraianiLocalGlobal_of_dual₂ (hL : GlobalTheory.Published.LocalLanglandsGL) (H : GlobalTheory.Published.CaraianiLocalGlobalDual)
     (hd : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (π : CuspSub E a),
@@ -52,7 +52,7 @@ theorem caraianiLocalGlobal_of_dual₂ (hL : GlobalTheory.Published.LocalLanglan
   exact (h4 P AI hT w A h O Bw hj).2 σ' (loc' w σ σ' hσ hσ') rc (isRec_of_isTheRec Ω hL hrc)
 
 /- English proof (translation)
-Take `⟨c, e⟩` from `Submodule.mem_span_singleton.1 φ.2`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `act (.fin _) φ.1 = φ.1`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem locRep_triv (w : HeightOneSpectrum (𝓞 E)) (g) (φ : (CuspSub.triv E (le_refl 1)).V) :
     (CuspSub.triv E le_rfl).locRep w g φ = φ := by
@@ -62,13 +62,11 @@ theorem locRep_triv (w : HeightOneSpectrum (𝓞 E)) (g) (φ : (CuspSub.triv E (
   rw [← e]; rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, h0, hf⟩ g v`. Establish `hinj : Function.Injective f`. Break down `((isIrreducible_iff _).1 σ.irred).2 (LinearMap.ker f) (fun g v hv => by` into its components or cases. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hf, hv, map_zero]) with h | h`. Conclude with `LinearMap.ker_eq_bot.1 h`. Conclude with `absurd (LinearMap.ker_eq_top.1 h) h0`. Conclude with `hinj ((hf g v).trans (locRep_triv w g _))`. Introduce `H`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `((isIrreducible_iff _).1 σ.irred).1` as an intermediate fact. Take `⟨v, hv⟩` from `exists_ne (0 : σ.V)`. Take `⟨f, hf⟩` from `Module.Projective.exists_dual_ne_zero ℂ hv`. Set `φ : (CuspSub.triv E (le_refl 1)).V` to `⟨oneFn E 1, Submodule.mem_span_singleton_self _⟩`. Use `⟨f.smulRight φ, fun e => ?_, fun g v => by rw [H, locRep_triv]⟩` and prove the remaining obligations.
-
-Establish `h1` using `congrArg Subtype.val (LinearMap.congr_fun e v)`. Conclude with `(smul_ne_zero hf oneFn_ne_zero) h1`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocComp_triv_iff {w : HeightOneSpectrum (𝓞 E)} (σ : SmIrr (GL (Fin 1) (w.adicCompletion E))) :
     (CuspSub.triv E le_rfl).IsLocComp w σ ↔ ∀ g v, σ.ρ g v = v := by
@@ -90,9 +88,9 @@ theorem isLocComp_triv_iff {w : HeightOneSpectrum (𝓞 E)} (σ : SmIrr (GL (Fin
     exact (smul_ne_zero hf oneFn_ne_zero) h1
 
 /- English proof (translation)
-Take `⟨e⟩` from `e`. Rewrite `h`, the goal using `[isLocComp_triv_iff]`. Introduce `g v`. Apply `e.toLinearEquiv.injective` to reduce the goal to its premises. Establish `h1` using `LinearMap.congr_fun (e.toIntertwiningMap.isIntertwining' g) v`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `h1.trans (Subtype.ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Conclude with `congrArg (e.toLinearEquiv v).1 (h g⁻¹ x)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isLocComp_contra {w : HeightOneSpectrum (𝓞 E)} {σ σ' : SmIrr (GL (Fin 1) (w.adicCompletion E))}
     (h : (CuspSub.triv E le_rfl).IsLocComp w σ) (e : Nonempty (σ'.ρ.Equiv (SmGL.contra σ.ρ))) :
@@ -106,7 +104,7 @@ theorem isLocComp_contra {w : HeightOneSpectrum (𝓞 E)} {σ σ' : SmIrr (GL (F
   exact congrArg (e.toLinearEquiv v).1 (h g⁻¹ x)
 
 /- English proof (translation)
-Establish `ht : ∀ g (f : Module.Dual ℂ (SmIrr.triv G).V), (SmIrr.triv G).ρ.dual g f = f` using `fun g f => LinearMap.ext fun x => rfl`. Establish `htop : PRep.smoothPart (SmIrr.triv G).ρ.dual = ⊤` using `eq_top_iff.2 fun f _ => SmGL.mem_smoothPart_of_nhds (Filter.univ_mem' fun g => ht g f)`. Set `L : ℂ ≃ₗ[ℂ] Module.Dual ℂ ℂ` to `(LinearMap.ringLmapEquivSelf ℂ ℂ ℂ).symm`. Set `M : (SmIrr.triv G).V ≃ₗ[ℂ] PRep.smoothPart (SmIrr.triv G).ρ.dual` to `L.trans (LinearEquiv.ofTop _ htop).symm`. Conclude with `⟨.mk M fun g => LinearMap.ext fun v => Subtype.ext (ht g _).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem triv_contra (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
     Nonempty ((SmIrr.triv G).ρ.Equiv (SmGL.contra (SmIrr.triv G).ρ)) := by
@@ -118,9 +116,9 @@ theorem triv_contra (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGrou
   exact ⟨.mk M fun g => LinearMap.ext fun v => Subtype.ext (ht g _).symm⟩
 
 /- English proof (translation)
-Take `⟨a, ha, ε, -, H⟩` from `hrc`. Establish `h1 : SmGL.IsSmoothChar (1 : (w.adicCompletion E)ˣ →* ℂˣ)`. Simplify using `using isSmoothChar_absPow (k := w.adicCompletion E) 0`. Establish `e : (((1 - ((1 : ℕ) : ℝ)) / 2 : ℝ) : ℂ) = 0` using `by simp`. Rewrite using `[algNorm, e, IrrGL.nu_zero, GlobalTheory.GalOfCusp.Model.locComp_triv hσ h1, H.one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `WD.sound ⟨.refl _ _, fun σ v => ?_, fun v => rfl⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[WDRep.ofChars]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rec_triv {w : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω} {h : IsPlaceOver A w}
     {rc : IrrGL (w.adicCompletion E) → WD h} (hrc : IsRecLit h rc) {σ : SmIrr (GL (Fin 1) (w.adicCompletion E))}
@@ -134,7 +132,7 @@ theorem rec_triv {w : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω} {h :
   ext i; simp [WDRep.ofChars]
 
 /- English proof (translation)
-The claim follows from `continuous_const ss W _ := let ⟨W', h⟩ := W.exists_isCompl; ⟨W', fun g v hv => by simpa using hv, h⟩ unr w hl A h rc hrc σ σ' hσ _ e := by rw [rec_triv Ω hrc.1 (isLocComp_contra hσ e)] exact (GlobalTheory.GalOfCusp.Model.isWDOf_one hl h ι).wdOf_eq hl`.
+A detailed English derivation is pending.
 -/
 theorem isAssoc_triv : IsAssoc (CuspSub.triv E (le_refl 1)) ι (1 : G E Ω →* GL (Fin 1) (Qbar l)) where
   cont := continuous_const
@@ -144,7 +142,7 @@ theorem isAssoc_triv : IsAssoc (CuspSub.triv E (le_refl 1)) ι (1 : G E Ω →* 
     exact (GlobalTheory.GalOfCusp.Model.isWDOf_one hl h ι).wdOf_eq hl
 
 /- English proof (translation)
-Establish `h2 : (CuspSub.triv E (le_refl 1)).IsLocComp w (SmIrr.triv _)` using `(isLocComp_triv_iff _).2 fun _ _ => rfl`. Rewrite using `[H.unr w hl A h rc hrc _ _ h2 ?_ (triv_contra _), rec_triv Ω hrc.1 h2]`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨(1 : ℂ), fun x => (one_smul ℂ _).symm, fun e => one_ne_zero (α := ℂ) e⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsAssoc.wdOf_triv {R : G E Ω →* GL (Fin 1) (Qbar l)} (H : IsAssoc (CuspSub.triv E (le_refl 1)) ι R)
     {w : HeightOneSpectrum (𝓞 E)} (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) {A : ValuationSubring Ω} (h : IsPlaceOver A w)
@@ -154,7 +152,7 @@ theorem IsAssoc.wdOf_triv {R : G E Ω →* GL (Fin 1) (Qbar l)} (H : IsAssoc (Cu
   exact (Submodule.ne_bot_iff _).2 ⟨(1 : ℂ), fun x => (one_smul ℂ _).symm, fun e => one_ne_zero (α := ℂ) e⟩
 
 /- English proof (translation)
-Use `⟨isAssoc_triv Ω ι, fun R hR => GlobalTheory.TraceConjWeil.main E Ω l 1 1 R continuous_const hR.cont (isAssoc_triv Ω ι).ss hR.ss fun w hl A h σ => ?_⟩` and prove the remaining obligations. Take `⟨rc, hrc, -⟩` from `hL.1 E Ω A w h`. Use `GlobalTheory.WdTrace.trace_eq_of_isWDOf E Ω l ι 1 1 R w A h _ (GlobalTheory.GalOfCusp.Model.isWDOf_one hl h ι) ?_ σ` and prove the remaining obligations. Rewrite using `[← IsAssoc.wdOf_triv Ω ι hR hl h (hU.isTheRec_of_isRec hrc)]`. Conclude with `isWDOf_wdOf hl ι (Units.continuous_val.comp hR.cont)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTheRep_triv (hL : GlobalTheory.Published.LocalLanglandsGL) (hU : RecUnique) :
     IsTheRep (CuspSub.triv E (le_refl 1)) ι (1 : G E Ω →* GL (Fin 1) (Qbar l)) := by
@@ -166,9 +164,9 @@ theorem isTheRep_triv (hL : GlobalTheory.Published.LocalLanglandsGL) (hU : RecUn
   exact isWDOf_wdOf hl ι (Units.continuous_val.comp hR.cont)
 
 /- English proof (translation)
-Take `⟨p, e⟩` from `hR.2 1 (isAssoc_triv Ω ι)`. Take `rfl : R = 1` from `MonoidHom.ext fun g => by`. Use `e g` as an intermediate fact. Rewrite `this` using `[MonoidHom.one_apply, eq_mul_inv_iff_mul_eq, one_mul, eq_comm, mul_eq_left]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `(GlobalTheory.LocGlobAll.Model.compat_triv (E := E) Ω ι).2.2.2 P AI hT w A h O Bw hj`. Conclude with `⟨h1, fun σ σ' hσ e rc hrc => h2 σ' (isLocComp_contra hσ e) rc (isRec_of_isTheRec Ω hL hrc)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem concl_triv (hL : GlobalTheory.Published.LocalLanglandsGL) {R : G E Ω →* GL (Fin 1) (Qbar l)}
     (hR : IsTheRep (CuspSub.triv E (le_refl 1)) ι R) (P : LocPrime l) (AI : LocAinf l P) (hT : Nonempty (LocTied l P AI))
@@ -187,11 +185,11 @@ theorem concl_triv (hL : GlobalTheory.Published.LocalLanglandsGL) {R : G E Ω �
   exact ⟨h1, fun σ σ' hσ e rc hrc => h2 σ' (isLocComp_contra hσ e) rc (isRec_of_isTheRec Ω hL hrc)⟩
 
 /- English proof (translation)
-Introduce `H`. Establish `h3` using `IsAssoc.wdOf_triv Ω ι H hl h hrc`. Rewrite `h3` using `[wdOf_cyc]`. Establish `h4` using `congrArg (fun x : WD h => x.charPol (frob h)) h3`. Simplify using `only [WD.lpTw_mk, WD.charPol_mk] at h4`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : (WDRep.diag h fun _ : Fin 1 => (1 : ℂˣ)).ρ (frob h) = 1` using `by ext; simp`. Rewrite `h4` using `[WDRep.tw_ρ, e1, deg_frob]`. Establish `h5` using `LinearMap.aeval_self_charpoly ((((normV w : ℕ) : ℂ) ^ (((1 : ℝ) : ℝ) : ℂ)) ^ (1 : ℤ) • (1 : Module.End ℂ (Fin 1 → ℂ)))`. Rewrite `h5` using `[h4, LinearMap.charpoly_one]`. Establish `h6` using `congrFun (LinearMap.congr_fun h5 fun _ => 1) 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[sub_eq_zero] at h6`. Conclude with `(one_lt_normV w).ne' h6`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_isAssoc_cyc {w : HeightOneSpectrum (𝓞 E)} (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) {A : ValuationSubring Ω}
     (h : IsPlaceOver A w) {rc} (hrc : IsTheRec h rc) :

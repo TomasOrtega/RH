@@ -11,7 +11,7 @@ open scoped Matrix MatrixGroups ModularForm ComplexConjugate
 
 open UpperHalfPlane MeasureTheory in
 /- English proof (translation)
-The claim follows from `(petersson_continuous _ (ModularFormClass.continuous f) (ModularFormClass.continuous g)).comp (continuous_const_smul (γ : GL (Fin 2) ℝ))`.
+A detailed English derivation is pending.
 -/
 private theorem petHerm_cont (M k : ℕ) (f g : CuspForm (Gamma1 M) (k : ℤ)) (γ : SL(2, ℤ)) :
     Continuous fun z : ℍ => petersson (k : ℤ) f g (γ • z) :=
@@ -20,7 +20,7 @@ private theorem petHerm_cont (M k : ℕ) (f g : CuspForm (Gamma1 M) (k : ℤ)) (
 
 open UpperHalfPlane MeasureTheory in
 /- English proof (translation)
-Take `⟨B, hB⟩` from `CuspFormClass.petersson_bounded_left (k : ℤ) (Gamma1 M) f g`. Conclude with `Measure.integrableOn_of_bounded (M := B) hF.2.ne (petHerm_cont M k f g γ).aestronglyMeasurable (Filter.Eventually.of_forall fun z => hB _)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem petHerm_int (hF : UpperTheory.V.Af.Rs.FdFin) (M k : ℕ) [NeZero M] (f g : CuspForm (Gamma1 M) (k : ℤ)) (γ : SL(2, ℤ)) :
     IntegrableOn (fun z : ℍ => petersson (k : ℤ) f g (γ • z)) ModularGroup.fd := by
@@ -30,7 +30,7 @@ private theorem petHerm_int (hF : UpperTheory.V.Af.Rs.FdFin) (M k : ℕ) [NeZero
 
 open UpperHalfPlane in
 /- English proof (translation)
-Simplify using `[petersson, Complex.normSq_eq_conj_mul_self]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem petHerm_self (k : ℕ) (f : ℍ → ℂ) (z : ℍ) :
     petersson (k : ℤ) f f z = ((Complex.normSq (f z) * z.im ^ k : ℝ) : ℂ) := by
@@ -38,27 +38,25 @@ private theorem petHerm_self (k : ℕ) (f : ℍ → ℂ) (z : ℍ) :
 
 open UpperHalfPlane MeasureTheory in
 /- English proof (translation)
-Introduce `M k hM`. Use `haveI : NeZero M := ⟨hM.ne'⟩`. Establish `hV : UpperTheory.V.Af.Rs.VolMap` using `UpperTheory.V.Af.Rs.volMap`. Establish `hF : UpperTheory.V.Af.Rs.FdFin` using `UpperTheory.V.Af.Rs.fdFin (UpperTheory.V.Af.Rs.stripIm hV) hV`. Establish `hP : UpperTheory.V.Af.Rs.FdPos` using `UpperTheory.V.Af.Rs.fdPos hV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (SL(2, ℤ) ⧸ Gamma1 M)` using `Subgroup.finite_quotient_of_finiteIndex`. Use `haveI : Fintype (SL(2, ℤ) ⧸ Gamma1 M) := Fintype.ofFinite _`. Use `⟨fun f g h => ?_, fun c f g => ?_, fun f g => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Simplify using `only [pet, finsum_eq_sum_of_fintype]`. Rewrite using `[← Finset.sum_add_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_add (petHerm_int hF M k f g _) (petHerm_int hF M k f h _)]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `only [petersson, CuspForm.add_apply]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [pet, finsum_eq_sum_of_fintype]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `only [petersson, CuspForm.IsGLPos.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [pet, finsum_eq_sum_of_fintype]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `petersson_symm _ _ _ _`. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨z0, hz0⟩ : ∃ z, f z ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hne (by ext z; simpa using hall z)`. Take `⟨g, hg⟩` from `ModularGroup.exists_smul_mem_fd z0`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (Gamma1 M) g`. Establish `hre : (pet M k f f).re = ∑ γ : SL(2, ℤ) ⧸ Gamma1 M, ∫ z in ModularGroup.fd, (petersson (k : ℤ) f f (γ.out⁻¹ • z)).re`. Simplify using `only [pet, finsum_eq_sum_of_fintype]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Conclude with `(integral_re (petHerm_int hF M k f f _)).symm`. Establish `h0 : ∀ z : ℍ, 0 ≤ (petersson (k : ℤ) f f z).re` using `fun z => by`. Rewrite using `[petHerm_self, Complex.ofReal_re]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_nonneg (Complex.normSq_nonneg _) (pow_nonneg z.im_pos.le _)`. Rewrite `hre` using `[hf, Complex.zero_re]`. Use `ne_of_lt (Finset.sum_pos' (fun γ _ => integral_nonneg fun z => h0 _) ⟨(g : SL(2, ℤ) ⧸ Gamma1 M), Finset.mem_univ _, ?_⟩) hre` and prove the remaining obligations. Use `hP _ (Complex.continuous_re.comp (petHerm_cont M k f f _)) (fun z => h0 _) (petHerm_int hF M k f f _).re (g • z0) hg ?_` and prove the remaining obligations. Rewrite using `[hh, mul_inv_rev, mul_smul, inv_smul_smul]`.
-
-Establish `e : petersson (k : ℤ) f f (((h : SL(2, ℤ))⁻¹) • z0) = petersson (k : ℤ) f f z0` using `SlashInvariantFormClass.petersson_smul (Γ := (Gamma1 M : Subgroup (GL (Fin 2) ℝ))) (g := ((h⁻¹ : SL(2, ℤ)) : GL (Fin 2) ℝ)) ⟨_, inv_mem h.2, rfl⟩`. Rewrite using `[e, petHerm_self, Complex.ofReal_re]`. Conclude with `mul_pos (Complex.normSq_pos.2 hz0) (pow_pos z0.im_pos _)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.KT.petHerm :
     ∀ (M k : ℕ), 0 < M → (∀ f g h : CuspForm (Gamma1 M) (k : ℤ), pet M k f (g + h : CuspForm (Gamma1 M) (k : ℤ)) = pet M k f g + pet M k f h) ∧ (∀ (c : ℂ) (f g : CuspForm (Gamma1 M) (k : ℤ)), pet M k f (c • g : CuspForm (Gamma1 M) (k : ℤ)) = c * pet M k f g) ∧

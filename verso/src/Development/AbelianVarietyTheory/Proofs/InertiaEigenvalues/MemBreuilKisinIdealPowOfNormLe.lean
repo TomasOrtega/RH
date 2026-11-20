@@ -8,21 +8,21 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl`. Establish `hρ0 : (0 : ℝ) < ρ` using `h0`. Establish `hρ1 : (ρ : ℝ) ≤ 1` using `h1.le`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨a, b, c, hw, rfl⟩` from `hx`. Establish `e : algebraMap A (PreDisc l u ρ) ((l : A) ^ c) * (algebraMap A (PreDisc l u ρ) ((l : A) ^ a * u ^ b) * IsLocalization.Away.invSelf (l : A) ^ c) = algebraMap A (PreDisc l u ρ) ((l : A) ^ a * u ^ b)`. Rewrite using `[map_pow, mul_left_comm, ← mul_pow, IsLocalization.Away.mul_invSelf, one_pow, mul_one]`. Break down `le_or_gt m b with hb | hb` into its components or cases. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `⟨c, (l : A) ^ a * u ^ k, 0, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hp : (ρ : ℝ) ^ m ≤ (ρ : ℝ) ^ b` using `pow_le_pow_of_le_one hρ0.le hρ1 hb.le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h2 : (l : ℝ) ^ (c + n) ≤ (l : ℝ) ^ a`. Rewrite `hw` using `[div_mul_eq_mul_div, le_div_iff₀ (by positivity)]`. Establish `h3 : (l : ℝ) ^ (c + n) * (ρ : ℝ) ^ b ≤ (l : ℝ) ^ a * (ρ : ℝ) ^ b`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_right h3 (by positivity)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le ((pow_le_pow_iff_right₀ hl1).1 h2)`. Use `⟨c, 0, (l : A) ^ k * u ^ b, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, 0, 0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c, z₁, z₂, h⟩` from `hx`. Take `⟨c', z₁', z₂', h'⟩` from `hy`. Use `⟨c + c', (l : A) ^ c' * z₁ + (l : A) ^ c * z₁', z₂ + z₂', ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_mul, map_pow, pow_add] at h h' ⊢`. Take the linear combination `(algebraMap A (PreDisc l u ρ) (l : A)) ^ c' * h + (algebraMap A (PreDisc l u ρ) (l : A)) ^ c * h'`. Consider the case `smul a x _ hx`. Take `⟨c, z₁, z₂, h⟩` from `hx`. Use `⟨c, a * z₁, a * z₂, ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_mul, map_pow, pow_add, Algebra.smul_def] at h ⊢`. Take the linear combination `(algebraMap A (PreDisc l u ρ) a) * h`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_ball_small {l : ℕ} (hl : 1 < l) {A : Type} [CommRing A] (u : A) {ρ : ℝ≥0} (h0 : 0 < ρ)
     (h1 : ρ < 1) (m n : ℕ) {y : PreDisc l u ρ} (hy : y ∈ ball l u ρ ((ρ : ℝ) ^ m / (l : ℝ) ^ n)) :
@@ -68,11 +68,11 @@ theorem exists_of_mem_ball_small {l : ℕ} (hl : 1 < l) {A : Type} [CommRing A] 
     linear_combination (algebraMap A (PreDisc l u ρ) a) * h
 
 /- English proof (translation)
-Establish `hb : algebraMap A (PreDisc l u ρ) x ∈ ball l u ρ ((ρ : ℝ) ^ m / (l : ℝ) ^ n)` using `mem_ball_of_gauge_lt l u ρ ((norm_ofPre l u ρ _).symm.trans_lt hx)`. Take `⟨c, z₁, z₂, h⟩` from `exists_of_mem_ball_small hl u h0 h1 m n hb`. Establish `hn : (l : A) ∈ nonZeroDivisors A` using `mem_nonZeroDivisors_iff_left.2 ht`. Establish `hi : Function.Injective (algebraMap A (PreDisc l u ρ))` using `IsLocalization.injective (M := Submonoid.powers (l : A)) _ (Submonoid.powers_le.2 hn)`. Rewrite `h` using `[← map_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hi h`. Establish `key : ∀ (c : ℕ) (w : A), u ^ m ∣ (l : A) ^ c * w → u ^ m ∣ w` using `fun c => by`. Proceed by induction on `c with`. Consider the case `zero => intro w hw`. Simplify using `using hw`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ c ih`. Introduce and unpack `w ⟨y, hy⟩`. Conclude with `ih w (hd _ y (by rw [← hy]; ring))`. Take `⟨z, hz⟩` from `key c (x - (l : A) ^ n * z₂) ⟨z₁, by rw [pow_add] at h2; linear_combination h2⟩`. Conclude with `⟨z, z₂, by linear_combination hz⟩`.
+Treat this case separately. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_of_norm_toDisc_lt {l : ℕ} (hl : 1 < l) {A : Type} [CommRing A] (u : A)
     (ht : ∀ x : A, (l : A) * x = 0 → x = 0) (m : ℕ) (hd : ∀ x y : A, (l : A) * x = u ^ m * y → u ^ m ∣ x)
@@ -96,9 +96,9 @@ theorem exists_of_norm_toDisc_lt {l : ℕ} (hl : 1 < l) {A : Type} [CommRing A] 
   exact ⟨z, z₂, by linear_combination hz⟩
 
 /- English proof (translation)
-Establish `h` using `congrArg (Polynomial.coeToPowerSeries.ringHom (R := Wq l bk.a)) bk.monic.as_sum`. Simplify using `only [map_add, map_pow, map_sum, map_mul, Polynomial.coeToPowerSeries.ringHom_apply, Polynomial.coe_X, Polynomial.coe_C] at h`. Establish `e : (X : bk.S) ^ bk.Ep.natDegree = bk.E - ∑ i ∈ Finset.range bk.Ep.natDegree, C (bk.Ep.coeff i) * (X : bk.S) ^ i`. Rewrite using `[eq_sub_iff_add_eq]`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `sub_mem (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)) (Ideal.mem_sup_left (sum_mem fun i hi => ?_))` and prove the remaining obligations. Take `⟨w, hw⟩` from `bk.dvd_coeff i (Finset.mem_range.1 hi)`. Rewrite using `[hw, map_mul, map_natCast, mul_assoc]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BK.X_pow_natDegree_mem_J {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K) :
     (X : bk.S) ^ bk.Ep.natDegree ∈ bk.J := by
@@ -115,11 +115,9 @@ theorem BK.X_pow_natDegree_mem_J {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : B
   exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Introduce `l hl K bk A _ s ht hd ρ h0 h1 n`. Establish `hl0 : (0 : ℝ) < l` using `Nat.cast_pos.2 hl.out.pos`. Establish `hρ0 : (0 : ℝ) < ρ` using `h0`. Establish `hr : 0 < (ρ : ℝ) ^ (bk.Ep.natDegree * n) / (l : ℝ) ^ n` using `by positivity`. Use `⟨_, half_pos hr, fun x hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z₁, z₂, rfl⟩` from `exists_of_norm_toDisc_lt hl.out.one_lt (s X) ht _ (hd _) h0 h1 n x (hx.trans_lt (half_lt_self hr))`. Use `add_mem (Ideal.mul_mem_right _ _ ?_) (Ideal.mul_mem_right _ _ ?_)` and prove the remaining obligations. Rewrite using `[← map_pow, pow_mul]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.pow_mem_pow bk.X_pow_natDegree_mem_J n)`. Rewrite using `[← map_natCast s, ← map_pow]`.
-
-Conclude with `Ideal.mem_map_of_mem _ (Ideal.pow_mem_pow (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)) n)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_J_pow_of_norm_le : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (A : Type) [CommRing A] (s : bk.S →+* A), (∀ x : A, (l : A) * x = 0 → x = 0) → (∀ (m : ℕ) (x y : A), (l : A) * x = s X ^ m * y → s X ^ m ∣ x) → ∀ (ρ : ℝ≥0), 0 < ρ → ρ < 1 → ∀ n : ℕ, ∃ r : ℝ, 0 < r ∧ ∀ x : A, ‖toDisc l (s X) ρ x‖ ≤ r → x ∈ (bk.J ^ n).map s := by
   intro l hl K bk A _ s ht hd ρ h0 h1 n

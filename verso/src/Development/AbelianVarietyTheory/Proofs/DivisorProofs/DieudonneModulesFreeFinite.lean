@@ -13,9 +13,9 @@ namespace GlobalTheory
 namespace PDivGroup
 
 /- English proof (translation)
-Establish `e : Module.finrank (FractionRing R) (FractionRing R ⊗[R] M) = Module.finrank R M`. Rewrite using `[IsLocalization.finrank_eq (FractionRing R) (nonZeroDivisors R) le_rfl]`. Conclude with `IsLocalizedModule.finrank_eq (nonZeroDivisors R) (TensorProduct.mk R (FractionRing R) M 1) le_rfl`. Set `b` to `Module.finBasis (IsLocalRing.ResidueField R) (IsLocalRing.ResidueField R ⊗[R] M)`. Use `choose v hv using fun i => TensorProduct.mk_surjective R M (IsLocalRing.ResidueField R) Ideal.Quotient.mk_surjective (b i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs` using `IsLocalRing.span_eq_top_of_tmul_eq_basis v b hv`. Rewrite using `[e]`. Use `⟨by simpa using finrank_le_of_span_eq_top hs, fun h => ?_⟩` and prove the remaining obligations. Conclude with `.of_basis (Module.Basis.mk (linearIndependent_of_top_le_span_of_card_le_finrank hs.ge (by simpa using h)) hs.ge)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finrank_generic_le_special_and_free {R M : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     [AddCommGroup M] [Module R M] [Module.Finite R M] :
@@ -39,7 +39,7 @@ theorem finrank_generic_le_special_and_free {R M : Type} [CommRing R] [IsDomain 
 variable {p : ℕ} {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `.equiv (LinearEquiv.ofBijective _ (G.omegaLevel_one_bijective hp)).symm`.
+A detailed English derivation is pending.
 -/
 theorem finite_omega_of_natCast_eq_zero (G : PDivGroup p R) (hp : (p : R) = 0) :
     Module.Finite R G.omega :=
@@ -48,7 +48,7 @@ theorem finite_omega_of_natCast_eq_zero (G : PDivGroup p R) (hp : (p : R) = 0) :
 variable [Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `(LinearEquiv.ofLinearMap (omegaMap G H e.hom) (omegaMap H G e.inv) (by rw [← omegaMap_comp, e.hom_inv_id, omegaMap_id]) (by rw [← omegaMap_comp, e.inv_hom_id, omegaMap_id])).finrank_eq`.
+A detailed English derivation is pending.
 -/
 theorem finrank_omega_eq_of_iso {G H : PDivGroup p R} (e : G ≅ H) :
     Module.finrank R H.omega = Module.finrank R G.omega :=
@@ -57,7 +57,7 @@ theorem finrank_omega_eq_of_iso {G H : PDivGroup p R} (e : G ≅ H) :
     (by rw [← omegaMap_comp, e.inv_hom_id, omegaMap_id])).finrank_eq
 
 /- English proof (translation)
-Establish `hp' : (p : K) = 0` using `by rw [← map_natCast (algebraMap R K), hp, map_zero]`. Rewrite using `[(LinearEquiv.ofBijective _ (T.omega_baseChange_bijective_of_p_eq_zero G K hp)).finrank_eq, (LinearEquiv.ofBijective _ (T.omega_baseChange_bijective_of_p_eq_zero G.dual K hp)).finrank_eq, finrank_omega_eq_of_iso (PerfdLat.dualBaseChange K G)]`. Conclude with `(T.dieudonne_ranks_field_char_p hW p K hp' (G.baseChange K)).2.2.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_fibre_omega_add (hW : GlobalTheory.Published.BarsottiTateDieudonne.WittModule)
     (G : PDivGroup p R) (hp : (p : R) = 0) (K : Type) [Field K] [Algebra R K] :
@@ -69,11 +69,9 @@ theorem finrank_fibre_omega_add (hW : GlobalTheory.Published.BarsottiTateDieudon
   exact (T.dieudonne_ranks_field_char_p hW p K hp' (G.baseChange K)).2.2.1
 
 /- English proof (translation)
-Use `haveI f1 := G.finite_omega_of_natCast_eq_zero h`. Use `haveI f2 := G.dual.finite_omega_of_natCast_eq_zero h`. Establish `k1` using `G.finrank_fibre_omega_add hW h (FractionRing R)`. Establish `k2` using `G.finrank_fibre_omega_add hW h (IsLocalRing.ResidueField R)`. Take `⟨a1, a2⟩` from `finrank_generic_le_special_and_free (R := R) (M := G.omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨b1, b2⟩` from `finrank_generic_le_special_and_free (R := R) (M := G.dual.omega)`. Use `haveI g1 : Module.Free R G.omega := a2 (by omega)`. Use `haveI g2 : Module.Free R G.dual.omega := b2 (by omega)`. Set `e : G.VecExt ≃ₗ[R] Module.Dual R G.dual.omega` to `(G.extCharEquiv h).trans (LinearEquiv.ofBijective _ (G.primLie_bijective h))`. Use `haveI g3 : Module.Free R G.VecExt := .of_equiv e.symm`.
-
-Use `haveI f3 : Module.Finite R G.VecExt := .equiv e.symm`. Take `⟨s, hs⟩` from `G.rigToExt.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 G.rigToExt_surjective)`. Set `e' : G.RigExt ≃ₗ[R] G.omega × G.VecExt` to `(G.exact_rigOfOmega_rigToExt.splitSurjectiveEquiv (G.rigOfOmega_injective_of_eq_zero h) ⟨s, hs⟩).1`. Conclude with `⟨g1, f1, g2, f2, g3, f3, .of_equiv e'.symm, .equiv e'.symm⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem free_finite_omega_ext_of_isDiscreteValuationRing
     (hW : GlobalTheory.Published.BarsottiTateDieudonne.WittModule) (p : ℕ) [Fact p.Prime] (R : Type)

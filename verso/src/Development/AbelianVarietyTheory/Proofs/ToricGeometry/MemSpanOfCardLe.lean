@@ -12,7 +12,7 @@ open scoped BigOperators Real
 namespace GlobalTheory.ThetaOnto
 
 /- English proof (translation)
-Unfold `constFn`. Rewrite using `[← CommRingCat.comp_apply]`. Use `erw [Scheme.Hom.appLE_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_constFn {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {U V : X.Opens}
     (h : V ≤ U) (a : R) :
@@ -22,7 +22,7 @@ theorem res_constFn {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {U
   erw [Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Unfold `constFn`. Rewrite using `[map_zero, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem constFn_zero {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) (U : X.Opens) :
     constFn p U 0 = 0 := by
@@ -49,11 +49,11 @@ def secConst {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) (L : LB X
     rw [res_constFn, res_constFn, this, Units.val_one, _root_.one_mul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hv' : v ∉ Submodule.span ℂ (Set.range f)`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Conclude with `hne`. Establish `hli' : LinearIndependent ℂ (Fin.cons v f : Fin (N + 1) → V)` using `linearIndependent_finCons.mpr ⟨hli, hv'⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : ∀ k, Q ((Fin.cons v f : Fin (N + 1) → V) k)`. Introduce `k`. Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using `using hv`. Simplify using `using hf i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hN (N + 1) _ hQ hli'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mem_span_of_card_le {V : Type} [AddCommGroup V] [Module ℂ V] (Q : V → Prop) {N : ℕ}
     (hN : ∀ (M : ℕ) (f : Fin M → V), (∀ k, Q (f k)) → LinearIndependent ℂ f → M ≤ N)
@@ -74,31 +74,29 @@ theorem mem_span_of_card_le {V : Type} [AddCommGroup V] [Module ℂ V] (Q : V �
   omega
 
 /- English proof (translation)
-Introduce `hval hdim hsec hfun P u Hm χ Ef hAH hfr hEf n θ hθ`. Establish `hpt : ∀ z, (u.ex z).left ≫ P.A.hom = 𝟙 _` using `fun z => Over.w (u.ex z)`. Establish `hconst : ∀ z (U : P.A.left.Opens) (a : ℂ), ⊤ ≤ (u.ex z).left ⁻¹ᵁ U → valAt' (u.ex z).left U (constFn P.A.hom U a) = a` using `fun z U a hU => (hval _ _).2.2.2.2.2 P.A.hom (hpt z) U a hU`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `hper : ∀ (l : u.Λ) z, θ (z + l) = θ z` using `fun l z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[hθ.2 l z, pow_zero, _root_.one_mul]`. Use `u.discrete` as an intermediate fact. Establish `: IsZLattice ℝ u.Λ` using `⟨u.full⟩`. Set `b` to `(Module.Free.chooseBasis ℤ u.Λ).ofZLatticeBasis ℝ u.Λ`. Establish `hb : Bornology.IsBounded (Set.range θ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hK : IsCompact (closure (ZSpan.fundamentalDomain b))` using `Metric.isCompact_of_isClosed_isBounded isClosed_closure (ZSpan.fundamentalDomain_isBounded b).closure`. Use `(hK.image hθ.1.continuous).isBounded.subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Use `⟨ZSpan.fract b z, subset_closure (ZSpan.fract_mem_fundamentalDomain b z), ?_⟩` and prove the remaining obligations. Establish `hfl : ((ZSpan.floor b z : _) : Fin P.g → ℂ) ∈ u.Λ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h : ((ZSpan.floor b z : _) : Fin P.g → ℂ) ∈ Submodule.span ℤ (Set.range b)` using `(ZSpan.floor b z).2`. Conclude with `((Module.Free.chooseBasis ℤ u.Λ).ofZLatticeBasis_span ℝ).le h`. Rewrite using `[← hper ⟨_, hfl⟩ (ZSpan.fract b z), ZSpan.fract_apply, sub_add_cancel]`. Establish `hc : ∀ z, θ z = θ 0` using `fun z => hθ.1.apply_eq_apply_of_bounded hb z 0`. Use `⟨secConst P.A.hom P.L (θ 0), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j z hz`. Use `show valAt' _ _ (constFn P.A.hom _ (θ 0)) = _`. Rewrite using `[hconst z _ _ hz, pow_zero, _root_.mul_one, hc z]`. Take `⟨s, hs⟩` from `hsec P n hn`. Establish `hex : ∀ i, ∃ T, u.IsThetaFn Hm χ n T ∧ u.IsFnPow n (s i) T` using `fun i => ((hfun P u Hm χ Ef hfr n).1 (s i)).exists`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose T hT using hex`. Establish `hcomb : ∀ a : Fin (n ^ P.g) → ℂ, u.IsFnPow n (secComb P.A.hom a s) (fun z => ∑ i, a i * T i z)`. Introduce `a j z hz`. Take `⟨e, he⟩` from `(hval _ (u.ex z).left).2.1 _ hz`. Establish `hca : ∀ i, e (constFn P.A.hom ((lbPow P.L n).U j) (a i)) = a i` using `fun i => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he]`. Conclude with `hconst z _ (a i) hz`. Establish `hsi : ∀ i, e ((s i).f j) = T i z * u.fr (j PUnit.unit) z ^ n` using `fun i => by`. Rewrite using `[← he]`. Conclude with `(hT i).2 j z hz`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he]`. Use `show e (∑ i, constFn P.A.hom _ (a i) * (s i).f j) = _`. Rewrite using `[map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hca, hsi, _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent ℂ T`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `a ha`. Establish `hz : ∀ z, ∑ i, a i * T i z = 0` using `fun z => by`. Simplify `congrFun ha z` using `[Finset.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : u.IsFnPow n (secComb P.A.hom (0 : Fin (n ^ P.g) → ℂ) s) (fun z => ∑ i, a i * T i z)`. Introduce `j z hz'`. Rewrite using `[hcomb 0 j z hz']`. Simplify using `[hz]`. Establish `heq` using `(hfun P u Hm χ Ef hfr n).2 _ _ _ (hcomb a) h0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `ha0 : a = 0`. Apply `hs a` to reduce the goal to its premises. Introduce `j`. Establish `hj` using `congrArg (fun t => LB.Sec.f t j) heq`. Simplify using `only [secComb] at hj`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hj]`. Simplify using `[constFn_zero]`. Introduce `i`. Rewrite using `[ha0]`. Both sides reduce to the same expression.
-
-Take `⟨a, ha⟩` from `mem_span_of_card_le (u.IsThetaFn Hm χ n) (fun M f hf hlin => hdim P.g u.Λ u.discrete u.full Hm χ Ef hfr.1 hAH.2.1 hfr.2.1 hfr.2.2.1 hEf n hn M f (fun k => ⟨(hf k).1, fun l z => (hf k).2 l z⟩) hlin) T (fun i => (hT i).1) hli hθ`. Use `⟨secComb P.A.hom a s, ?_⟩` and prove the remaining obligations. Introduce `j z hz`. Rewrite using `[hcomb a j z hz, ← ha]`. Simplify using `[Finset.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_from_section :
     (∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X), (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U) ∧ (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U → ∃ e : Γ(X, U) →+* ℂ, ∀ f, valAt' x U f = e f) ∧ (∀ (U V : X.Opens) (h : V ≤ U) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ V → valAt' x V (resG X h f) = valAt' x U f) ∧ (∀ (Y : Scheme.{0}) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)), valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f) ∧ (∀ (U : X.Opens) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ valAt' x U f ≠ 0) ∧ (∀ (p : X ⟶ Sp ℂ), x ≫ p = 𝟙 _ → ∀ (U : X.Opens) (a : ℂ), ⊤ ≤ x ⁻¹ᵁ U → valAt' x U (constFn p U a) = a)) → (∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)), DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → ∀ (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : Λ → ℂ) (Ef : LinearMap.BilinForm ℤ Λ), Hm.IsHermitian → (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm.mulVec (star z)).re) → (∀ l, ‖χ l‖ = 1) → (∀ l m : Λ, (Ef l m : ℝ) = ((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin g → ℂ))).im) → Function.Bijective Ef → ∀ n : ℕ, 1 ≤ n → ∀ (N : ℕ) (f : Fin N → (Fin g → ℂ) → ℂ), (∀ k, Differentiable ℂ (f k) ∧ ∀ (l : Λ) z, f k (z + l) = (χ l * cexp (Real.pi * (z ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))) + Real.pi / 2 * ((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))))) ^ n * f k z) → LinearIndependent ℂ f → N ≤ n ^ g) → (∀ (P : Out.PolAV (Sp ℂ)) (n : ℕ), 1 ≤ n → ∃ s : Fin (n ^ P.g) → (lbPow P.L n).Sec, ∀ a : Fin (n ^ P.g) → ℂ, (∀ j, ∑ i, constFn P.A.hom _ (a i) * (s i).f j = 0) → a = 0) → (∀ (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ) (Ef : LinearMap.BilinForm ℤ u.Λ), (Hm.IsHermitian ∧ (∀ l, ‖χ l‖ = 1) ∧ (∀ l m : u.Λ, (Ef l m : ℝ) = ((l : Fin P.g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin P.g → ℂ))).im) ∧ ∀ (l : u.Λ) i z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ P.L.U i → u.fr i z = (χ l * cexp (Real.pi * (z ⬝ᵥ Hm.mulVec (star (l : Fin P.g → ℂ))) + Real.pi / 2 * ((l : Fin P.g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin P.g → ℂ))))) * u.fr i (z + l)) → ∀ n : ℕ, (∀ s, ∃! θ, u.IsThetaFn Hm χ n θ ∧ u.IsFnPow n s θ) ∧ ∀ θ s s', u.IsFnPow n s θ → u.IsFnPow n s' θ → s = s') → (∀ (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ) (Ef : LinearMap.BilinForm ℤ u.Λ), u.IsAH Hm χ → (Hm.IsHermitian ∧ (∀ l, ‖χ l‖ = 1) ∧ (∀ l m : u.Λ, (Ef l m : ℝ) = ((l : Fin P.g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin P.g → ℂ))).im) ∧ ∀ (l : u.Λ) i z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ P.L.U i → u.fr i z = (χ l * cexp (Real.pi * (z ⬝ᵥ Hm.mulVec (star (l : Fin P.g → ℂ))) + Real.pi / 2 * ((l : Fin P.g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin P.g → ℂ))))) * u.fr i (z + l)) → Function.Bijective Ef → ∀ (n : ℕ) θ, u.IsThetaFn Hm χ n θ → ∃ s, u.IsFnPow n s θ) := by

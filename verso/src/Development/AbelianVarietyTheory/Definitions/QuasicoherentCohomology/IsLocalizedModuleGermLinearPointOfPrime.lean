@@ -15,7 +15,7 @@ variable {X : Scheme.{u}} {F G H : X.Modules} {U V : X.Opens}
 section Maps
 
 /- English proof (translation)
-The claim follows from `TopCat.Presheaf.stalkFunctor_map_germ_apply U x hx φ.mapPresheaf s`.
+A detailed English derivation is pending.
 -/
 theorem stalkFunctor_map_germ (φ : F ⟶ G) (x : X) (hx : x ∈ U) (s : Γ(F, U)) :
     (TopCat.Presheaf.stalkFunctor Ab.{u} x).map φ.mapPresheaf (F.presheaf.germ U x hx s) =
@@ -36,7 +36,7 @@ def stalkLinear (φ : F ⟶ G) (x : X) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `stalkFunctor_map_germ φ x hx s @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem stalkLinear_germ (φ : F ⟶ G) (x : X) (hx : x ∈ U) (s : Γ(F, U)) :
     stalkLinear φ x (F.presheaf.germ U x hx s) = G.presheaf.germ U x hx (φ.app U s) :=
@@ -44,7 +44,7 @@ theorem stalkLinear_germ (φ : F ⟶ G) (x : X) (hx : x ∈ U) (s : Γ(F, U)) :
 
 @[simp]
 /- English proof (translation)
-Use extensionality with `t`. Take `⟨V, hV, s, rfl⟩` from `F.presheaf.exists_germ_eq t`. Rewrite using `[stalkLinear_germ]`. Both sides reduce to the same expression. Use the proof step `@[simp]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stalkLinear_id (F : X.Modules) (x : X) : stalkLinear (𝟙 F) x = LinearMap.id := by
   ext t
@@ -53,7 +53,7 @@ theorem stalkLinear_id (F : X.Modules) (x : X) : stalkLinear (𝟙 F) x = Linear
 
 @[simp]
 /- English proof (translation)
-Use extensionality with `t`. Take `⟨V, hV, s, rfl⟩` from `F.presheaf.exists_germ_eq t`. Rewrite using `[LinearMap.comp_apply, stalkLinear_germ, stalkLinear_germ, stalkLinear_germ]`. Both sides reduce to the same expression. Use the proof step `@[simp]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stalkLinear_comp (φ : F ⟶ G) (ψ : G ⟶ H) (x : X) :
     stalkLinear (φ ≫ ψ) x = stalkLinear ψ x ∘ₗ stalkLinear φ x := by
@@ -63,7 +63,7 @@ theorem stalkLinear_comp (φ : F ⟶ G) (ψ : G ⟶ H) (x : X) :
 
 @[simp]
 /- English proof (translation)
-Use extensionality with `t`. Take `⟨V, hV, s, rfl⟩` from `F.presheaf.exists_germ_eq t`. Rewrite using `[LinearMap.add_apply, stalkLinear_germ, stalkLinear_germ, stalkLinear_germ, ← map_add]`. Both sides reduce to the same expression. Use the proof step `@[simp]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stalkLinear_add (φ ψ : F ⟶ G) (x : X) :
     stalkLinear (φ + ψ) x = stalkLinear φ x + stalkLinear ψ x := by
@@ -73,7 +73,7 @@ theorem stalkLinear_add (φ ψ : F ⟶ G) (x : X) :
 
 @[simp]
 /- English proof (translation)
-Use extensionality with `t`. Take `⟨V, hV, s, rfl⟩` from `F.presheaf.exists_germ_eq t`. Rewrite using `[stalkLinear_germ]`. Conclude with `map_zero _`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkLinear_zero (x : X) : stalkLinear (0 : F ⟶ G) x = 0 := by
   ext t
@@ -94,7 +94,7 @@ theorem stalkLinearEquiv_apply (e : F ≅ G) (x : X) (t : (F.presheaf.stalk x :)
     stalkLinearEquiv e x t = stalkLinear e.hom x t := rfl
 
 /- English proof (translation)
-Rewrite using `[← SheafLES.exact_map_toAbSheaf_iff, TopCat.Sheaf.exact_iff_stalkFunctor_map_exact]`. Conclude with `forall_congr' fun x ↦ ShortComplex.ab_exact_iff_function_exact _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exact_iff_stalkLinear (S : ShortComplex X.Modules) :
     S.Exact ↔ ∀ x : X, Function.Exact (stalkLinear S.f x) (stalkLinear S.g x) := by
@@ -102,7 +102,7 @@ theorem exact_iff_stalkLinear (S : ShortComplex X.Modules) :
   exact forall_congr' fun x ↦ ShortComplex.ab_exact_iff_function_exact _
 
 /- English proof (translation)
-Rewrite using `[← ShortComplex.exact_iff_mono (ShortComplex.mk (0 : F ⟶ F) φ (by simp)) rfl, exact_iff_stalkLinear]`. Use `forall_congr' fun x ↦ ?_` and prove the remaining obligations. Rewrite using `[stalkLinear_zero]`. Conclude with `LinearMap.exact_zero_iff_injective _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mono_iff_stalkLinear_injective (φ : F ⟶ G) :
     Mono φ ↔ ∀ x : X, Function.Injective (stalkLinear φ x) := by
@@ -113,7 +113,7 @@ theorem mono_iff_stalkLinear_injective (φ : F ⟶ G) :
   exact LinearMap.exact_zero_iff_injective _ _
 
 /- English proof (translation)
-Rewrite using `[← ShortComplex.exact_iff_epi (ShortComplex.mk φ (0 : G ⟶ G) (by simp)) rfl, exact_iff_stalkLinear]`. Use `forall_congr' fun x ↦ ?_` and prove the remaining obligations. Rewrite using `[stalkLinear_zero]`. Conclude with `LinearMap.exact_zero_iff_surjective _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epi_iff_stalkLinear_surjective (φ : F ⟶ G) :
     Epi φ ↔ ∀ x : X, Function.Surjective (stalkLinear φ x) := by
@@ -124,21 +124,21 @@ theorem epi_iff_stalkLinear_surjective (φ : F ⟶ G) :
   exact LinearMap.exact_zero_iff_surjective _ _
 
 /- English proof (translation)
-The claim follows from `(mono_iff_stalkLinear_injective φ).1 inferInstance x`.
+A detailed English derivation is pending.
 -/
 theorem stalkLinear_injective (φ : F ⟶ G) [Mono φ] (x : X) :
     Function.Injective (stalkLinear φ x) :=
   (mono_iff_stalkLinear_injective φ).1 inferInstance x
 
 /- English proof (translation)
-The claim follows from `(epi_iff_stalkLinear_surjective φ).1 inferInstance x`.
+A detailed English derivation is pending.
 -/
 theorem stalkLinear_surjective (φ : F ⟶ G) [Epi φ] (x : X) :
     Function.Surjective (stalkLinear φ x) :=
   (epi_iff_stalkLinear_surjective φ).1 inferInstance x
 
 /- English proof (translation)
-The claim follows from `TopCat.Presheaf.section_ext ⟨F.presheaf, F.isSheaf⟩ U s 0 fun x hx ↦ by rw [map_zero]; exact h x hx`.
+A detailed English derivation is pending.
 -/
 theorem section_eq_zero_of_germ (s : Γ(F, U))
     (h : ∀ (x : X) (hx : x ∈ U), F.presheaf.germ U x hx s = 0) : s = 0 :=
@@ -150,7 +150,7 @@ def pointOfPrime (hU : IsAffineOpen U) (P : PrimeSpectrum Γ(X, U)) : U :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `hU.fromSpec.isOpenEmbedding.injective (hU.fromSpec_primeIdealOf _) @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem primeIdealOf_pointOfPrime (hU : IsAffineOpen U) (P : PrimeSpectrum Γ(X, U)) :
     hU.primeIdealOf (pointOfPrime hU P) = P :=
@@ -158,14 +158,14 @@ theorem primeIdealOf_pointOfPrime (hU : IsAffineOpen U) (P : PrimeSpectrum Γ(X,
 
 @[simp]
 /- English proof (translation)
-The claim follows from `Subtype.ext (hU.fromSpec_primeIdealOf x)`.
+A detailed English derivation is pending.
 -/
 theorem pointOfPrime_primeIdealOf (hU : IsAffineOpen U) (x : U) :
     pointOfPrime hU (hU.primeIdealOf x) = x :=
   Subtype.ext (hU.fromSpec_primeIdealOf x)
 
 /- English proof (translation)
-Use `isLocalizedModule_germLinear F hU (pointOfPrime hU ⟨P, hP⟩)` as an intermediate fact. Simplify using `only [primeIdealOf_pointOfPrime] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLocalizedModule_germLinear_pointOfPrime (F : X.Modules) [F.IsQuasicoherent]
     (hU : IsAffineOpen U) (P : Ideal Γ(X, U)) [hP : P.IsPrime] :

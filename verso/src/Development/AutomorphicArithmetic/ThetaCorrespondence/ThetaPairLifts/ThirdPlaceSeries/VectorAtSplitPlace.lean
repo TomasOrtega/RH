@@ -13,19 +13,17 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.DzVecLoc
 /- English proof (translation)
-Take `⟨c, T, hc, hcs, -, -, -⟩` from `hT.rep i s hw PI`. Take `⟨F, hF, hne⟩` from `hocc`. Use `set z := idemOf D k ρ with hz`. Establish `hzc : ∀ b, z * b = b * z` using `by haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Conclude with `(GlobalTheory.SerOSys.zIdem_centralIdempotent ρ hρ).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcen` using `GlobalTheory.SeriesSupportTest.atPlace_central D k v z hzc`. Take `⟨L, hLift, hCL⟩` from `hC i`. Establish `e : (P.M.loc i).real (D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v z) F) = actSum D L (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v z) ((P.M.loc i).real F)`. Rewrite using `[NTypes.onMt, dif_pos hcen]`. Conclude with `hCL ⟨_, hcen⟩ F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne' : actSum D L (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v z) ((P.M.loc i).real F) ≠ 0`. Rewrite using `[← e]`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Conclude with `(P.M.loc i).real_inj (h0.trans (map_zero _).symm)`.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Set `g : GL (Fin D.R.r) (ZMod (D.host.g k)) → G0g D.nd` to `fun h => Pi.mulSingle (M := fun kv : (Σ k : Fin 2, D.nd.PlG k) => GL (Fin D.R.r) (ZMod (D.host.g kv.1))) ⟨k, v⟩ h`. Establish `hsum : actSum D L (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v z) ((P.M.loc i).real F) = ∑ h, z.coeff h • NG.rt D.host.E D.R.nV (L (g h)) ((P.M.loc i).real F)`. Unfold `actSum Formalism.MainNotions.ArithmeticCylinders.atPlace`. Rewrite using `[MonoidAlgebra.coeff_ofCoeff, Finsupp.sum_mapDomain_index (h := fun g c => c • NG.rt D.host.E D.R.nV (L g) ((P.M.loc i).real F)) (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)]`. Conclude with `Finsupp.sum_fintype _ _ (fun _ => zero_smul _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hg : ∀ h, ∃ x : GAf D.host.E D.R.nV, TrivOutside {s.v} x ∧ IsLiftN h (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x)) ∧ NG.rt D.host.E D.R.nV (L (g h)) ((P.M.loc i).real F) = NG.rt D.host.E D.R.nV x ((P.M.loc i).real F)` using `fun h => _root_.GlobalTheory.T.lift_through_completion_iso_alt hL D P i PI k v s hs c hc hcs L hLift F hF h (g h) (by simp [g]) (fun kv hkv => by simp [g, Pi.mulSingle_eq_of_ne hkv])`. Use `choose xs hxs using hg`. Establish `hne'' : ∑ h, z.coeff h • NG.rt D.host.E D.R.nV (xs h) ((P.M.loc i).real F) ≠ 0`. Rewrite `hne'` using `[hsum]`. Simplify `hne'` using `only [(hxs _).2.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨U, hU, h1U, hθU⟩` from `GlobalTheory.T.charOfLowerRightBlockDet_eventually_eq_one _ D.R.r D.R.t (S i s.w hw).mu (S i s.w hw).mu_ok.1`. Establish `hFS : (P.M.loc i).real F ∈ NG.isoTyp (P.M.loc i).wt.ρ (P.H.av.S i PI)`. Use `hF` as an intermediate fact. Rewrite `this` using `[P.H.av.typeV]`. Conclude with `this`.
-
-Take `⟨y, hy, hyz⟩` from `GlobalTheory.T.local_component_continuous_iso_fixed D.host.E D.R.nV (P.M.loc i).wt (P.H.av.S i PI) (P.H.av.irr i PI) s ((S i s.w hw).rep PI).toIrrRep (hT.rep i s hw PI) c hc hcs (GlobalTheory.BlockType.blockGrp _ D.R.r D.R.t) (GlobalTheory.BlockType.blockChar (S i s.w hw).mu) U ( …`. Use `⟨y, GlobalTheory.BlockType.isBlockVec_of _ _ _ hy, fun h => Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV (xs h)), fun h => (hxs h).2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype _ _ (by simp)]`. Conclude with `hyz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vector_at_split_place (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (hC : GlobalTheory.HeightCounting.Up.CenLoc D P.M) (S : Reading P.T)
     (hT : _root_.GlobalTheory.NPin.IsFaithfulReading P S) (i : D.nd.Loc) (PI : D.naut.AV i) (k : Fin 2) (v : D.nd.PlG k) (s : SplitPlace D.host.E)

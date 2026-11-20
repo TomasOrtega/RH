@@ -24,7 +24,7 @@ def inclF (G : HTGroup p) (P : Pair G) : ℚ_[p] ⊗[ℚ] G.F →ₐ[ℚ_[p]] �
 variable {G : HTGroup p} {P : Pair G}
 
 /- English proof (translation)
-Simplify using `[rhoL, HTGroup.locW, Algebra.TensorProduct.lift_tmul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem rhoL_tmul (w : Fin G.m) (a : ℚ_[p]) (x : algF P) :
     rhoL G P w (a ⊗ₜ x) = algebraMap ℚ_[p] _ a * G.rho w (x : G.C) := by
@@ -32,14 +32,14 @@ theorem rhoL_tmul (w : Fin G.m) (a : ℚ_[p]) (x : algF P) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[rhoL_tmul, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rhoL_one_tmul (w : Fin G.m) (x : algF P) :
     rhoL G P w ((1 : ℚ_[p]) ⊗ₜ x) = G.rho w (x : G.C) := by
   rw [rhoL_tmul, map_one, one_mul]
 
 /- English proof (translation)
-Introduce `a b h`. Establish `hL : Function.Injective (algebraMap ℚ (algF P))` using `(algebraMap ℚ (algF P)).injective`. Apply `Algebra.TensorProduct.includeLeft_injective (R := ℚ) (S := ℚ_[p]) (A := ℚ_[p]) (B := algF P) hL` to reduce the goal to its premises. Simplify `h` using `[Algebra.TensorProduct.algebraMap_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem algebraMap_injective (G : HTGroup p) (P : Pair G) :
     Function.Injective (algebraMap ℚ_[p] (ℚ_[p] ⊗[ℚ] algF P)) := by
@@ -49,7 +49,7 @@ theorem algebraMap_injective (G : HTGroup p) (P : Pair G) :
   simpa [Algebra.TensorProduct.algebraMap_apply] using h
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_simT_iff {k : Type} [Field k] {A : Type} [CommRing A] [Algebra k A] {c : A →ₐ[k] A} {x : Aˣ} :
     x ∈ GlobalTheory.LKTorus.simT k c ↔ ∃ t : kˣ, (x : A) * c x = algebraMap k A t := Iff.rfl
@@ -78,7 +78,7 @@ variable {G P c}
 def gamL (P : Pair G) : algF P := ⟨(P.γ : G.C), Algebra.subset_adjoin rfl⟩
 
 /- English proof (translation)
-Establish `h : G.rho w (P.γ : G.C) = rhoL G P w ((1 : ℚ_[p]) ⊗ₜ gamL P)` using `(rhoL_one_tmul w (gamL P)).symm`. Rewrite using `[h, ← map_mul, ← map_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rhoL_comm (w : Fin G.m) (y : ℚ_[p] ⊗[ℚ] algF P) :
     G.rho w (P.γ : G.C) * rhoL G P w y = rhoL G P w y * G.rho w (P.γ : G.C) := by
@@ -92,7 +92,7 @@ def phiG : GlobalTheory.LKTorus.simT ℚ_[p] (extC ℚ_[p] c) →* Gp G :=
     (Units.map ((rhoL G P w).toRingHom.toMonoidHom)).comp (GlobalTheory.LKTorus.simT ℚ_[p] (extC ℚ_[p] c)).subtype)
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_centralizer_singleton_iff]`. Use `Prod.ext (mul_comm _ _) (funext fun w => Units.ext ?_)` and prove the remaining obligations. Conclude with `(rhoL_comm w _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem phiG_mem (s : GlobalTheory.LKTorus.simT ℚ_[p] (extC ℚ_[p] c)) :
     phiG G P c s ∈ Subgroup.centralizer {P.atP} := by

@@ -14,9 +14,7 @@ variable {p : ℕ} {O : Type} [CommRing O] [IsHausdorff (Ideal.span {(p : O)}) O
   {G : PDivGroup p O} {d : ℕ}
 
 /- English proof (translation)
-Use `haveI : IsHausdorff (Ideal.span {(p : G.A n)}) (G.A n) := GlobalTheory.CEval.isHausdorff_of_projective (O := O) p`. Establish `h` using `GlobalTheory.CEval.isEval_comp p (c.isEval (n + 1)) (G.res n : G.A (n + 1) →ₐ[O] G.A n)`. Establish `h' : IsEval p (c.x n) ((G.res n : G.A (n + 1) →ₐ[O] G.A n).comp (c.ev (n + 1)))`. Use `h using 2 with i` and compare the differences between its conclusion and the goal. Conclude with `(c.res n i).symm`.
-
-Conclude with `congrArg (fun E : MvPowerSeries (Fin d) O →ₐ[O] G.A n => E f) (GlobalTheory.CEval.eval_unique p (c.x n) _ _ h' (c.isEval n))`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem res_ev (c : Chart G d) (n : ℕ) (f : MvPowerSeries (Fin d) O) :
     G.res n (c.ev (n + 1) f) = c.ev n f := by
@@ -30,13 +28,11 @@ theorem res_ev (c : Chart G d) (n : ℕ) (f : MvPowerSeries (Fin d) O) :
     (GlobalTheory.CEval.eval_unique p (c.x n) _ _ h' (c.isEval n))
 
 /- English proof (translation)
-Set `E₂ : MvPowerSeries (Fin d) O →ₐ[O] O` to `{ (constantCoeff : MvPowerSeries (Fin d) O →+* O) with commutes' := fun r => by show constantCoeff (algebraMap O (MvPowerSeries (Fin d) O) r) = r`. Rewrite using `[← c_eq_algebraMap]`. Simplify using `}`. Establish `h` using `GlobalTheory.CEval.isEval_comp p (c.isEval n) (Bialgebra.counitAlgHom O (G.A n))`. Establish `h₁ : IsEval p (fun _ : Fin d => (0 : O)) ((Bialgebra.counitAlgHom O (G.A n)).comp (c.ev n))`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h using 2 with i` and compare the differences between its conclusion and the goal. Conclude with `(c.aug n i).symm`. Establish `h₂ : IsEval p (fun _ : Fin d => (0 : O)) E₂`. Use `⟨fun i => by simp [E₂], fun m => ⟨1, fun g hg => ?_⟩⟩` and prove the remaining obligations. Establish `: constantCoeff g = 0`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Conclude with `hg 0 (by simp)`. Use `show (p : O) ^ m ∣ constantCoeff g`. Rewrite using `[this]`. Conclude with `dvd_zero _`.
-
-Conclude with `congrArg (fun E : MvPowerSeries (Fin d) O →ₐ[O] O => E f) (GlobalTheory.CEval.eval_unique p (fun _ => (0 : O)) _ _ h₁ h₂)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem counit_ev (c : Chart G d) (n : ℕ) (f : MvPowerSeries (Fin d) O) :
     Coalgebra.counit (R := O) (c.ev n f) = constantCoeff f := by
@@ -66,9 +62,7 @@ end GlobalTheory.QLog.Chart
 namespace GlobalTheory.QLog
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ G d c χ`. Use `haveI : ∀ n, IsHausdorff (Ideal.span {(p : G.A n)}) (G.A n) := fun n => GlobalTheory.CEval.isHausdorff_of_projective (O := O) p`. Take `⟨u, hu⟩` from `(GlobalTheory.Limits.exists_unique_of_compatible p O (Fin d) G.A (fun n => (G.res n : G.A (n + 1) →ₐ[O] G.A n)) c.x c.ev c.isEval (fun n f => c.res_ev n f) c.ker).2 c.surj (charElem χ) (fun n => res_charElem χ n)`. Use `⟨u, ?_, hu⟩` and prove the remaining obligations. Rewrite using `[← c.counit_ev 0 u, hu 0]`.
-
-Conclude with `(isGroupLikeElem_charElem χ 0).counit_eq_one`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_charSeries : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) (χ : G.dual.Tate), ∃ u : MvPowerSeries (Fin d) O, constantCoeff u = 1 ∧ ∀ n, c.ev n u = charElem χ n := by
   intro p _ O _ _ _ G d c χ

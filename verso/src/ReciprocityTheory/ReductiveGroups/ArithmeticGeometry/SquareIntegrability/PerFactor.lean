@@ -12,7 +12,7 @@ namespace ReciprocityTheory.ChartRestriction.G.I2
 open MeasureTheory Complex NumberField
 
 /- English proof (translation)
-The claim follows from `perFactor_of hx hS P hI hph hs`.
+A detailed English derivation is pending.
 -/
 theorem perFactor (hx : Ext.All) (hS : GSupStatement) (hd : DimStatement) {E : Type} [Field E]
     [NumberField E] [IsCMField E] {X : PT E} {DF : ℕ} (P : Par X DF) {I : Submodule ℤ (Vsp X.dim)}
@@ -20,9 +20,9 @@ theorem perFactor (hx : Ext.All) (hS : GSupStatement) (hd : DimStatement) {E : T
     (hs0 : s ≠ 0) : PerFactor P I s := perFactor_of hx hS P hI hph hs
 
 /- English proof (translation)
-Introduce `E _ _ _ X DF P r1 hr1 a ha hgen s hsmem hs0`. Use `⟨fun hph => ?_, fun h0 => ?_⟩` and prove the remaining obligations. Take `⟨I, hI⟩` from `hs E X DF P`. Conclude with `t_assemble P hI (perFactor_of hx hS P hI hph hsmem) r1 hr1 a ha hgen hph`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← Real.exp_nat_mul]`.
+A detailed English derivation is pending.
 -/
 theorem tOf (hx : Ext.All) (hs : SplitStatement) (hS : GSupStatement) (hd : DimStatement) :
     TStatement := by

@@ -19,9 +19,9 @@ variable {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW
 namespace StepIn
 
 /- English proof (translation)
-Establish `h0 : 0 < G.P.n' v` using `lt_of_lt_of_le (by norm_num) (G.P.setting v).two_le`. Apply `(G.P.ι v).injective` to reduce the goal to its premises. Establish `h1` using `H.pos_emb v ⟨0, h0⟩ x`. Establish `h2` using `H'.pos_emb v ⟨0, h0⟩ x`. Simplify using `only [pow_zero] at h1 h2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h1.symm.trans h2`.
+A detailed English derivation is pending.
 -/
 theorem Core.iw_eq {e : D.what₂.LL →+* G.Kf} {β β' : S.Ch} (H : S.Core e β) (H' : S.Core e β') (v : Fin G.P.nV) (x : D.host.E) :
     (S.loc β).iw v x = (S.loc β').iw v x := by
@@ -33,7 +33,7 @@ theorem Core.iw_eq {e : D.what₂.LL →+* G.Kf} {β β' : S.Ch} (H : S.Core e �
   exact h1.symm.trans h2
 
 /- English proof (translation)
-Introduce `v s x`. Rewrite using `[tPos_apply]`. Conclude with `H.pos_emb v s x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Core.posCompat {e : D.what₂.LL →+* G.Kf} {β : S.Ch} (H : S.Core e β) :
     PosCompat G e (S.loc β).iw (fun v s => tPos (sigD D) (tEL D) S.pos v s) := by
@@ -42,9 +42,9 @@ theorem Core.posCompat {e : D.what₂.LL →+* G.Kf} {β : S.Ch} (H : S.Core e �
   exact H.pos_emb v s x
 
 /- English proof (translation)
-Use `⟨(castGL (S.loc β).rk D.host.E).symm ((S.loc β).B⁻¹ * (S.loc β).gamI a γ * (S.loc β).B), fun v => ?_⟩` and prove the remaining obligations. Establish `h1 : ((S.charts.gat β).lev a).act v γ = bc ((S.loc β).iw v) ((castGL (S.loc β).rk D.host.E).symm ((S.loc β).B⁻¹ * (S.loc β).gamI a γ * (S.loc β).B))`. Rewrite using `[← castGL_symm_bc, ← H.actB a v γ, MulEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem Core.actE {e : D.what₂.LL →+* G.Kf} {β : S.Ch} (H : S.Core e β) (a : S.cmpt β) (γ : ((S.charts.gat β).lev a).Γ) :
     ∃ g : GL (Fin (G.P.m + 1)) D.host.E, ∀ v, ((S.charts.gat β).lev a).act v γ = Matrix.GeneralLinearGroup.map ((S.loc β).iw v) g := by
@@ -59,7 +59,7 @@ theorem Core.actE {e : D.what₂.LL →+* G.Kf} {β : S.Ch} (H : S.Core e β) (a
   rfl
 
 /- English proof (translation)
-Take `⟨κ, hκ⟩` from `awayEx_of H.good (S.K β).lev H.gam a γ`. Take `⟨r, _, hr⟩` from `H.chi a γ κ hκ`. Conclude with `⟨r⁻¹, by rw [map_inv₀]; exact (eq_inv_of_mul_eq_one_left hr).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Core.chiRatG {e : D.what₂.LL →+* G.Kf} {β : S.Ch} (H : S.Core e β) (a : S.cmpt β) (γ : ((S.charts.gat β).lev a).Γ) :
     ∃ r : D.what₂.LL, e r = algebraMap G.O G.Kf (((S.charts.gat β).lev a).χ γ : G.O) := by
@@ -72,15 +72,15 @@ def IwF (S : StepIn M i hi G) (β : S.Ch) : Prop :=
     ((S.loc β).eQ v).symm (algebraMap D.host.F (((S.loc β).pl v).1.adicCompletion D.host.F) a)
 
 /- English proof (translation)
-Distinguish the cases in `hne : Nonempty S.Ch`. Take `⟨β0⟩` from `hne`. Establish `hA : ActE G (S.loc β0).iw`. Introduce `c γ`. Take `⟨⟨β, a⟩, rfl⟩` from `S.eC.surjective c`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `(H β).actE a γ`. Use `⟨g, fun v => ?_⟩` and prove the remaining obligations. Establish `h1 : (S.loc β).iw v = (S.loc β0).iw v` using `RingHom.ext fun x => (H β).iw_eq (H β0) v x`. Rewrite using `[← h1]`. Conclude with `hg v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hC : ChiRat G e`. Introduce `c γ`. Take `⟨⟨β, a⟩, rfl⟩` from `S.eC.surjective c`. Conclude with `(H β).chiRatG a γ`. Establish `hW : WeakApprox G (S.loc β0).iw` using `weak_of_locAt (S.charts.gat β0) (S.loc β0) (hF β0) (H β0).int`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mRatSpan_of_rat_inv G e pw hσ hfin (ratLev_of G e (S.loc β0).iw _ (H β0).posCompat hA hC) (ratBasis_of G e (S.loc β0).iw _ (H β0).posCompat (ratTup_of_weak G (S.loc β0).iw hW))`. Establish `hE : IsEmpty G.comp` using `⟨fun c => hne ⟨(S.eC.symm c).1⟩⟩`. Establish `hs : Subsingleton (FnP G.P G.comp)` using `⟨fun a b => funext fun c => (hE.false c).elim⟩`. Unfold `MRatSpan`. Use extensionality with `x`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hx : x = 0` using `Subsingleton.elim _ _`. Rewrite using `[hx]`. Conclude with `⟨fun _ => Submodule.zero_mem _, fun _ => Submodule.zero_mem _⟩`.
+A detailed English derivation is pending.
 -/
 theorem desc [IsFractionRing G.O G.Kf] (e : D.what₂.LL →+* G.Kf) (H : ∀ β, S.Core e β) (hF : ∀ β, S.IwF β)
     (pw : HeightOneSpectrum (𝓞 D.what₂.LL))
@@ -112,11 +112,9 @@ theorem desc [IsFractionRing G.O G.Kf] (e : D.what₂.LL →+* G.Kf) (H : ∀ β
     exact ⟨fun _ => Submodule.zero_mem _, fun _ => Submodule.zero_mem _⟩
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span D.what₂.LL ((M.lat i).L : Set (M.lat i).V)`. Rewrite using `[(M.lat_good i).2.2]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `(cmpJ_lat e H hS w hw hloc y).2 (Submodule.subset_span hy)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ h1 h2 => rw [map_add]`.
-
-Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul a y _ h1 => rw [LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ h1`.
+Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cmpJ_mem_span (e : D.what₂.LL →+* G.Kf) (H : ∀ β, S.Core e β) (hS : BlockRationalityField) (w : D.what₂.places.Pl) (hw : S.okW w)
     (hloc : S.ValIntJ e w) (x : (M.lat i).V) : cmpJL e H hS x ∈ Submodule.span G.Kf (G.M : Set G.Fn) := by
@@ -131,7 +129,7 @@ theorem cmpJ_mem_span (e : D.what₂.LL →+* G.Kf) (H : ∀ β, S.Core e β) (h
   | smul a y _ h1 => rw [LinearMap.map_smulₛₗ]; exact Submodule.smul_mem _ _ h1
 
 /- English proof (translation)
-The claim follows from `li_of_rat e (evG G) (cmpJL e H hS).toAddMonoidHom (evG_sep G) (fun a x => (cmpJL e H hS).map_smulₛₗ a x) (fun x => (ratFn_iff G e _).1 (cmpJ_rat e x)) (cmpJ_inj e H hS) _ (M.lat i).b.linearIndependent`.
+A detailed English derivation is pending.
 -/
 theorem cmpJ_li (e : D.what₂.LL →+* G.Kf) (H : ∀ β, S.Core e β) (hS : BlockRationalityField) :
     LinearIndependent G.Kf fun a => cmpJL e H hS ((M.lat i).b a) :=
@@ -139,9 +137,9 @@ theorem cmpJ_li (e : D.what₂.LL →+* G.Kf) (H : ∀ β, S.Core e β) (hS : Bl
     (fun x => (ratFn_iff G e _).1 (cmpJ_rat e x)) (cmpJ_inj e H hS) _ (M.lat i).b.linearIndependent
 
 /- English proof (translation)
-Establish `h1 : Fn ∈ Submodule.span G.Kf (Set.range fun a => cmpJL e H hS ((M.lat i).b a))` using `mem_span_of_card G.M _ (cmpJ_li e H hS) (fun a => cmpJ_mem_span e H hS w hw hloc _) hcard Fn hFn`. Establish `h2 : Fn ∈ Submodule.span G.Kf (Set.range (cmpJL e H hS).toAddMonoidHom)`. Use `Submodule.span_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `rat_mem e (evG G) (cmpJL e H hS).toAddMonoidHom (evG_sep _) (fun a x => (cmpJL e H hS).map_smulₛₗ a x) (fun x => (ratFn_iff _ _ _).1 (cmpJ_rat e x)) h2 ((ratFn_iff _ _ _).1 hrat)`.
+A detailed English derivation is pending.
 -/
 theorem surj_of_card [IsFractionRing G.O G.Kf] [Module.Finite G.O G.M] (e : D.what₂.LL →+* G.Kf) (H : ∀ β, S.Core e β)
     (hS : BlockRationalityField) (w : D.what₂.places.Pl) (hw : S.okW w) (hloc : S.ValIntJ e w)

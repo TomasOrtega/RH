@@ -25,21 +25,21 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => AlgHom.ext h, fun h c => DFunLike.congr_fun h c⟩`.
+Supply the required witnesses or components.
 -/
 theorem isOver_iff (i : ZMod n) (τ : K →ₐ[Qp] LL) : IsOver W i τ ↔ OverLetter W τ i :=
   ⟨fun h => AlgHom.ext h, fun h c => DFunLike.congr_fun h c⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H τ i hτ => H i τ ((isOver_iff W i τ).2 hτ), fun H i τ hτ => H τ i ((isOver_iff W i τ).1 hτ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem jumps_iff (M h : ZMod n → ℕ) : JumpsBounded W T M h ↔ JumpsLet W T M h :=
   ⟨fun H τ i hτ => H i τ ((isOver_iff W i τ).2 hτ), fun H i τ hτ => H τ i ((isOver_iff W i τ).1 hτ)⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `W.φ₀ ((letE (i - 1) : LetA O n) (j - 1)) = _`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[letE]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: j - 1 ≠ i - 1` using `fun h => hj (sub_left_injective h)`. Simplify using `[letE, hj, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem φA_letE (i : ZMod n) : W.φA (letE (i - 1)) = letE i := by
   funext j
@@ -51,11 +51,11 @@ theorem φA_letE (i : ZMod n) : W.φA (letE (i - 1)) = letE i := by
     simp [letE, hj, this]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H x hx`. Conclude with `((mem_Nl_iff W T i _).1 (H _ (Submodule.subset_span ⟨x, hx, rfl⟩))).1`. Introduce `H y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Use `(mem_Nl_iff W T i _).2 ⟨H x hx, ?_⟩` and prove the remaining obligations. Establish `h1` using `((mem_Nl_iff W T (i - 1) x).1 hx).2`. Rewrite using `[smul_comm, ← φA_letE W i, ← φD_smulA, h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ ha`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pole_iff (i : ZMod n) (m : ℕ) :
     (∀ y ∈ phiStar W T i, W.Q ^ m • y ∈ W.Nl T i) ↔
@@ -75,7 +75,7 @@ theorem pole_iff (i : ZMod n) (m : ℕ) :
     | smul c a _ ha => rw [smul_comm]; exact Submodule.smul_mem _ _ ha
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H => ⟨fun i => (pole_iff W T i _).1 (H i).1, fun i => (H i).2⟩, fun H i => ⟨(pole_iff W T i _).2 (H.1 i), H.2 i⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem partA_iff (M h : ZMod n → ℕ) : PartA W T M h ↔
     (∀ i, ∀ x ∈ W.Nl T (i - 1), W.Q ^ (M i) • W.φD T x ∈ W.N T) ∧
@@ -84,15 +84,15 @@ theorem partA_iff (M h : ZMod n → ℕ) : PartA W T M h ↔
     fun H i => ⟨(pole_iff W T i _).2 (H.1 i), H.2 i⟩⟩
 
 /- English proof (translation)
-Establish `hp` using `((GlobalTheory.WachHeightTest.qRoot_iff W i ζ).1 hζ).2`. Take `⟨w, hw⟩` from `PowerSeries.X_dvd_iff.2 hζ.2.2`. Use `⟨w, ?_, hw⟩` and prove the remaining obligations. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero]`. Introduce `h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w', hw'⟩` from `PowerSeries.X_dvd_iff.2 h0`. Take `⟨E, hE, hd, hlev⟩` from `W.lev_π i ζ ⟨_, hp⟩`. Establish `hs : W.s = W.s - 1 + 1` using `by have := W.s_pos; omega`. Establish `h1 : W.lev i ζ W.Q * ((PowerSeries.C ζ * E) ^ (PD.p ^ (W.s - 1)) - 1) = E ^ (PD.p ^ W.s) - 1`. Rewrite using `[GlobalTheory.WachHeightTest.Q_eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_pow, map_add, map_one, hlev]`. Rewrite using `[geom_sum_mul, ← pow_mul, ← pow_succ, ← hs, mul_pow, ← map_pow, hp.pow_eq_one, map_one, one_mul]`. Establish `h2 : PowerSeries.X ^ 2 ∣ E ^ (PD.p ^ W.s) - 1`. Rewrite using `[← h1, hw, hw']`. Conclude with `Dvd.dvd.mul_right ⟨w', by ring⟩ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `PowerSeries.X_pow_dvd_iff.1 h2 1 (by norm_num)`. Establish `h4 : PowerSeries.coeff 1 E = 1`. Use `congrArg (PowerSeries.coeff 0) hd` as an intermediate fact. Rewrite `this` using `[PowerSeries.coeff_derivative]`. Simplify `this` using `[hE]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[map_sub, PowerSeries.coeff_one_pow, h4, hE]`. Simplify using `[PowerSeries.coeff_one] at h3`. Conclude with `GlobalTheory.WachHeightTest.p_ne_zero W h3.1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem simple_zero (i : ZMod n) (ζ : LL) (hζ : QRoot W i ζ) :
     ∃ w : PowerSeries LL, IsUnit w ∧ W.lev i ζ W.Q = PowerSeries.X * w := by
@@ -126,20 +126,18 @@ def Van (i : ZMod n) (ζ : LL) (x : W.DD T) : Prop :=
   ∀ k : ℕ, W.Q ^ k • x ∈ W.N T → W.Q ^ k • x ∈ vanI W i ζ k • W.N T
 
 /- English proof (translation)
-Simplify using `only [vanI, Ideal.mem_comap, Ideal.mem_span_singleton]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_vanI {i : ZMod n} {ζ : LL} {k : ℕ} {a : LetA O n} :
     a ∈ vanI W i ζ k ↔ PowerSeries.X ^ k ∣ W.lev i ζ a := by
   simp only [vanI, Ideal.mem_comap, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `key : ∃ h : y ∈ W.N T, ∀ j, nb.repr ⟨y, h⟩ j ∈ I`. Use `Submodule.smul_induction_on h (fun a ha z hz => ⟨(W.N T).smul_mem a hz, fun j => ?_⟩) ?_` and prove the remaining obligations. Establish `e : (⟨a • z, (W.N T).smul_mem a hz⟩ : ↥(W.N T)) = a • (⟨z, hz⟩ : ↥(W.N T))` using `rfl`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `I.mul_mem_right _ ha`. Introduce and unpack `a b ⟨ha, ha'⟩ ⟨hb, hb'⟩`. Use `⟨(W.N T).add_mem ha hb, fun j => ?_⟩` and prove the remaining obligations. Establish `e : (⟨a + b, (W.N T).add_mem ha hb⟩ : ↥(W.N T)) = ⟨a, ha⟩ + ⟨b, hb⟩` using `rfl`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_add, Finsupp.add_apply]`. Conclude with `I.add_mem (ha' j) (hb' j)`. Conclude with `key.2`. Introduce `h`. Establish `h1` using `congrArg Subtype.val (nb.sum_repr ⟨y, hy⟩)`.
-
-Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul] at h1`. Rewrite using `[← h1]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem_smul (h j) (nb j).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_smul_iff {ι : Type} [Fintype ι] (nb : Module.Basis ι (LetA O n) ↥(W.N T))
     (I : Ideal (LetA O n)) (y : W.DD T) (hy : y ∈ W.N T) :
@@ -164,11 +162,11 @@ theorem mem_smul_iff {ι : Type} [Fintype ι] (nb : Module.Basis ι (LetA O n) �
     exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem_smul (h j) (nb j).2
 
 /- English proof (translation)
-Introduce `k' hk'`. Take `⟨w, hw, hQ⟩` from `simple_zero W i ζ hζ`. Rewrite `h` using `[mem_smul_iff W T nb _ _ hk]`. Rewrite using `[mem_smul_iff W T nb _ _ hk']`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : W.Q ^ k' • (⟨_, hk⟩ : ↥(W.N T)) = W.Q ^ k • (⟨_, hk'⟩ : ↥(W.N T))` using `Subtype.ext (smul_comm _ _ _)`. Establish `e2` using `congrArg (fun z => W.lev i ζ (nb.repr z j)) e`. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, map_pow, hQ] at e2`. Take `⟨c, hc⟩` from `(mem_vanI W).1 (h j)`. Rewrite `e2` using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_vanI, ← (hw.pow k).dvd_mul_left]`. Use `⟨w ^ k' * c, ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ (pow_ne_zero k (PowerSeries.X_ne_zero (R := LL)))` to reduce the goal to its premises. Rewrite `e2` using `[mul_pow, mul_pow]`. Take the linear combination `-e2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem van_of_one {ι : Type} [Fintype ι] (nb : Module.Basis ι (LetA O n) ↥(W.N T))
     {i : ZMod n} {ζ : LL} (hζ : QRoot W i ζ) {x : W.DD T} {k : ℕ} (hk : W.Q ^ k • x ∈ W.N T)
@@ -191,7 +189,7 @@ theorem van_of_one {ι : Type} [Fintype ι] (nb : Module.Basis ι (LetA O n) ↥
   linear_combination -e2
 
 /- English proof (translation)
-Use `W.lev_letter i ζ (1 - letE i) (by simp [letE])` as an intermediate fact. Rewrite `this` using `[map_sub, map_one]`. Conclude with `(sub_eq_zero.1 this).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_letE (i : ZMod n) (ζ : LL) : W.lev i ζ (letE i) = 1 := by
   have := W.lev_letter i ζ (1 - letE i) (by simp [letE])
@@ -199,21 +197,21 @@ theorem lev_letE (i : ZMod n) (ζ : LL) : W.lev i ζ (letE i) = 1 := by
   exact (sub_eq_zero.1 this).symm
 
 /- English proof (translation)
-Take `⟨w, hw, hQ⟩` from `simple_zero W i ζ hζ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, z, hz⟩`. Establish `hk'` using `((mem_Nl_iff W T i _).1 hk).1`. Use `van_of_one W T nb hζ hk' ((mem_smul_iff W T nb _ _ hk').2 fun j => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : W.Nl T i ≤ W.N T` using `fun x hx => ((mem_Nl_iff W T i _).1 hx).1`. Set `f : ↥(W.Nl T i) →ₗ[LetA O n] LocRing W i ζ` to `(Algebra.linearMap (LetA O n) (LocRing W i ζ)).comp ((nb.coord j).comp (Submodule.inclusion hle))`. Establish `h1` using `congrArg (f.liftBaseChange (LocRing W i ζ)) hz`. Rewrite `h1` using `[map_smul, LinearMap.liftBaseChange_tmul, one_smul, smul_eq_mul]`. Rewrite using `[mem_vanI]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : W.lev i ζ (nb.repr ⟨_, hk'⟩ j) = W.lev i ζ (W.Q ^ k) * (show PowerSeries LL from f.liftBaseChange (LocRing W i ζ) z)` using `h1`. Rewrite using `[h2, map_pow, hQ, mul_pow, mul_assoc]`. Conclude with `dvd_mul_right _ _`. Introduce `H`. Take `⟨k, hk⟩` from `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hk', he⟩` from `(mem_Nl_iff W T i _).1 hk`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Establish `key : ∀ m ∈ vanI W i ζ k • W.N T, ∃ (hm : (letE i : LetA O n) • m ∈ W.Nl T i) (z : Nloc W T i ζ), (1 : LocRing W i ζ) ⊗ₜ[LetA O n] (⟨_, hm⟩ : ↥(W.Nl T i)) = (algebraMap (LetA O n) (LocRing W i ζ) (W.Q ^ k)) • z`. Introduce `m hm`. Use `Submodule.smul_induction_on hm (fun a ha z hz => ?_) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨letE_smul_mem W T i ((W.N T).smul_mem a hz), ?_⟩` and prove the remaining obligations. Establish `hd : W.lev i ζ (W.Q ^ k) ∣ W.lev i ζ a`. Rewrite using `[map_pow, hQ, mul_pow, (hw.pow k).mul_right_dvd]`. Conclude with `(mem_vanI W).1 ha`. Take `⟨c, hc⟩` from `hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(show LocRing W i ζ from c) ⊗ₜ[LetA O n] (⟨_, letE_smul_mem W T i hz⟩ : ↥(W.Nl T i)), ?_⟩` and prove the remaining obligations. Establish `e : (⟨_, letE_smul_mem W T i ((W.N T).smul_mem a hz)⟩ : ↥(W.Nl T i)) = a • (⟨_, letE_smul_mem W T i hz⟩ : ↥(W.Nl T i))` using `Subtype.ext (smul_comm _ _ _)`. Rewrite using `[e, ← TensorProduct.smul_tmul, TensorProduct.smul_tmul', smul_eq_mul, Algebra.smul_def, mul_one]`. Use `congr 1`. Introduce and unpack `a b ⟨ha, za, ha'⟩ ⟨hb, zb, hb'⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨by rw [smul_add]; exact Submodule.add_mem _ ha hb, za + zb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add _ za zb, ← ha', ← hb', ← TensorProduct.tmul_add]`. Use `congr 1`. Conclude with `Subtype.ext (smul_add _ _ _)`. Take `⟨hm, z, hz⟩` from `key _ (H k hk')`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz]`. Use `congr 1`. Conclude with `Subtype.ext he.symm`.
+A detailed English derivation is pending.
 -/
 theorem memLoc_iff {ι : Type} [Fintype ι] (nb : Module.Basis ι (LetA O n) ↥(W.N T))
     {i : ZMod n} {ζ : LL} (hζ : QRoot W i ζ) {y : W.DD T} (hy : MemInv W T i y) :
@@ -267,7 +265,7 @@ theorem memLoc_iff {ι : Type} [Fintype ι] (nb : Module.Basis ι (LetA O n) ↥
     exact Subtype.ext he.symm
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hy`. Use `Q_pow_smul_cancel W T k ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `((mem_Nl_iff W T i _).1 hk).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_of_memInv {i : ZMod n} {y : W.DD T} (hy : MemInv W T i y) :
     (letE i : LetA O n) • y = y := by
@@ -277,7 +275,7 @@ theorem fixed_of_memInv {i : ZMod n} {y : W.DD T} (hy : MemInv W T i y) :
   exact ((mem_Nl_iff W T i _).1 hk).2
 
 /- English proof (translation)
-Introduce `k hk`. Rewrite using `[← hy, smul_comm]`. Use `Submodule.smul_mem_smul ?_ hk` and prove the remaining obligations. Rewrite using `[mem_vanI, W.lev_letter i' ζ _ (by simp [letE, h])]`. Conclude with `dvd_zero _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem van_other {i i' : ZMod n} (h : i' ≠ i) (ζ : LL) {y : W.DD T}
     (hy : (letE i : LetA O n) • y = y) : Van W T i' ζ y := by
@@ -288,13 +286,11 @@ theorem van_other {i i' : ZMod n} (h : i' ≠ i) (ζ : LL) {y : W.DD T}
   exact dvd_zero _
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hx`. Establish `hk' : W.Q ^ k • (letE i : LetA O n) • x ∈ W.N T`. Rewrite using `[smul_comm]`. Conclude with `(W.N T).smul_mem _ hk`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H`. Use `van_of_one W T nb hζ hk ?_` and prove the remaining obligations. Establish `e : W.Q ^ k • x = W.Q ^ k • (letE i : LetA O n) • x + (1 - letE i : LetA O n) • W.Q ^ k • x`. Rewrite using `[smul_comm (W.Q ^ k) (letE i : LetA O n), ← add_smul, add_sub_cancel, one_smul]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.add_mem _ (H k hk') (Submodule.smul_mem_smul ?_ hk)` and prove the remaining obligations. Rewrite using `[mem_vanI, map_sub, map_one, lev_letE, sub_self]`. Conclude with `dvd_zero _`. Introduce `H`. Use `van_of_one W T nb hζ hk' ?_` and prove the remaining obligations.
-
-Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ _ (H k hk)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem van_letE_iff {ι : Type} [Fintype ι] (nb : Module.Basis ι (LetA O n) ↥(W.N T))
     {i : ZMod n} {ζ : LL} (hζ : QRoot W i ζ) {x : W.DD T} (hx : ∃ k : ℕ, W.Q ^ k • x ∈ W.N T) :
@@ -318,7 +314,7 @@ theorem van_letE_iff {ι : Type} [Fintype ι] (nb : Module.Basis ι (LetA O n) �
 
 include W in
 /- English proof (translation)
-Use `⟨fun h i => letE_smul_mem W T i h, fun h => ?_⟩` and prove the remaining obligations. Use `haveI := neZero_letters W`. Establish `e : (∑ i, letE i : LetA O n) = 1` using `Finset.univ_sum_single (1 : LetA O n)`. Rewrite using `[← one_smul (LetA O n) x, ← e, Finset.sum_smul]`. Conclude with `Submodule.sum_mem _ fun i _ => ((mem_Nl_iff W T i _).1 (h i)).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_N_iff (x : W.DD T) : x ∈ W.N T ↔ ∀ i, (letE i : LetA O n) • x ∈ W.Nl T i := by
   refine ⟨fun h i => letE_smul_mem W T i h, fun h => ?_⟩
@@ -328,17 +324,17 @@ theorem mem_N_iff (x : W.DD T) : x ∈ W.N T ↔ ∀ i, (letE i : LetA O n) • 
   exact Submodule.sum_mem _ fun i _ => ((mem_Nl_iff W T i _).1 (h i)).1
 
 /- English proof (translation)
-Establish `hr : ∀ i ζ, QRoot W i ζ ↔ IsPrimitiveRoot ζ (PD.p ^ W.s)` using `fun i ζ => (GlobalTheory.WachHeightTest.qRoot_iff W i ζ).trans ⟨fun h => h.2, fun h => ⟨hO ζ h, h⟩⟩`. Prove the components needed by the constructor for the conclusion. Introduce `H x hx`. Establish `hi : ∀ i, MemInv W T i ((letE i : LetA O n) • x)` using `fun i => by`. Take `⟨k, hk⟩` from `hx`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k, by rw [smul_comm]; exact letE_smul_mem W T i hk⟩`. Rewrite using `[mem_N_iff W T x]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[H i _ (hi i)]`. Use `forall_congr' fun ζ => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hr i ζ]`. Use `imp_congr_right fun hζ => ?_` and prove the remaining obligations. Rewrite using `[memLoc_iff W T nb hζ (hi i), van_letE_iff W T nb hζ hx]`. Both sides reduce to the same expression. Introduce `H i y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he` using `fixed_of_memInv W T hy`. Establish `hx : ∃ k : ℕ, W.Q ^ k • y ∈ W.N T`. Take `⟨k, hk⟩` from `hy`. Conclude with `⟨k, ((mem_Nl_iff W T i _).1 hk).1⟩`. Rewrite using `[mem_Nl_iff, and_iff_left he, H y hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h ζ hζ`. Conclude with `(memLoc_iff W T nb ((hr i ζ).2 hζ) hy).2 (h i ζ ((hr i ζ).2 hζ))`. Introduce `h i' ζ hζ`. Distinguish the cases in `hi : i' = i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hi` using the available equality. Conclude with `(memLoc_iff W T nb hζ hy).1 (h ζ ((hr _ ζ).1 hζ))`. Conclude with `van_other W T hi ζ he`.
+A detailed English derivation is pending.
 -/
 theorem partB_iff {ι : Type} [Fintype ι] (nb : Module.Basis ι (LetA O n) ↥(W.N T))
     (hO : ∀ ζ : LL, IsPrimitiveRoot ζ (PD.p ^ W.s) → ∃ c : O, algebraMap O LL c = ζ) :
@@ -376,7 +372,7 @@ theorem partB_iff {ι : Type} [Fintype ι] (nb : Module.Basis ι (LetA O n) ↥(
       · exact van_other W T hi ζ he
 
 /- English proof (translation)
-Rewrite using `[partA_iff, partB_iff W T nb hO, and_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem partAB_iff {ι : Type} [Fintype ι] (nb : Module.Basis ι (LetA O n) ↥(W.N T))
     (hO : ∀ ζ : LL, IsPrimitiveRoot ζ (PD.p ^ W.s) → ∃ c : O, algebraMap O LL c = ζ)
@@ -385,7 +381,7 @@ theorem partAB_iff {ι : Type} [Fintype ι] (nb : Module.Basis ι (LetA O n) ↥
   rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem partC_iff {RA RW : Type} [CommRing RA] [CommRing RW] [Algebra O RA] [Algebra O RW]
     {inclR : RA →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : RA}
@@ -394,7 +390,7 @@ theorem partC_iff {RA RW : Type} [CommRing RA] [CommRing RW] [Algebra O RA] [Alg
 end Generic
 
 /- English proof (translation)
-Use `haveI := letters_neZero K`. Unfold `letterMax mx`. Conclude with `Finset.sup_univ_eq_ciSup m`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem letterMax_eq {l : ℕ} [Fact l.Prime] (K : FinExt l)
     (m : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → ℕ) : letterMax K m = mx m := by
@@ -403,7 +399,7 @@ theorem letterMax_eq {l : ℕ} [Fact l.Prime] (K : FinExt l)
   exact Finset.sup_univ_eq_ciSup m
 
 /- English proof (translation)
-Take `⟨nb⟩` from `GlobalTheory.NL.N_basis_loc H K s LL hg T hT`. Use `partAB_iff _ T nb (fun ζ hζ => ⟨⟨ζ, ?_⟩, rfl⟩) M h` and prove the remaining obligations. Conclude with `IsIntegral.of_pow (pow_pos (P.PD K).hp.pos _) (by rw [hζ.pow_eq_one]; exact isIntegral_one)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem partAB_iff_good {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P) (K : FinExt l) (s : ℕ)
     (LL : FinExt l) (hg : Good K s LL) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL))
@@ -414,11 +410,11 @@ theorem partAB_iff_good {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P
   exact IsIntegral.of_pow (pow_pos (P.PD K).hp.pos _) (by rw [hζ.pow_eq_one]; exact isIntegral_one)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun K s LL hg T M h' hT hJ => ?_, fun K s LL hg T M h' hT hJ => ?_⟩` and prove the remaining obligations. Use `h K s LL hg T hT M h' ((jumps_iff _ T M h').2 hJ)` as an intermediate fact. Conclude with `(partAB_iff_good H K s LL hg T hT M h').1 ⟨this.1, this.2.1⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(h K s LL hg T hT M h' ((jumps_iff _ T M h').2 hJ)).2.2` as an intermediate fact. Rewrite `this` using `[letterMax_eq, letterMax_eq, partC_iff]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩ K s LL hg T hT M h' hJ`. Establish `hJ'` using `(jumps_iff _ T M h').1 hJ`. Use `(partAB_iff_good H K s LL hg T hT M h').2 (h1 K s LL hg T M h' hT hJ')` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨this.1, this.2, ?_⟩` and prove the remaining obligations. Rewrite using `[letterMax_eq, letterMax_eq, partC_iff]`. Conclude with `h2 K s LL hg T M h' hT hJ'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heights_iff_loc (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (H : LocHW l P)
     (F : LocFon l P AI H) (C : LocCmpT l P AI H F) :
@@ -441,7 +437,7 @@ theorem heights_iff_loc (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf 
     exact h2 K s LL hg T M h' hT hJ'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨fun l _ => ((heights_iff_loc l _ _ _ _ _).1 (h l)).1, fun l _ => ((heights_iff_loc l _ _ _ _ _).1 (h l)).2⟩, fun h l _ => (heights_iff_loc l _ _ _ _ _).2 ⟨h.1 l, h.2 l⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem heights_iff (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (C : CmpOf D.loc D.locA HW F) :

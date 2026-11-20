@@ -16,7 +16,7 @@ open GlobalTheory.Mum
 open GlobalTheory.ArcPull GlobalTheory.ArcQ
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.nonempty_isPullDeg_id_of_common_pull` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNonemptyPullDegIdOfCommonFieldExtension.lean&line=53#L53)
 -/

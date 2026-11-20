@@ -46,9 +46,9 @@ def isoC (k : ℕ) : chains R ⋙ HomologicalComplex.eval _ _ (-(k : ℤ)) ≅ c
       simp)
 
 /- English proof (translation)
-Distinguish the cases in `hp : ∃ k : ℕ, ComplexShape.embeddingDownNat.f k = p`. Take `⟨k, rfl⟩` from `hp`. Use `pres_N R k` as an intermediate fact. Conclude with `preservesColimitsOfShape_of_natIso (isoC R k).symm`. Use `push Not at hp`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Functor.preservesColimitsOfShape_of_isZero` to reduce the goal to its premises. Rewrite using `[Functor.isZero_iff]`. Introduce `X`. Conclude with `HomologicalComplex.isZero_extend_X _ _ _ hp`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pres (p : ℤ) : PreservesColimitsOfShape WalkingSpan (chains R ⋙ HomologicalComplex.eval _ _ p) := by
   by_cases hp : ∃ k : ℕ, ComplexShape.embeddingDownNat.f k = p
@@ -65,7 +65,7 @@ end LateralTheory.CohomologicalPurity.Bd.PushPf
 
 open LateralTheory.CohomologicalPurity.Bd.PushPf in
 /- English proof (translation)
-Introduce `R _ U E E' D f g l r h p`. Use `pres R p` as an intermediate fact. Conclude with `(chains R ⋙ HomologicalComplex.eval _ _ p).map_isPushout h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LateralTheory.CohomologicalPurity.Bd.LeafPush_of : LateralTheory.CohomologicalPurity.Bd.LeafPush := by
   intro R _ U E E' D f g l r h p

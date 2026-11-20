@@ -6,29 +6,27 @@ open scoped Pointwise ENNReal
 namespace GlobalTheory.CompanionTheory.Ar.Cmp
 
 /- English proof (translation)
-Introduce `G X _ _ _ _ μ _ Γ₀ Γ _ s hle hidx hs`. Use `set H : Subgroup Γ := Γ₀.subgroupOf Γ with hH`. Establish `: H.FiniteIndex` using `⟨hidx⟩`. Set `_ : Fintype (Γ ⧸ H)` to `Fintype.ofFinite _`. Set `ρ : Γ ⧸ H → Γ` to `fun q => q.out`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hout : ∀ q : Γ ⧸ H, ((ρ q : Γ) : Γ ⧸ H) = q` using `fun q => QuotientGroup.out_eq' q`. Establish `hρ : ∀ γ : Γ, (ρ (γ : Γ ⧸ H))⁻¹ * γ ∈ H` using `fun γ => QuotientGroup.eq.mp (hout _)`. Set `ι : Γ₀ → Γ` to `fun g => ⟨g, hle g.2⟩`. Establish `key : ∀ (g : Γ₀) (γ : Γ), g • (γ • s) = (ι g * γ) • s`. Introduce `g γ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul]`. Both sides reduce to the same expression. Set `t : Set X` to `⋃ q : Γ ⧸ H, (ρ q)⁻¹ • s`. Establish `hdisj : Pairwise (Function.onFun (AEDisjoint μ) fun q : Γ ⧸ H => (ρ q)⁻¹ • s)`. Introduce `q q' hqq'`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hs.aedisjoint` to reduce the goal to its premises. Introduce `heq`. Apply `hqq'` to reduce the goal to its premises. Establish `h1 : ρ q = ρ q'` using `inv_injective heq`. Rewrite using `[← hout q, ← hout q', h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, ⟨NullMeasurableSet.iUnion fun q => hs.nullMeasurableSet_smul _, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hs.ae_covers] with x hx`. Take `⟨γ, hγ⟩` from `hx`. Use `⟨⟨(((ρ (γ : Γ ⧸ H))⁻¹ * γ : Γ) : G), Subgroup.mem_subgroupOf.mp (hρ γ)⟩, ?_⟩` and prove the remaining obligations. Use `Set.mem_iUnion.2 ⟨(γ : Γ ⧸ H), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, inv_inv]`. Use `hγ using 1` and compare the differences between its conclusion and the goal. Simplify using `[Subgroup.smul_def, smul_smul]`. Introduce `g g' hgg' show AEDisjoint μ (g • t) (g' • t)`. Simplify using `only [t, Set.smul_set_iUnion]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AEDisjoint.iUnion_left_iff]`. Introduce `q`. Rewrite using `[AEDisjoint.iUnion_right_iff]`. Introduce `q'`. Rewrite using `[key, key]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hs.aedisjoint` to reduce the goal to its premises. Introduce `heq`. Apply `hgg'` to reduce the goal to its premises. Establish `h1 : (ρ q')⁻¹ * ρ q = (ι g')⁻¹ * ι g`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (ι g')⁻¹ * ι g ∈ H`. Rewrite using `[Subgroup.mem_subgroupOf]`. Simplify `Γ₀.mul_mem (Γ₀.inv_mem g'.2) g.2` using `[ι]`. Establish `h3 : q' = q`. Rewrite using `[← hout q', ← hout q]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `QuotientGroup.eq.mpr (h1 ▸ h2)`. Substitute `h3` using the available equality. Establish `h4 : ι g = ι g'` using `mul_right_cancel heq`. Establish `h5 : ((ι g : Γ) : G) = ((ι g' : Γ) : G)` using `by rw [h4]`. Conclude with `Subtype.ext h5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[measure_iUnion₀ hdisj (fun q => hs.nullMeasurableSet_smul _)]`. Establish `hm : ∀ q, μ ((ρ q)⁻¹ • s) = μ s` using `fun q => by show μ (((ρ q)⁻¹ : Γ) • s) = μ s`. Rewrite using `[show ((ρ q)⁻¹ : Γ) • s = (((ρ q)⁻¹ : Γ) : G) • s from rfl]`. Conclude with `measure_smul μ _ _`. Simplify using `only [hm, tsum_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
-
-Use `congr 1`. Rewrite using `[← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isFundamentalDomain_of_relIndex_ne_zero :
     ∀ (G X : Type) [Group G] [MeasurableSpace X] [MulAction G X] [MeasurableConstSMul G X]

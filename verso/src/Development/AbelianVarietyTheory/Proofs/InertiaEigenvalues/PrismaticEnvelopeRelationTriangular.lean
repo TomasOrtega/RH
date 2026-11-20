@@ -13,7 +13,7 @@ namespace GlobalTheory.EnvShape
 variable {l : ℕ} [hl : Fact l.Prime] {A : Type} [CommRing A]
 
 /- English proof (translation)
-Rewrite using `[← MvPolynomial.algebraMap_eq]`. Conclude with `Subalgebra.algebraMap_mem _ c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem C_mem_supp (S : Set ℕ) (c : A) : MvPolynomial.C c ∈ MvPolynomial.supported A S := by
   rw [← MvPolynomial.algebraMap_eq]; exact Subalgebra.algebraMap_mem _ c
@@ -21,7 +21,7 @@ theorem C_mem_supp (S : Set ℕ) (c : A) : MvPolynomial.C c ∈ MvPolynomial.sup
 omit hl in
 
 /- English proof (translation)
-Unfold `cc`. Conclude with `Ideal.sum_mem _ fun k hk => Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ hx k (Finset.mem_Ioo.1 hk).1))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cc_mem_ideal {R : Type} [CommRing R] (I : Ideal R) {x : R} (y : R) (hx : x ∈ I) : cc l x y ∈ I := by
   unfold cc
@@ -31,7 +31,7 @@ theorem cc_mem_ideal {R : Type} [CommRing R] (I : Ideal R) {x : R} (y : R) (hx :
 omit hl in
 
 /- English proof (translation)
-Unfold `cc`. Conclude with `Subalgebra.sum_mem _ fun k _ => S.mul_mem (S.mul_mem (natCast_mem S _) (S.pow_mem hx _)) (S.pow_mem hy _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cc_mem_sub {R : Type} [CommRing R] [Algebra A R] (S : Subalgebra A R) {x y : R} (hx : x ∈ S)
     (hy : y ∈ S) : cc l x y ∈ S := by
@@ -39,19 +39,19 @@ theorem cc_mem_sub {R : Type} [CommRing R] [Algebra A R] (S : Subalgebra A R) {x
   exact Subalgebra.sum_mem _ fun k _ => S.mul_mem (S.mul_mem (natCast_mem S _) (S.pow_mem hx _)) (S.pow_mem hy _)
 
 /- English proof (translation)
-Rewrite using `[D.φ_eq]`. Conclude with `J.add_mem (J.pow_mem_of_mem he _ hl.out.pos) (J.mul_mem_right _ hlJ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_mem (D : Delta l A) (J : Ideal A) (hlJ : (l : A) ∈ J) {e : A} (he : e ∈ J) : D.φ e ∈ J := by
   rw [D.φ_eq]; exact J.add_mem (J.pow_mem_of_mem he _ hl.out.pos) (J.mul_mem_right _ hlJ)
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero`. Establish `h0 : Set.Iio (0:ℕ) = ∅` using `by ext; simp`. Rewrite `hs` using `[h0, MvPolynomial.supported_empty, Algebra.mem_bot]`. Take `⟨c, rfl⟩` from `hs`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[MvPolynomial.algebraMap_eq, polyDelta_C]`. Use `⟨C_mem_supp _ _, 0, Subalgebra.zero_mem _, MvPolynomial.C (D.δ c), C_mem_supp _ _, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Consider the case `succ i`. Establish `h1 : Set.Iio (i+1) = Set.Iic i` using `by ext; simp [Nat.lt_succ_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `hs`, the goal using `[h1]`. Take `⟨h2, a, ha, b, hb, h3⟩` from `GlobalTheory.T.mvPolynomialDelta_supported_linear_mod_prime l A D i s hs`. Establish `hl' : (l : MvPolynomial ℕ A) ∈ J.map (MvPolynomial.C : A →+* MvPolynomial ℕ A)`. Use `Ideal.mem_map_of_mem (MvPolynomial.C : A →+* MvPolynomial ℕ A) hlJ` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `⟨h2, a, ha, b, hb, Ideal.span_le.2 (Set.singleton_subset_iff.2 hl') h3⟩`.
+Supply the required witnesses or components.
 -/
 theorem delta_Iio (D : Delta l A) (J : Ideal A) (hlJ : (l : A) ∈ J) (i : ℕ) (s : MvPolynomial ℕ A)
     (hs : s ∈ MvPolynomial.supported A (Set.Iio i)) :
@@ -76,7 +76,7 @@ theorem delta_Iio (D : Delta l A) (J : Ideal A) (hlJ : (l : A) ∈ J) (i : ℕ) 
     exact ⟨h2, a, ha, b, hb, Ideal.span_le.2 (Set.singleton_subset_iff.2 hl') h3⟩
 
 /- English proof (translation)
-Rewrite using `[(polyDelta D).δ_add, (polyDelta D).δ_mul, polyDelta_C, polyDelta_X, D.φ_eq]`. Simplify using `only [map_add, map_pow, map_mul, map_natCast]`. Unfold `cc`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem step_eq (D : Delta l A) (e : A) (k : ℕ) (s : MvPolynomial ℕ A) :
     (polyDelta D).δ (MvPolynomial.C e * MvPolynomial.X k + s) =
@@ -88,11 +88,11 @@ theorem step_eq (D : Delta l A) (e : A) (k : ℕ) (s : MvPolynomial ℕ A) :
   unfold cc; ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨d, hd, hu, MvPolynomial.C p, C_mem_supp _ _, by simp [add_comm]⟩`. Consider the case `succ k ih`. Take `⟨e, he, heu, s, hs, hk⟩` from `ih`. Establish `hIic : Set.Iic k = Set.Iio (k+1)` using `by ext; simp [Nat.lt_succ_iff]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hX : MvPolynomial.X k ∈ MvPolynomial.supported A (Set.Iio (k+1))` using `by rw [MvPolynomial.supported_eq_adjoin_X]; exact Algebra.subset_adjoin ⟨k, by simp, rfl⟩`. Establish `hδ` using `(delta_Iio D J hlJ k s hs).1`. Rewrite `hδ` using `[hIic]`. Establish `hs' : s ∈ MvPolynomial.supported A (Set.Iio (k+1))` using `MvPolynomial.supported_mono (Set.Iio_subset_Iio (Nat.le_succ k)) hs`. Use `⟨D.φ e, phi_mem D J hlJ he, ?_, MvPolynomial.X k ^ l * MvPolynomial.C (D.δ e) + (polyDelta D).δ s - cc l (MvPolynomial.C e * MvPolynomial.X k) s, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.T.deltaRingStructure_delta_frobenius_comm]`. Conclude with `heu.map D.φ`. Conclude with `Subalgebra.sub_mem _ (Subalgebra.add_mem _ (Subalgebra.mul_mem _ (Subalgebra.pow_mem _ hX _) (C_mem_supp _ _)) hδ) (cc_mem_sub _ (Subalgebra.mul_mem _ (C_mem_supp _ _) hX) hs')`. Rewrite using `[Function.iterate_succ_apply', hk, step_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shape (D : Delta l A) (J : Ideal A) (d p : A) (hlJ : (l : A) ∈ J) (hd : d ∈ J)
     (hu : IsUnit (D.δ d)) (k : ℕ) :
@@ -118,11 +118,11 @@ theorem shape (D : Delta l A) (J : Ideal A) (d p : A) (hlJ : (l : A) ∈ J) (hd 
     · rw [Function.iterate_succ_apply', hk, step_eq]
 
 /- English proof (translation)
-Introduce `l _ A _ D J d p hlJ hd hu i`. Take `⟨e, he, heu, s, hs, hi⟩` from `shape D J d p hlJ hd hu i`. Take `⟨-, a, ha, b, hb, hab⟩` from `delta_Iio D J hlJ i s hs`. Use `⟨heu.unit, a, b, ha, hb, ?_⟩` and prove the remaining obligations. Establish `hrel : envRel D d p i = MvPolynomial.C (D.φ e) * MvPolynomial.X (i + 1) + (MvPolynomial.X i ^ l * MvPolynomial.C (D.δ e) + (polyDelta D).δ s - cc l (MvPolynomial.C e * MvPolynomial.X i) s)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[envRel, Function.iterate_succ_apply', hi, step_eq]`. Establish `hdiff : envRel D d p i - (MvPolynomial.C (heu.unit : A) * MvPolynomial.X i ^ l + a * MvPolynomial.X i + b) = MvPolynomial.C (D.φ e) * MvPolynomial.X (i + 1) + ((polyDelta D).δ s - (a * MvPolynomial.X i + b)) - cc l (MvPolynomial.C e * MvPolynomial.X i) s`. Rewrite using `[hrel, IsUnit.unit_spec]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdiff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.sub_mem _ (Ideal.add_mem _ (Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (phi_mem D J hlJ he))) hab) (cc_mem_ideal _ _ (Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ he)))`.
+A detailed English derivation is pending.
 -/
 theorem envRel_triangular : ∀ (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A] (D : Delta l A) (J : Ideal A)
     (d p : A), (l : A) ∈ J → d ∈ J → IsUnit (D.δ d) → ∀ i, ∃ (v : Aˣ) (a b : MvPolynomial ℕ A),

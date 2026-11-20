@@ -9,9 +9,9 @@ open MeasureTheory GlobalTheory.SmGL GlobalTheory.PRep PositivityTheory.Rg.BcN.F
 namespace GlobalTheory.CompanionTheory.HeckeAlg
 
 /- English proof (translation)
-Introduce `F _ _ _ _ ι _ _`. Unfold `HkAlg`. Introduce `K e₁ e₂ h₁ h₂`. Take `⟨hstar₁, hadj⟩` from `GlobalTheory.CompanionTheory.HeckeAdj.hk_adjoint F ι K e₁ h₁`. Use `⟨GlobalTheory.CompanionTheory.HeckeMul.isHk_hconv h₁ h₂, hstar₁, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `V _ _ ρ v hv`. Conclude with `⟨(GlobalTheory.CompanionTheory.HeckeFix.hk_mem_fixed F ι K e₁ h₁ V ρ v hv).1, GlobalTheory.CompanionTheory.HeckeMul.hk_hconv h₁ h₂ ρ hv, fun B hB w hw => hadj V ρ B hB v hv w hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem hk_alg : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (ι : Type) [Fintype ι] [DecidableEq ι], HkAlg F ι := by
   intro F _ _ _ _ ι _ _

@@ -17,11 +17,11 @@ open ReciprocityTheory.ChartRestriction.G.TB (dAct)
 open ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.EigA (dActH)
 
 /- English proof (translation)
-Establish `key : ∀ m n, m ≤ n → g m ≡ g n [SMOD (Ideal.span {q} ^ m • ⊤ : Submodule O O)]`. Introduce `m n hmn`. Take `⟨w, hw⟩` from `hg m n hmn`. Rewrite using `[SModEq.sub_mem, Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Conclude with `⟨-w, by rw [← neg_sub, hw]; ring⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {q}) g (fun {m n} h => key m n h)`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Establish `h` using `hL n`. Rewrite `h` using `[SModEq.sub_mem, Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨-a, by rw [← neg_sub, ← ha]; ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lim {O : Type} [CommRing O] (q : O) [IsAdicComplete (Ideal.span {q}) O] (g : ℕ → O)
     (hg : ∀ m n, m ≤ n → ∃ w, g n - g m = q ^ m * w) : ∃ L : O, ∀ n, ∃ w, L - g n = q ^ n * w := by
@@ -42,13 +42,13 @@ section Val
 variable {T : CDVR} {p : ℕ} [Fact p.Prime] (X : ValExt T p)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FactorDepth.isIntV_iff]`. Conclude with `X.ints.map_le_one o`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntV_alg (o : X.O) : IsIntV (vX_vp X) (algebraMap X.O X.C o) := by
   rw [GlobalTheory.FactorDepth.isIntV_iff]; exact X.ints.map_le_one o
 
 /- English proof (translation)
-Rewrite using `[AddValuation.map_mul, AddValuation.map_pow, vX_vp_p, nsmul_one]`. Establish `h` using `isIntV_alg X o`. Unfold `IsIntV at h`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem le_v_pow_mul (N : ℕ) (o : X.O) :
     ((N : ℝ) : WithTop ℝ) ≤ vX_vp X ((p : X.C) ^ N * algebraMap X.O X.C o) := by
@@ -59,7 +59,7 @@ theorem le_v_pow_mul (N : ℕ) (o : X.O) :
     _ ≤ (N : WithTop ℝ) + vX_vp X (algebraMap X.O X.C o) := le_add_of_nonneg_right h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Take `⟨N, hN⟩` from `exists_nat_gt ((Real.log (X.v (p : X.C) : ℝ))⁻¹ * Real.log (X.v x : ℝ))`. Use `h N` as an intermediate fact. Rewrite `this` using `[vX_vp_apply X hx, WithTop.coe_le_coe]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem eq_zero_of_le_v (x : X.C) (h : ∀ N : ℕ, ((N : ℝ) : WithTop ℝ) ≤ vX_vp X x) : x = 0 := by
   by_contra hx
@@ -90,9 +90,9 @@ def entO (a : 𝓞 E) (e e' : Fin (chD Ch.ch)) : X.O :=
   X.ι (coeff (Finsupp.single ((0 : Fin 1), e') 1) (Ch.actT a e))
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Use `letI : Algebra T.Fr X.C := X.ιF.toAlgebra`. Rewrite using `[entO, ← X.comp]`. Use `show _ = coeff _ (Ch.ch.B.actK X.C a e)`. Unfold `FB.actK`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ch.gen.1.2.1 a e, coeff_map, coeff_map]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem alg_entO (a : 𝓞 E) (e e' : Fin (chD Ch.ch)) :
     algebraMap X.O X.C (entO Ch X a e e') = dActX Ch X a e e' := by
@@ -105,9 +105,9 @@ theorem alg_entO (a : 𝓞 E) (e e' : Fin (chD Ch.ch)) :
   rfl
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Use `letI : Algebra T.Fr X.C := X.ιF.toAlgebra`. Use `show coeff _ (Ch.ch.B.actK X.C a e) = X.ιF (coeff _ (Ch.ch.B.actK T.Fr a e))`. Unfold `FB.actK`. Rewrite using `[coeff_map, coeff_map]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem dActX_apply (a : 𝓞 E) (e e' : Fin (chD Ch.ch)) :
     dActX Ch X a e e' = X.ιF (letI := io.toAlgebra; dAct T.Fr Ch.ch.B a e e') := by
@@ -119,9 +119,9 @@ theorem dActX_apply (a : 𝓞 E) (e e' : Fin (chD Ch.ch)) :
   rfl
 
 /- English proof (translation)
-Take `rfl` from `GlobalTheory.PowGerm.starSt E H inst hst`. Use `letI := H.starRing`. Use `letI := io.toAlgebra`. Establish `h` using `GlobalTheory.PowGerm.eigDirSt E H Dw l Xo c T io y Ch a ⟨τ, i⟩`. Use function extensionality and compare the values at `e`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h3` using `congrArg X.ιF (congrFun h e)`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul, map_sum, map_mul] at h3 ⊢`. Simplify using `only [dActX_apply, lieVec, jX, RingHom.comp_apply, hφ, ← Ch.gen.1.2.2.2.2.2.2]`. Conclude with `h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dActX_mulVec_lieVec (hst : ∀ a : 𝓞 E, star a = H.bar a) (φ : 𝓞 E →+* T.V) (τ : E →+* ℂ)
     (hφ : ∀ a : 𝓞 E, algebraMap T.V T.Fr (φ a) = io (embK c τ a)) (a : 𝓞 E) (i : Fin (Dw.mult τ)) :
@@ -139,13 +139,13 @@ theorem dActX_mulVec_lieVec (hst : ∀ a : 𝓞 E, star a = H.bar a) (φ : 𝓞 
 end Chart
 
 /- English proof (translation)
-Establish `hstep : ∀ N, ε (N + 1) * x (N + 1) - ε N * x N ∈ Ideal.span {q ^ N}`. Introduce `N`. Take `⟨z0, hz0⟩` from `hx N`. Take `⟨z1, hz1⟩` from `hx (N + 1)`. Take `⟨u0, hu0⟩` from `(hε N).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u1, hu1⟩` from `(hε (N + 1)).1`. Establish `ha : ε N * (x (N + 1) - x N) ∈ Ideal.span {q ^ N}` using `(hε N).2 N le_rfl _ ⟨φ q * z1 - z0, by rw [map_sub, hz0, hz1]; ring⟩`. Establish `hb : ε (N + 1) * (1 - ε N) ∈ Ideal.span {q ^ N}` using `(hε (N + 1)).2 N (Nat.le_succ N) _ ⟨-u0, by rw [map_sub, map_one, hu0]; ring⟩`. Establish `hc : ε N * (1 - ε (N + 1)) ∈ Ideal.span {q ^ N}` using `(hε N).2 N le_rfl _ ⟨-(φ q * u1), by rw [map_sub, map_one, hu1]; ring⟩`. Establish `e : ε (N + 1) * x (N + 1) - ε N * x N = ε N * (x (N + 1) - x N) + (ε (N + 1) * (1 - ε N) - ε N * (1 - ε (N + 1))) * x (N + 1)` using `by ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Ideal.add_mem _ ha (Ideal.mul_mem_right _ _ (Ideal.sub_mem _ hb hc))`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => exact ⟨0, by ring⟩`. Consider the case `succ n hmn ih`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `ih`. Take `⟨w', hw'⟩` from `Ideal.mem_span_singleton'.1 (hstep n)`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Conclude with `⟨w + q ^ k * w', by linear_combination hw - hw'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cauchy_eps_mul {R V : Type} [CommRing R] [CommRing V] (φ : R →+* V) (q : R) (ε x : ℕ → R) (t : V)
     (hε : ∀ N : ℕ, (∃ z, φ (ε N) = 1 + φ q ^ N * z) ∧
@@ -185,23 +185,21 @@ open ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Geo.Tor Recipro
 open GlobalTheory.FGDepth GlobalTheory.CharDepth GlobalTheory.FactorDepth GlobalTheory.LawLog GlobalTheory.IsoTriv.LimAct
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c inst hst T io y Ch p _ X τ`. Take `⟨φ, hφ⟩` from `GlobalTheory.IsoCols.exists_lift T (io.comp (embK c τ))`. Establish `hP : φ (p : 𝓞 E) = (p : T.V)` using `map_natCast φ p`. Establish `hp0 : φ (p : 𝓞 E) ≠ 0` using `by rw [hP]; exact Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Establish `hpu : ¬ IsUnit (φ (p : 𝓞 E))` using `by rw [hP]; exact not_isUnit_p X`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ε, hεN⟩` from `hε (𝓞 E) T.V φ (p : 𝓞 E) hp0 hpu`. Use `⟨ε, fun t x hx => ?_⟩` and prove the remaining obligations. Establish `hxN : ∀ N : ℕ, ∃ z, φ (x N) = t + φ (p : 𝓞 E) ^ N * z` using `fun N => by`. Take `⟨z, hz⟩` from `hx N`. Conclude with `⟨z, by rw [hP]; exact IsFractionRing.injective T.V T.Fr ((hφ (x N)).trans hz)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hcau` using `cauchy_eps_mul φ (p : 𝓞 E) ε x t hεN hxN`. Establish `hent : ∀ e e', ∃ L : X.O, ∀ N, ∃ w, L - entO Ch X (ε N * x N) e e' = (p : X.O) ^ N * w`. Introduce `e e'`. Use `exists_lim (p : X.O) (fun N => entO Ch X (ε N * x N) e e') fun m n hmn => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `hcau m n hmn`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨entO Ch X w e e', X.ints.hom_inj ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, map_pow, map_natCast, alg_entO, alg_entO, alg_entO, dActX_eq, dActX_eq, dActX_eq, ← Matrix.sub_apply, ← map_sub, hw, ← Nat.cast_pow, ← nsmul_eq_mul, map_nsmul, Matrix.smul_apply, nsmul_eq_mul, Nat.cast_pow]`. Use `choose L W hW using hent`. Establish `hA : ∀ N e e', algebraMap X.O X.C (L e e') = dActX Ch X (ε N * x N) e e' + (p : X.C) ^ N * algebraMap X.O X.C (W e e' N)`. Introduce `N e e'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `congrArg (algebraMap X.O X.C) (hW e e' N)`. Rewrite `h` using `[map_sub, map_mul, map_pow, map_natCast, alg_entO]`. Take the linear combination `h`. Use `⟨Matrix.of fun e e' => algebraMap X.O X.C (L e e'), fun N e e' => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.of_apply, hA N, add_sub_cancel_left]`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `le_v_pow_mul X N _`. Use function extensionality and compare the values at `e`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_le_v X _ fun N => ?_` and prove the remaining obligations. Take `⟨z0, hz0⟩` from `hxN N`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `(hεN N).1`. Take `⟨z, hz⟩ : ∃ z, φ (ε N * x N) = t + (p : T.V) ^ N * z` from `⟨z0 + u * t + (p : T.V) ^ N * u * z0, by rw [map_mul, hu, hz0, hP]; ring⟩`. Establish `hj : ∀ r : T.V, jX X r = algebraMap X.O X.C (X.ι r)` using `fun r => X.comp r`. Establish `he` using `congrFun (dActX_mulVec_lieVec Ch X hst φ τ (fun a => hφ a) (ε N * x N) i) e`. Rewrite `he` using `[hz, map_add, map_mul, map_pow, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul, Matrix.of_apply] at he ⊢`. Establish `key : ∑ e', algebraMap X.O X.C (L e e') * lieVec Ch X ⟨τ, i⟩ e' - jX X t * lieVec Ch X ⟨τ, i⟩ e = (p : X.C) ^ N * algebraMap X.O X.C (∑ e', W e e' N * X.ι (Ch.uvecT ⟨τ, i⟩ e') + X.ι z * X.ι (Ch.uvecT ⟨τ, i⟩ e))`. Simplify using `only [hA N, add_mul, Finset.sum_add_distrib, he, map_add, map_sum, map_mul, ← hj, mul_add, Finset.mul_sum, mul_assoc]`. Simplify using `only [lieVec]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[key]`. Conclude with `le_v_pow_mul X N _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limActSt_of_epsSt (hε : EpsSt) : LimActSt := by
   intro E _ _ _ H Dw l Xo c inst hst T io y Ch p _ X τ

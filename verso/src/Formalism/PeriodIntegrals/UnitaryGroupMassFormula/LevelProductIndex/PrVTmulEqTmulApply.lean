@@ -16,9 +16,9 @@ theorem prV_tmul_eq_tmul_apply {F E : Type} [Field F] [NumberField F] [CommRing 
     prV (E := E) v (e ⊗ₜ[F] a) = e ⊗ₜ[F] (a v) := rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Apply the tactic sequence `try rfl`. Consider the case `tmul e a`. Rewrite using `[prV_tmul_eq_tmul_apply, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Algebra.smul_def]`. Both sides reduce to the same expression. Consider the case `add x y hx hy`. Simplify using `only [map_add, Finsupp.coe_add, Pi.add_apply, hx, hy]`. Apply the tactic sequence `try rfl`.
+Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coord_prV {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {ι : Type}
     [DecidableEq ι] (b : Module.Basis ι F E) (v : HeightOneSpectrum (𝓞 F)) (z : E ⊗[F] FiniteAdeleRing (𝓞 F) F) (i : ι) :
@@ -36,9 +36,9 @@ theorem coord_prV {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     try rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ z hz`. Set `b` to `Module.finBasis F E`. Apply `(TensorProduct.equivFinsuppOfBasisLeft b).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `Finsupp.ext fun i => FiniteAdeleRing.ext F fun v => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← coord_prV b v z i, hz v, map_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem plInj : PLInj := by
   intro F E _ _ _ _ _ z hz

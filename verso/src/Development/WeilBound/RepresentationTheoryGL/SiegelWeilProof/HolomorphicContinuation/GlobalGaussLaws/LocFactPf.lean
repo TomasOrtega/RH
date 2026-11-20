@@ -14,15 +14,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC`. Establish `hop : ∀ y : GR n, ((∃ b : Matrix (Fin n) (Fin n) ℂ, bᴴ = b ∧ mR y = nU b) ∨ (∃ c : Matrix (Fin n) (Fin n) ℂ, cᴴ = c ∧ mR y = nbar c) ∨ (∃ a : Matrix (Fin n) (Fin n) ℂ, IsUnit a.det ∧ mR y = mM a)) → ∃ L : ((Fin V.rank → Fin n → ℂ) → ℂ) → ((Fin V.rank → Fin n → ℂ) → ℂ), (∀ f, IsSc …` using `fun y hy => hG D n V ψ χ θ μ ω H l s ν τ ε fr ι hC y hy`. Use `choose! large₂ hLgS hLg using hop`. Establish `hdec` using `fun y : GR n => hD n y`. Use `choose y1 y2 y3 y4 hy h1 h2 h3 h4 using hdec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `g1 : ∀ y, (∃ b : Matrix (Fin n) (Fin n) ℂ, bᴴ = b ∧ mR (y1 y) = nU b) ∨ (∃ c : Matrix (Fin n) (Fin n) ℂ, cᴴ = c ∧ mR (y1 y) = nbar c) ∨ (∃ a : Matrix (Fin n) (Fin n) ℂ, IsUnit a.det ∧ mR (y1 y) = mM a)` using `fun y => by`. Take `⟨t, ht⟩` from `h1 y`. Conclude with `Or.inl ⟨_, herm_smul_one t, ht⟩`. Establish `g2 : ∀ y, (∃ b : Matrix (Fin n) (Fin n) ℂ, bᴴ = b ∧ mR (y2 y) = nU b) ∨ (∃ c : Matrix (Fin n) (Fin n) ℂ, cᴴ = c ∧ mR (y2 y) = nbar c) ∨ (∃ a : Matrix (Fin n) (Fin n) ℂ, IsUnit a.det ∧ mR (y2 y) = mM a)` using `fun y => Or.inr (Or.inl (h2 y))`. Establish `g3 : ∀ y, (∃ b : Matrix (Fin n) (Fin n) ℂ, bᴴ = b ∧ mR (y3 y) = nU b) ∨ (∃ c : Matrix (Fin n) (Fin n) ℂ, cᴴ = c ∧ mR (y3 y) = nbar c) ∨ (∃ a : Matrix (Fin n) (Fin n) ℂ, IsUnit a.det ∧ mR (y3 y) = mM a)` using `fun y => Or.inr (Or.inr (h3 y))`.
+Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `g4 : ∀ y, (∃ b : Matrix (Fin n) (Fin n) ℂ, bᴴ = b ∧ mR (y4 y) = nU b) ∨ (∃ c : Matrix (Fin n) (Fin n) ℂ, cᴴ = c ∧ mR (y4 y) = nbar c) ∨ (∃ a : Matrix (Fin n) (Fin n) ℂ, IsUnit a.det ∧ mR (y4 y) = mM a)` using `fun y => Or.inl (h4 y)`. Use `⟨fun y f => large₂ (y1 y) (large₂ (y2 y) (large₂ (y3 y) (large₂ (y4 y) f))), fun y f hf => ?_, fun y Ψ hΨ f hf => ?_⟩` and prove the remaining obligations. Conclude with `hLgS _ (g1 y) _ (hLgS _ (g2 y) _ (hLgS _ (g3 y) _ (hLgS _ (g4 y) _ hf)))`. Establish `step : ∀ (z : GR n) (hz : (∃ b : Matrix (Fin n) (Fin n) ℂ, bᴴ = b ∧ mR z = nU b) ∨ (∃ c : Matrix (Fin n) (Fin n) ℂ, cᴴ = c ∧ mR z = nbar c) ∨ (∃ a : Matrix (Fin n) (Fin n) ℂ, IsUnit a.det ∧ mR z = mM a)), ∀ f (hf : IsSch f) (h : tens θ τ fr f Ψ ∈ schwartzA θ V.rank n), ω (ι z) ⟨t …`. Introduce `z hz f hf h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext (hLg z hz Ψ hΨ f hf)`. Establish `hprod : ω (ι y) = ω (ι (y1 y)) * ω (ι (y2 y)) * ω (ι (y3 y)) * ω (ι (y4 y))` using `by conv_lhs => rw [hy y]`. Simplify using `only [map_mul]`. Rewrite using `[hprod]`. Simplify using `only [Module.End.mul_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `s4` using `hLgS (y4 y) (g4 y) _ hf`. Establish `s3` using `hLgS (y3 y) (g3 y) _ s4`. Establish `s2` using `hLgS (y2 y) (g2 y) _ s3`. Rewrite using `[step (y4 y) (g4 y) _ hf, step (y3 y) (g3 y) _ s4, step (y2 y) (g2 y) _ s3, step (y1 y) (g1 y) _ s2]`.
+A detailed English derivation is pending.
 -/
 theorem locFact_of (hD : Decomp) (hG : OpGen) : LocFact := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hC
@@ -70,11 +70,11 @@ theorem locFact_of (hD : Decomp) (hG : OpGen) : LocFact := by
     rw [step (y4 y) (g4 y) _ hf, step (y3 y) (g3 y) _ s4, step (y2 y) (g2 y) _ s3, step (y1 y) (g1 y) _ s2]
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC`. Take `⟨L, -, hL2⟩` from `hF D n V ψ χ θ μ ω H l s ν τ ε fr ι hC`. Use `⟨L, ?_⟩` and prove the remaining obligations. Introduce `y Ψ hΨ P`. Establish `hAw : AwayCls θ τ fr Ψ` using `hA D n V θ l s τ ε fr hC.hθ hC.hs hC.hfr (fun τ' => hL D ψ θ l hC.hψ hC.hθ hC.hl τ') Ψ hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : 0 < cLoc l τ`. Establish `hne` using `hL D ψ θ l hC.hψ hC.hθ hC.hl τ`. Unfold `cLoc`. Establish `: 0 < |l τ|` using `abs_pos.mpr hne`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `hf0 : IsSch (fP (cLoc l τ) P)` using `hS _ _ _ hc P`. Rewrite using `[phiS_eq' (hAw.2 _ hf0)]`. Conclude with `hL2 y Ψ hAw _ hf0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locOpEx_of_fact (hF : LocFact) (hA : AwayIn) (hS : SchFP) (hL : LNe) : LocOpEx := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hC

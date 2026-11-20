@@ -13,19 +13,19 @@ noncomputable abbrev po_d {σ : Type} (v : σ) : MvPolynomial σ ℚ_[p] →ₗ[
   (pderiv v : Derivation ℚ_[p] (MvPolynomial σ ℚ_[p]) (MvPolynomial σ ℚ_[p])).toLinearMap
 
 /- English proof (translation)
-Establish `hp1 : (1 : ℝ) ≤ p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt.le`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `j _ l x hx`. Break down `j with _ | j` into its components or cases.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `using hx`. Simplify using the standard rewrite rules. Consider the case `insert a S ha ih`. Introduce `j hj l x hx`. Establish `hc : Commute (Dc a) (∑ c ∈ S, Dc c)` using `Commute.sum_right _ _ _ (fun c _ => hcomm a c)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_insert ha, hc.add_pow j, Finset.card_insert_of_notMem ha, LinearMap.sum_apply, Finset.smul_sum]`. Use `Submodule.sum_mem _ (fun k hk => ?_)` and prove the remaining obligations. Establish `hkj : k ≤ j` using `by rw [Finset.mem_range] at hk; omega`. Establish `hfac` using `Nat.choose_mul_factorial_mul_factorial hkj`. Establish `hne : ((j.choose k : ℕ) : ℚ_[p]) ≠ 0` using `by exact_mod_cast (Nat.choose_pos hkj).ne'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk0 : ((k.factorial : ℕ) : ℚ_[p]) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos k).ne'`. Establish `hjk0 : (((j - k).factorial : ℕ) : ℚ_[p]) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos _).ne'`. Establish `key : (((j.factorial : ℚ_[p]) ^ 2))⁻¹ * ((j.choose k : ℕ) : ℚ_[p]) = (((j.choose k : ℕ) : ℚ_[p]))⁻¹ * ((((k.factorial : ℚ_[p]) ^ 2))⁻¹ * ((((j - k).factorial : ℚ_[p]) ^ 2))⁻¹)`. Rewrite using `[← hfac]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Clear the denominators using the available nonvanishing facts. Establish `eq : ((p : ℚ_[p]) ^ ((S.card + 1) * L) * ((j.factorial : ℚ_[p]) ^ 2)⁻¹) • (Dc a ^ k * (∑ c ∈ S, Dc c) ^ (j - k) * ((j.choose k : ℕ) : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p])) x = ((p : ℚ_[p]) ^ L * (((j.choose k : ℕ) : ℚ_[p]))⁻¹) • ((((k.factorial : ℚ_[p]) ^ 2))⁻¹ • …`. Simplify using `only [Module.End.mul_apply, Module.End.natCast_apply, map_smul, ← Nat.cast_smul_eq_nsmul ℚ_[p], smul_smul]`. Use `congr 1`. Rewrite using `[mul_assoc, key, add_mul, one_mul, pow_add]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eq]`. Establish `h1` using `ih (j - k) (by omega) l x hx`. Establish `h2` using `hdiv a k _ _ h1`. Rewrite `h2` using `[show l + (j - k) + k = l + j by omega]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `smul_mem_of_norm _ ?_ h2` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, Padic.norm_p]`. Establish `h3 : ‖(((j.choose k : ℕ) : ℚ_[p]))⁻¹‖ ≤ (p : ℝ) ^ L` using `(norm_choose_inv_le j k hkj).trans (pow_le_pow_right₀ hp1 ((Nat.log_mono_right hj).trans hn))`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem po_Fsum {σ ι : Type} [DecidableEq ι]
     (Dc : ι → (MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p]))
@@ -83,9 +83,9 @@ theorem po_Fsum {σ ι : Type} [DecidableEq ι]
       _ = 1 := by rw [← mul_pow, inv_mul_cancel₀ (by positivity), one_pow]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', Module.End.mul_apply, Module.End.mul_apply, ih]`. Use `show pderiv v (a * _) = a * pderiv v _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pderiv_mul, ha, zero_mul, zero_add]`.
+A detailed English derivation is pending.
 -/
 theorem po_pow_right {σ : Type} (v : σ) {a : MvPolynomial σ ℚ_[p]} (ha : pderiv v a = 0)
     (g : MvPolynomial σ ℚ_[p]) (k : ℕ) : (po_d v ^ k) (a * g) = a * (po_d v ^ k) g := by
@@ -97,9 +97,9 @@ theorem po_pow_right {σ : Type} (v : σ) {a : MvPolynomial σ ℚ_[p]} (ha : pd
     rw [pderiv_mul, ha, zero_mul, zero_add]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, ih]`. Use `show pderiv (f u) (_ * g) = rename f (pderiv u _) * g`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pderiv_mul, hg, mul_zero, add_zero, pderiv_rename hf]`.
+A detailed English derivation is pending.
 -/
 theorem po_pow_left {σ τ : Type} (f : τ → σ) (hf : Function.Injective f) (u : τ)
     (y : MvPolynomial τ ℚ_[p]) {g : MvPolynomial σ ℚ_[p]} (hg : pderiv (f u) g = 0) (k : ℕ) :
@@ -112,7 +112,7 @@ theorem po_pow_left {σ τ : Type} (f : τ → σ) (hf : Function.Injective f) (
     rw [pderiv_mul, hg, mul_zero, add_zero, pderiv_rename hf]
 
 /- English proof (translation)
-Rewrite `hy`, the goal using `[intPol_iff_bnd]`. Establish `h` using `contr_divDeriv (p := p) v k 1 zero_le_one y hy`. Introduce `m`. Simplify using `using h m`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem po_int {σ : Type} (v : σ) (k : ℕ) {y : MvPolynomial σ ℚ_[p]} (hy : y ∈ IntPol p σ) :
     ((k.factorial : ℚ_[p])⁻¹ • (po_d v ^ k) y) ∈ IntPol p σ := by
@@ -124,7 +124,7 @@ theorem po_int {σ : Type} (v : σ) (k : ℕ) {y : MvPolynomial σ ℚ_[p]} (hy 
 variable {N r : ℕ} [NeZero r] {D : BlockData N}
 
 /- English proof (translation)
-Apply `pderiv_eq_zero_of_notMem_vars` to reduce the goal to its premises. Introduce `h`. Take `⟨a, -, ha⟩` from `Finset.mem_image.mp (vars_rename _ _ h)`. Conclude with `xi_notin (D := D) c ⟨a, ha⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pderiv_xi_rename_chainEmb_eq_zero (y : MvPolynomial (Fin N × Fin r) ℚ_[p]) (c : Fin r) :
     pderiv (xiVar N r D.T.t c) (rename (chainEmb N r D.T.t) y) = 0 := by
@@ -136,7 +136,7 @@ theorem pderiv_xi_rename_chainEmb_eq_zero (y : MvPolynomial (Fin N × Fin r) ℚ
 
 omit [NeZero r] in
 /- English proof (translation)
-Introduce `a b h`. Simplify `h` using `[xiVar]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem po_xi_inj {t : ℕ} : Function.Injective (xiVar N r t) := by
   intro a b h
@@ -148,11 +148,11 @@ noncomputable abbrev po_R (p : ℕ) [Fact p.Prime] (N r t b : ℕ) : Submodule �
 
 omit [NeZero r] in
 /- English proof (translation)
-Rewrite `hg`, the goal using `[mem_restrictSupport_iff]`. Introduce `m hm`. Establish `hm' : m + Finsupp.single (xiVar N r t c) 1 ∈ g.support`. Rewrite `hm` using `[Finset.mem_coe, mem_support_iff, coeff_pderiv]`. Rewrite using `[mem_support_iff]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `left_ne_zero_of_mul hm`. Take `⟨h1, h2⟩` from `hg (Finset.mem_coe.mpr hm')`. Use `⟨fun v hv => h1 v ?_, ?_⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[Finsupp.mem_support_iff]`. Rewrite using `[Finsupp.add_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib] at h2`. Rewrite `h2` using `[Finset.sum_eq_single c (fun d _ hd => Finsupp.single_eq_of_ne (fun h => hd (po_xi_inj h))) (fun h => absurd (Finset.mem_univ c) h), Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem po_R_step {t b : ℕ} (c : Fin r) {g : MvPolynomial (BVar N r t) ℚ_[p]} (hg : g ∈ po_R p N r t b) :
     pderiv (xiVar N r t c) g ∈ po_R p N r t (b - 1) := by
@@ -175,9 +175,9 @@ theorem po_R_step {t b : ℕ} (c : Fin r) {g : MvPolynomial (BVar N r t) ℚ_[p]
 
 omit [NeZero r] in
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro b g hg`. Simplify using `using hg`. Consider the case `succ k ih`. Introduce `b g hg`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ', Module.End.mul_apply, ← Nat.sub_sub]`. Conclude with `po_R_step c (ih b hg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem po_R_pow {t : ℕ} (c : Fin r) (k : ℕ) : ∀ (b : ℕ) {g : MvPolynomial (BVar N r t) ℚ_[p]},
     g ∈ po_R p N r t b → (po_d (xiVar N r t c) ^ k) g ∈ po_R p N r t (b - k) := by
@@ -190,7 +190,7 @@ theorem po_R_pow {t : ℕ} (c : Fin r) (k : ℕ) : ∀ (b : ℕ) {g : MvPolynomi
 
 omit [NeZero r] in
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `Submodule.mem_inf.mp hg`. Conclude with `Submodule.mem_inf.mpr ⟨(po_R p N r t (b - k)).smul_mem _ (po_R_pow c k b h1), po_int _ k h2⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem po_xi_div {t b : ℕ} (c : Fin r) (k : ℕ) {g : MvPolynomial (BVar N r t) ℚ_[p]}
     (hg : g ∈ XiPolZ p N r t b) :
@@ -199,9 +199,9 @@ theorem po_xi_div {t b : ℕ} (c : Fin r) (k : ℕ) {g : MvPolynomial (BVar N r 
   exact Submodule.mem_inf.mpr ⟨(po_R p N r t (b - k)).smul_mem _ (po_R_pow c k b h1), po_int _ k h2⟩
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro jp y hy`. Rewrite using `[pow_zero, Module.End.one_apply, add_zero]`. Conclude with `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `jp y hy`. Rewrite using `[pow_succ', Module.End.mul_apply, ← add_assoc]`. Conclude with `hU j (jp + k) c _ (ih jp y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem po_Y_iter (hU : HypU p (r := r) D) (c : Fin r) (j : Fin D.T.t → ℕ) :
     ∀ k (jp : ℕ), ∀ y ∈ Y p (r := r) (D.lettersAt j jp) D.T.J D.T.thr,
@@ -215,11 +215,11 @@ theorem po_Y_iter (hU : HypU p (r := r) D) (c : Fin r) (j : Fin D.T.t → ℕ) :
     exact hU j (jp + k) c _ (ih jp y hy)
 
 /- English proof (translation)
-Introduce `x hx`. Use `span_map_mem ((((k.factorial : ℚ_[p]) ^ 2))⁻¹ • ((po_d (wU D c) ∘ₗ po_d (xiVar N r D.T.t c)) ^ k)) _ (Lat p D (r := r) j (jp + k)) ?_ x hx` as an intermediate fact. Simplify using `using this`. Introduce and unpack `v ⟨y, hy, g, hg, rfl⟩`. Establish `hg'` using `po_xi_div c k hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : ((((k.factorial : ℚ_[p]) ^ 2))⁻¹ • ((po_d (wU D c) ∘ₗ po_d (xiVar N r D.T.t c)) ^ k)) (rename (chainEmb N r D.T.t) y * g) = rename (chainEmb N r D.T.t) ((k.factorial : ℚ_[p])⁻¹ • (po_d (D.uPos, c) ^ k) y) * ((k.factorial : ℚ_[p])⁻¹ • (po_d (xiVar N r D.T.t c) ^ k) g)`. Establish `h1` using `po_pow_left (p := p) (chainEmb N r D.T.t) chainEmb_inj (D.uPos, c) y (xi_free hg' (fun d => wU_ne_xi (D := D) c d)) k`. Rewrite using `[← Module.End.mul_eq_comp, (commute_pderiv _ _).mul_pow, LinearMap.smul_apply, Module.End.mul_apply, po_pow_right _ (pderiv_xi_rename_chainEmb_eq_zero (D := D) y c), map_smul, smul_mul_assoc, ← h1, mul_smul_comm, map_smul, smul_smul, sq, mul_inv]`. Both sides reduce to the same expression. Rewrite `*` using `[e, Nat.sub_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨_, yz_mk (Submodule.smul_mem _ _ (po_Y_iter hU c j k jp y (yz_y hy))) (po_int _ k (yz_int hy)), _, hg', rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem po_coord (hU : HypU p (r := r) D) (j : Fin D.T.t → ℕ) (c : Fin r) (k jp : ℕ) :
     ∀ x ∈ Lat p D (r := r) j jp, ((((k.factorial : ℚ_[p]) ^ 2))⁻¹ •
@@ -247,9 +247,9 @@ theorem po_coord (hU : HypU p (r := r) D) (j : Fin D.T.t → ℕ) (c : Fin r) (k
 end plusop
 
 /- English proof (translation)
-Introduce `p _ N r _ D hB hU j jp m L hmL x hx`. Establish `hcomm : ∀ a b : Fin r, Commute (po_d (p` using `p) (wU D a) ∘ₗ po_d (xiVar N r D.T.t a)) (po_d (wU D b) ∘ₗ po_d (xiVar N r D.T.t b)) := by`. Introduce `a b`. Simplify using `only [← Module.End.mul_eq_comp]`. Apply the tactic sequence `refine Commute.mul_left (Commute.mul_right ?_ ?_) (Commute.mul_right ?_ ?_) <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `commute_pderiv _ _`. Establish `h` using `po_Fsum (fun c : Fin r => po_d (p := p) (wU D c) ∘ₗ po_d (xiVar N r D.T.t c)) hcomm (fun l => Lat p D (r := r) j l) (fun a k l x hx => po_coord hU j a k l x hx) L m hmL Finset.univ m le_rfl jp x hx`. Rewrite `h` using `[Finset.card_univ, Fintype.card_fin]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_plus_holds : LatPlus := by
   intro p _ N r _ D hB hU j jp m L hmL x hx

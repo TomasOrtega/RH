@@ -7,11 +7,11 @@ namespace GlobalTheory
 open Matrix Finset Real in
 
 /- English proof (translation)
-Establish `h : ∀ i k : Fin a, j i * j k = (if i < k then j i * j k else 0) + (if k < i then j k * j i else 0) + (if i = k then j i ^ 2 else 0)`. Introduce `i k`. Break down `lt_trichotomy i k with hik | hik | hik` into its components or cases. Simplify using `[hik, hik.ne, not_lt.mpr hik.le]`. Substitute `hik` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[sq]`. Simplify using `[hik, hik.ne', not_lt.mpr hik.le, mul_comm]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_add_distrib]`. Rewrite using `[Finset.sum_comm (f := fun i k => if k < i then j k * j i else 0)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.sq_sum_eq_sum_sq_add_two_mul_sum_lt (a : ℕ) (j : Fin a → ℤ) :
     (∑ i, j i) ^ 2 = ∑ i, j i ^ 2 + 2 * ∑ i, ∑ k, if i < k then j i * j k else 0 := by
@@ -35,9 +35,9 @@ theorem _root_.GlobalTheory.sq_sum_eq_sum_sq_add_two_mul_sum_lt (a : ℕ) (j : F
 open Matrix Finset Real in
 
 /- English proof (translation)
-Introduce `a j n`. Simplify using `only`. Establish `key` using `_root_.GlobalTheory.sq_sum_eq_sum_sq_add_two_mul_sum_lt a j`. Establish `hQ : 0 ≤ ∑ i, j i ^ 2` using `Finset.sum_nonneg fun i _ => sq_nonneg (j i)`. Generalize the expression as in `(∑ i, ∑ k, if i < k then j i * j k else 0) = S at key ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(∑ i, j i ^ 2) = Q at key hQ ⊢`. Generalize the expression as in `(∑ i, j i) = J at key ⊢`. Use `⟨by linear_combination (-2) * key, by linear_combination 4 * key, ?_⟩` and prove the remaining obligations. Use polynomial arithmetic with `[key, sq_nonneg J, hQ]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem _root_.GlobalTheory.dim_unipotent_radical_identities :
     ∀ (a : ℕ) (j : Fin a → ℤ) (n : ℤ), let J := ∑ i, j i; let n₀ := n - 2 * J; let dimN := 4 * (∑ i, ∑ k, if i < k then j i * j k else 0) + 2 * J * n₀ + ∑ i, j i ^ 2; dimN = 2 * J ^ 2 - ∑ i, j i ^ 2 + 2 * J * n₀ ∧ n ^ 2 = n₀ ^ 2 + 2 * ∑ i, j i ^ 2 + 2 * dimN ∧ dimN ≤ 2 * J * n := by

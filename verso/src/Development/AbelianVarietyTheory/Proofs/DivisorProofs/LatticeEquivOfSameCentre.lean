@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc.LatCmp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem act_unit {Y : Type} [AddCommGroup Y] (a b : Fin 8) (w : Fin 8 → Y) :
     (fun i => ∑ j, (Matrix.of fun i' j' => if i' = a ∧ j' = b then (1 : ℤ) else 0) i j • w j) = Pi.single a (w b) := by
@@ -24,9 +24,9 @@ theorem act_unit {Y : Type} [AddCommGroup Y] (a b : Fin 8) (w : Fin 8 → Y) :
   · simp [hi]
 
 /- English proof (translation)
-Establish `h1` using `h (Matrix.of fun i' j' => if i' = a ∧ j' = a then (1 : ℤ) else 0) v`. Rewrite `h1` using `[act_unit, act_unit]`. Establish `h2` using `h (Matrix.of fun i' j' => if i' = a ∧ j' = 0 then (1 : ℤ) else 0) (Pi.single 0 (v a))`. Rewrite `h2` using `[act_unit, act_unit]`. Establish `e1` using `congrFun h1 a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `congrFun h2 a`. Simplify using `only [Pi.single_eq_same] at e1 e2`. Rewrite using `[← e1, e2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_diag {Y Y' : Type} [AddCommGroup Y] [AddCommGroup Y'] (θ : (Fin 8 → Y) ≃+ (Fin 8 → Y'))
     (h : ∀ (E : Matrix (Fin 8) (Fin 8) ℤ) v, θ (fun a => ∑ b, E a b • v b) = fun a => ∑ b, E a b • θ v b)
@@ -41,15 +41,15 @@ theorem eq_diag {Y Y' : Type} [AddCommGroup Y] [AddCommGroup Y'] (θ : (Fin 8 �
   rw [← e1, e2]
 
 /- English proof (translation)
-Set `κ0 : Y →+ Y'` to `(Pi.evalAddMonoidHom (fun _ : Fin 8 => Y') 0).comp (θ.toAddMonoidHom.comp (AddMonoidHom.single (fun _ : Fin 8 => Y) 0))`. Establish `hθ : ∀ v a, θ v a = κ0 (v a)` using `fun v a => eq_diag θ h v a`. Establish `hsingle : ∀ y, θ (Pi.single 0 y) = Pi.single 0 (κ0 y)`. Introduce `y`. Use function extensionality and compare the values at `a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hθ]`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, ha]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `inj : Function.Injective κ0`. Introduce `y y' hy`. Establish `: θ (Pi.single 0 y) = θ (Pi.single 0 y')` using `by rw [hsingle, hsingle, hy]`. Conclude with `Pi.single_injective 0 (θ.injective this)`. Establish `surj : Function.Surjective κ0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Use `⟨θ.symm (fun _ => y) 0, ?_⟩` and prove the remaining obligations. Rewrite using `[← hθ]`. Simplify using the standard rewrite rules. Use `⟨(AddEquiv.ofBijective κ0 ⟨inj, surj⟩).toIntLinearEquiv, fun v => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Conclude with `hθ v a`.
+A detailed English derivation is pending.
 -/
 theorem exists_diag {Y Y' : Type} [AddCommGroup Y] [AddCommGroup Y'] (θ : (Fin 8 → Y) ≃+ (Fin 8 → Y'))
     (h : ∀ (E : Matrix (Fin 8) (Fin 8) ℤ) v, θ (fun a => ∑ b, E a b • v b) = fun a => ∑ b, E a b • θ v b) :
@@ -77,9 +77,9 @@ theorem exists_diag {Y Y' : Type} [AddCommGroup Y] [AddCommGroup Y'] (θ : (Fin 
 end GlobalTheory.Poinc.LatCmp
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ hg hn ho hi he ht hp ε₁ hε p _ z₁ c c' yy yy' h h'`. Take `⟨Y, U₀, EE, FinalForm, q, hov, hee, hq, hpt, hcon, hlift⟩` from `GlobalTheory.T.exists_semiabelianModel_proper_over_thetaSetup g n F W Z i X₁ hg hn ho hi he ht hp`. Take `⟨y, hy⟩` from `hlift p z₁ c`. Take `⟨y', hy'⟩` from `hlift p z₁ c'`. Take `⟨θ, hl, hE⟩` from `GlobalTheory.T.exists_labelled_lattice_equiv_of_common_fibre g n F W Z i X₁ hg hn ho hi he ht hp ε₁ hε Y U₀ EE FinalForm q hov hee hq hpt p z₁ (hcon z₁) c c' y y' hy hy' yy yy' h h'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ⟩` from `GlobalTheory.Poinc.LatCmp.exists_diag θ hE`. Use `⟨κ, fun a μ hμ => ?_⟩` and prove the remaining obligations. Rewrite using `[hl a μ hμ, hκ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.Poinc.lattice_equiv_of_same_centre : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i), 1 ≤ g → 3 ≤ n → Odd n → IsOpenImmersion i → IsE8 W → ThetaInt F W i → IsProjOver X₁.M.s → ∀ (ε₁ : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsDiagEnd F W X₁.ρ.P X₁.u ε₁ → ∀ (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z) (c c' : CTrait X₁ p z₁) (yy : X₁.S.Gam →+ ModN (X₁.S.r * X₁.S.N) (Fin 8 → c.T.D.toPre.X)) (yy' : X₁.S.Gam →+ ModN (X₁.S.r * X₁.S.N) (Fin 8 → c'.T.D.toPre.X)), IsLab X₁ ε₁ c yy → IsLab X₁ ε₁ c' yy' → ∃ κ : c.T.D.toPre.X ≃ₗ[ℤ] c'.T.D.toPre.X, ∀ a μ, yy a = QuotientAddGroup.mk μ → yy' a = QuotientAddGroup.mk (fun u => κ (μ u)) := by
   intro g n F W Z i X₁ hg hn ho hi he ht hp ε₁ hε p _ z₁ c c' yy yy' h h'

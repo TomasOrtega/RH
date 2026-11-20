@@ -6,7 +6,7 @@ noncomputable section
 namespace ReciprocityTheory.ChartRestriction.DS.Lap.Base
 
 /- English proof (translation)
-Introduce `k r` and use `StandardBasisEmbedding.main k r`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem b7a : ExistsUnitaryHaarProbability := fun k r => StandardBasisEmbedding.main k r
 

@@ -16,7 +16,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-The claim follows from `Ideal.quotientMap_injective' le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem quotientMap_imageZ_injective (v : (Σ k, ι k) → (Σ k', ι' k')) (W' : Ideal (MRing ι')) :
     Function.Injective (Ideal.quotientMap W' (rename v : MRing ι →ₐ[ℤ] MRing ι').toRingHom
@@ -64,7 +64,7 @@ def genFibreOf (v : (Σ k, ι k) → (Σ k', ι' k')) (W' : Ideal (MRing ι')) [
       simp [g, Ideal.quotientMap_mk] }
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ v W' hW'`. Conclude with `⟨genFibreOf v W'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GenericPointExists.proof : GenericPointExists.Statement := by
   intro K _ ι _ K' _ ι' _ v W' hW'

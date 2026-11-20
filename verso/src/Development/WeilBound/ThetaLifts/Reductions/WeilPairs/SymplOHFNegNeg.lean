@@ -42,21 +42,21 @@ Both sides reduce to the same expression.
 theorem botR_zero : botR (0 : WOF F E nS (nT + nT)) = 0 := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_submatrix _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_topR : Continuous (topR : WOF F E nS (nT + nT) → WOF F E nS nT) :=
   continuous_id.matrix_submatrix _ _
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_submatrix _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_botR : Continuous (botR : WOF F E nS (nT + nT) → WOF F E nS nT) :=
   continuous_id.matrix_submatrix _ _
 
 /- English proof (translation)
-Simplify using `only [hOF, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_sub_distrib]`. Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun c _ => ?_ <;>`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [← finSumFinEquiv.sum_comp, Fintype.sum_sum_type] <;>`. Apply the tactic sequence `simp only [dblG, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, topR, botR, Function.comp_apply, id] <;> simp [dbl]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hOF_dbl (x y : WOF F E nS (nT + nT)) :
     hOF σ JS (dblG JT) x y = hOF σ JS JT (topR x) (topR y) - hOF σ JS JT (botR x) (botR y) := by
@@ -70,33 +70,33 @@ theorem hOF_dbl (x y : WOF F E nS (nT + nT)) :
       Function.comp_apply, id] <;> simp [dbl]
 
 /- English proof (translation)
-Simplify using `only [symplOF, hOF_dbl, mul_sub, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplOF_dbl (x y : WOF F E nS (nT + nT)) :
     symplOF σ JS (dblG JT) ξ₀ x y = symplOF σ JS JT ξ₀ (topR x) (topR y) - symplOF σ JS JT ξ₀ (botR x) (botR y) := by
   simp only [symplOF, hOF_dbl, mul_sub, map_sub]
 
 /- English proof (translation)
-Simplify using `only [symplOHF, symplOF_dbl, mul_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplOHF_dbl (x y : WOF F E nS (nT + nT)) :
     symplOHF σ JS (dblG JT) ξ₀ x y = symplOHF σ JS JT ξ₀ (topR x) (topR y) - symplOHF σ JS JT ξ₀ (botR x) (botR y) := by
   simp only [symplOHF, symplOF_dbl, mul_sub]
 
 /- English proof (translation)
-Simplify using `[symplOHF, symplOF, hOF]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplOHF_neg_neg (x y : WOF F E nS nT) : symplOHF σ JS JT ξ₀ (-x) (-y) = symplOHF σ JS JT ξ₀ x y := by
   simp [symplOHF, symplOF, hOF]
 
 /- English proof (translation)
-Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_eq_conj (hψ t)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_psi {ψ : AddChar (AF F) ℂ} (hψ : ∀ a, ‖ψ a‖ = 1) (t : AF F) : conj (ψ t) = ψ (-t) := by
   rw [AddChar.map_neg_eq_inv, Complex.inv_eq_conj (hψ t)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [heisOF, deltaT_apply, symplOHF_dbl, symplOHF_neg_neg, map_mul, conj_psi hψ, topR_add, botR_add, neg_add, sub_eq_add_neg, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heis_delta {ψ : AddChar (AF F) ℂ} (hψ : ∀ a, ‖ψ a‖ = 1) (w : WOF F E nS (nT + nT))
     (f₁ f₂ : WOF F E nS nT → ℂ) :
@@ -108,21 +108,19 @@ theorem heis_delta {ψ : AddChar (AF F) ℂ} (hψ : ∀ a, ‖ψ a‖ = 1) (w : 
   ring
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.HeisThetaF.isTopologicalRing_AEF (F := F) (E := E)`. Set `tA : WOF F E nS (nT + nT) →+ WOF F E nS nT` to `⟨⟨topR, rfl⟩, fun _ _ => rfl⟩`. Set `bA : WOF F E nS (nT + nT) →+ WOF F E nS nT` to `-⟨⟨botR, rfl⟩, fun _ _ => rfl⟩`. Establish `htA : Continuous tA` using `continuous_topR`. Establish `hbA : Continuous bA` using `continuous_botR.neg`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun γ w => ?_, ?_, ?_, fun k L hL h0 w => ?_⟩` and prove the remaining obligations. Establish `e1 : topR (ratWF (F` using `F) γ) = ratWF (γ.submatrix (finSumFinEquiv ∘ Sum.inl) id) := rfl`. Establish `e2 : -botR (ratWF (F` using `F) γ) = ratWF (-γ.submatrix (finSumFinEquiv ∘ Sum.inr) id) := by`. Use extensionality with `i j`. Simplify using `[ratWF, botR]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [deltaT_apply, topR_add, botR_add, neg_add, symplOHF_dbl]`. Rewrite using `[← symplOHF_neg_neg (botR _), e1, e2, h₁.quasi, h₂.quasi, map_mul, conj_psi hψ, neg_neg, neg_sub, sub_eq_add_neg, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨U₁, hU₁, hf₁⟩` from `h₁.level`. Take `⟨U₂, hU₂, hf₂⟩` from `h₂.level`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U₁.comap tA ⊓ U₂.comap bA, (hU₁.preimage htA).inter (hU₂.preimage hbA), fun u hu h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[heis_delta hψ, hf₁ (topR u) hu.1, hf₂ (-botR u) hu.2]`. Use extensionality with `i j`. Use `congrFun (congrFun h0 (finSumFinEquiv (Sum.inr i))) j` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.zero_apply] at this`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show infPartF F E (-(u (finSumFinEquiv (Sum.inr i)) j)) = 0`. Rewrite using `[map_neg, show infPartF F E (u (finSumFinEquiv (Sum.inr i)) j) = 0 from this, neg_zero]`. Use extensionality with `i j`. Conclude with `congrFun (congrFun h0 (finSumFinEquiv (Sum.inl i))) j`. Conclude with `(h₁.cont.comp htA).mul (Complex.continuous_conj.comp (h₂.cont.comp hbA))`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `a1` using `h₁.smooth k (tA.comp L) (htA.comp hL) (fun t => by`. Use extensionality with `i j`. Conclude with `congrFun (congrFun (h0 t) (finSumFinEquiv (Sum.inl i))) j) (topR w)`. Establish `a2` using `h₂.smooth k (bA.comp L) (hbA.comp hL) (fun t => by`. Use extensionality with `i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun (congrFun (h0 t) (finSumFinEquiv (Sum.inr i))) j` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.zero_apply] at this`. Use `show finPartF F E (-(L t (finSumFinEquiv (Sum.inr i)) j)) = 0`. Rewrite using `[map_neg, this, neg_zero]) (-botR w)`. Establish `a3` using `a1.mul (Complex.conjCLE.contDiff.comp a2)`.
-
-Use `(show (fun t => deltaT f₁ f₂ (w + L t)) = _ from funext fun t => ?_) ▸ a3` and prove the remaining obligations. Simplify using `only [deltaT_apply, topR_add, botR_add, neg_add]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem theta_delta {ψ : AddChar (AF F) ℂ} (hψ : ∀ a, ‖ψ a‖ = 1) {f₁ f₂ : WOF F E nS nT → ℂ}
     (h₁ : IsThetaFunOF σ JS JT ξ₀ ψ f₁) (h₂ : IsThetaFunOF σ JS JT ξ₀ ψ f₂) :
@@ -167,7 +165,7 @@ theorem theta_delta {ψ : AddChar (AF F) ℂ} (hψ : ∀ a, ‖ψ a‖ = 1) {f�
     rfl
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood F E σ B hB).1.2.1`.
+A detailed English derivation is pending.
 -/
 theorem psi_norm {B : Base F E} (hB : B.IsGood σ) : ∀ a, ‖B.ψ a‖ = 1 :=
   (GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood F E σ B hB).1.2.1

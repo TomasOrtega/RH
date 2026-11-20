@@ -41,7 +41,7 @@ structure TwLev (R : RealDat D A Ks) (χ : Formalism.L2.Host.HChar D.host.E) (xi
   guard : ∀ PP ∈ Q, ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal
 
 /- English proof (translation)
-The claim follows from `hC.lev.xi t xi_fin := hC.lev.xi_fin t xi_triv := hC.lev.xi_triv t xi_tame := hC.lev.xi_tame t Q_pl := hC.lev.Q_pl t Q_off := hC.lev.Q_off t Q_de p hp := by obtain ⟨𝔭, h𝔭⟩ := hC.lev.Q_de p hp exact ⟨𝔭, h𝔭, h𝔭 t⟩ Q_ram := hC.lev.Q_ram t xiR := hC.lev.xiR t roots PP hPP := hC.fam.ro …`.
+A detailed English derivation is pending.
 -/
 theorem twLev_of_core {R : RealDat D A Ks} {F : Face D A} (hC : GlobalTheory.Hk3.Core R F) (hG : QGuard R) (t : T0) :
     TwLev R (R.xiH t) (R.xi t) (R.Q t) (R.xiR t) where
@@ -91,13 +91,13 @@ variable {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} 
   {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec} {O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)} {j : Fin D.R.m}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ h => h, fun _ _ _ _ h => h, fun c u hc hu => ⟨c, u, hc, hu, fun _ => rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem Ext.refl : Ext T R κ v₀ O j R v₀ O :=
   ⟨fun _ h => h, fun _ _ _ _ h => h, fun c u hc hu => ⟨c, u, hc, hu, fun _ => rfl⟩⟩
 
 /- English proof (translation)
-Use `⟨fun τ h => h2.1 τ (h1.1 τ h), fun τ ζ Φ Φ' h => h1.2.1 τ ζ Φ Φ' (h2.2.1 τ ζ Φ Φ' h), fun c u hc hu => ?_⟩` and prove the remaining obligations. Take `⟨c1, u1, hc1, hu1, e1⟩` from `h1.2.2 c u hc hu`. Take `⟨c2, u2, hc2, hu2, e2⟩` from `h2.2.2 c1 u1 hc1 hu1`. Conclude with `⟨c2, u2, hc2, hu2, fun x => (e2 x).trans (e1 x)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Ext.trans {T1 T2 : Type} {A1 : FamIn D.what₂.LL G Pl0 T1 D.R.m} {A2 : FamIn D.what₂.LL G Pl0 T2 D.R.m}
     {R1 : RealDat D A1 T.Q.c.F} {R2 : RealDat D A2 T.Q.c.F} {v1 : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R1.MW i σ).Vec}
@@ -110,7 +110,7 @@ theorem Ext.trans {T1 T2 : Type} {A1 : FamIn D.what₂.LL G Pl0 T1 D.R.m} {A2 : 
   exact ⟨c2, u2, hc2, hu2, fun x => (e2 x).trans (e1 x)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨T0', A', R', F', v₀', O', hL.1, hL.2.1, hL.2.2.1, hL.2.2.2.1, hL.2.2.2.2.1, hL.2.2.2.2.2.1, hL.2.2.2.2.2.2.1, hL.2.2.2.2.2.2.2, hE.1, hE.2.1, hE.2.2, t, t', ht, ht'⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasTuples_of_laws {ph : Fin D.R.m → ℂ} {B : Base (Vc D j) (Wc D j)} {ψ ψ' : Twist D Circle} {T0' : Type}
     {A' : FamIn D.what₂.LL G Pl0 T0' D.R.m} {R' : RealDat D A' T.Q.c.F} {F' : Face D A'}

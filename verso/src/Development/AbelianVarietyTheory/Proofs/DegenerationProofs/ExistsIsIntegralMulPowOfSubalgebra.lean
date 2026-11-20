@@ -10,25 +10,23 @@ section
 variable {o Ω : Type*} [CommRing o] [Field Ω] [Algebra o Ω] {J : Type*}
 
 /- English proof (translation)
-Use `set A := Algebra.adjoin o (Set.range fun j => t j / t i) with hA`. Use `haveI : Algebra.FiniteType o A := .adjoin_of_finite (Set.finite_range _)`. Establish `hK : Subfield.closure (Set.range (algebraMap o Ω) ∪ {x | ∃ i j, x = t j / t i}) ≤ Subfield.closure (A : Set Ω)`. Use `Subfield.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `x (⟨a, rfl⟩ | ⟨k, j, rfl⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subfield.subset_closure (A.algebraMap_mem a)`. Establish `: t j / t k = (t j / t i) / (t k / t i)`. Rewrite using `[div_div_div_cancel_right₀ hi]`. Rewrite using `[this]`. Conclude with `div_mem (Subfield.subset_closure (Algebra.subset_adjoin ⟨j, rfl⟩)) (Subfield.subset_closure (Algebra.subset_adjoin ⟨k, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Use `haveI : Algebra.EssFiniteType A Ω := by`. Take `⟨σ, hσ⟩` from `hfin`. Use `(Algebra.essFiniteType_iff _ _).mpr ⟨σ, fun s => ?_⟩` and prove the remaining obligations. Establish `hs : s ∈ Submodule.span _ (σ : Set Ω)` using `hσ ▸ Submodule.mem_top`. Proceed by induction on `hs using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx => exact ⟨1, one_mem _, isUnit_one, by simpa using Algebra.subset_adjoin hx⟩`. Consider the case `zero => exact ⟨1, one_mem _, isUnit_one, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, ha', hx⟩` from `hx`. Take `⟨b, hb, hb', hy⟩` from `hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨a * b, mul_mem ha hb, ha'.mul hb', ?_⟩` and prove the remaining obligations. Establish `: (x + y) * (a * b) = x * a * b + y * b * a` using `by ring`. Rewrite using `[this]`. Conclude with `add_mem (mul_mem hx hb) (mul_mem hy ha)`. Consider the case `smul c x _ hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha, ha', hx⟩` from `hx`. Take `⟨y, hy, w, hw, hc⟩` from `Subfield.mem_closure_iff.mp (hK c.2)`. Establish `hAA : Subring.closure (A : Set Ω) = A.toSubring` using `Subring.closure_eq A.toSubring`. Rewrite `hy`, `hw` using `[hAA]`. Establish `hy' : y ∈ Algebra.adjoin A (σ : Set Ω)` using `Subalgebra.algebraMap_mem _ (⟨y, hy⟩ : A)`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hw' : w ∈ Algebra.adjoin A (σ : Set Ω)` using `Subalgebra.algebraMap_mem _ (⟨w, hw⟩ : A)`. Distinguish the cases in `hw0 : w = 0`. Use `⟨1, one_mem _, isUnit_one, ?_⟩` and prove the remaining obligations. Establish `: (c : Ω) = 0` using `by rw [← hc, hw0, div_zero]`. Rewrite using `[Subfield.smul_def, this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨a * w, mul_mem ha hw', ha'.mul (IsUnit.mk0 _ hw0), ?_⟩` and prove the remaining obligations. Establish `: c • x * (a * w) = y * (x * a)`. Rewrite using `[Subfield.smul_def, ← hc, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[this]`. Conclude with `mul_mem hy' hx`. Use `haveI := finite_integralClosure_of_essFiniteType_field o A Ω`. Take `⟨s, hs⟩` from `(inferInstance : Module.Finite A (integralClosure A Ω))`. Use `⟨(integralClosure A Ω).val.toLinearMap '' s, s.finite_toSet.image _, ?_, fun x hx => ?_⟩` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`. Rewrite using `[Submodule.span_image, hs]`. Conclude with `⟨⟨x, hx⟩, trivial, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_finite_span_isIntegral_chart [IsDedekindDomain o] [CharZero Ω] [Finite J]
     (t : J → Ω) {i : J} (hi : t i ≠ 0)
@@ -91,15 +89,15 @@ theorem exists_finite_span_isIntegral_chart [IsDedekindDomain o] [CharZero Ω] [
     exact ⟨⟨x, hx⟩, trivial, rfl⟩
 
 /- English proof (translation)
-Establish `hu : t i / t j ∈ Algebra.adjoin o (Set.range fun k => t k / t j)` using `Algebra.subset_adjoin ⟨i, rfl⟩`. Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: t k / t i * (t i / t j) ^ 1 = t k / t j`. Rewrite using `[pow_one, div_mul_div_cancel₀ hi]`. Rewrite using `[this]`. Conclude with `Algebra.subset_adjoin ⟨k, rfl⟩`. Consider the case `algebraMap a => exact ⟨0, by simp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨n, hx⟩` from `hx`. Take `⟨m, hy⟩` from `hy`. Use `⟨n + m, ?_⟩` and prove the remaining obligations. Establish `: (x + y) * (t i / t j) ^ (n + m) = x * (t i / t j) ^ n * (t i / t j) ^ m + y * (t i / t j) ^ m * (t i / t j) ^ n` using `by ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `add_mem (mul_mem hx (pow_mem hu _)) (mul_mem hy (pow_mem hu _))`. Consider the case `mul x y _ _ hx hy`. Take `⟨n, hx⟩` from `hx`. Take `⟨m, hy⟩` from `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨n + m, ?_⟩` and prove the remaining obligations. Establish `: x * y * (t i / t j) ^ (n + m) = x * (t i / t j) ^ n * (y * (t i / t j) ^ m)` using `by ring`. Rewrite using `[this]`. Conclude with `mul_mem hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_pow_mem_chart (t : J → Ω) {i : J} (j : J) (hi : t i ≠ 0) {r : Ω}
     (hr : r ∈ Algebra.adjoin o (Set.range fun k => t k / t i)) :
@@ -132,19 +130,17 @@ theorem exists_mul_pow_mem_chart (t : J → Ω) {i : J} (j : J) (hi : t i ≠ 0)
     exact mul_mem hx hy
 
 /- English proof (translation)
-Establish `hB : ∀ x ∈ B, IsIntegral B x` using `fun x hx => isIntegral_algebraMap (x := (⟨x, hx⟩ : B))`. It suffices to establish `∃ N : ℕ, IsIntegral B (z * u ^ N) by`. Take `⟨N, hN⟩` from `this`. Use `⟨N, fun M hM => ?_⟩` and prove the remaining obligations. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hM`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pow_add, ← mul_assoc]`. Conclude with `hN.mul (hB _ (pow_mem hu _))`. Take `⟨p, hp, hz⟩` from `hz`. Use `choose n hn using fun r : A => hr r r.2`. Set `N` to `p.support.sup fun i => n (p.coeff i)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN : ∀ i k, k ≠ 0 → IsIntegral B (algebraMap A Ω (p.coeff i) * (u ^ N) ^ k)`. Introduce `i k hk`. Distinguish the cases in `hi : i ∈ p.support`. Establish `h1 : n (p.coeff i) ≤ N * k` using `(Finset.le_sup (f := fun i => n (p.coeff i)) hi).trans (Nat.le_mul_of_pos_right _ (Nat.pos_of_ne_zero hk))`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le h1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_mul, hd, pow_add, ← mul_assoc]`. Conclude with `hB _ (mul_mem (hn _) (pow_mem hu _))`. Rewrite using `[notMem_support_iff.mp hi, map_zero, zero_mul]`. Conclude with `isIntegral_zero`. Set `q` to `p.map (algebraMap A Ω)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq : q.Monic` using `hp.map _`. Establish `hqz : q.eval z = 0` using `by rw [eval_map, hz]`. Establish `hq0 : q.natDegree ≠ 0`. Introduce `h`. Rewrite `hqz` using `[hq.natDegree_eq_zero.mp h]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `at hqz`. Use `⟨N, IsIntegral.of_aeval_monic_of_isIntegral_coeff (p := q.scaleRoots (u ^ N)) ((monic_scaleRoots_iff _).mpr hq) (by rwa [natDegree_scaleRoots]) ?_ fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, scaleRoots_eval_mul, hqz, mul_zero]`. Conclude with `isIntegral_zero`. Rewrite using `[coeff_scaleRoots]`.
-
-Break down `lt_trichotomy i q.natDegree with h | rfl | h` into its components or cases. Rewrite using `[coeff_map]`. Conclude with `hN _ _ (by omega)`. Simplify `isIntegral_one` using `[hq.coeff_natDegree]`. Simplify `isIntegral_zero` using `[coeff_eq_zero_of_natDegree_lt h]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_isIntegral_mul_pow_of_subalgebra (A B : Subalgebra o Ω) {u : Ω} (hu : u ∈ B)
     (hr : ∀ r ∈ A, ∃ n : ℕ, r * u ^ n ∈ B) {z : Ω} (hz : IsIntegral A z) :
@@ -189,19 +185,17 @@ theorem exists_isIntegral_mul_pow_of_subalgebra (A B : Subalgebra o Ω) {u : Ω}
     · simpa [coeff_eq_zero_of_natDegree_lt h] using isIntegral_zero
 
 /- English proof (translation)
-Set `y : J → C.toSubring` to `fun i => ⟨_, hC i⟩`. Distinguish the cases in `hI : Ideal.span (Set.range y) = ⊤`. Take `⟨c, hc⟩` from `Ideal.mem_span_range_iff_exists_fun.mp ((Ideal.eq_top_iff_one _).mp hI)`. Use `⟨fun i => ⟨c i, (c i).2⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg C.toSubring.subtype hc`.
+Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[map_sum, map_one]`. Conclude with `h`. It suffices to derive a contradiction. Take `⟨V, hV, hV'⟩` from `Ideal.image_subset_nonunits_valuationSubring _ hI`. Take `⟨i₀, hi₀⟩` from `ht`.
+Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, -, hi⟩` from `Finset.exists_max_image Finset.univ (fun j => V.valuation (t j)) ⟨i₀, Finset.mem_univ _⟩`. Establish `hv : 0 < V.valuation (t i)` using `((V.valuation.pos_iff).mpr hi₀).trans_le (hi _ (Finset.mem_univ _))`. Establish `hti : t i ≠ 0` using `(V.valuation.pos_iff).mp hv`. Establish `hle : ∀ x ∈ Algebra.adjoin o (Set.range fun j => t j / t i), x ∈ V`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Rewrite using `[← V.valuation_le_one_iff, map_div₀, div_le_one₀ hv]`. Conclude with `hi _ (Finset.mem_univ _)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `algebraMap a => exact hV (C.algebraMap_mem a)`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`. Establish `h1 : IsIntegral V (w / t i ^ e)` using `(hw i hti).map_of_comp_eq (T := V) ((Algebra.adjoin o (Set.range fun j => t j / t i)).val.toRingHom.codRestrict V fun x => hle x x.2) (RingHom.id Ω) rfl`. Take `⟨v, hv1⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h1`.
+Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : V.valuation (w / t i ^ e) ≤ 1`. Rewrite using `[V.valuation_le_one_iff, ← hv1]`. Conclude with `v.2`. Establish `h3 : V.valuation (t i ^ e / w) < 1` using `V.mem_nonunits_iff.mp (hV' ⟨y i, Ideal.subset_span ⟨i, rfl⟩, rfl⟩)`. Establish `h4 : V.valuation (t i ^ e / w) * V.valuation (w / t i ^ e) = 1`.
-
-Rewrite using `[← map_mul, div_mul_div_cancel₀ hw0, div_self (pow_ne_zero _ hti), map_one]`. Conclude with `(mul_lt_one_of_lt_of_le h3 h2).ne h4`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum_mul_pow_div_eq_one [Fintype J] (t : J → Ω) (ht : ∃ i, t i ≠ 0) (e : ℕ) {w : Ω}
     (hw0 : w ≠ 0) (hw : ∀ i, t i ≠ 0 →
@@ -250,27 +244,23 @@ theorem exists_sum_mul_pow_div_eq_one [Fintype J] (t : J → Ω) (ht : ∃ i, t 
 end
 
 /- English proof (translation)
-Set `A : J → Subalgebra o Ω` to `fun i => Algebra.adjoin o (Set.range fun j => t j / t i)`. Establish `hA : ∀ i, ∀ x ∈ A i, IsIntegral (A i) x` using `fun i x hx => isIntegral_algebraMap (x := (⟨x, hx⟩ : A i))`. Establish `hmem : ∀ i j, t j / t i ∈ A i` using `fun i j => Algebra.subset_adjoin ⟨j, rfl⟩`. Use `choose G hG hGi hGs using fun i : {i // t i ≠ 0} => exists_finite_span_isIntegral_chart (o := o) t i.2 hfin`. Use `haveI : ∀ i, Finite (G i) := fun i => (hG i).to_subtype`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `choose N hN using fun a : (Σ i, G i) × J => exists_isIntegral_mul_pow_of_subalgebra (A a.1.1) (A a.2) (hmem a.2 a.1.1) (fun r hr => exists_mul_pow_mem_chart t a.2 a.1.1.2 hr) (hGi _ _ a.1.2.2)`. Take `⟨d, hd⟩` from `(Set.finite_range N).bddAbove`. Set `Z : Set Ω` to `Set.range (fun a : J × J => t a.1 ^ d * t a.2) ∪ Set.range (fun a : (Σ i, G i) => (a.2 : Ω) * t a.1 ^ (d + 1))`. Establish `hZ : Z.Finite` using `(Set.finite_range _).union (Set.finite_range _)`. Take `⟨n, z, -, hz⟩` from `hZ.fin_param`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hzt : ∀ i j, ∃ k, z k = t i ^ d * t j` using `fun i j => (hz.ge (Or.inl ⟨(i, j), rfl⟩) :)`. Take `_ | n` from `n`. Take `⟨i, -⟩` from `ht`. Take `⟨k, -⟩` from `hzt i i`. Conclude with `k.elim0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzi : ∀ k i, t i ≠ 0 → IsIntegral (A i) (z k / t i ^ (d + 1))`. Introduce `k i hi`. Take `⟨a, ha⟩ | ⟨a, ha⟩ : z k ∈ Z` from `hz.le ⟨k, rfl⟩`. Establish `: z k / t i ^ (d + 1) = (t a.1 / t i) ^ d * (t a.2 / t i)`. Rewrite using `[← ha, div_pow, div_mul_div_comm, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hA _ _ (mul_mem (pow_mem (hmem _ _) _) (hmem _ _))`. Establish `: z k / t i ^ (d + 1) = a.2 * (t a.1 / t i) ^ (d + 1)`. Rewrite using `[← ha, div_pow, mul_div_assoc]`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hN (a, i) _ ((hd ⟨_, rfl⟩).trans (Nat.le_succ d))`. Establish `hzp : ∀ i, ∃ k, z k = t i ^ (d + 1)` using `fun i => by simpa [pow_succ] using hzt i i`. Use `⟨d + 1, n, z, Nat.le_add_left _ _, hzp, fun i hi x => ⟨fun hx => ?_, fun hx => ?_⟩, fun k hk => exists_sum_mul_pow_div_eq_one t ht _ hk (hzi k) _ fun i => ?_⟩` and prove the remaining obligations. Establish `: Algebra.adjoin o (Set.range fun k => z k / t i ^ (d + 1)) ≤ (integralClosure (A i) Ω).restrictScalars o`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `hzi k i hi`. Conclude with `this hx`. Establish `h1 : A i ≤ Algebra.adjoin o (Set.range fun k => z k / t i ^ (d + 1))`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨k, hk⟩` from `hzt i j`. Use `Algebra.subset_adjoin ⟨k, ?_⟩` and prove the remaining obligations. Simplify using `only [hk]`. Rewrite using `[pow_succ, mul_div_mul_left _ _ (pow_ne_zero _ hi)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Treat this case separately.
 
-Establish `h2` using `hGs ⟨i, hi⟩ x hx`. Use `clear hx`. Proceed by induction on `h2 using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨k, hk⟩ : y * t i ^ (d + 1) ∈ Set.range z` from `hz.ge (Or.inr ⟨⟨⟨i, hi⟩, y, hy⟩, rfl⟩)`.
-
-Use `Algebra.subset_adjoin ⟨k, ?_⟩` and prove the remaining obligations. Simplify using `only [hk]`. Clear the denominators using the available nonvanishing facts. Consider the case `zero => exact zero_mem _`. Consider the case `add y w _ _ hy hw => exact add_mem hy hw`.
-
-Consider the case `smul c y _ hy => exact mul_mem (h1 c.2) hy`. Take `⟨l, hl⟩` from `hzp i`. Conclude with `Algebra.subset_adjoin ⟨l, by simp only [hl]⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_tuple_normalisation_charts (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω]
     [IsDedekindDomain o] [CharZero Ω] (_hinj : Function.Injective (algebraMap o Ω)) (J : Type)

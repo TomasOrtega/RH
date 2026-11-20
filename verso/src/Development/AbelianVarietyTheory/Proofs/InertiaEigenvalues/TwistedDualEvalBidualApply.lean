@@ -19,9 +19,9 @@ variable {R : Type*} [CommRing R] {G : Type*} [Group G] [TopologicalSpace G]
   [IsTopologicalAddGroup P] [ContinuousConstSMul R P]
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with | H x =>`. Proceed by induction on `y using Submodule.Quotient.induction_on with | H y =>`. Rewrite using `[eq_neg_iff_add_eq_zero]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (cupCocycleZ1Z1 rho' rho rhoP b.flip hb' hbe' h y x + cupCocycleZ1Z1 rho rho' rhoP b hb hbe h' x y) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+Proceed by induction. Proceed by induction. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `(separated_dvr_second_cohomology_mem _ _).2 ⟨fun g => -b (x.1 g) (y.1 g), (hb.comp (x.2.1.prodMk y.2.1)).neg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Take `⟨g, k⟩` from `p`. Express the relevant statement in the definitionally equal form `_ = b (rho g (x.1 k)) (y.1 g) + b (x.1 g) (rho' g (y.1 k))`. Simplify using `only [d1_apply, map_neg, ← hbe, x.2.2 g k, y.2.2 g k, map_add, LinearMap.add_apply]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -47,9 +47,9 @@ theorem cupH11_anticomm (rho : Representation R G M) (rho' : Representation R G 
   abel
 
 /- English proof (translation)
-Establish `he' : ∀ g m, u.symm.toLinearMap (rho' g m) = rho g (u.symm.toLinearMap m)` using `fun g m => by`. Apply `u.injective` to reduce the goal to its premises. Use `he g (u.symm m)` as an intermediate fact. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at this ⊢`. Conclude with `this.symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Function.bijective_iff_has_inverse.2 ⟨mapH1 rho' rho u.symm.toLinearMap hu' he', fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z => exact congrArg Submodule.Quotient.mk (Subtype.ext (funext fun g => u.symm_apply_apply _))`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z => exact congrArg Submodule.Quotient.mk (Subtype.ext (funext fun g => u.apply_symm_apply _))`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mapH1_bijective (rho : Representation R G M) (rho' : Representation R G M')
     (u : M ≃ₗ[R] M') (hu : Continuous u.toLinearMap) (hu' : Continuous u.symm.toLinearMap)
@@ -74,7 +74,7 @@ section Dual
 variable {R : Type*} [CommRing R] {Γ : Type*} [Group Γ] {M : Type*} [AddCommGroup M] [Module R M]
 
 /- English proof (translation)
-The claim follows from `Finite.of_injective _ (DFunLike.coe_injective (F := TDual R M))`.
+A detailed English derivation is pending.
 -/
 theorem finite_TDual [Finite R] [Finite M] : Finite (TDual R M) :=
   Finite.of_injective _ (DFunLike.coe_injective (F := TDual R M))
@@ -88,7 +88,7 @@ Both sides reduce to the same expression.
     (evalBidual m : TDual R (TDual R M)) φ = φ m := rfl
 
 /- English proof (translation)
-Use extensionality with `φ`. Simplify using `only [twistedDual_evalBidual_apply, twDual_apply, inv_inv, map_inv]`. Rewrite using `[← mul_assoc, Units.mul_inv, one_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalBidual_equiv (χ : Γ →* Rˣ) (rho : Representation R Γ M) (g : Γ) (m : M) :
     evalBidual (rho g m) = twDual χ (twDual χ rho) g (evalBidual m) := by
@@ -99,7 +99,7 @@ theorem evalBidual_equiv (χ : Γ →* Rˣ) (rho : Representation R Γ M) (g : �
 variable [TopologicalSpace R] [DiscreteTopology R] [TopologicalSpace M] [DiscreteTopology M]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun (p : Γ × TDual R M) (m : M) => twDual χ rho p.1 p.2 m` using `continuous_pi fun m => hχ.comp (continuous_fst.prodMk ((continuous_of_discreteTopology (f := fun q : TDual R M × M => q.1 q.2)).comp (continuous_snd.prodMk (h.comp (continuous_fst.inv.prodMk continuous_const)))))`. Conclude with `(IsLocallyConstant.desc _ (fun (φ : TDual R M) (m : M) => φ m) ((IsLocallyConstant.iff_continuous _).2 h1) DFunLike.coe_injective).continuous`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contAction_twDual [TopologicalSpace Γ] [ContinuousInv Γ] [Finite M] {χ : Γ →* Rˣ}
     {rho : Representation R Γ M} (hχ : ContAction (charRep χ)) (h : ContAction rho) :
@@ -117,7 +117,7 @@ def evalH1 (χ : D →* Rˣ) (rho : Representation R D M) : H1 rho →ₗ[R] H1 
   mapH1 rho _ evalBidual continuous_of_discreteTopology (evalBidual_equiv χ rho)
 
 /- English proof (translation)
-Establish `e` using `cupH11_anticomm ((twDual χ rho).comp φ) (rho.comp φ) ((charRep χ).comp φ) evalPair.flip continuous_of_discreteTopology (fun g y x => evalPair_equiv χ rho (φ g) x y) continuous_of_discreteTopology (fun g x y => evalPair_equiv χ rho (φ g) x y) h' h y (resH1 rho φ hφ x)`. Use `Eq.trans ?_ e` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with | H x =>`. Proceed by induction on `y using Submodule.Quotient.induction_on with | H y =>`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Proceed by induction. Both sides reduce to the same expression.
 -/
 theorem cup11_res_evalH1 [TopologicalSpace Γ] (χ : Γ →* Rˣ) (rho : Representation R Γ M)
     (φ : D →* Γ) (hφ : Continuous φ) (h : ContAction (rho.comp φ))
@@ -136,7 +136,7 @@ theorem cup11_res_evalH1 [TopologicalSpace Γ] (χ : Γ →* Rˣ) (rho : Represe
 end Dual
 
 /- English proof (translation)
-The claim follows from `mapH1_bijective rho _ (LinearEquiv.ofBijective (evalBidual (R := ZMod n) (M := M)) (GlobalTheory.TateTop.eval_bijective (n := n) (M := M))) continuous_of_discreteTopology continuous_of_discreteTopology (evalBidual_equiv χ rho)`.
+A detailed English derivation is pending.
 -/
 theorem evalH1_bijective {n : ℕ} [NeZero n] {Γ : Type*} [Group Γ] [TopologicalSpace Γ] {M : Type}
     [AddCommGroup M] [Module (ZMod n) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]
@@ -161,14 +161,14 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
 
 omit [TopologicalSpace M] [DiscreteTopology M] in
 /- English proof (translation)
-The claim follows from `haveI : NeZero (l ^ r) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩ finite_TDual`.
+A detailed English derivation is pending.
 -/
 theorem finite_TDual_pow : Finite (TDual (ZMod (l ^ r)) M) :=
   haveI : NeZero (l ^ r) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
   finite_TDual
 
 /- English proof (translation)
-Establish `: NeZero (l ^ r)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Rewrite using `[h.mem_range_localization_H1_iff, (evalH1_bijective μ ρ).2.forall]`. Use `forall_congr' fun x => ?_` and prove the remaining obligations. Simplify using `only [cup11_res_evalH1 μ ρ _ _ (hρ.comp' (continuous_locFam S Av _)), map_neg, Finset.sum_neg_distrib, neg_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mem_range_loc1_twDual_iff (hρ : ContAction ρ) {hρ' : ContAction (twDual μ ρ)}
     (h : NineTermExact S Av μ j (twDual μ ρ) hρ')
@@ -187,7 +187,7 @@ end Global
 open GlobalTheory.Published GlobalTheory.Published.PoitouTate in
 
 /- English proof (translation)
-Take `⟨inv, hinv, h⟩` from `h F Ω l r hr ζ hζ`. Use `⟨inv, hinv, fun S hS Av hA μ hμ M _ _ _ _ _ ρ hρ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(h S hS Av hA μ hμ M ρ hρ).1.mem_range_localization_H1_iff`. Use `finite_TDual_pow (l := l) (r := r) (M := M)` as an intermediate fact. Conclude with `mem_range_loc1_twDual_iff hρ (h S hS Av hA μ hμ _ (twDual μ ρ) (contAction_twDual (contAction_charRep hμ) hρ)).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exact_annihilators (h : PoitouTateTotallyComplex)
     (F Ω : Type) [Field F] [NumberField F] [IsTotallyComplex F] [Field Ω] [Algebra F Ω]

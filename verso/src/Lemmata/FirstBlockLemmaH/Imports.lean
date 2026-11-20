@@ -3,15 +3,15 @@ import Mathlib
 namespace Bl.FirstBlockLemmaH
 
 /- English proof (translation)
-Introduce `E _ _ V _ _ _ _ ι _ _ b M hM`. Take `⟨S, hS⟩` from `Module.Finite.iff_fg.mp hM`. Take `⟨s, hs⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (NumberField.RingOfIntegers E)) (S ×ˢ (Finset.univ : Finset ι)) (fun p : V × ι => b.repr p.1 p.2)`. Use `⟨s, s.2, ?_⟩` and prove the remaining obligations. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv` using `[← hS]`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Introduce `i`. Establish `h` using `hs (x, i) (Finset.mem_product.mpr ⟨Finset.mem_coe.mp hx, Finset.mem_univ _⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[IsLocalization.IsInteger, Algebra.smul_def]`. Conclude with `RingHom.mem_range.mpr (RingHom.mem_rangeS.mp h)`. Consider the case `zero`. Introduce `i`. Rewrite using `[map_zero, Finsupp.zero_apply, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Introduce `i`. Rewrite using `[map_add, Finsupp.add_apply, mul_add]`. Conclude with `add_mem (hx i) (hy i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul a x _ hx`. Introduce `i`. Rewrite using `[← algebraMap_smul E a x, map_smul, Finsupp.smul_apply, smul_eq_mul, mul_left_comm]`. Conclude with `mul_mem (RingHom.mem_range_self _ a) (hx i)`.
+A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {E : Type} [inst : Field.{0} E] [NumberField.{0} E] {V : Type} [inst_2 : AddCommGroup.{0} V]

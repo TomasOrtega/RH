@@ -11,15 +11,15 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.SiegelTor GlobalTheory.EndLoc
 
 /- English proof (translation)
-Introduce `h M B _ ζ O _ S S₁ S₂ s s₁ s₂ z act g₁ y w₁ act₁ w₂ act₂ m₁ m₂`. Take `⟨φ₁, φ₁₂, h1, s1, p1, l1, a1⟩` from `m₁`. Take `⟨φ₂, φ₂₂, h2, s2, p2, l2, a2⟩` from `m₂`. Establish `hw : φ₂ ≫ z.A.hom = (w₂.A.hom ≫ y) ≫ g₁` using `by rw [h2.1.w, Category.assoc]`. Set `ψ : w₂.A.left ⟶ w₁.A.left` to `h1.1.lift φ₂ (w₂.A.hom ≫ y) hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hψ₁ : ψ ≫ φ₁ = φ₂` using `h1.1.lift_fst _ _ _`. Establish `hψ : ψ ≫ w₁.A.hom = w₂.A.hom ≫ y` using `h1.1.lift_snd _ _ _`. Set `ψ₂ : (G2 w₂.A).left ⟶ (G2 w₁.A).left` to `ActUnr.sqMap hψ`. Establish `sψ : IsSquare ψ ψ₂` using `⟨ActUnr.sqMap_fst hψ, ActUnr.sqMap_snd hψ⟩`. Establish `e₂ : φ₂₂ = ψ₂ ≫ φ₁₂`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `ActUnr.left_hom_ext` to reduce the goal to its premises. Rewrite using `[s2.1, Category.assoc, s1.1, ← Category.assoc, sψ.1, Category.assoc, hψ₁]`. Rewrite using `[s2.2, Category.assoc, s1.2, ← Category.assoc, sψ.2, Category.assoc, hψ₁]`. Establish `n : IsGrpPullback w₂.A z.A (y ≫ g₁) (ψ ≫ φ₁)` using `by rw [hψ₁]; exact h2`. Use `⟨ψ, ψ₂, IsGrpPullback.cancel h1 n hψ, sψ, ?_, fun a => ?_, fun o => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LBIso.trans w₂.isLB (pull_isLB z.isLB _) (pull_isLB w₁.isLB _) p2 ?_` and prove the remaining obligations. Use `LBIso.trans (pull_isLB z.isLB _) (pull_isLB (pull_isLB z.isLB _) _) (pull_isLB w₁.isLB _) (GlobalTheory.GenSpread.lbIso_pull_pull z.isLB ψ₂ e₂) ?_` and prove the remaining obligations. Conclude with `GlobalTheory.GenSpread.lbIso_pullback (LBIso.symm p1) ψ₂`. Apply `h1.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψ₁, l2 a, Category.assoc, Category.assoc, l1 a]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hψ, ← Category.assoc, Over.w (w₂.lev a), Category.assoc, Over.w (w₁.lev a)]`. Simplify using the standard rewrite rules. Apply `h1.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψ₁, a2 o, Category.assoc, a1 o, ← Category.assoc, hψ₁]`. Rewrite using `[Category.assoc, hψ, ← Category.assoc, Over.w (act₂ o), Category.assoc, Over.w (act₁ o), hψ]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actPB_cancel : ∀ (h M : ℕ) (B : Type) [CommRing B] (ζ : B) (O : Type) [Ring O] (S S₁ S₂ : Scheme.{0})
     (s : S ⟶ Sp B) (s₁ : S₁ ⟶ Sp B) (s₂ : S₂ ⟶ Sp B) (z : SiegPre h M ζ s) (act : O → (z.A ⟶ z.A)) (g₁ : S₁ ⟶ S)

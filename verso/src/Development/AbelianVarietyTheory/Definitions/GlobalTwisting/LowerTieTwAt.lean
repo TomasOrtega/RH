@@ -75,7 +75,7 @@ def RowVal (u : B.Word) (a : I.ι) (G : (I.per l u a).Mt) : Prop :=
     (I.perIn u a).rd B.fields.emb B.embLL G c = MvPolynomial.map B.embLL y.1
 
 /- English proof (translation)
-Introduce `c` and use `⟨0, Submodule.zero_mem _, by rw [map_zero]; exact (map_zero _).symm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem rowVal_zero (u : B.Word) (a : I.ι) : RowVal I l u a 0 := fun c => ⟨0, Submodule.zero_mem _, by
   rw [map_zero]; exact (map_zero _).symm⟩

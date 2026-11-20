@@ -19,11 +19,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ}
 
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.WeilDeligne in
 /- English proof (translation)
-Establish `hν` using `GlobalTheory.HeckeGal.Model.absPow_isAbsPow E s`. Establish `hr' : (π.twist (GlobalTheory.HeckeGal.Model.absPow E s)).IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Rewrite using `[((ParLaws.hasInfChar_infChar π τ).twist _).infChar_eq, (InfType.expo_of_infType E _).2.1 s hν τ]`. Use `⟨(hr τ).1.map (add_left_injective _), fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(hr τ).2 y hy`. Proceed by induction on `π using Quotient.inductionOn with | _ π =>`. Take `⟨r, wt, HT, H⟩` from `hG E Ω l ι a ha _ _ hr' (isPolarized_twist_absPow hc s)`. Use `⟨r, Units.continuous_val.comp H.cont, fun w hl A h => ?_⟩` and prove the remaining obligations. Establish `k` using `H.aw_locPar hL hF hl h`.
+Proceed by induction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `locPar_twist_absPow hL hF (CG.mk π) hν h`. Conclude with `(congrArg (fun x : WD h => UpperTheory.GalS.Aw (wdOf h hl ι r) (x.lpTw ((1 - (a : ℝ)) / 2))) e).mp k`.
+A detailed English derivation is pending.
 -/
 theorem exists_rep_alt (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
     (hG : UpperTheory.GalS.CuspU) (Ω : Type) [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ}
@@ -55,13 +55,11 @@ variable {hL : GlobalTheory.Published.LocalLanglandsGL} (hF : GlobalTheory.Publi
 
 include hF C in
 /- English proof (translation)
-Introduce `a ha π hc s hs`. Use `host_isCMField D.host` as an intermediate fact. Take `⟨r, h1, h3⟩` from `exists_rep_alt hL hF hG D.nd.Om ι ha (C.e a π).1 ((C.csd a π).1 hc) s fun τ => by`. Use `hs τ` as an intermediate fact. Rewrite `this` using `[C.inf]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hfin : ∀ᶠ w : PlE D.host in cofinite, ((l : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal`. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 D.host.E)} ≠ 0` using `by simpa using hp.out.ne_zero`. Conclude with `((Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.2 hv).eventually_cofinite_notMem`. Use `⟨fun z σ => (r σ : Matrix (Fin a) (Fin a) (Qbar l)).charpoly.eval z, fun z => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.eval_charpoly]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(continuous_const.sub h1).matrix_det`. Use `filter_upwards [hfin, D.naut.locG_unr_ae π] with w hl hu B σ hB hσ z`. Establish `hu'` using `(D.naut.unr_tw _ (s + (1 - (a : ℝ)) / 2)).2 hu`. Establish `e : T.e w (D.naut.lpTw (D.naut.locG π w) (s + (1 - (a : ℝ)) / 2)) = wdOf (D.nd.plOm.2 w) hl ι r`. Establish `hu2` using `(T.unr w _).1 hu'`.
-
-Rewrite `hu2`, the goal using `[← D.naut.lpTw_add, T.tw, T.tw, C.loc]`. Conclude with `((h3 w hl _ _).eq_unr hu2).symm`. Rewrite using `[galPol, T.frobEig w _ hu', e, ← frobEig_wdOf hl ι h1 (e ▸ (T.unr w _).1 hu') hB hσ]`. Conclude with `(eval_map_apply ι.toRingHom _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspFam_alt (hG : UpperTheory.GalS.CuspU) {l : ℕ} [hp : Fact l.Prime] (ι : Qbar l ≃+* ℂ) :
     CuspFam D.naut ι := by
@@ -94,11 +92,11 @@ namespace GlobalTheory.HeightCounting
 open Formalism.BasicNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host GlobalTheory.CuspRep GlobalTheory.WeilDeligne NumberField IsDedekindDomain Polynomial
 
 /- English proof (translation)
-Introduce `l _ ι a ha π hc hr`. Use `host_isCMField D.host` as an intermediate fact. Establish `hr' : (C.e a π).1.IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Use `(D.naut.ralg_def π).1 hr τ` as an intermediate fact. Rewrite `this` using `[C.inf]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨r, h1, h2, h3⟩` from `UpperTheory.GalS.exists_aw hL hF hG D.nd.Om ι ha (C.e a π).1 ((C.csd a π).1 hc) hr'`. Use `⟨r, h1, h2, ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_natCast_notMem D.host.E l, D.naut.locG_unr_ae π] with w hl hu B σ hB hσ`. Establish `hu'` using `(D.naut.unr_tw _ ((1 - (a : ℝ)) / 2)).2 hu`. Establish `e : T.e w (D.naut.lpTw (D.naut.locG π w) ((1 - (a : ℝ)) / 2)) = wdOf (D.nd.plOm.2 w) hl ι r`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu2` using `(T.unr w _).1 hu'`. Rewrite `hu2`, the goal using `[T.tw, C.loc]`. Conclude with `((h3 w hl _ _).eq_unr hu2).symm`. Rewrite using `[galPol, T.frobEig w _ hu', e]`. Conclude with `frobEig_wdOf hl ι h1 (e ▸ (T.unr w _).1 hu') hB hσ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CGTrue.galEx_alt (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
     (hG : UpperTheory.GalS.CuspU) {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (C : CGTrue hL D T) :
@@ -128,11 +126,11 @@ namespace GlobalTheory.GalAllPlaces
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.CuspRep GlobalTheory.WeilDeligne Polynomial
 
 /- English proof (translation)
-Use `host_isCMField D.host` as an intermediate fact. Establish `hr' : (C.e a π).1.IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Use `(D.naut.ralg_def π).1 hr τ` as an intermediate fact. Rewrite `this` using `[C.inf]`. Then use the resulting hypothesis. Take `⟨r, h1, h2, h3⟩` from `UpperTheory.GalS.exists_aw hL hF hG D.nd.Om ι ha (C.e a π).1 ((C.csd a π).1 hc) hr'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `⟨r, h1, fun w hl hu B σ hB hσ => ?_⟩` and prove the remaining obligations. Establish `hu'` using `(D.naut.unr_tw _ ((1 - (a : ℝ)) / 2)).2 hu`. Establish `e : T.e w (D.naut.lpTw (D.naut.locG π w) ((1 - (a : ℝ)) / 2)) = wdOf (D.nd.plOm.2 w) hl ι r`. Establish `hu2` using `(T.unr w _).1 hu'`. Rewrite `hu2`, the goal using `[T.tw, C.loc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `((h3 w hl _ _).eq_unr hu2).symm`. Rewrite using `[galPol, T.frobEig w _ hu', e]`. Conclude with `frobEig_wdOf hl ι h1 (e ▸ (T.unr w _).1 hu') hB hσ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_galois_rep_charpoly_frobenius_eq_twisted_local_poly (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
     (hG : UpperTheory.GalS.CuspU) {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (C : CGTrue hL D T)
@@ -169,35 +167,33 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.CsdTwistGal
 
 /- English proof (translation)
-Introduce `hG _ _ _ _ hLL E Ω _ _ _ _ _ _ _ l _ ι a ha P hP m hm hnd f J hJ`. Establish `hτ : ∀ σ : E →+* ℂ, ι.toRingHom.comp (ι.symm.toRingHom.comp σ) = σ` using `fun σ => by`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hint : ∀ σ : E →+* ℂ, ∀ z ∈ m σ, ∃ k : ℤ, f - z = k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `σ z hz`. Establish `h1` using `hJ (ι.symm.toRingHom.comp σ)`. Rewrite `h1` using `[hτ]`. Establish `h2 : f - z ∈ (m σ).map (fun z => f - z)` using `Multiset.mem_map_of_mem _ hz`. Rewrite `h2` using `[← h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, -, hk⟩` from `Multiset.mem_map.1 h2`. Conclude with `⟨k, hk.symm⟩`. Establish `hfre : f = ((f.re : ℝ) : ℂ)`. Take `⟨τ0⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Take `⟨z, hz⟩ : ∃ z, z ∈ m τ0` from `Multiset.card_pos_iff_exists_mem.1 (by rw [(hm τ0).1]; omega)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc` using `infChar_conj_of_isCsd E a P hP τ0 _ _ (hm τ0) (hm _)`. Establish `hz' : -z ∈ m (NumberField.ComplexEmbedding.conjugate τ0)`. Rewrite using `[hc]`. Conclude with `Multiset.mem_map_of_mem _ hz`. Take `⟨k1, hk1⟩` from `hint _ z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k2, hk2⟩` from `hint _ _ hz'`. Establish `e1` using `congrArg Complex.im hk1`. Establish `e2` using `congrArg Complex.im hk2`. Simplify using `only [Complex.sub_im, Complex.intCast_im, Complex.neg_im] at e1 e2`. Apply `Complex.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [Complex.ofReal_im]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set s : ℝ := ((a : ℝ) - 1) / 2 - f.re with hs`. Establish `hν` using `GlobalTheory.HeckeGal.Model.absPow_isAbsPow E s`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexpo : ∀ τ, expo (GlobalTheory.HeckeGal.Model.absPow E s) τ = s` using `(GlobalTheory.CuspRep.InfType.expo_of_infType E _).2.1 s hν`. Establish `hm' : ∀ τ, (P.twist (GlobalTheory.HeckeGal.Model.absPow E s)).HasInfChar τ ((m τ).map (· + (s : ℂ)))` using `fun τ => by`. Use `(hm τ).twist (GlobalTheory.HeckeGal.Model.absPow E s)` as an intermediate fact. Rewrite `this` using `[hexpo]`. Then use the resulting hypothesis. Establish `hinf' : ∀ τ, (CG.mk (P.twist (GlobalTheory.HeckeGal.Model.absPow E s))).infChar τ = (m τ).map (· + (s : ℂ))` using `fun τ => CG.HasInfChar.infChar_eq (hm' τ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : (CG.mk (P.twist (GlobalTheory.HeckeGal.Model.absPow E s))).IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Rewrite using `[hinf' τ]`. Use `⟨(hnd τ).map (add_left_injective _), fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hz`. Take `⟨k, hk⟩` from `hint τ y hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨-k, ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Use `push_cast`. Take the linear combination `(-1 : ℂ) * hk + hfre`. Take `⟨r, wt, HT, H⟩` from `hG E Ω l ι a ha _ _ hr (GlobalTheory.HeightCounting.Blocks.isPolarized_twist_absPow hP s)`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hHT : ∀ τ, HT τ = J τ` using `fun τ => by`. Apply `Multiset.map_injective (f := fun n : ℤ => (n : ℂ)) Int.cast_injective` to reduce the goal to its premises. Rewrite using `[H.weights τ, hinf', hJ τ, Multiset.map_map]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hs]`. Use `push_cast`. Take the linear combination `(-1 : ℂ) * hfre`. Use `⟨r, H.cont, fun hsph => ⟨H.cont, fun PP AI T w A h O _ _ _ Bw hj => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hw : ((l : ℕ) : 𝓞 E) ∈ w.asIdeal` using `hj.mem_placesOver h`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨σ, hσ, hsp⟩` from `hsph w hw`. Establish `HA` using `H.above PP AI T w A h O Bw hj`. Use `⟨HA.crys _ (hσ.twist _) (GlobalTheory.T.isSpherical_twist_absDetPow_GL E a w σ s hsp), fun τ LL' τ' hτ' => ?_⟩` and prove the remaining obligations. Rewrite using `[← hHT]`. Establish `hrc` using `ParLaws.isRec_locRec hLL h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `HA.jumps (UpperTheory.GalS.nice_of_spherical hrc (hσ.twist _) (GlobalTheory.T.isSpherical_twist_absDetPow_GL E a w σ s hsp)) τ LL' τ' hτ'`. Introduce `w _ hl σ hσ S hS B g hB hg`. Take `⟨rc, hrc⟩ : ∃ rc, GlobalTheory.LocLanglands.IsRec hB rc` from `⟨_, ParLaws.isRec_locRec hLL hB⟩`. Establish `e0` using `H.aw hl hrc (hσ.twist (GlobalTheory.HeckeGal.Model.absPow E s))`. Rewrite `e0` using `[rec_twist_absPow E Ω w B hB rc hrc a σ s, GlobalTheory.WeilDeligne.WD.lpTw_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `e0.eq_unr ((GlobalTheory.WeilDeligne.WD.unr_tw _ _).2 (UpperTheory.GalS.unr_rec_of_hasSat hrc σ S hS))`. Rewrite using `[GlobalTheory.T.local_langlands_galois_compat E Ω l ι a r H.cont w hl B hB rc hrc σ S hS _ e1 g hg]`. Establish `e2 : ((-(s + (1 - (a : ℝ)) / 2) : ℝ) : ℂ) = f`. Rewrite using `[hfre, hs]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_galRep_csd_twist_alt : UpperTheory.GalS.CuspU → GlobalTheory.Published.HeckeLAdicCharacter →
   GlobalTheory.Published.HeckeLAdicCharacterAbove → GlobalTheory.Published.ChebotarevDegreeOne → GlobalTheory.Published.BhattScholzeCrystallineLattices → GlobalTheory.Published.LocalLanglandsGL →
@@ -289,17 +285,17 @@ end GlobalTheory.CsdTwistGal
 namespace GlobalTheory.TempSatGal
 
 /- English proof (translation)
-Take `⟨τ0⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hτ : ι.toRingHom.comp (ι.symm.toRingHom.comp τ0) = τ0` using `by ext x; simp`. Use `set τ : E →+* Qbar l := ι.symm.toRingHom.comp τ0 with hτdef`. Use `set X : Multiset ℂ := (HT τ).map (fun n : ℤ => (n : ℂ)) with hXdef`. Establish `hX : X = (m τ0).map (fun z => (((a : ℂ) - 1) / 2 - s) + (-1) * z)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hXdef, H.weights τ, hτ, hinf, Multiset.map_map]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hY : (HT (τ.comp (IsCMField.complexConj E).toRingEquiv.toRingHom)).map (fun n : ℤ => (n : ℂ)) = X.map (fun z => (wt : ℂ) + (-1) * z)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[H.weights_conj, hXdef, Multiset.map_map, Multiset.map_map]`. Use `Multiset.map_congr rfl fun n _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ : (HT (τ.comp (IsCMField.complexConj E).toRingEquiv.toRingHom)).map (fun n : ℤ => (n : ℂ)) = (m τ0).map (fun z => (((a : ℂ) - 1) / 2 - s) + 1 * z)`. Rewrite using `[H.weights, comp_complexConj, hτ, hinf, hconj, Multiset.map_map, Multiset.map_map]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcX : (X.card : ℂ) = a` using `by rw [hX, Multiset.card_map, hcard]`. Establish `e` using `congrArg Multiset.sum (hY.symm.trans hZ)`. Rewrite `e` using `[sum_map_affine, sum_map_affine, hcX, hX, sum_map_affine, hcard]`. Establish `ha0 : (a : ℂ) ≠ 0` using `by exact_mod_cast (by omega : a ≠ 0)`. Establish `h : (wt : ℂ) = (a : ℂ) - 1 - 2 * (s : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `mul_left_cancel₀ ha0` to reduce the goal to its premises. Take the linear combination `e`. Conclude with `h` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem weight_eq_rank_sub_one_sub_two_mul_of_inf_char_shift {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {a : ℕ} (ha : 1 ≤ a) {π : CuspSub E a} {χ}

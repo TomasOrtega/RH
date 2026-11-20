@@ -8,7 +8,7 @@ open scoped MatrixOrder
 namespace GlobalTheory.RedTh.RedBasis
 
 /- English proof (translation)
-Simplify using `only [dotProduct, mulVec, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_sum_eq_dotProduct {n : ℕ} (G : Matrix (Fin n) (Fin n) ℝ) (c : Fin n → ℝ) :
     ∑ i, ∑ j, c i * c j * G i j = c ⬝ᵥ (G *ᵥ c) := by
@@ -16,15 +16,15 @@ theorem sum_sum_eq_dotProduct {n : ℕ} (G : Matrix (Fin n) (Fin n) ℝ) (c : Fi
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Establish `hT : G.PosSemidef`. Rewrite using `[posSemidef_iff_dotProduct_mulVec]`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Use `show Gᴴ = G`. Rewrite using `[conjTranspose_eq_transpose_of_trivial, hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Use `(hp x hx).le` as an intermediate fact. Rewrite `this` using `[sum_sum_eq_dotProduct]`. Simplify using `using this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ G` using `Matrix.nonneg_iff_posSemidef.mpr hT`. Establish `hsq : (CFC.sqrt G).PosSemidef` using `Matrix.nonneg_iff_posSemidef.mp (CFC.sqrt_nonneg G)`. Establish `hsym : (CFC.sqrt G)ᵀ = CFC.sqrt G`. Use `hsq.1` as an intermediate fact. Rewrite `this` using `[IsHermitian, conjTranspose_eq_transpose_of_trivial]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hgG : (CFC.sqrt G)ᵀ * CFC.sqrt G = G`. Rewrite using `[hsym, CFC.sqrt_mul_sqrt_self G h0]`. Use `⟨CFC.sqrt G, fun hd => ?_, hgG⟩` and prove the remaining obligations. Take `⟨v, hv, hgv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hd`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hp v hv`. Rewrite `h` using `[sum_sum_eq_dotProduct, ← hgG, ← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose, hgv]`. Simplify using `at h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_transpose_mul_self {n : ℕ} (G : Matrix (Fin n) (Fin n) ℝ) (hs : Gᵀ = G)
     (hp : ∀ c : Fin n → ℝ, c ≠ 0 → 0 < ∑ i, ∑ j, c i * c j * G i j) :
@@ -54,15 +54,15 @@ theorem exists_transpose_mul_self {n : ℕ} (G : Matrix (Fin n) (Fin n) ℝ) (hs
   simp at h
 
 /- English proof (translation)
-Introduce `n Y _ b₀ B hs hB`. Set `G : Matrix (Fin n) (Fin n) ℝ` to `Matrix.of fun i j => B (b₀ i) (b₀ j)`. Take `⟨g, hg, hgG⟩` from `exists_transpose_mul_self G (by ext i j; simp [G, hs]) (by simpa [G] using (isPosDef_iff_basis b₀ B).1 hB)`. Take `⟨γ, k, a, m, hγ, hk, ha, h1, h0, hup, hstep, hdec⟩` from `GlobalTheory.ClassFin.HermiteReduction.exists_reduced n g hg`. Apply the tactic sequence `have hu : IsUnit γ.det := by rcases hγ with h | h <;> rw [h] <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `e : Y ≃ₗ[ℤ] Y` to `Matrix.toLinearEquiv b₀ γ hu`. Establish `hbe : ∀ j, b₀.map e j = ∑ i, γ i j • b₀ i` using `fun j => by`. Simplify using `[e, Matrix.toLinearEquiv_apply, Matrix.toLin_self]`. Establish `hM : (γ.map (Int.cast : ℤ → ℝ))ᵀ * G * γ.map (Int.cast : ℤ → ℝ) = gram (fun i => a i ^ 2) m`. Establish `e1 : (γ.map (Int.cast : ℤ → ℝ))ᵀ * G * γ.map (Int.cast : ℤ → ℝ) = (g * γ.map (Int.cast : ℤ → ℝ))ᵀ * (g * γ.map (Int.cast : ℤ → ℝ))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hgG, transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `e2 : (k * diagonal a * m)ᵀ * (k * diagonal a * m) = mᵀ * (diagonal a * (kᵀ * k) * diagonal a) * m`. Simplify using `only [transpose_mul, diagonal_transpose, Matrix.mul_assoc]`. Rewrite using `[e1, hdec, e2, hk, Matrix.mul_one, diagonal_mul_diagonal, gram]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sq]`. Use `⟨b₀.map e, fun i => a i ^ 2, m, ⟨fun i => sq_nonneg _, fun p q hq => ?_, h1, h0, hup⟩, fun i => pow_pos (ha i) 2, fun i j => ?_⟩` and prove the remaining obligations. Establish `h2` using `hstep p q hq`. Establish `h3` using `ha p`. Establish `h4` using `ha q`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show a p ^ 2 ≤ 4 * a q ^ 2`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[← hM, hbe, hbe]`. Simplify using `only [map_sum, map_zsmul, LinearMap.sum_apply, LinearMap.smul_apply, zsmul_eq_mul, Matrix.mul_apply, transpose_apply, map_apply, G, of_apply, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => by ring`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_siegel_basis : ∀ (n : ℕ) (Y : Type) [AddCommGroup Y] (b₀ : Module.Basis (Fin n) ℤ Y)
     (B : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ), (∀ y z, B y z = B z y) → IsPosDef B → ∃ (b : Module.Basis (Fin n) ℤ Y)

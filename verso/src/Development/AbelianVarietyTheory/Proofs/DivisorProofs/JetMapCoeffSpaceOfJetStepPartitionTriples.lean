@@ -8,13 +8,13 @@ open scoped ComplexOrder
 namespace GlobalTheory.ColNorms
 
 /- English proof (translation)
-Introduce `K _ _ ι _ a b hlt lam ν lam' hw J P hP`. Use `choose s' hs' using fun τ => (hw τ).2.1`. Use `choose s hs using fun τ => (hw τ).2.2`. Use `GlobalTheory.JetPoint.jetMap_mem hlt.le _ _ _ (fun ap => ?_) J` and prove the remaining obligations. Use `GlobalTheory.SubstMem.substAdj_sharp_mem K ι a b hlt lam lam' s (fun τ => if 0 < a then s' τ else 0) _ ⟨fun τ i => ?_, fun τ j hj => ?_, fun τ => ?_⟩ ap _ hP` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hs τ (Fin.castLE hlt.le i)`. Establish `h0` using `hs' τ i`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.padZero, Fin.val_castLE, i.2, dif_pos, Fin.eta] at h`. Simplify using `only [Fin.pos i, if_true]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `hs τ j`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.padZero, dif_neg (not_lt.2 hj)] at h`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `unfold GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.lastEntry DomWeight.detShift split_ifs with h`. Establish `h0` using `hs' τ ⟨a - 1, by omega⟩`.
+Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `(hw τ).1 ⟨a - 1, by omega⟩`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetInVV_of_stepWeights : ∀ (K : Type) [Field K] [CharZero K] (ι : Type) [Fintype ι] (a b : ℕ), a < b → ∀ (lam nu : ι → DomWeight a) (lam' : ι → DomWeight b), (∀ τ, GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.StepWeights (lam τ) (nu τ) (lam' τ)) → JetInVV K lam lam' fun τ => GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.lastEntry (nu τ) := by
   intro K _ _ ι _ a b hlt lam ν lam' hw J P hP

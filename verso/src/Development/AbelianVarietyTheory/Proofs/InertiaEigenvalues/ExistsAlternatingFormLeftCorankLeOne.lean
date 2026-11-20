@@ -11,15 +11,15 @@ def Good (S₁ S₂ : Submodule K V) : Prop :=
     (∀ a, ∀ y ∈ S₂, ω (x a) y = 0) → ¬ LinearIndependent K x
 
 /- English proof (translation)
-Take `⟨ω, hω, hk⟩` from `h`. Set `π : V →ₗ[K] V` to `LinearMap.id - φ.smulRight u - ψ.smulRight v`. Establish `hπ : ∀ x, π x = x - φ x • u - ψ x • v` using `fun x => rfl`. Set `Ω : V →ₗ[K] V →ₗ[K] K` to `ω.compl₁₂ π π + (LinearMap.mul K K).compl₁₂ φ ψ - (LinearMap.mul K K).compl₁₂ ψ φ`. Establish `hΩ : ∀ x y, Ω x y = ω (π x) (π y) + φ x * ψ y - ψ x * φ y` using `fun x y => rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hπu : π u = 0` using `by simp [hπ, hφu, hψu]`. Establish `hπv : π v = 0` using `by simp [hπ, hφv, hψv]`. Use `⟨Ω, fun x => by rw [hΩ, hω]; ring, fun x hx hz => ?_⟩` and prove the remaining obligations. Establish `e1 : ∀ a, φ (x a) = 0` using `fun a => by`. Use `hz a v hv` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hΩ, hπv, hφv, hψv]`. Simplify using `using this`. Establish `e2 : ∀ a, ψ (x a) = 0` using `fun a => by`. Break down `hu with hu | hu` into its components or cases. Use `hz a u hu` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `this` using `[hΩ, hπu, hφu, hψu]`. Simplify using `using this`. Conclude with `hu _ (hx a)`. Use `hk x (fun a => h₁ _ (hx a) (e1 a) (e2 a)) fun a y hy => ?_` and prove the remaining obligations. Take `⟨hy, f1, f2⟩` from `h₂ y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hz a y hy` as an intermediate fact. Rewrite `this` using `[hΩ, hπ, hπ, e1, e2, f1, f2]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem good_step (S₁ S₂ T₁ T₂ : Submodule K V) (u v : V) (φ ψ : V →ₗ[K] K)
     (hφu : φ u = 1) (hφv : φ v = 0) (hψu : ψ u = 0) (hψv : ψ v = 1) (hv : v ∈ S₂)
@@ -52,7 +52,7 @@ theorem good_step (S₁ S₂ T₁ T₂ : Submodule K V) (u v : V) (φ ψ : V →
   simpa using this
 
 /- English proof (translation)
-Establish `hne : (φ.domRestrict S : Module.Dual K S) ≠ 0`. Introduce `h`. Use `LinearMap.congr_fun h ⟨u, hu⟩` as an intermediate fact. Simplify using `[hφ] at this`. Rewrite using `[← Module.Dual.finrank_ker_add_one_of_ne_zero hne, LinearMap.ker_domRestrict, ← Submodule.map_comap_subtype, Submodule.finrank_map_subtype_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_inf_ker [Module.Finite K V] (S : Submodule K V) (φ : V →ₗ[K] K) (u : V)
     (hu : u ∈ S) (hφ : φ u = 1) :
@@ -65,7 +65,7 @@ theorem finrank_inf_ker [Module.Finite K V] (S : Submodule K V) (φ : V →ₗ[K
     ← Submodule.map_comap_subtype, Submodule.finrank_map_subtype_eq]
 
 /- English proof (translation)
-Take `⟨f, hf, hS⟩` from `S.exists_dual_map_eq_bot_of_notMem hu inferInstance`. Use `⟨(f u)⁻¹ • f, by simp [hf], fun x hx => ?_⟩` and prove the remaining obligations. Establish `: f x ∈ S.map f` using `⟨x, hx, rfl⟩`. Rewrite `this` using `[hS]`. Simplify using `[(Submodule.mem_bot K).1 this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_dual (S : Submodule K V) (u : V) (hu : u ∉ S) :
     ∃ φ : V →ₗ[K] K, φ u = 1 ∧ ∀ x ∈ S, φ x = 0 := by
@@ -76,21 +76,21 @@ theorem exists_dual (S : Submodule K V) (u : V) (hu : u ∉ S) :
   simp [(Submodule.mem_bot K).1 this]
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `S₁ S₂ h₁ h₂`. Distinguish the cases in `hE : S₁ = S₂`. Substitute `hE` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hx : ∃ x : Fin 2 → V, (∀ a, x a ∈ S₁) ∧ LinearIndependent K x`. Take `⟨x, hx, hli⟩` from `hx`. Establish `n0 : x 0 ∉ Submodule.span K {x 1}`. Use `hli.notMem_span_image (s := {1}) (x := 0) (by simp)` as an intermediate fact. Simplify using `using this`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `n1 : x 1 ∉ Submodule.span K {x 0}`. Use `hli.notMem_span_image (s := {0}) (x := 1) (by simp)` as an intermediate fact. Simplify using `using this`. Take `⟨φ, a1, a2⟩` from `exists_dual _ _ n0`. Take `⟨ψ, b1, b2⟩` from `exists_dual _ _ n1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `a3` using `a2 _ (Submodule.mem_span_singleton_self _)`. Establish `b3` using `b2 _ (Submodule.mem_span_singleton_self _)`. Establish `hlt : finrank K (S₁ ⊓ LinearMap.ker φ ⊓ LinearMap.ker ψ : Submodule K V) < n`. Use `finrank_inf_ker S₁ φ _ (hx 0) a1` as an intermediate fact. Use `Submodule.finrank_mono (inf_le_left : S₁ ⊓ LinearMap.ker φ ⊓ LinearMap.ker ψ ≤ S₁ ⊓ LinearMap.ker φ)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `good_step S₁ S₁ _ _ (x 0) (x 1) φ ψ a1 a3 b3 b1 (hx 1) (Or.inl (hx 0)) ?_ ?_ (ih _ hlt _ _ rfl rfl)` and prove the remaining obligations. Introduce `y h1 h2 h3`. Conclude with `⟨⟨h1, h2⟩, h3⟩`. Introduce and unpack `y ⟨⟨h1, h2⟩, h3⟩`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h1, h2, h3⟩`. Conclude with `⟨0, fun _ => rfl, fun x h1 _ h2 => hx ⟨x, h1, h2⟩⟩`. Establish `l1 : ¬ S₁ ≤ S₂` using `fun h => hE (Submodule.eq_of_le_of_finrank_eq h (h₁.trans h₂.symm))`. Establish `l2 : ¬ S₂ ≤ S₁` using `fun h => hE (Submodule.eq_of_le_of_finrank_eq h (h₂.trans h₁.symm)).symm`. Take `⟨u, hu1, hu2⟩` from `SetLike.not_le_iff_exists.1 l1`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv2, hv1⟩` from `SetLike.not_le_iff_exists.1 l2`. Take `⟨φ, a1, a2⟩` from `exists_dual _ _ hu2`. Take `⟨ψ, b1, b2⟩` from `exists_dual _ _ hv1`. Establish `c1` using `finrank_inf_ker S₁ φ u hu1 a1`. Establish `c2` using `finrank_inf_ker S₂ ψ v hv2 b1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `good_step S₁ S₂ (S₁ ⊓ LinearMap.ker φ) (S₂ ⊓ LinearMap.ker ψ) u v φ ψ a1 (a2 _ hv2) (b2 _ hu1) b1 hv2 (Or.inr b2) ?_ ?_ (ih (n - 1) (by omega) _ _ (by omega) (by omega))` and prove the remaining obligations. Introduce `y h1 h2 _`. Conclude with `⟨h1, h2⟩`. Introduce and unpack `y ⟨h1, h2⟩`. Conclude with `⟨h1, a2 _ h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem good_of_finrank_eq [Module.Finite K V] (n : ℕ) :
     ∀ S₁ S₂ : Submodule K V, finrank K S₁ = n → finrank K S₂ = n → Good S₁ S₂ := by
@@ -140,7 +140,7 @@ theorem good_of_finrank_eq [Module.Finite K V] (n : ℕ) :
       exact ⟨h1, a2 _ h1, h2⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ S₁ S₂ h` and use `good_of_finrank_eq _ S₁ S₂ h rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_alt_corank_le_one :
     ∀ (K V : Type) [Field K] [AddCommGroup V] [Module K V] [Module.Finite K V]

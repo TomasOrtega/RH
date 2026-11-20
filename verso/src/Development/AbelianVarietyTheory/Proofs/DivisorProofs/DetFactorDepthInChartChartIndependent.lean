@@ -16,11 +16,11 @@ open MvPowerSeries ReciprocityTheory.PGsh GlobalTheory.FGDepth
 variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)}
 
 /- English proof (translation)
-Establish `s1 : HasSubst w'` using `hasSubst_of_constantCoeff_zero hw'`. Establish `c2 : ∀ f, constantCoeff (subst w' (expOf G' f) : MvPowerSeries τ C) = 0` using `fun f => constantCoeff_subst_eq_zero s1 hw' ((isExp_expOf G').1 f)`. Establish `s2` using `hasSubst_of_constantCoeff_zero c2`. Establish `s3 : HasSubst (fun e => (subst (fun f => (subst w' (expOf G' f) : MvPowerSeries τ C)) (Φ e) : MvPowerSeries τ C))` using `hasSubst_of_constantCoeff_zero fun e => constantCoeff_subst_eq_zero s2 c2 (h0 e)`. Establish `key : (fun j => subst (fun e => (subst (fun f => (subst w' (expOf G' f) : MvPowerSeries τ C)) (Φ e) : MvPowerSeries τ C)) (G.lg j)) = w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[← subst_comp_subst_apply (hasSubst_of_constantCoeff_zero h0) s2, hl, hw, ← coe_substAlgHom s2, map_sum]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, coe_substAlgHom, ← subst_comp_subst_apply (hasSubst_of_constantCoeff_zero (isExp_expOf G').1) s1, (isExp_expOf G').2, subst_X s1]`. Use `subst_comp_subst_apply (hasSubst_of_constantCoeff_zero G.lg_const) s3 (expOf G e)` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[subst_lg_expOf, subst_X s3, key]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_eq_of_log_hom {d : ℕ} (G G' : LogFGL v d) (Φ : Fin d → MvPowerSeries (Fin d) C)
     (h0 : ∀ e, constantCoeff (Φ e) = 0) (M : Matrix (Fin d) (Fin d) C)
@@ -47,13 +47,13 @@ theorem exp_eq_of_log_hom {d : ℕ} (G G' : LogFGL v d) (Φ : Fin d → MvPowerS
   exact this.symm
 
 /- English proof (translation)
-Establish `cX : ∀ b (e : Fin (d b)), constantCoeff (X ⟨b, e⟩ : MvPowerSeries (Σ b, Fin (d b)) C) = 0` using `fun b e => by simp`. Set `Ψ : (Σ b, Fin (d b)) → MvPowerSeries (Σ b, Fin (d b)) C` to `fun x => subst (fun e : Fin (d x.1) => (X ⟨x.1, e⟩ : MvPowerSeries (Σ b, Fin (d b)) C)) (Φ x.1 x.2)`. Establish `cΨ : ∀ x, constantCoeff (Ψ x) = 0` using `fun x => constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero (cX x.1)) (cX x.1) (h0 x.1 x.2)`. Apply the tactic sequence `have iΨ : ∀ x, MvIsInt v (Ψ x) := fun x => ReciprocityTheory.ChartRestriction.G.Sh.PTb.mvIsInt_subst v (hI x.1 x.2) (fun e α => by rw [coeff_X]; split_ifs <;> simp [IsIntV]) (cX x.1)`. Establish `cw : ∀ b (e : Fin (d b)), constantCoeff (∑ a, u' b a e • (X ⟨b, a⟩ : MvPowerSeries (Σ b, ι b) C)) = 0` using `fun b e => by simp`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `cE : ∀ x, constantCoeff (expAlong G' u' x) = 0` using `fun x => constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero (cw x.1)) (cw x.1) ((isExp_expOf _).1 _)`. Establish `sE` using `hasSubst_of_constantCoeff_zero cE`. Establish `key : expAlong G u = fun x => subst (expAlong G' u') (Ψ x)`. Use function extensionality and compare the values at `x`. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero (cX x.1)) sE]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [subst_X sE]`. Use `exp_eq_of_log_hom (G x.1) (G' x.1) (Φ x.1) (h0 x.1) (M x.1) (hl x.1) _ _ (cw x.1) (fun e => ?_) x.2` and prove the remaining obligations. Simplify using `only [hu, Matrix.mulVec, dotProduct, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Conclude with `Finset.sum_comm`. Use `le_iInf fun f => iInf_le_of_le ⟨subst Ψ f.1, ReciprocityTheory.ChartRestriction.G.Sh.PTb.mvIsInt_subst v f.2 iΨ cΨ⟩ (le_of_eq ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, subst_comp_subst_apply (hasSubst_of_constantCoeff_zero cΨ) sE]`.
+A detailed English derivation is pending.
 -/
 theorem depth_le_of_log_hom {κ : Type} [Finite κ] {d : κ → ℕ} (G G' : ∀ b, LogFGL v (d b)) {ι : κ → Type}
     [∀ b, Fintype (ι b)] (u u' : ∀ b, ι b → Fin (d b) → C) (Φ : ∀ b, Fin (d b) → MvPowerSeries (Fin (d b)) C)
@@ -96,11 +96,11 @@ open GlobalTheory.GermDerivativeLinearMaps GlobalTheory.IndefiniteRowSideFullHec
 variable {C : Type} [Field C] [CharZero C] {d : ℕ}
 
 /- English proof (translation)
-Use `⟨fun i => GlobalTheory.FormalLog.constantCoeff_prim _, ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_ show coeff (Finsupp.single ((0 : Fin 1), j) 1) (GlobalTheory.FormalLog.logOf G i) = (1 : Matrix (Fin d) (Fin d) C) i j` and prove the remaining obligations. Establish `h` using `congrArg constantCoeff (GlobalTheory.FormalLog.pderiv_logOf G i j)`. Rewrite `h` using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv, zero_add]`. Establish `h2` using `congrFun (congrFun (GlobalTheory.FormalLog.cc_om G) i) j`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_apply] at h2`. Simplify `h` using `[h2]`. Establish `e : addOf G.F (pt C (n` using `2) d 0) (pt C (n := 2) d 1) = G.F := add_pt G`. Rewrite using `[e]`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `GlobalTheory.FormalLog.logOf_add G i`.
+A detailed English derivation is pending.
 -/
 theorem logOf_spec (G : FGLaw C d) : GP (GlobalTheory.FormalLog.logOf G) ∧ dLin (GlobalTheory.FormalLog.logOf G) = 1 ∧
     comp1 (GlobalTheory.FormalLog.logOf G) (addOf G.F (pt C (n := 2) d 0) (pt C (n := 2) d 1)) =
@@ -119,11 +119,11 @@ theorem logOf_spec (G : FGLaw C d) : GP (GlobalTheory.FormalLog.logOf G) ∧ dLi
     exact GlobalTheory.FormalLog.logOf_add G i
 
 /- English proof (translation)
-Take `⟨a0, a1, a2⟩` from `logOf_spec G`. Take `⟨b0, b1, b2⟩` from `logOf_spec G'`. Take `⟨ε, hi⟩` from `ChartInv.exists_isInvPair C d _ b0 (by rw [b1, Matrix.det_one]; exact isUnit_one)`. Establish `p0 : GP (pt C (n` using `2) d 0) := gp_pt 0`. Establish `p1 : GP (pt C (n` using `2) d 1) := gp_pt 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : addOf G'.F (pt C (n` using `2) d 0) (pt C (n := 2) d 1) = G'.F := add_pt G'`. Establish `e1` using `additive_eq_lin _ G'.const _ ε (comp1 (GlobalTheory.FormalLog.logOf G) φ) b1 b2 hi (gp_comp1 _ _ a0 hφ) (by`. Rewrite using `[e, gt_comp1_comp1 _ _ hφ _ G'.const, hhom, additive_at _ G.const _ a2 _ _ (gp_comp1 _ _ hφ p0) (gp_comp1 _ _ hφ p1), gt_comp1_comp1 _ _ hφ _ p0, gt_comp1_comp1 _ _ hφ _ p1])`. Rewrite `e1` using `[dLin_comp _ _ hφ, a1, one_mul]`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[germComp_matrixLinearMap_apply _ _ b0]`. Simplify using `only [MvPowerSeries.smul_eq_C_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem logOf_comp_hom (G G' : FGLaw C d) (φ : Pt C 1 d) (hφ : GP φ)
     (hhom : comp1 φ G'.F = addOf G.F (comp1 φ (pt C (n := 2) d 0)) (comp1 φ (pt C (n := 2) d 1))) :
@@ -148,17 +148,17 @@ theorem logOf_comp_hom (G G' : FGLaw C d) (φ : Pt C 1 d) (hφ : GP φ)
 open ReciprocityTheory.PGsh GlobalTheory.FGDepth in
 
 /- English proof (translation)
-Establish `hφ : GP φ` using `hi.1`. Establish `p0 : GP (pt R (n` using `2) d 0) := gp_pt 0`. Establish `p1 : GP (pt R (n` using `2) d 1) := gp_pt 1`. Establish `q` using `gp_addOf F hF _ _ (gp_comp1 _ _ hφ p0) (gp_comp1 _ _ hφ p1)`. Establish `e0 : F' = comp1 φi (addOf F (comp1 φ (pt R (n` using `2) d 0)) (comp1 φ (pt R (n := 2) d 1))) := funext ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF' : GP F'` using `e0 ▸ gp_comp1 _ _ hi.2.1 q`. Establish `e1 : comp1 φ F' = addOf F (comp1 φ (pt R (n` using `2) d 0)) (comp1 φ (pt R (n := 2) d 1)) := by`. Rewrite using `[e0, gt_comp_inv hi _ q]`. Establish `e2` using `congrArg (GlobalTheory.FBMap.mapPt j) e1`. Rewrite `e2` using `[GlobalTheory.FBMap.mapPt_comp1 j _ hF', GlobalTheory.FBMap.mapPt_addOf j _ (gp_comp1 _ _ hφ p0) (gp_comp1 _ _ hφ p1), GlobalTheory.FBMap.mapPt_comp1 j _ p0, GlobalTheory.FBMap.mapPt_comp1 j _ p1, GlobalTheory.FBMap.mapPt_pt, GlobalTheory.FBMap.mapPt_pt, show GlobalTheory.FBMap.m …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hψ : GP (GlobalTheory.FBMap.mapPt j φ)` using `fun a => by simp [GlobalTheory.FBMap.mapPt, hφ a]`. Establish `e3` using `logOf_comp_hom L L' _ hψ e2`. Use `depth_le_of_log_hom _ _ _ _ (fun _ a => subst (oneVar C d) (GlobalTheory.FBMap.mapPt j φ a)) (fun _ a => constantCoeff_subst_eq_zero hs_oneVar cc_oneVar (hψ a)) (fun _ a α => ?_) (fun _ => dLin (GlobalTheory.FBMap.mapPt j φ)) (fun _ a => ?_) (fun _ a => ?_) _` and prove the remaining obligations. Establish `e : subst (oneVar C d) (GlobalTheory.FBMap.mapPt j φ a) = MvPowerSeries.map j (subst (oneVar R d) (φ a))`. Rewrite using `[MvPowerSeries.map_subst hs_oneVar]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `q`. Simplify using `[oneVar]`. Rewrite using `[e, coeff_map]`. Conclude with `hj _`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show subst _ (subst (oneVar C d) (GlobalTheory.FormalLog.logOf L a)) = ∑ f, _ • subst (oneVar C d) (GlobalTheory.FormalLog.logOf L' f)`. Rewrite using `[subst_oneVar _ cc_oneVar _ hψ]`. Use `(congrArg (subst (oneVar C d)) (congrFun e3 a)).trans ?_` and prove the remaining obligations. Rewrite using `[← coe_substAlgHom hs_oneVar, map_sum]`. Simplify using `only [map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `e`. Rewrite using `[hu, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem detDepth_le_of_transF {R : Type} [CommRing R] (v : AddValuation C (WithTop ℝ)) (j : R →+* C)
     (hj : ∀ r, IsIntV v (j r)) (F F' : Fin d → PS R 2 d) (hF : ∀ a, constantCoeff (F a) = 0)
@@ -212,9 +212,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.ChartCmp GlobalTheory.CharDepth ReciprocityTheory.PGsh GlobalTheory.FGDepth GlobalTheory.LawLog
 
 /- English proof (translation)
-Establish `hd : d = d'`. Take `⟨x'', -, h2, -⟩` from `GlobalTheory.T.pushChartAlt E H V t t' n d x`. Conclude with `GlobalTheory.T.universalJetCoordinates_dim_unique V t'.G d d' x'' x' (h2 hu) hu'`. Substitute `hd` using the available equality. Take `⟨φ, φi, hJ, hdir⟩` from `GlobalTheory.T.formal_biextensions_related_of_triple_map_over_id E H hs V t t' n hsurj d B B' (Fin d) (Fin d) tg tg' uv uv' x x' e e' hc hc' hu hu' hf hf'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε⟩` from `hJ 0`. Conclude with `detDepth_le_of_transF v j hj _ _ B.G.const φ φi hε.inv hε.law L L' hL hL' hI hI' u u' (fun a => hdir _ _ _ (hw a) (hw' a)) k`.
+A detailed English derivation is pending.
 -/
 theorem detDepth_le_of_charts {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     [StarRing (𝓞 E)] (hs : ∀ a : 𝓞 E, star a = H.bar a)
@@ -251,15 +251,13 @@ theorem detDepth_le_of_charts {E : Type} [Field E] [NumberField E] [IsCMField E]
     (fun a => hdir _ _ _ (hw a) (hw' a)) k
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `p _ T io y C C' X f k`. Use `letI := io.toAlgebra`. Take `⟨n, hn⟩` from `GlobalTheory.T.exists_iso_integralModels_matching_lieBases E H Dw l Xo c T io y.1 C.I C'.I`. Take `⟨B, b1, b2, b3, b4, b5, b6, -⟩` from `GlobalTheory.integralChart_formalBiext E H Dw l Xo c T io y C`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B', b1', b2', b3', b4', b5', b6', -⟩` from `GlobalTheory.integralChart_formalBiext E H Dw l Xo c T io y C'`. Use `detDepth_le_of_charts (fun _ => rfl) T.V C.I.G C'.I.G n (GlobalTheory.T.surjective_appTop_integralModel_square E H Dw l Xo c T io y.1 C'.I) _ _ B B' C.tgT C'.tgT (fun j => Pi.single j 1) (fun j => Pi.single j 1) C.xT C'.xT C.eT C'.eT ?_ ?_ (GlobalTheory.PowGerm.univSt_holds E H D …` and prove the remaining obligations. Rewrite using `[b1, b2]`. Conclude with `C.chartT`. Rewrite using `[b1', b2']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `C'.chartT`. Rewrite using `[b1, b2, b3, b4, b5, b6]`. Conclude with `C.frameT`. Rewrite using `[b1', b2', b3', b4', b5', b6']`. Conclude with `C'.frameT`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Rewrite using `[hn]`. Conclude with `C'.dirT ⟨f.1, Fin.castLE (rk_le f) a⟩`. Introduce `a`. Rewrite using `[b1]`.
-
-Conclude with `lawX_F C X a`. Introduce `a`. Rewrite using `[b1']`. Conclude with `lawX_F C' X a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nuFacC_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} (Xo : Moduli Dw l) (c : Coeff l) :
@@ -289,7 +287,7 @@ theorem nuFacC_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
   · intro a; rw [b1']; exact lawX_F C' X a
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ Xo c p _ T io y Ch Ch' X f k` and use `le_antisymm (nuFacC_le Xo c p T io y Ch' Ch X f k) (nuFacC_le Xo c p T io y Ch Ch' X f k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nuFacC_chart_indep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (p : ℕ) [Fact p.Prime] (T : CDVR)

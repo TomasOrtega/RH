@@ -9,9 +9,9 @@ open scoped IntermediateField nonZeroDivisors
 namespace GlobalTheory.FieldSize
 
 /- English proof (translation)
-Set `e : K ≃ₐ[ℚ] φ.toRatAlgHom.fieldRange` to `AlgEquiv.ofInjectiveField φ.toRatAlgHom`. Establish `hfd : FiniteDimensional ℚ φ.toRatAlgHom.fieldRange` using `e.toLinearEquiv.finiteDimensional`. Use `⟨hfd, ?_⟩` and prove the remaining obligations. Set `_ : NumberField φ.toRatAlgHom.fieldRange` to `NumberField.mk`. Establish `h1 : Module.finrank ℚ φ.toRatAlgHom.fieldRange = Module.finrank ℚ K` using `e.toLinearEquiv.finrank_eq.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2 : discr φ.toRatAlgHom.fieldRange = discr K` using `(NumberField.discr_eq_discr_of_algEquiv K e).symm`. Rewrite using `[h1, h2]`. Conclude with `⟨le_rfl, le_rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sz_fieldRange_embedding (K : Type) [Field K] [NumberField K] (φ : K →+* ℂ) :
     Sz φ.toRatAlgHom.fieldRange (Real.log (Module.finrank ℚ K))

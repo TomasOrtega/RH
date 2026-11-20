@@ -17,17 +17,17 @@ open scoped TensorProduct
 open GlobalTheory.EmbChart (atPlace tensAt compFin_tensAt tensAt_mul_right sigR_tensAt)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h v t`. Use `set y : Fv F v ⊗[F] E := (splitAlgEquiv h t).symm (1, -1) with hy`. Establish `hQ : algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1) = tensAt E v 1` using `rfl`. Establish `hpi : ∀ τ : E →ₐ[F] Fv F v, piW τ (tensAt E v y) = splitProj τ y` using `fun τ => by`. Express the relevant statement in the definitionally equal form `splitProj τ (compFin F E v (tensAt E v y)) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[compFin_tensAt]`. Use `⟨tensAt E v y, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_comm, tensAt_mul_right]`. Establish `e : compFin F E v (algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) = 1`. Express the relevant statement in the definitionally equal form `GlobalTheory.AdelicU.evFin F v (GlobalTheory.LatVac.liftV v 1) ⊗ₜ[F] (1 : E) = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.LatVac.evFin_liftV]`. Both sides reduce to the same expression. Rewrite using `[e, mul_one]`. Rewrite using `[hQ, tensAt_mul_right, compFin_tensAt]`. Use `congr 1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `split_ext h t (by simp [hy]) (by simp [hy])`. Establish `hc : cA σ (tensAt E v y) = tensAt E v (sigR (Fv F v) σ y)` using `sigR_tensAt v σ y`. Rewrite using `[hc, hQ, tensAt_mul_right, compFin_tensAt, ← map_neg]`. Use `congr 1`. Use `split_ext h t ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, ← splitProj_comp, map_neg, map_one]`. Simplify using `[hy]`. Rewrite using `[map_mul, splitProj_comp_sigR h, map_neg, map_one]`. Simplify using `[hy]`. Rewrite using `[hpi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hy]`. Rewrite using `[hpi]`. Simplify using `[hy]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_swap_elt : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (v : Pl F) (t : E →ₐ[F] Fv F v), ∃ f : AE F E,

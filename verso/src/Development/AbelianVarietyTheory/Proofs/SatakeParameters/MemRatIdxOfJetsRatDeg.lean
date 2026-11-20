@@ -33,7 +33,7 @@ def JetLossAll (D : D7) (EX : ErrX D) (sel : HeightOneSpectrum (𝓞 D.host.F) �
     JetLossAllAt (recPrimes EX) D.R (ambOf (recSeam D) B χ cD) sel (badS D)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `absurd rfl h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {X : Fields} (A : Amb X) {a b : ℕ} (S : Finset (HeightOneSpectrum (𝓞 X.E))) (cA c : ℕ)
     (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (e : DVar X.Tau a b →₀ ℕ) :
@@ -47,19 +47,19 @@ section
 variable (A : Amb X)
 
 /- English proof (translation)
-Substitute `hj'` using the available equality. Establish `hT : ∀ Q ∈ Pr.vT u, ((Pr.g i : ℕ) : 𝓞 X.E) ∉ Q.asIdeal` using `fun Q hQ h => natCast_notMem_of_ne (hPr.T_prime u) (hPr.g_prime i) (hPr.T_ne_g u i) _ h (T_mem_of_piT_mem hPr u (mem_divs hQ))`. Establish `hsd : IsSdLat d.1.N` using `⟨d.2.lat, d.2.uni⟩`. Establish `hsd' : IsSdLat d'.1.N` using `⟨d'.2.lat, d'.2.uni⟩`. Rewrite `hv` using `[(GlobalTheory.GO.use₃ _ hT d w hw).2]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[(GlobalTheory.GO.use₃ _ hT d' w hw).2, stepC, kerOf_thDistC A _ _ (cAof_pos sel mu cst) (cBof_pos sel mu cst hPr u) _ _ _ _ _ _ d.2.lat d'.2.lat, LinearMap.smul_apply, smul_comm]`. Use `smul_mem_localizationAt_of_le w _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀, hscal _ _ _ hsd hs hf, hscal _ _ _ hsd' hs' hf', inv_one, one_mul]`. Take `⟨s, s', hwt, hnu⟩` from `hW X Pr R W u j hj`. Use `hO X.K w X.Tau _ _ _ _ _ s s' _ hwt _ _ (fun τ => GlobalTheory.TauLat.tauLatLattice X.E X.K X.Tau _ X.emb τ _ d.2.lat) (fun τ => GlobalTheory.TauLat.tauLatLattice X.E X.K X.Tau _ X.emb τ _ d'.2.lat) (latWithBasis_of_stdOver X.emb (hPr.g_prime i).ne_zero d.2.lat hs w hw) (latWithB …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∀ τ, ((∑ β, ∑ α, e (τ, β, α) : ℕ) : ℤ) = ∑ a, (W.nuW u (j + 1) τ).w a` using `fun τ => by`. Rewrite using `[he τ]`. Conclude with `Finset.sum_congr rfl fun a _ => hnu τ a`. Establish `h2 : (e.prod fun k n => X.emb k.1 (star ((Pr.piG i : 𝓞 X.E) : X.E)) ^ n) = ∏ τ, X.emb τ (star ((Pr.piG i : 𝓞 X.E) : X.E)) ^ (∑ a, (W.nuW u (j + 1) τ).w a).toNat`. Rewrite using `[Finsupp.prod_fintype _ _ fun _ => pow_zero _, Fintype.prod_prod_type]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← h1 τ, Int.toNat_natCast, Finset.prod_pow_eq_pow_sum, Fintype.sum_prod_type]`. Establish `h3 : e.degree + 1 < Pr.g i`. Establish `h4 : (e.degree : ℤ) = ∑ τ, ∑ a, (W.nuW u (j + 1) τ).w a`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.degree_eq_sum, Fintype.sum_prod_type, Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl fun τ _ => by rw [← h1 τ, Fintype.sum_prod_type]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[lossAt, ← h2]`. Use `hJ i w hw u mu cst hc j _ hj rfl _ _ hsd hsd' hs hs' Ξ hΞ e h3 fun c hc0 hdvd x hx _ => ?_` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `hrat _ _ _ x ⟨hsd, hsd', hc0, hdvd, ?_⟩ e fun τ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((cAof sel mu cst * cBof sel mu cst u : ℕ) : 𝓞 X.E) • x ∈ homAt _ _ _`. Rewrite using `[Nat.cast_mul, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← h1 τ]`. Establish `h5 : (∑ β, ∑ α, (e (τ, β, α) : ℤ)) = ((∑ β, ∑ α, e (τ, β, α) : ℕ) : ℤ)`. Use `push_cast`. Both sides reduce to the same expression. Use `(GlobalTheory.ColPeriodCompare.deg_eq e τ).trans h5` and compare the differences between its conclusion and the goal.
+Both sides reduce to the same expression. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem kerOf_bound_all (hJ : JetLossAllAt Pr R A sel S) (hO : JetOpWeyl) (hW : ChainWeights) (hPr : Pr.Ok)
     (hc : cst.Ok) (u : Pr.Word) (i : Fin 2) (w : HeightOneSpectrum (𝓞 X.K)) (hw : ((Pr.g i : ℕ) : 𝓞 X.K) ∈ w.asIdeal)
@@ -130,23 +130,21 @@ variable (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (A : Amb X)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hm` using `hL.hm`. Establish `hlp` using `hLP X Pr sel S mu hX hPr hsel`. Establish `hq : ∀ Q : rowSG Pr sel mu, Q.1 ∉ Pr.vGs → ((qOf Q.1 : ℕ) : 𝓞 X.K) ∉ w.asIdeal` using `fun Q hQ => natCast_notMem_of_ne (hlp Q).1.1 (hPr.g_prime i) (fun h => (hlp Q).2 hQ (h ▸ hSg i)) w hw`. Establish `hsu` using `hSU X Pr R Ch sel S mu cst L G m2 e eta hX hPr hsel hSg hT hL i w hw`. Establish `heq` using `fun (Q : rowSG Pr sel mu) (hQ : Q.1 ∉ Pr.vGs) => hEQ X Pr R Ch sel S mu cst L G m2 hL Q w hQ (hlp Q).1 (hq Q hQ) fun j hj => (hsu j hj).1 Q fun h => hQ (vG_subset i h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcd` using `GlobalTheory.LastSteps.chainDataGuarded X Pr R Ch sel S mu cst m2 hPr hL.cst_ok hm`. Rewrite using `[show Finset.range R.m = Finset.range (m2 + 2) by rw [hm]]`. Use `colCpl_bound (chKerC W Ch sel mu cst L A u m2 b hY P hK).kk hF (fun j hj b => hwt j (by omega) b) (lossAt W i u) (chKerC W Ch sel mu cst L A u m2 b hY P hK).cp (hF (m2 + 1) b) (hwt _ (by omega) b) (fun j hj al be p p' => ?_) (fun al p₀ p Y hYm => ?_) (fun al p d₁ Y hYm => ?_) (st …` and prove the remaining obligations. Take `⟨g, hg⟩` from `exists_std_pt W sel mu L hM hPr i u j al p`. Take `⟨g', hg'⟩` from `exists_std_pt W sel mu L hM hPr i u (j + 1) be p'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Bd.transfer g g' ((hF j al).del_smul g p) ((hF (j + 1) be).del_smul g' p') (((chKerC W Ch sel mu cst L A u m2 b hY P hK).kk j al be).equiv g g' p p') ?_` and prove the remaining obligations. Generalize the expression as in `g • p = p, g' • p' = p' at hg hg' ⊢`. Establish `e1 : ((chKerC W Ch sel mu cst L A u m2 b hY P hK).kk j al be).k p p' = matK W Ch sel mu cst L (chTh W Ch sel mu cst A u m2) j al be p p'`. Simplify using `only [chKerC, chKer, dif_pos hj]`. Rewrite using `[e1]`.
+Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Use `kerOf_bound_all W Ch sel mu cst A hJ hO hW hPr hL.cst_ok u i w hw (by omega) rfl (hsu j (by omega)).2 (hdeg j (by omega)) (hrat j (by omega)) (DecoF.deco p) (DecoF.deco p') hg hg' (isFrames_frsF p) (isFrames_frsF p') ?_ hv` and prove the remaining obligations. Conclude with `datumAt_prod hPr hL.cst_ok u i w (DecoF.deco p).1 (DecoF.deco p').2 (fun Q x => XiAt Ch sel mu cst j Q (L.h j al Q) (L.h (j + 1) be Q) (inFr (frsF sel mu p Q) (frsF sel mu p' Q) x)) (fun Q hQ => fnModAt_inFr (isFrames_frsF p Q) (isFrames_frsF p' Q) (hEG X Pr R Ch sel S mu cst L G …`. Take `⟨g, hg⟩` from `exists_std_pt W sel mu L hM hPr i u m2 al p₀`. Take `⟨g', hg'⟩` from `exists_std_pt W sel mu L hM hPr i u (m2 + 1) b p`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Bd.transfer g g' ((hF m2 al).del_smul g p₀) ((hF (m2 + 1) b).del_smul g' p) (((chKerC W Ch sel mu cst L A u m2 b hY P hK).cp al).equiv1 g g' p₀ p Y) ?_` and prove the remaining obligations. Establish `hY'` using `((ybCpl W sel mu cst L u m2 b hY).equiv g' p Y).2 hYm`. It suffices to establish `key : ∀ (p₀ : ChPt (R` using `R) sel mu u m2) (p : ChPt (R := R) sel mu u (m2 + 1)) Y', StdOver (Pr.g i) (DecoF.deco p₀).1.N → StdOver (Pr.g i) (DecoF.deco p).1.N → Y' ∈ ybSet sel mu cst (DecoF.deco p).1.N → Bd w (lossAt W i u m2) (((chF W sel mu L u m2).mem al).Del p₀) (((chF W sel mu L u (m2 + 1)).mem b).De …`. Introduce `p₀ p Y' hg hg' hY''`. Establish `e1 : ((chKerC W Ch sel mu cst L A u m2 b hY P hK).cp al).k1 p₀ p Y' = cp1K W Ch sel mu cst L (chTh W Ch sel mu cst A u m2) al p₀ p Y'` using `rfl`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, cp1K, if_pos hY'']`. Introduce `v hv`. Use `kerOf_bound_all W Ch sel mu cst A hJ hO hW hPr hL.cst_ok u i w hw (by omega) rfl (hsu m2 (by omega)).2 (hdeg m2 (by omega)) (hrat m2 (by omega)) (DecoF.deco p₀) (DecoF.deco p) hg hg' (isFrames_frsF p₀) (isFrames_frsF p) ?_ hv` and prove the remaining obligations. Conclude with `datumAt_prod hPr hL.cst_ok u i w (DecoF.deco p₀).1 (DecoF.deco p).2 (facPen Ch sel mu cst L m2 al p₀ p Y') (fun Q hQ => (hcd Q hQ).2.2.2.1 L al (hL.stabG m2 al Q hQ) u p₀ p Y' hY'') (fun Q hQ => awayAt_inFr (isFrames_frsF p₀ Q) (isFrames_frsF p Q) ((heq Q hQ).2 al _))`. Take `⟨g, hg⟩` from `exists_std_pt W sel mu L hM hPr i u (m2 + 1) b p`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hγ⟩` from `hM X Pr hPr i _ d₁.1.N ⟨d₁.2.lat, d₁.2.uni⟩`. Use `Bd.transfer (S' := evGSD W Ch sel mu P u) g (γ, 1) ((hF (m2 + 1) b).del_smul g p) (evGSD_del_smul W Ch sel mu hPr hsel u hS P γ d₁) (((chKerC W Ch sel mu cst L A u m2 b hY P hK).cp al).equiv2 g (γ, 1) p Y d₁) ?_` and prove the remaining obligations. Establish `hY'` using `((ybCpl W sel mu cst L u m2 b hY).equiv g p Y).2 hYm`. Establish `hγ' : StdOver (Pr.g i) (((γ, 1) : (evGSD W Ch sel mu P u).G) • d₁).1.N` using `hγ`. It suffices to establish `key : ∀ (p : ChPt (R` using `R) sel mu u (m2 + 1)) Y' (d₂ : RowPt Pr R sel mu), StdOver (Pr.g i) (DecoF.deco p).1.N → Y' ∈ ybSet sel mu cst (DecoF.deco p).1.N → StdOver (Pr.g i) d₂.1.N → Bd w (lossAt W i u (m2 + 1)) (((chF W sel mu L u (m2 + 1)).mem b).Del p) ((evGSD W Ch sel mu P u).Del d₂) (((chKerC W Ch s …`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p Y' d₂ hg hY'' hγ'`. Establish `e1 : ((chKerC W Ch sel mu cst L A u m2 b hY P hK).cp al).k2 p Y' d₂ = cp2K W Ch sel mu cst (chTh W Ch sel mu cst A u m2) p Y' d₂` using `rfl`. Rewrite using `[e1, cp2K, if_pos hY'']`. Introduce `v hv`. Use `kerOf_bound_all W Ch sel mu cst A hJ hO hW hPr hL.cst_ok u i w hw (j := m2 + 1) (j' := R.m) (by omega) hm (hsu _ (by omega)).2 (hdeg _ (by omega)) (hrat _ (by omega)) (DecoF.deco p) (tilQ sel mu u d₂) hg (stdOver_tilH _ (conj_piT_notMem hPr u) (piT_notMem_rowSG sel mu hPr hsel u …` and prove the remaining obligations.
-
-Conclude with `datumAt_prod hPr hL.cst_ok u i w (DecoF.deco p).1 (tilQ sel mu u d₂).2 (facTop Ch sel mu cst m2 p Y' d₂) (fun Q hQ => (hcd Q hQ).2.2.2.2 u (piT_notMem_rowSG sel mu hPr hsel u hS) p d₂ Y' hY'') (fun Q hQ => hTQ X Pr R Ch sel S mu cst L G m2 u hPr hsel hS hL Q w hQ (hlp Q).1 (hq Q …`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem colMu_bound_all (hJ : JetLossAllAt Pr R A sel S) (hO : JetOpWeyl) (hW : ChainWeights) (hM : StdMove)
     (hLP : LevelPrimes) (hSU : ScalarUnit) (hEG : EntryAtG) (hEQ : EntryAtQ) (hTQ : TopAtQ)

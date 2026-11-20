@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul (Lsq K Δ) k m]`. Simplify using `only [herm, smul_mul_assoc, map_smul, smul_eq_mul, mul_zero, zero_mul, map_zero, add_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem splitM_lemma {K : Type} [Field K] {Δ τ : K} (c k : K) (m : EL Δ τ) (x y : Sp Δ τ) :
     herm c (k • m) x y = herm c m (x.1, 0) y + algebraMap K (Lsq K Δ) k * herm c m (0, x.2) y := by
@@ -13,24 +13,22 @@ private theorem splitM_lemma {K : Type} [Field K] {Δ τ : K} (c k : K) (m : EL 
   simp only [herm, smul_mul_assoc, map_smul, smul_eq_mul, mul_zero, zero_mul, map_zero, add_zero, zero_add]
 
 /- English proof (translation)
-Simplify using `[herm]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem splitM_lemma_3 {K : Type} [Field K] {Δ τ : K} (c : K) (m : EL Δ τ) (y : Sp Δ τ) :
     herm c m (0, 0) y = 0 := by
   simp [herm]
 
 /- English proof (translation)
-Take `⟨-, -, h1, h2⟩` from `One.splitS O K Δ τ hl hτ hu c d m hd S hS`. Establish `h2' : ∀ x ∈ S, ((0 : Lsq K Δ), x.2) ∈ S` using `fun x hx => by`. Simplify `h2 x hx 1 (by simp) (by simp)` using `[ofE_one]`. Establish `e : IsIntegral O (algebraMap K (Lsq K Δ) (algebraMap O K ε))`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntegral_algebraMap`. Establish `ei : IsIntegral O (algebraMap K (Lsq K Δ) (algebraMap O K ↑ε⁻¹))`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `isIntegral_algebraMap`. Use `⟨hS.fg, fun y => ?_, hS.stab⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hS.dual y]`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Rewrite using `[splitM_lemma]`. Conclude with `(hy _ (h1 x hx)).add (e.mul (hy _ (h2' x hx)))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hy x hx`. Establish `a` using `hy _ (h1 x hx)`. Establish `b` using `hy _ (h2' x hx)`. Rewrite `a`, `b` using `[splitM_lemma]`. Simplify using `only [splitM_lemma_3, mul_zero, add_zero, zero_add] at a b`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hm'` using `splitM_lemma c 1 m x y`. Rewrite `hm'` using `[one_smul, map_one, one_mul]`. Use `show IsIntegral O (herm c m x y)`. Rewrite using `[hm']`. Use `a.add ?_` and prove the remaining obligations.
-
-Use `ei.mul b` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← map_mul, ← map_mul, Units.inv_mul, map_one, map_one, one_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem splitM_lemma_2 (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
     [Algebra O K] (Δ τ : K) (hl : IsLoc O Δ) (c : K) (d m : EL Δ τ) (hd : IsDat c d m)
@@ -65,13 +63,13 @@ private theorem splitM_lemma_2 (O K : Type) [CommRing O] [IsDomain O] [IsDiscret
     rwa [← mul_assoc, ← map_mul, ← map_mul, Units.inv_mul, map_one, map_one, one_mul] at this
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ hl c d m hd hτ hu ε`. Establish `hd' : IsDat c d (algebraMap O K ε • m)`. Simplify using `using datSmul K Δ τ c d m hd (Units.map (algebraMap O K).toMonoidHom ε)`. Establish `key : ∀ S, IsFix O c d (algebraMap O K ε • m) S ↔ IsFix O c d m S`. Introduce `S`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `splitM_lemma_2 O K Δ τ hl c d _ hd' hτ hu ε⁻¹ S h` as an intermediate fact. Rewrite `this` using `[smul_smul, ← map_mul, Units.inv_mul, map_one, one_smul]`. Then use the resulting hypothesis. Conclude with `splitM_lemma_2 O K Δ τ hl c d m hd hτ hu ε S`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions.
 
-Unfold `lcount`. Use `congr 1`. Use function extensionality and compare the values at `S`. Distinguish the cases in `h : IsFix O c d m S`. Rewrite using `[if_pos ((key S).2 h), if_pos h]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h' => h ((key S).1 h')), if_neg h]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.splitM : UpperTheory.V.Z.Sym.Loc.SplitM := by
   intro O K _ _ _ _ _ Δ τ hl c d m hd hτ hu ε

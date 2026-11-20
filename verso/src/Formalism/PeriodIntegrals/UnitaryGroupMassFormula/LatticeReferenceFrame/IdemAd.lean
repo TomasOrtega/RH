@@ -12,7 +12,7 @@ section Ad
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Iff.rfl`. Consider the case `exact HeightOneSpectrum.mem_adicCompletionIntegers F v`. Consider the case `simp [HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem memO {v : HeightOneSpectrum (𝓞 F)} {x : v.adicCompletion F} :
     x ∈ v.adicCompletionIntegers F ↔ Valued.v x ≤ 1 := by
@@ -34,7 +34,7 @@ Both sides reduce to the same expression.
 theorem evA_apply (v : HeightOneSpectrum (𝓞 F)) (a : Af F) : evA v a = a v := rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `(ext v; exact h v)`. Consider the case `exact Subtype.ext (funext h)`. Consider the case `exact RestrictedProduct.ext h`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eq_of_evA {a b : Af F} (h : ∀ v, evA v a = evA v b) : a = b := by
   first
@@ -53,7 +53,7 @@ theorem mkA_apply (c : ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletion F)
     (hc : ∀ v, Valued.v (c v) ≤ 1) (v : HeightOneSpectrum (𝓞 F)) : mkA c hc v = c v := rfl
 
 /- English proof (translation)
-Unfold `Formalism.UG.intAd`. Use `show ∀ v, mkA c hc v ∈ HeightOneSpectrum.adicCompletionIntegers F v`. Introduce `v`. Rewrite using `[mkA_apply]`. Conclude with `memO.2 (hc v)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mkA_mem (c : ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletion F)
     (hc : ∀ v, Valued.v (c v) ≤ 1) : mkA c hc ∈ Formalism.UG.intAd F := by
@@ -64,7 +64,7 @@ theorem mkA_mem (c : ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletion F)
   exact memO.2 (hc v)
 
 /- English proof (translation)
-The claim follows from `memO.1 (natCast_mem _ g)`.
+A detailed English derivation is pending.
 -/
 theorem natCast_le_one (v : HeightOneSpectrum (𝓞 F)) (g : ℕ) :
     Valued.v ((g : ℕ) : v.adicCompletion F) ≤ 1 := memO.1 (natCast_mem _ g)
@@ -72,23 +72,21 @@ theorem natCast_le_one (v : HeightOneSpectrum (𝓞 F)) (g : ℕ) :
 end Ad
 
 /- English proof (translation)
-Unfold `AdOfLoc LocIdem AdIdem`. Introduce `hL F _ _ g α β hg hα hβ`. Establish `hα' : ∀ v, Valued.v (α v) ≤ 1`. Introduce `v`. Establish `h0` using `(show ∀ v, α v ∈ HeightOneSpectrum.adicCompletionIntegers F v from hα) v`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `memO.1 h0`. Establish `hβ' : ∀ v, Valued.v (β v) ≤ 1`. Introduce `v`. Establish `h0` using `(show ∀ v, β v ∈ HeightOneSpectrum.adicCompletionIntegers F v from hβ) v`. Conclude with `memO.1 h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ v : HeightOneSpectrum (𝓞 F), ∃ c₁ c₂ : v.adicCompletion F, Valued.v c₁ ≤ 1 ∧ Valued.v c₂ ≤ 1 ∧ (1 + (g : v.adicCompletion F) * α v) * (1 + (g : v.adicCompletion F) * c₁) ^ 2 - 2 * (1 + (g : v.adicCompletion F) * c₁) * ((g : v.adicCompletion F) * c₂) = 1 + (g : v.adicCompl …`. Introduce `v`. Distinguish the cases in `hv : Valued.v ((g : ℕ) : v.adicCompletion F) < 1`. Conclude with `hL F v g (α v) (β v) hg hv (hα' v) (hβ' v)`. Establish `h1 : Valued.v ((g : ℕ) : v.adicCompletion F) = 1` using `le_antisymm (natCast_le_one v g) (not_lt.mp hv)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg0 : ((g : ℕ) : v.adicCompletion F) ≠ 0`. Introduce `h`. Rewrite `h1` using `[h, map_zero]`. Conclude with `zero_ne_one h1`. Establish `hu : 1 + (g : v.adicCompletion F) * -((g : v.adicCompletion F))⁻¹ = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_neg, mul_inv_cancel₀ hg0, add_neg_cancel]`. Use `⟨-((g : v.adicCompletion F))⁻¹, 0, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Valuation.map_neg, map_inv₀, h1, inv_one]`. Rewrite using `[map_zero]`. Conclude with `zero_le'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu]`. Simplify using the standard rewrite rules. Rewrite using `[hu]`. Simplify using the standard rewrite rules. Rewrite using `[hu]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `choose c₁ c₂ h1 h2 e1 e2 e3 using key`. Use `⟨mkA c₁ h1, mkA c₂ h2, mkA_mem c₁ h1, mkA_mem c₂ h2, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `eq_of_evA` to reduce the goal to its premises. Introduce `v`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_add, map_mul, map_sub, map_pow, map_one, map_natCast, map_neg, map_ofNat, evA_apply, mkA_apply]`. Conclude with `e1 v`. Apply `eq_of_evA` to reduce the goal to its premises. Introduce `v`. Simplify using `only [map_add, map_mul, map_sub, map_pow, map_one, map_natCast, map_neg, map_ofNat, evA_apply, mkA_apply]`.
-
-Conclude with `e2 v`. Apply `eq_of_evA` to reduce the goal to its premises. Introduce `v`. Simplify using `only [map_add, map_mul, map_sub, map_pow, map_one, map_natCast, map_neg, map_ofNat, map_zero, evA_apply, mkA_apply]`. Conclude with `e3 v`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adOfLoc : AdOfLoc := by
   unfold AdOfLoc LocIdem AdIdem

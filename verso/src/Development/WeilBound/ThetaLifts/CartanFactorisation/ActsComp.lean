@@ -14,12 +14,12 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {B : Base F E} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ}
 
 /- English proof (translation)
-Introduce `u _` and use `by simp [mat]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_at {m : ℕ} {Y : Spc F E m} {R : Type} [Zero R] (ev : AF F → R) : (1 : UA σ Y.J) ∈ UAt σ Y ev := fun u _ => by simp [mat]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_at _, fun w => by have : (mat (1 : UA σ Y.J)).map (piInf (τ w)) = 1 := by simp [mat] rw [this]; exact Commute.one_left _⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_kinf {m : ℕ} {Y : Spc F E m} (τ) : (1 : UA σ Y.J) ∈ KInf σ Y τ :=
   ⟨one_at _, fun w => by
@@ -27,13 +27,13 @@ theorem one_kinf {m : ℕ} {Y : Spc F E m} (τ) : (1 : UA σ Y.J) ∈ KInf σ Y 
     rw [this]; exact Commute.one_left _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const, fun _ => one_at _⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_line {m : ℕ} {Y : Spc F E m} : (1 : Multiplicative ℝ →* UA σ Y.J) ∈ Lines σ Y :=
   ⟨continuous_const, fun _ => one_at _⟩
 
 /- English proof (translation)
-Introduce `r hr` and use `by rw [map_mul, Module.End.mul_apply, h1 r hr] exact h2 r ⟨hr.1, h1 r hr ▸ hp.weil.isUSplitting.pres _ _ hr.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem acts_comp (hp : IsPair B M χX χW om r s r' s') {x y} {f g k : SInf F (Fin n × Fin d)}
     (h1 : Acts (evI F) (om y) f g) (h2 : Acts (evI F) (om x) g k) : Acts (evI F) (om (x * y)) f k := fun r hr => by
@@ -41,7 +41,7 @@ theorem acts_comp (hp : IsPair B M χX χW om r s r' s') {x y} {f g k : SInf F (
   exact h2 r ⟨hr.1, h1 r hr ▸ hp.weil.isUSplitting.pres _ _ hr.2⟩
 
 /- English proof (translation)
-Use `SchwartzMap.ext fun x => ?_` and prove the remaining obligations. Conclude with `h ((BoundedContinuousFunction.evalCLM ℂ x).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ _))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sinf_ext {κ : Type} [Fintype κ] {f g : SInf F κ} (h : ∀ L : SInf F κ →L[ℂ] ℂ, L f = L g) : f = g := by
   classical
@@ -49,7 +49,7 @@ theorem sinf_ext {κ : Type} [Fintype κ] {f g : SInf F κ} (h : ∀ L : SInf F 
   exact h ((BoundedContinuousFunction.evalCLM ℂ x).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ _))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => { toFun := fun f => M.I om (pureA F f ψ) h map_add' := fun f g => by have : pureA F ⇑(f + g) ψ = pureA F f ψ + pureA F g ψ := by funext x; simp [pureA, add_mul] rw [this, I_add' hp hc (h𝓒 f) (h𝓒 g)]; rfl map_smul' := fun c f => by have : pureA F ⇑(c • f) ψ = c • pureA F …`.
+Supply the required witnesses or components.
 -/
 theorem exists_L (hp : IsPair B M χX χW om r s r' s') {𝓒} (hc : Cls B M om 𝓒) {ψ} (hψ : ψ ∈ SB (Fin n × Fin d → Af F))
     (h𝓒 : ∀ f : SInf F (Fin n × Fin d), pureA F f ψ ∈ 𝓒) :
@@ -66,55 +66,47 @@ theorem exists_L (hp : IsPair B M χX χW om r s r' s') {𝓒} (hc : Cls B M om 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨ψ, hψ, eψ⟩` from `PositivityTheory.ThKG.pure_eq_pureA hp.good φ h1 h2`. Establish `h𝓒' : ∀ f : SInf F (Fin n × Fin d), pureA F f ψ ∈ 𝓒` using `fun f => eψ f ▸ h𝓒 f`. Take `⟨L, hL⟩` from `exists_L hp hc hψ h𝓒'`. Take `⟨hΓ, μ, 𝓕, hμ, h𝓕, hr⟩` from `uniW hU hp`. Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : SFinite μ := @instSFiniteOfSigmaFinite _ _ _ (sFinite_haar (ε := -1) hp.base.cm (fun i j => by simpa using hp.skew.skew i j) (detW hp) μ)`. Use `choose op hop hopP using hO F E σ B n d X W M χX χW om r s r' s' hp`. Establish `hL2` using `hLie F E σ B n d X W M χX χW om r s r' s' hp`. Take `⟨hA1, hA2⟩` from `hAd F E σ B n d X W M χX χW om r s r' s' hp`. Take `⟨K, hKe⟩` from `hK F E σ d W B.emb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `kk : ∀ k : K, k.1 ∈ KInf σ W B.emb` using `fun k => hKe ▸ k.2`. Set `Q` to `M.Pol B.ψ B.emb`. Set `u : Q →ₗ[ℂ] (UA σ W.J → ℂ)` to `LinearMap.pi fun h => (L h : _ →ₗ[ℂ] ℂ) ∘ₗ Q.subtype`. Establish `hu : ∀ x : Q, u x = M.I om (pureA F x.1 ψ)` using `fun x => funext fun h => hL h x`. Establish `uc : ∀ x, Continuous (u x)` using `fun x => hu x ▸ hc.cont _ (h𝓒' x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `u2 : ∀ x, IntegrableOn (fun g => ‖u x g‖ ^ 2) 𝓕 μ` using `fun x => by`. Rewrite using `[hu]`. Conclude with `hc.sq μ 𝓕 hμ h𝓕 _ (h𝓒' x) (eψ x ▸ Submodule.subset_span ⟨x, x.2, φ, h1, h2, rfl⟩)`. Establish `ui : ∀ x, L2.Inv (ratU σ W.J) (u x)` using `fun x => hu x ▸ I_inv hT hp (hc.sch (h𝓒' x))`. Take `⟨β, hβ, hs, hpos⟩` from `exists_beta 𝓕 μ u uc u2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `LW : ∀ h hh g f, L g (op 1 (one_at _) h hh f) = L (g * h) f` using `fun h hh g f => by`. Rewrite using `[hL, hL, ← (hop 1 _ h hh).1 f ψ hψ, I_right]`. Establish `LX : ∀ h hh g f, L g (op h hh 1 (one_at _) f) = L g f` using `fun h hh g f => by`. Rewrite using `[hL, hL, ← (hop h hh 1 _).1 f ψ hψ, I_left hU hT hp (hc.sch (h𝓒' f))]`. Set `A : K → Module.End ℂ Q` to `fun k => (op 1 (one_at _) k (kk k).1 : _ →ₗ[ℂ] _).restrict (hopP 1 _ k _ (one_kinf _) (kk k))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hA : ∀ (k : K) (x : Q) (y : SInf F (Fin n × Fin d)), Acts (evI F) (om (1, k.1)) x.1 y ↔ y = (A k x).1` using `fun k x y => ⟨fun h => (hQ F _ x y _).1 _ h ((hop 1 _ k _).2 x), fun h => h ▸ (hop 1 _ k _).2 x⟩`. Set `κ : K →* Module.End ℂ Q` to `{ toFun := A map_one' := LinearMap.ext fun x => Subtype.ext ((hA 1 x x).1 fun r _ => by`. Rewrite using `[show ((1, (1 : K).1) : UA σ X.J × UA σ W.J) = 1 from rfl, map_one]`. Use the proof step `rfl).symm`. Use the proof step `map_mul' := fun k k' => LinearMap.ext fun x => Subtype.ext ((hA (k * k') x (A k (A k' x))).1 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using acts_comp hp ((hA k' x _).2 rfl) ((hA k (A k' x) _).2 rfl))).symm }`. Establish `uA : ∀ k x g, u (κ k x) g = u x (g * k)` using `fun k x g => LW k (kk k).1 g x`. Establish `iso : ∀ k x y, β (κ k x) (κ k y) = β x y` using `fun k x y => by`. Simplify using `only [hβ, uA]`. Conclude with `L2.form_right h𝓕 (ui x) (ui y) k`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `exD : ∀ δ ∈ Lines σ W, ∃ D : Module.End ℂ Q, (∀ (x : Q) (y : SInf F _), ActsD (evI F) (fun t => om (1, δ (Multiplicative.ofAdd t))) x.1 y ↔ y = (D x).1) ∧ ∀ x g, HasDerivAt (fun t : ℝ => u x (g * δ (Multiplicative.ofAdd t))) (u (D x) g) 0` using `fun δ hδ => by choose D h3 h4 h5 using hL2 1 one_line δ hδ (fun t => op 1 (one_at _) _ (hδ.2 _)) fun t => hop 1 _ _ _`. Use `⟨{ toFun := fun x => ⟨D x x.2, h3 x x.2⟩ map_add' := fun x y => Subtype.ext (sinf_ext fun l => ?_) map_smul' := fun c x => Subtype.ext (sinf_ext fun l => ?_) }, fun x y => ⟨fun h => (hQ F _ x y _).2 _ h (h4 x x.2), fun h => h ▸ h4 x x.2⟩, fun x g => ?_⟩` and prove the remaining obligations. Use `(h5 _ (x + y).2 l).unique ?_` and prove the remaining obligations. Simplify using `using (h5 x x.2 l).fun_add (h5 y y.2 l)`. Use `(h5 _ (c • x).2 l).unique ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `using (h5 x x.2 l).const_mul c`. Use `h5 x x.2 (L g)` as an intermediate fact. Simplify using `only [LW] at this`. Conclude with `this`. Use `choose D hD hDu using exD`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Set `𝒪 : Set (Module.End ℂ Q)` to `{T | (∃ k, T = κ k) ∨ ∃ δ hδ, T = D δ hδ}`. Set `A₀ : Submodule ℂ Q` to `(augInf B M om).comap Q.subtype`. Establish `gen : ∀ z : SInf F (Fin n × Fin d), (∃ f ∈ M.Pol B.ψ B.emb, (∃ γ ∈ Lines σ X, ActsD (evI F) (fun t => om (γ (Multiplicative.ofAdd t), 1)) f z) ∨ ∃ k ∈ KInf σ X B.emb, ∃ f₁ : SInf F _, Acts (evI F) (om (k, 1)) f f₁ ∧ z = f₁ - f) → z ∈ Q ∧ ∀ g, L g z = 0`. Introduce and unpack `z ⟨x, hx, ⟨γ, hγ, hz⟩ | ⟨k, hk, y, hy, rfl⟩⟩`. Take `⟨y, h3, h4, h5⟩` from `hL2 γ hγ 1 one_line (fun t => op _ (hγ.2 _) 1 (one_at _)) (fun t => hop _ _ 1 _) x hx`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `rfl : z = y` from `(hQ F _ x z y).2 _ hz h4`. Use `⟨h3, fun g => (h5 (L g)).unique ?_⟩` and prove the remaining obligations. Simplify using `only [LX]`. Conclude with `hasDerivAt_const _ _`. Take `rfl : y = op k hk.1 1 (one_at _) x` from `(hQ F _ x y _).1 _ hy ((hop k _ 1 _).2 x)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨sub_mem (hopP k _ 1 _ hk (one_kinf _) x hx) hx, fun g => by rw [map_sub, LX, sub_self]⟩`. Establish `augle : augInf B M om ≤ Q` using `Submodule.span_le.2 fun z hz => (gen z hz).1`. Establish `uaug : ∀ g, augInf B M om ≤ LinearMap.ker (L g : _ →ₗ[ℂ] ℂ)` using `fun g => Submodule.span_le.2 fun z hz => (gen z hz).2 g`. Establish `hiff : ∀ P : Submodule ℂ Q, (A₀ ≤ P ∧ ∀ T ∈ 𝒪, ∀ x ∈ P, T x ∈ P) ↔ GlobalTheory.Published.ThetaSubInf M B.ψ B.emb om (P.map Q.subtype)` using `fun P => by`. Establish `mem : ∀ y : Q, y.1 ∈ P.map Q.subtype → y ∈ P` using `fun y ⟨z, hz, e⟩ => (show z = y from Subtype.ext e) ▸ hz`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `ha : augInf B M om ≤ P.map Q.subtype` using `fun z hz => ⟨⟨z, augle hz⟩, h.1 hz, rfl⟩`. Use `⟨Submodule.map_subtype_le _ _, fun γ hγ x hx y hy => ha (Submodule.subset_span ⟨x, hx, Or.inl ⟨γ, hγ, hy⟩⟩), fun k hk x hx y hy => ha (Submodule.subset_span ⟨x, hx, Or.inr ⟨k, hk, y, hy, rfl⟩⟩), ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `δ hδ _ ⟨x, hx, rfl⟩ y hy`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨D δ hδ x, h.2 _ (Or.inr ⟨δ, hδ, rfl⟩) x hx, ((hD δ hδ x y).1 hy).symm⟩`. Introduce and unpack `k hk _ ⟨x, hx, rfl⟩ y hy`. Establish `hk' : k ∈ K` using `by rw [← SetLike.mem_coe, hKe]; exact hk`. Conclude with `⟨κ ⟨k, hk'⟩ x, h.2 _ (Or.inl ⟨_, rfl⟩) x hx, ((hA ⟨k, hk'⟩ x y).1 hy).symm⟩`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : augInf B M om ≤ P.map Q.subtype` using `Submodule.span_le.2 (by`. Introduce and unpack `z ⟨x, hx, ⟨γ, hγ, hz⟩ | ⟨k, hk, y, hy, rfl⟩⟩`. Use `exacts [h.2.1 γ hγ x hx z hz, h.2.2.1 k hk x hx y hy])`. Use `⟨fun x hx => mem x (ha hx), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ (⟨k, rfl⟩ | ⟨δ, hδ, rfl⟩) x hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mem _ (h.2.2.2.2 k (kk k) x ⟨x, hx, rfl⟩ _ ((hA k x _).2 rfl))`. Conclude with `mem _ (h.2.2.2.1 δ hδ x ⟨x, hx, rfl⟩ _ ((hD δ hδ x _).2 rfl))`. Take `⟨m1, m2⟩` from `max_comap Q (GlobalTheory.Published.ThetaSubInf M B.ψ B.emb om) _ (fun _ h => h.1) hiff N hN fun N' hN' => by`. Establish `mc : ∀ N, N ≤ Q → (N.comap Q.subtype).map Q.subtype = N` using `fun N hN => by`. Rewrite using `[Submodule.map_comap_subtype, inf_eq_right.2 hN]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `a1` using `(hiff (N.comap Q.subtype)).2 (by rw [mc N hN.prop.1.1]; exact hN.prop.1)`. Establish `a2` using `(hiff (N'.comap Q.subtype)).2 (by rw [mc N' hN'.prop.1.1]; exact hN'.prop.1)`. Establish `a3` using `(hiff (N.comap Q.subtype ⊔ N'.comap Q.subtype)).1 ⟨a1.1.trans le_sup_left, fun T hT x hx => by`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.add_mem_sup (a1.2 T hT y hy) (a2.2 T hT z hz)⟩`. Rewrite `a3` using `[Submodule.map_sup, mc N hN.prop.1.1, mc N' hN'.prop.1.1]`. Establish `a4` using `hsum N N' hN.prop.1 hN'.prop.1 hN.prop.2 hN'.prop.2`. Conclude with `le_antisymm (le_sup_right.trans (hN.le_of_ge ⟨a3, a4⟩ le_sup_left)) (le_sup_left.trans (hN'.le_of_ge ⟨a3, a4⟩ le_sup_right))`. Establish `key` using `absUnit Q β 𝒪 A₀ hs hpos (fun x hx => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: u x = 0` using `funext fun g => uaug g hx`. Rewrite using `[hβ, this]`. Use the proof step `simp)`. Use the proof step `(by`. Introduce and unpack `_ (⟨k, rfl⟩ | ⟨δ, hδ, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨_, Or.inl ⟨k⁻¹, rfl⟩, 1, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, ← iso k x, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Use `⟨_, Or.inr ⟨δ, hδ, rfl⟩, -1, fun x y => ?_⟩` and prove the remaining obligations. Use `L2.skew h𝓕 δ hδ.1 (uc x) (uc _) (uc y) (uc _) (ui x) (ui _) (ui y) (ui _) (u2 x) (u2 _) (u2 y) (u2 _) (hDu δ hδ x) (hDu δ hδ y)` as an intermediate fact. Rewrite using `[hβ, hβ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `this)`. Use the proof step `(fun x₀ => by`. Use `⟨K, inferInstance, κ, fun k => Or.inl ⟨k, rfl⟩, iso, fun x => ?_, fun m ρ' _ => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hA1 x x.2`. Take `⟨π, hπ⟩` from `LinearMap.exists_extend (LinearMap.id : Q →ₗ[ℂ] Q)`.
-
-Establish `hπ' : ∀ y : Q, π y = y` using `fun y => LinearMap.congr_fun hπ y`. Use `⟨t.image π, fun k => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, z, hz, e⟩` from `Submodule.mem_sup.1 (ht k (kk k) _ ((hA k x _).2 rfl))`. Establish `e' : κ k x = π y + ⟨z, augle hz⟩` using `by rw [← hπ' ⟨z, _⟩, ← map_add, e]; exact (hπ' _).symm`. Rewrite using `[e', Finset.coe_image, ← Submodule.map_span]`.
-
-Conclude with `Submodule.add_mem_sup ⟨y, hy, rfl⟩ hz`. Take `⟨t, ht⟩` from `hA2 m fun h => if hh : h ∈ K then ρ' ⟨h, hh⟩ else 0`. Use `⟨t.image fun l => l ∘ₗ Q.subtype, fun Λ hΛ hΛe => ?_⟩` and prove the remaining obligations. Take `⟨l, hl⟩` from `LinearMap.exists_extend Λ`. Establish `hl' : ∀ x : Q, l x = Λ x` using `fun x => LinearMap.congr_fun hl x`.
-
-Take `⟨l', hl't, hll⟩` from `ht l (fun z hz => (hl' ⟨z, augle hz⟩).trans (hΛ hz)) fun k hk x hx y hy => by`. Establish `hk' : k ∈ K` using `by rw [← SetLike.mem_coe, hKe]; exact hk`. Rewrite using `[dif_pos hk', (hA ⟨k, hk'⟩ ⟨x, hx⟩ y).1 hy, hl', hl' ⟨x, hx⟩]`. Conclude with `hΛe ⟨k, hk'⟩ ⟨x, hx⟩`. Establish `e : Λ = LinearMap.lcomp ℂ _ Q.subtype l'` using `LinearMap.ext fun x => (hl' x).symm.trans (hll x x.2)`.
-
-Rewrite using `[e, Finset.coe_image]`. Conclude with `(Submodule.map_span (LinearMap.lcomp ℂ _ Q.subtype) _).le ⟨l', hl't, rfl⟩)`. Use `_ m1 m2 ⟨f, hN.prop.1.1 hf⟩ hf`. Use `L2.eq_zero h𝓕 (uc _) (ui _) (u2 _) ((hβ _ _).symm.trans key)` as an intermediate fact. Rewrite `this` using `[hu, ← eψ]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem killInf (hU : Unimod) (hT : ThetaBasic) (hO : ArchOp) (hLie : ArchLie) (hQ : ArchUniq) (hK : KInfGrp) (hAd : AdmInf)
     (hp : IsPair B M χX χW om r s r' s') {𝓒} (hc : Cls B M om 𝓒) {N}

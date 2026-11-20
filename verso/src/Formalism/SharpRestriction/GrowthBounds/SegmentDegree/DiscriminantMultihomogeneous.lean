@@ -9,13 +9,13 @@ namespace Formalism.MainNotions.SelectionLemmas.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.G.Joints.StandardMonomialSpace
 
 /- English proof (translation)
-Establish `key : ∀ σ : Equiv.Perm (Fin r), DegAt t (∑ a : Fin r, if posOf n' (X.row j x a) = t then p ^ X.F.dist j (X.row j x a) else 0) (∏ i : Fin r, phSeg R K p X.F j (plEmb R r K (MvPolynomial.X (X.row j x (σ i), i))))`. Introduce `σ`. Rewrite using `[← Equiv.sum_comp σ (fun a => if posOf n' (X.row j x a) = t then p ^ X.F.dist j (X.row j x a) else 0)]`. Apply `degAt_prod` to reduce the goal to its premises. Introduce `i _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [plEmb, phSeg, rename_X, aeval_X]`. Establish `h` using `degAt_pow (R := R) (degAt_X (x := t) (posOf n' (X.row j x (σ i)), Fin.castAdd K i)) (p ^ X.F.dist j (X.row j x (σ i)))`. Use `h using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> simp`. Unfold `Dat.detPl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.det_apply']`. Simplify using `only [map_sum, map_mul, map_prod, Matrix.of_apply, map_intCast]`. Apply `degAt_sum` to reduce the goal to its premises. Introduce `σ _`. Establish `e : ((Equiv.Perm.sign σ : ℤ) : RRing R n' (r + K)) = C ((Equiv.Perm.sign σ : ℤ) : R)` using `by simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `degAt_C_mul _ (key σ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degAt_ph_detPl {R : Type} [CommRing R] {n' r : ℕ} [NeZero n'] (X : Dat n' r) (p K : ℕ) (j x : ℤ) (t : Fin n') :
     DegAt t (∑ a : Fin r, if posOf n' (X.row j x a) = t then p ^ X.F.dist j (X.row j x a) else 0)
@@ -42,11 +42,11 @@ theorem degAt_ph_detPl {R : Type} [CommRing R] {n' r : ℕ} [NeZero n'] (X : Dat
   exact degAt_C_mul _ (key σ)
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ X O _`. Rewrite using `[RRdeg, mem_restrictSupport_iff]`. Introduce `m hm t`. Establish `hdeg : DegAt t (X.Et p K t) (X.Dl p K O)`. Unfold `Dat.Dl Dat.DlSeg Dat.Et`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [map_prod, map_pow]`. Apply `degAt_prod` to reduce the goal to its premises. Introduce `j _`. Apply `degAt_prod` to reduce the goal to its premises. Introduce `x _`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `degAt_pow (degAt_ph_detPl X p K j x t) _`. Conclude with `hdeg m hm`.
+A detailed English derivation is pending.
 -/
 theorem discriminant_multihomogeneous : DiscriminantMultihomogeneous := by
   intro p n' r K _ _ _ X O _

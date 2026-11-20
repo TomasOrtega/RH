@@ -8,15 +8,15 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 namespace GlobalTheory.CoreHt
 
 /- English proof (translation)
-Introduce `B X I _ l Z L hD u`. Take `⟨n, hn⟩` from `hD`. Establish `hfl : ((⌊(I.rec7 l Z).s.Del⌋₊ : ℕ) : ℚ) = (I.rec7 l Z).s.Del` using `by rw [hn, Nat.floor_natCast]`. Use `⟨B.wts_isOk, fun z => ?_, fun z => ⟨?_, fun i => ?_⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.ColumnNormCompare.mem_tops_rec (I.rec7 l Z) z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `B.wts_isOk.hc_row u _`. Express the relevant statement in the definitionally equal form `((I.rec7 l Z).hcW u (plRec (I.rec7 l Z) z)).u i = _`. Unfold `NumDatum.uW`. Take `⟨i, hi⟩` from `i`. Establish `hi' : i < (I.rec7 l Z).R.k` using `hi`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : 1 ≤ i ∧ i + 1 < (I.rec7 l Z).R.k`. Rewrite using `[dif_pos h]`. Take `⟨k, rfl⟩ : ∃ k, i = k + 1` from `⟨i - 1, by omega⟩`. Establish `hk : k < (I.rec7 l Z).R.k - 2` using `by omega`. Establish `a` using `(I.rec7 l Z).s.u_letter u (plRec (I.rec7 l Z) z) k hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv` using `(I.rec7 l Z).hcW_v u (plRec (I.rec7 l Z) z)`. Rewrite using `[a, hv, ← hfl]`. Both sides reduce to the same expression. Rewrite using `[dif_neg h]`. Distinguish the cases in `h0 : i = 0`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `h0` using the available equality. Conclude with `(I.rec7 l Z).hcW_first u _ hi'`. Establish `h1 : i = (I.rec7 l Z).R.k - 1` using `by omega`. Substitute `h1` using the available equality. Conclude with `(I.rec7 l Z).hcW_last u _ (by omega)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem weightTie_trueCols : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (h : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l)) (L : SizeData₂ (I.rec7 l Z)), DelNat (I.rec7 l Z) → ∀ u : B.Word, GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds.WeightTie (numDatumOfParameters (I.rec7 l Z) L) (X := B.fields) (Pr := B.primes X) B.wts (plRec (I.rec7 l Z)) u (codeRec L u) := by
   intro B X I _ l Z L hD u

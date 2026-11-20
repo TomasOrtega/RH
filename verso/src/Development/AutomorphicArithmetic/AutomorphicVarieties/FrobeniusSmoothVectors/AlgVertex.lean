@@ -3,23 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `l _ O _ _ F n C _ _ _ K _ _ ρ hC`. Establish `off : ∀ (L : List (F.G0 × Fin n × Fin n)) (j : ℤ), (L.map (fun s => w n s.2.1 - w n s.2.2)).sum = j → j ≠ 0 → ∃ s ∈ L, s.2.1 ≠ s.2.2`. Introduce `L j hL hj`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hj` to reduce the goal to its premises. Rewrite using `[← hL]`. Apply `List.sum_eq_zero` to reduce the goal to its premises. Introduce `x hx`. Take `⟨s, hs, rfl⟩` from `List.mem_map.1 hx`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h s hs, sub_self]`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Establish `hle : ρ.mon 0 ⊆ (LinearMap.range (Algebra.linearMap C K) : Set K)`. Introduce and unpack `_ ⟨L, hL, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hd : ∃ s ∈ L, s.2.1 ≠ s.2.2`. Take `⟨c, -, hc⟩` from `hC.cyc L hL hd`. Conclude with `⟨c, hc⟩`. Use `push_neg at hd`. Establish `hm : (L.map (fun s => ρ.r s.1 s.2.1 s.2.2)).prod ∈ (algebraMap C K).rangeS`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `list_prod_mem` to reduce the goal to its premises. Introduce `y hy`. Take `⟨s, hs, rfl⟩` from `List.mem_map.1 hy`. Rewrite using `[← hd s hs]`. Take `⟨c, hc, -⟩` from `hC.dg s.1 s.2.1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, hc⟩`. Take `⟨c, hc⟩` from `hm`. Conclude with `⟨c, hc⟩`. Take `⟨c, hc⟩` from `Submodule.span_le.2 hle hx`. Conclude with `⟨c, hc⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j hj x hx y hy open Pointwise in`. Establish `hle : ρ.mon j * ρ.mon (-j) ⊆ (Submodule.map (Algebra.linearMap C K) (maximalIdeal C) : Set K)`. Introduce and unpack `_ ⟨a, ⟨L1, h1, rfl⟩, b, ⟨L2, h2, rfl⟩, rfl⟩`. Take `⟨s, hs, hne⟩` from `off L1 j h1 hj`. Take `⟨c, hc, hc'⟩` from `hC.cyc (L1 ++ L2) (by rw [List.map_append, List.sum_append, h1, h2]; ring) ⟨s, List.mem_append_left _ hs, hne⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.mem_map.2 ⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.linearMap_apply, hc', List.map_append, List.prod_append]`. Use `open Pointwise in`. Establish `hxy : x * y ∈ Submodule.span C (ρ.mon j * ρ.mon (-j))`. Rewrite using `[← Submodule.span_mul_span]`.
-
-Conclude with `Submodule.mul_mem_mul hx hy`. Take `⟨c, hc, hc'⟩` from `Submodule.mem_map.1 (Submodule.span_le.2 hle hxy)`. Conclude with `⟨c, hc, hc'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.alg_vertex :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {F : Frame l (ResidueField O)} {n : ℕ} (C : Type) [CommRing C] [Algebra O C] [IsCO O C] {K : Type} [CommRing K] [Algebra C K] (ρ : NRep F n K), Cone O C ρ → HasVertex (ρ.part C) := by

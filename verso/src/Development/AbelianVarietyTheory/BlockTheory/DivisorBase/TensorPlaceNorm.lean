@@ -35,7 +35,7 @@ def TensorNormBound : Prop :=
         ∀ F : VV ℂ lam, coefNorm lam' (T F) ≤ (∏ τ, c τ) * coefNorm lam F
 
 /- English proof (translation)
-Unfold `Formalism.REAL.fockF fockS mfact`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fockF_eq_fockS {σ : Type} (f : MvPolynomial σ ℂ) : Formalism.REAL.fockF f f = fockS f f := by
   unfold Formalism.REAL.fockF fockS mfact
@@ -43,7 +43,7 @@ theorem fockF_eq_fockS {σ : Type} (f : MvPolynomial σ ℂ) : Formalism.REAL.fo
   ring
 
 /- English proof (translation)
-Use `⟨∑ m ∈ f.support, ‖f.coeff m‖ ^ 2 * (mfact m : ℝ), by positivity, ?_⟩` and prove the remaining obligations. Unfold `fockS`. Use `push_cast`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.conj_mul']`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

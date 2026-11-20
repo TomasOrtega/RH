@@ -7,13 +7,13 @@ namespace Formalism.FourierDecayAlt.P.CutMP
 noncomputable section
 
 /- English proof (translation)
-Introduce `P`. Take `⟨Mb, hMb⟩ : ∃ Mb : ℝ, Mb = 1 + ∑ π : M.Ty P, ∑ i ∈ Finset.Icc 1 (P.k - 1), |M.rho P π i|` from `⟨_, rfl⟩`. Use `⟨fun j => Mb + ((j : ℕ) : ℝ), fun a b h => ?_, fun j π => ?_⟩` and prove the remaining obligations. Simplify using `only at h`. Establish `h' : ((a : ℕ) : ℝ) = ((b : ℕ) : ℝ)` using `add_left_cancel h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Conclude with `Fin.ext (by exact_mod_cast h')`. Unfold `M.xC`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i hi`. Establish `hle : |M.rho P π i| ≤ ∑ π' : M.Ty P, ∑ i' ∈ Finset.Icc 1 (P.k - 1), |M.rho P π' i'|`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < Mb + ((j : ℕ) : ℝ) + M.rho P π i`. Establish `h1` using `neg_abs_le (M.rho P π i)`. Establish `hj : (0 : ℝ) ≤ ((j : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hc : (((Mb + ((j : ℕ) : ℝ) : ℝ) : ℂ) + ((M.rho P π i : ℝ) : ℂ)) = ((Mb + ((j : ℕ) : ℝ) + M.rho P π i : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[hc]`. Conclude with `Complex.ofReal_ne_zero.2 (ne_of_gt hpos)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hat_nodes_decay_holds : JDHatNodes := by
   intro P

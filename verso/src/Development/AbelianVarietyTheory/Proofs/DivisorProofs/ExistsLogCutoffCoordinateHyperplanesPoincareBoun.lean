@@ -14,13 +14,11 @@ open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
 set_option autoImplicit false in
 /- English proof (translation)
-Establish `hc : Continuous fun x : ℝ => |deriv Real.smoothTransition x| * |x - 2|` using `((Real.smoothTransition.contDiff (n := 1)).continuous_deriv le_rfl).abs.mul (continuous_id.sub continuous_const).abs`. Take `⟨M, hM⟩` from `(isCompact_Icc (a := (0 : ℝ)) (b := 1)).exists_bound_of_continuousOn hc.continuousOn`. Use `⟨max M 0, le_max_right _ _, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ Set.Icc (0 : ℝ) 1`. Use `hM x hx` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Conclude with `this.trans (le_max_left _ _)`. Establish `hd : deriv Real.smoothTransition x = 0`. Break down `not_and_or.mp hx with h | h` into its components or cases. Establish `hev : Real.smoothTransition =ᶠ[𝓝 x] fun _ => 0` using `by filter_upwards [Iio_mem_nhds (not_le.mp h)] with y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.smoothTransition.zero_of_nonpos (le_of_lt hy)`. Rewrite using `[hev.deriv_eq, deriv_const]`. Establish `hev : Real.smoothTransition =ᶠ[𝓝 x] fun _ => 1` using `by filter_upwards [Ioi_mem_nhds (not_le.mp h)] with y hy`. Conclude with `Real.smoothTransition.one_of_one_le (le_of_lt hy)`. Rewrite using `[hev.deriv_eq, deriv_const]`.
-
-Rewrite using `[hd, abs_zero, zero_mul]`. Conclude with `le_max_right _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_bound_abs_deriv_smoothTransition_mul_sub_two :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ x : ℝ, |deriv Real.smoothTransition x| * |x - 2| ≤ M := by
@@ -51,19 +49,17 @@ open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
 set_option autoImplicit false in
 /- English proof (translation)
-Take `⟨M, hM0, hM⟩` from `exists_bound_abs_deriv_smoothTransition_mul_sub_two`. Use `⟨M, hM0, fun k z c => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : z = 0`. Substitute `h0` using the available equality. Simplify using `only [norm_zero, zero_mul, mul_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Check the signs of the components of the expression. Establish `hk : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Establish `hz : 0 < ‖z‖` using `norm_pos_iff.mpr h0`. Establish `hev : _root_.GlobalTheory.GoodTop.logCutoff k =ᶠ[𝓝 z] fun w => Real.smoothTransition (2 + Real.log ‖w‖ / ((k : ℝ) + 1))` using `by filter_upwards [isOpen_ne.mem_nhds h0] with w hw`. Simplify using `only [_root_.GlobalTheory.GoodTop.logCutoff, if_neg (show w ≠ 0 from hw)]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set N := fderiv ℝ (fun w : ℂ => ‖w‖) z`. Establish `hn : HasFDerivAt (fun w : ℂ => ‖w‖) N z` using `((contDiffAt_norm ℝ (n := 1) h0).differentiableAt one_ne_zero).hasFDerivAt`. Establish `hN : ‖N‖ ≤ 1`. Simplify using `using norm_fderiv_le_of_lipschitz ℝ (f := fun w : ℂ => ‖w‖) (x₀ := z) (lipschitzWith_one_norm (E := ℂ))`. Establish `hl` using `(((Real.hasDerivAt_log hz.ne').div_const ((k : ℝ) + 1)).const_add 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `(Real.smoothTransition.contDiff (n := 1)).differentiable one_ne_zero (2 + Real.log ‖z‖ / ((k : ℝ) + 1))`. Establish `hs` using `(hg.hasDerivAt.comp ‖z‖ hl).comp_hasFDerivAt z hn`. Establish `hs' : HasFDerivAt (fun w : ℂ => Real.smoothTransition (2 + Real.log ‖w‖ / ((k : ℝ) + 1))) ((deriv Real.smoothTransition (2 + Real.log ‖z‖ / ((k : ℝ) + 1)) * (‖z‖⁻¹ / ((k : ℝ) + 1))) • N) z` using `hs`. Rewrite using `[hev.fderiv_eq, hs'.fderiv]`. Use `set x := 2 + Real.log ‖z‖ / ((k : ℝ) + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hlog : Real.log ‖z‖ = (x - 2) * ((k : ℝ) + 1)`. Simplify using `only [x]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hNc : ‖N c‖ ≤ ‖c‖` using `(N.le_opNorm c).trans (by simpa using mul_le_mul_of_nonneg_right hN (norm_nonneg c))`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, smul_eq_mul, Real.norm_eq_abs]`. Rewrite using `[hlog]`. Establish `e : |deriv Real.smoothTransition x * (‖z‖⁻¹ / ((k : ℝ) + 1)) * N c| * (‖z‖ * |(x - 2) * ((k : ℝ) + 1)|) = |deriv Real.smoothTransition x| * |x - 2| * |N c|`. Rewrite using `[abs_mul, abs_mul, abs_mul, abs_div, abs_inv, abs_of_pos hz, abs_of_pos hk]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[e]`. Conclude with `mul_le_mul (hM x) (by rw [← Real.norm_eq_abs]; exact hNc) (abs_nonneg _) hM0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_bound_fderiv_logCutoff_mul_norm_mul_log :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ (k : ℕ) (z c : ℂ),
@@ -112,7 +108,7 @@ open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
 set_option autoImplicit false in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GoodTop.logCutoff`. Use `split_ifs`. Conclude with `⟨le_rfl, zero_le_one⟩`. Conclude with `⟨Real.smoothTransition.nonneg _, Real.smoothTransition.le_one _⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma logCutoff_mem_Icc (k : ℕ) (z : ℂ) :
     0 ≤ _root_.GlobalTheory.GoodTop.logCutoff k z ∧ _root_.GlobalTheory.GoodTop.logCutoff k z ≤ 1 := by
@@ -125,9 +121,9 @@ open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
 set_option autoImplicit false in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GoodTop.logCutoff`. Use `split_ifs with h0`. Both sides reduce to the same expression. Apply `Real.smoothTransition.zero_of_nonpos` to reduce the goal to its premises. Establish `hk : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : Real.log ‖z‖ ≤ -2 * ((k : ℝ) + 1)`. Rewrite using `[← Real.log_exp (-2 * ((k : ℝ) + 1))]`. Conclude with `Real.log_le_log (norm_pos_iff.mpr h0) hz`. Rewrite using `[← sub_nonneg, show 0 - (2 + Real.log ‖z‖ / ((k : ℝ) + 1)) = (-2 * ((k : ℝ) + 1) - Real.log ‖z‖) / ((k : ℝ) + 1) by field_simp; ring]`. Conclude with `div_nonneg (by linarith) hk.le`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma logCutoff_eq_zero_of_norm_le_exp_neg_two_mul (k : ℕ) {z : ℂ}
     (hz : ‖z‖ ≤ Real.exp (-2 * ((k : ℝ) + 1))) : _root_.GlobalTheory.GoodTop.logCutoff k z = 0 := by
@@ -147,11 +143,11 @@ open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
 set_option autoImplicit false in
 /- English proof (translation)
-Establish `h0 : z ≠ 0`. Introduce `h`. Rewrite `hz` using `[h, norm_zero]`. Conclude with `absurd hz (not_le.mpr (Real.exp_pos _))`. Unfold `_root_.GlobalTheory.GoodTop.logCutoff`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h0]`. Apply `Real.smoothTransition.one_of_one_le` to reduce the goal to its premises. Establish `hk : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Establish `hlog : -((k : ℝ) + 1) ≤ Real.log ‖z‖`. Rewrite using `[← Real.log_exp (-((k : ℝ) + 1))]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.log_le_log (Real.exp_pos _) hz`. Rewrite using `[← sub_nonneg, show 2 + Real.log ‖z‖ / ((k : ℝ) + 1) - 1 = (Real.log ‖z‖ + ((k : ℝ) + 1)) / ((k : ℝ) + 1) by field_simp; ring]`. Conclude with `div_nonneg (by linarith) hk.le`.
+A detailed English derivation is pending.
 -/
 private lemma logCutoff_eq_one_of_exp_le_norm (k : ℕ) {z : ℂ}
     (hz : Real.exp (-((k : ℝ) + 1)) ≤ ‖z‖) : _root_.GlobalTheory.GoodTop.logCutoff k z = 1 := by
@@ -172,19 +168,17 @@ open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
 set_option autoImplicit false in
 /- English proof (translation)
-Establish `hψ : ∀ z, HasFDerivAt (_root_.GlobalTheory.GoodTop.logCutoff k) (fderiv ℝ (_root_.GlobalTheory.GoodTop.logCutoff k) z) z` using `fun z => ((_root_.GlobalTheory.GoodTop.contDiff_logCutoff k).differentiable (by simp) z).hasFDerivAt`. Establish `hχ : ContDiff ℝ 1 (fun w : _root_.ReciprocityTheory.L2DbarEstimates.V n => ∏ a ∈ S, _root_.GlobalTheory.GoodTop.logCutoff k (w a))` using `contDiff_prod fun a _ => ((_root_.GlobalTheory.GoodTop.contDiff_logCutoff k).of_le (by simp)).comp ((EuclideanSpace.proj (𝕜 := ℂ) (ι := Fin n) a).contDiff.restrict_scalars ℝ)`. Establish `hline : HasDerivAt (fun t : ℝ => v + t • (c • _root_.GlobalTheory.GoodMetric.coordVec b)) (c • _root_.GlobalTheory.GoodMetric.coordVec b) 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const (c • _root_.GlobalTheory.GoodMetric.coordVec b)).const_add v`. Establish `h1` using `((hχ.differentiable one_ne_zero) v).hasFDerivAt.comp_hasDerivAt_of_eq 0 hline (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hcoord : ∀ (t : ℝ) (a : Fin n), (v + t • (c • _root_.GlobalTheory.GoodMetric.coordVec b)) a = if a = b then v b + (t : ℂ) * c else v a`. Introduce `t a`. Simplify using `only [_root_.GlobalTheory.GoodMetric.coordVec, PiLp.add_apply, PiLp.smul_apply, EuclideanSpace.single_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Complex.real_smul]`. Simplify using the standard rewrite rules. Establish `hψline : HasDerivAt (fun t : ℝ => _root_.GlobalTheory.GoodTop.logCutoff k (v b + (t : ℂ) * c)) (fderiv ℝ (_root_.GlobalTheory.GoodTop.logCutoff k) (v b) c) 0`. Establish `hl : HasDerivAt (fun t : ℝ => v b + (t : ℂ) * c) c 0`. Simplify using `using ((Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).mul_const c).const_add (v b)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `(hψ (v b)).comp_hasDerivAt_of_eq 0 hl (by simp)`. Use `split_ifs with hb`. Establish `h2 : HasDerivAt (fun t : ℝ => ∏ a ∈ S, _root_.GlobalTheory.GoodTop.logCutoff k ((v + t • (c • _root_.GlobalTheory.GoodMetric.coordVec b)) a)) ((∏ a ∈ S.erase b, _root_.GlobalTheory.GoodTop.logCutoff k (v a)) * fderiv ℝ (_root_.GlobalTheory.GoodTop.logCutoff k) (v b) c) 0`. Establish `e : (fun t : ℝ => ∏ a ∈ S, _root_.GlobalTheory.GoodTop.logCutoff k ((v + t • (c • _root_.GlobalTheory.GoodMetric.coordVec b)) a)) = fun t : ℝ => (∏ a ∈ S.erase b, _root_.GlobalTheory.GoodTop.logCutoff k (v a)) * _root_.GlobalTheory.GoodTop.logCutoff k (v b + (t : ℂ) * c)`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.mul_prod_erase S _ hb, mul_comm, hcoord, if_pos rfl]`. Use `congr 1`. Use `Finset.prod_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[hcoord, if_neg (Finset.ne_of_mem_erase ha)]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hψline.const_mul _`. Conclude with `h1.unique h2`. Establish `h2 : HasDerivAt (fun t : ℝ => ∏ a ∈ S, _root_.GlobalTheory.GoodTop.logCutoff k ((v + t • (c • _root_.GlobalTheory.GoodMetric.coordVec b)) a)) 0 0`. Establish `e : (fun t : ℝ => ∏ a ∈ S, _root_.GlobalTheory.GoodTop.logCutoff k ((v + t • (c • _root_.GlobalTheory.GoodMetric.coordVec b)) a)) = fun _ => ∏ a ∈ S, _root_.GlobalTheory.GoodTop.logCutoff k (v a)`. Use function extensionality and compare the values at `t`.
-
-Use `Finset.prod_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[hcoord, if_neg (fun h : a = b => hb (h ▸ ha))]`. Rewrite using `[e]`. Conclude with `hasDerivAt_const _ _`. Conclude with `h1.unique h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma fderiv_prod_logCutoff_coordVec {n : ℕ} (k : ℕ) (S : Finset (Fin n))
     (v : _root_.ReciprocityTheory.L2DbarEstimates.V n) (b : Fin n) (c : ℂ) :
@@ -249,31 +243,25 @@ open scoped ContDiff Matrix in
 set_option autoImplicit false in
 
 /- English proof (translation)
-Take `⟨M, hM0, hM⟩` from `exists_bound_fderiv_logCutoff_mul_norm_mul_log`. Establish `hproj : ∀ a : Fin n, ContDiff ℝ ∞ fun w : _root_.ReciprocityTheory.L2DbarEstimates.V n => w a` using `fun a => (EuclideanSpace.proj (𝕜 := ℂ) (ι := Fin n) a).contDiff.restrict_scalars ℝ`. Establish `hcont : ∀ a : Fin n, Continuous fun w : _root_.ReciprocityTheory.L2DbarEstimates.V n => w a` using `fun a => (hproj a).continuous`. Use `⟨M, fun k v => ∏ a ∈ S, _root_.GlobalTheory.GoodTop.logCutoff k (v a), fun k => ?_, fun k v => ?_, fun k v hv => ?_, fun v hv => ?_, fun k v b => ?_⟩` and prove the remaining obligations. Conclude with `contDiff_prod fun a _ => (_root_.GlobalTheory.GoodTop.contDiff_logCutoff k).comp (hproj a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨Finset.prod_nonneg fun a _ => (logCutoff_mem_Icc k _).1, Finset.prod_le_one (fun a _ => (logCutoff_mem_Icc k _).1) (fun a _ => (logCutoff_mem_Icc k _).2)⟩`. Take `⟨a, ha, h0⟩` from `hv`. Establish `hopen : IsOpen {w : _root_.ReciprocityTheory.L2DbarEstimates.V n | ‖w a‖ < Real.exp (-2 * ((k : ℝ) + 1))}` using `isOpen_lt (hcont a).norm continuous_const`. Use `filter_upwards [hopen.mem_nhds (by simp [h0, Real.exp_pos])] with w hw`. Conclude with `Finset.prod_eq_zero ha (logCutoff_eq_zero_of_norm_le_exp_neg_two_mul k (le_of_lt hw))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hone : ∀ a ∈ S, ∀ᶠ k : ℕ in atTop, ∀ᶠ w in 𝓝 v, _root_.GlobalTheory.GoodTop.logCutoff k (w a) = 1`. Introduce `a ha`. Establish `hr : 0 < ‖v a‖ / 2` using `by have := norm_pos_iff.mpr (hv a ha); positivity`. Take `⟨N, hN⟩` from `exists_nat_gt (-Real.log (‖v a‖ / 2))`. Establish `hopen : IsOpen {w : _root_.ReciprocityTheory.L2DbarEstimates.V n | ‖v a‖ / 2 < ‖w a‖}` using `isOpen_lt continuous_const (hcont a).norm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hvm : v ∈ {w : _root_.ReciprocityTheory.L2DbarEstimates.V n | ‖v a‖ / 2 < ‖w a‖}`. Use `norm_pos_iff.mpr (hv a ha)` as an intermediate fact. Use `show ‖v a‖ / 2 < ‖v a‖`. Combine the linear equalities and inequalities to obtain the conclusion. Use `filter_upwards [Filter.eventually_ge_atTop N] with k hk`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `filter_upwards [hopen.mem_nhds hvm] with w hw`. Apply `logCutoff_eq_one_of_exp_le_norm` to reduce the goal to its premises. Use `le_trans ?_ hw.le` and prove the remaining obligations. Rewrite using `[← Real.exp_log hr]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (N : ℝ) ≤ k` using `by exact_mod_cast hk`. Combine the linear equalities and inequalities to obtain the conclusion. Use `filter_upwards [(Filter.eventually_all_finset S).2 hone] with k hk`. Use `filter_upwards [(Filter.eventually_all_finset S).2 hk] with w hw`. Conclude with `Finset.prod_eq_one hw`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set χk := fun w : _root_.ReciprocityTheory.L2DbarEstimates.V n => ∏ a ∈ S, _root_.GlobalTheory.GoodTop.logCutoff k (w a) with hχk`. Establish `hd : DifferentiableAt ℝ χk v` using `((contDiff_prod fun a _ => (_root_.GlobalTheory.GoodTop.contDiff_logCutoff k).comp (hproj a)).differentiable (by simp)) v`. Establish `hF : ∀ w, fderiv ℝ (fun x => (χk x : ℂ)) v w = ((fderiv ℝ χk v w : ℝ) : ℂ)`. Introduce `w`. Establish `hc` using `Complex.ofRealCLM.hasFDerivAt.comp v hd.hasFDerivAt`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (fun x => (χk x : ℂ)) = Complex.ofRealCLM ∘ χk from rfl, hc.fderiv]`. Both sides reduce to the same expression. Rewrite using `[_root_.GlobalTheory.dbar_apply, hF, hF]`. Establish `h1` using `fderiv_prod_logCutoff_coordVec k S v b 1`. Establish `hI` using `fderiv_prod_logCutoff_coordVec k S v b Complex.I`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[one_smul]`. Rewrite using `[h1, hI]`. Unfold `_root_.GlobalTheory.GoodMetric.poinWt`. Use `split_ifs with hb`. Use `set P := ∏ a ∈ S.erase b, _root_.GlobalTheory.GoodTop.logCutoff k (v a)`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hP : |P| ≤ 1`. Rewrite using `[abs_of_nonneg (Finset.prod_nonneg fun a _ => (logCutoff_mem_Icc k _).1)]`. Conclude with `Finset.prod_le_one (fun a _ => (logCutoff_mem_Icc k _).1) (fun a _ => (logCutoff_mem_Icc k _).2)`. Establish `hw : 0 ≤ ‖v b‖ * |Real.log ‖v b‖|` using `by positivity`. Establish `b1` using `hM k (v b) 1`.
-
-Establish `bI` using `hM k (v b) Complex.I`. Rewrite `b1` using `[norm_one, mul_one]`. Rewrite `bI` using `[Complex.norm_I, mul_one]`. Rewrite `b1`, `bI` using `[Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `mul_le_mul_of_nonneg_right ?_ hw` and prove the remaining obligations. Rewrite using `[norm_smul, norm_div, norm_one, Complex.norm_two]`. Use `mul_le_mul_of_nonneg_left ((norm_add_le _ _).trans ?_) (by norm_num)` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_I, one_mul, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs, abs_mul, abs_mul]`. Conclude with `add_le_add (mul_le_of_le_one_left (abs_nonneg _) hP) (mul_le_of_le_one_left (abs_nonneg _) hP)`.
-
-Use `_ ≤ M := by nlinarith`. Simplify using `using hM0`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GoodTop.exists_logCutoff_hyperplanes {n : ℕ} (S : Finset (Fin n)) :
     ∃ (C : ℝ) (χ : ℕ → _root_.ReciprocityTheory.L2DbarEstimates.V n → ℝ),

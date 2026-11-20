@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 namespace LateralTheory.E.LeafHalf1Pf
 
 /- English proof (translation)
-Establish `h1` using `(IsPullback.of_hasPullback f g).map ((evaluation SimplexCategoryᵒᵖ PSh).obj (op (SimplexCategory.mk n)))`. Conclude with `h1.map ((evaluation Scheme.{0}ᵒᵖ Type).obj (op X))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pbSq {A B C : Spc} (f : A ⟶ C) (g : B ⟶ C) (n : ℕ) (X : Scheme.{0}) :
     IsPullback (((pullback.fst f g).app (op (SimplexCategory.mk n))).app (op X))
@@ -16,7 +16,7 @@ theorem pbSq {A B C : Spc} (f : A ⟶ C) (g : B ⟶ C) (n : ℕ) (X : Scheme.{0}
   exact h1.map ((evaluation Scheme.{0}ᵒᵖ Type).obj (op X))
 
 /- English proof (translation)
-The claim follows from `Types.ext_of_isPullback (pbSq f g n X) h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem pb_ext {A B C : Spc} {f : A ⟶ C} {g : B ⟶ C} {n : ℕ} {X : Scheme.{0}} {z w : Sx (pullback f g) n X}
     (h1 : ((pullback.fst f g).app _).app _ z = ((pullback.fst f g).app _).app _ w)
@@ -24,7 +24,7 @@ theorem pb_ext {A B C : Spc} {f : A ⟶ C} {g : B ⟶ C} {n : ℕ} {X : Scheme.{
   Types.ext_of_isPullback (pbSq f g n X) h1 h2
 
 /- English proof (translation)
-The claim follows from `Types.exists_of_isPullback (pbSq f g n X) a b h`.
+A detailed English derivation is pending.
 -/
 theorem pb_exists {A B C : Spc} (f : A ⟶ C) (g : B ⟶ C) {n : ℕ} {X : Scheme.{0}} (a : Sx A n X) (b : Sx B n X)
     (h : (f.app _).app _ a = (g.app _).app _ b) :
@@ -40,7 +40,7 @@ Both sides reduce to the same expression.
 theorem blockDiagonal_apply₂ (a b : ℕ) (A : Type) [CommRing A] (p : GL (Fin a) A × GL (Fin b) A) : bl a b A p = blockGL a b A p.1 p.2 := rfl
 
 /- English proof (translation)
-Rewrite using `[blockDiagonal_apply₂, blockGL_val]`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_add, Matrix.reindex_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blockDiagonal_mulVec_castAdd {a b : ℕ} {A : Type} [CommRing A] (p : GL (Fin a) A × GL (Fin b) A) (v : Fin (a + b) → A) (i : Fin a) :
     ((bl a b A p : GL (Fin (a + b)) A) : Matrix _ _ A).mulVec v (Fin.castAdd b i) =
@@ -49,7 +49,7 @@ theorem blockDiagonal_mulVec_castAdd {a b : ℕ} {A : Type} [CommRing A] (p : GL
   simp [Matrix.mulVec, dotProduct, Fin.sum_univ_add, Matrix.reindex_apply]
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `show ∑ j, M i j * v j ∈ _`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem span_mulVec_le {m k : ℕ} {A : Type} [CommRing A] (M : Matrix (Fin m) (Fin k) A) (v : Fin k → A) :
     Ideal.span (Set.range (M.mulVec v)) ≤ Ideal.span (Set.range v) := by
@@ -59,7 +59,7 @@ theorem span_mulVec_le {m k : ℕ} {A : Type} [CommRing A] (M : Matrix (Fin m) (
   exact Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem span_smul_le {k : ℕ} {A : Type} [CommRing A] (c : A) (v : Fin k → A) :
     Ideal.span (Set.range (c • v)) ≤ Ideal.span (Set.range v) := by
@@ -87,7 +87,7 @@ Both sides reduce to the same expression.
 theorem unimodularBlock_comp_val_eq_mul {a b : ℕ} {A : Type} [CommRing A] {u v w : U1 a b A} (f : u ⟶ v) (g : v ⟶ w) : (f ≫ g).1 = g.1 * f.1 := rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem unimodularBlock_eqToHom_val_eq_one {a b : ℕ} {A : Type} [CommRing A] {v w : U1 a b A} (h : v = w) : (eqToHom h).1 = 1 := by
   subst h; rfl
@@ -98,20 +98,20 @@ Both sides reduce to the same expression.
 theorem Um_comp_val {N : ℕ} {A : Type} [CommRing A] {u v w : Um N A} (f : u ⟶ v) (g : v ⟶ w) : (f ≫ g).1 = g.1 * f.1 := rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem Um_eqToHom_val {N : ℕ} {A : Type} [CommRing A] {v w : Um N A} (h : v = w) : (eqToHom h).1 = 1 := by
   subst h; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem Um_comp_eqToHom {N : ℕ} {A : Type} [CommRing A] {u v w : Um N A} (p : u ⟶ v) (h : v = w) :
     (p ≫ eqToHom h).1 = p.1 := by
   subst h; simp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem Um_eqToHom_comp {N : ℕ} {A : Type} [CommRing A] {u v w : Um N A} (h : u = v) (p : v ⟶ w) :
     (eqToHom h ≫ p).1 = p.1 := by
@@ -190,7 +190,7 @@ def fstNat (C D : CommRingCat.{0} ⥤ Cat.{0,0}) : prodCat C D ⟶ C where
 def glNat (N : ℕ) : pglCat N ⟶ glCat N := { app := fun A => (Um.toGL N A).toCatHom, naturality := fun _ _ _ => rfl }
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(unfold ofCatMap; rw [Functor.whiskerRight_comp, Functor.whiskerLeft_comp, Functor.map_comp])`. Consider the case `simp [ofCatMap]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ofCatMap_comp {C D F : CommRingCat.{0} ⥤ Cat.{0,0}} (α : C ⟶ D) (β : D ⟶ F) :
     ofCatMap (α ≫ β) = ofCatMap α ≫ ofCatMap β := by
@@ -200,7 +200,7 @@ theorem ofCatMap_comp {C D F : CommRingCat.{0} ⥤ Cat.{0,0}} (α : C ⟶ D) (β
   | simp [ofCatMap]
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(ext n U x; rfl)`. Consider the case `(ext n U x; exact CategoryTheory.Functor.ext (fun _ => rfl) (fun _ _ _ => by simp))`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem liftCat_fst {E : Spc} {C D : CommRingCat.{0} ⥤ Cat.{0,0}} (V : E ⟶ ofCat C) (W : E ⟶ ofCat D) :
     liftCat V W ≫ ofCatMap (fstNat C D) = V := by
@@ -210,14 +210,14 @@ theorem liftCat_fst {E : Spc} {C D : CommRingCat.{0} ⥤ Cat.{0,0}} (V : E ⟶ o
   | (ext n U x; exact CategoryTheory.Functor.ext (fun _ => rfl) (fun _ _ _ => by simp))
 
 /- English proof (translation)
-Use extensionality with `A`. Conclude with `CategoryTheory.Functor.hext (fun _ => rfl) (fun v w p => HEq.rfl)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem e_rho (a b : ℕ) : rho a b ≫ glNat a = pr1 a b ≫ fstNat _ _ := by
   ext A
   exact CategoryTheory.Functor.hext (fun _ => rfl) (fun v w p => HEq.rfl)
 
 /- English proof (translation)
-Use extensionality with `A`. Conclude with `CategoryTheory.Functor.hext (fun _ => rfl) (fun v w p => HEq.rfl)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem e_sig (a b : ℕ) : sig a b ≫ glNat (a + b) = pr1 a b ≫ blockNat a b := by
   ext A
@@ -235,14 +235,14 @@ def lineNat (N : ℕ) : pglCat N ⟶ glCat 1 where
     simp
 
 /- English proof (translation)
-Use extensionality with `A`. Conclude with `CategoryTheory.Functor.hext (fun _ => rfl) (fun v w p => HEq.rfl)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem e_line (a b : ℕ) : rho a b ≫ lineNat a = sig a b ≫ lineNat (a + b) := by
   ext A
   exact CategoryTheory.Functor.hext (fun _ => rfl) (fun v w p => HEq.rfl)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← h0]`. Establish `e : v0 = Matrix.mulVec ((g⁻¹ : GL (Fin a) A) : Matrix (Fin a) (Fin a) A) (Matrix.mulVec (g : Matrix (Fin a) (Fin a) A) v0)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[e, h]`. Conclude with `(span_mulVec_le _ _).trans (span_smul_le _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem first_transfer {a : ℕ} {A : Type} [CommRing A] (g : GL (Fin a) A) (u : Aˣ) (v0 vi : Fin a → A)
     (h : Matrix.mulVec (g : Matrix (Fin a) (Fin a) A) v0 = (u : A) • vi) (h0 : Ideal.span (Set.range v0) = ⊤) : Ideal.span (Set.range vi) = ⊤ := by
@@ -253,20 +253,20 @@ theorem first_transfer {a : ℕ} {A : Type} [CommRing A] (g : GL (Fin a) A) (u :
   exact (span_mulVec_le _ _).trans (span_smul_le _ _)
 
 /- English proof (translation)
-Consider the cases of `h`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem eqToHom_ps {M N : Type} [Monoid M] [Monoid N] {x y : SingleObj M × SingleObj N} (h : x = y) :
     eqToHom h = (show x ⟶ y from ((1 : M), (1 : N))) := by
   cases h; rfl
 
 /- English proof (translation)
-Establish `ho : ∀ i, F.obj i = G.obj i` using `fun i => Subtype.ext (CategoryTheory.Functor.congr_obj h1 i)`. Use `CategoryTheory.Functor.ext ho (fun i j f => ?_)` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[unimodularBlock_comp_val_eq_mul, unimodularBlock_comp_val_eq_mul, unimodularBlock_eqToHom_val_eq_one, unimodularBlock_eqToHom_val_eq_one]`. Simplify using `only [one_mul, mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `k1` using `congrArg (fun q => q.1) (CategoryTheory.Functor.congr_hom h1 f)`. Use `first`. Consider the case `(rw [Um_eqToHom_comp, Um_comp_eqToHom] at k1)`. Consider the case `(simp only [Um_eqToHom_comp, Um_comp_eqToHom] at k1)`. Consider the case `(rw [Um_comp_val, Um_comp_val, Um_eqToHom_val, Um_eqToHom_val] at k1; simp only [one_mul, mul_one] at k1)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `ku : (F.map f).1.2 = (G.map f).1.2`. Use `congrArg Prod.snd k1` as an intermediate fact. Conclude with `this`. Establish `k2` using `CategoryTheory.Functor.congr_hom h2 f`. Rewrite `k2` using `[eqToHom_ps, eqToHom_ps]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `kg : (F.map f).1.1.1 = (1 * (G.map f).1.1.1) * 1` using `congrArg Prod.fst k2`. Establish `kh : (F.map f).1.1.2 = (1 * (G.map f).1.1.2) * 1` using `congrArg Prod.snd k2`. Simplify using `only [one_mul, mul_one] at kg kh`. Conclude with `Prod.ext (Prod.ext kg kh) ku`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jmF {a b : ℕ} {A : Type} [CommRing A] {J : Type} [Category J] (F G : J ⥤ U1 a b A)
     (h1 : F ⋙ toUm a b A = G ⋙ toUm a b A) (h2 : F ⋙ toProd a b A = G ⋙ toProd a b A) : F = G := by
@@ -291,7 +291,7 @@ theorem jmF {a b : ℕ} {A : Type} [CommRing A] {J : Type} [Category J] (F G : J
   exact Prod.ext (Prod.ext kg kh) ku
 
 /- English proof (translation)
-Use extensionality with `n U x`. Establish `e1` using `congrArg (fun φ : T ⟶ _ => (φ.app n).app U x) h1`. Establish `e2` using `congrArg (fun φ : T ⟶ _ => (φ.app n).app U x) h2`. Conclude with `jmF (J := Fin (n.unop.len + 1)) (A := ↑(Scheme.Γ.obj U)) ((s.app n).app U x) ((t.app n).app U x) e1 e2`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem JM {T : Spc} {a b : ℕ} (s t : T ⟶ ofCat (cat1 a b)) (h1 : s ≫ ofCatMap (sig a b) = t ≫ ofCatMap (sig a b))
     (h2 : s ≫ ofCatMap (pr1 a b) = t ≫ ofCatMap (pr1 a b)) : s = t := by
@@ -301,7 +301,7 @@ theorem JM {T : Spc} {a b : ℕ} (s t : T ⟶ ofCat (cat1 a b)) (h1 : s ≫ ofCa
   exact jmF (J := Fin (n.unop.len + 1)) (A := ↑(Scheme.Γ.obj U)) ((s.app n).app U x) ((t.app n).app U x) e1 e2
 
 /- English proof (translation)
-Consider the cases of `h`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem singleObj_eqToHom_eq_monoid_one {M : Type} [Monoid M] {x y : SingleObj M} (h : x = y) : eqToHom h = (show x ⟶ y from (1 : M)) := by
   cases h; rfl
@@ -310,49 +310,45 @@ def sigP (a b : ℕ) : ofCat (cat1 a b) ⟶ PGL (a + b) := ofCatMap (sig a b)
 def rhoP (a b : ℕ) : ofCat (cat1 a b) ⟶ PGL a := ofCatMap (rho a b)
 
 /- English proof (translation)
-The claim follows from `(ofCatMap_comp _ _).symm.trans ((congrArg ofCatMap (e_sig a b)).trans (ofCatMap_comp _ _))`.
+A detailed English derivation is pending.
 -/
 theorem sigP_pr (a b : ℕ) : sigP a b ≫ PGL.pr (a + b) = ofCatMap (pr1 a b) ≫ ofCatMap (blockNat a b) :=
   (ofCatMap_comp _ _).symm.trans ((congrArg ofCatMap (e_sig a b)).trans (ofCatMap_comp _ _))
 
 /- English proof (translation)
-The claim follows from `(ofCatMap_comp _ _).symm.trans ((congrArg ofCatMap (e_rho a b)).trans (ofCatMap_comp _ _))`.
+A detailed English derivation is pending.
 -/
 theorem rhoP_pr (a b : ℕ) : rhoP a b ≫ PGL.pr a = ofCatMap (pr1 a b) ≫ ofCatMap (fstNat _ _) :=
   (ofCatMap_comp _ _).symm.trans ((congrArg ofCatMap (e_rho a b)).trans (ofCatMap_comp _ _))
 
 /- English proof (translation)
-The claim follows from `(ofCatMap_comp _ _).symm.trans ((congrArg ofCatMap (e_line a b)).trans (ofCatMap_comp _ _))`.
+A detailed English derivation is pending.
 -/
 theorem rhoP_line (a b : ℕ) : rhoP a b ≫ PGL.line a = sigP a b ≫ PGL.line (a + b) :=
   (ofCatMap_comp _ _).symm.trans ((congrArg ofCatMap (e_line a b)).trans (ofCatMap_comp _ _))
 
 /- English proof (translation)
-Introduce `E a b V W`. Establish `hp : pullback.fst (liftCat V W) (ofCatMap (pr1 a b)) ≫ V = (pullback.snd (liftCat V W) (ofCatMap (pr1 a b)) ≫ rhoP a b) ≫ PGL.pr a`. Rewrite using `[Category.assoc, rhoP_pr, ← Category.assoc, ← pullback.condition, Category.assoc, liftCat_fst]`. Establish `hf : pullback.fst (liftCat V W) (ofCatMap (pr1 a b)) ≫ bsumOf V W = (pullback.snd (liftCat V W) (ofCatMap (pr1 a b)) ≫ sigP a b) ≫ PGL.pr (a + b)`. Rewrite using `[Category.assoc, sigP_pr, ← Category.assoc, ← pullback.condition, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨pullback (liftCat V W) (ofCatMap (pr1 a b)), pullback.lift _ _ hf, pullback.lift _ _ hp, ⟨fun {T} g1 g2 h => ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `ef` using `pullback.lift_fst (f := bsumOf V W) (g := PGL.pr (a + b)) _ _ hf`. Establish `es` using `pullback.lift_snd (f := bsumOf V W) (g := PGL.pr (a + b)) _ _ hf`. Establish `h1 : g1 ≫ pullback.fst _ _ = g2 ≫ pullback.fst _ _` using `(congrArg (g1 ≫ ·) ef.symm).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ pullback.fst (bsumOf V W) (PGL.pr (a + b))) h).trans ((Category.assoc _ _ _).trans (congrArg (g2 ≫ ·) ef))))`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (g1 ≫ pullback.snd _ _) ≫ sigP a b = (g2 ≫ pullback.snd _ _) ≫ sigP a b` using `(Category.assoc _ _ _).trans ((congrArg (g1 ≫ ·) es.symm).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ pullback.snd (bsumOf V W) (PGL.pr (a + b))) h).trans ((Category.assoc _ _ _).trans ((congrArg (g2 ≫ ·) es).trans (Category.assoc _ _ _).symm)))))`. Establish `h3 : (g1 ≫ pullback.snd _ _) ≫ ofCatMap (pr1 a b) = (g2 ≫ pullback.snd _ _) ≫ ofCatMap (pr1 a b)`. Rewrite using `[Category.assoc, Category.assoc, ← pullback.condition, ← Category.assoc, ← Category.assoc, h1]`. Conclude with `pullback.hom_ext h1 (JM _ _ h2 h3)`. Conclude with `(pullback.lift_fst _ _ hp).trans (pullback.lift_fst _ _ hf).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [PB.line]`. Rewrite using `[← Category.assoc, ← Category.assoc, pullback.lift_snd, pullback.lift_snd, Category.assoc, Category.assoc, rhoP_line]`. Introduce `n X x hF`. Set `e` to `((pullback.fst (bsumOf V W) (PGL.pr (a + b))).app (op (SimplexCategory.mk n))).app (op X) x`. Set `F : Fin (n + 1) ⥤ Um (a + b) (Scheme.Γ.obj (op X))` to `((pullback.snd (bsumOf V W) (PGL.pr (a + b))).app (op (SimplexCategory.mk n))).app (op X) x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Ve : Fin (n + 1) ⥤ SingleObj (GL (Fin a) (Scheme.Γ.obj (op X)))` to `(V.app (op (SimplexCategory.mk n))).app (op X) e`. Set `We : Fin (n + 1) ⥤ SingleObj (GL (Fin b) (Scheme.Γ.obj (op X)))` to `(W.app (op (SimplexCategory.mk n))).app (op X) e`. Establish `cond : Functor.prod' Ve We ⋙ blockFun a b _ = F ⋙ Um.toGL (a + b) _` using `congrArg (fun φ : PB (bsumOf V W) ⟶ ofCat (glCat (a + b)) => (φ.app (op (SimplexCategory.mk n))).app (op X) x) (pullback.condition (f := bsumOf V W) (g := PGL.pr (a + b)))`. Establish `hb : ∀ {i j : Fin (n + 1)} (f : i ⟶ j), bl a b _ (Ve.map f, We.map f) = (F.map f).1.1`. Introduce `i j f`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `CategoryTheory.Functor.congr_hom cond f` as an intermediate fact. Simplify using `only [singleObj_eqToHom_eq_monoid_one] at this`. Establish `t : blockGL a b _ (Ve.map f) (We.map f) = (1 * (F.map f).1.1) * 1` using `this`. Rewrite using `[blockDiagonal_apply₂]`. Use `first`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact t.trans (by simp only [mul_one, one_mul])`. Consider the case `exact t.trans (by rw [mul_one, one_mul])`. Consider the case `exact t.trans ((congrArg (· * 1) (one_mul _)).trans (mul_one _))`. Establish `hfirst : ∀ i, Ideal.span (Set.range fun k : Fin a => (F.obj i).1 (Fin.castAdd b k)) = ⊤`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `f0 : (0 : Fin (n + 1)) ⟶ i` to `homOfLE (Fin.zero_le i)`. Establish `h0 : Ideal.span (Set.range fun k : Fin a => (F.obj 0).1 (Fin.castAdd b k)) = ⊤` using `hF`. Use `first_transfer (show GL (Fin a) _ from Ve.map f0) (F.map f0).1.2 _ _ ?_ h0` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Establish `h` using `congrFun (F.map f0).2 (Fin.castAdd b k)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[← hb f0, blockDiagonal_mulVec_castAdd]`. Conclude with `h`. Set `G : Fin (n + 1) ⥤ U1 a b (Scheme.Γ.obj (op X))` to `{ obj := fun i => ⟨F.obj i, hfirst i⟩ map := fun {i j} f => ⟨((Ve.map f, We.map f), (F.map f).1.2), by show Matrix.mulVec ((bl a b _ (Ve.map f, We.map f) : GL _ _) : Matrix _ _ _) (F.obj i).1 = ((F.map f).1.2 : _) • (F.obj j).1`. Rewrite using `[hb f]`. Conclude with `(F.map f).2⟩`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `map_id := fun i => Subtype.ext (Prod.ext (Prod.ext (Ve.map_id i) (We.map_id i)) (congrArg (fun q => q.1.2) (F.map_id i)))`. Use `map_comp := fun f g => Subtype.ext (Prod.ext (Prod.ext (Ve.map_comp f g) (We.map_comp f g)) (congrArg (fun q => q.1.2) (F.map_comp f g))) }`. Establish `hG : ((liftCat V W).app (op (SimplexCategory.mk n))).app (op X) e = ((ofCatMap (pr1 a b)).app (op (SimplexCategory.mk n))).app (op X) (show Sx (ofCat (cat1 a b)) n X from G)` using `by first`. Consider the case `rfl`. Consider the case `exact CategoryTheory.Functor.ext (fun _ => rfl) (fun _ _ _ => by simp [G, toProd])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy1, hy2⟩` from `pb_exists (liftCat V W) (ofCatMap (pr1 a b)) e (show Sx (ofCat (cat1 a b)) n X from G) hG`. Use `⟨y, pb_ext ?_ ?_⟩` and prove the remaining obligations. Conclude with `(ConcreteCategory.congr_hom (NatTrans.congr_app (NatTrans.congr_app (pullback.lift_fst _ _ hf) _) _) y).trans hy1`. Establish `k` using `ConcreteCategory.congr_hom (NatTrans.congr_app (NatTrans.congr_app (pullback.lift_snd _ _ hf) (op (SimplexCategory.mk n))) (op X)) y`. Use `k.trans ?_` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `((sigP a b).app _).app _ (((pullback.snd (liftCat V W) (ofCatMap (pr1 a b))).app _).app _ y) = _`. Rewrite using `[hy2]`. Use `show (G ⋙ toUm a b _ : Fin (n + 1) ⥤ Um (a + b) _) = F`. Use `CategoryTheory.Functor.ext (fun _ => rfl) (fun i j f => ?_)` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use `first`. Consider the case `(rw [Um_eqToHom_comp, Um_comp_eqToHom]; exact Prod.ext (hb f) rfl)`. Consider the case `(simp only [Um_eqToHom_comp, Um_comp_eqToHom]; exact Prod.ext (hb f) rfl)`. Consider the case `(erw [Um_eqToHom_comp, Um_comp_eqToHom]; exact Prod.ext (hb f) rfl)`.
+Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem LeafHalf1_of : LeafHalf1 := by
   intro E a b V W

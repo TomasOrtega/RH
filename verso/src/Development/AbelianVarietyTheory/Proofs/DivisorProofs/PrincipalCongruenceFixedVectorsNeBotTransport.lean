@@ -34,14 +34,14 @@ theorem intMap_coe (i : k ≃+* k') (hv : ∀ x : k, valuation k' (i x) ≤ 1 �
     ((intMap i hv x : 𝒪[k']) : k') = i x := rfl
 
 /- English proof (translation)
-Introduce `y` and use `by have := hv (i.symm y); rw [RingEquiv.apply_symm_apply] at this; exact this.symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem symm_hv (i : k ≃+* k') (hv : ∀ x : k, valuation k' (i x) ≤ 1 ↔ valuation k x ≤ 1) :
     ∀ y : k', valuation k (i.symm y) ≤ 1 ↔ valuation k' y ≤ 1 := fun y => by
   have := hv (i.symm y); rw [RingEquiv.apply_symm_apply] at this; exact this.symm
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Establish `h` using `ha.map (intMap i.symm (symm_hv i hv))`. Establish `e : intMap i.symm (symm_hv i hv) (intMap i hv a) = a` using `Subtype.ext (by`. Rewrite using `[intMap_coe, intMap_coe, RingEquiv.symm_apply_apply])`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isLocalHom_intMap (i : k ≃+* k') (hv : ∀ x : k, valuation k' (i x) ≤ 1 ↔ valuation k x ≤ 1) :
     IsLocalHom (intMap i hv) := by
@@ -52,11 +52,11 @@ theorem isLocalHom_intMap (i : k ≃+* k') (hv : ∀ x : k, valuation k' (i x) �
   rwa [e] at h
 
 /- English proof (translation)
-Use `haveI := isLocalHom_intMap i hv`. Take `⟨g0, hg0, rfl⟩` from `Subgroup.mem_map.1 hg`. Use `Subgroup.mem_map.2 ⟨GeneralLinearGroup.map (intMap i hv) g0, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hg0`, the goal using `[MonoidHom.mem_ker]`. Use extensionality with `a b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun m : GL (Fin n) (IsLocalRing.ResidueField 𝒪[k]) => (m.val : Matrix (Fin n) (Fin n) _) a b) hg0`. Simplify using `only [GeneralLinearGroup.map_apply, Units.val_one] at h ⊢`. Rewrite using `[← IsLocalRing.ResidueField.map_residue, h]`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab]`. Use extensionality with `a b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[GeneralLinearGroup.map_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem map_mem_kOne (i : k ≃+* k') (hv : ∀ x : k, valuation k' (i x) ≤ 1 ↔ valuation k x ≤ 1) {n : ℕ}
     {g : GL (Fin n) k} (hg : g ∈ GlobalTheory.SplitWeil.KOne k (Fin n)) :
@@ -79,15 +79,15 @@ end GlobalTheory.KOneTransport
 open GlobalTheory.LocLanglands.FieldCompat GlobalTheory.LocLanglands.TransportGL in
 
 /- English proof (translation)
-Introduce `k k' _ _ _ _ _ _ _ _ _ _ i hi x x' H hx`. Take `⟨-, hv, -⟩` from `GlobalTheory.T.continuous_ringEquiv_localField_preserves_valuation k k' i hi`. Rewrite `H` using `[← cls_rep x]`. Take `⟨π', e, rfl, he⟩` from `GlobalTheory.TheRecTransport.exists_of_repRel _ H`. Take `⟨v, hv0, hvne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `φ` to `equivRep π'`. Establish `h2 : ∀ g v, φ.toLinearEquiv (π'.ρ g v) = π'.cl.rep.ρ g (φ.toLinearEquiv v)` using `fun g v => φ.toIntertwiningMap.isIntertwining _ _ g v`. Rewrite using `[Submodule.ne_bot_iff]`. Use `⟨φ.toLinearEquiv (e v), fun h => ?_, ?_⟩` and prove the remaining obligations. Establish `hg : GeneralLinearGroup.map i.symm.toRingHom (h : GL (Fin x.1) k') ∈ GlobalTheory.SplitWeil.KOne k (Fin x.1)` using `GlobalTheory.KOneTransport.map_mem_kOne i.symm (GlobalTheory.KOneTransport.symm_hv i hv) h.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfx : x.rep (GeneralLinearGroup.map i.symm.toRingHom (h : GL (Fin x.1) k')) v = v`. Use `hv0 ⟨_, hg⟩` as an intermediate fact. Simplify using `using this`. Establish `h3` using `he (GeneralLinearGroup.map i.symm.toRingHom (h : GL (Fin x.1) k')) v`. Rewrite `h3` using `[map_map_symm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show π'.cl.rep.ρ (h : GL (Fin x.1) k') (φ.toLinearEquiv (e v)) = ((1 : _ →* ℂˣ) h : ℂ) • φ.toLinearEquiv (e v)`. Rewrite using `[← h2, ← h3]`. Use `erw [hfx]`. Simplify using the standard rewrite rules. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hvne` to reduce the goal to its premises. Establish `: e v = 0` using `φ.toLinearEquiv.map_eq_zero_iff.1 h0`. Conclude with `e.map_eq_zero_iff.1 this`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KOneTransport.fixed_ne_bot_transport : ∀ (k k' : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] [CharZero k'] (i : k ≃+* k'), Continuous i → ∀ (x : IrrGL k) (x' : IrrGL k'), RepRel i x x' → GlobalTheory.PRep.fixed x.rep (GlobalTheory.SplitWeil.KOne k (Fin x.1)) ≠ ⊥ → GlobalTheory.PRep.fixed x'.rep (GlobalTheory.SplitWeil.KOne k' (Fin x'.1)) ≠ ⊥ := by
   intro k k' _ _ _ _ _ _ _ _ _ _ i hi x x' H hx

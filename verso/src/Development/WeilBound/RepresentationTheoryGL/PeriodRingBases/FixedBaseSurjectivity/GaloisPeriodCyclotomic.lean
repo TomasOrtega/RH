@@ -18,17 +18,17 @@ namespace BaseA
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Introduce `x` and use `Loc2.lift_mk₀ _ _ _ x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isCrisDR_ι : IsCrisDR l (ι l) := fun x => Loc2.lift_mk₀ _ _ _ x
 
 /- English proof (translation)
-The claim follows from `(PositivityTheory.LocInh.isCrisDR_iff _).1 (isCrisDR_ι l)`.
+A detailed English derivation is pending.
 -/
 theorem ι_eq : ι l = PositivityTheory.LocInh.ιCD l := (PositivityTheory.LocInh.isCrisDR_iff _).1 (isCrisDR_ι l)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[l]) (RingHom.ext fun z => by rw [RingHom.comp_apply, RingHom.comp_apply, qB, IsLocalization.lift_eq] exact (PositivityTheory.LocInh.qB_coe z).symm)`.
+A detailed English derivation is pending.
 -/
 theorem qB_eq : qB l = PositivityTheory.LocInh.qB l :=
   IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[l]) (RingHom.ext fun z => by
@@ -36,7 +36,7 @@ theorem qB_eq : qB l = PositivityTheory.LocInh.qB l :=
     exact (PositivityTheory.LocInh.qB_coe z).symm)
 
 /- English proof (translation)
-The claim follows from `Loc2.lift_mk₀ _ _ _ y`.
+A detailed English derivation is pending.
 -/
 theorem ι_cB (y : ACris.ACris ℂ_[l] l) : ι l (cB l y) = iC l y := Loc2.lift_mk₀ _ _ _ y
 
@@ -45,49 +45,49 @@ end BaseA
 open BaseA
 
 /- English proof (translation)
-Rewrite using `[ι_eq]`. Conclude with `PositivityTheory.LocInh.ιCD_injective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_ι_inj (l : ℕ) [Fact l.Prime] : Function.Injective (ι l) := by
   rw [ι_eq]; exact PositivityTheory.LocInh.ιCD_injective
 
 /- English proof (translation)
-The claim follows from `Function.Injective.isDomain (ι l) (base_ι_inj l)`.
+A detailed English derivation is pending.
 -/
 theorem base_dom (l : ℕ) [Fact l.Prime] : IsDomain (B l) :=
   Function.Injective.isDomain (ι l) (base_ι_inj l)
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun b => PositivityTheory.LocInh.σB_one b`.
+A detailed English derivation is pending.
 -/
 theorem base_σ_one (l : ℕ) [Fact l.Prime] : σB (1 : GQ l) = RingHom.id _ :=
   RingHom.ext fun b => PositivityTheory.LocInh.σB_one b
 
 /- English proof (translation)
-Introduce `g h` and use `RingHom.ext fun b => PositivityTheory.LocInh.σB_mul g h b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem base_σ_mul (l : ℕ) [Fact l.Prime] : ∀ g h : GQ l, σB (g * h) = (σB g).comp (σB h) :=
   fun g h => RingHom.ext fun b => PositivityTheory.LocInh.σB_mul g h b
 
 /- English proof (translation)
-Introduce `g x` and use `PositivityTheory.LocInh.φB_σB g x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem base_φ_σ (l : ℕ) [Fact l.Prime] : ∀ (g : GQ l) x, φ l (σB g x) = σB g (φ l x) :=
   fun g x => PositivityTheory.LocInh.φB_σB g x
 
 /- English proof (translation)
-Introduce `g x`. Rewrite using `[ι_eq]`. Conclude with `PositivityTheory.LocInh.ιCD_σB g x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_ι_σ (l : ℕ) [Fact l.Prime] : ∀ (g : GQ l) x, ι l (σB g x) = σD g (ι l x) := by
   intro g x; rw [ι_eq]; exact PositivityTheory.LocInh.ιCD_σB g x
 
 /- English proof (translation)
-Introduce `q`. Rewrite using `[qB_eq]`. Conclude with `PositivityTheory.LocInh.φB_qB q`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_φ_q (l : ℕ) [Fact l.Prime] : ∀ q, φ l (qB l q) = qB l q := by
   intro q; rw [qB_eq]; exact PositivityTheory.LocInh.φB_qB q
 
 /- English proof (translation)
-Introduce `g q`. Apply `base_ι_inj l` to reduce the goal to its premises. Rewrite using `[base_ι_σ, ι_eq, qB_eq, PositivityTheory.LocInh.ιCD_qB, PositivityTheory.LocInh.σD_oD, AlgEquiv.commutes]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem base_σ_q (l : ℕ) [Fact l.Prime] : ∀ (g : GQ l) q, σB g (qB l q) = qB l q := by
   intro g q
@@ -95,36 +95,36 @@ theorem base_σ_q (l : ℕ) [Fact l.Prime] : ∀ (g : GQ l) q, σB g (qB l q) = 
   rw [base_ι_σ, ι_eq, qB_eq, PositivityTheory.LocInh.ιCD_qB, PositivityTheory.LocInh.σD_oD, AlgEquiv.commutes]
 
 /- English proof (translation)
-Introduce `q`. Rewrite using `[ι_eq, qB_eq]`. Conclude with `PositivityTheory.LocInh.fund_ιCD_qB q`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_ι_q (l : ℕ) [Fact l.Prime] : ∀ q, ι l (qB l q) = qQ l q := by
   intro q; rw [ι_eq, qB_eq]; exact PositivityTheory.LocInh.fund_ιCD_qB q
 
 /- English proof (translation)
-The claim follows from `ι_cB l (tA l)`.
+A detailed English derivation is pending.
 -/
 theorem period_image_eq (l : ℕ) [Fact l.Prime] : ι l (t l) = tQ l := ι_cB l (tA l)
 
 /- English proof (translation)
-The claim follows from `Loc2.isUnit_right _ _`.
+A detailed English derivation is pending.
 -/
 theorem base_t_unit (l : ℕ) [Fact l.Prime] : IsUnit (t l) := Loc2.isUnit_right _ _
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.LocInh.φB_tB`.
+A detailed English derivation is pending.
 -/
 theorem frobenius_period_holds (l : ℕ) [Fact l.Prime] : φ l (t l) = (l : B l) * t l := PositivityTheory.LocInh.φB_tB
 
 /- English proof (translation)
-Introduce `g`. Rewrite using `[qB_eq]`. Conclude with `PositivityTheory.LocInh.σB_tB g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galois_period_cyclotomic (l : ℕ) [Fact l.Prime] : ∀ g : GQ l, σB g (t l) = qB l (χ g) * t l := by
   intro g; rw [qB_eq]; exact PositivityTheory.LocInh.σB_tB g
 
 /- English proof (translation)
-Establish `h1 : Continuous (fun g : GQ l => ((DeRhamTwist.Twist.chi0 l g : ℤ_[l]ˣ) : ℤ_[l]))` using `Units.continuous_val.comp (DeRhamTwist.Twist.continuous_cyclotomic_character (l := l))`. Establish `h2 : Continuous (fun x : ℤ_[l] => (x : ℚ_[l]))` using `by first`. Consider the case `exact PadicInt.continuous_coe`. Consider the case `exact continuous_subtype_val`. Consider the case `exact (Isometry.of_dist_eq fun _ _ => rfl).continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `h2.comp h1`.
+A detailed English derivation is pending.
 -/
 theorem base_χ_cont (l : ℕ) [Fact l.Prime] : Continuous (χ : GQ l → ℚ_[l]) :=
   by
@@ -138,13 +138,13 @@ theorem base_χ_cont (l : ℕ) [Fact l.Prime] : Continuous (χ : GQ l → ℚ_[l
   exact h2.comp h1
 
 /- English proof (translation)
-Introduce `x`. Take `⟨m, n, y, h⟩` from `PositivityTheory.LocInh.bcris_surj x`. Establish `h1` using `congrArg (ι l) h`. Establish `hl : ι l (cB l (l : ACris.ACris ℂ_[l] l)) = (l : BdR l)` using `by rw [map_natCast, map_natCast]`. Rewrite `h1` using `[map_mul, map_mul, map_pow, map_pow, hl, ι_cB, ι_cB]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htq : iC l (tA l) = tQ l` using `rfl`. Rewrite `h1` using `[htq]`. Establish `hl0 : (l : BdR l) ≠ 0`. Use `(isUnit_l l).map (ι l)` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.ne_zero`. Establish `ht0 : tQ l ≠ 0` using `DeRhamTwist.Twist.tQ_ne`. Establish `e : ι l x = iC l y * ((l : BdR l)⁻¹) ^ m * ((tQ l)⁻¹) ^ n`. Rewrite using `[← h1, inv_pow, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `mem : ∀ z ∈ ({((l : BdR l))⁻¹, (tQ l)⁻¹, uQ l} : Set (BdR l)), z ∈ Bst l` using `fun z hz => Subring.subset_closure (Or.inr hz)`. Conclude with `Subring.mul_mem _ (Subring.mul_mem _ (Subring.subset_closure (Or.inl ⟨y, rfl⟩)) (Subring.pow_mem _ (mem _ (by simp)) _)) (Subring.pow_mem _ (mem _ (by simp)) _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem base_ι_Bst (l : ℕ) [Fact l.Prime] : ∀ x, ι l x ∈ Bst l := by
   intro x
@@ -169,13 +169,13 @@ theorem base_ι_Bst (l : ℕ) [Fact l.Prime] : ∀ x, ι l x ∈ Bst l := by
     (Subring.pow_mem _ (mem _ (by simp)) _)) (Subring.pow_mem _ (mem _ (by simp)) _)
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inr (by simp))`.
+A detailed English derivation is pending.
 -/
 theorem base_u_Bst (l : ℕ) [Fact l.Prime] : uQ l ∈ Bst l :=
   Subring.subset_closure (Or.inr (by simp))
 
 /- English proof (translation)
-Introduce `x hφ hx`. Take `⟨z, hz⟩` from `RingHom.mem_range.1 hx`. Rewrite `hz` using `[ι_eq]`. Take `⟨q, hq⟩` from `PositivityTheory.LocInh.fund x hφ ((IsPerfectoidField.mem_fil_zero_iff ℂ_[l] l).2 ⟨z, hz.symm⟩)`. Conclude with `⟨q, by rw [qB_eq]; exact hq.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem base_fs_ker (l : ℕ) [Fact l.Prime] : ∀ x, φ l x = x → ι l x ∈ Plus l → ∃ q, x = qB l q := by
   intro x hφ hx
@@ -185,7 +185,7 @@ theorem base_fs_ker (l : ℕ) [Fact l.Prime] : ∀ x, φ l x = x → ι l x ∈ 
   exact ⟨q, by rw [qB_eq]; exact hq.symm⟩
 
 /- English proof (translation)
-Introduce `z`. Take `⟨x, hφ, c, hc⟩` from `PositivityTheory.LocInh.fund_onto z`. Conclude with `⟨x, hφ, RingHom.mem_range.2 ⟨c, by rw [ι_eq]; exact hc.symm⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem base_fs_surj (l : ℕ) [Fact l.Prime] : ∀ z : BdR l, ∃ x, φ l x = x ∧ ι l x - z ∈ Plus l := by
   intro z

@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base
 
 /- English proof (translation)
-Introduce `k E Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ D e τ σ h x y hxy`. Take `⟨z, z', rfl, rfl, hz⟩` from `hxy`. Take `⟨z₁, e₁, f₁⟩` from `exists_cocycle_h1TwistConjByLift_mk_eq_mk D e h z`. Take `⟨z₂, e₂, f₂⟩` from `conjU_mk (LDataCardLeFinrank.qzG k Ω l e) (galOf k E Ω) σ z'`. Use `⟨z₁, z₂, by rw [galois_action_cohomology_eq_conj D e h, e₁], by rw [conjRep_apply, e₂], fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : conjHom (galOf k E Ω) σ ⟨galEmb k E Ω g, galEmb_mem k E Ω g⟩ = ⟨galEmb k E Ω (conjGal h g), galEmb_mem k E Ω _⟩` using `Subtype.ext (AlgEquiv.ext fun _ => rfl)`. Rewrite using `[f₂, f₁, conjGS_toGS, hc, hz]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.V.Base.inflAct :
     ∀ (k E Ω : Type) [Field k] [NumberField k] [Field E] [NumberField E] [Field Ω] [Algebra k E] [Algebra k Ω] [Algebra E Ω]

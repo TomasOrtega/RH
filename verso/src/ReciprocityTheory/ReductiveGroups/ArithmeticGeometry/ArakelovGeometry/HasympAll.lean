@@ -9,37 +9,33 @@ open ReciprocityTheory.ChartRestriction.G.Geo MvPolynomial
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Use `choose a0 C hC hb using fun b => block_step (L := L) hp hW hpW hdim hR4W IH b`. Use `set a₁ := 1 + ∑ b, a0 b`. Use `set Δ : (K → ℕ) → ℝ := fun a => lg W a - appr L (m + 1) W a with hΔ`. Use `set B := coefB (m + 1) W`. Establish `hB : 0 ≤ B` using `coefB_nonneg _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `hf : (0 : ℝ) < m.factorial` using `by exact_mod_cast m.factorial_pos`. Use `set Kst := ∑ b, C b + |L| * B * 2 ^ (m - 1) / m.factorial`. Establish `hKst : 0 ≤ Kst`. Use `Finset.sum_nonneg fun b (_ : b ∈ Finset.univ) => hC b` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstep : ∀ a : K → ℕ, ∀ b, (∀ k, a₁ ≤ a k) → a₁ < a b → |Δ a - Δ (a - Pi.single b 1)| ≤ Kst * m * ((tdeg a : ℝ) + 1) ^ (m - 1)`. Introduce `a b ha hab`. Establish `ha0 : ∀ k, a0 b ≤ a k` using `fun k => by`. Establish `h1 : a0 b ≤ ∑ b, a0 b` using `Finset.single_le_sum (f := a0) (fun _ _ => Nat.zero_le _) (Finset.mem_univ b)`. Use `ha k` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use linear arithmetic over natural numbers and integers. Establish `h1` using `hb b a ha0`. Use `set x : K → ℤ := fun k => (a k : ℤ)`. Establish `hx : (fun _ : Fin (m + 1) => fun k => ((a - (Pi.single b 1 : K → ℕ)) k : ℤ)) = fun _ => x - uv b`. Use function extensionality and compare the values at `_ k`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hk : k = b`. Substitute `hk` using the available equality. Establish `: 1 ≤ a k` using `by omega`. Simplify using `[x, uv, Nat.cast_sub this]`. Simplify using `[x, uv, Pi.single_apply, hk]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2` using `geoNum_diff_est m W hSW x b`. Rewrite `h2` using `[show nrm x = tdeg a from nrm_natCast a]`. Establish `hfs : ((m + 1).factorial : ℝ) = (m + 1) * m.factorial`. Rewrite using `[Nat.factorial_succ]`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hid : Δ a - Δ (a - Pi.single b 1) = (lg W a - lg W (a - Pi.single b 1) - L * (geoNum (m + 1) W (Fin.snoc (fun _ k => (a k : ℤ)) (uv b)) : ℝ) / m.factorial) - L / ((m + 1).factorial : ℝ) * ((geoNum (m + 1) W (fun _ => x) : ℝ) - geoNum (m + 1) W (fun _ => x - uv b) - (m + 1) * geoN …`. Simplify using `only [hΔ, appr]`. Rewrite using `[hx, hfs]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h3 : |L / ((m + 1).factorial : ℝ) * ((geoNum (m + 1) W (fun _ => x) : ℝ) - geoNum (m + 1) W (fun _ => x - uv b) - (m + 1) * geoNum (m + 1) W (Fin.snoc (fun _ => x) (uv b)))| ≤ |L| * B * 2 ^ (m - 1) / m.factorial * m * ((tdeg a : ℝ) + 1) ^ (m - 1)`. Rewrite using `[abs_mul, abs_div, abs_of_pos (by positivity : (0 : ℝ) < ((m + 1).factorial : ℝ)), hfs]`. Establish `hN : (0 : ℝ) ≤ tdeg a` using `by positivity`. Establish `h4 : ((tdeg a : ℝ) + 2) ^ (m + 1 - 2) ≤ 2 ^ (m - 1) * ((tdeg a : ℝ) + 1) ^ (m - 1)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show m + 1 - 2 = m - 1 by omega, ← mul_pow]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCb : C b ≤ ∑ b, C b` using `Finset.single_le_sum (f := C) (fun b _ => hC b) (Finset.mem_univ b)`. Rewrite using `[hid]`. Combine the equalities or inequalities in the displayed calculation. Establish `hw` using `walk_bound Δ a₁ m hKst hstep`. Use `⟨a₁, |Δ (fun _ => a₁)| + Kst * m, by positivity, fun a ha => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h` using `hw a ha`. Establish `hN : (0 : ℝ) ≤ tdeg a` using `by positivity`. Establish `hp1 : (1 : ℝ) ≤ ((tdeg a : ℝ) + 1) ^ m` using `one_le_pow₀ (by linarith)`. Establish `hkey : Kst * m * tdeg a * ((tdeg a : ℝ) + 1) ^ (m - 1) ≤ Kst * m * ((tdeg a : ℝ) + 1) ^ m`. Break down `Nat.eq_zero_or_pos m with hm | hm` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Substitute `hm` using the available equality. Simplify using the standard rewrite rules. Establish `: ((tdeg a : ℝ) + 1) ^ m = ((tdeg a : ℝ) + 1) ^ (m - 1) * ((tdeg a : ℝ) + 1)`. Rewrite using `[← pow_succ]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`. Establish `: (0 : ℝ) ≤ ((tdeg a : ℝ) + 1) ^ (m - 1)` using `by positivity`. Establish `: (0 : ℝ) ≤ Kst * m` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Nat.add_sub_cancel]`. Use `push_cast`. Establish `hΔc` using `abs_nonneg (Δ (fun _ => a₁))`. Establish `hKm : (0 : ℝ) ≤ Kst * m` using `by positivity`. Express the relevant statement in the definitionally equal form `|Δ a| ≤ _`.
-
-Establish `hm0 : (0 : ℝ) ≤ m` using `by positivity`. Establish `hA : (1 : ℝ) ≤ ((m : ℝ) + 1) * ((tdeg a : ℝ) + 1) ^ m` using `by nlinarith`. Establish `hB1 : |Δ (fun _ => a₁)| ≤ |Δ (fun _ => a₁)| * (((m : ℝ) + 1) * ((tdeg a : ℝ) + 1) ^ m)` using `le_mul_of_one_le_right hΔc hA`. Establish `hB2 : Kst * m * ((tdeg a : ℝ) + 1) ^ m ≤ Kst * m * (((m : ℝ) + 1) * ((tdeg a : ℝ) + 1) ^ m)`. Establish `: ((tdeg a : ℝ) + 1) ^ m ≤ ((m : ℝ) + 1) * ((tdeg a : ℝ) + 1) ^ m` using `le_mul_of_one_le_left (by positivity) (by linarith)`.
-
-Conclude with `mul_le_mul_of_nonneg_left this hKm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem main_step {L : ℝ} {m p : ℕ} (hp : p.Prime) {W : Ideal (MRing ι)} (hW : IsMultiProjPrime W)
     (hpW : (p : MRing ι) ∈ W)
@@ -161,9 +157,9 @@ theorem main_step {L : ℝ} {m p : ℕ} (hp : p.Prime) {W : Ideal (MRing ι)} (h
     _ = (|Δ (fun _ => a₁)| + Kst * m) * ((m : ℝ) + 1) * ((tdeg a : ℝ) + 1) ^ m := by ring
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `W hW hpW hdim`. Conclude with `⟨hbase W hW hpW hdim, fun a σ => hSymm 0 W a σ hW (charOf_ne_zero_of_mem hp.ne_zero hpW) hdim⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ m ih`. Introduce `W hW hpW hdim`. Establish `hc` using `charOf_ne_zero_of_mem hp.ne_zero hpW`. Establish `hS : SymmAt (m + 1) W` using `fun a σ => hSymm (m + 1) W a σ hW hc hdim`. Conclude with `⟨main_step hp hW hpW hdim (fun a k i hX ha => hR4 m W a k i hW hc hdim hX ha) hS (fun W' hW' hpW' hdim' => ih W' hW' hpW' hdim'), hS⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem hasymp_all {L : ℝ} {p : ℕ} (hp : p.Prime)
     (hR4 : ∀ (n : ℕ) (V : Ideal (MRing ι)) (a : Fin (n + 1) → K → ℤ) (k : K) (i : ι k),

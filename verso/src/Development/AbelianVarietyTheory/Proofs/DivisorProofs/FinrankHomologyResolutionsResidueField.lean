@@ -13,19 +13,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Set `g : (Z × R') →ₗ[K] W` to `LinearMap.coprod (A ∘ₗ Z.subtype) R'.subtype`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker g`. Rewrite `h1` using `[Module.finrank_prod]`. Establish `h2 : Module.finrank K (LinearMap.range g) ≤ Module.finrank K Z'`. Apply `Submodule.finrank_mono` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨⟨x, r⟩, rfl⟩`. Simplify using `only [g, LinearMap.coprod_apply, LinearMap.comp_apply, Submodule.subtype_apply]`. Conclude with `Z'.add_mem (hZ x x.2) (hR' r.2)`. Establish `h3 : Module.finrank K (LinearMap.ker g) ≤ Module.finrank K R`. Set `φ : LinearMap.ker g →ₗ[K] R` to `LinearMap.codRestrict R (Z.subtype ∘ₗ LinearMap.fst K Z R' ∘ₗ (LinearMap.ker g).subtype) (by`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨x, r⟩, hx⟩`. Simplify using `only [LinearMap.mem_ker, g, LinearMap.coprod_apply, LinearMap.comp_apply, Submodule.subtype_apply] at hx`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.fst_apply]`. Apply `hk x x.2` to reduce the goal to its premises. Establish `: A x = -(r : W)` using `eq_neg_of_add_eq_zero_left hx`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `R'.neg_mem r.2)`. Use `LinearMap.finrank_le_finrank_of_injective (f := φ) ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨⟨x, r⟩, hx⟩ h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.mem_ker, g, LinearMap.coprod_apply, LinearMap.comp_apply, Submodule.subtype_apply] at hx`. Establish `hx0 : x = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Subtype.val h0` as an intermediate fact. Simplify `this` using `[φ]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hx0` using the available equality. Establish `hr : r = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using hx`. Substitute `hr` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers.
 
-Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem finrank_add_le_of_image_mem {K V W : Type} [Field K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] [AddCommGroup W] [Module K W] [FiniteDimensional K W]
@@ -68,37 +68,37 @@ theorem finrank_add_le_of_image_mem {K V W : Type} [Field K] [AddCommGroup V] [M
   omega
 
 /- English proof (translation)
-Introduce `O _ K _ _ N _ _ F₀ _ _ _ _ F₁ _ _ _ _ F₂ _ _ _ _ F₃ _ _ _ _ G₀ _ _ _ _ G₁ _ _ _ _ G₂ _ _ _ _ ε d₁ d₂ d₃ ν e₁ e₂ hε hd₁ hd₂ hd₃ hν he₁ he₂`. Take `⟨a₀, a₁, a₂, b₀, b₁, b₂, h₀, h₁, h₂, k₀, k₁, c1, c2, c3, c4, c5, c6, c7⟩` from `GlobalTheory.T.partialFreeResolutions_homotopyEquivalent O N F₀ F₁ F₂ F₃ G₀ G₁ G₂ ε d₁ d₂ d₃ ν e₁ e₂ hε hd₁ hd₂ hd₃ hν he₁ he₂`. Establish `bc : ∀ {P Q : Type} [AddCommGroup P] [Module O P] [AddCommGroup Q] [Module O Q] {f g : P →ₗ[O] Q}, f = g → ∀ x, f.baseChange K x = g.baseChange K x`. Introduce `P Q _ _ _ _ f g h x`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `z12 : ∀ x, d₁.baseChange K (d₂.baseChange K x) = 0`. Introduce `x`. Use `bc hd₂.linearMap_comp_eq_zero x` as an intermediate fact. Simplify `this` using `[LinearMap.baseChange_comp]`. Establish `ze12 : ∀ x, e₁.baseChange K (e₂.baseChange K x) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `x`. Use `bc he₂.linearMap_comp_eq_zero x` as an intermediate fact. Simplify `this` using `[LinearMap.baseChange_comp]`. Establish `q1 : ∀ x, e₁.baseChange K (a₁.baseChange K x) = a₀.baseChange K (d₁.baseChange K x)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `bc c1 x` as an intermediate fact. Simplify `this` using `[LinearMap.baseChange_comp]`. Establish `q2 : ∀ x, e₂.baseChange K (a₂.baseChange K x) = a₁.baseChange K (d₂.baseChange K x)`. Introduce `x`. Use `bc c2 x` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[LinearMap.baseChange_comp]`. Establish `q3 : ∀ x, d₁.baseChange K (b₁.baseChange K x) = b₀.baseChange K (e₁.baseChange K x)`. Introduce `x`. Use `bc c3 x` as an intermediate fact. Simplify `this` using `[LinearMap.baseChange_comp]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `q4 : ∀ x, d₂.baseChange K (b₂.baseChange K x) = b₁.baseChange K (e₂.baseChange K x)`. Introduce `x`. Use `bc c4 x` as an intermediate fact. Simplify `this` using `[LinearMap.baseChange_comp]`. Establish `q5 : ∀ x, x - b₁.baseChange K (a₁.baseChange K x) = d₂.baseChange K (h₁.baseChange K x) + h₀.baseChange K (d₁.baseChange K x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `x`. Use `bc c5 x` as an intermediate fact. Simplify `this` using `[LinearMap.baseChange_comp, LinearMap.baseChange_sub, LinearMap.baseChange_add, LinearMap.baseChange_id]`. Establish `q6 : ∀ x, x - b₂.baseChange K (a₂.baseChange K x) = d₃.baseChange K (h₂.baseChange K x) + h₁.baseChange K (d₂.baseChange K x)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `bc c6 x` as an intermediate fact. Simplify `this` using `[LinearMap.baseChange_comp, LinearMap.baseChange_sub, LinearMap.baseChange_add, LinearMap.baseChange_id]`. Establish `q7 : ∀ x, x - a₁.baseChange K (b₁.baseChange K x) = e₂.baseChange K (k₁.baseChange K x) + k₀.baseChange K (e₁.baseChange K x)`. Introduce `x`. Use `bc c7 x` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[LinearMap.baseChange_comp, LinearMap.baseChange_sub, LinearMap.baseChange_add, LinearMap.baseChange_id]`. Use `⟨le_antisymm ?_ ?_, ?_⟩` and prove the remaining obligations. Use `finrank_add_le_of_image_mem (a₁.baseChange K) _ _ _ _ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `ze12 y`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[q1, hx, map_zero]`. Introduce and unpack `x hx ⟨y, hy⟩`. Rewrite `hx` using `[LinearMap.mem_ker]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b₂.baseChange K y + h₁.baseChange K x, ?_⟩` and prove the remaining obligations. Use `q5 x` as an intermediate fact. Rewrite `this` using `[hx, map_zero, add_zero, ← hy, ← q4]`. Rewrite using `[map_add, ← this]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations.
 
-Use `finrank_add_le_of_image_mem (b₁.baseChange K) _ _ _ _ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `z12 y`. Introduce `x hx`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[q3, hx, map_zero]`. Introduce and unpack `x hx ⟨y, hy⟩`. Rewrite `hx` using `[LinearMap.mem_ker]`. Use `⟨a₂.baseChange K y + k₁.baseChange K x, ?_⟩` and prove the remaining obligations. Use `q7 x` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hx, map_zero, add_zero, ← hy, ← q2]`. Rewrite using `[map_add, ← this]`. Normalize the expressions using the abelian group laws. Use `finrank_add_le_of_image_mem (a₂.baseChange K) (LinearMap.ker (d₂.baseChange K)) (LinearMap.range (d₃.baseChange K)) ⊤ ⊥ bot_le (fun _ _ => Submodule.mem_top) (by` as an intermediate fact. Introduce `x hx h0`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[LinearMap.mem_ker]`. Rewrite `h0` using `[Submodule.mem_bot]`. Use `⟨h₂.baseChange K x, ?_⟩` and prove the remaining obligations. Use `q6 x` as an intermediate fact. Rewrite `this` using `[hx, h0, map_zero, map_zero, add_zero, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `this.symm)`. Simplify using `only [finrank_top, finrank_bot, add_zero] at this`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem finrank_homology_base_change_resolutions : ∀ (O : Type) [CommRing O] (K : Type) [Field K] [Algebra O K] (N : Type) [AddCommGroup N] [Module O N] (F₀ : Type) [AddCommGroup F₀] [Module O F₀] [Module.Free O F₀] [Module.Finite O F₀] (F₁ : Type) [AddCommGroup F₁] [Module O F₁] [Module.Free O F₁] [Module.Finite O F₁] (F₂ : Type) [AddCommGroup F₂] [Module O F₂] [Module.Free O F₂] [Module.Finite O F₂] (F₃ : Type) [AddCommGroup F₃] [Module O F₃] [Module.Free O F₃] [Module.Finite O F₃] (G₀ : Type) [AddCommGroup G₀] [Module O G₀] [Module.Free O G₀] [Module.Finite O G₀] (G₁ : Type) [AddCommGroup G₁] [Module O G₁] [Module.Free O G₁] [Module.Finite O G₁] (G₂ : Type) [AddCommGroup G₂] [Module O G₂] [Module.Free O G₂] [Module.Finite O G₂] (ε : F₀ →ₗ[O] N) (d₁ : F₁ →ₗ[O] F₀) (d₂ : F₂ →ₗ[O] F₁) (d₃ : F₃ →ₗ[O] F₂) (ν : G₀ →ₗ[O] N) (e₁ : G₁ →ₗ[O] G₀) (e₂ : G₂ →ₗ[O] G₁), Function.Surjective ε → Function.Exact d₁ ε → Function.Exact d₂ d₁ → Function.Exact d₃ d₂ → Function.Surjective ν → Function.Exact e₁ ν → Function.Exact e₂ e₁ → Module.finrank K (LinearMap.ker (d₁.baseChange K)) + Module.finrank K (LinearMap.range (e₂.baseChange K)) = Module.finrank K (LinearMap.ker (e₁.baseChange K)) + Module.finrank K (LinearMap.range (d₂.baseChange K)) ∧ Module.finrank K (LinearMap.ker (d₂.baseChange K)) ≤ Module.finrank K (LinearMap.range (d₃.baseChange K)) + Module.finrank K (K ⊗[O] G₂) := by
   intro O _ K _ _ N _ _ F₀ _ _ _ _ F₁ _ _ _ _ F₂ _ _ _ _ F₃ _ _ _ _ G₀ _ _ _ _ G₁ _ _ _ _

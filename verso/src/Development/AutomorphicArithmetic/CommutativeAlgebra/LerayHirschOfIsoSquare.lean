@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CupHypercohomologyP
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Pbf UpperTheory.Blow
 
 /- English proof (translation)
-Use `Function.bijective_iff_has_inverse.2 ⟨fun y => pull _ (inv f) _ _ y, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Use `show pull _ (inv f) _ _ (pull _ f _ _ x) = x`. Rewrite using `[← pull_comp, IsIso.inv_hom_id, pull_id]`. Use `show pull _ f _ _ (pull _ (inv f) _ _ y) = y`. Rewrite using `[← pull_comp, IsIso.hom_inv_id, pull_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pull_bij (q : ℕ) {A B : Spc} (f : A ⟶ B) [IsIso f] (n i : ℤ) :
     Function.Bijective (fun x : Ht q B n i => (pull _ f _ _ x : Ht q A n i)) := by
@@ -19,25 +19,25 @@ private theorem pull_bij (q : ℕ) {A B : Spc} (f : A ⟶ B) [IsIso f] (n i : �
     rw [← pull_comp, IsIso.hom_inv_id, pull_id]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.cup_hypercohomologyPullback (ZMod q) (twPair q i j) f rfl a b`.
+A detailed English derivation is pending.
 -/
 private theorem pull_cup (q : ℕ) {A B : Spc} (f : A ⟶ B) {n m i j : ℤ} (a : Ht q B n i) (b : Ht q B m j) :
     pull _ f _ _ (cup q a b) = cup q (pull _ f _ _ a) (pull _ f _ _ b) :=
   GlobalTheory.T.cup_hypercohomologyPullback (ZMod q) (twPair q i j) f rfl a b
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem pull_cast' (q : ℕ) {A B : Spc} (f : A ⟶ B) {n i n' i' : ℤ} (hn : n = n') (hi : i = i')
     (x : Ht q B n i) : pull _ f _ _ (x.cast hn hi) = Ht.cast hn hi (pull _ f _ _ x : Ht q A n i) := by
   subst hn; subst hi; rfl
 
 /- English proof (translation)
-Introduce `q _ X X' E E' π π' u b _ _ w m d e c h n i`. Establish `hP : Function.Bijective (fun (a : ∀ j, Ht q E (n - d j) (i - e j)) j => (pull _ b _ _ (a j) : Ht q E' (n - d j) (i - e j)))` using `⟨fun a a' haa => funext fun j => (pull_bij q b _ _).1 (congrFun haa j), fun y => ⟨fun j => ((pull_bij q b _ _).2 (y j)).choose,`. Use function extensionality and compare the values at `fun j => ((pull_bij q b _ _).2 (y j)).choose_spec⟩⟩`. Establish `hc : ∀ a : ∀ j, Ht q E (n - d j) (i - e j), (∑ j, ((cup q (pull _ π' _ _ (pull _ b _ _ (a j) : Ht q E' (n - d j) (i - e j))) (pull _ u _ _ (c j))).cast (by ring) (by ring) : Ht q X' n i)) = pull _ u _ _ (∑ j, ((cup q (pull _ π _ _ (a j)) (c j)).cast (by ring) (by ring) : Ht q X n …`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pull_cast', pull_cup, ← pull_comp, ← pull_comp, w]`. Establish `hcomp` using `(pull_bij q u n i).comp (h n i)`. Establish `heq : (fun y : ∀ j, Ht q E' (n - d j) (i - e j) => ∑ j, ((cup q (pull _ π' _ _ (y j)) (pull _ u _ _ (c j))).cast (by ring) (by ring) : Ht q X' n i)) ∘ (fun (a : ∀ j, Ht q E (n - d j) (i - e j)) j => (pull _ b _ _ (a j) : Ht q E' (n - d j) (i - e j))) = (fun x : Ht q X n i => (pul …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `hc`. Rewrite `hcomp` using `[← heq]`. Conclude with `(Function.Bijective.of_comp_iff _ hP).1 hcomp`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.lerayHirsch_of_iso_square :
     ∀ (q : ℕ) [NeZero q] {X X' E E' : Spc} (π : X ⟶ E) (π' : X' ⟶ E') (u : X' ⟶ X) (b : E' ⟶ E) [IsIso u] [IsIso b], u ≫ π = π' ≫ b →

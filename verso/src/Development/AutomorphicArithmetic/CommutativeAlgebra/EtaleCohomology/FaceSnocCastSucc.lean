@@ -17,12 +17,12 @@ variable {E : Type*} [Category E] {m : ℕ} (s : ComposableArrows E m) {X : E} (
 def snObj (X : E) (i : Fin (m + 2)) : E := if h : (i : ℕ) < m + 1 then s.obj ⟨i, h⟩ else X
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem snObj_lt (X : E) {i : Fin (m + 2)} (h : (i : ℕ) < m + 1) : snObj s X i = s.obj ⟨i, h⟩ := dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem snObj_ge (X : E) {i : Fin (m + 2)} (h : ¬ (i : ℕ) < m + 1) : snObj s X i = X := dif_neg h
 
@@ -36,7 +36,7 @@ def snMap (i j : Fin (m + 2)) (hij : i ≤ j) : snObj s X i ⟶ snObj s X j :=
   else eqToHom ((snObj_ge s X hi).trans (snObj_ge s X hj).symm)
 
 /- English proof (translation)
-The claim follows from `dif_pos hj`.
+A detailed English derivation is pending.
 -/
 theorem snMap_lt {i j : Fin (m + 2)} (hij : i ≤ j) (hj : (j : ℕ) < m + 1) :
     snMap s a i j hij = eqToHom (snObj_lt s X (lt_of_le_of_lt (Fin.le_def.1 hij) hj)) ≫
@@ -44,14 +44,14 @@ theorem snMap_lt {i j : Fin (m + 2)} (hij : i ≤ j) (hj : (j : ℕ) < m + 1) :
         eqToHom (snObj_lt s X hj).symm := dif_pos hj
 
 /- English proof (translation)
-Rewrite using `[snMap, dif_neg hj, dif_pos hi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem snMap_mid {i j : Fin (m + 2)} (hij : i ≤ j) (hj : ¬ (j : ℕ) < m + 1) (hi : (i : ℕ) < m + 1) :
     snMap s a i j hij = eqToHom (snObj_lt s X hi) ≫ s.map (homOfLE (Fin.le_last _)) ≫ a ≫ eqToHom (snObj_ge s X hj).symm := by
   rw [snMap, dif_neg hj, dif_pos hi]
 
 /- English proof (translation)
-Rewrite using `[snMap, dif_neg hj, dif_neg hi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem snMap_top {i j : Fin (m + 2)} (hij : i ≤ j) (hj : ¬ (j : ℕ) < m + 1) (hi : ¬ (i : ℕ) < m + 1) :
     snMap s a i j hij = eqToHom ((snObj_ge s X hi).trans (snObj_ge s X hj).symm) := by
@@ -88,7 +88,7 @@ def snoc : ComposableArrows E (m + 1) where
           simp
 
 /- English proof (translation)
-The claim follows from `snObj_ge s X (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem snoc_last : (snoc s a).obj (Fin.last (m + 1)) = X := snObj_ge s X (by simp)
 
@@ -98,14 +98,14 @@ section Chains
 variable {E : Type*} [Category E]
 
 /- English proof (translation)
-The claim follows from `CategoryTheory.Functor.ext ho fun i j f => hm i j (leOfHom f)`.
+A detailed English derivation is pending.
 -/
 theorem chain_ext {n : ℕ} {T T' : ComposableArrows E n} (ho : ∀ i, T.obj i = T'.obj i)
     (hm : ∀ i j (h : i ≤ j), T.map (homOfLE h) = eqToHom (ho i) ≫ T'.map (homOfLE h) ≫ eqToHom (ho j).symm) : T = T' :=
   CategoryTheory.Functor.ext ho fun i j f => hm i j (leOfHom f)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `only [eqToHom_refl, Category.id_comp] at w`. Rewrite using `[w]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_chain_eq {n : ℕ} {X : E} {s s' : ComposableArrows E n} {b : s.obj (Fin.last n) ⟶ X}
     {b' : s'.obj (Fin.last n) ⟶ X} (h : s = s') (w : b = eqToHom (by rw [h]) ≫ b') :
@@ -117,13 +117,13 @@ theorem sigma_chain_eq {n : ℕ} {X : E} {s s' : ComposableArrows E n} {b : s.ob
 variable {m : ℕ} (s : ComposableArrows E m) {X : E} (a : s.obj (Fin.last m) ⟶ X)
 
 /- English proof (translation)
-The claim follows from `(snObj_lt s X (h ▸ q.2)).trans (congrArg s.obj (Fin.ext h))`.
+A detailed English derivation is pending.
 -/
 theorem snObj_val {p : Fin (m + 2)} {q : Fin (m + 1)} (h : (p : ℕ) = q) : snObj s X p = s.obj q :=
   (snObj_lt s X (h ▸ q.2)).trans (congrArg s.obj (Fin.ext h))
 
 /- English proof (translation)
-Take `⟨q, hq0⟩` from `q`. Take `⟨q', hq1⟩` from `q'`. Take `rfl : (p : ℕ) = q` from `h`. Take `rfl : (p' : ℕ) = q'` from `h'`. Conclude with `snMap_lt s a hp hq1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem snMap_val {p p' : Fin (m + 2)} {q q' : Fin (m + 1)} (h : (p : ℕ) = q) (h' : (p' : ℕ) = q') (hp : p ≤ p') (hq : q ≤ q') :
     snMap s a p p' hp = eqToHom (snObj_val s h) ≫ s.map (homOfLE hq) ≫ eqToHom (snObj_val s h').symm := by
@@ -134,7 +134,7 @@ theorem snMap_val {p p' : Fin (m + 2)} {q q' : Fin (m + 1)} (h : (p : ℕ) = q) 
   exact snMap_lt s a hp hq1
 
 /- English proof (translation)
-Take `⟨q, hq0⟩` from `q`. Take `rfl : (p : ℕ) = q` from `h`. Conclude with `snMap_mid s a hp h' hq0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem snMap_val_top {p p' : Fin (m + 2)} {q : Fin (m + 1)} (h : (p : ℕ) = q) (h' : ¬ (p' : ℕ) < m + 1) (hp : p ≤ p') :
     snMap s a p p' hp = eqToHom (snObj_val s h) ≫ s.map (homOfLE (Fin.le_last q)) ≫ a ≫ eqToHom (snObj_ge s X h').symm := by
@@ -145,7 +145,7 @@ theorem snMap_val_top {p p' : Fin (m + 2)} {q : Fin (m + 1)} (h : (p : ℕ) = q)
 def snε : (snoc s a).obj (Fin.last (m + 1)) ⟶ X := eqToHom (snoc_last s a)
 
 /- English proof (translation)
-Establish `hv : ∀ i : Fin (m + 1), (((Fin.last (m + 1)).succAbove i : Fin (m + 2)) : ℕ) = i` using `fun i => by simp`. Use `chain_ext (fun i => snObj_val s (hv i)) fun i j h => ?_` and prove the remaining obligations. Conclude with `snMap_val s a (hv i) (hv j) ((Fin.strictMono_succAbove _).monotone h) h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem face_snoc_last : face (Fin.last (m + 1)) (snoc s a) = s := by
   have hv : ∀ i : Fin (m + 1), (((Fin.last (m + 1)).succAbove i : Fin (m + 2)) : ℕ) = i := fun i => by simp
@@ -153,7 +153,7 @@ theorem face_snoc_last : face (Fin.last (m + 1)) (snoc s a) = s := by
   exact snMap_val s a (hv i) (hv j) ((Fin.strictMono_succAbove _).monotone h) h
 
 /- English proof (translation)
-Use `sigma_chain_eq (face_snoc_last s a) ?_` and prove the remaining obligations. Establish `hv : (((Fin.last (m + 1)).succAbove (Fin.last m) : Fin (m + 2)) : ℕ) = (Fin.last m : Fin (m + 1))` using `by simp`. Establish `e : toLast (Fin.last (m + 1)) (snoc s a) = eqToHom (snObj_val s hv) ≫ s.map (homOfLE (Fin.le_last _)) ≫ a ≫ eqToHom (snObj_ge s X (by simp)).symm` using `snMap_val_top s a hv (by simp) (Fin.le_last _)`. Rewrite using `[e]`. Simplify using `[snε, homOfLE_refl]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gen_snoc_last :
     (⟨face (Fin.last (m + 1)) (snoc s a), toLast (Fin.last (m + 1)) (snoc s a) ≫ snε s a⟩ :
@@ -166,15 +166,15 @@ theorem gen_snoc_last :
   simp [snε, homOfLE_refl]
 
 /- English proof (translation)
-Establish `ho : ∀ p, (hg.functor ⋙ snoc s a).obj p = (snoc (hf.functor ⋙ s) (s.map (homOfLE (Fin.le_last (f (Fin.last n)))) ≫ a)).obj p`. Introduce `p`. Distinguish the cases in `hp : (p : ℕ) < n + 1`. Conclude with `(snObj_val s (h1 p hp)).trans (snObj_lt (hf.functor ⋙ s) X hp).symm`. Conclude with `(snObj_ge s X (h2 p hp)).trans (snObj_ge (hf.functor ⋙ s) X hp).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `chain_ext ho fun p p' h => ?_` and prove the remaining obligations. Establish `e1 : (hg.functor ⋙ snoc s a).map (homOfLE h) = snMap s a (g p) (g p') (hg h)` using `rfl`. Establish `e2 : (snoc (hf.functor ⋙ s) (s.map (homOfLE (Fin.le_last (f (Fin.last n)))) ≫ a)).map (homOfLE h) = snMap (hf.functor ⋙ s) (s.map (homOfLE (Fin.le_last (f (Fin.last n)))) ≫ a) p p' h` using `rfl`. Rewrite using `[e1, e2]`. Distinguish the cases in `hp' : (p' : ℕ) < n + 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : (p : ℕ) < n + 1` using `lt_of_le_of_lt (Fin.le_def.1 h) hp'`. Rewrite using `[snMap_val s a (h1 p hp) (h1 p' hp') (hg h) (hf (Fin.le_def.2 (Fin.le_def.1 h))), snMap_lt _ _ h hp']`. Simplify using `only [Category.assoc, eqToHom_trans, eqToHom_trans_assoc]`. Both sides reduce to the same expression. Distinguish the cases in `hp : (p : ℕ) < n + 1`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[snMap_val_top s a (h1 p hp) (h2 p' hp') (hg h), snMap_mid _ _ h hp' hp]`. Simplify using `only [Category.assoc, eqToHom_trans, eqToHom_trans_assoc]`. Establish `e3 : s.map (homOfLE (Fin.le_last (f ⟨p, hp⟩))) = (hf.functor ⋙ s).map (homOfLE (Fin.le_last (⟨p, hp⟩ : Fin (n + 1)))) ≫ s.map (homOfLE (Fin.le_last (f (Fin.last n))))`. Express the relevant statement in the definitionally equal form `_ = s.map _ ≫ s.map _`. Rewrite using `[← Functor.map_comp]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e3]`. Simplify using `only [Category.assoc]`. Rewrite using `[snMap_top s a (hg h) (h2 p' hp') (h2 p hp), snMap_top _ _ h hp' hp]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem snoc_reindex {n : ℕ} (f : Fin (n + 1) → Fin (m + 1)) (hf : Monotone f) (g : Fin (n + 2) → Fin (m + 2)) (hg : Monotone g)
     (h1 : ∀ (p : Fin (n + 2)) (hp : (p : ℕ) < n + 1), (g p : ℕ) = f ⟨p, hp⟩)
@@ -215,7 +215,7 @@ section Face
 variable {E : Type*} [Category E] {m : ℕ} (s : ComposableArrows E (m + 1)) {X : E} (a : s.obj (Fin.last (m + 1)) ⟶ X)
 
 /- English proof (translation)
-Simplify using `only [Fin.succAbove, Fin.lt_def, Fin.val_castSucc]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sa_lt (i : Fin (m + 2)) (p : Fin (m + 2)) (hp : (p : ℕ) < m + 1) :
     ((i.castSucc.succAbove p : Fin (m + 3)) : ℕ) = (i.succAbove ⟨p, hp⟩ : Fin (m + 2)) := by
@@ -223,7 +223,7 @@ private theorem sa_lt (i : Fin (m + 2)) (p : Fin (m + 2)) (hp : (p : ℕ) < m + 
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h1 : (p : ℕ) = m + 1` using `by omega`. Establish `h2` using `i.2`. Simplify using `only [Fin.succAbove, Fin.lt_def, Fin.val_castSucc]`. Apply the tactic sequence `split_ifs <;> simp <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sa_ge (i : Fin (m + 2)) (p : Fin (m + 2)) (hp : ¬ (p : ℕ) < m + 1) :
     ¬ ((i.castSucc.succAbove p : Fin (m + 3)) : ℕ) < m + 2 := by
@@ -233,14 +233,14 @@ private theorem sa_ge (i : Fin (m + 2)) (p : Fin (m + 2)) (hp : ¬ (p : ℕ) < m
   split_ifs <;> simp <;> omega
 
 /- English proof (translation)
-The claim follows from `snoc_reindex s a (Fin.succAboveOrderEmb i) (Fin.succAboveOrderEmb i).monotone (Fin.succAboveOrderEmb i.castSucc) (Fin.succAboveOrderEmb i.castSucc).monotone (sa_lt i) (sa_ge i)`.
+A detailed English derivation is pending.
 -/
 theorem face_snoc_castSucc (i : Fin (m + 2)) : face i.castSucc (snoc s a) = snoc (face i s) (toLast i s ≫ a) :=
   snoc_reindex s a (Fin.succAboveOrderEmb i) (Fin.succAboveOrderEmb i).monotone (Fin.succAboveOrderEmb i.castSucc)
     (Fin.succAboveOrderEmb i.castSucc).monotone (sa_lt i) (sa_ge i)
 
 /- English proof (translation)
-Use `sigma_chain_eq (face_snoc_castSucc s a i) ?_` and prove the remaining obligations. Establish `h0 : ¬ ((i.castSucc.succAbove (Fin.last (m + 1)) : Fin (m + 3)) : ℕ) < m + 2` using `sa_ge i _ (by simp)`. Establish `e : toLast i.castSucc (snoc s a) = eqToHom ((snObj_ge s X h0).trans (snObj_ge s X (by simp)).symm)` using `snMap_top s a (Fin.le_last _) (by simp) h0`. Rewrite using `[e]`. Simplify using `[snε]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gen_snoc_castSucc (i : Fin (m + 2)) :
     (⟨face i.castSucc (snoc s a), toLast i.castSucc (snoc s a) ≫ snε s a⟩ :

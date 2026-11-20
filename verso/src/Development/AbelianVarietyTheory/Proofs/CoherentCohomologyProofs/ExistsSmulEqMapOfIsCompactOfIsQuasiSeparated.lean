@@ -19,11 +19,11 @@ variable {X : Scheme.{u}} {R : Type*} [CommRing R] (S : Submonoid R) (U : X.Open
   (φ : ∀ V, A V →ₗ[R] B V)
 
 /- English proof (translation)
-Take `⟨W, hWU⟩` from `W`. Use `compact_open_induction_on (P := fun W ↦ ∀ (h : W ∈ Set.Iic U), IsCompact (W : Set X) → ∀ a : A ⟨W, h⟩, φ ⟨W, h⟩ a = 0 → ∃ s ∈ S, s • a = 0) W hW ?_ ?_ hWU hW a ha` and prove the remaining obligations. Introduce `h _ a _`. Use `hbot ⟨⊥, h⟩ rfl` as an intermediate fact. Conclude with `⟨1, S.one_mem, Subsingleton.elim _ _⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce `T hT V ih h _ a ha`. Set `T' : Set.Iic U` to `⟨T, (le_sup_left.trans h : T ≤ U)⟩`. Set `V' : Set.Iic U` to `⟨V.1, (le_sup_right.trans h : V.1 ≤ U)⟩`. Establish `h₁ : T' ≤ ⟨T ⊔ V.1, h⟩` using `le_sup_left (a := T)`. Establish `h₂ : V' ≤ ⟨T ⊔ V.1, h⟩` using `le_sup_right (a := T)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s₁, hs₁, e₁⟩` from `ih T'.2 hT (rA h₁ a) (by rw [hφ, ha, map_zero])`. Take `⟨s₂, hs₂, e₂⟩` from `hker V' V.2 (rA h₂ a) (by rw [hφ, ha, map_zero])`. Use `⟨s₁ * s₂, mul_mem hs₁ hs₂, sepA h₁ h₂ le_rfl _ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, mul_comm, mul_smul, e₁, smul_zero]`. Rewrite using `[map_smul, mul_smul, e₂, smul_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_smul_eq_zero_of_isCompact
     (hφ : ∀ {V W} (h : V ≤ W) (a : A W), φ V (rA h a) = rB h (φ W a))
@@ -52,15 +52,15 @@ theorem exists_smul_eq_zero_of_isCompact
     · rw [map_smul, mul_smul, e₂, smul_zero]
 
 /- English proof (translation)
-Take `⟨W, hWU⟩` from `W`. Use `compact_open_induction_on (P := fun W ↦ ∀ (h : W ∈ Set.Iic U), IsCompact (W : Set X) → IsQuasiSeparated (W : Set X) → ∀ b : B ⟨W, h⟩, ∃ s ∈ S, ∃ a : A ⟨W, h⟩, s • b = φ ⟨W, h⟩ a) W hW ?_ ?_ hWU hW hW' b` and prove the remaining obligations. Introduce `h _ _ b`. Use `hbotB ⟨⊥, h⟩ rfl` as an intermediate fact. Conclude with `⟨1, S.one_mem, 0, Subsingleton.elim _ _⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce `T hT V ih h _ hqs b`. Set `T' : Set.Iic U` to `⟨T, (le_sup_left.trans h : T ≤ U)⟩`. Set `V' : Set.Iic U` to `⟨V.1, (le_sup_right.trans h : V.1 ≤ U)⟩`. Establish `h₁ : T' ≤ ⟨T ⊔ V.1, h⟩` using `le_sup_left (a := T)`. Establish `h₂ : V' ≤ ⟨T ⊔ V.1, h⟩` using `le_sup_right (a := T)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s₁, hs₁, a₁, e₁⟩` from `ih T'.2 hT (hqs.of_subset Set.subset_union_left) (rB h₁ b)`. Take `⟨s₂, hs₂, a₂, e₂⟩` from `hsurj V' V.2 (rB h₂ b)`. Establish `hc : IsCompact ((T' ⊓ V').1 : Set X)` using `hqs _ _ Set.subset_union_left T.2 hT Set.subset_union_right V.1.2 V.2.isCompact`. Take `⟨s, hs, e⟩` from `exists_smul_eq_zero_of_isCompact S U rA rB φ hφ hbotA sepA hker (T' ⊓ V') hc (s₂ • rA inf_le_left a₁ - s₁ • rA inf_le_right a₂) (by`. Rewrite using `[map_sub, map_smul, map_smul, hφ, hφ, ← e₁, ← e₂, map_smul, map_smul, hrB, hrB, smul_comm, sub_self])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha₁, ha₂⟩` from `glueA h₁ h₂ le_rfl (s • s₂ • a₁) (s • s₁ • a₂) (by`. Rewrite `e` using `[smul_sub, sub_eq_zero]`. Simplify `e)` using `only [map_smul]`. Use `⟨s * (s₁ * s₂), mul_mem hs (mul_mem hs₁ hs₂), a, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sepB h₁ h₂ le_rfl _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_sub, ← hφ, ha₁, map_smul, map_smul, map_smul, ← e₁, mul_comm s₁, mul_smul, mul_smul, sub_self]`. Rewrite using `[map_sub, ← hφ, ha₂, map_smul, map_smul, map_smul, ← e₂, mul_smul, mul_smul, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_smul_eq_map_of_isCompact_of_isQuasiSeparated
     (hφ : ∀ {V W} (h : V ≤ W) (a : A W), φ V (rA h a) = rB h (φ W a))
@@ -116,7 +116,7 @@ section Sheaf
 variable {X : Scheme.{u}} (F : X.Modules) {V₁ V₂ W : X.Opens}
 
 /- English proof (translation)
-Use `⟨fun s t ↦ ?_⟩` and prove the remaining obligations. Conclude with `TopCat.Sheaf.eq_of_locally_eq' (C := Ab.{u}) ⟨F.presheaf, F.isSheaf⟩ (fun i : PEmpty.{u + 1} ↦ i.elim) W (fun i ↦ i.elim) (by simp [h]) s t (fun i ↦ i.elim)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem subsingleton_sections_of_eq_bot (h : W = ⊥) : Subsingleton Γ(F, W) := by
   refine ⟨fun s t ↦ ?_⟩
@@ -124,7 +124,7 @@ theorem subsingleton_sections_of_eq_bot (h : W = ⊥) : Subsingleton Γ(F, W) :=
     (fun i : PEmpty.{u + 1} ↦ i.elim) W (fun i ↦ i.elim) (by simp [h]) s t (fun i ↦ i.elim)
 
 /- English proof (translation)
-The claim follows from `TopCat.Sheaf.eq_of_locally_eq₂ (C := Ab.{u}) ⟨F.presheaf, F.isSheaf⟩ (homOfLE h₁) (homOfLE h₂) h s 0 (e₁.trans (map_zero _).symm) (e₂.trans (map_zero _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem section_eq_zero_of_res₂ (h₁ : V₁ ≤ W) (h₂ : V₂ ≤ W) (h : W ≤ V₁ ⊔ V₂) (s : Γ(F, W))
     (e₁ : F.presheaf.map (homOfLE h₁).op s = 0) (e₂ : F.presheaf.map (homOfLE h₂).op s = 0) :
@@ -133,9 +133,9 @@ theorem section_eq_zero_of_res₂ (h₁ : V₁ ≤ W) (h₂ : V₂ ≤ W) (h : W
     h s 0 (e₁.trans (map_zero _).symm) (e₂.trans (map_zero _).symm)
 
 /- English proof (translation)
-Set `𝒰 : Bool → X.Opens` to `fun b ↦ Bool.rec V₁ V₂ b`. Take `⟨s, hs, -⟩` from `TopCat.Sheaf.existsUnique_gluing' (C := Ab.{u}) ⟨F.presheaf, F.isSheaf⟩ 𝒰 W (fun b ↦ Bool.rec (homOfLE h₁) (homOfLE h₂) b) (h.trans (sup_le (le_iSup 𝒰 false) (le_iSup 𝒰 true))) (fun b ↦ Bool.rec s₁ s₂ b) (by`. Introduce and unpack `(_ | _) (_ | _)`. Both sides reduce to the same expression. Conclude with `e`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `congr(F.presheaf.map (homOfLE (inf_comm V₂ V₁).le).op $e)` as an intermediate fact. Rewrite `this` using `[res_res, res_res]`. Conclude with `this.symm`. Use the proof step `rfl)`. Conclude with `⟨s, hs false, hs true⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_section_glue₂ (h₁ : V₁ ≤ W) (h₂ : V₂ ≤ W) (h : W ≤ V₁ ⊔ V₂) (s₁ : Γ(F, V₁))
     (s₂ : Γ(F, V₂))
@@ -177,11 +177,9 @@ def resLinearOver (hW : W ≤ U) (hV : V ≤ U) (h : V ≤ W) :
 variable [F.IsQuasicoherent]
 
 /- English proof (translation)
-Use `letI (W : Set.Iic U) : Module Γ(X, U) Γ(F, W.1) := resModule F W.2`. Use `letI (W : Set.Iic U) : Module Γ(X, U) Γ(F, W.1 ⊓ V) := resModule F (inf_le_right.trans h)`. Take `⟨_, ⟨n, rfl⟩, e⟩` from `exists_smul_eq_zero_of_isCompact (.powers f) U (A := fun W ↦ Γ(F, W.1)) (B := fun W ↦ Γ(F, W.1 ⊓ V)) (fun {W₁ W₂} h' ↦ resLinearOver F W₂.2 W₁.2 h') (fun {W₁ W₂} h' ↦ resLinearOver F _ _ (inf_le_inf_right V h')) (fun W ↦ resLinearOver F W.2 _ inf_le_left) (fun h' a ↦ (res_res F _ …`. Take `⟨n, hn⟩` from `exists_pow_smul_eq_zero F hW (X.presheaf.map (homOfLE (W.2 : W.1 ≤ U)).op f) inf_le_left (by rw [X.basicOpen_res, hV]) a ha`. Conclude with `⟨f ^ n, ⟨n, rfl⟩, by rw [← map_pow] at hn; exact hn⟩)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `⟨U, Set.self_mem_Iic⟩ hU t (by`. Express the relevant statement in the definitionally equal form `F.presheaf.map (homOfLE inf_le_left).op t = 0`. Rewrite using `[← res_res F h inf_le_right, ht, map_zero])`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← res_self_ring le_rfl (f ^ n)]`.
-
-Conclude with `e`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_eq_zero_of_isCompact (hU : IsCompact (U : Set X)) (f : Γ(X, U))
     (h : V ≤ U) (hV : V = X.basicOpen f) (t : Γ(F, U))
@@ -208,11 +206,11 @@ theorem exists_pow_smul_eq_zero_of_isCompact (hU : IsCompact (U : Set X)) (f : �
   exact e
 
 /- English proof (translation)
-Use `letI (W : Set.Iic U) : Module Γ(X, U) Γ(F, W.1) := resModule F W.2`. Use `letI (W : Set.Iic U) : Module Γ(X, U) Γ(F, W.1 ⊓ V) := resModule F (inf_le_right.trans h)`. Take `⟨_, ⟨n, rfl⟩, t, e⟩` from `exists_smul_eq_map_of_isCompact_of_isQuasiSeparated (.powers f) U (A := fun W ↦ Γ(F, W.1)) (B := fun W ↦ Γ(F, W.1 ⊓ V)) (fun {W₁ W₂} h' ↦ resLinearOver F W₂.2 W₁.2 h') (fun {W₁ W₂} h' ↦ resLinearOver F _ _ (inf_le_inf_right V h')) (fun W ↦ resLinearOver F W.2 _ inf_le_left) (fun …`. Take `⟨n, hn⟩` from `exists_pow_smul_eq_zero F hW (X.presheaf.map (homOfLE (W.2 : W.1 ≤ U)).op f) inf_le_left (by rw [X.basicOpen_res, hV]) a ha`. Conclude with `⟨f ^ n, ⟨n, rfl⟩, by rw [← map_pow] at hn; exact hn⟩)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `(fun W hW b ↦ by`. Take `⟨n, a, hn⟩` from `exists_pow_smul_eq_res F hW (X.presheaf.map (homOfLE (W.2 : W.1 ≤ U)).op f) (V := W.1 ⊓ V) inf_le_left (by rw [X.basicOpen_res, hV]) b`. Conclude with `⟨f ^ n, ⟨n, rfl⟩, a, by rw [res_res_ring (show W.1 ≤ U from W.2), ← map_pow] at hn; exact hn⟩)`. Use the proof step `⟨U, Set.self_mem_Iic⟩ hU hU' (F.presheaf.map (homOfLE inf_le_right).op s)`. Use `⟨n, t, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : X.presheaf.map (homOfLE (inf_le_left : U ⊓ V ≤ U)).op (f ^ n) • F.presheaf.map (homOfLE inf_le_right).op s = F.presheaf.map (homOfLE inf_le_left).op t` using `e`. Use `congr(F.presheaf.map (homOfLE (le_inf h le_rfl)).op $e')` as an intermediate fact. Rewrite `this` using `[F.map_smul, res_res, res_res, res_res_ring, res_self, map_pow]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_eq_res_of_qcqs (hU : IsCompact (U : Set X))
     (hU' : IsQuasiSeparated (U : Set X)) (f : Γ(X, U)) (h : V ≤ U) (hV : V = X.basicOpen f)
@@ -250,7 +248,7 @@ theorem exists_pow_smul_eq_res_of_qcqs (hU : IsCompact (U : Set X))
   rwa [F.map_smul, res_res, res_res, res_res_ring, res_self, map_pow] at this
 
 /- English proof (translation)
-The claim follows from `(isLocalizedModule_resBasicOpen_iff F f).mpr ⟨exists_pow_smul_eq_res_of_qcqs F hU hU' f _ rfl, exists_pow_smul_eq_zero_of_isCompact F hU f _ rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem isLocalizedModule_resBasicOpen_of_qcqs (hU : IsCompact (U : Set X))
     (hU' : IsQuasiSeparated (U : Set X)) (f : Γ(X, U)) :
@@ -260,9 +258,9 @@ theorem isLocalizedModule_resBasicOpen_of_qcqs (hU : IsCompact (U : Set X))
       exists_pow_smul_eq_zero_of_isCompact F hU f _ rfl⟩
 
 /- English proof (translation)
-Use `IsLocalizedModule.Away.mk_of_addCommGroup ?_ (fun s ↦ ?_) (fun t ht ↦ ?_)` and prove the remaining obligations. Use `(isUnit_res_of_le_basicOpen (φ a) h hV.le).map (algebraMap Γ(X, V) (Module.End Γ(X, V) Γ(F, V)))` as an intermediate fact. Rewrite `this`, the goal using `[Module.End.isUnit_iff]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `s`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Conclude with `hsV a s`. Take `⟨n, t, ht⟩` from `exists_pow_smul_eq_res_of_qcqs F hU hU' (φ a) h hV s`. Conclude with `⟨n, t, by rw [hsV, hl, map_pow, map_pow, ht]⟩`. Take `⟨n, hn⟩` from `exists_pow_smul_eq_zero_of_isCompact F hU (φ a) h hV t (by rw [← hl, ht])`. Conclude with `⟨n, by rw [hsU, map_pow, hn]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isLocalizedModule_of_ringHom_of_qcqs (hU : IsCompact (U : Set X))
     (hU' : IsQuasiSeparated (U : Set X)) {A : Type*} [CommRing A]
@@ -285,7 +283,7 @@ theorem isLocalizedModule_of_ringHom_of_qcqs (hU : IsCompact (U : Set X))
     exact ⟨n, by rw [hsU, map_pow, hn]⟩
 
 /- English proof (translation)
-The claim follows from `isLocalizedModule_resBasicOpen_of_qcqs F isCompact_univ (isQuasiSeparated_univ) f`.
+A detailed English derivation is pending.
 -/
 theorem isLocalizedModule_resBasicOpen_top [CompactSpace X] [QuasiSeparatedSpace X]
     (f : Γ(X, ⊤)) : IsLocalizedModule.Away f (resBasicOpen F f) :=
@@ -298,7 +296,7 @@ section Hom
 variable {X : Scheme.{u}} {F G : X.Modules} (φ : F ⟶ G) {U V W : X.Opens}
 
 /- English proof (translation)
-The claim follows from `congr($(φ.mapPresheaf.naturality (homOfLE h).op) s)`.
+A detailed English derivation is pending.
 -/
 theorem app_res (h : V ≤ W) (s : Γ(F, W)) :
     φ.app V (F.presheaf.map (homOfLE h).op s) = G.presheaf.map (homOfLE h).op (φ.app W s) :=
@@ -315,9 +313,9 @@ def appLinearOver (h : V ≤ U) :
     map_smul' := fun _ s ↦ φ.app_smul _ s }
 
 /- English proof (translation)
-Use `letI (W : Set.Iic U) : Module Γ(X, U) Γ(F, W.1) := resModule F W.2`. Use `letI (W : Set.Iic U) : Module Γ(X, U) Γ(G, W.1) := resModule G W.2`. Take `⟨s, hs, e⟩` from `exists_smul_eq_zero_of_isCompact S U (A := fun W ↦ Γ(F, W.1)) (B := fun W ↦ Γ(G, W.1)) (fun {W₁ W₂} h' ↦ resLinearOver F W₂.2 W₁.2 h') (fun {W₁ W₂} h' ↦ resLinearOver G W₂.2 W₁.2 h') (fun W ↦ appLinearOver φ W.2) (fun h' a ↦ app_res φ h' a) (fun W hW ↦ subsingleton_sections_of_eq …`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← res_self_ring le_rfl s]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_zero_of_app_eq_zero (hU : IsCompact (U : Set X)) (S : Submonoid Γ(X, U))
     (hker : ∀ (V : X.Opens) (h : V ≤ U), IsAffineOpen V → ∀ a : Γ(F, V), φ.app V a = 0 →
@@ -339,9 +337,9 @@ theorem exists_smul_eq_zero_of_app_eq_zero (hU : IsCompact (U : Set X)) (S : Sub
   exact e
 
 /- English proof (translation)
-Use `letI (W : Set.Iic U) : Module Γ(X, U) Γ(F, W.1) := resModule F W.2`. Use `letI (W : Set.Iic U) : Module Γ(X, U) Γ(G, W.1) := resModule G W.2`. Take `⟨s, hs, a, e⟩` from `exists_smul_eq_map_of_isCompact_of_isQuasiSeparated S U (A := fun W ↦ Γ(F, W.1)) (B := fun W ↦ Γ(G, W.1)) (fun {W₁ W₂} h' ↦ resLinearOver F W₂.2 W₁.2 h') (fun {W₁ W₂} h' ↦ resLinearOver G W₂.2 W₁.2 h') (fun W ↦ appLinearOver φ W.2) (fun h' a ↦ app_res φ h' a) (fun h₁ h₂ b ↦ res_r …`. Use `⟨s, hs, a, ?_⟩` and prove the remaining obligations. Rewrite using `[← res_self_ring le_rfl s]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_app (hU : IsCompact (U : Set X)) (hU' : IsQuasiSeparated (U : Set X))
     (S : Submonoid Γ(X, U))

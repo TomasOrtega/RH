@@ -16,15 +16,15 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace RJR
 
 /- English proof (translation)
-Conclude with `(le_top : ((n : ℕ∞)) ≤ ⊤)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem le_inf (n : ℕ) : (n : WithTop ℕ∞) ≤ ∞ := by
   exact_mod_cast (le_top : ((n : ℕ∞)) ≤ ⊤)
 
 /- English proof (translation)
-Introduce `j hj`. Establish `hus : UniqueDiffOn ℝ s` using `hs.uniqueDiffOn`. Establish `key` using `B.norm_iteratedFDerivWithin_le_of_bilinear hu hv hus hx (n := j) (RJR.le_inf j)`. Rewrite using `[← norm_le_zero_iff, ← iteratedFDerivWithin_of_isOpen j hs hx]`. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_zero, mul_zero]`. Introduce `i _`. Rewrite using `[iteratedFDerivWithin_of_isOpen (j - i) hs hx, hvz (j - i) (le_trans (Nat.sub_le _ _) hj), norm_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem zero_bilin {D E F G : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [NormedAddCommGroup G] [NormedSpace ℝ G]
@@ -42,13 +42,13 @@ theorem zero_bilin {D E F G : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] 
     norm_zero, mul_zero]
 
 /- English proof (translation)
-Introduce `j hj`. Establish `hus : UniqueDiffOn ℝ s` using `hs.uniqueDiffOn`. Establish `hut : UniqueDiffOn ℝ t` using `ht.uniqueDiffOn`. Use `set Dd : ℝ := ∑ i ∈ Finset.range (j + 1), ‖iteratedFDerivWithin ℝ i ζ s x‖ + 1 with hDd`. Establish `hD1 : 1 ≤ Dd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 ≤ ∑ i ∈ Finset.range (j + 1), ‖iteratedFDerivWithin ℝ i ζ s x‖` using `Finset.sum_nonneg (fun _ _ => norm_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `norm_iteratedFDerivWithin_comp_le (n := j) hψ hζ (RJR.le_inf j) hut hus hmap hx (C := 0) (D := Dd) (fun i hi => by`. Rewrite using `[iteratedFDerivWithin_of_isOpen i ht (hmap hx), hz i (le_trans hi hj), norm_zero])`. Use the proof step `(fun i hi1 hij => by`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖iteratedFDerivWithin ℝ i ζ s x‖ ≤ Dd`. Establish `: ‖iteratedFDerivWithin ℝ i ζ s x‖ ≤ ∑ i ∈ Finset.range (j + 1), ‖iteratedFDerivWithin ℝ i ζ s x‖` using `Finset.single_le_sum (f := fun i => ‖iteratedFDerivWithin ℝ i ζ s x‖) (fun _ _ => norm_nonneg _) (Finset.mem_range.2 (Nat.lt_succ_of_le hij))`. Combine the linear equalities and inequalities to obtain the conclusion. Use `h1.trans ?_` and prove the remaining obligations. Use `first`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact le_self_pow₀ hD1 (by omega)`. Consider the case `exact le_self_pow hD1 (by omega))`. Rewrite using `[← norm_le_zero_iff, ← iteratedFDerivWithin_of_isOpen j hs hx]`. Simplify using `using key`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem zero_comp {D G : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup G] [NormedSpace ℝ G]
     {ψ : ℂ → G} {ζ : D → ℂ} {s : Set D} {t : Set ℂ} {x : D} (hs : IsOpen s) (ht : IsOpen t) (hx : x ∈ s)
@@ -94,29 +94,27 @@ end RJR
 
 open RJR in
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs _ _ Φ q hq N hN`. Establish `hq1 : q.1 ∈ OmX P.r` using `hq.1`. Establish `hB : NF.RadBase P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π'` using `⟨Bs.k_pos, Bs.z_mem, Bs.z'_mem, Bs.T_pos, Bs.T'_pos, Bs.sec, Bs.π_rep, Bs.π'_rep, Bs.π_cont, Bs.π'_cont⟩`. Establish `hmem` using `Formalism.FourierDecayAlt.P.radical_reduction_mem Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hB Φ Φ.2`. Establish `hΦe` using `(Φ.2).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `tt : Set ℂ` to `{ζ | Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq ζ}`. Establish `ht : IsOpen tt` using `isOpen_lt continuous_const Complex.continuous_normSq`. Set `ψ : ℂ → (Wq →L[ℂ] Wp)` to `fun ζ => NF.radR P.k P.r Bs.z Bs.z' Bs.μsec (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (q.1, ζ)`. Establish `hmapQ : Set.MapsTo (fun ζ : ℂ => (q.1, ζ)) tt (NF.QR P.k P.r Bs.z Bs.z')` using `fun ζ hζ => ⟨hq1, hζ⟩`. Establish `hpair : ContDiff ℝ ∞ (fun ζ : ℂ => (q.1, ζ))` using `by first`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact contDiff_const.prodMk contDiff_id`. Consider the case `exact contDiff_const.prod contDiff_id`. Establish `hψs : ContDiffOn ℝ ∞ ψ tt` using `hmem.1.comp hpair.contDiffOn hmapQ`. Establish `hψval : ∀ ζ ∈ tt, ψ ζ = (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) q.1 (NF.muZ P.k P.r Bs.μsec ζ)`. Introduce `ζ hζ`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [ψ, NF.radR]`. Rewrite using `[Set.indicator_of_mem (hmapQ hζ)]`. Establish `hdom` using `Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR Bs.z_mem Bs.z'_mem Bs.sec hq`. Take `⟨V, hV, hg₀V, a, b, ha, hb, hfac⟩` from `Formalism.FourierDecayAlt.P.local_smooth_section P.k P.r Bs.z Bs.z' Bs.μsec Bs.k_pos Bs.z_mem Bs.z'_mem Bs.T_pos Bs.T'_pos Bs.sec _ hdom.2.1 hdom.2.2`. Establish `hf0` using `hfac _ hg₀V hdom.2.1 hdom.2.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Vp, hVp, haVp, Pp, hPp, hPpe⟩` from `Formalism.FourierDecayAlt.P.representation_smooth Wp P.k P.r Bs.z Bs.π Bs.z_mem Bs.T_pos Bs.π_rep Bs.π_cont _ hf0.1`. Take `⟨Vq, hVq, hbVq, Pq, hPq, hPqe⟩` from `Formalism.FourierDecayAlt.P.representation_smooth Wq P.k P.r Bs.z' Bs.π' Bs.z'_mem Bs.T'_pos Bs.π'_rep Bs.π'_cont _ hf0.2.1`. Set `zL` to `Q.zetaL P.k P.r Bs.z Bs.z' (Fin.last P.r)`. Establish `hzL : ContDiff ℝ ∞ zL` using `Formalism.FourierDecayAlt.P.Qx5.zetaL_contDiff P.k P.r Bs.z Bs.z' (Fin.last P.r)`. Establish `hz0 : zL (NF.muZ P.k P.r Bs.μsec q.2) = q.2` using `Formalism.FourierDecayAlt.P.NFRadRedA.zeta_muZ Bs.z_mem Bs.z'_mem Bs.sec hq.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `W : Set (Q.Mx P.k P.r)` to `(V ∩ a ⁻¹' Vp) ∩ (V ∩ b ⁻¹' Vq) ∩ zL ⁻¹' tt`. Establish `hW : IsOpen W` using `((ha.continuousOn.isOpen_inter_preimage hV hVp).inter (hb.continuousOn.isOpen_inter_preimage hV hVq)).inter (ht.preimage hzL.continuous)`. Establish `hg₀W : NF.muZ P.k P.r Bs.μsec q.2 ∈ W`. Use `⟨⟨⟨hg₀V, haVp⟩, ⟨hg₀V, hbVq⟩⟩, ?_⟩` and prove the remaining obligations. Use `show zL (NF.muZ P.k P.r Bs.μsec q.2) ∈ tt`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz0]`. Conclude with `hq.2`. Establish `hu : ContDiffOn ℝ ∞ (fun g => Pp (a g)) W` using `hPp.comp (ha.mono fun g hg => hg.1.1.1) fun g hg => hg.1.1.2`. Establish `hu' : ContDiffOn ℝ ∞ (fun g => Pq (b g)) W` using `hPq.comp (hb.mono fun g hg => hg.1.2.1) fun g hg => hg.1.2.2`. Establish `hv' : ContDiffOn ℝ ∞ (ψ ∘ zL) W` using `hψs.comp hzL.contDiffOn fun g hg => hg.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ContDiffOn ℝ ∞ (fun g => Bd Wp Wq (Pq (b g)) ((ψ ∘ zL) g)) W` using `((Bd Wp Wq).contDiff.comp_contDiffOn hu').clm_apply hv'`. Establish `hF : ContDiffOn ℝ ∞ (fun g => Bc Wp Wq (Pp (a g)) (Bd Wp Wq (Pq (b g)) ((ψ ∘ zL) g))) W` using `((Bc Wp Wq).contDiff.comp_contDiffOn hu).clm_apply hv`. Establish `hz1 : ∀ j ≤ N, iteratedFDeriv ℝ j ψ (zL (NF.muZ P.k P.r Bs.μsec q.2)) = 0`. Rewrite using `[hz0]`. Conclude with `hN`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv'0` using `zero_comp hW ht hg₀W (fun g hg => hg.2) hψs hzL.contDiffOn N hz1`. Establish `hv0` using `zero_bilin (Bd Wp Wq) hW hg₀W hu' hv' N hv'0`. Establish `hF0` using `zero_bilin (Bc Wp Wq) hW hg₀W hu hv N hv0`. Use `⟨W, _, hW, hg₀W, hF, ?_, hF0⟩` and prove the remaining obligations. Introduce `g hg hGl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgt : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq (zL g)` using `hg.2`. Establish `hGG : 0 < Q.GGl P.k P.r Bs.z Bs.z' g` using `by show 0 < Complex.normSq (zL g) - Tz P.k P.r Bs.z * Tz P.k P.r Bs.z'`. Conclude with `sub_pos.2 hgt`. Take `⟨haU, hbU, hfg⟩` from `hfac g hg.1.1.1 hGl hGG`. Establish `hdom'` using `Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR Bs.z_mem Bs.z'_mem Bs.sec (q := (q.1, zL g)) ⟨hq1, hgt⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `he` using `hΦe (q.1, NF.muZ P.k P.r Bs.μsec (zL g)) hdom' (a g) haU (b g) hbU`. Establish `hl : (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) q.1 g = (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) q.1 (a g * NF.muZ P.k P.r Bs.μsec (zL g) * b g)` using `by conv_lhs => rw [hfg]`. Rewrite using `[hl, he]`. Simplify using `only`. Rewrite using `[hPpe (a g) hg.1.1.2 haU, hPqe (b g) hg.1.2.2 hbU, ← hψval (zL g) hgt]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jet_radial_holds : GTCLRJetRad := by
   intro Wp Wq _ _ _ _ _ _ P Bs _ _ Φ q hq N hN

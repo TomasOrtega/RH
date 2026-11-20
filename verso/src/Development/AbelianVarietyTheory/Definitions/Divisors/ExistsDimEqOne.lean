@@ -68,7 +68,7 @@ instance : Category (AbVar K) where
   assoc _ _ _ := Subtype.ext (Category.assoc _ _ _)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem hom_ext {A B : AbVar K} {f g : A ⟶ B} (h : f.hom = g.hom) : f = g := Subtype.ext h
 
@@ -173,20 +173,20 @@ theorem lev_tmap {A B : AbVar K} (f : A ⟶ B) (t : Tl l A) (n : ℕ) :
     (tmap l A B f t).lev n = t.lev n ≫ f.hom := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun t => Tate.ext fun n => (Category.assoc (t.lev n) f.hom g.hom).symm`.
+A detailed English derivation is pending.
 -/
 theorem tmap_comp {A B C : AbVar K} (f : A ⟶ B) (g : B ⟶ C) :
     tmap l A C (f ≫ g) = tmap l B C g ∘ₗ tmap l A B f :=
   LinearMap.ext fun t => Tate.ext fun n => (Category.assoc (t.lev n) f.hom g.hom).symm
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun t => Tate.ext fun n => Category.comp_id (t.lev n)`.
+A detailed English derivation is pending.
 -/
 theorem tmap_id (A : AbVar K) : tmap l A A (𝟙 A) = LinearMap.id :=
   LinearMap.ext fun t => Tate.ext fun n => Category.comp_id (t.lev n)
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun t => Tate.ext fun n => Category.assoc (specAut σ) (t.lev n) f.hom`.
+A detailed English derivation is pending.
 -/
 theorem tmap_galT {A B : AbVar K} (f : A ⟶ B) (σ : Gal K) :
     tmap l A B f ∘ₗ galT l A σ = galT l B σ ∘ₗ tmap l A B f :=
@@ -347,7 +347,7 @@ def ell (W : WeierstrassCurve K) [W.IsElliptic] : AbVar K where
 open GlobalTheory.WeierstrassCurve in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, (ellPolAV W).ample, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem ell_isAmpleCls (W : WeierstrassCurve K) [W.IsElliptic] :
     IsAmpleCls (A := ell W) (cls (ellPolAV W).L (ellPolAV W).isLB) :=
@@ -356,24 +356,24 @@ theorem ell_isAmpleCls (W : WeierstrassCurve K) [W.IsElliptic] :
 open Classical in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ell (WeierstrassCurve.ofJ (0 : K)), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_dim_eq_one (K : Type) [Field K] : ∃ A : AbVar K, A.dim = 1 :=
   ⟨ell (WeierstrassCurve.ofJ (0 : K)), rfl⟩
 
 /- English proof (translation)
-The claim follows from `exists_dim_eq_one K`.
+A detailed English derivation is pending.
 -/
 theorem exists_dim_one (K : Type) [Field K] : ∃ A : AbVar K, A.dim = 1 := exists_dim_eq_one K
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstanceAs (IsFinite (𝟙 _)), inferInstanceAs (Surjective (𝟙 _))⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIsogeny_id (A : AbVar K) : IsIsogeny (𝟙 A) :=
   ⟨inferInstanceAs (IsFinite (𝟙 _)), inferInstanceAs (Surjective (𝟙 _))⟩
 
 /- English proof (translation)
-Establish `: IsIso (Hom.hom (𝟙 A)).left` using `inferInstanceAs (IsIso (𝟙 _))`. Rewrite using `[deg, if_pos (isIsogeny_id A), Scheme.Hom.finrank_eq_one_of_isIso]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem deg_id (A : AbVar K) : deg (𝟙 A) = 1 := by
   have : IsIso (Hom.hom (𝟙 A)).left := inferInstanceAs (IsIso (𝟙 _))
@@ -381,9 +381,9 @@ theorem deg_id (A : AbVar K) : deg (𝟙 A) = 1 := by
   rfl
 
 /- English proof (translation)
-Establish `h : CechPic.pull (1 : Y ⟶ A.X).left c = 0`. Rewrite using `[CategoryTheory.Hom.one_def, Over.comp_left, pull_comp]`. Take `⟨V, hV, hc⟩` from `AbDual.exists_pull_eq_zero (CechPic.pull (η[A.X]).left c) (IsLocalRing.closedPoint K)`. Conclude with `AbDual.pull_eq_zero_of_mem V _ (fun z => by`. Establish `: (toUnit Y).left z = IsLocalRing.closedPoint K` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hV) hc`. Rewrite using `[lam, CechPic.lam, h, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_eq {A : AbVar K} (c : Pic A.X.left) {Y : Over (Sp K)} (x y : Y ⟶ A.X) :
     lam c x y = CechPic.lam c x y := by

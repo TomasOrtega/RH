@@ -25,7 +25,7 @@ variable (K E R) in
 def cT {m n : Type*} (M : Matrix m n (R ⊗[K] E)) : Matrix n m (R ⊗[K] E) := Matrix.transpose (M.map (conjBase K E R))
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [conjBase_tmul, conj_conj]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem conjBase_conjBase (z : (R ⊗[K] E)) : conjBase K E R (conjBase K E R z) = z := by
   induction z using TensorProduct.induction_on with
@@ -34,7 +34,7 @@ theorem conjBase_conjBase (z : (R ⊗[K] E)) : conjBase K E R (conjBase K E R z)
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [conjBase_tmul, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem conjBase_smul (c : K) (z : (R ⊗[K] E)) : conjBase K E R (c • z) = c • conjBase K E R z := by
   induction z using TensorProduct.induction_on with
@@ -43,54 +43,54 @@ theorem conjBase_smul (c : K) (z : (R ⊗[K] E)) : conjBase K E R (c • z) = c 
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, conjBase_conjBase]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_cT {m n : Type*} (M : Matrix m n (R ⊗[K] E)) : cT K E R (cT K E R M) = M := by
   ext i j
   simp [cT, conjBase_conjBase]
 
 /- English proof (translation)
-Rewrite using `[cT, cT, cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_mul {l m n : Type*} [Fintype m] (M : Matrix l m (R ⊗[K] E)) (N : Matrix m n (R ⊗[K] E)) :
     cT K E R (M * N) = cT K E R N * cT K E R M := by
   rw [cT, cT, cT, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Rewrite using `[cT, cT, cT, Matrix.map_add _ (map_add _), Matrix.transpose_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_add {m n : Type*} (M N : Matrix m n (R ⊗[K] E)) :
     cT K E R (M + N) = cT K E R M + cT K E R N := by
   rw [cT, cT, cT, Matrix.map_add _ (map_add _), Matrix.transpose_add]
 
 /- English proof (translation)
-Rewrite using `[cT, cT, cT, Matrix.map_sub _ (map_sub _), Matrix.transpose_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_sub {m n : Type*} (M N : Matrix m n (R ⊗[K] E)) :
     cT K E R (M - N) = cT K E R M - cT K E R N := by
   rw [cT, cT, cT, Matrix.map_sub _ (map_sub _), Matrix.transpose_sub]
 
 /- English proof (translation)
-Rewrite using `[cT, cT, Matrix.map_neg _ (map_neg _), Matrix.transpose_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_neg {m n : Type*} (M : Matrix m n (R ⊗[K] E)) :
     cT K E R (-M) = -cT K E R M := by
   rw [cT, cT, Matrix.map_neg _ (map_neg _), Matrix.transpose_neg]
 
 /- English proof (translation)
-Rewrite using `[cT, Matrix.map_zero _ (map_zero _), Matrix.transpose_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_zero {m n : Type*} : cT K E R (0 : Matrix m n (R ⊗[K] E)) = 0 := by
   rw [cT, Matrix.map_zero _ (map_zero _), Matrix.transpose_zero]
 
 /- English proof (translation)
-Rewrite using `[cT, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_one {m : Type*} [DecidableEq m] : cT K E R (1 : Matrix m m (R ⊗[K] E)) = 1 := by
   rw [cT, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, conjBase_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_smul {m n : Type*} (c : K) (M : Matrix m n (R ⊗[K] E)) :
     cT K E R (c • M) = c • cT K E R M := by
@@ -98,7 +98,7 @@ theorem cT_smul {m n : Type*} (c : K) (M : Matrix m n (R ⊗[K] E)) :
   simp [cT, conjBase_smul]
 
 /- English proof (translation)
-Rewrite using `[cT, Matrix.det_transpose, RingHom.map_det, RingHom.mapMatrix_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_cT {m : Type*} [Fintype m] [DecidableEq m] (M : Matrix m m (R ⊗[K] E)) :
     (cT K E R M).det = conjBase K E R M.det := by
@@ -117,7 +117,7 @@ theorem framePair_eq (H : Matrix ι ι E) {q : ℕ} (X : Matrix ι (Fin p) (R �
     framePair K E R H X Y = cT K E R X ⬝ Hm K R H ⬝ Y := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `congrFun (congrFun hH i) j` as an intermediate fact. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply] at this`. Simplify using `only [cT, Hm, Matrix.transpose_apply, Matrix.map_apply, Algebra.TensorProduct.includeRight_apply, conjBase_tmul]`. Rewrite using `[← this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -134,28 +134,28 @@ theorem cT_Hm {H : Matrix ι ι E} (hH : IsHermitianFor (conjHom K E) H) :
 variable {H : Matrix ι ι E}
 
 /- English proof (translation)
-Rewrite using `[framePair_eq, framePair_eq, cT_mul, cT_mul, cT_cT, cT_Hm hH, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_framePair (hH : IsHermitianFor (conjHom K E) H) {q : ℕ} (X : Matrix ι (Fin p) (R ⊗[K] E))
     (Y : Matrix ι (Fin q) (R ⊗[K] E)) : cT K E R (framePair K E R H X Y) = framePair K E R H Y X := by
   rw [framePair_eq, framePair_eq, cT_mul, cT_mul, cT_cT, cT_Hm hH, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[framePair_eq, framePair_eq, framePair_eq, Matrix.mul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem framePair_add_right {q : ℕ} (X : Matrix ι (Fin p) (R ⊗[K] E)) (Y Y' : Matrix ι (Fin q) (R ⊗[K] E)) :
     framePair K E R H X (Y + Y') = framePair K E R H X Y + framePair K E R H X Y' := by
   rw [framePair_eq, framePair_eq, framePair_eq, Matrix.mul_add]
 
 /- English proof (translation)
-Rewrite using `[framePair_eq, framePair_eq, framePair_eq, cT_add, Matrix.add_mul, Matrix.add_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem framePair_add_left {q : ℕ} (X X' : Matrix ι (Fin p) (R ⊗[K] E)) (Y : Matrix ι (Fin q) (R ⊗[K] E)) :
     framePair K E R H (X + X') Y = framePair K E R H X Y + framePair K E R H X' Y := by
   rw [framePair_eq, framePair_eq, framePair_eq, cT_add, Matrix.add_mul, Matrix.add_mul]
 
 /- English proof (translation)
-Simplify using `only [framePair_eq, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem framePair_mul_right {q r : ℕ} (X : Matrix ι (Fin p) (R ⊗[K] E)) (Y : Matrix ι (Fin q) (R ⊗[K] E))
     (d : Matrix (Fin q) (Fin r) (R ⊗[K] E)) :
@@ -163,7 +163,7 @@ theorem framePair_mul_right {q r : ℕ} (X : Matrix ι (Fin p) (R ⊗[K] E)) (Y 
   simp only [framePair_eq, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[framePair_eq, framePair_eq, cT_mul, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem framePair_mul_left {q r : ℕ} (X : Matrix ι (Fin p) (R ⊗[K] E)) (d : Matrix (Fin p) (Fin r) (R ⊗[K] E))
     (Y : Matrix ι (Fin q) (R ⊗[K] E)) :
@@ -171,7 +171,7 @@ theorem framePair_mul_left {q r : ℕ} (X : Matrix ι (Fin p) (R ⊗[K] E)) (d :
   rw [framePair_eq, framePair_eq, cT_mul, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [gram, framePair_add_left, framePair_add_right, framePair_mul_left, framePair_mul_right, cT_framePair hH, Matrix.mul_assoc, Matrix.add_mul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem gram_add_mul (hH : IsHermitianFor (conjHom K E) H) (X Z : Matrix ι (Fin p) (R ⊗[K] E))
     (T : Matrix (Fin p) (Fin p) (R ⊗[K] E)) :
@@ -182,7 +182,7 @@ theorem gram_add_mul (hH : IsHermitianFor (conjHom K E) H) (X Z : Matrix ι (Fin
   abel
 
 /- English proof (translation)
-Rewrite using `[framePair_add_right, framePair_mul_right, show framePair K E R H Z Z = gram K E R H Z from rfl, hZ, Matrix.zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem framePair_add_iso {Z : Matrix ι (Fin p) (R ⊗[K] E)} (hZ : gram K E R H Z = 0)
     (X : Matrix ι (Fin p) (R ⊗[K] E)) (d : Matrix (Fin p) (Fin p) (R ⊗[K] E)) :
@@ -194,11 +194,11 @@ def shiftT (Z X : Matrix ι (Fin p) (R ⊗[K] E)) (S : Matrix (Fin p) (Fin p) (R
   (cT K E R (framePair K E R H Z X))⁻¹ * ((2 : K)⁻¹ • S)
 
 /- English proof (translation)
-Use `set a := framePair K E R H Z X with ha`. Establish `hcu : IsUnit (cT K E R a).det`. Rewrite using `[det_cT]`. Conclude with `hX.map _`. Establish `h1 : cT K E R a * shiftT (H` using `H) Z X S = (2 : K)⁻¹ • S := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[shiftT, ← ha, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hcu, Matrix.one_mul]`. Establish `h2 : cT K E R (shiftT (H` using `H) Z X S) * a = (2 : K)⁻¹ • S := by`. Use `congrArg (cT K E R) h1` as an intermediate fact. Rewrite `this` using `[cT_mul, cT_cT, cT_smul, hS]`. Then use the resulting hypothesis. Rewrite using `[gram_add_mul hH, hZ, Matrix.mul_zero, Matrix.zero_mul, add_zero, ← ha, h1, h2, add_assoc, ← add_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `: ((2 : K)⁻¹ + (2 : K)⁻¹) = 1`. Rewrite using `[← two_mul, mul_inv_cancel₀ (two_ne_zero)]`. Rewrite using `[this, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_add_shiftT [CharZero K] (hH : IsHermitianFor (conjHom K E) H)
     {Z : Matrix ι (Fin p) (R ⊗[K] E)} (hZ : gram K E R H Z = 0) {X : Matrix ι (Fin p) (R ⊗[K] E)}
@@ -222,7 +222,7 @@ theorem gram_add_shiftT [CharZero K] (hH : IsHermitianFor (conjHom K E) H)
   rw [this, one_smul]
 
 /- English proof (translation)
-Use `⟨(framePair K E R H Z X)⁻¹ ⬝ (cT K E R Z ⬝ Hm K R H), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← framePair_eq, Matrix.nonsing_inv_mul _ hX]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isFree_of_isUnit {Z X : Matrix ι (Fin p) (R ⊗[K] E)} (hX : IsUnit (framePair K E R H Z X).det) :
     IsFree X := by
@@ -230,15 +230,13 @@ theorem isFree_of_isUnit {Z X : Matrix ι (Fin p) (R ⊗[K] E)} (hX : IsUnit (fr
   rw [Matrix.mul_assoc, ← framePair_eq, Matrix.nonsing_inv_mul _ hX]
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `hY`. Establish `hHmu : IsUnit (Hm K R H).det`. Establish `hdet : (Hm K R H).det = (Algebra.TensorProduct.includeRight : E →ₐ[K] R ⊗[K] E) H.det`. Rewrite using `[Hm, AlgHom.map_det]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hdet]`. Conclude with `hHu.map _`. Use `set Z' := (Hm K R H)⁻¹ * cT K E R L with hZ'`. Establish `hYZ' : framePair K E R H Y Z' = 1`. Rewrite using `[framePair_eq, hZ', ← Matrix.mul_assoc, Matrix.mul_assoc (cT K E R Y), Matrix.mul_nonsing_inv _ hHmu, Matrix.mul_one, ← cT_mul, hL, cT_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ'Y : framePair K E R H Z' Y = 1`. Rewrite using `[← cT_framePair hH, hYZ', cT_one]`. Use `set S := gram K E R H Z' with hS`. Establish `hSh : cT K E R S = S` using `cT_framePair hH Z' Z'`. Use `⟨Z' + Y * (-((2 : K)⁻¹ • S)), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT : cT K E R (-((2 : K)⁻¹ • S)) = -((2 : K)⁻¹ • S)`. Rewrite using `[cT_neg, cT_smul, hSh]`. Establish `h2 : ((2 : K)⁻¹ + (2 : K)⁻¹) = 1`. Rewrite using `[← two_mul, mul_inv_cancel₀ two_ne_zero]`. Rewrite using `[gram_add_mul hH, hY0, hYZ', cT_one, Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul, add_zero, ← hS, hT, add_assoc, ← neg_add, ← add_smul, h2, one_smul, add_neg_cancel]`.
-
-Rewrite using `[framePair_add_left, framePair_mul_left, show framePair K E R H Y Y = gram K E R H Y from rfl, hY0, Matrix.mul_zero, add_zero, hZ'Y]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_partner [CharZero K] (hH : IsHermitianFor (conjHom K E) H) (hHu : IsUnit H.det)
     {Y : Matrix ι (Fin p) (R ⊗[K] E)} (hY : IsFree Y) (hY0 : gram K E R H Y = 0) :

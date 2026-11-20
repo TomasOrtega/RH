@@ -29,19 +29,19 @@ namespace GlobalTheory.CompanionTheory.WSum
 variable {D : D7} {r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [halfTr, trA, map_add, mul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem halfTr_add (x y : AE D) : halfTr (x + y) = halfTr x + halfTr y := by
   simp only [halfTr, trA, map_add, mul_add]
 
 /- English proof (translation)
-Simplify using `only [halfTr, trA, map_zero, mul_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem halfTr_zero : halfTr (0 : AE D) = 0 := by
   simp only [halfTr, trA, map_zero, mul_zero]
 
 /- English proof (translation)
-The claim follows from `continuous_const.mul (IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_halfTr : Continuous (halfTr : AE D → AF D.host.F) :=
   continuous_const.mul (IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D)))
@@ -70,13 +70,13 @@ theorem W_eq_chi (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) (μ : Measure (Mx 
     W ψ V μ lam φ β = ∫ b, Jt ψ V μ φ b * chi ψ β b ∂lam := rfl
 
 /- English proof (translation)
-The claim follows from `hψ.2.1 _`.
+A detailed English derivation is pending.
 -/
 theorem norm_chi {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (β : HermE D r) (b : hermA D r) :
     ‖chi ψ β b‖ = 1 := hψ.2.1 _
 
 /- English proof (translation)
-Establish `h0 : Continuous fun b : hermA D r => Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D r r)` using `(continuous_const.matrix_mul continuous_subtype_val).matrix_trace`. Conclude with `hψ.1.comp (continuous_halfTr.comp h0).neg`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_chi {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (β : HermE D r) :
     Continuous (chi ψ β) := by
@@ -85,7 +85,7 @@ theorem continuous_chi {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F
   exact hψ.1.comp (continuous_halfTr.comp h0).neg
 
 /- English proof (translation)
-Rewrite using `[W_eq_chi]`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Simplify using `only [norm_mul, norm_chi hψ, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem norm_W_le {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (V : HSp D) (μ : Measure (Mx D V.rank r))
     (lam : Measure (hermA D r)) (φ : Mx D V.rank r → ℂ) (β : HermE D r) :
@@ -99,14 +99,14 @@ def tq (V : HSp D) (b : Mx D r r) (y : Mx D V.rank r) : AE D :=
   Matrix.trace (HMul.hMul b (inner V y y) : Mx D r r)
 
 /- English proof (translation)
-Unfold `tq`. Rewrite using `[Matrix.add_mul, Matrix.trace_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tq_add (V : HSp D) (b c : Mx D r r) (y : Mx D V.rank r) : tq V (b + c) y = tq V b y + tq V c y := by
   unfold tq
   rw [Matrix.add_mul, Matrix.trace_add]
 
 /- English proof (translation)
-Establish `h : Continuous fun y : Mx D V.rank r => (inner V y y : Mx D r r)`. Unfold `GlobalTheory.StdUnn.inner`. Conclude with `continuous_adj.matrix_mul (continuous_const.matrix_mul continuous_id)`. Conclude with `(continuous_const.matrix_mul h).matrix_trace`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_tq (V : HSp D) (b : Mx D r r) : Continuous (tq V b) := by
   have h : Continuous fun y : Mx D V.rank r => (inner V y y : Mx D r r) := by
@@ -115,7 +115,7 @@ theorem continuous_tq (V : HSp D) (b : Mx D r r) : Continuous (tq V b) := by
   exact (continuous_const.matrix_mul h).matrix_trace
 
 /- English proof (translation)
-Unfold `Jt`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show φ y * ψ (halfTr (tq V (b.1 + c.1) y)) = _`. Rewrite using `[tq_add, halfTr_add, AddChar.map_add_eq_mul]`. Conclude with `(mul_assoc _ _ _).symm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Jt_add (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) (μ : Measure (Mx D V.rank r)) (φ : Mx D V.rank r → ℂ)
     (b c : hermA D r) :
@@ -127,13 +127,11 @@ theorem Jt_add (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) (μ : Measure (Mx D 
   exact (mul_assoc _ _ _).symm
 
 /- English proof (translation)
-Use `haveI : BorelSpace (Mx D V.rank r) := ⟨rfl⟩`. Establish `hu : Continuous fun y => ψ (halfTr (tq V b.1 y))` using `hψ.1.comp (continuous_halfTr.comp (continuous_tq V b.1))`. Establish `hn : ∀ y, ‖ψ (halfTr (tq V b.1 y))‖ = 1` using `fun y => hψ.2.1 _`. Establish `hg : Integrable (fun y => φ y * ψ (halfTr (tq V b.1 y))) μ` using `hφ.norm.mono' (hφ.aestronglyMeasurable.mul hu.aestronglyMeasurable) (Filter.Eventually.of_forall fun y => by simp only [norm_mul, hn, mul_one, le_refl])`. Establish `hMg : Integrable (fun y => (M y : ℂ) * (φ y * ψ (halfTr (tq V b.1 y)))) μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hMφ.norm.mono' ?_ (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `(hMφ.aestronglyMeasurable.mul hu.aestronglyMeasurable).congr (Filter.Eventually.of_forall fun y => mul_assoc _ _ _)`. Simplify using `only [norm_mul, hn, mul_one, le_refl]`. Establish `h` using `GlobalTheory.T.fourier_parameter_derivative _ μ (fun y => φ y * ψ (halfTr (tq V b.1 y))) M hM hg hMg s`. Establish `e1 : (fun t : ℝ => Jt ψ V μ φ (b + c t)) = fun t : ℝ => ∫ y, φ y * ψ (halfTr (tq V b.1 y)) * Complex.exp (2 * Real.pi * Complex.I * ((t * M y : ℝ) : ℂ)) ∂μ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[Jt_add]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun y => by simp only [hc])`. Establish `e2 : Jt ψ V μ (fun y => (M y : ℂ) * φ y) (b + c s) = ∫ y, (M y : ℂ) * (φ y * ψ (halfTr (tq V b.1 y))) * Complex.exp (2 * Real.pi * Complex.I * ((s * M y : ℝ) : ℂ)) ∂μ`. Rewrite using `[Jt_add]`.
-
-Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun y => by simp only [hc, mul_assoc])`. Rewrite using `[e1, e2]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDeriv_Jt {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (V : HSp D)
     (μ : Measure (Mx D V.rank r)) {φ : Mx D V.rank r → ℂ} (hφ : Integrable φ μ) {M : Mx D V.rank r → ℝ}
@@ -168,13 +166,13 @@ theorem hasDeriv_Jt {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ
   exact h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `φ hφ`. Take `⟨C, hC⟩` from `hb φ hφ`. Conclude with `⟨C, fun i => by simpa using hC i⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `insert k s hk ih`. Introduce `φ hφ`. Take `⟨C₁, h₁⟩` from `ih φ hφ`. Take `⟨C₂, h₂⟩` from `ih _ (hS k _ (hS k φ hφ))`. Use `⟨C₁ + C₂, fun i => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ‖w (T k (T k φ)) i‖ = f k i ^ 2 * ‖w φ i‖`. Rewrite using `[hR k _ (hS k φ hφ), hR k φ hφ, norm_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, ← mul_assoc, abs_mul_abs_self, sq]`. Establish `h2` using `h₂ i`. Rewrite `h2` using `[e]`. Rewrite using `[Finset.prod_insert hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[h₁ i, h2]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem decay_abs {Φ ι : Type} {d : ℕ} (S : Set Φ) (w : Φ → ι → ℂ) (T : Fin d → Φ → Φ) (f : Fin d → ι → ℝ)
     (hb : ∀ φ ∈ S, ∃ C, ∀ i, ‖w φ i‖ ≤ C) (hS : ∀ k, ∀ φ ∈ S, T k φ ∈ S)
@@ -200,7 +198,7 @@ theorem decay_abs {Φ ι : Type} {d : ℕ} (S : Set Φ) (w : Φ → ι → ℂ) 
     nlinarith [h₁ i, h2]
 
 /- English proof (translation)
-Use `show Matrix.trace (HMul.hMul (rs σ s • a.1.map (incA D)) (inner V y y) : Mx D r r) = _`. Rewrite using `[Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tq_path {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : GlobalTheory.FockCompare.Chart θ σ) (V : HSp D)
     (a : HermE D r) (s : ℝ) (y : Mx D V.rank r) :
@@ -210,7 +208,7 @@ theorem tq_path {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : 
   rfl
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (f := fun s : ℝ => rs σ s • a.1.map (incA D)) ?_ _` and prove the remaining obligations. Conclude with `continuous_pi fun i => continuous_pi fun j => (continuous_rs hσ).mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_path {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : GlobalTheory.FockCompare.Chart θ σ)
     (a : HermE D r) : Continuous (path hσ a) := by
@@ -218,7 +216,7 @@ theorem continuous_path {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D}
   exact continuous_pi fun i => continuous_pi fun j => (continuous_rs hσ).mul continuous_const
 
 /- English proof (translation)
-Establish `h : (HMul.hMul (β.1.map (incA D)) (a.1.map (incA D)) : Mx D r r) = (β.1 * a.1).map (incA D)`. Rewrite using `[Matrix.map_mul]`. Rewrite using `[h]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_rat (β a : HermE D r) :
     Matrix.trace (HMul.hMul (β.1.map (incA D)) (a.1.map (incA D)) : Mx D r r) = incA D (Matrix.trace (β.1 * a.1)) := by
@@ -228,7 +226,7 @@ theorem trace_rat (β a : HermE D r) :
   simp only [Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]
 
 /- English proof (translation)
-Rewrite using `[chi_apply]`. Establish `e : (Matrix.trace (HMul.hMul (β.1.map (incA D)) (path hσ a s).1 : Mx D r r)) = rs σ s * incA D (Matrix.trace (β.1 * a.1))` using `by show Matrix.trace (HMul.hMul (β.1.map (incA D)) (rs σ s • a.1.map (incA D)) : Mx D r r) = _`. Rewrite using `[Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, trace_rat]`. Rewrite using `[e, AddChar.map_neg_eq_inv, hph, Complex.exp_neg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chi_path {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D}
     (hσ : GlobalTheory.FockCompare.Chart θ σ) {α : D.host.F}
@@ -246,15 +244,9 @@ theorem chi_path {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {σ : (D.what�
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D r r`. Use `haveI : IsTopologicalAddGroup (Mx D r r) := i1`. Use `haveI : LocallyCompactSpace (Mx D r r) := i2`. Use `haveI : SecondCountableTopology (Mx D r r) := i3`. Use `haveI : T2Space (Mx D r r) := i4`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (Mx D r r) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D V.rank r) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (hermA D r) := Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `haveI : lam'.IsAddHaarMeasure := hlam.1`. Use `haveI : LocallyCompactSpace (hermA D r) := (GlobalTheory.CompanionTheory.HermVol.isClosed_hermA (D := D) (r := r)).locallyCompactSpace`.
-
-Use `haveI : SFinite lam' := by haveI : SigmaFinite lam' := MeasureTheory.sigmaFinite_of_locallyFinite infer_instance`. Take `⟨𝓕, hF⟩` from `hμ`. Use `haveI : μ.IsAddHaarMeasure := hF.1`. Establish `hμ' : ∃ 𝓕, IsCovolOne (ratMx D V.rank r) μ 𝓕` using `⟨𝓕, hF⟩`. Establish `hMφ` using `hmem φ hφ`.
-
-Establish `cont : ∀ φ ∈ schwartzA θ V.rank r, Continuous (Jt ψ V μ φ)` using `fun φ h => GlobalTheory.T.theta_integral_continuous D r V ψ θ μ φ hψ hθ hμ' h`. Establish `intg : ∀ φ ∈ schwartzA θ V.rank r, Integrable (Jt ψ V μ φ) lam'` using `fun φ h => (GlobalTheory.T.poisson_summation_hermitian_lattice D r ψ hψ lam' 𝓖 hlam _ (cont φ h) (GlobalTheory.T.theta_integral_locally_summable_bound D r V ψ θ μ φ hm hψ hθ hμ' h)).1`. Establish `hc : ∀ (s : ℝ) y, ψ (halfTr (tq V (path hσ a s).1 y)) = Complex.exp (2 * Real.pi * Complex.I * ((s * multM θ α V a y : ℝ) : ℂ))` using `fun s y => by`. Rewrite using `[tq_path]`. Conclude with `hph _ s`.
-
-Conclude with `GlobalTheory.T.fourier_one_parameter_integral (hermA D r) lam' (path hσ a) (continuous_path hσ a) _ _ (cont φ hφ) (cont _ hMφ) (intg φ hφ) (intg _ hMφ) (chi ψ β) (continuous_chi hψ β) (norm_chi hψ β) (pairF θ α a β) (chi_path hσ hph a β) (hasDeriv_Jt hψ V μ (GlobalTheory.T.integr …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem W_mult {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {θ : InfFam D} (hθ : IsInfFam θ)
     {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : GlobalTheory.FockCompare.Chart θ σ) {α : D.host.F}
@@ -299,25 +291,21 @@ theorem W_mult {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {θ
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D r r`. Use `haveI : IsTopologicalAddGroup (Mx D r r) := i1`. Use `haveI : BorelSpace (Mx D r r) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (Mx D r r) := i3`. Use `set v : hermA D r := N • ((GlobalTheory.CompanionTheory.HermPoisson.ofHermE a).1 - path hσ a 1) with hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hper : ∀ b, Jt ψ V μ φ (b + v) = Jt ψ V μ φ b` using `fun b => by`. Rewrite using `[Jt_add]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Distinguish the cases in `h : φ y = 0`. Use `show φ y * _ * _ = φ y * _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h]`. Simplify using the standard rewrite rules. Establish `h1 : ψ (halfTr (tq V v.1 y)) = 1` using `hN y h show _ = φ y * ψ (halfTr (tq V b.1 y))`. Simplify using `only [h1, mul_one]`. Establish `h1 : W ψ V μ lam' φ β = chi ψ β v * W ψ V μ lam' φ β`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[W_eq_chi, ← integral_const_mul]`. Rewrite using `[← integral_add_right_eq_self (fun b => Jt ψ V μ φ b * chi ψ β b) v]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Use `show Jt ψ V μ φ (b + v) * chi ψ β (b + v) = chi ψ β v * (Jt ψ V μ φ b * chi ψ β b)`. Rewrite using `[hper, AddChar.map_add_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : chi ψ β v = 1`. Establish `: (chi ψ β v - 1) * W ψ V μ lam' φ β = 0`. Rewrite using `[sub_mul, ← h1, one_mul, sub_self]`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_right hW)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : chi ψ β (GlobalTheory.CompanionTheory.HermPoisson.ofHermE a).1 = 1`. Rewrite using `[chi_apply]`. Use `show ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) (a.1.map (incA D)) : Mx D r r))) = 1`. Rewrite using `[trace_rat, GlobalTheory.CompanionTheory.ThetaInv.halfTr_incA, ← map_neg]`. Conclude with `hψ.2.2.1 _`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h4 : chi ψ β v = Complex.exp (((N : ℂ)) * (2 * Real.pi * Complex.I * (pairF θ α a β : ℂ)))`. Rewrite using `[hv, AddChar.map_nsmul_eq_pow, AddChar.map_sub_eq_div, h3, chi_path hσ hph, Complex.exp_nat_mul]`. Use `congr 1`. Rewrite using `[one_div, ← Complex.exp_neg, neg_neg]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h4, Complex.exp_eq_one_iff]`. Take `⟨n, hn⟩` from `h2`. Use `⟨n, ?_⟩` and prove the remaining obligations.
-
-Establish `hI : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Establish `h5 : ((N : ℝ) * pairF θ α a β : ℝ) = n`. Establish `: (((N : ℝ) * pairF θ α a β : ℝ) : ℂ) = (n : ℂ)`. Apply `mul_left_cancel₀ hI` to reduce the goal to its premises. Use `push_cast`.
-
-Take the linear combination `hn`. Conclude with `this` after adjusting the coercions. Conclude with `h5`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem W_int {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {θ : InfFam D}
     {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : GlobalTheory.FockCompare.Chart θ σ) {α : D.host.F}
@@ -381,17 +369,15 @@ theorem W_int {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {θ 
 end GlobalTheory.CompanionTheory.WSum
 
 /- English proof (translation)
-Introduce `D r V ψ θ μ lam 𝓖 φ hm hψ hθ hμ hlam hφ`. Use `haveI : lam.IsAddHaarMeasure := hlam.1`. Take `⟨ψ₀, h₀, α, hα0, hα⟩` from `GlobalTheory.ThetaAllChar.exists_std hψ`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `hph` using `GlobalTheory.T.character_along_one_parameter_path D ψ ψ₀ h₀ α hα θ σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨d, a, hinj⟩` from `GlobalTheory.T.injective_pairing_finite_family D r θ hθ α hα0`. Establish `hq` using `fun k => GlobalTheory.T.archimedean_multiplier_temperate D r θ hθ α V (a k)`. Use `choose q hqt hqe using hq`. Establish `hcomp : Continuous fun y : Mx D V.rank r => (fun τ i j => compAt θ τ y i j : D.what₂.Tau → Fin V.rank → Fin r → ℂ)` using `continuous_pi fun τ => continuous_pi fun i => continuous_pi fun j => (GlobalTheory.RealWeil.continuous_compAt hθ τ _ _).matrix_elem i j`. Establish `hMc : ∀ k, Continuous (GlobalTheory.CompanionTheory.WSum.multM θ α V (a k))` using `fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : Continuous fun y => ((GlobalTheory.CompanionTheory.WSum.multM θ α V (a k) y : ℝ) : ℂ)`. Simplify using `only [hqe k]`. Conclude with `(hqt k).1.continuous.comp hcomp`. Conclude with `Complex.continuous_re.comp h1`. Establish `hmem : ∀ k, ∀ φ ∈ schwartzA θ V.rank r, (fun y => (GlobalTheory.CompanionTheory.WSum.multM θ α V (a k) y : ℂ) * φ y) ∈ schwartzA θ V.rank r` using `fun k φ h => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [hqe k]`. Conclude with `GlobalTheory.T.temperate_multiplier_preserves_schwartz D θ _ _ (q k) (hqt k) φ h`. Establish `hdec` using `GlobalTheory.CompanionTheory.WSum.decay_abs (schwartzA θ V.rank r : Set (Mx D V.rank r → ℂ)) (fun φ β => W ψ V μ lam φ β) (fun k φ y => (GlobalTheory.CompanionTheory.WSum.multM θ α V (a k) y : ℂ) * φ y) (fun k β => GlobalTheory.CompanionTheory.WSum.pairF θ α (a k) β) (fun φ _ => …`. Take `⟨C, hC⟩` from `hdec`. Establish `hlev` using `fun k => GlobalTheory.T.integral_multiple_path_trivial_character D r V ψ hψ θ σ hσ (a k) φ hφ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose Nk hNk hNy using hlev`. Use `GlobalTheory.T.summable_of_lattice_decay_of_injective (HermE D r) d _ (fun β k => GlobalTheory.CompanionTheory.WSum.pairF θ α (a k) β) hinj (∏ k, Nk k) (Finset.prod_pos fun k _ => hNk k) C hC fun β hW k => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `GlobalTheory.CompanionTheory.WSum.W_int hψ hσ hph (a k) (Nk k) (hNy k) β hW`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem Nk (Finset.mem_univ k)`. Use `⟨c * n, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hc]`. Use `push_cast`. Rewrite using `[mul_comm ((Nk k : ℝ)) (c : ℝ), mul_assoc, hn]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.WSum.summable_W_of_two_mul_lt_rank : ∀ (D : D7) (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (μ : Measure (Mx D V.rank r)) (lam : Measure (hermA D r)) (𝓖 : Set (hermA D r)) (φ : Mx D V.rank r → ℂ),

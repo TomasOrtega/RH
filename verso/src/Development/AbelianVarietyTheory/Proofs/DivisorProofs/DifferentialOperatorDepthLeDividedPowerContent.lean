@@ -20,21 +20,21 @@ def Near (k n : ℕ) (P Q : MvPowerSeries τ S) : Prop :=
   (n : ℕ∞) ≤ P.order ∧ (n : ℕ∞) ≤ Q.order ∧ ((k + n : ℕ) : ℕ∞) ≤ (P - Q).order + 1
 
 /- English proof (translation)
-Simplify using `[Near]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Near.one (k : ℕ) : Near k 0 (1 : MvPowerSeries τ S) 1 := by
   simp [Near]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Take `⟨h1', h2', h3'⟩` from `h'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`. Conclude with `(add_le_add h1 h1').trans le_order_mul`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Conclude with `(add_le_add h2 h2').trans le_order_mul`. Establish `e : P * P' - Q * Q' = P * (P' - Q') + (P - Q) * Q'` using `by ring`. Rewrite using `[e]`. Use `le_trans ?_ (add_le_add_left min_order_le_add 1)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← min_add_add_right]`. Use `le_min ?_ ?_` and prove the remaining obligations. Use `le_trans ?_ (add_le_add_left le_order_mul 1)` and prove the remaining obligations. Rewrite using `[add_assoc]`. Use `le_trans (le_of_eq ?_) (add_le_add h1 h3')` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `le_trans ?_ (add_le_add_left le_order_mul 1)` and prove the remaining obligations. Rewrite using `[add_right_comm]`. Use `le_trans (le_of_eq ?_) (add_le_add h3 h2')` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem Near.mul {k n m : ℕ} {P Q P' Q' : MvPowerSeries τ S} (h : Near k n P Q)
     (h' : Near k m P' Q') : Near k (n + m) (P * P') (Q * Q') := by
@@ -58,11 +58,9 @@ theorem Near.mul {k n m : ℕ} {P Q P' Q' : MvPowerSeries τ S} (h : Near k n P 
       push_cast; ring
 
 /- English proof (translation)
-Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => simpa using Near.one k`. Consider the case `add f g hf hg`. Rewrite using `[Finsupp.prod_add_index' (by simp) (by simp [pow_add]), Finsupp.prod_add_index' (by simp) (by simp [pow_add]), map_add]`. Conclude with `hf.mul hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `single s n`. Rewrite using `[Finsupp.prod_single_index (by simp), Finsupp.prod_single_index (by simp), Finsupp.degree_single]`. Proceed by induction on `n with`. Consider the case `zero => simpa using Near.one k`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`.
-
-Conclude with `ih.mul (h s)`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Near.prod {σ : Type} {k : ℕ} {a b : σ → MvPowerSeries τ S}
     (h : ∀ s, Near k 1 (a s) (b s)) (d : σ →₀ ℕ) :
@@ -81,13 +79,11 @@ theorem Near.prod {σ : Type} {k : ℕ} {a b : σ → MvPowerSeries τ S}
     | succ n ih => rw [pow_succ, pow_succ]; exact ih.mul (h s)
 
 /- English proof (translation)
-Establish `hc : ∀ s, Near 2 1 (Y s) (X s)` using `fun s => by`. Establish `hX : (1 : ℕ∞) ≤ (X s : MvPowerSeries τ S).order` using `one_le_order_iff_constCoeff_eq_zero.mpr (by simp)`. Use `⟨?_, hX, ?_⟩` and prove the remaining obligations. Establish `: Y s = (Y s - X s) + X s` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_trans (le_min ((by norm_num : (1 : ℕ∞) ≤ 2).trans (hY s)) hX) min_order_le_add`. Use `add_le_add (hY s) (le_refl (1 : ℕ∞))` as an intermediate fact. Use `push_cast`. Conclude with `this`. Establish `h` using `(Near.prod hc α).2.2`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (α.prod fun s e => (X s : MvPowerSeries τ S) ^ e) = monomial α 1`. Use `subst_monomial (R := S) (HasSubst.X (S := S) (σ := τ)) α (1 : S)` as an intermediate fact. Rewrite `this` using `[subst_self]`. Simplify using `using this.symm`. Rewrite `h` using `[hm]`.
-
-Establish `h2 : ((α.degree + 1 : ℕ) : ℕ∞) + 1 = ((2 + α.degree : ℕ) : ℕ∞)` using `by push_cast; ring`. Conclude with `(ENat.add_le_add_iff_right (by simp)).mp (h2.le.trans h)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lead_prod (Y : τ → MvPowerSeries τ S) (hY : ∀ s, 2 ≤ (Y s - X s).order) (α : τ →₀ ℕ) :
     ((α.degree + 1 : ℕ) : ℕ∞) ≤ ((α.prod fun s k => Y s ^ k) - monomial α 1).order := by
@@ -119,9 +115,9 @@ section Int
 variable {C : Type} [Field C] (v : AddValuation C (WithTop ℝ))
 
 /- English proof (translation)
-Introduce `α`. Unfold `IsIntV`. Rewrite using `[coeff_mul]`. Use `Finset.sum_induction _ (fun x => 0 ≤ v x) (fun a b ha hb => le_trans (le_min ha hb) (v.map_add a b)) (by simp) ?_` and prove the remaining obligations. Introduce `p _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[v.map_mul]`. Conclude with `add_nonneg (hf _) (hg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInt_mul {τ : Type} {f g : MvPowerSeries τ C} (hf : MvIsInt v f) (hg : MvIsInt v g) :
     MvIsInt v (f * g) := by
@@ -150,9 +146,9 @@ def intSub (τ : Type) : Subring (MvPowerSeries τ C) where
   neg_mem' := by intro f hf α; unfold IsIntV; rw [map_neg, v.map_neg]; exact hf α
 
 /- English proof (translation)
-Introduce `α`. Unfold `IsIntV`. Rewrite using `[coeff_smul, coeff_X]`. Use `split_ifs`. Rewrite using `[mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hc`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem isInt_smul_X {τ : Type} {c : C} (hc : IsIntV v c) (t : τ) :
     MvIsInt v (c • (X t : MvPowerSeries τ C)) := by
@@ -164,7 +160,7 @@ theorem isInt_smul_X {τ : Type} {c : C} (hc : IsIntV v c) (t : τ) :
   · simp
 
 /- English proof (translation)
-Use `show _ ∈ intSub v τ`. Unfold `Finsupp.prod`. Conclude with `prod_mem fun s _ => pow_mem (hL s) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isInt_prod {σ τ : Type} (L : σ → MvPowerSeries τ C) (hL : ∀ s, MvIsInt v (L s))
     (α : σ →₀ ℕ) : MvIsInt v (α.prod fun s k => L s ^ k) := by
@@ -176,9 +172,9 @@ theorem isInt_prod {σ τ : Type} (L : σ → MvPowerSeries τ C) (hL : ∀ s, M
 end Int
 
 /- English proof (translation)
-Establish `e` using `congrArg (coeff (Finsupp.single b 1)) (h.2 a)`. Rewrite `e` using `[GlobalTheory.FormalSeries.coeff_single_subst h.1]`. Simplify using `only [G.lg_lin, smul_eq_mul, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, coeff_X] at e`. Rewrite using `[e]`. Distinguish the cases in `hab : a = b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hab, Finsupp.single_left_inj one_ne_zero, Ne.symm hab]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coeff_single_exp {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {d : ℕ}
     (G : LogFGL v d) {ex : Fin d → MvPowerSeries (Fin d) C} (h : IsExp G ex) (a b : Fin d) :
@@ -193,29 +189,27 @@ theorem coeff_single_exp {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)}
   · simp [hab, Finsupp.single_left_inj one_ne_zero, Ne.symm hab]
 
 /- English proof (translation)
-Introduce `C _ _ v κ _ _ d n G u P D hP hu`. Use `choose l hlint hldual using fun b => GlobalTheory.T.exists_integral_dual_frame_of_isSatFrame C v (n b) (d b) (u b) (hu b)`. Establish `hexp : ∀ b, IsExp (G b) (expOf (G b))` using `fun b => (GlobalTheory.T.formalGroupExp_twoSided_inverse_unique C v (d b) (G b)).1`. Establish `hlin0 : ∀ b (e : Fin (d b)), constantCoeff (∑ a, u b a e • (X ⟨b, a⟩ : MvPowerSeries (Σ b, Fin (n b)) C)) = 0`. Introduce `b e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hlin1 : ∀ b (e : Fin (d b)) (y : Σ b, Fin (n b)), coeff (Finsupp.single y 1) (∑ a, u b a e • (X ⟨b, a⟩ : MvPowerSeries (Σ b, Fin (n b)) C)) = ∑ a, u b a e * if y = ⟨b, a⟩ then 1 else 0`. Introduce `b e y`. Simplify using `only [map_sum, coeff_smul, coeff_X, Finsupp.single_left_inj one_ne_zero, smul_eq_mul]`. Use `set A := expAlong G u with hAdef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0 : ∀ x, constantCoeff (A x) = 0` using `fun x => constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero (hlin0 x.1)) (hlin0 x.1) ((hexp x.1).1 x.2)`. Establish `hA1 : ∀ x y, coeff (Finsupp.single y 1) (A x) = ∑ a, u x.1 a x.2 * if y = ⟨x.1, a⟩ then 1 else 0`. Introduce `x y`. Use `show coeff (Finsupp.single y 1) (subst _ (expOf (G x.1) x.2)) = _`. Rewrite using `[GlobalTheory.FormalSeries.coeff_single_subst (hlin0 x.1)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [coeff_single_exp (G x.1) (hexp x.1), hlin1, smul_eq_mul, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `set Y : (Σ b, Fin (n b)) → MvPowerSeries (Σ b, Fin (n b)) C := fun y => ∑ e, l y.1 y.2 e • A ⟨y.1, e⟩ with hYdef`. Establish `hY : ∀ y, 2 ≤ (Y y - X y).order`. Introduce `y`. Rewrite using `[GlobalTheory.FormalSeries.two_le_order_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `⟨by simp [hYdef, hA0], fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hYdef]`. Simplify using `only [map_sum, coeff_smul, hA1, smul_eq_mul, coeff_X, Finsupp.single_left_inj one_ne_zero]`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ a : Fin (n y.1), ∑ e, l y.1 y.2 e * (u y.1 a e * if z = ⟨y.1, a⟩ then (1 : C) else 0) = (if y.2 = a then 1 else 0) * if z = ⟨y.1, a⟩ then 1 else 0`. Introduce `a`. Rewrite using `[← hldual y.1 y.2 a, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun e _ => by ring`. Establish `key2 : ∑ e : Fin (d y.1), ∑ a : Fin (n y.1), l y.1 y.2 e * (u y.1 a e * if z = ⟨y.1, a⟩ then (1 : C) else 0) = if z = y then 1 else 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[key, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Conclude with `key2`. Establish `hAs : HasSubst A` using `hasSubst_of_constantCoeff_zero hA0`. Unfold `content`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `le_iInf₂ fun α hα => ?_` and prove the remaining obligations. Use `set L : (Σ b, Fin (n b)) → MvPowerSeries (Σ b, Fin (d b)) C := fun y => ∑ e, l y.1 y.2 e • X ⟨y.1, e⟩ with hLdef`. Establish `hLint : ∀ y, MvIsInt v (L y)` using `fun y => (intSub v _).sum_mem fun e _ => isInt_smul_X v (hlint y.1 y.2 e) _`. Use `set f := α.prod fun y k => L y ^ k with hfdef`. Establish `hfint : MvIsInt v f` using `isInt_prod v L hLint α`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : subst A f = α.prod fun y k => Y y ^ k`. Rewrite using `[hfdef, ← coe_substAlgHom hAs, map_finsuppProd]`. Simplify using `only [map_pow, hLdef, hYdef, map_sum, map_smul, substAlgHom_X]`. Establish `hord` using `lead_prod Y hY α`. Rewrite `hord` using `[← hsub]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hdeg : ∀ β ∈ P.support, β.degree = D` using `fun β hβ => by`. Use `hP (MvPolynomial.mem_support_iff.mp hβ)` as an intermediate fact. Rewrite using `[← this, Finsupp.degree_eq_weight_one]`. Both sides reduce to the same expression. Establish `hval : derivAt0 P (subst A f) = P.coeff α * mfact α`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `derivAt0`. Rewrite using `[Finset.sum_eq_single α]`. Rewrite using `[GlobalTheory.FormalSeries.coeff_eq_of_le_order_sub hord (Nat.lt_succ_self _), coeff_monomial_same, mul_one]`. Introduce `β hβ hne`. Rewrite using `[GlobalTheory.FormalSeries.coeff_eq_of_le_order_sub hord (by rw [hdeg β hβ, ← hdeg α hα]; exact Nat.lt_succ_self _), coeff_monomial, if_neg hne, mul_zero]`.
-
-Introduce `h`. Conclude with `absurd hα h`. Unfold `depth`. Use `(iInf_le _ ⟨f, hfint⟩).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← hAdef, hval]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem depth_le_content : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ))
     (κ : Type) [Fintype κ] [DecidableEq κ] (d n : κ → ℕ) (G : ∀ b, LogFGL v (d b))

@@ -11,13 +11,13 @@ namespace GlobalTheory.CuspRep
 open Finset in
 
 /- English proof (translation)
-Introduce `E _ _ _ b`. Use `⟨univ.image (fun p : (E →+* ℂ) × Fin (b + 1) => cap (a := b) p.1 ((p.2 : ℕ) : ℂ)), ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Take `⟨p, -, rfl⟩` from `mem_image.1 ht`. Conclude with `⟨p.1, _, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Apply `le_antisymm` to reduce the goal to its premises. Unfold `Zalg`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `z ⟨τ, u, rfl⟩`. Take `⟨w, hw⟩` from `cap_eq_sum_nodes E b τ u`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hw]`. Use `Subalgebra.sum_mem _ fun j _ => Subalgebra.smul_mem _ (Algebra.subset_adjoin ?_) _` and prove the remaining obligations. Simplify using `only [coe_image, coe_univ, Set.image_univ, Set.mem_range]`. Conclude with `⟨(τ, j), rfl⟩`. Unfold `Zalg`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Apply `Algebra.adjoin_mono` to reduce the goal to its premises. Introduce `t ht`. Simplify using `only [coe_image, coe_univ, Set.image_univ, Set.mem_range] at ht`. Take `⟨p, rfl⟩` from `ht`. Conclude with `⟨p.1, _, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem zalg_eq_adjoin_finite_caps : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (b : ℕ),
     ∃ T : Finset (Module.End ℂ (Sm E b)), (∀ t ∈ T, ∃ (τ : E →+* ℂ) (u : ℂ), t = cap τ u) ∧

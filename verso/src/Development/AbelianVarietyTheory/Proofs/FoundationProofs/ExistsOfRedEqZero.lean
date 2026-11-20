@@ -6,13 +6,13 @@ noncomputable section
 namespace GlobalTheory.Col.NormFrob
 
 /- English proof (translation)
-Use `ext1 h`. Use extensionality with `n`. Use `set P : Polynomial R := trunc (n + 1) h`. Establish `hd : X ^ (n + 1) ∣ h - (P : PowerSeries R)`. Rewrite using `[X_pow_dvd_iff]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `m hm`. Simplify using `[P, Polynomial.coeff_coe, coeff_trunc, hm]`. Take `⟨q, hq⟩` from `hd`. Establish `hh : h = (P : PowerSeries R) + X ^ (n + 1) * q` using `by rw [← hq]; ring`. Establish `hP : f (P : PowerSeries R) = g (P : PowerSeries R)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun F => F P) hfg` as an intermediate fact. Simplify using `using this`. Establish `key : ∀ F : PowerSeries R →+* PowerSeries S, X ∣ F X → coeff n (F (X ^ (n + 1) * q)) = 0`. Introduce `F hF`. Establish `: X ^ (n + 1) ∣ F (X ^ (n + 1) * q)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_pow]`. Conclude with `Dvd.dvd.mul_right (pow_dvd_pow_of_dvd hF _) _`. Conclude with `(X_pow_dvd_iff.1 this) n (Nat.lt_succ_self n)`. Rewrite using `[hh, map_add, map_add, map_add, map_add, hP, key f hf, key g hg]`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_ext_of_poly {R S : Type} [CommRing R] [CommRing S] (f g : PowerSeries R →+* PowerSeries S)
     (hfg : f.comp Polynomial.coeToPowerSeries.ringHom = g.comp Polynomial.coeToPowerSeries.ringHom)
@@ -46,9 +46,9 @@ abbrev red : PowerSeries R →+* PowerSeries (R ⧸ Ideal.span {(p : R)}) :=
   PowerSeries.map (Ideal.Quotient.mk (Ideal.span {(p : R)}))
 
 /- English proof (translation)
-Establish `hc : ∀ n, ∃ c : R, coeff n D = (p : R) * c`. Introduce `n`. Establish `h1 : coeff n (red p D) = 0` using `by rw [hD, map_zero]`. Rewrite `h1` using `[coeff_map, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, by rw [← hc, mul_comm]⟩`. Use `choose c hc using hc`. Use `⟨PowerSeries.mk c, ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Rewrite using `[hc n, show (p : PowerSeries R) = C (p : R) from (map_natCast C p).symm, coeff_C_mul, coeff_mk]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_red_eq_zero (D : PowerSeries R) (hD : red p D = 0) :
     ∃ g : PowerSeries R, D = (p : PowerSeries R) * g := by
@@ -64,17 +64,15 @@ theorem exists_of_red_eq_zero (D : PowerSeries R) (hD : red p D = 0) :
   rw [hc n, show (p : PowerSeries R) = C (p : R) from (map_natCast C p).symm, coeff_C_mul, coeff_mk]
 
 /- English proof (translation)
-Use `haveI : CharP (R ⧸ Ideal.span {(p : R)}) p := CharP.quotient R p (hfl.prime.not_unit)`. Use `haveI : CharP (PowerSeries (R ⧸ Ideal.span {(p : R)})) p := charP_of_injective_algebraMap (R := R ⧸ Ideal.span {(p : R)}) (PowerSeries.C_injective) p`. Establish `hX1 : ((frobenius (PowerSeries (R ⧸ Ideal.span {(p : R)})) p).comp (red p)) X = X ^ p`. Simplify using `[frobenius_def]`. Establish `hX2 : ((red p).comp ((phi (R` using `R) p hp.out.pos).toRingHom.comp (smap σ))) X = X ^ p := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, smap, map_X, phi_X, map_sub, map_pow, map_add, map_one]`. Rewrite using `[add_pow_char, one_pow, add_sub_cancel_left]`. It suffices to establish `H : (frobenius (PowerSeries (R ⧸ Ideal.span {(p : R)})) p).comp (red p) = (red p).comp ((phi (R` using `R) p hp.out.pos).toRingHom.comp (smap σ)) by`. Use `congrArg (fun F => F h) H` as an intermediate fact. Simplify `this` using `[frobenius_def]`.
+Reduce the argument to an intermediate assertion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ringHom_ext_of_poly` to reduce the goal to its premises. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Polynomial.coeToPowerSeries.ringHom_apply, Polynomial.coe_C, smap, map_C, frobenius_def, ← map_pow]`. Establish `h1 : (phi (R` using `R) p hp.out.pos) (C (σ a)) = C (σ a) := (phi (R := R) p hp.out.pos).commutes (σ a)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Ideal.Quotient.mk (Ideal.span {(p : R)}) (σ a) = (Ideal.Quotient.mk (Ideal.span {(p : R)}) a) ^ p`. Rewrite using `[← map_pow]`. Conclude with `Ideal.Quotient.eq.2 (hfl.frob a)`. Rewrite using `[h1, map_C, h2, map_pow]`. Simplify using `only [RingHom.comp_apply, Polynomial.coeToPowerSeries.ringHom_apply, Polynomial.coe_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hX1`, `hX2` using `[RingHom.comp_apply]`. Rewrite `*` using `[hX1, RingHom.comp_apply]`. Rewrite using `[hX2]`. Rewrite using `[hX1]`. Conclude with `dvd_pow_self _ hp.out.ne_zero`.
-
-Rewrite using `[hX2]`. Conclude with `dvd_pow_self _ hp.out.ne_zero`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_pow_eq (σ : R ≃+* R) (hfl : FrobLift R p σ) (h : PowerSeries R) :
     red p h ^ p = red p (phi (R := R) p hp.out.pos (smap σ h)) := by
@@ -113,19 +111,17 @@ namespace GlobalTheory.Col.NormFrob
 variable {R : Type} [CommRing R] (p : ℕ) [hp : Fact p.Prime]
 
 /- English proof (translation)
-Use `haveI := hfl.dom`. Use `haveI : CharP (R ⧸ Ideal.span {(p : R)}) p := CharP.quotient R p (hfl.prime.not_unit)`. Use `haveI : CharP (PowerSeries (R ⧸ Ideal.span {(p : R)})) p := charP_of_injective_algebraMap (R := R ⧸ Ideal.span {(p : R)}) (PowerSeries.C_injective) p`. Use `haveI : (Ideal.span {(p : R)}).IsPrime := (Ideal.span_singleton_prime hfl.prime.ne_zero).2 hfl.prime`. Use `letI := (phi (R := R) p hp.out.pos).toRingHom.toAlgebra`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `letI : Module (PowerSeries R) (PowerSeries R) := Algebra.toModule`. Use `haveI : Module.Free (PowerSeries R) (PowerSeries R) := Module.Free.of_basis b`. Establish `hrank : Module.finrank (PowerSeries R) (PowerSeries R) = p`. Rewrite using `[Module.finrank_eq_card_basis b, Fintype.card_fin]`. Establish `hred0 : red p (p : PowerSeries R) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_natCast]`. Conclude with `CharP.cast_eq_zero _ p`. Establish `hcong : ∀ x g : PowerSeries R, red p (Algebra.norm (PowerSeries R) (x + (p : PowerSeries R) * g)) = red p (Algebra.norm (PowerSeries R) x)`. Introduce `x g`. Rewrite using `[Algebra.norm_eq_matrix_det b, Algebra.norm_eq_matrix_det b, RingHom.map_det, RingHom.map_det, map_add, map_mul, map_natCast, map_add, map_mul, map_natCast]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hz : ((p : ℕ) : Matrix (Fin p) (Fin p) (PowerSeries (R ⧸ Ideal.span {(p : R)}))) = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.natCast_apply]`. Apply the tactic sequence `split_ifs <;> simp [CharP.cast_eq_zero]`. Rewrite using `[hz, zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `exists_of_red_eq_zero p (h ^ p - phi (R := R) p hp.out.pos (smap σ h)) (by`. Rewrite using `[map_sub, map_pow, red_pow_eq p σ hfl h, sub_self])`. Establish `hpow : red p (normOp p h) ^ p = red p (smap σ h) ^ p`. Establish `e1 : h ^ p = phi (R` using `R) p hp.out.pos (smap σ h) + (p : PowerSeries R) * g := by rw [← hg]; ring`. Establish `e2 : Algebra.norm (PowerSeries R) (phi (R` using `R) p hp.out.pos (smap σ h)) = (smap σ h) ^ p := by`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Algebra.norm_algebraMap (S := PowerSeries R) (smap σ h)` as an intermediate fact. Rewrite `this` using `[hrank]`. Conclude with `this`. Unfold `normOp`. Rewrite using `[← map_pow, ← map_pow (Algebra.norm _), e1, hcong, e2, map_pow]`.
-
-Establish `hinj` using `frobenius_inj (PowerSeries (R ⧸ Ideal.span {(p : R)})) p`. Establish `heq : red p (normOp p h) = red p (smap σ h)` using `hinj (by simpa [frobenius_def] using hpow)`. Take `⟨r, hr⟩` from `exists_of_red_eq_zero p (normOp p h - smap σ h) (by rw [map_sub, heq, sub_self])`. Conclude with `⟨r, by rw [← hr]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem normOp_eq_smap_add (σ : R ≃+* R) (hfl : FrobLift R p σ)
     (b : @Module.Basis (Fin p) (PowerSeries R) (PowerSeries R) _ _

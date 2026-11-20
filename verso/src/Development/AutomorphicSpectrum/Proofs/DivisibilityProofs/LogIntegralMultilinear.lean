@@ -17,7 +17,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Top.GeoMix
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Consider the cases of `A`. Consider the cases of `B`. Consider the cases of `ha`. Consider the cases of `hh`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem line_ext {A B : HermLine ι} (ha : A.a = B.a) (hh : A.h = B.h) : A = B := by
   cases A
@@ -30,18 +30,18 @@ def oneLine (ι : K → Type) [∀ k, Fintype (ι k)] : HermLine ι :=
   HermLine.ofWeight (fun _ => (-1 : ℝ)) (fun _ _ _ => rfl)
 
 /- English proof (translation)
-Use `show ContDiffOn ℝ _ (fun _ => Real.exp (-(-1 : ℝ))) _`. Conclude with `contDiffOn_const`.
+A detailed English derivation is pending.
 -/
 theorem smooth_oneLine : IsSmoothHerm (oneLine ι) := by
   show ContDiffOn ℝ _ (fun _ => Real.exp (-(-1 : ℝ))) _
   exact contDiffOn_const
 
 /- English proof (translation)
-Use `contDiffOn_prod fun a _ => ?_` and prove the remaining obligations. Introduce `z hz`. Establish `h0 : (ℓ a).h z ≠ 0` using `((ℓ a).pos z hz).ne'`. Establish `hf` using `hℓ a z hz`. Establish `key : ∀ m : ℤ, ContDiffWithinAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => (ℓ a).h z ^ m) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} z`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m`. Consider the cases of `m with`. Consider the case `ofNat k => simpa only [Int.ofNat_eq_natCast, zpow_natCast] using hf.pow k`. Consider the case `negSucc k`. Simplify using `only [zpow_negSucc]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `(hf.pow (k + 1)).inv (pow_ne_zero _ h0)`. Conclude with `key _`.
+A detailed English derivation is pending.
 -/
 theorem smooth_comb {J : Type} [Fintype J] {ℓ : J → HermLine ι} (hℓ : ∀ j, IsSmoothHerm (ℓ j))
     (n : J → ℤ) : IsSmoothHerm (combLine ℓ n) := by
@@ -72,7 +72,7 @@ def lastExp {J : Type} : Option J → ℤ
   | some _ => 0
 
 /- English proof (translation)
-Apply `line_ext` to reduce the goal to its premises. Simplify using `[combLine, Fintype.sum_option, extLine, extExp]`. Use function extensionality and compare the values at `z`. Simplify using `[combLine, Fintype.prod_option, extLine, extExp]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem comb_extExp {J : Type} [Fintype J] (ℓ : J → HermLine ι) (m : J → ℤ) :
     combLine (extLine ℓ) (extExp m) = combLine ℓ m := by
@@ -82,7 +82,7 @@ theorem comb_extExp {J : Type} [Fintype J] (ℓ : J → HermLine ι) (m : J → 
     simp [combLine, Fintype.prod_option, extLine, extExp]
 
 /- English proof (translation)
-Apply `line_ext` to reduce the goal to its premises. Simplify using `[combLine, Fintype.sum_option, extLine, lastExp]`. Use function extensionality and compare the values at `z`. Simplify using `[combLine, Fintype.prod_option, extLine, lastExp]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem comb_lastExp {J : Type} [Fintype J] (ℓ : J → HermLine ι) :
     combLine (extLine ℓ) lastExp = oneLine ι := by
@@ -92,7 +92,7 @@ theorem comb_lastExp {J : Type} [Fintype J] (ℓ : J → HermLine ι) :
     simp [combLine, Fintype.prod_option, extLine, lastExp]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.arith_intersection_constant_metric II hII.1 K ι P e L (-1) hP hL`. Establish `h' : II K ι P (e + 1) (Fin.snoc L (oneLine ι)) = - -1 * ptsIntegral P (fun j z => Real.log ((L j).h z)) (fun _ => 1)` using `h`. Rewrite using `[h']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pts_eq_II (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) (P : Ideal (MRing ι))
     {e : ℕ} (L : Fin e → HermLine ι) (hP : IsArithVar P (e + 1)) (hL : ∀ j, IsSmoothHerm (L j)) :
@@ -105,29 +105,27 @@ theorem pts_eq_II (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) 
   ring
 
 /- English proof (translation)
-Establish `hext : ∀ o, IsSmoothHerm (extLine ℓ o)`. Introduce `o`. Consider the cases of `o with`. Consider the case `none => exact smooth_oneLine`. Consider the case `some j => exact hℓ j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Set `n' : Fin (e + 1) → Option J → ℤ` to `Fin.snoc (α := fun _ => Option J → ℤ) (fun k => extExp (n k)) lastExp`. Establish `hn'c : ∀ k : Fin e, n' k.castSucc = extExp (n k)` using `fun k => by simp [n']`. Establish `hn'l : n' (Fin.last e) = lastExp` using `by simp [n']`. Establish `hcomb : (Fin.snoc (fun k => combLine ℓ (n k)) (oneLine ι) : Fin (e + 1) → HermLine ι) = fun k => combLine (extLine ℓ) (n' k)`. Use function extensionality and compare the values at `k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Fin.lastCases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `[hn'l, comb_lastExp]`. Simplify using `[hn'c, comb_extExp]`. Rewrite using `[pts_eq_II II hII P _ hP (fun k => smooth_comb hℓ _), hcomb, GlobalTheory.T.arith_intersection_multilinear_all II hII K ι P (e + 1) (Option J) (extLine ℓ) n' hP hext]`. Use `symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Set `E : (Fin e → J) → (Fin (e + 1) → Option J)` to `fun w => Fin.snoc (α := fun _ => Option J) (fun k => some (w k)) none`. Establish `hEc : ∀ (w : Fin e → J) (k : Fin e), E w k.castSucc = some (w k)` using `fun w k => by simp [E]`. Establish `hEl : ∀ w : Fin e → J, E w (Fin.last e) = none` using `fun w => by simp [E]`. Use `Finset.sum_of_injOn E ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `w _ w' _ h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `k`. Use `congrFun h k.castSucc` as an intermediate fact. Rewrite `this` using `[hEc, hEc]`. Conclude with `Option.some.inj this`. Introduce `w _`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.mem_coe.2 (Finset.mem_univ _)`. Introduce `v _ hv`. Establish `hzero : ∏ k, (n' k (v k) : ℝ) = 0`. Distinguish the cases in `hl : v (Fin.last e) = none`. Distinguish the cases in `hs : ∀ k : Fin e, (v k.castSucc).isSome`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-It suffices to derive a contradiction. Apply `hv` to reduce the goal to its premises. Use `⟨fun k => (v k.castSucc).get (hs k), Finset.mem_coe.2 (Finset.mem_univ _), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Use `Fin.lastCases ?_ (fun k => ?_) k` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hEl, hl]`. Rewrite using `[hEc]`. Simplify using the standard rewrite rules. Use `push_neg at hs`. Take `⟨k, hk⟩` from `hs`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hk' : v k.castSucc = none` using `by simpa using hk`. Use `Finset.prod_eq_zero (Finset.mem_univ k.castSucc) ?_` and prove the remaining obligations. Rewrite using `[hk', hn'c]`. Simplify using `[extExp]`. Take `⟨j, hj⟩` from `Option.ne_none_iff_exists'.1 hl`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.prod_eq_zero (Finset.mem_univ (Fin.last e)) ?_` and prove the remaining obligations. Rewrite using `[hj, hn'l]`. Simplify using `[lastExp]`. Rewrite using `[hzero, zero_mul]`. Introduce `w _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlines : (fun k => extLine ℓ (E w k)) = (Fin.snoc (fun k => ℓ (w k)) (oneLine ι) : Fin (e + 1) → HermLine ι)`. Use function extensionality and compare the values at `k`. Use `Fin.lastCases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `[hEl, extLine]`. Simplify using `[hEc, extLine]`.
-
-Rewrite using `[hlines, ← pts_eq_II II hII P _ hP (fun k => hℓ _), Fin.prod_univ_castSucc]`. Simplify using `[hn'c, hn'l, hEc, hEl, extExp, lastExp]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pts_comb (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) (P : Ideal (MRing ι))
     {e : ℕ} {J : Type} [Fintype J] [DecidableEq J] (ℓ : J → HermLine ι) (n : Fin e → J → ℤ)
@@ -199,11 +197,11 @@ theorem pts_comb (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) (
     simp [hn'c, hn'l, hEc, hEl, extExp, lastExp]
 
 /- English proof (translation)
-Set `τ : Equiv.Perm (Fin (e + 1))` to `(finSuccEquivLast.trans (Equiv.optionCongr σ)).trans finSuccEquivLast.symm`. Establish `hτc : ∀ k : Fin e, τ k.castSucc = (σ k).castSucc` using `fun k => by simp [τ]`. Establish `hτl : τ (Fin.last e) = Fin.last e` using `by simp [τ]`. Establish `hcomp : (Fin.snoc (fun k => L (σ k)) (oneLine ι) : Fin (e + 1) → HermLine ι) = (Fin.snoc L (oneLine ι) : Fin (e + 1) → HermLine ι) ∘ τ`. Use function extensionality and compare the values at `k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Fin.lastCases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `[hτl]`. Simplify using `[hτc]`. Establish `hsm : ∀ j, IsSmoothHerm ((Fin.snoc L (oneLine ι) : Fin (e + 1) → HermLine ι) j)`. Introduce `j`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Fin.lastCases ?_ (fun k => ?_) j` and prove the remaining obligations. Simplify using `using smooth_oneLine`. Simplify using `using hL k`. Rewrite using `[pts_eq_II II hII P _ hP (fun k => hL _), pts_eq_II II hII P _ hP hL, hcomp]`. Conclude with `(hII.1 K ι).1 P (e + 1) _ τ hP hsm`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pts_perm (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) (P : Ideal (MRing ι))
     {e : ℕ} (L : Fin e → HermLine ι) (σ : Equiv.Perm (Fin e)) (hP : IsArithVar P (e + 1))
@@ -229,7 +227,7 @@ theorem pts_perm (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) (
   exact (hII.1 K ι).1 P (e + 1) _ τ hP hsm
 
 /- English proof (translation)
-Establish `hD` using `GlobalTheory.T.intersection_system_degree II hII.1`. Establish `h1 : ptsIntegral P (fun k z => Real.log ((L k).h z)) (fun _ => 1) = _` using `hD K ι P e L 2 hP hL Nat.prime_two`. Establish `h2 : ptsIntegral P (fun k z => Real.log ((L' k).h z)) (fun _ => 1) = _` using `hD K ι P e L' 2 hP hL' Nat.prime_two`. Establish `hdeg : (fun j => (L' j).a) = fun j => (L j).a` using `funext ha`. Rewrite using `[h1, h2, hdeg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pts_deg (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) (P : Ideal (MRing ι))
     {e : ℕ} (L L' : Fin e → HermLine ι) (hP : IsArithVar P (e + 1)) (hL : ∀ j, IsSmoothHerm (L j))
@@ -249,7 +247,7 @@ end GlobalTheory.CompanionTheory.Ar.Top.GeoMix
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-Introduce `II hII K _ ι _ P e J _ _ ℓ n hP hℓ`. Use `⟨GeoMix.pts_comb II hII P ℓ n hP hℓ, ?_⟩` and prove the remaining obligations. Introduce `L L' σ hL hL' ha`. Rewrite using `[GeoMix.pts_deg II hII P (fun k => L (σ k)) L' hP (fun k => hL _) hL' ha]`. Conclude with `GeoMix.pts_perm II hII P L σ hP hL`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geo_multilin : ∀ II : IntersectionSystem, IsFullIntersectionSystem II → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (e : ℕ) (J : Type) [Fintype J] [DecidableEq J] (ℓ : J → HermLine ι) (n : Fin e → J → ℤ), IsArithVar P (e + 1) → (∀ j, IsSmoothHerm (ℓ j)) → (ptsIntegral P (fun k z => Real.log ((combLine ℓ (n k)).h z)) (fun _ => 1) = ∑ w : Fin e → J, (∏ k, (n k (w k) : ℝ)) * ptsIntegral P (fun k z => Real.log ((ℓ (w k)).h z)) (fun _ => 1)) ∧ (∀ (L L' : Fin e → HermLine ι) (σ : Equiv.Perm (Fin e)), (∀ k, IsSmoothHerm (L k)) → (∀ k, IsSmoothHerm (L' k)) → (∀ k, (L' k).a = (L (σ k)).a) → ptsIntegral P (fun k z => Real.log ((L' k).h z)) (fun _ => 1) = ptsIntegral P (fun k z => Real.log ((L k).h z)) (fun _ => 1)) := by
   intro II hII K _ ι _ P e J _ _ ℓ n hP hℓ

@@ -13,7 +13,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.ExtraWeight
 
 /- English proof (translation)
-Rewrite using `[D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_host (D : D7) : (Module.finrank ℚ D.host.E : ℝ) = 2 * (D.R.f : ℝ) := by
   rw [D.host.finrank_cmField]
@@ -22,7 +22,7 @@ theorem finrank_host (D : D7) : (Module.finrank ℚ D.host.E : ℝ) = 2 * (D.R.f
   ring
 
 /- English proof (translation)
-The claim follows from `|(NumberField.discr D.host.E : ℝ)| ^ ((1 : ℝ) / D.R.f) = D.host.rdE ^ 2 := by have hf : (8 : ℝ) ≤ (D.R.f : ℝ) := by exact_mod_cast D.eight_le_f unfold Host.rdE rw [finrank_host, ← Real.rpow_natCast, ← Real.rpow_mul (abs_nonneg _)] congr 1 push_cast field_simp`.
+A detailed English derivation is pending.
 -/
 theorem discr_rpow (D : D7) :
     |(NumberField.discr D.host.E : ℝ)| ^ ((1 : ℝ) / D.R.f) = D.host.rdE ^ 2 := by
@@ -34,9 +34,9 @@ theorem discr_rpow (D : D7) :
   field_simp
 
 /- English proof (translation)
-Establish `hf : 8 ≤ D.R.f` using `D.eight_le_f`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hp : 1 ≤ (D.R.sigW j).1` using `by unfold Ranks.sigW; simp only; omega`. Establish `hq : 1 ≤ (D.R.sigW j).2` using `by unfold Ranks.sigW; simp only; omega`. Establish `hpq : 1 ≤ (D.R.sigW j).1 * (D.R.sigW j).2` using `Nat.mul_pos hp hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `WeightFamilies.dimY`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem two_le_dimY (D : D7) {j : ℕ} (hj : j < D.R.m) (h1 : 1 ≤ j) : 2 ≤ WeightFamilies.dimY D j := by
   have hf : 8 ≤ D.R.f := D.eight_le_f
@@ -49,15 +49,15 @@ theorem two_le_dimY (D : D7) {j : ℕ} (hj : j < D.R.m) (h1 : 1 ≤ j) : 2 ≤ W
     _ ≤ _ := Nat.mul_le_mul hf (by omega)
 
 /- English proof (translation)
-Establish `h2f : 2 * f ≤ rd` using `by nlinarith`. Establish `hrd1 : 1 ≤ rd` using `by linarith`. Establish `hT : 0 ≤ T` using `hr.trans hrT`. Establish `hc0 : 0 ≤ c` using `by rw [hc]; positivity`. Establish `hcP : c * (PP ^ 2 * rd ^ 21) ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hc, div_mul_eq_mul_div, div_le_one hq]`. Combine the equalities or inequalities in the displayed calculation. Establish `e : r * (1 + rd ^ 7 * T * c * (2 * f * ρ) ^ 2 * ρ / 2 / (1 / (2 * 5 ^ 4 * rd ^ 2))) = r + T * (c * ((g * f * ρ ^ 3) * (2 * f * rd ^ 9)))`. Rewrite using `[hg]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `a1 : g * f * ρ ^ 3 ≤ PP ^ 2`. Use `le_trans ?_ hgP` and prove the remaining obligations. Establish `: 0 ≤ g * f` using `by rw [hg]; positivity`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hρ0 hρ 3) this`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : 2 * f * rd ^ 9 ≤ rd ^ 21`. Combine the equalities or inequalities in the displayed calculation. Establish `a3 : (g * f * ρ ^ 3) * (2 * f * rd ^ 9) ≤ PP ^ 2 * rd ^ 21` using `mul_le_mul a1 a2 (by positivity) (by positivity)`. Establish `a4 : c * ((g * f * ρ ^ 3) * (2 * f * rd ^ 9)) ≤ 1` using `(mul_le_mul_of_nonneg_left a3 hc0).trans hcP`. Rewrite using `[e]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left a4 hT` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem core (r f m ρ rd PP c T g DF q : ℝ) (hg : g = 1250 * r) (hr : 0 ≤ r) (hrT : r ≤ T) (hf : 1 ≤ f) (hm : 1 ≤ m)
     (hρ0 : 0 ≤ ρ) (hρ : ρ ≤ m) (hrd : 2 * f * m ≤ rd) (hPP : 0 < PP) (hq : 0 < q)
@@ -90,29 +90,27 @@ theorem core (r f m ρ rd PP c T g DF q : ℝ) (hg : g = 1250 * r) (hr : 0 ≤ r
   linarith
 
 /- English proof (translation)
-Introduce `D B P j X K Ch Ah Cq Aq large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 hH ht hPg hj h1 hDF`. Take `⟨hA, hS, h3, -, -⟩` from `hH`. Take `⟨hn, -, -, -, -, -, -, -, -, -, -, -, -, hnV, hL, hF, -, -, -, -, hrT, -, -, h11, -, hd⟩` from `hS`. Establish `hgP` using `g0fm3_le_of_dom hPg ht hd`. Take `⟨e1, e2, e3⟩` from `tie_eqs ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hCR : CR = 7` using `ht.2.2.2.2.2.1`. Establish `hK : K.CRm = 7` using `ht.2.2.2.2.2.2.1`. Establish `hrd16` using `sixteen_le_rdE_of_parA hA`. Establish `hrd : 2 * (D.R.f : ℝ) * D.R.m ≤ D.host.rdE` using `hA.2.2.2.2.2.2.2.2.2`. Establish `hRR : WeightFamilies.RRv D 7 = D.host.rdE ^ 7`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `WeightFamilies.RRv`. Conclude with `Real.rpow_natCast D.host.rdE 7` after adjusting the coercions. Establish `hC : 1000 ≤ C2` using `ht.1 ▸ hd.1`. Establish `hPP : 0 < WeightFamilies.PPv D large₂ C2 A2`. Unfold `WeightFamilies.PPv`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `WeightFamilies.one_le_zBase large₂` as an intermediate fact. Conclude with `mul_pos (by linarith) (Real.rpow_pos_of_pos (by linarith) _)`. Take `⟨hql, -, -, hTc, -, -⟩` from `h3`. Rewrite `hql` using `[Real.rpow_zero, one_mul, hCR, hRR]`. Rewrite `hTc` using `[e1, e2, e3]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDF' : (1 : ℝ) ≤ (WeightAlgebra.DF wL : ℝ)` using `by exact_mod_cast hDF`. Establish `hrd0 : 0 < D.host.rdE` using `by linarith`. Establish `hq : (0 : ℝ) < (qq D : ℝ)` using `lt_of_lt_of_le (by positivity) hql`. Establish `hc : WeightAlgebra.cc D large₂ C2 A2 CR wL = D.host.rdE ^ 7 * WeightFamilies.PPv D large₂ C2 A2 * (WeightAlgebra.DF wL : ℝ) ^ 2 / (qq D : ℝ)`. Unfold `WeightAlgebra.cc`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hCR, hRR]`. Use `⟨by rw [hc]; positivity, hTc, ?_, ?_, ?_, two_le_dimY D hj h1, h11⟩` and prove the remaining obligations. Rewrite using `[hK, hRR]; exact one_le_pow₀ (by linarith)`. Rewrite using `[discr_rpow]`. Unfold `WeightFamilies.c1 WeightFamilies.dP`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hK, hRR]`. Use `push_cast`. Establish `hf : (8 : ℝ) ≤ (D.R.f : ℝ)` using `by exact_mod_cast D.eight_le_f`. Establish `hm : (2 : ℝ) ≤ (D.R.m : ℝ)` using `by exact_mod_cast D.R.two_le_m`. Use `core _ _ (D.R.m : ℝ) _ _ _ _ _ (g0 D : ℝ) _ _ ?_ (Nat.cast_nonneg _) ?_ (by linarith) (by linarith) (Nat.cast_nonneg _) ?_ hrd hPP hq hc hql hgP` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Unfold `g0`. Use `push_cast`. Evaluate the numerical expressions. Conclude with `(by omega : D.R.r ≤ Tn)` after adjusting the coercions. Establish `: WeightFamilies.rho D j ≤ D.R.m` using `by unfold WeightFamilies.rho Ranks.sigW; simp only; omega`.
+Evaluate the numerical expressions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this` after adjusting the coercions. Take `⟨f1, f2, f3⟩` from `hF`. Establish `l1` using `hL.1`. Take `⟨aP, aM, p1, p2, n, p3⟩` from `ka`. Unfold `addL wadd wsmul`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [WeightFamilies.Wt.mk.injEq]`. Simplify using `only at hn f2 f3`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ i`. Use `f2 τ i` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `zify`. Combine the linear equalities and inequalities to obtain the conclusion. Use function extensionality and compare the values at `τ i`. Use `f3 τ i` as an intermediate fact. Use `zify`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[f1, l1, hn, hnV]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem numbers : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (K : KAdm) (Ch Ah Cq Aq : ℝ) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CR CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ), FamilyHypotheses.HypPage large₂ X H C2 A2 CR CT ka wL wF Tn nP nW h0 → TieC K H Ch Ah Cq Aq C2 A2 CR → PageAt large₂ C2 A2 → j < D.R.m → 1 ≤ j → 1 ≤ WeightAlgebra.DF wL → 0 < WeightAlgebra.cc D large₂ C2 A2 CR wL ∧ (Tn : ℝ) * WeightAlgebra.cc D large₂ C2 A2 CR wL * g0 D ≤ 1 ∧ 1 ≤ WeightFamilies.RRv D K.CRm ∧ (D.R.r : ℝ) * (1 + WeightFamilies.c1 D K.CRm Tn (WeightAlgebra.cc D large₂ C2 A2 CR wL) j / (1 / (2 * (5 : ℝ) ^ 4 * |(NumberField.discr D.host.E : ℝ)| ^ ((1 : ℝ) / D.R.f)))) ≤ 2 * Tn ∧ addL wF wL Tn = ka ∧ 2 ≤ WeightFamilies.dimY D j ∧ 11 * WeightFamilies.dimY D j ^ 2 ≤ Tn := by
   intro D B P j X K Ch Ah Cq Aq large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 hH ht hPg hj h1 hDF

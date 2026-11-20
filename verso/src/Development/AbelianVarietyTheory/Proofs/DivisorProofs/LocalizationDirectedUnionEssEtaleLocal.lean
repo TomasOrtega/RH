@@ -5,15 +5,15 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R B _ _ _ Q _ ι _ _ _ C hC hcov hét hann`. Establish `hV` using `fun i => GlobalTheory.T.exists_subalgebra_atPrime_fractions_equiv R B Q (C i) (hann i)`. Use `choose V hVmem hVeq using hV`. Use `⟨ι, inferInstance, inferInstance, inferInstance, V, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, s, hs, hsQ, hxs⟩` from `(hVmem i x).1 hx`. Conclude with `(hVmem j x).2 ⟨a, hC hij ha, s, hC hij hs, hsQ, hxs⟩`. Introduce `x`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective Q.primeCompl x`. Take `⟨i1, h1⟩` from `hcov a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i2, h2⟩` from `hcov (s : B)`. Take `⟨k, hk1, hk2⟩` from `directed_of (· ≤ ·) i1 i2`. Conclude with `⟨k, (hVmem k _).2 ⟨a, hC hk1 h1, s, hC hk2 h2, s.2, IsLocalization.mk'_spec _ _ _⟩⟩`. Introduce `m x hx hu`. Take `⟨a, ha, s, hs, hsQ, hxs⟩` from `(hVmem m x).1 hx`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsu : IsUnit (algebraMap B (Localization.AtPrime Q) s)` using `IsLocalization.map_units _ (⟨s, hsQ⟩ : Q.primeCompl)`. Establish `hau : IsUnit (algebraMap B (Localization.AtPrime Q) a)` using `hxs ▸ hu.mul hsu`. Establish `haQ : a ∉ Q` using `(IsLocalization.AtPrime.isUnit_to_map_iff (Localization.AtPrime Q) Q a).1 hau`. Use `⟨↑hu.unit⁻¹, (hVmem m _).2 ⟨s, hs, a, ha, haQ, ?_⟩, hu.mul_val_inv⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `m`. Take `⟨A, i1, i2, i3, q, i4, ⟨e⟩⟩` from `hét m`. Take `⟨f⟩` from `hVeq m`. Conclude with `⟨A, i1, i2, i3, q, i4, ⟨e.trans f⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem localDecomp_core : ∀ (R B : Type) [CommRing R] [CommRing B] [Algebra R B] (Q : Ideal B) [Q.IsPrime] (ι : Type) [Preorder ι] [IsDirected ι (· ≤ ·)] [Nonempty ι] (C : ι → Subalgebra R B), Monotone C → (∀ b : B, ∃ i, b ∈ C i) → (∀ i, (∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] Localization.AtPrime (Q.comap ((C i).val : C i →ₐ[R] B))))) → (∀ i, ∀ c ∈ C i, ∀ t : B, t ∉ Q → t * c = 0 → ∃ s ∈ C i, s ∉ Q ∧ s * c = 0) → ∃ (μ : Type) (_ : Preorder μ) (_ : IsDirected μ (· ≤ ·)) (_ : Nonempty μ) (W : μ → Subalgebra R (Localization.AtPrime Q)), Monotone W ∧ (∀ x : Localization.AtPrime Q, ∃ m, x ∈ W m) ∧ (∀ m, ∀ x ∈ W m, IsUnit x → ∃ z ∈ W m, x * z = 1) ∧ ∀ m, (∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] W m)) := by
   intro R B _ _ _ Q _ ι _ _ _ C hC hcov hét hann

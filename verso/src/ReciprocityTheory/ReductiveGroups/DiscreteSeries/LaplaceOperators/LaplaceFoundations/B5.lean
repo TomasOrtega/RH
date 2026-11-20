@@ -6,7 +6,7 @@ noncomputable section
 namespace ReciprocityTheory.ChartRestriction.DS.Lap.Base
 
 /- English proof (translation)
-The claim follows from `LieExponentialMajorant.lieExponentialMajorant_holds`.
+A detailed English derivation is pending.
 -/
 theorem b5 : CayleyMajorantBound := LieExponentialMajorant.lieExponentialMajorant_holds
 

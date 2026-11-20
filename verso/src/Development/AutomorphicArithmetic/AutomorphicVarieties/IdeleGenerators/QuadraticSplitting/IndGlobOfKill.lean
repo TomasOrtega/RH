@@ -8,7 +8,7 @@ section
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Use `(IsUltrametricDist.norm_add_le_max (a - b) (b - x)).trans_lt (max_lt ha hb)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem c_trans {a b x : K} (ha : ‖a - b‖ < 1) (hb : ‖b - x‖ < 1) : ‖a - x‖ < 1 := by
   have := (IsUltrametricDist.norm_add_le_max (a - b) (b - x)).trans_lt (max_lt ha hb)
@@ -16,19 +16,19 @@ private theorem c_trans {a b x : K} (ha : ‖a - b‖ < 1) (hb : ‖b - x‖ < 1
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Rewrite using `[norm_sub_rev]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem c_symm {a b : K} (ha : ‖a - b‖ < 1) : ‖b - a‖ < 1 := by rwa [norm_sub_rev]
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Rewrite using `[← neg_sub', norm_neg]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem c_neg {a b : K} (ha : ‖a - b‖ < 1) : ‖-a - -b‖ < 1 := by
   rw [← neg_sub', norm_neg]; exact ha
 
 /- English proof (translation)
-Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := a - x) (y := x) (by rw [hx]; exact h.ne)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, hx, max_eq_right h.le]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem c_norm {a x : K} (h : ‖a - x‖ < 1) (hx : ‖x‖ = 1) : ‖a‖ = 1 := by
   have := IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := a - x) (y := x) (by rw [hx]; exact h.ne)
@@ -36,7 +36,7 @@ private theorem c_norm {a x : K} (h : ‖a - x‖ < 1) (hx : ‖x‖ = 1) : ‖a
   exact this
 
 /- English proof (translation)
-Establish `e : a * b - x * y = (a - x) * b + x * (b - y)` using `by ring`. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, c_norm hb hy, mul_one]` and apply the resulting hypothesis. Rewrite using `[norm_mul, hx, one_mul]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem c_mul {a b x y : K} (ha : ‖a - x‖ < 1) (hb : ‖b - y‖ < 1) (hx : ‖x‖ = 1) (hy : ‖y‖ = 1) :
     ‖a * b - x * y‖ < 1 := by
@@ -50,7 +50,7 @@ private def Sh (M : M4 K) (x : Fin 4 → K) : Prop :=
   (∀ i j, ‖M i j‖ ≤ 1) ∧ (∀ i, ‖M i i - x i‖ < 1) ∧ ∀ i j, i ≠ j → wt i j ∉ vV → ‖M i j‖ < 1
 
 /- English proof (translation)
-Establish `n : ∀ i j, ‖(M * Matrix.diagonal d) i j‖ = ‖M i j‖` using `fun i j => by`. Rewrite using `[Matrix.mul_diagonal, norm_mul, c_norm (hd j) (hy j), mul_one]`. Use `⟨fun i j => (n i j).trans_le (h.1 i j), fun i => ?_, fun i j a b => (n i j).trans_lt (h.2.2 i j a b)⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal]`. Conclude with `c_mul (h.2.1 i) (hd i) (hx i) (hy i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Sh.mul_diag {M : M4 K} {x d y : Fin 4 → K} (h : Sh M x) (hx : ∀ i, ‖x i‖ = 1) (hy : ∀ i, ‖y i‖ = 1)
     (hd : ∀ i, ‖d i - y i‖ < 1) : Sh (M * Matrix.diagonal d) (fun i => x i * y i) := by
@@ -61,7 +61,7 @@ private theorem Sh.mul_diag {M : M4 K} {x d y : Fin 4 → K} (h : Sh M x) (hx : 
   exact c_mul (h.2.1 i) (hd i) (hx i) (hy i)
 
 /- English proof (translation)
-Establish `n : ∀ i j, ‖(d • M) i j‖ = ‖M i j‖` using `fun i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, norm_mul, c_norm hd norm_one, one_mul]`. Use `⟨fun i j => (n i j).trans_le (h.1 i j), fun i => ?_, fun i j a b => (n i j).trans_lt (h.2.2 i j a b)⟩` and prove the remaining obligations. Use `c_mul hd (h.2.1 i) norm_one (hx i)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem Sh.smul {M : M4 K} {x : Fin 4 → K} {d : K} (h : Sh M x) (hx : ∀ i, ‖x i‖ = 1)
     (hd : ‖d - 1‖ < 1) : Sh (d • M) x := by
@@ -74,9 +74,9 @@ private theorem Sh.smul {M : M4 K} {x : Fin 4 → K} {d : K} (h : Sh M x) (hx : 
 end
 
 /- English proof (translation)
-Establish `e : adj (d • M) = d • adj M`. Use extensionality with `i j`. Simplify using `only [adj_apply, Matrix.smul_apply]`. Rewrite using `[smul_comm]`. Unfold `IsGSp at *`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[e, Matrix.smul_mul, Matrix.mul_smul, h, smul_smul, smul_smul, pow_two]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem gsp_smul {K : Type} [CommRing K] {ν d : K} {M : M4 K} (h : IsGSp ν M) : IsGSp (d ^ 2 * ν) (d • M) := by
   have e : adj (d • M) = d • adj M := by
@@ -90,9 +90,9 @@ section
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Conclude with `h.commutes ⟨x, hx⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hg`. Rewrite `hg` using `[IntermediateField.mem_fixingSubgroup_iff]`. Conclude with `⟨{ g.toRingEquiv with commutes' := fun x => hg x.1 x.2 }, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem mem_range (F : IntermediateField ℚ Ω) (g : G ℚ Ω) : g ∈ (resQ F).range ↔ g ∈ F.fixingSubgroup := by
   constructor
@@ -105,7 +105,7 @@ private theorem mem_range (F : IntermediateField ℚ Ω) (g : G ℚ Ω) : g ∈ 
     exact ⟨{ g.toRingEquiv with commutes' := fun x => hg x.1 x.2 }, rfl⟩
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.Af.continuous_restrictScalarsHom ℚ F Ω`.
+A detailed English derivation is pending.
 -/
 private theorem cont_res (F : IntermediateField ℚ Ω) : Continuous (resQ F) :=
   UpperTheory.V.Af.continuous_restrictScalarsHom ℚ F Ω
@@ -113,29 +113,25 @@ private theorem cont_res (F : IntermediateField ℚ Ω) : Continuous (resQ F) :=
 end
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T k₀ _ _ φ ι k t r α β R δ H`. Establish `val : ∀ g, twF T R δ g = (δ g : Qbar l) • (R (resQ T.F g) : M4 (Qbar l))` using `fun g => tw_val _ _ g`. Establish `un : ∀ i g, ‖(ch T i g : Qbar l)‖ = 1` using `fun i g => H.chars.unit _ g`. Establish `nα : ‖(α : Qbar l)‖ = 1` using `c_norm H.α_cong (un _ _)`. Establish `nβ : ‖(β : Qbar l)‖ = 1` using `c_norm H.β_cong (un _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `nγ : ‖((β / α : (Qbar l)ˣ) : Qbar l)‖ = 1`. Rewrite using `[Units.val_div_eq_div_val, norm_div, nα, nβ, div_one]`. Establish `nrm : (resQ k₀).range.Normal` using `Subgroup.normal_of_index_eq_two H.mix.index`. Establish `inn : ∀ (g : G T.F Ω) (h : G k₀ Ω), resQ k₀ h = resQ T.F g → Sh (R (resQ T.F g) : M4 (Qbar l)) (fun i => ch T i (resQ T.F g)) ∧ (‖r h 0 1‖ = 1 → ‖R (resQ T.F g) 1 0‖ = 1 ∨ (‖R (resQ T.F g) 1 2‖ = 1 ∧ ‖R (resQ T.F g) 3 0‖ = 1))`. Introduce `g h hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h', hh'⟩` from `nrm.conj_mem' (resQ k₀ h) ⟨h, rfl⟩ (resQ T.F T.g0)`. Establish `e` using `H.mix.on h h' hh'`. Establish `a` using `H.rib h ((mem_range _ _).1 ⟨g, hg.symm⟩)`. Establish `b` using `H.rib h' ((mem_range _ _).1 ⟨T.g0⁻¹ * g * T.g0, by rw [hh', hg, map_mul, map_mul, map_inv]⟩)`. Establish `ex : up D.ξ (resQ k₀ h') = up D.ξ (resQ k₀ h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hh', map_mul, map_mul, map_inv, mul_right_comm, inv_mul_cancel, one_mul]`. Rewrite `b` using `[ex]`. Take `⟨m1, m2, m3, m4⟩` from `UpperTheory.mixMatrix_residue_properties l H.hyp.good.l_odd (β / α) _ (r h) (r h') nγ (H.chars.unit _ _) a b`. Rewrite `m1`, `m2`, `m3`, `m4` using `[← e, hg]`. Use `⟨⟨m1, fun i => c_trans (m2 i) (c_symm ?_), m3⟩, m4⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `H.chars.inn g ((mem_range _ _).1 ⟨h, hg⟩) i` as an intermediate fact. Apply the tactic sequence `fin_cases i <;> exact this`. Establish `all : ∀ g : G T.F Ω, Sh (R (resQ T.F g) : M4 (Qbar l)) (fun i => ch T i (resQ T.F g))`. Introduce `g`. Distinguish the cases in `hg : resQ T.F g ∈ (resQ k₀).range`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨h, hh⟩` from `hg`. Conclude with `(inn g h hh).1`. Establish `: resQ T.F (g * T.g0⁻¹) ∈ (resQ k₀).range`. Rewrite using `[map_mul, map_inv, Subgroup.mul_mem_iff_of_index_two H.mix.index, inv_mem_iff]`. Conclude with `iff_of_false hg H.mix.nmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h, hh⟩` from `this`. Establish `s` using `(inn _ h hh).1.mul_diag (d := ![(β : Qbar l), -(α : Qbar l), -(β : Qbar l), (α : Qbar l)]) (y := fun i => ch T i (resQ T.F T.g0)) (fun i => un _ _) (fun i => un _ _) (by`. Introduce `i`. Use `fin_cases i`. Conclude with `H.β_cong`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `c_trans (c_neg H.α_cong) (c_symm H.chars.c1)`. Conclude with `c_trans (c_neg H.β_cong) (c_symm H.chars.c2)`. Conclude with `H.α_cong)`. Rewrite `s` using `[← H.mix.off, ← Units.val_mul, ← map_mul, ← map_mul, inv_mul_cancel_right]`. Use `s using 2 with i` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_mul, ← map_mul, ← map_mul, inv_mul_cancel_right]`. Establish `all' : ∀ g : G T.F Ω, Sh (twF T R δ g) (fun i => ch T i (resQ T.F g))` using `fun g => by`. Rewrite using `[val]`. Conclude with `(all g).smul (fun i => un _ _) (H.δ_one g)`. Use `⟨?_, fun g => ?_, hk Ω l c D T k₀ φ ι k t r α β R δ H, ?_, fun g => (all' g).1, fun g => (all' g).2.1, fun g => (all' g).2.2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[show (twF T R δ : G T.F Ω → M4 (Qbar l)) = _ from funext val]`. Conclude with `(Units.continuous_val.comp H.δ_cont).smul (Units.continuous_val.comp (H.cont.comp (cont_res T.F)))`. Rewrite using `[val, ← H.δ_sq g, Units.val_mul, Units.val_pow_eq_pow_val]`. Conclude with `gsp_smul (H.gsp _)`. Rewrite using `[val, H.mix.off]`.
-
-Conclude with `(Matrix.isDiag_diagonal _).smul _`. Take `⟨h, hF, h1⟩` from `H.ns`. Take `⟨g, hg⟩` from `(mem_range _ _).2 hF`. Establish `n : ∀ i j, ‖twF T R δ g i j‖ = ‖R (resQ T.F g) i j‖` using `fun i j => by`. Rewrite using `[val, Matrix.smul_apply, smul_eq_mul, norm_mul, c_norm (H.δ_one g) norm_one, one_mul]`.
-
-Break down `(inn g h hg.symm).2 h1 with e | ⟨e, e'⟩` into its components or cases. Conclude with `Or.inl ⟨g, (n _ _).trans e⟩`. Conclude with `Or.inr ⟨⟨g, (n _ _).trans e⟩, g, (n _ _).trans e'⟩`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.S2.indGlob_of_kill (hk : IndKill) : IndGlob := by
   intro Ω _ _ _ l _ c D T k₀ _ _ φ ι k t r α β R δ H

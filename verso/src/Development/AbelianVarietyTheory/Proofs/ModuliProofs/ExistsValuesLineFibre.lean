@@ -14,9 +14,9 @@ open scoped Matrix Topology
 namespace GlobalTheory.ThetaFamily
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `PowSec.exists_basis_sections hT ℂ P 1 le_rfl`. Establish `i₀ : Fin (1 ^ P.g)` using `⟨0, by simp⟩`. Establish `su : ∀ {M : Type} [AddCommMonoid M] (q : Fin (1 ^ P.g) → M), ∑ i, q i = q i₀` using `fun q => Finset.sum_eq_single i₀ (fun a _ h => absurd (Fin.ext (by have := a.2; have := i₀.2; simp at *; omega)) h) (by simp)`. Use `⟨fun i x => valAt' x _ ((β i₀).f (fun _ => i)), fun s => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, -⟩` from `hβ (secToPow s 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨a i₀, fun i x hx hi => ?_⟩` and prove the remaining obligations. Establish `hi' : ⊤ ≤ x ⁻¹ᵁ (lbPow P.L 1).U (fun _ => i)` using `fun p hp => mem_powChart.2 (hi hp)`. Establish `e` using `(congrArg (valAt' x _) ((ha (fun _ => i)).trans (su _))).trans ((valAt'_mul x _ _ _).trans (congrArg (· * _) (valAt'_constFn x _ hx _ _ hi')))`. Use `Eq.trans ?_ e` and prove the remaining obligations. Conclude with `((valAt'_res x _ (s.f i ^ 1) hi').trans (by rw [pow_one])).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_values_line (hT : Out.GlobalSectionsRankAlgClosed) (P : Out.PolAV (Sp ℂ)) :
     ∃ v : P.L.ι → (Sp ℂ ⟶ P.A.left) → ℂ, ∀ s : P.L.Sec, ∃ a : ℂ, ∀ i (x : Sp ℂ ⟶ P.A.left), x ≫ P.A.hom = 𝟙 _ →
@@ -35,9 +35,9 @@ theorem exists_values_line (hT : Out.GlobalSectionsRankAlgClosed) (P : Out.PolAV
   exact ((valAt'_res x _ (s.f i ^ 1) hi').trans (by rw [pow_one])).symm
 
 /- English proof (translation)
-Establish `h` using `isGrpPullback_pullback o.t.G z`. Take `⟨hL, hr, ⟨c', w, g, -⟩, hs⟩` from `Out.CubePf.cubePull S _ o.t.G _ (cubeMapOf h) o.t.PP o.t.cub`. Establish `semi` using `IsSemiAbelian.pullback z o.t.G o.t.semi`. Use `semi.smooth` as an intermediate fact. Take `⟨am, kt⟩` from `amplePt _ _ z _ _ _ h _ _ o.t.PP.isLB hL ⟨w, g⟩ o.ample o.ktriv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `semi.geomConnected` as an intermediate fact. Establish `: ConnectedSpace ((Over.pullback z).obj o.t.G).left` using `GeometricallyConnected.geometrically_connectedSpace (f := ((Over.pullback z).obj o.t.G).hom) (𝟙 _) (𝟙 _) ((Over.pullback z).obj o.t.G).hom (IsPullback.of_horiz_isIso ⟨(Category.id_comp _).trans (Category.comp_id _).symm⟩)`. Take `⟨d, hd⟩` from `exists_dim_of_preconnected ((Over.pullback z).obj o.t.G).hom (eSec ((Over.pullback z).obj o.t.G) (default : PrimeSpectrum ℂ))`. Take `⟨-, ws, gs', -⟩` from `hs o.t.sym`. Conclude with `exists_values_line hT { A := (Over.pullback z).obj o.t.G, g := d, smoothDim := hd, L := o.t.PP.L.pull (pullback.fst o.t.G.hom z), isLB := hL, ample := am, ktriv := kt isAb := ⟨inferInstance, inferInstance, MorphismProperty.of_isPullback (P := @IsProper) h.1 o.proper, ‹_›⟩ rigid : …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_values_line_fibre (hT : Out.GlobalSectionsRankAlgClosed) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {D : Datum H} {l : Level H} {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}} {s : S ⟶ Sp B} (o : Obj D l b s)
@@ -67,15 +67,15 @@ theorem exists_values_line_fibre (hT : Out.GlobalSectionsRankAlgClosed) {E : Typ
       sym := fun _ => ⟨⊤, trivial, gen_of_iso ((isGen_iff ws).1 gs') _⟩ }
 
 /- English proof (translation)
-Use `o.t.semi.smooth` as an intermediate fact. Establish `mem : ∀ x, pullback.fst o.t.G.hom u x ∈ o.t.G.hom ⁻¹ᵁ V` using `fun x => (congrArg (fun q => q x ∈ V) (pullback.condition (f := o.t.G.hom) (g := u))).mpr (hu (Set.mem_univ _))`. Take `⟨t, ht⟩` from `HolSec.exists_sec_pull o.t.PP.L _ _ mem θ₀ hθ₀`. Take `⟨v, hv⟩` from `exists_values_line_fibre hT o u`. Take `⟨g₀, j₀, hg₀, hb₀⟩` from `nz _ (hu (Set.mem_univ (default : PrimeSpectrum ℂ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg₁, -⟩` from `Scheme.exists_preimage_of_isPullback (IsPullback.of_hasPullback o.t.G.hom u) g₀ _ hg₀`. Take `⟨x₀, hx₀, hx₁⟩` from `ComplexPoints.exists_point_mem (pullback.snd o.t.G.hom u) (Z := (pullback.fst o.t.G.hom u ⁻¹ᵁ o.t.G.left.basicOpen (θ₀ j₀) : Scheme.Opens _)) (TopologicalSpace.Opens.isOpen _).isLocallyClosed ⟨g, by show pullback.fst o.t.G.hom u g ∈ o.t.G.left.basicOpen (θ₀ j₀)`. Rewrite using `[hg₁]`. Conclude with `hb₀⟩`. Establish `hx₂ : ⊤ ≤ (x₀ ≫ pullback.fst o.t.G.hom u) ⁻¹ᵁ o.t.G.left.basicOpen (θ₀ j₀)` using `fun p _ => hx₁ p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hv t`. Take `⟨a, ha⟩` from `hv σ`. Establish `m : ∀ j (x : Sp ℂ ⟶ pullback o.t.G.hom u), ⊤ ≤ (x ≫ pullback.fst _ _) ⁻¹ᵁ o.t.PP.L.U j → ⊤ ≤ x ⁻¹ᵁ (o.t.PP.L.pull (pullback.fst o.t.G.hom u)).U (fun _ => j)` using `fun j x h p hp => mem_pull.2 (h hp)`. Establish `hj₀ : ⊤ ≤ (x₀ ≫ pullback.fst o.t.G.hom u) ⁻¹ᵁ o.t.PP.L.U j₀` using `top_le_preimage_mono _ ((o.t.G.left.basicOpen_le _).trans inf_le_right) hx₂`. Establish `hc0 : c ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Use `(top_le_preimage_basicOpen_iff _ _ _).1 hx₂ ?_` and prove the remaining obligations. Rewrite using `[← ht j₀ x₀ hj₀, hc _ x₀ hx₀ (m _ _ hj₀), zero_mul]`. Use `⟨a / c, fun j x h₁ h₂ => ?_⟩` and prove the remaining obligations. Rewrite using `[← ht j x h₂, hc _ x h₁ (m _ _ h₂), ha _ x h₁ (m _ _ h₂)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem exists_ratio_fibre (hT : Out.GlobalSectionsRankAlgClosed) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {D : Datum H} {l : Level H} {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}} {s : S ⟶ Sp B} (o : Obj D l b s)
@@ -115,7 +115,7 @@ theorem exists_ratio_fibre (hT : Out.GlobalSectionsRankAlgClosed) {E : Type} [Fi
   field_simp
 
 /- English proof (translation)
-Use `⟨⟨fun i => constFn p _ a * s.f i, fun i j => ?_⟩, fun i x hx hi => (valAt'_mul x _ _ _).trans (congrArg (· * _) (valAt'_constFn x _ hx _ _ hi))⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, s.compat i j, mul_left_comm]`. Use `congr 2`. Establish `r : ∀ (U W : X.Opens) (h : W ≤ U), (X.presheaf.map (homOfLE h).op).hom (constFn p U a) = constFn p W a` using `fun U W h => (congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a)) (Scheme.Hom.appLE_map p (U := ⊤) (V := U) le_top (homOfLE h).op) :)`. Rewrite using `[r, r]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_sec_const_mul {X : Scheme.{0}} {L : LB X} (p : X ⟶ Sp ℂ) (s : L.Sec) (a : ℂ) :
     ∃ t : L.Sec, ∀ i (x : Sp ℂ ⟶ X), x ≫ p = 𝟙 _ → ⊤ ≤ x ⁻¹ᵁ L.U i →
@@ -130,11 +130,11 @@ theorem exists_sec_const_mul {X : Scheme.{0}} {L : LB X} (p : X ⟶ Sp ℂ) (s :
   rw [r, r]
 
 /- English proof (translation)
-Establish `hs : ((2 : ℂ)⁻¹ • (τ + τᵀ)).IsSymm`. Rewrite using `[Matrix.IsSymm, Matrix.transpose_smul, Matrix.transpose_add, Matrix.transpose_transpose, add_comm]`. Establish `hi : ((2 : ℂ)⁻¹ • (τ + τᵀ)).map Complex.im = τ.map Complex.im`. Use extensionality with `i j`. Use `congrFun (congrFun hp.1 i) j` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `at this`. Simplify using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `CanTh.thetaChar_ne_zero hs (hi ▸ hp) a b`. Establish `e : ∀ v : Fin g → ℂ, v ⬝ᵥ ((2 : ℂ)⁻¹ • (τ + τᵀ)) *ᵥ v = v ⬝ᵥ τ *ᵥ v` using `fun v => by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.smul_mulVec, Matrix.add_mulVec, dotProduct_smul, dotProduct_add, Matrix.mulVec_transpose, dotProduct_comm v (v ᵥ* τ), ← Matrix.dotProduct_mulVec, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `thetaChar at h ⊢`. Simplify `h` using `only [e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem thetaChar_ne_zero {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hp : (τ.map Complex.im).PosDef) (a b : Fin g → ℝ) :
     thetaChar τ (fun i => (a i : ℂ)) (fun i => (b i : ℂ)) ≠ 0 := by

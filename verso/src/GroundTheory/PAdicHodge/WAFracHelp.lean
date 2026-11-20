@@ -19,7 +19,7 @@ local notation "𝓣" => teichLift ℂ_[p] p
 local notation "𝔽" => frob ℂ_[p] p
 
 /- English proof (translation)
-The claim follows from `Function.Injective.isDomain (iotaPlus ℂ_[p] p) (iotaPlus_injective (K := ℂ_[p]))`.
+A detailed English derivation is pending.
 -/
 theorem isDomain_bCrisPlus : IsDomain (BCrisPlus ℂ_[p] p) :=
   Function.Injective.isDomain (iotaPlus ℂ_[p] p) (iotaPlus_injective (K := ℂ_[p]))
@@ -27,7 +27,7 @@ theorem isDomain_bCrisPlus : IsDomain (BCrisPlus ℂ_[p] p) :=
 abbrev radPhi : Set.Ioo (0 : ℝ) 1 := (𝔽).rootRadius (rhoMid p)
 
 /- English proof (translation)
-Establish `e : ((inRad p (radPhi (p` using `p)) : Set.Ioc (0 : ℝ) _) : ℝ) = rhoMid p := congrArg Subtype.val ((𝔽).powRadius_rootRadius (rhoMid p))`. Rewrite using `[e]`. Conclude with `inv_p_lt_rhoMid.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_p_le_inRad_radPhi : (p : ℝ)⁻¹ ≤ ((inRad p (radPhi (p := p)) : Set.Ioc (0 : ℝ) _) : ℝ) := by
   have e : ((inRad p (radPhi (p := p)) : Set.Ioc (0 : ℝ) _) : ℝ) = rhoMid p :=
@@ -35,9 +35,9 @@ theorem inv_p_le_inRad_radPhi : (p : ℝ)⁻¹ ≤ ((inRad p (radPhi (p := p)) :
   rw [e]; exact inv_p_lt_rhoMid.le
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `hx0`. Establish `hσ` using `inv_p_le_inRad_radPhi (p := p)`. Establish `h1` using `annNorm_bcrisToAnn_pos hσ hx0 (annOut _ _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `annNorm_frobCirc (radPhi (p := p)) (bcrisToAnn hσ x)`. Rewrite `h2` using `[frobCirc_bcrisToAnn _ hσ, hx, map_zero, (𝓣).annNorm_zero]`. Use `pow_pos h1 p` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem phiPlus_injective : Function.Injective (phiPlus ℂ_[p] p) := by
   rw [injective_iff_map_eq_zero]
@@ -55,7 +55,7 @@ section Points
 variable {ρ0 : Set.Ioo (0 : ℝ) 1} {σ0 : Set.Ioc (0 : ℝ) ρ0}
 
 /- English proof (translation)
-Rewrite using `[TeichLift.ξAnn, TeichLift.TeichIso.annMap_coeAnn, TeichLift.ξAnn]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (galIso σ).toB (algebraMap (WC p) (𝓣).B P.1) = algebraMap (WC p) (𝓣).B ((galIso σ).ψ P.1)`. Rewrite using `[TeichLift.TeichIso.toB_algebraMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annMap_ξAnn {K : IntermediateField ℚ_[p] (PadicAlgCl p)} (σ : Gal(PadicAlgCl p/K)) (P : (𝓣).Pt) :
     (galIso σ).annMap ((𝓣).ξAnn (ρ0 := ρ0) (σ0 := σ0) P.1) = (𝓣).ξAnn (galPt σ P).1 := by
@@ -66,7 +66,7 @@ theorem annMap_ξAnn {K : IntermediateField ℚ_[p] (PadicAlgCl p)} (σ : Gal(Pa
   rw [TeichLift.TeichIso.toB_algebraMap]
 
 /- English proof (translation)
-Rewrite using `[TeichLift.ξAnn, (𝓣).annRes_coeAnn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem annRes_ξAnn {ρ1 : Set.Ioo (0 : ℝ) 1} {σ1 : Set.Ioc (0 : ℝ) ρ1} (h : (ρ1 : ℝ) ≤ ρ0)
     (hs : (σ0 : ℝ) ≤ σ1) (ξ : (𝓣).int) :
@@ -74,9 +74,9 @@ theorem annRes_ξAnn {ρ1 : Set.Ioo (0 : ℝ) 1} {σ1 : Set.Ioc (0 : ℝ) ρ1} (
   rw [TeichLift.ξAnn, (𝓣).annRes_coeAnn]; rfl
 
 /- English proof (translation)
-Rewrite using `[(𝓣).isUnit_int_iff]`. Establish `h0 : (𝓣).red (P.1 : WC p) = (𝓣).red (Q.1 : WC p) * (𝓣).red (B : WC p)`. Rewrite using `[h, Subring.coe_mul, map_mul]`. Establish `hP : ‖(𝓣).red (P.1 : WC p)‖ = (𝓣).ptRad P.1` using `by rw [← coeff_zero]; rfl`. Establish `hQ : ‖(𝓣).red (Q.1 : WC p)‖ = (𝓣).ptRad Q.1` using `by rw [← coeff_zero]; rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ0 : 0 < (𝓣).ptRad Q.1` using `(𝓣).ptRad_pos' Q.2`. Use `congrArg norm h0` as an intermediate fact. Rewrite `this` using `[norm_mul, hP, hQ, hr]`. Establish `h1 : (𝓣).ptRad Q.1 * 1 = (𝓣).ptRad Q.1 * ‖(𝓣).red (B : WC p)‖` using `by rw [mul_one]; exact this`. Conclude with `(mul_left_cancel₀ hQ0.ne' h1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_of_eq_mul_of_ptRad_eq {P Q : (𝓣).Pt} {B : (𝓣).int} (h : P.1 = Q.1 * B)
     (hr : (𝓣).ptRad P.1 = (𝓣).ptRad Q.1) : IsUnit B := by
@@ -92,7 +92,7 @@ theorem isUnit_of_eq_mul_of_ptRad_eq {P Q : (𝓣).Pt} {B : (𝓣).int} (h : P.1
   exact (mul_left_cancel₀ hQ0.ne' h1).symm
 
 /- English proof (translation)
-Introduce `h0`. Rewrite `h0` using `[ξAnn_eq_toAnn, annEval_toAnn, (𝓣).ptEval_ξExt_eq Q hQ.2, (𝓣).toUntiltField_eq_zero_iff]`. Take `⟨B, hB, hPB⟩` from `((𝓣).toUntilt_eq_zero_iff (ξ := Q.1)).1 h0`. Establish `hPB' : P.1 = Q.1 * ⟨B, hB⟩` using `Subtype.ext hPB`. Conclude with `hPQ ⟨⟨B, hB⟩, isUnit_of_eq_mul_of_ptRad_eq hPB' hr, by rw [hPB', mul_comm]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem annEval_ξAnn_ne_zero {P Q : (𝓣).Pt} (hQ : (𝓣).ptRad Q.1 ∈ Set.Icc (σ0 : ℝ) ρ0)
     (hr : (𝓣).ptRad P.1 = (𝓣).ptRad Q.1) (hPQ : ¬ ∃ u : (𝓣).int, IsUnit u ∧ P.1 = u * Q.1) :

@@ -25,7 +25,7 @@ theorem gam_comp {T T' : Scheme.{0}} (x : T' ⟶ T) (s : T ⟶ Sp R) (a : R) :
   rfl
 
 /- English proof (translation)
-Establish `e` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β)`. Conclude with `(congrArg (fun g => g.hom a) e).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gam_spMap {R' : Type} [CommRing R'] (β : R →+* R') (a : R) :
     gam (spMap β) a = (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom (β a) := by
@@ -35,22 +35,22 @@ theorem gam_spMap {R' : Type} [CommRing R'] (β : R →+* R') (a : R) :
 variable {b : Base D R} {b₁ : Base D R₁}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨L.rho.symm, fun i c => (L.t i c).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem Link.symm {T : Scheme.{0}} {s : T ⟶ Sp R} {s₁ : T ⟶ Sp R₁} (L : Link b b₁ s s₁) : Link b₁ b s₁ s :=
   ⟨L.rho.symm, fun i c => (L.t i c).symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [gam_comp, gam_comp, L.rho], fun i c => by rw [gam_comp, gam_comp, L.t]⟩`.
+Supply the required witnesses or components.
 -/
 theorem Link.pull {T T' : Scheme.{0}} {s : T ⟶ Sp R} {s₁ : T ⟶ Sp R₁} (L : Link b b₁ s s₁) (x : T' ⟶ T) :
     Link b b₁ (x ≫ s) (x ≫ s₁) :=
   ⟨by rw [gam_comp, gam_comp, L.rho], fun i c => by rw [gam_comp, gam_comp, L.t]⟩
 
 /- English proof (translation)
-Establish `inj : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom` using `(Scheme.ΓSpecIso (CommRingCat.of R')).symm.commRingCatIsoToRingEquiv.injective`. Establish `L'` using `L.pull x`. Rewrite `L'` using `[h, h₁]`. Use `⟨inj ?_, fun i c => inj ?_⟩` and prove the remaining obligations. Rewrite using `[← gam_spMap, ← gam_spMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `L'.rho`. Rewrite using `[← gam_spMap, ← gam_spMap]`. Conclude with `L'.t i c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Link.eval {T : Scheme.{0}} {s : T ⟶ Sp R} {s₁ : T ⟶ Sp R₁} (L : Link b b₁ s s₁) {R' : Type} [CommRing R']
     (β : R →+* R') (β₁ : R₁ →+* R') (x : Sp R' ⟶ T) (h : x ≫ s = spMap β) (h₁ : x ≫ s₁ = spMap β₁) :

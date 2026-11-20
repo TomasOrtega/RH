@@ -15,7 +15,7 @@ open GroundTheory.Global.AdeleBaseChange (finiteAdeleMap below)
 open GroundTheory.Global.SemiLocal (completionMap)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hz`. Establish `h0 : Valued.v z ≠ 0` using `(Valuation.ne_zero_iff _).2 hz`. Take `⟨m, hm⟩ : ∃ m : ℤ, Valued.v z = WithZero.exp m` from `⟨WithZero.log _, (WithZero.exp_log h0).symm⟩`. Use `h (1 - m).toNat` as an intermediate fact. Rewrite `this` using `[hm, WithZero.exp_le_exp]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -30,9 +30,9 @@ private theorem eq_zero_of_small {E : Type} [Field E] [NumberField E] {w : Plc E
   omega
 
 /- English proof (translation)
-Establish `he : P.asIdeal.ramificationIdx (𝓞 ℚ) ≠ 0`. Introduce `h0`. Establish `h` using `GroundTheory.Global.SemiLocal.valued_completionMap (below ℚ P) P (0 : (below ℚ P).adicCompletion ℚ)`. Rewrite `h` using `[map_zero, map_zero, map_zero, h0, pow_zero]`. Conclude with `zero_ne_one h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GroundTheory.Global.SemiLocal.valued_completionMap]`. Use `le_trans ?_ ht` and prove the remaining obligations. Use `pow_le_of_le_one zero_le' (ht.trans ?_) he` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem valued_completionMap_le {E : Type} [Field E] [NumberField E] (P : Plc E)
     (t : (below ℚ P).adicCompletion ℚ) (n : ℕ) (ht : Valued.v t ≤ WithZero.exp (-(n : ℤ))) :
@@ -50,11 +50,11 @@ private theorem valued_completionMap_le {E : Type} [Field E] [NumberField E] (P 
   omega
 
 /- English proof (translation)
-Establish `aux : ∀ q : ℚ →+* v.adicCompletion ℚ, DenseRange q → φ x = ψ x`. Introduce `q hd`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_small _ fun n => ?_` and prove the remaining obligations. Establish `hopen : IsOpen {y : v.adicCompletion ℚ | Valued.v (y - x) ≤ WithZero.exp (-(n : ℤ))}` using `(GlobalTheory.Idele.isOpen_valued_le (K := ℚ) v (-(n : ℤ))).preimage (continuous_id.sub continuous_const)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `hd.exists_mem_open hopen ⟨x, by simp⟩`. Establish `hk' : Valued.v (q k - x) ≤ WithZero.exp (-(n : ℤ))`. Simplify `hk` using `only [Set.mem_setOf_eq]`. Establish `h : φ (q k) = ψ (q k)` using `RingHom.congr_fun (Subsingleton.elim (φ.comp q) (ψ.comp q)) k`. Establish `e : φ x - ψ x = ψ (q k - x) - φ (q k - x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub φ, map_sub ψ, h]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `(Valuation.map_sub _ _ _).trans (max_le (hψ n _ hk') (hφ n _ hk'))`. Conclude with `aux _ (HeightOneSpectrum.denseRange_algebraMap (K := ℚ) v)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ringHom_eq {E : Type} [Field E] [NumberField E] (P : Plc E) (v : Plc ℚ)
     (φ ψ : v.adicCompletion ℚ →+* P.adicCompletion E)
@@ -81,7 +81,7 @@ private theorem ringHom_eq {E : Type} [Field E] [NumberField E] (P : Plc E) (v :
   exact aux _ (HeightOneSpectrum.denseRange_algebraMap (K := ℚ) v)
 
 /- English proof (translation)
-The claim follows from `ringHom_eq P (below ℚ P) (GlobalTheory.AdeleBaseChange.locMap ℚ P) (completionMap (below ℚ P) P) (fun n a ha => GlobalTheory.AdeleBaseChange.locMap_valued P n a ha) (fun n a ha => valued_completionMap_le P a n ha) x`.
+A detailed English derivation is pending.
 -/
 private theorem locMap_eq {E : Type} [Field E] [NumberField E] (P : Plc E)
     (x : (below ℚ P).adicCompletion ℚ) :
@@ -91,7 +91,7 @@ private theorem locMap_eq {E : Type} [Field E] [NumberField E] (P : Plc E)
     (fun n a ha => valued_completionMap_le P a n ha) x
 
 /- English proof (translation)
-Establish `aux : ∀ q : ℚ →+* v.adicCompletion ℚ, DenseRange q → φ x = ψ x` using `fun q hd => congrFun (hd.equalizer hφ hψ (funext fun k => RingHom.congr_fun (Subsingleton.elim (φ.comp q) (ψ.comp q)) k)) x`. Conclude with `aux _ (HeightOneSpectrum.denseRange_algebraMap (K := ℚ) v)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ringHom_eq_of_continuous {R : Type} [Ring R] [TopologicalSpace R] [T2Space R]
     (v : Plc ℚ) (φ ψ : v.adicCompletion ℚ →+* R) (hφ : Continuous φ) (hψ : Continuous ψ)
@@ -102,16 +102,16 @@ private theorem ringHom_eq_of_continuous {R : Type} [Ring R] [TopologicalSpace R
   exact aux _ (HeightOneSpectrum.denseRange_algebraMap (K := ℚ) v)
 
 /- English proof (translation)
-The claim follows from `FiniteAdeleRing.ext _ fun P => locMap_eq P _`.
+A detailed English derivation is pending.
 -/
 private theorem adMap_eq {E : Type} [Field E] [NumberField E] (a : AfQ) :
     GlobalTheory.AdeleBaseChange.adMap ℚ E a = finiteAdeleMap ℚ E a :=
   FiniteAdeleRing.ext _ fun P => locMap_eq P _
 
 /- English proof (translation)
-Establish `h` using `conjPl_conjSrc (conjE E) w`. Use `HeightOneSpectrum.ext (Ideal.ext fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 ℚ) (𝓞 E) y ∈ (conjSrc (conjE E) w).asIdeal ↔ algebraMap (𝓞 ℚ) (𝓞 E) y ∈ w.asIdeal`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E), ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E), ← h]`. Establish `: conjE E ((algebraMap (𝓞 ℚ) (𝓞 E) y : 𝓞 E) : E) = ((algebraMap (𝓞 ℚ) (𝓞 E) y : 𝓞 E) : E)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `conjE E (algebraMap ℚ E (y : ℚ)) = algebraMap ℚ E (y : ℚ)`. Simplify using `[eq_ratCast]`. Rewrite using `[this]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem below_conjSrc {E : Type} [Field E] [NumberField E] [IsCMField E] (w : Plc E) :
     below ℚ (conjSrc (conjE E) w) = below ℚ w := by
@@ -125,9 +125,9 @@ private theorem below_conjSrc {E : Type} [Field E] [NumberField E] [IsCMField E]
   rw [this]
 
 /- English proof (translation)
-Use `GlobalTheory.EulerTw.pLoc_ext E fun w => ?_` and prove the remaining obligations. Rewrite using `[pLoc_conjFin]`. Establish `hb` using `below_conjSrc w`. Establish `key : ∀ (u : Plc E) (_ : below ℚ u = below ℚ w) (f : u.adicCompletion E →+* w.adicCompletion E), Continuous f → f (pLoc E u (finiteAdeleMap ℚ E a)) = pLoc E w (finiteAdeleMap ℚ E a)`. Introduce `u hu f hf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : w.asIdeal.LiesOver (below ℚ u).asIdeal := (GroundTheory.Global.AdeleBaseChange.below_eq_iff w _).1 hu.symm`. Express the relevant statement in the definitionally equal form `f (completionMap (below ℚ u) u (a (below ℚ u))) = completionMap (below ℚ w) w (a (below ℚ w))`. Rewrite using `[← GroundTheory.Global.AdeleBaseChange.completionMap_congr hu w a]`. Conclude with `ringHom_eq_of_continuous (below ℚ u) (f.comp (completionMap (below ℚ u) u)) (completionMap (below ℚ u) w) (hf.comp (GroundTheory.Global.SemiLocal.continuous_completionMap _ _)) (GroundTheory.Global.SemiLocal.continuous_completionMap _ _) _`. Conclude with `key _ hb _ (conjLoc_spec (conjE E) w).1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conj_finiteAdeleMap {E : Type} [Field E] [NumberField E] [IsCMField E] (a : AfQ) :
     conjFin (conjE E) (finiteAdeleMap ℚ E a) = finiteAdeleMap ℚ E a := by
@@ -151,17 +151,15 @@ open GlobalTheory.SplitPts (conjE)
 open GroundTheory.Global.AdeleBaseChange (finiteAdeleMap)
 
 /- English proof (translation)
-Introduce `E _ _ _`. Take `⟨ι, hι⟩` from `GlobalTheory.AdeleBaseChange.exists_toAd ℚ E`. Set `c : AfQ ⊗[ℚ] E ≃+* Formalism.L2.DIV.AfE ℚ E` to `(Algebra.TensorProduct.comm ℚ AfQ E).toRingEquiv`. Establish `hc : ∀ a x, c (a ⊗ₜ[ℚ] x) = x ⊗ₜ[ℚ] a` using `fun a x => rfl`. Establish `hc' : ∀ a x, c.symm (x ⊗ₜ[ℚ] a) = a ⊗ₜ[ℚ] x` using `fun a x => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `j` to `c.trans (RingEquiv.ofBijective ι ⟨GlobalTheory.AdeleBaseChange.map_injective hι, GlobalTheory.AdeleBaseChange.map_surjective hι⟩)`. Establish `hj : ∀ y, j y = ι (c y)` using `fun y => rfl`. Use `⟨j, fun a x => ?_, fun y => ⟨fun hy => ?_, fun hy => ?_⟩, conj_finiteAdeleMap⟩` and prove the remaining obligations. Rewrite using `[hj, hc, hι, adMap_eq, mul_comm]`. Establish `: j y ∈ Formalism.UG.intAd E`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, x, ha, rfl⟩` from `hy`. Rewrite using `[hj, hc]`. Conclude with `GlobalTheory.AdeleBaseChange.map_mem_int hι (Formalism.UG.P.levelaf_tmul_mem x ha)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `neg_mem hx`. Conclude with `this`. Establish `h : c y ∈ Formalism.L2.DIV.RInt ℚ E` using `GlobalTheory.AdeleBaseChange.mem_int_of_map hι hy`. Take `⟨m, g, hg⟩` from `Module.Finite.exists_fin (R := ℤ) (M := 𝓞 E)`. Take `⟨r, hr, e⟩` from `Formalism.UG.P.levelaf_decomp g hg h`.
-
-Establish `e' : y = c.symm (c y)` using `(c.symm_apply_apply y).symm`. Rewrite using `[e', e, map_sum]`. Use `sum_mem fun i _ => AddSubgroup.subset_closure ⟨r i, g i, hr i, ?_⟩` and prove the remaining obligations. Rewrite using `[hc']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pAdTensor :
     AdTensor := by

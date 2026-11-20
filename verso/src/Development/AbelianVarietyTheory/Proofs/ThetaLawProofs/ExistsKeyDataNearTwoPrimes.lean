@@ -21,17 +21,17 @@ open GlobalTheory.KeyPow GlobalTheory.KeyFam GlobalTheory.ZM GlobalTheory.AbLaw
 namespace GlobalTheory.KeyFam
 
 /- English proof (translation)
-Establish `h` using `isGrpPullback_pullback Q.A (spMap f)`. Set `φ : ((Over.pullback (spMap f)).obj Q.A).left ⟶ Q.A.left` to `pullback.fst Q.A.hom (spMap f)`. Express the relevant statement in the definitionally equal form `IsGrpPullback _ _ _ φ at h`. Establish `hL'` using `pull_isLB Q.isLB φ`. Establish `hw` using `(isGen_iff _).1 (idIso_isGen hL')`.
+Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `P' : Out.PolAV (Sp R')` to `{ A := (Over.pullback (spMap f)).obj Q.A isAb := Out.TLinPf.isAb_pullback (spMap f) Q.A Q.isAb g := Q.g smoothDim := (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1 Q.smoothDim L := Q.L.pull φ isLB := hL' rigid := PolBaseChange.rigidified_pull h Q.rigid sy …`. Take `⟨rig, hr⟩` from `P'.rigid`. Take `⟨th', hth'⟩` from `sec_pull_down hw Q.isLB hL' th`. Establish `h₁` using `isGrpPullback_pullback Q.A (spMap f₁)`. Establish `hA₁` using `Out.TLinPf.isAb_pullback (spMap f₁) Q.A Q.isAb`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₁` using `hA₁.comm`. Establish `c₂ : IsCommMonObj P'.A` using `P'.isAb.comm`. Establish `e : spMap g ≫ spMap f₁ = spMap f`. Rewrite using `[← hf, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `w : φ ≫ Q.A.hom = P'.A.hom ≫ spMap g ≫ spMap f₁` using `by rw [e]; exact h.1.w`. Establish `w₁ : φ ≫ Q.A.hom = (P'.A.hom ≫ spMap g) ≫ spMap f₁` using `by rw [Category.assoc]; exact w`. Establish `h₂ : IsGrpPullback P'.A _ (spMap g) (h₁.1.lift _ _ w₁)` using `IsGrpPullback.cancel h₁ (h.congr e.symm (h₁.1.lift_fst _ _ w₁).symm) (h₁.1.lift_snd _ _ w₁)`. Take `⟨v', hb', -⟩` from `exists_isLieBasis_baseChange R₁ R' g _ P'.A _ h₂ hA₁.smooth Q.g v hv`. Use `⟨⟨P', hg, rig, hr, th', fun s => ?_, v', hb'⟩, φ, h, rfl, ⟨idIso _, idIso_isGen hL'⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz, hz'⟩` from `hth s`. Take `⟨y, rfl, hy⟩` from `Scheme.exists_preimage_of_isPullback h.1 z s hz`. Take `⟨k, hk, u⟩` from `(mem_nonzeroLocus _ _).1 hz'`. Use `⟨y, hy, (mem_nonzeroLocus _ _).2 ⟨fun _ => k, mem_pull.2 hk, ?_⟩⟩` and prove the remaining obligations. Establish `u₁ : IsUnit (gs φ y _ (th.f k))` using `by rw [gs_stalkMap φ y _ hk]; exact u.map _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `hth' _ (𝟙 _) y k (fun _ => k) hk (mem_pull.2 hk)`. Rewrite `e` using `[Category.id_comp]`. Conclude with `isUnit_of_mul_isUnit_right (e ▸ u₁)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_keyIn_polPB {R R₁ R' : Type} [CommRing R] [CommRing R₁] [CommRing R'] (Q : Out.PolAV (Sp R))
     (hg : 1 ≤ Q.g) (f₁ : R →+* R₁) (g : R₁ →+* R') (f : R →+* R') (hf : g.comp f₁ = f) (th : Q.L.Sec)
@@ -78,9 +78,9 @@ theorem exists_keyIn_polPB {R R₁ R' : Type} [CommRing R] [CommRing R₁] [Comm
   exact isUnit_of_mul_isUnit_right (e ▸ u₁)
 
 /- English proof (translation)
-Introduce `hL hL₂ R _ _ Q p q hg`. Take `⟨th, a, ap, aq, ha⟩` from `GlobalTheory.T.exists_principalPolarization_section_nonzero_near_two_primes hL hL₂ R Q p q`. Establish `c : IsCommMonObj Q.A` using `Q.isAb.comm`. Take `⟨b, bp, bq, v, hv⟩` from `GlobalTheory.T.exists_lieBasis_away_avoiding_two_primes R Q.A Q.g Q.smoothDim p q`. Use `⟨b * a, fun h => (p.isPrime.mem_or_mem h).elim bp ap, fun h => (q.isPrime.mem_or_mem h).elim bq aq, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_keyIn_polPB Q hg (algebraMap R (Localization.Away b)) (IsLocalization.Away.awayToAwayRight (S := Localization.Away b) (P := Localization.Away (b * a)) b a) _ (RingHom.ext fun x => IsLocalization.Away.awayToAwayRight_eq (S := Localization.Away b) b a x) th (fun s => ha _ fu …` and prove the remaining obligations. Establish `h' : algebraMap R (Localization.Away (b * a)) a ∈ s.asIdeal` using `h`. Establish `u : IsUnit (algebraMap R (Localization.Away (b * a)) (b * a))` using `IsLocalization.Away.algebraMap_isUnit _`. Rewrite `u` using `[map_mul]`. Conclude with `s.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h' (isUnit_of_mul_isUnit_right u))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_keyIn_near_two : Out.Laws → Out.Laws2 → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (Q : Out.PolAV (Sp R)) (p q : PrimeSpectrum R), 1 ≤ Q.g → ∃ r : R, r ∉ p.asIdeal ∧ r ∉ q.asIdeal ∧ ∃ (y : KeyIn (Localization.Away r)) (φ : y.P.A.left ⟶ Q.A.left), PolPB y.P Q (spMap (algebraMap R (Localization.Away r))) φ := by
   intro hL hL₂ R _ _ Q p q hg

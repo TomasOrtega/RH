@@ -5,7 +5,7 @@ namespace GroundTheory.Heights₂.Heights
 open MeasureTheory Matrix Module
 
 /- English proof (translation)
-Establish `hcard : Fintype.card ι = finrank ℝ V`. Rewrite using `[← ZLattice.rank ℝ L, finrank_eq_card_basis b]`. Set `o : OrthonormalBasis ι ℝ V` to `(stdOrthonormalBasis ℝ V).reindex (Fintype.equivFinOfCardEq hcard).symm`. Rewrite using `[ZLattice.covolume_eq_det_mul_measureReal L volume b o.toBasis, measureReal_congr (ZSpan.fundamentalDomain_ae_parallelepiped o.toBasis volume), OrthonormalBasis.coe_toBasis, measureReal_def, o.volume_parallelepiped, ENNReal.toReal_one, mul_one, gram_eq_conjTranspose_mul o, det_mu …`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem covolume_eq_sqrt_det_gram {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V]

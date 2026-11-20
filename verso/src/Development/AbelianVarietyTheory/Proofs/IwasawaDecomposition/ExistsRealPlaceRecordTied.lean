@@ -12,11 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `H D`. Use `choose grp hgrp using fun p q : ℕ => GlobalTheory.DetSqrtCover.exists_grpData_map_haar p q (D.cd.cd p q) (D.cd.haar p q)`. Establish `key : ∀ (p q : ℕ) (lam : Ix p q → ℚ), ∃ R : DSRep (grp p q), IsParam lam → HasParam R lam`. Introduce `p q lam`. Distinguish the cases in `h : IsParam lam`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hR⟩` from `H p q (grp p q) lam h`. Conclude with `⟨R, fun _ => hR⟩`. Take `⟨R, -⟩` from `H p q (grp p q) _ (realPlaceStdParam_isParam p q)`. Conclude with `⟨R, fun h' => absurd h' h⟩`. Use `choose ds hds using key`.
-
-Apply the tactic sequence `exact ⟨⟨grp, fun p q r s => Classical.choice (GlobalTheory.T.nonempty_fockModel_unitary_dual_pair p q r s _ _ _), ds⟩, ⟨hgrp, fun p q lam h => by first | exact hds p q lam h | exact fun _ => hds p q lam h⟩⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_realPlace_record_tied :
     (∀ (p q : ℕ) (T : GrpData p q) (lam : Ix p q → ℚ), IsParam lam → ∃ R : DSRep T, HasParam R lam) →

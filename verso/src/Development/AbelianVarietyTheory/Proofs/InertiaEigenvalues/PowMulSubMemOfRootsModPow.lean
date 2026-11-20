@@ -6,19 +6,17 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ I p x y b lam n hx hy hxy hb`. Take `⟨k, hk⟩` from `Polynomial.binomExpansion p x (y - x)`. Establish `hy' : x + (y - x) = y` using `by ring`. Rewrite `hk` using `[hy']`. Take `⟨d, hdd⟩ : ∃ d, d = y - x` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hk` using `[← hdd]`. Establish `hd : d ∈ I`. Establish `e : d = -(x - y)` using `by rw [hdd]; ring`. Rewrite using `[e]`. Conclude with `I.neg_mem hxy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩ : ∃ h, h = (Polynomial.derivative p).eval x + k * d` from `⟨_, rfl⟩`. Establish `hdh : d * h ∈ I ^ n`. Establish `e : d * h = p.eval y - p.eval x` using `by rw [hk, hh]; ring`. Rewrite using `[e]`. Conclude with `sub_mem hy hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, hjj⟩ : ∃ j, j = b * h - lam` from `⟨_, rfl⟩`. Establish `hj : j ∈ I`. Establish `e : j = (b * (Polynomial.derivative p).eval x - lam) + b * k * d`. Rewrite using `[hjj, hh]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `add_mem hb (I.mul_mem_left _ hd)`. Take `⟨q, hq⟩` from `sub_dvd_pow_sub_pow lam (-j) n`. Establish `e : lam ^ n * (x - y) = -(b * q * (d * h)) - (-j) ^ n * d`. Establish `e1 : lam ^ n = (lam - -j) * q + (-j) ^ n` using `by rw [← hq]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : lam - -j = b * h` using `by rw [hjj]; ring`. Establish `e3 : x - y = -d` using `by rw [hdd]; ring`. Rewrite using `[e1, e2, e3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `sub_mem (neg_mem (Ideal.mul_mem_left _ _ hdh)) (Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow (neg_mem hj) n))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mul_sub_mem_of_roots_mod_pow :
     ∀ (R : Type) [CommRing R] (I : Ideal R) (p : Polynomial R) (x y b lam : R) (n : ℕ),

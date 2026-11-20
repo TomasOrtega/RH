@@ -12,13 +12,13 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.Fo
 namespace GlobalTheory.FormalAlg
 
 /- English proof (translation)
-Introduce `R _ _ I hI X Z hX hZ Y b hb g g' hg`. Establish `hι : IsClosedImmersion (equalizer.ι g g').left` using `isClosedImmersion_equalizer_ι_left g g'`. Establish `hN : IsLocallyNoetherian X.left` using `LocallyOfFiniteType.isLocallyNoetherian X.hom`. Establish `hle : ∀ e : ℕ, (equalizer.ι g g').left.ker ≤ baseIdeal X.hom (I ^ (e + 1))`. Introduce `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← (GlobalTheory.T.baseChange_quotient_closedImmersion_idealSheaf R (I ^ (e + 1)) X.left (Y e).left X.hom (b e) (Y e).hom (hb e)).2.1]`. Set `c : Over.mk (b e ≫ X.hom) ⟶ X` to `Over.homMk (b e) rfl`. Establish `hc : c ≫ g = c ≫ g'`. Use `ext`. Conclude with `hg e`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h1 : (equalizer.lift c hc).left ≫ (equalizer.ι g g').left = b e`. Rewrite using `[← Over.comp_left, equalizer.lift_ι]`. Both sides reduce to the same expression. Rewrite using `[← h1]`. Conclude with `Scheme.Hom.le_ker_comp _ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbot : (equalizer.ι g g').left.ker ≤ ⊥` using `GlobalTheory.T.idealSheaf_le_of_le_on_reductions_jacobson R I hI X.left X.hom _ ⊥ inferInstance fun e => (hle e).trans le_sup_right`. Establish `hiso : IsIso (equalizer.ι g g').left` using `IsClosedImmersion.isIso_iff_ker_eq_bot.2 (le_bot_iff.1 hbot)`. Use `ext`. Rewrite using `[← cancel_epi (equalizer.ι g g').left, ← Over.comp_left, ← Over.comp_left, equalizer.condition]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_eq_of_reductions_eq : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), I ≤ Ideal.jacobson ⊥ → ∀ (X Z : Over (Spec (CommRingCat.of R))), IsProper X.hom → IsSeparated Z.hom → ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (b : ∀ e, (Y e).left ⟶ X.left), (∀ e, IsPullback (b e) (Y e).hom X.hom (thick R I e)) → ∀ g g' : X ⟶ Z, (∀ e, b e ≫ g.left = b e ≫ g'.left) → g = g' := by
   intro R _ _ I hI X Z hX hZ Y b hb g g' hg

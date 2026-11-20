@@ -18,9 +18,7 @@ end
 end UpperTheory.V.Kum
 
 /- English proof (translation)
-Establish `key : MulSemiringAction.toRingAut (G F Ω) Ω v * σ = σ * MulSemiringAction.toRingAut (G F Ω) Ω u`. Use extensionality with `x`. Conclude with `h x`. Establish `e` using `congrArg (cyclotomicCharacter Ω l) key`. Rewrite `e` using `[map_mul, map_mul, mul_comm (cyclotomicCharacter Ω l σ)]`.
-
-Conclude with `mul_right_cancel e`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cycZ_eq_of_intertwined {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime]
     (σ : Ω ≃+* Ω) (u v : G F Ω) (h : ∀ x, v (σ x) = σ (u x)) : cycZ F Ω l v = cycZ F Ω l u := by
@@ -32,7 +30,7 @@ private theorem cycZ_eq_of_intertwined {F Ω : Type} [Field F] [Field Ω] [Algeb
   exact mul_right_cancel e
 
 /- English proof (translation)
-Use `Subgroup.mem_inf.mpr ⟨hv, ?_⟩` and prove the remaining obligations. Establish `hu2` using `(Subgroup.mem_inf.mp hu).2`. Rewrite `hu2`, the goal using `[Subgroup.mem_comap]`. Rewrite using `[cycZ_eq_of_intertwined l σ u v h]`. Conclude with `hu2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_levU_of_intertwined {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime]
     (U : Subgroup (G F Ω)) (n : ℕ) (σ : Ω ≃+* Ω) (u v : G F Ω) (hu : u ∈ levU l U n) (hv : v ∈ U)
@@ -44,7 +42,7 @@ private theorem mem_levU_of_intertwined {F Ω : Type} [Field F] [Field Ω] [Alge
   exact hu2
 
 /- English proof (translation)
-Use `Subgroup.mem_inf.mpr ⟨hv, ?_⟩` and prove the remaining obligations. Establish `hu2` using `(Subgroup.mem_inf.mp hu).2`. Rewrite `hu2`, the goal using `[MonoidHom.mem_ker]`. Rewrite using `[cycZ_eq_of_intertwined l σ u v h]`. Conclude with `hu2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_cycU_of_intertwined {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime]
     (U : Subgroup (G F Ω)) (σ : Ω ≃+* Ω) (u v : G F Ω) (hu : u ∈ cycU l U) (hv : v ∈ U)
@@ -56,16 +54,16 @@ private theorem mem_cycU_of_intertwined {F Ω : Type} [Field F] [Field Ω] [Alge
   exact hu2
 
 /- English proof (translation)
-The claim follows from `inf_le_inf_left _ (Subgroup.comap_mono (KStar.TotallyRealRoots.princ_anti h))`.
+A detailed English derivation is pending.
 -/
 private theorem levU_antitone {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime]
     (U : Subgroup (G F Ω)) {n m : ℕ} (h : n ≤ m) : levU l U m ≤ levU l U n :=
   inf_le_inf_left _ (Subgroup.comap_mono (KStar.TotallyRealRoots.princ_anti h))
 
 /- English proof (translation)
-Establish `h1 : IsLocallyConstant fun p : T × levU l U n => ψ₀ ⟨c p.1 p.2, hcU p.1 p.2 p.2.2⟩` using `hψ₀.comp_continuous (Continuous.subtype_mk (hc.comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd))) _)`. Establish `h2 : IsLocallyConstant fun p : T × levU l U n => ψ₀ p.2` using `hψ₀.comp_continuous continuous_snd`. Establish `hloc : IsLocallyConstant fun p : T × levU l U n => ψ₀ ⟨c p.1 p.2, hcU p.1 p.2 p.2.2⟩ - A p.1 (ψ₀ p.2)`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce and unpack `⟨t₀, u₀⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h3 : IsLocallyConstant fun p : T × levU l U n => A p.1 (ψ₀ u₀)` using `(hA (ψ₀ u₀)).comp_continuous continuous_fst`. Use `filter_upwards [(IsLocallyConstant.iff_eventually_eq _).mp h1 (t₀, u₀), (IsLocallyConstant.iff_eventually_eq _).mp h2 (t₀, u₀), (IsLocallyConstant.iff_eventually_eq _).mp h3 (t₀, u₀)] with p e1 e2 e3`. Rewrite using `[e1, e2, e3]`. Take `⟨m, hnm, hm⟩` from `levCompact F Ω l U n T M _ hU hloc (fun t u hu => sub_eq_zero.mpr (h0 t u hu))`. Conclude with `⟨m, hnm, fun t u hu => sub_eq_zero.mp (hm t u hu)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem fix_lemma_5 (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (l : ℕ) [Fact l.Prime] (U : Subgroup (G F Ω)) (hU : IsClosed (U : Set (G F Ω))) (n : ℕ)
@@ -96,7 +94,7 @@ private theorem fix_lemma_5 (F Ω : Type) [Field F] [NumberField F] [Field Ω] [
   exact ⟨m, hnm, fun t u hu => sub_eq_zero.mp (hm t u hu)⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 private theorem restr_restr {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (R M : Type) [CommRing R]
     [AddCommGroup M] [Module R M] {A B C : Subgroup (G F Ω)} (h1 : A ≤ B) (h2 : B ≤ C) (h3 : A ≤ C)
@@ -105,19 +103,17 @@ private theorem restr_restr {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (R
   rfl
 
 /- English proof (translation)
-Introduce `φ hφ`. Take `⟨hφX, hφC⟩` from `Submodule.mem_inf.mp hφ`. Take `⟨n, ψ₀, hψ₀X, hres⟩` from `xdualExt F Ω l N U R M hN hU φ hφX`. Establish `hloc : IsLocallyConstant ψ₀` using `hψ₀X.1`. Establish `hcU : ∀ g u, u ∈ levU l U n → g * u * g⁻¹ ∈ levU l U n` using `fun g u hu => mem_levU_of_intertwined l U n g.toRingEquiv u _ hu (hUn.conj_mem u (levU_le l U n hu) g) (fun x => by simp [AlgEquiv.mul_apply])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∀ g (u : levU l U n), (u : G F Ω) ∈ cycU l U → ψ₀ ⟨g * u * g⁻¹, hcU g u u.2⟩ = ρ g (ψ₀ u)`. Introduce `g u hu`. Establish `hw' : g * (u : G F Ω) * g⁻¹ ∈ cycU l U` using `mem_cycU_of_intertwined l U g.toRingEquiv u _ hu (hUn.conj_mem u (levU_le l U n u.2) g) (fun x => by simp [AlgEquiv.mul_apply])`. Establish `e1 : ψ₀ ⟨g * u * g⁻¹, hcU g u u.2⟩ = φ ⟨g * u * g⁻¹, hw'⟩`. Rewrite using `[← hres]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e2 : ψ₀ u = φ ⟨u, hu⟩`. Rewrite using `[← hres]`. Both sides reduce to the same expression. Rewrite using `[e1, e2]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.mem_iInf _).mp hφC g ⟨u, hu⟩ ⟨g * u * g⁻¹, hw'⟩ (fun x => by simp [AlgEquiv.mul_apply])`. Take `⟨m, hnm, hm⟩` from `fix_lemma_5 F Ω l U hU n (G F Ω) M ψ₀ hloc (fun g u => g * u * g⁻¹) ((continuous_fst.mul continuous_snd).mul continuous_fst.inv) hcU (fun g x => ρ g x) hρ h0`. Use `⟨m, restr R M (levU_antitone l U hnm) ψ₀, Submodule.mem_inf.mpr ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(restrMem F Ω N _ _ (levU_antitone l U hnm) R M ρ).1 (Submodule.mem_map_of_mem hψ₀X)`. Use `(Submodule.mem_iInf _).mpr fun g => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u u' hrel`. Establish `hu' : (u' : G F Ω) = g * u * g⁻¹`. Use extensionality with `x`. Establish `e` using `hrel (g⁻¹ x)`. Simplify using `only [AlgEquiv.coe_ringEquiv] at e`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgEquiv.mul_apply, ← e]`. Simplify using the standard rewrite rules. Establish `e` using `hm g (Subgroup.inclusion (levU_antitone l U hnm) u) u.2`. Use `show ψ₀ (Subgroup.inclusion _ u') = ρ g (ψ₀ (Subgroup.inclusion _ u))`. Rewrite using `[← e]`.
-
-Use `congr 1`. Conclude with `Subtype.ext hu'`. Conclude with `(restr_restr R M _ _ (cycU_le_levU l U n) ψ₀).trans hres`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem eqHom_cycU_exists_lift_levU (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (N : ℕ) (U : Subgroup (G F Ω)) [hUn : U.Normal]
@@ -167,21 +163,19 @@ private theorem eqHom_cycU_exists_lift_levU (F Ω : Type) [Field F] [NumberField
   · exact (restr_restr R M _ _ (cycU_le_levU l U n) ψ₀).trans hres
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ N U hUn R M _ _ _ ρ hN hU hρ`. Use `⟨eqHom_cycU_exists_lift_levU F Ω l N U R M ρ hN hU hρ, ?_⟩` and prove the remaining obligations. Introduce `τ σ h s hUσ φ hφ`. Take `⟨hφH, hφS⟩` from `Submodule.mem_inf.mp hφ`. Take `⟨n, ψ, hψ, hres⟩` from `eqHom_cycU_exists_lift_levU F Ω l N U R M ρ hN hU hρ φ hφH`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hloc : IsLocallyConstant ψ` using `(Submodule.mem_inf.mp hψ).1.1`. Establish `hrelc : ∀ (u : G F Ω) x, conjGal h.symm u (σ x) = σ (u x)`. Introduce `u x`. Simplify using `[conjGal_apply]`. Establish `hcU : ∀ (t : Unit) u, u ∈ levU l U n → conjGal h.symm u ∈ levU l U n` using `fun _ u hu => mem_levU_of_intertwined l U n σ u _ hu (hUσ u (levU_le l U n hu)) (hrelc u)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : ∀ (t : Unit) (u : levU l U n), (u : G F Ω) ∈ cycU l U → ψ ⟨conjGal h.symm u, hcU t u u.2⟩ = s • ψ u`. Introduce `t u hu`. Establish `hw' : conjGal h.symm (u : G F Ω) ∈ cycU l U` using `mem_cycU_of_intertwined l U σ u _ hu (hUσ u (levU_le l U n u.2)) (hrelc u)`. Establish `e1 : ψ ⟨conjGal h.symm u, hcU t u u.2⟩ = φ ⟨conjGal h.symm u, hw'⟩`. Rewrite using `[← hres]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e2 : ψ u = φ ⟨u, hu⟩`. Rewrite using `[← hres]`. Both sides reduce to the same expression. Rewrite using `[e1, e2]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hφS ⟨u, hu⟩ ⟨conjGal h.symm u, hw'⟩ (hrelc u)`. Take `⟨m, hnm, hm⟩` from `fix_lemma_5 F Ω l U hU n Unit M ψ hloc (fun _ u => conjGal h.symm u) ((continuous_conjGal h.symm).comp continuous_snd) hcU (fun _ x => s • x) (fun _ => IsLocallyConstant.const _) h0`. Use `⟨m, restr R M (levU_antitone l U hnm) ψ, Submodule.mem_inf.mpr ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(restrMem F Ω N _ _ (levU_antitone l U hnm) R M ρ).2.1 (Submodule.mem_map_of_mem hψ)`. Introduce `u u' hrel`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hu' : (u' : G F Ω) = conjGal h.symm u`. Use extensionality with `x`. Establish `e` using `hrel (σ.symm x)`. Simplify using `only [RingEquiv.apply_symm_apply] at e`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[conjGal_apply]`. Establish `e` using `hm () (Subgroup.inclusion (levU_antitone l U hnm) u) u.2`. Use `show ψ (Subgroup.inclusion _ u') = s • ψ (Subgroup.inclusion _ u)`. Rewrite using `[← e]`. Use `congr 1`.
-
-Conclude with `Subtype.ext hu'`. Conclude with `(restr_restr R M _ _ (cycU_le_levU l U n) ψ).trans hres`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.eqExt :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (N : ℕ) (U : Subgroup (G F Ω)) [U.Normal] (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] (ρ : Representation R (G F Ω) M), N ≠ 0 → IsClosed (U : Set (G F Ω)) → (∀ m, IsLocallyConstant fun g => ρ g m) →

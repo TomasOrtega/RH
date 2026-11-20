@@ -19,39 +19,33 @@ variable {HH : Type} [NormedAddCommGroup HH] [InnerProductSpace ℂ HH] [Complet
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
 
 /- English proof (translation)
-Establish `hS'` using `hS`. Take `⟨-, -, hSmul, hSinv, hSig, -, -, -, -, -, -⟩` from `hS'`. Use `haveI : SigmaFinite μS := hSig`. Use `haveI : IsFiniteMeasure (μS.restrict Ω) := isFiniteMeasure_restrict.mpr hfin.ne`. Establish `hleft : ∀ (μ : Measure G) (f : G → PiLp 2 (fun _ : Fin (Module.finrank ℂ V) => HH)), Integrable f μ → ∀ c, ⟪∫ x, f x ∂μ, c⟫_ℂ = ∫ x, ⟪f x, c⟫_ℂ ∂μ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `μ f hf c`. Rewrite using `[← inner_conj_symm, ← integral_inner hf, ← integral_conj]`. Repeatedly rewrite using `[inner_conj_symm]`. Use `set g := gvec σ w W with hg`. Establish `hgc : Continuous g` using `gvec_continuous hσ w hWc`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hWn : ∀ s ∈ S, ∀ x, ‖W (s * x)‖ = ‖W x‖`. Introduce `s hs x`. Rewrite using `[hWeq s hs x]`. Establish `h` using `hτu s hs (W x) (W x)`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : ‖τ s (W x)‖ ^ 2 = ‖W x‖ ^ 2` using `by exact_mod_cast h`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp h'`. Establish `hgn : ∀ s ∈ Ω, ∀ z, ‖g (s⁻¹ * z)‖ = ‖W z‖`. Introduce `s hs z`. Rewrite using `[hg, gvec_norm hσ hw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hWn s⁻¹ (hSinv s (hΩS hs)) z`. Establish `hgint : ∀ z, Integrable (fun s => g (s⁻¹ * z)) (μS.restrict Ω)`. Introduce `z`. Use `Integrable.mono' (integrable_const ‖W z‖) ?_ ?_` and prove the remaining obligations. Conclude with `(hgc.comp (continuous_inv.mul continuous_const)).aestronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(ae_restrict_iff' hΩm).mpr (Filter.Eventually.of_forall fun s hs => (hgn s hs z).le)`. Use `set F : G → PiLp 2 (fun _ : Fin (Module.finrank ℂ V) => HH) := fun z => ∫ s in Ω, g (s⁻¹ * z) ∂μS with hF`. Establish `hWi : Integrable W ν` using `⟨hWc.aestronglyMeasurable, hW1⟩`. Establish `hWint : Integrable (fun z => ‖W z‖) ν` using `hWi.norm`. Establish `hFint : Integrable F ν`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Integrable.mono' (hWint.const_mul (μS.real Ω)) ?_ ?_` and prove the remaining obligations. Establish `hsm : StronglyMeasurable (Function.uncurry fun (z s : G) => g (s⁻¹ * z))`. Apply `Continuous.stronglyMeasurable` to reduce the goal to its premises. Conclude with `hgc.comp ((continuous_snd.inv).mul continuous_fst)`. Conclude with `(hsm.integral_prod_right (ν := μS.restrict Ω)).aestronglyMeasurable`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Filter.Eventually.of_forall fun z => ?_` and prove the remaining obligations. Establish `h1` using `norm_integral_le_of_norm_le_const (μ := μS.restrict Ω) (f := fun s => g (s⁻¹ * z)) (C := ‖W z‖) ((ae_restrict_iff' hΩm).mpr (Filter.Eventually.of_forall fun s hs => (hgn s hs z).le))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Measure.real, Measure.restrict_apply_univ]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hY : ∀ i, (∫ z, F z ∂ν).ofLp i = yv μS ν σ w W Ω (stdOrthonormalBasis ℂ V i)`. Introduce `i`. Establish `h1` using `(PiLp.proj 2 (𝕜 := ℂ) (fun _ : Fin (Module.finrank ℂ V) => HH) i).integral_comp_comm hFint`. Simplify using `only [PiLp.proj_apply] at h1`. Rewrite using `[← h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `yv`. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Establish `h2` using `(PiLp.proj 2 (𝕜 := ℂ) (fun _ : Fin (Module.finrank ℂ V) => HH) i).integral_comp_comm (hgint z)`. Simplify using `only [PiLp.proj_apply] at h2`. Simplify using `only [hF]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← h2]`. Simplify using `[hg, gvec]`. Establish `hr : (∑ i, ‖yv μS ν σ w W Ω (stdOrthonormalBasis ℂ V i)‖ ^ 2) = ‖∫ z, F z ∂ν‖ ^ 2`. Rewrite using `[PiLp.norm_sq_eq_of_L2]`. Simplify using `only [hY]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hr]`. Use `push_cast`. Use `(inner_self_eq_norm_sq_to_K (𝕜 := ℂ) (∫ z, F z ∂ν)).symm.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use function extensionality and compare the values at `z`. Conclude with `(integral_inner hFint _).symm`. Use `_ = ∫ z, ∫ z', ∫ q, (cnt μS Ω q).toReal • Fk σ w W z z' q ∂μS ∂ν ∂ν := by`. Use `congr 1`. Use function extensionality and compare the values at `z`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `z'`. Establish `hae : ∀ᵐ p ∂((μS.restrict Ω).prod (μS.restrict Ω)), p ∈ Ω ×ˢ Ω`. Rewrite using `[Measure.prod_restrict]`. Conclude with `ae_restrict_mem (hΩm.prod hΩm)`.
-
-Establish `hint : Integrable (fun p : G × G => Fk σ w W z z' (p.1 * p.2⁻¹)) ((μS.restrict Ω).prod (μS.restrict Ω))`. Use `Integrable.mono' (integrable_const (‖W z‖ * ‖W z'‖)) ?_ ?_` and prove the remaining obligations. Conclude with `(Fk_continuous hσ w hWc (a := fun _ => z) (b := fun _ => z') (c := fun p : G × G => p.1 * p.2⁻¹) continuous_const continuous_const (continuous_fst.mul continuous_snd.inv)).aestronglyMeasurable`. Conclude with `hae.mono fun p hp => Fk_bound hσ hw hWeq hτu z z' (hSmul _ (hΩS hp.1) _ (hSinv _ (hΩS hp.2)))`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `congr 1`. Use function extensionality and compare the values at `s`. Conclude with `(integral_inner (hgint z') _).symm`. Use `_ = ∫ s in Ω, ∫ t in Ω, Fk σ w W z z' (s * t⁻¹) ∂μS ∂μS := by`. Use `setIntegral_congr_fun hΩm fun s hs => ?_` and prove the remaining obligations.
-
-Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[hg, gvec_inner]`. Conclude with `kF hσ w hSinv hWeq hτu z z' (hΩS hs)`. Use `_ = _ := conv_integral hS hΩm hΩS hfin _ (Fk_continuous hσ w hWc (a := fun _ => z) (b := fun _ => z') (c := fun q => q) continuous_const continuous_const continuous_id).stronglyMeasurable hint`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumsq_eq {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {w : HH} (hw : ‖w‖ = 1) {S : Set G}
     {μS ν : Measure G} (hS : IsHaarSub S μS) [SFinite ν] {τ : G → (V →L[ℂ] V)} {W : G → V}

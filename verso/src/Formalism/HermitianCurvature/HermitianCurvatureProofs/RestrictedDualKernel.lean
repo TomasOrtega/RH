@@ -11,7 +11,7 @@ variable {A S V : Type} [Ring A] [StarRing A] [Algebra ℂ A] [Fintype S] [Decid
   [AddCommGroup V] [Module ℂ V] [Module A V] [IsScalarTower ℂ A V]
 
 /- English proof (translation)
-Set `Ξ : Formalism.FourierDecayAlt.F7.Sesq X` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun u v : X => frmS ρ M u v) (fun u v z => by simp) (fun c u z => by simp) (fun u v z => by simp) (fun c u z => by simp)`. Establish `h` using `cs_of_pos Ξ (fun m => hP m.1 m.2) ⟨x, hx⟩ ⟨y, hy⟩`. Simplify `h` using `[Ξ, frmS_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cs_on (ρ : Rep A V) (M : SlopeTestRemainingChoices S A) (X : Submodule ℂ (Ix S → V)) (hP : IsPosOn ρ M X)
     {x y : Ix S → V} (hx : x ∈ X) (hy : y ∈ X) :
@@ -23,7 +23,7 @@ theorem cs_on (ρ : Rep A V) (M : SlopeTestRemainingChoices S A) (X : Submodule 
   simpa [Ξ, frmS_apply] using h
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `Complex.pos_iff.mp hc`. Establish `hci : c.im = 0` using `by linarith`. Rewrite using `[Complex.mul_re, Complex.mul_im, hci, hu.2]`. Prove the components needed by the constructor for the conclusion. Use polynomial arithmetic with `[hu.1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -38,11 +38,11 @@ theorem pos_mul {c u : ℂ} (hc : 0 < c) (hu : 0 ≤ u.re ∧ u.im = 0) : 0 ≤ 
 end Rep
 
 /- English proof (translation)
-Introduce `A S V _ _ _ _ _ _ _ _ _ _ ρ Ω RR TT q a Y X D hD hDX hΦ hP`. Establish `hq : q Y ≠ 0` using `hD.2.2.2.2.2`. Establish `hm : ∀ X₂, frm ρ (RR * ins a (TT (↑Y + 1))ᵀ) X₂ X₂ = q Y * frm ρ (RR * ins a (TT ↑Y)) (act (PsiP TT q a ↑Y) X₂) (act (PsiP TT q a ↑Y) X₂)`. Introduce `X₂`. Rewrite using `[d1b A S V ρ Ω RR TT q a Y hD X₂ X₂]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Use `⟨fun X₁ h₁ X₂ h₂ => ?_, fun hq0 X₂ h₂ => ?_⟩` and prove the remaining obligations. Rewrite using `[hm, d1a A S V ρ Ω RR TT q a Y hD X₁ X₂]`. Use `real_bound _ _ _ _ hq (hP X₁ h₁).2 (hP _ (hΦ X₂ h₂)).2 ?_` and prove the remaining obligations. Conclude with `cs_on ρ _ X hP h₁ (hΦ X₂ h₂)`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Conclude with `pos_mul hq0 (hP _ (hΦ X₂ h₂))`.
+A detailed English derivation is pending.
 -/
 theorem d1cSub : DualityPositiveSubspace := by
   intro A S V _ _ _ _ _ _ _ _ _ _ ρ Ω RR TT q a Y X D hD hDX hΦ hP
@@ -58,13 +58,13 @@ theorem d1cSub : DualityPositiveSubspace := by
   · rw [hm]; exact pos_mul hq0 (hP _ (hΦ X₂ h₂))
 
 /- English proof (translation)
-Introduce `A S V _ _ _ _ _ _ _ _ _ _ ρ QQ q w L X D hS hD hDX hΦ hP`. Establish `hok` using `dkDualOK S q w L hD`. Establish `hdl` using `Formalism.FourierDecayAlt.P.duality_list_holds ℂ A S QQ q w L hS hD.2.1 hD.2.2.1 hok`. Establish `hkap` using `Formalism.FourierDecayAlt.P.kappa_formula_holds ℂ S q w L hD.2.1 hD.2.2.1 hok`. Establish `h4` using `Formalism.FourierDecayAlt.P.GramProductIdentities.dkStep4 S q w L hD.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk0 : kap q w L ≠ 0` using `hdl.2.1`. Establish `hprod : (L.map fun l => qw q w l.pt).prod = kap q w L` using `by rw [hkap, h4]`. Establish `hm : ∀ X₂, frm ρ (RRw QQ (L.map dl ++ w)) X₂ X₂ = kap q w L * frm ρ (RRw QQ (L ++ w)) (act (Ps QQ q w L) X₂) (act (Ps QQ q w L) X₂)`. Introduce `X₂`. Simplify using `only [frm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[pair_act', ← act_mul, ← act_mul, hdl.2.2.2.1, act_csmul, pair_smul_left]`. Clear the denominators using the available nonvanishing facts. Use `⟨fun X₁ h₁ X₂ h₂ => ?_, fun hq0 X₂ h₂ => ?_⟩` and prove the remaining obligations. Rewrite using `[hprod, hm, dkStep1 A S V ρ QQ q w L hS hD X₁ X₂]`. Use `real_bound _ _ _ _ hk0 (hP X₁ h₁).2 (hP _ (hΦ X₂ h₂)).2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `cs_on ρ _ X hP h₁ (hΦ X₂ h₂)`. Rewrite `hq0` using `[hprod]`. Rewrite using `[hm]`. Conclude with `pos_mul hq0 (hP _ (hΦ X₂ h₂))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lemmaDKSub : LemmaDKSub := by
   intro A S V _ _ _ _ _ _ _ _ _ _ ρ QQ q w L X D hS hD hDX hΦ hP
@@ -89,10 +89,10 @@ theorem lemmaDKSub : LemmaDKSub := by
 end Formalism.FourierDecayAlt.P.RestrictedDualKernel
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.RestrictedDualKernel.d1cSub`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.duality_positive_subspace : Formalism.FourierDecayAlt.FormPairingAction.DualityPositiveSubspace := Formalism.FourierDecayAlt.P.RestrictedDualKernel.d1cSub
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.RestrictedDualKernel.lemmaDKSub`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.dual_kernel_lemma_restricted : Formalism.FourierDecayAlt.FormPairingAction.LemmaDKSub := Formalism.FourierDecayAlt.P.RestrictedDualKernel.lemmaDKSub

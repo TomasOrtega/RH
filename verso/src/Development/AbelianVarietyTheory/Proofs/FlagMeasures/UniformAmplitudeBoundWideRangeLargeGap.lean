@@ -32,7 +32,7 @@ namespace GlobalTheory.UnifPTGap
 open Formalism.MainNotions.BridgeLemma
 
 /- English proof (translation)
-Use `haveI : Fact Formalism.L2.SG.Pf.SzHypFD.DsigHC := ⟨hDs⟩`. Conclude with `level_frame_of_sizes Fm Cg cb Cu cT CT C0 1 (by linarith) (level_formula_family Fm C0 Cg cb Cu cT CT (fun x i => mass_ratio_of_siegel_cm_unramified hM (Fm.D x i)) (mass_two_bound_family_holds Fm) hR) (Formalism.L2.SG.Pf.SzHypFam.localSplitExponents_of_forty_le_sCl Fm h40 C0 Cg cb …`.
+A detailed English derivation is pending.
 -/
 theorem tFrame_of_dsig (hM : Formalism.HermitianLatticesTheory.SiegelMassRatio) (hDs : Formalism.L2.SG.Pf.SzHypFD.DsigHC)
     {eps : ℝ} (Fm : FamP eps) (h40 : 40 ≤ sCl Fm) {C0 Cg cb Cu cT CT : ℝ}
@@ -43,13 +43,13 @@ theorem tFrame_of_dsig (hM : Formalism.HermitianLatticesTheory.SiegelMassRatio) 
     (Formalism.L2.SG.Pf.SzHypFam.localSplitExponents_of_forty_le_sCl Fm h40 C0 Cg cb Cu cT CT)
 
 /- English proof (translation)
-Introduce `hM hH hBp Cg cb Cu cT CT C0 C1`. Use `set Cβ : ℝ := max 2 (max Cu (max CT (1 / 8 + 2 * Cg))) with hCβ`. Establish `hβ2 : 2 ≤ Cβ` using `le_max_left _ _`. Establish `hu : Cu ≤ Cβ` using `(le_max_left _ _).trans (le_max_right _ _)`. Establish `hT : CT ≤ Cβ * 1` using `by rw [mul_one]; exact ((le_max_left _ _).trans (le_max_right _ _)).trans (le_max_right _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : 1 / 8 + 2 * Cg ≤ Cβ * 1`. Rewrite using `[mul_one]`. Conclude with `((le_max_right _ _).trans (le_max_right _ _)).trans (le_max_right _ _)`. Take `⟨Cb, Cg₀, hBP⟩` from `(GlobalTheory.T.besselPointwiseBound_at_largeGaps hH hBp 1).imp fun _ h => h.imp fun _ h Cg hCg => (h Cg hCg).2.2`. Take `⟨Cgf, hOB⟩` from `GlobalTheory.T.oneBessel_torusTranslates_largeGap hH`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Cf, hCf, hFrm⟩` from `GlobalTheory.FrameTurn.frameChange_of_frames 1 Cgf 2 zero_le_one (by norm_num)`. Take `⟨Ca, hCa, hAmp⟩` from `GlobalTheory.T.amplitude_eq_besselFunction_largeGaps hH Cg cb Cu cT CT C0 C1`. Use `⟨max (Ca + Cβ * (Cf + max Cb 0 + Cf * max Cb 0)) (max Cb 0), 1000, fun eps Fm _ hl hR Cn => ?_⟩` and prove the remaining obligations. Take `⟨m₀, hA⟩` from `hAmp Cn`. Take `⟨x0, hx0⟩` from `GlobalTheory.family_sizes_eventually_large eps Fm m₀`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hAmpF : OwnEv Fm fun C' Cl x i => Bridge.AmpIsBessel (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 Cn C1 Ca` using `⟨x0, fun x hx i => hA (Fm.D x i) (Fm.L x i) _ _ hl (hx0 x hx i).2.2.2.2.1 (hx0 x hx i).2.1 (Fm.ties x i).cdScale_tie⟩`. Take `⟨a', hFr⟩` from `hFrm Cn`. Establish `hStd` using `Formalism.MainNotions.BridgeLemma.stdHypS_of Fm Cg cb Cu cT CT C0 1 Cβ (by linarith) zero_le_one hβ2 hu hT hg (max Cg₀ a') (200 * Cn)`. Establish `hTF` using `tFrame_of_dsig hM hH.2.2.2 Fm (by linarith) hR`. Conclude with `Formalism.MainNotions.S.OwnEv.mono (fun C' Cl x i H => AuxiliaryNormPrimes.plancherelBoundOneParameter_of_uniformity _ _ _ _ _ _ _ _ _ _ Cn C1 Ca 1 Cf (max Cg₀ a') (200 * Cn) Cβ (max Cb 0) _ H.1.1 (hFr _ (le_max_right _ _) _ (Formalism.MainNotions.OnePlaceExpansion.frame_bound_of …`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem uniformPT_gap : Formalism.HermitianLatticesTheory.SiegelMassRatio → GlobalTheory.GapIn.Hyp → BpJoin.ThmBpDS →
     ∀ Cg cb Cu cT CT C0 C1 : ℝ, ∃ C thr : ℝ, ∀ (eps : ℝ) (Fm : FamP eps),

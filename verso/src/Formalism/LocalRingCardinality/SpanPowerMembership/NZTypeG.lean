@@ -434,7 +434,7 @@ def nexpL {what₂ : Rows.Data R} [NumberField what₂.LL] [StarRing what₂.LL]
   hkF i := i.elim
 
 /- English proof (translation)
-Introduce `i` and use `i.elim`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem l_Z_tie (what₂ : Rows.Data R) (h : NHyp H what₂)
     (lab : ∀ k, what₂.FT → Fin R.f → Polynomial (ZMod (H.g k)))
@@ -443,7 +443,7 @@ theorem l_Z_tie (what₂ : Rows.Data R) (h : NHyp H what₂)
   fun i => i.elim
 
 /- English proof (translation)
-Introduce `i` and use `i.elim`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem l_Zgood_tie (what₂ : Rows.Data R) (h : NHyp H what₂)
     (lab : ∀ k, what₂.FT → Fin R.f → Polynomial (ZMod (H.g k)))
@@ -453,7 +453,7 @@ theorem l_Zgood_tie (what₂ : Rows.Data R) (h : NHyp H what₂)
   fun i => i.elim
 
 /- English proof (translation)
-Introduce `j w _ _`. Rewrite using `[hη]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem l_etaJ_tie (what₂ : Rows.Data R) (h : NHyp H what₂)
     (lab : ∀ k, what₂.FT → Fin R.f → Polynomial (ZMod (H.g k)))

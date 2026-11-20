@@ -15,7 +15,7 @@ namespace GlobalTheory.SplitPlaceIdem
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_conj {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -23,11 +23,11 @@ theorem conj_conj {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) 
   rw [h.2.2.2, h.2.2.2, star_star]
 
 /- English proof (translation)
-Establish `hs` using `Subalgebra.isSimpleOrder_of_finrank h.2.2.1`. Break down `hs.eq_bot_or_eq_top (AlgHom.equalizer σ (AlgHom.id F E)) with hb | ht` into its components or cases. Establish `: x ∈ AlgHom.equalizer σ (AlgHom.id F E)` using `hx`. Rewrite `this` using `[hb]`. Conclude with `Algebra.mem_bot.1 this`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `h.2.1` as an intermediate fact. Apply `IsTotallyComplex.complexEmbedding_not_isReal τ` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Establish `h1 : σ y = y` using `show y ∈ AlgHom.equalizer σ (AlgHom.id F E) from ht ▸ Algebra.mem_top`. Establish `h2` using `h.2.2.2 τ y`. Rewrite `h2` using `[h1]`. Simplify `h2.symm` using `[ComplexEmbedding.conjugate_coe_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_of_fixed {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {x : E} (hx : σ x = x) :
     ∃ a : F, algebraMap F E a = x := by
@@ -48,9 +48,9 @@ theorem exists_of_fixed {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {x : E} (hx : 
     simpa [ComplexEmbedding.conjugate_coe_eq] using h2.symm
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_of_fixed h hx`. Establish `hi : IsIntegral ℤ a`. Establish `: IsIntegral ℤ (x : E)` using `x.isIntegral_coe`. Rewrite `this` using `[← ha]`. Conclude with `(isIntegral_algebraMap_iff (algebraMap F E).injective).1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨a, hi⟩, Subtype.ext ha⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_int_of_fixed {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {x : 𝓞 E} (hx : σ x = x) :
     ∃ a : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) a = x := by
@@ -62,15 +62,13 @@ theorem exists_int_of_fixed {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {x : 𝓞 
   exact ⟨⟨a, hi⟩, Subtype.ext ha⟩
 
 /- English proof (translation)
-Take `⟨P, Q, hPQ, hP, hQ⟩` from `hv`. Establish `hne : ¬ P.asIdeal ≤ Q.asIdeal` using `fun hle => hPQ (HeightOneSpectrum.ext (P.isMaximal.eq_of_le Q.isPrime.ne_top hle))`. Take `⟨ξ, hξP, hξQ⟩` from `SetLike.not_le_iff_exists.1 hne`. Establish `hi : IsIntegral ℤ (σ (ξ : E))` using `(ξ.isIntegral_coe).map (σ.toRingHom.toIntAlgHom)`. Use `set η : 𝓞 E := ⟨σ (ξ : E), hi⟩ with hη`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `exists_int_of_fixed h (x := ξ + η) (by show σ ((ξ : E) + σ (ξ : E)) = (ξ : E) + σ (ξ : E)`. Rewrite using `[map_add, conj_conj h, add_comm])`. Take `⟨n, hn⟩` from `exists_int_of_fixed h (x := ξ * η) (by show σ ((ξ : E) * σ (ξ : E)) = (ξ : E) * σ (ξ : E)`. Rewrite using `[map_mul, conj_conj h, mul_comm])`. Establish `hnv : n ∈ v.asIdeal`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hP, Ideal.mem_comap, hn]`. Conclude with `P.asIdeal.mul_mem_right _ hξP`. Establish `hηQ : η ∈ Q.asIdeal`. Establish `: ξ * η ∈ Q.asIdeal`. Rewrite using `[← hn, ← Ideal.mem_comap, hQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hnv`. Conclude with `(Q.isPrime.mem_or_mem this).resolve_left hξQ`. Use `⟨ξ, t, n, ?_, ?_, fun htv => hξQ ?_, hnv⟩` and prove the remaining obligations. Conclude with `(congrArg (fun z : 𝓞 E => (z : E)) ht).symm`. Conclude with `(congrArg (fun z : 𝓞 E => (z : E)) hn).symm`.
-
-Rewrite `htv` using `[← hQ, Ideal.mem_comap, ht]`. Simplify using `using Q.asIdeal.sub_mem htv hηQ`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_trace_norm {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : Pl F} (hv : Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v) :
     ∃ (ξ : 𝓞 E) (t n : 𝓞 F), (ξ : E) + σ ξ = algebraMap F E t ∧ (ξ : E) * σ ξ = algebraMap F E n ∧
@@ -101,17 +99,15 @@ theorem exists_trace_norm {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : Pl F} (
     simpa using Q.asIdeal.sub_mem htv hηQ
 
 /- English proof (translation)
-Use `set T : v.adicCompletionIntegers F := algebraMap (𝓞 F) _ t with hT`. Use `set N : v.adicCompletionIntegers F := algebraMap (𝓞 F) _ n with hN`. Establish `hTc : (T : Fv F v) = algebraMap F (Fv F v) t` using `rfl`. Establish `hNc : (N : Fv F v) = algebraMap F (Fv F v) n` using `rfl`. Establish `hNm : N ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Formalism.BasicNotions.Examples₂.adicInt_mem_max_iff, hNc, Formalism.BasicNotions.Examples₂.adicCompl_val_algebraMap]`. Conclude with `(v.valuation_lt_one_iff_mem n).2 hn`. Establish `hTm : T ∉ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)`. Rewrite using `[Formalism.BasicNotions.Examples₂.adicInt_mem_max_iff, hTc, Formalism.BasicNotions.Examples₂.adicCompl_val_algebraMap]`. Conclude with `fun h => ht ((v.valuation_lt_one_iff_mem t).1 h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hTu : IsUnit T`. Assume the negation of the conclusion as `h`. Conclude with `hTm h`. Establish `hmon : (Polynomial.X ^ 2 - Polynomial.C T * Polynomial.X + Polynomial.C N).Monic` using `by monicity!`. Take `⟨a, ha, ham⟩` from `HenselianLocalRing.is_henselian _ hmon 0 (by simpa using hNm) (by simpa using hTu)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `ham` using `[sub_zero]`. Establish `hu : IsUnit (T - 2 * a)`. Assume the negation of the conclusion as `h`. Apply `hTm` to reduce the goal to its premises. Establish `h' : T - 2 * a ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)` using `h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using add_mem h' (Ideal.mul_mem_left _ 2 ham)`. Take `⟨c, hc⟩` from `hu.exists_left_inv`. Use `⟨a, c, a.2, c.2, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : a * a - T * a + N = 0`. Use `ha.eq_zero` as an intermediate fact.
-
-Simplify `this` using `[pow_two]`. Rewrite using `[← hTc, ← hNc]`. Conclude with `congrArg (fun z : v.adicCompletionIntegers F => (z : Fv F v)) h1` after adjusting the coercions. Rewrite using `[← hTc]`. Conclude with `congrArg (fun z : v.adicCompletionIntegers F => (z : Fv F v)) hc`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root (v : Pl F) {t n : 𝓞 F} (ht : t ∉ v.asIdeal) (hn : n ∈ v.asIdeal) :
     ∃ α c : Fv F v, α ∈ v.adicCompletionIntegers F ∧ c ∈ v.adicCompletionIntegers F ∧
@@ -149,9 +145,9 @@ theorem exists_root (v : Pl F) {t n : 𝓞 F} (ht : t ∉ v.asIdeal) (hn : n ∈
     exact congrArg (fun z : v.adicCompletionIntegers F => (z : Fv F v)) hc
 
 /- English proof (translation)
-Establish `h1 : evFin F v (1 - GlobalTheory.LatVac.liftV v 1) = 0`. Rewrite using `[map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self]`. Establish `h2` using `ha _ h1`. Establish `h3` using `hb _ h1`. Establish `h4` using `GlobalTheory.LatVac.at_liftV v 1 (a - b) (by rw [map_sub, h, sub_self])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [smul_eq_mul] at h2 h3 h4`. Take the linear combination `h2 - h3 + h4`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eq_of_at {v : Pl F} {a b : AF F} (ha : At (evFin F v) a) (hb : At (evFin F v) b)
     (h : evFin F v a = evFin F v b) : a = b := by
@@ -164,7 +160,7 @@ theorem eq_of_at {v : Pl F} {a b : AF F} (ha : At (evFin F v) a) (hb : At (evFin
   linear_combination h2 - h3 + h4
 
 /- English proof (translation)
-Introduce `u hu`. Use `ha u hu` as an intermediate fact. Simplify using `only [smul_eq_mul] at this ⊢`. Rewrite using `[← mul_assoc, this, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_mul {v : Pl F} {a : AF F} (ha : At (evFin F v) a) (b : AF F) : At (evFin F v) (a * b) := by
   intro u hu
@@ -173,11 +169,11 @@ theorem at_mul {v : Pl F} {a : AF F} (ha : At (evFin F v) a) (b : AF F) : At (ev
   rw [← mul_assoc, this, zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hv, y, hy, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a * b, at_mul ha b, ?_, x • y, W.L.smul_mem x hy, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem hv hb`. Use function extensionality and compare the values at `i show (b ⊗ₜ[F] (x : E) : AE F E) * (a • ((1 : AF F) ⊗ₜ[F] (y i))) = (a * b) • ((1 : AF F) ⊗ₜ[F] ((x : E) * y i))`. Rewrite using `[TensorProduct.smul_tmul', TensorProduct.smul_tmul', Algebra.TensorProduct.tmul_mul_tmul]`. Simplify using `[mul_comm]`. Consider the case `zero => rw [smul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tmul_smul_mem {d : ℕ} (W : Spc F E d) (v : Pl F) {b : AF F} (hb : evFin F v b ∈ v.adicCompletionIntegers F)
     (x : 𝓞 E) {z : Fin d → AE F E} (hz : z ∈ GlobalTheory.InertSph.latAt W v) :
@@ -196,25 +192,25 @@ theorem tmul_smul_mem {d : ℕ} (W : Spc F E d) (v : Pl F) {b : AF F} (hb : evFi
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB v hv`. Take `⟨ξ, t, n, ht, hn, htv, hnv⟩` from `exists_trace_norm hB.cm hv`. Take `⟨α, c, hα, hc, hroot, hinv⟩` from `exists_root v htv hnv`. Take `⟨e, he, hev⟩ : ∃ e : AF F, At (evFin F v) e ∧ evFin F v e = 1` from `⟨_, GlobalTheory.LatVac.at_liftV v 1, GlobalTheory.LatVac.evFin_liftV v 1⟩`. Take `⟨C, hC, hCv⟩ : ∃ C : AF F, At (evFin F v) C ∧ evFin F v C = c` from `⟨_, GlobalTheory.LatVac.at_liftV v c, GlobalTheory.LatVac.evFin_liftV v c⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hAv⟩ : ∃ A : AF F, evFin F v A = α` from `⟨_, GlobalTheory.LatVac.evFin_liftV v α⟩`. Establish `hee : e * e = e` using `eq_of_at (at_mul he e) he (by rw [map_mul, hev, one_mul])`. Establish `hCe : C * e = C` using `eq_of_at (at_mul hC e) hC (by rw [map_mul, hev, mul_one])`. Establish `h1 : C * (algebraMap F (AF F) t - 2 * A) = e` using `eq_of_at (at_mul hC _) he (by`. Rewrite using `[map_mul, map_sub, map_mul, AlgHom.commutes, map_ofNat, hCv, hAv, hev, hinv])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : C * (A * A - algebraMap F (AF F) t * A + algebraMap F (AF F) n) = 0`. Rewrite using `[mul_comm]`. Use `hC _ ?_` and prove the remaining obligations. Rewrite using `[map_add, map_sub, map_mul, map_mul, AlgHom.commutes, AlgHom.commutes, hAv, hroot]`. Use `set φ := algebraMap (AF F) (AE F E) with hφ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set x : AE F E := (1 : AF F) ⊗ₜ[F] (ξ : E) with hx`. Use `set y : AE F E := (1 : AF F) ⊗ₜ[F] (σ (ξ : E)) with hy`. Establish `hFE : ∀ s : F, ((1 : AF F) ⊗ₜ[F] (algebraMap F E s) : AE F E) = φ (algebraMap F (AF F) s)`. Introduce `s`. Rewrite using `[hφ, ← IsScalarTower.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxy1 : x + y = φ (algebraMap F (AF F) t)`. Rewrite using `[hx, hy, ← TensorProduct.tmul_add, ht, hFE]`. Establish `hxy2 : x * y = φ (algebraMap F (AF F) n)`. Rewrite using `[hx, hy, Algebra.TensorProduct.tmul_mul_tmul, hn, one_mul, hFE]`. Establish `hcx : cA σ x = y` using `by simp [hx, hy, cA]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcθ : cA σ (φ C * (x - φ A)) = φ C * (y - φ A)`. Rewrite using `[map_mul, map_sub, hcx, hφ, AlgHom.commutes, AlgHom.commutes]`. Establish `g1` using `congrArg φ h1`. Establish `g2` using `congrArg φ h2`. Establish `g3` using `congrArg φ hCe`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_sub, map_add, map_ofNat, map_zero, ← hxy1, ← hxy2] at g1 g2 g3`. Establish `s1 : φ C * (x - φ A) + φ C * (y - φ A) = φ e` using `by linear_combination g1`. Establish `s2 : φ C * (x - φ A) * (φ C * (y - φ A)) = 0` using `by linear_combination φ C * g2`. Establish `hθ : ∀ {d : ℕ} (W : Spc F E d), ∀ z ∈ GlobalTheory.InertSph.latAt W v, (φ C * (x - φ A)) • z ∈ GlobalTheory.InertSph.latAt W v`. Introduce `d W z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : φ C * (x - φ A) = (C ⊗ₜ[F] (ξ : E) : AE F E) - (C * A) ⊗ₜ[F] ((1 : 𝓞 E) : E)`. Simplify using `[hφ, hx, mul_sub, Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[e1, sub_smul]`. Use `sub_mem (tmul_smul_mem W v (hCv ▸ hc) ξ hz) (tmul_smul_mem W v ?_ 1 hz)` and prove the remaining obligations. Rewrite using `[map_mul, hCv, hAv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem hc hα`. Use `⟨e, φ C * (x - φ A), he, hev, hee, ?_, ?_, ?_, fun W z hz => ⟨hθ W z hz, ?_⟩⟩` and prove the remaining obligations. Take the linear combination `(φ C * (x - φ A)) * s1 - s2 + (x - φ A) * g3`. Rewrite using `[hcθ, s2]`. Rewrite using `[hcθ, s1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : cA σ (φ C * (x - φ A)) = (e ⊗ₜ[F] ((1 : 𝓞 E) : E) : AE F E) - φ C * (x - φ A)`. Rewrite using `[hcθ, eq_sub_iff_add_eq', s1]`. Simplify using `[hφ]`. Rewrite using `[e2, sub_smul]`. Conclude with `sub_mem (tmul_smul_mem W v (hev ▸ one_mem _) 1 hz) (hθ W z hz)`.
+A detailed English derivation is pending.
 -/
 theorem exists_split_idem : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v →

@@ -20,7 +20,7 @@ def AdmissibleHodgeTateZetaClassParams {l : ℕ} [Fact l.Prime] (e : ℕ) (X : T
     ‖α‖ = 1 ∧ ∀ b ∈ X.B N l (2 * e - 1), pr (X.heckeU l b) = α • pr b
 
 /- English proof (translation)
-Introduce `h` and use `by have := h.1; omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {l : ℕ} [Fact l.Prime] (e : ℕ) (X : Tower Ω ε) (pr : X.Fn l → Fin 2 → Qbar l) (gm : (ZMod l)ˣ → SL(2, ℤ)) (α : Qbar l) :
     ¬ AdmissibleHodgeTateZetaClassParams e X pr 4 gm α := fun h => by have := h.1; omega

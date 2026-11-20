@@ -16,16 +16,14 @@ namespace GlobalTheory.BotPairSmall.BlockIdx
 variable (D : D7) (𝔪 : Ideal (𝓞 D.host.E))
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨b, hb, s, hs, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem_hatId {b : 𝓞 D.host.E} (hb : b ∈ 𝔪) {s : AE D} (hs : s ∈ OhE D) :
     inc D (b : D.host.E) * s ∈ hatId D 𝔪 :=
   AddSubgroup.subset_closure ⟨b, hb, s, hs, rfl⟩
 
 /- English proof (translation)
-Establish `h : AddSubgroup.closure {y | ∃ b ∈ 𝔪, ∃ t ∈ OhE D, y = inc D (b : D.host.E) * t} ≤ (hatId D 𝔪).comap (AddMonoidHom.mulLeft s)`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `y ⟨b, hb, t, ht, rfl⟩`. Use `show s * (inc D (b : D.host.E) * t) ∈ hatId D 𝔪`. Rewrite using `[mul_left_comm]`.
-
-Conclude with `gen_mem_hatId D 𝔪 hb (mul_mem hs ht)`. Conclude with `h hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_hatId {s : AE D} (hs : s ∈ OhE D) {x : AE D} (hx : x ∈ hatId D 𝔪) :
     s * x ∈ hatId D 𝔪 := by
@@ -39,7 +37,7 @@ theorem mul_mem_hatId {s : AE D} (hs : s ∈ OhE D) {x : AE D} (hx : x ∈ hatId
   exact h hx
 
 /- English proof (translation)
-Use `gen_mem_hatId D 𝔪 (Ideal.absNorm_mem 𝔪) hw` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem absNorm_mul_mem_hatId {w : AE D} (hw : w ∈ OhE D) :
     (Ideal.absNorm 𝔪 : AE D) * w ∈ hatId D 𝔪 := by
@@ -47,9 +45,7 @@ theorem absNorm_mul_mem_hatId {w : AE D} (hw : w ∈ OhE D) :
   simpa using this
 
 /- English proof (translation)
-Establish `hn : 0 < Ideal.absNorm 𝔪` using `Nat.pos_of_ne_zero (by simpa [Ideal.absNorm_eq_zero_iff] using h𝔪)`. Take `⟨r, hr, w, hw, e⟩` from `GlobalTheory.HeckeVal.exists_approx D _ hn x hx`. Use `⟨⟨r, (mem_integralClosure_iff ℤ _).2 hr⟩, ?_⟩` and prove the remaining obligations. Use `show x - inc D r ∈ hatId D 𝔪`. Rewrite using `[e, add_sub_cancel_left]`.
-
-Conclude with `absNorm_mul_mem_hatId D 𝔪 hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_red (h𝔪 : 𝔪 ≠ ⊥) (x : AE D) (hx : x ∈ OhE D) :
     ∃ r : 𝓞 D.host.E, x - inc D (r : D.host.E) ∈ hatId D 𝔪 := by
@@ -61,9 +57,9 @@ theorem exists_red (h𝔪 : 𝔪 ≠ ⊥) (x : AE D) (hx : x ∈ OhE D) :
   exact absNorm_mul_mem_hatId D 𝔪 hw
 
 /- English proof (translation)
-Apply `Subgroup.subset_closure` to reduce the goal to its premises. Use `⟨(intG D N).mul_mem ((intG D N).inv_mem h₁) h₂, fun i j hj hi => ?_⟩` and prove the remaining obligations. Establish `hij : i ≠ j` using `fun e => by subst e; omega`. Establish `hinv` using `(mem_intG k₁).1 h₁`. Establish `e : (((k₁⁻¹ * k₂ : GA D N) : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) = (((k₁ : GL (Fin N) (AE D))⁻¹ : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) * (((k₂ : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) - ((k₁ : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) …`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_sub, Units.inv_mul, Subgroup.coe_mul, Subgroup.coe_inv, Units.val_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, Matrix.add_apply, Matrix.one_apply_ne hij, add_zero, Matrix.mul_apply]`. Conclude with `AddSubgroup.sum_mem _ fun l _ => mul_mem_hatId D 𝔪 ((hinv i l).2) (h l j)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_blockJ_of_congr {a N : ℕ} {k₁ k₂ : GA D N} (h₁ : k₁ ∈ intG D N) (h₂ : k₂ ∈ intG D N)
     (h : ∀ i j, ((k₂ : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) i j -
@@ -89,15 +85,15 @@ namespace GlobalTheory.BotPairSmall
 open BlockIdx in
 
 /- English proof (translation)
-Introduce `D 𝔪 h𝔪 a N`. Establish `hent : ∀ k : intG D N, ∀ i j, (((k : GA D N) : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) i j ∈ OhE D` using `fun k i j => (((mem_intG _).1 k.2) i j).1`. Use `choose r hr using fun (k : intG D N) i j => exists_red D 𝔪 h𝔪 _ (hent k i j)`. Set `H` to `(blockJ D 𝔪 a N).subgroupOf (intG D N)`. Set `f : (intG D N ⧸ H) → (Fin N → Fin N → 𝓞 D.host.E ⧸ 𝔪)` to `fun q i j => Ideal.Quotient.mk 𝔪 (r q.out i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : Function.Injective f`. Introduce `q₁ q₂ e`. Rewrite using `[← QuotientGroup.out_eq' q₁, ← QuotientGroup.out_eq' q₂, QuotientGroup.eq, Subgroup.mem_subgroupOf, Subgroup.coe_mul, Subgroup.coe_inv]`. Use `mem_blockJ_of_congr D 𝔪 q₁.out.2 q₂.out.2 fun i j => ?_` and prove the remaining obligations. Establish `e' : Ideal.Quotient.mk 𝔪 (r q₁.out i j) = Ideal.Quotient.mk 𝔪 (r q₂.out i j)` using `congrFun (congrFun e i) j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e'` using `[Ideal.Quotient.eq]`. Use `sub_mem (sub_mem (hr q₂.out i j) (gen_mem_hatId D 𝔪 e' (one_mem (OhE D)))) (hr q₁.out i j)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Rewrite using `[map_sub]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcard : Nat.card (𝓞 D.host.E ⧸ 𝔪) = Ideal.absNorm 𝔪`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Finite (𝓞 D.host.E ⧸ 𝔪) := Nat.finite_of_card_ne_zero (by rw [hcard]; simpa [Ideal.absNorm_eq_zero_iff] using h𝔪)`. Use `haveI : Finite (intG D N ⧸ H) := Finite.of_injective f hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `⟨Subgroup.index_ne_zero_of_finite, ?_⟩` and prove the remaining obligations. Use `show H.index ≤ _`. Rewrite using `[Subgroup.index]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.card_fun, Nat.card_fun, Nat.card_fin, hcard, ← pow_mul, sq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockJ_relIndex : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → ∀ (a N : ℕ),
     (GlobalTheory.BotPairSmall.blockJ D 𝔪 a N).relIndex (intG D N) ≠ 0 ∧

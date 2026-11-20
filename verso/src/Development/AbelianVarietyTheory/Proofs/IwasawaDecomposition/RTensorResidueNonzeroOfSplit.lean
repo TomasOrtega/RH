@@ -6,15 +6,15 @@ open GlobalTheory.EigenSplit
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `O R k _ _ _ _ _ _ ρ₀ hρ e f hf hε`. Set `b` to `Module.Free.chooseBasis ℤ O`. Establish `key : ∀ (z : R ⊗[ℤ] O) i, TensorProduct.equivFinsuppOfBasisRight b (ρ₀.toIntAlgHom.toLinearMap.rTensor O z) i = ρ₀ (TensorProduct.equivFinsuppOfBasisRight b z i)`. Introduce `z i`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul m n => simp`. Consider the case `add x y hx hy => simp [hx, hy]`. Establish `hmem : ∀ i, TensorProduct.equivFinsuppOfBasisRight b e i ∈ IsLocalRing.maximalIdeal R`. Introduce `i`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hρ` to reduce the goal to its premises. Rewrite using `[← key, hε]`. Simplify using the standard rewrite rules. Establish `he : e = (TensorProduct.equivFinsuppOfBasisRight b e).sum (fun i m => m • ((1 : R) ⊗ₜ[ℤ] b i))` using `by conv_lhs => rw [← (TensorProduct.equivFinsuppOfBasisRight b).symm_apply_apply e]`. Rewrite using `[TensorProduct.equivFinsuppOfBasisRight_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i m`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `h1 : (1 : R) ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[← hf, he, map_finsuppSum]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_smul, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (hmem i)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rTensor_reduction_ne_zero_of_form_eq_one :
     ∀ {O R k : Type} [CommRing O] [CommRing R] [IsLocalRing R] [Field k] [Module.Free ℤ O] [Module.Finite ℤ O]

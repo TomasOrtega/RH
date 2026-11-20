@@ -93,7 +93,7 @@ inductive OrderCertificate {k : Type u} [Field k] :
 end
 
 /- English proof (translation)
-The claim follows from `PrincipalizationCertificate.large hm`.
+A detailed English derivation is pending.
 -/
 theorem PrincipalizationCertificate.of_two_le {k : Type u} [Field k] (W : Scheme.{u})
     (p : W ⟶ Spec (CommRingCat.of k)) (I : W.IdealSheafData) (m : ℕ) (Mem : Set ↥W)
@@ -102,7 +102,7 @@ theorem PrincipalizationCertificate.of_two_le {k : Type u} [Field k] (W : Scheme
   PrincipalizationCertificate.large hm
 
 /- English proof (translation)
-The claim follows from `OrderCertificate.large hmu`.
+A detailed English derivation is pending.
 -/
 theorem OrderCertificate.of_two_le {k : Type u} [Field k] (W : Scheme.{u})
     (p : W ⟶ Spec (CommRingCat.of k)) (N : W.IdealSheafData) (μ : ℕ) (Mem : Set ↥W)

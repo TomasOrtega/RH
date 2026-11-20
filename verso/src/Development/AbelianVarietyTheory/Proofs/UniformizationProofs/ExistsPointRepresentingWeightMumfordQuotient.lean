@@ -26,7 +26,7 @@ variable {S : Scheme.{0}} {G : Over S} [GrpObj G] {X : Type} [AddCommGroup X] {i
   {Y : Scheme.{0}} {f : G.left ⟶ Y}
 
 /- English proof (translation)
-Establish `hm : r y ∈ (M.pull F).U (fun _ => j) ⊓ (M.pull F).U (fun _ => j')` using `⟨mem_pull.2 hj, mem_pull.2 hj'⟩`. Establish `e` using `congrArg (gm r y _) (ht (fun _ => j) (fun _ => j'))`. Rewrite `e` using `[map_mul, gm_res _ y _ hm, gm_res _ y _ hm, gm_pull_g M F r y _ _ hm.1 hm.2]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_gen_pull {Z W : Scheme.{0}} {F : Z ⟶ Y} {M : LB Y} {t : LB.Gen (M.pull F)} (ht : t.IsGen) (r : W ⟶ Z) (y : W)
     {j j' : M.ι} (hj : F (r y) ∈ M.U j) (hj' : F (r y) ∈ M.U j') :
@@ -38,7 +38,7 @@ theorem gm_gen_pull {Z W : Scheme.{0}} {F : Z ⟶ Y} {M : LB Y} {t : LB.Gen (M.p
   exact e
 
 /- English proof (translation)
-Establish `hm : r y ∈ N.U j ⊓ O.U k ⊓ (N.U j' ⊓ O.U k')` using `⟨h, h'⟩`. Conclude with `(gm_res r y _ hm _).symm.trans ((congrArg (gm r y _) (hw (j, k) (j', k'))).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div O N r y (j, k) (j', k') hm) (gm_res r y _ hm _))))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gm_iso {W : Scheme.{0}} {O N : LB Y} {w : LB.Iso O N} (hw : w.IsGen) (r : W ⟶ Y) (y : W)
     {j j' : N.ι} {k k' : O.ι} (h : r y ∈ N.U j ⊓ O.U k) (h' : r y ∈ N.U j' ⊓ O.U k') :
@@ -50,17 +50,15 @@ theorem gm_iso {W : Scheme.{0}} {O N : LB Y} {w : LB.Iso O N} (hw : w.IsGen) (r 
     (congrArg₂ (· * ·) (gm_div O N r y (j, k) (j', k') hm) (gm_res r y _ hm _))))
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Establish `tr : ∀ (Z : Scheme.{0}) (r : Z ⟶ G.left) (z : Z) (j j' : N.ι) (k k' : O.ι), f (r z) ∈ N.U j ⊓ O.U k → f (r z) ∈ N.U j' ⊓ O.U k' → gm (r ≫ f) z (N.U j ⊓ O.U k) (w.s (j, k)) * gm r z ((O.pull f).U fun _ => k) (u.s fun _ => k) = gm (r ≫ f) z (N.U j ⊓ N.U j') (N.g j j') * (gm (r ≫ f) …`. Introduce `Z r z j j' k k' h h'`. Rewrite using `[gm_iso hw (r ≫ f) z h h', gm_gen_pull hu r z h.2 h'.2, _root_.mul_assoc, _root_.mul_assoc, mul_left_comm (gm (r ≫ f) z (N.U j' ⊓ O.U k') (w.s (j', k'))), inv_mul_cancel_left]`. Establish `glue : ∀ j : N.ι, ∃ s : Γ(G.left, (N.pull f).U fun _ => j)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ G.left) (z : Z) (k : O.ι), f (r z) ∈ N.U j ⊓ O.U k → gm r z _ s = gm (r ≫ f) z (N.U j ⊓ O.U k) (w.s (j, k)) * gm r z ((O.pull f).U fun _ => k) (u.s fun _ => k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j`. Establish `l₀ : ∀ k, f ⁻¹ᵁ (N.U j ⊓ O.U k) ≤ (N.pull f).U fun _ => j` using `fun k x hx => mem_pull.2 hx.1`. Establish `l₁ : ∀ k, f ⁻¹ᵁ (N.U j ⊓ O.U k) ≤ (O.pull f).U fun _ => k` using `fun k x hx => mem_pull.2 hx.2`. Take `⟨a, ha⟩ : ∃ a : ∀ k, Γ(G.left, f ⁻¹ᵁ (N.U j ⊓ O.U k))ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ G.left) (z : Z) (k : O.ι), f (r z) ∈ N.U j ⊓ O.U k → gm r z _ (a k) = gm (r ≫ f) z (N.U j ⊓ O.U k) (w.s (j, k)) * gm r z ((O.pull f).U fun _ => k) (u.s fun _ => k)` from `⟨fun k => pullU f (N.U j ⊓ O.U k) (w.s (j, k)) * res (l₁ k) (u.s fun _ => k), fun Z r z k hz => (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_pull r f z _ hz _) (gm_res r z (l₁ k) hz _))⟩`. Take `⟨s, hs⟩` from `glue_unit _ _ l₀ (fun x hx => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `exists_chart hO (f x)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k, mem_pull.1 hx, hk⟩) a (fun k k' x hx => by`. Rewrite using `[ha _ (𝟙 _) x k hx.1, ha _ (𝟙 _) x k' hx.2, tr _ (𝟙 _) x j j k k' hx.1 hx.2, gm_self hN (𝟙 _ ≫ f) x hx.1.1, _root_.one_mul])`. Conclude with `⟨s, fun Z r z k hz => (gm_res r z (l₀ k) hz s).symm.trans ((congrArg (gm r z (f ⁻¹ᵁ (N.U j ⊓ O.U k))) (hs k)).trans (ha Z r z k hz))⟩`. Use `choose s hs using glue`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨fun J => s (J PUnit.unit)⟩, fun J J' => unit_ext fun y hy => ?_, fun J => isWt_of_gm _ _ ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart hO (f y)`. Establish `h₁` using `mem_pull.1 hy.1`. Establish `h₂` using `mem_pull.1 hy.2`. Conclude with `((gm_res _ y _ hy _).trans ((hs _ _ (𝟙 _) y k ⟨h₁, hk⟩).trans (tr _ (𝟙 _) y _ _ k k ⟨h₁, hk⟩ ⟨h₂, hk⟩))).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_pull_g N f (𝟙 _) y J J' hy.1 hy.2) ((gm_res _ y _ hy _).trans (hs _ _ (𝟙 _) y k ⟨h₂, hk⟩)))).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `Z t g z hz`. Take `⟨k, hk⟩` from `exists_chart hO (f (g.left z))`. Establish `h₂ : f (g.left z) ∈ N.U (J PUnit.unit) ⊓ O.U k` using `⟨mem_pull.1 hz, hk⟩`. Establish `h₁ : f (((t ≫ i) * g).left z) ∈ N.U (J PUnit.unit) ⊓ O.U k` using `(congrArg (fun m : Z.left ⟶ Y => m z ∈ N.U (J PUnit.unit) ⊓ O.U k) (hf Z t g)).mpr h₂`. Use `(hs _ _ _ z k h₁).trans (Eq.trans ?_ (congrArg (_ * ·) (hs _ _ _ z k h₂)).symm)` and prove the remaining obligations.
-
-Rewrite using `[hf, WtBundle.gm_of_isWt (hχ fun _ => k) t g z (mem_pull.2 h₁.2) (mem_pull.2 h₂.2), gm_charUnit, mul_left_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen_of_iso
     (hf : ∀ (Z : Over S) (t : Z ⟶ splitTorus S X) (g : Z ⟶ G), ((t ≫ i) * g).left ≫ f = g.left ≫ f)
@@ -112,9 +110,9 @@ theorem exists_gen_of_iso
       mul_left_comm]
 
 /- English proof (translation)
-Use `⟨⟨fun J => (u.s J)⁻¹⟩, fun J J' => ?_, fun J => ?_⟩` and prove the remaining obligations. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `h₁ : f y ∈ LB.wchart L φ (J PUnit.unit)` using `mem_pull.1 hy.1`. Establish `h₂ : f y ∈ LB.wchart L φ (J' PUnit.unit)` using `mem_pull.1 hy.2`. Establish `e : gm (𝟙 _ ≫ f) y _ ((LB.LinComb L φ ε').g (J PUnit.unit) (J' PUnit.unit)) = (gm (𝟙 _ ≫ f) y _ ((LB.LinComb L φ ε).g (J PUnit.unit) (J' PUnit.unit)))⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(gm_linComb L φ ε' (𝟙 _ ≫ f) y _ _ h₁ h₂).trans (Eq.trans ?_ (congrArg (·⁻¹) (gm_linComb L φ ε (𝟙 _ ≫ f) y _ _ h₁ h₂)).symm)` and prove the remaining obligations. Simplify using `only [hε, zpow_neg, Finset.prod_inv_distrib]`. Conclude with `((gm_res _ y _ hy _).trans ((map_inv _ _).trans ((congrArg (·⁻¹) (gm_gen_pull hu (𝟙 _) y h₁ h₂)).trans (mul_inv _ _)))).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_pull_g (LB.LinComb L φ ε') f (𝟙 _) y J J' hy.1 hy.2).trans e) ((gm_res _ y _ hy _).trans (map_inv _ _)))).s …`. Use `(hχ J).inv` as an intermediate fact. Rewrite `this` using `[neg_neg]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_gen_neg {B : Scheme.{0}} {L : LB B} {K : Type} [Fintype K] {φ : K → (Y ⟶ B)} {ε ε' : K → ℤ}
     (hε : ∀ k, ε' k = - ε k) {χ : X} (u : LB.Gen ((LB.LinComb L φ ε).pull f)) (hu : u.IsGen)
@@ -137,7 +135,7 @@ theorem exists_gen_neg {B : Scheme.{0}} {L : LB B} {K : Type} [Fintype K] {φ : 
     rwa [neg_neg] at this
 
 /- English proof (translation)
-Introduce `_` and use `by obtain ⟨t, ht, -⟩ := exists_gen P.L.isLB (K' := Fin 2) (φ' := ![(G.hom ⁻¹ᵁ ⊤).ι ≫ (GrpObj.inv : G ⟶ G).left, (G.hom ⁻¹ᵁ ⊤).ι]) (ε' := ![1, -1]) (fun U _ h => by simp [Fin.prod_univ_two]) (LB.pullGen _ _ _ P.sym (G.hom ⁻¹ᵁ ⊤).ι) (LB.isGen_pullGen _ _ _ _ P.sym_gen _) exact ⟨⊤, …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sym_of_cp [IsCommMonObj G] (P : CP G) : Out.Sym G P.L.L := fun _ => by
   obtain ⟨t, ht, -⟩ := exists_gen P.L.isLB (K' := Fin 2)
@@ -151,11 +149,11 @@ end GlobalTheory.WtPoint
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hL V _ _ _ A G _ _ s t a hK χ`. Establish `: IsDiscreteValuationRing V` using `s.cdvr.1`. Take `⟨g, hg⟩` from `AbelianDim.exists_relDim V a.B a.isAb`. Take `⟨O, hO, hΛ, hu⟩` from `GlobalTheory.T.exists_weightBundle_torusQuotientTower_algebraisation hL V A G s t a (-χ)`. Take `⟨c, hc⟩` from `_root_.GlobalTheory.PrimitiveOverValuationRing.exists_section_translate hL V { A := a.B, isAb := a.isAb, g := g, smoothDim := hg, L := a.M.L.L, isLB := a.M.L.isLB, rigid := ⟨a.M.L.rig, a.M.L.rigGen⟩, sym := WtPoint.sym_of_cp a.M, ample := a.ample, ktriv := hK } O hO hΛ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c, fun e => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hw⟩` from `hu e`. Take `⟨v, hv, hw'⟩` from `WtPoint.exists_gen_of_iso (fun Z τ x => by`. Rewrite using `[← Category.assoc, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, WtBundle.act_comp])`. Use `hO (LB.isLB_linComb a.M.L.isLB _ _) hc u hu hw`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `exact WtPoint.exists_gen_neg (fun k => by fin_cases k <;> rfl) v hv hw'`.
+A detailed English derivation is pending.
 -/
 theorem exists_point_repWt : Laws → AllSet fun {V} _ _ _ {A} {G} _ _ s => ∀ (t : Tower s) (a : t.Alg), KTriv a.B a.M.L.L → ∀ χ : s.X, ∃ c : 𝟙_ _ ⟶ a.B, ∀ e, a.RepWt c χ e := by
   intro hL V _ _ _ A G _ _ s t a hK χ

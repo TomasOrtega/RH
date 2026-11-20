@@ -22,9 +22,9 @@ def CanonKeySt : Prop :=
 namespace CanonKeySt
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, _⟩`. Distinguish the cases in `h : IsField R`. Conclude with `Or.inl h`. Conclude with `Or.inr { not_a_field' := fun e => h (IsLocalRing.isField_iff_maximalIdeal_eq.2 e) }`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 
-Introduce and unpack `(h | h)`. Use `letI := h.toField`. Conclude with `⟨inferInstance, inferInstance⟩`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem base_iff (R : Type) [CommRing R] [IsDomain R] :
     (IsLocalRing R ∧ IsPrincipalIdealRing R) ↔ IsField R ∨ IsDiscreteValuationRing R := by
@@ -39,7 +39,7 @@ theorem base_iff (R : Type) [CommRing R] [IsDomain R] :
     · exact ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Simplify using `only [thetaChar, add_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaChar_zero {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (z : Fin g → ℂ) :
     thetaChar τ 0 0 z = ∑' n : Fin g → ℤ,
@@ -48,7 +48,7 @@ theorem thetaChar_zero {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (z : Fin g �
   simp only [thetaChar, add_zero]
 
 /- English proof (translation)
-Rewrite using `[← pow_mul, Nat.mul_comm g 4, pow_mul, pow_mul, mul_pow, Complex.I_pow_four, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem const_pow (g : ℕ) :
     ((2 * Real.pi * Complex.I : ℂ) ^ g) ^ 4 = (2 * Real.pi : ℂ) ^ (4 * g) := by

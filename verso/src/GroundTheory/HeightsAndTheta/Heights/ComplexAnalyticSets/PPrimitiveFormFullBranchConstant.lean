@@ -7,13 +7,11 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Filter Topology
 
 /- English proof (translation)
-Use `set Q : (Fin d → ℂ) → ℂ → ℂ → ℂ := fun t x y => ∑ i ∈ Finset.range N, x ^ i * y ^ (N - 1 - i) + ∑ j : Fin N, a j t * ∑ i ∈ Finset.range j, x ^ i * y ^ ((j : ℕ) - 1 - i) with hQdef`. Establish `hQ : ∀ t x y, (x ^ N + ∑ j, a j t * x ^ (j : ℕ)) - (y ^ N + ∑ j, a j t * y ^ (j : ℕ)) = Q t x y * (x - y)`. Introduce `t x y`. Rewrite using `[hQdef, add_mul, geom_sum₂_mul, Finset.sum_mul]`. Repeatedly rewrite using `[mul_assoc, geom_sum₂_mul, mul_sub, Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hQs : Q s (u s) (u s) ≠ 0`. Establish `h` using `hsep.eval₂_derivative_ne_zero (RingHom.id ℂ) (x := u s) (by simpa [Polynomial.eval₂_id, Polynomial.eval_finsetSum] using hru.self_of_nhds)`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `[hQdef, Polynomial.eval₂_id, Polynomial.eval_finsetSum, geom_sum₂_self, Polynomial.derivative_X_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : ContinuousAt (fun t => Q t (u t) (v t)) s`. Simplify using `only [hQdef]`. Use `fun_prop`. Establish `hne : ∀ᶠ t in 𝓝 s, Q t (u t) (v t) ≠ 0` using `hc.eventually_ne (by rw [← huv]; exact hQs)`. Use `filter_upwards [hru, hrv, hne] with t h1 h2 h3`.
-
-Establish `h` using `hQ t (u t) (v t)`. Rewrite `h` using `[h1, h2, sub_self]`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h.symm).resolve_left h3)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monic_root_branch_eventuallyEq {d N : ℕ} (a : Fin N → (Fin d → ℂ) → ℂ) (s : Fin d → ℂ)
     (u v : (Fin d → ℂ) → ℂ) (ha : ∀ j, ContinuousAt (a j) s) (hu : ContinuousAt u s)
@@ -45,29 +43,25 @@ theorem monic_root_branch_eventuallyEq {d N : ℕ} (a : Fin N → (Fin d → ℂ
   exact sub_eq_zero.1 ((mul_eq_zero.1 h.symm).resolve_left h3)
 
 /- English proof (translation)
-Introduce `σ _ X W N' k f d A ℓ N a δ q B O r hW hN' hWN' hf hXN' hXW hP hB ha hδ hq hO hOc hOB hδO hsep hr hrO`. Use `set G : (Fin d → ℂ) → σ → ℂ := fun s i => (∑ j, q i j s * r s ^ (j : ℕ)) / δ s with hGdef`. Use `set P : (Fin d → ℂ) → Prop := fun u => G u ∈ X ∩ W ∧ A (G u) = u ∧ ℓ (G u) = r u with hPdef`. Establish `hG : AnalyticOnNhd ℂ G O` using `fun u hu => analyticAt_pi_iff.2 fun i => (Finset.analyticAt_fun_sum _ fun j _ => (hq i j u (hOB hu)).mul ((hr u hu).pow _)).div (hδ u (hOB hu)) (hδO u hu)`. Establish `hfull : ∀ s ∈ O, (PrimitiveFormRootFull X W A ℓ δ q s (r s) ↔ ∀ᶠ u in 𝓝 s, P u)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `s hs`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨O', r', hO', hsO', hr', hrs, hw⟩`. Establish `hroot' : ∀ᶠ u in 𝓝 s, r' u ^ N + ∑ j, a j u * r' u ^ (j : ℕ) = 0` using `by filter_upwards [hO'.mem_nhds hsO'] with u hu`. Take `⟨hX, hA, hℓ⟩` from `hw u hu`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `hP _ hX`. Rewrite `h` using `[hA, hℓ]`. Then use the resulting hypothesis. Establish `heq : r' =ᶠ[𝓝 s] r` using `monic_root_branch_eventuallyEq a s r' r (fun j => (ha j s (hOB hs)).continuousAt) (hr' s hsO').continuousAt (hr s hs).continuousAt hrs (hsep s hs) hroot' (Filter.mem_of_superset (hO.mem_nhds hs) hrO)`. Use `filter_upwards [hO'.mem_nhds hsO', heq] with u hu hru`. Establish `h` using `hw u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hru] at h`. Conclude with `h`. Introduce `hev`. Take `⟨U, hUs, hUo, hsU⟩` from `mem_nhds_iff.1 hev`. Conclude with `⟨U ∩ O, r, hUo.inter hO, ⟨hsU, hs⟩, hr.mono Set.inter_subset_right, rfl, fun u hu => hUs hu.1⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `set S : Set (Fin d → ℂ) := {s | ∀ᶠ u in 𝓝 s, P u} with hSdef`. Establish `hSo : IsOpen S` using `isOpen_setOfPred_eventually_nhds`. Establish `hSc : closure S ∩ O ⊆ S`. Introduce and unpack `s ⟨hsc, hs⟩`. Establish `hGs : ContinuousAt G s` using `(hG s hs).continuousAt`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hGW : G s ∈ closure W` using `closure_mono (by rintro _ ⟨u, hu, rfl⟩; exact hu.self_of_nhds.1.2) (mem_closure_image hGs hsc)`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 (Filter.inter_mem (hO.mem_nhds hs) (hGs.preimage_mem_nhds (hN'.mem_nhds (hWN' hGW))))`. Use `set Φ : (Fin d → ℂ) → (Fin k → ℂ) × (Fin d → ℂ) × ℂ := fun u => (fun i => f i (G u), A (G u) - u, ℓ (G u) - r u) with hΦdef`. Establish `hΦ : AnalyticOnNhd ℂ Φ (Metric.ball s ε)` using `fun u hu => by`. Establish `hu'` using `hball hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(analyticAt_pi_iff.2 fun i => (hf i _ hu'.2).comp (hG u hu'.1)).prod ((((A.analyticAt _).comp (hG u hu'.1)).sub analyticAt_id).prod (((ℓ.analyticAt _).comp (hG u hu'.1)).sub (hr u hu'.1)))`. Take `⟨u₀, hu₀U, hu₀S⟩` from `mem_closure_iff.1 hsc _ Metric.isOpen_ball (Metric.mem_ball_self hε)`. Establish `hΦ0 : Set.EqOn Φ 0 (Metric.ball s ε)` using `hΦ.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball s ε).isPreconnected hu₀U (by filter_upwards [hu₀S] with u hu`. Take `⟨⟨hX, hWu⟩, hA, hℓ⟩` from `hu`. Establish `hXN : G u ∈ X ∩ N'` using `⟨hX, hWN' (subset_closure hWu)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hXN` using `[hXN']`. Simplify using `only [hΦdef, Pi.zero_apply, Prod.mk_eq_zero, hA, hℓ, sub_self, and_true]`. Conclude with `funext fun i => hXN.2 i)`. Establish `hU : ∀ u ∈ Metric.ball s ε, G u ∈ X ∧ A (G u) = u ∧ ℓ (G u) = r u`. Introduce `u hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h` using `hΦ0 hu`. Simplify using `only [hΦdef, Pi.zero_apply, Prod.mk_eq_zero, sub_eq_zero] at h`. Use `⟨?_, h.2.1, h.2.2⟩` and prove the remaining obligations. Establish `hXN : G u ∈ X ∩ N'` using `by rw [hXN']; exact ⟨(hball hu).2, fun i => congr_fun h.1 i⟩`. Conclude with `hXN.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Take `⟨hXs, hAs, -⟩` from `hU s (Metric.mem_ball_self hε)`. Establish `hGsW : G s ∈ W` using `hXW _ ⟨hXs, hGW⟩ (by rw [hAs]; exact hOB hs)`. Use `filter_upwards [Metric.isOpen_ball.mem_nhds (Metric.mem_ball_self hε), hGs.preimage_mem_nhds (hW.mem_nhds hGsW)] with u hu hu'`. Take `⟨h1, h2, h3⟩` from `hU u hu`. Conclude with `⟨⟨h1, hu'⟩, h2, h3⟩`.
-
-Establish `key : ∀ s ∈ O, ∀ s' ∈ O, PrimitiveFormRootFull X W A ℓ δ q s (r s) → PrimitiveFormRootFull X W A ℓ δ q s' (r s')`. Introduce `s hs s' hs' h`. Establish `hsub : O ⊆ S` using `hOc.subset_of_closure_inter_subset hSo ⟨s, hs, (hfull s hs).1 h⟩ hSc`. Conclude with `(hfull s' hs').2 (hsub hs')`. Introduce `s hs s' hs'`.
-
-Conclude with `⟨key s hs s' hs', key s' hs' s hs⟩`.
+A detailed English derivation is pending.
 -/
 theorem PrimitiveFormFullBranchConstant.proof : PrimitiveFormFullBranchConstant.Statement := by
   intro σ _ X W N' k f d A ℓ N a δ q B O r hW hN' hWN' hf hXN' hXW hP hB ha hδ hq hO hOc hOB hδO hsep hr hrO

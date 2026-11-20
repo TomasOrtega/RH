@@ -21,13 +21,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 namespace GlobalTheory.ModifRefl
 
 /- English proof (translation)
-Introduce `k _ Y p D _ inst2 B hB s y hy`. Use `revert inst2`. Generalize the expression as in `hq : 𝟙 Y ≫ p = q`. Simplify using `only [Category.id_comp] at hq`. Substitute `hq` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `inst2`. Establish `hK : (CanonLB.all p D).bundle.IsLB` using `(CanonLB.all p D).isLB`. Establish `hBp : (B.pull (𝟙 Y)).IsLB` using `LB.isLB_linComb hB _ _`. Establish `H1 : LBIso (tens (B.pull (𝟙 Y)) (CanonLB.all p D).bundle) (tens B (CanonLB.all p D).bundle)` using `GlobalTheory.CechPic.tens_congr_left hK (DescendedPrincipal.lbIso_pull_id hB)`. Establish `H : LBIso (tens (CanonLB.all p D).bundle (B.pull (𝟙 Y))) (tens (CanonLB.all p D).bundle B)` using `LBIso.trans (isLB_tens hK hBp) (isLB_tens hBp hK) (isLB_tens hK hB) (GlobalTheory.CechPic.tens_comm_iso hK hBp) (LBIso.trans (isLB_tens hBp hK) (isLB_tens hB hK) (isLB_tens hK hB) H1 (GlobalTheory.CechPic.tens_comm_iso hB hK))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `exists_sec_nonzeroLocus_eq_of_lbIso (isLB_tens hK hBp) (isLB_tens hK hB) H (toSec s)`. Use `⟨H0.ofSec p ⊤ t, ?_⟩` and prove the remaining obligations. Establish `e : toSec (H0.ofSec p ⊤ t) = t`. Unfold `toSec`. Conclude with `Equiv.ofBijective_symm_apply_apply _ _ _`.
-
-Rewrite using `[e, ht]`. Conclude with `hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_canon_tens_pull_id : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (D : ℕ) [SmoothOfRelativeDimension D p] [SmoothOfRelativeDimension D (𝟙 Y ≫ p)] (B : LB Y), B.IsLB → ∀ (s : H0 p (tens (CanonLB.all p D).bundle B) ⊤) (y : Y), y ∈ nonzeroLocus (toSec s) → ∃ s' : H0 (𝟙 Y ≫ p) (tens (CanonLB.all (𝟙 Y ≫ p) D).bundle (B.pull (𝟙 Y))) ⊤, y ∈ nonzeroLocus (toSec s') := by
   intro k _ Y p D _ inst2 B hB s y hy

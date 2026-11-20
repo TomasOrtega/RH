@@ -10,15 +10,15 @@ namespace Formalism.L2.SG.Pf.StabilizerIndexVolumes
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hN0E : (N0 : E) ≠ 0` using `by exact_mod_cast hN0`. Establish `hN1E : (N1 : E) ≠ 0` using `by exact_mod_cast hN1`. Apply `hcg _ (hHS (H.mul_mem (H.inv_mem hh1) hh2))` to reduce the goal to its premises. Introduce `i j`. Establish `hinv` using `hbd _ (H.inv_mem hh1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose p hp using hinv`. Use `⟨∑ k, p i k * c k j, ?_⟩` and prove the remaining obligations. Establish `hsub : ((h1⁻¹ * h2 : Matrix.GeneralLinearGroup (Fin n) E) : Matrix (Fin n) (Fin n) E) - 1 = ((h1⁻¹ : Matrix.GeneralLinearGroup (Fin n) E) : Matrix (Fin n) (Fin n) E) * ((h2 : Matrix (Fin n) (Fin n) E) - (h1 : Matrix (Fin n) (Fin n) E))`. Rewrite using `[Matrix.mul_sub, Units.val_mul, Units.inv_mul]`. Establish `hent` using `congrFun (congrFun hsub i) j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hent` using `[Matrix.sub_apply]`. Establish `hcast : ((∑ k, p i k * c k j : 𝓞 E) : E) = ∑ k, (p i k : E) * (c k j : E)` using `by push_cast; rfl`. Rewrite using `[hent, Matrix.mul_apply, Finset.sum_div, hcast]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hpk` using `hp i k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hck` using `hc k j`. Move the coercions through the operations in `at hck`. Establish `hX : ((h1⁻¹ : Matrix.GeneralLinearGroup (Fin n) E) : Matrix (Fin n) (Fin n) E) i k = (p i k : E) / N0`. Rewrite using `[hpk]`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hD : (h2 : Matrix (Fin n) (Fin n) E) k j - (h1 : Matrix (Fin n) (Fin n) E) k j = (c k j : E) * (N0 * N1)`. Establish `: (N0 : E) * ((h2 : Matrix (Fin n) (Fin n) E) k j - (h1 : Matrix (Fin n) (Fin n) E) k j) = (N0 : E) * ((c k j : E) * (N0 * N1))` using `by rw [mul_sub, ← hck]; ring`. Conclude with `mul_left_cancel₀ hN0E this`. Rewrite using `[hX, Matrix.sub_apply, hD]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem inv_mul_mem_of_scaled_entries_congr (W : Matrix (Fin n) (Fin n) E) (H K : Subgroup (Matrix.GeneralLinearGroup (Fin n) E))
     (hHS : (H : Set (Matrix.GeneralLinearGroup (Fin n) E)) ⊆ StSet W) (N0 : ℕ) (hN0 : N0 ≠ 0)
@@ -61,17 +61,15 @@ theorem inv_mul_mem_of_scaled_entries_congr (W : Matrix (Fin n) (Fin n) E) (H K 
   field_simp
 
 /- English proof (translation)
-Introduce `E _ _ n W H K hHS ⟨N0, hN0, hbd⟩ ⟨N1, hN1, hcg⟩`. Establish `hM0 : ((N0 * N0 * N1 : ℕ) : 𝓞 E) ≠ 0`. Conclude with `(Nat.mul_ne_zero (Nat.mul_ne_zero hN0 hN0) hN1)` after adjusting the coercions. Establish `hI : Ideal.span {((N0 * N0 * N1 : ℕ) : 𝓞 E)} ≠ ⊥`. Simplify `hM0` using `[Ideal.span_singleton_eq_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `: Finite (𝓞 E ⧸ Ideal.span {((N0 * N0 * N1 : ℕ) : 𝓞 E)})` using `Ideal.finiteQuotientOfFreeOfNeBot _ hI`. Use `choose o ho using hbd`. Set `φ : H → Fin n → Fin n → 𝓞 E ⧸ Ideal.span {((N0 * N0 * N1 : ℕ) : 𝓞 E)}` to `fun h i j => Ideal.Quotient.mk _ (o h h.2 i j)`. Establish `key : ∀ h1 h2 : H, φ h1 = φ h2 → h1⁻¹ * h2 ∈ K.subgroupOf H`. Introduce `h1 h2 hq`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ k j, ∃ c : 𝓞 E, c * ((N0 * N0 * N1 : ℕ) : 𝓞 E) = o h2 h2.2 k j - o h1 h1.2 k j`. Introduce `k j`. Use `congrFun (congrFun hq k) j` as an intermediate fact. Simplify using `only [φ] at this`. Conclude with `Ideal.mem_span_singleton'.mp (Ideal.Quotient.eq.mp this.symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose c hc using hc`. Rewrite using `[Subgroup.mem_subgroupOf]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Use `inv_mul_mem_of_scaled_entries_congr W H K hHS N0 hN0 (fun h hh i j => ⟨o h hh i j, ho h hh i j⟩) N1 hN1 hcg _ _ h1.2 h2.2 c fun k j => ?_` and prove the remaining obligations. Establish `h3` using `congrArg (fun x : 𝓞 E => (x : E)) (hc k j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ((c k j * ((N0 * N0 * N1 : ℕ) : 𝓞 E) : 𝓞 E) : E) = (c k j : E) * ((N0 * N0 * N1 : ℕ) : E)` using `by push_cast; rfl`. Establish `e2 : ((o h2 h2.2 k j - o h1 h1.2 k j : 𝓞 E) : E) = (o h2 h2.2 k j : E) - (o h1 h1.2 k j : E)` using `by push_cast; rfl`. Rewrite using `[← e1, h3, e2, ho, ho]`. Establish `: Finite (H ⧸ K.subgroupOf H)`. Use `Finite.of_injective (fun q : H ⧸ K.subgroupOf H => φ (Quotient.out q)) ?_` and prove the remaining obligations.
-
-Introduce `q1 q2 hq`. Use `(QuotientGroup.eq (s := K.subgroupOf H)).mpr (key _ _ hq)` as an intermediate fact. Simplify `this` using `[QuotientGroup.out_eq']`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem commens : Commens := by
   intro E _ _ n W H K hHS ⟨N0, hN0, hbd⟩ ⟨N1, hN1, hcg⟩

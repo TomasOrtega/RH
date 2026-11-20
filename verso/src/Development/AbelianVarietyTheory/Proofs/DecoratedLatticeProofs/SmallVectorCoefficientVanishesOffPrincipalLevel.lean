@@ -25,7 +25,7 @@ open Classical
 namespace GlobalTheory.Core.Rk.Exh.SmallSupp
 
 /- English proof (translation)
-Establish `h : frameLat V = GlobalTheory.PlaceModel.latFrame V` using `Submodule.ext fun y => (mem_frameLat V y).trans (GlobalTheory.PlaceModel.mem_latFrame V y).symm`. Rewrite using `[h]`. Conclude with `GlobalTheory.PlaceModel.isSelfDualC_latFrame V`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_frameLat {D : D7} (V : HSp D) : IsSelfDualC V (frameLat V) := by
   have h : frameLat V = GlobalTheory.PlaceModel.latFrame V :=
@@ -34,13 +34,13 @@ theorem selfDual_frameLat {D : D7} (V : HSp D) : IsSelfDualC V (frameLat V) := b
   exact GlobalTheory.PlaceModel.isSelfDualC_latFrame V
 
 /- English proof (translation)
-Introduce `D ψ θ A H χA om sA sH _hθ _hη hW _hcA _hcH hrank β Z hP βH f₀ f hβH hvec hthf ν 𝓕 hν g hg hnot`. Establish `sdA` using `selfDual_frameLat A`. Establish `sdH` using `selfDual_frameLat H`. Take `⟨_hvac, e, he, hth⟩` from `hvec`. Establish `hQ : (prinDat A Z).Q = ∅` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hPg : (prinDat A Z).Pg = Z` using `rfl`. Establish `hint : ∀ v, (∀ PP ∈ (prinDat A Z).Pg, PP.under (𝓞 D.host.F) ≠ v) → GlobalTheory.AdelicU.proj D.sp.cm.sig A.gram v g ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig A.gram (frameLat A) v`. Introduce `v hv`. Apply `hg v` to reduce the goal to its premises. Introduce `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [under, Finset.mem_image] at hmem`. Take `⟨PP, hPP, hPPv⟩` from `hmem`. Conclude with `hv PP (hPg ▸ hPP) hPPv`. Establish `hsupp` using `fun x hx => by_contra fun h => hnot (GlobalTheory.T.finitePart_mem_level_of_thetaDatum_ne_zero D A H (frameLat A) β βH (prinDat A Z) (fun _ => 1) (fun _ => 1) e sdA hP.frame hrank hQ he g hint x hx h)`. Establish `hsb` using `GlobalTheory.T.thetaChainStep_finiteDatum_isSchwartzBruhat_half D A H (frameLat A) (frameLat H) β βH (prinDat A Z) (fun _ => 1) (fun _ => 1) ((prinDat A Z).Pg ∪ ∅) e sdA sdH hP.frame hβH he`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, a, y, -, h1, h2⟩` from `GlobalTheory.T.heisenberg_fix_and_kill_theta_off_support_move D ψ A H hW.std (frameLat A) (frameLat H) sdA sdH ((prinDat A Z).Pg ∪ ∅) e he f₀ _ f hsb hth g hsupp`. Conclude with `GlobalTheory.T.weilMatrixCoefficient_eq_zero_of_heisenberg_relations D ψ A H χA 1 om hW ν 𝓕 hν f hthf g n a y h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem wcoef_eq_zero_off_prin : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A H : HSp D) (χA : (AE D)ˣ →* Circle) (om : WRep A H) (sA : RealMat A) (sH : RealMat H), IsInfFam θ → (∃ η, GlobalTheory.WeilParts.IsEtaTilde D η) → IsWeilDatumO ψ A H χA 1 om → (∀ τ, IsCartanInv (gramAt D A τ) (sA τ)) → (∀ τ, IsCartanInv (gramAt D H τ) (sH τ)) → A.rank ≤ H.rank → ∀ (β : GL (Fin A.rank) (Formalism.IndefR.Lev.EAf D)) (Z : Finset (Formalism.L2.DIV.Pl D.host.E)), Places A β Z → ∀ (βH : GL (Fin H.rank) (Formalism.IndefR.Lev.EAf D)) (f₀ f : WO A H → ℂ), Formalism.L2.DIV.IsFrame βH (frameLat H) → IsStepVecOf ψ θ A H sA sH (frameLat A) (frameLat H) β βH (prinDat A Z) (fun _ => 1) ∅ (fun _ => 1) f₀ f → IsThetaFunO ψ A H f → ∀ ν 𝓕, IsCovolOne (ratL H A) ν 𝓕 → ∀ g ∈ openOff A (frameLat A) (under Z), g ∉ prinInf A β Z → wcoef om ν 𝓕 f f g = 0 := by
   intro D ψ θ A H χA om sA sH _hθ _hη hW _hcA _hcH hrank β Z hP βH f₀ f hβH hvec hthf ν 𝓕 hν g hg hnot

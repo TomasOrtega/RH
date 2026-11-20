@@ -20,11 +20,11 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   {n : ℕ} {V : Type*} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun g ↦ ?_` and prove the remaining obligations. Establish `hopen : IsOpen ((fun h ↦ g⁻¹ * h) ⁻¹' (stabilizerOf π ξ : Set (GL (Fin n) F)))` using `(mem_smoothVectors.1 hξ).preimage (continuous_const.mul continuous_id)`. Establish `hg : g ∈ (fun h ↦ g⁻¹ * h) ⁻¹' (stabilizerOf π ξ : Set (GL (Fin n) F))`. Simplify using `only [mem_preimage, inv_mul_cancel, SetLike.mem_coe]`. Conclude with `(stabilizerOf π ξ).one_mem`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(continuousAt_const (y := Parabolic.matrixCoeff π ξ ℓ g)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hopen.mem_nhds hg] with h hh`. Establish `hfix : π (g⁻¹ * h) ξ = ξ` using `mem_stabilizerOf.1 hh`. Establish `: π h ξ = π g ξ`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Parabolic.matrixCoeff]`. Rewrite using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem continuous_matrixCoeff_of_smooth (π : Representation ℂ (GL (Fin n) F) V) {ξ : V}
     (hξ : ξ ∈ smoothVectors π) (ℓ : Module.Dual ℂ V) : Continuous (Parabolic.matrixCoeff π ξ ℓ) := by
@@ -45,7 +45,7 @@ theorem continuous_matrixCoeff_of_smooth (π : Representation ℂ (GL (Fin n) F)
   rw [this]
 
 /- English proof (translation)
-The claim follows from `((hΦ.comp Units.continuous_val).mul (continuous_matrixCoeff_of_smooth π hξ ℓ)).mul (continuous_detPow _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_localIntegrand [MeasurableSpace (GL (Fin n) F)] {Φ : Matrix (Fin n) (Fin n) F → ℂ}
     (hΦ : Continuous Φ) (π : Representation ℂ (GL (Fin n) F) V) {ξ : V} (hξ : ξ ∈ smoothVectors π)
@@ -55,9 +55,9 @@ theorem continuous_localIntegrand [MeasurableSpace (GL (Fin n) F)] {Φ : Matrix 
   ((hΦ.comp Units.continuous_val).mul (continuous_matrixCoeff_of_smooth π hξ ℓ)).mul (continuous_detPow _)
 
 /- English proof (translation)
-Establish `h1 : integralIndicator F n (k : Matrix (Fin n) (Fin n) F) = 1`. Rewrite using `[integralIndicator, Set.indicator_of_mem (mem_integralMatrixSet.2 ((mem_integralGL_iff F n).1 hk).1)]`. Both sides reduce to the same expression. Establish `h2 : Parabolic.matrixCoeff π ξ ℓ k = 1`. Rewrite using `[Parabolic.matrixCoeff, hξ k hk, hℓ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, detPow_of_mem_integralGL hk, one_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem localIntegrand_of_mem_integralGL (π : Representation ℂ (GL (Fin n) F) V) {ξ : V}
     (hξ : ξ ∈ fixedVectors π (integralGL F n)) {ℓ : Module.Dual ℂ V} (hℓ : ℓ ξ = 1) (s : ℂ)
@@ -81,27 +81,27 @@ def adeleToLocal (v : HeightOneSpectrum (𝓞 K)) : 𝔸[K] →+* v.adicCompleti
   (GodementSection.adeleAt v).comp (RingHom.snd _ _)
 
 /- English proof (translation)
-The claim follows from `(RingHom.map_det (adeleToLocal v) x).symm`.
+A detailed English derivation is pending.
 -/
 theorem det_localMat (v : HeightOneSpectrum (𝓞 K)) (x : Matrix (Fin n) (Fin n) 𝔸[K]) :
     (localMat v x).det = (x.det).2 v :=
   (RingHom.map_det (adeleToLocal v) x).symm
 
 /- English proof (translation)
-The claim follows from `(RingHom.map_det (RingHom.fst (InfiniteAdeleRing K) (FiniteAdeleRing (𝓞 K) K)) x).symm`.
+A detailed English derivation is pending.
 -/
 theorem det_archMat (x : Matrix (Fin n) (Fin n) 𝔸[K]) : (archMat x).det = (x.det).1 :=
   (RingHom.map_det (RingHom.fst (InfiniteAdeleRing K) (FiniteAdeleRing (𝓞 K) K)) x).symm
 
 /- English proof (translation)
-Rewrite using `[absDet, coe_localComp, det_localMat, GodementSection.modulus_adicCompletion]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem absDet_localComp (v : HeightOneSpectrum (𝓞 K)) (g : AdelicGLn.AdelicGL K n) :
     absDet (localComp n v g) = ‖((g : Matrix (Fin n) (Fin n) 𝔸[K]).det).2 v‖ := by
   rw [absDet, coe_localComp, det_localMat, GodementSection.modulus_adicCompletion]
 
 /- English proof (translation)
-Rewrite using `[archAbsDet, coe_archComp, det_archMat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem archAbsDet_archComp (g : AdelicGLn.AdelicGL K n) :
     archAbsDet (archComp K n g) =
@@ -109,7 +109,7 @@ theorem archAbsDet_archComp (g : AdelicGLn.AdelicGL K n) :
   rw [archAbsDet, coe_archComp, det_archMat]
 
 /- English proof (translation)
-Rewrite using `[archAbsDet_archComp]`. Repeatedly rewrite using `[absDet_localComp]`. Use `show (GroundTheory.Global.IdeleGroup.ideleModule K (AdelicGLn.det K n g) : ℝ) = _`. Rewrite using `[GroundTheory.Global.IdeleGroup.ideleModule_eq, AdelicGLn.coe_det]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detModule_eq (g : AdelicGLn.AdelicGL K n) :
     (Reduction.detModule K n g : ℝ) = archAbsDet (archComp K n g) * ∏ᶠ v, absDet (localComp n v g) := by
@@ -119,7 +119,7 @@ theorem detModule_eq (g : AdelicGLn.AdelicGL K n) :
   rw [GroundTheory.Global.IdeleGroup.ideleModule_eq, AdelicGLn.coe_det]
 
 /- English proof (translation)
-Establish `h` using `detPow_of_mem_integralGL hk 1`. Rewrite `h` using `[detPow, Complex.cpow_one]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absDet_of_mem_integralGL {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {k : GL (Fin n) F} (hk : k ∈ integralGL F n) : absDet k = 1 := by
@@ -128,18 +128,18 @@ theorem absDet_of_mem_integralGL {F : Type*} [Field F] [ValuativeRel F] [Topolog
   exact_mod_cast h
 
 /- English proof (translation)
-The claim follows from `Filter.eventually_cofinite.1 (eventually_localComp_mem g)`.
+A detailed English derivation is pending.
 -/
 theorem finite_setOf_not_mem (g : AdelicGLn.AdelicGL K n) :
     {v : HeightOneSpectrum (𝓞 K) | localComp n v g ∉ integralGL (v.adicCompletion K) n}.Finite :=
   Filter.eventually_cofinite.1 (eventually_localComp_mem g)
 
 /- English proof (translation)
-Use `set T := (finite_setOf_not_mem g).toFinset with hT`. Establish `hsub : ∀ v ∉ T, localComp n v g ∈ integralGL (v.adicCompletion K) n` using `fun v hv ↦ by`. Assume the negation of the conclusion as `h`. Conclude with `hv ((finite_setOf_not_mem g).mem_toFinset.2 h)`. Establish `h1 : ∏ᶠ v, absDet (localComp n v g) = ∏ v ∈ T, absDet (localComp n v g)` using `finprod_eq_prod_of_mulSupport_subset _ fun v hv ↦ by`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hvT`. Conclude with `hv (absDet_of_mem_integralGL (hsub v hvT))`. Establish `h2 : ∏ᶠ v, detPow (localComp n v g) s = ∏ v ∈ T, detPow (localComp n v g) s` using `finprod_eq_prod_of_mulSupport_subset _ fun v hv ↦ by`. Assume the negation of the conclusion as `hvT`. Conclude with `hv (detPow_of_mem_integralGL (hsub v hvT) s)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hA : 0 ≤ archAbsDet (archComp K n g)` using `Finset.prod_nonneg fun w _ ↦ pow_nonneg (norm_nonneg _) _`. Establish `hB : ∀ v, 0 ≤ absDet (localComp n v g)` using `fun v ↦ NNReal.coe_nonneg _`. Rewrite using `[GJGlobal.detPow, detModule_eq, h1, h2, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg hA (Finset.prod_nonneg fun v _ ↦ hB v), GodementSection.ofReal_prod_cpow T _ hB]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem detPow_eq (g : AdelicGLn.AdelicGL K n) (s : ℂ) :
     GJGlobal.detPow g s = archDetPow (archComp K n g) s * ∏ᶠ v, detPow (localComp n v g) s := by
@@ -175,14 +175,14 @@ def prodConst (ν : Measure (AdelicGLn.AdelicGL K n)) [ν.IsHaarMeasure]
     (μi.prod (Measure.haar : Measure (AdelicGLn.FiniteAdelicGL K n)))
 
 /- English proof (translation)
-The claim follows from `Measure.haarScalarFactor_pos_of_isHaarMeasure _ _`.
+A detailed English derivation is pending.
 -/
 theorem prodConst_pos (ν : Measure (AdelicGLn.AdelicGL K n)) [ν.IsHaarMeasure]
     (μi : Measure (AdelicGLn.InfiniteAdelicGL K n)) [μi.IsHaarMeasure] : 0 < prodConst ν μi :=
   Measure.haarScalarFactor_pos_of_isHaarMeasure _ _
 
 /- English proof (translation)
-The claim follows from `Measure.isMulLeftInvariant_eq_smul _ _`.
+A detailed English derivation is pending.
 -/
 theorem map_prodEquiv_eq (ν : Measure (AdelicGLn.AdelicGL K n)) [ν.IsHaarMeasure]
     (μi : Measure (AdelicGLn.InfiniteAdelicGL K n)) [μi.IsHaarMeasure] :
@@ -191,9 +191,9 @@ theorem map_prodEquiv_eq (ν : Measure (AdelicGLn.AdelicGL K n)) [ν.IsHaarMeasu
   Measure.isMulLeftInvariant_eq_smul _ _
 
 /- English proof (translation)
-Use `set me := (AdelicGLn.prodEquiv K n).toHomeomorph.toMeasurableEquiv`. Establish `h1 : ∫ g, A (archComp K n g) * B (finComp K n g) ∂ν = ∫ p, A p.1 * B p.2 ∂(ν.map me)`. Rewrite using `[integral_map_equiv me (fun p ↦ A p.1 * B p.2)]`. Both sides reduce to the same expression. Establish `hme : ν.map me = ν.map (AdelicGLn.prodEquiv K n)` using `rfl`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hme, map_prodEquiv_eq ν μi, integral_smul_nnreal_measure, integral_prod_mul, NNReal.smul_def, Complex.real_smul]`.
+A detailed English derivation is pending.
 -/
 theorem integral_eq_mul (ν : Measure (AdelicGLn.AdelicGL K n)) [ν.IsHaarMeasure]
     (μi : Measure (AdelicGLn.InfiniteAdelicGL K n)) [μi.IsHaarMeasure]
@@ -209,9 +209,9 @@ theorem integral_eq_mul (ν : Measure (AdelicGLn.AdelicGL K n)) [ν.IsHaarMeasur
     Complex.real_smul]
 
 /- English proof (translation)
-Use `set me := (AdelicGLn.prodEquiv K n).toHomeomorph.toMeasurableEquiv`. Establish `h1 : ∫⁻ g, ‖A (archComp K n g) * B (finComp K n g)‖ₑ ∂ν = ∫⁻ p, ‖A p.1‖ₑ * ‖B p.2‖ₑ ∂(ν.map me)`. Rewrite using `[lintegral_map_equiv (fun p ↦ ‖A p.1‖ₑ * ‖B p.2‖ₑ) me]`. Use `lintegral_congr fun g ↦ ?_` and prove the remaining obligations. Rewrite using `[enorm_mul]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hme : ν.map me = ν.map (AdelicGLn.prodEquiv K n)` using `rfl`. Rewrite using `[h1, hme, map_prodEquiv_eq ν μi, lintegral_smul_measure, lintegral_prod_mul hA.enorm.aemeasurable hB.enorm.aemeasurable, ENNReal.smul_def, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_eq_mul (ν : Measure (AdelicGLn.AdelicGL K n)) [ν.IsHaarMeasure]
     (μi : Measure (AdelicGLn.InfiniteAdelicGL K n)) [μi.IsHaarMeasure]
@@ -264,14 +264,14 @@ def finConst : ℝ :=
   (finHaar K n).real {x | ∀ v, x v ∈ integralGL (v.adicCompletion K) n}
 
 /- English proof (translation)
-The claim follows from `RestrictedHaar.measureReal_setOf_forall_mem_pos _ (fun _ ↦ isOpen_integralGL _ n) (fun _ ↦ isCompact_integralGL _ n) _`.
+A detailed English derivation is pending.
 -/
 theorem finConst_pos : 0 < finConst K n :=
   RestrictedHaar.measureReal_setOf_forall_mem_pos _ (fun _ ↦ isOpen_integralGL _ n)
     (fun _ ↦ isCompact_integralGL _ n) _
 
 /- English proof (translation)
-Use `set me := (AdelicGLn.finiteRestrictedEquiv K n).toHomeomorph.toMeasurableEquiv`. Rewrite using `[finHaar, show (Measure.haar : Measure (AdelicGLn.FiniteAdelicGL K n)).map (AdelicGLn.finiteRestrictedEquiv K n) = (Measure.haar : Measure (AdelicGLn.FiniteAdelicGL K n)).map me from rfl, integral_map_equiv me Φ]`. Conclude with `integral_congr_ae (Eventually.of_forall fun y ↦ hB y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_finHaar_eq {B : AdelicGLn.FiniteAdelicGL K n → ℂ}
     (Φ : (Πʳ v : HeightOneSpectrum (𝓞 K),
@@ -285,7 +285,7 @@ theorem integral_finHaar_eq {B : AdelicGLn.FiniteAdelicGL K n → ℂ}
   exact integral_congr_ae (Eventually.of_forall fun y ↦ hB y)
 
 /- English proof (translation)
-Use `set me := (AdelicGLn.finiteRestrictedEquiv K n).toHomeomorph.toMeasurableEquiv`. Rewrite using `[finHaar, show (Measure.haar : Measure (AdelicGLn.FiniteAdelicGL K n)).map (AdelicGLn.finiteRestrictedEquiv K n) = (Measure.haar : Measure (AdelicGLn.FiniteAdelicGL K n)).map me from rfl, integrable_map_equiv me Φ]`. Establish `: B = Φ ∘ me` using `funext hB`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_finHaar_iff {B : AdelicGLn.FiniteAdelicGL K n → ℂ}
     (Φ : (Πʳ v : HeightOneSpectrum (𝓞 K),
@@ -300,7 +300,7 @@ theorem integrable_finHaar_iff {B : AdelicGLn.FiniteAdelicGL K n → ℂ}
   rw [this]
 
 /- English proof (translation)
-Rewrite using `[integral_finHaar_eq (fun x ↦ ∏ᶠ v, F v (x v)) hB]`. Establish `hν1 : ∀ v : HeightOneSpectrum (𝓞 K), localHaar n v (integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K))) = 1` using `fun v ↦ localHaar_integralGL v`. Conclude with `RestrictedHaar.hasProd_integral (G := fun v : HeightOneSpectrum (𝓞 K) ↦ GL (Fin n) (v.adicCompletion K)) (fun v ↦ integralGL (v.adicCompletion K) n) (fun v ↦ isOpen_integralGL _ n) (fun v ↦ isCompact_integralGL _ n) (finHaar K n) (fun v ↦ localHaar n v) hν1 F hF hF1 (fun x ↦ ∏ᶠ v …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasProd_finite (F : ∀ v : HeightOneSpectrum (𝓞 K), GL (Fin n) (v.adicCompletion K) → ℂ)
     (hF : ∀ v, Measurable (F v))
@@ -320,7 +320,7 @@ theorem hasProd_finite (F : ∀ v : HeightOneSpectrum (𝓞 K), GL (Fin n) (v.ad
     ((integrable_finHaar_iff _ hB).1 hint)
 
 /- English proof (translation)
-Establish `hν1 : ∀ v : HeightOneSpectrum (𝓞 K), localHaar n v (integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K))) = 1` using `fun v ↦ localHaar_integralGL v`. Conclude with `RestrictedHaar.integrable_factor (G := fun v : HeightOneSpectrum (𝓞 K) ↦ GL (Fin n) (v.adicCompletion K)) (fun v ↦ integralGL (v.adicCompletion K) n) (fun v ↦ isOpen_integralGL _ n) (fun v ↦ isCompact_integralGL _ n) (finHaar K n) (fun v ↦ localHaar n v) hν1 F hF hF1 (fun x ↦ ∏ᶠ …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_factor_finite (F : ∀ v : HeightOneSpectrum (𝓞 K), GL (Fin n) (v.adicCompletion K) → ℂ)
     (hF : ∀ v, Measurable (F v))
@@ -364,7 +364,7 @@ variable {S : Finset (HeightOneSpectrum (𝓞 K))}
   {ℓ : ∀ v, Module.Dual ℂ (V v)}
 
 /- English proof (translation)
-Rewrite using `[localIntegrand, hS0 v hv]`. Conclude with `localIntegrand_of_mem_integralGL (π v) (hsph v hv).1 (hsph v hv).2 s hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localIntegrand_eq_one (hS0 : ∀ v ∉ S, Φ v = integralIndicator (v.adicCompletion K) n)
     (hsph : ∀ v ∉ S, ξ v ∈ fixedVectors (π v) (integralGL (v.adicCompletion K) n) ∧ ℓ v (ξ v) = 1)
@@ -374,9 +374,7 @@ theorem localIntegrand_eq_one (hS0 : ∀ v ∉ S, Φ v = integralIndicator (v.ad
   exact localIntegrand_of_mem_integralGL (π v) (hsph v hv).1 (hsph v hv).2 s hk
 
 /- English proof (translation)
-Establish `hΦ : Continuous (Φ v)`. Distinguish the cases in `hv : v ∈ S`. Conclude with `(hSB v hv).1.continuous`. Rewrite using `[hS0 v hv]`. Conclude with `isSchwartzBruhat_integralIndicator.1.continuous`.
-
-Conclude with `continuous_localIntegrand hΦ (π v) (hξ v) (ℓ v) s`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_localIntegrand' (hSB : ∀ v ∈ S, IsSchwartzBruhat (Φ v))
     (hS0 : ∀ v ∉ S, Φ v = integralIndicator (v.adicCompletion K) n)
@@ -390,13 +388,11 @@ theorem continuous_localIntegrand' (hSB : ∀ v ∈ S, IsSchwartzBruhat (Φ v))
   exact continuous_localIntegrand hΦ (π v) (hξ v) (ℓ v) s
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun y ↦ ?_` and prove the remaining obligations. Use `set e := AdelicGLn.finiteRestrictedEquiv K n`. Establish `hfin : {v : HeightOneSpectrum (𝓞 K) | e y v ∉ integralGL (v.adicCompletion K) n}.Finite` using `Filter.eventually_cofinite.1 (e y).2`. Use `set T := S ∪ hfin.toFinset with hT`. Establish `hopen : IsOpen (e ⁻¹' (RestrictedHaar.box (fun v ↦ integralGL (v.adicCompletion K) n) T : Set (Πʳ v : HeightOneSpectrum (𝓞 K), [GL (Fin n) (v.adicCompletion K), (integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K)))])))` using `(RestrictedHaar.isOpen_box _ (fun v ↦ isOpen_integralGL _ n) T).preimage e.continuous`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : y ∈ e ⁻¹' (RestrictedHaar.box (fun v ↦ integralGL (v.adicCompletion K) n) T : Set (Πʳ v : HeightOneSpectrum (𝓞 K), [GL (Fin n) (v.adicCompletion K), (integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K)))]))`. Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (Finset.mem_union_right _ (hfin.mem_toFinset.2 h))`. Establish `heq : ∀ z ∈ e ⁻¹' (RestrictedHaar.box (fun v ↦ integralGL (v.adicCompletion K) n) T : Set (Πʳ v : HeightOneSpectrum (𝓞 K), [GL (Fin n) (v.adicCompletion K), (integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K)))])), finIntegrand Φ π ξ ℓ s z = ∏ v ∈ T, localIn …`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `z hz`. Use `RestrictedHaar.finprod_eq_prod_of_mem_box (G := fun v : HeightOneSpectrum (𝓞 K) ↦ GL (Fin n) (v.adicCompletion K)) (fun v ↦ integralGL (v.adicCompletion K) n) (F := fun v ↦ localIntegrand Φ π ξ ℓ s v) (fun v hv k hk ↦ ?_) hz` and prove the remaining obligations. Conclude with `localIntegrand_eq_one hS0 hsph s (fun h ↦ hv (Finset.mem_union_left _ h)) hk`. Establish `hc : Continuous fun z : AdelicGLn.FiniteAdelicGL K n ↦ ∏ v ∈ T, localIntegrand Φ π ξ ℓ s v (e z v)` using `continuous_finsetProd _ fun v _ ↦ (continuous_localIntegrand' hSB hS0 hξ s v).comp ((RestrictedProduct.continuous_eval v).comp e.continuous)`. Use `hc.continuousAt.congr ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hopen.mem_nhds hy] with z hz`. Conclude with `(heq z hz).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_finIntegrand (hSB : ∀ v ∈ S, IsSchwartzBruhat (Φ v))
     (hS0 : ∀ v ∉ S, Φ v = integralIndicator (v.adicCompletion K) n)
@@ -436,17 +432,15 @@ theorem continuous_finIntegrand (hSB : ∀ v ∈ S, IsSchwartzBruhat (Φ v))
   exact (heq z hz).symm
 
 /- English proof (translation)
-Use `set U := S ∪ (finite_setOf_not_mem g).toFinset with hU`. Establish `hout : ∀ v ∉ U, v ∉ S ∧ localComp n v g ∈ integralGL (v.adicCompletion K) n`. Introduce `v hv`. Use `⟨fun h ↦ hv (Finset.mem_union_left _ h), ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hv (Finset.mem_union_right _ ((finite_setOf_not_mem g).mem_toFinset.2 h))`. Establish `h1 : ∏ᶠ v, Φ v (localComp n v g : Matrix (Fin n) (Fin n) (v.adicCompletion K)) = ∏ v ∈ U, Φ v (localComp n v g : Matrix (Fin n) (Fin n) (v.adicCompletion K))` using `finprod_eq_prod_of_mulSupport_subset _ fun v hv ↦ by`. Assume the negation of the conclusion as `hvU`. Take `⟨hvS, hvK⟩` from `hout v hvU`. Apply `hv` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hS0 v hvS, integralIndicator, Set.indicator_of_mem (mem_integralMatrixSet.2 ((mem_integralGL_iff _ n).1 hvK).1)]`. Both sides reduce to the same expression. Establish `h2 : ∏ᶠ v, Parabolic.matrixCoeff (π v) (ξ v) (ℓ v) (localComp n v g) = ∏ v ∈ U, Parabolic.matrixCoeff (π v) (ξ v) (ℓ v) (localComp n v g)` using `finprod_eq_prod_of_mulSupport_subset _ fun v hv ↦ by`. Assume the negation of the conclusion as `hvU`.
+Both sides reduce to the same expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨hvS, hvK⟩` from `hout v hvU`. Apply `hv` to reduce the goal to its premises. Use `show (ℓ v) ((π v) (localComp n v g) (ξ v)) = 1`. Rewrite using `[(hsph v hvS).1 _ hvK, (hsph v hvS).2]`. Establish `h3 : ∏ᶠ v, detPow (localComp n v g) (s + ((n : ℂ) - 1) / 2) = ∏ v ∈ U, detPow (localComp n v g) (s + ((n : ℂ) - 1) / 2)` using `finprod_eq_prod_of_mulSupport_subset _ fun v hv ↦ by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hvU`. Conclude with `hv (detPow_of_mem_integralGL (hout v hvU).2 _)`. Establish `h4 : finIntegrand Φ π ξ ℓ s (finComp K n g) = ∏ v ∈ U, localIntegrand Φ π ξ ℓ s v (localComp n v g)` using `finprod_eq_prod_of_mulSupport_subset _ fun v hv ↦ by`. Assume the negation of the conclusion as `hvU`. Conclude with `hv (localIntegrand_eq_one hS0 hsph s (hout v hvU).1 (hout v hvU).2)`.
-
-Rewrite using `[GJGlobal.zetaIntegrand, matrixTensor_coe, hf g, detPow_eq, h1, h2, h3, h4, archIntegrand]`. Simplify using `only [localIntegrand, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem zetaIntegrand_eq (φ : 𝓢(Fin n × Fin n → mixedSpace K, ℂ))
     (hS0 : ∀ v ∉ S, Φ v = integralIndicator (v.adicCompletion K) n)
@@ -506,7 +500,7 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
   {ℓ : ∀ v, Module.Dual ℂ (V v)}
 
 /- English proof (translation)
-Repeatedly rewrite using `[archSchwartz_eq]`. Conclude with `φ.continuous.comp ((archEntries K n).continuous.comp (Units.continuous_val : Continuous (Units.val : AdelicGLn.InfiniteAdelicGL K n → Matrix (Fin n) (Fin n) (InfiniteAdeleRing K))))`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_archSchwartz (φ : 𝓢(Fin n × Fin n → mixedSpace K, ℂ)) :
     Continuous fun x : AdelicGLn.InfiniteAdelicGL K n ↦
@@ -518,7 +512,7 @@ theorem continuous_archSchwartz (φ : 𝓢(Fin n × Fin n → mixedSpace K, ℂ)
         Matrix (Fin n) (Fin n) (InfiniteAdeleRing K))))
 
 /- English proof (translation)
-The claim follows from `((continuous_archSchwartz φ).mul hfi).mul (continuous_archDetPow _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_archIntegrand (φ : 𝓢(Fin n × Fin n → mixedSpace K, ℂ))
     {fi : AdelicGLn.InfiniteAdelicGL K n → ℂ} (hfi : Continuous fi) (s : ℂ) :
@@ -526,23 +520,21 @@ theorem continuous_archIntegrand (φ : 𝓢(Fin n × Fin n → mixedSpace K, ℂ
   ((continuous_archSchwartz φ).mul hfi).mul (continuous_archDetPow _)
 
 /- English proof (translation)
-Use `set A := archIntegrand φ fi s with hAdef`. Use `set B := finIntegrand Φ π ξ ℓ s with hBdef`. Establish `hA : Continuous A` using `continuous_archIntegrand φ hfi s`. Establish `hB : Continuous B` using `continuous_finIntegrand hSB hS0 hsph hξ s`. Establish `hH : GJGlobal.zetaIntegrand (matrixTensor φ Φ) f s = fun g ↦ A (archComp K n g) * B (finComp K n g)` using `funext (zetaIntegrand_eq φ hS0 hsph hf s)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ : GJGlobal.globalZeta ν (matrixTensor φ Φ) f s = ((prodConst ν μi : ℝ) : ℂ) * ((∫ x, A x ∂μi) * ∫ y, B y ∂Measure.haar)`. Rewrite using `[GJGlobal.globalZeta, hH]`. Conclude with `integral_eq_mul ν μi A B`. Establish `hzA : archZeta μi φ fi s = ∫ x, A x ∂μi` using `rfl`. Distinguish the cases in `h0 : A =ᵐ[μi] 0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hA0 : ∫ x, A x ∂μi = 0`. Rewrite using `[integral_congr_ae h0]`. Simplify using the standard rewrite rules. Use `⟨?_, fun h ↦ absurd h0 h⟩` and prove the remaining obligations. Rewrite using `[hZ, hzA, hA0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hBint : Integrable B Measure.haar`. Establish `hl` using `lintegral_eq_mul ν μi hA.measurable hB.measurable`. Establish `hfin : ∫⁻ g, ‖A (archComp K n g) * B (finComp K n g)‖ₑ ∂ν < ⊤`. Use `hint.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hH]`. Then use the resulting hypothesis. Rewrite `hfin` using `[hl]`. Establish `hAne : ∫⁻ x, ‖A x‖ₑ ∂μi ≠ 0`. Introduce `h`. Apply `h0` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h` using `[lintegral_eq_zero_iff hA.measurable.enorm]`. Use `filter_upwards [h] with x hx`. Simplify using `using hx`. Establish `hc0 : (prodConst ν μi : ℝ≥0∞) ≠ 0` using `by exact_mod_cast (prodConst_pos ν μi).ne'`. Use `⟨hB.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `ENNReal.lt_top_of_mul_ne_top_right hfin.ne hc0`. Conclude with `ENNReal.lt_top_of_mul_ne_top_right h1.ne hAne`. Establish `hP` using `hasProd_finite (fun v ↦ localIntegrand Φ π ξ ℓ s v) (fun v ↦ (continuous_localIntegrand' hSB hS0 hξ s v).measurable) (by filter_upwards [S.finite_toSet.compl_mem_cofinite] with v hv k hk`. Conclude with `localIntegrand_eq_one hS0 hsph s hv hk)`. Use the proof step `(fun y ↦ rfl) hBint`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Establish `hval` using `hP.tprod_eq`. Use `⟨?_, fun _ ↦ ⟨hBint, hP.multipliable.hasProd⟩⟩` and prove the remaining obligations. Establish `hzv : (fun v ↦ zetaIntegral (localHaar n v) (Φ v) (Parabolic.matrixCoeff (π v) (ξ v) (ℓ v)) s) = fun v ↦ ∫ h, localIntegrand Φ π ξ ℓ s v h ∂localHaar n v` using `rfl`. Rewrite using `[hZ, hzA, hzv, hval]`. Establish `hf0 : (finConst K n : ℂ) ≠ 0` using `by exact_mod_cast (finConst_pos (K := K) (n := n)).ne'`.
-
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem globalZeta_eq_euler (ν : Measure (AdelicGLn.AdelicGL K n)) [ν.IsHaarMeasure]
     (μi : Measure (AdelicGLn.InfiniteAdelicGL K n)) [μi.IsHaarMeasure]

@@ -13,7 +13,7 @@ set_option autoImplicit false
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Take `⟨m, rfl | rfl⟩` from `r.eq_nat_or_neg`. Rewrite using `[zpow_natCast, E.ord_pow]`. Rewrite using `[zpow_neg, zpow_natCast, E.ord_inv, E.ord_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem DivOver.ord_zpow_int {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
     (E : DivOver p) (f : X.functionFieldˣ) (r : ℤ) : E.ord (f ^ r) = r * E.ord f := by
@@ -22,7 +22,7 @@ theorem DivOver.ord_zpow_int {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X
   · rw [zpow_neg, zpow_natCast, E.ord_inv, E.ord_pow]; ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, E.ord_mul, ih, E.ord_zpow_int]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem DivOver.ord_finsetProd_zpow {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X]
     {p : X ⟶ Sp k} (E : DivOver p) {ι : Type} (s : Finset ι) (f : ι → X.functionFieldˣ)
@@ -33,9 +33,9 @@ theorem DivOver.ord_finsetProd_zpow {k : Type} [Field k] {X : Scheme.{0}} [IsInt
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, E.ord_mul, ih, E.ord_zpow_int]
 
 /- English proof (translation)
-Take `⟨a, ha, e⟩` from `h`. Establish `h1 : (v : X.functionField) ∈ E.ring` using `hE _ ⟨a, e⟩`. Establish `h2 : ((v⁻¹ : X.functionFieldˣ) : X.functionField) ∈ E.ring`. Use `hE _ ⟨(ha.unit⁻¹ : (X.presheaf.stalk y)ˣ), ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val, ← e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← map_mul, IsUnit.val_inv_mul, map_one]`. Establish `a1` using `(E.ord_nonneg_iff v).2 h1`. Establish `a2` using `(E.ord_nonneg_iff v⁻¹).2 h2`. Rewrite `a2` using `[E.ord_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -59,25 +59,21 @@ end GlobalTheory.Discrepancy
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Introduce `Y _ _ q n _ B y U hy z J w u hc η K Θ m g hη hK hm hΘ hg E hE`. Use `haveI := SmoothOfRelativeDimension.smooth n q`. Establish `hn : topologicalKrullDim Y = n`. Establish `hd (V : Y.Opens) (hV : IsAffineOpen V) (hne : (V : Set Y).Nonempty) : topologicalKrullDim (V : Set Y) = n`. Rewrite using `[topologicalKrullDim_eq_of_isEmbedding hV.fromSpec.isOpenEmbedding.isEmbedding hV.range_fromSpec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim (R := Γ(Y, V))).trans (SmoothDim.ringKrullDim_affineOpen ℂ _ q _ inferInstance V hV hne)`. Use `le_antisymm (topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_) ?_` and prove the remaining obligations. Take `⟨V, hV, hx, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens (TopologicalSpace.Opens.mem_top x)`. Conclude with `⟨V, V.isOpen, hx, (hd V hV ⟨x, hx⟩).le⟩`. Take `⟨V, hV, hx, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens (TopologicalSpace.Opens.mem_top y)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hd V hV ⟨_, hx⟩).ge.trans (topologicalKrullDim_subspace_le _ _)`. Use `set ω := formOf U (gen_mem hy) (dOn q z) with hω`. Establish `hgen` using `isFreeGen_formOf (gen_mem hy) hc.frame`. Establish `h0 : ω ≠ 0` using `fun h => one_ne_zero (hgen.1 (a₁ := 1) (a₂ := 0) (by simp [← hω, h]))`. Take `⟨c, hcη⟩` from `hgen.2 η`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : c ≠ 0` using `fun h => hη (by rw [← hcη]; simp [h])`. Use `set k0 : Y.functionFieldˣ := Units.mk0 c hc0 with hk0`. Establish `hηk : η = (k0 : Y.functionField) • ω` using `by rw [hk0, Units.val_mk0]; exact hcη.symm`. Establish `hKy : K.IsEqn y k0` using `hK U (dOn q z) hc.frame y hy k0 hηk`. Establish `hΘy` using `GlobalTheory.T.snc_chart_divisor_equation ℂ Y q n B y U hy z J w u hc Θ hΘ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `set M : Y.functionFieldˣ := ∏ j ∈ J, u j ^ Θ.mult (w j) with hM`. Establish `hsum : (Θ + m • K).IsEqn y (M * k0 ^ m)` using `hΘy.add (hKy.nsmul m)`. Use `set v : Y.functionFieldˣ := g * (M * k0 ^ m)⁻¹ with hv`. Establish `hvu : UnitAt y (v : Y.functionField)`. Use `hsum.iff_unitAt.1 hg` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, Units.val_mul, Units.val_inv_eq_inv_val, ← div_eq_mul_inv]` and apply the resulting hypothesis. Establish `hv0 : E.ord v = 0` using `E.ord_eq_zero_of_unitAt_through hE v hvu`. Establish `hvo : E.ord v = E.ord g - (E.ord M + m * E.ord k0)`. Rewrite using `[hv, E.ord_mul, E.ord_inv, E.ord_mul, E.ord_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hMo : E.ord M = ∑ j ∈ J, Θ.mult (w j) * E.ord (u j)`. Rewrite using `[hM, E.ord_finsetProd_zpow]`. Establish `hordg : E.ord g = ∑ j ∈ J, Θ.mult (w j) * E.ord (u j) + m * E.ord k0`. Rewrite using `[← hMo]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hform : E.formOrd η = E.ord k0 + E.formOrd ω`. Rewrite using `[hηk]`. Conclude with `E.formOrd_smul hn h0 k0`. Establish `hm' : (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne'`. Rewrite using `[discrep, hform, hordg]`.
-
-Use `push_cast`. Establish `hs : ∑ j ∈ J, ((Θ.mult (w j) : ℚ) / m) * (E.ord (u j) : ℚ) = (∑ j ∈ J, (Θ.mult (w j) : ℚ) * E.ord (u j)) / m`. Rewrite using `[Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun j _ => div_mul_eq_mul_div _ _ _`. Rewrite using `[hs]`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem IsSncChart.discrep_eq_formOrd_sub_sum : ∀ (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp ℂ) (n : ℕ) [SmoothOfRelativeDimension n q] (B : Closeds Y) (y : Y) (U : Y.Opens) (hy : y ∈ U) (z : Fin n → Γ(Y, U)) (J : Finset (Fin n)) (w : Fin n → Y) (u : Fin n → Y.functionFieldˣ), IsSncChart q n B y U hy z J w u → ∀ (η : RatForms q n) (K Θ : CartierDiv Y) (m : ℕ) (g : Y.functionFieldˣ), η ≠ 0 → IsDivOfForm K η → 0 < m → Θ.supp ≤ B → (Θ + m • K).IsEqn y g → ∀ E : DivOver q, E.Through y → discrep E η m g = (E.formOrd (formOf U (gen_mem hy) (dOn q z)) : ℚ) - ∑ j ∈ J, ((Θ.mult (w j) : ℚ) / m) * E.ord (u j) := by
   intro Y _ _ q n _ B y U hy z J w u hc η K Θ m g hη hK hm hΘ hg E hE

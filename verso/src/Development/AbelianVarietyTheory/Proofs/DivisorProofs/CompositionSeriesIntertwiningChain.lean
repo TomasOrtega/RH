@@ -8,13 +8,13 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 namespace GlobalTheory.FiltStepCut
 
 /- English proof (translation)
-Proceed by induction on `j' using Fin.induction with`. Consider the case `zero`. Introduce `h _`. Take `rfl : j = 0` from `le_antisymm h (Fin.zero_le _)`. Conclude with `⟨[], by simp, by simp⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `succ i ih`. Introduce `h ht`. Break down `h.eq_or_lt with rfl | h` into its components or cases. Conclude with `⟨[], by simp, by simp⟩`. Establish `h' : j ≤ i.castSucc` using `Fin.le_castSucc_iff.2 h`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hi : i ≠ t₀` using `ht i h' le_rfl`. Take `⟨l, hl, hm⟩` from `ih h' fun t a b => ht t a (b.trans (Fin.castSucc_lt_succ).le)`. Use `⟨l ++ [i], ?_, fun w hw => ?_⟩` and prove the remaining obligations. Introduce `t htl`. Break down `List.mem_append.1 htl with a | a` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hl t a`. Rewrite using `[List.mem_singleton.1 a]`. Conclude with `hi`. Rewrite using `[List.map_append, List.prod_append]`. Simplify using `using hm _ (hQ i hi w hw)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_prod_maps {J : Type} [AddCommGroup J] [Module ℂ J] {N : ℕ}
     (S : Fin (N + 1) → Submodule ℂ J) (t₀ : Fin N) (Q : Fin N → Module.End ℂ J)
@@ -42,21 +42,17 @@ theorem exists_prod_maps {J : Type} [AddCommGroup J] [Module ℂ J] {N : ℕ}
         simpa using hm _ (hQ i hi w hw)
 
 /- English proof (translation)
-Introduce `L J _ _ _ ρ N S _ h0 hN t₀ z c hz hc`. Use `set Q : Fin N → Module.End ℂ J := fun t => ρ (z t) - c t • (1 : Module.End ℂ J) with hQdef`. Establish `hQ : ∀ t, t ≠ t₀ → ∀ w ∈ (S t.succ).toSubmodule, Q t w ∈ (S t.castSucc).toSubmodule`. Introduce `t ht w hw`. Establish `h1` using `hc t ht (Submodule.Quotient.mk ⟨w, hw⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← Submodule.Quotient.mk_smul]`. Conclude with `(Submodule.Quotient.eq ((S t.castSucc).toSubmodule.comap (S t.succ).toSubmodule.subtype) (x := (S t.succ).toRepresentation (z t) ⟨w, hw⟩) (y := c t • (⟨w, hw⟩ : (S t.succ).toSubmodule))).1 h1`. Establish `hcomm : ∀ t y, Commute (ρ y) (Q t)`. Introduce `t y`. Use `Commute.sub_right ?_ ((Commute.one_right _).smul_right _)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show ρ y * ρ (z t) = ρ (z t) * ρ y`. Rewrite using `[← map_mul, ← map_mul, hz]`. Take `⟨l₁, hl₁, hm₁⟩` from `exists_prod_maps (fun j => (S j).toSubmodule) t₀ Q hQ t₀.succ (Fin.last N) (Fin.le_last _) (by`. Introduce and unpack `t a - rfl`. Conclude with `absurd a (not_le.2 Fin.castSucc_lt_succ))`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨l₂, hl₂, hm₂⟩` from `exists_prod_maps (fun j => (S j).toSubmodule) t₀ Q hQ 0 t₀.castSucc (Fin.zero_le _) (by`. Introduce and unpack `t - a rfl`. Conclude with `absurd a (not_le.2 Fin.castSucc_lt_succ))`. Establish `hP : ∀ y, Commute (ρ y) (l₂.map Q).prod` using `fun y => Commute.list_prod_right _ _ fun x hx => by`. Take `⟨t, -, rfl⟩` from `List.mem_map.1 hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hcomm t y`. Establish `hker : (S t₀.castSucc).toSubmodule.comap (S t₀.succ).toSubmodule.subtype ≤ LinearMap.ker ((l₂.map Q).prod ∘ₗ (S t₀.succ).toSubmodule.subtype)`. Introduce `x hx`. Use `hm₂ _ hx` as an intermediate fact. Simplify using `only [h0] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Use `⟨l₂ ++ l₁, ⟨Submodule.liftQ _ _ hker, fun g => Submodule.linearMap_qext _ (LinearMap.ext fun x => ?_)⟩, ?_, fun w => ?_⟩` and prove the remaining obligations. Conclude with `(LinearMap.congr_fun (hP g).eq (x : J)).symm`. Introduce `t htl`. Break down `List.mem_append.1 htl with a | a` into its components or cases.
-
-Conclude with `hl₂ t a`. Conclude with `hl₁ t a`. Establish `hw : w ∈ (S (Fin.last N)).toSubmodule` using `by rw [hN]; trivial`. Use `⟨Submodule.Quotient.mk ⟨_, hm₁ w hw⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_append, List.prod_append]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_prod_mem_range : ∀ (L J : Type) [Group L] [AddCommGroup J] [Module ℂ J]
     (ρ : Representation ℂ L J) (N : ℕ)

@@ -16,13 +16,13 @@ def sgLoF (L : Matrix (Fin N) (Fin N) K) : K := ∑ a : Fin N, if h : a.val + 1 
 def sgUpF (U : Matrix (Fin N) (Fin N) K) : K := ∑ a : Fin N, if h : a.val + 1 < N then U a ⟨a.val + 1, h⟩ else 0
 
 /- English proof (translation)
-Use `set b : Fin N := ⟨a.val + 1, h⟩ with hb`. Establish `hab : a ≠ b`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `[b] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply, Fintype.sum_eq_add a b hab]`. Rewrite using `[(hB a a).2 rfl, (hA b b).2 rfl]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `x ⟨hxa, hxb⟩`. Break down `lt_or_gt_of_ne hxa with hx | hx` into its components or cases.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hB x a).1 hx, mul_zero]`. Establish `hbx : b < x`. Establish `h1 : x.val ≠ a.val + 1` using `fun e => hxb (Fin.ext e)`. Rewrite `hx`, the goal using `[Fin.lt_iff_val_lt_val]`. Simplify using `only [b]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[(hA b x).1 hbx, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mul_apply_subdiag_of_isLoUni {A B : Matrix (Fin N) (Fin N) K} (hA : IsLoUni A) (hB : IsLoUni B) (a : Fin N)
     (h : a.val + 1 < N) : (A * B) ⟨a.val + 1, h⟩ a = A ⟨a.val + 1, h⟩ a + B ⟨a.val + 1, h⟩ a := by
@@ -41,9 +41,7 @@ private lemma mul_apply_subdiag_of_isLoUni {A B : Matrix (Fin N) (Fin N) K} (hA 
       rw [(hA b x).1 hbx, zero_mul]
 
 /- English proof (translation)
-Unfold `sgLoF`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `mul_apply_subdiag_of_isLoUni hA hB a h`.
-
-Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sgLoF_mul {A B : Matrix (Fin N) (Fin N) K} (hA : IsLoUni A) (hB : IsLoUni B) :
     sgLoF (A * B) = sgLoF A + sgLoF B := by
@@ -55,13 +53,13 @@ theorem sgLoF_mul {A B : Matrix (Fin N) (Fin N) K} (hA : IsLoUni A) (hB : IsLoUn
   · simp
 
 /- English proof (translation)
-Use `set b : Fin N := ⟨a.val + 1, h⟩ with hb`. Establish `hab : a ≠ b`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `[b] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply, Fintype.sum_eq_add a b hab]`. Rewrite using `[(hA a a).2 rfl, (hB b b).2 rfl]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `x ⟨hxa, hxb⟩`. Break down `lt_or_gt_of_ne hxa with hx | hx` into its components or cases.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hA a x).1 hx, zero_mul]`. Establish `hbx : b < x`. Establish `h1 : x.val ≠ a.val + 1` using `fun e => hxb (Fin.ext e)`. Rewrite `hx`, the goal using `[Fin.lt_iff_val_lt_val]`. Simplify using `only [b]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[(hB x b).1 hbx, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mul_apply_superdiag_of_isUpUni {A B : Matrix (Fin N) (Fin N) K} (hA : IsUpUni A) (hB : IsUpUni B) (a : Fin N)
     (h : a.val + 1 < N) : (A * B) a ⟨a.val + 1, h⟩ = A a ⟨a.val + 1, h⟩ + B a ⟨a.val + 1, h⟩ := by
@@ -80,9 +78,7 @@ private lemma mul_apply_superdiag_of_isUpUni {A B : Matrix (Fin N) (Fin N) K} (h
       rw [(hB x b).1 hbx, mul_zero]
 
 /- English proof (translation)
-Unfold `sgUpF`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `mul_apply_superdiag_of_isUpUni hA hB a h`.
-
-Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sgUpF_mul {A B : Matrix (Fin N) (Fin N) K} (hA : IsUpUni A) (hB : IsUpUni B) :
     sgUpF (A * B) = sgUpF A + sgUpF B := by
@@ -97,11 +93,11 @@ def sameBF (bs : List (K × ℕ)) (N a : ℕ) : Prop :=
   a + 1 < N ∧ pσ bs (a + 1) + 1 = pσ bs a ∧ pv bs (a + 1) = pv bs a
 
 /- English proof (translation)
-Introduce `bs`. Proceed by induction on `bs with`. Consider the case `nil => intro i h`. Simplify using `at h`. Consider the case `cons b bs ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `i h`. Take `⟨t, s⟩` from `b`. Simplify using `only [List.map_cons, List.sum_cons] at h`. Distinguish the cases in `hi : i < s`. Establish `h1 : s - 1 - i < s` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [pσ, pv, hi, h1, if_true]`. Establish `h1 : ¬ s + pσ bs (i - s) < s` using `by omega`. Simplify using `only [pσ, pv, hi, h1, if_false, Nat.add_sub_cancel_left]`. Conclude with `ih (i - s) (by omega)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pv_psigma_eq_pv : ∀ (bs : List (K × ℕ)) (i : ℕ), i < (bs.map Prod.snd).sum →
     pv bs (pσ bs i) = pv bs i := by
@@ -120,11 +116,11 @@ private theorem pv_psigma_eq_pv : ∀ (bs : List (K × ℕ)) (i : ℕ), i < (bs.
       exact ih (i - s) (by omega)
 
 /- English proof (translation)
-Establish `hsum : (p.1.map Prod.snd).sum = N` using `p.2.2`. Unfold `sameBF at hs ⊢`. Take `⟨h1, h2, h3⟩` from `hs`. Establish `ha : a < N` using `by omega`. Establish `hσa` using `pσ_lt p.1 a (by rw [hsum]; exact ha)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv1` using `pσ_inv p.1 (a + 1) (by rw [hsum]; exact h1)`. Establish `hinv0` using `pσ_inv p.1 a (by rw [hsum]; exact ha)`. Establish `hv1` using `pv_psigma_eq_pv p.1 (a + 1) (by rw [hsum]; exact h1)`. Establish `hv0` using `pv_psigma_eq_pv p.1 a (by rw [hsum]; exact ha)`. Use `⟨⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2]`. Conclude with `lt_of_lt_of_eq hσa hsum`. Rewrite using `[h2, hinv0, hinv1]`. Rewrite using `[h2, hv0, hv1, h3]`. Rewrite using `[h2, hinv0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem same_phiF (p : Point K N) {a : ℕ} (hs : sameBF p.1 N a) :
     sameBF p.1 N (pσ p.1 (a + 1)) ∧ pσ p.1 (pσ p.1 (a + 1) + 1) = a := by
@@ -144,11 +140,9 @@ theorem same_phiF (p : Point K N) {a : ℕ} (hs : sameBF p.1 N a) :
   · rw [h2, hinv0]
 
 /- English proof (translation)
-Introduce `bs`. Proceed by induction on `bs with`. Consider the case `nil => intro _ i h`. Simplify using `at h`. Consider the case `cons b bs ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hb i h`. Take `⟨t, s⟩` from `b`. Simplify using `only [List.map_cons, List.sum_cons] at h`. Simplify using `only [pv]`. Use `split_ifs with hi`.
-
-Conclude with `(hb (t, s) (by simp)).1`. Conclude with `ih (fun b hb' => hb b (by simp [hb'])) (i - s) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pv_ne_zero_of_blocks_ne_zero : ∀ (bs : List (K × ℕ)), (∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) →
     ∀ i, i < (bs.map Prod.snd).sum → pv bs i ≠ 0 := by
@@ -165,13 +159,13 @@ private theorem pv_ne_zero_of_blocks_ne_zero : ∀ (bs : List (K × ℕ)), (∀ 
     · exact ih (fun b hb' => hb b (by simp [hb'])) (i - s) (by omega)
 
 /- English proof (translation)
-Establish `hs : (p.1.map Prod.snd).sum = N` using `p.2.2`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single k]`. Apply the tactic sequence `have e : ptMat p k j = pv p.1 k.val := by show ptEntry p.1 k.val j.val = _`. Rewrite using `[ptEntry_eq_pv p.1 _ _ (by rw [hs]; exact k.isLt), if_pos]`. Rewrite using `[hk, pσ_inv p.1 _ (by rw [hs]; exact j.isLt)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Introduce `c _ hc`. Apply the tactic sequence `have e : ptMat p c j = 0 := by show ptEntry p.1 c.val j.val = _`. Rewrite using `[ptEntry_eq_pv p.1 _ _ (by rw [hs]; exact c.isLt), if_neg]`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hc` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[hk, e, pσ_inv p.1 _ (by rw [hs]; exact c.isLt)]`. Rewrite using `[e, mul_zero]`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ k) h`.
+A detailed English derivation is pending.
 -/
 private lemma mul_ptMat_apply_eq (p : Point K N) (A : Matrix (Fin N) (Fin N) K) (i j k : Fin N)
     (hk : k.val = pσ p.1 j.val) : (A * ptMat p) i j = A i k * pv p.1 k.val := by
@@ -194,11 +188,11 @@ private lemma mul_ptMat_apply_eq (p : Point K N) (A : Matrix (Fin N) (Fin N) K) 
   · intro h; exact absurd (Finset.mem_univ k) h
 
 /- English proof (translation)
-Establish `hs : (p.1.map Prod.snd).sum = N` using `p.2.2`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single k]`. Apply the tactic sequence `have e : ptMat p i k = pv p.1 i.val := by show ptEntry p.1 i.val k.val = _`. Rewrite using `[ptEntry_eq_pv p.1 _ _ (by rw [hs]; exact i.isLt), if_pos hk]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `c _ hc`. Apply the tactic sequence `have e : ptMat p i c = 0 := by show ptEntry p.1 i.val c.val = _`. Rewrite using `[ptEntry_eq_pv p.1 _ _ (by rw [hs]; exact i.isLt), if_neg]`. Introduce `e`. Conclude with `hc (Fin.ext (e.trans hk.symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma ptMat_mul_apply_eq (p : Point K N) (A : Matrix (Fin N) (Fin N) K) (i j k : Fin N)
     (hk : k.val = pσ p.1 i.val) : (ptMat p * A) i j = pv p.1 i.val * A k j := by
@@ -218,27 +212,25 @@ private lemma ptMat_mul_apply_eq (p : Point K N) (A : Matrix (Fin N) (Fin N) K) 
   · intro h; exact absurd (Finset.mem_univ k) h
 
 /- English proof (translation)
-Establish `hs : (p.1.map Prod.snd).sum = N` using `p.2.2`. Establish `hbs` using `p.2.1`. Establish `hlt : ∀ i, i < N → pσ p.1 i < N` using `fun i hi => by`. Use `pσ_lt p.1 i (by rw [hs]; exact hi); rwa [hs] at this` as an intermediate fact. Establish `hinv : ∀ i, i < N → pσ p.1 (pσ p.1 i) = i` using `fun i hi => pσ_inv p.1 i (by rw [hs]; exact hi)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ i, i < N → pv p.1 i ≠ 0` using `fun i hi => pv_ne_zero_of_blocks_ne_zero p.1 hbs i (by rw [hs]; exact hi)`. Establish `key : ∀ (i j k l : Fin N), k.val = pσ p.1 j.val → l.val = pσ p.1 i.val → n i k * pv p.1 k.val = pv p.1 i.val * m l j`. Introduce `i j k l hk hl`. Use `congrFun (congrFun h i) j` as an intermediate fact. Rewrite `this` using `[mul_ptMat_apply_eq p n i j k hk, ptMat_mul_apply_eq p m i j l hl]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hlo : ∀ a : Fin N, (if h : a.val + 1 < N then n ⟨a.val + 1, h⟩ a else 0) = if hS : sameBF p.1 N a.val then m ⟨pσ p.1 (a.val + 1), hlt _ hS.1⟩ ⟨pσ p.1 (a.val + 1) + 1, by rw [hS.2.1]; exact hlt _ a.isLt⟩ else 0`. Introduce `a`. Distinguish the cases in `ha : a.val + 1 < N`. Rewrite using `[dif_pos ha]`. Establish `K1` using `key ⟨a.val + 1, ha⟩ ⟨pσ p.1 a.val, hlt _ a.isLt⟩ a ⟨pσ p.1 (a.val + 1), hlt _ ha⟩ (hinv _ a.isLt).symm rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs with hS`. Take `⟨_, h2, h3⟩` from `hS`. Establish `e : (⟨pσ p.1 a.val, hlt _ a.isLt⟩ : Fin N) = ⟨pσ p.1 (a.val + 1) + 1, by rw [h2]; exact hlt _ a.isLt⟩` using `Fin.ext h2.symm`. Establish `h3' : pv p.1 (Fin.val (⟨a.val + 1, ha⟩ : Fin N)) = pv p.1 a.val` using `h3`. Rewrite `K1` using `[e, h3']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `mul_right_cancel₀ (hv _ a.isLt) (K1.trans (mul_comm _ _))`. Break down `pσ_nb p.1 hbs a.val (by rw [hs]; exact ha) with hsame | hgt` into its components or cases. Conclude with `absurd ⟨ha, hsame.1, hsame.2⟩ hS`. Establish `e : m ⟨pσ p.1 (a.val + 1), hlt _ ha⟩ ⟨pσ p.1 a.val, hlt _ a.isLt⟩ = 0` using `(hm _ _).1 (by rw [Fin.lt_iff_val_lt_val]; exact hgt)`. Rewrite `K1` using `[e, mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(mul_eq_zero.1 K1).resolve_right (hv _ a.isLt)`. Rewrite using `[dif_neg ha, dif_neg (fun hS => ha hS.1)]`. Establish `hup : ∀ b : Fin N, (if h : b.val + 1 < N then m b ⟨b.val + 1, h⟩ else 0) = if hS : sameBF p.1 N b.val then m b ⟨b.val + 1, hS.1⟩ else 0`. Introduce `b`. Distinguish the cases in `hb : b.val + 1 < N`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[dif_pos hb] split_ifs with hS`. Both sides reduce to the same expression. Break down `pσ_nb p.1 hbs b.val (by rw [hs]; exact hb) with hsame | hgt` into its components or cases. Conclude with `absurd ⟨hb, hsame.1, hsame.2⟩ hS`. Establish `K1` using `key ⟨pσ p.1 b.val, hlt _ b.isLt⟩ ⟨b.val + 1, hb⟩ ⟨pσ p.1 (b.val + 1), hlt _ hb⟩ b`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `rfl (hinv _ b.isLt).symm`. Establish `e : n ⟨pσ p.1 b.val, hlt _ b.isLt⟩ ⟨pσ p.1 (b.val + 1), hlt _ hb⟩ = 0` using `(hn _ _).1 (by rw [Fin.lt_iff_val_lt_val]; exact hgt)`. Rewrite `K1` using `[e, zero_mul]`. Conclude with `(mul_eq_zero.1 K1.symm).resolve_left (hv _ (hlt _ b.isLt))`. Rewrite using `[dif_neg hb, dif_neg (fun hS => hb hS.1)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Unfold `sgLoF sgUpF`. Rewrite using `[Finset.sum_congr rfl (fun a _ => hlo a), Finset.sum_congr rfl (fun b _ => hup b)]`. Use `set fe : Fin N → Fin N := fun a => if hS : sameBF p.1 N a.val then ⟨pσ p.1 (a.val + 1), hlt _ hS.1⟩ else a with hfe`. Establish `hinvol : Function.Involutive fe`. Introduce `a`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hS : sameBF p.1 N a.val`. Establish `h2` using `same_phiF p hS`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[hfe, hS, h2.1, h2.2]`. Simplify using `[hfe, hS]`.
-
-Use `Fintype.sum_equiv (hinvol.toPerm _) _ _ (fun a => ?_)` and prove the remaining obligations. Distinguish the cases in `hS : sameBF p.1 N a.val`. Establish `h2` using `same_phiF p hS`. Simplify using `[hfe, hS, h2.1]`. Simplify using `[hfe, hS]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem simple_eqF (p : Point K N) {n m : Matrix (Fin N) (Fin N) K} (hn : IsLoUni n) (hm : IsUpUni m)
     (h : n * ptMat p = ptMat p * m) : sgLoF n = sgUpF m := by
@@ -310,7 +302,7 @@ theorem simple_eqF (p : Point K N) {n m : Matrix (Fin N) (Fin N) K} (hn : IsLoUn
   · simp [hfe, hS]
 
 /- English proof (translation)
-Take `⟨hn, hm, hnm, hL1, hU1⟩` from `cell_move hL hU hL' hU' e`. Establish `hs` using `simple_eqF p hn hm hnm`. Establish `h1 : sgLoF L = sgLoF L' + sgLoF (L'⁻¹ * L)` using `by rw [← sgLoF_mul hL' hn, hL1]`. Establish `h2 : sgUpF U' = sgUpF (U' * U⁻¹) + sgUpF U` using `by rw [← sgUpF_mul hm hU, hU1]`. Rewrite using `[h1, h2, hs]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -331,7 +323,7 @@ def mapPt {K' : Type} [Field K'] (f : K →+* K') (p : Point K N) : Point K' N :
     · rw [List.map_map]; exact p.2.2⟩
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => by simp [ptEntry] | (t, s) :: bs, i, j => by simp only [List.map_cons, ptEntry] split_ifs <;> simp [ptEntry_map f bs]`.
+A detailed English derivation is pending.
 -/
 theorem ptEntry_map {K' : Type} [Field K'] (f : K →+* K') :
     ∀ (bs : List (K × ℕ)) (i j : ℕ), ptEntry (bs.map (fun b => (f b.1, b.2))) i j = f (ptEntry bs i j)
@@ -341,7 +333,7 @@ theorem ptEntry_map {K' : Type} [Field K'] (f : K →+* K') :
     split_ifs <;> simp [ptEntry_map f bs]
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `ptEntry_map f p.1 a.val b.val`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem ptMat_mapPt {K' : Type} [Field K'] (f : K →+* K') (p : Point K N) : ptMat (mapPt f p) = (ptMat p).map f := by
   ext a b

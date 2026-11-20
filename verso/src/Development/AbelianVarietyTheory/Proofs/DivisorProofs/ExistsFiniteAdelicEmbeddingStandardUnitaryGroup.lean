@@ -23,7 +23,7 @@ namespace GlobalTheory.FinEmbStd
 variable {D : D7}
 
 /- English proof (translation)
-Use `GlobalTheory.UnitarySplit.ga_ext V ?_ ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker.1 hg, MonoidHom.mem_ker.1 hg']`. Conclude with `Units.ext (Matrix.ext fun i j => (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).injective (h i j))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_finHom (V : HSp D) {g g' : GA D V} (hg : g ∈ GfC V) (hg' : g' ∈ GfC V)
     (h : ∀ i j, GlobalTheory.LFun.finAdEquiv D.host.F D.host.E (((finHom V g : GL (Fin V.rank) _) : Matrix (Fin V.rank) (Fin V.rank) _) i j) =
@@ -34,7 +34,7 @@ theorem eq_of_finHom (V : HSp D) {g g' : GA D V} (hg : g ∈ GfC V) (hg' : g' �
   · exact Units.ext (Matrix.ext fun i j => (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).injective (h i j))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `GlobalTheory.LFun.toFinAd ℚ D.host.E (1 ⊗ₜ[ℚ] e) = _`. Rewrite using `[GlobalTheory.LFun.toFinAd_tmul, map_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toFinE_inc (e : D.host.E) :
     GlobalTheory.BotFormula.toFinE D (Formalism.MainNotions.StandardLatticesGL3.inc D e) = algebraMap D.host.E _ e := by
@@ -42,7 +42,7 @@ theorem toFinE_inc (e : D.host.E) :
   rw [GlobalTheory.LFun.toFinAd_tmul, map_one, one_mul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `GlobalTheory.LFun.toFinAd D.host.F D.host.E (1 ⊗ₜ[D.host.F] e) = _`. Rewrite using `[GlobalTheory.LFun.toFinAd_tmul, map_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem finAdEquiv_inclR (e : D.host.E) :
     GlobalTheory.LFun.finAdEquiv D.host.F D.host.E (inclR (F := D.host.F) (Af D.host.F) e) = algebraMap D.host.E _ e := by
@@ -50,16 +50,16 @@ theorem finAdEquiv_inclR (e : D.host.E) :
   rw [GlobalTheory.LFun.toFinAd_tmul, map_one, one_mul]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.BotFormula.toAfE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toFinE_toAfE_symm (y : TensorProduct D.host.F (Af D.host.F) D.host.E) :
     GlobalTheory.BotFormula.toFinE D ((GlobalTheory.BotFormula.toAfE D).symm y) = GlobalTheory.LFun.finAdEquiv D.host.F D.host.E y := by
   simp [GlobalTheory.BotFormula.toAfE]
 
 /- English proof (translation)
-Establish `: ((finHom V γ : GL (Fin V.rank) _) : Matrix (Fin V.rank) (Fin V.rank) _) i j = inclR (F` using `D.host.F) (Af D.host.F) ((u : Matrix (Fin V.rank) (Fin V.rank) D.host.E) i j) := by`. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)) (((matHom V γ : GL _ _) : Matrix (Fin V.rank) (Fin V.rank) _) i j) = _`. Rewrite using `[← hγ]`. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)) (inclR (F := D.host.F) (AF D.host.F) ((u : Matrix (Fin V.rank) (Fin V.rank) D.host.E) i j)) = _`. Simplify using `[inclR, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, finAdEquiv_inclR]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finAdEquiv_finHom_rat (V : HSp D) (γ : GA D V) (u : GL (Fin V.rank) D.host.E)
     (hγ : Formalism.UG.bc (inclR (F := D.host.F) (AF D.host.F)) u = matHom V γ) (i j : Fin V.rank) :
@@ -76,13 +76,13 @@ theorem finAdEquiv_finHom_rat (V : HSp D) (γ : GA D V) (u : GL (Fin V.rank) D.h
   rw [this, finAdEquiv_inclR]
 
 /- English proof (translation)
-Set `M : Matrix (Fin V.rank) (Fin V.rank) (TensorProduct D.host.F (Af D.host.F) D.host.E)` to `(finHom V g).val`. Establish `hM : Formalism.UG.cT (sigR (Af D.host.F) D.sp.cm.sig) M * M = 1`. Establish `h2` using `GlobalTheory.UnitarySplit.finHom_mem V g`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ M * JR (Af D.host.F) V.gram * M = JR (Af D.host.F) V.gram at h2`. Rewrite `h2` using `[hG, JR, Matrix.map_one _ (map_zero _) (map_one _), mul_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`. Establish `hu : Formalism.UG.cT (Formalism.MainNotions.StandardLatticesGL3.sgA D) (M.map (GlobalTheory.BotFormula.toAfE D).symm.toRingHom) * M.map (GlobalTheory.BotFormula.toAfE D).symm.toRingHom = 1`. Use `GlobalTheory.DefU.ClassFin.unitary_map _ (sigR (Af D.host.F) D.sp.cm.sig) _ ?_ _ hM` and prove the remaining obligations. Introduce `y`. Apply `(GlobalTheory.BotFormula.toAfE D).injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, RingEquiv.apply_symm_apply, GlobalTheory.BotFormula.toAfE_sgA]`. Set `x0 : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)` to `Formalism.UG.bc (GlobalTheory.BotFormula.toAfE D).symm.toRingHom (finHom V g)`. Establish `hx0 : x0 ∈ Formalism.MainNotions.StandardLatticesGL3.GA D V.rank`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ (M.map (GlobalTheory.BotFormula.toAfE D).symm.toRingHom) * (1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map _ * (M.map (GlobalTheory.BotFormula.toAfE D).symm.toRingHom) = _`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), mul_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hu`. Use `⟨⟨x0, hx0⟩, hg, rfl, fun i j => ?_⟩` and prove the remaining obligations. Conclude with `(toFinE_toAfE_symm _).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_std_of_GfC (V : HSp D) (hG : V.gram = 1) (g : GA D V) (hg : g ∈ GfC V) :
     ∃ x : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank, IsFinPt V g x := by
@@ -108,15 +108,15 @@ theorem exists_std_of_GfC (V : HSp D) (hG : V.gram = 1) (g : GA D V) (hg : g ∈
   exact (toFinE_toAfE_symm _).symm
 
 /- English proof (translation)
-Rewrite `hxr` using `[GlobalTheory.NormSum.ratG_eq_ratPts]`. Take `⟨u, hu, hu'⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hxr)`. Set `U : Matrix (Fin V.rank) (Fin V.rank) D.host.E` to `u.val`. Establish `huV : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) U * V.gram * U = V.gram`. Establish `h : Formalism.UG.cT (D.host.conj : D.host.E →+* D.host.E) U * 1 * U = 1` using `hu`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) U = Formalism.UG.cT (D.host.conj : D.host.E →+* D.host.E) U`. Conclude with `Matrix.ext fun i j => Formalism.MainNotions.GlobalTheoryTheory.jnt_sig_eq_conj D _`. Rewrite using `[hG, hc]`. Conclude with `h`. Establish `hcT : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (U.map (inclR (F` using `D.host.F) (AF D.host.F))) = (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) U).map (inclR (F := D.host.F) (AF D.host.F)) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, sigR, inclR, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]`. Establish `hmem : Formalism.UG.bc (inclR (F` using `D.host.F) (AF D.host.F)) u ∈ HR (AF D.host.F) D.sp.cm.sig V.gram := by`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (U.map (inclR (F := D.host.F) (AF D.host.F))) * JR (AF D.host.F) V.gram * U.map (inclR (F := D.host.F) (AF D.host.F)) = JR (AF D.host.F) V.gram`. Rewrite using `[hcT, JR, ← Matrix.map_mul, ← Matrix.map_mul, huV]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `γ : GA D V` to `⟨Formalism.UG.bc (inclR (F := D.host.F) (AF D.host.F)) u, hmem⟩`. Use `⟨γ, Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨u, huV, rfl⟩), ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply `(GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[finAdEquiv_finHom_rat V γ u rfl i j, hg i j, ← toFinE_inc]`. Use `congr 1`. Rewrite using `[← hu']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_GQ_of_rat (V : HSp D) (hG : V.gram = 1) (x : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank) (hxr : x ∈ ratG D V.rank)
     (g : GA D V) (hg : ∀ i j,
@@ -150,25 +150,23 @@ theorem exists_GQ_of_rat (V : HSp D) (hG : V.gram = 1) (x : Formalism.MainNotion
   rfl
 
 /- English proof (translation)
-Introduce `D V n hG hr`. Substitute `hr` using the available equality. Establish `key : ∀ (g : GA D V) (x : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank), IsFinPt V g x ↔ g ∈ GfC V ∧ ∀ i j, GlobalTheory.LFun.finAdEquiv D.host.F D.host.E (((finHom V g : GL (Fin V.rank) _) : Matrix (Fin V.rank) (Fin V.rank) _) i j) = GlobalTheory.BotFormula.toFinE D ((( …`. Introduce `g x`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, e, h2⟩`. Conclude with `⟨h1, fun i j => by simpa using h2 i j⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, rfl, fun i j => by simpa using h2 i j⟩`. Use `choose f hf using fun x : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank => GlobalTheory.BotFormula.exists_isFinPt_of_gram_one V hG x rfl`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `uniq : ∀ g x, IsFinPt V g x → g = f x`. Introduce `g x hg`. Take `⟨g1, g2⟩` from `(key g x).1 hg`. Take `⟨f1, f2⟩` from `(key _ x).1 (hf x)`. Conclude with `eq_of_finHom V g1 f1 fun i j => (g2 i j).trans (f2 i j).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hfx : ∀ x, ∀ i j, GlobalTheory.LFun.finAdEquiv D.host.F D.host.E (((finHom V (f x) : GL (Fin V.rank) _) : Matrix (Fin V.rank) (Fin V.rank) _) i j) = GlobalTheory.BotFormula.toFinE D (((x : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin V.rank) (Fi …` using `fun x => ((key _ x).1 (hf x)).2`. Set `ι : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank →* GA D V` to `{ toFun := f map_one' := (uniq 1 1 ((key 1 1).2 ⟨one_mem _, fun i j => by`. Apply the tactic sequence `simp [Matrix.one_apply, apply_ite]; split_ifs <;> simp_all⟩)).symm`. Use the proof step `map_mul' := fun x y => (uniq _ _ ((key _ _).2 ⟨mul_mem ((key _ x).1 (hf x)).1 ((key _ y).1 (hf y)).1, fun i j => by`. Simplify using `only [map_mul, Units.val_mul, Subgroup.coe_mul, Matrix.mul_apply, map_sum, hfx]⟩)).symm }`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨ι, hf, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y hxy`. Express the relevant statement in the definitionally equal form `f x = f y at hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Apply `(GlobalTheory.BotFormula.toFinE D).injective` to reduce the goal to its premises. Rewrite using `[← hfx x, ← hfx y, hxy]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `((key _ x).1 (hf x)).1`. Introduce `g hg`. Take `⟨x, hx⟩` from `exists_std_of_GfC V hG g hg`. Conclude with `⟨x, (uniq g x hx).symm⟩`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, he⟩`. Express the relevant statement in the definitionally equal form `finHom V γ = finHom V (f x) at he`. Take `⟨u, -, hu'⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hγ)`. Rewrite using `[GlobalTheory.NormSum.mem_ratG]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(u : Matrix (Fin V.rank) (Fin V.rank) D.host.E), ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply `(GlobalTheory.BotFormula.toFinE D).injective` to reduce the goal to its premises. Rewrite using `[Matrix.map_apply, toFinE_inc, ← hfx x, ← he, finAdEquiv_finHom_rat V γ u hu' i j]`. Introduce `hxr`.
-
-Conclude with `exists_GQ_of_rat V hG x hxr (f x) (hfx x)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_finEmb : ∀ {D : D7} (V : HSp D) (n : ℕ), V.gram = 1 → V.rank = n → ∃ ι : Formalism.MainNotions.StandardLatticesGL3.GA D n →* GA D V,
     (∀ x, IsFinPt V (ι x) x) ∧ Function.Injective ι ∧ ι.range = GfC V ∧

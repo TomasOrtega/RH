@@ -8,15 +8,15 @@ def unitBallSubring (A : Type) [NormedField A] [IsUltrametricDist A] : Subring A
   GlobalTheory.ClosedBallValuationSubring.closedBallSubring A
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨q, hq, hqd⟩` from `Nat.exists_prime_and_dvd hne`. Use `haveI := Fact.mk hq`. Establish `hc : c ≠ 0`. Introduce and unpack `rfl`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `at hne`. Establish `h1` using `h q hq`. Rewrite `h1` using `[padicNorm.eq_zpow_of_nonzero hc]`. Establish `hv : 0 ≤ padicValRat q c`. Assume the negation of the conclusion as `hlt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hlt`. Establish `hq1 : (1 : ℚ) < q` using `by exact_mod_cast hq.one_lt`. Establish `: (1 : ℚ) < (q : ℚ) ^ (-padicValRat q c)` using `one_lt_zpow₀ hq1 (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hden : 1 ≤ padicValNat q c.den` using `one_le_padicValNat_of_dvd c.den_nz hqd`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hnum : padicValInt q c.num = 0`. Apply `padicValInt.eq_zero_of_not_dvd` to reduce the goal to its premises. Introduce `hdvd`. Establish `hcop` using `c.reduced`. Establish `: q ∣ Nat.gcd c.num.natAbs c.den` using `Nat.dvd_gcd (Int.natCast_dvd.mp hdvd) hqd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `this` using `[hcop]`. Conclude with `hq.one_lt.ne' (Nat.dvd_one.mp this)`. Unfold `padicValRat at hv`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem den_eq_one_of_padicNorm_le_one (c : ℚ)
     (h : ∀ q : ℕ, q.Prime → padicNorm q c ≤ 1) : c.den = 1 := by
@@ -47,25 +47,23 @@ theorem den_eq_one_of_padicNorm_le_one (c : ℚ)
   omega
 
 /- English proof (translation)
-Introduce `M _ _ a h`. Use `set f := minpoly ℚ a with hf`. Establish `hint : IsIntegral ℚ a` using `Algebra.IsIntegral.isIntegral a`. Establish `hmon : f.Monic` using `minpoly.monic hint`. Establish `hcoeff : ∀ q : ℕ, q.Prime → ∀ n, padicNorm q (f.coeff n) ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q hq n`. Use `haveI := Fact.mk hq`. Set `S` to `unitBallSubring (PadicAlgCl q)`. Use `set g := f.map (algebraMap ℚ (PadicAlgCl q)) with hg`. Establish `hroots : ∀ b ∈ g.roots, b ∈ S`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `b hb`. Establish `hb' : b ∈ f.rootSet (PadicAlgCl q)`. Rewrite using `[Polynomial.mem_rootSet]`. Take `⟨hne, hr⟩` from `(mem_roots'.mp hb)`. Use `⟨fun h0 => hne (by rw [hg, h0, Polynomial.map_zero]), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← eval_map_algebraMap]`. Conclude with `hr`. Rewrite `hb'` using `[← NumberField.Embeddings.range_eval_eq_rootSet_minpoly]`. Take `⟨τ, rfl⟩` from `hb'`. Conclude with `h q τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Multiset.card g.roots = g.natDegree` using `IsAlgClosed.card_roots_eq_natDegree`. Establish `hgmon : g.Monic` using `hmon.map _`. Establish `hgc : g.coeff n ∈ S`. Distinguish the cases in `hn : n ≤ g.natDegree`. Rewrite using `[coeff_eq_esymm_roots_of_card hcard hn, hgmon.leadingCoeff, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `S.mul_mem (S.pow_mem (S.neg_mem S.one_mem) _) ?_` and prove the remaining obligations. Unfold `Multiset.esymm`. Use `S.multiset_sum_mem _ fun x hx => ?_` and prove the remaining obligations. Take `⟨s, hs, rfl⟩` from `Multiset.mem_map.mp hx`. Use `S.multiset_prod_mem _ fun y hy => hroots y ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Multiset.mem_of_le (Multiset.mem_powersetCard.mp hs).1 hy`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by omega)]; exact S.zero_mem`. Establish `h1 : ‖algebraMap ℚ (PadicAlgCl q) (f.coeff n)‖ ≤ 1`. Rewrite using `[← coeff_map]`. Conclude with `hgc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : algebraMap ℚ (PadicAlgCl q) (f.coeff n) = ((f.coeff n : ℚ_[q]) : PadicAlgCl q)` using `by simp`. Rewrite `h1` using `[e, PadicAlgCl.norm_extends, Padic.eq_padicNorm]`. Conclude with `h1` after adjusting the coercions. Establish `hlift : f ∈ Polynomial.lifts (Int.castRingHom ℚ)`. Rewrite using `[lifts_iff_coeff_lifts]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `n`. Use `⟨(f.coeff n).num, ?_⟩` and prove the remaining obligations. Use `den_eq_one_of_padicNorm_le_one _ (fun q hq => hcoeff q hq n)` as an intermediate fact. Simplify using `using Rat.coe_int_num_of_den_eq_one this`. Take `⟨g, hg, -, hgm⟩` from `lifts_and_natDegree_eq_and_monic hlift hmon`.
-
-Use `⟨g, hgm, ?_⟩` and prove the remaining obligations. Establish `h0 : aeval a f = 0` using `minpoly.aeval ℚ a`. Rewrite `h0` using `[← hg, ← algebraMap_int_eq, aeval_map_algebraMap]`. Conclude with `h0`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_forall_padicAlgCl_norm_le_one :
     ∀ (M : Type) [Field M] [NumberField M] (a : M),

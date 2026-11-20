@@ -16,15 +16,15 @@ open Matrix GlobalTheory.DoubledPlaneEmb
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 
 /- English proof (translation)
-Establish `hpow : ∀ j : ℕ, (A * X * B) ^ (j + 1) = A * X ^ (j + 1) * B`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_succ, ih, pow_succ X (j + 1)]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc B A, hBA, Matrix.one_mul]`. Set `L : Matrix k k ℂ →+ Matrix m m ℂ` to `{ toFun := fun Y => A * Y * B map_zero' := by simp map_add' := fun Y Z => by simp [Matrix.mul_add, Matrix.add_mul] }`. Establish `hL : Continuous L` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h3` using `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) X).map L hL`. Establish `h4 : HasSum (fun n : ℕ => if n = 0 then (1 - A * B : Matrix m m ℂ) else 0) (1 - A * B)` using `hasSum_ite_eq 0 _`. Establish `h5` using `h3.add h4`. Establish `e : (fun n : ℕ => ((n.factorial : ℂ)⁻¹) • (A * X * B) ^ n) = fun n => (L ∘ fun n : ℕ => ((n.factorial : ℂ)⁻¹) • X ^ n) n + (if n = 0 then (1 - A * B) else 0)`. Use function extensionality and compare the values at `n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the cases of `n with`. Consider the case `zero => simp [L]`. Consider the case `succ j => simp [L, hpow, Matrix.mul_smul, Matrix.smul_mul]`. Establish `h1` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) (A * X * B)`. Rewrite `h1` using `[e]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(h1.unique h5).trans ?_` and prove the remaining obligations. Simplify using `only [extM, L, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Conclude with `add_comm _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exp_sandwich {m k : Type} [Fintype m] [DecidableEq m] [Fintype k] [DecidableEq k]
     (A : Matrix m k ℂ) (B : Matrix k m ℂ) (hBA : B * A = 1) (X : Matrix k k ℂ) :
@@ -59,7 +59,7 @@ theorem exp_sandwich {m k : Type} [Fintype m] [DecidableEq m] [Fintype k] [Decid
   exact add_comm _ _
 
 /- English proof (translation)
-Simplify using `only [extM]`. Rewrite using `[← RingHom.mapMatrix_apply, map_add, map_sub, map_one, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem extM_map {A B : Type} [CommRing A] [CommRing B] {m k : Type} [Fintype m] [DecidableEq m] [Fintype k]
     [DecidableEq k] (ρ : A →+* B) (ι : Matrix m k A) (Q : Matrix k m A) (g : Matrix k k A) :
@@ -73,13 +73,13 @@ section Frame
 variable {E : Type} [Field E] {n n₁ : ℕ}
 
 /- English proof (translation)
-Introduce `a b h` and use `by simpa [mid] using h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mid_injective : Function.Injective (mid (n₁ := n₁)) := fun a b h => by
   simpa [mid] using h
 
 /- English proof (translation)
-Introduce `h` and use `by have := congrArg (blk n₁) h rw [blk_mid, block_matrix_mulVec_basis] at this exact absurd this (by norm_num)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mid_ne_x (k : Fin n₁) : mid k ≠ Fin.castAdd 1 (Fin.castAdd n₁ (0 : Fin 1)) := fun h => by
   have := congrArg (blk n₁) h
@@ -87,7 +87,7 @@ theorem mid_ne_x (k : Fin n₁) : mid k ≠ Fin.castAdd 1 (Fin.castAdd n₁ (0 :
   exact absurd this (by norm_num)
 
 /- English proof (translation)
-Introduce `h` and use `by have := congrArg (blk n₁) h rw [blk_mid, blk_y] at this exact absurd this (by norm_num)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mid_ne_y (k : Fin n₁) : mid k ≠ Fin.natAdd (1 + n₁) (0 : Fin 1) := fun h => by
   have := congrArg (blk n₁) h
@@ -95,11 +95,9 @@ theorem mid_ne_y (k : Fin n₁) : mid k ≠ Fin.natAdd (1 + n₁) (0 : Fin 1) :=
   exact absurd this (by norm_num)
 
 /- English proof (translation)
-Proceed by induction on `j using Fin.addCases with`. Consider the case `left a`. Proceed by induction on `a using Fin.addCases with`. Consider the case `left b => left`. Rewrite using `[Subsingleton.elim b 0]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `right b => right`. Use `left`. Conclude with `⟨b, rfl⟩`. Consider the case `right a => right`. Use `right`.
-
-Rewrite using `[Subsingleton.elim a 0]`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem col_cases (j : Fin (1 + n₁ + 1)) :
     j = Fin.castAdd 1 (Fin.castAdd n₁ (0 : Fin 1)) ∨ (∃ l, j = mid l) ∨ j = Fin.natAdd (1 + n₁) (0 : Fin 1) := by
@@ -120,7 +118,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Rewrite using `[← hRF]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coef_frame (hRF : R * frame H = 1) :
     R.submatrix mid id * frame H = (1 : Matrix (Fin (1 + n₁ + 1)) (Fin (1 + n₁ + 1)) E).submatrix mid id := by
@@ -128,7 +126,7 @@ theorem coef_frame (hRF : R * frame H = 1) :
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Use extensionality with `k l`. Use `congrArg (fun M : Matrix (Fin (1 + n₁ + 1)) (Fin (1 + n₁ + 1)) E => M (mid k) (mid l)) hRF` as an intermediate fact. Simplify using `only [Matrix.mul_apply, frame_mid, Matrix.one_apply, mid_injective.eq_iff] at this`. Simplify `this` using `[Matrix.mul_apply, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coef_mul_ι (hRF : R * frame H = 1) : R.submatrix mid id * H.ι = 1 := by
   ext k l
@@ -138,7 +136,7 @@ theorem coef_mul_ι (hRF : R * frame H = 1) : R.submatrix mid id * H.ι = 1 := b
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Use extensionality with `k`. Use `congrArg (fun M : Matrix (Fin (1 + n₁ + 1)) (Fin (1 + n₁ + 1)) E => M (mid k) (Fin.castAdd 1 (Fin.castAdd n₁ (0 : Fin 1)))) hRF` as an intermediate fact. Simplify using `only [Matrix.mul_apply, frame_alt, Matrix.one_apply, if_neg (mid_ne_x k)] at this`. Simplify `this` using `[Matrix.mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem submatrix_mulVec_x_eq_zero_of_mul_frame (hRF : R * frame H = 1) : R.submatrix mid id *ᵥ H.x = 0 := by
   ext k
@@ -149,7 +147,7 @@ theorem submatrix_mulVec_x_eq_zero_of_mul_frame (hRF : R * frame H = 1) : R.subm
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Use extensionality with `k`. Use `congrArg (fun M : Matrix (Fin (1 + n₁ + 1)) (Fin (1 + n₁ + 1)) E => M (mid k) (Fin.natAdd (1 + n₁) (0 : Fin 1))) hRF` as an intermediate fact. Simplify using `only [Matrix.mul_apply, frame_y, Matrix.one_apply, if_neg (mid_ne_y k)] at this`. Simplify `this` using `[Matrix.mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coef_mulVec_y (hRF : R * frame H = 1) : R.submatrix mid id *ᵥ H.y = 0 := by
   ext k
@@ -160,14 +158,14 @@ theorem coef_mulVec_y (hRF : R * frame H = 1) : R.submatrix mid id *ᵥ H.y = 0 
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem col_eq (k : Fin n₁) : (fun r => H.ι r k) = H.ι *ᵥ Pi.single k 1 := by
   funext r; simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `only [Matrix.map_apply, Matrix.submatrix_apply, id, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem one_sub_map (k : Fin n₁) (col : Fin (1 + n₁ + 1)) :
     ((1 : Matrix (Fin (1 + n₁ + 1)) (Fin (1 + n₁ + 1)) E).submatrix mid id).map σ k col =
@@ -178,13 +176,13 @@ theorem one_sub_map (k : Fin n₁) (col : Fin (1 + n₁ + 1)) :
 omit [NumberField F] [NumberField E] in
 
 /- English proof (translation)
-Establish `hFRσ : (frame H).map σ * R.map σ = 1`. Rewrite using `[← Matrix.map_mul, hFR]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. It suffices to establish `h : H.ιᵀ * J * (frame H).map σ = J₁ * (R.submatrix mid id).map σ * (frame H).map σ by`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, h, Matrix.mul_assoc (J₁ * _)]`. Use `_ = _ := by rw [hFRσ, Matrix.mul_one]`. Rewrite using `[Matrix.mul_assoc J₁, ← Matrix.map_mul, coef_frame hRF]`. Use extensionality with `k col`. Rewrite using `[GlobalTheory.LeviPlaneSection.gram_apply, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [one_sub_map]`. Break down `col_cases col with rfl | ⟨l, rfl⟩ | rfl` into its components or cases. Simplify using `only [frame_alt, Matrix.one_apply, if_neg (mid_ne_x _), mul_zero, Finset.sum_const_zero]`. Rewrite using `[col_eq, (horth _).1]`. Simplify using `only [frame_mid, Matrix.one_apply, mid_injective.eq_iff, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← GlobalTheory.LeviPlaneSection.gram_apply, hgram]`. Simplify using `only [frame_y, Matrix.one_apply, if_neg (mid_ne_y _), mul_zero, Finset.sum_const_zero]`. Rewrite using `[col_eq, (horth _).2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ιT_mul (hRF : R * frame H = 1) (hFR : frame H * R = 1)
     (horth : ∀ u, form σ J (H.ι *ᵥ u) H.x = 0 ∧ form σ J (H.ι *ᵥ u) H.y = 0)
@@ -212,13 +210,13 @@ theorem ιT_mul (hRF : R * frame H = 1) (hFR : frame H * R = 1)
 omit [NumberField F] [NumberField E] in
 
 /- English proof (translation)
-Establish `hRFt : Rᵀ * (frame H)ᵀ = 1` using `by rw [← Matrix.transpose_mul, hFR, Matrix.transpose_one]`. It suffices to establish `h : (frame H)ᵀ * ((R.submatrix mid id)ᵀ * J₁) = (frame H)ᵀ * (J * H.ι.map σ) by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hRFt, Matrix.one_mul]`. Use `_ = Rᵀ * (frame H)ᵀ * (J * H.ι.map σ) := by rw [Matrix.mul_assoc, h, ← Matrix.mul_assoc]`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by rw [hRFt, Matrix.one_mul]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.transpose_mul, coef_frame hRF, ← Matrix.mul_assoc]`. Use extensionality with `col l`. Rewrite using `[GlobalTheory.LeviPlaneSection.gram_apply, Matrix.mul_apply]`. Simplify using `only [Matrix.transpose_apply, Matrix.submatrix_apply, id]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `col_cases col with rfl | ⟨k, rfl⟩ | rfl` into its components or cases. Simplify using `only [frame_alt, id_eq, Matrix.one_apply, if_neg (mid_ne_x _), zero_mul, Finset.sum_const_zero]`. Rewrite using `[GlobalTheory.LeviPlaneSection.form_skew hσ hsk, col_eq, (horth _).1, map_zero, neg_zero]`. Simplify using `only [frame_mid, id_eq, Matrix.one_apply, mid_injective.eq_iff, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← GlobalTheory.LeviPlaneSection.gram_apply, hgram]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [frame_y, id_eq, Matrix.one_apply, if_neg (mid_ne_y _), zero_mul, Finset.sum_const_zero]`. Rewrite using `[GlobalTheory.LeviPlaneSection.form_skew hσ hsk, col_eq, (horth _).2, map_zero, neg_zero]`.
+A detailed English derivation is pending.
 -/
 theorem coefT_mul (hσ : ∀ x, σ (σ x) = x) (hsk : ∀ i j, σ (J j i) = -J i j) (hRF : R * frame H = 1)
     (hFR : frame H * R = 1) (horth : ∀ u, form σ J (H.ι *ᵥ u) H.x = 0 ∧ form σ J (H.ι *ᵥ u) H.y = 0)
@@ -247,33 +245,31 @@ end Gram
 open GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups (mapH) in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm n n₁ Y Y₁ H hsk hn hxx hyy hxy horth hgram hdet R hFR hRF c hc hJ hJ₁`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_sigma hcm`. Establish `hQE` using `coef_mul_ι hRF`. Establish `h3E` using `ιT_mul hRF hFR horth hgram`. Establish `h2E` using `coefT_mul hσ hsk hRF hFR horth hgram`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcf : ∀ {a b : Type} (X : Matrix a b E), (incM F X).map (cA σ) = incM F (X.map σ)` using `fun X => by`. Use extensionality with `i j`. Conclude with `GlobalTheory.LeviPlaneSection.cA_inclR' σ _`. Establish `hQ : incM F (R.submatrix mid id) * incM F H.ι = 1`. Simplify using `only [incM]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, hQE]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h2 : (incM F (R.submatrix mid id))ᵀ * incM F Y₁.J = incM F Y.J * (incM F H.ι).map (cA σ)`. Rewrite using `[hcf]`. Simplify using `only [incM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, h2E]`. Establish `h3 : (incM F H.ι)ᵀ * incM F Y.J = incM F Y₁.J * (incM F (R.submatrix mid id)).map (cA σ)`. Rewrite using `[hcf]`. Simplify using `only [incM]`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, h3E]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ιU` to `GlobalTheory.DoubledPlaneEmb.extHom (cA σ) (incM F Y.J) (incM F Y₁.J) (incM F H.ι) (incM F (R.submatrix mid id)) hQ h2 h3`. Set `ι : GAd σ (c • Y₁.J.map σ) →* GAd σ (c • Y.J.map σ)` to `(SquareIntegrability.toGAd hσ Y.J hc).toMonoidHom.comp (ιU.comp (SquareIntegrability.toGAd hσ Y₁.J hc).symm.toMonoidHom)`. Establish `hvec : ∀ v : Fin n → E, R.submatrix mid id *ᵥ v = 0 → incM F (R.submatrix mid id) *ᵥ incV F v = 0`. Introduce `v hv`. Use extensionality with `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ((R.submatrix mid id).map (inclR (F := F) (AF F)) *ᵥ (inclR (F := F) (AF F) ∘ v)) i = 0`. Rewrite using `[← RingHom.map_mulVec, hv, Pi.zero_apply, map_zero]`. Use `⟨ι, fun g₁ g' hg => ?_, ?_⟩` and prove the remaining obligations. Establish `e : (SquareIntegrability.toGAd hσ Y₁.J hc).symm g' = g₁` using `Subtype.ext hg.symm`. Use `⟨ιU g₁, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show extM (incM F H.ι) (incM F (R.submatrix mid id)) g₁.1.1 *ᵥ incV F H.x = _`. Rewrite using `[extM_mulVec_of _ (hvec _ (submatrix_mulVec_x_eq_zero_of_mul_frame hRF)), Units.val_one, one_smul]`. Use `show extM (incM F H.ι) (incM F (R.submatrix mid id)) g₁.1.1 *ᵥ incV F H.y = _`. Rewrite using `[extM_mulVec_of _ (hvec _ (coef_mulVec_y hRF)), inv_one, Units.val_one, map_one, one_smul]`. Conclude with `extM_mul_self hQ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (ιU g₁).1 = (ιU ((SquareIntegrability.toGAd hσ Y₁.J hc).symm g')).1`. Rewrite using `[e]`. Establish `hone : ∀ {R' : Type} [CommRing R'] [Algebra F R'] (φ : AF F →ₐ[F] R') (g : GAd σ (c • Y₁.J.map σ)), mapH σ (c • Y₁.J.map σ) φ g = 1 → mapH σ (c • Y.J.map σ) φ (ι g) = 1`. Introduce `R' _ _ φ g h1`. Set `ρ : AE F E →+* R' ⊗[F] E` to `(Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : (HA.mat R' σ (c • Y₁.J.map σ) (mapH σ (c • Y₁.J.map σ) φ g)).1 = 1` using `by rw [h1]; rfl`. Establish `e2 : (HA.mat R' σ (c • Y.J.map σ) (mapH σ (c • Y.J.map σ) φ (ι g))).1 = (extM (incM F H.ι) (incM F (R.submatrix mid id)) (HA.mat (AF F) σ (c • Y₁.J.map σ) g).1).map ρ` using `rfl`. Establish `e3 : (HA.mat R' σ (c • Y₁.J.map σ) (mapH σ (c • Y₁.J.map σ) φ g)).1 = (HA.mat (AF F) σ (c • Y₁.J.map σ) g).1.map ρ` using `rfl`. Use `GlobalTheory.AutFunCompare.HA_ext σ _ fun r s => ?_` and prove the remaining obligations. Rewrite using `[e2, extM_map, ← e3, e1, extM_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Both sides reduce to the same expression. Introduce `w τ Z γ hγ t`. Take `⟨y, hy, he⟩` from `hγ t`. Use `⟨projArch σ _ w (ι (γ t)), ?_, ?_⟩` and prove the remaining obligations. Use `GAd_ext σ _ (fun u => ?_) (fun v => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Distinguish the cases in `hu : u = w`. Substitute `hu` using the available equality. Rewrite using `[projArch_embArch_self]`. Rewrite using `[projArch_embArch_ne σ _ hu]`. Conclude with `hone (evInf F u) _ (by rw [hy]; exact projArch_embArch_ne σ _ hu y)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[proj_embArch]`. Conclude with `hone (evFin F v) _ (by rw [hy]; exact proj_embArch σ _ v w y)`. Set `ρw : AE F E →+* w.Completion ⊗[F] E` to `(Algebra.TensorProduct.map (evInf F w) (AlgHom.id F E)).toRingHom`. Establish `hρ : ∀ e : E, infEmb τ (ρw (inclR (F` using `F) (AF F) e)) = τ.1 e := by`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ρw, inclR, infEmb_tmul]`. Establish `hBA : (R.submatrix mid id).map τ.1 * H.ι.map τ.1 = 1`. Rewrite using `[← Matrix.map_mul, hQE]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `key : GlobalTheory.Orb.archMat σ (c • Y.J.map σ) τ (projArch σ _ w (ι (γ t))) = extM (H.ι.map τ.1) ((R.submatrix mid id).map τ.1) (GlobalTheory.Orb.archMat σ (c • Y₁.J.map σ) τ (projArch σ _ w (γ t)))`.
-
-Rewrite using `[GlobalTheory.Orb.archMat_apply, GlobalTheory.Orb.archMat_apply]`. Express the relevant statement in the definitionally equal form `((extM (incM F H.ι) (incM F (R.submatrix mid id)) (HA.mat (AF F) σ (c • Y₁.J.map σ) (γ t)).1).map ρw).map (infEmb τ) = extM _ _ (((HA.mat (AF F) σ (c • Y₁.J.map σ) (γ t)).1.map ρw).map (infEmb τ))`. Rewrite using `[extM_map, extM_map]`. Apply the tactic sequence `congr 1 <;> ext i j <;> exact hρ _`. Rewrite using `[key, hy, projArch_embArch_self, he, ← Matrix.smul_mul, ← Matrix.mul_smul, exp_sandwich _ _ hBA]`.
+A detailed English derivation is pending.
 -/
 theorem leviEmb : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁),

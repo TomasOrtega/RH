@@ -27,9 +27,9 @@ namespace GlobalTheory.Obs.MulLift
 variable {S S' : Scheme.{0}}
 
 /- English proof (translation)
-Establish `p : IsPullback (fst A B).left (snd A B).left A.hom B.hom` using `IsPullback.of_hasPullback _ _`. Establish `p' : IsPullback (fst A' B').left (snd A' B').left A'.hom B'.hom` using `IsPullback.of_hasPullback _ _`. Establish `q` using `p'.paste_horiz m`. Rewrite `q` using `[← h₁, ← n.w]`. Establish `r` using `(IsPullback.of_right q h₂ p).paste_vert n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `r` using `[Over.w, Over.w]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isPullback_tensor {A' B' : Over S'} {A B : Over S} {b : S' ⟶ S} {f : A'.left ⟶ A.left} {g : B'.left ⟶ B.left}
     (m : IsPullback f A'.hom A.hom b) (n : IsPullback g B'.hom B.hom b) {h : (A' ⊗ B').left ⟶ (A ⊗ B).left}
@@ -43,7 +43,7 @@ theorem isPullback_tensor {A' B' : Over S'} {A B : Over S} {b : S' ⟶ S} {f : A
   rwa [Over.w, Over.w] at r
 
 /- English proof (translation)
-Use `haveI := hX`. Use `haveI := hY`. Rewrite using `[Over.tensorObj_hom, Limits.pullback.condition]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_tensor {X Y : Over S} (hX : Smooth X.hom) (hY : Smooth Y.hom) : Smooth (X ⊗ Y).hom := by
   haveI := hX
@@ -52,13 +52,13 @@ theorem smooth_tensor {X Y : Over S} (hX : Smooth X.hom) (hY : Smooth Y.hom) : S
   infer_instance
 
 /- English proof (translation)
-Simplify using `using Over.w (toUnit X)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toUnit_left (X : Over S) : (toUnit X).left = X.hom := by
   simpa using Over.w (toUnit X)
 
 /- English proof (translation)
-Establish `p : IsPullback (fst X X).left (snd X X).left X.hom X.hom` using `IsPullback.of_hasPullback _ _`. Apply `p.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← Over.comp_left, lift_fst, hu, Category.assoc, hl₁, ← Category.assoc, ← Over.comp_left, lift_fst]`. Rewrite using `[Category.assoc, ← Over.comp_left, lift_snd, hv, Category.assoc, hl₂, ← Category.assoc, ← Over.comp_left, lift_snd]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_match {A : Over S'} {X : Over S} {i : A.left ⟶ X.left} {l : (A ⊗ A).left ⟶ (X ⊗ X).left}
     (hl₁ : l ≫ (fst X X).left = (fst A A).left ≫ i) (hl₂ : l ≫ (snd X X).left = (snd A A).left ≫ i)
@@ -72,9 +72,9 @@ theorem lift_match {A : Over S'} {X : Over S} {i : A.left ⟶ X.left} {l : (A �
       lift_snd]
 
 /- English proof (translation)
-Establish `e₁ : (1 : 𝟙_ (Over (Sp R₀)) ⟶ A) = η[A]` using `by simp [Hom.one_def]`. Express the relevant statement in the definitionally equal form `_ = (toUnit A ≫ η[A]).left ≫ i`. Rewrite using `[Over.comp_left, Over.comp_left, toUnit_left, toUnit_left]`. Express the relevant statement in the definitionally equal form `i ≫ X.hom ≫ e = (A.hom ≫ η[A].left) ≫ i`. Rewrite using `[← Category.assoc i, h.w, Category.assoc, Category.assoc, ← e₁]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (A.hom ≫ ·) hie.symm`.
+A detailed English derivation is pending.
 -/
 theorem one_match {R R₀ : Type} [CommRing R] [CommRing R₀] {π : R →+* R₀} {A : Over (Sp R₀)} [GrpObj A]
     {X : Over (Sp R)} {i : A.left ⟶ X.left} (h : IsPullback i A.hom X.hom (spMap π)) {e : Sp R ⟶ X.left}
@@ -94,17 +94,17 @@ namespace GlobalTheory.Obs
 open MulLift in
 
 /- English proof (translation)
-Introduce `hF hAx R R₀ _ _ I hI π hπ hk A₀ _ g hab hg X i h hX e he hie l hl₁ hl₂`. Establish `hl : IsPullback l (A₀ ⊗ A₀).hom (X ⊗ X).hom (spMap π)` using `isPullback_tensor h h hl₁ hl₂`. Establish `hsm : Smooth (X ⊗ X).hom` using `smooth_tensor hX hX`. Take `⟨S, ⟨P⟩⟩` from `GlobalTheory.T.exists_squareZeroSmoothLiftSystem_presents R R₀ I hI π hπ hk A₀.left A₀.hom X.left X.hom i h hX`. Take `⟨S', ⟨P'⟩⟩` from `GlobalTheory.T.exists_squareZeroSmoothLiftSystem_presents R R₀ I hI π hπ hk (A₀ ⊗ A₀).left (A₀ ⊗ A₀).hom (X ⊗ X).left (X ⊗ X).hom l hl hsm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨R₁, _, _, ⟨α⟩⟩` from `GlobalTheory.T.exists_squareZeroAugmentedAlgebra R R₀ I hI π hπ hk`. Establish `hh : (μ[A₀]).left ≫ A₀.hom = (A₀ ⊗ A₀).hom ≫ spMap (RingHom.id R₀)` using `overW μ[A₀]`. Establish `hlift : ∀ T : (Pair (μ[A₀]).left)ᵒᵖ, ∃ ρ : (ofSys S).B ((pairPull hh).G.obj T) →ₐ[R] (pairPre S' (μ[A₀]).left).B T, ∀ b, (pairPre S' (μ[A₀]).left).p T (ρ b) = (pairPull hh).α T ((ofSys S).p _ b)` using `fun T ↦ by haveI := (ofSys S).smooth ((pairPull hh).G.obj T)`. Conclude with `GlobalTheory.T.exists_lift_hom_of_reduction_squareZero_smooth R R₀ I hI π hπ hk _ _ ((ofSys S).p _) ((ofSys S).semi _) ((ofSys S).surj _) ((ofSys S).ker _) _ _ ((pairPre S' (μ[A₀]).left).p T) ((pairPre S' (μ[A₀]).left).semi T) ((pairPre S' (μ[A₀]).left).surj T) ((pairPre S' (μ[A₀ …`. Use `choose l₀ hl₀ using hlift`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hL : (ofSys S).IsLift (pairPre S' (μ[A₀]).left) (pairPull hh) l₀` using `hl₀`. Take `⟨Pp, Fa, -⟩` from `hF R₀ A₀ g hab hg`. Establish `hu : (lift (𝟙 A₀) 1).left ≫ (μ[A₀]).left = 𝟙 _`. Rewrite using `[← Over.comp_left, ← Hom.mul_def, _root_.mul_one, Over.id_left]`. Establish `hu' : (lift 1 (𝟙 A₀)).left ≫ (μ[A₀]).left = 𝟙 _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, ← Hom.mul_def, _root_.one_mul, Over.id_left]`. Establish `hob : ∀ w, (ofSys S).IsOb1 (pairPre S' (μ[A₀]).left) (pairPull hh) l₀ α w 0`. Introduce `w`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_degreeOneObstructionClass R R₀ I hI π hπ hk R₁ α _ _ _ _ (ofSys S) (pairPre S' (μ[A₀]).left) (pairPull hh) l₀ (ofSys_isFun S) ((ofSys_isFun S').restrict _) hL w`. Take `⟨⟨-, hsurj⟩, -⟩` from `(GlobalTheory.T.cechPairRestrict_baseChange_bijective R₀ R₁ _ _ (A₀ ⊗ A₀).hom (μ[A₀]).left).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c', rfl⟩` from `hsurj c`. Establish `ax₁ : IsExtendedPullbackDegOne R₁ (overW (lift (𝟙 A₀) 1)) c' 0` using `GlobalTheory.T.retractionLiftObstruction_zero_of_liftedSection R R₀ I hI π hπ hk R₁ α _ _ _ _ A₀.hom (A₀ ⊗ A₀).hom X.hom (X ⊗ X).hom i l h hl S S' P P' (μ[A₀]).left hh (lift (𝟙 A₀) 1).left (overW _) (lift (𝟙 X) (toUnit X ≫ (Over.homMk e (by simpa using he) : 𝟙_ (Over (Sp R)) ⟶ X) …`. Establish `ax₂ : IsExtendedPullbackDegOne R₁ (overW (lift 1 (𝟙 A₀))) c' 0` using `GlobalTheory.T.retractionLiftObstruction_zero_of_liftedSection R R₀ I hI π hπ hk R₁ α _ _ _ _ A₀.hom (A₀ ⊗ A₀).hom X.hom (X ⊗ X).hom i l h hl S S' P P' (μ[A₀]).left hh (lift 1 (𝟙 A₀)).left (overW _) (lift (toUnit X ≫ (Over.homMk e (by simpa using he) : 𝟙_ (Over (Sp R)) ⟶ X)) (𝟙 X …`. Establish `h0 : c' = 0` using `hAx R₀ R₁ α.q α.sq A₀ g hab hg c' ax₁ ax₂`. Substitute `h0` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `using hc`. Take `⟨l', hL', hN'⟩` from `GlobalTheory.T.lifts_natural_of_obstructionOne_zero R R₀ I hI π hπ hk R₁ α A₀.left A₀.hom Pp Fa _ _ (ofSys S) (pairPre S' (μ[A₀]).left) (pairPull hh) l₀ hL hob`. Take `⟨f, hfs, hfk⟩` from `GlobalTheory.T.affinePairLifts_glue_to_morphism_of_lifts R R₀ I hI π hπ hk _ _ _ _ A₀.hom (A₀ ⊗ A₀).hom X.hom (X ⊗ X).hom i l h hl S S' P P' (μ[A₀]).left hh l' hL' hN'`. Conclude with `⟨Over.homMk f hfs, hfk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mul_lifts : FormSt → AxesVanishingExtendedDegOne → ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0)
     (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (A₀ : Over (Sp R₀)) [GrpObj A₀] (g : ℕ),

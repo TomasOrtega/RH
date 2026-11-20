@@ -5,13 +5,13 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Introduce `hF hS hG Z n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `Y s d _`. Conclude with `⟨Z, 𝟙 Z, 1, one_pos, UpperTheory.Gal.Int.Geo.fEt_id Z, fun i => i.elim0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ n ih`. Introduce `Y s d hs`. Take `⟨W, c, e, he, hc, hspl⟩` from `ih (fun i => Y i.castSucc) (fun i => s i.castSucc) (fun i => d i.castSucc) (fun i => hs i.castSucc)`. Establish `hP : FEt (pullback.snd (s (Fin.last n)) c) (d (Fin.last n))` using `hF.1 (pullback.fst _ _) (pullback.snd _ _) (s (Fin.last n)) c _ (IsPullback.of_hasPullback _ _) (hs _)`. Take `⟨W2, c2, G, _, _, a, σ, hgal, hσ⟩` from `hG (pullback.snd (s (Fin.last n)) c) _ hP`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc2 : FEt c2 (Nat.card G)` using `hF.2.2 c2 G a hgal`. Use `⟨W2, c2 ≫ c, e * Nat.card G, Nat.mul_pos he Nat.card_pos, hF.2.1 c2 c e (Nat.card G) hc2 hc, ?_⟩` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun i => ?_)` and prove the remaining obligations. Use `haveI := (hs (Fin.last n)).1 haveI := (hs (Fin.last n)).2.1`. Conclude with `⟨fun j => σ j ≫ pullback.fst _ _, (hS.2 (pullback.fst _ _) (pullback.snd _ _) (s (Fin.last n)) c (IsPullback.of_hasPullback _ _) c2 (Fin (d (Fin.last n))) σ hσ.1).mp hσ⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ⟩` from `hspl i haveI := (hs i.castSucc).1 haveI := (hs i.castSucc).2.1`. Conclude with `⟨fun j => c2 ≫ τ j, hS.1 (s i.castSucc) c _ τ c2 hτ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pMultiSplit :
     FEtBasic → SplitsBasic → GalClosD → MultiSplit := by

@@ -19,11 +19,11 @@ noncomputable section
 section Helpers
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_le_iff_height_le]`. Introduce `𝔓 h𝔓`. Establish `key` using `DimensionInequality.full A B hinj 𝔓`. Establish `htd : Algebra.trdeg A B ≤ 1`. Simplify using `using Algebra.IsAlgebraic.trdeg_le_cardinalMk A ({y} : Set B)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hp : (𝔓.under A).height + 1 ≤ (N : ℕ∞)`. Establish `h1` using `Ideal.height_le_ringKrullDim_of_ne_top (Ideal.IsPrime.ne_top (inferInstance : (𝔓.under A).IsPrime))`. Establish `h2 : ((𝔓.under A).height : WithBot ℕ∞) < (N : WithBot ℕ∞)` using `h1.trans_lt hA`. Establish `h3 : (𝔓.under A).height < (N : ℕ∞)` using `by exact_mod_cast h2`. Conclude with `Order.add_one_le_of_lt h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Cardinal.ofENat 𝔓.height ≤ Cardinal.ofENat (N : ℕ∞)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Cardinal.ofENat_le_ofENat.mp hc` after adjusting the coercions.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_le_of_isAlgebraic_adjoin_singleton {A B : Type u} [CommRing A] [IsDomain A]
     [IsNoetherianRing A] [CommRing B] [IsDomain B] [Algebra A B] [Algebra.FiniteType A B]
@@ -51,9 +51,9 @@ theorem ringKrullDim_le_of_isAlgebraic_adjoin_singleton {A B : Type u} [CommRing
   exact_mod_cast Cardinal.ofENat_le_ofENat.mp hc
 
 /- English proof (translation)
-Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact WithBot.bot_lt_coe _`. Consider the case `coe a`. Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top => exact absurd h (by norm_cast)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `coe a`. Normalize the coercions in `at h ⊢`.
+Treat this case separately. Put the expressions in a common number system so they can be compared.
 -/
 private theorem lt_natCast_of_add_one_le_withBotENat {x : WithBot ℕ∞} {n : ℕ} (h : x + 1 ≤ (n : WithBot ℕ∞)) :
     x < (n : WithBot ℕ∞) := by
@@ -70,45 +70,39 @@ end Helpers
 section Proof
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP b f g hD c s hs hsP hH e hce m hm hmP hmH G' hϖG' hY₀ hE`. Take `⟨hQm, -, -, hY₀Q, hD₁, -, -, -⟩` from `h₁ O ϖ hϖ K ι P d hP b f g hD c s hs hsP hH e hce m hm hmP hmH`. Use `set Q := blowUpOf P (blowUpGens s g f m e) with hQdef`. Use `set G := G'.comap (liftForm (J := BlowUpIdx ι)) with hGdef`. Establish `hPp : P.IsPrime` using `hP.multiProj.isPrime`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hQp : Q.IsPrime` using `hQm.multiProj.isPrime`. Take `⟨hG'p, hQG', hG'rel⟩` from `le_and_isRelevant_of_divCycle_ne_zero hY₀.ne'`. Take `⟨hGp, hPG, hGrel, -⟩` from `comap_liftForm_facts hG'p hQG' hG'rel`. Establish `hlift : ∀ {p : MRing ι O}, p ∉ P → liftForm (J` using `BlowUpIdx ι) p ∉ Q := fun hp => liftForm_not_mem_blowUpOf hp`. Establish `hfP : f ∉ P` using `hD.1.num_not_mem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgP : g ∉ P` using `hD.1.den_not_mem`. Establish `hY₁Q : (newVar (some none) : MRing (extIdx ι (BlowUpIdx ι)) O) ∉ Q` using `hD₁.1.num_not_mem`. Establish `hmul` using `DivCycleMul.proof O (Option K) (extIdx ι (BlowUpIdx ι)) Q`. Establish `hnm : ∀ {x y}, x ∉ Q → y ∉ Q → x * y ∉ Q` using `fun hx hy h => (hQp.mem_or_mem h).elim hx hy`. Establish `e1` using `congrFun (divCycle_congr_of_sub_mem (blowUp_relation P s g f m e)) G'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `e1` using `[map_mul, hmul _ _ hQp (hnm (hlift hsP) (hlift hgP)) hY₁Q, hmul _ _ hQp (hlift hsP) (hlift hgP), hmul _ _ hQp (hlift (fun h => (hPp.mem_or_mem h).elim hfP hmP)) hY₀Q]`. Simplify using `only [Pi.add_apply] at e1`. Establish `hE'` using `hE`. Unfold `ratDiv at hE'`. Rewrite `hE'` using `[hmul _ _ hQp (hlift hgP) hY₁Q]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply] at hE'`. Establish `hspos : 0 < divCycle Q (liftForm s) G'` using `by linarith`. Establish `hsG' : liftForm (J` using `BlowUpIdx ι) s ∈ G' := form_mem_of_divCycle_ne_zero hspos.ne'`. Establish `hsG : s ∈ G` using `hsG'`. Establish `hY₀G' : (newVar none : MRing (extIdx ι (BlowUpIdx ι)) O) ∈ G'` using `form_mem_of_divCycle_ne_zero hY₀.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `powMonomial_not_mem hGp hGrel e`. Use `hGp` as an intermediate fact. Use `hG'p` as an intermediate fact. Set `φ : MRing ι O ⧸ G →+* MRing (extIdx ι (BlowUpIdx ι)) O ⧸ G'` to `Ideal.quotientMap G' (liftForm (J := BlowUpIdx ι) : MRing ι O →ₐ[O] _).toRingHom le_rfl`. Set `_ : Algebra (MRing ι O ⧸ G) (MRing (extIdx ι (BlowUpIdx ι)) O ⧸ G')` to `φ.toAlgebra`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : ∀ p : MRing ι O, algebraMap (MRing ι O ⧸ G) (MRing (extIdx ι (BlowUpIdx ι)) O ⧸ G') (Ideal.Quotient.mk G p) = Ideal.Quotient.mk G' (liftForm p)` using `fun p => Ideal.quotientMap_mk`. Establish `: IsScalarTower O (MRing ι O ⧸ G) (MRing (extIdx ι (BlowUpIdx ι)) O ⧸ G')`. Use `IsScalarTower.of_algebraMap_eq (R := O) (S := MRing ι O ⧸ G) (A := MRing (extIdx ι (BlowUpIdx ι)) O ⧸ G') fun r => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk G' (algebraMap O (MRing (extIdx ι (BlowUpIdx ι)) O) r) = algebraMap (MRing ι O ⧸ G) _ (Ideal.Quotient.mk G (algebraMap O (MRing ι O) r))`. Rewrite using `[hφ, MvPolynomial.algebraMap_eq, MvPolynomial.algebraMap_eq, liftForm_C]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (algebraMap (MRing ι O ⧸ G) (MRing (extIdx ι (BlowUpIdx ι)) O ⧸ G'))` using `Ideal.quotientMap_injective`. Establish `: Algebra.FiniteType O (MRing (extIdx ι (BlowUpIdx ι)) O ⧸ G')` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ O G') (Ideal.Quotient.mkₐ_surjective O G')`. Establish `: Algebra.FiniteType (MRing ι O ⧸ G) (MRing (extIdx ι (BlowUpIdx ι)) O ⧸ G')` using `Algebra.FiniteType.of_restrictScalars_finiteType O _ _`. Use `set y : MRing (extIdx ι (BlowUpIdx ι)) O ⧸ G' := Ideal.Quotient.mk G' (newVar (some (some i))) with hy`. Use `set Cy := Algebra.adjoin (MRing ι O ⧸ G) ({y} : Set (MRing (extIdx ι (BlowUpIdx ι)) O ⧸ G'))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `_ : CommRing Cy` to `inferInstance`. Establish `hAalg : ∀ a : MRing ι O ⧸ G, IsAlgebraic Cy (algebraMap (MRing ι O ⧸ G) (MRing (extIdx ι (BlowUpIdx ι)) O ⧸ G') a)` using `fun a => isAlgebraic_algebraMap (⟨_, Subalgebra.algebraMap_mem Cy a⟩ : Cy)`. Establish `hpi : Ideal.Quotient.mk G' (liftForm (J` using `BlowUpIdx ι) (powMonomial e i)) ≠ 0 := by`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hi`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hX : ∀ v, IsAlgebraic Cy (Ideal.Quotient.mk G' (X v : MRing (extIdx ι (BlowUpIdx ι)) O))`. Introduce and unpack `⟨_ | k, j⟩`. Break down `j with _ | j'` into its components or cases. Express the relevant statement in the definitionally equal form `IsAlgebraic Cy (Ideal.Quotient.mk G' (newVar none))`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.mpr hY₀G']`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isAlgebraic_zero`. Use `set c : MRing ι O := Option.elim j' m (fun i' => powMonomial e i') with hc`. Establish `hrel : newVar (some j') * liftForm (powMonomial e i) - newVar (some (some i)) * liftForm c ∈ Q` using `mem_blowUpOf_of_sub (by`. Apply the tactic sequence `rcases j' with _ | i' <;> simp only [blowUpGens, hc, Option.elim] <;>`. Apply the tactic sequence `convert P.zero_mem using 1 <;> ring)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hrel'` using `Ideal.Quotient.eq_zero_iff_mem.mpr (hQG' hrel)`. Rewrite `hrel'` using `[map_sub, map_mul, map_mul]`. Set `a' : Cy` to `⟨_, Subalgebra.algebraMap_mem Cy (Ideal.Quotient.mk G (powMonomial e i))⟩`. Set `z' : Cy` to `⟨y * algebraMap (MRing ι O ⧸ G) _ (Ideal.Quotient.mk G c), Cy.mul_mem (Algebra.subset_adjoin rfl) (Subalgebra.algebraMap_mem Cy _)⟩`. Use `⟨Polynomial.C a' * Polynomial.X - Polynomial.C z', fun h0 => hpi ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `congrArg (fun p => Polynomial.coeff p 1) h0`. Simplify using `only [Polynomial.coeff_sub, Polynomial.coeff_C_mul_X, if_true, Polynomial.coeff_C, one_ne_zero, if_false, sub_zero, Polynomial.coeff_zero] at h1`. Establish `h2` using `congrArg Subtype.val h1`. Simplify `h2` using `[a', hφ]`. Simplify using `only [map_sub, map_mul, Polynomial.aeval_C, Polynomial.aeval_X]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Express the relevant statement in the definitionally equal form `(algebraMap (MRing ι O ⧸ G) _ (Ideal.Quotient.mk G (powMonomial e i))) * Ideal.Quotient.mk G' (newVar (some j')) - y * algebraMap (MRing ι O ⧸ G) _ (Ideal.Quotient.mk G c) = 0`. Rewrite using `[hφ, hφ, hy]`. Take the linear combination `hrel'`. Rewrite using `[← liftForm_X (J := BlowUpIdx ι) (R := O) ⟨k, j⟩, ← hφ]`. Conclude with `hAalg _`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `: Algebra.IsAlgebraic Cy (MRing (extIdx ι (BlowUpIdx ι)) O ⧸ G')` using `⟨fun x => by`. Take `⟨t, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Proceed by induction on `t using MvPolynomial.induction_on with`. Consider the case `C r`. Establish `: Ideal.Quotient.mk G' (C r : MRing (extIdx ι (BlowUpIdx ι)) O) = algebraMap (MRing ι O ⧸ G) _ (Ideal.Quotient.mk G (C r))`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hφ, liftForm_C]`. Rewrite using `[this]`. Conclude with `hAalg _`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `hp.add hq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `mul_X p v hp => rw [map_mul]`. Conclude with `hp.mul (hX v)⟩`. Establish `hdimB` using `ComponentDim.proof O ϖ hϖ (Option K) (extIdx ι (BlowUpIdx ι)) Q (d + 1) hQm (Pi.single none 1) (newVar none) (isWeightedHomogeneous_X _ _ _) hY₀Q G' hY₀.ne' hϖG'`. Establish `hdimA : ¬ ringKrullDim (MRing ι O ⧸ G) < ((d + 1 + Fintype.card K : ℕ) : WithBot ℕ∞)`. Introduce `hlt`.
-
-Establish `h` using `ringKrullDim_le_of_isAlgebraic_adjoin_singleton hinj y _ hlt`. Rewrite `h` using `[hdimB, Fintype.card_option]`. Establish `h' : d + 1 + (Fintype.card K + 1) ≤ d + 1 + Fintype.card K` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers. Establish `hsum : ringKrullDim (MRing ι O ⧸ (P ⊔ Ideal.span {s})) < ((d + 1 + Fintype.card K + 1 : ℕ) : WithBot ℕ∞)`.
-
-Use `hPp` as an intermediate fact. Establish `h` using `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor (le_sup_left : P ≤ P ⊔ Ideal.span {s})) (Ideal.Quotient.factor_surjective _) (r := Ideal.Quotient.mk P s) (mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])) (by rw [Ideal.Quotient.factor_mk, Ide …`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))`. Rewrite `h` using `[hP.dim]`. Conclude with `lt_natCast_of_add_one_le_withBotENat (by convert h using 2; omega)`.
-
-Conclude with `TopDimMinimal.proof DimStrictDrop.proof (MRing ι O) (P ⊔ Ideal.span {s}) G (d + 1 + Fintype.card K) (sup_le hPG ((Ideal.span_singleton_le_iff_mem _).mpr hsG)) hsum hdimA`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ExceptionalContraction.proof (h₁ : BlowUpDecomposition.Statement.{u}) :
     ExceptionalContraction.Statement.{u} := by

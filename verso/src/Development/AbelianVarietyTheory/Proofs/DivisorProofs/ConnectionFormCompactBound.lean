@@ -6,9 +6,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Matrix ReciprocityTheory.
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `e n U K H₀ hH hKc hKU`. Take `⟨β, hβ⟩` from `GlobalTheory.FrameCompact.exists_conn_bound hH hKU hKc`. Use `⟨(n : ℝ) * n * max β 0, by positivity, fun z hz ξ => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ a b : Fin n, ‖GlobalTheory.HermFrame.conn H₀ z ξ a b‖ ≤ max β 0 * ‖ξ‖` using `fun a b => (hβ z hz ξ a b).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg _))`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem GlobalTheory.HermFrame.conn_sum_bound_on_compact : ∀ (e n : ℕ) (U K : Set (Fin e → ℂ)) (H₀ : (Fin e → ℂ) → Matrix (Fin n) (Fin n) ℂ), GlobalTheory.HermFrame.IsPosFrame U H₀ → IsCompact K → K ⊆ U → ∃ B : ℝ, 0 ≤ B ∧ ∀ z ∈ K, ∀ ξ : Fin e → ℂ, ∑ a, ∑ b, ‖GlobalTheory.HermFrame.conn H₀ z ξ a b‖ ≤ B * ‖ξ‖ := by
   intro e n U K H₀ hH hKc hKU

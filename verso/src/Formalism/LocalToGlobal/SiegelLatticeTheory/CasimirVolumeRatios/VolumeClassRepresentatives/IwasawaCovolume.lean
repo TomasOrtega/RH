@@ -14,7 +14,7 @@ def covolR (X : CData) : ℝ :=
     Formalism.HermitianLatticesTheory.mass (Formalism.MainNotions.StandardLattice.stdForm X.I.E X.I.n) (Formalism.MainNotions.StandardLattice.stdLat X.I.E X.I.n)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun i _ => div_pos (pow_pos (by positivity) _) (by exact_mod_cast Nat.factorial_pos i)`.
+A detailed English derivation is pending.
 -/
 theorem volgU_pos (N : ℕ) : 0 < volgU N :=
   Finset.prod_pos fun i _ => div_pos (pow_pos (by positivity) _) (by exact_mod_cast Nat.factorial_pos i)

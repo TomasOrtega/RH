@@ -19,11 +19,11 @@ open ReciprocityTheory.ChartRestriction.G.TB.Canon Formalism.MainNotions.ModuliI
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨t₀, ht₀, hv₀⟩` from `exists_cubN t.cub (1 : t.G ⊗ t.G ⟶ t.G) (fst t.G t.G) (snd t.G t.G) n`. Take `⟨κ, hκ, hv⟩` from `exists_gen t.PP.isLB (φ' := Sum.elim (cφG t ![fst t.G t.G ^ n, snd t.G t.G]) (cφG t ![fst t.G t.G, snd t.G t.G])) (ε' := Sum.elim (cε 2) fun I => -((n : ℤ) * cε 2 I)) (fun U _ h => by`. Establish `a` using `prod_cube₂ (fst t.G t.G ^ n) (snd t.G t.G) h`. Establish `b` using `prod_cube₂ (fst t.G t.G) (snd t.G t.G) h`. Establish `b' : ∏ I, h (cφG t ![fst t.G t.G, snd t.G t.G] I) ^ (-((n : ℤ) * cε 2 I)) = (∏ I, h (cφG t ![fst t.G t.G, snd t.G t.G] I) ^ (cε 2 I)) ^ (-(n : ℤ))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_zpow]`. Conclude with `Finset.prod_congr rfl fun I _ => by rw [← zpow_mul]; congr 1; ring`. Use `Eq.trans ?_ ((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) a (b'.trans (congrArg (· ^ (-(n : ℤ))) b)))).symm` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `[Fin.prod_univ_succ, ofMul_mul, ofMul_inv, ofMul_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `module) t₀ ht₀`. Use `⟨κ, hκ, fun T p q z J hJ => (hv _ _ z J hJ).trans ((hv₀ T (lift p q) z J hJ).trans ?_)⟩` and prove the remaining obligations. Rewrite using `[MonObj.comp_one, lift_fst, lift_snd]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_kappa (t : SAB H X0) (n : ℕ) :
     ∃ κ : LB.Gen (LB.LinComb t.PP.L (Sum.elim (cφG t ![fst t.G t.G ^ n, snd t.G t.G]) (cφG t ![fst t.G t.G, snd t.G t.G]))
@@ -51,20 +51,20 @@ theorem exists_kappa (t : SAB H X0) (n : ℕ) :
 variable [StarRing (𝓞 E)] {t : SAB H X0} {S : Type} [CommRing S] {x : Sp S ⟶ X0} {d : ℕ} (g : GermAt t x d) {m k : ℕ}
 
 /- English proof (translation)
-The claim follows from `(congrArg (sq ![u]) (show AQ g.B.A 0 = 0 from Subtype.ext (act_zero_eq g.B))).trans (map_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem ac_zero (u : Q S d k) : ac (AQ g.B.A 0) u = 0 :=
   (congrArg (sq ![u]) (show AQ g.B.A 0 = 0 from Subtype.ext (act_zero_eq g.B))).trans (map_zero _)
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_succ, ac_add, ac_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ac_succ (n : ℕ) (u : Q S d k) :
     ac (AQ g.B.A ((n + 1 : ℕ) : 𝓞 E)) u = op (FQ g.B.G) (ac (AQ g.B.A (n : 𝓞 E)) u) u := by
   rw [Nat.cast_succ, ac_add, ac_one]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, ac_zero, PP_zero g.chart, pow_zero]`. Consider the case `succ n ih => rw [ac_succ, PP_op g.chart, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem PP_nat (n : ℕ) (u : Q S d k) : PP m g.x (ac (AQ g.B.A (n : 𝓞 E)) u) = PP m g.x u ^ n := by
   induction n with
@@ -72,11 +72,11 @@ theorem PP_nat (n : ℕ) (u : Q S d k) : PP m g.x (ac (AQ g.B.A (n : 𝓞 E)) u)
   | succ n ih => rw [ac_succ, PP_op g.chart, ih, pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow1, Finset.prod_range_zero, VV_one, Nat.cast_zero, ac_zero, (dict_ax hJ g.axes _).1]`. Simplify using `[cubN]`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `e : pow1 g.B (n + 1) = pow1 g.B n * E3 g.B.ph1 (ac (AQ g.B.A (n : 𝓞 E)) (gen 0)) (gen 0) (gen 1)`. Simplify using `only [formalSeriesValueAtThreePoints_eq_ev, ac_val, gen_val]`. Conclude with `Finset.prod_range_succ _ _`. Rewrite using `[e, VV_mul, ih, frame_biext_dictionary_first_partial_law hJ g.frame, ← Units.val_mul, ac_succ, PP_nat]`. Use `congrArg Units.val (Additive.ofMul.injective ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [cubN, Finset.prod_range_succ, _root_.one_mul, pow_succ, ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem value_first_power {y : (jOG x d m 2).left} {J : ((jOG x d m 2).left ⟶ t.G.left) → t.PP.L.ι} (hJ : Good t.PP.L y J)
     (n : ℕ) : VV m y (pow1 g.B n) = (cubN (cubV t.cub y J) n 1 (PP m g.x (gen 0)) (PP m g.x (gen 1)) *
@@ -95,9 +95,9 @@ theorem value_first_power {y : (jOG x d m 2).left} {J : ((jOG x d m 2).left ⟶ 
     abel
 
 /- English proof (translation)
-Establish `e : jQ m ![(gen 0 : Q S d 2), gen 1] = AlgHom.id S _` using `GermD.jet_hom_ext fun s => by`. Take `⟨j, s⟩` from `s`. Rewrite using `[jQ_X]`. Apply the tactic sequence `fin_cases j <;> exact psJet_X m _`. Rewrite using `[e]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Spec.map_id _`.
+A detailed English derivation is pending.
 -/
 theorem homAt_gen : (homAt x (jQ m ![(gen 0 : Q S d 2), gen 1])).left = 𝟙 _ := by
   have e : jQ m ![(gen 0 : Q S d 2), gen 1] = AlgHom.id S _ := GermD.jet_hom_ext fun s => by
@@ -112,17 +112,17 @@ end SlopeTestRemainingChoices
 open ReciprocityTheory.ChartRestriction.G.TB.Canon Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdAd in
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ _ X0 t n`. Take `⟨κ, hκ, hv⟩` from `exists_kappa t n`. Use `⟨κ, hκ, corr_of_val t.PP.isLB fun y J hJ => ?_, fun S _ x d g m => ?_⟩` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, val_one, hv _ _ _ y J hJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_one fun i _ => (isCub_cubV t.cub hJ).face₂ _ _`. Establish `hc : MvPowerSeries.constantCoeff (pow1 g.B n) = 1`. Rewrite using `[← cc_ev ZZa, ((act_zero S d _ g.B).2.2.2 n).1.1, map_one]`. Take `⟨w, hw⟩ : IsUnit (pow1 g.B n)` from `MvPowerSeries.isUnit_iff_constantCoeff.2 (hc ▸ isUnit_one)`. Set `u : (Jet S (Fin 2 × Fin d) m)ˣ` to `⟨psJet m w.val, psJet m w.inv, by rw [← FBIdJet.psJet_mul, w.val_inv, FBIdJet.psJet_one], by rw [← FBIdJet.psJet_mul, w.inv_val, FBIdJet.psJet_one]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu : (u : Jet S (Fin 2 × Fin d) m) = psJet m (pow1 g.B n)` using `congrArg (psJet m) hw`. Use `⟨u, hu, corr_of_val t.PP.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, hv _ _ _ y J hJ]`. Establish `h0` using `gm_unit (x0 := x) (y := y) u ![gen 0, gen 1] _ hu`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `val_peG g.x hJ g.e ![gen 0, gen 1] ![fun j => psIn d m ![0] (g.B.A.act (n : 𝓞 E) j), fun j => MvPolynomial.X ((1 : Fin 2), j)] (ac (AQ g.B.A (n : 𝓞 E)) (gen 0)) (gen 1) (by rintro ⟨l, j⟩; fin_cases l; exacts [hA _ 0 j, hX 1 j]) (by rintro ⟨l, j⟩; fin_cases l; exacts [(FBIdPh.cc_p …`. Rewrite `h1` using `[sq_ac, sq_gen, sq_gen, homAt_gen]`. Establish `h2 : val (genPowG t _ _ (g.e m) n) (𝟙 _) y J = ee g.x g.e y J (gen 0) (gen 1) ^ n`. Rewrite using `[ee, homAt_gen]`. Conclude with `map_pow _ _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : sb ![(gen 0 : Q S d 2), gen 1] (pow1 g.B n) = pow1 g.B n` using `formalSeriesValueAtTwoPoints_genericPoints _`. Rewrite `h0` using `[h3, value_first_power g hJ, homAt_gen]`. Use `Eq.trans ?_ ((val_scale hJ _ _ _).trans (congrArg₂ (· * ·) (Units.ext h0) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) h1 ((val_inv _ _).trans (congrArg (·⁻¹) h2)))))).symm` and prove the remaining obligations. Rewrite using `[PP_gen, PP_gen]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [ofMul_mul, ofMul_inv, Matrix.cons_val]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem nfold_law : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X0 : Scheme.{0}) (t : SAB H X0) (n : ℕ), ∃ κ : LB.Gen (LB.LinComb t.PP.L (Sum.elim (cφG t ![fst t.G t.G ^ n, snd t.G t.G]) (cφG t ![fst t.G t.G, snd t.G t.G])) (Sum.elim (cε 2) fun I => -((n : ℤ) * cε 2 I))), κ.IsGen ∧ LB.Gen.Corr t.PP.L _ _ _ _ (LB.pullGen t.PP.L _ _ κ (lift (1 : t.G ⟶ t.G) (𝟙 t.G)).left) (LB.oneGen t.PP.L) ∧ ∀ (S : Type) [CommRing S] (x : Sp S ⟶ X0) (d : ℕ) (g : GermAt t x d) (m : ℕ), ∃ u : (Jet S (Fin 2 × Fin d) m)ˣ, (u : Jet S (Fin 2 × Fin d) m) = psJet m (pow1 g.B n) ∧ LB.Gen.Corr t.PP.L _ _ _ _ (LB.pullGen t.PP.L _ _ κ (lift (jptG t x d g.x m (0 : Fin 2)) (jptG t x d g.x m (1 : Fin 2))).left) (scaleGenG t _ _ (unitΓ u) (LB.mulGen t.PP.L _ _ _ _ (peG t x d g.x g.e m ![fun j => psIn d m ![0] (g.B.A.act (n : 𝓞 E) j), fun j => MvPolynomial.X ((1 : Fin 2), j)]) (LB.invGen t.PP.L _ _ (genPowG t _ _ (g.e m) n)))) := by
   intro E _ _ _ H _ _ X0 t n

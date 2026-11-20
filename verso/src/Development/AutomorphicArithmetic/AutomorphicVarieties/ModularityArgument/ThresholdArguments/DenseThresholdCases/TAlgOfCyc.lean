@@ -14,11 +14,9 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 section Lem
 variable {E : Type} [Field E] [NumberField E] {l : ℕ} [Fact l.Prime]
 /- English proof (translation)
-Establish `h1 : ‖y‖ ≤ 1`. Use `IsUltrametricDist.norm_add_le_max (y - 1) 1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, norm_one]`. Conclude with `this.trans (max_le hy le_rfl)`. Proceed by induction on `m with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[show y ^ (m + 1) - 1 = y * (y ^ m - 1) + (y - 1) by ring]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ le_rfl)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
-
-Conclude with `(mul_le_of_le_one_left (norm_nonneg _) h1).trans ih`.
+Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_pow_sub_le {K : Type} [NormedField K] [IsUltrametricDist K] {y : K} (hy : ‖y - 1‖ ≤ 1) (m : ℕ) :
     ‖y ^ m - 1‖ ≤ ‖y - 1‖ := by
@@ -34,7 +32,7 @@ private theorem norm_pow_sub_le {K : Type} [NormedField K] [IsUltrametricDist K]
     rw [norm_mul]
     exact (mul_le_of_le_one_left (norm_nonneg _) h1).trans ih
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Finset.sum_range_succ, Nat.cast_succ, add_sub_add_comm]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ih (norm_pow_sub_le hy m))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_geom_sub_le {K : Type} [NormedField K] [IsUltrametricDist K] {y : K} (hy : ‖y - 1‖ ≤ 1) (m : ℕ) :
     ‖(∑ i ∈ Finset.range m, y ^ i) - m‖ ≤ ‖y - 1‖ := by
@@ -44,7 +42,7 @@ private theorem norm_geom_sub_le {K : Type} [NormedField K] [IsUltrametricDist K
     rw [Finset.sum_range_succ, Nat.cast_succ, add_sub_add_comm]
     exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ih (norm_pow_sub_le hy m))
 /- English proof (translation)
-Rewrite using `[← geom_sum_mul, norm_mul]`. Use `congr 1`. Establish `h` using `(norm_geom_sub_le hy m).trans_lt hm`. Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h.ne` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, max_eq_right h.le]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem norm_pow_sub_eq {K : Type} [NormedField K] [IsUltrametricDist K] {y : K} (hy : ‖y - 1‖ ≤ 1) {m : ℕ}
     (hm : ‖y - 1‖ < ‖(m : K)‖) : ‖y ^ m - 1‖ = ‖(m : K)‖ * ‖y - 1‖ := by
@@ -54,28 +52,28 @@ private theorem norm_pow_sub_eq {K : Type} [NormedField K] [IsUltrametricDist K]
   have := IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h.ne
   rwa [sub_add_cancel, max_eq_right h.le] at this
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem norm_nat (m : ℕ) : ‖((m : ℕ) : Qbar l)‖ = ‖((m : ℕ) : ℚ_[l])‖ := by
   rw [← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends]
 /- English proof (translation)
-The claim follows from `IsUltrametricDist.norm_natCast_le_one _ l`.
+A detailed English derivation is pending.
 -/
 private theorem norm_l_le : ‖((l : ℕ) : Qbar l)‖ ≤ 1 := IsUltrametricDist.norm_natCast_le_one _ l
 /- English proof (translation)
-Rewrite using `[norm_nat]`. Conclude with `Padic.norm_natCast_eq_one_iff.mpr hm.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_coprime {m : ℕ} (hm : m.Coprime l) : ‖((m : ℕ) : Qbar l)‖ = 1 := by
   rw [norm_nat]
   exact Padic.norm_natCast_eq_one_iff.mpr hm.symm
 /- English proof (translation)
-Proceed by induction on `k using Nat.recOnMul with`. Consider the case `zero => exact absurd hk (lt_irrefl 0)`. Consider the case `one => intro y _ h`. Simplify using `using h`. Consider the case `prime p hp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `y hy h`. Establish `hl : ‖((l : ℕ) : Qbar l)‖ ≤ ‖((p : ℕ) : Qbar l)‖`. Distinguish the cases in `e : p = l`. Rewrite using `[e]`. Rewrite using `[norm_coprime ((Nat.coprime_primes hp Fact.out).2 e)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_l_le`. Use `norm_pow_sub_eq (hy.le.trans norm_l_le) (hy.trans_le hl)` as an intermediate fact. Rewrite `this` using `[h, sub_self, norm_zero, eq_comm, mul_eq_zero]`. Conclude with `sub_eq_zero.1 (norm_eq_zero.1 (this.resolve_left ((norm_nonneg _).trans_lt (hy.trans_le hl)).ne'))`. Consider the case `mul a b iha ihb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y hy h`. Rewrite `h` using `[pow_mul]`. Conclude with `iha (Nat.pos_of_mul_pos_right hk) y hy (ihb (Nat.pos_of_mul_pos_left hk) _ ((norm_pow_sub_le (hy.le.trans norm_l_le) a).trans_lt hy) h)`.
+A detailed English derivation is pending.
 -/
 private theorem eq_one_of_near {k : ℕ} (hk : 0 < k) : ∀ y : Qbar l, ‖y - 1‖ < ‖((l : ℕ) : Qbar l)‖ → y ^ k = 1 → y = 1 := by
   induction k using Nat.recOnMul with
@@ -97,11 +95,11 @@ private theorem eq_one_of_near {k : ℕ} (hk : 0 < k) : ∀ y : Qbar l, ‖y - 1
     exact iha (Nat.pos_of_mul_pos_right hk) y hy
       (ihb (Nat.pos_of_mul_pos_left hk) _ ((norm_pow_sub_le (hy.le.trans norm_l_le) a).trans_lt hy) h)
 /- English proof (translation)
-Set `c` to `max ‖z - 1‖ ‖(p : K)‖`. Establish `hc0 : 0 ≤ c` using `(norm_nonneg _).trans (le_max_left _ _)`. Establish `key : ∀ n : ℕ, ‖z ^ p ^ n - 1‖ ≤ c ^ n` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using hz.le`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih`. Establish `h1` using `norm_pow_sub_le hz.le (p ^ n)`. Establish `h2` using `norm_geom_sub_le (h1.trans hz.le) p`. Establish `h3` using `IsUltrametricDist.norm_add_le_max ((∑ i ∈ Finset.range p, (z ^ p ^ n) ^ i) - p) (p : K)`. Rewrite `h3` using `[sub_add_cancel]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pow_succ, pow_mul, ← geom_sum_mul, norm_mul, pow_succ']`. Conclude with `mul_le_mul (h3.trans (max_le_max (h2.trans h1) le_rfl)) ih (norm_nonneg _) hc0`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Conclude with `squeeze_zero (fun _ => norm_nonneg _) key (tendsto_pow_atTop_nhds_zero_of_lt_one hc0 (max_lt hz hp))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tendsto_pow_pow {K : Type} [NormedField K] [IsUltrametricDist K] {z : K} (hz : ‖z - 1‖ < 1) {p : ℕ}
     (hp : ‖(p : K)‖ < 1) : Tendsto (fun n : ℕ => z ^ p ^ n) atTop (𝓝 1) := by
@@ -120,15 +118,15 @@ private theorem tendsto_pow_pow {K : Type} [NormedField K] [IsUltrametricDist K]
   rw [tendsto_iff_norm_sub_tendsto_zero]
   exact squeeze_zero (fun _ => norm_nonneg _) key (tendsto_pow_atTop_nhds_zero_of_lt_one hc0 (max_lt hz hp))
 /- English proof (translation)
-Establish `hlt : Valued.v ((p : ℕ) : v.adicCompletion E) < 1`. Establish `h : Valued.v (((algebraMap (𝓞 E) E (p : 𝓞 E) : E)) : v.adicCompletion E) = v.valuation E (algebraMap (𝓞 E) E (p : 𝓞 E))` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _`. Establish `h2 : v.valuation E (algebraMap (𝓞 E) E (p : 𝓞 E)) < 1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem v _).mpr hp`. Rewrite `h2` using `[← h]`. Establish `e : (((algebraMap (𝓞 E) E (p : 𝓞 E) : E)) : v.adicCompletion E) = ((p : ℕ) : v.adicCompletion E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_natCast]`. Conclude with `map_natCast (algebraMap E (v.adicCompletion E)) p`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Establish `hM : ∃ M : ℕ, 0 < M ∧ Valued.v ((x : v.adicCompletion E) ^ M - 1) < 1`. Set `O` to `v.adicCompletionIntegers E`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `y : O` to `⟨x, hx.le⟩`. Use `haveI : Finite (IsLocalRing.ResidueField O) := inferInstance`. Take `⟨a, b, hab, e⟩` from `Finite.exists_ne_map_eq_of_infinite fun n : ℕ => IsLocalRing.residue O (y ^ n)`. Use `wlog hlt : a < b generalizing a b`. Conclude with `this b a hab.symm e.symm (lt_of_le_of_ne (not_lt.1 hlt) hab.symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨b - a, Nat.sub_pos_of_lt hlt, ?_⟩` and prove the remaining obligations. Establish `h1 : y ^ b - y ^ a ∈ IsLocalRing.maximalIdeal O` using `Ideal.Quotient.eq.1 e.symm`. Establish `h2 : Valued.v ((x : v.adicCompletion E) ^ b - (x : v.adicCompletion E) ^ a) < 1` using `(Valuation.mem_maximalIdeal_iff _ _).1 h1`. Establish `hx' : Valued.v (x : v.adicCompletion E) = 1` using `hx`. Rewrite using `[show (x : v.adicCompletion E) ^ b - (x : v.adicCompletion E) ^ a = (x : v.adicCompletion E) ^ a * ((x : v.adicCompletion E) ^ (b - a) - 1) by` and apply the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[mul_sub, ← pow_add, Nat.add_sub_cancel' hlt.le, mul_one], map_mul, map_pow, hx', one_pow, one_mul]`. Take `⟨M, hM0, hM⟩` from `hM`. Use `⟨M, hM0, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.isEmbedding_val₀.tendsto_nhds_iff]`. Conclude with `tendsto_pow_pow (K := v.adicCompletion E) (Valued.toNormedField.norm_lt_one_iff.2 hM) (Valued.toNormedField.norm_lt_one_iff.2 hlt)`.
+A detailed English derivation is pending.
 -/
 private theorem unit_pow {v : HeightOneSpectrum (𝓞 E)} {p : ℕ} (hp : ((p : ℕ) : 𝓞 E) ∈ v.asIdeal)
     {x : (v.adicCompletion E)ˣ} (hx : IsUnitAt v x) :
@@ -165,11 +163,11 @@ private theorem unit_pow {v : HeightOneSpectrum (𝓞 E)} {p : ℕ} (hp : ((p : 
   exact tendsto_pow_pow (K := v.adicCompletion E) (Valued.toNormedField.norm_lt_one_iff.2 hM)
     (Valued.toNormedField.norm_lt_one_iff.2 hlt)
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `hN : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`. Take `⟨a, p, hp, hNM⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN l hl.ne_one`. Establish `hmem : ((p : ℕ) : 𝓞 E) ∈ v.asIdeal`. Establish `h` using `Ideal.absNorm_mem v.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hNM, Nat.cast_mul, Nat.cast_pow]`. Conclude with `(v.isPrime.mem_or_mem h).resolve_left fun h' => hv (v.isPrime.mem_of_pow_mem a h')`. Take `⟨M, hM, ht⟩` from `unit_pow hmem hx`. Establish `h1` using `(norm_pow_sub_le (h.le.trans norm_l_le) M).trans_lt h`. Establish `h2 : ∀ n : ℕ, ‖((φ ((x ^ M) ^ p ^ n) : (Qbar l)ˣ) : Qbar l) - 1‖ = ‖((φ x : (Qbar l)ˣ) : Qbar l) ^ M - 1‖` using `fun n => by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `norm_coprime (l := l) (Nat.Coprime.pow_left n ((Nat.Prime.coprime_iff_not_dvd hl).mpr hp).symm)`. Rewrite using `[map_pow, map_pow, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, norm_pow_sub_eq (h1.le.trans norm_l_le) (by rw [hc]; exact h1.trans_le norm_l_le), hc, one_mul]`. Establish `h3` using `((((Units.continuous_val.comp hφ).tendsto 1).comp ht).sub_const 1).norm`. Simplify using `only [Function.comp_def, h2, map_one, Units.val_one, sub_self, norm_zero] at h3`. Conclude with `Units.ext (eq_one_of_near hM _ h (sub_eq_zero.1 (norm_eq_zero.1 (tendsto_nhds_unique tendsto_const_nhds h3))))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem loc_away {v : HeightOneSpectrum (𝓞 E)} (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal)
     (φ : (v.adicCompletion E)ˣ →* (Qbar l)ˣ) (hφ : Continuous φ) {x : (v.adicCompletion E)ˣ} (hx : IsUnitAt v x)
@@ -191,25 +189,21 @@ private theorem loc_away {v : HeightOneSpectrum (𝓞 E)} (hv : ((l : ℕ) : �
   simp only [Function.comp_def, h2, map_one, Units.val_one, sub_self, norm_zero] at h3
   exact Units.ext (eq_one_of_near hM _ h (sub_eq_zero.1 (norm_eq_zero.1 (tendsto_nhds_unique tendsto_const_nhds h3))))
 /- English proof (translation)
-Rewrite `hV` using `[Units.isInducing_embedProduct.nhds_eq_comap, Filter.mem_comap]`. Take `⟨T, hT, hTV⟩` from `hV`. Take `⟨T1, hT1, T2, hT2, hTT⟩` from `mem_nhds_prod_iff.1 hT`. Set `f : FiniteAdeleRing (𝓞 E) E → AdeleRing (𝓞 E) E` to `fun b => (1, 1 + b)`. Establish `hf : Continuous f` using `continuous_const.prodMk (continuous_const.add continuous_id)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf0 : f 0 = 1` using `Prod.ext rfl (add_zero _)`. Establish `h1 : f ⁻¹' T1 ∈ 𝓝 0` using `hf.continuousAt.preimage_mem_nhds (by rw [hf0]; exact hT1)`. Establish `h2 : (fun b => MulOpposite.op (f b)) ⁻¹' T2 ∈ 𝓝 0` using `(MulOpposite.continuous_op.comp hf).continuousAt.preimage_mem_nhds (by rw [Function.comp_apply, hf0]; exact hT2)`. Take `⟨N, hN, hNW⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele E _ (Filter.inter_mem h1 h2)`. Set `P : Set (FiniteAdeleRing (𝓞 E) E)` to `{c | ∃ a : FiniteAdeleRing (𝓞 E) E, (∀ v, a v ∈ v.adicCompletionIntegers E) ∧ c = N • a}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hP : P ∈ 𝓝 0` using `GlobalTheory.AdLat.OpenLat.nsmul_integral_mem_nhds E N hN`. Establish `key : ∀ (u : Ideles E), (u : AdeleRing (𝓞 E) E).2 - 1 ∈ P → ∀ (v : HeightOneSpectrum (𝓞 E)) (x : (v.adicCompletion E)ˣ), (x : v.adicCompletion E) = (u : AdeleRing (𝓞 E) E).2 v → Valued.v (x : v.adicCompletion E) ≤ 1 ∧ ∃ b : FiniteAdeleRing (𝓞 E) E, (∀ v, b v ∈ v.adicCompletionInt …`. Introduce and unpack `u ⟨a, ha, e⟩ v x hx`. Establish `e1 : (x : v.adicCompletion E) = 1 + N • a v`. Rewrite using `[hx, eq_add_of_sub_eq' e]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨?_, Neutral.B1.finiteSingle E v (1 + a v) - 1, fun w => ?_, Prod.ext rfl ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `(add_mem (one_mem _) (nsmul_mem (ha v) N) : _ ∈ v.adicCompletionIntegers E)`. Use `show Function.update (fun w : HeightOneSpectrum (𝓞 E) => (1 : w.adicCompletion E)) v (1 + a v) w - 1 ∈ _`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self, add_sub_cancel_left]`. Conclude with `ha w`. Rewrite using `[Function.update_of_ne hw, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `zero_mem _`. Use `Subtype.ext (funext fun w => ?_) show Function.update (fun w : HeightOneSpectrum (𝓞 E) => (1 : w.adicCompletion E)) v (x : v.adicCompletion E) w = 1 + N • (Function.update (fun w : HeightOneSpectrum (𝓞 E) => (1 : w.adicCompletion E)) v (1 + a v) w - 1)` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self, Function.update_self, add_sub_cancel_left, e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne hw, Function.update_of_ne hw, sub_self, smul_zero, add_zero]`. Use `⟨{u | (u : AdeleRing (𝓞 E) E).2 - 1 ∈ P ∧ ((u⁻¹ : Ideles E) : AdeleRing (𝓞 E) E).2 - 1 ∈ P}, Filter.inter_mem ?_ ?_, fun u hu v x hx => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun u : Ideles E => (u : AdeleRing (𝓞 E) E).2 - 1` using `(continuous_snd.comp (Units.continuous_val (M := AdeleRing (𝓞 E) E))).sub continuous_const`. Conclude with `hc.continuousAt.preimage_mem_nhds (t := P) (by convert hP; exact sub_self _)`. Establish `hc : Continuous fun u : Ideles E => ((u⁻¹ : Ideles E) : AdeleRing (𝓞 E) E).2 - 1` using `(continuous_snd.comp (Units.continuous_coe_inv (M := AdeleRing (𝓞 E) E))).sub continuous_const`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc.continuousAt.preimage_mem_nhds (t := P) (by convert hP; exact sub_self _)`. Take `⟨k1, b, hb, e⟩` from `key u hu.1 v x hx`. Take `⟨k2, b', hb', e'⟩` from `key u⁻¹ hu.2 v x⁻¹ (by`. Rewrite using `[Units.val_inv_eq_inv_val, hx]`. Conclude with `(eq_inv_of_mul_eq_one_right (congrArg (fun y : AdeleRing (𝓞 E) E => y.2 v) u.mul_inv)).symm)`.
-
-Use `⟨le_antisymm k1 ?_, hTV (hTT ⟨?_, ?_⟩)⟩` and prove the remaining obligations. Rewrite `k2` using `[Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `(inv_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 x.ne_zero))).1 k2`. Express the relevant statement in the definitionally equal form `((localIdele E v x : Ideles E) : AdeleRing (𝓞 E) E) ∈ T1`. Rewrite using `[e]`.
-
-Conclude with `(hNW b hb).1`. Express the relevant statement in the definitionally equal form `MulOpposite.op (((localIdele E v x)⁻¹ : Ideles E) : AdeleRing (𝓞 E) E) ∈ T2`. Rewrite using `[← map_inv, e']`. Conclude with `(hNW b' hb').2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nhd_loc (V : Set (Ideles E)) (hV : V ∈ 𝓝 (1 : Ideles E)) : ∃ H ∈ 𝓝 (1 : Ideles E), ∀ u ∈ H,
     ∀ (v : HeightOneSpectrum (𝓞 E)) (x : (v.adicCompletion E)ˣ), (x : v.adicCompletion E) = (u : AdeleRing (𝓞 E) E).2 v →
@@ -273,15 +267,13 @@ private theorem nhd_loc (V : Set (Ideles E)) (hV : V ∈ 𝓝 (1 : Ideles E)) : 
     · change MulOpposite.op (((localIdele E v x)⁻¹ : Ideles E) : AdeleRing (𝓞 E) E) ∈ T2
       rw [← map_inv, e']; exact (hNW b' hb').2
 /- English proof (translation)
-Establish `hV : {u | ‖((θ u : (Qbar l)ˣ) : Qbar l) - 1‖ < ‖((l : ℕ) : Qbar l)‖} ∈ 𝓝 (1 : Ideles E)`. Use `(isOpen_lt (((Units.continuous_val.comp hθ).sub continuous_const).norm) continuous_const).mem_nhds ?_` and prove the remaining obligations. Simplify using `using (Fact.out : l.Prime).ne_zero`. Take `⟨H, hH, hHV⟩` from `nhd_loc _ hV`. Set `p : Ideles E →* (InfiniteAdeleRing E)ˣ` to `Units.map (MonoidHom.fst (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `q : Ideles E →* (FiniteAdeleRing (𝓞 E) E)ˣ` to `Units.map (MonoidHom.snd (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E))`. Establish `hp : Continuous p` using `Continuous.units_map _ continuous_fst`. Establish `ho` using `(isOpen_connectedComponentOfOne_inf E).preimage hp`. Use `θ.ker.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset (Filter.inter_mem (ho.mem_nhds ?_) hH) ?_)` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, map_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.one_mem _`. Introduce and unpack `x ⟨h1, h2⟩`. Establish `e : x = inlInf E (p x) * inrFin E (q x)` using `Units.ext (Prod.ext (mul_one _).symm (one_mul _).symm)`. Establish `h3 : θ (inrFin E (q x)) = 1`. Use `GlobalTheory.FrobDense.eq_one_of_local θ hθ _ rfl fun v => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hu, hn⟩` from `hHV x h2 v (Units.map (GlobalTheory.Mem.LocTriv.ev v) (inrFin E (q x))) rfl`. Distinguish the cases in `hv : ((l : ℕ) : 𝓞 E) ∈ v.asIdeal`. Take `⟨k, hk, e⟩` from `hl v hv _ hu`. Conclude with `Units.ext (eq_one_of_near hk _ hn (congrArg Units.val e))`. Conclude with `loc_away hv (θ.comp (localIdele E v)) (hθ.comp ((continuous_const.prodMk (GlobalTheory.Mem.UnrAe.continuous_finSingle v)).units_map _)) hu hn`.
-
-Use `show θ x = 1`. Rewrite using `[e, map_mul, h3, mul_one]`. Conclude with `h _ ⟨_, h1, rfl⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem open_ker (θ : Ideles E →* (Qbar l)ˣ) (hθ : Continuous θ) (h : ∀ x ∈ infConn E, θ x = 1)
     (hl : ∀ v : HeightOneSpectrum (𝓞 E), ((l : ℕ) : 𝓞 E) ∈ v.asIdeal → ∀ x : (v.adicCompletion E)ˣ, IsUnitAt v x →
@@ -314,15 +306,13 @@ private theorem open_ker (θ : Ideles E →* (Qbar l)ˣ) (hθ : Continuous θ) (
     rw [e, map_mul, h3, mul_one]
     exact h _ ⟨_, h1, rfl⟩
 /- English proof (translation)
-Rewrite using `[infDiag, MonoidHom.finsetProd_apply]`. Use `prod_mem fun w _ => ?_` and prove the remaining obligations. Set `s : (w.Completion)ˣ →* (InfiniteAdeleRing E)ˣ` to `by classical`. Conclude with `Units.map (MonoidHom.mulSingle (fun w : InfinitePlace E => w.Completion) w)`. Establish `hs : Continuous s` using `by classical`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-Conclude with `Continuous.units_map _ (continuous_mulSingle w)`. It suffices to establish `H : atInf w k ∈ connectedComponent (1 : (w.Completion)ˣ) by`. Use `hs.image_connectedComponent_subset 1 ⟨_, H, rfl⟩` as an intermediate fact. Rewrite `this` using `[map_one]`. Conclude with `⟨_, this, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ S : Set w.Completion, IsPreconnected S → 0 ∉ S → 1 ∈ S → algebraMap E w.Completion (k : E) ∈ S → atInf w k ∈ connectedComponent (1 : (w.Completion)ˣ)` using `fun S hS h0 h1 h2 => by`. Use `IsPreconnected.subset_connectedComponent (s := Units.val ⁻¹' S) ?_ h1 h2` and prove the remaining obligations. Rewrite using `[← Units.isEmbedding_val₀.isInducing.isPreconnected_image, Set.image_preimage_eq_of_subset]`. Conclude with `hS`. Conclude with `fun y hy => ⟨Units.mk0 y fun e => h0 (e ▸ hy), rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Break down `w.isReal_or_isComplex with hw | hw` into its components or cases. Set `e` to `InfinitePlace.Completion.ringEquivRealOfIsReal hw`. Establish `he : e (algebraMap E w.Completion (k : E)) = InfinitePlace.embedding_of_isReal hw (k : E)` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hw ((WithAbs.equiv w.1).symm (k : E))`. Use `key (e ⁻¹' Set.Ioi 0) ((InfinitePlace.Completion.isometryEquivRealOfIsReal hw).toHomeomorph.isPreconnected_preimage.2 isPreconnected_Ioi) (by simp) (by simp) ?_` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, he]`.
-
-Conclude with `hk _`. Set `e` to `InfinitePlace.Completion.ringEquivComplexOfIsComplex hw`. Use `key (e ⁻¹' {0}ᶜ) ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex hw).toHomeomorph.isPreconnected_preimage.2 (isConnected_compl_singleton_of_one_lt_rank (by simp) 0).isPreconnected) (by simp) (by simp) ?_` and prove the remaining obligations. Conclude with `(map_ne_zero e).2 ((map_ne_zero _).2 k.ne_zero)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem pos_conn (k : Eˣ) (hk : ∀ φ : E →+* ℝ, 0 < φ (k : E)) : infDiag k ∈ infConn E := by
   rw [infDiag, MonoidHom.finsetProd_apply]
@@ -359,7 +349,7 @@ end Lem
 section
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {l : ℕ} [Fact l.Prime]
 /- English proof (translation)
-Establish `h` using `GlobalTheory.Published.CharAboveModel.absPow_isAlgPos E 1`. Take `⟨μ, hμ, hL⟩` from `ha.exists_isLAdicOf ι h`. Establish `e' : μ = cycBar E Ω l ^ 1` using `GlobalTheory.Published.CharAboveModel.eq_cyc_pow ha hμ hL`. Rewrite `e'` using `[pow_one]`. Rewrite using `[← e', hL.loc x σ e, (GlobalTheory.HeckeGal.Model.absPow_isAbsPow E _).1 v x hx]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -374,9 +364,9 @@ private theorem cyc_loc [IsAlgClosure E Ω] {art : Ideles E →* Gab E Ω} (ha :
   rw [← e', hL.loc x σ e, (GlobalTheory.HeckeGal.Model.absPow_isAbsPow E _).1 v x hx]
   simp
 /- English proof (translation)
-Set `P : (E →+* ℂ) → HeightOneSpectrum (𝓞 E) → Prop` to `fun φ v => ∃ j : v.adicCompletion E →+* Qbar l, Continuous j ∧ φ = (ι.toRingHom.comp j).comp (algebraMap E (v.adicCompletion E))`. Use `⟨fun φ => if h : ∃ v, P φ v then a h.choose else 0, fun v y => ?_⟩` and prove the remaining obligations. Use `haveI : Fintype {j : v.adicCompletion E →+* Qbar l // Continuous j} := @Fintype.ofFinite _ (finite_contEmb v)`. Unfold `locPow`. Rewrite using `[finprod_eq_prod_of_fintype, finprod_eq_prod_of_fintype, ← Finset.prod_zpow]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h : ∃ v', P ((ι.toRingHom.comp j.1).comp (algebraMap E (v.adicCompletion E))) v'` using `⟨v, j.1, j.2, rfl⟩`. Take `⟨j', hj', e⟩` from `h.choose_spec`. Establish `h1 : v = h.choose` using `place_eq_of_contEmb_comp_eq E l v _ j.1 j' j.2 hj' (RingHom.ext fun b => ι.injective (DFunLike.congr_fun e b))`. Simplify using `only [dif_pos h, zpow_one, ← h1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_type (ι : Qbar l ≃+* ℂ) (a : HeightOneSpectrum (𝓞 E) → ℤ) :
     ∃ n : (E →+* ℂ) → ℤ, ∀ v y, locPow ι n v y = locPow ι (fun _ => 1) v y ^ a v := by
@@ -394,19 +384,17 @@ private theorem exists_type (ι : Qbar l ≃+* ℂ) (a : HeightOneSpectrum (𝓞
     (RingHom.ext fun b => ι.injective (DFunLike.congr_fun e b))
   simp only [dif_pos h, zpow_one, ← h1]
 /- English proof (translation)
-Take `⟨f, hf, hfe⟩` from `exists_infPow_hom E n`. Take `⟨g, hg, hge⟩` from `exists_lPow_hom E l ι n`. Set `θ : Ideles E →* (Qbar l)ˣ` to `(liftAb κ hκ).comp art * g⁻¹`. Establish `hθ : Continuous θ` using `((continuous_liftAb κ hκ).comp ha.quot.continuous).mul hg.inv`. Establish `hθe : ∀ x, ((θ x : (Qbar l)ˣ) : Qbar l) = ((liftAb κ hκ (art x) : (Qbar l)ˣ) : Qbar l) * (lPow ι n x)⁻¹` using `fun x => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hge, ← Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression. Establish `hk : ∀ x ∈ (diagUnits E).range ⊔ infConn E, art x = 1` using `fun x hx => by`. Rewrite using `[← MonoidHom.mem_ker, ha.ker]`. Conclude with `Subgroup.le_topologicalClosure _ hx`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∀ x ∈ infConn E, θ x = 1` using `fun x hx => Units.ext (by`. Rewrite using `[hθe, hk x (Subgroup.mem_sup_right hx), lPow_of_mem_infConn ι n hx]`. Use the proof step `simp)`. Establish `ho` using `open_ker θ hθ h1 fun v hv x hx => by`. Take `⟨k, hk0, e⟩` from `h v hv x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨k, hk0, Units.ext (by rw [Units.val_pow_eq_pow_val, hθe, lPow_localIdele, e]; rfl)⟩`. Set `θ' : Ideles E →* ℂˣ` to `(Units.map ι.toRingHom.toMonoidHom).comp θ`. Establish `hθ' : Continuous θ'` using `continuous_of_isOpen_ker' θ' (Subgroup.isOpen_mono (fun x hx => by`. Rewrite `hx`, the goal using `[MonoidHom.mem_ker]`. Rewrite using `[MonoidHom.comp_apply, hx, map_one]) ho)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hχ : ∀ x, (((θ' * f) x : ℂˣ) : ℂ) = ι ((θ x : (Qbar l)ˣ) : Qbar l) * infPow n x` using `fun x => by`. Rewrite using `[← hfe]`. Both sides reduce to the same expression. Use `⟨⟨θ' * f, hθ'.mul hf, fun k => Units.ext ?_⟩, hκ, art, n, ha, fun k hk => ?_, fun x σ hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hχ, hθe, hk _ (Subgroup.mem_sup_left ⟨k, rfl⟩), infPow_diagUnits, lPow_diagUnits, map_one, Units.val_one, one_mul, map_inv₀, map_prod]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_zpow₀, RingEquiv.apply_symm_apply]`. Conclude with `inv_mul_cancel₀ (Finset.prod_ne_zero_iff.mpr fun φ _ => zpow_ne_zero _ (by simp))`. Use `show (((θ' * f) (infDiag k) : ℂˣ) : ℂ) = _`. Rewrite using `[hχ, h1 _ (pos_conn k hk), Units.val_one, map_one, one_mul, ← infPow_diagUnits E n k, infDiag_eq]`. Both sides reduce to the same expression.
-
-Use `show _ = ι.symm ((((θ' * f) x : ℂˣ) : ℂ) * _) * _`. Establish `hf0 : infPow n x ≠ 0` using `hfe x ▸ Units.ne_zero _`. Establish `hg0 : lPow ι n x ≠ 0` using `hge x ▸ Units.ne_zero _`. Rewrite using `[hχ, mul_inv_cancel_right₀ hf0, ι.symm_apply_apply, hθe, inv_mul_cancel_right₀ hg0, hx, liftAb_toAb]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem alg_of_open {art : Ideles E →* Gab E Ω} [IsAlgClosure E Ω] (ha : IsGlobalArtin art) (ι : Qbar l ≃+* ℂ)
     (κ : G E Ω →* (Qbar l)ˣ) (hκ : Continuous κ) (n : (E →+* ℂ) → ℤ)
@@ -449,18 +437,18 @@ private theorem alg_of_open {art : Ideles E →* Gab E Ω} [IsAlgClosure E Ω] (
     have hg0 : lPow ι n x ≠ 0 := hge x ▸ Units.ne_zero _
     rw [hχ, mul_inv_cancel_right₀ hf0, ι.symm_apply_apply, hθe, inv_mul_cancel_right₀ hg0, hx, liftAb_toAb]
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨χ, h, art, a, h'⟩ => ⟨h, art, χ, a, h'⟩, fun ⟨h, art, χ, a, h'⟩ => ⟨χ, h, art, a, h'⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem alg_iff [IsAlgClosure E Ω] (ι : Qbar l ≃+* ℂ) (κ : G E Ω →* (Qbar l)ˣ) :
     UpperTheory.V.Af.IsAlgChar ι κ ↔ UpperTheory.V.Sd.IsAlgChar ι κ :=
   ⟨fun ⟨χ, h, art, a, h'⟩ => ⟨h, art, χ, a, h'⟩, fun ⟨h, art, χ, a, h'⟩ => ⟨χ, h, art, a, h'⟩⟩
 end
 /- English proof (translation)
-Introduce `hP F Ω _ _ _ _ _ l _ ι`. Use `⟨fun κ hκ h => ?_, fun κ κ' h h' => ?_, fun M _ _ _ _ _ _ κ h => ?_⟩` and prove the remaining obligations. Take `⟨art, ha⟩ : ∃ art : Ideles F →* Gab F Ω, IsGlobalArtin art` from `hP.toClassicalTheorems.litN.aut.art _ Ω choose! A hA a k hk H using h`. Take `⟨n, hn⟩` from `exists_type ι a`. Use `alg_of_open ha ι κ hκ n fun v hv x hx => ⟨k v, hk v hv, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨σ, hσ, e⟩` from `(ha.ine v (A v) (hA v hv) _).mp ⟨x, hx, rfl⟩`. Rewrite using `[hn, ← cyc_loc ha ι hx e.symm, ← e, liftAb_toAb, ← zpow_neg, ← Units.val_zpow_eq_zpow_val, ← Units.val_mul, ← Units.val_pow_eq_pow_val, H v hv σ hσ, Units.val_one]`. Establish `H` using `_root_.UpperTheory.V.Sd.alg_cyclotomic_of_printed_results hP.toClassicalTheorems F Ω l ι`. Simplify using `only [alg_iff] at h h' ⊢`. Conclude with `⟨H.2.1 κ κ' h h', H.2.2 κ h⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `(alg_iff ι _).2 (_root_.UpperTheory.V.Sd.alg_restriction_of_printed_results hP.toClassicalTheorems F M Ω l ι κ ((alg_iff ι κ).1 h))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.algOfCyc_s :
     _root_.UpperTheory.V.Af.HypothesesH' → UpperTheory.V.Af.AlgOfCyc := by

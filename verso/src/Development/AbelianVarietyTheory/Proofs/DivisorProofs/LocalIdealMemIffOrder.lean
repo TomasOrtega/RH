@@ -20,21 +20,19 @@ namespace GlobalTheory.TateUnr
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Set `J : Ideal (𝓞 E)` to `(1 : Submodule (𝓞 E) E).colon {e}`. Establish `key : ¬ J.comap (algebraMap (𝓞 F) (𝓞 E)) ≤ v.asIdeal`. Introduce `hle`. Take `⟨Q, hJQ, hQ, hQv⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral v.asIdeal J hle`. Establish `hQ0 : Q ≠ ⊥`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Apply `v.ne_bot` to reduce the goal to its premises. Rewrite using `[← hQv]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)`. Set `w : HeightOneSpectrum (𝓞 E)` to `⟨Q, hQ, hQ0⟩`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hw : w.under (𝓞 F) = v` using `HeightOneSpectrum.ext hQv`. Establish `h1 : e ∈ HeightOneSpectrum.valuationSubringAtPrime E w`. Rewrite using `[HeightOneSpectrum.valuationSubringAtPrime_eq_valuationSubring]`. Conclude with `he w hw`. Take `⟨a, s, hs, hae⟩` from `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsJ : s ∈ J`. Rewrite using `[Submodule.mem_colon_singleton, Submodule.mem_one]`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `hs0 : algebraMap (𝓞 E) E s ≠ 0`. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hs` to reduce the goal to its premises. Rewrite using `[(IsFractionRing.injective (𝓞 E) E) (h0.trans (map_zero _).symm)]`. Conclude with `zero_mem _`. Rewrite using `[Algebra.smul_def, hae, mul_left_comm, mul_inv_cancel₀ hs0, mul_one]`. Conclude with `hs (hJQ hsJ)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hdJ, hdv⟩` from `Set.not_subset.1 key`. Rewrite `hdJ` using `[SetLike.mem_coe, Ideal.mem_comap, Submodule.mem_colon_singleton, Submodule.mem_one]`. Take `⟨x, hx⟩` from `hdJ`. Establish `hv : v.valuation F (d : F) = 1` using `(HeightOneSpectrum.valuation_eq_one_iff_notMem v).2 hdv`. Establish `hd0 : (d : F) ≠ 0` using `fun e => by simp [e] at hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : algebraMap F (Fv F v) (d : F)⁻¹ ∈ v.adicCompletionIntegers F` using `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (d : F)⁻¹).trans_le (by rw [map_inv₀, hv, inv_one])`. Establish `hx' : ((x : 𝓞 E) : E) = (d : F) • e`. Use `hx.trans ?_` and prove the remaining obligations. Rewrite using `[algebraMap_smul]`. Conclude with `(algebraMap_smul F d e).symm`.
-
-Establish `h` using `tmul_mem_intLoc (E := E) h4 x`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hx', Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, inv_smul_smul₀ hd0]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_tmul_mem_intLoc_of_valuation {v : Pl F} {e : E}
     (he : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → w.valuation E e ≤ 1) :
@@ -80,11 +78,11 @@ theorem one_tmul_mem_intLoc_of_valuation {v : Pl F} {e : E}
   rw [hx', Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, inv_smul_smul₀ hd0]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_sub_mem_intLoc v y`. Establish `h1 : (1 : Fv F v) ⊗ₜ[F] e ∈ intLoc F E v`. Use `one_tmul_mem_intLoc_of_valuation fun w hw => ?_` and prove the remaining obligations. Establish `h2 : toCompl hw ((1 : Fv F v) ⊗ₜ[F] e) = toCompl hw y - toCompl hw (y - (1 : Fv F v) ⊗ₜ[F] e)`. Rewrite using `[map_sub, sub_sub_cancel]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : Valued.v (toCompl hw (y - (1 : Fv F v) ⊗ₜ[F] e)) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (InertChart.toCompl_mem hw he)`. Establish `h4` using `Valuation.map_sub_le _ (hy w hw) h3`. Rewrite `h4` using `[← h2, toCompl_tmul, map_one, one_mul]`. Establish `h5 : Valued.v (algebraMap E (w.adicCompletion E) e) = w.valuation E e` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w e`. Rewrite using `[← h5]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h4`. Use `add_mem he h1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_intLoc_of_toCompl {v : Pl F} {y : Fv F v ⊗[F] E}
     (hy : ∀ (w : HeightOneSpectrum (𝓞 E)) (hw : w.under (𝓞 F) = v), Valued.v (toCompl hw y) ≤ 1) :
@@ -106,7 +104,7 @@ theorem mem_intLoc_of_toCompl {v : Pl F} {y : Fv F v ⊗[F] E}
   rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Use `intLoc_induction (p := fun z => (1 : Fv F v) ⊗ₜ[F] i * z ∈ locId v 𝔞) (fun a ha x => ?_) (by rw [mul_zero]; exact zero_mem _) (fun y z hy hz => by rw [mul_add]; exact add_mem hy hz) (fun y hy => by rw [mul_neg]; exact neg_mem hy) hz` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Use `tmul_mem_locId ha ?_` and prove the remaining obligations. Use `(𝔞 : Submodule (𝓞 E) E).smul_mem x hi` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def, mul_comm]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem one_tmul_mul_mem_locId {v : Pl F} {𝔞 : FractionalIdeal (𝓞 E)⁰ E} {i : E} (hi : i ∈ 𝔞)
     {z : Fv F v ⊗[F] E} (hz : z ∈ intLoc F E v) : (1 : Fv F v) ⊗ₜ[F] i * z ∈ locId v 𝔞 := by
@@ -119,23 +117,21 @@ theorem one_tmul_mul_mem_locId {v : Pl F} {𝔞 : FractionalIdeal (𝓞 E)⁰ E}
   rwa [Algebra.smul_def, mul_comm] at this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v 𝔞 h𝔞 l`. Establish `hval : ∀ (w : HeightOneSpectrum (𝓞 E)) (hw : w.under (𝓞 F) = v), Valued.v (toCompl hw (compFin F E v (l.1 : AE F E))) = WithZero.exp (-ordW hw l)` using `fun w hw => by`. Rewrite using `[← compW_apply]`. Conclude with `valued_compW hw l`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hY w`. Establish `hw` using `mem_aboveF.1 w.2`. Establish `h0 : ∀ y ∈ locId v 𝔞, Valued.v (toCompl hw y) ≤ WithZero.exp (-FractionalIdeal.count E w.1 𝔞)`. Introduce `y hY`. Proceed by induction on `hY using AddSubgroup.closure_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem y hy`. Take `⟨c, hc, x, hx, rfl⟩` from `hy`. Establish `h2 : Valued.v (algebraMap E (w.1.adicCompletion E) x) = w.1.valuation E x` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w.1 x`. Rewrite using `[toCompl_tmul, map_mul, h2]`. Establish `h3 : Valued.v (complMap hw c) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (complMap_mem hw hc)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Conclude with `(mul_le_mul' h3 (GlobalTheory.UnrTate.valuation_le_of_mem w.1 hx)).trans_eq (one_mul _)`. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `zero_le'`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Valuation.map_add_le _ hy hz`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Consider the case `neg y _ hy => rw [map_neg, Valuation.map_neg]`. Conclude with `hy`. Establish `h1` using `h0 _ hY`. Rewrite `h1` using `[hval, WithZero.exp_le_exp]`. Express the relevant statement in the definitionally equal form `FractionalIdeal.count E w.1 𝔞 ≤ ordW hw l`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h`. Establish `key : ∀ z ∈ 𝔞 * 𝔞⁻¹, (1 : Fv F v) ⊗ₜ[F] z * compFin F E v (l.1 : AE F E) ∈ locId v 𝔞`. Introduce `z hz`. Use `FractionalIdeal.mul_induction_on hz (fun i hi j hj => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_one (1 : Fv F v), ← Algebra.TensorProduct.tmul_mul_tmul, mul_assoc]`. Use `one_tmul_mul_mem_locId hi (mem_intLoc_of_toCompl fun w hw => ?_)` and prove the remaining obligations. Establish `h2 : Valued.v (algebraMap E (w.adicCompletion E) j) = w.valuation E j` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w j`. Rewrite using `[map_mul, map_mul, hval, toCompl_tmul, map_one, one_mul, h2]`. Establish `hc` using `h ⟨w, mem_aboveF.2 hw⟩`.
+Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `FractionalIdeal.count E w 𝔞 ≤ ordW hw l at hc`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[FractionalIdeal.count_inv, neg_neg, ← WithZero.exp_add, add_neg_cancel, WithZero.exp_zero]`. Rewrite using `[TensorProduct.tmul_add, add_mul]`. Conclude with `add_mem hx hy`.
-
-Establish `h1 : (1 : E) ∈ 𝔞 * 𝔞⁻¹`. Rewrite using `[mul_inv_cancel₀ h𝔞]`. Conclude with `FractionalIdeal.one_mem_one _`. Use `key 1 h1` as an intermediate fact. Rewrite `this` using `[← Algebra.TensorProduct.one_def, one_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_locId_iff_count_le_ordV : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (v : Pl F) (𝔞 : FractionalIdeal (𝓞 E)⁰ E), 𝔞 ≠ 0 → ∀ l : idelesAt E (evFin F v),

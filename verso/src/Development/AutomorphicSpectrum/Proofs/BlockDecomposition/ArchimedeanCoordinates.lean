@@ -11,23 +11,21 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.CoordR
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n M`. Take `⟨-, e, -, he, -⟩` from `GlobalTheory.T.infinite_adele_haar_map_eq_scaled_volume F hσ.1`. Set `eh : Ainf F ≃ₜ (InfinitePlace F → ℝ)` to `he.homeomorph _`. Establish `heh : ∀ y, eh y = e y` using `fun _ => rfl`. Use `haveI : SecondCountableTopology (Ainf F) := eh.secondCountableTopology`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : T2Space (Ainf F) := eh.symm.t2Space`. Take `⟨i1, i2, i3, i4, -, -, hb, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Ainf F)`. Set `d` to `Module.finrank F E`. Set `b : Module.Basis (Fin d) F E` to `Module.finBasis F E`. Set `B` to `Algebra.TensorProduct.basis (Ainf F) b`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Hs : (Ainf F ⊗[F] E) ≃ₜ (Fin d → Ainf F)` to `(hb d b).homeomorph _`. Establish `hHs : ∀ y k, Hs y k = B.repr y k` using `fun _ _ => rfl`. Set `I` to `Fin n × Fin M × Fin d × InfinitePlace F`. Set `q : I ≃ Fin (Fintype.card I)` to `Fintype.equivFin I`. Set `eH : (Fin n → Fin M → Ainf F ⊗[F] E) ≃ₜ (Fin (Fintype.card I) → ℝ)` to `{ toFun := fun X t => eh (Hs (X (q.symm t).1 (q.symm t).2.1) (q.symm t).2.2.1) (q.symm t).2.2.2 invFun := fun y a j => Hs.symm fun k => eh.symm fun w => y (q (a, j, k, w)) left_inv := fun X => by simp right_inv := fun y => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Use `continuous_toFun := continuous_pi fun t => (continuous_apply _).comp (eh.continuous.comp ((continuous_apply _).comp (Hs.continuous.comp ((continuous_apply _).comp (continuous_apply _)))))`. Use `continuous_invFun := continuous_pi fun a => continuous_pi fun j => Hs.symm.continuous.comp (continuous_pi fun k => eh.symm.continuous.comp (continuous_pi fun w => continuous_apply _)) }`. Establish `hadd : ∀ X Y, eH (X + Y) = eH X + eH Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Introduce `X Y`. Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `eh (Hs (X _ _ + Y _ _) _) _ = eh (Hs (X _ _) _) _ + eh (Hs (Y _ _) _) _`. Simplify using `only [hHs, heh, map_add, Finsupp.add_apply, Pi.add_apply]`. Set `eV : (Fin n → Fin M → Ainf F ⊗[F] E) ≃+ (Fin (Fintype.card I) → ℝ)` to `{ eH.toEquiv with map_add' := hadd }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hV : ∀ X, eV X = eH X` using `fun _ => rfl`. Establish `hVs : ∀ y, eV.symm y = eH.symm y` using `fun _ => rfl`. Establish `hc : Continuous fun p : (Fin n → Fin M → Ainf F ⊗[F] E) × Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E) => rmul (Ainf F) p.1 p.2`. Use `continuous_pi fun a => continuous_pi fun i => continuous_finset_sum _ fun c _ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun p : (Fin n → Fin M → Ainf F ⊗[F] E) × Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E) => p.1 c i` using `(continuous_apply i).comp ((continuous_apply c).comp continuous_fst)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `h1.mul (continuous_snd.matrix_elem c a)`. Establish `hrad : ∀ (g : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) (X Y : Fin n → Fin M → Ainf F ⊗[F] E), rmul (Ainf F) (X + Y) g = rmul (Ainf F) X g + rmul (Ainf F) Y g`. Introduce `g X Y`. Use function extensionality and compare the values at `a i`. Simplify using `[rmul, add_mul, Finset.sum_add_distrib]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `L0 : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E) → (Fin (Fintype.card I) → ℝ) →+ (Fin (Fintype.card I) → ℝ)` to `fun g => AddMonoidHom.mk' (fun y => eV (rmul (Ainf F) (eV.symm y) g)) fun y z => by`. Rewrite using `[map_add, hrad, map_add]`. Establish `hL0 : ∀ g, Continuous (L0 g)` using `fun g => eH.continuous.comp (hc.comp (eH.symm.continuous.prodMk continuous_const))`. Set `L : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E) → (Fin (Fintype.card I) → ℝ) →L[ℝ] (Fin (Fintype.card I) → ℝ)` to `fun g => (L0 g).toRealLinearMap (hL0 g)`. Use `⟨Fintype.card I, eV, eH.continuous, eH.symm.continuous, L, ?_, ?_⟩` and prove the remaining obligations.
-
-Use `continuous_clm_apply.2 fun y => ?_` and prove the remaining obligations. Conclude with `eH.continuous.comp (hc.comp (continuous_const.prodMk continuous_id))`. Introduce `g X`. Express the relevant statement in the definitionally equal form `eV _ = eV (rmul (Ainf F) (eV.symm (eV X)) g)`. Rewrite using `[AddEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordInf : PositivityTheory.PfSWUS.SchInf.CoordInf := by
   intro F E _ _ _ _ _ σ hσ n M

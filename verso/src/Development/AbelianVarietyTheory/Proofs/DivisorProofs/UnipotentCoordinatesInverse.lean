@@ -11,7 +11,7 @@ namespace GlobalTheory.ThK.UnipDom.Inverse
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨_, _, _, hτ⟩` from `h`. Set `τ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hτ, hτ, star_star]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_sigma {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (e : E) : σ (σ e) = e := by
   obtain ⟨_, _, _, hτ⟩ := h
@@ -20,7 +20,7 @@ theorem sigma_sigma {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (e : E) : σ (σ e
   rw [hτ, hτ, star_star]
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [cA, hσ]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_cA {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) (a : AE F E) : cA σ (cA σ a) = a := by
   induction a using TensorProduct.induction_on with
@@ -29,7 +29,7 @@ theorem cA_cA {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) (a : AE F E) : c
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `[cA, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_inclR (σ : E →ₐ[F] E) (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR]
@@ -45,16 +45,16 @@ Both sides reduce to the same expression.
 theorem mat_one {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} : mat (1 : UA σ J) = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← mat_mul, inv_mul_cancel, mat_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_inv_mulVec {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) (v : Fin n → AE F E) :
     mat g⁻¹ *ᵥ (mat g *ᵥ v) = v := by
   rw [Matrix.mulVec_mulVec, ← mat_mul, inv_mul_cancel, mat_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `hg : (mat g)ᵀ * incM F J * (mat g).map (cA σ) = incM F J` using `g.2`. Establish `hc : (fun i => cA σ ((mat g *ᵥ w) i)) = (mat g).map (cA σ) *ᵥ fun i => cA σ (w i)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (cA σ).toRingHom (mat g) w i`. Unfold `fA`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]`.
+A detailed English derivation is pending.
 -/
 theorem fA_mulVec (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (g : UA σ J) (v w : Fin n → AE F E) :
     fA σ J (mat g *ᵥ v) (mat g *ᵥ w) = fA σ J v w := by
@@ -65,37 +65,37 @@ theorem fA_mulVec (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) 
   rw [hc, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]
 
 /- English proof (translation)
-Simplify using `[fA, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fA_add_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v v' w : Fin n → AE F E) :
     fA σ J (v + v') w = fA σ J v w + fA σ J v' w := by
   simp [fA, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `[fA, sub_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fA_sub_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v v' w : Fin n → AE F E) :
     fA σ J (v - v') w = fA σ J v w - fA σ J v' w := by
   simp [fA, sub_dotProduct]
 
 /- English proof (translation)
-Simplify using `[fA, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fA_smul_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a : AE F E) (v w : Fin n → AE F E) :
     fA σ J (a • v) w = a * fA σ J v w := by
   simp [fA, smul_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [fA, form, incV, incM, dotProduct, Matrix.mulVec, Matrix.map_apply, map_sum, map_mul, cA_inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fA_incV (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
     fA σ J (incV F x) (incV F y) = inclR (F := F) (AF F) (form σ J x y) := by
   simp only [fA, form, incV, incM, dotProduct, Matrix.mulVec, Matrix.map_apply, map_sum, map_mul, cA_inclR]
 
 /- English proof (translation)
-Establish `hJ' : ∀ i k, cA σ (incM F J i k) = -incM F J k i`. Introduce `i k`. Simplify using `[incM, cA_inclR, hJ]`. Simplify using `only [fA, dotProduct, Matrix.mulVec, map_sum, map_mul, cA_cA hσ, hJ', Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fA_swap {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = -J i j) (v w : Fin n → AE F E) :
@@ -138,22 +138,22 @@ def unipSet (σ : E →ₐ[F] E) {d d₁ : ℕ} (J : Matrix (Fin d) (Fin d) E) (
     rw [neg_smul, ← sub_eq_add_neg, eq_sub_iff_add_eq, ← h]
 
 /- English proof (translation)
-The claim follows from `(Subgroup.closure_le (unipSet σ W.J H')).mpr (fun _ h => h) hu`.
+A detailed English derivation is pending.
 -/
 theorem mem_unipSet {σ : E →ₐ[F] E} {d d₁ : ℕ} {W : Spc F E d} {H' : Plane E d d₁} {u : UA σ W.J}
     (hu : u ∈ unip σ W H') : u ∈ unipSet σ W.J H' :=
   (Subgroup.closure_le (unipSet σ W.J H')).mpr (fun _ h => h) hu
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' r s i₀ i₁ hCM hW hH u hu`. Establish `hσ` using `sigma_sigma hCM`. Take `⟨hx, hz⟩` from `mem_unipSet hu`. Establish `hxinv : mat u⁻¹ *ᵥ incV F H'.x = incV F H'.x` using `(mem_unipSet (Subgroup.inv_mem _ hu)).1`. Establish `hxy : fA σ W.J (incV F H'.x) (incV F H'.y) = 1` using `by rw [fA_incV, hH.xy, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨funext fun j => ?_, ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hz (Pi.single j 1)`. Establish `h0 : fA σ W.J (incM F H'.ι *ᵥ Pi.single j 1) (incV F H'.y) = 0`. Establish `: incM F H'.ι *ᵥ (Pi.single j 1 : Fin d₁ → AE F E) = incV F (H'.ι *ᵥ Pi.single j 1)`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[incM, incV, Matrix.mulVec_single_one, Matrix.transpose_apply]`. Rewrite using `[this, fA_incV, (hH.orth _).2, map_zero]`. Establish `hinv : mat u⁻¹ *ᵥ (incM F H'.ι *ᵥ Pi.single j 1) = incM F H'.ι *ᵥ Pi.single j 1 - a • incV F H'.x`. Establish `h` using `congrArg (mat u⁻¹ *ᵥ ·) ha`. Simplify using `only [mat_inv_mulVec, Matrix.mulVec_add, Matrix.mulVec_smul, hxinv] at h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[eq_sub_iff_add_eq, ← h]`. Simplify using `only [coA, Pi.neg_apply]`. Rewrite using `[hinv, ha, fA_sub_left, fA_add_left, fA_smul_left, h0, hxy]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `fA_mulVec σ W.J u (mat u⁻¹ *ᵥ incV F H'.y) (incV F H'.y)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.mulVec_mulVec, ← mat_mul, mul_inv_cancel, mat_one, Matrix.one_mulVec]`. Simplify using `only [coC]`. Rewrite using `[← h, fA_swap hσ hW.skew]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coA_coC_inv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (r s i₀ i₁ : ℕ),

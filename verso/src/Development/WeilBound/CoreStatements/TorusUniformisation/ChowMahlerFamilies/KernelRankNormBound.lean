@@ -6,11 +6,11 @@ namespace PositivityTheory.Xgn.AmalgamKernelBound
 open Module
 
 /- English proof (translation)
-Take `⟨e⟩ : Nonempty (M ≃ₗ[ℤ] N)` from `⟨LinearEquiv.ofFinrankEq M N h.symm⟩`. Establish `hj : Function.Injective ((e : M →ₗ[ℤ] N) ∘ₗ ι)` using `e.injective.comp hι`. Establish `hdet : LinearMap.det ((e : M →ₗ[ℤ] N) ∘ₗ ι) ≠ 0`. Introduce `h0`. Conclude with `(LinearMap.det_eq_zero_iff_ker_ne_bot.mp h0) (LinearMap.ker_eq_bot.mpr hj)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcomm : ((e : M →ₗ[ℤ] N) ∘ₗ ι) ∘ₗ g = ((e : M →ₗ[ℤ] N) ∘ₗ f ∘ₗ (e.symm : N →ₗ[ℤ] M)) ∘ₗ ((e : M →ₗ[ℤ] N) ∘ₗ ι)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[hfg]`. Establish `key` using `congrArg LinearMap.det hcomm`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[LinearMap.det_comp ((e : M →ₗ[ℤ] N) ∘ₗ ι) g, LinearMap.det_comp ((e : M →ₗ[ℤ] N) ∘ₗ f ∘ₗ (e.symm : N →ₗ[ℤ] M)) ((e : M →ₗ[ℤ] N) ∘ₗ ι), LinearMap.det_conj]`. Conclude with `(mul_left_cancel₀ hdet (key.trans (mul_comm _ _))).symm`.
+A detailed English derivation is pending.
 -/
 theorem det_eq_of_intertwine {M N : Type} [AddCommGroup M] [AddCommGroup N]
     [Module.Free ℤ M] [Module.Finite ℤ M] [Module.Free ℤ N] [Module.Finite ℤ N]
@@ -34,23 +34,21 @@ theorem det_eq_of_intertwine {M N : Type} [AddCommGroup M] [AddCommGroup N]
   exact (mul_left_cancel₀ hdet (key.trans (mul_comm _ _))).symm
 
 /- English proof (translation)
-Use `haveI : Module.Finite (𝓞 E) Λ := Module.Finite.of_restrictScalars_finite ℤ (𝓞 E) Λ`. Take `⟨v, hv⟩` from `exists_linearIndependent_of_le_finrank (R := 𝓞 E) (M := Λ) (le_refl (finrank (𝓞 E) Λ))`. Set `L : (Fin (finrank (𝓞 E) Λ) → 𝓞 E) →ₗ[𝓞 E] Λ` to `Fintype.linearCombination (𝓞 E) v`. Establish `hL : Function.Injective L` using `linearIndependent_iff_injective_fintypeLinearCombination.mp hv`. Establish `htors : ∀ x : Λ, ∃ b : 𝓞 E, b ≠ 0 ∧ b • x ∈ LinearMap.range L`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Submodule.finrank_quotient_add_finrank (LinearMap.range L)`. Establish `h2 : finrank (𝓞 E) (LinearMap.range L) = finrank (𝓞 E) Λ`. Rewrite using `[LinearMap.finrank_range_of_inj hL, Module.finrank_fin_fun]`. Establish `h3 : finrank (𝓞 E) (Λ ⧸ LinearMap.range L) = 0` using `by omega`. Introduce `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hbx⟩` from `Module.finrank_eq_zero_iff.mp h3 (Submodule.Quotient.mk x)`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Rewrite `hbx` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis. Set `Lz : (Fin (finrank (𝓞 E) Λ) → 𝓞 E) →ₗ[ℤ] Λ` to `L.restrictScalars ℤ`. Establish `hLz : Function.Injective Lz` using `hL`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htorsZ : ∀ x : Λ, ∃ r : ℤ, r ≠ 0 ∧ r • x ∈ LinearMap.range Lz`. Introduce `x`. Take `⟨b, hb, hbx⟩` from `htors x`. Take `⟨y, hy⟩` from `LinearMap.mem_range.mp hbx`. Take `⟨r, hr, c, hc⟩` from `IsAlgebraic.exists_nonzero_dvd (Algebra.IsIntegral.isIntegral (R := ℤ) b).isAlgebraic (mem_nonZeroDivisors_of_ne_zero hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r, hr, LinearMap.mem_range.mpr ⟨c • y, ?_⟩⟩` and prove the remaining obligations. Use `show L (c • y) = r • x`. Rewrite using `[map_smul, hy, ← algebraMap_smul (𝓞 E) r x, hc, mul_comm b c, mul_smul]`. Establish `hrankZ : finrank ℤ (Fin (finrank (𝓞 E) Λ) → 𝓞 E) = finrank ℤ Λ`. Establish `h1` using `Submodule.finrank_quotient_add_finrank (LinearMap.range Lz)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `LinearMap.finrank_range_of_inj hLz`. Establish `h3 : finrank ℤ (Λ ⧸ LinearMap.range Lz) = 0`. Rewrite using `[Module.finrank_eq_zero_iff]`. Introduce `q`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr, hrx⟩` from `htorsZ x`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `hrx`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hfg : ∀ y, Lz (((LinearMap.lsmul (𝓞 E) (Fin (finrank (𝓞 E) Λ) → 𝓞 E) a).restrictScalars ℤ) y) = ((LinearMap.lsmul (𝓞 E) Λ a).restrictScalars ℤ) (Lz y)`. Introduce `y`. Simplify using `only [Lz, LinearMap.restrictScalars_apply, LinearMap.lsmul_apply]`. Conclude with `map_smul L a y`. Establish `hsmul : LinearMap.lsmul (𝓞 E) (Fin (finrank (𝓞 E) Λ) → 𝓞 E) a = a • LinearMap.id` using `LinearMap.ext fun y => by simp`.
-
-Rewrite using `[PositivityTheory.Xgn.AmalgamKernelBound.det_eq_of_intertwine Lz hLz hrankZ _ _ hfg, LinearMap.det_restrictScalars, hsmul, LinearMap.det_smul, LinearMap.det_id, mul_one, Module.finrank_fin_fun, map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_lsmul (E : Type) [Field E] [NumberField E] (Λ : Type) [AddCommGroup Λ]
     [Module (𝓞 E) Λ] [Module.Free ℤ Λ] [Module.Finite ℤ Λ] (a : 𝓞 E) :
@@ -106,9 +104,9 @@ theorem det_lsmul (E : Type) [Field E] [NumberField E] (Λ : Type) [AddCommGroup
     Module.finrank_fin_fun, map_pow]
 
 /- English proof (translation)
-Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `t`. Rewrite using `[Polynomial.eval_pow, LinearMap.eval_charpoly, LinearMap.eval_charpoly]`. Establish `h1 : algebraMap ℤ (Module.End ℤ Λ) t - (LinearMap.lsmul (𝓞 E) Λ a).restrictScalars ℤ = (LinearMap.lsmul (𝓞 E) Λ (algebraMap ℤ (𝓞 E) t - a)).restrictScalars ℤ`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Simplify using `[sub_smul, Module.algebraMap_end_apply, Int.cast_smul_eq_zsmul]`. Establish `h2 : algebraMap ℤ (Module.End ℤ (𝓞 E)) t - (Algebra.lmul ℤ (𝓞 E) a : Module.End ℤ (𝓞 E)) = Algebra.lmul ℤ (𝓞 E) (algebraMap ℤ (𝓞 E) t - a)`. Rewrite using `[map_sub, AlgHom.commutes]`. Rewrite using `[h1, h2, PositivityTheory.Xgn.AmalgamKernelBound.det_lsmul, ← Algebra.norm_apply ℤ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_lsmul (E : Type) [Field E] [NumberField E] (Λ : Type) [AddCommGroup Λ]
     [Module (𝓞 E) Λ] [Module.Free ℤ Λ] [Module.Finite ℤ Λ] (a : 𝓞 E) :
@@ -128,27 +126,25 @@ theorem charpoly_lsmul (E : Type) [Field E] [NumberField E] (Λ : Type) [AddComm
   rw [h1, h2, PositivityTheory.Xgn.AmalgamKernelBound.det_lsmul, ← Algebra.norm_apply ℤ]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot]`. Assume the negation of the conclusion as `h`. Conclude with `hf (LinearMap.det_eq_zero_iff_ker_ne_bot.mpr h)`. Establish `hrank : finrank ℤ (LinearMap.range f) = finrank ℤ M` using `LinearMap.finrank_range_of_inj hinj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, s, d, hst⟩ : ∃ (t : Module.Basis (Fin (finrank ℤ M)) ℤ M) (s : Module.Basis (Fin (finrank ℤ M)) ℤ (LinearMap.range f)) (d : Fin (finrank ℤ M) → ℤ), ∀ i, (s i : M) = d i • t i` from `⟨_, _, _, Submodule.smithNormalFormBotBasis_def (Module.finBasis ℤ M) hrank⟩`. Take `⟨e, he⟩ : ∃ e : M ≃ₗ[ℤ] LinearMap.range f, ∀ x, (e x : M) = f x` from `⟨LinearEquiv.ofInjective f hinj, fun x => LinearEquiv.ofInjective_apply f x⟩`. Establish `hfe : f = (LinearMap.range f).subtype ∘ₗ (e : M →ₗ[ℤ] LinearMap.range f)` using `LinearMap.ext fun x => by simp [he]`. Establish `hD : LinearMap.toMatrix s t (LinearMap.range f).subtype = Matrix.diagonal d`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.toMatrix_apply, Submodule.subtype_apply, hst j, map_smul, Module.Basis.repr_self]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.diagonal_apply, Finsupp.single_apply, hij, Ne.symm hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQ : IsUnit (LinearMap.toMatrix t s (e : M →ₗ[ℤ] LinearMap.range f)).det`. Establish `h1 : LinearMap.toMatrix s t (e.symm : LinearMap.range f →ₗ[ℤ] M) * LinearMap.toMatrix t s (e : M →ₗ[ℤ] LinearMap.range f) = 1`. Rewrite using `[← LinearMap.toMatrix_comp, ← LinearMap.toMatrix_id t]`. Use `congr 1`. Conclude with `LinearMap.ext fun x => by simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_one, mul_comm]`. Conclude with `isUnit_iff_exists_inv.mpr ⟨_, h2⟩`. Establish `hA : LinearMap.toMatrix t t f = Matrix.diagonal d * LinearMap.toMatrix t s (e : M →ₗ[ℤ] LinearMap.range f)`. Rewrite using `[← hD, ← LinearMap.toMatrix_comp, ← hfe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hdvd : (∏ i, d i) ∣ LinearMap.det f`. Use `⟨(LinearMap.toMatrix t s (e : M →ₗ[ℤ] LinearMap.range f)).det, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.det_toMatrix t, hA, Matrix.det_mul, Matrix.det_diagonal]`. Establish `hAk : LinearMap.toMatrix (Algebra.TensorProduct.basis k t) (Algebra.TensorProduct.basis k t) (LinearMap.baseChange k f) = Matrix.diagonal (fun i => algebraMap ℤ k (d i)) * (LinearMap.toMatrix t s (e : M →ₗ[ℤ] LinearMap.range f)).map (algebraMap ℤ k)`. Rewrite using `[LinearMap.toMatrix_baseChange, hA, Matrix.map_mul, Matrix.diagonal_map (map_zero (algebraMap ℤ k))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hrange : finrank k (LinearMap.range (LinearMap.baseChange k f)) = Fintype.card {i // algebraMap ℤ k (d i) ≠ 0}`. Rewrite using `[← Matrix.toLin_toMatrix (Algebra.TensorProduct.basis k t) (Algebra.TensorProduct.basis k t) (LinearMap.baseChange k f), ← Matrix.rank_eq_finrank_range_toLin, hAk, Matrix.rank_mul_eq_left_of_isUnit_det]`. Use `Matrix.rank_diagonal (fun i => algebraMap ℤ k (d i))` and compare the differences between its conclusion and the goal. Use `hQ.map (algebraMap ℤ k)` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Use `haveI : Module.Finite k (TensorProduct ℤ k M) := Module.Finite.of_basis (Algebra.TensorProduct.basis k t)`. Establish `hsum` using `LinearMap.finrank_range_add_finrank_ker (LinearMap.baseChange k f)`. Rewrite `hsum` using `[Module.finrank_eq_card_basis (Algebra.TensorProduct.basis k t)]`. Establish `hcongr : Fintype.card {i // algebraMap ℤ k (d i) ≠ 0} = Fintype.card {i // ¬ (p : ℤ) ∣ d i}` using `Fintype.card_congr (Equiv.subtypeEquivRight fun i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_intCast, ne_eq, CharP.intCast_eq_zero_iff k p])`. Establish `hcompl : Fintype.card {i // ¬ (p : ℤ) ∣ d i} = Fintype.card (Fin (finrank ℤ M)) - Fintype.card {i // (p : ℤ) ∣ d i}` using `Fintype.card_subtype_compl _`. Establish `hle : Fintype.card {i // (p : ℤ) ∣ d i} ≤ Fintype.card (Fin (finrank ℤ M))` using `Fintype.card_subtype_le _`. Establish `hpow : (p : ℤ) ^ Fintype.card {i // (p : ℤ) ∣ d i} ∣ LinearMap.det f`. Rewrite using `[Fintype.card_subtype, ← Finset.prod_const]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `dvd_trans ?_ hdvd` and prove the remaining obligations. Use `dvd_trans (Finset.prod_dvd_prod_of_dvd _ _ (fun i hi => (Finset.mem_filter.mp hi).2)) ?_` and prove the remaining obligations. Conclude with `Finset.prod_dvd_prod_of_subset _ _ _ (Finset.filter_subset _ _)`. Establish `hne : (LinearMap.det f).natAbs ≠ 0` using `Int.natAbs_ne_zero.mpr hf`. Establish `hpow' : p ^ Fintype.card {i // (p : ℤ) ∣ d i} ∣ (LinearMap.det f).natAbs`.
-
-Use `Int.natAbs_dvd_natAbs.mpr hpow` as an intermediate fact. Rewrite `this` using `[Int.natAbs_pow, Int.natAbs_natCast]`. Then use the resulting hypothesis. Establish `hv` using `(padicValNat_dvd_iff_le hne).mp hpow'`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem corank_le {M : Type} [AddCommGroup M] [Module.Free ℤ M] [Module.Finite ℤ M]
     (k : Type) [Field k] (p : ℕ) [Fact p.Prime] [CharP k p]
@@ -236,9 +232,9 @@ theorem corank_le {M : Type} [AddCommGroup M] [Module.Free ℤ M] [Module.Finite
 end PositivityTheory.Xgn.AmalgamKernelBound
 
 /- English proof (translation)
-Introduce `E _ _ k _ p _ _ Λ _ _ _ _ a ha`. Establish `hdet` using `PositivityTheory.Xgn.AmalgamKernelBound.det_lsmul E Λ a`. Establish `hN : Algebra.norm ℤ a ≠ 0` using `Algebra.norm_ne_zero_iff.mpr ha`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `PositivityTheory.Xgn.AmalgamKernelBound.corank_le k p ((LinearMap.lsmul (𝓞 E) Λ a).restrictScalars ℤ) (by rw [hdet]; exact pow_ne_zero _ hN)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[hdet, Int.natAbs_pow, padicValNat.pow]`. Conclude with `h`. Rewrite using `[LinearMap.charpoly_baseChange, PositivityTheory.Xgn.AmalgamKernelBound.charpoly_lsmul, Polynomial.map_pow, algebraMap_int_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.kernel_rank_norm_bound : ∀ (E : Type) [Field E] [NumberField E] (k : Type) [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] [Module.Free ℤ Λ] [Module.Finite ℤ Λ] (a : 𝓞 E), a ≠ 0 → Module.finrank k (LinearMap.ker (LinearMap.baseChange k ((LinearMap.lsmul (𝓞 E) Λ a).restrictScalars ℤ))) ≤ Module.finrank (𝓞 E) Λ * padicValNat p (Algebra.norm ℤ a).natAbs ∧ (LinearMap.baseChange k ((LinearMap.lsmul (𝓞 E) Λ a).restrictScalars ℤ)).charpoly = ((Algebra.lmul ℤ (𝓞 E) a : Module.End ℤ (𝓞 E)).charpoly.map (Int.castRingHom k)) ^ Module.finrank (𝓞 E) Λ := by
   intro E _ _ k _ p _ _ Λ _ _ _ _ a ha

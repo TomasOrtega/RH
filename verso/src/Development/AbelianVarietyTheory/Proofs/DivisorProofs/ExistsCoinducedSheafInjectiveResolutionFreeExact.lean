@@ -10,19 +10,17 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCoinductionCom
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `R S _ _ φ J _ hJ`. Use `haveI := GlobalTheory.T.etaleCoinductionComplexAugmentation_quasiIso R S φ J hJ`. Set `I : InjectiveResolution ((restr φ).obj ((coind φ).obj J))` to `{ cocomplex := coindCx φ J injective := fun n => GlobalTheory.T.injective_etaleSheafOfLinearMapsFromModule R J ((scalarsRes φ).complex.X n) ι := coindAug φ J }`. Use `⟨I.cochainComplex, I.ι', inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Introduce `P n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩ : ∃ k : ℕ, n = (k : ℤ) + 1` from `⟨(n - 1).toNat, by omega⟩`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. It suffices to establish `h : ∀ x : CohomologyClass (sgl ((free R).obj P)) I.cochainComplex ((k : ℤ) + 1), x = 0 by`. Rewrite using `[h x, h y]`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨α, rfl⟩` from `x.mk_surjective`. Take `⟨f, hf, rfl⟩` from `Cocycle.fromSingleMk_surjective α ((k : ℤ) + 1) (zero_add _) ((k : ℤ) + 1 + 1) rfl`. Rewrite using `[CohomologyClass.mk_eq_zero_iff, Cocycle.fromSingleMk_mem_coboundaries_iff _ _ _ _ _ (k : ℤ) rfl]`. Establish `hex : ∀ b, ((scalarsRes φ).complex.d (k + 1) k).hom b = 0 → ∃ a, ((scalarsRes φ).complex.d (k + 2) (k + 1)).hom a = b`. Introduce `b hb`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `((ShortComplex.moduleCat_exact_iff _).1 ((scalarsRes φ).exact_succ k)) b hb`. Establish `hd1` using `I.cochainComplex_d ((k : ℤ) + 1) ((k : ℤ) + 1 + 1) (k + 1) (k + 2) (by simp) (by push_cast; ring)`. Rewrite `hf` using `[hd1]`. Establish `h2 : (f ≫ (I.cochainComplexXIso ((k : ℤ) + 1) (k + 1) (by simp)).hom) ≫ I.cocomplex.d (k + 1) (k + 2) = 0`. Rewrite using `[← cancel_mono (I.cochainComplexXIso ((k : ℤ) + 1 + 1) (k + 2) (by push_cast; ring)).inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hf`. Establish `hf' : (f ≫ (I.cochainComplexXIso ((k : ℤ) + 1) (k + 1) (by simp)).hom) ≫ (homSh J).map ((scalarsRes φ).complex.d (k + 2) (k + 1)).op = 0`. Rewrite using `[← coindCx_d]`. Conclude with `h2`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_lift_etaleSheafOfLinearMaps_exact R J ((free R).obj P) (hJ P) _ _ _ _ _ hex _ hf'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨g ≫ (I.cochainComplexXIso (k : ℤ) k rfl).inv, ?_⟩` and prove the remaining obligations. Rewrite using `[I.cochainComplex_d (k : ℤ) ((k : ℤ) + 1) k (k + 1) rfl (by simp)]`. Use `erw [Category.assoc, Iso.inv_hom_id_assoc]`. Establish `hg' : g ≫ I.cocomplex.d k (k + 1) = f ≫ (I.cochainComplexXIso ((k : ℤ) + 1) (k + 1) (by simp)).hom`. Rewrite using `[← hg, ← coindCx_d]`.
-
-Both sides reduce to the same expression. Use `erw [← Category.assoc, hg', Category.assoc, Iso.hom_inv_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.coindRes_exists : ∀ (R S : Type) [CommRing R] [CommRing S] (φ : R →+* S) (J : Shv R) [Injective J], (∀ P : PSh, Module.Injective (ULift.{1} R) ((free R).obj P ⟶ J)) → ∃ (C : Cx R) (ε : sgl ((restr φ).obj ((coind φ).obj J)) ⟶ C), C.IsStrictlyGE 0 ∧ (∀ t, Injective (C.X t)) ∧ QuasiIso ε ∧ ∀ (P : PSh) (n : ℤ), 0 < n → Subsingleton (CohomologyClass (sgl ((free R).obj P)) C n) := by
   intro R S _ _ φ J _ hJ

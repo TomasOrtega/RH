@@ -13,7 +13,7 @@ section Generic
 variable {X Y : Type} [MeasurableSpace X] [MeasurableSpace Y]
 
 /- English proof (translation)
-Rewrite using `[he.map_comap]`. Conclude with `Measure.restrict_eq_self_of_ae_mem (mem_ae_iff.mpr hμ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_comap_of_carried {e : Y → X} (he : MeasurableEmbedding e) {μ : Measure X}
     (hμ : μ (Set.range e)ᶜ = 0) : (μ.comap e).map e = μ := by
@@ -21,9 +21,9 @@ theorem map_comap_of_carried {e : Y → X} (he : MeasurableEmbedding e) {μ : Me
   exact Measure.restrict_eq_self_of_ae_mem (mem_ae_iff.mpr hμ)
 
 /- English proof (translation)
-Establish `hν` using `map_comap_of_carried he hμ`. Establish `h2 : ((μ.comap e).map a').map e = μ`. Rewrite using `[Measure.map_map he.measurable ha']`. Establish `h3 : e ∘ a' = a ∘ e` using `funext hcomm`. Rewrite using `[h3, ← Measure.map_map ha he.measurable, hν, hinv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `he.comap_map ((μ.comap e).map a')`. Rewrite `h4` using `[h2]`. Conclude with `h4.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_invariant {e : Y → X} (he : MeasurableEmbedding e) {a : X → X} {a' : Y → Y}
     (ha : Measurable a) (ha' : Measurable a') (hcomm : ∀ y, e (a' y) = a (e y)) {μ : Measure X}
@@ -38,7 +38,7 @@ theorem comap_invariant {e : Y → X} (he : MeasurableEmbedding e) {a : X → X}
   exact h4.symm
 
 /- English proof (translation)
-Rewrite using `[← he.lintegral_map, map_comap_of_carried he hμ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_comap_of_carried {e : Y → X} (he : MeasurableEmbedding e) {μ : Measure X}
     (hμ : μ (Set.range e)ᶜ = 0) (G : X → ℝ≥0∞) :
@@ -46,7 +46,7 @@ theorem lintegral_comap_of_carried {e : Y → X} (he : MeasurableEmbedding e) {�
   rw [← he.lintegral_map, map_comap_of_carried he hμ]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `map_comap_of_carried he hμ`. Rewrite `h1` using `[h, Measure.map_zero]`. Conclude with `h0 h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_ne_zero_of_carried {e : Y → X} (he : MeasurableEmbedding e) {μ : Measure X}
     (hμ : μ (Set.range e)ᶜ = 0) (h0 : μ ≠ 0) : μ.comap e ≠ 0 := by
@@ -56,7 +56,7 @@ theorem comap_ne_zero_of_carried {e : Y → X} (he : MeasurableEmbedding e) {μ 
   exact h0 h1.symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun K hK => by rw [he.comap_apply] exact hfin _ (hK.image hc) (by rintro _ ⟨y, -, rfl⟩; exact hS y)⟩`.
+Supply the required witnesses or components.
 -/
 theorem comap_finite_compacts [TopologicalSpace X] [TopologicalSpace Y] {e : Y → X}
     (he : MeasurableEmbedding e) (hc : Continuous e) {S : Set X} (hS : ∀ y, e y ∈ S)
@@ -69,33 +69,25 @@ theorem comap_finite_compacts [TopologicalSpace X] [TopologicalSpace Y] {e : Y �
 end Generic
 
 /- English proof (translation)
-Introduce `ι _ G₀ _ _ _ _ _ _ G _ _ _ _ _ _ W₀ _ _ _ _ _ _ W _ _ _ _ _ _ a₀ a hc₀ h1₀ hm₀ hc h1 hm U₀ U hU₀ hU hsU₀ hsU Z₀ Z hZ₀ hZ hs₀ hs ht₀ ht m₀ m hfin₀ hfin hi₀ hi hz₀ hz hn₀ hn P hPc hP hPZ`. Use `haveI : LocallyCompactSpace ↥U₀ := hU₀.locallyCompactSpace`. Use `haveI : ∀ i, LocallyCompactSpace ↥(U i) := fun i => (hU i).locallyCompactSpace`. Establish `hmeas₀ : ∀ g, Measurable (a₀ g)` using `fun g => (hc₀.comp (Continuous.prodMk_right g)).measurable`. Establish `hmeas : ∀ i g, Measurable (a i g)` using `fun i g => ((hc i).comp (Continuous.prodMk_right g)).measurable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b₀ : G₀ → ↥U₀ → ↥U₀` to `fun g x => ⟨a₀ g x.1, hsU₀ g x.1 x.2⟩`. Set `b : ∀ i, G i → ↥(U i) → ↥(U i)` to `fun i g x => ⟨a i g x.1, hsU i g x.1 x.2⟩`. Set `E : (↥U₀ × ∀ i, ↥(U i)) → W₀ × ∀ i, W i` to `Prod.map Subtype.val fun z i => (z i).1`. Establish `he₀ : MeasurableEmbedding (Subtype.val : ↥U₀ → W₀)` using `MeasurableEmbedding.subtype_coe hU₀.measurableSet`. Establish `he : ∀ i, MeasurableEmbedding (Subtype.val : ↥(U i) → W i)` using `fun i => MeasurableEmbedding.subtype_coe (hU i).measurableSet`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEo : IsOpenEmbedding E` using `hU₀.isOpenEmbedding_subtypeVal.prodMap (IsOpenEmbedding.piMap fun i => (hU i).isOpenEmbedding_subtypeVal)`. Establish `hE : MeasurableEmbedding E` using `hEo.measurableEmbedding`. Establish `hcar₀ : m₀ (Set.range (Subtype.val : ↥U₀ → W₀))ᶜ = 0`. Use `measure_mono_null (Set.compl_subset_compl.mpr ?_) hz₀` and prove the remaining obligations. Rewrite using `[Subtype.range_coe]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Set.inter_subset_right`. Establish `hcar : ∀ i, m i (Set.range (Subtype.val : ↥(U i) → W i))ᶜ = 0` using `fun i => by`. Use `measure_mono_null (Set.compl_subset_compl.mpr ?_) (hz i)` and prove the remaining obligations. Rewrite using `[Subtype.range_coe]`. Conclude with `Set.inter_subset_right`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hcarP : P (Set.range E)ᶜ = 0`. Use `measure_mono_null (Set.compl_subset_compl.mpr ?_) hPZ` and prove the remaining obligations. Introduce and unpack `⟨x, z⟩ ⟨h₀, hz'⟩`. Conclude with `⟨(⟨x, h₀.2⟩, fun i => ⟨z i, (hz' i (Set.mem_univ i)).2⟩), rfl⟩`. Use `haveI : IsFiniteMeasureOnCompacts (m₀.comap (Subtype.val : ↥U₀ → W₀)) := comap_finite_compacts he₀ continuous_subtype_val (fun y => y.2) (hfin₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : ∀ i, IsFiniteMeasureOnCompacts ((m i).comap (Subtype.val : ↥(U i) → W i)) := fun i => comap_finite_compacts (he i) continuous_subtype_val (fun y => y.2) (hfin i)`. Use `haveI : IsFiniteMeasureOnCompacts (P.comap E) := comap_finite_compacts hE hEo.continuous (S := Set.univ) (fun _ => Set.mem_univ _) (fun K hK _ => hK.measure_lt_top)`. Establish `hcb₀ : Continuous fun p : G₀ × ↥U₀ => b₀ p.1 p.2` using `Continuous.subtype_mk (hc₀.comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd))) _`. Establish `hcb : ∀ i, Continuous fun p : G i × ↥(U i) => b i p.1 p.2` using `fun i => Continuous.subtype_mk ((hc i).comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd))) _`. Establish `hmb₀ : ∀ g, Measurable (b₀ g)` using `fun g => (hcb₀.comp (Continuous.prodMk_right g)).measurable`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `hmb : ∀ i g, Measurable (b i g)` using `fun i g => ((hcb i).comp (Continuous.prodMk_right g)).measurable`. Take `⟨c, hcf⟩` from `prod_factor (G₀ := G₀) (G := G) (W₀ := ↥U₀) (W := fun i => ↥(U i)) b₀ b hcb₀ (fun x => Subtype.ext (h1₀ x.1)) (fun g h x => Subtype.ext (hm₀ g h x.1)) hcb (fun i x => Subtype.ext (h1 i x.1)) (fun i g h x => Subtype.ext (hm i g h x.1)) (Subtype.val ⁻¹' Z₀) (fun i => Subtype.val ⁻¹ …`. Take `⟨g, hg⟩` from `ht₀ x.1 ⟨hx, x.2⟩ y.1 ⟨hy, y.2⟩`. Conclude with `⟨g, Subtype.ext hg⟩)`. Use the proof step `(fun i x hx y hy => by`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨g, hg⟩` from `ht i x.1 ⟨hx, x.2⟩ y.1 ⟨hy, y.2⟩`. Conclude with `⟨g, Subtype.ext hg⟩)`. Use the proof step `(m₀.comap Subtype.val) (fun i => (m i).comap Subtype.val)`. Use the proof step `(fun g => comap_invariant he₀ (hmeas₀ g) (hmb₀ g) (fun _ => rfl) hcar₀ (hi₀ g))`. Use the proof step `(fun i g => comap_invariant (he i) (hmeas i g) (hmb i g) (fun _ => rfl) (hcar i) (hi i g))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the proof step `(by`. Rewrite using `[he₀.comap_apply]`. Use `measure_mono_null ?_ hz₀` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩ hmem`. Conclude with `hy hmem.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `(fun i => by`. Rewrite using `[(he i).comap_apply]`. Use `measure_mono_null ?_ (hz i)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩ hmem`. Conclude with `hy hmem.1)`.
-
-Use the proof step `(fun ⟨x, hx⟩ => comap_ne_zero_of_carried he₀ hcar₀ (hn₀ ⟨x.1, hx, x.2⟩))`. Use the proof step `(fun i ⟨x, hx⟩ => comap_ne_zero_of_carried (he i) (hcar i) (hn i ⟨x.1, hx, x.2⟩))`. Use the proof step `(P.comap E)`. Use the proof step `(fun g₀ g => comap_invariant hE (a := fun x => (a₀ g₀ x.1, fun i => a i (g i) (x.2 i))) ((hmeas₀ g₀).comp measurable_fst |>.prodMk (measurable_pi_lambda _ fun i => (hmeas i (g i)).comp ((measurable_pi_apply i).comp measurable_snd))) ((hmb₀ g₀).comp measurable_fst |>.prodMk (measu …`. Use the proof step `(by`.
-
-Rewrite using `[hE.comap_apply]`. Use `measure_mono_null ?_ hPZ` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩ hmem`. Conclude with `hy ⟨hmem.1.1, fun i _ => (hmem.2 i (Set.mem_univ i)).1⟩)`. Use `⟨c, fun f₀ f hf₀ hf => ?_⟩` and prove the remaining obligations.
-
-Establish `h` using `hcf (fun x => f₀ x.1) (fun i x => f i x.1) (hf₀.comp measurable_subtype_coe) (fun i => (hf i).comp measurable_subtype_coe)`. Establish `hL` using `lintegral_comap_of_carried hE hcarP fun x => f₀ x.1 * ∏ i, f i (x.2 i)`. Establish `hL₀` using `lintegral_comap_of_carried he₀ hcar₀ f₀`. Establish `hLi` using `fun i => lintegral_comap_of_carried (he i) (hcar i) (f i)`. Rewrite using `[← hL, ← hL₀]`.
-
-Simplify using `only [← hLi]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem prod_factor_open : ∀ {ι : Type} [Fintype ι]
   {G₀ : Type} [Group G₀] [TopologicalSpace G₀] [IsTopologicalGroup G₀] [T2Space G₀]

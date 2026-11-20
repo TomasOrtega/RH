@@ -18,7 +18,7 @@ namespace GlobalTheory.Poinc.IntEval
 open GlobalTheory.UT.CoefBasic GlobalTheory.BoxExpansion GlobalTheory.UT.EvalZero
 
 /- English proof (translation)
-Use `(Fv ^ k).mul_left_inj.1 ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, ← Finset.sum_congr rfl fun i _ => h₅ i, ← h₂, h₁, h₃]`. Simplify using `only [Units.val_pow_eq_pow_val]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem alg_value_at {M K : Type} [CommRing M] [Fintype K] {k : ℕ} {P E Fv : Mˣ} {Sσ sA cv cl : M} {u d : K → M}
     (h₁ : Sσ = (P ^ k).val * sA) (h₂ : Sσ = ∑ i, u i) (h₃ : sA = cv * (E ^ k).val) (h₄ : P.val * E.val = cl * Fv.val)
@@ -31,23 +31,23 @@ theorem alg_value_at {M K : Type} [CommRing M] [Fintype K] {k : ℕ} {P E Fv : M
     _ = _ := by ring
 
 /- English proof (translation)
-Introduce `R _ _ I D A G _ _ U w₀ x e h l f hExt hF k s σ' hR n c σ hσ xs hxs v hv`. Take `⟨z⟩` from `exists_pt (R := R) (F := FractionRing R)`. Take `⟨JA, hA⟩` from `exists_good' (Z := (TFK (R := R) (FractionRing R)).left) A.isLB z`. Take `⟨JG, hG⟩` from `exists_good' (Z := (TFK (R := R) (FractionRing R)).left) U.LG.isLB z`. Set `r : TFK (R` to `R) (FractionRing R) ⟶ UnifPre.GF (G := G) (FractionRing R) := lift (𝟙 _) (x ≫ U.gen.inv)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `e₁ : r.left ≫ (snd (TFK (R` using `R) (FractionRing R)) ((Over.pullback (jK R)).obj G)).left = x.left ≫ U.gen.inv.left := by`. Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression. Establish `e₂ : r.left ≫ (U.genF (FractionRing R)).left = (ptSecT A.A x).left`. Rewrite using `[← Over.comp_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations. Simplify using `[r, ptSecT]`. Simplify using `[r, ptSecT]`. Establish `e₀ : (toUnit (TF (R` using `R) (FractionRing R))).left = jFK (R := R) (FractionRing R) ≫ jK R := by`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `using Over.w (toUnit (TF (R := R) (FractionRing R)))`. Establish `e₃ : r.left ≫ UnifPre.gFK (G` using `G) (FractionRing R) = (toUnit (TF (R := R) (FractionRing R)) ≫ h).left := by`. Rewrite using `[← Category.assoc, e₁, Category.assoc]`. Conclude with `hExt`. Establish `e₄ : r.left ≫ (fst (TFK (R` using `R) (FractionRing R)) ((Over.pullback (jK R)).obj G)).left = 𝟙 _ := by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Establish `e₅ : (x.left ≫ U.gen.inv.left) ≫ U.gen.hom.left = x.left`. Rewrite using `[Category.assoc, ← Over.comp_left, Iso.inv_hom_id]`. Conclude with `Category.comp_id _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₆ : (x.left ≫ U.gen.inv.left) ≫ pullback.fst G.hom (jK R) = (toUnit (TF (R` using `R) (FractionRing R)) ≫ h).left := by`. Rewrite using `[Category.assoc]`. Conclude with `hExt`. Establish `a₁` using `isoRel_val hR r.left z hA hG`. Rewrite `a₁` using `[Category.comp_id, e₁, e₂, e₅, e₆]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `a₂` using `secLin_val hσ r.left z hG`. Rewrite `a₂` using `[e₃]`. Establish `a₃` using `hv z JA hA`. Rewrite `a₃` using `[GlobalTheory.UT.NonVan.val_powFrame, zpow_natCast]`. Establish `a₄` using `hF z JA JG hA hG`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `a₃`, `a₄` using `[cst_eq]`. Apply `cstH_inj (R := R) z` to reduce the goal to its premises. Rewrite using `[map_mul, map_pow, map_sum]`. Use `alg_value_at a₁ a₂ a₃ a₄ (fun i => ?_)` and prove the remaining obligations. Establish `b : gs r.left z ⊤ (scal (fst (TFK (R` using `R) (FractionRing R)) ((Over.pullback (jK R)).obj G)).left (c i)) = cstH (R := R) z (c i) := ((gs_pull _ _ z ⊤ trivial _).trans (by rw [e₄]; rfl)).trans (cst_eq (R := R) z _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `cb : Geo.Tor.cst (toUnit (TF (R` using `R) (FractionRing R))).left z (xs i) = cstH (R := R) z (algebraMap (FractionRing R) (FractionRing R) (algebraMap R _ (xs i))) := by`. Rewrite using `[e₀]`. Conclude with `cst_base (R := R) (FractionRing R) z (xs i)`. Rewrite using `[b, Over.comp_left, hxs i _ _ z JG hG, cb, map_mul, _root_.mul_assoc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem value_at_section : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (w₀ : W0 U) (x : TFK (R := R) (FractionRing R) ⟶ A.A) (e : FrAt x) (h : 𝟙_ (Over (Sp R)) ⟶ G) (l : FractionRing R) (f : LB.Gen (LB.LinComb U.LG.L (K := Fin 1) (fun _ => h.left) (fun _ => 1))), IntTerm.Ext U x h → (∀ (z : (TF (R := R) (FractionRing R)).left) (JA : ((TF (R := R) (FractionRing R)).left ⟶ A.A.left) → A.L.ι) (JG : ((TF (R := R) (FractionRing R)).left ⟶ G.left) → U.LG.L.ι), Good A.L z JA → Good U.LG.L z JG → (Geo.Tor.gw (Y := (TF (R := R) (FractionRing R)).left) w₀ (x.left ≫ U.gen.inv.left) z (JG (toUnit (TF (R := R) (FractionRing R)) ≫ h).left) (fun _ => JA x.left)).val * (val (Z := (TF (R := R) (FractionRing R)).left) e (𝟙 _) z JA).val = GlobalTheory.UT.cst (FractionRing R) z l * (val f (toUnit (TF (R := R) (FractionRing R))).left z JG).val) → ∀ (k : ℕ) (s : SecA A (FractionRing R) k) (σ' : U.SecGF (FractionRing R) k), GeneratorPullback.IsoRelM A.L U.LG.L U.gen.hom.left (pullback.fst G.hom (jK R)) w₀ (snd (TFK (R := R) (FractionRing R)) ((Over.pullback (jK R)).obj G)).left k (snd (TFK (R := R) (FractionRing R)) A.A).left (U.genF (FractionRing R)).left s (UnifPre.gFK (G := G) (FractionRing R)) (𝟙 _) σ' → ∀ (n : ℕ) (c : Fin n → FractionRing R) (σ : Fin n → H0 U.LG.L k), GeneratorPullback.SecLin U.LG.L (fun _ : Fin 1 => UnifPre.gFK (G := G) (FractionRing R)) (fun _ => (k : ℤ)) σ' (fun _ : Fin 1 => 𝟙 G.left) (fun _ => (k : ℤ)) σ (UnifPre.gFK (G := G) (FractionRing R)) (fun i => scal (fst (TFK (R := R) (FractionRing R)) ((Over.pullback (jK R)).obj G)).left (c i)) → ∀ xs : Fin n → R, (∀ (i : Fin n) (Z : Scheme.{0}) (r : Z ⟶ Sp R) (z : Z) (J : (Z ⟶ G.left) → U.LG.L.ι), Good U.LG.L z J → sval (σ i) (r ≫ h.left) z J = Geo.Tor.cst r z (xs i) * (val f r z J ^ k).val) → ∀ v : FractionRing R, ValAt s x e v → v * l ^ k = ∑ i, c i * algebraMap R (FractionRing R) (xs i) := by
   intro R _ _ I D A G _ _ U w₀ x e h l f hExt hF k s σ' hR n c σ hσ xs hxs v hv

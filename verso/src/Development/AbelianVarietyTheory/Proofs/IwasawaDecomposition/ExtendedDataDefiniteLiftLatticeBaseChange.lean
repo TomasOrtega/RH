@@ -29,9 +29,9 @@ namespace GlobalTheory.Mem.R3.TwistedPlaceExtensions
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 h7`. Use `StepW.trans (GlobalTheory.T.extendedData_lift_blockDatum_eq_baseChange h1 h2 h3 h4 h5 h6 h7) (StepW.of_all ?_)` and prove the remaining obligations. Introduce `K B' f' T' w' _ _ H B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt j j' hj φ hφ`. Take `⟨e, he⟩` from `H B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt j j' hj φ hφ`. Establish `hstar : ∀ x, φ (star x) = star (φ x)` using `fun x => (w'.st Z').toD7.what₂.embLL.injective (by rw [hφ, (w.st Z).toD7.starLL_cx, (w'.st Z').toD7.starLL_cx, hφ])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.block_data_level_forms_transport_field_map φ hstar e _ _ _ _ _ _ 1 (hHL.ok.ok2.lifts j _) he`.
+A detailed English derivation is pending.
 -/
 theorem defLat0_baseChange : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

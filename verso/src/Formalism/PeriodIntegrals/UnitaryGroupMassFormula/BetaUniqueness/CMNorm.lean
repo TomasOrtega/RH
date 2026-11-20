@@ -10,9 +10,9 @@ namespace PI.UnitaryGroupMassFormula.BetaLUniq
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hφ` using `D.sp.cm.cmUnram.2.1 φ μ`. Establish `h1 : φ (star μ) * φ μ = 1` using `by rw [← map_mul, h, map_one]`. Rewrite `h1` using `[hφ, Complex.conj_mul']`. Establish `h2 : ‖φ μ‖ ^ 2 = 1` using `by exact_mod_cast h1`. Establish `h3 : 0 ≤ ‖φ μ‖` using `norm_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_nonneg (‖φ μ‖ - 1), sq_nonneg (‖φ μ‖ + 1)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem cm_norm_eq_one (D : D7) (μ : D.host.E) (h : star μ * μ = 1) (φ : D.host.E →+* ℂ) :
     ‖φ μ‖ = 1 := by
@@ -24,7 +24,7 @@ theorem cm_norm_eq_one (D : D7) (μ : D.host.E) (h : star μ * μ = 1) (φ : D.h
   nlinarith [sq_nonneg (‖φ μ‖ - 1), sq_nonneg (‖φ μ‖ + 1)]
 
 /- English proof (translation)
-The claim follows from `cm_norm_eq_one D μ (by rw [mul_comm]; exact h) φ`.
+A detailed English derivation is pending.
 -/
 theorem cm_norm_eq_one' (D : D7) (μ : D.host.E) (h : μ * star μ = 1) (φ : D.host.E →+* ℂ) :
     ‖φ μ‖ = 1 := cm_norm_eq_one D μ (by rw [mul_comm]; exact h) φ

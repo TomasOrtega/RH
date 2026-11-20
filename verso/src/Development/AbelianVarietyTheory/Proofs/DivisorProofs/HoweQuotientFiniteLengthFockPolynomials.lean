@@ -12,9 +12,9 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 namespace GlobalTheory.HoweR
 
 /- English proof (translation)
-Introduce `P Q R S x`. Take `⟨-, hLie, -, hWt, -⟩` from `GlobalTheory.T.fockActions_lie_rationalWeights_commute P Q R S`. Take `⟨hStab, hAdm⟩` from `GlobalTheory.T.fockCoinvariantKernel_stable_and_admissible P Q R S x`. Take `⟨α, β, hq⟩` from `GlobalTheory.T.fockSecondAction_quadraticIdentity_mod_coinvariants P Q R S x`. Take `⟨α', β', hqt⟩` from `GlobalTheory.T.negTranspose_fockSecondAction_quadratic_mod_coinvariants P Q R S x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨hLie, hWt, GlobalTheory.T.fockAction_isLocallyBlockUnitary P Q R S⟩, hStab, ⟨α, β, α', β', fun a b v _ => ⟨hq a b v, hqt a b v⟩⟩, hAdm, GlobalTheory.T.fockCoinvariants_highestWeightCyclic_multiplicityOne P Q R S x⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem fock_pack : ∀ (P Q R S : ℕ) (x : ℂ), Pack (fockAct2 P Q R S) (coinv P Q R S x) := by
   intro P Q R S x

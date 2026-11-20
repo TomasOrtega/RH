@@ -7,17 +7,17 @@ open scoped BigOperators
 namespace GlobalTheory.GalTheta
 
 /- English proof (translation)
-Introduce `x hx y hy`. Take `⟨a, ha⟩` from `h2 x hx`. Take `⟨c, hc⟩` from `h2 y hy`. Take `⟨b, hb⟩` from `h1 x hx y hy`. Take `⟨k, hk⟩` from `h1 _ (h3 x hx) y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hal : ∀ z : VC D N N', ∀ m : ℤ, qH D T z = m → al D T z = (-1 : ℂ) ^ m`. Introduce `z m hm`. Establish `e : al D T z = (-1 : ℂ) ^ (round (qH D T z))` using `rfl`. Rewrite using `[e, hm, round_intCast]`. Establish `hk' : Real.sqrt D.host.d * (Hf D T x y).re = 2 * k - b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hk` using `[Hf_smul_left]`. Rewrite using `[← hk, ← hb]`. Simplify using `[w0, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : qH D T (x + y) = ((a + c + (2 * k - b) : ℤ) : ℝ)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[← ha, ← hc, ← hk']`. Simplify using `only [qH, Hf_add_left, Hf_add_right, Complex.add_re, Hf_re_swap D T x y]`. Expand and normalize the polynomial expressions, which then agree. Establish `he : Complex.exp (-(Real.pi : ℂ) * Complex.I * ((Hf D T x y).im : ℂ)) = (-1 : ℂ) ^ (-b)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hb, ← Complex.exp_pi_mul_I, ← Complex.exp_int_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : (-1 : ℂ) ≠ 0` using `by norm_num`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hal _ _ hs, hal _ _ ha, hal _ _ hc, he, sub_eq_add_neg, zpow_add₀ hn, zpow_add₀ hn, zpow_add₀ hn, zpow_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem al_add (D : D7) (T : Tor D) (N N' : ℕ) (A : AddSubgroup (VC D N N'))
     (h1 : ∀ x ∈ A, ∀ y ∈ A, ∃ m : ℤ, (Hf D T x y).im = m) (h2 : ∀ x ∈ A, ∃ m : ℤ, qH D T x = m)

@@ -7,9 +7,9 @@ namespace PositivityTheory.Lord
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨hF, hE, h2, -⟩` from `h`. Establish `hcF : nrComplexPlaces F = 0` using `IsTotallyReal.nrComplexPlaces_eq_zero F`. Establish `hrE : nrRealPlaces E = 0` using `IsTotallyComplex.nrRealPlaces_eq_zero E`. Establish `kF` using `card_add_two_mul_card_eq_rank F`. Establish `kE` using `card_add_two_mul_card_eq_rank E`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `Module.finrank_mul_finrank ℚ F E`. Rewrite `ht` using `[h2]`. Use `⟨by omega, hcF, hrE, by omega⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem cm_places {σ : E →ₐ[F] E} (h : IsCMExt F E σ) :
     nrRealPlaces F = Module.finrank ℚ F ∧ nrComplexPlaces F = 0 ∧ nrRealPlaces E = 0 ∧
@@ -24,9 +24,7 @@ theorem cm_places {σ : E →ₐ[F] E} (h : IsCMExt F E σ) :
   refine ⟨by omega, hcF, hrE, by omega⟩
 
 /- English proof (translation)
-Unfold `PositivityTheory.SiegelWeilFormula.Gen.eSp`. Use `split_ifs with h1 h2 h2`. Conclude with `h2.neg_one_zpow`. Conclude with `(Int.not_even_iff_odd.1 h2).neg_one_zpow`. Conclude with `one_zpow j`.
-
-Conclude with `one_zpow j`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem eSp_zpow (v : HeightOneSpectrum (𝓞 F)) (j : ℤ) :
     PositivityTheory.SiegelWeilFormula.Gen.eSp E v ^ j = if Even j then 1 else PositivityTheory.SiegelWeilFormula.Gen.eSp E v := by

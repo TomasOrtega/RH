@@ -7,21 +7,17 @@ open ReciprocityTheory.ChartRestriction.G.FD (Data Frame Bor rmul lact mat col d
 namespace GlobalTheory.ShFam.PerLim
 
 /- English proof (translation)
-Establish `hc : ∀ a : Fin N, ∃ c : Fin n → ℂ, ∑ j, c j • L j = Pi.single a 1` using `fun a => (Submodule.mem_span_range_iff_exists_fun ℂ).1 (hs ▸ Submodule.mem_top)`. Use `choose c hc using hc`. Set `W : Matrix (Fin N) (Fin N) ℂ` to `Matrix.of fun b a => ∑ j, c a j * u j b`. Establish `hR : Tendsto (fun w => (M w)⁻¹ * W) l (𝓝 1)`. Use `tendsto_pi_nhds.2 fun a' => tendsto_pi_nhds.2 fun a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : ∀ w, ((M w)⁻¹ * W) a' a = ∑ j, c a j * (Matrix.mulVec (M w)⁻¹ (u j)) a'`. Introduce `w`. Simplify using `only [Matrix.mul_apply, Matrix.mulVec, dotProduct, W, Matrix.of_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun b _ => by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lim : (1 : Matrix (Fin N) (Fin N) ℂ) a' a = ∑ j, c a j * L j a'`. Use `congrFun (hc a) a'` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[this, Pi.single_apply, Matrix.one_apply]`. Simplify using `only [e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lim]`. Conclude with `tendsto_finset_sum _ fun j _ => ((ht j).apply_nhds a').const_mul _`. Establish `hRi : Tendsto (fun w => ((M w)⁻¹ * W)⁻¹) l (𝓝 1)`. Establish `h0 : ContinuousAt Ring.inverse (1 : Matrix (Fin N) (Fin N) ℂ).det`. Rewrite using `[Matrix.det_one, Ring.inverse_eq_inv']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `continuousAt_inv₀ one_ne_zero`. Establish `h1` using `((continuousAt_matrix_inv (1 : Matrix (Fin N) (Fin N) ℂ) h0).tendsto).comp hR`. Rewrite `h1` using `[inv_one]`. Conclude with `h1`. Establish `hRd : ∀ᶠ w in l, ((M w)⁻¹ * W).det ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : Tendsto (fun w => ((M w)⁻¹ * W).det) l (𝓝 (1 : Matrix (Fin N) (Fin N) ℂ).det)` using `((Continuous.matrix_det continuous_id).tendsto (1 : Matrix (Fin N) (Fin N) ℂ)).comp hR`. Rewrite `h1` using `[Matrix.det_one]`. Conclude with `h1.eventually_ne one_ne_zero`. Use `⟨W, ?_⟩` and prove the remaining obligations. Establish `hlim : Tendsto (fun w => W * ((M w)⁻¹ * W)⁻¹) l (𝓝 (W * 1))` using `((continuous_const.matrix_mul continuous_id).tendsto _).comp hRi`.
-
-Rewrite `hlim` using `[Matrix.mul_one]`. Use `hlim.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hdet, hRd] with w h1 h2`. Establish `e1 : M w * ((M w)⁻¹ * W) = W`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 h1), Matrix.one_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tendsto_of_inv_mulVec_span {α : Type} {l : Filter α} {N n : ℕ} (M : α → Matrix (Fin N) (Fin N) ℂ)
     (u : Fin n → Fin N → ℂ) (L : Fin n → Fin N → ℂ) (hdet : ∀ᶠ w in l, (M w).det ≠ 0)
@@ -69,21 +65,17 @@ theorem tendsto_of_inv_mulVec_span {α : Type} {l : Filter α} {N n : ℕ} (M : 
     _ = M w := by rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 h2), Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z σ N U A _ φ x fr ψ r y k T M γ xx hσ hU harc hm horb hlift hp0 v`. Take `⟨n, vv, Lp, Lm, hLp, -, hsp⟩` from `GlobalTheory.ShFam.PerLim.exists_periods_tendsto_span E H Dw l Xo c O β Z σ N U A φ x fr ψ r y k T M γ xx hσ hU harc hm horb hlift`. Establish `hdom : ∀ᶠ w in imTop, xx w ∈ (U.X k).dom` using `by filter_upwards [(tendsto_comap (f := Complex.im) (x := atTop)).eventually (eventually_gt_atTop T)] with w hw`. Conclude with `horb.2.2.2.1 w hw`. Establish `hmat : ∀ τ' : (U.X k).Ψ, ∃ L0, Tendsto (fun w => mat (xx w) τ') imTop (𝓝 L0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ'`. Use `tendsto_of_inv_mulVec_span (fun w => mat (xx w) τ') (fun j => ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ'.1 (vv j)) (fun j i => Lp j τ' ⟨i, by omega⟩) ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hdom] with w hw`. Conclude with `(hw τ').1`. Introduce `j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `tendsto_pi_nhds.2 fun i => ?_` and prove the remaining obligations. Establish `hi : (i : ℕ) < N - (U.X k).p0` using `by omega`. Use `(hLp j τ' ⟨i, hi⟩).congr fun w => ?_` and prove the remaining obligations. Unfold `perFr`. Rewrite using `[dif_pos τ'.2, dif_pos (by simp only [hp0]; omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `ext`. Simplify using `[hp0]`. Conclude with `span_proj (fun j => Lp j τ') (hsp τ').1 (fun i => ⟨i, by omega⟩) (fun a b h => Fin.ext (by simpa using congrArg Fin.val h))`. Use `choose L0 hL0 using hmat`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Set `F : ℂ → ((U.X k).Ψ → Fin N → ℂ)` to `fun w τ' a => ReciprocityTheory.ChartRestriction.G.FD.hermC τ'.1 (U.X k).Gm (col (mat (xx w) τ') a) (ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ'.1 v)`. Establish `hF : Tendsto F imTop (𝓝 (fun τ' a => ReciprocityTheory.ChartRestriction.G.FD.hermC τ'.1 (U.X k).Gm (col (L0 τ') a) (ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ'.1 v)))`. Use `tendsto_pi_nhds.2 fun τ' => tendsto_pi_nhds.2 fun a => ?_` and prove the remaining obligations. Establish `hc : Continuous fun Mx : Matrix (Fin N) (Fin N) ℂ => ReciprocityTheory.ChartRestriction.G.FD.hermC τ'.1 (U.X k).Gm (col Mx a) (ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ'.1 v)`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.hermC col`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `fun_prop`. Conclude with `(hc.tendsto _).comp (hL0 τ')`. Use `⟨‖(fun τ' a => ReciprocityTheory.ChartRestriction.G.FD.hermC τ'.1 (U.X k).Gm (col (L0 τ') a) (ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ'.1 v) : (U.X k).Ψ → Fin N → ℂ)‖ + 1, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hF.norm.eventually (gt_mem_nhds (lt_add_one _))] with w hw`. Introduce `τ i hτ`.
-
-Unfold `perFr`. Rewrite using `[dif_neg hτ]`. Use `split_ifs with h' hj`. Conclude with `((norm_le_pi_norm (F w ⟨_, h'⟩) ⟨_, hj⟩).trans (norm_le_pi_norm (F w) ⟨_, h'⟩)).trans hw.le`. Simplify using `only [norm_zero]`.
-
-Check the signs of the components of the expression. Simplify using `only [norm_zero]`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. Simplify using the standard rewrite rules. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem periods_bounded_outside_cmType_of_definite_arc_lift_alt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (N : ℕ) (U : Unf Xo c σ N) (A : Type) [CommRing A] (φ : c.F →+* A) (x : Sp A ⟶ gen Z) (fr : EigFrame Z φ (x ≫ genι Z)) (ψ : ℂ → (A →+* ℂ)) (r : ℝ) (y : ℂ → FrPt Xo c (CAt σ)) (k : U.Comp) (T : ℝ) (M : ℕ) (γ : GL (Fin N) E) (xx : ℂ → Frame (U.X k).Ψ N), GoodEmb c σ → IsUnf U → IsArc Z σ φ x ψ r → (∀ u ∈ Metric.ball (0 : ℂ) r, u ≠ 0 → Matches fr (ψ u) (y u)) → IsOrbit (U.X k) T M γ xx → IsLift U k y T xx → (U.X k).p0 = 0 → ∀ v : Fin N → E, ∃ C : ℝ, ∀ᶠ w in imTop, ∀ (τ : E →+* ℂ) (i : ℕ), τ ∉ (U.X k).Ψ → ‖perFr (U.X k) (xx w) v τ i‖ ≤ C := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ N U A _ φ x fr ψ r y k T M γ xx hσ hU harc hm horb hlift hp0 v

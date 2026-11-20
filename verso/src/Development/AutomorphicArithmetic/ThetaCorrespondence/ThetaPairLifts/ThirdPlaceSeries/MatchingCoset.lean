@@ -30,7 +30,7 @@ namespace GlobalTheory.MiTop
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
 /- English proof (translation)
-Use `⟨hz, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.LevSplit.mem_lev_of_red _ _ _ _ _ (GlobalTheory.LevSplit.finE_mem_UA _ _) hS ?_` and prove the remaining obligations. Introduce and unpack `PP (hP | hP)`. Conclude with `hR PP hP`. Conclude with `absurd hP (Finset.notMem_empty _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_rJ_of_red_alt (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (z : GA D (D.sp.Y 0)) (hz : z ∈ GfC (D.sp.Y 0))
     (hS : Formalism.IndefR.Lev.finE (Yc D 0) (show GA D (Yc D 0) from z) ∈ Formalism.L2.DIV.St (W.Q.Rl.βY 0))
@@ -43,7 +43,7 @@ theorem mem_rJ_of_red_alt (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (z : GA D
   · exact hR PP hP
   · exact absurd hP (Finset.notMem_empty _)
 /- English proof (translation)
-Establish `h1 : Formalism.IndefR.Lev.finE (Yc D 0) k ∈ Formalism.L2.DIV.lev D.sp.cm (Yc D 0).gram (W.Q.Rl.βY 0) (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true))` using `hk.2`. Establish `h2 : Formalism.IndefR.Lev.finE (Yc D 0) κ ∈ Formalism.L2.DIV.lev D.sp.cm (Yc D 0).gram (W.Q.Rl.βY 0) (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true))` using `hκ.2`. Establish `e` using `levFn_conj D.sp.cm (Yc D 0).gram (W.Q.Rl.βY 0) (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true)) h1 h2`. Unfold `_root_.GlobalTheory.MiTop.realCharacter Formalism.IndefR.Lev.levChi`. Use `erw [map_mul, map_mul, map_inv, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem reduced_character_conj_eq_of_mem_level_group (W : _root_.GlobalTheory.MiS.RealPackAlt ex) {k κ : GA D (D.sp.Y 0)} (hk : k ∈ _root_.GlobalTheory.MiTop.rJ_z W) (hκ : κ ∈ _root_.GlobalTheory.MiTop.rJ_z W) :
     _root_.GlobalTheory.MiTop.realCharacter W (k * κ * k⁻¹) = _root_.GlobalTheory.MiTop.realCharacter W κ := by
@@ -53,16 +53,16 @@ theorem reduced_character_conj_eq_of_mem_level_group (W : _root_.GlobalTheory.Mi
   unfold _root_.GlobalTheory.MiTop.realCharacter Formalism.IndefR.Lev.levChi
   erw [map_mul, map_mul, map_inv, e]
 /- English proof (translation)
-Use `(Subgroup.mul_mem_cancel_right (Formalism.IndefR.Lev.levG (Yc D 0) (W.Q.Rl.βY 0) (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true))) (y := k * κ) (Subgroup.inv_mem _ hk)).trans (Subgroup.mul_mem_cancel_left (Formalism.IndefR.Lev.levG (Yc D 0) (W.Q.Rl.βY 0) (W.Q.Rl.dat0 (W.Q.Rl. …` as an intermediate fact. Conclude with `this.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_rJ_iff_conj_mem (W : _root_.GlobalTheory.MiS.RealPackAlt ex) {k κ : GA D (D.sp.Y 0)} (hk : k ∈ _root_.GlobalTheory.MiTop.rJ_z W) : κ ∈ _root_.GlobalTheory.MiTop.rJ_z W ↔ k * κ * k⁻¹ ∈ _root_.GlobalTheory.MiTop.rJ_z W := by
   have := (Subgroup.mul_mem_cancel_right (Formalism.IndefR.Lev.levG (Yc D 0) (W.Q.Rl.βY 0) (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true))) (y := k * κ) (Subgroup.inv_mem _ hk)).trans
     (Subgroup.mul_mem_cancel_left (Formalism.IndefR.Lev.levG (Yc D 0) (W.Q.Rl.βY 0) (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true))) (y := κ) hk)
   exact this.symm
 /- English proof (translation)
-Establish `hkf : k ∈ GfC (D.sp.Y 0)` using `hk.1`. Use `⟨Subgroup.mul_mem _ (Subgroup.mul_mem _ hzf ht.1) hkf, fun κ => ?_⟩` and prove the remaining obligations. Establish `hz` using `Subgroup.mem_center_iff.mp hzc`. Establish `hc : (z * t * k)⁻¹⁻¹ * κ * (z * t * k)⁻¹ = t⁻¹⁻¹ * (k * κ * k⁻¹) * t⁻¹`. Establish `e : (z * t * k)⁻¹⁻¹ * κ * (z * t * k)⁻¹ = z * (t⁻¹⁻¹ * (k * κ * k⁻¹) * t⁻¹) * z⁻¹` using `by group`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, ← hz, mul_inv_cancel_right]`. Take `⟨h1, h2⟩` from `ht.2 (k * κ * k⁻¹)`. Rewrite using `[hc]`. Use `⟨(_root_.GlobalTheory.MiTop.mem_rJ_iff_conj_mem W hk).trans h1, fun hκ => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 ((_root_.GlobalTheory.MiTop.mem_rJ_iff_conj_mem W hk).1 hκ), _root_.GlobalTheory.MiTop.reduced_character_conj_eq_of_mem_level_group W hk hκ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem matches_mul_of_mem_rJ (W : _root_.GlobalTheory.MiS.RealPackAlt ex) {z t k : GA D (D.sp.Y 0)} (hzf : z ∈ GfC (D.sp.Y 0))
     (hzc : z ∈ Subgroup.center (GA D (D.sp.Y 0))) (hk : k ∈ _root_.GlobalTheory.MiTop.rJ_z W) (ht : Matches W.S.X W.Q.instEq (_root_.GlobalTheory.MiTop.rJ_z W) (_root_.GlobalTheory.MiTop.realCharacter W) t) :
@@ -78,15 +78,15 @@ theorem matches_mul_of_mem_rJ (W : _root_.GlobalTheory.MiS.RealPackAlt ex) {z t 
   refine ⟨(_root_.GlobalTheory.MiTop.mem_rJ_iff_conj_mem W hk).trans h1, fun hκ => ?_⟩
   rw [h2 ((_root_.GlobalTheory.MiTop.mem_rJ_iff_conj_mem W hk).1 hκ), _root_.GlobalTheory.MiTop.reduced_character_conj_eq_of_mem_level_group W hk hκ]
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hW hr u u' f f' B B' hP hP' hF hF' a₀ a a₀' a' hA hA'`. Take `⟨z, hzf, hzc, c, hcf, hcc, k, hk, he⟩` from `_root_.GlobalTheory.T.matching_translates_bottom_alt W hW.bot hr u B (_root_.GlobalTheory.MiTop.translationElement f B a₀ a) hA.2.2.2.1 (_root_.GlobalTheory.MiTop.translationElement f' B' a₀' a') hA'.2.2.2.1 hA.2.2.2 hA'.2.2.2`. Establish `hcc'` using `Subgroup.mem_center_iff.mp (Subgroup.inv_mem _ hcc)`. Establish `hX : _root_.GlobalTheory.MiTop.translationElement f B a₀ (a * c⁻¹) = ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u))⁻¹ * embA B.d B.o c⁻¹ * (iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) * _root_.GlobalTheory.MiTop.translationElement f B a₀ a`. Unfold `_root_.GlobalTheory.MiTop.translationElement`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[show a₀ * (a * c⁻¹) = c⁻¹ * (a₀ * a) by rw [← hcc' (a₀ * a), mul_assoc], map_mul]`. Establish `key : ∀ {G : Type} [Group G] (x e y b : G), x⁻¹ * (e * y) * b = x⁻¹ * e * x * (x⁻¹ * y * b)` using `by intros; group`. Conclude with `key (G := GA D (D.sp.Y 0)) _ _ _ _`. Establish `e1 : _root_.GlobalTheory.MiTop.translationElement f B a₀ (a * c⁻¹) = z * _root_.GlobalTheory.MiTop.translationElement f' B' a₀' a' * k`. Rewrite using `[hX, he, map_inv]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc, mul_inv_cancel_left, inv_mul_cancel_left]`. Establish `hA₁ : _root_.GlobalTheory.MiTop.IsTranslate' f B a₀ (a * c⁻¹)`. Use `⟨hA.1, Subgroup.mul_mem _ hA.2.1 (Subgroup.inv_mem _ hcf), Subgroup.mul_mem _ hA.2.2.1 (Subgroup.inv_mem _ hcc), ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `_root_.GlobalTheory.MiTop.matches_mul_of_mem_rJ W hzf hzc hk hA'.2.2.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Establish `hz : z ∈ _root_.GlobalTheory.MiTop.rJ_z W` using `_root_.GlobalTheory.MiTop.mem_rJ_of_red_alt W z hzf (by first`. Consider the case `exact _root_.GlobalTheory.T.placed_bessel_pair_relation_alt W hW hr u u' f f' B B' hP hP' hF hF' a₀ (a * c⁻¹) a₀' a' hA₁ hA' z hzf hzc k hk e1`. Consider the case `exact _root_.GlobalTheory.T.placed_bessel_pair_relation_alt W hW hr u u' f f' B B' hP hP' a₀ (a * c⁻¹) a₀' a' hA₁ hA' z hzf hzc k hk e1)`. Use the proof step `(by first`. Consider the case `exact _root_.GlobalTheory.T.placed_bessel_pair_identity_alt W hW hr u u' f f' B B' hP hP' hF hF' a₀ (a * c⁻¹) a₀' a' hA₁ hA' z hzf hzc k hk e1`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact _root_.GlobalTheory.T.placed_bessel_pair_identity_alt W hW hr u u' f f' B B' hP hP' a₀ (a * c⁻¹) a₀' a' hA₁ hA' z hzf hzc k hk e1)`. Use `⟨a * c⁻¹, hA₁, z * k, Subgroup.mul_mem _ hz hk, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, ← (Subgroup.mem_center_iff.mp hzc (_root_.GlobalTheory.MiTop.translationElement f' B' a₀' a')), mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem matching_coset_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → 1 ≤ D.R.rS → ∀ u u' (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (f' : _root_.GlobalTheory.Fam.FamilyCharacter W u') (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)) (B' : SBes W.S.X W.Q.instEq u' W.Q.Rl.ψ (D.sp.X 0)), _root_.GlobalTheory.MiTop.PlacedConditions f B → _root_.GlobalTheory.MiTop.PlacedConditions f' B' → GlobalTheory.MiTop.Framed B → GlobalTheory.MiTop.Framed B' → ∀ a₀ a a₀' a', _root_.GlobalTheory.MiTop.IsTranslate' f B a₀ a → _root_.GlobalTheory.MiTop.IsTranslate' f' B' a₀' a' → ∃ a₁, _root_.GlobalTheory.MiTop.IsTranslate' f B a₀ a₁ ∧ ∃ k ∈ _root_.GlobalTheory.MiTop.rJ_z W, _root_.GlobalTheory.MiTop.translationElement f B a₀ a₁ = _root_.GlobalTheory.MiTop.translationElement f' B' a₀' a' * k := by
   intro D L hT Gi Gl Kc Yd cX ex W hW hr u u' f f' B B' hP hP' hF hF' a₀ a a₀' a' hA hA'

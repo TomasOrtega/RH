@@ -8,7 +8,7 @@ variable {𝕜 E F : Type} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpa
   [FiniteDimensional 𝕜 E] [NormedAddCommGroup F] [InnerProductSpace 𝕜 F] [FiniteDimensional 𝕜 F]
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Rewrite using `[← LinearMap.adjoint_inner_left, LinearMap.mem_ker.mp hu, inner_zero_left]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma mem_orth_ker_adjoint (T : E →ₗ[𝕜] F) (x : E) :
     T x ∈ (LinearMap.ker (LinearMap.adjoint T))ᗮ := by
@@ -27,9 +27,9 @@ lemma restr_apply (T : E →ₗ[𝕜] F) (x : (LinearMap.ker T)ᗮ) :
     ((restr T x : (LinearMap.ker (LinearMap.adjoint T))ᗮ) : F) = T x := rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h0 : T x = 0`. Use `congrArg (fun y : (LinearMap.ker (LinearMap.adjoint T))ᗮ => (y : F)) hx` as an intermediate fact. Simplify `this` using `[restr_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hk : (x : E) ∈ LinearMap.ker T` using `h0`. Establish `hmem : (x : E) ∈ LinearMap.ker T ⊓ (LinearMap.ker T)ᗮ` using `⟨hk, x.2⟩`. Rewrite `hmem` using `[Submodule.inf_orthogonal_eq_bot, Submodule.mem_bot]`. Conclude with `Subtype.ext hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma restr_injective (T : E →ₗ[𝕜] F) : Function.Injective (restr T) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -43,7 +43,7 @@ lemma restr_injective (T : E →ₗ[𝕜] F) : Function.Injective (restr T) := b
   exact Subtype.ext hmem
 
 /- English proof (translation)
-Establish `h1` using `(LinearMap.ker T).finrank_add_finrank_orthogonal`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker T`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma finrank_orth_ker (T : E →ₗ[𝕜] F) :
     Module.finrank 𝕜 (LinearMap.ker T)ᗮ = Module.finrank 𝕜 (LinearMap.range T) := by
@@ -52,7 +52,7 @@ lemma finrank_orth_ker (T : E →ₗ[𝕜] F) :
   omega
 
 /- English proof (translation)
-Rewrite using `[finrank_orth_ker, finrank_orth_ker, LinearMap.finrank_range_adjoint]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma finrank_eq (T : E →ₗ[𝕜] F) :
     Module.finrank 𝕜 (LinearMap.ker T)ᗮ =

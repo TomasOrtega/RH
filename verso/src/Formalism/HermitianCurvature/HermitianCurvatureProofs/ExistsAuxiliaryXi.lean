@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.XiExistsOf
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.DS.Xi.xiExists`.
+A detailed English derivation is pending.
 -/
 theorem exists_auxiliary_xi : Formalism.FourierDecayAlt.B.XiExists := ReciprocityTheory.ChartRestriction.DS.Xi.xiExists
 

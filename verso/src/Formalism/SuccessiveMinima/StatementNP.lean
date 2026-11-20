@@ -44,23 +44,23 @@ def ZeroFormula : Prop :=
           ‖evalS a x‖ = gNorm a r / r ^ wdeg a r * (Z.map fun ζ => ‖algebraMap K L x - ζ‖).prod
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] : IsAlgClosed (PadicAlgCl p) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] : NormedAlgebra ℚ_[p] (PadicAlgCl p) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] : IsUltrametricDist (PadicAlgCl p) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] : IsUltrametricDist ℚ_[p] := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] : CompleteSpace ℚ_[p] := inferInstance
 

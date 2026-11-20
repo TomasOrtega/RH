@@ -18,11 +18,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PtId.OneScalar
 
 /- English proof (translation)
-Establish `h : ∀ s i hi col, MvPolynomial.map φ (minorPolynomial (Dw` using `Dw) (n := n) c s i hi col) = MvPolynomial.map φ' (minorPolynomial c' s i hi col) := by`. Introduce `s i hi col`. Unfold `minorPolynomial`. Rewrite using `[RingHom.map_det, RingHom.map_det]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `p q : 2`. Simplify using the standard rewrite rules. Unfold `pG`. Simplify using `only [map_prod, map_pow]`. Use `Finset.prod_congr rfl fun s _ => Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `split_ifs`. Conclude with `h _ _ _ _`. Conclude with `h _ _ _ _`. Rewrite using `[map_zero, map_zero]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_pG_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} (c c' : Coeff l) (φ : c.F →+* ℂ) (φ' : c'.F →+* ℂ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
@@ -45,24 +45,24 @@ theorem map_pG_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.To
   · rw [map_zero, map_zero]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Proof.TensorMapDescent.ten_mem lam _ fun τ => Formalism.GradedWeylDivisibility.hwMem K n n le_rfl _ (Formalism.L2.DIV.natW_antitone (lam τ))`.
+A detailed English derivation is pending.
 -/
 theorem ten_extremal_mem (K : Type) [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) :
     (Formalism.L2.DIV.ten fun τ => extremal K n (lam τ)) ∈ Formalism.L2.DIV.VV K lam :=
   GlobalTheory.Proof.TensorMapDescent.ten_mem lam _ fun τ => Formalism.GradedWeylDivisibility.hwMem K n n le_rfl _ (Formalism.L2.DIV.natW_antitone (lam τ))
 
 /- English proof (translation)
-Establish `hp : ∀ ℓ : LtN Dw n, ∀ ρ, ℓ.1 = tauE D ρ → (ℓ.2.1 : ℕ) < Dw.p`. Introduce and unpack `⟨σ, s, b⟩ ρ h`. Establish `hs` using `s.2`. Establish `: Dw.mult σ = Dw.p`. Rewrite using `[show σ = tauE D ρ from h]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `if_pos (hH ρ)`. Conclude with `this ▸ hs`. Introduce `x y hxy`. Take `⟨a1, a2⟩` from `hlt x`. Take `⟨b1, b2⟩` from `hlt y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpx` using `hp x (lt x).1`. Establish `hpy` using `hp y (lt y).1`. Rewrite `a1`, `a2`, `hpx` using `[hxy]`. Establish `key : x.1 = y.1 ∧ (x.2.1 : ℕ) = y.2.1`. Apply the tactic sequence `rcases a2 with ⟨a2, a3⟩ | ⟨a2, a3⟩ <;> rcases b2 with ⟨b2, b3⟩ | ⟨b2, b3⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨a2.trans b2.symm, by omega⟩`. Use `hpx a2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `hpy b2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a2.trans b2.symm, by omega⟩`. Take `⟨σ, s, b⟩` from `x`. Take `⟨σ', s', b'⟩` from `y`. Take `⟨k1, k2⟩` from `key`. Simplify using `only at k1 k2 a1 b1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `k1` using the available equality. Take `rfl : s = s'` from `Fin.ext k2`. Take `rfl : b = b'` from `a1.symm.trans b1`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lt_injective {D : D7} {H : Geo.Tor.Host D.host.E} {Dw : Datum H} (hH : ∀ ρ, tauE D ρ (H.rt : D.host.E) = H.rt0)
     {m n : ℕ} (lt : LtN Dw n → FVar D m n)
@@ -102,9 +102,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : Formalis
   {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {i : Fin D.R.m}
 
 /- English proof (translation)
-Take `⟨v', h1, h2⟩` from `hc ⟨_, ten_extremal_mem D.what₂.LL (lamV D i)⟩`. Rewrite using `[← h2]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[h1, show (O.hw : Formalism.L2.DIV.Pol O.c'.F D.what₂.Tau (Vc D i).rank) = _ from hO]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[GlobalTheory.Proof.TensorMapDescent.map_ten]`. Simplify using `only [Formalism.L2.DIV.map_extremal]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coefficientMap_extremalTensor_baseChange {Tp : Type} {tup : Tp → T0} (O : OMDat T.toCore R i Tp tup) (hO : hwOK O.c' (lamV D i) O.hw)
     {c0L : VsV D i D.what₂.LL →ₛₗ[D.what₂.embLL] (R.cV i).W} (hc : CoefficientBaseChange R i O.jL (inC O.c') c0L O.c0') :
@@ -121,21 +121,19 @@ theorem coefficientMap_extremalTensor_baseChange {Tp : Type} {tup : Tp → T0} (
 end Hw
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hC hT hI i c0L`. Distinguish the cases in `hex : ∃ (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) ∧ CoefficientBaseChange R i O.jL (inC O.c') c0L O.c0'`. Use `swap`. Conclude with `⟨1, norm_one, fun Tp tup O h1 h2 => absurd ⟨Tp, tup, O, h1, h2⟩ hex⟩`. Take `⟨Tp₀, tup₀, O₀, hP₀, hB₀⟩` from `hex`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ka₀, hn₀, hk₀⟩` from `GlobalTheory.T.oscillator_model_extension_first D G Pl0 T0 A T R F κ v₀ hC hT hI i Tp₀ tup₀ O₀ hP₀`. Use `⟨ka₀, hn₀, fun Tp tup O hP hB => ?_⟩` and prove the remaining obligations. Take `⟨ka, -, hk⟩` from `GlobalTheory.T.oscillator_model_extension_first D G Pl0 T0 A T R F κ v₀ hC hT hI i Tp tup O hP`. Introduce `lt hlt u hu`. It suffices to establish `h : ka = ka₀ by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Substitute using the available equality.
 
-Substitute `h` using the available equality. Conclude with `hk lt hlt u hu`. Establish `e1` using `hk lt hlt u hu A.μ0 O.hw`. Establish `e2` using `hk₀ lt hlt u hu A.μ0 O₀.hw`. Take `⟨hw1, cga, -, hinj, -, -, -, -, hio, -⟩` from `hP.io`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hw2, cga', -, -, -, -, -, -, hio₀, -⟩` from `hP₀.io`. Establish `hne : O.io O.hw ≠ 0`. Introduce `h0`. Establish `h1 : O.hw = 0` using `hinj (h0.trans (map_zero _).symm)`. Establish `h2` using `(GlobalTheory.AdTh.coefMap_norm_equivariant_basis D G Pl0 T0 A T R F κ v₀ hC hT i Tp tup O hP).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1, map_zero, norm_zero]`. Conclude with `zero_ne_one h2`. Rewrite `e1` using `[coefficientMap_extremalTensor_baseChange O hw1 hB]`. Rewrite `e2` using `[coefficientMap_extremalTensor_baseChange O₀ hw2 hB₀, hio₀, map_pG_eq O₀.c' O.c' (inC O₀.c') (inC O.c'), ← hio, e1]`. Establish `hV` using `hP.lift.std`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f1, f2, f3, f4, f5⟩` from `GlobalTheory.AdTh.VecFock.vec_fock D G Pl0 T0 A T.Q.c.F R F hC i A.μ0 hV`. Establish `hON : ∀ τ, IsONBasis (gramAt D (Vc D i) τ) 1 1 (Vc D i).rank` using `fun τ => by`. Use `⟨fun _ => 1, fun a => Or.inl ⟨rfl, a.2⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[gramAt, hV.1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinjP` using `GlobalTheory.FockVecInj.pureTensorO_injective D R.ψ R.θ (Vc D i) (Wc D i) (hC.thP.ωP i A.μ0).std hC.models.inf (fun _ => 1) (fun _ => 1) (cart (R.MW i (sg0 D A))) (onb (R.MW i (sg0 D A))) (fun _ => (Vc D i).rank) _ f4 f3 hON f5 (D.sp.V_sig _) (D.sp.W_sig _) (R.vP i A.μ0) f1 f2 (G …`. Establish `hlti : Function.Injective lt` using `lt_injective (fun ρ => hT.laws.pins.1.2.2.2 ρ) lt hlt`. Use `smul_left_injective ℂ (fun h0 => hne ?_) e2` and prove the remaining obligations. Establish `h1` using `hinjP (h0.trans (map_zero _).symm)`. Establish `h2` using `MvPolynomial.rename_injective lt hlti (h1.trans (map_zero _).symm)`.
-
-Conclude with `MvPolynomial.map_injective _ (inC O.c').injective (h2.trans (map_zero _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_scalar : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → TieIn T R κ v₀ → IoExt R → ∀ (i : Fin D.R.m) (c0L : VsV D i D.what₂.LL →ₛₗ[D.what₂.embLL] (R.cV i).W), ∃ ka : ℂ, ‖ka‖ = 1 ∧ ∀ (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → CoefficientBaseChange R i O.jL (inC O.c') c0L O.c0' → GlobalTheory.PtId.IoAt O (v₀ i (sg0 D A)) ka := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hC hT hI i c0L

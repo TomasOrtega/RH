@@ -13,7 +13,7 @@ open NumberField IsDedekindDomain Matrix CrossDiaZero
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Unfold `mulLat`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mulLat_one_GL {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) :
     mulLat ((1 : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) L = L := by
@@ -24,29 +24,27 @@ set_option maxHeartbeats 8000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hδ'` using `Formalism.L2.GlobalTheoryTheory.UnramifiedDiagonal.isDia_conj T.cls0.lev (T.atT.eV v).1 (T.atT.eV v).2 hδ κ`. Establish `hcl` using `T.val0.dil v a k hk c1 _ hδ'`. Take `⟨hh, hhH, κ0, hκK, e⟩` from `(DoubleCoset.eq _ _ _ _).1 hcl`. Establish `hκ0 : κ0.1 ∈ T.cls0.lev.U` using `hκK`. Take `⟨γ', hγ', hge⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hhH)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx1 : (T.cls0.y c1 * Formalism.L2.GlobalTheoryTheory.UnramifiedDiagonal.conjPt T.cls0.lev δ κ).1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ' * (T.cls0.y ((D.fm u).dil 0 v a c1)).1 * κ0.1 := by`. Rewrite using `[e]`. Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[← hge]`. Generalize the expression as in `hc1' : (D.fm u).dil 0 v a c1 = c1' at hx1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `hLat1` using `diamond_lattice_transport T v k _ hδ' c1 c1' γ' hγ' ⟨κ0.1, hκ0⟩ hx1`. Take `⟨ε, hε1⟩ : ∃ ε : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F), ε.1 = η.1 * δ.1` from `⟨η * δ, rfl⟩`. Take `⟨κε, hκε⟩ : ∃ κε : T.cls0.lev.U, κε.1 = κ.1 * κ0.1⁻¹` from `⟨⟨_, mul_mem κ.2 (inv_mem hκ0)⟩, rfl⟩`. Take `⟨γε, hγε⟩ : ∃ γε : UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)), γε.1 = γ.1 * γ'` from `⟨⟨_, mul_mem γ.2 hγ'⟩, rfl⟩`. Establish `hε : ∀ v', v' ≠ (T.atT.eV v).1 → bc (prV (E` using `D.host.E) v') ε.1 = 1 := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `v' hv'`. Rewrite using `[hε1, map_mul, h1 v' hv', hδ.1 v' hv', one_mul]`. Establish `h1ε : bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γε.1 * (T.cls0.y c1').1 = (T.cls0.y c).1 * ε.1 * κε.1 := by`. Establish `eγ : bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ.1 = (T.cls0.y c).1 * η.1 * κ.1 * (T.cls0.y c1).1⁻¹ := by rw [← h2]; group`. Establish `hx1' : (T.cls0.y c1).1 * (κ.1⁻¹ * δ.1 * κ.1) = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ' * (T.cls0.y c1').1 * κ0.1 := hx1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eγ' : bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ' = (T.cls0.y c1).1 * (κ.1⁻¹ * δ.1 * κ.1) * κ0.1⁻¹ * (T.cls0.y c1').1⁻¹ := by`. Rewrite using `[hx1']`. Use `group`. Rewrite using `[hγε, hε1, hκε, map_mul, eγ, eγ']`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlε : Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (mulLat γε.1.1 (Ld D u 0 (Nat.zero_le _) c1')) = Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (clsCrd D u 0 (Nat.zero_le _) c)`. Rewrite using `[hγε, Units.val_mul]`. Conclude with `rlv_chainP _ _ _ hl (by rw [hLat1.2])`. Establish `hfε : ∀ (w : ↥(Ld D u 0 (Nat.zero_le _) c1')) (hw : γε.1.1 *ᵥ w.1 ∈ Lk T.atT 0 (Nat.zero_le _) v c), (D.fm u).fv 0 v c1' (T.lv0.pr v c1' w) = ((a : (D.mem u).A.Fv v) • g) (T.lv0.prk v c ⟨_, hw⟩)`. Introduce `w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw1 : (γ' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ w.1 ∈ Ld D u 0 (Nat.zero_le _) c1` using `by rw [← hLat1.2]; exact ⟨w.1, w.2, rfl⟩`. Establish `eback : ((γ'⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ ((γ' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ w.1) = w.1`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hz2 : ((γ'⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ ((γ' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ w.1) ∈ Ld D u 0 (Nat.zero_le _) c1'` using `by rw [eback]; exact w.2`. Establish `ew : γε.1.1 *ᵥ w.1 = γ.1.1 *ᵥ ((γ' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ w.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hγε, Units.val_mul, Matrix.mulVec_mulVec]`. Establish `hw' : γ.1.1 *ᵥ (⟨_, hw1⟩ : ↥(Ld D u 0 (Nat.zero_le _) c1)).1 ∈ Lk T.atT 0 (Nat.zero_le _) v c` using `by show γ.1.1 *ᵥ ((γ' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ w.1) ∈ _`. Rewrite using `[← ew]`. Conclude with `hw`. Establish `d` using `Formalism.L2.GlobalTheoryTheory.UnramifiedDiagonal.diaFun_same T v k _ hδ' c1 c1' γ' ⟨κ0.1, hκ0⟩ hx1 _ hw1 hz2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pr_congr T v c1' w ⟨_, hz2⟩ eback.symm, d, hf ⟨_, hw1⟩ hw', LinearMap.smul_apply, zsmul_eq_mul, hk, smul_eq_mul]`. Establish `ep : T.lv0.prk v c ⟨_, hw'⟩ = T.lv0.prk v c ⟨_, hw⟩` using `congrArg (T.lv0.prk v c) (Subtype.ext ew.symm)`. Rewrite using `[ep]`. Establish `hL1` using `mulLat_one_GL (D := D) (clsCrd D u 0 (Nat.zero_le _) c)`. Establish `hLd1` using `mulLat_one_GL (D := D) (Ld D u 0 (Nat.zero_le _) c)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hxy : ∀ w, ((a : (D.mem u).A.Fv v) • g) w = ((a : (D.mem u).A.Fv v) • g) (dniEquiv T v c c 1 hL1 hLd1 w)`. Introduce `w`. Take `⟨z, rfl⟩` from `T.lv0.prk_surj v c w`. Rewrite using `[dniEquiv_prk]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show z.1 = ((1 : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z.1`. Rewrite using `[Units.val_one, Matrix.one_mulVec]`. Establish `htriv : (T.cls0.y c).1 * (1 : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)).1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (1 : GL (Fin (D.R.N 0)) D.host.E) * (T.cls0.y c).1 * (1 : T.cls0.lev.U).1 := by`. Simplify using `only [OneMemClass.coe_one, map_one, mul_one, one_mul]`.
-
-Establish `hm` using `dn_match_gen T v 1 (by simp only [OneMemClass.coe_one, map_one]) c c c1' c3 1 (one_mem _) 1 htriv hL1 hLd1 ((a : (D.mem u).A.Fv v) • g) ((a : (D.mem u).A.Fv v) • g) hxy γε γ2 ε η2 κε κ2 hε g1 h1ε g2 hlε gl hfε gf`. Establish `efin : η2.1⁻¹ * (η.1 * δ.1) = η2.1⁻¹ * (1 : T.cls0.lev.U).1 * ε.1`. Rewrite using `[hε1, OneMemClass.coe_one, mul_one]`. Rewrite using `[efin]`. Conclude with `hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eSame_one (T : Forms0 D u) (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) (k : ℤ)
     (hk : (k : (D.mem u).A.Fv v) = a) (δ : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))
@@ -135,11 +133,9 @@ set_option maxHeartbeats 8000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `v a k hk δ hδ c`. Use `choose γ1 η1 κ1 hs1 hr1 hl1 hf1 ht1 using fun x : {x : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) // x ≠ 0} => T.down_natural_level_zero v c x.1 x.2`. Set `σ : {x : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) // x ≠ 0} ≃ {x : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) // x ≠ 0}` to `{ toFun := fun x => ⟨(a : (D.mem u).A.Fv v) • x.1, smul_ne_zero (Units.ne_zero a) x.2⟩ invFun := fun x => ⟨((a⁻¹ : ((D.mem u).A.Fv v)ˣ) : (D.mem u).A.Fv v) • x.1, smul_ne_zero (Units.ne_zero _) x.2⟩ left_inv := fun x => Subtype.ext (by show ((a⁻¹ : ((D.mem u).A.Fv v)ˣ) : (D.mem u …`. Rewrite using `[smul_smul, Units.inv_mul, one_smul])`. Use `right_inv := fun x => Subtype.ext (by show (a : (D.mem u).A.Fv v) • (((a⁻¹ : ((D.mem u).A.Fv v)ˣ) : (D.mem u).A.Fv v) • x.1) = x.1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_smul, Units.mul_inv, one_smul]) }`. Use `⟨σ, η1, fun x => ⟨γ1 x, κ1 x, hs1 x, hr1 x, fun h => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Rewrite using `[ht1 x h s _ (is_translate_inverse T (γ1 x) s), Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
-
-Conclude with `eSame_one T v a k hk δ hδ c _ _ x.1 (γ1 x) (γ1 (σ x)) (η1 x) (η1 (σ x)) (κ1 x) (κ1 (σ x)) (hs1 x) (hr1 x) (hl1 x) (hf1 x) (hs1 (σ x)) (hr1 (σ x)) (hl1 (σ x)) (hf1 (σ x))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eSame (T : Forms0 D u) : Formalism.L2.GlobalTheoryTheory.UnramifiedDiagonal.EDiaSame0F T := by
   intro v a k hk δ hδ c
@@ -162,7 +158,7 @@ theorem eSame (T : Forms0 D u) : Formalism.L2.GlobalTheoryTheory.UnramifiedDiago
       (hs1 x) (hr1 x) (hl1 x) (hf1 x) (hs1 (σ x)) (hr1 (σ x)) (hl1 (σ x)) (hf1 (σ x))
 
 /- English proof (translation)
-Introduce `_ _ T` and use `eSame T`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem equal_diagonal_entries_all : Formalism.L2.GlobalTheoryTheory.UnramifiedDiagonal.ESameAll := fun _ _ T => eSame T
 

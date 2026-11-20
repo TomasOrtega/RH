@@ -15,13 +15,13 @@ instance instHaarMat : (volume : Measure (Fin m → Fin n → ℂ)).IsAddHaarMea
 def sq (x : Fin m → Fin n → ℂ) : ℝ := ∑ a, ∑ i, ‖x a i‖ ^ 2
 
 /- English proof (translation)
-Unfold `sq`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 lemma sq_nonneg' (x : Fin m → Fin n → ℂ) : 0 ≤ sq x := by
   unfold sq; positivity
 
 /- English proof (translation)
-Unfold `sq`. Conclude with `continuous_finsetSum _ fun a _ => continuous_finsetSum _ fun i _ => ((continuous_apply i).comp (continuous_apply a)).norm.pow 2`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma continuous_sq : Continuous (sq : (Fin m → Fin n → ℂ) → ℝ) := by
   unfold sq
@@ -29,7 +29,7 @@ lemma continuous_sq : Continuous (sq : (Fin m → Fin n → ℂ) → ℝ) := by
     ((continuous_apply i).comp (continuous_apply a)).norm.pow 2
 
 /- English proof (translation)
-Unfold `sq`. Conclude with `Finset.sum_le_sum fun a _ => Finset.single_le_sum (f := fun j => ‖x a j‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ i)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma col_sq_le (x : Fin m → Fin n → ℂ) (i : Fin n) : ∑ a, ‖x a i‖ ^ 2 ≤ sq x := by
   unfold sq
@@ -37,21 +37,21 @@ lemma col_sq_le (x : Fin m → Fin n → ℂ) (i : Fin n) : ∑ a, ‖x a i‖ ^
     Finset.single_le_sum (f := fun j => ‖x a j‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ i)
 
 /- English proof (translation)
-The claim follows from `(Finset.single_le_sum (f := fun b => ‖x b i‖ ^ 2) (fun b _ => by positivity) (Finset.mem_univ a)).trans (col_sq_le x i)`.
+A detailed English derivation is pending.
 -/
 lemma coord_sq_le (x : Fin m → Fin n → ℂ) (a : Fin m) (i : Fin n) : ‖x a i‖ ^ 2 ≤ sq x :=
   (Finset.single_le_sum (f := fun b => ‖x b i‖ ^ 2) (fun b _ => by positivity) (Finset.mem_univ a)).trans
     (col_sq_le x i)
 
 /- English proof (translation)
-Establish `h` using `coord_sq_le x a i`. Use polynomial arithmetic with `[sq_nonneg (‖x a i‖ - 1), norm_nonneg (x a i)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma coord_le (x : Fin m → Fin n → ℂ) (a : Fin m) (i : Fin n) : ‖x a i‖ ≤ 1 + sq x := by
   have h := coord_sq_le x a i
   nlinarith [sq_nonneg (‖x a i‖ - 1), norm_nonneg (x a i)]
 
 /- English proof (translation)
-Establish `h : ‖x‖ ≤ Real.sqrt (sq x)`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun a => (pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Use `Real.abs_le_sqrt (coord_sq_le x a i)` as an intermediate fact. Rewrite `this` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 -/
 lemma norm_sq_le (x : Fin m → Fin n → ℂ) : ‖x‖ ^ 2 ≤ sq x := by
   have h : ‖x‖ ≤ Real.sqrt (sq x) := by
@@ -63,20 +63,18 @@ lemma norm_sq_le (x : Fin m → Fin n → ℂ) : ‖x‖ ^ 2 ≤ sq x := by
     _ = sq x := Real.sq_sqrt (sq_nonneg' x)
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.P6.r22b.PositivityTheory.Rg.Sw.FFTSteps.SecondLineEstimates.pow_mul_exp_le K hβ`.
+A detailed English derivation is pending.
 -/
 lemma pow_mul_exp_le (K : ℕ) {β : ℝ} (hβ : 0 < β) :
     ∃ M : ℝ, ∀ s : ℝ, 0 ≤ s → (1 + s) ^ K * Real.exp (-β * s) ≤ M :=
   _root_.UpperTheory.Reformulated.B.P6.r22b.PositivityTheory.Rg.Sw.FFTSteps.SecondLineEstimates.pow_mul_exp_le K hβ
 
 /- English proof (translation)
-Use `set L : ℕ := Module.finrank ℝ (Fin m → Fin n → ℂ) + 1 with hL`. Take `⟨M, hM⟩` from `pow_mul_exp_le (N + L) hβ`. Establish `hint : Integrable (fun x : Fin m → Fin n → ℂ => (1 + ‖x‖) ^ (-((2 * L : ℕ) : ℝ)))` using `integrable_one_add_norm (by rw [hL]; push_cast; linarith)`. Use `(hint.const_mul (2 ^ L * M)).mono' ?_ ?_` and prove the remaining obligations. Conclude with `(((continuous_const.add continuous_sq).pow N).mul (Real.continuous_exp.comp (continuous_const.mul continuous_sq))).aestronglyMeasurable`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Eventually.of_forall fun x => ?_` and prove the remaining obligations. Establish `hs` using `sq_nonneg' x`. Establish `hb : 0 < (1 + ‖x‖) ^ (2 * L)` using `by positivity`. Rewrite using `[Real.norm_of_nonneg (by positivity), Real.rpow_neg (by positivity), Real.rpow_natCast]`. Establish `hx2 : (1 + ‖x‖) ^ 2 ≤ 2 * (1 + sq x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[norm_sq_le x, sq_nonneg (‖x‖ - 1)]`. Establish `hxL : (1 + ‖x‖) ^ (2 * L) ≤ 2 ^ L * (1 + sq x) ^ L`. Combine the equalities or inequalities in the displayed calculation. Establish `key : (1 + sq x) ^ N * Real.exp (-β * sq x) * (1 + ‖x‖) ^ (2 * L) ≤ 2 ^ L * M`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[le_mul_inv_iff₀ hb]`. Conclude with `key`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma integrable_poly_gauss (N : ℕ) {β : ℝ} (hβ : 0 < β) :
     Integrable (fun x : Fin m → Fin n → ℂ => (1 + sq x) ^ N * Real.exp (-β * sq x)) := by

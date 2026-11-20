@@ -15,9 +15,9 @@ noncomputable def gauss (c : ℝ) (hc : 0 < c) : SchwartzMap E ℂ :=
     (GroundTheory.Global.gaussianSchwartz E)
 
 /- English proof (translation)
-Rewrite using `[gauss, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, GroundTheory.Global.gaussianSchwartz_apply]`. Establish `h : -Real.pi * ‖(LinearEquiv.smulOfNeZero ℝ E (Real.sqrt (c / Real.pi)) (Real.sqrt_ne_zero'.2 (div_pos hc Real.pi_pos))).toContinuousLinearEquiv x‖ ^ 2 = -c * ‖x‖ ^ 2`. Simplify using `only [LinearEquiv.coe_toContinuousLinearEquiv', LinearEquiv.smulOfNeZero_apply, norm_smul, Real.norm_eq_abs, mul_pow, sq_abs, Real.sq_sqrt (div_pos hc Real.pi_pos).le]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h, Complex.ofReal_exp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Put the polynomial expressions in normal form.
+Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 theorem gauss_apply (c : ℝ) (hc : 0 < c) (x : E) :
     gauss c hc x = Complex.exp (-(c : ℂ) * ‖x‖ ^ 2) := by
@@ -35,7 +35,7 @@ theorem gauss_apply (c : ℝ) (hc : 0 < c) (x : E) :
   ring_nf
 
 /- English proof (translation)
-Rewrite using `[SchwartzMap.fourier_coe]`. Establish `: (⇑(gauss c hc) : E → ℂ) = fun v ↦ Complex.exp (-(c : ℂ) * ‖v‖ ^ 2)`. Use function extensionality and compare the values at `(gauss_apply c hc)`. Rewrite using `[this, fourier_gaussian_innerProductSpace (by simpa using hc)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem fourier_gauss (c : ℝ) (hc : 0 < c) (w : E) :
     (𝓕 (gauss (E := E) c hc) : SchwartzMap E ℂ) w = (Real.pi / (c : ℂ)) ^ (Module.finrank ℝ E / 2 : ℂ) *
@@ -46,15 +46,15 @@ theorem fourier_gauss (c : ℝ) (hc : 0 < c) (w : E) :
   rw [this, fourier_gaussian_innerProductSpace (by simpa using hc)]
 
 /- English proof (translation)
-Use `set c : ℝ := Real.pi ^ 2 / b with hc_def`. Establish `hc : 0 < c` using `by positivity`. Use `set K : ℂ := (Real.pi / (c : ℂ)) ^ (Module.finrank ℝ E / 2 : ℂ) with hK`. Establish `hK0 : K ≠ 0`. Rewrite using `[hK]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `Complex.cpow_ne_zero_iff.2 (Or.inl (div_ne_zero (by exact_mod_cast Real.pi_ne_zero) (by exact_mod_cast hc.ne')))`. Use `set g : SchwartzMap E ℂ := gauss c hc`. Use `set v : SchwartzMap E ℂ := SchwartzMap.convolution (ContinuousLinearMap.mul ℂ ℂ) f g`. Establish `huv : u = K⁻¹ • (𝓕 v : SchwartzMap E ℂ)`. Use extensionality with `ξ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[SchwartzMap.smul_apply, SchwartzMap.fourier_convolution, SchwartzMap.pairing_apply_apply, ContinuousLinearMap.mul_apply', fourier_gauss, ← hK, hu, smul_eq_mul]`. Establish `e : Complex.exp (-Real.pi ^ 2 * ‖ξ‖ ^ 2 / c) = Complex.exp (-((b * ‖ξ‖ ^ 2 : ℝ) : ℂ))`. Use `congr 1`. Rewrite using `[hc_def]`. Use `push_cast`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Use `⟨c, K⁻¹, hc, fun y ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[huv, FourierTransform.fourierInv_smul, FourierTransform.fourierInv_fourier_eq, SchwartzMap.smul_apply, smul_eq_mul, SchwartzMap.convolution_apply, convolution_def]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Use `congr 1`. Use `integral_congr_ae (Eventually.of_forall fun a ↦ ?_)` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.mul_apply', g, gauss_apply]`. Use `push_cast`. Put the polynomial expressions in normal form.
+A detailed English derivation is pending.
 -/
 theorem fourierInv_gauss_mul_eq (f u : SchwartzMap E ℂ) (b : ℝ) (hb : 0 < b)
     (hu : ∀ y, u y = Complex.exp (-((b * ‖y‖ ^ 2 : ℝ) : ℂ)) * (𝓕 f : SchwartzMap E ℂ) y) :
@@ -93,9 +93,9 @@ end GlobalTheory.NarrowGauss
 
 open GlobalTheory.NarrowGauss in
 /- English proof (translation)
-Introduce `E _ _ _ _ _ f`. Establish `h1` using `GlobalTheory.T.mem_closure_wideGaussian_mul_schwartz E (𝓕 f : SchwartzMap E ℂ)`. Establish `h2` using `map_mem_closure (f := fun w : SchwartzMap E ℂ ↦ (𝓕⁻ w : SchwartzMap E ℂ)) (t := {u : SchwartzMap E ℂ | ∃ (c : ℝ) (s : ℂ), 0 < c ∧ ∀ y, u y = s * ∫ a, f a * Complex.exp (-((c * ‖y - a‖ ^ 2 : ℝ) : ℂ))}) FourierTransform.continuous_fourierInv h1 (fun u hu ↦ by`. Take `⟨b, hb, hu⟩` from `hu`. Conclude with `fourierInv_gauss_mul_eq f u b hb hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h2` using `[FourierTransform.fourierInv_fourier_eq]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.narrowGauss_convolution_dense :
     ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]

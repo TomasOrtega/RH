@@ -18,7 +18,7 @@ open GlobalTheory.Dict
 namespace GlobalTheory.Dict
 
 /- English proof (translation)
-Use `I2.polyDeriv_sum P u (Finset.univ : Finset Unit) (fun _ => c) (fun _ => G) (fun _ _ k => I2.contDiff_of_differentiable_fd hG k) x` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem polyDeriv_const_mul_entire {σ W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDimensional ℂ W]
     (P : MvPolynomial σ ℂ) (u : σ → W) (c : ℂ) {G : W → ℂ} (hG : Differentiable ℂ G) (x : W) :
@@ -28,9 +28,9 @@ theorem polyDeriv_const_mul_entire {σ W : Type} [NormedAddCommGroup W] [NormedS
   simpa using this
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Use `polyDeriv_const_mul_entire P u 0 hG x` as an intermediate fact. Simplify `this` using `[hc]`. Establish `h : T = fun z => c⁻¹ * (c * T z)`. Use function extensionality and compare the values at `z`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Clear the denominators using the available nonvanishing facts. Use `conv_rhs => rw [h]`. Rewrite using `[polyDeriv_const_mul_entire P u c⁻¹ hG x]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem polyDeriv_const_mul_of_entire {σ W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
     [FiniteDimensional ℂ W] (P : MvPolynomial σ ℂ) (u : σ → W) (c : ℂ) {T : W → ℂ}
@@ -46,21 +46,21 @@ theorem polyDeriv_const_mul_of_entire {σ W : Type} [NormedAddCommGroup W] [Norm
     field_simp
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g q0 hr bas idx n hs hn w hw L hL x hd ho t ht hc 𝔐 M hM h𝔐 v hv θ κ hθ hm hκ P hP hdeg`. Take `⟨F, hF, hFa, hFP⟩` from `GlobalTheory.T.exists_theta_sublattice_jet_ne_zero_alt E r X g q0 hr bas idx n hs hn w hw L hL x hd ho t ht hc 𝔐 M hM h𝔐 P hP hdeg`. Take `⟨s, cf, hs', hsum⟩` from `GlobalTheory.T.theta_ideal_lattice_eq_sum_level_translates E r X g q0 hr bas idx n hs hn w hw L hL x hd ho t ht hc 𝔐 M hM h𝔐 v hv θ κ hθ hm hκ F hF hFa`. Take `⟨hcomp, -, -, hdiff, hprod⟩` from `fock_laws E r X g bas idx n hs hn x hd 1 θ`. Establish `hprod'` using `hprod (fun _ => θ) κ v hv.1 hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hent : ∀ y : Matrix (Fin n) (Fin r) E, Differentiable ℂ fun z => κ * thA X bas idx (heisG X bas y v) x z`. Introduce `y`. Establish `: (fun z => κ * thA X bas idx (heisG X bas y v) x z) = fun z : Fin n → Fin g → ℂ => ∏ b, fock X bas idx x 1 (pv X idx x (y b)) θ (z b)`. Use function extensionality and compare the values at `fun z => (hprod' y z).symm`. Rewrite using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ∀ b, Differentiable ℂ fun z : Fin n → Fin g → ℂ => fock X bas idx x 1 (pv X idx x (y b)) θ (z b)` using `fun b => (hdiff hθ.1 (pv X idx x (y b))).comp (f := fun z : Fin n → Fin g → ℂ => z b) (differentiable_apply b)`. Conclude with `fun z => (HasFDerivAt.finset_prod (u := Finset.univ) fun b _ => (hb b z).hasFDerivAt).differentiableAt`. Establish `hFe : F = fun z => ∑ y ∈ s, cf y * (κ * thA X bas idx (heisG X bas y v) x z)` using `funext hsum`. Rewrite `hFP` using `[hFe, I2.polyDeriv_sum P _ s cf (fun y z => κ * thA X bas idx (heisG X bas y v) x z) (fun y _ k => I2.contDiff_of_differentiable_fd (hent y) k)]`. Take `⟨y, hy, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hFP`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨y, hs' y hy, fun y' hy' => ?_⟩` and prove the remaining obligations. Establish `hne'` using `right_ne_zero_of_mul hne`. Establish `hrow : ∀ b, ∃ c : ℂ, fock X bas idx x 1 (pv X idx x (y b)) θ = c • fock X bas idx x 1 (pv X idx x (y' b)) θ`. Introduce `b`. Establish `h1` using `hθ.2 _ (hy' b)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `hcomp (pv X idx x (y b)) (pv X idx x (y' b - y b))`. Establish `h3 : pv X idx x (y b) + pv X idx x (y' b - y b) = pv X idx x (y' b)`. Use function extensionality and compare the values at `j`. Use `congrFun (per_add X x (y b) (y' b - y b)) (idx j)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Rewrite `h2` using `[h3]`. Establish `h4 : ∀ (e : ℂ) (a : Fin g → ℂ) (φ : (Fin g → ℂ) → ℂ), fock X bas idx x 1 a (e • φ) = e • fock X bas idx x 1 a φ`. Introduce `e a φ`. Use function extensionality and compare the values at `z`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [fock, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨_, by conv_lhs => rw [← h1, h4, h2, smul_smul]⟩`. Use `choose c hcc using hrow`. Establish `hfun : (fun z => κ * thA X bas idx (heisG X bas y v) x z) = fun z => (∏ b, c b) * (κ * thA X bas idx (heisG X bas y' v) x z)`.
+Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[← hprod' y z, ← hprod' y' z, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun b _ => by rw [hcc b]; rfl`. Rewrite `hne'` using `[hfun, polyDeriv_const_mul_entire P _ _ (hent y'), polyDeriv_const_mul_of_entire P _ _ (hent y')]`. Conclude with `right_ne_zero_of_mul hne'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_level_translate_jet_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ w : 𝓞 E, (w : E) + cc (w : E) = 1 → ∀ L : Lt E r, SelfD X L → ∀ x ∈ X.dom, X.IsOrtho x → ∀ t : ℝ, 0 < t → (∀ τ, X.c τ = t) → ∀ (𝔐 : Ideal (𝓞 E)) (M : ℕ), Odd M → 𝔐 * conjI 𝔐 = Ideal.span {(M : 𝓞 E)} → ∀ v : TF n g, IsVac X bas (w : E) (tens (stdL E n) L) v → ∀ (θ : (Fin g → ℂ) → ℂ) (κ : ℂ), IsTheta1 X bas idx (w : E) x L θ → MeanOne X bas idx x L θ → (∀ z : Fin n → Fin g → ℂ, ∏ b, θ (z b) = κ * thA X bas idx v x z) → ∀ P : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n), P ≠ 0 → 3 * P.totalDegree + 2 ≤ M → ∃ y : Matrix (Fin n) (Fin r) E, (∀ b, (M : E) • y b ∈ 𝔐 • L) ∧ ∀ y' : Matrix (Fin n) (Fin r) E, (∀ b, y' b - y b ∈ L) → κ * thP X hr bas idx (heisG X bas y' v) P x ≠ 0 := by
   intro E _ _ _ r X g q0 hr bas idx n hs hn w hw L hL x hd ho t ht hc 𝔐 M hM h𝔐 v hv θ κ hθ hm hκ P hP hdeg

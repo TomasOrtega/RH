@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.
 namespace Formalism.MainNotions.BesselDiscreteSeries
 
 /- English proof (translation)
-Introduce `N ε lam H _ _ σ hp hσ h hg hthr` and use `ReciprocityTheory.ChartRestriction.DS.final_lowKMultOneG N ε lam H σ hp hσ h hg hthr`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lowest_K_type_mult_one_of_gaps : Formalism.MainNotions.DiscreteSeriesWeylDimension.LowKMultOneG :=
   fun N ε lam H _ _ σ hp hσ h hg hthr => ReciprocityTheory.ChartRestriction.DS.final_lowKMultOneG N ε lam H σ hp hσ h hg hthr

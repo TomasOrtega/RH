@@ -6,17 +6,17 @@ open GlobalTheory.SeqCx Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V F G x hx p c hc hbd`. Set `cone : (List V →₀ ℤ) →ₗ[ℤ] (List V →₀ ℤ)` to `Finsupp.lmapDomain ℤ ℤ (fun l : List V => x :: l)`. Establish `hcone : ∀ l : List V, cone (Finsupp.single l 1) = Finsupp.single (x :: l) 1`. Introduce `l`. Simplify using `[cone, Finsupp.mapDomain_single]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hs : ∀ l : List V, bd V (cone (Finsupp.single l 1)) = Finsupp.single l 1 - cone (bd V (Finsupp.single l 1))`. Introduce `l`. Rewrite using `[hcone]`. Simplify using `only [bd, Finsupp.linearCombination_single, one_smul, List.length_cons, Finset.sum_range_succ', List.eraseIdx_cons_succ, List.eraseIdx_cons_zero, pow_zero, map_sum, map_zsmul, hcone, pow_succ, mul_neg_one, neg_smul, Finset.sum_neg_distrib]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `key : ∀ d : List V →₀ ℤ, bd V (cone d) = d - cone (bd V d)`. Introduce `d`. Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[map_add, map_add, hf, hg, map_add, map_add]`. Normalize the expressions using the abelian group laws. Consider the case `single l n`. Rewrite using `[← Finsupp.smul_single_one]`. Simplify using `only [map_zsmul, hs, smul_sub]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨cone c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[chains, Finsupp.mem_supported]`. Introduce `l hl`. Establish `hl'` using `Finsupp.mapDomain_support hl`. Take `⟨m, hm, rfl⟩` from `Finset.mem_image.mp hl'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm'` using `(Finsupp.mem_supported _ _).mp hc hm`. Conclude with `⟨hx m hm'.1, by simp [hm'.2]⟩`. Rewrite using `[key, hbd, map_zero, sub_zero]`.
+Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem cone_cycle_isBoundary : ∀ (V : Type) (F G : Set (List V)) (x : V), (∀ l ∈ G, x :: l ∈ F) →
     ∀ (p : ℕ), ∀ c ∈ chains G p, bd V c = 0 → ∃ b ∈ chains F (p + 1), bd V b = c := by
@@ -58,7 +58,7 @@ end GlobalTheory
 section
 open GlobalTheory.SeqCx Matrix
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.cone_cycle_isBoundary`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.seqChain_cycle_bounded_by_cone : ∀ (V : Type) (F G : Set (List V)) (x : V), (∀ l ∈ G, x :: l ∈ F) → ∀ (p : ℕ), ∀ c ∈ chains G p, bd V c = 0 → ∃ b ∈ chains F (p + 1), bd V b = c := by
   first

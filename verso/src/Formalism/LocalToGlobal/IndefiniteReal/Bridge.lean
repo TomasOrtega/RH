@@ -31,7 +31,7 @@ def AdForms (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ)
 def stab (J : Subgroup G) (y : G) : Subgroup Γ := J.comap ((MulAut.conj y⁻¹).toMonoidHom.comp ι)
 
 /- English proof (translation)
-Simplify using `[stab, MulAut.conj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_stab {J : Subgroup G} {y : G} {γ : Γ} : γ ∈ stab ι J y ↔ y⁻¹ * ι γ * y ∈ J := by
   simp [stab, MulAut.conj_apply]
@@ -40,7 +40,7 @@ def stabK {J : Subgroup G} {y : G} (γ : stab ι J y) : J :=
   ⟨(y⁻¹ * ι (γ : Γ) * y)⁻¹, J.inv_mem ((mem_stab ι).1 γ.2)⟩
 
 /- English proof (translation)
-Simplify using `only [stabK]`. Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stabK_spec {J : Subgroup G} {y : G} (γ : stab ι J y) : ι (γ : Γ) * y * (stabK ι γ : G) = y := by
   simp only [stabK]
@@ -97,7 +97,7 @@ def decG (h : G) : Γ := (P.reps h).exists.choose_spec.choose
 def decK (h : G) : J := (P.reps h).exists.choose_spec.choose_spec.choose
 
 /- English proof (translation)
-Conclude with `(P.reps h).exists.choose_spec.choose_spec.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem dec_spec (h : G) : h = ι (P.decG h) * P.y (P.decC h) * (P.decK h : G) := by
   exact (P.reps h).exists.choose_spec.choose_spec.choose_spec

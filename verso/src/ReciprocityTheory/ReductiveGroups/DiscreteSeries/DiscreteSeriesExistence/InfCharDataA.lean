@@ -22,20 +22,20 @@ section Gen
 variable {M : Type*} [AddCommGroup M] [Module ℂ M]
 
 /- English proof (translation)
-The claim follows from `le_sInf fun _ hT => hT.1`.
+A detailed English derivation is pending.
 -/
 theorem le_gen (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M) : V ≤ genSub E V :=
   le_sInf fun _ hT => hT.1
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.2 fun T hT => hT.2 a b x (Submodule.mem_sInf.1 hx T hT)`.
+A detailed English derivation is pending.
 -/
 theorem gen_stable {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M} {x : M} (hx : x ∈ genSub E V)
     (a b : Fin n) : E a b x ∈ genSub E V :=
   Submodule.mem_sInf.2 fun T hT => hT.2 a b x (Submodule.mem_sInf.1 hx T hT)
 
 /- English proof (translation)
-The claim follows from `sInf_le ⟨h1, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_le {E : Fin n → Fin n → Module.End ℂ M} {V P : Submodule ℂ M} (h1 : V ≤ P)
     (h2 : ∀ a b, ∀ v ∈ P, E a b v ∈ P) : genSub E V ≤ P :=
@@ -44,7 +44,7 @@ theorem gen_le {E : Fin n → Fin n → Module.End ℂ M} {V P : Submodule ℂ M
 end Gen
 
 /- English proof (translation)
-The claim follows from `Submodule.le_topologicalClosure _ (Submodule.mem_map_of_mem hx)`.
+A detailed English derivation is pending.
 -/
 theorem mem_closGen {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {D : Submodule ℂ H}
     {E : Fin n → Fin n → Module.End ℂ D} {V : Submodule ℂ D} {x : D} (hx : x ∈ genSub E V) :
@@ -61,7 +61,7 @@ def ext (U : C₁ ≃ₗᵢ[ℂ] C₂) : H₁ →L[ℂ] H₂ :=
   C₂.subtypeL ∘L U.toLinearIsometry.toContinuousLinearMap ∘L C₁.orthogonalProjectionOnto
 
 /- English proof (translation)
-Use `show ((U (C₁.orthogonalProjectionOnto v) : C₂) : H₂) = _`. Conclude with `congrArg (fun z : C₁ => ((U z : C₂) : H₂)) (Submodule.orthogonalProjectionOnto_mem_subspace_eq_self (K := C₁) ⟨v, hv⟩)`.
+A detailed English derivation is pending.
 -/
 theorem ext_apply (U : C₁ ≃ₗᵢ[ℂ] C₂) (v : H₁) (hv : v ∈ C₁) : ext U v = ((U ⟨v, hv⟩ : C₂) : H₂) := by
   show ((U (C₁.orthogonalProjectionOnto v) : C₂) : H₂) = _
@@ -69,19 +69,19 @@ theorem ext_apply (U : C₁ ≃ₗᵢ[ℂ] C₂) (v : H₁) (hv : v ∈ C₁) : 
     (Submodule.orthogonalProjectionOnto_mem_subspace_eq_self (K := C₁) ⟨v, hv⟩)
 
 /- English proof (translation)
-The claim follows from `ext_apply U z z.2`.
+A detailed English derivation is pending.
 -/
 theorem ext_apply' (U : C₁ ≃ₗᵢ[ℂ] C₂) (z : C₁) : ext U (z : H₁) = ((U z : C₂) : H₂) :=
   ext_apply U z z.2
 
 /- English proof (translation)
-The claim follows from `(U (C₁.orthogonalProjectionOnto v)).2`.
+A detailed English derivation is pending.
 -/
 theorem ext_mem (U : C₁ ≃ₗᵢ[ℂ] C₂) (v : H₁) : ext U v ∈ C₂ :=
   (U (C₁.orthogonalProjectionOnto v)).2
 
 /- English proof (translation)
-Rewrite `h` using `[ext_apply U v hv, ext_apply U w hw]`. Use `U.injective (Subtype.ext h)` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ext_inj (U : C₁ ≃ₗᵢ[ℂ] C₂) {v w : H₁} (hv : v ∈ C₁) (hw : w ∈ C₁) (h : ext U v = ext U w) : v = w := by
   rw [ext_apply U v hv, ext_apply U w hw] at h
@@ -89,7 +89,7 @@ theorem ext_inj (U : C₁ ≃ₗᵢ[ℂ] C₂) {v w : H₁} (hv : v ∈ C₁) (h
   exact congrArg Subtype.val this
 
 /- English proof (translation)
-Rewrite using `[ext_apply U _ (hst g hg x hx), ext_apply U x hx]`. Conclude with `hU g hg _ _ rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_intertw {σ₁ : Matrix (Fin n) (Fin n) ℂ → (H₁ →L[ℂ] H₁)} {σ₂ : Matrix (Fin n) (Fin n) ℂ → (H₂ →L[ℂ] H₂)}
     {G : Set (Matrix (Fin n) (Fin n) ℂ)} (U : C₁ ≃ₗᵢ[ℂ] C₂)
@@ -110,7 +110,7 @@ variable {ε : Fin n → Bool}
   {σ₂ : Matrix (Fin n) (Fin n) ℂ → (H₂ →L[ℂ] H₂)} {D₂ : Submodule ℂ H₂} {E₂ : Fin n → Fin n → Module.End ℂ D₂}
 
 /- English proof (translation)
-Establish `h1` using `(Φ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hD₁.deriv X hX x)`. Establish `h2` using `hD₂.deriv X hX y`. Use `h1.unique (h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_))` and prove the remaining obligations. Use `show Φ (σ₁ (NormedSpace.exp ((t : ℂ) • X)) (x : H₁)) = σ₂ (NormedSpace.exp ((t : ℂ) • X)) (y : H₂)`. Rewrite using `[hint _ (exp_smul_mem_UJset hX t) _ hx, hxy]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_actM (hD₁ : IsDerivedOn ε σ₁ D₁ E₁) (hD₂ : IsDerivedOn ε σ₂ D₂ E₂) (Φ : H₁ →L[ℂ] H₂)
     (C₁ : Submodule ℂ H₁) (hint : ∀ g ∈ UJset ε, ∀ x ∈ C₁, Φ (σ₁ g x) = σ₂ g (Φ x))
@@ -124,7 +124,7 @@ theorem map_actM (hD₁ : IsDerivedOn ε σ₁ D₁ E₁) (hD₂ : IsDerivedOn �
   rw [hint _ (exp_smul_mem_UJset hX t) _ hx, hxy]
 
 /- English proof (translation)
-Rewrite using `[← matrixAction_smul, ← matrixAction_add, ← matrix_decomp_lieAlgebra ε (Matrix.single a b (1 : ℂ)), matrixAction_single]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem E_eq_actM {M : Type*} [AddCommGroup M] [Module ℂ M] (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) :
@@ -134,7 +134,7 @@ theorem E_eq_actM {M : Type*} [AddCommGroup M] [Module ℂ M] (ε : Fin n → Bo
   rw [← matrixAction_smul, ← matrixAction_add, ← matrix_decomp_lieAlgebra ε (Matrix.single a b (1 : ℂ)), matrixAction_single]
 
 /- English proof (translation)
-Rewrite using `[E_eq_actM ε E₁ a b, E_eq_actM ε E₂ a b]`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul, map_add, map_smul]`. Rewrite using `[map_actM hD₁ hD₂ Φ C₁ hint (hermPart_mem_lieAlgebra ε _) x hx y hxy, map_actM hD₁ hD₂ Φ C₁ hint (hermPart_mem_lieAlgebra_var ε _) x hx y hxy]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_E (hD₁ : IsDerivedOn ε σ₁ D₁ E₁) (hD₂ : IsDerivedOn ε σ₂ D₂ E₂) (Φ : H₁ →L[ℂ] H₂)
     (C₁ : Submodule ℂ H₁) (hint : ∀ g ∈ UJset ε, ∀ x ∈ C₁, Φ (σ₁ g x) = σ₂ g (Φ x))
@@ -154,19 +154,17 @@ variable {ε : Fin n → Bool}
   {H₂ : Type*} [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂] {σ₂ : Matrix (Fin n) (Fin n) ℂ → (H₂ →L[ℂ] H₂)}
 
 /- English proof (translation)
-Take `⟨hfd, hK, hirr, ⟨v, hvS, hv0, hvw⟩, hdom⟩` from `h`. Use `hfd` as an intermediate fact. Establish `hK' : ∀ g, g ∈ Formalism.REAL.Kset ε → g ∈ Kset ε` using `fun g hg => by rwa [mir_Kset_eq] at hg`. Establish `hne : ∀ x ∈ S, x ≠ 0 → Φ x ≠ 0`. Introduce `x hx hx0 h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx0 (hinj x (hS hx) 0 (zero_mem _) (by rw [h0, map_zero]))`. Use `⟨inferInstance, ?_, ?_, ⟨Φ v, Submodule.mem_map_of_mem hvS, hne v hvS hv0, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg _ ⟨x, hx, rfl⟩`. Conclude with `⟨σ₁ g x, hK g hg x hx, hint g (hK' g hg) x (hS hx)⟩`. Introduce `S' hS' hS'K`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hT : ∀ g ∈ Formalism.REAL.Kset ε, ∀ x ∈ S ⊓ S'.comap Φ, σ₁ g x ∈ S ⊓ S'.comap Φ`. Introduce and unpack `g hg x ⟨hx, hx'⟩`. Use `⟨hK g hg x hx, ?_⟩` and prove the remaining obligations. Use `show Φ (σ₁ g x) ∈ S'`. Rewrite using `[hint g (hK' g hg) x (hS hx)]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hS'K g hg _ hx'`. Break down `hirr (S ⊓ S'.comap Φ) inf_le_left hT with h0 | h1` into its components or cases. Use `left`. Use `(Submodule.eq_bot_iff _).2 fun y hy => ?_` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `hS' hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: x ∈ S ⊓ S'.comap Φ` using `⟨hx, hy⟩`. Rewrite `this` using `[h0, Submodule.mem_bot]`. Rewrite using `[this, map_zero]`. Use `right`. Use `le_antisymm hS' ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `: x ∈ S ⊓ S'.comap Φ` using `by rw [h1]; exact hx`. Conclude with `this.2`. Introduce `θ hθ`. Rewrite using `[← hint _ (hK' _ hθ) v (hS hvS), hvw θ hθ, map_smul]`.
-
-Introduce and unpack `μ _ ⟨x, hx, rfl⟩ hx0 hw`. Use `hdom μ x hx (fun h0 => hx0 (by rw [h0, map_zero])) fun θ hθ => ?_` and prove the remaining obligations. Use `hinj _ (hst _ (hK' _ hθ) x (hS hx)) _ (C₁.smul_mem _ (hS hx)) ?_` and prove the remaining obligations. Rewrite using `[hint _ (hK' _ hθ) x (hS hx), hw θ hθ, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ktype_map (C₁ : Submodule ℂ H₁) (Φ : H₁ →ₗ[ℂ] H₂)
     (hinj : ∀ x ∈ C₁, ∀ y ∈ C₁, Φ x = Φ y → x = y)

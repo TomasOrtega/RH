@@ -11,9 +11,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.HoweLocal
 
 /- English proof (translation)
-Use `⟨Units.map (Algebra.TensorProduct.map f (AlgHom.id F E) : A ⊗[F] E →* B ⊗[F] E) z, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_inv_mul_iff_mul_eq]`. Use `ext`. Rewrite using `[← hy, h]`. Express the relevant statement in the definitionally equal form `algebraMap F B t * Algebra.norm B (Algebra.TensorProduct.map f (AlgHom.id F E) (z : A ⊗[F] E)) = f (algebraMap F A t * Algebra.norm A (z : A ⊗[F] E))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[norm_map_tensor, map_mul, AlgHom.commutes]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_div_mem_normGroup {F E A B : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     [CommRing A] [CommRing B] [Algebra F A] [Algebra F B] (f : A →ₐ[F] B) (x : Aˣ) (t : Fˣ) (z : (A ⊗[F] E)ˣ)
@@ -29,15 +29,13 @@ theorem map_div_mem_normGroup {F E A B : Type} [Field F] [Field E] [Algebra F E]
   rw [norm_map_tensor, map_mul, AlgHom.commutes]
 
 /- English proof (translation)
-Use `haveI : Algebra.IsQuadraticExtension F E := ⟨h2⟩`. Establish `hP` using `((hC.1 F E).2.2.2 t).2`. Establish `hfin : ∀ u : Pl F, u ≠ v → GlobalTheory.QuadSymbol.eta F E (u.adicCompletion F) (GlobalTheory.QuadSymbol.finDiag F t u) = 1`. Introduce `u hu`. Use `map_div_mem_normGroup (evFin F u) _ t z h 1 (by` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[liftUF_val, map_add, map_one, show evFin F u (GlobalTheory.LatVac.liftV v ((a : Fv F v) - 1)) = 0 from evalV_singleFin_ne hu _, add_zero]`. Use the proof step `rfl)`. Rewrite `this` using `[mul_one, inv_mem_iff]`. Conclude with `GlobalTheory.QuadSymbol.eta_eq_one_iff.2 this`. Establish `hinf : ∀ w : InfinitePlace F, GlobalTheory.QuadSymbol.eta F E w.Completion (GlobalTheory.QuadSymbol.infDiag F t w) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Use `map_div_mem_normGroup (evInf F w) _ t z h 1 (by` as an intermediate fact. Rewrite using `[liftUF_val, map_add, map_one, show evInf F w (GlobalTheory.LatVac.liftV v ((a : Fv F v) - 1)) = 0 from map_zero (GlobalTheory.AutFunCompare.evW w), add_zero]`. Use the proof step `rfl)`. Rewrite `this` using `[mul_one, inv_mem_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.QuadSymbol.eta_eq_one_iff.2 this`. Unfold `GlobalTheory.QuadSymbol.etaProd at hP`. Rewrite `hP` using `[Finset.prod_eq_one fun w _ => hinf w, mul_one, finprod_eq_single _ v hfin]`. Establish `ht` using `GlobalTheory.QuadSymbol.eta_eq_one_iff.1 hP`. Establish `hv` using `map_div_mem_normGroup (evFin F v) _ t z h a (by`.
-
-Rewrite using `[liftUF_val, map_add, map_one, GlobalTheory.LatVac.evFin_liftV, add_sub_cancel])`. Use `mul_mem ht hv` as an intermediate fact. Rewrite `this` using `[show GlobalTheory.QuadSymbol.finDiag F t v = GlobalTheory.QuadSymbol.toUnits F (Fv F v) t from rfl, mul_inv_cancel_left]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_localNorms_of_liftUF_eq (hC : GlobalTheory.Published.QuadraticClassFieldTheory)
     (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (h2 : Module.finrank F E = 2)

@@ -16,9 +16,7 @@ variable {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
 open scoped Matrix.Norms.L2Operator in
 
 /- English proof (translation)
-Use `⟨‖J‖₊ * ‖P‖₊ + ‖K‖₊, fun x h h1 hx => ?_⟩` and prove the remaining obligations. Establish `hx' : ‖x‖₊ ≤ h` using `hx`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(Matrix.l2_opNNNorm_mul _ _).trans (by gcongr; exact Matrix.l2_opNNNorm_mul _ _)`. Use `_ ≤ ‖J‖₊ * h * ‖P‖₊ + ‖K‖₊ * h := by gcongr`.
-
-Conclude with `le_mul_of_one_le_right (by positivity) h1`. Use `_ = (‖J‖₊ * ‖P‖₊ + ‖K‖₊) * h := by ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_opNorm_le (J : Matrix n m ℂ) (P : Matrix m n ℂ) (K : Matrix n n ℂ) :
     ∃ c : ℝ≥0, ∀ (x : Matrix m m ℂ) (h : ℝ≥0), 1 ≤ h → opNorm x ≤ h → opNorm (J * x * P + K) ≤ c * h := by
@@ -35,9 +33,9 @@ theorem exists_opNorm_le (J : Matrix n m ℂ) (P : Matrix m n ℂ) (K : Matrix n
     _ = (‖J‖₊ * ‖P‖₊ + ‖K‖₊) * h := by ring
 
 /- English proof (translation)
-Establish `hx1 : 1 ≤ htOf N₁ x` using `one_le_htOf N₁ x`. Establish `hc1 : 1 ≤ c * htOf N₁ x` using `one_le_mul_of_one_le_of_one_le hc hx1`. Use `show max 1 (max (N (X : Matrix n n R)) (N ((X⁻¹ : GL n R) : Matrix n n R))) ≤ c * htOf N₁ x`. Use `max_le hc1 (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hN _ _ hx1 (le_htOf N₁ x)`. Rewrite using `[h2]`. Conclude with `hN _ _ hx1 (inv_le_htOf N₁ x)`.
+A detailed English derivation is pending.
 -/
 theorem htOf_le {R : Type} [CommRing R] {N₁ : Matrix m m R → ℝ≥0} {N : Matrix n n R → ℝ≥0}
     {f : Matrix m m R → Matrix n n R} {c : ℝ≥0} (hc : 1 ≤ c)
@@ -56,9 +54,9 @@ theorem htOf_le {R : Type} [CommRing R] {N₁ : Matrix m m R → ℝ≥0} {N : M
 variable (F : Type) [Field F] [NumberField F] {E : Type} [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hτ : ∀ τ : EmbOver E w, ∃ c : ℝ≥0, ∀ (x : Matrix m m ℂ) (h : ℝ≥0), 1 ≤ h → opNorm x ≤ h → opNorm (J.map (infEmb τ) * x * P.map (infEmb τ) + K.map (infEmb τ)) ≤ c * h` using `fun τ => GlobalTheory.EmbHeight.exists_opNorm_le _ _ _`. Use `choose c hc using hτ`. Use `⟨max 1 (Finset.univ.sup c), le_max_left _ _, fun x h h1 hx => ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[normInf_le_iff]`. Introduce `τ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_add _ (map_add _), Matrix.map_mul, Matrix.map_mul]`. Use `(hc τ _ h h1 (hx τ)).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `(Finset.le_sup (Finset.mem_univ τ)).trans (le_max_right _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_normInf_le (w : InfinitePlace F) (J : Matrix n m (w.Completion ⊗[F] E))
     (P : Matrix m n (w.Completion ⊗[F] E)) (K : Matrix n n (w.Completion ⊗[F] E)) :
@@ -78,7 +76,7 @@ theorem exists_normInf_le (w : InfinitePlace F) (J : Matrix n m (w.Completion �
   exact (Finset.le_sup (Finset.mem_univ τ)).trans (le_max_right _ _)
 
 /- English proof (translation)
-Rewrite using `[normFin_le_iff]`. Introduce `i j`. Conclude with `(absFin_add_le F v _ _).trans (max_le_max (absFin_le_normFin F v a i j) (absFin_le_normFin F v b i j))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma normFin_add_le_max (v : HeightOneSpectrum (𝓞 F)) {p q : Type} [Fintype p] [Fintype q]
     (a b : Matrix p q (Fv F v ⊗[F] E)) : normFin F v (a + b) ≤ max (normFin F v a) (normFin F v b) := by
@@ -89,7 +87,7 @@ private lemma normFin_add_le_max (v : HeightOneSpectrum (𝓞 F)) {p q : Type} [
 omit [DecidableEq m] [DecidableEq n] in
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `max_le ?_ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `(le_max_left _ _).trans (le_max_right _ _)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem normFin_le (v : HeightOneSpectrum (𝓞 F)) (J : Matrix n m (Fv F v ⊗[F] E))
     (P : Matrix m n (Fv F v ⊗[F] E)) (K : Matrix n n (Fv F v ⊗[F] E))
@@ -113,7 +111,7 @@ theorem normFin_le (v : HeightOneSpectrum (𝓞 F)) (J : Matrix n m (Fv F v ⊗[
 omit [DecidableEq m] [DecidableEq n] in
 
 /- English proof (translation)
-Establish `hall : ∀ᶠ v in Filter.cofinite, ∀ p : m × n, absFin F v (compFin F E v (y p.1 p.2)) ≤ 1` using `Filter.eventually_all.2 fun p => eventually_absFin_le_one F (y p.1 p.2)`. Use `filter_upwards [hall] with v hv`. Rewrite using `[normFin_le_iff]`. Introduce `i j`. Conclude with `hv (i, j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eventually_normFin_le (y : Matrix m n (AF F ⊗[F] E)) :
     ∀ᶠ v in Filter.cofinite, normFin F v (y.map (compFin F E v)) ≤ 1 := by
@@ -125,7 +123,7 @@ theorem eventually_normFin_le (y : Matrix m n (AF F ⊗[F] E)) :
   exact hv (i, j)
 
 /- English proof (translation)
-Rewrite using `[h, Matrix.map_add _ (map_add φ), Matrix.map_mul, Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma matrix_map_eq_of_eq {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') {p q : Type} [Fintype p]
     [Fintype q] (J : Matrix q p R) (P : Matrix p q R) (K : Matrix q q R) (X : Matrix q q R) (x : Matrix p p R)
@@ -133,15 +131,13 @@ private lemma matrix_map_eq_of_eq {R R' : Type} [CommRing R] [CommRing R'] (φ :
   rw [h, Matrix.map_add _ (map_add φ), Matrix.map_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Establish `hinf : ∀ w : InfinitePlace F, ∃ c : ℝ≥0, 1 ≤ c ∧ ∀ (x : Matrix m m (w.Completion ⊗[F] E)) (h : ℝ≥0), 1 ≤ h → normInf F w x ≤ h → normInf F w (J.map (compInf F E w) * x * P.map (compInf F E w) + K.map (compInf F E w)) ≤ c * h` using `fun w => GlobalTheory.EmbHeight.exists_normInf_le F w _ _ _`. Use `choose c hc1 hc using hinf`. Set `M : HeightOneSpectrum (𝓞 F) → ℝ≥0` to `fun v => max 1 (max (normFin F v (J.map (compFin F E v)) * normFin F v (P.map (compFin F E v))) (normFin F v (K.map (compFin F E v))))`. Establish `hM1 : ∀ v, 1 ≤ M v` using `fun v => le_max_left _ _`. Establish `hMfin : (Function.mulSupport M).Finite`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(GlobalTheory.EmbHeight.eventually_normFin_le F J).and ((GlobalTheory.EmbHeight.eventually_normFin_le F P).and (GlobalTheory.EmbHeight.eventually_normFin_le F K))`. Use `(Filter.eventually_cofinite.1 h3).subset ?_` and prove the remaining obligations. Introduce `v hv hv3`. Conclude with `hv (max_eq_left (max_le (mul_le_one' hv3.1 hv3.2.1) hv3.2.2))`. Use `⟨(∏ w, c w) * ∏ᶠ v, M v, fun X x hX hXi => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key_inf : ∀ w, htInf F w (Formalism.UG.bc (compInf F E w) X) ≤ c w * htInf F w (Formalism.UG.bc (compInf F E w) x)` using `fun w => GlobalTheory.EmbHeight.htOf_le (hc1 w) (hc w) _ _ (matrix_map_eq_of_eq _ _ _ _ _ _ hX) (matrix_map_eq_of_eq _ _ _ _ _ _ hXi)`. Establish `key_fin : ∀ v, htFin F v (Formalism.UG.bc (compFin F E v) X) ≤ M v * htFin F v (Formalism.UG.bc (compFin F E v) x)` using `fun v => GlobalTheory.EmbHeight.htOf_le (hM1 v) (fun y h h1 hy => GlobalTheory.EmbHeight.normFin_le F v _ _ _ y h h1 hy) _ _ (matrix_map_eq_of_eq _ _ _ _ _ _ hX) (matrix_map_eq_of_eq _ _ _ _ _ _ hXi)`. Establish `hfinX` using `finite_mulSupport_htFin F X`. Establish `hfinx` using `finite_mulSupport_htFin F x`. Establish `hI : ∏ w, htInf F w (Formalism.UG.bc (compInf F E w) X) ≤ (∏ w, c w) * ∏ w, htInf F w (Formalism.UG.bc (compInf F E w) x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_le_prod' fun w _ => key_inf w`. Establish `hF : ∏ᶠ v, htFin F v (Formalism.UG.bc (compFin F E v) X) ≤ (∏ᶠ v, M v) * ∏ᶠ v, htFin F v (Formalism.UG.bc (compFin F E v) x)`. Rewrite using `[← finprod_mul_distrib hMfin hfinx]`. Conclude with `finprod_le_finprod' hfinX ((hMfin.union hfinx).subset (Function.mulSupport_mul _ _)) fun v => key_fin v`.
-
-Unfold `heightGL`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_heightGL_le (J : Matrix n m (AF F ⊗[F] E)) (P : Matrix m n (AF F ⊗[F] E))
     (K : Matrix n n (AF F ⊗[F] E)) :
@@ -188,13 +184,11 @@ theorem exists_heightGL_le (J : Matrix n m (AF F ⊗[F] E)) (P : Matrix m n (AF 
     _ = _ := by ring
 
 /- English proof (translation)
-Introduce `D S A B o`. Take `⟨C, hC⟩` from `GlobalTheory.EmbHeight.exists_heightGL_le D.host.F o.jA o.pA (o.jB * o.pB)`. Use `⟨(C : ℝ), 1, fun g => ?_⟩` and prove the remaining obligations. Establish `e : ∀ a : GA D A, (Formalism.L2.Theta.matHom S (o.emb (a, 1)) : Matrix (Fin S.rank) (Fin S.rank) (AF D.host.F ⊗[D.host.F] D.host.E)) = o.jA * (Formalism.L2.Theta.matHom A a : Matrix (Fin A.rank) (Fin A.rank) (AF D.host.F ⊗[D.host.F] D.host.E)) * o.pA + o.jB * o.pB`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm` using `o.mt_emb a 1`. Rewrite `hm` using `[GlobalTheory.MixModel.mt_one, Matrix.mul_one]`. Conclude with `hm`. Establish `hinv : o.emb (g⁻¹, 1) = (o.emb (g, 1))⁻¹`. Rewrite using `[← map_inv, Prod.inv_mk, inv_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `e g⁻¹`. Rewrite `e2` using `[hinv, map_inv, map_inv]`. Establish `key` using `hC _ _ (e g) e2`. Unfold `GlobalTheory.Grow.height`. Rewrite using `[pow_one]`.
-
-Conclude with `key` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_emb_le : ∀ (D : D7) (S A B : HSp D) (o : GlobalTheory.MixModel.OrthDec S A B), ∃ (C : ℝ) (a : ℕ),
     ∀ g : GA D A, GlobalTheory.Grow.height S (o.emb (g, 1)) ≤ C * GlobalTheory.Grow.height A g ^ a := by

@@ -17,7 +17,7 @@ def fockL {τ K : Type} [CommRing K] (Q : MvPolynomial τ K) : MvPolynomial τ K
   map_smul' c a := by simpa using tsact_smul_left c a Q
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.G.Model.TS.fockR, coeff_add, mul_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fockR_add_right {τ K : Type} [CommRing K] (g f f' : MvPolynomial τ K) :
     fockR g (f + f') = fockR g f + fockR g f' := by
@@ -33,7 +33,7 @@ def LatM (O : Type) {Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf] {n' m : �
   tensorLat O Kf (fun s => nablaLTw O Kf m (letterWt m (d s) (vecE n' s)) (M s))
 
 /- English proof (translation)
-Unfold `VS Vsp`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[flat_lam (vecE n') d (flW d) (isFlat_flW d) s, if_pos (letterWt_anti _ _ _)]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem VS_eq (Kf : Type) [Field Kf] {n' m : ℕ} (d : Fin n' → ℕ) :
     VS Kf m (vecE n') d = Vsp Kf (flW (m := m) d) := by
@@ -43,7 +43,7 @@ theorem VS_eq (Kf : Type) [Field Kf] {n' m : ℕ} (d : Fin n' → ℕ) :
   rw [flat_lam (vecE n') d (flW d) (isFlat_flW d) s, if_pos (letterWt_anti _ _ _)]
 
 /- English proof (translation)
-Unfold `Hten`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[flat_lam (vecE n') d (flW d) (isFlat_flW d) s]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem Hten_flW (O : Type) {Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf] {n' m : ℕ} (d : Fin n' → ℕ)
     (Λ : Fin n' → Submodule O (Fin (m + 1) → Kf)) :
@@ -54,13 +54,13 @@ theorem Hten_flW (O : Type) {Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf] {
   rw [flat_lam (vecE n') d (flW d) (isFlat_flW d) s]
 
 /- English proof (translation)
-Establish `hV : ∀ P : ↥(Pol Kf (ι` using `Fin n') (m + 1) d), Th0 Kf m (vecE n') (P : MvPolynomial (Fin n' × Fin (m + 1)) Kf) ∈ Vsp Kf (flW (m := m) d) := by`. Introduce `P`. Rewrite using `[← VS_eq]`. Conclude with `(mem_tens_dw Kf m hm (vecE n') d _).mpr ⟨P, P.2, rfl⟩`. Set `f : ↥(Pol Kf (ι` to `Fin n') (m + 1) d) →ₗ[Kf] ↥(Vsp Kf (flW (m := m) d)) := LinearMap.codRestrict _ ((Th0 Kf m (vecE n')).toLinearMap.comp (Pol Kf (ι := Fin n') (m + 1) d).subtype) hV`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective f`. Introduce `P Q h`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h'` using `congrArg Subtype.val h`. Conclude with `Th0_inj Kf m hm (vecE n') d _ _ P.2 Q.2 h'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsurj : Function.Surjective f`. Introduce `y`. Establish `hy : (y : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) ∈ VS Kf m (vecE n') d`. Rewrite using `[VS_eq]`. Conclude with `y.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨F, hF, hFy⟩` from `(mem_tens_dw Kf m hm (vecE n') d _).mp hy`. Conclude with `⟨⟨F, hF⟩, Subtype.ext hFy.symm⟩`. Conclude with `⟨LinearEquiv.ofBijective f ⟨hinj, hsurj⟩, fun P => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_thK (Kf : Type) [Field Kf] {n' m : ℕ} (hm : 1 ≤ m) (d : Fin n' → ℕ) :
     ∃ thK : ↥(Pol Kf (ι := Fin n') (m + 1) d) ≃ₗ[Kf] ↥(Vsp Kf (flW (m := m) d)),
@@ -106,7 +106,7 @@ def TY (c : Kf) : ↥(Vsp Kf (flW (m := m) d)) →ₗ[Kf] Module.Dual Kf ↥(Vsp
     ring
 
 /- English proof (translation)
-Simplify using `[TY, fockL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem TY_apply (c : Kf) (P Q : ↥(Pol Kf (ι := Fin n') (m + 1) d)) :
     TY thK c (thK Q) (thK P) = c * fockR (P : MvPolynomial (Fin n' × Fin (m + 1)) Kf)
@@ -114,13 +114,13 @@ theorem TY_apply (c : Kf) (P Q : ↥(Pol Kf (ι := Fin n') (m + 1) d)) :
   simp [TY, fockL]
 
 /- English proof (translation)
-Distinguish the cases in `hD0 : (((∏ s, (d s).factorial : ℕ) : ℕ) : Kf) = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[hD0, div_zero, zero_mul, map_zero]`. Establish `hw : ∀ μ : Fin n' × Fin (m + 1) →₀ ℕ, ∃ w : O, μ ∈ G.support → (p : O) ^ κ * ((∏ j ∈ μ.support, (μ j).factorial : ℕ) : O) = ((∏ s, (d s).factorial : ℕ) : O) * w`. Introduce `μ`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hμ : μ ∈ G.support`. Take `⟨w, hw⟩` from `hMD μ ((mem_Pol.mp hG) μ hμ)`. Conclude with `⟨w, fun _ => hw⟩`. Conclude with `⟨0, fun h => absurd h hμ⟩`. Use `choose w hw using hw`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ μ ∈ G.support, coeff μ G * coeff μ E * w μ, ?_⟩` and prove the remaining obligations. Rewrite using `[fockR_eq_sum _ _ G.support (support_map_subset _ _), Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `μ hμ`. Establish `h` using `congrArg (algebraMap O Kf) (hw μ hμ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_pow, map_natCast] at h`. Simplify using `only [coeff_map, map_mul]`. Rewrite using `[div_mul_eq_mul_div, div_eq_iff hD0]`. Take the linear combination `(algebraMap O Kf (coeff μ G) * algebraMap O Kf (coeff μ E)) * h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem int_pair (p κ : ℕ) (hMD : MultDiv O p κ (k := m + 1) d) (G : MvPolynomial (Fin n' × Fin (m + 1)) O)
     (hG : G ∈ Pol O (m + 1) d) (E : MvPolynomial (Fin n' × Fin (m + 1)) O) :
@@ -149,13 +149,13 @@ theorem int_pair (p κ : ℕ) (hMD : MultDiv O p κ (k := m + 1) d) (G : MvPolyn
   linear_combination (algebraMap O Kf (coeff μ G) * algebraMap O Kf (coeff μ E)) * h
 
 /- English proof (translation)
-Take `⟨F, hF, hFu⟩` from `(mem_tens_nabla O Kf m hm (vecE n') d M hM _).mp hu`. Establish `hM' : ∀ s, IsUnit (((M s)⁻¹).transpose).det` using `fun s => by`. Rewrite using `[Matrix.det_transpose]`. Conclude with `Matrix.isUnit_nonsing_inv_det _ (hM s)`. Take `⟨G, hG, hGy⟩` from `(mem_tens_nabla O Kf m hm (vecE n') d _ hM' _).mp hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hP : ((thK.symm u : ↥(Pol Kf (ι` using `Fin n') (m + 1) d)) : MvPolynomial (Fin n' × Fin (m + 1)) Kf) = Lin (fun s => Aa (vecE n' s) (M s)⁻¹) (map (algebraMap O Kf) F) := by`. Apply `Th0_inj Kf m hm (vecE n') d _ _ (thK.symm u).2 (Lin_Pol _ _ (map_Pol _ _ hF))` to reduce the goal to its premises. Rewrite using `[← hthK, LinearEquiv.apply_symm_apply, ← hFu]`. Establish `hQ : ((thK.symm y : ↥(Pol Kf (ι` using `Fin n') (m + 1) d)) : MvPolynomial (Fin n' × Fin (m + 1)) Kf) = Lin (fun s => Aa (vecE n' s) (((M s)⁻¹).transpose)⁻¹) (map (algebraMap O Kf) G) := by`. Apply `Th0_inj Kf m hm (vecE n') d _ _ (thK.symm y).2 (Lin_Pol _ _ (map_Pol _ _ hG))` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hthK, LinearEquiv.apply_symm_apply, ← hGy]`. Establish `e` using `TY_apply thK ((p : Kf) ^ κ / (((∏ s, (d s).factorial : ℕ) : ℕ) : Kf)) (thK.symm u) (thK.symm y)`. Rewrite `e` using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Take `⟨z, hz⟩` from `int_pair (Kf := Kf) p κ hMD F hF G`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hP, hQ, fockR_Lin_dual _ _ (fun s => Aa_dual (vecE n' s) (M s) (hM s))]`. Conclude with `hz.symm`.
+A detailed English derivation is pending.
 -/
 theorem sandwich (hm : 1 ≤ m)
     (hthK : ∀ P, ((thK P : ↥(Vsp Kf (flW (m := m) d))) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) =

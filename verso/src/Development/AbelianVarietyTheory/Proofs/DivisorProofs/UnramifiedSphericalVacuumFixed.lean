@@ -23,9 +23,9 @@ noncomputable section
 namespace GlobalTheory.SplitSphV
 
 /- English proof (translation)
-Take `⟨τ⟩` from `hv`. Establish `hmem : ∀ ρ : E →ₐ[F] Fv F v, (GlobalTheory.AdelicU.splitPrime ρ).asIdeal.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal`. Introduce `ρ`. Establish `h : (GlobalTheory.AdelicU.splitPrime ρ).asIdeal ∈ v.asIdeal.primesOver (𝓞 E)`. Rewrite using `[GlobalTheory.AdelicU.primesOver_eq_split hcm ρ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.mem_insert _ _`. Conclude with `h.2.over.symm`. Conclude with `⟨GlobalTheory.AdelicU.splitPrime τ, GlobalTheory.AdelicU.splitPrime (τ.comp σ), (GlobalTheory.AdelicU.splitPrime_comp_ne hcm τ).symm, hmem τ, hmem _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isSplit_of_nonempty {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {v : Pl F} (hv : Nonempty (E →ₐ[F] Fv F v)) :
@@ -42,15 +42,13 @@ theorem isSplit_of_nonempty {F E : Type} [Field F] [NumberField F] [Field E] [Nu
     (GlobalTheory.AdelicU.splitPrime_comp_ne hcm τ).symm, hmem τ, hmem _⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hsp hvT k hk`. Take `⟨hSB, hne, θ, hθ, hfix⟩` from `hT.geo.hM.vac v`. Take `⟨φ₁, hφ₁, hact⟩` from `GlobalTheory.T.weilRepresentationLocality_unitaryGroupV_pairVW F E σ B a a' G X om om' hT v k hk.1 _ hSB`. Establish `hfix₁` using `GlobalTheory.VacTransportLeft.transport_left F E σ B a a' G X om om' hT v k hk θ hθ _ hSB φ₁ hφ₁ hfix hact`. Use `set Λ := latAtV G.V G.W v with hΛ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set co := G.M.co with hco`. Establish `hAt : ∀ γ ∈ Λ, At (evFin F v) γ` using `(GlobalTheory.LatVac.latAtV_at_stable G.V G.W v).1`. Set `χ : Matrix (Fin a) (Fin (a + a')) (AE F E) → ℂ` to `fun γ => B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) γ γ)`. Establish `toSchr : ∀ f : (Fin a × Fin (a + a') → Fv F v) → ℂ, f ∈ SB _ → (∀ γ ∈ Λ, Acts (evFin F v) (co.rho B.ψ γ) f (χ γ • f)) → ∀ γ ∈ Λ, schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo co v γ) f = χ γ • f`. Introduce `f hf hA γ hγ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨r, hr, x₀, hx₀⟩` from `GlobalTheory.RestComplement.exists_rest_ne_zero v f hf`. Use function extensionality and compare the values at `ξ`. Establish `key` using `GlobalTheory.LatVac.heis_at_local_identity v co B.ψ γ f (χ γ) (hAt γ hγ) (hA γ hγ) r hr x₀ hx₀ ξ`. Rewrite `key` using `[← invOf_eq_inv]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hB` using `hT.base`. Take `⟨hop, hcpt⟩` from `GlobalTheory.LatOpenCptAny.main σ B G.V G.W _ _ _ _ hT.geo.hV hT.geo.hW co v`. Take `⟨c, hc⟩` from `GlobalTheory.HeisUniqLoc.eigen_unique v (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.VacAny.continuous_psiV hB.std.1 v) (GlobalTheory.PsiNontriv.psiAt_ne_one B.ψ hB.std v) (GlobalTheory.LatVac.locCo co v) Λ hop hcpt (fun w hw => GlobalTheory.LatSelfDualCo.latAtV_selfDual_locCo …`. Rewrite `hact` using `[hc]`. Establish `h1` using `GlobalTheory.T.split_place_vacuum_eigenvalue_one F E σ B a a' G X om om' hT v (isSplit_of_nonempty hB.cm hsp) hvT k hk c hact`.
-
-Rewrite `hact` using `[h1, one_smul]`. Conclude with `hact`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vacV_fixed_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

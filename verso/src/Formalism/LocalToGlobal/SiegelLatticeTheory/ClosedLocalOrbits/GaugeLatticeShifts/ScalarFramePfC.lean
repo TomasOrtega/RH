@@ -16,7 +16,7 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V)
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite using `[show y = e (e.symm y) from (e.apply_symm_apply y).symm, hiso]`. Conclude with `hx _ (h21 y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perp_map (e : V ≃ₗ[E] V) (hiso : ∀ v w, H.h (e v) (e w) = H.h v w) (X1 X2 : Submodule E V)
     (h21 : ∀ y ∈ X2, e.symm y ∈ X1) {x : V} (hx : x ∈ H.perp X1) : e x ∈ H.perp X2 := by
@@ -25,7 +25,7 @@ theorem perp_map (e : V ≃ₗ[E] V) (hiso : ∀ v w, H.h (e v) (e w) = H.h v w)
   exact hx _ (h21 y hy)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[← hiso, e.apply_symm_apply]`. Conclude with `hy _ (h12 x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perp_map_symm (e : V ≃ₗ[E] V) (hiso : ∀ v w, H.h (e v) (e w) = H.h v w) (X1 X2 : Submodule E V)
     (h12 : ∀ x ∈ X1, e x ∈ X2) {y : V} (hy : y ∈ H.perp X2) : e.symm y ∈ H.perp X1 := by
@@ -76,7 +76,7 @@ theorem qEquiv_mk (e : V ≃ₗ[E] V) (hiso : ∀ v w, H.h (e v) (e w) = H.h v w
       Submodule.Quotient.mk (perpEquiv H e hiso X1 X2 h12 h21 x) := rfl
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mk_eq_iff (X : Submodule E V) (x y : ↥(H.perp X)) :
     (Submodule.Quotient.mk x : ↥(H.perp X) ⧸ X.comap (H.perp X).subtype) = Submodule.Quotient.mk y ↔
@@ -84,7 +84,7 @@ theorem mk_eq_iff (X : Submodule E V) (x y : ↥(H.perp X)) :
   rw [Submodule.Quotient.eq, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub]
 
 /- English proof (translation)
-Rewrite using `[← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, mk_eq_iff]`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smul_mk_eq (X : Submodule E V) (c₁ c₂ : E) (x y : ↥(H.perp X)) (h : c₁ • (x : V) - c₂ • (y : V) ∈ X) :
     c₁ • (Submodule.Quotient.mk x : ↥(H.perp X) ⧸ X.comap (H.perp X).subtype) = c₂ • Submodule.Quotient.mk y := by
@@ -92,9 +92,9 @@ theorem smul_mk_eq (X : Submodule E V) (c₁ c₂ : E) (x y : ↥(H.perp X)) (h 
   simpa using h
 
 /- English proof (translation)
-Establish `hle : Submodule.span E (Set.range w) ≤ H.perp (Submodule.span E (Set.range w))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, mem_perp_span]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hw i j`. Introduce `a ha b hb`. Conclude with `hle ha b hb`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem iso_span {ι : Type} (w : ι → V) (hw : ∀ i j, H.h (w i) (w j) = 0) :
     ∀ a ∈ Submodule.span E (Set.range w), ∀ b ∈ Submodule.span E (Set.range w), H.h a b = 0 := by

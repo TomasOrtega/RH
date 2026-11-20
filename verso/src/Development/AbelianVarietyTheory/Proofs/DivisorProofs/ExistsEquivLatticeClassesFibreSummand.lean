@@ -14,7 +14,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.Slo
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `h1 : ((ε : 𝓞 F) : F) = 1` using `mul_right_cancel₀ hb (by rw [h, one_mul])`. Apply `Units.ext` to reduce the goal to its premises. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Simplify using `[h1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem unit_eq_one_of_mul {ε : (𝓞 F)ˣ} {b : F} (hb : b ≠ 0) (h : ((ε : 𝓞 F) : F) * b = b) : ε = 1 := by
   have h1 : ((ε : 𝓞 F) : F) = 1 := mul_right_cancel₀ hb (by rw [h, one_mul])
@@ -26,7 +26,7 @@ def pairOf {𝔞 𝔟 : Frac F} (x : Σ _β : NzCls 𝔟, (latM 𝔞 : Set F)) :
   ⟨((x.2 : F), rep x.1), x.2.2, rep_mem x.1, fun h => rep_ne_zero x.1 (congrArg Prod.snd h)⟩
 
 /- English proof (translation)
-The claim follows from `Quotient.exact (Quotient.out_eq (Quotient.mk (latRel 𝔞 𝔟) p)).symm`.
+A detailed English derivation is pending.
 -/
 theorem out_mk {𝔞 𝔟 : Frac F} (p : LatPair 𝔞 𝔟) :
     ∃ ε : (𝓞 F)ˣ, (Quotient.mk (latRel 𝔞 𝔟) p).out.1.1 = ((ε : 𝓞 F) : F) * p.1.1 ∧
@@ -34,13 +34,13 @@ theorem out_mk {𝔞 𝔟 : Frac F} (p : LatPair 𝔞 𝔟) :
   Quotient.exact (Quotient.out_eq (Quotient.mk (latRel 𝔞 𝔟) p)).symm
 
 /- English proof (translation)
-The claim follows from `right_ne_zero_of_mul_eq_one (unit_inv_mul ε)`.
+A detailed English derivation is pending.
 -/
 private lemma ringOfIntegers_unit_coe_ne_zero (ε : (𝓞 F)ˣ) : ((ε : 𝓞 F) : F) ≠ 0 :=
   right_ne_zero_of_mul_eq_one (unit_inv_mul ε)
 
 /- English proof (translation)
-Take `⟨ε, -, h2⟩` from `out_mk (pairOf x)`. Rewrite using `[h2]`. Conclude with `mul_ne_zero (ringOfIntegers_unit_coe_ne_zero ε) (rep_ne_zero x.1)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem out_mk_ne {𝔞 𝔟 : Frac F} (x : Σ _β : NzCls 𝔟, (latM 𝔞 : Set F)) :
     (Quotient.mk (latRel 𝔞 𝔟) (pairOf x)).out.1.2 ≠ 0 := by
@@ -53,9 +53,9 @@ def fibreMap (𝔞 𝔟 : Frac F) (x : Σ _β : NzCls 𝔟, (latM 𝔞 : Set F))
   ⟨Quotient.mk _ (pairOf x), out_mk_ne x⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨β, a⟩ ⟨β', a'⟩ h`. Establish `h' : Quotient.mk (latRel 𝔞 𝔟) (pairOf ⟨β, a⟩) = Quotient.mk (latRel 𝔞 𝔟) (pairOf ⟨β', a'⟩)` using `congrArg Subtype.val h`. Take `⟨ε, h1, h2⟩` from `Quotient.exact h'`. Establish `hβ : β = β'` using `(Quotient.out_eq (s := unitRel 𝔟) β).symm.trans ((Quotient.sound (s := unitRel 𝔟) (a := Quotient.out (s := unitRel 𝔟) β) (b := Quotient.out (s := unitRel 𝔟) β') ⟨ε, h2⟩).trans (Quotient.out_eq (s := unitRel 𝔟) β'))`. Substitute `hβ` using the available equality.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hε : ε = 1` using `unit_eq_one_of_mul (rep_ne_zero β) h2.symm`. Substitute `hε` using the available equality. Establish `haa : a = a'` using `Subtype.ext (by simpa [pairOf] using h1.symm)`. Substitute `haa` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem fibreMap_injective (𝔞 𝔟 : Frac F) : Function.Injective (fibreMap 𝔞 𝔟) := by
   rintro ⟨β, a⟩ ⟨β', a'⟩ h
@@ -74,11 +74,9 @@ theorem fibreMap_injective (𝔞 𝔟 : Frac F) : Function.Injective (fibreMap �
   rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨c, hc⟩`. Set `b : NzElt 𝔟` to `⟨c.out.1.2, c.out.2.2.1, hc⟩`. Take `⟨ε, hε⟩ : ∃ ε : (𝓞 F)ˣ, rep (Quotient.mk (unitRel 𝔟) b : NzCls 𝔟) = ((ε : 𝓞 F) : F) * c.out.1.2` from `Quotient.exact (Quotient.out_eq (Quotient.mk (unitRel 𝔟) b)).symm`. Establish `ha : ((ε : 𝓞 F) : F) * c.out.1.1 ∈ latM 𝔞`. Establish `hs` using `(latM 𝔞 : Submodule (𝓞 F) F).smul_mem (ε : 𝓞 F) c.out.2.1`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hs` using `[Algebra.smul_def]`. Then use the resulting hypothesis. Use `⟨⟨(Quotient.mk (unitRel 𝔟) b : NzCls 𝔟), ⟨_, ha⟩⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Quotient.mk (latRel 𝔞 𝔟) (pairOf _) = c`. Use `conv_rhs => rw [← Quotient.out_eq c]`.
-
-Conclude with `(Quotient.sound (s := latRel 𝔞 𝔟) (a := c.out) ⟨ε, rfl, hε⟩).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem fibreMap_surjective (𝔞 𝔟 : Frac F) : Function.Surjective (fibreMap 𝔞 𝔟) := by
   rintro ⟨c, hc⟩
@@ -96,7 +94,7 @@ theorem fibreMap_surjective (𝔞 𝔟 : Frac F) : Function.Surjective (fibreMap
   exact (Quotient.sound (s := latRel 𝔞 𝔟) (a := c.out) ⟨ε, rfl, hε⟩).symm
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔞 𝔟`. Use `⟨Equiv.ofBijective (fibreMap 𝔞 𝔟) ⟨fibreMap_injective 𝔞 𝔟, fibreMap_surjective 𝔞 𝔟⟩, ?_⟩` and prove the remaining obligations. Introduce `k hk σ z x`. Conclude with `eisClass_mk 𝔞 𝔟 hk σ z (pairOf x)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_equiv : ∀ (F : Type) [Field F] [NumberField F] [NumberField.IsTotallyReal F] (𝔞 𝔟 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F),
     ∃ e : (Σ _β : GlobalTheory.SlopeTestRemainingChoices.EisFibre.NzCls 𝔟, (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latM 𝔞 : Set F)) ≃

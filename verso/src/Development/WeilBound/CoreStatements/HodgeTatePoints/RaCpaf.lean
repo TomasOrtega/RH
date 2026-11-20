@@ -13,9 +13,9 @@ section
 variable {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R] [Algebra R C]
 
 /- English proof (translation)
-Establish `hp0 : (p : C) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Rewrite using `[pInt, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, rfl⟩`. Rewrite using `[Algebra.smul_def, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_left zero_le (hv.map_le_one r)`. Introduce `h`. Take `⟨r, hr⟩` from `hv.exists_of_le_one (r := z / p) (by rw [map_div₀]; exact div_le_one_of_le₀ h zero_le)`. Conclude with `⟨r, by rw [Algebra.smul_def, hr, div_mul_cancel₀ _ hp0]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma mem_pInt_iff [CharZero C] (hv : v.Integers R) (p : ℕ) [Fact p.Prime] (z : C) :
     z ∈ pInt (C := C) R p ↔ v z ≤ v (p : C) := by
@@ -31,7 +31,7 @@ lemma mem_pInt_iff [CharZero C] (hv : v.Integers R) (p : ℕ) [Fact p.Prime] (z 
     exact ⟨r, by rw [Algebra.smul_def, hr, div_mul_cancel₀ _ hp0]⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using A.one_mem`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `A.mul_mem _ _ ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma pow_mem_order {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
     (A : HopfOrder (C := C) R N) {f : N → C} (hf : f ∈ A.carrier) (k : ℕ) :
@@ -41,11 +41,11 @@ lemma pow_mem_order {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
   | succ k ih => rw [pow_succ]; exact A.mul_mem _ _ ih hf
 
 /- English proof (translation)
-Establish `: (fun x => tl p (f x)) = ∑ k ∈ Finset.Ico 1 p, fun x => (-1) ^ (k - 1) * (f x - 1) ^ k / (k : C)`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun k hk => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `Finset.mem_Ico.1 hk`. Take `⟨r, hr⟩` from `hv.exists_of_le_one (r := (-1) ^ (k - 1) / (k : C)) (by`. Rewrite using `[map_div₀, val_nat_eq v p hp k h1 h2, map_pow, Valuation.map_neg, map_one, one_pow, div_one])`. Establish `h3` using `A.carrier.smul_mem r (pow_mem_order A (A.carrier.sub_mem hf A.one_mem) k)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, hr, Pi.pow_apply, Pi.sub_apply, Pi.one_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma tl_mem_order (hv : v.Integers R) (p : ℕ) [Fact p.Prime] (hp : v (p : C) < 1)
     {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
@@ -68,15 +68,13 @@ lemma tl_mem_order (hv : v.Integers R) (p : ℕ) [Fact p.Prime] (hp : v (p : C) 
 end
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp N _ _ _ AA μ`. Establish `hpp : p.Prime` using `Fact.out`. Establish `: NeZero (p : C)` using `⟨Nat.cast_ne_zero.2 hpp.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot C p`. Set `ψ : AddChar N C` to `(AddChar.zmodChar p hζ.pow_eq_one).compAddMonoidHom μ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hψ : ∀ x, ψ x = ζ ^ (μ x).val` using `fun x => rfl`. Establish `hψp : ∀ x, ψ x ^ p = 1` using `fun x => by`. Rewrite using `[hψ, ← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`. Establish `hζ1` using `val_root v p hpp.ne_zero hζ.pow_eq_one`. Establish `hε` using `val_tl_prim v p hp hζ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ε, hεe⟩` from `hv.exists_of_le_one (r := tl p ζ) (hε.le.trans (val_prim_lt v p hp hζ).le)`. Use `⟨fun x => tl p (ψ x), ⟨tl_mem_order hv p hp AA (charmem p C v R hv hp N AA ψ), ?_⟩, ε, ?_, ?_, fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `x y`. Rewrite using `[mem_pInt_iff hv]`. Simplify using `only [AddChar.map_add_eq_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `val_tl_add v p hp (hψp x) (hψp y)`. Rewrite using `[hεe, hε, val_prim v p hζ]`. Simplify using `only [AddChar.map_zero_eq_one, tl_one]`. Rewrite using `[mem_pInt_iff hv, hεe]`. Conclude with `(val_tl_pow v p hp hζ1 _).trans (val_prim_pow_le v p hp hζ)`.
-
-Rewrite using `[hεe, hε]`. Conclude with `(val_tl_pow v p hp hζ1 _).trans_lt (val_prim_pow_lt v p hp hζ p hpp.one_lt)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpaf : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (N : Type) [AddCommGroup N] [Fintype N] [DecidableEq N], ∀ AA : HopfOrder (C := C) R N, ∀ μ : N →+ ZMod p, ∃ g ∈ afFun p AA.carrier, ∃ ε : R, v (algebraMap R C ε) ^ (p - 1) = v (p : C) ∧ g 0 = 0 ∧ ∀ x, g x - algebraMap R C ε * ((μ x).val : C) ∈ pInt (C := C) R p ∧ v (g x - algebraMap R C ε * ((μ x).val : C)) < v (algebraMap R C ε) := by
   intro p _ C _ _ _ v R _ _ hv hp N _ _ _ AA μ
@@ -104,9 +102,9 @@ theorem cpaf : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C]
     exact (val_tl_pow v p hp hζ1 _).trans_lt (val_prim_pow_lt v p hp hζ p hpp.one_lt)
 
 /- English proof (translation)
-Simplify using `only [map_sum, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `h` using `Nat.mod_add_div ((x i).val + (y i).val) p`. Rewrite `h` using `[← ZMod.val_add]`. Establish `h'` using `congrArg (Nat.cast : ℕ → C) h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pInt, Submodule.mem_span_singleton]`. Use `⟨-(l i * ((((x i).val + (y i).val) / p : ℕ) : R)), ?_⟩` and prove the remaining obligations. Simplify using `only [Algebra.smul_def, map_neg, map_mul, map_natCast, Pi.add_apply]`. Rewrite `h'` using `[Nat.cast_add, Nat.cast_add, Nat.cast_mul]`. Take the linear combination `(-algebraMap R C (l i)) * h'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma form_add {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C] (p : ℕ) [Fact p.Prime]
     {ι : Type} [Fintype ι] (l : ι → R) (x y : ι → ZMod p) :
@@ -124,29 +122,27 @@ lemma form_add {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C] (p : �
   linear_combination (-algebraMap R C (l i)) * h'
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp ι _ _ AA l ε hl hε`. Establish `hpp : p.Prime` using `Fact.out`. Establish `hp1 : p - 1 ≠ 0` using `by have := hpp.two_le; omega`. Establish `hp0 : v (p : C) ≠ 0` using `(Valuation.ne_zero_iff v).2 (Nat.cast_ne_zero.2 hpp.ne_zero)`. Establish `hε0 : v (algebraMap R C ε) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hε` using `[h, zero_pow hp1]`. Conclude with `hp0 (le_antisymm hε zero_le)`. Establish `hε0' : algebraMap R C ε ≠ 0` using `(Valuation.ne_zero_iff v).1 hε0`. It suffices to establish `h : ∃ u : (ι → ZMod p) → C, (fun x => algebraMap R C ε * u x) ∈ afFun p AA.carrier ∧ ∀ x, v (u x - algebraMap R C (∑ i, l i * ((x i).val : R))) < 1 by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result.
 
-Take `⟨u, h1, h2⟩` from `h`. Use `⟨u, h1, fun x => ?_, h2⟩` and prove the remaining obligations. Rewrite using `[← sub_add_cancel (u x) (algebraMap R C (∑ i, l i * ((x i).val : R)))]`. Conclude with `v.map_add_le (h2 x).le (hv.map_le_one _)`. Break down `lt_or_ge (v (p : C)) (v (algebraMap R C ε)) with hlt | hge` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg, h⟩` from `hl`. Use `⟨fun x => g x / algebraMap R C ε, ?_, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [mul_div_cancel₀ _ hε0']`. Use `⟨hg, fun x y => ?_⟩` and prove the remaining obligations. Use `Submodule.add_mem _ (Submodule.sub_mem _ (Submodule.sub_mem _ (h (x + y)) (h x)) (h y)) (form_add (C := C) p (ε • l) x y)` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `(mem_pInt_iff hv p _).1 (h x)`. Establish `h2 : g x / algebraMap R C ε - algebraMap R C (∑ i, l i * ((x i).val : R)) = (g x - algebraMap R C (∑ i, (ε • l) i * ((x i).val : R))) / algebraMap R C ε`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[h2, map_div₀, div_lt_one₀ (pos_iff_ne_zero.2 hε0)]`. Conclude with `h1.trans_lt hlt`. Establish `hc` using `fun i => cpaf p C v R hv hp (ι → ZMod p) AA (Pi.evalAddMonoidHom _ i) choose g hg e he _ hge' using hc`. Establish `hee : ∀ i, v (algebraMap R C ε) ≤ v (algebraMap R C (e i))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Use `hge.trans ?_` and prove the remaining obligations. Rewrite using `[← he i]`. Conclude with `pow_le_of_le_one zero_le (hv.map_le_one _) hp1`. Establish `he0 : ∀ i, v (algebraMap R C (e i)) ≠ 0` using `fun i h => hε0 (le_antisymm (h ▸ hee i) zero_le)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `he0' : ∀ i, algebraMap R C (e i) ≠ 0` using `fun i => (Valuation.ne_zero_iff v).1 (he0 i)`. Use `choose r hr using fun i => hv.dvd_of_le (hee i)`. Use `⟨fun x => ∑ i, algebraMap R C (l i) * (g i x / algebraMap R C (e i)), ?_, fun x => ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem (afFun p AA.carrier) (t := Finset.univ) fun i _ => Submodule.smul_mem _ (l i * r i) (hg i)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h0` using `he0' i`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_mul]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conv_lhs => rw [hr i, map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[map_sum, ← Finset.sum_sub_distrib]`. Use `v.map_sum_lt one_ne_zero fun i _ => ?_` and prove the remaining obligations. Establish `h0` using `he0' i`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : algebraMap R C (l i) * (g i x / algebraMap R C (e i)) - algebraMap R C (l i * ((x i).val : R)) = algebraMap R C (l i) * ((g i x - algebraMap R C (e i) * ((x i).val : C)) / algebraMap R C (e i))`. Rewrite using `[map_mul, map_natCast]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h2, map_mul, map_div₀]`. Use `mul_lt_one_of_nonneg_of_lt_one_right (hv.map_le_one _) zero_le ?_` and prove the remaining obligations.
-
-Rewrite using `[div_lt_one₀ (pos_iff_ne_zero.2 (he0 i))]`. Conclude with `(hge' i x).2`.
+A detailed English derivation is pending.
 -/
 theorem lifts : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (AA : HopfOrder (C := C) R (ι → ZMod p)), ∀ (l : ι → R) (ε : R), ε • l ∈ afLat p AA.carrier → v (p : C) ≤ v (algebraMap R C ε) ^ (p - 1) → ∃ u : (ι → ZMod p) → C, (fun x => algebraMap R C ε * u x) ∈ afFun p AA.carrier ∧ (∀ x, v (u x) ≤ 1) ∧ ∀ x, v (u x - algebraMap R C (∑ i, l i * ((x i).val : R))) < 1 := by
   intro p _ C _ _ _ v R _ _ hv hp ι _ _ AA l ε hl hε

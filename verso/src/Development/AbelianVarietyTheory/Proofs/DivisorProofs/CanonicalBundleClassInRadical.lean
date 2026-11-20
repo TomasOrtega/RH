@@ -8,15 +8,15 @@ open scoped Classical
 namespace GlobalTheory.LatChain
 
 /- English proof (translation)
-Introduce `hP k _ X _ q n ar num hn hS Q hQ`. Use `haveI : IsLocallyNoetherian X := ar.isLocallyNoetherian`. Take `⟨r, hr, hE, h1⟩` from `hQ`. Establish `hm (z : X) : (Q.div hr).mult z = 0`. Rewrite using `[hE]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `CartierDiv.mult_add (0 : CartierDiv X) 0 z` as an intermediate fact. Rewrite `this` using `[add_zero]`. Use linear arithmetic over natural numbers and integers. Establish `hN (N : Fin (n + 1) → HermLB q) : num (Fin.cons (cl Q) fun j => cl (N j)) = 0`. Rewrite using `[GlobalTheory.VertMix.vertMix hP _ X q _ ar num hn Q r hr (fun σ y _ => (h1 σ y).2) N (fun _ => 2) (fun _ => 0) (fun z hz => absurd (hm z) hz)]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hm]`. Establish `hg : num.curryLeft (cl Q) = 0`. Use `Module.Basis.ext_multilinear (fun _ => (Finsupp.basisSingleOne : Module.Basis (HermLB q) ℝ (Cl q))) fun N => ?_` and prove the remaining obligations. Simplify `hN N` using `[MultilinearMap.curryLeft_apply, Finsupp.coe_basisSingleOne, cl]`. Establish `h0 (w : Fin (n + 1 + 1) → Cl q) : num (Function.update w 0 (cl Q)) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Function.update w 0 (cl Q) = Fin.cons (cl Q) (Fin.tail w)`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[Fin.tail, Function.update_of_ne (Fin.succ_ne_zero i)]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← MultilinearMap.curryLeft_apply, hg]`. Both sides reduce to the same expression. Introduce `v j`. Rewrite using `[← hS _ (Equiv.swap 0 j), Function.update_comp_equiv, Equiv.symm_swap, Equiv.swap_apply_right]`. Conclude with `h0 _`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem can_zero_mem_rad : Hypotheses2 → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp k) (n : ℕ), IsArithVar q (n + 1) → ∀ num : Form (Cl q) (n + 1), IsArForm (n + 1) num → IsSymm num → ∀ M : HermLB q, Can M 0 → cl M ∈ rad num := by
   intro hP k _ X _ q n ar num hn hS Q hQ

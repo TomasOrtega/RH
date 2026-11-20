@@ -30,21 +30,21 @@ variable {F : Type} [Field F] [NumberField F] {Y : Var F} {M : TrueGeo.Model Y}
 def extEmb (σ : 𝓞 F →+* ℂ) : F →+* ℂ := IsFractionRing.lift (ModelCharts.injective_emb σ)
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => by rw [RingHom.comp_apply, extEmb, IsFractionRing.lift_algebraMap]`.
+A detailed English derivation is pending.
 -/
 theorem extEmb_comp (σ : 𝓞 F →+* ℂ) : (extEmb σ).comp (algebraMap (𝓞 F) F) = σ :=
   RingHom.ext fun a => by
     rw [RingHom.comp_apply, extEmb, IsFractionRing.lift_algebraMap]
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F)) ((extEmb_comp σ).trans h.symm)`.
+A detailed English derivation is pending.
 -/
 theorem extEmb_eq {σ : 𝓞 F →+* ℂ} {τ : F →+* ℂ} (h : τ.comp (algebraMap (𝓞 F) F) = σ) :
     extEmb σ = τ :=
   IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F)) ((extEmb_comp σ).trans h.symm)
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
     spMap b ≫ spMap a = spMap (b.comp a) := by
@@ -56,12 +56,12 @@ def toY {σ : 𝓞 F →+* ℂ} (y : CxPts M.p σ) : Pts Y (extEmb σ) :=
     M.pb.lift_snd _ _ _⟩
 
 /- English proof (translation)
-The claim follows from `M.pb.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem toY_j {σ : 𝓞 F →+* ℂ} (y : CxPts M.p σ) : (toY y).1 ≫ M.j = y.1 := M.pb.lift_fst _ _ _
 
 /- English proof (translation)
-Take `rfl` from `extEmb_eq h`. Conclude with `congrArg _ (Subtype.ext (M.pb.hom_ext ((toY_j y).trans hz.symm) ((toY y).2.trans z.2.symm)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem apply_toY {σ : 𝓞 F →+* ℂ} {τ : F →+* ℂ} (h : τ.comp (algebraMap (𝓞 F) F) = σ)
     (f : ∀ τ : F →+* ℂ, Pts Y τ → ℝ) (y : CxPts M.p σ) (z : Pts Y τ) (hz : z.1 ≫ M.j = y.1) :
@@ -75,19 +75,19 @@ def toM {σ : 𝓞 F →+* ℂ} (z : Pts Y (extEmb σ)) : CxPts M.p σ :=
   ⟨z.1 ≫ M.j, by rw [Category.assoc, M.pb.w, ← Category.assoc, z.2, spMap_comp_spMap, extEmb_comp]⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (M.pb.hom_ext (toY_j _) ((toY _).2.trans z.2.symm))`.
+A detailed English derivation is pending.
 -/
 theorem toY_toM {σ : 𝓞 F →+* ℂ} (z : Pts Y (extEmb σ)) : toY (toM M z) = z :=
   Subtype.ext (M.pb.hom_ext (toY_j _) ((toY _).2.trans z.2.symm))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (toY_j y)`.
+A detailed English derivation is pending.
 -/
 theorem toM_toY {σ : 𝓞 F →+* ℂ} (y : CxPts M.p σ) : toM M (toY y) = y :=
   Subtype.ext (toY_j y)
 
 /- English proof (translation)
-Establish `h' : toY y ∈ ptsIn Y.str (extEmb σ) (M.j ⁻¹ᵁ L.U i)`. Express the relevant statement in the definitionally equal form `⊤ ≤ ((toY y).1 ≫ M.j) ⁻¹ᵁ L.U i`. Rewrite using `[toY_j]`. Conclude with `h`. Conclude with `ptsIn_mono (fun _ hx => Set.mem_iInter.2 fun _ => hx) h'`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_pull {σ : 𝓞 F →+* ℂ} {L : LB M.X} {y : CxPts M.p σ} {i : L.ι}
     (h : y ∈ ptsIn M.p σ (L.U i)) : toY y ∈ ptsIn Y.str (extEmb σ) ((L.pull M.j).U fun _ => i) := by
@@ -116,7 +116,7 @@ namespace GlobalTheory.TrueGeo.ModelMetric
 variable {F : Type} [Field F] [NumberField F] {Y : Var F} {M : TrueGeo.Model Y}
 
 /- English proof (translation)
-Introduce `i y hy` and use `by have h := hψ (extEmb σ) (fun _ => i) (toY y) (mem_pull hy) have h' := GlobalTheory.Mean4O.OnModelCInf.baseChange_cInfAt F M.X Y.X M.p Y.str M.j M.pb (extEmb σ) σ (toM M) (fun _ => rfl) ((wtOf hL ψ σ).φ i) (toY y) (h.congr (.of_forall fun w => by show (ψ (extEmb σ)).φ (fun _ => …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isCInf_wtOf {L : LB M.X} (hL : L.IsLB) (ψ : ∀ τ : F →+* ℂ, Weight Y.str τ (L.pull M.j))
     (hψ : ∀ τ, (ψ τ).IsCInf) (σ : 𝓞 F →+* ℂ) : (wtOf hL ψ σ).IsCInf := fun i y hy => by
@@ -128,9 +128,9 @@ theorem isCInf_wtOf {L : LB M.X} (hL : L.IsLB) (ψ : ∀ τ : F →+* ℂ, Weigh
   rwa [toM_toY] at h'
 
 /- English proof (translation)
-Introduce `i y y' h hy`. Establish `hσ` using `CxPts.eq_conj_of_conj h`. Establish `he : extEmb σ' = (starRingEnd ℂ).comp (extEmb σ)` using `extEmb_eq (by rw [RingHom.comp_assoc, extEmb_comp, hσ])`. Use `hc (extEmb σ) (extEmb σ') (fun _ => i) (toY y) (toY y') ?_ (mem_pull hy)` and prove the remaining obligations. Use `M.pb.hom_ext ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[toY_j, Category.assoc, toY_j]`. Conclude with `h`. Rewrite using `[(toY y').2, Category.assoc, (toY y).2, spMap_comp_spMap, he]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isConj_wtOf {L : LB M.X} (hL : L.IsLB) (ψ : ∀ τ : F →+* ℂ, Weight Y.str τ (L.pull M.j))
     (hc : ∀ τ τ', (ψ τ).IsConj (ψ τ')) (σ σ' : 𝓞 F →+* ℂ) : (wtOf hL ψ σ).IsConj (wtOf hL ψ σ') := by
@@ -159,7 +159,7 @@ namespace GlobalTheory.TrueGeo.ModelMetric
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Use `show z'.1 (IsLocalRing.closedPoint ℂ) = z.1 (IsLocalRing.closedPoint ℂ)`. Rewrite using `[h]`. Conclude with `congrArg (fun x => z.1 x) (Subsingleton.elim _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_conj {τ τ' : F →+* ℂ} {z : Pts Y τ} {z' : Pts Y τ'}
     (h : z'.1 = spMap (starRingEnd ℂ) ≫ z.1) : Var.base z' = Var.base z := by
@@ -168,17 +168,15 @@ theorem base_conj {τ τ' : F →+* ℂ} {z : Pts Y τ} {z' : Pts Y τ'}
   exact congrArg (fun x => z.1 x) (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Use `set g := Var.eqn Δ z`. Establish `hg : z ∈ Var.eqnSet τ Δ g` using `Var.mem_eqnSet Δ z`. Establish `hg' : z' ∈ Var.eqnSet τ' Δ g` using `by show Δ.IsEqn (Var.base z') g`. Rewrite using `[hb]`. Conclude with `hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbz' : z' ∈ Var.eqnSet τ' (k • Δ) b` using `by show (k • Δ).IsEqn (Var.base z') b`. Rewrite using `[hb]`. Conclude with `hbz`. Establish `hgk : z ∈ Var.eqnSet τ (k • Δ) (g ^ k)` using `CartierDiv.IsEqn.nsmul hg k`. Establish `hgk' : z' ∈ Var.eqnSet τ' (k • Δ) (g ^ k)` using `CartierDiv.IsEqn.nsmul hg' k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set w : Y.Fnˣ := g ^ k / b with hw_def`. Establish `hw : (0 : Y.Dv).IsEqn (Var.base z) w` using `(CartierDiv.isEqn_zero _).iff_unitAt.2 (by`. Use `(CartierDiv.IsEqn.iff_unitAt hbz).1 hgk` as an intermediate fact. Simplify `this)` using `[w]`. Establish `hg2 : z ∈ Var.eqnSet τ Δ (g * w)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `CartierDiv.IsEqn.add hg hw` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis. Establish `hg2' : z' ∈ Var.eqnSet τ' Δ (g * w)` using `by show Δ.IsEqn (Var.base z') _`. Rewrite using `[hb]`. Conclude with `hg2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `et (σ : F →+* ℂ) (y : Pts Y σ) : Var.tv b (g ^ k) y = Var.tv g (g * w) y`. Rewrite using `[Var.tv, Var.tv, Units.val_mul, hw_def, Units.val_div_eq_div_val, mul_div_cancel_left₀ _ g.ne_zero]`. Establish `e1` using `μ.trans g (g * w) z hg hg2`. Establish `e2` using `μ'.trans g (g * w) z' hg' hg2'`. Rewrite `e2` using `[H g hg, H (g * w) hg2]`.
-
-Establish `hp2 : 0 < μ.h (g * w) z` using `(Var.Met.mem_posSet_iff hg2).1 hpos`. Establish `en : ‖Var.tv g (g * w) z'‖ ^ 2 = ‖Var.tv g (g * w) z‖ ^ 2` using `(mul_right_cancel₀ hp2.ne' (e1.symm.trans e2)).symm`. Rewrite using `[(Var.mPow Y τ' Δ k μ').trans b (g ^ k) z' hbz' hgk', (Var.mPow Y τ Δ k μ).trans b (g ^ k) z hbz hgk, Var.mPow_h hg', Var.mPow_h hg, H g hg, et, et, en]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem h_mPow_conj {Δ : Y.Dv} {τ τ' : F →+* ℂ} (μ : Var.Met Y τ Δ) (μ' : Var.Met Y τ' Δ)
     {z : Pts Y τ} {z' : Pts Y τ'} (hb : Var.base z' = Var.base z) (hpos : z ∈ μ.posSet)
@@ -222,7 +220,7 @@ theorem h_mPow_conj {Δ : Y.Dv} {τ τ' : F →+* ℂ} (μ : Var.Met Y τ Δ) (�
 def powMet (A : Adl (cxSt F) Y) (m : ℕ) (τ : F →+* ℂ) : Var.Met Y τ (m • A.D) := Var.mPow Y τ A.D m (A.m τ)
 
 /- English proof (translation)
-The claim follows from `Var.Met.SmoothOn.mPow isOpen_univ (hsm τ) m`.
+A detailed English derivation is pending.
 -/
 theorem powMet_smooth (A : Adl (cxSt F) Y) (m : ℕ) (hsm : ∀ σ, (cxSt F).mSmooth Y σ A.D (A.m σ))
     (τ : F →+* ℂ) : Var.mSmooth Y τ _ (powMet A m τ) :=
@@ -233,14 +231,14 @@ def powWt (A : Adl (cxSt F) Y) (m : ℕ) (hsm : ∀ σ, (cxSt F).mSmooth Y σ A.
   (powMet A m τ).toWeight (powMet_smooth A m hsm τ).posSet_eq hr
 
 /- English proof (translation)
-The claim follows from `(Weight.isCInf_iff_isSmooth (Y.an τ)).2 (Var.mSmooth.isSmooth_toWeight (powMet_smooth A m hsm τ) hr)`.
+A detailed English derivation is pending.
 -/
 theorem powWt_isCInf (A : Adl (cxSt F) Y) (m : ℕ) (hsm : ∀ σ, (cxSt F).mSmooth Y σ A.D (A.m σ)) {B : LB Y.X}
     {r : B.ι → Y.Fnˣ} (hr : Presents (m • A.D) B r) (τ : F →+* ℂ) : (powWt A m hsm hr τ).IsCInf :=
   (Weight.isCInf_iff_isSmooth (Y.an τ)).2 (Var.mSmooth.isSmooth_toWeight (powMet_smooth A m hsm τ) hr)
 
 /- English proof (translation)
-Introduce `i z z' h hz`. Use `show -Real.log ((powMet A m τ').h (r i) z') = -Real.log ((powMet A m τ).h (r i) z)`. Rewrite using `[powMet, powMet, h_mPow_conj (A.m τ) (A.m τ') (base_conj h) ((Var.mSmooth.posSet_eq (hsm τ)) ▸ Set.mem_univ z) (fun a ha => hconj τ τ' z z' a h ha) m (Var.ptsIn_subset_eqnSet hr i hz)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powWt_conj (A : Adl (cxSt F) Y) (m : ℕ) (hsm : ∀ σ, (cxSt F).mSmooth Y σ A.D (A.m σ)) {B : LB Y.X}
     {r : B.ι → Y.Fnˣ} (hr : Presents (m • A.D) B r)
@@ -258,11 +256,11 @@ end GlobalTheory.TrueGeo.ModelMetric
 namespace GlobalTheory.TrueGeo.ModelMetric
 
 /- English proof (translation)
-Introduce `F _ _ Y A M L hL m r hr hci hsm hconj hfin`. Use `⟨hermOf hL (powWt A m hsm hr) (powWt_isCInf A m hsm hr) (powWt_conj A m hsm hr hconj), ?_⟩` and prove the remaining obligations. Use `⟨by simp, r, hr, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ y y' i f hy hi hf`. Rewrite using `[hci]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.zero_apply, mul_zero, neg_zero, Real.exp_zero, one_mul]`. Establish `hg : y ∈ Var.eqnSet σ ((m : ℕ) • A.D) (r i)` using `hr.isEqn i _ hi`. Establish `hpos : y ∈ (powMet A m σ).posSet` using `(powMet_smooth A m hsm σ).posSet_eq ▸ Set.mem_univ y`. Establish `e` using `apply_toY (M := M) (σ := σ.comp (algebraMap (𝓞 F) F)) (τ := σ) rfl (fun τ z => (powMet A m τ).wt (r i) z) y' y hy.symm`. Establish `hp : (cxSt F).pn Y σ _ ((cxSt F).mPow Y σ A.D m (A.m σ)) ((cxSt F).cx Y σ f) y = Var.pn Y σ _ (powMet A m σ) (Y.cx σ f) y` using `rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hp, Var.pn_eq_exp hpos hg, Var.fval_cx]`. Conclude with `congrArg (fun t => ‖ratVal (f * (r i : Y.Fn)) y‖ ^ 2 * Real.exp (-t)) e.symm`. Introduce `v e y yt i h1 h2`. Rewrite using `[Pi.zero_apply, mul_zero, sub_zero]`. Conclude with `hfin v e y yt i h1 h2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hermLB_induced : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (A : Adl (cxSt F) Y) (M : GlobalTheory.TrueGeo.Model Y) (L : LB M.X), L.IsLB → ∀ (m : ℕ+) (r : (L.pull M.j).ι → Y.Fnˣ), Presents ((m : ℕ) • A.D) (L.pull M.j) r → A.ci = 0 → (∀ σ, (cxSt F).mSmooth Y σ A.D (A.m σ)) → (∀ (σ σ' : F →+* ℂ) (p : Pts Y σ) (p' : Pts Y σ') (a : Y.Fnˣ), p'.1 = spMap (starRingEnd ℂ) ≫ p.1 → p ∈ Var.eqnSet σ A.D a → Var.Met.h (A.m σ') a p' = Var.Met.h (A.m σ) a p) → (∀ (v : HeightOneSpectrum (𝓞 F)) (e : Ext v) (y : AlgPt Y) (yt : Sp e.O ⟶ M.X) (i : (L.pull M.j).ι), spMap e.O.subtype ≫ yt = y.1 ≫ M.j → ⊤ ≤ yt ⁻¹ᵁ L.U (i PUnit.unit) → ((m : ℕ) : ℝ) * A.lg v e y = Real.log (e.w (valAt y.1 (((eqn A.D (below y.1))⁻¹ ^ (m : ℕ) * r i : Y.Fnˣ) : Y.Fn)))) → ∃ L' : GlobalTheory.HermLB M.p, A.Induced M L' m 0 := by
   intro F _ _ Y A M L hL m r hr hci hsm hconj hfin

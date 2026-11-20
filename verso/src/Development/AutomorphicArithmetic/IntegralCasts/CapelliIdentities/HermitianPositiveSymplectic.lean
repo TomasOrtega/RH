@@ -1,17 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Set `K : Submodule ℂ (Fin n → ℂ)` to `{ carrier := {y | f y = 0} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_add, ha, hb, add_zero]`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun z y hy => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq] at hy ⊢`. Establish `hz : z • y = z.re • y + z.im • (Complex.I • y)`. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, Pi.add_apply, smul_eq_mul, Complex.real_smul]`. Use `conv_lhs => rw [← Complex.re_add_im z]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hz, map_add, map_smul, map_smul, hy, hI y hy, smul_zero, smul_zero, add_zero] }`. Use `⟨K, fun y => Iff.rfl, ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker f`. Establish `h2 : LinearMap.ker f = K.restrictScalars ℝ`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `y`. Both sides reduce to the same expression. Establish `h3 : LinearMap.range f ≤ U.restrictScalars ℝ`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `hU y`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `Submodule.finrank_mono h3`. Establish `h5 : Module.finrank ℝ (U.restrictScalars ℝ) = 2 * Module.finrank ℂ U` using `finrank_real_of_complex U`. Establish `h6 : Module.finrank ℝ (K.restrictScalars ℝ) = 2 * Module.finrank ℂ K` using `finrank_real_of_complex K`. Establish `h7 : Module.finrank ℝ (Fin n → ℂ) = 2 * n`. Rewrite using `[finrank_real_of_complex]`.
-
-Simplify using the standard rewrite rules. Rewrite `h1` using `[h2, h6, h7]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem exists_ker {n g : ℕ} (f : (Fin n → ℂ) →ₗ[ℝ] (Fin g → ℂ))
     (U : Submodule ℂ (Fin g → ℂ)) (hU : ∀ y, f y ∈ U)
@@ -51,35 +49,33 @@ private theorem exists_ker {n g : ℕ} (f : (Fin n → ℂ) →ₗ[ℝ] (Fin g �
   omega
 
 /- English proof (translation)
-Introduce `g j j' p H S c U U' hH hS hc hp hU hU' hA hB`. Set `Q : (Fin (j + j') → ℂ) →ₗ[ℝ] (Fin g → ℂ)` to `{ toFun := fun y => Complex.I • p (Complex.I • y) map_add' := fun a b => by rw [smul_add, map_add, smul_add] map_smul' := fun r a => by`. Rewrite using `[smul_comm Complex.I r a, map_smul, smul_comm Complex.I r]`. Use `rfl }`. Establish `hII : ∀ {m : ℕ} (v : Fin m → ℂ), Complex.I • Complex.I • v = -v`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `m v`. Rewrite using `[smul_smul, Complex.I_mul_I, neg_smul, one_smul]`. Establish `eA : ∀ y, p y - Complex.I • p (Complex.I • y) = 0 → p (Complex.I • y) = -(Complex.I • p y)`. Introduce `y hy`. Rewrite using `[sub_eq_zero.mp hy, hII, neg_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `eB : ∀ y, p y + Complex.I • p (Complex.I • y) = 0 → p (Complex.I • y) = Complex.I • p y`. Introduce `y hy`. Rewrite using `[eq_neg_of_add_eq_zero_left hy, smul_neg, hII, neg_neg]`. Take `⟨K, hK, dK⟩` from `exists_ker (p - Q) U hA (by`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `p (Complex.I • y) - Complex.I • p (Complex.I • Complex.I • y) = 0`. Rewrite using `[hII, map_neg, eA y hy, smul_neg, sub_self])`. Take `⟨K', hK', dK'⟩` from `exists_ker (p + Q) U' hB (by`. Introduce `y hy`. Express the relevant statement in the definitionally equal form `p (Complex.I • y) + Complex.I • p (Complex.I • Complex.I • y) = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hII, map_neg, eB y hy, smul_neg, add_neg_cancel])`. Establish `hp' : ∀ y y', (dotProduct (p y) (H.mulVec (star (p y')))).im = -(2 * c * (dotProduct (star y') (S.mulVec y)).im)`. Introduce `y y'`. Rewrite using `[hp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hinj : ∀ y, y ≠ 0 → p y ≠ 0`. Introduce `y hy h0`. Apply `hy` to reduce the goal to its premises. Establish `hz : ∀ y', (dotProduct (star y') (S.mulVec y)).im = 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `y'`. Establish `h` using `hp' y y'`. Rewrite `h` using `[h0, zero_dotProduct, Complex.zero_im]`. Establish `: c * (dotProduct (star y') (S.mulVec y)).im = 0` using `by linarith`. Conclude with `(mul_eq_zero.mp this).resolve_left hc.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSy : S.mulVec y = 0`. Use extensionality with `i`. Establish `h1` using `hz (Pi.single i 1)`. Establish `h2` using `hz (Pi.single i Complex.I)`. Simplify using `[← Pi.single_star] at h1 h2`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `apply Complex.ext <;> simp [h1, h2]`. Conclude with `Matrix.eq_zero_of_mulVec_eq_zero hS.ne_zero hSy`. Use `⟨K, K', by omega, by omega, fun y hy => (hK y).mp hy, fun y hy => (hK' y).mp hy, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy h0`. Establish `h1` using `hH _ (hinj y h0)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hp' (Complex.I • y) y`. Rewrite `h2` using `[eA y ((hK y).mp hy)]`. Simplify using `[Matrix.mulVec_smul] at h2`. Assume the negation of the conclusion as `hn`. Use `mul_nonneg hc.le (neg_nonneg.mpr (not_lt.mp hn))` as an intermediate fact.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `y hy h0`. Establish `h1` using `hH _ (hinj y h0)`. Establish `h2` using `hp' (Complex.I • y) y`. Rewrite `h2` using `[eB y ((hK' y).mp hy)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `[Matrix.mulVec_smul] at h2`. Assume the negation of the conclusion as `hn`. Use `mul_nonneg hc.le (not_lt.mp hn)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `y hy y' hy'`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `eA y ((hK y).mp hy)`. Establish `e2` using `eB y' ((hK' y').mp hy')`. Establish `h1` using `hp' y y'`. Establish `h2` using `hp' (Complex.I • y) y'`. Establish `h3` using `hp' y (Complex.I • y')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `hp' (Complex.I • y) (Complex.I • y')`. Rewrite `h2`, `h4` using `[e1]`. Rewrite `h3`, `h4` using `[e2]`. Simplify using `[Matrix.mulVec_smul, Matrix.mulVec_neg] at h2 h3 h4`. Establish `r1 : c * (dotProduct (star y') (S.mulVec y)).re = 0` using `by linarith`.
-
-Establish `r2 : c * (dotProduct (star y') (S.mulVec y)).im = 0` using `by linarith`. Conclude with `Complex.ext ((mul_eq_zero.mp r1).resolve_left hc.ne') ((mul_eq_zero.mp r2).resolve_left hc.ne')`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.hermitian_positive_symplectic :
     ∀ {g j j' : ℕ} (p : (Fin (j + j') → ℂ) →ₗ[ℝ] (Fin g → ℂ)) (H : Matrix (Fin g) (Fin g) ℂ)

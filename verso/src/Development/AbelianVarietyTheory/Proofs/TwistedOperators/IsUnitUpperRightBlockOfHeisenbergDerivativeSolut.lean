@@ -10,7 +10,7 @@ namespace GlobalTheory.FockFamily
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (B : V →ₗ[ℝ] V)` using `LinearMap.injective_iff_surjective.mp h`. Set `e : V ≃ₗ[ℝ] V` to `LinearEquiv.ofBijective (B : V →ₗ[ℝ] V) ⟨h, hs⟩`. Set `e' : V ≃L[ℝ] V` to `e.toContinuousLinearEquiv`. Use `⟨(ContinuousLinearEquiv.unitsEquiv ℝ V).symm e', ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
 Both sides reduce to the same expression.
 -/
@@ -22,9 +22,9 @@ theorem isUnit_of_injective_clm (B : V →L[ℝ] V) (h : Function.Injective B) :
   ext x; rfl
 
 /- English proof (translation)
-Establish `hint : interior ((LinearMap.ker (β.flip q) : Submodule ℝ V) : Set V) = ∅`. Assume the negation of the conclusion as `hne`. Use `Submodule.eq_top_of_nonempty_interior' _ (Set.nonempty_iff_ne_empty.mpr hne)` as an intermediate fact. Apply `hx` to reduce the goal to its premises. Establish `: x₀ ∈ LinearMap.ker (β.flip q)` using `by rw [this]; trivial`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using this`. Use `interior_eq_empty_iff_dense_compl.mp hint` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dense_pair_ne_zero (β : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (q x₀ : V) (hx : β x₀ q ≠ 0) :
     Dense {x | β x q ≠ 0} := by
@@ -39,17 +39,15 @@ theorem dense_pair_ne_zero (β : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (q x₀ : V) (
   ext x; simp
 
 /- English proof (translation)
-Apply `isUnit_of_injective_clm` to reduce the goal to its premises. Use `(injective_iff_map_eq_zero (blockB J)).mpr ?_` and prove the remaining obligations. Introduce `q hq`. Apply `hβ q` to reduce the goal to its premises. Assume the negation of the conclusion as `hne`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hne`. Take `⟨x₀, hx₀⟩` from `hne`. Establish `hzero : ∀ x, β x q ≠ 0 → g x = 0`. Introduce `x hx`. Establish `h` using `hJ (0, q) x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (J (0, q)).1 = 0` using `by rw [← blockB_apply]; exact hq`. Simplify using `only [GlobalTheory.GaussLine.dHeis, h1, map_zero] at h`. Establish `key : (((β x q : ℝ) : ℂ) + Complex.I * ((β x (J (0, q)).2 : ℝ) : ℂ)) * g x = 0`. Establish `hpi : (2 * Real.pi : ℂ) ≠ 0`. Use `Real.pi_pos; exact_mod_cast (by positivity : (2 * Real.pi : ℝ) ≠ 0)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (2 * Real.pi : ℂ) * ((((β x q : ℝ) : ℂ) + Complex.I * ((β x (J (0, q)).2 : ℝ) : ℂ)) * g x) = 0`. Take the linear combination `(-1 : ℂ) * h + (2 * Real.pi * ((β x q : ℝ) : ℂ) * g x) * Complex.I_sq`. Conclude with `(mul_eq_zero.mp h2).resolve_left hpi`. Break down `mul_eq_zero.mp key with h3 | h3` into its components or cases. It suffices to derive a contradiction.
+Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hx` to reduce the goal to its premises. Use `congrArg Complex.re h3` as an intermediate fact. Simplify using `using this`. Conclude with `h3`. Apply `hg0` to reduce the goal to its premises.
-
-Establish `hd` using `dense_pair_ne_zero β q x₀ hx₀`. Conclude with `Continuous.ext_on hd hg continuous_const (fun x hx => hzero x hx)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_blockB_of_solution (β : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (hβ : ∀ q, (∀ x, β x q = 0) → q = 0)
     (J : (V × V) →ₗ[ℝ] (V × V)) (g : V → ℂ) (hg : Continuous g) (hg0 : g ≠ 0)

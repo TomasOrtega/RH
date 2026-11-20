@@ -7,15 +7,13 @@ namespace PI.VolStabSW.TopoPolish
 open Topology TopologicalSpace Set
 
 /- English proof (translation)
-Use `letI := TopologicalSpace.metrizableSpaceMetric Y`. Establish `hemb : IsEmbedding ((↑) : Y → UniformSpace.Completion Y)` using `(UniformSpace.Completion.isUniformEmbedding_coe Y).isEmbedding`. Establish `hdense : DenseRange ((↑) : Y → UniformSpace.Completion Y)` using `UniformSpace.Completion.denseRange_coe`. Establish `hopen : IsOpen (range ((↑) : Y → UniformSpace.Completion Y))`. Rewrite using `[isOpen_iff_forall_mem_open]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨K, hK, hKy⟩` from `exists_compact_mem_nhds y`. Take `⟨V, hVK, hVo, hyV⟩` from `mem_nhds_iff.1 hKy`. Take `⟨U, hUo, hUV⟩` from `hemb.isInducing.isOpen_iff.1 hVo`. Use `⟨U, ?_, hUo, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcl : IsClosed (((↑) : Y → UniformSpace.Completion Y) '' K)` using `(hK.image hemb.continuous).isClosed`. Combine the equalities or inequalities in the displayed calculation. Apply `closure_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨hz, ⟨z, rfl⟩⟩`. Use `⟨z, hVK ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hUV]`. Conclude with `hz`. Use `_ = ((↑) : Y → UniformSpace.Completion Y) '' K := hcl.closure_eq`. Use `_ ⊆ range ((↑) : Y → UniformSpace.Completion Y) := image_subset_range _ _`. Use `show y ∈ ((↑) : Y → UniformSpace.Completion Y) ⁻¹' U`.
-
-Rewrite using `[hUV]`. Conclude with `hyV`. Establish `: PolishSpace (range ((↑) : Y → UniformSpace.Completion Y))` using `hopen.polishSpace`. Conclude with `hemb.toHomeomorph.isClosedEmbedding.polishSpace`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem polish_of_lcsc (Y : Type) [TopologicalSpace Y] [LocallyCompactSpace Y] [T2Space Y]
     [SecondCountableTopology Y] : PolishSpace Y := by

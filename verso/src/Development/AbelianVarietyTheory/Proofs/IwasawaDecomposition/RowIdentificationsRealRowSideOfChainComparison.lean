@@ -28,17 +28,11 @@ def ids (hU : ∀ μ, Used0 D μ ↔ y.Us μ)
   prt π := y.prtE F b (rep π)
 
 /- English proof (translation)
-Use `show Mult.parB (Ptw D) (min j D.R.m) = Mult.parB (Ptw D) j`. Rewrite using `[min_eq_left (by have := y.hm; omega)]`. Use `lvl μ _ := GlobalTheory.HilbertLevels.eec_le_cc R F y.tupT y.hm y.hTop b μ`. Use `lvlP μ _ j _ h2 := GlobalTheory.HilbertLevels.ccp_le R F y.tupT y.hm y.hTop b μ (by have := y.hm; omega)`. Use `lvlX μ _ := GlobalTheory.HilbertLevels.ccxp_le R F y.tupT y.hm y.hTop b μ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ee x x' := t.jE_ip x x'`. Use `mult μ hμ j h1 h2 x x' := t.jM_ip μ ((hU μ).1 hμ) j h1 h2 x x'`. Use `multX _ μ hμ x x' := by`. Rewrite using `[← (S.multTop μ).inner_map_map x x']`. Conclude with `t.jX_ip μ ((hU μ).1 hμ) _ _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `io0 _ μ hμ _ x v := by`. Establish `hmem : t.jM μ 1 v ∈ (y.C F).CC b μ 1` using `GlobalTheory.HilbertLevels.ccp_le R F y.tupT y.hm y.hTop b μ (by have := D.R.two_le_m; omega) ((ids hU t).jM μ hμ 1 le_rfl (by have := D.R.two_le_m; omega) v).2`. Establish `e` using `t.io0 μ ((hU μ).1 hμ) x v hmem`. Use `e.trans ?_` and prove the remaining obligations. Both sides reduce to the same expression.
-
-Use `io0X h := absurd h (by have := D.R.two_le_m; omega)`. Use `io μ hμ _ j h1 h2 x v := by`. Establish `hmem : t.jM μ (j + 1) v ∈ (y.C F).CC b μ (j + 1)` using `GlobalTheory.HilbertLevels.ccp_le R F y.tupT y.hm y.hTop b μ (by omega) ((ids hU t).jM μ hμ (j + 1) (by omega) h2 v).2`. Conclude with `(t.io μ ((hU μ).1 hμ) j h1 h2 x v hmem).trans rfl`. Use `ioTop h μ hμ _ x v := by`.
-
-Establish `hmem : t.jX μ (S.multTop μ v) ∈ (y.C F).CCX b μ` using `GlobalTheory.HilbertLevels.ccxp_le R F y.tupT y.hm y.hTop b μ ((ids hU t).jX μ hμ v).2`. Conclude with `(t.ioTop μ ((hU μ).1 hμ) x v _ (cast_heq _ _) hmem).trans rfl`. Use `ft σ := by`. Establish `h` using `t.ft (ty σ)`. Establish `hs : bs σ ∈ Submodule.span ℂ (bs '' {σ' | ty σ' = ty σ})` using `Submodule.subset_span ⟨σ, rfl, rfl⟩`.
-
-Rewrite `hs` using `[h]`. Conclude with `hs`. Use `prt_disj π π' h := t.disj π π' h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real (hU : ∀ μ, Used0 D μ ↔ y.Us μ)
     (t : ChT y F b rep (Top := fun μ => ⟨S.Amb μ⟩) jA ⟨⟨EE⟩, fun μ j => ⟨S.Mult μ j⟩, S.multZero, S.multTop, S.io, n, bs, ty⟩) :
@@ -81,7 +75,7 @@ end GlobalTheory.Mem.R3.Rw.SideTie
 open GlobalTheory.Mem.R3.Rw.SideTie in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F y _ _ hU b rep EE _ _ _ S n bs ty jA t`. Conclude with `⟨ids hU t, real hU t, fun _ => rfl, fun _ => rfl, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Mem.R3.Rw.rowSide_of_chainTie : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (y : Hd R), Inputs D → R.BaseW F → (∀ μ, Used0 D μ ↔ y.Us μ) → ∀ (b : Bool) (rep : D.what₂.FT → Formalism.L2.NG.FinTyp D.host.E D.R.r) (EE : Type) [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (S : RowSide D EE) (n : ℕ) (bs : OrthonormalBasis (Fin n) ℂ EE) (ty : Fin n → D.what₂.FT) (jA : ∀ t, (Fin (rDim D A (levP F b).1 (levP F b).2 t) → D.what₂.LL) → S.Amb (y.tup t)) (t : ChT y F b rep (Top := fun μ => ⟨S.Amb μ⟩) jA ⟨⟨EE⟩, fun μ j => ⟨S.Mult μ j⟩, S.multZero, S.multTop, S.io, n, bs, ty⟩), ∃ I : RowIds S (y.C F) b, RowSideReal S (y.C F) b I bs ty ∧ (∀ π, I.prt π = y.prtE F b (rep π)) ∧ (∀ x, (I.jE x).1 = t.jE x) ∧ ∀ μ h x, (I.jX μ h x).1 = t.jX μ (S.multTop μ x) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F y _ _ hU b rep EE _ _ _ S n bs ty jA t

@@ -13,11 +13,11 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimension
   [MeasurableSpace E] [BorelSpace E]
 
 /- English proof (translation)
-Establish `hD : IsAddFundamentalDomain (L.prod L') (latticeDomain L ×ˢ latticeDomain L') (μ.prod μ)`. Use `IsAddFundamentalDomain.mk' ((measurableSet_latticeDomain L).prod (measurableSet_latticeDomain L')).nullMeasurableSet fun x => ?_` and prove the remaining obligations. Take `⟨a, ha, hu⟩` from `existsUnique_add_mem_latticeDomain L x.1`. Take `⟨a', ha', hu'⟩` from `existsUnique_add_mem_latticeDomain L' x.2`. Use `⟨⟨(a, a'), a.2, a'.2⟩, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `ha` using `[Submodule.vadd_def, add_comm]`. Simplify `ha'` using `[Submodule.vadd_def, add_comm]`. Introduce and unpack `⟨b, hb⟩ hb'`. Establish `h1` using `hu ⟨b.1, hb.1⟩ (by simpa [Submodule.vadd_def, add_comm] using hb'.1)`. Establish `h2` using `hu' ⟨b.2, hb.2⟩ (by simpa [Submodule.vadd_def, add_comm] using hb'.2)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[← h1, ← h2]`. Rewrite using `[ZLattice.covolume_eq_measure_fundamentalDomain _ _ hD, measureReal_prod_prod, ZLattice.covolume_eq_measure_fundamentalDomain _ _ (isAddFundamentalDomain_latticeDomain L μ), ZLattice.covolume_eq_measure_fundamentalDomain _ _ (isAddFundamentalDomain_latticeDomain L' μ)]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem covolume_prod (μ : Measure E) [μ.IsAddHaarMeasure] (L L' : Submodule ℤ E)
     [DiscreteTopology L] [DiscreteTopology L'] [IsZLattice ℝ L] [IsZLattice ℝ L'] :
@@ -41,27 +41,25 @@ theorem covolume_prod (μ : Measure E) [μ.IsAddHaarMeasure] (L L' : Submodule �
     ZLattice.covolume_eq_measure_fundamentalDomain _ _ (isAddFundamentalDomain_latticeDomain L' μ)]
 
 /- English proof (translation)
-Establish `h2A : ∀ p ∈ M, p.1 + p.1 ∈ A` using `fun p hp => by`. Rewrite using `[hA]`. Use `M.add_mem hp (hM p hp)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2B : ∀ p ∈ M, p.2 + p.2 ∈ B` using `fun p hp => by`. Rewrite using `[hB]`. Use `M.sub_mem hp (hM p hp)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `haveI dA : DiscreteTopology A := DiscreteTopology.of_continuous_injective (f := fun x : A => (⟨(x.1, 0), (hA _).1 x.2⟩ : M)) ((continuous_subtype_val.prodMk continuous_const).subtype_mk _) (fun x y h => Subtype.ext (congrArg (fun z : M => z.1.1) h))`. Use `haveI dB : DiscreteTopology B := DiscreteTopology.of_continuous_injective (f := fun x : B => (⟨(0, x.1), (hB _).1 x.2⟩ : M)) ((continuous_const.prodMk continuous_subtype_val).subtype_mk _) (fun x y h => Subtype.ext (congrArg (fun z : M => z.1.2) h))`. Establish `key : ∀ (C : Submodule ℤ E) (f : E × E →ₗ[ℝ] E), Function.Surjective f → (∀ p ∈ M, f p + f p ∈ C) → Submodule.span ℝ (C : Set E) = ⊤`. Introduce `C f hf hC`. Rewrite using `[eq_top_iff, ← LinearMap.range_eq_top.2 hf, LinearMap.range_eq_map, ← IsZLattice.span_top (K := ℝ) (L := M), Submodule.map_span, Submodule.span_le]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨p, hp, rfl⟩`. Establish `h` using `(Submodule.span ℝ (C : Set E)).smul_mem (2⁻¹ : ℝ) (Submodule.subset_span (hC p hp))`. Rewrite `h` using `[← two_smul ℝ, inv_smul_smul₀ two_ne_zero]`. Then use the resulting hypothesis. Use `haveI lA : IsZLattice ℝ A := ⟨key A (LinearMap.fst ℝ E E) LinearMap.fst_surjective h2A⟩`. Use `haveI lB : IsZLattice ℝ B := ⟨key B (LinearMap.snd ℝ E E) LinearMap.snd_surjective h2B⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨⟨dA, lA⟩, ⟨dB, lB⟩, ?_⟩` and prove the remaining obligations. Establish `hle : A.prod B ≤ M` using `fun p hp => by`. Use `M.add_mem ((hA _).1 hp.1) ((hB _).1 hp.2)` as an intermediate fact. Simplify using `using this`. Rewrite using `[← covolume_prod μ A B, covolume_eq_relIndex_mul_of_haar (μ.prod μ) _ M hle]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_right ?_ (ZLattice.covolume_pos M (μ.prod μ)).le` and prove the remaining obligations. Set `f : M.toAddSubgroup →+ A` to `{ toFun := fun p => ⟨p.1.1 + p.1.1, h2A _ p.2⟩ map_zero' := by ext; simp map_add' := fun p q => by ext; simp; abel }`. Establish `hK : (nsmulAddMonoidHom (α` using `A) 2).range.index = 2 ^ Module.finrank ℝ E := by`. Rewrite using `[AddSubgroup.index_range_nsmul, ZLattice.rank ℝ A]`. Establish `hc : (A.prod B).toAddSubgroup.addSubgroupOf M.toAddSubgroup = (nsmulAddMonoidHom (α` using `A) 2).range.comap f := by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `p`. Simplify using `only [AddSubgroup.mem_addSubgroupOf, Submodule.mem_toAddSubgroup, Submodule.mem_prod, AddSubgroup.mem_comap, AddMonoidHom.mem_range, nsmulAddMonoidHom_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, -⟩`. Conclude with `⟨⟨_, h1⟩, Subtype.ext (by simp [f, two_nsmul])⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨y, hy⟩`. Establish `h1 : y.1 + y.1 = p.1.1 + p.1.1`. Use `congrArg Subtype.val hy` as an intermediate fact. Simplify `this` using `[f, two_nsmul]`. Establish `h2 : y.1 = p.1.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[← two_smul ℝ, ← two_smul ℝ]`. Conclude with `smul_right_injective E two_ne_zero h1`. Establish `h3 : p.1.1 ∈ A` using `h2 ▸ y.2`. Use `⟨h3, (hB _).2 ?_⟩` and prove the remaining obligations. Use `M.sub_mem p.2 ((hA _).1 h3)` as an intermediate fact.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext <;> simp`. Establish `hidx : (A.prod B).toAddSubgroup.relIndex M.toAddSubgroup ≤ 2 ^ Module.finrank ℝ E`. Rewrite using `[AddSubgroup.relIndex, hc, AddSubgroup.index_comap, ← hK, ← AddSubgroup.relIndex_top_right]`. Use `AddSubgroup.relIndex_le_of_le_right le_top ?_` and prove the remaining obligations.
-
-Rewrite using `[AddSubgroup.relIndex_top_right, hK]`. Check the signs of the components of the expression. Conclude with `hidx` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem reflection_stable (μ : Measure E) [μ.IsAddHaarMeasure] (M : Submodule ℤ (E × E))
     [DiscreteTopology M] [IsZLattice ℝ M] (hM : ∀ p ∈ M, (p.1, -p.2) ∈ M) (A B : Submodule ℤ E)
@@ -157,9 +155,9 @@ theorem reImEquiv_apply {ι κ : Type} [Fintype ι] [Fintype κ] (p : (ι → κ
     (v : ι) (i : κ) : reImEquiv ι κ p v i = ⟨p.1 v i, p.2 v i⟩ := rfl
 
 /- English proof (translation)
-Establish `h1` using `(volume_measurePreserving_arrowProdEquivProdArrow (κ → ℝ) (κ → ℝ) ι).symm`. Establish `h2` using `(volume_measurePreserving_arrowProdEquivProdArrow ℝ ℝ κ).symm`. Establish `h3` using `Complex.volume_preserving_equiv_real_prod.symm`. Establish `h4` using `volume_preserving_pi (ι := κ) (fun _ => h3)`. Establish `h5` using `volume_preserving_pi (ι := ι) (fun _ => h4.comp h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h5.comp h1`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_reImEquiv (ι κ : Type) [Fintype ι] [Fintype κ] :
     MeasurePreserving (reImEquiv ι κ) (Measure.prod volume volume) volume := by
@@ -171,15 +169,11 @@ theorem measurePreserving_reImEquiv (ι κ : Type) [Fintype ι] [Fintype κ] :
   exact h5.comp h1
 
 /- English proof (translation)
-Introduce `ι κ _ _ L _ _ hL A B hA hB`. Establish `hmem : ∀ p, p ∈ ZLattice.comap ℝ L (reImEquiv ι κ).toLinearMap ↔ reImEquiv ι κ p ∈ L` using `fun p => Iff.rfl`. Establish `h` using `reflection_stable volume (ZLattice.comap ℝ L (reImEquiv ι κ).toLinearMap) (fun p hp => by`. Rewrite `hp`, the goal using `[hmem]`. Use `hL _ hp using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Apply the tactic sequence `ext v i; apply Complex.ext <;> simp [reImEquiv_apply]) A B`. Use the proof step `(fun y => by`. Rewrite using `[hA, hmem]`. Use `congr! 1)`. Use the proof step `(fun y => by`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hB, hmem]`. Use `congr! 1`. Apply the tactic sequence `ext v i; apply Complex.ext <;> simp [reImEquiv_apply])`. Use `haveI : (volume : Measure (κ → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (ι → κ → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`.
-
-Use `haveI : (volume : Measure (κ → ℝ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (ι → κ → ℝ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : ((volume : Measure (ι → κ → ℝ)).prod (volume : Measure (ι → κ → ℝ))).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Rewrite `h` using `[ZLattice.covolume_comap L volume _ (measurePreserving_reImEquiv ι κ)]`. Establish `hr : Module.finrank ℝ (ι → κ → ℝ) = Fintype.card ι * Fintype.card κ`.
-
-Rewrite using `[Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules. Rewrite `h` using `[hr]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem real_imag_covolume_le : ∀ (ι κ : Type) [Fintype ι] [Fintype κ] (L : Submodule ℤ (ι → κ → ℂ)) [DiscreteTopology L] [IsZLattice ℝ L], (∀ z ∈ L, (fun v i => starRingEnd ℂ (z v i)) ∈ L) → ∀ A B : Submodule ℤ (ι → κ → ℝ), (∀ y, y ∈ A ↔ (fun v i => (y v i : ℂ)) ∈ L) → (∀ y, y ∈ B ↔ (fun v i => Complex.I * (y v i : ℂ)) ∈ L) → (∃ _ : DiscreteTopology A, IsZLattice ℝ A) ∧ (∃ _ : DiscreteTopology B, IsZLattice ℝ B) ∧ ZLattice.covolume A volume * ZLattice.covolume B volume ≤ 2 ^ (Fintype.card ι * Fintype.card κ) * ZLattice.covolume L volume := by
   intro ι κ _ _ L _ _ hL A B hA hB

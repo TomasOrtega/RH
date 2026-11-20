@@ -7,15 +7,15 @@ open scoped Matrix
 namespace GlobalTheory.HilbertThetaSeries
 
 /- English proof (translation)
-Set `f : Function.End F` to `fun y => ⟨σ y, hF y y.2⟩`. Establish `hf : ∀ (n : ℕ) (y : F), (((f ^ n) y : F) : α) = σ^[n] y`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `succ n ih`. Introduce `y`. Rewrite using `[pow_succ', Function.iterate_succ_apply', ← ih y]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : f ^ p ^ 1 = 1`. Use function extensionality and compare the values at `y`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[pow_one, hf]`. Conclude with `hp y y.2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Equiv.Perm.card_fixedPoints_modEq (f := f) (p := p) (n := 1) h1`. Establish `h3 : Fintype.card (Function.fixedPoints f) = 0`. Rewrite using `[Fintype.card_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hfree y y.2 (congrArg Subtype.val hy)`. Rewrite `h2` using `[h3, Fintype.card_coe]`. Conclude with `Nat.modEq_zero_iff_dvd.mp h2`.
+A detailed English derivation is pending.
 -/
 theorem freeOrbit_prime_dvd_card {p : ℕ} [Fact p.Prime] {α : Type} (σ : α → α) (F : Finset α)
     (hF : ∀ x ∈ F, σ x ∈ F) (hp : ∀ x ∈ F, σ^[p] x = x) (hfree : ∀ x ∈ F, σ x ≠ x) :
@@ -45,7 +45,7 @@ theorem freeOrbit_prime_dvd_card {p : ℕ} [Fact p.Prime] {α : Type} (σ : α �
   exact Nat.modEq_zero_iff_dvd.mp h2
 
 /- English proof (translation)
-Establish `h` using `PadicAlgCl.valuation_p p`. Rewrite using `[← PadicAlgCl.valuation_coe, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_prime_Qbar_eq (p : ℕ) [Fact p.Prime] : ‖(p : Qbar p)‖ = (p : ℝ)⁻¹ := by
   have h := PadicAlgCl.valuation_p p
@@ -53,17 +53,15 @@ theorem norm_prime_Qbar_eq (p : ℕ) [Fact p.Prime] : ‖(p : Qbar p)‖ = (p : 
   simp
 
 /- English proof (translation)
-Introduce `p _ ι α σ s Φ hs hp hfree hinv hle`. Establish `hna` using `PadicAlgCl.isNonarchimedean p`. Establish `key : ∀ c ∈ s.image Φ, ‖ι.symm ((s.filter (fun x => Φ x = c)).card • c)‖ ≤ (p : ℝ)⁻¹`. Introduce `c hc`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.1 hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hd : p ∣ (s.filter (fun x => Φ x = Φ y)).card`. Apply `freeOrbit_prime_dvd_card σ` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx`, the goal using `[Finset.mem_filter]`. Conclude with `⟨hs x hx.1, (hinv x hx.1).trans hx.2⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `x hx`. Conclude with `hp x (Finset.mem_filter.1 hx).1`. Introduce `x hx`. Conclude with `hfree x (Finset.mem_filter.1 hx).1`. Take `⟨k, hk⟩` from `hd`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_nsmul, nsmul_eq_mul, norm_mul, hk, Nat.cast_mul, norm_mul, norm_prime_Qbar_eq]`. Establish `h1 : ‖((k : ℕ) : Qbar p)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one _ k`. Establish `h2` using `hle y hy`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum : ∑ x ∈ s, Φ x = ∑ c ∈ s.image Φ, (s.filter (fun x => Φ x = c)).card • c` using `Finset.sum_comp (fun c => c) Φ`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[hsum, map_sum]`. Generalize the expression as in `s.image Φ = T at key`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a T ha ih`.
-
-Rewrite using `[Finset.sum_insert ha]`. Conclude with `(hna _ _).trans (max_le (key a (Finset.mem_insert_self a T)) (ih fun c hc => key c (Finset.mem_insert_of_mem hc)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sum_free_orbits_le : ∀ (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ) (α : Type) (σ : α → α) (s : Finset α) (Φ : α → ℂ), (∀ x ∈ s, σ x ∈ s) → (∀ x ∈ s, σ^[p] x = x) → (∀ x ∈ s, σ x ≠ x) → (∀ x ∈ s, Φ (σ x) = Φ x) → (∀ x ∈ s, ‖ι.symm (Φ x)‖ ≤ 1) → ‖ι.symm (∑ x ∈ s, Φ x)‖ ≤ (p : ℝ)⁻¹ := by
   intro p _ ι α σ s Φ hs hp hfree hinv hle
@@ -105,7 +103,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.norm_sum_free_orbits_le | exact GlobalTheory.HilbertThetaSeries.norm_sum_free_orbits_le | (intros; apply GlobalTheory.HilbertThetaSeries.norm_sum_free_orbits_le <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.norm_sum_free_orbits_le_inv_prime : ∀ (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ) (α : Type) (σ : α → α) (s : Finset α) (Φ : α → ℂ), (∀ x ∈ s, σ x ∈ s) → (∀ x ∈ s, σ^[p] x = x) → (∀ x ∈ s, σ x ≠ x) → (∀ x ∈ s, Φ (σ x) = Φ x) → (∀ x ∈ s, ‖ι.symm (Φ x)‖ ≤ 1) → ‖ι.symm (∑ x ∈ s, Φ x)‖ ≤ (p : ℝ)⁻¹ := by
   first | exact @GlobalTheory.HilbertThetaSeries.norm_sum_free_orbits_le | exact GlobalTheory.HilbertThetaSeries.norm_sum_free_orbits_le | (intros; apply GlobalTheory.HilbertThetaSeries.norm_sum_free_orbits_le <;> assumption)

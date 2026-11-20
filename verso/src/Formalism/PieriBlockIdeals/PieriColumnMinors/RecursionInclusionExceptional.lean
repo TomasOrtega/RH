@@ -96,9 +96,9 @@ def Ev7E : Prop :=
           30 * (W.T2.card : ℝ) * (P.m : ℝ) * P.b * P.x ^ (2 * ε) + 2 * (P.m : ℝ) * P.b
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `hi : a + i.val < N` using `by have := i.isLt; omega`. Establish `hj : a + j.val < N` using `by have := j.isLt; omega`. Establish `hle : (⟨a + i.val, hi⟩ : Fin N) ≤ ⟨a + j.val, hj⟩`. Rewrite using `[Fin.mk_le_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Fin.le_iff_val_le_val.mp hij` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `h hle`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem res_anti_shift {N a : ℕ} {lam : ℕ → ℕ} (h : Antitone (res N lam)) :
     Antitone (res (N - a) (fun i => lam (a + i))) := by
@@ -112,13 +112,13 @@ theorem res_anti_shift {N a : ℕ} {lam : ℕ → ℕ} (h : Antitone (res N lam)
   exact h hle
 
 /- English proof (translation)
-Establish `hanti : Antitone ν`. Introduce `i j _`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Establish `: i = j` using `Fin.ext (by omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Establish `h` using `LA.lattice_z_rank_le_two N N le_rfl (by omega) ν hanti l hl`. Establish `he : Formalism.RankGapBounds.JumpSetsAlt.eExp (LA.lamU N N ν) l = 0`. Unfold `Formalism.RankGapBounds.JumpSetsAlt.eExp`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p hp`. Simplify using `only [Formalism.RankGapBounds.JumpSetsAlt.posPairs, Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Establish `h1` using `p.1.isLt`. Establish `h2` using `p.2.isLt`. Establish `h3 : p.1.val < p.2.val` using `hp`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[he]`. Conclude with `Nat.le_zero.mp (Nat.sInf_le h)`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exZ_rank_le_one {N : ℕ} (hN : N ≤ 1) (ν : Fin N → ℕ) (l : ℕ) (hl : l.Prime) :
     LA.exZ N N le_rfl ν l = 0 := by
@@ -142,19 +142,17 @@ theorem exZ_rank_le_one {N : ℕ} (hN : N ≤ 1) (ν : Fin N → ℕ) (l : ℕ) 
   exact Nat.le_zero.mp (Nat.sInf_le h)
 
 /- English proof (translation)
-Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `lam _ lo _`. Rewrite using `[exZ_rank_le_one (by norm_num) (res 0 lam) l hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.zero_le _`. Consider the case `succ n ih`. Introduce `lam hA lo hb`. Establish `hcut : LA.exZ (n + 1) (n + 1) le_rfl (res (n + 1) lam) l ≤ LA.exZ 1 1 le_rfl (res 1 lam) l + LA.exZ n n le_rfl (res n (fun i => lam (1 + i))) l + 1 * n * Nat.log l w` using `hC (n + 1) lam hA l hl lo w hb 1 (by omega)`. Establish `h1 : LA.exZ 1 1 le_rfl (res 1 lam) l = 0` using `exZ_rank_le_one le_rfl _ l hl`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA' : Antitone (res n (fun i => lam (1 + i)))` using `res_anti_shift (a := 1) hA`. Establish `hb' : ∀ a < n, lo ≤ UN n (fun i => lam (1 + i)) a ∧ UN n (fun i => lam (1 + i)) a ≤ lo + (w : ℤ)`. Introduce `a ha`. Establish `hba` using `hb (1 + a) (by omega)`. Establish `e : UN n (fun i => lam (1 + i)) a = UN (n + 1) lam (1 + a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [UN]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hba`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrest` using `ih (fun i => lam (1 + i)) hA' lo hb'`. Establish `hch : (n + 1).choose 2 = n.choose 2 + n`. Establish `h2` using `Nat.choose_succ_succ n 1`. Rewrite `h2` using `[Nat.choose_one_right]`. Conclude with `h2.trans (Nat.add_comm _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hcut` using `[h1]`. Rewrite using `[hch, Nat.add_mul]`. Establish `hstep : 0 + LA.exZ n n le_rfl (res n (fun i => lam (1 + i))) l + 1 * n * Nat.log l w ≤ n.choose 2 * Nat.log l w + n * Nat.log l w`. Rewrite using `[zero_add, one_mul]`. Conclude with `Nat.add_le_add_right hrest _`.
-
-Conclude with `le_trans hcut hstep`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exZ_le_of_exCut (hC : ExCut) (l : ℕ) (hl : l.Prime) (w : ℕ) :
     ∀ (N : ℕ) (lam : ℕ → ℕ), Antitone (res N lam) → ∀ lo : ℤ,
@@ -199,9 +197,9 @@ theorem exZ_le_of_exCut (hC : ExCut) (l : ℕ) (hl : l.Prime) (w : ℕ) :
     exact le_trans hcut hstep
 
 /- English proof (translation)
-Introduce `hC N lam hA l hl lo w hb`. Establish `h` using `exZ_le_of_exCut hC l hl w N lam hA lo hb`. Use `⟨h, fun hw => ?_⟩` and prove the remaining obligations. Establish `h0 : Nat.log l w = 0` using `Nat.log_of_lt hw`. Rewrite `h` using `[h0, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Nat.le_zero.mp h`.
+A detailed English derivation is pending.
 -/
 theorem exIntervalLt_of_exCut : ExCut → ExIntervalLt := by
   intro hC N lam hA l hl lo w hb
@@ -212,11 +210,11 @@ theorem exIntervalLt_of_exCut : ExCut → ExIntervalLt := by
   exact Nat.le_zero.mp h
 
 /- English proof (translation)
-Introduce `hI _ P hH hL ι W hW J τ _ l hl`. Establish `hN` using `rank_pos_of_hyp P hH`. Establish `h` using `hI P.Nr (W.lam τ) (restriction_lambda_antitone hW τ) l hl (W.U P τ (P.Nr - 1)) (W.width P τ).toNat (fun a ha => weight_in_width_range hW τ a ha)`. Establish `hc : (((W.width P τ).toNat : ℕ) : ℝ) = (W.width P τ : ℝ)`. Establish `: (((W.width P τ).toNat : ℕ) : ℤ) = W.width P τ` using `Int.toNat_of_nonneg (width_nonneg hW hN τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Prove the components needed by the constructor for the conclusion. Introduce `hlt`. Apply `h.2` to reduce the goal to its premises. Establish `h1 : (((W.width P τ).toNat : ℕ) : ℝ) < (l : ℝ)` using `by rw [hc]; exact hlt`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1` after adjusting the coercions. Introduce `hle`. Establish `h2 : (2 : ℝ) ≤ (l : ℝ)` using `by exact_mod_cast hl.two_le`. Establish `hle' : (l : ℝ) ≤ (W.width P τ : ℝ)` using `hle`. Conclude with `exponent_mul_log_le_choose_mul_log P.Nr l _ _ _ h.1 hc.le (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thin_exceptional : ThinAE := by
   intro hI _ P hH hL ι W hW J τ _ l hl
@@ -237,47 +235,43 @@ theorem thin_exceptional : ThinAE := by
     exact exponent_mul_log_le_choose_mul_log P.Nr l _ _ _ h.1 hc.le (by linarith)
 
 /- English proof (translation)
-The claim follows from `hH.m_pos.trans hH.m_le`.
+A detailed English derivation is pending.
 -/
 theorem one_le_k_of_hyp (P : Par) (hH : P.Hyp) : 1 ≤ P.k := hH.m_pos.trans hH.m_le
 
 /- English proof (translation)
-Unfold `kc`. Conclude with `Nat.sub_le P.k 1` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kc_cast_le_k (P : Par) : (kc P : ℝ) ≤ (P.k : ℝ) := by
   unfold kc
   exact_mod_cast Nat.sub_le P.k 1
 
 /- English proof (translation)
-Introduce `hI hC P hH hL ι W hW J τ hτ l hl`. Take `⟨sh, hS0, hE0⟩` from `shape_a_real_holds P hH hL ι W hW τ hτ`. Establish `hh` using `one_le_h P hH`. Establish `hh0` using `floor_height_le_height P hH`. Establish `h` using `hI P.Nr (W.lam τ) (restriction_lambda_antitone hW τ) l hl 0 (h0 P) (fun a ha => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `sh.inRange ⟨a, ha⟩`. Rewrite using `[zero_add]`. Conclude with `h1)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hlt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h.2` to reduce the goal to its premises. Establish `h1 : (h0 P : ℝ) < (l : ℝ)` using `lt_of_le_of_lt hh0 hlt`. Conclude with `h1` after adjusting the coercions. Conclude with `exponent_mul_log_le_choose_mul_log P.Nr l _ _ _ h.1 hh0 hh`. Introduce `hle`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heta : (W.U P τ (kc P) - W.U P τ (P.Nr - 1)).toNat < l`. Establish `ht1 : (1 : ℝ) ≤ (P.t : ℝ)`. Use `hH.t_ge` as an intermediate fact. Conclude with `(show 1 ≤ P.t by omega)` after adjusting the coercions. Establish `h1 : (((W.U P τ (kc P) - W.U P τ (P.Nr - 1)).toNat : ℕ) : ℝ) < (l : ℝ)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h1` after adjusting the coercions. Establish `hjq` using `(rest_near_holds P hH ι W hW τ).2.2.2.1`. Establish `hrows` using `hW.what₂ τ`. Establish `hNk : P.Nr - kc P ≤ P.m + P.t` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs` using `SL2BinomialLattices.size_large l P.Nr (kc P) (h0 P) _ _ 0 P.m P.t _ _ _ hl sh (Nat.zero_le _) heta.le hNk`. Establish `hkN : kc P ≤ P.Nr` using `sh.k_le`. Establish `hcut` using `hC P.Nr (W.lam τ) (restriction_lambda_antitone hW τ) l hl 0 (h0 P) (fun a ha => by`. Establish `h1` using `sh.inRange ⟨a, ha⟩`. Rewrite using `[zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Conclude with `h1) (kc P) hkN`. Establish `hcl` using `(hI (kc P) (W.lam τ) (restriction_lambda_antitone_kc hW τ) l hl (W.xm τ - ((P.Nr : ℤ) - (kc P : ℤ))) (W.xp τ - W.xm τ).toNat (fun a ha => by`. Establish `h1` using `hW.cloud τ a ha`. Establish `h2` using `(hW.window τ).2.1`. Unfold `Wts.U UN at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Unfold `UN`. Use the proof step `omega)).1`. Establish `hrest` using `(hI (P.Nr - kc P) (fun i => W.lam τ (kc P + i)) (res_anti_shift (restriction_lambda_antitone hW τ)) l hl (W.U P τ (P.Nr - 1)) (W.U P τ (kc P) - W.U P τ (P.Nr - 1)).toNat (fun a ha => by`. Establish `h1` using `sh.restIn ⟨kc P + a, by omega⟩ (by simp)`. Simplify using `only at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `Wts.U UN at h1 ⊢`. Move the coercions through the operations in `at h1 ⊢`. Use the proof step `omega)).2 heta`. Establish `hexN : W.ex P τ l ≤ (kc P).choose 2 * Nat.log l (W.xp τ - W.xm τ).toNat + kc P * (P.Nr - kc P) * Nat.log l (h0 P)`. Establish `e0 : W.ex P τ l = LA.exZ P.Nr P.Nr le_rfl (res P.Nr (W.lam τ)) l` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e0]`. Rewrite `hcut` using `[hrest, add_zero]`. Conclude with `hcut.trans (Nat.add_le_add_right hcl _)`. Establish `hexR : (W.ex P τ l : ℝ) ≤ ((kc P).choose 2 : ℝ) * (Nat.log l (W.xp τ - W.xm τ).toNat : ℝ) + (kc P : ℝ) * ((P.Nr - kc P : ℕ) : ℝ) * (Nat.log l (h0 P) : ℝ)`. Conclude with `hexN` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlg0 : (0 : ℝ) ≤ Real.log (l : ℝ)` using `Real.log_natCast_nonneg l`. Establish `g1` using `SL2BinomialLattices.log_le_log_bound l (W.xp τ - W.xm τ).toNat`. Establish `g2` using `SL2BinomialLattices.log_le_log_bound l (h0 P)`. Establish `hmain : (W.ex P τ l : ℝ) * Real.log l ≤ (kc P : ℝ) * ((P.Nr - kc P : ℕ) : ℝ) * Real.log (h0 P : ℕ) + ((kc P).choose 2 : ℝ) * Real.log ((W.xp τ - W.xm τ).toNat : ℕ)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hmain.trans hs.2).trans ?_` and prove the remaining obligations. Establish `hk` using `kc_cast_le_k P`. Establish `hk0 : (0 : ℝ) ≤ (kc P : ℝ)` using `Nat.cast_nonneg _`. Establish `h01 : (1 : ℝ) ≤ (h0 P : ℝ)` using `by exact_mod_cast one_le_floor_height P hH`. Establish `hl1 : 0 ≤ Real.log (3 * (h0 P : ℝ))` using `Real.log_nonneg (by linarith)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Establish `hl2 : Real.log (3 * (h0 P : ℝ)) ≤ Real.log (3 * P.h)` using `Real.log_le_log (by linarith) (by linarith)`. Establish `hmt : (0 : ℝ) ≤ (P.m : ℝ) + (P.t : ℝ)` using `by positivity`. Establish `t1 : (kc P : ℝ) * ((P.m : ℝ) + (P.t : ℝ)) * Real.log (3 * (h0 P : ℝ)) ≤ (P.k : ℝ) * ((P.m : ℝ) + (P.t : ℝ)) * Real.log (3 * P.h)` using `mul_le_mul (mul_le_mul_of_nonneg_right hk hmt) hl2 hl1 (mul_nonneg (Nat.cast_nonneg _) hmt)`. Establish `hk1 : (1 : ℝ) ≤ (P.k : ℝ)` using `by exact_mod_cast one_le_k_of_hyp P hH`. Establish `hSk : 0 ≤ Real.log (P.S + (P.k : ℝ))` using `Real.log_nonneg (by linarith [hH.S_nonneg])`.
-
-Establish `t2 : (kc P : ℝ) ^ 2 * Real.log ((((W.xp τ - W.xm τ).toNat : ℕ) : ℝ) + (kc P : ℝ)) ≤ (P.k : ℝ) ^ 2 * Real.log (P.S + (P.k : ℝ))`. Break down `Nat.eq_zero_or_pos (kc P) with h0 | h0` into its components or cases. Rewrite using `[h0]`. Simplify using `only [Nat.cast_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_mul]`. Check the signs of the components of the expression.
-
-Establish `hc1 : (1 : ℝ) ≤ (kc P : ℝ)` using `by exact_mod_cast h0`. Establish `hs0 : (0 : ℝ) ≤ (((W.xp τ - W.xm τ).toNat : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Conclude with `mul_le_mul (pow_le_pow_left₀ hk0 hk 2) (Real.log_le_log (by linarith) (by linarith)) (Real.log_nonneg (by linarith)) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem thick_exceptional : ThickAE := by
   intro hI hC P hH hL ι W hW J τ hτ l hl
@@ -380,13 +374,13 @@ theorem thick_exceptional : ThickAE := by
     linarith
 
 /- English proof (translation)
-Introduce `hI _ P hH hL ι W hW J τ hτ l hl hlt`. Establish `hkN` using `kc_le_rank hW τ`. Establish `h` using `hI (kc P) (W.lam τ) (restriction_lambda_antitone_kc hW τ) l hl (W.xm τ - ((P.Nr : ℤ) - (kc P : ℤ))) (W.xp τ - W.xm τ).toNat (fun a ha => by`. Establish `h1` using `hW.cloud τ a ha`. Establish `h2` using `(hW.window τ).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Wts.U UN at h1`. Unfold `UN`. Use the proof step `omega)`. Apply `h.2` to reduce the goal to its premises. Establish `hw` using `hW.window τ`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (((W.xp τ - W.xm τ).toNat : ℕ) : ℝ) = (W.xp τ : ℝ) - (W.xm τ : ℝ)`. Establish `: (((W.xp τ - W.xm τ).toNat : ℕ) : ℤ) = W.xp τ - W.xm τ` using `Int.toNat_of_nonneg (sub_nonneg.mpr hw.2.1)`. Conclude with `this` after adjusting the coercions. Establish `h4 : (((W.xp τ - W.xm τ).toNat : ℕ) : ℝ) < (l : ℝ)`. Rewrite using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: (0 : ℝ) ≤ (P.k : ℝ)` using `Nat.cast_nonneg _`. Combine the linear relations using `[hw.1, hw.2.2]`. Conclude with `h4` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem cloud_exceptional : CloudAE := by
   intro hI _ P hH hL ι W hW J τ hτ l hl hlt
@@ -411,15 +405,15 @@ theorem cloud_exceptional : CloudAE := by
   exact_mod_cast h4
 
 /- English proof (translation)
-Introduce `hI hC P hH hL ι _ _ W hW l hl hlJ hlh`. Establish `hex : ∀ τ, W.ex P τ l = 0`. Introduce `τ`. Distinguish the cases in `hτ : τ ∈ W.T2`. Conclude with `(thick_exceptional hI hC P hH hL ι W hW (fun _ => 0) τ hτ l hl).1 hlh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(thin_exceptional hI hC P hH hL ι W hW (fun _ => 0) τ hτ l hl).1 show (W.width P τ : ℝ) < (l : ℝ)` to reduce the goal to its premises. Establish `he` using `paramsTop_holds P hH hL`. Establish `hf` using `(paramsThin_holds P hH hL).2`. Establish `ht` using `hL.top_le`. Establish `hb` using `hH.b'_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : 0 < P.x` using `by linarith [hH.x_ge]`. Establish `hpos : 0 ≤ P.b' * (1 / P.x + 1 / P.x ^ 2)` using `by positivity`. Break down `hW.other τ hτ with h | h` into its components or cases. Combine the linear relations using `[h.2]`. Use polynomial arithmetic with `[h.2]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hex, ?_, ?_⟩` and prove the remaining obligations. Unfold `Wts.JA`. Conclude with `Finset.sum_eq_zero fun τ _ => hex τ`. Unfold `Wts.JW`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `τ _`. Unfold `cTau`. Use `split_ifs`. Simplify using `[hex τ]`. Conclude with `hex τ`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem beyond_height_exceptional : BeyondHE := by
   intro hI hC P hH hL ι _ _ W hW l hl hlJ hlh
@@ -450,7 +444,7 @@ theorem beyond_height_exceptional : BeyondHE := by
     · exact hex τ
 
 /- English proof (translation)
-Introduce `hI hC P hH hL ι _ _ W hW hcard hSp`. Use `⟨hcard, hSp, ?_, sizeData_boundW_of_le_seventh_recursion W P hH hL hW _ (fun _ _ => le_rfl), thin_exceptional hI hC P hH hL ι W hW _, thick_exceptional hI hC P hH hL ι W hW _, cloud_exceptional hI hC P hH hL ι W hW _, shape_t_real_holds P hH hL ι W hW _, widths_real_holds P ι W h …` and prove the remaining obligations. Introduce `l _ hc`. Conclude with `(seventh_recursion_eq_a_of_small_prime W P l hc).le`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem recursion_inputs_exceptional : InputsRec7E := by
   intro hI hC P hH hL ι _ _ W hW hcard hSp
@@ -462,7 +456,7 @@ theorem recursion_inputs_exceptional : InputsRec7E := by
   exact (seventh_recursion_eq_a_of_small_prime W P l hc).le
 
 /- English proof (translation)
-Introduce `hI hC hRS P hH hL ι _ _ W hW hcard hSp Q hQ`. Conclude with `totalElementary_holds hRS P hH hL ι (W.sizeData₂ P (W.Jrec7 P)) (recursion_inputs_exceptional hI hC P hH hL ι W hW hcard hSp) (places_real_holds P hH hL ι W hW _).2 Q hQ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem recursion_sum_exceptional : RecSum7E := by
   intro hI hC hRS P hH hL ι _ _ W hW hcard hSp Q hQ
@@ -470,85 +464,85 @@ theorem recursion_sum_exceptional : RecSum7E := by
     (recursion_inputs_exceptional hI hC P hH hL ι W hW hcard hSp) (places_real_holds P hH hL ι W hW _).2 Q hQ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ B : Prop, Formalism.CohomologicalDescent.ShortWeightBounds.ThinAReal = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ ThinAE = (ExIntervalLt → ExCut → B) :=
   ⟨_, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ B : Prop, Formalism.CohomologicalDescent.ShortWeightBounds.ThickAReal = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ ThickAE = (ExIntervalLt → ExCut → B) :=
   ⟨_, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ B : Prop, Formalism.CohomologicalDescent.ShortWeightBounds.CloudAReal = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ CloudAE = (ExIntervalLt → ExCut → B) :=
   ⟨_, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ B : Prop, Formalism.CohomologicalDescent.ShortWeightBounds.BeyondH = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ BeyondHE = (ExIntervalLt → ExCut → B) :=
   ⟨_, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ B : Prop, Formalism.CohomologicalDescent.ShortWeightBounds.RecIncl7 = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ RecIncl7E = (ExIntervalLt → ExCut → B) :=
   ⟨_, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ B : Prop, Formalism.CohomologicalDescent.ShortWeightBounds.InputsRec7 = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ InputsRec7E = (ExIntervalLt → ExCut → B) :=
   ⟨_, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ B : Prop, Formalism.CohomologicalDescent.ShortWeightBounds.RecSum7 = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ RecSum7E = (ExIntervalLt → ExCut → B) :=
   ⟨_, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ B : Prop, Formalism.CohomologicalDescent.ShortWeightBounds.CorollaryOfRecord7 = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ CorollaryExceptionalStrict = (ExIntervalLt → ExCut → B) :=
   ⟨_, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ B : Prop, Formalism.CohomologicalDescent.LargeParameterEstimates.CorollaryOfRecord7Tail = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ Tail7E = (ExIntervalLt → ExCut → B) :=
   ⟨_, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ B : Prop, Formalism.CohomologicalDescent.LargeParameterEstimates.CorollaryOfRecord7Ev = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧ Ev7E = (ExIntervalLt → ExCut → B) :=
   ⟨_, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ B : Prop, Formalism.CohomologicalDescent.Top.CorollaryOfRecord7 = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧
     CorollaryOfRecord7E = (ExInterval → ExCut → B) := ⟨_, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ B : Prop, Formalism.CohomologicalDescent.JD.JointRecord = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧
     JointRecordE = (ExInterval → ExCut → B) := ⟨_, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ B : Prop, Formalism.CohomologicalDescent.Top.CorollaryOfRecord7 = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧
     CorollaryOfRecord7ELt = (ExIntervalLt → ExCut → B) ∧ CorollaryOfRecord7C = (ExCut → B) := ⟨_, rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ B : Prop, Formalism.CohomologicalDescent.JD.JointRecord = (Formalism.CohomologicalDescent.LA.LemmaAZ → B) ∧
     JointRecordELt = (ExIntervalLt → ExCut → B) ∧ JointRecordC = (ExCut → B) := ⟨_, rfl, rfl, rfl⟩

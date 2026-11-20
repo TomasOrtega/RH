@@ -26,19 +26,19 @@ noncomputable section
 namespace GlobalTheory.FamTrace.LastRow
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x0, hx0⟩ : ∃ x, Q.fn x ≠ 0 := by`. Assume the negation of the conclusion as `h`. Conclude with `Q.fn_ne (LinearMap.ext fun x => not_not.1 fun hx => h ⟨x, hx⟩)`. Take `⟨y0, -, s0, hs0, ha0⟩` from `(hQ x0.1 (Q.fn x0)).1 ⟨x0.2, rfl⟩`. Establish `hu : residue 𝒪[k] s0 ≠ 0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hx0` to reduce the goal to its premises. Rewrite using `[ha0, map_mul, h, zero_mul]`. Set `yE : Fin n → 𝒪[k]` to `Pi.single s 1`. Establish `hyE : ∀ r, (yE r : k) = (Pi.single s 1 : Fin n → k) r`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Simplify using `only [yE, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Establish `h1 : Q.HasVal (b' *ᵥ Pi.single s 1) (residue 𝒪[k] (s0 * yE r₀))`. Use `(hQ _ _).2 ⟨yE, fun r => ?_, s0, hs0, rfl⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, hb, Matrix.one_mulVec, hyE]`. Establish `h2 : Q.HasVal (g • (b' *ᵥ (Pi.single s 1 : Fin n → k))) (residue 𝒪[k] (s0 * yE r₀))`. Rewrite using `[← hfix, GlobalTheory.LatPair.Pair.smul_hasVal, inv_smul_smul]`. Conclude with `h1`. Take `⟨y1, hy1, s1, hs1, ha1⟩` from `(hQ _ _).1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `rfl : s1 = s0` from `Subtype.ext (hs1.trans hs0.symm)`. Establish `hM : (y1 r₀ : k) = M r₀ s`. Rewrite using `[hy1]`. Express the relevant statement in the definitionally equal form `(b *ᵥ (g.val *ᵥ (b' *ᵥ (Pi.single s 1 : Fin n → k)))) r₀ = _`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← hg, Matrix.mulVec_single_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h3 : residue 𝒪[k] (y1 r₀ - yE r₀) = 0`. Rewrite `ha1` using `[map_mul, map_mul]`. Rewrite using `[map_sub, mul_left_cancel₀ hu ha1, sub_self]`. Establish `h4` using `Valuation.Integer.not_isUnit_iff_valuation_lt_one.1 ((IsLocalRing.mem_maximalIdeal _).1 ((IsLocalRing.residue_eq_zero_iff _).1 h3))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : ((y1 r₀ - yE r₀ : 𝒪[k]) : k) = M r₀ s - (1 : Matrix (Fin n) (Fin n) k) r₀ s`. Rewrite using `[AddSubgroupClass.coe_sub, hM, hyE, Pi.single_apply, Matrix.one_apply]`. Rewrite using `[← h5]`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem row_lt_of_smul_pair_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} (Q : GlobalTheory.LatPair.Pair k (Fin n)) (b b' M : Matrix (Fin n) (Fin n) k) (hb : b * b' = 1) (c : k) (r₀ : Fin n)
@@ -85,11 +85,11 @@ theorem row_lt_of_smul_pair_eq {k : Type} [Field k] [ValuativeRel k] [Topologica
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hm : ∀ x y : GA D V, x * y = 1 → (mt V x).map p.pr * (mt V y).map p.pr = 1`. Introduce `x y h`. Establish `e : mt V x * mt V y = 1`. Simplify using `only [Formalism.L2.Theta.mt]`. Rewrite using `[← Units.val_mul, ← map_mul, h, map_one, Units.val_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, e]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hc : ∀ A A' : Matrix (Fin V.rank) (Fin V.rank) k, A * A' = 1 → (β.b' * A * β.b) * (β.b' * A' * β.b) = 1`. Introduce `A A' h`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨β.b' * (mt V κ).map p.pr * β.b, β.b' * (mt V κ⁻¹).map p.pr * β.b, hc _ _ (hm _ _ (mul_inv_cancel κ)), hc _ _ (hm _ _ (inv_mul_cancel κ))⟩, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_gl {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {p : GlobalTheory.FinPl.SplitPt D k} {V : HSp D} (β : GlobalTheory.FinPl.Frame p V (Fin V.rank)) (κ : GA D V) :
@@ -113,15 +113,13 @@ theorem exists_gl {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Set `y : AE D` to `mt V κ r s - (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) r s`. Establish `hy : Formalism.UG.prV (E` using `D.host.E) p.v (toEAf D y) = Formalism.UG.prV (E := D.host.E) p.v (GlobalTheory.AdForm.finM V rfl κ r s) - (1 : Matrix (Fin V.rank) (Fin V.rank) (D.host.E ⊗[D.host.F] p.v.adicCompletion D.host.F)) r s := by`. Simplify using `only [y]`. Rewrite using `[RingHom.map_sub, RingHom.map_sub]`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Distinguish the cases in `h : r = s`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one, RingHom.map_one]`. Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne h, RingHom.map_zero, RingHom.map_zero]`.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h7 : p.pr ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) r s) = (1 : Matrix (Fin V.rank) (Fin V.rank) k) r s`. Apply the tactic sequence `simp only [Matrix.one_apply]; split_ifs <;> simp`. Rewrite using `[← hy]`. Use `GlobalTheory.LocMod.SplitUnif.eq_mul_of_val_lt_one D k p P hP T t t' h1 h2 h3 h4 h5 h6 y ?_ ?_` and prove the remaining obligations. Rewrite using `[hy]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Subring.sub_mem _ hi ?_` and prove the remaining obligations. Simplify using `only [Matrix.one_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
-
-Simplify using `only [y]`. Rewrite using `[map_sub, h7]`. Conclude with `hl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_cong (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : GlobalTheory.FinPl.SplitPt D k) (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : Formalism.L2.NTheta.IsIdemAt p.e P) (T : ℕ)
@@ -163,19 +161,17 @@ end GlobalTheory.FamTrace.LastRow
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha hat κ hκ hkp hint v hv s`. Use `letI := a.fld`. Use `letI := a.val`. Use `letI := a.top`. Use `haveI := a.loc`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `htP : ∀ p, p ∈ a.v.tP ↔ ((((I.rec7 l Z).mem u).A.T : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∈ p.asIdeal`. Establish `hψ` using `hat.pinX.std`. Set `row : ∀ t, RowCh (pk W) (lvP W) u a.g t` to `fun t => { vP := fun _ => 0, vT := fun _ _ => 0, sBF := fun j ρ h => (GlobalTheory.Unf.Inhab.nonempty_stepBF hψ _ _).some, sFB := fun j σ h => (GlobalTheory.Unf.Inhab.nonempty_stepFB hψ _ _).some, io := fun _ => 0, ioT := fun _ _ => 0 }`. Conclude with `(ha.tie row (fun t => { kom := fun _ => 1, Ch := fun _ => Unit, fin := fun _ => inferInstance, dd := fun _ _ _ => 0, e := fun _ _ => 0, eT := fun _ _ _ => 0, Ram := fun _ => Set.univ, S := fun _ => id, rd := fun _ _ _ _ _ => 0, cV := fun _ => 1, cK := fun _ => 1, cP := 1 })).1.tP`. Take `⟨i, rfl⟩` from `(ha.shape.pre.tP v).1 ((htP v).2 hv)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hPr, -⟩` from `GlobalTheory.Mem.Col2.base_fields_primes_ok B X`. Take `⟨e, he⟩` from `hat.std.1`. Establish `hpi : X.piT u ∈ (e i).1.asIdeal`. Establish `hcop : IsCoprime (X.piT u) (B.fields.conjO (X.piT u))` using `hPr.piT_cop u`. Establish `hne : X.piT u ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Rewrite `hcop` using `[h0, map_zero, isCoprime_zero_left]`. Conclude with `not_isUnit_zero hcop`. Conclude with `(Formalism.L2.Col.mem_divs hne _).1 (e i).2`. Establish `hn` using `Formalism.L2.Forms.rankN (I.rec7 l Z) 0 (Nat.zero_le _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : NeZero ((I.rec7 l Z).R.N 0) := ⟨by`. Use `(I.rec7 l Z).R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Ranks.N]`. Use the proof step `omega⟩`. Use `set r₀ : Fin ((I.rec7 l Z).sp.X 0).rank := (finCongr hn).symm (Formalism.L2.Col.lastIdx _) with hr₀def`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set s' : Fin ((I.rec7 l Z).sp.X 0).rank := (finCongr hn).symm s with hs'def`. Establish `hr₀ : r₀.1 + 1 = ((I.rec7 l Z).sp.X 0).rank`. Establish `h1 : (Formalism.L2.Col.lastIdx ((I.rec7 l Z).R.N 0)).1 = (I.rec7 l Z).R.N 0 - 1` using `rfl`. Establish `h2 : r₀.1 = (Formalism.L2.Col.lastIdx ((I.rec7 l Z).R.N 0)).1` using `rfl`. Establish `h3` using `NeZero.ne ((I.rec7 l Z).R.N 0)`.
-
-Use linear arithmetic over natural numbers and integers. Establish `hQ` using `GlobalTheory.AdForm.stdT_pair_coords I l Z u a.k a.ι a.o.p a.o.β a.o.Q _ hat.std 0 (Nat.zero_le _) i r₀ hr₀`. Take `⟨g, hg⟩` from `GlobalTheory.FamTrace.LastRow.exists_gl (a.o.β 0 i) κ`. Establish `hl` using `GlobalTheory.FamTrace.LastRow.row_lt_of_smul_pair_eq _ _ _ _ (a.o.β 0 i).bb' _ r₀ hQ g hg (hkp i g hg) s'`. Conclude with `GlobalTheory.FamTrace.LastRow.entry_cong (I.rec7 l Z) a.k (a.o.p i) (e i).1 (he i) ((I.rec7 l Z).mem u).A.T (X.piT u) (B.fields.conjO (X.piT u)) ((B.fields_conjO_coe _).trans (GlobalTheory.RankOneLine.star_eq_hostConj (I.rec7 l Z) _).symm) (hPr.piT_norm u) (hPr.piT_cop u) hpi hv …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FamTrace.lastRow_cong_of_keepsPairs : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ κ ∈ GfC ((I.rec7 l Z).sp.X 0), GlobalTheory.FamTrace.KeepsPairs a κ → (∀ (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)) (r s : Fin ((I.rec7 l Z).R.N 0)), Formalism.UG.prV (E := (I.rec7 l Z).host.E) v (GlobalTheory.AdForm.finM ((I.rec7 l Z).sp.X 0) (Formalism.L2.Forms.rankN (I.rec7 l Z) 0 (Nat.zero_le _)) κ r s) ∈ Formalism.BasicNotions.intV (I.rec7 l Z).host.E v) → ∀ v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F), (((((I.rec7 l Z).mem u).A.T : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal) → ∀ s : Fin ((I.rec7 l Z).R.N 0), ∃ c ∈ Formalism.BasicNotions.intV (I.rec7 l Z).host.E v, Formalism.UG.prV (E := (I.rec7 l Z).host.E) v (GlobalTheory.AdForm.finM ((I.rec7 l Z).sp.X 0) (Formalism.L2.Forms.rankN (I.rec7 l Z) 0 (Nat.zero_le _)) κ (Formalism.L2.Col.lastIdx _) s) - (1 : Matrix (Fin ((I.rec7 l Z).R.N 0)) (Fin ((I.rec7 l Z).R.N 0)) ((I.rec7 l Z).host.E ⊗[(I.rec7 l Z).host.F] v.adicCompletion (I.rec7 l Z).host.F)) (Formalism.L2.Col.lastIdx _) s = Formalism.UG.inclE (F := (I.rec7 l Z).host.F) (v.adicCompletion (I.rec7 l Z).host.F) (show (I.rec7 l Z).host.E from (X.piT u : B.fields.E)) * c := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha hat κ hκ hkp hint v hv s

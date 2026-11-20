@@ -11,11 +11,11 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 variable {N : ℕ}
 
 /- English proof (translation)
-Establish `hpt : ∀ Z : Fin N → Fin N → ℂ, ENNReal.ofReal (Real.exp (-hs (Matrix.of Z))) = ENNReal.ofReal (∏ i, (fun (_ : Fin N) (row : Fin N → ℂ) => ∏ j, Real.exp (-‖row j‖ ^ 2)) i (Z i))`. Introduce `Z`. Use `congr 1`. Simplify using `only [hs, Matrix.of_apply, ← Real.exp_sum, ← Finset.sum_neg_distrib]`. Establish `hrow : Integrable (fun row : Fin N → ℂ => ∏ j, Real.exp (-‖row j‖ ^ 2))` using `Integrable.fintype_prod (fun _ => gaussA_cint)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hrowi : ∫ row : Fin N → ℂ, ∏ j, Real.exp (-‖row j‖ ^ 2) = Real.pi ^ N`. Rewrite using `[integral_fintype_prod_volume_eq_prod (fun (_ : Fin N) (z : ℂ) => Real.exp (-‖z‖ ^ 2))]`. Simplify using `only [gaussA_cintegral, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Repeatedly rewrite using `[hpt]`. Rewrite using `[show (volume : Measure (Fin N → Fin N → ℂ)) = Measure.pi (fun _ => volume) from rfl, gaussA_lint_pi_ofReal _ (fun _ => hrow) (fun _ _ => Finset.prod_nonneg fun _ _ => (Real.exp_pos _).le)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hrowi, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← ENNReal.ofReal_pow (pow_nonneg Real.pi_pos.le _), ← pow_mul, sq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gaussC_mat :
     ∫⁻ Z : Fin N → Fin N → ℂ, ENNReal.ofReal (Real.exp (-hs (Matrix.of Z))) =
@@ -38,15 +38,15 @@ theorem gaussC_mat :
   rw [← ENNReal.ofReal_pow (pow_nonneg Real.pi_pos.le _), ← pow_mul, sq]
 
 /- English proof (translation)
-Establish `hp : ∀ a b : Fin N, ‖upMat t a b‖ ^ 2 = (if a = b then t.1 a ^ 2 else 0) + (if h : a < b then ‖t.2 ⟨(a, b), h⟩‖ ^ 2 else 0)`. Introduce `a b`. Unfold `upMat`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Complex.norm_real, sq_abs]`. Distinguish the cases in `h : a < b`. Simplify using `[hab, h]`. Simplify using `[hab, h]`. Unfold `hs`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Repeatedly rewrite using `[hp, Finset.sum_add_distrib]`. Use `congr 1`. Simplify using `[Finset.sum_ite_eq]`. Rewrite using `[← Finset.sum_product' (f := fun a b => if h : a < b then ‖t.2 ⟨(a, b), h⟩‖ ^ 2 else 0), Finset.univ_product_univ, ← (Equiv.sumCompl (fun p : Fin N × Fin N => p.1 < p.2)).sum_comp, Fintype.sum_sum_type]`. Establish `h1 : ∀ a : {p : Fin N × Fin N // p.1 < p.2}, (fun p : Fin N × Fin N => if h : p.1 < p.2 then ‖t.2 ⟨(p.1, p.2), h⟩‖ ^ 2 else 0) ((Equiv.sumCompl (fun p : Fin N × Fin N => p.1 < p.2)) (Sum.inl a)) = ‖t.2 a‖ ^ 2`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Take `⟨⟨x, y⟩, h⟩` from `a`. Simplify using `[h]`. Establish `h2 : ∀ b : {p : Fin N × Fin N // ¬ p.1 < p.2}, (fun p : Fin N × Fin N => if h : p.1 < p.2 then ‖t.2 ⟨(p.1, p.2), h⟩‖ ^ 2 else 0) ((Equiv.sumCompl (fun p : Fin N × Fin N => p.1 < p.2)) (Sum.inr b)) = 0`. Introduce `b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨⟨x, y⟩, h⟩` from `b`. Simplify using `[h]`. Simplify using `only [h1, h2, Finset.sum_const_zero, add_zero]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gaussC_hs_upMat (t : TriCo N) :
     hs (upMat t) = ∑ j, t.1 j ^ 2 + ∑ ab : {ab : Fin N × Fin N // ab.1 < ab.2}, ‖t.2 ab‖ ^ 2 := by
@@ -79,11 +79,11 @@ theorem gaussC_hs_upMat (t : TriCo N) :
 def gaussRadW (N : ℕ) (j : Fin N) (r : ℝ) : ℝ := Real.exp (-r ^ 2) * |r| ^ (2 * (N - 1 - (j : ℕ)) + 1)
 
 /- English proof (translation)
-Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos _).le, ← ENNReal.ofReal_mul' (Finset.prod_nonneg fun _ _ => (Real.exp_pos _).le)]`. Use `congr 1`. Rewrite using `[gaussC_hs_upMat, neg_add, Real.exp_add, ← Finset.sum_neg_distrib, ← Finset.sum_neg_distrib, Real.exp_sum, Real.exp_sum]`. Establish `hw : ∀ j : Fin N, t.1 j ^ (2 * (N - (j : ℕ)) - 1) = |t.1 j| ^ (2 * (N - 1 - (j : ℕ)) + 1)`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[abs_of_pos (ht j)]`. Use `congr 1`. Use `j.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Unfold `qrWt gaussRadW`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Repeatedly rewrite using `[hw, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gaussD_integrand (t : TriCo N) (ht : t ∈ triPos N) :
     ENNReal.ofReal (Real.exp (-hs (upMat t))) * ENNReal.ofReal (qrWt t) =
@@ -105,16 +105,16 @@ theorem gaussD_integrand (t : TriCo N) (ht : t ∈ triPos N) :
   ring
 
 /- English proof (translation)
-Use extensionality with `t`. Simplify using `[triPos]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gaussD_triPos_eq : triPos N = (Set.univ.pi fun _ : Fin N => Set.Ioi (0:ℝ)) ×ˢ Set.univ := by
   ext t
   simp [triPos]
 
 /- English proof (translation)
-Establish `hms : MeasurableSet (triPos N)`. Rewrite using `[gaussD_triPos_eq]`. Conclude with `(MeasurableSet.univ_pi fun _ => measurableSet_Ioi).prod MeasurableSet.univ`. Rewrite using `[setLIntegral_congr_fun hms (fun t ht => gaussD_integrand t ht), gaussD_triPos_eq, show (volume : Measure (TriCo N)) = (volume : Measure (Fin N → ℝ)).prod (volume : Measure ({ab : Fin N × Fin N // ab.1 < ab.2} → ℂ)) from rfl, ← Measure.prod_restrict, Measure.restrict_univ, show ( …`. Rewrite using `[lintegral_prod_mul (f := fun x : Fin N → ℝ => ENNReal.ofReal (∏ j, gaussRadW N j (x j))) (g := fun y : {ab : Fin N × Fin N // ab.1 < ab.2} → ℂ => ENNReal.ofReal (∏ ab, Real.exp (-‖y ab‖ ^ 2))) (by unfold gaussRadW; fun_prop) (ENNReal.measurable_ofReal.comp (by fun_prop : Continu …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gaussA_lint_pi_ofReal (fun j => gaussRadW N j) (fun j => gaussA_rad_int _) (fun j r => mul_nonneg (Real.exp_pos _).le (pow_nonneg (abs_nonneg _) _)), show (volume : Measure ({ab : Fin N × Fin N // ab.1 < ab.2} → ℂ)) = Measure.pi (fun _ => volume) from rfl, gaussA_lint_pi_ofReal …`. Simplify using `only [gaussRadW, gaussA_rad, gaussA_cintegral, Finset.prod_const, Finset.card_univ, gaussB_card_lt]`. Rewrite using `[← ENNReal.ofReal_prod_of_nonneg (fun _ _ => by positivity), ← ENNReal.ofReal_pow Real.pi_pos.le, ← ENNReal.ofReal_mul (Finset.prod_nonneg fun _ _ => by positivity), gaussB_prod_fact]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gaussD_tri :
     ∫⁻ t in triPos N, ENNReal.ofReal (Real.exp (-hs (upMat t))) * ENNReal.ofReal (qrWt t) =

@@ -22,13 +22,13 @@ namespace GlobalTheory.SS.PowLocus
 open GlobalTheory.AbLaw
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty {x : Γ // P x ∧ x ^ n = 1} with h | h` into its components or cases. Conclude with `⟨inferInstance, by simp⟩`. Set `d : {x : Γ // P x ∧ x ^ n = 1} → J` to `fun x => c ⟨x.1, x.2.1⟩`. Establish `h1 : ∀ x : {x : Γ // P x ∧ x ^ n = 1}, ∃ t : {t : T // t ^ n = 1}, i t.1 = x.1 * (Function.invFun d (d x)).1⁻¹`. Introduce `x`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : d (Function.invFun d (d x)) = d x` using `Function.invFun_eq ⟨x, rfl⟩`. Take `⟨t, ht⟩` from `hc _ _ e.symm`. Use `⟨⟨t, hi ?_⟩, ht⟩` and prove the remaining obligations. Rewrite using `[map_pow, ht, map_one, (hΓ _ _).mul_pow, inv_pow]`. Express the relevant statement in the definitionally equal form `x.1 ^ n * ((Function.invFun d (d x)).1 ^ n)⁻¹ = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[x.2.2, (Function.invFun d (d x)).2.2, inv_one, _root_.mul_one]`. Use `choose τ hτ using h1`. Establish `hinj : Function.Injective fun x => (d x, τ x)`. Introduce `x y hxy`. Establish `e1 : d x = d y` using `congrArg Prod.fst hxy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : τ x = τ y` using `congrArg Prod.snd hxy`. Establish `e3` using `hτ x`. Rewrite `e3` using `[e1, e2, hτ y]`. Conclude with `Subtype.ext (mul_right_cancel e3).symm`. Conclude with `⟨Finite.of_injective _ hinj, (Nat.card_le_card_of_injective _ hinj).trans (Nat.card_prod _ _).le⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_torsion_le {Γ T J : Type} [Group Γ] [Group T] [Finite J] (hΓ : ∀ a b : Γ, Commute a b)
     (i : T →* Γ) (hi : Function.Injective i) (P : Γ → Prop) (c : {x // P x} → J)
@@ -58,11 +58,11 @@ theorem card_torsion_le {Γ T J : Type} [Group Γ] [Group T] [Finite J] (hΓ : �
   exact ⟨Finite.of_injective _ hinj, (Nat.card_le_card_of_injective _ hinj).trans (Nat.card_prod _ _).le⟩
 
 /- English proof (translation)
-Use `haveI : NeZero n := ⟨by omega⟩`. Set `b` to `Module.finBasis ℤ X`. Set `e₁` to `splitTorusPointsEquiv (Sp k) X (𝟙_ (Over (Sp k)))`. Set `e₃ : Γ((𝟙_ (Over (Sp k))).left, ⊤)ˣ ≃* kˣ` to `Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of k)).commRingCatIsoToRingEquiv.toMulEquiv`. Set `f : {t : 𝟙_ (Over (Sp k)) ⟶ splitTorus (Sp k) X // t ^ n = 1} → (Fin (Module.finrank ℤ X) → rootsOfUnity n k)` to `fun t j => ⟨e₃ (e₁ t.1 (Multiplicative.ofAdd (b j))), by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_rootsOfUnity, ← map_pow, ← MonoidHom.pow_apply, ← map_pow, t.2, map_one, MonoidHom.one_apply, map_one]⟩`. Establish `hf : Function.Injective f`. Introduce `s t h`. Use `Subtype.ext (e₁.injective ?_)` and prove the remaining obligations. Establish `: (MonoidHom.toAdditiveRight (e₁ s.1)).toIntLinearMap = (MonoidHom.toAdditiveRight (e₁ t.1)).toIntLinearMap` using `b.ext fun j => congrArg Additive.ofMul (e₃.injective (congrArg Subtype.val (congrFun h j)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Conclude with `congrArg Additive.toMul (DFunLike.congr_fun this x)`. Use `⟨Finite.of_injective _ hf, (Nat.card_le_card_of_injective _ hf).trans ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_fun, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin]`. Conclude with `Nat.pow_le_pow_left (by simpa using card_rootsOfUnity k n) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torus_torsion (k : Type) [Field k] (X : Type) [AddCommGroup X] [Module.Free ℤ X]
     [Module.Finite ℤ X] (n : ℕ) (hn : 1 ≤ n) :
@@ -91,11 +91,9 @@ theorem torus_torsion (k : Type) [Field k] (X : Type) [AddCommGroup X] [Module.F
   exact Nat.pow_le_pow_left (by simpa using card_rootsOfUnity k n) _
 
 /- English proof (translation)
-Establish `h2 : ν.left.ker ≤ g.left.ker`. Use `le_trans ?_ (ReducedSubgroup.vanishingIdeal_le_ker g.left ν.left.ker.support ?_)` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.vanishingIdeal_support]`. Conclude with `Scheme.IdealSheafData.le_radical _`. Rewrite using `[Scheme.Hom.support_ker]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h.trans subset_closure`. Establish `h3` using `IsClosedImmersion.lift_fac ν.left g.left h2`. Use `⟨Over.homMk (IsClosedImmersion.lift ν.left g.left h2) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.w ν, ← Category.assoc, h3, Over.w]`. Use `ext1`.
-
-Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift {S : Scheme.{0}} {T N G : Over S} [IsReduced T.left] (ν : N ⟶ G)
     [IsClosedImmersion ν.left] (g : T ⟶ G) (h : Set.range g.left ⊆ Set.range ν.left) :
@@ -113,13 +111,13 @@ theorem exists_lift {S : Scheme.{0}} {T N G : Over S} [IsReduced T.left] (ν : N
     exact h3
 
 /- English proof (translation)
-Take `⟨f, hf, -⟩` from `Y.sheaf.existsUnique_gluing' M.U ⊤ (fun _ => homOfLE le_top) hM.cover.ge (fun i => (s i ^ m * ((t i)⁻¹ ^ n).val : Γ(Y, M.U i))) (by`. Introduce `i j`. Express the relevant statement in the definitionally equal form `rs Y (inf_le_left : M.U i ⊓ M.U j ≤ _) (s i ^ m * ((t i)⁻¹ ^ n).val) = rs Y inf_le_right (s j ^ m * ((t j)⁻¹ ^ n).val)`. Establish `e3 : ∀ {V W : Y.Opens} (h : W ≤ V) (u : Γ(Y, V)ˣ), rs Y h u.val = (res h u).val` using `fun _ _ => rfl`. Rewrite using `[map_mul, map_mul, e3, e3, map_pow, map_pow, map_pow, map_pow, map_inv, map_inv, e1, e2]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_natCast, zpow_natCast, mul_pow, ← Units.val_pow_eq_pow_val, mul_right_comm, ← Units.val_mul, mul_comm _ (_ ^ m)]`. Use `congr 2`. Rewrite using `[mul_inv, mul_pow, ← _root_.mul_assoc, inv_pow, ← pow_mul, ← pow_mul, mul_comm n m, mul_inv_cancel, _root_.one_mul])`. Use `⟨f, ?_⟩` and prove the remaining obligations. Establish `key : ∀ i, M.U i ⊓ Y.basicOpen f = Y.basicOpen (s i)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `i`. Establish `h1` using `Y.basicOpen_res f (homOfLE (le_top : M.U i ≤ ⊤)).op`. Rewrite using `[← h1]`. Use `(congrArg Y.basicOpen (hf i)).trans ?_` and prove the remaining obligations. Use `beta_reduce`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.basicOpen_mul, Scheme.basicOpen_pow _ _ hm, Y.basicOpen_of_isUnit (Units.isUnit _)]`. Conclude with `inf_eq_left.2 (Y.basicOpen_le _)`. Simplify using `only [← key]`. Rewrite using `[← iSup_inf_eq, hM.cover, top_inf_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basicOpen_eq {Y : Scheme.{0}} {M : LB Y} (hM : M.IsLB) (m n : ℕ) (hm : 0 < m)
     (t : ∀ i, Γ(Y, M.U i)ˣ) (e2 : ∀ i j, res (inf_le_left : M.U i ⊓ M.U j ≤ _) (t i) =
@@ -153,11 +151,11 @@ theorem exists_basicOpen_eq {Y : Scheme.{0}} {M : LB Y} (hM : M.IsLB) (m n : ℕ
   rw [← iSup_inf_eq, hM.cover, top_inf_eq]
 
 /- English proof (translation)
-Set `pt : (𝟙_ (Over (Sp k))).left` to `IsLocalRing.closedPoint k`. Establish `: IsReduced (𝟙_ (Over (Sp k))).left` using `inferInstanceAs (IsReduced (Sp k))`. Establish `hsub : Subsingleton (𝟙_ (Over (Sp k))).left` using `inferInstanceAs (Subsingleton (Sp k))`. Use `⟨irreducibleComponents N.left, TopologicalSpace.NoetherianSpace.finite_irreducibleComponents, fun x => ⟨irreducibleComponent (x.left pt), irreducibleComponent_mem_irreducibleComponents _⟩, fun x y h => exists_lift μ₀ _ ?_⟩` and prove the remaining obligations. Establish `h' : irreducibleComponent (x.left pt) = irreducibleComponent (y.left pt)` using `congrArg Subtype.val h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `τ : N ⟶ N` to `𝟙 N * (toUnit N ≫ y⁻¹)`. Establish `hτ : ∀ w : 𝟙_ (Over (Sp k)) ⟶ N, w ≫ τ = w * y⁻¹` using `fun w => by`. Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique (w ≫ toUnit N) (𝟙 _), Category.id_comp]`. Establish `hcl : IsClopen (Set.range μ₀.left)` using `⟨μ₀.left.isClosedEmbedding.isClosed_range, μ₀.left.isOpenEmbedding.isOpen_range⟩`. Establish `hpre : _root_.IsPreconnected (τ.left '' irreducibleComponent (x.left pt))` using `(isIrreducible_irreducibleComponent.isConnected.isPreconnected).image _ τ.left.continuous.continuousOn`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `hpre.subset_isClopen hcl ⟨τ.left (y.left pt), ⟨_, h' ▸ mem_irreducibleComponent, rfl⟩, ⟨(1 : 𝟙_ (Over (Sp k)) ⟶ N₀).left pt, by`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← Over.comp_left, ← Over.comp_left, hτ, mul_inv_cancel, MonObj.one_comp]⟩⟩`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[hsub.elim p pt, ← hτ, Over.comp_left, Scheme.Hom.comp_apply]`. Conclude with `hs ⟨_, mem_irreducibleComponent, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_classes {k : Type} [Field k] {N₀ N : Over (Sp k)} [GrpObj N₀] [GrpObj N]
     [TopologicalSpace.NoetherianSpace N.left] (μ₀ : N₀ ⟶ N) [IsMonHom μ₀] [IsOpenImmersion μ₀.left]
@@ -189,11 +187,11 @@ theorem exists_finite_classes {k : Type} [Field k] {N₀ N : Over (Sp k)} [GrpOb
   exact hs ⟨_, mem_irreducibleComponent, rfl⟩
 
 /- English proof (translation)
-Establish `h₁' : MulPull.HasGen L (K` using `Fin 2) ![F, 𝟙 _] ![1, -a] := h₁`. Establish `h₂' : MulPull.HasGen L (K` using `Fin 2) ![P, 𝟙 _] ![1, -b] := h₂`. Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le (sub_pos.2 hab).le`. Establish `hm0 : 0 < m` using `by omega`. Take `⟨t, ht⟩ : MulPull.HasGen L (K` from `PUnit) (fun _ => ν) (fun _ => (m : ℤ)) := ((h₁'.pull ν).mul (h₂'.pull ν).inv).of_formEq hL fun U _ u => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Fintype.prod_sum_type, Fin.prod_univ_two, Fin.prod_univ_two, Fintype.prod_unique, ← hm]`. Express the relevant statement in the definitionally equal form `u (ν ≫ F) ^ (1 : ℤ) * u (ν ≫ 𝟙 _) ^ (-a) * (u (ν ≫ P) ^ (-1 : ℤ) * u (ν ≫ 𝟙 _) ^ (- -b)) = _`. Rewrite using `[h, Category.comp_id]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `module`. Use `exists_basicOpen_eq (pull_isLB hL ν) m n hm0 t.s (fun i j => (ht i j).trans ?_) s.f s.compat` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ rfl` and prove the remaining obligations. Establish `key : ∀ (U : Type) [CommGroup U] (g : PUnit.{1} → U), ∏ k, g k ^ (m : ℤ) = (∏ k, g k ^ (1 : ℤ)) ^ (m : ℤ)` using `fun U _ g => by simp`. Conclude with `key _ fun k => res (le_inf (inf_le_left.trans (LB.wchart_le L (fun _ : PUnit.{1} => ν) i k)) (inf_le_right.trans (LB.wchart_le L (fun _ : PUnit.{1} => ν) j k)) : LB.wchart L (fun _ : PUnit.{1} => ν) i ⊓ LB.wchart L (fun _ : PUnit.{1} => ν) j ≤ ν ⁻¹ᵁ (L.U (i k) ⊓ L.U (j k))) (pull …`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_basicOpen_eq_of_pullPow {Y Z : Scheme.{0}} {L : LB Y} (hL : L.IsLB) (ν : Z ⟶ Y)
     {F P : Y ⟶ Y} {a b : ℤ} (hab : a < b) (h₁ : PullPow F L a) (h₂ : PullPow P L b)
@@ -221,35 +219,35 @@ theorem exists_basicOpen_eq_of_pullPow {Y Z : Scheme.{0}} {L : LB Y} (hL : L.IsL
         ν ⁻¹ᵁ (L.U (i k) ⊓ L.U (j k))) (pullU ν _ (L.g (i k) (j k)))
 
 /- English proof (translation)
-Introduce `k _ _ G _ hG X _ _ _ B _ i q hq hB L hL F Q hQ hF hP hi`. Take `⟨hc, hsm, hsep, hqc, hgc⟩` from `id hG`. Take `⟨hi₁, -, -, -, -, hpb, -⟩` from `id hq`. Establish `hcomm : ∀ a b : 𝟙_ (Over (Sp k)) ⟶ G, Commute a b` using `fun a b => mul_comm a b`. Establish `hred₁ : IsReduced (𝟙_ (Over (Sp k))).left` using `inferInstanceAs (IsReduced (Sp k))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e` to `equalizer.ι F ((𝟙 G) ^ Q)`. Establish `he : IsClosedImmersion e.left` using `isClosedImmersion_equalizer_ι_left _ _`. Establish `hpw : ∀ {T : Over (Sp k)} (x : T ⟶ G), x ≫ (𝟙 G) ^ Q = x ^ Q` using `fun x => by`. Rewrite using `[MonObj.comp_pow, Category.comp_id]`. Establish `hin : ∀ {T : Over (Sp k)} (x : T ⟶ G), x ≫ F = x ^ Q → Set.range x.left ⊆ Set.range e.left`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `T x hx`. Rewrite using `[← equalizer.lift_ι (f := F) (g := (𝟙 G) ^ Q) x (hx.trans (hpw x).symm), Over.comp_left]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `⟨_, (Scheme.Hom.comp_apply _ _ p).symm⟩`. Establish `hout : ∀ {T : Over (Sp k)} [IsReduced T.left] (x : T ⟶ G), Set.range x.left ⊆ Set.range e.left → x ≫ F = x ^ Q`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `T _ x hx`. Take `⟨l, rfl⟩` from `exists_lift e x hx`. Use `Eq.trans ?_ (hpw _)` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, equalizer.condition]`. Set `C : Subgroup (𝟙_ (Over (Sp k)) ⟶ G)` to `{ carrier := {x | x ≫ F = x ^ Q} one_mem' := (MonObj.one_comp F).trans (one_pow Q).symm mul_mem' := fun {a b} ha hb => (MonObj.mul_comp a b F).trans ((congrArg₂ (· * ·) ha hb).trans ((hcomm a b).mul_pow Q).symm) inv_mem' := fun {a} ha => (GrpObj.inv_comp a F).trans ((congrArg (·⁻ …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨N, _, ν, hν, hνc, hNs, hr⟩` from `ReducedSubgroup.exists_smooth_closed_subgroup k G inferInstance C (Set.range e.left) e.left.isClosedEmbedding.isClosed_range fun x => ⟨hin x, hout x⟩`. Establish `hNq : QuasiCompact N.hom` using `by rw [← Over.w ν]; infer_instance`. Take `⟨N₀, _, μ₀, g, hμ, hμo, hμc, hgc₀, hsm₀, -⟩` from `exists_neutralComponent k N hNs hNq`. Establish `: Mono ν` using `Over.mono_of_mono_left ν`. Establish `: Mono μ₀` using `Over.mono_of_mono_left μ₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs₀ : Smooth N₀.hom` using `SmoothOfRelativeDimension.smooth g _`. Establish `hN₀ : SmConn N₀`. Use `⟨⟨?_⟩, hs₀, ?_, ?_, hgc₀⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (μ₀ ≫ ν), Category.assoc, IsMonHom.mul_hom, ← Category.assoc, ← BraidedCategory.braiding_naturality, Category.assoc, IsCommMonObj.mul_comm]`. Rewrite using `[← Over.w (μ₀ ≫ ν), Over.comp_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Rewrite using `[← Over.w (μ₀ ≫ ν), Over.comp_left]`. Use `infer_instance`. Establish `hcl₀ : IsClosedImmersion (μ₀ ≫ ν).left` using `by rw [Over.comp_left]; infer_instance`. Take `⟨-, -, -, -, -, -, hTi, -⟩` from `(splitTorus_properties (Sp k)).1 X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hT : IsIntegral (splitTorus (Sp k) X).left` using `GeometricallyIntegral.isIntegral_of_subsingleton (splitTorus (Sp k) X).hom`. Take `⟨i₁, hi₁'⟩` from `exists_lift ν i (hr ▸ hin i hi)`. Establish `hone : (1 : 𝟙_ (Over (Sp k)) ⟶ _) ≫ i₁ = (1 : 𝟙_ (Over (Sp k)) ⟶ _) ≫ μ₀`. Rewrite using `[← cancel_mono ν, Category.assoc, hi₁', MonObj.one_comp, MonObj.one_comp, MonObj.one_comp]`. Take `⟨i', hi'⟩` from `exists_lift μ₀ i₁ ((isPreconnected_range i₁.left.continuous).subset_isClopen ⟨μ₀.left.isClosedEmbedding.isClosed_range, μ₀.left.isOpenEmbedding.isOpen_range⟩ ⟨((1 : 𝟙_ (Over (Sp k)) ⟶ _) ≫ i₁).left (IsLocalRing.closedPoint k), ⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩, by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hone]`. Conclude with `⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩⟩)`. Establish `hNl : IsLocallyNoetherian N.left` using `LocallyOfFiniteType.isLocallyNoetherian N.hom`. Establish `hNr : IsReduced N₀.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced N₀.hom`. Establish `hF₀ : (μ₀ ≫ ν).left ≫ F.left = (μ₀ ≫ ν).left ≫ ((𝟙 G) ^ Q).left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Over.comp_left, ← Over.comp_left, hpw]`. Use `congrArg _ (hout _ ?_)` and prove the remaining obligations. Rewrite using `[← hr, Over.comp_left]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `⟨_, (Scheme.Hom.comp_apply _ _ p).symm⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hA, hB'⟩` from `AmpSub.ampleCub_pull_and_pullPow (Sp k) G L hL`. Take `⟨-, -, -, n, -, hamp⟩` from `hA N₀ (μ₀ ≫ ν) inferInstance hcl₀`. Establish `h₂` using `hB' ((Scheme.ΓSpecIso (CommRingCat.of k)).commRingCatIsoToRingEquiv.symm.isLocalRing) inferInstance Q`. Establish `hqa : ∀ x : N₀.left, ∃ f : Γ(N₀.left, ⊤), x ∈ N₀.left.basicOpen f ∧ IsAffineOpen (N₀.left.basicOpen f)`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hx, hs⟩` from `hamp x`. Take `⟨f, hf⟩` from `exists_basicOpen_eq_of_pullPow hL.1 (μ₀ ≫ ν).left (by have : (2 : ℤ) ≤ Q := by exact_mod_cast hQ nlinarith) hP h₂ hF₀ n s`. Conclude with `⟨f, hf ▸ hx, hf ▸ hs⟩`. Establish `hK` using `GlobalTheory.T.quasiAffine_subgroup_containing_torus_eq_torus k G hG X B i q hq hB N₀ (μ₀ ≫ ν) i' hN₀ inferInstance hcl₀ (by rw [← Category.assoc, hi', hi₁']) hqa`. Establish `: CompactSpace N.left` using `QuasiCompact.compactSpace_of_compactSpace N.hom`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsNoetherian N.left` using `{}`. Take `⟨J, _, c, hc'⟩` from `exists_finite_classes μ₀`. Establish `hl : ∀ x : {x : 𝟙_ (Over (Sp k)) ⟶ G // x ≫ F = x ^ Q}, ∃ l, l ≫ ν = x.1` using `fun x => exists_lift ν x.1 (hr ▸ hin x.1 x.2)`. Use `choose l hl using hl`. Establish `: Mono i` using `⟨fun a b h => hpb.hom_ext h (toUnit_unique _ _)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Nat.card J, fun r hr1 => ?_⟩` and prove the remaining obligations. Take `⟨hfin, hle⟩` from `torus_torsion k X r hr1`. Take `⟨h3, h4⟩` from `card_torsion_le hcomm (MonoidHom.mk' (fun t : 𝟙_ (Over (Sp k)) ⟶ splitTorus (Sp k) X => t ≫ i) fun a b => MonObj.mul_comp a b i) (fun a b h => (cancel_mono i).1 h) (fun x => x ≫ F = x ^ Q) (fun x => c (l x)) (fun x y h => by`. Take `⟨z, hz⟩` from `hc' _ _ h`. Take `⟨t, ht⟩` from `hK z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `⟨t, ht.trans ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hz, MonObj.mul_comp, GrpObj.inv_comp, hl, hl]) r`. Conclude with `⟨h3, h4.trans (Nat.mul_le_mul_left _ hle)⟩`.
+A detailed English derivation is pending.
 -/
 theorem card_torsion_powLocus_le : ∀ (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G], SmConn G →  ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (B : Over (Sp k)) [GrpObj B] (i : splitTorus (Sp k) X ⟶ G) (q : G ⟶ B), IsQuot i q → IsAbelianScheme B → ∀ (L : LB G.left), AmpleCub G L → ∀ (F : G ⟶ G) (Q : ℕ), 2 ≤ Q → IsMonHom F → PullPow F.left L Q → i ≫ F = i ^ Q → ∃ C : ℕ, ∀ n, 1 ≤ n → Finite {x : (𝟙_ (Over (Sp k)) ⟶ G) // x ≫ F = x ^ Q ∧ x ^ n = 1} ∧ Nat.card {x : (𝟙_ (Over (Sp k)) ⟶ G) // x ≫ F = x ^ Q ∧ x ^ n = 1} ≤ C * n ^ Module.finrank ℤ X := by
   intro k _ _ G _ hG X _ _ _ B _ i q hq hB L hL F Q hQ hF hP hi

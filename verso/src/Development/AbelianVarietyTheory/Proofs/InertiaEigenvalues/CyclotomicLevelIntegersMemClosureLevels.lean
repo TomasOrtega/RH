@@ -13,9 +13,9 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory.Cyc.LevelGen
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_succ', pow_mul, ← add_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ζ j := by rw [h, ih]`.
+A detailed English derivation is pending.
 -/
 theorem chain_pow {l : ℕ} {M : Type} [Monoid M] (ζ : ℕ → M) (h : ∀ j, ζ (j + 1) ^ l = ζ j)
     (j k : ℕ) : ζ (j + k) ^ (l ^ k) = ζ j := by
@@ -27,11 +27,9 @@ theorem chain_pow {l : ℕ} {M : Type} [Monoid M] (ζ : ℕ → M) (h : ∀ j, �
       _ = ζ j := by rw [h, ih]
 
 /- English proof (translation)
-Establish `hfin : ζ (j + 1) ^ l ^ (j + 1) = 1`. Use `chain_pow ζ h 0 (j + 1)` as an intermediate fact. Rewrite `this` using `[zero_add]`. Rewrite using `[this, h0]`. Establish `hnot : ¬ ζ (j + 1) ^ l ^ j = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `chain_pow ζ h 1 j` as an intermediate fact. Rewrite `this` using `[add_comm 1 j]`. Rewrite using `[this]`. Conclude with `h1`. Rewrite using `[← orderOf_eq_prime_pow hnot hfin]`.
-
-Conclude with `IsPrimitiveRoot.orderOf _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chain_primitive {l : ℕ} [Fact l.Prime] {M : Type} [CommMonoid M] (ζ : ℕ → M)
     (h0 : ζ 0 = 1) (h1 : ζ 1 ≠ 1) (h : ∀ j, ζ (j + 1) ^ l = ζ j) (j : ℕ) :
@@ -49,15 +47,15 @@ theorem chain_primitive {l : ℕ} [Fact l.Prime] {M : Type} [CommMonoid M] (ζ :
   exact IsPrimitiveRoot.orderOf _
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero`. Introduce `α hα hn`. Establish `hp : IsPrimitiveRoot (ζ (0 + 1)) l`. Simplify using `using chain_primitive ζ h0 h1 h 0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨y, hy, rfl⟩` from `GlobalTheory.T.exists_integral_eq_sum_zeta_pow_level_one l K (ζ (0 + 1)) hp α hα hn`. Use `AddSubgroup.sum_mem _ (fun a _ => AddSubgroup.subset_closure ?_)` and prove the remaining obligations. Conclude with `⟨a, y a, (hy a).1, (hy a).2, mul_comm _ _⟩`. Consider the case `succ s ih`. Introduce `α hα hn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp : IsPrimitiveRoot (ζ (s + 1 + 1)) (l ^ (s + 1 + 1))` using `chain_primitive ζ h0 h1 h (s + 1)`. Establish `hα' : α ∈ Ks K (s + 1 + 1)` using `hα`. Take `⟨y, hy, rfl⟩` from `(GlobalTheory.Cyc.integers_eq_sum_zeta_pow l K (s + 1 + 1) (by omega) (ζ (s + 1 + 1)) hp).1 α hα' hn`. Use `AddSubgroup.sum_mem _ (fun a _ => ?_)` and prove the remaining obligations. Establish `hya : y a ∈ Ks K (s + 1)` using `by simpa using (hy a).1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmem` using `ih (y a) hya (hy a).2`. Establish `hle : AddSubgroup.closure {x : Om l | ∃ (n : ℕ) (c : Om l), c ∈ K0 K ∧ ‖c‖ ≤ 1 ∧ x = c * ζ (s + 1) ^ n} ≤ (AddSubgroup.closure {x : Om l | ∃ (n : ℕ) (c : Om l), c ∈ K0 K ∧ ‖c‖ ≤ 1 ∧ x = c * ζ (s + 1 + 1) ^ n}).comap (AddMonoidHom.mulLeft (ζ (s + 1 + 1) ^ (a : ℕ)))`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `x ⟨n, c, hc, hcn, rfl⟩`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨(a : ℕ) + l * n, c, hc, hcn, ?_⟩` and prove the remaining obligations. Simplify using `only [AddMonoidHom.coe_mulLeft]`. Rewrite using `[← h (s + 1), pow_add, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hle hmem`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mem_closure_all (l : ℕ) [Fact l.Prime] (K : FinExt l) (ζ : ℕ → Om l) (h0 : ζ 0 = 1)
     (h1 : ζ 1 ≠ 1) (h : ∀ j, ζ (j + 1) ^ l = ζ j) (s : ℕ) :
@@ -99,23 +97,21 @@ end GlobalTheory.Cyc.LevelGen
 open GlobalTheory.Cyc.LevelGen in
 
 /- English proof (translation)
-Introduce `l _ K ζ h0 h1 h s hs α hα hn`. Use `set S : AddSubgroup (Om l) := AddSubgroup.closure {x : Om l | ∃ (j n : ℕ) (c : Om l), 1 ≤ j ∧ j ≤ s ∧ ¬ l ∣ n ∧ c ∈ K0 K ∧ ‖c‖ ≤ 1 ∧ x = c * ζ j ^ n} with hS`. Establish `hl : 1 < l` using `(Fact.out : l.Prime).one_lt`. Establish `hconst : ∀ c : Om l, c ∈ K0 K → ‖c‖ ≤ 1 → c ∈ S`. Introduce `c hc hcn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hp : IsPrimitiveRoot (ζ 1) l` using `by simpa using chain_primitive ζ h0 h1 h 0`. Establish `hsum` using `hp.geom_sum_eq_zero hl`. Take `⟨m, hm⟩ : ∃ m, l = m + 1` from `⟨l - 1, by omega⟩`. Establish `hr : Finset.range l = Finset.range (m + 1)` using `by rw [hm]`. Rewrite `hsum` using `[hr, Finset.sum_range_succ', pow_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc' : c = ∑ i ∈ Finset.range m, (-c) * ζ 1 ^ (i + 1)`. Rewrite using `[← Finset.mul_sum, eq_neg_of_add_eq_zero_left hsum]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc']`. Use `AddSubgroup.sum_mem _ (fun i hi => AddSubgroup.subset_closure ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hi'` using `Finset.mem_range.1 hi`. Use `⟨1, i + 1, -c, le_rfl, hs, ?_, neg_mem hc, by rwa [norm_neg], rfl⟩` and prove the remaining obligations. Introduce `hdvd`. Use `Nat.le_of_dvd (by omega) hdvd` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hlev : ∀ j, j ≤ s → ∀ (n : ℕ) (c : Om l), c ∈ K0 K → ‖c‖ ≤ 1 → c * ζ j ^ n ∈ S`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ n c hc hcn`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, one_pow, mul_one]`. Conclude with `hconst c hc hcn`. Consider the case `succ j ih`. Introduce `hj n c hc hcn`. Distinguish the cases in `hd : l ∣ n`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, rfl⟩` from `hd`. Rewrite using `[pow_mul, h j]`. Conclude with `ih (by omega) m c hc hcn`. Conclude with `AddSubgroup.subset_closure ⟨j + 1, n, c, by omega, hj, hd, hc, hcn, rfl⟩`. Take `⟨t, rfl⟩ : ∃ t, s = t + 1` from `⟨s - 1, by omega⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hmem` using `mem_closure_all l K ζ h0 h1 h t α hα hn`. Establish `hle : AddSubgroup.closure {x : Om l | ∃ (n : ℕ) (c : Om l), c ∈ K0 K ∧ ‖c‖ ≤ 1 ∧ x = c * ζ (t + 1) ^ n} ≤ S`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `x ⟨n, c, hc, hcn, rfl⟩`. Conclude with `hlev (t + 1) le_rfl n c hc hcn`.
-
-Conclude with `hle hmem`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Cyc.integers_mem_closure_levels : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (ζ : ℕ → Om l), ζ 0 = 1 → ζ 1 ≠ 1 → (∀ j, ζ (j + 1) ^ l = ζ j) → ∀ s : ℕ, 1 ≤ s → ∀ α : Om l, α ∈ Ks K s → ‖α‖ ≤ 1 → α ∈ AddSubgroup.closure {x : Om l | ∃ (j n : ℕ) (c : Om l), 1 ≤ j ∧ j ≤ s ∧ ¬ l ∣ n ∧ c ∈ K0 K ∧ ‖c‖ ≤ 1 ∧ x = c * ζ j ^ n} := by
   intro l _ K ζ h0 h1 h s hs α hα hn

@@ -79,7 +79,7 @@ theorem colsRe_to0S (C : ColsTiedSym (w.D Z)) (u : B.Word) :
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Introduce `u` and use `{ hC u with gl := { (hC u).gl with } }`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stdC_tr (C : ColsTiedSym (w.D Z)) (hC : TC.StdC w.I w.l Z C) :
     TC.StdC w.I w.l (setDivZ Z N h) (colsRe (setDivZ Z N h) C) := fun u =>

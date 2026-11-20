@@ -7,13 +7,13 @@ open Finset ArithmeticFunction
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `M, hM using Nat.le_induction with`. Consider the case `base`. Establish `: 0 ≤ (∑ n ∈ Icc 1 K, Λ n) / (K : ℝ) ^ 2` using `div_nonneg (sum_nonneg fun _ _ => vonMangoldt_nonneg) (sq_nonneg _)`. Simplify using `only [Ioc_self, sum_empty]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Consider the case `succ M hM ih`. Rewrite using `[sum_Ioc_succ_top hM, sum_Icc_succ_top (by omega : 1 ≤ M + 1)]`. Establish `hM0 : (0 : ℝ) < M` using `by exact_mod_cast (by omega : 0 < M)`. Establish `hψ` using `h M`. Use `set ψ := ∑ n ∈ Icc 1 M, Λ n`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Establish `key : ψ / (M : ℝ) ^ 2 - ψ / ((M : ℝ) + 1) ^ 2 ≤ 4 / (M : ℝ) - 4 / ((M : ℝ) + 1)`. Establish `e1 : ψ / (M : ℝ) ^ 2 - ψ / ((M : ℝ) + 1) ^ 2 = ψ * ((2 * M + 1) / ((M : ℝ) ^ 2 * ((M : ℝ) + 1) ^ 2))` using `by field_simp; ring`. Establish `e2 : 4 / (M : ℝ) - 4 / ((M : ℝ) + 1) = 2 * M * ((2 * M + 2) / ((M : ℝ) ^ 2 * ((M : ℝ) + 1) ^ 2))` using `by field_simp; ring`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_le_mul hψ _ (by positivity) (by positivity)` to reduce the goal to its premises. Use `gcongr`. Evaluate the numerical expressions. Rewrite using `[add_div]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_von_mangoldt_div_sq_Ioc_le
     (h : ∀ M : ℕ, ∑ n ∈ Icc 1 M, Λ n ≤ 2 * (M : ℝ)) (K : ℕ) (hK : 1 ≤ K) (M : ℕ) (hM : K ≤ M) :
@@ -46,9 +46,9 @@ theorem sum_von_mangoldt_div_sq_Ioc_le
     linarith
 
 /- English proof (translation)
-Break down `le_total K M with hM | hM` into its components or cases. Establish `h1` using `sum_von_mangoldt_div_sq_Ioc_le h K hK M hM`. Establish `hM0 : (0 : ℝ) < M` using `by exact_mod_cast (by omega : 0 < M)`. Establish `h2 : (∑ n ∈ Icc 1 M, Λ n) / (M : ℝ) ^ 2 ≤ 4 / (M : ℝ)`. Rewrite using `[div_le_div_iff₀ (by positivity) hM0]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h M` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Ioc_eq_empty (by omega), sum_empty]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem sum_vonMangoldt_div_sq_Ioc_le
     (h : ∀ M : ℕ, ∑ n ∈ Icc 1 M, Λ n ≤ 2 * (M : ℝ)) (K : ℕ) (hK : 1 ≤ K) (M : ℕ) :
@@ -65,23 +65,21 @@ theorem sum_vonMangoldt_div_sq_Ioc_le
     positivity
 
 /- English proof (translation)
-Establish `hx0 : (0 : ℝ) ≤ x` using `by linarith`. Establish `hcn : ∀ n : ℕ, 0 ≤ Formalism.HermitianLattices.GL2PrimeSums.cn x n` using `fun n => mul_nonneg vonMangoldt_nonneg (le_min zero_le_one (div_nonneg hx0 (Nat.cast_nonneg _)))`. Use `set y := Real.sqrt x with hy`. Establish `hy1 : 1 ≤ y` using `Real.one_le_sqrt.mpr hx`. Establish `hyy : y * y = x` using `Real.mul_self_sqrt hx0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K : ℕ := ⌊y⌋₊ with hKdef`. Establish `hK1 : 1 ≤ K` using `Nat.le_floor (by simpa using hy1)`. Establish `hK1' : (1 : ℝ) ≤ K` using `by exact_mod_cast hK1`. Establish `hKy : (K : ℝ) ≤ y` using `Nat.floor_le (by linarith)`. Establish `hyK : y < K + 1` using `Nat.lt_floor_add_one y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub : (Icc 1 N).filter (fun n => IsSquare n) ⊆ (Icc 1 K ∪ Ioc K N).image (fun m => m ^ 2)`. Introduce `n hn`. Simplify using `only [mem_filter, mem_Icc] at hn`. Take `⟨⟨h1, h2⟩, r, rfl⟩` from `hn`. Use `mem_image.mpr ⟨r, ?_, sq r⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : 1 ≤ r` using `Nat.pos_of_ne_zero (by rintro rfl; simp at h1)`. Establish `hrN : r ≤ N` using `le_trans (Nat.le_mul_self r) h2`. Simplify using `only [mem_union, mem_Icc, mem_Ioc]`. Use linear arithmetic over natural numbers and integers. Establish `hdisj : Disjoint (Icc 1 K) (Ioc K N)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[disjoint_left]`. Introduce `a h1 h2`. Simplify using `only [mem_Icc, mem_Ioc] at h1 h2`. Use linear arithmetic over natural numbers and integers. Establish `hA : ∑ m ∈ Icc 1 K, Formalism.HermitianLattices.GL2PrimeSums.cn x (m ^ 2) ≤ 2 * y`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `sum_le_sum fun m _ => ?_` and prove the remaining obligations. Unfold `Formalism.HermitianLattices.GL2PrimeSums.cn`. Rewrite using `[vonMangoldt_apply_pow (by norm_num)]`. Conclude with `mul_le_of_le_one_right vonMangoldt_nonneg (min_le_left _ _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ ≤ 2 * (K : ℝ) := h K`. Use `_ ≤ 2 * y := by linarith`. Establish `hB : ∑ m ∈ Ioc K N, Formalism.HermitianLattices.GL2PrimeSums.cn x (m ^ 2) ≤ 8 * y`. Combine the equalities or inequalities in the displayed calculation. Use `sum_le_sum fun m _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Unfold `Formalism.HermitianLattices.GL2PrimeSums.cn`. Rewrite using `[vonMangoldt_apply_pow (by norm_num)]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = x * ∑ m ∈ Ioc K N, Λ m / (m : ℝ) ^ 2 := by rw [mul_sum]`. Use `_ ≤ x * (4 / (K : ℝ)) := mul_le_mul_of_nonneg_left (sum_vonMangoldt_div_sq_Ioc_le h K hK1 N) hx0`.
-
-Use `_ ≤ 8 * y := by`. Rewrite using `[← mul_div_assoc, div_le_iff₀ (by linarith), ← hyy]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_cn_isSquare_le
     (h : ∀ M : ℕ, ∑ n ∈ Icc 1 M, Λ n ≤ 2 * (M : ℝ)) (x : ℝ) (hx : 1 ≤ x) (N : ℕ) :
@@ -143,21 +141,19 @@ theorem sum_cn_isSquare_le
     _ ≤ 10 * y := by linarith
 
 /- English proof (translation)
-Introduce `hψ`. Establish `h : ∀ M : ℕ, ∑ n ∈ Icc 1 M, Λ n ≤ 2 * (M : ℝ)` using `fun M => by`. Simplify using `using hψ M (Nat.cast_nonneg M)`. Take `⟨C, hC⟩` from `prime_power_von_mangoldt_sum_bound`. Use `⟨max C 10, fun ε hε _ x hx m₀ hm₀ hp => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Formalism.HermitianLattices.GL2a2.Rsum`. Establish `hx0 : (0 : ℝ) < x` using `by linarith`. Establish `hlog : 0 ≤ Real.log x` using `Real.log_nonneg (by linarith)`. Establish `h10 : (10 : ℝ) ≤ max C 10` using `le_max_right _ _`. Establish `hw : 0 ≤ x ^ (ε / 5)` using `Real.rpow_nonneg hx0.le _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `sum_cn_isSquare_le h x (by linarith) ⌊x ^ (400 : ℝ)⌋₊`. Rewrite `h1` using `[Real.sqrt_eq_rpow]`. Establish `hs : 0 ≤ x ^ ((1 : ℝ) / 2)` using `Real.rpow_nonneg hx0.le _`. Use `set S := m₀.primeFactors.filter (fun p => p ≤ ⌊x ^ (400 : ℝ)⌋₊) with hS`. Establish `hsub : S ⊆ Icc 1 ⌊x ^ (ε / 5)⌋₊`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hpS`. Simplify using `only [hS, mem_filter, Nat.mem_primeFactors] at hpS`. Take `⟨⟨hpp, hd, _⟩, hle⟩` from `hpS`. Use `mem_Icc.mpr ⟨hpp.one_le, Nat.le_floor ?_⟩` and prove the remaining obligations. Break down `hp p hpp hd with h' | h'` into its components or cases.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Conclude with `h'`. It suffices to derive a contradiction. Establish `: (p : ℝ) ≤ x ^ (400 : ℝ)` using `(Nat.le_floor_iff (Real.rpow_nonneg hx0.le _)).mp hle`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcard : (S.card : ℝ) ≤ x ^ (ε / 5)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `card_le_card hsub` as an intermediate fact. Simplify using `only [Nat.card_Icc, Nat.add_sub_cancel] at this`. Conclude with `le_trans (by exact_mod_cast this) (Nat.floor_le hw)`. Establish `h2 : ∑ p ∈ S, Formalism.HermitianLattices.GL2a2.sP x p ≤ max C 10 * (x ^ (ε / 5) * Real.log x)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sum_le_card_nsmul _ _ _ fun p hpS => ?_` and prove the remaining obligations. Establish `hpp : p.Prime` using `Nat.prime_of_mem_primeFactors (mem_filter.mp hpS).1`. Conclude with `(hC x hx p hpp).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hlog)`. Use `_ = (S.card : ℝ) * (max C 10 * Real.log x) := nsmul_eq_mul _ _`. Use `_ ≤ x ^ (ε / 5) * (max C 10 * Real.log x) := mul_le_mul_of_nonneg_right hcard (mul_nonneg (by linarith) hlog)`.
-
-Use `_ = max C 10 * (x ^ (ε / 5) * Real.log x) := by ring`. Establish `h3 : 10 * x ^ ((1 : ℝ) / 2) ≤ max C 10 * x ^ ((1 : ℝ) / 2)` using `mul_le_mul_of_nonneg_right h10 hs`. Rewrite using `[mul_add]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem remainder_smooth_rough_bound : Formalism.HermitianLattices.GL2a2.SizeR := by
   intro hψ

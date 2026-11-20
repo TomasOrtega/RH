@@ -3,21 +3,19 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `P : AddSubgroup R` to `{ carrier := {p | ∀ x, g (x + p) = g x} zero_mem' := fun x => by simp add_mem' := fun {a b} ha hb x => by`. Rewrite using `[← add_assoc, hb, ha]`. Use the proof step `neg_mem' := fun {a} ha x => by`. Use `ha (x + -a)` as an intermediate fact. Rewrite using `[← this]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `}`. Establish `hP : Submodule.span ℝ (P : Set R) = ⊤`. Rewrite using `[eq_top_iff, ← hS, Submodule.span_le]`. Introduce `s hs`. Take `⟨N, hN, h⟩` from `hper s hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (N : ℝ) • s ∈ Submodule.span ℝ (P : Set R)` using `Submodule.subset_span h`. Establish `h2` using `Submodule.smul_mem _ ((N : ℝ)⁻¹) h1`. Establish `hN' : (N : ℝ) ≠ 0` using `by exact_mod_cast hN.ne'`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hN', one_smul]`. Then use the resulting hypothesis. Take `⟨t, htP, hspan, hli⟩` from `exists_linearIndependent ℝ (P : Set R)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfin : Finite t` using `hli.finite`. Use `letI : Fintype t := Fintype.ofFinite t`. Set `b : Module.Basis t ℝ R` to `Module.Basis.mk hli (by`. Rewrite using `[Subtype.range_coe, hspan, hP])`. Establish `hb : Submodule.span ℤ (Set.range b) ≤ AddSubgroup.toIntSubmodule P`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `: b i = (i : R)` using `by simp [b]`. Rewrite using `[this]`. Conclude with `htP i.2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hK : IsCompact (Metric.closedBall (0 : R) (∑ i, ‖b i‖))` using `isCompact_closedBall _ _`. Take `⟨C, hC⟩` from `hK.bddAbove_image hg.continuousOn`. Use `⟨C, fun x => ?_⟩` and prove the remaining obligations. Establish `hfl : ((ZSpan.floor b x : R)) ∈ P` using `hb (ZSpan.floor b x).2`. Establish `hx : g x = g (ZSpan.fract b x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hfl (ZSpan.fract b x)` as an intermediate fact. Rewrite using `[← this, ZSpan.fract_apply]`. Simplify using the standard rewrite rules. Rewrite using `[hx]`. Apply `hC` to reduce the goal to its premises.
-
-Conclude with `⟨_, by simpa using ZSpan.norm_fract_le b x, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bddAbove_of_spanning_periods (R : Type) [NormedAddCommGroup R] [NormedSpace ℝ R]
     [FiniteDimensional ℝ R] (g : R → ℝ) (hg : Continuous g) (S : Set R)

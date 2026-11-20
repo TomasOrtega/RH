@@ -29,27 +29,27 @@ def infPt (y : UJ (starRingEnd (Cinf E)) (1 : Matrix (Fin n) (Fin n) (Cinf E))) 
     exact h)⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.DefU.continuous_infGL.comp continuous_subtype_val).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infPt : Continuous (infPt (E := E) (n := n)) :=
   (GlobalTheory.DefU.continuous_infGL.comp continuous_subtype_val).subtype_mk _
 
 /- English proof (translation)
-Establish `hne : ∃ z, (IsCMField.complexConj E : E →+* E) z ≠ z`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `IsCMField.complexConj_ne_one E (AlgEquiv.ext h)`. Establish `hd` using `GlobalTheory.RealApprox.dense_unitary (GlobalTheory.CuspRep.InfType.diagInf E) (IsCMField.complexConj E : E →+* E) (starRingEnd (Cinf E)) (fun z => (pInf_complexConj z).symm) (fun z => IsCMField.complexConj_apply_apply E z) hne (fun z => star_star z) continuous_star GlobalTheory. …`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hd` using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hp : ∀ a : Ad E, pInf E (conjAd E a) = starRingEnd (Cinf E) (pInf E a)` using `fun a => (infEq E).symm_apply_apply _`. Establish `hM : GeneralLinearGroup.map (pInf E) x.1 ∈ UJ (starRingEnd (Cinf E)) (1 : Matrix (Fin n) (Fin n) (Cinf E))`. Establish `h0 : cT (conjAd E) (x.1 : Matrix (Fin n) (Fin n) (Ad E)) * 1 * x.1 = 1` using `x.2`. Rewrite `h0` using `[mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : cT (starRingEnd (Cinf E)) ((x.1 : Matrix (Fin n) (Fin n) (Ad E)).map (pInf E)) = (cT (conjAd E) (x.1 : Matrix (Fin n) (Fin n) (Ad E))).map (pInf E)`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hp]`. Express the relevant statement in the definitionally equal form `cT (starRingEnd (Cinf E)) ((x.1 : Matrix (Fin n) (Fin n) (Ad E)).map (pInf E)) * 1 * (x.1 : Matrix (Fin n) (Fin n) (Ad E)).map (pInf E) = 1`. Rewrite using `[e, mul_one, ← Matrix.map_mul, h0, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxe : infPt ⟨_, hM⟩ = x`. Use `Subtype.ext (ga_ext ?_ ?_)` and prove the remaining obligations. Conclude with `pInf_infGL _`. Conclude with `(pFin_infGL _).trans hx.symm`. Rewrite using `[← hxe]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `closure_mono ?_ (image_closure_subset_closure_image continuous_infPt ⟨_, hd ⟨_, hM⟩, rfl⟩)` and prove the remaining obligations. Introduce and unpack `_ ⟨h, hh, rfl⟩`. Take `⟨γ, hγ, hγh⟩` from `Subgroup.mem_map.1 hh`. Establish `hγ0 : cT (IsCMField.complexConj E : E →+* E) (γ : Matrix (Fin n) (Fin n) E) * 1 * γ = 1` using `hγ`. Rewrite `hγ0` using `[mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hr : ratGL E n γ ∈ UA E n`. Establish `e : cT (conjAd E) ((γ : Matrix (Fin n) (Fin n) E).map (algebraMap E (Ad E))) = (cT (IsCMField.complexConj E : E →+* E) (γ : Matrix (Fin n) (Fin n) E)).map (algebraMap E (Ad E))`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, conjAd_algebraMap]`. Express the relevant statement in the definitionally equal form `cT (conjAd E) ((γ : Matrix (Fin n) (Fin n) E).map (algebraMap E (Ad E))) * 1 * (γ : Matrix (Fin n) (Fin n) E).map (algebraMap E (Ad E)) = 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, mul_one, ← Matrix.map_mul, hγ0, Matrix.map_one _ (map_zero _) (map_one _)]`. Set `r : UA E n` to `⟨ratGL E n γ, hr⟩`. Establish `hrU : r ∈ ratU E n` using `Subgroup.mem_subgroupOf.2 ⟨γ, rfl⟩`. Establish `hk : r⁻¹ * infPt h ∈ finU E n`. Establish `e1 : GeneralLinearGroup.map (pInf E) (ratGL E n γ) = h.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← hγh]`. Conclude with `Units.ext rfl`. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pInf E) ((ratGL E n γ)⁻¹ * infGL E n h.1) = 1`. Rewrite using `[map_mul, map_inv, e1, pInf_infGL, inv_mul_cancel]`. Conclude with `⟨r, hrU, r⁻¹ * infPt h, hk, mul_inv_cancel_left r _⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_closure_rat_fin (x : UA E n) (hx : x ∈ infU E n) :
     x ∈ closure ((ratU E n : Set (UA E n)) * (finU E n : Set (UA E n))) := by
@@ -104,13 +104,11 @@ theorem mem_closure_rat_fin (x : UA E n) (hx : x ∈ infU E n) :
   exact ⟨r, hrU, r⁻¹ * infPt h, hk, mul_inv_cancel_left r _⟩
 
 /- English proof (translation)
-Introduce `L _ _ _ n φ hφ h0`. Establish `hS : ((ratU L n : Set (UA L n)) * (finU L n : Set (UA L n))) ⊆ {g | φ g = 0}`. Introduce and unpack `_ ⟨γ, hγ, k, hk, rfl⟩`. Express the relevant statement in the definitionally equal form `φ (γ * k) = 0`. Rewrite using `[hφ.left γ hγ k]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0 k hk`. Establish `hZ : IsClosed {g : UA L n | φ g = 0}` using `isClosed_eq hφ.cont continuous_const`. Use function extensionality and compare the values at `g`. Take `⟨k, hk, x, hx, rfl⟩` from `GlobalTheory.DefU.exists_finU_mul_infU L n g`. Rewrite using `[GlobalTheory.DefU.fin_mul_inf hk hx]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : Continuous (· * k : UA L n → UA L n)` using `continuous_mul_const k`. Establish `hxk : x * k ∈ closure ((ratU L n : Set (UA L n)) * (finU L n : Set (UA L n)))`. Use `closure_mono ?_ (image_closure_subset_closure_image hc ⟨x, mem_closure_rat_fin x hx, rfl⟩)` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨γ, hγ, k', hk', rfl⟩, rfl⟩`. Conclude with `⟨γ, hγ, k' * k, (finU L n).mul_mem hk' hk, (mul_assoc _ _ _).symm⟩`.
-
-Conclude with `hZ.closure_subset_iff.2 hS hxk`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_finU : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (φ : UA L n → ℂ),
     IsAutFormU φ → (∀ y ∈ finU L n, φ y = 0) → φ = 0 := by

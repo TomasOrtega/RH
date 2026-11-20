@@ -9,11 +9,11 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Establish `key : z ∈ X.basicOpen (fn s ϖ) ↔ ϖ ∉ (s z).asIdeal`. Rewrite using `[show X.basicOpen (fn s ϖ) = s ⁻¹ᵁ (Spec (CommRingCat.of O)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of O)).inv ϖ) from (Scheme.preimage_basicOpen_top s _).symm]`. Express the relevant statement in the definitionally equal form `s z ∈ (Spec (CommRingCat.of O)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of O)).inv ϖ) ↔ _`. Rewrite using `[basicOpen_eq_of_affine]`. Conclude with `PrimeSpectrum.mem_basicOpen _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, not_not]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hm : (s z).asIdeal = IsLocalRing.maximalIdeal O` using `congrArg PrimeSpectrum.asIdeal h`. Rewrite using `[hm]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal _).mpr hϖ.not_isUnit`. Introduce `h`. Establish `hne : (s z).asIdeal ≠ ⊥` using `fun hb0 => hϖ.ne_zero (by simpa [hb0] using h)`. Conclude with `PrimeSpectrum.ext (IsLocalRing.eq_maximalIdeal (Ring.DimensionLEOne.maximalOfPrime hne (s z).2))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma closed_iff {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}
     (hϖ : Irreducible ϖ) {X : Scheme.{0}} (s : X ⟶ Spec (CommRingCat.of O)) (z : X) :
@@ -35,9 +35,9 @@ private lemma closed_iff {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuati
     exact PrimeSpectrum.ext (IsLocalRing.eq_maximalIdeal (Ring.DimensionLEOne.maximalOfPrime hne (s z).2))
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ X Y s h hflat y hy`. Establish `hc : ∀ y' : Y, s (h y') = IsLocalRing.closedPoint O ↔ y' ∉ Y.basicOpen (fn (h ≫ s) ϖ)`. Introduce `y'`. Rewrite using `[← closed_iff hϖ (h ≫ s) y', Scheme.Hom.comp_apply]`. Use `⟨(hc y).mpr hy.1, fun z' hz' hsp => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y', hy'sp, rfl⟩` from `Flat.generalizingMap h hsp`. Use `hy.2 y' ((hc y').mp hz') hy'sp` as an intermediate fact. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.genDown_of :
     GenDown := by

@@ -23,7 +23,7 @@ variable (Λ : Submodule (𝓞 D.host.E) (VS D).V) (X : Submodule D.host.E (VS D
 
 include hy0 in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(1 : D.host.E) • y0 ∈ Λ ⊔ X.restrictScalars (𝓞 D.host.E)`. Rewrite using `[one_smul]`. Conclude with `Submodule.mem_sup_left hy0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_mem_J : (1 : D.host.E) ∈ Jsub Λ X y0 := by
   change (1 : D.host.E) • y0 ∈ Λ ⊔ X.restrictScalars (𝓞 D.host.E)
@@ -32,9 +32,9 @@ theorem one_mem_J : (1 : D.host.E) ∈ Jsub Λ X y0 := by
 
 include hun hiso horth hy0 hc0 hc0ne in
 /- English proof (translation)
-Use `⟨c0, mem_nonZeroDivisors_of_ne_zero hc0ne, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `pair_int (Λ := Λ) (X := X) (y0 := y0) hun hiso horth hb (one_mem_J Λ X y0 hy0)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Use `show (c : D.host.E) = (c0 : D.host.E) * b`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, hc0]`. Simplify using `only [brS, one_smul, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isFractional_J : IsFractional (nonZeroDivisors (𝓞 D.host.E)) (Jsub Λ X y0) := by
   refine ⟨c0, mem_nonZeroDivisors_of_ne_zero hc0ne, fun b hb => ?_⟩
@@ -49,12 +49,12 @@ theorem isFractional_J : IsFractional (nonZeroDivisors (𝓞 D.host.E)) (Jsub Λ
 def Jfrac : FI := ⟨Jsub Λ X y0, isFractional_J Λ X y0 hun hiso horth hy0 c0 hc0 hc0ne⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Jfrac {l : D.host.E} : l ∈ Jfrac Λ X y0 hun hiso horth hy0 c0 hc0 hc0ne ↔ l • y0 ∈ Λ ⊔ X.restrictScalars (𝓞 D.host.E) := Iff.rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (1 : D.host.E) ∈ Jfrac Λ X y0 hun hiso horth hy0 c0 hc0 hc0ne` using `(mem_Jfrac Λ X y0 hun hiso horth hy0 c0 hc0 hc0ne).2 (by rw [one_smul]; exact Submodule.mem_sup_left hy0)`. Rewrite `h1` using `[h, FractionalIdeal.mem_zero_iff]`. Conclude with `one_ne_zero h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Jfrac_ne_zero : Jfrac Λ X y0 hun hiso horth hy0 c0 hc0 hc0ne ≠ 0 := by
   intro h
@@ -64,14 +64,14 @@ theorem Jfrac_ne_zero : Jfrac Λ X y0 hun hiso horth hy0 c0 hc0 hc0ne ≠ 0 := b
   exact one_ne_zero h1
 
 /- English proof (translation)
-Conclude with `Algebra.norm_eq_of_algEquiv (TorsionTotientBound.cO D.host.E).toIntAlgEquiv d`.
+A detailed English derivation is pending.
 -/
 theorem normZ_cO (d : 𝓞 D.host.E) :
     Algebra.norm ℤ (TorsionTotientBound.cO D.host.E d) = Algebra.norm ℤ d := by
   exact Algebra.norm_eq_of_algEquiv (TorsionTotientBound.cO D.host.E).toIntAlgEquiv d
 
 /- English proof (translation)
-The claim follows from `|((Algebra.norm ℚ (c0 : D.host.E) : ℚ) : ℝ)| := by classical have key : ∀ l ∈ Jsub Λ X y0, ∀ m ∈ Jsub Λ X y0, ∃ c : 𝓞 D.host.E, (c : D.host.E) = star m * l * c0 := by intro l hl m hm obtain ⟨c, hc⟩ := pair_int (Λ := Λ) (X := X) (y0 := y0) hun hiso horth hl hm refine ⟨c, ?_⟩ rw [h …`.
+A detailed English derivation is pending.
 -/
 theorem norm_bound :
     (1 : ℝ) ≤ ((FractionalIdeal.absNorm (Jfrac Λ X y0 hun hiso horth hy0 c0 hc0 hc0ne) : ℚ) : ℝ) ^ 2 *

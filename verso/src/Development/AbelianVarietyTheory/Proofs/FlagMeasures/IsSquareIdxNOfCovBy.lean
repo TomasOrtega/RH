@@ -14,15 +14,15 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
 omit [StarRing K] [FiniteDimensional K V] in
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `Y hY hXY hn hsq`. Distinguish the cases in `hYX : Y ≤ X`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← hn, GlobalTheory.Mass.DiscOrder.idxN_eq_one.2 hYX]`. Conclude with `⟨1, rfl⟩`. Establish `hlt : X < Y` using `lt_of_le_of_ne hXY (fun h => hYX (h ▸ le_rfl))`. Take `⟨Z, hXZ, hZY⟩` from `GlobalTheory.Mass.DiscOrder.exists_covBy hY.fg hlt`. Establish `hZ : Submodule.IsLattice K Z` using `GlobalTheory.Mass.DiscOrder.lattice_between hX hY hXZ hZY.le`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmul : idxN Z X * idxN Y Z = idxN Y X` using `GlobalTheory.Mass.DiscOrder.idxN_mul hXZ hZY.le`. Establish `hne : idxN Y X ≠ 0` using `GlobalTheory.Mass.DiscOrder.idxN_ne_zero hX hY.fg`. Establish `h1 : idxN Y Z ≠ 1` using `fun h => not_le_of_gt hZY.lt (GlobalTheory.Mass.DiscOrder.idxN_eq_one.1 h)`. Establish `ha : idxN Z X ≠ 0` using `fun h0 => hne (by rw [← hmul, h0, zero_mul])`. Establish `hb : idxN Y Z ≠ 0` using `fun h0 => hne (by rw [← hmul, h0, mul_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt' : idxN Z X < n`. Rewrite using `[← hn, ← hmul]`. Establish `ha1 : 1 ≤ idxN Z X` using `Nat.one_le_iff_ne_zero.2 ha`. Establish `hb2 : 2 ≤ idxN Y Z` using `by omega`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hsZ` using `ih _ hlt' Z hZ hXZ rfl (fun A B h1 h2 h3 => hsq A B h1 h2 (h3.trans hZY.le))`. Establish `hsY` using `hsq Z Y hXZ hZY le_rfl`. Rewrite using `[← hn, ← hmul]`. Conclude with `hsZ.mul hsY`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSquare_idxN_of_covBy {X : Submodule (𝓞 K) V} (hX : Submodule.IsLattice K X) : ∀ (n : ℕ)
     (Y : Submodule (𝓞 K) V), Submodule.IsLattice K Y → X ≤ Y → idxN Y X = n →
@@ -55,19 +55,17 @@ theorem isSquare_idxN_of_covBy {X : Submodule (𝓞 K) V} (hX : Submodule.IsLatt
 omit [StarRing K] [FiniteDimensional K V] in
 
 /- English proof (translation)
-Take `⟨I, hmemI⟩ : ∃ I : Ideal (𝓞 K), ∀ r, r ∈ I ↔ r • y ∈ M` from `⟨M.comap (LinearMap.toSpanSingleton (𝓞 K) V y), fun r => by simp⟩`. Establish `hIP : I ≤ P` using `fun r hr => hy r ((hmemI r).1 hr)`. Establish `hI0 : I ≠ ⊥`. Establish `hy' : y ∈ Formalism.HermitianLatticesTheory.locS (nonZeroDivisors (𝓞 K)) M`. Rewrite using `[Formalism.HermitianLatticesTheory.indexBasic_locS_top (K := K) M hM.span_eq_top]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_top`. Take `⟨s, hs, hsy⟩ : ∃ s ∈ nonZeroDivisors (𝓞 K), s • y ∈ M` from `hy'`. Introduce `hbot`. Establish `hsI : s ∈ I` using `(hmemI s).2 hsy`. Rewrite `hsI` using `[hbot, Ideal.mem_bot]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `nonZeroDivisors.ne_zero hs hsI`. Take `⟨J, hJ⟩ : P ∣ I` from `Ideal.dvd_iff_le.2 hIP`. Establish `hIJ : I ≤ J`. Rewrite using `[hJ]`. Conclude with `Ideal.mul_le.2 fun p _ q hq => Ideal.mul_mem_left J p hq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hne : I ≠ J`. Introduce `hEq`. Apply `hP` to reduce the goal to its premises. Establish `h2 : P * I = 1 * I`. Rewrite using `[one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conv_rhs => rw [hJ]`. Rewrite using `[← hEq]`. Establish `hI0' : I ≠ 0` using `by rwa [Ideal.zero_eq_bot]`. Establish `h3 : P = 1` using `mul_right_cancel₀ hI0' h2`. Rewrite `h3` using `[Ideal.one_eq_top]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, hjJ, hjI⟩` from `SetLike.exists_of_lt (lt_of_le_of_ne hIJ hne)`. Use `⟨j, fun hj => hjI ((hmemI j).2 hj), fun r hr => ?_⟩` and prove the remaining obligations. Establish `hrj : r * j ∈ I`. Rewrite using `[hJ]`. Conclude with `Ideal.mul_mem_mul (I := P) (J := J) hr hjJ`.
-
-Rewrite using `[smul_smul]`. Conclude with `(hmemI _).1 hrj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_killed {M : Submodule (𝓞 K) V} (hM : Submodule.IsLattice K M) {P : Ideal (𝓞 K)} (hP : P ≠ ⊤)
     (y : V) (hy : ∀ r : 𝓞 K, r • y ∈ M → r ∈ P) : ∃ j : 𝓞 K, j • y ∉ M ∧ ∀ r ∈ P, r • j • y ∈ M := by
@@ -106,7 +104,7 @@ theorem exists_killed {M : Submodule (𝓞 K) V} (hM : Submodule.IsLattice K M) 
   exact (hmemI _).1 hrj
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℤ (star (algebraMap (𝓞 K) K r))`. Use `(NumberField.RingOfIntegers.isIntegral_coe r).map (starRingEnd K).toIntAlgHom` as an intermediate fact. Simplify `this` using `[starRingEnd_apply]`. Conclude with `⟨⟨_, hi⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 private theorem star_algebraMap_mem_range' (r : 𝓞 K) :
     star (algebraMap (𝓞 K) K r) ∈ Set.range (algebraMap (𝓞 K) K) := by
@@ -116,55 +114,49 @@ private theorem star_algebraMap_mem_range' (r : 𝓞 K) :
   exact ⟨⟨_, hi⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hstar : ∀ r : 𝓞 K, star (algebraMap (𝓞 K) K r) ∈ Set.range (algebraMap (𝓞 K) K)` using `star_algebraMap_mem_range'`. Take `⟨hanti, -, -, hint, -⟩` from `Formalism.HermitianLatticesTheory.dualBasic (𝓞 K) K V h hs hstar`. Establish `hstar1 : ∀ k : K, k ∈ (1 : Submodule (𝓞 K) K) → star k ∈ (1 : Submodule (𝓞 K) K)`. Introduce `k hk`. Take `⟨r, rfl⟩` from `Submodule.mem_one.1 hk`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `hstar r`. Conclude with `Submodule.mem_one.2 ⟨t, ht⟩`. Establish `hsymm : ∀ x y : V, h y x = star (h x y)` using `fun x y => by`. Rewrite using `[← hs.eq x y, starRingEnd_apply]`. Introduce `n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `M hM hle hidx`. Establish `hD : Submodule.IsLattice K (dual h M)` using `(Formalism.HermitianLatticesTheory.dualLattice (𝓞 K) K V h hs hn hstar M hM).1`. Distinguish the cases in `hall : ∀ Z Z' : Submodule (𝓞 K) V, M ≤ Z → Z ⋖ Z' → Z' ≤ dual h M → IsSquare (idxN Z' Z)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `isSquare_idxN_of_covBy hM n (dual h M) hD hle hidx hall`. Use `push_neg at hall`. Take `⟨Z, Z', hMZ, hcov, hZ'D, hnsq⟩` from `hall`. Establish `hZl : Submodule.IsLattice K Z` using `GlobalTheory.Mass.DiscOrder.lattice_between hM hD hMZ (hcov.le.trans hZ'D)`. Establish `hZ'l : Submodule.IsLattice K Z'` using `GlobalTheory.Mass.DiscOrder.lattice_between hM hD (hMZ.trans hcov.le) hZ'D`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P, hPmax, hPiff, hPcard⟩` from `GlobalTheory.Mass.DiscOrder.exists_max_of_covBy hcov`. Establish `hcard : idxN Z' Z = Ideal.absNorm P`. Rewrite using `[hPcard, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hne0 : idxN Z' Z ≠ 0` using `GlobalTheory.Mass.DiscOrder.idxN_ne_zero hZl hZ'l.fg`. Establish `hPbot : P ≠ ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hcard` using `[Ideal.absNorm_bot]`. Conclude with `hne0 hcard`. Establish `hconj : conjIdeal (K` using `K) P ≠ P := by`. Introduce `heq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hnsq` to reduce the goal to its premises. Rewrite using `[hcard]`. Conclude with `hP ⟨P, hPmax.isPrime, hPbot⟩ heq`. Take `⟨w, hwZ', hwZ⟩` from `SetLike.exists_of_lt hcov.lt`. Establish `hy : ∀ r : 𝓞 K, r • w ∈ M → r ∈ P`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `r hr`. Assume the negation of the conclusion as `hrP`. Take `⟨s, p, hp, hsp⟩` from `hPmax.exists_inv hrP`. Apply `hwZ` to reduce the goal to its premises. Establish `hw : w = s • (r • w) + p • w` using `by rw [smul_smul, ← add_smul, hsp, one_smul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hw]`. Conclude with `Z.add_mem (Z.smul_mem s (hMZ hr)) ((hPiff p).1 hp w hwZ')`. Take `⟨j, hjM, hjP⟩` from `GlobalTheory.Mass.DetNat.exists_killed hM hPmax.ne_top w hy`. Establish `hyD : j • w ∈ dual h M` using `(dual h M).smul_mem j (hZ'D hwZ')`. Establish `hyM : ∀ m ∈ M, h m (j • w) ∈ (1 : Submodule (𝓞 K) K)` using `(Formalism.HermitianLatticesTheory.dualBasic_mem_dual h M _).1 hyD`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hyy : h (j • w) (j • w) ∈ (1 : Submodule (𝓞 K) K)`. Take `⟨T, hT⟩ : ∃ T : Ideal (𝓞 K), ∀ r, r ∈ T ↔ algebraMap (𝓞 K) K r * h (j • w) (j • w) ∈ (1 : Submodule (𝓞 K) K)` from `⟨(1 : Submodule (𝓞 K) K).comap (LinearMap.toSpanSingleton (𝓞 K) K (h (j • w) (j • w))), fun r => by simp [Algebra.smul_def]⟩`. Establish `hPT : P ≤ T`. Introduce `r hr`. Rewrite using `[hT]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : h (j • w) (r • j • w) ∈ (1 : Submodule (𝓞 K) K)`. Rewrite using `[hsymm]`. Conclude with `hstar1 _ (hyM _ (hjP r hr))`. Rewrite `h1` using `[Formalism.HermitianLatticesTheory.locDual_h_smul_right]`. Then use the resulting hypothesis. Establish `hcT : conjIdeal (K` using `K) P ≤ T := by`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Unfold `Formalism.HermitianLatticesTheory.conjIdeal`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `r ⟨s, hsP, hrs⟩`. Rewrite using `[SetLike.mem_coe, hT, hrs, ← Formalism.HermitianLatticesTheory.locDual_h_smul_left]`. Conclude with `hyM _ (hjP s hsP)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hsupT : P ⊔ conjIdeal (K` using `K) P = ⊤ := by`. Assume the negation of the conclusion as `hne`. Establish `h1 : P = P ⊔ conjIdeal (K` using `K) P := hPmax.eq_of_le hne le_sup_left`. Establish `h2 : conjIdeal (K` using `K) P ≤ P := le_sup_right.trans h1.symm.le`. Apply `hconj` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `le_antisymm h2 ?_` and prove the remaining obligations. Introduce `s hs'`. Take `⟨t, ht⟩` from `hstar s`. Establish `htc : t ∈ conjIdeal (K` using `K) P := Ideal.subset_span ⟨s, hs', ht⟩`. Conclude with `Ideal.subset_span ⟨t, h2 htc, by rw [ht, star_star]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1T : (1 : 𝓞 K) ∈ T`. Establish `hT' : (⊤ : Ideal (𝓞 K)) ≤ T`. Rewrite using `[← hsupT]`. Conclude with `sup_le hPT hcT`. Conclude with `hT' Submodule.mem_top`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `(hT 1).1 h1T`. Rewrite `h1` using `[map_one, one_mul]`. Then use the resulting hypothesis. Use `set M' : Submodule (𝓞 K) V := M ⊔ Submodule.span (𝓞 K) {j • w} with hM'`. Establish `hMM' : M ≤ M'` using `le_sup_left`. Establish `hyM' : j • w ∈ M'` using `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM'D : M' ≤ dual h M` using `sup_le hle ((Submodule.span_singleton_le_iff_mem _ _).2 hyD)`. Establish `hM'l : Submodule.IsLattice K M'` using `GlobalTheory.Mass.DiscOrder.lattice_between hM hD hMM' hM'D`. Establish `hM'int : M' ≤ dual h M'`. Use `(hint M').1 ?_` and prove the remaining obligations. Introduce `x hx z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨m1, hm1, v1, hv1, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨m2, hm2, v2, hv2, rfl⟩` from `Submodule.mem_sup.1 hz`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hv1`. Take `⟨b, rfl⟩` from `Submodule.mem_span_singleton.1 hv2`. Establish `e1 : h m1 m2 ∈ (1 : Submodule (𝓞 K) K)` using `(Formalism.HermitianLatticesTheory.dualBasic_mem_dual h M m2).1 (hle hm2) m1 hm1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : h m1 (b • j • w) ∈ (1 : Submodule (𝓞 K) K)`. Rewrite using `[Formalism.HermitianLatticesTheory.locDual_h_smul_right]`. Conclude with `Formalism.HermitianLatticesTheory.locDual_one_mul (Formalism.HermitianLatticesTheory.locDual_alg_mem b) (hyM m1 hm1)`. Establish `e3 : h (a • j • w) m2 ∈ (1 : Submodule (𝓞 K) K)`. Rewrite using `[Formalism.HermitianLatticesTheory.locDual_h_smul_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Formalism.HermitianLatticesTheory.locDual_one_mul (hstar1 _ (Formalism.HermitianLatticesTheory.locDual_alg_mem a)) ?_` and prove the remaining obligations. Rewrite using `[hsymm]`. Conclude with `hstar1 _ (hyM m2 hm2)`. Establish `e4 : h (a • j • w) (b • j • w) ∈ (1 : Submodule (𝓞 K) K)`. Rewrite using `[Formalism.HermitianLatticesTheory.locDual_h_smul_left, Formalism.HermitianLatticesTheory.locDual_h_smul_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Formalism.HermitianLatticesTheory.locDual_one_mul (hstar1 _ (Formalism.HermitianLatticesTheory.locDual_alg_mem a)) (Formalism.HermitianLatticesTheory.locDual_one_mul (Formalism.HermitianLatticesTheory.locDual_alg_mem b) hyy)`. Simplify using `only [map_add, LinearMap.add_apply]`. Conclude with `add_mem (add_mem e1 e3) (add_mem e2 e4)`. Establish `hDM'le : dual h M' ≤ dual h M` using `hanti M M' hMM'`. Establish `hM'DM : M ≤ dual h M'` using `hMM'.trans hM'int`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `GlobalTheory.Mass.DiscOrder.idxN_dual h hs hn hM (idxN M' M) M' hM'l hMM' rfl`. Establish `hm1` using `GlobalTheory.Mass.DiscOrder.idxN_mul hMM' hM'int`. Establish `hm2` using `GlobalTheory.Mass.DiscOrder.idxN_mul hM'DM hDM'le`. Establish `hn0 : n ≠ 0` using `hidx ▸ GlobalTheory.Mass.DiscOrder.idxN_ne_zero hM hD.fg`. Establish `hk0 : idxN M' M ≠ 0` using `GlobalTheory.Mass.DiscOrder.idxN_ne_zero hM hM'l.fg`.
-
-Establish `hk1 : idxN M' M ≠ 1` using `fun h1 => hjM (GlobalTheory.Mass.DiscOrder.idxN_eq_one.1 h1 hyM')`. Establish `hnn : n = idxN M' M * idxN (dual h M') M' * idxN M' M`. Rewrite using `[← hidx, ← hm2, ← hm1, hk]`. Establish `hd0 : idxN (dual h M') M' ≠ 0`. Introduce `h0`.
-
-Apply `hn0` to reduce the goal to its premises. Rewrite using `[hnn, h0, mul_zero, zero_mul]`. Establish `hd : idxN (dual h M') M' < n`. Establish `hk2 : 2 ≤ idxN M' M` using `by omega`. Establish `hkk : 4 ≤ idxN M' M * idxN M' M` using `by nlinarith`.
-
-Establish `hd1 : 1 ≤ idxN (dual h M') M'` using `Nat.one_le_iff_ne_zero.2 hd0`. Combine the equalities or inequalities in the displayed calculation. Take `⟨r, hr⟩` from `ih _ hd M' hM'l hM'int rfl`. Conclude with `⟨r * idxN M' M, by rw [hnn, hr]; ring⟩`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isSquare_disc (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm) (hn : h.Nondegenerate)
     (hP : ∀ P : HeightOneSpectrum (𝓞 K), conjIdeal (K := K) P.asIdeal = P.asIdeal →
@@ -312,33 +304,29 @@ theorem isSquare_disc (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm) (hn : h
   exact ⟨r * idxN M' M, by rw [hnn, hr]; ring⟩
 
 /- English proof (translation)
-Establish `hstar : ∀ r : 𝓞 K, star (algebraMap (𝓞 K) K r) ∈ Set.range (algebraMap (𝓞 K) K)` using `star_algebraMap_mem_range'`. Use `set U : Submodule K V := Submodule.span K (M : Set V) with hU`. Establish `hMU : ∀ m ∈ M, m ∈ U` using `fun m hm => Submodule.subset_span hm`. Set `φ : U →ₗ[𝓞 K] V` to `U.subtype.restrictScalars (𝓞 K)`. Establish `hφ : Function.Injective φ` using `fun a b hab => Subtype.ext hab`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `g : U →ₗ⋆[K] U →ₗ[K] K` to `h.domRestrict₁₂ U U`. Establish `hgs : g.IsSymm` using `hs.domRestrict U`. Establish `hgn : g.Nondegenerate`. Unfold `LinearMap.Nondegenerate LinearMap.SeparatingLeft LinearMap.SeparatingRight`. Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Submodule.coe_eq_zero.1 (ha _ (hx x))`. Conclude with `Submodule.coe_eq_zero.1 (ha _ (hx x))`. Use `set MU : Submodule (𝓞 K) U := M.comap φ with hMUdef`. Establish `hmapMU : MU.map φ = M`. Rewrite using `[hMUdef, Submodule.map_comap_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `inf_eq_right.2 ?_` and prove the remaining obligations. Introduce `m hm`. Conclude with `LinearMap.mem_range.2 ⟨⟨m, hMU m hm⟩, rfl⟩`. Establish `hMUl : Submodule.IsLattice K MU`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `Submodule.fg_of_fg_map_injective φ hφ (hmapMU ▸ hM)`. Apply `Submodule.map_injective_of_injective (f := U.subtype) Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[Submodule.map_top, Submodule.range_subtype, Submodule.map_span]`. Use `conv_rhs => rw [hU]`. Use `congr 1`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `hu`. Introduce `hv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `⟨⟨v, hMU v hv⟩, hv, rfl⟩`. Establish `hMUint : MU ≤ dual g MU`. Introduce `x hx`. Rewrite using `[Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxD : (x : V) ∈ dualInH h M` using `hle hx`. Unfold `Formalism.MainNotions.S.Lat.dualInH at hxD`. Conclude with `(Formalism.HermitianLatticesTheory.dualBasic_mem_dual h M _).1 (Submodule.mem_inf.1 hxD).1 _ hy`. Establish `hDU` using `Formalism.HermitianLatticesTheory.dualLattice (𝓞 K) K U g hgs hgn hstar MU hMUl`. Establish `hsq` using `isSquare_disc (K := K) (V := U) g hgs hgn hP _ MU hMUl hMUint rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions.
 
-Establish `hidx : idxN (dual g MU) MU = idxN (dualInH h M) M`. Unfold `GlobalTheory.Mass.idxN`. Establish `h1 : MU.toAddSubgroup = M.toAddSubgroup.comap φ.toAddMonoidHom` using `AddSubgroup.ext fun _ => Iff.rfl`. Establish `h2 : (dual g MU).toAddSubgroup.map φ.toAddMonoidHom = (dualInH h M).toAddSubgroup`. Use extensionality with `v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Simplify using `only [AddSubgroup.mem_map, Submodule.mem_toAddSubgroup, LinearMap.toAddMonoidHom_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Unfold `Formalism.MainNotions.S.Lat.dualInH`. Use `Submodule.mem_inf.2 ⟨?_, u.2⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Introduce `m hm`. Conclude with `(Formalism.HermitianLatticesTheory.dualBasic_mem_dual g MU u).1 hu ⟨m, hMU m hm⟩ hm`. Introduce `hv`. Unfold `Formalism.MainNotions.S.Lat.dualInH at hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hv1, hv2⟩` from `Submodule.mem_inf.1 hv`. Use `⟨⟨v, hv2⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Introduce `y hy`. Conclude with `(Formalism.HermitianLatticesTheory.dualBasic_mem_dual h M v).1 hv1 y hy`.
-
-Rewrite using `[h1, AddSubgroup.relIndex_comap, h2]`. Establish `hne : idxN (dual g MU) MU ≠ 0` using `GlobalTheory.Mass.DiscOrder.idxN_ne_zero hMUl hDU.1.fg`. Rewrite `hsq`, `hne` using `[hidx]`. Take `⟨r, hr⟩` from `hsq`. Establish `hgen` using `GlobalTheory.Mass.DetAgree.genIdxH_eq_idxN hle hne`.
-
-Use `⟨r, Nat.one_le_iff_ne_zero.2 fun h0 => hne (by simp [hr, h0]), ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.S.Lat.latDetH`. Rewrite using `[hgen, hr]`. Use `push_cast`. Conclude with `Real.sqrt_mul_self (Nat.cast_nonneg r)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem latDetH_nat (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm) (ha : ∀ x, h x x = 0 → x = 0)
     (hP : ∀ P : HeightOneSpectrum (𝓞 K), conjIdeal (K := K) P.asIdeal = P.asIdeal →
@@ -420,7 +408,7 @@ theorem latDetH_nat (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm) (ha : ∀
   exact Real.sqrt_mul_self (Nat.cast_nonneg r)
 
 /- English proof (translation)
-Introduce `E _ _ _ S _ hP ha M hM hle`. Conclude with `latDetH_nat S.hT S.herm ha hP M hM hle`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (S : HSpace E), (∀ (τ : E →+* ℂ) (x : E), τ (star x) = starRingEnd ℂ (τ x)) → (∀ P : HeightOneSpectrum (𝓞 E), Formalism.HermitianLatticesTheory.conjIdeal (K := E) P.asIdeal = P.asIdeal → IsSquare (Ideal.absNorm P.asIdeal)) → (∀ x : S.V, S.hT x x = 0 → x = 0) → ∀ M : Submodule (𝓞 E) S.V, M.FG → M ≤ dualIn S M → ∃ de : ℕ, 1 ≤ de ∧ latDet S M = de := by
   intro E _ _ _ S _ hP ha M hM hle

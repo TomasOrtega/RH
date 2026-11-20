@@ -20,21 +20,21 @@ def mapsInto (U T : Submodule K V) : Submodule K (V →ₗ[K] V) where
 
 omit [FiniteDimensional K V] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_mapsInto {U T : Submodule K V} {X : V →ₗ[K] V} :
     X ∈ mapsInto U T ↔ ∀ y ∈ U, X y ∈ T := Iff.rfl
 
 /- English proof (translation)
-Set `Φ : (V →ₗ[K] V) →ₗ[K] (U →ₗ[K] (V ⧸ T))` to `(LinearMap.llcomp K U V (V ⧸ T) T.mkQ) ∘ₗ (LinearMap.lcomp K V U.subtype)`. Establish `hk : LinearMap.ker Φ = mapsInto U T`. Use extensionality with `X`. Simplify using `only [LinearMap.mem_ker, mem_mapsInto, Φ, LinearMap.ext_iff]`. Simplify using `[Submodule.Quotient.mk_eq_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hs : LinearMap.range Φ = ⊤`. Rewrite using `[LinearMap.range_eq_top]`. Introduce `f`. Take `⟨s, hs⟩` from `T.mkQ.exists_rightInverse_of_surjective (Submodule.range_mkQ T)`. Take `⟨g, hg⟩` from `LinearMap.exists_extend (s ∘ₗ f)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨g, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Establish `h1` using `LinearMap.congr_fun hg y`. Establish `h2` using `LinearMap.congr_fun hs (f y)`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h1 h2`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Φ, LinearMap.comp_apply, LinearMap.lcomp_apply, LinearMap.llcomp_apply]`. Rewrite using `[h1, h2]`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker Φ`. Rewrite `h` using `[hk, hs, finrank_top, Module.finrank_linearMap, Module.finrank_linearMap]`. Establish `hq` using `Submodule.finrank_quotient_add_finrank T`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hq' : (Module.finrank K (V ⧸ T) : ℤ) = Module.finrank K V - Module.finrank K T` using `by omega`. Establish `h' : ((Module.finrank K U * Module.finrank K (V ⧸ T) + Module.finrank K (mapsInto U T) : ℕ) : ℤ) = (Module.finrank K V * Module.finrank K V : ℕ)` using `by rw [h]`. Move the coercions through the operations in `at h'`. Rewrite `h'` using `[hq']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem finrank_mapsInto (U T : Submodule K V) :
     (Module.finrank K (mapsInto U T) : ℤ) = (Module.finrank K V : ℤ) ^ 2 -
@@ -68,11 +68,11 @@ theorem finrank_mapsInto (U T : Submodule K V) :
   linarith
 
 /- English proof (translation)
-Establish `hsup : S ⊔ mapsInto U' U = mapsInto U U`. Use `le_antisymm (sup_le h2 fun X hX y hy => mem_mapsInto.mp hX y (hU hy)) ?_` and prove the remaining obligations. Introduce `X hX`. Take `⟨p, hp⟩` from `LinearMap.exists_extend (LinearMap.id : U →ₗ[K] U)`. Establish `e : X = (X - X ∘ₗ U.subtype ∘ₗ p) + X ∘ₗ U.subtype ∘ₗ p` using `by abel`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `Submodule.add_mem_sup (h1 fun y hy => ?_) fun y _ => hX _ (p y).2` and prove the remaining obligations. Use `LinearMap.congr_fun hp ⟨y, hy⟩` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.id_apply] at this`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h` using `Submodule.finrank_sup_add_finrank_inf_eq S (mapsInto U' U)`. Rewrite `h` using `[hsup]`. Establish `h' : ((Module.finrank K (mapsInto U U) + Module.finrank K ↥(S ⊓ mapsInto U' U) : ℕ) : ℤ) = (Module.finrank K S + Module.finrank K (mapsInto U' U) : ℕ)` using `by rw [h]`. Move the coercions through the operations in `at h'`. Rewrite `h'` using `[finrank_mapsInto, finrank_mapsInto]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -100,11 +100,11 @@ theorem finrank_inf_mapsInto (S : Submodule K (V →ₗ[K] V)) (U U' : Submodule
   linarith
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero`. Introduce `F S _ _ _`. Rewrite using `[iInf_of_empty, inf_top_eq]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ a ih`. Introduce `F S hF h1 h2`. Establish `h01 : F 0 ≤ F (Fin.succ 0)` using `hF (Fin.zero_le _)`. Establish `hb : ∀ y ∈ (⊥ : Submodule K V), ∀ T : Submodule K V, y ∈ T` using `fun y hy T => bot_le (a := T) hy`. Use `ih (fun i => F i.succ) (S ⊓ mapsInto (F (Fin.succ 0)) (F 0)) (fun i k h => hF (Fin.succ_le_succ_iff.mpr h)) (le_inf (fun X hX => h1 fun y hy => hX y (h01 hy)) fun X hX y hy => hb _ (hX y hy) _) (fun X hX y hy => h01 (hX.2 y hy))` as an intermediate fact.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[finrank_inf_mapsInto S _ _ h01 h1 h2]`. Establish `e : (S ⊓ ⨅ i : Fin (a + 1), mapsInto (F i.succ) (F i.castSucc)) = (S ⊓ mapsInto (F (Fin.succ 0)) (F 0)) ⊓ ⨅ i : Fin a, mapsInto (F i.succ.succ) (F i.castSucc.succ)`. Use extensionality with `X`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, Fin.forall_fin_succ, Fin.castSucc_zero, Fin.succ_castSucc, and_assoc]`. Rewrite using `[e, this, Fin.sum_univ_succ, sub_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -139,17 +139,17 @@ theorem finrank_inf_flag (a : ℕ) : ∀ (F : Fin (a + 1) → Submodule K V) (S 
 end General
 
 /- English proof (translation)
-Use `letI : InnerProductSpace ℝ (EuclideanSpace ℂ (Fin n × Fin n)) := InnerProductSpace.complexToReal`. Set `e : Matrix (Fin n) (Fin n) ℂ ≃ₗ[ℝ] EuclideanSpace ℂ (Fin n × Fin n)` to `{ toFun := fun X => WithLp.toLp 2 fun p => X p.1 p.2 invFun := fun v => Matrix.of fun i k => v (i, k) map_add' := fun X Y => by ext p; simp map_smul' := fun c X => by ext p; simp left_inv := fun X => by ext i k; simp right_inv := fun v => by ext p; simp }`. Establish `hin : ∀ X Y, inner ℝ (e Y) (e X) = ((X * Yᴴ).trace).re`. Introduce `X Y`. Express the relevant statement in the definitionally equal form `(inner ℂ (e Y) (e X)).re = _`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congr 1`. Simplify using `[e, PiLp.inner_apply, Matrix.trace, Matrix.mul_apply, Fintype.sum_prod_type]`. Set `Q` to `P.map (e : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] EuclideanSpace ℂ (Fin n × Fin n))`. Establish `hQ : Module.finrank ℝ Q = d` using `by rw [← hd]; exact LinearEquiv.finrank_map_eq e P`. Set `b` to `(stdOrthonormalBasis ℝ Q).reindex (finCongr hQ)`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨fun i => e.symm (b i), fun i k => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hin, e.apply_symm_apply, e.apply_symm_apply]`. Use `orthonormal_iff_ite.mp b.orthonormal k i` as an intermediate fact. Rewrite `this` using `[Submodule.coe_inner]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[eq_comm]`. Establish `h1 : Submodule.span ℝ (Set.range fun i => (b i : EuclideanSpace ℂ (Fin n × Fin n))) = Q`. Use `congrArg (Submodule.map Q.subtype) b.toBasis.span_eq` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, Submodule.map_subtype_top, ← Set.range_comp]`. Simplify `this` using `[Function.comp_def]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : P = Q.map (e.symm : EuclideanSpace ℂ (Fin n × Fin n) →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ)`. Simplify using `only [Q]`. Rewrite using `[← Submodule.map_comp]`. Simplify using the standard rewrite rules. Establish `h3` using `congrArg (Submodule.map (e.symm : EuclideanSpace ℂ (Fin n × Fin n) →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ)) h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h3` using `[Submodule.map_span, ← Set.range_comp, ← h2]`. Conclude with `h3.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_orthonormal {n : ℕ} (P : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) (d : ℕ)
     (hd : Module.finrank ℝ P = d) :
@@ -192,23 +192,21 @@ theorem exists_orthonormal {n : ℕ} (P : Submodule ℝ (Matrix (Fin n) (Fin n) 
     exact h3.symm
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℝ M := Module.Finite.trans ℂ M`. Set `m : M ≃ₗ[ℝ] M` to `(LinearEquiv.smulOfNeZero ℂ M Complex.I Complex.I_ne_zero).restrictScalars ℝ`. Establish `hm : ∀ x, m x = Complex.I • x` using `fun x => rfl`. Set `P'` to `P.map (m : M →ₗ[ℝ] M)`. Establish `hP' : Module.finrank ℝ P' = Module.finrank ℝ P` using `LinearEquiv.finrank_map_eq m P`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinf : P ⊓ P' = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨hx, y, hy, rfl⟩`. Establish `h1` using `((hP _).mp hx).2`. Establish `h2` using `((hP _).mp hy).2`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.coe_coe, hm] at h1 ⊢`. Rewrite `h1` using `[hc, h2]`. Establish `h3 : (2 : ℂ) • (Complex.I • y) = 0`. Rewrite using `[two_smul]`. Use `nth_rewrite 1 [← h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using the standard rewrite rules. Simplify using `using h3`. Establish `hsup : P ⊔ P' = S.restrictScalars ℝ`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le (fun x hx => ((hP _).mp hx).1) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `x ⟨y, hy, rfl⟩`. Conclude with `S.smul_mem _ ((hP _).mp hy).1`. Introduce `x hx`. Establish `hx' : x ∈ S` using `hx`. Establish `e : x = (1 / 2 : ℂ) • (x + σ x) + m ((-Complex.I / 2) • (x - σ x))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hm, smul_smul]`. Establish `: Complex.I * (-Complex.I / 2) = 1 / 2`. Take the linear combination `(-1 / 2 : ℂ) * Complex.I_mul_I`. Rewrite using `[this]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Use `Submodule.add_mem_sup ((hP _).mpr ⟨S.smul_mem _ (S.add_mem hx' (hS _ hx')), ?_⟩) ⟨_, (hP _).mpr ⟨S.smul_mem _ (S.sub_mem hx' (hS _ hx')), ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[hc, map_add, hσ, add_comm]`. Simplify using the standard rewrite rules. Rewrite using `[hc, map_sub, hσ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: star (-Complex.I / 2) = Complex.I / 2` using `by simp`. Rewrite using `[this]`. Use `module`. Establish `h` using `Submodule.finrank_sup_add_finrank_inf_eq P P'`. Rewrite `h` using `[hsup, hinf, finrank_bot, hP']`.
-
-Establish `h2 : Module.finrank ℝ (S.restrictScalars ℝ) = 2 * Module.finrank ℂ S`. Rewrite using `[← Complex.finrank_real_complex, Module.finrank_mul_finrank]`. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_fixed {M : Type} [AddCommGroup M] [Module ℂ M] [Module ℝ M] [IsScalarTower ℝ ℂ M]
     [FiniteDimensional ℂ M]
@@ -273,19 +271,19 @@ def perp (U : Submodule ℂ (Fin n → ℂ)) : Submodule ℂ (Fin n → ℂ) whe
   smul_mem' := fun c y hy x hx => by rw [mulVec_smul, dotProduct_smul, hy x hx, smul_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_perp {U : Submodule ℂ (Fin n → ℂ)} {y : Fin n → ℂ} :
     y ∈ perp ε U ↔ ∀ x ∈ U, star x ⬝ᵥ (Jm ε *ᵥ y) = 0 := Iff.rfl
 
 /- English proof (translation)
-Set `e : (Fin n → ℂ) ≃ₗ[ℂ] EuclideanSpace ℂ (Fin n)` to `(WithLp.linearEquiv 2 ℂ (Fin n → ℂ)).symm`. Establish `hJ : Matrix.toLin' (Jm ε) ∘ₗ Matrix.toLin' (Jm ε) = LinearMap.id`. Rewrite using `[← Matrix.toLin'_mul, Jm_mul_self, Matrix.toLin'_one]`. Set `eJ : (Fin n → ℂ) ≃ₗ[ℂ] (Fin n → ℂ)` to `LinearEquiv.ofLinear _ _ hJ hJ`. Establish `hm : (perp ε U).map ((eJ.trans e : _ ≃ₗ[ℂ] _) : (Fin n → ℂ) →ₗ[ℂ] EuclideanSpace ℂ (Fin n)) = (U.map (e : (Fin n → ℂ) →ₗ[ℂ] EuclideanSpace ℂ (Fin n)))ᗮ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `z`. Take `⟨y, rfl⟩` from `(eJ.trans e).surjective z`. Establish `hi : ∀ x, inner ℂ (e x) ((eJ.trans e) y) = star x ⬝ᵥ (Jm ε *ᵥ y)` using `fun x => by`. Rewrite using `[dotProduct_comm]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.symm_apply_apply, Submodule.mem_orthogonal, mem_perp]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨x, hx, rfl⟩`. Conclude with `(hi x).trans (h x hx)`. Introduce `h x hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hi x).symm.trans (h _ ⟨x, hx, rfl⟩)`. Establish `h` using `Submodule.finrank_add_finrank_orthogonal (U.map (e : (Fin n → ℂ) →ₗ[ℂ] EuclideanSpace ℂ (Fin n)))`. Rewrite `h` using `[← hm, LinearEquiv.finrank_map_eq, LinearEquiv.finrank_map_eq, finrank_euclideanSpace_fin]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_perp (U : Submodule ℂ (Fin n → ℂ)) :
     Module.finrank ℂ U + Module.finrank ℂ (perp ε U) = n := by
@@ -311,15 +309,15 @@ theorem finrank_perp (U : Submodule ℂ (Fin n → ℂ)) :
   exact h
 
 /- English proof (translation)
-Rewrite using `[star_dotProduct, star_mulVec, Jm_conjTranspose, dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_symm (x y : Fin n → ℂ) : star y ⬝ᵥ (Jm ε *ᵥ x) = star (star x ⬝ᵥ (Jm ε *ᵥ y)) := by
   rw [star_dotProduct, star_mulVec, Jm_conjTranspose, dotProduct_mulVec]
 
 /- English proof (translation)
-Use `symm`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Introduce `x hx y hy`. Rewrite using `[form_symm, hy x hx, star_zero]`. Establish `h1` using `finrank_perp ε U`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `finrank_perp ε (perp ε U)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem perp_perp (U : Submodule ℂ (Fin n → ℂ)) : perp ε (perp ε U) = U := by
   symm
@@ -331,7 +329,7 @@ theorem perp_perp (U : Submodule ℂ (Fin n → ℂ)) : perp ε (perp ε U) = U 
     omega
 
 /- English proof (translation)
-Introduce `_ hy x hx` and use `hy x (h hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem perp_anti {U T : Submodule ℂ (Fin n → ℂ)} (h : U ≤ T) : perp ε T ≤ perp ε U :=
   fun _ hy x hx => hy x (h hx)
@@ -347,7 +345,7 @@ Both sides reduce to the same expression.
 theorem negAdj_apply (X : Matrix (Fin n) (Fin n) ℂ) : negAdj ε X = -(Jm ε * Xᴴ * Jm ε) := rfl
 
 /- English proof (translation)
-Simplify using `only [negAdj_apply, conjTranspose_neg, conjTranspose_mul, Jm_conjTranspose, conjTranspose_conjTranspose, mul_neg, neg_mul, neg_neg]`. Rewrite using `[← mul_assoc, ← mul_assoc, Jm_mul_self, one_mul, mul_assoc, Jm_mul_self, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem negAdj_negAdj (X : Matrix (Fin n) (Fin n) ℂ) : negAdj ε (negAdj ε X) = X := by
   simp only [negAdj_apply, conjTranspose_neg, conjTranspose_mul, Jm_conjTranspose,
@@ -355,15 +353,15 @@ theorem negAdj_negAdj (X : Matrix (Fin n) (Fin n) ℂ) : negAdj ε (negAdj ε X)
   rw [← mul_assoc, ← mul_assoc, Jm_mul_self, one_mul, mul_assoc, Jm_mul_self, mul_one]
 
 /- English proof (translation)
-Simplify using `only [negAdj_apply, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem negAdj_smul (c : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) : negAdj ε (c • X) = star c • negAdj ε X := by
   simp only [negAdj_apply, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]
 
 /- English proof (translation)
-Rewrite using `[negAdj_apply, inG]`. Prove the components needed by the constructor for the conclusion. Introduce `h nth_rewrite 2 [← h]`. Rewrite using `[mul_neg, ← mul_assoc, ← mul_assoc, Jm_mul_self, one_mul, add_neg_cancel]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_assoc, eq_neg_of_add_eq_zero_left h, mul_neg, neg_neg, ← mul_assoc, Jm_mul_self, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem negAdj_eq_iff (X : Matrix (Fin n) (Fin n) ℂ) : negAdj ε X = X ↔ inG ε X := by
   rw [negAdj_apply, inG]
@@ -375,7 +373,7 @@ theorem negAdj_eq_iff (X : Matrix (Fin n) (Fin n) ℂ) : negAdj ε X = X ↔ inG
     rw [mul_assoc, eq_neg_of_add_eq_zero_left h, mul_neg, neg_neg, ← mul_assoc, Jm_mul_self, one_mul]
 
 /- English proof (translation)
-Introduce `y hy x hx`. Use `hy _ (h x hx)` as an intermediate fact. Rewrite `this` using `[Matrix.toLin'_apply, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec]`. Rewrite using `[Matrix.toLin'_apply, mulVec_mulVec, negAdj_apply, mul_neg, ← mul_assoc, ← mul_assoc, Jm_mul_self, one_mul, neg_mulVec, dotProduct_neg, this, neg_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem negAdj_mapsInto {U T : Submodule ℂ (Fin n → ℂ)} {X : Matrix (Fin n) (Fin n) ℂ}
     (h : Matrix.toLin' X ∈ mapsInto U T) :
@@ -395,7 +393,7 @@ def fullLowering : Submodule ℂ ((Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) :
   lowering ε W ⊓ ⨅ i : Fin a, mapsInto (perp ε (W i.succ.rev)) (perp ε (W i.castSucc.rev))
 
 /- English proof (translation)
-Simplify using `[lowering]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_lowering {X : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)} : X ∈ lowering ε W ↔
     (∀ i : Fin a, X ∈ mapsInto (W i.succ) (W i.castSucc)) ∧
@@ -403,7 +401,7 @@ theorem mem_lowering {X : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)} : X ∈ l
   simp [lowering]
 
 /- English proof (translation)
-Simplify using `only [fullLowering, Submodule.mem_inf, Submodule.mem_iInf, Fin.rev_succ, Fin.rev_castSucc]`. Use `and_congr_right fun _ => ⟨fun h i => ?_, fun h i => h _⟩` and prove the remaining obligations. Simplify using `using h i.rev`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_fullLowering {X : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)} : X ∈ fullLowering ε W ↔
     X ∈ lowering ε W ∧ ∀ i : Fin a, X ∈ mapsInto (perp ε (W i.castSucc)) (perp ε (W i.succ)) := by
@@ -414,7 +412,7 @@ theorem mem_fullLowering {X : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)} : X �
 variable {ε W} {j : Fin a → ℕ}
 
 /- English proof (translation)
-Take `⟨h0, -, h1, -⟩` from `h`. Establish `h2 : ∑ i : Fin (a + 1), Module.finrank ℂ (W i) = _` using `Fin.sum_univ_succ _`. Establish `h3 : ∑ i : Fin (a + 1), Module.finrank ℂ (W i) = _` using `Fin.sum_univ_castSucc _`. Rewrite `h2` using `[h0, finrank_bot]`. Simplify using `only [h1, Finset.sum_add_distrib] at h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -427,9 +425,9 @@ theorem finrank_last (h : IsIsoFlag ε j W) : Module.finrank ℂ (W (Fin.last a)
   omega
 
 /- English proof (translation)
-Introduce `y hy`. Proceed by induction on `k using Fin.cases with`. Consider the case `zero`. Rewrite `hy` using `[h.1, Submodule.mem_bot]`. Rewrite using `[hy, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `succ i => exact h.2.1 i.castSucc_lt_succ.le (hX i y hy)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lowering_mapsInto (h : IsIsoFlag ε j W) {X : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)}
     (hX : ∀ i : Fin a, X ∈ mapsInto (W i.succ) (W i.castSucc)) (k : Fin (a + 1)) :
@@ -443,25 +441,23 @@ theorem lowering_mapsInto (h : IsIsoFlag ε j W) {X : (Fin n → ℂ) →ₗ[ℂ
   | succ i => exact h.2.1 i.castSucc_lt_succ.le (hX i y hy)
 
 /- English proof (translation)
-Establish `hl` using `finrank_last h`. Establish `hle : W (Fin.last a) ≤ perp ε (W (Fin.last a))` using `fun y hy x hx => h.2.2.2 x hx y hy`. Establish `hp` using `finrank_perp ε (W (Fin.last a))`. Establish `hn : 2 * ∑ i, j i ≤ n`. Use `Submodule.finrank_mono hle` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hb : ∀ y ∈ (⊥ : Submodule ℂ (Fin n → ℂ)), ∀ T : Submodule ℂ (Fin n → ℂ), y ∈ T` using `fun y hy T => bot_le (a := T) hy`. Establish `e1` using `finrank_inf_flag a W ⊤ h.2.1 le_top (by`. Introduce `X _ y hy`. Rewrite `hy` using `[h.1, Submodule.mem_bot]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hy, map_zero]`. Conclude with `Submodule.zero_mem _)`. Establish `k1 : mapsInto (W (Fin.last a)) ⊥ ≤ ⊤ ⊓ ⨅ i : Fin a, mapsInto (W i.succ) (W i.castSucc)` using `le_inf le_top (le_iInf fun i X hX y hy => hb _ (mem_mapsInto.mp hX y (h.2.1 (Fin.le_last _) hy)) _)`. Establish `e2` using `finrank_inf_mapsInto (⊤ ⊓ ⨅ i : Fin a, mapsInto (W i.succ) (W i.castSucc)) _ _ hle k1 (fun X hX => lowering_mapsInto h ((Submodule.mem_iInf _).mp hX.2) _)`. Establish `e3` using `finrank_inf_flag a (fun k => perp ε (W k.rev)) (lowering ε W) (fun i k hik => perp_anti ε (h.2.1 (Fin.rev_le_rev.mpr hik))) (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.rev_zero]`. Conclude with `le_inf (fun X hX => k1 fun y hy => mem_mapsInto.mp hX y (hle hy)) fun X hX y hy => hb _ (mem_mapsInto.mp hX y hy) _)`. Use the proof step `(by`. Rewrite using `[Fin.rev_zero]`. Conclude with `fun X hX y hy => hle (hX.2 y hy))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hp' : ∀ k, (Module.finrank ℂ (perp ε (W k)) : ℤ) = n - Module.finrank ℂ (W k)` using `fun k => by`. Use `finrank_perp ε (W k)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hs : ∀ i : Fin a, (Module.finrank ℂ (W i.succ) : ℤ) = Module.finrank ℂ (W i.castSucc) + j i` using `fun i => by rw [h.2.2.1 i]; push_cast; rfl`. Establish `e3' : (Module.finrank ℂ (fullLowering ε W) : ℤ) = Module.finrank ℂ (lowering ε W) - ∑ i : Fin a, (j i : ℤ) * (Module.finrank ℂ (W i.castSucc) + j i)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `e3.trans ?_` and prove the remaining obligations. Use `congr 1`. Use `Fintype.sum_equiv Fin.revPerm _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[Fin.revPerm_apply, Fin.rev_succ, Fin.rev_castSucc, hp', hp', hs, Module.finrank_fin_fun]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2' : (Module.finrank ℂ (lowering ε W) : ℤ) = _` using `e2`. Rewrite `e2'` using `[e1, finrank_top, Module.finrank_linearMap, hp', hl]`. Simplify using `only [hs, Module.finrank_fin_fun] at e2'`. Establish `hsum : ∑ i : Fin a, ((Module.finrank ℂ (W i.castSucc) : ℤ) + j i - Module.finrank ℂ (W i.castSucc)) * ((n : ℤ) - Module.finrank ℂ (W i.castSucc)) + ∑ i : Fin a, (j i : ℤ) * (Module.finrank ℂ (W i.castSucc) + j i) = n * ∑ i, (j i : ℤ) + ∑ i, (j i : ℤ) ^ 2`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `hsq` using `GlobalTheory.sq_sum_eq_sum_sq_add_two_mul_sum_lt a fun i => (j i : ℤ)`. Establish `hd : (dimN n j : ℤ) = 4 * (∑ i, ∑ k, if i < k then (j i : ℤ) * j k else 0) + 2 * (∑ i, (j i : ℤ)) * (n - 2 * ∑ i, (j i : ℤ)) + ∑ i, (j i : ℤ) ^ 2`. Simplify using `only [dimN, Finset.sum_filter]`. Move the coercions through the operations in `[Nat.cast_sub hn]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Move the coercions through the operations in `at e2'`. Establish `: (Module.finrank ℂ (fullLowering ε W) : ℤ) = dimN n j`. Rewrite using `[e3', e2', hd]`. Take the linear combination `-hsum + 2 * hsq`.
-
-Conclude with `this` after adjusting the coercions.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem finrank_fullLowering (h : IsIsoFlag ε j W) : Module.finrank ℂ (fullLowering ε W) = dimN n j := by
   have hl := finrank_last h
@@ -526,21 +522,21 @@ theorem finrank_fullLowering (h : IsIsoFlag ε j W) : Module.finrank ℂ (fullLo
 end Form
 
 /- English proof (translation)
-Introduce `n ε a j W h`. Set `t : Matrix (Fin n) (Fin n) ℂ ≃ₗ[ℂ] ((Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ))` to `Matrix.toLin'`. Set `A` to `((lowering ε W).map t.symm.toLinearMap).restrictScalars ℝ`. Establish `hA : ∀ X, X ∈ A ↔ Matrix.toLin' X ∈ lowering ε W` using `fun X => by`. Simplify using `only [A, Submodule.restrictScalars_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.mem_map_equiv]`. Both sides reduce to the same expression. Set `S` to `(fullLowering ε W).map t.symm.toLinearMap`. Establish `hS : ∀ X, X ∈ S ↔ Matrix.toLin' X ∈ fullLowering ε W` using `fun X => by`. Simplify using `only [S]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.mem_map_equiv]`. Both sides reduce to the same expression. Establish `hSd : Module.finrank ℂ S = dimN n j` using `(LinearEquiv.finrank_map_eq t.symm _).trans (finrank_fullLowering h)`. Set `P : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)` to `{ carrier := {X | X ∈ S ∧ negAdj ε X = X} add_mem' := fun hX hY => ⟨S.add_mem hX.1 hY.1, by rw [map_add, hX.2, hY.2]⟩ zero_mem' := ⟨S.zero_mem, map_zero _⟩ smul_mem' := fun c X hX => by`. Establish `e : c • X = (c : ℂ) • X` using `rfl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Set.mem_setOf_eq, e]`. Conclude with `⟨S.smul_mem _ hX.1, by rw [negAdj_smul, hX.2]; simp⟩ }`. Establish `hst : ∀ X ∈ S, negAdj ε X ∈ S`. Introduce `X hX`. Rewrite `hX`, the goal using `[hS, mem_fullLowering, mem_lowering]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨⟨fun i => ?_, ?_⟩, fun i => negAdj_mapsInto ε (hX.1.1 i)⟩` and prove the remaining obligations. Simplify `negAdj_mapsInto ε (hX.2 i)` using `only [perp_perp]`. Simplify `negAdj_mapsInto ε hX.1.2` using `only [perp_perp]`. Establish `hPd : Module.finrank ℝ P = dimN n j` using `(finrank_fixed (negAdj ε) (negAdj_negAdj ε) (negAdj_smul ε) S hst P fun _ => Iff.rfl).trans hSd`. Take `⟨E, hE, hPE⟩` from `exists_orthonormal P _ hPd`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨A, E, ?_, hE, fun X => ?_, ?_⟩` and prove the remaining obligations. Introduce `X hX Y hY`. Rewrite `hX`, `hY`, the goal using `[hA, mem_lowering]`. Rewrite using `[Matrix.toLin'_mul]`. Conclude with `⟨fun i y hy => lowering_mapsInto h hX.1 _ _ (hY.1 i y hy), fun y hy => lowering_mapsInto h hX.1 _ _ (hY.2 y hy)⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← hPE, ← negAdj_eq_iff]`. Express the relevant statement in the definitionally equal form `_ ↔ X ∈ S ∧ negAdj ε X = X`. Use `and_congr_left fun hX => ?_` and prove the remaining obligations. Rewrite using `[hA, hS, mem_fullLowering]`. Use `⟨fun h1 => ⟨h1, fun i => ?_⟩, fun h1 => h1.1⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hX]`. Conclude with `negAdj_mapsInto ε (((mem_lowering ε W).mp h1).1 i)`. Use extensionality with `g`. Rewrite using `[Set.mem_setOf_eq, hA, mem_lowering]`. Simplify using `only [flagN, Set.mem_setOf_eq, mem_mapsInto, mem_perp, Matrix.toLin'_apply, sub_mulVec, one_mulVec]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_algebra_flagN : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), IsIsoFlag ε j W → ∃ (A : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) (E : Fin (dimN n j) → Matrix (Fin n) (Fin n) ℂ), (∀ X ∈ A, ∀ Y ∈ A, X * Y ∈ A) ∧ (∀ i k, ((E i * (E k)ᴴ).trace).re = if i = k then 1 else 0) ∧ (∀ X, (X ∈ A ∧ Formalism.REAL.inG ε X) ↔ X ∈ Submodule.span ℝ (Set.range E)) ∧ flagN ε W = {g | uMat g - 1 ∈ A} := by
   intro n ε a j W h

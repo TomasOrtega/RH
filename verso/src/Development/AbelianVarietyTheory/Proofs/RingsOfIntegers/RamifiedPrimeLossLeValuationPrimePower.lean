@@ -10,23 +10,23 @@ namespace GlobalTheory.PlaceTop
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.DIV.Cons Formalism.L2.Pj GlobalTheory.PtTie
 
 /- English proof (translation)
-Establish `hqp : D.host.q.Prime` using `D.host.hyp.1`. Establish `hdp : D.host.d.Prime` using `D.host.hyp.2.1`. Take `⟨hs, hq, hd, -, -⟩` from `UpperTheory.cmDatum_discriminantDepth_bounds D.host.toHostAx`. Establish `hN : pPow D a b b ≠ 0`. Unfold `pPow`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `mul_ne_zero (mul_ne_zero (pow_ne_zero _ D.host.QS_pos.ne') (pow_ne_zero _ hqp.ne_zero)) (pow_ne_zero _ hdp.ne_zero)`. Establish `hl` using `Crude.resCharOf_prime la`. Use `haveI : Fact (resCharOf la).Prime := ⟨hl⟩`. Establish `ha' : (DF w : ℝ) ≤ a` using `by exact_mod_cast ha`. Establish `hb' : (DF w : ℝ) / 2 ≤ b` using `Nat.ceil_le.1 hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : (0 : ℝ) ≤ (DF w : ℝ)` using `Nat.cast_nonneg _`. Establish `he : (0 : ℝ) ≤ (ramOverZ la : ℝ)` using `Nat.cast_nonneg _`. Establish `hR : ((vLa la ((pPow D a b b : ℕ) : K) : ℤ) : ℝ) = (padicValNat (resCharOf la) (pPow D a b b) : ℝ) * ramOverZ la`. Rewrite using `[Crude.crv_vLa_natCast la hN, Int.cast_natCast, Nat.cast_mul]`. Establish `hz : ∀ p ∈ D.host.condN.primeFactors, p ≠ resCharOf la → ((vLa la (p : K) : ℤ) : ℝ) * D.host.vdH p * (DF w : ℝ) / 2 = 0` using `fun p hp hne => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpp` using `Nat.prime_of_mem_primeFactors hp`. Use `haveI : Fact p.Prime := ⟨hpp⟩`. Rewrite using `[Crude.crv_vLa_natCast la hpp.ne_zero, padicValNat_primes hne.symm]`. Simplify using the standard rewrite rules. Rewrite using `[ramLoss, hR]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hm : resCharOf la ∈ D.host.condN.primeFactors`. Rewrite using `[Finset.sum_eq_single_of_mem _ hm hz, Crude.crv_vLa_natCast la hl.ne_zero, padicValNat_self]`. Establish `key : D.host.vdH (resCharOf la) * (DF w : ℝ) / 2 ≤ (padicValNat (resCharOf la) (pPow D a b b) : ℝ)`. Establish `hv0` using `D.host.vdH_nonneg (resCharOf la)`. Establish `hle : ∀ k : ℕ, resCharOf la ^ k ∣ pPow D a b b → (k : ℝ) ≤ (padicValNat (resCharOf la) (pPow D a b b) : ℝ)` using `fun k hk => by exact_mod_cast (padicValNat_dvd_iff_le hN).1 hk`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `(D.host.dvd_condN_iff_small hl).1 (Nat.dvd_of_mem_primeFactors hm) with h | h | h` into its components or cases. Establish `h1` using `hle (padicValNat (resCharOf la) D.host.QS * a) (by`. Rewrite using `[pow_mul]`. Conclude with `((pow_dvd_pow_of_dvd pow_padicValNat_dvd a).mul_right _).mul_right _)`. Establish `h2` using `(hs _ h).1`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Move the coercions through the operations in `at h1`. Use polynomial arithmetic with `[mul_le_mul h2 ha' hD (Nat.cast_nonneg _), mul_nonneg hv0 hD]`. Establish `h1` using `hle b (by rw [h]; exact (Dvd.intro_left _ rfl).mul_right _)`. Rewrite `hv0`, the goal using `[h]`. Rewrite `h1` using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hq hD]`. Establish `h1` using `hle b (by rw [h]; exact Dvd.intro_left _ rfl)`. Rewrite `hv0`, the goal using `[h]`. Rewrite `h1` using `[h]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hd hD]`.
+Use the polynomial consequences of the given equalities and inequalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Use `push_cast`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right key he]`. Rewrite using `[Finset.sum_eq_zero fun p hp => hz p hp fun h => hm (h ▸ hp)]`. Check the signs of the components of the expression.
+A detailed English derivation is pending.
 -/
 theorem ramLoss_le_vLa_pPow (D : D7) (K : Type) [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (j : ℕ)
     (w : WeightFamilies.Wt D j) (a b : ℕ) (ha : c2 D w ≤ a) (hb : Formalism.MainNotions.DIV.Cons.cHalf w ≤ b) :

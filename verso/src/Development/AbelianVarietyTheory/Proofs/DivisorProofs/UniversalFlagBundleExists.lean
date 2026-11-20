@@ -20,17 +20,15 @@ namespace GlobalTheory.FlagFree
 open Limits
 
 /- English proof (translation)
-Proceed by induction on `ι using Finite.induction_empty_option with`. Consider the case `@of_equiv α β e ih`. Introduce `Z ρ`. Take `⟨Y, π, p, hp, H⟩` from `ih (fun a => Z (e a)) (fun a => ρ (e a))`. Set `p' : ∀ b, Y ⟶ Z b` to `Equiv.piCongrLeft (fun b => Y ⟶ Z b) e p`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hp' (a : α) : p' (e a) = p a` using `Equiv.piCongrLeft_apply_apply _ _ _ _`. Use `⟨Y, π, p', e.forall_congr_right.1 fun a => by rw [hp', hp], fun T g h hh => ?_⟩` and prove the remaining obligations. Take `⟨g', ⟨h₁, h₂⟩, u⟩` from `H T g (fun a => h (e a)) fun a => hh _`. Conclude with `⟨g', ⟨h₁, e.forall_congr_right.1 fun a => by rw [hp', h₂]⟩, fun y hy => u y ⟨hy.1, fun a => by rw [← hp', hy.2]⟩⟩`. Consider the case `h_empty`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `Z ρ`. Conclude with `⟨B, 𝟙 B, fun a => a.elim, fun a => a.elim, fun T g _ _ => ⟨g, ⟨Category.comp_id g, fun a => a.elim⟩, fun y hy => (Category.comp_id y).symm.trans hy.1⟩⟩`. Consider the case `@h_option α _ ih`. Introduce `Z ρ`. Take `⟨Y, π, p, hp, H⟩` from `ih (fun a => Z (some a)) (fun a => ρ (some a))`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨pullback π (ρ none), pullback.fst _ _ ≫ π, fun a => Option.rec (pullback.snd _ _) (fun a => pullback.fst _ _ ≫ p a) a, ?_, fun T g h hh => ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | a)`. Conclude with `pullback.condition.symm`. Conclude with `(Category.assoc _ _ _).trans (congrArg _ (hp a))`. Take `⟨g', ⟨h₁, h₂⟩, u⟩` from `H T g (fun a => h (some a)) fun a => hh _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨pullback.lift g' (h none) (h₁.trans (hh none).symm), ⟨by rw [pullback.lift_fst_assoc, h₁], ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | a)`. Conclude with `pullback.lift_snd _ _ _`. Conclude with `(pullback.lift_fst_assoc _ _ _ _).trans (h₂ a)`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations.
-
-Rewrite using `[pullback.lift_fst]`. Conclude with `u _ ⟨(Category.assoc _ _ _).trans hy.1, fun a => (Category.assoc _ _ _).trans (hy.2 (some a))⟩`. Rewrite using `[pullback.lift_snd]`. Conclude with `hy.2 none`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_widePullback {B : Scheme.{0}} (ι : Type) [Finite ι] : ∀ (Z : ι → Scheme.{0}) (ρ : ∀ a, Z a ⟶ B),
       ∃ (Y : Scheme.{0}) (π : Y ⟶ B) (p : ∀ a, Y ⟶ Z a), (∀ a, p a ≫ ρ a = π) ∧
@@ -71,7 +69,7 @@ theorem exists_widePullback {B : Scheme.{0}} (ι : Type) [Finite ι] : ∀ (Z : 
           exact hy.2 none
 
 /- English proof (translation)
-Introduce `ι _ r`. Take `⟨Y, π, p, hp, H⟩` from `exists_widePullback ι (fun a => _) (fun a => GlobalTheory.FlagZ.flStr Unit (r a))`. Conclude with `⟨Y, π, _, GlobalTheory.FlagFamily.isFlagBundle_of_widePullback (fun a => GlobalTheory.QCoh.freeModule (X := Sp ℤ) (Fin (r a))) r (fun a => GlobalTheory.FlagZ.flStr Unit (r a)) (fun a => GlobalTheory.FlagZ.Univ.flag Unit (r a)) (fun a => GlobalTheory.FlagZ.Univ.isFlagBundle_flag U …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isFlagBundle_freeModule : ∀ (ι : Type) [Fintype ι] (r : ι → ℕ), ∃ (Y : Scheme.{0}) (π : Y ⟶ Sp ℤ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (GlobalTheory.QCoh.freeModule (X := Sp ℤ) (Fin (r a)))) (r a)), IsFlagBundle π (fun a => GlobalTheory.QCoh.freeModule (X := Sp ℤ) (Fin (r a))) r fl := by
   intro ι _ r

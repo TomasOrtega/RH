@@ -21,7 +21,7 @@ open GlobalTheory.Unf
 namespace GlobalTheory.Unf
 
 /- English proof (translation)
-Introduce `D`. Establish `hD : Descent D` using `GlobalTheory.T.weilDatum_descends_to_wittCore D`. Conclude with `⟨GlobalTheory.T.besselPeriod_thetaLift_unfolding D hD, GlobalTheory.T.bessel_period_evaluation_unfolding_of_witt_descent D hD, GlobalTheory.T.fourierJacobi_period_unfolding_of_witt_descent D hD, GlobalTheory.T.besselPeriod_double_step_unfolding_of_descent D hD, GlobalTheory.T.dou …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem unfoldings_of_chain :
     ∀ D : D7, UnfBF D ∧ EvalBF D ∧ UnfFB D ∧ DoubleStep D ∧ LastLaw D ∧ IT D ∧ ContrLaw D ∧ SeeLast D := by

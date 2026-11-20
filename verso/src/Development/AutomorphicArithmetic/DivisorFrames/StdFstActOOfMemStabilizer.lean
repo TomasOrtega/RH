@@ -15,7 +15,7 @@ variable {D : D7}
 local notation "OO" => Formalism.L2.Herm.intAf D.host.F D.host.E
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact Subring.sum_mem _ fun l _ => mul_mem (hN i l) (hκ l j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem isIntM_mul {b a c : ℕ} {N : Matrix (Fin b) (Fin a) (Lev.EAf D)} {κ : Matrix (Fin a) (Fin c) (Lev.EAf D)}
     (hN : IsIntM N) (hκ : IsIntM κ) : IsIntM (N * κ) := fun i j => by
@@ -23,9 +23,9 @@ private theorem isIntM_mul {b a c : ℕ} {N : Matrix (Fin b) (Fin a) (Lev.EAf D)
   exact Subring.sum_mem _ fun l _ => mul_mem (hN i l) (hκ l j)
 
 /- English proof (translation)
-Establish `hm : (N * κ) i j ∈ OO`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun l _ => mul_mem (hN l).1 (hκ l j)`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Establish `e : (⟨(N * κ) i j, hm⟩ : OO) = ∑ l, (⟨N i l, (hN l).1⟩ : OO) * ⟨κ l j, hκ l j⟩` using `Subtype.ext (by show (N * κ) i j = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply]`. Use `push_cast`. Use the proof step `rfl)`. Rewrite using `[e]`. Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hN l).2`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inId_mul {b a c : ℕ} {I : Ideal (𝓞 D.host.E)} {N : Matrix (Fin b) (Fin a) (Lev.EAf D)}
     {κ : Matrix (Fin a) (Fin c) (Lev.EAf D)} (hκ : IsIntM κ) (i : Fin b) (hN : ∀ l, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (N i l))
@@ -43,7 +43,7 @@ private theorem inId_mul {b a c : ℕ} {I : Ideal (𝓞 D.host.E)} {N : Matrix (
   exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hN l).2
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [topL, Matrix.mul_apply]`. Distinguish the cases in `hi : i.1 < b`. Simplify using `[hi]`. Simplify using `[hi]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem topL_mul {b a : ℕ} (N : Matrix (Fin b) (Fin a) (Lev.EAf D)) (κ : Matrix (Fin a) (Fin a) (Lev.EAf D)) :
     topL a (N * κ) = topL a N * κ := by
@@ -54,9 +54,7 @@ private theorem topL_mul {b a : ℕ} (N : Matrix (Fin b) (Fin a) (Lev.EAf D)) (�
   · simp [hi]
 
 /- English proof (translation)
-Set `A : Matrix (Fin k) (Fin k) OO` to `fun i j => ⟨N i j, hN i j⟩`. Establish `eA : N.det = ((A.det : OO) : Lev.EAf D)`. Rewrite using `[show N = (OO).subtype.mapMatrix A from rfl]`. Conclude with `(RingHom.map_det (OO).subtype A).symm`. Rewrite using `[eA]`.
-
-Conclude with `A.det.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem det_int {k : ℕ} {N : Matrix (Fin k) (Fin k) (Lev.EAf D)} (hN : IsIntM N) : N.det ∈ OO := by
   let A : Matrix (Fin k) (Fin k) OO := fun i j => ⟨N i j, hN i j⟩
@@ -67,21 +65,21 @@ private theorem det_int {k : ℕ} {N : Matrix (Fin k) (Fin k) (Lev.EAf D)} (hN :
   exact A.det.2
 
 /- English proof (translation)
-The claim follows from `Units.ext (StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.eq_of_parts (h.1.trans h'.1.symm) (h.2.1.trans h'.2.1.symm))`.
+A detailed English derivation is pending.
 -/
 private theorem isUnitDet_unique {e : AE D} {k : ℕ} {N : Matrix (Fin k) (Fin k) (Lev.EAf D)} {x x' : (AE D)ˣ}
     (h : IsUnitDet e N x) (h' : IsUnitDet e N x') : x = x' :=
   Units.ext (StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.eq_of_parts (h.1.trans h'.1.symm) (h.2.1.trans h'.2.1.symm))
 
 /- English proof (translation)
-Take the linear combination `(a * b - a - b + 1) * hε`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem idem_mul {R : Type} [CommRing R] {ε a b : R} (hε : ε * ε = ε) :
     (1 - ε + ε * a) * (1 - ε + ε * b) = 1 - ε + ε * (a * b) := by
   linear_combination (a * b - a - b + 1) * hε
 
 /- English proof (translation)
-Substitute `hz hy` using the available equality. Take the linear combination `(1 - ε + ε * a) * hyy - (a * b - a - b + 1) * yi * hε`.
+Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem succ_mul_succ_sub_one_div_succ {R : Type} [CommRing R] {ε z y yi a b : R} (hε : ε * ε = ε) (hz : z = 1 - ε + ε * (a * b))
     (hy : y = 1 - ε + ε * b) (hyy : y * yi = 1) : z * yi = 1 - ε + ε * a := by
@@ -89,9 +87,9 @@ private theorem succ_mul_succ_sub_one_div_succ {R : Type} [CommRing R] {ε z y y
   linear_combination (1 - ε + ε * a) * hyy - (a * b - a - b + 1) * yi * hε
 
 /- English proof (translation)
-Establish `hε : toEAf D e * toEAf D e = toEAf D e` using `by rw [← map_mul, GlobalTheory.PlaceDatum.idemSum_mul_self he]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, hx.1, hy.1, mul_one]`. Rewrite using `[Units.val_mul, map_mul, hx.2.1, hy.2.1, Matrix.det_mul, idem_mul hε]`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, map_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem hy.2.2 hx.2.2`.
+A detailed English derivation is pending.
 -/
 private theorem isUnitDet_mul {e : AE D} {S : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e S) {k : ℕ}
     {L κ : Matrix (Fin k) (Fin k) (Lev.EAf D)} {x y : (AE D)ˣ} (hx : IsUnitDet e L x) (hy : IsUnitDet e κ y) :
@@ -105,13 +103,13 @@ private theorem isUnitDet_mul {e : AE D} {S : Finset (Formalism.L2.DIV.Pl D.host
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hε : toEAf D e * toEAf D e = toEAf D e` using `by rw [← map_mul, GlobalTheory.PlaceDatum.idemSum_mul_self he]`. Establish `hE` using `StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.toEAf_mem he`. Establish `hyy : toEAf D (y : AE D) * toEAf D ((y⁻¹ : (AE D)ˣ) : AE D) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hinv : infPart D ((y⁻¹ : (AE D)ˣ) : AE D) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (infPart D) (Units.mul_inv y)` as an intermediate fact. Rewrite `this` using `[map_mul, hy.1, one_mul, map_one]`. Then use the resulting hypothesis. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, hz.1, hinv, mul_one]`. Rewrite using `[Units.val_mul, map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `succ_mul_succ_sub_one_div_succ hε (hz.2.1.trans (by rw [Matrix.det_mul])) hy.2.1 hyy`. Establish `e0 : (z * y⁻¹)⁻¹ = y * z⁻¹` using `by rw [_root_.mul_inv_rev, inv_inv]`. Rewrite using `[e0]`. Rewrite using `[Units.val_mul]`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_mem ?_ hz.2.2` and prove the remaining obligations. Rewrite using `[hy.2.1]`. Conclude with `add_mem (sub_mem (one_mem _) hE) (mul_mem hE (det_int hκ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnitDet_div {e : AE D} {S : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e S) {k : ℕ}
     {L κ : Matrix (Fin k) (Fin k) (Lev.EAf D)} (hκ : IsIntM κ) {z y : (AE D)ˣ} (hz : IsUnitDet e (L * κ) z)
@@ -136,9 +134,9 @@ private theorem isUnitDet_div {e : AE D} {S : Finset (Formalism.L2.DIV.Pl D.host
     exact add_mem (sub_mem (one_mem _) hE) (mul_mem hE (det_int hκ))
 
 /- English proof (translation)
-Unfold `unitChar`. Distinguish the cases in `hL : ∃ x, IsUnitDet e L x`. Establish `hLκ : ∃ x, IsUnitDet e (L * κ) x` using `⟨_, isUnitDet_mul he hL.choose_spec hy⟩`. Rewrite using `[dif_pos hL, dif_pos hLκ, isUnitDet_unique hLκ.choose_spec (isUnitDet_mul he hL.choose_spec hy), map_mul, _root_.mul_inv_rev, Circle.coe_mul]`. Establish `hLκ : ¬ ∃ x, IsUnitDet e (L * κ) x` using `fun ⟨z, hz⟩ => hL ⟨_, isUnitDet_div he hκ hz hy⟩`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dif_neg hL, dif_neg hLκ, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem unitChar_mul (ν : (AE D)ˣ →* Circle) {e : AE D} {S : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e S)
     {k : ℕ} (L κ : Matrix (Fin k) (Fin k) (Lev.EAf D)) (hκ : IsIntM κ) {y : (AE D)ˣ} (hy : IsUnitDet e κ y) :
@@ -152,7 +150,7 @@ private theorem unitChar_mul (ν : (AE D)ˣ →* Circle) {e : AE D} {S : Finset 
     rw [dif_neg hL, dif_neg hLκ, mul_zero]
 
 /- English proof (translation)
-Introduce `i j` and use `by unfold actO simp only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul] refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => ?_ rw [← mul_assoc, mul_left_comm, h m l]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem half_act {e : AE D} (S T : HSp D) (g : GA D S) {x : WO S T} (h : IsHalf e x) :
     IsHalf e (actO S T g 1 x) := fun i j => by
@@ -162,9 +160,9 @@ private theorem half_act {e : AE D} (S T : HSp D) (g : GA D S) {x : WO S T} (h :
   rw [← mul_assoc, mul_left_comm, h m l]
 
 /- English proof (translation)
-Establish `h1 : ∀ V : HSp D, Formalism.L2.Theta.mt V 1 = 1` using `fun V => by simp [Formalism.L2.Theta.mt]`. Establish `h2 : Formalism.L2.Theta.mt S g⁻¹ * Formalism.L2.Theta.mt S g = 1`. Rewrite using `[← h1 S, ← inv_mul_cancel g]`. Simplify using `[Formalism.L2.Theta.mt]`. Unfold `actO`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[inv_inv, h1, Matrix.one_mul, Matrix.one_mul, Matrix.mul_assoc, h2, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem act_act (S T : HSp D) (g : GA D S) (x : WO S T) :
     actO S T g⁻¹ 1 (actO S T g 1 x) = x := by
@@ -175,7 +173,7 @@ private theorem act_act (S T : HSp D) (g : GA D S) (x : WO S T) :
   rw [inv_inv, h1, Matrix.one_mul, Matrix.one_mul, Matrix.mul_assoc, h2, Matrix.mul_one]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `h`. Establish `e : (β⁻¹ * Formalism.L2.DIV.frGL β y * β : GL (Fin n) (Lev.EAf D)) = Formalism.L2.DIV.intGL _ _ n y` using `by show β⁻¹ * (β * Formalism.L2.DIV.intGL _ _ n y * β⁻¹) * β = _ group`. Rewrite using `[e]`. Conclude with `fun i j => (y.val i j).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem st_int {n : ℕ} {β k : GL (Fin n) (Lev.EAf D)} (h : k ∈ Formalism.L2.DIV.St β) :
     IsIntM (β⁻¹ * k * β : GL (Fin n) (Lev.EAf D)).val := by
@@ -192,15 +190,15 @@ open UpperTheory.standardActionStabilizer in
 set_option synthInstance.maxHeartbeats 100000 in
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `D S T βS βT ν e Z I he g hg y hy x`. Establish `hκ'` using `st_int hg`. Establish `hκ` using `st_int ((Formalism.L2.DIV.St βS).inv_mem hg)`. Establish `einv : (βS⁻¹ * (Lev.finE S g)⁻¹ * βS : GL (Fin S.rank) (Lev.EAf D)) = (βS⁻¹ * Lev.finE S g * βS)⁻¹` using `by group`. Rewrite `hκ` using `[einv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfr` using `GlobalTheory.T.frameMatrix_weilPairAction_left_inv D S T βS βT g x`. Generalize the expression as in `(βS⁻¹ * Lev.finE S g * βS : GL (Fin S.rank) (Lev.EAf D)) = γ at hy hκ hκ' hfr`. Establish `hkk : (γ⁻¹).val * γ.val = 1` using `Units.inv_mul γ`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst`. Rewrite using `[hfr]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `frMapO S T βS βT x = N`. Establish `hH : IsHalf e (actO S T g 1 x) ↔ IsHalf e x` using `⟨fun h => by have := half_act S T g⁻¹ h; rwa [act_act] at this, half_act S T g⟩`. Establish `hI : IsIntM (N * (γ⁻¹).val) ↔ IsIntM N`. Use `⟨fun h => ?_, fun h => isIntM_mul h hκ⟩` and prove the remaining obligations. Use `isIntM_mul h hκ'` as an intermediate fact.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mul_assoc, hkk, Matrix.mul_one]`. Then use the resulting hypothesis. Establish `hR : (∀ i j, S.rank ≤ i.1 → GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I ((N * (γ⁻¹).val) i j)) ↔ ∀ i j, S.rank ≤ i.1 → GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (N i j)`. Use `⟨fun h i j hi => ?_, fun h i j hi => inId_mul hκ i (fun l => h i l hi) j⟩` and prove the remaining obligations. Use `inId_mul hκ' i (fun l => h i l hi) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, hkk, Matrix.mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hU` using `unitChar_mul ν he (topL S.rank N * (γ⁻¹).val) γ.val hκ' hy`. Rewrite `hU` using `[Matrix.mul_assoc, hkk, Matrix.mul_one]`. Distinguish the cases in `hc : IsHalf e x ∧ IsIntM N ∧ ∀ i j, S.rank ≤ i.1 → GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (N i j)`. Rewrite using `[if_pos hc, if_pos ⟨hH.2 hc.1, hI.2 hc.2.1, hR.2 hc.2.2⟩, topL_mul, hU, ← mul_assoc, ← Circle.coe_mul, mul_inv_cancel, Circle.coe_one, one_mul]`. Rewrite using `[if_neg hc, if_neg fun h => hc ⟨hH.1 h.1, hI.1 h.2.1, hR.1 h.2.2⟩, mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.stdFst_actO_of_mem_stabilizer :
     ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (ν : (AE D)ˣ →* Circle) (e : AE D) (Z : Finset (Formalism.L2.DIV.Pl D.host.E)) (I : Ideal (𝓞 D.host.E)),

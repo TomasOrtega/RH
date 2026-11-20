@@ -11,21 +11,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ B A c hc f n`. Establish `bil` using `GlobalTheory.T.abelianVarietyMumfordClass_bilinear K A c B.X`. Establish `h1 : CechPic.pull (1 : B.X ⟶ A.X).left c = 0`. Establish `e` using `(bil 1 1 1 0).2.1`. Simplify using `only [AbVar.lam, _root_.mul_one, sub_self, zero_sub, neg_eq_zero] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `e`. Establish `hinv : ∀ y : B.X ⟶ A.X, CechPic.pull (y⁻¹).left c = CechPic.pull y.left c`. Introduce `y`. Establish `hc' : CechPic.pull ((𝟙 A.X)⁻¹).left c = c` using `hc`. Rewrite using `[show y⁻¹ = y ≫ (𝟙 A.X)⁻¹ by rw [GrpObj.comp_inv, Category.comp_id], Over.comp_left, pull_comp, hc']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmul : ∀ y z : B.X ⟶ A.X, CechPic.pull (y * z).left c = AbVar.lam c y z + CechPic.pull y.left c + CechPic.pull z.left c`. Introduce `y z`. Simplify using `only [AbVar.lam]`. Normalize the expressions using the abelian group laws. Use `set x := f.hom with hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : AbVar.lam c x x = 2 • CechPic.pull x.left c`. Establish `e` using `(bil x x 1 (-1)).2.2.2.2`. Rewrite `e` using `[zpow_neg_one]`. Establish `e2` using `hmul x x⁻¹`. Rewrite `e2` using `[_root_.mul_inv_cancel, h1, hinv, e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : AbVar.lam c x x - 2 • CechPic.pull x.left c = -((-1 : ℤ) • AbVar.lam c x x + CechPic.pull x.left c + CechPic.pull x.left c)` using `by module`. Rewrite using `[← sub_eq_zero, e3, ← e2, neg_zero]`. Use `⟨key, ?_⟩` and prove the remaining obligations. Establish `step : ∀ m : ℤ, CechPic.pull (x ^ (m + 1)).left c = CechPic.pull (x ^ m).left c + (2 * m + 1) • CechPic.pull x.left c`. Introduce `m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[zpow_add_one, hmul, (bil x x 1 m).2.2.2.1, key]`. Use `module`. Express the relevant statement in the definitionally equal form `CechPic.pull (x ^ n).left c = (n ^ 2) • CechPic.pull x.left c`. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => rw [zpow_zero, h1]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ m ih`. Rewrite using `[step, ih]`. Use `module`. Consider the case `pred m ih`.
-
-Establish `e` using `step (-(m : ℤ) - 1)`. Rewrite `e` using `[show -(m : ℤ) - 1 + 1 = -(m : ℤ) by ring, ih]`. Rewrite using `[eq_sub_of_add_eq e.symm]`. Use `module`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_zsmul_of_symm : ∀ (K : Type) [Field K] (B A : AbVar K) (c : Pic A.X.left), CechPic.pull (Hom.hom (-(𝟙 A))).left c = c → ∀ (f : B ⟶ A) (n : ℤ), AbVar.lam c f.hom f.hom = 2 • CechPic.pull f.hom.left c ∧ CechPic.pull (Hom.hom (n • f)).left c = (n ^ 2) • CechPic.pull f.hom.left c := by
   intro K _ B A c hc f n

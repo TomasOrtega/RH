@@ -65,7 +65,7 @@ instance isScalarTower_padic_intermediateField_bDeRham : IsScalarTower ℚ_[p] K
 variable {K}
 
 /- English proof (translation)
-Rewrite using `[algebraMap_intermediateField_bDeRham, gal_smul_algebraMap_bDeRham, gal_smul_algClToBdR]`. Use `congr 2`. Conclude with `AlgEquiv.commutes σ k`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem gal_smul_algebraMap_intermediateField_bDeRham (σ : Gal(PadicAlgCl p/K)) (k : K) :
     σ • algebraMap K 𝔹dR k = algebraMap K 𝔹dR k := by
@@ -74,7 +74,7 @@ theorem gal_smul_algebraMap_intermediateField_bDeRham (σ : Gal(PadicAlgCl p/K))
   exact AlgEquiv.commutes σ k
 
 /- English proof (translation)
-Rewrite using `[algebraMap_padic_bDeRham, gal_smul_algebraMap_bDeRham, gal_smul_algebraMap_bdR]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gal_smul_algebraMap_padic_bDeRham (σ : Gal(PadicAlgCl p/K)) (q : ℚ_[p]) :
     σ • algebraMap ℚ_[p] 𝔹dR q = algebraMap ℚ_[p] 𝔹dR q := by
@@ -94,7 +94,7 @@ end Algebra
 section Level
 
 /- English proof (translation)
-Establish `hx : x ∈ ⨆ i, Fil i`. Rewrite using `[IsPerfectoidField.iSup_fil]`. Conclude with `Submodule.mem_top`. Conclude with `(Submodule.mem_iSup_of_directed _ (IsPerfectoidField.fil_antitone ℂ_[p] p).directed_le).1 hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bDeRham_exists_mem_fil (x : 𝔹dR) : ∃ i : ℤ, x ∈ Fil i := by
   have hx : x ∈ ⨆ i, Fil i := by
@@ -104,7 +104,7 @@ theorem bDeRham_exists_mem_fil (x : 𝔹dR) : ∃ i : ℤ, x ∈ Fil i := by
     (IsPerfectoidField.fil_antitone ℂ_[p] p).directed_le).1 hx
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hx` to reduce the goal to its premises. Establish `: x ∈ ⨅ i, Fil i` using `(Submodule.mem_iInf _).2 h`. Rewrite `this` using `[IsPerfectoidField.iInf_fil, Submodule.mem_bot]`. Then use the resulting hypothesis.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem bDeRham_exists_not_mem_fil {x : 𝔹dR} (hx : x ≠ 0) : ∃ i : ℤ, x ∉ Fil i := by
   by_contra h
@@ -114,9 +114,9 @@ theorem bDeRham_exists_not_mem_fil {x : 𝔹dR} (hx : x ≠ 0) : ∃ i : ℤ, x 
   rwa [IsPerfectoidField.iInf_fil, Submodule.mem_bot] at this
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `bDeRham_exists_not_mem_fil hx`. Establish `hbdd : ∃ b : ℤ, ∀ z : ℤ, x ∈ Fil z → z ≤ b`. Use `⟨j, fun z hz => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hj (IsPerfectoidField.fil_antitone ℂ_[p] p hlt.le hz)`. Take `⟨i, hi, hmax⟩` from `Int.exists_greatest_of_bdd hbdd (bDeRham_exists_mem_fil x)`. Conclude with `⟨i, hi, fun h => by have := hmax _ h; omega⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bDeRham_exists_level {x : 𝔹dR} (hx : x ≠ 0) : ∃ i : ℤ, x ∈ Fil i ∧ x ∉ Fil (i + 1) := by
   obtain ⟨j, hj⟩ := bDeRham_exists_not_mem_fil hx
@@ -129,9 +129,9 @@ theorem bDeRham_exists_level {x : 𝔹dR} (hx : x ≠ 0) : ∃ i : ℤ, x ∈ Fi
   exact ⟨i, hi, fun h => by have := hmax _ h; omega⟩
 
 /- English proof (translation)
-Use `Finset.induction_on s ⟨0, by simp⟩ ?_` and prove the remaining obligations. Introduce and unpack `a s - ⟨i, hi⟩`. Take `⟨i', hi'⟩` from `bDeRham_exists_mem_fil (c a)`. Use `⟨min i i', fun j hj => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `IsPerfectoidField.fil_antitone ℂ_[p] p (min_le_right _ _) hi'`. Conclude with `IsPerfectoidField.fil_antitone ℂ_[p] p (min_le_left _ _) (hi j hj)`.
+A detailed English derivation is pending.
 -/
 theorem bDeRham_exists_forall_mem_fil {ι : Type*} (s : Finset ι) (c : ι → 𝔹dR) :
     ∃ i : ℤ, ∀ j ∈ s, c j ∈ Fil i := by
@@ -145,9 +145,9 @@ theorem bDeRham_exists_forall_mem_fil {ι : Type*} (s : Finset ι) (c : ι → �
   · exact IsPerfectoidField.fil_antitone ℂ_[p] p (min_le_left _ _) (hi j hj)
 
 /- English proof (translation)
-Establish `e : algebraMap 𝔹 𝔹dR b = algebraMap 𝔹 𝔹dR (tBdR p) ^ (0 : ℤ) * algebraMap 𝔹 𝔹dR b`. Rewrite using `[zpow_zero, one_mul]`. Establish `h' : algebraMap 𝔹 𝔹dR (tBdR p) ^ (0 : ℤ) * algebraMap 𝔹 𝔹dR b ∈ Fil 0`. Rewrite using `[← e]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (⟨algebraMap 𝔹 𝔹dR b, h⟩ : Fil 0) = ⟨_, h'⟩` using `Subtype.ext e`. Rewrite using `[this, IsPerfectoidField.grMap_mk, thetaAlgHom_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grMap_zero_algebraMap (b : 𝔹) (h : algebraMap 𝔹 𝔹dR b ∈ Fil 0) :
     IsPerfectoidField.grMap maximalIdeal_eq_span_tBdR 0 ⟨algebraMap 𝔹 𝔹dR b, h⟩ =
@@ -167,7 +167,7 @@ section Invariants
 variable (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 
 /- English proof (translation)
-Rewrite using `[ContRepresentation.mem_invariants]`. Introduce `σ`. Rewrite using `[← grMap_tBdR_gal_smul σ x]`. Use `congr 1`. Conclude with `Subtype.ext (hx σ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem grMap_mem_invariants {i : ℤ} (x : Fil i)
     (hx : ∀ σ : Gal(PadicAlgCl p/K), σ • (x : 𝔹dR) = x) :
@@ -181,7 +181,7 @@ theorem grMap_mem_invariants {i : ℤ} (x : Fil i)
 variable [FiniteDimensional ℚ_[p] K]
 
 /- English proof (translation)
-Establish `h` using `grMap_mem_invariants K ⟨x, hxi⟩ hx`. Rewrite `h` using `[cpTwistRep_invariants_eq_bot K hi, Submodule.mem_bot]`. Conclude with `(IsPerfectoidField.grMap_eq_zero_iff maximalIdeal_eq_span_tBdR ⟨x, hxi⟩).1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_fil_succ_of_invariant {i : ℤ} (hi : i ≠ 0) {x : 𝔹dR} (hxi : x ∈ Fil i)
     (hx : ∀ σ : Gal(PadicAlgCl p/K), σ • x = x) : x ∈ Fil (i + 1) := by
@@ -190,7 +190,7 @@ theorem mem_fil_succ_of_invariant {i : ℤ} (hi : i ≠ 0) {x : 𝔹dR} (hxi : x
   exact (IsPerfectoidField.grMap_eq_zero_iff maximalIdeal_eq_span_tBdR ⟨x, hxi⟩).1 h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `hi' (mem_fil_succ_of_invariant K h hi hx)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem level_eq_zero_of_invariant {x : 𝔹dR} (hx : ∀ σ : Gal(PadicAlgCl p/K), σ • x = x)
     {i : ℤ} (hi : x ∈ Fil i) (hi' : x ∉ Fil (i + 1)) : i = 0 := by
@@ -198,15 +198,15 @@ theorem level_eq_zero_of_invariant {x : 𝔹dR} (hx : ∀ σ : Gal(PadicAlgCl p/
   exact hi' (mem_fil_succ_of_invariant K h hi hx)
 
 /- English proof (translation)
-Distinguish the cases in `h0 : x = 0`. Conclude with `⟨0, by rw [map_zero, h0]⟩`. Take `⟨i, hi, hi'⟩` from `bDeRham_exists_level h0`. Take `rfl` from `level_eq_zero_of_invariant K hx hi hi'`. Establish `hinv` using `grMap_mem_invariants K ⟨x, hi⟩ hx`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hinv` using `[cpTwistRep_invariants_zero K]`. Take `⟨k, hk⟩` from `hinv`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[algebraMap_intermediateField_bDeRham]`. Assume the negation of the conclusion as `hne`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hy0 : x - algebraMap 𝔹 𝔹dR (algClToBdR p k) ≠ 0` using `sub_ne_zero.2 (Ne.symm hne)`. Establish `hyinv : ∀ σ : Gal(PadicAlgCl p/K), σ • (x - algebraMap 𝔹 𝔹dR (algClToBdR p k)) = x - algebraMap 𝔹 𝔹dR (algClToBdR p k)` using `fun σ => by`. Rewrite using `[smul_sub, hx σ, ← algebraMap_intermediateField_bDeRham, gal_smul_algebraMap_intermediateField_bDeRham]`. Establish `hk0 : algebraMap 𝔹 𝔹dR (algClToBdR p k) ∈ Fil 0` using `(IsPerfectoidField.mem_fil_zero_iff ℂ_[p] p).2 ⟨_, rfl⟩`. Establish `hgr0` using `grMap_zero_algebraMap (algClToBdR p k) hk0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hgr0` using `[thetaAlgHom_algClToBdR]`. Establish `hy : x - algebraMap 𝔹 𝔹dR (algClToBdR p k) ∈ Fil 0` using `Submodule.sub_mem _ hi hk0`. Establish `hgr : IsPerfectoidField.grMap maximalIdeal_eq_span_tBdR 0 (⟨x - algebraMap 𝔹 𝔹dR (algClToBdR p k), hy⟩ : Fil 0) = 0`. Establish `e : (⟨x - algebraMap 𝔹 𝔹dR (algClToBdR p k), hy⟩ : Fil 0) = ⟨x, hi⟩ - ⟨algebraMap 𝔹 𝔹dR (algClToBdR p k), hk0⟩` using `rfl`. Rewrite using `[e, map_sub, hgr0, ← hk, Algebra.linearMap_apply, algebraMap_intermediateField_cp, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy1 : x - algebraMap 𝔹 𝔹dR (algClToBdR p k) ∈ Fil (0 + 1)` using `(IsPerfectoidField.grMap_eq_zero_iff maximalIdeal_eq_span_tBdR _).1 hgr`. Take `⟨j, hj, hj'⟩` from `bDeRham_exists_level hy0`. Take `rfl` from `level_eq_zero_of_invariant K hyinv hj hj'`. Conclude with `hj' hy1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bDeRham_fixed (x : 𝔹dR) (hx : ∀ σ : Gal(PadicAlgCl p/K), σ • x = x) :
     ∃ k : K, algebraMap K 𝔹dR k = x := by
@@ -242,7 +242,7 @@ theorem bDeRham_fixed (x : 𝔹dR) (hx : ∀ σ : Gal(PadicAlgCl p/K), σ • x 
   exact hj' hy1
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `bDeRham_fixed K (algebraMap 𝔹 𝔹dR b) fun σ => by`. Rewrite using `[gal_smul_algebraMap_bDeRham, hb σ]`. Conclude with `⟨k, IsPerfectoidField.algebraMap_bDeRham_injective hk⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem bDeRhamPlus_fixed (b : 𝔹) (hb : ∀ σ : Gal(PadicAlgCl p/K), σ • b = b) :
     ∃ k : K, algClToBdR p k = b := by
@@ -251,7 +251,7 @@ theorem bDeRhamPlus_fixed (b : 𝔹) (hb : ∀ σ : Gal(PadicAlgCl p/K), σ • 
   exact ⟨k, IsPerfectoidField.algebraMap_bDeRham_injective hk⟩
 
 /- English proof (translation)
-The claim follows from `invariantRing_eq_range (bDeRham_fixed K)`.
+A detailed English derivation is pending.
 -/
 theorem invariantRing_bDeRham :
     invariantRing Gal(PadicAlgCl p/K) ℚ_[p] 𝔹dR = (IsScalarTower.toAlgHom ℚ_[p] K 𝔹dR).range :=
@@ -264,7 +264,7 @@ section DeRham
 variable (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 
 /- English proof (translation)
-The claim follows from `isRegular_of_field _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem isRegular_bDeRham : IsRegular Gal(PadicAlgCl p/K) ℚ_[p] 𝔹dR :=
   isRegular_of_field _ _ _
@@ -279,13 +279,13 @@ def IsDeRham : Prop := IsAdmissible 𝔹dR ρ
 variable [FiniteDimensional ℚ_[p] K] [FiniteDimensional ℚ_[p] V]
 
 /- English proof (translation)
-The claim follows from `(isRegular_bDeRham K).finiteDimensional_DBK ρ (bDeRham_fixed K)`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_DdR : FiniteDimensional K (DdR K ρ) :=
   (isRegular_bDeRham K).finiteDimensional_DBK ρ (bDeRham_fixed K)
 
 /- English proof (translation)
-The claim follows from `(isRegular_bDeRham K).finrank_DBK_le ρ (bDeRham_fixed K)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_DdR_le : finrank K (DdR K ρ) ≤ finrank ℚ_[p] V :=
   (isRegular_bDeRham K).finrank_DBK_le ρ (bDeRham_fixed K)
@@ -293,7 +293,7 @@ theorem finrank_DdR_le : finrank K (DdR K ρ) ≤ finrank ℚ_[p] V :=
 omit [FiniteDimensional ℚ_[p] V] in
 
 /- English proof (translation)
-The claim follows from `isAdmissible_iff_finrank_DBK ρ (bDeRham_fixed K)`.
+A detailed English derivation is pending.
 -/
 theorem isDeRham_iff_finrank : IsDeRham K ρ ↔ finrank K (DdR K ρ) = finrank ℚ_[p] V :=
   isAdmissible_iff_finrank_DBK ρ (bDeRham_fixed K)
@@ -301,7 +301,7 @@ theorem isDeRham_iff_finrank : IsDeRham K ρ ↔ finrank K (DdR K ρ) = finrank 
 omit [FiniteDimensional ℚ_[p] K] in
 
 /- English proof (translation)
-The claim follows from `((isRegular_bDeRham K).isAdmissible_iff_bijective ρ).1 h`.
+A detailed English derivation is pending.
 -/
 theorem IsDeRham.comparison_bijective (h : IsDeRham K ρ) :
     Function.Bijective (comparison 𝔹dR ρ) :=
@@ -320,15 +320,13 @@ def filTensor (i : ℤ) : Submodule K (𝔹dR ⊗[ℚ_[p]] V) :=
 variable {K V}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, w, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `j`. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul, mul_comm, algebraMap_padic_bDeRham, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ hb`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[map_add, Finsupp.add_apply]`. Conclude with `add_mem (hx j) (hy j)`. Consider the case `smul k x _ hx`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← algebraMap_smul 𝔹dR k x, map_smul, Finsupp.smul_apply, smul_eq_mul, algebraMap_intermediateField_bDeRham, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (hx j)`. Introduce `h`. Rewrite using `[← (Algebra.TensorProduct.basis 𝔹dR v).sum_repr x]`. Use `Submodule.sum_mem _ fun j _ => Submodule.subset_span ⟨_, h j, v j, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_filTensor_iff {ι : Type*} [Fintype ι] (v : Basis ι ℚ_[p] V) {i : ℤ}
     {x : 𝔹dR ⊗[ℚ_[p]] V} :
@@ -360,7 +358,7 @@ theorem mem_filTensor_iff {ι : Type*} [Fintype ι] (v : Basis ι ℚ_[p] V) {i 
 variable (K V) in
 
 /- English proof (translation)
-Introduce `_ _ hij` and use `Submodule.span_mono fun _ ⟨b, hb, w, hx⟩ => ⟨b, IsPerfectoidField.fil_antitone ℂ_[p] p hij hb, w, hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem filTensor_antitone : Antitone (filTensor K V) := fun _ _ hij =>
   Submodule.span_mono fun _ ⟨b, hb, w, hx⟩ =>
@@ -369,7 +367,7 @@ theorem filTensor_antitone : Antitone (filTensor K V) := fun _ _ hij =>
 variable [FiniteDimensional ℚ_[p] V]
 
 /- English proof (translation)
-Set `v` to `Module.finBasis ℚ_[p] V`. Take `⟨i, hi⟩` from `bDeRham_exists_forall_mem_fil Finset.univ ((Algebra.TensorProduct.basis 𝔹dR v).repr x)`. Conclude with `⟨i, (mem_filTensor_iff v).2 fun j => hi j (Finset.mem_univ j)⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem_filTensor (x : 𝔹dR ⊗[ℚ_[p]] V) : ∃ i : ℤ, x ∈ filTensor K V i := by
   let v := Module.finBasis ℚ_[p] V
@@ -378,9 +376,9 @@ theorem exists_mem_filTensor (x : 𝔹dR ⊗[ℚ_[p]] V) : ∃ i : ℤ, x ∈ fi
   exact ⟨i, (mem_filTensor_iff v).2 fun j => hi j (Finset.mem_univ j)⟩
 
 /- English proof (translation)
-Set `v` to `Module.finBasis ℚ_[p] V`. Establish `: (Algebra.TensorProduct.basis 𝔹dR v).repr x ≠ 0`. Rewrite using `[Ne, LinearEquiv.map_eq_zero_iff]` and apply the resulting hypothesis. Take `⟨j, hj⟩` from `Finsupp.ne_iff.1 this`. Take `⟨i, hi⟩` from `bDeRham_exists_not_mem_fil hj`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨i, fun h => hi ((mem_filTensor_iff v).1 h j)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_not_mem_filTensor {x : 𝔹dR ⊗[ℚ_[p]] V} (hx : x ≠ 0) :
     ∃ i : ℤ, x ∉ filTensor K V i := by
@@ -392,9 +390,9 @@ theorem exists_not_mem_filTensor {x : 𝔹dR ⊗[ℚ_[p]] V} (hx : x ≠ 0) :
   exact ⟨i, fun h => hi ((mem_filTensor_iff v).1 h j)⟩
 
 /- English proof (translation)
-Use `Finset.induction_on s ⟨0, by simp⟩ ?_` and prove the remaining obligations. Introduce and unpack `a s - ⟨i, hi⟩`. Take `⟨i', hi'⟩` from `exists_mem_filTensor (K := K) (x a)`. Use `⟨min i i', fun j hj => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `filTensor_antitone K V (min_le_right _ _) hi'`. Conclude with `filTensor_antitone K V (min_le_left _ _) (hi j hj)`.
+A detailed English derivation is pending.
 -/
 theorem exists_forall_mem_filTensor {ι : Type*} (s : Finset ι) (x : ι → 𝔹dR ⊗[ℚ_[p]] V) :
     ∃ i : ℤ, ∀ j ∈ s, x j ∈ filTensor K V i := by
@@ -417,14 +415,14 @@ omit [FiniteDimensional ℚ_[p] V] in
 variable (K) in
 
 /- English proof (translation)
-Introduce `_ _ hij` and use `inf_le_inf_left _ (filTensor_antitone K V hij)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem filDdR_antitone : Antitone (filDdR K ρ) := fun _ _ hij =>
   inf_le_inf_left _ (filTensor_antitone K V hij)
 
 omit [FiniteDimensional ℚ_[p] V] in
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem filDdR_le (i : ℤ) : filDdR K ρ i ≤ DdR K ρ := inf_le_left
 
@@ -433,9 +431,9 @@ variable [FiniteDimensional ℚ_[p] K]
 variable (K) in
 
 /- English proof (translation)
-Use `finiteDimensional_DdR K ρ` as an intermediate fact. Establish `: Module.Free K (DdR K ρ)` using `Module.Free.of_divisionRing K (DdR K ρ)`. Set `d` to `Module.finBasis K (DdR K ρ)`. Take `⟨a, ha⟩` from `exists_forall_mem_filTensor (K := K) Finset.univ fun l => (d l : 𝔹dR ⊗[ℚ_[p]] V)`. Use `⟨a, le_antisymm inf_le_left fun x hx => ⟨hx, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum` using `congrArg Subtype.val (d.sum_repr ⟨x, hx⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at hsum`. Rewrite using `[← hsum]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (ha l (Finset.mem_univ l))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_filDdR_eq_top : ∃ a : ℤ, filDdR K ρ a = DdR K ρ := by
   have := finiteDimensional_DdR K ρ
@@ -451,15 +449,13 @@ theorem exists_filDdR_eq_top : ∃ a : ℤ, filDdR K ρ a = DdR K ρ := by
 variable (K) in
 
 /- English proof (translation)
-Use `finiteDimensional_DdR K ρ` as an intermediate fact. Establish `key : ∀ n : ℕ, ∀ i : ℤ, finrank K (filDdR K ρ i) ≤ n → ∃ b : ℤ, filDdR K ρ b = ⊥`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `i hi`. Establish `: FiniteDimensional K (filDdR K ρ i)` using `Submodule.finiteDimensional_of_le (filDdR_le ρ i)`. Conclude with `⟨i, Submodule.finrank_eq_zero.1 (Nat.le_zero.1 hi)⟩`. Consider the case `succ n ih`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hbot : filDdR K ρ i = ⊥`. Conclude with `⟨i, hbot⟩`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hbot`. Take `⟨j, hj⟩` from `exists_not_mem_filTensor (K := K) hx0`. Establish `hij : i ≤ j`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Conclude with `hj (filTensor_antitone K V hlt.le hx.2)`. Establish `hlt : filDdR K ρ j < filDdR K ρ i` using `lt_of_le_of_ne (filDdR_antitone K ρ hij) fun heq => hj (heq ▸ hx).2`. Establish `: FiniteDimensional K (filDdR K ρ i)` using `Submodule.finiteDimensional_of_le (filDdR_le ρ i)`.
-
-Conclude with `ih j (Nat.lt_succ_iff.1 ((Submodule.finrank_lt_finrank_of_lt hlt).trans_le hi))`. Conclude with `key _ 0 le_rfl`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_filDdR_eq_bot : ∃ b : ℤ, filDdR K ρ b = ⊥ := by
   have := finiteDimensional_DdR K ρ

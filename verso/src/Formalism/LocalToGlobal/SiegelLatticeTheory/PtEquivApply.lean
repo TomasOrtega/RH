@@ -21,9 +21,9 @@ def ptList {K : Type*} [Zero K] {i : ℕ} (p : Formalism.MainNotions.S.Point K i
   p.1.map Prod.swap
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `p.2.2 show ((p.1.map Prod.swap).map Prod.fst).sum = i`. Rewrite using `[List.map_map]`. Conclude with `h`. Introduce `b hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [ptList, List.mem_map] at hb`. Take `⟨c, hc, rfl⟩` from `hb`. Conclude with `⟨(p.2.1 c hc).2, (p.2.1 c hc).1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ptList_isPtL {K : Type*} [Zero K] {i : ℕ} (p : Formalism.MainNotions.S.Point K i) : IsPtL (ptList p) i := by
   refine ⟨?_, ?_⟩

@@ -15,7 +15,7 @@ def bcPres {n : ℕ} (φ : MvPolynomial (Fin n) R →ₐ[R] A) :
   aeval (fun i => (1 : S) ⊗ₜ[R] φ (X i))
 
 /- English proof (translation)
-Unfold `bcPres`. Rewrite using `[MvPolynomial.aeval_map_algebraMap]`. Establish `h : (aeval (R` using `R) (fun i => (1 : S) ⊗ₜ[R] φ (X i))) = (Algebra.TensorProduct.includeRight (R := R) (A := S)).comp φ := MvPolynomial.algHom_ext (fun i => by simp)`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bcPres_map {n : ℕ} (φ : MvPolynomial (Fin n) R →ₐ[R] A) (P : MvPolynomial (Fin n) R) :
     bcPres (S := S) φ (MvPolynomial.map (algebraMap R S) P) = (1 : S) ⊗ₜ[R] φ P := by
@@ -28,11 +28,11 @@ theorem bcPres_map {n : ℕ} (φ : MvPolynomial (Fin n) R →ₐ[R] A) (P : MvPo
   rfl
 
 /- English proof (translation)
-Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `tmul s a`. Take `⟨P, rfl⟩` from `hφ a`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨s • MvPolynomial.map (algebraMap R S) P, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, bcPres_map, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Consider the case `add x y hx hy`. Take `⟨P, rfl⟩` from `hx`. Take `⟨Q, rfl⟩` from `hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨P + Q, map_add _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem bcPres_surjective {n : ℕ} (φ : MvPolynomial (Fin n) R →ₐ[R] A)
     (hφ : Function.Surjective φ) : Function.Surjective (bcPres (S := S) φ) := by
@@ -49,13 +49,11 @@ theorem bcPres_surjective {n : ℕ} (φ : MvPolynomial (Fin n) R →ₐ[R] A)
     exact ⟨P + Q, map_add _ _ _⟩
 
 /- English proof (translation)
-Establish `hψ` using `bcPres_surjective (S := S) φ hφ`. Use `haveI : Algebra.FiniteType S (S ⊗[R] A) := Algebra.FiniteType.of_surjective _ hψ`. Establish `hint : ∀ i, IsIntegral S (bcPres (S` using `S) φ (X i)) := by`. Introduce `i`. Use `⟨q i, hq i, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Polynomial.aeval_def, Polynomial.aeval_algHom_apply, hG i, map_sum]`. Use `Finset.sum_eq_zero (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, bcPres_map, hrel, TensorProduct.tmul_zero, mul_zero]`. Use `haveI : Algebra.IsIntegral S (S ⊗[R] A) := by`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Take `⟨P, rfl⟩` from `hψ x`. Set `ψ' : MvPolynomial (Fin n) S →ₐ[S] S ⊗[R] A` to `(integralClosure S (S ⊗[R] A)).val.comp (aeval (fun i => ⟨_, hint i⟩))`. Establish `h : bcPres (S` using `S) φ = ψ' := MvPolynomial.algHom_ext (fun i => by simp [ψ'])`. Rewrite using `[h]`.
-
-Conclude with `(aeval (fun i => (⟨_, hint i⟩ : integralClosure S (S ⊗[R] A))) P).2`. Conclude with `Algebra.IsIntegral.finite`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_of_relations {n : ℕ} {L : Type} [Fintype L] (φ : MvPolynomial (Fin n) R →ₐ[R] A)
     (hφ : Function.Surjective φ) (rel : L → MvPolynomial (Fin n) R) (hrel : ∀ l, φ (rel l) = 0)
@@ -83,15 +81,15 @@ theorem finite_of_relations {n : ℕ} {L : Type} [Fintype L] (φ : MvPolynomial 
   exact Algebra.IsIntegral.finite
 
 /- English proof (translation)
-Set `e` to `MvPolynomial.algebraTensorAlgEquiv (σ := Fin n) R S`. Set `T` to `Algebra.TensorProduct.map (AlgHom.id R S) φ`. Establish `hT : ∀ y, bcPres (S` using `S) φ (e y) = T y := by`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul s p`. Simplify using `only [e, T, MvPolynomial.algebraTensorAlgEquiv_tmul, map_smul, bcPres_map, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hmem : e.symm P ∈ RingHom.ker T`. Rewrite using `[RingHom.mem_ker, ← hT, AlgEquiv.apply_symm_apply, hP]`. Rewrite `hmem` using `[Algebra.TensorProduct.lTensor_ker _ hφ, hker, Ideal.map_span]`. Establish `hmem2 : P ∈ Ideal.span (Set.range (fun l => MvPolynomial.map (algebraMap R S) (rel l)))`. Use `Ideal.mem_map_of_mem (e : S ⊗[R] MvPolynomial (Fin n) R →+* MvPolynomial (Fin n) S) hmem` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Ideal.map_span]`. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Set.image_image, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `l`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[e, Algebra.TensorProduct.includeRight_apply, MvPolynomial.algebraTensorAlgEquiv_tmul]`. Simplify using the standard rewrite rules. Conclude with `Ideal.mem_span_range_iff_exists_fun.mp hmem2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_comb_of_bcPres_eq_zero {n : ℕ} {L : Type} [Fintype L]
     (φ : MvPolynomial (Fin n) R →ₐ[R] A) (hφ : Function.Surjective φ)
@@ -124,11 +122,11 @@ theorem exists_comb_of_bcPres_eq_zero {n : ℕ} {L : Type} [Fintype L]
   exact Ideal.mem_span_range_iff_exists_fun.mp hmem2
 
 /- English proof (translation)
-Establish `hc'` using `isColimitOfPreserves (forget _) hc`. Use `choose jx x hx using fun y : c.pt ↦ Types.jointly_surjective_of_isColimit hc' y`. Take `⟨k, hk⟩` from `IsFiltered.sup_objs_exists (insert j (s.image jx))`. Take `⟨f⟩` from `hk (Finset.mem_insert_self _ _)`. Use `⟨k, f, fun y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨g⟩` from `hk (Finset.mem_insert_of_mem (Finset.mem_image_of_mem jx hy))`. Use `⟨F.map g (x y), ?_⟩` and prove the remaining obligations. Establish `h1` using `hx y`. Establish `h2` using `congr(($(c.w g)).hom (x y))`. Simplify using `only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply] at h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_stage_range {J : Type} [SmallCategory J] [IsFiltered J] {F : J ⥤ CommRingCat.{0}}
     {c : Cocone F} (hc : IsColimit c) (j : J) (s : Finset c.pt) :
@@ -148,13 +146,13 @@ theorem exists_stage_range {J : Type} [SmallCategory J] [IsFiltered J] {F : J �
   exact h1
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨k, 𝟙 k, by simp⟩`. Consider the case `insert a s ha ih`. Take `⟨k1, g1, h1⟩` from `ih (fun x hx => hs x (Finset.mem_insert_of_mem hx))`. Establish `h0 : (c.ι.app k).hom a = (c.ι.app k).hom 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_zero]`. Conclude with `hs a (Finset.mem_insert_self _ _)`. Take `⟨k2, g2, h2⟩` from `(Types.FilteredColimit.isColimit_eq_iff' (isColimitOfPreserves (forget CommRingCat.{0}) hc) a 0).1 (by exact h0)`. Establish `h2' : (F.map g2).hom a = 0` using `by simpa using h2`. Set `u` to `g1 ≫ IsFiltered.leftToMax k1 k2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `v` to `g2 ≫ IsFiltered.rightToMax k1 k2`. Use `⟨IsFiltered.coeq u v, u ≫ IsFiltered.coeqHom u v, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Rewrite using `[IsFiltered.coeq_condition u v]`. Simplify using `only [v, Functor.map_comp, CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply, h2', map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [u, Functor.map_comp, CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply, h1 x hx, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_stage_zero {J : Type} [SmallCategory J] [IsFiltered J] {F : J ⥤ CommRingCat.{0}}
     {c : Cocone F} (hc : IsColimit c) {k : J} (s : Finset (F.obj k))
@@ -187,7 +185,7 @@ namespace GlobalTheory.FiniteColim
 open MvPolynomial
 
 /- English proof (translation)
-Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `monomial n a => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_aeval_X {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {σ : Type} (i : σ)
     (q : Polynomial R) :
@@ -204,35 +202,31 @@ namespace GlobalTheory.FiniteColim
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `J _ _ F c hc j A _ _ hfp hfin`. Take `⟨n, φ, hφ, hfg⟩` from `hfp.out`. Take `⟨s, hs⟩` from `hfg`. Set `rel : s → MvPolynomial (Fin n) (F.obj j)` to `fun x => x`. Establish `hker : RingHom.ker φ = Ideal.span (Set.range rel)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Set.range rel = (s : Set (MvPolynomial (Fin n) (F.obj j)))`. Use extensionality with `x`. Simplify using `[rel]`. Rewrite using `[this, hs]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `letI : Algebra (F.obj j) c.pt := (c.ι.app j).hom.toAlgebra`. Use `haveI : Algebra.IsIntegral c.pt (c.pt ⊗[F.obj j] A) := Algebra.IsIntegral.of_finite _ _`. Establish `hint : ∀ i, IsIntegral c.pt (bcPres (S` using `c.pt) φ (X i)) := fun i => Algebra.IsIntegral.isIntegral _`. Use `choose p hpm hp0 using hint`. Establish `hcomb : ∀ i, ∃ G : s → MvPolynomial (Fin n) c.pt, ∑ l, G l * MvPolynomial.map (algebraMap (F.obj j) c.pt) (rel l) = Polynomial.aeval (X i : MvPolynomial (Fin n) c.pt) (p i)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Use `exists_comb_of_bcPres_eq_zero φ hφ rel hker _ ?_` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_algHom_apply, Polynomial.aeval_def]`. Conclude with `hp0 i`. Use `choose G hG using hcomb`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `T : Finset c.pt` to `Finset.univ.biUnion (fun i => (p i).support.image (p i).coeff) ∪ Finset.univ.biUnion (fun i => Finset.univ.biUnion (fun l => (G i l).coeffs))`. Take `⟨k₁, f₁, hk₁⟩` from `exists_stage_range hc j T`. Establish `hlp : ∀ i, ∃ q : Polynomial (F.obj k₁), q.map (c.ι.app k₁).hom = p i ∧ q.Monic`. Introduce `i`. Establish `hl : p i ∈ Polynomial.lifts (c.ι.app k₁).hom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `m`. Distinguish the cases in `hm : m ∈ (p i).support`. Conclude with `hk₁ _ (Finset.mem_union_left _ (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, Finset.mem_image_of_mem _ hm⟩))`. Rewrite using `[Polynomial.notMem_support_iff.1 hm]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨0, map_zero _⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl (hpm i)`. Conclude with `⟨q, hq, hqm⟩`. Use `choose q hq hqm using hlp`. Establish `hlG : ∀ i l, ∃ H, MvPolynomial.map (c.ι.app k₁).hom H = G i l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i l`. Establish `: G i l ∈ Set.range (MvPolynomial.map (σ` using `Fin n) (c.ι.app k₁).hom) := by`. Rewrite using `[MvPolynomial.mem_range_map_iff_coeffs_subset]`. Introduce `y hy`. Conclude with `hk₁ _ (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, Finset.mem_biUnion.2 ⟨l, Finset.mem_univ _, hy⟩⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Conclude with `this`. Use `choose H hH using hlG`. Set `E : Fin n → MvPolynomial (Fin n) (F.obj k₁)` to `fun i => Polynomial.aeval (X i) (q i) - ∑ l, H i l * MvPolynomial.map (F.map f₁).hom (rel l)`. Establish `hE : ∀ i, MvPolynomial.map (c.ι.app k₁).hom (E i) = 0`. Introduce `i`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [E, map_sub, map_sum, map_mul, map_aeval_X, hq, hH, MvPolynomial.map_map]`. Rewrite using `[← CommRingCat.hom_comp, c.w f₁, sub_eq_zero, ← hG i]`. Both sides reduce to the same expression. Set `U : Finset (F.obj k₁)` to `Finset.univ.biUnion (fun i => (E i).coeffs)`. Take `⟨k₂, g₂, hg₂⟩` from `exists_stage_zero hc U (by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Take `⟨i, -, hx⟩` from `Finset.mem_biUnion.1 hx`. Take `⟨m, -, rfl⟩` from `MvPolynomial.mem_coeffs_iff.1 hx`. Use `congrArg (MvPolynomial.coeff m) (hE i)` as an intermediate fact. Rewrite using `[MvPolynomial.coeff_map, MvPolynomial.coeff_zero] at this)` and apply the resulting hypothesis.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hE2 : ∀ i, MvPolynomial.map (F.map g₂).hom (E i) = 0`. Introduce `i`. Use extensionality with `m`. Rewrite using `[MvPolynomial.coeff_map, MvPolynomial.coeff_zero]`. Distinguish the cases in `hm : m ∈ (E i).support`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hg₂ _ (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, MvPolynomial.coeff_mem_coeffs _ (MvPolynomial.mem_support_iff.1 hm)⟩)`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hm, map_zero]`. Use `⟨k₂, f₁ ≫ g₂, fun k f => ?_⟩` and prove the remaining obligations. Use `letI : Algebra (F.obj j) (F.obj k) := (F.map ((f₁ ≫ g₂) ≫ f)).hom.toAlgebra`. Establish `hrel : ∀ l, φ (rel l) = 0` using `fun l => (RingHom.mem_ker).1 (hker ▸ Ideal.subset_span ⟨l, rfl⟩ : rel l ∈ RingHom.ker φ)`.
-
-Use `finite_of_relations φ hφ rel hrel (fun i => (q i).map (F.map (g₂ ≫ f)).hom) (fun i => (hqm i).map _) (fun i l => MvPolynomial.map (F.map (g₂ ≫ f)).hom (H i l)) (fun i => ?_)` and prove the remaining obligations. Establish `halg : algebraMap (F.obj j) (F.obj k) = (F.map (g₂ ≫ f)).hom.comp (F.map f₁).hom`. Express the relevant statement in the definitionally equal form `(F.map ((f₁ ≫ g₂) ≫ f)).hom = _`. Rewrite using `[Category.assoc, Functor.map_comp, CommRingCat.hom_comp]`. Establish `h3 : MvPolynomial.map (F.map (g₂ ≫ f)).hom (E i) = 0`.
-
-Rewrite using `[Functor.map_comp, CommRingCat.hom_comp, ← MvPolynomial.map_map, hE2, map_zero]`. Simplify using `only [E, map_sub, map_sum, map_mul, map_aeval_X, MvPolynomial.map_map, sub_eq_zero] at h3`. Rewrite using `[halg]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_finite_baseChange : ∀ (J : Type) [SmallCategory J] [IsFiltered J]
     (F : J ⥤ CommRingCat.{0}) (c : Cocone F),

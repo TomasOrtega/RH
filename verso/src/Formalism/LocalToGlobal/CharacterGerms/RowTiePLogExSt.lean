@@ -29,7 +29,7 @@ section Gen
 variable {C : Type} [CommRing C] {dd : ℕ}
 
 /- English proof (translation)
-Establish `h` using `hf i 0 (by simp)`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h, MvPowerSeries.coeff_zero_X]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem linN_const {f : Pt C 1 dd} (hf : LinN f) (i : Fin dd) : constantCoeff (f i) = 0 := by
   have h := hf i 0 (by simp)

@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-Establish `e : inst = ((algebraMap B S).comp (algebraMap A B)).toAlgebra` using `Algebra.algebra_ext _ _ fun a => IsScalarTower.algebraMap_apply A B S a`. Substitute `e` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem bc_D {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (B : Type)
     [CommRing B] [Algebra A B] (S : Type) [CommRing S] [Algebra B S] [inst : Algebra A S] [h : IsScalarTower A B S]
@@ -15,7 +15,7 @@ private theorem bc_D {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul b z => simp [Det.cancel_tmul]`. Consider the case `add a b ha hb => simp only [tmul_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem cancel_one {A E : Type} [CommRing A] [Ring E] [Algebra A E] (B : Type)
     [CommRing B] [Algebra A B] (S : Type) [CommRing S] [Algebra B S] [Algebra A S] [IsScalarTower A B S]
@@ -27,7 +27,7 @@ private theorem cancel_one {A E : Type} [CommRing A] [Ring E] [Algebra A E] (B :
   | add a b ha hb => simp only [tmul_add, map_add, ha, hb]
 
 /- English proof (translation)
-Unfold `Det.chi Det.chiS`. Rewrite using `[bc_D, map_sub, cancel_one, Algebra.TensorProduct.one_def, Det.cancel_tmul, map_one, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem bc_chi {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (B : Type)
     [CommRing B] [Algebra A B] (y : B ⊗[A] E) : (D.baseChange B).chi y = D.chiS B y := by
@@ -35,7 +35,7 @@ private theorem bc_chi {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E
   rw [bc_D, map_sub, cancel_one, Algebra.TensorProduct.one_def, Det.cancel_tmul, map_one, mul_one]
 
 /- English proof (translation)
-Rewrite using `[bc_chi]`. Establish `h` using `D.nat A[X] B[X] (Polynomial.mapAlgHom (Algebra.ofId A B)) (X ⊗ₜ 1 - 1 ⊗ₜ x)`. Unfold `Det.chi Det.chiS`. Use `Eq.trans ?_ (h.trans ?_)` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
 Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
@@ -50,11 +50,11 @@ private theorem bc_chi_tmul {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebr
   · rfl
 
 /- English proof (translation)
-Introduce `n A E _ _ _ D B _ _`. Use `⟨fun S _ _ _ _ y => bc_D D B S y, fun y => ?_, bc_chi D B, fun x => ⟨bc_chi_tmul D B x, fun i => ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(D.baseChange B).D B (1 ⊗ₜ y) = _`. Rewrite using `[bc_D, cancel_one]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul b z => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Unfold `Det.lam`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions.
 
-Rewrite using `[bc_chi_tmul, Polynomial.coeff_map]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.CA.d_bc :
     ∀ {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (B : Type) [CommRing B] [Algebra A B], (∀ (S : Type) [CommRing S] [Algebra B S] [Algebra A S] [IsScalarTower A B S] (y : S ⊗[B] (B ⊗[A] E)), (D.baseChange B).D S y = D.D S (Det.cancel A E B S y)) ∧ (∀ y, (D.baseChange B).val y = D.D B y) ∧ (∀ y, (D.baseChange B).chi y = D.chiS B y) ∧ ∀ x : E, (D.baseChange B).chi (1 ⊗ₜ x) = (D.chi x).map (algebraMap A B) ∧ ∀ i, (D.baseChange B).lam i (1 ⊗ₜ x) = algebraMap A B (D.lam i x) := by

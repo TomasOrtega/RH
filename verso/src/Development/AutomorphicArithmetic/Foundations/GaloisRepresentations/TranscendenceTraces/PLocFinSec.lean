@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalPropertyC
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `hC hG R _ F G f V U r _ b hb`. Take `⟨W, π, a, hE, hS, ha⟩` from `hC R f V b hb`. Use `haveI := hE`. Use `haveI := hS`. Use `(GlobalTheory.T.etaleLocal_property_calculus_rules).2.1 U _ _ (hG π r) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `U' g ⟨s, hs⟩ V' k r' hk`. Use `⟨Sec.res (pullback.lift k r' hk ≫ s) a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_res, ha, res_res]`. Use `congr 1`. Rewrite using `[Category.assoc, hs, pullback.lift_fst]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.locFinSec_of :
     CoverOne → LocFinGeo → LocFinSec := by

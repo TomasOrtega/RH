@@ -15,21 +15,21 @@ open PI.UpqRep GlobalTheory.UnitaryHighestWeight
 
 open Matrix Finset in
 /- English proof (translation)
-Unfold `_root_.PI.UpqRep.CDom at h`. Take `⟨c, hc, h⟩` from `h`. Establish `key : ∑ x : Fin n, ((x : ℕ) : ℝ) * Λ x - ∑ x : Fin n, ((x : ℕ) : ℝ) * μ x = ∑ a, ∑ b, ((c a b : ℕ) : ℝ) * (((a : ℕ) : ℝ) - ((b : ℕ) : ℝ))`. Rewrite using `[← Finset.sum_sub_distrib]`. Establish `hx : ∀ x, Λ x - μ x = (Λ - μ) x` using `fun x => rfl`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[← mul_sub, hx, h]`. Unfold `_root_.PI.UpqRep.root`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Pi.sub_apply, Pi.single_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[mul_sub, Finset.sum_sub_distrib, mul_comm, mul_left_comm]`. Expand and normalize the polynomial expressions, which then agree. Establish `hterm : ∀ a b : Fin n, ((c a b : ℕ) : ℝ) * (((a : ℕ) : ℝ) - ((b : ℕ) : ℝ)) ≤ 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `a b`. Distinguish the cases in `h0 : c a b = 0`. Simplify using `[h0]`. Establish `hab` using `(hc a b h0).1`. Establish `: ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg _) (by linarith)`. Establish `hrow : ∀ a, ∑ b, ((c a b : ℕ) : ℝ) * (((a : ℕ) : ℝ) - ((b : ℕ) : ℝ)) ≤ 0` using `fun a => Finset.sum_nonpos fun b _ => hterm a b`. Establish `hsum : ∑ a, ∑ b, ((c a b : ℕ) : ℝ) * (((a : ℕ) : ℝ) - ((b : ℕ) : ℝ)) ≤ 0` using `Finset.sum_nonpos fun a _ => hrow a`. Use `⟨by linarith, fun heq => ?_⟩` and prove the remaining obligations. Establish `hzero : ∑ a, ∑ b, ((c a b : ℕ) : ℝ) * (((a : ℕ) : ℝ) - ((b : ℕ) : ℝ)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc0 : ∀ a b, c a b = 0`. Introduce `a b`. Assume the negation of the conclusion as `h0`. Establish `hab` using `(hc a b h0).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : ((c a b : ℕ) : ℝ) * (((a : ℕ) : ℝ) - ((b : ℕ) : ℝ)) < 0`. Establish `: ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`. Conclude with `mul_neg_of_pos_of_neg (by exact_mod_cast Nat.pos_of_ne_zero h0) (by linarith)`. Establish `ha` using `(Finset.sum_eq_zero_iff_of_nonpos fun a _ => hrow a).1 hzero a (Finset.mem_univ a)`. Establish `hb` using `(Finset.sum_eq_zero_iff_of_nonpos fun b _ => hterm a b).1 ha b (Finset.mem_univ b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `: Λ - μ = 0` using `by simp [h, hc0]`. Conclude with `sub_eq_zero.mp this`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnitaryHighestWeightUnique.height_le {n : ℕ} {ε : Fin n → Bool} {μ Λ : Fin n → ℝ}
     (h : _root_.PI.UpqRep.CDom ε μ Λ) :
@@ -81,23 +81,23 @@ theorem _root_.GlobalTheory.UnitaryHighestWeightUnique.height_le {n : ℕ} {ε :
 open Matrix Finset in
 
 /- English proof (translation)
-Take `⟨E, hrel, -, hder⟩` from `_root_.GlobalTheory.UnitaryDerived.exists_derived_action k W π hπ`. Unfold `_root_.PI.UpqRep.IsKTypeOf at hK`. Take `⟨-, -, hirr, ⟨v, -, hv0, hvw⟩, hdom⟩` from `hK`. Use `⟨E, hrel, hder, ?_, v, hv0, ?_⟩` and prove the remaining obligations. Introduce `S hS`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hSπ : _root_.PI.UpqRep.IsKStableOn (_root_.PI.UpqRep.allPos k) π S`. Unfold `_root_.PI.UpqRep.IsKStableOn`. Introduce `g hg w hw`. Conclude with `_root_.GlobalTheory.UnitaryHighestWeight.stable_of_derived hπ E hder S (by unfold _root_.Formalism.REAL.KStable; exact fun a b _ x hx => hS a b x hx) g ((_root_.GlobalTheory.UnitaryHighestWeight.mem_K_iff g).1 hg) w hw`. Conclude with `hirr S le_top hSπ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hvE : _root_.Formalism.REAL.IsWeight E Λ v` using `_root_.GlobalTheory.UnitaryHighestWeight.isWeight_of_isWtOn E hder Λ v hvw`. Unfold `_root_.Formalism.REAL.IsWeight at hvE`. Unfold `_root_.Formalism.REAL.IsHW`. Use `⟨fun a => hvE a, fun a b hab => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `_root_.Formalism.REAL.GlRel at hrel`. Establish `hw : _root_.Formalism.REAL.IsWeight E (Λ + _root_.PI.UpqRep.root a b) (E a b v)`. Unfold `_root_.Formalism.REAL.IsWeight`. Introduce `c`. Establish `hc` using `congrArg (fun T : Module.End ℂ W => T v) (hrel c c a b)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at hc`. Establish `hsplit : E c c (E a b v) = E a b (E c c v) + ((if c = a then E c b else 0) - if b = c then E a c else 0) v`. Rewrite using `[LinearMap.sub_apply, ← hc]`. Normalize the expressions using the abelian group laws. Rewrite using `[hsplit, hvE c, map_smul]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Unfold `_root_.PI.UpqRep.root`. Distinguish the cases in `hca : c = a`. Substitute `hca` using the available equality. Establish `hcb : b ≠ c` using `ne_of_gt hab`. Simplify using `[hcb, Ne.symm hcb, add_smul, add_comm]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hcb : b = c`. Substitute `hcb` using the available equality. Simplify using `[hca, Ne.symm hca, add_smul, sub_eq_add_neg, add_comm]`. Simplify using `[hca, hcb, Ne.symm hcb]`. Establish `ht` using `_root_.GlobalTheory.UnitaryHighestWeight.isWtOn_of_isWeight hπ E hder _ _ hw`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD` using `hdom _ (E a b v) Submodule.mem_top hne ht`. Establish `hle` using `(_root_.GlobalTheory.UnitaryHighestWeightUnique.height_le hD).1`. Establish `hcomp : ∑ x : Fin k, ((x : ℕ) : ℝ) * (Λ + _root_.PI.UpqRep.root a b) x = ∑ x : Fin k, ((x : ℕ) : ℝ) * Λ x + (((a : ℕ) : ℝ) - ((b : ℕ) : ℝ))`. Unfold `_root_.PI.UpqRep.root`. Simplify using `[mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, Pi.single_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnitaryHighestWeightUnique.exists_derived_highest {k : ℕ} {W : Type} [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [Nontrivial W]
@@ -157,13 +157,11 @@ theorem _root_.GlobalTheory.UnitaryHighestWeightUnique.exists_derived_highest {k
 open Matrix Finset in
 
 /- English proof (translation)
-Set `Tc : W₁ →L[ℝ] W₂` to `(LinearMap.toContinuousLinearMap T).restrictScalars ℝ`. Set `Ac : W₂ →L[ℝ] W₂` to `(LinearMap.toContinuousLinearMap A₂).restrictScalars ℝ`. Establish `hTc : ∀ x, Tc x = T x` using `fun x => rfl`. Establish `hAc : ∀ x, Ac x = A₂ x` using `fun x => rfl`. Establish `hf : ∀ s, HasDerivAt (fun s => T (U₁ s v)) (Ac (T (U₁ s v))) s`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s`. Establish `h` using `_root_.GlobalTheory.UnitaryHighestWeight.deriv_left U₁ A₁ hadd₁ hd₁ v s`. Establish `h'` using `Tc.hasFDerivAt.comp_hasDerivAt s h`. Simplify using `only [Function.comp_def, hTc] at h'`. Rewrite using `[hAc, ← hT]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hg : ∀ s, HasDerivAt (fun s => U₂ s (T v)) (Ac (U₂ s (T v))) s`. Introduce `s`. Rewrite using `[hAc]`. Conclude with `_root_.GlobalTheory.UnitaryHighestWeight.deriv_left U₂ A₂ hadd₂ hd₂ (T v) s`. Establish `heq` using `ODE_solution_unique_univ (v := fun _ => Ac) (s := fun _ => Set.univ) (K := ‖Ac‖₊) (t₀ := 0) (fun _ => Ac.lipschitz.lipschitzOnWith) (fun s => ⟨hf s, Set.mem_univ _⟩) (fun s => ⟨hg s, Set.mem_univ _⟩) (by simp [h₁, h₂])`.
-
-Conclude with `congrFun heq t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnitaryHighestWeightUnique.intertwine_group {W₁ W₂ : Type} [NormedAddCommGroup W₁]
     [InnerProductSpace ℂ W₁] [NormedAddCommGroup W₂] [InnerProductSpace ℂ W₂]
@@ -196,21 +194,19 @@ theorem _root_.GlobalTheory.UnitaryHighestWeightUnique.intertwine_group {W₁ W�
 open Matrix Finset in
 
 /- English proof (translation)
-Introduce `k u H₁ _ _ H₂ _ _ π₁ π₂ h₁ h₂`. Establish `h₁' : _root_.PI.UpqRep.IsHCTypeU k u π₁` using `h₁`. Establish `h₂' : _root_.PI.UpqRep.IsHCTypeU k u π₂` using `h₂`. Unfold `_root_.PI.UpqRep.IsHCTypeU at h₁' h₂'`. Take `⟨hnt₁, hfd₁, hπ₁, hK₁⟩` from `h₁'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨hnt₂, hfd₂, hπ₂, hK₂⟩` from `h₂'`. Take `⟨E₁, hrel₁, hder₁, hirr₁, x₁, hx₁, hw₁⟩` from `_root_.GlobalTheory.UnitaryHighestWeightUnique.exists_derived_highest hπ₁ hK₁`. Take `⟨E₂, hrel₂, hder₂, hirr₂, x₂, hx₂, hw₂⟩` from `_root_.GlobalTheory.UnitaryHighestWeightUnique.exists_derived_highest hπ₂ hK₂`. Take `⟨T, hT⟩` from `_root_.GlobalTheory.exists_linearEquiv_of_irreducible_isHW H₁ H₂ k E₁ E₂ _ x₁ x₂ hrel₁ hrel₂ hirr₁ hirr₂ hw₁ hw₂ hx₁ hx₂`. Use `⟨T, fun g hg x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hL : _root_.Formalism.REAL.Jm (_root_.PI.UpqRep.allPos k) = 1`. Unfold `_root_.Formalism.REAL.Jm _root_.PI.UpqRep.allPos`. Simplify using the standard rewrite rules. Establish `hgL : g ∈ _root_.Formalism.REAL.Kset (_root_.PI.UpqRep.allPos k)`. Unfold `_root_.Formalism.REAL.Kset`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [hL, mul_one, one_mul, and_true]`. Conclude with `hg`. Take `⟨Y, hY, hexp, -⟩` from `_root_.Formalism.REAL.compact_exists_log_bounded _ g hgL`. Establish `hskew : Yᴴ = -Y`. Unfold `_root_.Formalism.REAL.inK _root_.Formalism.REAL.inG at hY`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hY` using `[hL]`. Simplify using `only [mul_one, one_mul, and_true] at hY`. Conclude with `eq_neg_of_add_eq_zero_left hY`. Set `A₁ : H₁ →ₗ[ℂ] H₁` to `∑ a, ∑ b, Y a b • E₁ a b`. Set `A₂ : H₂ →ₗ[ℂ] H₂` to `∑ a, ∑ b, Y a b • E₂ a b`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA₁ : ∀ v, A₁ v = ∑ a, ∑ b, Y a b • E₁ a b v`. Introduce `v`. Simplify using `[A₁, LinearMap.sum_apply]`. Establish `hA₂ : ∀ v, A₂ v = ∑ a, ∑ b, Y a b • E₂ a b v`. Introduce `v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[A₂, LinearMap.sum_apply]`. Establish `hTA : ∀ v, T.toLinearMap (A₁ v) = A₂ (T.toLinearMap v)`. Introduce `v`. Simplify using `[hA₁, hA₂, map_sum, map_smul, hT]`. Establish `key` using `_root_.GlobalTheory.UnitaryHighestWeightUnique.intertwine_group (fun t : ℝ => π₁ (NormedSpace.exp ((t : ℂ) • Y))) A₁ (fun v => _root_.GlobalTheory.UnitaryHighestWeight.group_zero hπ₁ Y v) (fun s t v => _root_.GlobalTheory.UnitaryHighestWeight.group_add hπ₁ hskew s t v) (fun v => …`.
-
-Simplify `key` using `[hexp]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnitaryHighestWeightUnique.exists_equiv_of_isHCTypeU : ∀ (k : ℕ) (u : Fin k → ℝ)
     (H₁ : Type) [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (H₂ : Type) [NormedAddCommGroup H₂]

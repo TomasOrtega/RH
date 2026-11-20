@@ -24,13 +24,11 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 namespace GlobalTheory.SquareAgree
 
 /- English proof (translation)
-Introduce `hU hR hG hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' R Rf hM Pi rf rl p p' hm Φ₀ hΦ₀ Φ₀D hΦ₀D hD`. Take `⟨K, hK, hKs, hKne⟩` from `GlobalTheory.T.seesaw_unfolding_fundamental_domain hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' Pi rf rl p p' hm`. Take `⟨KD, hKD, hKDs, hKDne⟩` from `GlobalTheory.T.matched_maps_finite_identity hP Bs Γ Xc om om' R Rf hM`. Establish `h1 : K ≤ KD` using `fun Φ hΦ => (hKD Φ).2 ⟨hKs.le hΦ, GlobalTheory.T.matched_maps_real_finite hU hR hG hP Bs Γ Xc om om' R Rf hM K hKs hKne Φ hΦ⟩`. Establish `h2 : KD = K` using `(GlobalTheory.T.seesaw_unfolding_integrable hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' Pi rf rl p p' hm K KD hK hKDs h1).resolve_right hKDne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hm : Φ₀D ∈ K` using `(hK Φ₀D).2 ⟨hΦ₀D, Φ₀, hΦ₀, hD, h0⟩`. Rewrite `hm` using `[← h2]`. Conclude with `((hKD _).1 hm).2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hpm`. Establish `hm : Φ₀D ∈ KD` using `(hKD _).2 ⟨hΦ₀D, hpm⟩`. Rewrite `hm` using `[h2]`. Take `⟨_, Φ₁, _, hD₁, h0⟩` from `(hK _).1 hm`. Rewrite using `[IsDatum.fun_eq Γ.M' ψ cB cB.surjective hD hD₁]`.
-
-Conclude with `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pPrime_eq_zero_iff_polMatch : GlobalTheory.Published.HoweDualityUnitary → GlobalTheory.Published.HoweDualityReal → GlobalTheory.Published.MinguezThetaGL → GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

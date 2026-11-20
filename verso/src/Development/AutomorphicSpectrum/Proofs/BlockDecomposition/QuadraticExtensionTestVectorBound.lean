@@ -16,7 +16,7 @@ variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchim
   [MeasurableSpace K] [BorelSpace K]
 
 /- English proof (translation)
-Apply `localLFactor_ne_zero hμ` to reduce the goal to its premises. Establish `h0 : quasiCharExponent μ = 0` using `by simp [quasiCharExponent, h1]`. Rewrite using `[h0]`. Evaluate the numerical expressions.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem localLFactor_half_ne_zero {μ : Kˣ →* ℂˣ} (hμ : Continuous μ)
     (h1 : ‖((μ (unifUnit K) : ℂˣ) : ℂ)‖ = 1) : localLFactor μ (1 / 2) ≠ 0 := by
@@ -26,7 +26,7 @@ theorem localLFactor_half_ne_zero {μ : Kˣ →* ℂˣ} (hμ : Continuous μ)
   norm_num
 
 /- English proof (translation)
-Establish `hu : IsUnramifiedChar (1 : Kˣ →* ℂˣ)` using `isUnramifiedChar_iff.2 fun _ _ => rfl`. Establish `hL : localLFactor (1 : Kˣ →* ℂˣ) (1 / 2) ≠ 0` using `localLFactor_half_ne_zero continuous_const (by simp)`. Establish `hs : (1 : ℂ) - 1 / 2 = 1 / 2` using `by norm_num`. Unfold `Ad3.gam`. Rewrite using `[localEpsilon_of_isUnramified hu, inv_one, hs, mul_div_assoc, div_self hL]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

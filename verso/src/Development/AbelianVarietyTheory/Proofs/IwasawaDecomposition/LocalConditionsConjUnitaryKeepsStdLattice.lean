@@ -16,7 +16,7 @@ section Res
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨r, -, hr⟩` from `h`. Rewrite using `[← sub_add_cancel a (algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E r))]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le hr.le (GlobalTheory.Mem.Dil.val_le_one P r))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasRes_val_le {P : HeightOneSpectrum (𝓞 E)} {a : P.adicCompletion E} {c : 𝓞 E ⧸ P.asIdeal}
     (h : HasRes P a c) : Valued.v a ≤ 1 := by
@@ -25,9 +25,9 @@ theorem hasRes_val_le {P : HeightOneSpectrum (𝓞 E)} {a : P.adicCompletion E} 
   exact (Valuation.map_add _ _ _).trans (max_le hr.le (GlobalTheory.Mem.Dil.val_le_one P r))
 
 /- English proof (translation)
-Take `⟨r, rfl, hr⟩` from `ha`. Take `⟨s, rfl, hs⟩` from `hb`. Use `⟨r + s, map_add _ _ _, ?_⟩` and prove the remaining obligations. Establish `e : a + b - algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E (r + s)) = (a - algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E r)) + (b - algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E s))`. Rewrite using `[map_add, map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(Valuation.map_add _ _ _).trans_lt (max_lt hr hs)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasRes_add {P : HeightOneSpectrum (𝓞 E)} {a b : P.adicCompletion E} {c d : 𝓞 E ⧸ P.asIdeal}
     (ha : HasRes P a c) (hb : HasRes P b d) : HasRes P (a + b) (c + d) := by
@@ -42,11 +42,11 @@ theorem hasRes_add {P : HeightOneSpectrum (𝓞 E)} {a b : P.adicCompletion E} {
   exact (Valuation.map_add _ _ _).trans_lt (max_lt hr hs)
 
 /- English proof (translation)
-Establish `hb1` using `hasRes_val_le hb`. Take `⟨r, rfl, hr⟩` from `ha`. Take `⟨s, rfl, hs⟩` from `hb`. Use `⟨r * s, map_mul _ _ _, ?_⟩` and prove the remaining obligations. Establish `e : a * b - algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E (r * s)) = (a - algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E r)) * b + algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E r) * (b - algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E s))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(Valuation.map_add _ _ _).trans_lt (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_le_of_le_one_right' hb1).trans_lt hr`. Rewrite using `[Valuation.map_mul]`. Conclude with `(mul_le_of_le_one_left' (GlobalTheory.Mem.Dil.val_le_one P r)).trans_lt hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasRes_mul {P : HeightOneSpectrum (𝓞 E)} {a b : P.adicCompletion E} {c d : 𝓞 E ⧸ P.asIdeal}
     (ha : HasRes P a c) (hb : HasRes P b d) : HasRes P (a * b) (c * d) := by
@@ -68,17 +68,17 @@ theorem hasRes_mul {P : HeightOneSpectrum (𝓞 E)} {a b : P.adicCompletion E} {
     exact (mul_le_of_le_one_left' (GlobalTheory.Mem.Dil.val_le_one P r)).trans_lt hs
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, map_zero _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasRes_zero (P : HeightOneSpectrum (𝓞 E)) : HasRes P (0 : P.adicCompletion E) 0 := ⟨0, map_zero _, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, map_one _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasRes_one (P : HeightOneSpectrum (𝓞 E)) : HasRes P (1 : P.adicCompletion E) 1 := ⟨1, map_one _, by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hasRes_zero P`. Consider the case `@insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `hasRes_add (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasRes_sum {P : HeightOneSpectrum (𝓞 E)} {ι : Type} (s : Finset ι) {f : ι → P.adicCompletion E}
     {g : ι → 𝓞 E ⧸ P.asIdeal} (h : ∀ i ∈ s, HasRes P (f i) (g i)) : HasRes P (∑ i ∈ s, f i) (∑ i ∈ s, g i) := by
@@ -90,7 +90,7 @@ theorem hasRes_sum {P : HeightOneSpectrum (𝓞 E)} {ι : Type} (s : Finset ι) 
     exact hasRes_add (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, map_sum]`. Conclude with `hasRes_sum Finset.univ fun k _ => by`. Rewrite using `[map_mul]`. Conclude with `hasRes_mul (hA i k) (hB k j)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasRes_matMul {n : ℕ} {P : HeightOneSpectrum (𝓞 E)} {A B : Matrix (Fin n) (Fin n) (AfE F E)}
     {a b : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)} (hA : ∀ i j, HasRes P (adAt F P (A i j)) (a i j))
@@ -102,11 +102,11 @@ theorem hasRes_matMul {n : ℕ} {P : HeightOneSpectrum (𝓞 E)} {A B : Matrix (
     exact hasRes_mul (hA i k) (hB k j)
 
 /- English proof (translation)
-Take `⟨r, rfl, hr⟩` from `hc`. Take `⟨s, rfl, hs⟩` from `hd`. Rewrite using `[Ideal.Quotient.eq]`. Establish `key : Valued.v (algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E (r - s))) < 1`. Establish `e : algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E (r - s)) = (a - algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E s)) - (a - algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E r))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(Valuation.map_sub _ _ _).trans_lt (max_lt hs hr)`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[GlobalTheory.Mem.Dil.val_eq_one hne]`. Conclude with `lt_irrefl _ key`.
+A detailed English derivation is pending.
 -/
 private theorem hasRes_unique {P : HeightOneSpectrum (𝓞 E)}
     {a : P.adicCompletion E} {c d : 𝓞 E ⧸ P.asIdeal} (hc : HasRes P a c) (hd : HasRes P a d) : c = d := by
@@ -125,13 +125,11 @@ private theorem hasRes_unique {P : HeightOneSpectrum (𝓞 E)}
   exact lt_irrefl _ key
 
 /- English proof (translation)
-Use `choose c hc using fun a b => GlobalTheory.Mem.Dil.exists_res P _ (hti a b)`. Set `Y : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)` to `Matrix.of fun a b => Ideal.Quotient.mk P.asIdeal (c a b)`. Establish `hY : ∀ a b, HasRes P (adAt F P (((t⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) a b)) (Y a b)` using `fun a b => ⟨c a b, rfl, hc a b⟩`. Establish `hXY : (X : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)) * Y = 1`. Use extensionality with `a b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h1` using `hasRes_matMul ht hY a b`. Rewrite `h1` using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h2 : HasRes P (adAt F P ((1 : Matrix (Fin n) (Fin n) (AfE F E)) a b)) ((1 : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)) a b)`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one]`. Conclude with `hasRes_one P`. Rewrite using `[map_zero]`. Conclude with `hasRes_zero P`. Conclude with `hasRes_unique h1 h2`.
-
-Rewrite using `[Units.inv_eq_of_mul_eq_one_right hXY]`. Conclude with `hY i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hasRes_inv_entry_of_le_one [StarRing E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (t : GL (Fin n) (AfE F E)) (X : GL (Fin n) (𝓞 E ⧸ P.asIdeal))
     (ht : ∀ i j, HasRes P (adAt F P ((t : Matrix (Fin n) (Fin n) (AfE F E)) i j)) ((X : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)) i j))
@@ -170,7 +168,7 @@ section Conj
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hti'` using `hasRes_inv_entry_of_le_one P t X ht hti`. Conclude with `hasRes_matMul (fun a b => hasRes_matMul hti' hg a b) ht i j`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasRes_conj [StarRing E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (t : GL (Fin n) (AfE F E))
     (g : Matrix (Fin n) (Fin n) (AfE F E)) (X : GL (Fin n) (𝓞 E ⧸ P.asIdeal))
@@ -185,9 +183,9 @@ theorem hasRes_conj [StarRing E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (t :
   exact hasRes_matMul (fun a b => hasRes_matMul hti' hg a b) ht i j
 
 /- English proof (translation)
-Establish `ht1 : (t : Matrix (Fin n) (Fin n) (AfE F E)).map (adAt F P) = 1`. Use extensionality with `a b`. Rewrite using `[Matrix.map_apply, h1, Matrix.one_apply]`. Establish `ht2 : ((t⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)).map (adAt F P) = 1`. Use extensionality with `a b`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.map_apply, h2, Matrix.one_apply]`. Express the relevant statement in the definitionally equal form `((((t⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) * g * (t : Matrix (Fin n) (Fin n) (AfE F E))).map (adAt F P)) i j = (g.map (adAt F P)) i j`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, ht1, ht2, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem adAt_conj_of_one {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (t : GL (Fin n) (AfE F E))
     (g : Matrix (Fin n) (Fin n) (AfE F E))
@@ -205,7 +203,7 @@ theorem adAt_conj_of_one {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (t : GL (Fin
   rw [Matrix.map_mul, Matrix.map_mul, ht1, ht2, one_mul, mul_one]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.Carries at *`. Introduce `x`. Rewrite using `[hg x, hh, _root_.mul_inv_rev, Units.val_mul, Matrix.mulVec_mulVec]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem carries_mul' [StarRing E] {N : ℕ} {g h : GL (Fin N) (AfE F E)} {L : Submodule (𝓞 E) (Fin N → E)}
     (hg : Formalism.L2.Herm.Carries g L L) (hh : Formalism.L2.Herm.Carries h L L) : Formalism.L2.Herm.Carries (g * h) L L := by
@@ -214,9 +212,9 @@ theorem carries_mul' [StarRing E] {N : ℕ} {g h : GL (Fin N) (AfE F E)} {L : Su
   rw [hg x, hh, _root_.mul_inv_rev, Units.val_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.Carries at *`. Introduce `x`. Rewrite using `[inv_inv]`. Establish `key` using `hg ((g : Matrix (Fin N) (Fin N) (AfE F E)) *ᵥ x)`. Rewrite `key` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key.symm`.
+A detailed English derivation is pending.
 -/
 theorem carries_inv' [StarRing E] {N : ℕ} {g : GL (Fin N) (AfE F E)} {L : Submodule (𝓞 E) (Fin N → E)}
     (hg : Formalism.L2.Herm.Carries g L L) : Formalism.L2.Herm.Carries g⁻¹ L L := by
@@ -228,7 +226,7 @@ theorem carries_inv' [StarRing E] {N : ℕ} {g : GL (Fin N) (AfE F E)} {L : Subm
   exact key.symm
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.Carries`. Introduce `x`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem carries_one' [StarRing E] {N : ℕ} (L : Submodule (𝓞 E) (Fin N → E)) :
     Formalism.L2.Herm.Carries (1 : GL (Fin N) (AfE F E)) L L := by
@@ -246,35 +244,31 @@ namespace GlobalTheory.Mem.Col2.TC.ChTw.Match
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B X I _hI _l u n t s x h hp hT hx`. Take `⟨p, ⟨htU, htC, -, -, -⟩, hp2⟩` from `hp`. Rewrite `htC` using `[hp2]`. Establish `htiC` using `carries_inv' htC`. Establish `hint : ∀ (w : HeightOneSpectrum (𝓞 B.host.E)) (i j : Fin n), Valued.v (adAt B.host.F w (((t⁻¹ : GA B n) : Matrix (Fin n) (Fin n) (AfE B.host.F B.host.E)) i j)) ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w i j`. Establish `key` using `GlobalTheory.Mem.Col2.Splice.valued_inv_mul_le (w := w) htC (carries_one' _) le_rfl i j`. Rewrite `key` using `[mul_one]`. Then use the resulting hypothesis. Establish `hvT : ∀ (P : (B.primes X).vT u) (i j : Fin n), adAt B.host.F P.1 ((t : Matrix (Fin n) (Fin n) (AfE B.host.F B.host.E)) i j) = (if i = j then 1 else 0) ∧ adAt B.host.F P.1 (((t⁻¹ : GA B n) : Matrix (Fin n) (Fin n) (AfE B.host.F B.host.E)) i j) = (if i = j then 1 else 0)`. Introduce `P i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP : X.piT u ∈ P.1.asIdeal`. Establish `h0 : P.1 ∈ divs (X.piT u)` using `P.2`. Unfold `divs at h0`. Use `split_ifs at h0 with hf`. Conclude with `(Set.Finite.mem_toFinset hf).mp h0`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `at h0`. Establish `hcI : IsIntegral ℤ (B.host.conj (X.piT u : B.host.E))` using `(RingOfIntegers.isIntegral_coe (X.piT u)).map (RingHom.toIntAlgHom (B.host.conj : B.host.E →+* B.host.E))`. Establish `hTc : ((B.T u : ℕ) : 𝓞 B.host.E) = X.piT u * ⟨B.host.conj (X.piT u : B.host.E), hcI⟩`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `only [RingOfIntegers.coe_eq_algebraMap, map_mul, map_natCast]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(X.piT_norm u).symm`. Establish `hbc : bc (prV (E` using `B.host.E) (P.1.under (𝓞 B.host.F))) t = 1 := by`. Apply `hT` to reduce the goal to its premises. Use `show algebraMap (𝓞 B.host.F) (𝓞 B.host.E) ((B.T u : ℕ) : 𝓞 B.host.F) ∈ P.1.asIdeal`. Rewrite using `[map_natCast, hTc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_right _ _ hP`. Establish `hbc' : bc (prV (E` using `B.host.E) (P.1.under (𝓞 B.host.F))) t⁻¹ = 1 := by`. Rewrite using `[map_inv, hbc, inv_one]`. Conclude with `⟨GlobalTheory.Mem.Dil.adAt_of_bc_eq_one t P.1 hbc i j, GlobalTheory.Mem.Dil.adAt_of_bc_eq_one t⁻¹ P.1 hbc' i j⟩`. Establish `inv1 : ((t⁻¹ * s * t)⁻¹ : GA B n) = t⁻¹ * s⁻¹ * t` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `inv2 : (s⁻¹ : GA B n) = (t⁻¹)⁻¹ * (t⁻¹ * s * t)⁻¹ * t⁻¹` using `by group`. Establish `e3 : ∀ (P : (B.primes X).vT u) (r j : Fin n), adAt B.host.F P.1 ((((t⁻¹ * s * t)⁻¹ : GA B n) : Matrix (Fin n) (Fin n) (AfE B.host.F B.host.E)) r j) = adAt B.host.F P.1 (((s⁻¹ : GA B n) : Matrix (Fin n) (Fin n) (AfE B.host.F B.host.E)) r j)`. Introduce `P r j`. Rewrite using `[inv1, Units.val_mul, Units.val_mul]`. Conclude with `adAt_conj_of_one P.1 t _ (fun a b => (hvT P a b).1) (fun a b => (hvT P a b).2) r j`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Unfold `LocalCondMoveDecoratedLattice`. Use `and_congr ?_ (and_congr ?_ (and_congr ?_ ?_))` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Establish `key` using `Subgroup.mul_mem _ (Subgroup.mul_mem _ htU hm) (Subgroup.inv_mem _ htU)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `key using 1` and compare the differences between its conclusion and the goal. Use `group`. Introduce `hm`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ htU) hm) htU`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hm`. Establish `key` using `carries_mul' (carries_mul' htC hm) htiC`. Use `key using 2` and compare the differences between its conclusion and the goal. Use `group`. Introduce `hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `carries_mul' (carries_mul' htiC hm) htC`. Use `forall_congr' fun P => forall_congr' fun r => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[e3]`. Simplify using `only`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `H w r j`. Establish `key` using `hasRes_conj w.1 t⁻¹ (((t⁻¹ * s * t)⁻¹ : GA B n) : Matrix (Fin n) (Fin n) (AfE B.host.F B.host.E)) (x w)⁻¹ ((h w : GL (Fin n) (𝓞 B.host.E ⧸ w.1.asIdeal)) : Matrix (Fin n) (Fin n) (𝓞 B.host.E ⧸ w.1.asIdeal)) (hasRes_inv_entry_of_le_one w.1 t (x w) (hx w) (hint w.1)) (fun a b => by …`. Establish `eL : (((t⁻¹)⁻¹ : GA B n) : Matrix (Fin n) (Fin n) (AfE B.host.F B.host.E)) * (((t⁻¹ * s * t)⁻¹ : GA B n) : Matrix (Fin n) (Fin n) (AfE B.host.F B.host.E)) * ((t⁻¹ : GA B n) : Matrix (Fin n) (Fin n) (AfE B.host.F B.host.E)) = ((s⁻¹ : GA B n) : Matrix (Fin n) (Fin n) (AfE B.host.F …`. Rewrite using `[← Units.val_mul, ← Units.val_mul, ← inv2]`. Establish `eR : ((((x w)⁻¹)⁻¹ : GL (Fin n) (𝓞 B.host.E ⧸ w.1.asIdeal)) : Matrix (Fin n) (Fin n) (𝓞 B.host.E ⧸ w.1.asIdeal)) * ((h w : GL (Fin n) (𝓞 B.host.E ⧸ w.1.asIdeal)) : Matrix (Fin n) (Fin n) (𝓞 B.host.E ⧸ w.1.asIdeal)) * (((x w)⁻¹ : GL (Fin n) (𝓞 B.host.E ⧸ w.1.asIdeal)) : Matrix (Fi …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[inv_inv, Units.val_mul, Units.val_mul]`. Rewrite `key` using `[eL, eR]`. Conclude with `key`. Introduce `H w r j`. Establish `key` using `hasRes_conj w.1 t ((s⁻¹ : GA B n) : Matrix (Fin n) (Fin n) (AfE B.host.F B.host.E)) (x w) ((x w * h w * (x w)⁻¹ : GL (Fin n) (𝓞 B.host.E ⧸ w.1.asIdeal)) : Matrix (Fin n) (Fin n) (𝓞 B.host.E ⧸ w.1.asIdeal)) (hx w) (hint w.1) (H w) r j`.
-
-Establish `eL : ((t⁻¹ : GA B n) : Matrix (Fin n) (Fin n) (AfE B.host.F B.host.E)) * ((s⁻¹ : GA B n) : Matrix (Fin n) (Fin n) (AfE B.host.F B.host.E)) * (t : Matrix (Fin n) (Fin n) (AfE B.host.F B.host.E)) = (((t⁻¹ * s * t)⁻¹ : GA B n) : Matrix (Fin n) (Fin n) (AfE B.host.F B.host.E))`. Rewrite using `[inv1, Units.val_mul, Units.val_mul]`. Establish `eR : (((x w)⁻¹ : GL (Fin n) (𝓞 B.host.E ⧸ w.1.asIdeal)) : Matrix (Fin n) (Fin n) (𝓞 B.host.E ⧸ w.1.asIdeal)) * ((x w * h w * (x w)⁻¹ : GL (Fin n) (𝓞 B.host.E ⧸ w.1.asIdeal)) : Matrix (Fin n) (Fin n) (𝓞 B.host.E ⧸ w.1.asIdeal)) * ((x w : GL (Fin n) (𝓞 B.host.E ⧸ w.1.asIdeal)) : Ma …`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Use `congr 1`.
-
-Use `group`. Rewrite `key` using `[eL, eR]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem conj_unitary_preserves_stdLat_of_ptOf : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (u : B.Word) (n : ℕ) (t s : GA B n)
     (x : ∀ w : (B.primes X).vGs, GL (Fin n) (𝓞 B.fields.E ⧸ w.1.asIdeal)) (h : GLG B.fields.E n (B.primes X).vGs),

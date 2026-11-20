@@ -14,19 +14,17 @@ section Alg
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `X _ _ _ hN c hc`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `subsingleton_or_nontrivial X with hX | hX` into its components or cases. Conclude with `Subsingleton.elim _ _`. Establish `: IsArtinian O X` using `isArtinian_of_finite`. Take `⟨S, hS, -⟩` from `(eq_bot_or_exists_atom_le (⊤ : Submodule O X)).resolve_left top_ne_bot`. Establish `hs : IsSimpleModule O S` using `isSimpleModule_iff_isAtom.mpr hS`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨I, hI, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.mp hs`. Take `rfl` from `IsLocalRing.eq_maximalIdeal hI`. Establish `hfin : Finite (O ⧸ IsLocalRing.maximalIdeal O)` using `Finite.of_equiv _ e.toEquiv`. Establish `: Finite (X ⧸ S)` using `Finite.of_surjective _ S.mkQ_surjective`. Establish `hcard : Nat.card (X ⧸ S) < N`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Submodule.card_eq_card_quotient_mul_card S`. Establish `h2 : 1 < Nat.card S`. Use `IsSimpleModule.nontrivial O S` as an intermediate fact. Conclude with `Finite.one_lt_card`. Establish `h3 : 0 < Nat.card (X ⧸ S)` using `Nat.card_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[← hN, h1]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h0 : S.mkQ.lTensor C c = 0` using `ih _ hcard (X ⧸ S) rfl _ ((hmap X (X ⧸ S) S.mkQ c).1 hc)`. Set `j : (O ⧸ IsLocalRing.maximalIdeal O) →ₗ[O] X` to `S.subtype ∘ₗ e.symm.toLinearMap`. Establish `hj : Function.Injective j` using `S.injective_subtype.comp e.symm.injective`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hex : Function.Exact j S.mkQ`. Introduce `x`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨fun hx => ⟨e ⟨x, hx⟩, by simp [j]⟩, by rintro ⟨y, rfl⟩; exact (e.symm y).2⟩`. Take `⟨c₀, rfl⟩` from `(lTensor_exact C hex S.mkQ_surjective c).mp h0`.
-
-Rewrite using `[hk hfin c₀ ((hmap _ X j c₀).2 hj hc), map_zero]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_res [IsLocalRing O] {m : Ideal O} (hm : m = IsLocalRing.maximalIdeal O) {C : Type} [AddCommGroup C] [Module O C]
     (A : ∀ (X : Type) [AddCommGroup X] [Module O X], Set (C ⊗[O] X))
@@ -68,15 +66,15 @@ theorem eq_zero_of_res [IsLocalRing O] {m : Ideal O} (hm : m = IsLocalRing.maxim
   rw [hk hfin c₀ ((hmap _ X j c₀).2 hj hc), map_zero]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx` using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ] at hx`. Establish `hC : (C.projectionOnto F h.symm).rTensor _ (C.subtype.rTensor _ c) = c`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.rTensor_comp, Submodule.projectionOnto_comp_subtype]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hF : (F.projectionOnto C h).rTensor _ (C.subtype.rTensor _ c) = 0`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.rTensor_comp]`. Establish `: F.projectionOnto C h ∘ₗ C.subtype = 0` using `by ext y; simp`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `Fin.cases ?_ (fun a => ?_)` and prove the remaining obligations. Establish `h1` using `congrArg ((C.projectionOnto F h.symm).rTensor _) hx`. Simplify using `only [map_add, map_smul, map_sum, hC, LinearMap.rTensor_tmul, map_zero] at h1`. Simplify using `only [Submodule.projectionOnto_apply_right, zero_tmul, smul_zero, Finset.sum_const_zero, add_zero] at h1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Ideal.mem_span_singleton, hl]`. Assume the negation of the conclusion as `hu`. Establish `hu' : IsUnit (x 0)` using `by simpa using hu`. Conclude with `hc (hu'.smul_eq_zero.mp h1)`. Establish `h1` using `congrArg (fun y => TensorProduct.lid O _ ((b.coord a).rTensor _ ((F.projectionOnto C h).rTensor _ y))) hx`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_smul, map_sum, hF, LinearMap.rTensor_tmul, map_zero] at h1`. Simplify using `only [Submodule.projectionOnto_apply_left, lid_tmul, smul_zero, zero_add, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply, ite_smul, one_smul, zero_smul, smul_ite, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h1`. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem, ← h1, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem indep_cons [IsLocalRing O] {lam : O} (hl : Ideal.span {lam} = IsLocalRing.maximalIdeal O)
     {H : Type} [AddCommGroup H] [Module O H] {F C : Submodule O H} (h : IsCompl F C) {d : ℕ}
@@ -109,15 +107,13 @@ theorem indep_cons [IsLocalRing O] {lam : O} (hl : Ideal.span {lam} = IsLocalRin
     rfl
 
 /- English proof (translation)
-Establish `hm : Ideal.span {lam} = IsLocalRing.maximalIdeal O` using `hl.maximalIdeal_eq.symm`. Establish `key` using `eq_zero_of_res hm (C := C) (fun X _ _ => {y | C.subtype.rTensor X y ∈ A X}) (fun X X' _ _ _ _ _ _ f y => by`. Establish `e : C.subtype.rTensor X' (f.lTensor C y) = f.lTensor H (C.subtype.rTensor X y)`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.comp_apply, LinearMap.rTensor_comp_lTensor, LinearMap.lTensor_comp_rTensor]`. Simplify using `only [Set.mem_setOf_eq, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hmap X X' f _)`. Use the proof step `(fun hfin y hy => by`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hk hfin _ _ (Fin.cases hy fun a => hF _ (Module.finBasis O F a ⊗ₜ[O] 1)) (indep_cons hm h (Module.finBasis O F) y hne)`. Use the proof step `omega)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdec : c - F.subtype.rTensor X ((F.projectionOnto C h).rTensor X c) = C.subtype.rTensor X ((C.projectionOnto F h.symm).rTensor X c)`. Rewrite using `[sub_eq_iff_eq_add', ← LinearMap.comp_apply, ← LinearMap.comp_apply, ← LinearMap.rTensor_comp, ← LinearMap.rTensor_comp, ← LinearMap.add_apply, ← LinearMap.rTensor_add]`. Establish `: F.subtype ∘ₗ F.projectionOnto C h + C.subtype ∘ₗ C.projectionOnto F h.symm = LinearMap.id`. Use extensionality with `x`. Conclude with `Submodule.projection_add_projection_eq_self h x`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `h0` using `key _ X rfl ((C.projectionOnto F h.symm).rTensor X c) (by`. Express the relevant statement in the definitionally equal form `_ ∈ A X`. Rewrite using `[← hdec]`.
-
-Conclude with `hsub X _ hc _ (hF X _))`. Rewrite `hdec` using `[h0, map_zero, sub_eq_zero]`. Conclude with `⟨_, hdec.symm⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_of_bound [IsDomain O] [IsDiscreteValuationRing O] {lam : O} (hl : Irreducible lam)
     {H : Type} [AddCommGroup H] [Module O H] [Module.Free O H] [Module.Finite O H] {F C : Submodule O H}
@@ -187,7 +183,7 @@ def coefAmb {M : Type} [AddCommGroup M] [Module O M] (W : Representation O G M) 
     | add a b ha hb => simp only [map_add, ha, hb])
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem toAmb_coefH1_eq_coefAmb_toAmb {M : Type} [AddCommGroup M] [Module O M] (W : Representation O G M) {X X' : Type}
     [AddCommGroup X] [Module O X] [AddCommGroup X'] [Module O X'] (f : X →ₗ[O] X') (c : H1 (twCoef W χ X) ⊤) :
@@ -196,7 +192,7 @@ theorem toAmb_coefH1_eq_coefAmb_toAmb {M : Type} [AddCommGroup M] [Module O M] (
   rfl
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul c x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
 Both sides reduce to the same expression.
 -/
@@ -211,17 +207,15 @@ theorem tensAmb_lTensor {X X' : Type} [AddCommGroup X] [Module O X] [AddCommGrou
     rfl
 
 /- English proof (translation)
-Use `Set.Subset.antisymm (fun c hc => ?_) (hF X)` and prove the remaining obligations. Establish `hex : ∀ (X : Type) [AddCommGroup X] [Module O X] [Finite X] (y : H1tw L χ ⊗[O] X), ∃ c, toAmb (twCoef (latRep L) χ X) c = tensAmb L χ X y` using `fun X _ _ _ y => by`. Establish `h1` using `LinearMap.mem_range_self (tensAmb L χ X) y`. Rewrite `h1` using `[(hT X).2]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `LinearMap.mem_range_self (toAmb (twCoef (latRep L) χ X)) c`. Rewrite `h1` using `[← (hT X).2]`. Take `⟨y, hy⟩` from `h1`. Take `⟨y', hy'⟩` from `mem_range_of_bound hl h (fun X _ _ => {y | ∃ c ∈ A X, toAmb (twCoef (latRep L) χ X) c = tensAmb L χ X y}) (fun X X' _ _ _ _ _ _ f y => ⟨fun ⟨c, hc, e⟩ => ⟨_, (hmap X X' f c).1 hc, by`. Rewrite using `[toAmb_coefH1_eq_coefAmb_toAmb, tensAmb_lTensor, e]⟩, fun hf ⟨c', hc', e⟩ => by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, e'⟩` from `hex X y`. Use `⟨c, (hmap X X' f c).2 hf ?_, e'⟩` and prove the remaining obligations. Rewrite using `[toAmb_injective _ (show toAmb (twCoef (latRep L) χ X') (coefH1 (latRep L) χ f c) = toAmb (twCoef (latRep L) χ X') c' by` and apply the resulting hypothesis. Rewrite using `[toAmb_coefH1_eq_coefAmb_toAmb, e, tensAmb_lTensor, e'])]⟩)`. Use the proof step `(fun X _ _ _ y ⟨c, hc, e⟩ y' ⟨c', hc', e'⟩ => ⟨c - c', by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨B, hB⟩` from `hsub X`. Rewrite `hc`, `hc'`, the goal using `[hB]`. Conclude with `B.sub_mem hc hc', by rw [map_sub, map_sub, e, e']⟩)`. Use the proof step `(fun X _ _ _ y => by`. Take `⟨c, e⟩` from `hex X (F.subtype.rTensor X y)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨c, hF X ⟨y, e.symm⟩, e⟩)`. Use the proof step `(fun hfin s y hy hind => by choose c hc e using hy`. Use `hk s c hc fun x hx => hind x ((hT _).1 ?_)` and prove the remaining obligations. Establish `h2` using `congrArg (toAmb (twCoef (latRep L) χ (O ⧸ Ideal.span {lam}))) hx`. Simplify using `only [map_sum, map_smul, e, map_zero] at h2`.
-
-Simplify using `only [map_sum, map_smul, map_zero, h2])`. Use `X y ⟨c, hc, hy.symm⟩`. Conclude with `⟨y', by rw [LinearMap.comp_apply, hy', hy]⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem subset_of_bound [IsDomain O] [IsDiscreteValuationRing O] {lam : O} (hl : Irreducible lam)
     [Module.Free O (H1tw L χ)] [Module.Finite O (H1tw L χ)] {F C : Submodule O (H1tw L χ)} (h : IsCompl F C)
@@ -290,7 +284,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 open GlobalTheory.IndefiniteRowSideFullHecke.InvariantsVanishing in
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hC`. Conclude with `subset_of_bound Γ.T₀.L Γ.χ₁ hl hC hT (fun X _ _ => adm PD emb Γ t Ut Γ.W₀ X) (fun X X' _ _ _ _ _ _ f c => hmap X X' f c) hsub hF (fun s c hc hi => (hk s c hc hi).trans hd.ge) X`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem adm_eq_H1fX (hO : IsDomain O) (hdvr : IsDiscreteValuationRing O) (hl : Irreducible Γ.lam)
     (hf1 : Module.Free O (HH Γ)) (hf2 : Module.Finite O (HH Γ))
@@ -315,7 +309,7 @@ theorem adm_eq_H1fX (hO : IsDomain O) (hdvr : IsDiscreteValuationRing O) (hl : I
 end Data
 
 /- English proof (translation)
-Introduce `l _ P S h0 hfree hsum hfin hres X _ _ _`. Establish `hg` using `(GlobalTheory.LocalIntegers.goodO_integers l S.LL).1`. Conclude with `adm_eq_H1fX (P.PD S.K) S.emb S.Γ S.D.t S.D.dsum S.D.Ut hg.choose hg.choose_spec.1 S.hyp.1.2.2.2.2.2 hfree.1.1 hfree.1.2.1 hsum.1 hsum.2 hfree.2 (fun X _ _ _ => (h0 X).2.2) (fun X _ _ _ => (h0 X).1) hfin hres X`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cls_eq_H1fX : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P), S.Lem0 S.Γ.W₀ → S.FreeH →
     S.FSummand → S.FinAdm → S.ResBound S.Γ.W₀ S.D.dsum → ∀ (X : Type) [AddCommGroup X] [Module S.O X] [Finite X],

@@ -28,9 +28,9 @@ namespace LevelTowerAlt
 open SheetDecomposition.PF
 
 /- English proof (translation)
-Establish `h1` using `(hII K J).2.2 _ e A (cst J) 1 (fun _ => 0) ha hs cst_smooth (fun _ => rfl) Geo.isMultiHomog_one ((Ideal.ne_top_iff_one _).1 ha.2.1.1.ne_top)`. Establish `h3 : logNorm (cst J) 1 = fun _ => 1`. Use function extensionality and compare the values at `z`. Simplify using `[logNorm, SheetDecomposition.PF.cst, HermLine.ofWeight]`. Use `h1.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[recR, Geo.divSupp_one, finsum_mem_empty, zero_sub, arInt, h3]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ii_cst_int {K : Type} [Fintype K] {J : K → Type} [∀ b, Fintype (J b)] {II : IntersectionSystem}
     (hII : IsIntersectionSystem II) {P : Ideal (MRing J)} {e : ℕ} (ha : IsArithVar P (e + 1)) (A : Fin e → HermLine J)
@@ -47,7 +47,7 @@ theorem ii_cst_int {K : Type} [Fintype K] {J : K → Type} [∀ b, Fintype (J b)
   rw [recR, Geo.divSupp_one, finsum_mem_empty, zero_sub, arInt, h3]
 
 /- English proof (translation)
-Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `using cst_smooth`. Simplify using `using hs j`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem snoc_cst_smooth {K : Type} [Fintype K] {J : K → Type} [∀ b, Fintype (J b)] {e : ℕ} (A : Fin e → HermLine J)
     (hs : ∀ j, IsSmoothHerm (A j)) (j : Fin (e + 1)) : IsSmoothHerm (Fin.snoc (α := fun _ => HermLine J) A (cst J) j) := by

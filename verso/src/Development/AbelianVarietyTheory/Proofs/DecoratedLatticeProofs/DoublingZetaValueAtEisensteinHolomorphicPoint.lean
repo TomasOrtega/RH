@@ -18,27 +18,25 @@ open Filter Topology Set Metric GlobalTheory.Eis
 namespace GlobalTheory.Eis
 
 /- English proof (translation)
-Introduce `D V μ hμ m hm Φ hE ha hreg f₁ f₂ h₁ h₂ hZ s₀ E₀ hv`. Take `⟨C', c, hio⟩` from `l1 D V`. Establish `key : ∀ (H : ℂ → GA D (dblSp V) → ℂ) (z : ℂ) (r : ℝ), 0 < r → (∀ s ∈ ball z r, LeftInv (GQ (dblSp V)) (H s)) → (∀ g, DifferentiableOn ℂ (H · g) (ball z r)) → ContinuousOn (fun x : ℂ × GA D (dblSp V) => H x.1 x.2) (ball z r ×ˢ univ) → (∃ (C : ℝ) (N : ℕ), ∀ s ∈ ball z r, ∀ g, ‖H s …`. Introduce and unpack `H z r hr hinv hd hc ⟨C, N, hb⟩`. Take `⟨bound, hbi, hbd⟩` from `l2 D V μ m hm f₁ f₂ h₁ h₂ C' c hio C N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hcont : ∀ s ∈ ball z r, Continuous (H s)` using `fun s hs => hc.comp_continuous (f := fun g => (s, g)) (by fun_prop) fun g => ⟨hs, trivial⟩`. Establish `hli : ∀ s ∈ ball z r, LeftInv ((GQ V).prod (GQ V)) (dblIntegrand V μ (H s) f₁ f₂)` using `fun s hs => leftInv_dblIntegrand hμ (hinv s hs) h₁.1 h₂.1`. Establish `hmeas : ∀ s ∈ ball z r, AEStronglyMeasurable (dblIntegrandQ V μ (H s) f₁ f₂) ((autMeasure V m).prod (autMeasure V m))`. Introduce `s hs`. Establish `e' : dblIntegrandQ V μ (H s) f₁ f₂ = dblIntegrand V μ (H s) f₁ f₂ ∘ Prod.map (sec (GQ V)) (sec (GQ V))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun q => (congrArg _ (Prod.ext (mk_sec q.1) (mk_sec q.2)).symm).trans (dblIntegrandQ_mk (hli s hs) _ _)`. Rewrite using `[e']`. Conclude with `((continuous_dblIntegrand hμ (hcont s hs) h₁.continuous h₂.continuous).measurable.comp (measurableEmbedding_sec.measurable.prodMap measurableEmbedding_sec.measurable)).aestronglyMeasurable`. Use `⟨fun s hs => ⟨hli s hs, hbi.mono' (hmeas s hs) (ae_of_all _ fun q => hbd (H s) (hinv s hs) (hb s hs) q)⟩, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.differentiableOn_integral_of_holomorphic_of_locally_dominated (μ := (autMeasure V m).prod (autMeasure V m)) (F := fun q s => dblIntegrandQ V μ (H s) f₁ f₂ q) (isOpen_ball (x := z) (ε := r)) hmeas (ae_of_all _ fun q => by` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [dblIntegrandQ, dblIntegrand]`. Conclude with `(((hd _).mul_const _).mul_const _).mul_const _)`. Use `fun x hx => ⟨ball z r, isOpen_ball.mem_nhds hx, bound, hbi, ae_of_all _ fun q y hy => hbd (H y) (hinv y hy) (hb y hy) q⟩`. Conclude with `this.1`. Establish `hinvE : ∀ s, LeftInv (GQ (dblSp V)) (eisCont V Φ s)` using `fun s => hE.1.leftInv_eisLaurent s 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set Z : ℂ → ℂ := fun s => dblInt V μ m (eisCont V Φ s) f₁ f₂ with hZdef`. Establish `hmer : ∀ s₁, MeromorphicAt Z s₁`. Introduce `s₁`. Take `⟨k, r, H, hr, e, hd, hc, C, N, hb⟩` from `hreg s₁`. Establish `hinvH : ∀ s ∈ ball s₁ r, LeftInv (GQ (dblSp V)) (H s)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s hs γ hγ g`. Break down `eq_or_ne s s₁ with rfl | h0` into its components or cases. Establish `t1` using `((hd (γ * g)).continuousOn.continuousAt (ball_mem_nhds _ hr)).tendsto.mono_left (nhdsWithin_le_nhds (s := {s}ᶜ))`. Establish `t2` using `((hd g).continuousOn.continuousAt (ball_mem_nhds _ hr)).tendsto.mono_left (nhdsWithin_le_nhds (s := {s}ᶜ))`. Use `tendsto_nhds_unique t1 (t2.congr' ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds s hr)] with w h1 h2`. Rewrite using `[e w h2 h1, e w h2 h1, hinvE w γ hγ g]`. Rewrite using `[e s hs h0, e s hs h0, hinvE s γ hγ g]`. Establish `han : AnalyticAt ℂ (fun s => dblInt V μ m (H s) f₁ f₂) s₁` using `(key H s₁ r hr hinvH hd hc ⟨C, N, hb⟩).2.analyticAt (ball_mem_nhds _ hr)`. Establish `hm1 : MeromorphicAt (fun s => ((s - s₁) ^ k)⁻¹ * dblInt V μ m (H s) f₁ f₂) s₁`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: MeromorphicAt (fun s : ℂ => s - s₁) s₁` using `(MeromorphicAt.id s₁).sub (MeromorphicAt.const _ _)`. Conclude with `(this.pow k).inv.mul han.meromorphicAt`. Use `hm1.congr ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds s₁ hr)] with w h1 h2`. Establish `e1 : eisCont V Φ w = ((w - s₁) ^ k)⁻¹ • H w`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[Pi.smul_apply, e w h2 h1 g, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ (sub_ne_zero.2 h1)), one_mul]`. Establish `e2` using `dblInt_smul (V := V) (μ := μ) (m := m) (E := H w) (f₁ := f₁) (f₂ := f₂) ((w - s₁) ^ k)⁻¹ 1 1`. Simplify using `only [one_smul, map_one, mul_one] at e2`. Simplify using `only [Z, e1, e2]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hext : IsMerExt (zeta V μ m Φ f₁ f₂) univ Z`. Use `⟨isRightDomain_univ, fun s _ => hmer s, (V.rank : ℝ) / 2, fun s hs => ?_⟩` and prove the remaining obligations. Establish `: eisCont V Φ s = eis V (Φ s)` using `funext fun g => eqOn_cont (ha g) hs`. Simplify using `only [Z, zeta, this]`. Take `⟨k, hk⟩` from `hreg s₀`.
-
-Take `⟨r, hr, hd, hc, C, N, hb⟩` from `hk.of_eisValueAt hv`. Take `⟨hconv, hdiff⟩` from `key (eisCont V Φ) s₀ r hr (fun s _ => hinvE s) hd hc ⟨C, N, hb⟩`. Establish `e0` using `hv.eisCont_eq`. Use `⟨e0 ▸ hconv s₀ (mem_ball_self hr), hZ, Z, hext.isExtAt trivial, hdiff.analyticAt (ball_mem_nhds _ hr), ?_⟩` and prove the remaining obligations. Simplify using `only [Z, e0]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zetaHolValueAt_of_heightBounds (l1 : ∀ (D : D7) (V : HSp D), ∃ (C : ℝ) (c : ℕ), ∀ g₁ g₂ : GA D V,
     GlobalTheory.Grow.height (dblSp V) (io V (g₁, g₂)) ≤ C * (GlobalTheory.Grow.height V g₁ * GlobalTheory.Grow.height V g₂) ^ c) (l2 : ∀ (D : D7) (V : HSp D) (μ : (AE D)ˣ →* Circle) (m : Measure (GA D V)), m.IsHaarMeasure →
@@ -123,7 +121,7 @@ theorem zetaHolValueAt_of_heightBounds (l1 : ∀ (D : D7) (V : HSp D), ∃ (C : 
   simp only [Z, e0]
 
 /- English proof (translation)
-The claim follows from `zetaHolValueAt_of_heightBounds GlobalTheory.T.exists_height_doublingEmbedding_le_pow_mul_heights GlobalTheory.T.exists_integrable_bound_doubling_integrand_quotient`.
+A detailed English derivation is pending.
 -/
 theorem zetaHolValueAt_of_eisValueAt : ∀ (D : D7) (V : HSp D) (μ : (AE D)ˣ →* Circle), IsHeckeChar D μ → ∀ (m : Measure (GA D V)), m.IsHaarMeasure → ∀ (Φ : ℂ → GA D (dblSp V) → ℂ), GlobalTheory.Eis.EisContinues V Φ → (∀ g, AnalyticOnNhd ℂ (GlobalTheory.Eis.eisSer V Φ g) (rightOf (V.rank / 2))) → (∀ s₀, ∃ k, GlobalTheory.Eis.EisRegularAt V Φ s₀ k) → ∀ f₁ f₂ : GA D V → ℂ, GlobalTheory.Grow.RapidDec V f₁ → GlobalTheory.Grow.RapidDec V f₂ → GlobalTheory.Eis.IsZetaFamily V μ m Φ f₁ f₂ → ∀ (s₀ : ℂ) (E₀ : GA D (dblSp V) → ℂ), GlobalTheory.Eis.EisValueAt V Φ s₀ E₀ → GlobalTheory.Eis.DblConv V μ m E₀ f₁ f₂ ∧ GlobalTheory.Eis.ZetaHolValueAt V μ m Φ f₁ f₂ s₀ (GlobalTheory.Eis.dblInt V μ m E₀ f₁ f₂) :=
   zetaHolValueAt_of_heightBounds GlobalTheory.T.exists_height_doublingEmbedding_le_pow_mul_heights GlobalTheory.T.exists_integrable_bound_doubling_integrand_quotient

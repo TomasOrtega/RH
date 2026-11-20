@@ -11,9 +11,9 @@ namespace GlobalTheory
 open ValuativeRel
 
 /- English proof (translation)
-Establish `hset : {x : kˣ | ValuativeRel.valuation k (x : k) = 1} = (fun x : kˣ => (x : k)) ⁻¹' (𝒪[k] : Set k) ∩ (fun x : kˣ => ((x⁻¹ : kˣ) : k)) ⁻¹' (𝒪[k] : Set k)`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_preimage, SetLike.mem_coe, Valuation.mem_integer_iff, Units.val_inv_eq_inv_val, map_inv₀]`. Rewrite using `[inv_le_one₀ (by simp [zero_lt_iff])]`. Conclude with `le_antisymm_iff`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hopen : IsOpen {x : kˣ | ValuativeRel.valuation k (x : k) = 1}`. Rewrite using `[hset]`. Conclude with `((Valuation.isOpen_integer (R := k)).preimage Units.continuous_val).inter ((Valuation.isOpen_integer (R := k)).preimage Units.continuous_coe_inv)`. Conclude with `hopen.mem_nhds (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem units_valuation_eq_one_mem_nhds_one {k : Type} [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
@@ -33,7 +33,7 @@ theorem units_valuation_eq_one_mem_nhds_one {k : Type} [Field k] [ValuativeRel k
   exact hopen.mem_nhds (by simp)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.units_valuation_eq_one_mem_nhds_one`.
+A detailed English derivation is pending.
 -/
 example : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     {x : kˣ | ValuativeRel.valuation k (x : k) = 1} ∈ 𝓝 (1 : kˣ) :=

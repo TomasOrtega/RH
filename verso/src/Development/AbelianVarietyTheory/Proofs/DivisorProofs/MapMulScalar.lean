@@ -8,9 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SplitCentral
 
 /- English proof (translation)
-Establish `he' : σ e * σ e = σ e` using `by rw [← map_mul, he]`. Establish `hab' : σ a * σ b = 1` using `by rw [← map_mul, hab, map_one]`. Use `⟨e * a + σ e * σ b + (1 - e - σ e), ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_sub, map_one, hσ]`. Take the linear combination `(a * b - a - b + 1) * he + (σ a * σ b - σ a - σ b + 1) * he' + (a * σ a + b * σ b - a - b - σ a - σ b + 2) * hc + e * hab + σ e * hab'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(a - 1) * he + (σ b - 1) * he' + (a + σ b - 2) * hc`. Take the linear combination `(a - 1) * he + (σ b - 1) * hc`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_unitary {A : Type} [CommRing A] (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x)
     (e a b : A) (he : e * e = e) (hc : e * σ e = 0) (hab : a * b = 1) :
@@ -25,11 +25,11 @@ theorem exists_unitary {A : Type} [CommRing A] (σ : A →+* A) (hσ : ∀ x, σ
   · linear_combination (a - 1) * he + (σ b - 1) * hc
 
 /- English proof (translation)
-Establish `hu' : σ u * u = 1` using `by rw [mul_comm, hu]`. Use `⟨⟨⟨u • 1, σ u • 1, ?_, ?_⟩, ?_⟩, rfl⟩` and prove the remaining obligations. Simplify using `[smul_smul, hu, hu']`. Simplify using `[smul_smul, hu, hu']`. Use `show Formalism.UG.cT σ (u • (1 : Matrix (Fin n) (Fin n) A)) * J * (u • (1 : Matrix (Fin n) (Fin n) A)) = J`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: Formalism.UG.cT σ (u • (1 : Matrix (Fin n) (Fin n) A)) = σ u • (1 : Matrix (Fin n) (Fin n) A)`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Formalism.UG.cT, Matrix.one_apply, h, Ne.symm h]`. Rewrite using `[this]`. Simplify using `[smul_smul, hu, hu']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_scalar {A : Type} [CommRing A] (σ : A →+* A) {n : ℕ} (J : Matrix (Fin n) (Fin n) A)
     (u : A) (hu : u * σ u = 1) :
@@ -48,7 +48,7 @@ theorem exists_scalar {A : Type} [CommRing A] (σ : A →+* A) {n : ℕ} (J : Ma
     simp [smul_smul, hu, hu']
 
 /- English proof (translation)
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `using h`. Simplify using `[hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem supp_scalar {A : Type} [CommRing A] {n : ℕ} (f u : A) (h : f * (u - 1) = u - 1) (i j : Fin n) :
     f * (u • (1 : Matrix (Fin n) (Fin n) A) - 1) i j = (u • (1 : Matrix (Fin n) (Fin n) A) - 1) i j := by
@@ -64,7 +64,7 @@ theorem scalar_comm {A : Type} [CommRing A] {n : ℕ} (u : A) (M : Matrix (Fin n
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_mul_scalar {A R : Type} [CommRing A] [CommRing R] (φ : A →+* R) {n : ℕ} (u : A)
     (M : Matrix (Fin n) (Fin n) A) :
@@ -73,9 +73,9 @@ theorem map_mul_scalar {A R : Type} [CommRing A] [CommRing R] (φ : A →+* R) {
   simp
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Establish `: D.sp.cm.sig (D.sp.cm.sig b) = b` using `star_star b`. Simplify using `[cA, sigR, this]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem cA_cA (D : D7) (x : Formalism.L2.Theta.AE D) : cA D (cA D x) = x := by
   induction x using TensorProduct.induction_on with
@@ -86,9 +86,9 @@ theorem cA_cA (D : D7) (x : Formalism.L2.Theta.AE D) : cA D (cA D x) = x := by
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Establish `h1` using `congrFun hy a`. Establish `h2 : (fun i => c' i * z i) = p • (fun i => c i * z i)`. Use function extensionality and compare the values at `i`. Simplify using `[hc, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2, Matrix.mulVec_smul, Matrix.smul_mulVec]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h1 ⊢`. Take the linear combination `(M.mulVec y a) * h + p * h1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mulVec_shift {R : Type} [CommRing R] {n : ℕ} (B M : Matrix (Fin n) (Fin n) R) (e u p : R)
     (h : e * u = e * p) (c c' z y : Fin n → R) (hc : ∀ i, c' i = p * c i)
@@ -103,7 +103,7 @@ theorem mulVec_shift {R : Type} [CommRing R] {n : ℕ} (B M : Matrix (Fin n) (Fi
   linear_combination (M.mulVec y a) * h + p * h1
 
 /- English proof (translation)
-Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_mul, Units.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hmul {D : D7} {V : HSp D} (g h : GA D V) :
     Formalism.L2.Theta.mt V (g * h) = Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V h := by
@@ -111,7 +111,7 @@ theorem hmul {D : D7} {V : HSp D} (g h : GA D V) :
   rw [map_mul, Units.val_mul]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext hh)`.
+A detailed English derivation is pending.
 -/
 theorem hinj {D : D7} {V : HSp D} (g h : GA D V) (hh : Formalism.L2.Theta.mt V g = Formalism.L2.Theta.mt V h) :
     g = h := Subtype.ext (Units.ext hh)
@@ -123,7 +123,7 @@ theorem hfin {D : D7} {V : HSp D} (g : GA D V) :
     finMat D.sp.cm.sig V.gram g = (Formalism.L2.Theta.mt V g).map (finPart D) := rfl
 
 /- English proof (translation)
-The claim follows from `exists_scalar (cA D) (JR (AF D.host.F) V.gram) u hu`.
+A detailed English derivation is pending.
 -/
 theorem exists_mt {D : D7} (V : HSp D) (u : Formalism.L2.Theta.AE D) (hu : u * cA D u = 1) :
     ∃ ζ : GA D V, Formalism.L2.Theta.mt V ζ =
@@ -131,7 +131,7 @@ theorem exists_mt {D : D7} (V : HSp D) (u : Formalism.L2.Theta.AE D) (hu : u * c
   exists_scalar (cA D) (JR (AF D.host.F) V.gram) u hu
 
 /- English proof (translation)
-Establish `: (d.map (· + 1)).getD i 0 = d.getD i 0 + 1`. Simplify using `[List.getD_eq_getElem?_getD, hi]`. Rewrite using `[this, zpow_add_one₀ hϖ, map_mul, map_mul, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem shift_pow {D : D7} (ϖ : D.host.E) (hϖ : ϖ ≠ 0) (d : List ℤ) (i : ℕ) (hi : i < d.length) :
     finPart D (incA D (ϖ ^ ((d.map (· + 1)).getD i 0))) =
@@ -141,7 +141,7 @@ theorem shift_pow {D : D7} (ϖ : D.host.E) (hϖ : ϖ ≠ 0) (d : List ℤ) (i : 
   rw [this, zpow_add_one₀ hϖ, map_mul, map_mul, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[hfin, hfin, hmul, hmt]`. Conclude with `map_mul_scalar _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finMat_scalar {D : D7} {V : HSp D} (α ζ : GA D V) (u : Formalism.L2.Theta.AE D)
     (hmt : Formalism.L2.Theta.mt V ζ = u • (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.Theta.AE D))) :
@@ -150,17 +150,15 @@ theorem finMat_scalar {D : D7} {V : HSp D} (α ζ : GA D V) (u : Formalism.L2.Th
   exact map_mul_scalar _ _ _
 
 /- English proof (translation)
-Introduce `D V e ϖ he hϖ`. Take `⟨u, hu, hs, hue⟩` from `exists_unitary (cA D) (cA_cA D) e (incA D ϖ) (incA D ϖ⁻¹) he.1 he.2.1 (by rw [← map_mul, mul_inv_cancel₀ hϖ, map_one])`. Take `⟨ζ, hmt⟩ : ∃ ζ : GA D V, Formalism.L2.Theta.mt V ζ = u • (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.Theta.AE D))` from `exists_mt V u hu`. Use `⟨ζ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hmt]`. Conclude with `supp_scalar _ _ hs i j`. Introduce `g`. Use `hinj (ζ * g) (g * ζ) ?_` and prove the remaining obligations. Rewrite using `[hmul, hmul, hmt]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `scalar_comm _ _`. Introduce and unpack `d α ⟨hd, B, h1, h2, h3, h4⟩`. Establish `hF` using `finMat_scalar α ζ u hmt`. Establish `hup : finPart D e * finPart D u = finPart D e * finPart D (incA D ϖ)`. Rewrite using `[← map_mul, hue, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ∀ i : Fin V.rank, finPart D (incA D (ϖ ^ ((d.map (· + 1)).getD i.1 0))) = finPart D (incA D ϖ) * finPart D (incA D (ϖ ^ (d.getD i.1 0)))` using `fun i => shift_pow ϖ hϖ d i.1 (lt_of_lt_of_eq i.2 hd.symm)`. Use `⟨by simpa using hd, B, h1, h2, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨z, hz, hyz⟩` from `h3 y hy`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hF]`. Conclude with `mulVec_shift B _ _ _ _ hup _ _ z y hc hyz`. Introduce `z hz`. Take `⟨y, hy, hyz⟩` from `h4 z hz`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hF]`. Conclude with `mulVec_shift B _ _ _ _ hup _ _ z y hc hyz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem central : ∀ {D : D7} (V : HSp D) (e : Formalism.L2.Theta.AE D) (ϖ : D.host.E), IsSplitIdem D e → ϖ ≠ 0 → ∃ ζ : GA D V, SuppAt e V ζ ∧ (∀ g, Commute ζ g) ∧ ∀ (d : List ℤ) (α : GA D V), DivAt V e ϖ d α → DivAt V e ϖ (d.map (· + 1)) (α * ζ) := by
   intro D V e ϖ he hϖ

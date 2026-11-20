@@ -15,15 +15,15 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] [IsTopologicalRing E]
 
 /- English proof (translation)
-Establish `hLo : Formalism.DoubleCosetMeasures.IsLowUni (rI a l)` using `lowUni_rI a hl`. Establish `hUp : Formalism.DoubleCosetMeasures.IsUpUni (rI a ρ)` using `upUni_rI a hρ`. Establish `hv : Formalism.DoubleCosetMeasures.IsLowUni (rI a l')` using `lowUni_rI a hl'`. Establish `hu : Formalism.DoubleCosetMeasures.IsUpUni (rI a ρ')` using `upUni_rI a hρ'`. Establish `hvPu : rI a l' * Formalism.DoubleCosetMeasures.pt (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2 * rI a ρ' = rI a l * Formalism.DoubleCosetMeasures.pt (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formali …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h'` using `congrArg (rI a) h`. Simplify using `only [rI_mul, rI_mat] at h'`. Conclude with `h'`. Establish `hLd : IsUnit (rI a l).det` using `by rw [Formalism.DoubleCosetMeasures.isLowUni_det E hLo]; exact isUnit_one`. Establish `hUd : IsUnit (rI a ρ).det` using `by rw [Formalism.DoubleCosetMeasures.isUpUni_det E hUp]; exact isUnit_one`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ((rI a l)⁻¹ * rI a l') * Formalism.DoubleCosetMeasures.pt (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2 * (rI a ρ' * (rI a ρ)⁻¹) = Formalism.DoubleCosetMeasures.pt (Formalism.MainNotions.LocalModelPeriodLatt …`. Combine the equalities or inequalities in the displayed calculation. Establish `h0` using `Formalism.DoubleCosetMeasures.Final.phaseWellDef E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1 (Formalism.MainNotions.LocalModelPeriodLattices.tr a).2 _ _ (Formalism.DoubleCosetMeasures.isLowUni_mul E (Formalism.DoubleCosetMeasures.isLowUni_inv E hLo) hv) (Formalism.D …`. Establish `sa` using `Formalism.DoubleCosetMeasures.Final.simpleAdd E (Formalism.MainNotions.LocalModelPeriodLattices.tr a).1.sum`. Rewrite `h0` using `[(sa _ _).1 (Formalism.DoubleCosetMeasures.isLowUni_inv E hLo) hv, (sa _ _).2 hu (Formalism.DoubleCosetMeasures.isUpUni_inv E hUp)]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hLi` using `(sa (rI a l)⁻¹ (rI a l)).1 (Formalism.DoubleCosetMeasures.isLowUni_inv E hLo) hLo`. Rewrite `hLi` using `[Matrix.nonsing_inv_mul _ hLd, sLow_one]`. Establish `hUi` using `(sa (rI a ρ) (rI a ρ)⁻¹).2 hUp (Formalism.DoubleCosetMeasures.isUpUni_inv E hUp)`. Rewrite `hUi` using `[Matrix.mul_nonsing_inv _ hUd, sUp_one]`. Rewrite using `[Formalism.MainNotions.LocalOrbitGerms.Cls.simpleLow_eq, Formalism.MainNotions.LocalOrbitGerms.Cls.simpleUp_eq, Formalism.MainNotions.LocalOrbitGerms.Cls.simpleLow_eq, Formalism.MainNotions.LocalOrbitGerms.Cls.simpleUp_eq, ← sLow_rI a l', ← sUp_rI a ρ', ← sLow_rI a l, ← sUp_rI a …`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h0 + hLi + hUi`.
+A detailed English derivation is pending.
 -/
 theorem sg_dec_eq {m : ℕ} (a : Loc.Pt E (m + 1)) (l ρ l' ρ' : Matrix (Fin (m + 1)) (Fin (m + 1)) E)
     (hl : Formalism.DoubleCosetMeasures.IsLowUni l) (hρ : Formalism.DoubleCosetMeasures.IsUpUni ρ) (hl' : Formalism.DoubleCosetMeasures.IsLowUni l') (hρ' : Formalism.DoubleCosetMeasures.IsUpUni ρ')
@@ -76,9 +76,9 @@ section Simple
 variable {K : Type} [CommRing K] {n : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.DoubleCosetMeasures.sLow`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, ← hc j h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sLow_conj (A : Matrix (Fin n) (Fin n) K) (d d' : Fin n → K) (c : K)
     (hc : ∀ (j : Fin n) (h : j.val + 1 < n), d ⟨j.val + 1, h⟩ * d' j = c) :
@@ -92,9 +92,9 @@ theorem sLow_conj (A : Matrix (Fin n) (Fin n) K) (d d' : Fin n → K) (c : K)
   · rw [mul_zero]
 
 /- English proof (translation)
-Unfold `Formalism.DoubleCosetMeasures.sUp`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, ← hc j h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sUp_conj (A : Matrix (Fin n) (Fin n) K) (d d' : Fin n → K) (c : K)
     (hc : ∀ (j : Fin n) (h : j.val + 1 < n), d' j * d ⟨j.val + 1, h⟩ = c) :
@@ -108,7 +108,7 @@ theorem sUp_conj (A : Matrix (Fin n) (Fin n) K) (d d' : Fin n → K) (c : K)
   · rw [mul_zero]
 
 /- English proof (translation)
-Unfold `Formalism.DoubleCosetMeasures.sLow`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sLow_map {S : Type} [CommRing S] (f : K →+* S) (A : Matrix (Fin n) (Fin n) K) :
     Formalism.DoubleCosetMeasures.sLow (A.map f) = f (Formalism.DoubleCosetMeasures.sLow A) := by
@@ -118,7 +118,7 @@ theorem sLow_map {S : Type} [CommRing S] (f : K →+* S) (A : Matrix (Fin n) (Fi
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Formalism.DoubleCosetMeasures.sUp`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sUp_map {S : Type} [CommRing S] (f : K →+* S) (A : Matrix (Fin n) (Fin n) K) :
     Formalism.DoubleCosetMeasures.sUp (A.map f) = f (Formalism.DoubleCosetMeasures.sUp A) := by
@@ -138,13 +138,13 @@ Both sides reduce to the same expression.
 theorem sgUp_eq {K' : Type} [Field K'] (A : Matrix (Fin n) (Fin n) K') : PairVal.sgUp A = Formalism.DoubleCosetMeasures.sUp A := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i j hij => h.2 i j hij, h.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem lowUni_of_isLo {A : Matrix (Fin n) (Fin n) K} (h : IsLo A) : Formalism.DoubleCosetMeasures.IsLowUni A :=
   ⟨fun i j hij => h.2 i j hij, h.1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i j hij => h.2 j i hij, h.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem upUni_of_isUp {A : Matrix (Fin n) (Fin n) K} (h : IsUp A) : Formalism.DoubleCosetMeasures.IsUpUni A :=
   ⟨fun i j hij => h.2 j i hij, h.1⟩
@@ -156,13 +156,13 @@ section Dec
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Use `Formalism.MainNotions.LocalModelPeriodLattices.top_of_OK (M p) hOK` as an intermediate fact. Establish `hO : InOrbP δ T T' p w Y` using `PCount.inOrbP_of_orb hw₀ ⟨l, ρ, fun a => ⟨hl.1 a, hρ.1 a⟩, fun a b hab => ⟨hl.2 a b hab, hρ.2 a b hab⟩, hY⟩`. Take `⟨w₁, hw₁, hex⟩` from `hO`. Rewrite `hw₁` using `[hw₀]`. Take `rfl` from `Option.some.inj hw₁`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Unfold `phL`. Rewrite using `[hw₀]`. Apply the tactic sequence `try dsimp only`. Rewrite using `[dif_pos hex]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hmat` using `modShift_holds δ T T' p w w₀ hw₀`. Establish `e1` using `zAt_eq hmat hex.choose`. Rewrite `e1` using `[← hex.choose_spec]`. Establish `e2 : l * w₀.mat * ρ = Y + shM δ T T' p w`. Rewrite using `[hmat, mul_add, add_mul, mul_shM l ρ (last_of_low l hl.1 hl.2) (last_of_up ρ hρ.1 (fun a b h => hρ.2 b a h)), hY]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `zAt at e1`. Conclude with `LocOrbCut.sg_dec_eq w₀ l ρ _ _ (lowUni_of_isLo hl) (upUni_of_isUp hρ) (LocOrbCut.uLow_lowUni hex.choose.1) (LocOrbCut.uUp_upUni w₀ hex.choose.2) (e1.trans e2.symm)`.
+A detailed English derivation is pending.
 -/
 theorem phL_of_dec (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     {T T' : ℕ} {p : PlF D} {w : Point D.host.E (D.R.rS + 1)} {w₀ : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1)}
@@ -198,7 +198,7 @@ variable {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP 
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Unfold `cf cfi`. Establish `hb : D.R.rS - b.val = (D.R.rS - a.val) + 1` using `by have := a.2; omega`. Rewrite using `[hb, pow_succ, inv_pow, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ (yP_ne Zd p)), one_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cf_mul_cfi (Zd : LocDat D) (p : PlF D) (a b : Fin (D.R.rS + 1)) (h : a.val = b.val + 1) :
     cf Zd p a * cfi Zd p b = yP Zd p := by
@@ -207,31 +207,31 @@ theorem cf_mul_cfi (Zd : LocDat D) (p : PlF D) (a b : Fin (D.R.rS + 1)) (h : a.v
   rw [hb, pow_succ, inv_pow, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ (yP_ne Zd p)), one_mul]
 
 /- English proof (translation)
-Take `⟨-, -, hL, hU, e⟩` from `hN`. Establish `hL'` using `PCount.isLo_of_uni hL`. Establish `hU'` using `PCount.isUp_of_uni hU`. Establish `hf' : ZhatL (lf D F0) F' * Sg D.host.E D.R.rS = L * ptMat w * U` using `by rw [← zhatOM_eq]; exact e`. Establish `hAg` using `(hA p).2.2.2.2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : (D.s.atP p).split = none`. Break down `hR : (D.s.atP p).split with _ | sg` into its components or cases. Both sides reduce to the same expression. Simplify using `only [hM, hR] at hAg`. Establish `hfr : ∀ a, algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cfi ⟨δ, M, hA⟩ p a) * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf ⟨δ, M, hA⟩ p a) = 1` using `fun a => by`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, cfi_cf, map_one]`. Establish `hfr' : ∀ a, algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf ⟨δ, M, hA⟩ p a) * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cfi ⟨δ, M, hA⟩ p a) = 1` using `fun a => by`. Rewrite using `[← map_mul, cf_cfi, map_one]`. Establish `hmod : Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf ⟨δ, M, hA⟩ p a)) * (ptMat w).map (D.s.atP p).ιE * Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf ⟨δ, M, hA⟩ p a)) = modMat δ (D.mem u).A.T (D.mem u').A.T p w`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[modMat_apply', Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, ptMat_apply']`. Distinguish the cases in `hb : b = sgF w a`. Rewrite using `[if_pos hb, if_pos hb, modMat_blk ⟨δ, M, hA⟩]`. Simplify using `only [twist, qE, tau0, hR, Ring.inverse_one, mul_one, ite_self, sub_zero, map_mul]`. Substitute `hb` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hb, if_neg hb, map_zero, mul_zero, zero_mul]`. Establish `h1` using `PCount.zzp_sgn_ord ⟨δ, M, hA⟩ u u' p hM (ZhatL (lf D F0) F')`. Establish `hdec : CntLocal.ZZP (M` using `M) δ u u' p (ZhatL (lf D F0) F') * sgnP p = (Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf ⟨δ, M, hA⟩ p a)) * L.map (D.s.atP p).ιE * Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cfi ⟨δ, M, hA⟩ p a))) * modMat δ (D.mem u).A.T (D.mem …`. Use `h1.trans ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hf', Matrix.map_mul, Matrix.map_mul, regroup _ _ hfr, hmod]`. Take `⟨w₀, hw₀⟩` from `PCount.modPt_full (δ := δ) (D.mem u).A.T (D.mem u').A.T p (hA p).2.1 w`. Rewrite using `[phL_of_dec M δ (hA p).1 hw₀ (isLo_conj (isLo_map (D.s.atP p).ιE hL') _ _ hfr') (isUp_conj (isUp_map (D.s.atP p).ιE hU') _ _ hfr) hdec]`. Establish `hd : dfac M δ (D.mem u).A.T (D.mem u').A.T p w = 1`. Unfold `dfac`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hR]`. Rewrite using `[hd, one_mul, Formalism.MainNotions.LocalOrbitGerms.Cls.simpleLow_eq, Formalism.MainNotions.LocalOrbitGerms.Cls.simpleUp_eq, sLow_conj _ _ _ (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (yP ⟨δ, M, hA⟩ p)) (fun j h => by rw [← map_mul, cf_mul_cfi ⟨δ, M, hA⟩ p ⟨j.val + 1, h⟩ j rfl]), …`. Unfold `Loc.Model.psiR`. Rewrite using `[hM]`. Apply the tactic sequence `try dsimp only`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hA p).2.2.2.2.1]`. Use `congr 1`. Establish `hres : Loc.resChar p ∉ ({D.host.g 0, D.host.g 1} : Finset ℕ)`. Introduce `hmem`. Use `(D.s_split p).2 hmem` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hR]`. Conclude with `absurd this (by simp)`. Establish `hg0 : Loc.resChar p ≠ D.host.g 0` using `fun h => hres (by simp [h])`. Establish `hg1 : Loc.resChar p ≠ D.host.g 1` using `fun h => hres (by simp [h])`. Establish `hgp : gpart p = 1` using `by unfold gpart; rw [if_neg hg0, if_neg hg1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ : δ p ≠ 0` using `(hA p).2.1`. Establish `hu : (D.s.atP p).ιE ((uP p : ℚ) : D.host.E) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((D.s.atP p).ιF ((uP p : ℚ) : D.host.F))`. Rewrite using `[← (D.s.atP p).compat, map_ratCast (algebraMap D.host.F D.host.E)]`. Establish `hyP : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (yP ⟨δ, M, hA⟩ p) * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p)⁻¹ = (D.s.atP p).ιE ((uP p : ℚ) : D.host.E)`. Rewrite using `[hu, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `yP`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hup : ((uP p : ℚ) : D.host.E) = 1 / ((gS D : ℕ) : D.host.E)`. Unfold `uP`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hgp]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `key : (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (yP ⟨δ, M, hA⟩ p) * (D.s.atP p).ιE (Formalism.DoubleCosetMeasures.sLow L) + algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (yP ⟨δ, M, hA⟩ p) * (D.s.atP p).ιE (Formalism.DoubleCosetMeasures.sUp U)) * algebraMap (D.s.atP p).Fp (D.s.atP p).E …`. Rewrite using `[div_eq_mul_one_div, ← hup, map_mul, map_add, ← hyP]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [sgLo_eq, sgUp_eq, map_neg]`. Conclude with `congrArg Neg.neg key`.
+A detailed English derivation is pending.
 -/
 theorem phaseLoc_L (hA : ∀ p, Agree δ M p) {γ : TermDef.Term D u u' F0 what₂} {w : Point D.host.E (D.R.rS + 1)}
     {F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)} {L U : PairVal.MatR D} (hN : PairVal.NormRep γ w F' L U)
@@ -339,7 +339,7 @@ def PhaseLocG : Prop :=
       (D.s.atP p).psiE ((D.s.atP p).ιE (-((PairVal.sgLo L + PairVal.sgUp U) / ((gS D : ℕ) : D.host.E))))
 
 /- English proof (translation)
-Introduce `γ w F' L U hrel hgen hN p`. Distinguish the cases in `h : (M p).split = none`. Conclude with `phaseLoc_L hA hN p h`. Conclude with `hG γ w F' L U hrel hgen hN p h`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem phaseLoc_of (hA : ∀ p, Agree δ M p) (hG : PhaseLocG M δ u u' F0 what₂) : PhaseLoc M δ u u' F0 what₂ := by
   intro γ w F' L U hrel hgen hN p

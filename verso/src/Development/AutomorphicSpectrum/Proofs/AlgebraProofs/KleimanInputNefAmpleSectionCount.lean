@@ -7,7 +7,7 @@ import Development.WeilBound.CoreStatements.HodgeTatePoints.KTwins
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `PositivityTheory.HtPt.Ktw.k_twins` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FHodgeTatePoints%2FKTwins.lean&line=40#L40)
 -/

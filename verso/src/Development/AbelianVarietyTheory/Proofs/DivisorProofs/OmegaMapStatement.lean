@@ -26,14 +26,14 @@ def lin {s : Fin r → Γ(F, U)} (hs : GlobalTheory.VB.IsFrame s) (t : Fin r →
   (hs.basis h).constr Γ(X, V) fun i => resM G h (t i)
 
 /- English proof (translation)
-The claim follows from `(hs.basis h).constr_apply_fintype _ _ σ`.
+A detailed English derivation is pending.
 -/
 theorem lin_apply {s : Fin r → Γ(F, U)} (hs : GlobalTheory.VB.IsFrame s) (t : Fin r → Γ(G, U)) {V : X.Opens} (h : V ≤ U)
     (σ : Γ(F, V)) : lin hs t h σ = ∑ i, (hs.basis h).repr σ i • resM G h (t i) :=
   (hs.basis h).constr_apply_fintype _ _ σ
 
 /- English proof (translation)
-Rewrite using `[← hs.basis_apply h]`. Conclude with `(hs.basis h).constr_basis _ _ i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_frame {s : Fin r → Γ(F, U)} (hs : GlobalTheory.VB.IsFrame s) (t : Fin r → Γ(G, U)) {V : X.Opens} (h : V ≤ U)
     (i : Fin r) : lin hs t h (resM F h (s i)) = resM G h (t i) := by
@@ -41,7 +41,7 @@ theorem lin_frame {s : Fin r → Γ(F, U)} (hs : GlobalTheory.VB.IsFrame s) (t :
   exact (hs.basis h).constr_basis _ _ i
 
 /- English proof (translation)
-Rewrite using `[lin_apply, lin_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[resM_smul, resM_resM, hs.repr_resM h h']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lin_resM {s : Fin r → Γ(F, U)} (hs : GlobalTheory.VB.IsFrame s) (t : Fin r → Γ(G, U)) {V V' : X.Opens} (h : V ≤ U)
     (h' : V' ≤ V) (σ : Γ(F, V)) : resM G h' (lin hs t h σ) = lin hs t (h'.trans h) (resM F h' σ) := by
@@ -50,15 +50,13 @@ theorem lin_resM {s : Fin r → Γ(F, U)} (hs : GlobalTheory.VB.IsFrame s) (t : 
   rw [resM_smul, resM_resM, hs.repr_resM h h']
 
 /- English proof (translation)
-Establish `nat {V W : X.Opens} (h : W ≤ V) {σ : Γ(F, V)} {τ : Γ(G, V)} (k : resM G inf_le_left τ = lin hs s' (inf_le_right : V ⊓ U ≤ U) (resM F inf_le_left σ)) : resM G inf_le_left (resM G h τ) = lin hs s' (inf_le_right : W ⊓ U ≤ U) (resM F inf_le_left (resM F h σ))`. Establish `k'` using `congrArg (resM G (inf_le_inf_right U h)) k`. Rewrite `k'` using `[lin_resM, resM_resM, resM_resM]`. Rewrite using `[resM_resM, resM_resM]`. Conclude with `k'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ex (V : X.Opens) (σ : Γ(F, V)) : ∃ τ : Γ(G, V), resM G inf_le_left τ = lin hs s' (inf_le_right : V ⊓ U ≤ U) (resM F inf_le_left σ)`. Establish `loc (x : V) : ∃ (W : X.Opens) (h : W ≤ V) (τ : Γ(G, W)), x.1 ∈ W ∧ resM G inf_le_left τ = lin hs s' (inf_le_right : W ⊓ U ≤ U) (resM F inf_le_left (resM F h σ))`. Take `⟨W, e, t, hx, he, ht⟩` from `H x`. Use `⟨V ⊓ W, inf_le_left, ∑ j, (he.basis inf_le_right).repr (resM F inf_le_left σ) j • resM G inf_le_right (t j), ⟨x.2, hx⟩, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← (he.basis (inf_le_right : V ⊓ W ≤ W)).sum_repr (resM F inf_le_left σ)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_sum, resM_smul, map_smul, GlobalTheory.VB.IsFrame.basis_apply, nat inf_le_right (ht _)]`. Use `choose W hW τ hx hτ using loc`. Establish `hc : V ≤ iSup W` using `fun x hxV => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hxV⟩, hx _⟩`. Take `⟨t, ht⟩` from `exists_sec_of_cover W hW hc τ fun x y => resM_inj hG hU (by`. Rewrite using `[nat inf_le_left (hτ x), nat inf_le_right (hτ y), resM_resM, resM_resM, resM_resM, resM_resM])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨t, sec_ext_of_cover (fun x => W x ⊓ U) (fun x => inf_le_inf_right U (hW x)) (fun x hxV => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hxV.1⟩, hx _, hxV.2⟩) fun x => ?_⟩` and prove the remaining obligations. Establish `k` using `hτ x`. Rewrite `k` using `[← ht x, resM_resM, resM_resM]`. Rewrite using `[lin_resM, resM_resM, resM_resM]`. Conclude with `k`.
-
-Use `choose u hu using ex`. Use `⟨GlobalTheory.LB.homOfLinear (fun V => { toFun := u V map_add' := fun a b => resM_inj hG hU (by simp only [map_add, hu]) map_smul' := fun a b => resM_inj hG hU (by simp only [resM_smul, map_smul, hu, RingHom.id_apply]) }) fun h σ => resM_inj hG hU ((hu _ _).trans (nat h (hu _ σ)) …` and prove the remaining obligations. Conclude with `(hu U (s i)).trans (lin_frame hs s' _ i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_hom [IsIntegral X] (hG : GlobalTheory.VB.IsVB G r') (hU : (U : Set X).Nonempty) {s : Fin r → Γ(F, U)}
     (hs : GlobalTheory.VB.IsFrame s) (s' : Fin r → Γ(G, U))
@@ -100,9 +98,9 @@ theorem exists_hom [IsIntegral X] (hG : GlobalTheory.VB.IsVB G r') (hU : (U : Se
   exact (hu U (s i)).trans (lin_frame hs s' _ i)
 
 /- English proof (translation)
-Rewrite using `[lin_apply]`. Simplify using `only [Finset.sum_smul, mul_smul, resM_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.smul_sum, ← Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[← (he'.basis (inf_le_left : V ⊓ U ≤ V)).sum_repr (resM G inf_le_right (s' i))]`. Simplify using `only [GlobalTheory.VB.IsFrame.basis_apply]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem lin_eq_sum {V : X.Opens} {e : Fin r → Γ(F, V)} {e' : Fin r → Γ(G, V)} {s : Fin r → Γ(F, U)}
     {s' : Fin r → Γ(G, U)} (he : GlobalTheory.VB.IsFrame e) (he' : GlobalTheory.VB.IsFrame e') (hs : GlobalTheory.VB.IsFrame s)
@@ -121,11 +119,11 @@ theorem lin_eq_sum {V : X.Opens} {e : Fin r → Γ(F, V)} {e' : Fin r → Γ(G, 
   rfl
 
 /- English proof (translation)
-Use `choose T hT t hxT ht using fun q : Fin r × Fin r => H q.1 q.2`. Take `⟨V', hxV, hle, hV⟩ : ∃ V' : X.Opens, x ∈ V' ∧ V' ≤ V ∧ ∀ q, V' ≤ T q` from `⟨V ⊓ Finset.univ.inf T, ⟨hx, by rw [TopologicalSpace.Opens.coe_finset_inf]; simpa using hxT⟩, inf_le_left, fun q => inf_le_right.trans (Finset.inf_le (Finset.mem_univ q))⟩`. Use `⟨V', _, fun j => ∑ l, resG X (hV (j, l)) (t (j, l)) • resM G hle (e' l), hxV, he.res hle, fun j => ?_⟩` and prove the remaining obligations. Establish `k` using `congrArg (resM G (inf_le_inf_right U hle)) (hA j)`. Rewrite `k` using `[lin_resM, resM_resM]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[resM_resM]`. Use `Eq.trans ?_ k.symm` and prove the remaining obligations. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[resM_smul, resM_smul, resM_resM, resM_resM]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k'` using `congrArg (resG X (inf_le_inf_right U (hV (j, l)))) (ht (j, l))`. Rewrite `k'` using `[GlobalTheory.LB.resG_resG, GlobalTheory.LB.resG_resG]`. Rewrite using `[GlobalTheory.LB.resG_resG, k']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local {V : X.Opens} {e : Fin r → Γ(F, V)} {e' : Fin r → Γ(G, V)} {s : Fin r → Γ(F, U)}
     {s' : Fin r → Γ(G, U)} (he : GlobalTheory.VB.IsFrame e) (hs : GlobalTheory.VB.IsFrame s) {x : X} (hx : x ∈ V)
@@ -152,7 +150,7 @@ theorem exists_local {V : X.Opens} {e : Fin r → Γ(F, V)} {e' : Fin r → Γ(G
   rw [GlobalTheory.LB.resG_resG, k']
 
 /- English proof (translation)
-Use `resM_inj hG hU ?_` and prove the remaining obligations. Rewrite using `[← app_resM, resM_smul, ← (hs.basis (inf_le_right : V ⊓ U ≤ U)).sum_repr (resM F inf_le_left (e i)), ← (hs'.basis (inf_le_right : V ⊓ U ≤ U)).sum_repr (resM G inf_le_left (e' i))]`. Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, GlobalTheory.VB.IsFrame.basis_apply, app_resM, hu, resM_smul, Finset.smul_sum, smul_smul]`. Conclude with `Finset.sum_congr rfl fun j _ => congrArg (· • resM G inf_le_right (s' j)) (H i j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem app_eq [IsIntegral X] (hG : GlobalTheory.VB.IsVB G r') (hU : (U : Set X).Nonempty) {V : X.Opens} {e : Fin r → Γ(F, V)}
     {e' : Fin r → Γ(G, V)} {s : Fin r → Γ(F, U)} {s' : Fin r → Γ(G, U)} (he : GlobalTheory.VB.IsFrame e) (he' : GlobalTheory.VB.IsFrame e')
@@ -182,9 +180,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {x : Fin r → Letter Dw}
 
 /- English proof (translation)
-Set `U : Fin r → TanM y t.G` to `fun i => tanOf (hu.1 (x i).1 (x i).2).1`. Take `rfl` from `(comb_iff U cf v).1 hv`. Use `⟨isTan_tv _, (comb_iff U _ _).2 ?_⟩` and prove the remaining obligations. Establish `e : g • actR t.act a (∑ i, cf i • U i) = ∑ i, (cf i * (g * f (embK c (x i).1 a))) • U i`. Rewrite using `[map_sum, Finset.smul_sum]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, (eig_iff (U i) a _).1 ((hu.1 (x i).1 (x i).2).2 a), smul_smul, smul_smul, mul_comm g, mul_assoc]`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comb_op {f : c.F →+* k} {u : Vecs Dw t k} (hu : GlobalTheory.LocM.IsFrame t f y u) {cf : Fin r → k}
     {v : Sp (DualNumber k) ⟶ t.G.left} (hv : IsCombAtG t y (fun i => u (x i).1 (x i).2) cf v) (g : k) (a : 𝓞 E) :
@@ -201,9 +199,9 @@ theorem comb_op {f : c.F →+* k} {u : Vecs Dw t k} (hu : GlobalTheory.LocM.IsFr
   rfl
 
 /- English proof (translation)
-Set `U : Fin r → TanM y t.G` to `fun i => tanOf (hu.1 (x i).1 (x i).2).1`. Establish `e : ∑ i, cf i • U i = ∑ i, cf' i • U i` using `tan_ext (((comb_iff U cf v).1 hv).symm.trans ((comb_iff U cf' v).1 hv'))`. Set `ε` to `Equiv.ofBijective x hx`. Establish `key (d : Fin r → k) : ∑ i, d i • U i = ∑ q, d (ε.symm q) • tanOf (hu.1 q.1 q.2).1`. Rewrite using `[← ε.sum_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Equiv.symm_apply_apply]`. Both sides reduce to the same expression. Use `(GlobalTheory.TanSec.Frame.exists_unique_coords hu (∑ i, cf i • U i)).unique (key cf) (e.trans (key cf'))` as an intermediate fact. Use function extensionality and compare the values at `i`. Simplify using `using congrFun this (ε i)`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem comb_unique {f : c.F →+* k} {u : Vecs Dw t k} (hu : GlobalTheory.LocM.IsFrame t f y u) (hx : Function.Bijective x)
     {cf cf' : Fin r → k} {v : Sp (DualNumber k) ⟶ t.G.left} (hv : IsCombAtG t y (fun i => u (x i).1 (x i).2) cf v)
@@ -221,11 +219,11 @@ theorem comb_unique {f : c.F →+* k} {u : Vecs Dw t k} (hu : GlobalTheory.LocM.
   simpa using congrFun this (ε i)
 
 /- English proof (translation)
-Establish `h₁` using `(comb_op hu hv 1 a).2`. Establish `h₂` using `(comb_op hu hv (f' (embK c q.1 a)) 1).2`. Establish `e : spMap (epsMul (1 : k)) ≫ u' q.1 q.2 ≫ (t.act.act a).left = spMap (epsMul (f' (embK c q.1 a))) ≫ u' q.1 q.2 ≫ (t.act.act 1).left`. Rewrite using `[(hu'.1 q.1 q.2).2, (hu'.1 q.1 q.2).2, map_one, map_one, ← Category.assoc, ← Category.assoc]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[ModelRelProbe.spMap_comp, ModelRelProbe.spMap_comp]`. Use `congr 1`. Apply the tactic sequence `ext z <;> simp [epsMul]`. Rewrite `h₁` using `[e]`. Use `congrFun (comb_unique hu hx h₁ h₂) i` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_one, one_mul, mul_one] at this`. Rewrite using `[← this, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_eig {f f' : c.F →+* k} {u u' : Vecs Dw t k} (hu : GlobalTheory.LocM.IsFrame t f y u) (hu' : GlobalTheory.LocM.IsFrame t f' y u')
     (hx : Function.Bijective x) {cf : Fin r → k} {q : Letter Dw}
@@ -260,7 +258,7 @@ def eig (h : X ⟶ Z.X) (g : Γ(X, ⊤)) (c : 𝓞 E) (a : Fin Z.m) (q : Letter 
   resG X le_top g * (h.app (Z.U a).1).hom (Z.alg a (embK Z.i.c q.1 c))
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ w ⁻¹ᵁ (h ⁻¹ᵁ (Z.U a).1)` using `fun z hz => l (hV hz)`. Rewrite using `[valF_restrict l hV, eig, valF_mul h', valF_restrict le_top h', h.app_eq_appLE, valF_appLE h _ _ h', ← hφ]`. Conclude with `congrArg _ (valF_fromSpec (Z.U a).2 φ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valF_eig (g : Γ(X, ⊤)) (c : 𝓞 E) {a : Fin Z.m} (q : Letter Dw) {k : Type} [Field k] {w : Sp k ⟶ X}
     {φ : Γ(Z.X, (Z.U a).1) →+* k} (hφ : spMap φ ≫ Z.chart a = w ≫ h) {V : X.Opens} (l : V ≤ h ⁻¹ᵁ (Z.U a).1)
@@ -271,9 +269,9 @@ theorem valF_eig (g : Γ(X, ⊤)) (c : 𝓞 E) {a : Fin Z.m} (q : Letter Dw) {k 
   exact congrArg _ (valF_fromSpec (Z.U a).2 φ _)
 
 /- English proof (translation)
-Use `GlobalTheory.TestPts.ext_chart h hopn fun k _ w _ _ hw => ?_` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `exists_fromSpec (Z.U a).2 (w ≫ h) fun q hq => (hw hq).1`. Take `⟨φ', hφ'⟩` from `exists_fromSpec (Z.U a').2 (w ≫ h) fun q hq => (hw hq).2`. Establish `f` using `chart_frame Z (a := a) hφ`. Establish `f'` using `chart_frame Z (a := a') hφ'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `f`, `f'` using `[Category.assoc]`. Establish `k₁` using `hF.glue k w a a' φ φ' hφ hφ' j`. Establish `k₂` using `congrFun (comb_unique f hx k₁ (hF'.glue k w a a' φ φ' hφ hφ' j)) i`. Establish `k₃` using `comb_eig f f' hx k₁ c i`. Rewrite using `[valF_mul hw, valF_mul hw, valF_eig g c _ hφ _ hw, valF_eig g c _ hφ' _ hw, ← k₂, mul_left_comm, k₃, mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_eig [IsReduced X] (hopn : ToOpen Z h) (hx : Function.Bijective x) (hF : IsLat Z h x true b F s)
     (hF' : IsLat Z h x true b' F' s') (g : Γ(X, ⊤)) (c : 𝓞 E) (a a' : Fin Z.m) (i j : Fin r) :
@@ -291,13 +289,13 @@ theorem coef_eig [IsReduced X] (hopn : ToOpen Z h) (hx : Function.Bijective x) (
   rw [valF_mul hw, valF_mul hw, valF_eig g c _ hφ _ hw, valF_eig g c _ hφ' _ hw, ← k₂, mul_left_comm, k₃, mul_assoc]
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `exists_fromSpec (Z.U a).2 y.gen hy`. Establish `hg : y.gen = (spMap (intO ↥y.C.S).subtype ≫ w) ≫ h` using `by rw [Category.assoc, hw]; rfl`. Establish `hw' : ⊤ ≤ (spMap (intO ↥y.C.S).subtype ≫ w) ⁻¹ᵁ (V ⊓ h ⁻¹ᵁ (Z.U a).1)` using `fun q hq => ⟨hV (Set.mem_univ (spMap (intO ↥y.C.S).subtype q)), by`. Use `hy hq` as an intermediate fact. Rewrite `this` using `[hg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this⟩`. Take `⟨ev, hev⟩` from `exists_ev hw'`. Establish `f` using `chart_frame Z (a := a) hφ`. Take `⟨v, hv⟩` from `GlobalTheory.ChainPts.LatUniq.exists_comb (Y Z.i).t (fun i => (f.1 (x i).1 (x i).2).1) fun i => ev (coef false he' (hF'.frame a) l i)`. Take `⟨k₁, k₂⟩` from `comb_op f hv (valF (spMap (intO ↥y.C.S).subtype ≫ w) ⊤ g) c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `k₃` using `(hF.norm y w hw a φ hφ V e he hV _ _ k₂).1 (hop v k₁ ((hF'.norm y w hw a φ hφ V e' he' hV _ v hv).2 fun m => by`. Simplify using `only [hev, ← map_mul, ← map_sum, mul_comm (coef false _ _ _ _), coef_mul]`. Apply the tactic sequence `split_ifs <;> simp)) j`. Rewrite using `[hev, map_sum]`. Use `k₃ using 3 with i` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, ← hev (resG _ _ _), valF_eig g c _ (hφ.trans hg) _ hw', hev]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_le (hF : IsLat Z h x true b F s) (hF' : IsLat Z h x true b' F' s') (g : Γ(X, ⊤)) (c : 𝓞 E) (a : Fin Z.m)
     {V : X.Opens} {e : Fin r → Γ(F, V)} {e' : Fin r → Γ(F', V)} (he : GlobalTheory.VB.IsFrame e) (he' : GlobalTheory.VB.IsFrame e')
@@ -332,9 +330,9 @@ theorem norm_le (hF : IsLat Z h x true b F s) (hF' : IsLat Z h x true b' F' s') 
 end Model
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ Z hp hW _ B hN h hopn r x hx b b' F F' s s' vF vF' hF hF' g c hop`. Take `⟨a₀, ha₀⟩` from `GlobalTheory.TestPts.exists_chart_of_maximal h hopn (η := genericPoint B.X) fun y hy => (hy.antisymm ((genericPoint_spec B.X).specializes (Set.mem_univ y))).eq`. Establish `ha : ((h ⁻¹ᵁ (Z.U a₀).1 : B.X.Opens) : Set B.X).Nonempty` using `⟨_, ha₀⟩`. Take `⟨u, hu⟩` from `exists_hom vF' ha (hF.frame a₀) (fun i => eig h g c a₀ (x i) • s' a₀ i) fun z => by`. Take `⟨z₀, hz, hz₀⟩` from `GlobalTheory.TestPts.exists_special_V hp hW B z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, e, e', hxV, he, he'⟩` from `exists_frames vF vF' z₀`. Take `⟨V', e₂, t, k₁, k₂⟩` from `exists_local he (hF.frame a₀) hxV _ (lin_eq_sum he he' (hF.frame a₀) (hF'.frame a₀) fun i => eig h g c a₀ (x i)) fun j l => exists_ext hp hW hN h ha (U := V) _ (fun y w k₁ k₂ k₃ => norm_le hF hF' g c a₀ he he' j l y w k₁ k₂ k₃ (hop y w k₁)) hxV hz₀`. Conclude with `⟨V', e₂, t, hz.mem_open V'.isOpen k₁, k₂⟩`. Conclude with `⟨u, fun a i => app_eq vF' ha (hF.frame a) (hF'.frame a) (hF.frame a₀) (hF'.frame a₀) (d := fun i => eig h g c a (x i)) hu (coef_eig hopn hx hF hF' g c a a₀) i⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem mapSt : MapSt := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z hp hW _ B hN h hopn r x hx b b' F F' s s' vF vF' hF hF' g c hop

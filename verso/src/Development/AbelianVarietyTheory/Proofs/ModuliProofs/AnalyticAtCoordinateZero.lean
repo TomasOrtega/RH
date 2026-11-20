@@ -25,15 +25,15 @@ abbrev crd0 (t : Fin g → Γ(G.left, U)) {x : Sp ℂ ⟶ X} (a : Over.mk x ⟶ 
   crd U t (pt a) - crd U t (pt (1 : Over.mk x ⟶ G))
 
 /- English proof (translation)
-Set `c : (Fin m → ℂ) → (Fin g → ℂ)` to `fun b => crd U t (pt (1 : Over.mk (y b) ⟶ G))`. Establish `hc : AnalyticAt ℂ c b₀` using `(HolAt.one (G := G) hy).analyticAt_pi hU t`. Set `τ : (Fin m → ℂ) × (Fin g → ℂ) → (Fin m → ℂ) × (Fin g → ℂ)` to `fun q => (q.1, q.2 + c q.1)`. Establish `hτ : AnalyticAt ℂ τ (b₀, 0)` using `analyticAt_fst.prod (analyticAt_snd.add (AnalyticAt.comp (g := c) hc analyticAt_fst))`. Establish `hτ0 : τ (b₀, 0) ∈ N`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hinv b₀ _ (Over.w (1 : Over.mk (y b₀) ⟶ G)) hU hO).1` as an intermediate fact. Simplify `this` using `only [τ, zero_add]`. Set `s : ∀ b, (Fin g → ℂ) → (Over.mk (y b) ⟶ G)` to `fun b w => if h : τ (b, w) ∈ N then Over.homMk (σ (τ (b, w))) (hσN _ h).1 else 1`. Establish `hs : ∀ q, τ q ∈ N → pt (s q.1 q.2) = σ (τ q)` using `fun q hq => by`. Establish `: s q.1 q.2 = Over.homMk (σ (τ q)) (hσN _ hq).1` using `dif_pos hq`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hev : ∀ᶠ q in 𝓝 (b₀, (0 : Fin g → ℂ)), τ q ∈ N` using `hτ.continuousAt.eventually (hN.mem_nhds hτ0)`. Use `⟨s, (HolAt.comp ⟨N, hN, hτ0, hσ⟩ hτ).congr (hev.mono fun q hq => (hs q hq).symm), hev.mono fun q hq => ?_, fun b a ha hf => ?_⟩` and prove the remaining obligations. Establish `: crd U t (pt (s q.1 q.2)) = q.2 + c q.1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hs q hq]`. Conclude with `funext (hσN _ hq).2.2`. Conclude with `sub_eq_iff_eq_add.2 this`. Take `⟨h1, h2⟩` from `hinv b _ (Over.w a) ha hf`. Establish `e : τ (b, crd0 t a) = (b, crd U t (pt a))` using `Prod.ext rfl (sub_add_cancel _ _)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Over.OverMorphism.ext ((hs (b, crd0 t a) (e ▸ h1)).trans ?_)` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_centred_chart (hy : HolAt y b₀) {N : Set ((Fin m → ℂ) × (Fin g → ℂ))}
     {σ : (Fin m → ℂ) × (Fin g → ℂ) → (Sp ℂ ⟶ G.left)} (hN : IsOpen N)
@@ -77,21 +77,21 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensiona
 
 omit [FiniteDimensional ℂ E] in
 /- English proof (translation)
-Simplify `ha.pow 0` using `only [pow_zero]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem HolAt.one_of (ha : HolAt (fun w => pt (a w)) w₀) :
     HolAt (fun w => pt (1 : Over.mk (y (β w)) ⟶ G)) w₀ := by
   simpa only [pow_zero] using ha.pow 0
 
 /- English proof (translation)
-The claim follows from `(ha.analyticAt_pi (by rw [h1]; exact hU) t).sub (ha.one_of.analyticAt_pi hU t)`.
+A detailed English derivation is pending.
 -/
 theorem HolAt.analyticAt_coordinate_zero (ha : HolAt (fun w => pt (a w)) w₀) (h1 : a w₀ = 1)
     (hU : ⊤ ≤ pt (1 : Over.mk (y (β w₀)) ⟶ G) ⁻¹ᵁ U) : AnalyticAt ℂ (fun w => crd0 t (a w)) w₀ :=
   (ha.analyticAt_pi (by rw [h1]; exact hU) t).sub (ha.one_of.analyticAt_pi hU t)
 
 /- English proof (translation)
-Establish `hU' : ⊤ ≤ pt (a w₀) ⁻¹ᵁ U` using `by rw [h1]; exact hU`. Use `(ha.eventually_mem hU').and ((hβ.prodMk (ha.analyticAt_pi hU' f).continuousAt).eventually (hOo.mem_nhds ?_))` and prove the remaining obligations. Simplify `hO` using `only [h1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem HolAt.eventually_near (ha : HolAt (fun w => pt (a w)) w₀) (hβ : ContinuousAt β w₀) (h1 : a w₀ = 1)
     (hOo : IsOpen O) (hU : ⊤ ≤ pt (1 : Over.mk (y (β w₀)) ⟶ G) ⁻¹ᵁ U)
@@ -105,17 +105,15 @@ theorem HolAt.eventually_near (ha : HolAt (fun w => pt (a w)) w₀) (hβ : Conti
 end Family
 
 /- English proof (translation)
-Establish `hs0 : ∀ᶠ b in 𝓝 b₀, s b 0 = 1` using `by filter_upwards [HolAt.eventually_near (β := fun b => b) (a := fun _ => 1) (HolAt.one hy) continuousAt_id rfl hOo hU hO] with b hb`. Simplify `hs3 b 1 hb.1 hb.2` using `only [crd0, sub_self]`. Establish `hprod : HolAt (fun q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => pt (s q.1 q.2.1 * s q.1 q.2.2)) (b₀, 0, 0)`. Establish `k1` using `HolAt.comp (φ := fun q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => (q.1, q.2.1)) (v₀ := (b₀, 0, 0)) hs1 (analyticAt_fst.prod (analyticAt_fst.comp analyticAt_snd))`. Establish `k2` using `HolAt.comp (φ := fun q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => (q.1, q.2.2)) (v₀ := (b₀, 0, 0)) hs1 (analyticAt_fst.prod (analyticAt_snd.comp analyticAt_snd))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `HolAt.mul (y := fun q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => y q.1) (a := fun q => s q.1 q.2.1) (b := fun q => s q.1 q.2.2) k1 k2`. Establish `h11 : s b₀ 0 * s b₀ 0 = 1` using `by rw [hs0.self_of_nhds, _root_.mul_one]`. Set `M : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) → (Fin g → ℂ)` to `fun q => crd0 t (s q.1 q.2.1 * s q.1 q.2.2)`. Establish `hMa : AnalyticAt ℂ M (b₀, 0, 0)` using `HolAt.analyticAt_coordinate_zero (β := fun q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => q.1) (a := fun q => s q.1 q.2.1 * s q.1 q.2.2) hprod h11 hU`. Establish `hM : ∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) in 𝓝 (b₀, 0, 0), s q.1 (M q) = s q.1 q.2.1 * s q.1 q.2.2` using `(HolAt.eventually_near (β := fun q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => q.1) (a := fun q => s q.1 q.2.1 * s q.1 q.2.2) hprod continuousAt_fst h11 hOo hU hO).mono fun q hq => hs3 _ _ hq.1 hq.2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨E, L, hE, hL, h0, hLE, hadd⟩` from `hexp m g b₀ M hMa (by filter_upwards [hs2, (continuous_fst.tendsto (b₀, (0 : Fin g → ℂ))).eventually hs0] with q h1 h2 show crd0 t (s q.1 q.2 * s q.1 0) = q.2`. Rewrite using `[h2, _root_.mul_one, h1])`. Use the proof step `(Eventually.of_forall fun q => by simp only [M, mul_comm]) (by`. Establish `t1` using `Continuous.tendsto (f := fun q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => (q.1, q.2.1, q.2.2.1)) (by fun_prop) (b₀, 0, 0, 0)`. Establish `t2` using `Continuous.tendsto (f := fun q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => (q.1, q.2.2.1, q.2.2.2)) (by fun_prop) (b₀, 0, 0, 0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [t1.eventually hM, t2.eventually hM] with q h1 h2`. Use `show crd0 t (s q.1 (M _) * s q.1 q.2.2.2) = crd0 t (s q.1 q.2.1 * s q.1 (M _))`. Rewrite using `[h1, h2, _root_.mul_assoc])`. Use `⟨E, L, hE, hL, h0, hLE, ?_⟩` and prove the remaining obligations. Establish `hEt : Tendsto E (𝓝 (b₀, 0)) (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hE.continuousAt.tendsto` as an intermediate fact. Rewrite `this` using `[h0.self_of_nhds.1]`. Then use the resulting hypothesis. Establish `t1` using `Continuous.tendsto (f := fun q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => (q.1, q.2.1)) (by fun_prop) (b₀, 0, 0)`. Establish `t2` using `Continuous.tendsto (f := fun q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => (q.1, q.2.2)) (by fun_prop) (b₀, 0, 0)`. Establish `t3` using `((continuous_fst.tendsto (b₀, (0 : Fin g → ℂ), (0 : Fin g → ℂ))).prodMk_nhds ((hEt.comp t1).prodMk_nhds (hEt.comp t2)))`.
-
-Use `filter_upwards [hadd, t3.eventually hM] with q h1 h2`. Rewrite using `[h1]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_exp [IsCommMonObj G]
     (hexp : ∀ (m g : ℕ) (b₀ : Fin m → ℂ) (M : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) → (Fin g → ℂ)), AnalyticAt ℂ M (b₀, 0, 0) → (∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) in nhds (b₀, 0), M (q.1, q.2, 0) = q.2) → (∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) in nhds (b₀, 0, 0), M (q.1, q.2.1, q.2.2) = M (q.1, q.2.2, q.2.1)) → (∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) in nhds (b₀, 0, 0, 0), M (q.1, M (q.1, q.2.1, q.2.2.1), q.2.2.2) = M (q.1, q.2.1, M (q.1, q.2.2.1, q.2.2.2))) → ∃ E L : (Fin m → ℂ) × (Fin g → ℂ) → (Fin g → ℂ), AnalyticAt ℂ E (b₀, 0) ∧ AnalyticAt ℂ L (b₀, 0) ∧ (∀ᶠ b in nhds b₀, E (b, 0) = 0 ∧ HasFDerivAt (fun v => E (b, v)) (ContinuousLinearMap.id ℂ (Fin g → ℂ)) 0) ∧ (∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) in nhds (b₀, 0), L (q.1, E q) = q.2 ∧ E (q.1, L q) = q.2) ∧ ∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) in nhds (b₀, 0, 0), E (q.1, q.2.1 + q.2.2) = M (q.1, E (q.1, q.2.1), E (q.1, q.2.2)))
@@ -178,31 +176,29 @@ theorem exists_local_exp [IsCommMonObj G]
   exact h2
 
 /- English proof (translation)
-Take `⟨E, L, hE, hL, h0, hLE, hadd⟩` from `exists_local_exp hexp hy hOo hU hO hs1 hs2 hs3`. Establish `hE0 : E (b₀, 0) = 0` using `h0.self_of_nhds.1`. Establish `hL0 : L (b₀, 0) = 0`. Use `hLE.self_of_nhds.1` as an intermediate fact. Rewrite `this` using `[hE0]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hτ : AnalyticAt ℂ (fun q : (Fin m → ℂ) × (Fin g → ℂ) => (q.1, E q)) (b₀, 0)` using `analyticAt_fst.prod hE`. Establish `hψ : HolAt (fun q : (Fin m → ℂ) × (Fin g → ℂ) => pt (s q.1 (E q))) (b₀, 0)`. Use `HolAt.comp (a := fun q : (Fin m → ℂ) × (Fin g → ℂ) => pt (s q.1 q.2)) (φ := fun q : (Fin m → ℂ) × (Fin g → ℂ) => (q.1, E q)) (v₀ := (b₀, 0)) (by simpa only [hE0] using hs1) hτ` as an intermediate fact. Conclude with `this`. Establish `hcE : ∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) in 𝓝 (b₀, 0), crd0 t (s q.1 (E q)) = E q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hτ.continuousAt.tendsto` as an intermediate fact. Simplify using `only [hE0] at this`. Conclude with `this.eventually hs2`. Take `⟨r₁, hr₁, h₁⟩` from `Metric.eventually_nhds_iff_ball.1 (hψ.eventually.and (hcE.and hLE))`. Take `⟨r₂, hr₂, h₂⟩` from `Metric.eventually_nhds_iff_ball.1 hadd`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : 0 < min r₁ r₂` using `lt_min hr₁ hr₂`. Use `set r := min r₁ r₂ with hrdef`. Establish `k₁ : ∀ b ∈ Metric.ball b₀ r, ∀ v ∈ Metric.ball (0 : Fin g → ℂ) r, _` using `fun b hb v hv => h₁ (b, v) (Metric.ball_subset_ball (min_le_left _ _) (by rw [← ball_prod_same]; exact ⟨hb, hv⟩))`. Establish `hex : ∀ b, ∃ ε : (Fin g → ℂ) →+ Additive (Over.mk (y b) ⟶ G), b ∈ Metric.ball b₀ r → ∀ v ∈ Metric.ball (0 : Fin g → ℂ) r, (ε v).toMul = s b (E (b, v))`. Introduce `b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Distinguish the cases in `hb : b ∈ Metric.ball b₀ r`. Take `⟨ε, hε⟩` from `exists_addMonoidHom_eqOn_ball (g := fun v => Additive.ofMul (s b (E (b, v)))) hr fun v hv v' hv' => congrArg Additive.ofMul (h₂ (b, v, v') (Metric.ball_subset_ball (min_le_right _ _) (by rw [← ball_prod_same, ← ball_prod_same]; exact ⟨hb, hv, hv'⟩)))`. Conclude with `⟨ε, fun _ v hv => congrArg Additive.toMul (hε v hv)⟩`. Conclude with `⟨0, fun h => absurd h hb⟩`. Use `choose ε hε using hex`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Q, hQ, hQo, hQ0⟩` from `eventually_nhds_iff.1 (hL.eventually_analyticAt.and (hLE.and (((continuous_fst.tendsto (b₀, (0 : Fin g → ℂ))).eventually (Metric.ball_mem_nhds b₀ hr)).and (hL.continuousAt.eventually (by rw [hL0]; exact Metric.ball_mem_nhds 0 hr)))))`. Establish `hQb : ∀ᶠ b in 𝓝 b₀, (b, (0 : Fin g → ℂ)) ∈ Q` using `(Continuous.tendsto (f := fun b : Fin m → ℂ => (b, (0 : Fin g → ℂ))) (by fun_prop) b₀).eventually (hQo.mem_nhds hQ0)`. Take `⟨B', hB', hB'o, hB'0⟩` from `eventually_nhds_iff.1 (Filter.Eventually.and hB (h0.and (hQb.and (HolAt.eventually_near (β := fun b => b) (a := fun _ => 1) (HolAt.one hy) continuousAt_id rfl hOo hU hO))))`. Use `⟨B', fun b v => (ε b v).toMul, r, Q, L, hB'o, hB'0, fun b hb => (hB' b hb).1, hr, hQo, fun b z w => congrArg Additive.toMul ((ε b).map_add z w), fun b hb => ?_, fun b a ha hf hq => ?_⟩` and prove the remaining obligations. Take `⟨-, ⟨hEb, hEd⟩, hbQ, hbU, hbO⟩` from `hB' b hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hbr : b ∈ Metric.ball b₀ r` using `(hQ _ hbQ).2.2.1`. Establish `hLb : L (b, 0) = 0`. Use `(hQ _ hbQ).2.1.1` as an intermediate fact. Rewrite `this` using `[hEb]`. Then use the resulting hypothesis. Use `⟨fun z => ?_, hbU, hbO, hbQ, ?_, hLb, (hQ _ hbQ).1, fun z hz h1 => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `exists_nat_gt (‖z‖ / r)`. Establish `hk0 : (0 : ℝ) < k` using `lt_of_le_of_lt (by positivity) hk`. Establish `hkc : (k : ℂ) ≠ 0` using `by exact_mod_cast hk0.ne'`. Establish `hz : (k : ℂ)⁻¹ • z ∈ Metric.ball (0 : Fin g → ℂ) r`. Rewrite using `[mem_ball_zero_iff, norm_smul, norm_inv, Complex.norm_natCast, inv_mul_lt_iff₀ hk0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hk` using `[div_lt_iff₀ hr]`. Then use the resulting hypothesis. Establish `hφ : AnalyticAt ℂ (fun q : (Fin m → ℂ) × (Fin g → ℂ) => (q.1, (k : ℂ)⁻¹ • q.2)) (b, z)` using `analyticAt_fst.prod (analyticAt_snd.const_smul (c := (k : ℂ)⁻¹))`. Establish `h0'` using `HolAt.comp (φ := fun q : (Fin m → ℂ) × (Fin g → ℂ) => (q.1, (k : ℂ)⁻¹ • q.2)) (v₀ := (b, z)) (k₁ b hbr _ hz).1 hφ`. Establish `h1` using `(HolAt.pow (y := fun q : (Fin m → ℂ) × (Fin g → ℂ) => y q.1) (a := fun q => s q.1 (E (q.1, (k : ℂ)⁻¹ • q.2))) h0' k)`. Use `h1.congr ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [hφ.continuousAt.eventually (prod_mem_nhds (Metric.isOpen_ball.mem_nhds hbr) (Metric.isOpen_ball.mem_nhds hz))] with q hq`. Rewrite using `[← hε q.1 hq.1 _ hq.2, ← toMul_nsmul, ← map_nsmul, ← Nat.cast_smul_eq_nsmul ℂ, smul_inv_smul₀ hkc]`. Use `(hEd.add_const (crd U t (pt (1 : Over.mk (y b) ⟶ G)))).congr_of_eventuallyEq ?_ filter_upwards [Metric.ball_mem_nhds (0 : Fin g → ℂ) hr] with v hv` and prove the remaining obligations. Rewrite using `[hε b hbr v hv]`. Conclude with `sub_eq_iff_eq_add.1 (k₁ b hbr v hv).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hz'` using `mem_ball_zero_iff.2 hz`. Establish `h2` using `(k₁ b hbr z hz').2`. Establish `h3 : s b (E (b, z)) = 1` using `(hε b hbr z hz').symm.trans h1`. Establish `h4 : E (b, z) = 0`. Rewrite using `[← h2.1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h3, crd0, sub_self]`. Establish `h5` using `h2.2.1`. Simplify using `only [h4, hLb] at h5`. Conclude with `h5.symm`. Take `⟨-, h1, h2, h3⟩` from `hQ _ hq`.
-
-Use `(hε b h2 _ h3).trans ?_` and prove the remaining obligations. Rewrite using `[h1.2]`. Conclude with `hs3 b a ha hf`.
+A detailed English derivation is pending.
 -/
 theorem exists_global_exp [IsCommMonObj G]
     (hexp : ∀ (m g : ℕ) (b₀ : Fin m → ℂ) (M : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) → (Fin g → ℂ)), AnalyticAt ℂ M (b₀, 0, 0) → (∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) in nhds (b₀, 0), M (q.1, q.2, 0) = q.2) → (∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) in nhds (b₀, 0, 0), M (q.1, q.2.1, q.2.2) = M (q.1, q.2.2, q.2.1)) → (∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) in nhds (b₀, 0, 0, 0), M (q.1, M (q.1, q.2.1, q.2.2.1), q.2.2.2) = M (q.1, q.2.1, M (q.1, q.2.2.1, q.2.2.2))) → ∃ E L : (Fin m → ℂ) × (Fin g → ℂ) → (Fin g → ℂ), AnalyticAt ℂ E (b₀, 0) ∧ AnalyticAt ℂ L (b₀, 0) ∧ (∀ᶠ b in nhds b₀, E (b, 0) = 0 ∧ HasFDerivAt (fun v => E (b, v)) (ContinuousLinearMap.id ℂ (Fin g → ℂ)) 0) ∧ (∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) in nhds (b₀, 0), L (q.1, E q) = q.2 ∧ E (q.1, L q) = q.2) ∧ ∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) in nhds (b₀, 0, 0), E (q.1, q.2.1 + q.2.2) = M (q.1, E (q.1, q.2.1), E (q.1, q.2.2)))

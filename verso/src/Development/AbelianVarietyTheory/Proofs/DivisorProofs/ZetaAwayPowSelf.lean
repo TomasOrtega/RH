@@ -23,13 +23,13 @@ def SympCond {b : Base D R} {N : ℕ} {S : Scheme.{0}} {t : S ⟶ Sp R} (o : Obj
         ((Over.homMk x rfl : Over.mk (x ≫ T.hom) ⟶ T) ≫ lv c) (unitOn (z ^ (2 * omegaStd a c)))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simpa [zetaAway, zeta] using (Complex.isPrimitiveRoot_exp M hM).pow_eq_one)`.
+A detailed English derivation is pending.
 -/
 theorem zetaAway_pow_self (M : ℕ) (hM : M ≠ 0) : zetaAway M ^ M = 1 :=
   Subtype.ext (by simpa [zetaAway, zeta] using (Complex.isPrimitiveRoot_exp M hM).pow_eq_one)
 
 /- English proof (translation)
-Rewrite `h` using `[ZMod.natCast_eq_natCast_iff']`. Rewrite using `[← Nat.div_add_mod k M, ← Nat.div_add_mod k' M, pow_add, pow_add, pow_mul, pow_mul, zetaAway_pow_self M hM, one_pow, one_pow, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem zetaAway_pow_eq (M : ℕ) (hM : M ≠ 0) {k k' : ℕ} (h : (k : ZMod M) = k') :
     zetaAway M ^ k = zetaAway M ^ k' := by
@@ -38,9 +38,9 @@ theorem zetaAway_pow_eq (M : ℕ) (hM : M ≠ 0) {k k' : ℕ} (h : (k : ZMod M) 
     one_pow, one_pow, h]
 
 /- English proof (translation)
-Set `i : Fin h` to `⟨0, hh⟩`. Establish `e1` using `hn (Pi.single (.inl i) 1) (Pi.single (.inr i) 1)`. Establish `e2` using `hn' (Pi.single (.inl i) 1) (Pi.single (.inr i) 1)`. Establish `h1 : omegaMod M (Pi.single (Sum.inl i) (1 : ZMod M)) (Pi.single (Sum.inr i) 1) = 1`. Simplify using `[omegaMod, Pi.single_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e1`, `e2` using `[h1, _root_.mul_one]`. Rewrite using `[← e1, ← e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMultOf_unique {h M : ℕ} (hh : 1 ≤ h) {a : sympSimGrp h M} {n n' : ℕ} (hn : IsMultOf a n)
     (hn' : IsMultOf a n') : (n : ZMod M) = n' := by

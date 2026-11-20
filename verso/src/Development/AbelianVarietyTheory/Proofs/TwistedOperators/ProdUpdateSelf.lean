@@ -11,7 +11,7 @@ namespace GlobalTheory.TensorContraction
 variable {ι : Type} [Fintype ι] {K : ι → Type} [∀ i, AddCommGroup (K i)] [∀ i, Module ℂ (K i)]
 
 /- English proof (translation)
-Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hk' : k ≠ j` using `fun e => hj (e ▸ hk)`. Rewrite using `[Function.update_of_ne hk']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_update_self [d : DecidableEq ι] (φ : ∀ j, K j →ₗ[ℂ] ℂ) (s : Finset ι) (j : ι) (hj : j ∉ s)
     (v : ∀ k, K k) (x : K j) :
@@ -21,7 +21,7 @@ theorem prod_update_self [d : DecidableEq ι] (φ : ∀ j, K j →ₗ[ℂ] ℂ) 
   rw [Function.update_of_ne hk']
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase s _ hj, Function.update_self, prod_update_self φ (s.erase j) j (Finset.notMem_erase j s) v x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_update_mem [d : DecidableEq ι] (φ : ∀ j, K j →ₗ[ℂ] ℂ) (s : Finset ι) (j : ι) (hj : j ∈ s)
     (v : ∀ k, K k) (x : K j) :
@@ -50,7 +50,7 @@ def contrL (φ : ∀ j, K j →ₗ[ℂ] ℂ) (i : ι) : (⨂[ℂ] j, K j) →ₗ
     fun j h => Finset.mem_erase.2 ⟨h, Finset.mem_univ j⟩)
 
 /- English proof (translation)
-Rewrite using `[contrL, PiTensorProduct.lift.tprod]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem contrL_tprod (φ : ∀ j, K j →ₗ[ℂ] ℂ) (i : ι) (v : ∀ j, K j) :
     contrL φ i (PiTensorProduct.tprod ℂ v) = (∏ k ∈ Finset.univ.erase i, φ k (v k)) • v i := by
@@ -58,7 +58,7 @@ theorem contrL_tprod (φ : ∀ j, K j →ₗ[ℂ] ℂ) (i : ι) (v : ∀ j, K j)
   rfl
 
 /- English proof (translation)
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Use `MultilinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, position_tprod, contrL_tprod]`. Rewrite using `[prod_update_self φ _ i (Finset.notMem_erase i _), Function.update_self, map_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem contrL_comp_mapFactor (φ : ∀ j, K j →ₗ[ℂ] ℂ) (i : ι) (f : Module.End ℂ (K i)) :
     contrL φ i ∘ₗ intersection_update_fsHerm_neg_one i f = f ∘ₗ contrL φ i := by
@@ -68,9 +68,9 @@ theorem contrL_comp_mapFactor (φ : ∀ j, K j →ₗ[ℂ] ℂ) (i : ι) (f : Mo
   rw [prod_update_self φ _ i (Finset.notMem_erase i _), Function.update_self, map_smul]
 
 /- English proof (translation)
-Set `b : ∀ j, Module.Basis (Module.Basis.ofVectorSpaceIndex ℂ (K j)) ℂ (K j)` to `fun j => Module.Basis.ofVectorSpace ℂ (K j)`. Set `B` to `Basis.piTensorProduct b`. Use `B.forall_coord_eq_zero_iff.1 fun p => ?_` and prove the remaining obligations. Set `φ : ∀ j, K j →ₗ[ℂ] ℂ` to `fun j => (b j).coord (p j)`. Establish `key : B.coord p = (b i).coord (p i) ∘ₗ contrL φ i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Use `MultilinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, contrL_tprod, map_smul, smul_eq_mul, Module.Basis.coord_apply, B, Basis.piTensorProduct_repr_tprod_apply, φ]`. Rewrite using `[Finset.prod_erase_mul _ _ (Finset.mem_univ i)]`. Rewrite using `[key, LinearMap.comp_apply, h φ, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eq_zero_of_contrL_eq_zero (i : ι) (z : ⨂[ℂ] j, K j)
     (h : ∀ φ : ∀ j, K j →ₗ[ℂ] ℂ, contrL φ i z = 0) : z = 0 := by
@@ -88,7 +88,7 @@ private theorem eq_zero_of_contrL_eq_zero (i : ι) (z : ⨂[ℂ] j, K j)
   rw [key, LinearMap.comp_apply, h φ, map_zero]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Conclude with `eq_zero_of_contrL_eq_zero i (x - y) fun φ => by rw [map_sub, h φ, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_contrL (i : ι) (x y : ⨂[ℂ] j, K j) (h : ∀ φ : ∀ j, K j →ₗ[ℂ] ℂ, contrL φ i x = contrL φ i y) :
     x = y := by
@@ -96,11 +96,11 @@ theorem eq_of_contrL (i : ι) (x y : ⨂[ℂ] j, K j) (h : ∀ φ : ∀ j, K j �
   exact eq_zero_of_contrL_eq_zero i (x - y) fun φ => by rw [map_sub, h φ, sub_self]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [PiTensorProduct.map_id]`. Consider the case `insert a s ha ih`. Establish `e : (fun j => if j ∈ insert a s then p j else (LinearMap.id : Module.End ℂ (K j))) = fun j => Function.update (fun j => (LinearMap.id : K j →ₗ[ℂ] K j)) a (p a) j ∘ₗ (if j ∈ s then p j else LinearMap.id)`. Use function extensionality and compare the values at `j`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hj : j = a`. Substitute `hj` using the available equality. Simplify using `[ha]`. Simplify using `[hj]`. Rewrite using `[e, PiTensorProduct.map_comp, LinearMap.comp_apply, ih]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h a`.
+A detailed English derivation is pending.
 -/
 private theorem piTensorProduct_map_ite_eq_self_of_slot_fixed (p : ∀ j, Module.End ℂ (K j)) (x : ⨂[ℂ] j, K j)
     (h : ∀ i, intersection_update_fsHerm_neg_one i (p i) x = x) (s : Finset ι) :
@@ -120,18 +120,18 @@ private theorem piTensorProduct_map_ite_eq_self_of_slot_fixed (p : ∀ j, Module
     exact h a
 
 /- English proof (translation)
-Simplify using `using piTensorProduct_map_ite_eq_self_of_slot_fixed p x h Finset.univ`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_eq_self (p : ∀ j, Module.End ℂ (K j)) (x : ⨂[ℂ] j, K j) (h : ∀ i, intersection_update_fsHerm_neg_one i (p i) x = x) :
     PiTensorProduct.map p x = x := by
   simpa using piTensorProduct_map_ite_eq_self_of_slot_fixed p x h Finset.univ
 
 /- English proof (translation)
-Establish `hN : ∀ i, ∀ φ : ∀ j, K j →ₗ[ℂ] ℂ, contrL φ i x ∈ N i` using `fun i φ => h i (contrL φ i) (contrL_comp_mapFactor φ i)`. Use `choose g hg using fun i => LinearMap.exists_leftInverse_of_injective (N i).subtype (N i).ker_subtype`. Set `P : ∀ i, Module.End ℂ (K i)` to `fun i => (N i).subtype ∘ₗ g i`. Establish `hP : ∀ i, ∀ v ∈ N i, P i v = v` using `fun i v hv => by`. Use `congrArg (fun f => (N i).subtype (f ⟨v, hv⟩)) (hg i)` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[P]`. Establish `hfix : ∀ i, intersection_update_fsHerm_neg_one i (P i) x = x` using `fun i => eq_of_contrL i _ _ fun φ => by`. Rewrite using `[← LinearMap.comp_apply (contrL φ i), contrL_comp_mapFactor, LinearMap.comp_apply, hP i _ (hN i φ)]`. Rewrite using `[LinearMap.mem_range]`. Use `⟨PiTensorProduct.map g x, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.comp_apply, ← PiTensorProduct.map_comp]`. Conclude with `map_eq_self P x hfix`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_map (ι : Type) [Fintype ι] (K : ι → Type) [∀ i, AddCommGroup (K i)] [∀ i, Module ℂ (K i)]
     (N : ∀ i, Submodule ℂ (K i)) (x : ⨂[ℂ] i, K i)

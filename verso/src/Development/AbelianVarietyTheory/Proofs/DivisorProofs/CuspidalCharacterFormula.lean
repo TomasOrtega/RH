@@ -13,7 +13,7 @@ variable {g : ℕ} [Fact g.Prime]
 open Polynomial in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih`. Rewrite using `[Nat.mul_succ, pow_add, pow_mul, ih, (_root_.GlobalTheory.GoodCharsCompare.frobenius_orbit_degreeOverPrimeFieldFbar y).1]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pow_pow_dg_mul_eq_self (y : _root_.Formalism.CyclotomicNorms.Fbar g) (q : ℕ) :
     y ^ g ^ (_root_.GlobalTheory.GoodCharsCompare.dg y * q) = y := by
@@ -25,9 +25,9 @@ private theorem pow_pow_dg_mul_eq_self (y : _root_.Formalism.CyclotomicNorms.Fba
 open Polynomial in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Establish `hDpos` using `_root_.GlobalTheory.GoodCharsCompare.dg_pos y`. Establish `hd' : y ^ g ^ d = y` using `_root_.GlobalTheory.GoodCharsCompare.pow_g_of hy`. Use `⟨d / _root_.GlobalTheory.GoodCharsCompare.dg y, ?_⟩` and prove the remaining obligations. Establish `hr : y ^ g ^ (d % _root_.GlobalTheory.GoodCharsCompare.dg y) = y ^ g ^ 0`. Rewrite using `[pow_zero, pow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← hd', ← Nat.div_add_mod d (_root_.GlobalTheory.GoodCharsCompare.dg y), pow_add, pow_mul, pow_pow_dg_mul_eq_self]`. Establish `h1` using `(_root_.GlobalTheory.GoodCharsCompare.frobenius_orbit_degreeOverPrimeFieldFbar y).2 _ (Nat.mod_lt _ hDpos) 0 hDpos hr`. Establish `h2` using `Nat.div_add_mod d (_root_.GlobalTheory.GoodCharsCompare.dg y)`. Rewrite `h2` using `[h1, add_zero]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GoodCharsCompare.exists_dg_mul {d : ℕ} (hd : 0 < d) {y : _root_.Formalism.CyclotomicNorms.Fbar g}
     (hy : y ^ (g ^ d - 1) = 1) : ∃ k, d = _root_.GlobalTheory.GoodCharsCompare.dg y * k := by
@@ -44,9 +44,9 @@ theorem _root_.GlobalTheory.GoodCharsCompare.exists_dg_mul {d : ℕ} (hd : 0 < d
   exact h2.symm
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `exists_dg_mul one_pos hy`. Establish `h1 : dg y = 1` using `Nat.eq_one_of_mul_eq_one_right hk.symm`. Take `⟨c, hc⟩` from `minpoly.natDegree_eq_one_iff.1 h1`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hy` using `[← hc, map_zero, zero_pow (g_pow_sub_pos one_pos).ne']`. Conclude with `zero_ne_one hy`. Conclude with `⟨Units.mk0 c hc0, hc⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_pow {y : Fbar g} (hy : y ^ (g ^ 1 - 1) = 1) :
     ∃ c : (ZMod g)ˣ, algebraMap (ZMod g) (Fbar g) c = y := by
@@ -60,15 +60,15 @@ theorem exists_unit_of_pow {y : Fbar g} (hy : y ^ (g ^ 1 - 1) = 1) :
   exact ⟨Units.mk0 c hc0, hc⟩
 
 /- English proof (translation)
-Rewrite using `[← map_pow, pow_one, ZMod.pow_card_sub_one_eq_one c.ne_zero, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_pow (c : (ZMod g)ˣ) : algebraMap (ZMod g) (Fbar g) c ^ (g ^ 1 - 1) = 1 := by
   rw [← map_pow, pow_one, ZMod.pow_card_sub_one_eq_one c.ne_zero, map_one]
 
 /- English proof (translation)
-Establish `key : ∀ {ω ω' : Fbar g →*₀ ℂ}, Function.Injective ω → ∀ x, ∃ z, ω z = ω' x`. Introduce `ω ω' hω x`. Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, by simp [hx]⟩`. Take `⟨z, -, hz⟩` from `exists_preimage hω (dg_pos x) (z := ω' x) (by rw [← map_pow, pow_dg hx, map_one])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z, hz⟩`. Use `choose a ha using key (ω' := ω') hω`. Use `choose a' ha' using key (ω' := ω) hω'`. Conclude with `⟨⟨⟨a, a', fun x => hω' (by rw [ha', ha]), fun x => hω (by rw [ha, ha'])⟩, fun x y => hω (by simp only [ha, map_mul])⟩, ha⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_alpha {ω ω' : Fbar g →*₀ ℂ} (hω : Function.Injective ω) (hω' : Function.Injective ω') :
     ∃ α : Fbar g ≃* Fbar g, ∀ x, ω (α x) = ω' x := by
@@ -84,9 +84,9 @@ theorem exists_alpha {ω ω' : Fbar g →*₀ ℂ} (hω : Function.Injective ω)
     fun x y => hω (by simp only [ha, map_mul])⟩, ha⟩
 
 /- English proof (translation)
-Establish `: NeZero (g ^ d - 1)` using `⟨(g_pow_sub_pos hd).ne'⟩`. Take `⟨φ, u, hu⟩` from `exists_prim (g := g) hd`. Take `⟨a, -, ha⟩` from `hu.eq_pow_of_pow_eq_one (ξ := α (φ u)) (by rw [← map_pow, hu.pow_eq_one, map_one])`. Use `⟨a, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨k, -, rfl⟩` from `hu.eq_pow_of_pow_eq_one hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_pow, ← ha, ← pow_mul, ← pow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_exp (α : Fbar g ≃* Fbar g) {d : ℕ} (hd : 0 < d) :
     ∃ a : ℕ, ∀ z : Fbar g, z ^ (g ^ d - 1) = 1 → α z = z ^ a := by
@@ -98,9 +98,9 @@ theorem exists_exp (α : Fbar g ≃* Fbar g) {d : ℕ} (hd : 0 < d) :
   rw [map_pow, ← ha, ← pow_mul, ← pow_mul, mul_comm]
 
 /- English proof (translation)
-Take `⟨α, hα⟩` from `exists_alpha hω hω'`. Use `⟨α.trans α, fun d hd x y hx hy => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_exp α hd`. Take `⟨n, hn⟩` from `exists_log ω hd hy`. Establish `hx1 : α x ^ (g ^ d - 1) = 1` using `by rw [← map_pow, hx, map_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx2 : α (α x) ^ (g ^ d - 1) = 1` using `by rw [← map_pow, hx1, map_one]`. Rewrite using `[labelChar_eq ω' hd hx (m := n * a) (by rw [← hα, ha y hy, map_pow, hn, ← pow_mul]), MulEquiv.trans_apply, labelChar_eq ω hd hx2 hn, ha _ hx1, map_pow, hα, ← pow_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem exists_beta {ω ω' : Fbar g →*₀ ℂ} (hω : Function.Injective ω) (hω' : Function.Injective ω') :
     ∃ β : Fbar g ≃* Fbar g, ∀ d, 0 < d → ∀ x y : Fbar g, x ^ (g ^ d - 1) = 1 → y ^ (g ^ d - 1) = 1 →
@@ -117,7 +117,7 @@ theorem exists_beta {ω ω' : Fbar g →*₀ ℂ} (hω : Function.Injective ω) 
 open Polynomial in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Rewrite `h` using `[← Nat.sub_add_cancel (Nat.one_le_pow n g (Fact.out : g.Prime).pos), pow_succ]`. Conclude with `mul_right_cancel₀ hy (h.trans (one_mul y).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_pow_sub_one_eq_one_of_pow_pow_eq_self {y : _root_.Formalism.CyclotomicNorms.Fbar g} (hy : y ≠ 0) {n : ℕ}
     (h : y ^ g ^ n = y) : y ^ (g ^ n - 1) = 1 := by
@@ -127,15 +127,15 @@ private theorem pow_pow_sub_one_eq_one_of_pow_pow_eq_self {y : _root_.Formalism.
 open Polynomial in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Establish `hint` using `_root_.GlobalTheory.GoodCharsCompare.isInt y`. Establish `hchar0 : M.charpoly ≠ 0` using `(Matrix.charpoly_monic M).ne_zero`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[_root_.GlobalTheory.GoodCharsCompare.mem_rootsBar hchar0, ← coeff_zero_eq_aeval_zero', map_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hM` to reduce the goal to its premises. Rewrite using `[Matrix.det_eq_sign_charpoly_coeff, hy, mul_zero]`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Rewrite `hk` using `[pow_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[hk, _root_.GlobalTheory.GoodCharsCompare.mem_rootsBar one_ne_zero, map_one]`. Conclude with `one_ne_zero hy`. Establish `hyp : aeval y p = 0`. Rewrite `hy` using `[_root_.GlobalTheory.GoodCharsCompare.mem_rootsBar hchar0, hk, map_pow]`. Conclude with `(pow_eq_zero_iff hk0).mp hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdvd : minpoly (ZMod g) y ∣ p` using `minpoly.dvd _ _ hyp`. Establish `hassoc : Associated (minpoly (ZMod g) y) p` using `associated_of_dvd_dvd hdvd ((minpoly.irreducible hint).dvd_symm hp hdvd)`. Establish `hdeg : p.natDegree = _root_.GlobalTheory.GoodCharsCompare.dg y` using `(natDegree_eq_of_degree_eq (degree_eq_degree_of_associated hassoc)).symm`. Establish `hcard : Fintype.card ι = _root_.GlobalTheory.GoodCharsCompare.dg y * k`. Rewrite using `[← Matrix.charpoly_natDegree_eq_dim M, hk, natDegree_pow, hdeg, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `pow_pow_sub_one_eq_one_of_pow_pow_eq_self hy0` to reduce the goal to its premises. Rewrite using `[hcard]`. Conclude with `pow_pow_dg_mul_eq_self y k`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GoodCharsCompare.root_pow {ι : Type} [Fintype ι]
     [DecidableEq ι] {M : Matrix ι ι (ZMod g)} (hM : M.det ≠ 0)
@@ -169,9 +169,9 @@ theorem _root_.GlobalTheory.GoodCharsCompare.root_pow {ι : Type} [Fintype ι]
   exact pow_pow_dg_mul_eq_self y k
 
 /- English proof (translation)
-Unfold `cuspVal`. Use `split_ifs with hh`. Take `⟨p, k, hp, hk⟩` from `hh`. Use `congr 1`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h y (root_pow hM hp hk (by simpa using hy))]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cuspVal_congr {ω ω' : Fbar g →*₀ ℂ} {ι : Type} [Fintype ι] [DecidableEq ι] {M : Matrix ι ι (ZMod g)}
     (hM : M.det ≠ 0) {x x' : Fbar g} (h : ∀ y : Fbar g, y ^ (g ^ Fintype.card ι - 1) = 1 →
@@ -188,7 +188,7 @@ def Tr (β : Fbar g ≃* Fbar g) (f f' : (ZMod g)[X]) : Prop :=
   f'.Monic ∧ rootsBar f' = (rootsBar f).map β
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1.1.mul h2.1, by rw [rootsBar_mul h1.1.ne_zero h2.1.ne_zero, rootsBar_mul hf hh, h1.2, h2.2, Multiset.map_add]⟩`.
+Supply the required witnesses or components.
 -/
 theorem Tr.mul {β : Fbar g ≃* Fbar g} {f f' h h' : (ZMod g)[X]} (hf : f ≠ 0) (hh : h ≠ 0)
     (h1 : Tr β f f') (h2 : Tr β h h') : Tr β (f * h) (f' * h') :=
@@ -196,27 +196,27 @@ theorem Tr.mul {β : Fbar g ≃* Fbar g} {f f' h h' : (ZMod g)[X]} (hf : f ≠ 0
     rw [rootsBar_mul h1.1.ne_zero h2.1.ne_zero, rootsBar_mul hf hh, h1.2, h2.2, Multiset.map_add]⟩
 
 /- English proof (translation)
-The claim follows from `eq_of_rootsBar h1.1 h2.1 (h1.2.trans h2.2.symm)`.
+A detailed English derivation is pending.
 -/
 theorem Tr.unique {β : Fbar g ≃* Fbar g} {f f' f'' : (ZMod g)[X]} (h1 : Tr β f f') (h2 : Tr β f f'') : f' = f'' :=
   eq_of_rootsBar h1.1 h2.1 (h1.2.trans h2.2.symm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf, by rw [h1.2, Multiset.map_map]; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem Tr.symm {β : Fbar g ≃* Fbar g} {f f' : (ZMod g)[X]} (hf : f.Monic) (h1 : Tr β f f') : Tr β.symm f' f :=
   ⟨hf, by rw [h1.2, Multiset.map_map]; simp⟩
 
 /- English proof (translation)
-Rewrite using `[← card_rootsBar, h1.2, Multiset.card_map, card_rootsBar]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Tr.natDegree {β : Fbar g ≃* Fbar g} {f f' : (ZMod g)[X]} (h1 : Tr β f f') : f'.natDegree = f.natDegree := by
   rw [← card_rootsBar, h1.2, Multiset.card_map, card_rootsBar]
 
 /- English proof (translation)
-Use `⟨minpoly.monic (isInt _), ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.Nodup.ext (nodup_minpoly _) ((nodup_minpoly x).map β.injective)]`. Introduce `y`. Rewrite using `[mem_roots_minpoly, Multiset.mem_map]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨x ^ g ^ i, mem_roots_minpoly.2 ⟨i, rfl⟩, map_pow _ _ _⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Take `⟨i, rfl⟩` from `mem_roots_minpoly.1 hz`. Conclude with `⟨i, map_pow _ _ _⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tr_minpoly (β : Fbar g ≃* Fbar g) (x : Fbar g) : Tr β (minpoly (ZMod g) x) (minpoly (ZMod g) (β x)) := by
   refine ⟨minpoly.monic (isInt _), ?_⟩
@@ -231,12 +231,12 @@ theorem tr_minpoly (β : Fbar g ≃* Fbar g) (x : Fbar g) : Tr β (minpoly (ZMod
     exact ⟨i, map_pow _ _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨monic_one, by simp [rootsBar]⟩`.
+Supply the required witnesses or components.
 -/
 theorem tr_one (β : Fbar g ≃* Fbar g) : Tr β 1 1 := ⟨monic_one, by simp [rootsBar]⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using tr_one β`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `Tr.mul (h0 a (by simp)).ne_zero (monic_prod_of_monic _ _ fun c hc => h0 c (by simp [hc])).ne_zero (h a (by simp)) (ih (fun c hc => h0 c (by simp [hc])) fun c hc => h c (by simp [hc]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_prod (β : Fbar g ≃* Fbar g) (s : Finset ℕ) (φ φ' : ℕ → (ZMod g)[X]) (h0 : ∀ c ∈ s, (φ c).Monic)
     (h : ∀ c ∈ s, Tr β (φ c) (φ' c)) : Tr β (∏ c ∈ s, φ c) (∏ c ∈ s, φ' c) := by
@@ -248,11 +248,11 @@ theorem tr_prod (β : Fbar g ≃* Fbar g) (s : Finset ℕ) (φ φ' : ℕ → (ZM
       (h a (by simp)) (ih (fun c hc => h0 c (by simp [hc])) fun c hc => h c (by simp [hc]))
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `f hf hn`. Distinguish the cases in `h1 : f = 1`. Conclude with `⟨1, h1 ▸ tr_one β⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Establish `hu : ¬ IsUnit f` using `fun hu => h1 (hf.isUnit_iff.1 hu)`. Take `⟨P, hPm, hP, h, rfl⟩` from `exists_monic_irreducible_factor f hu`. Establish `hh : h.Monic` using `hPm.of_mul_monic_left hf`. Establish `hd : h.natDegree < n`. Rewrite using `[← hn, hPm.natDegree_mul hh]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hP.natDegree_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨h', hh'⟩` from `ih _ hd h hh rfl`. Take `⟨x, rfl⟩` from `exists_minpoly hPm hP`. Conclude with `⟨_, (tr_minpoly β x).mul hPm.ne_zero hh.ne_zero hh'⟩`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_tr (β : Fbar g ≃* Fbar g) (n : ℕ) :
     ∀ f : (ZMod g)[X], f.Monic → f.natDegree = n → ∃ f', Tr β f f' := by
@@ -273,7 +273,7 @@ theorem exists_tr (β : Fbar g ≃* Fbar g) (n : ℕ) :
       exact ⟨_, (tr_minpoly β x).mul hPm.ne_zero hh.ne_zero hh'⟩
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `hd`. Establish `ht` using `hq.of_mul_monic_left hf`. Take `⟨t', ht'⟩` from `exists_tr β _ t ht rfl`. Conclude with `⟨t', h.unique (h'.mul hq.ne_zero ht.ne_zero ht')⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Tr.dvd {β : Fbar g ≃* Fbar g} {f f' q q' : (ZMod g)[X]} (hf : f.Monic) (hq : q.Monic) (h : Tr β f f')
     (h' : Tr β q q') (hd : q ∣ f) : q' ∣ f' := by
@@ -285,7 +285,7 @@ theorem Tr.dvd {β : Fbar g ≃* Fbar g} {f f' q q' : (ZMod g)[X]} (hf : f.Monic
 open Polynomial in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Unfold `_root_.Formalism.CyclotomicNorms.rootsBar`. Rewrite using `[mem_roots_map_of_injective (algebraMap (ZMod g) (_root_.Formalism.CyclotomicNorms.Fbar g)).injective hf, ← aeval_def, ← coeff_zero_eq_aeval_zero', map_eq_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.GoodCharsCompare.coeff_zero_iff {f : (ZMod g)[X]} (hf : f ≠ 0) :
     f.coeff 0 ≠ 0 ↔ (0 : _root_.Formalism.CyclotomicNorms.Fbar g) ∉ _root_.Formalism.CyclotomicNorms.rootsBar f := by
@@ -296,7 +296,7 @@ theorem _root_.GlobalTheory.GoodCharsCompare.coeff_zero_iff {f : (ZMod g)[X]} (h
 open Polynomial in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Unfold `_root_.Formalism.CyclotomicNorms.rootsBar`. Rewrite using `[nodup_roots_iff_of_splits (Polynomial.map_ne_zero hf) (IsAlgClosed.splits _), separable_map, PerfectField.separable_iff_squarefree]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.GoodCharsCompare.squarefree_iff {f : (ZMod g)[X]} (hf : f ≠ 0) :
     Squarefree f ↔ (_root_.Formalism.CyclotomicNorms.rootsBar f).Nodup := by
@@ -307,7 +307,7 @@ theorem _root_.GlobalTheory.GoodCharsCompare.squarefree_iff {f : (ZMod g)[X]} (h
 open Polynomial in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Unfold `_root_.Formalism.CyclotomicNorms.primeToPart`. Rewrite using `[MulEquiv.orderOf_eq, map_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.GoodCharsCompare.primeToPart_map (β : _root_.Formalism.CyclotomicNorms.Fbar g ≃* _root_.Formalism.CyclotomicNorms.Fbar g) (l : ℕ) (x : _root_.Formalism.CyclotomicNorms.Fbar g) :
     _root_.Formalism.CyclotomicNorms.primeToPart l (β x) = β (_root_.Formalism.CyclotomicNorms.primeToPart l x) := by
@@ -315,21 +315,19 @@ theorem _root_.GlobalTheory.GoodCharsCompare.primeToPart_map (β : _root_.Formal
   rw [MulEquiv.orderOf_eq, map_pow]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, v, q, hq, hqd, h6⟩` from `H`. Use `⟨fun v => ⟨(h v).1, (h v).natDegree.trans (h1 v).2.1, ?_⟩, fun v => ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_zero_iff (h v).1.ne_zero, (h v).2, Multiset.mem_map]`. Introduce and unpack `⟨z, hz, h0⟩`. Rewrite `h0` using `[map_eq_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(coeff_zero_iff (h1 v).1.ne_zero).1 (h1 v).2.2 (h0 ▸ hz)`. Rewrite using `[squarefree_iff (h v).1.ne_zero, (h v).2]`. Conclude with `((squarefree_iff (h1 v).1.ne_zero).1 (h2 v)).map (β v).injective`. Introduce `l hl hb v x hx y hy hxy`. Rewrite `hx`, `hy` using `[(h v).2, Multiset.mem_map]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, rfl⟩` from `hx`. Take `⟨y, hy, rfl⟩` from `hy`. Rewrite `hxy` using `[primeToPart_map, primeToPart_map]`. Rewrite using `[h3 l hl hb v x hx y hy ((β v).injective hxy)]`. Introduce `l hl hb v j x hx hxy`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[(h v).2, Multiset.mem_map]`. Take `⟨x, hx, rfl⟩` from `hx`. Rewrite `hxy` using `[hχ, primeToPart_map, primeToPart_map]`. Conclude with `h4 l hl hb v j x hx ((β v).injective hxy)`. Introduce `a ha hb`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨v, hv⟩` from `h5 a ha hb`. Use `⟨v, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨q, hq, rfl⟩`. Establish `hq0 : q ≠ 0` using `ne_zero_of_dvd_ne_zero (h v).1.ne_zero hq`. Establish `hm` using `monic_normalize hq0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q', hq'⟩` from `exists_tr (β v).symm _ _ hm rfl`. Use `hv ⟨q', Tr.dvd (h v).1 hm ((h v).symm (h1 v).1) hq' (normalize_dvd_iff.2 hq), ?_⟩` and prove the remaining obligations. Rewrite using `[hq'.natDegree]`. Conclude with `natDegree_eq_of_degree_eq (degree_normalize)`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_aeval_eq_zero (Fbar g) q (degree_pos_of_irreducible hq).ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1` using `minpoly.eq_of_irreducible hq hx`. Establish `e2 : (minpoly (ZMod g) (β v x)).natDegree = q.natDegree`. Rewrite using `[(tr_minpoly (β v) x).natDegree, ← e1, natDegree_mul_leadingCoeff_inv _ hq.ne_zero]`. Use `⟨v, minpoly (ZMod g) (β v x), minpoly.irreducible (isInt _), Tr.dvd (h1 v).1 (minpoly.monic (isInt x)) (h v) (tr_minpoly _ x) ((minpoly.dvd _ _ hx).trans hqd), ?_⟩` and prove the remaining obligations. Rewrite using `[e2]`.
-
-Conclude with `h6`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGood_tr {N : ℕ} {P J : Type} (β : P → Fbar g ≃* Fbar g) {f f' : P → (ZMod g)[X]} {χ χ' : P → J → (ZMod g)ˣ}
     (h : ∀ v, Tr (β v) (f v) (f' v))
@@ -374,13 +372,13 @@ theorem isGood_tr {N : ℕ} {P J : Type} (β : P → Fbar g ≃* Fbar g) {f f' :
     exact h6
 
 /- English proof (translation)
-The claim follows from `(Fintype.card_subtype _).symm`.
+A detailed English derivation is pending.
 -/
 theorem blkSize_eq {r : ℕ} (b : Fin r → ℕ) (c : ℕ) : blkSize b c = Fintype.card {a : Fin r // b a = c} :=
   (Fintype.card_subtype _).symm
 
 /- English proof (translation)
-Take `⟨a, -, ha⟩` from `Finset.mem_image.1 hc`. Conclude with `Fintype.card_pos_iff.2 ⟨⟨a, ha⟩⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem card_blk_pos {r : ℕ} {b : Fin r → ℕ} {c : ℕ} (hc : c ∈ Finset.univ.image b) :
     0 < Fintype.card {a : Fin r // b a = c} := by
@@ -388,7 +386,7 @@ theorem card_blk_pos {r : ℕ} {b : Fin r → ℕ} {c : ℕ} (hc : c ∈ Finset.
   exact Fintype.card_pos_iff.2 ⟨⟨a, ha⟩⟩
 
 /- English proof (translation)
-The claim follows from `(blkDet b c p).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem det_blkMat_ne {r : ℕ} (b : Fin r → ℕ) (c : ℕ) (p : blockTri (κ := ZMod g) b) : (blkMat b c p).det ≠ 0 :=
   (blkDet b c p).ne_zero
@@ -396,7 +394,7 @@ theorem det_blkMat_ne {r : ℕ} (b : Fin r → ℕ) (c : ℕ) (p : blockTri (κ 
 open Polynomial in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-The claim follows from `minpoly.eq_of_irreducible_of_monic hi ((_root_.GlobalTheory.GoodCharsCompare.mem_rootsBar hm.ne_zero).mp hx) hm`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GoodCharsCompare.eq_minpoly {φ : (ZMod g)[X]} (hm : φ.Monic)
     (hi : Irreducible φ) {x : _root_.Formalism.CyclotomicNorms.Fbar g} (hx : x ∈ _root_.Formalism.CyclotomicNorms.rootsBar φ) : φ = minpoly (ZMod g) x :=
@@ -404,7 +402,7 @@ theorem _root_.GlobalTheory.GoodCharsCompare.eq_minpoly {φ : (ZMod g)[X]} (hm :
     ((_root_.GlobalTheory.GoodCharsCompare.mem_rootsBar hm.ne_zero).mp hx) hm
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Rewrite `h0` using `[coeff_zero_prod]`. Conclude with `(coeff_zero_iff hm.ne_zero).1 (Finset.prod_ne_zero_iff.1 h0 c hc) hx`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_ne_zero {s : Finset ℕ} {φ : ℕ → (ZMod g)[X]} (h0 : (∏ c ∈ s, φ c).coeff 0 ≠ 0) {c : ℕ} (hc : c ∈ s)
     (hm : (φ c).Monic) {x : Fbar g} (hx : x ∈ rootsBar (φ c)) : x ≠ 0 := by
@@ -413,9 +411,9 @@ theorem root_ne_zero {s : Finset ℕ} {φ : ℕ → (ZMod g)[X]} (h0 : (∏ c �
   exact (coeff_zero_iff hm.ne_zero).1 (Finset.prod_ne_zero_iff.1 h0 c hc) hx
 
 /- English proof (translation)
-Take `⟨b, φ, x, n, ρ, h1, rfl, h3, h4, h5⟩` from `h`. Establish `e : ∀ c ∈ Finset.univ.image b, φ c = minpoly (ZMod g) (x c)` using `fun c hc => eq_minpoly (h1 c hc).1 (h1 c hc).2.1 (h1 c hc).2.2.2`. Use `⟨b, fun c => minpoly (ZMod g) (β (x c)), fun c => β (x c), n, ρ, fun c hc => ⟨minpoly.monic (isInt _), minpoly.irreducible (isInt _), ?_, mem_roots_minpoly.2 ⟨0, by simp⟩⟩, ?_, h3, fun p => ?_, h5⟩` and prove the remaining obligations. Rewrite using `[(tr_minpoly β (x c)).natDegree, ← e c hc, (h1 c hc).2.2.1]`. Conclude with `hf.unique (tr_prod β _ _ _ (fun c hc => (h1 c hc).1) fun c hc => e c hc ▸ tr_minpoly β (x c))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4]`. Use `Finset.prod_congr rfl fun c hc => cuspVal_congr (det_blkMat_ne b c p) fun y hy => hβ _ (card_blk_pos hc) _ _ ?_ hy` and prove the remaining obligations. Rewrite using `[← (h1 c hc).2.2.1, e c hc]`. Conclude with `pow_dg (root_ne_zero h0 hc (h1 c hc).1 (h1 c hc).2.2.2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTypeChar_tr {ω ω' : Fbar g →*₀ ℂ} {β : Fbar g ≃* Fbar g}
     (hβ : ∀ d, 0 < d → ∀ x y : Fbar g, x ^ (g ^ d - 1) = 1 → y ^ (g ^ d - 1) = 1 →
@@ -439,17 +437,17 @@ def Ext (ι : (Fbar g)ˣ →* ℂˣ) (ω : Fbar g →*₀ ℂ) : Prop := ∀ u :
 open Polynomial in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Set `f : _root_.Formalism.CyclotomicNorms.Fbar g → ℂ` to `fun x => if h : x = 0 then 0 else ((ι (Units.mk0 x h) : ℂˣ) : ℂ)`. Establish `hf0 : ∀ x (hx : x ≠ 0), f x = ((ι (Units.mk0 x hx) : ℂˣ) : ℂ)` using `fun x hx => dif_neg hx`. Establish `hfz : f 0 = 0` using `dif_pos rfl`. Set `ω : _root_.Formalism.CyclotomicNorms.Fbar g →*₀ ℂ` to `{ toFun := f map_zero' := hfz map_one' := by show f 1 = 1`. Rewrite using `[hf0 1 one_ne_zero, Units.mk0_one, map_one, Units.val_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_mul' := by`. Introduce `a b`. Use `show f (a * b) = f a * f b`. Distinguish the cases in `ha : a = 0`. Rewrite using `[ha, zero_mul, hfz, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hb : b = 0`. Rewrite using `[hb, mul_zero, hfz, mul_zero]`. Rewrite using `[hf0 a ha, hf0 b hb, hf0 (a * b) (mul_ne_zero ha hb), Units.mk0_mul, map_mul, Units.val_mul] }`. Use `⟨ω, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 
-Express the relevant statement in the definitionally equal form `f a = f b at hab`. Apply the tactic sequence `by_cases ha : a = 0 <;> by_cases hb : b = 0`. Rewrite using `[ha, hb]`. It suffices to derive a contradiction. Rewrite `hab` using `[ha, hfz, hf0 b hb]`.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Units.ne_zero _ hab.symm`. It suffices to derive a contradiction. Rewrite `hab` using `[hb, hfz, hf0 a ha]`. Conclude with `Units.ne_zero _ hab`. Rewrite `hab` using `[hf0 a ha, hf0 b hb]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `hι (Units.ext hab)` as an intermediate fact. Simplify using `using congrArg Units.val this`. Introduce `u show _ = f u`. Rewrite using `[hf0 u u.ne_zero, Units.mk0_val]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GoodCharsCompare.exists_ext {ι : (_root_.Formalism.CyclotomicNorms.Fbar g)ˣ →* ℂˣ}
     (hι : Function.Injective ι) :
@@ -492,9 +490,9 @@ theorem _root_.GlobalTheory.GoodCharsCompare.exists_ext {ι : (_root_.Formalism.
     rw [hf0 u u.ne_zero, Units.mk0_val]
 
 /- English proof (translation)
-Unfold `IsCharLabel IsTameLabel`. Simplify using `only [he _, rootOfOne_eq, Units.coe_map, MonoidHom.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `h z`. Take `⟨m, hm⟩` from `exists_log ω one_pos (unit_pow z)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h z m hm, labelChar_eq ω one_pos (unit_pow a) hm]`. Introduce `h z m hm`. Rewrite using `[h z, labelChar_eq ω one_pos (unit_pow a) hm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem label_iff {ι : (Fbar g)ˣ →* ℂˣ} {ω : Fbar g →*₀ ℂ} (he : Ext ι ω) (θ : (ZMod g)ˣ → ℂ) (a : (ZMod g)ˣ) :
     IsCharLabel ι θ a ↔ IsTameLabel ω θ a := by
@@ -508,9 +506,9 @@ theorem label_iff {ι : (Fbar g)ˣ →* ℂˣ} {ω : Fbar g →*₀ ℂ} (he : E
     rw [h z, labelChar_eq ω one_pos (unit_pow a) hm]
 
 /- English proof (translation)
-Take `⟨y, hy, hy'⟩` from `exists_preimage hω one_pos (rootC_prim (g := g) one_pos).pow_eq_one`. Take `⟨z, rfl⟩` from `exists_unit_of_pow hy`. Establish `e` using `(h z).symm.trans (h' z)`. Rewrite `hy'` using `[← pow_one (rootC _)]`. Rewrite `e` using `[labelChar_eq ω one_pos (unit_pow a) hy', labelChar_eq ω one_pos (unit_pow a') hy', pow_one, pow_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Units.ext ((algebraMap (ZMod g) (Fbar g)).injective (hω e))`.
+A detailed English derivation is pending.
 -/
 theorem label_unique {ω : Fbar g →*₀ ℂ} (hω : Function.Injective ω) {θ : (ZMod g)ˣ → ℂ} {a a' : (ZMod g)ˣ}
     (h : IsTameLabel ω θ a) (h' : IsTameLabel ω θ a') : a = a' := by
@@ -522,7 +520,7 @@ theorem label_unique {ω : Fbar g →*₀ ℂ} (hω : Function.Injective ω) {θ
   exact Units.ext ((algebraMap (ZMod g) (Fbar g)).injective (hω e))
 
 /- English proof (translation)
-Introduce `z`. Take `⟨m, hm⟩` from `exists_log ω one_pos (unit_pow z)`. Use `show (θ z)⁻¹ = _`. Rewrite using `[h z, labelChar_eq ω one_pos (unit_pow a) hm, labelChar_eq ω one_pos (unit_pow a⁻¹) hm, Units.val_inv_eq_inv_val, map_inv₀, map_inv₀, inv_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem label_inv {ω : Fbar g →*₀ ℂ} {θ : (ZMod g)ˣ → ℂ} {a : (ZMod g)ˣ}
     (h : IsTameLabel ω θ a) : IsTameLabel ω (fun z => (θ z)⁻¹) a⁻¹ := by
@@ -533,17 +531,15 @@ theorem label_inv {ω : Fbar g →*₀ ℂ} {θ : (ZMod g)ˣ → ℂ} {a : (ZMod
     Units.val_inv_eq_inv_val, map_inv₀, map_inv₀, inv_pow]
 
 /- English proof (translation)
-Establish `h1 : ∀ c, ∃ M : Matrix {a : Fin r // b a = c} {a : Fin r // b a = c} (ZMod g), c ∈ Finset.univ.image b → minpoly (ZMod g) M = minpoly (ZMod g) (y c)`. Introduce `c`. Distinguish the cases in `hc : c ∈ Finset.univ.image b`. Take `⟨M, hM⟩` from `exists_matrix (card_blk_pos hc) (hy c hc)`. Conclude with `⟨M, fun _ => hM⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun h => absurd h hc⟩`. Use `choose M hM using h1`. Set `A : Matrix (Fin r) (Fin r) (ZMod g)` to `fun i j => if h : b j = b i then M (b i) ⟨i, rfl⟩ ⟨j, h⟩ else 0`. Establish `hA : A.BlockTriangular b` using `fun i j h => dif_neg (ne_of_lt h)`. Establish `hB : ∀ c, A.toSquareBlock b c = M c`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Use extensionality with `⟨i, rfl⟩ ⟨j, hj⟩`. Conclude with `dif_pos hj`. Establish `hdet : A.det ≠ 0`. Rewrite using `[hA.det]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Finset.prod_ne_zero_iff.2 fun c hc => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `charpoly_eq_pow _ (hM c hc)`. Establish `hy0 : y c ≠ 0`. Introduce `h`. Use `hy c hc` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[h, zero_pow (g_pow_sub_pos (card_blk_pos hc)).ne']`. Conclude with `zero_ne_one this`. Rewrite using `[hB, Matrix.det_eq_sign_charpoly_coeff, hk, coeff_zero_eq_eval_zero, eval_pow, ← coeff_zero_eq_eval_zero]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by simp)) (pow_ne_zero _ (minpoly.coeff_zero_ne_zero (isInt _) hy0))`. Use `⟨⟨Matrix.GeneralLinearGroup.mkOfDetNeZero A hdet, hA⟩, fun c hc => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hM c hc, ← hB]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_block {r : ℕ} (b : Fin r → ℕ) (y : ℕ → Fbar g)
     (hy : ∀ c ∈ Finset.univ.image b, y c ^ (g ^ Fintype.card {a : Fin r // b a = c} - 1) = 1) :
@@ -579,7 +575,7 @@ theorem exists_block {r : ℕ} (b : Fin r → ℕ) (y : ℕ → Fbar g)
   rfl
 
 /- English proof (translation)
-Use `mul_ne_zero (pow_ne_zero _ (by simp)) (Finset.prod_ne_zero_iff.2 fun i hi => ?_)` and prove the remaining obligations. Establish `h1 : 1 < g ^ (e * i)` using `Nat.one_lt_pow (Nat.mul_pos he (Finset.mem_Ico.1 hi).1).ne' (Fact.out : g.Prime).one_lt`. Rewrite using `[sub_ne_zero]`. Conclude with `h1.ne'` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torus_coef_ne {d e : ℕ} (he : 0 < e) :
     ((-1 : ℂ) ^ (d - d / e) * ∏ i ∈ Finset.Ico 1 (d / e), ((g : ℂ) ^ (e * i) - 1)) ≠ 0 := by
@@ -596,31 +592,29 @@ def CuspidalCharacterFormula : Prop :=
       ∀ p, σ.character p = ∏ c ∈ Finset.univ.image b, cuspVal ω (x c) (blkMat b c p)
 
 /- English proof (translation)
-Take `⟨b, φ, n, σ, hL, rfl, h5⟩` from `h`. Take `⟨x₀, hx₀, hch⟩` from `H g ω hω r b n σ hL.cusp`. Use `⟨b, φ, x₀, n, σ, fun c₀ hc₀ => ⟨hL.monic _ hc₀, hL.irred _ hc₀, by rw [hL.degree _ hc₀, blkSize_eq], ?_⟩, rfl, hL.cusp, hch, h5⟩` and prove the remaining obligations. Establish `h1 : ∀ c, ∃ x : (Fbar g)ˣ, c ∈ Finset.univ.image b → φ c = minpoly (ZMod g) (x : Fbar g)`. Introduce `c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hc : c ∈ Finset.univ.image b`. Take `⟨x, hx⟩` from `exists_minpoly (hL.monic c hc) (hL.irred c hc)`. Establish `: x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hL.ne_X c hc (by rw [hx, minpoly.zero])`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨Units.mk0 x this, fun _ => hx⟩`. Conclude with `⟨1, fun h => absurd h hc⟩`. Use `choose x hx using h1`. Establish `hxp : ∀ c ∈ Finset.univ.image b, (x c : Fbar g) ^ (g ^ Fintype.card {a : Fin r // b a = c} - 1) = 1`. Introduce `c hc`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← blkSize_eq, ← hL.degree c hc, hx c hc]`. Conclude with `pow_dg (x c).ne_zero`. Establish `hx₀p : ∀ c ∈ Finset.univ.image b, x₀ c ^ (g ^ Fintype.card {a : Fin r // b a = c} - 1) = 1`. Introduce `c hc`. Rewrite using `[← (hx₀ c hc).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `pow_dg (hx₀ c hc).1`. Establish `hd` using `card_blk_pos hc₀`. Take `⟨j, hj⟩` from `mem_orbit_of_sums (g := g) (z := ω (x c₀)) (w := ω (x₀ c₀)) hd (by`. Introduce `m₀`. Take `⟨y₀, hy₀, hy₀'⟩` from `exists_preimage hω hd (z := rootC (g ^ Fintype.card {a : Fin r // b a = c₀} - 1) ^ m₀) (by rw [← pow_mul, mul_comm, pow_mul, (rootC_prim (g := g) hd).pow_eq_one, one_pow])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hy00 : y₀ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy₀` using `[zero_pow (g_pow_sub_pos hd).ne']`. Conclude with `zero_ne_one hy₀`. Set `y : ℕ → (Fbar g)ˣ` to `fun c => if c = c₀ then Units.mk0 y₀ hy00 else 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Set `m : ℕ → ℕ` to `fun c => if c = c₀ then m₀ else 0`. Establish `hm : ∀ c, ω (y c) = rootC (g ^ Fintype.card {a : Fin r // b a = c} - 1) ^ m c`. Introduce `c`. Distinguish the cases in `hc : c = c₀`. Substitute `hc` using the available equality.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify `hy₀'` using `[y, m]`. Simplify using `[y, m, hc]`. Take `⟨p, hp⟩` from `exists_block b (fun c => (y c : Fbar g)) (by`. Introduce `c _`. Distinguish the cases in `hc : c = c₀`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hc` using the available equality. Simplify `hy₀` using `[y]`. Simplify using `[y, hc])`. Establish `e1` using `hL.value x y m p (fun c hc => by rw [hx c hc]; exact minpoly.aeval _ _) hp (fun c _ => by rw [he, hm, rootOfOne_eq, blkSize_eq])`. Rewrite `e1` using `[hch, Finset.prod_congr rfl (fun c hc => cuspVal_eq_torusValue ω (card_blk_pos hc) _ (hx₀p c hc) (hp c hc) (hm c)), ← Finset.mul_prod_erase _ _ hc₀, ← Finset.mul_prod_erase _ _ hc₀]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [blkSize_eq, he _] at e1`. Establish `e2 : ∀ z : ℕ → ℂ, ∏ c ∈ (Finset.univ.image b).erase c₀, torusValue g (Fintype.card {a : Fin r // b a = c}) (dg (y c : Fbar g)) (z c) (m c) = ∏ c ∈ (Finset.univ.image b).erase c₀, torusValue g (Fintype.card {a : Fin r // b a = c}) (dg (y c : Fbar g)) 1 0`. Introduce `z`. Use `Finset.prod_congr rfl fun c hc => ?_` and prove the remaining obligations. Simplify using `[torusValue, m, Finset.ne_of_mem_erase hc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `e1` using `[e2 (fun c => ω (x₀ c)), e2 (fun c => ω (x c))]`. Establish `e3` using `mul_right_cancel₀ (Finset.prod_ne_zero_iff.2 fun c _ => by`. Use `mul_ne_zero (torus_coef_ne (dg_pos _)) ?_` and prove the remaining obligations. Simplify using `using (dg_pos _).ne') e1`. Establish `e4` using `mul_left_cancel₀ (torus_coef_ne (dg_pos _)) e3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyc : (y c₀ : Fbar g) = y₀` using `by simp [y]`. Establish `hmc : m c₀ = m₀` using `by simp [m]`. Rewrite `e4` using `[hyc, hmc]`. Take `⟨k, hk⟩` from `exists_dg_mul hd hy₀`. Establish `s1` using `sum_period (period_of ω hd (hxp _ hc₀) hy₀') k`.
-
-Establish `s2` using `sum_period (period_of ω hd (hx₀p _ hc₀) hy₀') k`. Rewrite `s1`, `s2` using `[← hk]`. Rewrite using `[s1, s2, e4])`. Rewrite using `[hx _ hc₀]`. Conclude with `mem_roots_minpoly.2 ⟨j, hω (by rw [hj, map_pow])⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeChar_full_of_torus (H : CuspidalCharacterFormula) {ι : (Fbar g)ˣ →* ℂˣ} {ω : Fbar g →*₀ ℂ}
     (hω : Function.Injective ω) (he : Ext ι ω) {r : ℕ} {f : (ZMod g)[X]} {ch : GL (Fin r) (ZMod g) → ℂ}

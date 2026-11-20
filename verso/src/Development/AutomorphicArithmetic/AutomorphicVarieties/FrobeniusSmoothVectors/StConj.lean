@@ -4,11 +4,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `Ω _ _ _ k _ κ y hy v A A' hA hA' ⟨b, hb⟩`. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver (F := ℚ) hA hA'`. Use `⟨(κ σ : k) * b - y σ, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hs' : s • A' = A'` using `mem_Dec.mp hs`. Establish `ht : σ⁻¹ * s * σ ∈ Dec (F` using `ℚ) A := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem_Dec, mul_smul, mul_smul, hσ, hs', ← hσ, ← mul_smul, inv_mul_cancel, one_smul]`. Establish `hbt` using `hb _ ht`. Establish `hκ : κ (σ⁻¹ * s * σ) = κ s`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm, ← mul_assoc, mul_inv_cancel, one_mul]`. Establish `hκ' : ((κ (σ⁻¹ * s * σ) : kˣ) : k) = κ s` using `congrArg Units.val hκ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hy s σ`. Establish `h2` using `hy σ (σ⁻¹ * s * σ)`. Establish `h3 : σ * (σ⁻¹ * s * σ) = s * σ` using `by group`. Rewrite `h2` using `[h3]`. Take the linear combination `-h1 + h2 + (κ σ : k) * hbt + (κ σ : k) * b * hκ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem UpperTheory.V.Fr.st_conj :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (k : Type) [Field k] (κ : G ℚ Ω →* kˣ) (y : G ℚ Ω → k), (∀ s t, y (s * t) = y s + κ s * y t) → ∀ (v : HeightOneSpectrum (𝓞 ℚ)) (A A' : ValuationSubring Ω), IsPlaceOver A v → IsPlaceOver A' v → (∃ b, ∀ s ∈ Dec (F := ℚ) A, y s = κ s * b - b) → ∃ b, ∀ s ∈ Dec (F := ℚ) A', y s = κ s * b - b := by

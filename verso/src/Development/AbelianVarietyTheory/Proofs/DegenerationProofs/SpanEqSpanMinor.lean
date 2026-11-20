@@ -33,7 +33,7 @@ open Matrix in
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : Subalgebra o Ω) {J : Type}
   [Fintype J] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_dotDual_iff' (N : Submodule S (J → Ω)) (v : J → Ω) :
     v ∈ _root_.GlobalTheory.ZH.DualLattice.dotDual S N ↔ ∀ w ∈ N, w ⬝ᵥ v ∈ S :=
@@ -47,13 +47,11 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : Subalgebra o 
   [Fintype J] in
 
 /- English proof (translation)
-Rewrite using `[mem_dotDual_iff']`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Conclude with `h _ (Submodule.subset_span ⟨i, rfl⟩)`. Introduce `h w hw`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `h i`. Consider the case `zero`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[zero_dotProduct]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[add_dotProduct]`. Conclude with `add_mem hx hy`.
-
-Consider the case `smul c x _ hx`. Rewrite using `[smul_dotProduct, Subalgebra.smul_def, smul_eq_mul]`. Conclude with `mul_mem c.2 hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ZH.DualLattice.mem_dotDual_span {I : Type} (a : I → J → Ω) (v : J → Ω) :
     v ∈ _root_.GlobalTheory.ZH.DualLattice.dotDual S (Submodule.span S (Set.range a)) ↔ ∀ i, a i ⬝ᵥ v ∈ S := by
@@ -84,11 +82,11 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : Subalgebra o 
   [Fintype J] in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `v ∈ Submodule.span S (Set.range fun i => B i) ↔ _`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Use `⟨fun i => c i, fun i => (c i).2, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `j`. Simplify using `[Matrix.vecMul, dotProduct, Finset.sum_apply, Subalgebra.smul_def]`. Introduce and unpack `⟨c, hc, rfl⟩`. Use `⟨fun i => ⟨c i, hc i⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.vecMul, dotProduct, Finset.sum_apply, Subalgebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.ZH.DualLattice.mem_span_rows (B : Matrix J J Ω) (v : J → Ω) :
     v ∈ Submodule.span S (Set.range B) ↔ ∃ c : J → Ω, (∀ i, c i ∈ S) ∧ c ᵥ* B = v := by
@@ -115,11 +113,11 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : Subalgebra o 
 variable [DecidableEq J] in
 
 /- English proof (translation)
-Use extensionality with `v`. Use `(_root_.GlobalTheory.ZH.DualLattice.mem_dotDual_span S (fun i => A i) v).trans ((?_ : _ ↔ _).trans (_root_.GlobalTheory.ZH.DualLattice.mem_span_rows S B v).symm)` and prove the remaining obligations. Establish `hBA : Bᵀ * A = 1` using `mul_eq_one_comm.mp h`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨A *ᵥ v, fun i => hv i, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_transpose, Matrix.mulVec_mulVec, hBA, Matrix.one_mulVec]`. Introduce and unpack `⟨c, hc, rfl⟩ i`. Establish `hAc : A *ᵥ (c ᵥ* B) = c`. Rewrite using `[← Matrix.mulVec_transpose, Matrix.mulVec_mulVec, h, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (A *ᵥ (c ᵥ* B)) i ∈ S`. Rewrite using `[hAc]`. Conclude with `hc i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ZH.DualLattice.dotDual_span_rows {A B : Matrix J J Ω} (h : A * Bᵀ = 1) :
     _root_.GlobalTheory.ZH.DualLattice.dotDual S (Submodule.span S (Set.range A)) =
@@ -148,19 +146,19 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : Subalgebra o 
 variable [DecidableEq J] in
 
 /- English proof (translation)
-Use `set G : Matrix J J Ω := Matrix.of fun i j => g (k i) j with hG`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨m, rfl⟩`. Rewrite using `[SetLike.mem_coe, _root_.GlobalTheory.ZH.DualLattice.mem_span_rows]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(t / s) • G.det⁻¹ • Gᵀ.cramer (g m), fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `hc : Gᵀ.cramer (g m) i = (Matrix.of fun i' j => g (Function.update k i m i') j).det`. Rewrite using `[Matrix.cramer_apply, Matrix.updateCol_transpose, Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `i' j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i' = i`. Substitute `hi` using the available equality. Simplify using `[Matrix.updateRow_apply]`. Simplify using `[Matrix.updateRow_apply, Function.update_apply, hi, hG]`. Establish `hmem` using `mul_mem hts (hd (Function.update k i m))`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, hc]`. Use `hmem using 1` and compare the differences between its conclusion and the goal. Rewrite using `[div_eq_mul_inv _ G.det]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.smul_vecMul, Matrix.vecMul_smul, Matrix.smul_vecMul, ← Matrix.mulVec_transpose, Matrix.mulVec_cramer, Matrix.det_transpose]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `j`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hrow : (t⁻¹ • G) i = (s / t) • (fun j => g (k i) j / s)`. Use extensionality with `j`. Simplify using `only [Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, hG, Matrix.of_apply]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[SetLike.mem_coe, hrow]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem` using `Submodule.smul_mem (Submodule.span S (Set.range fun m j => g m j / s)) (⟨s / t, hst⟩ : S) (Submodule.subset_span ⟨k i, rfl⟩)`. Rewrite `hmem` using `[Subalgebra.smul_def]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ZH.DualLattice.span_eq_span_minor {n : ℕ} (g : Fin n → J → Ω) (k : J → Fin n)
     (h0 : (Matrix.of fun i j => g (k i) j).det ≠ 0)
@@ -214,7 +212,7 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : Subalgebra o 
 variable [DecidableEq J] in
 
 /- English proof (translation)
-Rewrite using `[Matrix.transpose_smul, Matrix.transpose_transpose, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr h0), smul_smul, inv_mul_cancel₀ ht, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.ZH.DualLattice.smul_mul_smul_inv {G : Matrix J J Ω} (h0 : G.det ≠ 0) {t : Ω}
     (ht : t ≠ 0) : (t⁻¹ • G) * (t • G⁻¹ᵀ)ᵀ = 1 := by
@@ -230,19 +228,17 @@ open Classical in
 open Matrix in
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ M J _ _ n g θ hθ hdiv`. Establish `key : ∀ (z x : M.Z) (k : J → Fin n), M.Div (fun k : J → Fin n => Matrix.det (Matrix.of fun i j => g (k i) j)) k x → θ z / θ x ∈ M.O x → θ x / θ z ∈ M.O x → Submodule.span (M.O x) (Set.range fun m j => g m j / θ x) = Submodule.span (M.O x) (Set.range ((θ z)⁻¹ • Matrix.of fun i j = …`. Introduce `z x k hk hzx hxz`. Establish `hspan` using `_root_.GlobalTheory.ZH.DualLattice.span_eq_span_minor (M.O x) g k hk.1 hk.2 (hθ x).1 (hθ z).1 hxz hzx`. Use `⟨hspan, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hspan]`. Conclude with `_root_.GlobalTheory.ZH.DualLattice.dotDual_span_rows _ (_root_.GlobalTheory.ZH.DualLattice.smul_mul_smul_inv hk.1 (hθ z).1)`. Set `E : ∀ z : M.Z, Submodule (M.O z) (J → Ω)` to `fun z => _root_.GlobalTheory.ZH.DualLattice.dotDual (M.O z) (Submodule.span (M.O z) (Set.range fun m j => g m j / θ z))`. Use `⟨⟨E, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `hdiv z`. Take `⟨W, hzW, hW⟩` from `(hθ z).2`. Set `V : M.Z.Opens` to `⟨{x | M.Div (fun k : J → Fin n => Matrix.det (Matrix.of fun i j => g (k i) j)) k x}, M.isOpen_setOf_div _ k⟩`. Use `⟨W ⊓ V, θ z • (Matrix.of fun i j => g (k i) j : Matrix J J Ω)⁻¹ᵀ, ⟨hzW, hk⟩, ?_, fun x hx => (key z x k hx.2 (hW x hx.1).1 (hW x hx.1).2).2⟩` and prove the remaining obligations. Simplify using `[Matrix.det_smul, Matrix.det_nonsing_inv, hk.1, (hθ z).1]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z w`. Take `⟨k, hk⟩` from `hdiv z`. Establish `hone : θ z / θ z ∈ M.O z`. Rewrite using `[div_self (hθ z).1]`. Conclude with `one_mem _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hN, hE⟩` from `key z z k hk hone hone`. Establish `hAB` using `_root_.GlobalTheory.ZH.DualLattice.smul_mul_smul_inv (J := J) (G := (Matrix.of fun i j => g (k i) j : Matrix J J Ω)) hk.1 (hθ z).1`. Establish `hBA` using `congrArg Matrix.transpose hAB`. Rewrite `hBA` using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one]`. Use `show _ ↔ ∀ v ∈ _root_.GlobalTheory.ZH.DualLattice.dotDual _ _, _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hE, hN, ← _root_.GlobalTheory.ZH.DualLattice.dotDual_span_rows _ hBA, mem_dotDual_iff']`. Prove the components needed by the constructor for the conclusion. Introduce `h v hv`. Rewrite using `[dotProduct_comm]`. Conclude with `h v hv`.
-
-Introduce `h v hv`. Rewrite using `[dotProduct_comm]`. Conclude with `h v hv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ZH.DualLattice.exists_lat_dual : ∀ (o Ω : Type) [CommRing o] [Field Ω]
     [Algebra o Ω] (M : _root_.GlobalTheory.ZH.RatModel o Ω) (J : Type) [Fintype J]

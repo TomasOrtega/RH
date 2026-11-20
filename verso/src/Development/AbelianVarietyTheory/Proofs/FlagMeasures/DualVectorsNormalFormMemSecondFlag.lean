@@ -8,29 +8,25 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ H r j hj e e' s hdet he' hz hs he's hss`. Use `set P : Matrix (Fin j) (Fin j) K := Matrix.of fun a b : Fin j => H.B (e (Fin.castLE hj a)) (e' (Fin.castLE hj b)) with hPdef`. Establish `hu : IsUnit P.det` using `isUnit_iff_ne_zero.mpr hdet`. Establish `hPQ : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hu`. Establish `hQP : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : ∀ (x : V) (g : Fin j → K), H.B x (∑ c, g c • e' (Fin.castLE hj c)) = ∑ c, star (g c) * H.B x (e' (Fin.castLE hj c))`. Introduce `x g`. Simplify using `[map_sum, map_smulₛₗ, starRingEnd_apply]`. Establish `hL : ∀ (y : V) (g : Fin j → K), H.B (∑ c, g c • e' (Fin.castLE hj c)) y = ∑ c, g c * H.B (e' (Fin.castLE hj c)) y`. Introduce `y g`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[map_sum, LinearMap.sum_apply]`. Set `f : Fin r → V` to `fun b => if h : b.val < j then ∑ c : Fin j, star (P⁻¹ c ⟨b.val, h⟩) • e' (Fin.castLE hj c) else s b`. Establish `hf : ∀ b : Fin j, f (Fin.castLE hj b) = ∑ c, star (P⁻¹ c b) • e' (Fin.castLE hj c)` using `fun b => by`. Simplify using `[f]`. Use `⟨f, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Simplify using `[f, Nat.not_lt.mpr ha]`. Introduce `a ha`. Simplify using `only [f, dif_pos ha]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨Fin.castLE hj c, c.isLt, rfl⟩)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `a b`. Distinguish the cases in `hb : b.val < j`. Simplify using `only [f, dif_pos hb, hR, star_star]`. Distinguish the cases in `ha : a.val < j`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Use `_ = (P * P⁻¹) ⟨a.val, ha⟩ ⟨b.val, hb⟩ := by rw [Matrix.mul_apply]`. Use `_ = if a = b then 1 else 0 := by rw [hPQ, Matrix.one_apply]; simp [Fin.ext_iff]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_eq_zero]`. Establish `: a ≠ b` using `fun h => ha (h ▸ hb)`. Simplify using `[this]`. Introduce `c _`. Rewrite using `[hz a (Fin.castLE hj c) (Nat.not_lt.mp ha) (by simp), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, dif_neg hb]`. Conclude with `hs a b (Nat.not_lt.mp hb)`. Introduce `a b`. Apply the tactic sequence `by_cases ha : a.val < j <;> by_cases hb : b.val < j`. Simplify using `only [f, dif_pos ha, dif_pos hb, hL, hR, he', mul_zero, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [f, dif_pos ha, dif_neg hb, hL]`. Conclude with `Finset.sum_eq_zero fun c _ => by rw [he's _ _ (by simp) (Nat.not_lt.mp hb), mul_zero]`. Simplify using `only [f, dif_neg ha, dif_pos hb, hR]`. Conclude with `Finset.sum_eq_zero fun c _ => by rw [← H.herm, he's _ _ (by simp) (Nat.not_lt.mp ha), star_zero, mul_zero]`. Simplify using `only [f, dif_neg ha, dif_neg hb]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hss a b (Nat.not_lt.mp ha) (Nat.not_lt.mp hb)`. Introduce `a ha`. Establish `key : e' a = ∑ b : Fin j, star (P b ⟨a.val, ha⟩) • f (Fin.castLE hj b)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Matrix.one_apply, apply_ite star]`.
-
-Use `_ = ∑ c, star ((P⁻¹ * P) c ⟨a.val, ha⟩) • e' (Fin.castLE hj c) := by rw [hQP]`. Use `_ = ∑ b, star (P b ⟨a.val, ha⟩) • ∑ c, star (P⁻¹ c b) • e' (Fin.castLE hj c) := by`. Repeatedly rewrite using `[Matrix.mul_apply, star_sum, Finset.sum_smul, Finset.smul_sum, smul_smul, star_mul]`. Rewrite using `[Finset.sum_comm]`. Use `_ = ∑ b, star (P b ⟨a.val, ha⟩) • f (Fin.castLE hj b) := by simp_rw [hf]`.
-
-Rewrite using `[key]`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨Fin.castLE hj b, b.isLt, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem dual_vectors_in_second_flag : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) {r j : ℕ} (hj : j ≤ r) (e e' s : Fin r → V),

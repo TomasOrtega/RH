@@ -15,7 +15,7 @@ def coW (G : Geo σ a a') {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTenso
   -(G.V.J.map t * u.map (piW (t.comp σ)) * (G.W.J.map t)ᵀ)
 
 /- English proof (translation)
-Unfold `coW`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coW_eq_zero (G : Geo σ a a') {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (t : E →ₐ[F] Fv F v)
     (u : Matrix (Fin a) (Fin (a + a')) (AE F E)) (h : u.map (piW (t.comp σ)) = 0) : coW G t u = 0 := by

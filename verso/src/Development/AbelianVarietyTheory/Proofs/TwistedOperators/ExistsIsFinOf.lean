@@ -21,7 +21,7 @@ def locAt (B : Frames G) (t : T) (w : Pl D.host.E) (j : ℕ) (hj : j ≤ D.R.m) 
   (inBasis (rank_vertex G t w (X := (D.R.m, j)) ⟨le_rfl, hj⟩) (B.β D.R.m j) w).comp (Lev.finE _)
 
 /- English proof (translation)
-Establish `h : Lev.finE (G.V (.grid D.R.m j)) a = 1`. Simplify using `only [Lev.finE, GinfC, MonoidHom.mem_ker] at ha ⊢`. Rewrite using `[MonoidHom.comp_apply, ha, map_one]`. Simplify using `only [locAt, MonoidHom.comp_apply, h, map_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem locAt_inf (B : Frames G) (t : T) (w : Pl D.host.E) (j : ℕ) (hj : j ≤ D.R.m) {a : GA D (G.V (.grid D.R.m j))}
     (ha : a ∈ GinfC _) : locAt B t w j hj a = 1 := by
@@ -31,7 +31,7 @@ theorem locAt_inf (B : Frames G) (t : T) (w : Pl D.host.E) (j : ℕ) (hj : j ≤
   simp only [locAt, MonoidHom.comp_apply, h, map_one]
 
 /- English proof (translation)
-Take `⟨-, -, -, ⟨e, he⟩, -⟩` from `GlobalTheory.AdelicSplit.adelic_split D V`. Take `⟨p, rfl⟩` from `e.surjective g`. Conclude with `⟨p.2, p.2.2, p.1, p.1.2, (he p).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isFinOf (V : HSp D) (g : GA D V) : ∃ b, GlobalTheory.RowVal.IsFinOf g b := by
   obtain ⟨-, -, -, ⟨e, he⟩, -⟩ := GlobalTheory.AdelicSplit.adelic_split D V
@@ -39,7 +39,7 @@ theorem exists_isFinOf (V : HSp D) (g : GA D V) : ∃ b, GlobalTheory.RowVal.IsF
   exact ⟨p.2, p.2.2, p.1, p.1.2, (he p).symm⟩
 
 /- English proof (translation)
-Simplify using `only [Reps.elt]`. Rewrite using `[onColumn_apply]`. Simplify using `only [dif_pos i.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem elt_succ (t : T) (w : Pl D.host.E) (β : Cosets (G := locGrid G t w) one_le_sLen (givenLevel G t w))
     (i : Fin ((locGrid G t w).m - 2)) :
@@ -54,7 +54,7 @@ namespace GlobalTheory.RowRep
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Rewrite using `[hρ, ← elt_succ]`. Conclude with `hr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_rep (B : Frames G) (t : T) (s : ℤˣ) (β : CosFam G t) (w : locPl G t) (i : Fin ((locGrid G t w.1).m - 2))
     (hj : i.1 + 1 ≤ D.R.m) (r : GA D (G.V (.grid D.R.m (i.1 + 1))))
@@ -67,7 +67,7 @@ theorem loc_rep (B : Frames G) (t : T) (s : ℤˣ) (β : CosFam G t) (w : locPl 
   exact hr
 
 /- English proof (translation)
-Rewrite using `[DoubleCoset.eq]`. Use `⟨_, hN, Y, hY, ?_⟩` and prove the remaining obligations. Rewrite using `[show (A' * S)⁻¹ * X * (A * S) * ρ * Y = (A' * S)⁻¹ * (X * (A * (S * ρ)) * Y) by group, ← e]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_eq_of {Gp : Type} [Group Gp] (H K : Subgroup Gp) {A A' S X Y ρ ρ' : Gp}
     (e : A' * (S * ρ') = X * (A * (S * ρ)) * Y) (hN : (A' * S)⁻¹ * X * (A * S) ∈ H) (hY : Y ∈ K) :
@@ -78,7 +78,7 @@ theorem mk_eq_of {Gp : Type} [Group Gp] (H K : Subgroup Gp) {A A' S X Y ρ ρ' :
   group
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.RowVal.idx, List.mem_range'_1] at h`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem idx_le {j : ℕ} (h : j ∈ GlobalTheory.RowVal.idx D) : 1 ≤ j ∧ j + 2 ≤ D.R.m := by
   simp only [GlobalTheory.RowVal.idx, List.mem_range'_1] at h

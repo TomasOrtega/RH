@@ -16,15 +16,15 @@ namespace GlobalTheory.SNCCompBound
 variable {d n : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
 
 /- English proof (translation)
-Introduce `y j z hz w hw`. Take `⟨-, χ, -, a, hχ, -, -, -, -, -, -, -, htgt, hsymm⟩` from `hS j`. Take `⟨l, hl⟩` from `B.cover ((C.chart j).symm z).1`. Establish `hO : IsOpen ((C.chart j).target ∩ (C.chart j).symm ⁻¹' (Subtype.val ⁻¹' (B.chart l).source))` using `(C.chart j).isOpen_inter_preimage_symm ((B.chart l).open_source.preimage continuous_subtype_val)`. Establish `hzO : z ∈ (C.chart j).target ∩ (C.chart j).symm ⁻¹' (Subtype.val ⁻¹' (B.chart l).source)` using `⟨hz.1, hl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `han` using `hC.2 j l z hzO`. Use `set F := B.chart l ∘ Subtype.val ∘ (C.chart j).symm with hF`. Establish `hFz : (B.chart l).symm (F z) = ((C.chart j).symm z).1` using `(B.chart l).left_inv hl`. Establish `hin : F z ∈ (B.chart l).target ∩ (B.chart l).symm ⁻¹' P.U y.1` using `⟨(B.chart l).map_source hl, by rw [Set.mem_preimage, hFz]; exact hz.2⟩`. Establish `h1 : ContDiffAt ℝ 2 (P.φ y.1 ∘ (B.chart l).symm) (F z)` using `(contDiffAt_of_isPotential B P hP y.1 l hin).of_le (by norm_cast)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : (P.pullback Subtype.val continuous_subtype_val).φ y ∘ (C.chart j).symm =ᶠ[𝓝 z] (P.φ y.1 ∘ (B.chart l).symm) ∘ F` using `by filter_upwards [hO.mem_nhds hzO] with z' hz' show P.φ y.1 ((C.chart j).symm z').1 = P.φ y.1 ((B.chart l).symm ((B.chart l) ((C.chart j).symm z').1))`. Rewrite using `[(B.chart l).left_inv hz'.2]`. Rewrite using `[levi_congr heq, levi_comp w han h1]`. Use `hp _ l _ hin _ fun h0 => hw ?_` and prove the remaining obligations. Establish `hmem : ∀ v ∈ (C.chart j).target, Fin.insertNth (α` using `fun _ => ℂ) a 0 v ∈ χ.target := fun v hv => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[htgt]`. Conclude with `hv`. Establish `hG : AnalyticAt ℂ (fun v => a.removeNth ((χ ∘ (B.chart l).symm) v)) (F z)` using `SimpleNormalCrossingSliceCharts.analyticAt_removeNth_comp a ((hχ l).1 _ ⟨hin.1, by`. Rewrite using `[Set.mem_preimage, hFz, hsymm z hz.1]`. Conclude with `χ.map_target (hmem z hz.1)⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hid : id =ᶠ[𝓝 z] (fun v => a.removeNth ((χ ∘ (B.chart l).symm) v)) ∘ F` using `by filter_upwards [hO.mem_nhds hzO] with v hv show v = a.removeNth (χ ((B.chart l).symm ((B.chart l) ((C.chart j).symm v).1)))`. Rewrite using `[(B.chart l).left_inv hv.2, hsymm v hv.1, χ.right_inv (hmem v hv.1), Fin.removeNth_insertNth]`. Establish `hd` using `((hG.differentiableAt.hasFDerivAt.comp z han.differentiableAt.hasFDerivAt).congr_of_eventuallyEq hid).unique (hasFDerivAt_id z)`. Establish `h2` using `congrArg (fun T => T w) hd`. Simplify `h2.symm` using `[h0]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPosPot_restrict (B : FinHolAtlas (n + 1) Y) (μ : Y → X) {q r : ℕ} (L : Fin q → LocPot X)
     (t : Fin q → X → X → ℂ) (W : Fin r → Set Y) (e : Fin q → Fin r → ℕ) (k : Fin r)
@@ -68,19 +68,17 @@ theorem isPosPot_restrict (B : FinHolAtlas (n + 1) Y) (μ : Y → X) {q r : ℕ}
   simpa [h0] using h2.symm
 
 /- English proof (translation)
-Rewrite using `[Set.eq_empty_iff_forall_notMem]`. Introduce `x hx`. Take `⟨j, hj⟩` from `C.cover x`. Take `⟨y, χ, κ, a, -, -, hκ, hinj, -, hfac, -, -, htgt, hsymm⟩` from `hS j`. Take `⟨hU, u, -, hu0, hprod⟩` from `hfac i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hO` using `(C.chart j).isOpen_inter_preimage_symm (isOpen_interior (s := {v : W k | t i (μ v.1) (μ v.1) = 0}))`. Establish `hD : Dense {z : Fin n → ℂ | ∀ b, z b ≠ 0}`. Establish `h : Dense (Set.pi Set.univ fun _ : Fin n => ({0}ᶜ : Set ℂ))` using `dense_pi Set.univ fun _ _ => dense_compl_singleton (0 : ℂ)`. Use `Dense.mono ?_ h` and prove the remaining obligations. Introduce `z hz b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hz b trivial`. Take `⟨z, ⟨hzt, hzi⟩, hz0⟩` from `hD.inter_open_nonempty _ hO ⟨C.chart j x, (C.chart j).map_source hj, by rwa [Set.mem_preimage, (C.chart j).left_inv hj]⟩`. Establish `hzχ : Fin.insertNth (α` using `fun _ => ℂ) a 0 z ∈ χ.target := by`. Rewrite `hzt` using `[htgt]`. Conclude with `hzt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : t i (μ ((C.chart j).symm z).1) (μ ((C.chart j).symm z).1) = 0` using `interior_subset (s := {v : W k | t i (μ v.1) (μ v.1) = 0}) hzi`. Rewrite `h0` using `[hsymm z hzt]`. Establish `hs` using `χ.map_target hzχ`. Rewrite `h0` using `[LeviFormBoundaryTopology.bdry_iff hi (hU hs), hprod _ hs, χ.right_inv hzχ]`. Break down `mul_eq_zero.1 h0 with h1 | h1` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Conclude with `hu0 _ hs h1`. Take `⟨k', -, hk'⟩` from `Finset.prod_eq_zero_iff.1 h1 revert hk'`. Consider the cases of `hb : κ k' with`. Consider the case `none => simp`. Consider the case `some b`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `hk'`. Take `⟨h2, h3⟩` from `pow_eq_zero_iff'.1 hk'`. Break down `Fin.eq_self_or_eq_succAbove a b with rfl | ⟨c, rfl⟩` into its components or cases. Conclude with `h3 (hinj k' k _ hb hκ ▸ he)`. Rewrite `h2` using `[Fin.insertNth_apply_succAbove]`.
-
-Conclude with `hz0 c h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interior_zero_eq_empty (A : FinHolAtlas d X) (B : FinHolAtlas (n + 1) Y) (μ : Y → X) {q r : ℕ}
     (L : Fin q → LocPot X) (t : Fin q → X → X → ℂ) (W : Fin r → Set Y) (e : Fin q → Fin r → ℕ) (k : Fin r)
@@ -124,27 +122,23 @@ theorem interior_zero_eq_empty (A : FinHolAtlas d X) (B : FinHolAtlas (n + 1) Y)
         exact hz0 c h2
 
 /- English proof (translation)
-Introduce `d X _ _ _ A m α Λ σ c hS L s _ _ _ n Y _ _ _ B hB μ hμ r W e hJ w K hw hwp hwb k Ck hCk hA _ he`. Take `⟨hα, hαp, hσ, -⟩` from `hS`. Establish `hcl : IsClosed (W k)`. Use `SimpleNormalCrossingSliceCharts.isClosed_divisorComponent B (L.pullback μ hμ.1) (fun y z => s (μ y) (μ z)) (e 0) W (fun y => ?_) k` and prove the remaining obligations. Take `⟨χ, h1, h2, κ, h3, h4, h5⟩` from `hJ y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h6, u, h7, h8, h9⟩` from `h5 0`. Conclude with `⟨χ, h1, h2, h6, κ, h3, h4, u, h7, h8, h9⟩`. Use `haveI : CompactSpace (W k) := isCompact_iff_compactSpace.mp hcl.isCompact`. Take `⟨OmY, hOY, hOYpos⟩` from `GlobalTheory.T.projective_atlas_positive_potential (n + 1) Y B hB`. Use `set Om := OmY.pullback (Subtype.val : W k → Y) continuous_subtype_val with hOm`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO : IsPotential Ck Om` using `isPotentialPullback B Ck _ hCk OmY hOY`. Establish `hOpos : IsPosPot Ck Om` using `isPosPot_restrict B μ _ _ W e k Ck hCk hA OmY hOY hOYpos`. Establish `hOp` using `TailBoundAlt.isPsh_of_isPosPot Ck Om hOpos`. Use `set ν : W k → X := μ ∘ Subtype.val with hνdef`. Establish `hν : HoloMap Ck A ν` using `GlobalTheory.SNCRankDrop.holoMap_comp hμ hCk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ i, interior {y | σ i (ν y) (ν y) = 0} = ∅` using `fun i => interior_zero_eq_empty A B μ _ _ W e k Ck hA i.succ (hσ i).2.1 (he i)`. Establish `hBd` using `GlobalTheory.isBd_pullback_boundary d X A m Λ σ (fun i => ⟨(hσ i).1, (hσ i).2.1, (hσ i).2.2.2⟩) n (W k) Ck ν hν hint Om hO hOpos`. Use `set Z := ν ⁻¹' boundary σ with hZ`. Use `set ρ : W k → ℝ := fun y => Real.exp 1 - 2 * ∑ i, logNormSec (Λ i) (σ i) (ν y) with hρ`. Establish `hα'` using `isPotentialPullback A Ck ν hν α hα`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hαp'` using `GlobalTheory.PshPull.isPsh_pullback d X A n (W k) Ck ν hν α hα (TailBoundAlt.isPsh_of_isPosPot A α hαp)`. Take `⟨K₂, hK₂, ha1, ha2⟩` from `TailBoundAlt.exists_psh_chern_bound Ck Om _ hO hOpos hα'`. Establish `hKm : 0 ≤ max K 0 * (1 + (m : ℝ))` using `by positivity`. Use `set K' := K₂ + max K 0 * (1 + (m : ℝ)) with hK'`. Establish `hK'0 : 0 ≤ K'` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hρe` using `hBd.2.2.2.2.2.1`. Take `⟨C, hC⟩` from `GlobalTheory.Mean4O.LogTail.tail n (W k) Ck Z ρ Om hBd K'`. Establish `ha1'` using `psh_mono Ck hO hOp hα' ha1 (C' := K') (by linarith)`. Establish `ha2'` using `psh_mono Ck hO hOp (isPotentialRsmul Ck _ _ hα') ha2 (C' := K') (by linarith)`. Use `⟨K' * (C * Real.log (Real.exp 1) ^ (n + 1) / Real.exp 1), fun R T hT => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hg` using `smooth_comp_holo A Ck ν hν _ (hw R)`. Establish `hgc` using `continuous_of_smooth Ck hg`. Establish `hgb : ∀ y, y ∉ Z → -(K' * Real.log (ρ y)) ≤ w R (ν y) ∧ w R (ν y) ≤ 0` using `fun y hy => by`. Take `⟨h1, h2⟩` from `hwb R (ν y) hy`. Use `⟨le_trans ?_ h1, h2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h3, h4⟩` from `sum_log_le (fun i => logNormSec (Λ i) (σ i) (ν y)) fun i => logNormSec_nonpos ((hσ i).2.2.2 _)`. Establish `h5 : 0 ≤ Real.log (ρ y)` using `Real.log_nonneg ((Real.one_le_exp zero_le_one).trans (hρe y hy))`. Establish `h6` using `mul_le_mul (le_max_left K 0) h4 h3 (le_max_right K 0)`. Establish `h7` using `mul_nonneg hK₂ h5`. Establish `h8 : K' * Real.log (ρ y) = K₂ * Real.log (ρ y) + max K 0 * ((1 + (m : ℝ)) * Real.log (ρ y))` using `by rw [hK']; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h8]`. Conclude with `neg_le_neg (h6.trans (le_add_of_nonneg_left h7))`. Establish `hwR` using `isPotentialAdd A _ _ hα (isPotential_ofFun A _ (hw R))`. Establish `hTall : ∀ i, IsPotential Ck ((T i).pullback Subtype.val continuous_subtype_val) ∧ IsPsh Ck ((T i).pullback Subtype.val continuous_subtype_val) ∧ ListForm Ck Z ρ Om K' ((T i).pullback Subtype.val continuous_subtype_val)` using `fun i => by`. Apply the tactic sequence `rcases hT i with h | h <;> rw [h]`.
-
-Establish `hp` using `GlobalTheory.PshPull.isPsh_pullback d X A n (W k) Ck ν hν _ hwR (hwp R)`. Use `⟨isPotentialPullback A Ck ν hν _ hwR, hp, ?_⟩` and prove the remaining obligations. Rewrite `hp` using `[pullback_add_ofFun]`. Conclude with `listForm_add Ck hα' ha1' ha2' hg hgb hp`. Conclude with `⟨hα', hαp', listForm_self Ck hK'0 hρe hα' ha1' ha2' hαp'⟩`.
-
-Conclude with `mInt_lower_of_tail Ck hBd hK'0 hC _ (fun i => (hTall i).1) (fun i => (hTall i).2.1) (fun i => (hTall i).2.2) hgc fun y hy => (hgb y hy).1`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem component_term_bounded : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas d X) (m : ℕ) (α : LocPot X) (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ) (c : ℝ),

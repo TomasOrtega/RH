@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
 /- English proof (translation)
-Introduce `E _ _ p`. Use `⟨fun s a => ?_, ?_⟩` and prove the remaining obligations. Establish `hO : IsIntegral (OCp p) (s (a : E))` using `(RingOfIntegers.isIntegral_coe a).map_of_comp_eq (Int.castRingHom (OCp p)) s (RingHom.ext_int _ _)`. Establish `hv` using `Valuation.valuationSubring.integers (v := NormedField.valuation (K := ℂ_[p]))`. Conclude with `hv.exists_of_le_one (hv.isIntegral_iff_v_le_one.mp hO)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `NumberField.Embeddings.card E ℂ_[p]`.
+A detailed English derivation is pending.
 -/
 theorem embeddings_padicComplex : ∀ (E : Type) [Field E] [NumberField E] (p : Nat.Primes),
     (∀ (s : E →+* ℂ_[p]) (a : 𝓞 E), s (a : E) ∈ (algebraMap (OCp p) ℂ_[p]).range) ∧

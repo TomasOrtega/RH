@@ -9,13 +9,11 @@ open GlobalTheory
 namespace GlobalTheory.FlagPlucker
 
 /- English proof (translation)
-Take `⟨Q, Ψ, r, P, hP, hr, hΨ, hc, hinj⟩` from `GlobalTheory.AmpleSeparateOverRing.exists_ample_model R X f ι L hL M t ht w hw Finset.univ`. Establish `: LocallyOfFiniteType (Ψ ≫ r)` using `by rw [hΨ]; infer_instance`. Establish `: LocallyOfFiniteType Ψ` using `locallyOfFiniteType_of_comp Ψ r`. Establish `: IsProper (Ψ ≫ r)` using `by rw [hΨ]; infer_instance`. Establish `: IsProper Ψ` using `IsProper.of_comp Ψ r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyQuasiFinite Ψ` using `GlobalTheory.locallyQuasiFinite_of_finite_geometric_points Ψ fun K _ _ y => by`. Distinguish the cases in `hy : ∃ a : Spec (.of K) ⟶ X, a ≫ Ψ = y`. Take `⟨a, rfl⟩` from `hy`. Establish `hs : {a' : Spec (.of K) ⟶ X | a' ≫ Ψ = a ≫ Ψ}.Finite` using `(hfin K a).subset fun a' ha' => by`. Take `⟨e1, e2⟩` from `hinj K a' a ha'`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e1, fun i => e2 i (Finset.mem_univ i)⟩`. Conclude with `hs.to_subtype`. Use `haveI : IsEmpty {x : Spec (.of K) ⟶ X // x ≫ Ψ = y} := ⟨fun x => hy ⟨x.1, x.2⟩⟩ infer_instance`. Use `IsFinite.of_isProper_of_locallyQuasiFinite Ψ` as an intermediate fact. Establish `hcls' : CechPic.cls (P.pull Ψ) (LB.isLB_pull hP.isLB Ψ) = CechPic.cls N hN`.
-
-Rewrite using `[hc, hcls]`. Conclude with `Finset.sum_congr rfl fun i _ => natCast_zsmul _ _`. Conclude with `(isAmpleLB_congr (LB.isLB_pull hP.isLB Ψ) hN ((CechPic.cls_eq_iff _ _).1 hcls')).1 (hP.pull_of_isAffineHom Ψ)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAmpleLB_of_finite_fibres (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Sp R) (hf : IsProper f)
     (ι : Type) [Fintype ι] (L : ι → LB X) (hL : ∀ i, (L i).IsLB) (M : ι → ℕ)
@@ -80,7 +78,7 @@ def plkIdx (Mc : MChart Y) (m : ℕ) : Fin (plkNum Mc m + 1) → Option (Fin (m 
   Fin.cases none fun i => some ((Fintype.equivFin _).symm i)
 
 /- English proof (translation)
-Introduce `_ hp` and use `⟨LB.wchart_le _ _ j PUnit.unit hp, hg trivial⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem plk_le (F : Frames Y π) (Mc : MChart Y) {T : Scheme.{0}} (g : T ⟶ Z) (hg : ⊤ ≤ (g ≫ π) ⁻¹ᵁ Mc.U)
     (e : Ix Dw → ℤ) (j : ((F.LL e).pull g).ι) :

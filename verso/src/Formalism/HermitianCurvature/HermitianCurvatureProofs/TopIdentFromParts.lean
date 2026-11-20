@@ -9,9 +9,9 @@ namespace Formalism.FourierDecayAlt.P5
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd
 
 /- English proof (translation)
-Introduce `A S _ _ _ _ _ r L st w`. Proceed by induction on `w with`. Consider the case `nil`. Conclude with `⟨by simp [Fr.ofWord, RRw, Fr.Start.frame], fun Y => by simp [Fr.ofWord, TTw, Fr.Start.frame]⟩`. Consider the case `cons l w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨ih1, ih2⟩` from `ih`. Consider the cases of `hl : l.plus`. Conclude with `⟨by simp [Fr.ofWord, RRw, hl, Fr.FrameData.minus, ih1, ih2], fun Y => by simp [Fr.ofWord, TTw, hl, Fr.FrameData.minus, ih2]⟩`. Conclude with `⟨by simp [Fr.ofWord, RRw, hl, Fr.FrameData.plus, ih1, ih2], fun Y => by simp [Fr.ofWord, TTw, hl, Fr.FrameData.plus, ih2]⟩`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem ofWordRR : OfWordRR := by
   intro A S _ _ _ _ _ r L st w
@@ -33,14 +33,14 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Rewrite using `[tprod, dif_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tprod_ge (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (Y : ℂ) (i : ℕ) (h : r ≤ i) :
     tprod L Y i = 1 := by
   rw [tprod, dif_neg (by omega)]
 
 /- English proof (translation)
-Rewrite using `[QQi, Fin.val_last, tprod_ge L (star Y) r le_rfl, tprod_ge L Y r le_rfl, Matrix.conjTranspose_one, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem QQi_last (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (st : Fr.Start (Pr (RadSp k r z z' π π')))
     (Y : ℂ) : QQi L st (Fin.last r) Y = st.QQ Y := by
@@ -50,9 +50,9 @@ theorem QQi_last (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (st : Fr.Start
 end
 
 /- English proof (translation)
-Introduce `hD hFA hOW hAdj w hw x y hx hy c hc`. Take `⟨hint, heq⟩` from `hAdj w hw x y hx hy c hc`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Establish `hQ : QQi L st (Fin.last P.r) = st.QQ` using `funext fun Y => QQi_last L st Y`. Establish `hfr` using `hFA (Pr (RadSp P.k P.r z z' π π')) S P.r L st w hD.2.2.2.2.2.2.1 hD.2.2.2.2.2.2.2 hw.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRR : RRi L st (Fin.last P.r) w = star (Fr.ofWord L st w).F * (Fr.ofWord L st w).d L * (Fr.ofWord L st w).F`. Rewrite using `[RRi, hQ, ← (hOW _ S P.r L st w).1, hfr.form]`. Rewrite using `[RRform, hRR, heq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem topIdentFromParts {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]

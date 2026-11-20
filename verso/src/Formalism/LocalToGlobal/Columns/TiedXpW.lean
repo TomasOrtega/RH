@@ -16,7 +16,7 @@ section Rec
 variable {d : ColDat} (a : ColArgs d) (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSurjP d) (hQ : PtSurj d)
 
 /- English proof (translation)
-Establish `h` using `vfi_ufGL_ratHom d.sp.cm (d.R.N d.R.m) (d.tilGa u c)`. Establish `e : ratHom d.sp.cm (d.R.N d.R.m) (d.tilGa u c) = (d.tilMv u c).1` using `(ratEquiv d.sp.cm (d.R.N d.R.m)).apply_symm_apply _`. Rewrite `h` using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ufGL_tilMv (u : d.what₂.Word) (c : PCl d) :
     ufGL d.X.E (d.R.N d.R.m) (d.tilMv u c).1 = (d.tilGa u c).1 := by
@@ -27,7 +27,7 @@ theorem ufGL_tilMv (u : d.what₂.Word) (c : PCl d) :
   exact h
 
 /- English proof (translation)
-Establish `h1` using `xp_clsG_chi d.sp.cm d.hX d.hPr d.σ₀ u (d.lev d.R.m) (colDia (X := d.X) (Pr := d.Pr) d.R u d.R.m) (d.repr u d.R.m) (hQ u d.R.m) (fun c => (stepGSD (Pr := d.Pr) d.W d.lev u d.R.m).outSec.spec c) (stepCrd a hS hH u d.R.m le_rfl) ((tilAd a hS hH hP hQ u hM).ka c) (hM c).choose.2`. Establish `h2 : (classAgreement a hS hH hQ u d.R.m le_rfl).lev.chi ((tilAd a hS hH hP hQ u hM).ka c) = levTyp ((Units.map d.σ₀.toMonoidHom).comp (d.lev d.R.m).chr) (hM c).choose` using `h1`. Rewrite using `[h2, ← map_inv, vfi_typ d.sp.cm d.σ₀ (d.lev d.R.m), inv_inv, (hM c).choose_spec.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_ka (u : d.what₂.Word) (hM : TilMove a u) (c : PCl d) :
     ((((classAgreement a hS hH hQ u d.R.m le_rfl).lev.chi ((tilAd a hS hH hP hQ u hM).ka c))⁻¹ : ℂˣ) : ℂ) =
@@ -40,7 +40,7 @@ theorem chi_ka (u : d.what₂.Word) (hM : TilMove a u) (c : PCl d) :
   rw [h2, ← map_inv, vfi_typ d.sp.cm d.σ₀ (d.lev d.R.m), inv_inv, (hM c).choose_spec.1]
 
 /- English proof (translation)
-Rewrite using `[ufGL_tilMv]`. Conclude with `vfi_frMul_of_isTr d.σ₀ _ s s' h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evz_core (u : d.what₂.Word) (c : PCl d) (s s' : FrS d.X d.σ₀ (d.R.N d.R.m))
     (h : IsTr (atInf (embAt d.σ₀ d.X.emb) (d.tilGa u c).1.1) s' s) :
@@ -49,11 +49,11 @@ theorem evz_core (u : d.what₂.Word) (c : PCl d) (s s' : FrS d.X d.σ₀ (d.R.N
   exact vfi_frMul_of_isTr d.σ₀ _ s s' h
 
 /- English proof (translation)
-Introduce `φ c s s' hTr`. Establish `hs : frMul d.σ₀ (ufGL d.X.E (d.R.N d.R.m) (d.tilMv u c).1)⁻¹ s = s'`. Use `evz_core u c s s' fun τ => ?_` and prove the remaining obligations. Establish `h` using `hTr τ`. Establish `e1` using `congrFun (hW s) τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `congrFun (hW s') τ`. Establish `e3` using `embT_eq a hH`. Rewrite `h` using `[e1, e2, e3]`. Conclude with `h`. Use `Eq.trans ?_ (congrArg (fun t => t * φ (((d.colRec a).fm u).til c) s') (chi_ka a hS hH hP hQ u hM c).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (congrArg (fun t => d.σ₀ (((d.lev d.R.m).chr (d.tilMv u c).2 : d.X.Kˣ) : d.X.K) * φ (((d.colRec a).fm u).til c) t) hs)` and prove the remaining obligations. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem evzTied (u : d.what₂.Word) (hM : TilMove a u)
     (W : CF.ValTied (D := d.colRec a) u (atTTied a hH u).eV d.R.m le_rfl (classAgreement a hS hH hQ u d.R.m le_rfl))

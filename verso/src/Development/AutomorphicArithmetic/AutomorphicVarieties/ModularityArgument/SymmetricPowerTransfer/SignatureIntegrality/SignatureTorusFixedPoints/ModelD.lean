@@ -24,7 +24,7 @@ private theorem ev_coe {K : Type} [Field K] {τ a : K} (h : a * a = τ * a - 1) 
     (evU h z : K) = (z : Etau K τ).re + a * (z : Etau K τ).im := rfl
 
 /- English proof (translation)
-Simplify using `[proj]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem proj_smul {K : Type} [Field K] {Δ s : K} (hs : s * s = Δ) (c : K) (x : Lsq K Δ) :
     proj hs (c • x) = c * proj hs x := by
@@ -32,21 +32,21 @@ private theorem proj_smul {K : Type} [Field K] {Δ s : K} (hs : s * s = Δ) (c :
   ring
 
 /- English proof (translation)
-Introduce `k _ _ _ _ O _ _ hO h2 Δ s hs hs0 a ha γ j ⟨hdet, htr⟩ hemb`. Take `⟨-, -, -, -, hdt, -⟩` from `eD_facts k O hO h2 Δ s hs hs0`. Establish `inj` using `(algebraMap k (Lsq k Δ)).injective`. Establish `hdet1 : ((eD hs γ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k).det = 1` using `inj (by rw [← (hdt γ).1, hdet, map_one])`. Establish `htr1 : ((eD hs γ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k).trace = (a : k) + ((a⁻¹ : kˣ) : k)` using `inj (by rw [← (hdt γ).2, htr])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : valuation k ((a⁻¹ : kˣ) : k) * valuation k (a : k) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `hne : a ≠ a⁻¹`. Introduce `h`. Establish `h' : valuation k ((a⁻¹ : kˣ) : k) < 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← h]`. Conclude with `ha`. Conclude with `(mul_lt_of_le_one_of_lt h'.le ha).ne hprod`. Establish `hcp : ((eD hs γ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k).charpoly = (X - C (a : k)) * (X - C ((a⁻¹ : kˣ) : k))`. Rewrite using `[Matrix.charpoly_fin_two, htr1, hdet1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hab : (a : k) * ((a⁻¹ : kˣ) : k) = 1` using `Units.mul_inv a`. Rewrite using `[← hab, C_add, C_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨g₀, hg₀⟩` from `normalD k (eD hs γ) a a⁻¹ hne hcp`. Use `⟨g₀, hg₀, fun t => ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Establish `hM : ((eD hs (j t) : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) = (t : Etau k ((a : k) + ((a⁻¹ : kˣ) : k))).re • (1 : Matrix (Fin 2) (Fin 2) k) + (t : Etau k ((a : k) + ((a⁻¹ : kˣ) : k))).im • ((eD hs γ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k)`. Rewrite using `[eD_coe, eD_coe, hemb t]`. Use extensionality with `i l`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, map_add, proj_smul, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hg : ((eD hs γ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) = (g₀ : Matrix (Fin 2) (Fin 2) k) * ((dg ![a, a⁻¹] : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) * ((g₀⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k)`. Rewrite using `[hg₀, Units.val_mul, Units.val_mul]`. Establish `hPP : (g₀ : Matrix (Fin 2) (Fin 2) k) * ((g₀⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hM, hg, Units.val_mul, Units.val_mul]`. Unfold `dg`. Rewrite using `[val_diagT, val_diagT]`. Establish `hdiag : (t : Etau k ((a : k) + ((a⁻¹ : kˣ) : k))).re • (1 : Matrix (Fin 2) (Fin 2) k) + (t : Etau k ((a : k) + ((a⁻¹ : kˣ) : k))).im • diagonal (fun i => ((![a, a⁻¹] i : kˣ) : k)) = diagonal fun i => ((![evU (root_left a) t, evU (root_right a) t] i : kˣ) : k)`. Use extensionality with `i l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases l <;> simp [Matrix.one_apply, Matrix.diagonal_apply, ev_coe] <;> ring`. Rewrite using `[← hdiag, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, hPP, Matrix.mul_smul, Matrix.smul_mul]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.V.Z.Sym.Sig.modelD : UpperTheory.V.Z.Sym.Sig.ModelD := by
   intro k _ _ _ _ O _ _ hO h2 Δ s hs hs0 a ha γ j ⟨hdet, htr⟩ hemb

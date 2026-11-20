@@ -10,7 +10,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.LMe
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Unfold `Ge`. Use `exists_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[h g]`. Simplify using `[tconj]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem linked_iff_torus_conjugate {H K : Type} [Group H] [Field K] {r r' : H →* M4 K} {t : Kˣ × Kˣ}
     (h : ∀ g, r g = tconj t (r' g)) (i j : Fin 4) : Ge r i j ↔ Ge r' i j := by
@@ -20,7 +20,7 @@ private theorem linked_iff_torus_conjugate {H K : Type} [Group H] [Field K] {r r
   simp [tconj]
 
 /- English proof (translation)
-Rewrite using `[h g]`. Simplify using `[tconj, wv, wt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem torus_conjugate_corner_entry_eq {H K : Type} [Group H] [Field K] {r r' : H →* M4 K} {t : Kˣ × Kˣ}
     (h : ∀ g, r g = tconj t (r' g)) (g : H) : r g 0 0 = r' g 0 0 := by
@@ -28,9 +28,9 @@ private theorem torus_conjugate_corner_entry_eq {H K : Type} [Group H] [Field K]
   simp [tconj, wv, wt]
 
 /- English proof (translation)
-Take `⟨t, r, hr, h⟩` from `ptScale D hD M hF ξ`. Take `⟨s1, s2, -⟩` from `signs D hD M hF ξ`. Establish `hd' : DiagType r` using `fun i j hij a b => hd i j hij ((linked_iff_torus_conjugate h i j).1 a) ((linked_iff_torus_conjugate h j i).1 b)`. Establish `hs : (D.s0 : G ℚ Ω) ∈ D.Ip l` using `hD.decompSigma_mem.1.1`. Break down `diagCases D hD hS r hr hd' with ⟨a, b⟩ | ⟨a, b⟩` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl ⟨(torus_conjugate_corner_entry_eq h _).symm.trans (a _ hs), s1 fun i j hij e => b i j hij ((linked_iff_torus_conjugate h i j).2 e)⟩`. Conclude with `Or.inr ⟨(torus_conjugate_corner_entry_eq h _).symm.trans (a _ hs), s2 fun i j hij e => b i j hij ((linked_iff_torus_conjugate h i j).2 e)⟩`.
+Prove the first alternative. Prove the second alternative.
 -/
 private theorem diagonal_type_corner_cases {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     (D : Raw Ω c) (hD : D.Good) (M : Model D) [GradedAlgebra M.gr] (hS : SoV Ω l) (hF : D.Fin0)
@@ -46,19 +46,15 @@ private theorem diagonal_type_corner_cases {Ω : Type} [Field Ω] [CharZero Ω] 
   · exact Or.inr ⟨(torus_conjugate_corner_entry_eq h _).symm.trans (a _ hs), s2 fun i j hij e => b i j hij ((linked_iff_torus_conjugate h i j).2 e)⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD M _ hL hS hF x₁ h1 hn hp _`. Take `⟨ξ₁, rfl⟩` from `ptLift D hD M x₁ h1`. Take `⟨t, r, hr, h⟩` from `ptScale D hD M hF ξ₁`. Take `⟨-, -, s3, -, s5⟩` from `signs D hD M hF ξ₁`. Establish `n02 : ¬ Ge r 0 2` using `fun e => s3 hp ((linked_iff_torus_conjugate h 0 2).1 e)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : DiagType (M.rep ξ₁)`. Break down `tri D hD hL r hr with a | a | a` into its components or cases. Take `⟨p1, -, -, -, -, p6, -⟩` from `ptIn D hD _ r hr`. Conclude with `absurd ((geAlg _ r _ p1 p6).2.2.2.2.1.1 a 0 2) n02`. Conclude with `fun i j hij u v => a i j hij ((linked_iff_torus_conjugate h i j).2 u) ((linked_iff_torus_conjugate h j i).2 v)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Conclude with `absurd a.1 n02`. Establish `hne : ((D.th D.s0 : c.O) : PadicAlgCl l) ≠ ((D.al D.s0 : c.O) : PadicAlgCl l)` using `fun e => by`. Establish `hinj` using `(facts D hD).2.2.2.2.2.2.1`. Establish `: (0 : Fin 4) = 2` using `hinj (Subtype.ext e)`. Conclude with `absurd this (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ x : M.A →ₐ[c.O] PadicAlgCl l, OnS M.eqns.ideal x → Same0 M.gr x (ξ₁.comp M.toSS) → (M.rep ξ₁ D.s0 0 0 = ((D.th D.s0 : c.O) : PadicAlgCl l) ∧ NegZero M.gr x) ∨ (M.rep ξ₁ D.s0 0 0 = ((D.al D.s0 : c.O) : PadicAlgCl l) ∧ PosZero M.gr x)`. Introduce `x hx h0`. Take `⟨ξ, rfl⟩` from `ptLift D hD M x hx`. Take `⟨q1, q2⟩` from `s5 ξ fun b hb => (h0 b hb).symm`. Rewrite using `[q1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `diagonal_type_corner_cases D hD M hS hF ξ (q2 hd)`. Break down `diagonal_type_corner_cases D hD M hS hF ξ₁ hd with ⟨a, -⟩ | ⟨a, -⟩` into its components or cases. Use `Or.inr ?_` and prove the remaining obligations. Introduce and unpack `⟨x, hx, -, hnn, h0⟩`. Break down `key x hx h0 with ⟨-, b⟩ | ⟨b, -⟩` into its components or cases.
-
-Conclude with `hnn b`. Conclude with `hne (a.symm.trans b)`. Use `Or.inl ?_` and prove the remaining obligations. Introduce and unpack `⟨x, hx, -, hnn, h0⟩`. Break down `key x hx h0 with ⟨b, -⟩ | ⟨-, b⟩` into its components or cases.
-
-Conclude with `hne (b.symm.trans a)`. Conclude with `hnn b`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.m3 :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ M : Model D, ∀ [GradedAlgebra M.gr], Loc.LocalPublishedTheorems → SoV Ω l → D.Fin0 → M3 M.gr (PadicAlgCl l) M.x0 M.eqns.ideal := by

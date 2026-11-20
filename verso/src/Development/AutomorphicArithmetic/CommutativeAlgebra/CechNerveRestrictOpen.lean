@@ -7,13 +7,13 @@ set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Establish `hc : (Arrow.mapCechNerve F).app n ≫ WidePullback.base _ = WidePullback.base _ ≫ F.right`. Simplify using `[Arrow.mapCechNerve]`. Use `⟨⟨hc⟩, ⟨PullbackCone.IsLimit.mk hc (fun s => WidePullback.lift s.snd (fun i => h.lift (s.fst ≫ WidePullback.π _ i) s.snd (by` and prove the remaining obligations. Simplify using `only [Category.assoc, WidePullback.π_arrow]`. Simplify using `using s.condition)) (by simp)) ?_ ?_ ?_⟩⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `s`. Use `WidePullback.hom_ext _ _ _ (fun j => ?_) ?_` and prove the remaining obligations. Simplify using `[Arrow.mapCechNerve]`. Simplify `s.condition.symm` using `[Arrow.mapCechNerve]`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `s m h1 h2`. Use `WidePullback.hom_ext _ _ _ (fun j => ?_) ?_` and prove the remaining obligations. Simplify using `only [WidePullback.lift_π]`. Use `h.hom_ext ?_ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h.lift_fst, ← h1]`. Simplify using `[Arrow.mapCechNerve]`. Rewrite using `[h.lift_snd, ← h2, Category.assoc]`. Simplify using the standard rewrite rules. Simplify using `using h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem cechNerve_level_isPullback {C : Type*} [Category C] {a b : Arrow C}
     [∀ n : ℕ, HasWidePullback a.right (fun _ : Fin (n + 1) => a.left) fun _ => a.hom]
@@ -44,7 +44,7 @@ private theorem cechNerve_level_isPullback {C : Type*} [Category C] {a b : Arrow
     · simpa using h2
 
 /- English proof (translation)
-Rewrite using `[← h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem comp_eq_of_comp_inv {C : Type*} [Category C] {A B D E : C} {i : A ⟶ B} {ψ : B ⟶ D} {t : A ⟶ E}
     (e : E ≅ D) (h : i ≫ ψ ≫ e.inv = t) : i ≫ ψ = t ≫ e.hom := by
@@ -52,13 +52,11 @@ private theorem comp_eq_of_comp_inv {C : Type*} [Category C] {A B D E : C} {i : 
   simp
 
 /- English proof (translation)
-Introduce `V Y f W`. Establish `hP0` using `isPullback_morphismRestrict f W`. Establish `hP1` using `hP0.map yoneda`. Set `F : Arrow.mk (yoneda.map (f ∣_ W)) ⟶ Arrow.mk (yoneda.map f)` to `Arrow.homMk (yoneda.map (f ⁻¹ᵁ W).ι) (yoneda.map W.ι) (by`. Simplify using `only [Arrow.mk_hom, ← Functor.map_comp, morphismRestrict_ι])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Establish `hF : IsPullback F.left (Arrow.mk (yoneda.map (f ∣_ W))).hom (Arrow.mk (yoneda.map f)).hom F.right` using `hP1.flip`. Establish `hL` using `cechNerve_level_isPullback F hF`. Use `⟨Arrow.mapCechNerve F, ?_, ?_⟩` and prove the remaining obligations. Conclude with `NatTrans.ext (funext fun n => (hL n).w)`. Introduce `p Z g e he`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hA` using `((isPullback_morphismRestrict g W).map yoneda).flip`. Establish `hL' : IsPullback ((Arrow.mapCechNerve F).app (op (SimplexCategory.mk p)) ≫ e.inv) ((cechAug (f ∣_ W)).app (op (SimplexCategory.mk p))) (yoneda.map g) (yoneda.map W.ι)` using `IsPullback.of_iso (hL (op (SimplexCategory.mk p))) (Iso.refl _) e.symm (Iso.refl _) (Iso.refl _) (by simp) (by simp; rfl) (by`. Simplify using `only [Iso.refl_hom, Category.comp_id, Iso.symm_hom]`. Conclude with `(Iso.eq_inv_comp e).2 he) (by simp; rfl)`. Use `⟨hA.isoIsPullback _ _ hL', ?_⟩` and prove the remaining obligations.
-
-Establish `h1` using `hA.isoIsPullback_hom_fst _ _ hL'`. Conclude with `comp_eq_of_comp_inv e h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cech_nerve_restrict_open :
     ∀ {V Y : Scheme.{0}} (f : V ⟶ Y) (W : Y.Opens), ∃ ψ : cech (f ∣_ W) ⟶ cech f, ψ ≫ cechAug f = cechAug (f ∣_ W) ≫ sch.map W.ι ∧

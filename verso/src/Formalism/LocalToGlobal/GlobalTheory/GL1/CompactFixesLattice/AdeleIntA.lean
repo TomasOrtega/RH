@@ -10,7 +10,7 @@ variable {R : Type*} [CommRing R] [IsDedekindDomain R] {K : Type*} [Field K] [Al
 def IsInt (b : FiniteAdeleRing R K) : Prop := ∀ v, b v ∈ v.adicCompletionIntegers K
 
 /- English proof (translation)
-Use `first`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers ..`. Consider the case `exact Iff.rfl`. Consider the case `exact Valuation.mem_valuationSubring_iff _ _`. Consider the case `simp [IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem memO_lemma (v : HeightOneSpectrum R) (x : v.adicCompletion K) :
     x ∈ v.adicCompletionIntegers K ↔ Valued.v x ≤ 1 := by
@@ -21,9 +21,9 @@ private theorem memO_lemma (v : HeightOneSpectrum R) (x : v.adicCompletion K) :
   | simp [IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _).trans (IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap v _)`. Consider the case `exact (IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (K := K) v _).trans (IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap (K := K) v _)`. Consider the case `(rw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation', IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap])`. Consider the case `(erw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation', IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap])`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap])`. Consider the case `simp [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation', IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem valR_lemma_2 (v : HeightOneSpectrum R) (r : R) :
     Valued.v (algebraMap K (v.adicCompletion K) (algebraMap R K r)) = v.intValuation r := by
@@ -42,7 +42,7 @@ private theorem valR_lemma_2 (v : HeightOneSpectrum R) (r : R) :
       IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]
 
 /- English proof (translation)
-Rewrite using `[memO_lemma, valR_lemma_2]`. Use `first`. Consider the case `exact v.intValuation_le_one r`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.intValuation_le_one v r`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.intValuation_le_one (v := v) r`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem int_R (v : HeightOneSpectrum R) (r : R) :
     algebraMap K (v.adicCompletion K) (algebraMap R K r) ∈ v.adicCompletionIntegers K := by
@@ -53,21 +53,19 @@ theorem int_R (v : HeightOneSpectrum R) (r : R) :
   | exact IsDedekindDomain.HeightOneSpectrum.intValuation_le_one (v := v) r
 
 /- English proof (translation)
-The claim follows from `valR_lemma_2 v r`.
+A detailed English derivation is pending.
 -/
 theorem val_R (v : HeightOneSpectrum R) (r : R) :
     Valued.v (algebraMap K (v.adicCompletion K) (algebraMap R K r)) = v.intValuation r := valR_lemma_2 v r
 
 /- English proof (translation)
-Establish `hd : ∀ y : v.adicCompletion K, y ∈ closure (Set.range (algebraMap K (v.adicCompletion K)))` using `by first`. Consider the case `exact fun y => UniformSpace.Completion.denseRange_coe y`. Consider the case `exact UniformSpace.Completion.denseRange_coe`. Consider the case `(intro y; exact (IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap (R := R) K v) y)`. Consider the case `(intro y; exact (Valuation.Completion.denseRange_coe (v.valuation K)) y)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(unfold IsDedekindDomain.HeightOneSpectrum.adicCompletion Valuation.Completion;`. Conclude with `UniformSpace.Completion.denseRange_coe)`. Consider the case `(unfold IsDedekindDomain.HeightOneSpectrum.adicCompletion;`. Conclude with `UniformSpace.Completion.denseRange_coe)`. Consider the case `(delta IsDedekindDomain.HeightOneSpectrum.adicCompletion;`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Conclude with `UniformSpace.Completion.denseRange_coe)`. Establish `hN : {z : v.adicCompletion K | Valued.v (z - y) < 1} ∈ nhds y` using `by first`. Consider the case `exact Valued.mem_nhds.2 ⟨1, fun z hz => by simpa using hz⟩`. Consider the case `(rw [Valued.mem_nhds]; exact ⟨1, fun z hz => by simpa using hz⟩)`. Consider the case `exact (Valued.mem_nhds (x := y)).2 ⟨1, fun z hz => by simpa using hz⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨_, hz, k, rfl⟩` from `mem_closure_iff_nhds.1 (hd y) _ hN`. Establish `hz' : Valued.v (algebraMap K (v.adicCompletion K) k - y) < 1` using `hz`. Use `⟨k, (memO_lemma v _).2 ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `(rw [Valuation.map_sub_swap]; exact le_of_lt hz')`.
-
-Consider the case `(rw [← neg_sub, Valuation.map_neg]; exact le_of_lt hz')`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_near (v : HeightOneSpectrum R) (y : v.adicCompletion K) :
     ∃ k : K, y - algebraMap K (v.adicCompletion K) k ∈ v.adicCompletionIntegers K := by
@@ -96,15 +94,15 @@ theorem exists_near (v : HeightOneSpectrum R) (y : v.adicCompletion K) :
   | (rw [← neg_sub, Valuation.map_neg]; exact le_of_lt hz')
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `exists_near v y`. Take `⟨a, b, hb, hab⟩ : ∃ a b : R, b ∈ nonZeroDivisors R ∧ algebraMap R K a / algebraMap R K b = k` from `by first`. Consider the case `exact IsFractionRing.div_surjective (A := R) k`. Consider the case `(obtain ⟨a, b, h⟩ := IsLocalization.mk'_surjective (nonZeroDivisors R) k;`. Conclude with `⟨a, b, b.2, by rw [← h, IsFractionRing.mk'_eq_div]⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 
-Substitute `hab` using the available equality. Establish `hb0 : b ≠ 0` using `by first`. Consider the case `exact nonZeroDivisors.ne_zero hb`. Consider the case `exact mem_nonZeroDivisors_iff_ne_zero.1 hb`. Establish `hbK : algebraMap R K b ≠ 0` using `by first`.
+Substitute using the available equality. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Consider the case `exact (map_ne_zero_iff _ (IsFractionRing.injective R K)).2 hb0`. Use `⟨b, hb0, ?_⟩` and prove the remaining obligations. Establish `e1 : algebraMap R K b * (algebraMap R K a / algebraMap R K b) = algebraMap R K a` using `by first`. Consider the case `(field_simp; done)`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(rw [← mul_div_assoc]; exact mul_div_cancel_left₀ _ hbK)`. Consider the case `(field_simp; ring)`. Establish `e2 : algebraMap K (v.adicCompletion K) (algebraMap R K b) * (y - algebraMap K (v.adicCompletion K) (algebraMap R K a / algebraMap R K b)) + algebraMap K (v.adicCompletion K) (algebraMap R K a) = algebraMap K (v.adicCompletion K) (algebraMap R K b) * y`. Rewrite using `[mul_sub, ← map_mul (algebraMap K (v.adicCompletion K)), e1, sub_add_cancel]`. Rewrite using `[← e2]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (mul_mem (int_R v b) hk) (int_R v a)`.
+A detailed English derivation is pending.
 -/
 theorem exists_den_local (v : HeightOneSpectrum R) (y : v.adicCompletion K) :
     ∃ s : R, s ≠ 0 ∧
@@ -140,7 +138,7 @@ theorem exists_den_local (v : HeightOneSpectrum R) (y : v.adicCompletion K) :
   exact add_mem (mul_mem (int_R v b) hk) (int_R v a)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Filter.eventually_cofinite.1 b.2`. Consider the case `exact b.2`. Consider the case `exact Filter.eventually_cofinite.1 b.property`. Consider the case `(have h := b.2; rw [Filter.eventually_cofinite] at h; exact h)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem fin_lemma_3 (b : FiniteAdeleRing R K) :
     {v : HeightOneSpectrum R | b v ∉ v.adicCompletionIntegers K}.Finite := by
@@ -151,7 +149,7 @@ private theorem fin_lemma_3 (b : FiniteAdeleRing R K) :
   | (have h := b.2; rw [Filter.eventually_cofinite] at h; exact h)
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp`. Consider the case `exact RestrictedProduct.mul_apply a b v`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem mulApp_lemma_4 (a b : FiniteAdeleRing R K) (v : HeightOneSpectrum R) :
     (a * b) v = a v * b v := by
@@ -161,7 +159,7 @@ private theorem mulApp_lemma_4 (a b : FiniteAdeleRing R K) (v : HeightOneSpectru
   | exact RestrictedProduct.mul_apply a b v
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(rw [IsScalarTower.algebraMap_apply R K (FiniteAdeleRing R K)]; rfl)`. Consider the case `simp`. Consider the case `(simp; rfl)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem algApp_lemma_5 (r : R) (v : HeightOneSpectrum R) :
     (algebraMap R (FiniteAdeleRing R K) r) v = algebraMap K (v.adicCompletion K) (algebraMap R K r) := by
@@ -172,11 +170,11 @@ private theorem algApp_lemma_5 (r : R) (v : HeightOneSpectrum R) :
   | (simp; rfl)
 
 /- English proof (translation)
-Establish `hS` using `fin_lemma_3 b`. Use `choose s hs0 hs using fun w : HeightOneSpectrum R => exists_den_local w (b w)`. Use `⟨∏ w ∈ hS.toFinset, s w, Finset.prod_ne_zero_iff.2 (fun w _ => hs0 w), ?_⟩` and prove the remaining obligations. Introduce `v`. Rewrite using `[mulApp_lemma_4, algApp_lemma_5]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hv : v ∈ hS.toFinset`. Rewrite using `[← Finset.mul_prod_erase hS.toFinset s hv]`. Simplify using `only [map_mul]`. Rewrite using `[show ∀ x y z : v.adicCompletion K, x * y * z = y * (x * z) from fun x y z => by ring]`. Conclude with `mul_mem (int_R v _) (hs v)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hb : b v ∈ v.adicCompletionIntegers K`. Assume the negation of the conclusion as `h`. Conclude with `hv (hS.mem_toFinset.2 h)`. Conclude with `mul_mem (int_R v _) hb`.
+A detailed English derivation is pending.
 -/
 theorem exists_den (b : FiniteAdeleRing R K) :
     ∃ r : R, r ≠ 0 ∧ IsInt (algebraMap R (FiniteAdeleRing R K) r * b) := by
@@ -198,15 +196,15 @@ theorem exists_den (b : FiniteAdeleRing R K) :
     exact mul_mem (int_R v _) hb
 
 /- English proof (translation)
-Establish `hrK : algebraMap R K r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R K)).mpr hr`. Establish `hrv : algebraMap K (v.adicCompletion K) (algebraMap R K r) ≠ 0` using `(map_ne_zero_iff _ (algebraMap K (v.adicCompletion K)).injective).mpr hrK`. Take `⟨k', hk'⟩` from `exists_near v ((algebraMap K (v.adicCompletion K) (algebraMap R K r))⁻¹ * c)`. Establish `h1 : Valued.v (c - algebraMap K _ (algebraMap R K r * k')) ≤ v.intValuation r`. Establish `: c - algebraMap K (v.adicCompletion K) (algebraMap R K r * k') = algebraMap K _ (algebraMap R K r) * ((algebraMap K (v.adicCompletion K) (algebraMap R K r))⁻¹ * c - algebraMap K _ k')`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, mul_sub, ← mul_assoc, mul_inv_cancel₀ hrv, one_mul]`. Rewrite using `[this, Valuation.map_mul, val_R]`. Conclude with `mul_le_of_le_one_right' hk'`. Establish `hk : v.valuation K (algebraMap R K r * k') ≤ 1`. Rewrite using `[← valuedAdicCompletion_eq_valuation']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (((algebraMap R K r * k' : K)) : v.adicCompletion K) = c - (c - algebraMap K (v.adicCompletion K) (algebraMap R K r * k'))`. Rewrite using `[sub_sub_cancel]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(Valuation.map_sub _ _ _).trans (max_le hc (h1.trans (v.intValuation_le_one r)))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hγ : v.intValuation r ≠ 0` using `v.intValuation_ne_zero r hr`. Take `⟨a, ha⟩` from `exists_valuation_sub_lt_of_integer v hk (Units.mk0 _ hγ)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `e : c - algebraMap K (v.adicCompletion K) (algebraMap R K a) = (c - algebraMap K _ (algebraMap R K r * k')) - algebraMap K _ (algebraMap R K a - algebraMap R K r * k')`. Rewrite using `[map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(Valuation.map_sub _ _ _).trans (max_le h1 ?_)` and prove the remaining obligations. Use `valuedAdicCompletion_eq_valuation' v (algebraMap R K a - algebraMap R K r * k')` as an intermediate fact. Conclude with `this.trans_le ha.le`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_approx_local (v : HeightOneSpectrum R) (c : v.adicCompletion K)
     (hc : c ∈ v.adicCompletionIntegers K) (r : R) (hr : r ≠ 0) :
@@ -242,15 +240,13 @@ theorem exists_approx_local (v : HeightOneSpectrum R) (c : v.adicCompletion K)
   exact this.trans_le ha.le
 
 /- English proof (translation)
-Establish `hT : {v : HeightOneSpectrum R | v.asIdeal ∣ Ideal.span {r}}.Finite` using `Ideal.finite_factors (by rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]; exact hr)`. Use `choose a0 ha0 using fun v => exists_approx_local v (c v) (hc v) r hr`. Take `⟨a, ha⟩` from `exists_forall_sub_mem_ideal (s := hT.toFinset) (fun v => v.asIdeal) (fun v => multiplicity v.asIdeal (Ideal.span {r})) (fun v _ => v.prime) (fun v _ w _ hvw h => hvw (HeightOneSpectrum.ext h)) (fun v => a0 v.1)`. Use `⟨a, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ hT.toFinset`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h1` using `ha v hv`. Rewrite `h1` using `[← intValuation_le_pow_iff_mem, ← intValuation_eq_exp_neg_multiplicity v hr]`. Establish `e : c v - algebraMap K (v.adicCompletion K) (algebraMap R K a) = (c v - algebraMap K _ (algebraMap R K (a0 v))) - algebraMap K _ (algebraMap R K (a - a0 v))`. Rewrite using `[map_sub, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `(Valuation.map_sub _ _ _).trans (max_le (ha0 v) ?_)` and prove the remaining obligations. Rewrite using `[val_R]`. Conclude with `h1`. Establish `h1 : v.intValuation r = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[intValuation_eq_one_iff_mem_primeCompl]`. Use `Ideal.mem_primeCompl_iff.mpr fun hmem => hv ?_` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `Ideal.dvd_span_singleton.mpr hmem`. Rewrite using `[h1]`.
-
-Conclude with `sub_mem (hc v) (int_R v a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_approx (c : FiniteAdeleRing R K) (hc : IsInt c) (r : R) (hr : r ≠ 0) :
     ∃ a : R, ∀ v, Valued.v (c v - algebraMap K _ (algebraMap R K a)) ≤ v.intValuation r := by
@@ -278,7 +274,7 @@ theorem exists_approx (c : FiniteAdeleRing R K) (hc : IsInt c) (r : R) (hr : r �
     rw [h1]; exact sub_mem (hc v) (int_R v a)
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp`. Consider the case `(simp; rfl)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem algKApp_lemma_6 (k : K) (v : HeightOneSpectrum R) :
     (algebraMap K (FiniteAdeleRing R K) k) v = algebraMap K (v.adicCompletion K) k := by
@@ -288,19 +284,19 @@ private theorem algKApp_lemma_6 (k : K) (v : HeightOneSpectrum R) :
   | (simp; rfl)
 
 /- English proof (translation)
-Take `⟨r, hr, hrb⟩` from `exists_den b`. Take `⟨a, ha⟩` from `exists_approx _ hrb r hr`. Establish `hrK : algebraMap R K r ≠ 0` using `by first`. Consider the case `exact IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hr)`. Consider the case `exact (map_ne_zero_iff _ (IsFractionRing.injective R K)).2 hr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Use `⟨algebraMap R K a / algebraMap R K r, ?_⟩` and prove the remaining obligations. Introduce `v`. Establish `hv` using `ha v`. Rewrite `hv` using `[mulApp_lemma_4, algApp_lemma_5]`. Establish `hsub : (b - algebraMap K (FiniteAdeleRing R K) (algebraMap R K a / algebraMap R K r)) v = b v - algebraMap K (v.adicCompletion K) (algebraMap R K a / algebraMap R K r)` using `by first`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Consider the case `rfl`. Consider the case `simp [algKApp_lemma_6]`. Consider the case `(rw [← algKApp_lemma_6]; rfl)`. Rewrite using `[hsub, memO_lemma]`. Establish `e1 : algebraMap R K r * (algebraMap R K a / algebraMap R K r) = algebraMap R K a` using `by first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `(field_simp; done)`. Consider the case `(rw [← mul_div_assoc]; exact mul_div_cancel_left₀ _ hrK)`. Consider the case `(field_simp; ring)`. Establish `e2 : algebraMap K (v.adicCompletion K) (algebraMap R K r) * (b v - algebraMap K (v.adicCompletion K) (algebraMap R K a / algebraMap R K r)) = algebraMap K (v.adicCompletion K) (algebraMap R K r) * b v - algebraMap K (v.adicCompletion K) (algebraMap R K a)`. Rewrite using `[mul_sub, ← map_mul (algebraMap K (v.adicCompletion K)), e1]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv2 : v.intValuation r * Valued.v (b v - algebraMap K (v.adicCompletion K) (algebraMap R K a / algebraMap R K r)) ≤ v.intValuation r`. Establish `h3` using `hv`. Rewrite `h3` using `[← e2, Valuation.map_mul, valR_lemma_2]`. Conclude with `h3`. Establish `hne : v.intValuation r ≠ 0` using `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact v.intValuation_ne_zero r hr`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.intValuation_ne_zero v r hr`. Consider the case `(rw [← valR_lemma_2 (K := K) v r, Valuation.ne_zero_iff, map_ne_zero]; exact hrK)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hne, one_mul]`.
+Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `_ ≤ (v.intValuation r)⁻¹ * v.intValuation r := by first`. Consider the case `gcongr`. Consider the case `exact mul_le_mul_left' hv2 _`. Consider the case `exact mul_le_mul_left hv2 _`. Use `_ = 1 := inv_mul_cancel₀ hne`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_approx_adele (b : FiniteAdeleRing R K) :
     ∃ u : K, IsInt (b - algebraMap K (FiniteAdeleRing R K) u) := by
@@ -353,7 +349,7 @@ theorem exists_approx_adele (b : FiniteAdeleRing R K) :
     _ = 1 := inv_mul_cancel₀ hne
 
 /- English proof (translation)
-Introduce `v`. Use `first`. Consider the case `exact zero_mem _`. Consider the case `simp`. Consider the case `(show (0 : v.adicCompletion K) ∈ _; exact zero_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isInt_zero : IsInt (0 : FiniteAdeleRing R K) := by
   intro v
@@ -363,7 +359,7 @@ theorem isInt_zero : IsInt (0 : FiniteAdeleRing R K) := by
   | (show (0 : v.adicCompletion K) ∈ _; exact zero_mem _)
 
 /- English proof (translation)
-Introduce `v`. Use `first`. Consider the case `exact add_mem (ha v) (hb v)`. Consider the case `simpa using add_mem (ha v) (hb v)`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isInt_add {a b : FiniteAdeleRing R K} (ha : IsInt a) (hb : IsInt b) : IsInt (a + b) := by
   intro v
@@ -372,7 +368,7 @@ theorem isInt_add {a b : FiniteAdeleRing R K} (ha : IsInt a) (hb : IsInt b) : Is
   | simpa using add_mem (ha v) (hb v)
 
 /- English proof (translation)
-Introduce `v`. Rewrite using `[mulApp_lemma_4]`. Conclude with `mul_mem (ha v) (hb v)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInt_mul {a b : FiniteAdeleRing R K} (ha : IsInt a) (hb : IsInt b) : IsInt (a * b) := by
   intro v
@@ -380,7 +376,7 @@ theorem isInt_mul {a b : FiniteAdeleRing R K} (ha : IsInt a) (hb : IsInt b) : Is
   exact mul_mem (ha v) (hb v)
 
 /- English proof (translation)
-Introduce `v`. Rewrite using `[algApp_lemma_5]`. Conclude with `int_R v r`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInt_R (r : R) : IsInt (algebraMap R (FiniteAdeleRing R K) r) := by
   intro v
@@ -388,9 +384,9 @@ theorem isInt_R (r : R) : IsInt (algebraMap R (FiniteAdeleRing R K) r) := by
   exact int_R v r
 
 /- English proof (translation)
-Use `IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one K k (fun v => ?_)` and prove the remaining obligations. Establish `h1` using `h v`. Rewrite `h1` using `[algKApp_lemma_6, memO_lemma]`. Use `first`. Consider the case `exact (IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v k).symm.le.trans h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (K := K) v k).symm.le.trans h1`. Consider the case `(rwa [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] at h1)`. Consider the case `(erw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] at h1; exact h1)`. Consider the case `simpa [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] using h1`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_of_isInt (k : K) (h : IsInt (algebraMap K (FiniteAdeleRing R K) k)) :
     k ∈ (algebraMap R K).range := by

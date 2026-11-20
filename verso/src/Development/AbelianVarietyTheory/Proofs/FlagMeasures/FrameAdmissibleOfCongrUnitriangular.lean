@@ -6,15 +6,15 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `D : Ideal (𝓞 E)` to `Submodule.comap (LinearMap.toSpanSingleton (𝓞 E) E m) 1`. Establish `hD : ∀ s : 𝓞 E, s ∈ D ↔ ∃ o : 𝓞 E, (s : E) * m = o`. Introduce `s`. Simplify using `only [D, Submodule.mem_comap, LinearMap.toSpanSingleton_apply, Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy⟩; exact ⟨y, by rw [Algebra.smul_def] at hy; exact hy.symm⟩`. Introduce and unpack `⟨o, ho⟩; exact ⟨o, by rw [Algebra.smul_def]; exact ho.symm⟩`. Establish `htop : D ⊔ Ideal.span {(g : 𝓞 E)} = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨Q, hQmax, hQ⟩` from `Ideal.exists_le_maximal _ hne`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hgQ : (g : 𝓞 E) ∈ Q` using `hQ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hg0 : (g : 𝓞 E) ≠ 0` using `by exact_mod_cast hg`. Establish `hQbot : Q ≠ ⊥` using `fun h => hg0 (by rw [h] at hgQ; simpa using hgQ)`. Take `⟨s, hs, o, ho⟩` from `hm ⟨Q, hQmax.isPrime, hQbot⟩ hgQ`. Conclude with `hs (hQ (Ideal.mem_sup_left ((hD s).2 ⟨o, ho⟩)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (1 : 𝓞 E) ∈ D ⊔ Ideal.span {(g : 𝓞 E)}` using `by rw [htop]; trivial`. Take `⟨d, hd, y, hy, hdy⟩` from `Submodule.mem_sup.1 h1`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Take `⟨o, ho⟩` from `(hD d).1 hd`. Use `⟨o, c, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun x : 𝓞 E => (x : E)) hdy`. Move the coercions through the operations in `at e`. Rewrite using `[← ho]`. Take the linear combination `(-m) * e`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_int_sub_eq_mul_of_integral_over {E : Type} [Field E] [NumberField E]
     (g : ℕ) (hg : g ≠ 0) (m : E)
@@ -47,19 +47,19 @@ theorem exists_int_sub_eq_mul_of_integral_over {E : Type} [Field E] [NumberField
   linear_combination (-m) * e
 
 /- English proof (translation)
-Establish `key : ∀ a b, ∃ ξ c : 𝓞 E, M a b - (ξ : E) = (g : E) * (c : E) * M a b` using `fun a b => exists_int_sub_eq_mul_of_integral_over g hg (M a b) (fun P hP => hint P hP a b)`. Set `ξ : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E)` to `fun a b => if b < a then 0 else if a = b then 1 else (key a b).choose`. Establish `hξ : ∀ a b, ∃ c : 𝓞 E, M a b - ((ξ a b : 𝓞 E) : E) = (g : E) * (c : E) * M a b`. Introduce `a b`. Distinguish the cases in `h1 : b < a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨0, by simp [ξ, h1, hlow a b h1]⟩`. Distinguish the cases in `h2 : a = b`. Substitute `h2; exact ⟨0, by simp [ξ, hdiag]⟩` using the available equality. Take `⟨c, hc⟩` from `(key a b).choose_spec`. Conclude with `⟨c, by simpa [ξ, h1, h2] using hc⟩`.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨ξ, fun a b hab => by simp [ξ, hab], fun a => by simp [ξ], ?_⟩` and prove the remaining obligations. Introduce `b P hP`. Use `haveI := P.isPrime`. Establish `hsplit : frame F' b - frameAct (frame F) ξ b = (frame F' b - ∑ a, M a b • frame F a) + ∑ a, (M a b - (ξ a b : E)) • frame F a`. Simplify using `only [frameAct, sub_smul, Finset.sum_sub_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hsplit]`. Use `Submodule.add_mem _ (hmod b P hP) (Submodule.sum_mem _ fun a _ => ?_)` and prove the remaining obligations. Take `⟨c, hc⟩` from `hξ a b`. Take `⟨t, ht, htf⟩` from `hloc P hP a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, o, ho⟩` from `hint P hP a b`. Use `⟨s * t, P.asIdeal.primeCompl.mul_mem hs ht, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Establish `e : (s * t) • (((g : E) * (c : E) * M a b) • frame F a) = ((g : 𝓞 E) * (c * o)) • (t • frame F a)`. Rewrite using `[← algebraMap_smul E (s * t), ← algebraMap_smul E ((g : 𝓞 E) * (c * o)), ← algebraMap_smul E t, smul_smul, smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [map_mul, map_natCast]`. Express the relevant statement in the definitionally equal form `(s : E) * (t : E) * ((g : E) * (c : E) * M a b) = (g : E) * ((c : E) * (o : E)) * (t : E)`. Rewrite using `[← ho]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem_smul (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)) htf`.
+A detailed English derivation is pending.
 -/
 theorem admissible_of_congr_unitriangular {E : Type} [Field E] [NumberField E] [StarRing E]
     {S : HSpace E} {r : ℕ} (Λ : Submodule (𝓞 E) S.V) (g : ℕ) (hg : g ≠ 0) {T T' : E}

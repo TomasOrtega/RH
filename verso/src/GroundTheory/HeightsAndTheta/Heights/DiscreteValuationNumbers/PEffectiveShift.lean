@@ -7,29 +7,27 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P e hP b f g hD`. Establish `hPr : P.IsPrime` using `hP.multiProj.isPrime`. Establish `hCP : (C ϖ : MRing ι O) ∉ P`. Introduce `h`. Establish `h' : ϖ ∈ P.comap (C : O →+* MRing ι O)` using `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h'` using `[hP.noTorsion, Ideal.mem_bot]`. Conclude with `hϖ.ne_zero h'`. Set `J : Ideal (MRing ι O)` to `{ carrier := {u | ∃ v, u * f - v * g ∈ P} add_mem' := by`. Introduce and unpack `a c ⟨v, hv⟩ ⟨w, hw⟩`. Conclude with `⟨v + w, by convert P.add_mem hv hw using 1; ring⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨v, hv⟩`. Conclude with `⟨c * v, by convert P.mul_mem_left c hv using 1; simp only [smul_eq_mul]; ring⟩ }`. Establish `hJ : ∀ u, u ∈ J ↔ ∃ v, u * f - v * g ∈ P` using `fun u => Iff.rfl`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hPJ : P ≤ J` using `fun p hp => (hJ p).2 ⟨0, by simpa using P.mul_mem_right f hp⟩`. Set `𝔞 : Ideal (MRing ι O)` to `∏ k : K, Ideal.span (Set.range fun i : ι k => (X ⟨k, i⟩ : MRing ι O))`. Set `I : Ideal (MRing ι O)` to `Ideal.span {(C ϖ : MRing ι O)} * 𝔞`. Establish `hIJ : I ≤ J.radical`. Rewrite using `[Ideal.radical_eq_sInf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `le_sInf fun W hW => ?_` and prove the remaining obligations. Take `⟨hJW, hWp⟩` from `hW`. Distinguish the cases in `hϖW : (C ϖ : MRing ι O) ∈ W`. Conclude with `Ideal.mul_le_left.trans ((Ideal.span_singleton_le_iff_mem W).2 hϖW)`. Establish `hrel : ¬ IsRelevant W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `hrel`. Take `⟨u, v, hu, -, huv⟩` from `hD.unit_off_special W hWp (hPJ.trans hJW) hrel hϖW`. Conclude with `hu (hJW ((hJ u).2 ⟨v, huv⟩))`. Simplify using `only [IsRelevant, not_forall, not_exists, not_not] at hrel`. Take `⟨k, hk⟩` from `hrel`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Ideal.mul_le_right.trans (Ideal.prod_le_inf.trans ((Finset.inf_le (Finset.mem_univ k)).trans ?_))` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hk i`. Take `⟨N, hN⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hIJ (IsNoetherian.noetherian I)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hCN : (C ϖ : MRing ι O) ^ N ∉ P` using `fun h => hCP (hPr.mem_of_pow_mem N h)`. Use `⟨N, ?_, ?_⟩` and prove the remaining obligations. Take `⟨bf, bg, hf, hg, hb⟩` from `hD.degrees`. Use `IsVerticalDivisor.of_unit_off_special ⟨bf, bg, ?_, hg, hb⟩ ?_ hD.den_not_mem ?_` and prove the remaining obligations. Establish `h` using `(isWeightedHomogeneous_C (blockWeight ι) (ϖ ^ N)).mul hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite `h` using `[zero_add, map_pow]`. Conclude with `h`. Conclude with `fun h => (hPr.mem_or_mem h).elim hCN hD.num_not_mem`. Introduce `W hW hPW hrel hϖW`. Take `⟨u, v, hu, hv, huv⟩` from `hD.unit_off_special W hW hPW hrel hϖW`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u, C ϖ ^ N * v, hu, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun h => (hW.mem_or_mem h).elim (fun h' => hϖW (hW.mem_of_pow_mem N h')) hv`. Use `P.mul_mem_left (C ϖ ^ N) huv using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Introduce `W hW hPW hrel choose i hi using hrel`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : (∏ k, (X ⟨k, i k⟩ : MRing ι O)) ∉ W`. Rewrite using `[hW.prod_mem_iff]`. Introduce and unpack `⟨k, -, hk⟩`. Conclude with `hi k hk`. Establish `hz𝔞 : (∏ k, (X ⟨k, i k⟩ : MRing ι O)) ∈ 𝔞` using `Ideal.prod_mem_prod fun k _ => Ideal.subset_span ⟨i k, rfl⟩`.
-
-Establish `hmem : (C ϖ * ∏ k, (X ⟨k, i k⟩ : MRing ι O)) ^ N ∈ J` using `hN (Ideal.pow_mem_pow (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) hz𝔞) N)`. Take `⟨v, hv⟩` from `(hJ _).1 hmem`. Use `⟨(∏ k, (X ⟨k, i k⟩ : MRing ι O)) ^ N, v, fun h => hz (hW.mem_of_pow_mem N h), ?_⟩` and prove the remaining obligations. Use `hv using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem EffectiveShift.proof : EffectiveShift.Statement := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P e hP b f g hD

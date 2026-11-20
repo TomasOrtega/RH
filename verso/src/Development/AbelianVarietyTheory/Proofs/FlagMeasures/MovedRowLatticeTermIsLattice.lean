@@ -10,7 +10,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HL
 
 /- English proof (translation)
-Use `⟨hΛ.fg.map _, ?_⟩` and prove the remaining obligations. Establish `h1 : ((Λ.map (((e : V →ₗ[E] W)).restrictScalars (𝓞 E)) : Submodule (𝓞 E) W) : Set W) = (e : V →ₗ[E] W) '' (Λ : Set V)`. Simplify using `[Submodule.map_coe]`. Rewrite using `[h1, Submodule.span_image, hΛ.span_eq_top, Submodule.map_top]`. Conclude with `LinearMap.range_eq_top.mpr e.surjective`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_map_equiv {E : Type} [Field E] [NumberField E] {V W : Type} [AddCommGroup V] [Module E V]
     [AddCommGroup W] [Module E W] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V]
@@ -25,7 +25,7 @@ theorem isLattice_map_equiv {E : Type} [Field E] [NumberField E] {V W : Type} [A
   exact LinearMap.range_eq_top.mpr e.surjective
 
 /- English proof (translation)
-Introduce `D X Y u u' Z T T' F0 F0' FP G c t ρ`. Establish `hrow` using `(Y.rowsOK u).1 t.lam t.mem`. Establish `hL : Submodule.IsLattice D.host.E t.lam` using `hrow.1.1`. Conclude with `isLattice_map_equiv (ρ.trans c.e) t.lam hL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem term_lat_isLattice : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word) (Z : LocDat D) {T T' : D.host.E} (F0 : LFlag (VS D) D.R.rS T) (F0' : LFlag (VS D) D.R.rS T') (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (G : GFrames (placesOf Z) D.R.rS D.R.k) (c : GCoord Z F0 F0' FP G) (t : TauC Y u u') (ρ : (VS D).V ≃ₗ[D.host.E] (VS D).V), Submodule.IsLattice D.host.E (c.lat ρ t.lam) := by
   intro D X Y u u' Z T T' F0 F0' FP G c t ρ

@@ -8,27 +8,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
 /- English proof (translation)
-Establish `hq0 : 0 < q` using `by linarith`. Establish `hsm : ∀ cf : Fin g → K, (∀ i, ‖cf i‖ ≤ q ^ 2) → ∀ a, ‖∑ i, (h a i - k a i) * cf i‖ ≤ 1`. Introduce `cf hc a`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : q⁻¹ ^ n ≤ q⁻¹ ^ 2` using `pow_le_pow_of_le_one (by positivity) (inv_le_one_of_one_le₀ hq.le) hn`. Combine the equalities or inequalities in the displayed calculation. Establish `key : ∀ cf : Fin g → K, (∀ i, ‖cf i‖ ≤ q ^ 2) → (cf ∈ Λ ↔ ∀ a, ‖∑ i, k a i * cf i‖ ≤ 1)`. Introduce `cf hc`. Rewrite using `[hΛ]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun a => ?_` and prove the remaining obligations. Establish `e : ∑ i, (h a i - k a i) * cf i = ∑ i, h a i * cf i - ∑ i, k a i * cf i`. Simplify using `[sub_mul, Finset.sum_sub_distrib]`. Establish `hs` using `hsm cf hc a`. Rewrite `hs` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h1`. Establish `: ∑ i, k a i * cf i = ∑ i, h a i * cf i + -(∑ i, h a i * cf i - ∑ i, k a i * cf i)` using `by ring`. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 (by rwa [norm_neg]))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Establish `: ∑ i, h a i * cf i = ∑ i, k a i * cf i + (∑ i, h a i * cf i - ∑ i, k a i * cf i)` using `by ring`. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 hs)`. Establish `hb' : ∀ cf ∈ Λ, ∀ i, ‖cf i‖ ≤ q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `cf hc i`. Use `hb cf hc i` as an intermediate fact. Rewrite `this` using `[norm_mul, hπ, inv_mul_le_iff₀ hq0, _root_.mul_one]`. Then use the resulting hypothesis. Prove the components needed by the constructor for the conclusion. Introduce `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `(key cf fun i => (hb' cf hc i).trans ?_).1 hc` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Establish `ind : ∀ m : ℕ, ∀ cf : Fin g → K, (∀ i, ‖cf i‖ ≤ q ^ (m + 2)) → (∀ a, ‖∑ i, k a i * cf i‖ ≤ 1) → cf ∈ Λ`. Introduce `m`. Proceed by induction on `m with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => intro cf hc h1; exact (key cf (by simpa using hc)).2 h1`. Consider the case `succ m ih`. Introduce `cf hc h1`. Establish `h2 : (fun i => π * cf i) ∈ Λ`. Use `ih _ (fun i => ?_) fun a => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[norm_mul, hπ, inv_mul_le_iff₀ hq0]`. Combine the equalities or inequalities in the displayed calculation. Establish `: ∑ i, k a i * (π * cf i) = π * ∑ i, k a i * cf i`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[this, norm_mul, hπ, inv_mul_le_iff₀ hq0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(h1 a).trans (by linarith)`. Use `(key cf fun i => ?_).2 h1` and prove the remaining obligations. Establish `h3` using `hb' _ h2 i`. Rewrite `h3` using `[norm_mul, hπ, inv_mul_le_iff₀ hq0]`. Rewrite using `[sq]` and apply the resulting hypothesis.
-
-Take `⟨m, hm⟩` from `pow_unbounded_of_one_lt ‖cf‖ hq`. Use `ind m cf fun i => (norm_le_pi_norm cf i).trans (hm.le.trans ?_)` and prove the remaining obligations. Conclude with `pow_le_pow_right₀ hq.le (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem lattice_membership_stable_under_approximation {K : Type} [NormedField K] [IsUltrametricDist K] {A : Type} {g : ℕ} (π : K) (q : ℝ) (hq : 1 < q)
     (hπ : ‖π‖ = q⁻¹) (n : ℕ) (hn : 2 ≤ n) (h k : A → Fin g → K) (Λ : Set (Fin g → K))
@@ -93,11 +91,11 @@ private theorem lattice_membership_stable_under_approximation {K : Type} [Normed
     exact pow_le_pow_right₀ hq.le (by omega)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw p hp n g h b Λ hn hk hΛ hb cf`. Establish `hnp : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]), norm_algebraMap', Padic.norm_p]`. Establish `hq : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Rewrite using `[lattice_membership_stable_under_approximation (p : ℂ_[p]) (p : ℝ) hq hnp n hn h (fun a i => pr Dw (b (Pi.single i 1)) a) Λ hk hΛ hb cf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun a => ?_` and prove the remaining obligations. Establish `e : pr Dw (b cf) a = ∑ i, pr Dw (b (Pi.single i 1)) a * cf i`. Establish `: cf = ∑ i, cf i • (Pi.single i 1 : Fin g → ℂ_[p])`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [this]`. Simplify using `only [pr, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.p_adic_lattice_membership_approximated :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (p : ℕ) [Fact p.Prime] (n g : ℕ) (h : Dw.La → Fin g → ℂ_[p]) (b : (Fin g → ℂ_[p]) →ₗ[ℂ_[p]] ℂ_[p] ⊗[ℤ] Dw.La) (Λ : Set (Fin g → ℂ_[p])), 2 ≤ n → (∀ a i, ‖h a i - pr Dw (b (Pi.single i 1)) a‖ ≤ (p : ℝ)⁻¹ ^ n) → (∀ cf, cf ∈ Λ ↔ ∀ a, ‖∑ i, h a i * cf i‖ ≤ 1) → (∀ cf ∈ Λ, ∀ i, ‖(p : ℂ_[p]) * cf i‖ ≤ 1) → ∀ cf, cf ∈ Λ ↔ ∀ a, ‖pr Dw (b cf) a‖ ≤ 1 := by

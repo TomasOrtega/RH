@@ -11,19 +11,19 @@ open Formalism.BasicNotions Formalism.L2.Forms Formalism.UG Formalism.L2.GlobalT
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `key : ∀ z, z ∈ loc res M' ↔ g z ∈ loc res M`. Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨s, hs0, h⟩` from `(mem_loc _ _ _).1 hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `loc_sat res M s _ hs0 ?_` and prove the remaining obligations. Rewrite using `[← map_smul]`. Conclude with `(mem_loc _ _ _).2 (h1 _ h)`. Introduce `hz`. Take `⟨s, hs0, h⟩` from `(mem_loc _ _ _).1 hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← map_smul]`. Conclude with `loc_sat res M' s _ hs0 ((mem_loc _ _ _).2 (h2 _ h))`. Use extensionality with `x`. Rewrite using `[Pr.mem_act] show g.symm x ∈ loc res M' ↔ x ∈ loc res M`. Rewrite using `[key, g.apply_symm_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, rfl⟩` from `g.surjective x show φ' (locExt res M' pr' (g.symm (g z))) = a * φ (locExt res M pr (g z))`. Rewrite using `[g.symm_apply_apply]`. Distinguish the cases in `hz : z ∈ loc res M'`. Establish `hz'` using `(key z).1 hz`. Take `⟨s, hs0, h⟩` from `(mem_loc _ _ _).1 hz`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht0, h'⟩` from `(mem_loc _ _ _).1 hz'`. Establish `e1 : (t * s) • z ∈ M'` using `by rw [mul_smul]; exact M'.smul_mem _ h`. Establish `e2 : (t * s) • g z ∈ M` using `by rw [mul_comm, mul_smul]; exact M.smul_mem _ h'`. Establish `e3 : g ((t * s) • z) ∈ M` using `by rw [map_smul]; exact e2`. Establish `hne : res (t * s) ≠ 0` using `by rw [map_mul]; exact mul_ne_zero ht0 hs0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4` using `h3 _ e1 e3`. Establish `e5 : (⟨g ((t * s) • z), e3⟩ : M) = ⟨(t * s) • g z, e2⟩` using `Subtype.ext (map_smul _ _ _)`. Rewrite `e4` using `[e5, locExt_spec res M' pr' hs' z hz _ e1, locExt_spec res M pr hs _ hz' _ e2, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[e4]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[locExt_off _ _ _ _ hz, locExt_off _ _ _ _ (fun h => hz ((key z).2 h)), map_zero, map_zero, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem pairOf_act {R V k W W' : Type} [CommRing R] [AddCommGroup V] [Module R V] [Field k]
     [AddCommGroup W] [Module k W] [AddCommGroup W'] [Module k W'] (res : R →+* k) (M M' : Submodule R V)
@@ -70,7 +70,7 @@ theorem pairOf_act {R V k W W' : Type} [CommRing R] [AddCommGroup V] [Module R V
     · rw [locExt_off _ _ _ _ hz, locExt_off _ _ _ _ (fun h => hz ((key z).2 h)), map_zero, map_zero, mul_zero]
 
 /- English proof (translation)
-Establish `e : (fun a => inclE (F` using `F) (v.adicCompletion F) ((γ.1 *ᵥ z) a)) = (γ.1.map (inclE (F := F) (v.adicCompletion F))) *ᵥ (fun a => inclE (F := F) (v.adicCompletion F) (z a)) := by`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec _ _ _ _`. Rewrite using `[e, mulVec_mulVec, ← Units.val_mul, map_mul, mul_inv_cancel_right, map_mul, map_inv, Units.val_mul, ← mulVec_mulVec]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mov_mulVec {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (v : HeightOneSpectrum (𝓞 F)) (y y' : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (γ : GL (Fin n) E)
@@ -87,7 +87,7 @@ theorem mov_mulVec {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `⟨hg, hf⟩` from `hM`. Use `⟨hg x, fun hx hx' => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf ⟨x, hx⟩, map_zsmul, zsmul_eq_mul]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulsF_apply {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
@@ -107,7 +107,7 @@ section Tied
 variable {D : D7} {u : D.what₂.Word} {i : ℕ} {hi : i ≤ D.R.m}
 
 /- English proof (translation)
-Establish `hL` using `bwB_clsCrd_lat D u i hi c`. Take `⟨d, hd, hle⟩` from `LocB.dual_le_bnd (sigD D : D.host.E →+* D.host.E) (gramN D i hi) (bwB_gramN_det D i hi) _ hL`. Conclude with `⟨LocB.fg_of_le_bnd hd hle, LocB.dual_span (sigD D : D.host.E →+* D.host.E) (gramN D i hi) _ hL⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ld_lattice (c : (D.mem u).C.cls i) : Submodule.IsLattice D.host.E (Ld D u i hi c) := by
   have hL := bwB_clsCrd_lat D u i hi c
@@ -118,7 +118,7 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `GlobalTheory.T.unitary_completion_maps_dualLattices D.host.F D.host.E (sigD D) _ (gramN D i hi) v (clsCrd D u i hi c) K.lev.Lb (bc (prV (E := D.host.E) v) (K.y c).1) (bwB_gramN_det D i hi) (bwB_clsCrd_lat D u i hi c) ⟨Module.Finite.iff_fg.1 K.lev.Lb_fin, K.lev.Lb_span⟩ (Formalism …` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `rlv_yloc v (K.y c).1 (K.y_lat c) x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ld_loc (K : ClsTied u i hi) (v : HeightOneSpectrum (𝓞 D.host.F)) (c : (D.mem u).C.cls i)
     (x : Fin (D.R.N i) → D.host.E ⊗[D.host.F] v.adicCompletion D.host.F) :
@@ -137,11 +137,11 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D u A i hi P K fMe hT v c c' γ a hM`. Establish `hin : ∀ c (z : Fin (D.R.N i) → D.host.E), z ∈ Ld D u i hi c → ((bc (prV (E` using `D.host.E) (A.eV v).1) (K.y c).1)⁻¹).1 *ᵥ (fun a => inclE (F := D.host.F) ((A.eV v).1.adicCompletion D.host.F) (z a)) ∈ dualV K (A.eV v).1 := fun c z hz => (ld_loc K _ c _).1 (Submodule.subset_span ⟨z, hz, rfl⟩)`. Establish `hout : ∀ c (z : Fin (D.R.N i) → D.host.E), ((bc (prV (E` using `D.host.E) (A.eV v).1) (K.y c).1)⁻¹).1 *ᵥ (fun a => inclE (F := D.host.F) ((A.eV v).1.adicCompletion D.host.F) (z a)) ∈ dualV K (A.eV v).1 → ∃ s, A.res v s ≠ 0 ∧ s • z ∈ Ld D u i hi c := by`. Introduce `c z hz`. Take `⟨r, hr, h⟩` from `GlobalTheory.T.exists_smul_mem_lattice_of_mem_completion D.host.F D.host.E (A.eV v).1 _ _ (ld_lattice c) z ((ld_loc K _ c _).2 hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, fun h0 => hr ((A.res_v v r).2 h0), h⟩`. Establish `hst` using `fun z => mulsF_apply K.lev _ _ a _ hM (fMe v) _ _ (mov_mulVec (A.eV v).1 (K.y c).1 (K.y c').1 γ z)`. Use `pairOf_act _ _ _ _ _ _ _ (P.pr_smul v c) (P.pr_smul v c') (glE γ) _ (fun z hz => hout c (γ.1 *ᵥ z) ((hst z).1.1 (hin c' z hz))) (fun z hz => hout c' z ((hst z).1.2 (hin c (γ.1 *ᵥ z) hz))) (fun z hz hz' => ?_)` and prove the remaining obligations. Establish `hz2 : γ.1 *ᵥ z ∈ Ld D u i hi c` using `hz'`. Establish `hT' : ∀ c (z : Fin (D.R.N i) → D.host.E) (hz : z ∈ Ld D u i hi c), (D.fm u).fv i v c (P.pr v c ⟨z, hz⟩) = fMe v (K.lev.fT (A.eV v).1 (A.eV v).2 ⟨_, hin c z hz⟩)` using `fun c z hz => hT v c ⟨z, hz⟩ (hin c z hz)`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hT' c' z hz`. Establish `e2` using `hT' c _ hz2`. Conclude with `e1.trans (((hst z).2 _ _).trans (congrArg (fun t => (a : (D.mem u).A.Fv v) * t) e2.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pc_act_of_mulsF : ∀ (D : D7) (u : D.what₂.Word) (A : AtTTied u) (i : ℕ) (hi : i ≤ D.R.m) (P : LvTied u A i hi) (K : ClsTied u i hi) (fMe : ∀ v, K.lev.fM (A.eV v).1 (A.eV v).2 ≃+ (D.mem u).A.Fv v), FvTie P K fMe → ∀ (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls i) (γ : GL (Fin (D.R.N i)) D.host.E) (a : ℤ), MulsF K.lev (A.eV v).1 (A.eV v).2 a (mov K (A.eV v).1 c γ c') → (pc P v c').act (glE γ) = (pc P v c).dil (a : (D.mem u).A.Fv v) := by
   intro D u A i hi P K fMe hT v c c' γ a hM

@@ -9,26 +9,26 @@ namespace GlobalTheory.PadicComplexHost
 variable (p : ℕ) [hp : Fact p.Prime]
 
 /- English proof (translation)
-Rewrite using `[PadicComplex.norm_eq_norm, Valued.v.norm_def, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_coe_eq_norm (x : ℂ_[p]) : ((Valued.v x : NNReal) : ℝ) = ‖x‖ := by
   rw [PadicComplex.norm_eq_norm, Valued.v.norm_def, PadicComplex.RankOne.hom_eq_embedding,
     Valuation.embedding_restrict]
 
 /- English proof (translation)
-Rewrite using `[← valuation_coe_eq_norm, PadicComplex.valuation_p]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_p : ‖((p : ℕ) : ℂ_[p])‖ = (p : ℝ)⁻¹ := by
   rw [← valuation_coe_eq_norm, PadicComplex.valuation_p]; simp
 
 /- English proof (translation)
-The claim follows from `inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.out.one_lt)`.
+A detailed English derivation is pending.
 -/
 theorem inv_p_lt_one : (p : ℝ)⁻¹ < 1 :=
   inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.out.one_lt)
 
 /- English proof (translation)
-Rewrite using `[← valuation_coe_eq_norm]`. Express the relevant statement in the definitionally equal form `Valued.v x ≤ 1 ↔ _`. Conclude with `Iff.rfl` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem mem_iff_norm (x : ℂ_[p]) : x ∈ 𝓞_ℂ_[p] ↔ ‖x‖ ≤ 1 := by
   rw [← valuation_coe_eq_norm]
@@ -36,9 +36,9 @@ theorem mem_iff_norm (x : ℂ_[p]) : x ∈ 𝓞_ℂ_[p] ↔ ‖x‖ ≤ 1 := by
   exact_mod_cast Iff.rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `(PadicComplexInt.integers p).one_of_isUnit h`. Rewrite `h1` using `[map_natCast]`. Establish `h2` using `valuation_coe_eq_norm p ((p : ℕ) : ℂ_[p])`. Rewrite `h2` using `[h1, norm_p]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `inv_p_lt_one p` as an intermediate fact. Rewrite `this` using `[← h2]`. Simplify using `at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem not_isUnit_p : ¬IsUnit ((p : ℕ) : 𝓞_ℂ_[p]) := by
   intro h
@@ -51,7 +51,7 @@ theorem not_isUnit_p : ¬IsUnit ((p : ℕ) : 𝓞_ℂ_[p]) := by
   simp at this
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, Ideal.mem_span_singleton, (PadicComplexInt.integers p).dvd_iff_le, map_pow, map_natCast, ← norm_p, ← norm_pow, ← valuation_coe_eq_norm, ← valuation_coe_eq_norm, NNReal.coe_le_coe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem smodEq_iff (n : ℕ) (x y : 𝓞_ℂ_[p]) :
     x ≡ y [SMOD ((span {((p : ℕ) : 𝓞_ℂ_[p])}) ^ n • ⊤ : Submodule 𝓞_ℂ_[p] 𝓞_ℂ_[p])] ↔
@@ -62,14 +62,14 @@ theorem smodEq_iff (n : ℕ) (x y : 𝓞_ℂ_[p]) :
   rfl
 
 /- English proof (translation)
-The claim follows from `tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) (inv_p_lt_one p)`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_inv_p_pow :
     Filter.Tendsto (fun n : ℕ => (p : ℝ)⁻¹ ^ n) Filter.atTop (nhds 0) :=
   tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) (inv_p_lt_one p)
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `h : ∀ n : ℕ, ‖(x : ℂ_[p])‖ ≤ (p : ℝ)⁻¹ ^ n` using `fun n => by`. Simplify using `using (smodEq_iff p n x 0).1 (hx n)`. Establish `h0 : ‖(x : ℂ_[p])‖ ≤ 0` using `ge_of_tendsto (tendsto_inv_p_pow p) (Filter.Eventually.of_forall h)`. Conclude with `Subtype.ext (norm_le_zero_iff.1 h0)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isHausdorff : IsHausdorff (span {((p : ℕ) : 𝓞_ℂ_[p])}) 𝓞_ℂ_[p] := by
   refine ⟨fun x hx => ?_⟩
@@ -80,11 +80,11 @@ theorem isHausdorff : IsHausdorff (span {((p : ℕ) : 𝓞_ℂ_[p])}) 𝓞_ℂ_[
   exact Subtype.ext (norm_le_zero_iff.1 h0)
 
 /- English proof (translation)
-Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `h : ∀ {m n : ℕ}, m ≤ n → ‖(f m : ℂ_[p]) - (f n : ℂ_[p])‖ ≤ (p : ℝ)⁻¹ ^ m` using `fun hmn => (smodEq_iff p _ _ _).1 (hf hmn)`. Establish `hc : CauchySeq fun n => (f n : ℂ_[p])`. Use `cauchySeq_of_le_geometric (p : ℝ)⁻¹ 1 (inv_p_lt_one p) fun n => ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h (Nat.le_succ n)`. Take `⟨L, hL⟩` from `cauchySeq_tendsto_of_complete hc`. Establish `hm : ∀ m : ℕ, ‖(f m : ℂ_[p]) - L‖ ≤ (p : ℝ)⁻¹ ^ m` using `fun m => le_of_tendsto ((tendsto_const_nhds.sub hL).norm) ((Filter.eventually_ge_atTop m).mono fun n hn => h hn)`. Establish `hLO : L ∈ 𝓞_ℂ_[p]`. Rewrite using `[mem_iff_norm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `le_of_tendsto hL.norm (Filter.Eventually.of_forall fun n => (mem_iff_norm p _).1 (f n).2)`. Conclude with `⟨⟨L, hLO⟩, fun n => (smodEq_iff p n _ _).2 (hm n)⟩`.
+A detailed English derivation is pending.
 -/
 theorem isPrecomplete : IsPrecomplete (span {((p : ℕ) : 𝓞_ℂ_[p])}) 𝓞_ℂ_[p] := by
   refine ⟨fun f hf => ?_⟩
@@ -105,13 +105,13 @@ theorem isPrecomplete : IsPrecomplete (span {((p : ℕ) : 𝓞_ℂ_[p])}) 𝓞_�
   exact ⟨⟨L, hLO⟩, fun n => (smodEq_iff p n _ _).2 (hm n)⟩
 
 /- English proof (translation)
-The claim follows from `{ isHausdorff p, isPrecomplete p with }`.
+A detailed English derivation is pending.
 -/
 theorem isAdicComplete : IsAdicComplete (span {((p : ℕ) : 𝓞_ℂ_[p])}) 𝓞_ℂ_[p] :=
   { isHausdorff p, isPrecomplete p with }
 
 /- English proof (translation)
-Introduce `p _`. Establish `h1 : Fact ¬IsUnit ((p : ℕ) : 𝓞_ℂ_[p])` using `⟨not_isUnit_p p⟩`. Establish `h2` using `isAdicComplete p`. Take `⟨ε, hε⟩` from `ReciprocityTheory.PGsh.exists_eps (p := p) ℂ_[p] Valued.v 𝓞_ℂ_[p] (PadicComplexInt.integers p)`. Conclude with `⟨h1, h2, ε, PadicComplexInt.integers p, hε⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main : ∀ (p : ℕ) [Fact p.Prime], ∃ (_ : Fact ¬IsUnit ((p : ℕ) : 𝓞_ℂ_[p])) (_ : IsAdicComplete (span {((p : ℕ) : 𝓞_ℂ_[p])}) 𝓞_ℂ_[p])
     (ε : PreTilt 𝓞_ℂ_[p] p), (Valued.v : Valuation ℂ_[p] NNReal).Integers 𝓞_ℂ_[p] ∧

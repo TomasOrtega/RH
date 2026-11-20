@@ -5,9 +5,9 @@ open NumberField IsDedekindDomain IntermediateField Formalism.ConjugateSelfDual 
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `K L Ω _ _ _ _ _ _ _ _ _ _ _ A w hw`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed K`. Use `haveI : Algebra.IsAlgebraic L Ω := Algebra.IsAlgebraic.tower_top (K := K) L`. Use `haveI : IsAlgClosure L Ω := ⟨inferInstance, inferInstance⟩`. Use extensionality with `τ`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, hσ, rfl⟩`. Conclude with `CompanionTheory.FamInh.res_mem_inertia hw hσ`. Introduce `hτ`. Conclude with `CompanionTheory.FamInh.exists_lift_ine hw hτ`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CF.ineAbs :
     ∀ (K L Ω : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Field Ω] [Algebra K L] [Algebra K Ω] [Algebra L Ω] [IsScalarTower K L Ω] [IsAlgClosure K Ω] [IsGalois K L] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 L)), IsPlaceOver A w → (Ine (F := K) A).map (resTo K L Ω) = w.asIdeal.inertia Gal(L/K) := by

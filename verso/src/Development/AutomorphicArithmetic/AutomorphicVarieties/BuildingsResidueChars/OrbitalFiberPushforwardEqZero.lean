@@ -3,25 +3,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MulAction
 
 /- English proof (translation)
-Introduce `H Y _ _ H₀ k hidx htriv hk hfin`. Establish `hout : ∀ (o : orbitRel.Quotient H Y) (y : Y), (Quotient.mk (orbitRel H Y) y : orbitRel.Quotient H Y) = o ↔ y ∈ orbit H o.out`. Introduce `o y`. Rewrite using `[← orbitRel_apply, ← Quotient.eq (r := orbitRel H Y), Quotient.out_eq]`. Establish `hkeq : ∀ (x y : Y), y ∈ orbit H x → k y = k x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `x y ⟨h, rfl⟩`. Conclude with `hk h x`. Use `set S : Finset Y := hfin.toFinset with hS`. Establish `hmem : ∀ y, y ∈ S ↔ k y ≠ 0`. Introduce `y`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[hS]`. Set `q : Y → orbitRel.Quotient H Y` to `fun y => Quotient.mk (orbitRel H Y) y`. Establish `h1 : ∑ᶠ y, k y = ∑ y ∈ S, k y` using `finsum_eq_sum k hfin`. Establish `h2 : UpperTheory.V.Z.Sym.gq H₀ k = ∑ o ∈ S.image q, k o.out / (H₀.relIndex (stabilizer H o.out) : ℂ)`. Unfold `UpperTheory.V.Z.Sym.gq`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `o ho`. Establish `hne : k o.out ≠ 0`. Introduce `h0`. Conclude with `ho (by simp [h0])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.coe_image]`. Conclude with `⟨o.out, by simpa [hmem] using hne, Quotient.out_eq o⟩`. Rewrite using `[h1, h2, ← Finset.sum_fiberwise_of_maps_to (s := S) (t := S.image q) (g := q) (fun y hy => Finset.mem_image_of_mem q hy), Finset.sum_div]`. Use `Finset.sum_congr rfl fun o ho => ?_` and prove the remaining obligations. Take `⟨y₀, hy₀, hy₀o⟩` from `Finset.mem_image.mp ho`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : k o.out ≠ 0`. Rewrite using `[← hkeq o.out y₀ ((hout o y₀).mp hy₀o)]`. Conclude with `(hmem y₀).mp hy₀`. Establish `hset : ((S.filter fun y => q y = o : Finset Y) : Set Y) = orbit H o.out`. Use extensionality with `y`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => (hout o y).mp h.2`. Introduce `h`. Conclude with `⟨(hmem y).mpr (by rw [hkeq _ _ h]; exact hne), (hout o y).mpr h⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : (S.filter fun y => q y = o).card = (stabilizer H o.out).index`. Rewrite using `[index_stabilizer, ← hset, Set.ncard_coe_finset]`. Establish `hle : H₀ ≤ stabilizer H o.out` using `fun z hz => htriv z hz _`. Establish `hmul` using `Subgroup.relIndex_mul_index hle`. Establish `hsum : ∑ y ∈ S with q y = o, k y = ((stabilizer H o.out).index : ℂ) * k o.out`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl (g := fun _ => k o.out), Finset.sum_const, hcard, nsmul_eq_mul]`. Introduce `y hy`. Conclude with `hkeq _ _ ((hout o y).mp (Finset.mem_filter.mp hy).2)`. Rewrite `hidx` using `[← hmul]`. Establish `ha : ((H₀.relIndex (stabilizer H o.out) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (left_ne_zero_of_mul hidx)`.
-
-Establish `hb : (((stabilizer H o.out).index : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (right_ne_zero_of_mul hidx)`. Rewrite using `[hsum, ← hmul, Nat.cast_mul]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.orbitalFiber_pushforward_eq_zero :
     UpperTheory.V.Z.Sym.Glob.Fib.PushZero := by

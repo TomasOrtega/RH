@@ -21,7 +21,7 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Establish `h1` using `(PadicComplexInt.integers p).isUnit_iff_valuation_eq_one.1 hx`. Rewrite using `[← coe_valued]`. Express the relevant statement in the definitionally equal form `((Valued.v ((algebraMap 𝓞_ℂ_[p] ℂ_[p]) x) : ℝ≥0) : ℝ) = 1`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_coe_of_isUnit_padicComplexInt (p : ℕ) [Fact p.Prime] (x : 𝓞_ℂ_[p]) (hx : IsUnit x) :
     ‖(x : ℂ_[p])‖ = 1 := by
@@ -31,19 +31,17 @@ theorem norm_coe_of_isUnit_padicComplexInt (p : ℕ) [Fact p.Prime] (x : 𝓞_�
   rw [h1]; rfl
 
 /- English proof (translation)
-Introduce `F _ _ V p _ hp hD X s Xw hX hflat hlft hXw hne A _ w hw u hu`. Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `𝔮 ⟨hle, h𝔮⟩`. Assume the negation of the conclusion as `hf`. Set `f : A` to `u - 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Set `B` to `Localization.Away f`. Use `haveI : IsOpenImmersion (spMap (algebraMap A B)) := inferInstanceAs (IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap A (Localization.Away f)))))`. Set `ξ : Sp B ⟶ X` to `spMap (algebraMap A B) ≫ w`. Establish `hpq : (p : A) ∈ 𝔮` using `hle (Ideal.subset_span rfl)`. Establish `hdisj : Disjoint (Submonoid.powers f : Set A) (𝔮 : Set A)` using `(Ideal.disjoint_powers_iff_notMem _ h𝔮.isRadical).2 hf`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Q : Ideal B` to `Ideal.map (algebraMap A B) 𝔮`. Use `haveI hQ : Q.IsPrime := IsLocalization.isPrime_of_isPrime_disjoint (Submonoid.powers f) B 𝔮 h𝔮 hdisj`. Establish `hpQ : (p : B) ∈ Q`. Rewrite using `[← map_natCast (algebraMap A B)]`. Conclude with `Ideal.mem_map_of_mem _ hpq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `y : Sp B` to `(⟨Q, hQ⟩ : PrimeSpectrum B)`. Establish `hx : ξ y ∉ X.basicOpen (p : Γ(X, ⊤))`. Establish `h1 : y ∉ ξ ⁻¹ᵁ X.basicOpen (p : Γ(X, ⊤))`. Rewrite using `[Scheme.preimage_basicOpen_top, map_natCast]`. Establish `h2 : ((p : Γ(Sp B, ⊤))) = (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (p : B)` using `(map_natCast _ _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h2, basicOpen_eq_of_affine]`. Introduce `h3`. Conclude with `((PrimeSpectrum.mem_basicOpen _ _).1 h3) hpQ`. Conclude with `h1`. Take `⟨φ, hφ⟩` from `hD F V p hp X s Xw hX hflat hlft hXw hne B ξ inferInstance ⟨ξ y, ⟨y, rfl⟩, hx⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ' : IsTest p Xw (spMap (φ.comp (algebraMap A B)) ≫ w)`. Rewrite using `[← sp_sp]`. Conclude with `hφ`. Establish `h1` using `hu _ hφ'`. Establish `hunit : IsUnit ((φ.comp (algebraMap A B)) f)` using `(IsLocalization.Away.algebraMap_isUnit (S := B) f).map φ`.
-
-Establish `h2 : ((φ.comp (algebraMap A B) u : 𝓞_ℂ_[p]) : ℂ_[p]) - 1 = (((φ.comp (algebraMap A B)) f : 𝓞_ℂ_[p]) : ℂ_[p])`. Simplify using `[f, map_sub]`. Rewrite `h1` using `[h2, norm_coe_of_isUnit_padicComplexInt p _ hunit]`. Conclude with `lt_irrefl _ h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_one_mem_radical_of_isTest : ∀ (F : Type) [Field F] [NumberField F] (V : ValuationSubring F) (p : ℕ) [Fact p.Prime], (p : F) ∈ V.nonunits → DensSt → ∀ (X : Scheme.{0}) (s : X ⟶ Sp V) (Xw : X.Opens), IsIntegral X → Flat s → LocallyOfFiniteType s → Xw ≤ X.basicOpen (p : Γ(X, ⊤)) → (Xw : Set X).Nonempty → ∀ (A : Type) [CommRing A] (w : Sp A ⟶ X), IsOpenImmersion w → ∀ u : A, (∀ φ : A →+* 𝓞_ℂ_[p], IsTest p Xw (spMap φ ≫ w) → ‖(φ u : ℂ_[p]) - 1‖ < 1) → u - 1 ∈ (Ideal.span {(p : A)}).radical := by
   intro F _ _ V p _ hp hD X s Xw hX hflat hlft hXw hne A _ w hw u hu

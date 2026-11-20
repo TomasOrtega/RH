@@ -14,9 +14,9 @@ namespace GlobalTheory.Unf.ParCont
 variable {D : D7} {m n : ℕ}
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, C, hC, hCc⟩` from `lattice_Mx D m n`. Establish `h : ∀ᶠ p in nhds p₀, ∀ x ∈ C, ‖K x p - K x p₀‖ < ε`. Use `hC.eventually_forall_of_forall_eventually (P := fun p x => ‖K x p - K x p₀‖ < ε) fun y _ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun z : P × Mx D m n => ‖K z.2 z.1 - K z.2 p₀‖` using `((hc.comp (continuous_snd.prodMk continuous_fst)).sub (hc.comp (continuous_snd.prodMk continuous_const))).norm`. Conclude with `(isOpen_lt h1 continuous_const).mem_nhds (by simpa using hε)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [h] with p h x`. Take `⟨γ, hγ, hx⟩` from `hCc x`. Rewrite using `[← hp γ hγ x p, ← hp γ hγ x p₀]`. Conclude with `(h _ hx).le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_close {P : Type} [TopologicalSpace P] (K : Mx D m n → P → ℂ) (hc : Continuous (Function.uncurry K))
     (hp : ∀ γ ∈ ratMx D m n, ∀ x p, K (γ + x) p = K x p) (p₀ : P) {ε : ℝ} (hε : 0 < ε) :
@@ -34,13 +34,11 @@ theorem eventually_close {P : Type} [TopologicalSpace P] (K : Mx D m n → P →
   exact (h _ hx).le
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI := h.1`. Set `f : Mx D m n ≃ₜ Mx D m n` to `{ e.toEquiv with continuous_toFun := he, continuous_invFun := he' }`. Establish `hemb : MeasurableEmbedding e` using `f.measurableEmbedding`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `⟨⟨e.isAddHaarMeasure_map μ he he', ?_, ?_⟩, hemb⟩` and prove the remaining obligations. Set `g : ratMx D m n ≃ ratMx D m n` to `{ toFun := fun γ => ⟨e.symm γ, (hr _).1 (by rw [e.apply_symm_apply]; exact γ.2)⟩ invFun := fun γ => ⟨e γ, (hr _).2 γ.2⟩ left_inv := fun γ => Subtype.ext (e.apply_symm_apply _) right_inv := fun γ => Subtype.ext (e.symm_apply_apply _) }`. Use `h.2.1.image_of_equiv e.toEquiv ?_ g fun γ x => ?_` and prove the remaining obligations. Use `⟨he'.measurable, ?_⟩` and prove the remaining obligations. Establish `: (μ.map e).map e.symm = μ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Measure.map_map he'.measurable he.measurable]`. Establish `: (e.symm ∘ e : Mx D m n → Mx D m n) = id` using `funext e.symm_apply_apply`. Rewrite using `[this, Measure.map_id]`. Conclude with `this.absolutelyContinuous`. Express the relevant statement in the definitionally equal form `e (e.symm γ + x) = γ + e x`.
-
-Rewrite using `[map_add, e.apply_symm_apply]`. Rewrite using `[hemb.map_apply, Set.preimage_image_eq _ e.injective]`. Conclude with `h.2.2`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCovolOne_map {μ : Measure (Mx D m n)} {𝓕 : Set (Mx D m n)} (h : IsCovolOne (ratMx D m n) μ 𝓕)
     (e : Mx D m n ≃+ Mx D m n) (he : Continuous e) (he' : Continuous e.symm)
@@ -70,13 +68,13 @@ theorem isCovolOne_map {μ : Measure (Mx D m n)} {𝓕 : Set (Mx D m n)} (h : Is
     exact h.2.2
 
 /- English proof (translation)
-Introduce `D m n v P _ K hc hp`. Establish `hx : ∀ p, Continuous fun x => K x p` using `fun p => hc.comp (continuous_id.prodMk continuous_const)`. Establish `hi : ∀ p, IntegrableOn (fun x => K x p) v.𝓕 v.μ` using `fun p => covolOne_integrableOn v.covol _ (hx p) fun γ hγ a => hp γ hγ a p`. Use `⟨hi, ?_, fun p₀ => ?_, fun e he he' hr p => ?_⟩` and prove the remaining obligations. Use `continuous_iff_continuousAt.2 fun p₀ => Metric.tendsto_nhds.2 fun ε hε => ?_ filter_upwards [eventually_close K hc hp p₀ (half_pos hε)] with p h` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dist_eq_norm, ← integral_sub (hi p) (hi p₀)]`. Establish `h1 : v.μ v.𝓕 = 1` using `v.covol.2.2`. Establish `h2` using `norm_setIntegral_le_of_norm_le_const (μ := v.μ) (s := v.𝓕) (f := fun x => K x p - K x p₀) (C := ε / 2) (by rw [h1]; exact ENNReal.one_lt_top) fun x _ => h x`. Rewrite `h2` using `[Measure.real, h1, ENNReal.toReal_one, mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨-, -, -, -, -, C, hC, hCc⟩` from `lattice_Mx D m n`. Take `⟨B, hB⟩` from `hC.exists_bound_of_continuousOn (hx p₀).continuousOn`. Use `⟨B + 1, ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_close K hc hp p₀ one_pos] with p h x`. Take `⟨γ, hγ, ha⟩` from `hCc x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ‖K x p₀‖ ≤ B` using `by rw [← hp γ hγ x p₀]; exact hB _ ha`. Combine the equalities or inequalities in the displayed calculation. Take `⟨h1, hemb⟩` from `isCovolOne_map v.covol e he he' hr`. Rewrite using `[← covolOne_integral_eq v.covol h1 (fun x => K x p) fun γ hγ a => hp γ hγ a p, hemb.setIntegral_map, Set.preimage_image_eq _ e.injective]`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parCont : ∀ (D : D7) (m n : ℕ) (v : VolM D m n) (P : Type) [TopologicalSpace P] (K : Mx D m n → P → ℂ), Continuous (Function.uncurry K) → (∀ γ ∈ ratMx D m n, ∀ x p, K (γ + x) p = K x p) → (∀ p, IntegrableOn (fun x => K x p) v.𝓕 v.μ) ∧ (Continuous fun p => ∫ x in v.𝓕, K x p ∂v.μ) ∧ (∀ p₀, ∃ C : ℝ, ∀ᶠ p in nhds p₀, ∀ x, ‖K x p‖ ≤ C) ∧ ∀ (e : Mx D m n ≃+ Mx D m n), Continuous e → Continuous e.symm → (∀ x, e x ∈ ratMx D m n ↔ x ∈ ratMx D m n) → ∀ p, ∫ x in v.𝓕, K (e x) p ∂v.μ = ∫ x in v.𝓕, K x p ∂v.μ := by
   intro D m n v P _ K hc hp

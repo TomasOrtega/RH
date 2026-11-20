@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CechRoot
 
 /- English proof (translation)
-The claim follows from `X.presheaf.germ_res_apply (homOfLE h) _ _ s`.
+A detailed English derivation is pending.
 -/
 theorem gen_res {X : Scheme.{0}} [IsIntegral X] {V W : X.Opens} [Nonempty V] [Nonempty W]
     (h : W ≤ V) (s : Γ(X, V)) :
@@ -19,7 +19,7 @@ theorem gen_res {X : Scheme.{0}} [IsIntegral X] {V W : X.Opens} [Nonempty V] [No
   X.presheaf.germ_res_apply (homOfLE h) _ _ s
 
 /- English proof (translation)
-Take `⟨⟨v, hv⟩⟩` from `hV`. Take `⟨⟨w, hw⟩⟩` from `hW`. Take `⟨z, hz⟩` from `nonempty_preirreducible_inter V.isOpen W.isOpen ⟨v, hv⟩ ⟨w, hw⟩`. Conclude with `⟨⟨z, hz⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_inf {X : Scheme.{0}} [IsIntegral X] (V W : X.Opens) [hV : Nonempty V] [hW : Nonempty W] :
     Nonempty (V ⊓ W : X.Opens) := by
@@ -29,9 +29,7 @@ theorem nonempty_inf {X : Scheme.{0}} [IsIntegral X] (V W : X.Opens) [hV : Nonem
   exact ⟨⟨z, hz⟩⟩
 
 /- English proof (translation)
-Use `IsNormalScheme.exists_germToFunctionField_eq_of_locally V t fun x hx => ?_` and prove the remaining obligations. Use `exists_germToFunctionField_eq_of_mem_range_stalk ?_ hx` and prove the remaining obligations. Use `haveI := hN x`. Use `IsIntegrallyClosed.algebraMap_eq_of_integral (IsIntegral.of_pow hl ?_)` and prove the remaining obligations. Rewrite using `[ht, ← Scheme.algebraMap_germ_eq_germToFunctionField X hx f]`.
-
-Conclude with `isIntegral_algebraMap`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section_of_pow {X : Scheme.{0}} [IsIntegral X] (hN : ∀ b : X, IsIntegrallyClosed (X.presheaf.stalk b))
     {l : ℕ} (hl : 0 < l) (V : X.Opens) [Nonempty V] (f : Γ(X, V)) (t : X.functionField)
@@ -44,7 +42,7 @@ theorem exists_section_of_pow {X : Scheme.{0}} [IsIntegral X] (hN : ∀ b : X, I
   exact isIntegral_algebraMap
 
 /- English proof (translation)
-Use `haveI : Nonempty (⊤ : X.Opens) := ⟨⟨genericPoint X, trivial⟩⟩`. Use `(CharP.charP_iff_prime_eq_zero Fact.out).2 ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (X.germToFunctionField ⊤).hom, h, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charP_functionField {X : Scheme.{0}} [IsIntegral X] (l : ℕ) [Fact l.Prime] (h : (l : Γ(X, ⊤)) = 0) :
     CharP X.functionField l := by
@@ -53,17 +51,15 @@ theorem charP_functionField {X : Scheme.{0}} [IsIntegral X] (l : ℕ) [Fact l.Pr
   rw [← map_natCast (X.germToFunctionField ⊤).hom, h, map_zero]
 
 /- English proof (translation)
-Introduce `X _ hN l _ hl J U f n hf i b hb h hh`. Use `haveI := charP_functionField l hl`. Establish `hl0 : 0 < l` using `(Fact.out : l.Prime).pos`. Use `haveI : Nonempty (U i) := ⟨⟨b, hb⟩⟩`. Set `e` to `FractionRing.algEquiv (X.presheaf.stalk b) X.functionField`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : e h ^ l = (X.germToFunctionField (U i)).hom (f i)`. Rewrite using `[← map_pow, hh, AlgEquiv.commutes]`. Conclude with `Scheme.algebraMap_germ_eq_germToFunctionField X hb (f i)`. Establish `hg : ∀ j j' [Nonempty (U j)] [Nonempty (U j')] [Nonempty (U j ⊓ U j' : X.Opens)], (X.germToFunctionField (U j)).hom (f j) - (X.germToFunctionField (U j')).hom (f j') = (X.germToFunctionField (U j ⊓ U j')).hom (n j j') ^ l`. Introduce `j j' _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_pow, ← hf, map_sub, gen_res, gen_res]`. Establish `ex : ∀ j, ∃ H : Γ(X, U j), ∀ [Nonempty (U j)], (X.germToFunctionField (U j)).hom H ^ l = (X.germToFunctionField (U j)).hom (f j)`. Introduce `j`. Distinguish the cases in `hj : Nonempty (U j)`. Use `haveI := nonempty_inf (U j) (U i)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `ht : (e h + (X.germToFunctionField (U j ⊓ U i)).hom (n j i)) ^ l = (X.germToFunctionField (U j)).hom (f j)`. Rewrite using `[add_pow_char, he, ← hg, add_sub_cancel]`. Take `⟨s, hs⟩` from `exists_section_of_pow hN hl0 (U j) (f j) _ ht`. Conclude with `⟨s, by intro _; rw [hs, ht]⟩`. Conclude with `⟨0, by intro h; exact absurd h hj⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `choose H hH using ex`. Use `⟨H, fun j j' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : Nonempty (U j ⊓ U j' : X.Opens)`. Take `⟨⟨z, hz⟩⟩` from `id hj haveI : Nonempty (U j) := ⟨⟨z, hz.1⟩⟩ haveI : Nonempty (U j') := ⟨⟨z, hz.2⟩⟩`. Apply `X.germToFunctionField_injective (U j ⊓ U j')` to reduce the goal to its premises.
-
-Apply `frobenius_inj X.functionField l` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(X.germToFunctionField (U j ⊓ U j')).hom _ ^ l = (X.germToFunctionField (U j ⊓ U j')).hom _ ^ l`. Rewrite using `[map_sub, gen_res, gen_res, sub_pow_char, hH, hH, hg]`. Conclude with `fn_ext (V := U j ⊓ U j') fun x hx => absurd ⟨⟨x, hx⟩⟩ hj`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root : ∀ (X : Scheme.{0}) [IsIntegral X], (∀ b : X, IsIntegrallyClosed (X.presheaf.stalk b)) → ∀ (l : ℕ) [Fact l.Prime], (l : Γ(X, ⊤)) = 0 → ∀ (J : Type) (U : J → X.Opens) (f : ∀ j, Γ(X, U j)) (n : ∀ j j', Γ(X, U j ⊓ U j')), (∀ j j', (X.presheaf.map (homOfLE (inf_le_left : U j ⊓ U j' ≤ U j)).op).hom (f j) - (X.presheaf.map (homOfLE (inf_le_right : U j ⊓ U j' ≤ U j')).op).hom (f j') = n j j' ^ l) → ∀ (i : J) (b : X) (hb : b ∈ U i) (h : FractionRing (X.presheaf.stalk b)), h ^ l = algebraMap (X.presheaf.stalk b) _ ((X.presheaf.germ (U i) b hb).hom (f i)) → ∃ H : ∀ j, Γ(X, U j), ∀ j j', (X.presheaf.map (homOfLE (inf_le_left : U j ⊓ U j' ≤ U j)).op).hom (H j) - (X.presheaf.map (homOfLE (inf_le_right : U j ⊓ U j' ≤ U j')).op).hom (H j') = n j j' := by
   intro X _ hN l _ hl J U f n hf i b hb h hh

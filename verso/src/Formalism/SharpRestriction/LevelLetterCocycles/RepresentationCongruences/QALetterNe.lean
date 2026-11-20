@@ -22,7 +22,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 variable (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Use `show W.φD T (a • x) = (letφ W.φ₀ a) • W.φD T x`. Rewrite using `[← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_smul (T : LocLat G Qp LL O) (a : LetA O n) (x : W.DD T) :
     W.φD T (a • x) = W.φA a • W.φD T x := by
@@ -32,9 +32,9 @@ theorem phi_smul (T : LocLat G Qp LL O) (a : LetA O n) (x : W.DD T) :
 variable {W} [IsDomain O] [FiniteDimensional Qp LL]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hR.1`. Introduce `h0`. Establish `h1 : W.π₀ j = (w : LetA O n) j * PowerSeries.X ^ (PD.p - 1)`. Rewrite using `[hw, Pi.mul_apply, Pi.pow_apply]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h0` using `[h1]`. Establish `hu : IsUnit ((w : LetA O n) j)` using `w.isUnit.map (Pi.evalMonoidHom (fun _ : ZMod n => PowerSeries O) j)`. Establish `hX : (PowerSeries.X : PowerSeries O) ^ (PD.p - 1) ≠ 0` using `pow_ne_zero _ PowerSeries.X_ne_zero`. Conclude with `hX (hu.mul_right_eq_zero.mp h0)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem π₀_letter_ne (hR : Formalism.MainNotions.N.FrobeniusPowerSeries.GS.RD W) (j : ZMod n) : W.π₀ j ≠ 0 := by
   obtain ⟨w, hw⟩ := hR.1
@@ -48,7 +48,7 @@ theorem π₀_letter_ne (hR : Formalism.MainNotions.N.FrobeniusPowerSeries.GS.RD
   exact hX (hu.mul_right_eq_zero.mp h0)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Establish `h'` using `congrFun h j`. Simplify using `only [Pi.mul_apply] at h'`. Conclude with `mul_left_cancel₀ (π₀_letter_ne hR j) h'`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cancel_π₀ (hR : Formalism.MainNotions.N.FrobeniusPowerSeries.GS.RD W) {x y : LetA O n} (h : W.π₀ * x = W.π₀ * y) : x = y := by
   funext j
@@ -57,9 +57,9 @@ theorem cancel_π₀ (hR : Formalism.MainNotions.N.FrobeniusPowerSeries.GS.RD W)
   exact mul_left_cancel₀ (π₀_letter_ne hR j) h'
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hR.1`. Establish `hp2 : 2 ≤ PD.p` using `PD.hp.two_le`. Establish `h1 : qA W j = (w : LetA O n) j * PowerSeries.X ^ (PD.p - 1) + ((PD.p : ℕ) : PowerSeries O)` using `by show W.π₀ j + (lA W) j = _`. Rewrite using `[hw, Pi.mul_apply, Pi.pow_apply]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1, map_add, map_mul, map_pow, PowerSeries.constantCoeff_X, zero_pow (by omega), mul_zero, zero_add, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qA_letter_cc (hR : Formalism.MainNotions.N.FrobeniusPowerSeries.GS.RD W) (j : ZMod n) : constantCoeff (qA W j) = ((PD.p : ℕ) : O) := by
   obtain ⟨w, hw⟩ := hR.1
@@ -72,9 +72,9 @@ theorem qA_letter_cc (hR : Formalism.MainNotions.N.FrobeniusPowerSeries.GS.RD W)
     map_natCast]
 
 /- English proof (translation)
-Introduce `h`. Establish `hc` using `qA_letter_cc hR j`. Rewrite `hc` using `[h, map_zero]`. Establish `hv` using `W.v_l`. Establish `h0 : ((PD.p : ℕ) : LL) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (algebraMap O LL), ← hc, map_zero]`. Rewrite `hv` using `[h0, AddValuation.map_zero]`. Simplify using `at hv`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qA_letter_ne (hR : Formalism.MainNotions.N.FrobeniusPowerSeries.GS.RD W) (j : ZMod n) : qA W j ≠ 0 := by
   intro h
@@ -87,27 +87,23 @@ theorem qA_letter_ne (hR : Formalism.MainNotions.N.FrobeniusPowerSeries.GS.RD W)
   simp at hv
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hR.2.1`. Establish `hinv : ∀ g, g ∈ W.DelF → g⁻¹ ∈ W.DelF`. Introduce `g hg`. Take `⟨k, hk, hk'⟩` from `(W.DelF_def g).1 hg`. Conclude with `(W.DelF_def _).2 ⟨k, hk, by rw [inv_pow, hk', inv_one]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmul : ∀ a b, a ∈ W.DelF → b ∈ W.DelF → a * b ∈ W.DelF`. Introduce `a b ha hb`. Take `⟨k, hk, hk'⟩` from `(W.DelF_def a).1 ha`. Take `⟨m, hm, hm'⟩` from `(W.DelF_def b).1 hb`. Use `(W.DelF_def _).2 ⟨k * m, Nat.mul_pos hk hm, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, pow_mul, hk', one_pow, one_mul, mul_comm k m, pow_mul, hm', one_pow]`. Establish `hπ : ∀ δ ∈ W.DelF, W.γA δ W.π₀ = W.π₀`. Introduce `δ hδ`. Use function extensionality and compare the values at `i`. Use `show W.γ₀ δ W.π₀₁ = W.π₀₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.BasicNotions.LocWach.π₀₁`. Rewrite using `[map_add, map_sub, map_one, map_natCast, map_sum]`. Use `congr 1`. Establish `hsum : ∀ x ∈ W.DelF, W.γ₀ δ (W.γ₀ x (1 + PowerSeries.X)) = W.γ₀ (δ * x) (1 + PowerSeries.X)`. Introduce `x _`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, AlgHom.mul_apply]`. Rewrite using `[Finset.sum_congr rfl hsum]`. Use `Finset.sum_equiv (Equiv.mulLeft δ) (fun g => ?_) (fun g _ => rfl)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hmul δ g hδ hg`. Introduce `hg`. Use `hmul δ⁻¹ (δ * g) (hinv δ hδ) hg` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis. Establish `hq : ∀ δ ∈ W.DelF, W.γA δ (qA W) = qA W`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `δ hδ`. Use `show W.γA δ (W.π₀ + lA W) = W.π₀ + lA W`. Rewrite using `[map_add, hπ δ hδ]`. Use `congr 1`. Use `show W.γA δ ((PD.p : ℕ) : LetA O n) = ((PD.p : ℕ) : LetA O n)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `map_natCast _ _`. Establish `hc : ∀ δ (a : LetA O n), W.γA δ (W.φA a) = W.φA (W.γA δ a)`. Introduce `δ a`. Use function extensionality and compare the values at `i`. Use `show W.γ₀ δ (W.φ₀ (a (i - 1))) = W.φ₀ (W.γ₀ δ (a (i - 1)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[W.γ₀_comm]`. Use `⟨w, ?_, w.isUnit, hw⟩` and prove the remaining obligations. Use `show ∀ δ ∈ W.DelF, W.γA δ (w : LetA O n) = w`. Introduce `δ hδ`. Establish `e1` using `congrArg (W.γA δ) hw`.
-
-Rewrite `e1` using `[hc, hπ δ hδ, map_mul, map_mul, map_pow, hπ δ hδ, hq δ hδ, hw]`. Use function extensionality and compare the values at `j`. Establish `e2` using `congrFun e1 j`. Simplify using `only [Pi.mul_apply, Pi.pow_apply] at e2`. Establish `hne : W.π₀ j * qA W j ^ (PD.p - 1) ≠ 0` using `mul_ne_zero (π₀_letter_ne hR j) (pow_ne_zero _ (qA_letter_ne hR j))`.
-
-Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Take the linear combination `-e2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem w_mem (hR : Formalism.MainNotions.N.FrobeniusPowerSeries.GS.RD W) :
     ∃ w ∈ W.AΔ, IsUnit w ∧ W.φA W.π₀ = w * W.π₀ * qA W ^ (PD.p - 1) := by
@@ -166,31 +162,29 @@ theorem w_mem (hR : Formalism.MainNotions.N.FrobeniusPowerSeries.GS.RD W) :
   linear_combination -e2
 
 /- English proof (translation)
-Take `⟨a, ⟨haA, hxa⟩, -⟩` from `hb.2 x hx`. Use `choose F hF using fun m => hR.2.2.2 (a m) (haA m).1`. Establish `hs : HasSubst W.π₀₁` using `HasSubst.of_constantCoeff_zero' (Formalism.MainNotions.N.FrobeniusPowerSeries.GS.π₀₁_cc hR)`. Set `c₀ : Fin d → O` to `fun m => constantCoeff (F m i)`. Set `g : Fin d → PowerSeries O` to `fun m => substAlgHom hs (mk fun k => coeff (k + 1) (F m i))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `a' : Fin d → LetA O n` to `fun m => Pi.single i (g m)`. Establish `hzero : ∀ m, ∀ j, j ≠ i → a m j = 0`. Introduce `m j hj`. Use `congrFun (haA m).2 j` as an intermediate fact. Simplify using `only [Pi.mul_apply, letE, Pi.single_apply, hj, if_false, zero_mul] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `this.symm`. Establish `key : ∀ m, a m = algebraMap O (LetA O n) (c₀ m) * letE i + W.π₀ * a' m`. Introduce `m`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hj` using the available equality. Establish `e1 : a m j = substAlgHom hs (F m j)` using `by rw [hF m j, coe_substAlgHom]; rfl`. Rewrite using `[e1]`. Use `conv_lhs => rw [eq_shift_mul_X_add_const (F m j)]`. Rewrite using `[map_add, map_mul, substAlgHom_X hs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : substAlgHom hs (C (constantCoeff (F m j))) = C (constantCoeff (F m j))`. Rewrite using `[coe_substAlgHom, subst_C]`. Both sides reduce to the same expression. Rewrite using `[e2]`. Use `show _ = (algebraMap O (LetA O n) (c₀ m)) j * (letE (O := O) j : LetA O n) j + W.π₀ j * a' m j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Establish `e3 : (algebraMap O (LetA O n) (c₀ m)) j = C (c₀ m)` using `rfl`. Simplify using `only [e3, letE, a', g, c₀, Pi.single_eq_same, mul_one]`. Use `show _ = C (constantCoeff (F m j)) + W.π₀₁ * _`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.add_apply, Pi.mul_apply, letE, Pi.single_apply, hj, if_false, mul_zero, a', zero_add, hzero m j hj]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∀ m, W.π₀ * a' m = a m - algebraMap O (LetA O n) (c₀ m) * letE i`. Introduce `m`. Rewrite using `[key m]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨c₀, ∑ m, a' m • b m, ⟨⟨?_, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Submodule.sum_mem _ fun m _ => (W.N T).smul_mem _ (hb.1 m).1.1`. Introduce `δ hδ`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.MainNotions.N.FrobeniusPowerSeries.GS.γD_smulA, (hb.1 m).1.2 δ hδ]`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Apply `cancel_π₀ hR` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, Formalism.MainNotions.N.FrobeniusPowerSeries.GS.π₀_mem W δ hδ]`. Use `_ = W.γA δ (a m - algebraMap O (LetA O n) (c₀ m) * letE i) := by rw [h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `_ = a m - algebraMap O (LetA O n) (c₀ m) * letE i := by`. Rewrite using `[map_sub, map_mul, (haA m).1 δ hδ, AlgHom.commutes, Formalism.MainNotions.N.FrobeniusPowerSeries.GS.γA_letE]`. Use `_ = W.π₀ * a' m := (h1 m).symm`. Use `⟨∑ m, a' m • b m, Submodule.sum_mem _ fun m _ => (W.N T).smul_mem _ (hb.1 m).1.1, ?_⟩ show (letE i : LetA O n) • (∑ m, a' m • b m) = ∑ m, a' m • b m` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `hj` using the available equality. Simplify using `[letE, a']`. Simplify using `[letE, a', hj]`. Rewrite using `[hxa]`. Simplify using `only [Formalism.MainNotions.LiftingTheory.vecB]`.
-
-Rewrite using `[Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `hlet : (letE i : LetA O n) • b m = b m` using `Formalism.MainNotions.N.FrobeniusPowerSeries.TypesD.nl_letter W (hb.1 m).2`. Rewrite using `[key m, add_smul, mul_smul, hlet, algebraMap_smul, mul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem coord_mod (hR : Formalism.MainNotions.N.FrobeniusPowerSeries.GS.RD W) {T : LocLat G Qp LL O} {i : ZMod n} {d : ℕ} {b : Fin d → W.DD T}
     (hb : Formalism.MainNotions.LiftingTheory.IsFrameΔ W T i b) {x : W.DD T} (hx : Formalism.MainNotions.LiftingTheory.InNΔi W T i x) :

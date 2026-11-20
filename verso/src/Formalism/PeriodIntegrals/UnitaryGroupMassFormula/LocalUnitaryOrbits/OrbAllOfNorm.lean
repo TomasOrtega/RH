@@ -13,7 +13,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
 /- English proof (translation)
-Set `τ : E →ₐ[ℚ] ℂ` to `IsAlgClosed.lift`. Apply `τ.toRingHom.injective` to reduce the goal to its premises. Establish `h1` using `hcm.2.2.2 τ.toRingHom (σ x)`. Establish `h2` using `hcm.2.2.2 τ.toRingHom x`. Rewrite using `[h1, h2, star_star]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_invol (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   let τ : E →ₐ[ℚ] ℂ := IsAlgClosed.lift
@@ -23,7 +23,7 @@ theorem sigma_invol (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   rw [h1, h2, star_star]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Algebra.TensorProduct.map_tmul, sigma_invol σ hcm]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_invol (hcm : IsCMExt F E σ) (z : Fv F v ⊗[F] E) : sigR (Fv F v) σ (sigR (Fv F v) σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -32,13 +32,13 @@ theorem sigR_invol (hcm : IsCMExt F E σ) (z : Fv F v ⊗[F] E) : sigR (Fv F v) 
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `[Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR, Algebra.TensorProduct.map_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclR (e : E) : sigR (Fv F v) σ (inclR (F := F) (Fv F v) e) = inclR (F := F) (Fv F v) (σ e) := by
   simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR, Algebra.TensorProduct.map_tmul]
 
 /- English proof (translation)
-Simplify using `only [hR, hform, map_sum, map_mul, sigR_invol σ v hcm, JR, Matrix.map_apply, sigR_inclR, hJ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hR_conj (hcm : IsCMExt F E σ) (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin n → Fv F v ⊗[F] E) :
     sigR (Fv F v) σ (hR (Fv F v) σ J x y) = hR (Fv F v) σ J y x := by
@@ -60,11 +60,11 @@ def UnitNorm : Prop :=
       ∃ p ∈ PerpG σ J v Λ X, ∃ u' ∈ OEv (E := E) v, hR (Fv F v) σ J p p * u' = 1
 
 /- English proof (translation)
-Introduce `hstd hL hsd hun ι _ _ X hX hUX hc`. Take `⟨p, hp, u', hu'0, hu'⟩` from `hUN hstd hL hsd hun ι X hX hUX hc`. Establish `hcm` using `hstd.1`. Establish `hJ` using `hstd.2.1.1`. Establish `hu0 : hR (Fv F v) σ J p p ∈ OEv (E` using `E) v := (hsd p).1 hp.1 p hp.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨l, hl0, hl⟩` from `hN hstd hun _ hu0 (hR_conj σ J v hcm hJ p p) ⟨u', hu'0, hu'⟩`. Establish `hXl : ∀ i, hR (Fv F v) σ J (X i) (l • p) = 0`. Introduce `i`. Rewrite using `[hR_smul_right, hp.2 i, mul_zero]`. Use `⟨l • p, ⟨oSmul v Λ hL l hl0 p hp.1, hXl⟩, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hR_smul_left, hR_smul_right, ← mul_assoc]`. Conclude with `hl`. Introduce `i`. Rewrite using `[← hR_conj σ J v hcm hJ, hXl i, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitV_of (hN : NormOne σ J ψ v) (hUN : UnitNorm σ J ψ v Λ) : UnitV σ J ψ v Λ := by
   intro hstd hL hsd hun ι _ _ X hX hUX hc
@@ -83,7 +83,7 @@ theorem unitV_of (hN : NormOne σ J ψ v) (hUN : UnitNorm σ J ψ v Λ) : UnitV 
     rw [← hR_conj σ J v hcm hJ, hXl i, map_zero]
 
 /- English proof (translation)
-The claim follows from `orbAll_of_unitV σ J ψ v Λ a Y (unitV_of σ J ψ v Λ hN hUN)`.
+A detailed English derivation is pending.
 -/
 theorem orbAll_of_norm (a : ℕ) (Y : TupV (E := E) v n a) (hN : NormOne σ J ψ v)
     (hUN : UnitNorm σ J ψ v Λ) : OrbAll σ J ψ v Λ a Y :=

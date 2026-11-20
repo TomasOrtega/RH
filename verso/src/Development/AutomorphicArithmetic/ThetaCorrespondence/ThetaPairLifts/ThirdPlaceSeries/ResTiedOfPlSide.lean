@@ -14,7 +14,7 @@ open GlobalTheory.HeightCounting (RowSide PlSide IotaOk setTy factRes)
 open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (IsGaloisRepOf Zbar GalE OnW)
 variable {D : D7}
 /- English proof (translation)
-Introduce `w hw l _ e`. Substitute `e` using the available equality. Conclude with `⟨Pl.ι w, plRed Pl w, Pl.ι_w w, teichAt_of_iotaOk h w, fun σ π r h1 h2 h3 h4 => ⟨(hr w hw σ π r h1 h2 h3 h4).1, (hr w hw σ π r h1 h2 h3 h4).2, teichAt_of_iotaOk h w⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem residual_ties_of_charpoly_reduction {Rw : RowSide D} {Pl : PlSide D} (h : IotaOk D Pl)
     (hr : ∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → ∀ σ π r, D.nd.goodRow σ → OnW D σ → IsRowPar Rw σ π →
